@@ -29,154 +29,6 @@ ENGINE_API BOOL TUisAlphaPresents(D3DFORMAT f) {
 	};
 	return false;
 }
-/*
-ENGINE_API char* TUsf2string(D3DFORMAT f) {
-	switch (f) {
-        case D3DFMT_R8G8B8:    return "R8G8B8";
-        case D3DFMT_A8R8G8B8:  return "A8R8G8B8";
-        case D3DFMT_X8R8G8B8:  return "X8R8G8B8";
-        case D3DFMT_R5G6B5:    return "R5G6B5";
-        case D3DFMT_R5G5B5:    return "R5G5B5";
-        case D3DFMT_PALETTE4:  return "PALETTE4";
-        case D3DFMT_PALETTE8:  return "PALETTE8";
-        case D3DFMT_A1R5G5B5:  return "A1R5G5B5";
-        case D3DFMT_X4R4G4B4:  return "X4R4G4B4";
-        case D3DFMT_A4R4G4B4:  return "A4R4G4B4";
-        case D3DFMT_L8:        return "L8";
-        case D3DFMT_A8L8:      return "A8L8";
-        case D3DFMT_U8V8:      return "U8V8";
-        case D3DFMT_U5V5L6:    return "U5V5L6";
-        case D3DFMT_U8V8L8:    return "U8V8L8";
-        case D3DFMT_UYVY:      return "UYVY";
-        case D3DFMT_YUY2:      return "YUY2";
-        case D3DFMT_DXT1:      return "DXT1";
-        case D3DFMT_DXT3:      return "DXT3";
-        case D3DFMT_DXT5:      return "DXT5";
-        case D3DFMT_R3G3B2:    return "R3G3B2";
-        case D3DFMT_A8:        return "A8";
-        case D3DFMT_TEXTUREMAX:return "TEXTUREMAX";
-        case D3DFMT_Z16S0:     return "Z16S0";
-        case D3DFMT_Z32S0:     return "Z32S0";
-        case D3DFMT_Z15S1:     return "Z15S1";
-        case D3DFMT_Z24S8:     return "Z24S8";
-        case D3DFMT_S1Z15:     return "S1Z15";
-        case D3DFMT_S8Z24:     return "S8Z24";
-        case D3DFMT_DEPTHMAX:	return "DEPTHMAX";
-        case D3DFMT_UNKNOWN:
-        default:				return "UNKNOWN";
-	}
-}
-*/
-/*
-ENGINE_API IDirect3DTexture9*	TUCreateTexture(
-		u32 *f, u32 *w, u32 *h, D3DFORMAT *fmt,
-		u32 *m)
-{
-	LPDIRECTDRAWSURFACE7	pSurf=NULL;
-	R_CHK(D3DXCreateTexture(
-		   HW.pDevice,
-		   f,w,h,fmt,pal,
-		   &pSurf, m
-		   ));
-	R_ASSERT(pSurf);
-	return pSurf;
-}
-
-ENGINE_API LPDIRECTDRAWSURFACE7	TUCreateSurfaceFromMemory(
-		u32 _w, u32 _h, u32 _p, D3DFORMAT fmt, void *data)
-{
-    DDSURFACEDESC2       ddsd2;
-    LPDIRECTDRAWSURFACE7 lpDDS;
-
-
-    // Initialize the surface description.
-    ZeroMemory(&ddsd2, sizeof(DDSURFACEDESC2));
-    ddsd2.dwSize = sizeof(ddsd2);
-    ddsd2.dwFlags = DDSD_WIDTH | DDSD_HEIGHT | DDSD_LPSURFACE |
-                    DDSD_PITCH | DDSD_PIXELFORMAT | DDSD_CAPS;
-    ddsd2.ddsCaps.dwCaps = DDSCAPS_OFFSCREENPLAIN | DDSCAPS_SYSTEMMEMORY;
-    ddsd2.dwWidth = _w;
-    ddsd2.dwHeight= _h;
-    ddsd2.lPitch  = (LONG)_p;
-    ddsd2.lpSurface = data;
-
-    // Set up the pixel format for 32-bit RGB (8-8-8-8).
-    TUMakeDDPixelFormat(fmt,&ddsd2.ddpfPixelFormat);
-
-    // Create the surface
-    R_CHK(HW.pDDraw->CreateSurface(&ddsd2, &lpDDS, NULL));
-    R_ASSERT(lpDDS);
-    return lpDDS;
-}
-
-ENGINE_API void					TULoadFromSurface	(
-		LPDIRECTDRAWSURFACE7 pDest, u32 dwMipLevel,
-		LPDIRECTDRAWSURFACE7 pSrc,	D3DX_FILTERTYPE filter)
-{
-	R_ASSERT(pDest);
-	R_ASSERT(pSrc);
-	R_CHK(D3DXLoadTextureFromSurface(
-		HW.pDevice,
-		pDest,
-		dwMipLevel,
-		pSrc,
-		NULL,
-		NULL,
-		filter
-		));
-}
-
-ENGINE_API LPDIRECTDRAWSURFACE7	TUGetMipLevel(LPDIRECTDRAWSURFACE7 pS, u32 L)
-{
-	R_ASSERT				(pS);
-
-	LPDIRECTDRAWSURFACE7	pSub=NULL;
-    DDSCAPS2				ddsCaps;
-    ZeroMemory				(&ddsCaps, sizeof(ddsCaps));
-    ddsCaps.dwCaps			= DDSCAPS_TEXTURE;
-    ddsCaps.dwCaps2			= DDSCAPS2_MIPMAPSUBLEVEL;
-
-	while (L) {
-		R_CHK(pS->GetAttachedSurface(&ddsCaps,&pSub));	VERIFY(pSub);
-		pS=pSub; pS->Release();	// decrements ref count
-		L--;
-	}
-	return pS;
-}
-
-ENGINE_API void		TULoadFromMemory(
-		LPDIRECTDRAWSURFACE7 pDest, u32 dwMipLevel,
-		u32* pSrc, D3DX_FILTERTYPE filter)
-{
-	R_ASSERT(pDest);
-	R_ASSERT(pSrc);
-
-	LPDIRECTDRAWSURFACE7	pMip = TUGetMipLevel(pDest,dwMipLevel);
-
-	DDSURFACEDESC2 ddsd;
-	ddsd.dwSize=sizeof(ddsd);
-	pMip->GetSurfaceDesc(&ddsd);
-
-	LPDIRECTDRAWSURFACE7	pTMP =
-		TUCreateSurfaceFromMemory(
-			ddsd.dwWidth,ddsd.dwHeight,ddsd.dwWidth*4,D3DFMT_A8R8G8B8,pSrc);
-	TULoadFromSurface(pDest,dwMipLevel,pTMP,filter);
-	_RELEASE				(pTMP);
-}
-*/
-/*
-	pDest = TUGetMipLevel(pDest,dwMipLevel);
-
-	DDSURFACEDESC2 ddsd;
-	ddsd.dwSize=sizeof(ddsd);
-	pDest->GetSurfaceDesc(&ddsd);
-
-
-	LPDIRECTDRAWSURFACE7	pTMP =
-		TUCreateSurfaceFromMemory(
-			ddsd.dwWidth,ddsd.dwHeight,ddsd.dwWidth*4,D3DFMT_A8R8G8B8,pSrc);
-	R_CHK(pDest->Blt(NULL,pTMP,NULL,DDBLT_WAIT,NULL));
-*/
 
 ENGINE_API u32*	TUBuild32MipLevel(ETextureMipgen ALG, u32 &_w, u32 &_h, u32 &_p, u32 *pdwPixelSrc)
 {
@@ -216,146 +68,6 @@ ENGINE_API u32*	TUBuild32MipLevel(ETextureMipgen ALG, u32 &_w, u32 &_h, u32 &_p,
 	_w/=2; _h/=2; _p=_w*4;
 	return pNewData;
 }
-/*
-ENGINE_API void TULoadFromBGR24(LPDIRECTDRAWSURFACE7 picSurf, void *picData )
-{
-    DDSURFACEDESC2	picDesc;
-
-	VERIFY(picSurf);
-
-    picDesc.dwSize = sizeof(picDesc);
-	CHK_DX(picSurf->Lock(0,&picDesc,DDLOCK_WAIT|DDLOCK_WRITEONLY,0));
-
-	u32	picW,picH;
-	WORD	off_r,off_g,off_b;
-	u32	mask_r,mask_g,mask_b;
-	u32	loopW,loopH;
-
-	picW = picDesc.dwWidth;
-	picH = picDesc.dwHeight;
-
-	VERIFY( (picDesc.ddpfPixelFormat.dwRGBBitCount % 8)==0 );
-
-	VERIFY( picDesc.lpSurface );
-	VERIFY( picDesc.ddpfPixelFormat.dwRBitMask );
-	VERIFY( picDesc.ddpfPixelFormat.dwGBitMask );
-	VERIFY( picDesc.ddpfPixelFormat.dwBBitMask );
-
-
-	mask_r = picDesc.ddpfPixelFormat.dwRBitMask;
-	mask_g = picDesc.ddpfPixelFormat.dwGBitMask;
-	mask_b = picDesc.ddpfPixelFormat.dwBBitMask;
-
-	u32 bitmapscansize = picW*3;
-	if (bitmapscansize & 3) {
-		bitmapscansize = (bitmapscansize & ~3) + 4;
-	}
-
-	u32 bytepixsize = picDesc.ddpfPixelFormat.dwRGBBitCount / 8;
-	LPBYTE px = (LPBYTE) picDesc.lpSurface;
-	LPBYTE orgdata = (LPBYTE) picData + bitmapscansize * picH;
-
-	loopW = picW;
-	loopH = picH;
-
-	u32 addptr2 = picDesc.lPitch - loopW*bytepixsize;
-	u32 addptr1 = bitmapscansize - picW*3;
-
-	__asm{
-
-			mov eax,mask_r
-			bsr ebx,eax
-			mov dx,31
-			sub dx,bx
-			mov off_r,dx
-
-			mov eax,mask_g
-			bsr ebx,eax
-			mov dx,31
-			sub dx,bx
-			mov off_g,dx
-
-			mov eax,mask_b
-			bsr ebx,eax
-			mov dx,31
-			sub dx,bx
-			mov off_b,dx
-	}
-
-	__asm{
-
-			// WH loops prepare
-
-			mov esi,orgdata
-			mov edi,px
-			mov ecx,loopH
-
-scanloop_b24_H:
-
-			push ecx
-			mov ecx,loopW
-			sub esi,bitmapscansize
-
-scanloop_b24_W:
-
-			mov edx,ecx
-
-			mov ebx,0
-
-			// B
-			mov al, byte ptr [esi]
-			shl eax, 24
-			mov cx,  off_b
-			shr eax, cl
-			and eax, mask_b
-			or  ebx, eax
-
-			// G
-			mov al, byte ptr [esi+1]
-			shl eax,24
-			mov cx,off_g
-			shr eax,cl
-			and eax,mask_g
-			or  ebx,eax
-
-			// R
-			mov al, byte ptr [esi+2]
-			shl eax,24
-			mov cx,off_r
-			shr eax,cl
-			and eax,mask_r
-			or  ebx,eax
-
-			// store pixel
-
-			mov ecx,bytepixsize
-mvloop_b24:
-			mov byte ptr [edi], bl
-			shr ebx,8
-			inc edi
-			loop mvloop_b24
-
-
-			add esi,3
-			mov ecx,edx
-			loop scanloop_b24_W
-
-			// adjust scanline
-			add edi,addptr2
-			add esi,addptr1
-			sub esi,bitmapscansize
-
-			pop ecx
-			dec ecx
-			cmp ecx,0
-			jz  end
-			jmp scanloop_b24_H
-end:
-	}
-
-	CHK_DX(picSurf->Unlock(0));
-}
-*/
 
 ENGINE_API void	TUSelectMipLevel(u32 *w, u32 *h, u32 Q)
 {
@@ -410,19 +122,19 @@ IC void	Reduce				(int& w, int& h, int& l, int& skip)
 
 ENGINE_API IDirect3DBaseTexture9*	TWLoader2D
 (
- u32&				mem,
- const char *		fRName,
- ETexturePF			Algorithm,
- ETextureMipgen		Mipgen,
- u32				Quality,
- float				fContrast,
- BOOL				bGrayscale,
- BOOL				bSharpen,
+	u32&				mem,
+	const char *		fRName,
+	ETexturePF			Algorithm,
+	ETextureMipgen		Mipgen,
+	u32				Quality,
+	float				fContrast,
+	BOOL				bGrayscale,
+	BOOL				bSharpen,
 
- // return values
- D3DFORMAT&			fmt,
- u32&				dwWidth,
- u32&				dwHeight
+	// return values
+	D3DFORMAT&			fmt,
+	u32&				dwWidth,
+	u32&				dwHeight
  )
 {
 	CImage					Image;
@@ -439,6 +151,7 @@ ENGINE_API IDirect3DBaseTexture9*	TWLoader2D
 	// make file name
 	char fname[_MAX_PATH];
 	strcpy(fname,fRName); if (strext(fname)) *strext(fname)=0;
+	if (strstr(fn,"_bump"))									goto _BUMP;
 	if (FS.exist(fn,"$level$",			fname,	".dds"))	goto _DDS;
 	if (FS.exist(fn,"$game_textures$",	fname,	".dds"))	goto _DDS;
 
@@ -557,4 +270,65 @@ _DDS_2D:
 		}
 	}
 	return pTexture2D;
+_BUMP:
+	{
+		// Load   SYS-MEM-surface, bound to device restrictions
+		D3DXIMAGE_INFO			IMG;
+		IReader* S				= FS.r_open	(fn);
+		IDirect3DTexture9*		T_sysmem;
+		R_CHK(D3DXCreateTextureFromFileInMemoryEx(
+			HW.pDevice,
+			S->pointer(),S->length(),
+			D3DX_DEFAULT,D3DX_DEFAULT,
+			D3DX_DEFAULT,0,
+			D3DFMT_A8R8G8B8,
+			D3DPOOL_SYSTEMMEM,
+			D3DX_DEFAULT,
+			D3DX_DEFAULT,
+			0,&IMG,0,
+			&T_sysmem
+			));
+		FS.r_close				(S);
+
+		// Create HW-surface
+		R_CHK(D3DXCreateTexture		(HW.pDevice,IMG.Width,IMG.Height,D3DX_DEFAULT,0,D3DFMT_A8R8G8B8,D3DPOOL_MANAGED, &pTexture2D));
+		R_CHK(D3DXComputeNormalMap	(pTexture2D,T_sysmem,0,0,D3DX_CHANNEL_RED,8.f));
+
+		// Transfer gloss-map
+		{
+			LPDIRECT3DTEXTURE9			tDest	= pTexture2D;
+			LPDIRECT3DTEXTURE9			tSrc	= T_sysmem;
+			DWORD mips							= tDest->GetLevelCount();
+			R_ASSERT							(mips == tSrc->GetLevelCount());
+
+			for (DWORD i = 0; i < mips; i++)
+			{
+				D3DLOCKED_RECT				Rsrc,Rdst;
+				D3DSURFACE_DESC				desc;
+
+				tDest->GetLevelDesc			(i, &desc);
+
+				tSrc->LockRect				(i,&Rsrc,0,0);
+				tDest->LockRect				(i,&Rdst,0,0);
+
+				for (u32 y = 0; y < desc.Height; y++)
+				{
+					for (u32 x = 0; x < desc.Width; x++)
+					{
+						DWORD&	pSrc	= *(((DWORD*)((BYTE*)Rsrc.pBits + (y * Rsrc.Pitch)))+x);
+						DWORD&	pDst	= *(((DWORD*)((BYTE*)Rdst.pBits + (y * Rdst.Pitch)))+x);
+
+						DWORD	mask	= DWORD(0xff) << DWORD(24);
+
+						pDst			= (pDst& (~mask)) | (pSrc&mask);
+					}
+				}
+
+				tDest->UnlockRect			(i);
+				tSrc->UnlockRect			(i);
+			}
+		}
+		_RELEASE	(T_sysmem);
+		return		pTexture2D;
+	}
 }
