@@ -1,23 +1,42 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.10"
+	Version="8.00"
 	Name="PracticalPSM"
 	ProjectGUID="{F4403A80-5ECE-4D98-8AD2-C81569ED98B6}"
 	SccProjectName="&quot;$/TestBed/SunShadow&quot;, MWUAAAAA"
-	SccAuxPath=""
 	SccLocalPath="..\..\..\.."
-	SccProvider="MSSCCI:Microsoft Visual SourceSafe">
+	SccProvider="MSSCCI:Microsoft Visual SourceSafe"
+	>
 	<Platforms>
 		<Platform
-			Name="Win32"/>
+			Name="Win32"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="Debug"
 			IntermediateDirectory="Debug"
-			ConfigurationType="1">
+			ConfigurationType="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
@@ -29,9 +48,17 @@
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="4"/>
+				DebugInformationFormat="4"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="dxerr9.lib d3dx9.lib d3d9.lib d3dxof.lib dxguid.lib winmm.lib kernel32.lib user32.lib gdi32.lib winspool.lib comctl32.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib"
@@ -39,34 +66,52 @@
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../../../../LIBS/lib/debug,../../../../LIBS/implib/debug"
 				GenerateDebugInformation="TRUE"
-				SubSystem="2"/>
+				SubSystem="2"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCManifestTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"/>
+				Name="VCAppVerifierTool"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCWebDeploymentTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="Release"
 			IntermediateDirectory="Release"
 			ConfigurationType="1"
-			WholeProgramOptimization="TRUE">
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
@@ -75,7 +120,6 @@
 				EnableIntrinsicFunctions="TRUE"
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="TRUE"
-				OptimizeForProcessor="3"
 				AdditionalIncludeDirectories="../../inc;../../../../LIBS/inc;../../../common/inc;../../../../inc;../../../../LIBS/src;../shared"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				StringPooling="TRUE"
@@ -83,9 +127,17 @@
 				BufferSecurityCheck="FALSE"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="TRUE"/>
+				Detect64BitPortabilityProblems="TRUE"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="dxerr9.lib d3dx9.lib d3d9.lib d3dxof.lib dxguid.lib winmm.lib kernel32.lib user32.lib gdi32.lib winspool.lib comctl32.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib"
@@ -95,27 +147,29 @@
 				GenerateDebugInformation="FALSE"
 				SubSystem="2"
 				OptimizeReferences="2"
-				EnableCOMDATFolding="2"/>
+				EnableCOMDATFolding="2"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCManifestTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"/>
+				Name="VCAppVerifierTool"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCWebDeploymentTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 	</Configurations>
 	<References>
@@ -123,87 +177,113 @@
 	<Files>
 		<Filter
 			Name="Source Files"
-			Filter="cpp;cxx;c">
+			Filter="cpp;cxx;c"
+			>
 			<File
-				RelativePath=".\Bounding.cpp">
+				RelativePath=".\Bounding.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\FrameWork.inc">
+				RelativePath=".\FrameWork.inc"
+				>
 			</File>
 			<File
-				RelativePath=".\Helpers.inc">
+				RelativePath=".\Helpers.inc"
+				>
 			</File>
 			<File
-				RelativePath=".\LiSPSM.cpp">
+				RelativePath=".\LiSPSM.cpp"
+				>
 			</File>
 			<File
-				RelativePath="..\shared\NVBScene9.cpp">
+				RelativePath="..\shared\NVBScene9.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\PracticalPSM.cpp">
+				RelativePath=".\PracticalPSM.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\TSM.cpp">
+				RelativePath=".\TSM.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\Util.cpp">
+				RelativePath=".\Util.cpp"
+				>
 			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
-			Filter="h;hpp">
+			Filter="h;hpp"
+			>
 			<File
-				RelativePath=".\Bounding.h">
+				RelativePath=".\Bounding.h"
+				>
 			</File>
 			<File
-				RelativePath=".\common.h">
+				RelativePath=".\common.h"
+				>
 			</File>
 			<File
-				RelativePath=".\MouseUIs.h">
+				RelativePath=".\MouseUIs.h"
+				>
 			</File>
 			<File
-				RelativePath=".\PracticalPSM.h">
+				RelativePath=".\PracticalPSM.h"
+				>
 			</File>
 			<File
-				RelativePath=".\Util.h">
+				RelativePath=".\Util.h"
+				>
 			</File>
 		</Filter>
 		<Filter
 			Name="Media"
-			Filter="">
+			>
 			<File
-				RelativePath="..\..\..\..\Media\models\ClawBOT\ClawBOT.nvb">
+				RelativePath="..\..\..\..\Media\models\ClawBOT\ClawBOT.nvb"
+				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\Media\models\SambavaRockChunk\Ground-01_bp.dds">
+				RelativePath="..\..\..\..\Media\models\SambavaRockChunk\Ground-01_bp.dds"
+				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\Media\models\SambavaRockChunk\Ground-01_bp_normal.dds">
+				RelativePath="..\..\..\..\Media\models\SambavaRockChunk\Ground-01_bp_normal.dds"
+				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\Media\models\SambavaRockChunk\Ground-01_df.dds">
+				RelativePath="..\..\..\..\Media\models\SambavaRockChunk\Ground-01_df.dds"
+				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\Media\models\SambavaRockChunk\SambavaRockChunk.nvb">
+				RelativePath="..\..\..\..\Media\models\SambavaRockChunk\SambavaRockChunk.nvb"
+				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\Media\models\SambavaRockChunk\Stone_01-bp.dds">
+				RelativePath="..\..\..\..\Media\models\SambavaRockChunk\Stone_01-bp.dds"
+				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\Media\models\SambavaRockChunk\Stone_01-bp_normal.dds">
+				RelativePath="..\..\..\..\Media\models\SambavaRockChunk\Stone_01-bp_normal.dds"
+				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\Media\models\SambavaRockChunk\Stone_01-detail.dds">
+				RelativePath="..\..\..\..\Media\models\SambavaRockChunk\Stone_01-detail.dds"
+				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\Media\models\SambavaRockChunk\Stone_01-detail_normal.dds">
+				RelativePath="..\..\..\..\Media\models\SambavaRockChunk\Stone_01-detail_normal.dds"
+				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\Media\models\SambavaRockChunk\Stone_01-df.dds">
+				RelativePath="..\..\..\..\Media\models\SambavaRockChunk\Stone_01-df.dds"
+				>
 			</File>
 		</Filter>
 		<File
-			RelativePath="..\..\..\..\Media\programs\PracticalPSM\PracticalPSM.fx">
+			RelativePath="..\..\..\..\Media\programs\PracticalPSM\PracticalPSM.fx"
+			>
 		</File>
 	</Files>
 	<Globals>

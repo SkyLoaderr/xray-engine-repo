@@ -1,14 +1,11 @@
-Microsoft Visual Studio Solution File, Format Version 8.00
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PracticalPSM", "PracticalPSM.vcproj", "{F4403A80-5ECE-4D98-8AD2-C81569ED98B6}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
 EndProject
 Global
-	GlobalSection(DPCodeReviewSolutionGUID) = preSolution
-		DPCodeReviewSolutionGUID = {00000000-0000-0000-0000-000000000000}
-	EndGlobalSection
 	GlobalSection(SourceCodeControl) = preSolution
 		SccNumberOfProjects = 2
+		SccProviderRegKey = Software\Microsoft\SourceSafe
 		SccProjectName0 = \u0022$/TestBed/SunShadow\u0022,\u0020MWUAAAAA
 		SccLocalPath0 = ..\\..\\..\\..
 		SccProvider0 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
@@ -20,18 +17,20 @@ Global
 		CanCheckoutShared = true
 		SccProjectFilePathRelativizedFromConnection1 = DEMOS\\Direct3D9\\src\\PracticalPSM\\
 	EndGlobalSection
-	GlobalSection(SolutionConfiguration) = preSolution
-		Debug = Debug
-		Release = Release
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
 	EndGlobalSection
-	GlobalSection(ProjectConfiguration) = postSolution
-		{F4403A80-5ECE-4D98-8AD2-C81569ED98B6}.Debug.ActiveCfg = Debug|Win32
-		{F4403A80-5ECE-4D98-8AD2-C81569ED98B6}.Debug.Build.0 = Debug|Win32
-		{F4403A80-5ECE-4D98-8AD2-C81569ED98B6}.Release.ActiveCfg = Release|Win32
-		{F4403A80-5ECE-4D98-8AD2-C81569ED98B6}.Release.Build.0 = Release|Win32
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F4403A80-5ECE-4D98-8AD2-C81569ED98B6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F4403A80-5ECE-4D98-8AD2-C81569ED98B6}.Debug|Win32.Build.0 = Debug|Win32
+		{F4403A80-5ECE-4D98-8AD2-C81569ED98B6}.Release|Win32.ActiveCfg = Release|Win32
+		{F4403A80-5ECE-4D98-8AD2-C81569ED98B6}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(ExtensibilityAddIns) = postSolution
+	GlobalSection(DPCodeReviewSolutionGUID) = preSolution
+		DPCodeReviewSolutionGUID = {00000000-0000-0000-0000-000000000000}
 	EndGlobalSection
 EndGlobal
