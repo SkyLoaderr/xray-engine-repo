@@ -2,6 +2,8 @@
 #include "fstaticrender.h"
 #include "fstaticrender_rendertarget.h"
 
+LPCSTR	RTname	= "$user$rendertarget";
+
 CRenderTarget::CRenderTarget()
 {
 	bAvailable	= FALSE;
@@ -46,6 +48,12 @@ BOOL CRenderTarget::Create	()
 	R_CHK	(pSurface->GetSurfaceLevel			(0,&pRT));
 	R_CHK	(HW.pDevice->GetRenderTarget		(&pBaseRT));
 	R_CHK	(HW.pDevice->GetDepthStencilSurface	(&pBaseZB));
+	
+	// Texture and shader
+	pTexture	= Device.Shader._CreateTexture	(RTname);
+	pShaderSet	= Device.Shader.Create			("screen_set",	RTname);
+	pShaderGray	= Device.Shader.Create			("screen_gray",	RTname);
+	pTexture->surface_set	(pSurface);
 	return	TRUE;
 }
 

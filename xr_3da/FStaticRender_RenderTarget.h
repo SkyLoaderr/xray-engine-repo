@@ -9,7 +9,9 @@ private:
 	IDirect3DSurface8*	pBaseRT;
 	IDirect3DSurface8*	pBaseZB;
 	
-	Shader*				pShader;
+	CTexture*			pTexture;
+	Shader*				pShaderSet;
+	Shader*				pShaderGray;
 	CVertexStream*		pStream;
 	
 	BOOL				Create				();
