@@ -93,8 +93,19 @@ function trader_need_artefact(first_speaker, second_speaker)
 	return true
 end
 
+--' Escape dynamite for Wolf
+function have_dynamite(first_speaker, second_speaker)
+  	return first_speaker:object("dynamite") ~= nil
+end
 
---' Barmen needs military documents
+function give_dynamite(first_speaker, second_speaker)
+	local case = first_speaker:object("dynamite")
+	first_speaker:transfer_item (case, second_speaker)
+	first_speaker:set_task_state(task.completed, "esc_dinamit_to_volk", 1)
+	first_speaker:set_task_state(task.completed, "esc_dinamit_to_volk", 0)
+end
+
+--' Barman needs military documents
 function trader_need_military_document(first_speaker, second_speaker)
 	local actor = level.actor()
     if actor ~= nil and
