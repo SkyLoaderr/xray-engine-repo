@@ -621,6 +621,12 @@
 					RelativePath=".\ParticleEffect.h">
 				</File>
 				<File
+					RelativePath=".\ParticleEffectDef.cpp">
+				</File>
+				<File
+					RelativePath=".\ParticleEffectDef.h">
+				</File>
+				<File
 					RelativePath=".\ParticleGroup.cpp">
 				</File>
 				<File
