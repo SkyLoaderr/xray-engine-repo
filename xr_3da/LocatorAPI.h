@@ -54,7 +54,7 @@ public:
 	void						Destroy			();
 
 	CStream*					Open			(const char* N);
-	void						Close			(CStream* S);
+	void						Close			(CStream* &S);
 
 	BOOL						Exist			(const char* N);
 	BOOL						Exist			(char* fn, const char* path, const char* name);
