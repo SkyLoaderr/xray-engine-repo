@@ -20,15 +20,7 @@
 	</character>
 	
 	<character id="veteran">
-		<name>Unknown Stalker</name>
-		<icon x="2" y="9"></icon>
-		<map_icon x="0" y="4"></map_icon>
-		<visual>string_name2</visual>
-		<rank>veteran</rank>
-		<team>Lonewolf</team>
-		<start_dialog>stalker_talk_about</start_dialog>
-		
-		<specific_character>default</specific_character>
+		<rank>70</rank>
 	</character>
 	<character id="monolith">
 		<name>Unknown Stalker</name>
