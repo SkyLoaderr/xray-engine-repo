@@ -72,15 +72,6 @@ function main_menu:InitControls()
 							 width = btn_rect.width,
 							 height = btn_rect.height}
 	
-	local btn_ok_rect     = {x = indent,
-							 y = 0,
-							 height = 40,
-							 width  = 135}
-	btn_ok_rect.y = main_rect.height - (btn_ok_rect.height + indent)
-	local btn_cancel_rect = {x = btn_ok_rect.x + btn_ok_rect.width + indent,
-							 y = btn_ok_rect.y,
-							 height = btn_ok_rect.height,
-							 width  = btn_ok_rect.width}	
 	message_rect = {x = 0, y = 0, width = 400, height = 300}
 	
 	----- CODE -------
@@ -161,31 +152,6 @@ function main_menu:InitControls()
 	self:Register(btn)
 	main_frame:AttachChild(btn)
 		
-	btn   = CUIButton()
-	btn:SetAutoDelete(true) 
-	btn:SetWindowName("button_ok") --set window name for callback processing
-	
-	btn:Init("ui\\ui_button_01",btn_ok_rect.x, btn_ok_rect.y, btn_ok_rect.width, btn_ok_rect.height)
---  btn:Init(10,10,100,100) --or without texture
-    btn:SetText("OK")
-	btn:SetFont(GetFontLetterica25())
-	btn:SetTextAlign(CGameFont.alCenter) --horizontal align. possible values are [alCenter,alLeft,alRight]
-	btn:SetTextY(20) --vertical align(pixel). set value to -1 for center
-	self:Register(btn) --for event-handling
-	main_frame:AttachChild(btn)
---------------------------------------
-    btn   = CUIButton()
-    btn:SetAutoDelete(true)
-    btn:SetWindowName("button_cancel")	
-	btn:Init("ui\\ui_button_01",btn_cancel_rect.x, btn_cancel_rect.y, btn_cancel_rect.width, btn_cancel_rect.height) 	
-	btn:SetText("cancel")
-	btn:SetFont(GetFontLetterica25())
-	btn:SetTextAlign(CGameFont.alCenter)
-	btn:SetTextY(20)
-	self:Register(btn)
-	main_frame:AttachChild(btn)
-	
-	
 	-- Message Box --
 	message_box = CUIMessageBox()
 	message_box:SetAutoDelete(true)
