@@ -1,0 +1,57 @@
+----------------------------------------------------------------------------------------------------
+-- Physic door control
+----------------------------------------------------------------------------------------------------
+-- Исходный скрипт: Evgeniy Negrobov (Jon) jon@gsc-game.kiev.ua
+-- Перевод на xr_logic: Andrey Fidrya (Zmey) af@svitonline.com
+----------------------------------------------------------------------------------------------------
+
+class "action_car"
+
+function action_car:__init(obj, storage)
+	self.object = obj
+	self.st = storage
+end
+
+function action_car:reset_scheme()
+	printf("_bp: action_car:reset_scheme: self.object:name()='%s'", self.object:name())
+	
+	xr_logic.mob_capture(self.object, true)
+	
+	action(self.object, move(move.fwd), cond(cond.time_end, time_infinite))                                                                                                             
+end
+
+function action_car:update(delta)
+	--printf("_bp: action_car:update()", delta)
+
+	if not xr_logic.is_active(self.object, self.st) then
+		return
+	end
+
+	local actor = level.actor()
+	if not actor then
+		return
+	end
+
+	if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
+		return
+	end
+	
+end
+
+---------------------------------------------------------------------------------------------------------------------
+function add_to_binder(npc, ini, scheme, section, storage)
+	printf("DEBUG: add_to_binder: scheme='%s', section='%s'", scheme, section)
+
+	local new_action = action_car(npc, storage)
+
+	-- Зарегистрировать все actions, в которых должен быть вызван метод reset_scheme при изменении настроек схемы:
+	xr_logic.subscribe_action_for_events(npc, storage, new_action)
+end
+
+function set_scheme(npc, ini, scheme, section, gulag_name)
+	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
+
+	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)
+
+end
+
