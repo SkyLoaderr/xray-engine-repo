@@ -348,7 +348,15 @@ if char_ini:section_exist("soundcheck") == true then
 	self.object:set_hear_callback(hear_callback)
 	printf("SOUNDCHECK set")
 end
- 
+
+--' Проверка ТИМ СКВАД ГРУП 
+if true then
+	printf("[TSG] Object: %s t:%d s:%d g:%d", self.object:name(),
+											  self.object:team(),
+											  self.object:squad(),
+											  self.object:group())
+end
+
  
 end
 ----------------------------------------------------------------------------------------------------------------------
