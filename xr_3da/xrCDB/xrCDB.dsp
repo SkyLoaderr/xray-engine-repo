@@ -266,6 +266,10 @@ SOURCE=.\xrCDB.cpp
 
 SOURCE=.\xrCDB.h
 # End Source File
+# Begin Source File
+
+SOURCE=.\xrCDB_ray.cpp
+# End Source File
 # End Group
 # Begin Group "Opcode"
 
