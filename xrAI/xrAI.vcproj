@@ -480,6 +480,16 @@
 				RelativePath=".\xrLevel.h">
 			</File>
 		</Filter>
+		<Filter
+			Name="Graph"
+			Filter="">
+			<File
+				RelativePath="xrGraph.cpp">
+			</File>
+			<File
+				RelativePath="xrGraph.h">
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\todo.txt">
 		</File>

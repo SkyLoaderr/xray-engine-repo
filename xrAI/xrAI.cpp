@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "process.h"
+#include "xrGraph.h"
 
 #pragma comment(linker,"/STACK:0x800000,0x400000")
 
@@ -22,6 +23,7 @@ static const char* h_str =
 	"-? or -h	== this help\n"
 	"-f<NAME>	== compile level in gamedata\\levels\\<NAME>\\\n"
 	"-o			== modify build options\n"
+	"-g<NAME>	== build off-line AI graph in gamedata\\levels\\<NAME>\\\n"
 	"\n"
 	"NOTE: The last key is required for any functionality\n";
 
@@ -36,7 +38,7 @@ void Startup(LPSTR     lpCmdLine)
 	strcpy(cmd,lpCmdLine);
 	strlwr(cmd);
 	if (strstr(cmd,"-?") || strstr(cmd,"-h"))			{ Help(); return; }
-	if (strstr(cmd,"-f")==0)							{ Help(); return; }
+	if ((strstr(cmd,"-f")==0) && (strstr(cmd,"-g")==0))	{ Help(); return; }
 	if (strstr(cmd,"-o"))								bModifyOptions = TRUE;
 
 	// Give a LOG-thread a chance to startup
@@ -52,7 +54,11 @@ void Startup(LPSTR     lpCmdLine)
 	string prjName		= "gamedata\\levels\\"+string(name)+"\\";
 
 	DWORD				dwStartupTime	= timeGetTime();
-	xrCompiler			(prjName.c_str());
+	
+	if (strstr(cmd,"-f"))
+		xrCompiler			(prjName.c_str());
+	else
+		xrBuildGraph		(prjName.c_str());
 
 	// Show statistic
 	char	stats[256];
