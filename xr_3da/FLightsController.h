@@ -15,7 +15,6 @@ class ENGINE_API CLightsController {
 
 	vector<xrLIGHT>	Lights;			// -- Lights itself
 	vector<xrLIGHT>	LightsDynamic;
-	vector<Flight>	Keyframes;
 
 	vector<BYTE>	Enabled;		// -- is Enabled
 	vecI			Distance;		// -- Only selected are valid!!!
@@ -42,7 +41,7 @@ public:
 
 	int		Add				(xrLIGHT &L);	// Adds dynamic light - return handle
 	void	Remove			(int handle);	// Removes dynamic Light
-	xrLIGHT&	Get			(int handle)	{ return LightsDynamic[handle]; }
+	xrLIGHT& Get			(int handle)	{ return LightsDynamic[handle]; }
 
 	void	UnselectAll		(void);			// Disables all lights
 	void	BuildSelection	(void);			// Select relevant lights
@@ -58,7 +57,6 @@ public:
 		}
 	}
 
-	void	LoadKeyframes	(CStream *fs);
 	void	Load			(CStream *fs);
 	void	Unload			(void);
 	void	Render			(void);
