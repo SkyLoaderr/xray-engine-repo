@@ -28,6 +28,7 @@ void CGameObject::net_Destroy	()
 	setReady									(FALSE);
 	pCreator->Objects.net_Unregister			(this);
 	pCreator->ObjectSpace.Object_Unregister		(this);
+	shedule_Unregister							();
 	Sector_Move									(0);
 }
 
