@@ -2,6 +2,8 @@ function update_action (npc, script, ...)
 	
 	if npc == nil then return end
 
+	printf ("Number or arguments %d", arg.n)
+
 	local act = npc:action ()
 	if act == nil or arg.n == 0 then
 	   return
