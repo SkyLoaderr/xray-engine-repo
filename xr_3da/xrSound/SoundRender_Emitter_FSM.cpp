@@ -118,7 +118,7 @@ void CSoundRender_Emitter::update	(float dt)
 	bMoved				= FALSE;
 	if (state != stStopped)
 	{
-		if (dwTime	>=	dwTimeToPropagade)		PropagadeEvent();
+		if (dwTime	>=	dwTimeToPropagade)		Event_Propagade();
 	} else if (owner)	{ owner->feedback = 0; owner	= 0; }
 }
 
