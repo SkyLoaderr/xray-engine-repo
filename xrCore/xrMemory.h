@@ -74,4 +74,4 @@ IC void*	xr_malloc	(size_t size)			{	return	Memory.mem_alloc(size);					}
 
 IC void*	xr_realloc	(void* P, size_t size)	{	return Memory.mem_realloc(P,size);				}
 
-char*		xr_strdup	(const char* string);
+XRCORE_API char*		xr_strdup	(const char* string);
