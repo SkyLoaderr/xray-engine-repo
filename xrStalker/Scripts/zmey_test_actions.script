@@ -1,0 +1,27 @@
+function main ()
+
+	printf ("call zmey_test_actions");
+
+	walker = get_level_object("m_stalker_e0002")
+	
+	walker:script (true, zmey_test_actions.script_name())
+	
+	action (walker, move (move.standing, move.walk, move.line, patrol ("way0002")),
+			anim ("sidya_boltaet_ 0"), cond (cond.time_end, time_infinite))
+	
+	local old_time = game.time ()
+	local first_time = true
+	while true do
+		if game.time() - old_time > 10000 and first_time then
+			printf "!!!!!!!!!!!!!!!!"
+			local act = anim("spit_ 0");
+			walker:action():set_action( act )
+			first_time = false
+		end
+		wait()
+	end
+
+	walker:script (true, zmey_test_actions.script_name())
+
+	printf ("exit zmey_test_actions");
+end
