@@ -178,7 +178,7 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 				switch (m_type)
 				{
 				case M_SV_CONFIG_FINISHED:	bFinished = TRUE;	break;
-				case M_SV_SPAWN:			g_sv_Spawn(P);		break;
+				case M_SPAWN:				g_sv_Spawn(P);		break;
 				}
 			}
 			Sleep	(1);
@@ -191,7 +191,7 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 			{
 				u16			m_type;	
 				P->r_begin	(m_type);
-				if			(M_SV_SPAWN==m_type) g_sv_Spawn(P);
+				if			(M_SPAWN==m_type) g_sv_Spawn(P);
 			}
 			Sleep	(1);
 		}
@@ -278,10 +278,11 @@ void CLevel::ClientReceive()
 	for (NET_Packet* P = Retreive(); P; P=Retreive())
 	{
 		u16			m_type;
+		u16			ID;
 		DWORD		cl_time	= P->r_begin(m_type);
 		switch (m_type)
 		{
-		case M_SV_SPAWN:
+		case M_SPAWN:
 			g_sv_Spawn(P);
 			break;
 		case M_UPDATE:
@@ -289,13 +290,14 @@ void CLevel::ClientReceive()
 			break;
 		case M_FIRE_HIT:
 			{
-				DWORD		ID	= P->r_u8			();
+				P->r_u16		(ID);
 				CObject*	O	= Objects.net_Find	(ID);
 				if (O)	{
-					DWORD		ID2 = P->r_u8		();
+					u16			ID2;
+					P->r_u16	(ID2);
 					CEntity*	WHO = (CEntity*)Objects.net_Find(ID2);
-					DWORD		perc= P->r_u8		();
-					Fvector		dir = P->r_dir		();
+					DWORD		perc;	P->r_u8		(perc);
+					Fvector		dir;	P->r_dir	(perc);
 
 					CEntity*	E	= (CEntity*)O;
 					E->Hit		(perc,dir,WHO);
@@ -304,7 +306,7 @@ void CLevel::ClientReceive()
 			break;
 		case M_FIRE_BEGIN:
 			{
-				DWORD		ID	= P->r_u8			();
+				P->r_u16		(ID);
 				CObject*	O	= Objects.net_Find	(ID);
 				if (O) {
 					CEntity*	E	= (CEntity*)O;
@@ -314,7 +316,7 @@ void CLevel::ClientReceive()
 			break;
 		case M_FIRE_END:
 			{
-				DWORD		ID	= P->r_u8			();
+				P->r_u16		(ID);
 				CObject*	O	= Objects.net_Find	(ID);
 				if (O) {
 					CEntity*	E	= (CEntity*)O;

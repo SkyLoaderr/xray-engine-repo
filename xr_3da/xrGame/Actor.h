@@ -123,7 +123,7 @@ private:
 //------------------------------
 	struct				net_update 		
 	{
-		DWORD			dwTimeStamp;			// server(game) timestamp
+		u32				dwTimeStamp;			// server(game) timestamp
 		float			o_model;				// model yaw
 		SRotation		o_torso;				// torso in world coords
 		Fvector			p_pos;					// in world coords

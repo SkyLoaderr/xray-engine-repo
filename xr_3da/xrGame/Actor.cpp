@@ -87,24 +87,25 @@ void CActor::net_Import(NET_Packet* P)					// import from server
 	R_ASSERT		(!net_Local);
 	net_update		N;
 
-	N.dwTimeStamp	= P->r_u32		();
-	u8	flags		= P->r_u8		();
-	N.p_pos			= P->r_vec3		();
-	N.mstate		= P->r_u8		();
-	N.o_model		= P->r_angle8	();
-	N.o_torso.yaw	= P->r_angle8	();
-	N.o_torso.pitch	= P->r_angle8	();
-	N.p_accel		= P->r_sdir		();
-	N.p_velocity	= P->r_sdir		();
+	u8	 flags, wpn, tmp;
+	P->r_u32		(N.dwTimeStamp	);
+	P->r_u8			(flags			);
+	P->r_vec3		(N.p_pos		);
+	P->r_u8			(tmp			); N.mstate = DWORD(tmp);
+	P->r_angle8		(N.o_model		);
+	P->r_angle8		(N.o_torso.yaw	);
+	P->r_angle8		(N.o_torso.pitch);
+	P->r_sdir		(N.p_accel		);
+	P->r_sdir		(N.p_velocity	);
 
-	u8 wpn			= P->r_u8		();
+	P->r_u8			(wpn);
 	if (0xff==wpn)	N.weapon		= -1;
 	else			N.weapon		= int(wpn);
 
 	if (flags&MF_FIREPARAMS)
 	{
-		N.f_pos		= P->r_vec3		();
-		N.f_dir		= P->r_dir		();
+		P->r_vec3	(N.f_pos);
+		P->r_dir	(N.f_dir);
 	}
 
 	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	{
@@ -227,8 +228,8 @@ void CActor::Load(CInifile* ini, const char* section )
 BOOL CActor::Spawn		( BOOL bLocal, int sid, int team, int squad, int group, Fvector& o_pos, Fvector& o_angle )
 {
 	if (!inherited::Spawn(bLocal,sid,team,squad,group,o_pos,o_angle))	return FALSE;
-	r_model_yaw			= o_pos.w;
-	cameras[cam_active]->Set(o_pos.w,0,0);		// set's camera orientation
+	r_model_yaw			= o_angle.y;
+	cameras[cam_active]->Set(o_angle.y,0,0);		// set's camera orientation
 
 	bAlive				= TRUE;
 	bEnabled			= bLocal?TRUE:FALSE;
@@ -698,8 +699,8 @@ void CActor::g_sv_fireStart	(NET_Packet* P)
 	// Correct last packet if available
 	if (!NET.empty())	
 	{
-		NET.back().f_pos	= P->r_vec3		();
-		NET.back().f_dir	= P->r_dir		();
+		P->r_vec3		(NET.back().f_pos);
+		P->r_dir		(NET.back().f_dir);
 	}
 
 	Weapons->FireStart	( );

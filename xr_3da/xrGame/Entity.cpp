@@ -34,8 +34,8 @@ BOOL CEntity::Hit(int perc, Fvector &dir, CEntity* who)
 		// *** signal to everyone
 		NET_Packet	P;
 		P.w_begin	(M_FIRE_HIT);
-		P.w_u8		(u8(net_ID));
-		P.w_u8		(u8(who->net_ID));
+		P.w_u16		(u16(net_ID));
+		P.w_u16		(u16(who->net_ID));
 		P.w_u8		(perc	);
 		P.w_dir		(dir	);
 		Level().Send(P,net_flags(TRUE));
