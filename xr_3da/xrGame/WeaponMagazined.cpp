@@ -595,9 +595,15 @@ void CWeaponMagazined::switch2_Empty()
 		inherited::FireEnd();
 	}
 }
+void CWeaponMagazined::PlayReloadSound()
+{
+	PlaySound	(sndReload,vLastFP);
+}
+
 void CWeaponMagazined::switch2_Reload()
 {
 	UpdateFP	();
+	PlayReloadSound();
 	PlaySound	(sndReload,vLastFP);
 	
 	PlayAnimReload();

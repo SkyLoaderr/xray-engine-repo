@@ -24,8 +24,8 @@ public:
 	void			switch2_EndReload	();
 
 	virtual void	UpdateSounds		();
-	void			PlayAnimOpenWeapon	();
-	void			PlayAnimAddOneCartridgeWeapon();
+	virtual void	PlayAnimOpenWeapon	();
+	virtual void	PlayAnimAddOneCartridgeWeapon();
 	void			PlayAnimCloseWeapon	();
 
 	virtual bool	Action(s32 cmd, u32 flags);

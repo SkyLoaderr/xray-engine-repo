@@ -10,7 +10,10 @@
 
 CWeaponShotgun::CWeaponShotgun(void) : CWeaponCustomPistol("TOZ34")
 {
-    m_eSoundShotBoth	= ESoundTypes(SOUND_TYPE_WEAPON_SHOOTING);
+    m_eSoundShotBoth		= ESoundTypes(SOUND_TYPE_WEAPON_SHOOTING);
+	m_eSoundClose			= ESoundTypes(SOUND_TYPE_WEAPON_SHOOTING);
+	m_eSoundAddCartridge	= ESoundTypes(SOUND_TYPE_WEAPON_SHOOTING);
+	
 	m_bTriStateReload = false;
 }
 
@@ -18,6 +21,10 @@ CWeaponShotgun::~CWeaponShotgun(void)
 {
 	// sounds
 	HUD_SOUND::DestroySound(sndShotBoth);
+	HUD_SOUND::DestroySound(m_sndOpen);
+	HUD_SOUND::DestroySound(m_sndAddCartridge);
+	HUD_SOUND::DestroySound(m_sndClose);
+
 }
 
 void CWeaponShotgun::net_Destroy()
@@ -289,7 +296,7 @@ void CWeaponShotgun::OnStateSwitch	(u32 S)
 
 void CWeaponShotgun::switch2_StartReload()
 {
-//	PlaySound	(m_sndOpen,vLastFP);
+	PlaySound	(m_sndOpen,vLastFP);
 	
 	PlayAnimOpenWeapon();
 	m_bPending = true;
@@ -297,7 +304,7 @@ void CWeaponShotgun::switch2_StartReload()
 
 void CWeaponShotgun::switch2_AddCartgidge	()
 {
-//	PlaySound	(m_sndAddCartridge,vLastFP);
+	PlaySound	(m_sndAddCartridge,vLastFP);
 	PlayAnimAddOneCartridgeWeapon();
 	m_bPending = true;
 }
@@ -305,7 +312,7 @@ void CWeaponShotgun::switch2_AddCartgidge	()
 void CWeaponShotgun::switch2_EndReload	()
 {
 	m_bPending = false;
-//	PlaySound	(m_sndClose,vLastFP);
+	PlaySound	(m_sndClose,vLastFP);
 	PlayAnimCloseWeapon();
 }
 
