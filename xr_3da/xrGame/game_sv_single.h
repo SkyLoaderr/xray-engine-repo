@@ -16,7 +16,7 @@ public:
 	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)	{};
 
 	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_what);
-	virtual		BOOL				OnDetouch				(u16 eid_who, u16 eid_what);
+	virtual		BOOL				OnDetach				(u16 eid_who, u16 eid_what);
 
 	virtual		void				OnFraglimitExceed		()								{};
 	virtual		void				OnTimelimitExceed		()								{};

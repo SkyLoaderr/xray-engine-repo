@@ -10,6 +10,7 @@ public:
 
 	// Events
 	virtual		void				OnRoundStart			();										// старт раунда
+	virtual		void				OnRoundEnd				(LPCSTR reason);
 
 	virtual		void				OnTeamScore				(u32 team);								// команда выиграла
 	virtual		void				OnTeamsInDraw			();										// ничья

@@ -15,7 +15,7 @@ public:
 	virtual		void				OnTeamsInDraw			()								{};		// ничья
 
 	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_what);
-	virtual		BOOL				OnDetouch				(u16 eid_who, u16 eid_what);
+	virtual		BOOL				OnDetach				(u16 eid_who, u16 eid_what);
 
 	virtual		void				OnPlayerConnect			(u32 id_who);
 	virtual		void				OnPlayerReady			(u32 id_who);

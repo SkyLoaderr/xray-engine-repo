@@ -17,7 +17,7 @@ void	xrServer::Process_event_reject	(NET_Packet& P, DPNID sender, u32 time, u16 
 		// R_ASSERT			(c_entity == c_parent);
 		// R_ASSERT			(c_parent == c_from);		// assure client only send request for local units
 
-		if (game->OnDetouch	(id_parent,id_entity))
+		if (game->OnDetach	(id_parent,id_entity))
 		{
 			// Perform migration if needed
 			xrClientData*		c_dest		= SelectBestClientToMigrateTo		(e_entity);

@@ -168,6 +168,10 @@ void	game_sv_CS::OnRoundStart	()
 	}
 }
 
+void	game_sv_CS::OnRoundEnd		(LPCSTR reason)
+{
+}
+
 void	game_sv_CS::OnTeamScore		(u32 team)
 {
 	// Increment/decrement money
