@@ -4,12 +4,17 @@
   <MACROS>
     <VERSION value="BCB.06.00"/>
     <PROJECT value="x:\xrEPropsB.dll"/>
-    <OBJFILES value="stdafx.obj PropertiesListTypes.obj ItemList.obj ItemListHelper.obj 
-      ItemListTypes.obj PropertiesList.obj PropertiesListHelper.obj 
-      FolderLib.obj ColorPicker.obj NumericVector.obj ShaderFunction.obj 
-      TextForm.obj xrEProps.obj ChoseForm.obj EThumbnail.obj 
-      EThumbnailObject.obj EThumbnailSound.obj EThumbnailTexture.obj 
-      xrImage_Resampler.obj ETextureParams.obj ItemDialog.obj"/>
+    <OBJFILES value="intermediate\stdafx.obj intermediate\PropertiesListTypes.obj 
+      intermediate\ItemList.obj intermediate\ItemListHelper.obj 
+      intermediate\ItemListTypes.obj intermediate\PropertiesList.obj 
+      intermediate\PropertiesListHelper.obj intermediate\FolderLib.obj 
+      intermediate\ColorPicker.obj intermediate\NumericVector.obj 
+      intermediate\ShaderFunction.obj intermediate\TextForm.obj 
+      intermediate\xrEProps.obj intermediate\ChoseForm.obj 
+      intermediate\EThumbnail.obj intermediate\EThumbnailObject.obj 
+      intermediate\EThumbnailSound.obj intermediate\EThumbnailTexture.obj 
+      intermediate\xrImage_Resampler.obj intermediate\ETextureParams.obj 
+      intermediate\ItemDialog.obj R:\Borland\CBuilder6\Lib\c0pkg32.obj"/>
     <RESFILES value="xrEPropsB.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -43,14 +48,14 @@
       -IP:\xrCore -src_suffix cpp -D_EDITOR -DXR_EPROPS_EXPORTS -D_DEBUG -boa"/>
     <CFLAG1 value="-WD -Od -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps 
       -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
-    <PFLAGS value="-$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
+    <PFLAGS value="-N2intermediate -N0intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
     <AFLAGS value="/mu /w2 /zi"/>
-    <LFLAGS value="-D&quot;&quot; -aa -Tpd -x -Gi -v"/>
+    <LFLAGS value="-Iintermediate -D&quot;&quot; -aa -Tpd -x -Gi -v"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
-    <ALLOBJ value="c0d32.obj $(PACKAGES) Memmgr.Lib sysinit.obj $(OBJFILES)"/>
+    <ALLOBJ value="$(PACKAGES) Memmgr.Lib sysinit.obj $(OBJFILES)"/>
     <ALLRES value="$(RESFILES)"/>
     <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mti.lib"/>
     <OTHERFILES value=""/>
@@ -84,6 +89,7 @@
       <FILE FILENAME="ai_sounds.h" FORMNAME="" UNITNAME="ai_sounds.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="resource.res" FORMNAME="" UNITNAME="resource.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="ItemDialog.cpp" FORMNAME="frmItemDialog" UNITNAME="ItemDialog" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="R:\Borland\CBuilder6\Lib\c0pkg32.obj" FORMNAME="" UNITNAME="c0pkg32.obj" CONTAINERID="OBJTool" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -140,6 +146,10 @@ Item1=_EDITOR;XR_EPROPS_EXPORTS
 Item2=_EDITOR;_XR_EPROPSB;_DEBUG
 Item3=_EDITOR;_EPROPSB;_DEBUG
 Item4=_DEBUG
+
+[HistoryLists\hlIntOutputDir]
+Count=1
+Item0=intermediate
 
 [HistoryLists\hlFinalOutputDir]
 Count=1

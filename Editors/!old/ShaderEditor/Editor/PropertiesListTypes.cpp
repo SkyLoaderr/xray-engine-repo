@@ -2,6 +2,7 @@
 #pragma hdrstop
 
 #include "PropertiesListTypes.h"
+#pragma package(smart_init)
 
 AnsiString prop_draw_text;
 

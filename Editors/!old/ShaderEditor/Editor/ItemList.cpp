@@ -206,7 +206,7 @@ void __fastcall TItemList::AssignItems(ListItemsVec& items, bool full_expand, bo
 	LockUpdating			();
     // clear values
 //    if (tvItems->Selected) FHelper.MakeFullName(tvItems->Selected,0,last_selected_item);
-    ClearParams				();
+    if (!m_Items.empty())	ClearParams();
     // fill values
     m_Items					= items;
 	for (ListItemsIt it=m_Items.begin(); it!=m_Items.end(); it++){

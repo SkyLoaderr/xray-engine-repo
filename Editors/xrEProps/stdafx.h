@@ -4,7 +4,7 @@
 #ifndef stdafxH
 #define stdafxH
 
-#pragma once
+#pragma once   
 
 #include <xrCore.h>
 

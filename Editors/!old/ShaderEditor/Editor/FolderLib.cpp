@@ -296,6 +296,11 @@ void CFolderHelper::DragDrop(TObject *Sender, TObject *Source, int X, int Y, TOn
 
     // move objects
     TElTreeItem* item 	= DragItem;
+
+    AnsiString msg; msg.sprintf("Move '%s' to '%s'?",AnsiString(item->Text).c_str(),AnsiString(tgt_folder->Text).c_str());
+    if (mrNo==MessageDlg(msg, mtConfirmation, TMsgDlgButtons() << mbYes << mbNo, 0))
+    	return;
+
     bool bFolderMove	= IsFolder(item);
 
     do{

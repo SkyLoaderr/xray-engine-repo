@@ -3,6 +3,7 @@
 
 #include "ItemListHelper.h"
 //---------------------------------------------------------------------------
+#pragma package(smart_init)
 
 CListHelper LHelper;
 

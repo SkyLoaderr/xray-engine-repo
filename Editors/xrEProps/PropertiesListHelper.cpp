@@ -5,6 +5,7 @@
 #include "ItemListHelper.h"
 #include "ChoseForm.h"
 //---------------------------------------------------------------------------
+#pragma package(smart_init)
               
 CPropHelper PHelper;
 

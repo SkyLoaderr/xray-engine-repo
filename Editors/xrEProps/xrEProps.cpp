@@ -3,6 +3,15 @@
 
 #include "xrEProps.h"
 
+USEFORM("ChoseForm.cpp", frmChoseItem);
+USEFORM("ItemDialog.cpp", frmItemDialog);
+USEFORM("ItemList.cpp", ItemList);
+USEFORM("NumericVector.cpp", frmNumericVector);
+USEFORM("PropertiesList.cpp", Properties);
+USEFORM("ShaderFunction.cpp", frmShaderFunction);
+USEFORM("TextForm.cpp", frmText);
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
 void XR_EPROPS_API CheckWindowPos(TForm* form)
 {
 	if (form->Left+form->Width>Screen->Width) 	form->Left	= Screen->Width-form->Width;
@@ -12,4 +21,10 @@ void XR_EPROPS_API CheckWindowPos(TForm* form)
 }
 //---------------------------------------------------------------------------
 
+#pragma argsused
+int WINAPI DllEntryPoint(HINSTANCE hinst, unsigned long reason, void*)
+{
+	return 1;
+}
+//---------------------------------------------------------------------------
  
