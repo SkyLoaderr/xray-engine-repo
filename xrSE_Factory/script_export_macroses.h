@@ -198,3 +198,13 @@
 		{																				\
 			ptr->self_type::inherited::v_func_name(*p1,p2,p3,p4);						\
 		}
+
+#define DEFINE_LUA_WRAPPER_METHOD_R2P3_V3(v_func_name,t1,t2,t3)							\
+		virtual void v_func_name(t1 p1, t2 p2, t3& p3, t4& p4)							\
+		{																				\
+			call<void>(#v_func_name,p1,p2,&p3);											\
+		}                                   											\
+		static  void v_func_name##_static(inherited* ptr, t1* p1, t2 p2, t3 p3)			\
+		{																				\
+			ptr->self_type::inherited::v_func_name(*p1,p2,*p3);							\
+		}
