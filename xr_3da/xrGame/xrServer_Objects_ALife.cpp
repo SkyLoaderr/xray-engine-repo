@@ -650,6 +650,7 @@ CSE_ALifeObjectPhysic::CSE_ALifeObjectPhysic(LPCSTR caSection) : CSE_ALifeDynami
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
     	set_visual				(pSettings->r_string(caSection,"visual"));
 	startup_animation[0]		= 0;
+    flags.zero					();
 }
 
 CSE_ALifeObjectPhysic::~CSE_ALifeObjectPhysic		() 
@@ -721,7 +722,7 @@ void CSE_ALifeObjectPhysic::FillProp		(LPCSTR pref, PropItemVec& values) {
 	PHelper.CreateToken			(values, FHelper.PrepareKey(pref,s_name,"Type"), &type,	po_types, 1);
 	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Mass"), &mass, 0.1f, 10000.f);
 	PHelper.CreateText			(values, FHelper.PrepareKey(pref,s_name,"Fixed bone"),	fixed_bone,	sizeof(fixed_bone));
-    PHelper.CreateBool			(values, FHelper.PrepareKey(pref,s_name,"Activate"), activate, sizeof(activate));
+    PHelper.CreateFlag8			(values, FHelper.PrepareKey(pref,s_name,"Active"), &flags, flActive);
 	if (visual && PKinematics(visual))
 	{
 		CKinematics::accel		*ll_motions	= PKinematics(visual)->LL_Motions();
