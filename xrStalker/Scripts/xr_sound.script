@@ -8,7 +8,7 @@ local nstl = 10
 theme = {}
 
 snd_files = {
-	weather_bad_stalker            = "characters_voice\\human_01\\weather\\bad_weather\\stalker\\bad_weather_",
+	weather_bad_stalker            = "characters_voice\\human_01\\weather\\bad_weather\\stalker\\bad_weather__",
 	weather_good_stalker           = "characters_voice\\human_01\\weather\\good_weather\\stalker\\good_weather_",
 	
 	state_idle_stalker             = "characters_voice\\human_01\\states\\idle\\stalker\\idle_",
@@ -62,7 +62,13 @@ function load_sound(obj)
 		local file = snd_files[name]
 		if file ~= nil then
 			local sid = id()
-			return { id = sid, max = obj:add_sound(file, nstl, snd_type.talk, 2, 1, sid) }
+			local t = { id = sid, max = obj:add_sound(file, nstl, snd_type.talk, 2, 1, sid) }
+
+			if t.max == 0 then
+				printf( "No sounds loaded: %s", file )
+			end
+
+			return t
 		else
 			return nil
 		end
@@ -187,7 +193,9 @@ function sound_update(npc, sound, now)
 		function get_sound(path)
 			if path == nil then return nil end
 			if path.exec == nil then
-				sounds_ids[path.id] = path.max
+				if path.max > 0 then
+					sounds_ids[path.id] = path.max
+				end
 			else
 				local pe = path.exec(path.types, npc, target)
 				if type(pe) == "table" then
@@ -216,6 +224,10 @@ function sound_update(npc, sound, now)
 
 			for k, w in sounds_ids do
 				sum = sum + w
+			end
+
+			if sum == 0 then
+				return
 			end
 
 			repeat

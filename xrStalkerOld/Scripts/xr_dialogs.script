@@ -99,7 +99,7 @@ end
 
 -- текущий активный диалог
 function dialog_mgr:active()
-	return self.a.cur_dlg
+	return self.team and self.a.cur_dlg
 end
 
 -- начало нового диалога
