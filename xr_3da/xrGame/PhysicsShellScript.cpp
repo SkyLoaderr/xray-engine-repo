@@ -25,7 +25,7 @@ void CPhysicsElement::script_register(lua_State *L)
 {
 	module(L)
 		[
-			class_<CPhysicsElement>("physics_shell")
+			class_<CPhysicsElement>("physics_element")
 			.def("apply_force",					(void (CPhysicsElement::*)(float,float,float))(CPhysicsElement::applyForce))
 
 		];
@@ -35,7 +35,7 @@ void CPhysicsJoint::script_register(lua_State *L)
 {
 	module(L)
 		[
-			class_<CPhysicsJoint>("CPhysicsJoint")
+			class_<CPhysicsJoint>("physics_joint")
 			.def("get_bone_id",							CPhysicsJoint::BoneID)
 			.def("get_first_element",					CPhysicsJoint::PFirst_element)
 			.def("get_first_element",					CPhysicsJoint::PSecond_element)
