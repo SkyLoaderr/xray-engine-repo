@@ -10301,6 +10301,12 @@
 					<File
 						RelativePath=".\ui\UISkinSelector.h">
 					</File>
+					<File
+						RelativePath=".\ui\UISkinWindow.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UISkinWindow.h">
+					</File>
 				</Filter>
 				<Filter
 					Name="Chat"

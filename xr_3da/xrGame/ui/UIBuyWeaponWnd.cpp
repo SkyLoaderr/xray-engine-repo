@@ -759,10 +759,9 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 					if(!ToBag())
 					//если нельзя, то просто упорядочить элемент в своем списке
 					{
-						((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->
-							DetachChild(m_pCurrentDragDropItem);
-						((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->
-							AttachChild(m_pCurrentDragDropItem);
+                        CUIWindow* pWindowParent = m_pCurrentDragDropItem->GetParent();
+                        pWindowParent->DetachChild(m_pCurrentDragDropItem);
+						pWindowParent->AttachChild(m_pCurrentDragDropItem);
 						m_pCurrentDragDropItem->Rescale(	((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->GetItemsScaleX(),
 															((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->GetItemsScaleY()	);
 					}
