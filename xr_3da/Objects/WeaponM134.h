@@ -61,24 +61,28 @@ private:
 
 	EM134State		st_current, st_target;
 
-	void			DrawFlame	(const Fvector& fp, const Fvector& fd, bool bHUDView);
-	void			UpdateFP	(BOOL bHUD);
-	void			UpdateXForm	(BOOL bHUD);
+	void			DrawFlame		(const Fvector& fp, const Fvector& fd, bool bHUDView);
+	void			UpdateFP		(BOOL bHUD);
+	void			UpdateXForm		(BOOL bHUD);
 
 protected:
-	virtual void	AddShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R);
+	virtual void	AddShotmark		(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R);
 public:
-					CWeaponM134	();
-	virtual			~CWeaponM134();
+					CWeaponM134		();
+	virtual			~CWeaponM134	();
 
 	// misc
-	virtual void	Load		(CInifile* ini, const char* section);
+	virtual void	Load			(CInifile* ini, const char* section);
 
-	virtual void	SetDefaults	();
-	virtual void	FireStart	();
-	virtual void	FireEnd		();
-	virtual	void	Update		(float dt, BOOL bHUDView);
-	virtual	void	Render		(BOOL bHUDView);
+	virtual void	SetDefaults		();
+	virtual void	FireStart		();
+	virtual void	FireEnd			();
+
+	virtual void	Hide			();
+	virtual void	Show			();
+
+	virtual	void	Update			(float dt, BOOL bHUDView);
+	virtual	void	Render			(BOOL bHUDView);
 };
 
 #endif //__XR_WEAPON_M134_H__

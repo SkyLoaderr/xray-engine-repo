@@ -246,6 +246,16 @@ void CWeaponGroza::SetDefaults()
 	iAmmoElapsed = 0;
 }
 
+void CWeaponGroza::Hide			()
+{
+	inherited::Hide				();
+	signal_HideComplete			();
+}
+void CWeaponGroza::Show			()
+{
+	inherited::Show				();
+}
+
 void CWeaponGroza::AddShotmark(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R) 
 {
 	inherited::AddShotmark(vDir, vEnd, R);

@@ -373,10 +373,20 @@ void CWeaponM134::Render(BOOL bHUDView)
 	}
 }
 
-void CWeaponM134::SetDefaults()
+void CWeaponM134::SetDefaults	()
 {
 	CWeapon::SetDefaults();
 	iAmmoElapsed = 0;
+}
+
+void CWeaponM134::Hide			()
+{
+	inherited::Hide				();
+	signal_HideComplete			();
+}
+void CWeaponM134::Show			()
+{
+	inherited::Show				();
 }
 
 void CWeaponM134::AddShotmark(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R) 

@@ -250,6 +250,16 @@ void CWeaponProtecta::SetDefaults()
 	iAmmoElapsed = 0;
 }
 
+void CWeaponProtecta::Hide		()
+{
+	inherited::Hide				();
+	signal_HideComplete			();
+}
+void CWeaponProtecta::Show		()
+{
+	inherited::Show				();
+}
+
 void CWeaponProtecta::AddShotmark(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R) 
 {
 	inherited::AddShotmark(vDir, vEnd, R);
