@@ -191,7 +191,9 @@
 			[spawn] \n
 			wpn_lr300 \n
 			ammo_5.56x45_ss190 \n
-		</supplies>bar_bar_visitors_1_start</start_dialog>
+		</supplies>
+		
+		<start_dialog>bar_bar_visitors_1_start</start_dialog>
 	</specific_character>	
 </xml>
 
