@@ -24,12 +24,13 @@ void CALifeObject::STATE_Write(NET_Packet &tNetPacket)
 
 void CALifeObject::STATE_Read(NET_Packet &tNetPacket, u16 size)
 {
-	if (m_wVersion == 1) {
+	if (m_wVersion >= 1) {
 		tNetPacket.r_u8			(m_ucProbability);
 		tNetPacket.r_u32		(m_dwSpawnGroup);
 		tNetPacket.r_u16		(m_wCount);
 		tNetPacket.r			(&m_tGraphID,sizeof(m_tGraphID));
 		tNetPacket.r_float		(m_fDistance);
+		m_tObjectID				= ID;
 	}
 }
 
@@ -397,13 +398,11 @@ void CALifeDynamicObject::STATE_Read(NET_Packet &tNetPacket, u16 size)
 void CALifeDynamicObject::UPDATE_Write(NET_Packet &tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
-	tNetPacket.w				(&m_tTimeID,	sizeof(m_tTimeID));
 };
 
 void CALifeDynamicObject::UPDATE_Read(NET_Packet &tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
-	tNetPacket.r				(&m_tTimeID,	sizeof(m_tTimeID));
 };
 
 // CALifeItem

@@ -57,6 +57,12 @@ public:
 	u32								m_tALifeVersion;
 	EZoneState						m_tZoneState;
 	
+									CALifeHeader()
+	{
+		m_tALifeVersion				= ALIFE_VERSION;
+		m_tZoneState				= eZoneStateAfterSurge;
+	}
+
 	virtual void					Save(CFS_Memory	&tMemoryStream)
 	{
 		tMemoryStream.open_chunk	(ALIFE_CHUNK_DATA);

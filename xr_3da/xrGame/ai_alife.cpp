@@ -28,6 +28,7 @@ FLOAT_VECTOR				fpFactors;
 CAI_ALife::CAI_ALife()
 {
 	m_bLoaded			= false;
+	m_tpActor			= 0;
 }
 
 CAI_ALife::~CAI_ALife()
@@ -47,6 +48,53 @@ void CAI_ALife::vfInitTerrain()
 	}
 	for (_GRAPH_ID i=0; i<(_GRAPH_ID)Level().AI.GraphHeader().dwVertexCount; i++)
 		m_tpTerrain[Level().AI.m_tpaGraph[i].tVertexType].push_back(i);
+}
+
+void CAI_ALife::vfNewGame()
+{
+	CALifeGraphRegistry::Init	();
+	CALifeTraderRegistry::Init	();
+	CALifeScheduleRegistry::Init();
+
+	ALIFE_ENTITY_P_IT			B = m_tpSpawnPoints.begin();
+	ALIFE_ENTITY_P_IT			E = m_tpSpawnPoints.end();
+	for (ALIFE_ENTITY_P_IT I = B ; I != E; ) {
+		u32	wGroupID = (*I)->m_dwSpawnGroup;
+		float fSum = (*I)->m_ucProbability;
+		for (ALIFE_ENTITY_P_IT j= I + 1; (j != E) && ((*j)->m_dwSpawnGroup == wGroupID); j++)
+			fSum += (*j)->m_ucProbability;
+		float fProbability = ::Random.randF(0,fSum);
+		fSum = (*I)->m_ucProbability;
+		ALIFE_ENTITY_P_IT m = j, k = I;
+		for ( j= I + 1; (j != E) && ((*j)->m_dwSpawnGroup == wGroupID); j++) {
+			fSum += (*j)->m_ucProbability;
+			if (fSum > fProbability) {
+				k = j;
+				break;
+			}
+		}
+		xrServerEntity			*tpServerEntity = F_entity_Create	((*I)->s_name);
+		R_ASSERT2				(tpServerEntity,"Can't create entity.");
+		CALifeObject			*i = dynamic_cast<CALifeObject*>(tpServerEntity);
+		R_ASSERT				(i);
+		(*I)->m_tObjectID = (*I)->ID;
+		*i = **I;
+		I = m;	
+		
+		vfCreateObject(i);
+		m_tObjectRegistry.insert(make_pair(i->m_tObjectID,i));
+	}
+}
+
+void CAI_ALife::Save()
+{
+	CFS_Memory					tStream;
+	CALifeHeader::Save			(tStream);
+	CALifeGameTime::Save		(tStream);
+	CALifeObjectRegistry::Save	(tStream);
+	CALifeEventRegistry::Save	(tStream);
+	CALifeTaskRegistry::Save	(tStream);
+	tStream.SaveTo				("game.sav",0);
 }
 
 void CAI_ALife::Load()
@@ -69,87 +117,33 @@ void CAI_ALife::Load()
 	CALifeSpawnRegistry::Load	(*tpStream);
 	Engine.FS.Close				(tpStream);
 
-	// temporary!!! creating objects
-	ALIFE_ENTITY_P_VECTOR_PAIR_IT	K = m_tLevelEntities.find(1);
-	R_ASSERT					(K != m_tLevelEntities.begin());
-	m_tpObjects.resize			((*K).second->size());
-	ALIFE_ENTITY_P_IT			I = (*K).second->begin();
-	ALIFE_ENTITY_P_IT			E = (*K).second->end();
-	ALIFE_ENTITY_P_IT			i = m_tpObjects.begin();
-	for ( ; I != E; I++, i++) {
-		(*I)->m_tObjectID = (*I)->ID;
-		*i = *I;
-		vfSwitchObjectOnline	(*i);
-		(*i)->m_bOnline			= true;
-		if ((*I)->s_flags.is(M_SPAWN_OBJECT_ASPLAYER))
-			m_tpActor			= *i;
+	if (!Engine.FS.Exist(caFileName, ::Path.GameData, "game.sav")) {
+		vfNewGame();
+		Save();
+		R_ASSERT(false);
 	}
+	else {
+		tpStream					= Engine.FS.Open(caFileName);
+		CALifeHeader::Load			(*tpStream);
+		CALifeGameTime::Load		(*tpStream);
+		CALifeObjectRegistry::Load	(*tpStream);
+		CALifeEventRegistry::Load	(*tpStream);
+		CALifeTaskRegistry::Load	(*tpStream);
+	}
+	vfUpdateDynamicData();
+
 	m_bLoaded = true;
 #endif
 	return;
-
-//	vfInitTerrain();
-//
-//	CStream						*tpStream;
-//	FILE_NAME					caFileName;
-//	if (!Engine.FS.Exist(caFileName, ::Path.GameData, "game.spawn")) {
-////		THROW;
-//#ifdef DEBUG
-//		fpFactors.push_back(MONSTER_FACTOR);
-//		fpFactors.push_back(HUMAN_FACTOR);
-//		fpFactors.push_back(WEAPON_FACTOR);
-//		fpFactors.push_back(WEAPON_CH_FACTOR);
-//		fpFactors.push_back(EQUIPMENT_FACTOR);
-//		fpFactors.push_back(ARTEFACT_FACTOR);
-//		vfGenerateSpawnPoints(TOTAL_COUNT,fpFactors);
-//		vfSaveSpawnPoints();
-//		vfRandomizeGraphTerrain();
-//#else
-//		return;
-//#endif
-//	}
-//	else {
-//		tpStream = Engine.FS.Open(caFileName);
-//		CALifeSpawnRegistry::Load(*tpStream);
-//		Engine.FS.Close(tpStream);
-//	}
-//
-//	if (!Engine.FS.Exist(caFileName,::Path.GameData,"game.alife")) {
-//		Generate();
-//		Save();
-//	}
-//	
-//	if (!Engine.FS.Exist(caFileName,::Path.GameData,"game.alife"))
-//		THROW;
-//	
-//	tpStream = Engine.FS.Open	(caFileName);
-//	CALifeHeader::Load			(*tpStream);
-//	CALifeGameTime::Load		(*tpStream);
-//	CALifeObjectRegistry::Load	(*tpStream);
-//	CALifeEventRegistry::Load	(*tpStream);
-//	CALifeTaskRegistry::Load	(*tpStream);
-//	vfUpdateDynamicData			();
-//	Engine.FS.Close				(tpStream);
-//
-//	m_bLoaded					= true;
 }
 
-void CAI_ALife::Save()
+void CAI_ALife::vfUpdateDynamicData(CALifeObject *tpALifeObject)
 {
-	CFS_Memory					tStream;
-	CALifeHeader::Save			(tStream);
-	CALifeGameTime::Save		(tStream);
-	CALifeObjectRegistry::Save	(tStream);
-	CALifeEventRegistry::Save	(tStream);
-	CALifeTaskRegistry::Save	(tStream);
-	tStream.SaveTo				("game.alife",0);
-}
-
-void CAI_ALife::vfUpdateDynamicData(CALifeDynamicObject *tpALifeDynamicObject)
-{
-	CALifeGraphRegistry::Update		(tpALifeDynamicObject);
-	CALifeTraderRegistry::Update	(tpALifeDynamicObject);
-	CALifeScheduleRegistry::Update	(tpALifeDynamicObject);
+	vfCreateObject					(tpALifeObject);
+	tpALifeObject->m_bOnline		= true;
+	CALifeGraphRegistry::Update		(tpALifeObject);
+	CALifeTraderRegistry::Update	(tpALifeObject);
+	CALifeScheduleRegistry::Update	(tpALifeObject);
 }
 
 void CAI_ALife::vfUpdateDynamicData()
@@ -162,8 +156,9 @@ void CAI_ALife::vfUpdateDynamicData()
 	{
 		OBJECT_PAIR_IT				I = m_tObjectRegistry.begin();
 		OBJECT_PAIR_IT				E = m_tObjectRegistry.end();
-		for ( ; I != E; I++)
+		for ( ; I != E; I++) {
 			vfUpdateDynamicData((*I).second);
+		}
 	}
 	// update events
 	{
@@ -273,137 +268,4 @@ void CAI_ALife::vfBallanceCreatures()
 
 void CAI_ALife::vfUpdateCreatures()
 {
-}
-
-void CAI_ALife::vfCreateObject(CALifeObject *tpALifeObject)
-{
-	NET_Packet						P;
-	u16								ID;
-	tpALifeObject->ID				= 0xffff;
-	Level().Server->Process_spawn	(P,0,FALSE,tpALifeObject);
-	
-	P.w_begin						(M_UPDATE);
-	tpALifeObject->UPDATE_Write		(P);
-	P.r_begin						(ID);
-	R_ASSERT						(M_UPDATE==ID);
-	P.r_advance						(21);
-	Level().Server->Process_update	(P,0);
-}
-
-void CAI_ALife::vfReleaseObject(CALifeObject *tpALifeObject)
-{
-	NET_Packet						P;
-	CObject							*tpObject = Level().Objects.net_Find(tpALifeObject->ID);
-	if (!tpObject)
-		return;
-	CGameObject						*tpGameObject = dynamic_cast<CGameObject*>(tpObject);
-	R_ASSERT						(tpGameObject);
-	tpGameObject->u_EventGen		(P,GE_DESTROY,tpGameObject->ID());
-	tpGameObject->u_EventSend		(P);
-}
-
-void CAI_ALife::vfSwitchObjectOnline(CALifeObject *tpALifeObject)
-{
-	R_ASSERT						(!tpALifeObject->m_bOnline);
-	CObject							*tpObject = Level().Objects.net_Find(tpALifeObject->ID);
-	if (!tpObject) {
-		vfCreateObject				(tpALifeObject);
-		return;
-	}
-	tpObject->setVisible			(true);
-	tpObject->setEnabled			(true);
-	tpObject->setActive				(true);
-	
-	tpALifeObject->m_bOnline		= true;
-	Msg								("- SERVER: Going online [%d] '%s'(%d,%d,%d) as #%d, on '%s'",Level().timeServer(),tpALifeObject->s_name_replace, tpALifeObject->g_team(), tpALifeObject->g_squad(), tpALifeObject->g_group(), tpALifeObject->ID, "*SERVER*");
-}
-
-void CAI_ALife::vfSwitchObjectOffline(CALifeObject *tpALifeObject)
-{
-	R_ASSERT						(tpALifeObject->m_bOnline);
-	CObject							*tpObject = Level().Objects.net_Find(tpALifeObject->ID);
-	if (!tpObject)
-		return;
-	tpObject->setVisible			(false);
-	tpObject->setEnabled			(false);
-	tpObject->setActive				(false);
-	
-#ifdef DYNAMIC_ALLOCATION
-	vfReleaseObject					(tpALifeObject);
-#endif
-	
-	tpALifeObject->m_bOnline		= false;
-	Msg								("- SERVER: Going offline [%d] '%s'(%d,%d,%d) as #%d, on '%s'",Level().timeServer(),tpALifeObject->s_name_replace, tpALifeObject->g_team(), tpALifeObject->g_squad(), tpALifeObject->g_group(), tpALifeObject->ID, "*SERVER*");
-}
-
-void CAI_ALife::vfUpdateOfflineObject(CALifeObject *tpALifeObject)
-{
-	NET_Packet						P;
-	u16								ID;
-	CObject							*tpObject = Level().Objects.net_Find(tpALifeObject->ID);
-	if (!tpObject)
-		return;
-	P.w_begin						(M_UPDATE);
-	tpObject->net_Export			(P);
-	P.r_begin						(ID);
-	tpALifeObject->UPDATE_Read		(P);
-}
-
-void CAI_ALife::vfUpdateOnlineObject(CALifeObject *tpALifeObject)
-{
-	NET_Packet						P;
-	u16								ID;
-	P.w_begin						(M_UPDATE);
-	tpALifeObject->UPDATE_Write		(P);
-	CObject							*tpObject = tpObject = Level().Objects.net_Find(tpALifeObject->ID);
-	if (!tpObject)
-		return;
-	P.r_begin						(ID);
-	tpObject->net_Import			(P);
-}
-
-void CAI_ALife::ProcessOnlineOfflineSwitches(CObject *tpObject, ALIFE_ENTITY_P_IT &I)
-{
-	float						fDistance;
-	if ((*I)->m_bOnline) {
-		vfUpdateOfflineObject	(*I);
-		if ((*I)->ID_Parent == 0xffff) {
-			fDistance			= tpObject->Position().distance_to((*I)->o_Position);
-			if (fDistance > m_fOnlineDistance)
-				vfSwitchObjectOffline(*I);
-		}
-		else {
-			xrServerEntity		*tpServerEntity = Level().Server->ID_to_entity((*I)->ID_Parent);
-			R_ASSERT			(tpServerEntity);
-			CALifeObject		*tpALifeObject  = dynamic_cast<CALifeObject*>(tpServerEntity);
-			R_ASSERT			(tpALifeObject);
-			if (!tpALifeObject->m_bOnline)
-				vfSwitchObjectOffline(*I);
-		}
-	}
-	else {
-		vfUpdateOfflineObject	(*I);
-		if ((*I)->ID_Parent == 0xffff) {
-			fDistance			= tpObject->Position().distance_to((*I)->o_Position);
-			if (fDistance <= m_fOnlineDistance) {
-				vfUpdateOnlineObject(*I);
-				vfSwitchObjectOnline(*I);
-			}
-		}
-		else {
-			xrServerEntity		*tpServerEntity = Level().Server->ID_to_entity((*I)->ID_Parent);
-			R_ASSERT			(tpServerEntity);
-			CALifeObject		*tpALifeObject  = dynamic_cast<CALifeObject*>(tpServerEntity);
-			R_ASSERT			(tpALifeObject);
-			if (tpALifeObject->m_bOnline) {
-				vfUpdateOnlineObject	(*I);
-				vfSwitchObjectOnline(*I);
-			}
-		}
-	}
-}
-
-void CAI_ALife::vfNewGame()
-{
-	
 }

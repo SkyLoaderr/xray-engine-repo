@@ -52,13 +52,13 @@ void CAI_ALife::Update(u32 dt)
 //		default : NODEFAULT;
 //	}
 	
-	ALIFE_ENTITY_P_IT				I = m_tpObjects.begin();
-	ALIFE_ENTITY_P_IT				E = m_tpObjects.end();
+	OBJECT_PAIR_IT					I = m_tObjectRegistry.begin();
+	OBJECT_PAIR_IT					E = m_tObjectRegistry.end();
 	CObject							*tpObject = Level().Objects.net_Find(m_tpActor->ID);
 	if (!tpObject)
 		return;
 	for ( ;I != E; I++)
-		ProcessOnlineOfflineSwitches(tpObject, I);
+		ProcessOnlineOfflineSwitches(tpObject, (*I).second);
 }
 
 void CAI_ALife::vfProcessNPC(CALifeMonsterAbstract	*tpALifeMonsterAbstract)

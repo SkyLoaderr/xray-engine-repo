@@ -37,11 +37,9 @@ private:
 	GRAPH_VECTOR_SVECTOR			m_tpTerrain;			// массив списков: по идетнификатору 
 															//	местности получить список точек 
 															//  графа
-	ALIFE_ENTITY_P_VECTOR			m_tpObjects;
-	CALifeObject					*m_tpActor;
 	float							m_fOnlineDistance;
 	// comnmon
-	void							vfUpdateDynamicData		(CALifeDynamicObject *tpALifeDynamicObject);
+	void							vfUpdateDynamicData		(CALifeObject *tpALifeDynamicObject);
 	void							vfUpdateDynamicData		();
 	void							vfCreateNewDynamicObject(SPAWN_P_IT I, bool bUpdateDynamicData = false);
 	void							vfCreateNewTask			(CALifeTrader *tpTrader);
@@ -90,7 +88,7 @@ public:
 			void					vfSwitchObjectOffline	(CALifeObject *tpALifeObject);
 			void					vfUpdateOfflineObject	(CALifeObject *tpALifeObject);
 			void					vfUpdateOnlineObject	(CALifeObject *tpALifeObject);
-			void					ProcessOnlineOfflineSwitches(CObject *tpObject, ALIFE_ENTITY_P_IT &I);
+			void					ProcessOnlineOfflineSwitches(CObject *tpObject, CALifeObject *I);
 			void					vfReleaseObject			(CALifeObject *tpALifeObject);
 			void					vfNewGame				();
 #ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS

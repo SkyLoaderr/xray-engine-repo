@@ -182,52 +182,52 @@ bool CAI_ALife::bfCheckForItems(CALifeHumanAbstract	*tpALifeHumanAbstract)
 
 bool CAI_ALife::bfProcessItems(CALifeHumanParams &tHumanParams, _GRAPH_ID tGraphID, float fMaxItemMass, float fProbability)
 {
-	DYNAMIC_OBJECT_P_IT		I = m_tpGraphObjects[tGraphID].tpObjects.begin();
-	DYNAMIC_OBJECT_P_IT		E  = m_tpGraphObjects[tGraphID].tpObjects.end();
-	for ( ; I != E; I++) {
-		OBJECT_PAIR_IT	i = m_tObjectRegistry.find((*I)->m_tObjectID);
-		VERIFY(i != m_tObjectRegistry.end());
-		CALifeDynamicObject *tpALifeDynamicObject = (*i).second;
-		VERIFY(tpALifeDynamicObject);
-		CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>(tpALifeDynamicObject);
-		if (tpALifeItem) {
-			// adding _new item to the item list
-			if (tHumanParams.m_fCumulativeItemMass + tpALifeItem->m_fMass < fMaxItemMass) {
-				if (randF(1.0f) < fProbability) {
-					vfAttachItem(tHumanParams,tpALifeItem,tGraphID);
-					return(true);
-				}
-			}
-			else {
-				sort(tHumanParams.m_tpItemIDs.begin(),tHumanParams.m_tpItemIDs.end(),CSortItemPredicate(m_tObjectRegistry));
-				float		fItemMass = tHumanParams.m_fCumulativeItemMass;
-				u32			dwCount = tHumanParams.m_tpItemIDs.size();
-				int			i;
-				for ( i=(int)dwCount - 1; i>=0; i--) {
-					OBJECT_PAIR_IT II = m_tObjectRegistry.find(tHumanParams.m_tpItemIDs[i]);
-					VERIFY(II != m_tObjectRegistry.end());
-					CALifeItem *tpALifeItemIn = dynamic_cast<CALifeItem *>((*II).second);
-					VERIFY(tpALifeItemIn);
-					tHumanParams.m_fCumulativeItemMass -= tpALifeItemIn->m_fMass;
-					if (float(tpALifeItemIn->m_dwCost)/tpALifeItemIn->m_fMass >= float(tpALifeItemIn->m_dwCost)/tpALifeItem->m_fMass)
-						break;
-					if (tHumanParams.m_fCumulativeItemMass + tpALifeItem->m_fMass < fMaxItemMass)
-						break;
-				}
-				if (tHumanParams.m_fCumulativeItemMass + tpALifeItem->m_fMass < fMaxItemMass) {
-					for (int j=i + 1 ; j < (int)dwCount; j++)
-						vfDetachItem(tHumanParams,tpALifeItem,tGraphID);
-					tHumanParams.m_tpItemIDs.erase		(tHumanParams.m_tpItemIDs.begin() + i,tHumanParams.m_tpItemIDs.end());
-					tHumanParams.m_tpItemIDs.push_back	(tpALifeItem->m_tObjectID);
-					tHumanParams.m_fCumulativeItemMass	+= tpALifeItem->m_fMass;
-					vfAttachItem(tHumanParams,tpALifeItem,tGraphID);
-					return(true);
-				}
-				else
-					tHumanParams.m_fCumulativeItemMass	= fItemMass;
-			}
-		}
-	}
+//	DYNAMIC_OBJECT_P_IT		I = m_tpGraphObjects[tGraphID].tpObjects.begin();
+//	DYNAMIC_OBJECT_P_IT		E  = m_tpGraphObjects[tGraphID].tpObjects.end();
+//	for ( ; I != E; I++) {
+//		OBJECT_PAIR_IT	i = m_tObjectRegistry.find((*I)->m_tObjectID);
+//		VERIFY(i != m_tObjectRegistry.end());
+//		CALifeDynamicObject *tpALifeDynamicObject = (*i).second;
+//		VERIFY(tpALifeDynamicObject);
+//		CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>(tpALifeDynamicObject);
+//		if (tpALifeItem) {
+//			// adding _new item to the item list
+//			if (tHumanParams.m_fCumulativeItemMass + tpALifeItem->m_fMass < fMaxItemMass) {
+//				if (randF(1.0f) < fProbability) {
+//					vfAttachItem(tHumanParams,tpALifeItem,tGraphID);
+//					return(true);
+//				}
+//			}
+//			else {
+//				sort(tHumanParams.m_tpItemIDs.begin(),tHumanParams.m_tpItemIDs.end(),CSortItemPredicate(m_tObjectRegistry));
+//				float		fItemMass = tHumanParams.m_fCumulativeItemMass;
+//				u32			dwCount = tHumanParams.m_tpItemIDs.size();
+//				int			i;
+//				for ( i=(int)dwCount - 1; i>=0; i--) {
+//					OBJECT_PAIR_IT II = m_tObjectRegistry.find(tHumanParams.m_tpItemIDs[i]);
+//					VERIFY(II != m_tObjectRegistry.end());
+//					CALifeItem *tpALifeItemIn = dynamic_cast<CALifeItem *>((*II).second);
+//					VERIFY(tpALifeItemIn);
+//					tHumanParams.m_fCumulativeItemMass -= tpALifeItemIn->m_fMass;
+//					if (float(tpALifeItemIn->m_dwCost)/tpALifeItemIn->m_fMass >= float(tpALifeItemIn->m_dwCost)/tpALifeItem->m_fMass)
+//						break;
+//					if (tHumanParams.m_fCumulativeItemMass + tpALifeItem->m_fMass < fMaxItemMass)
+//						break;
+//				}
+//				if (tHumanParams.m_fCumulativeItemMass + tpALifeItem->m_fMass < fMaxItemMass) {
+//					for (int j=i + 1 ; j < (int)dwCount; j++)
+//						vfDetachItem(tHumanParams,tpALifeItem,tGraphID);
+//					tHumanParams.m_tpItemIDs.erase		(tHumanParams.m_tpItemIDs.begin() + i,tHumanParams.m_tpItemIDs.end());
+//					tHumanParams.m_tpItemIDs.push_back	(tpALifeItem->m_tObjectID);
+//					tHumanParams.m_fCumulativeItemMass	+= tpALifeItem->m_fMass;
+//					vfAttachItem(tHumanParams,tpALifeItem,tGraphID);
+//					return(true);
+//				}
+//				else
+//					tHumanParams.m_fCumulativeItemMass	= fItemMass;
+//			}
+//		}
+//	}
 	return(false);
 }
 

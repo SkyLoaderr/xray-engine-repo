@@ -1672,6 +1672,9 @@
 					RelativePath="ai_alife_spawn.h">
 				</File>
 				<File
+					RelativePath="ai_alife_switch.cpp">
+				</File>
+				<File
 					RelativePath="ai_alife_templates.h">
 				</File>
 				<File
