@@ -118,13 +118,20 @@ void CAI_Stalker::ForwardCover()
 			Fvector						tPoint;
 			m_tEnemy.Enemy->svCenter	(tPoint);
 			tPoint.y					-= .5f;
+			
+			EBodyState					tBodyState;
+			CWeapon						*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
+			if (tpWeapon && (tpWeapon->STATE != CWeapon::eFire) && (tpWeapon->STATE != CWeapon::eFire2) && (tpWeapon->STATE != CWeapon::eIdle))
+				tBodyState = m_tBodyState;
+			else
+				tBodyState = eBodyStateStand;
 			vfSetParameters				(
 				m_tSelectorCover,
 				0,
 				eWeaponStatePrimaryFire,
 				ePathTypeCriteria,
-				eBodyStateStand,
-				eMovementTypeStand,
+				tBodyState,
+				eMovementTypeRun,
 				eLookTypeFirePoint,
 				tPoint);
 			break;
@@ -140,12 +147,19 @@ void CAI_Stalker::ForwardCover()
 			Fvector						tPoint;
 			m_tEnemy.Enemy->svCenter	(tPoint);
 			tPoint.y					-= .5f;
+
+			EBodyState					tBodyState;
+			CWeapon						*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
+			if (tpWeapon && (tpWeapon->STATE != CWeapon::eFire) && (tpWeapon->STATE != CWeapon::eFire2) && (tpWeapon->STATE != CWeapon::eIdle))
+				tBodyState = m_tBodyState;
+			else
+				tBodyState = eBodyStateCrouch;;
 			vfSetParameters				(
 				m_tSelectorCover,
 				0,
 				eWeaponStatePrimaryFire,
 				ePathTypeCriteria,
-				eBodyStateStand,
+				tBodyState,
 				eMovementTypeStand,
 				eLookTypeFirePoint,
 				tPoint);

@@ -799,9 +799,9 @@ void CAI_Stalker::Update	( u32 DT )
 	}
 	
 	// inventory update
-	if (!g_Alive() && (m_inventory.TotalWeight() > 0)) {
+	if (m_dwDeathTime && (m_inventory.TotalWeight() > 0)) {
 		CWeapon *tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
-		if ((!tpWeapon || !tpWeapon->GetAmmoElapsed() || !m_bHammerIsClutched)) {
+		if (!tpWeapon || !tpWeapon->GetAmmoElapsed() || !m_bHammerIsClutched || (Level().timeServer() - m_dwDeathTime > 500)) {
 			vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin(), B = I;
 			vector<CInventorySlot>::iterator E = m_inventory.m_slots.end();
 			for ( ; I != E; I++)
