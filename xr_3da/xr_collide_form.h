@@ -77,24 +77,58 @@ class ENGINE_API	ICollisionForm
 {
 	friend class	CObjectSpace;
 protected:
-	struct			RayQuery
-	{
-		Fvector		start;
-		Fvector		dir;
-		float		range;
-		int			element;
-	};
-
 	CObject*		owner;			// владелец
-	Irect			rect_last;		// последние занимаемые слоты
 	u32				dwQueryID;
 protected:
 	Fbox			bv_box;			// (Local) BBox объекта
 	Fsphere			bv_sphere;		// (Local) Sphere 
 public:
+	class			RayQuery
+	{
+		Fvector		start;
+		Fvector		dir;
+		Flags32		flags;			// CDB flags
+		float		range;
+	public:
+		struct		Result{
+			float	range;
+			int		element;
+		};
+		DEFINE_VECTOR(Result,ResultVec,ResultIt);
+		ResultVec	results;
+		IC void		AppendResult	(float _range, int _element)
+		{
+			if (flags.is(CDB::OPT_ONLYNEAREST)&&!results.empty())
+			{
+				Result& R = results.back();
+				if (_range<R.range){
+					R.range		=_range;
+					R.element	=_element;
+				}
+				return;
+			}
+			results.push_back		(Result());
+			results.back().range	=_range;
+			results.back().element	=_element;
+		}
+	public:
+						RayQuery		(const Fvector& _start, const Fvector& _dir, float _range, u32 _flags)
+						{
+							start.set	(_start);
+							dir.set		(_dir);
+							range		= _range;
+							flags.set	(_flags);
+						};
+		IC const Fvector&	Start		()	{return start;}
+		IC const Fvector&	Dir			()	{return dir;}
+		IC float			Range		()	{return range;}
+		IC const Flags32&	Flags		()	{return flags;}
 
-					ICollisionForm		( CObject* _owner );
-	virtual			~ICollisionForm		( );
+		IC int				r_count		()	{return results.size();}
+	};
+public:
+					ICollisionForm	( CObject* _owner );
+	virtual			~ICollisionForm	( );
 
 	virtual BOOL	_RayTest		( RayQuery& Q) = 0;
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags) = 0;

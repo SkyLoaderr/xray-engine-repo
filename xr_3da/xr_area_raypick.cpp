@@ -17,8 +17,7 @@ BOOL CObjectSpace::RayTest	( const Fvector &start, const Fvector &dir, float ran
 	VERIFY					(_abs(dir.magnitude()-1)<EPS);
 
 	XRC.ray_options			(CDB::OPT_ONLYFIRST);
-	ICollisionForm::RayQuery Q;
-	Q.start = start; Q.dir = dir; Q.range=range; Q.element=0;
+	ICollisionForm::RayQuery Q(start,dir,range,CDB::OPT_ONLYFIRST);
 	if (bDynamic) 
 	{
 		// Traverse object database
@@ -44,7 +43,7 @@ BOOL CObjectSpace::RayTest	( const Fvector &start, const Fvector &dir, float ran
 		}
 		
 		// 2. Polygon doesn't pick - real database query
-		XRC.ray_query	(&Static,start,dir,Q.range);
+		XRC.ray_query	(&Static,start,dir,range);
 		if (0==XRC.r_count()) {
 			return FALSE;
 		} else {
@@ -57,26 +56,23 @@ BOOL CObjectSpace::RayTest	( const Fvector &start, const Fvector &dir, float ran
 			return TRUE;
 		}
 	} else {
-		XRC.ray_query	(&Static,start,dir,Q.range);
+		XRC.ray_query	(&Static,start,dir,range);
 		return XRC.r_count();
 	}
 }
 
 BOOL CObjectSpace::RayPick	( const Fvector &start, const Fvector &dir, float range, ray_query& R)
 {
-	ICollisionForm::RayQuery	Q;
-	Q.start = start; Q.dir = dir; Q.range=range; Q.element=0;
 	R.O		= 0; R.range = range; R.element = -1;
 
 	// Test static model
 	XRC.ray_options		(CDB::OPT_ONLYNEAREST | CDB::OPT_CULL);
-	XRC.ray_query		(&Static,Q.start,Q.dir,Q.range);
+	XRC.ray_query		(&Static,start,dir,range);
 	if (XRC.r_count()) {
 		CDB::RESULT* I	= XRC.r_begin	();
 		if (I->range<range) {
 			R.O			= NULL;
 			R.range		= I->range;
-			Q.range		= I->range;
 			R.element	= I->id;
 		}
 	}
@@ -84,6 +80,7 @@ BOOL CObjectSpace::RayPick	( const Fvector &start, const Fvector &dir, float ran
 	// Traverse object database
 	g_SpatialSpace.q_ray	(0,STYPE_COLLIDEABLE,start,dir,range);
 
+	ICollisionForm::RayQuery	Q(start,dir,R.range,CDB::OPT_ONLYNEAREST);
 	// Determine visibility for dynamic part of scene
 	for (u32 o_it=0; o_it<g_SpatialSpace.q_result.size(); o_it++)
 	{
@@ -94,10 +91,11 @@ BOOL CObjectSpace::RayPick	( const Fvector &start, const Fvector &dir, float ran
 		if (collidable->collidable.model->_RayTest(Q))	
 		{
 			C	= D3DCOLOR_XRGB(128,128,196);
-			if (Q.range<R.range) {
+			ICollisionForm::RayQuery::Result& QR = Q.results.back();
+			if (QR.range<R.range) {
 				R.O			= collidable;
-				R.range		= Q.range;
-				R.element	= Q.element;
+				R.range		= QR.range;
+				R.element	= QR.element;
 			}
 		}
 		if (bDebug) 
