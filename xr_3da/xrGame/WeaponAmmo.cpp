@@ -8,6 +8,7 @@
 #include "level.h"
 #include "level_bullet_manager.h"
 #include "ai_space.h"
+#include "gamemtllib.h"
 
 CCartridge::CCartridge() 
 {
