@@ -57,6 +57,9 @@ struct xrDispatchTable
 	xrBoneLerp*			blerp;
 	xrM44_Mul*			m44_mul;
 	xrTransfer*			transfer;
+	xrMemCopy_8b*		memCopy;
+	xrMemFill_8b*		memFill;
+	xrMemFill_32b*		memFill32;
 };
 #pragma pack(pop)
 
