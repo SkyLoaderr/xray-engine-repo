@@ -172,7 +172,7 @@ function zone_binder:reload( section )
 	end
 
 	if zone_ini:section_exist("no_weapon") then
-		//z.no_weapon = CZoneNotWeapon(self.object)
+		z.no_weapon = CZoneNotWeapon(self.object)
 	end
 end
 
@@ -476,21 +476,19 @@ function CZoneNotWeapon:__init(zone_object)
 	if( level.actor() and 
 	    zone_object:active_zone_contact(level.actor():id())
 	   ) then
-//		level.actor():hide_weapon()
+		level.actor():hide_weapon()
 		local i = 10
 	end
 end
 
 function CZoneNotWeapon:on_enter(obj)
 	if(obj:id() == get_actor_id()) then
-//		obj:hide_weapon()
-		local i = 10
+		obj:hide_weapon()
 	end
 end
 
 function CZoneNotWeapon:on_leave(obj)
 	if(obj:id() == get_actor_id()) then
-//		obj:restore_weapon()
-		local i = 10
+		obj:restore_weapon()
 	end
 end
