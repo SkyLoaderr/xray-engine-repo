@@ -13,9 +13,37 @@
 // included headers
 ////////////////////////////////////////////////////////////////////////////
 
-class CCustomMonster;
+#include "custommonster.h"
 
-class CPatternFunction {
+class CBaseFunction {
+public:
+	DWORD			m_dwLastUpdate;
+	double			m_dLastValue;
+	CCustomMonster	*m_tpLastMonster;
+	double			m_dMinResultValue;
+	double			m_dMaxResultValue;
+
+
+	virtual	void	vfLoadEF(char *caFileName, CBaseFunction **fpaBaseFunctions) {};
+	virtual double	dfGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions) = 0;
+	
+	virtual DWORD	dwfGetDiscreteValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions, DWORD dwDiscretizationValue)
+	{
+		double dTemp = dfGetValue(tpCustomMonster,fpaBaseFunctions);
+		if (dTemp <= m_dMinResultValue)
+			return(0);
+		else
+			if (dTemp >= m_dMaxResultValue)
+				return(dwDiscretizationValue - 1);
+			else {
+				double dDummy = (m_dMaxResultValue - m_dMinResultValue)/(double)dwDiscretizationValue;
+				dDummy = (dTemp - m_dMinResultValue)/dDummy;
+				return(floor(dDummy));
+			}
+	}
+};
+
+class CPatternFunction : public CBaseFunction {
 	
 private:
 	typedef struct tagSPattern {
@@ -23,37 +51,53 @@ private:
 		DWORD		*dwaVariableIndexes;
 	} SPattern;
 
-	DWORD			*dwaAtomicFeatureRange;
-	DWORD			*dwaPatternIndexes;
-	SPattern		*tpPatterns;
-	double			*daParameters;
+	DWORD		*m_dwaAtomicFeatureRange;
+	DWORD		*m_dwaPatternIndexes;
+	SPattern	*m_tpPatterns;
+	double		*m_daParameters;
 
-	DWORD			dwPatternCount;
-	DWORD			dwParameterCount;
+	DWORD		m_dwPatternCount;
+	DWORD		m_dwParameterCount;
 
-	__forceinline DWORD dwfGetPatternIndex(DWORD *dwpTest, int iPatternIndex)
+	IC DWORD dwfGetPatternIndex(DWORD *dwpTest, int iPatternIndex)
 	{
-		SPattern &tPattern = tpPatterns[iPatternIndex];
+		SPattern &tPattern = m_tpPatterns[iPatternIndex];
 		for (DWORD i=1, dwIndex = dwpTest[tPattern.dwaVariableIndexes[0]]; i<(int)tPattern.dwCardinality; i++)
-			dwIndex = dwIndex*dwaAtomicFeatureRange[tPattern.dwaVariableIndexes[i - 1]] + dwpTest[tPattern.dwaVariableIndexes[i]];
-		return(dwIndex + dwaPatternIndexes[iPatternIndex]);
+			dwIndex = dwIndex*m_dwaAtomicFeatureRange[tPattern.dwaVariableIndexes[i - 1]] + dwpTest[tPattern.dwaVariableIndexes[i]];
+		return(dwIndex + m_dwaPatternIndexes[iPatternIndex]);
 	}
 	
+	double		dfEvaluate();
+
 public:
 	
-	typedef DWORD	STypeFunction();
+	DWORD		m_dwVariableCount;
+	DWORD		m_dwFunctionType;
+	DWORD		*m_dwaVariableTypes;
+	DWORD		*m_dwaVariableValues;
 
-	DWORD		dwVariableCount;
-	DWORD		*dwaVariableTypes;
-	DWORD		*dwaVariableValues;
-
-				CPatternFunction(char *caEFFileName);
+				CPatternFunction(char *caEFFileName, CBaseFunction **fpaBaseFunctions);
 				CPatternFunction();
 				~CPatternFunction();
 
-	void		vfLoadEF(char *caEFFileName);
-	double		dfEvaluate();
-	double		dfGetValue(CCustomMonster *cAIMonster);
+	virtual	void	vfLoadEF(char *caEFFileName, CBaseFunction **fpaBaseFunctions);
+	virtual double	dfGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions);
 };
 
+class CHealthFunction : public CBaseFunction {
+	
+	CHealthFunction() {
+		m_dMinResultValue = 0.0;
+		m_dMaxResultValue = 100.0;
+	}
+	
+	virtual double	dfGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
+	{
+		m_dwLastUpdate = Level().timeServer();
+		m_tpLastMonster = tpCustomMonster;
+		return(m_dLastValue = tpCustomMonster->g_Health());
+	};
+	
+};
+ 
 #endif

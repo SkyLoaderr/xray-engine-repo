@@ -10,100 +10,106 @@
 #include "ai_funcs.h"
 #include "CustomMonster.h"
 
-double CPatternFunction::dfEvaluate()
-{
-	double dResult = 0.0;
-	for (DWORD i=0; i<dwPatternCount; i++)
-		dResult += daParameters[dwfGetPatternIndex(dwaVariableValues,i)];
-	return(dResult);
-}
-
 CPatternFunction::CPatternFunction()
 {
-	dwPatternCount = dwVariableCount = dwParameterCount = 0;
-	dwaVariableTypes = 0;
-	dwaAtomicFeatureRange = 0;
-	dwaPatternIndexes = 0;
-	tpPatterns = 0;
-	daParameters = 0;
-	dwaVariableValues = 0;
+	m_dwPatternCount = m_dwVariableCount = m_dwParameterCount = 0;
+	m_dwaVariableTypes = 0;
+	m_dwaAtomicFeatureRange = 0;
+	m_dwaPatternIndexes = 0;
+	m_tpPatterns = 0;
+	m_daParameters = 0;
+	m_dwaVariableValues = 0;
 }
 
-CPatternFunction::CPatternFunction(char *caFileName)
+CPatternFunction::CPatternFunction(char *caFileName, CBaseFunction **fpaBaseFunctions)
 {
-	dwPatternCount = dwVariableCount = dwParameterCount = 0;
-	dwaVariableTypes = 0;
-	dwaAtomicFeatureRange = 0;
-	dwaPatternIndexes = 0;
-	tpPatterns = 0;
-	daParameters = 0;
-	dwaVariableValues = 0;
-	vfLoadEF(caFileName);
+	m_dwPatternCount = m_dwVariableCount = m_dwParameterCount = 0;
+	m_dwaVariableTypes = 0;
+	m_dwaAtomicFeatureRange = 0;
+	m_dwaPatternIndexes = 0;
+	m_tpPatterns = 0;
+	m_daParameters = 0;
+	m_dwaVariableValues = 0;
+	vfLoadEF(caFileName,fpaBaseFunctions);
+    fpaBaseFunctions[m_dwFunctionType - 1] = this;
 }
 
-void CPatternFunction::vfLoadEF(char *caFileName)
+CPatternFunction::~CPatternFunction()
+{
+	_FREE(m_dwaVariableTypes);
+	_FREE(m_dwaAtomicFeatureRange);
+	_FREE(m_dwaPatternIndexes);
+	for (DWORD i=0; i<m_dwPatternCount; i++)
+		_FREE(m_tpPatterns[i].dwaVariableIndexes);
+	_FREE(m_tpPatterns);
+	_FREE(m_daParameters);
+	_FREE(m_dwaVariableValues);
+}
+
+void CPatternFunction::vfLoadEF(char *caFileName, CBaseFunction **fpaBaseFunctions)
 {
 	FILE *fTestParameters = fopen(caFileName,"rb");
 	if (!fTestParameters) {
 		Msg("EvaluationFunction : File not found \"%s\"",caFileName);
 		return;
 	}
-	fread(&dwVariableCount,1,sizeof(dwVariableCount),fTestParameters);
-	dwaAtomicFeatureRange = (DWORD *)xr_malloc(dwVariableCount*sizeof(DWORD));
-	ZeroMemory(dwaAtomicFeatureRange,dwVariableCount*sizeof(DWORD));
-	DWORD *dwaAtomicIndexes = (DWORD *)xr_malloc(dwVariableCount*sizeof(DWORD));
-	ZeroMemory(dwaAtomicIndexes,dwVariableCount*sizeof(DWORD));
+	fread(&m_dwVariableCount,1,sizeof(m_dwVariableCount),fTestParameters);
+	m_dwaAtomicFeatureRange = (DWORD *)xr_malloc(m_dwVariableCount*sizeof(DWORD));
+	ZeroMemory(m_dwaAtomicFeatureRange,m_dwVariableCount*sizeof(DWORD));
+	DWORD *m_dwaAtomicIndexes = (DWORD *)xr_malloc(m_dwVariableCount*sizeof(DWORD));
+	ZeroMemory(m_dwaAtomicIndexes,m_dwVariableCount*sizeof(DWORD));
 
-	for (DWORD i=0; i<dwVariableCount; i++) {
-		fread(dwaAtomicFeatureRange + i,1,sizeof(DWORD),fTestParameters);
+	for (DWORD i=0; i<m_dwVariableCount; i++) {
+		fread(m_dwaAtomicFeatureRange + i,1,sizeof(DWORD),fTestParameters);
 		if (i)
-			dwaAtomicIndexes[i] = dwaAtomicIndexes[i-1] + dwaAtomicFeatureRange[i-1];
+			m_dwaAtomicIndexes[i] = m_dwaAtomicIndexes[i-1] + m_dwaAtomicFeatureRange[i-1];
 	}
 
-	dwaVariableTypes = (DWORD *)xr_malloc(dwVariableCount*sizeof(DWORD));
-	fread(dwaVariableTypes,dwVariableCount,sizeof(DWORD),fTestParameters);
+	m_dwaVariableTypes = (DWORD *)xr_malloc(m_dwVariableCount*sizeof(DWORD));
+	fread(m_dwaVariableTypes,m_dwVariableCount,sizeof(DWORD),fTestParameters);
 
-	fread(&dwPatternCount,1,sizeof(dwPatternCount),fTestParameters);
-	tpPatterns = (SPattern *)xr_malloc(dwPatternCount*sizeof(SPattern));
-	dwaPatternIndexes = (DWORD *)xr_malloc(dwPatternCount*sizeof(DWORD));
-	ZeroMemory(dwaPatternIndexes,dwPatternCount*sizeof(DWORD));
-	dwParameterCount = 0;
-	for ( i=0; i<dwPatternCount; i++) {
+	fread(&m_dwFunctionType,1,sizeof(DWORD),fTestParameters);
+
+	fread(&m_dMinResultValue,1,sizeof(double),fTestParameters);
+	fread(&m_dMaxResultValue,1,sizeof(double),fTestParameters);
+
+	fread(&m_dwPatternCount,1,sizeof(m_dwPatternCount),fTestParameters);
+	m_tpPatterns = (SPattern *)xr_malloc(m_dwPatternCount*sizeof(SPattern));
+	m_dwaPatternIndexes = (DWORD *)xr_malloc(m_dwPatternCount*sizeof(DWORD));
+	ZeroMemory(m_dwaPatternIndexes,m_dwPatternCount*sizeof(DWORD));
+	m_dwParameterCount = 0;
+	for ( i=0; i<m_dwPatternCount; i++) {
 		if (i)
-			dwaPatternIndexes[i] = dwParameterCount;
-		fread(&(tpPatterns[i].dwCardinality),1,sizeof(tpPatterns[i].dwCardinality),fTestParameters);
-		tpPatterns[i].dwaVariableIndexes = (DWORD *)xr_malloc(tpPatterns[i].dwCardinality*sizeof(DWORD));
-		fread(tpPatterns[i].dwaVariableIndexes,tpPatterns[i].dwCardinality,sizeof(DWORD),fTestParameters);
-		DWORD dwComplexity = 1;
-		for (int j=0; j<(int)tpPatterns[i].dwCardinality; j++)
-			dwComplexity *= dwaAtomicFeatureRange[tpPatterns[i].dwaVariableIndexes[j]];
-		dwParameterCount += dwComplexity;
+			m_dwaPatternIndexes[i] = m_dwParameterCount;
+		fread(&(m_tpPatterns[i].dwCardinality),1,sizeof(m_tpPatterns[i].dwCardinality),fTestParameters);
+		m_tpPatterns[i].dwaVariableIndexes = (DWORD *)xr_malloc(m_tpPatterns[i].dwCardinality*sizeof(DWORD));
+		fread(m_tpPatterns[i].dwaVariableIndexes,m_tpPatterns[i].dwCardinality,sizeof(DWORD),fTestParameters);
+		DWORD m_dwComplexity = 1;
+		for (int j=0; j<(int)m_tpPatterns[i].dwCardinality; j++)
+			m_dwComplexity *= m_dwaAtomicFeatureRange[m_tpPatterns[i].dwaVariableIndexes[j]];
+		m_dwParameterCount += m_dwComplexity;
 	}
 	
-	daParameters = (double *)xr_malloc(dwParameterCount*sizeof(double));
-	fread(daParameters,dwParameterCount,sizeof(double),fTestParameters);
+	m_daParameters = (double *)xr_malloc(m_dwParameterCount*sizeof(double));
+	fread(m_daParameters,m_dwParameterCount,sizeof(double),fTestParameters);
 	fclose(fTestParameters);
 
-	dwaVariableValues = (DWORD *)xr_malloc(dwVariableCount*sizeof(DWORD));
+	m_dwaVariableValues = (DWORD *)xr_malloc(m_dwVariableCount*sizeof(DWORD));
 	
-	_FREE(dwaAtomicIndexes);
+	_FREE(m_dwaAtomicIndexes);
 }
 
-CPatternFunction::~CPatternFunction()
+double CPatternFunction::dfEvaluate()
 {
-	_FREE(dwaVariableTypes);
-	_FREE(dwaAtomicFeatureRange);
-	_FREE(dwaPatternIndexes);
-	for (DWORD i=0; i<dwPatternCount; i++)
-		_FREE(tpPatterns[i].dwaVariableIndexes);
-	_FREE(tpPatterns);
-	_FREE(daParameters);
-	_FREE(dwaVariableValues);
+	double dResult = 0.0;
+	for (DWORD i=0; i<m_dwPatternCount; i++)
+		dResult += m_daParameters[dwfGetPatternIndex(m_dwaVariableValues,i)];
+	return(dResult);
 }
 
-double CPatternFunction::dfGetValue(CCustomMonster *cAIMonster)
+double CPatternFunction::dfGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
 {
-	for (DWORD i=0; i<dwVariableCount; i++)
-		dwaVariableValues[i] = (*(cAIMonster->fpaTypeFunctions[dwaVariableTypes[i] - 1]))();
+	for (DWORD i=0; i<m_dwVariableCount; i++)
+		m_dwaVariableValues[i] = fpaBaseFunctions[m_dwaVariableTypes[i] - 1]->dwfGetDiscreteValue(tpCustomMonster,fpaBaseFunctions,m_dwaVariableTypes[i]);
 	return(dfEvaluate());
 }

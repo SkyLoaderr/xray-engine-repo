@@ -35,10 +35,6 @@ void __stdcall CCustomMonster::TorsoSpinCallback(CBoneInstance* B)
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-DWORD dwfFunction()
-{
-	return(0);
-}
 
 CCustomMonster::CCustomMonster()
 {
@@ -58,16 +54,11 @@ CCustomMonster::CCustomMonster()
 	eye_pp_stage		= 0;
 	m_tpPath			= 0;
 	vfResetPatrolData	();
-	dwFunctionCount		= 6;
-	fpaTypeFunctions	= (CPatternFunction::STypeFunction **)xr_malloc(dwFunctionCount*sizeof(CPatternFunction::STypeFunction *));
-	for (DWORD i=0; i<dwFunctionCount; i++)
-		fpaTypeFunctions[i] = &dwfFunction;
 }
 
 CCustomMonster::~CCustomMonster	()
 {
 	_DELETE		(Weapons);
-	_FREE(fpaTypeFunctions);
 
 #ifdef DEBUG
 	Device.seqRender.Remove	(this);

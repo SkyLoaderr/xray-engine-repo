@@ -14,7 +14,9 @@
 #include "..\\..\\hudmanager.h"
 #include "..\\..\\..\\xr_trims.h"
 
-//static bool bStarted = false;
+bool				CAI_Soldier::bPatternFunctionLoaded = false;
+CPatternFunction	CAI_Soldier::pfRelation;
+CBaseFunction		**CAI_Soldier::fpaTypeFunctions;
 
 CAI_Soldier::CAI_Soldier()
 {
@@ -183,6 +185,11 @@ void CAI_Soldier::Load	(LPCSTR section)
 	
 	m_dwMaxDynamicObjectsCount = min(pSettings->ReadINT(section,"DynamicObjectsCount"),MAX_DYNAMIC_OBJECTS);
 	m_dwMaxDynamicSoundsCount = min(pSettings->ReadINT(section,"DynamicSoundsCount"),MAX_DYNAMIC_SOUNDS);
+
+	if (!bPatternFunctionLoaded) {
+		bPatternFunctionLoaded = true;
+		pfRelation.vfLoadEF((char *)(pSettings->ReadSTRING(section,"Relation")),fpaTypeFunctions);
+	}
 
 	//tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[0] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[1] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[2] = PKinematics(pVisual)->ID_Cycle(pSettings->ReadSTRING(section,"TestAnimation"));
 	//m_fAddAngle = pSettings->ReadFLOAT(section,"AddAngle");

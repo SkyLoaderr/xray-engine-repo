@@ -12,7 +12,6 @@
 #include "entity.h"
 #include "ai_commands.h"
 #include "ai_pathnodes.h"
-#include "ai_funcs.h"
 
 class ENGINE_API CMotionDef;
 class ENGINE_API CKinematics;
@@ -30,8 +29,6 @@ class CCustomMonster :
 {
 private:
 	typedef	CEntityAlive	inherited;
-	CPatternFunction		cRelation;	
-	DWORD dwFunctionCount;
 protected:
 	float				m_fBananPadlaCorrection;
 
@@ -75,8 +72,6 @@ protected:
 	} SDynamicSound;
 
 public:
-	CPatternFunction::STypeFunction **fpaTypeFunctions;
-
 	enum EBodyStates {
 		BODY_STATE_STAND=0,
 		BODY_STATE_CROUCH,

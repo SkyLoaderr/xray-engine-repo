@@ -15,6 +15,7 @@
 #include "..\\..\\group.h"
 #include "..\\..\\xr_weapon_list.h"
 #include "..\\..\\actor.h"
+#include "..\\..\\ai_funcs.h"
 
 class CAI_Soldier : public CCustomMonster
 {
@@ -730,6 +731,10 @@ class CAI_Soldier : public CCustomMonster
 		virtual BOOL  net_Spawn( BOOL bLocal, int sid, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags );
 		virtual objQualifier* GetQualifier();
 		virtual	void  soundEvent(CObject* who, int eType, Fvector& Position, float power);
+		// Data driven design properties
+		static	bool				bPatternFunctionLoaded;
+		static  CBaseFunction		**fpaTypeFunctions;
+		static  CPatternFunction	pfRelation;
 };
 		
 #endif
