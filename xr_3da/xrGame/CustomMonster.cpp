@@ -56,6 +56,12 @@ CCustomMonster::CCustomMonster()
 	m_dwLastUpdateTime	= 0xffffffff;
 	m_tEyeShift.set		(0,0,0);
 	NET_WasExtrapolating = FALSE;
+
+	ISpatial*		self				= dynamic_cast<ISpatial*> (this);
+	if (self)		{
+		self->spatial.type	|= STYPE_VISIBLEFORAI;
+		self->spatial.type	|= STYPE_REACTTOSOUND;
+	}
 }
 
 CCustomMonster::~CCustomMonster	()
@@ -418,7 +424,6 @@ BOOL CCustomMonster::feel_visible_isRelevant (CObject* O)
 	CEntityAlive* E = dynamic_cast<CEntityAlive*>		(O);
 	if (0==E)								return FALSE;
 	if (E->g_Team() == g_Team())			return FALSE;
-	if (!E->IsVisibleForAI())				return FALSE;
 	return TRUE;
 }
 

@@ -200,9 +200,8 @@ BOOL  CAI_Soldier::feel_vision_isRelevant	(CObject* O)
 		return FALSE;
 	else {
 		CEntityAlive* E = dynamic_cast<CEntityAlive*> (O);
-		if (!E) return FALSE;
-		if (!E->IsVisibleForAI()) return FALSE; 
-		return TRUE;
+		if (!E)			return FALSE;
+		return			TRUE;
 	}
 }
 

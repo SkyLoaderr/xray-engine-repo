@@ -113,7 +113,6 @@ public:
 	virtual	float	ffGetRange		(){return 30.f;}
 
 	virtual BOOL	IsVisibleForHUD	()	{ return FALSE;		}
-	virtual BOOL	IsVisibleForAI	()	{ return !g_Alive();}
 	virtual bool	IsVisibleForZones() { return false;		}
 };
 

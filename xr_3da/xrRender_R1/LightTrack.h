@@ -26,7 +26,7 @@ public:
 		float				energy;
 	};
 	xr_vector<Item>			track;
-	xr_vector<Light>			lights;
+	xr_vector<Light>		lights;
 	float					ambient;
 	u32						dwFrame;
 public:

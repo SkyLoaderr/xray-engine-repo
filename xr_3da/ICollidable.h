@@ -9,6 +9,6 @@ public:
 		ICollisionForm*			model;
 	}							collidable;
 public:
-	ICollidable()				{	collidable.model	= NULL;		};
-	virtual ~ICollidable()		{ 	xr_delete( collidable.model );	};
+	ICollidable();
+	virtual ~ICollidable();
 };

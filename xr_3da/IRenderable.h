@@ -13,16 +13,7 @@ public:
 		IRender_ObjectSpecific*			ROS;
 	}	renderable;
 public:
-	IRenderable()
-	{
-		renderable.xform.identity		();
-		renderable.visual				= NULL;
-		renderable.ROS					= Render->ros_create(this);
-	}
-	virtual ~IRenderable()
-	{
-		Render->model_Delete			(renderable.visual);
-		Render->ros_destroy				(renderable.ROS);
-	}
+	IRenderable();
+	virtual ~IRenderable();
 	virtual	void						renderable_Render	()	= 0;
 };

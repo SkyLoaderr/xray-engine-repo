@@ -281,11 +281,10 @@ public:
 	IC  CGroup *getGroup() {return(&(Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()]));};
 
 public:
-	virtual	float			ffGetFov				(){return eye_fov;}	
-	virtual	float			ffGetRange				(){return eye_range;}
+	virtual	float			ffGetFov				()				{return eye_fov;}	
+	virtual	float			ffGetRange				()				{return eye_range;}
 	virtual	void			feel_touch_new			(CObject* O);
 	virtual BOOL			feel_visible_isRelevant	(CObject* O);
-	virtual BOOL			IsVisibleForAI			()	{return TRUE;};
 };
 
 namespace AI{

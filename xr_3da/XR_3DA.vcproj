@@ -340,9 +340,6 @@
 			Name="Interfaces"
 			Filter="">
 			<File
-				RelativePath=".\ICollidable.h">
-			</File>
-			<File
 				RelativePath="psystem.h">
 			</File>
 			<Filter
@@ -388,6 +385,9 @@
 				Name="Render"
 				Filter="">
 				<File
+					RelativePath=".\IRenderable.cpp">
+				</File>
+				<File
 					RelativePath=".\IRenderable.h">
 				</File>
 				<File
@@ -426,6 +426,16 @@
 							Name="VCCLCompilerTool"
 							AssemblerOutput="4"/>
 					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="Collidable"
+				Filter="">
+				<File
+					RelativePath=".\ICollidable.cpp">
+				</File>
+				<File
+					RelativePath=".\ICollidable.h">
 				</File>
 			</Filter>
 		</Filter>

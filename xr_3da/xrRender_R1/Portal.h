@@ -47,8 +47,8 @@ public:
 	void							traverse		(CFrustum& F);
 	void							load			(IReader& fs);
 
-	CSector							()				{root = NULL;	}
-	virtual							~CSector		();
+	CSector							()				{ m_root = NULL;	}
+	virtual							~CSector		( );
 };
 
 class	CPortalTraverser

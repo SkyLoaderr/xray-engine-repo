@@ -132,7 +132,6 @@ BOOL  CAI_Biting::feel_vision_isRelevant(CObject* O)
 	else  {
 		CEntityAlive* E = dynamic_cast<CEntityAlive*> (O);
 		if (!E) return FALSE;
-		if (!E->IsVisibleForAI()) return FALSE; 
 		if (E->g_Team() == g_Team()) && (E->g_Alive()) return FALSE;
 		return TRUE;
 	}

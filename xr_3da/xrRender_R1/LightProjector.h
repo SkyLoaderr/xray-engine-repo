@@ -35,7 +35,7 @@ private:
 	Shader*					sh_Screen;
 	SGeometry*				geom_Screen;
 public:
-	void					set_object		(CObject*	O);
+	void					set_object		(IRenderable*	O);
 	BOOL					shadowing		()			{ return current!=0; }
 	void					calculate		();
 	void					setup			(int slot);
@@ -47,7 +47,7 @@ public:
 	virtual	void			OnDeviceDestroy	();
 	
 	CLightProjector			();
-	~CLightProjector			();
+	~CLightProjector		();
 };
 
 #endif // !defined(AFX_LIGHTPRJ_H__CFA216D9_CACB_4515_9FBE_7C531649168F__INCLUDED_)

@@ -86,7 +86,7 @@ void		CRender::add_Wallmark		(Shader* S, const Fvector& P, float s, CDB::TRI* T)
 {
 	Wallmarks->AddWallmark	(T,P,S,s);
 }
-void		CRender::set_Object			(CObject*		O )	
+void		CRender::set_Object			(IRenderable*		O )	
 { 
 	val_pObject				= O;		// NULL is OK, trust me :)
 	L_Shadows.set_object	(O);

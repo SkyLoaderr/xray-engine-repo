@@ -82,7 +82,6 @@ public:
 	// Events
 	virtual void			OnEvent				( NET_Packet& P, u16 type		);
 
-	virtual BOOL			IsVisibleForAI		()	{return g_Alive();	}
 	virtual BOOL			IsVisibleForHUD		()	{return g_Alive();	}
 	virtual void			g_fireParams			(Fvector &, Fvector &){}; 
 };

@@ -163,9 +163,9 @@ void CAI_Idol::DropItemSendMessage(CObject *O)
 	u_EventSend				(P);
 }
 
-void CAI_Idol::Update		(u32 dt)
+void CAI_Idol::shedule_Update(u32 dt)
 {
-	inherited::Update		(dt);
+	inherited::shedule_Update(dt);
 	m_inventory.Update		(dt);
 }
 

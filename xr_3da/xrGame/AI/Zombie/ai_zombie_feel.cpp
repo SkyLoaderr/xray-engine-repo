@@ -42,7 +42,6 @@ BOOL CAI_Zombie::feel_vision_isRelevant(CObject* O)
 	else  {
 		CEntityAlive* E = dynamic_cast<CEntityAlive*> (O);
 		if (!E) return FALSE;
-		if (!E->IsVisibleForAI())		return FALSE; 
 		if (E->g_Team() == g_Team())	return FALSE;
 		return TRUE;
 	}

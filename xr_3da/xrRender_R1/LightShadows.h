@@ -55,8 +55,8 @@ private:
 	SGeometry*				geom_Screen;
 private:
 public:
-	void					set_object		(CObject*	O);
-	void					add_element		(NODE*		N);
+	void					set_object		(IRenderable*	O);
+	void					add_element		(NODE*			N);
 	void					calculate		();
 	void					render			();
 
