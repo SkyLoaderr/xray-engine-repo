@@ -27,6 +27,8 @@ private:
 	float				param_blur;
 	float				param_gray;
 	float				param_noise;
+	u32					param_noise_scale;
+	u32					param_noise_base_color;
 public:
 	CRenderTarget		();
 

@@ -90,7 +90,7 @@ void CRenderTarget::e_render_noise	()
 	p0.set		(start_u,	start_v	);
 	p1.set		(end_u,		end_v	);
 
-	u32			Cblend				= iFloor		(param_gray*255.f);
+	u32			Cblend				= iFloor		(param_noise*255.f);
 	u32			Cbase				= 255;
 	clamp		(Cblend,0u,255u);
 	u32			Cgray				= D3DCOLOR_RGBA	(Cbase,Cbase,Cbase,Cblend);
