@@ -1564,9 +1564,23 @@ void		CActor::Check_Weapon_ShowHideState	()
 
 void CActor::net_Save(NET_Packet& P)
 {
-	inherited::net_Save(P);
+#ifdef DEBUG
+	u32					pos;
+	Msg					("Actor net_Save");
+	
+	pos					= P.w_tell();
+	inherited::net_Save	(P);
+	Msg					("inherited::net_Save() : %d",Packet.w_tell() - pos);
+
+	pos					= P.w_tell();
 	m_pPhysics_support->in_NetSave(P);
 	P.w_u16(m_holderID);
+	Msg					("m_pPhysics_support->in_NetSave() : %d",Packet.w_tell() - pos);
+#else
+	inherited::net_Save	(P);
+	m_pPhysics_support->in_NetSave(P);
+	P.w_u16(m_holderID);
+#endif
 }
 
 BOOL CActor::net_SaveRelevant()
