@@ -63,6 +63,8 @@ void CLevel::ClientReceive()
 				O->net_Import(*P);
 		//---------------------------------------------------
 				UpdateDeltaUpd(timeServer());
+				if (pObjects4CrPr.empty() && pActors4CrPr.empty())
+					break;
 
 				u32 dTime = Level().timeServer() - P->timeReceive + Ping;
 				u32 NumSteps = ph_world->CalcNumSteps(dTime);
