@@ -73,12 +73,8 @@ void CRender::Render	()
 		Target.accum_direct						();
 	}
 
-	//$$$
-	//Target.phase_accumulator			();
-	//Target.accum_direct				();
-
 	// Point lighting (unshadowed)
-	if (0)
+	if (1)
 	{
 		Target.phase_accumulator		();
 		HOM.Disable						();
@@ -92,7 +88,7 @@ void CRender::Render	()
 	}
 
 	// Point/spot lighting (shadowed)
-	if (0)
+	if (1)
 	{
 		HOM.Disable								();
 		vector<light*>&	Lvec	= Lights.v_selected_shadowed;
@@ -133,9 +129,9 @@ void CRender::Render	()
 				phase									= PHASE_SMAP_S;
 
 				// calculate
-				LR.compute_xfs_1					(0, L);
+				LR.compute_xfs_1						(0, L);
 				render_smap_direct						(LR.L_combine);
-				LR.compute_xfs_2					(0, L);
+				LR.compute_xfs_2						(0, L);
 
 				// rendering
 				if (mapNormal.size())

@@ -2,6 +2,11 @@
 
 void CRenderTarget::accum_point_shadow	(light* L)
 {
+	if (RImplementation.b_nv3x)		{
+		Msg	("! nv3x code path: shadowed point sources not implemented");
+		return;
+	}
+
 	// Common
 	Fvector		L_pos;
 	float		L_spec;
@@ -177,9 +182,9 @@ void CRenderTarget::accum_point_unshadow(light* L)
 	m_Tex.mul		(m_TexelAdjust,RCache.xforms.m_wvp);
 
 	// Constants
-	RCache.set_c					("light_position",	L_pos.x,L_pos.y,L_pos.z,1/L_R);
-	RCache.set_c					("light_color",		L_clr.x,L_clr.y,L_clr.z,L_spec);
-	RCache.set_c					("m_tex",			m_Tex);
+	RCache.set_c						("light_position",	L_pos.x,L_pos.y,L_pos.z,1/L_R);
+	RCache.set_c						("light_color",		L_clr.x,L_clr.y,L_clr.z,L_spec);
+	RCache.set_c						("m_tex",			m_Tex);
 
 	// Render if (stencil >= light_id && z-pass)
 	RCache.set_Stencil					(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0xff,0x00,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP);
