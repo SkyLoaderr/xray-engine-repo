@@ -705,8 +705,10 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 		}
 	}
 	*/
-	if (m_DefaultVisualOutfit == NULL)
-		m_DefaultVisualOutfit = cNameVisual();
+//	if (m_DefaultVisualOutfit == NULL)
+//		m_DefaultVisualOutfit = cNameVisual();
+//	if (!GetDefaultVisualOutfit())
+	SetDefaultVisualOutfit(cNameVisual());
 
 	VERIFY(m_pActorEffector == NULL);
 	m_pActorEffector = xr_new<CActorEffector>();
@@ -782,6 +784,8 @@ void CActor::net_Destroy	()
 	m_holderID=u16(-1);
 
 	m_ArtefactsOnBelt.clear();
+
+	SetDefaultVisualOutfit(NULL);
 }
 
 void CActor::net_Relcase	(CObject* O)
@@ -842,11 +846,14 @@ void	CActor::OnChangeVisual()
 	m_r_hand			= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(*cNameSect(),"weapon_bone0"));
 	m_l_finger1			= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(*cNameSect(),"weapon_bone1"));
 	m_r_finger2			= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(*cNameSect(),"weapon_bone2"));
-
 	//-------------------------------------------------------------------------------
 	reattach_items();
 	//-------------------------------------------------------------------------------
 	m_pPhysics_support->in_ChangeVisual();
+	//-------------------------------------------------------------------------------
+	m_current_head = 0;
+	m_current_legs = 0;
+	m_current_torso = 0;
 };
 
 void	CActor::ChangeVisual			( shared_str NewVisual )

@@ -352,9 +352,9 @@ void CActor::Load	(LPCSTR section )
 	m_fDispCrouchFactor		= pSettings->r_float		(section,"disp_crouch_factor");
 
 	if (pSettings->line_exist(section, "default_outfit"))
-		m_DefaultVisualOutfit = pSettings->r_string(section, "default_outfit");
+		SetDefaultVisualOutfit(pSettings->r_string(section, "default_outfit"));
 	else
-		m_DefaultVisualOutfit = NULL;
+		SetDefaultVisualOutfit(NULL);
 
 	invincibility_fire_shield_1st			= NULL;
 	if (pSettings->line_exist(section,"Invincibility_Shield_1st"))
