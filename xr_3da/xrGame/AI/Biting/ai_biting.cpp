@@ -56,13 +56,13 @@ void CAI_Biting::Init()
 	MotionMan.Init					(this);
 
 
-	CMonsterMovement::Init();
 }
 
 void CAI_Biting::reinit()
 {
-	CSoundPlayer::play(MonsterSpace::eMonsterSoundAttackHit);
-	inherited::reinit();
+	m_pPhysics_support->in_NetSpawn		();
+	
+	inherited::reinit					();
 	CMonsterMovement::reinit			();
 
 	time_start_stand				=0;
