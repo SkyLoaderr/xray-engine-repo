@@ -83,7 +83,7 @@ function main()
 	event:set_callback(script_01.on_exit,false)
 
 	while stalker1:action() do		
-		if 	is_creature_entered then
+		if actor_id == object:id() then 
 			printf("alarm!")
 			flush()
 			stalker1:script	(false, script_01.script_name())
