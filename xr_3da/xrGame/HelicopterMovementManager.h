@@ -87,5 +87,6 @@ public:
 	float							m_wait_in_point;//tmp, fix it
 
 	Fbox							m_boundingVolume;
+	Fbox							m_boundingAssert;
 
 };

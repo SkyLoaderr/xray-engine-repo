@@ -57,15 +57,13 @@ void	CHelicopterMovManager::load(LPCSTR		section)
 			m_boundingVolume.min.add(b);
 		};
 
-//	m_pitch_k *= -1.0f;
+	m_boundingAssert  = m_boundingVolume;
+	m_boundingAssert.scale(0.2f);
 
 	m_hunt_dist = 20.0f;
 	m_hunt_time = 5.0f;
-	
-/*	m_korridor					= pSettings->r_float(section,"alt_korridor");
-*/
-
 }
+
 void CHelicopterMovManager::init(const Fmatrix& heli_xform)
 {
 	m_XFORM = heli_xform;
@@ -286,7 +284,7 @@ void CHelicopterMovManager::addPartolPath(float from_time)
 	else
 		fromPos = m_XFORM.c;
 
-	VERIFY( (fromPos.y >= m_boundingVolume.min.y) && (fromPos.y <= m_boundingVolume.max.y)   );
+	VERIFY( m_boundingAssert.contains(fromPos) );
 	
 
 	xr_vector<Fvector> vAddedKeys;
@@ -571,14 +569,12 @@ void CHelicopterMovManager::buildHPB(const Fvector& p_prev,
 	float h1 = d1.getH();
 	float h2 = d2.getH();
 	float p1 = d1.getP();
-//	float p2 = d2.getP();
 
 	Fvector cp;
 
 	float sk;
 	//y
 	sk = s2/(s1+s2);	
-//	float newY	= _flerp(h1, h2, sk);
 	float newY	= h2;
 	float y_sign;
 	Fvector prev_d;
@@ -592,7 +588,6 @@ void CHelicopterMovManager::buildHPB(const Fvector& p_prev,
 
 
 	//z
-//	Fvector cp;
 	float sign;
 	cp.crossproduct (d1,d2);
 	(cp.y>0.0)?sign=1.0f:sign=-1.0f;
@@ -602,8 +597,6 @@ void CHelicopterMovManager::buildHPB(const Fvector& p_prev,
 	p0_phb_res.z = ang_diff*sign*0.4f;
 
 	//x
-//	p0_phb_res.x = p1+m_pitch_k*m_basePatrolSpeed;
-
 	float speed_on_section = s1/time;
 
 	p0_phb_res.x = (p1*speed_on_section)/m_basePatrolSpeed + m_pitch_k*speed_on_section;
@@ -703,14 +696,17 @@ void CHelicopterMovManager::fixateKeyPath(float from_time)
 	float min_t,max_t;
 	u32 min_idx,max_idx;
 	Fvector T,R;
-	for(float t=from_time; t<m_endTime; t+=3.0f){
+
+	float dTime = (m_baseAttackSpeed>m_basePatrolSpeed)?m_maxKeyDist/m_baseAttackSpeed : m_maxKeyDist/m_basePatrolSpeed;
+
+	for(float t=from_time; t<m_endTime; t+=dTime){
 		FindNearestKey(t, min_t, max_t, min_idx, max_idx);
-		if( (_abs(t-min_t)<5.0f)||(_abs(t-max_t)<5.0f) )
+		if( (_abs(t-min_t)<2.5f)||(_abs(t-max_t)<2.5f) )
 			continue;
 		CHelicopterMotion::_Evaluate(t,T,R);
 		getPathAltitude(T,m_baseAltitude);
 		vAddKeys.push_back(T);
-		VERIFY( (T.y >= m_boundingVolume.min.y) && (T.y <= m_boundingVolume.max.y)   );
+		VERIFY( m_boundingAssert.contains(T) );
 
 		vAddTime.push_back(t);
 	};

@@ -15,7 +15,7 @@ void CHelicopterMovManager::createLevelPatrolTrajectory(u32 keyCount,
 	Fvector					dir;
 
 	keyPoint = fromPos;
-	VERIFY( (keyPoint.y >= m_boundingVolume.min.y) && (keyPoint.y <= m_boundingVolume.max.y)   );
+	VERIFY( m_boundingAssert.contains(keyPoint) );
 
 	keys.push_back(keyPoint);
 	lastPoint = keyPoint;
@@ -28,7 +28,7 @@ void CHelicopterMovManager::createLevelPatrolTrajectory(u32 keyCount,
 		makeNewPoint(m_boundingVolume, lastPoint, dir, keyPoint);
 	};
 
-	VERIFY( (keyPoint.y >= m_boundingVolume.min.y) && (keyPoint.y <= m_boundingVolume.max.y)   );
+	VERIFY( m_boundingAssert.contains(keyPoint) );
 
 	keys.push_back(keyPoint);
 	prevPoint = lastPoint;
@@ -37,7 +37,7 @@ void CHelicopterMovManager::createLevelPatrolTrajectory(u32 keyCount,
 		lastPoint = keyPoint;
 
 		makeNewPoint(prevPoint, lastPoint, m_boundingVolume, keyPoint);
-		VERIFY( (keyPoint.y >= m_boundingVolume.min.y) && (keyPoint.y <= m_boundingVolume.max.y)   );
+		VERIFY( m_boundingAssert.contains(keyPoint) );
 		
 		
 		prevPoint = lastPoint;
@@ -81,6 +81,7 @@ void CHelicopterMovManager::makeNewPoint (const Fbox& fbox,
 	newPoint.add(point, dir.mul(resK) );
 
 	getPathAltitude(newPoint,m_baseAltitude);
+	VERIFY( m_boundingAssert.contains(newPoint) );
 
 
 }
@@ -90,7 +91,8 @@ void CHelicopterMovManager::makeNewPoint(	const Fvector& prevPoint,
 											const Fbox& fbox,
 											Fvector& newPoint)
 {
-	VERIFY( (point.y >= m_boundingVolume.min.y) && (point.y <= m_boundingVolume.max.y)   );
+	VERIFY( m_boundingAssert.contains(prevPoint) );
+	VERIFY( m_boundingAssert.contains(point) );
 	u16 planeID		= getPlaneID(fbox, point); 
 
 	Fvector prevDir;
@@ -107,7 +109,7 @@ void CHelicopterMovManager::makeNewPoint(	const Fvector& prevPoint,
 
 	VERIFY(fsimilar(newDir.y, 0.0f));
 	makeNewPoint(fbox, point, newDir, newPoint);
-	VERIFY( (newPoint.y >= m_boundingVolume.min.y) && (newPoint.y <= m_boundingVolume.max.y)   );
+	VERIFY( m_boundingAssert.contains(newPoint) );
 
 }
 
@@ -120,6 +122,7 @@ u16 CHelicopterMovManager::getPlaneID(const Fbox& box, const Fvector& point)
 //		|						|
 //		----------------------------minZ
 //		|minX		(4)			|maxX
+	VERIFY( m_boundingAssert.contains(point) );
 
 	if( fsimilar(box.min.x, point.x, EPS_L) )
 		return 3;
@@ -181,6 +184,8 @@ void CHelicopterMovManager::selectSafeDir(const Fvector& prevPoint,
 	newDir.normalize_safe();
 	VERIFY(fsimilar(newDir.y, 0.0f));
 
+	VERIFY( m_boundingAssert.contains(prevPoint) );
+
 	while( !fbox.contains(pt.add(newDir)) ) {
 		pt = prevPoint;
 		
@@ -200,25 +205,24 @@ void CHelicopterMovManager::getPathAltitude (Fvector& point, float base_altitude
 	Fvector down_dir;
 	down_dir.set(0.0f, -1.0f, 0.0f);
 
-//	Fbox levelBox = Level().ObjectSpace.GetBoundingVolume();
-	Fbox levelBox = m_boundingVolume;
-	point.y = levelBox.max.y+EPS_L;
+	point.y = m_boundingVolume.max.y+EPS_L;
+	VERIFY( m_boundingAssert.contains(point) );
 
-	Level().ObjectSpace.RayPick(point, down_dir, levelBox.max.y-levelBox.min.y+1.0f, Collide::rqtStatic, cR);
+	Level().ObjectSpace.RayPick(point, down_dir, m_boundingVolume.max.y-m_boundingVolume.min.y+1.0f, Collide::rqtStatic, cR);
 	
 	point.y = point.y-cR.range;
 
-	if( point.y+m_baseAltitude < levelBox.max.y )
+	if( point.y+m_baseAltitude < m_boundingVolume.max.y )
 		point.y += base_altitude;
 	else
-		point.y = levelBox.max.y-EPS_L;
+		point.y = m_boundingVolume.max.y-EPS_L;
 
-	VERIFY( levelBox.max.y > point.y );
+	VERIFY( m_boundingAssert.contains(point) );
 
-	float minY = levelBox.min.y+(levelBox.max.y-levelBox.min.y)*m_alt_korridor;
-	float maxY = levelBox.max.y+base_altitude;
+	float minY = m_boundingVolume.min.y+(m_boundingVolume.max.y-m_boundingVolume.min.y)*m_alt_korridor;
+	float maxY = m_boundingVolume.max.y+base_altitude;
 //	minY = maxY-EPS_L;
 	clamp (point.y,minY,maxY);
-	VERIFY( levelBox.max.y > point.y );
+	VERIFY( m_boundingAssert.contains(point) );
 
 }
