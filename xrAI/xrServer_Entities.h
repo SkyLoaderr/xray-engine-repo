@@ -95,8 +95,12 @@ xrSE_EDITOR_METHODS\
 };
 
 xrSE_DECLARE_BEGIN2(xrSE_HangingLamp,xrServerEntity,xrSE_Visualed)
+	enum{
+    	flPhysic					= (1<<0)
+    };
+	Flags16							flags;
 	u32								color;
-	string64						animator;
+	string64						color_animator;
 	string64						spot_texture;
 	string32						spot_bone;
 	float							spot_range;

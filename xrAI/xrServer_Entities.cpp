@@ -1389,9 +1389,10 @@ void xrSE_Idol::FillProp(LPCSTR pref, PropItemVec& items)
 //***** Lamp
 xrSE_HangingLamp::xrSE_HangingLamp(LPCSTR caSection) : xrServerEntity(caSection)
 {
-	strcpy					(spot_texture,"");
-	strcpy					(animator,"");
-	strcpy					(spot_bone,"");
+	flags.set				(flPhysic,TRUE);
+	spot_texture[0]			= 0;
+	color_animator[0]		= 0;
+	spot_bone[0]			= 0;
 	spot_range				= 10.f;
 	spot_cone_angle			= PI_DIV_3;
 	color					= 0xffffffff;
@@ -1405,25 +1406,28 @@ void xrSE_HangingLamp::STATE_Read		(NET_Packet& P, u16 size)
 	visual_read				(P);
 	// model
 	P.r_u32					(color);
-	P.r_string				(animator);
+	P.r_string				(color_animator);
 	P.r_string				(spot_texture);
 	P.r_string				(spot_bone);
 	P.r_float				(spot_range);
 	P.r_angle8				(spot_cone_angle);
     if (m_wVersion>10)
 		P.r_float			(spot_brightness);
+    if (m_wVersion>11)
+    	P.r_u16				(flags.flags);
 }
 void xrSE_HangingLamp::STATE_Write		(NET_Packet& P)
 {
 	visual_write			(P);
 	// model
 	P.w_u32					(color);
-	P.w_string				(animator);
+	P.w_string				(color_animator);
 	P.w_string				(spot_texture);
 	P.w_string				(spot_bone);
 	P.w_float				(spot_range);
 	P.w_angle8				(spot_cone_angle);
 	P.w_float				(spot_brightness);
+   	P.w_u16					(flags.flags);
 }
 void xrSE_HangingLamp::UPDATE_Read		(NET_Packet& P)	{};
 void xrSE_HangingLamp::UPDATE_Write		(NET_Packet& P)	{};
@@ -1433,7 +1437,8 @@ void	xrSE_HangingLamp::FillProp		(LPCSTR pref, PropItemVec& values)
 	inherited::FillProp		(pref,values);
 	xrSE_Visualed::FillProp	(PHelper.PrepareKey(pref,s_name),values);
 	PHelper.CreateColor		(values, PHelper.PrepareKey(pref,s_name,"Color"),			&color);
-	PHelper.CreateLightAnim	(values, PHelper.PrepareKey(pref,s_name,"Color animator"),	animator,			sizeof(animator));
+	PHelper.CreateFlag16	(values, PHelper.PrepareKey(pref,s_name,"Physic"),			&flags,				flPhysic);
+	PHelper.CreateLightAnim	(values, PHelper.PrepareKey(pref,s_name,"Color animator"),	color_animator,		sizeof(color_animator));
 	PHelper.CreateText		(values, PHelper.PrepareKey(pref,s_name,"Guide bone"),		spot_bone,			sizeof(spot_bone));
 	PHelper.CreateTexture	(values, PHelper.PrepareKey(pref,s_name,"Texture"),			spot_texture,		sizeof(spot_texture));
 	PHelper.CreateFloat		(values, PHelper.PrepareKey(pref,s_name,"Range"),			&spot_range,		0.1f, 1000.f);
