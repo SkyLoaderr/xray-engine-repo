@@ -17,14 +17,18 @@ class CProjector: public CScriptMonster {
 	IRender_Light*	light_render;
 	IRender_Glow*	glow_render;
 
-	u16				rot_bone_x;
-	u16				rot_bone_y;
 	u16				guid_bone;
 
-	struct SRot {
-		float yaw;
-		float pitch;
-	} _start, _cur, _target;
+	struct SBoneRot {
+		float	velocity;
+		u16		id;
+	} bone_x, bone_y;
+	
+	struct {
+		float	yaw;
+		float	pitch;
+	} _start, _current, _target;
+
 public:
 					CProjector		();
 	virtual			~CProjector		();
@@ -49,8 +53,6 @@ private:
 
 	void			SetTarget		(const Fvector &target_pos);
 	
-	float			bone_vel_x;
-	float			bone_vel_y;
 };
 
 

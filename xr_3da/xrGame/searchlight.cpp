@@ -16,8 +16,8 @@ CProjector::CProjector()
 	light_render->set_shadow(true);
 	glow_render				= ::Render->glow_create();
 	lanim					= 0;
-	rot_bone_x				= BI_NONE;
-	rot_bone_y				= BI_NONE;
+	bone_x.id				= BI_NONE;
+	bone_y.id				= BI_NONE;
 }
 
 CProjector::~CProjector()
@@ -37,36 +37,21 @@ void __stdcall CProjector::BoneCallbackX(CBoneInstance *B)
 {
 	CProjector	*P = dynamic_cast<CProjector*> (static_cast<CObject*>(B->Callback_Param));
 
-	float delta_pitch;
+	float delta_yaw = angle_difference(P->_start.yaw,P->_current.yaw);
+	if (angle_normalize_signed(P->_start.yaw - P->_current.yaw) > 0) delta_yaw = -delta_yaw;
 
-	delta_pitch = angle_difference(P->_start.pitch,P->_cur.pitch);
-	if (angle_normalize_signed(P->_start.pitch - P->_cur.pitch) > 0) delta_pitch = -delta_pitch;
-
-	Fvector c				= B->mTransform.c;
-	Fmatrix					spin;
-
-	spin.setXYZi			(delta_pitch, 0, 0);
-	VERIFY					(_valid(spin));
-	B->mTransform.mulA_43	(spin);
-	B->mTransform.c			= c;
+	Fmatrix M;
+	M.setXYZi (delta_yaw,0.0f, 0.0f);
+	B->mTransform.mulB(M);
 }
 
 void __stdcall CProjector::BoneCallbackY(CBoneInstance *B)
 {
 	CProjector	*P = dynamic_cast<CProjector*> (static_cast<CObject*>(B->Callback_Param));
 
-	float delta_pitch;
-
-	delta_pitch = angle_difference(P->_start.pitch,P->_cur.pitch);
-	if (angle_normalize_signed(P->_start.pitch - P->_cur.pitch) > 0) delta_pitch = -delta_pitch;
-
-	Fvector c				= B->mTransform.c;
-	Fmatrix					spin;
-
-	spin.setXYZi			(delta_pitch, 0, 0);
-	VERIFY					(_valid(spin));
-	B->mTransform.mulA_43	(spin);
-	B->mTransform.c			= c;
+	Fmatrix M;
+	M.setXYZi (0.0f,P->_current.pitch, 0.0f);
+	B->mTransform.mulB(M);
 }
 
 BOOL CProjector::net_Spawn(LPVOID DC)
@@ -85,8 +70,8 @@ BOOL CProjector::net_Spawn(LPVOID DC)
 	R_ASSERT3				(pUserData,"Empty Torch user data!",slight->get_visual());
 	lanim					= LALib.FindItem(pUserData->r_string("projector_definition","color_animator"));
 	guid_bone				= K->LL_BoneID	(pUserData->r_string("projector_definition","guide_bone"));		VERIFY(guid_bone!=BI_NONE);
-	rot_bone_x				= K->LL_BoneID	(pUserData->r_string("projector_definition","rotation_bone_x"));VERIFY(rot_bone_x!=BI_NONE);
-	rot_bone_y				= K->LL_BoneID	(pUserData->r_string("projector_definition","rotation_bone_y"));VERIFY(rot_bone_y!=BI_NONE);
+	bone_x.id				= K->LL_BoneID	(pUserData->r_string("projector_definition","rotation_bone_x"));VERIFY(bone_x.id!=BI_NONE);
+	bone_y.id				= K->LL_BoneID	(pUserData->r_string("projector_definition","rotation_bone_y"));VERIFY(bone_y.id!=BI_NONE);
 	Fcolor clr				= pUserData->r_fcolor				("projector_definition","color");
 	fBrightness				= clr.intensity();
 	light_render->set_color	(clr);
@@ -104,16 +89,16 @@ BOOL CProjector::net_Spawn(LPVOID DC)
 	TurnOn		();
 	
 	//////////////////////////////////////////////////////////////////////////
-	CBoneInstance& b_x = PKinematics(Visual())->LL_GetBoneInstance(rot_bone_x);	
-	b_x.set_callback(BoneCallbackX,this,TRUE);
+	CBoneInstance& b_x = PKinematics(Visual())->LL_GetBoneInstance(bone_x.id);	
+	b_x.set_callback(BoneCallbackX,this);
 
-	CBoneInstance& b_y = PKinematics(Visual())->LL_GetBoneInstance(rot_bone_y);	
-	b_y.set_callback(BoneCallbackY,this,TRUE);
+	CBoneInstance& b_y = PKinematics(Visual())->LL_GetBoneInstance(bone_y.id);	
+	b_y.set_callback(BoneCallbackY,this);
 	
 	Fvector dir = Direction();
-	dir.invert().getHP(_start.yaw,_start.pitch);
-	_cur.yaw	= _target.yaw	= _start.yaw;
-	_cur.pitch	= _target.pitch	= _start.pitch;
+	dir.invert().getHP(_current.yaw,_current.pitch);
+	_start = _target = _current;
+
 	//////////////////////////////////////////////////////////////////////////
 
 	return TRUE;
@@ -127,8 +112,6 @@ void CProjector::shedule_Update	(u32 dt)
 
 void CProjector::TurnOn()
 {
-	if (light_render->get_active()) return;
-
 	light_render->set_active(true);
 	glow_render->set_active (true);
 	PKinematics(Visual())->LL_SetBoneVisible(guid_bone, TRUE, TRUE);
@@ -136,8 +119,6 @@ void CProjector::TurnOn()
 
 void CProjector::TurnOff()
 {
-	if (!light_render->get_active()) return;
-
 	light_render->set_active(false);
 	glow_render->set_active (false);
 	PKinematics(Visual())->LL_SetBoneVisible(guid_bone, FALSE, TRUE);
@@ -175,9 +156,8 @@ void CProjector::UpdateCL	()
 	}
 
 	// Update searchlight 
-	angle_lerp(_cur.yaw,	_target.yaw,	bone_vel_x,	Device.fTimeDelta);
-	angle_lerp(_cur.pitch,	_target.pitch,	bone_vel_y,	Device.fTimeDelta);
-	
+	angle_lerp(_current.yaw,	_target.yaw,	bone_x.velocity, Device.fTimeDelta);
+	angle_lerp(_current.pitch,	_target.pitch,	bone_y.velocity, Device.fTimeDelta);
 }
 
 
@@ -206,18 +186,14 @@ bool CProjector::bfAssignWatch(CEntityAction *tpEntityAction)
 	(!l_tWatchAction.m_tpObjectToWatch) ?	SetTarget(l_tWatchAction.m_tTargetPoint) : 
 											SetTarget(l_tWatchAction.m_tpObjectToWatch->Position());
 
-	bone_vel_x	= l_tWatchAction.vel_bone_x;
+	float delta_yaw		= angle_difference(_current.yaw,_target.yaw);
+	float delta_pitch	= angle_difference(_current.pitch,_target.pitch);
+
+	bone_x.velocity	= l_tWatchAction.vel_bone_x;
+	float time		= delta_yaw / bone_x.velocity;
+	bone_y.velocity	= (fis_zero(time,EPS_L)? l_tWatchAction.vel_bone_y : delta_pitch / time);
 	
-	float time = angle_difference(_target.yaw, _cur.yaw) / bone_vel_x;
-	bone_vel_y	= (fis_zero(time)? l_tWatchAction.vel_bone_y : angle_difference(_target.pitch, _cur.pitch) / time);
-	
-	if ((angle_difference(_cur.yaw,_target.yaw) < EPS_L) && (angle_difference(_cur.pitch,_target.pitch) < EPS_L)) {
-		l_tWatchAction.m_bCompleted = true;
-	} else {
-		l_tWatchAction.m_bCompleted = false;
-	}
-	
-	return !l_tWatchAction.m_bCompleted;
+	return false == (l_tWatchAction.m_bCompleted = ((delta_yaw < EPS_L) && (delta_pitch < EPS_L)));
 }
 
 bool CProjector::bfAssignObject(CEntityAction *tpEntityAction)
@@ -228,7 +204,7 @@ bool CProjector::bfAssignObject(CEntityAction *tpEntityAction)
 	CObjectAction	&l_tObjectAction = tpEntityAction->m_tObjectAction;
 
 	if (l_tObjectAction.m_tGoalType == MonsterSpace::eObjectActionTurnOn)			TurnOn	();
-	else if (l_tObjectAction.m_tGoalType == MonsterSpace::eObjectActionTurnOff)	TurnOff	();
+	else if (l_tObjectAction.m_tGoalType == MonsterSpace::eObjectActionTurnOff)		TurnOff	();
 
 	return	(true);
 }
