@@ -141,7 +141,7 @@ BOOL CCreator::Load(DWORD dwNum)
 			LPCSTR fname		= pLevel->ReadSTRING("static_sounds","ambient");
 			Sounds_Ambience		= pSounds->Create2D(fname);
 			pSounds->Play2D		(Sounds_Ambience,true);
-		}
+		} 
 	}
 	{
 		if (pLevel->SectionExists("random_sounds"))	
