@@ -1,14 +1,180 @@
-function main ()
+-- define class const evaluator
+class "const_evaluator"		(property_evaluator)
 
-    local stalker = get_level_object ("muzhik")
-    local kaban = get_level_object ("kaban")
+function const_evaluator:__init(value) super()
+	self.value				= value
+	printf					("evaluator is constructed!")
+end
+
+function const_evaluator:evaluate()
+	printf					("evaluator is asked for the value!")
+	return					self.value
+end
+
+class "evaluator_first_meet"	(property_evaluator)
+
+function evaluator_first_meet:__init(obj_name0,obj_name1,func) super()
+	self.object0			= get_level_object(obj_name0)
+	self.object1			= get_level_object(obj_name1)
+	self.func				= func
+	printf					("evaluator is constructed!")
+end
+
+function evaluator_first_meet:evaluate()
+	printf					("evaluator is asked for the value!")
+	if 
+		self.object0:see(self.object1)
+		and 
+		self.object0:position():distance_to(self.object1:position()) < 5.0
+		then
+		if self:func() == true then
+			return			true
+		else
+			return			false
+		end
+	else
+		return				false
+	end
+end
+
+-- define class action patrol
+class "action_patrol"		(action_base)
+
+function action_patrol:__init(obj_name,name) super(object,name)
+	self.object				= get_level_object(obj_name)
+	self.name				= name
+	printf					("action %s is constructed!",self.name)
+end
+
+function action_patrol:initialize()
+	action_base.initialize	(self)
+	self.object:script		(true,s_test.script_name())
+	action					(
+		self.object,
+		move				(move.standing,move.walk,move.line,patrol("way0000"))),
+		anim				(anim.free),
+		cond				(cond.move_end)
+	)
+	printf					("action %s is initialized!",self.name)
+end
+
+function action_patrol:finalize()
+	action_base.finalize	(self)
+	self.object:script		(false,s_test.script_name())
+	printf					("action %s is finalized!",self.name)
+end
+
+function action_patrol:execute()
+	action_base.execute		(self)
+	printf					("action %s is executed!",self.name)
+end
+
+-- define class action patrol hi
+class "action_patrol_hi"	(action_base)
+
+function action_patrol_hi:__init(obj_name,name,func) super(object,name)
+	self.object				= get_level_object(obj_name)
+	self.func				= func
+	self.name				= name
+	printf					("action %s is constructed!",self.name)
+end
+
+function action_patrol_hi:initialize()
+	action_base.initialize	(self)
+	self.object:script		(true,s_test.script_name())
+	action					(
+		self.object,
+		anim				(anim.free),
+		sound				("scripts\\idle\\say_holodno","bip01_head")
+		cond				(cond.sound_end)
+	)
+	printf					("action %s is initialized!",self.name)
+end
+
+function action_patrol_hi:finalize()
+	action_base.finalize	(self)
+	self.object:script		(false,s_test.script_name())
+	printf					("action %s is finalized!",self.name)
+end
+
+function action_patrol_hi:execute()
+	action_base.execute		(self)
+	if self.object:action() == nil then
+		self.func			(false)
+	printf					("action %s is executed!",self.name)
+end
+
+-- define class custom planner
+class "custom_planner" 		(action_planner)
+
+function custom_planner:__init	() super()
+	printf					("planner is constructed!")
+	self.meet				= true
+end
+
+function custom_planner:set_first_meet	(meet)
+	self.meet				= meet
+end
+
+function custom_planner:first_meet		()
+	return					self.meet
+end
+
+function custom_planner:reinit	(obj, clear_all)
+	action_planner.reinit	(self, obj, clear_all)
+	printf					("planner is reinitialized!")
+end
+
+function main ()
+	-- define planner
+    planner0					= s_test.custom_planner()
+    planner0:reinit				("m_stalker_e0000",false)
     
-    stalker:script (true, s_test.script_name ())
-    action (stalker, look (look.search), anim (anim.free), cond (cond.time_end, time_infinite))
+	-- define world properties
+	local property_patrol_over	= 0
+	local property_first_meet	= 1
+	
+	-- define action identifiers
+	local action_patrol_id		= 0
+	local action_patrol_hi_id	= 1
+	
+	-- define evaluators
+	local eval_patrol_over		= s_test.const_evaluator		(false)
+	local eval_first_meet		= s_test.evaluator_first_meet	("m_stalker_e0000","m_stalker_e0001",planner0.first_meet)
+	
+	-- define actions
+	local _action_patrol		= s_test.action_patrol			("m_stalker_e0000","action_patrol")
+	local _action_patrol_hi		= s_test.action_patrol_hi		("m_stalker_e0000","action_patrol_hi",planner0.set_first_meet)
     
-    local obj = kaban:best_enemy ()
-    
-    if obj ~= nil then printf ("Enemy name %s", obj:name ()) end
-    while true do wait () end
-    
+	-- define action conditions and effects
+	
+	_action_patrol:add_precondition		(world_property(property_patrol_over,	false))
+	_action_patrol:add_precondition		(world_property(property_say_hi,		false))
+	_action_patrol:add_effect			(world_property(property_patrol_over,	true))
+
+	_action_patrol_hi:add_precondition	(world_property(property_first_meet,	true))
+	_action_patrol_hi:add_effect		(world_property(property_first_meet,	false))
+	
+	-- add evaluators
+	planner0:add_evaluator	(property_patrol_over,eval_patrol_over)
+	planner0:add_evaluator	(property_first_meet,eval_first_meet)
+	
+	-- add actions
+	planner:add_action		(action_patrol_id,_action_patrol)
+	planner:add_action		(action_patrol_hi_id,_action_patrol_hi)
+	
+	-- define goal
+	local 					goal = world_state()			
+	goal:add_property		(world_property(property_patrol_over,true))
+	
+	-- setup goal
+	planner:set_goal_world_state(goal)
+	
+	-- update cycle
+	while true do
+		planner0:update		(1000)
+		wait				(1000)
+	end
+	
+	-- the end
 end
