@@ -118,8 +118,8 @@ void CUIMainIngameWnd::Init()
 	xml_init.InitStatic(uiXml, "static", 6, &UIWeaponBack);
 	UIWeaponBack.AttachChild(&UIWeaponSignAmmo);
 	xml_init.InitStatic(uiXml, "static", 7, &UIWeaponSignAmmo);
-	UIWeaponBack.AttachChild(&UIWeaponSignName);
-	xml_init.InitStatic(uiXml, "static", 8, &UIWeaponSignName);
+//	UIWeaponBack.AttachChild(&UIWeaponSignName);
+//	xml_init.InitStatic(uiXml, "static", 8, &UIWeaponSignName);
 	UIWeaponBack.AttachChild(&UIWeaponIcon);
 	xml_init.InitStatic(uiXml, "static", 9, &UIWeaponIcon);
 	UIWeaponIcon.SetShader(GetEquipmentIconsShader());
@@ -349,7 +349,8 @@ void CUIMainIngameWnd::Update()
 					(m_iWeaponIconHeight - UIWeaponIcon.GetHeight())/2);
 			}
 
-			UIWeaponSignName.SetText(m_pWeapon->NameShort());
+			UIWeaponBack.SetText(m_pWeapon->NameShort());
+			UIWeaponBack.SetTextX(static_cast<int>((UIWeaponBack.GetAbsoluteRect().right - UIWeaponBack.GetAbsoluteRect().left) * 0.5 - UIWeaponIcon.GetFont()->SizeOf(m_pWeapon->NameShort()) / 2));
 			
 			int	AE = m_pWeapon->GetAmmoElapsed();
 			int	AC = m_pWeapon->GetAmmoCurrent();
@@ -364,13 +365,16 @@ void CUIMainIngameWnd::Update()
 		}
 	} 
 	else
+	{
 		m_pWeapon = NULL;
+		UIWeaponBack.SetText("");
+	}
 
 	//сбросить индикаторы
 	if(!m_pWeapon)
 	{
 		UIWeaponSignAmmo.SetText("");
-		UIWeaponSignName.SetText("");
+		//UIWeaponSignName.SetText("");
 		UIWeaponIcon.Show(false);
 	}
     
