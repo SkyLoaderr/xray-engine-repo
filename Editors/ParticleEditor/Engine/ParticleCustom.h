@@ -14,7 +14,11 @@ public:
 
 	virtual void	Play				()=0;
     virtual void	Stop				(BOOL bDefferedStop=TRUE)=0;
-    virtual BOOL	IsPlaying			()=0;
+	virtual BOOL	IsPlaying			()=0;
+
+	virtual float	GetTimeLimit		()=0;
+
+	virtual LPCSTR	Name				()=0;
 };
 //---------------------------------------------------------------------------
 #endif //ParticleCustomH

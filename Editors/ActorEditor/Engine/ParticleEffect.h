@@ -161,6 +161,10 @@ public:
 	virtual void		Play				();
     virtual void		Stop				(BOOL bDefferedStop=TRUE);
     virtual BOOL		IsPlaying			(){return m_RT_Flags.is(flRT_Playing);}
+
+	virtual float		GetTimeLimit		(){VERIFY(m_Def); return m_Def->m_Flags.is(CPEDef::dfTimeLimit)?m_Def->m_TimeLimit:-1.f;}
+
+	virtual LPCSTR		Name				(){VERIFY(m_Def); return m_Def->m_Name;}
 };
 DEFINE_VECTOR			(PS::CPEDef*,PEDVec,PEDIt);
 }

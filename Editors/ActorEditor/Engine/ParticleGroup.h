@@ -51,7 +51,7 @@ public:
 };
 DEFINE_VECTOR(CPGDef*,PGDVec,PGDIt);
 
-class CParticleGroup: public FHierrarhyVisual, IParticleCustom{
+class ENGINE_API CParticleGroup: public FHierrarhyVisual, IParticleCustom{
 	const CPGDef*		m_Def;
     float				m_CurrentTime;
 	Fvector				m_InitialPosition;
@@ -80,6 +80,10 @@ public:
 	virtual void		Play			();
     virtual void		Stop			(BOOL bDefferedStop=TRUE);
     virtual BOOL		IsPlaying		(){return m_RT_Flags.is(flRT_Playing);}
+
+	virtual float		GetTimeLimit	(){VERIFY(m_Def); return m_Def->m_fTimeLimit;}
+
+	virtual LPCSTR		Name				(){VERIFY(m_Def); return m_Def->m_Name;}
 };
 
 }
