@@ -679,7 +679,7 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 		D3DX_DEFAULT,D3DX_DEFAULT,D3DX_DEFAULT,0,D3DFMT_UNKNOWN,D3DPOOL_SCRATCH,D3DX_DEFAULT,D3DX_DEFAULT,
 		0,NULL,NULL,&height);
 	hr = D3DXCreateTexture				(m_pd3dDevice,512,512,D3DX_DEFAULT,0,D3DFMT_A8R8G8B8,D3DPOOL_MANAGED, &t_Normals);
-	hr = D3DXComputeNormalMap			(t_Normals,height,0,0,D3DX_CHANNEL_RED,4.f);
+	hr = D3DXComputeNormalMap			(t_Normals,height,0,0,D3DX_CHANNEL_GREEN,4.f);
 	height->Release						();
 
 	hr = CreatePower					(m_pd3dDevice,256,32.f,&t_SpecularPower_32);
@@ -987,7 +987,7 @@ HRESULT CMyD3DApplication::RenderLight_Direct	()
 	D3DXVec3TransformNormal					(&vLightDir, &vLightDir,&mInvView);
 	D3DXVec3Normalize						(&vLightDir, &vLightDir);
 	cc.set									(s_Light_Direct.constants.get("light_direction"),	vLightDir.x,vLightDir.y,vLightDir.z,0	);
-	cc.set									(s_Light_Direct.constants.get("light_color"),		.3f,		.3f,		1.,			.9	);
+	cc.set									(s_Light_Direct.constants.get("light_color"),		.6f,		.6f,		1.,			1.0	);
 	cc.flush								(m_pd3dDevice);
 
 	// Blend mode - directional light comes first - means no blending
@@ -998,6 +998,7 @@ HRESULT CMyD3DApplication::RenderLight_Direct	()
 	m_pd3dDevice->SetStreamSource			(0, m_pQuadVB, 0, sizeof(TVERTEX));
 	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
 
+	/*
 	// Second light
 	m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, TRUE);
 	m_pd3dDevice->SetRenderState			(D3DRS_SRCBLEND,	D3DBLEND_ONE);
@@ -1008,7 +1009,6 @@ HRESULT CMyD3DApplication::RenderLight_Direct	()
 	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
 	m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, FALSE);
 
-	/*
 	// Third light
 	m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, TRUE);
 	m_pd3dDevice->SetRenderState			(D3DRS_SRCBLEND,	D3DBLEND_ONE);
