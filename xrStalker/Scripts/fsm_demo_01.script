@@ -52,8 +52,22 @@ end
 
 -- функция перехода из первого состояние в нулевое
 function finished_talking(npc, fsm)
-	if not npc:action() then
+	if npc:see(actor) and not npc:action() then
+		log("you still here, and now i gonna kill you")
+		return true
+	end
+
+	return false
+end
+
+
+function tell_lost_him(npc, fsm)
+	if not npc:see(actor) and not npc:action() then
 		log("i lost a trace of this fucking actor")
+		
+		-- выругаться когда актер скрылся из вида
+		sound_baran:play_at_pos(npc,npc:position(),0);
+
 		return true
 	end
 
@@ -70,9 +84,13 @@ function main()
 	-- инициализация FSM сталкера
 	local fsm_stalker = FSM(this.script_name(), stalker00)
 
+	sound_baran = sound_object("scripts\\idle\\say_baran")
+
 	-- установка функций перехода 
 	fsm_stalker:set_transition(0, 1, this.if_see_actor_tell_warning)
 	fsm_stalker:set_transition(1, 0, this.finished_talking)
+	fsm_stalker:set_transition(1, 2, this.tell_lost_him)
+	fsm_stalker:set_transition(2, 0, this.finished_talking)
 
 	-- запуск бесконечного цикла для одного FSM
 	fsm_stalker:run_loop()
