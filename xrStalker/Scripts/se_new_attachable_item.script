@@ -4,7 +4,7 @@ function CSE_NewAttachableItem:__init() super()
 	printf		("CSE_NewAttachableItem::CSE_NewAttachableItem called!")
 end
 
-function CCE_NewAttachableItem:__finalize()
+function CSE_NewAttachableItem:__finalize()
 	printf		("CSE_NewAttachableItem::~CSE_NewAttachableItem called!")
 end
 
