@@ -52,18 +52,18 @@ void FHierrarhyVisual::Load(const char* N, CStream *data, u32 dwFlags)
 		bDontDelete = TRUE;
 
 		// Correct BBs
-//		{
-//			bv_BBox.invalidate		();
-//			for (u32 i=0; i<cnt; i++) 
-//			{
-//				bv_BBox.merge	(children[i]->bv_BBox);
-//			}
-//			bv_Position.sub	(bv_BBox.max,bv_BBox.min);
-//			bv_Position.div	(2);
-//			bv_Radius		= bv_Position.magnitude();
-//			bv_Position.add	(bv_BBox.min);
-//			bv_BBox.grow	(EPS_S);
-//		}
+		{
+			bv_BBox.invalidate		();
+			for (u32 i=0; i<cnt; i++) 
+			{
+				bv_BBox.merge	(children[i]->bv_BBox);
+			}
+			bv_Position.sub	(bv_BBox.max,bv_BBox.min);
+			bv_Position.div	(2);
+			bv_Radius		= bv_Position.magnitude();
+			bv_Position.add	(bv_BBox.min);
+			bv_BBox.grow	(EPS_S);
+		}
 	}
 	else
 	{	

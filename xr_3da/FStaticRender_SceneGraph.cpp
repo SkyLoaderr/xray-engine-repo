@@ -320,8 +320,13 @@ void CRender::add_Static(CVisual *pVisual, u32 planes)
 {
 	// Check frustum visibility and calculate distance to visual's center
 	EFC_Visible	VIS;
+//	VIS = View->testSphere(pVisual->bv_Position,pVisual->bv_Radius,planes);
+//	VIS = (View->testSphere_dirty(pVisual->bv_Position,pVisual->bv_Radius))?fcvFully:fcvNone;
+//	VIS = View->testAABB(pVisual->bv_BBox.min,pVisual->bv_BBox.max,planes);
 	VIS = View->testSAABB	(pVisual->bv_Position,pVisual->bv_Radius,pVisual->bv_BBox.min,pVisual->bv_BBox.max,planes);
-	if (fcvNone==VIS)					return;
+	if (fcvNone==VIS){
+		return;
+	}
 	if (!HOM.visible(pVisual->bv_BBox))	return;
 	
 	// If we get here visual is visible or partially visible

@@ -64,7 +64,9 @@ void CVisual::Load		(const char* N, CStream *data, u32 dwFlags)
 	} else {
 		THROW;
 	}
-	// Msg	("DBG: [%f,%f,%f] - [%f,%f,%f]",VPUSH(bbox.min),VPUSH(bbox.max));
+	Log	("---");
+	Log	("pos",bv_Position);
+	Log	("r  ",bv_Radius);
 
 	// Sphere (if exists)
 	if (data->FindChunk(OGF_BSPHERE))
@@ -81,13 +83,9 @@ void CVisual::Load		(const char* N, CStream *data, u32 dwFlags)
 		bv_Position.add	(bbox.min);
 	}
 
-	/*
-	Log	("---");
+	Log	("---2n");
 	Log	("pos",bv_Position);
 	Log	("r  ",bv_Radius);
-	Log	("min",bv_BBox.min);
-	Log	("max",bv_BBox.max);
-	*/
 
 	// textures
 	if (data->FindChunk(OGF_TEXTURE_L)) {
