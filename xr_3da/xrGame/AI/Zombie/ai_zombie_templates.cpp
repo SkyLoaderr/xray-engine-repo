@@ -198,6 +198,33 @@ void CAI_Zombie::vfComputeNewPosition(bool bCanAdjustSpeed)
 		m_fDHeading = fSavedDHeading;
 		UpdateTransform();
 	}
+
+	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
+		m_fSpeed = .1f;
+		if (m_bNoWay) {
+			if (m_Enemy.Enemy) {
+				if (!::Random.randI(4)) {
+					float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
+					r_torso_target.yaw = r_torso_current.yaw + fAngle;
+				}
+				else {
+					Fvector tTemp;
+					tTemp.sub(m_Enemy.Enemy->Position(),vPosition);
+					tTemp.normalize_safe();
+					mk_rotation(tTemp,r_torso_target);
+				}
+				r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
+			}
+			else {
+				float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
+				r_torso_target.yaw = r_torso_current.yaw + fAngle;
+				r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
+			}
+		}
+		tStateStack.push(eCurrentState = aiZombieTurn);
+	}
+	else 
+		m_fSpeed = m_fSafeSpeed;
 }
 
 void CAI_Zombie::vfComputeNextDirectionPosition(bool bCanAdjustSpeed)
@@ -293,4 +320,31 @@ void CAI_Zombie::vfComputeNextDirectionPosition(bool bCanAdjustSpeed)
 		m_fSafeSpeed = m_fSpeed = EPS_S;
 		m_bNoWay = true;
 	}
+	
+	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
+		m_fSpeed = .1f;
+		if (m_bNoWay) {
+			if (m_Enemy.Enemy) {
+				if (!::Random.randI(4)) {
+					float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
+					r_torso_target.yaw = r_torso_current.yaw + fAngle;
+				}
+				else {
+					Fvector tTemp;
+					tTemp.sub(m_Enemy.Enemy->Position(),vPosition);
+					tTemp.normalize_safe();
+					mk_rotation(tTemp,r_torso_target);
+				}
+				r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
+			}
+			else {
+				float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
+				r_torso_target.yaw = r_torso_current.yaw + fAngle;
+				r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
+			}
+		}
+		tStateStack.push(eCurrentState = aiZombieTurn);
+	}
+	else 
+		m_fSpeed = m_fSafeSpeed;
 }
