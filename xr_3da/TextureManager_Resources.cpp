@@ -240,8 +240,8 @@ R_constant_table*	CShaderManager::_CreateConstantTable	(R_constant_table& C)
 	if (C.empty())		return NULL;
 	for (u32 it=0; it<v_constant_tables.size(); it++)
 		if (v_constant_tables[it]->equal(C))	return v_constant_tables[it];
-	v_constant_tables.push_back	(xr_new<R_constant_table>(C));
-	return v_constant_tables.back();
+	v_constant_tables.push_back		(xr_new<R_constant_table>(C));
+	return v_constant_tables.back	();
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -252,11 +252,7 @@ CRT*	CShaderManager::_CreateRT		(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f)
 	// ***** first pass - search already created RT
 	LPSTR N = LPSTR(Name);
 	map_RT::iterator I = m_rtargets.find	(N);
-	if (I!=m_rtargets.end())
-	{
-		CRT *RT				=	I->second;
-		return		RT;
-	}
+	if (I!=m_rtargets.end())	return		I->second;
 	else
 	{
 		CRT *RT				=	xr_new<CRT>();

@@ -1,6 +1,19 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+CRT::CRT			()
+{
+	pSurface		= NULL;
+	pRT				= NULL;
+	dwWidth			= 0;
+	dwHeight		= 0;
+	fmt				= D3DFMT_UNKNOWN;
+}
+CRT::~CRT			()
+{
+	Destroy			();
+}
+
 void CRT::Create	(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f)
 {
 	R_ASSERT	(HW.pDevice && Name && Name[0] && w && h);
@@ -51,12 +64,26 @@ void CRT::Create	(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f)
 	pTexture->surface_set	(pSurface);
 }
 
-void CRT::Destroy()
+void CRT::Destroy	()
 {
 	pTexture->surface_set				(0);
 	Device.Shader._DeleteTexture		(pTexture);
 	_RELEASE	(pRT		);
 	_RELEASE	(pSurface	);
+}
+
+//////////////////////////////////////////////////////////////////////////
+CRTC::CRTC			()
+{
+	pSurface									= NULL;
+	pRT[0]=pRT[1]=pRT[2]=pRT[3]=pRT[4]=pRT[5]	= NULL;
+	dwSize										= 0;
+	dwHeight									= 0;
+	fmt											= D3DFMT_UNKNOWN;
+}
+CRTC::~CRTC			()
+{
+	Destroy			();
 }
 
 void CRTC::Create	(LPCSTR Name, u32 size,	D3DFORMAT f)
