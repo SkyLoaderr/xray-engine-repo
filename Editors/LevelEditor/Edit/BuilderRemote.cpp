@@ -103,7 +103,7 @@ void SceneBuilder::SaveBuild()
     F.close_chunk	();
     
     F.open_chunk	(EB_MU_refs);
-	F.write			(l_mu_refs.begin(),sizeof(b_mu_model)*l_mu_refs.size());
+	F.write			(l_mu_refs.begin(),sizeof(b_mu_reference)*l_mu_refs.size());
     F.close_chunk	();
 
     AnsiString fn	= "build.prj";

@@ -75,41 +75,41 @@ void TUI_Tools::Reset(){
 //---------------------------------------------------------------------------
 
 bool __fastcall TUI_Tools::MouseStart(TShiftState Shift){
-    if(pCurTools->pCurControl) return pCurTools->pCurControl->Start(Shift);
+    if(pCurTools&&pCurTools->pCurControl) return pCurTools->pCurControl->Start(Shift);
     return false;
 }
 //---------------------------------------------------------------------------
 void __fastcall TUI_Tools::MouseMove(TShiftState Shift){
-    if(pCurTools->pCurControl) pCurTools->pCurControl->Move(Shift);
+    if(pCurTools&&pCurTools->pCurControl) pCurTools->pCurControl->Move(Shift);
 }
 //---------------------------------------------------------------------------
 bool __fastcall TUI_Tools::MouseEnd(TShiftState Shift){
-    if(pCurTools->pCurControl)	return pCurTools->pCurControl->End(Shift);
+    if(pCurTools&&pCurTools->pCurControl)	return pCurTools->pCurControl->End(Shift);
     return false;
 }
 //---------------------------------------------------------------------------
 void __fastcall TUI_Tools::OnObjectsUpdate(){
 	UpdateProperties();
-    if(pCurTools->pCurControl) return pCurTools->OnObjectsUpdate();
+    if(pCurTools&&pCurTools->pCurControl) return pCurTools->OnObjectsUpdate();
 }
 //---------------------------------------------------------------------------
 bool __fastcall TUI_Tools::HiddenMode(){
-    if(pCurTools->pCurControl) return pCurTools->pCurControl->HiddenMode();
+    if(pCurTools&&pCurTools->pCurControl) return pCurTools->pCurControl->HiddenMode();
     return false;
 }
 //---------------------------------------------------------------------------
 bool __fastcall TUI_Tools::KeyDown   (WORD Key, TShiftState Shift){
-    if(pCurTools->pCurControl) return pCurTools->pCurControl->KeyDown(Key,Shift);
+    if(pCurTools&&pCurTools->pCurControl) return pCurTools->pCurControl->KeyDown(Key,Shift);
     return false;
 }
 //---------------------------------------------------------------------------
 bool __fastcall TUI_Tools::KeyUp     (WORD Key, TShiftState Shift){
-    if(pCurTools->pCurControl) return pCurTools->pCurControl->KeyUp(Key,Shift);
+    if(pCurTools&&pCurTools->pCurControl) return pCurTools->pCurControl->KeyUp(Key,Shift);
     return false;
 }
 //---------------------------------------------------------------------------
 bool __fastcall TUI_Tools::KeyPress  (WORD Key, TShiftState Shift){
-    if(pCurTools->pCurControl) return pCurTools->pCurControl->KeyPress(Key,Shift);
+    if(pCurTools&&pCurTools->pCurControl) return pCurTools->pCurControl->KeyPress(Key,Shift);
     return false;
 }
 //---------------------------------------------------------------------------
