@@ -74,7 +74,6 @@ void CWeaponHUD::Load(CInifile* ini, const char* section)
 	}
 	R_ASSERT					(mShoots.size());
 	*/
-
 }
 
 void CWeaponHUD::UpdatePosition(const Fmatrix& trans)
