@@ -234,7 +234,9 @@ void xrMU_Model::calc_lighting		()
 void xrMU_Reference::calc_lighting	()
 {
 	static BOOL					bFirst	= TRUE;
-	model->calc_lighting	(color,xform,RCAST_Model,pBuild->L_layers.front().lights,TRUE);
+	model->calc_lighting		(color,xform,RCAST_Model,pBuild->L_layers.front().lights,TRUE);
+
+	R_ASSERT					(color.size()==model->color.size());
 
 	// A*C + D = B
 	// build data
