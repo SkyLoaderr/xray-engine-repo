@@ -418,6 +418,27 @@ void CAI_Zombie::AttackRun()
 	}
 	else 
 		m_fSafeSpeed = m_fSpeed = m_fAttackSpeed;
+
+	if	(!m_tpSoundBeingPlayed || !m_tpSoundBeingPlayed->feedback) {
+		u32 dwCurTime = Level().timeServer();
+		if (m_tpSoundBeingPlayed && !m_tpSoundBeingPlayed->feedback) {
+			m_tpSoundBeingPlayed = 0;
+			m_dwLastPursuitTalk = dwCurTime;
+		}
+		if ((dwCurTime - m_dwLastSoundRefresh > m_fPursuitRefreshRate) && ((dwCurTime - m_dwLastPursuitTalk > m_fMaxPursuitIinterval) || ((dwCurTime - m_dwLastPursuitTalk > m_fMinPursuitIinterval) && (::Random.randF(0,1) > (dwCurTime - m_dwLastPursuitTalk - m_fMinPursuitIinterval)/(m_fMaxPursuitIinterval - m_fMinPursuitIinterval))))) {
+			m_dwLastSoundRefresh = dwCurTime;
+			// Play pursuit-sound
+			m_tpSoundBeingPlayed = &(m_tpaSoundPursuit[Random.randI(SND_PURSUIT_COUNT)]);
+			
+			if (!m_tpSoundBeingPlayed->feedback)
+				pSounds->PlayAtPos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
+			else
+				m_tpSoundBeingPlayed->feedback->SetPosition(eye_matrix.c);
+		}
+	}
+	else
+		if (m_tpSoundBeingPlayed && m_tpSoundBeingPlayed->feedback)
+			m_tpSoundBeingPlayed->feedback->SetPosition(eye_matrix.c);
 }
 
 void CAI_Zombie::Pursuit()

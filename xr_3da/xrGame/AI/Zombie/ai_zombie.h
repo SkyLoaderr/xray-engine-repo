@@ -99,10 +99,17 @@ class CAI_Zombie : public CCustomMonster
 		sound				m_tpaSoundResurrect	[SND_RESURRECT_COUNT];
 		sound*				m_tpSoundBeingPlayed;
 		u32					m_dwLastSoundRefresh;
+		
 		float				m_fMinVoiceIinterval;
 		float				m_fMaxVoiceIinterval;
 		float				m_fVoiceRefreshRate;
 		u32					m_dwLastVoiceTalk;
+
+		float				m_fMinPursuitIinterval;
+		float				m_fMaxPursuitIinterval;
+		float				m_fPursuitRefreshRate;
+		u32					m_dwLastPursuitTalk;
+
 		
 		// ATTACK
 		bool				m_bActionStarted;

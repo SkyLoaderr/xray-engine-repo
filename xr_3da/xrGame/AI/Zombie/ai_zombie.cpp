@@ -25,6 +25,7 @@ CAI_Zombie::CAI_Zombie()
 	m_bActionStarted		= false;
 	m_bFiring				= false;
 	m_dwLastVoiceTalk		= 0;
+	m_dwLastPursuitTalk		= 0;
 	m_tpSoundBeingPlayed	= 0;
 	m_dwLastSoundRefresh	= 0;
 	m_dwLastRangeSearch		= 0;
@@ -94,7 +95,11 @@ void CAI_Zombie::Load(LPCSTR section)
 	m_fMinVoiceIinterval			= pSettings->ReadFLOAT (section,"MinVoiceInterval");
 	m_fMaxVoiceIinterval			= pSettings->ReadFLOAT (section,"MaxVoiceInterval");
 	m_fVoiceRefreshRate				= pSettings->ReadFLOAT (section,"VoiceRefreshRate");
-	
+
+	m_fMinPursuitIinterval			= pSettings->ReadFLOAT (section,"MinPursuitInterval");
+	m_fMaxPursuitIinterval			= pSettings->ReadFLOAT (section,"MaxPursuitInterval");
+	m_fPursuitRefreshRate			= pSettings->ReadFLOAT (section,"PursuitRefreshRate");
+
 	// active\passive
 	m_fChangeActiveStateProbability = pSettings->ReadFLOAT (section,"ChangeActiveStateProbability");
 	m_dwPassiveScheduleMin			= pSettings->ReadINT   (section,"PassiveScheduleMin");
