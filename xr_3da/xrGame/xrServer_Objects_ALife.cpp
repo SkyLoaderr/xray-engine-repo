@@ -780,12 +780,7 @@ bool CSE_ALifeObjectPhysic::can_save			() const
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeObjectHangingLamp::CSE_ALifeObjectHangingLamp(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection),CSE_PHSkeleton(caSection)
 {
-	flags.set					(flPhysic,FALSE);
-	flags.set					(flCastShadow,FALSE);
-	flags.set					(flR1,FALSE);
-	flags.set					(flR2,FALSE);
-	flags.set					(flPointAmbient,FALSE);
-	flags.set					(flTypeSpot,TRUE);
+	flags.assign				(flTypeSpot);
 
 	range						= 10.f;
 	color						= 0xffffffff;
