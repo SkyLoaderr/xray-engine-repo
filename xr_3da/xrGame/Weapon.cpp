@@ -334,7 +334,6 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 	setVisible						(true);
 	setEnabled						(true);
 
-	/*
 	{
 		// Physics (Box)
 		Fobb								obb;
@@ -355,7 +354,6 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 		m_pPhysicsShell->mDesired.identity	();
 		m_pPhysicsShell->fDesiredStrength	= 0.f;
 	}
-	*/
 
 	return bResult;
 }
