@@ -293,7 +293,7 @@ end
 function get_level_object(obj_name)
     local res       = level.object(obj_name)
     while res == nil do
-        printf("get_level_object() is waiting for object \"%s\"", obj_name)
+--        printf("get_level_object() is waiting for object \"%s\"", obj_name)
         res         = level.object(obj_name)
         wait        ()
     end

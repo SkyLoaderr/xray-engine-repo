@@ -2,71 +2,71 @@
 
 <game_information_portions>
     <info_portion id="news_escape_blockpost_attack">
-        <text>news_escape_blockpost_attack</text>
+        <text>st_news_escape_blockpost_attack</text>
     </info_portion>
     
     <info_portion id="news_escape_blockpost_case">
-        <text>news_escape_blockpost_case</text>
+        <text>st_news_escape_blockpost_case</text>
     </info_portion>    
     
     <info_portion id="news_escape_electra">
-        <text>news_escape_electra</text>
+        <text>st_news_escape_electra</text>
     </info_portion>    
     
     <info_portion id="new_escape_bridge">
-        <text>new_escape_bridge</text>
+        <text>st_new_escape_bridge</text>
     </info_portion>    
 
     <info_portion id="news_escape_bandits">
-        <text>news_escape_bandit</text>
+        <text>st_news_escape_bandit</text>
     </info_portion>    
     
     <info_portion id="news_escape_dogs">
-        <text>news_escape_dogs</text>
+        <text>st_news_escape_dogs</text>
     </info_portion>    
     
     <info_portion id="news_escape_artefact">
-        <text>news_escape_artefact</text>
+        <text>st_news_escape_artefact</text>
     </info_portion>    
     
     <info_portion id="news_garbage_marked">
-        <text>news_garbage_marked</text>
+        <text>st_news_garbage_marked</text>
     </info_portion>    
     
     <info_portion id="news_garbage_fedya">
-        <text>news_garbage_fedy</text>
+        <text>st_news_garbage_fedy</text>
     </info_portion>    
     
     <info_portion id="news_garbage_dolina">
-        <text>news_garbage_dolina</text>
+        <text>st_news_garbage_dolina</text>
     </info_portion>    
     
     <info_portion id="news_garbage_dolg">
-        <text>news_garbage_dolg</text>
+        <text>st_news_garbage_dolg</text>
     </info_portion>    
     
     <info_portion id="news_garbage_herovo">
-        <text>news_garbage_herovo</text>
+        <text>st_news_garbage_herovo</text>
     </info_portion>    
     
     <info_portion id="news_garbage_gunslinger">
-        <text>news_garbage_gunslinger</text>
+        <text>st_news_garbage_gunslinger</text>
     </info_portion>    
     
     <info_portion id="news_garbage_garage">
-        <text>news_garbage_garage</text>
+        <text>st_news_garbage_garage</text>
     </info_portion>    
     
     <info_portion id="news_garbage_dogs">
-        <text>news_garbage_dogs</text>
+        <text>st_news_garbage_dogs</text>
     </info_portion>    
     
     <info_portion id="news_agroprom_mili">
-        <text>news_agroprom_mili</text>
+        <text>st_news_agroprom_mili</text>
     </info_portion>    
 
     <info_portion id="news_agroprom_box">
-        <text>news_agroprom_box</text>
+        <text>st_news_agroprom_box</text>
     </info_portion>    
     
 </game_information_portions>
