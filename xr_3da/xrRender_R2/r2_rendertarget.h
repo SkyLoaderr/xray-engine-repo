@@ -11,7 +11,7 @@ private:
 	u32							dwWidth;
 	u32							dwHeight;
 	u32							dwAccumulatorClearMark;
-
+	u32							dwLightMarkerID;
 private:
 	// 
 	CBlender*					b_accum_direct_mask;
