@@ -946,6 +946,8 @@ void CUIMainIngameWnd::RenderQuickInfos()
 void CUIMainIngameWnd::OnNewsReceived(GAME_NEWS_DATA &news)
 {
 	if (g_bNewsDisable) return;
+
+	Msg("[news]%s", news.FullText());
 	
 	if(news.texture_name)
 	{

@@ -2002,6 +2002,9 @@
 								<File
 									RelativePath=".\ai\Monsters\ai_monster_movement_update.h">
 								</File>
+								<File
+									RelativePath=".\ai\Monsters\ai_monster_movement_update.h">
+								</File>
 							</Filter>
 							<Filter
 								Name="Squad"

@@ -21,6 +21,7 @@
 #	include "ef_storage.h"
 #	include "character_info.h"
 #	include "specific_character.h"
+#	include "game_graph.h"
 #endif
 
 
@@ -213,7 +214,14 @@ PROFILE_INDEX CSE_ALifeTraderAbstract::character_profile()
 		if(NULL == profile_id)
 			m_iCharacterProfile = NO_PROFILE;
 		else
-			m_iCharacterProfile = CCharacterInfo::IdToIndex(PROFILE_ID(profile_id));
+		{
+			m_iCharacterProfile = CCharacterInfo::IdToIndex(PROFILE_ID(profile_id), NO_PROFILE, true);
+			if(NO_PROFILE == m_iCharacterProfile)
+			{
+				CSE_ALifeObject* O = smart_cast<CSE_ALifeObject*>(base()); VERIFY(O);
+				Debug.fatal("wrong profile id %s, for %s at level %s", profile_id, O->name_replace(),ai().game_graph().header().level(ai().game_graph().vertex(O->m_tGraphID)->level_id()).name());
+			}
+		}
 #endif
 	}
 
@@ -807,8 +815,12 @@ CSE_ALifeMonsterAbstract::CSE_ALifeMonsterAbstract(LPCSTR caSection)	: CSE_ALife
 		m_fpImmunityFactors.resize	(ALife::eHitTypeMax);
 		svector<float,ALife::eHitTypeMax>::iterator	B = m_fpImmunityFactors.begin(), I = B;
 		svector<float,ALife::eHitTypeMax>::iterator	E = m_fpImmunityFactors.end();
+
+		LPCSTR imm_section = caSection;
+		if(pSettings->line_exist(caSection, "immunities_sect"))
+			imm_section = pSettings->r_string(caSection, "immunities_sect");
 		for ( ; I != E; ++I)
-			*I					= pSettings->r_float(caSection,strcat(strcpy(S,ALife::g_cafHitType2String(ALife::EHitType(I - B))),"_immunity"));
+			*I					= pSettings->r_float(imm_section,strcat(strcpy(S,ALife::g_cafHitType2String(ALife::EHitType(I - B))),"_immunity"));
 	}
 
 	if (pSettings->line_exist(caSection,"retreat_threshold"))
@@ -1489,6 +1501,15 @@ void CSE_ALifeHumanAbstract::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 	}
 	m_tpPath.clear				();
 	m_baVisitedVertices.clear	();
+
+#ifdef XRGAME_EXPORTS
+	if (m_wVersion > 76) 
+	{
+		character_profile();
+		specific_character();
+	}
+#endif
+
 }
 
 void CSE_ALifeHumanAbstract::UPDATE_Write	(NET_Packet &tNetPacket)
