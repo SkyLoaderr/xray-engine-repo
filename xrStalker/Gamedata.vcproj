@@ -466,16 +466,121 @@
 			RelativePath=".\actor.ltx">
 		</File>
 		<File
+			RelativePath=".\actor_diary.xml">
+		</File>
+		<File
+			RelativePath=".\artefacthunt_game.ltx">
+		</File>
+		<File
+			RelativePath=".\artefacts.ltx">
+		</File>
+		<File
+			RelativePath=".\buy_mp_item.xml">
+		</File>
+		<File
+			RelativePath=".\carbody_item.xml">
+		</File>
+		<File
+			RelativePath=".\carbody_new.xml">
+		</File>
+		<File
+			RelativePath=".\character_desc_general.xml">
+		</File>
+		<File
+			RelativePath=".\contracts.xml">
+		</File>
+		<File
+			RelativePath=".\contracts_character.xml">
+		</File>
+		<File
+			RelativePath=".\Copy of environment.ltx">
+		</File>
+		<File
+			RelativePath=".\deathmatch_game.ltx">
+		</File>
+		<File
 			RelativePath=".\devices.ltx">
+		</File>
+		<File
+			RelativePath=".\effectors.ltx">
+		</File>
+		<File
+			RelativePath=".\encyclopedia_new.xml">
+		</File>
+		<File
+			RelativePath=".\environment.ltx">
+		</File>
+		<File
+			RelativePath=".\environment_1.ltx">
+		</File>
+		<File
+			RelativePath=".\events_new.xml">
+		</File>
+		<File
+			RelativePath=".\external.ltx">
 		</File>
 		<File
 			RelativePath=".\game.ltx">
 		</File>
 		<File
+			RelativePath=".\game_cs.ltx">
+		</File>
+		<File
+			RelativePath=".\helicopter.ltx">
+		</File>
+		<File
+			RelativePath=".\helicopter_.ltx">
+		</File>
+		<File
+			RelativePath=".\inventory_new.xml">
+		</File>
+		<File
+			RelativePath=".\inventoryMP_new2.xml">
+		</File>
+		<File
+			RelativePath=".\jobs_new.xml">
+		</File>
+		<File
+			RelativePath=".\laststanding_game.ltx">
+		</File>
+		<File
+			RelativePath=".\M_dog_.ltx">
+		</File>
+		<File
+			RelativePath=".\mp_actor.ltx">
+		</File>
+		<File
 			RelativePath=".\npc_profile.xml">
 		</File>
 		<File
+			RelativePath=".\pda_character_new.xml">
+		</File>
+		<File
+			RelativePath=".\pda_contacts_new.xml">
+		</File>
+		<File
+			RelativePath=".\script.ltx">
+		</File>
+		<File
+			RelativePath=".\sleep_dialog_new.xml">
+		</File>
+		<File
+			RelativePath=".\stalkers.ltx">
+		</File>
+		<File
+			RelativePath=".\startup.ltx">
+		</File>
+		<File
 			RelativePath=".\System.ltx">
+		</File>
+		<File
+			RelativePath=".\teamdeathmatch_game.ltx">
+		</File>
+		<File
+			RelativePath=".\test_script.ltx">
+		</File>
+		<File
+			RelativePath=".\trade_new.xml">
 		</File>
 	</Files>
 	<Globals>

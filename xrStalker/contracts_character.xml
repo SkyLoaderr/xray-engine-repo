@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<!-- CHARACTER INFO IN THE PDA DIALOG -->
+<window>
+	<!-- ICON -->
+	<icon_static x="0" y="0" width="106" height="120"></icon_static>
+
+	<!-- NAME -->
+	<static x="30" y="182" width="240" height="60">
+		<text x="0" y="0" font="letterica18" r="255" g="128" b="64"></text>
+	</static>
+
+	<!-- RANK -->
+	<static x="121" y="14" width="240" height="60">
+		<text x="0" y="0" font="letterica18" r="150" g="150" b="180">Rank</text>
+	</static>
+
+	<!-- COMMUNITY -->
+	<static x="121" y="60" width="240" height="60">
+		<text x="0" y="0" font="letterica18" r="150" g="150" b="180"></text>
+	</static>
+
+
+	<!-- RELATION -->
+	<relation_static x="121" y="106" width="240" height="60">
+		<text x="0" y="0" font="letterica18" r="150" g="150" b="180"></text>
+	</relation_static>
+</window>
+

@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<!-- ITEM INFO IN THE INVENTORY MENU -->
+<window>
+
+	<!-- NAME -->
+	<static x="25" y="187" width="200" height="60">
+		<text x="0" y="0" font="letterica18" r="238" g="155" b="23"></text>
+	</static>
+
+	<!-- WEIGHT -->
+	<static x="150" y="138" width="240" height="18">
+		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
+	</static>
+
+	<!-- COST -->
+	<static x="150" y="120" width="240" height="18">
+		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
+	</static>
+
+	<!-- CONDITION -->
+	<static x="150" y="156" width="240" height="18">
+		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
+	</static>
+
+	<!-- DESCRIPTION -->
+	<descr_list x="15" y="220" width="241" height="200" item_height="18">
+		<font font="medium" r="216" g="186" b="140"/>
+	</descr_list>
+
+	<!-- 3D STATIC OLD!!!OLD!!!OLD!!! REMOVE ME!!!-->
+	<static_3d x="0" y="-175" width="250" height="190"></static_3d>
+
+	<!-- IMAGE STATIC -->
+	<image_static x="30" y="10" width="240" height="190"/>
+</window>
+

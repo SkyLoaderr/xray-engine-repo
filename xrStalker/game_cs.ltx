@@ -1,0 +1,52 @@
+[cs_change_team]
+title		= "Change team"
+item_1		= "Stalker's team",		"$g_change_team 0"
+item_2		= "Soldier's team",		"$g_change_team 1"
+item_3		= "Spectator",		"$g_change_team -1"
+
+[cs_buy_menu]
+title		= "Buy Menu"
+item_1		= "Primary Ammo",	12,	/ammo=1/primary=0
+item_2		= "Pistol Ammo",	7,	/ammo=1/primary=1
+menu_3		= "Equipment",		cs_buy_equipment
+menu_4		= "Weapon",		cs_buy_weapon
+;menu_3		= "Ammunition",		cs_buy_ammunition
+
+[cs_buy_equipment]
+title		= "Buy Equipment"
+;item_1		= "Radio",		15
+;item_2		= "Anomaly detector",	25
+;item_3		= "First-aid kit",	30
+item_1		= "Binocular",		30,	wpn_binoc
+
+[cs_buy_weapon]
+title		= "Buy Weapon"
+item_1		= "PM",			28, 	wpn_pm
+item_2		= "Fort",		30,  	wpn_fort
+item_3		= "HPSA",		35,  	wpn_hpsa
+item_4		= "AK74",		230,  	wpn_ak74
+item_5		= "LR300",		275,  	wpn_lr300
+item_6		= "FN2000",		800, 	wpn_fn2000
+item_7		= "TOZ34",		100, 	wpn_toz34
+item_8		= "SVD",		100, 	wpn_svd
+item_9		= "SVU",		100, 	wpn_svu
+
+;[cs_buy_ammunition]
+;item_1		= "Pistol Ammo",	10,	/ammo=1/primary=1
+;item_2		= "Shotgun Ammo",	20,	/ammo=1/primary=0
+;item_3		= "Submachine-gun Ammo",30
+;item_4		= "Sniper Ammo",	50
+
+[cs_start_arms]
+primary		= ;wpn_ak74
+primary_ammo	= 2
+pistol		= wpn_pm
+pistol_ammo	= 2
+
+[cs_money]
+startup		= 1000
+win		= 150
+lose		= 75
+draw		= 100
+kill		= 25
+mission		= 50

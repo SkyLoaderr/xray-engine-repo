@@ -1,0 +1,23 @@
+;********************************************
+; Internal console script for engine startup
+;
+; It is a bad idea to edit this file.
+; Instead u can edit USER.LTX file
+; But again: be careful.
+;********************************************
+; **** Bindings
+unbindall
+bind forward kW
+bind back kS
+bind lstrafe kA
+bind rstrafe kD
+bind jump kQ
+bind accel kLSHIFT
+bind left kLEFT
+bind right kRIGHT
+bind up kUP
+bind down kDOWN
+bind quit k0
+
+; **** Executing script file where all your preferences are saved
+cfg_load user.ltx

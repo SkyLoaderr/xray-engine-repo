@@ -1,0 +1,147 @@
+[helicopter_]
+GroupControlSection		= spawn_group
+$spawn					= "vehicles\helicopter_"
+cform                   = skeleton
+class					= C_HLCPTR
+
+time_delay_before_start		= 60	;sec
+time_patrol_period			= 12000	;sec
+time_delay_between_patrol	= 60	;sec
+velocity					= 40.0; 25.0	;m/sec
+attack_velocity				= 20.0
+altitude					= 50	;20.0	;m
+attack_altitude				= 35	;20.0
+pitch_koef					= 0.020;0.007
+max_key_dist				= 25.0
+
+altitude_korridor			= 0.1 ;0.0		;не ниже 1/10 высоты уровня
+x_level_bound				= 50;0;230.0	; граница (не долетать) до края уровня при патрулировании
+z_level_bound				= 50;0;400.0	;
+
+use_rocket					= true;
+use_mgun					= true;
+min_mgun_attack_dist		= 20;15.0  ;m
+max_mgun_attack_dist		= 150;300.0 ;m
+min_rocket_attack_dist		= 30;15.0	;m
+max_rocket_attack_dist		= 250;150.0 ;m
+time_between_rocket_attack	= 50 ; 500 ; msec
+syncronize_rocket			= false; true
+
+fire_dispersion_base	= 50; 0.5; 0.03 ; minigan
+tracer_head_speed		= 100; 400
+tracer_trail_scale		= 0.75
+tracer_start_length		= 1
+tracer_width			= 0.01
+rpm                     = 5000;1000; 600
+hit_power               = 5;40	;2;50
+hit_impulse		 		= 150.0;66.6
+fire_distance           = 500
+bullet_speed			= 600; 900			;начальная скорость пули
+light_color				= 0.6,0.5,0.3
+light_range				= 5
+light_var_color			= 0.05
+light_var_range			= 0.5
+light_time 				= 0.2
+ammo_class				= ammo_12x76_dart ;ammo_12x70_buck
+flame_particles		    = weapons\generic_weapon05
+smoke_particles		    = weapons\generic_shoot_00
+shell_point				= 0.05, 0.22, 0.06
+shell_particles			= weapons\generic_shells
+snd_shoot				= weapons\fn2000_shoot
+
+rocket_class			= helicopter_missile ;wpn_rpg7_missile 
+launch_speed			= 70; 500
+
+burn_immunity			= 0.0 ;0.8	;коэффициенты иммунитета 
+strike_immunity			= 0.0 ;0.7
+shock_immunity			= 0.0 ;1.0
+wound_immunity			= 0.0 ;0.15
+radiation_immunity		= 0.0 ;0.2
+telepatic_immunity		= 0.0 ;1.0
+chemical_burn_immunity	= 0.0 ;0.9
+fire_wound_immunity		= 0.05 ;0.05
+explosion_immunity		= 0.0 ;0.7
+
+[helicopter_missile]
+GroupControlSection		= spawn_group
+discovery_dependency	= 
+visual                  = weapon\rpg_7\wpn_rpg_7_grenade.ogf
+cform                   = skeleton
+class                   = G_RPG7
+
+inv_weight				= 0
+
+inv_grid_width			= 1
+inv_grid_height			= 1
+inv_grid_x				= 0
+inv_grid_y				= 0
+
+cost					= 200
+;---------------------------------------------------------------
+blast				= 550
+blast_r				= 15
+blast_impulse		= 550
+;delete
+blast_impulse_factor = 1
+
+frags				= 25
+frags_r				= 40
+frag_hit			= 50
+frag_hit_impulse	= 250
+
+hit_type_blast		= explosion
+hit_type_frag		= fire_wound
+
+up_throw_factor		= 1.4
+;---------------------------------------------------------------
+
+wm_size             = 0.05
+
+
+light_color		    = 0.9,0.9,0.5
+light_range		    = 30.0
+light_time 		    = 0.4
+
+
+ph_mass				= 5
+engine_f			= 530
+engine_u			= 90
+
+jump_height			= 0
+
+explode_particles	= explosions\explosion_01a
+
+
+;трассы от осколков
+tracer_head_speed	= 200
+tracer_max_length	= 3
+
+
+;звуки
+snd_explode			= weapons\f1_explode
+
+
+;свойства которые читаются, но не используются (надо убрать)
+inv_name		= "VOG-25"
+inv_name_short	= "VOG-25"
+inv_weight		= .2
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 19
+inv_grid_y			= 9
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Свойства CustomRocket
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+engine_present		= true		;присутствует ли в ракете двигатель
+engine_work_time	= 5000		;время работы двигателя (в милисекундах)
+engine_impulse		= 1000		;
+engine_impulse_up	= 250		;
+
+lights_enabled = TRUE			;свет вокруг ракеты, во время полета
+trail_light_color = 0.7,0.6,0.3
+trail_light_range = 20.0
+
+engine_particles = weapons\rpg_trail_01
+;fly_particles	 = weapons\rpg_trail_01
