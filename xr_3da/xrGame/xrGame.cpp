@@ -74,7 +74,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 
 // Factory
 #include "actor.h"
-#include "weaponrail.h"
+//#include "weaponrail.h"
 #include "customitem.h"
 #include "flyer.h"
 #include "customevent.h"
@@ -100,7 +100,7 @@ extern "C" {
 		case CLSID_LEVEL:			P = new CLevel();			break;
 		case CLSID_HUDMANAGER:		P = new CHUDManager();		break;
 		case CLSID_OBJECT_ACTOR:	P = new CActor();			break;
-		case CLSID_OBJECT_W_RAIL:	P = new	CWeaponRail();		break;
+//		case CLSID_OBJECT_W_RAIL:	P = new	CWeaponRail();		break;
 		case CLSID_OBJECT_ITEM_STD:	P = new CCustomItem();		break;
 		case CLSID_OBJECT_FLYER:	P = new CFlyer();			break;
 		case CLSID_OBJECT_DUMMY:	P = new CDummyObject();		break;
