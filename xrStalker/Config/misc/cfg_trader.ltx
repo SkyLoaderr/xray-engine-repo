@@ -1,0 +1,167 @@
+[logic]
+;active = nil
+active = mob_remark@start_wait
+
+; ------------------------------------------------------------------------------------------------------
+; СТАРТ
+; ------------------------------------------------------------------------------------------------------
+
+; Ждем вначале немного
+[mob_remark@start_wait]
+dialog_enabled = true
+meet_dialog = escape_trader_tutorial
+anim = spinka
+on_info = {=talking} mob_remark@spinka_to_talking
+on_signal = action_end | mob_remark@before_first_phrase
+
+; Пододвигаемся к игроку
+[mob_remark@before_first_phrase]
+dialog_enabled = true
+meet_dialog = escape_trader_tutorial
+anim = spinka_idle
+on_signal = action_end | {=talking} mob_remark@talking, mob_remark@first_phrase
+
+; Говорим первую фразу (подойди-ка - надо бы ситуацию прояснить)
+[mob_remark@first_phrase]
+dialog_enabled = true
+meet_dialog = escape_trader_tutorial
+anim = idle_non_stop
+anim_head = head_anim_normal
+snd = trader_come_here
+on_signal = action_end | {=talking} mob_remark@talking, mob_remark@before_second_phrase
+on_info = {=talking} mob_remark@talking ; обрывать фразу
+
+; Ждем немного
+[mob_remark@before_second_phrase]
+dialog_enabled = true
+meet_dialog = escape_trader_tutorial
+anim = idle
+tip = esc_trader_how_to_talk
+on_info = {=talking} mob_remark@talking
+on_signal = action_end | mob_remark@second_phrase
+
+; Говорим вторую фразу (что стоишь? подходи)
+[mob_remark@second_phrase]
+dialog_enabled = true
+meet_dialog = escape_trader_tutorial
+anim = idle_non_stop
+anim_head = head_anim_normal
+snd = trader_come_here2
+on_signal = action_end | {=talking} mob_remark@talking, mob_remark@before_third_phrase
+on_info = {=talking} mob_remark@talking ; обрывать фразу
+
+; Ждем немного и начинаем читать книгу
+[mob_remark@before_third_phrase]
+dialog_enabled = true
+meet_dialog = escape_trader_tutorial
+anim = idle
+on_info = {=talking} mob_remark@talking
+on_signal = action_end | mob_remark@to_reading
+
+; ------------------------------------------------------------------------------------------------------
+; ЗАНИМАЕМСЯ СВОИМИ ДЕЛАМИ
+; ------------------------------------------------------------------------------------------------------
+
+[mob_remark@to_reading]
+dialog_enabled = true
+meet_dialog = escape_trader_tutorial
+anim = idle_chitaet
+on_signal = action_end | mob_remark@reading
+
+[mob_remark@reading]
+dialog_enabled = true
+meet_dialog = escape_trader_tutorial
+anim = chitaet
+on_signal = action_end | {=talking} mob_remark@reading_idle, {~60} mob_remark@reading, mob_remark@reading_idle
+
+[mob_remark@reading_idle]
+dialog_enabled = true
+meet_dialog = escape_trader_tutorial
+anim = chitaet_idle
+on_signal = action_end | mob_remark@talking
+
+; ------------------------------------------------------------------------------------------------------
+
+[mob_remark@to_spinka]
+dialog_enabled = true
+meet_dialog = escape_trader_tutorial
+anim = idle_spinka
+on_signal = action_end | mob_remark@spinka
+
+[mob_remark@spinka]
+dialog_enabled = true
+meet_dialog = escape_trader_tutorial
+anim = spinka
+on_signal = action_end | {=talking} mob_remark@spinka_idle, {~15} mob_remark@spinka2, {~60} mob_remark@spinka, mob_remark@spinka_idle
+
+[mob_remark@spinka2]
+dialog_enabled = true
+meet_dialog = escape_trader_tutorial
+anim = idle_2
+on_signal = action_end | {=talking} mob_remark@spinka_idle, {~15} mob_remark@spinka2, {~60} mob_remark@spinka, mob_remark@spinka_idle
+
+[mob_remark@spinka_idle]
+dialog_enabled = true
+meet_dialog = escape_trader_tutorial
+anim = spinka_idle
+on_signal = action_end | mob_remark@talking
+
+; ------------------------------------------------------------------------------------------------------
+
+[mob_remark@palci]
+dialog_enabled = true
+meet_dialog = escape_trader_tutorial
+anim = palci
+on_signal = action_end | {=talking} mob_remark@talking, {~70} mob_remark@palci, mob_remark@talking
+
+[mob_remark@zatylok]
+dialog_enabled = true
+meet_dialog = escape_trader_tutorial
+anim = zatylok
+on_signal = action_end | {=talking} mob_remark@talking, mob_remark@talking
+
+[mob_remark@cheshit]
+dialog_enabled = true
+meet_dialog = escape_trader_tutorial
+anim = cheshit
+on_signal = action_end | {=talking} mob_remark@talking, mob_remark@talking
+
+[mob_remark@idle_0]
+dialog_enabled = true
+meet_dialog = escape_trader_tutorial
+anim = idle_0
+on_signal = action_end | {=talking} mob_remark@talking, mob_remark@talking
+
+[mob_remark@idle_1]
+dialog_enabled = true
+meet_dialog = escape_trader_tutorial
+anim = idle_1
+on_signal = action_end | {=talking} mob_remark@talking, mob_remark@talking
+
+; ------------------------------------------------------------------------------------------------------
+; РАЗГОВОР
+; ------------------------------------------------------------------------------------------------------
+
+[mob_remark@spinka_to_talking]
+dialog_enabled = true
+meet_dialog = escape_trader_tutorial
+anim = spinka_idle
+on_signal = action_end | mob_remark@talking
+
+[mob_remark@talking]
+dialog_enabled = true
+meet_dialog = escape_trader_tutorial
+anim = idle
+on_signal = action_end | {=talking} mob_remark@talking, {~10} mob_remark@to_reading, {~20} mob_remark@to_spinka, {~25} mob_remark@palci, {~30} mob_remark@zatylok, {~35} mob_remark@cheshit, {~40} mob_remark@idle_0, {~45} mob_remark@idle_1, mob_remark@talking
+on_info = {+esc_trader_monolog_1} mob_remark@monolog_1
+
+; ------------------------------------------------------------------------------------------------------
+; ОЗВУЧКА ФРАЗ
+; ------------------------------------------------------------------------------------------------------
+
+[mob_remark@monolog_1]
+dialog_enabled = true
+anim = idle_non_stop
+anim_head = head_anim_normal
+snd = trader_monolog1
+
