@@ -227,16 +227,17 @@ function fract:add_restrictor(npc, r_out, r_in)
 		r_out	= ""
 	end
 
+	printf		("RESTR HOLD       : %s", npc:name())
+
 	--' Удаляем старые рестрикторы
 	if restrictors[npc:id()] ~= nil and (restrictors[npc:id()].r_in ~= "" or 
 								        restrictors[npc:id()].r_out ~= "") 
 	then
+		printf(  "RESTR REMOVE(IN) : %s", restrictors[npc:id()].r_in )
+		printf(  "RESTR REMOVE(OUT): %s", restrictors[npc:id()].r_out )
 		npc:remove_restrictions(restrictors[npc:id()].r_out, restrictors[npc:id()].r_in)
 	end
 
-	
-
-	printf		("RESTR HOLD       : %s", npc:name())
 	printf		("RESTR HAVE (IN)  : %s", npc:in_restrictions())
 	printf		("RESTR HAVE (OUT) : %s", npc:out_restrictions())
 	printf		("RESTR NEED (IN)  : %s", r_in)
