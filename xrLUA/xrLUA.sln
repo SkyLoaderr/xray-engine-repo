@@ -1,0 +1,43 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrLUA", "xrLUA.vcproj", "{F496E4E3-22D5-4294-A0FB-A1EFDA7E2450}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LUA_TEST", "LUA_TEST\LUA_TEST.vcproj", "{67276AC3-3221-442E-9760-BA349C6880EA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F496E4E3-22D5-4294-A0FB-A1EFDA7E2450} = {F496E4E3-22D5-4294-A0FB-A1EFDA7E2450}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 3
+		SccLocalPath0 = .
+		CanCheckoutShared = true
+		SolutionUniqueID = {CDD3E3CA-81E8-442F-87E9-F5392497BDC0}
+		SccProjectUniqueName1 = LUA_TEST\\LUA_TEST.vcproj
+		SccLocalPath1 = .
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection1 = LUA_TEST\\
+		SccProjectUniqueName2 = xrLUA.vcproj
+		SccLocalPath2 = .
+		CanCheckoutShared = true
+	EndGlobalSection
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{F496E4E3-22D5-4294-A0FB-A1EFDA7E2450}.Debug.ActiveCfg = Debug|Win32
+		{F496E4E3-22D5-4294-A0FB-A1EFDA7E2450}.Debug.Build.0 = Debug|Win32
+		{F496E4E3-22D5-4294-A0FB-A1EFDA7E2450}.Release.ActiveCfg = Release|Win32
+		{F496E4E3-22D5-4294-A0FB-A1EFDA7E2450}.Release.Build.0 = Release|Win32
+		{67276AC3-3221-442E-9760-BA349C6880EA}.Debug.ActiveCfg = Debug|Win32
+		{67276AC3-3221-442E-9760-BA349C6880EA}.Debug.Build.0 = Debug|Win32
+		{67276AC3-3221-442E-9760-BA349C6880EA}.Release.ActiveCfg = Release|Win32
+		{67276AC3-3221-442E-9760-BA349C6880EA}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
