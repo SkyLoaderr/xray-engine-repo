@@ -98,8 +98,9 @@ function motivator_binder:reload (section)
 
 -- Состояние тела
 xr_motivator.storage[self.object:id()].state = {
-        body_state = 0,
-    target_state = 0
+    body_state = 0,
+    target_state = 0,
+    position = nil
     }
 -- Хранение трейдселлера
 xr_motivator.storage[self.object:id()].tradeseller =
