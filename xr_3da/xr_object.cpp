@@ -160,7 +160,6 @@ void CObject::net_Destroy		()
 	shedule_unregister			();
 	spatial_unregister			();
 	setDestroy					(true);
-	PositionStack.clear			();
 }
 
 //////////////////////////////////////////////////////////////////////////
