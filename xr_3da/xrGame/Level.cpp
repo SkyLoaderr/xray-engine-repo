@@ -295,11 +295,7 @@ void CLevel::ClientReceive()
 			g_sv_Spawn(P);
 			break;
 		case M_UPDATE:
-			{
-//				DWORD sv_time = P->r_u32();	// server time
-				// timeServer_Correct(sv_time,cl_time);
-				Objects.net_Import(P);
-			}
+			Objects.net_Import	(P);
 			break;
 		case M_FIRE_HIT:
 			{
@@ -363,8 +359,6 @@ void CLevel::OnFrame	()
 	Device.Statistic.netClient.Begin();
 	ClientReceive		();
 	Device.Statistic.netClient.End	();
-
-//	if (!isCompleted_Sync())	return;
 
 	// Inherited update
 	inherited::OnFrame	();
@@ -433,17 +427,13 @@ void CLevel::OnFrame	()
 			pApp->pFont->OutNext("client_2_sever ping: %d",	net_Statistic.getPing());
 		}
 	}
-
-	/*
-	AI::Path path;
-	AI.q_Path(93,1417,path);
-	*/
 }
 
 void CLevel::OnRender()
 {
 	inherited::OnRender	();
 	Tracers.Render		();
+	if (bDebug)			AI.Render();
 }
 
 void CLevel::OnEvent(EVENT E, DWORD P1, DWORD P2)
