@@ -44,7 +44,7 @@ void	CBlender_Screen_SET::Load	( CStream& FS	)
 	// Blend mode
 	BP_TOKEN::Item	I;
 	BP_READ			(BPID_TOKEN,		oBlend);
-	for (DWORD it=0; it<oBlend.Count)	FS.read		(&I,sizeof(I));
+	for (DWORD it=0; it<oBlend.Count; it++)	FS.Read	(&I,sizeof(I));
 	
 	// A-ref
 	BP_READ			(BPID_INTEGER,		oAREF);

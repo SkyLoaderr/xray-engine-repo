@@ -524,6 +524,15 @@ SOURCE=.\Blenders\Blender_Editor_Wire.h
 # Begin Source File
 
 SOURCE=.\Blenders\Blender_Screen_BLEND.cpp
+
+!IF  "$(CFG)" == "XR_3DA - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
+
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 

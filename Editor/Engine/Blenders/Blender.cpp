@@ -96,7 +96,6 @@ void		CBlender::CreatePalette(vector<CBlender*> &palette)
 	palette.push_back(Create(B_VERT_AREF));
 	palette.push_back(Create(B_SCREEN_SET));
 	palette.push_back(Create(B_SCREEN_GRAY));
-	palette.push_back(Create(B_SCREEN_BLEND));
 	palette.push_back(Create(B_EDITOR_WIRE));
 	palette.push_back(Create(B_EDITOR_SEL));
 }
