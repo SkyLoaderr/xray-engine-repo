@@ -179,3 +179,51 @@ inv_grid_height		= 2
 inv_grid_x			= 8
 inv_grid_y			= 18
 cost				= 1000
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Military
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[crazy_flash]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "devices\quest_items\crazy_flash"
+;$prefetch 			= 32
+class				= D_AFMERG
+cform				= skeleton
+visual				= equipments\item_flash_2.ogf
+radius				= 1
+script_binding		= stalker.object_init
+
+inv_name			= Flash card
+inv_name_short		= "Crazy stalker" flash
+inv_weight			= 0.1
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 3
+inv_grid_y			= 19
+cost				= 0
+
+[ugrum_flash]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "devices\quest_items\ugrum_flash"
+;$prefetch 			= 32
+class				= D_AFMERG
+cform				= skeleton
+visual				= equipments\item_flash_2.ogf
+radius				= 1
+script_binding		= stalker.object_init
+
+inv_name			= Flash card
+inv_name_short		= "stalker Ugrumiy" flash
+inv_weight			= 0.1
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 3
+inv_grid_y			= 19
+cost				= 0
+
