@@ -20,6 +20,7 @@ public:
 	virtual		BOOL				OnDetach				(u16 eid_who, u16 eid_what);
 
 	virtual		void				OnPlayerConnect			(u32 id_who);
+	virtual		void				OnPlayerDisconnect		(u32 id_who);
 	virtual		void				OnPlayerBuy				(u32 id_who, u16 eid_who, LPCSTR what);
 	virtual		void				OnPlayerReady			(u32 id_who);
 	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed);

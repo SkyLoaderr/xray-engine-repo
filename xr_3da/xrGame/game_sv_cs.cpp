@@ -240,13 +240,28 @@ void	game_sv_CS::OnPlayerKillPlayer	(u32 id_killer, u32 id_killed)
 	// Drop everything
 	vector<u16>*	C				=	get_children(id_killed);
 	if (0==C)						return;
-//	for (u32 it=0; it<C->size(); it++)
 	while(C->size())
 	{
-//		u16		eid						= (*C)[it];
 		u16		eid						= (*C)[0];
 
 		xrServerEntity*		from		= S->ID_to_entity(get_id_2_eid(id_killed));
+		xrServerEntity*		what		= S->ID_to_entity(eid);
+		S->Perform_reject				(what,from);
+	}
+}
+
+void	game_sv_CS::OnPlayerDisconnect	(u32 id_who)
+{
+	__super::OnPlayerDisconnect			(id_who);
+
+	// Drop everything
+	vector<u16>*	C				=	get_children(id_killed);
+	if (0==C)						return;
+	while(C->size())
+	{
+		u16		eid						= (*C)[0];
+
+		xrServerEntity*		from		= S->ID_to_entity(get_id_2_eid(id_who));
 		xrServerEntity*		what		= S->ID_to_entity(eid);
 		S->Perform_reject				(what,from);
 	}

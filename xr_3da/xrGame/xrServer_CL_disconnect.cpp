@@ -9,25 +9,16 @@ void xrServer::OnCL_Disconnected	(IClient* CL)
 	NET_Packet			P;
 	u32				mode			= net_flags(TRUE,TRUE);
 
-	// Collect entities
+	// Game config (all, info excludes deleted player)
+	game->OnPlayerDisconnect(CL->ID);
+	game->signal_Syncronize	();
+
+	// Migrate entities
 	xrS_entities::iterator	I=entities.begin(),E=entities.end();
 	for (; I!=E; I++)
 	{
 		xrServerEntity*	E	= I->second;
-		if (E->owner == CL)	{
-			P.w_begin			(M_EVENT);
-			P.w_u32				(Device.dwTimeGlobal);
-			P.w_u16				(GE_DESTROY);
-			P.w_u16				(E->ID);
-
-			SendBroadcast		(CL->ID,P,mode);
-			entities.erase		(E->ID);
-			entity_Destroy		(E);
-		}
+		if (E->owner == CL)		PerformMigration	(E,(xrClientData*)CL,SelectBestClientToMigrateTo(E));
 	}
-
-	// Game config (all, info excludes deleted player)
-	game->OnPlayerDisconnect(CL->ID);
-	game->signal_Syncronize	();
 	csPlayers.Leave			();
 }
