@@ -308,4 +308,8 @@ private:
 	SAttackAnimation	m_tAttack;
 	void				FillAttackStructure(u32, TTime);
 	void				vfBuildTravelLine(const Fvector &tpDestinationPosition, const Fvector& current_pos);
+
+	void	UnpackContour(AI::PContour& C, u32 ID);
+	BOOL	SegmentsIntersect(Fvector& dst, Fvector& v1, Fvector& v2, Fvector& v3, Fvector& v4);
+
 };
