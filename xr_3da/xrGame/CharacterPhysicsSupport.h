@@ -27,7 +27,7 @@ EState				m_eState;
 CEntityAlive&		m_EntityAlife;
 Fmatrix&			mXFORM;
 CPhysicsShell*      &m_pPhysicsShell;
-CPHMovementControl& m_PhysicMovementControl;
+CPHMovementControl& Movement;
 //skeleton
 float					skel_density_factor;
 float					skel_airr_lin_factor;
@@ -81,7 +81,7 @@ void in_Load(LPCSTR section);
 void in_Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse);
 CCharacterPhysicsSupport(EType atype,CEntityAlive* aentity);
 private:
-CCharacterPhysicsSupport& operator = (CCharacterPhysicsSupport& /**asup/**/){};
+CCharacterPhysicsSupport& operator = (CCharacterPhysicsSupport& asup){};
 void CreateSkeleton();
 };
 #endif  //CHARACTER_PHYSICS_SUPPORT
