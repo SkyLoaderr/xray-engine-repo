@@ -68,6 +68,7 @@ static class cl_emap			: public R_constant_setup		{	virtual void setup	(R_consta
 	float	clip				= factor;				// 5cm?
 	float	range				= 1.f / ps_r2_emap_range;
 	RCache.set_c				(C,	clip,shift,range,0);
+	Msg		("[%d]factor:%f, shift:%f",Device.dwFrame,factor,shift);
 }}	binder_emap;
 
 //////////////////////////////////////////////////////////////////////////

@@ -200,8 +200,9 @@ void CRender::Render		()
 		}
 		for (emapslice=0; emapslice<ps_r2_emap_slices; emapslice++)
 		{
-			bool	b_last						= (emapslice==(ps_r2_emap_slices-1));
-			r_dsgraph_render_graph				(0,b_last ? true : false);
+			bool	b_last										= false;
+			if		(emapslice==(ps_r2_emap_slices-1))	b_last	= true;
+			r_dsgraph_render_graph		(0,b_last ? true : false);
 		}
 	}
 
