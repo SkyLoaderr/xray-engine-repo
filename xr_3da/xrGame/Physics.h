@@ -184,7 +184,11 @@ Fmatrix m_m2;
 Fmatrix m_m0;
 dBodyID m_body;
 public:
-	virtual	void			add_Element				(CPhysicsElement* E)		  {elements.push_back((CPHElement*)E);};
+							CPHShell				()							{bActive=false;};
+
+	virtual	void			add_Element				(CPhysicsElement* E)		  {
+		elements.push_back((CPHElement*)E);
+	};
 	virtual	void			add_Joint				(CPhysicsJoint* E, int E1, int E2)					{};
 	virtual void			applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val)	{};
 

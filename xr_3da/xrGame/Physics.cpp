@@ -955,6 +955,8 @@ void CPHShell::setMass(float M){
 
 
 void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2){
+	if(bActive)
+		return;
 		vector<CPHElement*>::iterator i;
 		mXFORM.set(m0);
 		for(i=elements.begin();i!=elements.end();i++){
@@ -979,6 +981,8 @@ void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2){
 	}
 
 void CPHShell::Deactivate(){
+if(!bActive)
+		return;
 	vector<CPHElement*>::iterator i;
 	for(i=elements.begin();i!=elements.end();i++)
 	(*i)->Deactivate();

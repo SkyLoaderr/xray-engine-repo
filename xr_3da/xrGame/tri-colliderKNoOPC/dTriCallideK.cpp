@@ -1,6 +1,6 @@
 #include "stdafx.h"
-//#define SHAREDLIBIMPORT __declspec (dllimport)
-//#define SHAREDLIBEXPORT __declspec (dllexport)
+#define SHAREDLIBIMPORT __declspec (dllimport)
+#define SHAREDLIBEXPORT __declspec (dllexport)
 #include <include/ode/common.h>
 #include <include/ode/geom.h>
 #include <include/ode/rotation.h>
