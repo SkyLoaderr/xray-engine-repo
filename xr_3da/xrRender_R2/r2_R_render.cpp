@@ -13,7 +13,7 @@ IC	bool	pred_sp_sort	(ISpatial* _1, ISpatial* _2)
 
 void CRender::render_main	()
 {
-	// Msg		("---------------------------");
+	Msg						("---begin");
 	marker									++;
 	phase									= PHASE_NORMAL;
 
@@ -111,11 +111,13 @@ void CRender::render_main	()
 		g_pGameLevel->pHUD->Render_Last						();	
 	}
 	set_Recorder			(NULL);
+	Msg						("---end");
 }
 
 void CRender::Render		()
 {
-	VERIFY					(g_pGameLevel && g_pGameLevel->pHUD);
+	Msg		("*** main-start"	);
+	VERIFY									(g_pGameLevel && g_pGameLevel->pHUD);
 
 	//******* Main calc
 	Device.Statistic.RenderCALC.Begin		();
@@ -228,9 +230,11 @@ void CRender::Render		()
 	// Lighting, dependant on OCCQ
 	render_lights							(LP_pending);
 
+	Msg		("*** main-end"	);
 	// Postprocess
 	Target->phase_combine					();
 
+	Msg		("*** second-start"	);
 	//******* Main render - second order geometry (the one, that doesn't support deffering)
 	//.todo: should be done inside "combine" with estimation of of luminance, tone-mapping, etc.
 	{
@@ -248,4 +252,5 @@ void CRender::Render		()
 	Device.Statistic.RenderDUMP_HUD.Begin	();
 	g_pGameLevel->pHUD->Render_Direct		();
 	Device.Statistic.RenderDUMP_HUD.End		();
+	Msg		("*** second-end"	);
 }
