@@ -15,7 +15,7 @@ protected:
 			bool	valid					(u32 node_id) const;
 public:
 	enum EGamePathType {
-		eLevelPathTypeMinTime = u32(0),
+		eGamePathTypeMinTime = u32(0),
 	};
 
 	xr_vector<u32>							m_game_path;

@@ -126,82 +126,20 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, fl
 	Device.Statistic.Physics.End	();
 }
 
-template <u64 flags>
-void CMovementManager::find_location(PathManagers::CNodeEvaluator<flags> *node_evaluator)
+void CMovementManager::build_path()
 {
-	if (!m_locate_query_time ||
-		(m_locate_query_time < m_location_query_interval + m_current_update) ||
-		m_detail_path.empty() ||
-		(int(m_detail_cur_point_index) > int(m_detail_path.size()) - 4) ||
-		(speed() < EPS_L)
-		) 
-	{
-	   select_location	(node_evaluator);
-	   if ((m_level_dest_node != node_evaluator->m_dwBestNode) && !m_selector_failed){
-		   m_level_dest_node	= node_evaluator->m_dwBestNode;
-		   m_level_path.clear	();
-//		   m_tPathState			= ePathStateBuildNodePath;
-	   }
-	}
-}
-
-//void CMovementManager::find_path(PathManagers::CAbstractNodeEvaluator *tpNodeEvaluator)
-//{
-//	Device.Statistic.AI_Path.Begin();
-//	
-//	if (m_level_dest_node == m_dwLevelVertexID) {
-//		m_level_path.clear		();
-//		m_detail_path.clear();
-//		m_detail_cur_point_index		= 0;
-//		m_fCurSpeed				= 0;
-//		m_tPathState			= ePathStateSearchNode;
-//		Device.Statistic.AI_Path.End();
-//		return;
-//	}
-//	
-//	if (tpNodeEvaluator)
-//		ai().m_tpAStar->ffFindOptimalPath(m_dwLevelVertexID,m_level_dest_node,AI_Path,tpNodeEvaluator->m_dwEnemyNode,tpNodeEvaluator->m_fOptEnemyDistance);
-//	else
-//		ai().m_tpAStar->ffFindMinimalPath(m_dwLevelVertexID,m_level_dest_node,AI_Path);
-//	
-//	if (m_level_path.empty()) {
-//#ifdef DEBUG
-//		Msg("! !!!! node_start %d, node_finish %d",m_dwLevelVertexID,m_level_dest_node);
-//#endif
-////		if (tpNodeEvaluator) {
-//			ai().m_tpAStar->ffFindMinimalPath(m_dwLevelVertexID,m_level_dest_node,AI_Path);
-//			if (m_level_path.empty())
-//				m_tPathState = ePathStateSearchNode;
-//			else
-//				m_tPathState = ePathStateBuildTravelLine;
-////		}
-////		else
-////			m_tPathState = ePathStateSearchNode;
-//	}
-//	else
-//		m_tPathState = ePathStateBuildTravelLine;
-//	
-//	Device.Statistic.AI_Path.End();
-//}
-
-void CMovementManager::build_path(PathManagers::CAbstractNodeEvaluator *node_evaluator, const Fvector *target_position)
-{
-	if (node_evaluator)
-		init_evaluator			(node_evaluator);
-
-	if (m_path_type != m_path_type_previous) {
-		m_path_type_previous	= m_path_type;
+	if (!path_actual()) {
 		switch (m_path_type) {
 			case ePathTypeGamePath : {
-				m_path_state	= m_game_vertex_evaluator ? ePathStateSelectGameVertex : ePathStateBuildGamePath;
+				m_path_state			= m_game_vertex_evaluator ? ePathStateSelectGameVertex : ePathStateBuildGamePath;
 				break;
 			}
 			case ePathTypeLevelPath : {
-				m_path_state	= m_level_vertex_evaluator ? ePathStateSelectLevelVertex : ePathStateBuildLevelPath;
+				m_path_state			= m_level_vertex_evaluator ? ePathStateSelectLevelVertex : ePathStateBuildLevelPath;
 				break;
 			}
 			case ePathTypeGamePath : {
-				m_path_state	= ePathStatePredictEnemyVertices;
+				m_path_state			= ePathStatePredictEnemyVertices;
 				break;
 			}
 			default : NODEFAULT;
@@ -210,159 +148,203 @@ void CMovementManager::build_path(PathManagers::CAbstractNodeEvaluator *node_eva
 
 	switch (m_path_type) {
 		case ePathTypeGamePath : {
-			switch (m_path_state) {
-				case ePathStateSelectGameVertex : {
-					m_path_state	= ePathStateBuildGamePath;
-					break;
-				}
-				case ePathStateBuildGamePath : {
-					m_path_state	= ePathStateBuildLevelPath;
-					break;
-				}
-				case ePathStateSelectLevelVertex : {
-					m_path_state	= ePathStateBuildGamePath;
-					break;
-												  }
-				case ePathStateBuildLevelPath : {
-					m_path_state	= ePathStateBuildDetailPath;
-					break;
-				}
-				case ePathStateBuildDetailPath : {
-					m_path_state	= ePathStatePathVerification;
-					break;
-				}
-				case ePathStatePathVerification : {
-					if (true)
-						m_path_state	= ePathStateSelectLevelVertex;
-					else
-						m_path_state	= ePathStateSelectGameVertex;
-					break;
-				}
-				default : NODEFAULT;
-			}
+			process_game_path	();
 			break;
 		}
 		case ePathTypeLevelPath : {
-			switch (m_path_state) {
-				case ePathStateSelectLevelVertex : {
-					m_path_state	= ePathStateBuildLevelPath;
-					break;
-				}
-				case ePathStateBuildLevelPath : {
-					m_path_state	= ePathStateBuildDetailPath;
-					break;
-				}
-				case ePathStateBuildDetailPath : {
-					m_path_state	= ePathStatePathVerification;
-					break;
-				}
-				case ePathStatePathVerification : {
-					m_path_state	= ePathStateSelectLevelVertex;
-					break;
-				}
-				default : NODEFAULT;
-			}
+			process_level_path	();
 			break;
 		}
 		case ePathTypeEnemySearch : {
-			switch (m_path_state) {
-				case ePathStatePredictEnemyVertices : {
-					m_path_state	= ePathStateSelectEnemyVertex;
-					break;
-				}
-				case ePathStateSelectEnemyVertex : {
-					m_path_state	= ePathStateBuildLevelPath;
-					break;
-				}
-				case ePathStateBuildLevelPath : {
-					m_path_state	= ePathStateBuildDetailPath;
-					break;
-				}
-				case ePathStateBuildDetailPath : {
-					m_path_state	= ePathStatePathVerification;
-					break;
-				}
-				case ePathStatePathVerification : {
-					if (true)
-						m_path_state	= ePathStateSelectEnemyVertex;
-					else
-						m_path_state	= ePathStateBuildLevelPath;
-					break;
-				}
-				default : NODEFAULT;
-			}
+			process_enemy_search();
 			break;
 		}
 		default : NODEFAULT;
 	}
-
-//	if (m_path_state_previous != m_path_state) {
-//		m_path_state_previous	= m_path_state;
-//		m_path_state			= ePathStateSearchNode;
-//		m_level_path.clear		();
-//	}
-//
-//	EPathType					tPathType = m_tPathType;
-//	switch (m_tPathType) {
-//		case ePathTypeStraight : {
-//			m_tPathType			= ePathTypeStraight;
-//			break;
-//		}
-//		case ePathTypeDodge : {
-//			m_tPathType			= ePathTypeDodge;
-//			break;
-//		}
-//		case ePathTypeCriteria : {
-//			m_tPathType			= ePathTypeCriteria;
-//			break;
-//		}
-//		case ePathTypeStraightDodge : {
-//			if (::Random.randI(0,100) < (int)m_dwRandomFactor)
-//				m_tPathType		= ePathTypeStraight;
-//			else
-//				m_tPathType		= ePathTypeDodge;
-//			break;
-//		}
-//		case ePathTypeDodgeCriteria : {
-//			if (::Random.randI(0,100) < (int)m_dwRandomFactor)
-//				m_tPathType		= ePathTypeDodge;
-//			else
-//				m_tPathType		= ePathTypeCriteria;
-//			break;
-//		}
-//	}
-//	switch (m_tPathState) {
-//		case ePathStateSearchNode : {
-//			if (tpNodeEvaluator && bSearchForNode)
-//				find_position	(*tpNodeEvaluator,Squad,Leader);
-//			else
-//				if (!bSearchForNode || !tpDestinationPosition || !m_detail_path.size() || (m_detail_path[m_detail_path.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L))
-//					m_tPathState = ePathStateBuildNodePath;
-//			break;
-//		}
-//		case ePathStateBuildNodePath : {
-//			if ((m_level_dest_node != m_dwLevelVertexID) && (m_level_path.empty() || (m_level_path[m_level_path.size() - 1] != m_level_dest_node) || m_detail_path.empty() || ((m_detail_path.size() - 1) <= m_detail_cur_point_index)))
-//				vfBuildPathToDestinationPoint(tpNodeEvaluator);
-//			else
-//				if ((m_level_dest_node == m_dwLevelVertexID) && tpDestinationPosition) {
-//					m_level_path.clear();
-//					m_level_path.push_back(m_dwLevelVertexID);
-//					m_tPathState = ePathStateBuildTravelLine;
-//				}
-//				else
-//					if (bSearchForNode && tpNodeEvaluator)
-//						m_tPathState = ePathStateSearchNode;
-//
-//			break;
-//		}
-//		case ePathStateBuildTravelLine : {
-//			vfBuildTravelLine(tpDestinationPosition);
-//			break;
-//		}
-//		case ePathStateDodgeTravelLine : {
-//			vfDodgeTravelLine();
-//			break;
-//		}
-//	}
-//	m_tPathType = tPathType;
 }
+
+void CMovementManager::process_game_path()
+{
+	switch (m_path_state) {
+		case ePathStateSelectGameVertex : {
+			select_game_vertex	();
+			m_path_state		= ePathStateBuildGamePath;
+			break;
+		}
+		case ePathStateBuildGamePath : {
+			build_game_path		();
+			m_path_state		= ePathStateContinueGamePath;
+			break;
+		}
+		case ePathStateContinueGamePath : {
+			select_game_path_vertex	();
+			m_path_state		= ePathStateBuildLevelPath;
+			break;
+		}
+		case ePathStateBuildLevelPath : {
+			build_level_path	();
+			m_path_state		= ePathStateContinueLevelPath;
+			break;
+		}
+		case ePathStateContinueLevelPath : {
+			select_level_path_vertex ();
+			m_path_state		= ePathStateBuildDetailPath;
+			break;
+		}
+		case ePathStateBuildDetailPath : {
+			build_detail_path	();
+			m_path_state		= ePathStatePathVerification;
+			break;
+		}
+		case ePathStatePathVerification : {
+			if (!game_vertex_selection_actual())
+				m_path_state	= ePathStateSelectGameVertex;
+			else
+			if (!game_path_actual())
+				m_path_state	= ePathStateBuildGamePath;
+			else
+			if (!level_path_actual())
+				m_path_state	= ePathStateBuildLevelPath;
+			else
+			if (!detail_path_actual())
+				m_path_state	= ePathStateBuildDetailPath;
+			else
+			if (game_path_completed())
+				m_path_state	= ePathStatePathCompleted;
+			else
+			if (level_path_completed())
+				m_path_state	= ePathStateContinueGamePath;
+			else
+			if (detail_path_completed())
+				m_path_state	= ePathStateContinueLevelPath;
+			break;
+		}
+		case ePathStatePathCompleted : {
+			if (!game_vertex_selection_actual())
+				m_path_state	= ePathStateSelectGameVertex;
+			break;
+		}
+		default : NODEFAULT;
+	}
+}
+
+void CMovementManager::process_level_path()
+{
+	switch (m_path_state) {
+		case ePathStateSelectLevelVertex : {
+			select_level_vertex	();
+			m_path_state		= ePathStateBuildLevelPath;
+			break;
+		}
+		case ePathStateBuildLevelPath : {
+			build_level_path	();
+			m_path_state		= ePathStateContinueLevelPath;
+			break;
+		}
+		case ePathStateContinueLevelPath : {
+			select_level_path_vertex ();
+			m_path_state		= ePathStateBuildDetailPath;
+			break;
+		}
+		case ePathStateBuildDetailPath : {
+			build_detail_path	();
+			m_path_state		= ePathStatePathVerification;
+			break;
+		}
+		case ePathStatePathVerification : {
+			if (!level_vertex_selection_actual())
+				m_path_state	= ePathStateSelectLevelVertex;
+			else
+			if (!level_path_actual())
+				m_path_state	= ePathStateBuildLevelPath;
+			else
+			if (!detail_path_actual())
+				m_path_state	= ePathStateBuildDetailPath;
+			else
+			if (level_path_completed())
+				m_path_state	= ePathStatePathCompleted;
+			else
+			if (detail_path_completed())
+				m_path_state	= ePathStateContinueLevelPath;
+			break;
+		}
+		case ePathStatePathCompleted : {
+			if (!level_vertex_selection_actual())
+				m_path_state	= ePathStateSelectLevelVertex;
+			break;
+		}
+		default : NODEFAULT;
+	}
+}
+
+void CMovementManager::process_enemy_search()
+{
+	switch (m_path_state) {
+		case ePathStatePredictEnemyVertices : {
+			predict_enemy_locations();
+			m_path_state		= ePathStateSelectEnemyVertex;
+			break;
+		}
+		case ePathStateSelectEnemyVertex : {
+			select_enemy_location();
+			m_path_state		= ePathStateBuildLevelPath;
+			break;
+		}
+		case ePathStateBuildLevelPath : {
+			build_level_path	();
+			m_path_state		= ePathStateContinueLevelPath;
+			break;
+		}
+		case ePathStateContinueLevelPath : {
+			select_level_path_vertex ();
+			m_path_state		= ePathStateBuildDetailPath;
+			break;
+		}
+		case ePathStateBuildDetailPath : {
+			build_detail_path	();
+			m_path_state		= ePathStatePathVerification;
+			break;
+		}
+		case ePathStatePathVerification : {
+			if (!enemy_prediction_actual())
+				m_path_state	= ePathStatePredictEnemyVertices;
+			else
+			if (!level_path_actual())
+				m_path_state	= ePathStateBuildLevelPath;
+			else
+			if (!detail_path_actual())
+				m_path_state	= ePathStateBuildDetailPath;
+			else
+			if (level_path_completed())
+				m_path_state	= ePathStateSelectEnemyVertex;
+			else
+			if (detail_path_completed())
+				m_path_state	= ePathStateContinueLevelPath;
+			break;
+		}
+		case ePathStatePathCompleted : {
+			if (!enemy_prediction_actual())
+				m_path_state	= ePathStatePredictEnemyVertices;
+			break;
+		}
+		default : NODEFAULT;
+	}
+}
+
+//template <u64 flags>
+//void CMovementManager::find_location(PathManagers::CNodeEvaluator<flags> *node_evaluator)
+//{
+//	if (!m_locate_query_time ||
+//		(m_locate_query_time < m_location_query_interval + m_current_update) ||
+//		m_detail_path.empty() ||
+//		(int(m_detail_cur_point_index) > int(m_detail_path.size()) - 4) ||
+//		(speed() < EPS_L)
+//		) 
+//	{
+//	   select_location	(node_evaluator);
+//	   if ((m_level_dest_node != node_evaluator->m_dwBestNode) && !m_selector_failed){
+//		   m_level_dest_node	= node_evaluator->m_dwBestNode;
+//		   m_level_path.clear	();
+////		   m_tPathState			= ePathStateBuildNodePath;
+//	   }
+//	}

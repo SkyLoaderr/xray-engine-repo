@@ -21,12 +21,12 @@ protected:
 	bool									m_detail_path_actual;
 public:
 	enum EMovementType {
-		eMovementTypeStand		= u32(0),
-		eMovementTypJumpUp,
-		eMovementTypJumpDown,
-		eMovementTypeWalk,
-		eMovementTypeRun,
-		eMovementTypePanic,
+		eMovementTypeStand	= u32(1) << 1,
+		eMovementTypJumpUp	= u32(1) << 2,
+		eMovementTypJumpDown= u32(1) << 3,
+		eMovementTypeWalk	= u32(1) << 4,
+		eMovementTypeRun	= u32(1) << 5,
+		eMovementTypePanic	= u32(1) << 6,
 	};
 
 	enum EDetailPathType {
