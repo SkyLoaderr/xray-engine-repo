@@ -143,7 +143,7 @@ function CStateRestSleep:execute()
 	if(self.data.npc:action() == nil) then
 		assert(self.sleep_point ~= nil)
 		
-		action(self.data.npc, move(move.walk_fwd, self.sleep_point), sound(sound.idle), cond(cond.move_end))
+		action(self.data.npc, move(move.walk_fwd, self.sleep_point, 1), sound(sound.idle), cond(cond.move_end))
 		action(self.data.npc, anim(anim.stand_idle, 0), cond(cond.time_end, 300))
 		action(self.data.npc, anim(anim.lie_idle, 0), cond(cond.time_end, 2000))
 		action(self.data.npc, anim(anim.sleep, 0), cond(cond.time_end, 6000000))
