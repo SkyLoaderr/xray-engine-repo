@@ -210,13 +210,25 @@ function motivator_binder:update(delta)
 			self.st.state_mgr = nil
 		end
 	end
-    --' Апдейт саундменеджера
-    if self.object:alive() then
+
+	--' Апдейт саундменеджера
+	if self.object:alive() then
 		xr_sound.update(self.object)
 	else
 		stop_play_sound(self.object)
 	end
-    
+
+	self.object:info_clear()
+	local best_enemy = self.object:best_enemy()
+	if best_enemy then
+		self.object:info_add('enemy -- ' .. best_enemy:name())
+	end
+	local active_section = db.storage[self.object:id()].active_section
+	if active_section then
+		self.object:info_add('section -- ' .. active_section)
+	end
+	self.object:info_add('name -- ' .. self.object:name())
+     
 	--' Проверка ТИМ СКВАД ГРУП
 	--[[
 	if memtsg[self.object:id()] == nil then
