@@ -288,6 +288,30 @@ void	CResourceManager::_GetMemoryUsage(u32& m_base, u32& c_base, u32& m_lmaps, u
 		}
 	}
 }
+void	CResourceManager::_DumpMemoryUsage		()
+{
+	xr_map<u32,shared_str>		mtex			;
+
+	// sort
+	{
+		map_Texture::iterator I = m_textures.begin	();
+		map_Texture::iterator E = m_textures.end	();
+		for (; I!=E; I++)
+		{
+			u32			m = I->second->flags.MemoryUsage;
+			shared_str	n = I->second->cName;
+			mtex.insert (mk_pair(m,n));
+		}
+	}
+
+	// dump
+	{
+		xr_map<u32,shared_str>::iterator I = mtex.begin	();
+		xr_map<u32,shared_str>::iterator E = mtex.end	();
+		for (; I!=E; I++)
+			Msg			("* %4.1f : %s",float(I->first)/1024.f,I->second.c_str());
+	}
+}
 
 void	CResourceManager::Evict()
 {
