@@ -77,6 +77,7 @@ void CAI_ALife::Load()
 	ALIFE_ENTITY_P_IT			E = (*K).second->end();
 	ALIFE_ENTITY_P_IT			i = m_tpObjects.begin();
 	for ( ; I != E; I++, i++) {
+		(*I)->m_tObjectID = (*I)->ID;
 		*i = *I;
 		vfSwitchObjectOnline	(*i);
 		(*i)->m_bOnline			= true;
