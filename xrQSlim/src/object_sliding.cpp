@@ -17,7 +17,25 @@
 
 // Call this to reorder the tris in this trilist to get good vertex-cache coherency.
 // *pwList is modified (but obviously not changed in size or memory location).
-void OptimiseVertexCoherencyTriList ( WORD *pwList, int iHowManyTris, u32 mode);
+//void OptimiseVertexCoherencyTriList ( WORD *pwList, int iHowManyTris, u32 mode);
+void OptimiseVertexCoherencyTriList (WORD* pwList, int iHowManyTris, u32 optimize_mode)
+{
+	DWORD* remap	= xr_alloc<DWORD>		(iHowManyTris);
+	WORD max_idx	= 0;
+	for (u32 k=0; k<iHowManyTris*3; k++)
+		max_idx		= _max(max_idx,pwList[k]);
+	HRESULT	rhr		= D3DXOptimizeFaces		(pwList,iHowManyTris,max_idx+1,FALSE,remap);
+	R_CHK			(rhr);
+	WORD* tmp		= xr_alloc<WORD>		(iHowManyTris*3);
+	memcpy			(tmp,pwList,sizeof(WORD) * 3 * iHowManyTris);
+	for (u32 it=0; it<iHowManyTris; it++){	
+		pwList[it*3+0]= tmp[remap[it]*3+0];
+		pwList[it*3+1]= tmp[remap[it]*3+1];
+		pwList[it*3+2]= tmp[remap[it]*3+2];
+	}
+	xr_free			(remap);
+	xr_free			(tmp);
+}
 
 void CalculateSW(Object* object, VIPM_Result* result, u32 optimize_vertex_order)
 {
@@ -36,7 +54,7 @@ void CalculateSW(Object* object, VIPM_Result* result, u32 optimize_vertex_order)
 		iNumVerts++;
 	}
 	// Er... word indices, guys... nothing supports 32-bit indices yet.
-	VERIFY ( iNumVerts < 65535 );
+	R_ASSERT ( iNumVerts < 65535 );
 
 	// How many tris are we looking at?
 	int iNumTris = 0;
@@ -46,7 +64,7 @@ void CalculateSW(Object* object, VIPM_Result* result, u32 optimize_vertex_order)
 	}
 	// A lot of cards have this annoying limit - see D3DCAPS8.MaxPrimitiveCount, which is
 	// exactly 65535 for DX7 and previous devices. So might as well stick with that number.
-	VERIFY ( iNumTris < 65535 );
+	R_ASSERT ( iNumTris < 65535 );
 
 	// Create a place to put indices while we build up the list. Because we don't know
 	// how many we need yet, we can't create the IB until the end. Then we'll copy this into it.
@@ -54,7 +72,8 @@ void CalculateSW(Object* object, VIPM_Result* result, u32 optimize_vertex_order)
 
 	// permutation table
 	result->permute_verts.resize(iNumVerts);
-	for (u32 k=0; k<result->permute_verts.size(); k++) result->permute_verts[0]=u16(-1);
+	for (u32 k=0; k<result->permute_verts.size(); k++) 
+		result->permute_verts[k]=u16(-1);
 
 	// Now do all the collapses, so we start from the minimum mesh.
 	// Along the way, mark the vertices in reverse order.
@@ -90,7 +109,7 @@ void CalculateSW(Object* object, VIPM_Result* result, u32 optimize_vertex_order)
 	}
 
 	// Should meet in the middle!
-	VERIFY ( wCurIndex == iCurVerts );
+	R_ASSERT ( wCurIndex == iCurVerts );
 
 	// And count the tris that are left.
 	int iCurNumTris = 0;
@@ -145,7 +164,7 @@ void CalculateSW(Object* object, VIPM_Result* result, u32 optimize_vertex_order)
 			tri->mytri.dwNewIndex = INVALID_INDEX;		// Mark them as not being in a collapse.
 			iJustCheckingNumTris++;
 		}
-		VERIFY ( iJustCheckingNumTris == iCurNumTris );
+		R_ASSERT ( iJustCheckingNumTris == iCurNumTris );
 
 		BOOL bJustStartedANewLevel = TRUE;
 
@@ -170,12 +189,12 @@ void CalculateSW(Object* object, VIPM_Result* result, u32 optimize_vertex_order)
 					{
 						GeneralTriInfo *pTriInfo = pCollapse->TriCollapsed.item(i);
 						MeshTri *tri = pTriInfo->ppt[0]->FindTri ( pTriInfo->ppt[1], pTriInfo->ppt[2] );
-						VERIFY ( tri != NULL );
-						VERIFY ( tri->mytri.dwNewIndex == INVALID_INDEX );	// Should not have been in a collapse this level.
+						R_ASSERT ( tri != NULL );
+						R_ASSERT ( tri->mytri.dwNewIndex == INVALID_INDEX );	// Should not have been in a collapse this level.
 
-						VERIFY ( pTriInfo->ppt[0]->mypt.dwNewIndex < wCurIndex );
-						VERIFY ( pTriInfo->ppt[1]->mypt.dwNewIndex < wCurIndex );
-						VERIFY ( pTriInfo->ppt[2]->mypt.dwNewIndex < wCurIndex );
+						R_ASSERT ( pTriInfo->ppt[0]->mypt.dwNewIndex < wCurIndex );
+						R_ASSERT ( pTriInfo->ppt[1]->mypt.dwNewIndex < wCurIndex );
+						R_ASSERT ( pTriInfo->ppt[2]->mypt.dwNewIndex < wCurIndex );
 						*wTempIndices.item(i*3+0) = (WORD)pTriInfo->ppt[0]->mypt.dwNewIndex;
 						*wTempIndices.item(i*3+1) = (WORD)pTriInfo->ppt[1]->mypt.dwNewIndex;
 						*wTempIndices.item(i*3+2) = (WORD)pTriInfo->ppt[2]->mypt.dwNewIndex;
@@ -203,7 +222,7 @@ void CalculateSW(Object* object, VIPM_Result* result, u32 optimize_vertex_order)
 			object->UndoCollapse();
 			// Add the unbinned vertex.
 			MeshPt *pPt = pCollapse->pptBin;
-			VERIFY ( pPt->mypt.dwNewIndex == wCurIndex );
+			R_ASSERT ( pPt->mypt.dwNewIndex == wCurIndex );
 			result->permute_verts[pPt->mypt.dwIndex]=wCurIndex;
 /*
 			pCurVertex->pt	= pPt->mypt.vPos;
@@ -220,12 +239,12 @@ void CalculateSW(Object* object, VIPM_Result* result, u32 optimize_vertex_order)
 				for ( u32 i = 0; i < pCollapse->TriOriginal.size(); i++ ){
 					GeneralTriInfo *pTriInfo = pCollapse->TriOriginal.item(i);
 					MeshTri *tri = pTriInfo->ppt[0]->FindTri ( pTriInfo->ppt[1], pTriInfo->ppt[2] );
-					VERIFY ( tri != NULL );
+					R_ASSERT ( tri != NULL );
 					tri->mytri.dwNewIndex = 1;		// Mark it has having been in a collapse.
 
-					VERIFY ( pTriInfo->ppt[0]->mypt.dwNewIndex < wCurIndex );
-					VERIFY ( pTriInfo->ppt[1]->mypt.dwNewIndex < wCurIndex );
-					VERIFY ( pTriInfo->ppt[2]->mypt.dwNewIndex < wCurIndex );
+					R_ASSERT ( pTriInfo->ppt[0]->mypt.dwNewIndex < wCurIndex );
+					R_ASSERT ( pTriInfo->ppt[1]->mypt.dwNewIndex < wCurIndex );
+					R_ASSERT ( pTriInfo->ppt[2]->mypt.dwNewIndex < wCurIndex );
 					*wTempIndices.item(i*3+0) = (WORD)pTriInfo->ppt[0]->mypt.dwNewIndex;
 					*wTempIndices.item(i*3+1) = (WORD)pTriInfo->ppt[1]->mypt.dwNewIndex;
 					*wTempIndices.item(i*3+2) = (WORD)pTriInfo->ppt[2]->mypt.dwNewIndex;
@@ -267,7 +286,7 @@ void CalculateSW(Object* object, VIPM_Result* result, u32 optimize_vertex_order)
 				iTempTriNum++;
 			}
 		}
-		VERIFY ( iJustCheckingNumTris == iCurNumTris );
+		R_ASSERT ( iJustCheckingNumTris == iCurNumTris );
 
 		// Now try to order them as best you can.
 		if ( optimize_vertex_order )
@@ -279,25 +298,25 @@ void CalculateSW(Object* object, VIPM_Result* result, u32 optimize_vertex_order)
 
 		if ( object->pNextCollapse->ListNext() == NULL ){
 			// No more collapses.
-			VERIFY ( iCurCollapse == 0 );
-			VERIFY ( iCurSlidingWindowLevel == 0 );
+			R_ASSERT ( iCurCollapse == 0 );
+			R_ASSERT ( iCurSlidingWindowLevel == 0 );
 			break;
 		}
 
 		// Start a new level by skipping past all the indices so far.
 		iCurTriBinned += iCurNumTris;
 		// Check the maths.
-		VERIFY ( iCurTriBinned == iCurTriAdded );
+		R_ASSERT ( iCurTriBinned == iCurTriAdded );
 
 	    iCurSlidingWindowLevel = object->pNextCollapse->ListNext()->iSlidingWindowLevel;
 	}
 
 	// And now check everything is OK.
-	VERIFY ( result->swr_records.size() == u32(iNumCollapses + 1) );
+	R_ASSERT ( result->swr_records.size() == u32(iNumCollapses + 1) );
 	for ( int i = 0; i <= iNumCollapses; i++ ){
 		VIPM_SWR *swr = result->swr_records.item ( i );
 		for ( int j = 0; j < swr->num_tris * 3; j++ ){
-			VERIFY ( *(result->indices.item(j+swr->offset)) < swr->num_verts );
+			R_ASSERT ( *(result->indices.item(j+swr->offset)) < swr->num_verts );
 		}
 	}
 }
