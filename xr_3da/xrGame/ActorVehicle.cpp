@@ -49,6 +49,8 @@ void CActor::detach_Vehicle()
 	V->LL_GetInstance(spine_bone).set_callback		(SpinCallback,this);
 	V->LL_GetInstance(shoulder_bone).set_callback	(ShoulderCallback,this);
 	V->LL_GetInstance(head_bone).set_callback		(HeadCallback,this);
+	PKinematics(Visual())->PlayCycle(m_anims.m_normal.legs_idle);
+	PKinematics(Visual())->PlayCycle(m_anims.m_normal.m_torso_idle);
 }
 
 void CActor::use_Vehicle()

@@ -441,7 +441,7 @@ void CCar::ParseDefinitions()
 	fill_wheel_vector			(ini->r_string	("car_definition","driving_wheels"),m_driving_wheels);
 	fill_wheel_vector			(ini->r_string	("car_definition","steering_wheels"),m_steering_wheels);
 	fill_wheel_vector			(ini->r_string	("car_definition","breaking_wheels"),m_breaking_wheels);
-	//fill_exhaust_vector			(ini->r_string	("car_definition","exhausts"),m_exhausts);
+	fill_exhaust_vector			(ini->r_string	("car_definition","exhausts"),m_exhausts);
 	fill_doors_map				(ini->r_string	("car_definition","doors"),m_doors);
 
 	///////////////////////////car properties///////////////////////////////
@@ -1084,22 +1084,7 @@ void CCar::SDoor::Init()
 	dJointGetHingeAnchor (joint->GetDJoint(),(float*) &door_position);
 	dJointGetHingeAxis (joint->GetDJoint(), (float*) &door_axis);
 	door_position.sub(pcar->XFORM().c);
-	pos_open=door_position.dotproduct(pcar->m_root_transform.i)*door_axis.dotproduct(pcar->m_root_transform.j);
-	if(pos_open>0.f)
-	{
-	pos_open=1.f;
-	joint->GetLimits(closed_angle,opened_angle,0);
-//	closed_angle+=2.f*M_PI/180.f;
-	//opened_angle-=4.f*M_PI/180.f;
-	opened_angle-=opened_angle/4.f;
-	}
-	else
-	{
-	pos_open=-1.f;
-	joint->GetLimits(opened_angle,closed_angle,0);
-	opened_angle+=2.f*M_PI/180.f;
-	closed_angle-=2.f*M_PI/180.f;
-	}
+
 	Fmatrix door_transform;
 	joint->PSecond_element()->InterpolateGlobalTransform(&door_transform);
 	closed_door_form_in_object.set(joint->PSecond_element()->mXFORM);
@@ -1190,6 +1175,28 @@ void CCar::SDoor::Init()
 			break;
 		default: NODEFAULT;
 		}
+///////////////////////////define positive open///////////////////////////////////
+		Fvector door_dir,cr_dr_pos;
+		door_transform.transform_dir(door_dir,door_dir_in_door);
+		cr_dr_pos.crossproduct(door_dir,door_position);
+		pos_open=-cr_dr_pos.dotproduct(door_axis);
+		//pos_open=door_position.dotproduct(pcar->m_root_transform.i)*door_axis.dotproduct(pcar->m_root_transform.j);
+		if(pos_open>0.f)
+		{
+			pos_open=1.f;
+			joint->GetLimits(closed_angle,opened_angle,0);
+			//	closed_angle+=2.f*M_PI/180.f;
+			//opened_angle-=4.f*M_PI/180.f;
+			opened_angle-=opened_angle/4.f;
+		}
+		else
+		{
+			pos_open=-1.f;
+			joint->GetLimits(opened_angle,closed_angle,0);
+			opened_angle+=2.f*M_PI/180.f;
+			closed_angle-=2.f*M_PI/180.f;
+		}
+
 Close();
 }
 void CCar::SDoor::Open()
