@@ -186,8 +186,6 @@ function action_commander:finalize()
             xr_sounds.play_sound( self.object, 0, self.a.snd_theme, 1, snd_enemy_monster )
         end
     end
-
-    the_actor = nil
 end
 
 function action_commander:walk_to_pos( way, waypoint, run )
@@ -992,8 +990,6 @@ function action_look_at_actor:finalize()
     self.object:disable_talk()
 
     self.a.continue_act = true
-
-    the_actor = nil
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -1040,6 +1036,8 @@ function add_to_binder( npc, char_ini )
     if char_ini then
         this.set_commander( npc )
     end
+
+    the_actor = nil
 end
 
 function init_commander( npc, a )
