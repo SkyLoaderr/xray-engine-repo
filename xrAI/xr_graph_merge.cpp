@@ -290,6 +290,34 @@ public:
 
 };
 
+void send_message()
+{
+	LPCSTR							mailslot = 	"\\\\*\\mailslot\\game";
+
+	HANDLE							handle	= CreateFile(
+		mailslot,
+		GENERIC_WRITE,
+		FILE_SHARE_READ,
+		0,
+		OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL,
+		0
+		);
+
+	if (INVALID_HANDLE_VALUE != handle) {
+		BOOL			result; 
+		DWORD			bytes_written; 
+
+		result			= WriteFile(
+			handle,
+			"quit",
+			(DWORD)xr_strlen("quit") + 1,
+			&bytes_written,
+			0
+			);
+	}
+}
+
 class CGraphMerger {
 public:
 	CGraphMerger(LPCSTR name);
@@ -419,6 +447,7 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 	string256						l_caFileName;
 	FS.update_path					(l_caFileName,"$game_data$","game.graph");
 
+	send_message					();
 
 	while (!DeleteFile(l_caFileName)) {
 		string512					S;
@@ -431,6 +460,8 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 		);
 		if (result == IDCANCEL)
 			break;
+		
+		send_message				();
 	}
 	F.save_to						(l_caFileName);
 
