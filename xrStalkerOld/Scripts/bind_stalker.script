@@ -20,8 +20,15 @@ function actor_binder:net_spawn(data)
 	if object_binder.net_spawn(self,data) == false then
 		return false
 	end
-	
+
+	db.add_obj(self.object)
+
 	return true
+end
+----------------------------------------------------------------------------------------------------------------------
+function motivator_binder:net_destroy()
+	db.del_obj(self.object)
+	object_binder.net_destroy(self)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:reinit()
