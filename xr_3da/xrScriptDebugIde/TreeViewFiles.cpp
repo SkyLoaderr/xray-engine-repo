@@ -458,6 +458,11 @@ void CTreeViewFiles::OnKeydown(NMHDR* pNMHDR, LRESULT* pResult)
 		CProjectFile* pPF = (CProjectFile*)m_pTree->GetItemData(hItem);
 		if ( pPF )
 		{
+			if( m_pTree->GetChildItem(hItem) ){
+				AfxMessageBox("Folder is not empty");
+				return;
+			}
+
 			m_pTree->DeleteItem(hItem);
 			CProject* pProject = g_mainFrame->GetProject();
 			pProject->RemoveFile(pPF);
