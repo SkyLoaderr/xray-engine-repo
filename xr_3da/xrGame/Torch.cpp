@@ -58,9 +58,11 @@ BOOL CTorch::net_Spawn(LPVOID DC)
 	light_render->set_cone	(torch->spot_cone_angle);
 	light_render->set_texture(torch->spot_texture[0]?torch->spot_texture:0);
 
-	glow_render->set_texture(torch->glow_texture[0]?torch->glow_texture:0);
-	glow_render->set_color	(clr);
-	//glow_render->set_radius	(torch->glow_radius);
+	if (glow_render)		{
+		glow_render->set_texture(torch->glow_texture[0]?torch->glow_texture:0);
+		glow_render->set_color	(clr);
+		//glow_render->set_radius	(torch->glow_radius);
+	}
 
 	R_ASSERT				(Visual());
 	lanim					= LALib.FindItem(torch->animator);
