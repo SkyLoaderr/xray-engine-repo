@@ -82,7 +82,7 @@ blowout_wind		= on
 
 blowout_wind_time_start     = 0
 blowout_wind_time_peak      = 600
-blowout_wind_time_end		= 899
+blowout_wind_time_end		= 901; 899
 blowout_wind_power			= 0.5			;сила поднимаего ветра (от 0 до 1), в момент blowout_wind_time_peak 
 
 [zone_mine_field]
@@ -161,7 +161,7 @@ blowout_wind		= on
 
 blowout_wind_time_start     = 150
 blowout_wind_time_peak      = 200
-blowout_wind_time_end		= 999
+blowout_wind_time_end		= 800;999
 blowout_wind_power			= 0.5			;сила поднимаего ветра (от 0 до 1), в момент blowout_wind_time_peak 
 
 
@@ -171,7 +171,7 @@ GroupControlSection	= spawn_group_zone
 $spawn 			= "zones\death"
 $prefetch 		= 16
 class			= Z_MBALD
-hit_impulse_scale	= 0.3;0.5 ;0.1
+hit_impulse_scale	= 0.05;0.5 ;0.1
 effective_radius	= 0.75 ;размер радиуса в процентах от оригинального, где действует зона
 sound			= zone_mosquito_bald
 
@@ -242,7 +242,7 @@ spawn_blowout_artefacts = off
 ;; ветер
 blowout_wind		= on
 
-blowout_wind_time_start     = 0
+blowout_wind_time_start     = 200
 blowout_wind_time_peak      = 600
 blowout_wind_time_end		= 899
 blowout_wind_power			= 0.5			;сила поднимаего ветра (от 0 до 1), в момент blowout_wind_time_peak 
@@ -514,7 +514,7 @@ visible_by_detector = on
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ветер
-blowout_wind		= on
+blowout_wind		= off
 
 blowout_wind_time_start     = 0
 blowout_wind_time_peak      = 150
@@ -889,19 +889,19 @@ light_height		= 1.5			;подъем источника света на высоту
 
 idle_light			= off
 
-awaking_time		= 1
+awaking_time		= 100
 blowout_time		= 10000	
-accamulate_time		= 1
+accamulate_time		= 1000
 
 
 blowout_light_time		= 5999
 blowout_explosion_time	= 5999
 
 ;параметры телекинеза дл€ зоны
-throw_in_impulse		= 4000		;сила вт€гивани€ дл€ единичной массы на рассто€нии один метр
-throw_in_impulse_alive	= 200;800	;сила импульса вт€гивани€ дл€ живых
-throw_in_atten			= 3			;коэфф. зат€гивани€ (чем меньше, тем плавнее зат€гивает)
-blowout_radius_percent	= 0.0		;радиус (в процентах от всего радиуса) непосредственно выброса
+throw_in_impulse		= 2000;4000		;сила вт€гивани€ дл€ единичной массы на рассто€нии один метр
+throw_in_impulse_alive	= 100;200 800	;сила импульса вт€гивани€ дл€ живых
+throw_in_atten			= 2	;3		;коэфф. зат€гивани€ (чем меньше, тем плавнее зат€гивает)
+blowout_radius_percent	= 0.75;0		;радиус (в процентах от всего радиуса) непосредственно выброса
 
 tele_height				= 10 ;1.5		;высота подъема телекинеза 
 time_to_tele			= 7000		;врем€ деражани€ объекта в воздухе
@@ -914,7 +914,7 @@ blowout_wind		= on
 
 blowout_wind_time_start     = 0
 blowout_wind_time_peak      = 5900
-blowout_wind_time_end		= 9999
+blowout_wind_time_end		= 10000;9999
 blowout_wind_power			= 0.5			;сила поднимаего ветра (от 0 до 1), в момент blowout_wind_time_peak 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -997,8 +997,8 @@ blowout_explosion_time	= 2100
 
 ;параметры телекинеза дл€ зоны
 throw_in_impulse		= 4000		;сила импульса вт€гивани€ (дл€ тела 100кг)
-throw_in_impulse_alive	= 400;800	;сила импульса вт€гивани€ дл€ живых
-throw_in_atten			= 8			;коэфф. зат€гивани€ (чем меньше, тем плавнее зат€гивает)
+throw_in_impulse_alive	= 200;400 800	;сила импульса вт€гивани€ дл€ живых
+throw_in_atten			= 3;8			;коэфф. зат€гивани€ (чем меньше, тем плавнее зат€гивает)
 blowout_radius_percent	= 0.8		;радиус (в процентах от всего радиуса) непосредственно выброса
 
 tele_height				= 1.5		;высота подъема телекинеза 
@@ -1014,7 +1014,7 @@ blowout_wind		= on
 
 blowout_wind_time_start     = 0
 blowout_wind_time_peak      = 1500
-blowout_wind_time_end		= 2499
+blowout_wind_time_end		= 2501; 2499
 blowout_wind_power			= 0.5			;сила поднимаего ветра (от 0 до 1), в момент blowout_wind_time_peak 
 
 
@@ -1159,7 +1159,7 @@ accamulate_time				= 0
 
 visible_by_detector 		= off
 
-blowout_wind				= on
+blowout_wind				= off
 
 blowout_wind_time_start 	= 0
 blowout_wind_time_peak  	= 600
