@@ -5,40 +5,7 @@
 // Disables all lights
 void CLightDB_Static::UnselectAll	(void) 
 {
-	vecI_it it;
-	for (it=Selected.begin(); it!=Selected.end(); it++)
-		Disable(*it);
 	Selected.clear();
-}
-
-// for dynamic
-void	CLightDB_Static::Select		(Fvector &pos, float fRadius)
-{
-	// for all dynamic objects we apply not only dynamic but static lights too.
-	for (vecI_it it=Selected.begin(); it!=Selected.end(); it++)
-	{
-		int		num	= *it;
-		xrLIGHT &L	= Lights[num];
-		if (L.type == D3DLIGHT_DIRECTIONAL)		Enable(num);
-		else {
-			float	R	= fRadius+L.range;
-			if (pos.distance_to_sqr(L.position) < R*R)	Enable(num);
-			else										Disable(num);
-		}
-	}
-}
-void	CLightDB_Static::Select		(Fvector &pos, float fRadius, xr_vector<xrLIGHT*>& dest)
-{
-	// for all dynamic objects we apply not only dynamic but static lights too.
-	for (vecI_it it=Selected.begin(); it!=Selected.end(); it++)
-	{
-		xrLIGHT &L	= Lights[*it];
-		if (L.type == D3DLIGHT_DIRECTIONAL)				dest.push_back(&L);
-		else {
-			float	R	= fRadius+L.range;
-			if (pos.distance_to_sqr(L.position) < R*R)	dest.push_back(&L);
-		}
-	}
 }
 
 void CLightDB_Static::Load			(IReader *fs) 
@@ -54,36 +21,44 @@ void CLightDB_Static::Load			(IReader *fs)
 		u32 count		= size/element;
 		R_ASSERT		(count*element == size);
 		Lights.resize	(count);
-		Enabled.resize	(count);
 
 		for (u32 i=0; i<count; i++) 
 		{
-			
-			F->r						(&Lights[i].dwController,4);
-			F->r						(&Lights[i],sizeof(Flight));
+			R1_light*	L				= xr_new<R1_light>	();
+			Flight&		Ldata			= L->data;
+			Lights[i]					= L;
+			u32			dummycontrol	= 0;
+			F->r						(&dummycontrol,4);
+			F->r						(&Ldata,sizeof(Flight));
+			L->ID						= i;
 
-			Lights[i].specular.set		(Lights[i].diffuse);
-			Lights[i].specular.mul_rgb	(0.2f);
-			if (Lights[i].type==D3DLIGHT_DIRECTIONAL)
+			Ldata.specular.set			(Ldata.diffuse);
+			Ldata.specular.mul_rgb		(0.2f);
+			if (Ldata.type==D3DLIGHT_DIRECTIONAL)
 			{
-				Lights[i].position.invert	(Lights[i].direction);
-				Lights[i].position.mul		(1000.f);
-				Lights[i].range				= 1000.f;
+				Ldata.position.invert	(Ldata.direction);
+				Ldata.position.mul		(1000.f);
+				Ldata.range				= 1000.f;
 			}
-			Enabled[i]	= FALSE;
+
+			L->spatial.type				= STYPE_LIGHTSOURCE;
+			L->spatial.center			= Ldata.position;
+			L->spatial.radius			= Ldata.range;
+			L->spatial_register			();
 		}
 
 		F->close		();
 	}
-	//Msg	("* Layers/Lights : %d / %d",Layers.size(),Lights.size());
 }
 
 void CLightDB_Static::Unload		(void)
 {
-	for (u32 i=0; i<Lights.size(); i++) Disable(i);
-
-	Lights.clear			();
-	Enabled.clear			();
+	for (u32 i=0; i<Lights.size(); i++) 
+	{
+		Lights[i]->spatial_unregister	();
+		xr_delete						(Lights[i]);
+	}
+	Lights.clear						();
 }
 
 IC float spline(float *m, float p0, float p1, float p2, float p3)
@@ -102,12 +77,5 @@ IC void t_spline(float t, float *m)
 
 void	CLightDB_Static::add_light(WORD ID)
 {
-	xrLIGHT&  T	= Lights[ID];
-	if (T.dwFrame==Device.dwFrame) return;
-
-	if ((T.type == D3DLIGHT_DIRECTIONAL)||(RImplementation.View->testSphere_dirty	(T.position, T.range))) 
-	{
-		Selected.push_back(ID);
-		T.dwFrame=Device.dwFrame;
-	}
+	Selected.push_back	(ID);
 }

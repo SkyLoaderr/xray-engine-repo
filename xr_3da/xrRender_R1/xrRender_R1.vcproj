@@ -390,6 +390,9 @@
 			<File
 				RelativePath="LightTrack.h">
 			</File>
+			<File
+				RelativePath=".\r1_light.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="Glows"

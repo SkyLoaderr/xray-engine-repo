@@ -69,7 +69,7 @@ void	CLightDB_Static::Track	(IRenderable* O)
 	for (vecI_it it=Selected.begin(); it!=Selected.end(); it++)
 	{
 		int		num	= *it;
-		xrLIGHT &L	= Lights[num];
+		Flight &L	= Lights[num]->data;
 		if (L.type == D3DLIGHT_DIRECTIONAL)				dest.add	(num);
 		else {
 			float	R	= fRadius+L.range;
@@ -86,8 +86,8 @@ void	CLightDB_Static::Track	(IRenderable* O)
 	for (; I!=E; I++)
 	{
 		float	amount	= 0;
-		xrLIGHT& xrL	= Lights[I->id];
-		Fvector& LP		= xrL.position;
+		Flight&		xrL	= Lights[I->id]->data;
+		Fvector&	LP	= xrL.position;
 
 		for (int it=0; it<1; it++)
 		{

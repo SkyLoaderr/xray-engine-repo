@@ -168,7 +168,7 @@ public:
 
 	bool 			    Pick			(float& dist, const Fvector& S, const Fvector& D, const Fmatrix& parent);
 
-    void			    Select			(BOOL flag){flags.set(flSelected,flag);}
+    void			    Select			(BOOL flag)	{ flags.set(flSelected,flag); }
     bool			    Selected		(){return flags.is(flSelected);}
 
     void			    ClampByLimits	();
