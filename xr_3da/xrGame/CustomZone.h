@@ -64,29 +64,30 @@ public:
 	CCustomZone(void);
 	virtual ~CCustomZone(void);
 
-	virtual BOOL net_Spawn(LPVOID DC);
-	virtual void Load(LPCSTR section);
-	virtual void net_Destroy();
+	virtual BOOL	 net_Spawn(LPVOID DC);
+	virtual void	 Load(LPCSTR section);
+	virtual void	 net_Destroy();
 
-	virtual void UpdateCL();
-	virtual void shedule_Update		(u32 dt);
+	virtual void	 UpdateCL();
+	virtual void	 shedule_Update		(u32 dt);
 
-	virtual void feel_touch_new		(CObject* O);
-	virtual void feel_touch_delete	(CObject* O);
-	virtual BOOL feel_touch_contact	(CObject* O);
+	virtual void	feel_touch_new		(CObject* O);
+	virtual void	feel_touch_delete	(CObject* O);
+	virtual BOOL	feel_touch_contact	(CObject* O);
+	virtual float	effective_radius	();
+	virtual float	distance_to_center	(CObject* O);			
+	virtual void	Postprocess		(float val) {}
 
-	virtual void Postprocess		(float val) {}
+	virtual void	OnEvent			(NET_Packet& P, u16 type);
+	virtual void	OnOwnershipTake	(u16 id);
 
-	virtual void OnEvent			(NET_Packet& P, u16 type);
-	virtual void OnOwnershipTake	(u16 id);
-
-	float GetMaxPower() {return m_fMaxPower;}
+			float	GetMaxPower() {return m_fMaxPower;}
 
 	//вычисление силы хита в зависимости от расстояния до центра зоны
 	//относительный размер силы (от 0 до 1)
-	virtual float RelativePower(float dist);
+	virtual float	RelativePower(float dist);
 	//абсолютный размер
-	virtual float Power(float dist);
+	virtual float	Power(float dist);
 
 	virtual CCustomZone	*cast_custom_zone	()	{return this;}
 

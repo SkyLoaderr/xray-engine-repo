@@ -595,11 +595,21 @@ BOOL CCustomZone::feel_touch_contact(CObject* O)
 
 float CCustomZone::RelativePower(float dist)
 {
-	float radius = Radius()*REL_POWER_COEFF;
+	float radius = effective_radius();
 	float power = radius < dist ? 0 : (1.f - m_fAttenuation*(dist/radius)*(dist/radius));
 	return power < 0 ? 0 : power;
 }
+float CCustomZone::effective_radius()
+{
+	return Radius()*REL_POWER_COEFF;
+}
 
+float CCustomZone::distance_to_center(CObject* O)
+{
+	Fvector P; 
+	XFORM().transform_tiny(P,CFORM()->getSphere().P);
+	return P.distance_to(O->Position());
+}
 float CCustomZone::Power(float dist) 
 {
 	return  m_fMaxPower * RelativePower(dist);
