@@ -29,6 +29,7 @@ protected:
 	CTreeCtrl* m_pTree;
 	HTREEITEM m_hRoot, m_hFilesFolder;
 	CImageList m_images;
+	CString working_folder;
 
 // Overrides
 	// ClassWizard generated virtual function overrides

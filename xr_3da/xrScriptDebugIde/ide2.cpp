@@ -112,8 +112,10 @@ BOOL CIdeApp::InitInstance()
 	g_mainFrame->UpdateWindow();
 	
 	LoadIcon(IDR_MAINFRAME);
-	
-	m_ssConnection.b_Connect("","","\\\\X-RAY\\VSS$\\srcsafe.ini");
+
+	CString ss_ini  = 	GetProfileString("options","sSafeIniFile", "\\\\X-RAY\\VSS$\\srcsafe.ini" );
+	if(ss_ini.GetLength()>0)
+		m_ssConnection.b_Connect("","",ss_ini);
 	return TRUE;
 }
 
