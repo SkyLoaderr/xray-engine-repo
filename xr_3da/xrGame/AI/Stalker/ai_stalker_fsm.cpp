@@ -925,7 +925,7 @@ void CAI_Stalker::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 	GetDirectionAngles		(yaw,pitch);
 	yaw						= angle_normalize_signed(-yaw);
 	if (!getAI().bfTooSmallAngle(r_torso_current.yaw,yaw,PI_DIV_6)) {
-		Msg("! Turning to path direction [%f][%f][%f][%f]",r_torso_target.yaw,r_target.yaw,r_torso_current.yaw,r_current.yaw);
+		// Msg("! Turning to path direction [%f][%f][%f][%f]",r_torso_target.yaw,r_target.yaw,r_torso_current.yaw,r_current.yaw);
 		vfSetParameters(tpNodeEvaluator,0,false,eWeaponStateIdle,!tpNodeEvaluator ? ePathTypeStraight : ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eStateTypeNormal,eLookTypeDirection);
 		//r_target.yaw = r_torso_target.yaw;
 	}
