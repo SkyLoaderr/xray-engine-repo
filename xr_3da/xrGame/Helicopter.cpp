@@ -16,6 +16,9 @@ CHelicopter::CHelicopter()
 	m_light_render	= NULL;
 	m_lanim			= NULL;
 
+	ISpatial*		self				=	dynamic_cast<ISpatial*> (this);
+	if (self)		self->spatial.type &=~STYPE_VISIBLEFORAI;;	
+
 }
 
 CHelicopter::~CHelicopter()
