@@ -73,7 +73,7 @@ void CMovementManager::process_level_path()
 				if (CDetailPathManager::completed(Position())) {
 					m_path_state	= ePathStateContinueLevelPath;
 					if (CLevelPathManager::completed())
-						m_path_state	= ePathStateContinueGamePath;
+						m_path_state	= ePathStateSelectLevelVertex;
 				}
 			break;
 		}
