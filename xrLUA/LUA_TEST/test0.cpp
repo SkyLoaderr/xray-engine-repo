@@ -1094,41 +1094,85 @@ struct MI2W : public MI2, public wrap_base
 	}
 };
 
-MI2 *a = 0;
-
 template <typename T>
 struct AW : public T, public wrap_base {};
 
+void test_pointer(luabind::object a)
+{
+	a["a"] = 5;
+	a["b"] = "Ok";
+}
+
+class CLuaValue {
+protected:
+	luabind::object	m_object;
+	LPCSTR			m_name;
+
+public:
+	IC				CLuaValue	(luabind::object &object, LPCSTR name)
+	{
+		m_object	= object;
+		m_name		= name;
+	}
+
+	virtual	void	assign		() = 0;
+};
+
+template <typename _type>
+class CLuaValueWrapper : public CLuaValue {
+private:
+	typedef CLuaValue inherited;
+
+private:
+	_type			m_value;
+
+public:
+	IC				CLuaValueWrapper	(luabind::object &object, LPCSTR name) :
+						inherited		(object,name)
+	{
+	}
+
+	virtual	void	assign		()
+	{
+		m_object[m_name] = m_value;
+	}
+};
+
+class CLuaValueHolder {
+protected:
+	xr_vector<CLuaValue*>	m_values;
+
+public:
+	template <typename T>
+	IC	void	add			(luabind::object object, LPCSTR name)
+	{
+		CLuaValue			*value = 0;
+		xr_vector<CLuaValue*>::const_iterator	I = m_values.begin();
+		xr_vector<CLuaValue*>::const_iterator	E = m_values.end();
+		for ( ; I != E; ++I)
+			if (!xr_strcmp((*I)->name() == name)) {
+				value		= *I;
+				break;
+			}
+
+		if (value)
+			return;
+
+		m_values.push_back	(xr_new<CLuaValueWrapper<T> >(object,name));
+	}
+
+	template <typename T>
+	IC	void	assign		()
+	{
+		xr_vector<CLuaValue*>::iterator	I = m_values.begin();
+		xr_vector<CLuaValue*>::iterator	E = m_values.end();
+		for ( ; I != E; ++I)
+			(*I)->assign	();
+	}
+};
+
 void test1()
 {
-//	registry_test();
-//	broker_test();
-//	abstract_registry_test();
-//	delegate_test();
-//	script_test();
-////	printf	("%s\n",typeid(final::Head).name());
-////	printf	("%s\n",typeid(final::Tail::Head).name());
-////	printf("%s",test_string);
-////	boost::function2<int, CSomeClass*, int>	f;
-//	CSomeClass					instance;
-//	CMemCallbackHolder			holder;
-////	f							= std::bind1st(
-////		std::mem_fun(&CSomeClass::some_function),
-////		&instance
-////	);
-//	holder.OnSomeEvent			= _CLOSURE(CSomeClass::some_function,&instance);//std::bind1st(std::mem_fun(&CSomeClass::some_function),&instance);
-////	f							= ;
-////	f							(&instance,5);
-////	if (holder.OnSomeEvent.empty())
-//	holder.OnSomeEvent.clear	();
-//	if (!holder.OnSomeEvent)
-//		printf					("TRUE\n");
-//	else
-//		printf					("FALSE\n");
-//	holder.OnSomeEvent			(5);
-
-//	delegate_test();
-
 	string4096		SSS;
 	strcpy			(SSS,"");
 	g_ca_stdout		= SSS;
@@ -1146,31 +1190,8 @@ void test1()
 
 	open			(L);
 
-//	module_			game_engine = module(L,"game_engine");
-//	register_smth0	(game_engine);
-//	register_smth1	(game_engine);
-
 	module(L)
 	[
-//		class_<A1>("A1"),
-//		class_<A2,bases<A1> >("A2")
-//		class_<CInternal,CInternalWrapper>("internal")
-//			.def("update", &CInternal::update, &CInternalWrapper::update),
-
-//		class_<CInternal,CInternalWrapper>("internal")
-//			.def(		constructor<>())
-//			.def("update",	&CInternal::update,	&CInternalWrapper::update_static),
-
-//		class_<CExternal,CInternal>("external")
-//			.def(		constructor<>()),
-
-//		class_<CInternalStorage>("internal_storage")
-//			.def("add",	&CInternalStorage::add, adopt(_2))
-//			.def("get",	&CInternalStorage::get),//adopt(return_value)),
-
-//		class_<MI0>("mi0")
-//			.def(constructor<>()),
-
 		class_<MI1>("mi1")
 			.def(constructor<>())
 			.def("add",&MI1::add,adopt(_2)),
@@ -1179,19 +1200,13 @@ void test1()
 			.def(constructor<>())
 			.def("vf",&MI2::vf,&MI2W::vf_static,out_value(_2)),
 
-		set_a("set_a",&set_a),
-		set_a("get_a",&get_a)
-//		def("get_internals",	&get_internals)
-	];
 
-//	registrator().add	(register_classB);
-//	registrator().add	(register_classA);
-//	registrator().script_register(L);
+
+		def("test_pointer",&test_pointer)
+	];
 
 	lua_sethook		(L,hook,LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKCOUNT, 1);
 	lua_dofile		(L,"x:\\heritage_test2.script");
-//	lua_dofile		(L,"x:\\virtual_test.script");
-//	lua_dofile		(L,"x:\\comment_test.script");
 	if (xr_strlen(SSS)) {
 		printf		("\n%s\n",SSS);
 		strcpy		(SSS,"");
@@ -1199,9 +1214,5 @@ void test1()
 		return;
 	}
 
-//	luabind::functor<CClientBaseClass>	_functor;
-//	CScriptEngine::functor("a.b.a.create_lua_class",_functor);
-//	_functor()
-//
 	lua_close		(L);
 }
