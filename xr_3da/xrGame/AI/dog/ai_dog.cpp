@@ -14,8 +14,6 @@ CAI_Dog::CAI_Dog()
 	
 	CurrentState		= stateRest;
 
-	_sd_dog::OnCreate();
-	
 	Init();
 	
 }
@@ -29,8 +27,6 @@ CAI_Dog::~CAI_Dog()
 	xr_delete(stateDetour);
 	xr_delete(statePanic);
 	xr_delete(stateExploreNDE);
-
-	_sd_dog::OnDestroy();
 }
 
 
@@ -61,7 +57,7 @@ void CAI_Dog::Load(LPCSTR section)
 	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimWalkFwd,	eAnimWalkDamaged);
 	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimStandIdle,	eAnimStandDamaged);
 	
-	START_LOAD_SHARED();
+	BEGIN_LOAD_SHARED_MOTION_DATA();
 
 	// define animation set
 	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, 0,										0,									PS_STAND);
@@ -133,16 +129,10 @@ void CAI_Dog::Load(LPCSTR section)
 	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 600,	800,	center,		2.5f, inherited::_sd->m_fHitPower, 0.f, 0.f);
 	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 600,	700,	center,		1.5f, inherited::_sd->m_fHitPower, 0.f, 0.f);
 
-	STOP_LOAD_SHARED();
+	END_LOAD_SHARED_MOTION_DATA();
 
-
-	SHARE_ON_LOAD(_sd_dog);
 }
 
-void CAI_Dog::LoadShared(LPCSTR section)
-{
-	_sd_dog::_sd->real_speed	= 0.5f;
-}
 
 
 void CAI_Dog::StateSelector()

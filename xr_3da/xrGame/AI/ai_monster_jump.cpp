@@ -44,9 +44,6 @@ void CJumping::AddState(CMotionDef *motion, EJumpStateType type, bool change, fl
 
 void CJumping::Start()
 {
-	Msg("START:: Monster Pos = [%f,%f,%f], cur_time = [%i]", VPUSH(pMonster->Position()), pMonster->m_dwCurrentTime);
-	Msg("START:: Starting, cur_time = [%i]", pMonster->m_dwCurrentTime);
-	
 	ptr_cur		= bank.begin();
 	cur_motion	= 0;
 	active		= true;
@@ -60,9 +57,6 @@ void CJumping::Stop()
 {
 	active = false;
 		
-	Msg("STOP:: Monster Pos = [%f,%f,%f], cur_time = [%i]", VPUSH(pMonster->Position()), pMonster->m_dwCurrentTime);
-	Msg("STOP:: Stopped, cur_time = [%i]", pMonster->m_dwCurrentTime);
-
 	OnJumpStop();
 }
 // вызывается на каждом SelectAnimation
@@ -76,7 +70,6 @@ bool CJumping::PrepareAnimation(CMotionDef **m)
 // вызывается по окончанию анимации
 void CJumping::OnAnimationEnd()
 {
-	Msg("Animation Ended!!!, cur_time = [%i]", pMonster->m_dwCurrentTime);
 	if (ptr_cur->change) NextState();
 }
 
@@ -84,13 +77,10 @@ void CJumping::ApplyParams()
 {
 	pMonster->m_fCurSpeed		= ptr_cur->speed.linear;
 	pMonster->r_torso_speed		= ptr_cur->speed.angular;
-	Msg("Apply params..., cur_time = [%i] angular speed = [%f]", pMonster->m_dwCurrentTime, pMonster->r_torso_speed);
 }
 
 void CJumping::NextState()
 {
-	Msg("Next state..., cur_time = [%i]", pMonster->m_dwCurrentTime);
-
 	ptr_cur++;
 	if (ptr_cur == bank.end()) {
 		Stop();
@@ -105,7 +95,6 @@ void CJumping::NextState()
 
 void CJumping::Execute()
 {
-	Msg("EXEC:: Executing phisical jump..., cur_time = [%i]", pMonster->m_dwCurrentTime);
 	if (entity) {
 		// установить целевую точку 
 		u16 bone_id = PKinematics(entity->Visual())->LL_BoneID("bip01_head");
@@ -122,7 +111,6 @@ void CJumping::Execute()
 	ph_time = pMonster->Movement.JumpMinVelTime(target_pos);
 	// выполнить прыжок в соответствии с делителем времени
 	pMonster->Movement.Jump(target_pos,ph_time/m_fJumpFactor);
-	Msg("EXEC:: Traget pos [%f,%f,%f], cur_time = [%i]", VPUSH(target_pos), pMonster->m_dwCurrentTime);
 
 	time_started		= pMonster->m_dwCurrentTime;
 	time_next_allowed	= time_started + m_dwDelayAfterJump;

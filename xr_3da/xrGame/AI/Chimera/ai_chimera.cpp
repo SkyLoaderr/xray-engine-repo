@@ -78,23 +78,23 @@ void CAI_Chimera::Load(LPCSTR section)
 {
 	inherited::Load(section);
 
-	START_LOAD_SHARED();
+	BEGIN_LOAD_SHARED_MOTION_DATA();
 
 	// define animation set
-	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, 0,						0,							PS_STAND);
-	MotionMan.AddAnim(eAnimLieIdle,			"lie_idle_",			-1, 0,						0,							PS_LIE);
-	MotionMan.AddAnim(eAnimSleep,			"lie_idle_",			-1, 0,						0,							PS_LIE);
-	MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, _sd->m_fsWalkFwdNormal,	_sd->m_fsWalkAngular,		PS_STAND);
-	MotionMan.AddAnim(eAnimWalkTurnLeft,	"stand_walk_ls_",		-1, _sd->m_fsWalkTurn,		_sd->m_fsWalkTurnAngular,	PS_STAND);
-	MotionMan.AddAnim(eAnimWalkTurnRight,	"stand_walk_rs_",		-1, _sd->m_fsWalkTurn,		_sd->m_fsWalkTurnAngular,	PS_STAND);
-	MotionMan.AddAnim(eAnimRun,				"stand_run_",			-1,	_sd->m_fsRunFwdNormal,	_sd->m_fsRunAngular,		PS_STAND);
-	MotionMan.AddAnim(eAnimRunTurnLeft,		"stand_run_ls_",		-1,	_sd->m_fsRunTurn,		_sd->m_fsRunTurnAngular,	PS_STAND);
-	MotionMan.AddAnim(eAnimRunTurnRight,	"stand_run_rs_",		-1,	_sd->m_fsRunTurn,		_sd->m_fsRunTurnAngular,	PS_STAND);
-	MotionMan.AddAnim(eAnimEat,				"lie_eat_",				-1, 0,						0,							PS_LIE);
-	MotionMan.AddAnim(eAnimStandLieDown,	"stand_lie_down_",		-1, 0,						0,							PS_STAND);
-	MotionMan.AddAnim(eAnimLieStandUp,		"lie_stand_up_",		-1, 0,						0,							PS_LIE);
-	MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, 0,						_sd->m_fsRunAngular,		PS_STAND);
-	MotionMan.AddAnim(eAnimJump,			"jump_",				 0, 0,						_sd->m_fsRunAngular*3,		PS_STAND);
+	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, 0,									0,										PS_STAND);
+	MotionMan.AddAnim(eAnimLieIdle,			"lie_idle_",			-1, 0,									0,										PS_LIE);
+	MotionMan.AddAnim(eAnimSleep,			"lie_idle_",			-1, 0,									0,										PS_LIE);
+	MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, inherited::_sd->m_fsWalkFwdNormal,	inherited::_sd->m_fsWalkAngular,		PS_STAND);
+	MotionMan.AddAnim(eAnimWalkTurnLeft,	"stand_walk_ls_",		-1, inherited::_sd->m_fsWalkTurn,		inherited::_sd->m_fsWalkTurnAngular,	PS_STAND);
+	MotionMan.AddAnim(eAnimWalkTurnRight,	"stand_walk_rs_",		-1, inherited::_sd->m_fsWalkTurn,		inherited::_sd->m_fsWalkTurnAngular,	PS_STAND);
+	MotionMan.AddAnim(eAnimRun,				"stand_run_",			-1,	inherited::_sd->m_fsRunFwdNormal,	inherited::_sd->m_fsRunAngular,			PS_STAND);
+	MotionMan.AddAnim(eAnimRunTurnLeft,		"stand_run_ls_",		-1,	inherited::_sd->m_fsRunTurn,		inherited::_sd->m_fsRunTurnAngular,		PS_STAND);
+	MotionMan.AddAnim(eAnimRunTurnRight,	"stand_run_rs_",		-1,	inherited::_sd->m_fsRunTurn,		inherited::_sd->m_fsRunTurnAngular,		PS_STAND);
+	MotionMan.AddAnim(eAnimEat,				"lie_eat_",				-1, 0,									0,										PS_LIE);
+	MotionMan.AddAnim(eAnimStandLieDown,	"stand_lie_down_",		-1, 0,									0,										PS_STAND);
+	MotionMan.AddAnim(eAnimLieStandUp,		"lie_stand_up_",		-1, 0,									0,										PS_LIE);
+	MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, 0,									inherited::_sd->m_fsRunAngular,			PS_STAND);
+	MotionMan.AddAnim(eAnimJump,			"jump_",				 0, 0,									inherited::_sd->m_fsRunAngular*3,		PS_STAND);
 
 	// define transitions
 	// order : 1. [anim -> anim]	2. [anim->state]	3. [state -> anim]		4. [state -> state]
@@ -124,13 +124,13 @@ void CAI_Chimera::Load(LPCSTR section)
 	left_side.set	(-0.3f,0.f,0.f);
 	right_side.set	(0.3f,0.f,0.f);
 
-	MotionMan.AA_PushAttackAnim(eAnimAttack, 0, 700,	800,	center,		2.f, _sd->m_fHitPower, 0.f, 0.f);
-	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 500,	600,	right_side, 2.5f, _sd->m_fHitPower, 0.f, 0.f);
-	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 600,	700,	center,		2.5f, _sd->m_fHitPower, 0.f, 0.f);
-	MotionMan.AA_PushAttackAnim(eAnimAttack, 3, 800,	900,	left_side,	1.0f, _sd->m_fHitPower, 0.f, 0.f);
-	MotionMan.AA_PushAttackAnim(eAnimAttack, 5, 1500, 1600,	right_side, 2.0f, _sd->m_fHitPower, 0.f, 0.f);
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 0, 700,	800,	center,		2.f,	inherited::_sd->m_fHitPower, 0.f, 0.f);
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 500,	600,	right_side, 2.5f,	inherited::_sd->m_fHitPower, 0.f, 0.f);
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 600,	700,	center,		2.5f,	inherited::_sd->m_fHitPower, 0.f, 0.f);
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 3, 800,	900,	left_side,	1.0f,	inherited::_sd->m_fHitPower, 0.f, 0.f);
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 5, 1500,	1600,	right_side, 2.0f,	inherited::_sd->m_fHitPower, 0.f, 0.f);
 
-	STOP_LOAD_SHARED();
+	END_LOAD_SHARED_MOTION_DATA();
 }
 
 

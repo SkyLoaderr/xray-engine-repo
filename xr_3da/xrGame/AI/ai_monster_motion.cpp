@@ -7,12 +7,12 @@
 
 CMotionManager::CMotionManager() 
 {
-	pSharedObj	= CSharedObj<_motion_shared>::Instance();
+	CSharedClass<_motion_shared>::OnCreate();
 }
 
 CMotionManager::~CMotionManager()
 {
-	pSharedObj->FreeInst();
+	CSharedClass<_motion_shared>::OnDestroy();
 }
 
 
@@ -35,11 +35,6 @@ void CMotionManager::Init (CAI_Biting	*pM)
 	Seq_Init				();
 
 	AA_Clear				();
-}
-
-void CMotionManager::PrepareSharing()
-{
-	_sd = pSharedObj->get_shared(pMonster->SUB_CLS_ID);
 }
 
 // Загрузка параметров анимации. Вызывать необходимо на Monster::Load
@@ -535,9 +530,16 @@ EPState	CMotionManager::GetState (EMotionAnim a)
 	return item_it->second.pos_state;
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
-// Other
-/////////////////////////////////////////////////////////////////////////////////////////////////
+
+void CMotionManager::PrepareSharing()
+{
+	CSharedClass<_motion_shared>::Prepare(pMonster->SUB_CLS_ID);
+}
+
+void CMotionManager::NotifyShareLoaded() 
+{
+	CSharedClass<_motion_shared>::Finish();
+}
 
 void CMotionManager::ForceAnimSelect() 
 {
@@ -550,6 +552,8 @@ void CMotionManager::UpdateVisual()
 	pVisual = pMonster->Visual();
 	LoadVisualData();
 }	
+
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // Scripting

@@ -60,9 +60,6 @@ typedef VisionElem SEnemy;
 
 extern u32		mem_used;
 
-#define START_LOAD_SHARED() {MotionMan.PrepareSharing();}
-#define STOP_LOAD_SHARED() {MotionMan.NotifyShareLoaded();}
-
 
 class _biting_shared : public CSharedResource {
 public:
@@ -124,12 +121,15 @@ public:
 	u32						m_dwDayTimeEnd;
 	float					m_fMinSatiety;
 	float					m_fMaxSatiety;
+	// ----------------------------------------------------------- 
 
-	// Other fields
 	float					m_fSoundThreshold;
 	float					m_fHitPower;
 
 };
+
+#define BEGIN_LOAD_SHARED_MOTION_DATA() {MotionMan.PrepareSharing();}
+#define END_LOAD_SHARED_MOTION_DATA()	{MotionMan.NotifyShareLoaded();}
 
 #define SHARE_ON_LOAD(pmt) {							\
 		pmt::Prepare(SUB_CLS_ID);						\

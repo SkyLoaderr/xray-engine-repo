@@ -6,7 +6,6 @@
 
 class		CAI_Biting;
 class		CJumping;
-class		CSharedResource;
 
 typedef		ref_str			anim_string;
 
@@ -197,18 +196,13 @@ public:
 };
 
 //////////////////////////////////////////////////////////////////////////
-class CMotionManager {
-	
+class CMotionManager : public CSharedClass<_motion_shared> {
+
 	REPLACED_ANIM			m_tReplacedAnims;	// анимации подмены
 	
-	// sharing
-	_motion_shared				*_sd;
-	CSharedObj<_motion_shared>	*pSharedObj;
-
 	CAI_Biting				*pMonster;
 	CJumping				*pJumping;
 	IRender_Visual			*pVisual;
-
 
 	// работа с последовательностями
 	SEQ_VECTOR				seq_states;
@@ -266,7 +260,7 @@ public:
 	// -------------------------------------
 
 	void		PrepareSharing			(); 
-	void		NotifyShareLoaded		() {_sd->SetLoad();}
+	void		NotifyShareLoaded		(); 
 	
 	// -------------------------------------- 	
 	
@@ -336,5 +330,6 @@ public:
 
 
 };
+
 
 
