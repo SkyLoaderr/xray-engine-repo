@@ -738,6 +738,7 @@ CScriptMonsterHitInfo CScriptGameObject::GetMonsterHitInfo()
 //////////////////////////////////////////////////////////////////////////
 void  CScriptGameObject::set_body_state			(EBodyState body_state)
 {
+	VERIFY						((body_state == eBodyStateStand) || (body_state == eBodyStateCrouch));
 	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
 	if (!stalker)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
