@@ -983,6 +983,7 @@ Health			     = 15			; option for ALife Simulator
 MinSpeed		     = 1.0			; option for ALife Simulator
 MaxSpeed		     = 1.5			; option for ALife Simulator
 going_speed                  = 1.0                      ; option for ALife Simulator
+retreat_threshold			 = 0.2
 
 cform                        = skeleton			; collision class
 class                        = AI_RAT			; AI class
@@ -3870,7 +3871,7 @@ ph_skel_fatal_impulse_factor =7.0
 SoundThreshold		 = 0.06						; range [0..1]
 
 EyeFov				 = 80
-EyeRange			 = 30
+eye_range			 = 30
 
 HitPower			 = 30.0
 
@@ -3959,7 +3960,7 @@ ph_skel_fatal_impulse_factor =7.0
 SoundThreshold		 = 0.06             ; range [0..1]
 
 EyeFov				 = 100;
-EyeRange			 = 70;
+eye_range			 = 70;
 
 HitPower			 = 70.0;
 
@@ -4051,7 +4052,7 @@ ph_skel_fatal_impulse_factor =7.0
 SoundThreshold		 = 0.06             ; range [0..1]
 
 EyeFov				 = 100;
-EyeRange			 = 70;
+eye_range			 = 70;
 
 HitPower			 = 70.0;
 
@@ -4286,4 +4287,4 @@ class			= LVLPOINT
     switch_delay			= 1000											; milliseconds
     time_factor				= 1.0											; 
     preknown_artefacts		= af_magnet										; artefact sections
-    max_battle_iteration_count = 10											; maximum battle iteration count
+    max_combat_iteration_count = 10											; maximum combat iteration count

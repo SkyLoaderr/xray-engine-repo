@@ -103,7 +103,7 @@ void CAI_Biting::Load(LPCSTR section)
 
 	// loading frustum parameters
 	eye_fov							= pSettings->r_float(section,"EyeFov");
-	eye_range						= pSettings->r_float(section,"EyeRange");
+	eye_range						= pSettings->r_float(section,"eye_range");
 	m_fSoundThreshold				= pSettings->r_float (section,"SoundThreshold");
 
 	m_dwHealth						= pSettings->r_u32   (section,"Health");
