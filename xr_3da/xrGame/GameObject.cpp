@@ -157,6 +157,13 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 			}
 		}
 	}
+	else {
+		CGameObject* O	= dynamic_cast<CGameObject*>(H_Root());
+		VERIFY						(O);
+		Position().set				(O->Position());
+		AI_NodeID					= O->AI_NodeID;
+		AI_Node						= O->AI_Node;
+	}
 
 #pragma todo("Oles to Dima: Incorrect spawning, just hackery?")
 #pragma todo("Dima to Oles: Parent will be assigned after object's net_spawn, though I need it filled correctly during net_spawn to prevent illegal node ref_add/ref_dec in the sector_detect")
@@ -187,7 +194,7 @@ void CGameObject::spatial_move		()
 //		Msg							("REF_DEC (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] - 1);
 //		AI.ref_dec					(AI_NodeID);
 
-		//Position().set				(O->Position());
+		Position().set				(O->Position());
 		AI_NodeID					= O->AI_NodeID;
 //		Msg							("REF_ADD (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] + 1);
 //		AI.ref_add					(AI_NodeID);
