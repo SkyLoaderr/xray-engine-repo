@@ -30,6 +30,7 @@ public:
 
 	COMotion*			Play			(bool bLoop, LPCSTR name=0);
 	void				Stop			();
+	IC BOOL				IsPlaying		(){return m_MParam.bPlay;}
 
     IC const Fmatrix&	XFORM			(){return m_XFORM;}
 	
