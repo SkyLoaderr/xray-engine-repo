@@ -39,6 +39,7 @@ BOOL CPhysicObject::net_Spawn(CSE_Abstract* DC)
 	CPHSkeleton::Spawn(e);
 	setVisible(true);
 	setEnabled(true);
+	if(!PPhysicsShell()->isBreakable())shedule_unregister();
 	return TRUE;
 }
 
@@ -81,6 +82,7 @@ void CPhysicObject::CreatePhysicsShell(CSE_Abstract* e)
 {
 	CSE_ALifeObjectPhysic	*po	= smart_cast<CSE_ALifeObjectPhysic*>(e);
 	CreateBody(po);
+	
 }
 
 void CPhysicObject::CreateSkeleton(CSE_ALifeObjectPhysic* po)
