@@ -177,7 +177,7 @@ void CBuild::Load	(const b_params& Params, const CStream& _in_FS)
 		{
 			F = FS.OpenChunk(EB_Light_static);
 			b_light_static	temp;
-			u32 cnt		= F->Length()/sizeof(temp);
+			u32 cnt			= F->Length()/sizeof(temp);
 			for				(i=0; i<cnt; i++)
 			{
 				R_Light		RL;
