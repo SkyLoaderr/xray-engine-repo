@@ -90,6 +90,8 @@ class CAI_Hen : public CCustomMonster
 		void Pursuit();
 		void Retreat();
 		void Cover();
+		IC bool bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
+		bool bfCheckPath(AI::Path &Path,MemberNodes &taMembers);
 	
 		CHenSelectorAttack		SelectorAttack;
 		CHenSelectorFreeHunting SelectorFreeHunting;
@@ -99,7 +101,7 @@ class CAI_Hen : public CCustomMonster
 
 		void SetLessCoverLook(NodeCompressed *tNode);
 	public:
-					  CAI_Hen();
+					   CAI_Hen();
 		virtual		  ~CAI_Hen();
 		virtual void  Update(DWORD DT);
 		virtual void  HitSignal(int amount, Fvector& vLocalDir, CEntity* who);

@@ -167,7 +167,7 @@ void CAI_Rat::SelectEnemy(SEnemySelected& S)
 	}
 }
 
-IC bool bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint) {
+IC bool CAI_Rat::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint) {
 	Fvector tMemberDirection;
 	tMemberDirection.x = tMyPoint.x - tMemberPoint.x;
 	tMemberDirection.y = tMyPoint.y - tMemberPoint.y;
@@ -451,7 +451,7 @@ void CAI_Rat::Die()
 	bStopThinking = true;
 }
 
-bool bfCheckPath(AI::Path &Path,MemberNodes &taMembers) {
+bool CAI_Rat::bfCheckPath(AI::Path &Path,MemberNodes &taMembers) {
 	for (int i=0; i<Path.Nodes.size(); i++) 
 		for (int j=0; j<taMembers.size(); j++)
 			if (Path.Nodes[i] == taMembers[j])

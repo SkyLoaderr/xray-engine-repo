@@ -90,6 +90,8 @@ class CAI_Rat : public CCustomMonster
 		void Pursuit();
 		void Retreat();
 		void Cover();
+		IC bool bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
+		bool bfCheckPath(AI::Path &Path,MemberNodes &taMembers);
 	
 		CRatSelectorAttack		SelectorAttack;
 		CRatSelectorFreeHunting SelectorFreeHunting;
@@ -99,7 +101,7 @@ class CAI_Rat : public CCustomMonster
 
 		void SetLessCoverLook(NodeCompressed *tNode);
 	public:
-					  CAI_Rat();
+					   CAI_Rat();
 		virtual		  ~CAI_Rat();
 		virtual void  Update(DWORD DT);
 		virtual void  HitSignal(int amount, Fvector& vLocalDir, CEntity* who);
