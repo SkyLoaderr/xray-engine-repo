@@ -530,17 +530,19 @@ function action_commander:exec_radio_talk()
             self.decision = true
         end
     else
-        self.object:clear_animations()
-        self:stop()
-
-        self:radio()
-
         self.object:set_item( object.idle, nil )
         self.object:set_sight( look.direction, self.object:direction(), 0 ) -- против глюка
 
-        self.sub_act = true
+        if not xr_state.change_state( self.object, 0 ) then
+            self.object:clear_animations()
+--            self:stop()
 
-        printf( "[commander] : radio_talk" )
+            self:radio()
+
+            self.sub_act = true
+
+            printf( "[commander] : radio_talk" )
+       end
     end
 end
 
