@@ -31,6 +31,7 @@ public:
 	str_value*			dock			(str_c value);
 	void				clean			();
 	void				dump			();
+	void				verify			();
 	u32					stat_economy	();
 						~str_container	();
 };

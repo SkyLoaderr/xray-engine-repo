@@ -75,6 +75,9 @@ void	xrMemory::dbg_check		()
 {
 	if (!debug_mode)		return;
 
+	// Check RO strings
+	g_pStringContainer->verify	();
+
 	// Check overrun
 	debug_cs.Enter			();
 	debug_mode				= FALSE;
@@ -84,17 +87,17 @@ void	xrMemory::dbg_check		()
 			continue;
 
 		// check header
-		// R_ASSERT2		(get_header(debug_info[it]._p)==get_pool(debug_info[it]._size),"Memory block header corrupted");
+		R_ASSERT2			(get_header(debug_info[it]._p)==get_pool(debug_info[it]._size),"CorePanic: Memory block header corrupted");
 
 		// check footer
 		u8*			_ptr	= (u8*)	debug_info[it]._p;
 		u32*		_shred	= (u32*)(_ptr + debug_info[it]._size);
-		R_ASSERT2			(u32(-1)==*_shred, "Memory overrun error");
+		R_ASSERT2			(u32(-1)==*_shred, "CorePanic: Memory overrun error");
 	}
 
 	// crt-check
-	R_ASSERT2(_HEAPOK==_heapchk(),					"CRT heap corruption");
-	R_ASSERT2(HeapValidate(GetProcessHeap(),0,0),	"Win32 heap corruption");
+	R_ASSERT2(_HEAPOK==_heapchk(),					"CorePanic: CRT heap corruption");
+	R_ASSERT2(HeapValidate(GetProcessHeap(),0,0),	"CorePanic: Win32 heap corruption");
 
 	// leave
 	debug_mode				= TRUE;
