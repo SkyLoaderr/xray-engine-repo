@@ -214,7 +214,7 @@ function Trader:animation()
             self.mem.anim_snd = nil
             self.mem.repeats = 0                           //'ѕосле звука выбираем новую анимацию, старую не повтор€ем
 //'            printf( "Play anim with sound. Phrase %s", self.mem.anim_snd )
-            printf( "Play anim with sound. Anim   %s", self.mem.last_anim )
+//'            printf( "Play anim with sound. Anim   %s", self.mem.last_anim )
         end
     else
      //'”станавливаем торговца в нужное положение
@@ -282,7 +282,7 @@ function t_OnStart:sound()
 
     if( self.curState == waiting_come ) then
         if( device():time_global() > self.mem.time + 10000 ) then
-            printf( "Device time %d   need_time %d", device():time_global(), self.mem.time + 10000)
+//'            printf( "Device time %d   need_time %d", device():time_global(), self.mem.time + 10000)
             self.mem.anim_snd  =  Come_To_Mee2
             self.mem.time      = device():time_global()
         end
@@ -290,7 +290,7 @@ function t_OnStart:sound()
 
     if( self.curState == come_to_me ) then
         if( device():time_global() > self.mem.time + 10000 ) then
-            printf( "Device time %d   need_time %d", device():time_global(), self.mem.time + 10000)
+//'            printf( "Device time %d   need_time %d", device():time_global(), self.mem.time + 10000)
             self.mem.anim_snd  = Come_To_Mee1
             self.mem.time      = device():time_global()
             self.curState      = waiting_come
@@ -298,7 +298,7 @@ function t_OnStart:sound()
     end
 
     if( self.curState == telling ) then
-        printf( "Tell" )
+//'        printf( "Tell" )
         self.mem.anim_snd  = Story1
         self.curState      = waiting
         self.mem.last_anim = "vstuplenie"
@@ -333,7 +333,7 @@ function t_OnStart:set_anim()
 	if( self.mem.repeats == 0 or self.mem.anim_snd ~= nil ) then
         if( self.mem.anim_snd == nil ) then
 	        self.mem.last_anim  = "idle"
-            printf( "idle animation " )
+//'            printf( "idle animation " )
             self.mem.repeats    = 3
         else
 	        self.mem.repeats    = 0
@@ -371,7 +371,7 @@ function t_Life:__init( memory, pos )
     self.mem.enter_time = device():time_global()
     self.choise   		= 2
     self.phrase   		= 2
-    printf( "Init t_Life" )
+//'    printf( "Init t_Life" )
     self.mem.repeats 	= 0
     self.mem.need_reset = true
     self.position       = pos
@@ -404,7 +404,7 @@ function t_Life:set_anim()
 		end
          if( self.mem.repeats < 1 ) then             //'нуждую анимацию и звук, в противном случае false,  и нам надо установить анимацию
             //'јктер уже целую минуту тут
-            printf( "Device time = %d  enter_time %d", device():time_global(), self.mem.enter_time + 60000 )
+//'            printf( "Device time = %d  enter_time %d", device():time_global(), self.mem.enter_time + 60000 )
             if( device():time_global() > self.mem.enter_time + 60000 ) then
 
                 if( self.choise ~= 5 ) then
@@ -513,7 +513,6 @@ function t_Life:sound_with_anim()
             self.mem.time         	  = device():time_global() + 30000
 	        return true
         end
-        printf( "%d", monsters.ini.bring_trader )
         self.mem.new_state    = idle
     end
 
