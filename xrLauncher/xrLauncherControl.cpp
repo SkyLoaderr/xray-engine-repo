@@ -68,7 +68,7 @@ void xrLauncherControl::InitSoundPage()
 {
 	CConsole* con = ::Console;
 	int  ival=0, imin=0, imax=0;
-	float  fval=.0f, fmin=.0f, fmax=.0f;
+//	float  fval=.0f, fmin=.0f, fmax=.0f;
 	int  bval=false;
 
 	con->GetBool( SND_ACCEL, bval);
@@ -95,8 +95,7 @@ void xrLauncherControl::ApplySoundPage()
 	if(!SoundChanged())
 		return;
 	string256 buff;
-	int  ival=0, imin=0, imax=0;
-	float  fval=.0f, fmin=.0f, fmax=.0f;
+	int  ival=0;
 	int  bval=false;
 	CConsole* con = ::Console;
 	Log("ApplySoundPage -sndAccelCheck");
@@ -136,7 +135,6 @@ bool xrLauncherControl::SoundChanged()
 {
 	Log("SoundChanged - begin");
 	int  ival=0, imin=0, imax=0;
-	float  fval=.0f, fmin=.0f, fmax=.0f;
 	int  bval=false;
 	CConsole* con = ::Console;
 
@@ -174,7 +172,6 @@ bool xrLauncherControl::SoundChanged()
 void xrLauncherControl::InitRenderPage()
 {
 	int  ival=0, imin=0, imax=0;
-	float  fval=.0f, fmin=.0f, fmax=.0f;
 	int  bval=false;
 	CConsole* con = ::Console;
 	string16 sss;
@@ -207,8 +204,7 @@ void xrLauncherControl::ApplyRenderPage()
 {
 	Log("ApplyRenderPage - begin");
 	string256 buff;
-	int  ival=0, imin=0, imax=0;
-	float  fval=.0f, fmin=.0f, fmax=.0f;
+	int  ival=0;
 	int  bval=false;
 	CConsole* con = ::Console;
 
@@ -277,7 +273,6 @@ bool xrLauncherControl::RenderChanged()
 {
 	Log("RenderChanged - begin");
 	int  ival=0, imin=0, imax=0;
-	float  fval=.0f, fmin=.0f, fmax=.0f;
 	int  bval=false;
 	CConsole* con = ::Console;
 

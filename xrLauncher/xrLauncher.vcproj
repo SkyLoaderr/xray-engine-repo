@@ -112,6 +112,72 @@
 			<Tool
 				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
+		<Configuration
+			Name="Mixed|Win32"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="2"
+			CharacterSet="2"
+			ManagedExtensions="TRUE">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="3"
+				GlobalOptimizations="TRUE"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="TRUE"
+				FavorSizeOrSpeed="1"
+				EnableFiberSafeOptimizations="TRUE"
+				OptimizeForProcessor="3"
+				PreprocessorDefinitions="DEBUG,MIXED,WIN32;NDEBUG;_WINDOWS;_USRDLL;dSINGLE;MSVC"
+				StringPooling="TRUE"
+				MinimalRebuild="FALSE"
+				RuntimeLibrary="2"
+				BufferSecurityCheck="FALSE"
+				RuntimeTypeInfo="TRUE"
+				UsePrecompiledHeader="3"
+				AssemblerListingLocation="Mixed\"
+				ObjectFile="Mixed\"
+				ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"
+				WarningLevel="4"
+				Detect64BitPortabilityProblems="TRUE"
+				DebugInformationFormat="3"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalOptions="/noentry"
+				AdditionalDependencies="xrCore.lib xr_3da.lib"
+				OutputFile="x:\xrLauncher.dll"
+				LinkIncremental="1"
+				SuppressStartupBanner="TRUE"
+				GenerateDebugInformation="TRUE"
+				GenerateMapFile="TRUE"
+				MapFileName=".\Mixed/xrLauncher.map"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				TargetMachine="1"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
 	</Configurations>
 	<References>
 		<AssemblyReference
@@ -145,6 +211,12 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="1"/>
@@ -202,6 +274,12 @@
 							Name="VCManagedResourceCompilerTool"
 							ResourceFileName="$(IntDir)/xrLauncher.xrLauncher_about_dlg.resources"/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Mixed|Win32">
+						<Tool
+							Name="VCManagedResourceCompilerTool"
+							ResourceFileName="$(IntDir)/xrLauncher.xrLauncher_about_dlg.resources"/>
+					</FileConfiguration>
 				</File>
 			</File>
 			<File
@@ -217,6 +295,12 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32">
+						<Tool
+							Name="VCManagedResourceCompilerTool"
+							ResourceFileName="$(IntDir)/xrLauncher.xrLauncher_benchmark_frm.resources"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Mixed|Win32">
 						<Tool
 							Name="VCManagedResourceCompilerTool"
 							ResourceFileName="$(IntDir)/xrLauncher.xrLauncher_benchmark_frm.resources"/>
@@ -240,6 +324,12 @@
 							Name="VCManagedResourceCompilerTool"
 							ResourceFileName="$(IntDir)/xrLauncher.xrLauncher_benchmark_res_frm.resources"/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Mixed|Win32">
+						<Tool
+							Name="VCManagedResourceCompilerTool"
+							ResourceFileName="$(IntDir)/xrLauncher.xrLauncher_benchmark_res_frm.resources"/>
+					</FileConfiguration>
 				</File>
 			</File>
 			<File
@@ -255,6 +345,12 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32">
+						<Tool
+							Name="VCManagedResourceCompilerTool"
+							ResourceFileName="$(IntDir)/xrLauncher.xrLauncher_main_frm.resources"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Mixed|Win32">
 						<Tool
 							Name="VCManagedResourceCompilerTool"
 							ResourceFileName="$(IntDir)/xrLauncher.xrLauncher_main_frm.resources"/>
@@ -277,6 +373,12 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32">
+						<Tool
+							Name="VCManagedResourceCompilerTool"
+							ResourceFileName="$(IntDir)/xrLauncher.xrLauncherControl.resources"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Mixed|Win32">
 						<Tool
 							Name="VCManagedResourceCompilerTool"
 							ResourceFileName="$(IntDir)/xrLauncher.xrLauncherControl.resources"/>
