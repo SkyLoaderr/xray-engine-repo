@@ -73,6 +73,11 @@ void CHUDManager::OnMove()
 //--------------------------------------------------------------------
 
 ENGINE_API extern float psHUD_FOV;
+
+void CHUDManager::Render_Calcualte()
+{
+}
+
 void CHUDManager::Render_Affected()
 {
 	if (pUI) pCreator->CurrentViewEntity()->OnHUDDraw	(this);

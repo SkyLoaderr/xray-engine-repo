@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "3DSound.h"
 #include "xr_sndman.h"
+#include "xr_creator.h"
 
 extern	DWORD			psSoundModel;
 extern	DWORD			psSoundFreq;
@@ -96,6 +97,12 @@ void C3DSound::Update_Occlusion()
 	}
 }
 
+void C3DSound::PropagadeEvent()
+{
+	dwTimeToPropagade		+= soundEventPulse;
+	if (0==pCreator)		return;
+}
+
 void C3DSound::OnMove		()
 {
 	DWORD	dwTime			= Device.TimerAsync	();
@@ -121,6 +128,8 @@ void C3DSound::OnMove		()
 				// SIMULATE
 				dwState				= bMustLoop?stSimulatingLooped:stSimulating;
 			}
+			dwTimeToPropagade		= dwTime;
+			PropagadeEvent			();
 		}
 		break;
 	case stPlaying:
@@ -135,6 +144,7 @@ void C3DSound::OnMove		()
 				bNeedUpdate					=	true;				// signal to APPLY changes
 				dwState						=	stSimulating;		// switch state
 			}
+			if (dwTime>=dwTimeToPropagade)		PropagadeEvent();
 		}
 		break;
 	case stSimulating:
@@ -150,6 +160,7 @@ void C3DSound::OnMove		()
 				bNeedUpdate					=	true;				// signal to APPLY changes
 				dwState						=	stPlaying;			// switch state
 			}
+			if (dwTime>=dwTimeToPropagade)		PropagadeEvent();
 		}
 		break;
 	case stPlayingLooped:
@@ -167,6 +178,7 @@ void C3DSound::OnMove		()
 				dwState						=	stSimulatingLooped;	// switch state
 			}
 		}
+		if (dwTime>=dwTimeToPropagade)		PropagadeEvent();
 		break;
 	case stSimulatingLooped:
 		if (dwTime>=dwTimeToStop)	{
@@ -183,6 +195,7 @@ void C3DSound::OnMove		()
 				dwState						=	stPlayingLooped;	// switch state
 			}
 		}
+		if (dwTime>=dwTimeToPropagade)		PropagadeEvent();
 		break;
 	}
 	Update_Params		();
@@ -234,5 +247,6 @@ void C3DSound::Rewind		()
 	DWORD dwDiff				= dwTime-dwTimeStarted;
 	dwTimeStarted				+= dwDiff;
 	dwTimeToStop				+= dwDiff;
+	dwTimeToPropagade			= dwTime;
 	bNeedUpdate					= true;
 }

@@ -37,6 +37,7 @@ private:
 	DWORD					dwTimeTotal;			// всего
 	DWORD					dwTimeStarted;			// time of "Start"
 	DWORD					dwTimeToStop;			// time to "Stop"
+	DWORD					dwTimeToPropagade;
 
 	DWORD					dwState;
 
@@ -61,6 +62,7 @@ private:
 	void					Load					(LPCSTR, BOOL bCtrlFreq=FALSE);		// wav-file
 	void					Load					(const C3DSound *);					// clone
 
+	void					PropagadeEvent			();
 	void					internalStopOrComplete	();
 public:
 	BOOL					isPlaying				(void)	{ return (dwState!=stStopped) || bMustPlay; }

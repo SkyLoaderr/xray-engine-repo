@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "xr_area.h"
+#include "xr_object.h"
 
 using namespace	Collide;
 
@@ -34,8 +35,8 @@ void CObjectSpace::BoxQuery(const Fbox& B, const Fmatrix& M, DWORD flags)
 	{
 		if ( GetNearest(M.c, B.getradius()) )
 		{
-			for (NL_IT nl_item = nearest_list.begin(); nl_item!=nearest_list.end(); nl_item++)
-				(*nl_item)->_BoxQuery	(B,M,flags);
+			for (NL_IT nl_item = q_nearest.begin(); nl_item!=q_nearest.end(); nl_item++)
+				(*nl_item)->CFORM()->_BoxQuery	(B,M,flags);
 		}
 	};
 	/*

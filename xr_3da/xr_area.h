@@ -81,17 +81,18 @@ private:
 	void							clResolveStuck	(SCollisionData& cl, Fvector& position);
 	Fvector							CollideWithWorld(SCollisionData& cl, Fvector position, Fvector velocity,WORD cnt=0);
 public:
-	typedef svector<CCFModel*,128>	NL_TYPE;
-	typedef CCFModel**				NL_IT;
+	typedef svector<CObject*,256>	NL_TYPE;
+	typedef CObject**				NL_IT;
 
 public:
-	NL_TYPE							nearest_list;
+	NL_TYPE							q_nearest;
 	clQueryCollision				q_result;
 
 	clQueryCollision				q_debug;
 	vector<Fmatrix>					dbg_E;
 	vector<pair<Fsphere,DWORD> >	dbg_S;
 	vector<Fvector2>				dbg_Slot;
+
 public:
 									CObjectSpace		( );
 									~CObjectSpace		( );

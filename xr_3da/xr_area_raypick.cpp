@@ -36,10 +36,11 @@ BOOL CObjectSpace::nl_append(int x, int z, const Fvector2& O, const Fvector2& D)
 	
 			for(DWORD I=0; I<S.lst.size(); I++) 
 			{
-				CCFModel* M = S.lst[I]->CFORM();
+				CObject*	O	= S.lst[I];
+				CCFModel*	M	= O->CFORM();
 				if(M->GetEnable() && M->dwQueryID!=dwQueryID){
 					M->dwQueryID=dwQueryID;
-					nearest_list.push_back(M);
+					q_nearest.push_back(O);
 				}
 			}
 		}
@@ -133,18 +134,16 @@ BOOL CObjectSpace::RayTest	( const Fvector &start, const Fvector &dir, float ran
 	{
 		// Trace RAY through grid
 		dwQueryID			++;
-		nearest_list.clear	( );
-		CaptureSlots	(start,dir,range);
+		q_nearest.clear		( );
+		CaptureSlots		(start,dir,range);
 		
 		// Iterate on objects
-		for ( NL_IT nl_idx=nearest_list.begin(); nl_idx!=nearest_list.end(); nl_idx++ )
+		for ( NL_IT nl_idx=q_nearest.begin(); nl_idx!=q_nearest.end(); nl_idx++ )
 		{
-			CCFModel&	M = *(*nl_idx);
-										  
-			if (M.Owner()->getVisible()) 
-			{
-				if (M._svRayTest(Q))	return TRUE;
-			}
+			CObject*	O = *nl_idx;
+
+			if (O->getVisible()) 
+				if (O->CFORM()->_svRayTest(Q))	return TRUE;
 		}
 	}
 	
@@ -198,13 +197,13 @@ BOOL CObjectSpace::RayPick( const Fvector &start, const Fvector &dir, float rang
 	}
 
 	// Trace RAY through grid
-	nearest_list.clear	( );
+	q_nearest.clear		( );
 	CaptureSlots		(Q.start,Q.dir,Q.range);
 	
 	// Iterate on objects
-	for ( NL_IT nl_idx=nearest_list.begin(); nl_idx!=nearest_list.end(); nl_idx++ )
+	for ( NL_IT nl_idx=q_nearest.begin(); nl_idx!=q_nearest.end(); nl_idx++ )
 	{
-		CCFModel&	M = *(*nl_idx);
+		CCFModel&	M = *(*nl_idx)->CFORM();
 		
 		DWORD C = D3DCOLOR_XRGB(64,64,64);
 		if (M._svRayTest(Q)) {

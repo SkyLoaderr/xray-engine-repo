@@ -33,4 +33,6 @@ struct	soundListener
 	virtual		void	soundEvent	(CObject* who, int type, Fvector& Position, float power) {};
 };
 
+const DWORD soundEventPulse	= 500;	// ms
+
 typedef Fvector soundOccluder[3];

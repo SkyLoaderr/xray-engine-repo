@@ -113,26 +113,28 @@ IC void CObjectSpace::Object_Unregister		( CObject *O )
 IC int	CObjectSpace::GetNearest ( const Fvector &point, float range )
 {
 	dwQueryID			++;
-	nearest_list.clear	( );
+	q_nearest.clear		( );
 	Irect				rect;
 
 	GetRect				( point, rect, range );
 	Fsphere				Q; Q.set(point,range);
 
-	CCFModel*			target;
+	CObject*			t_object;
+	CCFModel*			t_model;
 	int 				ix, iz;
 	for (ix=rect.x1;ix<=rect.x2;ix++)
 		for (iz=rect.y1;iz<=rect.y2;iz++)
 			for (DWORD q=0; q<Dynamic(ix, iz).lst.size(); q++){
-				target	= Dynamic(ix, iz).lst[q]->CFORM();
-				if (!target->enabled)					continue;
-				if (target->dwQueryID!=dwQueryID) {
-					target->dwQueryID=dwQueryID;
-					if (Q.intersect(target->Sphere)) 
-						nearest_list.push_back(target);
+				t_object	= Dynamic(ix, iz).lst[q];
+				t_model		= t_object->CFORM();
+				if (!t_model->enabled)					continue;
+				if (t_model->dwQueryID!=dwQueryID) {
+					t_model->dwQueryID=dwQueryID;
+					if (Q.intersect(t_model->Sphere)) 
+						q_nearest.push_back(t_object);
 				}
 			}
-	return nearest_list.size();
+	return q_nearest.size();
 }
 //----------------------------------------------------------------------
 IC int   CObjectSpace::GetNearest( CCFModel* obj, float range ){
@@ -173,11 +175,11 @@ BOOL CObjectSpace::TestNearestObject(CCFModel *object, const Fvector& center, fl
 	GetNearest			( center, range );
 	object->EnableRollback( );
 
-	CCFModel**			_it	 = nearest_list.begin	();
-	CCFModel**			_end = nearest_list.end		();
+	CObject**			_it	 = q_nearest.begin	();
+	CObject**			_end = q_nearest.end		();
 	for ( ; _it!=_end; _it++ )
-		(*_it)->Owner()->OnNear(object->Owner());
-	return nearest_list.size();
+		(*_it)->OnNear	(object->Owner());
+	return q_nearest.size();
 }
 //----------------------------------------------------------------------
 void CObjectSpace::Load	(CStream *F)
