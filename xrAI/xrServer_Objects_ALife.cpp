@@ -928,18 +928,21 @@ void CSE_ALifeObjectHangingLamp::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
 		tNetPacket.r_stringZ		(fixed_bones);
 		tNetPacket.r_float			(m_health);
 	}
-
-	if (m_wVersion > 55)
-	{
+	if (m_wVersion > 55){
 		tNetPacket.r_float			(m_virtual_size);
 	    tNetPacket.r_float			(m_ambient_radius);
     	tNetPacket.r_float			(m_ambient_power);
 	    tNetPacket.r_stringZ		(m_ambient_texture);
         tNetPacket.r_stringZ		(light_texture);
-        tNetPacket.r_stringZ		(guid_bone);
+        tNetPacket.r_stringZ		(light_main_bone);
         tNetPacket.r_float			(spot_cone_angle);
         tNetPacket.r_stringZ		(glow_texture);
         tNetPacket.r_float			(glow_radius);
+	}
+	if (m_wVersion > 96){
+		tNetPacket.r_stringZ		(light_ambient_bone);
+	}else{
+		light_ambient_bone			= light_main_bone;
 	}
 }
 
@@ -951,23 +954,24 @@ void CSE_ALifeObjectHangingLamp::STATE_Write(NET_Packet	&tNetPacket)
 	// model
 	tNetPacket.w_u32			(color);
 	tNetPacket.w_float			(brightness);
-	tNetPacket.w_stringZ			(color_animator);
+	tNetPacket.w_stringZ		(color_animator);
 	tNetPacket.w_float			(range);
    	tNetPacket.w_u16			(flags.flags);
-	tNetPacket.w_stringZ			(startup_animation);
-    tNetPacket.w_stringZ			(fixed_bones);
+	tNetPacket.w_stringZ		(startup_animation);
+    tNetPacket.w_stringZ		(fixed_bones);
 	tNetPacket.w_float			(m_health);
 	tNetPacket.w_float			(m_virtual_size);
     tNetPacket.w_float			(m_ambient_radius);
     tNetPacket.w_float			(m_ambient_power);
-    tNetPacket.w_stringZ			(m_ambient_texture);
+    tNetPacket.w_stringZ		(m_ambient_texture);
 
-    tNetPacket.w_stringZ			(light_texture);
-    tNetPacket.w_stringZ			(guid_bone);
+    tNetPacket.w_stringZ		(light_texture);
+    tNetPacket.w_stringZ		(light_main_bone);
     tNetPacket.w_float			(spot_cone_angle);
-    tNetPacket.w_stringZ			(glow_texture);
+    tNetPacket.w_stringZ		(glow_texture);
     tNetPacket.w_float			(glow_radius);
     
+	tNetPacket.w_stringZ		(light_ambient_bone);
 }
 
 
@@ -1003,8 +1007,8 @@ void CSE_ALifeObjectHangingLamp::FillProps	(LPCSTR pref, PropItemVec& values)
     PropValue* P				= 0;
 	PHelper().CreateFlag16		(values, PrepareKey(pref,*s_name,"Flags\\Physic"),		&flags,			flPhysic);
 	PHelper().CreateFlag16		(values, PrepareKey(pref,*s_name,"Flags\\Cast Shadow"),	&flags,			flCastShadow);
-	PHelper().CreateFlag16		(values, PrepareKey(pref,*s_name,"Flags\\Allow R1"),		&flags,			flR1);
-	PHelper().CreateFlag16		(values, PrepareKey(pref,*s_name,"Flags\\Allow R2"),		&flags,			flR2);
+	PHelper().CreateFlag16		(values, PrepareKey(pref,*s_name,"Flags\\Allow R1"),	&flags,			flR1);
+	PHelper().CreateFlag16		(values, PrepareKey(pref,*s_name,"Flags\\Allow R2"),	&flags,			flR2);
 	P=PHelper().CreateFlag16	(values, PrepareKey(pref,*s_name,"Flags\\Allow Ambient"),&flags,			flPointAmbient);
     P->OnChangeEvent.bind		(this,&CSE_ALifeObjectHangingLamp::OnChangeFlag);
 	// 
@@ -1014,21 +1018,21 @@ void CSE_ALifeObjectHangingLamp::FillProps	(LPCSTR pref, PropItemVec& values)
     PHelper().CreateFloat		(values, PrepareKey(pref,*s_name,"Light\\Brightness"),	&brightness,		0.1f, 5.f);
 	PHelper().CreateChoose		(values, PrepareKey(pref,*s_name,"Light\\Color Animator"),&color_animator, 	smLAnim);
 	PHelper().CreateFloat		(values, PrepareKey(pref,*s_name,"Light\\Range"),		&range,				0.1f, 1000.f);
-	PHelper().CreateFloat		(values, PrepareKey(pref,*s_name,"Light\\Virtual Size"),	&m_virtual_size,	0.f, 100.f);
+	PHelper().CreateFloat		(values, PrepareKey(pref,*s_name,"Light\\Virtual Size"),&m_virtual_size,	0.f, 100.f);
 	PHelper().CreateChoose		(values, PrepareKey(pref,*s_name,"Light\\Texture"),	    &light_texture, 	smTexture, "lights");
+	PHelper().CreateChoose		(values, PrepareKey(pref,*s_name,"Light\\Bone"),		&light_main_bone,	smSkeletonBones,0,(void*)visual()->get_visual());
+
+	if (flags.is(flPointAmbient)){
+		PHelper().CreateFloat	(values, PrepareKey(pref,*s_name,"Ambient\\Radius"),	&m_ambient_radius,	0.f, 1000.f);
+		PHelper().CreateFloat	(values, PrepareKey(pref,*s_name,"Ambient\\Power"),		&m_ambient_power);
+		PHelper().CreateChoose	(values, PrepareKey(pref,*s_name,"Ambient\\Texture"),	&m_ambient_texture,	smTexture, 	"lights");
+		PHelper().CreateChoose	(values, PrepareKey(pref,*s_name,"Ambient\\Bone"),		&light_ambient_bone,smSkeletonBones,0,(void*)visual()->get_visual());
+	}
 
     if (flags.is(flTypeSpot))
 		PHelper().CreateAngle	(values, PrepareKey(pref,*s_name,"Light\\Cone Angle"),	&spot_cone_angle,	deg2rad(1.f), deg2rad(120.f));
-
-	// bones
-    ChooseValue* V				= PHelper().CreateChoose	(values, 	PrepareKey(pref,*s_name,"Model\\Fixed bones"),	&fixed_bones,		smSkeletonBones,0,(void*)visual()->get_visual(),8);
-	V        					= PHelper().CreateChoose	(values, 	PrepareKey(pref,*s_name,"Model\\Guid bone"),		&guid_bone,			smSkeletonBones,0,(void*)visual()->get_visual());
-
-	if (flags.is(flPointAmbient)){
-        PHelper().CreateFloat	(values, PrepareKey(pref,*s_name,"Ambient\\Radius"),		&m_ambient_radius,	0.f, 1000.f);
-        PHelper().CreateFloat	(values, PrepareKey(pref,*s_name,"Ambient\\Power"),		&m_ambient_power);
-		PHelper().CreateChoose	(values, PrepareKey(pref,*s_name,"Ambient\\Texture"),	&m_ambient_texture,	smTexture, 	"lights");
-    }
+	// fixed bones
+    PHelper().CreateChoose		(values, PrepareKey(pref,*s_name,"Model\\Fixed bones"),	&fixed_bones,		smSkeletonBones,0,(void*)visual()->get_visual(),8);
     // glow
 	PHelper().CreateFloat		(values, PrepareKey(pref,*s_name,"Glow\\Radius"),	    &glow_radius,		0.01f, 100.f);
 	PHelper().CreateChoose		(values, PrepareKey(pref,*s_name,"Glow\\Texture"),	    &glow_texture, 		smTexture,	"glow");
@@ -1042,24 +1046,25 @@ void CSE_ALifeObjectHangingLamp::on_render(CDUInterface* du, ISE_AbstractLEOwner
 	inherited1::on_render		(du,owner,bSelected,parent,priority,strictB2F);
 	if ((1==priority)&&(false==strictB2F)){
 		u32 clr					= bSelected?0x00FFFFFF:0x00FFFF00;
-		Fmatrix xform;
-		owner->get_bone_xform	(*guid_bone,xform);
-		xform.mulA				(parent);
+		Fmatrix main_xform, ambient_xform;
+		owner->get_bone_xform	(*light_main_bone,main_xform);
+		main_xform.mulA			(parent);
+		if(flags.is(flPointAmbient) ){
+			owner->get_bone_xform	(*light_ambient_bone,main_xform);
+			ambient_xform.mulA		(parent);
+		}
 		if (bSelected){
 			if (flags.is(flTypeSpot)){
-				du->DrawSpotLight	(xform.c, xform.k, range, spot_cone_angle, clr);
+				du->DrawSpotLight	(main_xform.c, main_xform.k, range, spot_cone_angle, clr);
 			}else{
-				du->DrawLineSphere	(xform.c, range, clr, true);
+				du->DrawLineSphere	(main_xform.c, range, clr, true);
 			}
-
-			if(flags.is(flPointAmbient) ){
-				du->DrawLineSphere	(parent.c, m_ambient_radius, clr, true);
-			}
-
+			if(flags.is(flPointAmbient) )
+				du->DrawLineSphere	(ambient_xform.c, m_ambient_radius, clr, true);
 		}
-		du->DrawPointLight		(xform.c,VIS_RADIUS, clr);
-		
-
+		du->DrawPointLight		(main_xform.c,VIS_RADIUS, clr);
+		if(flags.is(flPointAmbient) )
+			du->DrawPointLight	(ambient_xform.c,VIS_RADIUS, clr);
 	}
 }
 

@@ -322,7 +322,8 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVi
     float							range;
 	float							m_virtual_size;
 // bones&motions
-	shared_str						guid_bone;
+	shared_str						light_ambient_bone;
+	shared_str						light_main_bone;
     shared_str						fixed_bones;
 // spot
 	float							spot_cone_angle;

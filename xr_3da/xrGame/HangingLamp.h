@@ -21,7 +21,9 @@ public CPHSkeleton
 {//need m_pPhysicShell
 	typedef	CPhysicsShellHolder		inherited;
 private:
-	u16				guid_bone;
+	u16				light_bone;
+	u16				ambient_bone;
+
 	ref_light		light_render;
 	ref_light		light_ambient;
 	CLAItem*		lanim;
@@ -31,8 +33,6 @@ private:
 	
 	float			fHealth;
 	float			fBrightness;
-	CPHElement*		guid_physic_bone;
-	Fmatrix			m_guid_bone_offset;
 	void			CreateBody		(CSE_ALifeObjectHangingLamp	*lamp);
 	void			Init();
 	void			RespawnInit		();
