@@ -81,8 +81,8 @@ public:
 	void								UpdateTransform	(void);
 	IC void								svCenter		(Fvector& C) const	{ VERIFY(pVisual); svTransform.transform_tiny(C,pVisual->bv_Position);	}
 	IC void								clCenter		(Fvector& C) const	{ VERIFY(pVisual); clTransform.transform_tiny(C,pVisual->bv_Position);	}
-	IC const Fmatrix&					svXFORM			()			 const	{ return svTransform;	}
-	IC const Fmatrix&					clXFORM			()			 const	{ return clTransform;	}
+	IC Fmatrix&							svXFORM			()			 const	{ return svTransform;	}
+	IC Fmatrix&							clXFORM			()			 const	{ return clTransform;	}
 	
 	IC CSector*							Sector			()					{ return pSector; }
 
