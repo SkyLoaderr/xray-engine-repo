@@ -56,6 +56,27 @@ public:
 			dBodySetPosition(Bodies[i],newPos[0],newPos[1],newPos[2]);
 		}
 	}
+	void SetRotation(dReal* R){
+		const dReal* currentPos0=dBodyGetPosition(Bodies[0]);	
+		const dReal* currentR=dBodyGetRotation(Bodies[0]);
+		dMatrix3 relRot;
+		dMULTIPLYOP1_333(relRot,=,R,currentR);
+		dBodySetRotation(Bodies[0],R);
+		for(unsigned int i=1;i<NofBodies; i++ ){
+			const dReal* currentPos=dBodyGetPosition(Bodies[i]);
+			dVector3 relPos={currentPos[0]-currentPos0[0],currentPos[1]-currentPos0[1],currentPos[2]-currentPos0[2]};
+			dVector3 relPosRotated;
+			dMULTIPLYOP0_331(relPosRotated,=,relRot,relPos);
+			dVector3 posChange={relPosRotated[0]-relPos[0],relPosRotated[1]-relPos[1],relPosRotated[2]-relPos[2]};
+			dVector3 newPos={currentPos[0]+posChange[0],currentPos[1]+posChange[1],currentPos[2]+posChange[2]};
+			dBodySetPosition(Bodies[i],newPos[0],newPos[1],newPos[2]);
+
+			const dReal* currentR=dBodyGetRotation(Bodies[i]);
+			dMatrix3 newRotation;
+			dMULTIPLYOP0_333(newRotation,=,currentR,relRot);
+			dBodySetRotation(Bodies[i],newRotation);
+		}
+	}
 	Fvector GetVelocity(){
 		Fvector ret;
 		const dReal* vel=dBodyGetLinearVel(Bodies[0]);
@@ -159,6 +180,7 @@ class CPHElement: public CPhysicsElement {
 	void			create_Sphere				(Fsphere&	V);
 	void			create_Box					(Fobb&		V);
 	void			calculate_it_data			(const Fvector& mc,float mass);
+	void			calculate_it_data_use_density(const Fvector& mc,float density);
 public:
 	Fmatrix m_inverse_local_transform;
 	///

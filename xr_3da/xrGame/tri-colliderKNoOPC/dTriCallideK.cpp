@@ -1184,7 +1184,9 @@ if(code>3) outDepth=pointDepth; //deepest vertex axis used if its depth less tha
 //bool outV0=!(testV0&&sideTestV00&&sideTestV10&&sideTestV20);
 //bool outV1=!(testV1&&sideTestV01&&sideTestV11&&sideTestV21);
 //bool outV2=!(testV2&&sideTestV02&&sideTestV12&&sideTestV22);
-
+bool outV0=true;
+bool outV1=true;
+bool outV2=true;
 /////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 ///crosses between triangle sides and cylinder axis//////////////////////////
@@ -1223,15 +1225,15 @@ depth##ox=radius-dFabs(dist##ox);\
 }
 
 dNormalize3(triSideAx0);
-//if(outV0&&outV1) 
+if(outV0&&outV1) 
 TEST(0,1,2,7)
 
 dNormalize3(triSideAx1);
-//if(outV1&&outV2) 
+if(outV1&&outV2) 
 TEST(1,2,0,8)
 
 dNormalize3(triSideAx2);
-//if(outV2&&outV0) 
+if(outV2&&outV0) 
 TEST(2,0,1,9)
 #undef TEST
 
@@ -1468,6 +1470,8 @@ else {//7-12
 	contact->pos[1] = pos[1];
 	contact->pos[2] = pos[2];	
 }
+
+if(ret>maxc) ret=maxc;
 
  for (unsigned int i=0; i<ret; i++) {
     CONTACT(contact,i*skip)->g1 = const_cast<dxGeom*> (o2);

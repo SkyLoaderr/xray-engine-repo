@@ -7,7 +7,9 @@
 #include <ode\src\objects.h>
 #include <ode\src\geom_internal.h>
 #include "ExtendedGeom.h"
+#include "contacts.h"
 float friction_table[2]={5000.f,100.f};
+
 
 
 //void _stdcall dGeomTransformSetInfo (dGeomID g, int mode);
@@ -958,11 +960,45 @@ void CPHElement::calculate_it_data(const Fvector& mc,float mas){
 
 
 }
-void		CPHElement::	setMass		(float M){
-calculate_it_data(get_mc_data(),M);
-//dMassSetBox(&m_mass,1,1,1,1);
-//dMassAdjust(&m_mass,M);
 
+
+void CPHElement::calculate_it_data_use_density(const Fvector& mc,float density){
+	
+	dMass m;
+	dMassSetZero(&m_mass);
+	vector<Fobb>::iterator i_box;
+	for(i_box=m_boxes_data.begin();i_box!=m_boxes_data.end();i_box++){
+	Fvector& hside=(*i_box).m_halfsize;
+	Fvector& pos=(*i_box).m_translate;
+	Fvector l;
+	l.sub(pos,mc);
+	dMassSetBox(&m,1,hside.x*2.f,hside.y*2.f,hside.z*2.f);
+	dMassAdjust(&m,hside.x*hside.y*hside.z*8.f*density);
+	dMassTranslate(&m,l.x,l.y,l.z);
+	dMassAdd(&m_mass,&m);
+	
+	}
+
+	vector<Fsphere>::iterator i_sphere;
+	for(i_sphere=m_spheras_data.begin();i_sphere!=m_spheras_data.end();i_sphere++){
+	Fvector& pos=(*i_sphere).P;
+	Fvector l;
+	l.sub(pos,mc);
+	dMassSetSphere(&m,density,(*i_sphere).R);
+	dMassTranslate(&m,l.x,l.y,l.z);
+	dMassAdd(&m_mass,&m);
+
+	}
+
+
+}
+
+
+
+void		CPHElement::	setMass		(float M){
+//calculate_it_data(get_mc_data(),M);
+
+calculate_it_data_use_density(get_mc_data(),M);
 
 }
 void		CPHElement::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2){

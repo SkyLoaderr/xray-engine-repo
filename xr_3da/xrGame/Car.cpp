@@ -111,6 +111,11 @@ BOOL	CCar::net_Spawn				(LPVOID DC)
 	BOOL R = inherited::net_Spawn	(DC);
 	setVisible						(TRUE);
 	m_jeep.SetPosition				(vPosition);
+	dMatrix3 Rot;
+	Fmatrix33 m33;
+	m33.set(mRotate);
+	PHDynamicData::FMX33toDMX(m33,Rot);
+	m_jeep.SetRotation(Rot);
 	pSounds->PlayAtPos				(snd_engine,this,vPosition,true);
 	return R;
 }

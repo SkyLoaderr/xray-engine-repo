@@ -3,6 +3,25 @@
 #include <ode\src\objects.h>
 #include <ode\src\geom_internal.h>
 
+enum Material {
+weels,
+cardboard,
+mesh_default,
+car_cabin,
+weapon_default,
+matrerial_default
+};
+
+struct ContactsParameters{
+	dReal damping;
+	dReal spring;
+	dReal bonce;
+	dReal bonce_vel;
+	dReal mu;
+	unsigned int maxc;
+
+};
+
 struct Triangle {
 	dReal* v0;
 	dReal* v1;
@@ -47,7 +66,7 @@ dVector3 last_pos;
 bool pushing_neg,pushing_b_neg;
 Triangle neg_tri,b_neg_tri;
 dReal friction;
-dReal bk_friction;
+
 };
 
 inline void dGeomCreateUserData(dxGeom* geom){
@@ -73,6 +92,6 @@ return (dxGeomUserData*) geom->data;
 
 inline void dGeomUserDataSetFriction(dxGeom* geom,dReal friction){
 ((dxGeomUserData*)geom->data)->friction=friction;
-((dxGeomUserData*)geom->data)->bk_friction=friction;
+
 }
 #endif
