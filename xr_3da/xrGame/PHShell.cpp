@@ -176,14 +176,15 @@ CPhysicsElement* CPHShell::get_Element(s16 bone_id)
 }
 
 void __stdcall CPHShell:: BonesCallback				(CBoneInstance* B){
-	CPHElement*	E			= dynamic_cast<CPHElement*>	(static_cast<CObject*>(B->Callback_Param));
+	///CPHElement*	E			= dynamic_cast<CPHElement*>	(static_cast<CPhysicsBase*>(B->Callback_Param));
+	CPHElement*	E			= static_cast<CPHElement*>(B->Callback_Param);
 
 	E->CallBack(B);
 }
 
 void __stdcall CPHShell:: BonesCallback1				(CBoneInstance* B){
-	CPHElement*	E			= dynamic_cast<CPHElement*>	(static_cast<CObject*>(B->Callback_Param));
-
+	//CPHElement*	E			= dynamic_cast<CPHElement*>	(static_cast<CPhysicsBase*>(B->Callback_Param));
+	CPHElement*	E			= static_cast<CPHElement*>(B->Callback_Param);
 	E->CallBack1(B);
 }
 
