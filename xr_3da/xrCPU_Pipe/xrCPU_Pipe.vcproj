@@ -142,7 +142,7 @@
 				GenerateMapFile="TRUE"
 				MapFileName="x:\xrCPU_Pipe.map"
 				MapExports="FALSE"
-				OptimizeReferences="2"
+				OptimizeReferences="0"
 				ImportLibrary="x:\xrCPU_Pipe.lib"/>
 			<Tool
 				Name="VCMIDLTool"
