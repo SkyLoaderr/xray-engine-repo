@@ -71,12 +71,12 @@ void FShadowForm::Load(CStream *data)
     // of vertices in c-hull is dwNumVertices).
     // (dwNumVertices+1)*2 for triangle mesh to hold shadowvolume sides +
     // dwNumVertices to hold triangle-fan
-	S.pwShadVolIndices = new WORD[(dwNumVertices+1)*3];
+	S.pwShadVolIndices	= xr_alloc<WORD>((dwNumVertices+1)*3);
 
 	// Allocate memory for the hull (max size is dwNumInVertices+1 times the
 	// the storage space for a u32 and a ptr to a vertex
-	u32 dwElementSize = sizeof(u32) + sizeof(COLORVERTEX*)+4;
-	pwCHI = (WORD*)(new BYTE[(dwNumVertices+1)*dwElementSize]);
+	u32 dwElementSize	= sizeof(u32) + sizeof(COLORVERTEX*)+4;
+	pwCHI				= (WORD*)(xr_alloc<BYTE>((dwNumVertices+1)*dwElementSize));
 }
 
 //-----------------------------------------------------------------------------

@@ -16,7 +16,7 @@ void CLightTrack::add	(int id)
 	// Search
 	for (vector<Item>::iterator I=track.begin(); I!=track.end(); I++)	if (id == I->id)	return;
 		
-	// Register new
+	// Register _new_
 	track.push_back		(Item());
 	Item&	L			= track.back();
 	L.id				= id;

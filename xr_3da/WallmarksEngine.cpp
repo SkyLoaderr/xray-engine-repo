@@ -216,7 +216,7 @@ void CWallmarksEngine::AddWallmark	(CDB::TRI* pTri, const Fvector &contact_point
 		}
 	}
 
-	// no similar - register new
+	// no similar - register _new_
 	marks.push_back			(W);
 }
 

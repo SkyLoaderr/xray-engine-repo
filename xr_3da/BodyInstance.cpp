@@ -245,7 +245,7 @@ CBlend*	CKinematics::LL_PlayCycle(int part, int motion, BOOL  bMixing,	float ble
 	}
 	if (0==(*partition)[part].Name)	return 0;
 
-	// Process old cycles and create new
+	// Process old cycles and create _new_
 	if (bMixing)	LL_FadeCycle	(part,blendFalloff);
 	else			LL_CloseCycle	(part);
 	CPartDef& P	=	(*partition)[part];
