@@ -4,7 +4,6 @@
 const	float	tweak_COP_initial_offs			= 100000.f	;
 const	float	tweak_ortho_xform_initial_offs	= 1000.f	;	//. ?
 const	float	tweak_guaranteed_range			= 20.f		;	//. ?
-const	float	tweak_near_range				= 10.f		;
 
 //////////////////////////////////////////////////////////////////////////
 #define DW_AS_FLT(DW) (*(FLOAT*)&(DW))
@@ -481,7 +480,6 @@ void CRender::render_sun				()
 
 	// Begin SMAP-render
 	{
-		Lights_LastFrame.push_back				(fuckingsun	);
 		HOM.Disable								();
 		phase									= PHASE_SMAP_D;
 		if (RImplementation.o.Tshadows)	r_pmask	(true,true	);
@@ -847,7 +845,7 @@ void CRender::render_sun_near	()
 
 	Fmatrix	ex_project, ex_full, ex_full_inverse;
 	{
-		ex_project.build_projection	(deg2rad(Device.fFOV*Device.fASPECT),Device.fASPECT,VIEWPORT_NEAR,tweak_near_range); 
+		ex_project.build_projection	(deg2rad(Device.fFOV*Device.fASPECT),Device.fASPECT,VIEWPORT_NEAR,ps_r2_sun_near); 
 		ex_full.mul					(ex_project,Device.mView);
 		D3DXMatrixInverse			((D3DXMATRIX*)&ex_full_inverse,0,(D3DXMATRIX*)&ex_full);
 	}
@@ -914,7 +912,7 @@ void CRender::render_sun_near	()
 		mdir_View.build_camera_dir	(L_pos,L_dir,L_up);
 
 		// projection: box
-		float	sperical_range		= tweak_near_range*1.414213562373f;	// sqrt(2)
+		float	sperical_range		= ps_r2_sun_near*1.414213562373f+EPS;	// sqrt(2)
 		Fbox	frustum_bb;			frustum_bb.invalidate	();
 		hull.points.push_back		(Device.vCameraPosition);
 		for (int it=0; it<9; it++)	{
@@ -958,7 +956,6 @@ void CRender::render_sun_near	()
 
 	// Begin SMAP-render
 	{
-		Lights_LastFrame.push_back				(fuckingsun	);
 		HOM.Disable								();
 		phase									= PHASE_SMAP_D;
 		if (RImplementation.o.Tshadows)	r_pmask	(true,true	);

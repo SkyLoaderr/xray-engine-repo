@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-void CRenderTarget::accum_direct		()
+void CRenderTarget::accum_direct		(u32 sub_phase)
 {
 	RImplementation.stats.l_visible		++;
 
@@ -25,7 +25,8 @@ void CRenderTarget::accum_direct		()
 	Device.mView.transform_dir	(L_dir,fuckingsun->direction);
 	L_dir.normalize				();
 
-	// Perform masking
+	// Perform masking (only once - on the first/near phase)
+	if (SE_SUN_NEAR==sub_phase)
 	{
 		// Fill vertex buffer
 		FVF::TL* pv					= (FVF::TL*)	RCache.Vertex.Lock	(4,g_combine->vb_stride,Offset);
@@ -48,6 +49,11 @@ void CRenderTarget::accum_direct		()
 		RCache.set_CullMode			(CULL_NONE	);
 		RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0x01,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE,D3DSTENCILOP_KEEP);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+
+		// recalculate d_Z, to perform depth-clipping
+		Fvector	center_pt;			center_pt.mad	(Device.vCameraPosition,Device.vCameraDirection,ps_r2_sun_near);
+		Device.mFullTransform.transform(center_pt)	;
+		d_Z							= center_pt.z	;
 	}
 
 	// nv-stencil recompression
@@ -78,7 +84,7 @@ void CRenderTarget::accum_direct		()
 			FPU::m24r		();
 		}
 
-		// Analyze depth
+		// Make jitter texture
 		Fvector2					j0,j1;
 		float	scale_X				= float(Device.dwWidth)	/ float(TEX_jitter);
 		float	scale_Y				= float(Device.dwHeight)/ float(TEX_jitter);
@@ -96,11 +102,12 @@ void CRenderTarget::accum_direct		()
 		RCache.set_Geometry			(g_combine_2UV);
 
 		// setup
-		RCache.set_Element			(s_accum_direct->E[0]);
+		RCache.set_Element			(s_accum_direct->E[sub_phase]);
 		RCache.set_c				("Ldynamic_dir",		L_dir.x,L_dir.y,L_dir.z,0		);
 		RCache.set_c				("Ldynamic_color",		L_clr.x,L_clr.y,L_clr.z,L_spec	);
 		RCache.set_c				("m_shadow",			m_shadow						);
 
+		// setup z-stencil
 		RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0xff,0x00);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}

@@ -124,10 +124,10 @@ void	CBlender_Compile::PassSET_VS		(LPCSTR name)
 	strlwr	(pass_vs);
 }
 
-void	CBlender_Compile::PassSET_ZB		(BOOL bZTest, BOOL bZWrite)
+void	CBlender_Compile::PassSET_ZB		(BOOL bZTest, BOOL bZWrite, BOOL bInvertZTest)
 {
 	if (Pass())	bZWrite = FALSE;
-	RS.SetRS	(D3DRS_ZFUNC,			bZTest?D3DCMP_LESSEQUAL:D3DCMP_ALWAYS);
+	RS.SetRS	(D3DRS_ZFUNC,			bZTest?(bInvertZTest?D3DCMP_GREATER:D3DCMP_LESSEQUAL):D3DCMP_ALWAYS);
 	RS.SetRS	(D3DRS_ZWRITEENABLE,	BC(bZWrite));
 }
 

@@ -65,10 +65,10 @@ private:
 	ref_shader					s_occq;
 
 	// Accum
-	ref_shader					s_accum_mask;
-	ref_shader					s_accum_direct;
-	ref_shader					s_accum_point;
-	ref_shader					s_accum_spot;
+	ref_shader					s_accum_mask	;
+	ref_shader					s_accum_direct	;
+	ref_shader					s_accum_point	;
+	ref_shader					s_accum_spot	;
 	ref_shader					s_accum_reflected;
 
 	ref_geom					g_accum_point	;
@@ -145,7 +145,7 @@ public:
 	void						shadow_direct			(light* L, u32 dls_phase);
 	BOOL						enable_scissor			(light* L);		// true if intersects near plane
 	void						draw_volume				(light* L);
-	void						accum_direct			();
+	void						accum_direct			(u32	sub_phase);
 	void						accum_point				(light* L);
 	void						accum_spot				(light* L);
 	void						accum_reflected			(light* L);
