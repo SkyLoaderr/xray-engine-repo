@@ -111,7 +111,7 @@ IC	void CGameLocationSelector::select_random_location(const _vertex_id_type star
 					}
 			
 			string128	s;
-			sprintf		(s,"Start Vertex ID = [%u]", start_vertex_id);
+			sprintf		(s,"Start Vertex Position = [%f,%f,%f]", VPUSH(ai().level_graph().vertex_position(start_vertex_id)));
 			THROW2		(iBranches, s);
 		}
 	}
