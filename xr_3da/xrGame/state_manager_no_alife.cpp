@@ -82,11 +82,11 @@ void CStateManagerNoALife::initialize		()
 
 void CStateManagerNoALife::choose_state		()
 {
-	if (m_object->item()) {
-		set_dest_state		(eNoALifeGatherItems);
-		return;
-	}
-	else
+//	if (m_object->item()) {
+//		set_dest_state		(eNoALifeGatherItems);
+//		return;
+//	}
+//	else
 		if (!current_state().completed() || (current_state_id() != dest_state_id()))
 			return;
 
