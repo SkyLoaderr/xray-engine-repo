@@ -104,7 +104,7 @@ void CRenderTarget::accum_direct()
 	Fcolor		L_sunc			= RImplementation.Lights.sun->color;
 	L_clr.set					(L_sunc.r,L_sunc.g,L_sunc.b).div(ps_r2_ls_dynamic_range);
 	L_spec						= L_clr.magnitude()/_sqrt(3.f);
-	Device.mView.transform_dir	(L_dir,RImplementation.Lights.sun_dir);
+	Device.mView.transform_dir	(L_dir,RImplementation.Lights.sun->direction);
 	L_dir.normalize				();
 	RCache.set_c				("light_direction",	L_dir.x,L_dir.y,L_dir.z,0.f);
 	RCache.set_c				("light_color",		L_clr.x,L_clr.y,L_clr.z,L_spec);
