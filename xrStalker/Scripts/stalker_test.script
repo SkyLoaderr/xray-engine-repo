@@ -33,7 +33,7 @@ function main ()
 --		cond		(cond.move_end)
 --	)
 
-	action (
+	action1 (
 		stalker, 
 		move		(move.standing, move.walk, move.line, patrol ("way0000")),
 		look		(look.path_dir),
@@ -43,7 +43,7 @@ function main ()
 	
 	wait			(2000)
 	
-	action_first1 (
+	action_first (
 		stalker, 
 		move		(move.standing, move.stand, move.line, patrol ("way0000")),
 		anim		("stoya_ruje_ 0"),
