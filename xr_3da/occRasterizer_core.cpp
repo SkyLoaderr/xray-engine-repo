@@ -157,8 +157,9 @@ void i_section	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T, int
 	float mE2	= E2[0]/E2[1];
 	
 	// Initial Y offset for left and right (due to pixel rounding)
-	float e1_init_dY = startY - startp1[1], e2_init_dY = startY - startp2[1];
-	float t,leftX, leftZ, rightX, rightZ, left_dX, right_dX, left_dZ, right_dZ;
+	float	e1_init_dY = startY - startp1[1], e2_init_dY = startY - startp2[1];
+	float	t,leftX, leftZ, rightX, rightZ, left_dX, right_dX, left_dZ, right_dZ;
+	float	leftClamp,rightClamp;
 	
 	// find initial values, step values
 	if ( ((mE1<mE2)&&(Sect==BOTTOM)) || ((mE1>mE2)&&(Sect==TOP)) ) 
@@ -208,6 +209,6 @@ void occRasterizer::rasterize	(occTri* T)
 	c[0] = T->raster[2].x; c[1] = T->raster[2].y; c[2] = T->raster[2].z;
 	
 	i_order				(a, b, c);					// Order the vertices by Y
-	// i_section		(this,a, b, c, T,BOTTOM);	// Rasterise First Section
-	i_section			(this,a, b, c, T,TOP);		// Rasterise Second Section
+	i_section			(this,a, b, c, T,BOTTOM);	// Rasterise First Section
+	//i_section			(this,a, b, c, T,TOP);		// Rasterise Second Section
 }
