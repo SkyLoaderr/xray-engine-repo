@@ -19,6 +19,7 @@ public:
 
 	void	LoadT	(char *name);
 	void	LoadTGA	(char *name);
+	void	Create	(DWORD w, DWORD h);
 
 	void	Vflip		(void);
 	void	Hflip		(void);

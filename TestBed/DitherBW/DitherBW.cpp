@@ -39,8 +39,9 @@ void bwdithermap	(int levels, int magic[16][16] )
 
 void main(int argc, char* argv[])
 {
-	CImage		tex;
-	tex.LoadTGA	("x:\\dbg\\test.tga");
+	CImage			tex,scaled;
+	tex.LoadTGA		("x:\\dbg\\test.tga");
+	scaled.Create	(tex.dwWidth/2,tex.dwHeight/2);
 	
 	int			magic[16][16];
 	bwdithermap	(2,magic);

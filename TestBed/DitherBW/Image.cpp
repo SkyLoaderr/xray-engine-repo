@@ -5,6 +5,14 @@
 #include "stdafx.h"
 #include "Image.h"
 
+void CImage::Create(DWORD w, DWORD h)
+{
+	_FREE		(pData);
+	dwWidth		= w;
+	dwHeight	= h;
+	pData		= malloc(w*h*sizeof(DWORD));
+}
+
 void CImage::Vflip()
 {
 	R_ASSERT(pData);
