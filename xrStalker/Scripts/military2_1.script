@@ -127,7 +127,7 @@ function main ()
 	action (stalker2, look (look.fire_point, stalker3), anim ("stalker_2_1"), cond (cond.anim_end))
 
     reset_action (stalker3, military2_1.script_name ())
-    action (stalker3, move (pos, 0.40), look (look.search), anim ("walk_fwd_crawl"), cond (cond.move_end))
+    action (stalker3, move (pos, 0.32), look (look.search), anim ("walk_fwd_crawl"), cond (cond.move_end))
     action (stalker3, move (pos, 0.05), anim ("walk_fwd_crawl_stop"), cond (cond.anim_end))
     action (stalker3, anim ("prisluh"), cond (cond.anim_end	))
 	action (stalker3, anim ("prisluh_v_torso_idle_2"), 	cond (cond.anim_end))
