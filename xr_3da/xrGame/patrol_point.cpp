@@ -13,7 +13,9 @@
 
 CPatrolPoint::CPatrolPoint				()
 {
+#ifdef DEBUG
 	m_initialized		= false;
+#endif
 }
 
 IC	void CPatrolPoint::correct_position	()
@@ -28,7 +30,9 @@ CPatrolPoint::CPatrolPoint				(const Fvector &position, u32 level_vertex_id, u32
 	m_level_vertex_id	= level_vertex_id;
 	m_flags				= flags;
 	m_name				= name;
+#ifdef DEBUG
 	m_initialized		= true;
+#endif
 	correct_position	();
 }
 
@@ -38,7 +42,9 @@ CPatrolPoint &CPatrolPoint::load		(IReader &stream)
 	m_flags				= stream.r_u32();
 	stream.r_stringZ	(m_name);
 	m_level_vertex_id	= ai().level_graph().vertex(u32(-1),m_position);
+#ifdef DEBUG
 	m_initialized		= true;
+#endif
 	correct_position	();
 	return				(*this);
 }
