@@ -251,6 +251,7 @@ BOOL CLevel::Load_GameSpecific_Before()
 BOOL CLevel::Load_GameSpecific_After()
 {
 	// loading static particles
+	if (0)
 	{
 		IRender_Sector* S;
 		CPGObject* pStaticPG;
