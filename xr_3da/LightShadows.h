@@ -22,7 +22,7 @@ private:
 		CObject*			O;
 		Fvector				C;
 		float				D;
-		svector<NODE*,32>	nodes;
+		svector<NODE,32>	nodes;
 	};
 private:
 	CObject*				current;

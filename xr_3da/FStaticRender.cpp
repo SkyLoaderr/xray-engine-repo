@@ -174,6 +174,9 @@ void CRender::Calculate()
 	// Render sector
 	if (0!=pLastSector) pLastSector->Render(ViewBase);
 
+	// Calculate shadows
+	L_Shadows.calculate	();
+
 	Device.Statistic.RenderCALC.End();
 }
 
