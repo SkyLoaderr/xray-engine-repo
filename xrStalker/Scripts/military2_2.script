@@ -10,6 +10,12 @@ function main ()
 				 patrol ("way_stalker3")
 				 }
 
+	local torches = {
+				 get_level_object ("torch1"),
+				 get_level_object ("torch2"),
+				 get_level_object ("torch3")
+				}
+
 	for a = 1, table.getn (stalkers), 1 do
 		stalkers[a]:script (true, military2_2.script_name ())
 	end
@@ -17,7 +23,7 @@ function main ()
 	wait (10000)	
 
 	for a = 1, table.getn (stalkers), 1 do
-		action (stalkers[a], move (move.standing, move.run, move.line, ways[a]),
+		action (stalkers[a], move (move.standing, move.run, move.line, ways[a]), object (torches[a], object.activate),
 				look (look.path_dir), anim (anim.danger), cond (cond.move_end))
 	end
 
