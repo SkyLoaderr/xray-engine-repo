@@ -50,6 +50,7 @@ CxrUpdateApp::CxrUpdateApp()
 
 CxrUpdateApp::~CxrUpdateApp()
 {
+	FlushLog();
 	Core._destroy();
 	g_log_dlg = NULL;
 	m_log_dlg->DestroyWindow();
