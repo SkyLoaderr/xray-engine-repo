@@ -142,7 +142,7 @@ void mmgrMessage(const char *logMSG, const char *dop)
 #endif
 }
 
-char * __fastcall _STRDUP(const char * string)
+char * _STRDUP(const char * string)
 {
 	VERIFY(string);
 	int		len		= strlen(string)+1;
