@@ -159,7 +159,7 @@ bool CScriptMonster::CheckTypeVisibility(const char* section_name)
 	for ( ; I != E; ++I)
 	{
 		CObject* pObject = dynamic_cast<CObject*>(*I);
-		if (xr_strcmp(section_name, pObject->cNameSect()))
+		if (!xr_strcmp(section_name, pObject->cNameSect()))
 			return		(true);
 	}
 	return				(false);
