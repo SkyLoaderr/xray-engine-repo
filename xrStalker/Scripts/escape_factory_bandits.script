@@ -3,7 +3,7 @@
 Чугай Саша
 
 Сделать:
-	- если один вышел из офлайна, а другой нет !!!!!!!!!!!!!!!!!
+	- !!!!!!!!!!!!!!! если один вышел из офлайна, а другой нет !!!!!!!!!!!!!!!!!
 	- рассинхронизируются
     - стоит в бт
     - не смотрят друг на друга
@@ -353,7 +353,7 @@ function action_dead_hook:initialize()
 
     -- отослать партнёра в безопасную точку и сделать актёра врагом
     if self.a.partner and is_object_online( self.a.partner:id() ) and self.a.partner:alive() then
-        local pa        = xr_motivator.storage[self.a.partner_id].escape_factory_bandit
+        local pa        = xr_motivator.storage[self.a.partner:id()].escape_factory_bandit
         pa.way_safe     = patrol( "way_factory_bandits_safe" )
         pa.dest_vert_id = pa.way_safe:level_vertex_id( 0 )
 
