@@ -462,14 +462,8 @@ void vfLoadFileIntoNamespace(lua_State *L, LPCSTR S, LPCSTR N, bool bCall = true
 
 	if (bCall)
 		lua_call		(L,0,0);
-	else {
-		lua_pushvalue	(L,-4);
-		lua_pushvalue	(L,-4);
-		lua_pushvalue	(L,-4);
-		lua_remove		(L,-5);
-		lua_remove		(L,-5);
-		lua_remove		(L,-5);
-	}
+	else
+		lua_insert		(L,-4);
 
 	lua_pushnil		(L);
 	while (lua_next(L, -2) != 0) {
