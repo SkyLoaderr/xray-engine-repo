@@ -208,7 +208,12 @@ function main()
 			prof_ti_ubil_sivogo:play_at_pos		(guard02,guard02:position(),0);
 			guard02:script						(false,  script_guards_pr00.script_name())
 			wait(3000)			
-			hrom_prishli_rebyat = 1
+			final_guard04:script	(false,script_guards_pr00.script_name())
+			final_guard05:script	(false,script_guards_pr00.script_name())
+			siren:play_at_pos		(actor,actor:position(),0);
+			wait(1000)			
+			nemedlenno:play_at_pos		(actor,actor:position(),0);
+			wait(2000)			
 		break
 		end
 		wait()			
@@ -221,17 +226,7 @@ function main()
 			guard01:script						(false,  script_guards_pr00.script_name())
 			wait(3000)			
 			rainbow_hrom_u_nas_problema:play_at_pos		(guard02,guard02:position(),0);
-			hrom_prishli_rebyat = 1
-		break
-		end
-		wait()			
-	end
-
-	while true do
-		if hrom_prishli_rebyat == 1 then
-			printf("alarm!")
-			flush()
-		wait(2000)			
+			wait(2000)			
 			final_guard04:script	(false,script_guards_pr00.script_name())
 			final_guard05:script	(false,script_guards_pr00.script_name())
 			siren:play_at_pos		(actor,actor:position(),0);
