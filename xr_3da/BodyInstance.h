@@ -272,7 +272,7 @@ private:
 		CBlend *I=blend_pool.begin(), *E=blend_pool.end();
 		for (; I!=E; I++)
 			if (I->blend == CBlend::eFREE_SLOT) return I;
-		Device.Fatal("Too many blended motions requisted");
+		Debug.fatal("Too many blended motions requisted");
 		return 0;
 	}
 public:

@@ -53,14 +53,14 @@ void CObjectAnimator::LoadMotions(const char* fname)
 	FILE_NAME			full_path;
 	if (!Engine.FS.Exist( full_path, Path.Current, fname ))
 		if (!Engine.FS.Exist( full_path, Path.Meshes, fname ))
-			Device.Fatal("Can't find motion file '%s'.",fname);
+			Debug.fatal("Can't find motion file '%s'.",fname);
 
 	CStream* F			= Engine.FS.Open(full_path);
 	u32 dwMCnt		= F->Rdword(); VERIFY(dwMCnt);
 	for (u32 i=0; i<dwMCnt; i++){
 		COMotion* M		= xr_new<COMotion> ();
 		bool bRes		= M->Load(*F);
-		if (!bRes)		Device.Fatal("ERROR: Can't load motion. Incorrect file version.");
+		if (!bRes)		Debug.fatal("ERROR: Can't load motion. Incorrect file version.");
 		m_Motions[xr_strdup(M->Name())]=M;
 	}
 	Engine.FS.Close		(F);
@@ -95,7 +95,7 @@ COMotion* CObjectAnimator::PlayMotion(LPCSTR name, bool bLoop)
 	MotionPairIt I = m_Motions.find(LPSTR(name));
 	if (I!=m_Motions.end())	SetActiveMotion(I->second, bLoop);
 	else {
-		Device.Fatal	("OBJ ANIM::Cycle '%s' not found.",name);
+		Debug.fatal	("OBJ ANIM::Cycle '%s' not found.",name);
 		return NULL;
 	}
 	return I->second;

@@ -43,7 +43,7 @@ void CRenderDevice::End		(void)
 		if (0==dwPrecacheFrame)
 		{
 			Memory.mem_compact	();
-			Msg					("* MEMORY USAGE: %d K",Memory.mem_Usage()/1024);
+			Msg					("* MEMORY USAGE: %d K",Memory.mem_usage()/1024);
 		}
 	}
 

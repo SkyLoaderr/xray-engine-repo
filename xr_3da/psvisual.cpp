@@ -23,7 +23,7 @@ CPSVisual::~CPSVisual()
 //----------------------------------------------------
 void CPSVisual::Copy(CVisual* pFrom)
 {
-	Device.Fatal("Can't duplicate particle system - NOT IMPLEMENTED");
+	Debug.fatal("Can't duplicate particle system - NOT IMPLEMENTED");
 }
 //----------------------------------------------------
 //////////////////////////////////////////////////

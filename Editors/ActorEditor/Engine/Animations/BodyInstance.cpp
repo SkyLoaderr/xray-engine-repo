@@ -44,7 +44,7 @@ void CMotionDef::Load(CKinematics* P, CInifile* INI, LPCSTR  section, BOOL bCycl
 	LPCSTR  M = INI->ReadSTRING	(section,"motion");
 	_strlwr((char*)M);
 	int		m = P->LL_MotionID(M);
-	if (m<0) Device.Fatal("Can't find motion '%s'",M);
+	if (m<0) Debug.fatal("Can't find motion '%s'",M);
 	R_ASSERT(m>=0);
 
 	// params
@@ -134,7 +134,7 @@ int CKinematics::LL_PartID		(LPCSTR B)
 CMotionDef*	CKinematics::ID_Cycle	(LPCSTR  N)
 {
 	mdef::iterator I = m_cycle->find(LPSTR(N));
-	if (I==m_cycle->end())	{ Device.Fatal("! MODEL: can't find cycle: %s", N); return 0; }
+	if (I==m_cycle->end())	{ Debug.fatal("! MODEL: can't find cycle: %s", N); return 0; }
 	return &I->second;
 }
 CMotionDef*	CKinematics::ID_Cycle_Safe(LPCSTR  N)
@@ -147,14 +147,14 @@ CBlend*	CKinematics::PlayCycle		(LPCSTR  N, BOOL bMixIn, PlayCallback Callback, 
 {
 	mdef::iterator I = m_cycle->find(LPSTR(N));
 	if (I!=m_cycle->end())	return I->second.PlayCycle(this,bMixIn,Callback,CallbackParam);
-	else					{ Device.Fatal("! MODEL: can't find cycle: %s", N); return 0; }
+	else					{ Debug.fatal("! MODEL: can't find cycle: %s", N); return 0; }
 }
 
 // fx'es
 CMotionDef*	CKinematics::ID_FX			(LPCSTR  N)
 {
 	mdef::iterator I = m_fx->find(LPSTR(N));
-	if (I==m_fx->end())		{ Device.Fatal("! MODEL: can't find FX: %s", N); return 0; }
+	if (I==m_fx->end())		{ Debug.fatal("! MODEL: can't find FX: %s", N); return 0; }
 	return &I->second;
 }
 CMotionDef*	CKinematics::ID_FX_Safe		(LPCSTR  N)
@@ -167,7 +167,7 @@ CBlend*	CKinematics::PlayFX			(LPCSTR  N)
 {
 	mdef::iterator I = m_fx->find(LPSTR(N));
 	if (I!=m_fx->end())		return I->second.PlayFX(this);
-	else					{ Device.Fatal("! MODEL: can't find FX: %s", N); return 0; }
+	else					{ Debug.fatal("! MODEL: can't find FX: %s", N); return 0; }
 }
 
 CBlend*	CKinematics::LL_PlayFX(int bone, int motion, float blendAccrue, float blendFalloff, float Speed, float Power)
@@ -698,7 +698,7 @@ void CKinematics::Load(const char* N, CStream *data, u32 dwFlags)
             int pid = 0;
             for (I=S.begin(); I!=S.end(); I++,pid++)
             {
-                if (pid>=MAX_PARTS)	Device.Fatal("Too many partitions in motion description '%s'",def_N);
+                if (pid>=MAX_PARTS)	Debug.fatal("Too many partitions in motion description '%s'",def_N);
                 CPartDef&	PART		= (*partition)[pid];
                 LPSTR	N				= _strlwr(xr_strdup(I->first));
                 PART.Name				= N;
@@ -707,7 +707,7 @@ void CKinematics::Load(const char* N, CStream *data, u32 dwFlags)
                 for (; B!=P.end(); B++)
                 {
                     int bone			= LL_BoneID(B->first);
-                    if (bone<0)			Device.Fatal("Partition '%s' has incorrect bone name ('%s')",N,B->first);
+                    if (bone<0)			Debug.fatal("Partition '%s' has incorrect bone name ('%s')",N,B->first);
                     PART.bones.push_back(bone);
                 }
             }

@@ -33,8 +33,8 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 		Shader& S = *(shaders[it]);
 		if (0!=S.dwReference)	{
 			STextureList*		T	= S.lod0->Passes.front().T;
-			if (T)	Device.Fatal	("Shader still referenced (%d). Texture: %s",S.dwReference,DBG_GetTextureName(T->front()));
-			else	Device.Fatal	("Shader still referenced (%d).",S.dwReference);
+			if (T)	Debug.fatal	("Shader still referenced (%d). Texture: %s",S.dwReference,DBG_GetTextureName(T->front()));
+			else	Debug.fatal	("Shader still referenced (%d).",S.dwReference);
 		}
 		xr_delete(shaders[it]);
 	}
@@ -44,7 +44,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 	for (it=0; it!=elements.size(); it++)
 	{
 		ShaderElement& S = *(elements[it]);
-		if (0!=S.dwReference)		Device.Fatal("Element still referenced.");
+		if (0!=S.dwReference)		Debug.fatal("Element still referenced.");
 		xr_delete(elements[it]);
 	}
 	elements.clear();
@@ -53,7 +53,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 	// Texture List
 	for (it=0; it<lst_textures.size(); it++)	{
 		if (0!=lst_textures[it]->dwReference)
-			Device.Fatal("Texture list still referenced: %s",DBG_GetTextureName(lst_textures[it]->front()));
+			Debug.fatal("Texture list still referenced: %s",DBG_GetTextureName(lst_textures[it]->front()));
 		xr_delete (lst_textures[it]);
 	}
 	lst_textures.clear	();
@@ -61,7 +61,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 	// Matrix List
 	for (it=0; it<lst_matrices.size(); it++)	{
 		if (0!=lst_matrices[it]->dwReference)
-			Device.Fatal("Matrix list still referenced: %s",DBG_GetMatrixName(lst_matrices[it]->front()));
+			Debug.fatal("Matrix list still referenced: %s",DBG_GetMatrixName(lst_matrices[it]->front()));
 		xr_delete (lst_matrices[it]);
 	}
 	lst_matrices.clear	();
@@ -69,7 +69,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 	// Constant List
 	for (it=0; it<lst_constants.size(); it++)	{
 		if (0!=lst_constants[it]->dwReference)
-			Device.Fatal("Constant list still referenced: %s",DBG_GetConstantName(lst_constants[it]->front()));
+			Debug.fatal("Constant list still referenced: %s",DBG_GetConstantName(lst_constants[it]->front()));
 		xr_delete (lst_constants[it]);
 	}
 	lst_constants.clear	();

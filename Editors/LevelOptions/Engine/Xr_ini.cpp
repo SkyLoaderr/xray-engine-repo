@@ -258,11 +258,11 @@ CInifile::Sect& CInifile::ReadSection( LPCSTR S )
 	static  Sect Test; Test.Name = section; RootIt I = std::lower_bound(DATA.begin(),DATA.end(),Test,sect_pred());
 #ifdef ENGINE_BUILD
 	if (I!=DATA.end() && strcmp(I->Name,section)==0)	return *I;
-	else												{ Device.Fatal("Can't open section '%s'",S); return Test; }
+	else												{ Debug.fatal("Can't open section '%s'",S); return Test; }
 #else
 	#ifdef _EDITOR
 		if (I!=DATA.end() && strcmp(I->Name,section)==0)	return *I;
-		else												Device.Fatal("Can't open section '%s'",S);
+		else												Debug.fatal("Can't open section '%s'",S);
 	#else
 		R_ASSERT(I!=DATA.end() && strcmp(I->Name,section)==0);
 		return *I;
@@ -276,11 +276,11 @@ LPCSTR	CInifile::ReadSTRING(LPCSTR S, LPCSTR L )
 	Item Test; Test.first=(char*)L; SectIt	A = std::lower_bound(I.begin(),I.end(),Test,item_pred());
 #ifdef ENGINE_BUILD
 	if (A!=I.end() && strcmp(A->first,L)==0)	return A->second;
-	else										{ Device.Fatal("Can't find variable '%s'",L); return 0; }
+	else										{ Debug.fatal("Can't find variable '%s'",L); return 0; }
 #else
 	#ifdef _EDITOR
 		if (A!=I.end() && strcmp(A->first,L)==0)	return A->second;
-		else										Device.Fatal("Can't find variable '%s'",L);
+		else										Debug.fatal("Can't find variable '%s'",L);
 	#else
 		R_ASSERT(A!=I.end() && strcmp(A->first,L)==0);
 		return A->second;

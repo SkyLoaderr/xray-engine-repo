@@ -60,7 +60,7 @@ BOOL CCreator::Load(u32 dwNum)
 	pApp->Level_Set				( dwNum );
 	FILE_NAME					temp;
 	if (!Engine.FS.Exist(temp, Path.Current, "level.ltx"))
-		Device.Fatal("Can't find level configuration file '%s'.",temp);
+		Debug.fatal("Can't find level configuration file '%s'.",temp);
 
 	pLevel						= xr_new<CInifile>	( temp );
 

@@ -452,7 +452,7 @@ ENGINE_API IDirect3DBaseTexture8*	TWLoader2D
 	if (Engine.FS.Exist(fn,Path.Textures,fname,	".dds"))	goto _DDS;
 	if (Engine.FS.Exist(fn,Path.Current,fname,	".tga"))	goto _TGA;
 	if (Engine.FS.Exist(fn,Path.Textures,fname,	".tga"))	goto _TGA;
-	Device.Fatal("Can't find texture '%s'",fname);
+	Debug.fatal("Can't find texture '%s'",fname);
 #endif
  	return 0;
 

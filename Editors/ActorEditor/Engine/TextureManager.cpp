@@ -45,7 +45,7 @@ void		CShaderManager::_DeleteCode		(u32& SB)
 	}
 
 	// Fail
-	Device.Fatal("Failed to find compiled shader or stateblock");
+	Debug.fatal("Failed to find compiled shader or stateblock");
 }
 //--------------------------------------------------------------------------------------------------------------
 CRT* CShaderManager::_CreateRT		(LPCSTR Name, u32 w, u32 h) 
@@ -351,7 +351,7 @@ CBlender* CShaderManager::_GetBlender		(LPCSTR Name)
 #ifdef _EDITOR
 	if (I==blenders.end())	return 0;
 #else
-	if (I==blenders.end())	{ Device.Fatal("Shader '%s' not found in library.",Name); return 0; }
+	if (I==blenders.end())	{ Debug.fatal("Shader '%s' not found in library.",Name); return 0; }
 #endif
 	else					return I->second;
 }

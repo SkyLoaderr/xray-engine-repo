@@ -139,7 +139,7 @@ void CSkeletonX::_Load(const char* N, CStream *data, u32& dwVertCount)
 		data->Read	(Vertices2W,size);
 		break;
 	default:
-		Device.Fatal	("Invalid vertex type in skinned model '%s'",N);
+		Debug.fatal	("Invalid vertex type in skinned model '%s'",N);
 		break;
 	}
 }

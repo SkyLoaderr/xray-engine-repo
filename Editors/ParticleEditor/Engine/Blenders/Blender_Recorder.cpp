@@ -78,7 +78,7 @@ void	CBlender_Compile::PassTemplate_Detail(LPCSTR Base)
 	int id		=	ParseName(Base);
 	LPCSTR N	=	Base;
 	if (id>=0)	{
-		if (id>=int(lst.size()))	Device.Fatal("Not enought textures for shader. Base texture: '%s'.",lst[0]);
+		if (id>=int(lst.size()))	Debug.fatal("Not enought textures for shader. Base texture: '%s'.",lst[0]);
 		N = lst [id];
 	}
 
@@ -187,7 +187,7 @@ void	CBlender_Compile::Stage_Texture	(LPCSTR name)
 	int id		=	ParseName(name);
 	LPCSTR N	=	name;
 	if (id>=0)	{
-		if (id>=int(lst.size()))	Device.Fatal("Not enought textures for shader. Base texture: '%s'.",lst[0]);
+		if (id>=int(lst.size()))	Debug.fatal("Not enought textures for shader. Base texture: '%s'.",lst[0]);
 		N = lst [id];
 	}
 	passTextures.push_back	(Device.Shader._CreateTexture(N));
