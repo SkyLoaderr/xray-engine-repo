@@ -213,7 +213,7 @@ void CStats::Show()
 
 void CStats::OnDeviceCreate			()
 {
-	pFont	= new CGameFont			("stat_font");
+	pFont	= xr_new<CGameFont>		("stat_font");
 }
 void CStats::OnDeviceDestroy		()
 {

@@ -195,7 +195,7 @@ void CSector::Render(CFrustum &F)
 			// Cull by HOM
 			if (!::Render->occ_visible(*P))	continue;
 
-			// Create new frustum and recurse
+			// Create _new_ frustum and recurse
 			CFrustum Clip;
 			Clip.CreateFromPortal(P,Device.vCameraPosition,Device.mFullTransform);
 			PORTAL->dwFrame		= Device.dwFrame;

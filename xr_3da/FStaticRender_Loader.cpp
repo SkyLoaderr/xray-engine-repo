@@ -207,7 +207,7 @@ void CRender::LoadSectors(CStream* fs)
 		CStream* P = S->OpenChunk(i);
 		if (0==P) break;
 
-		Sectors.push_back(new CSector(i));
+		Sectors.push_back(xr_new<CSector> (i));
 		Sectors.back()->Load(*P);
 
 		P->Close();
@@ -247,7 +247,7 @@ void CRender::LoadSectors(CStream* fs)
 		}
 
 		// build portal model
-		rmPortals = new CDB::MODEL;
+		rmPortals = xr_new<CDB::MODEL> ();
 		rmPortals->build	(CL.getV(),CL.getVS(),CL.getT(),CL.getTS());
 	} else {
 		rmPortals = 0;

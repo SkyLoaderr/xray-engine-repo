@@ -58,7 +58,7 @@ COMotion::COMotion():CCustomMotion(){
 COMotion::COMotion(COMotion* source):CCustomMotion(source){
 	// bone motions
 	for (int ch=0; ch<ctMaxChannel; ch++)
-		envs[ch]	= new CEnvelope(source->envs[ch]);
+		envs[ch]	= xr_new<CEnvelope> (source->envs[ch]);
 }
 
 COMotion::~COMotion(){
@@ -102,7 +102,7 @@ bool COMotion::Load(CStream& F){
 	WORD vers	= F.Rword();
 	if (vers!=EOBJ_OMOTION_VERSION) return false;
 	for (int ch=0; ch<ctMaxChannel; ch++){
-		envs[ch] = new CEnvelope();
+		envs[ch] = xr_new<CEnvelope> ();
 		envs[ch]->Load(F);
 	}
 	return true;
@@ -131,7 +131,7 @@ CSMotion::CSMotion(CSMotion* source):CCustomMotion(source){
     	dest 		= &bone_mots[i];
     	src 		= &source->bone_mots[i];
 		for (int ch=0; ch<ctMaxChannel; ch++)
-			dest->envs[ch] = new CEnvelope(src->envs[ch]);
+			dest->envs[ch] = xr_new<CEnvelope> (src->envs[ch]);
     }
 }
 
@@ -168,7 +168,7 @@ void CSMotion::CopyMotion(CSMotion* source){
     	dest 		= &bone_mots[i];
     	src 		= &source->bone_mots[i];
 		for (int ch=0; ch<ctMaxChannel; ch++)
-			dest->envs[ch] = new CEnvelope(src->envs[ch]);
+			dest->envs[ch] = xr_new<CEnvelope> (src->envs[ch]);
     }
 }
 
@@ -243,7 +243,7 @@ bool CSMotion::Load(CStream& F){
         	bm_it->SetName	(itoa(bm_it-bone_mots.begin(),temp_buf,10));
 			bm_it->flag 	= F.Rdword();
 			for (int ch=0; ch<ctMaxChannel; ch++){
-				bm_it->envs[ch] = new CEnvelope();
+				bm_it->envs[ch] = xr_new<CEnvelope> ();
 				bm_it->envs[ch]->Load(F);
 			}
 		}
@@ -262,7 +262,7 @@ bool CSMotion::Load(CStream& F){
         	bm_it->SetName	(buf);
 			bm_it->flag 	= F.Rdword();
 			for (int ch=0; ch<ctMaxChannel; ch++){
-				bm_it->envs[ch] = new CEnvelope();
+				bm_it->envs[ch] = xr_new<CEnvelope> ();
 				bm_it->envs[ch]->Load(F);
 			}
 		}

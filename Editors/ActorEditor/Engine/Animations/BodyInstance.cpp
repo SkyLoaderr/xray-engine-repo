@@ -539,10 +539,10 @@ void CKinematics::Load(const char* N, CStream *data, u32 dwFlags)
 	inherited::Load(N,data, dwFlags);
 
 	// Globals
-	motion_map		= new accel;
-	bone_map		= new accel;
-	bones			= new vecBones;
-	partition		= new CPartition;
+	motion_map		= xr_new<accel> ();
+	bone_map		= xr_new<accel> ();
+	bones			= xr_new<vecBones> ();
+	partition		= xr_new<CPartition> ();
 	bone_instances	= NULL;
 
 	// Load bones
@@ -558,7 +558,7 @@ void CKinematics::Load(const char* N, CStream *data, u32 dwFlags)
 		// Bone
 		int		ID = bones->size();
 		data->RstringZ(buf);	strlwr(buf);
-		CBoneData*	pBone = new CBoneData(ID);
+		CBoneData*	pBone = xr_new<CBoneData> (ID);
 		bones->push_back(pBone);
 		bone_map->insert(make_pair(xr_strdup(buf),ID));
 
@@ -635,8 +635,8 @@ void CKinematics::Load(const char* N, CStream *data, u32 dwFlags)
             MP->Read			(&*PART.bones.begin(),PART.bones.size()*sizeof(int));
         }
 
-        m_cycle = new mdef;
-        m_fx	= new mdef;
+        m_cycle = xr_new<mdef> ();
+        m_fx	= xr_new<mdef> ();
 
         // motion defs (cycle&fx)
         WORD mot_count			= MP->Rword();
@@ -663,8 +663,8 @@ void CKinematics::Load(const char* N, CStream *data, u32 dwFlags)
                 MP->Read			(&*PART.bones.begin(),PART.bones.size()*sizeof(int));
             }
 
-            m_cycle = new mdef;
-            m_fx	= new mdef;
+            m_cycle = xr_new<mdef> ();
+            m_fx	= xr_new<mdef> ();
 
             // motion defs (cycle&fx)
             WORD mot_count			= MP->Rword();
@@ -687,8 +687,8 @@ void CKinematics::Load(const char* N, CStream *data, u32 dwFlags)
                 strcpy(def_N,N);
                 strcpy(strext(def_N),".ltx");
             }
-            m_cycle = new mdef;
-            m_fx	= new mdef;
+            m_cycle = xr_new<mdef> ();
+            m_fx	= xr_new<mdef> ();
 
             CInifile DEF(def_N);
             CInifile::SectIt I;

@@ -466,16 +466,16 @@ Fvector CObjectSpace::CollideWithWorld(SCollisionData& cl, Fvector position, Fve
 		float l = intersectRayPlane(destinationPoint, slidePlaneNormal, 
 			slidePlaneOrigin, slidePlaneNormal); 
 
-		// We can now calculate a new destination point on the sliding plane
+		// We can now calculate a _new_ destination point on the sliding plane
 		Fvector newDestinationPoint;
 		newDestinationPoint.mad(destinationPoint,slidePlaneNormal,l);
 		
-		// Generate the slide vector, which will become our new velocity vector
+		// Generate the slide vector, which will become our _new_ velocity vector
 		// for the next iteration
 		Fvector newVelocityVector;
 		newVelocityVector.sub(newDestinationPoint, cl.vNearestPolygonIntersectionPoint);
 		
-		// now we recursively call the function with the new position and velocity 
+		// now we recursively call the function with the _new_ position and velocity 
 		cl.vLastSafePosition.set(position);
 		return CollideWithWorld(cl, newSourcePoint, newVelocityVector,cnt+1); 
 	}

@@ -73,7 +73,7 @@ void CEnvironment::Load(CInifile *pIni, char *section)
 		u32 scnt = _GetItemCount(S);
 		for (u32 i=0; i<scnt; i++){
 			_GetItem(S,i,name);
-			pSun	= xr_new<new CSun(pIni, name);
+			pSun	= xr_new<CSun> (pIni, name);
 			Suns.push_back(pSun);
 		}
 	}

@@ -37,13 +37,13 @@ void FProgressiveFixedVisual::Load(const char* N, CStream *data, u32 dwFlags)
 
 	// PMAP_VSPLIT
 	R_ASSERT(vCount>V_Minimal);
-	vsplit = new Vsplit[vCount-V_Minimal];
+	vsplit = xr_alloc<Vsplit>(vCount-V_Minimal);
 	R_ASSERT(fs->ReadChunkSafe(0x2,vsplit,(vCount-V_Minimal)*sizeof(Vsplit)));
 
 	// PMAP_FACES
 	R_ASSERT(fs->FindChunk(0x3));
 	u32 fCount = fs->Rdword();
-	faces_affected = new WORD[fCount];
+	faces_affected = xr_alloc<WORD>(fCount);
 	fs->Read(faces_affected,fCount*sizeof(WORD));
 
 	fs->Close();
@@ -53,8 +53,8 @@ void FProgressiveFixedVisual::Release()
 {
 	Fvisual::Release();
 
-	delete [] faces_affected;
-	delete [] vsplit;
+	xr_free(faces_affected);
+	xr_free(vsplit);
 }
 
 void FProgressiveFixedVisual::SetLOD(float LOD)

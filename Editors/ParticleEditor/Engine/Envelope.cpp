@@ -12,7 +12,7 @@ CEnvelope::CEnvelope(CEnvelope* source)
 {
 	*this 		= *source;
 	for (u32 i=0; i<source->keys.size(); i++)
-    	keys[i]	= new st_Key(*source->keys[i]);
+    	keys[i]	= xr_new<st_Key> (*source->keys[i]);
 }
 
 void CEnvelope::RotateKeys(float angle)
@@ -38,7 +38,7 @@ void CEnvelope::Load(CStream& F){
 	F.Read		(behavior,sizeof(int)*2);
 	keys.resize	(F.Rdword());
 	for (u32 i=0; i<keys.size(); i++){
-    	keys[i]	= new st_Key();
+    	keys[i]	= xr_new<st_Key> ();
 		F.Read	(keys[i],sizeof(st_Key));
     }
 }
@@ -55,7 +55,7 @@ void CEnvelope::LoadA(CStream& F){
         int nkeys=atoi(buf);
 		keys.resize(nkeys);
 		for (u32 i=0; i<keys.size(); i++){
-    		keys[i]	= new st_Key();
+    		keys[i]	= xr_new<st_Key> ();
             st_Key& K=*keys[i];
 			F.Rstring(buf);
             int cnt = sscanf	(buf,"Key %f %f %f %f %f %f %f %f %f", f+0, f+1, f+2, f+3, f+4, f+5, f+6, f+7, f+8);

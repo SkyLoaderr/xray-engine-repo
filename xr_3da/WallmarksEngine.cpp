@@ -58,7 +58,7 @@ void CWallmarksEngine::OnDeviceDestroy()
 CWallmarksEngine::wallmark*	CWallmarksEngine::wm_allocate		(Shader*	S	)
 {
 	wallmark*			W = 0;
-	if (pool.empty())	W = new wallmark;
+	if (pool.empty())	W = xr_new<wallmark> ();
 	else				{ W = pool.back(); pool.pop_back(); }
 
 	W->shader			= S;
