@@ -228,6 +228,9 @@
 					RelativePath=".\Config\gameplay\encyclopedia_vehicles.xml">
 				</File>
 				<File
+					RelativePath=".\Config\gameplay\encyclopedia_weapons.xml">
+				</File>
+				<File
 					RelativePath=".\Config\gameplay\encyclopedia_zone.xml">
 				</File>
 				<File
