@@ -89,7 +89,7 @@ void	CRenderTarget::u_compute_texgen_jitter	(Fmatrix&		m_Texgen_J)
 	float	scale_X			= float(Device.dwWidth)	/ float(TEX_jitter);
 	float	scale_Y			= float(Device.dwHeight)/ float(TEX_jitter);
 	float	offset			= (.5f / float(TEX_jitter));
-	m_TexelAdjust.scale			(scale_X,	scale_X,1.f	);
+	m_TexelAdjust.scale			(scale_X,	scale_Y,1.f	);
 	m_TexelAdjust.translate_over(offset,	offset,	0	);
 	m_Texgen_J.mulA				(m_TexelAdjust);
 }
@@ -152,7 +152,7 @@ void	generate_jitter	(DWORD*	dest, u32 elem_count)
 {
 	const	int		cmax		= 8;
 	svector<Ivector2,cmax>		samples;
-	for (int it=0; it<elem_count*2; it++)
+	while (samples.size()<elem_count*2)
 	{
 		Ivector2	test;
 		test.set	(::Random.randI(0,256),::Random.randI(0,256));
