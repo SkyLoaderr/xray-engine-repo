@@ -61,7 +61,9 @@ To ALEX-MX:
 +O	ocasional memory corruption inside particle system (on destructor, probably?)
 	(game00/single/alife)
 +D	зоны глючат посто€нно из-за партикловой-хрени! (game00/single/alife)
--J  глюк с консолью (как только загрузилс€ уровень - вызвать консоль [occ_part_jim])
+-J  глюк с консолью. вылетает на: 
+    Msg("[ ACTION_LOOK_DESTINATION ]  :: CurrentTime = [%i] CurYaw = [%f] TargetYaw = [%f]  SoundPos = [%f,%f,%f]", m_dwCurrentTime, pMonster->r_torso_current.yaw, pMonster->r_torso_target.yaw,VPUSH(m_tSound.position));
+
 детальные объекты в редакторе
 - вылет при попытке заменить объектный лист
 - не мен€ютс€ параметры объекта в листе
