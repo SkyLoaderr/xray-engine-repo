@@ -14,7 +14,7 @@ end
 
 function C_new_game_sv_Deathmatch:type_name()
 	printf		("C_new_game_sv_Deathmatch::type_name called!")
-	return "new_deathmatch"
+	return "new_dm"
 end
 
 function Money_SetStart	(id_who)
