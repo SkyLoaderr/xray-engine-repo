@@ -20,7 +20,7 @@
 #include "fooditem.h"
 
 #ifdef _DEBUG
-#	define USE_LOG
+//#	define USE_LOG
 #endif
 
 using namespace ObjectHandlerSpace;

@@ -22,6 +22,9 @@ protected:
 	typedef GraphEngineSpace::_solver_condition_type	_condition_type;
 	typedef CActionPlannerActionScript<CAI_Stalker>		CActionPlannerAction;
 
+private:
+	bool					m_affect_cover;
+
 protected:
 			void			add_evaluators						();
 			void			add_actions							();
@@ -36,6 +39,8 @@ public:
 	virtual					~CMotivationActionManagerStalker	();
 	virtual	void			setup								(CAI_Stalker *object);
 	virtual	void			update								(u32 time_delta);
+	IC		void			affect_cover						(bool value);
+	IC		bool			affect_cover						() const;
 #ifdef LOG_ACTION
 	virtual	LPCSTR			object_name							() const;
 #endif

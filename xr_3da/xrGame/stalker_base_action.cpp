@@ -11,6 +11,7 @@
 #include "ai/stalker/ai_stalker.h"
 #include "script_game_object.h"
 #include "stalker_animation_manager.h"
+#include "motivation_action_manager_stalker.h"
 
 CStalkerActionBase::CStalkerActionBase		(CAI_Stalker *object, LPCSTR action_name) :
 	inherited				(object,action_name)
@@ -19,13 +20,14 @@ CStalkerActionBase::CStalkerActionBase		(CAI_Stalker *object, LPCSTR action_name
 
 void CStalkerActionBase::initialize			()
 {
-	inherited::initialize	();
+	inherited::initialize							();
 	object().animation().clear_script_animations	();
-	object().body_action	(eBodyActionNone);
+	object().body_action							(eBodyActionNone);
+	object().brain().affect_cover					(false);
 }
 
 void CStalkerActionBase::finalize			()
 {
-	inherited::finalize		();
+	inherited::finalize								();
 	object().animation().clear_script_animations	();
 }

@@ -25,6 +25,7 @@ using namespace StalkerDecisionSpace;
 
 CMotivationActionManagerStalker::CMotivationActionManagerStalker	()
 {
+	m_affect_cover			= false;
 }
 
 CMotivationActionManagerStalker::~CMotivationActionManagerStalker	()
@@ -59,6 +60,7 @@ void CMotivationActionManagerStalker::setup			(CAI_Stalker *object)
 	add_motivations			();
 	add_evaluators			();
 	add_actions				();
+	m_affect_cover			= false;
 }
 
 void CMotivationActionManagerStalker::update			(u32 time_delta)

@@ -92,7 +92,7 @@ void CAI_Stalker::reinit			()
 	m_ce_close->set_inertia			(3000);
 	m_ce_far->set_inertia			(3000);
 	m_ce_best->set_inertia			(1000);
-	m_ce_angle->set_inertia			(0);
+	m_ce_angle->set_inertia			(5000);
 	m_ce_safe->set_inertia			(1000);
 	m_ce_random_game->set_inertia	(3000);
 	m_ce_ambush->set_inertia		(3000);

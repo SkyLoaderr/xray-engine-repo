@@ -26,6 +26,7 @@
 #include "ai_object_location.h"
 #include "stalker_movement_manager.h"
 #include "sound_player.h"
+#include "motivation_action_manager_stalker.h"
 
 using namespace StalkerDecisionSpace;
 
@@ -292,9 +293,12 @@ void CStalkerActionGetReadyToKill::execute		()
 		object().movement().set_level_dest_vertex	(point->level_vertex_id());
 		object().movement().set_desired_position	(&point->position());
 		object().movement().set_movement_type		(eMovementTypeRun);
+		object().brain().affect_cover				(false);
 	}
-	else
+	else {
+		object().brain().affect_cover				(true);
 		object().movement().set_movement_type		(eMovementTypeStand);
+	}
 
 	if (object().memory().visual().visible_now(object().memory().enemy().selected()))
 		object().sight().setup	(CSightAction(object().memory().enemy().selected(),true));
@@ -330,6 +334,7 @@ void CStalkerActionKillEnemy::initialize		()
 	m_storage->set_property				(eWorldPropertyEnemyDetoured,false);
 	if (object().memory().enemy().selected()->human_being())
 		object().sound().play					(eStalkerSoundAttack);
+	object().brain().affect_cover		(true);
 }
 
 void CStalkerActionKillEnemy::finalize			()
@@ -465,6 +470,7 @@ void CStalkerActionLookOut::initialize		()
 	object().movement().set_mental_state			(eMentalStateDanger);
 	object().CObjectHandler::set_goal	(eObjectActionAimReady1,object().best_weapon());
 	set_inertia_time					(1000);
+	object().brain().affect_cover		(true);
 }
 
 IC	float current_cover					(CAI_Stalker *object)
@@ -540,6 +546,7 @@ void CStalkerActionHoldPosition::initialize		()
 	if (object().agent_manager().group_behaviour())
 		object().sound().play					(eStalkerSoundDetour,5000);
 	set_inertia_time					(5000 + ::Random32.random(5000));
+	object().brain().affect_cover		(true);
 }
 
 void CStalkerActionHoldPosition::finalize		()

@@ -7,3 +7,13 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once
+
+IC	void CMotivationActionManagerStalker::affect_cover	(bool value)
+{
+	m_affect_cover	= value;
+}
+
+IC	bool CMotivationActionManagerStalker::affect_cover	() const
+{
+	return			(m_affect_cover);
+}
