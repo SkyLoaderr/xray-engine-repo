@@ -141,6 +141,7 @@ bool	game_sv_ArtefactHunt::IsBuyableItem				(CSE_Abstract* pItem)
 	if (!pAlifeObject) return false;
 	if (pAlifeObject->m_tClassID == CLSID_OBJECT_A_VOG25) return true;
 	if (pAlifeObject->m_tClassID == CLSID_OBJECT_A_OG7B) return true;
+	if (pAlifeObject->m_tClassID == CLSID_OBJECT_A_M209) return true;
 	return false;
 };
 
