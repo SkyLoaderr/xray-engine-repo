@@ -642,10 +642,8 @@ HRESULT CMyD3DApplication::RenderFAT	()
 {
 	LPDIRECT3DSURFACE9						pBaseTarget;
 
-	// Save old render taget
-	m_pd3dDevice->GetRenderTarget			(0, &pBaseTarget);
-
 	// Set new render targets
+	m_pd3dDevice->GetRenderTarget			(0, &pBaseTarget);
 	m_pd3dDevice->SetRenderTarget			(0, d_Position	);
 	m_pd3dDevice->SetRenderTarget			(1, d_Normal	);
 	m_pd3dDevice->SetRenderTarget			(2, d_Color		);
