@@ -147,7 +147,8 @@ void	CEventAPI::Defer(LPCSTR N, DWORD P1, DWORD P2)
 
 void msParse			(LPCSTR c)
 {
-	if (0==strcmp(c,"quit") || 0==strcmp(c,"exit")) 
+	Msg					("- msPARSE(%s) -",c);
+	if ((0==strcmp(c,"quit")) || (0==strcmp(c,"exit"))) 
 	{
 		Engine.Event.Defer	("KERNEL::QUIT");
 	}

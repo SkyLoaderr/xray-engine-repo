@@ -15,10 +15,13 @@ void msCreate		(LPCSTR name)
         MAILSLOT_WAIT_FOREVER,         // no time-out for operations
         (LPSECURITY_ATTRIBUTES) NULL); // no security attributes
     if (hLocalSlot == INVALID_HANDLE_VALUE) return;
+
+	Msg				("* mailSLOT successfully created.");
 }
 
 void msRead			(void) 
 {
+	Msg				("- msREAD -");
     DWORD cbMessage, cMessage, cbRead;
 	BOOL fResult;
 	LPSTR lpszBuffer; 
