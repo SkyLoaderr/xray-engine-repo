@@ -1,0 +1,73 @@
+
+class "fx_snd"
+
+function fx_snd:__init(obj, storage)
+	self.object = obj
+	self.st		= storage
+	
+	self.loaded = false
+	
+end
+
+function fx_snd:reset_scheme()
+	self.object:set_nonscript_usable(false)
+end
+
+function fx_snd:update(delta)
+	if not self.loaded then
+		self.loaded = true
+	
+		self.target	= debug_get_level_object(self.st.obj_name):position()
+		self.source = self.object:position()
+		
+		self.current = vector():set(self.source)
+		
+		self.snd_obj = sound_object(self.st.snd)
+	end
+
+
+	if not self.snd_obj:playing() then 
+		--self.snd_obj:play_at_pos(self.source,0,sound_object.looped)
+		self.snd_obj:play_at_pos(self.object, self.current)
+		printf("play...")
+	end
+	
+	-- update current
+	local dir = vector():sub(self.target, self.source):normalize()
+	local target_pos = vector():set(self.current)
+	
+	target_pos:mad(dir, 0.8)
+	
+	self.current = vector():set(target_pos)
+	
+	if self.current:distance_to(self.target) < 2 then
+		printf("<<<<")
+		self.current = self.source	
+	end
+
+	self.snd_obj:set_position(self.current)
+	
+	printf("update :: delta = [%u] pos = [%f,%f,%f]", delta, self.current.x,self.current.y,self.current.z)	
+	
+end
+
+---------------------------------------------------------------------------------------------------------------------
+function add_to_binder(npc, ini, scheme, section, storage)
+	
+	local new_action = fx_snd(npc, storage)
+
+	-- Зарегистрировать все actions, в которых должен быть вызван метод reset_scheme при изменении настроек схемы:
+	xr_logic.subscribe_action_for_events(npc, storage, new_action)
+	
+end
+
+function set_scheme(npc, ini, scheme, section, gulag_name)
+	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
+
+	st.logic    = xr_logic.cfg_get_switch_conditions(ini, section, npc)
+	
+	st.obj_name	= utils.cfg_get_string(ini, section, "object",	npc,	false, "")	
+	st.snd		= utils.cfg_get_string(ini, section, "sound",	npc,	false, "")
+	
+end
+
