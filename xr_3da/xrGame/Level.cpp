@@ -98,8 +98,9 @@ void CLevel::g_sv_Spawn		(NET_Packet* Packet)
 		if (s_replace[0])	E->cNameSET(s_replace);
 		if (s_local	&& (0==CurrentEntity()))	SetEntity(E);
 		CSquad& S			= get_squad	(s_team,s_squad);
+		CGroup& G			= get_group(s_team,s_squad,s_group);
 		if (S.Leader==0)	S.Leader=E;
-		else				get_group(s_team,s_squad,s_group).Members.push_back(E);
+		else				G.Members.push_back(E);
 	}
 }
 

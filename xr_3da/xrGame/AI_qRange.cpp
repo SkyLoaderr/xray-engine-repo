@@ -46,6 +46,7 @@ void CAI_Space::q_Range(DWORD StartNode, const Fvector& BasePos, float Range, AI
 
 			// estimate
 			float	cost		= Estimator.Estimate(T,distance_sqr,bStop);
+
 			if (cost<Estimator.BestCost)	{
 				Estimator.BestCost	= cost;
 				Estimator.BestNode	= Test;

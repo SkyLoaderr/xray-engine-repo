@@ -61,6 +61,16 @@ public:
 	void			q_Path			(DWORD StartNode, DWORD GoalNode,		AI::Path&	Result);
 	DWORD			q_Node			(DWORD PrevNode,  const Fvector& Pos);
 
+	// yet another A* search
+	float			vfFindTheXestPath(DWORD StartNode, DWORD GoalNode,		AI::Path&	Result);
+	void			vfLoadSearch();
+	void			vfUnloadSearch();
+	// 
+
+	// yet another best node search
+	//void			vfFindTheBestNode(DWORD StartNode, const Fvector& Pos,	float Range,	AI::NodeEstimator& Estimator);
+	// 
+
 	int				q_LoadSearch	(const Fvector& Pos);	// <0 - failure
 
 	// Helper functions

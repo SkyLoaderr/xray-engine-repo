@@ -16,10 +16,27 @@ namespace AI {
 		aiAttack,				// attack mode
 		aiPursuit,				// преследование после потери цели
 		aiRetreating,			// retreating
+
+		aiHenDie,
+			
+		aiHenUnderFire,
+		aiHenGoInThisDirection,		
+		aiHenGoToThatPosition,		
+		aiHenWaitOnPosition,			
+		aiHenHoldPosition,			
+		aiHenHoldUnderFire,
+		aiHenFreeHunting,			
+		aiHenFollowMe,
+
+		aiHenAttack,				
+		aiHenDefend,				
+		aiHenPursuit,				
+		aiHenRetreat,			
 			
 		aiLAST,
 		aiFORCEDWORD			= DWORD(-1)
 	};
+	//----------------------------------------------------------------------------------
 	class State
 	{
 	public:
@@ -33,7 +50,6 @@ namespace AI {
 		virtual BOOL	Parse	(CCustomMonster* Me)=0;
 		virtual void	Hit		(Fvector &dir)	{};
 	};
-	//----------------------------------------------------------------------------------
 	class _Die					: public State
 	{
 	public:

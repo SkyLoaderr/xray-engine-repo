@@ -724,6 +724,14 @@ SOURCE=.\Tracer.h
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=.\ai_a_star.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ai_a_star.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\AI_astar.h
 # End Source File
 # Begin Source File

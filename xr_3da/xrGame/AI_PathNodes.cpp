@@ -178,7 +178,7 @@ BOOL SegmentsIntersect(Fvector& dst, Fvector& v1, Fvector& v2, Fvector& v3, Fvec
 	float bary2 = (T.z-v1.z)/lz;
 	if (fis_zero(lx))	bary1=bary2;
 	if (fis_zero(lz))	bary2=bary1;
-	VERIFY(fsimilar(bary1,bary2,EPS_L));
+	//VERIFY(fsimilar(bary1,bary2,EPS_L));
 
 	float bary	= (bary1+bary2)/2;
 	dst.x = T.x;

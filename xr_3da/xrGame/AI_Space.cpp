@@ -7,6 +7,9 @@
 #include "gameobject.h"
 #include "..\fstaticrender.h"
 
+// for a* search
+#include "ai_a_star.h"
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -24,6 +27,10 @@ CAI_Space::CAI_Space	()
 
 CAI_Space::~CAI_Space	()
 {
+	// for a* search
+	vfUnloadSearch();
+	//
+
 	Device.seqDevCreate.Remove	(this);
 	Device.seqDevDestroy.Remove	(this);
 	Device.Shader.Delete		(sh_debug);
@@ -72,6 +79,10 @@ void CAI_Space::Load(LPCSTR name)
 
 	// special query tables
 	q_mark.assign		(m_header.count,false);
+
+	// for a* search
+	vfLoadSearch();
+	//
 }
 
 void CAI_Space::Render()
