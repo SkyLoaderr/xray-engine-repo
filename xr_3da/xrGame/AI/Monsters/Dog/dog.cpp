@@ -136,7 +136,7 @@ void CAI_Dog::CheckSpecParams(u32 spec_params)
 		Fvector().sub(EnemyMan.get_enemy()->Position(), Position()).getHP(yaw,pitch);
 		yaw *= -1;
 
-		if (angle_difference(angle_normalize(yaw), movement().m_body.current.yaw) > 120 * PI / 180) {
+		if (angle_difference(yaw, movement().m_body.current.yaw) > 120 * PI / 180) {
 			
 			EMotionAnim anim;
 			if (from_right(yaw,movement().m_body.current.yaw)) {

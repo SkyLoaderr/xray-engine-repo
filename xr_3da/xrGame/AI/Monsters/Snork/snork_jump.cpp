@@ -81,11 +81,9 @@ void CSnorkJump::try_to_jump(u32 velocity_mask)
 
 	dir.sub		(target_position, source_position);
 	dir.getHP	(yaw, pitch);
-	yaw			*= -1;
-	yaw			= angle_normalize(yaw);
 
 	// проверка на angle и на dist
-	if (angle_difference(m_object->movement().m_body.current.yaw, yaw) < PI_DIV_6) {
+	if (angle_difference(m_object->movement().m_body.current.yaw, -yaw) < PI_DIV_6) {
 		try_jump_normal();
 		return;
 	}
@@ -109,11 +107,8 @@ void CSnorkJump::try_jump_specific()
 	Fvector().sub	(m_target_object->Position(), m_object->Position()).getHP(yaw, pitch);
 
 	// получить вектор направления и его мир угол
-	yaw				*= -1;
-	yaw				= angle_normalize(yaw);
-
 	//// проверка на angle и на dist
-	//if (angle_difference(m_object->movement().m_body.current.yaw, yaw) < PI_DIV_2) {
+	//if (angle_difference(m_object->movement().m_body.current.yaw, -yaw) < PI_DIV_2) {
 	//	return;
 	//}
 	

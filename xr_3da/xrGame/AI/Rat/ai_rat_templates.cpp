@@ -66,7 +66,7 @@ void CAI_Rat::vfAdjustSpeed()
 	tTemp2.normalize_safe	();
 	float					fAngle = tTemp1.dotproduct(tTemp2);
 	clamp					(fAngle,-.99999f,.99999f);
-	fAngle					= angle_normalize(acosf(fAngle));
+	fAngle					= acosf(fAngle);
 	
 	if (_abs(m_fSpeed - m_fMinSpeed) <= EPS_L)	{
 		if (fAngle >= 2*PI_DIV_3) {

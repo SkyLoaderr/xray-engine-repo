@@ -31,7 +31,7 @@ void CStateMonsterLookToUnprotectedAreaAbstract::initialize()
 
 	Fvector dir;
 	dir.set(1.f,0.f,0.f);
-	dir.setHP(angle_normalize(angle+PI), 0.f);
+	dir.setHP(angle+PI, 0.f);
 	dir.normalize();
 
 	target_point.mad(object->Position(),dir, 1.f);

@@ -323,11 +323,9 @@ Fvector CJumpingAbility::predict_position(CObject *obj, const Fvector &pos)
 
 	dir.sub		(prediction_pos, m_object->Position());
 	dir.getHP	(yaw, pitch);
-	yaw			*= -1;
-	yaw			= angle_normalize(yaw);
 
 	// проверка на angle и на dist
-	if (angle_difference(m_object->movement().m_body.current.yaw, yaw) > m_max_angle) return pos;
+	if (angle_difference(m_object->movement().m_body.current.yaw, -yaw) > m_max_angle) return pos;
 	
 	return prediction_pos;
 }

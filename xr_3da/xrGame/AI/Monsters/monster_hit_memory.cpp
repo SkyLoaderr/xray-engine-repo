@@ -98,7 +98,6 @@ Fvector CMonsterHitMemory::get_last_hit_dir()
 				break;
 		}
 
-		h = angle_normalize(h);
 		dir.setHP(h,p);
 		dir.normalize();
 	}

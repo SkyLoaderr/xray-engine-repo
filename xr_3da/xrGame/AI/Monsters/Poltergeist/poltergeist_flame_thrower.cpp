@@ -149,7 +149,7 @@ bool CPoltergeist::GetValidFlamePosition(const CObject *target_object, Fvector &
 	float angle = ai().level_graph().vertex_less_cover(Obj->ai_location().level_vertex_id(),PI_DIV_6);
 
 	dir.set(1.f,0.f,0.f);
-	dir.setHP(angle_normalize(angle+PI), 0.f);
+	dir.setHP(angle + PI, 0.f);
 	dir.normalize();
 
 	vertex_position = ai().level_graph().vertex_position(Obj->ai_location().level_vertex_id());

@@ -134,7 +134,7 @@ void CMonsterSquad::Attack_AssignTargetDir(ENTITY_VEC &members, CEntity *enemy)
 		SSquadCommand command;
 		command.type			= SC_ATTACK;
 		command.entity			= enemy;
-		command.direction.setHP	(angle_normalize(first_h + lines[i].yaw), first_p);
+		command.direction.setHP	(first_h + lines[i].yaw, first_p);
 		UpdateCommand(lines[i].pE, command);
 	}
 }
@@ -268,7 +268,7 @@ void CMonsterSquad::Attack_AssignTargetDir(ENTITY_VEC &members, CEntity *enemy)
 //		R_ASSERT(it != states.end());
 //
 //		float h = first_h + lines[i].yaw;
-//		it->second.target.setHP(angle_normalize(h),first_p);
+//		it->second.target.setHP(h,first_p);
 //	}
 //}
 //

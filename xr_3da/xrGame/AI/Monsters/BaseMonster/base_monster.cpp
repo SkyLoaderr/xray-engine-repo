@@ -217,7 +217,7 @@ void CBaseMonster::Exec_Look		( float dt )
 {
 	movement().m_body.current.yaw		= angle_normalize			(movement().m_body.current.yaw);
 	movement().m_body.target.yaw		= angle_normalize			(movement().m_body.target.yaw);
-	movement().m_body.current.pitch	= angle_normalize_signed	(movement().m_body.current.pitch);
+	movement().m_body.current.pitch		= angle_normalize_signed	(movement().m_body.current.pitch);
 	movement().m_body.target.pitch		= angle_normalize_signed	(movement().m_body.target.pitch);
 
 	float pitch_speed		= get_custom_pitch_speed(movement().m_body.speed);

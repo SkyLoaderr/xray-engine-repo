@@ -385,7 +385,7 @@ bool CBaseMonsterAttack::CheckStartThreaten()
 	// проверка угла
 	float h,p;
 	Fvector().sub(enemy->Position(),pMonster->Position()).getHP(h,p);
-	if (angle_difference(angle_normalize(-pMonster->movement().m_body.current.yaw),h) > PI / 15) {
+	if (angle_difference(-pMonster->movement().m_body.current.yaw,h) > PI / 15) {
 		return false;
 	}
 
@@ -404,7 +404,7 @@ bool CBaseMonsterAttack::CheckEndThreaten()
 
 	float h,p;
 	Fvector().sub(enemy->Position(),pMonster->Position()).getHP(h,p);
-	if (angle_difference(angle_normalize(-pMonster->movement().m_body.current.yaw),h) > PI_DIV_6) return true;
+	if (angle_difference(-pMonster->movement().m_body.current.yaw,h) > PI_DIV_6) return true;
 	
 	// проверка флагов
 	if (!flags.is(AF_LOW_MORALE) || flags.is(AF_ENEMY_DOESNT_SEE_ME) || flags.is(AF_ENEMY_GO_FARTHER_FAST) || flags.is(AF_REMEMBER_HIT_FROM_THIS_ENEMY)) {
@@ -571,9 +571,8 @@ bool CBaseMonsterAttack::CheckRotationJump()
 	// check angle
 	float yaw, pitch;
 	Fvector().sub(enemy->Position(), pMonster->Position()).getHP(yaw,pitch);
-	yaw *= -1;	yaw = angle_normalize(yaw);
 
-	if (angle_difference(yaw,pMonster->movement().m_body.current.yaw) < MIN_ROTATION_JUMP_ANGLE) return false;
+	if (angle_difference(-yaw,pMonster->movement().m_body.current.yaw) < MIN_ROTATION_JUMP_ANGLE) return false;
 
 	// timing
 	if (next_rot_jump_enabled > m_dwCurrentTime)  return false;
