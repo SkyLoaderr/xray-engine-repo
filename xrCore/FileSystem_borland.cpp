@@ -87,8 +87,8 @@ AnsiString&	EFS_Utils::AppendFolderToName(AnsiString& tex_name, int depth, BOOL 
 
 void EFS_Utils::WriteAccessLog(LPSTR fn, LPSTR start_msg)
 {
-	string1024 buf;
-	string128 dt_buf, tm_buf;
+	string1024	buf;
+	string256	dt_buf, tm_buf;
 	sprintf(buf, "%s:   '%s' from computer: '%s' by user: '%s' at %s %s",start_msg,fn,Core.CompName,Core.UserName,_strdate(dt_buf),_strtime(tm_buf));
 	int hf = open( m_AccessLog, _O_WRONLY|_O_APPEND|_O_BINARY );
 	if( hf<=0 )

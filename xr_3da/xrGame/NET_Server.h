@@ -13,7 +13,7 @@ public:
 	IClientStatistic	stats;
 
 	DPNID				ID;
-	string128			Name;
+	ref_str				Name;
 	Flags				flags;	// local/host/normal
 	u32					dwTime_LastUpdate;
 

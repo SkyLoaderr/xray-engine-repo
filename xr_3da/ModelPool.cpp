@@ -254,11 +254,12 @@ IRender_Visual* CModelPool::Create(const char* name, IReader* data)
 
 IRender_Visual* CModelPool::CreateChild(LPCSTR name, IReader* data)
 {
-	string128 low_name;		R_ASSERT(xr_strlen(name)<128);
+	string256 low_name;		R_ASSERT(xr_strlen(name)<128);
 	strcpy(low_name,name);	strlwr(low_name);
+	if (strext(low_name))	*strext(low_name) = 0;
 
 	// 1. Search for already loaded model
-	IRender_Visual* Model			= Instance_Find(low_name);
+	IRender_Visual* Model	= Instance_Find(low_name);
 
 	// 2. If found - return reference
 	if (0!=Model)			return Instance_Duplicate(Model);

@@ -168,7 +168,7 @@ void g_vfLoadSounds(SOUND_VECTOR &tpSounds, LPCSTR	prefix, u32 dwMaxCount, int t
 {
 	tpSounds.clear			();
 	for (int j=0, N = _GetItemCount(prefix); j<N; ++j) {
-		string128				fn, s;
+		string256				fn, s;
 		LPSTR					S = (LPSTR)&s;
 		_GetItem				(prefix,j,S);
 		if (FS.exist(fn,"$game_sounds$",S,".ogg")){

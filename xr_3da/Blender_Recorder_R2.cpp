@@ -45,7 +45,7 @@ void	CBlender_Compile::r_Constant	(LPCSTR name, R_constant_setup* s)
 u32		CBlender_Compile::i_Sampler		(LPCSTR _name)
 {
 	//
-	string128				name;
+	string256				name;
 	strcpy					(name,_name);
 	if (strext(name)) *strext(name)=0;
 

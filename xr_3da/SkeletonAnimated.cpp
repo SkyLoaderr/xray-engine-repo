@@ -564,7 +564,7 @@ void CSkeletonAnimated::Load(const char* N, IReader *data, u32 dwFlags)
         string128 buf;
         for (u16 part_i=0; part_i<part_count; part_i++){
             CPartDef&	PART	= (*partition)[part_i];
-            MP->r_stringZ(buf);
+            MP->r_stringZ		(buf);
             PART.Name			= _strlwr(buf);
             PART.bones.resize	(MP->r_u16());
             MP->r				(&*PART.bones.begin(),PART.bones.size()*sizeof(u32));

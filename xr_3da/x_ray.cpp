@@ -290,7 +290,7 @@ void CApplication::OnEvent(EVENT E, u64 P1, u64 P2)
 
 		// start any console command
 		if (strstr(Core.Params,"-$")) {
-			string128			buf,cmd,param;
+			string256			buf,cmd,param;
 			sscanf				(strstr(Core.Params,"-$")+2,"%[^ ] %[^ ] ",cmd,param);
 			strconcat			(buf,cmd," ",param);
 			Console->Execute		(buf);
