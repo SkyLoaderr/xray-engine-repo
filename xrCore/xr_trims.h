@@ -32,6 +32,7 @@ XRCORE_API u32		    __stdcall	_ParseItem				( LPSTR src, int ind, xr_token* toke
 XRCORE_API LPSTR 	    __stdcall	_ReplaceItem 			( LPCSTR src, int index, LPCSTR new_item, LPSTR dst, char separator );
 XRCORE_API LPSTR 	    __stdcall	_ReplaceItems 			( LPCSTR src, int idx_start, int idx_end, LPCSTR new_items, LPSTR dst, char separator );
 XRCORE_API void 	    __stdcall	_SequenceToList			( LPSTRVec& lst, LPCSTR in, char separator=',' );
+XRCORE_API void 		__stdcall	_SequenceToList			( RStringVec& lst, LPCSTR in, char separator=',' );
 
 XRCORE_API std::string& __stdcall	_Trim					( std::string& src );
 XRCORE_API std::string& __stdcall	_TrimLeft				( std::string& src );

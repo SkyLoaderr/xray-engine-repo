@@ -12,13 +12,13 @@
       Intermediate\_compressed_normal.obj Intermediate\xrMemory_align.obj 
       Intermediate\LzHuf.obj Intermediate\log.obj Intermediate\FS.obj 
       Intermediate\xr_trims.obj Intermediate\Xr_ini.obj Intermediate\clsid.obj 
-      Intermediate\LocatorAPI.obj Intermediate\LocatorAPI_borland.obj 
-      Intermediate\FileSystem_borland.obj Intermediate\FileSystem.obj 
-      Intermediate\xrMemory_subst_msvc.obj Intermediate\xrMemory_POOL.obj 
-      Intermediate\xrMemory_subst_borland.obj Intermediate\rt_lzo.obj 
-      Intermediate\rt_compressor.obj Intermediate\FTimer.obj 
-      Intermediate\xrstring.obj Intermediate\xrsharedmem.obj 
-      Intermediate\_std_extensions.obj Intermediate\crc32.obj"/>
+      Intermediate\LocatorAPI.obj Intermediate\FileSystem_borland.obj 
+      Intermediate\FileSystem.obj Intermediate\xrMemory_subst_msvc.obj 
+      Intermediate\xrMemory_POOL.obj Intermediate\xrMemory_subst_borland.obj 
+      Intermediate\rt_lzo.obj Intermediate\rt_compressor.obj 
+      Intermediate\FTimer.obj Intermediate\xrstring.obj 
+      Intermediate\xrsharedmem.obj Intermediate\_std_extensions.obj 
+      Intermediate\crc32.obj Intermediate\LocatorAPI_Notifications.obj"/>
     <RESFILES value="Intermediate\xrCore.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -86,7 +86,6 @@
       <FILE FILENAME="Xr_ini.cpp" FORMNAME="" UNITNAME="Xr_ini.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="clsid.cpp" FORMNAME="" UNITNAME="clsid" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="LocatorAPI.cpp" FORMNAME="" UNITNAME="LocatorAPI" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="LocatorAPI_borland.cpp" FORMNAME="" UNITNAME="LocatorAPI_borland" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="FileSystem_borland.cpp" FORMNAME="" UNITNAME="FileSystem_borland.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="FileSystem.cpp" FORMNAME="" UNITNAME="FileSystem.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="xrMemory_subst_msvc.cpp" FORMNAME="" UNITNAME="xrMemory_subst_msvc.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -133,7 +132,6 @@
       <FILE FILENAME="FS_internal.h" FORMNAME="" UNITNAME="FS_internal.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="FTimer.h" FORMNAME="" UNITNAME="FTimer.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="LocatorAPI.h" FORMNAME="" UNITNAME="LocatorAPI.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="LocatorAPI_borland.h" FORMNAME="" UNITNAME="LocatorAPI_borland.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="log.h" FORMNAME="" UNITNAME="log.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lzhuf.h" FORMNAME="" UNITNAME="lzhuf.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="resource.h" FORMNAME="" UNITNAME="resource.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -160,6 +158,7 @@
       <FILE FILENAME="_std_extensions.cpp" FORMNAME="" UNITNAME="_std_extensions" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="crc32.cpp" FORMNAME="" UNITNAME="crc32" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="fastdelegate.h" FORMNAME="" UNITNAME="fastdelegate.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="LocatorAPI_Notifications.cpp" FORMNAME="" UNITNAME="LocatorAPI_Notifications" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
