@@ -144,7 +144,7 @@ void CLightmap::Save()
 	Status			("Compression...");
 	{
 		char	FN[_MAX_PATH];
-		sprintf	(lm.name,"L#%d",lmapNameID						);
+		sprintf	(lm.name,"lmap#%d",lmapNameID					);
 		sprintf	(FN,"%s%s.dds",	pBuild->path.c_str(),lm.name	);
 		BYTE*	raw_data		= LPBYTE(lm.pSurface);
 		DWORD	w				= lm.dwWidth;
@@ -152,8 +152,8 @@ void CLightmap::Save()
 		DWORD	pitch			= w*4;
 
 		STextureParams fmt;
-		fmt.fmt					=		STextureParams::tf565;
-		fmt.flag				|=		STextureParams::flDitherColor;
+		fmt.fmt					=		STextureParams::tfRGBA;
+		fmt.flag				&=		~STextureParams::flDitherColor;
 		fmt.flag				&=		~STextureParams::flGenerateMipMaps;
 		DXTCompress				(FN,raw_data,w,h,pitch,&fmt,4);
 	}
