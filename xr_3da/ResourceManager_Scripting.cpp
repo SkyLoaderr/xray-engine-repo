@@ -154,18 +154,25 @@ Shader*	CResourceManager::_lua_Create		(LPCSTR s_shader, LPCSTR s_textures)
 	C.bEditor			= FALSE;
 	C.bDetail			= FALSE;
 
-	// Parse names
+	// Prepare
 	_ParseList			(C.L_textures,	s_textures	);
 	string256			fname;
 
 	// Compile element	(LOD0 - HQ)
-	if (Script::bfIsObjectPresent(LSVM,s_shader,"normal",LUA_TFUNCTION))
+	if (Script::bfIsObjectPresent(LSVM,s_shader,"normal_hq",LUA_TFUNCTION))
 	{
+		// Analyze possibility to detail this shader
 		C.iElement			= 0;
 		C.bDetail			= TRUE;
-		ShaderElement		E;
-		C._lua_Compile		(&E,strconcat(fname,s_shader,".normal"));
-		S.E[0]				= _CreateElement	(E);
+		C.detail_texture	= NULL;
+		C.detail_scaler		= NULL;
+		if (!Device.Resources->_GetDetailTexture(N,C.detail_texture,C.detail_scaler))	C.bDetail = FALSE;
+		if (C.bDetail)		S.E[0]	= C._lua_Compile(strconcat(fname,s_shader,".normal_hq"));
+		else				S.E[0]	= C._lua_Compile(strconcat(fname,s_shader,".normal"))
+	} else {
+		C.iElement			= 0;
+		C.bDetail			= FALSE;
+		S.E[0]				= C._lua_Compile		(strconcat(fname,s_shader,".normal"));
 	}
 
 	// Compile element	(LOD1)
@@ -173,9 +180,7 @@ Shader*	CResourceManager::_lua_Create		(LPCSTR s_shader, LPCSTR s_textures)
 	{
 		C.iElement			= 1;
 		C.bDetail			= FALSE;
-		ShaderElement		E;
-		C._lua_Compile		(&E,strconcat(fname,s_shader,".normal"));
-		S.E[1]				= _CreateElement	(E);
+		S.E[1]				= C._lua_Compile(strconcat(fname,s_shader,".normal"));
 	}
 
 	// Compile element
@@ -183,9 +188,7 @@ Shader*	CResourceManager::_lua_Create		(LPCSTR s_shader, LPCSTR s_textures)
 	{
 		C.iElement			= 2;
 		C.bDetail			= FALSE;
-		ShaderElement		E;
-		C._lua_Compile		(&E,strconcat(fname,s_shader,".l_point"));
-		S.E[2]				= _CreateElement	(E);
+		S.E[2]				= C._lua_Compile(strconcat(fname,s_shader,".l_point"));;
 	}
 
 	// Compile element
@@ -193,9 +196,7 @@ Shader*	CResourceManager::_lua_Create		(LPCSTR s_shader, LPCSTR s_textures)
 	{
 		C.iElement			= 3;
 		C.bDetail			= FALSE;
-		ShaderElement		E;
-		C._lua_Compile		(&E,strconcat(fname,s_shader,".l_spot"));
-		S.E[3]				= _CreateElement	(E);
+		S.E[3]				= C._lua_Compile(strconcat(fname,s_shader,".l_spot"));;
 	}
 
 	// Compile element
@@ -203,9 +204,7 @@ Shader*	CResourceManager::_lua_Create		(LPCSTR s_shader, LPCSTR s_textures)
 	{
 		C.iElement			= 4;
 		C.bDetail			= FALSE;
-		ShaderElement		E;
-		C._lua_Compile		(&E,strconcat(fname,s_shader,".l_special"));
-		S.E[4]				= _CreateElement	(E);
+		S.E[4]				= C._lua_Compile(strconcat(fname,s_shader,".l_special"));
 	}
 
 	// Search equal in shaders array
@@ -219,30 +218,18 @@ Shader*	CResourceManager::_lua_Create		(LPCSTR s_shader, LPCSTR s_textures)
 	return N;
 }
 
-void	CBlender_Compile::_lua_Compile	(ShaderElement* _SH, LPCSTR name)
+ShaderElement*		CBlender_Compile::_lua_Compile	(LPCSTR name)
 {
-	SH =			_SH;
-	RS.Invalidate	();
-
-	// Analyze possibility to detail this shader
-	detail_texture	= NULL;
-	detail_scaler	= NULL;
-	if (bDetail && BT->canBeDetailed())
-	{
-		// 
-		sh_list& lst=	L_textures;
-		int id		=	ParseName(BT->oT_Name);
-		LPCSTR N	=	BT->oT_Name;
-		if (id>=0)	{
-			if (id>=int(lst.size()))	Debug.fatal("Not enought textures for shader. Base texture: '%s'.",lst[0]);
-			N = lst [id];
-		}
-		if (!Device.Resources->_GetDetailTexture(N,detail_texture,detail_scaler))	bDetail	= FALSE;
-	} else {
-		bDetail	= FALSE;
-	}
+	ShaderElement		E;
+	SH =				&E;
+	RS.Invalidate		();
 
 	// Compile
-	adopt_compiler	ac(this);
-	luabind::call_function<void>	(ac);
+	adopt_compiler		ac		(this);
+	LPCSTR				t_0		= C.L_textures[0];
+	LPCSTR				t_1		= (C.L_textures.size() > 1) ? C.L_textures[1] : "null";
+	call_function<void>	(Device.Resources->LSVM,name,ac,t_0,t_1);
+	r_End				();
+
+	return				Device.Resources->_CreateElement(E);
 }
