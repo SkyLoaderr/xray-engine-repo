@@ -4,6 +4,7 @@
 #include "xr_List.h"
 
 class ENGINE_API FCached;
+class ENGINE_API FBasicVisual;
 
 namespace SceneGraph
 {
