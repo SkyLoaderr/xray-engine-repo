@@ -26,8 +26,12 @@ void	CRenderTarget::phase_combine	()
 		// Compute params
 		Fmatrix		m_v2w;			m_v2w.invert				(Device.mView		);
 		CEnvDescriptor&		envdesc	= g_pGamePersistent->Environment.CurrentEnv;
+		float		hemi_correct	= envdesc.hemi_color.w*2;
 		Fvector4	envclr			= { envdesc.sky_color.x*2, envdesc.sky_color.y*2, envdesc.sky_color.z*2, envdesc.sky_factor };
 		Fvector4	fogclr			= { _sqr(envdesc.fog_color.x), _sqr(envdesc.fog_color.y), _sqr(envdesc.fog_color.z), 0		};
+					envclr.x		*= hemi_correct;
+					envclr.y		*= hemi_correct;
+					envclr.z		*= hemi_correct;
 
 		// Fill VB
 		u32		C					= color_rgba	(255,255,255,255);
