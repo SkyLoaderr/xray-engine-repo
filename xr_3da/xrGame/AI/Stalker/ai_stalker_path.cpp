@@ -181,13 +181,13 @@ void CAI_Stalker::vfBuildTravelLine(Fvector *tpDestinationPosition)
 			AI_Path.Nodes.push_back(AI_Path.DestNode);
 		}
 		else {
+			AI::CTravelNode	T;
 			for (i=1; i<N; i++) {
 				m_tpaLine.clear();
 				m_tpaLine.push_back(m_tpaPoints[i-1]);
 				m_tpaLine.push_back(m_tpaPoints[i]);
 				getAI().vfCreateFastRealisticPath(m_tpaLine,m_tpaPointNodes[i-1],m_tpaDeviations,m_tpaTravelPath,m_tpaNodes,false,false,0,0);
 				u32 n = m_tpaTravelPath.size();
-				AI::CTravelNode	T;
 				for (u32 j= i<2?0:1; j<n; j++) {
 					T.P = m_tpaTravelPath[j];
 					if (m_tPathType == ePathTypeStraight)
@@ -198,6 +198,15 @@ void CAI_Stalker::vfBuildTravelLine(Fvector *tpDestinationPosition)
 				}
 			}
 			AI_Path.Nodes[AI_Path.Nodes.size() - 1] = AI_Path.DestNode;
+			if (m_tPathType == ePathTypeStraight) {
+				if (tpDestinationPosition && AI_Path.TravelPath.size() && AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L) {
+					T.P = *tpDestinationPosition;
+					AI_Path.TravelPath.push_back(T);
+				}
+			}
+			else
+				if (tpDestinationPosition && AI_Path.TravelPath.size() && AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L)
+					m_tpaTempPath.push_back(*tpDestinationPosition);
 		}
 		
 		if (m_tPathType == ePathTypeStraight) {
@@ -303,9 +312,9 @@ void CAI_Stalker::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluat
 			if ((AI_Path.DestNode != AI_NodeID) || (!tpDestinationPosition))
 				vfBuildPathToDestinationPoint(tpNodeEvaluator);
 			else {
-				AI_Path.Nodes.clear();
-				AI_Path.Nodes.push_back(AI_NodeID);
-				m_tPathState = ePathStateBuildTravelLine;
+//				AI_Path.Nodes.clear();
+//				AI_Path.Nodes.push_back(AI_NodeID);
+//				m_tPathState = ePathStateBuildTravelLine;
 			}
 			break;
 		}

@@ -23,180 +23,6 @@
 	#define WRITE_TO_LOG(s) m_bStopThinking = true;
 #endif
 
-void CAI_Stalker::Think()
-{
-	bool					A,B,C,D,E,F,G,H,I,J,K,L,M;
-	
-	m_dwLastUpdate			= m_dwCurrentUpdate;
-	m_dwCurrentUpdate		= Level().timeServer();
-	m_bStopThinking			= false;
-	
-	m_tEnemy.Enemy			= 0;
-	vfUpdateDynamicObjects	();
-	vfUpdateParameters		(A,B,C,D,E,F,G,H,I,J,K,L,M);
-//	Msg("[A=%d][B=%d][C=%d][D=%d][E=%d][F=%d][G=%d][H=%d][I=%d][J=%d][K=%d][L=%d][M=%d]",A,B,C,D,E,F,G,H,I,J,K,L,M);
-	m_dwUpdateCount++;
-	m_ePreviousState		= m_eCurrentState;
-	
-	if (!g_Alive())
-		Death				();
-	else
-//	if (C && H && I) {
-//		ForwardStraight	();
-//	} else
-//	if (C && H && !I) {
-//		ForwardStraight	();
-//	} else
-//	if (C && !H && I) {
-//		ForwardStraight	();
-//	} else
-//	if (C && !H && !I) {
-//		ForwardStraight	();
-//	} else
-//	
-//	if (D && H && I) {
-//		ForwardStraight	();
-//	} else
-//	if (D && H && !I) {
-//		ForwardStraight	();
-//	} else
-//	if (D && !H && I) {
-//		ForwardStraight	();
-//	} else
-//	if (D && !H && !I) {
-//		ForwardStraight	();
-//	} else
-//	
-//	if (E && H && I) {
-//		ForwardStraight	();
-//	} else
-//	if (E && H && !I) {
-//		ForwardStraight	();
-//	} else
-//	if (E && !H && I) {
-//		ForwardStraight	();
-//	} else
-//	if (E && !H && !I) {
-//		ForwardStraight	();
-//	} else
-//	
-//	if (F && H && I) {
-//		ForwardStraight	();
-//	} else
-//	if (F && H && !I) {
-//		ForwardStraight	();
-//	} else
-//	if (F && !H && I) {
-//		ForwardStraight	();
-//	} else
-//	if (F && !H && !I) {
-//		ForwardStraight	();
-//	} else
-//	
-//	if (G && H && I) {
-//		ForwardStraight	();
-//	} else
-//	if (G && H && !I) {
-//		ForwardStraight	();
-//	} else
-//	if (G && !H && I) {
-//		ForwardStraight	();
-//	} else
-//	if (G && !H && !I) {
-//		ForwardStraight	();
-//	} else
-//	
-//	if (A && !K && !H && !L) {
-//		ForwardStraight	();
-//	} else
-//	if (A && !K && H && !L) {
-//		ForwardStraight	();
-//	} else
-//	if (A && !K && !H && L) {
-//		ForwardStraight	();
-//	} else
-//	if (A && !K && H && L) {
-//		ForwardStraight	();
-//	} else
-//	
-//	if (B && !K && !H && !L) {
-//		ForwardStraight	();
-//	} else
-//	if (B && !K && H && !L) {
-//		ForwardStraight	();
-//	} else
-//	if (B && !K && !H && L) {
-//		ForwardStraight	();
-//	} else
-//	if (B && !K && H && L) {
-//		ForwardStraight	();
-//	} else
-	if (K) {
-		switch (m_dwRandomState) {
-			case 0 : {
-//				Msg("Back dodge");
-				ForwardDodge();
-//				BackDodge();
-				break;
-			}
-			case 1 : {
-//				Msg("Back cover");
-//				BackCover();
-				if ((m_tActionState != eActionStateStand) && (m_tActionState != eActionStateRun))
-					m_bStateChanged = true;
-				ForwardCover();
-				break;
-			}
-			case 2 : {
-//				Msg("Forward cover");
-				if ((m_tActionState != eActionStateStand) && (m_tActionState != eActionStateRun))
-					m_bStateChanged = true;
-				ForwardCover();
-				break;
-			}
-			case 3 : {
-//				Msg("Forward dodge");
-				ForwardDodge();
-				break;
-			}
-			case 4 : {
-//				Msg("Forward straight");
-				ForwardStraight();
-				break;
-			}
-			default : NODEFAULT;
-		}
-
-	} else
-	if (M) {
-		Fvector					tPoint;
-		m_tpItemToTake->clCenter(tPoint);
-		AI_Path.DestNode		= m_tpItemToTake->AI_NodeID;
-		vfSetParameters(0,&(m_tpItemToTake->Position()),eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eLookTypePoint,tPoint);
-	} else
-	{
-		vfUpdateSearchPosition	();
-		AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
-		vfSetParameters(0,0,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eLookTypeSearch);
-	}
-	
-	m_bStateChanged			= m_ePreviousState != m_eCurrentState;
-
-	_A	= A;
-	_B	= B;
-	_C	= C;
-	_D	= D;
-	_E	= E;
-	_F	= F;
-	_G	= G;
-	_H	= H;
-	_I	= I;
-	_J	= J;
-	_K	= K;
-	_L	= L;
-	_M	= M;
-};
-
 void CAI_Stalker::Death()
 {
 	WRITE_TO_LOG("Death");
@@ -374,4 +200,175 @@ void CAI_Stalker::ForwardDodge()
 		eMovementTypeRun,
 		eLookTypeFirePoint,
 		tPoint);
+}
+
+void CAI_Stalker::Think()
+{
+	bool					A,B,C,D,E,F,G,H,I,J,K,L,M;
+	
+	m_dwLastUpdate			= m_dwCurrentUpdate;
+	m_dwCurrentUpdate		= Level().timeServer();
+	m_bStopThinking			= false;
+	
+	m_tEnemy.Enemy			= 0;
+	vfUpdateDynamicObjects	();
+	vfUpdateParameters		(A,B,C,D,E,F,G,H,I,J,K,L,M);
+//	Msg("[A=%d][B=%d][C=%d][D=%d][E=%d][F=%d][G=%d][H=%d][I=%d][J=%d][K=%d][L=%d][M=%d]",A,B,C,D,E,F,G,H,I,J,K,L,M);
+	m_dwUpdateCount++;
+	m_ePreviousState		= m_eCurrentState;
+	
+	if (!g_Alive())
+		Death				();
+	else
+//	if (C && H && I) {
+//		ForwardStraight	();
+//	} else
+//	if (C && H && !I) {
+//		ForwardStraight	();
+//	} else
+//	if (C && !H && I) {
+//		ForwardStraight	();
+//	} else
+//	if (C && !H && !I) {
+//		ForwardStraight	();
+//	} else
+//	
+//	if (D && H && I) {
+//		ForwardStraight	();
+//	} else
+//	if (D && H && !I) {
+//		ForwardStraight	();
+//	} else
+//	if (D && !H && I) {
+//		ForwardStraight	();
+//	} else
+//	if (D && !H && !I) {
+//		ForwardStraight	();
+//	} else
+//	
+//	if (E && H && I) {
+//		ForwardStraight	();
+//	} else
+//	if (E && H && !I) {
+//		ForwardStraight	();
+//	} else
+//	if (E && !H && I) {
+//		ForwardStraight	();
+//	} else
+//	if (E && !H && !I) {
+//		ForwardStraight	();
+//	} else
+//	
+//	if (F && H && I) {
+//		ForwardStraight	();
+//	} else
+//	if (F && H && !I) {
+//		ForwardStraight	();
+//	} else
+//	if (F && !H && I) {
+//		ForwardStraight	();
+//	} else
+//	if (F && !H && !I) {
+//		ForwardStraight	();
+//	} else
+//	
+//	if (G && H && I) {
+//		ForwardStraight	();
+//	} else
+//	if (G && H && !I) {
+//		ForwardStraight	();
+//	} else
+//	if (G && !H && I) {
+//		ForwardStraight	();
+//	} else
+//	if (G && !H && !I) {
+//		ForwardStraight	();
+//	} else
+//	
+//	if (A && !K && !H && !L) {
+//		ForwardStraight	();
+//	} else
+//	if (A && !K && H && !L) {
+//		ForwardStraight	();
+//	} else
+//	if (A && !K && !H && L) {
+//		ForwardStraight	();
+//	} else
+//	if (A && !K && H && L) {
+//		ForwardStraight	();
+//	} else
+//	
+//	if (B && !K && !H && !L) {
+//		ForwardStraight	();
+//	} else
+//	if (B && !K && H && !L) {
+//		ForwardStraight	();
+//	} else
+//	if (B && !K && !H && L) {
+//		ForwardStraight	();
+//	} else
+//	if (B && !K && H && L) {
+//		ForwardStraight	();
+//	} else
+	if (K) {
+		switch (m_dwRandomState) {
+			case 0 : {
+//				Msg("Back dodge");
+				BackDodge();
+				break;
+			}
+			case 1 : {
+//				Msg("Back cover");
+				BackCover();
+				break;
+			}
+			case 2 : {
+//				Msg("Forward cover");
+				if ((m_tActionState != eActionStateStand) && (m_tActionState != eActionStateRun))
+					m_bStateChanged = true;
+				ForwardCover();
+				break;
+			}
+			case 3 : {
+//				Msg("Forward dodge");
+				ForwardDodge();
+				break;
+			}
+			case 4 : {
+//				Msg("Forward straight");
+				ForwardStraight();
+				break;
+			}
+			default : NODEFAULT;
+		}
+
+	} else
+	if (M) {
+		Fvector					tPoint;
+		m_tpItemToTake->svCenter(tPoint);
+		AI_Path.DestNode		= m_tpItemToTake->AI_NodeID;
+		tPoint.y				= getAI().ffGetY(*m_tpItemToTake->AI_Node,tPoint.x,tPoint.z);
+		vfSetParameters(0,&tPoint,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eLookTypePoint,tPoint);
+	} else
+	{
+		vfUpdateSearchPosition	();
+		AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
+		vfSetParameters(0,0,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eLookTypeSearch);
+	}
+	
+	m_bStateChanged			= m_ePreviousState != m_eCurrentState;
+
+	_A	= A;
+	_B	= B;
+	_C	= C;
+	_D	= D;
+	_E	= E;
+	_F	= F;
+	_G	= G;
+	_H	= H;
+	_I	= I;
+	_J	= J;
+	_K	= K;
+	_L	= L;
+	_M	= M;
 }
