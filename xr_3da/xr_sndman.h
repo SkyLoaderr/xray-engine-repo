@@ -30,7 +30,7 @@ private:
     LPDIRECTSOUNDBUFFER		pBuffer;				// The primary buffer (mixer destination)
 
 	// Geometry
-	RAPID::Model*			pGeometry;
+	CDB::MODEL*				pGeometry;
 private:
 	BOOL					CreatePrimaryBuffer		( );
 	void					Initialize				( );
@@ -67,8 +67,8 @@ public:
 	void					Play3DAtPos				( sound3D& S, const Fvector &pos, BOOL bLoop=false, int iLoopCnt=0);
 	void					Play3DAtPos_Unlimited	( sound3D& S, const Fvector &pos, BOOL bLoop=false, int iLoopCnt=0);
 	void					Delete3D				( sound3D& S);
-	void					SetGeometry				( RAPID::Model* M )	{ pGeometry=M; }
-	RAPID::Model*			GetGeometry				( )					{ return pGeometry;	}
+	void					SetGeometry				( CDB::MODEL* M )	{ pGeometry=M; }
+	CDB::MODEL* 			GetGeometry				( )					{ return pGeometry;	}
 	BOOL					IsOccluded				( Fvector& P, float R, soundOccluder& occ );
 	
 	// Stream interface

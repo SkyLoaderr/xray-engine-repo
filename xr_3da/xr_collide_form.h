@@ -127,8 +127,8 @@ public:
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, DWORD flags);
 
 	BOOL			LoadModel		( CInifile* ini, const char *section );
-	CDB::TRI*		GetTris			() { return model.tris;  }
-	CDB::MODEL*		GetModel		() { return &model; }
+	CDB::TRI*		GetTris			() { return model.get_tris();	}
+	CDB::MODEL*		GetModel		() { return &model;				}
 };
 
 class ENGINE_API	CCF_Skeleton : public CCFModel
