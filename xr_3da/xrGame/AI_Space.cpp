@@ -441,7 +441,7 @@ int	CAI_Space::q_LoadSearch(const Fvector& pos)
 		}
 	}
 	if (selected == u32(-1))
-		Msg			("Can't find an appropriate node for the specified position! ([%f][%f][%f])",VPUSH(pos));
+		Msg			("Can't find an appropriate node for the specified position! (% : [%f][%f][%f])",VPUSH(pos));
 	R_ASSERT2		(selected != u32(-1),"Can't find an appropriate node for the specified position!");
 	return selected;
 }

@@ -228,6 +228,7 @@ void CSE_ALifeSimulator::vfFurlObjectOffline(CSE_ALifeDynamicObject *I)
 
 void CSE_ALifeSimulator::vfValidatePosition(CSE_ALifeDynamicObject *I)
 {
+	Msg("Validating position");
 	// updating node if it is invalid and object is not attached and online
 	if ((I->m_bOnline || (I->m_tNodeID <= 0) || (I->m_tNodeID >= getAI().Header().count)) && (I->ID_Parent == 0xffff)) {
 		// checking if it is a group of objects

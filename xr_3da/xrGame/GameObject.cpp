@@ -121,6 +121,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 			//Msg					("G2L : %f",getAI().m_tpaGraph[a_obj->m_tGraphID].tLocalPoint.distance_to(Position()));
 			//		AI_NodeID			=	AI.q_Node	(getAI().m_tpaGraph[a_obj->m_tGraphID].tNodeID,Position());
 			//		Msg					("G2L : %f",getAI().tfGetNodeCenter(a_obj->m_tNodeID).distance_to(Position()));
+			Msg("Net_spawn %s",cName());
 			if ((l_dwDesiredNodeID < getAI().Header().count) && l_dwDesiredNodeID)
 				AI_NodeID			=	AI.q_Node	(l_dwDesiredNodeID,Position());
 			else
@@ -199,6 +200,7 @@ void CGameObject::spatial_move		()
 
 //			Msg						("REF_DEC (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] - 1);
 			AI.ref_dec  (AI_NodeID);
+			Msg("Spatial move %s",cName());
 			AI_NodeID	= AI.q_Node	(AI_NodeID,Position());
 
 			if (!AI_NodeID)
