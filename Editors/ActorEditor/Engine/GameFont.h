@@ -15,7 +15,7 @@ public:
 	};
 private:
 	struct String {
-		string128	string;
+		u8			string	[256];
 		float		x,y;
 		float		size;
 		u32			c;
@@ -33,8 +33,8 @@ protected:
 	float					fCurrentX, fCurrentY;
 	Fvector2				vInterval;
 
-	int						CharMap[256];
-	Fvector 				TCMap[256];
+	int						CharMap	[256];
+	Fvector 				TCMap	[256];
 	float					fHeight;
 	float					fTCHeight;
 	vector<String>			strings;
