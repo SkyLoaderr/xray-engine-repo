@@ -8,9 +8,11 @@
 
 #pragma once
 
-class CSpaceRestrictor : public CObject {
+#include "gameobject.h"
+
+class CSpaceRestrictor : public CGameObject {
 private:
-	typedef CObject inherited;
+	typedef CGameObject inherited;
 
 public:
 	IC				CSpaceRestrictor	();

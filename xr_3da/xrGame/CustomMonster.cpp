@@ -658,7 +658,7 @@ void CCustomMonster::Die	()
 
 BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 {
-	if (!inherited::net_Spawn(DC) || !CScriptMonster::net_Spawn(DC) || !CRestrictedObject::net_Spawn(DC))
+	if (!inherited::net_Spawn(DC) || !CScriptMonster::net_Spawn(DC) || !CMovementManager::net_Spawn(DC))
 		return					(FALSE);
 	
 	CDamageManager::Load		(*cNameSect());
@@ -744,6 +744,8 @@ void CCustomMonster::renderable_Render()
 void CCustomMonster::Hit(float P, Fvector &dir,CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type)
 {
 	inherited::Hit			(P,dir,who,element,position_in_object_space,impulse, hit_type);
+#pragma todo("Dima to Kostia : Please check if this is correct")
+//	CMovementManager::Hit	(P,dir,who,element,position_in_object_space,impulse, hit_type);
 }
 
 void CCustomMonster::OnEvent(NET_Packet& P, u16 type)
@@ -755,6 +757,7 @@ void CCustomMonster::net_Destroy()
 {
 	inherited::net_Destroy	();
 	CScriptMonster::net_Destroy();
+	CMovementManager::net_Destroy();
 	if (g_Alive())
 		processing_deactivate	();
 }

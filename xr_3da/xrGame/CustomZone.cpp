@@ -494,17 +494,6 @@ float CCustomZone::Power(float dist)
 	return  m_fMaxPower * RelativePower(dist);
 }
 
-
-void CCustomZone::Center(Fvector& C) const
-{
-	XFORM().transform_tiny	(C,CFORM()->getSphere().P);
-}
-float CCustomZone::Radius()	const
-{
-	return CFORM()->getRadius();
-}
-
-
 #ifdef DEBUG
 void CCustomZone::OnRender() 
 {

@@ -1,13 +1,14 @@
 #pragma once
-#include "gameobject.h"
+
+#include "space_restrictor.h"
 #include "../feel_touch.h"
 #include "zone_effector.h"
 #include "PhysicsShellHolder.h"
+
 class CActor;
 class CLAItem;
 
 #define SMALL_OBJECT_RADIUS 0.6f
-
 
 struct SZonePPInfo 
 {
@@ -47,11 +48,11 @@ struct SZoneObjectInfo
 
 
 class CCustomZone :
-	public CGameObject,
+	public CSpaceRestrictor,
 	public Feel::Touch
 {
 private:
-    typedef	CGameObject	inherited;
+    typedef	CSpaceRestrictor inherited;
 
 public:
 
@@ -69,19 +70,16 @@ public:
 	virtual void UpdateCL();
 	virtual void shedule_Update		(u32 dt);
 
-	virtual void feel_touch_new(CObject* O);
-	virtual void feel_touch_delete(CObject* O);
-	virtual BOOL feel_touch_contact(CObject* O);
+	virtual void feel_touch_new		(CObject* O);
+	virtual void feel_touch_delete	(CObject* O);
+	virtual BOOL feel_touch_contact	(CObject* O);
 
-	virtual void Postprocess(float val) {}
+	virtual void Postprocess		(float val) {}
 
-	virtual void  Center (Fvector& C)	const;
-	virtual float Radius () const;
-
-	virtual void	OnEvent				(NET_Packet& P, u16 type);
+	virtual void OnEvent			(NET_Packet& P, u16 type);
 
 #ifdef DEBUG
-	virtual void OnRender();
+	virtual void OnRender			();
 #endif
 
 	float GetMaxPower() {return m_fMaxPower;}

@@ -22,7 +22,6 @@
 #include "movement_manager.h"
 #include "selector_manager.h"
 #include "sound_player.h"
-#include "restricted_object.h"
 
 using namespace MonsterSpace;
 
@@ -39,9 +38,7 @@ class CCustomMonster :
 			public CMemoryManager,
 	virtual	public CMovementManager,
 			public CSelectorManager,
-			public CSoundPlayer,
-			public CRestrictedObject
-
+			public CSoundPlayer
 {
 	typedef	CEntityAlive	inherited;
 protected:

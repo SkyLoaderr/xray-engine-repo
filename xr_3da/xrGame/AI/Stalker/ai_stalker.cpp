@@ -161,12 +161,7 @@ void CAI_Stalker::Load				(LPCSTR section)
 
 BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 {
-	if (!inherited::net_Spawn(DC))
-		return						(FALSE);
-	if (!CInventoryOwner::net_Spawn(DC))
-		return						(FALSE);
-
-	if (!CScriptBinder::net_Spawn(DC))
+	if (!inherited::net_Spawn(DC) || !CInventoryOwner::net_Spawn(DC) || !CStalkerMovementManager::net_Spawn(DC) || !CScriptBinder::net_Spawn(DC))
 		return						(FALSE);
 
 	CStalkerAnimations::reload		(Visual(),pSettings,*cNameSect());
@@ -221,6 +216,7 @@ void CAI_Stalker::net_Destroy()
 	inherited::net_Destroy				();
 	CInventoryOwner::net_Destroy		();
 	CScriptBinder::net_Destroy			();
+	CStalkerMovementManager::net_Destroy();
 	m_pPhysics_support->in_NetDestroy	();
 
 	xr_delete							(m_ce_close);

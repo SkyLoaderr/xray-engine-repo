@@ -165,3 +165,8 @@ IC	u32	 CMovementManager::refresh_rate			() const
 {
 	return				(m_refresh_rate);
 }
+
+IC	bool CMovementManager::accessible			(const Fvector &position) const
+{
+	return				(CRestrictedObject::accessible(position));
+}

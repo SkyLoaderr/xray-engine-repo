@@ -18,6 +18,7 @@
 #include "patrol_path_manager.h"
 #include "ai_monster_space.h"
 #include "physicsshellholder.h"
+#include "restricted_object.h"
 
 class CPHMovementControl;
 
@@ -42,6 +43,7 @@ class CMovementManager :
 	public CDetailPathManager,
 	public CEnemyLocationPredictor,
 	public CPatrolPathManager,
+	public CRestrictedObject,
 	virtual public CPhysicsShellHolder
 {
 protected:
@@ -86,8 +88,11 @@ private:
 	CGraphEngine::CBaseParameters			*m_base_level_selector;
 	float									m_old_desirable_speed;
 	bool									m_selector_path_usage;
+	u32										m_dwFrameLoad;
 	u32										m_dwFrameReinit;
 	u32										m_dwFrameReload;
+	u32										m_dwFrameNetSpawn;
+	u32										m_dwFrameNetDestroy;
 	u32										m_refresh_rate;
 	u32										m_last_update;
 
@@ -116,6 +121,10 @@ public:
 	virtual void	Load					(LPCSTR caSection);
 	virtual void	reinit					();
 	virtual void	reload					(LPCSTR caSection);
+	virtual BOOL	net_Spawn				(LPVOID data);
+	virtual void	net_Destroy				();
+	virtual	void	Hit						(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
+	IC		bool	accessible				(const Fvector &position) const;
 	IC		bool	actual					() const;
 	IC		bool	actual_all				() const;
 	IC		void	set_path_type			(EPathType path_type);

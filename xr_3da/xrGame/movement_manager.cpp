@@ -13,8 +13,11 @@ CMovementManager::CMovementManager	()
 {
 	m_base_game_selector			= xr_new<CGraphEngine::CBaseParameters>();
 	m_base_level_selector			= xr_new<CGraphEngine::CBaseParameters>();
+	m_dwFrameLoad					= u32(-1);
 	m_dwFrameReinit					= u32(-1);
 	m_dwFrameReload					= u32(-1);
+	m_dwFrameNetSpawn				= u32(-1);
+	m_dwFrameNetDestroy				= u32(-1);
 	init							();
 }
 
@@ -30,12 +33,21 @@ void CMovementManager::init			()
 
 void CMovementManager::Load			(LPCSTR section)
 {
+	if (!frame_check(m_dwFrameLoad))
+		return;
+
+	CRestrictedObject::Load			(section);
+	CPhysicsShellHolder::Load		(section);
 }
 
 void CMovementManager::reinit		()
 {
 	if (!frame_check(m_dwFrameReinit))
 		return;
+	
+	CRestrictedObject::reinit		();
+	CPhysicsShellHolder::reinit		();
+	
 	m_time_work								= 300*CPU::cycles_per_microsec;
 	m_speed									= 0.f;
 	m_path_type								= ePathTypeNoPath;
@@ -65,6 +77,31 @@ void CMovementManager::reload		(LPCSTR section)
 {
 	if (!frame_check(m_dwFrameReload))
 		return;
+	
+	CRestrictedObject::reload		(section);
+	CPhysicsShellHolder::reload		(section);
+}
+
+BOOL CMovementManager::net_Spawn	(LPVOID data)
+{
+	if (!frame_check(m_dwFrameNetSpawn))
+		return						(TRUE);
+
+	return							(CRestrictedObject::net_Spawn(data) && CPhysicsShellHolder::net_Spawn(data));
+}
+
+void CMovementManager::net_Destroy	()
+{
+	if (!frame_check(m_dwFrameNetDestroy))
+		return;
+
+	CRestrictedObject::net_Destroy	();
+	CPhysicsShellHolder::net_Destroy();
+}
+
+void CMovementManager::Hit			(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
+{
+	CPhysicsShellHolder::Hit		(P,dir,who,element,p_in_object_space,impulse,hit_type);
 }
 
 void CMovementManager::update_path()
