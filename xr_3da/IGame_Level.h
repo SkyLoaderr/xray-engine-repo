@@ -10,6 +10,7 @@ class ENGINE_API CCursor;
 class ENGINE_API CCustomHUD;
 class ENGINE_API CPS_Instance;
 class ENGINE_API ISpatial;
+namespace Feel { class ENGINE_API Sound; }
 
 //-----------------------------------------------------------------------------------------------------------
 class ENGINE_API	IGame_Level		: 
