@@ -77,9 +77,8 @@
 	}
 
 	#define SWITCH_TO_NEW_STATE_THIS_UPDATE(a) {\
-		bStopThinking = false;\
 		tStateStack.push(eCurrentState);\
-		GO_TO_NEW_STATE(a);\
+		GO_TO_NEW_STATE_THIS_UPDATE(a);\
 	}
 
 	#define CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(a,b) {\
@@ -92,11 +91,9 @@
 			GO_TO_PREV_STATE_THIS_UPDATE;\
 	}
 
-	#define CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(a,b) {\
-		bStopThinking = false;\
+	#define CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(a,b) \
 		if (a)\
-			GO_TO_NEW_STATE_THIS_UPDATE(b);\
-	}
+			GO_TO_NEW_STATE_THIS_UPDATE(b);
 	
 	/************************************************************************/
 	/* 		
