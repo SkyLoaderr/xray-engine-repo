@@ -208,7 +208,7 @@ void game_sv_mp::Create (shared_str &options)
 	u32 year = 1, month = 1, day = 1, hours = 0, mins = 0, secs = 0, milisecs = 0;
 	sscanf				(StartTime,"%d:%d:%d.%d",&hours,&mins,&secs,&milisecs);
 	u64 StartEnvGameTime	= generate_time	(year,month,day,hours,mins,secs,milisecs);
-	float EnvTimeFactor = float(atof(TimeFactor));
+	float EnvTimeFactor = float(atof(TimeFactor))*GetEnvironmentGameTimeFactor();
 
 	SetEnvironmentGameTimeFactor(StartEnvGameTime,EnvTimeFactor);
 //	SetGameTimeFactor(StartEnvGameTime,EnvTimeFactor);
