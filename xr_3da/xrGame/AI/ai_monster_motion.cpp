@@ -490,7 +490,7 @@ void CMotionManager::SelectVelocities()
 		pMonster->m_velocity_linear.target	= _abs(anim_vel.linear);
 		if (fis_zero(pMonster->m_velocity_linear.target)) pMonster->m_velocity_linear.current = 0.f;
 	} else {
-		pMonster->m_velocity_linear.target	= 0.1f;
+		pMonster->m_velocity_linear.target	= 0.f;
 	}
 
 	// если невидимый, то установить скорость из пути

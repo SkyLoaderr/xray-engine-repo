@@ -5,8 +5,6 @@
 #include "../../../PhysicsShell.h"
 #include "../../ai_monster_utils.h"
 
-
-
 #define MAX_HANDLED_OBJECTS		3
 #define CHECK_OBJECTS_RADIUS	10.f
 #define MINIMAL_MASS			40.f
