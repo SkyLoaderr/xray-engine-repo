@@ -3,7 +3,7 @@
 <window>
 
 	<!-- ICON -->
-	<icon_static x="30" y="0" width="128" height="128"></icon_static>
+	<icon_static x="30" y="0" width="128" height="64"></icon_static>
 	
 	<!-- MASK FRAME -->
 	<mask_frame_window x="0" y="0" width="10" height="10">
