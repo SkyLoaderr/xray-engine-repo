@@ -15,13 +15,6 @@
 #include <dplay8.h>
 #pragma warning(default:4995)
 
-IC u32 TimeGlobal(CTimer* timer)
-{
-	u64	qTime	= timer->GetElapsed_clk();
-	return		u32((qTime*u64(1000))/CPU::cycles_per_second);
-}
-#define TimerAsync TimeGlobal
-
 #include "NET_Shared.h"
 
 #define _RELEASE(x)			{ if(x) { (x)->Release();       (x)=NULL; } }
