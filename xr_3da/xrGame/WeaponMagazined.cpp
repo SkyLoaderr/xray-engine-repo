@@ -475,7 +475,7 @@ void CWeaponMagazined::MediaLOAD		()
 {
 	if (hFlames.size())		return;
 
-	// flame textures
+/*	// flame textures
 	LPCSTR S		= pSettings->r_string	(cNameSect(),"flame");
 	u32 scnt		= _GetItemCount(S);
 	string256		name;
@@ -483,7 +483,7 @@ void CWeaponMagazined::MediaLOAD		()
 	{
 		hFlames.push_back	(ref_shader());
 		ShaderCreate		(hFlames.back(),"effects\\flame",_GetItem(S,i,name));
-	}
+	}*/
 }
 
 void CWeaponMagazined::MediaUNLOAD	()
