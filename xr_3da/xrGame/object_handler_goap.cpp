@@ -401,7 +401,7 @@ void CObjectHandlerGOAP::add_operators		(CEatableItem *eatable_item)
 }
 
 #ifdef DEBUG
-LPCSTR to_string(const u32 id)
+LPCSTR action2string(const u32 id)
 {
 	static	string4096 S;
 	if ((id & 0xffff) != 0xffff)
@@ -447,7 +447,7 @@ void CObjectHandlerGOAP::set_goal	(MonsterSpace::EObjectAction object_action, CG
 		condition_id		= eWorldPropertyNoItemsIdle;
 
 #ifdef LOG_ACTION
-	Msg						("%6d : Goal world state %s",Level().timeServer(),to_string(condition_id));
+	Msg						("%6d : Goal world state %s",Level().timeServer(),action2string(condition_id));
 #endif
 	CState					condition;
 	condition.add_condition	(CWorldProperty(condition_id,true));
@@ -461,7 +461,7 @@ void CObjectHandlerGOAP::update(u32 time_delta)
 	if (!solution().empty()) {
 		Msg						("%6d : Solution",Level().timeServer());
 		for (int i=0; i<(int)solution().size(); ++i)
-			Msg					("%s",to_string(solution()[i]));
+			Msg					("%s",action2string(solution()[i]));
 	}
 #endif
 }
