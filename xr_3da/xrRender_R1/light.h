@@ -20,10 +20,6 @@ public:
 	ref_shader		s_spot;
 	ref_shader		s_point;
 
-#if RENDER==R_R2
-	BOOL			scissor_enable;
-#endif
-
 	u32				dwFrame;
 public:
 	virtual void	set_type		(LT type)						{ flags.type = type;		}

@@ -10,16 +10,22 @@ void CRenderTarget::accum_spot	(light* L)
 	if (!shader)	shader		= s_accum_spot;
 
 	// Scissor
+	if (HW.Caps.bScissor)
 	{
-		CSector*	S				= (CSector*)L->spatial.sector;
-		Fbox2		bb				= S->r_scissor_merged;
+		CSector*	S	= (CSector*)L->spatial.sector;
+		Fbox2		bb	= S->r_scissor_merged;
 		RECT		R;
 		R.left		= clampr	(iFloor	(bb.min.x*Device.dwWidth),	int(0),int(Device.dwWidth));
 		R.right		= clampr	(iCeil	(bb.max.x*Device.dwWidth),	int(0),int(Device.dwWidth));
 		R.top		= clampr	(iFloor	(bb.min.y*Device.dwHeight),	int(0),int(Device.dwHeight));
 		R.bottom	= clampr	(iCeil	(bb.max.y*Device.dwHeight),	int(0),int(Device.dwHeight));
-		CHK_DX		(HW.pDevice->SetRenderState(D3DRS_SCISSORTESTENABLE,TRUE));
-		CHK_DX		(HW.pDevice->SetScissorRect(&R));
+		if	( (Device.dwWidth==(R.right - R.left)) && (Device.dwHeight==(R.bottom-R.top)) )
+		{
+			// full-screen -> do nothing
+		} else {
+			CHK_DX		(HW.pDevice->SetRenderState(D3DRS_SCISSORTESTENABLE,TRUE));
+			CHK_DX		(HW.pDevice->SetScissorRect(&R));
+		}
 	}
 
 	if (1)
@@ -135,23 +141,6 @@ void CRenderTarget::accum_spot	(light* L)
 	Device.mView.transform_tiny	(L_pos,L->position);
 	Device.mView.transform_dir	(L_dir,L->direction);
 	L_dir.normalize				();
-
-	// Perform "unmasking" where dot(L,N) < 0
-	/*
-	if (0 && ps_r2_ls_flags.test(R2FLAG_SPOT_UNMASK))
-	{
-		// General: if stencil>=light_id && alpha<="small_value" => stencil=0x1
-		// Unmasking (note: alpha-func assumed to be "greater" we need "less" here
-		// Another: projective divide controlled by sampler-state in ps_1_1
-		CHK_DX						(HW.pDevice->SetRenderState( D3DRS_ALPHAFUNC, D3DCMP_LESS		));
-		RCache.set_Element			(shader->E[1]);
-		RCache.set_c				("m_texgen",		m_Texgen);
-		RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0xff,0x01,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE,D3DSTENCILOP_KEEP);
-		RCache.set_Geometry			(g_accum_spot);
-		RCache.Render				(D3DPT_TRIANGLELIST,0,0,DU_CONE_NUMVERTEX,0,DU_CONE_NUMFACES);
-		CHK_DX						(HW.pDevice->SetRenderState( D3DRS_ALPHAFUNC, D3DCMP_GREATER	));
-	}
-	*/
 
 	// Draw volume with projective texgen
 	// CHK_DX	(Q->Issue(D3DISSUE_BEGIN));
