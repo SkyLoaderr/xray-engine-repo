@@ -58,7 +58,7 @@ function save_dialog:InitControls()
 	----- DATA ----
 	local indent          = 50
 	local screen          = {width = 1024,height = 768}	
-	local main_rect       = {x = 0,      
+	local main_rect       = {x = 0,
 							 y = 0,
 							 width = 800,
 							 height = 600}	
@@ -71,7 +71,7 @@ function save_dialog:InitControls()
 							 height = 0}
 	local edit_rect       = {x = indent, 
 						     y = caption_rect.y + caption_rect.height + indent,
-						     width = caption_rect.width - indent*2, 
+						     width =  300, --caption_rect.width - indent*2, 
 						     height = 28}
 	local btn_ok_rect     = {x = indent,
 							 y = 0,
