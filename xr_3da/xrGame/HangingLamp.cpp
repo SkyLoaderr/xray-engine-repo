@@ -99,7 +99,7 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 	light_render->set_cone	(lamp->spot_cone_angle);
 	light_render->set_texture(*lamp->light_texture);
 
-	if (*lamp->glow_texture){
+	if (lamp->glow_texture.size())	{
 		glow_render				= ::Render->glow_create();
 		glow_render->set_texture(*lamp->glow_texture);
 		glow_render->set_color	(clr);
