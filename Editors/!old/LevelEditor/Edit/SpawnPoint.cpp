@@ -15,7 +15,6 @@
 #include "SkeletonCustom.h"
 #include "ESceneSpawnTools.h"
 #include "ObjectAnimator.h"
-#include "xrSE_Factory_import_export.h"
 #include "xrMessages.h"
 #include "ui_main.h"
 #include "SkeletonAnimated.h"
@@ -23,8 +22,6 @@
 
 #include "eshape.h"
 #include "sceneobject.h"
-
-#pragma comment(lib,"xrSE_FactoryB.lib")
 
 #define SPAWNPOINT_VERSION   			0x0014
 //----------------------------------------------------
@@ -126,7 +123,7 @@ void CSpawnPoint::SSpawnData::Create(LPCSTR entity_ref)
     if (m_Data->motion()){
     	m_Motion	= xr_new<CLE_Motion>(m_Data->motion());
     }
-/*
+/*    
     CShapeData* cform = dynamic_cast<CShapeData*>(m_Data);
 //    if (cform) cform->shapes.push_back(xrSE_CFormed::shape_def());
     if (cform){
@@ -189,7 +186,7 @@ bool CSpawnPoint::SSpawnData::ExportGame(SExportStreams& F, CSpawnPoint* owner)
     m_Data->angle().set			(owner->PRotation);
 
     // export cform (if needed)
-    CSE_Shape* cform 			= dynamic_cast<CSE_Shape*>(m_Data);
+    ISE_Shape* cform 			= m_Data->shape();
 // SHAPE
     if (cform&&!(owner->m_AttachedObject&&(owner->m_AttachedObject->ClassID==OBJCLASS_SHAPE))){
 		ELog.DlgMsg				(mtError,"Spawn Point: '%s' must contain attached shape.",owner->Name);
@@ -198,7 +195,7 @@ bool CSpawnPoint::SSpawnData::ExportGame(SExportStreams& F, CSpawnPoint* owner)
     if (cform){
 	    CEditShape* shape		= dynamic_cast<CEditShape*>(owner->m_AttachedObject); R_ASSERT(shape);
 		shape->ApplyScale		();
-    	cform->shapes 			= shape->GetShapes();
+    	cform->assign_shapes	(&*shape->GetShapes().begin(),shape->GetShapes().size());
     }
     // end
 
@@ -317,7 +314,7 @@ bool CSpawnPoint::AttachObject(CCustomObject* obj)
     if (m_SpawnData.Valid()){
     	switch(obj->ClassID){    
         case OBJCLASS_SHAPE:
-	    	bAllowed = !!dynamic_cast<CSE_Shape*>(m_SpawnData.m_Data);
+	    	bAllowed = !!m_SpawnData.m_Data->shape();
         break;
 //        case OBJCLASS_SCENEOBJECT:
 //	    	bAllowed = !!dynamic_cast<xrSE_Visualed*>(m_SpawnData.m_Data);
@@ -389,16 +386,16 @@ bool CSpawnPoint::GetBox( Fbox& box )
             }else{
 			    CEditShape* shape	= dynamic_cast<CEditShape*>(m_AttachedObject);
                 if (shape&&!shape->GetShapes().empty()){
-                	CSE_Shape::ShapeVec& SV	= shape->GetShapes();
+                	CShapeData::ShapeVec& SV	= shape->GetShapes();
                 	box.invalidate();
                     Fvector p;
-                	for (CSE_Shape::ShapeIt it=SV.begin(); it!=SV.end(); it++){
+                	for (CShapeData::ShapeIt it=SV.begin(); it!=SV.end(); it++){
                     	switch (it->type){
-                        case CSE_Shape::cfSphere:
+                        case CShapeData::cfSphere:
                         	p.add(it->data.sphere.P,it->data.sphere.R); shape->_Transform().transform_tiny(p); box.modify(p);
                         	p.sub(it->data.sphere.P,it->data.sphere.R); shape->_Transform().transform_tiny(p); box.modify(p);
                         break;
-                        case CSE_Shape::cfBox:
+                        case CShapeData::cfBox:
                         	p.set( 0.5f, 0.5f, 0.5f);it->data.box.transform_tiny(p); shape->_Transform().transform_tiny(p); box.modify(p);
                         	p.set(-0.5f,-0.5f,-0.5f);it->data.box.transform_tiny(p); shape->_Transform().transform_tiny(p); box.modify(p);
                         break;
@@ -754,29 +751,4 @@ bool CSpawnPoint::OnChooseQuery(LPCSTR specific)
 
 
 ///-----------------------------------------------------------------------------
-/*
 
-SERVER_ENTITY_DECLARE_BEGIN0(CSE_Motion)
-private:
-	ref_str							motion_name;
-public:
-#ifdef _EDITOR
-	CObjectAnimator*	   			animator;
-    void __stdcall 					OnChangeMotion	(PropValue* sender);
-    void 							PlayMotion		(LPCSTR name=0);
-#endif
-public:
-									CSE_Motion 		(LPCSTR name=0);
-	virtual							~CSE_Motion		();
-
-	void							motion_read		(NET_Packet& P);
-	void							motion_write	(NET_Packet& P);
-
-    void							set_motion		(LPCSTR name);
-	LPCSTR							get_motion		() const {return *motion_name;};
-    
-#ifdef _EDITOR
-    void 							FillProp		(LPCSTR pref, PropItemVec& values);
-#endif
-};
-*/

@@ -32,7 +32,6 @@ IPropHelper &PHelper()
 
 FACTORY_API ISE_Abstract *create_entity	(LPCSTR section)
 {
-
 	return					(F_entity_Create(section));
 }
 

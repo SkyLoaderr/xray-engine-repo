@@ -12,7 +12,7 @@
 #include "GeometryCollector.h"
 
 #include "xrServer_Objects_Abstract.h"
-#include "xrSE_Factory_import_export.h"
+//.#include "xrSE_Factory_import_export.h"
 
 //----------------------------------------------------
 
@@ -547,8 +547,8 @@ bool ESceneObjectTools::ExportBreakableObjects(SExportStreams& F)
                 // export spawn object
                 {
                     AnsiString entity_ref		= "breakable_object";
-                    ISE_Abstract*	m_Data		= create_entity(entity_ref.c_str()); 	VERIFY(m_Data);
-                    CSE_Visual* m_Visual		= dynamic_cast<CSE_Visual*>(m_Data);	VERIFY(m_Visual);
+                    ISE_Abstract*	m_Data		= 0;//.create_entity(entity_ref.c_str()); 	VERIFY(m_Data);
+                    CSE_Visual* m_Visual		= m_Data->visual();	VERIFY(m_Visual);
                     // set params
                     strcpy	  					(m_Data->name(),entity_ref.c_str());
                     strcpy	  					(m_Data->name_replace(),sn.c_str());
@@ -562,7 +562,7 @@ bool ESceneObjectTools::ExportBreakableObjects(SExportStreams& F)
                     F.spawn.stream.open_chunk	(F.spawn.chunk++);
                     F.spawn.stream.w			(Packet.B.data,Packet.B.count);
                     F.spawn.stream.close_chunk	();
-                    destroy_entity				(m_Data);
+                    //.destroy_entity				(m_Data);
                 }
             }else{
             	ELog.Msg(mtError,"Can't export invalid part #%d",p_it-parts.begin());

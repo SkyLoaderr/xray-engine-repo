@@ -19,6 +19,7 @@ protected:
     Flags32				m_Flags;
 public:
 						ESceneSpawnTools		();
+	virtual				~ESceneSpawnTools		();
 	// definition
     IC LPCSTR			ClassName				(){return "spawn";}
     IC LPCSTR			ClassDesc				(){return "Spawn";}
@@ -33,5 +34,14 @@ public:
     virtual bool		LoadSelection      		(IReader&);
     virtual void		SaveSelection      		(IWriter&);
 };
+//---------------------------------------------------------------------------
+// refs 
+class ISE_Abstract;
+
+typedef ISE_Abstract* 	(__stdcall *Tcreate_entity)		(LPCSTR section);
+typedef void		  	(__stdcall *Tdestroy_entity)	(ISE_Abstract *&);
+
+extern	Tcreate_entity 	create_entity;
+extern	Tdestroy_entity destroy_entity;
 //---------------------------------------------------------------------------
 #endif
