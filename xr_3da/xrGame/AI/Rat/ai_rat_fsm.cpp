@@ -64,15 +64,15 @@ void CAI_Rat::Think()
 	}
 	while (!bStopThinking);
 //	if (m_fSpeed > EPS_L) {
-//		AI_Path.TravelPath.resize(2);
-//		AI_Path.TravelPath[0].floating = AI_Path.TravelPath[1].floating = FALSE;
+//		AI_Path.TravelPath.resize(3);
+//		AI_Path.TravelPath[0].floating = AI_Path.TravelPath[1].floating = AI_Path.TravelPath[2].floating = FALSE;
 //		AI_Path.TravelPath[0].P = m_tOldPosition;
-////		Fvector tTemp;
-////		tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
-////		tTemp.normalize_safe();
-////		tTemp.mul(10.f);
-////		AI_Path.TravelPath[1].P.add(vPosition,tTemp);
 //		AI_Path.TravelPath[1].P = vPosition;
+//		Fvector tTemp;
+//		tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
+//		tTemp.normalize_safe();
+//		tTemp.mul(10.f);
+//		AI_Path.TravelPath[2].P.add(vPosition,tTemp);
 //		AI_Path.TravelStart = 0;
 //		vPosition = m_tOldPosition;
 //	}
@@ -296,7 +296,6 @@ void CAI_Rat::UnderFire()
 			m_tSpawnPosition.add(vPosition,tTemp);
 		}
 		if (m_fMorale >= m_fMoraleNormalValue - EPS_L) {
-			//m_tSafeSpawnPosition.set(Level().Teams[g_Team()].Squads[g_Squad()].Leader->Position());
 			GO_TO_PREV_STATE;
 		}
 	}
@@ -333,13 +332,13 @@ void CAI_Rat::AttackFire()
 	if (m_Enemy.Enemy)
 		m_dwLostEnemyTime = Level().timeServer();
 
-	//if (!(m_Enemy.Enemy) && m_tSavedEnemy && (Level().timeServer() - m_dwLostEnemyTime < LOST_MEMORY_TIME))
-	//	m_Enemy.Enemy = m_tSavedEnemy;
+	if (!(m_Enemy.Enemy) && m_tSavedEnemy && (Level().timeServer() - m_dwLostEnemyTime < LOST_MEMORY_TIME))
+		m_Enemy.Enemy = m_tSavedEnemy;
+
+	CHECK_IF_GO_TO_NEW_STATE((m_Enemy.Enemy->Position().distance_to(vPosition) > ATTACK_DISTANCE),aiRatAttackRun)
 
 	CHECK_IF_GO_TO_PREV_STATE(!(m_Enemy.Enemy));// || !m_Enemy.Enemy->g_Alive())
 		
-	CHECK_IF_GO_TO_NEW_STATE((m_Enemy.Enemy->Position().distance_to(vPosition) > ATTACK_DISTANCE),aiRatAttackRun)
-
 	Fvector tTemp;
 	tTemp.sub(m_Enemy.Enemy->Position(),vPosition);
 	vfNormalizeSafe(tTemp);
@@ -472,7 +471,6 @@ void CAI_Rat::Retreat()
 	}
 	else
 		if ((Level().timeServer() - m_dwLostEnemyTime > RETREAT_TIME) && ((m_tLastSound.dwTime > m_dwLastUpdateTime) || (m_tLastSound.tpEntity && ((m_tLastSound.tpEntity->g_Team() == g_Team()) || bfCheckIfSoundFrightful())))) {
-			m_tSafeSpawnPosition.set(Level().Teams[g_Team()].Squads[g_Squad()].Leader->Position());
 			GO_TO_PREV_STATE;
 		}
 

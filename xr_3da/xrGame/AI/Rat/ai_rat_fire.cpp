@@ -138,10 +138,34 @@ void CAI_Rat::vfUpdateMorale()
 		m_dwMoraleLastUpdateTime = dwCurTime;
 		float fDistance = vPosition.distance_to(m_tSafeSpawnPosition);
 		fDistance = fDistance < 1.f ? 1.f : fDistance;
-		if (m_fMorale < m_fMoraleNormalValue)
-			m_fMorale += m_fMoraleRestoreQuant*(1.f - fDistance/m_fMoraleNullRadius);
-		else
-			m_fMorale -= m_fMoraleRestoreQuant*(fDistance/m_fMoraleNullRadius);
+		switch (eCurrentState) {
+			case aiRatFreeHuntingActive :
+			case aiRatFreeHuntingPassive : 
+			case aiRatRecoil : {
+				if (m_fMorale < m_fMoraleNormalValue) {
+					m_fMorale += m_fMoraleRestoreQuant*(1.f - fDistance/m_fMoraleNullRadius);
+					if (m_fMorale > m_fMoraleNormalValue)
+						m_fMorale = m_fMoraleNormalValue;
+				}
+				else 
+					if (m_fMorale > m_fMoraleNormalValue) {
+						m_fMorale -= m_fMoraleRestoreQuant*(fDistance/m_fMoraleNullRadius);
+						if (m_fMorale < m_fMoraleNormalValue)
+							m_fMorale = m_fMoraleNormalValue;
+					}
+				break;
+			}
+			case aiRatUnderFire :
+			case aiRatRetreat : {
+				m_fMorale += m_fMoraleRestoreQuant;
+				break;
+			}
+			case aiRatAttackRun :
+			case aiRatAttackFire : {
+				m_fMorale += m_fMoraleRestoreQuant*(1.f - fDistance/m_fMoraleNullRadius);
+				break;
+			}
+		}
 		if (m_fMorale < m_fMoraleMinValue)
 			m_fMorale = m_fMoraleMinValue;
 		if (m_fMorale > m_fMoraleMaxValue)

@@ -172,9 +172,9 @@ DWORD CAI_Space::q_Node(DWORD PrevNode, const Fvector& BasePos, bool bShortSearc
 	// Perform neibourhood search
 	DWORD BestNode;
 	float BestCost;
-	q_Range_Bit(PrevNode,BasePos,m_header.size*3,&QueryPos,BestNode,BestCost);
+	q_Range_Bit(PrevNode,BasePos,m_header.size*7,&QueryPos,BestNode,BestCost);
 	//q_Range_Bit(PrevNode,BasePos,m_header.size*3,BestNode,BestCost);
-	if (BestCost <= 3*m_header.size)	{
+	if (BestCost <= 7*m_header.size)	{
 		// small distance from node
 		Device.Statistic.AI_Node.End();
 		return BestNode;
