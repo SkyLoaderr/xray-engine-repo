@@ -405,6 +405,30 @@
     <string id="mil_dolg_dialog_9001">
         <text>Ты завалил Лукаша ?!! Ну ты даешь ! Спасибо, братан.</text>
     </string>
+    <string id="mil_dolg_soldier_dialog_0">
+        <text>Вот так тремя засранцанцами стало меньше. А ты появился как нельзя во время, и нас не спалил, и сам цел остался. Я думаю, никто об этом не узнает, а ты?</text>
+    </string>
+    <string id="mil_dolg_soldier_dialog_1">
+        <text>Нет, конечно.</text>
+    </string>
+    <string id="mil_dolg_soldier_dialog_2">
+        <text>Ну, вот и славненько. Есть желание заработать?</text>
+    </string>
+    <string id="mil_dolg_soldier_dialog_3">
+        <text>Всегда.</text>
+    </string>
+    <string id="mil_dolg_soldier_dialog_4">
+        <text>Тогда двигай за нами, поговоришь с нашим командиром.</text>
+    </string>
+    <string id="mil_dolg_soldier_dialog_5">
+        <text>Командиром?</text>
+    </string>
+    <string id="mil_dolg_soldier_dialog_6">
+        <text>Ага. Череп - он тебе сам все расскажет.</text>
+    </string>
+    <string id="mil_dolg_soldier_dialog_7">
+        <text>Ок.</text>
+    </string>
     <string id="mil_guard_arsenal_dialog_1000">
         <text>Стой. Доступ к арсеналу разрешен только членам группировки.</text>
     </string>
