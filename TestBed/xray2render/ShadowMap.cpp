@@ -441,18 +441,18 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 			B.z								= binormal[3 * i + 2];
 			D3DXVec3Normalize				(&B,&B);
 
-			// ortho-normalize
 			/*
-			D3DXVec3Cross					(&B,&T,&N);
-			D3DXVec3Normalize				(&B,&B);
-			D3DXVec3Cross					(&T,&N,&B);
-			D3DXVec3Normalize				(&T,&T);
-			*/
+			// ortho-normalize
+//			D3DXVec3Cross					(&B,&T,&N);
+//			D3DXVec3Normalize				(&B,&B);
+//			D3DXVec3Cross					(&T,&N,&B);
+//			D3DXVec3Normalize				(&T,&T);
 			B = -B;
 			D3DXVec3Cross					(&T,&B,&N);
 			D3DXVec3Normalize				(&T,&T);
 			D3DXVec3Cross					(&B,&N,&T);
 			D3DXVec3Normalize				(&B,&B);
+			*/
 
 			vertexBufferNew[i].n.x			= N.x;
 			vertexBufferNew[i].n.y			= N.y;
@@ -1396,7 +1396,7 @@ HRESULT CMyD3DApplication::UpdateTransform()
 	D3DXMatrixMultiply			(&dm_model2world2view2projection,	&dm_model2world, &dm_world2view2projection);
 
 	// Light direction
-	dv_LightDir					= D3DXVECTOR3(-1.0f, -1.0f, 0);
+	dv_LightDir					= D3DXVECTOR3(-1.0f, -1.0f, 1.0);
 	D3DXVec3Normalize			(&dv_LightDir, &dv_LightDir);
 
 	// Setup shadow map transform
