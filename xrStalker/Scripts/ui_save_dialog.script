@@ -74,7 +74,7 @@ function save_dialog:InitControls()
 	local txt_caption = CUIStatic()
 	txt_caption:SetAutoDelete(true)
 	txt_caption:SetWindowName("txt_caption")
-	txt_caption:SetText("SAVE___DIALOG__HERE")
+	txt_caption:SetText("SAVE_DIALOG_HERE")
 	txt_caption:SetTextAlign(CGameFont.alCenter)
 	txt_caption:Init(captiontxt_rect.x, captiontxt_rect.y, caption_rect.width, caption_rect.height)
 	main_frame:AttachChild(txt_caption)
@@ -139,7 +139,9 @@ function save_dialog:InitCallBacks()
 end
 
 function save_dialog:OnButton_ok_clicked()	
-	self:AddItemToList("item1")
+	local edit_box = self:GetEditWnd("edit_filename")
+	local txt = edit_box:GetText()
+	self:AddItemToList(txt)
 end
 
 function save_dialog:OnButton_cancel_clicked()
