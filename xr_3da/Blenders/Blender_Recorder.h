@@ -8,8 +8,16 @@
 
 #include "..\tss.h"
 
-class ENGINE_API CBlender_Recorder  
+class ENGINE_API CBlender_Compile  
 {
+public:
+	sh_list				L_textures;
+	sh_list				L_constants;
+	sh_list				L_matrices;
+	BOOL				bEditor;
+	BOOL				bLighting;
+	int					iLayers;
+private:
 	CSimulator			RS;
 	Shader*				SH;
 
@@ -37,17 +45,18 @@ public:
 
 	void				StageBegin			();
 	DWORD				Stage				()	{ return dwStage; }
+	void				StageTemplate_LMAP0	();
 	void				StageSET_Address	(DWORD adr);
 	void				StageSET_XForm		(DWORD tf, DWORD tc);
 	void				StageSET_Color		(DWORD a1, DWORD op, DWORD a2);
 	void				StageSET_Alpha		(DWORD a1, DWORD op, DWORD a2);
-	void				Stage_Texture		(LPCSTR name, sh_list& lst);
-	void				Stage_Matrix		(LPCSTR name, sh_list& lst, int iChannel);
-	void				Stage_Constant		(LPCSTR name, sh_list& lst);
+	void				Stage_Texture		(LPCSTR name);
+	void				Stage_Matrix		(LPCSTR name, int UVW_channel);
+	void				Stage_Constant		(LPCSTR name);
 	void				StageEnd			();
 
-	CBlender_Recorder	();
-	~CBlender_Recorder	();
+	CBlender_Compile	();
+	~CBlender_Compile	();
 	
 	void				Initialize			(Shader* _SH);
 };

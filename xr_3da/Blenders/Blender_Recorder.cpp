@@ -1,4 +1,4 @@
-// Blender_Recorder.cpp: implementation of the CBlender_Recorder class.
+// Blender_Recorder.cpp: implementation of the CBlender_Compile class.
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -6,23 +6,24 @@
 #pragma hdrstop
 
 #include "Blender_Recorder.h"
+#include "Blender.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CBlender_Recorder::CBlender_Recorder		()
+CBlender_Compile::CBlender_Compile		()
 {
 }
-CBlender_Recorder::~CBlender_Recorder		()
+CBlender_Compile::~CBlender_Compile		()
 {
 }
-void	CBlender_Recorder::Initialize		(Shader* _SH)
+void	CBlender_Compile::Initialize		(Shader* _SH)
 {
 	RS.Invalidate	();
 	SH =			_SH;
 }
-void	CBlender_Recorder::SetParams		(int iPriority, bool bStrictB2F, bool bLighting, bool bPixelShader)
+void	CBlender_Compile::SetParams		(int iPriority, bool bStrictB2F, bool bLighting, bool bPixelShader)
 {
 	SH->Flags.iPriority		= iPriority;
 	SH->Flags.bStrictB2F	= bStrictB2F;
@@ -31,7 +32,7 @@ void	CBlender_Recorder::SetParams		(int iPriority, bool bStrictB2F, bool bLighti
 }
 
 //
-void	CBlender_Recorder::PassBegin		()
+void	CBlender_Compile::PassBegin		()
 {
 	RS.Invalidate			();
 	passTextures.clear		();
@@ -39,7 +40,7 @@ void	CBlender_Recorder::PassBegin		()
 	passConstants.clear		();
 	dwStage					= 0;
 }
-void	CBlender_Recorder::PassEnd			()
+void	CBlender_Compile::PassEnd			()
 {
 	// Last Stage - disable
 	RS.SetTSS	(Stage(),D3DTSS_COLOROP,D3DTOP_DISABLE);
@@ -54,14 +55,14 @@ void	CBlender_Recorder::PassEnd			()
 	SH->Passes.push_back(P);
 }
 
-void	CBlender_Recorder::PassSET_ZB		(BOOL bZTest, BOOL bZWrite)
+void	CBlender_Compile::PassSET_ZB		(BOOL bZTest, BOOL bZWrite)
 {
 	if (Pass())	bZWrite = FALSE;
 	RS.SetRS	(D3DRS_ZFUNC,			bZTest?D3DCMP_LESSEQUAL:D3DCMP_ALWAYS);
 	RS.SetRS	(D3DRS_ZWRITEENABLE,	BC(bZWrite));
 }
 
-void	CBlender_Recorder::PassSET_Blend	(BOOL bABlend, DWORD abSRC, DWORD abDST, BOOL bATest, DWORD aRef)
+void	CBlender_Compile::PassSET_Blend	(BOOL bABlend, DWORD abSRC, DWORD abDST, BOOL bATest, DWORD aRef)
 {
 	RS.SetRS(D3DRS_ALPHABLENDENABLE,	BC(bABlend));
 	RS.SetRS(D3DRS_SRCBLEND,			bABlend?abSRC:D3DBLEND_ONE	);
@@ -70,7 +71,7 @@ void	CBlender_Recorder::PassSET_Blend	(BOOL bABlend, DWORD abSRC, DWORD abDST, B
 	if (bATest)
 		RS.SetRS(D3DRS_ALPHAREF,		DWORD(aRef));
 }
-void	CBlender_Recorder::PassSET_LightFog	(BOOL bLight, BOOL bFog)
+void	CBlender_Compile::PassSET_LightFog	(BOOL bLight, BOOL bFog)
 {
 	RS.SetRS(D3DRS_LIGHTING,			BC(bLight));
 	RS.SetRS(D3DRS_FOGENABLE,			BC(bFog));
@@ -78,30 +79,39 @@ void	CBlender_Recorder::PassSET_LightFog	(BOOL bLight, BOOL bFog)
 }
 
 //
-void	CBlender_Recorder::StageBegin	()
+void	CBlender_Compile::StageBegin	()
 {
 }
-void	CBlender_Recorder::StageEnd		()
+void	CBlender_Compile::StageEnd		()
 {
 	dwStage	++;
 }
-void	CBlender_Recorder::StageSET_Address(DWORD adr)
+void	CBlender_Compile::StageSET_Address(DWORD adr)
 {
 	RS.SetTSS	(Stage(),D3DTSS_ADDRESSU,	adr);
 	RS.SetTSS	(Stage(),D3DTSS_ADDRESSV,	adr);
 }
-void	CBlender_Recorder::StageSET_XForm	(DWORD tf, DWORD tc)
+void	CBlender_Compile::StageSET_XForm	(DWORD tf, DWORD tc)
 {
 	RS.SetTSS	(Stage(),D3DTSS_TEXTURETRANSFORMFLAGS,	tf);
 	RS.SetTSS	(Stage(),D3DTSS_TEXCOORDINDEX,			tc);
 }
-void	CBlender_Recorder::StageSET_Color	(DWORD a1, DWORD op, DWORD a2)
+void	CBlender_Compile::StageSET_Color	(DWORD a1, DWORD op, DWORD a2)
 {
 	RS.SetColor	(Stage(),a1,op,a2);
 }
-void	CBlender_Recorder::StageSET_Alpha	(DWORD a1, DWORD op, DWORD a2)
+void	CBlender_Compile::StageSET_Alpha	(DWORD a1, DWORD op, DWORD a2)
 {
 	RS.SetAlpha	(Stage(),a1,op,a2);
+}
+void	CBlender_Compile::StageTemplate_LMAP0	(CBlender_Compile& C)
+{
+	StageSET_Address	(D3DTADDRESS_WRAP);
+	StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
+	StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
+	Stage_Texture		("$base1",		C.L_textures	);
+	Stage_Matrix		("$null",		C.L_matrices,	1);
+	Stage_Constant		("$null",		C.L_constants	);
 }
 
 int ParseName(LPCSTR N)
@@ -118,7 +128,7 @@ int ParseName(LPCSTR N)
 	return -1;
 }
 
-void	CBlender_Recorder::Stage_Texture	(LPCSTR name, sh_list& lst)
+void	CBlender_Compile::Stage_Texture	(LPCSTR name, sh_list& lst)
 {
 	int id		= ParseName(name);
 	LPCSTR N	=  name;
@@ -128,7 +138,7 @@ void	CBlender_Recorder::Stage_Texture	(LPCSTR name, sh_list& lst)
 	}
 	passTextures.push_back	(Device.Shader._CreateTexture(N));
 }
-void	CBlender_Recorder::Stage_Matrix		(LPCSTR name, sh_list& lst, int iChannel)
+void	CBlender_Compile::Stage_Matrix		(LPCSTR name, sh_list& lst, int iChannel)
 {
 	int id = ParseName(name);
 	CMatrix*	M	= Device.Shader._CreateMatrix	((id>=0)?lst[id]:name);
@@ -150,7 +160,7 @@ void	CBlender_Recorder::Stage_Matrix		(LPCSTR name, sh_list& lst, int iChannel)
 		StageSET_XForm	(D3DTTFF_DISABLE,D3DTSS_TCI_PASSTHRU|iChannel);	
 	}
 }
-void	CBlender_Recorder::Stage_Constant	(LPCSTR name, sh_list& lst)
+void	CBlender_Compile::Stage_Constant	(LPCSTR name, sh_list& lst)
 {
 	int id = ParseName(name);
 	passConstants.push_back	(Device.Shader._CreateConstant((id>=0)?lst[id]:name));

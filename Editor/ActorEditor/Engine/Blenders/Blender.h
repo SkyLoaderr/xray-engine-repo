@@ -30,21 +30,6 @@ public:
 
 	void					Setup	(LPCSTR N);
 };
-
-const	DWORD	bcf_editor		= (1<<0);	// Compile for editor (diffuse only)
-const	DWORD	bcf_lighting	= (1<<1);	// Compile only lighting
-
-class ENGINE_API	CBlender_Compile
-{
-public:
-	CBlender_Recorder	RS;
-	sh_list				L_textures;
-	sh_list				L_constants;
-	sh_list				L_matrices;
-	BOOL				bEditor;
-	BOOL				bLighting;
-	int					iLayers;
-};
 #pragma pack(push,4)
 
 class ENGINE_API CBlender	: public CPropertyBase
