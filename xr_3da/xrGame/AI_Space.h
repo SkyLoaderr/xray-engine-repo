@@ -113,10 +113,6 @@ public:
 	float		z3;
 	u32			m_dwLastBestNode;
 	typedef		NodeLink* iterator;
-	IC bool		bfCheckIfAccessible		(u32 dwNode)
-	{
-		return(true);
-	}
 };
 
 class CAIGraphTemplateNode {
@@ -127,10 +123,6 @@ public:
 	{
 		return(tIterator->dwVertexNumber);
 	}
-	IC bool bfCheckIfAccessible(u32 dwNode)
-	{
-		return(true);
-	}
 };
 
 class CAIMapShortestPathNode : public CAIMapTemplateNode {
@@ -139,6 +131,7 @@ public:
 				CAIMapShortestPathNode	(SAIMapData &tAIMapData);
 	IC void		begin					(u32 dwNode, iterator &tStart, iterator &tEnd);
 	IC u32		get_value				(iterator &tIterator);
+	IC bool		bfCheckIfAccessible		(u32 dwNode);
 	IC float	ffEvaluate				(u32 dwStartNode, u32 dwFinishNode);
 	IC float	ffAnticipate			(u32 dwStartNode);
 	IC float	ffAnticipate			();
@@ -151,6 +144,7 @@ public:
 				CAIMapLCDPathNode		(SAIMapDataL &tAIMapData);
 	IC void		begin					(u32 dwNode, iterator &tStart, iterator &tEnd);
 	IC u32		get_value				(iterator &tIterator);
+	IC bool		bfCheckIfAccessible		(u32 dwNode);
 	IC float	ffEvaluate				(u32 dwStartNode, u32 dwFinishNode);
 	IC float	ffAnticipate			(u32 dwStartNode);
 	IC float	ffAnticipate			();
@@ -166,6 +160,7 @@ public:
 				CAIMapEnemyPathNode		(SAIMapDataE &tAIMapData);
 	IC void		begin					(u32 dwNode, iterator &tStart, iterator &tEnd);
 	IC u32		get_value				(iterator &tIterator);
+	IC bool		bfCheckIfAccessible		(u32 dwNode);
 	IC float	ffEvaluate				(u32 dwStartNode, u32 dwFinishNode);
 	IC float	ffAnticipate			(u32 dwStartNode);
 	IC float	ffAnticipate			();
@@ -181,6 +176,7 @@ public:
 				CAIMapEnemyPositionPathNode	(SAIMapDataF &tAIMapData);
 	IC void		begin					(u32 dwNode, iterator &tStart, iterator &tEnd);
 	IC u32		get_value				(iterator &tIterator);
+	IC bool		bfCheckIfAccessible		(u32 dwNode);
 	IC float	ffEvaluate				(u32 dwStartNode, u32 dwFinishNode);
 	IC float	ffAnticipate			(u32 dwStartNode);
 	IC float	ffAnticipate			();
@@ -191,6 +187,7 @@ public:
 	SAIMapData	tData;
 				CAIGraphShortestPathNode(SAIMapData &tAIMapData);
 	IC void		begin					(u32 dwNode, iterator &tStart, iterator &tEnd);
+	IC bool		bfCheckIfAccessible		(u32 dwNode);
 	IC float	ffEvaluate				(u32 dwStartNode, u32 dwFinishNode);
 	IC float	ffAnticipate			(u32 dwStartNode);
 	IC float	ffAnticipate			();
@@ -236,18 +233,21 @@ public:
 	SIndexNode								*m_tpIndexes;
 	u32										m_dwAStarStaticCounter;
 	float									m_fSize,m_fYSize,m_fSize2,m_fYSize2;
-	CAStarSearch<CAIMapShortestPathNode,SAIMapData>		m_tpMapPath;
-	CAStarSearch<CAIMapLCDPathNode,SAIMapDataL>			m_tpLCDPath;
-	CAStarSearch<CAIMapEnemyPathNode,SAIMapDataE>		m_tpEnemyPath;
-	CAStarSearch<CAIMapEnemyPositionPathNode,SAIMapDataF>		m_tpEnemyPositionPath;
-	CAStarSearch<CAIGraphShortestPathNode,SAIMapData>	m_tpGraphPath;
-	float vfFindMinimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result);
-	float vfFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, float fLightWeight = DEFAULT_LIGHT_WEIGHT, float fCoverWeight = DEFAULT_COVER_WEIGHT, float fDistanceWeight = DEFAULT_DISTANCE_WEIGHT);
-	float vfFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, u32 dwEnemyNode, float fOptimalEnemyDistance, float fLightWeight = DEFAULT_LIGHT_WEIGHT, float fCoverWeight = DEFAULT_COVER_WEIGHT, float fDistanceWeight = DEFAULT_DISTANCE_WEIGHT, float fEnemyViewWeight = DEFAULT_ENEMY_VIEW_WEIGHT);
-	float vfFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, Fvector tEnemyPosition, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight);
-	void  vfLoadSearch();
-	void  vfUnloadSearch();
-	int	  q_LoadSearch	(const Fvector& Pos);	// <0 - failure
+	CAStarSearch<CAIMapShortestPathNode,SAIMapData>
+		m_tpMapPath;
+	CAStarSearch<CAIMapLCDPathNode,SAIMapDataL>
+		m_tpLCDPath;
+	CAStarSearch<CAIMapEnemyPathNode,SAIMapDataE>
+		m_tpEnemyPath;
+	CAStarSearch<CAIMapEnemyPositionPathNode,SAIMapDataF>
+		m_tpEnemyPositionPath;
+	CAStarSearch<CAIGraphShortestPathNode,SAIMapData>
+		m_tpGraphPath;
+	float			vfFindMinimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, bool bUseMarks = false);
+	float			vfFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, float fLightWeight = DEFAULT_LIGHT_WEIGHT, float fCoverWeight = DEFAULT_COVER_WEIGHT, float fDistanceWeight = DEFAULT_DISTANCE_WEIGHT, bool bUseMarks = false);
+	float			vfFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, u32 dwEnemyNode, float fOptimalEnemyDistance, float fLightWeight = DEFAULT_LIGHT_WEIGHT, float fCoverWeight = DEFAULT_COVER_WEIGHT, float fDistanceWeight = DEFAULT_DISTANCE_WEIGHT, float fEnemyViewWeight = DEFAULT_ENEMY_VIEW_WEIGHT, bool bUseMarks = false);
+	float			vfFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, Fvector tEnemyPosition, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight, bool bUseMarks = false);
+	int				q_LoadSearch	(const Fvector& Pos);	// <0 - failure
 
 	// Helper functions
 	IC	const hdrNODES&		Header()		{ return m_header; }

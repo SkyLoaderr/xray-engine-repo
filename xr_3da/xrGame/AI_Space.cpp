@@ -94,12 +94,12 @@ void CAI_Space::Load(LPCSTR name)
 
 	// for graph
 	strconcat				(fName,name,"level.graph");
-	if (!Engine.FS.Exist(fName))
-		return;
-	m_tpGraphVFS			= Engine.FS.Open	(fName);
-	m_tpGraphVFS->Read		(&m_tGraphHeader,sizeof(AI::SGraphHeader));
-	R_ASSERT				(m_tGraphHeader.dwVersion == XRAI_CURRENT_VERSION);
-	m_tpaGraph				= (AI::SGraphVertex*)m_tpGraphVFS->Pointer();
+	if (Engine.FS.Exist(fName)) {
+		m_tpGraphVFS			= Engine.FS.Open	(fName);
+		m_tpGraphVFS->Read		(&m_tGraphHeader,sizeof(AI::SGraphHeader));
+		R_ASSERT				(m_tGraphHeader.dwVersion == XRAI_CURRENT_VERSION);
+		m_tpaGraph				= (AI::SGraphVertex*)m_tpGraphVFS->Pointer();
+	}
 
 	// for a* search
 	m_fSize2				= _sqr(m_fSize = m_header.size)/4;
@@ -107,7 +107,7 @@ void CAI_Space::Load(LPCSTR name)
 	u32 S1					= (MAX_NODES + 1)*sizeof(SNode);
 	m_tpHeap				= (SNode *)xr_malloc(S1);
 	ZeroMemory				(m_tpHeap,S1);
-	u32 S2					= max(m_header.count,m_tGraphHeader.dwVertexCount + 1)*sizeof(SIndexNode);
+	u32 S2					= max(vfs ? m_header.count : 0,m_tpGraphVFS ? m_tGraphHeader.dwVertexCount + 1 : 0)*sizeof(SIndexNode);
 	m_tpIndexes				= (SIndexNode *)xr_malloc(S2);
 	ZeroMemory				(m_tpIndexes,S2);
 	Msg						("* AI path-finding structures: %d K",(S1 + S2)/(1024));
@@ -288,14 +288,6 @@ int	CAI_Space::q_LoadSearch(const Fvector& pos)
 }
 
 //////////////////////////////////////////////////////////////////////////
-// CAIMapTemplateNode
-//////////////////////////////////////////////////////////////////////////
-
-//////////////////////////////////////////////////////////////////////////
-// CAIGraphTemplateNode
-//////////////////////////////////////////////////////////////////////////
-
-//////////////////////////////////////////////////////////////////////////
 // CAIMapShortestPathNode
 //////////////////////////////////////////////////////////////////////////
 
@@ -317,6 +309,11 @@ IC void CAIMapShortestPathNode::begin(u32 dwNode, CAIMapTemplateNode::iterator &
 IC u32 CAIMapShortestPathNode::get_value(CAIMapTemplateNode::iterator &tIterator)
 {
 	return(tData.tpAI_Space->UnpackLink(*tIterator));
+}
+
+IC bool CAIMapShortestPathNode::bfCheckIfAccessible(u32 dwNode)
+{
+	return(tData.tpAI_Space->q_mark_bit[dwNode]);
 }
 
 IC float CAIMapShortestPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
@@ -386,6 +383,11 @@ IC void CAIMapLCDPathNode::begin(u32 dwNode, CAIMapTemplateNode::iterator &tIter
 IC u32 CAIMapLCDPathNode::get_value(CAIMapTemplateNode::iterator &tIterator)
 {
 	return(tData.tpAI_Space->UnpackLink(*tIterator));
+}
+
+IC bool CAIMapLCDPathNode::bfCheckIfAccessible(u32 dwNode)
+{
+	return(tData.tpAI_Space->q_mark_bit[dwNode]);
 }
 
 IC float CAIMapLCDPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
@@ -471,6 +473,11 @@ IC u32 CAIMapEnemyPathNode::get_value(CAIMapTemplateNode::iterator &tIterator)
 	return(tData.tpAI_Space->UnpackLink(*tIterator));
 }
 
+IC bool CAIMapEnemyPathNode::bfCheckIfAccessible(u32 dwNode)
+{
+	return(tData.tpAI_Space->q_mark_bit[dwNode]);
+}
+
 IC float CAIMapEnemyPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
 {
 	if (m_dwLastBestNode != dwStartNode) {
@@ -553,6 +560,11 @@ IC u32 CAIMapEnemyPositionPathNode::get_value(CAIMapTemplateNode::iterator &tIte
 	return(tData.tpAI_Space->UnpackLink(*tIterator));
 }
 
+IC bool CAIMapEnemyPositionPathNode::bfCheckIfAccessible(u32 dwNode)
+{
+	return(tData.tpAI_Space->q_mark_bit[dwNode]);
+}
+
 IC float CAIMapEnemyPositionPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
 {
 	if (m_dwLastBestNode != dwStartNode) {
@@ -603,15 +615,6 @@ IC float CAIMapEnemyPositionPathNode::ffAnticipate()
 	return(m_fSum + tData.fDistance*(float)sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x2 - x3) + _sqr(z2 - z3)) + tData.tpAI_Space->m_fYSize2*_sqr(y2 - y3))));
 }
 
-//	{
-//		tData						= tAIMapData;
-//		m_dwLastBestNode			= u32(-1);
-//		m_fCriteriaLightWeight		= 5.f;
-//		m_fCriteriaCoverWeight		= 10.f;
-//		m_fCriteriaDistanceWeight	= 40.f;
-//		m_fCriteriaEnemyViewWeight	= 100.f;
-//		m_fOptimalEnemyDistance		= 40.f;
-//	}
 //////////////////////////////////////////////////////////////////////////
 // CAIGraphShortestPathNode
 //////////////////////////////////////////////////////////////////////////
@@ -626,6 +629,11 @@ IC void CAIGraphShortestPathNode::begin(u32 dwNode, CAIGraphTemplateNode::iterat
 {
 	tIterator = (AI::SGraphEdge *)((BYTE *)tData.tpAI_Space->m_tpaGraph + tData.tpAI_Space->m_tpaGraph[dwNode].dwEdgeOffset);
 	tEnd = tIterator + tData.tpAI_Space->m_tpaGraph[dwNode].dwNeighbourCount;
+}
+
+IC bool CAIGraphShortestPathNode::bfCheckIfAccessible(u32 dwNode)
+{
+	return(true);
 }
 
 IC float CAIGraphShortestPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
@@ -643,7 +651,22 @@ IC float CAIGraphShortestPathNode::ffAnticipate()
 	return(tData.tpAI_Space->m_tpaGraph[m_dwLastBestNode].tPoint.distance_to(tData.tpAI_Space->m_tpaGraph[tData.dwFinishNode].tPoint));
 }
 
-float CAI_Space::vfFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, float fLightWeight, float fCoverWeight, float fDistanceWeight)
+//////////////////////////////////////////////////////////////////////////
+// Optimal paths
+//////////////////////////////////////////////////////////////////////////
+
+
+float CAI_Space::vfFindMinimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, bool bUseMarks)
+{
+	SAIMapData			tData;
+	float				fDistance;
+	tData.dwFinishNode	= dwGoalNode;
+	tData.tpAI_Space	= this;
+	m_tpMapPath.vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,tData,dwStartNode,dwGoalNode,1000.f,fDistance,Result.Nodes,bUseMarks);
+	return(fDistance);
+}
+
+float CAI_Space::vfFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, float fLightWeight, float fCoverWeight, float fDistanceWeight, bool bUseMarks)
 {
 	SAIMapDataL			tData;
 	float				fDistance;
@@ -652,11 +675,11 @@ float CAI_Space::vfFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Re
 	tData.fLight		= fLightWeight;
 	tData.fCover		= fCoverWeight;
 	tData.fDistance		= fDistanceWeight;
-	m_tpLCDPath.vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,tData,dwStartNode,dwGoalNode,1000.f,fDistance,Result.Nodes);
+	m_tpLCDPath.vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,tData,dwStartNode,dwGoalNode,1000.f,fDistance,Result.Nodes,bUseMarks);
 	return(fDistance);
 }
 
-float CAI_Space::vfFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, u32 dwEnemyNode, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight)
+float CAI_Space::vfFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, u32 dwEnemyNode, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight, bool bUseMarks)
 {
 	SAIMapDataE			tData;
 	float				fDistance;
@@ -668,11 +691,11 @@ float CAI_Space::vfFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Re
 	tData.dwEnemyNode	= dwEnemyNode;
 	tData.fEnemyDistance = fOptimalEnemyDistance;
 	tData.fEnemyView	= fEnemyViewWeight;
-	m_tpEnemyPath.vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,tData,dwStartNode,dwGoalNode,1000.f,fDistance,Result.Nodes);
+	m_tpEnemyPath.vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,tData,dwStartNode,dwGoalNode,1000.f,fDistance,Result.Nodes,bUseMarks);
 	return(fDistance);
 }
 
-float CAI_Space::vfFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, Fvector tEnemyPosition, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight)
+float CAI_Space::vfFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, Fvector tEnemyPosition, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight, bool bUseMarks)
 {
 	SAIMapDataF			tData;
 	float				fDistance;
@@ -682,16 +705,6 @@ float CAI_Space::vfFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Re
 	tData.tEnemyPosition = tEnemyPosition;
 	tData.fEnemyDistance = fOptimalEnemyDistance;
 	tData.fEnemyView	= fEnemyViewWeight;
-	m_tpEnemyPositionPath.vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,tData,dwStartNode,dwGoalNode,1000.f,fDistance,Result.Nodes);
-	return(fDistance);
-}
-
-float CAI_Space::vfFindMinimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result)
-{
-	SAIMapData			tData;
-	float				fDistance;
-	tData.dwFinishNode	= dwGoalNode;
-	tData.tpAI_Space	= this;
-	m_tpMapPath.vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,tData,dwStartNode,dwGoalNode,1000.f,fDistance,Result.Nodes);
+	m_tpEnemyPositionPath.vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,tData,dwStartNode,dwGoalNode,1000.f,fDistance,Result.Nodes,bUseMarks);
 	return(fDistance);
 }

@@ -87,7 +87,8 @@ public:
 			u32			dwGoalNode, 
 			float		fMaxValue, 
 			float		&fValue, 
-			vector<u32> &tpaNodes)
+			vector<u32> &tpaNodes,
+			bool		bUseMarks)
 	{
 		Device.Statistic.AI_Path.Begin();
 		
@@ -155,7 +156,7 @@ public:
 				// checking if that node is in the path of the BESTNODE ones
 				int iNodeIndex = tTemplateNode.get_value(tIterator);
 				// checking if that node the node of the moving object 
-				if (!tTemplateNode.bfCheckIfAccessible(iNodeIndex))
+				if ((bUseMarks) && (!tTemplateNode.bfCheckIfAccessible(iNodeIndex)))
 					continue;
 				// checking if that node is in the path of the BESTNODE ones
 				if (tpIndexes[iNodeIndex].dwTime == dwAStarStaticCounter) {
