@@ -147,22 +147,26 @@ void CWeaponM134::FlameUNLOAD()
 		Device.Shader.Delete(hFlames[i]);
 	hFlames.clear();
 }
+
 void CWeaponM134::OnDeviceCreate()
 {
 	REQ_CREATE	();
 	inherited::OnDeviceCreate	();
 	FlameLOAD	();
 }
+
 void CWeaponM134::OnDeviceDestroy()
 {
 	inherited::OnDeviceDestroy	();
 	FlameUNLOAD	();
 }
+
 void CWeaponM134::FireStart()
 {
-	if (!IsWorking() && IsValid()){ 
+	if (!IsWorking() && IsValid())
+	{
 		inherited::FireStart();
-		m_pHUD->FireSpinup	();
+		m_pHUD->animPlay		(mhud_spinup);
 		st_target = eM134Spinup;
 	}
 }
@@ -170,7 +174,7 @@ void CWeaponM134::FireStart()
 void CWeaponM134::FireEnd(){
 	if (IsWorking()){
 		inherited::FireEnd	();
-		m_pHUD->FireEnd		();
+		m_pHUD->animPlay		(mhud_idle);
 		st_target = eM134Brake;
 	}
 }
@@ -263,9 +267,10 @@ void CWeaponM134::Update	(float dt, BOOL bHUDView)
 			}
 			break;
 		case eM134Fire:
-			if (st_current==eM134Spinup){
-				m_pHUD->FireCycleStart();
-				pSounds->Play3DAtPos(sndFireLoop,vLastFP,true);
+			if (st_current==eM134Spinup)
+			{
+				m_pHUD->animPlay		(mhud_fire);
+				pSounds->Play3DAtPos	(sndFireLoop,vLastFP,true);
 				if (sndServo.feedback) sndServo.feedback->Stop();
 			}
 			if (bHUDView)	Level().Cameras.AddEffector(new CEffectorShot(camRelax,camDispersion));
@@ -332,8 +337,6 @@ void CWeaponM134::Update	(float dt, BOOL bHUDView)
 	}
 	fRotateAngle	+= fRotateSpeed*dt;
 
-	m_pHUD->UpdateAnimation();
-	
 #ifdef DEBUG
 	pApp->pFont->Out(0,0,"%d",iAmmoElapsed);
 	pApp->pFont->Out(0,0.05f,"%.2f",fRotateSpeed);
