@@ -11,19 +11,15 @@
 #include "motivation_manager.h"
 #include "script_space.h"
 
-class CLuaGameObject;
-
-typedef CMotivationManager<CLuaGameObject> CScriptMotivationManager;
-
 class CScriptMotivationManagerWrapper : public CScriptMotivationManager, public luabind::wrap_base {
 protected:
-	typedef CLuaGameObject				_object_type;
+	typedef CScriptGameObject				_object_type;
 	typedef	CScriptMotivationManager	inherited;
 
 public:
 	virtual					~CScriptMotivationManagerWrapper();
 	virtual void			reinit							(_object_type *object, bool clear_all = false);
-	static	void			reinit_static					(CScriptMotivationManager *manager, CLuaGameObject *object, bool clear_all = false);
+	static	void			reinit_static					(CScriptMotivationManager *manager, CScriptGameObject *object, bool clear_all = false);
 	virtual void			Load							(LPCSTR section);
 	static	void			Load_static						(CScriptMotivationManager *manager, LPCSTR section);
 	virtual void			reload							(LPCSTR section);

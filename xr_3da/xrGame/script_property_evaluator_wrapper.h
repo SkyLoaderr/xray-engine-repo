@@ -11,15 +11,15 @@
 #include "property_evaluator.h"
 #include "script_space.h"
 
-class CLuaGameObject;
+class CScriptGameObject;
 
-typedef CPropertyEvaluator<CLuaGameObject> CScriptPropertyEvaluator;
+typedef CPropertyEvaluator<CScriptGameObject> CScriptPropertyEvaluator;
 
-class CPropertyEvaluatorWrapper : public CScriptPropertyEvaluator, public luabind::wrap_base {
+class CScriptPropertyEvaluatorWrapper : public CScriptPropertyEvaluator, public luabind::wrap_base {
 public:
-	IC					CPropertyEvaluatorWrapper	(CLuaGameObject *object = 0);
-	virtual void		reinit						(CLuaGameObject *object, CPropertyStorage *storage);
-	static	void		reinit_static				(CScriptPropertyEvaluator *evaluator, CLuaGameObject *object, CPropertyStorage *storage);
+	IC					CScriptPropertyEvaluatorWrapper	(CScriptGameObject *object = 0);
+	virtual void		reinit						(CScriptGameObject *object, CPropertyStorage *storage);
+	static	void		reinit_static				(CScriptPropertyEvaluator *evaluator, CScriptGameObject *object, CPropertyStorage *storage);
 	virtual bool		evaluate					();
 	static	bool		evaluate_static				(CScriptPropertyEvaluator *evaluator);
 };

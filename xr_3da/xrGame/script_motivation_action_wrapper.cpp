@@ -8,7 +8,7 @@
 
 #include "stdafx.h"
 #include "script_motivation_action_wrapper.h"
-#include "ai_script_classes.h"
+#include "script_game_object.h"
 
 CScriptMotivationActionWrapper::~CScriptMotivationActionWrapper	()
 {
@@ -19,7 +19,7 @@ void CScriptMotivationActionWrapper::reinit			(_object_type *object)
 	call_member<void>				("reinit",object);
 }
 
-void CScriptMotivationActionWrapper::reinit_static	(inherited *motivation, CLuaGameObject *object)
+void CScriptMotivationActionWrapper::reinit_static	(inherited *motivation, CScriptGameObject *object)
 {
 	motivation->inherited::reinit	(object);
 }
