@@ -92,6 +92,8 @@ public:
 		void*				ppShader,
 		void*				ppErrorMsgs,
 		void*				ppConstantTable);
+
+	virtual IDirect3DBaseTexture9*	texture_load			(LPCSTR	fname);
 };
 
 IC  float   CalcSSA(Fvector& C, float R)

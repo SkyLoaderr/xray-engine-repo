@@ -164,7 +164,7 @@ struct astr_pred : public std::binary_function<const AnsiString&, const AnsiStri
 
 #pragma comment(lib,"dinputB.lib")
 #pragma comment(lib,"freeimageB.lib")
-#pragma comment(lib,"d3d9B.lib")
+#pragma comment(lib,"d3d9.lib")
 #pragma comment(lib,"dxtB.lib")
 #pragma comment(lib,"xrProgressiveB.lib")
 #pragma comment(lib,"MagicFMDLLB.lib")
