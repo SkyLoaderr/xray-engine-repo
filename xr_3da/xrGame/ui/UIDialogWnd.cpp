@@ -13,6 +13,7 @@
 
 CUIDialogWnd:: CUIDialogWnd()
 {
+	Hide();
 }
 
 CUIDialogWnd::~ CUIDialogWnd()
