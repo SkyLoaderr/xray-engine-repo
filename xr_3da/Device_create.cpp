@@ -1,5 +1,8 @@
 #include "stdafx.h"
 
+#include "resourcemanager.h"
+#include "xr_effgamma.h"
+
 void CRenderDevice::_Create	(LPCSTR shName)
 {
 	Memory.mem_compact		();
