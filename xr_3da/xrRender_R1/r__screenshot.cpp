@@ -95,7 +95,8 @@ void CRender::Screenshot		(IRender_interface::ScreenshotMode mode, LPCSTR name)
 			break;
 		case IRender_interface::SM_NORMAL:
 			{
-				string_path			buf,t_stemp;
+				string64			t_stemp;
+				string_path			buf;
 				strconcat			(buf,"ss_",Core.UserName,"_",timestamp(t_stemp),".jpg");
 				ID3DXBuffer*		saved	= 0;
 				CHK_DX				(D3DXSaveSurfaceToFileInMemory (&saved,D3DXIFF_JPG,pFB,0,0));
@@ -107,7 +108,8 @@ void CRender::Screenshot		(IRender_interface::ScreenshotMode mode, LPCSTR name)
 			break;
 		case IRender_interface::SM_FOR_CUBEMAP:
 			{
-				string_path			buf,t_stemp;
+				string64			t_stemp;
+				string_path			buf;
 				VERIFY				(name);
 				strconcat			(buf,"ss_",Core.UserName,"_",timestamp(t_stemp),"_#",name,".tga");
 				IWriter*		fs	= FS.w_open	("$screenshots$",buf); R_ASSERT(fs);
