@@ -52,7 +52,7 @@ end
 function near_point_with_bit(point, patrol_path, bit)
 	local new_point	= nil
 	local index  	= 0
-    local dist   	= 1000
+    local dist   	= 1000.0
 
     for i = 0, patrol_path:count()-1 do
         if( patrol_path:flag(i, bit) ) then
