@@ -58,6 +58,7 @@ void	CHW::DestroyDevice	()
 	DestroyD3D				();
 }
 
+DWORD dwDebugSB = 0;
 DWORD CHW::CreateDevice		(HWND m_hWnd,DWORD &dwWidth,DWORD &dwHeight)
 {
 	CreateD3D				();
@@ -193,6 +194,8 @@ DWORD CHW::CreateDevice		(HWND m_hWnd,DWORD &dwWidth,DWORD &dwHeight)
 		Log("* Geometry Processor: PURE HARDWARE");
 		break;
 	}
+
+	CHK_DX(HW.pDevice->CreateStateBlock(D3DSBT_ALL,&dwDebugSB));
 
 	return dwWindowStyle;
 }
