@@ -42,6 +42,19 @@
 		<text>Принести документы капитану Иванцову</text>
 	</string>
 
+	<string id="bar_drunk_dolg_quest">
+		<text>Помочь пьяному долговцу</text>
+	</string>
+	<string id="bar_find_and_kill_killer_sniper">
+		<text>Убить снайпера и принести его ПДА</text>
+	</string>
+	<string id="bar_kill_killer_sniper">
+		<text>Убить снайпера на водонапорной башне</text>
+	</string>
+	<string id="bar_bring_pda_sniper">
+		<text>Принести его ПДА пьяному долговцу</text>
+	</string>
+
 
 
 </string_table>
