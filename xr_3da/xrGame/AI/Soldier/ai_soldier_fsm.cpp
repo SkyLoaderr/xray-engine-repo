@@ -127,7 +127,7 @@ void CAI_Soldier::OnRetreatAlone()
 	
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfActionOrFightTypeChanged());
 
-	if (bfFireEnemy(Enemy.Enemy))
+	if ((Enemy.Enemy && bfFireEnemy(Enemy.Enemy)) || (tSavedEnemy && bfFireEnemy(tSavedEnemy)))
 		SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierRetreatAloneFire)
 	else
 		SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierRetreatAloneNonFire)
