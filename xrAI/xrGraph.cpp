@@ -16,15 +16,15 @@
 #include "ai_a_star.h"
 
 #define MAX_DISTANCE_TO_CONNECT		200.f
-#define NUM_THREADS					6
+#define THREAD_COUNT				6
 
 #define GET_INDEX(N,K)				iFloor((2*N - 1 - sqrtf((2*N - 1)*(2*N - 1) - 4*float(N)*(N - 1)/float(K)))/2.f)
 
 #define START_THREADS(size,ThreadClass) {\
-	u32	stride	= size/NUM_THREADS;\
-	u32	last	= size - stride*(NUM_THREADS - 1);\
-	for (u32 thID=0; thID<NUM_THREADS; thID++)\
-		tThreadManager.start(new ThreadClass(thID,thID*stride,thID*stride+((thID==(NUM_THREADS - 1))?last:stride)));\
+	u32	stride	= size/THREAD_COUNT;\
+	u32	last	= size - stride*(THREAD_COUNT - 1);\
+	for (u32 thID=0; thID<THREAD_COUNT; thID++)\
+		tThreadManager.start(new ThreadClass(thID,thID*stride,thID*stride+((thID==(THREAD_COUNT - 1))?last:stride)));\
 }
 
 typedef struct tagRPoint {
@@ -193,7 +193,7 @@ void xrBuildGraph(LPCSTR name)
 	Msg("%d points don't have corresponding nodes (they are deleted)",dwfErasePoints());
 
 	Phase("Building graph");
-	for (u32 thID=0, dwThreadCount = NUM_THREADS, N = tpaGraph.size(), M = 0, K; thID<dwThreadCount; M += K, thID++)
+	for (u32 thID=0, dwThreadCount = THREAD_COUNT, N = tpaGraph.size(), M = 0, K; thID<dwThreadCount; M += K, thID++)
 		tThreadManager.start(new CGraphThread(thID,M, ((thID + 1) == dwThreadCount) ? N - 1 : M + (K = GET_INDEX((N - M),(dwThreadCount - thID))),MAX_DISTANCE_TO_CONNECT,tCriticalSection));
 	tThreadManager.wait();
 	for (int i=0, j=0; i<(int)tpaGraph.size(); i++)
