@@ -564,6 +564,21 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
   	}
 }
 //---------------------------------------------------------------------------
+
+template <class T>
+BOOL FlagOnEdit				(PropItem* prop, BOOL& bRes)
+{                                                     
+    FlagValue<_flags<T> >* V= dynamic_cast<FlagValue<_flags<T> >*>(prop->GetFrontValue());
+    if (!V)					return FALSE;
+    _flags<T> new_val 		= V->GetValue(); 
+    prop->OnBeforeEdit		(&new_val);
+    new_val.invert			(V->mask);
+    prop->OnAfterEdit	 	(&new_val);
+    bRes = prop->ApplyValue	(&new_val);
+    return TRUE;
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
@@ -593,34 +608,18 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                     }
                     item->RedrawItem			(true);
                 }break;
-/*                case PROP_FLAG8:{
-                    Flag8Value* V				= dynamic_cast<Flag8Value*>(prop->GetFrontValue()); R_ASSERT(V);
-                    Flags8 new_val 				= V->GetValue(); new_val.invert(V->mask);
-                    prop->OnAfterEdit			(&new_val);
-                    if (prop->ApplyValue(&new_val)){
-                        Modified				();
-                        RefreshForm				();
-                    }
+                case PROP_FLAG:{
+					BOOL bRes 					= FALSE;
+                    if (!FlagOnEdit<u8>(prop,bRes))
+	                    if (!FlagOnEdit<u16>(prop,bRes))
+		                    if (!FlagOnEdit<u32>(prop,bRes))
+                            	Debug.fatal		("Unknown flag type");
+                	if (bRes){
+	                  	Modified				();
+    	              	RefreshForm				();
+					}
                 }break;
-                case PROP_FLAG16:{
-                    Flag16Value* V				= dynamic_cast<Flag16Value*>(prop->GetFrontValue()); R_ASSERT(V);
-                    Flags16 new_val 			= V->GetValue(); new_val.invert(V->mask);
-                    prop->OnAfterEdit			(&new_val);
-                    if (prop->ApplyValue(&new_val)){
-                        Modified				();
-                        RefreshForm				();
-                    }
-                }break;
-                case PROP_FLAG32:{
-                    Flag32Value* V				= dynamic_cast<Flag32Value*>(prop->GetFrontValue()); R_ASSERT(V);
-                    Flags32 new_val 			= V->GetValue(); new_val.invert(V->mask);
-                    prop->OnAfterEdit			(&new_val);
-                    if (prop->ApplyValue(&new_val)){
-                        Modified				();
-                        RefreshForm				();
-                    }
-                }break;
-*/                case PROP_BOOLEAN:{
+                case PROP_BOOLEAN:{
                     BOOLValue* V				= dynamic_cast<BOOLValue*>(prop->GetFrontValue()); R_ASSERT(V);
                     BOOL new_val 				= !V->GetValue();
                     prop->OnAfterEdit			(&new_val);

@@ -604,7 +604,7 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
                         (*b_it)->ShapeMove(amount);
                 }else if (Shift.Contains(ssAlt)){
                     for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
-                        (*b_it)->BindRotate(amount);
+                        (*b_it)->BindMove(amount);
                     m_pEditObject->OnBindTransformChange();
                     RefreshSubProperties();
                 }

@@ -203,7 +203,7 @@ void __fastcall TfrmImageLib::SaveTextureParams()
 	if (m_ItemProps->IsModified()||bImportMode){
 	    for (THMIt t_it=m_THMs.begin(); t_it!=m_THMs.end(); t_it++){
             (*t_it)->Save(0,bImportMode?_import_:0);
-            AnsiString fn = ChangeFileExt((*t_it)->Name(),".tga");
+            AnsiString fn = (*t_it)->SrcName();
             FS_QueryPairIt it=texture_map.find(fn); R_ASSERT(it!=texture_map.end());
             modif_map.insert(*it);
         }
