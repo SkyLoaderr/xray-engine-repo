@@ -173,9 +173,9 @@ IReader* open_chunk(void* ptr, u32 ID)
 				unsigned		dest_sz;
 				_decompressLZ	(&dest,&dest_sz,src_data,dwSize);
 				xr_free			(src_data);
-				return xr_new<CTempReader>(dest,dest_sz);
+				return xr_new<CTempReader>(dest,dest_sz,0);
 			} else {
-				return xr_new<CTempReader>(src_data,dwSize);
+				return xr_new<CTempReader>(src_data,dwSize,0);
 			}
 			break;
 		}else{ 
@@ -735,7 +735,7 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 			// Compressed
 			u8*			dest			= xr_alloc<u8>(desc.size_real);
 			rtc_decompress				(dest,desc.size_real,ptr+ptr_offs,desc.size_compressed);
-			R = xr_new<CTempReader>		(dest,desc.size_real);
+			R = xr_new<CTempReader>		(dest,desc.size_real,0);
 			UnmapViewOfFile				(ptr);
 		} else {
 //			R_ASSERT2(data,cFileName);

@@ -199,9 +199,9 @@ IReader*	IReader::open_chunk(u32 ID)
 			BYTE*		dest;
 			unsigned	dest_sz;
 			_decompressLZ(&dest,&dest_sz,pointer(),dwSize);
-			return xr_new<CTempReader>(dest,dest_sz);
+			return xr_new<CTempReader>	(dest,		dest_sz,		tell()+dwSize);
 		} else {
-			return xr_new<IReader>(pointer(),dwSize);
+			return xr_new<IReader>		(pointer(),	dwSize,			tell()+dwSize);
 		}
 	} else return 0;
 };
