@@ -66,29 +66,42 @@ void	CBlender_BmmD::Compile	(CBlender_Compile& C)
 		C.PassEnd			();
 	} else {
 		if (C.L_textures.size()<2)	Debug.fatal	("Not enought textures for shader, base tex: %s",C.L_textures[0]);
-		if (2==C.iElement)
+		switch (C.iElement)
 		{
-			// Lighting only
-			C.r_Pass	("r1_impl_l","r1_impl_l",FALSE);
-			C.r_Sampler	("s_base",C.L_textures[0]);
-			C.r_Sampler	("s_lmap",C.L_textures[1]);
-			C.r_End		();
-		} else {
-			// Level view
-			if (C.bDetail)
-			{
+		case SE_R1_NORMAL_HQ:	
+			if (C.bDetail)	{
 				C.r_Pass	("r1_impl_dt","r1_impl_dt",TRUE);
 				C.r_Sampler	("s_base",	C.L_textures[0]);
 				C.r_Sampler	("s_lmap",	C.L_textures[1]);
 				C.r_Sampler	("s_detail",oT2_Name);
 				C.r_End		();
-			} else
-			{
+			} else	{
 				C.r_Pass	("r1_impl","r1_impl",TRUE);
 				C.r_Sampler	("s_base",C.L_textures[0]);
 				C.r_Sampler	("s_lmap",C.L_textures[1]);
 				C.r_End		();
 			}
+			break;
+		case SE_R1_NORMAL_LQ:
+			C.r_Pass	("r1_impl","r1_impl",TRUE);
+			C.r_Sampler	("s_base",C.L_textures[0]);
+			C.r_Sampler	("s_lmap",C.L_textures[1]);
+			C.r_End		();
+			break;
+		case SE_R1_LPOINT:
+			break;
+		case SE_R1_LSPOT:
+			C.r_Pass	("r1_impl","r1_impl",TRUE);
+			C.r_Sampler	("s_base",C.L_textures[0]);
+			C.r_Sampler	("s_lmap",C.L_textures[1]);
+			C.r_End		();
+			break;
+		case SE_R1_LMODELS:
+			C.r_Pass	("r1_impl_l","r1_impl_l",FALSE);
+			C.r_Sampler	("s_base",C.L_textures[0]);
+			C.r_Sampler	("s_lmap",C.L_textures[1]);
+			C.r_End		();
+			break;
 		}
 	}
 }
