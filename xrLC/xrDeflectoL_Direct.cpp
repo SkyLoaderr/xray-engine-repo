@@ -32,7 +32,7 @@ void CDeflector::L_Direct_Edge (CDB::COLLIDER* DB, LSelection* LightsSelected, U
 		if ((_x<0)||(_x>=(int)lm.dwWidth))	continue;
 		if ((_y<0)||(_y>=(int)lm.dwHeight))	continue;
 		
-		DWORD& Lumel	= lm.pSurface[_y*lm.dwWidth+_x];
+		u32& Lumel	= lm.pSurface[_y*lm.dwWidth+_x];
 		if (RGBA_GETALPHA(Lumel))			continue;
 		
 		// ok - perform lighting

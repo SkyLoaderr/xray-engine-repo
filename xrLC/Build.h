@@ -20,7 +20,7 @@ struct b_BuildTexture : public b_texture
 {
 	STextureParams	THM;
 	
-	DWORD&	Texel	(DWORD x, DWORD y)
+	u32&	Texel	(DWORD x, DWORD y)
 	{
 		return pSurface[y*dwWidth+x];
 	}
