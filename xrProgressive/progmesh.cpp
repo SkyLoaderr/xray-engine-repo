@@ -218,9 +218,9 @@ float ComputeEdgeCollapseCost(P_Vertex *u,P_Vertex *v) {
 	// flipped.  I never seemed to run into this problem and
 	// therefore never added code to detect this case.
 	
-	int i;
-	float edgelength	= magnitude(v->position - u->position);
-	float curvature		= 0.0001f;
+	int		i;
+	float	edgelength	= magnitude(v->position - u->position);
+	float	curvature	= 0.0001f;
 	
 	// find the "sides" triangles that are on the edge uv
 	for(i=0;i<u->face.num();i++) {
