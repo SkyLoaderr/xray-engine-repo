@@ -250,7 +250,8 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 	if (s_calc>EPS_S) 
 	{
 		s_res					= motion.magnitude();	
-		if ((final_vel.dotproduct	(vel_dir)<=0.f) || (s_res/s_calc)<0.001f){ 
+		// не ставить final_vel.dotproduct(vel_dir)< (=) 0.f равным нулю!!!
+		if ((final_vel.dotproduct(vel_dir)<0.f) || (s_res/s_calc)<0.00001f){ 
 			vVelocity.set	(0,0,0);
 			final_pos.set	(vPosition);
 			s_res			= 0;
