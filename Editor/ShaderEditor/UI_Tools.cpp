@@ -54,17 +54,12 @@ void CShaderTools::Modified(){
 bool CShaderTools::OnCreate(){
 	// shader test locking
 	AnsiString sh_fn = "shaders.xr"; FS.m_GameRoot.Update(sh_fn);
-    string256 locker="";
-	if (FS.IsFileLocking(0,sh_fn.c_str(),false,locker)){
-		ELog.DlgMsg(mtError,"Access denied. File '%s' currently locked by user '%s'.\nEditor aborted.",sh_fn.c_str(),locker);
+	if (FS.CheckLocking(0,sh_fn.c_str(),false,true))
     	return false;
-    }
 	// shader test locking
 	AnsiString lc_fn = "shaders_xrlc.xr"; FS.m_GameRoot.Update(lc_fn);
-	if (FS.IsFileLocking(0,lc_fn.c_str(),false,locker)){
-		ELog.DlgMsg(mtError,"Access denied. File '%s' currently locked by user '%s'.\nEditor aborted.",lc_fn.c_str(),locker);
+	if (FS.CheckLocking(0,lc_fn.c_str(),false,true))
     	return false;
-    }
 	//
     Device.seqDevCreate.Add(this);
     Device.seqDevDestroy.Add(this);
@@ -73,7 +68,6 @@ bool CShaderTools::OnCreate(){
 	// lock
     FS.LockFile(0,sh_fn.c_str());
     FS.LockFile(0,lc_fn.c_str());
-
     return true;
 }
 
