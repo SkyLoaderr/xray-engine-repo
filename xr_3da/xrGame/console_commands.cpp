@@ -625,10 +625,10 @@ public:
 		  {
 			  Msg	("! There are no level(s) started");
 		  } else {
-			  Console->Hide				();
+			  Console->Hide		();
 			  string_path		fn;
 			  u32		loops	=	0;
-			  LPSTR		comma	=	strchr(fn,',');
+			  LPSTR		comma	=	strchr(args,',');
 			  if (comma)	{
 				  loops			=	atoi	(comma+1);
 				  *comma		=	0;	//. :)
