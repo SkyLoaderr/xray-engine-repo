@@ -918,7 +918,7 @@ BOOL file_exist(LPCSTR src)
 
 BOOL CMainFrame::ErrorStringToFileLine(CString strError, CString &strPathName, int &nLine)
 {
-	CString strFileLine = strError;
+/*	CString strFileLine = strError;
 	if ( strError.Left(4)=="luac" )
 	strFileLine = strError.Mid(6);
 
@@ -932,19 +932,29 @@ BOOL CMainFrame::ErrorStringToFileLine(CString strError, CString &strPathName, i
 	CString strNum = strFileLine.Mid(nPos1+1, nPos2-nPos1-1);
 	nLine = atoi(strNum);
 	strPathName = strFileLine.Left(nPos1);
-/*
+*/
+	nLine = 1;
 	char file_ext[] = ".script";
 	int end_pos = strError.Find(file_ext);
 	if(end_pos==-1)
 		return FALSE;
 	int end_file_pos = end_pos+strlen(file_ext);
+	int start_linenum_pos = end_file_pos;
+	//find file name
+	int start_file_pos = strError.Find('&');
+	if(start_file_pos==-1)
+		return FALSE;
+	strPathName = strError.Mid(start_file_pos,end_file_pos-start_file_pos);
+
 	//find line num
 	CString sLineNum;
-	while( isdigit(strError[++end_file_pos] ) )
-		sLineNum.AppendChar(strError[end_file_pos]);
-	nLine = sLineNum.ToNu
-	//find file name
-*/	
+	if(strError[start_linenum_pos]==':' )
+		++start_linenum_pos;
+
+	while( isdigit(strError[++start_linenum_pos] ) )
+		sLineNum.AppendChar(strError[start_linenum_pos]);
+	nLine =atoi( sLineNum.GetBuffer() );
+	
 
 	return TRUE;
 
