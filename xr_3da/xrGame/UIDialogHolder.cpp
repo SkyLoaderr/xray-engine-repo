@@ -62,7 +62,8 @@ void CDialogHolder::StopMenu (CUIDialogWnd* pDialog)
 void CDialogHolder::AddDialogToRender(CUIWindow* pDialog)
 {
 	dlgItem itm(pDialog);
-	if(std::find(m_dialogsToRender.begin(), m_dialogsToRender.end(), itm) == m_dialogsToRender.end() )
+	xr_vector<dlgItem>::iterator it = std::find(m_dialogsToRender.begin(),m_dialogsToRender.end(),itm);
+	if( (it == m_dialogsToRender.end()) || ( it != m_dialogsToRender.end() && (*it).enabled==false)  )
 	{
 		m_dialogsToRender.push_back(itm);
 		pDialog->Show(true);
