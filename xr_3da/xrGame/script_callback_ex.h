@@ -33,7 +33,7 @@ IC	bool compare_safe(const luabind::object &o1 , const luabind::object &o2)
 				ai().script_engine().print_output(e.state(),"",LUA_ERRRUN);\
 			else\
 				ai().script_engine().print_output(ai().script_engine().lua(),"",LUA_ERRRUN);\
-		}\
+		}
 #else
 #	define process_error
 #endif
