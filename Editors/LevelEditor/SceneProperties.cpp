@@ -89,6 +89,7 @@ void __fastcall TfrmSceneProperties::FormShow(TObject *Sender)
     tsLevelScript->Enabled 	= true;
     tsLevelOptions->Enabled = true;
     tsLevelEnvironment->Enabled = true;
+
 #else
     tsLevelScript->Enabled = false;
     tsLevelOptions->Enabled = false;

@@ -73,6 +73,14 @@ int CLog::DlgMsg (TMsgDlgType mt, TMsgDlgButtons btn, LPCSTR _Format, ...)
     UI.Command(COMMAND_RENDER_FOCUS);
 
     res=MessageDlg(buf, mt, btn, 0);
+    if (mtConfirmation==mt){
+        switch (res){
+        case mrYes: 	strcat(buf," - Yes."); 	break;
+        case mrNo: 		strcat(buf," - No."); 	break;
+        case mrCancel:  strcat(buf," - Cancel.");	break;
+        default: strcat(buf," - Something.");
+        }
+    }
 #endif
 #ifdef _LW_PLUGIN
 	switch(mt){
@@ -108,14 +116,16 @@ int CLog::DlgMsg (TMsgDlgType mt, LPCSTR _Format, ...){
 #ifdef _EDITOR
     UI.Command(COMMAND_RENDER_FOCUS);
 
-    if (mt==mtConfirmation)	res=MessageDlg(buf, mt, TMsgDlgButtons() << mbYes << mbNo << mbCancel, 0);
+    if (mtConfirmation==mt)	res=MessageDlg(buf, mt, TMsgDlgButtons() << mbYes << mbNo << mbCancel, 0);
     else                   	res=MessageDlg(buf, mt, TMsgDlgButtons() << mbOK, 0);
 
-    switch (res){
-    case mrYes: 	strcat(buf," Yes."); 	break;
-    case mrNo: 		strcat(buf," No."); 	break;
-    case mrCancel:  strcat(buf," Cancel.");	break;
-    default: strcat(buf," Something.");
+    if (mtConfirmation==mt){
+        switch (res){
+        case mrYes: 	strcat(buf," - Yes."); 	break;
+        case mrNo: 		strcat(buf," - No."); 	break;
+        case mrCancel:  strcat(buf," - Cancel.");	break;
+        default: strcat(buf," - Something.");
+        }
     }
 #endif
 #ifdef _LW_PLUGIN

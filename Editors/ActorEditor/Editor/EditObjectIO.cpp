@@ -334,16 +334,19 @@ bool CEditableObject::ExportObjectOGF(LPCSTR fname)
     return false;
 }
 //------------------------------------------------------------------------------
-bool CEditableObject::ExportHOMPart(CFS_Base& F)
+bool CEditableObject::ExportHOMPart(const Fmatrix& parent, CFS_Base& F)
 {
+	Fvector v;
     for (EditMeshIt m_it=m_Meshes.begin(); m_it!=m_Meshes.end(); m_it++){
         for (SurfFacesPairIt sf_it=(*m_it)->m_SurfFaces.begin(); sf_it!=(*m_it)->m_SurfFaces.end(); sf_it++){
             BOOL b2Sided = sf_it->first->m_Flags.is(CSurface::sf2Sided);
             IntVec& i_lst= sf_it->second;
             for (IntIt i_it=i_lst.begin(); i_it!=i_lst.end(); i_it++){
                 st_Face& face = (*m_it)->m_Faces[*i_it];
-                for (int k=0; k<3; k++)
-                    F.Wvector((*m_it)->m_Points[face.pv[k].pindex]);
+                for (int k=0; k<3; k++){
+                    parent.transform_tiny(v,(*m_it)->m_Points[face.pv[k].pindex]);
+                    F.Wvector	(v);
+                }
                 F.Wdword(b2Sided);
             }
         }
@@ -358,7 +361,7 @@ bool CEditableObject::ExportHOM(LPCSTR fname)
     F.Wdword(0);
     F.close_chunk();
     F.open_chunk(1);
-    ExportHOMPart(F);
+    ExportHOMPart(Fidentity,F);
     F.close_chunk();
     F.SaveTo(fname,0);
 	return true;

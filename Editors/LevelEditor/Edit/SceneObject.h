@@ -134,6 +134,7 @@ public:
 
 	// editor integration
 	virtual void	FillProp				(LPCSTR pref, PropItemVec& values);
+	virtual bool 	GetSummaryInfo			(AStringVec& textures, int& face_cnt, int& vert_cnt);
 
     // load/save methods
   	virtual bool 	Load					(CStream&);

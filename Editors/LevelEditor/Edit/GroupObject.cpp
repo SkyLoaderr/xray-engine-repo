@@ -243,7 +243,7 @@ void CGroupObject::Render(int priority, bool strictB2F)
     	    case OBJCLASS_SCENEOBJECT: (*it)->Render(priority,strictB2F); break;
             default:
                 Device.SetShader(strictB2F?Device.m_SelectionShader:Device.m_WireShader);
-                Device.SetTransform(D3DTS_WORLD,Fidentity);
+                RCache.set_xform_world(Fidentity);
                 (*it)->Render(priority,strictB2F);
         	}
     	}
@@ -251,7 +251,7 @@ void CGroupObject::Render(int priority, bool strictB2F)
 	if ((1==priority)&&(false==strictB2F)){
     	if (Selected()&&m_BBox.is_valid()){
             Device.SetShader(Device.m_WireShader);
-            Device.SetTransform(D3DTS_WORLD,FTransform);
+            RCache.set_xform_world(FTransform);
             DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
             DU::DrawSelectionBox(m_BBox,&clr);
         }

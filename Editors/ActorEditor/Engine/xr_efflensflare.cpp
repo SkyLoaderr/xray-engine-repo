@@ -323,7 +323,7 @@ void CLensFlare::Update( Fvector& sun_dir, Fcolor& color )
 void CLensFlare::DDUnload	()
 {
 	// VS
-	VS				= Device.Shader._CreateVS	(FVF::F_LIT);
+	hGeom				= Device.Shader.CreateGeom(FVF::F_LIT,RCache.Vertex.Buffer(),RCache.QuadIB);
 
 	// shaders
 	m_Gradient.hShader	= CreateFlareShader		(m_Gradient.texture);
@@ -339,6 +339,6 @@ void CLensFlare::DDLoad()
     for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++) Device.Shader.Delete(it->hShader);
 
 	// VS
-	Device.Shader._DeleteVS						(VS);
+	Device.Shader.DeleteGeom(hGeom);
 }
 

@@ -418,14 +418,14 @@ void __fastcall	CLight::OnTypeChange(PropValue* value)
 
 void CLight::OnDeviceCreate()
 {
-	if (D3DLIGHT_DIRECTIONAL==m_D3D.type) m_LensFlare.OnDeviceCreate();
+	if (D3DLIGHT_DIRECTIONAL==m_D3D.type) m_LensFlare.DDLoad();
 }
 //----------------------------------------------------
 
 void CLight::OnDeviceDestroy()
 {
 //	if (D3DLIGHT_DIRECTIONAL==m_D3D.type) 
-    m_LensFlare.OnDeviceDestroy();
+    m_LensFlare.DDUnload();
 }
 //----------------------------------------------------
 
@@ -515,12 +515,12 @@ void CEditFlare::Render()
 
 void CEditFlare::DeleteShaders()
 {
-    CLensFlare::OnDeviceDestroy();
+    CLensFlare::DDUnload();
 }
 
 void CEditFlare::CreateShaders()
 {
-    CLensFlare::OnDeviceCreate();
+    CLensFlare::DDLoad();
 }
 //----------------------------------------------------
 

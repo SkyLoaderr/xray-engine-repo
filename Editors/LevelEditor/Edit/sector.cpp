@@ -150,7 +150,7 @@ void CSector::Render(int priority, bool strictB2F){
 	        Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
         }
         if (Selected()){
-		    Device.SetTransform(D3DTS_WORLD,Fidentity);
+		    RCache.set_xform_world(Fidentity);
     	    DU::DrawSelectionBox(m_Box);
         }
     }

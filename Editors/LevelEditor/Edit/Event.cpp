@@ -72,14 +72,14 @@ void CEvent::SForm::RenderBox(const Fmatrix& parent, bool bAlpha){
 	if (bAlpha){
         C=D3DCOLOR_RGBA( 0, 255, 0, 24 );
 		Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
-        Device.SetTransform(D3DTS_WORLD,T);
+        RCache.set_xform_world(T);
 	    Device.SetShader(Device.m_SelectionShader);
         DU::DrawIdentBox(true,false,C);
 		Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
     }else{
         C=D3DCOLOR_RGBA( m_Selected?255:32,m_Selected?255:32,m_Selected?255:32, 255 );
         Device.RenderNearer(0.0003);
-        Device.SetTransform(D3DTS_WORLD,T);
+        RCache.set_xform_world(T);
 	    Device.SetShader(Device.m_WireShader);
         Device.ResetNearer();
         DU::DrawIdentBox(false,true,C);
@@ -271,7 +271,7 @@ void CEvent::Render( int priority, bool strictB2F ){
             Fbox bb;
             GetRenderBox(bb);
 			DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
-			Device.SetTransform(D3DTS_WORLD,FTransform);
+			RCache.set_xform_world(FTransform);
 			DU::DrawSelectionBox(bb,&clr);
         }
     }

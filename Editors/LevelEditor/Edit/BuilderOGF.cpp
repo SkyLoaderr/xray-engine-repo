@@ -38,8 +38,9 @@ bool SceneBuilder::BuildHOMModel(){
     F.open_chunk(1);
     ObjectList& lst = Scene.ListObj(OBJCLASS_SCENEOBJECT);
     for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
-    	CEditableObject* E=((CSceneObject*)(*it))->GetReference(); R_ASSERT(E);
-    	if (E->m_Flags.is(CEditableObject::eoHOM)) E->ExportHOMPart(F);
+    	CSceneObject* S 	= (CSceneObject*)(*it);
+    	CEditableObject* E	= S->GetReference(); R_ASSERT(E);
+    	if (E->m_Flags.is(CEditableObject::eoHOM)) E->ExportHOMPart(S->_Transform(),F);
     }
     BOOL bValid = !!F.chunk_size();
     F.close_chunk();

@@ -120,7 +120,7 @@ void EDetailManager::Render(int priority, bool strictB2F)
     	if (1==priority){
         	if (false==strictB2F){
             	if (fraBottomBar->miDrawDOSlotBoxes->Checked){
-                    Device.SetTransform	(D3DTS_WORLD,Fidentity);
+                    RCache.set_xform_world(Fidentity);
                     Device.SetShader	(Device.m_WireShader);
 
                     Fvector			c;
@@ -146,7 +146,7 @@ void EDetailManager::Render(int priority, bool strictB2F)
                     }
                 }
             }else{
-				Device.SetTransform(D3DTS_WORLD,Fidentity);
+				RCache.set_xform_world(Fidentity);
                 if (fraBottomBar->miDrawDOBaseTexture->Checked)	m_Base.Render();
                 Fvector EYE = Device.m_Camera.GetPosition();
                 if (fraBottomBar->miDODrawObjects->Checked) CDetailManager::Render(EYE);
@@ -438,30 +438,29 @@ void EDetailManager::SBase::CreateRMFromObjects(const Fbox& box, ObjectList& lst
             }
         }
     }
-	stream	= Device.Shader._CreateVS(FVF::F_V);
+	geom	= Device.Shader.CreateGeom(FVF::F_V,RCache.Vertex.Buffer(),0);
 }
 
 void EDetailManager::SBase::Render()
 {
 	if (!Valid()) return;
     Device.RenderNearer(0.001f);
-	Device.SetTransform(D3DTS_WORLD,Fidentity);
+	RCache.set_xform_world(Fidentity);
     Device.SetShader((fraBottomBar->miDrawDOBlended->Checked)?shader_blended:shader_overlap);
     div_t cnt = div(mesh.size(),MAX_BUF_SIZE);
     DWORD vBase;
+    _VertexStream* Stream = &RCache.Vertex;
     for (int k=0; k<cnt.quot; k++){
-    	Device.Streams.BeginFrame();
-		FVF::V*	pv	 	= (FVF::V*)Device.Streams.Vertex.Lock(MAX_BUF_SIZE,stream->dwStride,vBase);
+		FVF::V*	pv	 	= (FVF::V*)Stream->Lock(MAX_BUF_SIZE,geom->vb_stride,vBase);
 		CopyMemory		(pv,mesh.begin()+k*MAX_BUF_SIZE,sizeof(FVF::V)*MAX_BUF_SIZE);
-		Device.Streams.Vertex.Unlock(MAX_BUF_SIZE,stream->dwStride);
-		Device.DP		(D3DPT_TRIANGLELIST,stream,vBase,MAX_BUF_SIZE/3);
+		Stream->Unlock	(MAX_BUF_SIZE,geom->vb_stride);
+		Device.DP		(D3DPT_TRIANGLELIST,geom,vBase,MAX_BUF_SIZE/3);
     }
     if (cnt.rem){
-    	Device.Streams.BeginFrame();
-		FVF::V*	pv	 	= (FVF::V*)Device.Streams.Vertex.Lock(cnt.rem,stream->dwStride,vBase);
+		FVF::V*	pv	 	= (FVF::V*)Stream->Lock(cnt.rem,geom->vb_stride,vBase);
 		CopyMemory		(pv,mesh.begin()+cnt.quot*MAX_BUF_SIZE,sizeof(FVF::V)*cnt.rem);
-		Device.Streams.Vertex.Unlock(cnt.rem,stream->dwStride);
-		Device.DP		(D3DPT_TRIANGLELIST,stream,vBase,cnt.rem/3);
+		Stream->Unlock	(cnt.rem,geom->vb_stride);
+		Device.DP		(D3DPT_TRIANGLELIST,geom,vBase,cnt.rem/3);
     }
     Device.ResetNearer();
 }
@@ -471,13 +470,13 @@ void EDetailManager::SBase::CreateShader()
 	if (Valid()){
 		shader_blended 	= Device.Shader.Create("editor\\do_base",name);
 		shader_overlap 	= Device.Shader.Create("default",name);
-		stream			= Device.Shader._CreateVS(FVF::F_V);
+		geom			= Device.Shader.CreateGeom(FVF::F_V,RCache.Vertex.Buffer(),0);
 	}
 }
 
 void EDetailManager::SBase::DestroyShader()
 {
-	Device.Shader._DeleteVS	(stream);
+	Device.Shader.DeleteGeom(geom);
 	Device.Shader.Delete	(shader_blended);
 	Device.Shader.Delete	(shader_overlap);
 }

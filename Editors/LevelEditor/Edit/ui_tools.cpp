@@ -393,7 +393,9 @@ void TUI_Tools::GetCurrentFog(u32& fog_color, float& s_fog, float& e_fog)
 
 LPCSTR TUI_Tools::GetInfo()
 {
-	return (AnsiString(AnsiString(" Sel: ")+AnsiString(Scene.SelectionCount(true,Tools.CurrentClassID())))).c_str();
+	static AnsiString sel;
+	int cnt = Scene.SelectionCount(true,Tools.CurrentClassID());
+	return sel.sprintf(" Sel: %d",cnt).c_str();
 }
 //---------------------------------------------------------------------------
 

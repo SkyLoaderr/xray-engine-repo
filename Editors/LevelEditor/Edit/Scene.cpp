@@ -430,13 +430,13 @@ void __fastcall object_StrictB2F_3(EScene::mapObject_Node *N){((CSceneObject*)N-
 
 #define RENDER_CLASS_NORMAL(P,C)\
  	Device.SetShader(Device.m_WireShader);\
- 	Device.SetTransform(D3DTS_WORLD,Fidentity);\
+ 	RCache.set_xform_world(Fidentity);\
     _E=LastObj(C); _F=FirstObj(C);\
     for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(P,false);
 
 #define RENDER_CLASS_ALPHA(P,C)\
  	Device.SetShader(Device.m_SelectionShader);\
- 	Device.SetTransform(D3DTS_WORLD,Fidentity);\
+ 	RCache.set_xform_world(Fidentity);\
     _E=LastObj(C); _F=FirstObj(C);\
     for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(P,true);
 
@@ -534,7 +534,7 @@ void EScene::Render( const Fmatrix& camera )
 		for(_F=m_SnapObjects.begin();_F!=m_SnapObjects.end();_F++) if((*_F)->Visible()) ((CSceneObject*)(*_F))->RenderSelection();
 
 	// draw PS
-    Device.SetTransform(D3DTS_WORLD,Fidentity);
+    RCache.set_xform_world(Fidentity);
     _F = FirstObj(OBJCLASS_PS);
     _E = LastObj(OBJCLASS_PS);
    	for(;_F!=_E;_F++)
@@ -546,7 +546,7 @@ void EScene::Render( const Fmatrix& camera )
     // draw compiler errors
 	if (1){
 	 	Device.SetShader		(Device.m_SelectionShader);
- 		Device.SetTransform		(D3DTS_WORLD,Fidentity);
+ 		RCache.set_xform_world	(Fidentity);
 		Device.SetRS			(D3DRS_CULLMODE,D3DCULL_NONE);
         AnsiString temp;
         int cnt=0;
@@ -835,6 +835,21 @@ void EScene::OnShowHint(AStringVec& dest)
 ObjectList* EScene::GetSnapList()
 {
 	return (fraLeftBar->ebEnableSnapList->Down&&!Scene.m_SnapObjects.empty())?&Scene.m_SnapObjects:0;
+}
+//--------------------------------------------------------------------------------------------------
+
+void EScene::ShowSummaryInfo()
+{
+	AStringVec textures;
+	int face_cnt=0, vert_cnt=0;
+	bool bRes=false;
+    for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
+        ObjectList& lst = (*it).second;
+    	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
+            if ((*_F)->GetSummaryInfo(textures, face_cnt, vert_cnt)) bRes=true;
+	}
+	if (bRes){
+    }
 }
 //--------------------------------------------------------------------------------------------------
 

@@ -280,6 +280,7 @@ public:
     // statistics methods
     int 			GetFaceCount			();
 	int 			GetVertexCount			();
+    int 			GetTexturesList			(AStringVec& lst);
     int 			GetSurfFaceCount		(LPCSTR surf_name);
 
     // render methods
@@ -359,7 +360,7 @@ public:
     bool			ExportObjectOGF			(LPCSTR fname);
     bool			PrepareOGF				(CFS_Base& F);
     // HOM
-    bool			ExportHOMPart			(CFS_Base& F);
+    bool			ExportHOMPart			(const Fmatrix& parent, CFS_Base& F);
     bool			ExportHOM				(LPCSTR fname);
 #ifdef _MAX_EXPORT
 	BOOL			ExtractTexName			(Texmap *src, LPSTR dest);

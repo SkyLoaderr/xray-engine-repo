@@ -80,7 +80,7 @@ void CGlow::Render(int priority, bool strictB2F){
         pinf.inf.range = D.magnitude();
         if (pinf.inf.range) D.div(pinf.inf.range);
         // тестируем находится ли во фрустуме glow
-		Device.SetTransform(D3DTS_WORLD,Fidentity);
+		RCache.set_xform_world(Fidentity);
         if (::Render->ViewBase.testSphere_dirty(PPosition,m_fRadius)){
         	// рендерим Glow
         	if ((fraBottomBar->miGlowTestVisibility->Checked&&!Scene.RayPick(PPosition,D,OBJCLASS_SCENEOBJECT,&pinf,true,0))||

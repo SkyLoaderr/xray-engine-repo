@@ -250,7 +250,7 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
 		Fbox bb; GetBox(bb);
 		if (::Render->occ_visible(bb)){
             if (strictB2F){
-                Device.SetTransform(D3DTS_WORLD,FTransformRP);
+                RCache.set_xform_world(FTransformRP);
                 if (m_SpawnData.Valid()){
                     // render icon
 				    Shader* s 			= GetIcon(m_SpawnData.m_Data->s_name);

@@ -278,6 +278,8 @@ public:
 	void 			OnShowHint		(AStringVec& dest);
 
     void			SynchronizeObjects();
+
+    void			ShowSummaryInfo	();
 };
 
 //----------------------------------------------------

@@ -190,9 +190,10 @@ void CRenderDevice::_Create(CStream* F)
 	Device.SetRS(D3DRS_EMISSIVEMATERIALSOURCE,D3DMCS_COLOR1	);
 
     ResetMaterial();
+
+    RCache.OnDeviceCreate		();
 	// signal another objects
 	seqDevCreate.Process		(rp_DeviceCreate);
-    RCache.OnDeviceCreate		();
     UI.OnDeviceCreate			();
 
 	pSystemFont			= xr_new<CGameFont>("hud_font_small");
@@ -312,22 +313,21 @@ void CRenderDevice::DP(D3DPRIMITIVETYPE pt, SGeometry* geom, DWORD vBase, DWORD 
     RCache.set_Geometry		(geom);
     for (DWORD dwPass = 0; dwPass<dwRequired; dwPass++){
     	RCache.set_Shader	(S,dwPass);
-//        Shader.set_Shader	();
 		RCache.Render		(pt,vBase,pc);
     }
 }
-/*
-void CRenderDevice::DIP(D3DPRIMITIVETYPE pt, SGeometry* geom, DWORD vBase, DWORD vc, IDirect3DIndexBuffer8* ib, DWORD iBase, DWORD pc){
+
+void CRenderDevice::DIP(D3DPRIMITIVETYPE pt, SGeometry* geom, u32 baseV, u32 startV, u32 countV, u32 startI, u32 PC)
+{
 	::Shader* S 			= m_CurrentShader?m_CurrentShader:m_WireShader;
     DWORD dwRequired		= S->lod0->Passes.size();
-    Primitive.setIndices	(vBase, ib);
-    Primitive.setVertices	(vs->dwHandle,vs->dwStride,vb);
+    RCache.set_Geometry		(geom);
     for (DWORD dwPass = 0; dwPass<dwRequired; dwPass++){
-        Shader.set_Shader	(S,dwPass);
-		Primitive.Render	(pt,vBase,vc,iBase,pc);
+    	RCache.set_Shader	(S,dwPass);
+		RCache.Render		(pt,baseV,startV,countV,startI,PC);
     }
 }
-*/
+
 void CRenderDevice::ReloadTextures()
 {
 	UI.SetStatus("Reload textures...");

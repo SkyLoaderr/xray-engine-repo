@@ -320,7 +320,7 @@ void CEditShape::Render(int priority, bool strictB2F)
                 for (ShapeIt it=shapes.begin(); it!=shapes.end(); it++){
 					switch(it->type){
                     case cfSphere:{
-		                Device.SetTransform	(D3DTS_WORLD,_Transform());
+		                RCache.set_xform_world(_Transform());
                     	Fsphere& S			= it->data.sphere;
 		                Device.SetShader	(Device.m_WireShader);
                         DU::DrawLineSphere	(S.P,S.R,SHAPE_COLOR_EDGE,true);
@@ -330,7 +330,7 @@ void CEditShape::Render(int priority, bool strictB2F)
                     case cfBox:		
                     	Fmatrix B			= it->data.box;
                         B.mulA				(_Transform());
-		                Device.SetTransform	(D3DTS_WORLD,B);
+		                RCache.set_xform_world(B);
 		                Device.SetShader	(Device.m_SelectionShader);
 				        DU::DrawIdentBox	(true,false,Selected()?SHAPE_COLOR_TRANSP_SEL:SHAPE_COLOR_TRANSP_NORM);
 		                Device.SetShader	(Device.m_WireShader);
@@ -342,7 +342,7 @@ void CEditShape::Render(int priority, bool strictB2F)
             }else{   
                 if( Selected()&&m_Box.is_valid() ){
                     DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
-	                Device.SetTransform	(D3DTS_WORLD,_Transform());
+	                RCache.set_xform_world(_Transform());
                     Device.SetShader(Device.m_WireShader);
                     DU::DrawSelectionBox(m_Box,&clr);
                 }

@@ -120,7 +120,7 @@ void CSceneObject::Render(int priority, bool strictB2F){
     	if (1==priority){
             if (false==strictB2F){
                 Device.SetShader(Device.m_WireShader);
-                Device.SetTransform(D3DTS_WORLD,_Transform());
+                RCache.set_xform_world(_Transform());
                 DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
                 DU::DrawSelectionBox(m_pReference->GetBox(),&clr);
             }else{
@@ -155,7 +155,7 @@ void CSceneObject::RenderAnimation(){
         }
 
         Device.SetShader		(Device.m_WireShader);
-        Device.SetTransform		(D3DTS_WORLD,Fidentity);
+        RCache.set_xform_world	(Fidentity);
         DU::DrawPrimitiveL		(D3DPT_LINESTRIP,v.size()-1,v.begin(),v.size(),clr,true,false);
     }
 }
@@ -402,5 +402,14 @@ void CSceneObject::FillProp(LPCSTR pref, PropItemVec& items)
     PropValue* V=0;
 	V=PHelper.CreateALibObject	(items,PHelper.PrepareKey(pref,"Reference"),	&m_ReferenceName); V->OnChangeEvent = ReferenceChange;
 //	PHelper.CreateFlag32		(items,PHelper.PrepareKey(pref,"Flags\\Dummy"),	&m_Flags,flDummy);
+}
+
+bool CSceneObject::GetSummaryInfo(AStringVec& textures, int& face_cnt, int& vert_cnt)
+{
+	CEditableObject* E = GetReference();
+    E->GetTexturesList(textures);
+	face_cnt	= GetFaceCount	();
+    vert_cnt	= GetVertexCount();
+	return true;
 }
 
