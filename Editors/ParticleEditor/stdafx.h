@@ -55,7 +55,7 @@ __inline float modff(float a, float *b){
 }
 __inline float expf	(float val)                           	{ return ::exp(val);}
 
-/*
+
 #ifdef	_ECOREB
     #define ECORE_API		__declspec(dllexport)
     #define ENGINE_API		__declspec(dllexport)
@@ -63,7 +63,7 @@ __inline float expf	(float val)                           	{ return ::exp(val);}
     #define ECORE_API		__declspec(dllimport)
     #define ENGINE_API		__declspec(dllimport)
 #endif
-*/
+
 #define ECORE_API		
 #define ENGINE_API		
 
