@@ -93,7 +93,7 @@ void CBuild::Run	(LPCSTR P)
 	mem_Compact					();
 	Tesselate					();
 	
-	//****************************************** Optimizing
+	//****************************************** Optimizing + checking for T-junctions
 	FPU::m64r					();
 	Phase						("Optimizing...");
 	mem_Compact					();

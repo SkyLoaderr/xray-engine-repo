@@ -43,13 +43,13 @@ Shader_xrLC&	base_Face::Shader		()
 }
 void			base_Face::CacheOpacity	()
 {
-	bDisableShadowCast	= false;
-	bOpaque				= TRUE;
+	flags.bDisableShadowCast	= false;
+	flags.bOpaque				= true;
 
 	b_material& M		= pBuild->materials		[dwMaterial];
 	b_texture&	T		= pBuild->textures		[M.surfidx];
-	if (T.bHasAlpha)	bOpaque = FALSE;
-	else				bOpaque = TRUE;
+	if (T.bHasAlpha)	flags.bOpaque = false;
+	else				flags.bOpaque = true;
 }
 
 //
@@ -124,7 +124,7 @@ void	_TCF::barycentric	(Fvector2 &P, float &u, float &v, float &w)
 Face::Face()
 {
 	pDeflector				= 0;
-	bSplitted				= FALSE;
+	flags.bSplitted			= false;
 	g_faces.push_back		(this);
 }
 Face::~Face()

@@ -61,7 +61,7 @@ void xrMU_Model::calc_lighting	(xr_vector<base_color>& dest, Fmatrix& xform, CDB
 	// Disable faces if needed
 	BOOL bDisableFaces			= flags&LP_UseFaceDisable;
 	if	(bDisableFaces)
-		for (I=0; I<m_faces.size(); I++)	m_faces[I]->bDisableShadowCast	= TRUE;
+		for (I=0; I<m_faces.size(); I++)	m_faces[I]->flags.bDisableShadowCast	= true;
 
 	// Perform lighting
 	for (I = 0; I<m_vertices.size(); I++)
@@ -131,7 +131,7 @@ void xrMU_Model::calc_lighting	(xr_vector<base_color>& dest, Fmatrix& xform, CDB
 
 	// Enable faces if needed
 	if	(bDisableFaces)
-		for (I=0; I<m_faces.size(); I++)	m_faces[I]->bDisableShadowCast	= FALSE;
+		for (I=0; I<m_faces.size(); I++)	m_faces[I]->flags.bDisableShadowCast	= true;
 
 	// Process all groups
 	for (mapVertIt it=g_trans.begin(); it!=g_trans.end(); it++)

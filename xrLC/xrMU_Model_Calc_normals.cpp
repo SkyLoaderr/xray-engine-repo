@@ -8,12 +8,12 @@ void xrMU_Model::calc_normals()
 	float	p_cost  = 1.f/(Vcount);
 
 	// Clear temporary flag
-	float	sm_cos	= _cos(deg2rad(89.f));
+	float	sm_cos	= _cos(deg2rad(g_params.m_sm_angle));
 
 	for (v_faces_it it = m_faces.begin(); it!=m_faces.end(); it++)
 	{
-		(*it)->bSplitted	= FALSE;
-		(*it)->CalcNormal	();
+		(*it)->flags.bSplitted	= FALSE;
+		(*it)->CalcNormal		();
 	}
 
 	// remark:
@@ -25,15 +25,15 @@ void xrMU_Model::calc_normals()
 
 		for (v_faces_it AFit = V->adjacent.begin(); AFit != V->adjacent.end(); AFit++)
 		{
-			_face*	F		= *AFit;
-			F->bSplitted	= FALSE;
+			_face*	F			= *AFit;
+			F->flags.bSplitted	= FALSE;
 		}
 		std::sort	(V->adjacent.begin(), V->adjacent.end());
 
 		for (u32 AF = 0; AF < V->adjacent.size(); AF++)
 		{
-			_face*	F			= V->adjacent[AF];
-			if (F->bSplitted)	continue;	// Face already used in calculation
+			_face*	F				= V->adjacent[AF];
+			if (F->flags.bSplitted)	continue;	// Face already used in calculation
 
 			// Create new vertex (except adjacency)
 			_vertex*	NV		= mu_vertices.create();
@@ -48,9 +48,9 @@ void xrMU_Model::calc_normals()
 				float	cosa	= F->N.dotproduct(Fn->N);
 				if (cosa>sm_cos) {
 					NV->N.add		(Fn->N);
-					if (!Fn->bSplitted) {
+					if (!Fn->flags.bSplitted) {
 						Fn->VReplace_NoRemove	(V,NV);
-						Fn->bSplitted			= TRUE;
+						Fn->flags.bSplitted		= true;
 					}
 				}
 			}
@@ -79,7 +79,7 @@ void xrMU_Model::calc_normals()
 
 	// Clear temporary flag
 	for (it = m_faces.begin(); it!=m_faces.end(); it++)
-		(*it)->bSplitted = FALSE;
+		(*it)->flags.bSplitted = FALSE;
 
 	clMsg("%5s %d vertices duplicated","-",m_vertices.size()-Vcount);
 }

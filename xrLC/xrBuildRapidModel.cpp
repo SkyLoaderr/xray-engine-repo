@@ -23,7 +23,7 @@ void CBuild::BuildRapid()
 	float	p_cost			= 1.f/(g_faces.size());
 
 	Status			("Converting faces...");
-	for				(u32 fit=0; fit<g_faces.size(); fit++)	g_faces[fit]->bProcessed = FALSE;
+	for				(u32 fit=0; fit<g_faces.size(); fit++)	g_faces[fit]->flags.bProcessed = false;
 
 	xr_vector<Face*>	adjacent;	adjacent.reserve(6*2*3);
 	CDB::CollectorPacked	CL	(scene_bb,g_vertices.size(),g_faces.size());
@@ -49,11 +49,11 @@ void CBuild::BuildRapid()
 		BOOL			bAlready	= FALSE;
 		for (u32 ait=0; ait<adjacent.size(); ait++)
 		{
-			Face*	Test			= adjacent[ait];
-			if (Test==F)			continue;
-			if (!Test->bProcessed)	continue;
+			Face*	Test					= adjacent[ait];
+			if (Test==F)					continue;
+			if (!Test->flags.bProcessed)	continue;
 			if (FaceEqual(*F,*Test)){
-				bAlready			= TRUE;
+				bAlready					= TRUE;
 				break;
 			}
 		}
@@ -61,8 +61,8 @@ void CBuild::BuildRapid()
 		//
 		if (!bAlready) 
 		{
-			F->bProcessed	= true;
-			CL.add_face_D	( F->v[0]->P,F->v[1]->P,F->v[2]->P, u32(F) );
+			F->flags.bProcessed	= true;
+			CL.add_face_D		( F->v[0]->P,F->v[1]->P,F->v[2]->P, u32(F) );
 		}
 	}
 

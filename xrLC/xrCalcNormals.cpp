@@ -9,13 +9,13 @@ void CBuild::CalcNormals()
 	float	p_cost  = 1.f/(Vcount);
 
 	// Clear temporary flag
-	Status("Processing...");
-	float sm_cos = _cos(deg2rad(g_params.m_sm_angle));
+	Status			("Processing...");
+	float sm_cos	= _cos(deg2rad(g_params.m_sm_angle));
 
 	for (vecFaceIt it = g_faces.begin(); it!=g_faces.end(); it++)
 	{
-		(*it)->bSplitted = FALSE;
-		(*it)->CalcNormal();
+		(*it)->flags.bSplitted	= true;
+		(*it)->CalcNormal		();
 	}
 
 	// remark:
@@ -27,15 +27,15 @@ void CBuild::CalcNormals()
 
 		for (vecFaceIt AFit = V->adjacent.begin(); AFit != V->adjacent.end(); AFit++)
 		{
-			Face*	F		= *AFit;
-			F->bSplitted	= FALSE;
+			Face*	F			= *AFit;
+			F->flags.bSplitted	= false;
 		}
 		std::sort(V->adjacent.begin(), V->adjacent.end());
 
 		for (u32 AF = 0; AF < V->adjacent.size(); AF++)
 		{
 			Face*	F			= V->adjacent[AF];
-			if (F->bSplitted)	continue;	// Face already used in calculation
+			if (F->flags.bSplitted)	continue;	// Face already used in calculation
 
 			Vertex*	NV			= V->CreateCopy_NOADJ();
 			
@@ -48,9 +48,9 @@ void CBuild::CalcNormals()
 				float	cosa	= F->N.dotproduct(Fn->N);
 				if (cosa>sm_cos) {
 					NV->N.add		(Fn->N);
-					if (!Fn->bSplitted) {
+					if (!Fn->flags.bSplitted) {
 						Fn->VReplace_not_remove	(V,NV);
-						Fn->bSplitted			= TRUE;
+						Fn->flags.bSplitted		= true;
 					}
 				}
 			}
@@ -73,7 +73,7 @@ void CBuild::CalcNormals()
 
 	// Clear temporary flag
 	for (it = g_faces.begin(); it!=g_faces.end(); it++)
-		(*it)->bSplitted = FALSE;
+		(*it)->flags.bSplitted = false;
 
 	// Models
 	Status	("Models...");

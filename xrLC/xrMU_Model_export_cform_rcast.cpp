@@ -2,7 +2,7 @@
 
 void xrMU_Model::export_cform_rcast	(CDB::CollectorPacked& CL, Fmatrix& xform)
 {
-	for		(u32 fit=0; fit<m_faces.size(); fit++)	m_faces[fit]->bProcessed = FALSE;
+	for		(u32 fit=0; fit<m_faces.size(); fit++)	m_faces[fit]->flags.bProcessed = false;
 
 	v_faces			adjacent;	adjacent.reserve(6*2*3);
 
@@ -27,7 +27,7 @@ void xrMU_Model::export_cform_rcast	(CDB::CollectorPacked& CL, Fmatrix& xform)
 		{
 			_face*	Test				= adjacent[ait];
 			if (Test==F)				continue;
-			if (!Test->bProcessed)		continue;
+			if (!Test->flags.bProcessed)continue;
 			if (F->isEqual(*Test))
 			{
 				bAlready			= TRUE;
@@ -38,7 +38,7 @@ void xrMU_Model::export_cform_rcast	(CDB::CollectorPacked& CL, Fmatrix& xform)
 		//
 		if (!bAlready) 
 		{
-			F->bProcessed			= true;
+			F->flags.bProcessed		= true;
 			Fvector					P[3];
 			xform.transform_tiny	(P[0],F->v[0]->P);
 			xform.transform_tiny	(P[1],F->v[1]->P);

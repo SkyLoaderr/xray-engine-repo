@@ -111,16 +111,16 @@ float getLastRP_Scale(CDB::COLLIDER* DB, CDB::MODEL* MDL, R_Light& L, Face* skip
 			CDB::RESULT& rpinf = DB->r_begin()[I];
 
 			// Access to texture
-			CDB::TRI& clT									= MDL->get_tris()[rpinf.id];
-			base_Face* F									= (base_Face*) clT.dummy;
-			if (0==F)										continue;
-			if (skip==F)									continue;
-			if (bUseFaceDisable && F->bDisableShadowCast)	continue;
+			CDB::TRI& clT										= MDL->get_tris()[rpinf.id];
+			base_Face* F										= (base_Face*) clT.dummy;
+			if (0==F)											continue;
+			if (skip==F)										continue;
+			if (bUseFaceDisable && F->flags.bDisableShadowCast)	continue;
 
-			Shader_xrLC&	SH								= F->Shader();
-			if (!SH.flags.bLIGHT_CastShadow)				continue;
+			Shader_xrLC&	SH									= F->Shader();
+			if (!SH.flags.bLIGHT_CastShadow)					continue;
 
-			if (F->bOpaque){
+			if (F->flags.bOpaque)	{
 				// Opaque poly - cache it
 				L.tri[0].set	(*clT.verts[0]);
 				L.tri[1].set	(*clT.verts[1]);
