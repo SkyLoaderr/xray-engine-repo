@@ -59,7 +59,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 	}
 #ifdef DEBUG
 	case DIK_F4: {
-//		if (GameID() != GAME_SINGLE) return;
+		if (GameID() != GAME_SINGLE) return;
 		xr_vector<CObject*>::iterator I = Objects.objects.begin(), B = I, J;
 		xr_vector<CObject*>::iterator E = Objects.objects.end();
 		bool bOk = false;
