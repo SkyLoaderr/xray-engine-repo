@@ -347,23 +347,24 @@ class ECORE_API ChooseValueCustom{
 public:
 	EChooseMode			choose_mode;
     TOnChoose			OnChooseEvent;
+    AnsiString			start_path;
 public:
-						ChooseValueCustom	(EChooseMode mode):choose_mode(mode),OnChooseEvent(0){;}
+						ChooseValueCustom	(EChooseMode mode, LPCSTR path):choose_mode(mode),OnChooseEvent(0),start_path(path){;}
 };
 
 class ECORE_API ChooseValue: public TextValue, public ChooseValueCustom{
 public:
-						ChooseValue			(LPSTR val, int len, EChooseMode mode):TextValue(val,len),ChooseValueCustom(mode){;}
+						ChooseValue			(LPSTR val, int len, EChooseMode mode, LPCSTR path):TextValue(val,len),ChooseValueCustom(mode,path){;}
 };
 
 class ECORE_API AChooseValue: public ATextValue, public ChooseValueCustom{
 public:
-						AChooseValue		(AnsiString* val, EChooseMode mode):ATextValue(val),ChooseValueCustom(mode){;}
+						AChooseValue		(AnsiString* val, EChooseMode mode, LPCSTR path):ATextValue(val),ChooseValueCustom(mode,path){;}
 };
 
 class ECORE_API RChooseValue: public RTextValue, public ChooseValueCustom{
 public:
-						RChooseValue		(ref_str* val, EChooseMode mode):RTextValue(val),ChooseValueCustom(mode){;}
+						RChooseValue		(ref_str* val, EChooseMode mode, LPCSTR path):RTextValue(val),ChooseValueCustom(mode,path){;}
 };
 
 typedef CustomValue<BOOL>		BOOLValue;

@@ -100,12 +100,12 @@ public:
     {	return			(CanvasValue*)	AppendValue		(items,key,xr_new<CanvasValue>(val,height),PROP_CANVAS);  	}
     IC ButtonValue*		CreateButton	(PropItemVec& items, AnsiString key, AnsiString val, u32 flags)
     {	return			(ButtonValue*)	AppendValue		(items,key,xr_new<ButtonValue>(val,flags),PROP_BUTTON);		}
-    IC ChooseValue*		CreateChoose	(PropItemVec& items, AnsiString key, LPSTR val, int len, EChooseMode mode)
-    {	return			(ChooseValue*)	AppendValue		(items,key,xr_new<ChooseValue>(val,len,mode),PROP_CHOOSE);	}
-    IC AChooseValue*	CreateChoose	(PropItemVec& items, AnsiString key, AnsiString* val, EChooseMode mode)
-    {	return			(AChooseValue*)	AppendValue		(items,key,xr_new<AChooseValue>(val,mode),PROP_CHOOSE);	}
-    IC RChooseValue*	CreateChoose	(PropItemVec& items, AnsiString key, ref_str* val, EChooseMode mode)
-    {	return			(RChooseValue*)	AppendValue		(items,key,xr_new<RChooseValue>(val,mode),PROP_CHOOSE);	}
+    IC ChooseValue*		CreateChoose	(PropItemVec& items, AnsiString key, LPSTR val, int len, EChooseMode mode, LPCSTR path=0)
+    {	return			(ChooseValue*)	AppendValue		(items,key,xr_new<ChooseValue>(val,len,mode,path),PROP_CHOOSE);	}
+    IC AChooseValue*	CreateChoose	(PropItemVec& items, AnsiString key, AnsiString* val, EChooseMode mode, LPCSTR path=0)
+    {	return			(AChooseValue*)	AppendValue		(items,key,xr_new<AChooseValue>(val,mode,path),PROP_CHOOSE);	}
+    IC RChooseValue*	CreateChoose	(PropItemVec& items, AnsiString key, ref_str* val, EChooseMode mode, LPCSTR path=0)
+    {	return			(RChooseValue*)	AppendValue		(items,key,xr_new<RChooseValue>(val,mode,path),PROP_CHOOSE);	}
     IC S8Value* 		CreateS8		(PropItemVec& items, AnsiString key, s8* val, s8 mn=0, s8 mx=100, s8 inc=1)
     {	return			(S8Value*)		AppendValue		(items,key,xr_new<S8Value>(val,mn,mx,inc,0),PROP_S8);	}
     IC S16Value* 		CreateS16		(PropItemVec& items, AnsiString key, s16* val, s16 mn=0, s16 mx=100, s16 inc=1)

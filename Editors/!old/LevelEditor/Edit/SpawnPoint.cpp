@@ -147,7 +147,7 @@ void CSpawnPoint::SSpawnData::Render(bool bSelected, const Fmatrix& parent,int p
         CSE_Motion* M			= dynamic_cast<CSE_Motion*>(m_Data);
         if (M&&M->animator)		M->animator->DrawPath();
     }
-    ::Render->model_Render(V->visual,parent,priority,strictB2F,1.f);
+    if (V->visual) ::Render->model_Render(V->visual,parent,priority,strictB2F,1.f);
 }
 void CSpawnPoint::SSpawnData::OnFrame()
 {

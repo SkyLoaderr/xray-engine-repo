@@ -756,34 +756,11 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                         pmEnum->Items->Add(mi);
                     }
                 }break;
-                case PROP_VECTOR: 			VectorClick(item); 			break;
-                case PROP_WAVE: 			WaveFormClick(item); 		break;
+                case PROP_VECTOR: 			VectorClick		(item); 	break;
+                case PROP_WAVE: 			WaveFormClick	(item); 	break;
                 case PROP_FCOLOR:
-                case PROP_COLOR: 			ColorClick(item); 			break;
-                case PROP_CHOOSE:{
-                	{
-                		ChooseValue* V		= dynamic_cast<ChooseValue*>(prop->GetFrontValue());
-                        if (V){
-                        	ChooseTextClick(item);
-                            break;
-                        }
-                    }
-                	{
-                		AChooseValue* V		= dynamic_cast<AChooseValue*>(prop->GetFrontValue());
-                        if (V){
-                        	ChooseATextClick(item);
-                            break;
-                        }
-                    }
-                	{
-                		RChooseValue* V		= dynamic_cast<RChooseValue*>(prop->GetFrontValue());
-                        if (V){
-                        	ChooseRTextClick(item);
-                            break;
-                        }
-                    }
-                    THROW2("Unknown choose type");
-                }break;
+                case PROP_COLOR: 			ColorClick		(item); 	break;
+                case PROP_CHOOSE:			ChooseClick		(item); 	break;
                 case PROP_U8:
                 case PROP_U16:
                 case PROP_U32:
@@ -1061,12 +1038,30 @@ void __fastcall TProperties::VectorClick(TElTreeItem* item)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TProperties::ChooseTextClick(TElTreeItem* item)
+void __fastcall TProperties::ChooseClick(TElTreeItem* item)
 {
 	PropItem* prop			= (PropItem*)item->Tag;
-	TextValue* V			= dynamic_cast<TextValue*>(prop->GetFrontValue()); R_ASSERT(V);
-	ChooseValueCustom* CV	= dynamic_cast<ChooseValueCustom*>(V); R_ASSERT(CV);
-	AnsiString edit_val		= V->GetValue();
+	PropValue* V			= prop->GetFrontValue(); R_ASSERT(V);
+    AnsiString edit_val;
+	ChooseValueCustom* CV	= 0;
+	TextValue* TV			= dynamic_cast<TextValue*>(prop->GetFrontValue());	
+    if (TV){ 
+    	edit_val			= TV->GetValue();
+        CV					= dynamic_cast<ChooseValueCustom*>(TV); R_ASSERT(CV);
+    }else{
+        ATextValue* AV		= dynamic_cast<ATextValue*>(prop->GetFrontValue());
+        if (AV){ 
+        	edit_val		= AV->GetValue();
+			CV				= dynamic_cast<ChooseValueCustom*>(AV); R_ASSERT(CV);
+        }else{
+			RTextValue* RV	= dynamic_cast<RTextValue*>(prop->GetFrontValue());
+            if (RV){
+            	edit_val	= *RV->GetValue();
+				CV			= dynamic_cast<ChooseValueCustom*>(RV); R_ASSERT(CV);
+            }else THROW		("Unknown choose value type");
+        }
+    }
+	if (!edit_val.Length()) edit_val = CV->start_path;
 	prop->OnBeforeEdit		(&edit_val);
     LPCSTR new_val			= 0;
     AStringVec items;
@@ -1077,50 +1072,6 @@ void __fastcall TProperties::ChooseTextClick(TElTreeItem* item)
         prop->OnAfterEdit	(&edit_val);
         if (prop->ApplyValue(edit_val.c_str())){
         	Modified		();
-        }
-        item->ColumnText->Strings[0]= prop->GetText();
-    }
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TProperties::ChooseATextClick(TElTreeItem* item)
-{
-	PropItem* prop			= (PropItem*)item->Tag;
-	ATextValue* V			= dynamic_cast<ATextValue*>(prop->GetFrontValue()); R_ASSERT(V);
-	ChooseValueCustom* CV	= dynamic_cast<ChooseValueCustom*>(V); R_ASSERT(CV);
-	AnsiString edit_val		= V->GetValue();
-	prop->OnBeforeEdit		(&edit_val);
-    LPCSTR new_val			= 0;
-    AStringVec items;
-    if (CV->choose_mode==smCustom)
-    	if (CV->OnChooseEvent) CV->OnChooseEvent(V,items);
-    if (TfrmChoseItem::SelectItem(CV->choose_mode,new_val,prop->subitem,edit_val.c_str(),&items)){
-        edit_val				= new_val;
-        prop->OnAfterEdit	(&edit_val);
-        if (prop->ApplyValue(&edit_val)){
-        	Modified();
-        }
-        item->ColumnText->Strings[0]= prop->GetText();
-    }
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TProperties::ChooseRTextClick(TElTreeItem* item)
-{
-	PropItem* prop			= (PropItem*)item->Tag;
-	RTextValue* V			= dynamic_cast<RTextValue*>(prop->GetFrontValue()); R_ASSERT(V);
-	ChooseValueCustom* CV	= dynamic_cast<ChooseValueCustom*>(V); R_ASSERT(CV);
-	AnsiString edit_val		= *V->GetValue();
-	prop->OnBeforeEdit		(&edit_val);
-    LPCSTR new_val			= 0;
-    AStringVec items;
-    if (CV->choose_mode==smCustom)
-    	if (CV->OnChooseEvent) CV->OnChooseEvent(V,items);
-    if (TfrmChoseItem::SelectItem(CV->choose_mode,new_val,prop->subitem,edit_val.c_str(),&items)){
-        edit_val				= new_val;
-        prop->OnAfterEdit	(&edit_val);
-        if (prop->ApplyValue(edit_val.c_str())){
-        	Modified();
         }
         item->ColumnText->Strings[0]= prop->GetText();
     }

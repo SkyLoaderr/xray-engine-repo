@@ -334,7 +334,7 @@ void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
             }
         }
     }else{
-        TElTreeItem* itm_node = FHelper.FindObject(tvItems,m_LastSelection[form->Mode].LowerCase().c_str(),0,0);//,bIgnoreExt);
+        TElTreeItem* itm_node = FHelper.FindItem(tvItems,m_LastSelection[form->Mode].LowerCase().c_str(),0,0);//,bIgnoreExt);
         TElTreeItem* fld_node = 0;
         if (itm_node){
             tvItems->Selected = itm_node;

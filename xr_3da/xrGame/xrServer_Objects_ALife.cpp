@@ -864,14 +864,14 @@ CSE_ALifeObjectHangingLamp::CSE_ALifeObjectHangingLamp(LPCSTR caSection) : CSE_A
 	color						= 0xffffffff;
     brightness					= 1.f;
 	m_health					= 100.f;
-	m_flags.set					(flUseSwitches,false);
-	m_flags.set					(flSwitchOffline,false);
+	m_flags.set					(flUseSwitches,FALSE);
+	m_flags.set					(flSwitchOffline,FALSE);
 
 	m_virtual_size				= 0.1f;
 	m_ambient_radius			= 10.f;
     m_ambient_power				= 0.1f;
     spot_cone_angle				= deg2rad(120.f);
-    glow_radius					= 0.2f;
+    glow_radius					= 0.7f;
 }
 
 CSE_ALifeObjectHangingLamp::~CSE_ALifeObjectHangingLamp()
@@ -1034,7 +1034,7 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
 	PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,s_name,"Light\\Color Animator"),&color_animator, 	smLAnim);
 	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Light\\Range"),		&range,				0.1f, 1000.f);
 	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Light\\Virtual Size"),	&m_virtual_size,	0.f, 100.f);
-	PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,s_name,"Light\\Texture"),	    &light_texture, 	smTexture);
+	PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,s_name,"Light\\Texture"),	    &light_texture, 	smTexture, "lights");
 
     if (flags.is(flTypeSpot))
 		PHelper.CreateAngle		(values, FHelper.PrepareKey(pref,s_name,"Light\\Cone Angle"),	&spot_cone_angle,	deg2rad(1.f), deg2rad(120.f));
@@ -1060,11 +1060,11 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
     if (flags.is(flPointAmbient)){
         PHelper.CreateFloat		(values, FHelper.PrepareKey(pref,s_name,"Ambient\\Radius"),		&m_ambient_radius,	0.f, 1000.f);
         PHelper.CreateFloat		(values, FHelper.PrepareKey(pref,s_name,"Ambient\\Power"),		&m_ambient_power);
-		PHelper.CreateChoose	(values, FHelper.PrepareKey(pref,s_name,"Ambient\\Texture"),	&m_ambient_texture,	smTexture);
+		PHelper.CreateChoose	(values, FHelper.PrepareKey(pref,s_name,"Ambient\\Texture"),	&m_ambient_texture,	smTexture, 	"lights");
     }
     // glow
 	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Glow\\Radius"),	    &glow_radius,		0.01f, 100.f);
-	PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,s_name,"Glow\\Texture"),	    &glow_texture, 	smTexture);
+	PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,s_name,"Glow\\Texture"),	    &glow_texture, 		smTexture,	"glow");
 	// game
 	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Game\\Health"),		&m_health,			0.f, 100.f);
 }

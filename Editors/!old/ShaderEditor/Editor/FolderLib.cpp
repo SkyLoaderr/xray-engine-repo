@@ -83,56 +83,27 @@ bool CFolderHelper::MakeFullName(TElTreeItem* begin_item, TElTreeItem* end_item,
 }
 //---------------------------------------------------------------------------
 
-TElTreeItem* CFolderHelper::FindItemInFolder(EItemType type, TElTree* tv, TElTreeItem* start_folder, const AnsiString& name, bool bIgnoreExt)
+TElTreeItem* CFolderHelper::FindItemInFolder(EItemType type, TElTree* tv, TElTreeItem* start_folder, const AnsiString& name)
 {
-	if (bIgnoreExt){
-        if (start_folder){
-            for (TElTreeItem* node=start_folder->GetFirstChild(); node; node=start_folder->GetNextChild(node)){
-                AnsiString nm = ChangeFileExt(node->Text,"");
-                if (type==((EItemType)(node->Data))&&(nm==name)) return node;
-            }
-        }else{
-            for (TElTreeItem* node=tv->Items->GetFirstNode(); node; node=node->GetNextSibling()){
-                AnsiString nm = ChangeFileExt(node->Text,"");
-                if (type==((EItemType)(node->Data))&&(nm==name)) return node;
-            }
-        }
+   if (start_folder){
+        for (TElTreeItem* node=start_folder->GetFirstChild(); node; node=start_folder->GetNextChild(node))
+            if (type==((EItemType)(node->Data))&&(node->Text==name)) return node;
     }else{
-       if (start_folder){
-            for (TElTreeItem* node=start_folder->GetFirstChild(); node; node=start_folder->GetNextChild(node))
-                if (type==((EItemType)(node->Data))&&(node->Text==name)) return node;
-        }else{
-            for (TElTreeItem* node=tv->Items->GetFirstNode(); node; node=node->GetNextSibling())
-                if (type==((EItemType)(node->Data))&&(node->Text==name)) return node;
-        }
+        for (TElTreeItem* node=tv->Items->GetFirstNode(); node; node=node->GetNextSibling())
+            if (type==((EItemType)(node->Data))&&(node->Text==name)) return node;
     }
-
     return 0;
 }
 //---------------------------------------------------------------------------
 
-TElTreeItem* CFolderHelper::FindItemInFolder(TElTree* tv, TElTreeItem* start_folder, const AnsiString& name, bool bIgnoreExt)
+TElTreeItem* CFolderHelper::FindItemInFolder(TElTree* tv, TElTreeItem* start_folder, const AnsiString& name)
 {
-	if (bIgnoreExt){
-        if (start_folder){
-            for (TElTreeItem* node=start_folder->GetFirstChild(); node; node=start_folder->GetNextChild(node)){
-                AnsiString nm = ChangeFileExt(node->Text,"");
-                if (nm==name) return node;
-            }
-        }else{
-            for (TElTreeItem* node=tv->Items->GetFirstNode(); node; node=node->GetNextSibling()){
-                AnsiString nm = ChangeFileExt(node->Text,"");
-                if (nm==name) return node;
-            }
-        }
+    if (start_folder){
+        for (TElTreeItem* node=start_folder->GetFirstChild(); node; node=start_folder->GetNextChild(node))
+            if (node->Text==name) return node;
     }else{
-        if (start_folder){
-            for (TElTreeItem* node=start_folder->GetFirstChild(); node; node=start_folder->GetNextChild(node))
-                if (node->Text==name) return node;
-        }else{
-            for (TElTreeItem* node=tv->Items->GetFirstNode(); node; node=node->GetNextSibling())
-                if (node->Text==name) return node;
-        }
+        for (TElTreeItem* node=tv->Items->GetFirstNode(); node; node=node->GetNextSibling())
+            if (node->Text==name) return node;
     }
     return 0;
 }
@@ -195,7 +166,7 @@ TElTreeItem* CFolderHelper::FindFolder(TElTree* tv, AnsiString full_name, TElTre
 }
 //---------------------------------------------------------------------------
 
-TElTreeItem* CFolderHelper::FindObject(TElTree* tv, AnsiString full_name, TElTreeItem** last_valid_node, int* last_valid_idx, bool bIgnoreExt)
+TElTreeItem* CFolderHelper::FindObject(TElTree* tv, AnsiString full_name, TElTreeItem** last_valid_node, int* last_valid_idx)
 {
 	int cnt = _GetItemCount(full_name.c_str(),'\\'); cnt--;
     if (cnt<0) return 0;
@@ -221,7 +192,7 @@ TElTreeItem* CFolderHelper::FindObject(TElTree* tv, AnsiString full_name, TElTre
         AnsiString obj;
         _GetItem(full_name.c_str(),cnt,obj,'\\');
         last_node = node;
-        node = FindItemInFolder(TYPE_OBJECT,tv,node,obj,bIgnoreExt);
+        node = FindItemInFolder(TYPE_OBJECT,tv,node,obj);
         if (!node){
             if (last_valid_node) *last_valid_node=last_node;
             if (last_valid_idx) *last_valid_idx=itm;
