@@ -484,7 +484,7 @@ void CSE_Target_CS_Cask::STATE_Write		(NET_Packet	&tNetPacket)
 
 void CSE_Target_CS_Cask::FillProps			(LPCSTR pref, PropItemVec& items)
 {
-	PHelper().CreateChoose		(items, PrepareKey(pref,s_name,"Model"),	&s_Model,	smGameObject);
+	PHelper().CreateChoose		(items, PrepareKey(pref,s_name,"Model"),	&s_Model,	smVisual);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -518,7 +518,7 @@ void CSE_Target_CS::STATE_Write				(NET_Packet	&tNetPacket)
 
 void CSE_Target_CS::FillProps				(LPCSTR pref, PropItemVec& items)
 {
-	PHelper().CreateChoose		(items, PrepareKey(pref,s_name,"Model"),	&s_Model,	smGameObject);
+	PHelper().CreateChoose		(items, PrepareKey(pref,s_name,"Model"),	&s_Model,	smVisual);
 }
 
 ////////////////////////////////////////////////////////////////////////////
