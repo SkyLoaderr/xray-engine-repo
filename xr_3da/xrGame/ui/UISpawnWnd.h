@@ -8,6 +8,8 @@
 #include "UIFrameWindow.h"
 #include "UIButton.h"
 
+typedef	void (*ButtonClickCallback) (int);
+
 class CUISpawnWnd: public CUIDialogWnd
 {
 private:
@@ -25,6 +27,8 @@ public:
 	// -1 - еще не нажималась, 0 - primary (левая), 1 - secondary (правая)
 	int GetPressingResult() { return m_iResult; }
 
+	void	SetCallbackFunc (ButtonClickCallback pFunc);
+
 protected:
 	// Подложка окна
 	CUIFrameWindow		UIFrameWndPrimary;
@@ -40,6 +44,8 @@ protected:
 	bool				m_bDual;
 	// Индикатор нажатой кнопки: -1 - еще не нажималась, 0 - primary (левая), 1 - secondary (правая)
 	int					m_iResult;
+
+	ButtonClickCallback	pCallbackFunc;
 };
 
 #endif

@@ -11,8 +11,6 @@ CUIGameDM::CUIGameDM(CUI* parent):CUIGameCustom(parent)
 {
 	pFragList	= xr_new<CUIDMFragList>		();
 	pPlayerList	= xr_new<CUIDMPlayerList>	();
-///	pFragList->Init							();
-///	pPlayerList->Init						();
 
 	int ScreenW = Device.dwWidth;
 	int ScreenH = Device.dwHeight;
@@ -51,7 +49,6 @@ void CUIGameDM::OnFrame()
 		};
 	break;
 	case GAME_PHASE_INPROGRESS:
-//		if (pPlayerList->IsShown()) pPlayerList->Hide();
 		if (uFlags&flShowFragList) 
 		{
 			pFragList->Update();

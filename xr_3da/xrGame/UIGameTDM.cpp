@@ -51,6 +51,8 @@ CUIGameTDM::CUIGameTDM(CUI* parent):CUIGameCustom(parent)
 
 	pPlayerListT2->SetWndRect(ScreenW/4*3-FrameW/2, (ScreenH - FrameH)/2, FrameW, FrameH);
 	//-----------------------------------------------------------
+	pUITeamSelectWnd = xr_new<CUISpawnWnd>	();
+	pUITeamSelectWnd->SetCallbackFunc((ButtonClickCallback)OnSelectTeamCallback);
 }
 //--------------------------------------------------------------------
 
@@ -60,6 +62,8 @@ CUIGameTDM::~CUIGameTDM()
 	xr_delete(pFragListT2);
 	xr_delete(pPlayerListT1);
 	xr_delete(pPlayerListT2);
+
+	xr_delete(pUITeamSelectWnd);
 }
 //--------------------------------------------------------------------
 
@@ -108,15 +112,10 @@ bool CUIGameTDM::IR_OnKeyboardPress(int dik)
 {
 	if(inherited::IR_OnKeyboardPress(dik)) return true;
 
-
 	switch (dik)
 	{
 	case DIK_I: 
 		StartStopMenu(&InventoryMenu);
-		return true;
-		break;
-	case DIK_M:
-		StartStopMenu(&MapMenu);
 		return true;
 		break;
 	}
@@ -125,6 +124,11 @@ bool CUIGameTDM::IR_OnKeyboardPress(int dik)
 		// switch pressed keys
 		switch (dik){
 		case DIK_TAB:	SetFlag		(flShowFragList,TRUE);	return true;
+		case DIK_M:
+			{
+				StartStopMenu(pUITeamSelectWnd);
+				return true;
+			}break;
 		}
 	}
 	return false;
@@ -144,3 +148,18 @@ bool CUIGameTDM::IR_OnKeyboardRelease(int dik)
 	return false;
 }
 //--------------------------------------------------------------------
+ButtonClickCallback CUIGameTDM::OnSelectTeamCallback(int Team)
+{
+	CObject *l_pObj = Level().CurrentEntity();
+
+	CGameObject *l_pPlayer = dynamic_cast<CGameObject*>(l_pObj);
+	if(!l_pPlayer) return 0;
+	
+	NET_Packet		P;
+	l_pPlayer->u_EventGen		(P,GEG_PLAYER_CHANGE_TEAM,l_pPlayer->ID()	);
+	P.w_u16			(u16(l_pPlayer->ID())	);
+	P.w_s16			(s16(Team));
+	P.w_s16			((s16)0);
+	//P.w_u32			(0);
+	l_pPlayer->u_EventSend		(P);	
+};

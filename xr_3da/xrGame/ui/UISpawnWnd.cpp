@@ -12,7 +12,8 @@
 
 CUISpawnWnd::CUISpawnWnd()
 	: m_bDual(false),
-	  m_iResult(-1)
+	  m_iResult(-1),
+	  pCallbackFunc(NULL)
 {
 	Init("-= Red Team =-", "-= Green Team =-", true);
 
@@ -24,6 +25,10 @@ CUISpawnWnd::~CUISpawnWnd()
 
 }
 
+void	CUISpawnWnd::SetCallbackFunc (ButtonClickCallback pFunc)
+{
+	pCallbackFunc = pFunc;
+};
 void CUISpawnWnd::Init(const char *strCaptionPrimary, const char *strCaptionSecondary, bool bDual)
 {
 	CUIXml uiXml;
@@ -98,7 +103,12 @@ void CUISpawnWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			m_iResult = 0;
 		else
 			m_iResult = 1;
-		Hide();
+		if (pCallbackFunc) 
+		{
+			pCallbackFunc(m_iResult+1);
+			m_iResult = -1;
+		};
+		HUD().GetUI()->UIGame()->StartStopMenu(this);
 	}
 
 	inherited::SendMessage(pWnd, msg, pData);

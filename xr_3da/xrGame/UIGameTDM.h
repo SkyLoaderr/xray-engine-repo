@@ -7,6 +7,7 @@
 #include "ui/UIDialogWnd.h"
 #include "ui/UIInventoryWnd.h"
 #include "ui/UIMapWnd.h"
+#include "ui/UISpawnWnd.h"
 
 // refs 
 class CUITDMFragList;
@@ -21,6 +22,8 @@ protected:
 	CUITDMFragList*		pFragListT2;
 	CUITDMPlayerList*	pPlayerListT1;
 	CUITDMPlayerList*	pPlayerListT2;
+
+	CUISpawnWnd*		pUITeamSelectWnd;
 public:
 	CUIGameTDM			(CUI* parent);
 	virtual 			~CUIGameTDM			();
@@ -30,6 +33,8 @@ public:
 
 	virtual bool		IR_OnKeyboardPress		(int dik);
 	virtual bool		IR_OnKeyboardRelease	(int dik);
+
+	static ButtonClickCallback	OnSelectTeamCallback			(int ButtonID);
 
 	/////////
 	CUIInventoryWnd		InventoryMenu;
