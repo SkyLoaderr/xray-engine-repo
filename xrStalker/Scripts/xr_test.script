@@ -76,7 +76,8 @@ end
 --test binder
 ----------------------------------------------------------------------------------------------------------------------
 function add_to_binder(npc, ini, scheme, section, storage)
-    printf("DEBUG: add_to_binder: scheme='%s', section='%s'", scheme, section)
+    printf("________________________________________bind_stalker test")
+	printf("DEBUG: add_to_binder: scheme='%s', section='%s'", scheme, section)
       local operators  = {}
       local properties  = {}
 
