@@ -141,12 +141,12 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="x:\xrCDB.dll"
-				LinkIncremental="1"
+				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
+				OptimizeReferences="0"
+				EnableCOMDATFolding="0"
 				ImportLibrary="x:\xrCDB.lib"
 				TargetMachine="0"/>
 			<Tool

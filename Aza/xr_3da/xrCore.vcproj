@@ -195,12 +195,13 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)/xrCore.dll"
-				LinkIncremental="1"
+				LinkIncremental="2"
+				SuppressStartupBanner="FALSE"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
 				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
+				OptimizeReferences="0"
+				EnableCOMDATFolding="0"
 				ImportLibrary="$(OutDir)/xrCore.lib"
 				TargetMachine="0"/>
 			<Tool

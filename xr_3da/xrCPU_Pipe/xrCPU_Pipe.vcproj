@@ -228,7 +228,7 @@
 				AdditionalOptions="/MACHINE:I386 "
 				AdditionalDependencies="x:\xr_3da.lib odbc32.lib odbccp32.lib"
 				OutputFile="x:\xrCPU_Pipe.dll"
-				LinkIncremental="1"
+				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
@@ -236,8 +236,8 @@
 				MapFileName="x:\xrCPU_Pipe.map"
 				MapExports="TRUE"
 				MapLines="TRUE"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
+				OptimizeReferences="0"
+				EnableCOMDATFolding="0"
 				ImportLibrary="x:\xrCPU_Pipe.lib"
 				TargetMachine="0"/>
 			<Tool

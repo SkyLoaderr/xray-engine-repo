@@ -179,12 +179,12 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)/xrRender_R2.dll"
-				LinkIncremental="1"
+				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
 				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
+				OptimizeReferences="0"
+				EnableCOMDATFolding="0"
 				ImportLibrary="$(OutDir)/xrRender_R2.lib"
 				TargetMachine="1"/>
 			<Tool

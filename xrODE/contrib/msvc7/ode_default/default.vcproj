@@ -210,14 +210,14 @@
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="TRUE"
 				OutputFile="$(OutDir)/ode.dll"
-				LinkIncremental="1"
+				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
 				ModuleDefinitionFile="..\..\..\config\msvcdefs.def"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
 				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
+				OptimizeReferences="0"
+				EnableCOMDATFolding="0"
 				ImportLibrary="$(OutDir)/ode.lib"
 				TargetMachine="1"/>
 			<Tool

@@ -194,12 +194,12 @@
 				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="odbc32.lib odbccp32.lib"
 				OutputFile="$(OutDir)\xrCompress.exe"
-				LinkIncremental="1"
+				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
 				ProgramDatabaseFile=".\Release/xrCompress.pdb"
 				SubSystem="1"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"/>
+				OptimizeReferences="0"
+				EnableCOMDATFolding="0"/>
 			<Tool
 				Name="VCMIDLTool"
 				TypeLibraryName=".\Release/xrCompress.tlb"/>

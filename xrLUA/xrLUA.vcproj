@@ -174,14 +174,14 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="x:\xrLUA.dll"
-				LinkIncremental="1"
+				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
 				ModuleDefinitionFile=""
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
 				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
+				OptimizeReferences="0"
+				EnableCOMDATFolding="0"
 				ImportLibrary="x:\xrLua.lib"
 				TargetMachine="1"/>
 			<Tool

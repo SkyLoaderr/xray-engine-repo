@@ -132,14 +132,14 @@
 				AdditionalOptions="/MACHINE:I386 "
 				AdditionalDependencies="odbc32.lib odbccp32.lib"
 				OutputFile="x:\xrSE_Factory.dll"
-				LinkIncremental="1"
+				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
 				GenerateMapFile="TRUE"
 				MapFileName=".\Mixed/xrSE_Factory.map"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
+				OptimizeReferences="0"
+				EnableCOMDATFolding="0"
 				ImportLibrary="x:\xrSE_Factory.lib"
 				TargetMachine="1"/>
 			<Tool
