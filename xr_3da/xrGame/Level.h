@@ -86,7 +86,7 @@ public:
 		vector<SWayPoint>			tpaWayPoints;
 		vector<SWayLink>			tpaWayLinks;
 		vector<DWORD>				tpaWayPointIndexes;
-		svector<SPointVector,3>		tpaVectors;
+		SPointVector				tpaVectors[3];
 	} SPath;
 
 	enum EPathTypes {

@@ -21,15 +21,12 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 	tpPatrolPath.dwType = PATH_LOOPED | PATH_BIDIRECTIONAL;
 	
 	// computing from-to arrays
-	for ( i=0; i<N; i++) {
+	for ( i=0; i<N; i++)
 		tpaTo[i] = tpaFrom[i] = 0;
-		for (int j=0; j<N; j++)
-			if (i != j) {
-				if (i == tpPatrolPath.tpaWayLinks[j].wTo)
-					tpaTo[i]++;
-				if (i == tpPatrolPath.tpaWayLinks[j].wFrom)
-					tpaFrom[i]++;
-			}
+	
+	for ( i=0; i<N; i++) {
+		tpaTo[tpPatrolPath.tpaWayLinks[i].wTo]++;
+		tpaFrom[tpPatrolPath.tpaWayLinks[i].wFrom]++;
 	}
 	
 	// counting types of points
@@ -74,7 +71,7 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 	}
 	
 	// checking for supported path types
-	if (tpPatrolPath.dwType) {
+	if (!(dwOneZero + dwZeroOne)) {
 		if ((dwOneCount == 2) && (dwTwoCount == N - 2)) {
 			iCurPoint = iStartPoint;
 			tpPatrolPath.dwType ^= PATH_LOOPED;
@@ -111,6 +108,7 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 	}
 
 	// creating realistic path
+	tpaDeviations.resize(N);
 	tpaPoints.resize(N);
 	for (int i=0; i<N; i++)
 		tpaPoints[i] = tpPatrolPath.tpaWayPoints[tpPatrolPath.tpaWayPointIndexes[i]].tWayPoint;
@@ -234,6 +232,7 @@ BOOL CLevel::Load_GameSpecific_Before()
 				for (int i=0; i<dwCount; i++){
 					OBJ->Rvector(tPatrolPath.tpaWayPoints[i].tWayPoint);
 					tPatrolPath.tpaWayPoints[i].dwFlags = OBJ->Rdword();
+					tPatrolPath.tpaWayPoints[i].dwNodeID = AI.q_LoadSearch(tPatrolPath.tpaWayPoints[i].tWayPoint);
 				}
 
 				R_ASSERT(OBJ->FindChunk(WAYOBJECT_CHUNK_LINKS));
@@ -267,10 +266,8 @@ BOOL CLevel::Load_GameSpecific_Before()
 
 						m_PatrolPaths[sName] = tPatrolPath;
 						
-						for (int i=0; i<tPatrolPath.tpaWayPoints.size(); i++)
-							tPatrolPath.tpaWayPoints[i].dwNodeID = AI.q_LoadSearch(tPatrolPath.tpaWayPoints[i].tWayPoint);
-						
 						vfCreateAllPossiblePaths(sName, m_PatrolPaths[sName]);
+						break;
 					}
 					default :
 						THROW;
