@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="ode_default"
+	Name="ode"
 	ProjectGUID="{1BF75FEB-87DD-486C-880B-227987D191C2}"
 	SccProjectName="&quot;$/xrODE&quot;, AJPAAAAA"
 	SccAuxPath=""
