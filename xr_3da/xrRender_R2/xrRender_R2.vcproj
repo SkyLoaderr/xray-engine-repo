@@ -344,6 +344,18 @@
 			Name="Shading templates"
 			Filter="">
 			<File
+				RelativePath="blender_bloom_build.cpp">
+			</File>
+			<File
+				RelativePath="blender_bloom_build.h">
+			</File>
+			<File
+				RelativePath="blender_bloom_filter.cpp">
+			</File>
+			<File
+				RelativePath="blender_bloom_filter.h">
+			</File>
+			<File
 				RelativePath="blender_combine.cpp">
 			</File>
 			<File
