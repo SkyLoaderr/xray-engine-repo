@@ -33,7 +33,6 @@ class CSE_ALifeTrader;
 class CSE_ALifeEvent;
 class CSE_ALifeTask;
 class CSE_ALifePersonalEvent;
-class CSE_ALifePersonalTask;
 class CSE_ALifeKnownAnomaly;
 class CSE_ALifeDiscovery;
 class CSE_ALifeOrganization;
@@ -89,8 +88,6 @@ namespace ALife {
 
 	DEFINE_SET		(_TASK_ID,					TASK_SET,						TASK_SET_PAIR_IT);
 	DEFINE_MAP		(_OBJECT_ID,				TASK_SET,						OBJECT_TASK_MAP,			OBJECT_TASK_PAIR_IT);
-
-	DEFINE_MAP		(_TASK_ID,					CSE_ALifePersonalTask*,			PERSONAL_TASK_P_MAP,		PERSONAL_TASK_P_PAIR_IT);
 
 	typedef struct tagSGraphPoint {
 		ALIFE_ENTITY_P_VECTOR		tpObjects;

@@ -101,6 +101,11 @@ void CSE_ALifePersonalEvent::FillProp	(LPCSTR pref, PropItemVec& values)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeTask
 ////////////////////////////////////////////////////////////////////////////
+CSE_ALifeTask::CSE_ALifeTask				()
+{
+	m_dwTryCount				= 0;
+}
+
 void CSE_ALifeTask::STATE_Write				(NET_Packet &tNetPacket)
 {
 }
@@ -180,38 +185,6 @@ void CSE_ALifeTask::UPDATE_Read				(NET_Packet &tNetPacket)
 #ifdef _EDITOR
 void CSE_ALifeTask::FillProp	(LPCSTR pref, PropItemVec& values)
 {
-}
-#endif
-
-////////////////////////////////////////////////////////////////////////////
-// CSE_ALifePersonalTask
-////////////////////////////////////////////////////////////////////////////
-void CSE_ALifePersonalTask::STATE_Write		(NET_Packet &tNetPacket)
-{
-	inherited::STATE_Write		(tNetPacket);
-}
-
-void CSE_ALifePersonalTask::STATE_Read		(NET_Packet &tNetPacket, u16 size)
-{
-	inherited::STATE_Read		(tNetPacket,size);
-}
-
-void CSE_ALifePersonalTask::UPDATE_Write	(NET_Packet &tNetPacket)
-{
-	inherited::UPDATE_Write		(tNetPacket);
-	tNetPacket.w_u32			(m_dwTryCount);
-};
-
-void CSE_ALifePersonalTask::UPDATE_Read		(NET_Packet &tNetPacket)
-{
-	inherited::UPDATE_Read		(tNetPacket);
-	tNetPacket.r_u32			(m_dwTryCount);
-};
-
-#ifdef _EDITOR
-void CSE_ALifePersonalTask::FillProp	(LPCSTR pref, PropItemVec& values)
-{
-	inherited::FillProp			(pref,values);
 }
 #endif
 

@@ -45,6 +45,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeTask,CPureServerObject)
 	_OBJECT_ID						m_tCustomerID;
 	float							m_fCost;
 	ETaskType						m_tTaskType;
+	bool							m_dwTryCount;
 	union {
 		string32					m_caSection;
 		_OBJECT_ID					m_tObjectID;
@@ -54,18 +55,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeTask,CPureServerObject)
 		_GRAPH_ID					m_tGraphID;
 	};
 
-									CSE_ALifeTask	()
-	{
-	};
-SERVER_ENTITY_DECLARE_END
-
-SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifePersonalTask,CSE_ALifeTask)
-	u32								m_dwTryCount;
-
-									CSE_ALifePersonalTask()
-	{
-		m_dwTryCount				= 0;
-	};
+									CSE_ALifeTask	();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_LevelPoint,CSE_Abstract)

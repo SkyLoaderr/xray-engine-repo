@@ -11,7 +11,6 @@
 
 #ifdef AI_COMPILER
 	#include "net_utils.h"
-	#include "xrServer_Objects_ALife_Items.h"
 #endif
 
 #include "xrServer_Objects_ALife_Monsters.h"
@@ -706,7 +705,6 @@ CSE_ALifeHumanAbstract::CSE_ALifeHumanAbstract(LPCSTR caSection) : CSE_ALifeTrad
 {
 	m_tpaVertices.clear			();
 	m_baVisitedVertices.clear	();
-	m_tpTasks.clear				();
 	m_dwCurTaskID				= _TASK_ID(-1);
 	m_tTaskState				= eTaskStateChooseTask;
 	m_dwCurTaskLocation			= u32(-1);
@@ -718,7 +716,6 @@ CSE_ALifeHumanAbstract::CSE_ALifeHumanAbstract(LPCSTR caSection) : CSE_ALifeTrad
 
 CSE_ALifeHumanAbstract::~CSE_ALifeHumanAbstract()
 {
-	delete_data					(m_tpTasks);
 }
 
 void CSE_ALifeHumanAbstract::STATE_Write	(NET_Packet &tNetPacket)
@@ -727,7 +724,6 @@ void CSE_ALifeHumanAbstract::STATE_Write	(NET_Packet &tNetPacket)
 	inherited2::STATE_Write		(tNetPacket);
 	save_data					(m_tpaVertices,tNetPacket);
 	save_data					(m_baVisitedVertices,tNetPacket);
-	save_data					(m_tpTasks,tNetPacket);
 	tNetPacket.w_string			(m_caKnownCustomers);
 	save_data					(m_tpKnownCustomers,tNetPacket);
 }
@@ -739,7 +735,6 @@ void CSE_ALifeHumanAbstract::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 	if (m_wVersion > 19) {
 		load_data				(m_tpaVertices,tNetPacket);
 		load_data				(m_baVisitedVertices,tNetPacket);
-		load_data				(m_tpTasks,tNetPacket,tfChoosePersonalTaskKeyPredicate);
 		if (m_wVersion > 35) {
 			tNetPacket.r_string	(m_caKnownCustomers);
 			load_data			(m_tpKnownCustomers,tNetPacket);

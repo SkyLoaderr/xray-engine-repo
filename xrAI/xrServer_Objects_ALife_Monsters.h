@@ -206,7 +206,6 @@ SERVER_ENTITY_DECLARE_END
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_ALifeMonsterAbstract)
 	DWORD_VECTOR					m_tpaVertices;
 	xr_vector<bool>					m_baVisitedVertices;
-	PERSONAL_TASK_P_MAP				m_tpTasks;
 	ETaskState						m_tTaskState;
 	u32								m_dwCurTaskLocation;
 	u32								m_dwCurTaskID;

@@ -85,4 +85,15 @@ public:
 				return(false);
 		return(true);
 	}
+
+	IC		float					ffGetDistanceBetweenGraphPoints(_GRAPH_ID tGraphID0, _GRAPH_ID tGraphID1)
+	{
+		SGraphEdge					*i = (SGraphEdge*)((BYTE*)m_tpaGraph + m_tpaGraph[tGraphID0].dwEdgeOffset);
+		SGraphEdge					*e = i + m_tpaGraph[tGraphID0].tNeighbourCount;
+		for ( ; i != e; i++)
+			if (i->dwVertexNumber == tGraphID1)
+				return				(i->fPathDistance);
+		R_ASSERT2					(false,"There is no proper graph point neighbour!");
+		return						(_GRAPH_ID(-1));
+	}
 };
