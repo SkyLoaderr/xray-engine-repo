@@ -297,7 +297,7 @@ void CSoundManager::OnFrame( )
 }
 
 //-----------------------------------------------------------------------------
-void	CSoundManager::Create3D			( sound3D& S, CInifile* ini, LPCSTR section )
+void	CSoundManager::Create3D			( sound3D& S, CInifile* ini, LPCSTR section, int type )
 {
 	if (!bPresent) return;
 	FILE_NAME	fn;
@@ -305,8 +305,9 @@ void	CSoundManager::Create3D			( sound3D& S, CInifile* ini, LPCSTR section )
 	char*		E = strext(fn);
 	if (E)		*E = 0;
 	S.handle	= pSoundRender->CreateSound(fn);
+	S.g_type	= type;
 }
-void	CSoundManager::Create3D			( sound3D& S, const char* fName, BOOL bCtrlFreq )
+void	CSoundManager::Create3D			( sound3D& S, const char* fName, BOOL bCtrlFreq, int type )
 {
 	if (!bPresent) return;
 	FILE_NAME	fn;
@@ -314,6 +315,7 @@ void	CSoundManager::Create3D			( sound3D& S, const char* fName, BOOL bCtrlFreq )
 	char*		E = strext(fn);
 	if (E)		*E = 0;
 	S.handle	= pSoundRender->CreateSound(fn,bCtrlFreq);
+	S.g_type	= type;
 }
 void	CSoundManager::Play3D			( sound3D& S, CObject* O, BOOL bLoop, int iLoopCnt)
 {
