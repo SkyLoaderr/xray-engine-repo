@@ -1,7 +1,7 @@
 ***[OLES]*** Done:
 -------------------------
 		*	PS for everything even for R1			(?)
-		*	one pass detail textures
+		*	OPT:		one pass detail textures
 		*	d-lighting
 				hemisphere
 					- xrLC tesselation
@@ -15,19 +15,20 @@
 					- LMAP geom: 	3*4(pos) + 4(norm.hemi) + 2*4(tc0) + 2*2(tc1)  					= 28bytes = ~ideal
 					- VLIGHT geom:	3*4(pos) + 4(norm)      + 2*4(tc0) + 4(diffuse.rgb + hemi)		= 28bytes = ~ideal
 		*	xrLC - hemisphere (R1)
-		*	wallmarks shouldn't use connectivity		( - 16 bytes per CFORM triangle)
-		*	уменьшить/палеттизировать level.details
 		*	точное освещение level.details
 		*	более точное освещение моделей
-		*	string-docking / sharing
-		*	C++ LUA + xr_malloc, etc.
-		*	xrRenderR1/R2 - statistical flow analysis LOG (datch levels - yarigra, etc.)
+		*	MEM:		wallmarks shouldn't use connectivity		( - 16 bytes per CFORM triangle)
+		*	MEM:		уменьшить/палеттизировать level.details
+		*	MEM:		string-docking / sharing
+		*	OPT+MEM:	C++ LUA + xr_malloc, etc.
+		*	OPT:		xrRenderR1/R2 - statistical flow analysis LOG (datch levels - yarigra, etc.)
+		*	OPT:		move 90% of per-object info/calc into per-slot (vis-detection, etc)
 
 	bugs/features:
-		*	models/model_trans 			- черный
-		*	vert_aref					- черный
-		*	засветка кончиков моделей 
-		*	5-color-lods
+		*	BUG:		models/model_trans 			- черный
+		*	BUG:		vert_aref					- черный
+		*	BUG:		засветка кончиков моделей 
+		*	BUG:		5-color-lods
 
 ***[OLES]*** In progress:
 -------------------------
@@ -71,7 +72,6 @@
 
 		*	пригибание травы + ветер
 		*	дальность для травы
-		*	move 90% of per-object info/calc into per-slot (vis-detection, etc)
 
 		*	'fast' strings
 
