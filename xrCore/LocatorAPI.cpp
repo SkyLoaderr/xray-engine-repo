@@ -459,7 +459,7 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 		// Normal file, 100% full path - check cache
 		// Release don't need this at all
 #ifdef	DEBUG
-		if (pathes.size())
+		if (pathes.size()>1)
 		{
 			LPCSTR		path_base		= get_path	("$server_root$")->m_Path;
 			u32			len_base		= xr_strlen	(path_base);
@@ -496,6 +496,7 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 						_dst->w				(_src->pointer(),_src->length());
 						xr_delete			(_dst);
 						xr_delete			(_src);
+						set_file_age		(fname_in_cache,desc.modif)
 					}
 
 					// Use
