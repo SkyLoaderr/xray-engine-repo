@@ -28,6 +28,7 @@
 #define ALIFE_MONSTER_GROUP_ID		0x02
 #define ALIFE_HUMAN_ID				0x03
 #define ALIFE_HUMAN_GROUP_ID		0x04
+#define ALIFE_ANOMALOUS_ZONE_ID		0x05
 
 class CALifeMonsterParams;
 class CALifeHumanParams;
@@ -68,14 +69,16 @@ namespace ALife {
 	DEFINE_MAP		(_OBJECT_ID,				CALifeDynamicObject *,			OBJECT_MAP,				OBJECT_PAIR_IT);
 
 	enum EInjureType {
-		eInjureTypeEat = u32(0),
+		eInjureTypeNone = u32(0),
+		eInjureTypeEat,
 		eInjureTypeShoot,
 		eInjureTypeDestroyed,
 		eInjureTypeDummy = u32(-1),
 	};
 
 	enum ERelation {
-		eRelationMeet = u32(0),
+		eRelationNone = u32(0),
+		eRelationMeet,
 		eRelationWatch,
 		eRelationHear,
 		eRelationSeeResult,
@@ -87,7 +90,8 @@ namespace ALife {
 	};
 
 	enum EBattleResult {
-		eBattleRun1 = u32(0),
+		eBattleNone = u32(0),
+		eBattleRun1,
 		eBattleRun2,
 		eBattleRun12,
 		eBattleRun1WF,
@@ -114,12 +118,31 @@ namespace ALife {
 	};
 
 	enum EStalkerRank {
-		eStalkerRankNovice = u32(0),
+		eStalkerRankNone = u32(0),
+		eStalkerRankNovice,
 		eStalkerRankExperienced,
 		eStalkerRankVeteran,
 		eStalkerRankMaster,
 		eStalkerRankDummy = u32(-1),
 	};
+
+	enum EAnomalousZoneType {
+		eAnomalousZoneTypeNone = u32(0),
+		eAnomalousZoneTypeGravi,
+		eAnomalousZoneTypeFog,
+		eAnomalousZoneTypeRadio,
+		eAnomalousZoneTypePlant,
+		eAnomalousZoneTypeGelatine,
+		eAnomalousZoneTypeFluff,
+		eAnomalousZoneTypeRustyHair,
+		eAnomalousZoneTypeRustyWhistlers,
+		eAnomalousZoneTypeDummy = u32(-1),
+	};
+
+	typedef struct tagSAnomalousZone {
+		EAnomalousZoneType			tAnomalousZone;
+
+	} SAnomalousZone;
 
 	typedef struct tagSTask {
 		_TASK_ID					tTaskID;

@@ -10,6 +10,22 @@
 #include "ai_alife.h"
 
 #ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
+#define NORMALIZE_VARIABLE(a,b,c,d) a = u32(b % c) + d, b /= c;
+
+IC void vfPrintTime(char *S, _TIME_ID tTimeID)
+{
+	u32 Milliseconds,Seconds,Minutes,Hours,Days,Week,Months,Years;
+	NORMALIZE_VARIABLE(Milliseconds,tTimeID,1000,0);
+	NORMALIZE_VARIABLE(Seconds,		tTimeID,  60,0);
+	NORMALIZE_VARIABLE(Minutes,		tTimeID,  60,0);
+	NORMALIZE_VARIABLE(Hours,		tTimeID,  24,0);
+	NORMALIZE_VARIABLE(Days,		tTimeID,   7,1);
+	NORMALIZE_VARIABLE(Week,		tTimeID,   4,1);
+	NORMALIZE_VARIABLE(Months,		tTimeID,  12,1);
+	Years = u32(tTimeID) + 1;
+	Msg("%s year %d month %d week %d day %d time %d:%d:%d.%d",S,Years,Months,Week,Days,Hours,Minutes,Seconds,Milliseconds);
+}
+
 void vfPrintLargeString(const char *S1, const char *S, const int i, const int j, const u32 u)
 {
 	string128	S2;
@@ -159,7 +175,8 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 	Msg("* Spawn ID      : %d",tpALifeDynamicObject->m_tSpawnID);
 	Msg("* Graph ID      : %d",tpALifeDynamicObject->m_tGraphID);
 	Msg("* Count         : %d",tpALifeDynamicObject->m_wCount);
-	Msg("* Update        : %d",tpALifeDynamicObject->m_tTimeID);
+	vfPrintTime("* Update        :",tpALifeDynamicObject->m_tTimeID);
+	//Msg("* Update        : %d",tpALifeDynamicObject->m_tTimeID);
 	
 	CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>(tpALifeDynamicObject);
 	if (tpALifeItem) {
@@ -294,7 +311,8 @@ void CAI_ALife::vfEventInfo(_EVENT_ID &tEventID)
 	Msg("* Event information");
 	Msg("* Event ID  : %d",tEvent.tEventID);
 	Msg("* Graph ID  : %d",tEvent.tGraphID);
-	Msg("* Time  ID  : %d",tEvent.tTimeID);
+	vfPrintTime("* Time  ID  :",tEvent.tTimeID);
+//	Msg("* Time  ID  : %d",tEvent.tTimeID);
 	Msg("* Battle    : %d",tEvent.tBattleResult);
 	Msg("* Monster 1 :");
 	CALifeEventGroup *tpMG = tEvent.tpMonsterGroup1;
@@ -342,7 +360,8 @@ void CAI_ALife::vfTaskInfo(_TASK_ID &tTaskID)
 	STask &tTask = (*it).second;
 	Msg("* Task information");
 	Msg("* Task  ID    : %d",tTask.tTaskID);
-	Msg("* Time  ID    : %d",tTask.tTimeID);
+	vfPrintTime("* Time  ID  :",tTask.tTimeID);
+//	Msg("* Time  ID    : %d",tTask.tTimeID);
 	Msg("* Customer ID : %d",tTask.tCustomerID);
 	Msg("* Task type   : %d",tTask.tTaskType);
 	if (tTask.tTaskType == eTaskTypeSearchForItemOG) {

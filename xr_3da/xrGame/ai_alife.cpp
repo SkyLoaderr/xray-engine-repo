@@ -413,7 +413,7 @@ void CAI_ALife::Load()
 	R_ASSERT(tpStream->FindChunk(TASK_CHUNK_DATA));
 	m_tTaskRegistry.Load(*tpStream);
 
-	m_tGameTime = tfGetGameTime();
+	R_ASSERT(tpStream->FindChunk(ALIFE_CHUNK_DATA));
 	tpStream->Read(&m_tGameTime,sizeof(m_tGameTime));
 	
 	vfUpdateDynamicData();
@@ -444,6 +444,7 @@ void CAI_ALife::Save()
 	tStream.close_chunk	();
 	
 	tStream.open_chunk	(ALIFE_CHUNK_DATA);
+	m_tGameTime			= tfGetGameTime();
 	tStream.write		(&m_tGameTime,sizeof(m_tGameTime));
 	tStream.close_chunk	();
 	

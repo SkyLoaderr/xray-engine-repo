@@ -259,6 +259,31 @@ public:
 	};
 };
 
+class CALifeAnomalousZone : public CALifeMonsterAbstract {
+public:
+	typedef	CALifeMonsterAbstract inherited;
+	
+	SAnomalousZone					m_tAnomalousZone;
+
+	virtual	void					Save(CFS_Memory &tMemoryStream)
+	{
+		inherited::Save				(tMemoryStream);
+		tMemoryStream.write			(&m_tAnomalousZone, sizeof(m_tAnomalousZone));
+	};
+	
+	virtual	void					Load(CStream	&tFileStream)
+	{
+		inherited::Load				(tFileStream);
+		tFileStream.Read			(&m_tAnomalousZone, sizeof(m_tAnomalousZone));
+	};
+
+	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
+	{
+		inherited::Init				(tSpawnID,tpSpawnPoints);
+		m_tAnomalousZone.tAnomalousZone	= eAnomalousZoneTypeDummy;
+	};
+};
+
 class CALifeMonster : public CALifeMonsterAbstract {
 public:
 	typedef	CALifeMonsterAbstract inherited;

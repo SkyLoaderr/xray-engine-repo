@@ -53,8 +53,21 @@ public:
 						CALifeMonsterGroup	*tpALifeHumanGroup = dynamic_cast<CALifeMonsterGroup *>((*it).second);
 						if (tpALifeHumanGroup)
 							tMemoryStream.Wbyte(ALIFE_MONSTER_GROUP_ID);
-						else
-							tMemoryStream.Wbyte(ALIFE_ITEM_ID);
+						else {
+							CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>((*it).second);
+							if (tpALifeItem)
+								tMemoryStream.Wbyte(ALIFE_ITEM_ID);
+							else {
+								CALifeAnomalousZone *tpALifeAnomalousZone = dynamic_cast<CALifeAnomalousZone *>((*it).second);
+								if (tpALifeAnomalousZone)
+									tMemoryStream.Wbyte(ALIFE_ANOMALOUS_ZONE_ID);
+								else {
+									Msg("!Unsupported ALife monster type!");
+									R_ASSERT(false);
+								}
+							}
+						}
+
 					}
 				}
 			}
@@ -87,6 +100,10 @@ public:
 				}
 				case ALIFE_HUMAN_GROUP_ID : {
 					tpALifeDynamicObject = new CALifeHumanGroup;
+					break;
+				}
+				case ALIFE_ANOMALOUS_ZONE_ID : {
+					tpALifeDynamicObject = new CALifeAnomalousZone;
 					break;
 				}
 				default : NODEFAULT;

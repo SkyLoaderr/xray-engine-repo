@@ -60,7 +60,9 @@ public:
 
 	IC void vfSetTimeFactor(float fTimeFactor)
 	{
-		m_fTimeFactor = fTimeFactor;
+		m_tGameTime		= tfGetGameTime();
+		m_dwStartTime	= Level().timeServer();
+		m_fTimeFactor	= fTimeFactor;
 	}
 
 	IC _TIME_ID tfGetGameTime()
@@ -183,10 +185,14 @@ public:
 				else
 					tpALifeDynamicObject	= new CALifeHuman;
 			else
-				if (((*I).wCount > 1) && pSettings->LineExists((*I).caModel, "single") && pSettings->ReadBOOL((*I).caModel, "single"))
-					tpALifeDynamicObject	= new CALifeMonsterGroup;
+				if (pSettings->LineExists((*I).caModel, "monster") && pSettings->ReadBOOL((*I).caModel, "monster"))
+					if (((*I).wCount > 1) && pSettings->LineExists((*I).caModel, "single") && pSettings->ReadBOOL((*I).caModel, "single"))
+						tpALifeDynamicObject	= new CALifeMonsterGroup;
+					else
+						tpALifeDynamicObject	= new CALifeMonster;
 				else
-					tpALifeDynamicObject	= new CALifeMonster;
+					if (pSettings->LineExists((*I).caModel, "zone") && pSettings->ReadBOOL((*I).caModel, "zone"))
+						tpALifeDynamicObject	= new CALifeAnomalousZone;
 		}
 		else
 			tpALifeDynamicObject			= new CALifeItem;
