@@ -14,6 +14,13 @@ class CEntity;
 class CWeaponHUD;
 class ENGINE_API CMotionDef;
 
+//флаги аддонов к оружию
+#define SCOPE1_ADDON			0x01
+#define SCOPE2_ADDON			0x02
+#define GRENADE_LAUNCHER_ADDON	0x04
+#define SILENCER_ADDON			0x08
+
+
 class CWeapon : public CInventoryItem//CGameObject
 {
 	friend class CWeaponList;
@@ -125,6 +132,7 @@ protected:
 		u16					ammo_current;
 		u16					ammo_elapsed;
 		Fvector				pos,angles;
+		u8					m_flagsAddOnState;
 		void	lerp		(net_update& A,net_update& B, float f);
 	};
 	xr_deque<net_update>	NET;
@@ -158,8 +166,14 @@ public:
 		eHidden,
 		eMisfire
 	};
+
+
 	// Events/States
 	u32						STATE, NEXT_STATE;
+	
+	//состояние аддонов к оружию
+	u8						m_flagsAddOnState;
+	
 	float					m_fMinRadius;
 	float					m_fMaxRadius;
 

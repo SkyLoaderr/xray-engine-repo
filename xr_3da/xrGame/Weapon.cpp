@@ -88,6 +88,8 @@ CWeapon::CWeapon(LPCSTR name)
 
 	m_bUsingCondition = true;
 	bMisfire = false;
+
+	m_flagsAddOnState = 0;
 }
 
 CWeapon::~CWeapon		()
@@ -418,10 +420,12 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 {
 	BOOL bResult					= inherited::net_Spawn	(DC);
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
-	CSE_ALifeItemWeapon						*E	= dynamic_cast<CSE_ALifeItemWeapon*>(e);
+	CSE_ALifeItemWeapon			    *E	= dynamic_cast<CSE_ALifeItemWeapon*>(e);
 
 	//iAmmoCurrent					= E->a_current;
 	iAmmoElapsed					= E->a_elapsed;
+	m_flagsAddOnState				= E->m_addon_flags;
+
 	if(iAmmoElapsed) 
 	{
 		CCartridge l_cartridge; 
@@ -500,6 +504,8 @@ void CWeapon::net_Export	(NET_Packet& P)
 	P.w_angle8				(_x);
 	P.w_angle8				(_y);
 	P.w_angle8				(_z);
+
+	P.w_u8					(m_flagsAddOnState);
 }
 
 void CWeapon::net_Import	(NET_Packet& P)
@@ -517,6 +523,8 @@ void CWeapon::net_Import	(NET_Packet& P)
 	P.r_angle8				(N.angles.x);
 	P.r_angle8				(N.angles.y);
 	P.r_angle8				(N.angles.z);
+
+	P.r_u8					(N.m_flagsAddOnState);
 
 	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	
 	{
