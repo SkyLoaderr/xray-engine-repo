@@ -150,6 +150,13 @@ function mob_walker:waypoint_callback(obj, action_type, index)
 		printf("_bp: mob_walker [%s]: SIGNALLING: %s", self.object:name(), sig)
 	end
 	
+	local beh = self.path_walk_info[index]["b"]
+	if beh then
+		mob_state_mgr.set_state(self.object, db.actor, beg)
+	else
+		mob_state_mgr.set_state(self.object, db.actor, self.st.state)
+	end
+	
 	local search_for = self.path_walk_info[index].flags
 	if search_for:get() == 0 then
 		-- TODO: запретить одноточечные пути без соответствующего path_look по аналогии с move_mgr
@@ -180,6 +187,13 @@ function mob_walker:waypoint_callback(obj, action_type, index)
 			self.cur_anim_set = anim[suggested_anim_set]
 		else
 			self.cur_anim_set = default_anim_standing
+		end
+
+		local beh = self.path_walk_info[index]["b"]
+		if beh then
+			mob_state_mgr.set_state(self.object, db.actor, beg)
+		else
+			mob_state_mgr.set_state(self.object, db.actor, self.st.state)
 		end
 
 		if pt_chosen_idx ~= self.last_look_index then -- если уже смотрели туда - не поворачиваться

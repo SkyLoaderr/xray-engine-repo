@@ -64,7 +64,13 @@ end
 -- уже выполнены, и повторно выполн€ть их во врем€ бо€ нельз€ (а услови€ секции [combat] провер€ютс€ на каждом
 -- апдейте, когда персонаж в бою, если, конечно, не отключены вызовом этой функции).
 function disable_combat_handler(actor, npc)
-	db.storage[npc:id()].combat.enabled = false
+	if db.storage[npc:id()].combat then
+		db.storage[npc:id()].combat.enabled = false
+	end
+	
+	if db.storage[npc:id()].mob_combat then
+		db.storage[npc:id()].mob_combat.enabled = false
+	end
 end
 
 function log_bp1(actor, npc)

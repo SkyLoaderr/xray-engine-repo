@@ -2,6 +2,7 @@
 <game_information_portions>
 
 <!-- Сцена 2 - кровосос падает с обрыва -->
+<info_portion id="val_bs_deactivate"></info_portion>
 <info_portion id="val_bs_start"></info_portion>
 <info_portion id="val_bs_victim_killed"></info_portion>
 
@@ -9,7 +10,11 @@
 <info_portion id="val_escort_start"></info_portion>
 
 <!-- Стартует машина около бензоколонки -->
+<info_portion id="val_truck_actor_near_gas_st"></info_portion>
 <info_portion id="val_truck_start"></info_portion>
 <info_portion id="val_truck_arrived"></info_portion>
+
+<!-- SOS на бензоколонке -->
+<info_portion id="val_sos_actor_near_wounded"></info_portion>
 
 </game_information_portions>

@@ -194,24 +194,7 @@ function determine_section_to_activate(npc, ini, section_logic, actor)
 end
 
 ------------------------------------------------------------------------------------------------------------
--- бмняъ хглемемхъ б щрс тсмйжхч, ме гюашбюире днаюбкърэ яннрберярбсчыхе ярпнйх х б дбе нярюкэмше
-------------------------------------------------------------------------------------------------------------
-function load_generic_schemes(npc, stype)
-//	if stype == modules.stype_stalker then
-//		module(schemes["combat"])
-//		module(schemes["death"])
-//		module(schemes["hit"])
-//		module(schemes["actor_dialogs"])
-//		module(schemes["wounded"])
-//		module(schemes["heli_hunter"])
-//	elseif stype == modules.stype_mobile then
-//		module(schemes["mob_death"])
-//		module(schemes["mob_trade"])
-//	end
-end
-
-------------------------------------------------------------------------------------------------------------
--- бмняъ хглемемхъ б щрс тсмйжхч, ме гюашбюире днаюбкърэ яннрберярбсчыхе ярпнйх х б дбе нярюкэмше
+-- бмняъ хглемемхъ б щрс тсмйжхч, ме гюашбюире днаюбкърэ яннрберярбсчыхе ярпнйх х б enable_generic_schemes
 ------------------------------------------------------------------------------------------------------------
 function disable_generic_schemes(npc, stype)
 	if stype == modules.stype_stalker then
@@ -223,13 +206,14 @@ function disable_generic_schemes(npc, stype)
 		xr_heli_hunter.disable_scheme(npc, "heli_hunter")
 		xr_combat_ignore.disable_scheme(npc, "combat_ignore")
 	elseif stype == modules.stype_mobile then
+		mob_combat.disable_scheme(npc, "mob_combat")
 		mob_death.disable_scheme(npc, "mob_death")
 		mob_trade.disable_scheme(npc, "mob_trade")
 	end
 end
 
 ------------------------------------------------------------------------------------------------------------
--- бмняъ хглемемхъ б щрс тсмйжхч, ме гюашбюире днаюбкърэ яннрберярбсчыхе ярпнйх х б дбе нярюкэмше
+-- бмняъ хглемемхъ б щрс тсмйжхч, ме гюашбюире днаюбкърэ яннрберярбсчыхе ярпнйх х б disable_generic_schemes
 ------------------------------------------------------------------------------------------------------------
 function enable_generic_schemes(ini, npc, stype, section)
 	if stype == modules.stype_stalker then
@@ -268,6 +252,11 @@ function enable_generic_schemes(ini, npc, stype, section)
 		end
 
 	elseif stype == modules.stype_mobile then
+		local combat_section = utils.cfg_get_string(ini, section, "on_combat", npc, false, "")
+		if combat_section then
+			mob_combat.set_scheme(npc, ini, "mob_combat", combat_section)
+		end
+	
 		local death_section = utils.cfg_get_string(ini, section, "on_death", npc, false, "")
 		if death_section then
 			mob_death.set_scheme(npc, ini, "mob_death", death_section)
@@ -543,7 +532,7 @@ function try_switch_to_another_section(npc, st, actor)
 	for n, c in pairs(l) do
 		--printf("_bp: %d: %s", device():time_global(), c.name)
 		if c.name == "on_actor_dist_le" then
-			--printf("_bp: dist=%d (need <= %d), see_actor: %s", distance_between(actor, npc), c.v1, utils.to_str(npc:see(actor)))
+			printf("_bp: dist=%d (need <= %d), see_actor: %s", distance_between(actor, npc), c.v1, utils.to_str(npc:see(actor)))
 			if npc:see(actor) and distance_between(actor, npc) <= c.v1 then
 				--printf("_bp: conditions met")
 				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))

@@ -14,8 +14,6 @@ function motivator_binder:__init (obj) super(obj)
 	self.loaded = false
 
 	self.torch = xr_light.torch_light(obj)
-    
-	xr_logic.load_generic_schemes(obj, modules.stype_stalker)
 end
 
 function motivator_binder:extrapolate_callback(cur_pt)

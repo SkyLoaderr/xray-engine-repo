@@ -1424,6 +1424,9 @@
 						Name="Monster"
 						Filter="">
 						<File
+							RelativePath=".\Scripts\mob_combat.script">
+						</File>
+						<File
 							RelativePath=".\Scripts\mob_death.script">
 						</File>
 						<File

@@ -414,7 +414,7 @@ function action_enemy:execute ()
     
     local enemy = self.object:best_enemy ()
     state_mgr.set_state(self.object, "hide", nil,nil, {look_object = enemy})
-    if distance_between (self.object, enemy) < 20 and self.object:see (self.object:best_enemy ()) and self.object:see (enemy) == true then
+    if enemy and distance_between (self.object, enemy) < 20 and self.object:see (self.object:best_enemy ()) and self.object:see (enemy) == true then
        if enemy:alive () == true then 
           self.object:set_item (object.fire1, self.object:best_weapon ()) 
        else   
