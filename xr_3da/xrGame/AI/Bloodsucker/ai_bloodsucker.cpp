@@ -305,7 +305,7 @@ void CAI_Bloodsucker::shedule_Update(u32 dt)
 		SGameMtlPair* mtl_pair		= CMaterialManager::get_current_pair();
 		if (!mtl_pair) return;
 
-		VERIFY2(mtl_pair->CollideParticles.size()>0, "Collide Particles have not been set for current material pair!");
+		if (mtl_pair->CollideParticles.empty()) return;
 
 		LPCSTR ps_name = *mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.size())];
 
