@@ -42,9 +42,10 @@ long ov_tell_func1(void *datasource){return ftell((FILE*)datasource);}
 
 void CSoundRender_Source::LoadWave	(LPCSTR pName, BOOL b3D)
 {
-	fname					= pName;
+	/// fname					= pName;
 	// Load file into memory and parse WAV-format
-	wave					= FS.r_open(pName); VERIFY(wave);
+	wave					= FS.r_open(pName); 
+	R_ASSERT2				(wave,pName);
 	ov_callbacks ovc		= {ov_read_func,ov_seek_func,ov_close_func,ov_tell_func};
 	ov_open_callbacks		(wave,&ovf,NULL,0,ovc);
 /*
