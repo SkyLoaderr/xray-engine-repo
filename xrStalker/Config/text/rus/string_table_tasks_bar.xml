@@ -99,6 +99,16 @@
 	</string>
 
 
+	<string id="bar_dolg_svoboda_leader_kill_quest">
+		<text>Уничтожение лидера группировки Свободы</text>
+	</string>
+	<string id="mil_svoboda_leader_kill">
+		<text>На территории Военной базы найти и уничтожить лидера группировки Свобода. Снять с трупа нашивки Лидера, как доказательство его смерти</text>
+	</string>
+	<string id="bar_dolg_svoboda_leader_kill_return">
+		<text>Вернуться к генералу Воронину с нашивками Лидера Свободы</text>
+	</string>
+
 
 	<string id="bar_drunk_dolg_quest">
 		<text>Помочь пьяному долговцу</text>
