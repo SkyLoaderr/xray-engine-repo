@@ -40,6 +40,12 @@ void CAI_Rat::vfSetMovementType(char cBodyState, float fSpeed)
 
 void CAI_Rat::vfComputeNewPosition()
 {
+	// saving current parameters
+	Fvector tSafeHPB = m_tHPB;
+	Fvector tSavedPosition = vPosition;
+	SRotation tSavedTorsoTarget = r_torso_target;
+	float fSavedDHeading = m_fDHeading;
+
 	// Update position and orientation of the planes
 	float fAT = m_fASpeed * m_fTimeUpdateDelta;
 
@@ -92,8 +98,6 @@ void CAI_Rat::vfComputeNewPosition()
 	UpdateTransform();
 
 	// Update position
-	Fvector tTemp;
-	tTemp.set(vPosition);
 //	if (feel_touch.size() || true) {
 //		Fvector tTemp1;
 //		tTemp1.set(vPosition);
@@ -113,13 +117,18 @@ void CAI_Rat::vfComputeNewPosition()
 	}
 	if (dwNewNode && Level().AI.u_InsideNode(*tpNewNode,QueryPos)) {
 		vPosition.y = Level().AI.ffGetY(*tpNewNode,vPosition.x,vPosition.z);
-		m_tOldPosition.set(tTemp);
+		m_tOldPosition.set(tSavedPosition);
 		m_bNoWay = false;
 	}
 	else {
 		vPosition.set(m_tOldPosition);
 		m_fSafeSpeed = m_fSpeed = EPS_S;
 		m_bNoWay = true;
+		vPosition = tSavedPosition;
+		m_tHPB = tSafeHPB;
+		r_torso_target = tSavedTorsoTarget;
+		m_fDHeading = fSavedDHeading;
+		UpdateTransform();
 	}
 }
 

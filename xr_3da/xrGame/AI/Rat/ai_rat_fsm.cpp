@@ -202,20 +202,17 @@ void CAI_Rat::FreeHuntingActive()
 
 	vfUpdateTime(m_fTimeUpdateDelta);
 
-	if (m_fSpeed > EPS_L)
-		vfComputeNewPosition();
-	else
-		UpdateTransform();
+	vfComputeNewPosition();
 
 	SetDirectionLook();
 
 	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
-		m_fSpeed = EPS_S;
+		m_fSpeed = .1f;
 		if (m_bNoWay) {
-			m_tGoalDir.set(::Random.randF(-1,1),0,::Random.randF(-1,1));
-			m_tGoalDir.normalize();
-			m_tGoalDir.mul(1000.f);
-			m_tGoalDir.add(vPosition);
+			float fAngle = ::Random.randF(MIN_TURN_VALUE,MAX_TURN_VALUE);
+			r_torso_target.yaw = r_torso_current.yaw + fAngle;
+			r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
+			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
 		}
 	}
 	else 
@@ -338,15 +335,19 @@ void CAI_Rat::UnderFire()
 	
 	vfUpdateTime(m_fTimeUpdateDelta);
 
-	if ((!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8)) || m_bNoWay)
-		m_fSpeed = EPS_S;
+	vfComputeNewPosition();
+
+	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
+		m_fSpeed = .1f;
+		if (m_bNoWay) {
+			float fAngle = ::Random.randF(MIN_TURN_VALUE,MAX_TURN_VALUE);
+			r_torso_target.yaw = r_torso_current.yaw + fAngle;
+			r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
+			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
+		}
+	}
 	else 
 		m_fSafeSpeed = m_fSpeed = m_fAttackSpeed;
-
-	if (m_fSpeed > EPS_L)
-		vfComputeNewPosition();
-	else
-		UpdateTransform();
 
 	SetDirectionLook();
 }
@@ -402,8 +403,6 @@ void CAI_Rat::AttackRun()
 	WRITE_TO_LOG("Attack enemy");
 	bStopThinking = true;
 
-	//Msg("%d : %d",Level().timeServer(),m_dwLostEnemyTime);
-
 	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiRatDie)
 	
 	if (m_Enemy.Enemy)
@@ -452,10 +451,6 @@ void CAI_Rat::AttackRun()
 	
 	m_tGoalDir.set			(m_Enemy.Enemy->Position());
 	m_fASpeed				= .3f;
-	//m_tSpawnPosition.set	(m_Enemy.Enemy->Position());
-	//m_tVarGoal.set			(0,0,0);
-	//m_fGoalChangeDelta		= 0.f;
-	//vfChangeGoal();
 	
 	vfSaveEnemy();
 
@@ -463,7 +458,6 @@ void CAI_Rat::AttackRun()
 
 	if (m_Enemy.Enemy->Position().distance_to(vPosition) <= m_fAttackDistance) {
 		vfAimAtEnemy();
-		r_torso_target.pitch = 0;
 		UpdateTransform();
 	}
 	else {
@@ -471,15 +465,21 @@ void CAI_Rat::AttackRun()
 		SetDirectionLook();
 	}
 	
+	//vfComputeNewPosition();
+
 	vfSetFire(false,Group);
 
-	vfSetMovementType(m_cBodyState,m_fAttackSpeed);
-	
-	if ((!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8)) || m_bNoWay)
-		m_fSpeed = EPS_S;
+	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
+		m_fSpeed = .1f;
+		if (m_bNoWay) {
+			float fAngle = ::Random.randF(MIN_TURN_VALUE,MAX_TURN_VALUE);
+			r_torso_target.yaw = r_torso_current.yaw + fAngle;
+			r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
+			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
+		}
+	}
 	else 
 		m_fSafeSpeed = m_fSpeed = m_fAttackSpeed;
-
 }
 
 void CAI_Rat::Retreat()
@@ -514,23 +514,17 @@ void CAI_Rat::Retreat()
 
 	m_tGoalDir = m_tSpawnPosition;
 	
-	if ((!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8)) || m_bNoWay) {
-		m_fSpeed = 0.f;
-		m_fASpeed = .2f;
-		m_fGoalChangeDelta		= 10.f;
-		vfUpdateTime(m_fTimeUpdateDelta);
-//		UpdateTransform();
-		vfComputeNewPosition();
+	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
+		m_fSpeed = .1f;
+		if (m_bNoWay) {
+			float fAngle = ::Random.randF(MIN_TURN_VALUE,MAX_TURN_VALUE);
+			r_torso_target.yaw = r_torso_current.yaw + fAngle;
+			r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
+			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
+		}
 	}
-	else {
-		if (m_fSpeed < EPS_L)
-			m_fSafeSpeed = m_fSpeed = m_fMinSpeed;
-		else
-			m_fSafeSpeed = m_fSpeed = m_fAttackSpeed;
-		vfUpdateTime(m_fTimeUpdateDelta);
-		vfComputeNewPosition();
-		SetDirectionLook();
-	}
+	else 
+		m_fSafeSpeed = m_fSpeed = m_fAttackSpeed;
 }
 
 void CAI_Rat::Pursuit()
@@ -565,15 +559,19 @@ void CAI_Rat::Pursuit()
 	
 	vfUpdateTime(m_fTimeUpdateDelta);
 
-	if (m_fSpeed > EPS_L)
-		vfComputeNewPosition();
-	else
-		UpdateTransform();
+	vfComputeNewPosition();
 
 	SetDirectionLook();
 
-	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay)
-		m_fSpeed = EPS_S;
+	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
+		m_fSpeed = .1f;
+		if (m_bNoWay) {
+			float fAngle = ::Random.randF(MIN_TURN_VALUE,MAX_TURN_VALUE);
+			r_torso_target.yaw = r_torso_current.yaw + fAngle;
+			r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
+			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
+		}
+	}
 	else 
 		if (m_fSafeSpeed != m_fSpeed) {
 			int iRandom = ::Random.randI(0,2);
@@ -631,13 +629,17 @@ void CAI_Rat::FreeRecoil()
 	
 	vfUpdateTime(m_fTimeUpdateDelta);
 
-	if (m_fSpeed > EPS_L)
-		vfComputeNewPosition();
-	else
-		UpdateTransform();
+	vfComputeNewPosition();
 
-	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay)
-		m_fSpeed = EPS_S;
+	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
+		m_fSpeed = .1f;
+		if (m_bNoWay) {
+			float fAngle = ::Random.randF(MIN_TURN_VALUE,MAX_TURN_VALUE);
+			r_torso_target.yaw = r_torso_current.yaw + fAngle;
+			r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
+			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
+		}
+	}
 	else 
 		m_fSafeSpeed = m_fSpeed = m_fMaxSpeed;
 
@@ -683,16 +685,19 @@ void CAI_Rat::ReturnHome()
 
 	vfUpdateTime(m_fTimeUpdateDelta);
 
-	if (m_fSpeed > EPS_L)
-		vfComputeNewPosition();
-	else
-		UpdateTransform();
+	vfComputeNewPosition();
 
 	SetDirectionLook();
 
-	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8))
-		m_fSpeed = EPS_S;
+	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
+		m_fSpeed = .1f;
+		if (m_bNoWay) {
+			float fAngle = ::Random.randF(MIN_TURN_VALUE,MAX_TURN_VALUE);
+			r_torso_target.yaw = r_torso_current.yaw + fAngle;
+			r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
+			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
+		}
+	}
 	else 
-		if (m_fSafeSpeed != m_fSpeed)
-			m_fSpeed = m_fSafeSpeed = m_fAttackSpeed;
+		m_fSafeSpeed = m_fSpeed = m_fAttackSpeed;
 }
