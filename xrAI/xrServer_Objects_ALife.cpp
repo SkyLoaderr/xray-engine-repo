@@ -66,12 +66,12 @@ void CSE_ALifeEvent::FillProp	(LPCSTR pref, PropItemVec& values)
 ////////////////////////////////////////////////////////////////////////////
 void CSE_ALifePersonalEvent::STATE_Write	(NET_Packet &tNetPacket)
 {
-	save_base_vector			(m_tpItemIDs,		tNetPacket);
+	save_vector					(m_tpItemIDs,		tNetPacket);
 }
 
 void CSE_ALifePersonalEvent::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 {
-	load_base_vector			(m_tpItemIDs,		tNetPacket);
+	load_vector					(m_tpItemIDs,		tNetPacket);
 }
 
 void CSE_ALifePersonalEvent::UPDATE_Write	(NET_Packet &tNetPacket)
@@ -403,14 +403,14 @@ void CSE_ALifeAbstractGroup::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 	m_bCreateSpawnPositions		= !!dwDummy;
 	tNetPacket.r_u16			(m_wCount);
 	if (m_wVersion > 19)
-		load_base_vector		(m_tpMembers,tNetPacket);
+		load_vector				(m_tpMembers,tNetPacket);
 };
 
 void CSE_ALifeAbstractGroup::STATE_Write	(NET_Packet	&tNetPacket)
 {
 	tNetPacket.w_u32			(m_bCreateSpawnPositions);
 	tNetPacket.w_u16			(m_wCount);
-	save_base_vector			(m_tpMembers,tNetPacket);
+	save_vector					(m_tpMembers,tNetPacket);
 };
 
 void CSE_ALifeAbstractGroup::UPDATE_Read	(NET_Packet	&tNetPacket)

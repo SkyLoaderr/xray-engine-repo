@@ -79,8 +79,8 @@ CSE_ALifeDiscovery::CSE_ALifeDiscovery(LPCSTR caSection)
 
 CSE_ALifeDiscovery::~CSE_ALifeDiscovery()
 {
-	free_object_vector			(m_tpArtefactDemand);
-	free_malloc_vector			(m_tpDependency);
+	delete_vector			(m_tpArtefactDemand);
+	free_vector			(m_tpDependency);
 }
 
 void CSE_ALifeDiscovery::Save	(IWriter &tMemoryStream)
@@ -118,7 +118,7 @@ CSE_ALifeOrganization::CSE_ALifeOrganization(LPCSTR caSection)
 
 CSE_ALifeOrganization::~CSE_ALifeOrganization()
 {
-	free_malloc_vector			(m_tpPossibleDiscoveries);
+	free_vector			(m_tpPossibleDiscoveries);
 	{
 		ITEM_COUNT_PAIR_IT		I = m_tpPurchasedArtefacts.begin();
 		ITEM_COUNT_PAIR_IT		E = m_tpPurchasedArtefacts.end();

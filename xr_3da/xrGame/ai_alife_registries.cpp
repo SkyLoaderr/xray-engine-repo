@@ -132,7 +132,7 @@ CSE_ALifeEventRegistry::CSE_ALifeEventRegistry()
 
 CSE_ALifeEventRegistry::~CSE_ALifeEventRegistry()
 {
-	free_map					(m_tEventRegistry);
+	delete_map					(m_tEventRegistry);
 }
 
 void CSE_ALifeEventRegistry::Save(IWriter &tMemoryStream)
@@ -166,7 +166,7 @@ CSE_ALifeTaskRegistry::CSE_ALifeTaskRegistry()
 
 CSE_ALifeTaskRegistry::~CSE_ALifeTaskRegistry()
 {
-	free_map					(m_tTaskRegistry);
+	delete_map					(m_tTaskRegistry);
 }
 
 void CSE_ALifeTaskRegistry::Save(IWriter &tMemoryStream)
@@ -531,7 +531,7 @@ CSE_ALifeAnomalyRegistry::~CSE_ALifeAnomalyRegistry()
 	ANOMALY_P_VECTOR_IT			I = m_tpAnomalies.begin();
 	ANOMALY_P_VECTOR_IT			E = m_tpAnomalies.end();
 	for ( ; I != E; I++)
-		free_object_vector		(*I);
+		delete_vector		(*I);
 }
 
 void CSE_ALifeAnomalyRegistry::Save(IWriter &tMemoryStream)
@@ -591,9 +591,9 @@ CSE_ALifeOrganizationRegistry::CSE_ALifeOrganizationRegistry()
 
 CSE_ALifeOrganizationRegistry::~CSE_ALifeOrganizationRegistry()
 {
-	free_map					(m_tOrganizationRegistry);
-	free_map					(m_tDiscoveryRegistry);
-	free_malloc_vector			(m_tArtefactRegistry);
+	delete_map					(m_tOrganizationRegistry);
+	delete_map					(m_tDiscoveryRegistry);
+	free_vector					(m_tArtefactRegistry);
 }
 
 void CSE_ALifeOrganizationRegistry::Save(IWriter &tMemoryStream)
@@ -612,8 +612,8 @@ void CSE_ALifeOrganizationRegistry::Save(IWriter &tMemoryStream)
 void CSE_ALifeOrganizationRegistry::Load(IReader &tFileStream)
 { 
 	R_ASSERT2					(tFileStream.find_chunk(DISCOVERY_CHUNK_DATA),"Can't find chunk DISCOVERY_CHUNK_DATA!");
-	load_initialized_map		(m_tOrganizationRegistry,tFileStream,cafChooseOrganizationKeyPredicate);
-	load_initialized_map		(m_tDiscoveryRegistry,tFileStream,cafChooseDiscoveryKeyPredicate);
+	load_initialized_map		(m_tOrganizationRegistry,tFileStream);
+	load_initialized_map		(m_tDiscoveryRegistry,tFileStream);
 	m_tArtefactRegistry.resize	(tFileStream.r_u32());
 	LPSTR_IT					I = m_tArtefactRegistry.begin();
 	LPSTR_IT					E = m_tArtefactRegistry.end();

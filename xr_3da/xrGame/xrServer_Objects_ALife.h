@@ -12,7 +12,6 @@
 #include "xrServer_Objects.h"
 #include "ai_alife_space.h"
 using namespace ALife;
-//#include "ai_alife_templates.h"
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeEvent,IPureServerObject)
 	_EVENT_ID						m_tEventID;

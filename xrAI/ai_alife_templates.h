@@ -9,8 +9,8 @@
 #ifndef XRAY_AI_ALIFE_TEMPLATES
 #define XRAY_AI_ALIFE_TEMPLATES
 
-template <class T>
-void free_object_vector(xr_vector<T *> &tpVector)
+template <class T> 
+void delete_vector(xr_vector<T *> &tpVector)
 {
 	xr_vector<T *>::iterator	I = tpVector.begin();
 	xr_vector<T *>::iterator	E = tpVector.end();
@@ -18,8 +18,8 @@ void free_object_vector(xr_vector<T *> &tpVector)
 		xr_delete				(*I);
 };
 
-template <class T>
-void free_malloc_vector(xr_vector<T *> &tpVector)
+template <class T> 
+void free_vector(xr_vector<T *> &tpVector)
 {
 	xr_vector<T *>::iterator	I = tpVector.begin();
 	xr_vector<T *>::iterator	E = tpVector.end();
@@ -28,7 +28,7 @@ void free_malloc_vector(xr_vector<T *> &tpVector)
 };
 
 template <class T1, class T2, class T3>
-void free_map(xr_map<T1,T2 *,T3> &tpMap)
+void delete_map(xr_map<T1,T2 *,T3> &tpMap)
 {
 	xr_map<T1,T2 *,T3>::iterator	I = tpMap.begin();
 	xr_map<T1,T2 *,T3>::iterator	E = tpMap.end();
@@ -36,9 +36,29 @@ void free_map(xr_map<T1,T2 *,T3> &tpMap)
 		xr_delete				((*I).second);
 };
 
-// server objects
+template <class T, class M>
+void save_vector(xr_vector<T *> &tpVector, M &tNetPacket)
+{
+	tNetPacket.w_u32			((u32)tpVector.size());
+	xr_vector<T *>::iterator	I = tpVector.begin();
+	xr_vector<T *>::iterator	E = tpVector.end();
+	for ( ; I != E; I++)
+		(*I)->UPDATE_Write		(tNetPacket);
+};
+
+template <class T, class M>
+void save_vector(xr_vector<T> &tpVector, M &tNetPacket,bool bSaveCount = true)
+{
+	if (bSaveCount)
+		tNetPacket.w_u32		((u32)tpVector.size());
+	xr_vector<T>::iterator		I = tpVector.begin();
+	xr_vector<T>::iterator		E = tpVector.end();
+	for ( ; I != E; I++)
+		tNetPacket.w			(&*I,sizeof(*I));
+};
+
 template <class M>
-void save_bool_vector(xr_vector<bool> &baVector, M &tNetPacket)
+void save_vector(xr_vector<bool> &baVector, M &tNetPacket)
 {
 	tNetPacket.w_u32			((u32)baVector.size());
 	xr_vector<bool>::iterator 	I = baVector.begin();
@@ -58,8 +78,34 @@ void save_bool_vector(xr_vector<bool> &baVector, M &tNetPacket)
 	}
 };
 
+template <class T, class M>
+void load_vector(xr_vector<T *> &tpVector, M &tNetPacket)
+{
+	u32							dwDummy;
+	tNetPacket.r_u32			(dwDummy);
+	tpVector.resize				(dwDummy);
+	xr_vector<T *>::iterator	I = tpVector.begin();
+	xr_vector<T *>::iterator	E = tpVector.end();
+	for ( ; I != E; I++) {
+		*I = xr_new<T>			();
+		(*I)->UPDATE_Read		(tNetPacket);
+	}
+};
+
+template <class T, class M>
+void load_vector(xr_vector<T> &tpVector, M &tNetPacket)
+{
+	u32							dwDummy;
+	tNetPacket.r_u32			(dwDummy);
+	tpVector.resize				(dwDummy);
+	xr_vector<T>::iterator		I = tpVector.begin();
+	xr_vector<T>::iterator		E = tpVector.end();
+	for ( ; I != E; I++)
+		tNetPacket.r			(&*I,sizeof(*I));
+};
+
 template <class M>
-void load_bool_vector(xr_vector<bool> &baVector, M &tNetPacket)
+void load_vector(xr_vector<bool> &baVector, M &tNetPacket)
 {
 	u32							dwDummy;
 	tNetPacket.r_u32			(dwDummy);
@@ -73,64 +119,6 @@ void load_bool_vector(xr_vector<bool> &baVector, M &tNetPacket)
 			j					= 0;
 		}
 		*I						= !!(dwMask & (u32(1) << j));
-	}
-};
-
-template <class T, class M>
-void save_base_vector(xr_vector<T> &tpVector, M &tNetPacket,bool bSaveCount = true)
-{
-	if (bSaveCount)
-		tNetPacket.w_u32		((u32)tpVector.size());
-	xr_vector<T>::iterator		I = tpVector.begin();
-	xr_vector<T>::iterator		E = tpVector.end();
-	for ( ; I != E; I++)
-		tNetPacket.w			(&*I,sizeof(*I));
-};
-
-template <class T>
-void load_base_vector(xr_vector<T> &tpVector, NET_Packet &tNetPacket)
-{
-	u32							dwDummy;
-	tNetPacket.r_u32			(dwDummy);
-	tpVector.resize				(dwDummy);
-	xr_vector<T>::iterator		I = tpVector.begin();
-	xr_vector<T>::iterator		E = tpVector.end();
-	for ( ; I != E; I++)
-		tNetPacket.r			(&*I,sizeof(*I));
-};
-
-template <class T>
-void init_vector(xr_vector<T *> &tpVector, LPCSTR caSection)
-{
-	xr_vector<T *>::iterator	I = tpVector.begin();
-	xr_vector<T *>::iterator	E = tpVector.end();
-	for ( ; I != E; I++) {
-		*I = xr_new<T>			();
-		(*I)->Init				(caSection);
-	}
-};
-
-template <class T, class M>
-void save_entity_vector(xr_vector<T *> &tpVector, M &tNetPacket)
-{
-	tNetPacket.w_u32			((u32)tpVector.size());
-	xr_vector<T *>::iterator	I = tpVector.begin();
-	xr_vector<T *>::iterator	E = tpVector.end();
-	for ( ; I != E; I++)
-		(*I)->UPDATE_Write		(tNetPacket);
-};
-
-template <class T, class M>
-void load_entity_vector(xr_vector<T *> &tpVector, M &tNetPacket)
-{
-	u32							dwDummy;
-	tNetPacket.r_u32			(dwDummy);
-	tpVector.resize				(dwDummy);
-	xr_vector<T *>::iterator	I = tpVector.begin();
-	xr_vector<T *>::iterator	E = tpVector.end();
-	for ( ; I != E; I++) {
-		*I = xr_new<T>			();
-		(*I)->UPDATE_Read		(tNetPacket);
 	}
 };
 
@@ -191,7 +179,7 @@ void load_map(xr_map<T1,T2 *,T3> &tpMap, M &tNetPacket, T1 tfGetKey(const T2 *))
 };
 
 template <class T1, class T2, class T3, class M>
-void load_map(xr_map<T1,T2,T3> &tpMap, M &tNetPacket)
+void load_map(xr_map<T1,T2,T3> &tpMap, M &tNetPacket, T1 tfGetKey(const T2 *))
 {
 	tpMap.clear					();
 	u32							dwCount	= tNetPacket.r_u32();
@@ -203,7 +191,7 @@ void load_map(xr_map<T1,T2,T3> &tpMap, M &tNetPacket)
 };
 
 template <class T1, class T2, class T3, class M>
-void load_initialized_map(xr_map<T1,T2 *,T3> &tpMap, M &tNetPacket, T1 tfGetKey(const T2 *))
+void load_initialized_map(xr_map<T1,T2 *,T3> &tpMap, M &tNetPacket)
 {
 	R_ASSERT2					(tNetPacket.r_u32() == tpMap.size(),"Initialized and saved map length mismatch!");
 	xr_map<T1,T2 *,T3>::iterator	I = tpMap.begin();
