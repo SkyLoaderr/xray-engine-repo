@@ -251,6 +251,7 @@ void CWeapon::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::r
 
 void CWeapon::Update		(float dt, BOOL bHUDView)
 {
+	Sleep(50);
 	fireDispersion_Current	-= fireDispersion_Dec*dt;
 	clamp					(fireDispersion_Current,0.f,1.f);
 	if (light_time>0)		light_time -= dt;

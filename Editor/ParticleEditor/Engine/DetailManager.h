@@ -10,7 +10,7 @@
 #include "detailformat.h"
 #include "detailmodel.h"
 
-const int		dm_max_objects	= 32;
+const int		dm_max_objects	= 64;
 const int		dm_obj_in_slot	= 4;
 const int		dm_size			= 7;
 const int		dm_cache_line	= 1+dm_size+1+dm_size+1;
