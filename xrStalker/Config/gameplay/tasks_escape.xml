@@ -6,15 +6,15 @@
 		<title>Украсть ящик с блокпоста.</title>
 		<objective>
 			<text>Украсть у командира блокпоста ящик с важными документами.</text>
-			<icon x="50" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<icon x="350" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 		<objective>
 			<text>Украсть ящик с блокпоста.</text>
-			<icon x="50" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<icon x="300" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 		<objective>
 			<text>Принести ящик торговцу.</text>
-			<icon x="50" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<icon x="100" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
 
@@ -22,17 +22,17 @@
 		<title>Убить Стрелка.</title>
 		<objective>
 			<text>Необходимо найти и уничтожить Стрелка.</text>
-			<icon x="50" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<article>social_stalker-clans_gunslinger-clan</article>
 		</objective>
 		<objective>
 			<text>Найти Стрелка.</text>
-			<icon x="50" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<article>social_stalker-clans_gunslinger-clan</article>
 		</objective>
 		<objective>
 			<text>Убить Стрелка.</text>
-			<icon x="50" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<article>social_stalker-clans_gunslinger-clan</article>
 		</objective>
 	</game_task>
@@ -41,11 +41,11 @@
 		<title>Принести артефакт торговцу.</title>
 		<objective>
 			<text>Торговец разыскивает особо редкий артефакт "Ночная звезда".</text>
-			<icon x="100" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<icon x="450" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 		<objective>
 			<text>Найдите "Ночную звезду".</text>
-			<icon x="100" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<icon x="400" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 		<objective>
 			<text>Принесите "Ночную звезду" торговцу.</text>
@@ -57,7 +57,7 @@
 		<title>Встретиться на свалке со сталкером.</title>
 		<objective>
 			<text>Встретиться со сталкером в гараже на свалке на счет информации о группировке Стрелка.</text>
-			<icon x="50" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<icon x="150" y="50" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
 
@@ -65,15 +65,15 @@
 		<title>Достать документы военных из НИИ "Агропром".</title>
 		<objective>
 			<text>Необходимо достать военные документы и доставить их бармену в баре сталкеров.</text>
-			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>			
+			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>			
 		</objective>
 		<objective>
 			<text>Добудьте военные документы из НИИ "Агропром".</text>
-			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 		<objective>
 			<text>Отнесите документы бармену в баре сталкеров.</text>
-			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<icon x="100" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
 
@@ -89,7 +89,7 @@
 		<title>Найти тайник группировки Стрелка.</title>
 		<objective>
 			<text>Найдите и обыщите тайник группировки Стрелка. Там может быть информация о том, где найти самого Стрелка.</text>
-			<icon x="200" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
 	
