@@ -567,6 +567,7 @@ void CWeapon::OnH_B_Independent	()
 	m_bPending = false;
 	SwitchState(eIdle);
 
+	m_strapped_mode				= false;
 	hud_mode					= FALSE;
 	UpdateXForm					();
 
