@@ -243,7 +243,7 @@ private:
 			void			ExploreNDE						();
 			void			ExploreNDNE						();
 			void			TakeItems						();
-			void			AccomplishTask					();
+			void			AccomplishTask					(IBaseAI_NodeEvaluator *tpNodeEvaluator = 0);
 
 			// selectors
 			void			vfInitSelector					(IBaseAI_NodeEvaluator &S, CSquad &Squad, CEntity* &Leader);

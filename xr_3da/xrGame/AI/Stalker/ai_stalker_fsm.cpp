@@ -408,42 +408,44 @@ void CAI_Stalker::ExploreDNE()
 	else
 		tPoint				= getAI().tfGetNodeCenter(m_tpaDynamicSounds[m_iSoundIndex].dwNodeID);
 	if (m_bStateChanged) {
-		m_tActionState = eActionStateDontWatch;
+		m_tActionState		= eActionStateDontWatch;
 		m_dwActionStartTime = Level().timeServer();
 	}
+	m_tSelectorFreeHunting.m_fOptEnemyDistance = max(25.f,vPosition.distance_to(tPoint));
 	switch (m_tActionState) {
 		case eActionStateDontWatch : {
-			WRITE_TO_LOG			("DontWatch : Exploring non-danger non-expedient sound");
-			vfSetParameters(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeStand,eStateTypeDanger,eLookTypeSearch);
+			WRITE_TO_LOG			("DontWatch : Exploring danger non-expedient sound");
+			AccomplishTask			(&m_tSelectorFreeHunting);
 			if (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,tPoint) != u32(-1)) {
-				m_tActionState = eActionStateWatch;
+				m_tActionState		= eActionStateWatch;
 				m_dwActionStartTime = Level().timeServer();
 			}
 			break;
 		}
 		case eActionStateWatch : {
-			WRITE_TO_LOG			("Watch : Exploring non-danger non-expedient sound");
-			vfSetParameters(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeStand,eStateTypeDanger,eLookTypeLookOver,tPoint);
-			if (Level().timeServer() - m_dwActionStartTime > 7000) {
-				m_tActionState = eActionStateWatchGo;
+			WRITE_TO_LOG			("Watch : Exploring danger non-expedient sound");
+			vfSetParameters			(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeStand,eStateTypeDanger,eLookTypeLookFireOver,tPoint,2500);
+			if (Level().timeServer() - m_dwActionStartTime > 9000) {
+				m_tActionState		= eActionStateWatchGo;
 				m_dwActionStartTime = Level().timeServer();
 			}
 			break;
 		}
 		case eActionStateWatchGo : {
-			WRITE_TO_LOG			("WatchGo : Exploring non-danger non-expedient sound");
-			vfSetParameters(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeStand,eStateTypeDanger,eLookTypeSearch);
-			if (Level().timeServer() - m_dwActionStartTime > 10000) {
-				m_tActionState = eActionStateWatchLook;
+			WRITE_TO_LOG			("WatchGo : Exploring danger non-expedient sound");
+			AccomplishTask			(&m_tSelectorFreeHunting);
+			if (Level().timeServer() - m_dwActionStartTime > 7000) {
+				m_tActionState		= eActionStateWatchLook;
 				m_dwActionStartTime = Level().timeServer();
 			}
 			break;
 		}
 		case eActionStateWatchLook : {
-			WRITE_TO_LOG			("WatchLook : Exploring non-danger non-expedient sound");
-			vfSetParameters(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
-			if (Level().timeServer() - m_dwActionStartTime > 3000) {
-				m_tActionState = eActionStateWatchGo;
+			WRITE_TO_LOG			("WatchLook : Exploring danger non-expedient sound");
+			vfUpdateSearchPosition	();
+			vfSetParameters			(0,0,false,eWeaponStateIdle,ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
+			if (Level().timeServer() - m_dwActionStartTime > 5000) {
+				m_tActionState		= eActionStateWatchGo;
 				m_dwActionStartTime = Level().timeServer();
 			}
 			break;
@@ -461,42 +463,44 @@ void CAI_Stalker::ExploreDE()
 	else
 		tPoint				= getAI().tfGetNodeCenter(m_tpaDynamicSounds[m_iSoundIndex].dwNodeID);
 	if (m_bStateChanged) {
-		m_tActionState = eActionStateDontWatch;
+		m_tActionState		= eActionStateDontWatch;
 		m_dwActionStartTime = Level().timeServer();
 	}
+	m_tSelectorFreeHunting.m_fOptEnemyDistance = max(15.f,vPosition.distance_to(tPoint));
 	switch (m_tActionState) {
 		case eActionStateDontWatch : {
-			WRITE_TO_LOG			("DontWatch : Exploring non-danger non-expedient sound");
-			vfSetParameters(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeStand,eStateTypeDanger,eLookTypeSearch);
+			WRITE_TO_LOG			("DontWatch : Exploring danger non-expedient sound");
+			AccomplishTask			(&m_tSelectorFreeHunting);
 			if (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,tPoint) != u32(-1)) {
-				m_tActionState = eActionStateWatch;
+				m_tActionState		= eActionStateWatch;
 				m_dwActionStartTime = Level().timeServer();
 			}
 			break;
 		}
 		case eActionStateWatch : {
-			WRITE_TO_LOG			("Watch : Exploring non-danger non-expedient sound");
-			vfSetParameters(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeStand,eStateTypeDanger,eLookTypeLookOver,tPoint);
-			if (Level().timeServer() - m_dwActionStartTime > 7000) {
-				m_tActionState = eActionStateWatchGo;
+			WRITE_TO_LOG			("Watch : Exploring danger non-expedient sound");
+			vfSetParameters			(0,0,false,eWeaponStateIdle,ePathTypeCriteria,eBodyStateStand,eMovementTypeStand,eStateTypeDanger,eLookTypeLookFireOver,tPoint,3000);
+			if (Level().timeServer() - m_dwActionStartTime > 10000) {
+				m_tActionState		= eActionStateWatchGo;
 				m_dwActionStartTime = Level().timeServer();
 			}
 			break;
 		}
 		case eActionStateWatchGo : {
-			WRITE_TO_LOG			("WatchGo : Exploring non-danger non-expedient sound");
-			vfSetParameters(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeStand,eStateTypeDanger,eLookTypeSearch);
-			if (Level().timeServer() - m_dwActionStartTime > 10000) {
-				m_tActionState = eActionStateWatchLook;
+			WRITE_TO_LOG			("WatchGo : Exploring danger non-expedient sound");
+			AccomplishTask			(&m_tSelectorFreeHunting);
+			if (Level().timeServer() - m_dwActionStartTime > 6000) {
+				m_tActionState		= eActionStateWatchLook;
 				m_dwActionStartTime = Level().timeServer();
 			}
 			break;
 		}
 		case eActionStateWatchLook : {
-			WRITE_TO_LOG			("WatchLook : Exploring non-danger non-expedient sound");
-			vfSetParameters(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
-			if (Level().timeServer() - m_dwActionStartTime > 3000) {
-				m_tActionState = eActionStateWatchGo;
+			WRITE_TO_LOG			("WatchLook : Exploring danger non-expedient sound");
+			vfUpdateSearchPosition	();
+			vfSetParameters			(0,0,false,eWeaponStateIdle,ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
+			if (Level().timeServer() - m_dwActionStartTime > 6000) {
+				m_tActionState		= eActionStateWatchGo;
 				m_dwActionStartTime = Level().timeServer();
 			}
 			break;
@@ -519,8 +523,9 @@ void CAI_Stalker::ExploreNDE()
 	}
 	switch (m_tActionState) {
 		case eActionStateDontWatch : {
-			WRITE_TO_LOG			("DontWatch : Exploring non-danger non-expedient sound");
-			vfSetParameters(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeStand,eStateTypeDanger,eLookTypeSearch,tPoint);
+			WRITE_TO_LOG			("DontWatch : Exploring non-danger expedient sound");
+			AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
+			vfSetParameters			(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeSearch);
 			if (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,tPoint) != u32(-1)) {
 				m_tActionState = eActionStateWatch;
 				m_dwActionStartTime = Level().timeServer();
@@ -528,8 +533,8 @@ void CAI_Stalker::ExploreNDE()
 			break;
 		}
 		case eActionStateWatch : {
-			WRITE_TO_LOG			("Watch : Exploring non-danger non-expedient sound");
-			vfSetParameters(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeStand,eStateTypeDanger,eLookTypeLookOver,tPoint);
+			WRITE_TO_LOG			("Watch : Exploring non-danger expedient sound");
+			vfSetParameters			(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeStand,eStateTypeDanger,eLookTypeLookOver,tPoint);
 			if (Level().timeServer() - m_dwActionStartTime > 7000) {
 				m_tActionState = eActionStateWatchGo;
 				m_dwActionStartTime = Level().timeServer();
@@ -537,8 +542,8 @@ void CAI_Stalker::ExploreNDE()
 			break;
 		}
 		case eActionStateWatchGo : {
-			WRITE_TO_LOG			("WatchGo : Exploring non-danger non-expedient sound");
-			vfSetParameters(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeStand,eStateTypeDanger,eLookTypeSearch,tPoint);
+			WRITE_TO_LOG			("WatchGo : Exploring non-danger expedient sound");
+			AccomplishTask			();
 			if (Level().timeServer() - m_dwActionStartTime > 10000) {
 				m_tActionState = eActionStateWatchLook;
 				m_dwActionStartTime = Level().timeServer();
@@ -546,9 +551,10 @@ void CAI_Stalker::ExploreNDE()
 			break;
 		}
 		case eActionStateWatchLook : {
-			WRITE_TO_LOG			("WatchLook : Exploring non-danger non-expedient sound");
-			vfSetParameters(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
-			if (Level().timeServer() - m_dwActionStartTime > 3000) {
+			WRITE_TO_LOG			("WatchLook : Exploring non-danger expedient sound");
+			vfUpdateSearchPosition	();
+			vfSetParameters			(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
+			if (Level().timeServer() - m_dwActionStartTime > 4000) {
 				m_tActionState = eActionStateWatchGo;
 				m_dwActionStartTime = Level().timeServer();
 			}
@@ -582,8 +588,8 @@ void CAI_Stalker::ExploreNDNE()
 		}
 		case eActionStateWatch : {
 			WRITE_TO_LOG			("Watch : Exploring non-danger non-expedient sound");
-			vfSetParameters(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeStand,eStateTypeDanger,eLookTypeSearch,tPoint);
-			if (Level().timeServer() - m_dwActionStartTime > 7000) {
+			vfSetParameters			(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeStand,eStateTypeDanger,eLookTypeLookOver,tPoint,1200);
+			if (Level().timeServer() - m_dwActionStartTime > 5000) {
 				m_tActionState = eActionStateWatchGo;
 				m_dwActionStartTime = Level().timeServer();
 			}
@@ -600,6 +606,7 @@ void CAI_Stalker::ExploreNDNE()
 		}
 		case eActionStateWatchLook : {
 			WRITE_TO_LOG			("WatchLook : Exploring non-danger non-expedient sound");
+			vfUpdateSearchPosition	();
 			vfSetParameters(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
 			if (Level().timeServer() - m_dwActionStartTime > 3000) {
 				m_tActionState = eActionStateWatchGo;
@@ -627,7 +634,7 @@ void CAI_Stalker::TakeItems()
 		J = A = B = false;
 }
 
-void CAI_Stalker::AccomplishTask()
+void CAI_Stalker::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 {
 	// going via graph nodes
 	WRITE_TO_LOG			("Accomplishing task");
@@ -637,9 +644,9 @@ void CAI_Stalker::AccomplishTask()
 	GetDirectionAngles		(yaw,pitch);
 	yaw						= angle_normalize_signed(-yaw);
 	if (getAI().bfTooSmallAngle(r_torso_current.yaw,yaw,PI_DIV_6))
-		vfSetParameters(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeNormal,eLookTypeSearch);
+		vfSetParameters(tpNodeEvaluator,0,false,eWeaponStateIdle,!tpNodeEvaluator ? ePathTypeStraight : ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eStateTypeNormal,eLookTypeSearch);
 	else
-		vfSetParameters(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeNormal,eLookTypeDirection);
+		vfSetParameters(tpNodeEvaluator,0,false,eWeaponStateIdle,!tpNodeEvaluator ? ePathTypeStraight : ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eStateTypeNormal,eLookTypeDirection);
 }
 
 void CAI_Stalker::Think()
