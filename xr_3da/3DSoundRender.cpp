@@ -20,8 +20,8 @@ C3DSoundRender::C3DSoundRender()
 
     // Get listener interface.
 	R_ASSERT		(pSounds);
-	R_ASSERT		(pSounds->lpPrimaryBuf);
-    pSounds->lpPrimaryBuf->QueryInterface( IID_IDirectSound3DListener, (VOID**)&pListener );
+	R_ASSERT		(pSounds->pPrimaryBuf);
+    pSounds->pPrimaryBuf->QueryInterface( IID_IDirectSound3DListener, (VOID**)&pListener );
 
 	// Initialize listener data
 	Listener.dwSize				= sizeof(DS3DLISTENER);
@@ -40,7 +40,6 @@ C3DSoundRender::~C3DSoundRender()
 	_RELEASE		( pListener );
 }
 
-const DWORD dwSndKillTime = 3;
 void C3DSoundRender::OnMove()
 {
 	for (DWORD i=0; i<sounds.size(); i++) 
@@ -54,10 +53,10 @@ void C3DSoundRender::OnMove()
 				Device.Statistic.dwSND_Played++;
 				pSnd->dwLastTimeActive = Device.dwTimeGlobal;
 			} else {
-				if (j && (Device.dwTimeGlobal-pSnd->dwLastTimeActive) > dwSndKillTime*1000)
+				if (j && (Device.dwTimeGlobal-pSnd->dwLastTimeActive) > psSoundRelaxTime*1000)
 				{
-					_DELETE(pSnd);
-					sounds[i].erase(sounds[i].begin()+j);
+					_DELETE			(pSnd);
+					sounds[i].erase	(sounds[i].begin()+j);
 					j--;
 				}
 			}
