@@ -20,10 +20,11 @@ end
 
 function random_evaluator:evaluate()
 	printf					("evaluator is asked for the value!")
-	if (math.random() < 0.5)
+	if (math.random() < 0.5) then
 		return				(true)
 	else
 		return				(true)
+	end
 end
 
 -- define class custom action
