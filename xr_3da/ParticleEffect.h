@@ -156,13 +156,16 @@ namespace PS
 		s32					m_MemDT;
 
 		Fvector				m_InitialPosition;
+
+        Fmatrix				m_XFORM;
     protected:
     	DestroyCallback		m_DestroyCallback;
         CollisionCallback	m_CollisionCallback;
 	public:
 		enum{
 			flRT_Playing		= (1<<0),
-			flRT_DefferedStop	= (1<<1)
+			flRT_DefferedStop	= (1<<1),
+			flRT_XFORM			= (1<<2),
 		};
 		Flags8				m_RT_Flags;
 	protected:
@@ -185,7 +188,7 @@ namespace PS
 		virtual void 		OnDeviceCreate		();
 		virtual void 		OnDeviceDestroy		();
 
-		virtual void		UpdateParent		(const Fmatrix& m, const Fvector& velocity);
+		virtual void		UpdateParent		(const Fmatrix& m, const Fvector& velocity, BOOL bXFORM);
 
 		BOOL				Compile				(CPEDef* def);
 

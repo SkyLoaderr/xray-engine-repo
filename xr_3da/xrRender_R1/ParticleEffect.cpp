@@ -302,6 +302,7 @@ CParticleEffect::CParticleEffect()
 	m_InitialPosition.set	(0,0,0);
 	m_DestroyCallback		= 0;
 	m_CollisionCallback		= 0;
+    m_XFORM.identity		();
 }
 CParticleEffect::~CParticleEffect()
 {
@@ -359,10 +360,13 @@ void CParticleEffect::ResetParticles()
         pSetMaxParticlesG	(m_HandleEffect,m_Def->m_MaxParticles);
     }
 }
-void CParticleEffect::UpdateParent(const Fmatrix& m, const Fvector& velocity)
+
+void CParticleEffect::UpdateParent(const Fmatrix& m, const Fvector& velocity, BOOL bXFORM)
 {
 	m_InitialPosition		= m.c;
-	pSetActionListParenting	(m_HandleActionList,m,velocity);
+    m_RT_Flags.set			(flRT_XFORM, bXFORM);
+    if (bXFORM)				m_XFORM.set	(m);
+    else					pSetActionListParenting	(m_HandleActionList,m,velocity);
 }
 
 static const u32	uDT_STEP = 33;
@@ -541,7 +545,10 @@ void CParticleEffect::Render(float LOD)
 
     if (m_Def->m_Flags.is(CPEDef::dfSprite)){
         // build transform matrix
-        Fmatrix mSpriteTransform	= Device.mFullTransform;
+        Fmatrix mSpriteTransform;
+
+        if (m_RT_Flags.is(flRT_XFORM))	mSpriteTransform.mul(Device.mFullTransform,m_XFORM);
+        else							mSpriteTransform.set(Device.mFullTransform);
 
         float	w_2			= float(::Render->getTarget()->get_width()) / 2;
         float	h_2			= float(::Render->getTarget()->get_height()) / 2;
