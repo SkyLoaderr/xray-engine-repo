@@ -175,6 +175,8 @@ CBuild::~CBuild()
 	Phase("Cleanup");
 }
  
+extern int RegisterString(string &T);
+
 void CBuild::Run()
 {
 	CFS_File fs((string(g_params.L_path)+"level.").c_str());
@@ -296,8 +298,8 @@ void CBuild::Run()
 		fs.write(&G,4*sizeof(float));
 		string T = textures[materials[G.dwMaterial].surfidx].name;
 		string S = shader_names[materials[G.dwMaterial].shader].name;
-		fs.Wdword(RegisterTexture(T));
-		fs.Wdword(RegisterShader(S));
+		fs.Wdword(RegisterString(T));
+		fs.Wdword(RegisterString(S));
 	}
 	fs.close_chunk();
 
