@@ -31,7 +31,7 @@ function eva_state_mgr_direction:evaluate()
 		end	
 	else	
 		-- если текущая позиция ненулевая
-		local dir = utils.vector_copy_by_val(self.target_position):sub(self.object:position())
+		local dir = vector():sub(self.target_position, self.object:position())
 		--printf("head: %s", utils.to_str(yaw_degree(dir, self.object:head_orientation())))
 		--printf("body: %s", utils.to_str(yaw_degree(dir, self.object:direction())))
 
@@ -85,11 +85,11 @@ end
 function act_state_mgr_direction_turn:initialize()
 	action_base.initialize(self)
 	self.st.current_direction = self.target_position
-	self.object:set_sight(look.direction, utils.vector_copy_by_val(self.target_position):sub(self.object:position()), true)
+	self.object:set_sight(look.direction, vector():sub(self.target_position, self.object:position()), true)
 end
 function act_state_mgr_direction_turn:execute()
 	action_base.execute(self)
-	self.object:set_sight(look.direction, utils.vector_copy_by_val(self.target_position):sub(self.object:position()), true)
+	self.object:set_sight(look.direction, vector():sub(self.target_position, self.object:position()), true)
 end
 function act_state_mgr_direction_turn:finalize()
 	action_base.finalize(self)
