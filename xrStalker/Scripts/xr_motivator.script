@@ -4,54 +4,7 @@
 --  TODO:
 ----------------------------------------------------------------------------------------------------------------------
 storage = {}
-trade_arhive = {}
 memtsg = {} --' временная таблица
-
-class "motivation_action1" (motivation_action)
-function motivation_action1:__init(value) super(value)
-end
-
-class "action_base1" (action_base)
-function action_base1:__init(value) super(value)
-end
-
-----------------------------------------------------------------------------------------------------------------------
--- Evaluators
-----------------------------------------------------------------------------------------------------------------------
-class "evaluator_script" (property_evaluator)
-function evaluator_script:__init() super()
-end
-function evaluator_script:evaluate()
-    return false
-end
-
-----------------------------------------------------------------------------------------------------------------------
---Motivations
-----------------------------------------------------------------------------------------------------------------------
---Alive
-class "motivation_alive"    (motivation)
-function motivation_alive:__init(motivations, storage, trade_arhive) super()
-    self.motivations    = motivations
-    self.a          = storage
-    self.b          = trade_arhive
-end
-function motivation_alive:evaluate(motivation_id)
-    if self.motivations["normal"] == motivation_id then
-        if self.b:best_trader() == nil then
-            return 1.0
-        else
-            return 0.0
-        end
-    end
-    if self.motivations["trade_init"] == motivation_id then
-        if self.b:best_trader() ~= nil then
-            return 1.0
-        else
-            return 0.0
-        end
-    end
-    return 0.0
-end
 
 ----------------------------------------------------------------------------------------------------------------------
 --Motivator binder
@@ -107,22 +60,6 @@ function motivator_binder:reload (section)
 
     local char_ini = self.object:spawn_ini()
 
-    local motivations = {}
-    local operators = {}
-    local properties = {}
-    local manager = self.object:motivation_action_manager()
-    local goal = world_state()
-
-    motivations["solve_zone_puzzle"]= stalker_ids.motivation_solve_zone_puzzle
-
-    motivations["normal"]       = stalker_ids.motivation_script + 1
-    motivations["trade_init"]   = stalker_ids.motivation_script + 2
-
-    properties["alive"]     = stalker_ids.property_alive
-    properties["dead"]      = stalker_ids.property_already_dead
-    properties["solved"]        = stalker_ids.property_puzzle_solved
-    properties["trade_init"]    = xr_evaluators_id.final_trade_init
-
     -- Bind other scripts
     printf("Base evaluator ID %d", stalker_ids.property_script)
     printf("Base action ID %d", stalker_ids.action_script)
@@ -130,12 +67,10 @@ function motivator_binder:reload (section)
 
     --загрузка озвучки
     xr_sounds.load_sounds (self.object)
-
 ----------------------------------------------------------------------------------------------------------------------
 -- Общие скрипты
 ----------------------------------------------------------------------------------------------------------------------
-  xr_sound.load_sound(self.object)
-    xr_motivator.trade_arhive[self.object:id()] = xr_motivator.pda_storage()
+	xr_sound.load_sound(self.object)
     xr_motivator.storage[self.object:id()] = {  followers = {} }
     -- Положения тела
     xr_motivator.storage[self.object:id()].state = {
@@ -147,64 +82,46 @@ function motivator_binder:reload (section)
         }
     xr_state.add_to_binder(self.object)
     -- Настройка схемы реакции
-  xr_motivator.storage[self.object:id()].reactions = {
-    enabled = true,
-    time_wait = 5*60*1000,
-    evn = xr_reactions.events(self.object),
-    obj = {position = nil,
-      id = nil,
-      type = nil,
-      time = nil,
-      visibility = nil
-      },
-    rules = {}
+	xr_motivator.storage[self.object:id()].reactions = {
+		enabled = true,
+		time_wait = 5*60*1000,
+		evn = xr_reactions.events(self.object),
+		obj = {position = nil,
+				id = nil,
+				type = nil,
+				time = nil,
+				visibility = nil
+			},
+		rules = {}
     }
     xr_reactions.add_to_binder(self.object, char_ini)
-    -- схема привязки к позиции
+    --' схема привязки к позиции
     xr_position.add_to_binder(self.object)
-    -- Ответ на PDA сообщение
-    xr_motivator.storage[self.object:id()].tradeseller = {
-        Buyer = nil,
+    --' удар в морду
+    xr_punch.add_to_binder (self.object)   
+    --' Настройка встречи
+    xr_motivator.storage[self.object:id()].meet = {
+			Buyer = nil,
             Seller = self.object,
-            -- Задается время ожидания в секундах
             begin_wait_to_see = { time = 300,
                                 begin = nil },
-            -- Будет ли работать схема? если нет, то он всегда будет отказываться от торговли.
-            enabled = false
-        }
-    xr_meet.add_to_binder_pda(self.object, char_ini)
+            enabled = false,
+            over = false,
+            actor = nil,
+            noweap = false, -- игнорируем наличие оружия у актора
+            distance = 15, -- расстояние, в пределах которого мы реагируем
+            shoot_distance = 5 -- расстояние, в пределах которого мы стреляем
+        }  
+    xr_meet.add_to_binder(self.object, char_ini)
 
+	--' Помощник
     xr_motivator.storage[self.object:id()].helper = {
-      position,
-            enabled = false
+			position,
+			enabled = false
         }
-    //xr_meet.add_to_binder_pda(self.object, char_ini)
-
-    --Motivations
-    manager:remove_motivation (motivations["solve_zone_puzzle"])
-
-    manager:add_motivation (motivations["solve_zone_puzzle"], this.motivation_alive(motivations,
-                                        xr_motivator.storage[self.object:id()].tradeseller,
-                                        xr_motivator.trade_arhive[self.object:id()]))
-
-    goal:clear ()
-    goal:add_property (world_property(properties["solved"], true))
-    manager:add_motivation (motivations["normal"], this.motivation_action1(goal))
-
-    goal:clear ()
-    goal:add_property (world_property(properties["trade_init"], true))
-    manager:add_motivation (motivations["trade_init"], this.motivation_action1(goal))
-
-    -- Connections
-    manager:add_connection (motivations["solve_zone_puzzle"], motivations["normal"])
-    manager:add_connection (motivations["solve_zone_puzzle"], motivations["trade_init"])
-
 ----------------------------------------------------------------------------------------------------------------------
 -- Модели поведения
 ----------------------------------------------------------------------------------------------------------------------
-    -- удар в морду
-    xr_punch.add_to_binder (self.object)
-
     -- Грабители
     xr_motivator.storage[self.object:id()].robber = { }
     xr_robbers.add_to_binder(self.object, char_ini)
@@ -217,16 +134,6 @@ function motivator_binder:reload (section)
     xr_motivator.storage[self.object:id()].robber_guard = { }
     xr_robber_guard.add_to_binder(self.object, char_ini)
 
-    -- Настройка встречи
-    xr_motivator.storage[self.object:id()].meet = {
-            enabled = false,
-            over = false,
-            actor = nil,
-            noweap = false, -- игнорируем наличие оружия у актора
-            distance = 15, -- расстояние, в пределах которого мы реагируем
-            shoot_distance = 5 -- расстояние, в пределах которого мы стреляем
-        }
-xr_meet.add_to_binder(self.object, char_ini)
     -- лагерь у костра
     xr_motivator.storage[self.object:id()].kamp = {
             -- Будет ли работать схема? если нет, то он не будет пытаться инициализировать камп
@@ -409,61 +316,4 @@ function checkStorage(npc)
             end
         end
     end
-end
-----------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------
-class "pda_storage"
-function pda_storage:__init()
-    self.arhive = {}
-end
---сохраняет запрос на торговлю в таблицу. Передается тип, который послал запрос
---сохраняются только последние запросы от каждого игрока
-function pda_storage:save(npc)
-    local tt = { who = npc,
-             time = device():time_global()/1000 }
-
-    --удаляем все старые запросы от этого актора
-    for a = 1, table.getn(self.arhive), 1 do
-        if self.arhive[a].who:id() == npc:id() then
-            table.remove(self.arhive, a)
-        end
-    end
-
-    --добавляем новый
-    table.insert(self.arhive, tt)
-
-    self:remove_old()
-end
---проверяет на наличие устаревших запросов и удаляет их.
-function pda_storage:remove_old()
-    local old = 3000 --удаляются все старше 3000 секунд
-
-    for a = 1, table.getn(self.arhive), 1 do
-        if device():time_global()/1000 - self.arhive[a].time > old then
-            table.remove(self.arhive, a)
-        end
-    end
-end
---Удаляет запрос выбранного чудика
-function pda_storage:remove(npc)
-    for a = 1, table.getn(self.arhive), 1 do
-        if self.arhive[a].who:id() == npc:id() then
-            table.remove(self.arhive, a)
-        end
-    end
-end
---возвращает лучшего торговца. Возвращает торговца, запрос которого пришел последним.
-function pda_storage:best_trader()
-    self:remove_old()
-    local tt = nil
-
-    for a = 1, table.getn(self.arhive), 1 do
-        if tt == nil or self.arhive[a].time < tt.time then
-                tt = self.arhive[a]
-        end
-    end
-
-    if tt == nil then return nil end
-
-    return tt.who
 end

@@ -5,7 +5,6 @@
 ----------------------------------------------------------------------------------------------------------------------
 
 local sounds = {}
-
 ---------------------------------------------------------------------------------------------------------------------
 --Evaluators
 ----------------------------------------------------------------------------------------------------------------------
@@ -648,75 +647,75 @@ function add_to_binder(object, char_ini)
 	operators["talk"]				= xr_actions_id.stohe_meet_base + 6
 
 	-- Evaluators
-	manager:add_evaluator (properties["wait_buyer"], 	this.evaluator_wait		(xr_motivator.storage[object:id()].tradeseller))
-	manager:add_evaluator (properties["contact"], 		this.evaluator_contact		(xr_motivator.storage[object:id()].meet))
-	manager:add_evaluator (properties["weapon"], 		this.evaluator_weapon		(xr_motivator.storage[object:id()].meet))
-	manager:add_evaluator (properties["afraid"], 		this.evaluator_afraid		(xr_motivator.storage[object:id()].meet))
-	manager:add_evaluator (properties["clan"], 		this.evaluator_clan		(xr_motivator.storage[object:id()].meet))
-	manager:add_evaluator (properties["clan_zone"], 	this.evaluator_clan_zone	(xr_motivator.storage[object:id()].meet))
-	manager:add_evaluator (properties["talk"], 		this.evaluator_talk		(xr_motivator.storage[object:id()].meet))
+	manager:add_evaluator (properties["wait_buyer"], 	evaluator_wait		(xr_motivator.storage[object:id()].meet))
+	manager:add_evaluator (properties["contact"], 		evaluator_contact	(xr_motivator.storage[object:id()].meet))
+	manager:add_evaluator (properties["weapon"], 		evaluator_weapon	(xr_motivator.storage[object:id()].meet))
+	manager:add_evaluator (properties["afraid"], 		evaluator_afraid	(xr_motivator.storage[object:id()].meet))
+	manager:add_evaluator (properties["clan"], 			evaluator_clan		(xr_motivator.storage[object:id()].meet))
+	manager:add_evaluator (properties["clan_zone"], 	evaluator_clan_zone	(xr_motivator.storage[object:id()].meet))
+	manager:add_evaluator (properties["talk"], 			evaluator_talk		(xr_motivator.storage[object:id()].meet))
 
 	-- Actions
 	local action = action_meet_wait (object:name(),"action_meet_wait", xr_motivator.storage[object:id()].meet)
-	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
+	action:add_precondition		(world_property(stalker_ids.property_alive, true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
 	action:add_precondition		(world_property(properties["contact"], 		true))
 	action:add_precondition		(world_property(properties["afraid"], 		false))
 	action:add_precondition		(world_property(properties["weapon"], 		false))
 	action:add_precondition		(world_property(properties["clan"], 		true))
 	action:add_precondition		(world_property(properties["talk"], 		false))
-	action:add_effect 		(world_property(properties["contact"], 		false))
+	action:add_effect 		(world_property(properties["contact"], 			false))
 	manager:add_action (operators["wait_trade"], action)
 
 	action = action_talk (object:name(),"action_talk", xr_motivator.storage[object:id()].meet)
-	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
+	action:add_precondition		(world_property(stalker_ids.property_alive, true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
 	action:add_precondition		(world_property(properties["need_punch"],	false))	
 	action:add_precondition		(world_property(properties["talk"], 		true))
-	action:add_effect 		(world_property(properties["talk"], 		false))
+	action:add_effect 		(world_property(properties["talk"], 			false))
 	manager:add_action (operators["talk"], action)
 
 	action = action_afraid (object:name(),"action_afraid", xr_motivator.storage[object:id()].meet)
-	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
+	action:add_precondition		(world_property(stalker_ids.property_alive, true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
 	action:add_precondition		(world_property(properties["contact"], 		true))
 	action:add_precondition		(world_property(properties["afraid"], 		true))
-	action:add_effect 		(world_property(properties["afraid"], 		false))
+	action:add_effect 		(world_property(properties["afraid"], 			false))
 	manager:add_action (operators["afraid"], action)
 
 	action = action_weapon (object:name(),"action_weapon", xr_motivator.storage[object:id()].meet)
-	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
+	action:add_precondition		(world_property(stalker_ids.property_alive, true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
 	action:add_precondition		(world_property(properties["contact"], 		true))
 	action:add_precondition		(world_property(properties["weapon"], 		true))
-	action:add_effect 		(world_property(properties["weapon"], 		false))
+	action:add_effect 		(world_property(properties["weapon"], 			false))
 	manager:add_action (operators["weapon"], action)
 
 	action = action_contact_zone(object:name(),"action_contact_zone", xr_motivator.storage[object:id()].meet)
-	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
+	action:add_precondition		(world_property(stalker_ids.property_alive, true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
 	action:add_precondition		(world_property(properties["contact"], 		true))
 	action:add_precondition		(world_property(properties["clan"], 		false))
 	action:add_precondition		(world_property(properties["clan_zone"],	true))
-	action:add_effect 		(world_property(properties["contact"], 		false))
+	action:add_effect 		(world_property(properties["contact"], 			false))
 	manager:add_action (operators["contact_zone"], action)
 
 	action = action_contact_zoneout(object:name(),"action_contact_zoneout", xr_motivator.storage[object:id()].meet)
-	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
+	action:add_precondition		(world_property(stalker_ids.property_alive, true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
 	action:add_precondition		(world_property(properties["contact"], 		true))
 	action:add_precondition		(world_property(properties["clan"], 		false))
 	action:add_precondition		(world_property(properties["clan_zone"],	false))
-	action:add_effect 		(world_property(properties["contact"], 		false))
+	action:add_effect 		(world_property(properties["contact"], 			false))
 	manager:add_action (operators["contact_zoneout"], action)
 	                    
 	-- ќжидание торговца
-	action = action_wait_for_buyer (object:name(),"action_wait_for_buyer", xr_motivator.storage[object:id()].tradeseller)
-	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
+	action = action_wait_for_buyer (object:name(),"action_wait_for_buyer", xr_motivator.storage[object:id()].meet)
+	action:add_precondition		(world_property(stalker_ids.property_alive, true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
 	action:add_precondition		(world_property(properties["wait_buyer"], 	true))
 	action:add_precondition		(world_property(properties["event"], 		false))
-	action:add_effect 		(world_property(properties["wait_buyer"], 	false))
+	action:add_effect 		(world_property(properties["wait_buyer"], 		false))
 	manager:add_action (operators["wait_buyer"], action)
 
 	action = manager:action (stalker_ids.action_puzzle_solver)	
@@ -729,33 +728,6 @@ function add_to_binder(object, char_ini)
         end
         if char_ini:line_exist("meet", "noweap") == true then
                 xr_motivator.storage[object:id()].meet.noweap = char_ini:r_bool("meet", "noweap")
-        end
-    end
-end
-function add_to_binder_pda(object, char_ini)
-	local operators		= {}
-	local properties	= {}
-
-	local manager = object:motivation_action_manager()
-
-	properties["trade_init"]	= xr_evaluators_id.final_trade_init         
-
-	operators["trade_init"]		= xr_actions_id.stohe_tradeseller_base + 1
-
-	--Evaluators
-	manager:add_evaluator (properties["trade_init"], xr_evaluators.evaluator_trade_init(xr_motivator.storage[object:id()].tradeseller))
-	
-	-- Actions
-	local action = this.action_trade_init (object:name(),"action_trade_init", xr_motivator.storage[object:id()].tradeseller)
-	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
-	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
-	action:add_precondition		(world_property(properties["trade_init"], 	false))
-	action:add_effect 		(world_property(properties["trade_init"], 	true))
-	manager:add_action (operators["trade_init"], action)
-
-    if char_ini:section_exist ("tradeseller") == true then
-        if char_ini:line_exist("tradeseller", "enabled") == true then
-                xr_motivator.storage[object:id()].tradeseller.enabled = char_ini:r_bool("tradeseller", "enabled")
         end
     end
 end
