@@ -131,7 +131,7 @@ class NVMeshMender
 {
     private :
 
-        mutable xr_vector< std::string > LastErrors_;
+        mutable xr_vector< xr_string > LastErrors_;
 
 
 		struct Edge
@@ -165,14 +165,14 @@ class NVMeshMender
 
     public :
 
-        void SetLastError( const std::string& rhs ) const
+        void SetLastError( const xr_string& rhs ) const
         {
             LastErrors_.push_back( rhs );
         }
 
-        std::string GetLastError() const
+        xr_string GetLastError() const
         {
-            std::string aString;
+            xr_string aString;
 
             if ( LastErrors_.size() > 0 )
             {
@@ -183,7 +183,7 @@ class NVMeshMender
 
         struct VertexAttribute
         {
-            std::string  Name_;
+            xr_string  Name_;
 
             typedef xr_vector< int > IntVector;
             IntVector intVector_;

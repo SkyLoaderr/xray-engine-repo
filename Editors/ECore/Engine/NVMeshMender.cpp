@@ -172,7 +172,7 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 					       const Option _FixCylindricalTexGen,
                            const Option _WeightNormalsByFaceSize )
 {
-    typedef xr_map< std::string, unsigned int > Mapping;
+    typedef xr_map< xr_string, unsigned int > Mapping;
 	typedef xr_set< Edge > EdgeSet;
     typedef xr_vector< xr_set< unsigned int > > IdenticalVertices;
 

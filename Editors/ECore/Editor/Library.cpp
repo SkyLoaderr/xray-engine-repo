@@ -110,7 +110,7 @@ CEditableObject* ELibrary::LoadEditObject(LPCSTR name)
 {
 	VERIFY(m_bReady);
     CEditableObject* m_EditObject = xr_new<CEditableObject>(name);
-    std::string fn;
+    xr_string fn;
     FS.update_path(fn,_objects_,EFS.ChangeFileExt(name,".object").c_str());
     const CLocatorAPI::file* F = FS.exist(fn.c_str());
     if (F){
@@ -165,7 +165,7 @@ void ELibrary::Save()
 	EditObjPairIt E = m_EditObjects.end();
     for(; O!=E; O++)
     	if (O->second->IsModified()){
-        	std::string 			nm;
+        	xr_string 			nm;
             FS.update_path			(nm,_objects_,O->second->GetName());
             nm						= EFS.ChangeFileExt(nm,".object");
         	O->second->SaveObject	(nm.c_str());
@@ -186,11 +186,11 @@ void ELibrary::RemoveObject(LPCSTR _fname, EItemType type, bool& res)
         res = true;
 		return;
     }else if (TYPE_OBJECT==type){
-        std::string src_name;
-        std::string fname		= EFS.ChangeFileExt(_fname,".object");
+        xr_string src_name;
+        xr_string fname		= EFS.ChangeFileExt(_fname,".object");
         FS.update_path			(src_name,_objects_,fname.c_str());
         if (FS.exist(src_name.c_str())){
-            std::string thm_name= EFS.ChangeFileExt(fname,".thm");
+            xr_string thm_name= EFS.ChangeFileExt(fname,".thm");
             // source
             EFS.BackupFile		(_objects_,fname.c_str());
             FS.file_delete		(src_name.c_str());
@@ -214,7 +214,7 @@ void ELibrary::RenameObject(LPCSTR nm0, LPCSTR nm1, EItemType type)
 	if (TYPE_FOLDER==type){
     	FS.dir_delete			(_objects_,nm0,FALSE);
     }else if (TYPE_OBJECT==type){
-        std::string fn0,fn1,temp;
+        xr_string fn0,fn1,temp;
         // rename base file
         FS.update_path(fn0,_objects_,nm0);	fn0+=".object";
         FS.update_path(fn1,_objects_,nm1);	fn1+=".object";

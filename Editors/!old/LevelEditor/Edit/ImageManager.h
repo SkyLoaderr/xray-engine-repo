@@ -56,7 +56,7 @@ public:
 
     void 		RefreshTextures		(AStringVec* modif);
 
-    std::string	UpdateFileName		(std::string& fn);
+    xr_string	UpdateFileName		(xr_string& fn);
 
     void		WriteAssociation	(CInifile* ltx_ini, LPCSTR base_name, const STextureParams& fmt);
 

@@ -32,7 +32,7 @@ void EObjectThumbnail::CreateFromData(u32* p, u32 w, u32 h, int fc, int vc)
 
 bool EObjectThumbnail::Load(LPCSTR src_name, LPCSTR path)
 {
-	std::string fn 	= EFS.ChangeFileExt(src_name?src_name:m_Name.c_str(),".thm");
+	xr_string fn 	= EFS.ChangeFileExt(src_name?src_name:m_Name.c_str(),".thm");
     if (path) 		FS.update_path(fn,path,fn.c_str());
     else			FS.update_path(fn,_objects_,fn.c_str());
     if (!FS.exist(fn.c_str())) return false;
@@ -87,7 +87,7 @@ void EObjectThumbnail::Save(int age, LPCSTR path)
     F.w_u32			(vertex_count);
     F.close_chunk	();
 
-	std::string fn;
+	xr_string fn;
     if (path) 		FS.update_path(fn,path,m_Name.c_str());
     else			FS.update_path(fn,_objects_,m_Name.c_str());
     F.save_to		(fn.c_str());

@@ -226,7 +226,7 @@ u32 STextureParams::MemoryUsage(LPCSTR base_name)
     case STextureParams::tf565: 	mem_usage/=2; break;
     case STextureParams::tfRGBA:	break;
     }
-    std::string fn;
+    xr_string fn;
     FS.update_path	(fn,_game_textures_,EFS.ChangeFileExt(base_name,".seq").c_str());
     if (FS.exist(fn.c_str())){
         string128		buffer;

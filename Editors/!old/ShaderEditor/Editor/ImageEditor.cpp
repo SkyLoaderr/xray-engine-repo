@@ -103,7 +103,7 @@ void __fastcall TfrmImageLib::UpdateLib()
 		// rename with folder
 		FS_QueryMap	files=texture_map;
         texture_map.clear();
-        std::string fn;
+        xr_string fn;
         FS_QueryPairIt it=files.begin();
         FS_QueryPairIt _E=files.end();
         for (;it!=_E; it++){
@@ -207,7 +207,7 @@ void __fastcall TfrmImageLib::RegisterModifiedTHM()
 {
 	if (m_ItemProps->IsModified()||bImportMode){
 	    for (THMIt t_it=m_THM_Current.begin(); t_it!=m_THM_Current.end(); t_it++){
-            std::string fn = (*t_it)->SrcName();
+            xr_string fn = (*t_it)->SrcName();
             FS_QueryPairIt it=texture_map.find(fn); R_ASSERT(it!=texture_map.end());
             modif_map.insert(*it);
         }
@@ -241,7 +241,7 @@ void __fastcall TfrmImageLib::ebRebuildAssociationClick(TObject *Sender)
         }
     }
 
-	std::string nm;
+	xr_string nm;
     FS.update_path			(nm,_game_textures_,"textures.ltx");
 	CInifile* ini 			= xr_new<CInifile>(nm.c_str(), FALSE, FALSE, TRUE);
 
@@ -322,7 +322,7 @@ void TfrmImageLib::OnItemsFocused(ListItemsVec& items)
                     thm = FindUsedTHM(prop->Key());
                     if (!thm){ 
                     	m_THM_Used.push_back(thm=xr_new<ETextureThumbnail>(prop->Key(),false));
-	                    std::string fn = prop->Key();
+	                    xr_string fn = prop->Key();
     	                ImageLib.UpdateFileName(fn);
         	            if (!thm->Load(prop->Key(),_import_)){
             	            bool bLoad = thm->Load(fn.c_str(),_textures_);

@@ -193,7 +193,7 @@ int CImageManager::CreateMergedTexture(const RStringVec& _names, LPCSTR dest_nam
     SSimpleImageVec src_items	(src_names.size());
     SSimpleImageVecIt s_it		= src_items.begin();
     for (RStringVecIt n_it=src_names.begin(); n_it!=src_names.end(); n_it++,s_it++){
-        std::string		t_name;
+    	xr_string		t_name;
         FS.update_path	(t_name,_textures_,**n_it);
         if (!Surface_Load(EFS.ChangeFileExt(t_name,".tga").c_str(),s_it->data,s_it->w,s_it->h,s_it->a)){
             ELog.DlgMsg	(mtError,"Can't load texture '%s'. Check file existence.",**n_it);

@@ -94,7 +94,7 @@ void CEditorPreferences::OnKeyboardCommonFileClick(PropValue* value, bool& bModi
 {
 	ButtonValue* B = dynamic_cast<ButtonValue*>(value); R_ASSERT(B);
     bModif = false;
-	std::string fn;
+    xr_string fn;
 	switch(B->btn_num){
     case 0:
         if(EFS.GetOpenName("$import$", fn, false, NULL, 6)){
@@ -188,7 +188,7 @@ void CEditorPreferences::Edit()
 #define R_STRING_SAFE(S,L,D)I->line_exist(S,L)?I->r_string_wb(S,L):D;
 void CEditorPreferences::Load()
 {
-	std::string	fn;
+	xr_string	fn;
 	INI_NAME	(fn);
     CInifile* 	I = xr_new<CInifile>(fn.c_str(), TRUE, TRUE, TRUE);
 
@@ -246,7 +246,7 @@ void CEditorPreferences::Load()
 void CEditorPreferences::Save()
 {
 
-	std::string fn;
+	xr_string fn;
 	INI_NAME	(fn);
     CInifile* 	I = xr_new<CInifile>(fn.c_str(), FALSE, TRUE, TRUE);
 

@@ -12,7 +12,7 @@ CSoundManager* SndLib=0;
 
 extern "C" int ogg_enc(const char* in_fn, const char* out_fn, float quality, void* comment, int size);
 //------------------------------------------------------------------------------
-std::string CSoundManager::UpdateFileName(std::string& fn)
+xr_string CSoundManager::UpdateFileName(xr_string& fn)
 {
 	return EFS.AppendFolderToName(fn,-1,FALSE);
 }
@@ -66,7 +66,7 @@ void CSoundManager::RenameSound(LPCSTR nm0, LPCSTR nm1, EItemType type)
     	FS.dir_delete			(_sounds_,nm0,FALSE);
     	FS.dir_delete			(_game_sounds_,nm0,FALSE);
     }else if (TYPE_OBJECT==type){
-        std::string fn0,fn1,temp;
+        xr_string fn0,fn1,temp;
         // rename base file
         FS.update_path(fn0,_sounds_,nm0); 	fn0+=".wav";
         FS.update_path(fn1,_sounds_,nm1);	fn1+=".wav";
@@ -94,12 +94,12 @@ BOOL CSoundManager::RemoveSound(LPCSTR fname, EItemType type)
     	FS.dir_delete			(_game_sounds_,fname,FALSE);
 		return TRUE;
     }else if (TYPE_OBJECT==type){
-        std::string src_name;
+        xr_string src_name;
         FS.update_path			(src_name,_sounds_,fname);
         src_name				= EFS.ChangeFileExt(src_name,".wav");
         if (FS.exist(src_name.c_str())){
-            std::string thm_name = EFS.ChangeFileExt(fname,".thm");
-            std::string game_name= EFS.ChangeFileExt(fname,".ogg");
+            xr_string thm_name = EFS.ChangeFileExt(fname,".thm");
+            xr_string game_name= EFS.ChangeFileExt(fname,".ogg");
             // source
             EFS.BackupFile		(_sounds_,fname);
             FS.file_delete		(src_name.c_str());
@@ -131,8 +131,8 @@ int CSoundManager::GetLocalNewSounds(FS_QueryMap& files)
 /*
 void CSoundManager::SafeCopyLocalToServer(FS_QueryMap& files)
 {
-    std::string p_import,p_sounds;
-    std::string src_name,dest_name;
+    xr_string p_import,p_sounds;
+    xr_string src_name,dest_name;
     FS.update_path	  	(p_import,_import_,"");
     FS.update_path	  	(p_sounds,_sounds_,"");
 
@@ -140,7 +140,7 @@ void CSoundManager::SafeCopyLocalToServer(FS_QueryMap& files)
 	FS_QueryPairIt _E 	= files.end();
 	for (; it!=_E; it++){
         // copy thm
-		std::string fn 	= EFS.ChangeFileExt(it->first,".thm");
+		xr_string fn 	= EFS.ChangeFileExt(it->first,".thm");
 		src_name 		= p_import	+ fn;
 		UpdateFileName	(fn);
 		dest_name 		= p_sounds	+ fn;
@@ -167,7 +167,7 @@ void CSoundManager::SafeCopyLocalToServer(FS_QueryMap& files)
 void CSoundManager::CreateSoundThumbnail(ESoundThumbnail* THM, const AnsiString& src_name, LPCSTR initial, bool bSetDefParam)
 {
 	R_ASSERT(src_name.Length());
-	std::string base_name;
+	xr_string base_name;
     if (initial)	FS.update_path(base_name,initial,src_name.c_str());
     else			FS.update_path(base_name,_sounds_,src_name.c_str());
 	base_name		= EFS.ChangeFileExt(base_name,".wav");
@@ -226,8 +226,8 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
 	FS_QueryPairIt _E = M_BASE.end();
 	for (; it!=_E; it++){
 	    BOOL bUpdated = FALSE;
-        std::string base_name	= EFS.ChangeFileExt(it->first,""); xr_strlwr(base_name);
-        std::string 			fn;
+        xr_string base_name	= EFS.ChangeFileExt(it->first,""); xr_strlwr(base_name);
+        xr_string 			fn;
         FS.update_path			(fn,_sounds_,EFS.ChangeFileExt(base_name,".wav").c_str());
     	if (!FS.exist(fn.c_str())) continue;
 
@@ -253,9 +253,9 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
     	if (bForceGame||(sync_game&&bGame)){
         	if (!THM) THM 			= xr_new<ESoundThumbnail>(it->first.c_str()); 
             R_ASSERT(THM);
-            std::string src_name	= base_name+".wav";
+            xr_string src_name	= base_name+".wav";
             FS.update_path			(src_name,_sounds_,src_name.c_str());
-            std::string game_name	= base_name+".ogg";
+            xr_string game_name	= base_name+".ogg";
             FS.update_path			(game_name,_game_sounds_,game_name.c_str());
             MakeGameSound			(THM,src_name.c_str(),game_name.c_str());
             if (sync_list) 			sync_list->push_back(base_name.c_str());
@@ -266,9 +266,9 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
 		if (THM) xr_delete(THM);
 		if (UI->NeedAbort()) 	break;
         if (bProgress) 
-		    pb->Inc		(bUpdated?std::string(base_name+" - UPDATED.").c_str():"",bUpdated);
+		    pb->Inc		(bUpdated?xr_string(base_name+" - UPDATED.").c_str():"",bUpdated);
         if (bUpdated){
-            std::string				wav_fn,thm_fn,ogg_fn;
+            xr_string				wav_fn,thm_fn,ogg_fn;
             FS.update_path			(wav_fn,_sounds_,		EFS.ChangeFileExt(base_name,".wav").c_str());
             FS.update_path			(thm_fn,_sounds_,		EFS.ChangeFileExt(base_name,".thm").c_str());
             FS.update_path			(ogg_fn,_game_sounds_,	EFS.ChangeFileExt(base_name,".ogg").c_str());
@@ -303,7 +303,7 @@ void CSoundManager::CleanupSounds()
     it	= M_GAME.begin();
 	_E 	= M_GAME.end();
 	for (; it!=_E; it++){
-        std::string base_name	= EFS.ChangeFileExt(it->first,""); xr_strlwr(base_name);
+        xr_string base_name	= EFS.ChangeFileExt(it->first,""); xr_strlwr(base_name);
 		FS_QueryPairIt bs 		= M_BASE.find(base_name);
     	if (bs==M_BASE.end())
         	M_GAME_DEL.insert	(mk_pair(it->first,it->second));
@@ -311,7 +311,7 @@ void CSoundManager::CleanupSounds()
     it	= M_THUM.begin();
 	_E 	= M_THUM.end();
 	for (; it!=_E; it++){
-        std::string base_name	= EFS.ChangeFileExt(it->first,""); xr_strlwr(base_name);
+        xr_string base_name	= EFS.ChangeFileExt(it->first,""); xr_strlwr(base_name);
 		FS_QueryPairIt bs 		= M_BASE.find(base_name);
     	if (bs==M_BASE.end())
         	M_THM_DEL.insert	(mk_pair(it->first,it->second));
@@ -322,8 +322,8 @@ void CSoundManager::CleanupSounds()
     it	= M_GAME_DEL.begin();
 	_E 	= M_GAME_DEL.end();
 	for (; it!=_E; it++){
-        std::string base_name	= EFS.ChangeFileExt(it->first,""); xr_strlwr(base_name);
-        std::string 			fn;
+        xr_string base_name	= EFS.ChangeFileExt(it->first,""); xr_strlwr(base_name);
+        xr_string 			fn;
         FS.update_path			(fn,_game_sounds_,EFS.ChangeFileExt(base_name,".ogg").c_str());
         EFS.MarkFile			(fn.c_str(),true);
         pb->Inc					();
@@ -332,8 +332,8 @@ void CSoundManager::CleanupSounds()
     it	= M_THM_DEL.begin();
 	_E 	= M_THM_DEL.end();
 	for (; it!=_E; it++){
-        std::string base_name	= EFS.ChangeFileExt(it->first,""); xr_strlwr(base_name);
-        std::string 			fn;
+        xr_string base_name	= EFS.ChangeFileExt(it->first,""); xr_strlwr(base_name);
+        xr_string 			fn;
         FS.update_path			(fn,_sounds_,EFS.ChangeFileExt(base_name,".thm").c_str());
         EFS.MarkFile			(fn.c_str(),true);
         pb->Inc					();
@@ -357,8 +357,8 @@ void CSoundManager::ChangeFileAgeTo(FS_QueryMap* tgt_map, int age)
     FS_QueryPairIt it			= M_BASE->begin();
 	FS_QueryPairIt _E 			= M_BASE->end();
 	for (; it!=_E; it++){
-        std::string base_name	= EFS.ChangeFileExt(it->first,""); xr_strlwr(base_name);
-        std::string	wav_fn,thm_fn,ogg_fn;
+        xr_string base_name	= EFS.ChangeFileExt(it->first,""); xr_strlwr(base_name);
+        xr_string	wav_fn,thm_fn,ogg_fn;
         FS.update_path			(wav_fn,_sounds_,		EFS.ChangeFileExt(base_name,".wav").c_str());
         FS.update_path			(thm_fn,_sounds_,		EFS.ChangeFileExt(base_name,".thm").c_str());
         FS.update_path			(ogg_fn,_game_sounds_,	EFS.ChangeFileExt(base_name,".ogg").c_str());

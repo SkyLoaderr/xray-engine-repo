@@ -60,7 +60,7 @@ bool Surface_Load(LPCSTR full_name, U32Vec& data, u32& w, u32& h, u32& a)
 }
 //------------------------------------------------------------------------------
 
-std::string CImageManager::UpdateFileName(std::string& fn)
+xr_string CImageManager::UpdateFileName(xr_string& fn)
 {
 	return EFS.AppendFolderToName(fn,1,TRUE);
 }
@@ -86,7 +86,7 @@ void CImageManager::MakeThumbnailImage(ETextureThumbnail* THM, u32* data, u32 w,
 void CImageManager::CreateTextureThumbnail(ETextureThumbnail* THM, const AnsiString& src_name, LPCSTR initial, bool bSetDefParam)
 {
 	R_ASSERT(src_name.Length());
-	std::string base_name;
+	xr_string base_name;
     if (initial)	FS.update_path(base_name,initial,src_name.c_str());
     else			FS.update_path(base_name,_textures_,src_name.c_str());
     U32Vec data;
@@ -114,8 +114,8 @@ void CImageManager::CreateGameTexture(LPCSTR src_name, ETextureThumbnail* thumb)
 {
 	R_ASSERT(src_name&&src_name[0]);
     ETextureThumbnail* THM 	= thumb?thumb:xr_new<ETextureThumbnail>(src_name);
-	std::string base_name 	= src_name;
-	std::string game_name 	= EFS.ChangeFileExt(src_name,".dds");
+	xr_string base_name 	= src_name;
+	xr_string game_name 	= EFS.ChangeFileExt(src_name,".dds");
 	FS.update_path			(base_name,_textures_,base_name.c_str());
 	FS.update_path			(game_name,_game_textures_,game_name.c_str());
     int base_age 			= FS.get_file_age(base_name.c_str());
@@ -218,7 +218,7 @@ bool CImageManager::MakeGameTexture(ETextureThumbnail* THM, LPCSTR game_name, u3
 //------------------------------------------------------------------------------
 bool CImageManager::LoadTextureData(LPCSTR src_name, U32Vec& data, u32& w, u32& h)
 {
-	std::string fn;
+	xr_string fn;
 	FS.update_path			(fn,_textures_,ChangeFileExt(src_name,".tga").c_str());
     u32 a;
     if (!Surface_Load(fn.c_str(),data,w,h,a)) return false;
@@ -231,8 +231,8 @@ bool CImageManager::LoadTextureData(LPCSTR src_name, U32Vec& data, u32& w, u32& 
 //------------------------------------------------------------------------------
 void CImageManager::SafeCopyLocalToServer(FS_QueryMap& files)
 {
-    std::string p_import, p_textures;
-    std::string src_name,dest_name;
+    xr_string p_import, p_textures;
+    xr_string src_name,dest_name;
     FS.update_path	   	(p_import,_import_,"");
     FS.update_path	   	(p_textures,_textures_,"");
 
@@ -240,7 +240,7 @@ void CImageManager::SafeCopyLocalToServer(FS_QueryMap& files)
 	FS_QueryPairIt _E 	= files.end();
 	for (; it!=_E; it++){
         // copy thm
-		std::string fn 	= EFS.ChangeFileExt(it->first,".thm");
+		xr_string fn 	= EFS.ChangeFileExt(it->first,".thm");
 		src_name 		= p_import	+ fn;
 		UpdateFileName	(fn);
 		dest_name 		= p_textures+ fn;
@@ -295,7 +295,7 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
     int m_age		= time(NULL);
 
     // sync assoc
-	std::string 	ltx_nm;
+	xr_string 	ltx_nm;
     FS.update_path	(ltx_nm,_game_textures_,"textures.ltx");
 	CInifile* ltx_ini = xr_new<CInifile>(ltx_nm.c_str(), FALSE, TRUE, TRUE);
     
@@ -307,8 +307,8 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
 	    U32Vec data;
     	u32 w, h, a;
 
-        std::string base_name	= EFS.ChangeFileExt(it->first,""); xr_strlwr(base_name);
-        std::string				fn;
+        xr_string base_name	= EFS.ChangeFileExt(it->first,""); xr_strlwr(base_name);
+        xr_string				fn;
         FS.update_path			(fn,_textures_,EFS.ChangeFileExt(base_name,".tga").c_str());
     	if (!FS.exist(fn.c_str())) continue;
 
@@ -336,7 +336,7 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
             if (data.empty()){ bool bRes = Surface_Load(fn.c_str(),data,w,h,a); R_ASSERT(bRes);}
 			if (IsValidSize(w,h)){
                 STextureParams& FMT 	= THM->_Format();
-                std::string game_name	= base_name+".dds";
+                xr_string game_name	= base_name+".dds";
                 FS.update_path			(game_name,_game_textures_,game_name.c_str());
                 if (MakeGameTexture(THM,game_name.c_str(),data.begin())){
                     if (sync_list) 		sync_list->push_back(base_name.c_str());
@@ -355,10 +355,10 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
 		if (UI->NeedAbort()) break;
         
         if (bProgress) 
-		    pb->Inc(bUpdated?std::string(base_name+(bFailed?" - FAILED":" - UPDATED.")).c_str():base_name.c_str(),bUpdated);
+		    pb->Inc(bUpdated?xr_string(base_name+(bFailed?" - FAILED":" - UPDATED.")).c_str():base_name.c_str(),bUpdated);
             
         if (bUpdated){
-            std::string	tga_fn,thm_fn,dds_fn;
+            xr_string	tga_fn,thm_fn,dds_fn;
             FS.update_path			    (tga_fn,_textures_,		EFS.ChangeFileExt(base_name,".tga").c_str());
             FS.update_path			    (thm_fn,_textures_,		EFS.ChangeFileExt(base_name,".thm").c_str());
             FS.update_path			    (dds_fn,_game_textures_,EFS.ChangeFileExt(base_name,".dds").c_str());
@@ -388,8 +388,8 @@ void CImageManager::ChangeFileAgeTo(FS_QueryMap* tgt_map, int age)
     FS_QueryPairIt it			= M_BASE->begin();
 	FS_QueryPairIt _E 			= M_BASE->end();
 	for (; it!=_E; it++){
-        std::string base_name	= EFS.ChangeFileExt(it->first,""); xr_strlwr(base_name);
-        std::string	tga_fn,thm_fn,dds_fn;
+        xr_string base_name	= EFS.ChangeFileExt(it->first,""); xr_strlwr(base_name);
+        xr_string	tga_fn,thm_fn,dds_fn;
         FS.update_path			(tga_fn,_textures_,		EFS.ChangeFileExt(base_name,".tga").c_str());
         FS.update_path			(thm_fn,_textures_,		EFS.ChangeFileExt(base_name,".thm").c_str());
         FS.update_path			(dds_fn,_game_textures_,EFS.ChangeFileExt(base_name,".dds").c_str());
@@ -523,7 +523,7 @@ void CImageManager::CheckCompliance(FS_QueryMap& files, FS_QueryMap& compl)
 	FS_QueryPairIt _E 	= files.end();
 	for (; it!=_E; it++){
     	int val	= 0;
-        std::string 	fname;
+        xr_string 	fname;
         FS.update_path			(fname,_textures_,it->first.c_str());
     	if (!CheckCompliance(fname.c_str(),val))
         	ELog.Msg(mtError,"Bad texture: '%s'",it->first.c_str());
@@ -697,7 +697,7 @@ void CImageManager::CreateLODTexture(const Fbox& bbox, LPCSTR tex_name, u32 tgt_
 
 	CreateLODTexture			(bbox,new_pixels,tgt_w,tgt_h,samples);
 
-    std::string out_name;
+    xr_string out_name;
     FS.update_path				(out_name,_textures_,tex_name);
 
     CImage* I 					= xr_new<CImage>();
@@ -745,14 +745,14 @@ void CImageManager::RemoveTexture(LPCSTR fname, EItemType type, bool& res)
         res 					= true;
         return;
     }else if (TYPE_OBJECT==type){
-        std::string src_name;
+        xr_string src_name;
         FS.update_path			(src_name,_textures_,fname);
         src_name				= EFS.ChangeFileExt(src_name,".tga");
         if (FS.exist(src_name.c_str())){
-            std::string base_name= EFS.ChangeFileExt(fname,"");
-            std::string thm_name = EFS.ChangeFileExt(fname,".thm");
-            std::string game_name= EFS.ChangeFileExt(fname,".dds");
-            std::string game_name2=EFS.ChangeFileExt(fname,"#.dds");
+            xr_string base_name= EFS.ChangeFileExt(fname,"");
+            xr_string thm_name = EFS.ChangeFileExt(fname,".thm");
+            xr_string game_name= EFS.ChangeFileExt(fname,".dds");
+            xr_string game_name2=EFS.ChangeFileExt(fname,"#.dds");
             // source
             EFS.BackupFile		(_textures_,fname);
             FS.file_delete		(src_name.c_str());
@@ -765,7 +765,7 @@ void CImageManager::RemoveTexture(LPCSTR fname, EItemType type, bool& res)
             // game 2
             FS.file_delete		(_game_textures_,game_name2.c_str());
             // assoc
-            std::string ltx_nm;
+            xr_string ltx_nm;
             FS.update_path		(ltx_nm,_game_textures_,"textures.ltx");
             CInifile* ltx_ini 	= xr_new<CInifile>(ltx_nm.c_str(), FALSE, TRUE, TRUE);
             ltx_ini->remove_line("association", base_name.c_str());
@@ -815,7 +815,7 @@ BOOL CImageManager::CreateSmallerCubeMap(LPCSTR src_name, LPCSTR dst_name)
 {
     U32Vec data;
     u32 w, wf, h, a;
-    std::string full_name;
+    xr_string full_name;
     FS.update_path	(full_name,_textures_,src_name);
     full_name 			+= ".tga";
     if (Surface_Load(full_name.c_str(),data,wf,h,a)){
@@ -833,7 +833,7 @@ BOOL CImageManager::CreateSmallerCubeMap(LPCSTR src_name, LPCSTR dst_name)
         T.Stop			();
 		UI->ProgressEnd	(PB);
         // write texture
-        std::string out_name;
+        xr_string out_name;
         FS.update_path	(out_name,_game_textures_,dst_name);
         out_name		+= ".dds";
 		if (!MakeGameTexture(out_name.c_str(),&*sm_data.begin(),sm_wf,sm_h,STextureParams::tfRGBA,STextureParams::ttCubeMap,false))

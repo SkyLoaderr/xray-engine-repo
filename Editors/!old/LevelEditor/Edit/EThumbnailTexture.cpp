@@ -42,7 +42,7 @@ int ETextureThumbnail::MemoryUsage()
     case STextureParams::tf565: 	mem_usage/=2; break;
     case STextureParams::tfRGBA:	break;
     }
-    std::string fn;
+    xr_string fn;
     FS.update_path	(fn,_game_textures_,EFS.ChangeFileExt(m_Name.c_str(),".seq").c_str());
     if (FS.exist(fn.c_str())){
         string128		buffer;
@@ -71,7 +71,7 @@ void ETextureThumbnail::CreateFromData(u32* p, u32 w, u32 h)
 
 bool ETextureThumbnail::Load(LPCSTR src_name, LPCSTR path)
 {
-	std::string fn 	= EFS.ChangeFileExt(src_name?src_name:m_Name.c_str(),".thm");
+	xr_string fn 	= EFS.ChangeFileExt(src_name?src_name:m_Name.c_str(),".thm");
     if (path) 		FS.update_path(fn,path,fn.c_str());
     else			FS.update_path(fn,_textures_,fn.c_str());
     if (!FS.exist(fn.c_str())) return false;
@@ -120,7 +120,7 @@ void ETextureThumbnail::Save(int age, LPCSTR path)
 
 	m_TexParams.Save(F);
 
-	std::string fn;
+	xr_string		fn;
     if (path) 		FS.update_path(fn,path,			m_Name.c_str());
     else			FS.update_path(fn,_textures_,	m_Name.c_str());
     F.save_to		(fn.c_str());

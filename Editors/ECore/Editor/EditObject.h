@@ -169,7 +169,7 @@ class ECORE_API CEditableObject{
     time_t			m_ModifTime;
     
 // general
-	std::string		m_ClassScript;
+	xr_string		m_ClassScript;
 
 	SurfaceVec		m_Surfaces;
 	EditMeshVec		m_Meshes;
@@ -259,7 +259,7 @@ public:
     IC int 			Version 				() 	{return m_Version;}
 
     // LOD
-	std::string		GetLODTextureName		();
+	xr_string		GetLODTextureName		();
     LPCSTR			GetLODShaderName		(){return LOD_SHADER_NAME;}
     void			GetLODFrame				(int frame, Fvector p[4], Fvector2 t[4], const Fmatrix* parent=0);
 
@@ -291,7 +291,7 @@ public:
 ///    IC bool			CheckVersion			()  {if(m_LibRef) return (m_ObjVer==m_LibRef->m_ObjVer); return true;}
     // get object properties methods
 
-	IC std::string&	GetClassScript			()	{return m_ClassScript;}
+	IC xr_string&	GetClassScript			()	{return m_ClassScript;}
     IC const Fbox&	GetBox					() 	{return m_Box;}
 
     // animation

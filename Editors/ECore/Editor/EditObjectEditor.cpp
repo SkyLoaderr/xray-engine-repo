@@ -259,11 +259,11 @@ void CEditableObject::RenderLOD(const Fmatrix& parent)
     }
 }
 
-std::string CEditableObject::GetLODTextureName()
+xr_string CEditableObject::GetLODTextureName()
 {
     string256 nm; 	strcpy	(nm,m_LibName.c_str()); _ChangeSymbol(nm,'\\','_');
-	std::string 	l_name;
-    l_name 			= std::string("lod_")+nm;
+	xr_string 	l_name;
+    l_name 			= xr_string("lod_")+nm;
     return ImageLib.UpdateFileName(l_name);
 }
 
@@ -293,8 +293,8 @@ void CEditableObject::DefferedLoadRP()
 
 //*/
 	// создать LOD shader
-	std::string l_name = GetLODTextureName();
-    std::string fname = std::string(l_name)+std::string(".dds");
+	xr_string l_name = GetLODTextureName();
+    xr_string fname = xr_string(l_name)+xr_string(".dds");
     m_LODShader.destroy();
 //    if (FS.exist(_game_textures_,fname.c_str()))
     if (m_Flags.is(eoUsingLOD))
