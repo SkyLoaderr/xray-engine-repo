@@ -142,13 +142,17 @@ bool CSearchlight::bfAssignWatch(CEntityAction *tpEntityAction)
 	bone_vel_x	= l_tWatchAction.vel_bone_x;
 	bone_vel_y	= l_tWatchAction.vel_bone_y;
 
-	return true;
+	if ((angle_difference(_cur.yaw,_target.yaw) < EPS_L) && (angle_difference(_cur.pitch,_target.pitch) < EPS_L)) 
+		l_tWatchAction.m_bCompleted = true;
+	else
+		l_tWatchAction.m_bCompleted = false;
+
+	return (!l_tWatchAction.m_bCompleted);	
 }
 
 
 void CSearchlight::UpdateBones()
 {
-	Fmatrix M;
 	float delta_yaw;
 	float delta_pitch;
 	
@@ -158,15 +162,20 @@ void CSearchlight::UpdateBones()
 	delta_pitch = angle_difference(_start.pitch,_cur.pitch);
 	if (angle_normalize_signed(_start.pitch - _cur.pitch) > 0) delta_pitch = -delta_pitch;
 
-	M.setXYZi (delta_yaw, delta_pitch, 0.f);
-	bone->mTransform.mulB(M);
+	Fvector c					= bone->mTransform.c;
+	Fmatrix						spin;
+
+	spin.setXYZi				(delta_pitch, delta_yaw, 0);
+	VERIFY						(_valid(spin));
+	bone->mTransform.mulA_43	(spin);
+	bone->mTransform.c			= c;
 }
 
 
 void CSearchlight::SetTarget(const Fvector &target_pos)
 {
 	float  th,tp;
-	target_pos.getHP(th,tp);
+	Fvector().sub(target_pos, Position()).getHP(th,tp);
 
 	float delta_h;
 	delta_h = angle_difference(th,_start.yaw);
