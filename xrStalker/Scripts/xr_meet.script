@@ -33,16 +33,7 @@ function evaluator_contact:evaluate()
 	else
 		self.a.actor = nil
 	end	
-
-	local tt = self.a.actor ~= nil
-
-
---	if tt then
---		printf("[EVA] Meet: Contact? TRUE")
---	else
---		printf("[EVA] Meet: Contact? FALSE")
---	end
-	return tt
+	return self.a.actor ~= nil
 end
 
 class "evaluator_wait" (property_evaluator)
@@ -401,7 +392,6 @@ end
 -- binder
 ----------------------------------------------------------------------------------------------------------------------
 function add_to_binder(object, char_ini)
-    if char_ini:section_exist("meet") == true then
 	local operators		= {}
 	local properties	= {}
 
@@ -444,6 +434,7 @@ function add_to_binder(object, char_ini)
 	action:add_precondition		(world_property(properties["contact"],		false))
 	action:add_precondition		(world_property(properties["wait_buyer"], 	false))
 
+    if char_ini:section_exist("meet") == true then
         if char_ini:line_exist("meet", "enabled") == true then
                 xr_motivator.storage[object:id()].meet.enabled = char_ini:r_bool("meet", "enabled")
         end
