@@ -457,6 +457,7 @@ ENGINE_API IDirect3DBaseTexture8*	TWLoader2D
  	return 0;
 
 _DDS:
+	{
 		// Load and get header
 		D3DXIMAGE_INFO			IMG;
 		CStream* S				= Engine.FS.Open	(fn);
@@ -481,7 +482,7 @@ _DDS_CUBE:
 			));
 
 		// Log
-		Msg						("* T_2 [%d-%d] (%dK): %s",IMG.Width,IMG.Height,CTexture::MemUsage(pTextureCUBE)/1024,fn);
+		Msg						("* T_C [%d-%d] (%dK): %s",IMG.Width,IMG.Height,CTexture::MemUsage(pTextureCUBE)/1024,fn);
 
 		// OK
 		dwWidth					= IMG.Width;
@@ -557,7 +558,7 @@ _DDS_2D:
 		fmt						= F;
 		return					pTexture2D;
 	}
-
+    }
 _TGA:
 	Image.LoadTGA(fn);
 
