@@ -53,7 +53,7 @@ void CSHSoundEnvTools::OnRender()
 
 bool CSHSoundEnvTools::OnCreate()
 {
-	m_PreviewSnd 		= xr_new<ESound>((LPVOID)NULL, "Test");
+	m_PreviewSnd 		= xr_new<ESoundSource>((LPVOID)NULL, "Test");
     m_PreviewSnd->Select(TRUE);
     Load();
     return true;

@@ -17,7 +17,7 @@ class CSHSoundEnvTools: public ISHTools
     virtual LPCSTR				GenerateItemName	(LPSTR name, LPCSTR pref, LPCSTR source);
     SoundEnvironment_LIB		m_Library;
 
-    ESound*						m_PreviewSnd;
+    ESoundSource*				m_PreviewSnd;
     void __fastcall 			OnRevResetClick		(PropValue* sender);
     void __fastcall 			OnEchoResetClick	(PropValue* sender);
 public:
@@ -28,7 +28,7 @@ public:
 	virtual void				RenameItem			(LPCSTR old_full_name, LPCSTR new_full_name);
 	virtual void 				FillItemList		();
 
-    void						UseEnvironment		(){Sound->set_user_environment(m_Env);}
+    void						UseEnvironment		(){Sound->set_user_env(m_Env);}
 public:
 								CSHSoundEnvTools 	(ISHInit& init);
     virtual 					~CSHSoundEnvTools	();

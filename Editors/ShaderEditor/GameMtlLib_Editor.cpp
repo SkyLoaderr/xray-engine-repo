@@ -107,10 +107,10 @@ void SGameMtlPair::FillProp(PropItemVec& items)
     }
     
 	propFlotation		= PHelper.CreateFloat		(items,	"Flotation",		&fFlotation,	0.f,1.f,0.01f,2);
-	propBreakingSounds	= PHelper.CreateALibSound	(items,	"Braking Sounds",	&BreakingSounds);
-	propStepSounds		= PHelper.CreateALibSound	(items,	"Step Sounds",		&StepSounds);
-	propCollideSounds	= PHelper.CreateALibSound	(items,	"Collide Sounds",	&CollideSounds);
-	propHitSounds		= PHelper.CreateALibSound	(items,	"Hit Sounds",		&HitSounds);
+	propBreakingSounds	= PHelper.CreateASoundSrc	(items,	"Braking Sounds",	&BreakingSounds);
+	propStepSounds		= PHelper.CreateASoundSrc	(items,	"Step Sounds",		&StepSounds);
+	propCollideSounds	= PHelper.CreateASoundSrc	(items,	"Collide Sounds",	&CollideSounds);
+	propHitSounds		= PHelper.CreateASoundSrc	(items,	"Hit Sounds",		&HitSounds);
 	propHitParticles	= PHelper.CreateALibPS		(items,	"Hit Particles",	&HitParticles);
 	propHitMarks		= PHelper.CreateATexture	(items,	"Hit Marks",		&HitMarks);
 

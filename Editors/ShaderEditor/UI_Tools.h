@@ -82,6 +82,7 @@ public:
 
     void				ShowProperties		();
     void				UpdateProperties	(){;}
+    void				RefreshProperties	(){;}
 
 	void				SetNumPosition		(CCustomObject* p1){;}
 	void				SetNumRotation		(CCustomObject* p1){;}

@@ -69,10 +69,10 @@
       Intermediate\Blender_detail_still.obj Intermediate\Blender_tree.obj 
       Intermediate\ELog.obj Intermediate\SHSoundEnvTools.obj 
       Intermediate\SHToolsInterface.obj Intermediate\SHGameMtlTools.obj 
-      Intermediate\SHGameMtlPairTools.obj Intermediate\ESound.obj 
-      Intermediate\CustomObject.obj Intermediate\CustomObjectMisc.obj 
-      Intermediate\du_box.obj Intermediate\du_sphere.obj 
-      Intermediate\Blender_Palette.obj"/>
+      Intermediate\SHGameMtlPairTools.obj Intermediate\CustomObject.obj 
+      Intermediate\CustomObjectMisc.obj Intermediate\du_box.obj 
+      Intermediate\du_sphere.obj Intermediate\Blender_Palette.obj 
+      Intermediate\ESound_Source.obj"/>
     <RESFILES value="ShaderEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -257,12 +257,12 @@
       <FILE FILENAME="SHToolsInterface.cpp" FORMNAME="" UNITNAME="SHToolsInterface" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SHGameMtlTools.cpp" FORMNAME="" UNITNAME="SHGameMtlTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SHGameMtlPairTools.cpp" FORMNAME="" UNITNAME="SHGameMtlPairTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\ESound.cpp" FORMNAME="" UNITNAME="ESound" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\CustomObject.cpp" FORMNAME="" UNITNAME="CustomObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\CustomObjectMisc.cpp" FORMNAME="" UNITNAME="CustomObjectMisc" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="editor\du_box.cpp" FORMNAME="" UNITNAME="du_box" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\du_sphere.cpp" FORMNAME="" UNITNAME="du_sphere" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\Blender_Palette.cpp" FORMNAME="" UNITNAME="Blender_Palette" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ESound_Source.cpp" FORMNAME="" UNITNAME="ESound_Source" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
