@@ -115,7 +115,7 @@ void CAI_Space::Load()
 	CALifeCrossTable::Load	(fName);
 
 	bool bOk = false;
-	u32 N = m_tGraphHeader.dwLevelCount, I;
+	u32 N = m_tGraphHeader.dwLevelCount, I = -1;
 	for ( I=0; I<N; I++)
 		if (!stricmp(m_tGraphHeader.tpLevels[I].caLevelName,Level().net_SessionName())) {
 			I = m_tGraphHeader.tpLevels[I].dwLevelID;
