@@ -284,11 +284,6 @@ bool CSE_ALifeSimulator::bfCheckIfCanNullTradersBallance(CSE_ALifeTraderAbstract
 		return			(bfCheckForTrade(tpALifeTraderAbstract2, m_tpTrader2, m_tpSums2, tpALifeTraderAbstract2->m_dwMoney, tpALifeTraderAbstract1, m_tpTrader1, m_tpSums1, tpALifeTraderAbstract1->m_dwMoney, iBallance));
 }
 
-int  CSE_ALifeSimulator::ifComputeBallance(CSE_ALifeHumanAbstract *tpALifeHumanAbstract1, CSE_ALifeHumanAbstract *tpALifeHumanAbstract2)
-{
-	return(0);
-}
-
 void CSE_ALifeSimulator::vfRunFunctionByIndex(CSE_ALifeHumanAbstract *tpALifeHumanAbstract1, CSE_ALifeHumanAbstract *tpALifeHumanAbstract2, int i, int j, int &i1, int &i2)
 {
 	switch (i) {
@@ -352,6 +347,11 @@ void CSE_ALifeSimulator::vfRunFunctionByIndex(CSE_ALifeHumanAbstract *tpALifeHum
 	}
 }
 
+int  CSE_ALifeSimulator::ifComputeBallance(CSE_ALifeHumanAbstract *tpALifeHumanAbstract1, CSE_ALifeHumanAbstract *tpALifeHumanAbstract2)
+{
+	return(0);
+}
+
 void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAbstract1, CSE_ALifeHumanAbstract *tpALifeHumanAbstract2)
 {
 	vfAppendItemVector	(tpALifeHumanAbstract1->children,m_tpItemVector);
@@ -390,8 +390,8 @@ void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAb
 			case 3 : {
 				vfRunFunctionByIndex(tpALifeHumanAbstract1,tpALifeHumanAbstract2,j,0,l_iItemCount1,l_iItemCount2);
 				
-				m_tpBlockedItems1.clear();
-				m_tpBlockedItems1.insert(m_tpBlockedItems1.begin(),tpALifeHumanAbstract1->children.begin() + l_iItemCount1,tpALifeHumanAbstract1->children.begin());
+				m_tpBlockedItems2.clear();
+				m_tpBlockedItems2.insert(m_tpBlockedItems2.end(),tpALifeHumanAbstract1->children.begin() + l_iItemCount1,tpALifeHumanAbstract1->children.begin());
 				
 				vfRunFunctionByIndex(tpALifeHumanAbstract1,tpALifeHumanAbstract2,j,1,l_iItemCount1,l_iItemCount2);
 				break;
