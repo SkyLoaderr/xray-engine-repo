@@ -13,7 +13,6 @@
 
 #define					START_DISTANCE_TO_SEARCH				16.f
 #define					MAX_DEPTH								8			// i.e. 2048 meters
-//DEFINE_VECTOR			(float,			FLOAT_VECTOR,			FLOAT_IT);
 DEFINE_VECTOR			(FLOAT_VECTOR,	FLOAT_VECTOR_VECTOR,	FLOAT_VECTOR_IT);
 
 

@@ -273,6 +273,7 @@ void vfSaveGraph(LPCSTR name, CAI_Map *tpAI_Map)
 	tGraphHeader.dwLevelCount	= 1;
 	CALifeGraph::SLevel			tLevel;
 	tLevel.tOffset.set			(0,0,0);
+	tLevel.dwLevelID			= 0;
 	Memory.mem_copy(tLevel.caLevelName,name,strlen(name) + 1);
 	tGraphHeader.tpLevels.push_back(tLevel);
 	tGraph.w_u32				(tGraphHeader.dwVersion);
@@ -283,6 +284,7 @@ void vfSaveGraph(LPCSTR name, CAI_Map *tpAI_Map)
 	for ( ; I != E; I++) {
 		tGraph.w_stringZ((*I).caLevelName);
 		tGraph.w_fvector3((*I).tOffset);
+		tGraph.w_u32((*I).dwLevelID);
 	}
 
 	u32		dwPosition = tGraph.size();
