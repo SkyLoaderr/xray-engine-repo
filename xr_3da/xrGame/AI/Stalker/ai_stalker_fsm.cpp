@@ -78,7 +78,7 @@ void CAI_Stalker::BackCover(bool bFire)
 			if (Level().timeServer() - m_dwActionStartTime < 8500)
 				vfSetParameters			(&m_tSelectorCover,0,true,eWeaponStateIdle,ePathTypeDodgeCriteria,eBodyStateStand, /**(m_tSavedEnemyPosition.distance_to(vPosition) > 3.f) && m_tEnemy.Enemy ? eMovementTypeRun : eMovementTypeWalk/**/eMovementTypeRun,eStateTypeDanger,eLookTypeDirection);
 			else
-				vfSetParameters			(0,0,true,eWeaponStateIdle,ePathTypeDodgeCriteria,eBodyStateStand, eMovementTypeStand,eStateTypeDanger,eLookTypeFirePoint,tPoint);
+				vfSetParameters			(0,0,true,eWeaponStateIdle,ePathTypeDodgeCriteria,eBodyStateStand, eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
 			if ((Level().timeServer() - m_dwActionStartTime > 10000) && ((getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,tPoint) != u32(-1)) || (Level().timeServer() - m_dwActionStartTime > 8000))) {
 				m_tActionState		= eActionStateWatchLook;
 				m_dwActionStartTime = Level().timeServer();
@@ -921,7 +921,7 @@ void CAI_Stalker::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 	if (m_bStateChanged || AI_Path.Nodes.empty() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode)) {
 		AI_Path.Nodes.clear();
 		AI_Path.TravelPath.clear();
-		m_tActionState = ::Random.randI(1) ? eActionStateWatch : eActionStateDontWatch;
+		m_tActionState = !::Random.randI(1) ? eActionStateWatch : eActionStateDontWatch;
 		m_dwActionStartTime = Level().timeServer() + ::Random.randI(10000,20000);
 	}
 
