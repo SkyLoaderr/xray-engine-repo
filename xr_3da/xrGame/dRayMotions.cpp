@@ -5,18 +5,22 @@
 //#include "../ode/src/collision_kernel.h"
 //#pragma warning(default:4995)
 //#pragma warning(default:4267)
-//#pragma warning(disable:4995)
-//#pragma warning(disable:4267)
+
+#pragma warning(disable:4995)
+#pragma warning(disable:4267)
 #include "../ode/src/collision_std.h"
-//#pragma warning(default:4995)
-//#pragma warning(default:4267)
+#pragma warning(default:4995)
+#pragma warning(default:4267)
 struct dxRayMotions
 {
 	dGeomID ray;
+	dGeomID ray_ownwer;
+	dxRayMotions()
+	{
+		ray=0;
+		ray_ownwer=0;
+	}
 };
-
-
-
 
 int dRayMotionsClassUser = -1;
 
@@ -30,23 +34,37 @@ int dRayMotionsClassUser = -1;
 int dCollideRMB (dxGeom *o1, dxGeom *o2, int flags,
 				  dContactGeom *contact, int skip)
 {
-	dxRayMotions	*c = (dxRayMotions*) dGeomGetClassData(o1);
-	return dCollideRayBox (c->ray,o2, flags,contact,skip);
-
+	dxRayMotions	*rm = (dxRayMotions*) dGeomGetClassData(o1);
+	int ret= dCollideRayBox (rm->ray,o2, flags,contact,skip);
+	for (int i=0; i<ret; i++) {
+		dContactGeom *c = CONTACT(contact,skip*i);
+		c->g1 = rm->ray_ownwer;
+	}
+	return ret;
 }
 
 int dCollideRMS(dxGeom *o1, dxGeom *o2, int flags,
 				 dContactGeom *contact, int skip)
 {
-	dxRayMotions	*c = (dxRayMotions*) dGeomGetClassData(o1);
-	return dCollideRaySphere (c->ray, o2,flags, contact, skip);
+	dxRayMotions	*rm = (dxRayMotions*) dGeomGetClassData(o1);
+	int ret= dCollideRaySphere (rm->ray, o2,flags, contact, skip);
+	for (int i=0; i<ret; i++) {
+		dContactGeom *c = CONTACT(contact,skip*i);
+		c->g1 = rm->ray_ownwer;
+	}
+	return ret;
 }
 
 int dCollideRMCyl (dxGeom *o1, dxGeom *o2, int flags,
 				 dContactGeom *contact, int skip)
 {
-	dxRayMotions	*c = (dxRayMotions*) dGeomGetClassData(o1);
-	return	dCollideRayCCylinder (c->ray, o2,flags,contact,skip);
+	dxRayMotions	*rm = (dxRayMotions*) dGeomGetClassData(o1);
+	int ret=	dCollideRayCCylinder (rm->ray, o2,flags,contact,skip);
+	for (int i=0; i<ret; i++) {
+		dContactGeom *c = CONTACT(contact,skip*i);
+		c->g1 = rm->ray_ownwer;
+	}
+	return ret;
 }
 
 static  dColliderFn * dRayMotionsColliderFn (int num)
@@ -95,4 +113,10 @@ void dGeomRayMotionsSet (dGeomID g,const dReal* p,const dReal* d, dReal l)
 		d[0], d[1], d[2]);
 	dGeomMoved(g);
 
+}
+
+void dGeomRayMotionSetGeom(dGeomID rm,dGeomID g)
+{
+	dxRayMotions	*c = (dxRayMotions*) dGeomGetClassData(rm);
+	c->ray_ownwer=g;
 }

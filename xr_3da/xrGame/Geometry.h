@@ -58,6 +58,12 @@ public:
 							{
 								return m_geom_transform ? (geom() ? geom() : m_geom_transform) : NULL;
 							}
+	IC			dGeomID		geometry_bt()
+							{
+								if(is_transformed_bt())	return geom() ;
+								else					return geometry_transform();
+								
+							}
 	IC			bool		is_transformed_bt()
 							{
 								return dGeomGetClass(m_geom_transform)==dGeomTransformClass;

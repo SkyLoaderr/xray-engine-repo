@@ -17,6 +17,10 @@ public:
 		++geom;
 		return *this;
 	}
+	IC dGeomID dGeom()
+	{
+		return (*geom)->geometry_transform();
+	}
 	IC CPHPositionsPairs& operator ++	(int)
 	{
 		geom++;

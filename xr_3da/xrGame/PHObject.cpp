@@ -67,6 +67,7 @@ void CPHObject::Collide()
 					CPHObject* obj2=static_cast<CPHObject*>(*i);
 					if(obj2==this || !obj2->m_flags.test(st_dirty))		continue;
 					dGeomID	motion_ray=ph_world->GetMotionRayGeom();
+					dGeomRayMotionSetGeom(motion_ray,I.dGeom());
 					dGeomRayMotionsSet(motion_ray,(const dReal*) from,(const dReal*)&dir,magnitude);
 					NearCallback(this,obj2,motion_ray,obj2->dSpacedGeom());
 				}
