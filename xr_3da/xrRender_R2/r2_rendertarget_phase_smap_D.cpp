@@ -12,7 +12,7 @@ void	CRenderTarget::phase_smap_direct()
 	RImplementation.rmNormal			();
 
 	// Clear
-	CHK_DX(HW.pDevice->Clear			( 0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL, 0xFFFFFFFF, 1.0f, 0L));
+	CHK_DX(HW.pDevice->Clear			( 0L, NULL, /*D3DCLEAR_TARGET|*/ D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL, 0xFFFFFFFF, 1.0f, 0L));
 
 	// Stencil	- disable
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		FALSE				));
