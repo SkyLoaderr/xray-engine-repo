@@ -41,12 +41,12 @@ IC	bool CObjectHandlerGOAP::goal_reached			() const
 	return				(solution().size() < 2);
 }
 
-IC	void CObjectHandlerGOAP::add_condition			(CObjectActionBase *action, u16 id, EWorldProperties property, bool value)
+IC	void CObjectHandlerGOAP::add_condition			(CActionBase<CAI_Stalker> *action, u16 id, EWorldProperties property, bool value)
 {
 	action->add_condition(CWorldProperty(uid(id,property),value));
 }
 
-IC	void CObjectHandlerGOAP::add_effect				(CObjectActionBase *action, u16 id, EWorldProperties property, bool value)
+IC	void CObjectHandlerGOAP::add_effect				(CActionBase<CAI_Stalker> *action, u16 id, EWorldProperties property, bool value)
 {
 	action->add_effect	(CWorldProperty(uid(id,property),value));
 }

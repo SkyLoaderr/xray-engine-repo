@@ -101,21 +101,23 @@ void CPlanner::reload				(LPCSTR section)
 TEMPLATE_SPECIALIZATION
 void CPlanner::update				(u32 time_delta)
 {
+	m_actuality					= false;
+
 	solve						();
-//
-//	VERIFY						(!solution().empty());
-//
-//	if (initialized() && (current_action_id() != solution().front())) {
-//		current_action().finalize();
-//		set_current_action		(solution().front());
-//	}
-//
-//	current_action().initialize	();
-//	current_action().execute	();
-//
-//	CPlanner					*action_planner = dynamic_cast<CPlanner*>(&current_action());
-//	if (action_planner)
-//		action_planner->update	(time_delta);
+
+	VERIFY						(!solution().empty());
+
+	if (initialized() && (current_action_id() != solution().front())) {
+		current_action().finalize();
+		set_current_action		(solution().front());
+	}
+
+	current_action().initialize	();
+	current_action().execute	();
+
+	CPlanner					*action_planner = dynamic_cast<CPlanner*>(&current_action());
+	if (action_planner)
+		action_planner->update	(time_delta);
 
 	m_initialized				= true;
 }

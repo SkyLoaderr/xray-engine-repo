@@ -24,7 +24,6 @@ class CAI_Stalker;
 class CWeapon;
 class CMissile;
 class CEatableItem;
-class CObjectActionBase;
 
 class CObjectHandlerGOAP : 
 	public CActionPlanner<CAI_Stalker>,
@@ -56,7 +55,8 @@ protected:
 		eWorldPropertyIdle,
 		eWorldPropertyIdleStrap,
 		eWorldPropertyDropped,
-		eWorldPropertyQueueWait,
+		eWorldPropertyQueueWait1,
+		eWorldPropertyQueueWait2,
 		eWorldPropertyNoItemsIdle	= eWorldPropertyIdle | u16(-1),
 		eWorldPropertyDummy			= u32(-1),
 	};
@@ -77,7 +77,8 @@ protected:
 		eWorldOperatorFire2,
 		eWorldOperatorSwitch1,
 		eWorldOperatorSwitch2,
-		eWorldOperatorQueueWait,
+		eWorldOperatorQueueWait1,
+		eWorldOperatorQueueWait2,
 		eWorldOperatorNoItemsIdle	= eWorldOperatorIdle | u16(-1),
 		eWorldOperatorDummy			= u32(-1),
 	};
@@ -140,8 +141,8 @@ public:
 			void			add_item				(CInventoryItem *inventory_item);
 			void			remove_item				(CInventoryItem *inventory_item);
 			void			set_goal				(MonsterSpace::EObjectAction object_action, CGameObject *game_object = 0);
-	IC		void			add_condition			(CObjectActionBase *action, u16 id, EWorldProperties property, bool value);
-	IC		void			add_effect				(CObjectActionBase *action, u16 id, EWorldProperties property, bool value);
+	IC		void			add_condition			(CActionBase<CAI_Stalker> *action, u16 id, EWorldProperties property, bool value);
+	IC		void			add_effect				(CActionBase<CAI_Stalker> *action, u16 id, EWorldProperties property, bool value);
 };
 
 #include "object_handler_goap_inline.h"

@@ -8,7 +8,8 @@
 
 #pragma once
 
-IC	CObjectActionBase::CObjectActionBase(CGameObject *item, CAI_Stalker *owner, LPCSTR action_name) :
+template <typename _item_type>
+IC	CObjectActionBase<_item_type>::CObjectActionBase(_item_type *item, CAI_Stalker *owner, LPCSTR action_name) :
 	inherited			(owner,action_name)
 {
 	m_item				= item;

@@ -415,14 +415,11 @@
 							RelativePath=".\object_handler_goap_inline.h">
 						</File>
 						<Filter
-							Name="object_actions"
+							Name="actions"
 							Filter="">
 							<Filter
 								Name="base"
 								Filter="">
-								<File
-									RelativePath=".\object_action_base.cpp">
-								</File>
 								<File
 									RelativePath=".\object_action_base.h">
 								</File>
@@ -430,9 +427,119 @@
 									RelativePath=".\object_action_base_inline.h">
 								</File>
 							</Filter>
+							<Filter
+								Name="command"
+								Filter="">
+								<File
+									RelativePath=".\object_action_command.cpp">
+								</File>
+								<File
+									RelativePath=".\object_action_command.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="show"
+								Filter="">
+								<File
+									RelativePath=".\object_action_show.cpp">
+								</File>
+								<File
+									RelativePath=".\object_action_show.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="hide"
+								Filter="">
+								<File
+									RelativePath=".\object_action_hide.cpp">
+								</File>
+								<File
+									RelativePath=".\object_action_hide.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="reload"
+								Filter="">
+								<File
+									RelativePath=".\object_action_reload.cpp">
+								</File>
+								<File
+									RelativePath=".\object_action_reload.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="fire"
+								Filter="">
+								<File
+									RelativePath=".\object_action_fire.cpp">
+								</File>
+								<File
+									RelativePath=".\object_action_fire.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="aim"
+								Filter="">
+								<File
+									RelativePath=".\object_action_aim.cpp">
+								</File>
+								<File
+									RelativePath=".\object_action_aim.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="strapping"
+								Filter="">
+								<File
+									RelativePath=".\object_action_strapping.cpp">
+								</File>
+								<File
+									RelativePath=".\object_action_strapping.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="unstrapping"
+								Filter="">
+								<File
+									RelativePath=".\object_action_unstrapping.cpp">
+								</File>
+								<File
+									RelativePath=".\object_action_unstrapping.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="queue_wait"
+								Filter="">
+								<File
+									RelativePath=".\object_action_queue_wait.cpp">
+								</File>
+								<File
+									RelativePath=".\object_action_queue_wait.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="switch"
+								Filter="">
+								<File
+									RelativePath=".\object_action_switch.cpp">
+								</File>
+								<File
+									RelativePath=".\object_action_switch.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="drop"
+								Filter="">
+								<File
+									RelativePath=".\object_action_drop.cpp">
+								</File>
+								<File
+									RelativePath=".\object_action_drop.h">
+								</File>
+							</Filter>
 						</Filter>
 						<Filter
-							Name="object_property_evaluators"
+							Name="properties"
 							Filter="">
 							<Filter
 								Name="base"

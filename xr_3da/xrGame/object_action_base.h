@@ -12,13 +12,16 @@
 
 class CAI_Stalker;
 
+template <typename _item_type>
 class CObjectActionBase : public CActionBase<CAI_Stalker> {
 protected:
 	typedef CActionBase<CAI_Stalker> inherited;
-	CGameObject			*m_item;
+	_item_type			*m_item;
 
 public:
-	IC					CObjectActionBase(CGameObject *item, CAI_Stalker *owner, LPCSTR action_name = "");
+	IC					CObjectActionBase(_item_type *item, CAI_Stalker *owner, LPCSTR action_name = "");
 };
+
+typedef CObjectActionBase<CGameObject> CSObjectActionBase;
 
 #include "object_action_base_inline.h"
