@@ -379,7 +379,8 @@ SGeometry*	CShaderManager::CreateGeom		(u32 FVF, IDirect3DVertexBuffer9* vb, IDi
 
 void		CShaderManager::DeleteGeom		(const SGeometry* Geom)
 {
-	if (reclaim(v_geoms,Geom))			return;
+	if (0==(Geom->dwFlags&xr_resource::RF_REGISTERED))	return;
+	if (reclaim(v_geoms,Geom))							return;
 	Msg	("! ERROR: Failed to find compiled geometry-declaration");
 }
 

@@ -119,7 +119,8 @@ ShaderElement* CShaderManager::_CreateElement(	CBlender_Compile& C)
 
 void CShaderManager::_DeleteElement(const ShaderElement* S)
 {
-	if (reclaim(v_elements,S))	return;
+	if (0==(S->dwFlags&xr_resource::RF_REGISTERED))	return;
+	if (reclaim(v_elements,S))						return;
 	Msg	("! ERROR: Failed to find compiled 'shader-element'");
 }
 
@@ -225,7 +226,8 @@ Shader*	CShaderManager::Create_B	(IBlender* B, LPCSTR s_shader, LPCSTR s_texture
 
 void CShaderManager::Delete(const Shader* S)
 {
-	if (reclaim(v_shaders,S))	return;
+	if (0==(S->dwFlags&xr_resource::RF_REGISTERED))	return;
+	if (reclaim(v_shaders,S))						return;
 	Msg	("! ERROR: Failed to find complete shader");
 }
 
