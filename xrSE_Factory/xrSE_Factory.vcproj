@@ -1101,7 +1101,17 @@
 						RelativePath=".\alife_space.h">
 					</File>
 					<Filter
-						Name="PersonalEvent"
+						Name="artefact_order"
+						Filter="">
+						<File
+							RelativePath=".\alife_artefact_order.cpp">
+						</File>
+						<File
+							RelativePath=".\alife_artefact_order.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="event_personal"
 						Filter="">
 						<File
 							RelativePath=".\alife_event_personal.cpp">
