@@ -4,33 +4,10 @@ end
 
 class "CSE_NewAttachableItem"				(cse_alife_item)
 
-function CSE_NewAttachableItem:__init		(section) super(section)
-	log							("CSE_NewAttachableItem::CSE_NewAttachableItem called!")
-	self.script_property0		= flags32()
-	self.script_property0:zero	()
-	self.script_property1		= true
-end
-
-function CSE_NewAttachableItem:__finalize	()
-	log							("CSE_NewAttachableItem::~CSE_NewAttachableItem called!")
-end
-
+/**
 function CSE_NewAttachableItem:init			()
 	log							("CSE_NewAttachableItem::init called!")
 	return						(self)
-end
-
-function CSE_NewAttachableItem:STATE_Write	(packet)
-	log							("CSE_NewAttachableItem::STATE_Write called!")
-	cse_alife_item.STATE_Write	(self,packet)
-	packet:w_u32				(self.script_property0:get())
-end
-
-function CSE_NewAttachableItem:STATE_Read	(packet, size)
-	log							("CSE_NewAttachableItem::STATE_Read called!")
-	cse_alife_item.STATE_Read	(self,packet,size)
-	self.script_property0:assign(packet:r_u32())
-	this.printf					("STATE_Read : %d",self.script_property0:get())
 end
 
 function CSE_NewAttachableItem:UPDATE_Write	(packet)
@@ -42,16 +19,51 @@ function CSE_NewAttachableItem:UPDATE_Read	(packet)
 	log							("CSE_NewAttachableItem::UPDATE_Read called!")
 	cse_alife_item.UPDATE_Read	(self,packet)
 end
+/**/
+
+function CSE_NewAttachableItem:__init		(section) super(section)
+	log							("CSE_NewAttachableItem::CSE_NewAttachableItem called!")
+	// flags16
+	self._flag16				= flags16()
+	self._flag16:zero			()
+	// flags32
+	self._flag32				= flags32()
+	self._flag32:zero			()
+end
+
+function CSE_NewAttachableItem:__finalize	()
+	log							("CSE_NewAttachableItem::~CSE_NewAttachableItem called!")
+end
+
+function CSE_NewAttachableItem:STATE_Write	(packet)
+	log							("CSE_NewAttachableItem::STATE_Write called!")
+	cse_alife_item.STATE_Write	(self,packet)
+	// flags16
+	packet:w_u16				(self._flag16:get())
+    // flags32
+	packet:w_u32				(self._flag32:get())
+end
+
+function CSE_NewAttachableItem:STATE_Read	(packet, size)
+	log							("CSE_NewAttachableItem::STATE_Read called!")
+	cse_alife_item.STATE_Read	(self,packet,size)
+	// flags16
+	self._flag16:assign			(packet:r_u16())
+	// flags32
+	self._flag32:assign			(packet:r_u32())
+end
 
 function CSE_NewAttachableItem:FillProps	(pref,items)
 	log							("CSE_NewAttachableItem::FillProps called!")
 	cse_alife_item.FillProps	(self,pref,items)
-	properties_helper():create_flag32(items,"script\\flags32_0",self.script_property0,1)
-	properties_helper():create_flag32(items,"script\\flags32_1",self.script_property0,2)
-	properties_helper():create_flag32(items,"script\\flags32_2",self.script_property0,4)
-	properties_helper():create_flag32(items,"script\\flags32_3",self.script_property0,8)
-	properties_helper():create_flag32(items,"script\\flags32_4",self.script_property0,16)
-	properties_helper():create_flag32(items,"script\\flags32_5",self.script_property0,32)
-	properties_helper():create_flag32(items,"script\\flags32_6",self.script_property0,64)
-	properties_helper():create_flag32(items,"script\\flags32_7",self.script_property0,128)
+	// flags16
+	properties_helper():create_flag32(items,"script\\flags16_0",self._flag16,1)
+	properties_helper():create_flag32(items,"script\\flags16_1",self._flag16,2)
+	properties_helper():create_flag32(items,"script\\flags16_2",self._flag16,4)
+	properties_helper():create_flag32(items,"script\\flags16_3",self._flag16,8)
+	// flags32
+	properties_helper():create_flag32(items,"script\\flags32_0",self._flag32,1)
+	properties_helper():create_flag32(items,"script\\flags32_1",self._flag32,2)
+	properties_helper():create_flag32(items,"script\\flags32_2",self._flag32,4)
+	properties_helper():create_flag32(items,"script\\flags32_3",self._flag32,8)
 end
