@@ -407,6 +407,7 @@ void CLevel::OnRender()
 {
 	inherited::OnRender	();
 	Tracers.Render		();
+	eff_Rain.Render		();
 	if (bDebug)			AI.Render();
 }
 
