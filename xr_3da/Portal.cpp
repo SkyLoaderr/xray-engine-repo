@@ -36,7 +36,7 @@ void drawPoly(sPoly &P, CPortal* Portal)
 	CSector* S=0;
 	if (PL.classify(Device.vCameraPosition)<0)	S=Portal->Back	();
 	else										S=Portal->Front	();
-
+	
 	Fvector Center,End;
 	DWORD A_Mask = D3DCOLOR_RGBA(0xff,0xff,0xff,0x7f);
 	DWORD C		 = COLORS[S->SelfID % 8];
@@ -51,6 +51,13 @@ void drawPoly(sPoly &P, CPortal* Portal)
 	End.direct(Center,PL.n,.5f);
 	Device.Primitive.dbg_DrawLINE(precalc_identity,Center,End,0xffffffff);
 	HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_CCW);
+}
+
+CSector::~CSector()
+{
+	for (int i=0; i<int(tempObjects.size()); i++) 
+		_DELETE(tempObjects[i]);
+	tempObjects.clear();
 }
 
 void CSector::Render(CFrustum &F)
@@ -93,7 +100,6 @@ void CSector::Render(CFrustum &F)
 
 		// Visuals
 		{
-			vector<CTempObject*>::iterator I=tempObjects.begin(), E=tempObjects.end();
 			for (int i=0; i<int(tempObjects.size()); i++) 
 			{
 				CTempObject* pV = tempObjects[i];
