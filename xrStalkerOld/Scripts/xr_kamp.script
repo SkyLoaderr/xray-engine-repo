@@ -157,7 +157,7 @@ end
 class "action_go_patrol" (action_base)
 function action_go_patrol:__init (npc_name,action_name,storage) super (nil,action_name)
 	self.a = storage
-	self.move_mgr = move_mgr.move_mgr()
+	self.move_mgr = move_mgr.move_mgr(self.object)
 end
 function action_go_patrol:initialize()
 	action_base.initialize(self)
@@ -170,7 +170,7 @@ function action_go_patrol:initialize()
 	self:reset_scheme()
 end
 function action_go_patrol:reset_scheme()
-	self.move_mgr:initialize(self.object)
+	self.move_mgr:initialize()
 	local tt = math.random(table.getn(self.a.patrol_path))	
 	self.move_mgr:reset(self.a.patrol_path[tt], 
 					utils.path_parse_waypoints(self.a.patrol_path[tt]),
