@@ -31,12 +31,12 @@ public:
 		set_P		(Fidentity);
 		set_mapping	(NULL);
 	}
-	IC void			set_W		(Fmatrix& m)		{	flags |= dirty_W; m_w.set(m);	}
-	IC void			set_V		(Fmatrix& m)		{	flags |= dirty_V; m_v.set(m);	}
-	IC void			set_P		(Fmatrix& m)		{	flags |= dirty_P; m_p.set(m);	}
+	IC void			set_W		(const Fmatrix& m)		{	flags |= dirty_W; m_w.set(m);	}
+	IC void			set_V		(const Fmatrix& m)		{	flags |= dirty_V; m_v.set(m);	}
+	IC void			set_P		(const Fmatrix& m)		{	flags |= dirty_P; m_p.set(m);	}
 	IC void			set_mapping	(R_mapping* C)
 	{
-		if (C && !C->empty)		
+		if (C && !C->empty)
 		{
 			mapping	=	C;
 			flags	|=	dirty_M;

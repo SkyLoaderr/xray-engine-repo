@@ -4,6 +4,7 @@
 
 #include "r_DStreams.h"
 #include "r_constants_cache.h"
+#include "r_backend_xform.h"
 #include "fvf.h"
 
 class ENGINE_API CBackend
@@ -25,7 +26,9 @@ private:
 	u32								vb_stride;
 
 	// Pixel/Vertex constants
+	R_xforms						xforms;
 	R_constants						constants;
+	R_constant_table*				ctable;
 
 	// Shaders/State
 	IDirect3DStateBlock9*			state;
@@ -57,6 +60,7 @@ private:
 		state						= NULL;
 		ps							= NULL;
 		vs							= NULL;
+		ctable						= NULL;
 
 		T							= NULL;
 		M							= NULL;
@@ -93,15 +97,15 @@ public:
 
 	// API
 	IC	void						set_xform			(u32 ID, const Fmatrix& M);
-	IC	void						set_xform_world		(const Fmatrix& M)					{ set_xform(D3DTS_WORLD,M);			}
-	IC	void						set_xform_view		(const Fmatrix& M)					{ set_xform(D3DTS_VIEW,M);			}
-	IC	void						set_xform_project	(const Fmatrix& M)					{ set_xform(D3DTS_PROJECTION,M);	}
+	IC	void						set_xform_world		(const Fmatrix& M);
+	IC	void						set_xform_view		(const Fmatrix& M);
+	IC	void						set_xform_project	(const Fmatrix& M);
 
 	IC	void						set_RT				(IDirect3DSurface9* RT, u32 ID=0);
 	IC	void						set_ZB				(IDirect3DSurface9* ZB);
 	IC	void						set_Textures		(STextureList* T);
 	IC	void						set_Matrices		(SMatrixList* M);
-	IC	void						set_Constants		(SConstantList* C, BOOL	bPS);
+	IC	void						set_Constants		(R_constant_table* C);
 	IC	void						set_Element			(ShaderElement* S, u32	pass=0);
 	IC	void						set_Shader			(Shader* S, u32 pass=0);
 

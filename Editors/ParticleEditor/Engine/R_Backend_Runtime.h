@@ -12,6 +12,21 @@ IC void	CBackend::set_xform				(u32 ID, const Fmatrix& M)
 	stat.xforms			++;
 	CHK_DX				(HW.pDevice->SetTransform((D3DTRANSFORMSTATETYPE)ID,(D3DMATRIX*)&M));
 }
+IC	void	CBackend::set_xform_world	(const Fmatrix& M)
+{ 
+	xforms.set_W(M);	
+	set_xform	(D3DTS_WORLD,M);			
+}
+IC	void	CBackend::set_xform_view	(const Fmatrix& M)					
+{ 
+	xforms.set_V(M);	
+	set_xform	(D3DTS_VIEW,M);			
+}
+IC	void	CBackend::set_xform_project	(const Fmatrix& M)
+{ 
+	xforms.set_P(M);	
+	set_xform	(D3DTS_PROJECTION,M);		
+}
 
 IC void CBackend::set_RT				(IDirect3DSurface9* RT, u32 ID)
 {
@@ -86,31 +101,10 @@ IC void CBackend::set_Matrices			(SMatrixList*	_M)
 	}
 }
 
-IC void CBackend::set_Constants			(SConstantList* _C, BOOL bPS)
+IC void CBackend::set_Constants			(R_constant_table* C)
 {
-	/*
-	if (cache.pass.C != C)
-	{
-		cache.pass.C = C;
-		if (C)	{
-			if (bPS)
-			{
-				svector<Fcolor,8>	data;
-				for (u32 it=0; it<C->size(); it++)	{
-					CConstant* c	= (*C)[it];
-					c->Calculate	();
-					data.push_back	(c->const_float);
-				}
-				CHK_DX(HW.pDevice->SetPixelShaderConstantF(0,(const float*)data.begin(),data.size()));
-			} else {
-				CConstant* c		= (*C)[0];
-				c->Calculate		();
-				CHK_DX(HW.pDevice->SetRenderState(D3DRS_TEXTUREFACTOR,c->const_dword));
-			}
-			Device.Statistic.dwShader_Constants++;
-		}
-	}
-	*/
+	ctable			= C;
+	if (C)			xforms.set_mapping	(C->mapping);
 }
 
 IC void CBackend::set_Element			(ShaderElement* S, u32	pass)
@@ -119,9 +113,9 @@ IC void CBackend::set_Element			(ShaderElement* S, u32	pass)
 	set_States		(P.state);
 	set_PS			(P.ps);
 	set_VS			(P.vs);
+	set_Constants	(P.constants);
 	set_Textures	(P.T);
 	set_Matrices	(P.M);
-	//set_Constants	(P.C,S->Flags.bPixelShader);
 }
 
 IC void CBackend::set_Format			(IDirect3DVertexDeclaration9* _decl)
@@ -180,6 +174,7 @@ IC void CBackend::Render				(D3DPRIMITIVETYPE T, u32 baseV, u32 startV, u32 coun
 	stat.calls			++;
 	stat.verts			+= countV;
 	stat.polys			+= PC;
+	xforms.flush		();
 	constants.flush		();
 	CHK_DX				(HW.pDevice->DrawIndexedPrimitive(T,baseV, startV, countV,startI,PC));
 }
@@ -189,6 +184,7 @@ IC void CBackend::Render				(D3DPRIMITIVETYPE T, u32 startV, u32 PC)
 	stat.calls			++;
 	stat.verts			+= 3*PC;
 	stat.polys			+= PC;
+	xforms.flush		();
 	constants.flush		();
 	CHK_DX				(HW.pDevice->DrawPrimitive(T, startV, PC));
 }
