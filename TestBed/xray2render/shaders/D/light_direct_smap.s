@@ -56,27 +56,33 @@ p2f 	p_main	( v2p_in IN )
   float2 uv0	= float2	(PLS.x/PLS.w,PLS.y/PLS.w);
   float  depth	= PLS.z		+ .001f;
   
-  // Sample shadowmap
-  float4 s0		= tex2D		(s_shadowmap,uv0+jitter[0]);
-  float4 s1		= tex2D		(s_shadowmap,uv0+jitter[1]);
-  float4 s2		= tex2D		(s_shadowmap,uv0+jitter[2]);
-  float4 s3		= tex2D		(s_shadowmap,uv0+jitter[3]);
+  // 1. Sample shadowmap 
+  // 2. Compare (if (depth_pixel > depth_smap) then in shadow)
+  float4 s0,s1,s2,s3,sC;
+  float3 sA;
+ 
+  s0			= tex2D		(s_shadowmap,uv0+jitter[0]);
+  s1			= tex2D		(s_shadowmap,uv0+jitter[1]);
+  s2			= tex2D		(s_shadowmap,uv0+jitter[2]);
+  s3			= tex2D		(s_shadowmap,uv0+jitter[3]);
+  sC			= step		(float4(depth-s0.x,depth-s1.x,depth-s2.x,depth-s3.x),	0);
+  sA.x			= dot		(sC,sC);
 
-  float4 s4		= tex2D		(s_shadowmap,uv0-jitter[0]);
-  float4 s5		= tex2D		(s_shadowmap,uv0-jitter[1]);
-  float4 s6		= tex2D		(s_shadowmap,uv0-jitter[2]);
-  float4 s7		= tex2D		(s_shadowmap,uv0-jitter[3]);
+  s0			= tex2D		(s_shadowmap,uv0-jitter[0]);
+  s1			= tex2D		(s_shadowmap,uv0-jitter[1]);
+  s2			= tex2D		(s_shadowmap,uv0-jitter[2]);
+  s3			= tex2D		(s_shadowmap,uv0-jitter[3]);
+  sC			= step		(float4(depth-s0.x,depth-s1.x,depth-s2.x,depth-s3.x),	0);
+  sA.y			= dot		(sC,sC);
 
-  float4 s8		= tex2D		(s_shadowmap,uv0+jitter[4]);
-  float4 s9		= tex2D		(s_shadowmap,uv0+jitter[5]);
-  float4 s10	= tex2D		(s_shadowmap,uv0+jitter[6]);
-  float4 s11	= tex2D		(s_shadowmap,uv0+jitter[7]);
+  s0			= tex2D		(s_shadowmap,uv0+jitter[4]);
+  s1			= tex2D		(s_shadowmap,uv0+jitter[5]);
+  s2			= tex2D		(s_shadowmap,uv0+jitter[6]);
+  s3			= tex2D		(s_shadowmap,uv0+jitter[7]);
+  sC			= step		(float4(depth-s0.x,depth-s1.x,depth-s2.x,depth-s3.x),	0);
+  sA.z			= dot		(sC,sC);
   
-  // Compare (if (depth_pixel > depth_smap) then in shadow)
-  float4 sC0	= step		(float4(depth-s0.x,depth-s1.x,depth-s2.x,depth-s3.x),	0);
-  float4 sC1	= step		(float4(depth-s4.x,depth-s5.x,depth-s6.x,depth-s7.x),	0);
-  float4 sC2	= step		(float4(depth-s8.x,depth-s9.x,depth-s10.x,depth-s11.x),	0);
-  float	 shadow	= (dot(sC0,sC0)+dot(sC1,sC1)+dot(sC2,sC2))/12;
+  float	 shadow	= dot		(sA,sA)/12;
   
   // Normal
   float3 N		= float3	(_N.x,_N.y,_N.z);
