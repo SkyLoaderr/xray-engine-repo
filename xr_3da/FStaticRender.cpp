@@ -114,10 +114,16 @@ IC		void		gm_SetLighting		(CObject* O)
 {
 	if (O != gm_Object)
 	{
-		gm_Object	= O;
-		
+		gm_Object			= O;
+		CLightTrack& LT		= *O->Lights	();
+
 		// set up to 8 lights to device
-		CHK_DX(HW.pDevice->SetLight	(i, Lights[i].d3d()) );
+		int			 max	= _min(LT.lights.size(),8);
+		for (int L=0; L<max; L++)
+			CHK_DX(HW.pDevice->SetLight(L, LT.lights[L].L.d3d()) );
+
+		// enable them, disable others
+		
 	}
 }
 

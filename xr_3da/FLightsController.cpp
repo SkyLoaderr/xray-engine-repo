@@ -62,7 +62,7 @@ void CLightDB_Static::Load			(CStream *fs)
 			Lights[i].position.mul		(1000.f);
 			Lights[i].range				= 1000.f;
 		}
-		CHK_DX(HW.pDevice->SetLight	(i, Lights[i].d3d()) );
+		//  CHK_DX(HW.pDevice->SetLight	(i, Lights[i].d3d()) );
 		Enabled[i]=FALSE;
 	}
 	Log("* Total number of light sources on level: ",count);
