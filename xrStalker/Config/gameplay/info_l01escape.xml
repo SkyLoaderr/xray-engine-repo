@@ -37,6 +37,8 @@
 	</info_portion>
 	<info_portion id="tutorial_wounded_death">
 	</info_portion>
+	<info_portion id="tutorial_wounded_end">
+	</info_portion>
 	<info_portion id="tutorial_end">
 	</info_portion>
 	<info_portion id="tutorial_wounded_volk_greet">
