@@ -154,7 +154,7 @@ public:
 
 
 	//временно!!!! (а может уже и нет)
-	void SetFont(CGameFont* pFont) {m_pFont = pFont;}
+	virtual void SetFont(CGameFont* pFont) {m_pFont = pFont;}
 	CGameFont* GetFont() {if(m_pFont) return m_pFont;
 							if(m_pParentWnd== NULL)	
 								return  m_pFont;
