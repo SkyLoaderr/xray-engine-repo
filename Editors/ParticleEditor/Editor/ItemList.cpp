@@ -226,8 +226,10 @@ void __fastcall TItemList::AssignItems(ListItemsVec& items, bool full_expand, bo
 
     // sorting
     if (full_sort){
-    	tvItems->Sort		(true);
-        tvItems->SortMode 	= smAdd;
+        tvItems->ShowColumns	= false;
+    	tvItems->Sort			(true);
+        tvItems->SortMode 		= smAdd;
+        tvItems->ShowColumns	= true;
     }else{
         for (ListItemsIt it=m_Items.begin(); it!=m_Items.end(); it++){
             ListItem* prop		= *it;
@@ -570,5 +572,17 @@ void TItemList::RenameSelItem()
 }
 //---------------------------------------------------------------------------
 
-
+void __fastcall TItemList::tvItemsCompareItems(TObject *Sender,
+      TElTreeItem *Item1, TElTreeItem *Item2, int &res)
+{
+	u32 type1 = (u32)Item1->Data;
+	u32 type2 = (u32)Item2->Data;
+    if (type1==type2){
+        if (Item1->Text<Item2->Text) 		res = -1;
+        else if (Item1->Text>Item2->Text) 	res =  1;
+        else if (Item1->Text==Item2->Text) 	res =  0;
+    }else if (type1==TYPE_FOLDER)	    	res = -1;
+    else if (type2==TYPE_FOLDER)	    	res =  1;
+}
+//---------------------------------------------------------------------------
 

@@ -72,6 +72,8 @@ __published:	// IDE-managed Components
 	void __fastcall tvItemsResize(TObject *Sender);
 	void __fastcall RefreshForm1Click(TObject *Sender);
 	void __fastcall tvItemsHeaderResize(TObject *Sender);
+	void __fastcall tvItemsCompareItems(TObject *Sender, TElTreeItem *Item1,
+          TElTreeItem *Item2, int &res);
 public:
 	DEFINE_VECTOR(TElTreeItem*,ElItemsVec,ElItemsIt);
     typedef void 	__fastcall (__closure *TOnItemFocused)		(TElTreeItem* item);
