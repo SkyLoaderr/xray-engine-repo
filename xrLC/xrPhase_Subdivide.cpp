@@ -87,7 +87,7 @@ void CBuild::xrPhase_Subdivide()
 			// split deflector into TWO
 			if (defl_base)	
 			{
-				// delete old deflector
+				// _delete old deflector
 				for (DWORD it=0; it<g_deflectors.size(); it++)
 				{
 					if (g_deflectors[it]==defl_base)	{

@@ -286,7 +286,7 @@ void CBuild::MergeLM()
 					vecDeflIt		OLD = find(g_deflectors.begin(),g_deflectors.end(),SEL[iRealIndex]);
 					VERIFY			(OLD!=g_deflectors.end());
 					g_deflectors.erase(OLD);
-					delete			SEL[iRealIndex];
+					xr_delete		(SEL[iRealIndex]);
 				}
 				pDEFL->Save			();
 				deflNew.push_back	(pDEFL);

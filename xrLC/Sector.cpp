@@ -97,7 +97,7 @@ void CSector::BuildHierrarhy()
 				bAnyNode				= TRUE;
 			} else {
 				g_tree[I]->bConnected = false;
-				delete pNode;
+				xr_delete(pNode);
 			}
 		}
 		

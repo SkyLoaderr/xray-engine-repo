@@ -45,7 +45,7 @@ void CBuild::BuildHierrarhy()
 				g_tree.push_back(pNode);
 			} else {
 				g_tree[I]->bConnected = false;
-				delete pNode;
+				xr_delete pNode;
 			}
 			Progress(float(I)/float(iSize));
 		}

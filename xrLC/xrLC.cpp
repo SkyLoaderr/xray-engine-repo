@@ -113,7 +113,7 @@ void Startup(LPSTR     lpCmdLine)
 	
 	// Call for builder
 	pBuild->Run				("gamedata\\levels\\"+string(name));
-	delete					pBuild;
+	xr_delete				(pBuild);
 
 	// Show statistic
 	char	stats[256];
