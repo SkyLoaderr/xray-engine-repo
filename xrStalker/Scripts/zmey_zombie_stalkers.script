@@ -6,7 +6,7 @@ local zombied_stalker_names = {
 	"m_stalker_zombie4"
 }
 
-local release_distance = 50
+local release_distance = 100
 
 function main()
 	local actor = get_actor()
