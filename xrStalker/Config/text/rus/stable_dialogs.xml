@@ -40,7 +40,7 @@
         <text>Извини, у меня другие планы.</text>
     </string>
     <string id="companion_management_dialog_0">
-        <text>Нужно обговорить твои действия.</text>
+        <text>Слушай команду.</text>
     </string>
     <string id="companion_management_dialog_1">
         <text>Я слушаю.</text>
@@ -48,38 +48,17 @@
     <string id="companion_management_dialog_11">
         <text>Следуй за мной.</text>
     </string>
-    <string id="companion_management_dialog_111">
-        <text>Будет сделано. Я сразу за тобой.</text>
-    </string>
-    <string id="companion_management_dialog_12">
-        <text>Следуй за мной и держись поближе.</text>
-    </string>
-    <string id="companion_management_dialog_121">
-        <text>Идти за тобой, отстреливаться с места. Все ясно.</text>
-    </string>
     <string id="companion_management_dialog_13">
         <text>Следуй за мной и не атакуй врагов первым.</text>
-    </string>
-    <string id="companion_management_dialog_131">
-        <text>Идти за тобой и не привлекать лишнего внимания. Понял.</text>
     </string>
     <string id="companion_management_dialog_14">
         <text>Жди здесь.</text>
     </string>
-    <string id="companion_management_dialog_141">
-        <text>Договорились. Если что - я буду где то рядом.</text>
-    </string>
-    <string id="companion_management_dialog_15">
-        <text>Жди здесь и ни шагу в сторону.</text>
-    </string>
-    <string id="companion_management_dialog_151">
-        <text>Хорошо. Буду ждать прямо здесь.</text>
-    </string>
     <string id="companion_management_dialog_16">
         <text>Жди здесь и не атакуй врагов первым.</text>
     </string>
-    <string id="companion_management_dialog_161">
-        <text>Сидеть и не высовываться. Все ясно.</text>
+    <string id="companion_management_dialog_17">
+        <text>Я пропил все твои деньги...</text>
     </string>
     <string id="companion_management_dialog_20">
         <text>Спасибо за сотрудничество. Ты свободен.</text>

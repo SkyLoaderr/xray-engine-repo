@@ -214,7 +214,7 @@ function action_zoneguard_activity:fsm_step()
 
 	if self.sound_activated and distance_between(self.object, actor) <= 5 then
 		--printf("_bp: zoneguard: sound_update: maxidle = %d, sumidle = %s", self.snd.maxidle, self.snd.sumidle)
-		xr_sound.set_sound(self.object, self.snd.themes, true)
+		xr_sound.set_sound(self.object, self.snd.themes)
 	end
 	
 	local see_actor = self.object:see(actor)
@@ -327,6 +327,8 @@ function action_zoneguard_activity:finalize()
 
 	self:reset_trigger()
 	self.move_mgr:finalize()
+
+	xr_sound.set_sound(self.object, nil)
 	
 	action_base.finalize(self)
 end

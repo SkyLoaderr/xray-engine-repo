@@ -387,6 +387,40 @@ function not_is_companion(actor, npc)
 	return not is_companion(actor, npc)
 end
 
+function companion_beh_walk_simple(actor, npc)
+	printf("_bp: dialogs: companion_beh_walk_simple: npc='%s', actor='%s'",
+		npc:name(), actor:name())
+	local st = db.storage[npc:id()]
+	if st and st.companion then
+		st.companion.behavior = xr_companion.beh_walk_simple
+	end
+end
+
+function companion_beh_wait_simple(actor, npc)
+	printf("_bp: dialogs: companion_beh_wait_simple: npc='%s', actor='%s'",
+		npc:name(), actor:name())
+	local st = db.storage[npc:id()]
+	if st and st.companion then
+		st.companion.behavior = xr_companion.beh_wait_simple
+	end
+end
+
+function companion_suicide(actor, npc)
+	printf("_bp: dialogs: companion_suicide: npc='%s', actor='%s'",
+		npc:name(), actor:name())
+
+	local h = hit()
+	h.power = 1000
+	--h.direction = vector_rotate_y(npc:direction(), 90)
+	h.direction = npc:direction()
+	h.bone = "bip01_head"
+	h.draftsman = npc 
+	h.impulse = 10
+	h.type = hit.wound
+	npc:hit(h)
+
+end
+
 ------------------------------------------------------------------------------------
 -- escape factory combat
 ------------------------------------------------------------------------------------
