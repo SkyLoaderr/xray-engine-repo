@@ -5398,6 +5398,12 @@
 						Filter="">
 						<File
 							RelativePath=".\script_stack_tracker.cpp">
+							<FileConfiguration
+								Name="Release|Win32"
+								ExcludedFromBuild="TRUE">
+								<Tool
+									Name="VCCLCompilerTool"/>
+							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\script_stack_tracker.h">
