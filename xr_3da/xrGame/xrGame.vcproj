@@ -2998,6 +2998,12 @@
 						<File
 							RelativePath=".\ai\Monsters\Fracture\fracture.h">
 						</File>
+						<File
+							RelativePath=".\ai\Monsters\Fracture\fracture_state_manager.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Fracture\fracture_state_manager.h">
+						</File>
 					</Filter>
 				</Filter>
 				<Filter
