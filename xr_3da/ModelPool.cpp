@@ -80,9 +80,9 @@ CVisual*	CModelPool::Instance_Load		(const char* N)
 	else				strcpy		(name,N);
 
 	// Load data from MESHES or LEVEL
-	if (!Engine.FS.Exist(N))	{
-		if (!Engine.FS.Exist(fn, Path.Current, name))
-			if (!Engine.FS.Exist(fn, Path.Meshes, name)){
+	if (!FS.exist(N))	{
+		if (!FS.exist(fn, Path.Current, name))
+			if (!FS.exist(fn, Path.Meshes, name)){
 				Msg("Can't find model file '%s'.",name);
 				THROW;
 			}
@@ -91,12 +91,12 @@ CVisual*	CModelPool::Instance_Load		(const char* N)
 	}
 	
 	// Actual loading
-	IReader*			data	= Engine.FS.Open(fn);
+	IReader*			data	= FS.r_open(fn);
 	ogf_header			H;
 	data->r_chunk_safe	(OGF_HEADER,&H,sizeof(H));
 	V = Instance_Create (H.type);
 	V->Load				(fn,data,0);
-	Engine.FS.Close		(data);
+	FS.r_close		(data);
 
 	// Registration
 	Instance_Register	(N,V);

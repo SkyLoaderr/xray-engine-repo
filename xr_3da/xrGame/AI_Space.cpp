@@ -31,7 +31,7 @@ CAI_Space::CAI_Space	()
 	
 	string256					caFileName;
 	strconcat					(caFileName,::Path.GameData,GRAPH_NAME);
-	if (Engine.FS.Exist(caFileName))
+	if (FS.exist(caFileName))
 		CALifeGraph::Load		(caFileName);
 }
 
@@ -70,9 +70,9 @@ void CAI_Space::Load(LPCSTR name)
 
 	string256	fName;
 	strconcat	(fName,name,"level.ai");
-	if (!Engine.FS.Exist(fName))	return;
+	if (!FS.exist(fName))	return;
 
-	vfs			= Engine.FS.Open	(fName);
+	vfs			= FS.r_open	(fName);
 
 	// m_header & data
 	vfs->r	(&m_header,sizeof(m_header));
@@ -104,7 +104,7 @@ void CAI_Space::Load(LPCSTR name)
 	m_tpAStar	= xr_new<CAStar>(65535);
 
 	strconcat	(fName,name,CROSS_TABLE_NAME);
-	if (!Engine.FS.Exist(fName))	return;
+	if (!FS.exist(fName))	return;
 	CALifeCrossTable::Load(fName);
 }
 

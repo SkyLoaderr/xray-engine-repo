@@ -119,7 +119,7 @@ f32 CCustomZone::Power(f32 dist) {
 
 void CCustomZone::SoundCreate(sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq) {
 	string256 temp;
-	if (Engine.FS.Exist(temp,Path.Sounds,s_name)) {
+	if (FS.exist(temp,Path.Sounds,s_name)) {
 		Sound->Create(dest,TRUE,s_name,bCtrlFreq,iType);
 		return;
 	}

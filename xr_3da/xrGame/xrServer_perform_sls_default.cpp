@@ -13,9 +13,9 @@ void xrServer::SLS_Default	()
 		}
 	}
 	string256			fn_spawn;
-	if (Engine.FS.Exist(fn_spawn, ::Path.Current, "level.spawn"))
+	if (FS.exist(fn_spawn, ::Path.Current, "level.spawn"))
 	{
-		IReader*		SP	= Engine.FS.Open(fn_spawn);
+		IReader*		SP	= FS.r_open(fn_spawn);
 		NET_Packet		P;
 		IReader*		S		= 0;
 		int				S_id	= 0;
@@ -31,6 +31,6 @@ void xrServer::SLS_Default	()
 
 			S_id		+=	1;
 		}
-		Engine.FS.Close	(SP);
+		FS.r_close	(SP);
 	}
 }

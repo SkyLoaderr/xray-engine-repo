@@ -23,13 +23,13 @@ CDemoPlay::CDemoPlay(const char *name, float ms, BOOL bc, float life_time) : CEf
 	m_pMotion	= 0;
 	char		nm[255],fn[255];
 	strcpy	(nm,name);	if (strext(nm))	strcpy(strext(nm),".anm");
-	if (Engine.FS.Exist(fn,Path.Current,nm))
+	if (FS.exist(fn,Path.Current,nm))
 	{
 		m_pMotion	= xr_new<COMotion> ();
 		m_pMotion->LoadMotion(fn);
 		m_MParam.Set(m_pMotion, true);
 	}else{
-		if (!Engine.FS.Exist(name)) {
+		if (!FS.exist(name)) {
 			pCreator->Cameras.RemoveEffector(cefDemo);
 			return;
 		}

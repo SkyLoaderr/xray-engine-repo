@@ -22,7 +22,7 @@ CCreator::~CCreator	( )
 {
 	DEL_INSTANCE				( pHUD		);
 	xr_delete					( pLevel	);
-	Engine.FS.Close				( LL_Stream	);
+	FS.r_close				( LL_Stream	);
 
 	Sound->destroy				(Sounds_Ambience);
 
@@ -58,7 +58,7 @@ BOOL CCreator::Load(u32 dwNum)
 	// Initialize level data
 	pApp->Level_Set				( dwNum );
 	string256					temp;
-	if (!Engine.FS.Exist(temp, Path.Current, "level.ltx"))
+	if (!FS.exist(temp, Path.Current, "level.ltx"))
 		Debug.fatal("Can't find level configuration file '%s'.",temp);
 
 	pLevel						= xr_new<CInifile>	( temp );
@@ -68,7 +68,7 @@ BOOL CCreator::Load(u32 dwNum)
 	strconcat					(LDesc,Path.Current,"level");
 	
 	pApp->LoadTitle				("Opening virtual stream: ",LDesc);
-	LL_Stream					= Engine.FS.Open	(LDesc);
+	LL_Stream					= FS.r_open	(LDesc);
 	IReader	&fs					= *LL_Stream;
 	
 	IReader *chunk = 0;

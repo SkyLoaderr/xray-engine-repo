@@ -49,11 +49,11 @@ void CObjectAnimator::SetActiveMotion(COMotion* mot, bool bLoop)
 void CObjectAnimator::LoadMotions(const char* fname)
 {
 	string256			full_path;
-	if (!Engine.FS.Exist( full_path, Path.Current, fname ))
-		if (!Engine.FS.Exist( full_path, Path.Meshes, fname ))
+	if (!FS.exist( full_path, Path.Current, fname ))
+		if (!FS.exist( full_path, Path.Meshes, fname ))
 			Debug.fatal("Can't find motion file '%s'.",fname);
 
-	IReader* F			= Engine.FS.Open(full_path);
+	IReader* F			= FS.r_open(full_path);
 	u32 dwMCnt		= F->r_u32(); VERIFY(dwMCnt);
 	for (u32 i=0; i<dwMCnt; i++){
 		COMotion* M		= xr_new<COMotion> ();
@@ -61,7 +61,7 @@ void CObjectAnimator::LoadMotions(const char* fname)
 		if (!bRes)		Debug.fatal("ERROR: Can't load motion. Incorrect file version.");
 		m_Motions[xr_strdup(M->Name())]=M;
 	}
-	Engine.FS.Close		(F);
+	FS.r_close		(F);
 }
 
 /*

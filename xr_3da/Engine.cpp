@@ -34,7 +34,7 @@ void CEngine::Initialize	(void)
 	bindCPU		(&PSGP, CPU::ID.feature & CPU::ID.os_support);
 	
 	// Other stuff
-	Engine.FS.Initialize				( );
+	FS.Initialize				( );
 	Engine.Sheduler.Initialize			( );
 
 	// 
@@ -45,7 +45,7 @@ void CEngine::Destroy	()
 {
 	Engine.Sheduler.Destroy				( );
 	Engine.External.Destroy				( );
-	Engine.FS.Destroy					( );
+	FS.Destroy					( );
 	
 	if (hPSGP)	
 	{ 

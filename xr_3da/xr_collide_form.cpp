@@ -50,14 +50,14 @@ BOOL CCF_Polygonal::LoadModel( CInifile* ini, const char *section )
 	// Locate file
 	string256			full_path;
 	LPCSTR				N = ini->ReadSTRING(section,"cform");
-	if (!Engine.FS.Exist(full_path, Path.Current, N))
-		if (!Engine.FS.Exist(full_path, Path.CForms, N)){
+	if (!FS.exist(full_path, Path.Current, N))
+		if (!FS.exist(full_path, Path.CForms, N)){
 			Msg("Can't find cform file '%s'.",N);
 			THROW;
 		}
 
 	// Actual load
-	IReader*			f	= Engine.FS.Open(full_path);
+	IReader*			f	= FS.r_open(full_path);
 	hdrCFORM			H;
 	f->r				(&H,sizeof(hdrCFORM));
 	R_ASSERT			(CFORM_CURRENT_VERSION==H.version);
@@ -69,7 +69,7 @@ BOOL CCF_Polygonal::LoadModel( CInifile* ini, const char *section )
 	CDB::TRI*	tris	= (CDB::TRI*)(verts+H.vertcount);
 	model.build			( verts, H.vertcount, tris, H.facecount );
 	Msg("* CFORM memory usage: %dK",model.memory()/1024);
-	Engine.FS.Close		(f);
+	FS.r_close		(f);
 
 	return				TRUE;
 }

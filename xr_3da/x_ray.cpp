@@ -252,19 +252,19 @@ void CApplication::OnFrame( )
 void CApplication::Level_Scan()
 {
 	vector<char*>	folder;
-	Engine.FS.List	(folder,Path.Levels,FS_ListFolders);
+	FS.List	(folder,Path.Levels,FS_ListFolders);
 	R_ASSERT		(!folder.empty());
 	for (u32 i=0; i<folder.size(); i++)
 	{
 		string256	N,F;
 		strconcat	(N,Path.Levels,folder[i]);
 		if	(
-			Engine.FS.Exist(F,N,"level")		&&
-			Engine.FS.Exist(F,N,"level.ltx")
+			FS.exist(F,N,"level")		&&
+			FS.exist(F,N,"level.ltx")
 			)
 		{
 			/*
-			if (!Engine.FS.Exist(F,N,"level.ai"))
+			if (!FS.exist(F,N,"level.ai"))
 				Msg("! Warning: partially compiled level: %s",folder[i]);
 			*/
 			sLevelInfo			LI;

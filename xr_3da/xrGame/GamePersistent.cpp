@@ -19,7 +19,7 @@ void CGamePersistent::OnAppCycleStart()
 {
 	// load game materials
 	string256		fn_mtl;
-	if (Engine.FS.Exist(fn_mtl, Path.GameData, "gamemtl.xr"))
+	if (FS.exist(fn_mtl, Path.GameData, "gamemtl.xr"))
 		GMLib.Load	(fn_mtl);
 }
 

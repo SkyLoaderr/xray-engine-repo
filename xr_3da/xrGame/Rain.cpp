@@ -59,9 +59,9 @@ void	CEffect_Rain::OnDeviceCreate	()
 
 	string256			name;
 	strconcat			(name,Path.Meshes,"dm\\rain.dm");
-	IReader*	 fs		= Engine.FS.Open(name);
+	IReader*	 fs		= FS.r_open(name);
 	DM_Drop.Load		(fs);
-	Engine.FS.Close		(fs);
+	FS.r_close		(fs);
 
 	SH_Rain				= Device.Shader.Create		("effects\\rain","fx\\rain");
 	hGeom_Rain			= Device.Shader.CreateGeom	(FVF::F_LIT, RCache.Vertex.Buffer(), RCache.QuadIB);

@@ -8,7 +8,6 @@
 
 #include "engineAPI.h"
 #include "eventAPI.h"
-#include "locatorAPI.h"
 #include "xrCPU_Pipe.h"
 #include "xrSheduler.h"
 
@@ -19,7 +18,6 @@ public:
 	// DLL api stuff
 	CEngineAPI			External;
 	CEventAPI			Event;
-	CLocatorAPI			FS;
 	CSheduler			Sheduler;
 
 	void				Initialize	();

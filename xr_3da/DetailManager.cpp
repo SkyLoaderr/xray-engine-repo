@@ -88,12 +88,12 @@ void CDetailManager::Load		()
 {
 	// Open file stream
 	string256	fn;
-	if (!Engine.FS.Exist(fn,Path.Current,"level.details"))
+	if (!FS.exist(fn,Path.Current,"level.details"))
 	{
 		dtFS	= NULL;
 		return;
 	}
-	dtFS		= Engine.FS.Open(fn);
+	dtFS		= FS.r_open(fn);
 
 	// Header
 	dtFS->r_chunk_safe	(0,&dtH,sizeof(dtH));

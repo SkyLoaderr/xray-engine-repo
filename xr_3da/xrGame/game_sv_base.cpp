@@ -231,9 +231,9 @@ void game_sv_GameState::OnPlayerDisconnect		(u32 id_who)
 void game_sv_GameState::Create					(LPCSTR options)
 {
 	string256	fn_game;
-	if (Engine.FS.Exist(fn_game, Path.Current, "level.game")) 
+	if (FS.exist(fn_game, Path.Current, "level.game")) 
 	{
-		IReader *F = Engine.FS.Open	(fn_game);
+		IReader *F = FS.r_open	(fn_game);
 		IReader *O = 0;
 
 		// Load RPoints
@@ -253,7 +253,7 @@ void game_sv_GameState::Create					(LPCSTR options)
 			O->close();
 		}
 
-		Engine.FS.Close	(F);
+		FS.r_close	(F);
 	}
 }
 

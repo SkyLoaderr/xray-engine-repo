@@ -87,7 +87,7 @@ public:
 #ifdef AI_COMPILER
 		m_tpGraphVFS					= xr_new<CVirtualFileReader>(fName);
 #else
-		m_tpGraphVFS					= Engine.FS.Open(fName);
+		m_tpGraphVFS					= FS.r_open(fName);
 #endif
 		m_tGraphHeader.dwVersion		= m_tpGraphVFS->r_u32();
 		m_tGraphHeader.dwVertexCount	= m_tpGraphVFS->r_u32();

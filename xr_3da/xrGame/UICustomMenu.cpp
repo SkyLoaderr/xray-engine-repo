@@ -51,7 +51,7 @@ CUICustomMenuItem* UILoadMenu		(CUICustomMenu* owner, LPCSTR ini_name, LPCSTR se
 	// check ini exist
 	CUICustomMenuItem* I=0;
 	string256 fn;
-	if (Engine.FS.Exist(fn,Path.GameData,ini_name)){
+	if (FS.exist(fn,Path.GameData,ini_name)){
 		CInifile* ini		= CInifile::Create(fn);
 		I					= UIParseMenu(owner,ini,0,sect,exec,draw);
 		CInifile::Destroy	(ini);

@@ -19,29 +19,29 @@ BOOL psLibrary_Load(const char *Name, PS::PSVec &LIB)
 	// Check if file is compressed already
 	string32	ID			= PS_LIB_SIGN;
 	string32	id;
-	IReader*	F			= Engine.FS.Open(Name);
+	IReader*	F			= FS.r_open(Name);
 	F->r		(&id,8);
 	if (0==strncmp(id,ID,8))	
 	{
-		Engine.FS.Close			(F);
+		FS.r_close			(F);
 		F						= xr_new<CCompressedReader> (Name,ID);
 	}else{
     	F->seek	(0);
     }
-	IReader&				FS	= *F;
+	IReader&				fs	= *F;
     	
 	// Load
 	LIB.clear			();
-    WORD version		= FS.r_u16();
+    WORD version		= fs.r_u16();
     if (version!=PARTICLESYSTEM_VERSION) return false;
-    u32 count = FS.r_u32();
+    u32 count = fs.r_u32();
     if (count){
         LIB.resize		(count);
-        FS.r			(&*LIB.begin(), count*sizeof(PS::SDef));
+        fs.r			(&*LIB.begin(), count*sizeof(PS::SDef));
     }
     psLibrary_Sort		(LIB);
 
-	Engine.FS.Close		(F);
+	FS.r_close		(F);
     return true;
 }
 
@@ -51,7 +51,7 @@ void psLibrary_Save(const char *Name, PS::PSVec &LIB)
     F.w_u16		(PARTICLESYSTEM_VERSION);
     F.w_u32		(LIB.size());
 	F.w			(&*LIB.begin(), LIB.size()*sizeof(PS::SDef));
-    F.save_to	(Name,0);
+    F.save_to	(Name);
 }
 
 PS::SDef* psLibrary_FindSorted(const char* Name, PS::PSVec &LIB)

@@ -91,13 +91,13 @@ void CWeapon::SoundCreate(sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq)
 {
 	string256	name,temp;
 	strconcat	(name,"weapons\\",GetName(),"_",s_name);
-	if (Engine.FS.Exist(temp,Path.Sounds,name,".wav"))	
+	if (FS.exist(temp,Path.Sounds,name,".wav"))	
 	{
 		Sound->Create(dest,TRUE,name,bCtrlFreq,iType);
 		return;
 	}
 	strconcat	(name,"weapons\\","generic_",s_name);
-	if (Engine.FS.Exist(temp,Path.Sounds,name,".wav"))	
+	if (FS.exist(temp,Path.Sounds,name,".wav"))	
 	{
 		Sound->Create(dest,TRUE,name,bCtrlFreq,iType);
 		return;
@@ -117,13 +117,13 @@ void CWeapon::ShaderCreate	(Shader* &dest, LPCSTR S, LPCSTR T)
 
 	// test 'WEAPONS' folder 
 	strconcat	(name,"weapons\\",GetName(),"\\",T);
-	if (Engine.FS.Exist(temp,Path.Textures,name,".dds"))	
+	if (FS.exist(temp,Path.Textures,name,".dds"))	
 	{
 		dest = Device.Shader.Create(S,name); 
 		return;
 	}
 	strconcat	(name,"weapons\\generic\\",T);
-	if (Engine.FS.Exist(temp,Path.Textures,name,".dds"))	
+	if (FS.exist(temp,Path.Textures,name,".dds"))	
 	{
 		dest = Device.Shader.Create(S,name);
 		return;
@@ -131,13 +131,13 @@ void CWeapon::ShaderCreate	(Shader* &dest, LPCSTR S, LPCSTR T)
 
 	// test 'UI' folder
 	strconcat	(name,"ui\\ui_hud_wpn_",GetName());
-	if (Engine.FS.Exist(temp,Path.Textures,name,".dds"))	
+	if (FS.exist(temp,Path.Textures,name,".dds"))	
 	{
 		dest = Device.Shader.Create(S,name);
 		return;
 	}
 	strcpy		(name,"ui\\ui_hud_wpn_generic");
-	if (Engine.FS.Exist(temp,Path.Textures,name,".dds"))	
+	if (FS.exist(temp,Path.Textures,name,".dds"))	
 	{
 		dest = Device.Shader.Create(S,name);
 		return;

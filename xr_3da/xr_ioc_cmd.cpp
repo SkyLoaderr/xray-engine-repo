@@ -148,7 +148,7 @@ public:
 			return;
 		}
 		string256	fn;
-		if (Engine.FS.Exist(fn,"",args,".save"))
+		if (FS.exist(fn,"",args,".save"))
 		{
 			Engine.Event.Defer("KERNEL:server_load",u32(xr_strdup(fn)));
 		} else {

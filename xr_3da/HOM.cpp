@@ -47,14 +47,14 @@ void CHOM::Load			()
 {
 	// Find and open file
 	string256	fName;
-	if (!Engine.FS.Exist(fName, Path.Current, "level.hom"))
+	if (!FS.exist(fName, Path.Current, "level.hom"))
 	{
 		Msg		("! Occlusion map '%s' not found.",fName);
 		return;
 	}
 	Msg	("* Loading HOM: %s",fName);
 	
-	destructor<IReader> FS	(Engine.FS.Open(fName));
+	destructor<IReader> FS	(FS.r_open(fName));
 	destructor<IReader>	S	(FS().open_chunk(1));
 
 	// Load tris and merge them

@@ -78,7 +78,7 @@ void IPureServer::config_Load()
 	//************ Build sys_config
 	
 	// traffic in
-	IReader*		F	= Engine.FS.Open(nameTraffic);
+	IReader*		F	= FS.r_open(nameTraffic);
 	if (F) {
 		F->r	(&traffic_in,sizeof(traffic_in));
 		F->r	(&traffic_out,sizeof(traffic_out));

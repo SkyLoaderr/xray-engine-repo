@@ -58,17 +58,17 @@ void CPatternFunction::vfLoadEF(LPCSTR caFileName, CAI_DDD *tpAI_DDD)
 	char		caPath[260];
 	strconcat	(caPath,Path.GameData,AI_PATH);
 
-	if (!Engine.FS.Exist(caPath, caPath, caFileName)) {
+	if (!FS.exist(caPath, caPath, caFileName)) {
 		Msg("! Evaluation function : File not found \"%s\"",caPath);
 		R_ASSERT(false);
 		return;
 	}
 	
-	IReader *F = Engine.FS.Open(caPath);
+	IReader *F = FS.r_open(caPath);
 	F->r(&m_tEFHeader,sizeof(SEFHeader));
 
 	if (m_tEFHeader.dwBuilderVersion != EFC_VERSION) {
-		Engine.FS.Close(F);
+		FS.r_close(F);
 		Msg("! Evaluation function (%s) : Not supported version of the Evaluation Function Contructor",caPath);
 		R_ASSERT(false);
 		return;
@@ -113,7 +113,7 @@ void CPatternFunction::vfLoadEF(LPCSTR caFileName, CAI_DDD *tpAI_DDD)
 	
 	m_faParameters = (float *)xr_malloc(m_dwParameterCount*sizeof(float));
 	F->r(m_faParameters,m_dwParameterCount*sizeof(float));
-	Engine.FS.Close(F);
+	FS.r_close(F);
 
 	m_dwaVariableValues = (u32 *)xr_malloc(m_dwVariableCount*sizeof(u32));
 	

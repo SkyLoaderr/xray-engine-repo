@@ -59,7 +59,7 @@ public:
 #ifdef AI_COMPILER
 		m_tpCrossTableVFS					= xr_new<CVirtualFileReader>(fName);
 #else
-		m_tpCrossTableVFS					= Engine.FS.Open(fName);
+		m_tpCrossTableVFS					= FS.r_open(fName);
 #endif
 		R_ASSERT							(m_tpCrossTableVFS);
 		R_ASSERT							(m_tpCrossTableVFS->find_chunk(CROSS_TABLE_CHUNK_VERSION));

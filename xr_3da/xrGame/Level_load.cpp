@@ -193,8 +193,8 @@ BOOL CLevel::Load_GameSpecific_Before()
 	getAI().Load(Path.Current);
 
 	string256		fn_game;
-	if (Engine.FS.Exist(fn_game, Path.Current, "level.game")) {
-		IReader *F = Engine.FS.Open	(fn_game);
+	if (FS.exist(fn_game, Path.Current, "level.game")) {
+		IReader *F = FS.r_open	(fn_game);
 		IReader *O = 0;
 
 		// Load WayPoints
@@ -253,7 +253,7 @@ BOOL CLevel::Load_GameSpecific_Before()
 			}
 			O->close();
 		}
-		Engine.FS.Close(F);
+		FS.r_close(F);
 	}
 
 	return TRUE;

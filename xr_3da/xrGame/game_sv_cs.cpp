@@ -5,7 +5,7 @@
 
 cs_money::cs_money() {
 	string256 fn;
-	if (Engine.FS.Exist(fn,Path.GameData,"game_cs.ltx")) {
+	if (FS.exist(fn,Path.GameData,"game_cs.ltx")) {
 		CInifile* ini = CInifile::Create(fn);
 		startup = ini->ReadINT("cs_money","startup");
 		win = ini->ReadINT("cs_money","win");
@@ -55,7 +55,7 @@ void game_sv_CS::SavePlayerWeapon(u32 it, CMemoryWriter &store) {
 
 void game_sv_CS::SaveDefaultWeapon(CMemoryWriter &store) {		//@@@ WT: Ёто надо переделать, чтоб читать ltx только один раз.
 	string256 fn;
-	if (Engine.FS.Exist(fn,Path.GameData,"game_cs.ltx")) {
+	if (FS.exist(fn,Path.GameData,"game_cs.ltx")) {
 		CInifile* ini = CInifile::Create(fn);
 		LPCSTR prim = ini->ReadSTRING("cs_start_Arms","primary");
 		u32 prim_ammo = ini->ReadINT("cs_start_Arms","primary_ammo");
@@ -229,7 +229,7 @@ void game_sv_CS::OnRoundStart() {
 //	}
 //	{
 //		string256 fn;
-//		if (Engine.FS.Exist(fn,Path.GameData,"game_cs.ltx")) {
+//		if (FS.exist(fn,Path.GameData,"game_cs.ltx")) {
 //			CInifile* ini = CInifile::Create(fn);
 //			LPCSTR prim = ini->ReadSTRING("cs_start_Arms","primary");
 //			u32 prim_ammo = ini->ReadINT("cs_start_Arms","primary_ammo");
@@ -698,7 +698,7 @@ void game_sv_CS::OnPlayerConnect	(u32 id_who)
 
 	// ƒаем игроку децл оружи€ дл€ начала. ≈сли игрок изначально будет коннектитс€ как наблюдатель то все это не нужно.
 /*	string256 fn;
-	if (Engine.FS.Exist(fn,Path.GameData,"game_cs.ltx")) {
+	if (FS.exist(fn,Path.GameData,"game_cs.ltx")) {
 		CInifile* ini = CInifile::Create(fn);
 		LPCSTR prim = ini->ReadSTRING("cs_start_Arms","primary");
 		u32 prim_ammo = ini->ReadINT("cs_start_Arms","primary_ammo");

@@ -160,17 +160,17 @@ void CAI_ALife::Load()
 
 	string256					caFileName;
 	IReader						*tpStream;
-	if (!Engine.FS.Exist(caFileName,SAVE_PATH,SAVE_NAME)) {
-		R_ASSERT				(Engine.FS.Exist(caFileName, ::Path.GameData, SPAWN_NAME));
-		tpStream				= Engine.FS.Open(caFileName);
+	if (!FS.exist(caFileName,SAVE_PATH,SAVE_NAME)) {
+		R_ASSERT				(FS.exist(caFileName, ::Path.GameData, SPAWN_NAME));
+		tpStream				= FS.r_open(caFileName);
 		Log						("* Loading spawn registry");
 		CALifeSpawnRegistry::Load(*tpStream);
-		Engine.FS.Close			(tpStream);
+		FS.r_close			(tpStream);
 		vfNewGame				();
 		Save					();
 		R_ASSERT2				(false,"New game has been generated successfully.\nYou have to restart game");
 	}
-	tpStream					= Engine.FS.Open(caFileName);
+	tpStream					= FS.r_open(caFileName);
 	R_ASSERT					(tpStream);
 	Log							("* Loading simulator...");
 	CALifeHeader::Load			(*tpStream);

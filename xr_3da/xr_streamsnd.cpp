@@ -43,7 +43,7 @@ CSoundStream::CSoundStream	( )
 CSoundStream::~CSoundStream	( )
 {
 	Stop				( );
-	Engine.FS.r_close	(hf);
+	FS.r_close	(hf);
 
 	xr_free				(WaveSource);
 	xr_free				(WaveDest);
@@ -269,7 +269,7 @@ void CSoundStream::LoadADPCM( )
 
 	DataPos			= NULL;
 
-    hf				= Engine.FS.r_open(fn);
+    hf				= FS.r_open(fn);
 	R_ASSERT		(hf>=0);
 	ZeroMemory		(&riff, sizeof(riff));
     XRead			(riff);
