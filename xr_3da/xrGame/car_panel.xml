@@ -7,10 +7,11 @@
 	</car_health_static>
 
 	<!-- car health bar -->
-	<car_health_progress_bar x="8" y="23" length="120" broad="20" horz="1" min="0" max="100" pos="0">
-		<texture tile="0" length="120" r="0" g="255" b="0">ui\ui_mg_progress_efficiency_full</texture>
-		<background x="0" y="0">ui\ui_mg_progress_efficiency_empty</background>
+	<car_health_progress_bar x="16" y="23" length="120" broad="18" horz="1" min="0" max="100" pos="0">
+		<texture tile="0" width="120" height="16" length="120" r="0" g="255" b="0">ui\ui_mg_progress_efficiency_full</texture>
+		<background x="0" y="0" width="120" height="16">ui\ui_mg_progress_efficiency_empty</background>
 	</car_health_progress_bar>
+	
 
 
 	<speedometer x="-150" y="0" width="150" height="100" align="rb">
