@@ -97,7 +97,7 @@ void	game_sv_CS::OnTimelimitExceed	()
 	// Artifacts count
 	// if ()
 	// Если у команд поровну артефактов, то ничья.
-	ASSERT(teams.size() == 2);
+	R_ASSERT(teams.size() == 2);
 	if(teams[0].num_targets == teams[1].num_targets) OnTeamsInDraw();
 	else OnTeamScore((teams[0].num_targets > teams[1].num_targets) ? 0 : 1);
 	Unlock	();
