@@ -182,12 +182,14 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			xrClientData*		c_from		=	ID_to_client	(sender);	// клиент, кто прислал
 			R_ASSERT			(c_dest == c_from);							// assure client ownership of event
 
+			
+			SendBroadcast		(0xffffffff,P,MODE);
 			// Parent-signal
 			if (0xffff != e_dest->ID_Parent)
 			{
 				NET_Packet			P2;
 				P2.w_begin			(M_EVENT);
-				P2.w_u32			(timestamp-1);
+				P2.w_u32			(timestamp);
 				P2.w_u16			(GE_OWNERSHIP_REJECT);
 				P2.w_u16			(e_dest->ID_Parent);
 				P2.w_u16			(id_dest);
@@ -202,10 +204,8 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 					tpGame->m_tpALife->vfReleaseObject(e_dest,false);
 //				}
 			}
-			
 			entity_Destroy		(e_dest);
-			entities.erase		(id_dest);
-			SendBroadcast		(0xffffffff,P,MODE);
+			entities.erase		(id_dest);	
 		}
 		break;
 	case GE_GRENADE_EXPLODE:
