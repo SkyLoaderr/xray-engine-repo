@@ -66,9 +66,9 @@ void SimplifyCFORM		(CDB::CollectorPacked& CL)
 	Status		("Reconstructing mesh-topology...");
 	decimater.initialize();       // let the decimater initialize the mesh and the modules
 
-	float	nv_before		= float	(mesh.n_vertices());
+	int		nv_before		= int	(mesh.n_vertices());
 	int		nc				= decimater.decimate	(nv_before);	// do decimation, as large, as possible
-	float	nv_after		= float	(mesh.n_vertices());
+	int		nv_after		= int	(mesh.n_vertices());
 	clMsg					("was[%d], now[%d]",nv_before,nv_after);
 
 	// ---- 6 - throw away all tagged edges
