@@ -902,7 +902,7 @@ void CAI_Soldier::OnLookingOver()
 	
 	CGroup &Group = Squad.Groups[g_Group()];
 	
-//	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime),aiSoldierPatrolUnderFire)
+	//CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime),aiSoldierPatrolUnderFire)
 	
 	if (m_tpaPatrolPoints.size() > 1)
 		CHECK_IF_SWITCH_TO_NEW_STATE(this == Leader,aiSoldierPatrolRoute)
@@ -1432,6 +1432,9 @@ void CAI_Soldier::OnSteal()
 		
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 
+	if (m_bStateChanged)
+		m_dwLastRangeSearch = 0;
+
 	Fvector tDistance;
 	tDistance.sub(Position(),Enemy.Enemy->Position());
 
@@ -1451,7 +1454,8 @@ void CAI_Soldier::OnSteal()
 	if (AI_Path.bNeedRebuild)
 		vfBuildPathToDestinationPoint(0);
 	else
-		vfSearchForBetterPositionWTime(SelectorPatrol,Squad,Leader);
+//		vfSearchForBetterPositionWTime(SelectorPatrol,Squad,Leader);
+		vfSearchForBetterPosition(SelectorPatrol,Squad,Leader);
 
 	vfAimAtEnemy();
 	
@@ -1694,6 +1698,9 @@ void CAI_Soldier::OnHurtAloneDefend()
 	
 	vfSetFire(false,Group);
 
+	if (m_bStateChanged)
+		m_dwLastRangeSearch = 0;
+
 	CHECK_IF_GO_TO_NEW_STATE(!m_bFiring && Weapons->ActiveWeapon() && (float(Weapons->ActiveWeapon()->GetAmmoElapsed()) / float(Weapons->ActiveWeapon()->GetAmmoMagSize()) < RECHARGE_MEDIAN + ::Random.randF(-RECHARGE_EPSILON,+RECHARGE_EPSILON)),aiSoldierRecharge);
 
 	switch (m_cBodyState) {
@@ -1705,7 +1712,8 @@ void CAI_Soldier::OnHurtAloneDefend()
 			if (AI_Path.bNeedRebuild)
 				vfBuildPathToDestinationPoint(0);
 			else
-				vfSearchForBetterPositionWTime(SelectorUnderFireCover,Squad,Leader);
+//				vfSearchForBetterPositionWTime(SelectorUnderFireCover,Squad,Leader);
+				vfSearchForBetterPosition(SelectorUnderFireCover,Squad,Leader);
 				
 			if (dwCurTime - dwHitTime > 25000) {
 				if (AI_Path.fSpeed <= EPS_L)
@@ -1733,7 +1741,8 @@ void CAI_Soldier::OnHurtAloneDefend()
 			if (AI_Path.bNeedRebuild)
 				vfBuildPathToDestinationPoint(0);
 			else
-				vfSearchForBetterPositionWTime(SelectorUnderFireCover,Squad,Leader);
+//				vfSearchForBetterPositionWTime(SelectorUnderFireCover,Squad,Leader);
+				vfSearchForBetterPosition(SelectorUnderFireCover,Squad,Leader);
 				
 			vfAimAtEnemy();
 			
@@ -1760,7 +1769,8 @@ void CAI_Soldier::OnHurtAloneDefend()
 				if (AI_Path.bNeedRebuild)
 					vfBuildPathToDestinationPoint(0);
 				else
-					vfSearchForBetterPositionWTime(SelectorUnderFireCover,Squad,Leader);
+//					vfSearchForBetterPositionWTime(SelectorUnderFireCover,Squad,Leader);
+					vfSearchForBetterPosition(SelectorUnderFireCover,Squad,Leader);
 					
 				if ((dwCurTime - dwHitTime > 12000) && (m_cBodyState != BODY_STATE_STAND)) {
 					StandUp();
@@ -1778,7 +1788,8 @@ void CAI_Soldier::OnHurtAloneDefend()
 				if (AI_Path.bNeedRebuild)
 					vfBuildPathToDestinationPoint(0);
 				else
-					vfSearchForBetterPositionWTime(SelectorUnderFireLine,Squad,Leader);
+//					vfSearchForBetterPositionWTime(SelectorUnderFireLine,Squad,Leader);
+					vfSearchForBetterPosition(SelectorUnderFireLine,Squad,Leader);
 			}
 			
 			vfSetMovementType(WALK_FORWARD_0);
@@ -1815,6 +1826,9 @@ void CAI_Soldier::OnDangerAlone()
 	
 	tSavedEnemyPosition = tHitPosition;
 	
+	if (m_bStateChanged)
+		m_dwLastRangeSearch = 0;
+
 	vfSetFire(false,Group);
 
 	CHECK_IF_GO_TO_NEW_STATE(!m_bFiring && Weapons->ActiveWeapon() && (float(Weapons->ActiveWeapon()->GetAmmoElapsed()) / float(Weapons->ActiveWeapon()->GetAmmoMagSize()) < RECHARGE_MEDIAN + ::Random.randF(-RECHARGE_EPSILON,+RECHARGE_EPSILON)),aiSoldierRecharge);
@@ -1826,7 +1840,8 @@ void CAI_Soldier::OnDangerAlone()
 	if (AI_Path.bNeedRebuild)
 		vfBuildPathToDestinationPoint(0);
 	else
-		vfSearchForBetterPositionWTime(SelectorPatrol,Squad,Leader);
+//		vfSearchForBetterPositionWTime(SelectorPatrol,Squad,Leader);
+		vfSearchForBetterPosition(SelectorPatrol,Squad,Leader);
 		
 	if (AI_Path.fSpeed > EPS_L)
 		SetDirectionLook();
@@ -1862,6 +1877,9 @@ void CAI_Soldier::OnPursuitAlone()
 
 	m_dwLastRangeSearch = dwCurTime;
 	
+	if (m_bStateChanged)
+		m_dwLastRangeSearch = 0;
+
 	vfSetFire(false,Group);
 
 	CHECK_IF_GO_TO_NEW_STATE(!m_bFiring && Weapons->ActiveWeapon() && (float(Weapons->ActiveWeapon()->GetAmmoElapsed()) / float(Weapons->ActiveWeapon()->GetAmmoMagSize()) < RECHARGE_MEDIAN + ::Random.randF(-RECHARGE_EPSILON,+RECHARGE_EPSILON)),aiSoldierRecharge);
@@ -1876,7 +1894,8 @@ void CAI_Soldier::OnPursuitAlone()
 	if (AI_Path.bNeedRebuild)
 		vfBuildPathToDestinationPoint(0);
 	else
-		vfSearchForBetterPositionWTime(SelectorPatrol,Squad,Leader);
+//		vfSearchForBetterPositionWTime(SelectorPatrol,Squad,Leader);
+		vfSearchForBetterPosition(SelectorPatrol,Squad,Leader);
 		
 	if (AI_Path.fSpeed > EPS_L)
 		SetDirectionLook();
