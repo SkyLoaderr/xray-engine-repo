@@ -41,7 +41,7 @@ IC	bool CPatrolPathManager::need_selection		(const Fvector &position) const
 		m_path && 
 		!m_path->tpaWayPoints.empty() &&
 		(m_curr_point_index < m_path->tpaWayPoints.size()) &&
-		(m_path->tpaWayPoints[m_curr_point_index].tWayPoint.distance_to_sqr(position) < .5f)
+		(m_path->tpaWayPoints[m_curr_point_index].tWayPoint.distance_to_sqr(position) > .5f)
 	);
 }
 
