@@ -211,6 +211,9 @@
 			<File
 				RelativePath="_vector4.h">
 			</File>
+			<File
+				RelativePath="vector.h">
+			</File>
 			<Filter
 				Name="CPU"
 				Filter="">
@@ -220,6 +223,10 @@
 				<File
 					RelativePath="cpuid.h">
 				</File>
+			</Filter>
+			<Filter
+				Name="STLext"
+				Filter="">
 			</Filter>
 		</Filter>
 	</Files>
