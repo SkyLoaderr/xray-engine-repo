@@ -5,6 +5,8 @@ function main()
 
 	local actor   	= get_actor()
 
+	local 	ps2 = particles("ghoul\\fx-01-camp-fire_00",false)
+
 	wait		(1000)
 
 	stalker1:script	(true,script_01.script_name())
