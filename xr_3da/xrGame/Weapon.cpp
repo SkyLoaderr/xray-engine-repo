@@ -574,7 +574,7 @@ void CWeapon::Hide				()
 	bPending						= TRUE;
 
 	// add shot effector
-	Level().Cameras.RemoveEffector	(cefShot);
+	if (Local())					Level().Cameras.RemoveEffector	(cefShot);
 }
 
 void CWeapon::signal_HideComplete()
@@ -594,7 +594,8 @@ void CWeapon::SetDefaults()
 	bPending		= false;
 }
 
-void CWeapon::UpdatePosition(const Fmatrix& trans){
+void CWeapon::UpdatePosition(const Fmatrix& trans)
+{
 	vPosition.set	(trans.c);
 	svTransform.mul	(trans,m_Offset);
 }
