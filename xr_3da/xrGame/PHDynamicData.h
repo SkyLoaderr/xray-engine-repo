@@ -16,6 +16,7 @@ class PHDynamicData
 public:
 dVector3 pos;
 dMatrix3 R;
+Fmatrix BoneTransform;
 private:
 dBodyID body;
 dGeomID geom;

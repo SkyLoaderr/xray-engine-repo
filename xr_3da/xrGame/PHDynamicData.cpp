@@ -58,20 +58,13 @@ bool PHDynamicData::SetChild(unsigned int childNum,unsigned int numOfchilds,dBod
 
 void PHDynamicData::CalculateR_N_PosOfChilds(dBodyID parent)
 {
-const dReal const*  parentQuaternion   = dBodyGetQuaternion(parent);
-const dReal const* Quaternion = dBodyGetQuaternion (body);
-dQuaternion  QuaternionVSParent;
-const dReal const* currentPos=dBodyGetPosition(body);
-const dReal const* parentPos=dBodyGetPosition(parent);
+Fmatrix parent_transform;
+DMXPStoFMX(dBodyGetRotation(parent),dBodyGetPosition(parent),parent_transform);
+DMXPStoFMX(dBodyGetRotation(body),dBodyGetPosition(body),BoneTransform);
+parent_transform.invert();
+BoneTransform.mulA(parent_transform);
 
-for(unsigned int i=0;i<4;i++)
-pos[i]=currentPos[i]-parentPos[i];
-
-dQMultiply2( QuaternionVSParent,Quaternion,parentQuaternion );
-//dMatrix3 r;
-dQtoR(QuaternionVSParent,R);
-
-for(i=0;i<numOfChilds;i++){
+for(unsigned int i=0;i<numOfChilds;i++){
 
 	Childs[i].CalculateR_N_PosOfChilds(body);
 	}
@@ -88,14 +81,10 @@ else return NULL;
 
 void PHDynamicData::CalculateData()
 {
-const dReal const* Quaternion=dBodyGetQuaternion(body);
-const dReal const* currentPos=dBodyGetPosition(body);
-	for(unsigned int i=0;i<4;i++)
-		pos[i]=currentPos[i];
-//Quaternion=dBodyGetQuaternion(body);
-dQtoR(Quaternion,R);
 
-for(i=0;i<numOfChilds;i++){
+DMXPStoFMX(dBodyGetRotation(body),dBodyGetPosition(body),BoneTransform);
+
+for(unsigned int i=0;i<numOfChilds;i++){
 
 	Childs[i].CalculateR_N_PosOfChilds(body);
 	}

@@ -90,7 +90,7 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	static const dReal wheelRadius = REAL(0.28)* scaleParam, wheelWidth = REAL(0.25)* scaleParam;
 	
 
-	static const dVector3 startPosition={6.1999f,15.f,0.f};
+	static const dVector3 startPosition={6.199f,15.f,0.f};
 	static const dReal weelSepX=jeepBox[0]/2-jeepBox[0]/8,weelSepZ=jeepBox[2]/2-wheelRadius/2.f,weelSepY=jeepBox[1];
 
 	dMass m;
@@ -299,7 +299,8 @@ void CPHWorld::Step(dReal step){
 				dJointAttach(c, dGeomGetBody(bulletContact.geom.g1), dGeomGetBody(bulletContact.geom.g2));
 				
 				}
-				
+			
+			Jeep.DynamicData.CalculateData();
 
 			dWorldStep(phWorld, step);
 			dJointGroupEmpty(ContactGroup);
