@@ -35,6 +35,9 @@ public:
 	
 	IC	void	getcenter(Fvector2& center)					{ center.add(rb,lt); center.mul(.5f); }
 	IC	void	getsize(Fvector2& sz)						{ sz.sub(rb,lt); }
+
+	IC float	width()										{return rb.x-lt.x;}
+	IC float	heught()									{return rb.y-lt.y;}
 } Frect;
 
 
