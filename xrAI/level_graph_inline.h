@@ -477,8 +477,13 @@ IC	bool	CLevelGraph::create_straight_PTN_path	(u32 start_vertex_id, const Fvecto
 				path_node.set_position(tIntersectPoint);
 				tpaOutputPoints.push_back(path_node);
 
-				if (box.contains(dest))
+				if (box.contains(dest)) {
+					tIntersectPoint = v3d(dest);
+					tIntersectPoint.y = vertex_plane_y(vertex(cur_vertex_id),tIntersectPoint.x,tIntersectPoint.z);
+					path_node.set_position(tIntersectPoint);
+					tpaOutputPoints.push_back(path_node);
 					return		(true);
+				}
 				found			= true;
 				prev_vertex_id	= cur_vertex_id;
 				cur_vertex_id	= next_vertex_id;
