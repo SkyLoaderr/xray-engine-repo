@@ -41,6 +41,10 @@ function action_assassin_activity:get_target()
 	end
 end
 
+function action_assassin_activity:new_shoot_angle_change_time()
+	return device():time_global() + math.random(2000) + 500
+end
+
 function action_assassin_activity:reset_scheme()
 	self.object:set_path_type(game_object.level_path)
 	self.object:set_detail_path_type(move.line)
@@ -56,6 +60,9 @@ function action_assassin_activity:reset_scheme()
 	self.object:clear_animations()
 
 	self.move_expiration_time = 0
+	
+	self.shoot_angle_change_time = self:new_shoot_angle_change_time()
+	self.shoot_angle = 30
 
 	self.shall_shoot = 0
 	self.shoot_expiration_time = device():time_global() + 2000
@@ -118,7 +125,15 @@ function action_assassin_activity:execute()
 		self.state = state_standing
 	end
 	
-	utils.stalker_look_at_stalker(self.object, self.target)
+	if device():time_global() >= self.shoot_angle_change_time then
+		if self.shoot_angle == 30 then
+			self.shoot_angle = -30
+		else
+			self.shoot_angle = 30
+		end
+		self.shoot_angle_change_time = self:new_shoot_angle_change_time()
+	end
+	utils.stalker_look_at_stalker_angle(self.object, self.target, self.shoot_angle)
 end
 
 function action_assassin_activity:finalize()

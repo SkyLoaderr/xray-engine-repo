@@ -5,6 +5,10 @@
 
 monster_info = {}
 
+local state_main = 1
+local state_roof = 2
+local state_hideout = 3
+
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_need_scared" (property_evaluator)
 
@@ -15,11 +19,11 @@ end
 function evaluator_need_scared:evaluate()
 	if self.st.enabled then
 		if not monster_info[self.st.monster] then
-			monster_info[self.st.monster] = { }
+			monster_info[self.st.monster] = {}
 		end
-		local mi = monster_info[self.st.monster]
-		if not mi.stalker then
-			mi.stalker = self.object
+		if not monster_info[self.st.monster].stalker then
+			printf("evaluator_need_scared: self.st.monster=%s, stalker set", self.st.monster)
+			monster_info[self.st.monster].stalker = self.object
 		end
 	end
 
@@ -49,6 +53,8 @@ end
 
 
 function action_scared_activity:reset_scheme()
+	--xr_reactions.add_rule(self.object, "ignore")
+
 	if self.st.path_main_walk_info == nil then
 		self.st.path_main_walk_info = utils.path_parse_waypoints(self.st.path_main_walk)
 	end
@@ -68,15 +74,44 @@ function action_scared_activity:reset_scheme()
 		self.st.path_roof_look_info = utils.path_parse_waypoints(self.st.path_roof_look)
 	end
 
+	self.state = state_main
 	self.move_mgr:reset(self.st.path_main_walk, self.st.path_main_walk_info,
 		self.st.path_main_look, self.st.path_main_look_info,
 		nil,
 		{running = true, danger = true})
 end	
 
+function action_scared_activity:callback(mode, number)
+	monster_info[self.st.monster].finish_me_off = true
+	return false
+end
+
 function action_scared_activity:execute()
 	action_base.execute(self)
 	self.move_mgr:update()
+
+	local actor = level.actor()
+	if actor then
+		local pos = self.object:position()
+		local actor_pos = actor:position()
+		printf("_bp: self.state==%d, dead=%s", self.state, utils.to_str(monster_info[self.st.monster].dead))
+		if self.state ~= state_hideout and monster_info[self.st.monster].dead then
+			self.state = state_hideout
+			self.move_mgr:reset(self.st.path_hideout_walk, self.st.path_hideout_walk_info,
+				self.st.path_hideout_look, self.st.path_hideout_look_info,
+				nil,
+				{running = true, danger = true})
+		elseif self.state == state_main and pos:distance_to(actor_pos) < 20 then
+			self.state = state_roof
+			self.move_mgr:reset(self.st.path_roof_walk, self.st.path_roof_walk_info,
+				self.st.path_roof_look, self.st.path_roof_look_info,
+				nil,
+				{running = true, danger = true},
+				{obj = self, func = self.callback})
+			monster_info[self.st.monster].going_to_roof = true
+		end
+	end
+	
 end
 
 function action_scared_activity:finalize()
@@ -105,10 +140,10 @@ function add_to_binder(npc, char_ini)
 
 		local new_action = this.action_scared_activity(npc, "action_scared_activity", xr_motivator.storage[npc:id()].scared)
 		new_action:add_precondition(world_property(stalker_ids.property_alive, true))
-		new_action:add_precondition(world_property(stalker_ids.property_enemy, false))
+		--new_action:add_precondition(world_property(stalker_ids.property_enemy, false))
 		new_action:add_precondition(world_property(properties["need_scared"], true))
-		new_action:add_precondition(world_property(properties["event"], false))
-		new_action:add_precondition(world_property(properties["state_end"], true))
+		--new_action:add_precondition(world_property(properties["event"], false))
+		--new_action:add_precondition(world_property(properties["state_end"], true))
 	   	new_action:add_effect(world_property(properties["need_scared"], false))
 		manager:add_action(operators["action_scared"], new_action)
 
@@ -127,6 +162,7 @@ function set_scared(object, enabled,
 		path_hideout_walk, path_hideout_look,
 		path_roof_walk, path_roof_look,
 		monster)
+	printf("set_scared")
 	local char_ini = object:spawn_ini()
 	local st = xr_motivator.storage[object:id()].scared
 
@@ -140,6 +176,7 @@ function set_scared(object, enabled,
 	st.monster = utils.conf_get_string(char_ini, "scared", "monster", monster, object, true)
 
 	if not monster_info[st.monster] then
+		printf("set_scared: st.monster = %s", st.monster)
 		monster_info[st.monster] = { }
 	end
 

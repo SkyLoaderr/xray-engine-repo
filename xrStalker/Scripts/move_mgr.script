@@ -534,12 +534,36 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 	
 	local retv = self.path_walk_info[index]["ret"]
 	if retv then
+		local retv_num = tonumber(retv)
 		if not self.move_cb_func then
 			utils.abort("object '%s': path_walk '%s': ret flag is set, but " ..
 				"callback function wasn't registered in move_mgr:reset()",
 				self.object:name(), self.path_walk)
 		end
-		if self.move_cb_func(self.move_cb_obj, this.arrival_before_rotation, tonumber(retv)) then
+		
+		local set_bad_rel = self.path_walk_info[index]["rel"]
+		if set_bad_rel then
+			if retv_num == 0 then
+				-- ok
+			elseif retv_num == 1 then
+				-- ok
+			else
+				utils.abort("object '%s': path_walk '%s': 'rel' flag accepts only 0 (bad relation) or " ..
+					"1 (good relation) as value of 'ret' variable",
+					self.object:name(), self.path_walk)
+			end
+
+			local vict
+			for name in string.gfind(set_bad_rel, "([%w_\\]+)%p*" ) do
+				vict = level.object(name)
+				if vict then
+					vict:set_relation(game_object.enemy, self.object)
+				end
+			end
+			
+		end
+		
+		if self.move_cb_func(self.move_cb_obj, this.arrival_before_rotation, retv_num) then
 			return
 		end
 	end
