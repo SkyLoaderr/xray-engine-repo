@@ -225,6 +225,66 @@ xr_motivator.storage[self.object:id()].scout = {
         end
     end
 
+-- Настройка патруля
+xr_motivator.storage[self.object:id()].patrol = {
+    enabled = false,
+    patrol_path = nil,
+    escape_path = nil,
+    raid_enabled = false
+  }
+      if char_ini:section_exist ("patrol") == true then
+    if char_ini:line_exist("patrol", "enabled") == true then
+          xr_motivator.storage[self.object:id()].patrol.enabled = char_ini:r_bool("patrol", "enabled")
+      end
+    if char_ini:line_exist("patrol", "patrol_path") == true then
+          xr_motivator.storage[self.object:id()].patrol.patrol_path = char_ini:r_string("patrol", "patrol_path")
+    else
+      xr_motivator.storage[self.object:id()].patrol.enabled = false
+      end
+    if char_ini:line_exist("patrol", "escape_path") == true then
+          xr_motivator.storage[self.object:id()].patrol.escape_path = char_ini:r_string("patrol", "escape_path")
+    else
+      xr_motivator.storage[self.object:id()].patrol.escape_path = xr_motivator.storage[self.object:id()].patrol.patrol_path
+      end
+      if char_ini:line_exist ("patrol", "raid_enabled") == true then
+         xr_motivator.storage[self.object:id()].patrol.raid_enabled = char_ini:r_bool ("patrol", "raid_enabled")
+      end
+  end
+-- Настройка follower
+xr_motivator.storage[self.object:id()].follower = {
+    enabled = false,
+    leader_name = nil,
+    leader = nil,
+    escape_path = nil,
+    raid_enabled = false,
+    raid_path = nil,
+    mental_state = anim.free,
+    direction = vector():set(0,0,1),
+    distance = 2,
+    state = 0,
+    leader_command = 0,
+    npc = self.object
+  }
+      if char_ini:section_exist ("follower") == true then
+    if char_ini:line_exist("follower", "enabled") == true then
+          xr_motivator.storage[self.object:id()].follower.enabled = char_ini:r_bool("follower", "enabled")
+      end
+    if char_ini:line_exist("follower", "leader_name") == true then
+          xr_motivator.storage[self.object:id()].follower.leader_name = char_ini:r_string("follower", "leader_name")
+    else
+      xr_motivator.storage[self.object:id()].follower.leader_name = nil
+      end
+      if char_ini:line_exist ("follower", "escape_path") == true then
+          xr_motivator.storage[self.object:id()].follower.escape_path = char_ini:r_string ("follower", "escape_path")
+       end
+       if char_ini:line_exist ("follower", "raid_enabled") == true then
+          xr_motivator.storage[self.object:id()].follower.raid_enabled = char_ini:r_bool ("follower", "raid_enabled")
+      end
+      if char_ini:line_exist ("follower", "raid_path") == true then
+          xr_motivator.storage[self.object:id()].follower.raid_path = char_ini:r_string ("follower", "raid_path")
+       end
+  end
+
 xr_motivator.storage[self.object:id()].reactions = {
         enabled = true,
         evn = xr_reactions.events(self.object)
