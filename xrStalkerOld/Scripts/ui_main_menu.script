@@ -100,7 +100,7 @@ function main_menu:InitControls()
 
 		
 	--------->> LOAD Game	
-	btn = CUIButton()
+	btn = CUI3tButton()
 	btn:SetAutoDelete(true)
 	btn:SetWindowName("btn_load")
 --	btn:Init("ui\\ui_button_01", btn_load_rect.x, btn_load_rect.y, btn_load_rect.width, btn_load_rect.height)
