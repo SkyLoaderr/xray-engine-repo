@@ -17,20 +17,12 @@
 /**
 #define WRITE_TO_LOG(s) {\
 	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
-	if (!feel_visible.size())\
-		Msg("* No objects in frustum",feel_visible.size());\
+	if (!visible_objects().size())\
+		Msg("* No objects in frustum",visible_objects().size());\
 	else {\
-		Msg("* Objects in frustum (%d) :",feel_visible.size());\
-		for (int i=0; i<(int)feel_visible.size(); ++i)\
-			Msg("*   %s",feel_visible[i].O->cName());\
-		feel_vision_get(m_tpaVisibleObjects);\
-		if (!m_tpaVisibleObjects.size())\
-			Msg("* No visible objects");\
-		else {\
-			Msg("* Visible objects (%d) :",m_tpaVisibleObjects.size());\
-			for (int i=0; i<(int)m_tpaVisibleObjects.size(); ++i)\
-				Msg("*   %s (distance %7.2fm)",m_tpaVisibleObjects[i]->cName(),Position().distance_to(m_tpaVisibleObjects[i]->Position()));\
-		}\
+		Msg("* Objects in frustum (%d) :",visible_objects().size());\
+		for (int i=0; i<(int)visible_objects().size(); ++i)\
+			Msg("*   %s",visible_objects()[i]->cName());\
 	}\
 	m_bStopThinking = true;\
 }
@@ -628,11 +620,10 @@ void CAI_Rat::vfUpdateSpawnPosition()
 		}
 	}
 	else {
-//		if ((Level().timeServer() >= m_time_to_change) && (ai().cross_table().vertex(level_vertex_id()).game_vertex_id() == m_tNextGP)) {
-//			m_tNextGP					= ai().cross_table().vertex(level_vertex_id()).game_vertex_id();
-//			vfChooseNextGraphPoint		();
-//			m_tSafeSpawnPosition.set	(ai().game_graph().vertex(m_tNextGP).level_point());
-////.			Msg("Next graph point %d",m_tNextGP);
-//		}
+		if ((Level().timeServer() >= m_dwTimeToChange) && (ai().cross_table().vertex(level_vertex_id()).game_vertex_id() == m_tNextGP)) {
+			m_tNextGP					= ai().cross_table().vertex(level_vertex_id()).game_vertex_id();
+			vfChooseNextGraphPoint		();
+			m_tSafeSpawnPosition.set	(ai().game_graph().vertex(m_tNextGP)->level_point());
+		}
 	}
 }

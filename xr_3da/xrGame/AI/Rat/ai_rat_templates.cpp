@@ -272,41 +272,41 @@ bool CAI_Rat::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForward)
 
 void CAI_Rat::vfChooseNextGraphPoint()
 {
-//	_GRAPH_ID			tGraphID		= m_tNextGP;
-//	CGameGraph::const_iterator	i,e;
-//	ai().game_graph().begin		(tGraphID,i,e);
-//	int					iPointCount		= (int)m_tpaTerrain.size();
-//	int					iBranches		= 0;
-//	for ( ; i != e; ++i)
-//		for (int j=0; j<iPointCount; ++j)
-//			if (ai().game_graph().mask(m_tpaTerrain[j].tMask,ai().game_graph().vertex((*i).vertex_id()).vertex_type()) && ((*i).vertex_id() != m_tCurGP))
-//				++iBranches;
-//	ai().game_graph().begin		(tGraphID,i,e);
-//	if (!iBranches) {
-//		for ( ; i != e; ++i) {
-//			for (int j=0; j<iPointCount; ++j)
-//				if (ai().game_graph().mask(m_tpaTerrain[j].tMask,ai().game_graph().vertex((*i).vertex_id()).vertex_type())) {
-//					m_tCurGP	= m_tNextGP;
-//					m_tNextGP	= (*i).vertex_id();
-//					m_dwTimeToChange	= Level().timeServer() + ::Random.randI(m_tpaTerrain[j].dwMinTime,m_tpaTerrain[j].dwMaxTime);
-//					return;
-//				}
-//		}
-//	}
-//	else {
-//		int iChosenBranch = ::Random.randI(0,iBranches);
-//		iBranches = 0;
-//		for ( ; i != e; ++i) {
-//			for (int j=0; j<iPointCount; ++j)
-//				if (ai().game_graph().mask(m_tpaTerrain[j].tMask,ai().game_graph().vertex((*i).vertex_id()).vertex_type()) && ((*i).vertex_id() != m_tCurGP)) {
-//					if (iBranches == iChosenBranch) {
-//						m_tCurGP			= m_tNextGP;
-//						m_tNextGP			= (*i).vertex_id();
-//						m_dwTimeToChange	= Level().timeServer() + ::Random.randI(m_tpaTerrain[j].dwMinTime,m_tpaTerrain[j].dwMaxTime);
-//						return;
-//					}
-//					++iBranches;
-//				}
-//		}
-//	}
+	_GRAPH_ID			tGraphID		= m_tNextGP;
+	CGameGraph::const_iterator	i,e;
+	ai().game_graph().begin		(tGraphID,i,e);
+	int					iPointCount		= (int)vertex_types().size();
+	int					iBranches		= 0;
+	for ( ; i != e; ++i)
+		for (int j=0; j<iPointCount; ++j)
+			if (ai().game_graph().mask(vertex_types()[j].tMask,ai().game_graph().vertex((*i).vertex_id())->vertex_type()) && ((*i).vertex_id() != m_tCurGP))
+				++iBranches;
+	ai().game_graph().begin		(tGraphID,i,e);
+	if (!iBranches) {
+		for ( ; i != e; ++i) {
+			for (int j=0; j<iPointCount; ++j)
+				if (ai().game_graph().mask(vertex_types()[j].tMask,ai().game_graph().vertex((*i).vertex_id())->vertex_type())) {
+					m_tCurGP	= m_tNextGP;
+					m_tNextGP	= (*i).vertex_id();
+					m_dwTimeToChange	= Level().timeServer() + ::Random.randI(vertex_types()[j].dwMinTime,vertex_types()[j].dwMaxTime);
+					return;
+				}
+		}
+	}
+	else {
+		int iChosenBranch = ::Random.randI(0,iBranches);
+		iBranches = 0;
+		for ( ; i != e; ++i) {
+			for (int j=0; j<iPointCount; ++j)
+				if (ai().game_graph().mask(vertex_types()[j].tMask,ai().game_graph().vertex((*i).vertex_id())->vertex_type()) && ((*i).vertex_id() != m_tCurGP)) {
+					if (iBranches == iChosenBranch) {
+						m_tCurGP			= m_tNextGP;
+						m_tNextGP			= (*i).vertex_id();
+						m_dwTimeToChange	= Level().timeServer() + ::Random.randI(vertex_types()[j].dwMinTime,vertex_types()[j].dwMaxTime);
+						return;
+					}
+					++iBranches;
+				}
+		}
+	}
 }

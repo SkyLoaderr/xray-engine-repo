@@ -168,9 +168,12 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 {
 	//////////////////////////////////////////////////////////////////////////
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
-	CSE_ALifeMonsterRat						*tpSE_Rat = dynamic_cast<CSE_ALifeMonsterRat*>(e);
+	CSE_ALifeMonsterRat				*tpSE_Rat = dynamic_cast<CSE_ALifeMonsterRat*>(e);
 	// model
 	if (!inherited::net_Spawn(DC))
+		return(FALSE);
+	// model
+	if (!CEatableItem::net_Spawn(DC))
 		return(FALSE);
 	// personal characteristics
 	m_body.current.yaw				= m_body.target.yaw	= -tpSE_Rat->o_Angle.y;
@@ -199,8 +202,8 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	m_fAttackDistance				= tpSE_Rat->fAttackDistance;
 	m_fAttackAngle					= tpSE_Rat->fAttackAngle/180.f*PI;
 	m_fAttackSuccessProbability		= tpSE_Rat->fAttackSuccessProbability;
-//	m_tCurGP						= tpSE_Rat->m_tGraphID;
-//	m_tNextGP						= tpSE_Rat->m_tNextGraphID;
+	m_tCurGP						= tpSE_Rat->m_tGraphID;
+	m_tNextGP						= tpSE_Rat->m_tNextGraphID;
 	//////////////////////////////////////////////////////////////////////////
 
 	m_fCurSpeed						= m_fMaxSpeed;
@@ -263,6 +266,8 @@ void CAI_Rat::net_Export(NET_Packet& P)
 		P.w					(&f1,						sizeof(f1));
 		P.w					(&f1,						sizeof(f1));
 	}
+
+	CEatableItem::net_Export(P);
 }
 
 void CAI_Rat::net_Import(NET_Packet& P)
@@ -295,7 +300,10 @@ void CAI_Rat::net_Import(NET_Packet& P)
 
 	setVisible				(TRUE);
 	setEnabled				(TRUE);
+
+	CEatableItem::net_Import(P);
 }
+
 void CAI_Rat::CreateSkeleton(){
 
 	if (!Visual())
@@ -311,7 +319,7 @@ void CAI_Rat::CreateSkeleton(){
 	//sphere.R=0.25;
 	//element->add_Sphere(sphere);
 	element->setDensity(m_phMass);
-	element->SetMaterial("creatures/rat");
+	element->SetMaterial(PKinematics(Visual())->LL_GetData(PKinematics(Visual())->LL_GetBoneRoot()).game_mtl_idx);
 	m_pPhysicsShell=P_create_Shell();
 	m_pPhysicsShell->add_Element(element);
 	m_pPhysicsShell->Activate(XFORM(),0,XFORM());

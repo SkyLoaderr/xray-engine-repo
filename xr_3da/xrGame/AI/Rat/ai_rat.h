@@ -80,9 +80,9 @@ class CAI_Rat : public CCustomMonster, public CEatableItem
 		};
 
 		EZombieAction			m_tAction;
-//		_GRAPH_ID				m_tCurGP;
-//		_GRAPH_ID				m_tNextGP;
-//		u32						m_dwTimeToChange;
+		_GRAPH_ID				m_tCurGP;
+		_GRAPH_ID				m_tNextGP;
+		u32						m_dwTimeToChange;
 		float					m_fGoingSpeed;
 
 		// FSM
