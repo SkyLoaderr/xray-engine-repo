@@ -33,7 +33,7 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value="_XRSOUNDB;XRSOUND_EXPORTS;_DEBUG"/>
+    <USERDEFINES value="_EDITOR;_XRSOUNDB;XRSOUND_EXPORTS;_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="xrSoundB.bpf"/>
     <INCLUDEPATH value="R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\VS7.NET\Vc7\atlmfc\include;P:\xrCore"/>
@@ -45,8 +45,8 @@
     <IDLCFLAGS value="-IR:\SDK\DirectX9.0\include -I$(BCB)\include -I$(BCB)\include\vcl 
       -IP:\MagicFM_Borland\Sdk\Include -IR:\Borland\Components6\AlexMX 
       -IR:\Borland\Components6\ElPack\Code\Source 
-      -IR:\VS7.NET\Vc7\atlmfc\include -IP:\xrCore -src_suffix cpp -D_XRSOUNDB 
-      -DXRSOUND_EXPORTS -D_DEBUG -boa"/>
+      -IR:\VS7.NET\Vc7\atlmfc\include -IP:\xrCore -src_suffix cpp -D_EDITOR 
+      -D_XRSOUNDB -DXRSOUND_EXPORTS -D_DEBUG -boa"/>
     <CFLAG1 value="-WD -Od -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps 
       -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
@@ -157,8 +157,9 @@ Count=1
 Item0=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
-Count=1
-Item0=_XRSOUNDB;XRSOUND_EXPORTS;_DEBUG
+Count=2
+Item0=_EDITOR;_XRSOUNDB;XRSOUND_EXPORTS;_DEBUG
+Item1=_XRSOUNDB;XRSOUND_EXPORTS;_DEBUG
 
 [HistoryLists\hlIntOutputDir]
 Count=3

@@ -198,6 +198,7 @@ void	CSoundRender_Source::LoadWaveAs3D(LPCSTR pName)
 void CSoundRender_Source::Load		(LPCSTR name,	BOOL b3D)
 {
 	fname				= strlwr	(xr_strdup(name));
+    _3D					= b3D;
 
 	string256			fn,N;
 	strcpy				(N,name);

@@ -275,7 +275,7 @@ CSoundRender_Environment*	CSoundRender_Core::get_environment			( Fvector& P )
 	}
 }
 
-#ifdef __BORLANDC__
+#ifdef _EDITOR
 void						CSoundRender_Core::set_user_env		( CSound_environment* E)
 {
 	if (0==E && !bUserEnvironment)	return;

@@ -66,7 +66,7 @@ public:
 
 	virtual void						update					( const Fvector& P, const Fvector& D, const Fvector& N, float dt );
 
-#ifdef __BORLANDC__
+#ifdef _EDITOR
 	virtual SoundEnvironment_LIB*		get_env_library			()																{ return s_environment; }
 	virtual void						refresh_env_library		();
 	virtual void						set_user_env			( CSound_environment* E);
