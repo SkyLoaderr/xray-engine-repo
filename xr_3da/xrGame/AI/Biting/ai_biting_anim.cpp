@@ -48,10 +48,18 @@ namespace AI_Biting {
 static void __stdcall vfPlayCallBack(CBlend* B)
 {
 	CAI_Biting *tpBiting = (CAI_Biting*)B->CallbackParam;
-	
-	tpBiting->m_tpCurrentGlobalAnimation = 0;
-	if (tpBiting->_CA.Playing)tpBiting->_CA.Finished = true;
-	if (tpBiting->_CAction.Playing) tpBiting->_CAction.Switch();
+	tpBiting->OnAnimationEnd();
+}
+
+void CAI_Biting::OnAnimationEnd()
+{
+	m_tpCurrentGlobalAnimation = 0;
+	if (_CA.Playing) _CA.Finished = true;
+	if (_CAction.Playing) _CAction.Switch();
+	if (MotionSeq.Playing) {
+		MotionSeq.Switch(this);
+		if (MotionSeq.Finished) MotionSeq.Init();
+	}
 }
 
 void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, float speed )
@@ -230,10 +238,15 @@ void CAI_Biting::vfSetAnimation(bool bForceChange)
 		return;
 	}
 	
+
 	if ( ((PostureAnim_old != m_tPostureAnim) || (ActionAnim_old != m_tActionAnim)) && bForceChange) {
 //		if (m_dwAnimLastSetTime + m_dwAnimFrameDelay <= m_dwCurrentUpdate) {
 //			m_dwAnimLastSetTime = m_dwCurrentUpdate; 
 	
+		if (m_tActionAnim == eActionAttack) {
+			m_dwAttackMeleeTime = m_dwCurrentUpdate;
+		} else m_dwAttackMeleeTime = 0;
+
 		FORCE_ANIMATION_SELECT();
 	}
 }

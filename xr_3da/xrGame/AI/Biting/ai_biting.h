@@ -13,7 +13,7 @@
 #include "ai_biting_anim.h"
 #include "ai_biting_space.h"
 #include "ai_biting_mem.h"
-
+#include "ai_biting_state.h"
 
 class CAI_Biting : public CCustomMonster, public CBitingAnimations
 {
@@ -125,12 +125,6 @@ public:
 
 	virtual void			Think			();
 
-
-//	virtual float EnemyHeuristics(CEntity* E);
-	
-//	virtual	void  feel_sound_new(CObject* who, int type, const Fvector &Position, float power);
-//	virtual void  Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse);
-
 private:			
 			void			Init							();
 			void			vfInitSelector					(IBaseAI_NodeEvaluator &S, CSquad &Squad);
@@ -142,7 +136,6 @@ private:
 			void			vfSaveEnemy						();
 			void			vfValidatePosition				(Fvector &tPosition, u32 dwNodeID);
 			void			vfUpdateParameters				();
-			void			SelectEnemy						(SEnemySelected& S);
 			float			EnemyHeuristics					(CEntity* E);
 			// построение пути и установка параметров скорости
 			// tpPoint - куда смотреть при движении
@@ -171,9 +164,9 @@ private:
 			void			Scared							();
 
 
-
+			void			vfSetFireBones					(CInifile *ini, const char *section);
+			
 			// Eat corpse
-			void			SelectCorp						(SEnemySelected& S);
 			float			CorpHeuristics					(CEntity* E);
 
 
@@ -190,9 +183,8 @@ public:
 	bool					bPlayDeath;
 	bool					bStartPlayDeath;
 	
-	_TCA					_CA;
-	_TCAction				_CAction;
 
+	void OnAnimationEnd();
 private:
 	SOUND_VECTOR			m_tpSoundDie;
 	SOUND_VECTOR			m_tpSoundHit;
@@ -234,21 +226,11 @@ private:
 
 	// врем€ вызовов функции Think()
 	u32						m_dwLastUpdateTime;  
-	u32						m_dwCurrentUpdate;  // Level().timeServer()
-
-	// saved enemy
-	SEnemySelected			m_tEnemy;
-	CEntity*				m_tSavedEnemy;
-	Fvector					m_tSavedEnemyPosition;
-	NodeCompressed*			m_tpSavedEnemyNode;
-	u32						m_dwSavedEnemyNodeID;
-	u32						m_dwSeenEnemyLastTime;		// врем€, когда последний раз видел врага
-	Fvector					m_tMySavedPosition;			// мо€ последн€€ позици€, в которой € видел врага
-	u32						m_dwMyNodeID;				// мо€ нода последней позиции, ...
+	u32						m_dwCurrentUpdate;  
 
 	// search and path parameters
-	u32						m_dwLastRangeSearch;		// врем€ последнего поиска узла
-	bool					m_bIfSearchFailed;			// если поиск ничего не нашЄл
+	u32							m_dwLastRangeSearch;		// врем€ последнего поиска узла
+	bool						m_bIfSearchFailed;			// если поиск ничего не нашЄл
 	xr_vector<Fvector>			m_tpaPoints;
 	xr_vector<Fvector>			m_tpaTravelPath;
 	xr_vector<u32>				m_tpaPointNodes;
@@ -267,13 +249,11 @@ private:
 	xr_vector<CObject*>		m_tpaVisibleObjects;	// массив видимых объектов
 
 	// Sound
-	SSimpleSound			m_tLastSound;
-	u32						m_dwLastSoundNodeID;
-	AI_Biting::ESoundType	SndType;
+//	SSimpleSound			m_tLastSound;
+//	u32						m_dwLastSoundNodeID;
+//	AI_Biting::ESoundType	SndType;
 	float					m_fSoundThreshold;
 	
-	bool					bAnimCanBeNew;
-
 	/////////////////////////////////////////////////////////////////////////////////////////
 	AI_Biting::EActionState m_tActionState;
 
@@ -292,7 +272,7 @@ private:
 	bool					_A,_B,_C,_D,_E,_F,_G,_H,_I,_J,_K,_L,_M;
 	bool					A,B,C,D,E,F,G,H,I,J,K,L,M;
 
-	u32						m_dwInertion;
+	u32						m_dwInertion;							// »нерци€ состо€ни€
 	u32						m_dwActionStartTime;
 	bool					m_bStateChanged;
 	float					m_ls_yaw;
@@ -304,8 +284,6 @@ private:
 	BOOL					m_bCannibalism;
 	BOOL					m_bEatMemberCorpses;
 	u32						m_dwEatCorpseInterval;
-	// saved corpse
-	SEnemySelected			m_tCorpse;
 	
 	void					SetText();
 	virtual void			UpdateCL();
@@ -337,7 +315,12 @@ private:
 	// Animation Parameters
 	AI_Biting::EActionAnim		m_tActionAnim;
 	AI_Biting::EPostureAnim		m_tPostureAnim;
-	
+
+
+	_TCA					_CA;
+	_TCAction				_CAction;
+
+
 	u32						m_dwLieIndex;
 	u32						m_dwActionIndex;
 
@@ -348,21 +331,52 @@ private:
 	u32						m_AttackInterval;
 	Fvector					m_AttackLastPosition;		// последн€€ позици€ врага во врем€ аттаки
 
-	
-	//////////////////////////////////////////////////////////////////////////
-	Fvector					m_EnemyPos;
-	bool					bCorpseFoundFirstTime;
-	u32						m_dwEnemyMemoryTime;				// вр€м€ хранени€ "визуального" врага  
-	u32						m_dwEnemyLastMemoryTime;			// вр€м€ хранени€ "визуального" врага  
-	//////////////////////////////////////////////////////////////////////////
-	
 	void vfChoosePointAndBuildPathAtOnce(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode, bool bSelectorPath = false);
 	
+	CMonsterMemory			Mem;
+		
+	// Fire bone indexes
+	u32		m_iLeftFireBone;
+	u32		m_iRightFireBone;
+
+
+	u32		m_dwAttackMeleeTime;
+	u32		m_dwAttackActorMeleeTime;
+	bool	AttackMelee(CObject *obj,bool bAttackRat);
+
+
+	// Extended FSM
+
+	CBitingMotion		Motion;
+	IState				*CurrentState;
+	CRest				*stateRest;
+	CAttack				*stateAttack;
+	CMotionSequence		MotionSeq;
+
+	friend	class IState;
+	friend	class CRest;
+	friend	class CBitingMotion;
+	friend	class CMotionParams;
+	friend  class CMotionTurn;
+	friend  class CAttack;
+	friend	class CMotionSequence;
+
+
+	void SetState(IState *pS);
+	
+	
+	AI_Biting::EActionAnim		m_tActionAnimPrevFrame;
+	AI_Biting::EPostureAnim		m_tPostureAnimPrevFrame;
+	
+	
+	void ControlAnimation();
+
 	//CMonsterMemory			Mem;
 
 	virtual BOOL			feel_vision_isRelevant	(CObject* O);
 	
-	//	IState					*CurrentState;
+
+
 //
 //	CRest					*stateRest;
 //	CWalk					*stateWalk;
@@ -371,6 +385,17 @@ private:
 //	EMotionType				motion;
 //	
 //	friend	class IState;
+//	friend	class CRest;
+//	friend	class CWalk;
+//	friend  class CMicroAction;
+//
+//
+//	void SetStateParams(AI_Biting::EPostureAnim pa,AI_Biting::EActionAnim aa, float sp, float r_sp, float y);
+//	
+//
+//	void ChangeControl(IState *pS);
+//	void CheckForMicroAction();
+};/	friend	class IState;
 //	friend	class CRest;
 //	friend	class CWalk;
 //	friend  class CMicroAction;
