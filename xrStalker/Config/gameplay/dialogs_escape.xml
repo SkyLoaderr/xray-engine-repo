@@ -952,25 +952,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="escape_factory_assault_hello">
-        <phrase_list>
-            <phrase id="1">
-                <text></text>
-                <next>2</next>
-                <next>3</next>
-            </phrase>
-            <phrase id="3">
-                <text>escape_factory_assault_hello_3</text>
-            </phrase>
-            <phrase id="2">
-                <text>escape_factory_assault_hello_2</text>
-            </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="escape_lager_hlam_hello">
         <phrase_list>
             <phrase id="0">
@@ -994,7 +975,7 @@
     <dialog id="escape_fox_hello_dialog">
         <phrase_list>
             <phrase id="1">
-                <text></text>
+                <text />
                 <next>2</next>
                 <next>3</next>
             </phrase>
@@ -1007,17 +988,34 @@
                 <dont_has_info>escape_stalker_meet</dont_has_info>
             </phrase>
             <phrase id="0">
+                <text />
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="escape_factory_assault_hello">
+        <phrase_list>
+            <phrase id="1">
+                <text></text>
+                <next>2</next>
+                <next>3</next>
+            </phrase>
+            <phrase id="3">
+                <text>escape_factory_assault_hello_3</text>
+            </phrase>
+            <phrase id="2">
+                <text>escape_factory_assault_hello_2</text>
+            </phrase>
+            <phrase id="0">
                 <text></text>
                 <next>1</next>
             </phrase>
         </phrase_list>
     </dialog>
     <dialog id="escape_lager_access">
+        <precondition>dialogs.dialog_allowed</precondition>
+        <dont_has_info>tutorial_wounded_help</dont_has_info>
         <phrase_list>
-            <phrase id="11">
-                <text>escape_lager_access_11</text>
-                <next>111</next>
-            </phrase>
             <phrase id="12">
                 <text>escape_lager_access_12</text>
                 <next>121</next>
@@ -1028,14 +1026,18 @@
             <phrase id="121">
                 <text>escape_lager_access_121</text>
             </phrase>
-            <phrase id="0">
-                <text>escape_lager_access_0</text>
-                <next>1</next>
-            </phrase>
             <phrase id="1">
                 <text>escape_lager_access_1</text>
                 <next>11</next>
                 <next>12</next>
+            </phrase>
+            <phrase id="0">
+                <text>escape_lager_access_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="11">
+                <text>escape_lager_access_11</text>
+                <next>111</next>
             </phrase>
         </phrase_list>
     </dialog>
@@ -1044,19 +1046,23 @@
             <phrase id="0">
                 <text></text>
                 <next>1</next>
+                <next>11</next>
+            </phrase>
+            <phrase id="2">
+                <text>escape_lager_guard_start_dialog_2</text>
             </phrase>
             <phrase id="1">
                 <text></text>
+                <dont_has_info>tutorial_wounded_help</dont_has_info>
                 <next>2</next>
+            </phrase>
+            <phrase id="11">
+                <text></text>
+                <has_info>tutorial_wounded_help</has_info>
                 <next>3</next>
             </phrase>
             <phrase id="3">
                 <text>escape_lager_guard_start_dialog_3</text>
-                <has_info>tutorial_wounded_help</has_info>
-            </phrase>
-            <phrase id="2">
-                <text>escape_lager_guard_start_dialog_2</text>
-                <dont_has_info>tutorial_wounded_help</dont_has_info>
             </phrase>
         </phrase_list>
     </dialog>

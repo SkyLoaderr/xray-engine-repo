@@ -480,15 +480,16 @@ end
 
 --' Считывание доступных диалогов игрока.
 function set_actor_dialogs(npc, ini, name, dialog_section)
+	printf("*ACTOR_DIALOGS*")
 	if dialog_section == nil then return end
-	printf("*DIALOGS*: set_actor_dialogs: npc_name='%s' section='%s'", npc:name(), dialog_section)
+	printf("*ACTOR_DIALOGS*: set_actor_dialogs: npc_name='%s' section='%s'", npc:name(), dialog_section)
 	
 	local actor_dialogs_string = utils.cfg_get_string(ini, dialog_section, "id", npc, false, "")
 	if actor_dialogs_string ~= nil then
-		printf("*DIALOGS*: actor_dialogs=%s", actor_dialogs_string)
+		printf("*ACTOR_DIALOGS*: actor_dialogs=%s", actor_dialogs_string)
 		--' Создаем в массиве запись где будут храниться считанные диалоги.
 		xr_motivator.storage[npc:id()].actor_dialogs = parse_names(actor_dialogs_string)
 	else
-		printf("*DIALOGS*: actor_dialogs=nil")
+		printf("*ACTOR_DIALOGS*: actor_dialogs=nil")
 	end
 end

@@ -128,7 +128,7 @@ function generic_scheme_overrides(npc)
 	
 --]]
 
-function gulag_activate(npc, ini, section, gulag_name, death, combat)
+function gulag_activate(npc, ini, section, gulag_name, death, combat, actor_dialogs)
 	if npc == nil then
 		utils.abort("gulag_activate: npc is nil")
 	end
@@ -138,12 +138,13 @@ function gulag_activate(npc, ini, section, gulag_name, death, combat)
 
 	local npc_id = npc:id()
 
+	local stype = stypes[utils.get_scheme_by_section(section)]
 	xr_motivator.storage[npc_id]["active_section"] = nil
 	xr_motivator.storage[npc_id]["active_scheme"] = nil
 	xr_motivator.storage[npc_id]["gulag_name"] = if_then_else(gulag_name, gulag_name, "")
-	xr_motivator.storage[npc_id]["stype"] = stypes[utils.get_scheme_by_section(section)]
+	xr_motivator.storage[npc_id]["stype"] = stype
 
-	set_generic_schemes(ini, npc, stype)
+	set_generic_schemes(ini, npc, stype, death, combat, actor_dialogs)
 
 	activate_by_section(npc, ini, section)
 end
@@ -189,7 +190,7 @@ function enable_scripts(npc, ini, stype)
 	printf("DEBUG: stalker_enable_scripts end")
 end
 
-function set_generic_schemes(ini, npc, stype)
+function set_generic_schemes(ini, npc, stype, death, combat, actor_dialogs)
 	if stype == modules.stype_stalker then
 		local combat_section = utils.cfg_get_string(ini, "logic", "on_combat", npc, false, "")
 		printf("_bp: npc='%s': combat section: %s", npc:name(), if_then_else(combat_section ~= nil, "found",
@@ -206,8 +207,13 @@ function set_generic_schemes(ini, npc, stype)
 		end
 
 		--' actor dialogs
-		local dialog_section = utils.cfg_get_string (ini, "logic", "actor_dialogs", npc, false, "")
-		xr_meet.set_actor_dialogs(npc, ini, "actor_dialogs", dialog_section)
+		if actor_dialogs == nil then
+			printf("*GULAG_ACTIVATE1*: nil")
+			xr_meet.set_actor_dialogs(npc, ini, "actor_dialogs", utils.cfg_get_string (ini, "logic", "actor_dialogs", npc, false, ""))
+		else
+			printf("*GULAG_ACTIVATE1*: %s", actor_dialogs)
+			xr_meet.set_actor_dialogs(npc, ini, "actor_dialogs", actor_dialogs)
+		end
 		
 		-- wounded
 		local wounded_section = utils.cfg_get_string (ini, "logic", "wounded", npc, false, "")

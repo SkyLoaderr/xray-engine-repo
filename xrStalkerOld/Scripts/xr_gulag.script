@@ -152,6 +152,9 @@ function fract:print()
 			printf("    ObjID: %d", v.object:id())
 			printf("    Actor: %s", self.Object[v.object:id()]:name())
 			printf("    current section: %s", xr_motivator.storage[v.object:id()].active_section or "<<<nil>>>")
+			if v.actor_dialogs ~= nil then
+				printf("    Actor dialogs: %s", v.actor_dialogs)
+			end
 		end
 	end
 end
@@ -197,7 +200,7 @@ function fract:setJob(npc, job)
 		utils.abort( "no sections available! npc=%s section=%s gulag=%s", npc:name(), job.section, self.name )
 	end
 
-	xr_logic.gulag_activate(npc, gulag_tasks_ltx, section, self.name)
+	xr_logic.gulag_activate(npc, gulag_tasks_ltx, section, self.name, job.death, job.combat, job.actor_dialogs)
 
 	--' Смена тим, сквад, груп
 	job.object:change_team(job.object:team(), job.squad or job.object:squad(), job.group or job.object:group())
