@@ -914,6 +914,7 @@ void	CPHElement::applyForce(const Fvector& dir, float val)															//aux
 }
 void	CPHElement::applyForce(float x,float y,float z)																//called anywhere ph state influent
 {
+	if(!bActive)return;//hack??
 	if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
 	m_shell->EnableObject();
 	dBodyAddForce(m_body,x,y,z);
