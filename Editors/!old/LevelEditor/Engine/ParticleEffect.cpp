@@ -527,10 +527,10 @@ IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fv
 
 	if (a<1.f)	return;
 	if (b<1.f)	return;
-	if (PT.p.x<-1)	return;
-	if (PT.p.x> 1)	return;
-	if (PT.p.y<-1)	return;
-	if (PT.p.y> 1)	return;
+//	if (PT.p.x<-1)	return;
+//	if (PT.p.x> 1)	return;
+//	if (PT.p.y<-1)	return;
+//	if (PT.p.y> 1)	return;
 	if (PT.p.z< 0) 	return;
 
 	// Convert to screen coords
