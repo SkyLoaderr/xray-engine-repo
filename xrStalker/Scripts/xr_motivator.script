@@ -76,7 +76,7 @@ function motivator_binder:reload (section)
     local operators = {}
     local properties = {}
     local manager = self.object:motivation_action_manager()
-    local goal = world_state()  
+    local goal = world_state()
 
     motivations["solve_zone_puzzle"]= stalker_ids.motivation_solve_zone_puzzle
 
@@ -102,7 +102,7 @@ xr_motivator.storage[self.object:id()].state = {
 	target_state = 0
 	}
 -- Хранение трейдселлера
-xr_motivator.storage[self.object:id()].tradeseller = 
+xr_motivator.storage[self.object:id()].tradeseller =
     {   Buyer = nil,
             Seller = self.object,
             trade_position = { vertex_id = nil,
@@ -130,12 +130,12 @@ xr_motivator.storage[self.object:id()].tradeseller =
         enabled = false
     }
     if char_ini:section_exist ("tradeseller") == true then
-        if char_ini:line_exist("tradeseller", "enabled") == true then   
+        if char_ini:line_exist("tradeseller", "enabled") == true then
                 xr_motivator.storage[self.object:id()].tradeseller.enabled = char_ini:r_bool("tradeseller", "enabled")
-        end   
-    end    
+        end
+    end
 -- Хранение лагеря у костра
-xr_motivator.storage[self.object:id()].kamp = 
+xr_motivator.storage[self.object:id()].kamp =
     {   -- Будет ли работать схема? если нет, то он не будет пытаться инициализировать камп
         enabled = false,
         -- Патрульный путь из 1 вэйпоинта, который указывает на центр лагеря.
@@ -151,7 +151,7 @@ xr_motivator.storage[self.object:id()].kamp =
         -- Патрульные пути, по которым будут сталкеры обходить лагерь
         patrol_path = {},
         -- ID позиции, в которую он сядет
-        pos_id = -1,                                                     
+        pos_id = -1,
         -- Положение тела. 0 - стоит, остальное - разные варианты сидения
         body_state = 0,
         -- Время между повторением действий
@@ -159,20 +159,20 @@ xr_motivator.storage[self.object:id()].kamp =
                           act4 = {begin = nil, time = 60}}
     }
         if char_ini:section_exist ("kamp") == true then
-        if char_ini:line_exist("kamp", "enabled") == true then  
+        if char_ini:line_exist("kamp", "enabled") == true then
                 xr_motivator.storage[self.object:id()].kamp.enabled = char_ini:r_bool("kamp", "enabled")
-        end   
-        if char_ini:line_exist("kamp", "center_point") == true then 
+        end
+        if char_ini:line_exist("kamp", "center_point") == true then
                 xr_motivator.storage[self.object:id()].kamp.center_point = char_ini:r_string("kamp", "center_point")
         else
             xr_motivator.storage[self.object:id()].kamp.enabled = false
         end
         local i = 1
-        while char_ini:line_exist("kamp", "patrol_path_"..i) == true do 
+        while char_ini:line_exist("kamp", "patrol_path_"..i) == true do
             xr_motivator.storage[self.object:id()].kamp.patrol_path[i] = char_ini:r_string("kamp", "patrol_path_"..i)
             i = i + 1
         end
-    end    
+    end
 -- Хранение часовых
 xr_motivator.storage[self.object:id()].guard = {
         enabled = false,
@@ -182,22 +182,22 @@ xr_motivator.storage[self.object:id()].guard = {
     printf("_bp: npc = %s", self.object:name())
         if char_ini:section_exist ("guard") == true then
         printf("_bp: npc is guard = %s", self.object:name())
-        if char_ini:line_exist("guard", "enabled") == true then 
+        if char_ini:line_exist("guard", "enabled") == true then
                 xr_motivator.storage[self.object:id()].guard.enabled = char_ini:r_bool("guard", "enabled")
             printf("_bp: enabled = true")
-        end   
-        if char_ini:line_exist("guard", "path_main") == true then   
+        end
+        if char_ini:line_exist("guard", "path_main") == true then
                 xr_motivator.storage[self.object:id()].guard.path_main = char_ini:r_string("guard", "path_main")
         else
             xr_motivator.storage[self.object:id()].guard.enabled = false
         end
-        if char_ini:line_exist("guard", "path_hideout") == true then    
+        if char_ini:line_exist("guard", "path_hideout") == true then
                 xr_motivator.storage[self.object:id()].guard.path_hideout = char_ini:r_string("guard", "path_hideout")
         end
-        if char_ini:line_exist("guard", "search_light") == true then    
+        if char_ini:line_exist("guard", "search_light") == true then
                 xr_motivator.storage[self.object:id()].guard.projector_name = char_ini:r_string("guard", "search_light")
         end
-    end    
+    end
 -- Настройка встречи
 xr_motivator.storage[self.object:id()].meet = {
         enabled = false,
@@ -207,9 +207,9 @@ xr_motivator.storage[self.object:id()].meet = {
         shoot_distance = 5 -- расстояние, в пределах которого мы стреляем
     }
         if char_ini:section_exist ("meet") == true then
-        if char_ini:line_exist("meet", "enabled") == true then  
+        if char_ini:line_exist("meet", "enabled") == true then
                 xr_motivator.storage[self.object:id()].meet.enabled = char_ini:r_bool("meet", "enabled")
-        end   
+        end
     end
 -- Настройка scout
 xr_motivator.storage[self.object:id()].scout = {
@@ -221,11 +221,11 @@ xr_motivator.storage[self.object:id()].scout = {
         dead_hook = false
     }
     if char_ini:section_exist ("scout") then
-        if char_ini:line_exist("scout", "enabled") then  
+        if char_ini:line_exist("scout", "enabled") then
             xr_motivator.storage[self.object:id()].scout.enabled = char_ini:r_bool("scout", "enabled")
         end
 
-        if char_ini:line_exist("scout", "way") then  
+        if char_ini:line_exist("scout", "way") then
             xr_motivator.storage[self.object:id()].scout.path_name = char_ini:r_string("scout", "way")
         end
     end
@@ -290,6 +290,25 @@ xr_motivator.storage[self.object:id()].follower = {
           xr_motivator.storage[self.object:id()].follower.raid_path = char_ini:r_string ("follower", "raid_path")
        end
   end
+--Настройка схемы реакции новичка
+xr_motivator.storage[self.object:id()].novice = {
+                            path     = nil,         --Путь, по которому ходить
+                            rest     = nil,         --Места для сидения
+                            curState = 1,
+                            time     = nil,
+                            index    = 0,           --Index точки, к которой идем, чтоб посидеть
+                            enabled  = false
+}
+    if( char_ini:section_exist ("novice") == true ) then
+        xr_motivator.storage[self.object:id()].novice.enabled = true			--Если есть секция новичка, то включаем эту схему
+        if( char_ini:line_exist("novice", "path") == true ) then
+            xr_motivator.storage[self.object:id()].novice.path = char_ini:r_string("novice", "path")
+        end
+        if( char_ini:line_exist("novice", "rest") == true ) then
+            xr_motivator.storage[self.object:id()].novice.rest = char_ini:r_string("novice", "rest")
+        end
+    end
+
 -- Настройка схемы реакции
 xr_motivator.storage[self.object:id()].reactions = {
         enabled = true,
@@ -313,8 +332,8 @@ xr_motivator.storage[self.object:id()].reactions = {
 
     --Motivations
     manager:remove_motivation (motivations["solve_zone_puzzle"])
-    
-    manager:add_motivation (motivations["solve_zone_puzzle"], this.motivation_alive(motivations, 
+
+    manager:add_motivation (motivations["solve_zone_puzzle"], this.motivation_alive(motivations,
                                         xr_motivator.storage[self.object:id()].tradeseller,
                                         xr_motivator.trade_arhive[self.object:id()]))
 
@@ -348,6 +367,7 @@ xr_motivator.storage[self.object:id()].reactions = {
     xr_guard.add_to_binder(self.object)
     xr_scout.add_to_binder(self.object)
     xr_follower.add_to_binder (self.object)
+    xr_trivial.add_novice     (self.object)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function pda_call_back(recepient, who, msg, info_index)
@@ -355,12 +375,12 @@ function pda_call_back(recepient, who, msg, info_index)
         xr_motivator.trade_arhive[recepient:id()]:save(who)
     else
         recepient:send_pda_message(4, who)
-    end 
+    end
 end
 ----------------------------------------------------------------------------------------------------------------------
 function AddToMotivator(npc)
     npc:bind_object(this.motivator_binder(npc))
-end                                                  
+end
 ----------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------
@@ -389,7 +409,7 @@ end
 --проверяет на наличие устаревших запросов и удаляет их.
 function pda_storage:remove_old()
     local old = 3000 --удаляются все старше 3000 секунд
-                                              
+
     for a = 1, table.getn(self.arhive), 1 do
         if device():time_global()/1000 - self.arhive[a].time > old then
             table.remove(self.arhive, a)

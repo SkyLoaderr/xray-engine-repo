@@ -35,7 +35,11 @@ function init    (obj)
     elseif name == "swat" then
        xr_swat.AddSwat  (obj)
 	elseif name == "trivial" then
-	   xr_trivial.bind_object( obj, command )
+       if( command == "novice" ) then
+	   	   xr_motivator.AddToMotivator( obj )
+       else
+           xr_trivial.bind_object( obj, command )
+       end
     end
 end
 
