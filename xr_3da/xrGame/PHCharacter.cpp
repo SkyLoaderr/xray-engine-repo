@@ -630,6 +630,7 @@ m_control_force[2]=m_control_force[2]*accel[2]>0.f ? m_control_force[2] : -m_con
 }
 
 void CPHSimpleCharacter::SetPosition(Fvector pos){
+if(!b_exist) return;
 	m_death_position[0]=pos.x;
 	m_death_position[1]=pos.y;
 	m_death_position[2]=pos.z;
@@ -640,7 +641,11 @@ void CPHSimpleCharacter::SetPosition(Fvector pos){
 }
 
 Fvector CPHSimpleCharacter::GetPosition(){
-	
+	if(!b_exist){
+		 Fvector ret;
+		ret.set(m_safe_position[0],m_safe_position[1],m_safe_position[2]);
+		return ret;
+	}
 	const dReal* pos=dBodyGetPosition(m_body);
 	Fvector vpos;
 	
@@ -651,9 +656,9 @@ Fvector CPHSimpleCharacter::GetPosition(){
 
 Fvector CPHSimpleCharacter::GetVelocity(){
 	if(!b_exist){
-	Fvector ret;
-	ret.set(0,0,0);
-	return ret;
+		 Fvector ret;
+		ret.set(m_safe_velocity[0],m_safe_velocity[1],m_safe_velocity[2]);
+		return ret;
 	}
 	const dReal* vel=dBodyGetLinearVel(m_body);
 	Fvector vvel;
@@ -663,7 +668,7 @@ Fvector CPHSimpleCharacter::GetVelocity(){
 
 
 void CPHSimpleCharacter::SetVelocity(Fvector vel){
-	
+	if(!b_exist) return;
 	dBodySetLinearVel(m_body,vel.x,vel.y,vel.z);
 }
 
