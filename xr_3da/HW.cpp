@@ -33,7 +33,7 @@ D3DFORMAT CHW::selectDepthStencil	(D3DFORMAT fTarget)
 
 	D3DFORMAT*	fDS_Try = fDS_Try1;
 	int			fDS_Cnt	= 6;
-	if (psDeviceFlags & rsOverdrawView) { fDS_Try = fDS_Try2; fDS_Cnt=2; }
+	if (HW.Caps.bShowOverdraw) { fDS_Try = fDS_Try2; fDS_Cnt=2; }
 
 	for (int it = 0; it<fDS_Cnt; it++){
 		if (SUCCEEDED(pD3D->CheckDeviceFormat(

@@ -53,26 +53,26 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 void CRenderDevice::overdrawBegin	()
 {
     // Turn stenciling
-    HW.pDevice->SetRenderState( D3DRS_STENCILENABLE,	TRUE			);
-    HW.pDevice->SetRenderState( D3DRS_STENCILFUNC,		D3DCMP_ALWAYS	);
-    HW.pDevice->SetRenderState( D3DRS_STENCILREF,		0				);
-    HW.pDevice->SetRenderState( D3DRS_STENCILMASK,		0x00000000		);
-    HW.pDevice->SetRenderState( D3DRS_STENCILWRITEMASK,	0xffffffff		);
+    CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILENABLE,	TRUE				));
+    CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILFUNC,		D3DCMP_ALWAYS	));
+    CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILREF,		0				));
+    CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILMASK,		0x00000000		));
+    CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILWRITEMASK,	0xffffffff		));
 
     // Increment the stencil buffer for each pixel drawn
-    HW.pDevice->SetRenderState( D3DRS_STENCILZFAIL,		D3DSTENCILOP_INCRSAT	);
-    HW.pDevice->SetRenderState( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP		);
-    HW.pDevice->SetRenderState( D3DRS_STENCILPASS,		D3DSTENCILOP_INCRSAT	);
+    CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILZFAIL,		D3DSTENCILOP_INCRSAT	));
+    CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP		));
+    CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILPASS,		D3DSTENCILOP_INCRSAT	));
 }
 
 void CRenderDevice::overdrawEnd		()
 {
     // Set up the stencil states
-    HW.pDevice->SetRenderState( D3DRS_STENCILZFAIL,	D3DSTENCILOP_KEEP	);
-    HW.pDevice->SetRenderState( D3DRS_STENCILFAIL,  D3DSTENCILOP_KEEP	);
-    HW.pDevice->SetRenderState( D3DRS_STENCILPASS,  D3DSTENCILOP_KEEP	);
-    HW.pDevice->SetRenderState( D3DRS_STENCILFUNC,  D3DCMP_EQUAL		);
-    HW.pDevice->SetRenderState( D3DRS_STENCILMASK,	0xff				);
+    CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILZFAIL,		D3DSTENCILOP_KEEP	));
+    CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP	));
+    CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILPASS,		D3DSTENCILOP_KEEP	));
+    CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILFUNC,		D3DCMP_EQUAL		));
+    CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILMASK,		0xff				));
 
     // Set the background to black
 	CHK_DX(HW.pDevice->Clear(0,0,D3DCLEAR_TARGET,	0,1,0));
