@@ -79,7 +79,7 @@ void CStatGraph::RenderBack	()
 	float base_y		= float(rb.y)+(mn*elem_factor);
 
 	int PNum_H_Lines	= int((base_y - float(lt.y)) / grid_step.y) + u32((float(rb.y) - base_y) / grid_step.y);
-	u32 Num_H_Lines = (grid.x > PNum_H_Lines) ? grid.x : PNum_H_Lines;
+	u32 Num_H_Lines = (grid.y < PNum_H_Lines) ? grid.y : PNum_H_Lines;
 
 	pv_start	= (FVF::TL0uv*)RCache.Vertex.Lock(2 + 2*grid.x + Num_H_Lines*4,hGeomLine->vb_stride,dwOffset);
     pv			= pv_start;
@@ -89,18 +89,18 @@ void CStatGraph::RenderBack	()
     // grid
 //    float grid_offs_x		= float(rb.x-lt.x)/float(grid.x+1);
 //    float grid_offs_y		= float(rb.y-lt.y)/float(grid.y+1);
-    for (int g_x=0; g_x<=grid.x; g_x++)
+    for (int g_x=1; g_x<=grid.x; g_x++)
 	{
-	    pv->set				(int(lt.x + g_x*grid_step.x),lt.y,grid_color); pv++; 	
-	    pv->set				(int(lt.x + g_x*grid_step.x),rb.y,grid_color); pv++; 	
+	    pv->set				(int(lt.x + g_x*grid_step.x*elem_factor),lt.y,grid_color); pv++; 	
+	    pv->set				(int(lt.x + g_x*grid_step.x*elem_factor),rb.y,grid_color); pv++; 	
 	}
 	for (int g_y=1; g_y<=grid.y; g_y++)
 	{
-		pv->set				(lt.x,int(base_y+g_y*grid_step.y),grid_color); pv++;
-		pv->set				(rb.x,int(base_y+g_y*grid_step.y),grid_color); pv++;
+		pv->set				(lt.x,int(base_y+g_y*grid_step.y*elem_factor),grid_color); pv++;
+		pv->set				(rb.x,int(base_y+g_y*grid_step.y*elem_factor),grid_color); pv++;
 										
-		pv->set				(lt.x,int(base_y-g_y*grid_step.y),grid_color); pv++; 	
-		pv->set				(rb.x,int(base_y-g_y*grid_step.y),grid_color); pv++; 	
+		pv->set				(lt.x,int(base_y-g_y*grid_step.y*elem_factor),grid_color); pv++; 	
+		pv->set				(rb.x,int(base_y-g_y*grid_step.y*elem_factor),grid_color); pv++; 	
 	}    	
 
 	
