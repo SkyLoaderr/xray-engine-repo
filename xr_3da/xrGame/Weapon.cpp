@@ -661,7 +661,7 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 			CEntity* E		=	dynamic_cast<CEntity*>(RQ.O);
 			if (E) power	*=	E->HitScale(RQ.element);
 
-			// 
+			//  
 			NET_Packet		P;
 			u_EventGen		(P,GE_HIT,RQ.O->ID());
 			P.w_u16			(u16(H_Parent()->ID()));
