@@ -78,9 +78,9 @@ namespace luabind { namespace detail { namespace free_functions {
 #else
         if (!ret)
         {
-            // this bock is needed to make sure the std::string is destructed
+            // this bock is needed to make sure the xr_string is destructed
             {
-                std::string msg = "no match for function call '";
+                xr_string msg = "no match for function call '";
                 msg += rep->name();
                 msg += "' with the parameters (";
                 msg += stack_content_by_name(L, 1);
@@ -101,9 +101,9 @@ namespace luabind { namespace detail { namespace free_functions {
 
         if (ambiguous)
         {
-            // this bock is needed to make sure the std::string is destructed
+            // this bock is needed to make sure the xr_string is destructed
             {
-                std::string msg = "call of overloaded function '";
+                xr_string msg = "call of overloaded function '";
                 msg += rep->name();
                 msg += "(";
                 msg += stack_content_by_name(L, 1);
@@ -155,7 +155,7 @@ namespace luabind { namespace detail { namespace free_functions {
         }
         catch(...)
         {
-            std::string msg = rep->name();
+            xr_string msg = rep->name();
             msg += "() threw an exception";
             lua_pushstring(L, msg.c_str());
         }
@@ -219,9 +219,9 @@ int luabind::detail::free_functions::function_dispatcher(lua_State* L)
 
     if (!ret)
     {
-        // this bock is needed to make sure the std::string is destructed
+        // this bock is needed to make sure the xr_string is destructed
         {
-            std::string msg = "no match for function call '";
+            xr_string msg = "no match for function call '";
             msg += rep->name();
             msg += "' with the parameters (";
             msg += stack_content_by_name(L, 1);
@@ -237,9 +237,9 @@ int luabind::detail::free_functions::function_dispatcher(lua_State* L)
 
     if (ambiguous)
     {
-        // this bock is needed to make sure the std::string is destructed
+        // this bock is needed to make sure the xr_string is destructed
         {
-            std::string msg = "call of overloaded function '";
+            xr_string msg = "call of overloaded function '";
             msg += rep->name();
             msg += "(";
             msg += stack_content_by_name(L, 1);
@@ -280,7 +280,7 @@ int luabind::detail::free_functions::function_dispatcher(lua_State* L)
     }
     catch(...)
     {
-        std::string msg = rep->name();
+        xr_string msg = rep->name();
         msg += "() threw an exception";
         lua_pushstring(L, msg.c_str());
     }

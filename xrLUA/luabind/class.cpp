@@ -286,7 +286,7 @@ namespace luabind { namespace detail {
         const char* name
         , const boost::function2<int, lua_State*, int>& s
         , int (*match)(lua_State*, int)
-        , void (*get_sig_ptr)(lua_State*, std::string&))
+        , void (*get_sig_ptr)(lua_State*, xr_string&))
 #endif
     {
         detail::class_rep::callback c;
@@ -336,7 +336,7 @@ namespace luabind { namespace detail {
 #ifndef LUABIND_NO_ERROR_CHECKING
     void class_base::add_operator(
         int op_id,  int(*func)(lua_State*), int(*matcher)(lua_State*)
-        , void(*sig)(lua_State*, std::string&), int arity)
+        , void(*sig)(lua_State*, xr_string&), int arity)
 #else
     void class_base::add_operator(
         int op_id,  int(*func)(lua_State*)
@@ -372,18 +372,18 @@ namespace luabind { namespace detail {
     }
 
 	template<class T>
-	void add_custom_name(T i, std::string& s) {}
+	void add_custom_name(T i, xr_string& s) {}
 
-	void add_custom_name(std::type_info const* i, std::string& s)
+	void add_custom_name(std::type_info const* i, xr_string& s)
 	{
 		s += " [";
 		s += i->name();
 		s += "]";
 	}
 
-    std::string get_class_name(lua_State* L, LUABIND_TYPE_INFO i)
+    xr_string get_class_name(lua_State* L, LUABIND_TYPE_INFO i)
     {
-        std::string ret;
+        xr_string ret;
 
 		assert(L);
 
