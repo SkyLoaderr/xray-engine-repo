@@ -48,4 +48,14 @@ public:
 	u16			m_boxSize;			// Размер коробки (Сколько патронов игрок берет за раз)
 	u16			m_boxCurr;			// Сколько патронов осталось в коробке (включая текущий магазин)
 	string64	m_tmpName;
+
+protected:
+	struct	net_update
+	{
+		u32					dwTimeStamp;
+		Fvector				pos,angles;
+		u16					m_boxCurr;
+	};
+	xr_deque<net_update>	NET;
+	net_update				NET_Last;
 };
