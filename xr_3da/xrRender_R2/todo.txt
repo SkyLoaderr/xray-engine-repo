@@ -36,6 +36,7 @@ R2:
 	transluency					(?)
 	reverse culling	for spot/point with initial clears - should avoid most biasing (?)
 	4*32bit	RT(s) / emissive
+	perspective shadow maps and all that stuff Gary talks about
 	
 	surface material:
 		emmisive	map
@@ -44,8 +45,6 @@ R2:
 		material	definition
 
 ----------------------------
-perspective shadow maps and all that stuff Gary talks about
----
 I think I understand it. Maybe I can help myself (and others) understand it better if I try to explain it.
 I assume you know how the normal mapping works. The question is: how is the offset computed?
 
