@@ -58,13 +58,13 @@ public:
 	{
 		VERIFY(a>=min && a<=max);
 		float q = (a-min)/(max-min);
-		w_u16( u16(iFloor((q+EPS_L)*65535.f)));
+		w_u16( u16(iFloor(q*65535.f+EPS_S)));
 	}
 	IC void w_float_q8	( float a, float min, float max)
 	{
 		VERIFY(a>=min && a<=max);
 		float q = (a-min)/(max-min);
-		w_u8( u8(iFloor((q+EPS_L)*255.f)));
+		w_u8( u8(iFloor(q*255.f+EPS_S)));
 	}
 	IC void w_angle16	( float a		)	{
 		w_float_q16	(angle_normalize(a),0,PI_MUL_2);
