@@ -875,12 +875,6 @@
 					RelativePath=".\XR_IOConsole.h">
 				</File>
 				<File
-					RelativePath=".\log.cpp">
-				</File>
-				<File
-					RelativePath=".\log.h">
-				</File>
-				<File
 					RelativePath=".\xr_ioc_cmd.cpp">
 				</File>
 				<File
@@ -930,22 +924,10 @@
 					Name="File System"
 					Filter="">
 					<File
-						RelativePath=".\FS.cpp">
-					</File>
-					<File
-						RelativePath=".\FS.h">
-					</File>
-					<File
 						RelativePath=".\LocatorAPI.cpp">
 					</File>
 					<File
 						RelativePath=".\LocatorAPI.h">
-					</File>
-					<File
-						RelativePath=".\LzHuf.cpp">
-					</File>
-					<File
-						RelativePath=".\lzhuf.h">
 					</File>
 				</Filter>
 			</Filter>
