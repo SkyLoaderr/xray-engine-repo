@@ -188,7 +188,8 @@ function main_menu:OnButton_load_clicked()
 end
 
 function main_menu:OnButton_multiplayer_clicked()
-	local dlg = ui_multiplayer_dialog.mutiplayer_dialog()
+	local dlg = ui_multiplayer_dialog.multiplayer_dialog() --mutiplayer_dialog()
+	
 	level.start_stop_menu(dlg, true)
 end
 
