@@ -9,7 +9,7 @@
 #pragma once
 
 //#define OLD_OBJECT_HANDLER
-//#define OLD_DECISION_BLOCK
+#define OLD_DECISION_BLOCK
 
 #include "../../CustomMonster.h"
 #include "../../stalker_movement_manager.h"
