@@ -120,7 +120,7 @@ IC u32 SetMask(u32 mask, Flags32 flags, u32 flag )
 IC SGameMtlPair* GetLastParentValue(SGameMtlPair* who, u32 flag)
 {
 	if (!who)					return 0;
-	if (who->OwnProps.is(flag)) return who;
+	if ((GAMEMTL_NONE_ID==who->GetParent())||(who->OwnProps.is(flag))) return who;
     else						return GetLastParentValue(who->m_Owner->GetMaterialPair(who->GetParent()),flag);
 }
 
@@ -143,12 +143,16 @@ BOOL SGameMtlPair::SetParent(int parent)
         }
     }
     // all right
-    OwnProps.zero();
-	OwnProps.set(flBreakingSounds,	BreakingSounds.size());
-	OwnProps.set(flStepSounds,		StepSounds.size());
-	OwnProps.set(flCollideSounds,	CollideSounds.size());
-	OwnProps.set(flCollideParticles,CollideParticles.size());
-	OwnProps.set(flCollideMarks,	CollideMarks.size());
+    if (GAMEMTL_NONE_ID==ID_parent){
+        OwnProps.one	();
+    }else{
+        OwnProps.zero	();
+        OwnProps.set	(flBreakingSounds,	BreakingSounds.size());
+        OwnProps.set	(flStepSounds,		StepSounds.size());
+        OwnProps.set	(flCollideSounds,	CollideSounds.size());
+        OwnProps.set	(flCollideParticles,CollideParticles.size());
+        OwnProps.set	(flCollideMarks,	CollideMarks.size());
+    }
     return TRUE;
 }
 
@@ -292,7 +296,7 @@ LPCSTR CGameMtlLibrary::MtlPairToName		(int mtl0, int mtl1)
     string256 buf0, buf1;
     strcpy			(buf0,*M0->m_Name);	_ChangeSymbol	(buf0,'\\','/');
     strcpy			(buf1,*M1->m_Name);	_ChangeSymbol	(buf1,'\\','/');
-    sprintf			(buf,"%s\\%s",buf0,buf1);
+    sprintf			(buf,"%s \\ %s",buf0,buf1);
     return buf;
 }
 void CGameMtlLibrary::NameToMtlPair			(LPCSTR name, int& mtl0, int& mtl1)
