@@ -15,11 +15,15 @@
 #include "UIDragDropItem.h"
 #include "UIDragDropList.h"
 
+void WpnDrawIndex(CUIDragDropItem *pDDItem);
+
+
 class CUIBuyWeaponWnd;
 
 class CUIDragDropItemMP: public CUIDragDropItem
 {
 	friend class CUIBuyWeaponWnd;
+	friend class CUIBag;
 
 	typedef CUIDragDropItem inherited;
 	// возможность хранения номера слота
@@ -35,6 +39,8 @@ class CUIDragDropItemMP: public CUIDragDropItem
 	CUIDragDropList *m_pOwner;
 	// Игровая стоимость вещи
 	int				cost;
+
+	bool			m_bIsInfinite;
 public:
 	CUIDragDropItemMP():	slotNum						(0),
 							sectionNum					(0),

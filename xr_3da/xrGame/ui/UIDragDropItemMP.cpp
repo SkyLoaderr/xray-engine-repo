@@ -10,6 +10,8 @@
 #include "stdafx.h"
 #include "UIDragDropItemMP.h"
 #include "UIBuyWeaponWnd.h"
+#include "../MainUI.h"
+#include "../HUDManager.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -18,8 +20,7 @@ void CUIDragDropItemMP::AttachDetachAddon(AddonIDs iAddonIndex, bool bAttach, bo
 	R_ASSERT(iAddonIndex >= 0 && iAddonIndex < 3);
 	if (m_AddonInfo[iAddonIndex].iAttachStatus != -1)
 	{
-		// отнимаем от денег стоимость вещи.
-		CUIBuyWeaponWnd *this_inventory = smart_cast<CUIBuyWeaponWnd*>(GetOwner()->GetMessageTarget());
+		CUIBag *this_inventory = smart_cast<CUIBag*>(GetOwner()->GetMessageTarget());
 		R_ASSERT(this_inventory);
 
 		CUIDragDropItemMP *pPossibleAddon = this_inventory->GetAddonByID(this, iAddonIndex);
@@ -34,7 +35,7 @@ void CUIDragDropItemMP::AttachDetachAddon(CUIDragDropItemMP *pPossibleAddon, boo
 	AddonIDs ID = IsOurAddon(pPossibleAddon);
 	if (ID != ID_NONE)
 	{
-		CUIBuyWeaponWnd *this_inventory = smart_cast<CUIBuyWeaponWnd*>(GetOwner()->GetMessageTarget());
+		CUIBuyWeaponWnd *this_inventory = smart_cast<CUIBuyWeaponWnd*>(GetOwner()->GetMessageTarget()->GetParent());
 		R_ASSERT(this_inventory);
 
 		if (bAttach)
@@ -79,7 +80,7 @@ void CUIDragDropItemMP::AttachDetachAddon(CUIDragDropItemMP *pPossibleAddon, boo
 				m_pAddon[ID] = NULL;
 			}
 		}
-		this_inventory->CheckBuyAvailabilityInShop();
+//		this_inventory->CheckBuyAvailabilityInShop();
 	}
 
 	m_AddonInfo[ID].iAttachStatus = bAttach ? 1 : 0;
@@ -194,4 +195,21 @@ void CUIDragDropItemMP::SetSlot(int slot)
 {
 	R_ASSERT(slot < MP_SLOTS_NUM || slot == static_cast<u32>(-1) || slot == WEAPON_BOXES_SLOT);
 	slotNum = slot; 
+}
+
+void WpnDrawIndex(CUIDragDropItem *pDDItem)
+{
+	CUIDragDropItemMP *pDDItemMP = smart_cast<CUIDragDropItemMP*>(pDDItem);
+	R_ASSERT(pDDItemMP);
+	if (!pDDItemMP) return;
+
+	int left	= pDDItemMP->GetUIStaticItem().GetPosX();
+	int bottom	= pDDItemMP->GetUIStaticItem().GetPosY() + pDDItemMP->GetUIStaticItem().GetRect().height();
+
+	pDDItemMP->GetFont()->SetColor(0xffffffff);
+	UI()->OutText(pDDItem->GetFont(), pDDItemMP->GetSelfClipRect(), float(left), 
+		float(bottom - pDDItemMP->GetFont()->CurrentHeight()),
+		"%d", pDDItemMP->GetPosInSectionsGroup() + 1);
+
+	pDDItemMP->GetFont()->OnRender();
 }
