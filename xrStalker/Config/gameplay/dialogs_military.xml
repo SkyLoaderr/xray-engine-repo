@@ -513,42 +513,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="mil_cook_drink_for_rg6_2">
-        <precondition>dialogs_military.have_a_vodka</precondition>
-        <has_info>mil_freedom_cook_drink_1</has_info>
-        <dont_has_info>mil_freedom_cook_drink_2</dont_has_info>
-        <phrase_list>
-            <phrase id="3">
-                <text>mil_cook_drink_for_rg6_2_3</text>
-                <next>4</next>
-            </phrase>
-            <phrase id="4">
-                <text>mil_cook_drink_for_rg6_2_4</text>
-                <next>5</next>
-            </phrase>
-            <phrase id="5">
-                <text>mil_cook_drink_for_rg6_2_5</text>
-                <next>6</next>
-            </phrase>
-            <phrase id="2">
-                <text>mil_cook_drink_for_rg6_2_2</text>
-                <next>3</next>
-            </phrase>
-            <phrase id="0">
-                <text>mil_cook_drink_for_rg6_2_0</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="6">
-                <text>mil_cook_drink_for_rg6_2_6</text>
-                <action>dialogs_military.transfer_vodka</action>
-                <give_info>mil_freedom_cook_drink_2</give_info>
-            </phrase>
-            <phrase id="1">
-                <text>mil_cook_drink_for_rg6_2_1</text>
-                <next>2</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="mil_cook_common2">
         <precondition>dialogs.dialog_allowed</precondition>
         <dont_has_info>mil_cook_dialog2</dont_has_info>
@@ -795,60 +759,6 @@
                 <text>mil_cook_common5_504</text>
                 <give_info>mil_cook_dialog5</give_info>
                 <next>505</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="mil_cook_common1">
-        <precondition>dialogs.dialog_allowed</precondition>
-        <dont_has_info>mil_cook_dialog1</dont_has_info>
-        <phrase_list>
-            <phrase id="103">
-                <text>mil_cook_common1_103</text>
-                <next>104</next>
-            </phrase>
-            <phrase id="104">
-                <text>mil_cook_common1_104</text>
-                <next>105</next>
-            </phrase>
-            <phrase id="105">
-                <text>mil_cook_common1_105</text>
-                <next>106</next>
-            </phrase>
-            <phrase id="106">
-                <text>mil_cook_common1_106</text>
-                <next>107</next>
-            </phrase>
-            <phrase id="107">
-                <text>mil_cook_common1_107</text>
-                <next>108</next>
-            </phrase>
-            <phrase id="108">
-                <text>mil_cook_common1_108</text>
-                <next>109</next>
-            </phrase>
-            <phrase id="109">
-                <text>mil_cook_common1_109</text>
-                <next>110</next>
-            </phrase>
-            <phrase id="111">
-                <text>mil_cook_common1_111</text>
-            </phrase>
-            <phrase id="0">
-                <text>mil_cook_common1_0</text>
-                <next>101</next>
-            </phrase>
-            <phrase id="101">
-                <text>mil_cook_common1_101</text>
-                <next>102</next>
-            </phrase>
-            <phrase id="102">
-                <text>mil_cook_common1_102</text>
-                <next>103</next>
-            </phrase>
-            <phrase id="110">
-                <text>mil_cook_common1_110</text>
-                <give_info>mil_cook_dialog1</give_info>
-                <next>111</next>
             </phrase>
         </phrase_list>
     </dialog>
@@ -1114,35 +1024,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="mil_bodyguard_dialog">
-        <phrase_list>
-            <phrase id="1">
-                <text>mil_bodyguard_dialog_1</text>
-                <next>2</next>
-                <next>3</next>
-            </phrase>
-            <phrase id="5">
-                <text>mil_bodyguard_dialog_5</text>
-            </phrase>
-            <phrase id="4">
-                <text>mil_bodyguard_dialog_4</text>
-            </phrase>
-            <phrase id="3">
-                <text>mil_bodyguard_dialog_3</text>
-                <precondition>dialogs_military.actor_dont_has_weapon</precondition>
-                <next>4</next>
-            </phrase>
-            <phrase id="2">
-                <text>mil_bodyguard_dialog_2</text>
-                <precondition>dialogs_military.actor_has_weapon</precondition>
-                <next>5</next>
-            </phrase>
-            <phrase id="0">
-                <text>mil_bodyguard_dialog_0</text>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="mil_max_dialog">
         <phrase_list>
             <phrase id="4101">
@@ -1204,7 +1085,7 @@
                 <text>mil_max_dialog_8003</text>
             </phrase>
             <phrase id="1000">
-                <text></text>
+                <text />
                 <dont_has_info>mil_leader_attach_community</dont_has_info>
                 <dont_has_info>mil_leader_quest1_complete</dont_has_info>
                 <give_info>mil_max_arrive</give_info>
@@ -1215,27 +1096,27 @@
                 <text>mil_max_dialog_9001</text>
             </phrase>
             <phrase id="6000">
-                <text></text>
+                <text />
                 <dont_has_info>mil_max_flash_get</dont_has_info>
                 <has_info>mil_max_job</has_info>
                 <next>6001</next>
             </phrase>
             <phrase id="4000">
-                <text></text>
+                <text />
                 <dont_has_info>mil_max_job</dont_has_info>
                 <dont_has_info>mil_max_job_complete</dont_has_info>
                 <has_info>mil_leader_attach_community</has_info>
                 <next>4001</next>
             </phrase>
             <phrase id="9000">
-                <text></text>
+                <text />
                 <dont_has_info>mil_leader_attach_community</dont_has_info>
                 <has_info>mil_leader_quest2_start</has_info>
                 <has_info>mil_leader_quest2_complete</has_info>
                 <next>9001</next>
             </phrase>
             <phrase id="5000">
-                <text></text>
+                <text />
                 <dont_has_info>mil_max_job_complete</dont_has_info>
                 <has_info>mil_max_flash_get</has_info>
                 <has_info>mil_max_job</has_info>
@@ -1245,7 +1126,7 @@
                 <text>mil_max_dialog_6001</text>
             </phrase>
             <phrase id="7000">
-                <text></text>
+                <text />
                 <has_info>mil_max_job_complete</has_info>
                 <next>7001</next>
             </phrase>
@@ -1253,7 +1134,7 @@
                 <text>mil_max_dialog_7001</text>
             </phrase>
             <phrase id="8000">
-                <text></text>
+                <text />
                 <dont_has_info>mil_leader_quest1_start</dont_has_info>
                 <dont_has_info>mil_leader_quest2_start</dont_has_info>
                 <next>8001</next>
@@ -1290,14 +1171,14 @@
                 <next>4201</next>
             </phrase>
             <phrase id="2000">
-                <text></text>
+                <text />
                 <dont_has_info>mil_leader_quest2_start</dont_has_info>
                 <dont_has_info>mil_leader_attach_community</dont_has_info>
                 <has_info>mil_leader_quest1_complete</has_info>
                 <next>2001</next>
             </phrase>
             <phrase id="3000">
-                <text></text>
+                <text />
                 <dont_has_info>mil_leader_quest2_complete</dont_has_info>
                 <dont_has_info>mil_leader_attach_community</dont_has_info>
                 <has_info>mil_leader_quest2_start</has_info>
@@ -1359,7 +1240,7 @@
                 <next>3002</next>
             </phrase>
             <phrase id="0">
-                <text></text>
+                <text />
                 <next>1000</next>
                 <next>2000</next>
                 <next>3000</next>
@@ -1386,6 +1267,125 @@
             <phrase id="1220">
                 <text>mil_max_dialog_1220</text>
                 <next>1101</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="mil_bodyguard_dialog">
+        <phrase_list>
+            <phrase id="1">
+                <text>mil_bodyguard_dialog_1</text>
+                <next>2</next>
+                <next>3</next>
+            </phrase>
+            <phrase id="5">
+                <text>mil_bodyguard_dialog_5</text>
+            </phrase>
+            <phrase id="4">
+                <text>mil_bodyguard_dialog_4</text>
+            </phrase>
+            <phrase id="3">
+                <text>mil_bodyguard_dialog_3</text>
+                <precondition>dialogs_military.actor_dont_has_weapon</precondition>
+                <next>4</next>
+            </phrase>
+            <phrase id="2">
+                <text>mil_bodyguard_dialog_2</text>
+                <precondition>dialogs_military.actor_has_weapon</precondition>
+                <next>5</next>
+            </phrase>
+            <phrase id="0">
+                <text>mil_bodyguard_dialog_0</text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="mil_cook_drink_for_rg6_2">
+        <precondition>dialogs_military.have_a_vodka</precondition>
+        <has_info>mil_freedom_cook_drink_1</has_info>
+        <dont_has_info>mil_freedom_cook_drink_2</dont_has_info>
+        <phrase_list>
+            <phrase id="3">
+                <text>mil_cook_drink_for_rg6_2_3</text>
+                <next>4</next>
+            </phrase>
+            <phrase id="4">
+                <text>mil_cook_drink_for_rg6_2_4</text>
+                <next>5</next>
+            </phrase>
+            <phrase id="5">
+                <text>mil_cook_drink_for_rg6_2_5</text>
+                <next>6</next>
+            </phrase>
+            <phrase id="2">
+                <text>mil_cook_drink_for_rg6_2_2</text>
+                <next>3</next>
+            </phrase>
+            <phrase id="6">
+                <text>mil_cook_drink_for_rg6_2_6</text>
+                <action>dialogs_military.transfer_vodka</action>
+                <give_info>mil_freedom_cook_drink_2</give_info>
+            </phrase>
+            <phrase id="1">
+                <text>mil_cook_drink_for_rg6_2_1</text>
+                <next>2</next>
+            </phrase>
+            <phrase id="0">
+                <text>mil_cook_drink_for_rg6_2_0</text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="mil_cook_common1">
+        <precondition>dialogs.dialog_allowed</precondition>
+        <dont_has_info>mil_cook_dialog1</dont_has_info>
+        <phrase_list>
+            <phrase id="103">
+                <text>mil_cook_common1_103</text>
+                <next>104</next>
+            </phrase>
+            <phrase id="104">
+                <text>mil_cook_common1_104</text>
+                <next>105</next>
+            </phrase>
+            <phrase id="105">
+                <text>mil_cook_common1_105</text>
+                <next>106</next>
+            </phrase>
+            <phrase id="106">
+                <text>mil_cook_common1_106</text>
+                <next>107</next>
+            </phrase>
+            <phrase id="107">
+                <text>mil_cook_common1_107</text>
+                <next>108</next>
+            </phrase>
+            <phrase id="108">
+                <text>mil_cook_common1_108</text>
+                <next>109</next>
+            </phrase>
+            <phrase id="109">
+                <text>mil_cook_common1_109</text>
+                <next>110</next>
+            </phrase>
+            <phrase id="111">
+                <text>mil_cook_common1_111</text>
+            </phrase>
+            <phrase id="101">
+                <text>mil_cook_common1_101</text>
+                <next>102</next>
+            </phrase>
+            <phrase id="102">
+                <text>mil_cook_common1_102</text>
+                <next>103</next>
+            </phrase>
+            <phrase id="110">
+                <text>mil_cook_common1_110</text>
+                <give_info>mil_cook_dialog1</give_info>
+                <next>111</next>
+            </phrase>
+            <phrase id="0">
+                <text>mil_cook_common1_0</text>
+                <next>101</next>
             </phrase>
         </phrase_list>
     </dialog>
