@@ -88,7 +88,7 @@ struct OGF_Base
 		// get geometry
 		vector<Fvector>				V;
 		vector<Fvector>::iterator	I;
-		V.reserve					(1024);
+		V.reserve					(4096);
 		GetGeometry					(V);
 		FPU::m64					();
 
@@ -181,7 +181,7 @@ struct OGF_Node : public OGF_Base
 
 	OGF_Node(int _L, WORD _Sector) : OGF_Base(_L) { Sector=_Sector; }
 
-	void				AddChield(DWORD ID)
+	void				AddChield	(DWORD ID)
 	{
 		chields.push_back	(ID);
 		OGF_Base*			P = g_tree[ID];
