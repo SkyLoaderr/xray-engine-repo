@@ -191,8 +191,8 @@ xr_token game_types[]={
 
 void CSE_Abstract::FillProp					(LPCSTR pref, PropItemVec& items)
 {
-	PHelper().CreateToken8		(items,	PHelper().PrepareKey1(pref,"Game Type"),			&s_gameid,		game_types);
-    PHelper().CreateU16			(items,	PHelper().PrepareKey1(pref, "Respawn Time (s)"),	&RespawnTime,	0,43200);
+	PHelper().CreateToken8		(items,	PrepareKey(pref,"Game Type"),			&s_gameid,		game_types);
+    PHelper().CreateU16			(items,	PrepareKey(pref, "Respawn Time (s)"),	&RespawnTime,	0,43200);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -406,8 +406,8 @@ void CSE_Target_CS_Base::UPDATE_Write		(NET_Packet	&tNetPacket)
 void CSE_Target_CS_Base::FillProp			(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref,items);
-    PHelper().CreateFloat		(items,PHelper().PrepareKey2(pref,s_name,"Radius"),	&radius,1.f,100.f);
-    PHelper().CreateU8			(items,PHelper().PrepareKey2(pref,s_name,"Team"),		&s_team,0,1);
+    PHelper().CreateFloat		(items,PrepareKey(pref,s_name,"Radius"),	&radius,1.f,100.f);
+    PHelper().CreateU8			(items,PrepareKey(pref,s_name,"Team"),		&s_team,0,1);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -441,7 +441,7 @@ void CSE_Target_CS_Cask::STATE_Write		(NET_Packet	&tNetPacket)
 
 void CSE_Target_CS_Cask::FillProp			(LPCSTR pref, PropItemVec& items)
 {
-	PHelper().CreateChoose		(items, PHelper().PrepareKey2(pref,s_name,"Model"),	&s_Model,	smGameObject);
+	PHelper().CreateChoose		(items, PrepareKey(pref,s_name,"Model"),	&s_Model,	smGameObject);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -475,7 +475,7 @@ void CSE_Target_CS::STATE_Write				(NET_Packet	&tNetPacket)
 
 void CSE_Target_CS::FillProp				(LPCSTR pref, PropItemVec& items)
 {
-	PHelper().CreateChoose		(items, PHelper().PrepareKey2(pref,s_name,"Model"),	&s_Model,	smGameObject);
+	PHelper().CreateChoose		(items, PrepareKey(pref,s_name,"Model"),	&s_Model,	smGameObject);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -546,7 +546,7 @@ void CSE_SpawnGroup::UPDATE_Write			(NET_Packet	&tNetPacket)
 void CSE_SpawnGroup::FillProp				(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp				(pref,values);
-	PHelper().CreateFloat			(values,PHelper().PrepareKey2(pref,s_name,"ALife\\Group probability"),	&m_fGroupProbability,0.f,1.f);
+	PHelper().CreateFloat			(values,PrepareKey(pref,s_name,"ALife\\Group probability"),	&m_fGroupProbability,0.f,1.f);
 };
 
 ////////////////////////////////////////////////////////////////////////////

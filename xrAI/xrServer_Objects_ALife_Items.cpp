@@ -147,10 +147,10 @@ void CSE_ALifeInventoryItem::UPDATE_Read	(NET_Packet &tNetPacket)
 
 void CSE_ALifeInventoryItem::FillProp		(LPCSTR pref, PropItemVec& values)
 {
-	PHelper().CreateFloat			(values, PHelper().PrepareKey2(pref, base()->s_name, "Item condition"), 		&m_fCondition, 			0.f, 1.f);
+	PHelper().CreateFloat			(values, PrepareKey(pref, base()->s_name, "Item condition"), 		&m_fCondition, 			0.f, 1.f);
 	CSE_ALifeObject					*alife_object = dynamic_cast<CSE_ALifeObject*>(base());
 	R_ASSERT						(alife_object);
-	PHelper().CreateFlag32			(values, PHelper().PrepareKey2(pref, base()->s_name,"ALife\\Useful for AI"),	&alife_object->m_flags,	CSE_ALifeObject::flUsefulForAI);
+	PHelper().CreateFlag32			(values, PrepareKey(pref, base()->s_name,"ALife\\Useful for AI"),	&alife_object->m_flags,	CSE_ALifeObject::flUsefulForAI);
 }
 
 bool CSE_ALifeInventoryItem::bfUseful		()
@@ -434,18 +434,18 @@ u16	 CSE_ALifeItemWeapon::get_ammo_magsize	()
 void CSE_ALifeItemWeapon::FillProp			(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref, items);
-	PHelper().CreateU8			(items,PHelper().PrepareKey2(pref,s_name,"Ammo type:"), &ammo_type,0,255,1);
-	PHelper().CreateU16			(items,PHelper().PrepareKey2(pref,s_name,"Ammo: in magazine"),	&a_elapsed,0,30,1);
+	PHelper().CreateU8			(items,PrepareKey(pref,s_name,"Ammo type:"), &ammo_type,0,255,1);
+	PHelper().CreateU16			(items,PrepareKey(pref,s_name,"Ammo: in magazine"),	&a_elapsed,0,30,1);
 	
 
 	if ((EWeaponAddonStatus)pSettings->r_s32(s_name,"scope_status") == eAddonAttachable)
-	       PHelper().CreateFlag8(items,PHelper().PrepareKey2(pref,s_name,"Addons\\Scope"), 	&m_addon_flags, eWeaponAddonScope);
+	       PHelper().CreateFlag8(items,PrepareKey(pref,s_name,"Addons\\Scope"), 	&m_addon_flags, eWeaponAddonScope);
 
 	if ((EWeaponAddonStatus)pSettings->r_s32(s_name,"silencer_status") == eAddonAttachable)
-        PHelper().CreateFlag8	(items,PHelper().PrepareKey2(pref,s_name,"Addons\\Silencer"), 	&m_addon_flags, eWeaponAddonSilencer);
+        PHelper().CreateFlag8	(items,PrepareKey(pref,s_name,"Addons\\Silencer"), 	&m_addon_flags, eWeaponAddonSilencer);
 
 	if ((EWeaponAddonStatus)pSettings->r_s32(s_name,"grenade_launcher_status") == eAddonAttachable)
-        PHelper().CreateFlag8	(items,PHelper().PrepareKey2(pref,s_name,"Addons\\Podstvolnik"),&m_addon_flags,eWeaponAddonGrenadeLauncher);
+        PHelper().CreateFlag8	(items,PrepareKey(pref,s_name,"Addons\\Podstvolnik"),&m_addon_flags,eWeaponAddonGrenadeLauncher);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -490,7 +490,7 @@ void CSE_ALifeItemAmmo::UPDATE_Write		(NET_Packet	&tNetPacket)
 
 void CSE_ALifeItemAmmo::FillProp			(LPCSTR pref, PropItemVec& values) {
   	inherited::FillProp			(pref,values);
-	PHelper().CreateU16			(values, PHelper().PrepareKey2(pref, s_name, "Ammo: left"), &a_elapsed, 0, m_boxSize, m_boxSize);
+	PHelper().CreateU16			(values, PrepareKey(pref, s_name, "Ammo: left"), &a_elapsed, 0, m_boxSize, m_boxSize);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -565,7 +565,7 @@ void CSE_ALifeItemArtefact::UPDATE_Write	(NET_Packet	&tNetPacket)
 void CSE_ALifeItemArtefact::FillProp		(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref,items);
-	PHelper().CreateFloat			(items, PHelper().PrepareKey2(pref, s_name, "Anomaly value:"), &m_fAnomalyValue, 0.f, 200.f);
+	PHelper().CreateFloat			(items, PrepareKey(pref, s_name, "Anomaly value:"), &m_fAnomalyValue, 0.f, 200.f);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -646,7 +646,7 @@ void CSE_ALifeItemDocument::UPDATE_Write	(NET_Packet	&tNetPacket)
 void CSE_ALifeItemDocument::FillProp		(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref,items);
-	PHelper().CreateU16			(items, PHelper().PrepareKey2(pref, s_name, "Document index :"), &m_wDocIndex, 0, 65535);
+	PHelper().CreateU16			(items, PrepareKey(pref, s_name, "Document index :"), &m_wDocIndex, 0, 65535);
 }
 
 ////////////////////////////////////////////////////////////////////////////
