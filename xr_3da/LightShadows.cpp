@@ -10,6 +10,7 @@
 #include "xr_creator.h"
 
 const	float	S_distance	= 32;
+const	float	S_distance2	= S_distance*S_distance;
 const	float	S_level		= .1f;
 const	int		S_size		= 32;
 const	int		S_rt_size	= 512;
@@ -123,9 +124,11 @@ IC float PLC_energy	(Fvector& P, Fvector& N, xrLIGHT* L, float E)
 	}
 }
 
-IC int PLC_calc	(Fvector& P, Fvector& N, xrLIGHT* L, float E)
+IC int PLC_calc	(Fvector& P, Fvector& N, xrLIGHT* L, float energy)
 {
-	float	A		= 1.f-.5f*PLC_energy(P,N,L,E);
+	float	E		= PLC_energy(P,N,L,energy);
+	float	C		= Device.vCameraPosition.distance_to_sqr(P)/S_distance2;
+	float	A		= 1.f-.5f*E*(1.f-C);
 	return			iCeil(255.f*A);
 }
 
