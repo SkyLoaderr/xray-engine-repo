@@ -13,7 +13,7 @@
 #include "ai_script_actions.h"
 #include "luabind/return_reference_to_policy.hpp"
 #include "luabind/out_value_policy.hpp"
-//#include "luabind/adopt_policy.hpp"
+#include "luabind/adopt_policy.hpp"
 //#include "luabind/dependency_policy.hpp"
 //#include "luabind/discard_result_policy.hpp"
 //#include "luabind/iterator_policy.hpp"
@@ -637,7 +637,7 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("id",							&CLuaGameObject::ID)
 			.def("section",						&CLuaGameObject::Section)
 			.def("name",						&CLuaGameObject::Name)
-			.def("parent",						&CLuaGameObject::Parent)
+			.def("parent",						&CLuaGameObject::Parent, adopt(return_value))
 			.def("mass",						&CLuaGameObject::Mass)
 			.def("cost",						&CLuaGameObject::Cost)
 			.def("death_time",					&CLuaGameObject::DeathTime)
@@ -670,8 +670,9 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("command",						CLuaGameObject::AddAction)
 			.def("action",						&CLuaGameObject::GetCurrentAction)
 			.def("object_count",				&CLuaGameObject::GetInventoryObjectCount)
-			.def("object",						(CLuaGameObject *(CLuaGameObject::*)(LPCSTR))(CLuaGameObject::GetObjectByName))
-			.def("object",						(CLuaGameObject *(CLuaGameObject::*)(int))(CLuaGameObject::GetObjectByIndex))
+			.def("object",						(CLuaGameObject *(CLuaGameObject::*)(LPCSTR))(CLuaGameObject::GetObjectByName), adopt(return_value))
+			.def("object",						(CLuaGameObject *(CLuaGameObject::*)(int))(CLuaGameObject::GetObjectByIndex), adopt(return_value))
+			.def("active_item",					&CLuaGameObject::GetActiveItem, adopt(return_value))
 			.def("set_callback",				(void (CLuaGameObject::*)(const luabind::functor<void> &, bool))(CLuaGameObject::SetCallback))
 			.def("set_callback",				(void (CLuaGameObject::*)(const luabind::object &, LPCSTR, const CScriptMonster::EActionType))(CLuaGameObject::SetCallback))
 			.def("set_callback",				(void (CLuaGameObject::*)(const luabind::functor<void> &, const CScriptMonster::EActionType))(CLuaGameObject::SetCallback))

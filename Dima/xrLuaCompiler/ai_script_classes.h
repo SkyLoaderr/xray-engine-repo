@@ -507,6 +507,20 @@ public:
 		}
 	}
 
+	IC		CLuaGameObject	*GetActiveItem()
+	{
+		CInventoryOwner		*l_tpInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+		if (l_tpInventoryOwner)
+			if (l_tpInventoryOwner->m_inventory.ActiveItem())
+				return		(xr_new<CLuaGameObject>(l_tpInventoryOwner->m_inventory.ActiveItem()));
+			else
+				return		(0);
+		else {
+			LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member activge_item!");
+			return			(0);
+		}
+	}
+
 	IC		CLuaGameObject	*GetObjectByName	(LPCSTR caObjectName) const
 	{
 		CInventoryOwner		*l_tpInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
