@@ -27,7 +27,7 @@ bool CAI_Zombie::bfCheckForVisibility(CEntity* tpEntity)
 	float fAlpha = tWatchDirection.dotproduct(tTemp), fEyeFov = eye_fov*PI/180.f;
 	clamp(fAlpha,-.99999f,+.99999f);
 	fAlpha = acosf(fAlpha);
-	float fMaxViewableDistanceInDirection = eye_range*(1 - fAlpha/(fEyeFov/m_fLateralMutliplier));
+	float fMaxViewableDistanceInDirection = eye_range*(1 - fAlpha/(fEyeFov/m_fLateralMultiplier));
 	
 	// computing distance weight
 	tTemp.sub(vPosition,tpEntity->Position());
@@ -44,21 +44,21 @@ bool CAI_Zombie::bfCheckForVisibility(CEntity* tpEntity)
 	}
 	
 	// computing lightness weight
-	fResult *= 2*float(0 + tpEntity->AI_Node->light)/(0 + 255.f);
+	fResult *= m_fShadowWeight*float(tpEntity->AI_Node->light)/255.f;
 	
 	// computing enemy state
 	switch (m_cBodyState) {
-	case BODY_STATE_STAND : {
-		break;
-							}
-	case BODY_STATE_CROUCH : {
-		fResult *= m_fCrouchVisibilityMultiplier;
-		break;
-							 }
-	case BODY_STATE_LIE : {
-		fResult *= m_fLieVisibilityMultiplier;
-		break;
-						  }
+		case BODY_STATE_STAND : {
+			break;
+		}
+		case BODY_STATE_CROUCH : {
+			fResult *= m_fCrouchVisibilityMultiplier;
+			break;
+		}
+		case BODY_STATE_LIE : {
+			fResult *= m_fLieVisibilityMultiplier;
+			break;
+		}
 	}
 	
 	// computing my ability to view the enemy

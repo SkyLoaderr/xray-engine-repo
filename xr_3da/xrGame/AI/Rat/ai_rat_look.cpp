@@ -27,7 +27,7 @@ bool CAI_Rat::bfCheckForVisibility(CEntity* tpEntity)
 	float fAlpha = tWatchDirection.dotproduct(tTemp), fEyeFov = eye_fov*PI/180.f;
 	clamp(fAlpha,-.99999f,+.99999f);
 	fAlpha = acosf(fAlpha);
-	float fMaxViewableDistanceInDirection = eye_range*(1 - fAlpha/(fEyeFov/m_fLateralMutliplier));
+	float fMaxViewableDistanceInDirection = eye_range*(1 - fAlpha/(fEyeFov/m_fLateralMultiplier));
 	
 	// computing distance weight
 	tTemp.sub(vPosition,tpEntity->Position());

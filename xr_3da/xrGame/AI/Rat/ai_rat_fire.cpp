@@ -170,7 +170,7 @@ void CAI_Rat::SelectEnemy(SEnemySelected& S)
 				// only for fitting light coefficients
 				// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 				if (g_Squad() == SPECIAL_SQUAD) {
-					bool bB = true;//bfCheckForVisibility(E);
+					bool bB = bfCheckForVisibility(E);
 					CActor *tpActor = dynamic_cast<CActor *>(E);
 					if (tpActor) {
 						Level().HUD()->outMessage(0xffffffff,cName(),bB ? "I see you" : "I don't see you");

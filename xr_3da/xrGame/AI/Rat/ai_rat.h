@@ -138,7 +138,7 @@ class CAI_Rat : public CCustomMonster
 		float			m_fCrouchVisibilityMultiplier;
 		float			m_fLieVisibilityMultiplier;
 		float			m_fVisibilityThreshold;
-		float			m_fLateralMutliplier;
+		float			m_fLateralMultiplier;
 		float			m_fShadowWeight;
 		
 		float			m_fHitPower;
