@@ -9,7 +9,7 @@ CMemoryStream::~CMemoryStream()
 	_FREE(data);	
 }
 
-void CMemoryStream::write(const void* ptr, DWORD count)
+void CMemoryStream::write(const void* ptr, u32 count)
 {
 	if (position+count > mem_size) {
 		// reallocate

@@ -50,6 +50,7 @@ __published:	// IDE-managed Components
 	TLabel *RxLabel3;
 	TLabel *lbVertices;
 	TBevel *Bevel4;
+	TExtBtn *ebMakeLWO;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebCancelClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
@@ -70,6 +71,7 @@ __published:	// IDE-managed Components
 	void __fastcall ExtBtn1Click(TObject *Sender);
 	void __fastcall ebMakeLODClick(TObject *Sender);
 	void __fastcall FormActivate(TObject *Sender);
+	void __fastcall ebMakeLWOClick(TObject *Sender);
 private:	// User declarations
     void InitObjects();
     EImageThumbnail* 		m_Thm;

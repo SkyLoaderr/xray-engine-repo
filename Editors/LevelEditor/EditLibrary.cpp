@@ -222,8 +222,8 @@ void __fastcall TfrmEditLibrary::tvObjectsItemFocused(TObject *Sender)
     }
     UpdateObjectProperties();
     UI.RedrawScene();
-    ebMakeThm->Enabled = mt;
-    ebMakeLOD->Enabled = mt;
+    ebMakeThm->Enabled	= mt;
+    ebMakeLOD->Enabled	= mt;
 }
 
 //---------------------------------------------------------------------------
@@ -451,6 +451,33 @@ void __fastcall TfrmEditLibrary::ebExportHOMClick(TObject *Sender)
     }
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TfrmEditLibrary::ebMakeLWOClick(TObject *Sender)
+{
+    TElTreeItem* node = tvObjects->Selected;
+    if (node&&FOLDER::IsObject(node)){
+    	AnsiString name; FOLDER::MakeName(node,0,name,false);
+        AnsiString save_nm;
+        if (Engine.FS.GetSaveName(Engine.FS.m_Import,save_nm,0,3)){
+            int age;
+            CEditableObject* obj = Lib.CreateEditObject(name.c_str(),&age);
+            if (obj){
+                if (!obj->ExportLWO(save_nm.c_str())){
+                    ELog.DlgMsg(mtInformation, "Can't export object '%s'.", obj->GetName());
+                }else{
+					ELog.DlgMsg(mtInformation, "Export complete.");
+                }
+            }else{
+            	ELog.DlgMsg(mtError,"Can't load object.");
+        	}
+			Lib.RemoveEditObject(obj);
+	    }
+    }else{
+        ELog.DlgMsg(mtInformation, "Select object to export.");
+    }
+}
+
+//---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
 {
     AnsiString open_nm, save_nm, nm;
@@ -581,5 +608,7 @@ void __fastcall TfrmEditLibrary::FormActivate(TObject *Sender)
 	tvObjects->SetFocus();
 }
 //---------------------------------------------------------------------------
+
+
 
 
