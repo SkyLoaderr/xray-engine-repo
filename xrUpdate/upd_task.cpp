@@ -8,9 +8,14 @@ void SaveStringWithBrackets(CInifile& ini, LPCSTR section, LPCSTR name, shared_s
 	strconcat(buff,"\"",*str,"\"");
 	ini.w_string(section, name, buff);
 }
+struct SS{int a; float b;};
+typedef SS nnn[6];
+typedef xr_vector<nnn>  dddd;
+dddd m_d;
 
 ETaskType strToType(LPCSTR str)
 {
+dddd* m_ddd = xr_new<dddd>();
 	string32 s;
 	strcpy(s,str);
 	if(0==strcmp(xr_strlwr(s),"copy_files"))
