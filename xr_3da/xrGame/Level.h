@@ -283,6 +283,8 @@ public:
 		if (!Server) return true;
 		return (Server->client_Count() == 0);
 	};
+
+	void				spawn_item	(LPCSTR section, const Fvector &position, u32 level_vertex_id, u16 parent_id);
 };
 
 IC CLevel&				Level()		{ return *((CLevel*) g_pGameLevel);			}

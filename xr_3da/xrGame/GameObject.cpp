@@ -190,15 +190,15 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 #pragma warning(pop)
 	}
 
-	reload							(*cNameSect());
-	reinit							();
-
 	setDestroy						(FALSE);	// @@@ WT
 
 	// Net params
 	setLocal						(E->s_flags.is(M_SPAWN_OBJECT_LOCAL));
 	setReady						(TRUE);
 	g_pGameLevel->Objects.net_Register	(this);
+
+	reload						(*cNameSect());
+	reinit						();
 
 	// if we have a parent
 	if (0xffff != E->ID_Parent) {
@@ -235,7 +235,36 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	m_bObjectRemoved = false;
 
 	create_physic_shell			();
+
+	spawn_supplies				();
+
 	return						(TRUE);
+}
+
+void CGameObject::spawn_supplies()
+{
+	if (!spawn_ini())
+		return;
+
+	LPCSTR					items = spawn_ini()->r_string("spawn","items");
+	string64				item_section,item_count;
+	u32						n = _GetItemCount(items);
+	for (u32 i=0; i<n; ++i) {
+		_GetItem			(items,i,item_section);
+		VERIFY				(xr_strlen(item_section));
+		u32					count = 1;
+		if (i + 1 < n) {
+			_GetItem		(items,i+1,item_count);
+			VERIFY			(xr_strlen(item_count));
+			int				value = atoi(item_count);
+			if (value) {
+				count		= value;
+				++i;
+			}
+		}
+		for (u32 j=0; j<count; ++j)
+			Level().spawn_item	(item_section,Position(),level_vertex_id(),ID());
+	}
 }
 
 void CGameObject::setup_parent_ai_locations(bool assign_position)

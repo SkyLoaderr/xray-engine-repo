@@ -164,7 +164,12 @@ public:
 		return				(m_script_clsid);
 	}
 protected:
-			bool	frame_check			(u32 &frame);
+			bool			frame_check			(u32 &frame);
+	IC		CInifile		*spawn_ini			()
+	{
+		return				(m_ini_file);
+	}
+			void			spawn_supplies		();
 };
 
 #endif // !defined(AFX_GAMEOBJECT_H__3DA72D03_C759_4688_AEBB_89FA812AA873__INCLUDED_)

@@ -27,6 +27,8 @@
 #include "ai_script_processor.h"
 #include "script_engine.h"
 #include "team_base_zone.h"
+#include "xrServer_Objects_ALife.h"
+#include "game_level_cross_table.h"
 
 CPHWorld*	ph_world = 0;
 
@@ -413,3 +415,32 @@ void				CLevel::SetNumCrSteps		( u32 NumSteps )
 	if (m_dwNumSteps > NumSteps) return;
 	m_dwNumSteps = NumSteps;
 };
+
+void CLevel::spawn_item		(LPCSTR section, const Fvector &position, u32 level_vertex_id, u16 parent_id)
+{
+	CSE_Abstract			*abstract = F_entity_Create(section);
+	R_ASSERT				(abstract);
+	CSE_ALifeDynamicObject	*dynamic_object = dynamic_cast<CSE_ALifeDynamicObject*>(abstract);
+	if (dynamic_object && ai().get_level_graph()) {
+		dynamic_object->m_tNodeID	= level_vertex_id;
+		if (ai().get_cross_table())
+			dynamic_object->m_tGraphID	= ai().cross_table().vertex(level_vertex_id).game_vertex_id();
+	}
+	
+	// Fill
+	strcpy					(abstract->s_name,section);
+	strcpy					(abstract->s_name_replace,section);
+	abstract->s_gameid		= u8(GameID());
+	abstract->s_RP			= 0xff;
+	abstract->ID			= 0xffff;
+	abstract->ID_Parent		= parent_id;
+	abstract->ID_Phantom	= 0xffff;
+	abstract->s_flags.set	(M_SPAWN_OBJECT_LOCAL);
+	abstract->RespawnTime	= 0;
+	
+	NET_Packet				P;
+	abstract->Spawn_Write	(P,TRUE);
+	Send					(P,net_flags(TRUE));
+	
+	F_entity_Destroy		(abstract);
+}
