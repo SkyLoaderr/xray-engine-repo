@@ -41,6 +41,7 @@ public:
 	// in-place 
 	CAniFVector	  <caInPlaceNames>						*m_tInPlace;
 					CStateAnimations	();
+					CStateAnimations	(const CStateAnimations &anims);
 	virtual			~CStateAnimations	();
 			void	Load				(CSkeletonAnimated *tpKinematics, LPCSTR caBaseName);
 };
