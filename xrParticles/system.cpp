@@ -705,6 +705,8 @@ PARTICLEDLL_API void pDeleteParticleGroups(int p_group_num, int p_group_count)
 	if(p_group_num < 0)
 		return; // ERROR
 
+	_ParticleState &_ps = _GetPState();
+
 	if(p_group_num + p_group_count > (int)_ps.group_vec.size())
 		return; // ERROR
 	
