@@ -451,7 +451,7 @@ void CActor::Update	(DWORD DT)
 		g_Orientate				(mstate_real,dt);
 		g_Physics				(NET_SavedAccel,Jump,dt);
 		Fvector C; float R;		Movement.GetBoundingSphere	(C,R);
-		g_sv_Feel_Neighbours	(C,R);
+		feel_touch_update		(C,R);
 		g_cl_ValidateMState		(mstate_wishful);
 		g_SetAnimation			(mstate_real);
 		// Level().HUD()->outMessage(0xffffffff,cName(),"%d",AI_NodeID);

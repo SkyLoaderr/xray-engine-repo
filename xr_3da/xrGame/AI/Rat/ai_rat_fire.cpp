@@ -151,7 +151,7 @@ void CAI_Rat::SelectEnemy(SEnemySelected& S)
 	}
 	
 	// Get visible list
-	ai_Track.o_get	(tpaVisibleObjects);
+	feel_vision_get	(tpaVisibleObjects);
 	std::sort		(tpaVisibleObjects.begin(),tpaVisibleObjects.end());
 	
 	INIT_SQUAD_AND_LEADER;

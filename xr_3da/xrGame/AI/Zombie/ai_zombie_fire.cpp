@@ -121,8 +121,8 @@ void CAI_Zombie::SelectEnemy(SEnemySelected& S)
 	if (Known.size()==0)	return;
 	
 	// Get visible list
-	ai_Track.o_get	(tpaVisibleObjects);
-	std::sort		(tpaVisibleObjects.begin(),tpaVisibleObjects.end());
+	feel_vision_get		(tpaVisibleObjects);
+	std::sort			(tpaVisibleObjects.begin(),tpaVisibleObjects.end());
 	
 	INIT_SQUAD_AND_LEADER;
 	CGroup &Group = Squad.Groups[g_Group()];

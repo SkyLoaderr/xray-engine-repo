@@ -143,7 +143,7 @@ void CAI_Hen::SelectEnemy(SEnemySelected& S)
 
 	// Get visible list
 	objSET		Visible;
-	ai_Track.o_get	(Visible);
+	feel_vision_get		(Visible);
 	std::sort			(Visible.begin(),Visible.end());
 
 	// Iterate on known

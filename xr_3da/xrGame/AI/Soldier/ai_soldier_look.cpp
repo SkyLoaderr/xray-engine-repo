@@ -228,7 +228,7 @@ Fvector tfGetDirection(CEntity *tpEntity)
 
 void CAI_Soldier::vfUpdateDynamicObjects()
 {
-	ai_Track.o_get(tpaVisibleObjects);
+	feel_vision_get(tpaVisibleObjects);
 	DWORD dwTime = m_dwCurrentUpdate;
 	for (int i=0; i<(int)tpaVisibleObjects.size(); i++) {
 		
