@@ -69,18 +69,6 @@ void  HUD_SOUND::LoadSound(LPCSTR section, LPCSTR line,
 		}
 		
 }
-void HUD_SOUND::set_position(const Fvector& pos) 
-{
-	if(m_activeSnd&&m_activeSnd->snd.feedback)
-		m_activeSnd->snd.set_position(pos);
-/*
-	xr_vector<SSnd>::iterator it = sounds.begin();
-	for(;it!=sounds.end();++it)
-		if( (*it).snd.feedback )
-			(*it).snd.set_position(pos);
-*/	
-}
-
 
 void HUD_SOUND::DestroySound	(HUD_SOUND& hud_snd)
 {

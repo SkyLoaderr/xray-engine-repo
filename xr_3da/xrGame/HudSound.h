@@ -35,7 +35,13 @@ struct HUD_SOUND
 	static void		StopSound	(HUD_SOUND& snd);
 
 
-	void set_position(const Fvector& pos);
+	ICF void		set_position(const Fvector& pos)
+	{
+		if(m_activeSnd)	{ 
+			if (m_activeSnd->snd.feedback)	m_activeSnd->snd.set_position	(pos);
+			else							m_activeSnd	= NULL;
+		}
+	}
 
 	struct SSnd{
 		ref_sound	snd;
