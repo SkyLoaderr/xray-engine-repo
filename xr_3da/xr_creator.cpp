@@ -142,11 +142,13 @@ BOOL CCreator::Load(DWORD dwNum)
 	return TRUE;
 }
 
-Shader* CCreator::LL_CreateShader(DWORD S, DWORD T)
+Shader* CCreator::LL_CreateShader(DWORD S, DWORD T, DWORD M, DWORD C)
 {
-	R_ASSERT(S<LL_shaders.size() );
-	R_ASSERT(T<LL_textures.size());
-	return Device.Shader.Create(LL_shaders[S],LL_textures[T]);
+	R_ASSERT(S<LL_strings.size() );
+	R_ASSERT(T<LL_strings.size() );
+	R_ASSERT(M<LL_strings.size() );
+	R_ASSERT(C<LL_strings.size() );
+	return Device.Shader.Create(LL_strings[S],LL_strings[T],LL_strings[M],LL_strings[C]);
 }
 
 void CCreator::OnRender() 

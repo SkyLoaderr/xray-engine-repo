@@ -70,7 +70,7 @@ public:
 	void						SetEntity				( CObject* O  ) { VERIFY(O); pCurrentEntity=pCurrentViewEntity=O; }
 
 	// Loader interface
-	Shader*						LL_CreateShader			(DWORD S, DWORD T);
+	Shader*						LL_CreateShader			(DWORD S, DWORD T, DWORD M, DWORD C);
 };
 
 extern ENGINE_API	CCreator*	pCreator;
