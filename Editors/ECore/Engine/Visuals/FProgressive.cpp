@@ -14,7 +14,6 @@
 
 FProgressive::FProgressive	() : Fvisual()
 {
-	pSWI			= 0;
 	xSWI			= 0;
 	last_lod		= 0;
 }
@@ -27,10 +26,7 @@ FProgressive::~FProgressive	()
 void FProgressive::Release	()
 {
 	Fvisual::Release();
-	if (pSWI)		{
-		xr_free			(nSWI.sw);
-		xr_delete		(pSWI);
-	}
+	xr_free			(nSWI.sw);
 	if (xSWI)		{
 		xr_free			(xSWI->sw);
 		xr_delete		(xSWI);
@@ -43,13 +39,13 @@ void FProgressive::Load		(const char* N, IReader *data, u32 dwFlags)
 
 	// normal SWI
 	destructor<IReader> lods (data->open_chunk	(OGF_SWIDATA));
-    nSWI.reserved[0]	= lods()->r_u32();	// reserved 16 bytes
-    nSWI.reserved[1]	= lods()->r_u32();
-    nSWI.reserved[2]	= lods()->r_u32();
-    nSWI.reserved[3]	= lods()->r_u32();
-    nSWI.count			= lods()->r_u32();
+    nSWI.reserved[0]	= lods().r_u32();	// reserved 16 bytes
+    nSWI.reserved[1]	= lods().r_u32();
+    nSWI.reserved[2]	= lods().r_u32();
+    nSWI.reserved[3]	= lods().r_u32();
+    nSWI.count			= lods().r_u32();
     nSWI.sw				= xr_alloc<FSlideWindow>(nSWI.count);
-	lods()->r			(nSWI.sw,nSWI.count*sizeof(FSlideWindow));
+	lods().r			(nSWI.sw,nSWI.count*sizeof(FSlideWindow));
 
 	// fast
 #if RENDER==R_R2
@@ -58,13 +54,13 @@ void FProgressive::Load		(const char* N, IReader *data, u32 dwFlags)
 		destructor<IReader>	def		(geomdef()->open_chunk	(OGF_SWIDATA));
 
 		xSWI				= xr_new<FSlideWindowItem>();
-		xSWI->reserved[0]	= def()->r_u32();	// reserved 16 bytes
-		xSWI->reserved[1]	= def()->r_u32();
-		xSWI->reserved[2]	= def()->r_u32();
-		xSWI->reserved[3]	= def()->r_u32();
-		xSWI->count			= def()->r_u32();
+		xSWI->reserved[0]	= def().r_u32();	// reserved 16 bytes
+		xSWI->reserved[1]	= def().r_u32();
+		xSWI->reserved[2]	= def().r_u32();
+		xSWI->reserved[3]	= def().r_u32();
+		xSWI->count			= def().r_u32();
 		xSWI->sw			= xr_alloc<FSlideWindow>(xSWI->count);
-		def()->r			(xSWI->sw,xSWI->count*sizeof(FSlideWindow));
+		def().r			(xSWI->sw,xSWI->count*sizeof(FSlideWindow));
 	}
 #endif
 }
