@@ -295,8 +295,8 @@ xrSE_Target_CSBase::xrSE_Target_CSBase()
 	radius									= 10.f;
     s_gameid								= GAME_CS;    
 };
-void xrSE_Target_CSBase::STATE_Read			(NET_Packet& P, u16 size)	{P.r_float(radius);};
-void xrSE_Target_CSBase::STATE_Write		(NET_Packet& P)				{P.w_float(radius);};
+void xrSE_Target_CSBase::STATE_Read			(NET_Packet& P, u16 size)	{P.r_float(radius);P.r_u8(s_team);};
+void xrSE_Target_CSBase::STATE_Write		(NET_Packet& P)				{P.w_float(radius);P.w_u8(s_team);};
 void xrSE_Target_CSBase::UPDATE_Read		(NET_Packet& P)				{};
 void xrSE_Target_CSBase::UPDATE_Write		(NET_Packet& P)				{};
 #ifdef _EDITOR
