@@ -460,7 +460,7 @@
 
 <!---------------------------DOLG LEADER---------------------->
 	<specific_character id="bar_dolg_leader" team_default = "1">
-		<name>Майор Воронин</name>
+		<name>Генерал Воронин</name>
 		<icon x="16" y="4"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Лидер Долга. Основатель группировки Долг, вот уже пять лет возглавляет группировку.</bio>
