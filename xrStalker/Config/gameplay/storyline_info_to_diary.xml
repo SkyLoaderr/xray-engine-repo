@@ -57,7 +57,32 @@
     
     <article id="dar_password_info2" name="dar_password_info2" group="Diary">
         <texture x="200" y="650" width="200" height="150">ui\ui_icon_photo</texture>    
-        <text>Very important documents</text>
+        <text>Password: 9524</text>
+    </article>
+
+    <article id="dar_document1" name="dar_document1" group="Diary">
+        <texture x="200" y="650" width="200" height="150">ui\ui_icon_photo</texture>    
+        <text>Very important documents </text>
+    </article>
+
+    <article id="dar_document2" name="dar_document2" group="Diary">
+        <texture x="200" y="650" width="200" height="150">ui\ui_icon_photo</texture>    
+        <text>Some useless documents </text>
+    </article>
+
+    <article id="dar_document3" name="dar_document3" group="Diary">
+        <texture x="200" y="650" width="200" height="150">ui\ui_icon_photo</texture>    
+        <text>It seems to be very important documents... But no, it's a bullshit </text>
+    </article>
+
+    <article id="dar_document4" name="dar_document4" group="Diary">
+        <texture x="200" y="650" width="200" height="150">ui\ui_icon_photo</texture>    
+        <text>VERY VERY IMPORTANT DOCS</text>
+    </article>
+
+    <article id="dar_document5" name="dar_document5" group="Diary">
+        <texture x="200" y="650" width="200" height="150">ui\ui_icon_photo</texture>    
+        <text>Another fake of important documents </text>
     </article>
  
 </encyclopedia>
