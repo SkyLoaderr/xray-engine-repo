@@ -9,9 +9,9 @@
 #include "scene.h"
 
 #include "PropertiesSceneObject.h"
+#include "PropertiesGroup.h"
 #include "PropertiesLight.h"
 #include "PropertiesSound.h"
-#include "PropertiesOccluder.h"
 #include "PropertiesGlow.h"
 #include "PropertiesSector.h"
 #include "PropertiesPortal.h"
@@ -91,14 +91,12 @@ void TUI_CustomTools::ShowProperties(){
     if(!objset.empty()){
 //    	TfrmProperties* P = new TfrmProperties(0);
 	    switch(objclass){
-//    	case OBJCLASS_SCENEOBJECT:	P->ShowPropertiesModal(&objset); 	break;
+    	case OBJCLASS_GROUP:		TfrmPropertiesGroup::Run(&objset,bChange); break;
     	case OBJCLASS_SCENEOBJECT:	TfrmPropertiesSceneObject::Run(&objset,bChange); break;
 	    case OBJCLASS_LIGHT:    	frmPropertiesLightRun(&objset,bChange);		break;
 	    case OBJCLASS_SOUND:    	frmPropertiesSoundRun(&objset,bChange); 	break;
-	    case OBJCLASS_OCCLUDER: 	frmPropertiesOccluderRun(&objset,bChange); 	break;
 	    case OBJCLASS_GLOW:     	frmPropertiesGlowRun(&objset,bChange);		break;
 	    case OBJCLASS_SECTOR:   	frmPropertiesSectorRun(&objset,bChange); 	break;
-//    	case OBJCLASS_PORTAL:   	frmPropertiesPortalRun(&objset,bChange); 	break;
 	    case OBJCLASS_EVENT:   		frmPropertiesEventRun(&objset,bChange);		break;
 	    case OBJCLASS_RPOINT:   	TfrmPropertiesRPoint::Run(&objset,bChange); break;
 //	    case OBJCLASS_AITRAFFIC:   	TfrmPropertiesAITraffic::Run(&objset,bChange);break;

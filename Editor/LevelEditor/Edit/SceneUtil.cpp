@@ -29,7 +29,7 @@ CCustomObject* EScene::FindObjectByName( LPCSTR name, CCustomObject* pass_object
     	ObjectIt _F = lst.begin();
         ObjectIt _E = lst.end();
     	for(;_F!=_E;_F++){
-            if( (0==strcmp((*_F)->Name,name)) && (pass_object!=(*_F)) )
+            if( (0==stricmp((*_F)->Name,name)) && (pass_object!=(*_F)) )
                 return (*_F);
         }
 	}
@@ -52,15 +52,18 @@ bool EScene::FindDuplicateName(){
     return false;
 }
 
-void EScene::GenObjectName( EObjClass cls_id, char *buffer, const char* prefix ){
-    m_LastAvailObject = ListObj(cls_id).size();
-	do{
-        if (prefix)
-       		sprintf( buffer, "%s_%04x", prefix, m_LastAvailObject );
-        else
-       		sprintf( buffer, "%s_%04x", GetNameByClassID(cls_id), m_LastAvailObject );
-		m_LastAvailObject++;
-	} while( FindObjectByName( buffer, 0 ) );
+void EScene::GenObjectName( EObjClass cls_id, char *buffer, const char* pref ){
+    m_LastAvailObject = 0;
+    string128 prefix;
+    if (pref){                
+    	strcpy( prefix, pref );
+        for (int i=strlen(prefix)-1; i>=0; i--) if (isdigit(prefix[i])) prefix[i]=0; else break;
+		sprintf( buffer, "%s%04x", prefix, m_LastAvailObject++);
+    }else        sprintf( buffer, "%s%04x", GetNameByClassID(cls_id), m_LastAvailObject++ );
+    while (FindObjectByName( buffer, 0 )){
+        if (prefix)	sprintf( buffer, "%s%04x", prefix, m_LastAvailObject++ );
+        else   		sprintf( buffer, "%s%04x", GetNameByClassID(cls_id), m_LastAvailObject++ );
+	}
 }
 
 //----------------------------------------------------

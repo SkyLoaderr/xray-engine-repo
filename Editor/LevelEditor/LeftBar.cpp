@@ -26,7 +26,6 @@ __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
     ebTargetObject->Tag     = etObject;
     ebTargetLight->Tag      = etLight;
     ebTargetSound->Tag      = etSound;
-//    ebTargetOccluder->Tag   = etOccluder;
     ebTargetGlow->Tag       = etGlow;
     ebTargetRPoint->Tag     = etRPoint;
     ebTargetAITraffic->Tag  = etAITPoint;
@@ -96,7 +95,6 @@ void TfraLeftBar::ChangeTarget(int tgt){
 	    case etObject:		btn=ebTargetObject; 	break;
 	    case etLight:		btn=ebTargetLight; 		break;
 	    case etSound:		btn=ebTargetSound; 		break;
-//	    case etOccluder:	btn=ebTargetOccluder; 	break;
 	    case etGlow:		btn=ebTargetGlow; 		break;
 	    case etRPoint:		btn=ebTargetRPoint; 	break;
 	    case etAITPoint:	btn=ebTargetAITraffic; 	break;
@@ -347,33 +345,9 @@ void __fastcall TfraLeftBar::ebUnlockUnselClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ebGroupCreateClick(TObject *Sender)
-{
-	UI.Command(COMMAND_GROUP_CREATE);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::ebGroupDestroyClick(TObject *Sender)
-{
-	UI.Command(COMMAND_GROUP_DESTROY);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::ebGroupSaveClick(TObject *Sender)
-{
-	UI.Command(COMMAND_GROUP_SAVE);
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfraLeftBar::ebResetAnimationClick(TObject *Sender)
 {
 	UI.Command( COMMAND_RESET_ANIMATION );
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::ebGroupDestroyAllClick(TObject *Sender)
-{
-	UI.Command(COMMAND_GROUP_DESTROYALL);
 }
 //---------------------------------------------------------------------------
 
@@ -537,6 +511,12 @@ void __fastcall TfraLeftBar::miRecentFilesClick(TObject *Sender)
     else							ELog.DlgMsg(mtError, "Error reading file '%s'",fn.c_str());
 }
 //---------------------------------------------------------------------------
+
+LPCSTR TfraLeftBar::FirstRecentFile()
+{
+	if (miRecentFiles->Count>0)
+    	return miRecentFiles->Items[0]->Caption.c_str();
+}
 
 void TfraLeftBar::AppendRecentFile(LPCSTR name)
 {

@@ -325,7 +325,7 @@ void TfrmEditLibrary::ChangeReference(LPCSTR new_name)
 {
 	// save new position
 	CEditableObject* E=m_pEditObject->GetReference();
-    if (E&&new_name&&(strcmp(E->GetName(),new_name))==0) return;
+    if (E&&new_name&&(stricmp(E->GetName(),new_name))==0) return;
     if (E){
 		E->t_vPosition.set	(m_pEditObject->PPosition);
 		E->t_vScale.set		(m_pEditObject->PScale);

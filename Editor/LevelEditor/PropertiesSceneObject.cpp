@@ -52,7 +52,7 @@ bool TfrmPropertiesSceneObject::ApplyObjectsInfo(){
     	CSceneObject *_O = (CSceneObject*)(*_F);
         if (!bMultiSel){
         	if (Scene.FindObjectByName(edName->Text.c_str(),_O)){
-            	ELog.DlgMsg(mtError,"Duplicate object name already exists: '%s'",edName->Text.c_str());
+            	ELog.DlgMsg(mtError,"Name already exist in scene: '%s'",edName->Text.c_str());
             	return false;
             }
         	_O->Name = edName->Text.c_str();

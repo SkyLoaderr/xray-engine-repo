@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 277
+  Height = 857
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -107,7 +107,6 @@ object fraLeftBar: TfraLeftBar
         Margin = 3
         ParentFont = False
         Spacing = 3
-        Transparent = False
         OnMouseDown = ebSceneFileMouseDown
       end
       object ebSceneCompile: TExtBtn
@@ -139,7 +138,6 @@ object fraLeftBar: TfraLeftBar
         Margin = 3
         ParentFont = False
         Spacing = 3
-        Transparent = False
         OnMouseDown = ebSceneCompileMouseDown
       end
       object ebLibraryEditor: TExtBtn
@@ -161,7 +159,6 @@ object fraLeftBar: TfraLeftBar
         Font.Style = []
         Margin = 13
         ParentFont = False
-        Transparent = False
         OnClick = ebEditLibClick
       end
       object ebObjectList: TExtBtn
@@ -183,7 +180,6 @@ object fraLeftBar: TfraLeftBar
         Font.Style = []
         Margin = 13
         ParentFont = False
-        Transparent = False
         OnClick = ebObjectListClick
       end
       object ebSceneCommands: TExtBtn
@@ -215,7 +211,6 @@ object fraLeftBar: TfraLeftBar
         Margin = 3
         ParentFont = False
         Spacing = 3
-        Transparent = False
         OnMouseDown = ebSceneCommandsMouseDown
       end
       object ebPreferences: TExtBtn
@@ -237,7 +232,6 @@ object fraLeftBar: TfraLeftBar
         Font.Style = []
         Margin = 13
         ParentFont = False
-        Transparent = False
         OnClick = ebEditorPreferencesClick
       end
       object ebImageEditor: TExtBtn
@@ -259,7 +253,6 @@ object fraLeftBar: TfraLeftBar
         Font.Style = []
         Margin = 13
         ParentFont = False
-        Transparent = False
         OnClick = ebImageEditorClick
       end
       object ebLightAnimationEditor: TExtBtn
@@ -281,7 +274,6 @@ object fraLeftBar: TfraLeftBar
         Font.Style = []
         Margin = 13
         ParentFont = False
-        Transparent = False
         OnClick = ebLightAnimationEditorClick
       end
     end
@@ -360,7 +352,6 @@ object fraLeftBar: TfraLeftBar
         Margin = 3
         ParentFont = False
         Spacing = 3
-        Transparent = False
         OnMouseDown = ExtBtn7MouseDown
       end
       object ExtBtn8: TExtBtn
@@ -392,7 +383,6 @@ object fraLeftBar: TfraLeftBar
         Margin = 3
         ParentFont = False
         Spacing = 3
-        Transparent = False
         OnMouseDown = ExtBtn8MouseDown
       end
       object ExtBtn9: TExtBtn
@@ -424,7 +414,6 @@ object fraLeftBar: TfraLeftBar
         Margin = 3
         ParentFont = False
         Spacing = 3
-        Transparent = False
         OnMouseDown = ExtBtn9MouseDown
       end
       object ExtBtn10: TExtBtn
@@ -458,7 +447,6 @@ object fraLeftBar: TfraLeftBar
         Margin = 3
         ParentFont = False
         Spacing = 3
-        Transparent = False
         OnMouseDown = ExtBtn10MouseDown
       end
       object ebRandomAdd: TExtBtn
@@ -482,7 +470,6 @@ object fraLeftBar: TfraLeftBar
         Font.Style = []
         Margin = 13
         ParentFont = False
-        Transparent = False
         OnClick = ebRandomAddClick
       end
       object ebProperties: TExtBtn
@@ -504,7 +491,6 @@ object fraLeftBar: TfraLeftBar
         Font.Style = []
         Margin = 13
         ParentFont = False
-        Transparent = False
         OnClick = ebPropertiesClick
       end
       object ebIgnoreMode: TExtBtn
@@ -1405,7 +1391,6 @@ object fraLeftBar: TfraLeftBar
         Margin = 3
         ParentFont = False
         Spacing = 3
-        Transparent = False
         OnMouseDown = ExtBtn1MouseDown
       end
       object Bevel1: TBevel

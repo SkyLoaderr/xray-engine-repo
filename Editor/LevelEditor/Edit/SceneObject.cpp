@@ -164,12 +164,12 @@ bool CSceneObject::BoxPick(const Fbox& box, SBoxPickInfoVec& pinf){
 	return m_pRefs->BoxPick(this, box, _Transform(), pinf);
 }
 
-void CSceneObject::Scale(const Fmatrix& prev_inv, const Fmatrix& current, Fvector& center, Fvector& amount ){
+void CSceneObject::PivotScale(const Fmatrix& prev_inv, const Fmatrix& current, Fvector& amount ){
     if (IsDynamic()){
     	ELog.Msg(mtError,"Dynamic object %s - can't scale.", Name);
         return;
     }
-	inherited::Scale(prev_inv,current,center,amount);
+	inherited::PivotScale(prev_inv,current,amount);
 }
 
 void CSceneObject::Scale( Fvector& amount ){

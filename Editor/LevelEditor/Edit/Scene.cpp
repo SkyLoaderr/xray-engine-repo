@@ -458,7 +458,6 @@ void EScene::Render( const Fmatrix& camera )
     RENDER_CLASS_NORMAL(1,OBJCLASS_SOUND);
     RENDER_CLASS_NORMAL(1,OBJCLASS_RPOINT);
     RENDER_CLASS_NORMAL(1,OBJCLASS_AITPOINT);
-    RENDER_CLASS_NORMAL(1,OBJCLASS_OCCLUDER);
     RENDER_CLASS_NORMAL(1,OBJCLASS_EVENT);
     RENDER_CLASS_NORMAL(1,OBJCLASS_SECTOR);
     RENDER_CLASS_NORMAL(1,OBJCLASS_PS);
@@ -469,7 +468,6 @@ void EScene::Render( const Fmatrix& camera )
     m_DetailObjects->Render			(1,false);
     m_DetailObjects->Render			(1,true);
 	// draw clip planes, glows, event, sectors, portals
-	RENDER_CLASS_ALPHA(1,OBJCLASS_OCCLUDER);
 	RENDER_CLASS_ALPHA(1,OBJCLASS_GLOW);
 	RENDER_CLASS_ALPHA(1,OBJCLASS_EVENT);
 	RENDER_CLASS_ALPHA(1,OBJCLASS_SECTOR);
@@ -624,14 +622,6 @@ bool EScene::Validate(bool bNeedMsg, bool bTestPortal){
 //    	ELog.DlgMsg(mtError,"*ERROR: Compute portals before compiling.");
 //        return false;
 //	}
-    if (ObjCount(OBJCLASS_OCCLUDER)){
-    	ObjectList& lst = ListObj(OBJCLASS_OCCLUDER);
-    	for (ObjectIt it=lst.begin(); it!=lst.end(); it++)
-        	if (!(*it)->Valid()){
-	    		ELog.DlgMsg(mtError,"*ERROR: Can't found 'Occluder'.\nPlease add at least one.");
-    	    	return false;
-            }
-    }
 //	if (ObjCount(OBJCLASS_GLOW)==0){
 //    	ELog.DlgMsg(mtError,"*ERROR: Can't found 'Glow'.\nPlease add at least one.");
 //		return false;

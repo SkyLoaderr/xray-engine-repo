@@ -12,6 +12,7 @@
 #include "Frustum.h"
 #include "Scene.h"
 #include "xr_trims.h"
+#include "bottombar.h"
 
 #define GLOW_VERSION	   				0x0012
 //----------------------------------------------------
@@ -20,6 +21,8 @@
 #define GLOW_CHUNK_SHADER				0xC414
 #define GLOW_CHUNK_TEXTURE				0xC415
 //----------------------------------------------------
+
+#define VIS_RADIUS 		0.25f
 
 CGlow::CGlow( char *name ):CCustomObject(){
 	Construct();
@@ -64,16 +67,16 @@ void CGlow::Render(int priority, bool strictB2F){
 		Device.SetTransform(D3DTS_WORLD,Fidentity);
         if (Device.m_Frustum.testSphere(PPosition,m_Range)){
         	// рендерим Glow
-//        	if (!Scene.RayPick(m_Position,D,OBJCLASS_EDITOBJECT,&pinf)){
+        	if ((fraBottomBar->miGlowTestVisibility->Checked&&!Scene.RayPick(PPosition,D,OBJCLASS_SCENEOBJECT,&pinf,true,0))||
+            	!fraBottomBar->miGlowTestVisibility->Checked){
                 if (m_GShader){	Device.SetShader(m_GShader);
                 }else{			Device.SetShader(Device.m_WireShader);}
                 m_RenderSprite.Render(PPosition,m_Range);
-//			}else{
+			}else{
                 // рендерим bounding sphere
-//				Fcolor clr; clr.set(0,0.85f,0,0);
-//        		Device.Shader.Set(Device.m_WireShader);
-//          	DU::DrawLineSphere( m_Position, m_Range, clr, false );
-//			}
+        		Device.SetShader(Device.m_WireShader);
+                DU::DrawRomboid(PPosition, VIS_RADIUS, 0x0000D800);
+			}
             if( Selected() ){
             	Fbox bb; GetBox(bb);
                 DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;

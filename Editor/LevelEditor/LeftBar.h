@@ -174,11 +174,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebUnlockAllClick(TObject *Sender);
 	void __fastcall ebUnlockSelClick(TObject *Sender);
 	void __fastcall ebUnlockUnselClick(TObject *Sender);
-	void __fastcall ebGroupCreateClick(TObject *Sender);
-	void __fastcall ebGroupDestroyClick(TObject *Sender);
-	void __fastcall ebGroupSaveClick(TObject *Sender);
 	void __fastcall ebResetAnimationClick(TObject *Sender);
-	void __fastcall ebGroupDestroyAllClick(TObject *Sender);
 	void __fastcall ebMakeLTXClick(TObject *Sender);
 	void __fastcall ebSceneFileMouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
@@ -221,6 +217,7 @@ public:		// User declarations
     void UpdateBar();
     void UpdateSnapList();
     void AppendRecentFile(LPCSTR name);
+    LPCSTR FirstRecentFile();
 	void __fastcall ShowPPMenu(TMxPopupMenu* M, TObject* btn);
 };
 //---------------------------------------------------------------------------

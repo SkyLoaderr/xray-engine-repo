@@ -96,9 +96,6 @@ USEFORM("FrameDetObj.cpp", fraDetailObject); /* TFrame: File Type */
 USEUNIT("engine\xr_ini.cpp");
 USE("engine\Communicate.h", File);
 USEUNIT("edit\ColorPicker.cpp");
-USEUNIT("edit\Occluder.cpp");
-USEFORM("FrameOccluder.cpp", fraOccluder); /* TFrame: File Type */
-USEFORM("PropertiesOccluder.cpp", frmPropertiesOccluder);
 USEUNIT("engine\LzHuf.cpp");
 USEUNIT("edit\UI_AITPointTools.cpp");
 USEUNIT("edit\UI_Camera.cpp");
@@ -111,7 +108,6 @@ USEUNIT("edit\UI_LightTools.cpp");
 USEUNIT("edit\UI_Main.cpp");
 USEUNIT("edit\UI_MainCommand.cpp");
 USEUNIT("edit\UI_ObjectTools.cpp");
-USEUNIT("edit\UI_OccluderTools.cpp");
 USEUNIT("edit\UI_PortalTools.cpp");
 USEUNIT("edit\UI_PSTools.cpp");
 USEUNIT("edit\UI_RPointTools.cpp");
@@ -212,6 +208,8 @@ USEUNIT("edit\GroupObject.cpp");
 USEUNIT("edit\UI_GroupTools.cpp");
 USEFORM("FrameGroup.cpp", fraGroup); /* TFrame: File Type */
 USEUNIT("Engine\Blenders\Blender_Shadow_Texture.cpp");
+USEFORM("PropertiesGroup.cpp", frmPropertiesGroup);
+USEFORM("FrameEvent.cpp", fraEvent); /* TFrame: File Type */
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

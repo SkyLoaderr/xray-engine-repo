@@ -12,7 +12,6 @@ enum ETarget{
     etObject,
     etLight,
     etSound,
-    etOccluder,
     etGlow,
     etRPoint,
     etAITPoint,

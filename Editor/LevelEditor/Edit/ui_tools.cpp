@@ -13,7 +13,6 @@
 #include "UI_LightTools.h"
 #include "UI_ObjectTools.h"
 #include "UI_SoundTools.h"
-#include "UI_OccluderTools.h"
 #include "UI_GlowTools.h"
 #include "UI_RPointTools.h"
 #include "UI_AITPointTools.h"
@@ -63,7 +62,6 @@ void TUI_Tools::OnCreate(){
     AddTool			(etLight, 	new TUI_LightTools	());
     AddTool			(etObject,	new TUI_ObjectTools	());
     AddTool			(etSound, 	new TUI_SoundTools	());
-    AddTool			(etOccluder,new TUI_OccluderTools());
     AddTool			(etGlow,   	new TUI_GlowTools	());
     AddTool			(etRPoint, 	new TUI_RPointTools	());
     AddTool			(etSector, 	new TUI_SectorTools	());

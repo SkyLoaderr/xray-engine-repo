@@ -169,7 +169,7 @@ void EScene::Save(char *_FileName, bool bUndo){
     F.open_chunk	(CHUNK_OBJECT_LIST);
     int count = 0;
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
-        int sz0 = F.tell();
+//        int sz0 = F.tell();
         ObjectList& lst = (*it).second;
     	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
             F.open_chunk(count); count++;
@@ -398,7 +398,6 @@ bool EScene::LoadSelection(const char *_FileName,ObjectList& lst){
             }
             OBJ->Close();
         }
-        SynchronizeObjects();
     }
 
     return res;
@@ -414,11 +413,12 @@ bool EScene::LoadSelection( const char *_FileName ){
     	for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
         	CCustomObject* obj = *it;
             char buf[MAX_OBJ_NAME];
-            GenObjectName(obj->ClassID,buf);
+    		GenObjectName(obj->ClassID,buf,obj->Name);
             obj->Name=buf;
 			AddObject(obj, false);
-			obj->Select(false);
+			obj->Select(true);
         }
+		SynchronizeObjects();
         return true;
     }
 	return false;

@@ -15,7 +15,6 @@ class CEditableMesh;
 class EScene;
 class CLight;
 class CGlow;
-class COccluder;
 class CPortal;
 struct st_SPData;
 class CSurface;
@@ -36,7 +35,6 @@ class SceneBuilder{
     vector<b_material>      l_materials;
     vector<b_vnormal>       l_vnormals;
     vector<b_glow>          l_glows;
-    vector<b_occluder>      l_occluders;
     vector<b_portal>        l_portals;
     vector<Flight>          l_light_keys;
 
@@ -44,7 +42,6 @@ class SceneBuilder{
 
     void    BuildGlow       (b_glow* b, CGlow* e);
     void    BuildLight      (b_light* b, CLight* e);
-    void    BuildOccluder   (b_occluder* b, COccluder* e);
     void    BuildPortal   	(b_portal* b, CPortal* e);
     void    BuildMesh       (const Fmatrix& parent, CEditableObject* object, CEditableMesh* mesh, int sector_num);
     void    BuildObject     (CSceneObject* obj);

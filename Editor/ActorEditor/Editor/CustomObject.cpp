@@ -23,13 +23,16 @@
 
 CCustomObject::~CCustomObject()
 {
-	OnDestroy();
 }
 
 void CCustomObject::RemoveFromGroup()
 {
     m_pGroupObject = 0;
+    string64 new_name;
+    Scene.GenObjectName(ClassID,new_name,Name);
+    Name = new_name;
     Scene.AddObject(this,false);
+    Select(true);
 }
 
 void CCustomObject::AppendToGroup(CGroupObject* group)
@@ -37,12 +40,7 @@ void CCustomObject::AppendToGroup(CGroupObject* group)
 	R_ASSERT(group&&!m_pGroupObject);
     m_pGroupObject = group;
     Scene.RemoveObject(this,false);
-}
-
-void CCustomObject::OnDestroy()
-{
-	if (m_pGroupObject)
-		m_pGroupObject->RemoveObject(this);
+    Select(false);
 }
 
 void CCustomObject::OnUpdateTransform()
@@ -201,7 +199,7 @@ void CCustomObject::MoveTo(const Fvector& pos, const Fvector& up)
     PPosition = v;
 }
 
-void CCustomObject::ParentRotate(const Fmatrix& prev_inv, const Fmatrix& current, Fvector& axis, float angle)
+void CCustomObject::PivotRotateParent(const Fmatrix& prev_inv, const Fmatrix& current, Fvector& axis, float angle)
 {
     Fvector p		= PPosition;
     prev_inv.transform_tiny	(p);
@@ -213,7 +211,7 @@ void CCustomObject::ParentRotate(const Fmatrix& prev_inv, const Fmatrix& current
     PRotation	= r;
 }
 
-void CCustomObject::LocalRotate(const Fmatrix& parent, Fvector& center, Fvector& axis, float angle)
+void CCustomObject::PivotRotateLocal(const Fmatrix& parent, Fvector& center, Fvector& axis, float angle)
 {
 	R_ASSERT(!Locked());
     UI.UpdateScene();
@@ -237,7 +235,7 @@ void CCustomObject::LocalRotate(const Fmatrix& parent, Fvector& center, Fvector&
 	PPosition 	= p;
 }
 
-void CCustomObject::ParentRotate(Fvector& axis, float angle)
+void CCustomObject::RotateParent(Fvector& axis, float angle)
 {
 	R_ASSERT(!Locked());
     UI.UpdateScene();
@@ -246,7 +244,7 @@ void CCustomObject::ParentRotate(Fvector& axis, float angle)
     PRotation		= r;
 }
 
-void CCustomObject::LocalRotate(Fvector& axis, float angle)
+void CCustomObject::RotateLocal(Fvector& axis, float angle)
 {
     Fmatrix m;
     Fvector r;
@@ -256,7 +254,7 @@ void CCustomObject::LocalRotate(Fvector& axis, float angle)
     PRotation		= r;
 }
 
-void CCustomObject::Scale( const Fmatrix& prev_inv, const Fmatrix& current, Fvector& center, Fvector& amount )
+void CCustomObject::PivotScale( const Fmatrix& prev_inv, const Fmatrix& current, Fvector& amount )
 {
 	R_ASSERT(!Locked());
     UI.UpdateScene();
@@ -289,7 +287,9 @@ void CCustomObject::Scale( Fvector& amount )
 
 void CCustomObject::Render(int priority, bool strictB2F)
 {
-	if ((1==priority)&&(false==strictB2F)&&(Selected()))
+	if ((1==priority)&&(false==strictB2F)&&(Selected())){
+    	Device.SetShader(Device.m_WireShader);
     	DU::DrawObjectAxis(FTransformRP);
+    }
 }
 

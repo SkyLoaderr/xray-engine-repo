@@ -11,6 +11,7 @@
 #include "Scene.h"
 #include "SceneClassList.h"
 #include "SceneObject.h"
+#include "GroupObject.h"
 #include "EditObject.h"
 #include "Sector.h"
 //----------------------------------------------------
@@ -83,13 +84,23 @@ bool SceneBuilder::UngroupAndUnlockObjects(){
 
 	UI.ProgressStart(objcount, "Ungroup and unlock objects...");
 
+    // ungroup
+    {
+		ObjectList& lst = Scene.ListObj(OBJCLASS_GROUP);
+		for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
+			CGroupObject* O=(CGroupObject*)(*_F);
+            O->UngroupObjects();
+            _DELETE(O);
+		}
+        lst.clear();
+    }
+    // unlock
     for(ObjectPairIt it=Scene.FirstClass(); it!=Scene.LastClass(); it++){
         ObjectList& lst = (*it).second;
         if (UI.NeedAbort()) break; // break building
     	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
 			UI.ProgressInc();
             if (UI.NeedAbort()) break; // break building
-//S            (*_F)->Ungroup();
             (*_F)->Lock(false);
         }
 	}

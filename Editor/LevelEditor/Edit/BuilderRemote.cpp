@@ -6,7 +6,6 @@
 #include "ELight.h"
 #include "SceneObject.h"
 #include "EditObject.h"
-#include "occluder.h"
 #include "Communicate.h"
 #include "Scene.h"
 #include "EditMesh.h"
@@ -65,7 +64,6 @@ void SaveBuild(b_transfer *info)
 	pF.lights		= (b_light*		)transfer(F, L->lights,  	L->light_count);
 	pF.glows		= (b_glow*		)transfer(F, L->glows,		L->glow_count);
 	pF.particles	= (b_particle*	)transfer(F, L->particles,	L->particle_count);
-	pF.occluders	= (b_occluder*	)transfer(F, L->occluders,	L->occluder_count);
 	pF.portals		= (b_portal*	)transfer(F, L->portals,	L->portal_count);
 	pF.light_keys	= (Flight*		)transfer(F, L->light_keys,L->light_keys_count);
 
@@ -132,7 +130,6 @@ void SceneBuilder::ResetStructures (){
     l_materials.clear();
     l_vnormals.clear();
     l_glows.clear();
-    l_occluders.clear();
     l_portals.clear();
     l_light_keys.clear();
 }
@@ -317,18 +314,6 @@ void SceneBuilder::BuildGlow(b_glow* b, CGlow* e){
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// Occluder build functions
-//------------------------------------------------------------------------------
-void SceneBuilder::BuildOccluder(b_occluder* b, COccluder* e){
-    e->Optimize();
-    e->UpdatePoints3D();
-    b->vertices.resize(e->Get3DPoints().size());
-    CopyMemory(b->vertices.begin(),e->Get3DPoints().begin(),sizeof(Fvector)*e->Get3DPoints().size());
-    b->sector=m_iDefaultSectorNum;//CalculateSector(e->m_vCenter,e->m_vPlaneSize.magnitude());
-}
-//------------------------------------------------------------------------------
-
-//------------------------------------------------------------------------------
 // Portal build functions
 //------------------------------------------------------------------------------
 void SceneBuilder::BuildPortal(b_portal* b, CPortal* e){
@@ -499,10 +484,6 @@ bool SceneBuilder::RemoteStaticBuild()
                 l_glows.push_back(b_glow());
                 BuildGlow(&l_glows.back(),(CGlow*)(*_F));
                 break;
-            case OBJCLASS_OCCLUDER:
-                l_occluders.push_back(b_occluder());
-                BuildOccluder(&l_occluders.back(),(COccluder*)(*_F));
-                break;
             case OBJCLASS_PORTAL:
                 l_portals.push_back(b_portal());
                 BuildPortal(&l_portals.back(),(CPortal*)(*_F));
@@ -511,6 +492,7 @@ bool SceneBuilder::RemoteStaticBuild()
                 CSceneObject *obj = (CSceneObject*)(*_F);
                 if (!obj->IsDynamic()) BuildObject(obj);
             }break;
+            case OBJCLASS_GROUP: THROW2("Scene contain group."); break;
             }// end switch
         }
 	}// end scene cycle
@@ -561,9 +543,6 @@ bool SceneBuilder::RemoteStaticBuild()
 
 	    UI.ProgressUpdate(7);
     // occluders
-        TSData.occluder_count= l_occluders.size();
-        TSData.occluders    = new b_occluder[TSData.occluder_count+1];
-        CopyMemory(TSData.occluders,l_occluders.begin(),sizeof(b_occluder)*TSData.occluder_count);
 
 	    UI.ProgressUpdate(8);
     // light keys
@@ -591,7 +570,6 @@ bool SceneBuilder::RemoteStaticBuild()
     _DELETEARRAY(TSData.lights);
     _DELETEARRAY(TSData.glows);
     _DELETEARRAY(TSData.particles);
-    _DELETEARRAY(TSData.occluders);
     _DELETEARRAY(TSData.portals);
     _DELETEARRAY(TSData.light_keys);
 

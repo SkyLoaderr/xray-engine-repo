@@ -124,9 +124,9 @@ void CEvent::SForm::Move( Fvector& amount )
 	vPosition.add(amount);
 }
 
-void CEvent::SForm::LocalRotate( Fvector& axis, float angle )
+void CEvent::SForm::RotateLocal( Fvector& axis, float angle )
 {
-    vRotate.direct(vRotate,axis,angle);
+    vRotate.mad(vRotate,axis,angle);
 }
 
 void CEvent::SForm::Scale( Fvector& amount )
@@ -207,6 +207,7 @@ bool CEvent::GetBox( Fbox& box ){
 }
 
 void CEvent::Render( int priority, bool strictB2F ){
+	inherited::Render(priority,strictB2F);
 	if (priority==1){
         for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) it->Render(FTransform,strictB2F);
         if(Selected()&&(false==strictB2F)){
@@ -232,37 +233,37 @@ bool CEvent::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPi
     return bPick;
 }
 
+void CEvent::Select(BOOL flag)
+{
+	inherited::Select(flag);
+    if (UI.GetShiftState().Contains(ssCtrl)){
+		for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) if (it->m_Selected) it->Move(amount);
+    }
+}
+
 void CEvent::Move(Fvector& amount){
-	R_ASSERT(!Locked());
 	inherited::Move(amount);
-//	for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) if (it->m_Selected) it->Move(amount);
-    UI.UpdateScene();
+    if (UI.GetShiftState().Contains(ssCtrl)){
+		for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) if (it->m_Selected) it->Move(amount);
+    }
 }
-
-void CEvent::Rotate(Fvector& center, Fvector& axis, float angle){
-	R_ASSERT(!Locked());
-//S	inherited::Rotate(center,axis,angle);
-    UI.UpdateScene();
+void CEvent::RotateParent(Fvector& axis, float angle){
+	inherited::RotateParent(axis,angle);
 }
-
-void CEvent::ParentRotate(Fvector& axis, float angle){
-	R_ASSERT(!Locked());
-	inherited::ParentRotate(axis,angle);
-//	for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) if (it->m_Selected) it->LocalRotate(axis, angle);
-    UI.UpdateScene();
+void CEvent::RotateLocal(Fvector& axis, float angle){
+	inherited::RotateLocal(axis,angle);
 }
-
-void CEvent::Scale( const Fmatrix& prev_inv, const Fmatrix& current, Fvector& center, Fvector& amount ){
-	R_ASSERT(!Locked());
-	inherited::Scale(prev_inv, current, center,amount);
-    UI.UpdateScene();
-}
-
-void CEvent::Scale( Fvector& amount ){
-	R_ASSERT(!Locked());
+void CEvent::Scale(Fvector& amount){
 	inherited::Scale(amount);
-//	for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) if (it->m_Selected) it->Scale(amount);
-    UI.UpdateScene();
+}
+void CEvent::PivotRotateParent(const Fmatrix& prev_inv, const Fmatrix& current, Fvector& axis, float angle ){
+	inherited::PivotRotateParent(prev_inv, current, axis, angle);
+}
+void CEvent::PivotRotateLocal(const Fmatrix& parent, Fvector& pivot, Fvector& axis, float angle ){
+	inherited::PivotRotateLocal(parent, pivot, axis, angle);
+}
+void CEvent::PivotScale( const Fmatrix& prev_inv, const Fmatrix& current, Fvector& amount ){
+	inherited::PivotScale(prev_inv, current, amount);
 }
 //----------------------------------------------------
 

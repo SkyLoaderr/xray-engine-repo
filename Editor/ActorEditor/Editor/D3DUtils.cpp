@@ -520,6 +520,8 @@ void DrawObjectAxis(const Fmatrix& T){
     Fvector c,d,n,r;
 
 	float w	= T.c.x*Device.mFullTransform._14 + T.c.y*Device.mFullTransform._24 + T.c.z*Device.mFullTransform._34 + Device.mFullTransform._44;
+    if (w<0) return; // culling
+
 	float s = w*0.1;
 								Device.mFullTransform.transform(c,T.c);
     r.mul(T.i,s); r.add(T.c); 	Device.mFullTransform.transform(r);

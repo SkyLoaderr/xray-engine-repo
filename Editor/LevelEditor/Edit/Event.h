@@ -7,9 +7,6 @@
 
 #include "CustomObject.h"                         
 
-#define MIN_OCCLUDER_POINTS 3
-#define MAX_OCCLUDER_POINTS 6
-
 class CFrustum;
 
 class CEvent: public CCustomObject {
@@ -36,7 +33,7 @@ public:
 	    bool 		FrustumPick		( const CFrustum& frustum );
         bool		Pick			( float& distance, Fvector& start, Fvector& direction );
 		void 		Move			( Fvector& amount );
-		void 		LocalRotate		( Fvector& axis, float angle );
+		void 		RotateLocal		( Fvector& axis, float angle );
 		void 		Scale			( Fvector& amount );
     };
     DEFINE_VECTOR	(SForm,FormVec,FormIt);
@@ -69,11 +66,15 @@ public:
 									Fvector& direction, SRayPickInfo* pinf = NULL);
     virtual bool 	FrustumPick		( const CFrustum& frustum );
 
-	virtual void 	Move			( Fvector& amount );
-	virtual void 	Rotate			( Fvector& center, Fvector& axis, float angle );
-	virtual void 	Scale			( const Fmatrix& prev_inv, const Fmatrix& current, Fvector& center, Fvector& amount );
-	virtual void 	ParentRotate	( Fvector& axis, float angle );
-	virtual void 	Scale			( Fvector& amount );
+	virtual void 	Select			(BOOL flag);
+    // change position/orientation methods
+	virtual void 	Move			(Fvector& amount);
+	virtual void 	RotateParent	(Fvector& axis, float angle );
+	virtual void 	RotateLocal		(Fvector& axis, float angle );
+	virtual void 	Scale			(Fvector& amount);
+	virtual void 	PivotRotateParent(const Fmatrix& prev_inv, const Fmatrix& current, Fvector& axis, float angle );
+	virtual void 	PivotRotateLocal(const Fmatrix& parent, Fvector& pivot, Fvector& axis, float angle );
+	virtual void 	PivotScale		(const Fmatrix& prev_inv, const Fmatrix& current, Fvector& amount );
 
   	virtual bool 	Load			( CStream& );
 	virtual void 	Save			( CFS_Base& );

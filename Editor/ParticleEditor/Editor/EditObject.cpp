@@ -80,7 +80,7 @@ bool CEditableObject::ContainsMesh(const CEditableMesh* m){
 
 CEditableMesh* CEditableObject::FindMeshByName	(const char* name, CEditableMesh* Ignore){
     for(EditMeshIt m=m_Meshes.begin();m!=m_Meshes.end();m++)
-        if ((Ignore!=(*m))&&(strcmp((*m)->GetName(),name)==0)) return (*m);
+        if ((Ignore!=(*m))&&(stricmp((*m)->GetName(),name)==0)) return (*m);
     return 0;
 }
 
@@ -161,7 +161,7 @@ void CEditableObject::TranslateToWorld(const Fmatrix& parent) {
 
 CSurface*	CEditableObject::FindSurfaceByName(const char* surf_name, int* s_id){
 	for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
-    	if (strcmp((*s_it)->_Name(),surf_name)==0){ if (s_id) *s_id=s_it-m_Surfaces.begin(); return *s_it;}
+    	if (stricmp((*s_it)->_Name(),surf_name)==0){ if (s_id) *s_id=s_it-m_Surfaces.begin(); return *s_it;}
     return 0;
 }
 

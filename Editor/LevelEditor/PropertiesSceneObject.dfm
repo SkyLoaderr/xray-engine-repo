@@ -1,6 +1,6 @@
 object frmPropertiesSceneObject: TfrmPropertiesSceneObject
-  Left = 395
-  Top = 420
+  Left = 632
+  Top = 717
   BorderStyle = bsDialog
   Caption = 'Object properties'
   ClientHeight = 81

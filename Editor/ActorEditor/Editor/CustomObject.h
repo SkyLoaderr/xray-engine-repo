@@ -82,19 +82,19 @@ public:
     // change position/orientation methods
 	virtual void 	MoveTo			(const Fvector& pos, const Fvector& up);
 	virtual void 	Move			(Fvector& amount);
-	virtual void 	ParentRotate	(Fvector& axis, float angle );
-	virtual void 	LocalRotate		(Fvector& axis, float angle );
+	virtual void 	RotateParent	(Fvector& axis, float angle );
+	virtual void 	RotateLocal		(Fvector& axis, float angle );
 	virtual void 	Scale			(Fvector& amount);
-	virtual void 	ParentRotate	(const Fmatrix& prev_inv, const Fmatrix& current, Fvector& axis, float angle );
-	virtual void 	LocalRotate		(const Fmatrix& parent, Fvector& pivot, Fvector& axis, float angle );
-	virtual void 	Scale			(const Fmatrix& prev_inv, const Fmatrix& current, Fvector& center, Fvector& amount );
+	virtual void 	PivotRotateParent(const Fmatrix& prev_inv, const Fmatrix& current, Fvector& axis, float angle );
+	virtual void 	PivotRotateLocal(const Fmatrix& parent, Fvector& pivot, Fvector& axis, float angle );
+	virtual void 	PivotScale		(const Fmatrix& prev_inv, const Fmatrix& current, Fvector& amount );
 
 	virtual bool 	Load			(CStream&);
 	virtual void 	Save			(CFS_Base&);
 
 	virtual bool 	GetBox			(Fbox& box){return false; }
 	virtual void 	OnSceneUpdate	(){;}
-	virtual void 	OnDestroy		();
+	virtual void 	OnDestroy		(){;}
 
 	virtual void 	OnDeviceCreate	(){;}
 	virtual void 	OnDeviceDestroy	(){;}

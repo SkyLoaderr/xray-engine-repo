@@ -509,40 +509,9 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	case COMMAND_BREAK_LAST_OPERATION:
     	NeedBreak();
     	break;
-    case COMMAND_GROUP_CREATE:
-		if( !Scene.locked() ){
-//S	    	Scene.GroupCreate(true);
-//			Scene.UndoSave();
-		}else{
-        	ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
-        }
-	    break;
-    case COMMAND_GROUP_SAVE:
-		if( !Scene.locked() ){
-//S	    	Scene.GroupSave();
-//			Scene.UndoSave();
-		}else{
-        	ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
-        }
-		break;
-    case COMMAND_GROUP_DESTROY:
-		if( !Scene.locked() ){
-//S	    	Scene.GroupDestroy();
-//			Scene.UndoSave();
-		}else{
-        	ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
-        }
-    	break;
-    case COMMAND_GROUP_DESTROYALL:
-		if( !Scene.locked() ){
-//S	    	Scene.UngroupAll();
-//			Scene.UndoSave();
-		}else{
-        	ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
+    case COMMAND_LOAD_FIRSTRECENT:
+    	if (fraLeftBar->FirstRecentFile()){
+        	bRes = Command(COMMAND_LOAD,(int)fraLeftBar->FirstRecentFile());
         }
     	break;
     case COMMAND_RESET_ANIMATION:
@@ -634,8 +603,9 @@ void TUI::ApplyShortCut(WORD Key, TShiftState Shift)
         else if (Key=='N')   	Command(COMMAND_CLEAR);
         else if (Key=='S'){ 	if (Shift.Contains(ssAlt))  Command(COMMAND_SAVEAS);
 					            else                        Command(COMMAND_SAVE);}
-       	else if (Key=='1') 	 	Command(COMMAND_CHANGE_TARGET, etOccluder);
+       	else if (Key=='1') 	 	Command(COMMAND_CHANGE_TARGET, etGroup);
 		else if (Key=='2')		Command(COMMAND_CHANGE_TARGET, etPS);
+		else if (Key=='R')		Command(COMMAND_LOAD_FIRSTRECENT, etPS);
     }else{
         if (Shift.Contains(ssAlt)){
         	if (Key=='F')   	Command(COMMAND_FILE_MENU);

@@ -10,6 +10,8 @@ class TUI_EventTools:public TUI_CustomTools{
 public:
                     TUI_EventTools();
     virtual         ~TUI_EventTools(){;}
+	virtual void 	OnActivate();
+	virtual	void 	OnDeactivate();
 };
 //---------------------------------------------------------------------------
 #endif
