@@ -8,6 +8,9 @@
 
 struct HUD_SOUND
 {
+	HUD_SOUND() {enable = false;}
+
+
 	////////////////////////////////////
 	// работа со звуками
 	/////////////////////////////////////
@@ -24,9 +27,9 @@ struct HUD_SOUND
 	static void		DestroySound (HUD_SOUND& hud_snd);
 
 	static void		PlaySound	(HUD_SOUND& snd,
-		const Fvector& position,
-		const CObject* parent,
-		bool hud_mode);
+								const Fvector& position,
+								const CObject* parent,
+								bool hud_mode);
 
 
 	void set_position(const Fvector& pos) {snd.set_position(pos);}
@@ -34,5 +37,7 @@ struct HUD_SOUND
 	ref_sound snd;
 	float delay;	//задержка перед проигрыванием
 	float volume;	//громкость
+	
+	bool  enable;	//присутствует включен ли звук
 };
 
