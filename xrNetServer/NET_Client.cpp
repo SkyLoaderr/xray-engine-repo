@@ -108,6 +108,9 @@ IPureClient::IPureClient	(CTimer* timer): net_Statistic(timer)
 {
 	device_timer			= timer;
 	net_TimeDelta_User		= 0;
+	net_Time_LastUpdate		= 0;
+	net_TimeDelta			= 0;
+	net_TimeDelta_Calculated = 0;
 }
 
 IPureClient::~IPureClient	()
