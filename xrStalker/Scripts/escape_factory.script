@@ -8,7 +8,6 @@ function add_member (obj)
     if ini == nil or ini:section_exist ("factory") == false then
        return 
     end
-    printf ("Object %s is added to zone", obj:name ())
     table.insert (members, obj.id)
     this.switch_offline (obj)
     return        
