@@ -20,6 +20,7 @@ function main ()
     
     stalker			= get_level_object ("m_stalker_e0000")
     stalker:script	(true,stalker_test:script_name());
+    actor			= get_actor()
     
 --	action(                                                                                                       
 --	    stalker,                                                                                                      
@@ -78,6 +79,9 @@ function main ()
 		object:update()
 		object1:update()
 		wait		()
+		if (stalker:see(actor)) then
+			printf("I see actor!")
+		end
 	end
 	
     stalker:script	(false,stalker_test:script_name());
