@@ -39,7 +39,7 @@ void CCustomZone::net_Destroy(){
 void CCustomZone::Update(u32 dt) {
 	inherited::Update	(dt);
 
-	Fsphere s = cfModel->GetSphere();
+	Fsphere s = cfModel->getSphere();
 	feel_touch_update(s.P,s.R);
 }
 

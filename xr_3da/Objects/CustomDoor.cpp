@@ -30,13 +30,13 @@ void CCustomDoor::Load			(LPCSTR section)
 
 void CCustomDoor::Open(){
 	PKinematics(pVisual)->PlayCycle("open");
-	Fsphere& S = CFORM()->GetSphere();
+	const Fsphere& S = CFORM()->getSphere();
 	::Sound->PlayAtPos(sndOpenClose,this,S.P);
 }
 
 void CCustomDoor::Close(){
 	PKinematics(pVisual)->PlayCycle("close");
-	Fsphere& S = CFORM()->GetSphere();
+	const Fsphere& S = CFORM()->getSphere();
 	::Sound->PlayAtPos(sndOpenClose,this,S.P);
 }
 
