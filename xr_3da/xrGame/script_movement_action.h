@@ -59,6 +59,8 @@ public:
 	MonsterSpace::EScriptMonsterMoveAction		m_tMoveAction;
 	MonsterSpace::EScriptMonsterSpeedParam		m_tSpeedParam;
 	u32											m_previous_patrol_point;
+	float										m_fDistToEnd;
+
 
 public:
 	IC				CScriptMovementAction	();
@@ -70,9 +72,9 @@ public:
 	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------						
 	// Monsters
 	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	IC				CScriptMovementAction	(MonsterSpace::EScriptMonsterMoveAction tAct, Fvector &tPosition, MonsterSpace::EScriptMonsterSpeedParam speed_param = MonsterSpace::eSP_Default);
-	IC				CScriptMovementAction	(MonsterSpace::EScriptMonsterMoveAction tAct, CPatrolPathParams &tPatrolPathParams, MonsterSpace::EScriptMonsterSpeedParam speed_param = MonsterSpace::eSP_Default);
-	IC				CScriptMovementAction	(MonsterSpace::EScriptMonsterMoveAction tAct, CScriptGameObject *tpObjectToGo, MonsterSpace::EScriptMonsterSpeedParam speed_param = MonsterSpace::eSP_Default);
+	IC				CScriptMovementAction	(MonsterSpace::EScriptMonsterMoveAction tAct, Fvector &tPosition, float	dist_to_end						= -1.f,	MonsterSpace::EScriptMonsterSpeedParam speed_param = MonsterSpace::eSP_Default);
+	IC				CScriptMovementAction	(MonsterSpace::EScriptMonsterMoveAction tAct, CPatrolPathParams &tPatrolPathParams, float dist_to_end	= -1.f,	MonsterSpace::EScriptMonsterSpeedParam speed_param = MonsterSpace::eSP_Default);
+	IC				CScriptMovementAction	(MonsterSpace::EScriptMonsterMoveAction tAct, CScriptGameObject *tpObjectToGo, float dist_to_end		= -1.f,	MonsterSpace::EScriptMonsterSpeedParam speed_param = MonsterSpace::eSP_Default);
 	virtual			~CScriptMovementAction	();
 	IC		void	SetBodyState			(const MonsterSpace::EBodyState tBodyState);
 	IC		void	SetMovementType			(const MonsterSpace::EMovementType tMovementType);

@@ -78,12 +78,15 @@ void CScriptMovementAction::script_register(lua_State *L)
 			.def(								constructor<const Fvector &,float>())
 			
 			// Monsters 
-			.def(								constructor<MonsterSpace::EScriptMonsterMoveAction,Fvector &,				MonsterSpace::EScriptMonsterSpeedParam>())
-			.def(								constructor<MonsterSpace::EScriptMonsterMoveAction,CPatrolPathParams &,	MonsterSpace::EScriptMonsterSpeedParam>())
-			.def(								constructor<MonsterSpace::EScriptMonsterMoveAction,CScriptGameObject*,				MonsterSpace::EScriptMonsterSpeedParam>())
 			.def(								constructor<MonsterSpace::EScriptMonsterMoveAction,Fvector &>())
 			.def(								constructor<MonsterSpace::EScriptMonsterMoveAction,CPatrolPathParams &>())
 			.def(								constructor<MonsterSpace::EScriptMonsterMoveAction,CScriptGameObject*>())
+			.def(								constructor<MonsterSpace::EScriptMonsterMoveAction,Fvector &, float>())
+			.def(								constructor<MonsterSpace::EScriptMonsterMoveAction,CPatrolPathParams &, float>())
+			.def(								constructor<MonsterSpace::EScriptMonsterMoveAction,CScriptGameObject*, float>())
+			.def(								constructor<MonsterSpace::EScriptMonsterMoveAction,Fvector &,			float,	MonsterSpace::EScriptMonsterSpeedParam>())
+			.def(								constructor<MonsterSpace::EScriptMonsterMoveAction,CPatrolPathParams &,	float,	MonsterSpace::EScriptMonsterSpeedParam>())
+			.def(								constructor<MonsterSpace::EScriptMonsterMoveAction,CScriptGameObject*,	float,	MonsterSpace::EScriptMonsterSpeedParam>())
 
 
 			.def("body",						&CScriptMovementAction::SetBodyState)

@@ -74,14 +74,15 @@ IC	CScriptMovementAction::CScriptMovementAction		(const EInputKeys tInputKeys, f
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------						
 // Monsters
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-IC	CScriptMovementAction::CScriptMovementAction		(MonsterSpace::EScriptMonsterMoveAction tAct, Fvector &tPosition, MonsterSpace::EScriptMonsterSpeedParam speed_param)
+IC	CScriptMovementAction::CScriptMovementAction		(MonsterSpace::EScriptMonsterMoveAction tAct, Fvector &tPosition, float	dist_to_end, MonsterSpace::EScriptMonsterSpeedParam speed_param)
 {																																			
 	m_tMoveAction		= tAct;
 	SetPosition			(tPosition);																										
 	m_tSpeedParam		= speed_param;
+	m_fDistToEnd		= dist_to_end;
 }						
 
-IC	CScriptMovementAction::CScriptMovementAction		(MonsterSpace::EScriptMonsterMoveAction tAct, CPatrolPathParams &tPatrolPathParams, MonsterSpace::EScriptMonsterSpeedParam speed_param)
+IC	CScriptMovementAction::CScriptMovementAction		(MonsterSpace::EScriptMonsterMoveAction tAct, CPatrolPathParams &tPatrolPathParams, float dist_to_end, MonsterSpace::EScriptMonsterSpeedParam speed_param)
 {																																			
 	m_tMoveAction			= tAct;
 	SetPatrolPath			(tPatrolPathParams.m_path,tPatrolPathParams.m_path_name);															
@@ -90,15 +91,18 @@ IC	CScriptMovementAction::CScriptMovementAction		(MonsterSpace::EScriptMonsterMo
 	SetPatrolRandom			(tPatrolPathParams.m_bRandom);																						
 	m_tSpeedParam			= speed_param;
 	m_previous_patrol_point = tPatrolPathParams.m_previous_index;
+	m_fDistToEnd			= dist_to_end;
 }						
 
-IC	CScriptMovementAction::CScriptMovementAction		(MonsterSpace::EScriptMonsterMoveAction tAct, CScriptGameObject *tpObjectToGo, MonsterSpace::EScriptMonsterSpeedParam speed_param)
+IC	CScriptMovementAction::CScriptMovementAction		(MonsterSpace::EScriptMonsterMoveAction tAct, CScriptGameObject *tpObjectToGo, float dist_to_end, MonsterSpace::EScriptMonsterSpeedParam speed_param)
 {
 	m_tMoveAction		= tAct;
 	SetObjectToGo		(tpObjectToGo);
 	m_tSpeedParam		= speed_param;
+	m_fDistToEnd		= dist_to_end;
 }
 
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 IC	void CScriptMovementAction::SetBodyState			(const MonsterSpace::EBodyState tBodyState)
 {
 	m_tBodyState		= tBodyState;

@@ -2079,6 +2079,23 @@
 									</File>
 								</Filter>
 							</Filter>
+							<Filter
+								Name="Event Handler"
+								Filter="">
+								<File
+									RelativePath=".\ai\event_handler.cpp">
+								</File>
+								<File
+									RelativePath=".\ai\event_handler.h">
+								</File>
+								<Filter
+									Name="Custom Events"
+									Filter="">
+									<File
+										RelativePath=".\ai\custom_events.h">
+									</File>
+								</Filter>
+							</Filter>
 						</Filter>
 					</Filter>
 					<Filter
@@ -2778,6 +2795,9 @@
 						</File>
 						<File
 							RelativePath=".\ai\Monsters\Poltergeist\poltergeist.h">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Poltergeist\poltergeist_ability.cpp">
 						</File>
 						<File
 							RelativePath=".\ai\Monsters\Poltergeist\poltergeist_flame_thrower.cpp">

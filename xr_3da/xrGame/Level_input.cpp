@@ -227,6 +227,11 @@ void CLevel::IR_OnKeyboardPress(int key)
 
 	CObject			*obj		= Level().Objects.FindObjectByName("monster");
 	CPoltergeist	*monster	= dynamic_cast<CPoltergeist*>(obj);
+	
+	Fvector			pos;
+	pos.mad(Level().CurrentEntity()->Position(), Level().CurrentEntity()->XFORM().i, 2.f);
+	pos.y += 1.5f;
+
 	if (monster) {
 		switch (key) {
 		case DIK_1:
@@ -234,6 +239,10 @@ void CLevel::IR_OnKeyboardPress(int key)
 			break;
 		case DIK_2:
 			monster->Show();
+			break;
+
+		case DIK_0:
+			monster->StartFlame(pos);
 			break;
 		}
 	}
