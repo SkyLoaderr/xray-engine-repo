@@ -13,7 +13,7 @@ class CSector;
 class CPortal				: public IRender_Portal
 {
 private:
-	xr_vector<Fvector>		poly;
+	svector<Fvector,8>		poly;
 	CSector					*pFace,*pBack;
 public:
 	Fplane					P;
