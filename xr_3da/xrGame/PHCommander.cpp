@@ -46,10 +46,11 @@ void CPHCommander::remove_call(PHCALL_I i)
 }
 void CPHCommander::clear()
 {
-	PHCALL_I	i=m_calls.begin(),e=m_calls.end();
-	for(;e!=i;++i)
+	PHCALL_I	i=m_calls.begin();;
+	for(;m_calls.end()!=i;)
 	{
 	 remove_call(i);
+	 ++i;
 	}
 	m_calls.clear();
 }

@@ -4,7 +4,7 @@
 #include "xrserver.h"
 #include "xrmessages.h"
 #include "game_cl_base.h"
-
+#include "PHCommander.h"
 void CLevel::net_Stop		()
 {
 	Msg							("- Disconnect");
@@ -12,7 +12,7 @@ void CLevel::net_Stop		()
 	IPureClient::Disconnect		();
 
 	BulletManager().Clear		();
-
+	ph_commander().clear		();
 	
 	if (Server)
 	{
