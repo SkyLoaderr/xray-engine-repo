@@ -70,7 +70,7 @@ void CLightProjector::set_object	(IRenderable* O)
 // 
 void CLightProjector::setup		(int id)
 {
-	if (id>=int(receivers.size()) || id<0)	{
+	if (id>=int(cache.size()) || id<0)	{
 		Log		("! CLightProjector::setup - ID out of range");
 		return;
 	}
