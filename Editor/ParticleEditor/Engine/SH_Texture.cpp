@@ -183,6 +183,7 @@ void CTexture::Load(LPCSTR cName)
 			dwMemoryUsage			=	Calculate_MemUsage(pSurface);
 		}
 	}
+	Msg		("* -- %s : %d K ", cName, dwMemoryUsage/1024);
 }
 
 DWORD CTexture::Calculate_MemUsage	(IDirect3DTexture8* T)
@@ -196,7 +197,7 @@ DWORD CTexture::Calculate_MemUsage	(IDirect3DTexture8* T)
 			dwMemory		+= desc.Size;
 		}
 	}
-	return dwMemory;
+	return	dwMemory;
 }
 
 void CTexture::Unload()
