@@ -108,6 +108,10 @@ void	CBlender_Model::Compile	(CBlender_Compile& C)
 			C.r_End				();
 			break;
 		case SE_R1_LMODELS:
+			vsname				= "model_def_shadow";
+			psname				= "model_shadow";
+			C.r_Pass			(vsname,psname,FALSE,FALSE,FALSE,TRUE,D3DBLEND_ZERO,D3DBLEND_SRCCOLOR,FALSE,0);
+			C.r_End				();
 			break;
 		}
 	}

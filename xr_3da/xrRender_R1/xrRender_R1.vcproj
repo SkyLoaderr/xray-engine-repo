@@ -477,12 +477,6 @@
 				RelativePath="Blender_Screen_SET.h">
 			</File>
 			<File
-				RelativePath="Blender_Shadow_Texture.cpp">
-			</File>
-			<File
-				RelativePath="Blender_Shadow_Texture.h">
-			</File>
-			<File
 				RelativePath="Blender_Shadow_World.cpp">
 			</File>
 			<File

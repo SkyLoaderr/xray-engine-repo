@@ -124,9 +124,10 @@ void CLightShadows::set_object	(IRenderable* O)
 
 void CLightShadows::add_element	(NODE& N)
 {
-	if (0==current)	return;
+	if (0==current)						return;
 	VERIFY2	(casters.back()->nodes.size()<16,"Object exceeds limit of 16 renderable parts/materials");
-	casters.back()->nodes.push_back	(N);
+	if (0==N.pVisual->E[SE_R1_LMODELS])	return;
+	casters.back()->nodes.push_back		(N);
 }
 
 IC float PLC_energy	(Fvector& P, Fvector& N, light* L, float E)
@@ -204,7 +205,6 @@ void CLightShadows::calculate	()
 				bRTS						= TRUE;
 				RCache.set_RT				(RT_temp->pRT);
 				RCache.set_ZB				(RImplementation.Target->pTempZB);
-				RCache.set_Shader			(sh_Texture);
 				HW.pDevice->Clear			(0,0,D3DCLEAR_TARGET,D3DCOLOR_XRGB(255,255,255),1,0);
 			}
 
@@ -273,6 +273,7 @@ void CLightShadows::calculate	()
 			{
 				NODE& N					=	C.nodes[n_it];
 				IRender_Visual *V		=	N.pVisual;
+				RCache.set_Element		(V->hShader->E[SE_R1_LMODELS]);
 				RCache.set_xform_world	(N.Matrix);
 				V->Render				(-1.0f);
 			}
