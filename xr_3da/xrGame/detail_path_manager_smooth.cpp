@@ -708,6 +708,12 @@ void CDetailPathManager::postprocess_key_points(
 	u32						straight_line_index_negative
 )
 {
+	if (m_key_points.size() < 3)
+		return;
+
+	if (m_key_points[m_key_points.size() - 2].position.similar(m_key_points[m_key_points.size() - 1].position))
+		m_key_points.pop_back();
+
 	for (int i=1, n=(int)m_key_points.size() - 1; i < n; ++i) {
 		STravelPoint		key_point0 = compute_better_key_point(m_key_points[i-1],m_key_points[i],m_key_points[i+1]);
 		STravelPoint		key_point1 = compute_better_key_point(m_key_points[i+1],m_key_points[i],m_key_points[i-1]);
