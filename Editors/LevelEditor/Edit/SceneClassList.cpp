@@ -54,6 +54,24 @@ LPSTR GetNameByClassID(EObjClass cls_id){
     default: THROW2("Gen empty name"); return 0;
     }
 }
+//----------------------------------------------------
+LPSTR GetClassNameByClassID(EObjClass cls_id)
+{
+    switch(cls_id){
+	case OBJCLASS_GROUP:		return "Group";
+    case OBJCLASS_SCENEOBJECT: 	return "Object";
+    case OBJCLASS_LIGHT:    	return "Light";
+    case OBJCLASS_SOUND:    	return "Sound";
+    case OBJCLASS_GLOW:     	return "Glow";
+    case OBJCLASS_SPAWNPOINT:   return "Spawn Point";
+    case OBJCLASS_WAY:			return "Way";
+    case OBJCLASS_SECTOR: 		return "Sector";
+    case OBJCLASS_PORTAL: 		return "Portal";
+    case OBJCLASS_EVENT: 		return "Event";
+    case OBJCLASS_PS:			return "Particle System";
+    default: THROW2("Gen empty name"); return 0;
+    }
+}
 bool IsClassID(EObjClass cls_id){
     switch(cls_id){
 	case OBJCLASS_GROUP:		return true;

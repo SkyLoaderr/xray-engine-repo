@@ -195,10 +195,11 @@ void CCustomObject::Scale( Fvector& amount )
     PScale		= s;
 }
 
-bool CCustomObject::FillProp(PropValueVec& values)
+void CCustomObject::FillProp(LPCSTR pref, PropValueVec& values)
 {
-	FILL_PROP(values, "Name",	FName,	PROP::CreateText	(sizeof(FName),Scene.OnObjectNameAfterEdit));
-    return true;
+	FILL_PROP_EX(values, pref, "Name",	FName,	PROP::CreateText	(sizeof(FName),Scene.OnObjectNameAfterEdit));
+    PropValue* V = PROP::FindProp(values,pref, "Name"); R_ASSERT(V);
+    if (V->IsDiffValues()) V->bEnabled = false;
 }
 //----------------------------------------------------
 

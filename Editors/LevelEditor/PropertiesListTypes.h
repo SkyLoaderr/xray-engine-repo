@@ -782,6 +782,20 @@ namespace PROP{
         v->InitFirst	(val);
         return v;
     }
+    IC LPCSTR			PrepareKey			(LPCSTR pref, LPCSTR key)
+    {
+    	static AnsiString XKey;
+    	if (pref)	XKey= AnsiString(pref)+"\\"+AnsiString(key); 
+        else		XKey= key;
+        return XKey.c_str();
+    }
+    IC PropValue* 		FindProp			(PropValueVec& values,	LPCSTR pref, LPCSTR key)
+    {
+    	LPCSTR X		= PrepareKey(pref,key);
+    	for (PropValueIt it=values.begin(); it!=values.end(); it++)
+        	if (0==strcmp((*it)->key,X)) return *it;
+        return 0;
+    }
     IC PropValue* 		FindProp			(PropValueVec& values,	LPCSTR key)
     {
     	for (PropValueIt it=values.begin(); it!=values.end(); it++)
@@ -796,7 +810,7 @@ namespace PROP{
     }
 }
 #define FILL_PROP(A,K,V,P){PropValue* prop=PROP::FindProp(A,K); if (prop) PROP::InitNext(prop,V); else PROP::InitFirst(A,K,V,P);}
-#define FILL_PROP_EX(A,X,K,V,P){AnsiString XK=AnsiString(X)+"\\"+AnsiString(K); PropValue* prop=PROP::FindProp(A,XK.c_str()); if (prop) PROP::InitNext(prop,V); else PROP::InitFirst(A,XK.c_str(),V,P);}
+#define FILL_PROP_EX(A,X,K,V,P){AnsiString XK=PROP::PrepareKey(X,K); PropValue* prop=PROP::FindProp(A,XK.c_str()); if (prop) PROP::InitNext(prop,V); else PROP::InitFirst(A,XK.c_str(),V,P);}
 //---------------------------------------------------------------------------
 #endif
 

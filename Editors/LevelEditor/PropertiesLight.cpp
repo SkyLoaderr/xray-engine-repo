@@ -130,28 +130,19 @@ void TfrmPropertiesLight::GetObjectsInfo(){
     PropValueVec values;
     PropValueVec sun_values;
     PropValueVec point_values;
-    _L->FillProp	(values);
-    _L->FillSunProp	(sun_values);
-    _L->FillPointProp(point_values);
+	for(;_F!=m_Objects->end();_F++){
+		VERIFY( (*_F)->ClassID==OBJCLASS_LIGHT );
+		_L 							= (CLight *)(*_F);
+        _L->FillProp				(GetClassNameByClassID(_L->ClassID),values);
+        _L->FillSunProp				(GetClassNameByClassID(_L->ClassID),sun_values);
+        _L->FillPointProp			(GetClassNameByClassID(_L->ClassID),point_values);
+	}
 	flBrightness 					= (FloatValue*)PROP::FindProp(values,"Brightness"); R_ASSERT(flBrightness);
     flBrightness->OnChange			= OnBrightnessChange;
     flPointRange					= (FloatValue*)PROP::FindProp(point_values,"Range");					R_ASSERT(flPointRange);
     flPointA0						= (FloatValue*)PROP::FindProp(point_values,"Attenuation\\Constant"); 	R_ASSERT(flPointA0);
     flPointA1						= (FloatValue*)PROP::FindProp(point_values,"Attenuation\\Linear"); 		R_ASSERT(flPointA1);
     flPointA2						= (FloatValue*)PROP::FindProp(point_values,"Attenuation\\Quadratic"); 	R_ASSERT(flPointA2);
-    if (m_Objects->size()>1){
-		PropValue* V 				= PROP::FindProp(values,"Name"); R_ASSERT(V);
-        V->bEnabled					= false;
-    }
-                                                          
-	_F++;
-	for(;_F!=m_Objects->end();_F++){
-		VERIFY( (*_F)->ClassID==OBJCLASS_LIGHT );
-		_L 							= (CLight *)(*_F);
-        _L->FillProp				(values);
-	    _L->FillSunProp				(sun_values);
-	    _L->FillPointProp			(point_values);
-	}
     m_Props->AssignValues			(values,true);
     m_SunProps->AssignValues		(sun_values,false);
     m_PointProps->AssignValues		(point_values,true);

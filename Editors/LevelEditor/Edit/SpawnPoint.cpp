@@ -260,25 +260,23 @@ bool CSpawnPoint::ExportGame(SExportStreams& F)
 }
 //----------------------------------------------------
 
-bool CSpawnPoint::FillProp(PropValueVec& values)
+void CSpawnPoint::FillProp(LPCSTR pref, PropValueVec& values)
 {
-	inherited::FillProp(values);
+	inherited::FillProp(pref,values);
     
     if (m_SpawnData){
-    	m_SpawnData->FillProp(values);
+    	m_SpawnData->FillProp(pref,values);
     }else{
     	switch (m_Type){
         case ptRPoint:{
-            FILL_PROP_EX(values, "Respawn Point", "Team",	&m_dwTeamID, PROP::CreateU32(64,1));
+            FILL_PROP_EX(values, PROP::PrepareKey(pref,"Respawn Point"), 	"Team",		&m_dwTeamID, PROP::CreateU32(64,1));
         }break;
         case ptAIPoint: 
-            FILL_PROP_EX(values, "AI Point", "Reserved", "-", PROP::CreateMarker());
+            FILL_PROP_EX(values, PROP::PrepareKey(pref,"AI Point"), 		"Reserved", "-", PROP::CreateMarker());
         break;
         default: THROW;
         }
     }
-	
-    return true;
 }
 //----------------------------------------------------
 

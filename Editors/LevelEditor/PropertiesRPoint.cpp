@@ -27,35 +27,25 @@ void TfrmPropertiesSpawnPoint::GetObjectsInfo()
 {
 	VERIFY( !m_Objects->empty() );
 
-	ObjectIt _F = m_Objects->begin();
-	CSpawnPoint *P 		= dynamic_cast<CSpawnPoint*>(*_F); R_ASSERT(P);
+	ObjectIt _F 		= m_Objects->begin();
 
     PropValueVec values;
-    P->FillProp	(values);
-
-    if (m_Objects->size()>1){
-		PropValue* V 	= PROP::FindProp(values,"Name"); R_ASSERT(V);
-        V->bEnabled		= false;
-    }
-
-	_F++;
 	for(;_F!=m_Objects->end();_F++){
-		P 				= dynamic_cast<CSpawnPoint*>(*_F); R_ASSERT(P);
-        P->FillProp		(values);
+		CSpawnPoint *P 	= dynamic_cast<CSpawnPoint*>(*_F); R_ASSERT(P);
+        P->FillProp		(GetClassNameByClassID(P->ClassID),values);
 	}
 	m_Props->AssignValues(values,true);
-}
-//---------------------------------------------------------------------------
-
-bool TfrmPropertiesSpawnPoint::ApplyObjectsInfo()
-{
-	return true;
 }
 //---------------------------------------------------------------------------
 
 void TfrmPropertiesSpawnPoint::CancelObjectsInfo()
 {
 	m_Props->ResetValues();
+}
+//---------------------------------------------------------------------------
+
+void TfrmPropertiesSpawnPoint::ApplyObjectsInfo()
+{
 }
 //---------------------------------------------------------------------------
 
@@ -93,7 +83,6 @@ void __fastcall TfrmPropertiesSpawnPoint::ebCancelClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-//----------------------------------------------------
 int __fastcall TfrmPropertiesSpawnPoint::Run(ObjectList* pObjects, bool& bChange)
 {
 	VERIFY(!TfrmPropertiesSpawnPoint::form);
@@ -104,6 +93,7 @@ int __fastcall TfrmPropertiesSpawnPoint::Run(ObjectList* pObjects, bool& bChange
     bChange = (res==mrOk);
     return res;
 }
+//---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesSpawnPoint::FormClose(TObject *Sender,
       TCloseAction &Action)
@@ -113,7 +103,6 @@ void __fastcall TfrmPropertiesSpawnPoint::FormClose(TObject *Sender,
     case mrCancel: 	CancelObjectsInfo();	break;
     default: THROW2("Invalid case");
     }
-	TProperties::DestroyForm(m_Props);
 
 	// free resources
 	Action = caFree;
@@ -135,4 +124,10 @@ void __fastcall TfrmPropertiesSpawnPoint::fsStorageSavePlacement(
 }
 //---------------------------------------------------------------------------
 
+
+void __fastcall TfrmPropertiesSpawnPoint::FormDestroy(TObject *Sender)
+{
+	TProperties::DestroyForm(m_Props);
+}
+//---------------------------------------------------------------------------
 

@@ -63,7 +63,7 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                     CSurface* Osf = new CSurface();
                     m_Surfaces.push_back(Osf);
                     if (Isf->name&&Isf->name[0]) Osf->SetName(Isf->name); else Osf->SetName("Default");
-                    Osf->Set2Sided((Isf->sideflags==3)?TRUE:FALSE);
+                    Osf->SetFlag(CSurface::sf2Sided,(Isf->sideflags==3)?TRUE:FALSE);
                     AnsiString en_shader="default", lc_shader="default";
                     XRShader* sh_info = 0;
                     if (Isf->nshaders&&(stricmp(Isf->shader->name,SH_PLUGIN_NAME)==0)){
@@ -122,10 +122,9 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                         break;
                     }
 
-                    Osf->ED_SetShader(en_shader.c_str());
-					Osf->SetShaderXRLC(lc_shader.c_str());
-
-                    Osf->SetFVF(D3DFVF_XYZ|D3DFVF_NORMAL|(dwNumTextures<<D3DFVF_TEXCOUNT_SHIFT));
+                    Osf->SetShader		(en_shader.c_str());
+					Osf->SetShaderXRLC	(lc_shader.c_str());
+                    Osf->SetFVF			(D3DFVF_XYZ|D3DFVF_NORMAL|(dwNumTextures<<D3DFVF_TEXCOUNT_SHIFT));
                     i++;
                 }
 		    }

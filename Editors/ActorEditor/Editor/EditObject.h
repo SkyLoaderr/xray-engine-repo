@@ -38,13 +38,18 @@ class XRayMaterial;
 class CSurface
 {
 public:
+	enum EFlags{
+    	sf2Sided	= (1<<0),
+    	sfForceDWORD= (-1)
+    };
+
 	AnsiString		m_Name;
     AnsiString		m_Texture;	//
     AnsiString		m_VMap;		//
     AnsiString		m_ShaderName;
     AnsiString		m_ShaderXRLCName;
     Shader*			m_Shader;
-    BYTE			m_Sideflag;
+    DWORD			m_dwFlags;
     DWORD			m_dwFVF;
 #ifdef _MAX_EXPORT
 	DWORD			mid;
@@ -58,7 +63,7 @@ public:
 	CSurface		()
 	{
 		m_Shader	= 0;
-		m_Sideflag	= 0;
+		m_dwFlags	= 0;
 		m_dwFVF		= 0;
 #ifdef _MAX_EXPORT
 		mtl			= 0;
@@ -70,7 +75,7 @@ public:
 		tag			= 0;
 	}
 #ifdef _EDITOR
-					~CSurface		(){DeleteShader();}
+					~CSurface		(){R_ASSERT(!m_Shader);}
 	IC void			CopyFrom		(CSurface* surf){*this = *surf; m_Shader=0;}
     IC int			_Priority		()const {return m_Shader?m_Shader->lod0->Flags.iPriority:1;}
     IC bool			_StrictB2F		()const {return m_Shader?m_Shader->lod0->Flags.bStrictB2F:false;}
@@ -80,20 +85,21 @@ public:
     IC LPCSTR		_ShaderName		()const {return m_ShaderName.c_str();}
     IC LPCSTR		_ShaderXRLCName	()const {return m_ShaderXRLCName.c_str();}
     IC DWORD		_FVF			()const {return m_dwFVF;}
-    IC BOOL			_2Sided			()const {return !!m_Sideflag;}
     IC LPCSTR		_Texture		(){return m_Texture.c_str();}
     IC LPCSTR		_VMap			(){return m_VMap.c_str();}
     IC void			SetName			(LPCSTR name){m_Name=name;}
-    IC void			SetShader		(LPCSTR name, Shader* sh){R_ASSERT(name&&name[0]); m_ShaderName=name; m_Shader=sh;}
-    IC void			ED_SetShader	(LPCSTR name){R_ASSERT(name&&name[0]); m_ShaderName=name;}
+    IC void			SetShader		(LPCSTR name){R_ASSERT(name&&name[0]); m_ShaderName=name;}
     IC void 		SetShaderXRLC	(LPCSTR name){m_ShaderXRLCName=name;}
-    IC void			Set2Sided		(BOOL fl){m_Sideflag=fl;}
+    IC bool			GetFlag			(EFlags flag)const {return !!(m_dwFlags&flag);}
+    IC DWORD		GetFlags		()const {return m_dwFlags;}
+    IC void			SetFlag			(EFlags flag, bool val){if (val) m_dwFlags|=val; else m_dwFlags&=~flag;}
+    IC void			SetFlags		(DWORD flags){m_dwFlags=flags;}
     IC void			SetFVF			(DWORD fvf){m_dwFVF=fvf;}
     IC void			SetTexture		(LPCSTR name){m_Texture=name;}
     IC void			SetVMap			(LPCSTR name){m_VMap=name;}
 #ifdef _EDITOR
-    IC void			CreateShader	(){m_Shader=Device.Shader.Create(m_ShaderName.c_str(),m_Texture.c_str());}
-    IC void			DeleteShader	(){ if (m_Shader) Device.Shader.Delete(m_Shader); m_Shader=0; }
+    IC void			OnDeviceCreate	(){m_Shader=Device.Shader.Create(m_ShaderName.c_str(),m_Texture.c_str());}
+    IC void			OnDeviceDestroy	(){Device.Shader.Delete(m_Shader);}
 #endif
 };
 
@@ -306,8 +312,8 @@ public:
   	bool 			Load					(CStream&);
 	void 			Save					(CFS_Base&);
 #ifdef _EDITOR
-    void			FillPropSummary			(PropValueVec& values);
-    void			FillPropSurf			(PropValueVec& values, TOnChange change=0);
+    void			FillPropSummary			(LPCSTR pref, PropValueVec& values);
+    void			FillPropSurf			(LPCSTR pref, PropValueVec& values, TOnChange change=0);
 #endif
 	bool			Import_LWO				(LPCSTR fname, bool bNeedOptimize);
 
@@ -365,6 +371,7 @@ public:
 #define EOBJ_CHUNK_REFERENCE     	0x0902
 #define EOBJ_CHUNK_FLAGS           	0x0903
 #define EOBJ_CHUNK_SURFACES			0x0905
+#define EOBJ_CHUNK_SURFACES2		0x0906
 #define EOBJ_CHUNK_EDITMESHES      	0x0910
 #define EOBJ_CHUNK_LIB_VERSION     	0x0911
 #define EOBJ_CHUNK_CLASSSCRIPT     	0x0912

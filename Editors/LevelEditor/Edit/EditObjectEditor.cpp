@@ -265,7 +265,7 @@ void CEditableObject::DefferedLoadRP()
     }
 	// создать заново shaders
     for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
-       (*s_it)->CreateShader();
+       (*s_it)->OnDeviceCreate();
 	// создать LOD shader
 	AnsiString l_name;
     GetLODTextureName(l_name);
@@ -282,7 +282,7 @@ void CEditableObject::DefferedUnloadRP()
     	if (*_M) (*_M)->ClearRenderBuffers();
 	// удалить shaders
     for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
-        (*s_it)->DeleteShader();
+        (*s_it)->OnDeviceDestroy();
     // LOD
     Device.Shader.Delete(m_LODShader);
     m_LoadState &=~ EOBJECT_LS_DEFFEREDRP;
@@ -320,26 +320,29 @@ bool CEditableObject::PrepareSV(CFS_Base& F)
     return E.Export(F);
 }
 
-void CEditableObject::FillPropSummary(PropValueVec& values)
+void CEditableObject::FillPropSummary(LPCSTR pref, PropValueVec& values)
 {
     AnsiString t; t.sprintf("V: %d, F: %d",		GetVertexCount(),GetFaceCount());
-    FILL_PROP(values, "Summary\\Object",		t.c_str(), 			PROP::CreateMarker());
+    FILL_PROP_EX(values, pref, "Summary\\Object",		t.c_str(), 		PROP::CreateMarker());
     for (EditMeshIt m_it=FirstMesh(); m_it!=LastMesh(); m_it++){
         CEditableMesh* MESH=*m_it;
         t.sprintf("V: %d, F: %d",MESH->GetVertexCount(),MESH->GetFaceCount());
-        FILL_PROP(values, AnsiString(AnsiString("Summary\\Meshes\\")+MESH->GetName()).c_str(),	t.c_str(), PROP::CreateMarker());
+        FILL_PROP_EX(values, pref, AnsiString(AnsiString("Summary\\Meshes\\")+MESH->GetName()).c_str(),	t.c_str(), PROP::CreateMarker());
     }
-    FILL_PROP(values, "Game options\\Script",	&m_ClassScript,		PROP::CreateAText());
+    FILL_PROP_EX(values, pref, "Game options\\Script",	&m_ClassScript,		PROP::CreateAText());
 }
 
-void CEditableObject::FillPropSurf(PropValueVec& values, TOnChange change)
+void CEditableObject::FillPropSurf(LPCSTR pref, PropValueVec& values, TOnChange onchange)
 {
     for (SurfaceIt s_it=FirstSurface(); s_it!=LastSurface(); s_it++){
-        CSurface* SURF=*s_it;
-        AnsiString nm = AnsiString("Surfaces\\")+SURF->_Name();
-        FILL_PROP(values, AnsiString(nm+"\\Texture").c_str(), 	&SURF->m_Texture, 		PROP::CreateATexture(0,0,0,change));
-        FILL_PROP(values, AnsiString(nm+"\\Shader").c_str(), 	&SURF->m_ShaderName, 	PROP::CreateAEShader(0,0,0,change));
-        FILL_PROP(values, AnsiString(nm+"\\Compile").c_str(), 	&SURF->m_ShaderXRLCName,PROP::CreateACShader());
+        CSurface* SURF	= *s_it;
+        AnsiString nm 	= AnsiString("Surfaces\\")+SURF->_Name();
+        int face_cnt 	= GetSurfFaceCount(SURF->_Name());
+        FILL_PROP_EX(values, pref, AnsiString(nm+"\\Texture").c_str(), 	&SURF->m_Texture, 		PROP::CreateATexture(0,0,0,onchange));
+        FILL_PROP_EX(values, pref, AnsiString(nm+"\\Shader").c_str(), 	&SURF->m_ShaderName, 	PROP::CreateAEShader(0,0,0,onchange));
+        FILL_PROP_EX(values, pref, AnsiString(nm+"\\Compile").c_str(), 	&SURF->m_ShaderXRLCName,PROP::CreateACShader());
+        FILL_PROP_EX(values, pref, AnsiString(nm+"\\2 Sided").c_str(), 	&SURF->m_dwFlags,		PROP::CreateFlag(CSurface::sf2Sided,0,0,0,onchange));
+        FILL_PROP_EX(values, pref, AnsiString(nm+"\\Face count").c_str(), AnsiString(face_cnt).c_str(), PROP::CreateMarker());
     }
 }
 //---------------------------------------------------------------------------

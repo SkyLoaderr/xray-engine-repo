@@ -50,7 +50,7 @@ void CEditableMesh::GenerateCFModel(){
 		for (IntIt it=face_lst.begin(); it!=face_lst.end(); it++){
 			st_Face&	F = m_Faces[*it];
 			CL.add_face(m_Points[F.pv[0].pindex],m_Points[F.pv[1].pindex],m_Points[F.pv[2].pindex], 0,0,0, 0,0,*it);
-			if (sp_it->first->_2Sided())
+			if (sp_it->first->GetFlag(CSurface::sf2Sided))
 				CL.add_face(m_Points[F.pv[2].pindex],m_Points[F.pv[1].pindex],m_Points[F.pv[0].pindex], 0,0,0, 0,0,*it);
 		}
 	}

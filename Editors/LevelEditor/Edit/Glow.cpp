@@ -12,6 +12,7 @@
 #include "bottombar.h"
 #include "d3dutils.h"
 #include "render.h"
+#include "PropertiesListTypes.h"
 
 #define GLOW_VERSION	   				0x0012
 //----------------------------------------------------
@@ -31,15 +32,35 @@ void CGlow::Construct(LPVOID data){
 	ClassID		= OBJCLASS_GLOW;
     m_GShader   = 0;
     m_Range     = 0.5f;
+    m_bDefLoad	= false;
 }
 
-CGlow::~CGlow(){
-    if (m_GShader) Device.Shader.Delete(m_GShader);
+CGlow::~CGlow()
+{
+	OnDeviceDestroy();
 }
 
-void CGlow::Compile(){
-	if (m_GShader) Device.Shader.Delete(m_GShader);
+void CGlow::OnDeviceCreate()
+{
+	// создать заново shaders
 	if (!m_TexName.IsEmpty()&&!m_ShaderName.IsEmpty()) m_GShader = Device.Shader.Create(m_ShaderName.c_str(),m_TexName.c_str());
+	m_bDefLoad = true;
+}
+
+void CGlow::OnDeviceDestroy()
+{
+	m_bDefLoad = false;
+	// удалить shaders
+	Device.Shader.Delete(m_GShader);
+}
+
+void CGlow::FillProp(LPCSTR pref, PropValueVec& values)
+{
+	inherited::FillProp(pref, values);
+	FILL_PROP_EX(values, pref, "Texture", 		&m_TexName, 	PROP::CreateATexture());
+	FILL_PROP_EX(values, pref, "Shader", 		&m_ShaderName, 	PROP::CreateAEShader());
+    FILL_PROP_EX(values, pref, "Radius", 		&m_Range, 		PROP::CreateFloat	());
+    FILL_PROP_EX(values, pref, "Fixed size", 	&m_dwFlags, 	PROP::CreateFlag	(gfFixedSize));
 }
 //----------------------------------------------------
 bool CGlow::GetBox( Fbox& box ){
@@ -51,6 +72,7 @@ bool CGlow::GetBox( Fbox& box ){
 
 void CGlow::Render(int priority, bool strictB2F){
     if ((1==priority)&&(true==strictB2F)){
+    	if (!m_bDefLoad) OnDeviceCreate();
     	// определяем параметры для RayPick
     	Fvector D;
         SRayPickInfo pinf;
@@ -104,8 +126,7 @@ bool CGlow::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPic
 
 bool CGlow::Load(CStream& F){
 	DWORD version = 0;
-    char sh_name[64]="";
-    char tex_name[128]="";
+    string256 buf;
 
     R_ASSERT(F.ReadChunk(GLOW_CHUNK_VERSION,&version));
     if((version!=0x0011)&&(version!=GLOW_VERSION)){
@@ -115,10 +136,12 @@ bool CGlow::Load(CStream& F){
 
 	CCustomObject::Load(F);
 
-    if (F.FindChunk(GLOW_CHUNK_SHADER)) F.RstringZ (sh_name);
+    if (F.FindChunk(GLOW_CHUNK_SHADER)){ 
+    	F.RstringZ (buf); m_ShaderName = buf;
+    }
 
     R_ASSERT(F.FindChunk(GLOW_CHUNK_TEXTURE));
-	F.RstringZ	(tex_name); m_TexName = tex_name;
+	F.RstringZ	(buf); m_TexName = buf;
 
     R_ASSERT(F.FindChunk(GLOW_CHUNK_PARAMS));
 	m_Range  		= F.Rfloat();
@@ -127,9 +150,6 @@ bool CGlow::Load(CStream& F){
         UpdateTransform();
     }
 
-
-    m_ShaderName	= sh_name;
-    Compile			();
     return true;
 }
 
@@ -156,13 +176,4 @@ void CGlow::Save(CFS_Base& F){
 }
 //----------------------------------------------------
 
-void CGlow::OnDeviceCreate(){
-	// создать заново shaders
-	if (!m_TexName.IsEmpty()&&!m_ShaderName.IsEmpty()) m_GShader = Device.Shader.Create(m_ShaderName.c_str(),m_TexName.c_str());
-}
-
-void CGlow::OnDeviceDestroy(){
-	// удалить shaders
-	if (m_GShader) Device.Shader.Delete(m_GShader);
-}
 

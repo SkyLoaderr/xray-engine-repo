@@ -17,6 +17,9 @@ public:
 	// Constructor/destructor
 						CRender			();
 	virtual 			~CRender		();
+
+    void				Calculate		();
+    void				Render			();
 };                                                    
 
 IC  float   CalcSSA(Fvector& C, float R)

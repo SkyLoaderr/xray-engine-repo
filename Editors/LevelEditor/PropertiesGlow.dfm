@@ -1,13 +1,11 @@
-object frmPropertiesSpawnPoint: TfrmPropertiesSpawnPoint
-  Left = 380
-  Top = 360
+object frmPropertiesGlow: TfrmPropertiesGlow
+  Left = 478
+  Top = 367
   BorderStyle = bsDialog
-  Caption = 'Spawn properties'
-  ClientHeight = 292
-  ClientWidth = 245
+  Caption = 'Glow properties'
+  ClientHeight = 238
+  ClientWidth = 340
   Color = 10528425
-  Constraints.MinHeight = 319
-  Constraints.MinWidth = 253
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -20,18 +18,55 @@ object frmPropertiesSpawnPoint: TfrmPropertiesSpawnPoint
   OnClose = FormClose
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
-  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object paBottom: TPanel
+  object Panel1: TPanel
     Left = 0
-    Top = 270
-    Width = 245
+    Top = 0
+    Width = 340
+    Height = 216
+    Align = alClient
+    BevelOuter = bvNone
+    ParentColor = True
+    TabOrder = 0
+    object paImage: TPanel
+      Left = 208
+      Top = 1
+      Width = 132
+      Height = 132
+      BevelOuter = bvLowered
+      Caption = '<no image>'
+      ParentColor = True
+      TabOrder = 0
+      object pbImage: TPaintBox
+        Left = 1
+        Top = 1
+        Width = 130
+        Height = 130
+        Align = alClient
+        OnPaint = pbImagePaint
+      end
+    end
+    object paProps: TPanel
+      Left = 0
+      Top = 0
+      Width = 207
+      Height = 216
+      Align = alLeft
+      BevelOuter = bvLowered
+      ParentColor = True
+      TabOrder = 1
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 216
+    Width = 340
     Height = 22
     Align = alBottom
     BevelOuter = bvNone
     ParentColor = True
-    TabOrder = 0
+    TabOrder = 1
     object ebOk: TExtBtn
       Left = 1
       Top = 3
@@ -42,6 +77,7 @@ object frmPropertiesSpawnPoint: TfrmPropertiesSpawnPoint
       BtnColor = 10528425
       CloseButton = False
       Caption = 'Ok'
+      Enabled = False
       Transparent = False
       FlatAlwaysEdge = True
       OnClick = ebOkClick
@@ -61,21 +97,21 @@ object frmPropertiesSpawnPoint: TfrmPropertiesSpawnPoint
       OnClick = ebCancelClick
     end
   end
-  object paProps: TPanel
-    Left = 0
-    Top = 0
-    Width = 245
-    Height = 270
-    Align = alClient
-    BevelOuter = bvNone
-    ParentColor = True
-    TabOrder = 1
-  end
   object fsStorage: TFormStorage
     OnSavePlacement = fsStorageSavePlacement
     OnRestorePlacement = fsStorageRestorePlacement
-    StoredValues = <>
-    Left = 65528
-    Top = 65528
+    StoredValues = <
+      item
+        Name = 'EmitterDirX'
+        Value = 0
+      end
+      item
+        Name = 'EmitterDirY'
+        Value = 0
+      end
+      item
+        Name = 'EmitterDirZ'
+        Value = 0
+      end>
   end
 end

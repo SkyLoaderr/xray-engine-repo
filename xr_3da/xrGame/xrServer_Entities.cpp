@@ -52,9 +52,9 @@ void	xrServerEntity::Spawn_Read		(NET_Packet& P)
 }
 
 #ifdef _EDITOR
-void	xrServerEntity::FillProp(PropValueVec& values)
+void	xrServerEntity::FillProp(LPCSTR pref, PropValueVec& values)
 {
-	FILL_PROP(values,	"Active",	&s_flags, 	PROP::CreateFlag(M_SPAWN_OBJECT_ACTIVE));
+	FILL_PROP_EX(values,	pref, "Active",	&s_flags, 	PROP::CreateFlag(M_SPAWN_OBJECT_ACTIVE));
 }
 #endif
 
@@ -126,11 +126,11 @@ public:
 	}
 
 #ifdef _EDITOR
-    virtual void			FillProp		(PropValueVec& values)
+    virtual void			FillProp		(LPCSTR pref, PropValueVec& values)
     {
-    	inherited::FillProp(values);
-      	FILL_PROP_EX(values,s_name, "Ammo: total",		&a_current, PROP::CreateU16(0,1000,1));
-        FILL_PROP_EX(values,s_name, "Ammo: in magazine",&a_elapsed, PROP::CreateU16(0,30,1));
+    	inherited::FillProp(pref, values);
+      	FILL_PROP_EX(values,PROP::PrepareKey(pref,s_name), "Ammo: total",		&a_current, PROP::CreateU16(0,1000,1));
+        FILL_PROP_EX(values,PROP::PrepareKey(pref,s_name), "Ammo: in magazine",&a_elapsed, PROP::CreateU16(0,30,1));
     }
 #endif
 };
@@ -166,12 +166,12 @@ public:
 		P.w_u8				(s_group);
 	}
 #ifdef _EDITOR
-    virtual void			FillProp		(PropValueVec& values)
+    virtual void			FillProp			(LPCSTR pref, PropValueVec& values)
     {
-    	inherited::FillProp(values);
-      	FILL_PROP_EX(values,s_name, "Team",		&s_team, 	PROP::CreateU8(0,64,1));
-        FILL_PROP_EX(values,s_name, "Squad",	&s_squad, 	PROP::CreateU8(0,64,1));
-        FILL_PROP_EX(values,s_name, "Group",	&s_group, 	PROP::CreateU8(0,64,1));
+    	inherited::FillProp(pref,values);
+      	FILL_PROP_EX(values,PROP::PrepareKey(pref,s_name), "Team",		&s_team, 	PROP::CreateU8(0,64,1));
+        FILL_PROP_EX(values,PROP::PrepareKey(pref,s_name), "Squad",	&s_squad, 	PROP::CreateU8(0,64,1));
+        FILL_PROP_EX(values,PROP::PrepareKey(pref,s_name), "Group",	&s_group, 	PROP::CreateU8(0,64,1));
     }
 #endif
 };

@@ -68,7 +68,7 @@ public:
     IC BOOL			Valid			(){return m_bValid;}
 
 	// editor integration
-	virtual bool	FillProp		(PropValueVec& values);
+	virtual void	FillProp		(LPCSTR pref, PropValueVec& values);
 
 	virtual void 	Select			(int  flag);
 	virtual void 	Show			(BOOL flag);

@@ -98,30 +98,48 @@ bool CEditableObject::Load(CStream& F){
         // file version
         R_ASSERT(F.ReadChunk(EOBJ_CHUNK_LIB_VERSION, &m_ObjVer));
         // surfaces
-        R_ASSERT(F.FindChunk(EOBJ_CHUNK_SURFACES));
-        DWORD cnt = F.Rdword();
-        m_Surfaces.resize(cnt);
-        for (SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
-            *s_it = new CSurface();
-            F.RstringZ(buf);
-            (*s_it)->SetName(buf);
-            F.RstringZ(sh_name);
-            (*s_it)->Set2Sided	(F.Rbyte());
-            (*s_it)->SetFVF		(F.Rdword());
-            cnt 				= F.Rdword();
-            if (cnt>1) ELog.DlgMsg(mtError,"Object surface '%s' has more than one TC's.",buf);
-            R_ASSERT(1<=cnt);
-			F.RstringZ			(buf); (*s_it)->SetTexture(buf);
-			F.RstringZ			(buf); (*s_it)->SetVMap(buf);
-            (*s_it)->ED_SetShader	(sh_name);
-            (*s_it)->SetShaderXRLC	("default");
-        }
+        if (F.FindChunk(EOBJ_CHUNK_SURFACES2)){
+            DWORD cnt = F.Rdword();
+            m_Surfaces.resize(cnt);
+            for (SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
+                *s_it 		= new CSurface();
+                F.RstringZ	(buf);	(*s_it)->SetName		(buf);
+                F.RstringZ	(buf);	(*s_it)->SetShader		(buf);
+                F.RstringZ	(buf);	(*s_it)->SetShaderXRLC	(buf);
+                F.RstringZ	(buf); 	(*s_it)->SetTexture		(buf);
+                F.RstringZ	(buf); 	(*s_it)->SetVMap		(buf);
+                (*s_it)->SetFlags	(F.Rdword());
+                (*s_it)->SetFVF		(F.Rdword());
+                cnt 				= F.Rdword();
+                if (cnt>1) ELog.DlgMsg(mtError,"Object surface '%s' has more than one TC's.",buf);
+                R_ASSERT(1<=cnt);
+            }
+        }else{
+            R_ASSERT(F.FindChunk(EOBJ_CHUNK_SURFACES));
+            DWORD cnt = F.Rdword();
+            m_Surfaces.resize(cnt);
+            for (SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
+                *s_it = new CSurface();
+                F.RstringZ(buf);
+                (*s_it)->SetName(buf);
+                F.RstringZ(sh_name);
+                (*s_it)->SetFlag	(CSurface::sf2Sided,F.Rbyte());
+                (*s_it)->SetFVF		(F.Rdword());
+                cnt 				= F.Rdword();
+                if (cnt>1) ELog.DlgMsg(mtError,"Object surface '%s' has more than one TC's.",buf);
+                R_ASSERT(1<=cnt);
+                F.RstringZ			(buf); (*s_it)->SetTexture(buf);
+                F.RstringZ			(buf); (*s_it)->SetVMap(buf);
+                (*s_it)->SetShader		(sh_name);
+                (*s_it)->SetShaderXRLC	("default");
+            }
 
-        // surfaces xrlc part
-        if(F.FindChunk(EOBJ_CHUNK_SURFACES_XRLC))
-	        for (s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
-    	        F.RstringZ(buf); (*s_it)->SetShaderXRLC(buf);
-        	}
+            // surfaces xrlc part
+            if(F.FindChunk(EOBJ_CHUNK_SURFACES_XRLC))
+                for (s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
+                    F.RstringZ(buf); (*s_it)->SetShaderXRLC(buf);
+                }
+        }
 
         // Load meshes
         CStream* OBJ = F.OpenChunk(EOBJ_CHUNK_EDITMESHES);
@@ -214,22 +232,17 @@ void CEditableObject::Save(CFS_Base& F){
     }
     F.close_chunk	();
     // surfaces
-    F.open_chunk	(EOBJ_CHUNK_SURFACES);
+    F.open_chunk	(EOBJ_CHUNK_SURFACES2);
     F.Wdword		(m_Surfaces.size());
     for (SurfaceIt sf_it=m_Surfaces.begin(); sf_it!=m_Surfaces.end(); sf_it++){
-        F.WstringZ	((*sf_it)->_Name());
-        F.WstringZ	((*sf_it)->_ShaderName());
-        F.Wbyte		((*sf_it)->_2Sided());
-        F.Wdword	((*sf_it)->_FVF());
+        F.WstringZ	((*sf_it)->_Name			());
+        F.WstringZ	((*sf_it)->_ShaderName		());
+        F.WstringZ	((*sf_it)->_ShaderXRLCName	());
+		F.WstringZ	((*sf_it)->_Texture			());
+		F.WstringZ	((*sf_it)->_VMap			());
+        F.Wdword	((*sf_it)->GetFlags			());
+        F.Wdword	((*sf_it)->_FVF				());
         F.Wdword	(1);
-		F.WstringZ	((*sf_it)->_Texture());
-		F.WstringZ	((*sf_it)->_VMap());
-    }
-    F.close_chunk	();
-
-    F.open_chunk	(EOBJ_CHUNK_SURFACES_XRLC);
-    for (sf_it=m_Surfaces.begin(); sf_it!=m_Surfaces.end(); sf_it++){
-        F.WstringZ	((*sf_it)->_ShaderXRLCName());
     }
     F.close_chunk	();
 
@@ -306,7 +319,7 @@ bool CEditableObject::ExportHOMPart(CFS_Base& F)
 {
     for (EditMeshIt m_it=m_Meshes.begin(); m_it!=m_Meshes.end(); m_it++){
         for (SurfFacesPairIt sf_it=(*m_it)->m_SurfFaces.begin(); sf_it!=(*m_it)->m_SurfFaces.end(); sf_it++){
-            BOOL b2Sided = sf_it->first->_2Sided();
+            BOOL b2Sided = sf_it->first->GetFlag(CSurface::sf2Sided);
             IntVec& i_lst= sf_it->second;
             for (IntIt i_it=i_lst.begin(); i_it!=i_lst.end(); i_it++){
                 st_Face& face = (*m_it)->m_Faces[*i_it];

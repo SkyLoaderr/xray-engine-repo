@@ -7,8 +7,12 @@
 #include "ChoseForm.h"
 #include "xr_trims.h"
 #include "ui_main.h"
+#include "PropertiesList.h"
+#include "ImageThumbnail.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
+#pragma link "ExtBtn"
+#pragma link "mxPlacemnt"
 #pragma resource "*.dfm"
 TfrmPropertiesGlow *frmPropertiesGlow=0;
 //---------------------------------------------------------------------------
@@ -21,14 +25,14 @@ void frmPropertiesGlowRun(ObjectList* pObjects, bool& bChange){
 __fastcall TfrmPropertiesGlow::TfrmPropertiesGlow(TComponent* Owner)
     : TForm(Owner)
 {
+	m_Props = TProperties::CreateForm(paProps,alClient,OnModified,OnItemFocused);
     DEFINE_INI(fsStorage);
+	m_Thumbnail	= 0;
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesGlow::Run(ObjectList* pObjects, bool& bChange)
 {
-	ebApply->Enabled 	= false;
-	ebOk->Enabled 		= false;
     m_Objects = pObjects;
 	GetObjectsInfo();
     bChange = (ShowModal()==mrOk);
@@ -38,153 +42,122 @@ void __fastcall TfrmPropertiesGlow::Run(ObjectList* pObjects, bool& bChange)
 void __fastcall TfrmPropertiesGlow::FormKeyDown(TObject *Sender,
       WORD &Key, TShiftState Shift)
 {
-    if (Key==VK_ESCAPE) ebCancel->Click();
+	if (m_Props->IsFocused()) return;
+	if (Key==VK_ESCAPE) ebCancel->Click();
+	if (Key==VK_RETURN) ebOk->Click();
+}
+//----------------------------------------------------
+
+void __fastcall TfrmPropertiesGlow::OnItemFocused(TElTreeItem* item)
+{
+	_DELETE(m_Thumbnail);
+	if (item&&item->Tag){
+    	EPropType type		= TProperties::GetItemType(item);
+    	switch (type){
+        	case PROP_A_TEXTURE:
+            	if (TProperties::GetItemColumn(item,0)){
+	                m_Thumbnail = new EImageThumbnail(TProperties::GetItemColumn(item,0),EImageThumbnail::EITTexture);
+    	            if (m_Thumbnail->_Width()!=m_Thumbnail->_Height()) paImage->Repaint();
+        	        pbImagePaint(item);
+                }
+            break;
+        }
+    }
+    if (!m_Thumbnail){
+        paImage->Repaint();
+    }
+}
+//----------------------------------------------------
+
+void __fastcall	TfrmPropertiesGlow::OnShaderChange(PropValue* prop)
+{
+	ObjectIt _F 		= m_Objects->begin();
+	for(;_F!=m_Objects->end();_F++) (*_F)->OnDeviceDestroy();
 }
 
-//----------------------------------------------------
+void TfrmPropertiesGlow::GetObjectsInfo()
+{
+	VERIFY( !m_Objects->empty() );
+
+    PropValueVec values;
+	ObjectIt _F 		= m_Objects->begin();
+    LPCSTR pref			= GetClassNameByClassID((*_F)->ClassID);
+	for(;_F!=m_Objects->end();_F++){
+		CGlow *P		= dynamic_cast<CGlow*>(*_F); R_ASSERT(P);
+        P->FillProp		(pref,values);
+	}
+    PropValue* T 		= PROP::FindProp(values,pref,"Texture"); R_ASSERT(T);
+    PropValue* S 		= PROP::FindProp(values,pref,"Shader"); R_ASSERT(S);
+    T->OnChange			= OnShaderChange;
+    S->OnChange			= OnShaderChange;
+	m_Props->AssignValues(values,true);
+}
+//---------------------------------------------------------------------------
+
+void TfrmPropertiesGlow::CancelObjectsInfo()
+{
+	m_Props->ResetValues();
+	ObjectIt _F 		= m_Objects->begin();
+	for(;_F!=m_Objects->end();_F++) (*_F)->OnDeviceDestroy();
+}
+//---------------------------------------------------------------------------
+
+void TfrmPropertiesGlow::ApplyObjectsInfo()
+{
+}
+//---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesGlow::ebOkClick(TObject *Sender)
 {
-    if (ApplyObjectsInfo()){
-	    Close();
-    	ModalResult = mrOk;
-    }
+    ModalResult = mrOk;
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesGlow::ebCancelClick(TObject *Sender)
 {
-    Close();
     ModalResult = mrCancel;
-}
-//---------------------------------------------------------------------------
-
-void TfrmPropertiesGlow::GetObjectsInfo(){
-	VERIFY( !m_Objects->empty() );
-
-	CGlow *_G = 0;
-	ObjectIt _F = m_Objects->begin();
-	VERIFY( (*_F)->ClassID==OBJCLASS_GLOW );
-	_G = (CGlow *)(*_F);
-
-    m_Glow = _G;
-
-	seRange->ObjFirstInit( _G->m_Range );
-	_F++;
-    bool bDifTex=false, bDifShader=false;
-    AnsiString sh 	= _G->m_ShaderName;
-    AnsiString tex1,tex2;
-    tex1 = _G->m_TexName;
-	for(;_F!=m_Objects->end();_F++){
-		VERIFY( (*_F)->ClassID==OBJCLASS_GLOW );
-		_G = (CGlow *)(*_F);
-		seRange->ObjNextInit( _G->m_Range );
-		if (!bDifShader&&(_G->m_ShaderName!=sh)) bDifShader = true;
-		tex2 = _G->m_TexName;
-        if (!bDifTex&&!_G->m_TexName.IsEmpty()&&(tex2!=tex1))bDifTex = true;
-        m_Glow = 0;
-	}
-
-    if (m_Glow){
-    	lbShader->Font->Color = clNavy;
-    	lbTexture->Font->Color = clNavy;
-		lbTexture->Caption = m_Glow->m_TexName.IsEmpty()?AnsiString("..."):tex1;
-		lbShader->Caption  = m_Glow->m_ShaderName.IsEmpty()?AnsiString("..."):m_Glow->m_ShaderName;
-    }else{
-		_F = m_Objects->begin();
-		_G = (CGlow *)(*_F);
-		lbTexture->Caption = _G->m_TexName.IsEmpty()?AnsiString("..."):tex1;
-		lbShader->Caption  = _G->m_ShaderName.IsEmpty()?AnsiString("..."):_G->m_ShaderName;
-        if (bDifTex)	lbTexture->Color = clMaroon;
-        else			lbTexture->Font->Color = clNavy;
-        if (bDifShader)	lbShader->Font->Color = clMaroon;
-        else        	lbShader->Font->Color = clNavy;
-    }
-}
-
-bool TfrmPropertiesGlow::ApplyObjectsInfo(){
-	VERIFY( !m_Objects->empty() );
-
-	CGlow *_G = 0;
-	ObjectIt _F = m_Objects->begin();
-    bool bValidTex 		= (lbTexture->Caption!="...");
-    bool bValidShader 	= (lbShader->Caption!="...");
-	for(;_F!=m_Objects->end();_F++){
-		VERIFY( (*_F)->ClassID==OBJCLASS_GLOW );
-		_G = (CGlow *)(*_F);
-		seRange->ObjApplyFloat( _G->m_Range );
-        // apply shader
-        if (bValidTex)		_G->m_TexName=lbTexture->Caption.c_str();
-        if (bValidShader) 	_G->m_ShaderName = lbShader->Caption;
-        if (bValidShader&&bValidTex) _G->Compile();
-	}
-	pbImagePaint(0); paImage->Repaint();
-    UI.UpdateScene();
-    return true;
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmPropertiesGlow::ebApplyClick(TObject *Sender)
-{
-    ApplyObjectsInfo();
-    GetObjectsInfo();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesGlow::pbImagePaint(TObject *Sender)
 {
-    bool bValidTex 		= (lbTexture->Caption!="...");
-    if (bValidTex){
-        RECT r; r.left = 1; r.top = 1;
-        float w, h;
-//S
-/*        ETextureCore tx(lbTexture->Caption.c_str());
-        if (tx.Valid()){
-	        w = tx.width();
-    	    h = tx.height();
-	        if (w>h){   r.right = pbImage->Width; r.bottom = h/w*pbImage->Height;
-    	    }else{      r.right = h/w*pbImage->Width; r.bottom = pbImage->Height;}
-    	    tx.StretchThumbnail(paImage->Handle, &r);
-        }
-*/
+	if (m_Thumbnail) m_Thumbnail->Draw(paImage,pbImage,true);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmPropertiesGlow::OnModified()
+{
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmPropertiesGlow::FormClose(TObject *Sender,
+      TCloseAction &Action)
+{
+    switch (ModalResult){
+    case mrOk: 		ApplyObjectsInfo();		break;
+    case mrCancel: 	CancelObjectsInfo();	break;
+    default: THROW2("Invalid case");
     }
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmPropertiesGlow::OnModified(TObject *Sender)
+void __fastcall TfrmPropertiesGlow::fsStorageRestorePlacement(
+      TObject *Sender)
 {
-	ebApply->Enabled 	= true;
-	ebOk->Enabled 		= true;
+	m_Props->RestoreColumnWidth(fsStorage);
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmPropertiesGlow::seRangeKeyDown(TObject *Sender,
-      WORD &Key, TShiftState Shift)
+void __fastcall TfrmPropertiesGlow::fsStorageSavePlacement(TObject *Sender)
 {
-	if (Key==VK_RETURN)	OnModified(Sender);
+	m_Props->SaveColumnWidth(fsStorage);
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmPropertiesGlow::seRangeLWChange(TObject *Sender,
-      int Val)
+void __fastcall TfrmPropertiesGlow::FormDestroy(TObject *Sender)
 {
-	OnModified(Sender);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmPropertiesGlow::ebSelectShaderClick(TObject *Sender)
-{
-    bool bValidShader 	= (lbShader->Caption!="...");
-	LPCSTR S = TfrmChoseItem::SelectShader(bValidShader?lbShader->Caption.c_str():0);
-    if (S){lbShader->Caption=S; OnModified(Sender);}
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmPropertiesGlow::ebSelectTextureClick(TObject *Sender)
-{
-    bool bValidTex 		= (lbTexture->Caption!="...");
-	LPCSTR S = TfrmChoseItem::SelectTexture(false,bValidTex?lbTexture->Caption.c_str():0,false);
-    if (S){lbTexture->Caption=S; OnModified(Sender);}
+	_DELETE(m_Thumbnail);
+	TProperties::DestroyForm(m_Props);
 }
 //---------------------------------------------------------------------------
 

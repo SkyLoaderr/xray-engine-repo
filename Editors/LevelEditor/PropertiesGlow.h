@@ -10,7 +10,9 @@
 #include <Dialogs.hpp>
 #include <ExtCtrls.hpp>
 #include <ComCtrls.hpp>
-#include "CSPIN.h"
+#include "ExtBtn.hpp"
+#include "mxPlacemnt.hpp"
+#include "ElTree.hpp"
 
 #include "ExtBtn.hpp"
 #include "multi_edit.hpp"
@@ -18,41 +20,39 @@
 #include "mxPlacemnt.hpp"
 
 class CGlow;
+class TProperties;
+class EImageThumbnail;
 //---------------------------------------------------------------------------
 class TfrmPropertiesGlow : public TForm
 {
 __published:	// IDE-managed Components
     TPanel *Panel1;
-    TExtBtn *ebOk;
-    TExtBtn *ebCancel;
-    TPanel *paBottom;
-    TMultiObjSpinEdit *seRange;
-    TExtBtn *ebApply;
-	TLabel *RxLabel4;
     TPanel *paImage;
     TPaintBox *pbImage;
-	TExtBtn *ebSelectShader;
-	TLabel *lbShader;
-	TLabel *lbTexture;
-	TExtBtn *ebSelectTexture;
 	TFormStorage *fsStorage;
+	TPanel *Panel2;
+	TExtBtn *ebOk;
+	TExtBtn *ebCancel;
+	TPanel *paProps;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall ebCancelClick(TObject *Sender);
     void __fastcall ebOkClick(TObject *Sender);
-    void __fastcall ebApplyClick(TObject *Sender);
     void __fastcall pbImagePaint(TObject *Sender);
-	void __fastcall OnModified(TObject *Sender);
-	void __fastcall seRangeKeyDown(TObject *Sender, WORD &Key,
-          TShiftState Shift);
-	void __fastcall seRangeLWChange(TObject *Sender, int Val);
-	void __fastcall ebSelectShaderClick(TObject *Sender);
-	void __fastcall ebSelectTextureClick(TObject *Sender);
+	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
+	void __fastcall fsStorageRestorePlacement(TObject *Sender);
+	void __fastcall fsStorageSavePlacement(TObject *Sender);
+	void __fastcall FormDestroy(TObject *Sender);
 private:	// User declarations
-    CGlow* m_Glow;
-    list<CCustomObject*>* m_Objects;
-    void GetObjectsInfo();
-    bool ApplyObjectsInfo();
+    ObjectList* 	m_Objects;
+    void 			GetObjectsInfo();
+    void			ApplyObjectsInfo();
+    void 			CancelObjectsInfo();
+    EImageThumbnail*m_Thumbnail;
+    TProperties* 	m_Props;
+    void __fastcall OnModified();
+	void __fastcall	OnShaderChange(PropValue* prop);
+    void __fastcall OnItemFocused(TElTreeItem* item);
 public:		// User declarations
     __fastcall TfrmPropertiesGlow(TComponent* Owner);
     void __fastcall Run(ObjectList* pObjects, bool& bChange);

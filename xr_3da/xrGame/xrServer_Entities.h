@@ -66,7 +66,7 @@ public:
 
 	// editor integration
 #ifdef _EDITOR
-    virtual void			FillProp		(PropValueVec& values);
+    virtual void			FillProp		(LPCSTR pref, PropValueVec& values);
 #endif
 
 	xrServerEntity			()

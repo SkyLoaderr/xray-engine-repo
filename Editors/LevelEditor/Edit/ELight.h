@@ -69,9 +69,9 @@ public:
     // file system function
   	virtual bool 	Load		(CStream&);
 	virtual void 	Save		(CFS_Base&);
-	virtual bool	FillProp	(PropValueVec& values);
-	bool			FillSunProp	(PropValueVec& values);
-	bool			FillPointProp(PropValueVec& values);
+	virtual void	FillProp	(LPCSTR pref, PropValueVec& values);
+	void			FillSunProp	(LPCSTR pref, PropValueVec& values);
+	void			FillPointProp(LPCSTR pref, PropValueVec& values);
 
     // render utility function
 	void 			Set			(int d3dindex);

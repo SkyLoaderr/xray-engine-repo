@@ -19,6 +19,7 @@
 #include "ui_main.h"
 #include "d3dutils.h"
 #include "frustum.h"
+#include "render.h"
 
 
 bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& direction, int bSnap, Fvector* hitnormal){
@@ -227,6 +228,8 @@ void TUI::Idle()
 	    if (bUpdateScene) RealUpdateScene();
     	if (bRedraw){
             Scene.Update(Device.fTimeDelta);
+            Render->Calculate	();
+            Render->Render		();
         	Redraw();
         }
 		Tools.Update();

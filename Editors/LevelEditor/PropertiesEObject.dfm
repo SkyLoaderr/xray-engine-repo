@@ -41,7 +41,7 @@ object frmPropertiesEObject: TfrmPropertiesEObject
     ScrollOpposite = False
     Style = etsAngledTabs
     TabHeight = 15
-    TabIndex = 0
+    TabIndex = 1
     TabPosition = etpBottom
     HotTrackFont.Charset = DEFAULT_CHARSET
     HotTrackFont.Color = clBlue
@@ -49,7 +49,7 @@ object frmPropertiesEObject: TfrmPropertiesEObject
     HotTrackFont.Name = 'MS Sans Serif'
     HotTrackFont.Style = []
     TabBkColor = 10528425
-    ActivePage = tsBasic
+    ActivePage = tsSurfaces
     FlatTabBorderColor = clBtnShadow
     Align = alClient
     ParentColor = False
@@ -61,6 +61,7 @@ object frmPropertiesEObject: TfrmPropertiesEObject
       TabVisible = True
       Caption = 'Main Options'
       Color = 10528425
+      Visible = False
       object paBasic: TPanel
         Left = 0
         Top = 0
@@ -78,7 +79,6 @@ object frmPropertiesEObject: TfrmPropertiesEObject
       TabVisible = True
       Caption = 'Surfaces'
       Color = 10528425
-      Visible = False
       object paSurfaces: TPanel
         Left = 0
         Top = 19
@@ -100,9 +100,9 @@ object frmPropertiesEObject: TfrmPropertiesEObject
         TabOrder = 1
         object gbTexture: TGroupBox
           Left = 0
-          Top = 106
+          Top = 0
           Width = 136
-          Height = 192
+          Height = 298
           Align = alClient
           Caption = ' Texture Details '
           TabOrder = 0
@@ -183,135 +183,6 @@ object frmPropertiesEObject: TfrmPropertiesEObject
               Align = alClient
               OnPaint = pbImagePaint
             end
-          end
-        end
-        object GroupBox1: TGroupBox
-          Left = 0
-          Top = 0
-          Width = 136
-          Height = 106
-          Align = alTop
-          Caption = ' Surface Details '
-          TabOrder = 1
-          object Label2: TLabel
-            Left = 4
-            Top = 42
-            Width = 24
-            Height = 13
-            Caption = 'XYZ:'
-          end
-          object Label3: TLabel
-            Left = 4
-            Top = 57
-            Width = 36
-            Height = 13
-            Caption = 'Normal:'
-          end
-          object Label4: TLabel
-            Left = 4
-            Top = 72
-            Width = 36
-            Height = 13
-            Caption = 'Diffuse:'
-          end
-          object lbXYZ: TLabel
-            Left = 72
-            Top = 42
-            Width = 13
-            Height = 13
-            Caption = '...'
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'MS Sans Serif'
-            Font.Style = [fsBold]
-            ParentFont = False
-          end
-          object lbNormal: TLabel
-            Left = 72
-            Top = 57
-            Width = 13
-            Height = 13
-            Caption = '...'
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'MS Sans Serif'
-            Font.Style = [fsBold]
-            ParentFont = False
-          end
-          object lbDiffuse: TLabel
-            Left = 72
-            Top = 72
-            Width = 13
-            Height = 13
-            Caption = '...'
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'MS Sans Serif'
-            Font.Style = [fsBold]
-            ParentFont = False
-          end
-          object Label8: TLabel
-            Left = 4
-            Top = 87
-            Width = 25
-            Height = 13
-            Caption = 'UV'#39's:'
-          end
-          object lbUVs: TLabel
-            Left = 72
-            Top = 87
-            Width = 13
-            Height = 13
-            Caption = '...'
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'MS Sans Serif'
-            Font.Style = [fsBold]
-            ParentFont = False
-          end
-          object Label10: TLabel
-            Left = 4
-            Top = 28
-            Width = 67
-            Height = 13
-            Caption = 'Double Sided:'
-          end
-          object lb2Sided: TLabel
-            Left = 72
-            Top = 28
-            Width = 13
-            Height = 13
-            Caption = '...'
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'MS Sans Serif'
-            Font.Style = [fsBold]
-            ParentFont = False
-          end
-          object Label5: TLabel
-            Left = 4
-            Top = 14
-            Width = 32
-            Height = 13
-            Caption = 'Faces:'
-          end
-          object lbSurfFaces: TLabel
-            Left = 72
-            Top = 14
-            Width = 13
-            Height = 13
-            Caption = '...'
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'MS Sans Serif'
-            Font.Style = [fsBold]
-            ParentFont = False
           end
         end
       end

@@ -39,19 +39,6 @@ __published:	// IDE-managed Components
 	TLabel *lbAlpha;
 	TPanel *paImage;
 	TPaintBox *pbImage;
-	TGroupBox *GroupBox1;
-	TLabel *Label2;
-	TLabel *Label3;
-	TLabel *Label4;
-	TLabel *lbXYZ;
-	TLabel *lbNormal;
-	TLabel *lbDiffuse;
-	TLabel *Label8;
-	TLabel *lbUVs;
-	TLabel *Label10;
-	TLabel *lb2Sided;
-	TLabel *Label5;
-	TLabel *lbSurfFaces;
 	TPanel *Panel1;
 	TExtBtn *ebSortByImage;
 	TExtBtn *ebSortByName;
@@ -74,7 +61,6 @@ private:	// User declarations
     void __fastcall	OnSurfaceFocused	   	(TElTreeItem* item);
     EImageThumbnail*m_Thumbnail;
     CSceneObject* 	m_pEditObject;
-    void			ResetSurfInfo			(bool imageinfo, bool surfinfo);
     void			FillBasicProps			();
     void			FillSurfProps			();
 	void __fastcall OnChangeShader			(PropValue* sender);

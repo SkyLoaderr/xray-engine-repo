@@ -226,8 +226,6 @@ void CRenderDevice::_Destroy(BOOL	bKeepTextures){
 	Streams.OnDeviceDestroy		();
 }
 
-extern float 	ssaLIMIT;
-extern float	g_fSCREEN;
 //---------------------------------------------------------------------------
 void __fastcall CRenderDevice::Resize(int w, int h)
 {
@@ -239,9 +237,6 @@ void __fastcall CRenderDevice::Resize(int w, int h)
     dwHeight 		= m_RealHeight * m_ScreenQuality;
     m_RenderWidth_2 = dwWidth * 0.5f;
     m_RenderHeight_2= dwHeight * 0.5f;
-
-	g_fSCREEN		=	float(dwWidth*dwHeight);
-	ssaLIMIT		=	(4.f*4.f)/g_fSCREEN;
 
     Destroy			();
 

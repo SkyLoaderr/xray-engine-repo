@@ -165,9 +165,8 @@ void TfrmImageLib::InitItemsList(const char* nm)
     TElTreeItem *node=0;
     if (!nm)	node = tvItems->Items->GetFirstNode();
     else 		node = FOLDER::FindObject(tvItems,nm);
-    FOLDER::RestoreSelection(tvItems,node);
-
 	tvItems->IsUpdating = false;
+    FOLDER::RestoreSelection(tvItems,node);
 }
 
 //---------------------------------------------------------------------------

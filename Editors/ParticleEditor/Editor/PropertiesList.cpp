@@ -427,21 +427,23 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             break;
 	        };
         }
-        // show LW Number
-        switch(type){
-        case PROP_TEXT:
-			if (edText->Tag==(int)Item) if (!edText->Visible) ShowLWText(R);
-        break;
-        case PROP_U8:
-        case PROP_U16:
-        case PROP_U32:
-        case PROP_S8:
-        case PROP_S16:
-        case PROP_S32:
-        case PROP_FLOAT:
-            if (seNumber->Tag==(int)Item) if (!seNumber->Visible) ShowLWNumber(R);
-        break;
-        };
+        // show LW edit
+        if (prop->bEnabled){
+            switch(type){
+            case PROP_TEXT:
+                if (edText->Tag==(int)Item) if (!edText->Visible) ShowLWText(R);
+            break;
+            case PROP_U8:
+            case PROP_U16:
+            case PROP_U32:
+            case PROP_S8:
+            case PROP_S16:
+            case PROP_S32:
+            case PROP_FLOAT:
+                if (seNumber->Tag==(int)Item) if (!seNumber->Visible) ShowLWNumber(R);
+            break;
+            };
+        }
   	}
 }
 //---------------------------------------------------------------------------

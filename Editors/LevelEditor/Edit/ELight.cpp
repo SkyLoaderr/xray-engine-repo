@@ -266,51 +266,48 @@ void CLight::Save(CFS_Base& F){
 }
 //----------------------------------------------------
 
-bool CLight::FillProp(PropValueVec& values)
+void CLight::FillProp(LPCSTR pref, PropValueVec& values)
 {
-	inherited::FillProp(values);
-	FILL_PROP(values,	"Color",			&m_D3D.diffuse,	PROP::CreateFColor	());
-	FILL_PROP(values,	"Brightness",		&m_Brightness,	PROP::CreateFloat	(-3.f,3.f,0.1f,2));
-	FILL_PROP(values,	"Use In D3D",		&m_UseInD3D,	PROP::CreateBOOL	());
-	FILL_PROP(values,	"Usage\\LightMap",	&m_dwFlags,		PROP::CreateFlag	(CLight::flAffectStatic));
-	FILL_PROP(values,	"Usage\\Dynamic",	&m_dwFlags,		PROP::CreateFlag	(CLight::flAffectDynamic));
-	FILL_PROP(values,	"Usage\\Animated",	&m_dwFlags,		PROP::CreateFlag	(CLight::flProcedural));
-	FILL_PROP(values,	"Flags\\Breakable",	&m_dwFlags,		PROP::CreateFlag	(CLight::flBreaking));
-    return true;
+	inherited::FillProp(pref,values);
+	FILL_PROP_EX(values,	pref,	"Color",			&m_D3D.diffuse,	PROP::CreateFColor	());
+	FILL_PROP_EX(values,	pref,	"Brightness",		&m_Brightness,	PROP::CreateFloat	(-3.f,3.f,0.1f,2));
+	FILL_PROP_EX(values,	pref,	"Use In D3D",		&m_UseInD3D,	PROP::CreateBOOL	());
+	FILL_PROP_EX(values,	pref,	"Usage\\LightMap",	&m_dwFlags,		PROP::CreateFlag	(CLight::flAffectStatic));
+	FILL_PROP_EX(values,	pref,	"Usage\\Dynamic",	&m_dwFlags,		PROP::CreateFlag	(CLight::flAffectDynamic));
+	FILL_PROP_EX(values,	pref,	"Usage\\Animated",	&m_dwFlags,		PROP::CreateFlag	(CLight::flProcedural));
+	FILL_PROP_EX(values,	pref,	"Flags\\Breakable",	&m_dwFlags,		PROP::CreateFlag	(CLight::flBreaking));
 }
 //----------------------------------------------------
 
-bool CLight::FillSunProp	(PropValueVec& values)
+void CLight::FillSunProp(LPCSTR pref, PropValueVec& values)
 {
-	CEditFlare& F 		= m_LensFlare;
-	FILL_PROP(values,	"Source\\Enabled",	&F.m_dwFlags,			PROP::CreateFlag	(CEditFlare::flSource));
-	FILL_PROP(values,	"Source\\Radius",	&F.m_Source.fRadius,	PROP::CreateFloat	(0.f,10.f));
-	FILL_PROP(values,	"Source\\Texture",	F.m_Source.texture,		PROP::CreateTexture(sizeof(F.m_Source.texture)));
+	CEditFlare& F 			= m_LensFlare;
+	FILL_PROP_EX(values,	pref, "Source\\Enabled",	&F.m_dwFlags,			PROP::CreateFlag	(CEditFlare::flSource));
+	FILL_PROP_EX(values,	pref, "Source\\Radius",	&F.m_Source.fRadius,	PROP::CreateFloat	(0.f,10.f));
+	FILL_PROP_EX(values,	pref, "Source\\Texture",	F.m_Source.texture,		PROP::CreateTexture(sizeof(F.m_Source.texture)));
 
-	FILL_PROP(values,	"Gradient\\Enabled",&F.m_dwFlags,			PROP::CreateFlag	(CEditFlare::flGradient));
-	FILL_PROP(values,	"Gradient\\Radius",	&F.m_Gradient.fRadius,	PROP::CreateFloat	(0.f,100.f));
-	FILL_PROP(values,	"Gradient\\Opacity",&F.m_Gradient.fOpacity,	PROP::CreateFloat	(0.f,1.f));
-	FILL_PROP(values,	"Gradient\\Texture",F.m_Gradient.texture,	PROP::CreateTexture	(sizeof(F.m_Gradient.texture)));
+	FILL_PROP_EX(values,	pref, "Gradient\\Enabled",&F.m_dwFlags,			PROP::CreateFlag	(CEditFlare::flGradient));
+	FILL_PROP_EX(values,	pref, "Gradient\\Radius",	&F.m_Gradient.fRadius,	PROP::CreateFloat	(0.f,100.f));
+	FILL_PROP_EX(values,	pref, "Gradient\\Opacity",&F.m_Gradient.fOpacity,	PROP::CreateFloat	(0.f,1.f));
+	FILL_PROP_EX(values,	pref, "Gradient\\Texture",F.m_Gradient.texture,	PROP::CreateTexture	(sizeof(F.m_Gradient.texture)));
 
-	FILL_PROP(values,	"Flares\\Enabled",	&F.m_dwFlags,			PROP::CreateFlag	(CEditFlare::flFlare));
+	FILL_PROP_EX(values,	pref, "Flares\\Enabled",	&F.m_dwFlags,			PROP::CreateFlag	(CEditFlare::flFlare));
 	for (CEditFlare::FlareIt it=F.m_Flares.begin(); it!=F.m_Flares.end(); it++){
 		AnsiString nm; nm.sprintf("Flares\\Flare %d",it-F.m_Flares.begin());
-		FILL_PROP(values,	AnsiString(nm+"\\Radius").c_str(),  &it->fRadius,	PROP::CreateFloat	(0.f,10.f));
-		FILL_PROP(values,	AnsiString(nm+"\\Opacity").c_str(),	&it->fOpacity,	PROP::CreateFloat	(0.f,1.f));
-		FILL_PROP(values,	AnsiString(nm+"\\Position").c_str(),&it->fPosition,	PROP::CreateFloat	(-10.f,10.f));
-		FILL_PROP(values,	AnsiString(nm+"\\Texture").c_str(),	it->texture,	PROP::CreateTexture	(sizeof(it->texture)));
+		FILL_PROP_EX(values,pref, AnsiString(nm+"\\Radius").c_str(),  &it->fRadius,	PROP::CreateFloat	(0.f,10.f));
+		FILL_PROP_EX(values,pref, AnsiString(nm+"\\Opacity").c_str(),	&it->fOpacity,	PROP::CreateFloat	(0.f,1.f));
+		FILL_PROP_EX(values,pref, AnsiString(nm+"\\Position").c_str(),&it->fPosition,	PROP::CreateFloat	(-10.f,10.f));
+		FILL_PROP_EX(values,pref, AnsiString(nm+"\\Texture").c_str(),	it->texture,	PROP::CreateTexture	(sizeof(it->texture)));
 	}
-    return true;
 }
 //----------------------------------------------------
 
-bool CLight::FillPointProp(PropValueVec& values)
+void CLight::FillPointProp(LPCSTR pref, PropValueVec& values)
 {
-	FILL_PROP(values,	"Range",					&m_D3D.range,			PROP::CreateFloat	(0.f,1000.f));
-	FILL_PROP(values,	"Attenuation\\Constant",	&m_D3D.attenuation0,	PROP::CreateFloat	(0.f,1.f,0.0001f,6));
-	FILL_PROP(values,	"Attenuation\\Linear",		&m_D3D.attenuation1,	PROP::CreateFloat	(0.f,1.f,0.0001f,6));
-	FILL_PROP(values,	"Attenuation\\Quadratic",	&m_D3D.attenuation2,	PROP::CreateFloat	(0.f,1.f,0.0001f,6));
-    return true;
+	FILL_PROP_EX(values,	pref, "Range",					&m_D3D.range,			PROP::CreateFloat	(0.f,1000.f));
+	FILL_PROP_EX(values,	pref, "Attenuation\\Constant",	&m_D3D.attenuation0,	PROP::CreateFloat	(0.f,1.f,0.0001f,6));
+	FILL_PROP_EX(values,	pref, "Attenuation\\Linear",		&m_D3D.attenuation1,	PROP::CreateFloat	(0.f,1.f,0.0001f,6));
+	FILL_PROP_EX(values,	pref, "Attenuation\\Quadratic",	&m_D3D.attenuation2,	PROP::CreateFloat	(0.f,1.f,0.0001f,6));
 }
 //----------------------------------------------------
 

@@ -127,9 +127,9 @@ public:		// User declarations
     	tvProperties->IsUpdating = bVal;
     }
     // auxiliary routines
-	static IC LPVOID		GetItemData		(TElTreeItem* item){return item->Data;}
-	static IC bool 			IsItemType		(TElTreeItem* item, EPropType type){return item->Tag==type;}
-	static IC EPropType 	GetItemType		(TElTreeItem* item){return (EPropType)item->Tag;}
+	static IC LPVOID		GetItemData		(TElTreeItem* item){return (void*)item->Tag;}
+	static IC bool 			IsItemType		(TElTreeItem* item, EPropType type){return item->Tag&&(((PropValue*)item->Tag)->type==type);}
+	static IC EPropType 	GetItemType		(TElTreeItem* item){return item->Tag?((PropValue*)item->Tag)->type:0;}
 	static IC LPCSTR	 	GetItemColumn	(TElTreeItem* item, int col){
     	static AnsiString t;
         if (col<item->ColumnText->Count) t=item->ColumnText->Strings[col];

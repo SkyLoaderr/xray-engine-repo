@@ -96,7 +96,7 @@ void TfrmPropertiesEObject::FillBasicProps()
     	FILL_PROP(values, "Transform\\Rotation",	&S->FRotation, 	PROP::CreateVector(-10000,	10000,0.1,1,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw));
 	    FILL_PROP(values, "Transform\\Scale",		&S->FScale, 	PROP::CreateVector(0.01,	10000,0.01,2,0,0,0,OnChangeTransform));
 
-		O->FillPropSummary(values);
+		O->FillPropSummary(0,values);
 
         m_BasicProp->AssignValues(values,true);
     }else{
@@ -110,14 +110,12 @@ void TfrmPropertiesEObject::FillSurfProps()
 {
 	// surfaces
 	CSceneObject* 		S = m_pEditObject;
+    PropValueVec values;
     if (S->GetReference()){
     	CEditableObject* 	O = S->GetReference();
-        PropValueVec values;
-        O->FillPropSurf		(values,OnChangeShader);
-        m_SurfProp->AssignValues(values,true);
-    }else{
-    	m_SurfProp->ClearProperties();
+        O->FillPropSurf		(0,values,OnChangeShader);
     }
+    m_SurfProp->AssignValues(values,true);
 }
 //---------------------------------------------------------------------------
 
@@ -155,55 +153,26 @@ void __fastcall TfrmPropertiesEObject::fsStorageSavePlacement(
 void __fastcall TfrmPropertiesEObject::OnSurfaceFocused(TElTreeItem* item)
 {
 	_DELETE(m_Thumbnail);
-	if (item){
-    	EPropType type	= TProperties::GetItemType(item);
-        TElTreeItem* parent	= item->Parent?item->Parent:item;
-		CSurface* surf 		= (CSurface*)parent->Data;
+	if (item&&item->Tag){
+    	EPropType type		= TProperties::GetItemType(item);
     	switch (type){
         	case PROP_A_TEXTURE:
-                m_Thumbnail = new EImageThumbnail(TProperties::GetItemColumn(item,0),EImageThumbnail::EITTexture);
-                lbWidth->Caption 	= m_Thumbnail->_Width();
-                lbHeight->Caption 	= m_Thumbnail->_Height();
-                lbAlpha->Caption 	= (m_Thumbnail->_Alpha())?"present":"absent";
-                if (m_Thumbnail->_Width()!=m_Thumbnail->_Height()) paImage->Repaint();
-                pbImagePaint(item);
+            	if (TProperties::GetItemColumn(item,0)){
+                    m_Thumbnail = new EImageThumbnail(TProperties::GetItemColumn(item,0),EImageThumbnail::EITTexture);
+                    lbWidth->Caption 	= m_Thumbnail->_Width();
+                    lbHeight->Caption 	= m_Thumbnail->_Height();
+                    lbAlpha->Caption 	= (m_Thumbnail->_Alpha())?"present":"absent";
+                    if (m_Thumbnail->_Width()!=m_Thumbnail->_Height()) paImage->Repaint();
+                    pbImagePaint(item);
+                }
             break;
-            default:
-			    ResetSurfInfo		(true,false);
         }
-        if (surf){
-            lbSurfFaces->Caption 	= m_pEditObject->GetSurfFaceCount(surf->_Name());
-            lb2Sided->Caption 		= (surf->_2Sided())?"yes":"no";
-            lbXYZ->Caption			= (surf->_FVF()&D3DFVF_XYZ)?"yes":"no";
-            lbNormal->Caption  		= (surf->_FVF()&D3DFVF_NORMAL)?"yes":"no";
-            lbDiffuse->Caption		= (surf->_FVF()&D3DFVF_DIFFUSE)?"yes":"no";
-            lbUVs->Caption 			= ((surf->_FVF()&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT);
-        }else{
-			ResetSurfInfo			(false,true);
-        }
-    }else{
-	    ResetSurfInfo				(true,true);
     }
-}
-//---------------------------------------------------------------------------
-
-void TfrmPropertiesEObject::ResetSurfInfo(bool imageinfo, bool surfinfo)
-{
-	// image
-    if (imageinfo){
-	    lbWidth->Caption 		= "...";
-    	lbHeight->Caption 		= "...";
-	    lbAlpha->Caption 		= "...";
-		paImage->Repaint();
-    }
-    // surface
-    if (surfinfo){
-	    lbSurfFaces->Caption 	= "...";
-    	lb2Sided->Caption 		= "...";
-	    lbXYZ->Caption			= "...";
-    	lbNormal->Caption  		= "...";
-	    lbDiffuse->Caption		= "...";
-    	lbUVs->Caption 			= "...";
+    if (!m_Thumbnail){
+        lbWidth->Caption 		= "...";
+        lbHeight->Caption 		= "...";
+        lbAlpha->Caption 		= "...";
+        paImage->Repaint();
     }
 }
 //---------------------------------------------------------------------------
