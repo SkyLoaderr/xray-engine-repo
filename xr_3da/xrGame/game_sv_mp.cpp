@@ -99,7 +99,7 @@ void	game_sv_mp::KillPlayer				(ClientID id_who, u16 GameID)
 	ClientID clientID;clientID.setBroadcast();
 ///	m_server->SendBroadcast	(clientID,P,net_flags(TRUE, TRUE, TRUE));
 	Level().Send(P,net_flags(TRUE,TRUE));
-	AllowDeadBodyRemove(id_who, GameID);
+//	AllowDeadBodyRemove(id_who, GameID);
 	signal_Syncronize();
 };
 
@@ -300,6 +300,7 @@ void game_sv_mp::OnPlayerConnect			(ClientID id_who)
 
 void game_sv_mp::OnPlayerDisconnect		(ClientID id_who, LPSTR Name, u16 GameID)
 {
+	AllowDeadBodyRemove(id_who, GameID);
 	inherited::OnPlayerDisconnect (id_who, Name, GameID);
 }
 
