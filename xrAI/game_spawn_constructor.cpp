@@ -276,7 +276,7 @@ void CGameSpawnConstructor::process_actor			(LPCSTR start_level_name)
 
 	const CGameGraph::SLevel		&level = game_graph().header().level(start_level_name);
 	ALife::_GRAPH_ID				dest = ALife::_GRAPH_ID(-1);
-	CGraphEngine::CGameLevelParams	evaluator(level.id());
+	GraphEngineSpace::CGameLevelParams	evaluator(level.id());
 	CGraphEngine					*graph_engine = xr_new<CGraphEngine>(game_graph().header().vertex_count());
 
 	bool							failed = !graph_engine->search(game_graph(),m_actor->m_tGraphID,ALife::_GRAPH_ID(-1),0,evaluator);

@@ -8,9 +8,9 @@
 
 #include "stdafx.h"
 #include "problem_solver.h"
-#include "graph_engine.h"
 #include "condition_evaluator.h"
 #include "random32.h"
+#include "graph_engine.h"
 
 //#define SEED_TEST
 //#define COMPLEXITY_TEST
@@ -19,6 +19,7 @@
 u32 world_state_dimension = 8;
 const u32 min_operator_count	= 4;
 const u32 max_operator_count	= 8;
+
 typedef u32																				_condition_type;
 typedef bool																			_value_type;
 typedef u16																				_edge_value_type;
@@ -31,8 +32,9 @@ typedef u8																				_dist_type;
 typedef u32																				_iteration_type;
 typedef CSProblemSolver::_edge_type														_edge_type;
 typedef CSProblemSolver::CState															_index_type;
-typedef SBaseParameters<_dist_type,_index_type,_iteration_type>							CBaseParameters;
+typedef SBaseParameters<::_dist_type,::_index_type,::_iteration_type>							CBaseParameters;
 CRandom32																				random;
+
 const int	seeds[] = {
 	#include "seed.dat"
 };
@@ -316,9 +318,9 @@ void test_goap	()
 		path.clear							();
 
 	#ifndef STRAIGHT_SEARCH
-		graph_engine->search				(problem_solver,problem_solver.target_state(),CState(),&path,CBaseParameters());
+		graph_engine->search				(problem_solver,problem_solver.target_state(),CState(),&path,::CBaseParameters());
 	#else
-		graph_engine->search				(problem_solver,CState(),problem_solver.target_state(),&path,CBaseParameters());
+		graph_engine->search				(problem_solver,CState(),problem_solver.target_state(),&path,::CBaseParameters());
 	#endif
 		vertex_count						+= graph_engine->solver_algorithm().data_storage().get_visited_node_count();
 		

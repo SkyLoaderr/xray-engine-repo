@@ -674,7 +674,7 @@ void test_smooth_path(LPCSTR name)
 	
 	fill_params					(start,dest,start_set,dest_set);
 
-	if (!graph_engine->search(*level_graph,start.vertex_id,dest.vertex_id,&m_tpaNodes,CGraphEngine::CBaseParameters()))
+	if (!graph_engine->search(*level_graph,start.vertex_id,dest.vertex_id,&m_tpaNodes,GraphEngineSpace::CBaseParameters()))
 		return;
 
 	RESET_ALL_TIMERS;

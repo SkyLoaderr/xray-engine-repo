@@ -22,7 +22,7 @@ class CGraphThread : public CThread
 	xrCriticalSection						*m_tpCriticalSection;
 	const CLevelGraph						*m_graph;
 	CGraphEngine							*m_graph_engine;
-	CGraphEngine::CStraightLineParams		*m_parameters;
+	GraphEngineSpace::CStraightLineParams	*m_parameters;
 
 public:
 	CGraphThread(u32 ID, u32 dwStart, u32 dwEnd, float fMaxDistance, xrCriticalSection *tpCriticalSection, const CLevelGraph *graph) : CThread(ID)
@@ -34,7 +34,7 @@ public:
 		VERIFY					(m_graph);
 		m_path.reserve			(10000);
 		m_graph_engine			= xr_new<CGraphEngine>(m_graph->header().vertex_count());
-		m_parameters			= xr_new<CGraphEngine::CStraightLineParams>(Fvector().set(0,0,0),Fvector().set(0,0,0),fMaxDistance,u32(-1),u32(-1));
+		m_parameters			= xr_new<GraphEngineSpace::CStraightLineParams>(Fvector().set(0,0,0),Fvector().set(0,0,0),fMaxDistance,u32(-1),u32(-1));
 	}
 
 	virtual ~CGraphThread()

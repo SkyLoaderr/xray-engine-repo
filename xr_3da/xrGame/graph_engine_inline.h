@@ -224,7 +224,7 @@ IC	bool CGraphEngine::search(
 	Device.Statistic.AI_Path.Begin();
 #endif
 	typedef CProblemSolver<T1,T2,T3,T4,T5,T6,T7,T8>	CSProblemSolver;
-	typedef CPathManager<CSProblemSolver,CSolverAlgorithm::CDataStorage,_Parameters,_solver_dist_type,_solver_index_type,_iteration_type>	CSolverPathManager;
+	typedef CPathManager<CSProblemSolver,CSolverAlgorithm::CDataStorage,_Parameters,_solver_dist_type,_solver_index_type,GraphEngineSpace::_iteration_type>	CSolverPathManager;
 
 	CSolverPathManager			path_manager;
 
