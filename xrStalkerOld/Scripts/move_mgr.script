@@ -438,7 +438,12 @@ function move_mgr:turn_end_callback()
 		-- 1) Отключаем таймер
 		state_mgr.set_state(self.object, self.cur_state_standing, nil, nil, nil)
 		-- 2) Вызываем callback
-		if self.move_cb_func(self.move_cb_obj, this.arrival_after_rotation, self.retval_after_rotation) then
+		if not self.move_cb_info then
+			utils.abort("object '%s': path_look '%s': ret flag is set, but " ..
+				"callback function wasn't registered in move_mgr:reset()",
+				self.object:name(), self.path_look)
+		end
+		if self.move_cb_info.func(self.move_cb_info.obj, this.arrival_after_rotation, self.retval_after_rotation) then
 			-- Callback решил перехватить управление перемещением, не восстанавливаем таймер
 			return
 		end
