@@ -89,12 +89,6 @@ void CCustomMonster::Load		(LPCSTR section)
 	material().Load				(section);
 	memory().Load				(section);
 	movement().Load				(section);
-
-	ISpatial*		self				= smart_cast<ISpatial*> (this);
-	if (self)		{
-		self->spatial.type	|= STYPE_VISIBLEFORAI;
-		self->spatial.type	|= STYPE_REACTTOSOUND;
-	}
 	//////////////////////////////////////////////////////////////////////////
 
 	///////////
@@ -709,6 +703,13 @@ BOOL CCustomMonster::net_Spawn	(CSE_Abstract* DC)
 {
 	if (!movement().net_Spawn(DC) || !inherited::net_Spawn(DC) || !CScriptEntity::net_Spawn(DC))
 		return					(FALSE);
+
+
+	ISpatial					*self = smart_cast<ISpatial*> (this);
+	if (self) {
+		self->spatial.type	|= STYPE_VISIBLEFORAI;
+		self->spatial.type	|= STYPE_REACTTOSOUND;
+	}
 
 	CSE_Abstract				*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeMonsterAbstract	*E	= smart_cast<CSE_ALifeMonsterAbstract*>(e);
