@@ -85,8 +85,9 @@ CxrUpdateView::CxrUpdateView()
 	m_active_task = NULL;
 	b_initialized = FALSE;
 	// TODO: add construction code here
-	m_root = NULL;
-	m_cur_prop_wnd = NULL;
+	m_root			= NULL;
+	m_cur_prop_wnd	= NULL;
+	m_bLDragging	= FALSE;
 	m_copy_files_dlg = xr_new<CCopyFilesTaskPropDlg>(MAKEINTRESOURCE(IDD_COPY_TASK_DLG),this);
 	m_copy_folder_dlg = xr_new<CCopyFolderDlgProp>(MAKEINTRESOURCE(IDD_DIALOG_CPY_FOLDER),this);
 	m_exec_process_dlg = xr_new<CExecAppTaskDlgProp>(MAKEINTRESOURCE(IDD_DIALOG_EXEC_PROCESS),this);
