@@ -28,7 +28,7 @@ void CEditableObject::FillSurfaceProps(CSurface* SURF, LPCSTR pref, PropItemVec&
 }
 //---------------------------------------------------------------------------
 
-xr_token eo_type_token[]={
+xr_token ECORE_API eo_type_token[]={
 	{ "Static",					0},
 	{ "Dynamic",				CEditableObject::eoDynamic},
 	{ "Progressive Dynamic",	CEditableObject::eoDynamic|CEditableObject::eoProgressive},
