@@ -128,7 +128,7 @@ void CParticleGroup::OnFrame(u32 u_dt)
             }
         }
         m_CurrentTime 	+= f_dt;
-        if (m_CurrentTime>m_Def->m_fTimeLimit)
+        if ((m_CurrentTime>m_Def->m_fTimeLimit)&&(m_Def->m_fTimeLimit>0.f))
             if (!m_RT_Flags.is(flRT_DefferedStop)) Stop(true);
         bool bPlaying = false;
         Fbox box; box.invalidate();
