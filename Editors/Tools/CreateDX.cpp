@@ -2,8 +2,6 @@
 //
 
 #include	"stdafx.h"
-
-
 #include	"D3DX_Wrapper.h"
 
 // misc
