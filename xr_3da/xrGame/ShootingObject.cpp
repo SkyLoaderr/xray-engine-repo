@@ -73,10 +73,10 @@ void CShootingObject::Load	(LPCSTR section)
 	VERIFY(fTimeToFire>0.f);
 	fTimeToFire			= 60.f / fTimeToFire;
 
-	LoadFireParams			(section, "");
-	LoadLights				(section, "");
-	LoadShellParticles		(section, "");
-	LoadFlameParticles		(section, "");
+	LoadFireParams		(section, "");
+	LoadLights			(section, "");
+	LoadShellParticles	(section, "");
+	LoadFlameParticles	(section, "");
 }
 
 void CShootingObject::LoadFireParams(LPCSTR section, LPCSTR prefix)
