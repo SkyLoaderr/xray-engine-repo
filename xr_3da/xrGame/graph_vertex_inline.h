@@ -49,7 +49,7 @@ IC	const typename CSGraphVertex::CSGraphEdge *CSGraphVertex::edge				(const _ver
 TEMPLATE_SPECIALIZATION
 IC	typename CSGraphVertex::CSGraphEdge *CSGraphVertex::edge								(const _vertex_index_type vertex_index)
 {
-	xr_vector<CSGraphEdge>::iterator		I = std::find_if(m_edges.begin(),m_edges.end(),SEdgeFindPredicate(vertex_index));
+	xr_vector<CSGraphEdge>::iterator		I = std::find(m_edges.begin(),m_edges.end(),vertex_index);
 	if (m_edges.end() == I)
 		return				(0);
 	return					(&*I);
