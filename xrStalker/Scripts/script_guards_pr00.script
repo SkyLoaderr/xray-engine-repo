@@ -19,6 +19,9 @@ function main()
 	guard_wait02	= get_level_object("guard_wait02")
 	guard_wait03	= get_level_object("guard_wait03")
 
+	trader_guard01	= get_level_object("guard_wait01")
+	trader_guard02	= get_level_object("guard_wait02")
+
 	wait(1000)			
 	guard01:script	(true,script_guards_pr00.script_name())
 	guard02:script	(true,script_guards_pr00.script_name())
@@ -111,6 +114,22 @@ function main()
 				anim	(anim.danger),
 				cond	(cond.time_end, 100000000)
 			)
+
+			action(
+				trader_guard01,
+			  	move	(move.standing, move.stand,move.line,patrol("way0001")),
+				look	(look.fire_point, actor),
+				anim	(anim.danger),
+				cond	(cond.time_end, 100000000)
+			)
+			action(
+				trader_guard02,
+			  	move	(move.standing, move.stand,move.line,patrol("way0001")),
+				look	(look.fire_point, actor),
+				anim	(anim.danger),
+				cond	(cond.time_end, 100000000)
+			)
+
 
 	while guard01:action() and guard02:action() do
 		if guard01:see(actor) or guard02:see(actor) and distance_between(guard01,actor) <= 30 then
