@@ -153,8 +153,8 @@ public:
 	// Models
 	virtual IRender_Visual*			model_CreateParticles	(LPCSTR name)								= 0;
 	virtual IRender_DetailModel*	model_CreateDM			(IReader*	F)								= 0;
-	virtual IRender_Visual*			model_Create			(LPCSTR name)								= 0;
-	virtual IRender_Visual*			model_Create			(LPCSTR name, IReader*	data)				= 0;
+	virtual IRender_Visual*			model_Create			(LPCSTR name, IReader*	data=0)				= 0;
+	virtual IRender_Visual*			model_CreateChild		(LPCSTR name, IReader*	data)				= 0;
 	virtual IRender_Visual*			model_Duplicate			(IRender_Visual*	V)						= 0;
 	virtual void					model_Delete			(IRender_Visual* &	V, BOOL bDiscard=FALSE)	= 0;
 	virtual void 					model_Delete			(IRender_DetailModel* & F)					= 0;

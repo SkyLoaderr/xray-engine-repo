@@ -76,8 +76,8 @@ void					CRender::destroy				()
 // Implementation
 IRender_ObjectSpecific*	CRender::ros_create				(IRenderable* parent)				{ return 0;								}
 void					CRender::ros_destroy			(IRender_ObjectSpecific* &p)		{ xr_delete(p);							}
-IRender_Visual*			CRender::model_Create			(LPCSTR name)						{ return Models.Create(name);			}
 IRender_Visual*			CRender::model_Create			(LPCSTR name, IReader* data)		{ return Models.Create(name,data);		}
+IRender_Visual*			CRender::model_CreateChild		(LPCSTR name, IReader* data)		{ return Models.CreateChild(name,data);	}
 IRender_Visual*			CRender::model_Duplicate		(IRender_Visual* V)					{ return Models.Instance_Duplicate(V);	}
 void					CRender::model_Delete			(IRender_Visual* &V, BOOL bDiscard)	{ Models.Delete(V, bDiscard);			}
 IRender_DetailModel*	CRender::model_CreateDM			(IReader*	F)
