@@ -8,4 +8,4 @@
 
 #include "stdafx.h"
 
-#pragma comment(lib,"Winmm.lib")
+#pragma comment(lib,"winmm.lib")
