@@ -336,7 +336,7 @@ HRESULT	IPureClient::net_Handler(DWORD dwMessageType, PVOID pMessage)
 			case DPN_MSGID_TERMINATE_SESSION:			msg = "DPN_MSGID_TERMINATE_SESSION"; break;
 			default:									msg = "???"; break;
 			}
-			Msg("! ***** : %s",msg);
+			Msg("! ************************************ : %s",msg);
 		}
 		break;
 	}
