@@ -7,8 +7,8 @@
 #include "..\fstaticrender.h"
 #include "..\physics\bkphysix.hpp"
 
-#pragma comment(lib,"c:\\temp\\bk\\bkbase.lib")
-#pragma comment(lib,"c:\\temp\\bk\\bkphysix.lib")
+#pragma comment(lib,"x:\\game\\bkbase.lib")
+#pragma comment(lib,"x:\\game\\bkphysix.lib")
 
 static bkPhysicEnvironment	ENV;
 
