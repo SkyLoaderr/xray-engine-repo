@@ -3,11 +3,12 @@
 #define LevelGameDefH
 
 #define RPOINT_CHOOSE_NAME 		"$rpoint"
+#define ENVMOD_CHOOSE_NAME 		"$env_mod"
 #define NPCPOINT_CHOOSE_NAME 	"$npcpoint"
 
 enum EPointType{
     ptRPoint=0,
-    ptReserved,
+    ptEnvMod,
     ptSpawnPoint,
     ptMaxType,
     pt_force_dword=u32(-1)
@@ -25,6 +26,7 @@ enum EWayType{
 
 // POINT chunks
 #define RPOINT_CHUNK				POINT_BASE+ptRPoint
+#define ENVMOD_CHUNK				POINT_BASE+ptEnvMod
 
 // WAY chunks
 #define WAY_PATROLPATH_CHUNK		WAY_BASE+wtPatrolPath

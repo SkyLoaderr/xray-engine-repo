@@ -153,6 +153,7 @@ public:
     void			OnDetach		();
     void            OnAttach		(CCustomObject* owner);
     CCustomObject* 	GetOwner		(){return m_pOwnerObject;}
+    virtual bool	CanAttach		()=0;
 
     virtual bool	OnChooseQuery	(LPCSTR specific){return true;}
     

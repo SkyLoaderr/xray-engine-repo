@@ -33,7 +33,7 @@ CPEDef::CPEDef()
 
 CPEDef::~CPEDef()
 {
-//	for (PAVecIt it=m_ActionList.begin(); it!=m_ActionList.end(); it++) xr_delete(*it);
+	for (EPAVecIt it=m_EActionList.begin(); it!=m_EActionList.end(); it++) xr_delete(*it);
 }
 void CPEDef::CreateShader()
 {
