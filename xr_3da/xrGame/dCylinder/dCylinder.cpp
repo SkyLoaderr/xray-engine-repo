@@ -841,10 +841,11 @@ if (*code == 6) {
   	cos1 = dDOT14(normal,R1+0);
 	cos3 = dDOT14(normal,R1+2) ;
 	factor=_sqrt(cos1*cos1+cos3*cos3);
-
-	cos1/=factor;
-	cos3/=factor;
-	
+	if(factor>0.f)
+	{
+		cos1/=factor;
+		cos3/=factor;
+	}
     for (i=0; i<3; i++) pa[i] += cos1 * radius1 * R1[i*4];
 
     sign = (dDOT14(normal,R1+1) > 0) ? REAL(1.0) : REAL(-1.0);
@@ -859,10 +860,11 @@ if (*code == 6) {
  	cos1 = dDOT14(normal,R2+0);
 	cos3 = dDOT14(normal,R2+2) ;
 	factor=_sqrt(cos1*cos1+cos3*cos3);
-
-	cos1/=factor;
-	cos3/=factor;
-	
+	if(factor>0.f)
+	{
+		cos1/=factor;
+		cos3/=factor;
+	}
     for (i=0; i<3; i++) pb[i] -= cos1 * radius2 * R2[i*4];
 
     sign = (dDOT14(normal,R2+1) > 0) ? REAL(1.0) : REAL(-1.0);
@@ -900,9 +902,11 @@ if (*code == 6) {
     cos1 = dDOT14(normal,R2+0) ;
 	cos3 = dDOT14(normal,R2+2);
 	factor=_sqrt(cos1*cos1+cos3*cos3);
-
-	cos1/=factor;
-	cos3/=factor;
+	if(factor>0.f)
+	{
+		cos1/=factor;
+		cos3/=factor;
+	}
     for (i=0; i<3; i++) vertex[i] -= cos1 * radius2 * R2[i*4];
 
     sign = (dDOT14(normal,R1+1) > 0) ? REAL(1.0) : REAL(-1.0);
@@ -917,9 +921,11 @@ if (*code == 6) {
     cos1 = dDOT14(normal,R1+0) ;
 	cos3 = dDOT14(normal,R1+2);
 	factor=_sqrt(cos1*cos1+cos3*cos3);
-
-	cos1/=factor;
-	cos3/=factor;
+	if(factor>0.f)
+	{
+		cos1/=factor;
+		cos3/=factor;
+	}
     for (i=0; i<3; i++) vertex[i] += cos1 * radius1 * R1[i*4];
 
     sign = (dDOT14(normal,R1+1) > 0) ? REAL(1.0) : REAL(-1.0);
@@ -932,6 +938,7 @@ if (*code == 6) {
   return 1;
 }
 
+#pragma todo(optimize factor==0.f)
 //****************************************************************************
 
 
