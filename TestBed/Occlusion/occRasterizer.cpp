@@ -108,7 +108,7 @@ void occRasterizer::propagade	()
 
 			//
 			float d				= pDepth[pos];
-			clamp				(d,-1.9f,1.9f);
+			clamp				(d,-1.99f,1.99f);
 			bufDepth_0[y][x]	= d2int(d);
 		}
 	}
