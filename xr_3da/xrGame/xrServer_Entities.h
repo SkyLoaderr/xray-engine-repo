@@ -355,6 +355,7 @@ xrSE_DECLARE_END
 
 xrSE_DECLARE_BEGIN(xrGraphPoint,xrServerEntity)
 public:
+	xrGraphPoint();
 	string32				m_caConnectionPointName;
 xrSE_DECLARE_END
 
