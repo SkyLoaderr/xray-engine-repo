@@ -93,19 +93,19 @@ protected:
 
 #else
 
-struct sort_cells_predicate {
-	ICF	bool	operator()	(const LevelNavigationGraph::CCellVertexEx *v0, const LevelNavigationGraph::CCellVertexEx *v1) const
-	{
-		u32					s0 = v0->m_down*v0->m_right;
-		u32					s1 = v1->m_down*v1->m_right;
-		if (s0 > s1)
-			return			(true);
-		else
-			if (s0 < s1)
-				return		(false);
-		return				(v0 < v1);
-	}
-};
+//struct sort_cells_predicate {
+//	ICF	bool	operator()	(const LevelNavigationGraph::CCellVertexEx *v0, const LevelNavigationGraph::CCellVertexEx *v1) const
+//	{
+//		u32					s0 = v0->m_down*v0->m_right;
+//		u32					s1 = v1->m_down*v1->m_right;
+//		if (s0 > s1)
+//			return			(true);
+//		else
+//			if (s0 < s1)
+//				return		(false);
+//		return				(v0 < v1);
+//	}
+//};
 
 class CLevelNavigationGraph : public CLevelGraph {
 private:
@@ -123,7 +123,7 @@ public:
 
 public:
 	typedef xr_vector<CCellVertex>						CROSS_TABLE;
-	typedef xr_set<CCellVertex*,sort_cells_predicate>	CROSS_PTABLE;
+	typedef xr_map<u64,CCellVertex*,std::greater<u64> >	CROSS_PTABLE;
 	typedef xr_vector<CCellVertex*>						TEMP_TABLE;
 
 private:
@@ -133,8 +133,6 @@ private:
 private:
 	CROSS_TABLE					m_cross;
 	CROSS_PTABLE				m_temp;
-	TEMP_TABLE					m_temp2;
-
 	
 #ifdef DEBUG
 private:
