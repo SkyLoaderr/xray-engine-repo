@@ -32,7 +32,7 @@ void CUIPointerGage::InitPointer(LPCSTR arrow_tex_name,  int arrow_offset_x , in
 
 	m_fAngleMin = angle_min;
 	m_fAngleMax = angle_max;
-	R_ASSERT(m_fAngleMin<m_fAngleMax);
+
 }
 
 void CUIPointerGage::Update		()
