@@ -27,25 +27,20 @@ public:
     void				OnCreate		();
     void				OnDestroy		();
 
-    PS::SDef*			FindPS			(LPCSTR name);
     PS::CPEDef*			FindPED			(LPCSTR name);
     PS::PEDIt			FindPEDIt		(LPCSTR name);
     PS::CPGDef*			FindPGD			(LPCSTR name);
     PS::PGDIt			FindPGDIt		(LPCSTR name);
 
     // get object properties methods
-    IC PS::PSIt			FirstPS			()	{return m_PSs.begin();}
-    IC PS::PSIt			LastPS			()	{return m_PSs.end();}
     IC PS::PEDIt		FirstPED		()	{return m_PEDs.begin();}
     IC PS::PEDIt		LastPED			()	{return m_PEDs.end();}
     IC PS::PGDIt		FirstPGD		()	{return m_PGDs.begin();}
     IC PS::PGDIt		LastPGD			()	{return m_PGDs.end();}
 
-    PS::SDef*			AppendPS		(PS::SDef* src=0);
     PS::CPEDef*			AppendPED		(PS::CPEDef* src=0);
     PS::CPGDef*			AppendPGD		(PS::CPGDef* src=0);
     void				Remove			(LPCSTR name);
-    void				RenamePS		(PS::SDef* src, LPCSTR new_name);
     void				RenamePED		(PS::CPEDef* src, LPCSTR new_name);
     void				RenamePGD		(PS::CPGDef* src, LPCSTR new_name);
 
