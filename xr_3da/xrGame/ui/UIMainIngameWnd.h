@@ -243,7 +243,4 @@ public:
 	void				SetBatteryCharge(float value);
 	// Показать/спрятать батарейку
 	void				ShowBattery(bool on);
-
-	// Multiplayer chat log
-	CUIListWnd			UIMPChatLog;
 };
