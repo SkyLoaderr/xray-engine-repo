@@ -7,7 +7,7 @@ class "SPatrol"
 local snd_interval      =   5000
 local anim_interval     =   10000
 
-function SPatrol:__init (npc, script, way, sounds)
+function SPatrol:__init (npc, script, way, sounds, anims, flags)
     self.npc = npc
     self.script = script
     self.way = way
@@ -15,6 +15,9 @@ function SPatrol:__init (npc, script, way, sounds)
     self.snd_time = 0
     self.anim_time = 0
     self.snd_len = 0
+    self.animation = false
+    self.anims = anims
+    self.flags = flags
     
     npc:script (true, script)
     action (npc, anim (anim.free), cond (cond.time_end, time_infinite))
@@ -27,6 +30,13 @@ function SPatrol:initialize ()
             object (self.npc:best_weapon (), object.activate), cond (cond.move_end))
     self.snd_time = device():time_global()
     self.anim_time = self.snd_time
+	self.npc:set_callback (self, "anim_callback", game_object.animation)
+end
+
+function SPatrol:anim_callback (obj, action_type, index)
+    if action_type ~= game_object.animation or self.animation == false then return end
+    self.animation = false
+    self.anim_time = device():time_global() + anim_interval
 end
 
 
@@ -38,18 +48,15 @@ function SPatrol:process ()
     local ctime = device():time_global()
     
     --sounds
-    if table.getn (self.sounds) ~= 0 then
-       printf ("Snd length %d, ctime %d", self.snd_len, ctime) 
+    if table.getn (self.sounds) ~= 0 and self.animation == false then
        if self.snd_len ~= 0 and ctime >= self.snd_len then 
-          printf ("Sound end at time %d, snd_end %d", ctime, self.snd_len)
           self.snd_len = 0
           self.snd_time = ctime
        else
           if ctime - self.snd_time >= snd_interval and self.snd_len == 0 then
-             local sname = self.sounds[math.random (1, table.getn (self.sounds))]
+             local sname = self.sounds[math.random (1, table.getn (self.sounds) + 1)]
              local s = sound_object (sname)
              self.snd_len = s:length () + ctime
-             printf ("Set sound %s, snd_end %d, time %d", sname, self.snd_len, ctime)
              update_action (self.npc, self.script, sound (sname, "bip01_head", 
                             vector ():set (0, 0, 0), vector ():set (0, 0, 0), false))
           end
@@ -57,6 +64,17 @@ function SPatrol:process ()
     end   
     
     
+    --animations    
+    if self.animation == true then return end
+    
+    if ctime - self.anim_time < anim_interval then return end
+    
+    if table.getn (self.anims) == 0 then return end
+    local nanim = math.random (1, table.getn (self.anims) + 1)
+    printf ("Set animation %s", self.anims[nanim])
+    action_first (self.npc, anim (self.anims[nanim], self.flags[nanim]), cond (cond.anim_end))
+    self.animation = true
+        
 end
 
 
@@ -76,8 +94,11 @@ function main ()
                "monsters\\Stalker\\Humming\\em1_whistle4",
                "monsters\\Stalker\\Humming\\em1_whistle5"
                }
+
+    local anims = {"stoya_ruje_ 0", "plechi", "vishka_3", "vishka_1" }
+    local flags =  {true, false, false, false }
     
-    local sss = ptr.SPatrol (get_level_object ("s_patrol"), ptr.script_name (), patrol ("patrolway"), snds)
+    local sss = ptr.SPatrol (get_level_object ("s_patrol"), ptr.script_name (), patrol ("patrolway"), snds, anims, flags)
     wait (5000)
     
     sss:initialize ()
