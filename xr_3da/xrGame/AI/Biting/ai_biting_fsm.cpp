@@ -14,7 +14,7 @@
 void CAI_Biting::Think()
 {
 	if (!g_Alive()) return;
-		
+	
 #ifdef DEEP_TEST_SPEED	
 	if (time_next_update > Level().timeServer()) return;
 	time_next_update = Level().timeServer() + 1000 / UPS;
@@ -22,7 +22,11 @@ void CAI_Biting::Think()
 
 	m_dwLastUpdateTime						= m_current_update;
 	m_current_update						= Level().timeServer();
-	
+
+
+	CStateManagerBiting::update				(m_current_update - m_dwLastUpdateTime);
+
+
 	MotionStats->update						();
 	
 	vfUpdateParameters						();

@@ -2,8 +2,6 @@
 #ifndef CPHMOVEMENT_CONTROL_H
 #define CPHMOVEMENT_CONTROL_H
 
-//#define NO_PHYSICS_IN_AI_MOVE
-
 #include "PHCharacter.h"
 #include "detail_path_manager.h"
 

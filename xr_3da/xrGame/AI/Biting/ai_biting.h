@@ -20,6 +20,7 @@
 
 #include "../ai_monster_movement.h"
 
+#include "biting_state_manager.h"
 
 class CCharacterPhysicsSupport;
 
@@ -28,7 +29,8 @@ typedef VisionElem SEnemy;
 class CAI_Biting : public CCustomMonster, 
 				   public CMonsterMemory,
 				   virtual public CMonsterMovement,
-				   public CSharedClass<_biting_shared> {
+				   public CSharedClass<_biting_shared>,
+				   public CStateManagerBiting {
 
 	typedef	CCustomMonster					inherited;
 	typedef CSharedClass<_biting_shared>	_sd_biting;

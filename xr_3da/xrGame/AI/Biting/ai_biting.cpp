@@ -17,7 +17,7 @@
 #include "../ai_monster_jump.h"
 #include "../ai_monster_utils.h"
 
-CAI_Biting::CAI_Biting()
+CAI_Biting::CAI_Biting() : CStateManagerBiting("Biting Manager")
 {
 	m_PhysicMovementControl->AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
 	m_pPhysics_support=xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etBitting,this);
@@ -72,6 +72,7 @@ void CAI_Biting::reinit()
 	
 	inherited::reinit					();
 	CMonsterMovement::reinit			();
+	CStateManagerBiting::reinit			(this);
 
 #ifdef 	DEEP_TEST_SPEED	
 	time_next_update				= 0;
@@ -99,6 +100,7 @@ void CAI_Biting::Load(LPCSTR section)
 	// load parameters from ".ltx" file
 	inherited::Load					(section);
 	CMonsterMovement::Load			(section);
+	CStateManagerBiting::Load		(section);
 	
 	AS_Load							(section);
 
@@ -503,6 +505,7 @@ void CAI_Biting::reload	(LPCSTR section)
 {
 	CCustomMonster::reload		(section);
 	CMonsterMovement::reload	(section);
+	CStateManagerBiting::reload	(section);
 }
 
 

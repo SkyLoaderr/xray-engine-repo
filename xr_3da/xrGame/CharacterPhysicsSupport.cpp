@@ -68,12 +68,10 @@ void CCharacterPhysicsSupport::in_Load(LPCSTR section)
 
 void CCharacterPhysicsSupport::in_NetSpawn()
 {
-#ifndef NO_PHYSICS_IN_AI_MOVE
 
 	m_PhysicMovementControl.CreateCharacter();
 	m_PhysicMovementControl.SetPhysicsRefObject(&m_EntityAlife);
 	
-#endif
 	if(!m_physics_skeleton)CreateSkeleton(m_physics_skeleton);
 }
 void CCharacterPhysicsSupport::in_NetDestroy()
@@ -128,10 +126,9 @@ void CCharacterPhysicsSupport::in_Hit(float /**P/**/, Fvector &dir, CObject * /*
 		m_saved_element=element;
 		m_saved_hit_dir.set(dir);
 		m_saved_hit_position.set(p_in_object_space);
-#ifndef NO_PHYSICS_IN_AI_MOVE
+
 		if(!is_killing&&m_EntityAlife.g_Alive())
 			m_PhysicMovementControl.ApplyImpulse(dir,impulse);
-#endif
 
 	}
 	else {
@@ -195,11 +192,9 @@ void CCharacterPhysicsSupport::in_UpdateCL()
 		ActivateShell();
 		//CreateSkeleton();
 		//Log("mem use %d",Memory.mem_usage());
-#ifndef NO_PHYSICS_IN_AI_MOVE
 
 		m_PhysicMovementControl.DestroyCharacter();
 		m_EntityAlife.PHSetPushOut();
-#endif
 	}
 }
 
@@ -228,16 +223,12 @@ void CCharacterPhysicsSupport::CreateSkeleton()
 {
 	if(m_pPhysicsShell) return;
 Fvector velocity;
-#ifndef NO_PHYSICS_IN_AI_MOVE
 	m_PhysicMovementControl.GetCharacterVelocity(velocity);
 	m_PhysicMovementControl.GetDeathPosition	(m_EntityAlife.Position());
 	m_PhysicMovementControl.DestroyCharacter();
 	//Position().y+=.1f;
 	//#else
 	//Position().y+=0.1f;
-#else
-	velocity.set(0,0,0);
-#endif
 
 	if (!m_EntityAlife.Visual())
 		return;
@@ -262,14 +253,10 @@ void CCharacterPhysicsSupport::ActivateShell()
 {
 	if(m_pPhysicsShell) return;
 	Fvector velocity;
-#ifndef NO_PHYSICS_IN_AI_MOVE
 	m_PhysicMovementControl.GetCharacterVelocity(velocity);
 	velocity.mul(1.3f);
 	m_PhysicMovementControl.GetDeathPosition	(m_EntityAlife.Position());
 	m_PhysicMovementControl.DestroyCharacter();
-#else
-	velocity.set(0,0,0);
-#endif
 	R_ASSERT2(m_physics_skeleton,"No skeleton created!!");
 
 	m_pPhysicsShell=m_physics_skeleton;
