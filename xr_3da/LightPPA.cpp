@@ -4,6 +4,9 @@
 
 #include "stdafx.h"
 #include "LightPPA.h"
+#include "collide\cl_rapid.h"
+#include "xr_creator.h"
+#include "frustum.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -26,14 +29,14 @@ void CLightPPA::Render(Flight& D3D, CList<PPA_Vertex>&	vlist)
 
 	// Build bbox
 	Fbox	BB;
-	BB.set	(sphere.P);
+	BB.set	(sphere.P,sphere.P);
 	BB.grow	(sphere.R+EPS_L);
 
 	// Query collision DB (Select polygons)
 	XRC.BBoxMode		(0);
 	XRC.BBoxCollide		(precalc_identity,pCreator->ObjectSpace.GetStaticModel(),precalc_identity,BB);
 	DWORD	triCount	= XRC.GetBBoxContactCount();
-	if (0==triCount)	continue;
+	if (0==triCount)	return;
 	RAPID::tri* tris	= pCreator->ObjectSpace.GetStaticTris();
 
 	// Calculate XForms
@@ -64,9 +67,6 @@ void CLightPPA::Render(Flight& D3D, CList<PPA_Vertex>&	vlist)
 		RAPID::tri&	T	= tris[XRC.BBoxContact[t].id];
 
 		Fvector D1,D2,D3;
-		float	a1,a2,a3;
-		float	b1,b2,b3;
-
 		Fvector	V1		= *T.verts[0];
 		Fvector V2		= *T.verts[1];
 		Fvector V3		= *T.verts[2];
