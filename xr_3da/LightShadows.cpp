@@ -11,7 +11,7 @@
 
 const	float	S_distance	= 32;
 const	float	S_level		= .1f;
-const	int		S_size		= 16;
+const	int		S_size		= 32;
 const	int		S_rt_size	= 512;
 const	int		batch_size	= 128;
 
@@ -247,7 +247,7 @@ void CLightShadows::render	()
 	Device.Shader.set_Shader	(sh_World);
 	int batch					= 0;
 	DWORD Offset				= 0;
-	DWORD C						= 0xffffffff;
+	DWORD C						= 0x7f7f7f7f;
 	FVF::LIT* pv				= (FVF::LIT*) vs_World->Lock(batch_size*3,Offset);
 	for (int s_it=0; s_it<shadows.size(); s_it++)
 	{
