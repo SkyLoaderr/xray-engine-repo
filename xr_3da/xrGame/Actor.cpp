@@ -350,6 +350,9 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 
 	setEnabled				(E->s_flags.is(M_SPAWN_OBJECT_LOCAL));
 
+	setVisible					(TRUE);
+	setEnabled					(TRUE);
+
 	patch_frame				= 0;
 	patch_position.set		(Position());
 
@@ -364,7 +367,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	CSE_ALifeTraderAbstract	 *pTA	= dynamic_cast<CSE_ALifeTraderAbstract*>(e);
 	m_dwMoney				= pTA->m_dwMoney;
 	m_tRank					= pTA->m_tRank;
-
+	
 
 	// @@@: WT - !!!ВРЕМЕННО!!! - спавним каждому актеру детектор
 	if(Local()) for(u32 i = 0; i < 1; i++) {
