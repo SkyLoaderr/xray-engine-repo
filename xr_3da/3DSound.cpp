@@ -294,10 +294,10 @@ void CSound::Stop			()
 void CSound::Rewind			()
 {
 	pBuffer->SetCurrentPosition	(0);
-	u32 dwTime				= Device.TimerAsync();
-	u32 dwDiff				= dwTime-dwTimeStarted;
-	dwTimeStarted				+= dwDiff;
-	dwTimeToStop				+= dwDiff;
-	dwTimeToPropagade			= dwTime;
-	bNeedUpdate					= true;
+	u32 dwTime					=	Device.TimerAsync();
+	u32 dwDiff					=	dwTime-dwTimeStarted;
+	dwTimeStarted				+=	dwDiff;
+	dwTimeToStop				+=	dwDiff;
+	dwTimeToPropagade			=	dwTime;
+	bNeedUpdate					=	true;
 }
