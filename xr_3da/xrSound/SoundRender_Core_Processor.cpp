@@ -144,16 +144,16 @@ float CSoundRender_Core::get_occlusion_to( const Fvector& hear_pt, const Fvector
 {
 	float occ_value			= 1.f;
 
-	// Calculate RAY params
-	Fvector	pos,dir;
-	pos.random_dir			();
-	pos.mul					(dispersion);
-	pos.add					(snd_pt);
-	dir.sub					(pos,hear_pt);
-	float range				= dir.magnitude	();
-	dir.div					(range);
-
 	if (0!=geom_SOM){
+		// Calculate RAY params
+		Fvector	pos,dir;
+		pos.random_dir			();
+		pos.mul					(dispersion);
+		pos.add					(snd_pt);
+		dir.sub					(pos,hear_pt);
+		float range				= dir.magnitude	();
+		dir.div					(range);
+
 #ifdef _EDITOR
 		ETOOLS::ray_options		(CDB::OPT_CULL);
 		ETOOLS::ray_query		(geom_SOM,hear_pt,dir,range);
