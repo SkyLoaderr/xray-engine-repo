@@ -169,7 +169,7 @@ void xrLoad(LPCSTR name)
 const int	LIGHT_Count			=5;
 const int	LIGHT_Total			=(2*LIGHT_Count+1)*(2*LIGHT_Count+1);
 
-typedef	svector<R_Light*,128>	LSelection;
+typedef	svector<R_Light*,256>	LSelection;
 
 IC bool RayPick(RAPID::XRCollide& DB, Fvector& P, Fvector& D, float r, R_Light& L)
 {
@@ -267,7 +267,7 @@ public:
 				Fbox		BB;
 				BB.min.set	(slt_x*DETAIL_SLOT_SIZE,	DS.y_min,	slt_z*DETAIL_SLOT_SIZE);
 				BB.max.set	(BB.min.x+DETAIL_SLOT_SIZE,	DS.y_max,	BB.min.z+DETAIL_SLOT_SIZE);
-				BB.grow		(EPS_L);
+				BB.grow		(0.01f);
 				
 				Fsphere		S;
 				BB.getsphere(S.P,S.R);
