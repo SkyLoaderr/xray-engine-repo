@@ -1,3 +1,5 @@
+--stalker_3_s_1
+--stalker_3_s_2
 --sidya_boltaet_ 0
 --stalker_2_2
 --stalker_2_3
@@ -70,7 +72,7 @@ function main ()
     reset_action (stalker2, military2_1.script_name ())
     action (stalker2, anim ("stalker_1_2"), cond (cond.time_end, 100000000))
 	reset_action (stalker3, military2_1.script_name ())
-    action (stalker3, anim ("stalker_3_1"), cond (cond.time_end, 100000000))
+    action (stalker3, anim ("stalker_3_s_1"), cond (cond.anim_end))
     sound3_1:play_at_pos (stalker3, stalker3:position ())
     while sound3_1:playing () do wait () end
 	reset_action (stalker3, military2_1.script_name ())
