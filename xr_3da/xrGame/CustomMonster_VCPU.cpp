@@ -110,7 +110,7 @@ void CCustomMonster::Exec_Action	( float dt )
 	BOOL	b_firing	= Weapons->isWorking();
 	switch (L->Command) {
 	case AI::AIC_Action::FireBegin:
-		if (!b_firing)	g_cl_fireStart	();
+		if (!b_firing)	g_fireStart		();
 		break;
 	case AI::AIC_Action::FireEnd:
 		if (b_firing)	g_fireEnd		();
