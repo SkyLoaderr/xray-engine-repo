@@ -18,7 +18,7 @@ struct vertBoned1W	// (3+3+2+1)*4 = 9*4 = 36 bytes
 	Fvector	P;
 	Fvector	N;
 	float	u,v;
-	u32	matrix;
+	u32		matrix;
 };
 struct vertBoned2W	// (1+3+3 + 1+3+3 + 2)*4 = 16*4 = 64 bytes
 {

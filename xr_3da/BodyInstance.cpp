@@ -589,7 +589,8 @@ CBlend*	CKinematics::IBlend_Create	()
 
 void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 {
-	inherited::Load(N,data, dwFlags);
+	Msg				("skeleton: %s",N);
+	inherited::Load	(N, data, dwFlags);
 
 	// Globals
 	IReader* UD 	= data->open_chunk(OGF_USERDATA);
