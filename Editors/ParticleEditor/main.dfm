@@ -168,6 +168,7 @@ object frmMain: TfrmMain
   object fsStorage: TFormStorage
     IniSection = 'Main Form'
     RegistryRoot = prLocalMachine
+    Version = 1
     StoredProps.Strings = (
       'paLeftBar.Tag')
     StoredValues = <>
