@@ -110,8 +110,8 @@ VOID CDeflector::OA_Export()
 	size.sub	(max,min);
 
 	// Surface
-	lm.dwWidth  = iCeil(size.u*g_params.m_lm_pixels_per_meter*density+.5f); clamp(lm.dwWidth, 2ul,510ul);
-	lm.dwHeight = iCeil(size.v*g_params.m_lm_pixels_per_meter*density+.5f); clamp(lm.dwHeight,2ul,510ul);
+	lm.dwWidth  = iCeil(size.u*g_params.m_lm_pixels_per_meter*density+.5f); clamp(lm.dwWidth, 1ul,512ul-2*BORDER);
+	lm.dwHeight = iCeil(size.v*g_params.m_lm_pixels_per_meter*density+.5f); clamp(lm.dwHeight,1ul,512ul-2*BORDER);
 	lm.bHasAlpha= FALSE;
 	iArea		= lm.dwWidth*lm.dwHeight;
 
@@ -139,8 +139,8 @@ VOID CDeflector::OA_Export()
 	}
 	bb.getsphere(Center,Radius);
 
-	lm.dwWidth	+= 2;	// border
-	lm.dwHeight	+= 2;	// border
+	lm.dwWidth	+= 2*BORDER;	// border
+	lm.dwHeight	+= 2*BORDER;	// border
 }
 
 BOOL CDeflector::OA_Place(Face *owner)
@@ -172,9 +172,9 @@ VOID CDeflector::GetRect(UVpoint &min, UVpoint &max)
 VOID CDeflector::Capture		(CDeflector *D, int b_u, int b_v, int s_u, int s_v)
 {
 	UVpoint half;	half.set	(.5f/512.f, .5f/512.f);
-	UVpoint guard;	guard.set	(1.f/512.f, 1.f/512.f);
-	UVpoint scale;  scale.set	(float(s_u-2)/512.f, float(s_v-2)/512.f);	// take in mind border
-	UVpoint base;	base.set	(float(b_u)/512.f, float(b_v)/512.f);		// offset in UV space
+	UVpoint guard;	guard.set	(BORDER/512.f, BORDER/512.f);
+	UVpoint scale;  scale.set	(float(s_u-2*BORDER)/512.f, float(s_v-2*BORDER)/512.f);	// take in mind border
+	UVpoint base;	base.set	(float(b_u)/512.f, float(b_v)/512.f);					// offset in UV space
 
 	for (UVIt T=D->tris.begin(); T!=D->tris.end(); T++)
 	{
