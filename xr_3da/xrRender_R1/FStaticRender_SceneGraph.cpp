@@ -1,12 +1,14 @@
 // exxZERO Time Stamp AddIn. Document modified at : Thursday, March 07, 2002 11:44:58 , by user : Oles , from computer : OLES
 #include "stdafx.h"
+
 #include "..\fhierrarhyvisual.h"
-#include "..\particlegroup.h"
 #include "..\bodyinstance.h"
 #include "..\fmesh.h"
 #include "..\fcached.h"
 #include "..\flod.h"
 #include "..\irenderable.h"
+
+#include "particlegroup.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Scene graph actual insertion and sorting ////////////////////////////////////////////////////////

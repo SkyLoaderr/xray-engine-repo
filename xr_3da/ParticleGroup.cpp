@@ -173,7 +173,7 @@ BOOL CParticleGroup::Compile(CPGDef* def)
     if (m_Def){
         children.resize(m_Def->m_Effects.size());
         for (CPGDef::EffectVec::const_iterator e_it=m_Def->m_Effects.begin(); e_it!=m_Def->m_Effects.end(); e_it++)
-			children[e_it-def->m_Effects.begin()]	= ::Render->model_CreatePE(e_it->m_EffectName);
+			children[e_it-def->m_Effects.begin()]	= RImplementation.model_CreatePE(e_it->m_EffectName);
     }
     return TRUE;
 }

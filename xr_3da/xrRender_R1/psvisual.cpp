@@ -5,7 +5,7 @@
 #pragma hdrstop
 
 #include "PSVisual.h"
-#include "..\PSLibrary.h"
+#include "PSLibrary.h"
 
 #define MAX_PARTICLES	1024
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "PSLibrary.h"
+#include ".PSLibrary.h"
 
 #include "r2_types.h"
 #include "r2_scenegraph.h"

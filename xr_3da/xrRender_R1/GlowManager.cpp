@@ -3,6 +3,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "..\igame_persistent.h"
 #include "..\environment.h"
 #include "..\x_ray.h"
 #include "..\GameFont.h"
@@ -78,7 +79,7 @@ IC bool glow_compare(CGlow* g1, CGlow *g2)
 
 void CGlowManager::add	(CGlow *G)
 {
-	if (!psEnvFlags.test(effGlows))		return;
+//	if (!psEnvFlags.test(effGlows))		return;
 	if (G->dwFrame	==Device.dwFrame)		return;
 	G->dwFrame		= Device.dwFrame;
 
