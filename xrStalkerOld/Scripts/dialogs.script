@@ -70,6 +70,16 @@ function relocate_item(victim, obj, type)
 		news_manager.relocate_item(db.actor, type)
 	end
 end
+function relocate_money(victim, num, type)
+	if db.actor and victim then
+		if type == "in" then
+			victim:transfer_money(num, db.actor)
+		elseif type == "out" then
+			db.actor:transfer_money(num, victim)
+		end
+		news_manager.relocate_money(db.actor, type)
+	end
+end
 
 --'---------------------------------------------------------------------------------
 --' DIALOG ALLOWED
@@ -176,29 +186,26 @@ end
 -------------------
 --' Прекондишн на медикит
 function is_medikit_present (player, helper) 
-    printf ("is_medikit_present")
     return helper:object ("medkit") ~= nil
 end
 -------------------
 --' Прекондишн на медикит
 function is_medikit_no_present (helper, player) 
-    printf ("is_medikit_no_present")
     return helper:object ("medkit") == nil
 end
 -------------------
 --' Передача медикита халявная
 function drop_medikit (helper, player)
-    printf ("drop_medikit")
-    
-    helper:transfer_item (helper:object ("medkit"), player)
+	local obj = helper:object("medkit")
+	dialogs.relocate_item(helper, obj, "in")   
 end
 -------------------
 --' Продажа медикита
 function sell_medikit (helper, player)
-    printf ("sell_medikit")
     if player:money () < 300 then return end
-    helper:transfer_item (helper:object ("medkit"), player)
-    player:transfer_money (300, helper)
+    local obj = helper:object("medkit")
+    dialogs.relocate_item(helper, obj, "in")   
+    dialogs.relocate_money(helper, 300, "out")   
 end
 -------------------
 --' Имеется ли лишнее оружие
@@ -300,38 +307,20 @@ function disable_wounded (wounded, helper)
 end
 -------------------
 function transfer_medikit (wounded, player)
-    player:transfer_item (player:object ("medkit"), wounded)
+    local obj = player:object("medkit")
+    dialogs.relocate_item(wounded, obj, "out")   
+
     local good = wounded:goodwill (player) + 20
     if good > 100 then good = 100 end
     wounded:set_goodwill (good, player)
 end
 -------------------
-function sell_medikit (wounded, player)
-    if player:object ("medkit") == nil then return end
-    local good = wounded:goodwill (player) + 5
-    if good > 100 then good = 100 end
-    wounded:set_goodwill (good, player)
-end
--------------------
 function transfer_medikit2 (player, wounded)
-    player:transfer_item (player:object ("medkit"), wounded)
+    local obj = player:object("medkit")
+    dialogs.relocate_item(wounded, obj, "out")   
 	wounded:set_relation(game_object.friend, player)
     printf( "wounded=%s goodwill(actor)=%d", wounded:name(), wounded:goodwill(player) )
 end
--------------------
-function sell_medikit2 (player, wounded)
-    if player:object ("medkit") == nil then return end
-    local good = wounded:goodwill (player) + 5
-    if good > 100 then good = 100 end
-    wounded:set_goodwill (good, player)
-end
--------------------
-function kozel (wounded, player)
-    local good = wounded:goodwill (player) - 20
-    if good < 0 then good = 0 end
-    wounded:set_goodwill (good, player)
-end
-
 
 ------------------------------------------------------------------------------------
 -- escape factory combat
@@ -350,16 +339,4 @@ function transfer_vodka (stalker, player)
 		dialogs.relocate_item(stalker, obj, "out")
 	end
 
-end
-
-
-------------------------------------------------------------------------------------
--- Military section
-------------------------------------------------------------------------------------
--- Transfer money as payment for sniper kill
-function mil_dolg_payment (stalker, player)
-    printf ("Stalker_Name %s", stalker:name ())
-    printf ("Money before %d", player:money ())
-    stalker:transfer_money (stalker:money () / 2, player)
-    printf ("Money after %d", player:money ())
 end
