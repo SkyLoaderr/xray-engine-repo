@@ -104,22 +104,6 @@ function evaluator_need_patrol:evaluate()
 	return tt
 end
 
--- Стоим ли мы
-class "evaluator_standing" (property_evaluator)
-function evaluator_standing:__init(storage) super()
-	self.a = storage
-end
-function evaluator_standing:evaluate()
-	local tt
-	tt = (self.a.body_state == 0 and self.object:animation_count() == 0) or (self.a.enabled == false)
---	if tt == true then
---		printf("[EVA] Kamp: Standing? true")
---	else
---		printf("[EVA] Kamp: Standing? false")
---	end              
-	return tt
-end
-
 ----------------------------------------------------------------------------------------------------------------------
 --Actions
 ----------------------------------------------------------------------------------------------------------------------
@@ -139,24 +123,22 @@ function action_go_position:__init (npc_name,action_name,storage) super (nil,act
 			{1, 	0,	-1} }
 end
 function action_go_position:initialize()
-	printf("[ACT] Start: Go position")
+--	printf("[ACT] Start: Go position")
 	action_base.initialize(self)
 	self.object:set_node_evaluator()
 	self.object:set_path_evaluator()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()    
 
-	xr_kamp.change_state(self.object, self.a, 0)
 	self.object:set_body_state(move.standing)
 	self.object:set_mental_state(anim.free)
+	xr_state.change_state(self.object, 0)
 	
 	self.started = false
 end
 function action_go_position:execute ()
 
-	if self.started == false and
-	   self.object:animation_count() == 0 then
-
+	if self.started == false then
 		self.started = true
 	 
 		-- для начала надо составить список занятых позиций
@@ -208,13 +190,8 @@ function action_go_position:execute ()
 	action_base.execute (self)
 end
 function action_go_position:finalize ()
-	printf("[ACT] Finish: Go position")
-	                                                  
-	-- тут потом нужно будет вставить анимацию сажания и повернуть его лицом к центру
-	local pp = patrol(self.a.center_point):point(0)
-	pp.y = pp.y + 0.7
-	self.object:set_sight(look.point, pp, 0)
-   self.object:set_movement_type(move.stand)
+--	printf("[ACT] Finish: Go position")                                                  
+	self.object:set_movement_type(move.stand)
 	action_base.finalize (self)
 end
 
@@ -224,13 +201,12 @@ function action_kamp_idle:__init (npc_name,action_name,storage) super (nil,actio
 	self.a = storage
 end
 function action_kamp_idle:initialize()
-	printf("[ACT] Start: Kamp idle")
+--	printf("[ACT] Start: Kamp idle")
 	action_base.initialize(self)
 	self.object:set_node_evaluator()
 	self.object:set_path_evaluator()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()    
-
 end
 function action_kamp_idle:execute ()
 	action_base.execute (self)
@@ -293,7 +269,7 @@ function action_kamp_idle:execute ()
 	self.a.last_action = self.a.action
 end
 function action_kamp_idle:finalize ()               
-	printf("[ACT] Finish: Kamp idle")
+--	printf("[ACT] Finish: Kamp idle")
 	action_base.finalize (self)
 end
 
@@ -303,15 +279,17 @@ function action_go_patrol:__init (npc_name,action_name,storage) super (nil,actio
 	self.a = storage
 end
 function action_go_patrol:initialize()
-	printf("[ACT] Start: Go patrol")
+--	printf("[ACT] Start: Go patrol")
 	action_base.initialize(self)
 	self.object:set_node_evaluator()
 	self.object:set_path_evaluator()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()    
 
+	xr_state.change_state(self.object, 0)
+
 	self.begin = false
-	xr_kamp.change_state(self.object, self.a, 0)
+
 	self.final_point = {}
 	self.relax_point = {}
 	self.relax_time = {idle = nil,
@@ -330,14 +308,9 @@ end
 function action_go_patrol:execute()
 	action_base.execute (self)
 
-	if self.begin == true then
-		self.object:set_item(object.idle, self.object:best_weapon())	                                                            
-	end
-
-	-- не двигаться с места пока не закончим отыгрывать анимации
-	if self.object:animation_count() == 0  and self.begin == false then
+	-- не двигаться с места пока не закончим вставание
+	if self.begin == false and xr_state.finish_state(self.object) then
 		-- Установка на патрульный путь
-
 		self.begin = true
 		local rr = math.random(table.getn(self.a.patrol_path))
 		self.object:set_sight(look.path_dir, nil, 0)
@@ -347,6 +320,8 @@ function action_go_patrol:execute()
 		self.object:set_path_type  (game_object.patrol_path)
 	    	self.object:set_patrol_path (self.a.patrol_path[rr], patrol.start, patrol.continue, true)
 		self.object:set_movement_type(move.walk)
+
+		self.object:set_item(object.idle, self.object:best_weapon())	                                                            
 
 		local rr = math.random(3) 
 		if rr == 1 then
@@ -421,7 +396,7 @@ function action_go_patrol:execute()
 	end
 end
 function action_go_patrol:finalize()
-	printf("[ACT] Finish: Go patrol")
+--	printf("[ACT] Finish: Go patrol")
 	action_base.finalize (self)
 end
 
@@ -431,7 +406,7 @@ function action_wait:__init (npc_name,action_name,storage) super (nil,action_nam
 	self.a = storage
 end
 function action_wait:initialize()
-	printf("[ACT] Start: Wait")
+--	printf("[ACT] Start: Wait")
 	action_base.initialize(self)
 	self.object:set_node_evaluator()
 	self.object:set_path_evaluator()
@@ -480,52 +455,28 @@ function action_wait:initialize()
 
 	self.anim = {	idle = 0,
 			begin = nil,
-			maxidle = 10,
-			sumidle = 10,
+			maxidle = 5,
+			sumidle = 5,
 			rnd = 40,
-			anim_idle = {	{name = "stalker_2_1", hand = true, state = 2}, 
-					{name = "stalker_3_2", hand = true, state = 3}},
-			anim_active = { {name = "item_0_idle_1", hand = true, state = 3},
-					{name = "item_0_idle_2", hand = true, state = 3},
-					{name = "item_0_idle_3", hand = true, state = 3}} }
+			anim_active = { {name = "item_0_idle_1", hand = true},
+					{name = "item_0_idle_2", hand = true},
+					{name = "item_0_idle_3", hand = true}} }
 
 	self.finished = false
-
-	if self.a.action == 4 then
-		--Присаживаем
-		self.object:clear_animations()
-		xr_kamp.change_state(self.object, self.a, 3)
-		self.object:set_item(object.activate, self.object:object("vodka"))
-	end
-
 end
 function action_wait:execute()
 	action_base.execute (self)
-	if self.a.action == 4 then
-		--!!! ПЬЕМ ВОДКУ
-		if math.random(10) > 5 then
-		   	if self.timer.idle - (device():time_global()/1000 - self.timer.begin) > 5 then
-				self.object:set_item(object.use, self.object:object("vodka"))
-			else
-				if self.finished == false then
-					self.finished = true
-					self.object:set_item(object.deactivate, self.object:object("vodka"))
-					self.object:play_sound (sounds["idle"], 1, 0, 1, 0, 9)			
-				end
-			end
-		end
-
-		if (device():time_global()/1000 - self.timer.begin) > self.timer.idle then
-			self.a.timer.act4.begin = device():time_global()/1000
-			self.a.action = 0
-		end
-
-
-	elseif self.a.action == 5 then
+	if self.a.action == 5 then
 		--!!! ПРОСТО СИДИМ И ВТЫКАЕМ
+		xr_state.change_state(self.object, 3)
+		-- повернуть его лицом к центру
+		local pp = patrol(self.a.center_point):point(0)
+		pp.y = pp.y + 0.7
+		self.object:set_sight(look.point, pp, 0)
+
 		if (device():time_global()/1000 - self.timer.begin) < self.timer.idle then
 		        -- Анимации
-			if self.object:animation_count() <= 1 then
+			if self.object:animation_count() == 1 then
 				xr_kamp.set_anim(self.object, self.anim, self.a)
 			end
 
@@ -543,107 +494,27 @@ function action_wait:execute()
 	end
 end
 function action_wait:finalize()
-	printf("[ACT] Finish: Wait")
-	action_base.finalize (self)
-end
-
--- Вставание
-class "action_stand_up" (action_base)
-function action_stand_up:__init (npc_name,action_name,storage) super (nil,action_name)
-	self.a = storage
-end
-function action_stand_up:initialize()
-	printf("[ACT] Start: Stand UP")
-	action_base.initialize(self)
-	self.object:set_node_evaluator()
-	self.object:set_path_evaluator()
-	self.object:set_desired_position()
-	self.object:set_desired_direction()    
-	
-	self.object:clear_animations()
-	xr_kamp.change_state(self.object, self.a, 0)
-end
-function action_stand_up:execute()
-	action_base.execute (self)
-end
-function action_stand_up:finalize()
-	printf("[ACT] Finish: Stand UP")
+--	printf("[ACT] Finish: Wait")
 	action_base.finalize (self)
 end
 
 ----------------------------------------------------------------------------------------------------------------------
 -- Functions
 ----------------------------------------------------------------------------------------------------------------------
---функция смены положения тела
-function change_state(object, st, new)
-	-- ОПИСАНИЕ ИДЕНТИФИКАТОРОВ ПОЗИЦИЙ:
-	-- 0 - стоит                             
-	-- 1 - сидит в положении для курения
-	-- 2 - сидит в положении для водки
-	-- 3 - сидит в положении для еды
-	   	                                
-	if st.body_state == 0 then
-		if new == 0 then
-			--
-		elseif new == 1 then
-			object:add_animation("stalker_1_down", true)
-		elseif new == 2 then
-			object:add_animation("stalker_2_down", true)
-		elseif new == 3 then
-			object:add_animation("stalker_3_down", true)
-		end
-	elseif st.body_state == 1 then
-		if new == 0 then
-			object:add_animation("stalker_1_up", true)
-		elseif new == 1 then
-			--
-		elseif new == 2 then
-			--!!!!
-		elseif new == 3 then
-			--!!!!
-		end
-	elseif st.body_state == 2 then
-		if new == 0 then
-			object:add_animation("stalker_2_up", true)
-		elseif new == 1 then
-			--!!!!
-		elseif new == 2 then
-			--
-		elseif new == 3 then
-			object:add_animation("stalker_2v3", true)
-		end
-	elseif st.body_state == 3 then
-		if new == 0 then
-			object:add_animation("stalker_3_up", true)
-		elseif new == 1 then
-			--!!!!
-		elseif new == 2 then
-			object:add_animation("stalker_3v2", true)
-		elseif new == 3 then
-			--
-		end
-	end
-
-	st.body_state = new
-end
-
 -- Проигрыш анимашек
 function set_anim(npc, anim, st)
 	if anim.begin == nil or
-	   (device():time_global()/1000 - anim.begin) > anim.idle then
+	   (device():time_global()/1000 - anim.begin) > anim.idle 
+	then
 		anim.begin = device():time_global()/1000
 		anim.idle = math.random(anim.maxidle) + anim.sumidle
 
 		if math.random(100) < anim.rnd then
 			local r = math.random(table.getn(anim.anim_active))
-			xr_kamp.change_state(npc, st, anim.anim_active[r].state)
+			npc:clear_animations()
 			npc:add_animation(anim.anim_active[r].name,anim.anim_active[r].hand)
+			npc:add_animation("stalker_3_2", true)
 		end
-
-	else
-		local r = math.random(table.getn(anim.anim_idle))
-		xr_kamp.change_state(npc, st, anim.anim_idle[r].state)
-		npc:add_animation(anim.anim_idle[r].name,anim.anim_idle[r].hand)
 	end		
 end
 
@@ -663,30 +534,31 @@ function add_to_binder(object)
 
 	local manager = object:motivation_action_manager()
 
+	printf("KAMP BASE %d", xr_evaluators_id.stohe_kamp_base)
+
+	properties["state_end"]		= xr_evaluators_id.state_change
 	properties["kamp_end"]		= xr_evaluators_id.stohe_kamp_base + 1
 	properties["on_position"]	= xr_evaluators_id.stohe_kamp_base + 2
 	properties["need_select"]	= xr_evaluators_id.stohe_kamp_base + 3
 	properties["need_patrol"]	= xr_evaluators_id.stohe_kamp_base + 4
-	properties["standing"]		= xr_evaluators_id.stohe_kamp_base + 5
 
 	operators["kamp_idle"]		= xr_actions_id.stohe_kamp_base + 1
 	operators["go_position"]	= xr_actions_id.stohe_kamp_base + 2
 	operators["go_patrol"]		= xr_actions_id.stohe_kamp_base + 3
 	operators["wait"]		= xr_actions_id.stohe_kamp_base + 4
-	operators["stand_up"]		= xr_actions_id.stohe_kamp_base + 5
 
 	-- Evaluators                                                                            
 	manager:add_evaluator (properties["kamp_end"], 		this.evaluator_kamp_end		(xr_motivator.storage[object:id()].kamp))
 	manager:add_evaluator (properties["on_position"],	this.evaluator_on_position	(xr_motivator.storage[object:id()].kamp))
 	manager:add_evaluator (properties["need_select"],	this.evaluator_need_select	(xr_motivator.storage[object:id()].kamp))
 	manager:add_evaluator (properties["need_patrol"],	this.evaluator_need_patrol	(xr_motivator.storage[object:id()].kamp))
-	manager:add_evaluator (properties["standing"],		this.evaluator_standing		(xr_motivator.storage[object:id()].kamp))
 
 	-- Actions
 	local action = this.action_kamp_idle (object:name(),"action_kamp_idle", xr_motivator.storage[object:id()].kamp)
 	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
 	action:add_precondition		(world_property(stalker_ids.property_items,	false))
+	action:add_precondition		(world_property(properties["state_end"], 	true))
 	action:add_precondition		(world_property(properties["on_position"], 	true))
 	action:add_precondition		(world_property(properties["need_select"],	true))
 	action:add_effect 		(world_property(properties["kamp_end"],		true))
@@ -696,16 +568,18 @@ function add_to_binder(object)
 	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
 	action:add_precondition		(world_property(stalker_ids.property_items,	false))
+	action:add_precondition		(world_property(properties["state_end"], 	true))
 	action:add_precondition		(world_property(properties["need_select"],	false))
 	action:add_precondition		(world_property(properties["need_patrol"],	true))
 	action:add_effect 		(world_property(properties["need_select"], 	true))
 	manager:add_action (operators["go_patrol"], action)
 
-	action = this.action_wait (object:name(),"action_wait", xr_motivator.storage[object:id()].kamp)
+	action = this.action_wait (object:name(),"action_kamp_wait", xr_motivator.storage[object:id()].kamp)
 	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
 	action:add_precondition		(world_property(stalker_ids.property_items,	false))
 	action:add_precondition		(world_property(properties["on_position"], 	true))
+	action:add_precondition		(world_property(properties["state_end"], 	true))
 	action:add_precondition		(world_property(properties["need_select"],	false))
 	action:add_precondition		(world_property(properties["need_patrol"],	false))
 	action:add_effect 		(world_property(properties["need_select"], 	true))
@@ -715,19 +589,10 @@ function add_to_binder(object)
 	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
 	action:add_precondition		(world_property(stalker_ids.property_items,	false))
+	action:add_precondition		(world_property(properties["state_end"], 	true))
 	action:add_precondition 	(world_property(properties["on_position"], 	false))
 	action:add_effect 		(world_property(properties["on_position"], 	true))
 	manager:add_action (operators["go_position"], action)
-
-	action = this.action_stand_up (object:name(),"action_stand_up", xr_motivator.storage[object:id()].kamp)
-	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
-	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
-	action:add_precondition		(world_property(stalker_ids.property_items,	true))
-	action:add_effect 		(world_property(properties["standing"], 	true))
-	manager:add_action (operators["stand_up"], action)
-
-	action = manager:action (stalker_ids.action_gather_items)
-	action:add_precondition		(world_property(properties["standing"],		true))
 
 	action = manager:action (stalker_ids.action_free_no_alife)	
 	action:add_precondition		(world_property(properties["kamp_end"],		true))

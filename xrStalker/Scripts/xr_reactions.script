@@ -88,6 +88,7 @@ function action_wait:initialize()
 					{pack = sounds["wait"], id = 7},
 					{pack = sounds["wait"], id = 8} }}
 
+	xr_state.change_state(self.object, 0)
 end
 function action_wait:execute ()
 --	printf("[ACT] Reactions: Wait")
@@ -98,44 +99,44 @@ function action_wait:execute ()
 		self.a.time = device():time_global()
 		self.a.evn:markAsWatch(self.a.id)
 	end
+	
+	if xr_state.finish_state(self.object) == true then
+		--идем проверять или стоим смотрим
+		if ((self.a.isVisual ~= nil and self.a.isVisual > 0.75) or (self.a.isVisual == nil and self.a.watched == true)) then
+			--обработка проверки
+			if self.object:position():distance_to(level.vertex_position(self.a.position)) <= 3 then
+				-- если мы уже стоим в радиусе 5 метров от раздражителя - просто стоим и оглядываемся
+				if (self.time == nil) or (device():time_global()/1000 - self.time > self.t) then
+					self.t = math.random(3)+4
+					self.time = device():time_global()/1000
 
-	--идем проверять или стоим смотрим
-	if ((self.a.isVisual ~= nil and self.a.isVisual > 0.75) or (self.a.isVisual == nil and self.a.watched == true)) then
-		--обработка проверки
-		if self.object:position():distance_to(level.vertex_position(self.a.position)) <= 3 then
-			-- если мы уже стоим в радиусе 5 метров от раздражителя - просто стоим и оглядываемся
-			if (self.time == nil) or (device():time_global()/1000 - self.time > self.t) then
-				self.t = math.random(3)+4
-				self.time = device():time_global()/1000
-
-				local dir = vector():set(math.random(10)-5, 0, math.random(10)-5)
-				self.object:set_sight(look.direction, dir, 0)
-				self.object:set_body_state(move.standing)
-				self.object:set_movement_type(move.stand)
+					local dir = vector():set(math.random(10)-5, 0, math.random(10)-5)
+					self.object:set_sight(look.direction, dir, 0)
+					self.object:set_body_state(move.standing)
+					self.object:set_movement_type(move.stand)
+					self.object:set_mental_state(anim.danger)
+				end     	
+			else
 				self.object:set_mental_state(anim.danger)
-			end
+				self.object:set_movement_type(move.walk)
+				self.object:set_path_type(game_object.level_path)
+				-- медленно подходим к раздражителю
+				self.object:set_dest_level_vertex_id(self.a.position)
+				local pos = level.vertex_position(self.a.position)
+				pos.y = pos.y + 0.8
+				self.object:set_sight(look.point, pos, 0)
+	      			self.object:set_item(object.idle, self.object:best_weapon())
+	        	end
+			-- озвучка на проверку
+			globals.set_sound(self.object, self.sound_wait, false)
 		else
-			self.object:set_mental_state(anim.danger)
-			self.object:set_movement_type(move.walk)
-			self.object:set_path_type(game_object.level_path)
-			-- медленно подходим к раздражителю
-			self.object:set_dest_level_vertex_id(self.a.position)
-			local pos = level.vertex_position(self.a.position)
-			pos.y = pos.y + 0.8
-			self.object:set_sight(look.point, pos, 0)
-	      		self.object:set_item(object.idle, self.object:best_weapon())
-        	end
-		-- озвучка на проверку
-		globals.set_sound(self.object, self.sound_wait, false)
-
-	else
-		-- обрабатываем приглядывание
-		self.object:set_movement_type(move.stand)
-		self.object:set_sight(look.point, level.vertex_position(self.a.position), 0)
-		-- озвучка на поиск
-		globals.set_sound(self.object, self.sound_search, false)
+			-- обрабатываем приглядывание
+			self.object:set_movement_type(move.stand)
+			self.object:set_sight(look.point, level.vertex_position(self.a.position), 0)
+			-- озвучка на поиск
+			globals.set_sound(self.object, self.sound_search, false)
+		end
 	end
-
 
 	-- надо проверять время на обработку раздражителя, если время закончилось - прекращать обработку
 	if device():time_global() - self.a.time > self.a.time_wait then
@@ -184,17 +185,19 @@ function add_to_binder(object)
 
 	local manager = object:motivation_action_manager()
 
-	properties["event"] 	= xr_evaluators_id.stohe_reactions_base + 0
+	properties["state_end"]		= xr_evaluators_id.state_change
+	properties["event"] 		= xr_evaluators_id.stohe_reactions_base + 0
 
-	operators["wait"] 	= xr_actions_id.stohe_reactions_base + 0
+	operators["wait"] 		= xr_actions_id.stohe_reactions_base + 0
 
 	-- Evaluators
 	manager:add_evaluator (properties["event"], 		this.evaluator_new		("evaluator_new", xr_motivator.storage[object:id()].reactions))
 
 	-- Actions
-	local action = this.action_wait (object:name(),"action_wait", xr_motivator.storage[object:id()].reactions)
+	local action = this.action_wait (object:name(),"action_reaction_wait", xr_motivator.storage[object:id()].reactions)
 	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
+	action:add_precondition		(world_property(properties["state_end"], 	true))
 	action:add_precondition		(world_property(properties["event"],		true))
 	action:add_effect		(world_property(properties["event"],		false))
 	manager:add_action (operators["wait"], action)
@@ -202,7 +205,6 @@ function add_to_binder(object)
 
 	action = manager:action (stalker_ids.action_free_no_alife)	
 	action:add_precondition		(world_property(properties["event"],		false))
-
 end
 
 ----------------------------------------------------------------------------------------------------------------------

@@ -16,15 +16,25 @@ function evaluator_state_end:evaluate()
 	return self.a.body_state == self.a.target_state
 end
 
+-- Стоим ли мы
+class "evaluator_standing" (property_evaluator)
+function evaluator_standing:__init(storage) super()
+	self.a = storage
+end
+function evaluator_standing:evaluate()
+	return self.a.target_state == 0
+end
+
 ----------------------------------------------------------------------------------------------------------------------
 --Actions
 ----------------------------------------------------------------------------------------------------------------------
--- Идет в заданную область
+-- Изменяет положение тела
 class "action_change_state" (action_base)
 function action_change_state:__init (npc_name,action_name,storage) super (nil,action_name)
 	self.a = storage
 end
 function action_change_state:initialize()
+	printf("[ACT] State: Start")
 	action_base.initialize(self)
 	self.object:set_node_evaluator()
 	self.object:set_path_evaluator()
@@ -32,19 +42,53 @@ function action_change_state:initialize()
 	self.object:set_desired_direction()  
 end
 function action_change_state:execute ()
-	if self.object:animations_count() == 0 then
-		self.a.body_state = self.a.target_state
+
+	if self.a.target_state == 0 then
+		if self.object:animation_count() == 0 then
+			self.a.body_state = self.a.target_state
+		end
+	else
+		if self.object:animation_count() == 1 then
+			self.a.body_state = self.a.target_state
+		end
 	end
 
 	action_base.execute (self)
 end
 function action_change_state:finalize ()
+	printf("[ACT] State: Finish")
+	action_base.finalize (self)
+end
+
+-- Встаем
+class "action_stand" (action_base)
+function action_stand:__init (npc_name,action_name,storage) super (nil,action_name)
+	self.a = storage
+end
+function action_stand:initialize()
+	action_base.initialize(self)
+	self.object:set_node_evaluator()
+	self.object:set_path_evaluator()
+	self.object:set_desired_position()
+	self.object:set_desired_direction()  
+	xr_state.change_state(self.object, 0)
+end
+function action_stand:execute ()
+	action_base.execute (self)
+end
+function action_stand:finalize ()
 	action_base.finalize (self)
 end
 
 ----------------------------------------------------------------------------------------------------------------------
 -- Functions
 ----------------------------------------------------------------------------------------------------------------------
+-- Проверка, изменилось ли уже положение тела или нет
+function finish_state(object)
+	local st = xr_motivator.storage[object:id()].state
+	return st.body_state == st.target_state
+end
+
 --функция смены положения тела
 function change_state(object, new)
 	-- ОПИСАНИЕ ИДЕНТИФИКАТОРОВ ПОЗИЦИЙ:
@@ -52,52 +96,65 @@ function change_state(object, new)
 	-- 1 - сидит в положении для курения
 	-- 2 - сидит в положении для водки
 	-- 3 - сидит в положении для еды
-	object:clear_anomations()
 	local st = xr_motivator.storage[object:id()].state
-	   	                                
-	if st.body_state == 0 then
-		if new == 0 then
-			--
-		elseif new == 1 then
-			object:add_animation("stalker_1_down", true)
-		elseif new == 2 then
-			object:add_animation("stalker_2_down", true)
-		elseif new == 3 then
-			object:add_animation("stalker_3_down", true)
+	   	            
+	if st.body_state ~= new then 
+		object:clear_animations()
+		printf("Body State: %d, target %d", st.body_state, new) 
+	            
+		if st.body_state == 0 then
+			if new == 0 then
+				--
+			elseif new == 1 then
+				object:add_animation("stalker_1_down", true)
+			elseif new == 2 then
+				object:add_animation("stalker_2_down", true)
+			elseif new == 3 then
+				object:add_animation("stalker_3_down", true)
+			end
+		elseif st.body_state == 1 then
+			if new == 0 then
+				object:add_animation("stalker_1_up", true)
+			elseif new == 1 then
+				--
+			elseif new == 2 then
+				--!!!!
+			elseif new == 3 then
+				--!!!!
+			end
+		elseif st.body_state == 2 then
+			if new == 0 then
+				object:add_animation("stalker_2_up", true)
+			elseif new == 1 then
+				--!!!!
+			elseif new == 2 then
+				--
+			elseif new == 3 then
+				object:add_animation("stalker_2v3", true)
+			end
+		elseif st.body_state == 3 then
+			if new == 0 then
+				object:add_animation("stalker_3_up", true)
+			elseif new == 1 then
+				--!!!!
+			elseif new == 2 then
+				object:add_animation("stalker_3v2", true)
+			elseif new == 3 then
+				--
+			end
 		end
-	elseif st.body_state == 1 then
-		if new == 0 then
-			object:add_animation("stalker_1_up", true)
-		elseif new == 1 then
-			--
-		elseif new == 2 then
-			--!!!!
-		elseif new == 3 then
-			--!!!!
-		end
-	elseif st.body_state == 2 then
-		if new == 0 then
-			object:add_animation("stalker_2_up", true)
-		elseif new == 1 then
-			--!!!!
-		elseif new == 2 then
-			--
-		elseif new == 3 then
-			object:add_animation("stalker_2v3", true)
-		end
-	elseif st.body_state == 3 then
-		if new == 0 then
-			object:add_animation("stalker_3_up", true)
-		elseif new == 1 then
-			--!!!!
-		elseif new == 2 then
-			object:add_animation("stalker_3v2", true)
-		elseif new == 3 then
-			--
-		end
-	end
 
-	st.target_state = new
+		-- установка айдлов
+		if new == 0 then
+		elseif new == 1 then
+			object:add_animation("stalker_1_2", true)
+		elseif new == 2 then
+			object:add_animation("stalker_2_1", true)
+		elseif new == 3 then
+			object:add_animation("stalker_3_2", true)
+		end
+	      	st.target_state = new
+	end
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -109,12 +166,17 @@ function add_to_binder(object)
 
 	local manager = object:motivation_action_manager()
 
+	printf("STATE BASE %d", xr_evaluators_id.state_change)
+
 	properties["state_end"]		= xr_evaluators_id.state_change
+	properties["standing"]		= xr_evaluators_id.state_change + 1
 
 	operators["state"]		= xr_actions_id.stohe_state_base + 1
+	operators["stand"]		= xr_actions_id.stohe_state_base + 2
 
 	-- Evaluators                                                                            
 	manager:add_evaluator (properties["state_end"], 		this.evaluator_state_end		(xr_motivator.storage[object:id()].state))
+	manager:add_evaluator (properties["standing"], 			this.evaluator_standing			(xr_motivator.storage[object:id()].state))
 
 	-- Actions
 	local action = this.action_change_state (object:name(),"action_change_state", xr_motivator.storage[object:id()].state)
@@ -123,4 +185,15 @@ function add_to_binder(object)
 	action:add_precondition		(world_property(properties["state_end"],	false))
 	action:add_effect 		(world_property(properties["state_end"],	true))
 	manager:add_action (operators["state"], action)
+
+	action = this.action_stand (object:name(),"action_stand", xr_motivator.storage[object:id()].state)
+	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
+	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
+	action:add_precondition		(world_property(properties["standing"],		false))
+	action:add_effect 		(world_property(properties["standing"],		true))
+	manager:add_action (operators["stand"], action)
+
+	action = manager:action (stalker_ids.action_gather_items)
+	action:add_precondition		(world_property(properties["standing"],		true))
+	action:add_precondition		(world_property(properties["state_end"],	true))
 end
