@@ -12,7 +12,7 @@
 
 namespace LevelNavigationGraph {
 	struct CCellVertex;
-	struct CSector;
+	class  CSector;
 };
 
 template <typename, typename, typename> class CGraphAbstract;
@@ -42,9 +42,16 @@ private:
 	MARK_TABLE					m_marks;
 	CROSS_TABLE					m_cross;
 
-private:
 #ifdef DEBUG
+private:
 	u32							m_global_count;
+
+protected:
+	IC		void				check_vertices			();
+	IC		void				check_edges				();
+
+public:
+			void				render					();
 #endif
 
 public:
@@ -65,12 +72,6 @@ protected:
 	IC		void				fill_marks				();
 	IC		void				build_sectors			();
 	IC		void				build_edges				();
-
-protected:
-#ifdef DEBUG
-	IC		void				check_vertices			();
-	IC		void				check_edges				();
-#endif
 
 public:
 	IC		const CSectorGraph	&sectors				() const;

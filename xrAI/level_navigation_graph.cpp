@@ -1,9 +1,9 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: level_navigation_graph_inline.cpp
+//	Module 		: level_navigation_graph.cpp
 //	Created 	: 02.10.2001
 //  Modified 	: 27.02.2005
 //	Author		: Dmitriy Iassenev
-//	Description : Level navigation graph inline functions
+//	Description : Level navigation graph
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
@@ -148,10 +148,7 @@ enough:
 		}
 	}
 	
-	CSector						sector;
-	sector.min_vertex_id		= cell_vertex.m_vertex_id;
-	sector.max_vertex_id		= vertex_by_group_id((*i1_1)[j2 - 1],group_id).m_vertex_id;
-	sectors().add_vertex		(sector,group_id - 1);
+	sectors().add_vertex		(CSector(cell_vertex.m_vertex_id,vertex_by_group_id((*i1_1)[j2 - 1],group_id).m_vertex_id),group_id - 1);
 
 #ifdef DEBUG
 	m_global_count				+= (u32(i1 - m_marks.begin()) - i)*(j2 - j);
@@ -272,10 +269,10 @@ IC	void CLevelNavigationGraph::check_edges		()
 			continue;
 
 		++count;
-		if ((*I).second->data().min_vertex_id == (*I).second->data().max_vertex_id)
-			Msg							("! Node %d is not connected to the graph!",(*I).second->data().min_vertex_id);
+		if ((*I).second->data().min_vertex_id() == (*I).second->data().max_vertex_id())
+			Msg							("! Node %d is not connected to the graph!",(*I).second->data().min_vertex_id());
 		else
-			Msg							("! Sector [%d][%d] is not connected to the graph!",(*I).second->data().min_vertex_id,(*I).second->data().max_vertex_id);
+			Msg							("! Sector [%d][%d] is not connected to the graph!",(*I).second->data().min_vertex_id(),(*I).second->data().max_vertex_id());
 	}
 	if (count) {
 		if (count == 1)

@@ -905,6 +905,46 @@
 						Name="graphs"
 						Filter="">
 						<Filter
+							Name="abstract_graph"
+							Filter="">
+							<File
+								RelativePath=".\graph_abstract.h">
+							</File>
+							<File
+								RelativePath=".\graph_abstract_inline.h">
+							</File>
+							<Filter
+								Name="graph_edge"
+								Filter="">
+								<File
+									RelativePath=".\graph_edge.h">
+								</File>
+								<File
+									RelativePath=".\graph_edge_inline.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="graph_vertex"
+								Filter="">
+								<File
+									RelativePath=".\graph_vertex.h">
+								</File>
+								<File
+									RelativePath=".\graph_vertex_inline.h">
+								</File>
+							</Filter>
+						</Filter>
+						<Filter
+							Name="cross_table"
+							Filter="">
+							<File
+								RelativePath=".\game_level_cross_table.h">
+							</File>
+							<File
+								RelativePath=".\game_level_cross_table_inline.h">
+							</File>
+						</Filter>
+						<Filter
 							Name="game_graph"
 							Filter="">
 							<File
@@ -927,9 +967,6 @@
 								RelativePath=".\level_graph.h">
 							</File>
 							<File
-								RelativePath=".\level_graph_debug.cpp">
-							</File>
-							<File
 								RelativePath=".\level_graph_inline.h">
 							</File>
 							<File
@@ -940,6 +977,22 @@
 							</File>
 							<File
 								RelativePath=".\level_graph_vertex_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="level_navigation_graph"
+							Filter="">
+							<File
+								RelativePath=".\level_navigation_graph.cpp">
+							</File>
+							<File
+								RelativePath=".\level_navigation_graph.h">
+							</File>
+							<File
+								RelativePath=".\level_navigation_graph_inline.h">
+							</File>
+							<File
+								RelativePath=".\level_navigation_graph_space.h">
 							</File>
 						</Filter>
 						<Filter
@@ -1007,62 +1060,6 @@
 							Filter="">
 							<File
 								RelativePath=".\test_table.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="cross_table"
-							Filter="">
-							<File
-								RelativePath=".\game_level_cross_table.h">
-							</File>
-							<File
-								RelativePath=".\game_level_cross_table_inline.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="abstract_graph"
-							Filter="">
-							<File
-								RelativePath=".\graph_abstract.h">
-							</File>
-							<File
-								RelativePath=".\graph_abstract_inline.h">
-							</File>
-							<Filter
-								Name="graph_edge"
-								Filter="">
-								<File
-									RelativePath=".\graph_edge.h">
-								</File>
-								<File
-									RelativePath=".\graph_edge_inline.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="graph_vertex"
-								Filter="">
-								<File
-									RelativePath=".\graph_vertex.h">
-								</File>
-								<File
-									RelativePath=".\graph_vertex_inline.h">
-								</File>
-							</Filter>
-						</Filter>
-						<Filter
-							Name="level_navigation_graph"
-							Filter="">
-							<File
-								RelativePath=".\level_navigation_graph.cpp">
-							</File>
-							<File
-								RelativePath=".\level_navigation_graph.h">
-							</File>
-							<File
-								RelativePath=".\level_navigation_graph_inline.h">
-							</File>
-							<File
-								RelativePath=".\level_navigation_graph_space.h">
 							</File>
 						</Filter>
 					</Filter>

@@ -4341,6 +4341,9 @@
 						RelativePath=".\level_navigation_graph.h">
 					</File>
 					<File
+						RelativePath=".\level_navigation_graph_debug.cpp">
+					</File>
+					<File
 						RelativePath=".\level_navigation_graph_inline.h">
 					</File>
 					<File
