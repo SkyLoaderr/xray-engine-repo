@@ -21,7 +21,7 @@ public:
 	//t-defs
 	struct str_pred : public std::binary_function<char*, char*, bool> {	
 		IC bool operator()(const char* x, const char* y) const
-		{	return strcmp(x,y)<0;	}
+		{	return xr_strcmp(x,y)<0;	}
 	};
 	typedef xr_map<LPSTR,CConsoleCommand*,str_pred>	vecCMD;
 	typedef vecCMD::iterator						vecCMD_IT;

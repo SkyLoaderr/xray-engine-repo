@@ -586,7 +586,7 @@ void CMotionManager::FX_LoadMap(LPCSTR section)
 		_GetItem(val,0,first);
 		_GetItem(val,1,second);
 
-		if (0 == strcmp(bone_name, "default")) {
+		if (0 == xr_strcmp(bone_name, "default")) {
 			_sd->default_fx_indexes.front	= s8(atoi(first));
 			_sd->default_fx_indexes.back	= s8(atoi(second));
 		} else {

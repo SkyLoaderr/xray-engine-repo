@@ -28,7 +28,7 @@ bool CSE_ALifeHumanAbstract::bfCheckIfTaskCompleted(OBJECT_IT &I)
 		switch (tTask.m_tTaskType) {
 			case eTaskTypeSearchForItemCL :
 			case eTaskTypeSearchForItemCG : {
-				if (!strcmp(m_tpALife->tpfGetObjectByID(*I)->s_name,tTask.m_caSection))
+				if (!xr_strcmp(m_tpALife->tpfGetObjectByID(*I)->s_name,tTask.m_caSection))
 					return(true);
 				break;
 											}

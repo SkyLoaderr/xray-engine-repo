@@ -76,7 +76,7 @@ class ENGINE_API	CKinematics: public FHierrarhyVisual
 	friend class				CSkeletonX;
 protected:
 	struct str_pred : public std::binary_function<ref_str, ref_str, bool>	{	
-		IC bool operator()(const ref_str& x, const ref_str& y) const	{	return strcmp(*x,*y)<0;	}
+		IC bool operator()(const ref_str& x, const ref_str& y) const	{	return xr_strcmp(x,y)<0;	}
 	};
 public:
 	typedef xr_map<ref_str,u16,str_pred>		accel;

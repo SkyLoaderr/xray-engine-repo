@@ -12,7 +12,7 @@ class fNameEQ {
 	LPCSTR	name;
 public:
 	fNameEQ(LPCSTR N) : name(N) {};
-	IC bool operator() (CObject* O) { return strcmp(O->cName(),name)==0; }
+	IC bool operator() (CObject* O) { return xr_strcmp(O->cName(),name)==0; }
 };
 class fClassEQ {
 	CLASS_ID cls;

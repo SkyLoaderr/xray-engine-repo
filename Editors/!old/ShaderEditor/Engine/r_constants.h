@@ -58,7 +58,7 @@ struct	R_constant
 
 	IC BOOL					equal		(R_constant& C)
 	{
-		return (0==strcmp(*name,*C.name)) && (type==C.type) && (destination==C.destination) && ps.equal(C.ps) && vs.equal(C.vs) && samp.equal(C.samp) && handler==C.handler;
+		return (0==xr_strcmp(name,C.name)) && (type==C.type) && (destination==C.destination) && ps.equal(C.ps) && vs.equal(C.vs) && samp.equal(C.samp) && handler==C.handler;
 	}
 	IC BOOL					equal		(R_constant* C)
 	{

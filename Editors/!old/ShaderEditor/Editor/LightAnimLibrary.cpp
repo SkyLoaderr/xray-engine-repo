@@ -233,7 +233,7 @@ LAItemIt ELightAnimLibrary::FindItemI(LPCSTR name)
 {
 	if (name&&name[0])
 		for (LAItemIt it=Items.begin(); it!=Items.end(); it++)
-			if (0==strcmp((*it)->cName,name)) return it;
+			if (0==xr_strcmp((*it)->cName,name)) return it;
 	return Items.end();
 }
 

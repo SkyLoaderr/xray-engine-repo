@@ -18,7 +18,7 @@ protected:
 	bool			bLowerCaseArgs;
 	bool			bEmptyArgsHandled;
 
-	IC	bool		EQ(LPCSTR S1, LPCSTR S2) { return strcmp(S1,S2)==0; }
+	IC	bool		EQ(LPCSTR S1, LPCSTR S2) { return xr_strcmp(S1,S2)==0; }
 public:
 	CConsoleCommand		(LPCSTR N) : 
 	  cName				(N),

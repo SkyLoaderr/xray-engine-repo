@@ -55,7 +55,7 @@ class ENGINE_API	CEnvironment
 {
 	struct str_pred : public std::binary_function<ref_str, ref_str, bool>	{	
 		IC bool operator()(const ref_str& x, const ref_str& y) const
-		{	return strcmp(*x,*y)<0;	}
+		{	return xr_strcmp(x,y)<0;	}
 	};
 public:
 	DEFINE_VECTOR			(CEnvDescriptor*,EnvVec,EnvIt);

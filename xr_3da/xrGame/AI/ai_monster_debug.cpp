@@ -135,7 +135,7 @@ void CMonsterDebug::L_Update()
 void CMonsterDebug::HT_Add(float x, float y, LPCSTR str)
 {
 	for	(u32 i=0; i<_text.size(); i++) {
-		if (strcmp(_text[i].text, str) == 0) return;
+		if (xr_strcmp(_text[i].text, str) == 0) return;
 	}
 
 	_elem_const new_text;

@@ -65,7 +65,7 @@ public:
 		xr_vector<CLevel::SWayPoint>::const_iterator	i = m_path->tpaWayPoints.begin(), b = i;
 		xr_vector<CLevel::SWayPoint>::const_iterator	e = m_path->tpaWayPoints.end();
 		for ( ; i != e; ++i)
-			if (!strcmp(name,*(*i).name))
+			if (!xr_strcmp(name,*(*i).name))
 				return		(u32(i - b));
 		return				(u32(-1));
 	}

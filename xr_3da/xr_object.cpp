@@ -127,9 +127,9 @@ BOOL CObject::net_Spawn			(LPVOID data)
 
 			R_ASSERT3			(*NameVisual, "Model isn't assigned for object, but cform requisted",cName());
 
-			if (strcmp(cf,"skeleton")==0) collidable.model	= xr_new<CCF_Skeleton>	(this);
+			if (xr_strcmp(cf,"skeleton")==0) collidable.model	= xr_new<CCF_Skeleton>	(this);
 			else {
-				if (strcmp(cf,"rigid")==0)collidable.model	= xr_new<CCF_Rigid>		(this);
+				if (xr_strcmp(cf,"rigid")==0)collidable.model	= xr_new<CCF_Rigid>		(this);
 				else{
 					collidable.model						= xr_new<CCF_Polygonal> (this);
 					((CCF_Polygonal*)(collidable.model))->LoadModel(pSettings, cNameSect());

@@ -21,7 +21,7 @@ class ENGINE_API CObjectAnimator
 {
 private:
 	struct str_pred : public std::binary_function<char*, char*, bool>{	
-		IC bool operator()(LPCSTR x, LPCSTR y) const {return strcmp(x,y)<0;}
+		IC bool operator()(LPCSTR x, LPCSTR y) const {return xr_strcmp(x,y)<0;}
 	};
 	DEFINE_MAP_PRED		(LPSTR,COMotion*,MotionMap,MotionPairIt,str_pred);
 protected:

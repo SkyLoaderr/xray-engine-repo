@@ -62,7 +62,7 @@ void CScriptMonster::SetScriptControl(const bool bScriptControl, ref_str caScipt
 				bScriptControl || 
 				(
 					xr_strlen(*m_caScriptName) && 
-					!strcmp(*caSciptName,*m_caScriptName)
+					!xr_strcmp(caSciptName,m_caScriptName)
 				)
 			)
 		);
@@ -121,7 +121,7 @@ bool CScriptMonster::CheckTypeVisibility(const char* section_name)
 	for ( ; I != E; ++I)
 	{
 		CObject* pObject = dynamic_cast<CObject*>(*I);
-		if (strcmp(section_name, pObject->cNameSect()))
+		if (xr_strcmp(section_name, pObject->cNameSect()))
 			return		(true);
 	}
 	return				(false);
@@ -210,7 +210,7 @@ void CScriptMonster::ProcessScripts()
 
 		m_tpCurrentEntityAction	= l_tpEntityAction;
 
-		if (!strcmp("prisluh",*l_tpEntityAction->m_tAnimationAction.m_caAnimationToPlay)) {
+		if (!xr_strcmp("prisluh",*l_tpEntityAction->m_tAnimationAction.m_caAnimationToPlay)) {
 			l_tpEntityAction = l_tpEntityAction;
 		}
 		if (!l_tpEntityAction->CheckIfActionCompleted())

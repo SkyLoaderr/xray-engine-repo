@@ -37,7 +37,7 @@ void CLevelGraph::render()
 //		xr_map<LPCSTR,CLevel::SPath,pred_str>::const_iterator	I = Level().m_PatrolPaths.begin();
 //		xr_map<LPCSTR,CLevel::SPath,pred_str>::const_iterator	E = Level().m_PatrolPaths.end();
 //		for ( ; I != E; ++I) {
-//			if (strcmp("way0000",(*I).first))
+//			if (xr_strcmp("way0000",(*I).first))
 //				continue;
 //			xr_vector<CLevel::SWayPoint>::const_iterator	i = (*I).second.tpaWayPoints.begin();
 //			xr_vector<CLevel::SWayPoint>::const_iterator	e = (*I).second.tpaWayPoints.end();

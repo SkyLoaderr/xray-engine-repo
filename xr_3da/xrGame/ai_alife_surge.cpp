@@ -542,7 +542,7 @@ void CSE_ALifeSimulator::vfSellArtefacts(CSE_ALifeTrader &tTrader)
 					ARTEFACT_ORDER_IT		ii = (*I).second->m_tpOrderedArtefacts.begin();
 					ARTEFACT_ORDER_IT		ee = (*I).second->m_tpOrderedArtefacts.end();
 					for ( ; ii != ee; ++ii)
-						if (!strcmp((*ii).m_caSection,(*i).first)) {
+						if (!xr_strcmp((*ii).m_caSection,(*i).first)) {
 							SOrganizationOrder							l_tOrganizationOrder;
 							l_tOrganizationOrder.m_tpALifeOrganization	= (*I).second;
 							l_tOrganizationOrder.m_dwCount				= (*ii).m_dwCount;
@@ -573,7 +573,7 @@ void CSE_ALifeSimulator::vfSellArtefacts(CSE_ALifeTrader &tTrader)
 					for ( ; ii != ee; ++ii) {
 						// getting pointer to the purchased item from the object registry
 						CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = tpfGetObjectByID(*ii);
-						if (!strcmp((*i).first,l_tpALifeDynamicObject->s_name)) {
+						if (!xr_strcmp((*i).first,l_tpALifeDynamicObject->s_name)) {
 							CSE_Abstract				*l_tpAbstract = dynamic_cast<CSE_Abstract*>(l_tpALifeDynamicObject);
 							m_tpServer->entity_Destroy	(l_tpAbstract);
 							xr_delete					(l_tpAbstract);
@@ -793,7 +793,7 @@ void CSE_ALifeSimulator::vfAssignStalkerCustomers()
 //				for ( ; II != EE; ++II) {
 //					CSE_ALifeTraderAbstract *l_tpTraderAbstract = dynamic_cast<CSE_ALifeTraderAbstract*>((*II).second);
 //					if (l_tpTraderAbstract) {
-//						if (!strcmp((*II).second->s_name_replace,S)) {
+//						if (!xr_strcmp((*II).second->s_name_replace,S)) {
 //							l_tpALifeHumanAbstract->m_tpKnownCustomers.push_back((*II).second->ID);
 //							bOk		= true;
 //							break;

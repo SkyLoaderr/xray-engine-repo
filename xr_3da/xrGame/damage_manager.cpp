@@ -29,7 +29,7 @@ void CDamageManager::Load				(LPCSTR section)
 		string32						buffer;
 		CInifile::Sect					&damages = pSettings->r_section(pSettings->r_string(section,"damage"));
 		for (CInifile::SectIt i=damages.begin(); damages.end() != i; ++i) {
-			if (!strcmp(*(*i).first,"default"))
+			if (!xr_strcmp(*(*i).first,"default"))
 				m_default_hit_factor	= (float)atof(*(*i).second);
 			else {
 				CObject					*object = dynamic_cast<CObject*>(this);

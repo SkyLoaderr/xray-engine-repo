@@ -11,15 +11,15 @@
 
 static int ParseName(LPCSTR N)
 {
-	if (0==strcmp(N,"$null"))	return -1;
-	if (0==strcmp(N,"$base0"))	return	0;
-	if (0==strcmp(N,"$base1"))	return	1;
-	if (0==strcmp(N,"$base2"))	return	2;
-	if (0==strcmp(N,"$base3"))	return	3;
-	if (0==strcmp(N,"$base4"))	return	4;
-	if (0==strcmp(N,"$base5"))	return	5;
-	if (0==strcmp(N,"$base6"))	return	6;
-	if (0==strcmp(N,"$base7"))	return	7;
+	if (0==xr_strcmp(N,"$null"))	return -1;
+	if (0==xr_strcmp(N,"$base0"))	return	0;
+	if (0==xr_strcmp(N,"$base1"))	return	1;
+	if (0==xr_strcmp(N,"$base2"))	return	2;
+	if (0==xr_strcmp(N,"$base3"))	return	3;
+	if (0==xr_strcmp(N,"$base4"))	return	4;
+	if (0==xr_strcmp(N,"$base5"))	return	5;
+	if (0==xr_strcmp(N,"$base6"))	return	6;
+	if (0==xr_strcmp(N,"$base7"))	return	7;
 	return -1;
 }
 

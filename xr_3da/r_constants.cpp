@@ -23,18 +23,18 @@ void	R_constant_table::fatal			(LPCSTR S)
 // predicates
 IC bool	p_search	(R_constant* C, LPCSTR S)
 {
-	return strcmp(*C->name,S)<0;
+	return xr_strcmp(*C->name,S)<0;
 }
 IC bool	p_sort		(R_constant* C1, R_constant* C2)
 {
-	return strcmp(*C1->name,*C2->name)<0;
+	return xr_strcmp(C1->name,C2->name)<0;
 }
 
 R_constant* R_constant_table::get	(LPCSTR S)
 {
 	// assumption - sorted by name
 	c_table::iterator I	= std::lower_bound(table.begin(),table.end(),S,p_search);
-	if (I==table.end() || (0!=strcmp(*(*I)->name,S)))	return 0;
+	if (I==table.end() || (0!=xr_strcmp(*(*I)->name,S)))	return 0;
 	else												return *I;
 }
 R_constant* R_constant_table::get	(ref_str& S)

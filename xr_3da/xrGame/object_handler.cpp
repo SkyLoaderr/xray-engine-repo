@@ -420,7 +420,7 @@ void CObjectHandler::update(u32 time_delta)
 	inherited::update	(time_delta);
 
 #ifdef DEBUG
-	if (strcmp("stalker3",m_object->cName()))
+	if (xr_strcmp("stalker3",m_object->cName()))
 		return;
 	if (!path().empty()) {
 		Msg				("Path : ");
