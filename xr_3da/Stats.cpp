@@ -190,6 +190,11 @@ void CStats::Show()
 		Render->Statistics				(&F);
 
 		//////////////////////////////////////////////////////////////////////////
+		// Game specific
+		F.OutSet						(400,0);
+		g_pGamePersistent->Statistics	(&F);
+
+		//////////////////////////////////////////////////////////////////////////
 		// PERF ALERT
 		F.SetColor						(color_rgba(255,0,0,255));
 		F.OutSet						(300,300);
@@ -205,8 +210,8 @@ void CStats::Show()
 		if (RCache.stat.ib>100)			F.OutNext	("IB_change > 100:  %d",	RCache.stat.ib);
 		if (RenderDUMP_DT_Count>1000)	F.OutNext	("DT_count  > 1000: %d",	RenderDUMP_DT_Count);
 		F.OutSkip						();
-		if (fMem_calls>10)				F.OutNext	("MMGR calls > 10:  %3.1f",	fMem_calls);
-		if (Sheduler.result>5.f)		F.OutNext	("Update     > 5ms:	%3.1f",	Sheduler.result);
+		if (fMem_calls>100)				F.OutNext	("MMGR calls > 100: %3.1f",	fMem_calls);
+		if (Sheduler.result>3.f)		F.OutNext	("Update     > 3ms:	%3.1f",	Sheduler.result);
 		if (UpdateClient.result>3.f)	F.OutNext	("UpdateCL   > 3ms: %3.1f",	UpdateClient.result);
 		if (Physics.result>5.f)			F.OutNext	("Physics    > 5ms: %3.1f",	Physics.result);	
 

@@ -39,8 +39,9 @@ public:
 	IGame_Persistent				();
 	virtual ~IGame_Persistent		();
 
-    void							OnDeviceCreate	();
-    void							OnDeviceDestroy	();
+    virtual void					OnDeviceCreate		();
+    virtual void					OnDeviceDestroy		();
+	virtual void					Statistics			(CGameFont* F)	= 0;
 };
 
 extern ENGINE_API	IGame_Persistent*	g_pGamePersistent;
