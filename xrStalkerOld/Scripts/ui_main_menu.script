@@ -87,13 +87,14 @@ function main_menu:InitControls()
 			  self.screen.width, 
 			  self.screen.height)
 	-- AVI
+--[[	
 	self.avi = CUIStatic()
 	self.avi:SetAutoDelete(true)
 	self.avi:SetWindowName("avi")
 	self.avi:Init("ui\\ui_start_avi", avi_rect.x, avi_rect.y, avi_rect.width, avi_rect.height)
 	self.avi:SetStretchTexture(true)
 	self:AttachChild(self.avi)
-			  
+	]]		  
 	-- BACKGROUND 
 	self.background = CUIStatic()
 	self.background:SetAutoDelete(true)
