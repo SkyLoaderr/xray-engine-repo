@@ -213,43 +213,43 @@ void CBuild::Run()
 
 	FPU::m64r();
 	Phase	("Resolving materials...");
-	ResolveMaterials();
+	xrPhase_ResolveMaterials	();
 	
 	FPU::m64r();
 	Phase	("Build UV mapping...");
-	BuildUVmap		();
+	xrPhase_UVmap				();
 	
 	FPU::m64r();
+	Phase	("Subdividing geometry...");
+	xrPhase_Subdivide			();
+
+	FPU::m64r();
 	Phase	("Soften lights...");
-	SoftenLights	();
+	SoftenLights				();
 
 	FPU::m64r();
 	Phase	("Implicit lighting...");
-	ImplicitLighting();
+	ImplicitLighting			();
 
+	// All lighting
 	FPU::m64r();
-	Phase	("Raytracing...");
-	Light			();
-	
-	FPU::m64r();
-	Phase	("Merging lightmaps...");
-	MergeLM			();
-
-	FPU::m64r();
-	Phase	("Merging geometry...");
-	MergeGeometry	();
+	Light						();
 	
 	FPU::m64r();
 	Phase	("Calculating vertex lighting...");
-	LightVertex		();
+	LightVertex					();
+	
+	FPU::m64r();
+	Phase	("Merging lightmaps...");
+	xrPhase_MergeLM				();
+
+	FPU::m64r();
+	Phase	("Merging geometry...");
+	xrPhase_MergeGeometry		();
 	
 	FPU::m64r();
 	Phase	("Converting to OpenGraphicsFormat...");
-	Flex2OGF		();
-
-	FPU::m64r();
-	Phase	("Processing DetailPatches...");
-	LightPatches	();
+	Flex2OGF					();
 
 	FPU::m64r();
 	Phase	("Building sectors...");

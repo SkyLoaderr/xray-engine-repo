@@ -8,5 +8,5 @@ void CBuild::SaveLights(CFS_Base &fs)
 		fs.write(lights_dynamic.begin()+i, sizeof(b_light));
 	fs.close_chunk();
 
-	fs.write_chunk(fsL_LIGHT_KEYS, lights_keys.begin(), lights_keys.size()*sizeof(Flight) );
+//	fs.write_chunk(fsL_LIGHT_KEYS, lights_keys.begin(), lights_keys.size()*sizeof(Flight) );
 }
