@@ -481,5 +481,6 @@ void CRender::render_sun				()
 	}
 
 	// Accumulate
-	Target.accum_direct		();
+	Target.phase_accumulator	();
+	Target.accum_direct			();
 }
