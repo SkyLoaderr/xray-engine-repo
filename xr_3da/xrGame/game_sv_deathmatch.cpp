@@ -616,7 +616,7 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(u32 id_who, NET_Packet& P)
 					u8 NewAddons  = u8(ItemID&0x00ff)>>0x05;
 					if (OldAddons != NewAddons)
 					{
-						NET_Packet	P;
+//						NET_Packet	P;
 //						u_EventGen(P, GE_ADDON_CHANGE, pWeapon->ID);
 //						u_EventSend(P);
 					}
