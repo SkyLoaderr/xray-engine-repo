@@ -1,0 +1,59 @@
+
+class "test_avi_dlg" (CUIScriptWnd)
+
+function test_avi_dlg:__init() super()
+   self:SetFont(GetFontMedium()) --set base font for dialog.
+   
+   self:InitControls()
+end
+
+function test_avi_dlg:__finalize()
+
+end
+
+function test_avi_dlg:InitControls()
+
+	self.indent = 18	
+	self.button_indent = -1 
+	self.screen    = {x = 0, y = 0, width = 1024, height = 768}
+	
+	-- rect of main window
+	self.main_rect = {x = 0, y = 0,
+					  width  = 1024,
+					  height = 512}
+	self.main_rect.x = (self.screen.width  - self.main_rect.width )/2
+	self.main_rect.y = (self.screen.height - self.main_rect.height)
+	-----------------------------------------------------------------
+	self.left_align_x   = self.indent
+	self.right_align_x  = self.main_rect.width - self.indent
+	self.top_align_y    = self.indent
+	self.bottom_align_y = self.main_rect.height - self.indent
+	------------------------------------------------------------------
+	
+
+	-- init self position and size
+	self:Init(self.screen.x, 
+			  self.screen.y, 
+			  self.screen.width, 
+			  self.screen.height)
+			  
+	-- BACKGROUND 
+	self.background = CUIStatic()
+	self.background:SetAutoDelete(true)
+	self.background:SetWindowName("background")
+	
+	self.background:Init("ui\\ui_start_avi",self.screen.x, self.screen.y, self.screen.width, self.screen.height)
+	self.background:SetStretchTexture(true)
+	self:AttachChild(self.background)
+	
+end
+
+
+function main()
+	local dlg = test_avi_dlg()
+	level.add_dialog_to_render(dlg)
+	wait(16000)
+	level.remove_dialog_to_render(dlg)
+	
+end
+
