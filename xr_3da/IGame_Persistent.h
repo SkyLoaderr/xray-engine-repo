@@ -37,8 +37,6 @@ public:
 	IGame_Persistent				();
 	virtual ~IGame_Persistent		();
 
-    virtual void					OnDeviceCreate		();
-    virtual void					OnDeviceDestroy		();
 	virtual void					Statistics			(CGameFont* F)
 #ifndef _EDITOR
      = 0;

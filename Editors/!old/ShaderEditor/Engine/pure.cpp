@@ -14,8 +14,6 @@ ENGINE_API int	__cdecl	_REG_Compare(const void *e1, const void *e2)
 
 DECLARE_RP(Frame);
 DECLARE_RP(Render);
-DECLARE_RP(DeviceDestroy);
-DECLARE_RP(DeviceCreate);
 DECLARE_RP(AppActivate);
 DECLARE_RP(AppDeactivate);
 DECLARE_RP(AppCycleStart);
