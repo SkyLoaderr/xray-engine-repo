@@ -156,7 +156,7 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 		if (SSA>Nvs->val.ssa)		{ Nvs->val.ssa = SSA;
 		} } } } } }
 #if		RENDER==R_R2	
-		if (val_bRecordMP && (distSQ<ps_r2_emap_range))	lstRecorded.push_back	(pVisual);
+		if (val_bRecordMP && ( (_sqrt(distSQ)-pVisual->vis.sphere.R) < ps_r2_emap_range))	lstRecorded.push_back	(pVisual);
 #endif
 	}
 }

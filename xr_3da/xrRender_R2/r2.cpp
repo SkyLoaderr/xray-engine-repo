@@ -65,7 +65,7 @@ static class cl_emap			: public R_constant_setup		{	virtual void setup	(R_consta
 	// x=clip factor, y=position shift
 	float	factor				= float(emapslice+1)/float(ps_r2_emap_slices);
 	float	shift				= factor*ps_r2_emap_height;
-	float	clip				= factor;				// 5cm?
+	float	clip				= _sqrt(factor);		// 5cm?
 	float	range				= 1.f / ps_r2_emap_range;
 	RCache.set_c				(C,	clip,shift,range,0);
 	// Msg		("[%d]factor:%f, shift:%f",Device.dwFrame,factor,shift);

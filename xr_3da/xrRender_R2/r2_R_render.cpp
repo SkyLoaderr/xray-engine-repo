@@ -198,10 +198,10 @@ void CRender::Render		()
 		for (int it=0; it<lstRecorded.size(); it++)	{
 			r_dsgraph_insert_static				(lstRecorded[it]);
 		}
-		for (emapslice=0; emapslice<ps_r2_emap_slices; emapslice++)
+		for (emapslice=ps_r2_emap_slices-1; emapslice>=0; emapslice--)
 		{
-			bool	b_last										= false;
-			if		(emapslice==(ps_r2_emap_slices-1))	b_last	= true;
+			bool	b_last				= false;
+			if		(0==emapslice)		b_last	= true;
 			r_dsgraph_render_graph		(0,b_last ? true : false);
 		}
 	}
