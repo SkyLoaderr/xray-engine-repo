@@ -162,7 +162,7 @@ public:
 	bool visited;
 };
 
-typedef std::xr_vector<NvStripInfo*>    NvStripInfoVec;
+typedef xr_vector<NvStripInfo*>    NvStripInfoVec;
 
 
 //The actual stripifier
