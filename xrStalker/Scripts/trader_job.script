@@ -147,7 +147,7 @@ function artefacts_task_text(original_text, first_speaker, second_speaker)
 
 	local result_text = string.format("%s\\n", original_text)
 	for K,V in different_artefacts do
-		result_text = string.format("%s\\n-%s", result_text, K)
+		result_text = string.format("%s\\n%s", result_text, K)
 	end    
 	
 	return result_text
