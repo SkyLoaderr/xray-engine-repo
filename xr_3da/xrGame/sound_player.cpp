@@ -56,10 +56,10 @@ void CSoundPlayer::unload			()
 		if ((*I).second.m_sounds.empty())
 			continue;
 
-		if (!(*I).second.m_sounds.front().g_userdata)
+		if (!(*I).second.m_sounds.front()->g_userdata)
 			continue;
 		
-		(*I).second.m_sounds.front().g_userdata->invalidate();
+		(*I).second.m_sounds.front()->g_userdata->invalidate();
 	}
 }
 
