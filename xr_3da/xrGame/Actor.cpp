@@ -526,7 +526,7 @@ void CActor::g_cl_CheckControls(DWORD mstate_wf, Fvector &vControlAccel, float &
 			m_bJumpKeyPressed	=	TRUE;
 			m_bJumpInProgress	=	TRUE;
 			Jump = (mstate_wf&mcCrouch)?m_fJumpSpeed*.8f:m_fJumpSpeed;
-		} else if (m_bJumpInProgress && Movement.Environment()==CMovementControl::peInAir) 
+		} else if (m_bJumpInProgress && (Movement.Environment()==CMovementControl::peInAir)) 
 		{
 			mstate_real			|=	mcJump;
 			m_bJumpInProgress	=	FALSE;
