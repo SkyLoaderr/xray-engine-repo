@@ -97,19 +97,22 @@ bool CSector::AddMesh	(CSceneObject* O, CEditableMesh* M)
     return false;
 }                  
 
-bool CSector::DelMesh	(CSceneObject* O, CEditableMesh* M){
+int CSector::DelMesh	(CSceneObject* O, CEditableMesh* M)
+{
+	int res = 0;
 	SItemIt it;
     if (FindSectorItem(O, M, it)){
     	sector_items.erase(it);
 	    m_Flags.set(flNeedUpdateVolume,TRUE);
+        res = 1;
     }
 	if (sector_items.empty()){
+    	res = 2;
     	ELog.Msg(mtInformation,"Last mesh deleted.\nSector has no meshes and will be removed.");
 		Scene.RemoveObject(this,false);
         delete this;
-        return false;
     }
-    return true;
+    return res;
 }
 
 bool CSector::GetBox( Fbox& box )

@@ -468,19 +468,19 @@ void CParticleEffect::Copy(IRender_Visual* pFrom)
 }
 
 //----------------------------------------------------
-IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float r_x, float r_y, u32 clr, float angle, float scale, float w_2, float h_2)
+IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float a, float b, u32 clr, float angle, float scale, float w_2, float h_2)
 {
 	FVF::TL			PT;
 
 	PT.transform	(pos, M);
 //	float sz		= scale * radius / PT.p.w;
-    r_x				*= scale / PT.p.w;
-    r_y				*= scale / PT.p.w;
+    a				*= scale / PT.p.w;
+    b				*= scale / PT.p.w;
 	// 'Cause D3D clipping have to clip Four points
 	// We can help him :)
 
-	if (r_x<1.f)	return;
-	if (r_y<1.f)	return;
+	if (a<1.f)	return;
+	if (b<1.f)	return;
 	if (PT.p.x<-1)	return;
 	if (PT.p.x> 1)	return;
 	if (PT.p.y<-1)	return;
@@ -493,18 +493,18 @@ IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fv
 	c.y				= (PT.p.y+1)*h_2;
 
 	// Rotation                         
-	float	_sin1,_cos1,_sin2,_cos2,da;
-	da = angle+PI_DIV_4;	
-    	_sin1=r_y*_sin(da); 
-        _cos1=r_x*_cos(da);  
-	da += PI_DIV_2;  		
-    	_sin2=r_y*_sin(da); 
-        _cos2=r_x*_cos(da);
+	float	sa,ca,s_a,c_a,s_b,c_b;
+	sa	= _sin(angle);  
+    ca	= _cos(angle);  
+    s_a	= sa*a;
+    c_a	= ca*a;
+    s_b	= sa*b;
+    c_b	= ca*b;
 
-	pv->set	(c.x+_sin1,	c.y+_cos1,	PT.p.z, PT.p.w, clr, lt.x,rb.y);	pv++;
-	pv->set	(c.x-_sin2,	c.y-_cos2,	PT.p.z, PT.p.w, clr, lt.x,lt.y);	pv++;
-	pv->set	(c.x+_sin2,	c.y+_cos2,	PT.p.z, PT.p.w, clr, rb.x,rb.y);	pv++;
-	pv->set	(c.x-_sin1,	c.y-_cos1,	PT.p.z, PT.p.w, clr, rb.x,lt.y);	pv++;
+	pv->set	(c.x-c_a-s_b,	c.y-s_a+c_b,	PT.p.z, PT.p.w, clr, lt.x,rb.y);	pv++;
+	pv->set	(c.x-c_a+s_b,	c.y-s_a-c_b,	PT.p.z, PT.p.w, clr, lt.x,lt.y);	pv++;
+	pv->set	(c.x+c_a-s_b,	c.y+s_a+c_b,	PT.p.z, PT.p.w, clr, rb.x,rb.y);	pv++;
+	pv->set	(c.x+c_a+s_b,	c.y+s_a-c_b,	PT.p.z, PT.p.w, clr, rb.x,lt.y);	pv++;
 }
 
 IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float size_x, float size_y, u32 clr, const Fvector& D, float scale, float factor, float w_2, float h_2)

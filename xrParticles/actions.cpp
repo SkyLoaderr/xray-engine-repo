@@ -727,7 +727,7 @@ void PACopyVertexB::Execute(ParticleEffect *effect)
 			m.posB = m.pos;
 		}
 	}
-	
+/*	
 	if(copy_vel)
 	{
 		for(i = 0; i < effect->p_count; i++)
@@ -736,6 +736,7 @@ void PACopyVertexB::Execute(ParticleEffect *effect)
 			m.velB = m.vel;
 		}
 	}
+*/
 }
 //-------------------------------------------------------------------------------------------------
 
@@ -1038,7 +1039,7 @@ void PAMove::Execute(ParticleEffect *effect)
 		// move
 		m.age	+= dt;
         m.posB 	= m.pos;
-        m.velB 	= m.vel;
+//        m.velB 	= m.vel;
 		m.pos	+= m.vel * dt;
 	}
 }

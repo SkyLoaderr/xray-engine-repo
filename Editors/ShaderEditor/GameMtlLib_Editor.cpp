@@ -383,7 +383,7 @@ SGameMtlPair* CGameMtlLibrary::GetMaterialPair(LPCSTR name)
 //------------------------------------------------------------------------------
 void SGameMtl::Save(IWriter& fs)
 {
-	Flags.set				(flSlowDown,	fis_zero(fFlotationFactor-1.f,EPS_L));
+	Flags.set				(flSlowDown,	!fis_zero(1.f-fFlotationFactor,EPS_L));
 	Flags.set				(flShootable,	fis_zero(fShootFactor,EPS_L));
 	Flags.set				(flTransparent,	fis_zero(fVisTransparencyFactor,EPS_L));
 

@@ -81,7 +81,7 @@ public:
 	virtual bool 	GetSummaryInfo(SSceneSummary* inf);
 
 	bool			AddMesh		(CSceneObject* O, CEditableMesh* M); // возвращает добавлен ли объект
-	bool	  		DelMesh		(CSceneObject* O, CEditableMesh* M); // возвращает false если объект удален
+	int		  		DelMesh		(CSceneObject* O, CEditableMesh* M); // 0-не удален 1-удален 2-удален сектор вообще
 
     bool			IsDefault	(){return m_bDefault;}
     bool			Contains	(CSceneObject* O, CEditableMesh* M){SItemIt it; return FindSectorItem(O,M,it);}

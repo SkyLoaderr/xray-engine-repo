@@ -290,6 +290,7 @@ public:
         else if (command=="pSetMaxParticles")	pSetMaxParticles(P1);
 //        else if (command=="pObject")       		parent->pObject	(P1);
 		else if (command=="pAlignToPath")		parent->pAlignToPath();
+		else if (command=="pVelocityScale")		parent->pVelocityScale(P3);
 		else if (command=="pCollision")			parent->pCollision(P4);
         else if (command=="pSprite")        	parent->pSprite	(P2);
         else if (command=="pFrame")		  		parent->pFrame	(P6);
@@ -356,7 +357,6 @@ static LPCSTR PStateCommands[]={
 //	"pResetState();",
 	"pColor(float red, float green, float blue, float alpha=1.0f);",
 	"pColorD(float alpha, PDomainEnum dtype, float a0=0.0f, float a1=0.0f, float a2=0.0f, float a3=0.0f, float a4=0.0f, float a5=0.0f, float a6=0.0f, float a7=0.0f, float a8=0.0f);",
-	"pParentMotion(float scale);",
 	"pRotate(float rot_x, float rot_y=0.f, float rot_z=0.f);",
 	"pRotateD(PDomainEnum dtype, float a0=0.0f, float a1=0.0f, float a2=0.0f, float a3=0.0f, float a4=0.0f, float a5=0.0f, float a6=0.0f, float a7=0.0f, float a8=0.0f);",
 	"pSize(float size_x, float size_y=1.0f, float size_z=1.0f);",
@@ -370,7 +370,9 @@ static LPCSTR PStateCommands[]={
 	"pVertexBTracks(BOOL track_vertex=TRUE);",
 	"pSetMaxParticles(int max_count);",
 // our     
+	"pParentMotion(float scale);",
 	"pAlignToPath();",
+    "pVelocityScale(float scale_x=0.f, float scale_y=0.f, float scale_z=0.f);",
     "pCollision(float friction, float resilience, float cutoff, BOOL destroy_on_contact=FALSE);",
 //    "pObject(LPCSTR obj_name);",
     "pSprite(LPCSTR sh_name, LPCSTR tex_name);",

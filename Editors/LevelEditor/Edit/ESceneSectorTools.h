@@ -17,6 +17,8 @@ public:
     IC LPCSTR			ClassName				(){return "sector";}
     IC LPCSTR			ClassDesc				(){return "Sector";}
     IC int				RenderPriority			(){return 20;}
+
+    virtual void 		OnObjectRemove			(CCustomObject* O);
 };
 //---------------------------------------------------------------------------
 #endif

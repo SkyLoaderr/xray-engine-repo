@@ -122,7 +122,7 @@ bool __fastcall TUI_ControlSectorAdd::End(TShiftState _Shift)
                         O_ref->GetFullTransformToWorld(matrix);
                     	if ((*m_def)->FrustumPick(frustum,matrix)){
 	                        if (fraSector->ebAddMesh->Down)	sector->AddMesh(O_ref,*m_def);
-    	                    if (fraSector->ebDelMesh->Down)	if (!sector->DelMesh(O_ref,*m_def)) break;
+    	                    if (fraSector->ebDelMesh->Down)	if (sector->DelMesh(O_ref,*m_def)) break;
                         }
                     }
                 }

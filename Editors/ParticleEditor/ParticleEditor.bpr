@@ -306,7 +306,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=2
-Build=94
+Build=95
 Debug=1
 PreRelease=0
 Special=0
@@ -318,7 +318,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=GSC Game World
 FileDescription=
-FileVersion=1.0.2.94
+FileVersion=1.0.2.95
 InternalName=
 LegalCopyright=
 LegalTrademarks=
@@ -422,10 +422,12 @@ Item0=Intermediate
 Item1=ParticleEditor
 
 [HistoryLists\hlFinalOutputDir]
-Count=3
+Count=5
 Item0=x:\
-Item1=!run\
-Item2=P:\Editor\!run
+Item1=x:\build_karma\
+Item2=x:\build_karma
+Item3=!run\
+Item4=P:\Editor\!run
 
 [Debugging]
 DebugSourceDirs=c:\rad\borland\cbuilder5\source\vcl
