@@ -266,3 +266,10 @@ function military_dolg_dead (actor, npc)
     end   
     
 end
+
+function search_gulag_job(actor, npc)
+	local st = xr_gulag.isUnderFraction (npc)
+	if st ~= nil then
+		xr_gulag.resetJob (st, npc)
+	end
+end
