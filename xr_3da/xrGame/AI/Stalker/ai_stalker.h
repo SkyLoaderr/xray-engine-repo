@@ -8,7 +8,7 @@
 
 #pragma once
 
-#define OLD_OBJECT_HANDLER
+//#define OLD_OBJECT_HANDLER
 
 #include "../../CustomMonster.h"
 #include "../../stalker_movement_manager.h"

@@ -612,13 +612,13 @@
 								</File>
 							</Filter>
 							<Filter
-								Name="item_id"
+								Name="no_items"
 								Filter="">
 								<File
-									RelativePath=".\object_property_evaluator_item_id.cpp">
+									RelativePath=".\object_property_evaluator_no_items.cpp">
 								</File>
 								<File
-									RelativePath=".\object_property_evaluator_item_id.h">
+									RelativePath=".\object_property_evaluator_no_items.h">
 								</File>
 							</Filter>
 						</Filter>

@@ -20,7 +20,7 @@
 #include "object_property_evaluator_ammo.h"
 #include "object_property_evaluator_empty.h"
 #include "object_property_evaluator_ready.h"
-#include "object_property_evaluator_item_id.h"
+#include "object_property_evaluator_no_items.h"
 #include "object_action_command.h"
 #include "object_action_show.h"
 #include "object_action_hide.h"
@@ -70,10 +70,10 @@ void CObjectHandlerGOAP::reinit			(CAI_Stalker *object)
 	CInventoryOwner::reinit		();
 	m_aimed1					= false;
 	m_aimed2					= false;
-	add_evaluator				(eWorldPropertyCurItemID,	xr_new<CObjectPropertyEvaluatorItemID>(m_object));
+	add_evaluator				(eWorldPropertyNoItems,		xr_new<CObjectPropertyEvaluatorNoItems>(m_object));
 	add_evaluator				(eWorldPropertyNoItemsIdle,	xr_new<CObjectPropertyEvaluatorConst>(m_object,m_object,false));
 	CSObjectActionBase			*action = xr_new<CSObjectActionBase>(m_object,m_object);
-	action->add_condition		(CWorldProperty(eWorldPropertyCurItemID,	0xffff));
+	action->add_condition		(CWorldProperty(eWorldPropertyNoItems,		true));
 	action->add_effect			(CWorldProperty(eWorldPropertyNoItemsIdle,	true));
 	add_operator				(eWorldOperatorNoItemsIdle,action);
 	set_goal					(eObjectActionIdle);
@@ -287,7 +287,7 @@ LPCSTR property2string(const u32 id)
 		case CObjectHandlerGOAP::eWorldPropertyDropped		: {strcat(S,"Dropped");		break;}
 		case CObjectHandlerGOAP::eWorldPropertyQueueWait1	: {strcat(S,"QueueWait1");	break;}
 		case CObjectHandlerGOAP::eWorldPropertyQueueWait2	: {strcat(S,"QueueWait2");	break;}
-		case CObjectHandlerGOAP::eWorldPropertyCurrentItemID: {strcat(S,"CurItemID");	break;}
+		case CObjectHandlerGOAP::eWorldPropertyItemID		: {strcat(S,"NoItems");		break;}
 		default							: NODEFAULT;
 	}
 	return		(S);
@@ -335,16 +335,16 @@ void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
 	// show
 	action				= xr_new<CObjectActionShow>(weapon,m_object);
 	add_condition		(action,id,eWorldPropertyHidden,	true);
-	action->add_condition(CWorldProperty(eWorldPropertyCurItemID,0xffff));
-	action->add_effect	(CWorldProperty(eWorldPropertyCurItemID,id));
+	action->add_condition(CWorldProperty(eWorldPropertyNoItems,true));
+	action->add_effect	(CWorldProperty(eWorldPropertyNoItems,false));
 	add_effect			(action,id,eWorldPropertyHidden,	false);
 	add_operator		(uid(id,eWorldOperatorShow),		action);
 
 	// hide
 	action				= xr_new<CObjectActionHide>(weapon,m_object);
 	add_condition		(action,id,eWorldPropertyHidden,	false);
-	action->add_effect	(CWorldProperty(eWorldPropertyCurItemID,0xffff));
-	action->add_condition(CWorldProperty(eWorldPropertyCurItemID,id));
+	action->add_condition(CWorldProperty(eWorldPropertyNoItems,false));
+	action->add_effect	(CWorldProperty(eWorldPropertyNoItems,true));
 	add_effect			(action,id,eWorldPropertyHidden,	true);
 	add_effect			(action,id,eWorldPropertyAimed1,	false);
 	add_effect			(action,id,eWorldPropertyAimed2,	false);
@@ -534,13 +534,6 @@ void CObjectHandlerGOAP::update(u32 time_delta)
 			EVALUATOR_MAP::const_iterator	E = evaluators().end();
 			for ( ; I != E; ++I) {
 				xr_vector<COperatorCondition>::const_iterator J = std::lower_bound(current_state().conditions().begin(),current_state().conditions().end(),CWorldProperty((*I).first,false));
-				if (action_state_id((*I).first) == eWorldPropertyCurrentItemID) {
-					if ((J != current_state().conditions().end()) && ((*J).condition() == (*I).first))
-						Msg			("%5d : %s",(*J).value(),property2string((*I).first));
-					else
-						Msg			("%5c : %s",'?',property2string((*I).first));
-					continue;
-				}
 				char				temp = '?';
 				if ((J != current_state().conditions().end()) && ((*J).condition() == (*I).first))
 					temp				= (*J).value() ? '+' : '-';
@@ -554,13 +547,6 @@ void CObjectHandlerGOAP::update(u32 time_delta)
 			EVALUATOR_MAP::const_iterator	E = evaluators().end();
 			for ( ; I != E; ++I) {
 				xr_vector<COperatorCondition>::const_iterator J = std::lower_bound(target_state().conditions().begin(),target_state().conditions().end(),CWorldProperty((*I).first,false));
-				if (action_state_id((*I).first) == eWorldPropertyCurItemID) {
-					if ((J != target_state().conditions().end()) && ((*J).condition() == (*I).first))
-						Msg			("%5d : %s",(*J).value(),property2string((*I).first));
-					else
-						Msg			("%5c : %s",'?',property2string((*I).first));
-					continue;
-				}
 				char				temp = '?';
 				if ((J != target_state().conditions().end()) && ((*J).condition() == (*I).first))
 					temp				= (*J).value() ? '+' : '-';
