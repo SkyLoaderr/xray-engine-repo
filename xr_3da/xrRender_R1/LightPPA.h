@@ -8,7 +8,7 @@
 
 #include "light.h"
 
-struct	CLightPPA_Vertex
+struct	CLightR_Vertex
 {
 	Fvector			P;
 	Fvector			N;
@@ -16,18 +16,19 @@ struct	CLightPPA_Vertex
 	float			u1,v1;
 };
 
-class	CLightPPA_Manager
+class	CLightR_Manager
 {
 	ref_shader						hShader;
 	ref_geom						hGeom;
 
-	xr_vector<light*>				selected;
+	xr_vector<light*>				selected_point;
+	xr_vector<light*>				selected_spot;
 public:
-	CLightPPA_Manager				();
-	virtual ~CLightPPA_Manager		();
+	CLightR_Manager					();
+	virtual ~CLightR_Manager		();
 
-	void			Add				(light* L);
-	void			Render			();
+	void			add				(light* L);
+	void			render			();
 };
 
 #endif // !defined(AFX_LIGHTPPA_H__E5B97AC9_84A6_4773_9FEF_3BC5D1CEF8B6__INCLUDED_)

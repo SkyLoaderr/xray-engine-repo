@@ -18,7 +18,7 @@ IC void mk_vertex		(CLightPPA_Vertex& D, Fvector& P, Fvector& N, Fvector& C, flo
 	D.v1	=.5f;
 }
 
-void CLightPPA::Render	(ref_geom& hGeom)
+void CLightR_Manager::Render	(ref_geom& hGeom)
 {
 	VERIFY	(g_pGameLevel);
 
@@ -77,7 +77,7 @@ void CLightPPA::Render	(ref_geom& hGeom)
 	if (actual) RCache.Render	(D3DPT_TRIANGLELIST,vOffset,actual);
 }
 
-void CLightPPA_Manager::Render	()
+void CLightR_Manager::Render	()
 {
 	// Projection
 	float _43					 = Device.mProject._43;
@@ -87,7 +87,7 @@ void CLightPPA_Manager::Render	()
 	RCache.set_Shader	(hShader);
 	for (xr_vector<light*>::iterator it=selected.begin(); it!=selected.end(); it++)
 	{
-		CLightPPA&	PPL = *(*it);
+		light&	PPL		= *(*it);
 
 		// Culling
 		if (PPL.sphere.R<0.05f)													continue;
@@ -110,68 +110,14 @@ void CLightPPA_Manager::Render	()
 	RCache.set_xform_project	(Device.mProject);
 }
 
-CLightPPA*		CLightPPA_Manager::Create			()
-{
-	CLightPPA*	L	= xr_new<CLightPPA>	();
-	L->bActive		= false;
-	inactive.insert	(L);
-	return			L;
-}
-void			CLightPPA_Manager::Destroy			(CLightPPA* L)
-{
-	xr_set<CLightPPA*>::iterator	it;
-
-	//
-	it = inactive.find	(L);
-	if (it!=inactive.end())	
-	{
-		inactive.erase	(it);
-		xr_delete		(L);
-		return;
-	}
-
-	// 
-	it = active.find	(L);
-	if (it!=active.end())	
-	{
-		active.erase(it);
-		xr_delete	(L);
-		return;
-	}
-
-	// ???
-	xr_delete	(L);
-	//Msg		("! xrRENDER: unregistered light destroyed");
-	#pragma todo("rewrite OnDeviceDestroy/OnDeviceCreate in FStaticRender.cpp")
-}
-
-void	CLightPPA_Manager::Activate		(CLightPPA* L)
-{
-	xr_set<CLightPPA*>::iterator	it		= inactive.find	(L);
-	R_ASSERT								(it!=inactive.end());
-	inactive.erase							(it);
-
-	active.insert				(L);
-}
-void	CLightPPA_Manager::Deactivate	(CLightPPA* L)
-{
-	xr_set<CLightPPA*>::iterator	it		= active.find	(L);
-	R_ASSERT								(it!=active.end());
-	active.erase				(it);
-
-	inactive.insert				(L);
-}
-
-CLightPPA_Manager::CLightPPA_Manager()
+CLightR_Manager::CLightR_Manager()
 {
 	hShader.create				("effects\\light","effects\\light,effects\\light");
 	hGeom.create				(D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX2, RCache.Vertex.Buffer(), NULL);
 }
 
-CLightPPA_Manager::~CLightPPA_Manager()
+CLightR_Manager::~CLightR_Manager()
 {
-	R_ASSERT					(active.empty());
-	// R_ASSERT					(inactive.empty());
 	hGeom.destroy				();
 	hShader.destroy				();
 }

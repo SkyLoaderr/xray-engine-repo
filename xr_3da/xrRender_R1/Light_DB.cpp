@@ -1,6 +1,7 @@
 #include "StdAfx.h"
-#include "light_db.h"
+#include "..\_d3d_extensions.h"
 #include "..\xrLevel.h"
+#include "light_db.h"
 
 CLight_DB::CLight_DB()
 {
@@ -83,6 +84,26 @@ void			CLight_DB::Destroy	(light* L)
 	xr_delete	(L);
 }
 
+#if RENDER==R_R1
+void			CLight_DB::add_light		(light* L)
+{
+	if (Device.dwFrame==L->dwFrame)	return;
+	L->dwFrame	=	Device.dwFrame;
+	if (L->flags.bStatic)			return;
+
+
+	if (IRender_Light::POINT==L->flags.type)
+	{
+		// PPA
+		RImplementation.L_Dynamic->Add	(L);
+	} else {
+		// spot/flash
+		v_selected_unshadowed.push_back	(L);
+	}
+}
+#endif
+
+#if RENDER==R_R2
 void			CLight_DB::add_light		(light* L)
 {
 	if (Device.dwFrame==L->dwFrame)	return;
@@ -98,6 +119,7 @@ void			CLight_DB::add_light		(light* L)
 	}
 	else	v_selected_unshadowed.push_back	(L);
 }
+#endif
 
 void			CLight_DB::Update			()
 {
