@@ -49,7 +49,7 @@ public:
 	};
 private:
 	ObjectFlags							FLAGS;
-	u32									net_ID;
+	u16									net_ID;
 
 #ifdef DEBUG
 	u32									dbg_update_shedule;
@@ -75,8 +75,8 @@ public:
 	// Network
 	IC BOOL								Local				()			const	{ return FLAGS.net_Local;	}
 	IC BOOL								Remote				()			const	{ return !FLAGS.net_Local;	}
-	IC u32								ID					()			const	{ return net_ID;			}
-	IC void								setID				(u32 _ID)			{ net_ID = _ID;				}
+	IC u16								ID					()			const	{ return net_ID;			}
+	IC void								setID				(u16 _ID)			{ net_ID = _ID;				}
 	virtual BOOL						Ready				()					{ return FLAGS.net_Ready;	}
 	virtual float						shedule_Scale		()					{ return Device.vCameraPosition.distance_to(Position())/200.f; }
 
