@@ -102,12 +102,12 @@ void __fastcall TfrmPropertiesSound::ebLinkClick(TObject *Sender)
 {
     if (!bMultipleSelection){
     	string256 _FileName="";
-        if(FS.GetOpenName(FS.m_GameSounds,_FileName,sizeof(_FileName))){
+        if(Engine.FS.GetOpenName(Engine.FS.m_GameSounds,_FileName,sizeof(_FileName))){
             VERIFY(_FileName);
             strlwr(_FileName);
-            char* s=strstr(_FileName,FS.m_GameSounds.m_Path);
+            char* s=strstr(_FileName,Engine.FS.m_GameSounds.m_Path);
             if (s&&((s-_FileName)==0))
-                edName->Text = _FileName+strlen(FS.m_GameSounds.m_Path);
+                edName->Text = _FileName+strlen(Engine.FS.m_GameSounds.m_Path);
             else
                 MessageDlg("You can't change folder.\nThe only valid folder for sounds is GAME\\DATA\\SOUNDS\\...", mtError, TMsgDlgButtons() << mbOK, 0);
         }

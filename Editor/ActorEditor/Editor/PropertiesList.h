@@ -146,9 +146,6 @@ private:	// User declarations
     void Modified(){bModified=true; if (OnModifiedEvent) OnModifiedEvent();}
 public:		// User declarations
 	__fastcall TfrmProperties		        (TComponent* Owner);
-#ifdef _LEVEL_EDITOR
-    int  __fastcall ShowPropertiesModal		(ObjectList& lst);
-#endif
 	static TfrmProperties* CreateProperties	(TWinControl* parent=0, TAlign align=alNone, TOnModifiedEvent modif=0);
 	static void 	DestroyProperties		(TfrmProperties*& props);
     void __fastcall ShowPropertiesModal		();

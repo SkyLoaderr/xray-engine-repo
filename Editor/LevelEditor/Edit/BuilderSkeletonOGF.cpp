@@ -223,7 +223,7 @@ void ComputeOBB	(Fobb &B, FvectorVec& V){
 	B.m_halfsize.set	(S[0],S[1],S[2]);
 }
 bool SceneBuilder::SaveObjectSkeletonLTX(const char* name, CEditableObject* obj){
-	FS.DeleteFileByName(name);
+	Engine.FS.DeleteFileByName(name);
 	CInifile ini(name,false);
     ini.WriteString("general",0,0,"general params");
 

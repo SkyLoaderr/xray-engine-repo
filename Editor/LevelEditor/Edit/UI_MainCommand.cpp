@@ -31,7 +31,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 
 	switch( _Command ){
 	case COMMAND_INITIALIZE:{
-		FS.OnCreate			();
+		Engine.Initialize	();
 		InitMath			();
         // make interface
 	    fraBottomBar		= new TfraBottomBar(0);
@@ -62,6 +62,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 		Lib.OnDestroy		();
 		Tools.OnDestroy		();
         UI.OnDestroy		();
+		Engine.Destroy		();
 		//----------------
         _DELETE(fraLeftBar);
 	    _DELETE(fraTopBar);
@@ -133,17 +134,17 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 		if( !Scene.locked() ){
         	if (p1)	strcpy( filebuffer, (char*)p1 );
             else	strcpy( filebuffer, m_LastFileName );
-			if( p1 || FS.GetOpenName( FS.m_Maps, filebuffer, sizeof(filebuffer) ) ){
+			if( p1 || Engine.FS.GetOpenName( Engine.FS.m_Maps, filebuffer, sizeof(filebuffer) ) ){
                 if (!Scene.IfModified()){
                 	bRes=false;
                     break;
                 }
-                if ((0!=stricmp(filebuffer,m_LastFileName))&&FS.CheckLocking(0,filebuffer,false,true)){
+                if ((0!=stricmp(filebuffer,m_LastFileName))&&Engine.FS.CheckLocking(0,filebuffer,false,true)){
                 	bRes=false;
                     break;
                 }
-                if ((0==stricmp(filebuffer,m_LastFileName))&&FS.CheckLocking(0,filebuffer,true,false)){
-	                FS.UnlockFile(0,filebuffer);
+                if ((0==stricmp(filebuffer,m_LastFileName))&&Engine.FS.CheckLocking(0,filebuffer,true,false)){
+	                Engine.FS.UnlockFile(0,filebuffer);
                 }
                 SetStatus("Level loading...");
             	Command( COMMAND_CLEAR );
@@ -158,7 +159,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 			    Command(COMMAND_UPDATE_CAPTION);
                 Command(COMMAND_CHANGE_ACTION,eaSelect);
                 // lock
-                FS.LockFile(0,filebuffer);
+                Engine.FS.LockFile(0,filebuffer);
                 fraLeftBar->AppendRecentFile(filebuffer);
 			}
 		} else {
@@ -197,14 +198,14 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	case COMMAND_SAVEAS:
 		if( !Scene.locked() ){
 			filebuffer[0] = 0;
-			if( FS.GetSaveName( FS.m_Maps, filebuffer, sizeof(filebuffer) ) ){
+			if( Engine.FS.GetSaveName( Engine.FS.m_Maps, filebuffer, sizeof(filebuffer) ) ){
 	            BeginEState(esSceneLocked);
                 SetStatus("Level saving...");
 				Scene.Save( filebuffer, false );
                 SetStatus("");
                 Scene.m_Modified = false;
 				// unlock
-    	        FS.UnlockFile(0,m_LastFileName);
+    	        Engine.FS.UnlockFile(0,m_LastFileName);
                 // set new name
 				strcpy(m_LastFileName,filebuffer);
 			    bRes = Command(COMMAND_UPDATE_CAPTION);
@@ -222,7 +223,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
             if (!Scene.IfModified()) return false;
             BeginEState(esSceneLocked);
 			// unlock
-			FS.UnlockFile(0,m_LastFileName);
+			Engine.FS.UnlockFile(0,m_LastFileName);
 			Device.m_Camera.Reset();
 			Scene.Unload();
             Scene.m_LevelOp.Reset();

@@ -424,7 +424,7 @@ void CDetailManager::UpdateCache	(int limit)
 		D.type			= stReady;
 
 		// Select polygons
-		XRC.BBoxMode		(BBOX_TRITEST); // обязательно иначе точки установлены неверно
+		XRC.box_options		(0);//BBOX_TRITEST); // обязательно иначе точки установлены неверно
 		SBoxPickInfoVec		pinf;
 		Scene.BoxPick		(D.BB,pinf,&m_SnapObjects);
 		DWORD	triCount	= pinf.size();
@@ -486,7 +486,7 @@ void CDetailManager::UpdateCache	(int limit)
 				float		r_u,r_v,r_range;
 				for (DWORD tid=0; tid<triCount; tid++)
 				{
-                	Fvector* verts = pinf[tid].bp_inf.p;
+/*                	Fvector* verts = pinf[tid].bp_inf.p;
 					if (RAPID::TestRayTri(Item.P,dir,verts,r_u,r_v,r_range,TRUE))
 					{
 						if (r_range>=0)	{
@@ -494,6 +494,7 @@ void CDetailManager::UpdateCache	(int limit)
 							if (y_test>y)	y = y_test;
 						}
 					}
+*/
 				}
 				if (y<D.BB.min.y)	continue;
 				Item.P.y	= y;

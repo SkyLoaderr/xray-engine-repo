@@ -31,7 +31,7 @@ bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& dir
         default: THROW;
         }
         if (bPickObject){
-		    if (fraTopBar->ebVSnap->Down&&bSnap){
+/*		    if (fraTopBar->ebVSnap->Down&&bSnap){
                 Fvector pn;
                 float u = pinf.rp_inf.u;
                 float v = pinf.rp_inf.v;
@@ -44,6 +44,7 @@ bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& dir
             }else{
             	hitpoint.set(pinf.pt);
             }
+*/
             return true;
         }
     }

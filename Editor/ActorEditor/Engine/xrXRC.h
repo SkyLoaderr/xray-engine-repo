@@ -19,7 +19,7 @@ public:
 	IC void			ray_query		(const CDB::MODEL *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range = 10000.f)
 	{
 		Device.Statistic.clRAY.Begin();
-		CL->ray_query(m_def,r_start,r_dir,r_range);
+        cdb_query_ray(CL,m_def,r_start,r_dir,r_range);
 		Device.Statistic.clRAY.End	();
 	}
 	IC void			ray_query		(const Fmatrix& parent, const CDB::MODEL *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range = 10000.f)
@@ -33,17 +33,26 @@ public:
 		ray_query(m_def,S,D,r_range);
 	}
 
-	IC void			box_options		(DWORD f)	
-	{	
+	IC void			box_options		(DWORD f)
+	{
 		CL->box_options(f);
 	}
 	IC void			box_query		(const CDB::MODEL *m_def, const Fvector& b_center, const Fvector& b_dim)
 	{
 		Device.Statistic.clBOX.Begin();
-		CL->box_query(m_def,b_center,b_dim);
+        cdb_query_box(CL,m_def,b_center,b_dim);
 		Device.Statistic.clBOX.End	();
 	}
-	
+	IC void			box_query		(const Fmatrix& parent, const CDB::MODEL *m_def, const Fbox& src)
+	{
+    	Fbox dest;
+		dest.xform(src,parent);
+        Fvector c,d;
+        src.getcenter(c);
+        src.getradius(d);
+    	box_query(m_def,c,d);
+	}
+
 	IC void			frustum_options	(DWORD f)
 	{
 		CL->frustum_options(f);

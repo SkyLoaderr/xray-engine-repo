@@ -122,8 +122,6 @@ public:
 
     bool SaveObjectVCF              (const char* name, CEditableObject* obj);
     bool SaveObjectOGF              (const char* name, CEditableObject* obj);
-    bool SaveObjectSkeletonOGF      (const char* name, CEditableObject* obj);
-    bool SaveObjectSkeletonLTX      (const char* name, CEditableObject* obj);
 };
 
 extern SceneBuilder Builder;

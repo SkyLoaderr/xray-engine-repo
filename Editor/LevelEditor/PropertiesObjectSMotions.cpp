@@ -63,8 +63,8 @@ void __fastcall TfrmPropertiesObject::ebSAppendMotionClick(TObject *Sender)
 {
 	VERIFY(m_LibObject);
     AnsiString fn;
-    if (FS.GetOpenName(FS.m_SMotion,fn)){
-    	CSMotion* M=m_LibObject->AppendSMotion(fn.c_str());
+    if (Engine.FS.GetOpenName(Engine.FS.m_SMotion,fn)){
+    	CSMotion* M=m_LibObject->AppendSMotion(fn.c_str(),fn.c_str());
     	if (M){
         	char buf[1024];
             m_LibObject->GenerateSMotionName(buf,M->Name(),M);
@@ -91,7 +91,7 @@ void __fastcall TfrmPropertiesObject::ebSReloadMotionClick(TObject *Sender)
 	VERIFY(m_LibObject);
     if (selected_smotion){
     	AnsiString fn;
-	    if (FS.GetOpenName(FS.m_SMotion,fn)){
+	    if (Engine.FS.GetOpenName(Engine.FS.m_SMotion,fn)){
     		if (m_LibObject->ReloadSMotion(selected_smotion,fn.c_str())){
 	        	ELog.DlgMsg(mtInformation,"Motion '%s' reloaded.",selected_smotion->Name());
 		        seSMotionChange				(Sender);
@@ -255,7 +255,7 @@ void __fastcall TfrmPropertiesObject::ebSMotionSaveClick(TObject *Sender)
 	AnsiString fn;
     if (m_LibObject->SMotionCount()){
     	fn = m_LibObject->GetName();
-    	if(FS.GetSaveName(FS.m_SMotions,fn)){
+    	if(Engine.FS.GetSaveName(Engine.FS.m_SMotions,fn)){
         	m_LibObject->SaveSMotions(fn.c_str());
 	    	ELog.DlgMsg(mtInformation,"Motions saved.");
         }
@@ -269,7 +269,7 @@ void __fastcall TfrmPropertiesObject::ebSMotionLoadClick(TObject *Sender)
 {
 	VERIFY(m_LibObject);
 	AnsiString fn;
-    if (FS.GetOpenName(FS.m_SMotions,fn)){
+    if (Engine.FS.GetOpenName(Engine.FS.m_SMotions,fn)){
     	TElTreeItem* Item = tvSMotions->Items->GetFirstNode(); Item->Clear();
 		m_LibObject->ClearSMotions();
 		m_LibObject->LoadSMotions(fn.c_str());

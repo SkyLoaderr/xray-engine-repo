@@ -217,6 +217,7 @@ public:
 	IC bool 		IsFlag	     			(DWORD flag){return !!(m_dwFlags&flag); }
     IC void			SetFlag					(DWORD flag){m_dwFlags|=flag;}
     IC void			ResetFlag				(DWORD flag){m_dwFlags&=~flag;}
+    IC bool			IsDynamic				(){return IsFlag(eoDynamic);}
 
 	IC AnsiString&	GetClassScript			()	{return m_ClassScript;}
     IC const Fbox&	GetBox					() 	{return m_Box;}

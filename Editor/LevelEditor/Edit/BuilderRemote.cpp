@@ -148,7 +148,7 @@ void SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
 	for (FvectorIt pt_it=mesh->m_Points.begin(); pt_it!=mesh->m_Points.end(); pt_it++)
     	parent.transform_tiny(l_vertices[l_vertices_it++],*pt_it);
 
-    if (object->IsFlag(CEditableObject::eoDynamic)){
+    if (object->IsDynamic()){
 	    // update mesh
 	    if (!(mesh->m_LoadState&EMESH_LS_FNORMALS)) mesh->GenerateFNormals();
 		Fvector N;

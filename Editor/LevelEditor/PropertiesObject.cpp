@@ -132,7 +132,9 @@ void TfrmPropertiesObject::GetObjectsInfo(){
 void TfrmPropertiesObject::ApplyObjectsInfo(){
 	if (m_LibObject&&IsModified()){
         // dynamic flag
-        cbMakeDynamic->ObjApply			(m_LibObject->m_DynamicObject);
+        int c=m_LibObject->IsDynamic();
+        cbMakeDynamic->ObjApply(c);
+        m_LibObject->SetFlag(c);
 		// class script
         m_LibObject->GetClassScript() 	= mmScript->Text;
         // modify transformation
@@ -161,8 +163,6 @@ void __fastcall TfrmPropertiesObject::cbMakeDynamicClick(TObject *Sender)
 {
 	VERIFY(m_LibObject);
     tsScript->TabVisible 		= cbMakeDynamic->Checked;
-    tsOAnimation->TabVisible 	= cbMakeDynamic->Checked;
-    tsSAnimation->TabVisible 	= cbMakeDynamic->Checked&&m_LibObject->IsSkeleton();
     OnModified(Sender);
 }
 //---------------------------------------------------------------------------
@@ -174,8 +174,6 @@ void __fastcall TfrmPropertiesObject::tsMainOptionsShow(TObject *Sender)
     gbTemplates->Enabled 	= true;
 
     tsScript->TabVisible 	= cbMakeDynamic->Checked;
-    tsOAnimation->TabVisible= cbMakeDynamic->Checked;
-    tsSAnimation->TabVisible= cbMakeDynamic->Checked&&m_LibObject->IsSkeleton();
 }
 //---------------------------------------------------------------------------
 

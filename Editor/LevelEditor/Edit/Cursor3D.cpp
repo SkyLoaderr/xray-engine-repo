@@ -48,7 +48,7 @@ void C3DCursor::GetPickPoint (Fvector& src, Fvector& dst, Fvector* N){
     pick_dir.set(0,-1,0);
     if(Scene.RayPick(start, pick_dir, OBJCLASS_SCENEOBJECT, &pinf, false, true)){
         dst.set(pinf.pt);
-        if (N) N->mknormal(pinf.rp_inf.p[0], pinf.rp_inf.p[1], pinf.rp_inf.p[2]);
+//S        if (N) N->mknormal(pinf.rp_inf.p[0], pinf.rp_inf.p[1], pinf.rp_inf.p[2]);
     }else{
         dst.set(src);
         if (N) N->set(0,1,0);

@@ -219,7 +219,7 @@ bool COccluder::RayPick(float& distance, Fvector& start, Fvector& direction, SRa
         p[1].set(*it);
         p[2].set(*(it+1));
         range=UI.ZFar();
-        if (RAPID::TestRayTri2(start,direction,p,range)){
+        if (CDB::TestRayTri2(start,direction,p,range)){
             if ((range>=0)&&(range<distance)){
                 distance=range;
                 bPick=true;

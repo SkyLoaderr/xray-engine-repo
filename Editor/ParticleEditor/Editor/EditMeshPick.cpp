@@ -39,7 +39,7 @@ static float		m_fSoftAngle;
 void CEditableMesh::GenerateCFModel(){
 	UnloadCForm();
 
-	m_CFModel = new CDB::MODEL();    VERIFY(m_CFModel);
+	m_CFModel = (CDB::MODEL*)cdb_model_create();    VERIFY(m_CFModel);
 	// Collect faces
 
 	CDB::Collector CL;
@@ -152,14 +152,13 @@ void CEditableMesh::GetTiesFaces(int start_id, DWORDVec& fl, float fSoftAngle, b
 void CEditableMesh::BoxPick(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf){
     if (!m_CFModel) GenerateCFModel();
 
-    XRC.BBoxCollide(parent, m_CFModel, precalc_identity, box);
-    int cc=XRC.GetBBoxContactCount();
-    if (cc){
-    	for (int i=0; i<cc; i++){
-        	pinf.push_back(SBoxPickInfo());
-            pinf.back().bp_inf	= XRC.BBoxContact[i];
-            pinf.back().e_mesh	= this;
-        }
+    XRC.box_options(0);
+
+    XRC.box_query(parent, m_CFModel, box);
+    for (CDB::RESULT* I=XRC.r_begin(); I!=XRC.r_end(); I++){
+        pinf.push_back(SBoxPickInfo());
+        pinf.back().bp_inf	= *I;
+        pinf.back().e_mesh	= this;
     }
 }
 //----------------------------------------------------

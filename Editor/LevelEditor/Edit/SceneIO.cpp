@@ -188,12 +188,12 @@ void EScene::Save(char *_FileName, bool bUndo){
 //	Msg("TOTAL: %d",F.tell());
 
     // back up previous
-    if (!bUndo) FS.BackupFile	(_FileName);
+    if (!bUndo) Engine.FS.BackupFile	(_FileName);
 
     // save data
-	if (!bUndo) FS.UnlockFile	(0,_FileName,false);
-    F.SaveTo					(_FileName,0);
-	if (!bUndo) FS.LockFile		(0,_FileName,false);
+	if (!bUndo) Engine.FS.UnlockFile	(0,_FileName,false);
+    F.SaveTo							(_FileName,0);
+	if (!bUndo) Engine.FS.LockFile		(0,_FileName,false);
 }
 //--------------------------------------------------------------------------------------------------
 
@@ -220,7 +220,7 @@ bool EScene::Load(char *_FileName){
 	VERIFY( _FileName );
 	ELog.Msg( mtInformation, "EScene: loading %s...", _FileName );
 
-    if (FS.Exist(_FileName,true)){
+    if (Engine.FS.Exist(_FileName,true)){
         CStream* F;
         F = new CFileStream(_FileName);
 		char MARK[8];
@@ -363,7 +363,7 @@ bool EScene::LoadSelection(const char *_FileName,ObjectList& lst){
 
     bool res = true;
 
-    if (FS.Exist(_FileName)){
+    if (Engine.FS.Exist(_FileName)){
         CFileStream F(_FileName);
 
         // Version
@@ -447,7 +447,7 @@ int EScene::CopySelection( EObjClass classfilter ){
 	SceneClipData *sceneclipdata = (SceneClipData *)GlobalLock(hmem);
 
 	sceneclipdata->m_ClassFilter = classfilter;
-	GetTempFileName( FS.m_Temp.m_Path, "clip", 0, sceneclipdata->m_FileName );
+	GetTempFileName( Engine.FS.m_Temp.m_Path, "clip", 0, sceneclipdata->m_FileName );
 	SaveSelection( classfilter, sceneclipdata->m_FileName );
 
 	GlobalUnlock( hmem );

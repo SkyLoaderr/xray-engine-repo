@@ -138,7 +138,7 @@ bool CDetail::Update	(LPCSTR name){
         	st_Face& F 	= *f_it;
             Fvector& P  = M->m_Points[F.pv[k].pindex];
             st_VMapPt& vm=M->m_VMRefs[F.pv[k].vmref][0];
-            Fvector2& uv= M->m_VMaps[vm.vmap_index].getUV(vm.index);
+            Fvector2& uv= M->m_VMaps[vm.vmap_index]->getUV(vm.index);
         	*i_it 		= _AddVert	(P,uv.x,uv.y);
 	        bbox.modify	(m_Vertices[*i_it].P);
         }
@@ -423,7 +423,7 @@ bool CDetailManager::UpdateBaseTexture(LPCSTR tex_name){
 
 #define EPS_L_VAR 0.0012345f
 void CDetailManager::UpdateSlotBBox(int sx, int sz, DetailSlot& slot){
-	Fbox bbox;
+/*	Fbox bbox;
     Frect rect;
     GetSlotRect			(rect,sx,sz);
     bbox.min.set		(rect.x1, slot.y_min, rect.y1);
@@ -463,6 +463,7 @@ void CDetailManager::UpdateSlotBBox(int sx, int sz, DetailSlot& slot){
     	slot.items[2].id=0xff;
     	slot.items[3].id=0xff;
     }
+*/
 }
 
 bool CDetailManager::UpdateBBox(){

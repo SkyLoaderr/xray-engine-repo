@@ -13,8 +13,8 @@ CPSLibrary PSLib;
 void CPSLibrary::OnCreate(){
 	AnsiString fn;
     fn = PSLIB_FILENAME;
-    FS.m_GameRoot.Update(fn);
-	if (FS.Exist(fn.c_str(),true)){
+    Engine.FS.m_GameRoot.Update(fn);
+	if (Engine.FS.Exist(fn.c_str(),true)){
     	if (!Load(fn.c_str())) ELog.DlgMsg(mtInformation,"PS Library: Unsupported version.");
     }
 }
@@ -64,7 +64,7 @@ bool CPSLibrary::Load(const char* nm){
 void CPSLibrary::Save(){
 	AnsiString fn;
     fn = PSLIB_FILENAME;
-    FS.m_GameRoot.Update(fn);
+    Engine.FS.m_GameRoot.Update(fn);
     Save(fn.c_str());
 }
 //----------------------------------------------------
@@ -105,7 +105,7 @@ void CPSLibrary::Reload(){
 //----------------------------------------------------
 void CPSLibrary::Backup(){
 	AnsiString fn = PSLIB_FILENAME;
-    FS.BackupFile(fn);
+    Engine.FS.BackupFile(fn);
 }
 //----------------------------------------------------
 //void CPSLibrary::RestoreBackup(){

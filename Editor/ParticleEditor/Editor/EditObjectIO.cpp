@@ -286,7 +286,7 @@ void CEditableObject::Save(CFS_Base& F){
         F.close_chunk	();
     }                                 
 
-    if (IsFlag(eoDynamic)){
+    if (IsDynamic()){
 		F.open_chunk	(EOBJ_CHUNK_ACTORTRANSFORM);
         F.Wvector		(a_vPosition);
         F.Wvector		(a_vRotate);

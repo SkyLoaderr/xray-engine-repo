@@ -62,12 +62,9 @@ USELIB("lib\cg32.lib");
 USEFORM("PropertiesEvent.cpp", frmPropertiesEvent);
 USEFORM("LogForm.cpp", frmLog);
 USEUNIT("edit\EditObjectIO.cpp");
-USEUNIT("PropertiesObjectSMotions.cpp");
 USEUNIT("edit\EditObjectMotions.cpp");
-USEUNIT("PropertiesObjectOMotions.cpp");
 USEUNIT("PropertiesObjectMeshes.cpp");
 USEUNIT("PropertiesObjectInfo.cpp");
-USEUNIT("edit\BuilderSkeletonOGF.cpp");
 USELIB("lib\xrProgressive.lib");
 USEFORM("FrameLight.cpp", fraLight); /* TFrame: File Type */
 USEFORM("OneEnvironment.cpp", frmOneEnvironment);
@@ -95,14 +92,6 @@ USEUNIT("engine\motion.cpp");
 USEUNIT("engine\bone.cpp");
 USELIB("lib\gauss.lib");
 USEUNIT("engine\clsid.cpp");
-USEUNIT("engine\cl_raypick.cpp");
-USEUNIT("engine\cl_build.cpp");
-USEUNIT("engine\cl_collector.cpp");
-USEUNIT("engine\cl_collide.cpp");
-USEUNIT("engine\cl_intersect.cpp");
-USEUNIT("engine\cl_overlap.cpp");
-USEUNIT("engine\cl_RAPID.cpp");
-USEUNIT("engine\cl_bboxcollide.cpp");
 USEUNIT("edit\AITraffic.cpp");
 USEFORM("FrameAITPoint.cpp", fraAITPoint); /* TFrame: File Type */
 USEUNIT("edit\DetailObjects.cpp");
@@ -203,6 +192,21 @@ USEUNIT("Engine\Blenders\Blender_BmmD.cpp");
 USELIB("lib\FreeImage.lib");
 USEUNIT("edit\BuilderGame.cpp");
 USEFORM("EventOneAction.cpp", frmOneEventAction);
+USEUNIT("Engine\xrXRC.cpp");
+USEUNIT("Engine\Animations\xrSkin1W.cpp");
+USEUNIT("Engine\Animations\FBasicVisual.cpp");
+USEUNIT("Engine\Animations\FHierrarhyVisual.cpp");
+USEUNIT("Engine\Animations\FProgressive.cpp");
+USEUNIT("Engine\Animations\FProgressiveFixedVisual.cpp");
+USEUNIT("Engine\Animations\FVisual.cpp");
+USEUNIT("Engine\Animations\SkeletonCalculate.cpp");
+USEUNIT("Engine\Animations\SkeletonX.cpp");
+USEUNIT("Engine\Animations\xrBoneLerp.cpp");
+USEUNIT("Engine\Animations\BodyInstance.cpp");
+USEUNIT("edit\ExportSkeleton.cpp");
+USEUNIT("edit\Engine.cpp");
+USEUNIT("edit\ModelPool.cpp");
+USELIB("lib\xrCDB.lib");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

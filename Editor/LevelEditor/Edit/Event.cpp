@@ -90,7 +90,7 @@ bool CEvent::SForm::Pick(float& distance, Fvector& start, Fvector& direction)
             T.transform_tiny(v[1]);
             T.transform_tiny(v[2]);
             range=UI.ZFar();
-            if (RAPID::TestRayTri2(start,direction,v,range)){
+            if (CDB::TestRayTri2(start,direction,v,range)){
                 if ((range>=0)&&(range<distance)){
                     distance=range;
                     bPick=true;

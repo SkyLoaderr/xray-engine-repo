@@ -518,7 +518,7 @@ void EScene::UpdateSkydome(){
     if (!m_LevelOp.m_SkydomeObjName.IsEmpty()){
         m_SkyDome = new CSceneObject("$Sky");
         CEditableObject* EO = m_SkyDome->SetReference(m_LevelOp.m_SkydomeObjName.c_str());
-        if (!EO||!EO->IsFlag(CEditableObject::eoDynamic)){
+        if (!EO||!EO->IsDynamic()){
         	ELog.DlgMsg(mtError,"Object %s can't find in library or non dynamic model",m_LevelOp.m_SkydomeObjName.c_str());
             _DELETE(m_SkyDome);
         }
