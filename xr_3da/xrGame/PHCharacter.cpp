@@ -59,14 +59,16 @@ void	CPHCharacter::UnFreeze()
 
 void CPHCharacter::get_State(SPHNetState& state)
 {
-	state.XFORM.identity();
-	GetPosition(state.XFORM.c);
+	GetPosition(state.position);
+	m_body_interpolation.GetPosition(state.previous_position,0);
 	GetVelocity(state.linear_vel);
 	getForce(state.force);
 }
 void CPHCharacter::set_State(const SPHNetState& state)
 {
-	SetPosition(state.XFORM.c);
+	m_body_interpolation.SetPosition(state.previous_position,0);
+	m_body_interpolation.SetPosition(state.position,1);
+	SetPosition(state.position);
 	SetVelocity(state.linear_vel);
 	setForce(state.force);
 }

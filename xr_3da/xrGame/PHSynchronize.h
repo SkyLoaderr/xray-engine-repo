@@ -3,11 +3,14 @@
 
 struct SPHNetState
 {
-	Fvector linear_vel;
-	Fvector angular_vel;
-	Fvector force;
-	Fvector torque;
-	Fmatrix XFORM;
+	Fvector		linear_vel;
+	Fvector		angular_vel;
+	Fvector		force;
+	Fvector		torque;
+	Fvector		position;
+	Fvector		previous_position;
+	Fquaternion quaternion;
+	Fquaternion	previous_quaternion;
 };
 class CPHSynchronize
 {

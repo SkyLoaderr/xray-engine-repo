@@ -307,7 +307,29 @@ void CPHElement::SetTransform(const Fmatrix &m0){
 
 }
 
+void CPHElement::getQuaternion(Fquaternion& quaternion)
+{
+	if(!bActive) return;
+	const float* q=dBodyGetQuaternion(m_body);
+	quaternion.set(-q[0],q[1],q[2],q[3]);
+}
+void CPHElement::setQuaternion(const Fquaternion& quaternion)
+{
+	if(!bActive) return;
+	dQuaternion q={-quaternion.x,quaternion.y,quaternion.z,quaternion.w};
+	dBodySetQuaternion(m_body,q);
+}
+void CPHElement::GetGlobalPositionDynamic(Fvector* v)
+{
+	if(!bActive) return;
+	v->set((*(Fvector*)dBodyGetPosition(m_body)));
+}
 
+void CPHElement::SetGlobalPositionDynamic(const Fvector& position)
+{
+	if(!bActive) return;
+	dBodySetPosition(m_body,position.x,position.y,position.z);
+}
 CPHElement::~CPHElement	()
 {
 	Deactivate();
@@ -825,16 +847,7 @@ void CPHElement::InterpolateGlobalPosition(Fvector* v){
 
 }
 
-void CPHElement::GetGlobalPositionDynamic(Fvector* v)
-{
-	//Fmatrix m;
 
-	//PHDynamicData::DMXPStoFMX(dBodyGetRotation(m_body),dBodyGetPosition(m_body),m);
-	//m.transform_tiny(*v,m_inverse_local_transform.c);
-
-	//v->add(*((Fvector*)dBodyGetPosition(m_body)),tv);
-	v->set((*(Fvector*)dBodyGetPosition(m_body)));
-}
 
 void CPHElement::Activate(bool place_current_forms,bool disable){
 
@@ -1591,7 +1604,10 @@ u16	CPHElement::numberOfGeoms()
 }
 void CPHElement::get_State(SPHNetState& state)
 {
-	GetGlobalTransformDynamic(&state.XFORM);
+	GetGlobalPositionDynamic(&state.position);
+	getQuaternion(state.quaternion);
+	m_body_interpolation.GetPosition(state.previous_position,0);
+	m_body_interpolation.GetRotation(state.previous_quaternion,0);
 	get_LinearVel(state.linear_vel);
 	get_AngularVel(state.linear_vel);
 	getForce(state.force);
@@ -1599,7 +1615,12 @@ void CPHElement::get_State(SPHNetState& state)
 }
 void CPHElement::set_State(const SPHNetState& state)
 {
-	SetTransform(state.XFORM);
+	SetGlobalPositionDynamic(state.position);
+	setQuaternion(state.quaternion);
+	m_body_interpolation.SetPosition(state.previous_position,0);
+	m_body_interpolation.SetRotation(state.previous_quaternion,0);
+	m_body_interpolation.SetPosition(state.position,1);
+	m_body_interpolation.SetRotation(state.quaternion,1);
 	set_LinearVel(state.linear_vel);
 	set_AngularVel(state.angular_vel);
 	setForce(state.force);

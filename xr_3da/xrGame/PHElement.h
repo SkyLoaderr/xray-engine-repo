@@ -133,6 +133,10 @@ public:
 	virtual CPhysicsRefObject*	PhysicsRefObject			(){return m_phys_ref_object;}													//aux
 	virtual void			set_PushOut						(u32 time,PushOutCallbackFun* push_out=PushOutCallback);						//ph state influent called anywhere
 
+	virtual void			getQuaternion					(Fquaternion& quaternion);
+	virtual void			setQuaternion					(const Fquaternion& quaternion);
+	virtual void			SetGlobalPositionDynamic		(const Fvector& position);
+	virtual void			GetGlobalPositionDynamic		(Fvector* v);			
 	virtual void			getForce						(Fvector& force);
 	virtual void			getTorque						(Fvector& torque);
 	virtual void			get_LinearVel					(Fvector& velocity);															//aux
@@ -149,7 +153,7 @@ public:
 	virtual void			InterpolateGlobalTransform		(Fmatrix* m);																	//called UpdateCL vis influent
 	virtual void			InterpolateGlobalPosition		(Fvector* v);																	//aux
 	virtual void			GetGlobalTransformDynamic		(Fmatrix* m);																	//aux
-	virtual void			GetGlobalPositionDynamic		(Fvector* v);																	//aux
+														//aux
 	void					SetShell						(CPHShell* p){m_shell=p;}														//aux
 	//virtual CKinematics*	PKinematics						(){return m_shell->PKinematics();}
 	void					SetPhObjectInGeomData			(CPHObject* O);																	//aux
