@@ -27,7 +27,7 @@ function main()
 			prof_oba:play_at_pos						(guard01,guard01:position(),0);
 			wait(1000)			
 			prof_hmm_kto_eto:play_at_pos						(guard01,guard01:position(),0);
-			wait(2000)			
+			wait(1000)			
 			guard_see_actor = 1
 		break
 		end
@@ -49,7 +49,7 @@ function main()
 	while guard01:action() and guard02:action() do
 		if guard01:see(actor) and distance_between(guard01,actor) < 7 then
 			prof_stoyat_pristrelu:play_at_pos			(guard01,guard01:position(),0);
-			wait(2000)			
+			wait(3000)			
 		break
 		end
 	    wait	()
