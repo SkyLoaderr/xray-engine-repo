@@ -43,6 +43,7 @@ void	CBuild::xrPhase_ResolveMaterials()
 	
 	Status				("Perfroming subdivisions...");
 	{
+		g_XSplit.reserve(65536);
 		g_XSplit.resize	(counts.size());
 		for (DWORD I=0; I<counts.size(); I++) 
 		{
