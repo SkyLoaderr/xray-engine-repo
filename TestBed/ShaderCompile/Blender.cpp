@@ -5,9 +5,6 @@
 #include "stdafx.h"
 #include "Blender.h"
 
-BP_TCS	CBlender::oTCS_identity;
-BP_TCM	CBlender::oTCM_identity;
-
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -55,8 +52,7 @@ void	CBlender::Save(	CFS_Base& FS )
 	BP_WRITE	("Priority",		BPID_INTEGER,	oPriority);
 	BP_WRITE	("Strict sorting",	BPID_BOOL,		oStrictSorting);
 	BP_W_MARKER	("Base Texture");
-	BP_WRITE	("TC source",		BPID_TCS,		oTCS);
-	BP_WRITE	("TC modifier",		BPID_TCM,		oTCM);
+	BP_WRITE	("UV Transform",	BPID_MATRIX,	oTC);
 }
 
 void	CBlender::Load(	CStream& FS )
@@ -66,8 +62,7 @@ void	CBlender::Load(	CStream& FS )
 	BP_READ		(BPID_INTEGER,	oPriority);
 	BP_READ		(BPID_BOOL,		oStrictSorting);
 	BP_R_MARKER	();
-	BP_READ		(BPID_TCS,		oTCS);
-	BP_READ 	(BPID_TCM,		oTCM);
+	BP_READ		(BPID_MATRIX,	oTC);
 }
 //////////////////////////////////////////////////////////////////////
 #include "blender_clsid.h"

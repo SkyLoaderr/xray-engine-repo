@@ -59,11 +59,7 @@ protected:
 	CBlender_DESC	description;
 	BP_Integer		oPriority;
 	BP_BOOL			oStrictSorting;
-	BP_TCS			oTCS;
-	BP_TCM			oTCM;
-
-	static		BP_TCS		oTCS_identity;
-	static		BP_TCM		oTCM_identity;
+	string64		oTC;
 protected:
 	DWORD		BC			(BOOL v)		{ return v?0xff:0; }
 
