@@ -116,16 +116,6 @@ IC	void	xform		(Fmatrix& X, Fvector& D, Fvector& S, float dim_2)
 	D.y = (1.f-y/w)*dim_2;
 	D.z	= z/w;
 }
-IC	BOOL	xform_b		(Fmatrix& X, Fvector& D, Fvector& S)
-{
-	float w	= S.x*X._14 + S.y*X._24 + S.z*X._34 + X._44;
-	if (w<EPS_L) return TRUE;
-		
-	D.x	= 1.f+(S.x*X._11 + S.y*X._21 + S.z*X._31 + X._41)/w;
-	D.y	= 1.f-(S.x*X._12 + S.y*X._22 + S.z*X._32 + X._42)/w;
-	D.z	= 0.f+(S.x*X._13 + S.y*X._23 + S.z*X._33 + X._43)/w;
-	return FALSE;
-}
 
 void CHOM::Render_DB	(CFrustum& base)
 {
@@ -187,7 +177,7 @@ void CHOM::Render		(CFrustum& base)
 
 void CHOM::Debug		()
 {
-	return;
+	// return;
 	
 	// Texture
 	D3DLOCKED_RECT		R;
@@ -226,6 +216,17 @@ void CHOM::Debug		()
 	Device.Primitive.Draw	(pStream,4,2,Offset,Device.Streams_QuadIB);
 }
 
+IC	BOOL	xform_b		(Fmatrix& X, Fvector& D, Fvector& S)
+{
+	float w	= S.x*X._14 + S.y*X._24 + S.z*X._34 + X._44;
+	if (w<EPS_L) return TRUE;
+	
+	D.x	= 1.f+(S.x*X._11 + S.y*X._21 + S.z*X._31 + X._41)/w;
+	D.y	= 1.f-(S.x*X._12 + S.y*X._22 + S.z*X._32 + X._42)/w;
+	D.z	= 0.f+(S.x*X._13 + S.y*X._23 + S.z*X._33 + X._43)/w;
+	return FALSE;
+}
+
 BOOL CHOM::Visible		(Fbox& B)
 {
 	if (0==m_pModel)	return TRUE;
@@ -243,5 +244,5 @@ BOOL CHOM::Visible		(Fbox& B)
 	B.getpoint(6,src);	if (xform_b(XF,test,src)) return TRUE;	rect.modify	(test);
 	B.getpoint(7,src);	if (xform_b(XF,test,src)) return TRUE;	rect.modify	(test);
 	
-	return Raster.test	(rect.min.x,rect.min.y,rect.max.x,rect.max.y,rect.min.z);
+	return FALSE; //Raster.test	(rect.min.x,rect.min.y,rect.max.x,rect.max.y,rect.min.z);
 }
