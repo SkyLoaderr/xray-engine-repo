@@ -6,36 +6,53 @@ done, works OK			:	fixed coordinate system for point lights - should minimize fl
 						:	scissoring ???
 done, works OK			:	3*32	bit RTs		- position/normal compression
 done, works OK			:	bilinear/q-linear filter for cubemaps
-done, works OK			:	1*DXT5	bumpmaps	- lower quality, 8 bit, faster
+done, works OK			:	2*DXT5	bumpmaps + heightmaps	- lower quality, 8 bit, faster(?)
 ----------------------------
 						:	A8L8	encoding of encodeRG
 						:	L8		encoding of encodeB + mov instead add
 						:	A8L8	encoding of material
 ----------------------------
-work out tonemapping	(?)
-xrLC geometry selection for point/spot lights
+Engine/Game:
+	refactor/rebuild collision detection infrastructure (along with Slipch)	- should speed up physics considerably
 
-bicubic filter for spot shadows
-detail	bumpmaps	- better quality
-work out blooming	(again)
-work out skybox		(again)
-sRGB convert diffuse???
-reverse culling	for spot/point with initial clears - should avoid most biasing ?
+Sound:
+	I3DL2_reverb				(?)
+	
+Compiler:
+	xrLC geometry selection for point/spot lights
+	better hemisphere / qSlim	(???)
+	CDB - qSlim					(???)
+	SlidingWindow VIPM			(???)
+
+R1:
+	per-pixel displacement	+ secondary channel
+
+R2:
+	work out tonemapping		(?)
+	work out blooming			(again)
+	work out skybox				(again)
+	work out hemisphere			(again)
+	sRGB convert diffuse		(???)
+	transluency					(?)
+	reverse culling	for spot/point with initial clears - should avoid most biasing (?)
+	4*32bit	RT(s) / emissive
+	
+	surface material:
+		emmisive	map
+		detail-bump	map
+		anisotropic	materials
+		material	definition
+
 ----------------------------
 perspective shadow maps and all that stuff Gary talks about
-
 ---
 I think I understand it. Maybe I can help myself (and others) understand it better if I try to explain it.
 I assume you know how the normal mapping works. The question is: how is the offset computed?
 
 1) for each vertex, transform the eye vector into tangent space so that 'z' represents the normal component
-
 now for each fragment:
-
 2) normalize the tangent-space eye vector. call it ~v
-
 3) fetch the height of the texture, which represents the displacement of the surface. Scale and bias is used to map the fetched values of 0-1 to some range, such as -.02 to .02. You wouldn't need to do this with float textures, but you probably don't need the precision. Call the final height h.
-
 4) to compute the offset, you have to find the intersection of a ray with direction ~v and height h to a a plane at height 0.(representing the texture surface). Because the x and y components of ~v represent the tangent plane coordinates, and 2D texture fetches ignore the z component, all you need to do is scale ~v by h.
 
 I think that's it? Any corrections/clarifications?
