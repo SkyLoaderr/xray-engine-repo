@@ -55,7 +55,9 @@ void	CResourceManager::OnDeviceDestroy(BOOL bKeepTextures)
 	m_td.clear		();
 
 	// scripting
+#ifndef _EDITOR
 	LS_Unload				();
+#endif
 }
 
 void	CResourceManager::OnDeviceCreate	(IReader* F)
@@ -64,9 +66,10 @@ void	CResourceManager::OnDeviceCreate	(IReader* F)
 
 	string256	name;
 
+#ifndef _EDITOR
 	// scripting
 	LS_Load					();
-
+#endif
 	// Load constants
 	{
 		IReader*	fs		= F->open_chunk	(0);

@@ -207,8 +207,11 @@ Shader*		CResourceManager::Create	(IBlender*	B,		LPCSTR s_shader,	LPCSTR s_textu
 
 Shader*		CResourceManager::Create	(LPCSTR s_shader,	LPCSTR s_textures,	LPCSTR s_constants,	LPCSTR s_matrices)
 {
+#ifndef _EDITOR
 	if	(_lua_HasShader(s_shader))		return	_lua_Create	(s_shader,s_textures);
-	else								return	_cpp_Create	(s_shader,s_textures,s_constants,s_matrices);
+	else								
+#endif
+    return	_cpp_Create	(s_shader,s_textures,s_constants,s_matrices);
 }
 
 void CResourceManager::Delete(const Shader* S)

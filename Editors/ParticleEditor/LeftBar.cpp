@@ -44,7 +44,14 @@ void UpdatePanel(TPanel* p){
 }
 //---------------------------------------------------------------------------
 
-void TfraLeftBar::UpdateBar(){
+void TfraLeftBar::OnTimer()
+{
+	UpdateBar();
+}
+//---------------------------------------------------------------------------
+
+void TfraLeftBar::UpdateBar()
+{
     int i, j;
     for (i=0; i<fraLeftBar->ComponentCount; i++){
         TComponent* temp = fraLeftBar->Components[i];

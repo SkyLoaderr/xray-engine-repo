@@ -101,6 +101,7 @@ private:	// User declarations
 public:		// User declarations
         __fastcall TfraLeftBar		(TComponent* Owner);
     void 			UpdateBar		();
+    void			OnTimer			();
 	void 			ClearParticleList();
     void 			MinimizeAllFrames();
     void 			MaximizeAllFrames();

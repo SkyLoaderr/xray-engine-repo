@@ -19,6 +19,7 @@ USEFORM("LeftBar.cpp", fraLeftBar); /* TFrame: File Type */
 USEFORM("LogForm.cpp", frmLog);
 USEFORM("main.cpp", frmMain);
 USEFORM("Splash.cpp", frmSplash);
+USEFORM("Editor\SoundEditor.cpp", frmSoundLib);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 {
