@@ -144,16 +144,16 @@ function pp_linear_lerp:process(pp)
 	local noise		= noise()
 	local color		= color()
 
-	dual.h			= (self.max_power.dual.h 			- self.min_power.dual.h 		)	* d
-	dual.v			= (self.max_power.dual.v 			- self.min_power.dual.v 		)	* d
-	noise.grain		= (self.max_power.noise.grain 		- self.min_power.noise.grain 	)	* d
-	noise.intensity = (self.max_power.noise.intensity 	- self.min_power.noise.intensity) 	* d
-	color.r			= (self.max_power.noise.color.r 	- self.min_power.noise.color.r 	)	* d
-	color.g			= (self.max_power.noise.color.g 	- self.min_power.noise.color.g 	)	* d
-	color.b			= (self.max_power.noise.color.b 	- self.min_power.noise.color.b 	)	* d 
-	color.a			= (self.max_power.noise.color.a 	- self.min_power.noise.color.a 	)	* d 
-	pp.gray			= (self.max_power.gray 				- self.min_power.gray 			)	* d
-	pp.blur			= (self.max_power.blur 				- self.min_power.blur 			)	* d
+	dual.h			= math.abs(self.max_power.dual.h 			- self.min_power.dual.h 		)	* d
+	dual.v			= math.abs(self.max_power.dual.v 			- self.min_power.dual.v 		)	* d
+	noise.grain		= math.abs(self.max_power.noise.grain 		- self.min_power.noise.grain 	)	* d
+	noise.intensity = math.abs(self.max_power.noise.intensity 	- self.min_power.noise.intensity) 	* d
+	color.r			= math.abs(self.max_power.noise.color.r 	- self.min_power.noise.color.r 	)	* d
+	color.g			= math.abs(self.max_power.noise.color.g 	- self.min_power.noise.color.g 	)	* d
+	color.b			= math.abs(self.max_power.noise.color.b 	- self.min_power.noise.color.b 	)	* d 
+	color.a			= math.abs(self.max_power.noise.color.a 	- self.min_power.noise.color.a 	)	* d 
+	pp.gray			= math.abs(self.max_power.gray 				- self.min_power.gray 			)	* d
+	pp.blur			= math.abs(self.max_power.blur 				- self.min_power.blur 			)	* d
 
 	noise.color		= color
 	pp.dual			= dual
