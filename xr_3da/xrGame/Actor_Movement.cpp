@@ -284,7 +284,10 @@ bool CActor::g_LeaderOrient(u32/* mstate_rl*/,float dt)
 	////angle_lerp(angles3.z,angles1.z,angles2.z,dt);
 	//angle_lerp(angles3.x,angles1.x,angles2.x,dt);
 	//XFORM().setHPB(angles3.x,angles3.y,angles3.z);
+	Fvector position;
+	position.set(Position());
 	XFORM().rotation(q3);
+	Position().set(position);
 	return true;
 }
 // ****************************** Update actor orientation according to camera orientation
