@@ -136,10 +136,11 @@ void CAI_Rat::Load(LPCSTR section)
 
 BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 {
-	if (!inherited::net_Spawn(DC))	return FALSE;
+	if (!inherited::net_Spawn(DC))
+		return(FALSE);
 	
 	//////////////////////////////////////////////////////////////////////////
-	xrSE_Rat *tpSE_Rat = (xrSE_Rat *)DC;
+	xrSE_Rat						*tpSE_Rat = (xrSE_Rat *)DC;
 	// model
 	cNameVisual_set					(tpSE_Rat->caModel);
 	// personal characteristics
@@ -170,20 +171,20 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 
 	m_fCurSpeed						= m_fMaxSpeed;
 
-	m_tOldPosition.set(vPosition);
-	m_tSpawnPosition.set(Level().get_squad(g_Team(),g_Squad()).Leader->Position());
-	m_tSafeSpawnPosition.set(m_tSpawnPosition);
-	tStateStack.push(eCurrentState = aiRatFreeHuntingActive);
-	vfAddActiveMember(true);
-	m_bStateChanged = true;
+	m_tOldPosition.set				(vPosition);
+	m_tSpawnPosition.set			(Level().get_squad(g_Team(),g_Squad()).Leader->Position());
+	m_tSafeSpawnPosition.set		(m_tSpawnPosition);
+	tStateStack.push				(eCurrentState = aiRatFreeHuntingActive);
+	vfAddActiveMember				(true);
+	m_bStateChanged					= true;
 
-	r_torso_current = r_current;
-	r_torso_target = r_target;
-	m_tHPB.x = r_torso_current.yaw;
-	m_tHPB.y = r_torso_current.pitch;
-	m_tHPB.z = 0;
+	r_torso_current					= r_current;
+	r_torso_target					= r_target;
+	m_tHPB.x						= r_torso_current.yaw;
+	m_tHPB.y						= r_torso_current.pitch;
+	m_tHPB.z						= 0;
 	
-	return TRUE;
+	return							(TRUE);
 }
 
 void CAI_Rat::Exec_Movement	( float dt )

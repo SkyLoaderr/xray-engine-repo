@@ -95,7 +95,7 @@ void CAI_ALife::Load()
 {
 	Memory.mem_compact			();
 	u32							dwMemUsage = Memory.mem_usage();
-	pApp->LoadTitle				("Loading ALife Simulator...");
+	pApp->LoadTitle				("Loading a-life simulator...");
 	m_tALifeVersion				= ALIFE_VERSION;
 	m_tpActor					= 0;
 	m_tGameTime					= 0;
