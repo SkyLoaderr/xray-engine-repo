@@ -575,9 +575,7 @@ void __fastcall TfrmProperties::VectorClick(TElTreeItem* item)
     Fvector old_val=*V->val;
 	if (V->OnBeforeEdit) 	V->OnBeforeEdit(item,V,&edit_val);
     Fvector mn={V->lim_mn,V->lim_mn,V->lim_mn},mx={V->lim_mx,V->lim_mx,V->lim_mx};
-    POINT pt;
-    GetCursorPos(&pt);
-	if (NumericVectorRun(AnsiString(item->Text).c_str(),&edit_val,V->dec,&edit_val,&mn,&mx,(int*)&pt.x,(int*)&pt.y)){
+	if (NumericVectorRun(AnsiString(item->Text).c_str(),&edit_val,V->dec,&edit_val,&mn,&mx)){
         if (V->OnAfterEdit) V->OnAfterEdit(item,V,&edit_val);
 		*V->val = edit_val;
         if (!old_val.similar(edit_val)){

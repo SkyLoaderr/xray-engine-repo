@@ -139,10 +139,11 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
 			case fcvPartial:	// addition with TEST
 				{
 					for (int sp_id=0; sp_id<dm_obj_in_slot; sp_id++)
-					{                                                                 
+					{
 						SlotPart&			sp	= S.G		[sp_id];
+                        R_ASSERT(sp.id<m_Objects.size());
 						if (sp.id==0xff)	continue;
-						vector<SlotItem*>&	vis = m_Visible	[sp.id];			R_ASSERT(sp.id<m_Objects.size());
+						vector<SlotItem*>&	vis = m_Visible	[sp.id];
 						float				R   = m_Objects	[sp.id]->m_fRadius;
 
 						SlotItem			*siIT=sp.items.begin(), *siEND=sp.items.end();
@@ -173,8 +174,9 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
 					for (int sp_id=0; sp_id<3; sp_id++)
 					{
 						SlotPart&			sp	= S.G		[sp_id];
+                        R_ASSERT(sp.id<m_Objects.size());
 						if (sp.id==0xff)	continue;
-						vector<SlotItem*>&	vis = m_Visible	[sp.id];            R_ASSERT(sp.id<m_Objects.size());
+						vector<SlotItem*>&	vis = m_Visible	[sp.id];
 						float				R   = m_Objects	[sp.id]->m_fRadius;
 
 						SlotItem			*siIT=sp.items.begin(), *siEND=sp.items.end();

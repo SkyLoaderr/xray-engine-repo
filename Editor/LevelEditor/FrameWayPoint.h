@@ -25,7 +25,6 @@ __published:	// IDE-managed Components
 	TExtBtn *ebAutoLink;
 	TFormStorage *fsStorage;
 	TExtBtn *ebRemoveSelected;
-	TBevel *Bevel2;
 	TExtBtn *ebPointMode;
 	TPanel *paLink;
 	TLabel *Label1;
@@ -34,6 +33,7 @@ __published:	// IDE-managed Components
 	TExtBtn *ebAdd1Link;
 	TExtBtn *ebRemoveLinks;
 	TExtBtn *ebAdd2Link;
+	TBevel *Bevel2;
     void __fastcall PanelMinClick(TObject *Sender);
     void __fastcall ExpandClick(TObject *Sender);
 	void __fastcall ebAdd1LinksClick(TObject *Sender);

@@ -254,7 +254,7 @@ public:
 	void		    LightenObject			();
 
     // pick methods
-	bool 			RayPick					(float& dist, Fvector& S, Fvector& D, Fmatrix& parent, SRayPickInfo* pinf=0);
+	bool 			RayPick					(float& dist, Fvector& S, Fvector& D, Fmatrix& inv_parent, SRayPickInfo* pinf=0);
 #ifdef _LEVEL_EDITOR
     bool 			BoxPick					(CSceneObject* obj, const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf);
 	bool 			FrustumPick				(const CFrustum& frustum, const Fmatrix& parent);

@@ -202,7 +202,7 @@ public:
     IC FvectorVec&	GetFNormals				(){ return m_FNormals;}
 
     // pick routine
-	bool            RayPick					(float& dist, Fvector& start, Fvector& dir, Fmatrix& parent, SRayPickInfo* pinf = NULL);
+	bool            RayPick					(float& dist, Fvector& start, Fvector& dir, Fmatrix& inv_parent, SRayPickInfo* pinf = NULL);
 #ifdef _LEVEL_EDITOR
     bool 			BoxPick					(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf);
 	bool            FrustumPick				(const CFrustum& frustum, const Fmatrix& parent);

@@ -150,14 +150,17 @@ void CEditableMesh::Render(const Fmatrix& parent, CSurface* S){
     bb.getsphere(C,r);
 	if (!Device.m_Frustum.testSphere(C,r)) return;
     // render
-	RBVector& rb_vec = m_RenderBuffers.find(S)->second;
-    DWORD vBase;
-    for (RBVecIt rb_it=rb_vec.begin(); rb_it!=rb_vec.end(); rb_it++){
-		LPBYTE pv = (LPBYTE)rb_it->stream->Lock(rb_it->dwNumVertex,vBase);
-		CopyMemory(pv,rb_it->buffer,rb_it->buffer_size);
-		rb_it->stream->Unlock(rb_it->dwNumVertex);
-		Device.DP(D3DPT_TRIANGLELIST,rb_it->stream,vBase,rb_it->dwNumVertex/3);
-	}
+    RBMapPairIt rb_pair = m_RenderBuffers.find(S);
+    if (rb_pair!=m_RenderBuffers.end()){
+        RBVector& rb_vec = rb_pair->second;
+        DWORD vBase;
+        for (RBVecIt rb_it=rb_vec.begin(); rb_it!=rb_vec.end(); rb_it++){
+            LPBYTE pv = (LPBYTE)rb_it->stream->Lock(rb_it->dwNumVertex,vBase);
+            CopyMemory(pv,rb_it->buffer,rb_it->buffer_size);
+            rb_it->stream->Unlock(rb_it->dwNumVertex);
+            Device.DP(D3DPT_TRIANGLELIST,rb_it->stream,vBase,rb_it->dwNumVertex/3);
+        }
+    }
 }
 //----------------------------------------------------
 #define MAX_VERT_COUNT 0xFFFF

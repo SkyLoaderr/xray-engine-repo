@@ -12,6 +12,7 @@
 #include "CustomObject.h"
 #include "ui_customtools.h"
 #include "ExtBtn.hpp"
+#include "mxPlacemnt.hpp"
 // refs
 class CEditObject;
 //---------------------------------------------------------------------------
@@ -23,6 +24,9 @@ __published:	// IDE-managed Components
 	TExtBtn *ExtBtn2;
 	TExtBtn *ebAppendForm;
 	TExtBtn *ebRemoveForm;
+	TExtBtn *ebFormMode;
+	TBevel *Bevel2;
+	TFormStorage *fsStorage;
     void __fastcall PaneMinClick(TObject *Sender);
     void __fastcall ExpandClick(TObject *Sender);
 	void __fastcall ebAppendFormClick(TObject *Sender);

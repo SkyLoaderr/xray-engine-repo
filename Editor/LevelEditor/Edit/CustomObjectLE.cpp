@@ -7,6 +7,57 @@
 #include "topbar.h"
 #include "editorpref.h"
 
+//------------------------------------------------------------------------------
+// static part
+//------------------------------------------------------------------------------
+void CCustomObject::SnapMove(Fvector& pos, Fvector& rot, const Fmatrix& rotRP, const Fvector& amount)
+{
+// !!! Hide object before test
+    SRayPickInfo pinf;
+    Fvector up,dn={0,-1,0};
+    rotRP.transform_dir(dn);
+    up.invert(dn);
+    Fvector s2,s1=pos;
+    s1.add(amount);
+    s2.mad(s1,up,frmEditorPreferences->seSnapMoveTo->Value);
+
+    pinf.inf.range=frmEditorPreferences->seSnapMoveTo->Value;
+    if (Scene.RayPick( s1, dn, OBJCLASS_SCENEOBJECT, &pinf, false, Scene.GetSnapList())||
+        Scene.RayPick( s2, dn, OBJCLASS_SCENEOBJECT, &pinf, false, Scene.GetSnapList())){
+            pos.set(pinf.pt);
+            if (fraTopBar->ebNormalAlignment->Down){
+                Fvector verts[3];
+                pinf.s_obj->GetFaceWorld(pinf.e_mesh,pinf.inf.id,verts);
+                Fvector vR,vD,vN;
+                vN.mknormal(verts[0],verts[1],verts[2]);
+
+                vD.set(rotRP.k);
+                vR.crossproduct	(vN,vD);
+                vR.normalize();
+                vD.crossproduct	(vR,vN);
+                vD.normalize();
+
+                Fmatrix M;
+                M.set(vR,vN,vD,vR);
+                M.getXYZ(rot);
+            }
+        }
+    else pos.add(amount);
+}
+void CCustomObject::NormalAlign(Fvector& rot, const Fvector& up)
+{
+    Fmatrix	mR;
+    Fvector vR,vD,vN;
+    vN.set(up);
+    vD.set(0,0,1);
+    if (fabsf(vN.z)>0.99f) vD.set(1,0,0);
+    vR.crossproduct(vN,vD); vR.normalize();
+    vD.crossproduct(vR,vN); vD.normalize();
+    mR.set(vR,vN,vD,vR);
+    mR.getXYZ(rot);
+}
+//------------------------------------------------------------------------------
+
 void CCustomObject::RemoveFromGroup()
 {
     m_pGroupObject = 0;
@@ -30,48 +81,17 @@ void CCustomObject::Move(Fvector& amount)
 	R_ASSERT(!Locked());
     UI.UpdateScene();
     Fvector v=PPosition;
+    Fvector r=PRotation;
     if (fraTopBar->ebMoveToSnap->Down){
-        SRayPickInfo pinf;
-		Fmatrix	mR=FTransformRP;
-        Fvector up,dn={0,-1,0};
-        mR.transform_dir(dn);
-        up.invert(dn);
-        Fvector s2,s1=v;
-        s1.add(amount);
-        s2.mad(s1,up,frmEditorPreferences->seSnapMoveTo->Value);
-
         bool bVis=m_bVisible;
         m_bVisible=false;
-        pinf.inf.range=frmEditorPreferences->seSnapMoveTo->Value;
-        if (Scene.RayPick( s1, dn, OBJCLASS_SCENEOBJECT, &pinf, false, Scene.GetSnapList())||
-        	Scene.RayPick( s2, dn, OBJCLASS_SCENEOBJECT, &pinf, false, Scene.GetSnapList())){
-	            v.set(pinf.pt);
-    			if (fraTopBar->ebNormalAlignment->Down){
-					Fvector verts[3];
-					pinf.s_obj->GetFaceWorld(pinf.e_mesh,pinf.inf.id,verts);
-                    Fvector vR,vD,vN,r;
-                    vN.mknormal(verts[0],verts[1],verts[2]);
-
-                    vD.set(mR.k);
-					vR.crossproduct	(vN,vD);
-                    vR.normalize();
-					vD.crossproduct	(vR,vN);
-                    vD.normalize();
-
-                    Fmatrix M;
-                    M.set(vR,vN,vD,vR);
-                    M.getXYZ(r);
-
-                    PRotation = r;
-				}
-            }
-        else v.add(amount);
+    	SnapMove(v,r,FTransformRP,amount);
         m_bVisible=bVis;
     }else{
 	    v.add(amount);
     }
-
     PPosition = v;
+    PRotation = r;
 }
 
 void CCustomObject::MoveTo(const Fvector& pos, const Fvector& up)
@@ -81,15 +101,8 @@ void CCustomObject::MoveTo(const Fvector& pos, const Fvector& up)
     Fvector v=PPosition;
     v.set(pos);
     if (fraTopBar->ebNormalAlignment->Down){
-		Fmatrix	mR;
-        Fvector vR,vD,vN,r;
-        vN.set(up);
-        vD.set(0,0,1);
-		if (fabsf(vN.z)>0.99f) vD.set(1,0,0);
-		vR.crossproduct(vN,vD); vR.normalize();
-        vD.crossproduct(vR,vN); vD.normalize();
-        mR.set(vR,vN,vD,vR);
-        mR.getXYZ(r);
+        Fvector r=PRotation;
+    	NormalAlign(r,up);
         PRotation = r;
     }
     PPosition = v;

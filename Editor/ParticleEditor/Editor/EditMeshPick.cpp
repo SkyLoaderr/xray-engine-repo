@@ -68,14 +68,14 @@ void CEditableMesh::GenerateCFModel(){
 	m_LoadState |= EMESH_LS_CF_MODEL;
 }
 
-bool CEditableMesh::RayPick(float& distance, Fvector& start, Fvector& direction, Fmatrix& parent, SRayPickInfo* pinf){
+bool CEditableMesh::RayPick(float& distance, Fvector& start, Fvector& direction, Fmatrix& inv_parent, SRayPickInfo* pinf){
 	if (!m_Visible) return false;
 
     if (!m_CFModel) GenerateCFModel();
     float m_r = pinf?pinf->inf.range+EPS_L:UI.ZFar();// (bugs: не всегда выбирает) //S ????
 
 	XRC.ray_options	(CDB::OPT_ONLYNEAREST | CDB::OPT_CULL);
-    XRC.ray_query	(parent, m_CFModel, start, direction, m_r);
+    XRC.ray_query	(inv_parent, m_CFModel, start, direction, m_r);
     if (XRC.r_count()){
 		CDB::RESULT* I	= XRC.r_begin	();
 		if (I->range<distance) {

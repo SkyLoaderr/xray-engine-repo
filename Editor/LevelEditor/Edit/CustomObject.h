@@ -142,6 +142,9 @@ public:
 
     PropertyGP(FClassID,FClassID)			EObjClass ClassID;
     PropertyGP(GetName,SetName) 			LPSTR  	Name;
+public:
+	static void		SnapMove		(Fvector& pos, Fvector& rot, const Fmatrix& rotRP, const Fvector& amount);
+	static void		NormalAlign		(Fvector& rot, const Fvector& up);
 };
 
 typedef std::list<CCustomObject*> ObjectList;

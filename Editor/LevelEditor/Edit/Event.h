@@ -20,7 +20,7 @@ public:
     	ef_force_dword = -1
     };
 
-    struct SForm{
+    struct SForm{             
     	EFormType	m_eType;
         Fvector 	vSize;
         Fvector 	vRotate;
@@ -35,10 +35,11 @@ public:
 	    bool 		FrustumPick		(const Fmatrix& parent, const CFrustum& frustum);
         bool		RayPick			(const Fmatrix& parent, float& distance, Fvector& start, Fvector& direction);
 	    bool 		FrustumSelect	(const Fmatrix& parent, int flag, const CFrustum& frustum);
-		void 		Move			( Fvector& amount );
+		void 		Move			( const Fmatrix& parent, const Fmatrix& inv_parent, Fvector& amount );
 		void 		RotateLocal		( Fvector& axis, float angle );
 		void 		RotateParent	( Fvector& axis, float angle );
 		void 		Scale			( Fvector& amount );
+		void 		MoveTo			( Fvector& pos, Fvector& up );
     };
     DEFINE_VECTOR	(SForm,FormVec,FormIt);
 	FormVec			m_Forms;
@@ -57,7 +58,7 @@ public:
     DEFINE_VECTOR	(SAction,ActionVec,ActionIt);
     ActionVec		m_Actions;
 
-	void			AppendForm			(EFormType type);
+	SForm*			AppendForm			(EFormType type);
     void			RemoveSelectedForm	();
 	void 			GetRenderBox		(Fbox& box);
 public:
@@ -75,6 +76,7 @@ public:
 	virtual bool 	RaySelect		(int flag, Fvector& start,Fvector& dir, bool bRayTest=false); // flag 1,0,-1 (-1 invert)
     virtual bool 	FrustumSelect	(int flag, const CFrustum& frustum);
     // change position/orientation methods
+	virtual void 	MoveTo			(const Fvector& pos, const Fvector& up);
 	virtual void 	Move			(Fvector& amount);
 	virtual void 	RotateParent	(Fvector& axis, float angle );
 	virtual void 	RotateLocal		(Fvector& axis, float angle );
@@ -87,6 +89,8 @@ public:
 	virtual void 	Save			( CFS_Base& );
 
 	virtual bool 	GetBox			( Fbox& box );
+
+    static bool		IsFormMode		();
 };
 
 #endif /*_INCDEF_CEvent_H_*/

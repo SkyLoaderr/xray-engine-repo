@@ -14,4 +14,10 @@ public:
 	virtual	void 	OnDeactivate();
 };
 //---------------------------------------------------------------------------
+class TUI_ControlEventAdd: public TUI_CustomControl{
+public:
+    TUI_ControlEventAdd(int st, int act, TUI_CustomTools* parent);
+    virtual ~TUI_ControlEventAdd(){;}
+	virtual bool Start  (TShiftState _Shift);
+};
 #endif

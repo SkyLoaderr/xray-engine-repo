@@ -152,7 +152,7 @@ bool CSceneObject::SpherePick(const Fvector& center, float radius){
 bool CSceneObject::RayPick(float& dist, Fvector& S, Fvector& D, SRayPickInfo* pinf){
 	if (!m_pRefs) return false;
     if (Device.m_Frustum.testSphere(m_Center,m_fRadius))
-		if (m_pRefs&&m_pRefs->RayPick(dist, S, D, _Transform(), pinf)){
+		if (m_pRefs&&m_pRefs->RayPick(dist, S, D, _ITransform(), pinf)){
         	if (pinf) pinf->s_obj = this;
             return true;
         }

@@ -35,7 +35,6 @@ bool __fastcall TUI_ControlWayPointAdd::Start(TShiftState Shift){
         	ELog.DlgMsg(mtInformation,"Select one WayObject.");
             return false;
         }
-		ObjectList lst; Scene.GetQueryObjects(lst,OBJCLASS_WAY,1,1,-1);
         Fvector p;
 	    if (UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm,1)){
         	CWayObject* obj = (CWayObject*)lst.front(); R_ASSERT(obj);

@@ -22,14 +22,12 @@ public:
         cdb_query_ray(CL,m_def,r_start,r_dir,r_range);
 		Device.Statistic.clRAY.End	();
 	}
-	IC void			ray_query		(const Fmatrix& parent, const CDB::MODEL *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range = 10000.f)
+	IC void			ray_query		(const Fmatrix& inv_parent, const CDB::MODEL *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range = 10000.f)
 	{
     	// transform
-    	Fmatrix M;
         Fvector S,D;
-        M.invert(parent);
-	    M.transform_tiny(S,r_start);
-    	M.transform_dir(D,r_dir);
+	    inv_parent.transform_tiny(S,r_start);
+    	inv_parent.transform_dir(D,r_dir);
 		ray_query(m_def,S,D,r_range);
 	}
 
@@ -43,10 +41,10 @@ public:
         cdb_query_box(CL,m_def,b_center,b_dim);
 		Device.Statistic.clBOX.End	();
 	}
-	IC void			box_query		(const Fmatrix& parent, const CDB::MODEL *m_def, const Fbox& src)
+	IC void			box_query		(const Fmatrix& inv_parent, const CDB::MODEL *m_def, const Fbox& src)
 	{
     	Fbox dest;
-		dest.xform(src,parent);
+		dest.xform(src,inv_parent);
         Fvector c,d;
         dest.getcenter(c);
         dest.getradius(d);

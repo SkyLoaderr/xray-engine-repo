@@ -15,10 +15,10 @@ bool CEditableObject::Reload()
     return Load(m_LoadName.c_str());
 }
 
-bool CEditableObject::RayPick(float& dist, Fvector& S, Fvector& D, Fmatrix& parent, SRayPickInfo* pinf){
+bool CEditableObject::RayPick(float& dist, Fvector& S, Fvector& D, Fmatrix& inv_parent, SRayPickInfo* pinf){
 	bool picked = false;
     for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
-        if( (*m)->RayPick( dist, S, D, parent, pinf ) )
+        if( (*m)->RayPick( dist, S, D, inv_parent, pinf ) )
             picked = true;
 	return picked;
 }

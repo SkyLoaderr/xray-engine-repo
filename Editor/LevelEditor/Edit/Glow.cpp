@@ -75,7 +75,7 @@ void CGlow::Render(int priority, bool strictB2F){
 			}else{
                 // рендерим bounding sphere
         		Device.SetShader(Device.m_WireShader);
-                DU::DrawRomboid(PPosition, VIS_RADIUS, 0x0000D800);
+                DU::DrawRomboid(PPosition, VIS_RADIUS, 0x00FF8507);
 			}
             if( Selected() ){
             	Fbox bb; GetBox(bb);

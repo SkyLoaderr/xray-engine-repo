@@ -402,6 +402,7 @@ bool CWayObject::IsPointMode(){
 		TfraWayPoint* frame=(TfraWayPoint*)Tools.GetFrame(); R_ASSERT(frame);
         return frame->ebPointMode->Down;
     }
+    return false;
 }
 
 bool CWayObject::Load(CStream& F)

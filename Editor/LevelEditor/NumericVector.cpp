@@ -97,8 +97,15 @@ bool __fastcall TfrmNumericVector::Run(const char* title, Fvector* data, int dec
 	    seZ->MaxValue = 0;
     }
 
-    if (X) Left = *X-(Width*0.5f);
-    if (Y) Top = *Y;
+    if (!X||!Y){
+	    POINT pt;
+    	GetCursorPos(&pt);
+	    Left = pt.x-(Width*0.5f);
+    	Top = pt.y;
+    }else{
+	    Left = *X-(Width*0.5f);
+    	Top = *Y;
+    }
 
     return (ShowModal()==mrOk);
 }

@@ -13,7 +13,10 @@
 #include "texture.h"
 #include "D3DUtils.h"
 #include "bottombar.h"
+#include "topbar.h"
 #include "scene.h"
+#include "UI_Tools.h"
+#include "FrameEvent.h"
 
 #define EVENT_VERSION		   				0x0011
 //----------------------------------------------------
@@ -149,9 +152,25 @@ bool CEvent::SForm::FrustumSelect(const Fmatrix& parent, int flag, const CFrustu
 	return false;
 }
 
-void CEvent::SForm::Move( Fvector& amount )
+void CEvent::SForm::Move( const Fmatrix& parent, const Fmatrix& inv_parent, Fvector& amount )
 {
-	vPosition.add(amount);
+    if (fraTopBar->ebNormalAlignment->Down){
+    	Fmatrix Trp; GetTransformRP(Trp);
+		Trp.mulA(parent);
+        parent.transform_tiny(vPosition);
+    	CCustomObject::SnapMove(vPosition,vRotate,Trp,amount);
+		GetTransformRP(Trp);
+        Trp.mulA(inv_parent);
+        Trp.getXYZ(vRotate);
+        inv_parent.transform_tiny(vPosition);
+    }
+}
+
+void CEvent::SForm::MoveTo( Fvector& pos, Fvector& up )
+{
+    vPosition.set(pos);
+    if (fraTopBar->ebNormalAlignment->Down)
+    	CCustomObject::NormalAlign(vRotate,up);
 }
 
 void CEvent::SForm::RotateLocal( Fvector& axis, float angle )
@@ -200,7 +219,7 @@ void CEvent::Construct(){
     AppendForm		(efBox);
 }
 
-void CEvent::AppendForm(EFormType type)
+CEvent::SForm* CEvent::AppendForm(EFormType type)
 {
     for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) it->Select(0);
 	m_Forms.push_back(SForm());
@@ -210,6 +229,7 @@ void CEvent::AppendForm(EFormType type)
     F.vRotate.set(0.f,0.f,0.f);
 	F.vPosition.set(0.f,0.f,0.f);
     F.m_Selected= true;
+    return &F;
 }
 
 void CEvent::RemoveSelectedForm()
@@ -279,7 +299,7 @@ void CEvent::Select(int flag)
 
 bool CEvent::RaySelect(int flag, Fvector& start,Fvector& dir, bool bRayTest)
 {
-    if (UI.GetShiftState().Contains(ssAlt)){
+    if (IsFormMode()){
     	if ((bRayTest&&RayPick(UI.ZFar(),start,dir))||!bRayTest) Select(1);
         FormIt nearest=m_Forms.end();
         float dist = UI.ZFar();
@@ -295,7 +315,7 @@ bool CEvent::RaySelect(int flag, Fvector& start,Fvector& dir, bool bRayTest)
 
 bool CEvent::FrustumSelect(int flag, const CFrustum& frustum)
 {
-    if (UI.GetShiftState().Contains(ssAlt)){
+    if (IsFormMode()){
     	Select(1);
 		for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) it->FrustumSelect(FTransform,flag,frustum);
         return true;
@@ -303,24 +323,35 @@ bool CEvent::FrustumSelect(int flag, const CFrustum& frustum)
 }
 
 void CEvent::Move(Fvector& amount){
-    if (UI.GetShiftState().Contains(ssAlt)){
+    if (IsFormMode()){
 		for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++)
-        	if (it->m_Selected) it->Move(amount);
+        	if (it->m_Selected) it->Move(FTransform,FITransform,amount);
     }else inherited::Move(amount);
 }
+
+void CEvent::MoveTo(const Fvector& pos, const Fvector& up){
+	if (IsFormMode()){
+    	Fvector p,u;
+        FITransform.transform_tiny(p,pos);
+        FITransform.transform_dir(u,up);
+		for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++)
+        	if (it->m_Selected) it->MoveTo(p,u);
+    }else inherited::MoveTo(pos,up);
+}
+
 void CEvent::RotateParent(Fvector& axis, float angle){
-    if (UI.GetShiftState().Contains(ssAlt)){
+    if (IsFormMode()){
 		for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) if (it->m_Selected) it->RotateParent(axis,angle);
     }else	inherited::RotateParent(axis,angle);
 
 }
 void CEvent::RotateLocal(Fvector& axis, float angle){
-    if (UI.GetShiftState().Contains(ssAlt)){
+    if (IsFormMode()){
 	    for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) if (it->m_Selected) it->RotateLocal(axis,angle);
     }else	inherited::RotateLocal(axis,angle);
 }
 void CEvent::Scale(Fvector& amount){
-    if (UI.GetShiftState().Contains(ssAlt)){
+    if (IsFormMode()){
 	    for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) if (it->m_Selected) it->Scale(amount);
     }else	inherited::Scale(amount);
 }
@@ -332,6 +363,14 @@ void CEvent::PivotRotateLocal(const Fmatrix& parent, Fvector& pivot, Fvector& ax
 }
 void CEvent::PivotScale( const Fmatrix& prev_inv, const Fmatrix& current, Fvector& amount ){
 	inherited::PivotScale(prev_inv, current, amount);
+}
+
+bool CEvent::IsFormMode(){
+	if (Tools.GetTargetClassID()==OBJCLASS_EVENT){
+		TfraEvent* frame=(TfraEvent*)Tools.GetFrame(); R_ASSERT(frame);
+        return frame->ebFormMode->Down;
+    }
+    return false;
 }
 //----------------------------------------------------
 

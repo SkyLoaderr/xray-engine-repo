@@ -161,7 +161,7 @@ bool CSector::FrustumPick(const CFrustum& frustum){
 bool CSector::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf){
     bool bPick=false;
 	for (SItemIt s_it=sector_items.begin();s_it!=sector_items.end();s_it++)
-    	if (s_it->mesh->RayPick(distance,start,direction,s_it->object->_Transform(),pinf)) bPick=true;
+    	if (s_it->mesh->RayPick(distance,start,direction,s_it->object->_ITransform(),pinf)) bPick=true;
 	return bPick;
 }
 //----------------------------------------------------
