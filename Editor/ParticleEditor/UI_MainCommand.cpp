@@ -22,7 +22,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 
 	switch( _Command ){
 	case COMMAND_INITIALIZE:{
-		FS.OnCreate			(Device.m_hWnd);
+		FS.OnCreate			();
 		InitMath			();
         // make interface
 	    fraBottomBar		= new TfraBottomBar(0);
