@@ -15,8 +15,10 @@
 	template <>\
 	const B* SmartDynamicCast::smart_cast<const B,const A>(const A *p){return p->C();};
 
-template <> 
-CGameObject* SmartDynamicCast::smart_cast<CGameObject,CObject>(CObject *p)
-{
-	return static_cast<CGameObject*>(p);
-}
+#ifdef XRGAME_EXPORTS
+	template <> 
+	CGameObject* SmartDynamicCast::smart_cast<CGameObject,CObject>(CObject *p)
+	{
+		return static_cast<CGameObject*>(p);
+	}
+#endif
