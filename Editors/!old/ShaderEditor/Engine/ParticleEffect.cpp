@@ -520,7 +520,6 @@ void CParticleEffect::Copy(IRender_Visual* pFrom)
 	Debug.fatal("Can't duplicate particle system - NOT IMPLEMENTED");
 }
 
-#ifdef _EDITOR
 void CParticleEffect::OnDeviceCreate()
 {
 	if (m_Def){
@@ -601,7 +600,7 @@ void CParticleEffect::Render(float LOD)
 			FVF::LIT* pv		= pv_start;
 
 			for(int i = 0; i < pe->p_count; i++){
-				PAPI::Particle &m = pe->list[i];
+				PAPI::Particle &m = pe->particles[i];
 
 				Fvector2 lt,rb;
 				lt.set			(0.f,0.f);
@@ -634,146 +633,3 @@ void CParticleEffect::Render(float LOD)
 		}
 	}
 }
-#else
-void CParticleEffect::OnDeviceCreate()
-{
-	if (m_Def){
-		if (m_Def->m_Flags.is(CPEDef::dfSprite)){
-			hGeom.create	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
-			if (m_Def) hShader = m_Def->m_CachedShader;
-		}
-	}
-}
-
-void CParticleEffect::OnDeviceDestroy()
-{
-	if (m_Def){
-		if (m_Def->m_Flags.is(CPEDef::dfSprite)){
-			hGeom.destroy		();
-			hShader.destroy		();
-		}    
-	}
-}
-
-IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float a, float b, u32 clr, float angle, float scale, float w_2, float h_2)
-{
-	FVF::TL			PT;
-
-	PT.transform	(pos, M);
-//	float sz		= scale * radius / PT.p.w;
-    a				*= scale / PT.p.w;
-    b				*= scale / PT.p.w;
-	// 'Cause D3D clipping have to clip Four points
-	// We can help him :)
-
-	if (a<1.f)	return;
-	if (b<1.f)	return;
-//	if (PT.p.x<-1)	return;
-//	if (PT.p.x> 1)	return;
-//	if (PT.p.y<-1)	return;
-//	if (PT.p.y> 1)	return;
-	if (PT.p.z< 0) 	return;
-
-	// Convert to screen coords
-	Fvector2	c;
-	c.x				= (PT.p.x+1)*w_2;
-	c.y				= (PT.p.y+1)*h_2;
-
-	// Rotation                         
-	float	sa,ca,s_a,c_a,s_b,c_b;
-	sa	= _sin(angle);  
-    ca	= _cos(angle);  
-    s_a	= sa*a;
-    c_a	= ca*a;
-    s_b	= sa*b;
-    c_b	= ca*b;
-
-	pv->set	(c.x-c_a-s_b,	c.y-s_a+c_b,	PT.p.z, PT.p.w, clr, lt.x,rb.y);	pv++;
-	pv->set	(c.x-c_a+s_b,	c.y-s_a-c_b,	PT.p.z, PT.p.w, clr, lt.x,lt.y);	pv++;
-	pv->set	(c.x+c_a-s_b,	c.y+s_a+c_b,	PT.p.z, PT.p.w, clr, rb.x,rb.y);	pv++;
-	pv->set	(c.x+c_a+s_b,	c.y+s_a-c_b,	PT.p.z, PT.p.w, clr, rb.x,lt.y);	pv++;
-}
-
-IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float size_x, float size_y, u32 clr, const Fvector& D, float scale, float factor, float w_2, float h_2)
-{
-	Fvector			P1,P2;
-
-	P1.mad			(pos,D,-size_x*factor);
-	P2.mad			(pos,D,size_x*factor);
-
-	FVF::TL			s1,s2;
-	s1.transform	(P1,M);
-	s2.transform	(P2,M);
-
-	if ((s1.p.w<=0)||(s2.p.w<=0)) return;
-
-    float l1,l2		= 0.7071f*scale*size_y; l1 = l2;
-	l1				/= s1.p.w;
-	l2				/= s2.p.w;
-
-	Fvector2		dir,R;
-	R.cross			(dir.set(s2.p.x-s1.p.x,s2.p.y-s1.p.y).norm());
-	s1.p.x = (s1.p.x+1)*w_2; s1.p.y	= (s1.p.y+1)*h_2;
-	s2.p.x = (s2.p.x+1)*w_2; s2.p.y	= (s2.p.y+1)*h_2;
-	pv->set			(s1.p.x+l1*R.x,	s1.p.y+l1*R.y,	s2.p.z, s2.p.w, clr, lt.x,rb.y);	pv++;
-	pv->set			(s2.p.x+l2*R.x,	s2.p.y+l2*R.y,	s2.p.z, s2.p.w, clr, lt.x,lt.y);	pv++;
-	pv->set			(s1.p.x-l1*R.x,	s1.p.y-l1*R.y,	s2.p.z, s2.p.w, clr, rb.x,rb.y);	pv++;
-	pv->set			(s2.p.x-l2*R.x,	s2.p.y-l2*R.y,	s2.p.z, s2.p.w, clr, rb.x,lt.y);	pv++;
-}
-
-void CParticleEffect::Render(float LOD)
-{
-	u32			dwOffset,dwCount;
-    // Get a pointer to the particles in gp memory
-	ParticleEffect *pe 		= _GetEffectPtr(m_HandleEffect);
-    if((pe!=NULL)&&(pe->p_count>0)){
-        if (m_Def->m_Flags.is(CPEDef::dfSprite)){
-            // build transform matrix
-            Fmatrix mSpriteTransform;
-
-            if (m_RT_Flags.is(flRT_XFORM))	mSpriteTransform.mul(Device.mFullTransform,m_XFORM);
-            else							mSpriteTransform.set(Device.mFullTransform);
-
-            float	w_2			= float(::Render->getTarget()->get_width()) / 2;
-            float	h_2			= float(::Render->getTarget()->get_height()) / 2;
-            float	fov_rate	= (Device.fFOV/90.f);
-            float	fov_scale_w	= float(::Render->getTarget()->get_width()) / fov_rate;
-            float 	factor_r	= (0.2952f*fov_rate*fov_rate - 0.0972f*fov_rate + 0.8007f) * (1.41421356f/Device.fASPECT); // в первых скобках шаманский коеффициент
-
-            FVF::TL* pv_start	= (FVF::TL*)RCache.Vertex.Lock(pe->p_count*4*4,hGeom->vb_stride,dwOffset);
-            FVF::TL* pv			= pv_start;
-
-            for(int i = 0; i < pe->p_count; i++){
-                PAPI::Particle &m = pe->particles[i];
-
-                Fvector2 lt,rb;
-                lt.set			(0.f,0.f);
-                rb.set			(1.f,1.f);
-                if (m_Def->m_Flags.is(CPEDef::dfFramed)) m_Def->m_Frame.CalculateTC(iFloor(float(m.frame)/255.f),lt,rb);
-                float r_x		= m.size.x*0.5f;
-                float r_y		= m.size.y*0.5f;
-                if (m_Def->m_Flags.is(CPEDef::dfVelocityScale)){
-                    float speed	= m.vel.magnitude();
-                    r_x			+= speed*m_Def->m_VelocityScale.x;
-                    r_y			+= speed*m_Def->m_VelocityScale.y;
-                }
-                if (m_Def->m_Flags.is(CPEDef::dfAlignToPath)){
-                    Fvector 	dir;
-                    float speed	= m.vel.magnitude();
-                    if (speed>=EPS_S)	dir.div	(m.vel,speed);
-                    else				dir.setHP(-m_Def->m_APDefaultRotation.y,-m_Def->m_APDefaultRotation.x);
-                    FillSprite	(pv,mSpriteTransform,m.pos,lt,rb,r_x,r_y,m.color,dir,fov_scale_w,factor_r,w_2,h_2);
-                }else{
-                    FillSprite	(pv,mSpriteTransform,m.pos,lt,rb,r_x,r_y,m.color,m.rot.x,fov_scale_w,w_2,h_2);
-                }
-            }
-            dwCount 			= u32(pv-pv_start);
-            RCache.Vertex.Unlock(dwCount,hGeom->vb_stride);
-            if (dwCount)    {
-                RCache.set_Geometry	(hGeom);
-                RCache.Render	   	(D3DPT_TRIANGLELIST,dwOffset,0,dwCount,0,dwCount/2);
-            }
-        }
-    }
-}
-#endif
