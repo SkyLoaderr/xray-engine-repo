@@ -294,9 +294,9 @@ void game_sv_mp::OnPlayerConnect			(ClientID id_who)
 	inherited::OnPlayerConnect (id_who);
 }
 
-void game_sv_mp::OnPlayerDisconnect		(ClientID id_who)
+void game_sv_mp::OnPlayerDisconnect		(ClientID id_who, LPSTR Name)
 {
-	inherited::OnPlayerDisconnect (id_who);
+	inherited::OnPlayerDisconnect (id_who, Name);
 }
 
 void	game_sv_mp::SetSkin					(CSE_Abstract* E, u16 Team, u16 ID)

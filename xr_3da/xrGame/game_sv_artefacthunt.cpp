@@ -129,8 +129,10 @@ void	game_sv_ArtefactHunt::OnPlayerKillPlayer		(ClientID id_killer, ClientID id_
 
 		if (m_iReinforcementTime<0 && !CheckAlivePlayersInTeam(ps_killed->team))
 		{
-			int x=0;
-			x=x;
+			OnTeamScore(ps_killer->team);
+			phase = u16((ps_killed->team == 2)?GAME_PHASE_TEAM2_ELIMINATED:GAME_PHASE_TEAM1_ELIMINATED);
+			switch_Phase(phase);
+			OnDelayedRoundEnd("Team Eliminated");
 		}
 	}
 	// Send Message About Player Killed
@@ -543,16 +545,19 @@ void	game_sv_ArtefactHunt::SpawnArtefact			()
 
 void	game_sv_ArtefactHunt::RemoveArtefact			()
 {
-	//-----------------------------------------------
-	NET_Packet	P;
-	u_EventGen(P, GE_DESTROY, m_dwArtefactID);
-	Level().Send(P,net_flags(TRUE,TRUE));
-	//-----------------------------------------------
-//	P.w_begin			(M_GAMEMESSAGE);
-	GenerateGameMessage (P);
-	P.w_u32				(GAME_EVENT_ARTEFACT_DESTROYED);
-	u_EventSend(P);
-	//-----------------------------------------------
+	if (m_dwArtefactID != 0)
+	{
+		//-----------------------------------------------
+		NET_Packet	P;
+		u_EventGen(P, GE_DESTROY, m_dwArtefactID);
+		Level().Send(P,net_flags(TRUE,TRUE));
+		//-----------------------------------------------
+		//	P.w_begin			(M_GAMEMESSAGE);
+		GenerateGameMessage (P);
+		P.w_u32				(GAME_EVENT_ARTEFACT_DESTROYED);
+		u_EventSend(P);
+		//-----------------------------------------------
+	};
 	Artefact_PrepareForSpawn();
 };
 
@@ -564,6 +569,8 @@ void	game_sv_ArtefactHunt::Update			()
 	{
 	case GAME_PHASE_TEAM1_SCORES :
 	case GAME_PHASE_TEAM2_SCORES :
+	case GAME_PHASE_TEAM1_ELIMINATED :
+	case GAME_PHASE_TEAM2_ELIMINATED :
 	case GAME_PHASE_TEAMS_IN_A_DRAW :
 		{
 			if(m_delayedRoundEnd && m_roundEndDelay < Device.TimerAsync()) OnRoundEnd("Finish");

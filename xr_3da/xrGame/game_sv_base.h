@@ -34,7 +34,7 @@ public:
 
 public:
 	virtual		void				OnPlayerConnect			(ClientID id_who);
-	virtual		void				OnPlayerDisconnect		(ClientID id_who);
+	virtual		void				OnPlayerDisconnect		(ClientID id_who, LPSTR Name);
 	virtual		void				OnPlayerReady			(ClientID id_who)							   {};
 				void				GenerateGameMessage		(NET_Packet &P);
 

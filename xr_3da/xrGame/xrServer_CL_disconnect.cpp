@@ -17,6 +17,7 @@ void xrServer::OnCL_Disconnected	(IClient* CL)
 	NET_Packet P;
 	P.B.count = 0;
 	P.w_clientID(CL->ID);
+	P.w_stringZ(CL->Name);
 	P.r_pos = 0;
 	ClientID clientID;clientID.set(0);
 //	game->OnEvent(P,GAME_EVENT_PLAYER_DISCONNECTED, 0, clientID);

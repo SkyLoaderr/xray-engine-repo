@@ -81,7 +81,7 @@ public:
 	virtual		BOOL				OnDetach				(u16 eid_who, u16 eid_what);
 
 	virtual		void				OnPlayerConnect			(ClientID id_who);
-	virtual		void				OnPlayerDisconnect		(ClientID id_who);
+	virtual		void				OnPlayerDisconnect		(ClientID id_who, LPSTR Name);
 	virtual		void				OnPlayerReady			(ClientID id_who);
 	virtual		void				OnPlayerKillPlayer		(ClientID id_killer, ClientID id_killed);
 				void				OnPlayerChangeSkin		(ClientID id_who, u8 skin);

@@ -214,7 +214,7 @@ void game_sv_GameState::OnPlayerConnect			(ClientID /**id_who/**/)
 	signal_Syncronize	();
 }
 
-void game_sv_GameState::OnPlayerDisconnect		(ClientID /**id_who/**/)
+void game_sv_GameState::OnPlayerDisconnect		(ClientID /**id_who/**/, LPSTR )
 {
 	signal_Syncronize	();
 }
@@ -440,7 +440,9 @@ void game_sv_GameState::OnEvent (NET_Packet &tNetPacket, u16 type, u32 time, Cli
 		{
 			ClientID ID;
 			tNetPacket.r_clientID(ID);
-			OnPlayerDisconnect(ID);
+			string64 PlayerName;
+			tNetPacket.r_stringZ(PlayerName);
+			OnPlayerDisconnect(ID, PlayerName);
 		}break;
 
 	case GAME_EVENT_PLAYER_KILLED:

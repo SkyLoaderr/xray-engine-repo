@@ -202,7 +202,7 @@ void	game_sv_Deathmatch::Update					()
 bool game_sv_Deathmatch::checkForRoundStart()
 {
 
-	if( (Level().timeServer()-start_time)>u32(10*1000) && AllPlayers_Ready() ){
+	if( (Level().timeServer())>u32(10*1000) && AllPlayers_Ready() ){
 		OnRoundStart();
 		return true;
 	};
@@ -392,43 +392,45 @@ void	game_sv_Deathmatch::OnPlayerReady			(ClientID id)
 }
 
 
-void game_sv_Deathmatch::OnPlayerDisconnect		(ClientID id_who)
+void game_sv_Deathmatch::OnPlayerDisconnect		(ClientID id_who, LPSTR Name)
 {
 //	__super::OnPlayerDisconnect	(id_who);
-	inherited::OnPlayerDisconnect	(id_who);
+	inherited::OnPlayerDisconnect	(id_who, Name);
 	
-	LPCSTR	Name = NULL;
+//	LPCSTR	Name = NULL;
 
-	Name = get_name_id(id_who);
+//	Name = get_name_id(id_who);
 	Name = get_option_s(Name,"name",Name);
 
 
 	
 	// Remove everything	
-	xrClientData* xrCData	=	m_server->ID_to_client(id_who);
-	xrClientData* xrSCData	=	m_server->GetServer_client();	
+//	xrClientData* xrCData	=	m_server->ID_to_client(id_who);
+//	xrClientData* xrSCData	=	m_server->GetServer_client();	
 
-	if (xrCData != xrSCData)
+//	if (xrCData != xrSCData)
 	{
 		KillPlayer	(id_who);
 		AllowDeadBodyRemove(id_who);
 
 		// Send Message About Client DisConnected
-		if (xrCData)
+//		if (xrCData)
 		{
 			NET_Packet			P;
 			GenerateGameMessage (P);
 			P.w_u32				(GAME_EVENT_PLAYER_DISCONNECTED);
-			P.w_stringZ			(get_option_s(*xrCData->Name,"name",*xrCData->Name));
+//			P.w_stringZ			(get_option_s(*xrCData->Name,"name",*xrCData->Name));
+			P.w_stringZ			(Name);
 			u_EventSend(P);
 		};
 	}
+	/*
 	else
-	{	
-
+	{
 		CSE_Abstract*		from		= m_server->ID_to_entity(get_id_2_eid(id_who));
 		if (from) m_server->Perform_destroy				(from,net_flags(TRUE, TRUE), FALSE);
 	};
+	*/
 };
 
 

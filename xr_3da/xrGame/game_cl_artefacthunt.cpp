@@ -361,12 +361,26 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 	case GAME_PHASE_TEAM1_SCORES:
 		{
 			HUD().GetUI()->HideIndicators();
+			HUD().GetUI()->HideCursor();
 			m_game_ui->SetRoundResultCaption("Team Green WINS!");
 		}break;
 	case GAME_PHASE_TEAM2_SCORES:
 		{
 			HUD().GetUI()->HideIndicators();
+			HUD().GetUI()->HideCursor();
 			m_game_ui->SetRoundResultCaption("Team Blue WINS!");
+		}break;
+	case GAME_PHASE_TEAM1_ELIMINATED:
+		{
+			HUD().GetUI()->HideIndicators();
+			HUD().GetUI()->HideCursor();
+			m_game_ui->SetRoundResultCaption("Team Green ELIMINATED!");
+		}break;
+	case GAME_PHASE_TEAM2_ELIMINATED:
+		{
+			HUD().GetUI()->HideIndicators();
+			HUD().GetUI()->HideCursor();
+			m_game_ui->SetRoundResultCaption("Team Blue ELIMINATED!");
 		}break;
 	default:
 		{

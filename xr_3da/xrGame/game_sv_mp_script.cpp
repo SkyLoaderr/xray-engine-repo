@@ -167,9 +167,9 @@ void game_sv_mp_script::OnPlayerConnect (ClientID id_who)
 {
 	inherited::OnPlayerConnect (id_who);
 };
-void game_sv_mp_script::OnPlayerDisconnect (ClientID id_who)
+void game_sv_mp_script::OnPlayerDisconnect (ClientID id_who, LPSTR Name)
 {
-	inherited::OnPlayerDisconnect (id_who);
+	inherited::OnPlayerDisconnect (id_who, Name);
 };
 
 

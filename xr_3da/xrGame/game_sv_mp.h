@@ -27,7 +27,7 @@ public:
 									game_sv_mp				();
 	virtual		void				Create					(ref_str &options);
 	virtual		void				OnPlayerConnect			(ClientID id_who);
-	virtual		void				OnPlayerDisconnect		(ClientID id_who);
+	virtual		void				OnPlayerDisconnect		(ClientID id_who, LPSTR Name);
 	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_target){return true;};			// TRUE=allow ownership, FALSE=denied
 	virtual		BOOL				OnDetach				(u16 eid_who, u16 eid_target){return true;};			// TRUE=allow ownership, FALSE=denied
 	virtual		void				OnPlayerKillPlayer		(ClientID id_killer, ClientID id_killed){SendPlayerKilledMessage(id_killer, id_killed);};
