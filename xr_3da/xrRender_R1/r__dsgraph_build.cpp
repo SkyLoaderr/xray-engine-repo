@@ -146,7 +146,7 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 	if (sh->Flags.bEmissive) {
 		mapEmissive_Node* N		= mapEmissive.insertInAnyWay	(distSQ);
 		N->val.ssa				= SSA;
-		N->val.pObject			= RI.val_pObject;
+		N->val.pObject			= NULL;
 		N->val.pVisual			= pVisual;
 		N->val.Matrix			= Fidentity;
 		N->val.se				= &*pVisual->hShader->E[4];		// 4=L_special
