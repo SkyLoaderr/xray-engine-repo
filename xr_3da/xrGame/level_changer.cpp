@@ -89,3 +89,8 @@ void CLevelChanger::feel_touch_new	(CObject *tpObject)
 		Level().Send			(net_packet,net_flags(TRUE));
 	}
 }
+
+void CLevelChanger::feel_touch_contact	(CObject *object)
+{
+	return						((CCF_Shape*)CFORM())->Contact(object);
+}

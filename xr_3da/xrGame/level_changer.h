@@ -31,4 +31,5 @@ public:
 
 			void	UpdateCL			();
 	virtual void	feel_touch_new		(CObject* O);
+	virtual void	feel_touch_contact	(CObject* O);
 };

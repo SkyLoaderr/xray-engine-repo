@@ -109,7 +109,7 @@ void CScriptZone::feel_touch_delete	(CObject *tpObject)
 
 BOOL CScriptZone::feel_touch_contact	(CObject* O)
 {
-	return						(TRUE);
+	return						((CCF_Shape*)CFORM())->Contact(O);
 }
 
 void CScriptZone::set_callback	(const luabind::object &lua_object, LPCSTR method, bool bOnEnter)
