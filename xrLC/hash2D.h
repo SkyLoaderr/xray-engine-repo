@@ -9,7 +9,11 @@ class hash2D
 public:
 	hash2D()
 	{
-		ZeroMemory	(this,sizeof(*this));
+		for (DWORD y=0; y<s_Y; y++)
+			for (DWORD x=0; x<s_Y; x++)
+				table	= NULL;
+		bounds.invalidate	();
+		size.set			(0,0,0);
 	}
 	~hash2D()
 	{
@@ -26,7 +30,7 @@ public:
 		DWORD		apx		= faces/size;
 
 		for (DWORD y=0; y<s_Y; y++)
-			for (DWORD x=0; x<s_Y; x++)
+			for (DWORD x=0; x<s_X; x++)
 			{
 				table[y][x] = xr_new<vector<T> >	();
 				table[y][x]->reserve				(apx);
@@ -52,7 +56,7 @@ public:
 	void		clear		()
 	{
 		for (DWORD y=0; y<s_Y; y++)
-			for (DWORD x=0; x<s_Y; x++)
+			for (DWORD x=0; x<s_X; x++)
 				xr_delete(table[y][x]);
 	}
 };
