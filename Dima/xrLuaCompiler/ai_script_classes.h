@@ -9,7 +9,7 @@
 #pragma once
 
 #include "ai_script_space.h"
-#include "..\\effectorpp.h"
+#include "../effectorpp.h"
 #include "ai\\stalker\\ai_stalker.h"
 #include "script_zone.h"
 
