@@ -229,6 +229,12 @@
 			Name="Kernel"
 			Filter="">
 			<File
+				RelativePath=".\FTimer.cpp">
+			</File>
+			<File
+				RelativePath="FTimer.h">
+			</File>
+			<File
 				RelativePath="resource.h">
 			</File>
 			<File
@@ -412,9 +418,6 @@
 			</File>
 			<File
 				RelativePath="FS_internal.h">
-			</File>
-			<File
-				RelativePath="FTimer.h">
 			</File>
 			<File
 				RelativePath="LocatorAPI.cpp">

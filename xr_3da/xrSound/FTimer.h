@@ -19,4 +19,25 @@ public:
 	}
 };
 
+class XRCORE_API CStatTimer
+{
+public:
+	CTimer		T;
+	__int64		accum;
+	float		result;
+	u32			count;
+	float		_time;
+public:
+				CStatTimer		();
+	void		FrameStart		();
+	void		FrameEnd		();
+
+	IC void		Begin			()		{	count++; T.Start(); }
+	IC void		End				()		{	accum += T.GetElapsed_clk(); }
+
+	IC u64		GetElapsed_clk	()		{	return accum; }
+	IC float	GetElapsed_sec	()		{	return _time; }
+	IC float	GetFrame_sec	()		{	return result; }
+};
+
 #endif
