@@ -12,6 +12,8 @@
 #include "script_callback.h"
 #include "script_export_space.h"
 
+class CGameObject;
+
 class CClientSpawnManager {
 	struct CSpawnCallback {
 		CGameObject		*m_object;
