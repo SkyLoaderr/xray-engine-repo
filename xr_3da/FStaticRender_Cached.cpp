@@ -6,13 +6,13 @@
 const DWORD	v_limit			= 2048;
 
 // Render of cached meshes
-/*
 void __fastcall render_Cached(CList<FCached*>& cache)
 {
 	CVertexStream*			vs	= cache[0]->VS;
 	CIndexStream*			is	= Device.Streams.Get_IB();
 	DWORD dwPassesRequired		= Device.Shader.dwPassesRequired;
 
+	Device.Primitive.Reset		();
 	for (DWORD Start=0; Start<cache.size(); )
 	{
 		// Calculate lock parameters
@@ -68,21 +68,23 @@ void __fastcall render_Cached(CList<FCached*>& cache)
 		Fsphere	S;		bb.getsphere	(S.P,S.R);
 		::Render.Lights.Select			(S.P,S.R);
 
-		Device.Primitive.setVertices	(vs->getFVF(),Stride,vs->getBuffer());
-		Device.Primitive.setIndicesUC	(vBase, is->getBuffer());
 		DWORD	dwNumPrimitives			= i_count/3;
+		CHK_DX(HW.pDevice->SetVertexShader		(vs->getFVF()));
+		CHK_DX(HW.pDevice->SetStreamSource		(0,vs->getBuffer(),vs->Stride()));
+		CHK_DX(HW.pDevice->SetIndices			(is->getBuffer(),vBase));
+
 		for (DWORD dwPass = 0; dwPass<dwPassesRequired; dwPass++)
 		{
-			Device.Shader.SetupPass		(dwPass);
-			Device.Primitive.Render		(D3DPT_TRIANGLELIST,0,v_count,iBase,dwNumPrimitives);
+			Device.Shader.SetupPass			(0);
+			CHK_DX(HW.pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,0,v_count,iBase,dwNumPrimitives));
 		}
 		UPDATEC(v_count,dwNumPrimitives,dwPassesRequired);
 
 		Start = End;
 	}
 }
-*/
 
+/*
 // Render of cached meshes
 void __fastcall render_Cached(CList<FCached*>& cache)
 {
@@ -116,3 +118,4 @@ void __fastcall render_Cached(CList<FCached*>& cache)
 		UPDATEC(V.vCount,dwNumPrimitives,dwPassesRequired);
 	}
 }
+*/
