@@ -83,6 +83,9 @@ CEntityCondition::CEntityCondition(void)
 
 CEntityCondition::~CEntityCondition(void)
 {
+	for(WOUND_VECTOR_IT it = m_WoundVector.begin(); m_WoundVector.end() != it; ++it)
+		xr_delete(*it);
+	m_WoundVector.clear();
 }
 
 void CEntityCondition::Load(LPCSTR section)

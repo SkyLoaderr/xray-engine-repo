@@ -25,7 +25,10 @@ public:
 	bool operator() (SMapLocation* map_location)
 	{
 		if(map_location->object_id == object_id)
+		{
+			xr_delete(map_location);
 			return true;
+		}
 		else
 			return false;
 	}

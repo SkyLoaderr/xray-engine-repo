@@ -84,8 +84,11 @@ protected:
 	virtual void UpdateFireParticles();
     	
 	virtual void LoadFireParticles(LPCSTR section);
+public:	
+	static  void UnloadFireParticles	();
+protected:
 	//имя партиклов огня, которым может гореть EntityAlive
-	static STR_VECTOR m_FireParticlesVector;
+	static STR_VECTOR* m_pFireParticlesVector;
 	//минимальное время горения
 	static u32	 m_dwMinBurnTime;
 	//размер раны, чтоб запустить партиклы
@@ -96,11 +99,10 @@ protected:
 
 	virtual void			BloodyWallmarks			(float P, const Fvector &dir, s16 element, const Fvector& position_in_object_space);
 	static  void			LoadBloodyWallmarks		(LPCSTR section);
+	static  bool			m_BloodyWallmarksLoaded;
 public:	
 	static  void			UnloadBloodyWallmarks	();
 protected:
-	static  bool			m_BloodyWallmarksLoaded;
-
 	virtual void			PlaceBloodWallmark		(const Fvector& dir, const Fvector& start_pos, 
 														float trace_dist, float wallmark_size,
 														SHADER_VECTOR& wallmarks_vector);
@@ -108,7 +110,7 @@ protected:
 
 
 	//информация о кровавых отметках на стенах, общая для всех CEntityAlive
-	static SHADER_VECTOR m_BloodMarksVector;
+	static SHADER_VECTOR* m_pBloodMarksVector;
 	static float m_fBloodMarkSizeMax;
 	static float m_fBloodMarkSizeMin;
 	static float m_fBloodMarkDistance;
@@ -118,7 +120,7 @@ protected:
 
 
 	//текстурки капель крови
-	static SHADER_VECTOR m_BloodDropsVector;
+	static SHADER_VECTOR* m_pBloodDropsVector;
 	//список ран с которых капает кровь
 	
 	DEFINE_VECTOR(CWound*, WOUND_VECTOR, WOUND_VECTOR_IT);

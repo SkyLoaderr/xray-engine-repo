@@ -140,6 +140,7 @@ CLevel::~CLevel()
 	CInfoPortion::DeleteStrToID();
 	//static shader for blood
 	CEntityAlive::UnloadBloodyWallmarks	();
+	CEntityAlive::UnloadFireParticles ();
 }
 
 // Game interface ////////////////////////////////////////////////////

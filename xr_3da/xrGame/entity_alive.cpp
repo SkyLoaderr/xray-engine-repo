@@ -14,7 +14,7 @@
 #define BLOOD_DROPS_SIZE		0.03f
 
 
-SHADER_VECTOR CEntityAlive::m_BloodMarksVector;
+SHADER_VECTOR* CEntityAlive::m_pBloodMarksVector = NULL;
 bool CEntityAlive::m_BloodyWallmarksLoaded = false;
 
 float CEntityAlive::m_fBloodMarkSizeMin = 0.f;
@@ -34,12 +34,11 @@ float CEntityAlive::m_fStopBurnWoundSize = 0.1f;
 float CEntityAlive::m_fBloodDropTime = 0.9f;
 
 //капание крови
-SHADER_VECTOR CEntityAlive::m_BloodDropsVector;
+SHADER_VECTOR* CEntityAlive::m_pBloodDropsVector = NULL;
 float CEntityAlive::m_fStartBloodWoundSize = 0.3f;
 float CEntityAlive::m_fStopBloodWoundSize = 0.1f;
 
-
-STR_VECTOR CEntityAlive::m_FireParticlesVector;
+STR_VECTOR* CEntityAlive::m_pFireParticlesVector = NULL;
 
 /////////////////////////////////////////////
 // CEntityAlive
@@ -69,7 +68,7 @@ void CEntityAlive::Load		(LPCSTR section)
 	if(!m_BloodyWallmarksLoaded)
 		LoadBloodyWallmarks ("bloody_marks");
 
-	if(m_FireParticlesVector.empty())
+	if(m_pFireParticlesVector == 0)
 		LoadFireParticles("entity_fire_particles");
 }
 
@@ -77,6 +76,9 @@ void CEntityAlive::LoadBloodyWallmarks (LPCSTR section)
 {
 	m_BloodyWallmarksLoaded = true;
 
+	m_pBloodMarksVector = xr_new<SHADER_VECTOR>();
+	m_pBloodDropsVector = xr_new<SHADER_VECTOR>();
+	
 	//кровавые отметки на стенах
 	string256	tmp;
 	LPCSTR wallmarks_name = pSettings->r_string(section, "wallmarks"); 
@@ -87,7 +89,7 @@ void CEntityAlive::LoadBloodyWallmarks (LPCSTR section)
 	for (int k=0; k<cnt; ++k)
 	{
 		s.create ("effects\\wallmark",_GetItem(wallmarks_name,k,tmp));
-		m_BloodMarksVector.push_back	(s);
+		m_pBloodMarksVector->push_back	(s);
 	}
 
 	
@@ -106,7 +108,7 @@ void CEntityAlive::LoadBloodyWallmarks (LPCSTR section)
 	for (int k=0; k<cnt; ++k)
 	{
 		s.create ("effects\\wallmark",_GetItem(wallmarks_name,k,tmp));
-		m_BloodDropsVector.push_back	(s);
+		m_pBloodDropsVector->push_back	(s);
 	}
 
 	m_fBloodDropTime		= pSettings->r_float(section, "blood_drop_time");	
@@ -117,12 +119,18 @@ void CEntityAlive::LoadBloodyWallmarks (LPCSTR section)
 void CEntityAlive::UnloadBloodyWallmarks	()
 {
 	m_BloodyWallmarksLoaded = false;
-	m_BloodMarksVector.clear();
-	m_BloodDropsVector.clear();
+
+	m_pBloodMarksVector->clear();
+	m_pBloodDropsVector->clear();
+
+	xr_delete(m_pBloodMarksVector);
+	xr_delete(m_pBloodMarksVector);
 }
 
 void CEntityAlive::LoadFireParticles(LPCSTR section)
 {
+	m_pFireParticlesVector = xr_new<STR_VECTOR>();
+
 	string256	tmp;
 	LPCSTR particles_name = pSettings->r_string(section, "fire_particles"); 
 
@@ -132,13 +140,19 @@ void CEntityAlive::LoadFireParticles(LPCSTR section)
 	for (int k=0; k<cnt; ++k)
 	{
 		s  = _GetItem(particles_name,k,tmp);
-		m_FireParticlesVector.push_back	(s);
+		m_pFireParticlesVector->push_back	(s);
 	}
 
 	m_fStartBurnWoundSize  = pSettings->r_float(section, "start_burn_size");
 	m_fStopBurnWoundSize   = pSettings->r_float(section, "stop_burn_size");
 	
 	m_dwMinBurnTime		   = pSettings->r_u32(section, "min_burn_time");
+}
+
+void CEntityAlive::UnloadFireParticles()
+{
+	m_pFireParticlesVector->clear();
+	xr_delete(m_pFireParticlesVector);
 }
 
 void CEntityAlive::reinit			()
@@ -298,7 +312,7 @@ void CEntityAlive::BloodyWallmarks (float P, const Fvector &dir, s16 element,
 	clamp(wallmark_size, m_fBloodMarkSizeMin, m_fBloodMarkSizeMax);
 
 	PlaceBloodWallmark(dir, start_pos, m_fBloodMarkDistance, 
-						wallmark_size, m_BloodMarksVector);
+						wallmark_size, *m_pBloodMarksVector);
 
 }
 
@@ -360,7 +374,7 @@ void CEntityAlive::StartFireParticles(CWound* pWound)
 		//VERIFY(BI_NONE != particle_bone);
 
 		pWound->SetParticleBoneNum(particle_bone);
-		pWound->SetParticleName(m_FireParticlesVector[::Random.randI(0,m_FireParticlesVector.size())]);
+		pWound->SetParticleName((*m_pFireParticlesVector)[::Random.randI(0,m_pFireParticlesVector->size())]);
 
 		if(BI_NONE != particle_bone)
 		{
@@ -457,7 +471,7 @@ void CEntityAlive::UpdateBloodDrops()
 			{
 				PlaceBloodWallmark(Fvector().set(0.f, -1.f, 0.f),
 								Position(), m_fBloodMarkDistance, 
-								BLOOD_DROPS_SIZE, m_BloodDropsVector);
+								BLOOD_DROPS_SIZE, *m_pBloodDropsVector);
 			}
 		}
 		it++;

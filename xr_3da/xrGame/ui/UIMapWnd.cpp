@@ -193,10 +193,6 @@ void CUIMapWnd::InitMap()
 		
 	if (!pActor) return;
 
-	CInfoPortion info;
-	info.Load("test_info");
-	info.GetTask()->CalcState(pActor);
-
 
 //	CTeam& Team = Level().Teams[pActor->id_Team];
 
