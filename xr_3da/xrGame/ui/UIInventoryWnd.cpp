@@ -422,10 +422,10 @@ bool CUIInventoryWnd::ToBag()
 
 bool CUIInventoryWnd::ToBelt()
 {
-	if(!GetInventory()->CanPutInBelt(m_pCurrentItem)) return false;
+//	if(!GetInventory()->CanPutInBelt(m_pCurrentItem)) return false;
 	
 	bool result = GetInventory()->Belt(m_pCurrentItem);
-
+	UIBeltList.RearrangeItems();
 	if(!result) return false;
 
 	((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->DetachChild(m_pCurrentDragDropItem);

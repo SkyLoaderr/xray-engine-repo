@@ -150,20 +150,21 @@ bool InventoryUtilities::FreeRoom_inBelt	(TIItemContainer& item_list, PIItem _it
 	for(xr_vector<PIItem>::iterator it = item_list.begin(); (item_list.end() != it) && found_place; ++it) 
 	{
 		PIItem pItem = *it;
-
+		int iWidth	= pItem->GetGridWidth(); 
+		int iHeight = pItem->GetGridHeight();
 		//проверить можно ли разместить элемент,
 		//проверяем последовательно каждую клеточку
 		found_place = false;
 	
-		for(i=0; (i<height - pItem->GetGridHeight() +1) && !found_place; ++i)
+		for(i=0; (i<height - iHeight +1) && !found_place; ++i)
 		{
-			for(j=0; (j<width - pItem->GetGridWidth() +1) && !found_place; ++j)
+			for(j=0; (j<width - iWidth +1) && !found_place; ++j)
 			{
 				can_place = true;
 
-				for(k=0; (k<pItem->GetGridHeight()) && can_place; ++k)
+				for(k=0; (k<iHeight) && can_place; ++k)
 				{
-					for(m=0; (m<pItem->GetGridWidth()) && can_place; ++m)
+					for(m=0; (m<iHeight) && can_place; ++m)
 					{
 						if(ruck_room[(i+k)*width + (j+m)])
 								can_place =  false;
@@ -183,9 +184,9 @@ bool InventoryUtilities::FreeRoom_inBelt	(TIItemContainer& item_list, PIItem _it
 		//разместить элемент на найденном месте
 		if(found_place)
 		{
-			for(k=0; k<pItem->GetGridHeight(); ++k)
+			for(k=0; k<iHeight; ++k)
 			{
-				for(m=0; m<pItem->GetGridWidth(); ++m)
+				for(m=0; m<iWidth; ++m)
 				{
 					ruck_room[(place_row+k)*width + place_col+m] = true;
 				}
