@@ -47,7 +47,8 @@ void CActor::cam_Update(float dt, float fFOV)
 	}
 	CCameraBase* C				= cameras	[cam_active];
 	C->Update					(point,dangle);
-	pCreator->Cameras.Update	(C);
-	// ::Render.Target.set_gray	(cam_gray);
 	C->f_fov					= fFOV;
+	pCreator->Cameras.Update	(C);
+
+	// ::Render.Target.set_gray	(cam_gray);
 }

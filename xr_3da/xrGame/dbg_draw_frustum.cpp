@@ -51,8 +51,8 @@ void MK_Frustum(CFrustum& F, float FOV, float _FAR, float A, Fvector &P, Fvector
 
 void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvector &D, Fvector &U)
 {
-	float YFov	= deg2rad(FOV);
-	float XFov	= deg2rad(FOV/A);
+	float YFov	= deg2rad(FOV*A);
+	float XFov	= deg2rad(FOV);
 
 	// calc window extents in camera coords
 	float wR=tanf(XFov*0.5f);
@@ -82,22 +82,22 @@ void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvector &D, F
 
 	// find projector direction vectors (from cop through silhouette pts)
 	Fvector ProjDirs[4];
-	ProjDirs[0].sub(sPts[0],COP);
-	ProjDirs[1].sub(sPts[1],COP);
-	ProjDirs[2].sub(sPts[2],COP);
-	ProjDirs[3].sub(sPts[3],COP);
+	ProjDirs[0].sub(sPts[0],COP);		// ProjDirs[0].normalize	();
+	ProjDirs[1].sub(sPts[1],COP);		// ProjDirs[1].normalize	();
+	ProjDirs[2].sub(sPts[2],COP);		// ProjDirs[2].normalize	();
+	ProjDirs[3].sub(sPts[3],COP);		// ProjDirs[3].normalize	();
 
     CHK_DX(HW.pDevice->SetRenderState	(D3DRS_CULLMODE,	D3DCULL_NONE		));
 	CHK_DX(HW.pDevice->SetRenderState	(D3DRS_AMBIENT,		0xffffffff			));
 
 	Fvector _F[4];
-	_F[0].mad(COP, ProjDirs[0], _FAR);
-	_F[1].mad(COP, ProjDirs[1], _FAR);
-	_F[2].mad(COP, ProjDirs[2], _FAR);
-	_F[3].mad(COP, ProjDirs[3], _FAR);
+	_F[0].mad(COP, ProjDirs[0], _FAR); 
+	_F[1].mad(COP, ProjDirs[1], _FAR); 
+	_F[2].mad(COP, ProjDirs[2], _FAR); 
+	_F[3].mad(COP, ProjDirs[3], _FAR); 
 
 //	DWORD CT	= D3DCOLOR_RGBA(255,255,255,64);
-	DWORD CL	= D3DCOLOR_RGBA(0,255,0,255);
+	DWORD CL	= D3DCOLOR_RGBA(255,0,0,255);
 	Fmatrix& M	= Fidentity;
 	Device.Shader.set_Shader		(Level().ObjectSpace.dbgGetShader());
 //	Device.Primitive.dbg_DrawTRI	(M,COP,_F[0],_F[1],CT);
@@ -108,6 +108,11 @@ void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvector &D, F
 	Device.Primitive.dbg_DrawLINE	(M,COP,_F[1],CL);
 	Device.Primitive.dbg_DrawLINE	(M,COP,_F[2],CL);
 	Device.Primitive.dbg_DrawLINE	(M,COP,_F[3],CL);
+
+	Device.Primitive.dbg_DrawLINE	(M,_F[0],_F[1],CL);
+	Device.Primitive.dbg_DrawLINE	(M,_F[1],_F[2],CL);
+	Device.Primitive.dbg_DrawLINE	(M,_F[2],_F[3],CL);
+	Device.Primitive.dbg_DrawLINE	(M,_F[3],_F[0],CL);
 
     CHK_DX(HW.pDevice->SetRenderState	(D3DRS_CULLMODE,	D3DCULL_CCW			));
 	CHK_DX(HW.pDevice->SetRenderState	(D3DRS_AMBIENT,	0						));

@@ -32,8 +32,8 @@ typedef svector<Fvector,FRUSTUM_SAFE>	sPoly;
 
 class ENGINE_API CFrustum  
 {
-private:
-	Fplane			planes[FRUSTUM_MAXPLANES];
+public:
+	Fplane			planes	[FRUSTUM_MAXPLANES];
 	int				p_count;
 
 	IC EFC_Visible	AABB_OverlapPlane(const Fplane& P, const Fvector &m, const Fvector &M) const

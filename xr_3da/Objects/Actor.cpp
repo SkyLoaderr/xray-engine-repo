@@ -997,8 +997,13 @@ float CActor::HitScale(int element)
 }
 
 #ifdef DEBUG
+void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvector &D, Fvector &U);
+
 void CActor::OnRender()
 {
-	Movement.dbg_Draw();
+	Movement.dbg_Draw			();
+
+	CCameraBase* C				= cameras	[cam_active];
+	dbg_draw_frustum			(C->f_fov, 20.f, C->f_aspect, C->vPosition, C->vDirection, C->vNormal);
 }
 #endif
