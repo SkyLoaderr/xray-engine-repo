@@ -56,6 +56,27 @@ local snd = {
 		[[characters_voice\human_01\scenario\trader\trader_tutorial_map_on_3]]
 	},
 
+	trader_door_open_start = {
+		[[device\door_start]]
+	},
+
+	trader_door_close_start = {
+		[[device\door_closing]]
+	},
+
+	trader_door_close_stop = {
+		[[device\door_stop]]
+	},
+
+	trader_door_locked = {
+		[[device\door_locked]]
+	},
+
+	trader_door_unlock = {
+		[[device\door_servomotor]]
+	},
+
+	-- UNUSED:
 	hello = {
 			[[characters_voice\human_01\scenario\trader\trader_script1a_1]],
 			[[characters_voice\human_01\scenario\trader\trader_script1a_2]],
