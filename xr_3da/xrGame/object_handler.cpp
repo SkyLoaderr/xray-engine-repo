@@ -48,6 +48,9 @@ void CObjectHandler::reinit			(CAI_Stalker *object)
 	m_r_hand					= kinematics->LL_BoneID(pSettings->r_string(*planner().m_object->cNameSect(),"weapon_bone0"));
 	m_l_finger1					= kinematics->LL_BoneID(pSettings->r_string(*planner().m_object->cNameSect(),"weapon_bone1"));
 	m_r_finger2					= kinematics->LL_BoneID(pSettings->r_string(*planner().m_object->cNameSect(),"weapon_bone2"));
+	m_strap_object_id			= ALife::_OBJECT_ID(-1);
+	m_strap_bone0				= -1;
+	m_strap_bone1				= -1;
 }
 
 void CObjectHandler::reload			(LPCSTR section)
@@ -169,11 +172,17 @@ void CObjectHandler::weapon_bones	(int &b0, int &b1, int &b2) const
 		return;
 	}
 
+	if (weapon->ID() != m_strap_object_id) {
+		CKinematics				*kinematics = smart_cast<CKinematics*>(planner().m_object->Visual());
+		m_strap_bone0			= kinematics->LL_BoneID(weapon->strap_bone0());
+		m_strap_bone1			= kinematics->LL_BoneID(weapon->strap_bone1());
+		m_strap_object_id		= weapon->ID();
+	}
+
 	THROW3						(weapon->can_be_strapped(),"Cannot strap weapon",*weapon->cName());
 	weapon->strapped_mode		(true);
-	CKinematics					*kinematics = smart_cast<CKinematics*>(planner().m_object->Visual());
-	b0							= kinematics->LL_BoneID(weapon->strap_bone0());
-	b1							= kinematics->LL_BoneID(weapon->strap_bone1());
+	b0							= m_strap_bone0;
+	b1							= m_strap_bone1;
 	b2							= b1;
 }
 

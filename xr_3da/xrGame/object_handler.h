@@ -40,6 +40,10 @@ private:
 	int								m_l_finger1;
 	int								m_r_finger2;
 
+private:
+	mutable int						m_strap_bone0;
+	mutable int						m_strap_bone1;
+	mutable ALife::_OBJECT_ID		m_strap_object_id;
 
 protected:
 	bool							m_hammer_is_clutched;
