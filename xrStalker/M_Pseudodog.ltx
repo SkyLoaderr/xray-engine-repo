@@ -1,3 +1,16 @@
+[m_pseudodog_attack_params]
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, top, bottom) |	Test Dist
+;---------------------------------------------------------------------------------------------------------------------------------------------
+stand_attack_0 =	  	0.45,		50,		    700,        0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6, 1.6,								  3.5
+
+[m_pseudodog_step_params]
+;----------------------------------------------------------------------------------------------------------------
+;	anim			| time1 | power1 | time2 | power2 | time3 | power3 | time4 | power4 |
+;----------------------------------------------------------------------------------------------------------------
+stand_walk_fwd_0=	   0.2,     1,	  0.25,    0.7,    0.5,		1.0,     0.7,    1.0
+
+
 [m_pseudodog_e]
 GroupControlSection	= spawn_group
 $spawn               = "monsters\pseudodog"		; option for Level Editor
@@ -206,3 +219,6 @@ ce_time				= 1.5
 ce_amplitude		= 15.0
 ce_period_number	= 10.0
 ce_power			= 0.7
+
+attack_params			= m_pseudodog_attack_params
+step_params				= m_pseudodog_step_params
