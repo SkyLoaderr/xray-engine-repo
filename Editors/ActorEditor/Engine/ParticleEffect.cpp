@@ -117,13 +117,8 @@ BOOL CPEDef::Load(IReader& F)
     }
 
     if (m_Flags.is(dfTimeLimit)){
-		if(F.find_chunk(PED_CHUNK_TIMELIMIT)){
-			u32 dd = F.r_u32();
-			m_fTimeLimit= float(dd)/1000.f;
-		} else {
-			R_ASSERT(F.find_chunk(PED_CHUNK_TIMELIMIT2));
-			m_fTimeLimit= F.r_float();
-		}
+        R_ASSERT(F.find_chunk(PED_CHUNK_TIMELIMIT));
+        m_fTimeLimit= F.r_float();
     }
     
 #ifdef _PARTICLE_EDITOR
@@ -169,7 +164,7 @@ void CPEDef::Save(IWriter& F)
     }
 
     if (m_Flags.is(dfTimeLimit)){
-        F.open_chunk	(PED_CHUNK_TIMELIMIT2);
+        F.open_chunk	(PED_CHUNK_TIMELIMIT);
         F.w_float		(m_fTimeLimit);
         F.close_chunk	();
     }

@@ -56,6 +56,7 @@ class ENGINE_API CParticleGroup: public IParticleCustom
 	const CPGDef*		m_Def;
     float				m_CurrentTime;
 	Fvector				m_InitialPosition;
+public:
 	xr_vector<IRender_Visual*>		children;
 public:
     enum{

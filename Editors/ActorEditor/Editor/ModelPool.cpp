@@ -9,6 +9,7 @@
 #include "fmesh.h"
 #include "fvisual.h"
 #include "fprogressivefixedvisual.h"
+#include "ParticleGroup.h"
 //#include "fprogressive.h"
 #include "fhierrarhyvisual.h"
 #include "bodyinstance.h"
@@ -191,10 +192,22 @@ void 	CModelPool::Render(IRender_Visual* m_pVisual, const Fmatrix& mTransform, i
     // render visual
     RCache.set_xform_world(mTransform);
     switch (m_pVisual->Type){
-    case MT_PARTICLE_GROUP:
     case MT_SKELETON:
     case MT_HIERRARHY:{
-        FHierrarhyVisual* pV			= (FHierrarhyVisual*)m_pVisual;
+        FHierrarhyVisual* pV			= dynamic_cast<FHierrarhyVisual*>(m_pVisual); R_ASSERT(pV);
+        xr_vector<IRender_Visual*>::iterator 		I,E;
+        I = pV->children.begin			();
+        E = pV->children.end			();
+        for (; I!=E; I++){
+            IRender_Visual* V					= *I;
+			if (_IsRender(V,mTransform,priority,strictB2F)){
+		        RCache.set_Shader		(V->hShader?V->hShader:Device.m_WireShader);
+	            V->Render		 		(m_fLOD);
+            }
+        }
+    }break;
+    case MT_PARTICLE_GROUP:{
+        PS::CParticleGroup* pV			= dynamic_cast<PS::CParticleGroup*>(m_pVisual); R_ASSERT(pV);
         xr_vector<IRender_Visual*>::iterator 		I,E;
         I = pV->children.begin			();
         E = pV->children.end			();
