@@ -301,7 +301,7 @@ void CPHWorld::Freeze()
 }
 void CPHWorld::UnFreeze()
 {
-	R_ASSERT2(!b_world_freezed,"is not freezed!!!");
+	R_ASSERT2(b_world_freezed,"is not freezed!!!");
 	xr_list<CPHObject*>::iterator iter=m_objects.begin(),
 		e=	m_objects.end()	;
 	for(; e != iter;++iter)
