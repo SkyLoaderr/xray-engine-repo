@@ -26,6 +26,7 @@
 #include "custommonster.h"
 #include "movement_manager.h"
 #include "actorcondition.h"
+#include "level_graph.h"
 
 bool CScriptGameObject::GiveInfoPortion(LPCSTR info_id)
 {
