@@ -228,7 +228,7 @@ public:
 		D.resize			(size());
 		TNode** _it			= D.begin();
 		TNode*	_end		= end();
-		for (TNode* cur = begin(); cur!=_end; cur++,_it++) *it = cur;
+		for (TNode* cur = begin(); cur!=_end; cur++,_it++) *_it = cur;
 	}
 
 	IC void		setup(callback CB) {

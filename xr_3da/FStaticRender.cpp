@@ -445,10 +445,10 @@ void		sort_tlist
 	vector<SceneGraph::mapNormalTextures::TNode*>& lst, 
 	vector<SceneGraph::mapNormalTextures::TNode*>& temp, 
 	SceneGraph::mapNormalTextures& textures, 
-	BOOL	bSSA,
-	int		amount
+	BOOL	bSSA
 	)
 {
+	int amount			= textures.begin()->key->size();
 	if (bSSA)	
 	{
 		if (amount<=1)
@@ -529,12 +529,6 @@ void	CRender::Render		()
 	{
 		if (0==mapNormal[pr][0].size())	continue;
 
-		if (1==pr)
-		{
-			Device.set_xform_world	(Fidentity);
-			Details.Render			(Device.vCameraPosition);
-		}
-
 		for (DWORD pass_id=0; pass_id<8; pass_id++)	{
 			SceneGraph::mapNormalCodes&		codes	= mapNormal	[pr][pass_id];
 			if (0==codes.size())	break;
@@ -591,6 +585,9 @@ void	CRender::Render		()
 		}
 
 		if (1==pr)			{
+			Device.set_xform_world	(Fidentity);
+			Details.Render			(Device.vCameraPosition);
+
 			pCreator->Environment.RenderFirst	();
 
 			// NORMAL-matrix		*** actors and dyn. objects
