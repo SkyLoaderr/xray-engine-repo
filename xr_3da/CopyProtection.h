@@ -18,8 +18,6 @@ typedef struct SECUROM_PID{
 }tSECUROM_PID;
 #pragma pack(pop)
 
-#include <windows.h>
-
 IC	void	CheckCopyProtection	()
 {
 	DWORD ret;
@@ -35,7 +33,6 @@ IC	void	CheckCopyProtection	()
 		MessageBox(NULL,"Copy protection violation!","Error",MB_OK | MB_ICONHAND);
 		TerminateProcess(GetCurrentProcess(),0x66);
 	}
-
 }
 #else
 IC	void	CheckCopyProtection	()	{
