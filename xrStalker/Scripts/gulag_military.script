@@ -167,7 +167,11 @@ function load_job (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 10, state = {1},
 		squad = squad, group = groups[1],
-		in_rest = "", out_rest = ""
+		in_rest = "", out_rest = "",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "svoboda_specnaz"
+		            end
+		
 	}
 	table.insert(sj, t)
 
@@ -175,7 +179,10 @@ function load_job (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 10, state = {1},
 		squad = squad, group = groups[1],
-		in_rest = "", out_rest = ""
+		in_rest = "", out_rest = "",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "svoboda_regular"
+		            end
 	}
 	table.insert(sj, t)
 
@@ -183,7 +190,10 @@ function load_job (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 10, state = {1},
 		squad = squad, group = groups[1],
-		in_rest = "", out_rest = ""
+		in_rest = "", out_rest = "",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "svoboda_regular"
+		            end
 	}
 	table.insert(sj, t)
 	
@@ -191,7 +201,10 @@ function load_job (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 10, state = {1},
 		squad = squad, group = groups[1],
-		in_rest = "", out_rest = ""
+		in_rest = "", out_rest = "",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "svoboda_sniper"
+		            end
 	}
 	table.insert(sj, t)
 	
@@ -199,7 +212,10 @@ function load_job (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 10, state = {1},
 		squad = squad, group = groups[1],
-		in_rest = "", out_rest = ""
+		in_rest = "", out_rest = "",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "svoboda_sniper"
+		            end
 	}
 	table.insert(sj, t)
 	
@@ -207,7 +223,10 @@ function load_job (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 10, state = {1},
 		squad = squad, group = groups[1],
-		in_rest = "", out_rest = ""
+		in_rest = "", out_rest = "",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "svoboda_specnaz"
+		            end
 	}
 	table.insert(sj, t)
 	
@@ -215,7 +234,10 @@ function load_job (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 10, state = {1},
 		squad = squad, group = groups[1],
-		in_rest = "", out_rest = ""
+		in_rest = "", out_rest = "",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "svoboda_regular"
+		            end
 	}
 	table.insert(sj, t)
 	
@@ -223,7 +245,10 @@ function load_job (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 10, state = {1},
 		squad = squad, group = groups[1],
-		in_rest = "", out_rest = ""
+		in_rest = "", out_rest = "",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "svoboda_regular"
+		            end
 	}
 	table.insert(sj, t)
 	
@@ -231,7 +256,10 @@ function load_job (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 10, state = {1},
 		squad = squad, group = groups[1],
-		in_rest = "", out_rest = ""
+		in_rest = "", out_rest = "",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "svoboda_specnaz"
+		            end
 	}
 	table.insert(sj, t)
 	
@@ -239,7 +267,10 @@ function load_job (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 10, state = {1},
 		squad = squad, group = groups[1],
-		in_rest = "", out_rest = ""
+		in_rest = "", out_rest = "",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "svoboda_master"
+		            end
 	}
 	table.insert(sj, t)
 	
@@ -247,7 +278,10 @@ function load_job (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 10, state = {1},
 		squad = squad, group = groups[1],
-		in_rest = "", out_rest = ""
+		in_rest = "", out_rest = "",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "svoboda_regular"
+		            end
 	}
 	table.insert(sj, t)
 	
@@ -255,7 +289,10 @@ function load_job (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 10, state = {1},
 		squad = squad, group = groups[1],
-		in_rest = "", out_rest = ""
+		in_rest = "", out_rest = "",
+		predicate = function(obj) 
+		            	return obj:profile_name() == "svoboda_regular"
+		            end
 	}
 	table.insert(sj, t)
 	
