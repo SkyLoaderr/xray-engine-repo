@@ -33,6 +33,7 @@ private:
 	u32								m_dwSwitchDelay;
 	xrServer						*m_tpServer;
 	bool							m_bActorEnabled;
+
 	
 	// buffer for union operations
 	TASK_VECTOR						m_tpBufferTaskIDs;
@@ -45,6 +46,7 @@ private:
 	void							vfUpdateDynamicData			();
 	void							vfCreateNewTask				(CSE_ALifeTrader			*tpTrader);
 	void							vfAssignGraphPosition		(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
+	void							vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject		*&tpALifDynamicObject, CSE_ALifeDynamicObject *j, _SPAWN_ID tSpawnID);
 	// surge
 	void							vfGenerateAnomalousZones	();
 	void							vfGenerateAnomalyMap		();
@@ -53,8 +55,8 @@ private:
 	void							vfGiveMilitariesBribe		(CSE_ALifeTrader			&tTrader);
 	void							vfBuySupplies				(CSE_ALifeTrader			&tTrader);
 	void							vfAssignPrices				(CSE_ALifeTrader			&tTrader);
+	void							vfKillCreatures				();
 	void							vfBallanceCreatures			();
-	void							vfUpdateCreatures			();
 	// after surge
 	CSE_ALifeTrader *				tpfGetNearestSuitableTrader	(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
 	void							vfCommunicateWithTrader		(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,	CSE_ALifeTrader *tpTrader);

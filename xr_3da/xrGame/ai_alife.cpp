@@ -219,40 +219,72 @@ void CSE_ALifeSimulator::vfRemoveObject(CSE_Abstract *tpSE_Abstract)
 	tpSE_Abstract->m_bALifeControl = false;
 }
 
-void CSE_ALifeSimulator::vfSellArtefacts(CSE_ALifeTrader &tTrader)
+void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i, CSE_ALifeDynamicObject *j, _SPAWN_ID tSpawnID)
 {
-}
+	CSE_Abstract				*tpSE_Abstract = F_entity_Create	(j->s_name);
+	R_ASSERT2					(tpSE_Abstract,"Can't create entity.");
+	i							= dynamic_cast<CSE_ALifeDynamicObject*>(tpSE_Abstract);
+	R_ASSERT2					(i,"Non-ALife object in the 'game.spawn'");
 
-void CSE_ALifeSimulator::vfUpdateArtefactOrders(CSE_ALifeTrader &tTrader)
-{
-}
+	NET_Packet					tNetPacket;
+	j->Spawn_Write				(tNetPacket,TRUE);
+	i->Spawn_Read				(tNetPacket);
+	tNetPacket.w_begin			(M_UPDATE);
+	j->UPDATE_Write				(tNetPacket);
+	u16							id;
+	tNetPacket.r_begin			(id);
+	i->UPDATE_Read				(tNetPacket);
+	i->m_tSpawnID				= tSpawnID;
+	i->ID						= m_tpServer->PerformIDgen(0xffff);
+	m_tObjectRegistry.insert	(std::make_pair(i->ID,i));
+	vfUpdateDynamicData			(i);
+	
+	CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(i);
+	if (l_tpALifeMonsterAbstract)
+		vfAssignGraphPosition	(l_tpALifeMonsterAbstract);
+	
+	CSE_ALifeAbstractGroup		*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(i);
+	if (l_tpALifeAbstractGroup) {
+		l_tpALifeAbstractGroup->m_tpMembers.resize(l_tpALifeAbstractGroup->m_wCount);
+		OBJECT_IT				I = l_tpALifeAbstractGroup->m_tpMembers.begin();
+		OBJECT_IT				E = l_tpALifeAbstractGroup->m_tpMembers.end();
+		for ( ; I != E; I++) {
+			LPCSTR						S = pSettings->r_string(i->s_name,"monster_section");
+			CSE_Abstract				*l_tpAbstract = F_entity_Create	(S);
+			R_ASSERT2					(l_tpAbstract,"Can't create entity.");
+			CSE_ALifeDynamicObject		*k = dynamic_cast<CSE_ALifeDynamicObject*>(l_tpAbstract);
+			R_ASSERT2					(k,"Non-ALife object in the 'game.spawn'");
 
-void CSE_ALifeSimulator::vfGiveMilitariesBribe(CSE_ALifeTrader &tTrader)
-{
-}
-
-void CSE_ALifeSimulator::vfBuySupplies(CSE_ALifeTrader &tTrader)
-{
-}
-
-void CSE_ALifeSimulator::vfAssignPrices(CSE_ALifeTrader &tTrader)
-{
-}
-
-void CSE_ALifeSimulator::vfBallanceCreatures()
-{
-}
-
-void CSE_ALifeSimulator::vfUpdateCreatures()
-{
+			j->Spawn_Write				(tNetPacket,TRUE);
+			k->Spawn_Read				(tNetPacket);
+			tNetPacket.w_begin			(M_UPDATE);
+			j->UPDATE_Write				(tNetPacket);
+			u16							id;
+			tNetPacket.r_begin			(id);
+			k->UPDATE_Read				(tNetPacket);
+			Memory.mem_copy				(k->s_name,S,((int)strlen(S) + 1)*sizeof(char));
+			k->m_tSpawnID				= tSpawnID;
+			k->ID						= m_tpServer->PerformIDgen(0xffff);
+			*I							= k->ID;
+			k->m_bDirectControl			= false;
+			m_tObjectRegistry.insert	(std::make_pair(k->ID,k));
+			vfUpdateDynamicData			(k);
+		}
+	}
 }
 
 void CSE_ALifeSimulator::vfGenerateAnomalousZones()
 {
+	// deactivating all the anomalous zones
 	OBJECT_PAIR_IT				B = m_tObjectRegistry.begin(), I = B, J;
 	OBJECT_PAIR_IT				E = m_tObjectRegistry.end();
 	for ( ; I != E; ) {
-		// checking if it is an anomalous zone
+		CSE_ALifeAnomalousZone *l_tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>((*I).second);
+		if (l_tpALifeAnomalousZone)
+			l_tpALifeAnomalousZone->m_maxPower = 0.f;
+	}
+	// for each spawn group activate a zone if any
+	for (I = B; I != E; ) {
 		CSE_ALifeAnomalousZone *l_tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>((*I).second);
 		if (!l_tpALifeAnomalousZone)
 			continue;
@@ -278,28 +310,25 @@ void CSE_ALifeSimulator::vfGenerateAnomalousZones()
 		R_ASSERT2				(fSum > 1 + EPS_L,"Group probability more than 1!");
 		
 		// computing probability of the anomalous zone activation
-		float					fProbability = randF(0,1.f);
-		fSum					= 0;
+		float					fProbability = randF(1.f);
+		fSum					= 0.f;
 		J						= I;
 		ALIFE_ENTITY_P_IT		m = j;
-		ALIFE_ENTITY_P_IT		k = m_tpSpawnPoints.end();
 		for ( j = i; (j != e) && ((*j)->m_dwSpawnGroup == l_dwGroupID); j++, I++) {
 			fSum += (*j)->m_fProbability;
-			if (fSum > fProbability) {
-				k = j;
+			if (fSum > fProbability)
 				break;
-			}
 		}
 		
 		// if random choosed a number due to which there is no active zones in the current group ID
 		// then continue loop
-		if (k == m_tpSpawnPoints.end())
+		if (fSum <= fProbability)
 			continue;
 		
 		// otherwise assign random anomaly power to the zone
 		l_tpALifeAnomalousZone	= dynamic_cast<CSE_ALifeAnomalousZone*>((*I).second);
 		R_ASSERT2				(l_tpALifeAnomalousZone,"Anomalous zones are grouped with incompatible objects!");
-		CSE_ALifeAnomalousZone	*l_tpSpawnAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(*k);
+		CSE_ALifeAnomalousZone	*l_tpSpawnAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(*j);
 		R_ASSERT2				(l_tpSpawnAnomalousZone,"Anomalous zones are grouped with incompatible objects!");
 		l_tpALifeAnomalousZone->m_maxPower = randF(.5f*l_tpSpawnAnomalousZone->m_maxPower,1.5f*l_tpSpawnAnomalousZone->m_maxPower);
 		
@@ -315,9 +344,9 @@ void CSE_ALifeSimulator::vfGenerateAnomalousZones()
 			if (p < l_tpSpawnAnomalousZone->m_wItemCount) {
 				CSE_Abstract	*l_tpSE_Abstract = F_entity_Create	(l_tpSpawnAnomalousZone->m_cppArtefactSections[p]);
 				R_ASSERT2		(l_tpSE_Abstract,"Can't create entity.");
-
 				CSE_ALifeDynamicObject	*i = dynamic_cast<CSE_ALifeDynamicObject*>(l_tpSE_Abstract);
 				R_ASSERT2		(i,"Non-ALife object in the 'game.spawn'");
+
 				i->ID			= m_tpServer->PerformIDgen(0xffff);
 				i->m_tSpawnID	= _SPAWN_ID(j - b);
 				i->m_tGraphID	= l_tpSpawnAnomalousZone->m_tGraphID;
@@ -356,23 +385,6 @@ void CSE_ALifeSimulator::vfGenerateAnomalyMap()
 	}
 }
 
-void CSE_ALifeSimulator::vfPerformSurge()
-{
-	vfGenerateAnomalousZones	();
-	vfGenerateAnomalyMap		();
-	TRADER_P_IT					I = m_tpTraders.begin();
-	TRADER_P_IT					E = m_tpTraders.end();
-	for ( ; I != E; I++) {
-		vfSellArtefacts			(**I);
-		vfUpdateArtefactOrders	(**I);
-		vfGiveMilitariesBribe	(**I);
-		vfBuySupplies			(**I);
-		vfAssignPrices			(**I);
-	}
-	vfBallanceCreatures			();
-	vfUpdateCreatures			();
-}
-
 void CSE_ALifeSimulator::vfNewGame()
 {
 	CSE_ALifeGraphRegistry::Init	();
@@ -394,35 +406,19 @@ void CSE_ALifeSimulator::vfNewGame()
 		CSE_ALifeAnomalousZone	*tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(i);
 		if (tpALifeAnomalousZone) {
 			for ( ; j != m; j++) {
-				CSE_Abstract			*tpSE_Abstract = F_entity_Create	((*j)->s_name);
-				R_ASSERT2				(tpSE_Abstract,"Can't create entity.");
-				CSE_ALifeDynamicObject	*i = dynamic_cast<CSE_ALifeDynamicObject*>(tpSE_Abstract);
-				R_ASSERT2				(i,"Non-ALife object in the 'game.spawn'");
-				CSE_ALifeAnomalousZone	*tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(i);
+				CSE_ALifeAnomalousZone	*tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(*j);
 				R_ASSERT2				(tpALifeAnomalousZone,"Anomalous zones are grouped with incompatible objects!");
-
-				NET_Packet				tNetPacket;
-				(*j)->Spawn_Write		(tNetPacket,TRUE);
-				i->Spawn_Read			(tNetPacket);
-				tNetPacket.w_begin		(M_UPDATE);
-				(*j)->UPDATE_Write		(tNetPacket);
-				u16						id;
-				tNetPacket.r_begin		(id);
-				i->UPDATE_Read			(tNetPacket);
-				i->m_tSpawnID			= _SPAWN_ID(j - B);
-				i->ID					= m_tpServer->PerformIDgen(0xffff);
-				m_tObjectRegistry.insert(std::make_pair(i->ID,i));
-				vfUpdateDynamicData		(i);
+				vfCreateObjectFromSpawnPoint(i,*j,_SPAWN_ID(j - B));
 			}
 		}
 		I = m;
 	}
 	
-	m_tGameTime						= u64(m_dwStartTime = Device.TimerAsync());
-	m_tZoneState					= eZoneStateSurge;
-	_TIME_ID						l_tFinishTime = m_tGameTime + 3*7*24*3600*1000; // 3 weeks in milliseconds
-	float							l_fTimeFactor = m_fTimeFactor;
-	m_fTimeFactor					= 100;
+	m_tGameTime					= u64(m_dwStartTime = Device.TimerAsync());
+	m_tZoneState				= eZoneStateSurge;
+	_TIME_ID					l_tFinishTime = m_tGameTime + 3*7*24*3600*1000; // 3 weeks in milliseconds
+	float						l_fTimeFactor = m_fTimeFactor;
+	m_fTimeFactor				= 100;
 	
 	// simulating ALife during the given time period
 	while (tfGetGameTime() < l_tFinishTime) {
@@ -432,7 +428,6 @@ void CSE_ALifeSimulator::vfNewGame()
 				m_tLastSurgeTime	= tfGetGameTime();
 				m_tNextSurgeTime	= m_tLastSurgeTime + 7*24*3600*1000; // a week in milliseconds
 				m_tZoneState		= eZoneStateAfterSurge;
-				//vfUpdateDynamicData	();
 				break;
 			}
 			case eZoneStateAfterSurge : {
@@ -451,6 +446,133 @@ void CSE_ALifeSimulator::vfNewGame()
 		}
 	}
 
-	m_fTimeFactor					= l_fTimeFactor;
-	Save							();
+	m_fTimeFactor				= l_fTimeFactor;
+	Save						();
+}
+
+void CSE_ALifeSimulator::vfSellArtefacts(CSE_ALifeTrader &tTrader)
+{
+}
+
+void CSE_ALifeSimulator::vfUpdateArtefactOrders(CSE_ALifeTrader &tTrader)
+{
+}
+
+void CSE_ALifeSimulator::vfBuySupplies(CSE_ALifeTrader &tTrader)
+{
+}
+
+void CSE_ALifeSimulator::vfAssignPrices(CSE_ALifeTrader &tTrader)
+{
+}
+
+void CSE_ALifeSimulator::vfPerformSurge()
+{
+	vfGenerateAnomalousZones	();
+	vfGenerateAnomalyMap		();
+	TRADER_P_IT					I = m_tpTraders.begin();
+	TRADER_P_IT					E = m_tpTraders.end();
+	for ( ; I != E; I++) {
+		vfSellArtefacts			(**I);
+		vfUpdateArtefactOrders	(**I);
+		vfGiveMilitariesBribe	(**I);
+		vfBuySupplies			(**I);
+		vfAssignPrices			(**I);
+	}
+	vfKillCreatures				();
+	vfBallanceCreatures			();
+}
+
+void CSE_ALifeSimulator::vfBallanceCreatures()
+{
+	// filling array of the survived creatures
+	{
+		OBJECT_PAIR_IT				I = m_tObjectRegistry.begin();
+		OBJECT_PAIR_IT				E = m_tObjectRegistry.end();
+		for ( ; I != E; I++) {
+			CSE_ALifeCreatureAbstract *l_tpALifeCreatureAbstract = dynamic_cast<CSE_ALifeCreatureAbstract*>((*I).second);
+			if (!l_tpALifeCreatureAbstract || (l_tpALifeCreatureAbstract->fHealth > 0.f))
+				m_baAliveSpawnObjects[(*I).second->m_tSpawnID] = true;
+		}
+	}
+	// balancing creatures by spawn groups
+	// i.e. if there is no object being spawned by the particular spawn group
+	// then we have to spawn an object from this spawn group
+	{
+		ALIFE_ENTITY_P_IT			B = m_tpSpawnPoints.begin(), I = B, J;
+		ALIFE_ENTITY_P_IT			E = m_tpSpawnPoints.end();
+		for ( ; I != E; ) {
+			u32						l_dwSpawnGroup = (*I)->m_dwSpawnGroup;
+			bool					bOk = false;
+			J						= I;
+			for ( ; (I != E) && (l_dwSpawnGroup == (*I)->m_dwSpawnGroup); I++)
+				if (m_baAliveSpawnObjects[I - B]) {
+					bOk = true;
+					break;
+				}
+			if (!bOk) {
+				// there is no object being spawned from this spawn group -> spawn it!
+				float				l_fProbability = randF(0,1.f), l_fSum = 0.f;
+				ALIFE_ENTITY_P_IT	j = J;
+				ALIFE_ENTITY_P_IT	e = I;
+				for ( ; (j != e); j++) {
+					l_fSum			+= (*j)->m_fProbability;
+					if (l_fSum > l_fProbability)
+						break;
+				}
+				if (l_fSum > l_fProbability) {
+					CSE_ALifeAnomalousZone		*l_tpALifeAnomalousZone		= dynamic_cast<CSE_ALifeAnomalousZone*>(*j);
+					if (l_tpALifeAnomalousZone)
+						continue;
+
+					CSE_ALifeCreatureAbstract	*l_tpALifeCreatureAbstract	= dynamic_cast<CSE_ALifeCreatureAbstract*>(*j);
+					if (l_tpALifeCreatureAbstract)
+						continue;
+
+					CSE_ALifeDynamicObject		*l_tpALifeDynamicObject;
+					vfCreateObjectFromSpawnPoint(l_tpALifeDynamicObject,*j,_SPAWN_ID(j - B));
+				}
+			}
+		}
+	}
+	
+	// initialize array
+	m_baAliveSpawnObjects.assign(m_baAliveSpawnObjects.size(),false);
+}
+
+void CSE_ALifeSimulator::vfKillCreatures()
+{
+	OBJECT_PAIR_IT				I = m_tObjectRegistry.begin();
+	OBJECT_PAIR_IT				E = m_tObjectRegistry.end();
+	for ( ; I != E; I++) {
+		CSE_ALifeCreatureAbstract *l_tpALifeCreatureAbstract = dynamic_cast<CSE_ALifeCreatureAbstract*>((*I).second);
+		if (l_tpALifeCreatureAbstract && (l_tpALifeCreatureAbstract->m_bDirectControl) && (l_tpALifeCreatureAbstract->fHealth > 0.f)) {
+			CSE_ALifeAbstractGroup *l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>((*I).second);
+			getAI().m_tpCurrentALifeObject = (*I).second;
+			if (l_tpALifeAbstractGroup) {
+				for (u32 i=0, N = (u32)l_tpALifeAbstractGroup->m_tpMembers.size(); i<N; i++) {
+					if (randF(100) > getAI().pfSurgeDeathProbability->ffGetValue()) {
+						OBJECT_PAIR_IT				J = m_tObjectRegistry.find(l_tpALifeAbstractGroup->m_tpMembers[i]);
+						R_ASSERT2					(J != m_tObjectRegistry.end(),"There is no object being attached as a group member!");
+						CSE_ALifeCreatureAbstract	*l_tpALifeCreatureAbstract = dynamic_cast<CSE_ALifeCreatureAbstract*>((*J).second);
+						R_ASSERT2					(l_tpALifeCreatureAbstract,"Group class differs from the member class!");
+						l_tpALifeCreatureAbstract->m_bDirectControl	= true;
+						l_tpALifeCreatureAbstract->fHealth = 0.f;
+						l_tpALifeAbstractGroup->m_tpMembers.erase(l_tpALifeAbstractGroup->m_tpMembers.begin() + i);
+						vfUpdateDynamicData			(l_tpALifeCreatureAbstract);
+						i--;
+						N--;
+					}
+				}
+			}
+			else
+				if (randI(100) > getAI().pfSurgeDeathProbability->ffGetValue())
+					l_tpALifeCreatureAbstract->fHealth = 0.f;
+		}
+	}
+}
+
+void CSE_ALifeSimulator::vfGiveMilitariesBribe(CSE_ALifeTrader &tTrader)
+{
+	tTrader.m_dwMoney = u32(float(tTrader.m_dwMoney)*.9f);
 }

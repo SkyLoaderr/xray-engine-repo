@@ -204,10 +204,10 @@ public:
 	ALIFE_ENTITY_P_VECTOR_MAP		m_tLevelMap;
 	CSE_ALifeDynamicObject			*m_tpActor;
 	ALIFE_ENTITY_P_VECTOR			*m_tpCurrentLevel;
-	GRAPH_POINT_VECTOR				m_tpGraphObjects;		// по точке графа получить все 
-	GRAPH_VECTOR_SVECTOR			m_tpTerrain[LOCATION_TYPE_COUNT];			// массив списков: по идетнификатору 
-    														//	местности получить список точек 
-															//  графа
+	GRAPH_POINT_VECTOR				m_tpGraphObjects;					// по точке графа получить все 
+	GRAPH_VECTOR_SVECTOR			m_tpTerrain[LOCATION_TYPE_COUNT];	// массив списков: по идетнификатору 
+    																	//	местности получить список точек 
+																		//  графа
 									CSE_ALifeGraphRegistry() : CSE_ALifeAStar()
 	{
 	}
@@ -411,11 +411,12 @@ public:
 	
 	ALIFE_ENTITY_P_VECTOR			m_tpSpawnPoints;
 	LEVEL_POINT_VECTOR				m_tpArtefactSpawnPositions;
-
+	xr_vector<bool>					m_baAliveSpawnObjects;
 									CSE_ALifeSpawnRegistry()
 	{
 		m_tpSpawnPoints.clear		();
 		m_tpArtefactSpawnPositions.clear();
+		m_baAliveSpawnObjects.clear ();
 	}
 	
 	virtual							~CSE_ALifeSpawnRegistry()
@@ -432,6 +433,7 @@ public:
 	{
 		inherited::Load				(tFileStream);
 		m_tpSpawnPoints.resize		(m_dwSpawnCount);
+		m_baAliveSpawnObjects.assign(m_dwSpawnCount,false);
 		ALIFE_ENTITY_P_IT			I = m_tpSpawnPoints.begin();
 		ALIFE_ENTITY_P_IT			E = m_tpSpawnPoints.end();
 		NET_Packet					tNetPacket;

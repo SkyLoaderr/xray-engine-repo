@@ -122,7 +122,7 @@ void CPatternFunction::vfLoadEF(LPCSTR caFileName, CAI_DDD *tpAI_DDD)
 	
 	_splitpath(caPath,0,0,m_caName,0);
 
-	// Msg("* Evaluation function \"%s\" is successfully loaded",m_caName);
+	Msg("* Evaluation function \"%s\" is successfully loaded",m_caName);
 }
 
 float CPatternFunction::ffEvaluate()
@@ -135,8 +135,9 @@ float CPatternFunction::ffEvaluate()
 
 float CPatternFunction::ffGetValue()
 {
-	m_dwLastUpdate = Device.TimerAsync();
-	m_tpLastMonster = getAI().m_tpCurrentMember;
+	if (inherited::bfCheckForCachedResult())
+		return(m_fLastValue);
+
 	for (u32 i=0; i<m_dwVariableCount; i++)
 		m_dwaVariableValues[i] = getAI().fpaBaseFunctions[m_dwaVariableTypes[i]]->dwfGetDiscreteValue(m_dwaAtomicFeatureRange[i]);
 #ifndef WRITE_TO_LOG
@@ -184,6 +185,7 @@ CAI_DDD::CAI_DDD()
 	pfVictoryProbability				= xr_new<CPatternFunction>	("common\\VictoryProbability.dat",		this);
 	pfEntityCost						= xr_new<CPatternFunction>	("common\\EntityCost.dat",				this);
 	pfExpediency						= xr_new<CPatternFunction>	("common\\Expediency.dat",				this);
+	pfSurgeDeathProbability				= xr_new<CPatternFunction>	("common\\SurgeDeathProbability.dat",	this);
 }
 
 CAI_DDD::~CAI_DDD()

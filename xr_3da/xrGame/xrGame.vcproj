@@ -1852,6 +1852,9 @@
 				Name="AEval"
 				Filter="">
 				<File
+					RelativePath=".\ai_base_funcs.cpp">
+				</File>
+				<File
 					RelativePath="ai_base_funcs.h">
 				</File>
 				<File

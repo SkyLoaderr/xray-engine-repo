@@ -11,8 +11,8 @@
 #include "ai_base_funcs.h"
 
 class CDistanceFunction : public CBaseFunction {
-
 public:
+	typedef CBaseFunction inherited;
 
 	CDistanceFunction()
 	{
@@ -38,8 +38,8 @@ public:
 };
 
 class CPersonalHealthFunction : public CBaseFunction {
-
 public:
+	typedef CBaseFunction inherited;
 
 	CPersonalHealthFunction()
 	{
@@ -53,8 +53,8 @@ public:
 };
 
 class CPersonalMoraleFunction : public CBaseFunction {
-
 public:
+	typedef CBaseFunction inherited;
 
 	CPersonalMoraleFunction()
 	{
@@ -68,8 +68,8 @@ public:
 };
 
 class CPersonalCreatureTypeFunction : public CBaseFunction {
-
 public:
+	typedef CBaseFunction inherited;
 
 	CPersonalCreatureTypeFunction()
 	{
@@ -83,6 +83,8 @@ public:
 };
 
 class CPersonalWeaponTypeFunction : public CBaseFunction {
+public:
+	typedef CBaseFunction inherited;
 
 	float ffGetTheBestWeapon();
 
@@ -101,6 +103,7 @@ public:
 
 class CPersonalAccuracyFunction : public CBaseFunction {
 public:
+	typedef CBaseFunction inherited;
 
 	CPersonalAccuracyFunction()
 	{
@@ -115,6 +118,7 @@ public:
 
 class CPersonalIntelligenceFunction : public CBaseFunction {
 public:
+	typedef CBaseFunction inherited;
 
 	CPersonalIntelligenceFunction()
 	{
@@ -129,6 +133,7 @@ public:
 
 class CPersonalRelationFunction : public CBaseFunction {
 public:
+	typedef CBaseFunction inherited;
 
 	CPersonalRelationFunction()
 	{
@@ -143,6 +148,7 @@ public:
 
 class CPersonalGreedFunction : public CBaseFunction {
 public:
+	typedef CBaseFunction inherited;
 
 	CPersonalGreedFunction()
 	{
@@ -157,6 +163,7 @@ public:
 
 class CPersonalAggressivenessFunction : public CBaseFunction {
 public:
+	typedef CBaseFunction inherited;
 
 	CPersonalAggressivenessFunction()
 	{
@@ -170,8 +177,8 @@ public:
 };
 
 class CEnemyHealthFunction : public CBaseFunction {
-
 public:
+	typedef CBaseFunction inherited;
 
 	CEnemyHealthFunction()
 	{
@@ -185,8 +192,8 @@ public:
 };
 
 class CEnemyMoraleFunction : public CBaseFunction {
-
 public:
+	typedef CBaseFunction inherited;
 
 	CEnemyMoraleFunction()
 	{
@@ -199,8 +206,8 @@ public:
 };
 
 class CEnemyCreatureTypeFunction : public CBaseFunction {
-
 public:
+	typedef CBaseFunction inherited;
 
 	CEnemyCreatureTypeFunction()
 	{
@@ -213,8 +220,8 @@ public:
 };
 
 class CEnemyWeaponTypeFunction : public CBaseFunction {
-
 public:
+	typedef CBaseFunction inherited;
 
 	CEnemyWeaponTypeFunction()
 	{
@@ -228,8 +235,8 @@ public:
 };
 
 class CEnemyEquipmentCostFunction : public CBaseFunction {
-
 public:
+	typedef CBaseFunction inherited;
 
 	CEnemyEquipmentCostFunction()
 	{
@@ -243,8 +250,8 @@ public:
 };
 
 class CEnemyRukzakWeightFunction : public CBaseFunction {
-
 public:
+	typedef CBaseFunction inherited;
 
 	CEnemyRukzakWeightFunction()
 	{
@@ -258,14 +265,29 @@ public:
 };
 
 class CEnemyAnomalityFunction : public CBaseFunction {
-
 public:
+	typedef CBaseFunction inherited;
 
 	CEnemyAnomalityFunction()
 	{
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 12.0;
 		strcat(m_caName,"EnemyAnomality");
+		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
+	};
+
+	virtual float ffGetValue();
+};
+
+class CGraphPointType0 : public CBaseFunction {
+public:
+	typedef CBaseFunction inherited;
+
+	CGraphPointType0()
+	{
+		m_fMinResultValue = 0.0;
+		m_fMaxResultValue = 100.0;
+		strcat(m_caName,"GraphPointType0");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
 

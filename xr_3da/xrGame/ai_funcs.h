@@ -83,6 +83,7 @@ class CAI_DDD {
 public:
 	CEntityAlive							*m_tpCurrentMember;
 	CEntityAlive							*m_tpCurrentEnemy;
+	CSE_ALifeObject							*m_tpCurrentALifeObject;
 	// primary functions
 	CBaseFunction							*fpaBaseFunctions		[AI_MAX_EVALUATION_FUNCTION_COUNT];
 
@@ -114,6 +115,7 @@ public:
 	CPatternFunction						*pfVictoryProbability;
 	CPatternFunction						*pfEntityCost;
 	CPatternFunction						*pfExpediency;
+	CPatternFunction						*pfSurgeDeathProbability;
 
 											CAI_DDD();
 	virtual									~CAI_DDD();
