@@ -78,7 +78,30 @@ void	xrServerEntity::FillProp	(LPCSTR pref, PropValueVec& values)
 }
 #endif
 
+// class xrSE_MercuryBall /////////////////////////////////////////////////////////////////////////
+void xrSE_MercuryBall::UPDATE_Read		(NET_Packet& P)
+{
+}
+void	xrSE_MercuryBall::UPDATE_Write	(NET_Packet& P)
+{
+}
+void	xrSE_MercuryBall::STATE_Read		(NET_Packet& P, u16 size)
+{
+}
+void	xrSE_MercuryBall::STATE_Write	(NET_Packet& P)
+{
+}
+
+#ifdef _EDITOR
+void	xrSE_MercuryBall::FillProp	(LPCSTR pref, PropValueVec& values)
+{
+	FILL_PROP_EX(values,	pref, "Model",		s_Model, 		PROP::CreateObject());
+}
+#endif
 //
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
 xrSE_Weapon::xrSE_Weapon()
 {
 	a_current			= 90;
@@ -467,6 +490,10 @@ xrServerEntity*	F_entity_Create		(LPCSTR name)
 	case CLSID_AI_CROW:				return new	xrSE_Crow;
 	case CLSID_EVENT:				return new  xrSE_Event;
 	case CLSID_CAR_NIVA:			return new  xrSE_Car;
+
+	// Artifacts
+	case CLSID_AF_MERCURY_BALL:		return new  xrSE_MercuryBall;
+
 	case CLSID_OBJECT_W_M134:		return new	xrSE_Weapon;
 	case CLSID_OBJECT_W_FN2000:		return new	xrSE_Weapon;
 	case CLSID_OBJECT_W_AK74:		return new	xrSE_Weapon;

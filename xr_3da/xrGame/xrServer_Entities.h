@@ -157,6 +157,11 @@ xrSE_DECLARE_BEGIN(xrSE_Dummy,xrServerEntity)
     ~xrSE_Dummy				();
 xrSE_DECLARE_END
 
+//***** MercuryBall
+xrSE_DECLARE_BEGIN(xrSE_MercuryBall,xrServerEntity)
+	char*					s_Model;
+xrSE_DECLARE_END
+
 //***** Car
 xrSE_DECLARE_BEGIN(xrSE_Car,xrSE_Teamed)
 xrSE_DECLARE_END

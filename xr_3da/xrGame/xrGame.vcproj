@@ -3,6 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.00"
 	Name="xrGame"
+	ProjectGUID="{A15B9EF4-D198-45DE-8836-C736D09FF389}"
 	SccProjectName="&quot;$/xr_3da/xrGame&quot;, LSDAAAAA"
 	SccAuxPath=""
 	SccLocalPath="."
@@ -947,6 +948,20 @@
 					</File>
 					<File
 						RelativePath="TargetAssault.h">
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="Artifacts"
+				Filter="">
+				<Filter
+					Name="Mercury Ball"
+					Filter="">
+					<File
+						RelativePath="MercuryBall.cpp">
+					</File>
+					<File
+						RelativePath="MercuryBall.h">
 					</File>
 				</Filter>
 			</Filter>

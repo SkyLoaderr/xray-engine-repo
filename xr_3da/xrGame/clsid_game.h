@@ -38,7 +38,7 @@
 #define CLSID_OBJECT_LIFT			MK_CLSID('O','_','L','I','F','T',' ',' ')
 
 // Artifacts
-#define CLSID_AF_MERCURIY_BALL		MK_CLSID('A','F','_','M','B','A','L','L')
+#define CLSID_AF_MERCURY_BALL		MK_CLSID('A','F','_','M','B','A','L','L')
 
 // Weapons
 #define CLSID_OBJECT_W_M134			MK_CLSID('W','_','M','1','3','4',' ',' ')

@@ -103,6 +103,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 #include "flyer.h"
 #include "customevent.h"
 #include "dummyobject.h"
+#include "mercuryball.h"
 #include "customdoor.h"
 #include "customlift.h"
 #include "demoactor.h"
@@ -133,6 +134,9 @@ extern "C" {
 		case CLSID_AI_ZOMBIE:			P = new CAI_Zombie();			break;
 		case CLSID_AI_CROW:				P = new CAI_Crow();				break;
 		case CLSID_CAR_NIVA:			P = new CCar();					break;
+
+		// Artifacts
+		case CLSID_AF_MERCURY_BALL:		P = new CMercuryBall();			break;
 
 		case CLSID_OBJECT_DUMMY:		P = new CDummyObject();			break;
 
