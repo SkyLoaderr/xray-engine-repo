@@ -213,8 +213,8 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
 	float	fPhaseZ		= sinf(Device.fTimeGlobal*0.11f)*fPhaseRange;
 
 	// Get index-stream
-	CIndexStream*	IS	= Device.Streams.Get_IB();
-
+//s	CIndexStream*	IS	= Device.Streams.Get_IB();
+/*
 	for (DWORD O=0; O<dm_max_objects; O++)
 	{
 		vector<SlotItem*>&	vis = m_Visible	[O];
@@ -254,8 +254,8 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
 
 			// Lock buffers
 			DWORD	vBase,iBase,iOffset=0;
-			CDetail::fvfVertexIn* vDest	= (CDetail::fvfVertexIn*)	VS->Lock(vCount_Lock,vBase);
-			WORD*	iDest			   	= (WORD*)					IS->Lock(iCount_Lock,iBase);
+//s			CDetail::fvfVertexIn* vDest	= (CDetail::fvfVertexIn*)	VS->Lock(vCount_Lock,vBase);
+//s			WORD*	iDest			   	= (WORD*)					IS->Lock(iCount_Lock,iBase);
 
 			// Filling itself
 			for (DWORD item=item_start; item<item_end; item++)
@@ -278,7 +278,7 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
 				{
 //					DWORD					C = Instance.C;
 					CDetail::fvfVertexIn	*srcIt = Object.m_Vertices.begin(), *srcEnd = Object.m_Vertices.end();
-					CDetail::fvfVertexIn	*dstIt = vDest;
+//s					CDetail::fvfVertexIn	*dstIt = vDest;
 					for	(; srcIt!=srcEnd; srcIt++, dstIt++)
 					{
 						mXform.transform_tiny	(dstIt->P,srcIt->P);
@@ -322,6 +322,7 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
 	}
 	CHK_DX(HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_CCW));
 ///	Device.Statistic.RenderDUMP_DT_Render.End	();
+*/
 }
 
 CDetailManager::Slot&	CDetailManager::Query	(int sx, int sz)

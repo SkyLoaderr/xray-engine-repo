@@ -48,7 +48,7 @@ void CEditableMesh::UpdateRenderBuffers(){
 
             rb.buffer_size		= D3DXGetFVFVertexSize(_S->_FVF())*rb.dwNumVertex;
 			rb.buffer			= (LPBYTE)malloc(rb.buffer_size);
-            rb.stream			= Device.Streams.Create(_S->_FVF(),rb.dwNumVertex);
+//S			rb.vs		 		= Device.Shader._CreateVS(_S->_FVF());
 
 			FillRenderBuffer	(face_lst,start_face,num_face,_S,rb.buffer);
             v_cnt				-= V_LIM;
@@ -155,10 +155,10 @@ void CEditableMesh::Render(const Fmatrix& parent, CSurface* S){
         RBVector& rb_vec = rb_pair->second;
         DWORD vBase;
         for (RBVecIt rb_it=rb_vec.begin(); rb_it!=rb_vec.end(); rb_it++){
-            LPBYTE pv = (LPBYTE)rb_it->stream->Lock(rb_it->dwNumVertex,vBase);
-            CopyMemory(pv,rb_it->buffer,rb_it->buffer_size);
-            rb_it->stream->Unlock(rb_it->dwNumVertex);
-            Device.DP(D3DPT_TRIANGLELIST,rb_it->stream,vBase,rb_it->dwNumVertex/3);
+//S            LPBYTE pv = (LPBYTE)rb_it->vs->Lock(rb_it->dwNumVertex,vBase);
+//S            CopyMemory(pv,rb_it->buffer,rb_it->buffer_size);
+//S            rb_it->stream->Unlock(rb_it->dwNumVertex);
+//S            Device.DP(D3DPT_TRIANGLELIST,rb_it->stream,vBase,rb_it->dwNumVertex/3);
         }
     }
 }
@@ -208,10 +208,10 @@ void CEditableMesh::RenderEdge(Fmatrix& parent, DWORD color){
 		RBVector& rb_vec = p_it->second;
 	    DWORD vBase;
     	for (RBVecIt rb_it=rb_vec.begin(); rb_it!=rb_vec.end(); rb_it++){
-			LPBYTE pv = (LPBYTE)rb_it->stream->Lock(rb_it->dwNumVertex,vBase);
-			CopyMemory(pv,rb_it->buffer,rb_it->buffer_size);
-			rb_it->stream->Unlock(rb_it->dwNumVertex);
-			Device.DP(D3DPT_TRIANGLELIST,rb_it->stream,vBase,rb_it->dwNumVertex/3);
+//S			LPBYTE pv = (LPBYTE)rb_it->stream->Lock(rb_it->dwNumVertex,vBase);
+//S			CopyMemory(pv,rb_it->buffer,rb_it->buffer_size);
+//S			rb_it->stream->Unlock(rb_it->dwNumVertex);
+//S			Device.DP(D3DPT_TRIANGLELIST,rb_it->stream,vBase,rb_it->dwNumVertex/3);
 		}
     }
     Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
@@ -234,10 +234,10 @@ void CEditableMesh::RenderSelection(Fmatrix& parent, DWORD color){
 		RBVector& rb_vec = p_it->second;
 	    DWORD vBase;
     	for (RBVecIt rb_it=rb_vec.begin(); rb_it!=rb_vec.end(); rb_it++){
-			LPBYTE pv = (LPBYTE)rb_it->stream->Lock(rb_it->dwNumVertex,vBase);
-			CopyMemory(pv,rb_it->buffer,rb_it->buffer_size);
-			rb_it->stream->Unlock(rb_it->dwNumVertex);
-			Device.DP(D3DPT_TRIANGLELIST,rb_it->stream,vBase,rb_it->dwNumVertex/3);
+//S			LPBYTE pv = (LPBYTE)rb_it->stream->Lock(rb_it->dwNumVertex,vBase);
+//S			CopyMemory(pv,rb_it->buffer,rb_it->buffer_size);
+//S			rb_it->stream->Unlock(rb_it->dwNumVertex);
+//S			Device.DP(D3DPT_TRIANGLELIST,rb_it->stream,vBase,rb_it->dwNumVertex/3);
 		}
     }
     Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);

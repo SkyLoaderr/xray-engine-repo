@@ -84,7 +84,6 @@ void __fastcall TfrmSceneProperties::FormShow(TObject *Sender)
 	seCurEnv->Value			= Scene.m_LevelOp.m_CurEnv;
 	mmText->Text			= Scene.m_LevelOp.m_BOPText;
 	edSkydomeObjectName->Text = Scene.m_LevelOp.m_SkydomeObjName;
-	edHOMObjectName->Text 	= Scene.m_LevelOp.m_HOMObjName;
 
     tsLevelScript->Enabled 	= true;
     tsLevelOptions->Enabled = true;
@@ -238,7 +237,6 @@ void __fastcall TfrmSceneProperties::btContinueClick(TObject *Sender)
     	(*f_it)->UpdateEnvData		();
 	Scene.m_LevelOp.m_SkydomeObjName = edSkydomeObjectName->Text;
     Scene.UpdateSkydome				();
-    Scene.UpdateHOM					();
 #endif
     SetSceneParams					();
     Close							();

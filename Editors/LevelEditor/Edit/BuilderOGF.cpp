@@ -24,10 +24,29 @@ bool SceneBuilder::BuildSkyModel(){
         m_LevelPath.Update(ogf_name);
         CEditableObject* O = Scene.m_SkyDome->GetReference(); R_ASSERT(O);
         O->ExportObjectOGF(ogf_name.c_str());
-//        CFS_Memory F;
-//        BuildObjectOGF(F, Scene.m_SkyDome->GetReference(), Scene.m_SkyDome->Name,m_LevelPath);
-//        F.SaveTo(ogf_name.c_str(),0);
     }
+	return true;
+}
+
+// some types
+bool SceneBuilder::BuildHOMModel(){
+	// build HOM model
+	CFS_Memory F;
+
+    F.open_chunk(0);
+    F.Wdword(0);
+    F.close_chunk();
+
+    F.open_chunk(1);
+    ObjectList& lst = Scene.ListObj(OBJCLASS_SCENEOBJECT);
+    for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
+    	CEditableObject* E=((CSceneObject*)(*it))->GetReference(); R_ASSERT(E);
+    	if (E->IsFlag(CEditableObject::eoHOM)) E->ExportHOMPart(F);
+    }
+    F.close_chunk();
+    AnsiString hom_name = "level.hom";
+	m_LevelPath.Update(hom_name);
+    F.SaveTo(hom_name.c_str(),0);
 	return true;
 }
 /*

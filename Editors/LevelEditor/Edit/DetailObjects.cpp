@@ -238,7 +238,7 @@ CDetailManager::CDetailManager(){
     ZeroMemory			(&m_Header,sizeof(DetailHeader));
     m_Selected.clear	();
     InitRender			();
-	VS					= Device.Streams.Create	(D3DFVF_XYZ | D3DFVF_TEX1, vs_size);
+//s	VS					= Device.Streams.Create	(D3DFVF_XYZ | D3DFVF_TEX1, vs_size);
 	Device.seqDevCreate.Add	(this,REG_PRIORITY_LOW);
 	Device.seqDevDestroy.Add(this,REG_PRIORITY_NORMAL);
 }
@@ -400,10 +400,10 @@ bool CDetailManager::UpdateBaseTexture(LPCSTR tex_name){
     	return false;
     }
     AnsiString fn = tex_name?tex_name:m_Base.GetName();
-    m_Base.Clear();
+//s    m_Base.Clear();
     m_Base.LoadImage(fn.c_str());
     if (!m_Base.Valid()){
-	    m_Base.Clear();
+//s	    m_Base.Clear();
     	ELog.DlgMsg(mtError,"Can't load base image '%s'!",fn.c_str());
     	return false;
     }
@@ -687,7 +687,7 @@ void CDetailManager::Clear(bool bOnlySlots){
 	if (!bOnlySlots){
 		RemoveObjects		();
 		m_ColorIndices.clear();
-	    m_Base.Clear		();
+//s	    m_Base.Clear		();
    		m_SnapObjects.clear	();
     }
     ZeroMemory			(&m_Header,sizeof(DetailHeader));
@@ -1039,7 +1039,7 @@ void CDetailManager::SBase::CreateRMFromObjects(const Fbox& box, ObjectList& lst
             }
         }
     }
-	stream = Device.Streams.Create(FVF::F_V,MAX_BUF_SIZE);
+//s	stream = Device.Streams.Create(FVF::F_V,MAX_BUF_SIZE);
 }
 
 void CDetailManager::SBase::Render()
@@ -1051,16 +1051,16 @@ void CDetailManager::SBase::Render()
     div_t cnt = div(mesh.size(),MAX_BUF_SIZE);
     DWORD vBase;
     for (int k=0; k<cnt.quot; k++){
-		LPBYTE pv = (LPBYTE)stream->Lock(MAX_BUF_SIZE,vBase);
-		CopyMemory(pv,mesh.begin()+k*MAX_BUF_SIZE,sizeof(FVF::V)*MAX_BUF_SIZE);
-		stream->Unlock(MAX_BUF_SIZE);
-		Device.DP(D3DPT_TRIANGLELIST,stream,vBase,MAX_BUF_SIZE/3);
+//s		LPBYTE pv = (LPBYTE)stream->Lock(MAX_BUF_SIZE,vBase);
+//s		CopyMemory(pv,mesh.begin()+k*MAX_BUF_SIZE,sizeof(FVF::V)*MAX_BUF_SIZE);
+//s		stream->Unlock(MAX_BUF_SIZE);
+//s		Device.DP(D3DPT_TRIANGLELIST,stream,vBase,MAX_BUF_SIZE/3);
     }
     if (cnt.rem){
-	    LPBYTE pv = (LPBYTE)stream->Lock(cnt.rem,vBase);
-		CopyMemory(pv,mesh.begin()+cnt.quot*MAX_BUF_SIZE,sizeof(FVF::V)*cnt.rem);
-	    stream->Unlock(cnt.rem);
-    	Device.DP(D3DPT_TRIANGLELIST,stream,vBase,cnt.rem/3);
+//s	    LPBYTE pv = (LPBYTE)stream->Lock(cnt.rem,vBase);
+//s		CopyMemory(pv,mesh.begin()+cnt.quot*MAX_BUF_SIZE,sizeof(FVF::V)*cnt.rem);
+//s	    stream->Unlock(cnt.rem);
+//s    	Device.DP(D3DPT_TRIANGLELIST,stream,vBase,cnt.rem/3);
     }
     Device.ResetNearer();
 }

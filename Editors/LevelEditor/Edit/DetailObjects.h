@@ -160,7 +160,7 @@ public:
 		SlotPart	  	G[dm_obj_in_slot];
 	};
 
-	CVertexStream*		VS;
+//	CVertexStream*		VS;
 	svector<Slot,dm_cache_size>					m_Cache;
 	svector<vector<SlotItem*>,dm_max_objects> 	m_Visible;
 
@@ -183,11 +183,11 @@ public:
 		DWORDVec		data;
 	    DEFINE_VECTOR	(FVF::V,TVertVec,TVertIt);
 		TVertVec		mesh;
-	    CVertexStream*	stream;
+//s	    CVertexStream*	stream;
     public:
         				SBase				();
         IC bool			Valid				(){return (w>0)&&(h>0)&&(!!data.size());}
-    	IC void			Clear				(){name[0]=0; w=0; h=0; stream=0; data.clear(); mesh.clear(); DestroyShader();}
+//s    	IC void			Clear				(){name[0]=0; w=0; h=0; stream=0; data.clear(); mesh.clear(); DestroyShader();}
         void			CreateRMFromObjects	(const Fbox& box, ObjectList& lst);
         void			Render				();
         void			CreateShader		();

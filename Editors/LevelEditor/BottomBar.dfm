@@ -15,9 +15,9 @@ object fraBottomBar: TfraBottomBar
     BevelOuter = bvLowered
     TabOrder = 0
     object paInfo: TPanel
-      Left = 326
+      Left = 202
       Top = 1
-      Width = 116
+      Width = 240
       Height = 15
       Align = alRight
       BevelOuter = bvNone
@@ -25,7 +25,7 @@ object fraBottomBar: TfraBottomBar
       object paSel: TPanel
         Left = 0
         Top = 0
-        Width = 58
+        Width = 54
         Height = 15
         Align = alLeft
         Alignment = taLeftJustify
@@ -41,7 +41,7 @@ object fraBottomBar: TfraBottomBar
         TabOrder = 0
       end
       object paGridSquareSize: TPanel
-        Left = 58
+        Left = 182
         Top = 0
         Width = 58
         Height = 15
@@ -58,11 +58,29 @@ object fraBottomBar: TfraBottomBar
         ParentFont = False
         TabOrder = 1
       end
+      object paCamera: TPanel
+        Left = 54
+        Top = 0
+        Width = 128
+        Height = 15
+        Align = alClient
+        Alignment = taLeftJustify
+        BevelInner = bvLowered
+        Caption = 'C:'
+        Color = clSilver
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clMaroon
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 2
+      end
     end
     object paStatusBar: TPanel
       Left = 176
       Top = 1
-      Width = 150
+      Width = 26
       Height = 15
       Align = alClient
       BevelOuter = bvNone
@@ -81,7 +99,7 @@ object fraBottomBar: TfraBottomBar
       object paStatus: TPanel
         Left = 48
         Top = 0
-        Width = 102
+        Width = 347
         Height = 15
         Align = alClient
         Alignment = taLeftJustify
@@ -94,7 +112,7 @@ object fraBottomBar: TfraBottomBar
         ParentFont = False
         TabOrder = 1
         object cgProgress: TCGauge
-          Left = -27
+          Left = 218
           Top = 2
           Width = 127
           Height = 11

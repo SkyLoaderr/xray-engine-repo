@@ -324,6 +324,9 @@ public:
     // ogf
     bool			ExportObjectOGF			(LPCSTR fname);
     bool			PrepareOGF				(CFS_Base& F);
+    // HOM
+    bool			ExportHOMPart			(CFS_Base& F);
+    bool			ExportHOM				(LPCSTR fname);
 #ifdef _MAX_EXPORT
 	BOOL			ExtractTexName			(Texmap *src, LPSTR dest);
 	BOOL			ParseStdMaterial		(StdMat* src, CSurface* dest);

@@ -426,34 +426,12 @@ void __fastcall TfrmEditLibrary::ebExportHOMClick(TObject *Sender)
     	if (obj){
 		    AnsiString save_nm;
         	if (Engine.FS.GetSaveName(Engine.FS.m_GameDO,save_nm)){
-//------------------------------------------------------------------------------
-				CFS_Memory FS;
-                FS.open_chunk(0);
-                FS.Wdword(0);
-                FS.close_chunk();
-                FS.open_chunk(1);
-				EditMeshVec& m_lst=obj->Meshes();
-				for (EditMeshIt m_it=m_lst.begin(); m_it!=m_lst.end(); m_it++){
-					for (SurfFacesPairIt sf_it=(*m_it)->m_SurfFaces.begin(); sf_it!=(*m_it)->m_SurfFaces.end(); sf_it++){
-                    	BOOL b2Sided = sf_it->first->_2Sided();
-                        INTVec& i_lst= sf_it->second;
-                        for (INTIt i_it=i_lst.begin(); i_it!=i_lst.end(); i_it++){
-                        	st_Face& F = (*m_it)->m_Faces[*i_it];
-                            for (int k=0; k<3; k++)
-	                            FS.Wvector((*m_it)->m_Points[F.pv[k].pindex]);
-                            FS.Wdword(b2Sided);
-                        }
-                    }
-                }
-                FS.close_chunk();
                 save_nm = ChangeFileExt(save_nm,".hom");
-                FS.SaveTo(save_nm.c_str(),0);
-				ELog.DlgMsg(mtInformation, "Export complete.");
-
-//------------------------------------------------------------------------------
-//                if (!obj->ExportHOM()){
-//                    ELog.DlgMsg(mtInformation, "Can't export object '%s'.", obj->GetName());
-//                }
+                if (!obj->ExportHOM(save_nm.c_str())){
+                    ELog.DlgMsg(mtInformation, "Can't export object '%s'.", obj->GetName());
+                }else{
+					ELog.DlgMsg(mtInformation, "Export complete.");
+                }
             }else{
 	            ELog.DlgMsg(mtError,"Export canceled.");
             }

@@ -196,45 +196,22 @@ void CRenderDevice::_Create(CStream* F){
 	// signal another objects
 	seqDevCreate.Process		(rp_DeviceCreate);
 	Primitive.OnDeviceCreate	();
+    Streams.OnDeviceCreate		();
+    UI.OnDeviceCreate			();
 
 #ifdef _LEVEL_EDITOR
     UpdateFog();
 #else
     UpdateFog(dwClearColor,0.f,m_Camera.m_Zfar);
 #endif
-
-	// Create TL-primitive
-	{
-		const DWORD dwTriCount = 1024;
-		const DWORD dwIdxCount = dwTriCount*2*3;
-		WORD	*Indices = 0;
-		DWORD	dwUsage=D3DUSAGE_WRITEONLY;
-		if (HW.Caps.vertex.bSoftware)	dwUsage|=D3DUSAGE_SOFTWAREPROCESSING;
-		R_CHK(HW.pDevice->CreateIndexBuffer(dwIdxCount*2,dwUsage,D3DFMT_INDEX16,D3DPOOL_DEFAULT,&Streams_QuadIB));
-		R_CHK(Streams_QuadIB->Lock(0,0,(BYTE**)&Indices,D3DLOCK_NOSYSLOCK));
-		{
-			int		Cnt = 0;
-			int		ICnt= 0;
-			for (int i=0; i<dwTriCount; i++)
-			{
-				Indices[ICnt++]=Cnt+0;
-				Indices[ICnt++]=Cnt+1;
-				Indices[ICnt++]=Cnt+2;
-
-				Indices[ICnt++]=Cnt+3;
-				Indices[ICnt++]=Cnt+2;
-				Indices[ICnt++]=Cnt+1;
-
-				Cnt+=4;
-			}
-		}
-		R_CHK(Streams_QuadIB->Unlock());
-	}
 }
 
 void CRenderDevice::_Destroy(BOOL	bKeepTextures){
 	bReady 						= FALSE;
     m_CurrentShader				= 0;
+
+    Streams.OnDeviceDestroy		();
+    UI.OnDeviceDestroy			();
 
 	if (m_WireShader) Shader.Delete(m_WireShader);
 	if (m_SelectionShader) Shader.Delete(m_SelectionShader);
@@ -246,8 +223,6 @@ void CRenderDevice::_Destroy(BOOL	bKeepTextures){
 
 	Primitive.OnDeviceDestroy	();
 	Streams.OnDeviceDestroy		();
-
-	_RELEASE					(Streams_QuadIB);
 }
 
 #ifdef _LEVEL_EDITOR
@@ -365,30 +340,25 @@ void CRenderDevice::UpdateTimer(){
     m_Camera.Update(fTimeDelta);
 }
 
-void CRenderDevice::DP(D3DPRIMITIVETYPE pt, CVertexStream* vs, DWORD vBase, DWORD pc){
-//	if (!m_CurrentShader) return;
+void CRenderDevice::DP(D3DPRIMITIVETYPE pt, CVS* VS, DWORD vBase, DWORD pc){
 	::Shader* S 		= m_CurrentShader?m_CurrentShader:m_WireShader;
     DWORD dwRequired	= S->lod0->Passes.size();
-	Primitive.setVerticesUC(vs->getFVF(),vs->getStride(),vs->getBuffer());
+	Primitive.setVertices(VS->dwHandle,VS->dwStride,Device.Streams.Vertex.Buffer());
     for (DWORD dwPass = 0; dwPass<dwRequired; dwPass++){
-        Shader.set_Shader(S,dwPass);
-		Primitive.Render(pt,vBase,pc);
+        Shader.set_Shader	(S,dwPass);
+		Primitive.Render	(pt,vBase,pc);
     }
-    UPDATEC(pc*3,pc,dwRequired);
 }
 
-void CRenderDevice::DIP(D3DPRIMITIVETYPE pt, CVertexStream* vs, DWORD vBase, DWORD vc, CIndexStream* is, DWORD iBase, DWORD pc){
-//	if (!m_CurrentShader) return;
+void CRenderDevice::DIP(D3DPRIMITIVETYPE pt, CVS* vs, DWORD vBase, DWORD vc, DWORD iBase, DWORD pc){
 	::Shader* S 		= m_CurrentShader?m_CurrentShader:m_WireShader;
     DWORD dwRequired	= S->lod0->Passes.size();
-//S
-    Primitive.setIndices	(vBase, is->getBuffer());
-    Primitive.setVerticesUC	(vs->getFVF(),vs->getStride(),vs->getBuffer());
+    Primitive.setIndices	(vBase, Device.Streams.Index.Buffer());
+    Primitive.setVertices	(vs->dwHandle,vs->dwStride,Device.Streams.Vertex.Buffer());
     for (DWORD dwPass = 0; dwPass<dwRequired; dwPass++){
         Shader.set_Shader(S,dwPass);
 		Primitive.Render(pt,vBase,vc,iBase,pc);
     }
-    UPDATEC(vc,pc,dwRequired);
 }
 
 void CRenderDevice::ReloadTextures()

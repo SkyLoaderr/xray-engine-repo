@@ -84,6 +84,7 @@ protected:
 	void 	AddUniqueTexName        (const char *name);
 
     bool 	BuildSkyModel			();
+    bool 	BuildHOMModel			();
     BOOL	ParseStaticObjects		(ObjectList& lst);
     BOOL 	CompileStatic		   	();
 

@@ -57,6 +57,7 @@ BOOL SceneBuilder::Compile()
             VERIFY_COMPILE(BuildLTX(),					"Failed to build level description.");
             VERIFY_COMPILE(BuildGame(),					"Failed to build game.");
             VERIFY_COMPILE(BuildSkyModel(),				"Failed to build OGF model.");
+            VERIFY_COMPILE(BuildHOMModel(),				"Failed to build HOM model.");
             VERIFY_COMPILE(WriteTextures(),				"Failed to write textures."); 				// only implicit lighted
         } while(0);
 
@@ -92,6 +93,7 @@ BOOL SceneBuilder::MakeGame( )
             VERIFY_COMPILE(BuildLTX(),					"Failed to build level description.");
             VERIFY_COMPILE(BuildGame(),					"Failed to build game.");
             VERIFY_COMPILE(BuildSkyModel(),				"Failed to build OGF model.");
+            VERIFY_COMPILE(BuildHOMModel(),				"Failed to build HOM model.");
         } while(0);
 
         if (!error_text.IsEmpty()) 	ELog.DlgMsg(mtError,error_text.c_str());

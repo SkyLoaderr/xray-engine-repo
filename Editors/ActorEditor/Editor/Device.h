@@ -75,7 +75,6 @@ public:
 	CDraw					Primitive;
 	// Shared Streams
 	CSharedStreams	 	  	Streams;
-	IDirect3DIndexBuffer8*	Streams_QuadIB;
 
 	CStats					Statistic;
 
@@ -135,8 +134,8 @@ public:
 
 	// draw
 	void			   		SetShader		(Shader* sh){m_CurrentShader = sh;}
-	void			   		DP				(D3DPRIMITIVETYPE pt, CVertexStream* VS, DWORD vBase, DWORD pc);
-	void 					DIP				(D3DPRIMITIVETYPE pt, CVertexStream* vs, DWORD vBase, DWORD vc, CIndexStream* is, DWORD iBase, DWORD pc);
+	void			   		DP				(D3DPRIMITIVETYPE pt, CVS* vs, DWORD vBase, DWORD pc);
+	void 					DIP				(D3DPRIMITIVETYPE pt, CVS* vs, DWORD vBase, DWORD vc, DWORD iBase, DWORD pc);
 
     // light&material
     IC void					LightEnable		(DWORD dwLightIndex, BOOL bEnable){

@@ -107,7 +107,7 @@ class CSector;
 	    DWORD			dwNumVertex;
 		BYTE* 			buffer;
 		DWORD			buffer_size;
-	    CVertexStream*	stream;
+//	    CVS*			vs;
 		st_RenderBuffer	(DWORD sv, DWORD nv):dwStartVertex(sv),dwNumVertex(nv),buffer(0),buffer_size(0){;}
 	};
 	DEFINE_VECTOR(st_RenderBuffer,RBVector,RBVecIt);

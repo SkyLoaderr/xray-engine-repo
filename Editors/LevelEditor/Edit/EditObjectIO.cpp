@@ -307,4 +307,35 @@ bool CEditableObject::ExportObjectOGF(LPCSTR fname)
     }
     return false;
 }
+//------------------------------------------------------------------------------
+bool CEditableObject::ExportHOMPart(CFS_Base& F)
+{
+    for (EditMeshIt m_it=m_Meshes.begin(); m_it!=m_Meshes.end(); m_it++){
+        for (SurfFacesPairIt sf_it=(*m_it)->m_SurfFaces.begin(); sf_it!=(*m_it)->m_SurfFaces.end(); sf_it++){
+            BOOL b2Sided = sf_it->first->_2Sided();
+            INTVec& i_lst= sf_it->second;
+            for (INTIt i_it=i_lst.begin(); i_it!=i_lst.end(); i_it++){
+                st_Face& face = (*m_it)->m_Faces[*i_it];
+                for (int k=0; k<3; k++)
+                    F.Wvector((*m_it)->m_Points[face.pv[k].pindex]);
+                F.Wdword(b2Sided);
+            }
+        }
+    }
+	return true;
+}
+//------------------------------------------------------------------------------
+bool CEditableObject::ExportHOM(LPCSTR fname)
+{
+    CFS_Memory F;
+    F.open_chunk(0);
+    F.Wdword(0);
+    F.close_chunk();
+    F.open_chunk(1);
+    ExportHOMPart(F);
+    F.close_chunk();
+    F.SaveTo(fname,0);
+	return true;
+}
+//------------------------------------------------------------------------------
 #endif
