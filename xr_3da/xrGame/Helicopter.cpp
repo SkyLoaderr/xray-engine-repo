@@ -246,30 +246,17 @@ CHelicopter::shedule_Update(u32	time_delta)
 	if (!getEnabled())	return;
 	inherited::shedule_Update	(time_delta);
 	
-	m_movementMngr.shedule_Update(time_delta);
-    
-
-	updateMGunDir();
+	if( GetfHealth() >= 0.0f )
+	{
+		m_movementMngr.shedule_Update(time_delta);
+		updateMGunDir();
+	};
 
 	if ( GetfHealth() <= 0.0f && !PPhysicsShell() )
 	{//die
 		PPhysicsShell()=P_build_Shell	(this,false);
 	}
 
-/*	if(state()==CHelicopter::eMovingByAttackTraj)
-	{
-		updateMGunDir();
-		//начать стрельбу
-		float dist = XFORM().c.distance_to_xz(m_destEnemyPos);
-		if(dist <= m_maxFireDist)
-			FireStart();
-	}else
-	{
-		FireEnd();
-		m_bone_x_angle = 0.0f;
-		m_bone_y_angle = 0.0f;
-	}
-*/
 }
 
 void		
