@@ -1540,9 +1540,6 @@
 							RelativePath=".\scripts\xr_camper.script">
 						</File>
 						<File
-							RelativePath=".\scripts\xr_comm_ptr.script">
-						</File>
-						<File
 							RelativePath=".\scripts\xr_heli_hunter.script">
 						</File>
 						<File
