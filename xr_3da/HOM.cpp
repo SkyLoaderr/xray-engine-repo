@@ -146,7 +146,7 @@ void CHOM::Render_DB	(CFrustum& base)
 		// Control skipping
 		occTri& T		= m_pTris	[it->id];
 		if (T.skip)		{ T.skip--; continue; }
-		DWORD	next	= ::Random.randI(10);
+		DWORD	next	= 2+::Random.randI(10);
 		
 		// Test for good occluder - should be improved :)
 		if (!(T.flags || (T.plane.classify(COP)>0)))	
