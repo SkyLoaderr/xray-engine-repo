@@ -237,6 +237,8 @@ void CUIDragDropItem::Rescale(float scale_x, float scale_y)
 {
 	SetWidth	(iFloor(GetGridWidth() * scale_x * INV_GRID_WIDTH));
 	SetHeight	(iFloor(GetGridHeight() * scale_y * INV_GRID_HEIGHT));
+	cur_scale_x = scale_x;
+	cur_scale_y = scale_y;
 }
 //////////////////////////////////////////////////////////////////////////
 

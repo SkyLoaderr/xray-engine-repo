@@ -24,10 +24,18 @@ public:
 
 	virtual void SetData(void* pData);
 	virtual void Draw();
+	virtual void Update();
+	virtual void Rescale(float, float);
 	virtual void SetTextureScaleXY(float x, float y);
 
 
 protected:
+			void UpdateGridWidth					(bool b);
+
+	int iSilencerGridWidth,iSilencerGridHeight;
+	int iScopeGridWidth,iScopeGridHeight;
+	int iLauncherGridWidth,iLauncherGridHeight;
+
 	CUIStaticItem m_UIStaticGrenadeLauncher;
 	CUIStaticItem m_UIStaticScope;
 	CUIStaticItem m_UIStaticSilencer;

@@ -74,13 +74,14 @@ public:
 	bool NeedMoveWithoutRectCheck() { return m_bMoveOnNextDrop ? m_bMoveOnNextDrop = false, true : false; }
 
 	// Пропорционально скейлим себя по типу зума
-	void Rescale(float scale_x, float scale_y);
+	virtual void Rescale(float scale_x, float scale_y);
 
 	// Подсвечиваем себя в инвентаре
 	void Highlight(bool on);
 
 protected:
 	
+	float cur_scale_x, cur_scale_y;
 	int m_iOldMouseX;
 	int m_iOldMouseY;
 

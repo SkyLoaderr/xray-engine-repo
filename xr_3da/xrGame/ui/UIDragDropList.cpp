@@ -444,7 +444,7 @@ bool CUIDragDropList::CanPlaceItemInGrid(CUIDragDropItem* pItem, int& place_row,
 
 	if(place_col == -1)
 	{
-		place_col = iFloor((float)item_center_x/GetCellWidth() - (float)pItem->GetGridWidth()/2  + .5f);
+		place_col = iFloor((float)item_center_x/GetCellWidth() - (float)pItem->GetGridWidth()/2 /* + .5f*/);
 	}
 	if(place_row == -1)
 	{
