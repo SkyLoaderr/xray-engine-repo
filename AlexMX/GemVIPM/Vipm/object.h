@@ -106,12 +106,13 @@ struct GeneralCollapseInfo
 
 struct Object
 {
+/*
 	struct edge_info
 	{
 		float				err;
 		int					v1, v2;
 		MxVector			target;
-							edge_info			(){};
+		edge_info			(unsigned int D):target(D){};
 	};
 	xr_vector<edge_info*>	edge_list;
 
@@ -119,9 +120,10 @@ struct Object
 
 	void					collect_quadrics	();
 	unsigned int			quadric_count		() const { return __quadrics.size(); }
-	void					compute_face_quadric(MeshTri* tri, MxQuadric& Q);
 	MxQuadric&				quadric				(unsigned int i)       { return *(__quadrics[i]); }
 	const MxQuadric&		quadric				(unsigned int i) const { return *(__quadrics[i]); }
+*/
+	void					compute_face_quadric(MeshTri* tri, MxQuadric& Q);
 
 	// The permanent shape.
 	MeshPt		PermPtRoot;
@@ -153,6 +155,8 @@ public:
 				Object						();
 
 				~Object						();
+
+	void		initialize					();
 
 	// Check that this is sensible.
 	void		CheckObject					( void );

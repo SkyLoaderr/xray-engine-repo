@@ -13,11 +13,28 @@
 //---------------------------------------------------------------------------------------------------------------
 //
 //---------------------------------------------------------------------------------------------------------------
+#define MAX_DECIMATE_ERROR 0.5f
+#define MAX_DECIMATE_ERROR_TOLERANCE 0.1f
+#define COMPACTNESS_RATIO  0.5f
+/*
+struct SContractionParams{
+	Object*
+	SContractionParams(){}
+}
+*/
+
+MeshPt* FindPt(Object* m_pObject, u32 idx)
+{
+	MeshPt* pt;
+	for (pt=m_pObject->CurPtRoot.ListNext(); pt!=NULL; pt=pt->ListNext()){
+		if (pt->mypt.dwIndex==idx) return pt;
+	}
+	return 0;
+}
+
 void CMyD3DApplication::CollapseAll()
 {
-	Object *object	= m_pObject;
-
-//.	m_pObject->collect_quadrics();
+	m_pObject->initialize			();
 
 	while (true){
 		// Find the best collapse you can.
@@ -36,9 +53,9 @@ void CMyD3DApplication::CollapseAll()
 		int			iAvCount			= 0;
 
 		// Flush the cache, just in case.
-		object->FindCollapseError		( NULL, NULL, FALSE );
+		m_pObject->FindCollapseError		( NULL, NULL, FALSE );
 
-		for ( ppt = object->CurPtRoot.ListNext(); ppt != NULL; ppt = ppt->ListNext() ){
+		for ( ppt = m_pObject->CurPtRoot.ListNext(); ppt != NULL; ppt = ppt->ListNext() ){
 			// Disallow any pts that are on an edge - shouldn't be collapsing them.
 			BOOL bAllowed = TRUE;
 			for ( pedge = ppt->FirstEdge(); pedge != NULL; pedge = ppt->NextEdge() ){
@@ -51,14 +68,14 @@ void CMyD3DApplication::CollapseAll()
 			if ( !bAllowed ) continue;
 
 			BOOL bRequiresNewLevel = FALSE;
-			if ( !object->CollapseAllowedForLevel ( ppt, object->iCurSlidingWindowLevel ) ){
+			if ( !m_pObject->CollapseAllowedForLevel ( ppt, m_pObject->iCurSlidingWindowLevel ) ){
 				// This collapse would force a new level.
 				bRequiresNewLevel = TRUE;
 			}
 
 			// collect error
 			for ( pedge = ppt->FirstEdge(); pedge != NULL; pedge = ppt->NextEdge() ){
-				float fErrorBin = object->FindCollapseError ( ppt, pedge, TRUE );
+				float fErrorBin = m_pObject->FindCollapseError ( ppt, pedge, TRUE );
 				iAvCount++;
 				fAverage += fErrorBin;
 				if ( bRequiresNewLevel ){
@@ -93,7 +110,7 @@ void CMyD3DApplication::CollapseAll()
 		if ( ( pedgeBestError != NULL ) && ( pptBestError != NULL ) ){
 			MeshPt *pKeptPt = pedgeBestError->OtherPt ( pptBestError ); 
 			ASSERT ( pKeptPt != NULL );
-			object->CreateEdgeCollapse ( pptBestError, pKeptPt );
+			m_pObject->CreateEdgeCollapse ( pptBestError, pKeptPt );
 		}else{
 			break;
 		}

@@ -518,6 +518,7 @@ void Object::compute_face_quadric(MeshTri* tri, MxQuadric& Q)
 
 	Q			= MxQuadric(v1, v2, v3, 0.f);
 }
+/*
 void Object::collect_quadrics()
 {
 	__quadrics.resize(iFullNumPts);
@@ -653,5 +654,33 @@ float Object::FindCollapseError ( MeshPt *pptBinned, MeshEdge *pedgeCollapse, lo
 		// And find the error once the collapse has happened.
 		return qSum.FindError ( pptKept->mypt.vPos );
 	}
+}
+/*
+void Object::constrain_boundaries()
+{
+	MxVertexList star;
+	MxFaceList faces;
+
+	for(MxVertexID i=0; i<m->vert_count(); i++)
+	{
+		star.reset();
+		m->collect_vertex_star(i, star);
+
+		for(unsigned int j=0; j<(unsigned int)star.length(); j++){
+			if( i < star(j) )
+			{
+				faces.reset();
+				m->collect_edge_neighbors(i, star(j), faces);
+				if( faces.length() == 1 )
+					discontinuity_constraint(i, star(j), faces);
+			}
+		}
+	}
+}
+*/
+void Object::initialize()
+{
+//	collect_quadrics		();
+//	constrain_boundaries	();
 }
 

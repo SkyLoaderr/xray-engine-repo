@@ -80,19 +80,7 @@ CMyD3DApplication::CMyD3DApplication()
 //-----------------------------------------------------------------------------
 HRESULT CMyD3DApplication::OneTimeSceneInit()
 {
-
-	m_pObject				= new Object;
-/*
-	ObjectInstance			*pInst;
-	D3DXMATRIX				mat;
-	D3DXMatrixIdentity		( &mat );
-	
-	pInst					= &m_ObjectInstRoot;
-
-	// First one should always be at the origin - it's used for editing.
-	pInst					= new ObjectInstance ( m_pObject, pInst );
-	pInst->matOrn			= mat;
-*/
+	m_pObject				= xr_new<Object>();
     return S_OK;
 }
 
@@ -198,11 +186,7 @@ void CMyD3DApplication::SetMenuItems()
 //-----------------------------------------------------------------------------
 HRESULT CMyD3DApplication::FinalCleanup()
 {
-	if ( m_pObject != NULL )
-	{
-		delete m_pObject;
-		m_pObject = NULL;
-	}
+	xr_delete(m_pObject);
 
     SAFE_DELETE( m_pFont );
     return S_OK;

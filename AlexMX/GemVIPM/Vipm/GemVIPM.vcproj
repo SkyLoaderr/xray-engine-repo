@@ -55,7 +55,7 @@
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="TRUE"
 				AdditionalDependencies="d3dx8dt.lib winmm.lib dinput8.lib dxguid.lib d3d8.lib "
-				OutputFile=".\Debug/GemVIPM.exe"
+				OutputFile="x:\GemVIPM.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
 				IgnoreAllDefaultLibraries="FALSE"

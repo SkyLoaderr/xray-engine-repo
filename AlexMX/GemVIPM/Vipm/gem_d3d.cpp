@@ -34,8 +34,6 @@ LPDIRECT3DDEVICE8		g_pd3dDevice	= NULL;
 //-----------------------------------------------------------------------------
 HRESULT CMyD3DApplication::Render()
 {
-//	Object *pFirstObj = m_pObject;
-
 	{
 		MeshPt *ppt;
 		MeshEdge *pedge;
@@ -81,8 +79,6 @@ HRESULT CMyD3DApplication::Render()
 
 
 			m_pd3dDevice->SetTexture( 0, NULL );
-
-//.			m_pd3dDevice->SetTransform( D3DTS_WORLD,      &pObjInst->matOrn );
 
 			m_pd3dDevice->SetRenderState ( D3DRS_LIGHTING, FALSE );
 			m_pd3dDevice->SetRenderState ( D3DRS_ZENABLE, TRUE );
@@ -246,17 +242,8 @@ HRESULT CMyD3DApplication::InvalidateDeviceObjects()
 
     FreeDirectInput();
 
-	// Warn things that D3D is leaving now.
-/*
-//.
-	for ( ObjectInstance *pOI = m_ObjectInstRoot.ListNext(); pOI != NULL; pOI = pOI->ListNext() )
-	{
-		pOI->AboutToChangeDevice();
-	}
-*/
 	// Let the outside world know.
 	g_pd3dDevice = NULL;
-
 
     return S_OK;
 }
@@ -357,8 +344,8 @@ void CMyD3DApplication::CreateTestObject ()
 	//hres = D3DXCreateTeapot ( g_pd3dDevice, &pmeshTeapot, NULL );
 	// These are just some simpler test meshes
 	//hres = D3DXCreatePolygon ( g_pd3dDevice, 1.0f, 6, &pmeshTeapot, NULL );
-	//hres = D3DXCreateSphere ( g_pd3dDevice, 1.0f, 12, 6, &pmeshTeapot, NULL );
-	hres = D3DXCreateSphere ( g_pd3dDevice, 1.0f, 30, 15, &pmeshTeapot, NULL );
+	hres = D3DXCreateSphere ( g_pd3dDevice, 1.0f, 4, 6, &pmeshTeapot, NULL );
+	//hres = D3DXCreateSphere ( g_pd3dDevice, 1.0f, 30, 15, &pmeshTeapot, NULL );
 
 	// OK, now extract the data.
 	int iNumVerts = pmeshTeapot->GetNumVertices();
@@ -377,15 +364,15 @@ void CMyD3DApplication::CreateTestObject ()
 	// The de-index list.
 	MeshPt **ppPts = new MeshPt*[iNumVerts];
 
+//	srand( (unsigned)time( NULL ) );
+
 	for ( int i = 0; i < iNumVerts; i++ )
 	{
 		ppPts[i] = new MeshPt ( &m_pObject->PermPtRoot );
 		ppPts[i]->mypt.vPos		= pFVF.Position();
 		ppPts[i]->mypt.vNorm	= pFVF.Normal();
-		ppPts[i]->mypt.fU		= 0.001f;
-		ppPts[i]->mypt.fV		= 0.001f;
-//		ppPts[i]->mypt.fU		= pFVF.U0();
-//		ppPts[i]->mypt.fV		= pFVF.V0();
+		ppPts[i]->mypt.fU		= 1.f;//float(rand())/32767.f;
+		ppPts[i]->mypt.fV		= 1.f;//float(rand())/32767.f;
 
 		ppPts[i]->mypt.dwIndex	= i;
 
@@ -464,9 +451,6 @@ void CMyD3DApplication::CreateTestObject ()
 	{
 		edge = edge->ListNext();
 	}
-
-	m_pObject->iCurSlidingWindowLevel = 0;
-	m_pObject->SetNewLevel ( m_pObject->iCurSlidingWindowLevel );
 }
 
 
