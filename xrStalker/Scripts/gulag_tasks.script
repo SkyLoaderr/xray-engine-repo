@@ -940,7 +940,7 @@ function loadStates(gname, type)
 			local actor = level.actor()
 			local zone = level.object("gar_shooting")
 			if actor ~= nil and zone ~= nil then
-				if actor:position():distance_to(zone:position()) < 10 then
+				if actor:position():distance_to(zone:position()) < 50 then
 					return 1
 				else
 					return 0
