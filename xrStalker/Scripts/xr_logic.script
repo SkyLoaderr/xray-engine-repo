@@ -388,20 +388,6 @@ function non_goap_waypoint_callback_event(npc, st, action_type, index)
 	end
 end
 
-function non_goap_update_actions_event(npc, st, delta)
-	--printf("DEBUG: non_goap_update_actions_event [%s]", utils.to_str(xr_motivator.storage[npc:id()].active_section))
-	
-	if not st.actions then
-		local global_st = xr_motivator.storage[npc:id()]
-		printf("WARNING: reset_actions: scheme '%s', section '%s': at least one action in a scheme must be " ..
-			"subscribed for events", global_st.active_scheme, global_st.active_section)
-		return
-	end
-	for action_ptr, is_active in pairs(st.actions) do
-		action_ptr:update(delta)
-	end
-end
-
 function pick_section_from_condlist(actor, npc, condlist)
 	local rval = math.random(100)
 	--printf("_bp: pick_section_from_condlist: rval = %d", rval)
