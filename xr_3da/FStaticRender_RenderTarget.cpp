@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "fstaticrender_rendertarget.h"
+#include "xr_ini.h"
 
 static LPCSTR		RTname			= "$user$rendertarget";
 int					psSupersample	= 0;
@@ -54,7 +55,7 @@ BOOL CRenderTarget::Create	()
 void CRenderTarget::OnDeviceCreate	()
 {
 	bAvailable					= Create	();
-	set_blur					(1.f);
+	eff_load					("postprocess_base");
 }
 
 void CRenderTarget::OnDeviceDestroy	()
@@ -66,6 +67,15 @@ void CRenderTarget::OnDeviceDestroy	()
 	Device.Shader.Delete		(pShaderSet);
 	Device.Shader._DeleteRT		(RT);
 	Device.Shader._DeleteVS		(pVS);
+}
+
+void CRenderTarget::eff_load	(LPCSTR n)
+{
+	param_blur					= pSettings->ReadFLOAT	(n,"blur");
+	param_gray					= pSettings->ReadFLOAT	(n,"gray");
+	param_noise					= pSettings->ReadFLOAT	(n,"noise");
+	param_noise_scale			= pSettings->ReadINT	(n,"noise_scale");
+	param_noise_color			= pSettings->ReadCOLOR	(n,"noise_color");
 }
 
 void CRenderTarget::e_render_noise	()
@@ -91,9 +101,8 @@ void CRenderTarget::e_render_noise	()
 	p1.set		(end_u,		end_v	);
 
 	u32			Cblend				= iFloor		(param_noise*255.f);
-	u32			Cbase				= 255;
 	clamp		(Cblend,0u,255u);
-	u32			Cgray				= D3DCOLOR_RGBA	(Cbase,Cbase,Cbase,Cblend);
+	u32			Cgray				= param_noise_color | D3DCOLOR_RGBA	(0,0,0,Cblend);
 
 	// 
 	u32			Offset;

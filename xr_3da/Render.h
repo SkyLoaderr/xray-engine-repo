@@ -22,6 +22,7 @@ namespace PS	{
 class	ENGINE_API	CRender_target
 {
 public:
+	virtual void					eff_load	(LPCSTR n)	= 0;
 	virtual	void					set_blur	(float f)	= 0;
 	virtual	void					set_gray	(float f)	= 0;
 	virtual void					set_noise	(float f)	= 0;
