@@ -52,6 +52,7 @@ public:
 			Fmatrix						view;
 			Fmatrix						project;
 			Fmatrix						combine;
+			BOOL						transluent;
 		}	D;
 		struct		_P		{
 			Fmatrix						world;
