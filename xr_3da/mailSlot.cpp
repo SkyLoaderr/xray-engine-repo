@@ -21,7 +21,6 @@ void msCreate		(LPCSTR name)
 
 void msRead			(void) 
 {
-	Msg				("- msREAD -");
     DWORD cbMessage, cMessage, cbRead;
 	BOOL fResult;
 	LPSTR lpszBuffer; 
