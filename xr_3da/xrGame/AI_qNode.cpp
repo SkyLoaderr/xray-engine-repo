@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "ai_space.h"
-#include "xr_creator.h"
 
 BOOL InsideNode (NodeCompressed& N, NodePosition& P)
 {

@@ -10,7 +10,7 @@
 #include "..\xrLevel.h"
 
 namespace AI {
-	class ENGINE_API NodeEstimator
+	class	NodeEstimator
 	{
 		friend class CAI_Space;
 	public:
@@ -22,20 +22,20 @@ namespace AI {
 		// Return: min - best, max - worse
 		virtual	float	Estimate	(NodeCompressed* Node, float SqrDist, BOOL& bStop)=0;
 	};
-	class ENGINE_API NodeHeuristic
+	class	NodeHeuristic
 	{
 	};
 
 	const int	hashSize	= 32;
 
-	class	ENGINE_API	Path
+	class	Path
 	{
 	public:
 		CList<DWORD>	Nodes;
 	};
 };
 
-class ENGINE_API CAI_Space  
+class CAI_Space
 {
 private:
 	// Initial data
