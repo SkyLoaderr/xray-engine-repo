@@ -78,6 +78,8 @@ public:
 	virtual bool		CanBeReady				();
 	virtual BOOL		CanCallBuyMenu			();
 
+	virtual	void		SetBuyMenuItems			();
+
 	/////////
 	CUIInventoryWnd		InventoryMenu;
 	CUITextBanner		TimeMsgStatic, TimeMsgDyn;

@@ -9,6 +9,7 @@
 #include "level.h"
 #include "game_cl_base.h"
 #include "Spectator.h"
+#include "Inventory.h"
 
 #define MSGS_OFFS 510
 
@@ -259,6 +260,8 @@ bool CUIGameDM::IR_OnKeyboardPress(int dik)
 
 				SetCurrentBuyMenu	();
 
+				SetBuyMenuItems		();
+
 				StartStopMenu(pCurBuyMenu);
 			}break;
 		case DIK_N:
@@ -497,4 +500,22 @@ void		CUIGameDM::SetCurrentBuyMenu	()
 	game_cl_GameState::Player* P = Game().local_player;
 	if (!P) return;
 	pCurBuyMenu->SetMoneyAmount(P->money_for_round);
+};
+
+void		CUIGameDM::SetBuyMenuItems		()
+{
+	game_cl_GameState::Player* P = Game().local_player;
+	if (!P) return;
+
+	CActor* pCurActor = dynamic_cast<CActor*> (Level().Objects.net_Find	(P->GameID));
+	if (!pCurActor) return;
+
+	TIItemSet::const_iterator	I = pCurActor->inventory().m_all.begin();
+	TIItemSet::const_iterator	E = pCurActor->inventory().m_all.end();
+	for ( ; I != E; ++I) 
+	{
+		PIItem pItem = (*I);
+		if ((*I)->getDestroy() || (*I)->m_drop) continue;
+		pCurBuyMenu->MoveWeapon(*pItem->cNameSect());
+	};
 };
