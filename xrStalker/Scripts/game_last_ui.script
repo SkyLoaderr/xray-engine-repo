@@ -1,0 +1,19 @@
+
+class "ui_game_LastStanding" (UIGame_custom_script)
+
+function ui_game_LastStanding:__init() super()
+	printf		("ui_game_LastStanding::ui_game_LastStanding() called!")
+end
+
+function ui_game_LastStanding:__finalize()
+	printf		("ui_game_LastStanding::~ui_game_LastStanding() called!")
+end
+
+
+function ui_game_LastStanding:Init()
+local a = 8
+end
+
+function ui_game_LastStanding:SetClGame(cl_game)
+   self.m_cl_game = cl_game
+end

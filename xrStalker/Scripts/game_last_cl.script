@@ -1,0 +1,48 @@
+module("game_types")
+module("game_phases")
+module("game_messages")
+
+module("game_last_ui")
+
+class "game_cl_LastStanding" (game_cl_mp_script)
+
+function game_cl_LastStanding:__init() super()
+
+	printf		("game_cl_LastStanding::game_cl_LastStanding() called!")
+	
+end
+
+
+function game_cl_LastStanding:__finalize()
+	printf		("game_cl_LastStanding::~game_cl_LastStanding called!")
+end
+
+function game_cl_LastStanding:Init()
+
+end
+
+function game_cl_LastStanding:net_import_state	( P)
+	game_cl_mp_script.net_import_state	(self, P)
+end
+
+function game_cl_LastStanding:CanBeReady	()
+	return true
+end
+
+function game_cl_LastStanding:shedule_Update (dt)
+	game_cl_mp_script.shedule_Update	(self, P)
+   self:CommonMessageOut("--hello from script")
+end
+
+function game_cl_LastStanding:createGameUI ()
+   self.m_game_ui = ui_game_LastStanding()
+   m_game_ui:SetClGame(self)
+   m_game_ui:Init()
+   
+   return m_game_ui
+end
+
+function game_cl_LastStanding:GetMapEntities(ent_container)
+   local D = SZoneMapEntityData()
+   ent_container:push_back(D)
+end
