@@ -67,7 +67,7 @@
 #	include "game_base.h"
 #	include "game_sv_base.h"
 #	include "game_sv_mp.h"
-#	include "game_sv_deathmatch.h""
+#	include "game_sv_deathmatch.h"
 #	include "game_sv_mp_script.h"
 #	include "game_cl_mp.h"
 #	include "game_cl_mp_script.h"
