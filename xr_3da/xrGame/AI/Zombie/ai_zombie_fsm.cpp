@@ -135,7 +135,7 @@ void CAI_Zombie::FreeHunting()
 	/**/
 
 	if (ps_Size() > 1)
-		if ((m_bStateChanged) || (ps_Element(ps_Size() - 1).dwTime - ps_Element(ps_Size() - 2).dwTime < 500))
+		if ((m_bStateChanged) || ((ps_Element(ps_Size() - 1).dwTime - ps_Element(ps_Size() - 2).dwTime < 500)/** && (ps_Element(ps_Size() - 1).vPosition.distance_to(vPosition) < .1f)/**/))
 			;//tSavedEnemyPosition.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
 		else {
 			//Fvector tDistance;
