@@ -220,7 +220,7 @@ void CRenderTarget::End		()
 
 void	CRenderTarget::phase_distortion	()
 {
-	RCache.set_RT								(RT_distort);
+	RCache.set_RT								(RT_distort->pRT);
 	RCache.set_ZB								(HW.pBaseZB);
 	RCache.set_CullMode							(CULL_CCW);
 	RCache.set_ColorWriteEnable					( );
