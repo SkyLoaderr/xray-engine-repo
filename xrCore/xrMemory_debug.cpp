@@ -18,13 +18,13 @@ void	xrMemory::dbg_unregister	(void* _p)
 	debug_cs.Enter			();
 	debug_mode				= FALSE;
 
-	u32	_found		= u32(-1);
-	for (u32 it=0; it<debug_info.size(); it++)
+	// search entry
+	u32	_found				= u32(-1);
+
+	if (!debug_info.empty())
 	{
-		if (debug_info[it]==_p)	{ 
-			_found=it; 
-			break; 
-		}
+		for (int it=debug_info.size()-1; it>=0; it--)
+			if (debug_info[it]==_p)		{ _found=it; break; }
 	}
 
 	if (u32(-1)==_found)	{ 
