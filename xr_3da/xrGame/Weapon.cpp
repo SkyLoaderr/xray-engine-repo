@@ -390,17 +390,17 @@ void CWeapon::OnVisible		()
 	if (m_pHUD && hud_mode)	PKinematics(m_pHUD->Visual())->Update	();
 }
 
-void CWeapon::OnDeviceCreate()
+void CWeapon::OnDeviceCreate	()
 {
 	inherited::OnDeviceCreate();
 
-	ShaderCreate		(hUIIcon,"hud\\default","");
+	ShaderCreate				(hUIIcon,"hud\\default","");
 
-	if (0==pstrWallmark)hWallmark	= 0; 
-	else				hWallmark	= Device.Shader.Create("effects\\wallmark",pstrWallmark);
+	if (0==pstrWallmark)		hWallmark	= 0; 
+	else						hWallmark	= Device.Shader.Create("effects\\wallmark",pstrWallmark);
 }
 
-void CWeapon::OnDeviceDestroy()
+void CWeapon::OnDeviceDestroy	()
 {
 	inherited::OnDeviceDestroy	();
 	
@@ -408,7 +408,7 @@ void CWeapon::OnDeviceDestroy()
 	Device.Shader.Delete		(hWallmark);
 }
 
-void CWeapon::Hide		()
+void CWeapon::Hide				()
 {
 	FireEnd							();
 	OnHide							();

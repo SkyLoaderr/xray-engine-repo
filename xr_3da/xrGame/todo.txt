@@ -2,7 +2,7 @@
 	+ TODO: Adaptive Texture Sorter			| Optimization
 	+ TODO: Detail stripifier				| Optimization
 	+ TODO: Weapons as 'native' objects
-	+ TODO: NET: Can't connect
+	. BUG:  NET: Can't connect
 	+ TODO: Level-unload / reload
 	+ TODO: ltx
 	+ TODO: NET: Server Disconnect
@@ -16,6 +16,11 @@
 	+ BUG:  Sliding anims
 	+ BUG:  Lock after jump
 	+ BUG:  Shader still referenced
+	+ TODO: Gamma: Contrast/Brightness
+	+ TODO: SE : Properties
+	+ TODO: SE : Weapon
+	+ TODO: NET: Migrate
+	+ TODO: NET: Ownership
 	
 	. TODO: Detail texturing
 

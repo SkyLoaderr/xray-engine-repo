@@ -15,6 +15,9 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender)
 	R_ASSERT			(E);
 	E->Spawn_Read		(P);
 
+#pragma todo("SE, Spawn: remove auto-activate")
+	E->s_flags			|= M_SPAWN_OBJECT_ACTIVE;
+
 	// generate/find new ID for entity
 	u16 ID		=		E->ID;
 	if (0xffff==ID)		
