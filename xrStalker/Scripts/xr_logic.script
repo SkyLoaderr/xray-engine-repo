@@ -184,6 +184,12 @@ function enable_scripts(npc, ini, stype)
 			if death_section then
 				xr_death.set_death_checker(npc, actual_ini, "death", death_section)
 			end
+            
+            -- wounded
+			local wounded_section = utils.cfg_get_string (actual_ini, "logic", "wounded", npc, false, "")
+			printf("_bp: npc='%s': wounded section: %s", npc:name(), if_then_else(wounded_section ~= nil, "found",
+				"not_found"))
+			xr_wounded.set_wounded (npc, actual_ini, "wounded", wounded_section)
 
 			-- Здесь включить heli_hunter: add_to_binder без доп. условий
 		end
