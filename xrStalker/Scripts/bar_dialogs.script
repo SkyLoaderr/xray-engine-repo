@@ -10,17 +10,44 @@ end
 
 --Бармен в комнате
 function give_extra_task(actor, npc)
+	if barman_darklab_documents_given(actor,npc) or
+	   barman_need_decoding_given(actor,npc)
+	then
+		return true
+	end
 	return false
 end
 function dont_give_extra_task(actor, npc)
 	return not give_extra_task(actor, npc)
 end
 
+function barman_dont_has_room_job(actor,npc)
+	return not barman_has_job(actor,npc)
+end
+function barman_has_room_job(actor,npc)
+	if barman_need_darklab_documents(actor,npc) or
+	   barman_need_decoding(actor,npc) or
+	   barman_need_radar(actor,npc)
+	then
+		return true
+	end
+	return false
+end
+
+function barman_need_complete_job(actor,npc)
+	if (barman_darklab_documents_given(actor,npc) and have_darklab_documents(actor, npc) ) or (barman_need_decoding_given(actor,npc) and have_decoding_documents(actor, npc))
+	then
+		return true
+	end
+	return false
+end
+
 function barman_dont_has_job(actor,npc)
 	return not barman_has_job(actor,npc)
 end
+
 function barman_has_job(actor,npc)
-	if barman_need_research(actor,npc)
+	if barman_need_research(actor,npc) or barman_need_kill_veterans(actor,npc)
 	then
 		return true
 	end
@@ -28,6 +55,81 @@ function barman_has_job(actor,npc)
 end
 
 
+-- ********************************************************
+--			БАРМЕН В КОМНАТЕ
+-- ********************************************************
+-- Документы с дарклаба
+function barman_need_darklab_documents(actor,npc)
+	if db.actor:dont_has_info("bar_darklab_document_start")
+	then
+		return true
+	end
+	return false
+end
+
+function barman_darklab_documents_given(actor,npc)
+	if db.actor:has_info("bar_darklab_document_start") and
+	   db.actor:dont_has_info("bar_darklab_document_done") 
+	then
+		return true
+	end
+	return false
+end
+
+function have_darklab_documents(first_speaker, second_speaker)
+  	return first_speaker:object("bar_darklab_documents") ~= nil
+end
+
+function give_darklab_documents(first_speaker, second_speaker)
+	local darklab_documents = first_speaker:object("bar_darklab_documents")
+	first_speaker:transfer_item(darklab_documents, second_speaker)
+	level_tasks.set_task_state(task.completed, "bar_darklab_documents", 0)
+end
+
+-- Расшифровка документов
+function barman_need_decoding(actor,npc)
+	if db.actor:dont_has_info("bar_decoding_start") and
+	   db.actor:has_info("bar_darklab_document_done")
+	then
+		return true
+	end
+	return false
+end
+function barman_need_decoding_given(actor,npc)
+	if db.actor:has_info("bar_decoding_start") and
+	   db.actor:dont_has_info("bar_decoding_done")
+	then
+		return true
+	end
+	return false
+end
+function give_documents_to_decoding(first_speaker, second_speaker)
+	local darklab_documents = second_speaker:object("bar_darklab_documents")
+	second_speaker:transfer_item(darklab_documents, first_speaker)
+end
+function have_decoding_documents(first_speaker, second_speaker)
+  	return first_speaker:object("bar_decoding_documents") ~= nil
+end
+function give_decoding_documents(first_speaker, second_speaker)
+	local decoding_documents = first_speaker:object("bar_decoding_documents")
+	first_speaker:transfer_item(decoding_documents, second_speaker)
+	level_tasks.set_task_state(task.completed, "bar_decoding_documents", 0)
+end
+
+-- Выдача задания на отключение радара
+function barman_need_radar(actor,npc)
+	if db.actor:dont_has_info("bar_deactivate_radar_start") and
+	   db.actor:has_info("bar_decoding_done")
+	then
+		return true
+	end
+	return false
+end
+
+-- ********************************************************
+--			БАРМЕН ЗА ПРИЛАВКОМ
+-- ********************************************************
+-- спасение исследований ученных
 function barman_need_research(actor,npc)
 	if db.actor:dont_has_info("bar_resque_research_start") then
 		return true
@@ -52,6 +154,13 @@ function transfer_research_to_actor(npc,actor)
 		npc:transfer_item(obj, actor)
 	end
 end
+function barman_need_kill_veterans(actor,npc)
+	if db.actor:dont_has_info("bar_kill_veteran_start") then
+		return true
+	end
+	return false
+end
+
 
 function barman_ecolog_done(actor,npc)
 	level_tasks.set_task_state(task.completed, "bar_resque_information", 0)
@@ -75,6 +184,12 @@ function volkodav_active_quest(actor,npc)
 	return false
 end
 
+
+
+
+
+
+
 --Долг архивные документы
 function have_dolg_arhive_document(first_speaker, second_speaker)
   	return first_speaker:object("dolg_arhive_documents") ~= nil
@@ -85,6 +200,8 @@ function give_dolg_arhive_document(first_speaker, second_speaker)
 	first_speaker:transfer_item(document, second_speaker)
 	level_tasks.set_task_state(task.completed, "bar_dolg_test_quest", 0)
 end
+
+
 
 --Свобода РГ-6
 function have_rg6(first_speaker, second_speaker)
@@ -127,31 +244,4 @@ function give_lucky_pda(first_speaker, second_speaker)
 	local lucky_pda = first_speaker:object("bar_lucky_pda")
 	first_speaker:transfer_item(lucky_pda, second_speaker)
 	level_tasks.set_task_state(task.completed, "bar_crazy_veterans_quest", 0)
-end
-
-
--- Документы с дарклаба
-function have_darklab_documents(first_speaker, second_speaker)
-  	return first_speaker:object("bar_darklab_documents") ~= nil
-end
-function give_darklab_documents(first_speaker, second_speaker)
-	local darklab_documents = first_speaker:object("bar_darklab_documents")
-	first_speaker:transfer_item(darklab_documents, second_speaker)
-	level_tasks.set_task_state(task.completed, "bar_darklab_documents", 0)
-end
-
-
--- Расшифровка документов
-function have_documents_to_decoding(first_speaker, second_speaker)
-	local darklab_documents = second_speaker:object("bar_darklab_documents")
-	second_speaker:transfer_item(darklab_documents, first_speaker)
-end
-
-function have_decoding_documents(first_speaker, second_speaker)
-  	return first_speaker:object("bar_decoding_documents") ~= nil
-end
-function give_decoding_documents(first_speaker, second_speaker)
-	local decoding_documents = first_speaker:object("bar_decoding_documents")
-	first_speaker:transfer_item(decoding_documents, second_speaker)
-	level_tasks.set_task_state(task.completed, "bar_decoding_documents", 0)
 end
