@@ -1,0 +1,9 @@
+module "xr_events"
+
+function main()
+    local actor = get_actor()
+
+    xr_events.SoundEvent( get_level_object( "zone_snd_test" ), "ambient\\floor_creak1", actor )
+
+    wait( time_infinite )
+end
