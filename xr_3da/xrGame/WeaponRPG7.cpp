@@ -29,14 +29,16 @@ static void GetBasis(const Fvector &n, Fvector &u, Fvector &v) {
 	}
 }
 
-CWeaponRPG7Grenade::CWeaponRPG7Grenade() {
+CWeaponRPG7Grenade::CWeaponRPG7Grenade() 
+{
+	m_state = stInactive;
 	m_pos.set(0, 0, 0); m_vel.set(0, 0, 0);
 	m_pOwner = NULL;
 	m_eSoundExplode = ESoundTypes(SOUND_TYPE_WEAPON_SHOOTING);
 	m_eSoundRicochet = ESoundTypes(0/*SOUND_TYPE_WEAPON_BULLET_RICOCHET*/);
 	m_pLight = ::Render->light_create();
 	m_pLight->set_shadow(true);
-	m_explodeTime = m_engineTime = 0xffffffff;
+	m_explodeTime = m_engineTime = m_flashTime = 0;
 }
 
 CWeaponRPG7Grenade::~CWeaponRPG7Grenade() {
@@ -145,10 +147,14 @@ void CWeaponRPG7Grenade::Load(LPCSTR section) {
 	SoundCreate(sndRicochet[4], "ric5", m_eSoundRicochet);
 }
 
-static const u32 EXPLODE_TIME = 5000;
-void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal) {
-	m_engineTime = 0xffffffff;
-	m_explodeTime = EXPLODE_TIME;
+static const u32 EXPLODE_TIME	= 5000;
+static const u32 FLASH_TIME		= 300;
+static const u32 ENGINE_TIME	= 3000;
+void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal) 
+{
+	m_state			= stExplode;
+	m_explodeTime	= EXPLODE_TIME;
+	m_flashTime		= FLASH_TIME;
 	setVisible(false);
 	list<CPGObject*>::iterator l_it;
 	for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->Stop();
@@ -244,7 +250,7 @@ BOOL CWeaponRPG7Grenade::net_Spawn(LPVOID DC) {
 	BOOL l_res = inherited::net_Spawn(DC);
 	m_pos.set(0, 0, 0); m_vel.set(0, 0, 0);
 	m_pOwner = NULL;
-	m_explodeTime = m_engineTime = 0xffffffff;
+	m_explodeTime = m_engineTime = m_flashTime = 0;
 
 	if(0==pstrWallmark) hWallmark	= 0; 
 	else hWallmark	= Device.Shader.Create("effects\\wallmark",pstrWallmark);
@@ -381,7 +387,10 @@ void CWeaponRPG7Grenade::OnH_B_Independent() {
 		m_pPhysicsShell->set_PhysicsRefObject(this);
 		m_pPhysicsShell->set_ObjectContactCallback(ObjectContactCallback);
 		m_pPhysicsShell->set_ContactCallback(NULL);
-		m_engineTime = 3000;
+
+		m_state			= stEngine;
+		m_engineTime	= ENGINE_TIME;
+
 		CPGObject* pStaticPG; s32 l_c = m_trailEffects.size();
 		Fmatrix l_m; l_m.set(svTransform);// GetBasis(normal, l_m.k, l_m.i);
 		for(s32 i = 0; i < l_c; i++) {
@@ -395,44 +404,84 @@ void CWeaponRPG7Grenade::OnH_B_Independent() {
 
 void CWeaponRPG7Grenade::UpdateCL() {
 	inherited::UpdateCL();
-	if(m_explodeTime <= Device.dwTimeDelta) {
-		m_explodeTime = 0xffffffff;
-		m_pLight->set_active(false);
-		NET_Packet P;
-		u_EventGen(P, GE_DESTROY, ID());
-		u_EventSend(P);
+	switch (m_state){
+	case stDestroying: 
+		while(m_trailEffectsPSs.size()) { xr_delete(*(m_trailEffectsPSs.begin())); m_trailEffectsPSs.pop_front(); }
 		return;
-	}
-	if(m_pLight->get_active()){
-		float scale			= (float(m_explodeTime)/float(EXPLODE_TIME))*10.f;
-		m_curColor.mul_rgb	(m_lightColor,scale);
-		m_pLight->set_color	(m_curColor);
-	}
-	if(m_explodeTime < 0xffffffff) m_explodeTime -= Device.dwTimeDelta;
-	if(getVisible() && m_pPhysicsShell) {
-		m_pPhysicsShell->Update	();
-		svTransform.set(m_pPhysicsShell->mXFORM);
-		vPosition.set(m_pPhysicsShell->mXFORM.c);
-		if(m_engineTime <= Device.dwTimeDelta) {
-			m_engineTime = 0xffffffff;
-			while(m_trailEffectsPSs.size()) { xr_delete(*(m_trailEffectsPSs.begin())); m_trailEffectsPSs.pop_front(); }
+	case stExplode: 
+		if(m_explodeTime <= 0) {
+			m_state			= stDestroying;
+			NET_Packet		P;
+			u_EventGen		(P, GE_DESTROY, ID());
+			u_EventSend		(P);
+			return;
+		}else
+			m_explodeTime	-= Device.dwTimeDelta;
+		if(m_flashTime <= 0){
+			m_pLight->set_active(false);
+		}else{
+			if(m_pLight->get_active()){
+				float scale			= float(m_flashTime)/float(FLASH_TIME);
+				m_curColor.mul_rgb	(m_lightColor,scale);
+				m_pLight->set_color	(m_curColor);
+				m_flashTime		-= Device.dwTimeDelta;
+			}
 		}
-		if(m_engineTime < 0xffffffff) {
-			m_engineTime -= Device.dwTimeDelta;
-			Fvector l_pos, l_dir;; l_pos.set(0, 0, 3.f); l_dir.set(svTransform.k); l_dir.normalize();
-			float l_force = m_engine_f * Device.dwTimeDelta / 1000.f;
-			m_pPhysicsShell->applyImpulseTrace(l_pos, l_dir, l_force);
-			l_dir.set(0, 1.f, 0);
-			l_force = m_engine_u * Device.dwTimeDelta / 1000.f;
-			m_pPhysicsShell->applyImpulse(l_dir, l_force);
-			list<CPGObject*>::iterator l_it;
-			Fvector vel;
-			m_pPhysicsShell->get_LinearVel(vel);
-			for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->UpdateParent(svTransform,vel);
-		} else {
-			list<CPGObject*>::iterator l_it;
-			for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->Stop();
+		break;
+	case stEngine:
+		if(getVisible() && m_pPhysicsShell) {
+			m_pPhysicsShell->Update	();
+			svTransform.set	(m_pPhysicsShell->mXFORM);
+			vPosition.set	(m_pPhysicsShell->mXFORM.c);
+			if(m_engineTime <= 0) {
+				m_state		= stFlying;
+				// остановить двигатель
+				list<CPGObject*>::iterator l_it;
+				for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->Stop();
+			}else{
+				// двигатель все еще работает
+				m_engineTime -= Device.dwTimeDelta;
+				Fvector l_pos, l_dir;; l_pos.set(0, 0, 3.f); l_dir.set(svTransform.k); l_dir.normalize();
+				float l_force = m_engine_f * Device.dwTimeDelta / 1000.f;
+				m_pPhysicsShell->applyImpulseTrace(l_pos, l_dir, l_force);
+				l_dir.set(0, 1.f, 0);
+				l_force = m_engine_u * Device.dwTimeDelta / 1000.f;
+				m_pPhysicsShell->applyImpulse(l_dir, l_force);
+				list<CPGObject*>::iterator l_it;
+				Fvector vel;
+				m_pPhysicsShell->get_LinearVel(vel);
+				// обновить эффекты
+				for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->UpdateParent(svTransform,vel);
+			}
 		}
+		break;
+	case stFlying:
+		if(getVisible() && m_pPhysicsShell) {
+			m_pPhysicsShell->Update	();
+			svTransform.set	(m_pPhysicsShell->mXFORM);
+			vPosition.set	(m_pPhysicsShell->mXFORM.c);
+			if(m_engineTime <= 0) {
+				m_state			= stFlying;
+				while(m_trailEffectsPSs.size()) { xr_delete(*(m_trailEffectsPSs.begin())); m_trailEffectsPSs.pop_front(); }
+			}
+			if(m_engineTime < 0xffffffff) {
+				m_engineTime -= Device.dwTimeDelta;
+				Fvector l_pos, l_dir;; l_pos.set(0, 0, 3.f); l_dir.set(svTransform.k); l_dir.normalize();
+				float l_force = m_engine_f * Device.dwTimeDelta / 1000.f;
+				m_pPhysicsShell->applyImpulseTrace(l_pos, l_dir, l_force);
+				l_dir.set(0, 1.f, 0);
+				l_force = m_engine_u * Device.dwTimeDelta / 1000.f;
+				m_pPhysicsShell->applyImpulse(l_dir, l_force);
+				list<CPGObject*>::iterator l_it;
+				Fvector vel;
+				m_pPhysicsShell->get_LinearVel(vel);
+				for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->UpdateParent(svTransform,vel);
+			} else {
+				list<CPGObject*>::iterator l_it;
+				for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->Stop();
+			}
+		}
+		break;
 	}
 }
 

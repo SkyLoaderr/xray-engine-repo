@@ -25,30 +25,39 @@ public:
 	void Explode(const Fvector &pos, const Fvector &normal);
 	virtual void FragWallmark(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R);
 
-	Fvector m_pos, m_vel;
-	CGameObject *m_pOwner;
+	Fvector			m_pos, m_vel;
+	CGameObject*	m_pOwner;
 
-	f32 m_blast, m_blastR, m_fragsR, m_fragHit;
-	s32 m_frags;
+	f32				m_blast, m_blastR, m_fragsR, m_fragHit;
+	s32				m_frags;
 	list<CGameObject*> m_blasted;
 
-	LPSTR pstrWallmark;
-	Shader* hWallmark;
-	float fWallmarkSize;
-	sound sndRicochet[SND_RIC_COUNT], sndExplode;
-	ESoundTypes m_eSoundRicochet, m_eSoundExplode;
-	u32 m_engineTime, m_explodeTime;
-	char m_effectsSTR[255];
-	vector<LPCSTR> m_effects;
-	char m_trailEffectsSTR[255];
-	vector<LPCSTR> m_trailEffects;
-	list<CPGObject*> m_trailEffectsPSs;
-	IRender_Light* m_pLight;
-	Fcolor m_lightColor;
-	Fcolor m_curColor;
-	f32 m_lightRange;
-	u32 m_lightTime;
-	f32 m_mass, m_engine_f, m_engine_u;
+	enum EState{
+		stInactive,
+		stEngine,
+		stFlying,
+		stExplode,
+		stDestroying
+	};
+	EState			m_state;
+
+	LPSTR			pstrWallmark;
+	Shader*			hWallmark;
+	float			fWallmarkSize;
+	sound			sndRicochet[SND_RIC_COUNT], sndExplode;
+	ESoundTypes		m_eSoundRicochet, m_eSoundExplode;
+	s32				m_engineTime, m_explodeTime, m_flashTime;
+	char			m_effectsSTR[255];
+	vector<LPCSTR>	m_effects;
+	char			m_trailEffectsSTR[255];
+	vector<LPCSTR>	m_trailEffects;
+	list<CPGObject*>m_trailEffectsPSs;
+	IRender_Light*	m_pLight;
+	Fcolor			m_lightColor;
+	Fcolor			m_curColor;
+	f32				m_lightRange;
+	u32				m_lightTime;
+	f32				m_mass, m_engine_f, m_engine_u;
 
 	static void __stdcall ObjectContactCallback(bool& do_colide,dContact& c);
 };
