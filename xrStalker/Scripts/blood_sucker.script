@@ -416,7 +416,7 @@ end
 function CStateRest:execute()
 
     if(self.npc:action() == nil) then
-        if(self.npc:position():distance_to(self.point_rest) < 1) then
+        if(self.npc:position():distance_to(self.point_rest) > 1) then
 			action(self.npc, move(move.walk_fwd, self.point_rest), sound(sound.idle), cond(cond.move_end))
         end
         action(self.npc, anim(anim.turn, 0), look(look.point, point_with_bit(self.path, 1)), cond(cond.look_end))
