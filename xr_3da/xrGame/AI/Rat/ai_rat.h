@@ -86,7 +86,6 @@ class CAI_Rat : public CCustomMonster
 		float			m_fMaxVoiceIinterval;
 		float			m_fVoiceRefreshRate;
 		DWORD			m_dwLastVoiceTalk;
-		float			m_fBananPadlaCorrection;
 		
 		// events
 		EVENT			m_tpEventSay;

@@ -27,8 +27,8 @@ bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 	tCurrentWatchDirection.normalize();
 	tTemp.sub(tpEntity->Position(),vPosition);
 	tTemp.normalize();
-	//float fAlpha = tCurrentWatchDirection.dotproduct(tTemp), fEyeFov = eye_fov*PI/180.f;
-	float fAlpha = tWatchDirection.dotproduct(tTemp), fEyeFov = eye_fov*PI/180.f;
+	float fAlpha = tCurrentWatchDirection.dotproduct(tTemp), fEyeFov = eye_fov*PI/180.f;
+	//float fAlpha = tWatchDirection.dotproduct(tTemp), fEyeFov = eye_fov*PI/180.f;
 	clamp(fAlpha,-.99999f,+.99999f);
 	fAlpha = acosf(fAlpha);
 	float fMaxViewableDistanceInDirection = eye_range*(1 - fAlpha/(fEyeFov/m_fLateralMultiplier));

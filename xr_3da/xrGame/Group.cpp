@@ -401,16 +401,18 @@ void CGroup::GetAliveMemberInfoWithLeader(MemberPlacement& P0, MemberNodes& P1, 
 				CEntity*E = Members[I];
 				if (E!=Me) {
 					CCustomMonster* M = dynamic_cast<CCustomMonster*>(E);
-					const Fvector&	P = E->Position();
-					Fvector	_P1,_P2,C;
-					NodeCompressed*	NC = Level().AI.Node(M->AI_Path.DestNode);
-					Level().AI.UnpackPosition(_P1,NC->p0);
-					Level().AI.UnpackPosition(_P2,NC->p1);
-					C.lerp(_P1,_P2,.5f);
-					P0.push_back(P);
-					P1.push_back(M->AI_NodeID);
-					P2.push_back(C);
-					P3.push_back(M->AI_Path.DestNode);
+					if (M) {
+						const Fvector&	P = E->Position();
+						Fvector	_P1,_P2,C;
+						NodeCompressed*	NC = Level().AI.Node(M->AI_Path.DestNode);
+						Level().AI.UnpackPosition(_P1,NC->p0);
+						Level().AI.UnpackPosition(_P2,NC->p1);
+						C.lerp(_P1,_P2,.5f);
+						P0.push_back(P);
+						P1.push_back(M->AI_NodeID);
+						P2.push_back(C);
+						P3.push_back(M->AI_Path.DestNode);
+					}
 				}
 			}
 		}

@@ -19,12 +19,12 @@ bool CAI_Rat::bfCheckForVisibility(CEntity* tpEntity)
 	
 	// computing maximum viewable distance in the specified direction
 	Fvector tCurrentWatchDirection, tTemp;
-	tCurrentWatchDirection.setHP	(r_torso_current.yaw,r_torso_current.pitch);
+	tCurrentWatchDirection.setHP	(r_torso_current.yaw - m_fBananPadlaCorrection,r_torso_current.pitch);
 	tCurrentWatchDirection.normalize();
 	tTemp.sub(tpEntity->Position(),vPosition);
 	tTemp.normalize();
-	//float fAlpha = tCurrentWatchDirection.dotproduct(tTemp), fEyeFov = eye_fov*PI/180.f;
-	float fAlpha = tWatchDirection.dotproduct(tTemp), fEyeFov = eye_fov*PI/180.f;
+	float fAlpha = tCurrentWatchDirection.dotproduct(tTemp), fEyeFov = eye_fov*PI/180.f;
+	//float fAlpha = tWatchDirection.dotproduct(tTemp), fEyeFov = eye_fov*PI/180.f;
 	clamp(fAlpha,-.99999f,+.99999f);
 	fAlpha = acosf(fAlpha);
 	float fMaxViewableDistanceInDirection = eye_range*(1 - fAlpha/(fEyeFov/m_fLateralMultiplier));
@@ -76,7 +76,6 @@ void CAI_Rat::SetDirectionLook()
 		if (tWatchDirection.magnitude() > EPS_L) {
 			tWatchDirection.normalize();
 			mk_rotation(tWatchDirection,r_torso_target);
-			//ADJUST_BONE_ANGLES
 			//r_spine_target.yaw = r_torso_target.yaw;
 			//r_spine_target.yaw = r_target.yaw = 0;
 			//q_look.o_look_speed=PI_DIV_4;
@@ -95,9 +94,6 @@ void CAI_Rat::vfAimAtEnemy()
 	svCenter(pos2);
 	tWatchDirection.sub(pos1,pos2);
 	mk_rotation(tWatchDirection,r_torso_target);
-	
-	r_torso_target.yaw += m_fBananPadlaCorrection;
-	
 	r_spine_target.yaw = r_target.yaw = r_torso_target.yaw;
 	//r_target.yaw += PI_DIV_6;
 	//r_torso_target.yaw = r_torso_target.yaw - 2*PI_DIV_6;//EYE_WEAPON_DELTA;

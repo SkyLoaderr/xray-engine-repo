@@ -23,6 +23,7 @@ class CCustomMonster : public CEntityAlive, public pureRender, public soundListe
 private:
 	typedef	CEntityAlive	inherited;
 protected:
+	float				m_fBananPadlaCorrection;
 	// weapons
 	CWeaponList*		Weapons;
 	
