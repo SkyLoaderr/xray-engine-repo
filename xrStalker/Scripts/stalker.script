@@ -3,5 +3,6 @@ function init    (obj)
 end
 
 function actor_init    (obj)
-	printf("INIT %s", obj:name())
+	obj:give_info_portion("encyclopedy")
+    obj:give_info_portion("storyline_actor_start")
 end
