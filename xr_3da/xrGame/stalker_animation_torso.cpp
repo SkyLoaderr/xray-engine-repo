@@ -110,15 +110,10 @@ MotionID CStalkerAnimationManager::unknown_object_animation(u32 slot, const EBod
 					case eMovementTypeStand :
 						return m_part_animations.A[body_state].m_torso.A[slot].A[object().conditions().IsLimping() ? 9 : 6].A[0];
 					case eMovementTypeWalk :
-						VERIFY			((body_state != eBodyStateCrouch) || (body_state == object().movement().body_state()));
-						if (object().movement().body_state() == eBodyStateStand) {
-							VERIFY		((body_state != eBodyStateCrouch) || (body_state == object().movement().body_state()));
-							return		m_part_animations.A[body_state].m_torso.A[slot].A[7].A[0];
-						}
-						else {
-							VERIFY		((body_state != eBodyStateCrouch) || (body_state == object().movement().body_state()));
+						if (object().movement().body_state() == eBodyStateStand)
+							return m_part_animations.A[body_state].m_torso.A[slot].A[7].A[0];
+						else
 							return m_part_animations.A[body_state].m_torso.A[slot].A[6].A[0];
-						}
 					case eMovementTypeRun :
 						if (object().movement().body_state() == eBodyStateStand)
 							return m_part_animations.A[body_state].m_torso.A[slot].A[object().conditions().IsLimping() ? 7 : 8].A[0];
@@ -158,7 +153,6 @@ MotionID CStalkerAnimationManager::weapon_animation	(u32 slot, const EBodyState 
 				return m_part_animations.A[body_state].m_torso.A[slot].A[1].A[0];
 	}
 
-	VERIFY			((body_state != eBodyStateCrouch) || (body_state == object().movement().body_state()));
 	return			(unknown_object_animation(slot,body_state));
 }
 
@@ -194,13 +188,10 @@ MotionID CStalkerAnimationManager::missile_animation	(u32 slot, const EBodyState
 MotionID CStalkerAnimationManager::assign_torso_animation	()
 {
 	EBodyState		_body_state	= body_state();
-	VERIFY			((_body_state != eBodyStateCrouch) || (_body_state == object().movement().body_state()));
 	if (!object().inventory().ActiveItem())
 		return		(no_object_animation(_body_state));
 
-	VERIFY			((_body_state != eBodyStateCrouch) || (_body_state == object().movement().body_state()));
 	fill_object_info();
-	VERIFY			((_body_state != eBodyStateCrouch) || (_body_state == object().movement().body_state()));
 
 	if (m_weapon)
 		if (!strapped())
@@ -208,10 +199,8 @@ MotionID CStalkerAnimationManager::assign_torso_animation	()
 		else
 			return	(no_object_animation(_body_state));
 
-	VERIFY			((_body_state != eBodyStateCrouch) || (_body_state == object().movement().body_state()));
 	if (m_missile)
 		return		(missile_animation(object_slot(),_body_state));
 
-	VERIFY			((_body_state != eBodyStateCrouch) || (_body_state == object().movement().body_state()));
 	return			(unknown_object_animation(object_slot(),_body_state));
 }
