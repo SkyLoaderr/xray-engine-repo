@@ -19,13 +19,14 @@ private:
 	//
 	typedef	R_dsgraph::_MatrixItem	NODE;		
 	struct	recv			{
-		IRenderable*		O;
-		Fvector				C;
-		Fmatrix				UVgen;
-		Fvector				UVclamp_min;
-		Fvector				UVclamp_max;
-		Fbox				BB;
-		DWORD				dwFrame;
+		IRenderable*		O			;
+		Fvector				C			;
+		Fmatrix				UVgen		;
+		Fvector				UVclamp_min	;
+		Fvector				UVclamp_max	;
+		Fbox				BB			;
+		DWORD				dwFrame		;
+		DWORD				dwTime		;
 	};
 private:
 	IRenderable*			current;

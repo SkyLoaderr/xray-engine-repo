@@ -16,6 +16,8 @@ const	float		P_cam_dist		= 200;
 const	float		P_cam_range		= 7.f;
 const	D3DFORMAT	P_rtf			= D3DFMT_A8R8G8B8;
 const	float		P_blur_kernel	= .5f;
+const	int			time_min		= 30*1000;
+const	int			time_max		= 90*1000;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -71,7 +73,7 @@ void CLightProjector::set_object	(IRenderable* O)
 void CLightProjector::setup		(int id)
 {
 	if (id>=int(cache.size()) || id<0)	{
-		Log		("! CLightProjector::setup - ID out of range");
+		// Log		("! CLightProjector::setup - ID out of range");
 		return;
 	}
 	recv&			R			= cache[id];
@@ -102,7 +104,11 @@ void CLightProjector::calculate	()
 		else {
 			Fbox				bb;
 			bb.xform			(O->renderable.visual->vis.box,O->renderable.xform);
-			if (!cache[slot].BB.contains(bb))	bValid	= FALSE;
+			if (!cache[slot].BB.contains(bb))	{
+				// check time-limit
+				if (cache[slot].dwTime>Device.dwTimeGlobal)	bValid	= FALSE;
+				else										bValid	= TRUE;
+			}
 		}
 
 		// 
@@ -140,6 +146,7 @@ void CLightProjector::calculate	()
 		R.O						= O;
 		R.C						= C;
 		R.BB.xform				(O->renderable.visual->vis.box,O->renderable.xform).scale(0.1f);
+		R.dwTime				= Device.dwTimeGlobal + ::Random.randI(time_min,time_max);
 		LT->shadow_recv_slot	= c_it; 
 
 		// Msg					("[%f,%f,%f]-%f",C.C.x,C.C.y,C.C.z,C.O->renderable.visual->vis.sphere.R);
