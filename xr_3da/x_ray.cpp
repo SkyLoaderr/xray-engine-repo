@@ -246,10 +246,10 @@ void CApplication::LoadTitle	(char *S, char *S2)
 	u32	_w						= Device.dwWidth;
 	u32	_h						= Device.dwHeight;
 	FVF::TL* pv					= (FVF::TL*) RCache.Vertex.Lock(4,ll_hGeom->vb_stride,Offset);
-	pv->set						(EPS_S,				float(_h+EPS_S),	1, 1, C, 0, 1);	pv++;
-	pv->set						(EPS_S,				EPS_S,				1, 1, C, 0, 0);	pv++;
-	pv->set						(float(_w+EPS_S),	float(_h+EPS_S),	1, 1, C, 1, 1);	pv++;
-	pv->set						(float(_w+EPS_S),	EPS_S,				1, 1, C, 1, 0);	pv++;
+	pv->set						(EPS_S,				float(_h+EPS_S),	0+EPS_S, 1, C, 0, 1);	pv++;
+	pv->set						(EPS_S,				EPS_S,				0+EPS_S, 1, C, 0, 0);	pv++;
+	pv->set						(float(_w+EPS_S),	float(_h+EPS_S),	0+EPS_S, 1, C, 1, 1);	pv++;
+	pv->set						(float(_w+EPS_S),	EPS_S,				0+EPS_S, 1, C, 1, 0);	pv++;
 	RCache.Vertex.Unlock		(4,ll_hGeom->vb_stride);
 	
 	RCache.set_Shader			(ll_hLogo);
