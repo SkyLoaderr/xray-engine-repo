@@ -308,8 +308,9 @@ namespace PAPI{
 			ALLOW_ROTATE	= (1<<1)
 		};
 		static float	dt;	// This is copied to here from global state.
-		Flags32			flags;
+		Flags32			m_Flags;
 		PActionEnum		type;	// Type field
+		ParticleAction	(){m_Flags.zero();}
 	};
 
 	// This Methods actually does the particle's action.

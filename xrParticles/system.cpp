@@ -608,8 +608,8 @@ PARTICLEDLL_API void pSetActionListParenting(int action_list_num, const Fmatrix&
 
 	// Step through all the actions in the action list.
 	for(int act = 0; act < num_act; act++, pa++){
-		BOOL t = pa->flags.is(ParticleAction::ALLOW_TRANSLATE);
-		BOOL r = pa->flags.is(ParticleAction::ALLOW_ROTATE);
+		BOOL t = pa->m_Flags.is(ParticleAction::ALLOW_TRANSLATE);
+		BOOL r = pa->m_Flags.is(ParticleAction::ALLOW_ROTATE);
 		if ((!t)&&(!r)) continue;
 		const Fmatrix& m = t&&r?full:(t?mT:mR);
 		switch(pa->type)
@@ -691,7 +691,7 @@ PARTICLEDLL_API void pStopPlaying(int action_list_num)
 	for(int act = 0; act < num_act; act++, pa++){
 		switch(pa->type){
 		case PASourceID:
-			((PASource *)pa)->flags.set(PASource::flSilent,TRUE);
+			((PASource *)pa)->m_Flags.set(PASource::flSilent,TRUE);
 			break;
 		}
 	}
@@ -709,7 +709,7 @@ PARTICLEDLL_API void pStartPlaying(int action_list_num)
 	for(int act = 0; act < num_act; act++, pa++){
 		switch(pa->type){
 		case PASourceID:
-			((PASource *)pa)->flags.set(PASource::flSilent,FALSE);
+			((PASource *)pa)->m_Flags.set(PASource::flSilent,FALSE);
 			break;
 		}
 	}
