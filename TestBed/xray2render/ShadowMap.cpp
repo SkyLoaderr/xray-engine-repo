@@ -545,7 +545,7 @@ HRESULT CMyD3DApplication::ConfirmDevice( D3DCAPS9* pCaps, DWORD dwBehavior,
 // Desc: Called to render shadow map for the light. Outputs per-pixel distance
 //       normalized to 0..1 range to the floating point buffer.
 //-----------------------------------------------------------------------------
-HRESULT CMyD3DApplication::RenderShadowMap()
+HRESULT CMyD3DApplication::RenderShadowMap	()
 {
 	LPDIRECT3DSURFACE9	oldBackBuffer, oldZBuffer;
 	D3DVIEWPORT9		oldViewport;
@@ -586,15 +586,13 @@ HRESULT CMyD3DApplication::RenderShadowMap()
 	m_pd3dDevice->DrawIndexedPrimitive		(D3DPT_TRIANGLELIST, 0, 0, m_dwModelNumVerts, 0, m_dwModelNumFaces);
 
 	// Restore old render target
-	m_pd3dDevice->SetRenderTarget			(0, pOldBackBuffer);
-	m_pd3dDevice->SetDepthStencilSurface	(pOldZBuffer);
-	pOldBackBuffer->Release					();
-	pOldZBuffer->Release					();
+	m_pd3dDevice->SetRenderTarget			(0, oldBackBuffer);
+	m_pd3dDevice->SetDepthStencilSurface	(oldZBuffer);
+	oldBackBuffer->Release					();
+	oldZBuffer->Release						();
 
 	// Restore old viewport
 	m_pd3dDevice->SetViewport				(&oldViewport);
-
-	m_pd3dDevice->SetRenderState			(D3DRS_CULLMODE, D3DCULL_CCW);
 
 	return S_OK;
 }
@@ -605,6 +603,7 @@ HRESULT CMyD3DApplication::RenderShadowMap()
 //-----------------------------------------------------------------------------
 HRESULT CMyD3DApplication::RenderScene	()
 {
+	/*
 	m_pd3dDevice->Clear						(0L, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, 0x00404080, 1.0f, 0L);
 
 	D3DXVECTOR4 vDiffuseFloor				(0.75f, 0.75f, 0.75f, 1.0f);
@@ -660,6 +659,7 @@ HRESULT CMyD3DApplication::RenderScene	()
 	m_pd3dDevice->DrawIndexedPrimitive		(D3DPT_TRIANGLELIST, 0, 0, m_dwModelNumVerts, 0, m_dwModelNumFaces);
 
 	m_pd3dDevice->SetTexture(0, NULL);
+	*/
 
 	return S_OK;
 }
