@@ -2,9 +2,9 @@
 #include "ai_bloodsucker_bones.h"
 
 
-void bonesMotion::AddBone(CBoneInstance *bone, u32 axis_used, float target_yaw_1, float r_speed_1, float target_yaw_2, float r_speed_2, float target_yaw_3, float r_speed_3, u32 time);
+void bonesMotion::AddBone(CBoneInstance *bone, u32 axis_used, float target_yaw_1, float r_speed_1, float target_yaw_2, float r_speed_2, float target_yaw_3, float r_speed_3, u32 time)
 {
-	MBone b;
+	bonesBone b;
 
 	b.bone = bone;
 	b.axis_used = axis_used;
