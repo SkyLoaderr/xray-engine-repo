@@ -88,9 +88,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrSE_Factory", "..\xrSE_Fac
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrCompress", "..\xrCompress\xrCompress.vcproj", "{EF76867B-6EB8-4DC0-A1D6-E964FAD6FC7B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E} = {A0F7D1FB-59A7-4717-A7E4-96F37E91998E}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 14
+		SccNumberOfProjects = 15
 		SccLocalPath0 = .
 		CanCheckoutShared = true
 		SolutionUniqueID = {6F8E4AE3-CB8E-4760-8086-796FE333A467}
@@ -145,6 +150,10 @@ Global
 		SccProjectUniqueName13 = ..\\xrSE_Factory\\xrSE_Factory.vcproj
 		SccProjectName13 = \u0022$/xrSE_Factory\u0022,\u0020XWTAAAAA
 		SccLocalPath13 = ..\\xrSE_Factory
+		CanCheckoutShared = true
+		SccProjectUniqueName14 = ..\\xrCompress\\xrCompress.vcproj
+		SccProjectName14 = \u0022$/xrCompress\u0022,\u0020CIFAAAAA
+		SccLocalPath14 = ..\\xrCompress
 		CanCheckoutShared = true
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
@@ -237,6 +246,12 @@ Global
 		{3AD26FD3-4F52-4E22-A4CF-AD4C49E74C61}.Mixed.Build.0 = Mixed|Win32
 		{3AD26FD3-4F52-4E22-A4CF-AD4C49E74C61}.Release.ActiveCfg = Release|Win32
 		{3AD26FD3-4F52-4E22-A4CF-AD4C49E74C61}.Release.Build.0 = Release|Win32
+		{EF76867B-6EB8-4DC0-A1D6-E964FAD6FC7B}.Debug.ActiveCfg = Debug|Win32
+		{EF76867B-6EB8-4DC0-A1D6-E964FAD6FC7B}.Debug.Build.0 = Debug|Win32
+		{EF76867B-6EB8-4DC0-A1D6-E964FAD6FC7B}.Mixed.ActiveCfg = Debug|Win32
+		{EF76867B-6EB8-4DC0-A1D6-E964FAD6FC7B}.Mixed.Build.0 = Debug|Win32
+		{EF76867B-6EB8-4DC0-A1D6-E964FAD6FC7B}.Release.ActiveCfg = Release|Win32
+		{EF76867B-6EB8-4DC0-A1D6-E964FAD6FC7B}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 	EndGlobalSection

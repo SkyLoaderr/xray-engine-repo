@@ -64,10 +64,11 @@ void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs)
 		u32 flags			= 0;
 		if (0!=strstr(Params,"-build"))	flags |= CLocatorAPI::flBuildCopy;
 		if (0!=strstr(Params,"-ebuild"))flags |= CLocatorAPI::flBuildCopy|CLocatorAPI::flEBuildCopy;
-
+#ifdef	DEBUG
+		flags				|= CLocatorAPI::flCacheFiles;
+#endif
 		FS._initialize		(flags);
 		EFS._initialize		();
-
 		CreateLog			(cb,0!=strstr(Params,"-nolog"));
 	}
     

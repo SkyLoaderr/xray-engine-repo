@@ -184,7 +184,7 @@ void	Compress			(LPCSTR path, LPCSTR base)
 
 int __cdecl main	(int argc, char* argv[])
 {
-	Core._initialize("xrCompress");
+	Core._initialize("xrCompress",0,FALSE);
 	printf			("\n\n");
 
 	if (argc!=2)	{
@@ -194,9 +194,12 @@ int __cdecl main	(int argc, char* argv[])
 	printf			("[settings] SKIP: '*.key','build.*'\n");
 	printf			("[settings] VFS:  'level.*'\n");
 
-	string256		folder;		strlwr(strconcat(folder,argv[1],"\\"));
+	string_path		folder;		strlwr(strconcat(folder,argv[1],"\\"));
 	printf			("\nCompressing files (%s)...",folder);
-	xr_vector<char*>*	list	= FS.file_list_open	(folder,FS_ListFiles);
+
+	FS._initialize	(CLocatorAPI::flTargetFolderOnly,folder);
+
+	xr_vector<char*>*	list	= FS.file_list_open	("$target_folder$",FS_ListFiles);
 	R_ASSERT2			(list,	"Unable to open folder!!!");
 	if (!list->empty())
 	{
@@ -216,7 +219,7 @@ int __cdecl main	(int argc, char* argv[])
 		fs->close_chunk	();
 		bytesDST		= fs->tell	();
 		fs->w_chunk		(1|CFS_CompressMark, fs_desc.pointer(),fs_desc.size());
-		delete fs;
+		FS.w_close		(fs);
 		u32	dwTimeEnd	= timeGetTime();
 		printf			("\n\nFiles total/skipped/VFS/aliased: %d/%d/%d/%d\nOveral: %dK/%dK, %3.1f%%\nElapsed time: %d:%d\nCompression speed: %3.1f Mb/s",
 			filesTOTAL,filesSKIP,filesVFS,filesALIAS,

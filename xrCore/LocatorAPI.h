@@ -100,6 +100,7 @@ public:
 		flEBuildCopy			= (1<<4),
         flEventNotificator      = (1<<5),
 		flTargetFolderOnly		= (1<<6),
+		flCacheFiles			= (1<<7),
     };    
     Flags32						m_Flags;
     void						rescan_path		(LPCSTR full_path, BOOL bRecurse);

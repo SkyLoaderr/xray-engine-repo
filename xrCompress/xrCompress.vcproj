@@ -3,6 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="xrCompress"
+	ProjectGUID="{EF76867B-6EB8-4DC0-A1D6-E964FAD6FC7B}"
 	SccProjectName="&quot;$/xrCompress&quot;, CIFAAAAA"
 	SccAuxPath=""
 	SccLocalPath="."
@@ -181,7 +182,7 @@
 			Name="LZO"
 			Filter="">
 			<Filter
-				Name="include"
+				Name="Include"
 				Filter="">
 				<File
 					RelativePath=".\lzo\compr1b.h">
@@ -226,7 +227,19 @@
 					RelativePath=".\lzo\lzo16bit.h">
 				</File>
 				<File
+					RelativePath=".\lzo\lzo1_cm.ch">
+				</File>
+				<File
+					RelativePath=".\lzo\lzo1_d.ch">
+				</File>
+				<File
 					RelativePath=".\lzo\lzo1a.h">
+				</File>
+				<File
+					RelativePath=".\lzo\lzo1a_cm.ch">
+				</File>
+				<File
+					RelativePath=".\lzo\lzo1a_cr.ch">
 				</File>
 				<File
 					RelativePath=".\lzo\lzo1a_de.h">
@@ -235,10 +248,31 @@
 					RelativePath=".\lzo\lzo1b.h">
 				</File>
 				<File
+					RelativePath=".\lzo\lzo1b_c.ch">
+				</File>
+				<File
 					RelativePath=".\lzo\lzo1b_cc.h">
 				</File>
 				<File
+					RelativePath=".\lzo\lzo1b_cm.ch">
+				</File>
+				<File
+					RelativePath=".\lzo\lzo1b_cr.ch">
+				</File>
+				<File
+					RelativePath=".\lzo\lzo1b_d.ch">
+				</File>
+				<File
 					RelativePath=".\lzo\lzo1b_de.h">
+				</File>
+				<File
+					RelativePath=".\lzo\lzo1b_r.ch">
+				</File>
+				<File
+					RelativePath=".\lzo\lzo1b_sm.ch">
+				</File>
+				<File
+					RelativePath=".\lzo\lzo1b_tm.ch">
 				</File>
 				<File
 					RelativePath=".\lzo\lzo1c.h">
@@ -250,7 +284,19 @@
 					RelativePath=".\lzo\lzo1f.h">
 				</File>
 				<File
+					RelativePath=".\lzo\lzo1f_d.ch">
+				</File>
+				<File
 					RelativePath=".\lzo\lzo1x.h">
+				</File>
+				<File
+					RelativePath=".\lzo\lzo1x_c.ch">
+				</File>
+				<File
+					RelativePath=".\lzo\lzo1x_d.ch">
+				</File>
+				<File
+					RelativePath=".\lzo\lzo1x_oo.ch">
 				</File>
 				<File
 					RelativePath=".\lzo\lzo1y.h">
@@ -262,13 +308,22 @@
 					RelativePath=".\lzo\lzo2a.h">
 				</File>
 				<File
+					RelativePath=".\lzo\lzo2a_d.ch">
+				</File>
+				<File
 					RelativePath=".\lzo\lzo_conf.h">
 				</File>
 				<File
 					RelativePath=".\lzo\lzo_dict.h">
 				</File>
 				<File
+					RelativePath=".\lzo\lzo_mchw.ch">
+				</File>
+				<File
 					RelativePath=".\lzo\lzo_ptr.h">
+				</File>
+				<File
+					RelativePath=".\lzo\lzo_swd.ch">
 				</File>
 				<File
 					RelativePath=".\lzo\lzo_util.h">
@@ -290,7 +345,7 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="src"
+				Name="Source"
 				Filter="">
 				<File
 					RelativePath=".\lzo\alloc.c">

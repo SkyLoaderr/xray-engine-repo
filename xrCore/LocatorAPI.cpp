@@ -384,23 +384,29 @@ xr_vector<char*>* CLocatorAPI::file_list_open			(const char* initial, const char
 	return			file_list_open(N,flags);
 }
 
-xr_vector<char*>* CLocatorAPI::file_list_open			(const char* path, u32 flags)
+xr_vector<char*>* CLocatorAPI::file_list_open			(const char* _path, u32 flags)
 {
+	R_ASSERT		(_path);
 	VERIFY			(flags);
-	
-	LPCSTR N		= path;
+	// проверить нужно ли пересканировать пути
+	check_pathes	();
+
+	std::string		N;
+	if (FS.path_exist(_path))	update_path(N,_path,"");
+	else						N=_path;
+
 	file			desc;
-	desc.name		= N;                      
-	files_it	I	= files.find(desc);
+	desc.name		= N.c_str();
+	files_it	I 	= files.find(desc);
 	if (I==files.end())	return 0;
 	
 	xr_vector<char*>*	dest	= xr_new<xr_vector<char*> > ();
 
-	size_t base_len	= xr_strlen(N);
+	size_t base_len	= N.size();// xr_strlen(N);
 	for (++I; I!=files.end(); I++)
 	{
 		const file& entry = *I;
-		if (0!=strncmp(entry.name,N,base_len))	break;	// end of list
+		if (0!=strncmp(entry.name,N.c_str(),base_len))	break;	// end of list
 		const char* end_symbol = entry.name+xr_strlen(entry.name)-1;
 		if ((*end_symbol) !='\\')	{
 			// file
@@ -573,58 +579,58 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 	{
 		// Normal file, 100% full path - check cache
 		// Release don't need this at all
-#ifdef	DEBUG
-		string_path	fname_copy;
-		if (pathes.size()>1)
-		{
-			LPCSTR		path_base		= get_path	("$server_root$")->m_Path;
-			u32			len_base		= xr_strlen	(path_base);
-			LPCSTR		path_file		= fname;
-			u32			len_file		= xr_strlen	(path_file);
-			if (len_file>len_base)		
+		if (m_Flags.is(flCacheFiles)){
+			string_path	fname_copy;
+			if (pathes.size()>1)
 			{
-				if (0==memcmp(path_base,fname,len_base))	{
-					BOOL		bCopy	= FALSE;
+				LPCSTR		path_base		= get_path	("$server_root$")->m_Path;
+				u32			len_base		= xr_strlen	(path_base);
+				LPCSTR		path_file		= fname;
+				u32			len_file		= xr_strlen	(path_file);
+				if (len_file>len_base)		
+				{
+					if (0==memcmp(path_base,fname,len_base))	{
+						BOOL		bCopy	= FALSE;
 
-					string_path	fname_in_cache	;
-					update_path	(fname_in_cache,"$cache$",path_file+len_base);
-					files_it	fit	= file_find_it(fname_in_cache);
-					if (fit!=files.end())	
-					{
-						// use
-						file&	fc	= *fit;
-						if ((fc.size_real == desc.size_real)&&(fc.modif==desc.modif))	{
+						string_path	fname_in_cache	;
+						update_path	(fname_in_cache,"$cache$",path_file+len_base);
+						files_it	fit	= file_find_it(fname_in_cache);
+						if (fit!=files.end())	
+						{
 							// use
+							file&	fc	= *fit;
+							if ((fc.size_real == desc.size_real)&&(fc.modif==desc.modif))	{
+								// use
+							} else {
+								// copy & use
+								bCopy	= TRUE;
+							}
 						} else {
 							// copy & use
 							bCopy	= TRUE;
 						}
-					} else {
-						// copy & use
-						bCopy	= TRUE;
-					}
 
-					// copy if need
-					if (bCopy)			
-					{
-						IReader*	_src;
-						if (desc.size_real<256*1024)	_src = xr_new<CFileReader>			(fname);
-						else							_src = xr_new<CVirtualFileReader>	(fname);
-						IWriter*	_dst	= xr_new<CFileWriter>			(fname_in_cache);
-						_dst->w				(_src->pointer(),_src->length());
-						xr_delete			(_dst);
-						xr_delete			(_src);
-						set_file_age		(fname_in_cache,desc.modif);
-					}
+						// copy if need
+						if (bCopy)			
+						{
+							IReader*	_src;
+							if (desc.size_real<256*1024)	_src = xr_new<CFileReader>			(fname);
+							else							_src = xr_new<CVirtualFileReader>	(fname);
+							IWriter*	_dst	= xr_new<CFileWriter>			(fname_in_cache);
+							_dst->w				(_src->pointer(),_src->length());
+							xr_delete			(_dst);
+							xr_delete			(_src);
+							set_file_age		(fname_in_cache,desc.modif);
+						}
 
-					// Use
-					source_name	= &fname_copy[0];
-					strcpy		(fname_copy,fname);
-					strcpy		(fname,fname_in_cache);
+						// Use
+						source_name	= &fname_copy[0];
+						strcpy		(fname_copy,fname);
+						strcpy		(fname,fname_in_cache);
+					}
 				}
 			}
 		}
-#endif
 		if (desc.size_real<256*1024)	R = xr_new<CFileReader>			(fname);
 		else							R = xr_new<CVirtualFileReader>	(fname);
 	} else {
