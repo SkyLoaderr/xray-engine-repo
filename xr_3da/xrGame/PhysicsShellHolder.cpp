@@ -22,35 +22,7 @@ BOOL CPhysicsShellHolder::net_Spawn				(LPVOID	DC)
 	create_physic_shell			();
 	return ret;
 }
-void CPhysicsShellHolder::OnEvent		(NET_Packet& P, u16 type)
-{
 
-	switch (type)
-	{
-	case GE_HIT:
-		{
-			u16				id,weapon_id;
-			Fvector			dir;
-			float			power, impulse;
-			s16				element;
-			Fvector			position_in_bone_space;
-			u16				hit_type;
-
-			P.r_u16			(id);
-			P.r_u16			(weapon_id);
-			P.r_dir			(dir);
-			P.r_float		(power);
-			P.r_s16			(element);
-			P.r_vec3		(position_in_bone_space);
-			P.r_float		(impulse);
-			P.r_u16			(hit_type);	//hit type
-			Hit				(power,dir,Level().Objects.net_Find(id),element,
-				position_in_bone_space, impulse, (ALife::EHitType)hit_type);
-		}
-		break;
-	default: 	inherited::OnEvent(P,type);
-	}
-}
 void	CPhysicsShellHolder::PHHit(Fvector &dir,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type /* ALife::eHitTypeWound*/)
 {
 	if(impulse>0)

@@ -13,10 +13,6 @@ public:
 
 	virtual void			OnH_A_Chield		();
 	virtual void			OnH_B_Independent	();
-	virtual void			OnEvent				(NET_Packet& P,u16 type);
-// this included to resolve between CCustomTaget:GameObject::OnEvent and
-// CPhysicsItem:CPhysicsShellHolder::OnEvent the latest process GE_HIT 
-// the first only process GE_DESTROY
 
 	virtual void			Load				(LPCSTR section);
 	
@@ -28,6 +24,9 @@ public:
 	virtual void			net_Import			(NET_Packet& P);	// import from server
 	virtual void			shedule_Update		(u32 dt);
 	
+	virtual	void			Hit					(float P, Fvector &dir,	CObject* who, 
+		s16 element,Fvector p_in_object_space, 
+		float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
 	virtual BOOL			net_Spawn			(LPVOID DC);
 	virtual void			net_Destroy			();
 	virtual void			UpdateCL			();					// Called each frame, so no need for dt

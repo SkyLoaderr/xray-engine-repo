@@ -50,6 +50,12 @@ void CTargetCS::UpdateCL		()
 	}
 }
 
+void CTargetCS::	Hit					(float P, Fvector &dir,	CObject* who, 
+											 s16 element,Fvector p_in_object_space, 
+											 float impulse, ALife::EHitType hit_type /*ALife::eHitTypeWound*/)
+{
+	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
+}
 void CTargetCS::SetPos(const Fmatrix& pos) {
 	m_pos.set					(pos);
 	XFORM().set					(m_pos);
@@ -91,10 +97,7 @@ void CTargetCS::OnH_B_Chield		()
 	inherited::OnH_B_Chield		();
 }
 
-void CTargetCS::OnEvent(NET_Packet& P, u16 type)
-{
-	inherited::OnEvent(P,type);
-}
+
 void CTargetCS::create_physic_shell	()
 {
 	CPhysicItem::create_physic_shell();

@@ -30,7 +30,6 @@ public:
 	virtual	void			Hit					(float P, Fvector &dir,	CObject* who, 
 		s16 element,Fvector p_in_object_space, 
 		float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
-	virtual void			OnEvent				(NET_Packet& P, u16 type);
 ///////////////////////////////////////////////////////////////////////
 	virtual u16				PHGetSyncItemsNumber();
 	virtual CPHSynchronize*	PHGetSyncItem		(u16 item);
