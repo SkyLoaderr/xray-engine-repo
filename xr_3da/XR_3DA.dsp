@@ -2064,6 +2064,18 @@ SOURCE=.\DetailManager.cpp
 SOURCE=.\DetailManager.h
 # End Source File
 # End Group
+# Begin Group "Particle Sorter"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\ParticleSorter.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ParticleSorter.h
+# End Source File
+# End Group
 # Begin Source File
 
 SOURCE=.\FStaticRender.cpp
