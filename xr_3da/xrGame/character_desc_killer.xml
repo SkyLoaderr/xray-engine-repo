@@ -326,10 +326,10 @@
 
 <!---------------------------KILLER SPECNAZ COURIER---------------------->
 	<specific_character id="killer_specnaz_courier" team_default = "1">
-		<name>Неизвестный наемник</name>
+		<name>Курьер</name>
 		<icon x="4" y="2"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
+		<bio>Курьер наемников. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
 
 		<team>Killer_specnaz</team>
 		
