@@ -31,7 +31,7 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value="_DEBUG"/>
+    <USERDEFINES value=""/>
     <SYSDEFINES value="_RTLDLL;NO_STRICT;USEPACKAGES"/>
     <MAINSOURCE value="editor.cpp"/>
     <INCLUDEPATH value="..\..\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl"/>
@@ -40,14 +40,13 @@
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-src_suffix cpp -D_DEBUG -I..\..\CBuilder6\Projects -I$(BCB)\include 
-      -I$(BCB)\include\vcl -boa"/>
-    <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a8 -b- -k -y -v -vi- -c 
-      -tWM"/>
-    <PFLAGS value="-$YD -$W -$O- -$A8 -v -JPHNE -M -LUDesignIde"/>
+    <IDLCFLAGS value="-I..\..\CBuilder6\Projects -I$(BCB)\include -I$(BCB)\include\vcl 
+      -src_suffix cpp -boa"/>
+    <CFLAG1 value="-O2 -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -a8 -b- -k- -vi -c -tWM"/>
+    <PFLAGS value="-$Y- -$L- -$D- -$A8 -v -JPHNE -M -LUDesignIde"/>
     <RFLAGS value=""/>
-    <AFLAGS value="/mx /w2 /zd"/>
-    <LFLAGS value="-D&quot;&quot; -aa -Tpp -x -Gn -Gl -Gi -v"/>
+    <AFLAGS value="/mx /w2 /zn"/>
+    <LFLAGS value="-D&quot;&quot; -aa -Tpp -x -Gn -Gl -Gi"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
@@ -95,16 +94,14 @@ ProductName=
 ProductVersion=1.0.0.0
 Comments=
 
-[Excluded Packages]
-H:\RAD\Borland\Components6\AlexMX\editor.bpl=editor
-
 [HistoryLists\hlIncludePath]
 Count=1
 Item0=..\..\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
-Count=1
-Item0=..\..\CBuilder6\Projects;$(BCB)\lib\obj;$(BCB)\lib
+Count=2
+Item0=$(BCB)\Projects\Lib;..\..\CBuilder6\Projects;$(BCB)\lib\obj;$(BCB)\lib
+Item1=..\..\CBuilder6\Projects;$(BCB)\lib\obj;$(BCB)\lib
 
 [HistoryLists\hlDebugSourcePath]
 Count=1
@@ -115,8 +112,9 @@ Count=1
 Item0=_DEBUG
 
 [HistoryLists\hlFinalOutputDir]
-Count=1
-Item0=R:\Borland\Components6\AlexMX
+Count=2
+Item0=R:\Borland\Components6\AlexMX\
+Item1=R:\Borland\Components6\AlexMX
 
 [Debugging]
 DebugSourceDirs=$(BCB)\source\vcl
