@@ -37,8 +37,8 @@ CWeaponProtecta::CWeaponProtecta() : CWeapon("PROTECTA")
 CWeaponProtecta::~CWeaponProtecta()
 {
 	// sounds
-	pSounds->Delete3D(sndShoot);
-	for (int i=0; i<SND_RIC_COUNT; i++) pSounds->Delete3D(sndRicochet[i]);
+	pSounds->Delete(sndShoot);
+	for (int i=0; i<SND_RIC_COUNT; i++) pSounds->Delete(sndRicochet[i]);
 	
 	_DELETE			(m_pShootPS);
 }

@@ -29,8 +29,8 @@ class CAI_Crow : public CCustomMonster
 
 	protected:
 		// media
-		sound3D			sndHit[SND_HIT_COUNT];
-		sound3D			sndDie[SND_DIE_COUNT];
+		sound			sndHit[SND_HIT_COUNT];
+		sound			sndDie[SND_DIE_COUNT];
 		// ai
 		ECrowStates		eCurrentState;
 		bool			bStopThinking;

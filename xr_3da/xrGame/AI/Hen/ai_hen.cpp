@@ -32,8 +32,8 @@ CAI_Hen::~CAI_Hen()
 {
 	// removing all data no more being neded 
 	int i;
-	for (i=0; i<SND_HIT_COUNT; i++) pSounds->Delete3D(sndHit[i]);
-	for (i=0; i<SND_DIE_COUNT; i++) pSounds->Delete3D(sndDie[i]);
+	for (i=0; i<SND_HIT_COUNT; i++) pSounds->Delete(sndHit[i]);
+	for (i=0; i<SND_DIE_COUNT; i++) pSounds->Delete(sndDie[i]);
 }
 
 void CAI_Hen::Load(CInifile* ini, const char* section)

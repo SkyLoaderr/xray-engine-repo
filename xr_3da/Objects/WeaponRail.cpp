@@ -27,7 +27,7 @@ CWeaponRail::CWeaponRail() : CWeapon("rail")
 
 CWeaponRail::~CWeaponRail()
 {
-	pSounds->Delete3D(sndFire);
+	pSounds->Delete(sndFire);
 }
 
 void CWeaponRail::FireStart()

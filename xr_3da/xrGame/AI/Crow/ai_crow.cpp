@@ -29,8 +29,8 @@ CAI_Crow::~CAI_Crow()
 {
 	// removing all data no more being neded 
 	int i;
-	for (i=0; i<SND_HIT_COUNT; i++) pSounds->Delete3D(sndHit[i]);
-	for (i=0; i<SND_DIE_COUNT; i++) pSounds->Delete3D(sndDie[i]);
+	for (i=0; i<SND_HIT_COUNT; i++) pSounds->Delete(sndHit[i]);
+	for (i=0; i<SND_DIE_COUNT; i++) pSounds->Delete(sndDie[i]);
 }
 
 void CAI_Crow::Load(CInifile* ini, const char* section)
@@ -72,7 +72,7 @@ void CAI_Crow::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 	tHitDir.normalize();
 
 	// Play hit-sound
-	sound3D& S = sndHit[Random.randI(SND_HIT_COUNT)];
+	sound& S				= sndHit[Random.randI(SND_HIT_COUNT)];
 	if (S.feedback)			return;
 	if (Random.randI(2))	return;
 	pSounds->Play3DAtPos	(S,this,vPosition);

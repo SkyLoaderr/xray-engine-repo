@@ -25,7 +25,7 @@ CDummyObject::~CDummyObject()
 {
 	Device.seqRender.Remove(this);
 	_DELETE(animator);
-	pSounds->Delete3D(sndDummy);
+	pSounds->Delete(sndDummy);
 }
 
 void CDummyObject::OnRender()

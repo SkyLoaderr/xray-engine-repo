@@ -87,11 +87,11 @@ CWeaponM134::~CWeaponM134()
 	FlameUNLOAD();
 
 	// sounds
-	pSounds->Delete3D(sndFireStart);
-	pSounds->Delete3D(sndFireLoop);
-	pSounds->Delete3D(sndFireEnd);
-	pSounds->Delete3D(sndServo);
-	for (int i=0; i<SND_RIC_COUNT; i++) pSounds->Delete3D(sndRicochet[i]);
+	pSounds->Delete(sndFireStart);
+	pSounds->Delete(sndFireLoop);
+	pSounds->Delete(sndFireEnd);
+	pSounds->Delete(sndServo);
+	for (int i=0; i<SND_RIC_COUNT; i++) pSounds->Delete(sndRicochet[i]);
 }
 
 void CWeaponM134::Load(CInifile* ini, const char* section)

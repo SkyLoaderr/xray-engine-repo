@@ -16,7 +16,7 @@ public:
 	}
 	void	Unload	()
 	{
-		pSounds->Delete3D(handle);
+		pSounds->Delete(handle);
 	}
 	void	Update(Fvector& pos)
 	{

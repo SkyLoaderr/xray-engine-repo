@@ -14,7 +14,7 @@ CCustomDoor::CCustomDoor()
 
 CCustomDoor::~CCustomDoor()
 {	
-	pSounds->Delete3D(sndOpenClose);
+	pSounds->Delete(sndOpenClose);
 }
 
 void CCustomDoor::Load(CInifile* ini, const char * section)

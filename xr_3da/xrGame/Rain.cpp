@@ -31,7 +31,6 @@ CEffect_Rain::CEffect_Rain()
 	control_stop		= Engine.Event.Handler_Attach	("level.weather.rain.stop",this);
 	
 	pSounds->Create		(snd_Ambient,FALSE,"amb_rain");
-	snd_Ambient_control	= 0;
 	snd_Ambient_volume	= 0;
 
 	Device.seqDevCreate.Add	(this);
@@ -45,7 +44,7 @@ CEffect_Rain::~CEffect_Rain()
 	Engine.Event.Handler_Detach		(control_stop,this);
 	Engine.Event.Handler_Detach		(control_start,this);
 
-	pSounds->Delete2D				(snd_Ambient);
+	pSounds->Delete					(snd_Ambient);
 
 	Device.seqDevCreate.Remove	(this);
 	Device.seqDevDestroy.Remove	(this);
