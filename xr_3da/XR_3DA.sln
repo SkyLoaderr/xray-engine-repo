@@ -67,9 +67,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrXMLParser", "..\xrXMLPars
 		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E} = {A0F7D1FB-59A7-4717-A7E4-96F37E91998E}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrLUA", "..\xrLUA\xrLUA.vcproj", "{F496E4E3-22D5-4294-A0FB-A1EFDA7E2450}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 11
+		SccNumberOfProjects = 12
 		SccLocalPath0 = .
 		CanCheckoutShared = true
 		SolutionUniqueID = {6F8E4AE3-CB8E-4760-8086-796FE333A467}
@@ -112,6 +116,10 @@ Global
 		SccProjectUniqueName10 = ..\\xrXMLParser\\xrXMLParser.vcproj
 		SccProjectName10 = \u0022$/xrXMLParser\u0022,\u0020MGLAAAAA
 		SccLocalPath10 = ..\\xrXMLParser
+		CanCheckoutShared = true
+		SccProjectUniqueName11 = ..\\xrLUA\\xrLUA.vcproj
+		SccProjectName11 = \u0022$/xrLUA\u0022,\u0020LCMAAAAA
+		SccLocalPath11 = ..\\xrLUA
 		CanCheckoutShared = true
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
@@ -180,6 +188,12 @@ Global
 		{94A1C366-3D19-48E6-8170-4ADC2E70DF98}.Mixed.Build.0 = Release|Win32
 		{94A1C366-3D19-48E6-8170-4ADC2E70DF98}.Release.ActiveCfg = Release|Win32
 		{94A1C366-3D19-48E6-8170-4ADC2E70DF98}.Release.Build.0 = Release|Win32
+		{F496E4E3-22D5-4294-A0FB-A1EFDA7E2450}.Debug.ActiveCfg = Debug|Win32
+		{F496E4E3-22D5-4294-A0FB-A1EFDA7E2450}.Debug.Build.0 = Debug|Win32
+		{F496E4E3-22D5-4294-A0FB-A1EFDA7E2450}.Mixed.ActiveCfg = Release|Win32
+		{F496E4E3-22D5-4294-A0FB-A1EFDA7E2450}.Mixed.Build.0 = Release|Win32
+		{F496E4E3-22D5-4294-A0FB-A1EFDA7E2450}.Release.ActiveCfg = Release|Win32
+		{F496E4E3-22D5-4294-A0FB-A1EFDA7E2450}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 	EndGlobalSection
