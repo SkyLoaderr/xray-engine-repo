@@ -226,11 +226,13 @@ u32 CParticleManager::LoadActions(int alist_id, IReader& R)
 	// Execute the specified action list.
 	ParticleActions* pa		= GetActionListPtr(alist_id);
     pa->clear				();
-    u32 cnt					= R.r_u32();
-    for (u32 k=0; k<cnt; k++){
-        ParticleAction* act	= CreateAction	((PActionEnum)R.r_u32());
-        act->Load			(R);
-        pa->append			(act);
+    if (R.length()){
+        u32 cnt					= R.r_u32();
+        for (u32 k=0; k<cnt; k++){
+            ParticleAction* act	= CreateAction	((PActionEnum)R.r_u32());
+            act->Load			(R);
+            pa->append			(act);
+        }
     }
     return pa->size();
 }
