@@ -209,10 +209,6 @@ void	game_sv_TeamDeathmatch::OnPlayerKillPlayer		(ClientID id_killer, ClientID i
 	ps_killed->lasthitweapon		= 0;
 	ClearPlayerItems		(ps_killed);
 	SetPlayersDefItems		(ps_killed);
-
-//	if (fraglimit && (teams[ps_killer->team-1].score >= fraglimit ) )OnFraglimitExceed();
-
-//	signal_Syncronize();
 }
 
 bool game_sv_TeamDeathmatch::checkForFragLimit()
@@ -227,12 +223,6 @@ bool game_sv_TeamDeathmatch::checkForFragLimit()
 u32		game_sv_TeamDeathmatch::RP_2_Use				(CSE_Abstract* E)
 {
 	return 0;
-	/*
-	CSE_ALifeCreatureActor	*pA	=	smart_cast<CSE_ALifeCreatureActor*>(E);
-	if (!pA) return 0;
-
-	return u32(pA->s_team);
-	*/
 };
 
 
@@ -273,7 +263,7 @@ void	game_sv_TeamDeathmatch::OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, N
 	P.r_u16			(hit_type);	//hit type
 	P.r_pos = RPos;
 	//---------------------------------------
-	if (Device.dwTimeGlobal<ps_hitted->RespawnTime + damageblocklimit)
+	if (ps_hitted->testFlag(GAME_PLAYER_FLAG_INVINCIBLE))//Device.dwTimeGlobal<ps_hitted->RespawnTime + damageblocklimit)
 	{
 		power = 0;
 		impulse = 0;
@@ -320,4 +310,17 @@ void	game_sv_TeamDeathmatch::LoadTeams			()
 	LoadTeamData("teamdeathmatch_team2");
 };
 
-
+void	game_sv_TeamDeathmatch::Update					()
+{
+	inherited::Update	();
+	switch(Phase()) 	
+	{
+	case GAME_PHASE_TEAM1_SCORES :
+	case GAME_PHASE_TEAM2_SCORES :
+	case GAME_PHASE_TEAMS_IN_A_DRAW :
+		{
+			if(m_delayedRoundEnd && m_roundEndDelay < Device.TimerAsync())
+				OnRoundEnd("Finish");
+		} break;
+	};
+}

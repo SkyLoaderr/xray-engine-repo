@@ -170,8 +170,7 @@ CActor::CActor() : CEntityAlive()
 	SetControlled					(false);
 	//-----------------------------------------------------------------------------------
 	hFriendlyIndicator.create				(FVF::F_LIT,RCache.Vertex.Buffer(),RCache.QuadIB);
-	hIndicatorShader.create("friendly_indicator","ui\\ui_blueteam");
-//	hIndicatorShader.create("font","ui\\ui_font_header_europe");
+
 	m_pUsableObject=NULL;
 
 
@@ -204,6 +203,7 @@ CActor::~CActor()
 	xr_delete(m_pSleepEffector);
 	//-----------------------------------------------------------
 	hFriendlyIndicator.destroy();
+
 	xr_delete						(m_pPhysics_support);
 
 	xr_delete(m_anims);
@@ -352,6 +352,17 @@ void CActor::Load	(LPCSTR section )
 		m_DefaultVisualOutfit = pSettings->r_string(section, "default_outfit");
 	else
 		m_DefaultVisualOutfit = NULL;
+
+	invincibility_fire_shield_1st			= NULL;
+	if (pSettings->line_exist(section,"Invincibility_Shield_1st"))
+	{
+		invincibility_fire_shield_1st			= pSettings->r_string(section,"Invincibility_Shield_1st");
+	};	
+	invincibility_fire_shield_3rd			= NULL;
+	if (pSettings->line_exist(section,"Invincibility_Shield_3rd"))
+	{
+		invincibility_fire_shield_3rd			= pSettings->r_string(section,"Invincibility_Shield_3rd");
+	};	
 }
 
 void CActor::PHHit(float P,Fvector &dir,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type /* = ALife::eHitTypeWound */)
@@ -360,16 +371,37 @@ void CActor::PHHit(float P,Fvector &dir,s16 element,Fvector p_in_object_space, f
 }
 void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector position_in_bone_space, float impulse, ALife::EHitType hit_type)
 {
-
-
-
-
 #ifndef _DEBUG
 	if(Level().CurrentEntity() == this) {
 		Level().Cameras.AddEffector(xr_new<CShootingHitEffectorPP>(	m_pShootingEffector->ppi,		m_pShootingEffector->time,		m_pShootingEffector->time_attack,		m_pShootingEffector->time_release));
 		Level().Cameras.AddEffector(xr_new<CShootingHitEffector>(	m_pShootingEffector->ce_time,	m_pShootingEffector->ce_amplitude,m_pShootingEffector->ce_period_number,m_pShootingEffector->ce_power));
 	}
 #endif
+	
+	if (GameID() != GAME_SINGLE)
+	{
+		game_PlayerState* ps = Game().GetPlayerByGameID(ID());
+		if (ps && ps->testFlag(GAME_PLAYER_FLAG_INVINCIBLE) && Device.dwFrame != last_hit_frame)
+		{		
+			// вычислить позицию и направленность партикла
+			Fmatrix pos; 
+			
+			CParticlesPlayer::MakeXFORM(this,element,dir,position_in_bone_space,pos);
+
+			// установить particles
+			CParticlesObject* ps = NULL;
+
+			if (eacFirstEye == cam_active && this == Level().CurrentEntity())
+				ps = xr_new<CParticlesObject>(invincibility_fire_shield_1st);
+			else
+				ps = xr_new<CParticlesObject>(invincibility_fire_shield_3rd);
+
+			ps->UpdateParent(pos,Fvector().set(0.f,0.f,0.f));
+			Level().ps_needtoplay.push_back(ps);
+		};
+
+		last_hit_frame = Device.dwFrame;
+	};
 
 	
 	//slow actor, only when he gets hit
@@ -480,8 +512,6 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who, s16 element
 void CActor::Die	(CObject* who)
 {
 	inherited::Die(who);
-
-
 	//-------------------------------------
 	xr_vector<CInventorySlot>::iterator I = inventory().m_slots.begin(), B = I;
 	xr_vector<CInventorySlot>::iterator E = inventory().m_slots.end();
@@ -939,27 +969,6 @@ void CActor::renderable_Render	()
 	//-------------------------------------------------------------
 	if (g_Alive())
 	{
-		/*
-		u32			dwOffset = 0,dwCount = 0;
-		FVF::LIT* pv_start				= (FVF::LIT*)RCache.Vertex.Lock(4,hFriendlyIndicator->vb_stride,dwOffset);
-		FVF::LIT* pv						= pv_start;
-		// base rect
-		Fvector2 		lt,rb;
-		lt.x = - 1.f; lt.y = + 1.f;
-		rb.x = + 1.f; rb.y = - 1.f;
-		pv->set					(lt.x,rb.y,0.f, 0xffffffff, 0.f, 1.f); pv++;	// 0
-		pv->set					(lt.x,lt.y,0.f, 0xffffffff, 0.f, 0.f); pv++; 	// 1
-		pv->set					(rb.x,rb.y,0.f, 0xffffffff, 1.f, 1.f); pv++;	// 2
-		pv->set					(rb.x,lt.y,0.f, 0xffffffff, 1.f, 0.f); pv++;	// 3
-		// render	
-		dwCount 				= u32(pv-pv_start);
-		RCache.Vertex.Unlock	(dwCount,hFriendlyIndicator->vb_stride);
-
-		RCache.set_xform_world		(Fidentity);
-		RCache.set_Shader			(hIndicatorShader);
-		RCache.set_Geometry			(hFriendlyIndicator);
-		RCache.Render	   			(D3DPT_TRIANGLESTRIP,dwOffset,0, dwCount, 0, 2);
-		*/
 	}
 }
 

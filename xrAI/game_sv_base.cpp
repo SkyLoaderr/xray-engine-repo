@@ -441,6 +441,7 @@ game_sv_GameState::game_sv_GameState()
 
 	m_bMapRotation = false;
 	m_bMapNeedRotation = false;
+	m_bFastRestart = false;
 	m_pMapRotation_List.clear();
 }
 
@@ -624,12 +625,18 @@ void game_sv_GameState::MapRotation_AddMap		(LPCSTR MapName)
 void game_sv_GameState::OnRoundStart			()
 { 
 	m_bMapNeedRotation = false;
+	m_bFastRestart = false;
 }// старт раунда
 
 void game_sv_GameState::OnRoundEnd				(LPCSTR reason)						
 { 
-	if (stricmp(reason, "GAME_restarted") != NULL)
+	m_bFastRestart = false;
+	if (strstr(reason, "GAME_restarted") == NULL)
 		m_bMapNeedRotation = true; 
+	if (!stricmp(reason, "GAME_restarted_fast"))
+	{
+		m_bFastRestart = true;
+	}
 }// конец раунда
 
 void game_sv_GameState::SaveMapList				()

@@ -17,6 +17,11 @@ void	game_sv_Deathmatch::Create					(shared_str& options)
 	timelimit			= get_option_i		(*options,"timelimit",0)*60000;	// in (ms)
 	damageblocklimit	= get_option_i		(*options,"dmgblock",5)*1000;	// in (ms)
 
+	if (get_option_i(*options,"dmbi",0) != 0)
+		g_bDamageBlockIndicators	= true;
+	else 
+		g_bDamageBlockIndicators	= false;
+
 	if (get_option_i(*options,"ans",1) != 0)
 		m_bAnomaliesEnabled	= true;
 	else 
@@ -51,10 +56,14 @@ void	game_sv_Deathmatch::Create					(shared_str& options)
 	m_AnomalySetsList.clear();
 	m_AnomalySetID.clear();
 	m_dwLastAnomalySetID	= 1001;
+
+	m_delayedRoundEnd = false;
 }
 
 void	game_sv_Deathmatch::OnRoundStart			()
 {
+	m_delayedRoundEnd = false;
+	pWinnigPlayerName = "";
 	/////////////////////////////////////////////////////////////////////////
 	for (u32 i=0; i<teams.size(); ++i)
 	{
@@ -127,14 +136,47 @@ void	game_sv_Deathmatch::OnPlayerKillPlayer		(ClientID id_killer, ClientID id_ki
 	SetPlayersDefItems		(ps_killed);
 }
 
+game_PlayerState*	game_sv_Deathmatch::GetWinningPlayer		()
+{
+	game_PlayerState* res = NULL;
+	s16 MaxFrags	= -1;
+
+	u32		cnt		= get_players_count	();
+	for		(u32 it=0; it<cnt; ++it)	
+	{
+		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
+		game_PlayerState* ps	= l_pC->ps;
+		if (!ps) continue;
+		if (ps->kills > MaxFrags)
+		{
+			MaxFrags = ps->kills;
+			res = ps;
+		}
+	};
+	return res;
+};
+
+void	game_sv_Deathmatch::OnPlayerScores()
+{
+	game_PlayerState* pWinner = GetWinningPlayer();
+	if (pWinner)
+	{
+		pWinnigPlayerName = pWinner->getName();
+		phase = GAME_PHASE_PLAYER_SCORES;
+		switch_Phase		(phase);
+		OnDelayedRoundEnd("Player Scores");
+	}
+};
 
 void	game_sv_Deathmatch::OnTimelimitExceed		()
 {
 	OnRoundEnd	("TIME_limit");
+	OnPlayerScores();
 }
 void	game_sv_Deathmatch::OnFraglimitExceed		()
 {
 	OnRoundEnd	("FRAG_limit");
+	OnPlayerScores();
 }
 
 #include "UIGameDM.h"
@@ -147,18 +189,9 @@ void	game_sv_Deathmatch::Update					()
 	case GAME_PHASE_INPROGRESS:
 		{
 			checkForRoundEnd();
-/* //moved to game_sv_mp
-			// remove corpses if their number exceed limit
-			while (m_CorpseList.size()>g_dwMaxCorpses)
-			{
-				u16 CorpseID = m_CorpseList.front();
-				m_CorpseList.pop_front();
-				//---------------------------------------------
-				NET_Packet			P;
-				u_EventGen			(P,GE_DESTROY,CorpseID);
-				Level().Send(P,net_flags(TRUE,TRUE));
-			};*/
-			//-----------------------------------------------------
+			
+			check_InvinciblePlayers();
+
 			if (m_bSpectatorMode)
 			{
 				if (m_dwSM_LastSwitchTime<Level().timeServer())
@@ -183,6 +216,11 @@ void	game_sv_Deathmatch::Update					()
 			checkForRoundStart();
 		}
 		break;
+	case GAME_PHASE_PLAYER_SCORES:
+		{
+			if(m_delayedRoundEnd && m_roundEndDelay < Device.TimerAsync())
+				OnRoundEnd("Finish");
+		} break;
 	}
 }
 
@@ -193,7 +231,6 @@ bool game_sv_Deathmatch::checkForRoundStart()
 	{
 		if (!SwitchToNextMap() || !OnNextMap())
 		{
-			AllPlayers_Ready();
 			OnRoundStart();
 		};
 		return true;
@@ -308,6 +345,7 @@ void	game_sv_Deathmatch::SM_SwitchOnPlayer(CObject* pNewObject)
 BOOL	game_sv_Deathmatch::AllPlayers_Ready ()
 {
 	if (!m_server->GetServerClient()) return FALSE;
+	if (m_bFastRestart) return TRUE;
 	// Check if all players ready
 	u32		cnt		= get_players_count	();
 	u32		ready	= 0;
@@ -946,7 +984,7 @@ void	game_sv_Deathmatch::OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_P
 	P.r_pos = RPos;
 	
 	//---------------------------------------
-	if (Device.dwTimeGlobal<ps_hitted->RespawnTime + damageblocklimit)
+	if (ps_hitted->testFlag(GAME_PLAYER_FLAG_INVINCIBLE))//Device.dwTimeGlobal<ps_hitted->RespawnTime + damageblocklimit)
 	{
 		power = 0;
 		impulse = 0;
@@ -1145,13 +1183,21 @@ void game_sv_Deathmatch::net_Export_State		(NET_Packet& P, ClientID id_to)
 
 	P.w_s32			(fraglimit);
 	P.w_s32			(timelimit);
+//	P.w_u32			(damageblocklimit);
+	P.w_u8			(u8(g_bDamageBlockIndicators));
 	// Teams
 	P.w_u16			(u16(teams.size()));
 	for (u32 t_it=0; t_it<teams.size(); ++t_it)
 	{
 		P.w				(&teams[t_it],sizeof(game_TeamState));
 	}
-
+	switch(Phase())
+	{
+	case GAME_PHASE_PLAYER_SCORES:
+		{
+			P.w_stringZ(pWinnigPlayerName);
+		}break;
+	}
 }
 
 int game_sv_Deathmatch::GetTeamScore(u32 idx)
@@ -1371,3 +1417,44 @@ void	game_sv_Deathmatch::Player_AddMoney			(game_PlayerState* ps, s32 MoneyAmoun
 
 	ps->money_for_round = s16(TotalMoney);
 };
+
+void	game_sv_Deathmatch::check_InvinciblePlayers()
+{
+	u32		cnt		= get_players_count	();
+	for		(u32 it=0; it<cnt; ++it)	
+	{
+		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
+		game_PlayerState* ps	= l_pC->ps;
+		if (ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) continue;
+		u32 CurTime = Device.dwTimeGlobal;
+		if ((ps->RespawnTime + damageblocklimit < CurTime) && ps->testFlag(GAME_PLAYER_FLAG_INVINCIBLE))
+		{
+			ps->resetFlag(GAME_PLAYER_FLAG_INVINCIBLE);
+			signal_Syncronize();
+		}
+	};
+};
+
+void	game_sv_Deathmatch::RespawnPlayer			(ClientID id_who, bool NoSpectator)
+{
+	inherited::RespawnPlayer(id_who, NoSpectator);
+
+	xrClientData*	xrCData	= (xrClientData*)m_server->ID_to_client	(id_who);
+	game_PlayerState*	ps	=	xrCData->ps;
+	CSE_Abstract*	pOwner = xrCData->owner;
+	CSE_ALifeCreatureActor	*pA	=	smart_cast<CSE_ALifeCreatureActor*>(pOwner);
+	if(!pA) return;
+
+	TeamStruct*	pTeamData = GetTeamData(u8(ps->team));
+	if (pTeamData)
+		Player_AddMoney(ps, pTeamData->m_iM_OnRespawn);
+
+	if (damageblocklimit > 0)
+		ps->setFlag(GAME_PLAYER_FLAG_INVINCIBLE);
+}
+
+void	game_sv_Deathmatch::OnDelayedRoundEnd		(LPCSTR /**reason/**/)
+{
+	m_delayedRoundEnd = true;
+	m_roundEndDelay = Device.TimerAsync() + 10000;
+}

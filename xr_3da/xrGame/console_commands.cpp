@@ -86,8 +86,6 @@ public:
 	virtual void Execute(LPCSTR /**args/**/) {
 		if(Level().Server) {
 			Level().Server->game->OnRoundEnd("GAME_restarted");
-//			Level().Server->game->round = -1;
-			// Level().Server->game->OnRoundStart();
 		}
 	}
 	virtual void	Info	(TInfo& I)		
@@ -95,6 +93,21 @@ public:
 		strcpy(I,"restart game"); 
 	}
 };
+
+class CCC_RestartFast : public IConsole_Command {
+public:
+	CCC_RestartFast(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR /**args/**/) {
+		if(Level().Server) {
+			Level().Server->game->OnRoundEnd("GAME_restarted_fast");
+		}
+	}
+	virtual void	Info	(TInfo& I)		
+	{
+		strcpy(I,"restart game fast"); 
+	}
+};
+
 class CCC_Team : public IConsole_Command {
 public:
 	CCC_Team(LPCSTR N) : IConsole_Command(N)  { };
@@ -1460,6 +1473,7 @@ void CCC_RegisterCommands()
 	CMD3(CCC_Mask,				"g_god",				&psActorFlags,	AF_GODMODE	);
 	CMD1(CCC_Spawn,				"g_spawn"				);
 	CMD1(CCC_Restart,			"g_restart"				);
+	CMD1(CCC_RestartFast,		"g_restart_fast"		);
 	CMD1(CCC_Money,				"g_money"				);
 	CMD1(CCC_Team,				"g_change_team"			);
 	CMD1(CCC_Kill,				"g_kill"				);

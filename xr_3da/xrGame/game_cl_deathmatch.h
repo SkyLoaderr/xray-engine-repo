@@ -21,7 +21,9 @@ public :
 	s32								fraglimit; //dm,tdm,ah
 	s32								timelimit; //dm
 	u32								damageblocklimit;//dm,tdm
+	bool							g_bDamageBlockIndicators;
 	xr_vector<game_TeamState>		teams;//dm,tdm,ah
+	string64						WinnerName;
 
 	virtual		CUIGameCustom*		createGameUI			();
 	virtual		void				net_import_state	(NET_Packet& P);
@@ -62,6 +64,8 @@ protected:
 	virtual BOOL					CanCallSkinMenu			();
 	virtual	BOOL					CanCallInventoryMenu	();
 
+			void					Check_Invincible_Players ();
+
 	virtual		void				shedule_Update			(u32 dt);
 	virtual		bool				OnKeyboardPress			(int key);
 	virtual		bool				OnKeyboardRelease		(int key);
@@ -85,4 +89,7 @@ public:
 	virtual		void				OnVoteEnd				(NET_Packet& P);
 
 	virtual		void				GetMapEntities			(xr_vector<SZoneMapEntityData>& dst);
+
+	virtual		void				OnRender				();
+	virtual		bool				IsEnemy					(game_PlayerState* ps);
 };

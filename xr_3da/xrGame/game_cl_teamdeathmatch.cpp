@@ -212,7 +212,8 @@ bool game_cl_TeamDeathmatch::CanBeReady				()
 {
 	if (!m_bTeamSelected)
 	{
-		StartStopMenu(pUITeamSelectWnd,true);
+		if (CanCallTeamSelectMenu())
+			StartStopMenu(pUITeamSelectWnd,true);
 		return false;
 	}
 
@@ -239,6 +240,10 @@ char*	game_cl_TeamDeathmatch::getTeamSection(int Team)
 void game_cl_TeamDeathmatch::shedule_Update			(u32 dt)
 {
 	if(!m_game_ui && HUD().GetUI() ) m_game_ui = smart_cast<CUIGameTDM*>( HUD().GetUI()->UIGame() );
+	//---------------------------------------------------------
+	if (pUITeamSelectWnd && pUITeamSelectWnd->IsShown() && !CanCallTeamSelectMenu())
+		StartStopMenu(pUITeamSelectWnd,true);
+	//---------------------------------------------------------
 	inherited::shedule_Update(dt);
 }
 
@@ -257,6 +262,12 @@ bool	game_cl_TeamDeathmatch::OnKeyboardPress			(int key)
 	return inherited::OnKeyboardPress(key);
 }
 
+bool		game_cl_TeamDeathmatch::IsEnemy					(game_PlayerState* ps)
+{
+	if (!local_player) return false;
+	return local_player->team != ps->team;
+};
+
 void	game_cl_TeamDeathmatch::OnRender				()
 {
 	if (local_player && m_bFriendlyIndicators)
@@ -271,7 +282,7 @@ void	game_cl_TeamDeathmatch::OnRender				()
 			CObject* pObject = Level().Objects.net_Find(id);
 			if (!pObject) continue;
 			if (!pObject || pObject->CLS_ID != CLSID_OBJECT_ACTOR) continue;
-			if (ps->team != local_player->team) continue;
+			if (IsEnemy(ps)) continue;
 			if (ps == local_player) continue;
 
 			VERIFY(pObject);
@@ -280,6 +291,7 @@ void	game_cl_TeamDeathmatch::OnRender				()
 			pActor->RenderIndicator(pTS->IndicatorPos, pTS->Indicator_r1, pTS->Indicator_r2, pTS->IndicatorShader);
 		}
 	};
+	inherited::OnRender();
 }
 
 BOOL game_cl_TeamDeathmatch::CanCallBuyMenu			()

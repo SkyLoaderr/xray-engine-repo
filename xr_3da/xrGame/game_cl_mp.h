@@ -11,6 +11,8 @@ struct cl_TeamStruct
 	shared_str			caSection;		// имя секции комманды
 	//-----------------------------------
 	ref_shader			IndicatorShader;
+	ref_shader			InvincibleShader;
+
 	Fvector				IndicatorPos;
 	float				Indicator_r1;
 	float				Indicator_r2;

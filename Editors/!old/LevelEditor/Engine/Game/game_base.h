@@ -47,6 +47,7 @@ struct	game_PlayerState
 	s16			money_delta;
 	//---------------------------
 	u8			m_bCurrentVoteAgreed;
+	//---------------------------
 /*
 private:
 	game_PlayerState(const game_PlayerState&);

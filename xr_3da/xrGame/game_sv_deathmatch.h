@@ -19,13 +19,18 @@ protected:
 	};
 
 
+	BOOL							m_delayedRoundEnd;
+	u32								m_roundEndDelay;
 
 	shared_str							m_sBaseWeaponCostSection;
 	
 	s32								fraglimit; //dm,tdm,ah
 	s32								timelimit; //dm
 	u32								damageblocklimit;//dm,tdm
+	bool							g_bDamageBlockIndicators;
 	xr_vector<game_TeamState>		teams;//dm,tdm,ah
+
+	LPCSTR							pWinnigPlayerName;
 	/////////////////////////////////////////////////////////////
 	DEF_VECTOR(ANOMALIES, std::string);
 	DEF_VECTOR(ANOMALY_SETS, ANOMALIES);
@@ -73,6 +78,7 @@ public:
 
 	// Events
 	virtual		void				OnRoundStart			();												// старт раунда
+	virtual		void				OnDelayedRoundEnd		(LPCSTR /**reason/**/);
 
 	virtual		void				OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_Packet& P); //игрок получил Hit
 
@@ -87,6 +93,7 @@ public:
 	
 	virtual		void				OnFraglimitExceed		();
 	virtual		void				OnTimelimitExceed		();
+				void				OnPlayerScores			();
 	virtual		void				OnDestroyObject			(u16 eid_who);
 	// Main
 	virtual		void				Update					();
@@ -124,7 +131,10 @@ public:
 //	virtual		s16					GetItemCost				(u32 id_who, s16 ItemID);
 				int					GetTeamScore			(u32 idx);
 				void				SetTeamScore			(u32 idx, int val);
+				game_PlayerState*	GetWinningPlayer		();
 	virtual		BOOL				CanHaveFriendlyFire		()	{return FALSE;}
+	virtual		void				RespawnPlayer			(ClientID id_who, bool NoSpectator);
+	virtual		void				check_InvinciblePlayers	();
 				
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION

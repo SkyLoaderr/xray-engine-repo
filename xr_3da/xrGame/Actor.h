@@ -227,6 +227,7 @@ protected:
 	//устанавливается в game
 public:
 	bool					m_bAllowDeathRemove;
+//	u32						m_u32RespawnTime;
 
 	////////////////////////////////////////////////////////
 	void					SetZoomRndSeed			(s32 Seed = 0);
@@ -541,7 +542,6 @@ protected:
 #endif
 
 	ref_geom 				hFriendlyIndicator;
-	ref_shader				hIndicatorShader;				
 	//////////////////////////////////////////////////////////////////////////
 	// Actor physics
 	//////////////////////////////////////////////////////////////////////////
@@ -590,7 +590,12 @@ protected:
 		CStatGraph				*pStatGraph;
 		u32						m_dwStartKickTime;
 
-		shared_str					m_DefaultVisualOutfit;
+		shared_str				m_DefaultVisualOutfit;
+
+		LPCSTR					invincibility_fire_shield_3rd;
+		LPCSTR					invincibility_fire_shield_1st;
+		u32						last_hit_frame;
+
 #ifdef DEBUG
 		friend class CLevelGraph;
 #endif

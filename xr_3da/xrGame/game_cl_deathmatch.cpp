@@ -76,6 +76,8 @@ void game_cl_Deathmatch::net_import_state	(NET_Packet& P)
 
 	P.r_s32			(fraglimit);
 	P.r_s32			(timelimit);
+//	P.r_u32			(damageblocklimit);
+	g_bDamageBlockIndicators = !!P.r_u8();
 	// Teams
 	// Teams
 	u16				t_count;
@@ -87,6 +89,14 @@ void game_cl_Deathmatch::net_import_state	(NET_Packet& P)
 		P.r				(&ts,sizeof(game_TeamState));
 		teams.push_back	(ts);
 	};
+
+	switch (Phase())
+	{
+	case GAME_PHASE_PLAYER_SCORES:
+		{
+			P.r_stringZ(WinnerName);
+		}break;
+	}
 }
 
 CUIBuyWeaponWnd* game_cl_Deathmatch::InitBuyMenu			(LPCSTR BasePriceSection, s16 Team)
@@ -212,7 +222,8 @@ bool game_cl_Deathmatch::CanBeReady				()
 
 	if (!m_bSkinSelected)
 	{
-		StartStopMenu(pCurSkinMenu,true);
+		if (CanCallSkinMenu())
+			StartStopMenu(pCurSkinMenu,true);
 		return false;
 	};
 
@@ -224,7 +235,8 @@ bool game_cl_Deathmatch::CanBeReady				()
 
 	if (res == 0xff || !pCurBuyMenu->CanBuyAllItems())
 	{
-		StartStopMenu(pCurBuyMenu,true);
+		if (CanCallBuyMenu())
+			StartStopMenu(pCurBuyMenu,true);
 		return false;
 	};
 
@@ -237,102 +249,138 @@ char*	game_cl_Deathmatch::getTeamSection(int Team)
 	return "deathmatch_team0";
 };
 
+void game_cl_Deathmatch::Check_Invincible_Players()
+{
+};
+
 void game_cl_Deathmatch::shedule_Update			(u32 dt)
 {
+	if(m_game_ui)
+		m_game_ui->SetTimeMsgCaption("");
+	m_game_ui->SetRoundResultCaption("");
+	m_game_ui->SetSpectatorMsgCaption("");
+	m_game_ui->SetPressJumpMsgCaption("");
+	m_game_ui->SetPressBuyMsgCaption("");
+
 	//fake
 	if(!m_game_ui && HUD().GetUI() ) m_game_ui = smart_cast<CUIGameDM*>( HUD().GetUI()->UIGame() );
-	if (timelimit && Phase()==GAME_PHASE_INPROGRESS)
+	switch (Phase())
 	{
-		if (Level().timeServer()<(start_time + timelimit))
+	case GAME_PHASE_INPROGRESS:
 		{
-			u32 lts = Level().timeServer();
-			u32 Rest = (start_time + timelimit) - lts;
+			Check_Invincible_Players();
 
-			u32 RHour = Rest / 3600000;
-			Rest %= 3600000;
-			u32 RMinutes = Rest / 60000;
-			Rest %= 60000;
-			u32 RSecs = Rest / 1000;
-			string64 S;
-			sprintf(S,"%02d:%02d:%02d", RHour, RMinutes, RSecs);
-			//SetTimeMsgCaption(S);
-			if(m_game_ui)
-				m_game_ui->SetTimeMsgCaption(S);
-		}
-		else
+			if (timelimit)
+			{
+				if (Level().timeServer()<(start_time + timelimit))
+				{
+					u32 lts = Level().timeServer();
+					u32 Rest = (start_time + timelimit) - lts;
+
+					u32 RHour = Rest / 3600000;
+					Rest %= 3600000;
+					u32 RMinutes = Rest / 60000;
+					Rest %= 60000;
+					u32 RSecs = Rest / 1000;
+					string64 S;
+					sprintf(S,"%02d:%02d:%02d", RHour, RMinutes, RSecs);
+					//SetTimeMsgCaption(S);
+					if(m_game_ui)
+						m_game_ui->SetTimeMsgCaption(S);
+				}
+				else
+				{
+					if(m_game_ui)
+						m_game_ui->SetTimeMsgCaption("00:00:00");
+				}
+			};
+			
+			if(local_player)
+			{
+				game_PlayerState * P = local_player;
+
+				string16	tmp;
+				_itoa(P->money_for_round, tmp, 10);
+				shared_str PMoney(tmp);
+				HUD().GetUI()->UIMainIngameWnd.ChangeTotalMoneyIndicator(PMoney);
+
+				if (P->money_for_round != m_iCurrentPlayersMoney)
+				{
+					s16 dMoney = P->money_for_round - m_iCurrentPlayersMoney;
+					if (dMoney > 0)
+						sprintf(tmp,"+%d", dMoney);
+					else
+						sprintf(tmp,"%d", dMoney);				
+
+					PMoney._set(tmp);
+
+					HUD().GetUI()->UIMainIngameWnd.DisplayMoneyChange(PMoney);
+
+					m_iCurrentPlayersMoney = P->money_for_round;
+				};
+				m_game_ui->SetSpectatorMsgCaption("");
+				m_game_ui->SetPressJumpMsgCaption("");
+				m_game_ui->SetPressBuyMsgCaption("");
+
+				if (Level().CurrentEntity() && Level().CurrentEntity()->CLS_ID == CLSID_SPECTATOR)
+				{
+					if (!pCurBuyMenu || !pCurBuyMenu->IsShown())
+					{
+						m_game_ui->SetSpectatorMsgCaption("SPECTATOR : Free-fly camera");
+						m_game_ui->SetPressJumpMsgCaption("Press Jump to start");
+						m_game_ui->SetPressBuyMsgCaption("Press 'B' to access buy menu");
+					};
+				};
+
+				u32 CurTime = Level().timeServer();
+				if (IsVoteEnabled() && IsVotingActive() && m_dwVoteEndTime>=CurTime)
+				{
+					u32 TimeLeft = m_dwVoteEndTime - Level().timeServer();
+					string1024 VoteTimeResStr;
+					u32 SecsLeft = (TimeLeft % 60000) / 1000;
+					u32 MinitsLeft = (TimeLeft - SecsLeft) / 60000;
+
+					u32 NumAgreed = 0;
+					PLAYERS_MAP_IT I;
+					I	= players.begin();
+					for(;I!=players.end(); ++I)
+					{
+						game_PlayerState* ps = I->second;
+						if (ps->m_bCurrentVoteAgreed == 1) NumAgreed++;
+					}
+
+					sprintf(VoteTimeResStr, "Time Left : %d:%d; Agreed %.2f%", MinitsLeft, SecsLeft, float(NumAgreed)/players.size());
+					if (m_game_ui)
+						m_game_ui->SetVoteTimeResultMsg(VoteTimeResStr);
+				};
+			};
+		}break;
+	case GAME_PHASE_PENDING:
 		{
-			if(m_game_ui)
-				m_game_ui->SetTimeMsgCaption("00:00:00");
-		}
+			if (m_game_ui)
+				m_game_ui->ShowPlayersList(true);
+		}break;
+	case GAME_PHASE_PLAYER_SCORES:
+		{
+			HUD().GetUI()->HideIndicators();
+			HUD().GetUI()->HideCursor();
+			string128 resstring;
+			sprintf(resstring, "Player %s wins the match!", WinnerName);
+			m_game_ui->SetRoundResultCaption(resstring);
+		}break;
 	};
-
+	
 	if(m_game_ui)
 		m_game_ui->ShowPlayersList	(Phase()==GAME_PHASE_PENDING);
 
-	if(Phase()==GAME_PHASE_INPROGRESS && local_player)
-	{
-		game_PlayerState * P = local_player;
-
-		string16	tmp;
-		_itoa(P->money_for_round, tmp, 10);
-		shared_str PMoney(tmp);
-		HUD().GetUI()->UIMainIngameWnd.ChangeTotalMoneyIndicator(PMoney);
-
-		if (P->money_for_round != m_iCurrentPlayersMoney)
-		{
-			s16 dMoney = P->money_for_round - m_iCurrentPlayersMoney;
-			if (dMoney > 0)
-				sprintf(tmp,"+%d", dMoney);
-			else
-				sprintf(tmp,"%d", dMoney);				
-
-			PMoney._set(tmp);
-
-			HUD().GetUI()->UIMainIngameWnd.DisplayMoneyChange(PMoney);
-
-			m_iCurrentPlayersMoney = P->money_for_round;
-		};
-		m_game_ui->SetSpectatorMsgCaption("");
-		m_game_ui->SetPressJumpMsgCaption("");
-		m_game_ui->SetPressBuyMsgCaption("");
-
-		if (Level().CurrentEntity() && Level().CurrentEntity()->CLS_ID == CLSID_SPECTATOR)
-		{
-			if (!pCurBuyMenu || !pCurBuyMenu->IsShown())
-			{
-				m_game_ui->SetSpectatorMsgCaption("SPECTATOR : Free-fly camera");
-				m_game_ui->SetPressJumpMsgCaption("Press Jump to start");
-				m_game_ui->SetPressBuyMsgCaption("Press 'B' to access buy menu");
-			};
-		};
-
-		u32 CurTime = Level().timeServer();
-		if (IsVoteEnabled() && IsVotingActive() && m_dwVoteEndTime>=CurTime)
-		{
-			u32 TimeLeft = m_dwVoteEndTime - Level().timeServer();
-			string1024 VoteTimeResStr;
-			u32 SecsLeft = (TimeLeft % 60000) / 1000;
-			u32 MinitsLeft = (TimeLeft - SecsLeft) / 60000;
-
-			u32 NumAgreed = 0;
-			PLAYERS_MAP_IT I;
-			I	= players.begin();
-			for(;I!=players.end(); ++I)
-			{
-				game_PlayerState* ps = I->second;
-				if (ps->m_bCurrentVoteAgreed == 1) NumAgreed++;
-			}
-			
-			sprintf(VoteTimeResStr, "Time Left : %d:%d; Agreed %.2f%", MinitsLeft, SecsLeft, float(NumAgreed)/players.size());
-			if (m_game_ui)
-				m_game_ui->SetVoteTimeResultMsg(VoteTimeResStr);
-		};
-	};
-	if (Phase()==GAME_PHASE_PENDING)
-	{
-		m_game_ui->ShowPlayersList(true);
-	}
-
+	//-----------------------------------------
+	if (pCurBuyMenu && pCurBuyMenu->IsShown() && !CanCallBuyMenu())
+		StartStopMenu(pCurBuyMenu, true);
+	if (pCurSkinMenu && pCurSkinMenu->IsShown() && !CanCallSkinMenu())
+		StartStopMenu(pCurSkinMenu, true);
+	if (pInventoryMenu && pInventoryMenu->IsShown() && !CanCallInventoryMenu())
+		StartStopMenu(pInventoryMenu,true);
+	//-----------------------------------------
 
 	inherited::shedule_Update(dt);
 }
@@ -453,4 +501,35 @@ void game_cl_Deathmatch::GetMapEntities(xr_vector<SZoneMapEntityData>& dst)
 		dst.push_back(D);
 	}
 	*/
+}
+
+bool		game_cl_Deathmatch::IsEnemy					(game_PlayerState* ps)
+{
+	return true;
+}
+
+void		game_cl_Deathmatch::OnRender				()
+{
+	if (g_bDamageBlockIndicators && local_player)
+	{
+		PLAYERS_MAP_IT it = players.begin();
+		for(;it!=players.end();++it)
+		{
+			game_PlayerState* ps = it->second;
+			u16 id = ps->GameID;
+			if (ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) continue;
+			if (!ps->testFlag(GAME_PLAYER_FLAG_INVINCIBLE)) continue;
+			CObject* pObject = Level().Objects.net_Find(id);
+			if (!pObject) continue;
+			if (!pObject || pObject->CLS_ID != CLSID_OBJECT_ACTOR) continue;
+//			if (ps == local_player) continue;
+			if (!IsEnemy(ps)) continue;
+			cl_TeamStruct *pTS = &TeamList[ModifyTeam(ps->team)]; 
+
+			VERIFY(pObject);
+			CActor* pActor = smart_cast<CActor*>(pObject);
+			VERIFY(pActor);
+			pActor->RenderIndicator(pTS->IndicatorPos, pTS->Indicator_r1, pTS->Indicator_r2, pTS->InvincibleShader);
+		}
+	};
 }

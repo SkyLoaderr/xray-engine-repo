@@ -14,7 +14,6 @@
 #define BUY_MSG_COLOR		0xffffff00
 #define SCORE_MSG_COLOR		0xffffffff
 #define REINFORCEMENT_MSG_COLOR		0xff8080ff
-#define ROUND_RESULT_COLOR	0xfff0fff0
 #define TODO_MSG_COLOR		0xff00ff00
 //--------------------------------------------------------------------
 CUIGameAHunt::CUIGameAHunt()
@@ -83,9 +82,6 @@ void CUIGameAHunt::Init	()
 	m_score_caption					=	"ah_score";		
 	m_gameCaptions.addCustomMessage(m_score_caption, 0.0f, -0.85f, 0.02f, HUD().pFontDI, CGameFont::alCenter, SCORE_MSG_COLOR, "");
 
-	m_round_result_caption			=	"ah_round_result";
-	m_gameCaptions.addCustomMessage(m_round_result_caption, 0.0f, 0.0f, 0.02f, HUD().pFontDI, CGameFont::alCenter, ROUND_RESULT_COLOR, "");
-
 	m_todo_caption					=	"ah_todo";
 	m_gameCaptions.addCustomMessage(m_todo_caption, 0.0f, -0.8f, 0.02f, HUD().pFontDI, CGameFont::alCenter, TODO_MSG_COLOR, "");
 	m_gameCaptions.customizeMessage(m_todo_caption, CUITextBanner::tbsFlicker)->fPeriod = 0.5f;
@@ -108,11 +104,6 @@ void CUIGameAHunt::SetReinforcementCaption(LPCSTR str)
 void CUIGameAHunt::SetScoreCaption(LPCSTR str)
 {
 	m_gameCaptions.setCaption(m_score_caption, str, SCORE_MSG_COLOR, true);
-}
-
-void CUIGameAHunt::SetRoundResultCaption(LPCSTR str)
-{
-	m_gameCaptions.setCaption(m_round_result_caption, str, ROUND_RESULT_COLOR, true);
 }
 
 void CUIGameAHunt::SetTodoCaption(LPCSTR str)

@@ -277,16 +277,14 @@ void game_cl_ArtefactHunt::GetMapEntities(xr_vector<SZoneMapEntityData>& dst)
 
 void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 {
-	inherited::shedule_Update		(dt);
-
 	//out game information
 	m_game_ui->SetReinforcementCaption("");
 	m_game_ui->SetBuyMsgCaption		("");
 	m_game_ui->SetScoreCaption		("");
 	m_game_ui->SetTodoCaption		("");
-	m_game_ui->SetRoundResultCaption	("");
-
 	m_game_ui->SetPressBuyMsgCaption	("");
+
+	inherited::shedule_Update		(dt);
 
 	switch (phase)
 	{
@@ -427,7 +425,8 @@ bool game_cl_ArtefactHunt::CanBeReady				()
 
 	if (!m_bTeamSelected)
 	{
-		StartStopMenu(pUITeamSelectWnd,true);
+		if (CanCallTeamSelectMenu())
+			StartStopMenu(pUITeamSelectWnd,true);
 		return false;
 	};
 

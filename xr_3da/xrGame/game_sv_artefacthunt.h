@@ -16,11 +16,6 @@ private:
 	};
 
 protected:
-	
-	
-	BOOL							m_delayedRoundEnd;
-	u32								m_roundEndDelay;
-
 	int								m_iReinforcementTime;		//0 - Immediate, -1 - after artefact spawn , other - reinforcement
 	u32								m_dwNextReinforcementTime;
 
@@ -68,8 +63,7 @@ public:
 
 	virtual		void				OnTimelimitExceed		();
 
-	virtual		u32					RP_2_Use				(CSE_Abstract* E);
-	virtual		void				RespawnPlayer			(ClientID id_who, bool NoSpectator);
+	virtual		u32					RP_2_Use				(CSE_Abstract* E);	
 
 
 	virtual		void				LoadTeams				();
@@ -92,8 +86,7 @@ public:
 
 
 	virtual		void				Update					();
-
-				void				OnDelayedRoundEnd		(LPCSTR /**reason/**/);
+				
 				void				SpawnArtefact			();
 				void				RemoveArtefact			();
 				void				Assign_Artefact_RPoint	(CSE_Abstract* E);

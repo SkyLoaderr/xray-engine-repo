@@ -38,6 +38,7 @@ public:
 
 	bool							m_bMapRotation;
 	bool							m_bMapNeedRotation;
+	bool							m_bFastRestart;
 	MAP_ROTATION_LIST				m_pMapRotation_List;
 
 	virtual		void				SaveMapList				();

@@ -559,27 +559,16 @@ void	game_sv_ArtefactHunt::Update			()
 
 	switch(Phase()) 	
 	{
-	case GAME_PHASE_TEAM1_SCORES :
-	case GAME_PHASE_TEAM2_SCORES :
-	case GAME_PHASE_TEAMS_IN_A_DRAW :
-		{
-			if(m_delayedRoundEnd && m_roundEndDelay < Device.TimerAsync())
-				OnRoundEnd("Finish");
-		} break;
 	case GAME_PHASE_TEAM1_ELIMINATED :
 	case GAME_PHASE_TEAM2_ELIMINATED :
 		{
 			if(m_delayedRoundEnd && m_roundEndDelay < Device.TimerAsync())
 			{
 				switch_Phase	(GAME_PHASE_INPROGRESS);
-				
-//				RemoveArtefact();
-//				SpawnArtefact();
 			};
 		}break;
 	case GAME_PHASE_PENDING : 
 		{
-			//				if ((Device.TimerAsync()-start_time)>u32(30*1000)) OnRoundStart();
 		} break;			
 	case GAME_PHASE_INPROGRESS:
 		{
@@ -626,12 +615,6 @@ bool	game_sv_ArtefactHunt::ArtefactSpawn_Allowed		()
 	
 	return TRUE;
 };
-
-void	game_sv_ArtefactHunt::OnDelayedRoundEnd		(LPCSTR /**reason/**/)
-{
-	m_delayedRoundEnd = true;
-	m_roundEndDelay = Device.TimerAsync() + 10000;
-}
 
 void	game_sv_ArtefactHunt::OnCreate				(u16 id_who)
 {
@@ -931,7 +914,7 @@ void	game_sv_ArtefactHunt::CheckForTeamWin()
 	switch_Phase		(phase);
 	OnDelayedRoundEnd("Team Final Score");
 }
-
+/*
 
 void	game_sv_ArtefactHunt::RespawnPlayer			(ClientID id_who, bool NoSpectator)
 {
@@ -947,4 +930,4 @@ void	game_sv_ArtefactHunt::RespawnPlayer			(ClientID id_who, bool NoSpectator)
 	if (pTeamData)
 		Player_AddMoney(ps, pTeamData->m_iM_OnRespawn);
 }
-
+*/

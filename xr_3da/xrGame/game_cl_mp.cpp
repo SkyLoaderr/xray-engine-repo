@@ -30,6 +30,8 @@ game_cl_mp::~game_cl_mp()
 	{
 		if (it->IndicatorShader)
 			it->IndicatorShader.destroy();
+		if (it->InvincibleShader)
+			it->InvincibleShader.destroy();
 	};
 	TeamList.clear();
 };
@@ -366,6 +368,10 @@ void game_cl_mp::LoadTeamData			(char* TeamName)
 		LPCSTR ShaderType	= pSettings->r_string(TeamName, "indicator_shader");
 		LPCSTR ShaderTexture = pSettings->r_string(TeamName, "indicator_texture");
 		Team.IndicatorShader.create(ShaderType, ShaderTexture);
+
+		ShaderType	= pSettings->r_string(TeamName, "invincible_shader");
+		ShaderTexture = pSettings->r_string(TeamName, "invincible_texture");
+		Team.InvincibleShader.create(ShaderType, ShaderTexture);
 	};
 	TeamList.push_back(Team);
 }

@@ -19,6 +19,7 @@ public:
 
 	virtual		LPCSTR				type_name			() const { return "teamdeathmatch";};
 
+	virtual		void				Update					();
 	// Events	
 	virtual		void				OnPlayerConnect			(ClientID id_who);
 

@@ -51,4 +51,5 @@ protected:
 	virtual	bool		OnKeyboardPress		(int key);
 
 	virtual		void				OnRender				();
+	virtual		bool				IsEnemy					(game_PlayerState* ps);
 };

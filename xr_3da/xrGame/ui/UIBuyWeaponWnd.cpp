@@ -2257,12 +2257,13 @@ CUIDragDropItemMP * CUIBuyWeaponWnd::GetAddonByID(CUIDragDropItemMP *pAddonOwner
 {
 	R_ASSERT(pAddonOwner);
 	// Пробегаемся по списку вещей и ищем там нужный аддон
-	for (int i = 0; i < MAX_ITEMS; ++i)
+	for (int i = 0; i < m_iUsedItems; ++i)
 	{
 		for (int j = 0; j < CUIDragDropItemMP::NUM_OF_ADDONS; ++j)
 		{
+			CUIDragDropItemMP::AddonIDs AID = static_cast<CUIDragDropItemMP::AddonIDs>(j);
 			if (pAddonOwner->m_AddonInfo[j].strAddonName == m_vDragDropItems[i].GetSectionName() &&
-				static_cast<CUIDragDropItemMP::AddonIDs>(j) == ID)
+				AID == ID)
 			{
 				return &m_vDragDropItems[i];
 			}
