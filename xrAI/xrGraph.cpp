@@ -14,7 +14,6 @@
 
 #include "xrGraph.h"
 #include "ai_nodes.h"
-#include "ai_a_star.h"
 #include "xrSort.h"
 
 #define MAX_DISTANCE_TO_CONNECT		512.f
