@@ -2,6 +2,7 @@
 class "CRushMonster" (object_binder)
 
 function CRushMonster:__init(obj) super(obj)
+    self.first_call = true
 end 
 
 function CRushMonster:reload(section)
@@ -16,50 +17,74 @@ end
 
 function CRushMonster:update(delta)
 	object_binder.update(self, delta)
-	if(self.end_work) then return end
-	if(self:test_to_end_work() == false) then return end
+	
+	if self.end_work == true then return end
+	
+	if self:test_to_end_work () == false then return end
+	
 	// Если еще не взяли под скрипт, то берем
-	if(self.object:get_script() == false) then
-		self.object:script(true, script_name())
+	if self.object:get_script() == false then
+	   self.object:script (true, script_name ())
 	end
-	self:set_action()
-    if (self.object:position ():distance_to (self.rest_way:point (self.rest_way:count () - 1)) < 1) then
+	
+	// Установим коллбэки всех видов и форм :)
+	if self.first_call == false then
+	   self.first_call = true 
+	   self.object:set_death_callback (self, "death_callback")
+       self.npc:set_callback(self, "move_callback", game_object.movement)
+    end   
+	   
+	
+    self:set_action()
+    
+    if self.object:position ():distance_to (self.rest_way:point (self.rest_way:count () - 1)) < 4 then
        self.end_work = true
-	   if (self.object:get_script ()) then
+	   if self.object:get_script () then
 		  self.object:script (false, script_name ())
 	   end
-	   self.sim	= alife()
-	   if (self.sim) then
-		  self.sim:set_switch_online (self.object:id (), true)
-		  self.sim:set_switch_offline (self.object:id (), true)
-		  self.sim:set_interactive (self.object:id (), true)
+	   local sim = alife()
+	   if sim ~= nil then
+		  sim:set_switch_online (self.object:id (), true)
+		  sim:set_switch_offline (self.object:id (), true)
+		  sim:set_interactive (self.object:id (), true)
 	   end
     end        
 
 end
 
-function CRushMonster:set_action()
+function CRushMonster:move_callback (obj, action_type, index)
+    if index == -1 then return end
+    local ptr = patrol (obj:patrol ())
+    if ptr:flag (index, 0) then
+	   if self.object:get_script() == true then
+          self.object:script (false, script_name ())
+	   end
+	   self.end_work = true
+	   xr_spawner.remove_from_list (self.object:id ())
+    end
+end
 
-	if(self.object:action()) then return end
+function CRushMonster:set_action()
+	if self.object:action () then return end
     action (self.object, move (move.run_fwd, self.rest_way), cond(cond.move_end))
+    
 end
 
 function CRushMonster:test_to_end_work()
 	
-	//self.enemy= level.object(self.enemy_name)
-	
-	
-	// Учитываем, хиты и наличие врага рядом. Если это присуствует, то атакуем
-	if self.object:alive () then 
+	if self.object:alive () == true then 
        return true 
     end
 	
-	// Если мертвый, то больше скрипт не работает
-	if self.object:alive() then return false end
-	
-	// Мертвый, заканчиваем работу
-	self.end_work		= true
-	
-	return true
+	self.end_work = true
+	return false
 end
 
+function CRushMonster:death_callback (self, who)
+    if who == nil then return  end
+    printf ("Monster %s killed", self:name ())
+    xr_spawner.remove_from_list (self:id ())
+    local act = level.actor ()
+    if act == nil or act:id () ~= who:id () then return end
+    printf ("Monster %s killed by actor", self:name ())
+end
