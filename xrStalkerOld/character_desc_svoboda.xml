@@ -169,35 +169,6 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
-<specific_character id="svoboda_bodyguard4" team_default = "1">
-		<name>"Дядя"</name>
-		<icon x="22" y="6"></icon>
-		<map_icon x="5" y="0"></map_icon>
-		<bio>Охранник "Лукаша", лидера группировки "Свобода".</bio>
-
-		<team>Svoboda_regular</team>
-		
-		<class>Svoboda_bodyguard</class>
-		<community>freedom</community>
-		
-		<rank>40</rank>
-		<reputation>0</reputation>
-
-		<visual>actors\svoboda\stalker_sv_balon_1</visual>
-		<supplies>
-			[spawn] \n
-			wpn_beretta \n
-			ammo_9x19_pbp = 1 \n
-			wpn_spas12 = 1 \n
-			ammo_12x76_zhekan = 1 \n
-		</supplies>
-					
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-	</specific_character>
-
-
 <!---------------------------SVOBODA SNIPER---------------------->
 	<specific_character id="svoboda_sniper_default2" team_default = "1">
 		<name>Сталкер группировки "Свобода"</name>
@@ -436,7 +407,7 @@
 		<rank>90</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\svoboda\stalker_sv_nauchniy</visual>
+		<visual>actors\svoboda\stalker_sv_balon_1</visual>
 		<supplies>
 			[spawn] \n
 			wpn_desert_eagle \n
