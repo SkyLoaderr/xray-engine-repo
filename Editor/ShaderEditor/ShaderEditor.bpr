@@ -55,7 +55,8 @@
       Intermediate\FVisual.obj Intermediate\SkeletonCalculate.obj 
       Intermediate\SkeletonX.obj Intermediate\xrBoneLerp.obj 
       Intermediate\BodyInstance.obj Intermediate\xrXRC.obj 
-      Intermediate\Engine.obj Intermediate\PropertiesList.obj"/>
+      Intermediate\Engine.obj Intermediate\PropertiesList.obj 
+      Intermediate\SHEngineToolsProperties.obj"/>
     <RESFILES value="ShaderEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>

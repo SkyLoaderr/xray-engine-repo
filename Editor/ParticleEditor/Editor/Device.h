@@ -30,7 +30,7 @@ class ENGINE_API CRenderDevice{
 
     Shader*					m_CurrentShader;
 
-	void					_Create		(LPCSTR shName);
+	void					_Create		(CStream* F);
 	void					_Destroy	(BOOL	bKeepTextures);
 public:
     Shader*					m_WireShader;
@@ -104,7 +104,7 @@ public:
 
 	void 					Initialize		(void);
 	void 					ShutDown		(void);
-	void 					Reset			(LPCSTR shName, BOOL bKeepTextures);
+	void 					Reset			(CStream* F, BOOL bKeepTextures);
 
     IC float				GetRenderArea	(){return m_RenderArea;}
 	// Sprite rendering

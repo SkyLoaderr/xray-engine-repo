@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 472
+  Height = 709
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -21,18 +21,29 @@ object fraLeftBar: TfraLeftBar
   object paLeftBar: TPanel
     Left = 0
     Top = 0
-    Width = 145
-    Height = 472
+    Width = 260
+    Height = 709
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
-    Constraints.MaxWidth = 145
-    Constraints.MinWidth = 145
+    Color = 10528425
+    Constraints.MaxWidth = 260
+    Constraints.MinWidth = 260
     TabOrder = 0
+    object Splitter1: TSplitter
+      Left = 1
+      Top = 494
+      Width = 258
+      Height = 2
+      Cursor = crVSplit
+      Align = alBottom
+      Color = clBlack
+      ParentColor = False
+    end
     object paScene: TPanel
       Left = 1
       Top = 1
-      Width = 143
+      Width = 258
       Height = 68
       Hint = 'Scene commands'
       Align = alTop
@@ -43,7 +54,7 @@ object fraLeftBar: TfraLeftBar
       object APHeadLabel2: TLabel
         Left = 1
         Top = 1
-        Width = 141
+        Width = 256
         Height = 13
         Align = alTop
         Alignment = taCenter
@@ -53,7 +64,7 @@ object fraLeftBar: TfraLeftBar
         OnClick = PanelMaximizeClick
       end
       object ebSceneMin: TExtBtn
-        Left = 130
+        Left = 244
         Top = 2
         Width = 11
         Height = 11
@@ -150,16 +161,17 @@ object fraLeftBar: TfraLeftBar
     object paEngineShaders: TPanel
       Left = 1
       Top = 69
-      Width = 143
-      Height = 402
+      Width = 258
+      Height = 425
       Align = alClient
+      Color = 10528425
       ParentShowHint = False
       ShowHint = True
       TabOrder = 1
       object Label1: TLabel
         Left = 1
         Top = 1
-        Width = 141
+        Width = 256
         Height = 13
         Align = alTop
         Alignment = taCenter
@@ -171,8 +183,8 @@ object fraLeftBar: TfraLeftBar
       object pcShaders: TElPageControl
         Left = 1
         Top = 14
-        Width = 141
-        Height = 387
+        Width = 256
+        Height = 410
         ActiveTabColor = 10528425
         BorderWidth = 0
         Color = 10528425
@@ -208,21 +220,14 @@ object fraLeftBar: TfraLeftBar
           object Bevel1: TBevel
             Left = 0
             Top = 50
-            Width = 137
+            Width = 252
             Height = 2
             Align = alTop
-          end
-          object Bevel2: TBevel
-            Left = 0
-            Top = 344
-            Width = 137
-            Height = 2
-            Align = alBottom
           end
           object Panel1: TPanel
             Left = 0
             Top = 0
-            Width = 137
+            Width = 252
             Height = 50
             Align = alTop
             BevelOuter = bvNone
@@ -336,8 +341,8 @@ object fraLeftBar: TfraLeftBar
           object tvEngine: TElTree
             Left = 0
             Top = 52
-            Width = 137
-            Height = 292
+            Width = 252
+            Height = 333
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -423,38 +428,7 @@ object fraLeftBar: TfraLeftBar
             OnDragOver = tvEngineDragOver
             OnStartDrag = tvEngineStartDrag
             OnMouseDown = tvEngineMouseDown
-            OnDblClick = tvViewDblClick
             OnKeyDown = tvEngineKeyDown
-          end
-          object paAction: TPanel
-            Left = 0
-            Top = 346
-            Width = 137
-            Height = 16
-            Align = alBottom
-            BevelOuter = bvNone
-            Color = 10528425
-            TabOrder = 2
-            object ebEngineShaderProperties: TExtBtn
-              Left = 1
-              Top = 1
-              Width = 135
-              Height = 15
-              Align = alNone
-              BevelShow = False
-              HotTrack = True
-              HotColor = 15790320
-              CloseButton = False
-              Caption = 'Properties'
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = clWindowText
-              Font.Height = -11
-              Font.Name = 'MS Sans Serif'
-              Font.Style = []
-              Margin = 13
-              ParentFont = False
-              OnClick = ebEngineShaderPropertiesClick
-            end
           end
         end
         object tsCompiler: TElTabSheet
@@ -467,22 +441,22 @@ object fraLeftBar: TfraLeftBar
           Visible = False
           object Bevel4: TBevel
             Left = 0
-            Top = 344
-            Width = 137
+            Top = 383
+            Width = 252
             Height = 2
             Align = alBottom
           end
           object Bevel3: TBevel
             Left = 0
             Top = 50
-            Width = 137
+            Width = 252
             Height = 2
             Align = alTop
           end
           object Panel4: TPanel
             Left = 0
             Top = 0
-            Width = 137
+            Width = 252
             Height = 50
             Align = alTop
             BevelOuter = bvNone
@@ -584,41 +558,11 @@ object fraLeftBar: TfraLeftBar
               OnClick = ebCShaderCreateClick
             end
           end
-          object Panel5: TPanel
-            Left = 0
-            Top = 346
-            Width = 137
-            Height = 16
-            Align = alBottom
-            BevelOuter = bvNone
-            Color = 10528425
-            TabOrder = 1
-            object ExtBtn6: TExtBtn
-              Left = 1
-              Top = 1
-              Width = 137
-              Height = 15
-              Align = alNone
-              BevelShow = False
-              HotTrack = True
-              HotColor = 15790320
-              CloseButton = False
-              Caption = 'Properties'
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = clWindowText
-              Font.Height = -11
-              Font.Name = 'MS Sans Serif'
-              Font.Style = []
-              Margin = 13
-              ParentFont = False
-              OnClick = ebEngineShaderPropertiesClick
-            end
-          end
           object tvCompiler: TElTree
             Left = 0
             Top = 52
-            Width = 137
-            Height = 292
+            Width = 252
+            Height = 331
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -689,7 +633,7 @@ object fraLeftBar: TfraLeftBar
             ShowLines = False
             SortMode = smAddClick
             StoragePath = '\Tree'
-            TabOrder = 2
+            TabOrder = 1
             TabStop = True
             Tracking = False
             TrackColor = 10526880
@@ -704,10 +648,73 @@ object fraLeftBar: TfraLeftBar
             OnDragOver = tvEngineDragOver
             OnStartDrag = tvEngineStartDrag
             OnMouseDown = tvEngineMouseDown
-            OnDblClick = tvViewDblClick
             OnKeyDown = tvEngineKeyDown
           end
         end
+      end
+    end
+    object paShaderProperties: TPanel
+      Left = 1
+      Top = 496
+      Width = 258
+      Height = 212
+      Align = alBottom
+      ParentShowHint = False
+      ShowHint = False
+      TabOrder = 2
+      object Label6: TLabel
+        Left = 1
+        Top = 1
+        Width = 256
+        Height = 13
+        Align = alTop
+        Alignment = taCenter
+        Caption = 'Shaders properties'
+        Color = clGray
+        ParentColor = False
+        OnClick = PanelMaximizeClick
+      end
+      object ExtBtn5: TExtBtn
+        Left = 244
+        Top = 2
+        Width = 11
+        Height = 11
+        Align = alNone
+        CloseButton = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        Glyph.Data = {
+          DE000000424DDE00000000000000360000002800000007000000070000000100
+          180000000000A8000000120B0000120B00000000000000000000FFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF00
+          0000FFFFFFFFFFFF000000000000000000FFFFFFFFFFFF000000FFFFFF000000
+          000000000000000000000000FFFFFF0000000000000000000000000000000000
+          00000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00
+          0000}
+        ParentFont = False
+        OnClick = PanelMimimizeClick
+      end
+      object Bevel6: TBevel
+        Left = 1
+        Top = 14
+        Width = 256
+        Height = 1
+        Align = alTop
+        Shape = bsLeftLine
+      end
+      object paShaderProps: TPanel
+        Left = 1
+        Top = 15
+        Width = 256
+        Height = 196
+        Align = alClient
+        BevelOuter = bvNone
+        Color = 10528425
+        TabOrder = 0
       end
     end
   end
@@ -715,12 +722,16 @@ object fraLeftBar: TfraLeftBar
     IniSection = 'Left Bar'
     Options = []
     RegistryRoot = prLocalMachine
-    Version = 2
+    Version = 3
+    OnSavePlacement = fsStorageSavePlacement
+    OnRestorePlacement = fsStorageRestorePlacement
     StoredProps.Strings = (
       'paScene.Tag'
       'paScene.Height'
       'paEngineShaders.Height'
-      'pcShaders.ActivePage')
+      'pcShaders.ActivePage'
+      'paShaderProperties.Tag'
+      'paShaderProperties.Height')
     StoredValues = <>
     Left = 65529
     Top = 65526

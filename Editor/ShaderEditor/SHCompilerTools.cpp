@@ -27,6 +27,7 @@ CSHCompilerTools::~CSHCompilerTools(){
 void CSHCompilerTools::Modified(){
 	m_bModified=TRUE;
 	UI.Command(COMMAND_UPDATE_CAPTION);
+    ApplyChanges();
 }
 //---------------------------------------------------------------------------
 

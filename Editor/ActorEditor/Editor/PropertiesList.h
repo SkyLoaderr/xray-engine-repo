@@ -20,8 +20,8 @@
 struct 	xr_token;
 class PropValue;
 
-typedef void 	__fastcall (__closure *TBeforeEdit)		(PropValue* sender, LPVOID edit_val);
-typedef void 	__fastcall (__closure *TAfterEdit)		(PropValue* sender, LPVOID edit_val);
+typedef void 	__fastcall (__closure *TBeforeEdit)		(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+typedef void 	__fastcall (__closure *TAfterEdit)		(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
 typedef void 	__fastcall (__closure *TOnDrawValue)	(PropValue* sender, LPVOID draw_val);
 typedef void 	__fastcall (__closure *TOnModifiedEvent)(void);
 
@@ -91,11 +91,24 @@ public:
 						TokenValue2		(DWORD* value, AStringVec* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),items(*_items),PropValue(after,before,draw){};
 	virtual LPCSTR 		GetText			();
 };
+class TokenValue3: public PropValue{
+public:
+	struct Item {
+		DWORD		ID;
+		string64	str;
+	};
+	DWORD*				val;
+	DWORD				cnt;
+    const Item*			items;
+						TokenValue3		(DWORD* value, DWORD _cnt, const Item* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),cnt(_cnt),items(_items),PropValue(after,before,draw){};
+	virtual LPCSTR 		GetText			();
+};
 class ListValue: public PropValue{
 public:
 	LPSTR				val;
 	AStringVec 			items;
 						ListValue		(LPSTR value, AStringVec* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),items(*_items),PropValue(after,before,draw){};
+						ListValue		(LPSTR value, DWORD cnt, LPCSTR* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),PropValue(after,before,draw){items.resize(cnt); int i=0; for (AStringIt it=items.begin(); it!=items.end(); it++,i++) *it=_items[i]; };
 	virtual LPCSTR		GetText			();
 };
 //---------------------------------------------------------------------------
@@ -134,7 +147,7 @@ private:	// User declarations
 
 //	Graphics::TBitmap* m_BMEllipsis;
     bool bModified;
-    bool bFillMode;
+    int iFillMode;
 	// LW style inpl editor
     void HideLWNumber();
     void PrepareLWNumber(TElTreeItem* node);
@@ -145,6 +158,9 @@ private:	// User declarations
     PropValVec m_Params;
     TOnModifiedEvent OnModifiedEvent;
     void Modified(){bModified=true; if (OnModifiedEvent) OnModifiedEvent();}
+
+//    DEFINE_STACK(bool,boolStack);
+//    boolStack IsUpdating;
 public:		// User declarations
 	__fastcall TfrmProperties		        (TComponent* Owner);
 	static TfrmProperties* CreateProperties	(TWinControl* parent=0, TAlign align=alNone, TOnModifiedEvent modif=0);
@@ -154,12 +170,14 @@ public:		// User declarations
     void __fastcall HideProperties			();
     void __fastcall ClearProperties			();
     bool __fastcall IsModified				(){return bModified;}
+    void __fastcall ResetModified			(){bModified = false;}
     void __fastcall RefreshProperties		(){tvProperties->Repaint();}
 
     void __fastcall SetModifiedEvent		(TOnModifiedEvent modif=0){OnModifiedEvent=modif;}
     void __fastcall BeginFillMode			(const AnsiString& title="Properties", LPCSTR section=0);
-    void __fastcall FillFromStream			(CFS_Memory& stream, DWORD advance);
     void __fastcall EndFillMode				(bool bFullExpand=true);
+    TElTreeItem* __fastcall BeginEditMode	(LPCSTR section=0);
+    void __fastcall EndEditMode				(TElTreeItem* expand_node=0);
 	TElTreeItem* __fastcall AddItem			(TElTreeItem* parent, DWORD type, LPCSTR key, LPVOID value=0);
     void __fastcall GetColumnWidth			(int& c0, int& c1)
     {
@@ -200,9 +218,21 @@ public:		// User declarations
         m_Params.push_back(V);
     	return V;
     }
+	TokenValue3* 	MakeTokenValue3			(LPVOID val, DWORD cnt, const TokenValue3::Item* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+    {
+    	TokenValue3* V=new TokenValue3((LPDWORD)val,cnt,lst,after,before,draw);
+        m_Params.push_back(V);
+    	return V;
+    }
 	ListValue* 		MakeListValue			(LPVOID val, AStringVec* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
     	ListValue* V=new ListValue((LPSTR)val,lst,after,before,draw);
+        m_Params.push_back(V);
+    	return V;
+    }
+	ListValue* 		MakeListValueA			(LPVOID val, DWORD cnt, LPCSTR* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+    {
+    	ListValue* V=new ListValue((LPSTR)val,cnt,lst,after,before,draw);
         m_Params.push_back(V);
     	return V;
     }
@@ -241,7 +271,7 @@ enum EProperties{
 	PROP_TEXTURE2,
 	PROP_S_SH_ENGINE,
 	PROP_S_SH_COMPILE,
-	PROP_S_TEXTURE,
+	PROP_S_TEXTURE
 };
 //---------------------------------------------------------------------------
 #endif

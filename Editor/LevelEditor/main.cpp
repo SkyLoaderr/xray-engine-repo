@@ -204,7 +204,7 @@ void __fastcall TfrmMain::FormDeactivate(TObject *Sender)
 void __fastcall TfrmMain::D3DWindowMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-    UI.OnMousePress(Shift,X,Y);
+    UI.MousePress(Shift,X,Y);
     UI.RedrawScene();
 }
 //---------------------------------------------------------------------------
@@ -212,7 +212,7 @@ void __fastcall TfrmMain::D3DWindowMouseDown(TObject *Sender,
 void __fastcall TfrmMain::D3DWindowMouseUp(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-    UI.OnMouseRelease(Shift,X,Y);
+    UI.MouseRelease(Shift,X,Y);
     UI.RedrawScene();
 }
 //---------------------------------------------------------------------------

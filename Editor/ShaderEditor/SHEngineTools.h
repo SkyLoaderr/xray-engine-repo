@@ -2,6 +2,11 @@
 #ifndef SHEngineToolsH
 #define SHEngineToolsH
 
+#include "ElTree.hpp"
+
+// refs
+class PropValue; 
+
 DEFINE_VECTOR(CBlender*,TemplateVec,TemplateIt);
 DEFINE_MAP_PRED(LPSTR,CConstant*,ConstantMap,ConstantPairIt,str_pred);
 DEFINE_MAP_PRED(LPSTR,CMatrix*,MatrixMap,MatrixPairIt,str_pred);
@@ -12,13 +17,11 @@ public:
 	virtual void Parse(DWORD type, LPCSTR key, LPVOID data)=0;
 };
 
-#define SHADER_FILENAME_BASE "shaders.xr"
-#define SHADER_FILENAME_TEMP "$shaders$.xr"
-
 class CSHEngineTools
 {
 	BOOL				m_bFreezeUpdate;
 	BOOL				m_bModified;
+    BOOL				
 
 	TemplateVec			m_TemplatePalette;
 
@@ -61,8 +64,22 @@ friend class TfrmShaderProperties;
     bool				m_bCurBlenderChanged;
 
     void 				Save				(CFS_Memory& F);
-    void 				SaveForRender		();
+    void 				PrepareRender		();
+
+    // matrix props
+	void __fastcall 	ModeOnAfterEdit		(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall 	MatrixOnAfterEdit	(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall 	AddMatrixProps		(TElTreeItem* parent, LPSTR name);
+	void __fastcall 	RemoveMatrixProps	(TElTreeItem* parent);
+	void __fastcall 	UpdateMatrixModeProps(TElTreeItem* parent, CMatrix* M, DWORD mode);
+	void __fastcall 	MCOnDraw			(PropValue* sender, LPVOID draw_val);
+    // constant props
+	void __fastcall 	ConstOnAfterEdit	(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall 	AddConstProps		(TElTreeItem* parent, LPSTR name);
+	void __fastcall 	RemoveConstProps	(TElTreeItem* parent);
 public:
+	CFS_Memory 			m_RenderShaders;
+
     CBlender*			m_CurrentBlender;
     CBlender*			AppendBlender		(CLASS_ID cls_id, LPCSTR folder_name, CBlender* parent);
     CBlender* 			CloneBlender		(LPCSTR name);

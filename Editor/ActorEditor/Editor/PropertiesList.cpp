@@ -34,10 +34,8 @@
 #pragma resource "*.dfm"
 
 #define TSTRING_COUNT 	4
-#define MCSTRING_COUNT 	11
 const LPSTR BOOLString[2]={"False","True"};
 const LPSTR TEXTUREString[TSTRING_COUNT]={"Custom...","-","$null","$base0"};
-const LPSTR MCString[MCSTRING_COUNT]={"Custom...","-","$null","$base0","$base1","$base2","$base3","$base4","$base5","$base6","$base7"};
 
 LPCSTR	FlagValue::GetText(){
 	DWORD draw_val 	= *val;
@@ -56,33 +54,41 @@ LPCSTR 	TokenValue2::GetText(){
     if ((draw_val<0)||(draw_val>items.size())) return "";
 	return items[draw_val].c_str();
 }
+LPCSTR TokenValue3::GetText(){
+	VERIFY(*val<cnt);
+	DWORD draw_val 	= *val;
+    if (OnDrawValue)OnDrawValue(this, &draw_val);
+    return items[draw_val].str;
+}
+string128 lv_draw_text;
 LPCSTR	ListValue::GetText(){
-    static AnsiString draw_text;
-    draw_text = val;
-    if (OnDrawValue)OnDrawValue(this, &draw_text);
-    return draw_text.c_str();
+    strcpy(lv_draw_text,val);
+    if (OnDrawValue)OnDrawValue(this, &lv_draw_text);
+    return lv_draw_text;
 }
-
-xrP_TOKEN::Item& GetToken3Item(xrP_TOKEN* p, int idx)
-{
-    R_ASSERT(p&&(idx>=0)&&(idx<p->Count));
-    return *(xrP_TOKEN::Item*)(LPBYTE(p) + sizeof(xrP_TOKEN)+sizeof(xrP_TOKEN::Item)*idx);
-}
-
-LPCSTR GetToken3(xrP_TOKEN* p, int id)
-{
-	for(int i=0; p->Count; i++){
-		xrP_TOKEN::Item& I = GetToken3Item(p,i);
-    	if (I.ID==id) return I.str;
-    }
-    return 0;
-}
-
 
 //---------------------------------------------------------------------------
+TElTreeItem* __fastcall TfrmProperties::BeginEditMode(LPCSTR section)
+{
+	iFillMode++;
+	tvProperties->IsUpdating = true;
+    if (section) return FOLDER::FindFolder(tvProperties,section);
+    return 0;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmProperties::EndEditMode(TElTreeItem* expand_node)
+{
+	iFillMode--;
+	if (expand_node) expand_node->Expand(true);
+    tvProperties->IsUpdating = false;
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfrmProperties::BeginFillMode(const AnsiString& title, LPCSTR section)
 {
-	bFillMode=true;
+	iFillMode++;
+//    IsUpdating.push(tvProperties->IsUpdating);
 	tvProperties->IsUpdating = true;
     if (section){
     	TElTreeItem* node = FOLDER::FindFolder(tvProperties,section);
@@ -95,17 +101,22 @@ void __fastcall TfrmProperties::BeginFillMode(const AnsiString& title, LPCSTR se
 //---------------------------------------------------------------------------
 void __fastcall TfrmProperties::EndFillMode(bool bFullExpand)
 {
-	bFillMode=false;
+	iFillMode--;
     bModified=false;
 	if (bFullExpand) tvProperties->FullExpand();
     tvProperties->IsUpdating = false;
+//    IsUpdating.top();
+//    IsUpdating.pop();
 };
 //---------------------------------------------------------------------------
 void __fastcall TfrmProperties::ClearProperties()
 {
+//	IsUpdating.push(tvProperties->IsUpdating);
 	tvProperties->IsUpdating = true;
     tvProperties->Items->Clear();
     tvProperties->IsUpdating = false;
+//    IsUpdating.top();
+//	IsUpdating.pop();
     for (PropValIt it=m_Params.begin(); it!=m_Params.end(); it++)
     	_DELETE(*it);
 	m_Params.clear();
@@ -116,7 +127,7 @@ __fastcall TfrmProperties::TfrmProperties(TComponent* Owner)
 	: TForm(Owner)
 {
 	bModified = false;
-	bFillMode = false;
+	iFillMode = 0;
     DEFINE_INI(fsStorage);
 //	m_BMEllipsis = new Graphics::TBitmap();
 //	m_BMEllipsis->LoadFromResourceName((DWORD)HInstance,"ELLIPSIS");
@@ -169,7 +180,7 @@ void __fastcall TfrmProperties::FormClose(TObject *Sender,
 //---------------------------------------------------------------------------
 
 TElTreeItem* __fastcall TfrmProperties::AddItem(TElTreeItem* parent, DWORD type, LPCSTR key, LPVOID value){
-	R_ASSERT(bFillMode);
+	R_ASSERT(iFillMode>0);
     TElTreeItem* TI     = tvProperties->Items->AddChildObject(parent,key,(TObject*)value);
     TI->Tag	            = type;
     TI->UseStyles 		= true;
@@ -185,6 +196,7 @@ TElTreeItem* __fastcall TfrmProperties::AddItem(TElTreeItem* parent, DWORD type,
     case PROP_FLAG:
     case PROP_TOKEN:
     case PROP_TOKEN2:
+    case PROP_TOKEN3:
     case PROP_LIST:
     case PROP_FLOAT:
     case PROP_INTEGER:{		PropValue*  P=(PropValue*)value; TI->ColumnText->Add(P->GetText()); CS->Style = ElhsOwnerDraw; }break;
@@ -196,11 +208,7 @@ TElTreeItem* __fastcall TfrmProperties::AddItem(TElTreeItem* parent, DWORD type,
     case PROP_S_TEXTURE:	TI->ColumnText->Add(*(AnsiString*)value);  			CS->Style = ElhsOwnerDraw; break;
     case PROP_S_SH_ENGINE:	TI->ColumnText->Add(*(AnsiString*)value);  			CS->Style = ElhsOwnerDraw; break;
     case PROP_S_SH_COMPILE:	TI->ColumnText->Add(*(AnsiString*)value);  			CS->Style = ElhsOwnerDraw; break;
-    // shader part
-	case xrPID_MATRIX:		break;
-	case xrPID_CONSTANT:	break;
-	case PROP_TEXTURE2:		TI->ColumnText->Add((LPSTR)value);					break;
-    case PROP_TOKEN3:{		xrP_TOKEN* V = (xrP_TOKEN*)value; TI->ColumnText->Add(GetToken3(V,V->IDselected)); }break;
+	case PROP_TEXTURE2:		TI->ColumnText->Add((LPSTR)value);					CS->Style = ElhsOwnerDraw; break;
     default: THROW2("PROP_????");
     }
     return TI;
@@ -253,7 +261,7 @@ void __fastcall TfrmProperties::tvPropertiesItemDraw(TObject *Sender,
 		    Surface->Brush->Color = rgb2bgr(*(LPDWORD)Item->Data);
             Surface->FillRect(R);
         }break;
-        case PROP_TOKEN3:
+        case PROP_TEXTURE2:
         case PROP_BOOL:
             R.Right	-=	10;
             R.Left 	+= 	1;
@@ -265,6 +273,7 @@ void __fastcall TfrmProperties::tvPropertiesItemDraw(TObject *Sender,
         case PROP_FLAG:
 		case PROP_TOKEN:
         case PROP_TOKEN2:
+        case PROP_TOKEN3:
         case PROP_LIST:
             R.Right	-=	10;
             R.Left 	+= 	1;
@@ -339,10 +348,10 @@ void __fastcall TfrmProperties::tvPropertiesMouseDown(TObject *Sender,
         }break;
 		case PROP_TOKEN3:{
             pmEnum->Items->Clear();
-            xrP_TOKEN* tokens = (xrP_TOKEN*)item->Data;
-            for (DWORD i=0; i<tokens->Count; i++){
+            TokenValue3* T = (TokenValue3*)item->Data;
+            for (DWORD i=0; i<T->cnt; i++){
                 TMenuItem* mi = new TMenuItem(0);
-                mi->Caption = GetToken3Item(tokens,i).str;
+                mi->Caption = T->items[i].str;
                 mi->OnClick = PMItemClick;
                 pmEnum->Items->Add(mi);
             }
@@ -415,7 +424,7 @@ void __fastcall TfrmProperties::PMItemClick(TObject *Sender)
             DWORD new_val 				= *V->val;
             if (mi->MenuIndex) 	new_val |= V->mask;
             else				new_val &=~V->mask;
-			if (V->OnAfterEdit) V->OnAfterEdit(V,&new_val);
+			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
             if (new_val!= *V->val){
             	*V->val 	= new_val;
                 Modified();
@@ -426,7 +435,7 @@ void __fastcall TfrmProperties::PMItemClick(TObject *Sender)
         	TokenValue* V				= (TokenValue*)item->Data;
             xr_token* token_list 	   	= V->token;
             DWORD new_val				= token_list[mi->MenuIndex].id;
-			if (V->OnAfterEdit) V->OnAfterEdit(V,&new_val);
+			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
             if (*V->val	!= new_val){
     	        *V->val		= token_list[mi->MenuIndex].id;
                 Modified();
@@ -437,27 +446,29 @@ void __fastcall TfrmProperties::PMItemClick(TObject *Sender)
         	TokenValue2* V				= (TokenValue2*)item->Data;
             AStringVec& lst				= V->items;
             DWORD new_val				= mi->MenuIndex;
-			if (V->OnAfterEdit) V->OnAfterEdit(V,&new_val);
+			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
             if (*V->val	!= new_val){
     	        *V->val		= mi->MenuIndex;
-                Modified();                          
+                Modified();
             }
 			item->ColumnText->Strings[0]= V->GetText();
         }break;
 		case PROP_TOKEN3:{
-        	xrP_TOKEN* token_list			= (xrP_TOKEN*)item->Data;
-        	if (token_list->IDselected != GetToken3Item(token_list,mi->MenuIndex).ID){
-	            item->ColumnText->Strings[0]= mi->Caption;
-    	        token_list->IDselected 		= GetToken3Item(token_list,mi->MenuIndex).ID;
-	            Modified();
+        	TokenValue3* V				= (TokenValue3*)item->Data;
+            DWORD new_val				= V->items[mi->MenuIndex].ID;
+			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
+            if (*V->val	!= new_val){
+    	        *V->val		= V->items[mi->MenuIndex].ID;
+                Modified();
             }
+			item->ColumnText->Strings[0]= V->GetText();
         }break;
 		case PROP_LIST:{
         	ListValue* V				= (ListValue*)item->Data;
             AStringVec& lst				= V->items;
             string256 new_val;
             strcpy(new_val,lst[mi->MenuIndex].c_str());
-			if (V->OnAfterEdit) V->OnAfterEdit(V,&new_val);
+			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
             if (strcmp(V->val,new_val)){
     	        strcpy(V->val,new_val);
                 Modified();
@@ -630,7 +641,7 @@ void TfrmProperties::PrepareLWNumber(TElTreeItem* item)
     case PROP_INTEGER:{
         IntValue* V 		= (IntValue*)item->Data; VERIFY(V);
         int edit_val        = *V->val;
-        if (V->OnBeforeEdit) V->OnBeforeEdit(V,&edit_val);
+        if (V->OnBeforeEdit) V->OnBeforeEdit(item,V,&edit_val);
 		seNumber->MinValue 	= V->lim_mn;
         seNumber->MaxValue 	= V->lim_mx;
 	    seNumber->Increment	= V->inc;
@@ -642,7 +653,7 @@ void TfrmProperties::PrepareLWNumber(TElTreeItem* item)
     case PROP_FLOAT:{
         FloatValue* V 		= (FloatValue*)item->Data; VERIFY(V);
         float edit_val		= *V->val;
-        if (V->OnBeforeEdit) V->OnBeforeEdit(V,&edit_val);
+        if (V->OnBeforeEdit) V->OnBeforeEdit(item,V,&edit_val);
 		seNumber->MinValue 	= V->lim_mn;
         seNumber->MaxValue 	= V->lim_mx;
 	    seNumber->Increment	= V->inc;
@@ -675,7 +686,7 @@ void TfrmProperties::ApplyLWNumber()
     	case PROP_INTEGER:{
 	        IntValue* V 	= (IntValue*)item->Data; VERIFY(V);
             int new_val		= seNumber->Value;
-			if (V->OnAfterEdit) V->OnAfterEdit(V,&new_val);
+			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
             if (*V->val != new_val){
                 *V->val 	= new_val;
 				Modified();
@@ -685,7 +696,7 @@ void TfrmProperties::ApplyLWNumber()
 	    case PROP_FLOAT:{
 	        FloatValue* V 	= (FloatValue*)item->Data; VERIFY(V);
             float new_val	= seNumber->Value;
-			if (V->OnAfterEdit) V->OnAfterEdit(V,&new_val);
+			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
 		    if (!fsimilar(*V->val,new_val)){
                 *V->val 	= new_val;
 				Modified();

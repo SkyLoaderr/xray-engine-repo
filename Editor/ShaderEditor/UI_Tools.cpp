@@ -57,7 +57,7 @@ void CShaderTools::Modified(){
 
 bool CShaderTools::OnCreate(){
     // create props
-    m_Props = TfrmProperties::CreateProperties();
+    m_Props = TfrmProperties::CreateProperties(fraLeftBar->paShaderProps,alClient);
 	// shader test locking
 	AnsiString sh_fn = "shaders.xr"; Engine.FS.m_GameRoot.Update(sh_fn);
 	if (Engine.FS.CheckLocking(0,sh_fn.c_str(),false,true))

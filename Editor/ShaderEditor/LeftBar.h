@@ -58,27 +58,28 @@ __published:	// IDE-managed Components
 	TElPageControl *pcShaders;
 	TElTabSheet *tsEngine;
 	TBevel *Bevel1;
-	TBevel *Bevel2;
 	TPanel *Panel1;
 	TExtBtn *ebEngineShaderRemove;
 	TExtBtn *ebEngineShaderClone;
 	TExtBtn *ebEngineShaderFile;
 	TExtBtn *ebEngineShaderCreate;
 	TElTree *tvEngine;
-	TPanel *paAction;
-	TExtBtn *ebEngineShaderProperties;
 	TElTabSheet *tsCompiler;
 	TPanel *Panel4;
 	TExtBtn *ebCompilerShaderRemove;
 	TExtBtn *ebCompilerShaderClone;
 	TExtBtn *ExtBtn4;
 	TExtBtn *ebCShaderCreate;
-	TPanel *Panel5;
-	TExtBtn *ExtBtn6;
 	TBevel *Bevel4;
 	TBevel *Bevel3;
 	TElTreeInplaceAdvancedEdit *InplaceCompilerEdit;
 	TElTree *tvCompiler;
+	TPanel *paShaderProperties;
+	TLabel *Label6;
+	TExtBtn *ExtBtn5;
+	TBevel *Bevel6;
+	TPanel *paShaderProps;
+	TSplitter *Splitter1;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebReloadClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);
@@ -92,14 +93,12 @@ __published:	// IDE-managed Components
           TMouseButton Button, TShiftState Shift, int X, int Y);
 	void __fastcall tvEngineMouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
-	void __fastcall ebEngineShaderPropertiesClick(TObject *Sender);
 	void __fastcall PreviewClick(TObject *Sender);
 	void __fastcall ebEngineShaderCreateMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
 	void __fastcall CreateFolder1Click(TObject *Sender);
 	void __fastcall ExpandAll1Click(TObject *Sender);
 	void __fastcall CollapseAll1Click(TObject *Sender);
-	void __fastcall tvViewDblClick(TObject *Sender);
 	void __fastcall ebEngineShaderRemoveClick(TObject *Sender);
 	void __fastcall tvEngineItemFocused(TObject *Sender);
 	void __fastcall ebEngineShaderCloneClick(TObject *Sender);
@@ -118,6 +117,8 @@ __published:	// IDE-managed Components
           int Y, TDragState State, bool &Accept);
 	void __fastcall tvEngineDragDrop(TObject *Sender, TObject *Source, int X,
           int Y);
+	void __fastcall fsStorageRestorePlacement(TObject *Sender);
+	void __fastcall fsStorageSavePlacement(TObject *Sender);
 private:	// User declarations
 	void __fastcall TemplateClick	(TObject *Sender);
 	void __fastcall ShowPPMenu		(TMxPopupMenu* M, TObject* btn);

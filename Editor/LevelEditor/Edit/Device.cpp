@@ -150,7 +150,8 @@ bool CRenderDevice::Create(){
 
 	AnsiString sh		= "shaders.xr";
     Engine.FS.m_GameRoot.Update(sh);
-    _Create				(sh.c_str());
+	CCompressedStream	FS(sh.c_str(), "shENGINE");
+    _Create				(&FS);
 
 	ELog.Msg			(mtInformation, "D3D: initialized");
 	return true;
@@ -173,11 +174,11 @@ void CRenderDevice::Destroy(){
 	ELog.Msg( mtInformation, "D3D: device cleared" );
 }
 //---------------------------------------------------------------------------
-void CRenderDevice::_Create(LPCSTR shName){
+void CRenderDevice::_Create(CStream* F){
 	bReady				= TRUE;
 
 	// Shaders part
-	Shader.OnDeviceCreate(shName);
+	Shader.OnDeviceCreate(F);
 
     m_WireShader 		= Shader.Create("editor\\wire");
     m_SelectionShader 	= Shader.Create("editor\\selection");
@@ -464,11 +465,11 @@ bool CRenderDevice::MakeScreenshot(DWORDVec& pixels, DWORD& width, DWORD& height
     return true;
 }
 
-void CRenderDevice::Reset(LPCSTR shName, BOOL bKeepTextures)
+void CRenderDevice::Reset(CStream* F, BOOL bKeepTextures)
 {
 	u32 tm_start	= TimerAsync();
 	_Destroy		(bKeepTextures);
-	_Create			(shName);
+	_Create			(F);
 	u32 tm_end		= TimerAsync();
 	Msg				("*** RESET [%d ms]",tm_end-tm_start);
 }

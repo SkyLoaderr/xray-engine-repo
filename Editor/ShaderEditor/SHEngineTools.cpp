@@ -1,5 +1,4 @@
 //---------------------------------------------------------------------------
-
 #include "stdafx.h"
 #pragma hdrstop
 
@@ -8,10 +7,8 @@
 #include "UI_Tools.h"
 #include "ui_main.h"
 #include "LeftBar.h"
-#include "PropertiesShader.h"
 #include "PropertiesList.h"
 #include "xr_trims.h"
-#include "EditObject.h"
 
 //------------------------------------------------------------------------------
 class CCollapseBlender: public CParseBlender{
@@ -64,6 +61,7 @@ CSHEngineTools::~CSHEngineTools(){
 void CSHEngineTools::Modified(){
 	m_bModified=TRUE;
 	UI.Command(COMMAND_UPDATE_CAPTION);
+    ApplyChanges();
 }
 //---------------------------------------------------------------------------
 
@@ -81,14 +79,7 @@ void CSHEngineTools::OnDestroy(){
 
     ClearData();
 
-    // hide properties window
-	TfrmShaderProperties::HideProperties();
     m_bModified = FALSE;
-
-    // remove temp $shader$
-	AnsiString sh		= SHADER_FILENAME_TEMP;
-    Engine.FS.m_Temp.Update	(sh);
-    Engine.FS.DeleteFileByName	(sh.c_str());
 }
 
 void CSHEngineTools::ClearData(){
@@ -131,35 +122,28 @@ bool CSHEngineTools::IfModified(){
 void CSHEngineTools::UpdateDeviceShaders()
 {
 	// disable props vis update
-	TfrmShaderProperties::FreezeUpdate(true);
     m_bFreezeUpdate 	= TRUE;
 	// mem current blender
     LPCSTR name			= m_CurrentBlender?m_CurrentBlender->getName():0;
 	Tools.UpdateObjectShader(true);
 	ResetCurrentBlender	();
     // save to temp file
-    SaveForRender		();
+    PrepareRender		();
     // reset device shaders from temp file
-	AnsiString sh		= SHADER_FILENAME_TEMP;
-    Engine.FS.m_Temp.Update	(sh);
-    Device.Reset		(sh.c_str(),TRUE);
-	// restore current shader
-	SetCurrentBlender	(name,false);
+    CStream data		(m_RenderShaders.pointer(), m_RenderShaders.size());
+    Device.Reset		(&data,TRUE);
 	// enable props vis update
     m_bFreezeUpdate 	= FALSE;
-	TfrmShaderProperties::FreezeUpdate(false);
+
+	// restore current shader
+	SetCurrentBlender	(name,false);
 }
 
-
 void CSHEngineTools::ApplyChanges(bool bForced){
-    if (m_CurrentBlender&&(TfrmShaderProperties::IsModified()||bForced)){
+    if (m_CurrentBlender&&(Tools.m_Props->IsModified()||bForced)){
     	UpdateObjectFromStream();
-        // update visual
         UpdateDeviceShaders();
-        // set modified flag
-		if (TfrmShaderProperties::IsModified()) Modified();
-        // reset flag
-		TfrmShaderProperties::SetModified(false);
+		Tools.m_Props->ResetModified();
     }else if (bForced) UpdateDeviceShaders();
 }
 
@@ -174,7 +158,6 @@ void CSHEngineTools::Load(){
 	AnsiString fn = "shaders.xr";
     Engine.FS.m_GameRoot.Update(fn);
 
-	TfrmShaderProperties::FreezeUpdate(true);
     m_bFreezeUpdate		= TRUE;
     m_bUpdateCurrent	= false;
 
@@ -241,7 +224,6 @@ void CSHEngineTools::Load(){
     }
 	m_bUpdateCurrent			= true;
     m_bFreezeUpdate				= FALSE;
-	TfrmShaderProperties::FreezeUpdate(false);
 }
 
 void CSHEngineTools::Save(CFS_Memory& F)
@@ -290,7 +272,7 @@ void CSHEngineTools::Save(CFS_Memory& F)
 void CSHEngineTools::Save()
 {
     // set name
-	AnsiString fn 				= SHADER_FILENAME_BASE;
+	AnsiString fn 				= "shaders.xr";
     Engine.FS.m_GameRoot.Update	(fn);
 
     // collapse reference
@@ -310,19 +292,13 @@ void CSHEngineTools::Save()
     Engine.FS.LockFile(0,fn.c_str(),false);
 
     m_bModified	= FALSE;
-	TfrmShaderProperties::SetModified(false);
+	Tools.m_Props->ResetModified();
 }
 
-void CSHEngineTools::SaveForRender()
+void CSHEngineTools::PrepareRender()
 {
-    // set name
-	AnsiString fn = SHADER_FILENAME_TEMP; Engine.FS.m_Temp.Update(fn);
-    // collapse reference
 	CollapseReferences();
-    // save
-    CFS_Memory F;
-    Save(F);
-    F.SaveTo(fn.c_str(), "shENGINE");
+    Save(m_RenderShaders);
 }
 
 CBlender* CSHEngineTools::FindBlender(LPCSTR name){
@@ -687,45 +663,6 @@ void CSHEngineTools::CollapseReferences(){
 void CSHEngineTools::UpdateRefCounters(){
 	for (BlenderPairIt b=m_Blenders.begin(); b!=m_Blenders.end(); b++)
     	ParseBlender(b->second,ST_UpdateBlenderRefs);
-}
-
-void CSHEngineTools::UpdateProperties()
-{
-	if (m_bFreezeUpdate) return;
-	TfrmProperties* P=Tools.m_Props;
-    P->BeginFillMode("Engine shader");
-	if (m_CurrentBlender){ // fill Tree
-    	CStream data(m_BlenderStream.pointer(), m_BlenderStream.size());
-        data.Advance(sizeof(CBlender_DESC));
-        DWORD type;
-        char key[255];
-        TElTreeItem* marker_node=0;
-        TElTreeItem* node;
-
-        P->AddItem(0,PROP_MARKER2,"Type",(LPVOID)m_CurrentBlender->getComment());
-
-        while (!data.Eof()){
-            int sz=0;
-            type = data.Rdword();     
-            data.RstringZ(key);
-            switch(type){
-            case xrPID_MARKER:	marker_node = P->AddItem(0,PROP_MARKER,key,data.Pointer()); break;
-            case xrPID_TOKEN: 	sz=sizeof(xrP_TOKEN)+sizeof(xrP_TOKEN::Item)*(((xrP_TOKEN*)data.Pointer())->Count); P->AddItem(marker_node,PROP_TOKEN3,key,data.Pointer()); break;
-            case xrPID_MATRIX:	sz=sizeof(string64);	break;
-            case xrPID_CONSTANT:sz=sizeof(string64); 	break;
-            case xrPID_TEXTURE:	sz=sizeof(string64); 	P->AddItem(marker_node,PROP_TEXTURE2,key,data.Pointer()); break;
-            case xrPID_INTEGER:{sz=sizeof(xrP_Integer); xrP_Integer* V=(xrP_Integer*)data.Pointer();P->AddItem	(marker_node,PROP_INTEGER,key,P->MakeIntValue	(&V->value,V->min,V->max,1)); }break;
-            case xrPID_FLOAT:{ 	sz=sizeof(xrP_Float); 	xrP_Float* V=(xrP_Float*)data.Pointer(); 	P->AddItem	(marker_node,PROP_FLOAT,key,P->MakeFloatValue	(&V->value,V->min,V->max,0.01f,2)); }break;
-            case xrPID_BOOL:{ 	sz=sizeof(xrP_BOOL); 	xrP_BOOL* V=(xrP_BOOL*)data.Pointer(); 	 	P->AddItem	(marker_node,PROP_BOOL,key,&V->value); }break;
-            default: THROW2("UNKNOWN xrPID_????");
-            }
-            data.Advance(sz);
-        }
-    }
-    P->EndFillMode();
-    P->SetModifiedEvent(Modified);
-
-	TfrmShaderProperties::InitProperties();
 }
 
 

@@ -105,14 +105,8 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	break;
 	case COMMAND_RESET_ANIMATION:
    		break;
-    case COMMAND_SHADER_PROPERTIES:
-    	Tools.ShowProperties();
-    	break;
     case COMMAND_SELECT_PREVIEW_OBJ:
 		Tools.SelectPreviewObject(p1);
-    	break;
-    case COMMAND_APPLY_CHANGES:
-    	Tools.ApplyChanges();
     	break;
 	case COMMAND_UPDATE_GRID:
     	DU::UpdateGrid(frmEditorPreferences->seGridNumberOfCells->Value,frmEditorPreferences->seGridSquareSize->Value);

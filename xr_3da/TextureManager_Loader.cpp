@@ -96,20 +96,15 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 	blenders.clear	();
 }
 
-void	CShaderManager::OnDeviceCreate	(LPCSTR shName)
-{
+void	CShaderManager::OnDeviceCreate	(CStream* FS){
 	if (!Device.bReady) return;
 	cache.Invalidate	();
 
-#ifdef _EDITOR
-	if (!Engine.FS.Exist(shName)) return;
-#endif
-	CCompressedStream		FS(shName,		"shENGINE");
-	char					name	[256];
+	string256	name;
 
 	// Load constants
 	{
-		CStream*	fs		= FS.OpenChunk(0);
+		CStream*	fs		= FS->OpenChunk(0);
 		while (fs&&!fs->Eof())	{
 			fs->RstringZ	(name);
 			CConstant*		C = new CConstant;
@@ -118,10 +113,10 @@ void	CShaderManager::OnDeviceCreate	(LPCSTR shName)
 		}
 		fs->Close();
 	}
-	
+
 	// Load matrices
 	{
-		CStream*	fs		= FS.OpenChunk(1);
+		CStream*	fs		= FS->OpenChunk(1);
 		while (fs&&!fs->Eof())	{
 			fs->RstringZ	(name);
 			CMatrix*		M = new CMatrix;
@@ -133,10 +128,10 @@ void	CShaderManager::OnDeviceCreate	(LPCSTR shName)
 
 	// Load blenders
 	{
-		CStream*	fs		= FS.OpenChunk	(2);
+		CStream*	fs		= FS->OpenChunk	(2);
 		CStream*	chunk	= NULL;
 		int			chunk_id= 0;
-		
+
 		while ((chunk=fs->OpenChunk(chunk_id))!=NULL)
 		{
 			CBlender_DESC	desc;
@@ -158,6 +153,15 @@ void	CShaderManager::OnDeviceCreate	(LPCSTR shName)
 		}
 		fs->Close();
 	}
+}
+
+void	CShaderManager::OnDeviceCreate	(LPCSTR shName)
+{
+#ifdef _EDITOR
+	if (!Engine.FS.Exist(shName)) return;
+#endif
+	CCompressedStream		FS(shName,		"shENGINE");
+    OnDeviceCreate			(&FS);
 }
 
 void CShaderManager::xrStartUp()

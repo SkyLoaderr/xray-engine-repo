@@ -143,7 +143,7 @@ bool __fastcall TUI::KeyPress(WORD Key, TShiftState Shift)
 }
 //----------------------------------------------------
 
-void TUI::OnMousePress(TShiftState Shift, int X, int Y)
+void TUI::MousePress(TShiftState Shift, int X, int Y)
 {
 	if (!m_bReady) return;
     if (m_MouseCaptured) return;
@@ -176,7 +176,7 @@ void TUI::OnMousePress(TShiftState Shift, int X, int Y)
     RedrawScene();
 }
 
-void TUI::OnMouseRelease(TShiftState Shift, int X, int Y)
+void TUI::MouseRelease(TShiftState Shift, int X, int Y)
 {
 	if (!m_bReady) return;
 

@@ -9,6 +9,7 @@
 #include "xr_trims.h"
 #include "UI_Tools.h"
 #include "FolderLib.h"
+#include "PropertiesList.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ExtBtn"
@@ -154,12 +155,6 @@ void __fastcall TfraLeftBar::tvEngineMouseDown(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ebEngineShaderPropertiesClick(TObject *Sender)
-{
-	UI.Command( COMMAND_SHADER_PROPERTIES );
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfraLeftBar::PreviewClick(TObject *Sender)
 {
 	UI.Command( COMMAND_SELECT_PREVIEW_OBJ, dynamic_cast<TMenuItem*>(Sender)->Tag );
@@ -192,7 +187,6 @@ void __fastcall TfraLeftBar::TemplateClick(TObject *Sender)
     CBlender* B = Tools.SEngine.AppendBlender(((CBlender*)mi->Tag)->getDescription().CLS,folder.c_str(),0);
 	Tools.SEngine.SetCurrentBlender(B);
 	Tools.SEngine.Modified();
-	UI.Command(COMMAND_SHADER_PROPERTIES);
 }
 //---------------------------------------------------------------------------
 
@@ -252,13 +246,6 @@ void __fastcall TfraLeftBar::CollapseAll1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::tvViewDblClick(TObject *Sender)
-{
-	if (CurrentView()->Selected&&FOLDER::IsObject(CurrentView()->Selected))
-		ebEngineShaderPropertiesClick(Sender);
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfraLeftBar::ebEngineShaderRemoveClick(TObject *Sender)
 {
     TElTreeItem* pNode = tvEngine->Selected;
@@ -314,7 +301,6 @@ void __fastcall TfraLeftBar::ebEngineShaderCloneClick(TObject *Sender)
 		AnsiString full_name;
 		FOLDER::MakeName(pNode,0,full_name,false);
         Tools.SEngine.CloneBlender(full_name.c_str());
-		UI.Command(COMMAND_SHADER_PROPERTIES);
 		Tools.SEngine.Modified();
     }else{
 		ELog.DlgMsg(mtInformation, "At first select item.");
@@ -390,7 +376,6 @@ void __fastcall TfraLeftBar::ebCShaderCreateClick(TObject *Sender)
     Shader_xrLC* S = Tools.SCompiler.AppendShader(folder.c_str(),0);
 	Tools.SCompiler.SetCurrentShader(S);
 	Tools.SCompiler.Modified();
-	UI.Command(COMMAND_SHADER_PROPERTIES);
 }
 //---------------------------------------------------------------------------
 
@@ -438,7 +423,6 @@ void __fastcall TfraLeftBar::ebCompilerShaderCloneClick(TObject *Sender)
 		AnsiString full_name;
 		FOLDER::MakeName(pNode,0,full_name,false);
 		Tools.SCompiler.SetCurrentShader(Tools.SCompiler.CloneShader(full_name.c_str()));
-		UI.Command(COMMAND_SHADER_PROPERTIES);
 		Tools.SCompiler.Modified();
     }else{
 		ELog.DlgMsg(mtInformation, "At first select item.");
@@ -539,4 +523,16 @@ void __fastcall TfraLeftBar::tvEngineDragDrop(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
+
+void __fastcall TfraLeftBar::fsStorageRestorePlacement(TObject *Sender)
+{
+	Tools.m_Props->RestoreColumnWidth(fsStorage);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::fsStorageSavePlacement(TObject *Sender)
+{
+	Tools.m_Props->SaveColumnWidth(fsStorage);
+}
+//---------------------------------------------------------------------------
 

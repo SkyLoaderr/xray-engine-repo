@@ -94,11 +94,57 @@ void __fastcall CSHEngineTools::MatrixOnAfterEdit(TElTreeItem* item, PropValue* 
         }
     }else{
         if (*V->val!='$'){
-            RemoveMatrix(nm);
+            RemoveMatrix(V->val);
             RemoveMatrixProps(item);
         }
     }
 }
+//------------------------------------------------------------------------------
+
+void __fastcall CSHEngineTools::AddConstProps(TElTreeItem* item, LPSTR name)
+{
+	Tools.m_Props->BeginEditMode();
+	CConstant* C = Tools.SEngine.FindConstant(name,true);
+    R_ASSERT(C);
+    TfrmProperties* P=Tools.m_Props;
+    P->AddItem(item,PROP_WAVE,	"R",	(LPDWORD)&C->_R);
+    P->AddItem(item,PROP_WAVE,	"G",	(LPDWORD)&C->_G);
+    P->AddItem(item,PROP_WAVE,	"B",	(LPDWORD)&C->_B);
+    P->AddItem(item,PROP_WAVE,	"A",	(LPDWORD)&C->_A);
+	Tools.m_Props->EndEditMode(item);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall CSHEngineTools::RemoveConstProps(TElTreeItem* parent){
+    TfrmProperties* P=Tools.m_Props;
+	P->BeginEditMode();
+	for (TElTreeItem* item=parent->GetLastChild(); item;){
+    	TElTreeItem* node=parent->GetPrevChild(item);
+        item->Delete();
+        item=node;
+	}
+	P->EndEditMode(0);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall CSHEngineTools::ConstOnAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+{
+	ListValue* V = (ListValue*)sender;
+	LPSTR nm=(LPSTR)edit_val;	VERIFY(nm&&nm[0]);
+
+	if (*nm!='$'){
+        if (*V->val=='$'){
+            strcpy(nm,AppendConstant());
+            AddConstProps(item,nm);
+        }
+    }else{
+        if (*V->val!='$'){
+            RemoveConstant(V->val);
+            RemoveConstProps(item);
+        }
+    }
+}
+//------------------------------------------------------------------------------
 
 void CSHEngineTools::UpdateProperties()
 {
@@ -134,10 +180,12 @@ void CSHEngineTools::UpdateProperties()
                 LPSTR V=(LPSTR)data.Pointer();
 				if (V&&V[0]&&(*V!='$')) AddMatrixProps(node,V);
             }break;
-            case xrPID_CONSTANT:
+            case xrPID_CONSTANT:{
             	sz=sizeof(string64);
-                P->AddItem(marker_node,PROP_LIST,key,P->MakeListValueA(data.Pointer(),MCSTRING_COUNT,MCString));
-            break;
+                TElTreeItem* node=P->AddItem(marker_node,PROP_LIST,key,P->MakeListValueA(data.Pointer(),MCSTRING_COUNT,MCString,&ConstOnAfterEdit,0,&MCOnDraw));
+                LPSTR V=(LPSTR)data.Pointer();
+				if (V&&V[0]&&(*V!='$')) AddConstProps(node,V);
+            }break;
             case xrPID_TEXTURE:
             	sz=sizeof(string64);
                 P->AddItem(marker_node,PROP_TEXTURE2,key,data.Pointer());
@@ -165,6 +213,6 @@ void CSHEngineTools::UpdateProperties()
     P->EndFillMode();
     P->SetModifiedEvent(Modified);
 }
-
+//------------------------------------------------------------------------------
 
  

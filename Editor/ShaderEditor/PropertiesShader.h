@@ -52,7 +52,6 @@ __published:	// IDE-managed Components
           TCanvas *Surface, TRect &R, int SectionIndex);
 	void __fastcall tvPropertiesMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
-	void __fastcall ebPropertiesApplyClick(TObject *Sender);
 	void __fastcall seNumberExit(TObject *Sender);
 	void __fastcall seNumberKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);

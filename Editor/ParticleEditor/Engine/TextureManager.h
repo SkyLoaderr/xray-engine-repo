@@ -109,6 +109,7 @@ public:
 	void	xrStartUp		();
 	void	xrShutDown		();
 
+	void	OnDeviceCreate	(CStream* F);
 	void	OnDeviceCreate	(LPCSTR name);
 	void	OnDeviceDestroy	(BOOL   bKeepTextures);
 	void	OnFrameEnd		();

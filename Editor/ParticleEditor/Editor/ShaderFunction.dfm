@@ -222,6 +222,7 @@ object frmShaderFunction: TfrmShaderFunction
       CloseButton = False
       Caption = 'Apply'
       FlatAlwaysEdge = True
+      Visible = False
       OnClick = ebApplyClick
     end
     object stFunction: TStaticText

@@ -659,19 +659,11 @@ void __fastcall TfrmShaderProperties::CustomClick(TElTreeItem* item)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmShaderProperties::ebPropertiesApplyClick(
-      TObject *Sender)
-{
-	UI.Command(COMMAND_APPLY_CHANGES);
-	Modified();
-}
-//---------------------------------------------------------------------------
-
 void TfrmShaderProperties::Modified()
 {
 	m_bModified = true;
     Tools.Modified();
-	UI.Command(COMMAND_APPLY_CHANGES);
+//	UI.Command(COMMAND_APPLY_CHANGES);
 }
 
 
