@@ -24,8 +24,8 @@
 #define		B_SHADOW_TEX	MK_CLSID('S','H','_','T','E','X',' ',' ')
 #define		B_SHADOW_WORLD	MK_CLSID('S','H','_','W','O','R','L','D')
 
-#define		B_DETAIL_STILL	MK_CLSID('D','_','S','T','I','L','L',' ')
-#define		B_DETAIL_WAVE	MK_CLSID('D','_','W','A','V','E',' ',' ')
+#define		B_DETAIL		MK_CLSID('D','_','S','T','I','L','L',' ')
+#define		B_TREE			MK_CLSID('D','_','T','R','E','E',' ',' ')
 
 #define		B_MODEL			MK_CLSID('M','O','D','E','L',' ',' ',' ')
 #define		B_MODEL_EbB		MK_CLSID('M','O','D','E','L','E','b','B')

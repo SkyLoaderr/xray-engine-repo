@@ -13,7 +13,7 @@
 
 CBlender_Detail_Still::CBlender_Detail_Still()
 {
-	description.CLS		= B_DETAIL_STILL;
+	description.CLS		= B_DETAIL;
 	description.version	= 0;
 }
 

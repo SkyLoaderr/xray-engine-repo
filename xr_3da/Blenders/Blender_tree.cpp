@@ -1,40 +1,40 @@
-// Blender_Vertex_aref.cpp: implementation of the CBlender_Detail_Still class.
+// Blender_Vertex_aref.cpp: implementation of the CBlender_Tree class.
 //
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "Blender_Detail_still.h"
+#include "Blender_tree.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CBlender_Detail_Still::CBlender_Detail_Still()
+CBlender_Tree::CBlender_Tree()
 {
-	description.CLS		= B_DETAIL;
+	description.CLS		= B_TREE;
 	description.version	= 0;
 }
 
-CBlender_Detail_Still::~CBlender_Detail_Still()
+CBlender_Tree::~CBlender_Tree()
 {
 
 }
 
-void	CBlender_Detail_Still::Save		(CFS_Base& FS )
+void	CBlender_Tree::Save		(CFS_Base& FS )
 {
 	CBlender::Save		(FS);
 	xrPWRITE_PROP		(FS,"Alpha-blend",	xrPID_BOOL,		oBlend);
 }
 
-void	CBlender_Detail_Still::Load		(CStream& FS, WORD version )
+void	CBlender_Tree::Load		(CStream& FS, WORD version )
 {
 	CBlender::Load		(FS,version);
 	xrPREAD_PROP		(FS,xrPID_BOOL,		oBlend);
 }
 
-void	CBlender_Detail_Still::Compile	(CBlender_Compile& C)
+void	CBlender_Tree::Compile	(CBlender_Compile& C)
 {
 	CBlender::Compile	(C);
 	
@@ -64,11 +64,7 @@ void	CBlender_Detail_Still::Compile	(CBlender_Compile& C)
 				if (oBlend.value)	C.PassSET_Blend_BLEND	(TRUE, 200);
 				else				C.PassSET_Blend_SET		(TRUE, 200);
 				C.PassSET_LightFog	(FALSE,FALSE);
-				switch (C.iLOD)
-				{
-				case 0:	C.PassSET_VS("detail_wave");	break;
-				case 1:	C.PassSET_VS("detail_still");	break;
-				}
+				C.PassSET_VS		("tree_wave");
 				
 				// Stage1 - Base texture
 				C.StageBegin		();
@@ -85,13 +81,8 @@ void	CBlender_Detail_Still::Compile	(CBlender_Compile& C)
 				if (oBlend.value)	C.PassSET_Blend_BLEND	(TRUE, 200);
 				else				C.PassSET_Blend_SET		(TRUE, 200);
 				C.PassSET_LightFog	(FALSE,FALSE);
+				C.PassSET_VS		("tree_wave");
 
-				switch (C.iLOD)
-				{
-				case 0:	C.PassSET_VS("detail_wave");	break;
-				case 1:	C.PassSET_VS("detail_still");	break;
-				}
-				
 				// Stage1 - Base texture
 				C.StageBegin		();
 				C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,	D3DTA_DIFFUSE);
