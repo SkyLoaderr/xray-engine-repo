@@ -132,7 +132,7 @@ bool CSE_ALifeSimulator::bfCheckInventoryCapacity(INT_VECTOR &tpTrader1, int iSu
 #ifdef ALIFE_LOG
 			if (iSum1 > iBallance + iSum2)
 				S1			+= sprintf(S1," + $%d",iSum1 - iBallance - iSum2);
-			Msg				("%s",S1);
+			Msg				("%s",S);
 #endif
 			return			(true);
 		}
@@ -211,46 +211,57 @@ void CSE_ALifeSimulator::vfNullTradersBallance(CSE_ALifeHumanAbstract *tpALifeHu
 
 #ifdef ALIFE_LOG
 	{
-		Msg				("%s [%3d]: ",tpALifeHumanAbstract1->s_name_replace,l_iMoney1);
+		string4096		S;
+		char			*S1 = S;
+		S1				+= sprintf(S1,"%s [%3d]: ",tpALifeHumanAbstract1->s_name_replace,l_iMoney1);
 		for (int i=0, n=m_tpTrader1.size(); i<n; i++)
-			Msg			("%4d",m_tpTrader1[i]);
-		Msg				("\n");
+			S1			+= sprintf(S1,"%4d",m_tpTrader1[i]);
+		Msg				("%s",S);
 	}
 	{
-		Msg				("%s [%3d]: ",tpALifeHumanAbstract2->s_name_replace,l_iMoney2);
+		string4096		S;
+		char			*S1 = S;
+		S1				+= sprintf(S1,"%s [%3d]: ",tpALifeHumanAbstract2->s_name_replace,l_iMoney2);
 		for (int i=0, n=m_tpTrader2.size(); i<n; i++)
-			Msg			("%4d",m_tpTrader2[i]);
-		Msg				("\n");
+			S1			+= sprintf(S1,"%4d",m_tpTrader2[i]);
+		Msg				("%s",S);
 	}
-	Msg					("Ballance : %3d\n",l_iBallance);
+	Msg					("Ballance : %3d",l_iBallance);
 #endif
+	
 	vfGenerateSums		(m_tpTrader1,m_tpSums1);
 	vfGenerateSums		(m_tpTrader2,m_tpSums2);
+	
 	m_tpSums1.insert	(m_tpSums1.begin(),0);
 	m_tpSums2.insert	(m_tpSums2.begin(),0);
+
 #ifdef ALIFE_LOG
 	{	
-		Msg				("%s : ",tpALifeHumanAbstract1->s_name_replace);
+		string4096		S;
+		char			*S1 = S;
+		S1				+= sprintf(S1,"%s : ",tpALifeHumanAbstract1->s_name_replace);
 		INT_IT			I = m_tpSums1.begin();
 		INT_IT			E = m_tpSums1.end();
 		for ( ; I != E; I++)
-			Msg			("%6d",*I);
-		Msg				("\n");
+			S1			+= sprintf(S1,"%6d",*I);
+		Msg				("%s",S);
 	}
 	{
-		Msg				("%s : ",tpALifeHumanAbstract2->s_name_replace);
+		string4096		S;
+		char			*S1 = S;
+		S1				+= sprintf(S1,"%s : ",tpALifeHumanAbstract2->s_name_replace);
 		INT_IT			I = m_tpSums2.begin();
 		INT_IT			E = m_tpSums2.end();
 		for ( ; I != E; I++)
-			Msg			("%6d",*I);
-		Msg				("\n");
+			S1			+= sprintf(S1,"%6d",*I);
+		Msg				("%s",S);
 	}
 #endif
+	
 	if (true)
 		bfCheckForTrade	(m_tpTrader1, m_tpSums1, l_iMoney1, m_tpTrader2, m_tpSums2, l_iMoney2, l_iBallance);
 	else
 		bfCheckForTrade	(m_tpTrader2, m_tpSums2, l_iMoney2, m_tpTrader1, m_tpSums1, l_iMoney1, l_iBallance);
-	Msg					("\n");
 }
 
 void CSE_ALifeSimulator::vfCommunicateWithCustomer(CSE_ALifeHumanAbstract *tpALifeHumanAbstract, CSE_ALifeTraderAbstract *tpTraderAbstract)
