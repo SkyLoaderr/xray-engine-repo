@@ -21,6 +21,7 @@ CWeaponHPSA::CWeaponHPSA() : CWeaponMagazined("HPSA")
 	iFlameDiv		= 0;
 	fFlameLength	= 0;
 	fFlameSize		= 0;
+	fFlameTime		= -1;
 }
 
 CWeaponHPSA::~CWeaponHPSA()
@@ -133,15 +134,18 @@ void CWeaponHPSA::OnShot		(BOOL bHUDView)
 	pSounds->Play3DAtPos	(sndFireShoot,vLastFP);
 
 	// Camera
-	CEffectorShot*	S = dynamic_cast<CEffectorShot*>(Level().Cameras.GetEffector(cefShot));
+	CEffectorShot*	S	= dynamic_cast<CEffectorShot*>(Level().Cameras.GetEffector(cefShot));
 	if (bHUDView &&	(0==S))	{
 		S = new CEffectorShot(camRelax,camDispersion);
 		Level().Cameras.AddEffector(S);
 	}
-	if (bHUDView)	S->Shot();
+	if (bHUDView)		S->Shot();
 
 	// Animation
 	m_pHUD->animPlay	(mhud_shots[Random.randI(mhud_shots.size())],FALSE);
+
+	// Flames
+	fFlameTime			= .1f;
 }
 void CWeaponHPSA::OnEmptyClick	(BOOL bHUDView)
 {
@@ -151,16 +155,21 @@ void CWeaponHPSA::OnDrawFlame	(BOOL bHUDView)
 {
 	if (bHUDView &&	(0==Level().Cameras.GetEffector(cefShot)))	Level().Cameras.AddEffector(new CEffectorShot(camRelax,camDispersion));
 	
-	// fire flash
-	Fvector P = vLastFP;
-	Fvector D; D.mul(vLastFD,::Random.randF(fFlameLength)/float(iFlameDiv));
-	float f = fFlameSize;
-	for (int i=0; i<iFlameDiv; i++){
-		f*=0.9f;
-		float	S = f+f*::Random.randF	();
-		float	A = ::Random.randF		(PI_MUL_2);
-		::Render.add_Patch				(hFlames[Random.randI(hFlames.size())],P,S,A,bHUDView);
-		P.add(D);
+	if (fFlameTime>0)	
+	{
+		fFlameTime -= Device.fTimeDelta;
+		// fire flash
+		Fvector P = vLastFP;
+		Fvector D; D.mul(vLastFD,::Random.randF(fFlameLength*fFlameTime)/float(iFlameDiv));
+		float f = fFlameSize;
+		for (int i=0; i<iFlameDiv; i++)
+		{
+			f		*= 0.9f;
+			float	S = f+f*::Random.randF	();
+			float	A = ::Random.randF		(PI_MUL_2);
+			::Render.add_Patch				(hFlames[Random.randI(hFlames.size())],P,S,A,bHUDView);
+			P.add(D);
+		}
 	}
 }
 

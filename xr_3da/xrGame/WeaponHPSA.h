@@ -22,6 +22,7 @@ private:
 	int						iFlameDiv;
 	float					fFlameLength;
 	float					fFlameSize;
+	float					fFlameTime;
 	
 	// HUD :: Animations
 	CMotionDef*				mhud_idle;
