@@ -307,3 +307,14 @@ void CCF_EventBox::_BoxQuery(const Fbox& B, const Fmatrix& M, DWORD flags)
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
+CCF_Shape::CCF_Shape(CObject* _owner) : CCFModel(_owner)
+{
+}
+BOOL CCF_Shape::_svRayTest(RayQuery& Q)
+{	return FALSE; }
+BOOL CCF_Shape::_clRayTest(RayQuery& Q)
+{	return FALSE; }
+void CCF_Shape::_BoxQuery(const Fbox& B, const Fmatrix& M, DWORD flags)
+{   return; }
+BOOL CCF_Shape::Contact( CObject* O )
+{	return FALSE; }
