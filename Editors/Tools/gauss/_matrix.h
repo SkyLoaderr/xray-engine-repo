@@ -549,7 +549,7 @@ BOOL	_valid			(_matrix<T>& m)
 		_valid(m.i) && _valid(m._14_)	&& 
 		_valid(m.j) && _valid(m._24_)	&&
 		_valid(m.k) && _valid(m._34_)	&&
-		_valid(m.c) && _valid(m._44_)	&&
+		_valid(m.c) && _valid(m._44_)	
 		;
 }
 
