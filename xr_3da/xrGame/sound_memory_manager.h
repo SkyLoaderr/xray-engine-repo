@@ -29,10 +29,13 @@ private:
 	// selected sound
 	const CSoundObject		*m_selected_sound;
 
+private:
 	IC		void	update_sound_threshold		();
 	IC		u32		get_priority				(const CSoundObject &sound) const;
+
 protected:
 	IC		void	set_sound_type_priority		(ESoundTypes sound_type, u32 priority);
+
 public:
 					CSoundMemoryManager			();
 	virtual			~CSoundMemoryManager		();
@@ -46,7 +49,7 @@ public:
 	IC		const xr_vector<CSoundObject>		&sound_objects	() const;
 	IC		const CSoundObject					*sound			() const;
 	IC		void	set_squad_objects			(xr_vector<CSoundObject> *squad_objects);
-	IC		void	enable							(const CObject *object, bool enable);
+	IC		void	enable						(const CObject *object, bool enable);
 };
 
 #include "sound_memory_manager_inline.h"

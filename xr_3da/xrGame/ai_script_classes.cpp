@@ -755,3 +755,23 @@ const xr_vector<CVisibleObject>	&CLuaGameObject::memory_visible_objects	() const
 	}
 	return			(monster->memory_visible_objects());
 }
+
+const xr_vector<CSoundObject>	&CLuaGameObject::memory_sound_objects	() const
+{
+	CCustomMonster	*monster = dynamic_cast<CCustomMonster*>(m_tpGameObject);
+	if (!monster) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member visible_objects!");
+		NODEFAULT;
+	}
+	return			(monster->sound_objects());
+}
+
+const xr_vector<CHitObject>		&CLuaGameObject::memory_hit_objects		() const
+{
+	CCustomMonster	*monster = dynamic_cast<CCustomMonster*>(m_tpGameObject);
+	if (!monster) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member visible_objects!");
+		NODEFAULT;
+	}
+	return			(monster->hit_objects());
+}

@@ -65,6 +65,7 @@ void CScriptEngine::export_object()
 				value("patrol_path",			int(CMovementManager::ePathTypePatrolPath)),
 				value("no_path",				int(CMovementManager::ePathTypeNoPath))
 			]
+			
 			.property("visible",				&CLuaGameObject::getVisible,		&CLuaGameObject::setVisible)
 			.property("enabled",				&CLuaGameObject::getEnabled,		&CLuaGameObject::setEnabled)
 			.property("health",					&CLuaGameObject::GetHealth,			&CLuaGameObject::SetHealth)
@@ -197,6 +198,8 @@ void CScriptEngine::export_object()
 			.def("best_cover",					&CLuaGameObject::best_cover)
 			.def("spawn_ini",					&CLuaGameObject::spawn_ini)
 			.def("memory_visible_objects",		&CLuaGameObject::memory_visible_objects, return_stl_iterator)
+			.def("memory_sound_objects",		&CLuaGameObject::memory_sound_objects, return_stl_iterator)
+			.def("memory_hit_objects",			&CLuaGameObject::memory_hit_objects, return_stl_iterator)
 
 
 			// sight manager
@@ -238,7 +241,6 @@ void CScriptEngine::export_object()
 			.def("enable_talk",					&CLuaGameObject::EnableTalk)
 			.def("disable_talk",				&CLuaGameObject::DisableTalk)
 			.def("is_talk_enabled",				&CLuaGameObject::IsTalkEnabled)
-
 
 			.enum_("CLSIDS")
 			[
