@@ -128,9 +128,7 @@ namespace CDB
 		u32				frustum_mode;
 
 		// Result management
-		RESULT*			rd_ptr;
-		int				rd_count;
-		int				rd_size;
+		xr_vector<RESULT>	rd;
 	public:
 		COLLIDER		();
 		~COLLIDER		();
@@ -144,13 +142,12 @@ namespace CDB
 		IC void			frustum_options	(u32 f)	{	frustum_mode = f;	}
 		void			frustum_query	(const MODEL *m_def, const CFrustum& F);
 
-		IC RESULT*		r_begin			()	{	return rd_ptr;				};
-		IC RESULT*		r_end			()	{	return rd_ptr + rd_count;	};
+		IC RESULT*		r_begin			()	{	return &*rd.begin();		};
+		IC RESULT*		r_end			()	{	return &*rd.end();			};
 		RESULT&			r_add			();
 		void			r_free			();
-		IC int			r_count			()	{	return rd_count;			};
-
-		IC void			r_clear			()	{	rd_count = 0;				};
+		IC int			r_count			()	{	return rd.size();			};
+		IC void			r_clear			()	{	rd.clear();					};
 	};
 
 	//
