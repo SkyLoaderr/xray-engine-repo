@@ -9,16 +9,14 @@
 #define ZONE_EFFECTOR_TYPE_ID	4
 
 CZoneEffectPP::CZoneEffectPP(const SPPInfo &ppi) :
-	CEffectorPP(EEffectorPPType(ZONE_EFFECTOR_TYPE_ID), flt_max)
+	CEffectorPP(EEffectorPPType(ZONE_EFFECTOR_TYPE_ID), flt_max, false)
 {
 	state = ppi;
 	factor = 0.1f;
-//	Msg			("CZoneEffectPP::CZoneEffectPP %x",this);
 }
 
 CZoneEffectPP::~CZoneEffectPP()
 {
-//	Msg			("CZoneEffectPP::~CZoneEffectPP %x",this);
 }
 
 BOOL CZoneEffectPP::Process(SPPInfo& pp)
@@ -27,13 +25,13 @@ BOOL CZoneEffectPP::Process(SPPInfo& pp)
 
 	SPPInfo	def;
 
-	pp.duality.h		+= def.duality.h			+ (state.duality.h			- def.duality.h)		* factor; 			
-	pp.duality.v		+= def.duality.v			+ (state.duality.v			- def.duality.v)		* factor;
+	pp.duality.h		+= def.duality.h		+ (state.duality.h			- def.duality.h)		* factor; 			
+	pp.duality.v		+= def.duality.v		+ (state.duality.v			- def.duality.v)		* factor;
 	pp.gray				+= def.gray				+ (state.gray				- def.gray)				* factor;
 	pp.blur				+= def.blur				+ (state.blur				- def.blur)				* factor;
 	pp.noise.intensity	+= def.noise.intensity	+ (state.noise.intensity	- def.noise.intensity)	* factor;
 	pp.noise.grain		+= def.noise.grain		+ (state.noise.grain		- def.noise.grain)		* factor;
-	pp.noise.fps		+= def.noise.fps			+ (state.noise.fps			- def.noise.fps)		* factor;	
+	pp.noise.fps		+= def.noise.fps		+ (state.noise.fps			- def.noise.fps)		* factor;	
 	VERIFY(!fis_zero(pp.noise.fps));
 
 	pp.color_base.set	(
@@ -59,7 +57,9 @@ BOOL CZoneEffectPP::Process(SPPInfo& pp)
 
 void CZoneEffectPP::Destroy()
 {
-	fLifeTime = 0.f;
+	fLifeTime		= 0.f;
+	CZoneEffectPP	*self = this;
+	xr_delete		(self);
 }
 
 
@@ -74,7 +74,6 @@ CZoneEffector::CZoneEffector()
 
 CZoneEffector::~CZoneEffector()
 {
-	Stop		();
 }
 
 void CZoneEffector::Load(LPCSTR section)
@@ -120,9 +119,9 @@ void CZoneEffector::Update(float dist)
 
 	bool CreateEffector = (Level().CurrentEntity() && Level().CurrentEntity()->SUB_CLS_ID == CLSID_OBJECT_ACTOR);
 	
-	if (p_effector) 
+	if (p_effector) {
 		if (dist > max_r || !CreateEffector) Stop();
-	else 
+	} else 
 		if (dist < max_r && CreateEffector) Activate();
 	
 	if (p_effector) {
