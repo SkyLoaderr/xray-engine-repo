@@ -28,6 +28,7 @@ class CAI_Soldier : public CCustomMonster
 		aiSoldierFollowMe,
 		aiSoldierAttack,
 		aiSoldierPursuit,
+		aiSoldierTest,
 	};
 	
 	typedef	CCustomMonster inherited;
@@ -56,6 +57,7 @@ class CAI_Soldier : public CCustomMonster
 		CMotionDef* 	m_tpaDeathAnimations[2];
 		
 		DWORD			m_dwLastRangeSearch;
+		DWORD			m_dwLastSuccessfullSearch;
 		
 		SEnemySelected	Enemy;
 		objSET			tpaVisibleObjects;
