@@ -8,10 +8,10 @@ void CRenderTarget::accum_direct	()
 	float			fTexelOffs			= (.5f / DSM_size);
 	Fmatrix			m_TexelAdjust		= 
 	{
-		0.5f,				0.0f,				0.0f,		0.0f,
-		0.0f,				-0.5f,				0.0f,		0.0f,
-		0.0f,				0.0f,				1.0f,		0.0f,
-		0.5f + fTexelOffs,	0.5f + fTexelOffs,	0.0f,		1.0f
+		0.5f,				0.0f,				0.0f,			0.0f,
+		0.0f,				-0.5f,				0.0f,			0.0f,
+		0.0f,				0.0f,				1.0f,			0.0f,
+		0.5f + fTexelOffs,	0.5f + fTexelOffs,	0.0f - .001f,	1.0f
 	};
 
 	// compute xforms
