@@ -63,4 +63,14 @@
 		<rank>0</rank>
 		<reputation>0</reputation>
 	</specific_character>
+	
+	
+	<specific_character id="test_character" team_default = "1">
+		<name>test character</name>
+		<icon x="26" y="6"></icon>
+		<map_icon x="2" y="5"></map_icon>
+		<community>stalker</community>
+		<rank>0</rank>
+		<reputation>0</reputation>
+	</specific_character>
 </xml>
