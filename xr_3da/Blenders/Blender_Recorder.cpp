@@ -20,6 +20,13 @@ CBlender_Recorder::~CBlender_Recorder	()
 {
 
 }
+void	CBlender_Recorder::SetParams	(int iPriority, bool bStrictB2F, bool bLighting, bool bPixelShader)
+{
+	SH->Flags.iPriority		= iPriority;
+	SH->Flags.bStrictB2F	= bStrictB2F;
+	SH->Flags.bLighting		= bLighting;
+	SH->Flags.bPixelShader	= bPixelShader;
+}
 //
 void	CBlender_Recorder::PassBegin	()
 {
@@ -29,7 +36,6 @@ void	CBlender_Recorder::PassBegin	()
 	passConstants.clear		();
 	dwStage					= 0;
 }
-
 void	CBlender_Recorder::PassEnd		()
 {
 	// Last Stage - disable

@@ -21,6 +21,8 @@ class ENGINE_API CBlender_Recorder
 	DWORD				BC				(BOOL v)	{ return v?0xff:0; }
 public:
 	CSimulator&			R()				{ return RS; }
+	
+	void				SetParams		(int iPriority, bool bStrictB2F, bool bLighting, bool bPixelShader);
 
 	void				PassBegin		();
 	DWORD				Pass			()  { return SH->Passes.size(); }
