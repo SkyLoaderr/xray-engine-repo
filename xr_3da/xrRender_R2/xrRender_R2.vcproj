@@ -217,6 +217,9 @@
 					RelativePath="r2_rendertarget.h">
 				</File>
 				<File
+					RelativePath="r2_rendertarget_accum_direct.cpp">
+				</File>
+				<File
 					RelativePath="r2_rendertarget_phase_accumulator.cpp">
 				</File>
 				<File
@@ -330,6 +333,12 @@
 			</File>
 			<File
 				RelativePath="blender_deffer_flat.h">
+			</File>
+			<File
+				RelativePath="blender_light_direct.cpp">
+			</File>
+			<File
+				RelativePath="blender_light_direct.h">
 			</File>
 			<Filter
 				Name="R1"

@@ -7,6 +7,10 @@ private:
 	u32					dwHeight;
 	u32					dwAccumulatorClearMark;
 
+private:
+	// 
+	CBlender*			b_accum_direct;
+
 	//
 	CRT*				rt_Position;	// 64bit, fat	(x,y,z,?)				(eye-space)
 	CRT*				rt_Normal;		// 64bit, fat	(x,y,z,?)				(eye-space)
@@ -22,6 +26,9 @@ private:
 	//
 	SGeometry*			g_smap_d_debug;
 	Shader*				s_smap_d_debug;
+
+	// 
+	Shader*				s_accum_direct;
 
 	//
 	SGeometry*			g_combine;
@@ -45,6 +52,7 @@ public:
 	void				phase_scene			();
 	void				phase_smap_direct	();
 	void				phase_accumulator	();
+	void				accum_direct		();
 	void				phase_combine		();
 
 	virtual void		eff_load			(LPCSTR n)		{};

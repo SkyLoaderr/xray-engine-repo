@@ -1,8 +1,12 @@
 #include "stdafx.h"
+#include "blender_light_direct.h"
 
 void	CRenderTarget::OnDeviceCreate	()
 {
 	dwAccumulatorClearMark			= 0;
+
+	// blenders
+	b_accum_direct					= xr_new<CBlender_accum_direct>		();
 
 	//	NORMAL
 	{
@@ -22,6 +26,7 @@ void	CRenderTarget::OnDeviceCreate	()
 		R_CHK						(HW.pDevice->CreateDepthStencilSurface	(w,h,HW.Caps.fDepth,D3DMULTISAMPLE_NONE,0,TRUE,&rt_smap_d_ZB,NULL));
 		rt_smap_d					= Device.Shader._CreateRT	(r2_RT_smap_d,			w,h,D3DFMT_R32F);
 		s_smap_d_debug				= Device.Shader.Create		("effects\\screen_set",	r2_RT_smap_d);
+		s_accum_direct				= Device.Shader.Create_B	(b_accum_direct,		"r2\\accum_direct");
 		g_smap_d_debug				= Device.Shader.CreateGeom	(FVF::F_TL,				RCache.Vertex.Buffer(), RCache.QuadIB);
 	}
 
@@ -50,6 +55,7 @@ void	CRenderTarget::OnDeviceDestroy	()
 
 	// DIRECT
 	Device.Shader.DeleteGeom	(g_smap_d_debug	);
+	Device.Shader.Delete		(s_accum_direct	);
 	Device.Shader.Delete		(s_smap_d_debug	);
 	Device.Shader._DeleteRT		(rt_smap_d		);
 	_RELEASE					(rt_smap_d_ZB	);
@@ -61,5 +67,8 @@ void	CRenderTarget::OnDeviceDestroy	()
 	Device.Shader._DeleteRT		(rt_Color		);
 	Device.Shader._DeleteRT		(rt_Normal		);
 	Device.Shader._DeleteRT		(rt_Position	);
+
+	// Blenders
+	xr_delete					(b_accum_direct	);
 }
 
