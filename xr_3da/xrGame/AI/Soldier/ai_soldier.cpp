@@ -40,6 +40,7 @@ CAI_Soldier::CAI_Soldier()
 	m_bActionStarted = false;
 	m_bJumping = false;
 	tpaDynamicObjects.clear();
+	tpaDynamicSounds.clear();
 	// event handlers
 	m_tpEventSay = Engine.Event.Handler_Attach("level.entity.say",this);
 	m_tpEventAssignPath = Engine.Event.Handler_Attach("level.entity.path.assign",this);

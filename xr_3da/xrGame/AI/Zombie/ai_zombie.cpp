@@ -45,6 +45,10 @@ CAI_Zombie::CAI_Zombie()
 	AI_Path.fSpeed = 0.f;
 	m_fDistanceWent = 0.f;
 	m_cStep = 0;
+	m_fSensetivity = 0.f;
+	m_iSoundIndex = -1;
+	tpaDynamicSounds.clear();
+	m_dwLastUpdate = 0;
 }
 
 CAI_Zombie::~CAI_Zombie()

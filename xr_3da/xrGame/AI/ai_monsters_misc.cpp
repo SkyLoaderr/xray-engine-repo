@@ -10,6 +10,8 @@
 #include "ai_monsters_misc.h"
 #include "..\\xr_weapon_list.h"
 #include "..\\WayPointDef.h"
+#include "..\\CustomMonster.h"
+#include "..\\Actor.h"
 
 extern void	UnpackContour(PContour& C, DWORD ID);
 extern void	IntersectContours(PSegment& Dest, PContour& C1, PContour& C2);
@@ -834,3 +836,19 @@ float ffCalcSquare(float fAngle, float fAngleOfView, float _b0, float _b1, float
 							}
 	return(fSquare);
 }
+
+SRotation tfGetOrientation(CEntity *tpEntity)
+{
+	CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(tpEntity);
+	if (tpCustomMonster)
+		return(tpCustomMonster->r_torso_current);
+	else {
+		SRotation tTemp;
+		CActor *tpActor = dynamic_cast<CActor *>(tpEntity);
+		if (tpActor)
+			return(tpActor->Orientation());
+		else
+			return(tTemp);
+	}
+}
+

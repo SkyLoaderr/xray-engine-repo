@@ -14,7 +14,9 @@
 #include "..\\Entity.h"
 		   
 	// Fuzzy State Machine
-	//#define WRITE_LOG
+	#define ASSIGN_PROPORTIONAL_POWER(a,b)	if ((eType & a) == a) power*=b;
+
+	#define WRITE_LOG
 
 	#ifdef WRITE_LOG
 		#define WRITE_TO_LOG(S) {\
@@ -189,4 +191,5 @@
 	extern void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, vector<Fvector> &tpaDeviations, vector<CTravelNode> &tpaPath, vector<DWORD> &dwaNodes, bool bLooped, bool bUseDeviations = true, float fRoundedDistanceMin = 1.5f, float fRoundedDistanceMax = 3.0f, float fRadiusMin = .5f, float fRadiusMax = 3.0f, float fSuitableAngle = PI_DIV_8*.375f, float fSegmentSizeMin = Level().AI.GetHeader().size*.5f, float fSegmentSizeMax = Level().AI.GetHeader().size*2.f);
 	extern void vfCreatePointSequence(CLevel::SPatrolPath &tpPatrolPath,vector<Fvector> &tpaPoints, bool &bLooped);
 	extern float ffCalcSquare(float fAngle, float fAngleOfView, float _b0, float _b1, float _b2, float _b3);
+	extern SRotation tfGetOrientation(CEntity *tpEntity);
 #endif

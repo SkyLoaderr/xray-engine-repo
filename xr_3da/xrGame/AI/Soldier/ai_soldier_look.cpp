@@ -16,7 +16,6 @@
 #define EYE_WEAPON_DELTA				(0*PI/30.f)
 #define WEAPON_DISTANCE					(.35f)
 #define SQUARE_WEAPON_DISTANCE			(WEAPON_DISTANCE*WEAPON_DISTANCE)
-#define ASSIGN_PROPORTIONAL_POWER(a,b)	if ((eType & a) == a) power*=b;
 
 bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 {
@@ -215,21 +214,6 @@ void CAI_Soldier::OnVisible()
 	
 	Weapons->OnRender(FALSE);
 	//return(0);
-}
-
-SRotation CAI_Soldier::tfGetOrientation(CEntity *tpEntity)
-{
-	CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(tpEntity);
-	if (tpCustomMonster)
-		return(tpCustomMonster->r_torso_current);
-	else {
-		SRotation tTemp;
-		CActor *tpActor = dynamic_cast<CActor *>(tpEntity);
-		if (tpActor)
-			return(tpActor->Orientation());
-		else
-			return(tTemp);
-	}
 }
 
 void CAI_Soldier::vfUpdateDynamicObjects()

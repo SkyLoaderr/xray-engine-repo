@@ -33,12 +33,18 @@ class CAI_Zombie : public CCustomMonster
 		
 		aiZombiePursuit,
 		aiZombieTurnOver,
+		aiZombieUnderFire,
 	};
 	
 	typedef	CCustomMonster inherited;
 
 	protected:
 		
+		vector<SDynamicSound>	tpaDynamicSounds;
+		DWORD					m_dwMaxDynamicSoundsCount;
+		float					m_fSensetivity;
+		int						m_iSoundIndex;
+		DWORD					m_dwLastUpdate;
 		////////////////////////////////////////////////////////////////////////////
 		// normal animations
 		////////////////////////////////////////////////////////////////////////////
@@ -179,6 +185,7 @@ class CAI_Zombie : public CCustomMonster
 		
 		void Pursuit();
 		void TurnOver();
+		void UnderFire();
 		// miscellanious funtions	
 	IC  CGroup getGroup() {return Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];};
 		bool bfCheckForVisibility(CEntity* tpEntity);
@@ -209,6 +216,7 @@ class CAI_Zombie : public CCustomMonster
 		int  ifDivideNearestNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition, vector<SSubNode> &tpSubNodes);
 		void GoToPointViaSubnodes(Fvector &tLeaderPosition);
 		void vfUpdateDynamicObjects();
+		void SelectSound(int &iIndex);
 
 	public:
 					   CAI_Zombie();
@@ -229,6 +237,7 @@ class CAI_Zombie : public CCustomMonster
 		virtual void  OnEvent(EVENT E, DWORD P1, DWORD P2);
 		virtual BOOL  Spawn( BOOL bLocal, int sid, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags );
 		virtual objQualifier* GetQualifier();
+		virtual	void  soundEvent(CObject* who, int eType, Fvector& Position, float power);
 };
 		
 #endif

@@ -149,3 +149,114 @@ void CAI_Zombie::vfUpdateDynamicObjects()
 {
 
 }
+
+void CAI_Zombie::soundEvent(CObject* who, int eType, Fvector& Position, float power)
+{
+	#ifdef WRITE_LOG
+		Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
+	#endif
+
+	if (g_Health() <= 0) {
+		tpaDynamicSounds.clear();
+		return;
+	}
+	
+	if (Level().timeServer() < 15000)
+		return;
+
+	power *= ffGetStartVolume(ESoundTypes(eType));
+
+	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_WEAPON_RECHARGING		,0.15f);
+	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_WEAPON_SHOOTING		,1.00f); 
+	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_WEAPON_TAKING			,0.05f); 
+	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_WEAPON_HIDING			,0.05f); 
+	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_WEAPON_CHANGING		,0.05f); 
+	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_WEAPON_EMPTY_CLICKING	,0.10f); 
+	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_WEAPON_BULLET_RICOCHET	,0.50f); 
+	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_DYING			,0.50f); 
+	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_INJURING		,0.50f);
+	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_WALKING_NORMAL ,0.15f); 
+	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_WALKING_CROUCH	,0.05f); 
+	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_WALKING_LIE	,0.10f); 
+	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_RUNNING_NORMAL	,1.00f);//.25f 
+	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_RUNNING_CROUCH	,1.00f);//.20f 
+	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_RUNNING_LIE	,0.20f); 
+	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_JUMPING_NORMAL	,0.20f); 
+	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_JUMPING_CROUCH	,0.15f); 
+	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_FALLING		,0.20f); 
+	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_TALKING		,0.25f); 
+
+	DWORD dwTime = Level().timeServer();
+	
+	if ((power >= m_fSensetivity*m_fSoundPower) && ((eType & SOUND_TYPE_MONSTER) != SOUND_TYPE_MONSTER)) {
+		if (this != who) {
+			int j;
+			CEntity *tpEntity = dynamic_cast<CEntity *>(who);
+			if (!tpEntity || !bfCheckForVisibility(tpEntity)) {
+				for ( j=0; j<tpaDynamicSounds.size(); j++)
+					if (who == tpaDynamicSounds[j].tpEntity) {
+						tpaDynamicSounds[j].eSoundType = ESoundTypes(eType);
+						tpaDynamicSounds[j].dwTime = dwTime;
+						tpaDynamicSounds[j].fPower = power;
+						tpaDynamicSounds[j].dwUpdateCount++;
+						tpaDynamicSounds[j].tSavedPosition = Position;
+						tpaDynamicSounds[j].tOrientation = tfGetOrientation(tpEntity);
+						tpaDynamicSounds[j].tMySavedPosition = vPosition;
+						tpaDynamicSounds[j].tMyOrientation = r_torso_current;
+						tpaDynamicSounds[j].tpEntity = tpEntity;
+					}
+				if (j >= tpaDynamicSounds.size()) {
+					if (tpaDynamicSounds.size() >= m_dwMaxDynamicSoundsCount)	{
+						DWORD dwBest = dwTime + 1, dwIndex = DWORD(-1);
+						for (int j=0; j<tpaDynamicSounds.size(); j++)
+							if (tpaDynamicSounds[j].dwTime < dwBest) {
+								dwIndex = j;
+								dwBest = tpaDynamicSounds[j].dwTime;
+							}
+						if (dwIndex < tpaDynamicSounds.size()) {
+							tpaDynamicSounds[dwIndex].eSoundType = ESoundTypes(eType);
+							tpaDynamicSounds[dwIndex].dwTime = dwTime;
+							tpaDynamicSounds[dwIndex].fPower = power;
+							tpaDynamicSounds[dwIndex].dwUpdateCount = 1;
+							tpaDynamicSounds[dwIndex].tSavedPosition = Position;
+							tpaDynamicSounds[dwIndex].tOrientation = tfGetOrientation(tpEntity);
+							tpaDynamicSounds[dwIndex].tMySavedPosition = vPosition;
+							tpaDynamicSounds[dwIndex].tMyOrientation = r_torso_current;
+							tpaDynamicSounds[dwIndex].tpEntity = tpEntity;
+						}
+					}
+					else {
+						SDynamicSound tDynamicSound;
+						tDynamicSound.eSoundType = ESoundTypes(eType);
+						tDynamicSound.dwTime = dwTime;
+						tDynamicSound.fPower = power;
+						tDynamicSound.dwUpdateCount = 1;
+						tDynamicSound.tSavedPosition = Position;
+						tDynamicSound.tOrientation = tfGetOrientation(tpEntity);
+						tDynamicSound.tMySavedPosition = vPosition;
+						tDynamicSound.tMyOrientation = r_torso_current;
+						tDynamicSound.tpEntity = tpEntity;
+						tpaDynamicSounds.push_back(tDynamicSound);
+					}
+				}
+			}
+		}
+	}
+	// computing total power of my own sounds for computing tha ability to hear the others
+	if (m_fSoundPower < power) {
+		m_fSoundPower = m_fStartPower = power;
+		m_dwSoundUpdate = dwTime;
+	}
+}
+
+void CAI_Zombie::SelectSound(int &iIndex)
+{
+	iIndex = -1;
+	float fMaxPower = 0.f;
+	for (int i=0; i<tpaDynamicSounds.size(); i++)
+		if ((!tpaDynamicSounds[i].tpEntity) || (tpaDynamicSounds[i].tpEntity->g_Team() != g_Team()))
+			if ((tpaDynamicSounds[i].dwTime > m_dwLastUpdate) && (tpaDynamicSounds[i].fPower > fMaxPower)) {
+				fMaxPower = tpaDynamicSounds[i].fPower;
+				iIndex = i;
+			}
+}
