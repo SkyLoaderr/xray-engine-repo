@@ -10,43 +10,43 @@ function main()
 		printf("file name=%s; file_size=%d;file_modif=%s",fl:NameFull(),fl:Size(),fl:Modif() )
 	end
 	
-	printf("---eSortByNameUp")
-	fs_list:Sort(FS:eSortByNameUp)
+	printf("---FS_sort_by_name_up")
+	fs_list:Sort(FS:FS_sort_by_name_up)
 	for it=0,sz-1 do
 	local fl = fs_list:GetAt(it)
 		printf("file name=%s; file_size=%d;file_modif=%s",fl:NameFull(),fl:Size(),fl:Modif() )
 	end
 
-	printf("---eSortByNameDown")
-	fs_list:Sort(FS:eSortByNameDown)
+	printf("---FS_sort_by_name_down")
+	fs_list:Sort(FS:FS_sort_by_name_down)
 	for it=0,sz-1 do
 	local fl = fs_list:GetAt(it)
 		printf("file name=%s; file_size=%d;file_modif=%s",fl:NameFull(),fl:Size(),fl:Modif() )
 	end
 
-	printf("---eSortBySizeUp")
-	fs_list:Sort(FS:eSortBySizeUp)
+	printf("---FS_sort_by_size_up")
+	fs_list:Sort(FS:FS_sort_by_size_up)
 	for it=0,sz-1 do
 	local fl = fs_list:GetAt(it)
 		printf("file name=%s; file_size=%d;file_modif=%s",fl:NameFull(),fl:Size(),fl:Modif() )
 	end
 
-	printf("---eSortBySizeDown")
-	fs_list:Sort(FS:eSortBySizeDown)
+	printf("---FS_sort_by_size_down")
+	fs_list:Sort(FS:FS_sort_by_size_down)
 	for it=0,sz-1 do
 	local fl = fs_list:GetAt(it)
 		printf("file name=%s; file_size=%d;file_modif=%s",fl:NameFull(),fl:Size(),fl:Modif() )
 	end
 
-	printf("---eSortByModifUp")
-	fs_list:Sort(FS:eSortByModifUp)
+	printf("---FS_sort_by_modif_up")
+	fs_list:Sort(FS:FS_sort_by_modif_up)
 	for it=0,sz-1 do
 	local fl = fs_list:GetAt(it)
 		printf("file name=%s; file_size=%d;file_modif=%s",fl:NameFull(),fl:Size(),fl:Modif() )
 	end
 	
-	printf("---eSortByModifDown")
-	fs_list:Sort(FS:eSortByModifDown)
+	printf("---FS_sort_by_modif_down")
+	fs_list:Sort(FS:FS_sort_by_modif_down)
 	for it=0,sz-1 do
 	local fl = fs_list:GetAt(it)
 		printf("file name=%s; file_size=%d;file_modif=%s",fl:NameFull(),fl:Size(),fl:Modif() )
