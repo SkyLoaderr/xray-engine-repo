@@ -76,7 +76,7 @@ void Startup				( )
 	Device.Create				( );
 	LALib.OnCreate				( );
 	pApp						= xr_new<CApplication>	();
-	g_pGamePersistent			= (IGame_Persistant*)	NEW_INSTANCE (CLSID_GAME_PERSISTANT);
+	g_pGamePersistent			= (IGame_Persistent*)	NEW_INSTANCE (CLSID_GAME_PERSISTANT);
 
 	// Destroy LOGO
 	DestroyWindow				(logoWindow);
