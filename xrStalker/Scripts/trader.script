@@ -279,11 +279,16 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function Trader:get_random (_min, _max, _exclude)
 
-    if _min == _max and _exclude == _min then return exclude end
+    if _min == _max and _exclude == _min  then 
+       return _exclude 
+    end
+    
     local rnd = math.random (_min, _max)
+    
     while rnd == _exclude do
           rnd = math.random (_min, _max)
     end
+    
     return rnd
     
 emd          
