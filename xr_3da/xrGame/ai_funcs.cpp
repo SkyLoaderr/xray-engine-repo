@@ -191,6 +191,4 @@ CAI_DDD::CAI_DDD()
 CAI_DDD::~CAI_DDD()
 {
 	delete_data							(m_fpaBaseFunctions);
-//	for (int i=0; i<AI_MAX_EVALUATION_FUNCTION_COUNT; i++)
-//		xr_delete						(m_fpaBaseFunctions[i]);
 }

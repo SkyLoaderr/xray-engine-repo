@@ -184,15 +184,7 @@ public:
 			for ( ; I != E; I++)
 				xr_free((*I).tpaEdges);
 		}
-		{
-			VERTEX_PAIR_IT			I = m_tVertexMap.begin();
-			VERTEX_PAIR_IT			E = m_tVertexMap.end();
-			for ( ; I != E; I++) {
-				LPSTR	S = (*I).first;
-				xr_free(S);
-				xr_free((*I).second.caConnectName);
-			}
-		}
+		delete_data					(m_tVertexMap);
 	};
 
 	void						vfAddEdge(u32 dwVertexNumber, SGraphEdge &tGraphEdge)

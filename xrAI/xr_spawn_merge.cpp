@@ -181,12 +181,7 @@ public:
 				xr_free((*I).second);
 			}
 		}
-		{
-			xr_map<LPCSTR,CSE_SpawnGroup*>::iterator				I = l_tpSpawnGroupControlsMap.begin();
-			xr_map<LPCSTR,CSE_SpawnGroup*>::iterator				E = l_tpSpawnGroupControlsMap.end();
-			for ( ; I != E; I++)
-				xr_delete((*I).second);
-		}
+		delete_data					(l_tpSpawnGroupControlsMap);
 	};
 	virtual 					~CSpawn()
 	{

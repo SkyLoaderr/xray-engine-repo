@@ -10,15 +10,18 @@
 #define XRAY_AI_ALIFE_TEMPLATES
 
 // delete data
-extern void delete_data(xr_vector<LPSTR> &tpVector);
+extern void delete_data(LPSTR &tpVector);
+extern void delete_data(LPCSTR &tpVector);
 
 template <class T1, class T2, class T3>
 void delete_data(xr_map<T1,T2,T3> &tpMap)
 {
 	xr_map<T1,T2,T3>::iterator	I = tpMap.begin();
 	xr_map<T1,T2,T3>::iterator	E = tpMap.end();
-	for ( ; I != E; I++)
+	for ( ; I != E; I++) {
+		delete_data				((*I).first);
 		delete_data				((*I).second);
+	}
 	tpMap.clear					();
 };
 

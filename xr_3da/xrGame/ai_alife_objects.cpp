@@ -119,14 +119,7 @@ CSE_ALifeOrganization::CSE_ALifeOrganization(LPCSTR caSection)
 CSE_ALifeOrganization::~CSE_ALifeOrganization()
 {
 	delete_data					(m_tpPossibleDiscoveries);
-	{
-		ITEM_COUNT_PAIR_IT		I = m_tpPurchasedArtefacts.begin();
-		ITEM_COUNT_PAIR_IT		E = m_tpPurchasedArtefacts.end();
-		for ( ; I != E; I++) {
-			LPSTR				S = (*I).first;
-			xr_free				(S);
-		}
-	}
+	delete_data					(m_tpPurchasedArtefacts);
 }
 
 void CSE_ALifeOrganization::Save(IWriter &tMemoryStream)

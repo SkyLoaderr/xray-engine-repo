@@ -96,9 +96,7 @@ void Startup(LPSTR     lpCmdLine)
 				}
 				else
 					if (strstr(cmd,"-s")) {
-						//Ini					= xr_new<CInifile>(INI_FILE);
 						xrMergeSpawns		(prjName);
-						//xr_delete			(Ini);
 					}
 		}
 	// Show statistic
