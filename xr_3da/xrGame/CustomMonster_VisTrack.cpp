@@ -68,7 +68,7 @@ namespace AI {
 			Fvector			OP;
 			Fmatrix			mE;
 			const Fbox&		B = I->E->CFORM()->GetBBox();
-			const Fmatrix&	M = I->E->svTransform;
+			const Fmatrix&	M = I->E->svXFORM();
 
 			// build OBB
 			Fvector			c,r;

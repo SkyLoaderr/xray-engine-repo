@@ -201,7 +201,7 @@ void CWeaponM134::UpdateXForm(BOOL bHUDView)
 			R.crossproduct	(mR.j,D);		R.normalize_safe();
 			N.crossproduct	(D,R);			N.normalize_safe();
 			mRes.set		(R,N,D,mR.c);
-			mRes.mul2		(m_pParent->clTransform);
+			mRes.mul2		(m_pParent->clXFORM());
 			UpdatePosition	(mRes);
 		}
 	}

@@ -25,12 +25,12 @@ void CMovementControl::dbg_Draw()
 	Device.Primitive.dbg_DrawLINE(precalc_identity,vPosition,P2,D3DCOLOR_RGBA(0,255,0,255));
 
 	Fvector sz,C; aabb.getsize(sz); sz.div(2); aabb.getcenter(C);
-	Fmatrix	M = pObject->svTransform;
+	Fmatrix	M = pObject->svXFORM();
 	M.c.add (C);
 	Device.Primitive.dbg_DrawOBB (M,sz,D3DCOLOR_RGBA(0,0,255,255));
 
 	Fvector fct;
-	pObject->svTransform.transform_tiny(fct,vFootCenter);
+	pObject->svXFORM().transform_tiny(fct,vFootCenter);
 	Fmatrix fm;
 	fm.translate(fct);
 	Device.Primitive.dbg_DrawOBB (fm,vFootExt,D3DCOLOR_RGBA(255,0,255,255));
@@ -217,7 +217,7 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 	bbf.set(-vFootExt.x, -vFootExt.y, -vFootExt.z, +vFootExt.x, +vFootExt.y, +vFootExt.z );
 	bbf.add(vFootCenter);
 	pCreator->ObjectSpace.cl_Move( 
-		pObject->CFORM(), pObject->svTransform, 
+		pObject->CFORM(), pObject->svXFORM(), 
 		motion, aabb, bbf, final_pos, final_vel, EPS);
 	
 	// Velocity stuff
@@ -304,7 +304,7 @@ void CMovementControl::Move(Fvector& Dest, Fvector& Motion, BOOL bDynamic)
 	bbf.add(vFootCenter);
 	Fvector final_vel;
 	pCreator->ObjectSpace.cl_Move( 
-		pObject->CFORM(), pObject->svTransform, 
+		pObject->CFORM(), pObject->svXFORM(), 
 		Motion, aabb, bbf, Dest, final_vel, EPS, bDynamic);
 }
 
@@ -318,7 +318,7 @@ void CMovementControl::CheckEnvironment()
 	{
 		Fmatrix33	A; A.set(pObject->Rotation());
 		Fvector		C; 
-		pObject->svTransform.transform_tiny(C,vFootCenter);
+		pObject->svXFORM().transform_tiny(C,vFootCenter);
 		for(int i=0; i<cp_cnt; i++)
 		{
 			clQueryTri& T=pCreator->ObjectSpace.q_result.tris[i];
