@@ -3836,6 +3836,21 @@ AttackFastRSpeed	= 2.36						; 3 * PI_DIV_4
 AttackFastRSpeed2	= 3.14						; PI
 ScaredRSpeed		= 2.36						; 3 * PI_DIV_4
 
+; state times
+LieIdleTimeMin		= 5000
+LieIdleTimeMax		= 7000
+StandIdleTimeMin	= 3000
+StandIdleTimeMax	= 5000
+FreeWalkTimeMin		= 3000
+FreeWalkTimeMax		= 5000
+
+; "Rest" state specific 
+ProbRestWalkFree	= 10    ; при выборе действия, в 50% случаях монстр будет ходить
+ProbRestStandIdle	= 10		
+ProbRestLieIdle		= 50
+ProbRestTurnLeft	= 30	
+
+
 
 ;							  fSearchRange,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
 selector_free_hunting    =      20.0,            20.0,                 1000.0,                 0.0,               10000.0,               1000.0,               10000.0,      
@@ -3889,7 +3904,6 @@ WalkSpeed			= 3.0
 WalkTurningSpeed	= 1.0
 WalkRSpeed			= 0.79						; PI_DIV_4	when SetDirLook
 WalkTurnRSpeed		= 1.57						; PI_DIV_2	when turn needed
-;WalkTurnRSpeed		= 0.30						; PI_DIV_2	when turn needed TEMP!!!
 WalkMinAngle		= 0.52						; PI_DIV_6
 RunAttackSpeed		= 8.5
 RunAttackTurnSpeed	= 3.5
@@ -3898,12 +3912,25 @@ RunRSpeed			= 1.57						; PI_DIV_2
 RunAttackMinAngle	= 0.52						; PI_DIV_6
 AttackFastRSpeed	= 2.36						; 3 * PI_DIV_4
 ScaredRSpeed		= 2.36						; 3 * PI_DIV_4
-
 AttackFastRSpeed2	= 3.14						; PI	- not needed for chimera, remove it later
 
+; state times
+LieIdleTimeMin		= 5000
+LieIdleTimeMax		= 7000
+StandIdleTimeMin	= 3000
+StandIdleTimeMax	= 5000
+FreeWalkTimeMin		= 3000
+FreeWalkTimeMax		= 5000
+
+; "Rest" state specific 
+ProbRestWalkFree	= 10    ; при выборе действия, в 50% случаях монстр будет ходить
+ProbRestStandIdle	= 10		
+ProbRestLieIdle		= 50
+ProbRestTurnLeft	= 30	
+
+
+; spin spin sugar
 bone_spin			= bip01_spine1
-
-
 
 ;                           fSearchRange,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
 selector_free_hunting    =      20.0,            20.0,                 1000.0,                 0.0,               10000.0,               1000.0,               10000.0,      
