@@ -1,45 +1,45 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <game_dialogs>
-    <dialog id="mil_dolg_jod">
+    <dialog id="mil_dolg_job">
         <phrase_list>
-            <phrase id="0">
-                <text>mil_dolg_jod_0</text>
-                <next>01</next>
-            </phrase>
             <phrase id="01">
-                <text>mil_dolg_jod_01</text>
+                <text>mil_dolg_job_01</text>
                 <next>011</next>
             </phrase>
             <phrase id="011">
-                <text>mil_dolg_jod_011</text>
+                <text>mil_dolg_job_011</text>
                 <next>012</next>
                 <next>013</next>
             </phrase>
             <phrase id="013">
-                <text>mil_dolg_jod_013</text>
+                <text>mil_dolg_job_013</text>
             </phrase>
             <phrase id="012">
-                <text>mil_dolg_jod_012</text>
+                <text>mil_dolg_job_012</text>
                 <next>0121</next>
             </phrase>
             <phrase id="0123">
-                <text>mil_dolg_jod_0123</text>
+                <text>mil_dolg_job_0123</text>
             </phrase>
             <phrase id="0121">
-                <text>mil_dolg_jod_0121</text>
+                <text>mil_dolg_job_0121</text>
                 <next>0122</next>
                 <next>0123</next>
             </phrase>
             <phrase id="0122">
-                <text>mil_dolg_jod_0122</text>
+                <text>mil_dolg_job_0122</text>
                 <next>0124</next>
             </phrase>
             <phrase id="0124">
-                <text>mil_dolg_jod_0124</text>
+                <text>mil_dolg_job_0124</text>
                 <next>0125</next>
             </phrase>
+            <phrase id="0">
+                <text>mil_dolg_job_0</text>
+                <next>01</next>
+            </phrase>
             <phrase id="0125">
-                <text>mil_dolg_jod_0125</text>
+                <text>mil_dolg_job_0125</text>
             </phrase>
         </phrase_list>
     </dialog>
