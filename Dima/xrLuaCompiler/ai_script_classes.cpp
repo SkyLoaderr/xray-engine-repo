@@ -697,3 +697,14 @@ void CLuaGameObject::enable_memory_object	(CLuaGameObject *object, bool enable)
 	else
 		memory_manager->enable				(object->m_tpGameObject,enable);
 }
+
+int  CLuaGameObject::active_sound_count		()
+{
+	CSoundPlayer	*sound_player = dynamic_cast<CSoundPlayer*>(m_tpGameObject);
+	if (!sound_player) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member active_sound_count!");
+		return								(-1);
+	}
+	else
+		return								(sound_player->active_sound_count());
+}

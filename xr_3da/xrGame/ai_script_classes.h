@@ -667,4 +667,5 @@ public:
 			void				set_previous_point		(int point_index);
 			void				set_start_point			(int point_index);
 			void				enable_memory_object	(CLuaGameObject *object, bool enable);
+			int					active_sound_count		();
 };

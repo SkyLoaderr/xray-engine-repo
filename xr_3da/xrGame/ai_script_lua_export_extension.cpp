@@ -466,6 +466,7 @@ void CScriptEngine::export_object()
 			.def("set_previous_point",			&CLuaGameObject::set_previous_point)
 			.def("set_start_point",				&CLuaGameObject::set_start_point)
 			.def("enable_memory_object",		&CLuaGameObject::enable_memory_object)
+			.def("active_sound_count",			&CLuaGameObject::active_sound_count)
 
 			// sight manager
 			.def("set_sight",					&CLuaGameObject::set_sight)
