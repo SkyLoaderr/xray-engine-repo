@@ -2280,6 +2280,19 @@
 									RelativePath=".\ai\Monsters\direction_manager.h">
 								</File>
 							</Filter>
+							<Filter
+								Name="Melee Checker"
+								Filter="">
+								<File
+									RelativePath=".\ai\Monsters\melee_checker.cpp">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\melee_checker.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\melee_checker_inline.h">
+								</File>
+							</Filter>
 						</Filter>
 					</Filter>
 					<Filter
@@ -2412,6 +2425,12 @@
 							Filter="">
 							<File
 								RelativePath=".\ai\Monsters\States\monster_state_rest.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_rest_idle.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_rest_idle_inline.h">
 							</File>
 							<File
 								RelativePath=".\ai\Monsters\States\monster_state_rest_inline.h">
@@ -3141,6 +3160,28 @@
 						<File
 							RelativePath=".\ai\Monsters\Cat\cat_state_manager.h">
 						</File>
+						<Filter
+							Name="Attack Rat"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\Cat\cat_state_attack_rat.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Cat\cat_state_attack_rat_inline.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Cat\cat_state_attack_rat_melee.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Cat\cat_state_attack_rat_melee_inline.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Cat\cat_state_attack_rat_run.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Cat\cat_state_attack_rat_run_inline.h">
+							</File>
+						</Filter>
 					</Filter>
 				</Filter>
 				<Filter
