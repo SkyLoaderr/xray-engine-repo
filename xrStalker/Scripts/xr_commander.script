@@ -3,14 +3,8 @@
 Чугай Саша
 
 Сделать:
-    - реалистичная анимация ходьбы (КОГДА ИСПРАВЯТ)
-    - направление на карту уровня сделать точкой пути (ЕСЛИ ПОНАДОБИТСЯ)
-    - сбалансировать вероятности действий и реплик
     - подставить настоящие звуки
-    - звуки рации
     - звуки во сне
-    - пьяный во второй половине дня (звуки, анимации)
-    - смотреть на солдата, а не на позицию солдата. ГЛЮЧИТ
     - time_end=nil
 --------------------------------------------------------------------------------------------------------------------]]
 
@@ -192,7 +186,7 @@ function action_commander:execute()
                                    [walk_outside] = 20,
                                    [look_map]     = 10,
                                    [look_outside] = 10,
-                                   [radio_talk]   = 20,
+                                   [radio_talk]   = 20000,
                                    [drink_vodka]  = 10 }
                 else
                     self.act = random_choice_weighted{
@@ -330,7 +324,7 @@ function action_commander:exec_look_box()
                 self:add_inside_animations( 1 )
             end
         else
-            self.object:set_sight( look.point, self.way:point( self.way:index( "box" ) ), 0 )
+            self.object:set_sight( look.point, self.way:point( self.way:index( "box" ) ):add( vector():set( 0, 1.5, 0 ) ), 0 )
             self.object:set_mental_state( anim.danger )
 
             self.time_end = device():time_global() + 3000
@@ -458,15 +452,13 @@ function action_commander:exec_radio_talk()
         if self:process_radio() then
             self.time_end = nil
             self.decision = true
-
-            self.object:clear_animations()
         end
     else
-        self:stop()
-
-        self.object:set_item( object.idle, nil )
+--        self:stop()
 
         self:radio()
+
+        self.object:set_item( object.idle, nil )
 
         self.sub_act = true
 
@@ -475,7 +467,6 @@ function action_commander:exec_radio_talk()
 end
 
 function action_commander:radio ()
-    self.object:clear_animations ()
     self.object:add_animation ("raciya_komandir_0", true)
     self.object:add_animation ("raciya_komandir_1", true)
     self.object:add_animation ("raciya_komandir_2", true)
