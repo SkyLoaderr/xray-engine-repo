@@ -123,18 +123,18 @@ public:
 		if( _abs(dir.x)!=0 ){
 			alpha	= rvmin.x / dir.x;
 			yt		= alpha * dir.y;
-			if( yt >= rvmin.y - EPS_S && yt <= rvmax.y + EPS)		return true;
+			if( yt >= rvmin.y - EPS && yt <= rvmax.y + EPS)		return true;
 			alpha	= rvmax.x / dir.x;
 			yt		= alpha * dir.y;
-			if( yt >= rvmin.y - EPS_S && yt <= rvmax.y + EPS)		return true;
+			if( yt >= rvmin.y - EPS && yt <= rvmax.y + EPS)		return true;
 		}
 		if( _abs(dir.y)!=0 ){
 			alpha	= rvmin.y / dir.y;
 			xt		= alpha * dir.x;
-			if( xt >= rvmin.x - EPS_S && xt <= rvmax.x + EPS)		return true;
+			if( xt >= rvmin.x - EPS && xt <= rvmax.x + EPS)		return true;
 			alpha	= rvmax.y / dir.y;
 			xt		= alpha * dir.x;
-			if( xt >= rvmin.x - EPS_S && xt <= rvmax.x + EPS)		return true;
+			if( xt >= rvmin.x - EPS && xt <= rvmax.x + EPS)		return true;
 		}
 		return false;
 	};

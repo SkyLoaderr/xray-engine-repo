@@ -90,7 +90,7 @@ public:
 
 	IC SelfRef 	normalize		(void)						{ return norm();	 	}
 	IC SelfRef 	normalize_safe	(void)						{ return norm_safe();	}
-	IC float 	cross_product	(const Self &p) const		{ return x*p.y - y*p.x; }
+	IC float 	cross_product	(const Self &p) const		{ return y*p.x - x*p.y; }
 	IC float 	getH			(void) const
 	{
         if (fis_zero(x))
