@@ -1936,12 +1936,6 @@
 				RelativePath="ExtendedGeom.h">
 			</File>
 			<File
-				RelativePath="PHCharacter.cpp">
-			</File>
-			<File
-				RelativePath="PHCharacter.h">
-			</File>
-			<File
 				RelativePath="PHDynamicData.cpp">
 			</File>
 			<File
@@ -1967,12 +1961,6 @@
 			</File>
 			<File
 				RelativePath="PHJoint.h">
-			</File>
-			<File
-				RelativePath="PHMovementControl.cpp">
-			</File>
-			<File
-				RelativePath="PHMovementControl.h">
 			</File>
 			<File
 				RelativePath="PHObject.h">
@@ -2057,6 +2045,46 @@
 				</File>
 				<File
 					RelativePath="tri-colliderKNoOPC\dxTriList.h">
+				</File>
+			</Filter>
+			<Filter
+				Name="PhyMove"
+				Filter="">
+				<File
+					RelativePath="PHAICharacter.cpp">
+				</File>
+				<File
+					RelativePath="PHAICharacter.h">
+				</File>
+				<File
+					RelativePath="PHActorCharacter.cpp">
+				</File>
+				<File
+					RelativePath="PHActorCharacter.h">
+				</File>
+				<File
+					RelativePath="PHCharacter.cpp">
+				</File>
+				<File
+					RelativePath="PHCharacter.h">
+				</File>
+				<File
+					RelativePath="PHMovementControl.cpp">
+				</File>
+				<File
+					RelativePath="PHMovementControl.h">
+				</File>
+				<File
+					RelativePath="PHSimpleCharacter.cpp">
+				</File>
+				<File
+					RelativePath="PHSimpleCharacter.h">
+				</File>
+				<File
+					RelativePath="PHWheeledCharacter.cpp">
+				</File>
+				<File
+					RelativePath="PHWheeledCharacter.h">
 				</File>
 			</Filter>
 		</Filter>

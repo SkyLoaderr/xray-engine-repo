@@ -3,7 +3,10 @@
 #define CPHMOVEMENT_CONTROL_H
 
 #include "PHCharacter.h"
-//#include "MovementControl.h"
+
+class CPHAICharacter;
+class CPHSimpleCharacter;
+
 class CPHMovementControl 
 
 {
@@ -159,9 +162,8 @@ public:
 	void				SetJumpUpVelocity		(float velocity)														{m_character->SetJupmUpVelocity(velocity);}
 	void				EnableCharacter			()																		{m_character->Enable();}
 	void				GetDesiredPos			(Fvector& dpos)
-	{
-		CPHAICharacter* pStalker_Character=dynamic_cast<CPHAICharacter*>(m_character);
-		pStalker_Character->GetDesiredPosition(dpos);
+	{	
+		m_character->GetDesiredPosition(dpos);
 	}
 	CPHMovementControl(void);
 	~CPHMovementControl(void);

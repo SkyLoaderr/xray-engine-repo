@@ -452,7 +452,7 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 
 	// resolve stucking
 	Device.Statistic.Physics.Begin	();
-	Me->UpdateTransform	();
+
 //	if (m_bCollision) {
 //		Fvector final;
 //		Me->Movement.Move	(final,motion,FALSE);
@@ -501,7 +501,7 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 	}
 #endif
 	//Msg("After  : [%f][%f][%f]",VPUSH(p_dest));
-
+	Me->UpdateTransform	();
 	float	real_motion	= motion.magnitude() + dist_save-dist;
 	float	real_speed	= real_motion/dt;
 	fSpeed				= 0.5f*fSpeed + 0.5f*real_speed;

@@ -4,6 +4,8 @@
 #include "entity.h"
 #include "PHDynamicData.h"
 #include "Physics.h"
+#include "PHAICharacter.h"
+#include "PHActorCharacter.h"
 #define GROUND_FRICTION	10.0f
 #define AIR_FRICTION	0.01f
 #define WALL_FRICTION	3.0f
@@ -90,10 +92,10 @@ void CPHMovementControl::Calculate(Fvector& vAccel,float ang_speed,float jump,fl
 void CPHMovementControl::Calculate(const Fvector& desired_pos,float velocity,float dt){
 
 	m_character->IPosition(vPosition);
-	CPHAICharacter* pStalkerCharacter=dynamic_cast<CPHAICharacter*>(m_character);
 	
-	pStalkerCharacter->SetDesiredPosition(desired_pos);
-	pStalkerCharacter->BringToDesired(dt,velocity);
+	
+	m_character->SetDesiredPosition(desired_pos);
+	m_character->BringToDesired(dt,velocity);
 
 
 	m_character->GetVelocity(vVelocity); 
@@ -193,7 +195,7 @@ void	CPHMovementControl::AllocateCharacterObject(CharacterType type)
 {
 	switch(type)
 	{
-	case actor:			m_character = xr_new<CPHSimpleCharacter>	();break;
+	case actor:			m_character = xr_new<CPHActorCharacter>	();break;
 	case ai_stalker:	m_character = xr_new<CPHAICharacter>	();break;
 	}
 m_character->SetMas(fMass);

@@ -584,7 +584,7 @@ void CAI_Stalker::SearchEnemy()
 			break;
 		}
 		case eActionStateWatch   : {
-			if ((Group.m_tpaSuspiciousNodes.size() - 1) < m_iSuspPoint) {
+			if ((int(Group.m_tpaSuspiciousNodes.size()) - 1) < m_iSuspPoint) {
 				m_tSavedEnemy = 0;
 				m_dwInertion = 0;
 				return;
