@@ -126,14 +126,15 @@ void CParticleGroup::OnFrame(u32 u_dt)
         for (CPGDef::EffectVec::const_iterator e_it=m_Def->m_Effects.begin(); e_it!=m_Def->m_Effects.end(); e_it++){	
             CParticleEffect* E = (CParticleEffect*)children[e_it-m_Def->m_Effects.begin()];  
             if (E&&e_it->m_Flags.is(CPGDef::SEffect::flEnabled)){
-                switch (e_it->m_Type){
+                switch (e_it->m_Type){                                
                 case CPGDef::SEffect::etStopEnd:{
                     if (E->IsPlaying()){
                         if ((ct<=e_it->m_Time1)&&(ct+f_dt>=e_it->m_Time1))	
                             E->Stop(e_it->m_Flags.is(CPGDef::SEffect::flDeferredStop));
                     }else{
-                        if ((ct<=e_it->m_Time0)&&(ct+f_dt>=e_it->m_Time0))	
-                            E->Play();
+                    	if (!m_RT_Flags.is(flRT_DefferedStop))
+                            if ((ct<=e_it->m_Time0)&&(ct+f_dt>=e_it->m_Time0))	
+                                E->Play();
                     }
                 }break;
                 }
