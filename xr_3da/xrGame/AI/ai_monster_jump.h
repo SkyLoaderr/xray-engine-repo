@@ -72,7 +72,7 @@ public:
 	// Выполнить проверку на возможность прыжка в текущий момент времени
 	virtual bool	CanJump					() {return true;}
 
-			bool	IsGlide					() {return ((active) ? ptr_cur->type == JT_GLIDE : false);}
+			bool	IsGlide					() {return ((active) ? JT_GLIDE == ptr_cur->type : false);}
 			CObject	*GetEnemy				() {return entity;}
 
 	virtual void	OnJumpStart				() {};

@@ -1,7 +1,7 @@
 #include "stdafx.h"
-#include "..\\CustomMonster.h"
+#include "../CustomMonster.h"
 #include "ai_monster_mem.h"
-#include "..\\actor.h"
+#include "../actor.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CSoundMemory implementation
@@ -43,10 +43,10 @@ TSoundDangerValue tagSoundElement::ConvertSoundType(ESoundTypes stype)
 
 void CSoundMemory::HearSound(const SoundElem &s)
 {
-	if (s.type == MONSTER_DYING)				return;		// todo
-	if (s.type == NONE_DANGEROUS_SOUND)			return;		// todo
-	if (s.type == WEAPON_BULLET_RICOCHET)		return;		// todo
-	if (s.type == MONSTER_INJURING)				return;		// todo
+	if (MONSTER_DYING			== s.type)				return;		// todo
+	if (NONE_DANGEROUS_SOUND	== s.type)			return;		// todo
+	if (WEAPON_BULLET_RICOCHET	== s.type)		return;		// todo
+	if (MONSTER_INJURING		== s.type)				return;		// todo
 	
 	// не регистрировать звуки, у которых владелец не известен
 	if (!s.who) return;									// todo
@@ -58,8 +58,8 @@ void CSoundMemory::HearSound(const SoundElem &s)
 	// поиск в массиве звука
 	xr_vector<SoundElem>::iterator it;
 	
-	for (it = Sounds.begin(); it != Sounds.end(); it++) {
-		if ((it->who == s.who) && (it->type ==	s.type)) {
+	for (it = Sounds.begin(); Sounds.end() != it; ++it) {
+		if ((s.who == it->who) && (it->type ==	s.type)) {
 			if (s.time > it->time) *it = s;
 			return;
 		}
@@ -158,7 +158,7 @@ void CVisionMemory::UpdateVision(TTime dt)
 	VisionElem ve;
 	objVisible &VisibleEnemies = Level().Teams[pMonster->g_Team()].Squads[pMonster->g_Squad()].KnownEnemys;
 
-	for (int i=0, n=VisibleEnemies.size(); i<n; i++) {
+	for (int i=0, n=VisibleEnemies.size(); i<n; ++i) {
 		CEntityAlive *pE = dynamic_cast<CEntityAlive *>(VisibleEnemies[i].key);
 		if (!pE) R_ASSERT("Visible object is not of class CEntityAlive. Check feel_vision_isRelevant!");
 
@@ -191,7 +191,7 @@ void CVisionMemory::AddObject(const VisionElem &ve)
 	ITERATOR_VE res;
 
 	res = std::find(Objects.begin(), Objects.end(), ve);
-	if (res == Objects.end()) Objects.push_back(ve);
+	if (Objects.end() == res) Objects.push_back(ve);
 	else *res = ve;
 
 }
@@ -201,7 +201,7 @@ void CVisionMemory::AddEnemy(const VisionElem &ve)
 	ITERATOR_VE res;
 
 	res = std::find(Enemies.begin(), Enemies.end(), ve);
-	if (res == Enemies.end()) Enemies.push_back(ve);
+	if (Enemies.end() == res) Enemies.push_back(ve);
 	else *res = ve;
 
 	if (ve.obj == Selected.obj) Selected = ve;
@@ -250,12 +250,12 @@ VisionElem &CVisionMemory::GetNearestObject(EObjectType obj_type)
 	int			index = 0;		// Индекс ближайшего объекта в массиве объектов 
 
 	VECTOR_VE *ObjectsVector = 0;
-	if (obj_type == ENEMY) ObjectsVector = &Enemies;
+	if (ENEMY == obj_type) ObjectsVector = &Enemies;
 	else ObjectsVector = &Objects;
 	
 	optimal_val = 1000 * pMonster->Position().distance_to((*ObjectsVector)[index].position) * (timeCurrent - (*ObjectsVector)[index].time + 1);
 
-	for (u32 i=1; i < ObjectsVector->size(); i++) {
+	for (u32 i=1; i < ObjectsVector->size(); ++i) {
 		cur_val = 1000 * pMonster->Position().distance_to((*ObjectsVector)[i].position) * (timeCurrent - (*ObjectsVector)[i].time + 1);
 
 		if ( cur_val < optimal_val){
@@ -299,7 +299,7 @@ void CVisionMemory::RemoveOldIgnoreObjects()
 
 void CVisionMemory::UpdateWithIgnoreObjects()
 {
-	for (ITERATOR_VE IT = IgnoreObjects.begin(); IT !=  IgnoreObjects.end(); IT++)	{
+	for (ITERATOR_VE IT = IgnoreObjects.begin(); IgnoreObjects.end() != IT; ++IT)	{
 		ITERATOR_VE I = remove_if(Objects.begin(), Objects.end(), predicate_remove_ignore_objects(IT->obj));
 		Objects.erase(I,Objects.end());
 
@@ -315,7 +315,7 @@ void CVisionMemory::AddIgnoreObject(CEntity *pObj)
 	
 	ITERATOR_VE res;
 	res = std::find(IgnoreObjects.begin(), IgnoreObjects.end(), ve);
-	if (res == IgnoreObjects.end()) IgnoreObjects.push_back(ve);
+	if (IgnoreObjects.end() == res) IgnoreObjects.push_back(ve);
 	else *res = ve;
 }
 
