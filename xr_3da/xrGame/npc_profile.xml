@@ -10,6 +10,10 @@
 	<character id="soldier">
 		<team>Soldier</team>
 	</character>
+
+	<character id="dolg">
+		<team>Dolg</team>
+	</character>
 	
 	<character id="escape_trader">
 		<team>Trader</team>
