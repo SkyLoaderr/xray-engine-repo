@@ -273,11 +273,11 @@ void CRenderDevice::Create	()
 void CRenderDevice::_Destroy	(BOOL bKeepTextures)
 {
 	// before destroy
-	bReady = FALSE;
+	bReady						= FALSE;
 	Primitive.OnDeviceDestroy	();
 	seqDevDestroy.Process		(rp_DeviceDestroy);
 	Streams.OnDeviceDestroy		();
-	Shader.OnDeviceDestroy		();
+	Shader.OnDeviceDestroy		(bKeepTextures);
 	_RELEASE					(Streams_QuadIB);
 }
 
