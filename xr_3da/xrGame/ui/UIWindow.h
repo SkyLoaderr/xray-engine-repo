@@ -5,22 +5,6 @@
 
 #pragma once
 
-//#include "windows.h"
-
-//для рисования 
-//#include "WindowDraw.h"
-
-
-
-//для работы с XML
-//#include "IOXml.h"
-
-
-#include "..\uistaticitem.h"
-
-#include "..\uiframerect.h"
-
-
 
 class CUIWindow  
 {
@@ -32,10 +16,8 @@ public:
 
 	////////////////////////////////////
 	//инициализация
-	virtual void Init(const char* title, int x, int y, int width, int height);
-	virtual void Init(const char* title, RECT* pRect);
-	//загрузка параметров из XML
-	virtual void Init(const char* xml_filename);
+	virtual void Init(int x, int y, int width, int height);
+	virtual void Init(RECT* pRect);
 
 	////////////////////////////////////
 	//работа с дочерними и родительскими окнами
@@ -133,10 +115,6 @@ protected:
 	//дочернее окно которое, захватило ввод мыши
 	CUIWindow* m_pMouseCapturer;
 
-	//заголовок окна
-	//wstring m_sTitle;
-	//string m_sTitle;
-
 	//положение и размер окна, задается 
 	//относительно родительского окна
 	RECT m_WndRect;
@@ -145,34 +123,5 @@ protected:
 	bool m_bIsEnabled;
 	//показывать ли окно
 	bool m_bIsShown;
-
-
-
-	///////////////////////////////////////	
-	//Графический интрефейс для рисования
-	///////////////////////////////////////
-	//CUIStaticItem	m_background;
-	CUIFrameRect m_background;
-
-
-//	CUIWindowDraw* m_pWindowDraw;
-
-
-
-	////////////////////////////////////	
-	//свойства для рисования
-	/////////////////////////////////////
-
-	//положение надписи заголовка
-//	RECT m_title_rect;
-
-	//тип шрифта заголовка
-//	CUIWindowDraw::E_FONTTYPE m_title_font;
-
-	//цвет шрифта
-//	DWORD m_title_color;
-
-	//для чтения параметров из XML файла
-//	CIOXml m_inXml;
 
 };

@@ -50,3 +50,47 @@ void CUICursor::Render	()
 	RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,4,0,2);
 }
 //--------------------------------------------------------------------
+
+
+//move cursor to screen coordinates
+void CUICursor::SetPos(int x, int y)
+{
+	vPos.x =(float)2*x/(float)Device.dwWidth - 1.0f;
+	vPos.y =(float)2*y/(float)Device.dwHeight - 1.0f;
+
+	if(vPos.x<-1) vPos.x=-1;
+	if(vPos.x>1) vPos.x=1;
+	if(vPos.y<-1) vPos.y=-1;
+	if(vPos.y>1) vPos.y=1;
+}
+
+void CUICursor::GetPos(int& x, int& y)
+{
+	x = (int)((vPos.x+1.0f)*(float)Device.dwWidth/2);
+	y = (int)((vPos.y+1.0f)*(float)Device.dwHeight/2);
+}
+
+POINT CUICursor::GetPos()
+{
+	POINT pt;
+
+	int x, y;
+	GetPos(x, y);
+	pt.x = x;
+	pt.y = y;
+
+	return  pt;
+}
+
+
+void CUICursor::MoveBy(int dx, int dy)
+{
+	vPos.x +=(float)dx/(float)Device.dwWidth;
+	vPos.y +=(float)dy/(float)Device.dwHeight;
+
+	if(vPos.x<-1) vPos.x=-1;
+	if(vPos.x>1) vPos.x=1;
+	if(vPos.y<-1) vPos.y=-1;
+	if(vPos.y>1) vPos.y=1;
+
+}
