@@ -29,4 +29,6 @@ public:
 	virtual void		shedule_Update		(u32 dt);
 	virtual void		feel_touch_new		(CObject* O);
 	virtual BOOL		feel_touch_contact	(CObject* O);
+
+	virtual bool		IsVisibleForZones() { return false;		}
 };
