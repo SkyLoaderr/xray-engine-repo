@@ -179,6 +179,8 @@ public:
 			lerp(c1,c2,t*2.f);
 		}
 	}
+	IC  BOOL	similar_rgba(const _color &v, float E=EPS_L) 	const	{ return _abs(r-v.r)<E && _abs(g-v.g)<E && _abs(b-v.b)<E && _abs(a-v.a)<E;};
+	IC  BOOL	similar_rgb	(const _color &v, float E=EPS_L) 	const	{ return _abs(r-v.r)<E && _abs(g-v.g)<E && _abs(b-v.b)<E;};
 } Fcolor;
 
 #endif
