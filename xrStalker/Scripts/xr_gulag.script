@@ -125,7 +125,6 @@ function fract:updateJob()
 	for k,v in self.Job do
 		local npc = nil
 
-		-- проверяем что данная работа доступна при текущем состоянии лагеря
 		local avail = false
 		for key,stat in v.state do
 			if stat == self.state then
@@ -137,19 +136,16 @@ function fract:updateJob()
 		if avail == false then
 			v.object = nil
 		else
-			-- Если данная должность занята - продолжаем
 			if v.object == nil and
         	           (v.begin == nil or
 			   game.time() - v.begin > v.idle)	
 			then
-				-- Находим одного из свободных 
 				for k,v in self.Object do
 					if self:getJob(v) == nil then
 						npc = v
 						break
 					end
 				end
-				-- Находим одного из занятых, кого заставим выполнять эту работу
 				if npc == nil then
 					for i = table.getn(self.Job), k, -1 do
 						if self.Job[i].object ~= nil then 
