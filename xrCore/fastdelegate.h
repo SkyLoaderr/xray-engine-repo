@@ -702,6 +702,9 @@ public:																			\
 		(m_Closure.GetClosureThis()->*(m_Closure.GetClosureMemPtr()))INVOKELIST; };	\
 	inline bool operator ! () const	{	/* Is it bound to anything? */			\
 			return !m_Closure; };												\
+	inline bool empty() const {													\
+		return	(!m_Closure);													\
+	}																			\
 	void clear() { m_Closure.clear();};											\
 																				\
 public:	/* Invoker for static functions */										\
