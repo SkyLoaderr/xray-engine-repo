@@ -16,7 +16,7 @@ void CVertexStream::Create	()
 	Device.Shader.Evict		();
 
 	// Get vertex size
-	mStride					= D3DXGetFVFVertexSize(mFVF);
+	mStride		= D3DXGetFVFVertexSize(mFVF);
 	
 	// Calc size
 	R_ASSERT	(mCount);

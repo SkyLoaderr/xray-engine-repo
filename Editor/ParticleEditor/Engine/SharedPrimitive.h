@@ -35,9 +35,10 @@ private:
 	void						Create	();
 	void						Destroy	();
 public:
-	IC IDirect3DVertexBuffer8*	getBuffer() { return pVB;		}
-	IC DWORD					getFVF()	{ return mFVF;		}
-	IC DWORD					getStride()	{ return mStride;	}
+	IC IDirect3DVertexBuffer8*	getBuffer()		{ return pVB;			}
+	IC DWORD					getFVF()		{ return mFVF;			}
+	IC DWORD					getStride()		{ return mStride;		}
+	IC DWORD					getDiscard()	{ return mDiscardID;	}
 
 	BOOL						RequestStorage(DWORD vCount)
 	{
@@ -69,6 +70,7 @@ public:
 		{
 			mPosition	= 0;						// clear position
 			dwFlags		= LOCKFLAGS_FLUSH;			// discard it's contens
+			mDiscardID++;
 		}
 		
 		pVB->Lock( mPosition * mStride, Count * mStride, &pLockedData, dwFlags);
@@ -114,8 +116,9 @@ private:
 	void						Create	();
 	void						Destroy	();
 public:
-	IC IDirect3DIndexBuffer8*	getBuffer() { return pIB; }
-
+	IC IDirect3DIndexBuffer8*	getBuffer()		{ return pIB;			}
+	IC DWORD					getDiscard()	{ return mDiscardID;	}
+	
 	BOOL						RequestStorage(DWORD iCount)
 	{
 		if (0==pIB) {
@@ -146,6 +149,7 @@ public:
 		{
 			mPosition	= 0;						// clear position
 			dwFlags		= LOCKFLAGS_FLUSH;			// discard it's contens
+			mDiscardID++;
 		}
 		
 		pIB->Lock( mPosition * mStride, Count * mStride, &pLockedData, dwFlags);
