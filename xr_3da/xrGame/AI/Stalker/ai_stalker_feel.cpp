@@ -373,7 +373,7 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 	#endif
 
 	if (!g_Alive()) {
-		m_tpaDynamicSounds.clear();
+		//m_tpaDynamicSounds.clear();
 		return;
 	}
 	
