@@ -135,7 +135,7 @@ void TUI_CustomTools::SetNumRotation(CCustomObject* O){
     if(O)objset.push_back(O);
     else Scene.GetQueryObjects(objset,objclass);
 	if( !objset.empty() ){
-    	Fvector V=objset.front()->PRotate;
+    	Fvector V=objset.front()->PRotation;
         {
             V.set(rad2deg(V.x),rad2deg(V.y),rad2deg(V.z));
             Fvector RV; RV.set(0,0,0);
@@ -145,7 +145,7 @@ void TUI_CustomTools::SetNumRotation(CCustomObject* O){
                 ObjectIt _F = objset.begin(); ObjectIt _E = objset.end();
 	            V.set(deg2rad(V.x),deg2rad(V.y),deg2rad(V.z));
                 for(;_F!=_E;_F++)
-                	(*_F)->PRotate = V;
+                	(*_F)->PRotation = V;
                 Scene.UndoSave();
             }
         }

@@ -28,6 +28,7 @@ public:
 	IC	void	grow(const Fvector& s)				{ min.sub(s); max.add(s); };
 	
 	IC	void	add		(const Fvector &p)			{ min.add(p); max.add(p); };
+	IC	void	sub		(const Fvector &p)			{ min.sub(p); max.sub(p); };
 	IC	void	offset	(const Fvector &p)			{ min.add(p); max.add(p); };
 	IC	void	add(const _fbox &b, const Fvector &p){ min.add(b.min, p); max.add(b.max, p);	};
 	
@@ -41,12 +42,6 @@ public:
 	IC	void	modify		(const Fvector &p)		{ min.min(p); max.max(p);	}
 	IC	void	merge		(const _fbox &b)		{ modify(b.min); modify(b.max); };
 	IC	void	merge		(const _fbox &b1, const _fbox &b2) { invalidate(); merge(b1); merge(b2); }
-	IC	void	transform_p	(const Fmatrix &m)		{ m.transform_tiny(min); m.transform_tiny(max);	}
-	IC	void	transform_p	(const _fbox& B, const Fmatrix &m)	
-	{ 
-		m.transform_tiny(min,B.min);
-		m.transform_tiny(max,B.max);
-	}
 	IC	void	xform		(const _fbox &B, const Fmatrix &m)
 	{
 		// The three edges transformed: you can efficiently transform an X-only vector
@@ -72,7 +67,13 @@ public:
 		if(negative(vz.y))	min.y += vz.y; else max.y += vz.y;
 		if(negative(vz.z))	min.z += vz.z; else max.z += vz.z;
 	}
-	
+	IC	void	xform		(const Fmatrix &m)
+    {
+		_fbox b;
+        b.set(*this);
+        xform(b,m);
+    }
+
 	IC	void	getsize		(Fvector& R )	const 	{ R.sub( max, min ); };
 	IC	void	getradius	(Fvector& R )	const 	{ getsize(R); R.mul(0.5f); };
 	IC	float	getradius	( )				const 	{ Fvector R; getradius(R); return R.magnitude();	};
@@ -276,16 +277,6 @@ public:
 		result[7].set( max.x, max.y, min.z );
 	};
 
-	IC void transform(const Fmatrix& M){
-		Fvector pts[8];
-		getpoints(pts);
-		invalidate();
-		for(int i=0; i<8; i++){
-			M.transform_tiny(pts[i]);
-			modify(pts[i]);
-		}
-	}
-
 	IC void modify(const _fbox& src, const Fmatrix& M){
 		Fvector pt;
 		for(int i=0; i<8; i++){
@@ -293,11 +284,6 @@ public:
 			M.transform_tiny(pt);
 			modify(pt);
 		}
-	}
-
-	IC void transform(const _fbox& src, const Fmatrix& M){
-		invalidate();
-		modify(src,M);
 	}
 } Fbox;
 

@@ -66,7 +66,7 @@ bool CRPoint::GetBox( Fbox& box ){
 void CRPoint::Render( int priority, bool strictB2F ){
     if ((1==priority)&&(false==strictB2F)){
         if (Device.m_Frustum.testSphere(PPosition,RPOINT_SIZE)){
-		    DU::DrawFlag(PPosition,PRotate.y,RPOINT_SIZE*2,RPOINT_SIZE,.3f,RP_COLORS[m_dwTeamID],etEntity==m_Type);
+		    DU::DrawFlag(PPosition,PRotation.y,RPOINT_SIZE*2,RPOINT_SIZE,.3f,RP_COLORS[m_dwTeamID],etEntity==m_Type);
             if( Selected() ){
                 Fbox bb; GetBox(bb);
 	            DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
@@ -112,7 +112,7 @@ bool CRPoint::Load(CStream& F){
 
     if (version==0x0010){
 	    R_ASSERT(F.ReadChunk(RPOINT_CHUNK_POSITION,&FPosition));
-	    if (F.FindChunk(RPOINT_CHUNK_DIRECTION))FRotate.x = F.Rfloat();
+	    if (F.FindChunk(RPOINT_CHUNK_DIRECTION))FRotation.x = F.Rfloat();
         UpdateTransform();
     }
 

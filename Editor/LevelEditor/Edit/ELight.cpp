@@ -72,7 +72,7 @@ CLight::~CLight(){
 
 void CLight::OnUpdateTransform(){
 	inherited::OnUpdateTransform();
-	m_D3D.direction.direct(PRotate.y,PRotate.x);
+	m_D3D.direction.direct(PRotation.y,PRotation.x);
 	if (D3DLIGHT_DIRECTIONAL==m_D3D.type) m_LensFlare.Update(m_D3D.direction, m_D3D.diffuse);
 	if (D3DLIGHT_POINT==m_D3D.type)
         m_D3D.range=PScale.x;
@@ -218,14 +218,14 @@ bool CLight::Load(CStream& F){
     R_ASSERT(F.ReadChunk(LIGHT_CHUNK_USE_IN_D3D,&m_UseInD3D));
     if(version==0x0010){
     	if (F.FindChunk(LIGHT_CHUNK_ROTATE)){
-        	F.Rvector(FRotate);
+        	F.Rvector(FRotation);
         }else{
 	    	if (D3DLIGHT_DIRECTIONAL==m_D3D.type){
 		    	// generate from direction
         	    Fvector& dir= m_D3D.direction;
-                dir.getHP(FRotate.y,FRotate.x);
+                dir.getHP(FRotation.y,FRotation.x);
             }else{
-	        	FRotate.set(0,0,0);
+	        	FRotation.set(0,0,0);
             }
         }
     }

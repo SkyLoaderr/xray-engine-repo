@@ -66,8 +66,8 @@ public:
     virtual bool 	SpherePick				(const Fvector& center, float radius);
 
     // change position/orientation methods
-	virtual void 	Scale					(Fvector& center, Fvector& amount);
-	virtual void 	LocalScale				(Fvector& amount);
+	virtual void 	Scale					(const Fmatrix& prev_inv, const Fmatrix& current, Fvector& center, Fvector& amount);
+	virtual void 	Scale					(Fvector& amount);
 
     // get orintation/bounding volume methods
 	virtual bool 	GetBox					(Fbox& box);

@@ -106,12 +106,11 @@ protected:
 
 	deque<UndoItem> m_UndoStack;
 	deque<UndoItem> m_RedoStack;
-protected:
-	CCustomObject* ReadObject		(CStream*);
-
 public:
     bool m_Modified;
 
+	CCustomObject* ReadObject		(CStream*);
+	void SaveObject					(CCustomObject*,CFS_Base*);
 public:
 	bool Load						(char *_FileName);
 	void Save						(char *_FileName, bool bUndo);

@@ -78,7 +78,7 @@ bool SceneBuilder::BuildLTX(){
     		pIni->WriteString("mobileobjects", obj->Name, obj->Name );
             if( !obj->GetReference()->GetClassScript().IsEmpty() ) AppendDataToSection(pIni, AnsiString(obj->Name), obj->GetReference()->GetClassScript().c_str());
             pIni->WriteVector(obj->Name,"position",obj->_Position());
-			Fmatrix mRotate; mRotate.setHPB(obj->_Rotate().y, obj->_Rotate().x, obj->_Rotate().z);
+			Fmatrix mRotate; mRotate.setHPB(obj->PRotation.y, obj->PRotation.x, obj->PRotation.z);
             pIni->WriteVector(obj->Name,"direction",mRotate.k);
             pIni->WriteVector(obj->Name,"normal",mRotate.j);
 //            temp.sprintf("%.3f,%.3f,%.3f", obj->GetScale().x, obj->GetScale().y, obj->GetScale().z);
@@ -147,7 +147,7 @@ bool SceneBuilder::BuildLTX(){
         for(;i!=_E;i++){
             CRPoint *rpt = (CRPoint *)(*i);
             if (CRPoint::etPlayer==rpt->m_Type){
-	            temp.sprintf("%.3f,%.3f,%.3f,%d,%.3f", rpt->PPosition.x,rpt->PPosition.y,rpt->PPosition.z,rpt->m_dwTeamID,rpt->PRotate.x);
+	            temp.sprintf("%.3f,%.3f,%.3f,%d,%.3f", rpt->PPosition.x,rpt->PPosition.y,rpt->PPosition.z,rpt->m_dwTeamID,rpt->PRotation.x);
     	        pIni->WriteString("respawn_point",rpt->Name,temp.c_str());
             }
 		}

@@ -35,7 +35,7 @@ bool CSceneObject::Load(CStream& F){
         if (version==0x0010){
 	        R_ASSERT(F.FindChunk(SCENEOBJ_CHUNK_PLACEMENT));
     	    F.Rvector(FPosition);
-	        F.Rvector(FRotate);
+	        F.Rvector(FRotation);
     	    F.Rvector(FScale);
         }
 

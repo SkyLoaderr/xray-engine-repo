@@ -37,7 +37,7 @@ public:
         bool		Pick			( float& distance, Fvector& start, Fvector& direction );
 		void 		Move			( Fvector& amount );
 		void 		LocalRotate		( Fvector& axis, float angle );
-		void 		LocalScale		( Fvector& amount );
+		void 		Scale			( Fvector& amount );
     };
     DEFINE_VECTOR	(SForm,FormVec,FormIt);
 	FormVec			m_Forms;
@@ -71,9 +71,9 @@ public:
 
 	virtual void 	Move			( Fvector& amount );
 	virtual void 	Rotate			( Fvector& center, Fvector& axis, float angle );
-	virtual void 	Scale			( Fvector& center, Fvector& amount );
+	virtual void 	Scale			( const Fmatrix& prev_inv, const Fmatrix& current, Fvector& center, Fvector& amount );
 	virtual void 	ParentRotate	( Fvector& axis, float angle );
-	virtual void 	LocalScale		( Fvector& amount );
+	virtual void 	Scale			( Fvector& amount );
 
   	virtual bool 	Load			( CStream& );
 	virtual void 	Save			( CFS_Base& );

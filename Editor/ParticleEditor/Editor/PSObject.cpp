@@ -266,7 +266,7 @@ void CPSObject::Scale( Fvector& center, Fvector& amount ){
     UI.UpdateScene();
 }
 
-void CPSObject::LocalScale( Fvector& amount ){
+void CPSObject::Scale( Fvector& amount ){
 	R_ASSERT(!Locked());
     if (m_Emitter.m_EmitterType==PS::SEmitter::emBox){
 		m_Emitter.m_BoxSize.add(amount);

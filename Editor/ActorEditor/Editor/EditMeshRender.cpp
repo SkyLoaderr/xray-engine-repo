@@ -146,7 +146,7 @@ void CEditableMesh::Render(const Fmatrix& parent, CSurface* S){
 	// frustum test
 	Fvector C; float r;
     Fbox bb; bb.set(m_Box);
-    bb.transform(parent);
+    bb.xform(parent);
     bb.getsphere(C,r);
 	if (!Device.m_Frustum.testSphere(C,r)) return;
     // render
@@ -221,7 +221,7 @@ void CEditableMesh::RenderSelection(Fmatrix& parent, DWORD color){
 //	if (!m_Visible) return;
 	Fvector C; float r;
     Fbox bb; bb.set(m_Box);
-    bb.transform(parent);
+    bb.xform(parent);
     bb.getsphere(C,r);
 	if (!Device.m_Frustum.testSphere(C,r)) return;
     // render

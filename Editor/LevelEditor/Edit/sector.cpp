@@ -172,7 +172,7 @@ void CSector::UpdateVolume(){
     m_Box.invalidate();
     for (SItemIt s_it=sector_items.begin();s_it!=sector_items.end();s_it++){
         s_it->mesh->GetBox(bb);
-        bb.transform(s_it->object->_Transform());
+        bb.xform(s_it->object->_Transform());
         for(int i=0; i<8; i++){
             bb.getpoint(i, pt);
             m_Box.modify(pt);
@@ -260,7 +260,7 @@ void CSector::CaptureInsideVolume(){
                 obj->GetFullTransformToWorld(matrix);
                 Fbox bb;
 				(*m_def)->GetBox(bb);
-                bb.transform(matrix);
+                bb.xform(matrix);
                 EVisible vis=Intersect(bb);
             	if ((fvFully==vis)||(fvPartialInside==vis))
 					AddMesh(obj,*m_def);

@@ -32,17 +32,18 @@ public:
     // orientation
     Fvector 		FPosition;
     Fvector 		FScale;
-    Fvector 		FRotate;
+    Fvector 		FRotation;
+    Fmatrix			FTransformRP;
 	Fmatrix 		FTransform;
 
     CGroupObject*	m_pGroupObject;
 protected:
     virtual Fvector& GetPosition	()	{ return FPosition; 	}
-    virtual Fvector& GetRotate		()	{ return FRotate; 		}
+    virtual Fvector& GetRotation	()	{ return FRotation;		}
     virtual Fvector& GetScale		()	{ return FScale; 		}
 
     virtual void 	SetPosition		(Fvector& pos)	{ FPosition.set(pos);	UpdateTransform();}
-	virtual void 	SetRotate		(Fvector& rot)	{ FRotate.set(rot);		UpdateTransform();}
+	virtual void 	SetRotation		(Fvector& rot)	{ FRotation.set(rot);	UpdateTransform();}
     virtual void 	SetScale		(Fvector& scale){ FScale.set(scale);	UpdateTransform();}
 public:
 	IC BOOL 		Visible			(){return m_bVisible; }
@@ -66,7 +67,7 @@ public:
 
     void			ResetTransform	(){
     					FScale.set	(1,1,1);
-    					FRotate.set	(0,0,0);
+    					FRotation.set	(0,0,0);
     					FPosition.set(0,0,0);
 						FTransform.identity();
 					}
@@ -83,9 +84,10 @@ public:
 	virtual void 	Move			(Fvector& amount);
 	virtual void 	ParentRotate	(Fvector& axis, float angle );
 	virtual void 	LocalRotate		(Fvector& axis, float angle );
-	virtual void 	LocalScale		(Fvector& amount);
-	virtual void 	Rotate			(Fvector& center, Fvector& axis, float angle );
-	virtual void 	Scale			(Fvector& center, Fvector& amount );
+	virtual void 	Scale			(Fvector& amount);
+	virtual void 	ParentRotate	(const Fmatrix& prev_inv, const Fmatrix& current, Fvector& axis, float angle );
+	virtual void 	LocalRotate		(const Fmatrix& parent, Fvector& pivot, Fvector& axis, float angle );
+	virtual void 	Scale			(const Fmatrix& prev_inv, const Fmatrix& current, Fvector& center, Fvector& amount );
 
 	virtual bool 	Load			(CStream&);
 	virtual void 	Save			(CFS_Base&);
@@ -126,11 +128,11 @@ public:
 
     IC const Fmatrix& _Transform			(){return FTransform;}
     IC const Fvector& _Position				(){return FPosition;}
-    IC const Fvector& _Rotate				(){return FRotate;}
+    IC const Fvector& _Rotation				(){return FRotation;}
     IC const Fvector& _Scale				(){return FScale;}
 
     PropertyGP(GetPosition,SetPosition)		Fvector PPosition;
-    PropertyGP(GetRotate,SetRotate)			Fvector PRotate;
+    PropertyGP(GetRotation,SetRotation)		Fvector PRotation;
     PropertyGP(GetScale,SetScale)			Fvector PScale;
 
     PropertyGP(FClassID,FClassID)			EObjClass ClassID;

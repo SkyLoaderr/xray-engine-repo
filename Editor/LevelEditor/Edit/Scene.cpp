@@ -383,26 +383,28 @@ int EScene::SelectionCount(bool testflag, EObjClass classfilter){
 }
 
 //----------------------------------------------------
-void __fastcall object_Normal_0(EScene::mapObject_Node *N){ ((CSceneObject*)N->val)->Render( Fidentity, 0, false ); }
-void __fastcall object_Normal_1(EScene::mapObject_Node *N){ ((CSceneObject*)N->val)->Render( Fidentity, 1, false ); }
-void __fastcall object_Normal_2(EScene::mapObject_Node *N){ ((CSceneObject*)N->val)->Render( Fidentity, 2, false ); }
-void __fastcall object_Normal_3(EScene::mapObject_Node *N){ ((CSceneObject*)N->val)->Render( Fidentity, 3, false ); }
+void __fastcall object_Normal_0(EScene::mapObject_Node *N){ ((CSceneObject*)N->val)->Render( 0, false ); }
+void __fastcall object_Normal_1(EScene::mapObject_Node *N){ ((CSceneObject*)N->val)->Render( 1, false ); }
+void __fastcall object_Normal_2(EScene::mapObject_Node *N){ ((CSceneObject*)N->val)->Render( 2, false ); }
+void __fastcall object_Normal_3(EScene::mapObject_Node *N){ ((CSceneObject*)N->val)->Render( 3, false ); }
 //----------------------------------------------------
-void __fastcall object_StrictB2F_0(EScene::mapObject_Node *N){((CSceneObject*)N->val)->Render( Fidentity, 0, true );}
-void __fastcall object_StrictB2F_1(EScene::mapObject_Node *N){((CSceneObject*)N->val)->Render( Fidentity, 1, true );}
-void __fastcall object_StrictB2F_2(EScene::mapObject_Node *N){((CSceneObject*)N->val)->Render( Fidentity, 2, true );}
-void __fastcall object_StrictB2F_3(EScene::mapObject_Node *N){((CSceneObject*)N->val)->Render( Fidentity, 3, true );}
+void __fastcall object_StrictB2F_0(EScene::mapObject_Node *N){((CSceneObject*)N->val)->Render( 0, true );}
+void __fastcall object_StrictB2F_1(EScene::mapObject_Node *N){((CSceneObject*)N->val)->Render( 1, true );}
+void __fastcall object_StrictB2F_2(EScene::mapObject_Node *N){((CSceneObject*)N->val)->Render( 2, true );}
+void __fastcall object_StrictB2F_3(EScene::mapObject_Node *N){((CSceneObject*)N->val)->Render( 3, true );}
 //----------------------------------------------------
 
 #define RENDER_CLASS_NORMAL(P,C)\
  	Device.SetShader(Device.m_WireShader);\
+ 	Device.SetTransform(D3DTS_WORLD,Fidentity);\
     _E=LastObj(C); _F=FirstObj(C);\
-    for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(Fidentity,P,false);
+    for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(P,false);
 
 #define RENDER_CLASS_ALPHA(P,C)\
  	Device.SetShader(Device.m_SelectionShader);\
+ 	Device.SetTransform(D3DTS_WORLD,Fidentity);\
     _E=LastObj(C); _F=FirstObj(C);\
-    for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(Fidentity,P,true);
+    for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(P,true);
 
 void EScene::RenderSky(const Fmatrix& camera)
 {
@@ -432,7 +434,7 @@ void EScene::Render( const Fmatrix& camera )
     ObjectList& lst = ListObj(OBJCLASS_SCENEOBJECT);
     _E=lst.end(); _F=lst.begin();
     for(;_F!=_E;_F++){
-        if( (*_F)->Visible()&& (*_F)->IsRender(Fidentity) ){
+        if( (*_F)->Visible()&& (*_F)->IsRender() ){
             CSceneObject* _pT = (CSceneObject*)(*_F);
             Fmatrix m; _pT->GetFullTransformToWorld(m);
             float distSQ = cam_pos.distance_to_sqr(m.c);
@@ -502,8 +504,8 @@ void EScene::Render( const Fmatrix& camera )
     _E = LastObj(OBJCLASS_PS);
    	for(;_F!=_E;_F++)
     	if((*_F)->Visible()){
-        	(*_F)->Render(Fidentity,1,false);
-			(*_F)->Render(Fidentity,1,true);
+        	(*_F)->Render(1,false);
+			(*_F)->Render(1,true);
         }
 
     mapRenderObjects.clear			();

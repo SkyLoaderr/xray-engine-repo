@@ -168,8 +168,10 @@ bool TfrmEditLibrary::FinalClose(){
 void TfrmEditLibrary::OnModified(){
 	if (!form) return;
     form->ebSave->Enabled = true;
-    if (form->m_pEditObject->GetReference()){
-    	modif_map.insert(make_pair(form->m_pEditObject->GetRefName(),0));
+    CEditableObject* E=form->m_pEditObject->GetReference();
+    if (E){
+    	modif_map.insert(make_pair(E->GetName(),0));
+    	E->Modified();
 		form->m_pEditObject->UpdateTransform();
     }
 }
@@ -327,7 +329,7 @@ void TfrmEditLibrary::ChangeReference(LPCSTR new_name)
     if (E){
 		E->t_vPosition.set	(m_pEditObject->PPosition);
 		E->t_vScale.set		(m_pEditObject->PScale);
-		E->t_vRotate.set	(m_pEditObject->PRotate);
+		E->t_vRotate.set	(m_pEditObject->PRotation);
     }
     m_pEditObject->SetReference(new_name);
     // get old position
@@ -335,7 +337,7 @@ void TfrmEditLibrary::ChangeReference(LPCSTR new_name)
     if (E){
 		m_pEditObject->PPosition 	= E->t_vPosition;
 		m_pEditObject->PScale 		= E->t_vScale;
-		m_pEditObject->PRotate 		= E->t_vRotate;
+		m_pEditObject->PRotation	= E->t_vRotate;
     }
     // update transformation
     m_pEditObject->UpdateTransform();

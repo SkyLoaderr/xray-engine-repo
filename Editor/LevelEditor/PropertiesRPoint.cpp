@@ -46,7 +46,7 @@ void TfrmPropertiesRPoint::GetObjectsInfo(){
         seTeamID->ObjFirstInit(_S->m_dwTeamID);
         seSquadID->ObjFirstInit(_S->m_dwSquadID);
         seGroupID->ObjFirstInit(_S->m_dwGroupID);
-        seHeading->ObjFirstInit(rad2deg(_S->PRotate.y));
+        seHeading->ObjFirstInit(rad2deg(_S->PRotation.y));
         cbActive->ObjFirstInit((TCheckBoxState)_S->m_Flags.bActive);
         SetType(_N->m_Type);
         T = _N->m_Type;
@@ -60,7 +60,7 @@ void TfrmPropertiesRPoint::GetObjectsInfo(){
 	    seTeamID->ObjNextInit(_N->m_dwTeamID);
 	    seSquadID->ObjNextInit(_N->m_dwSquadID);
     	seGroupID->ObjNextInit(_N->m_dwGroupID);
-	    seHeading->ObjNextInit(rad2deg(_N->PRotate.y));
+	    seHeading->ObjNextInit(rad2deg(_N->PRotation.y));
 	    cbActive->ObjNextInit((TCheckBoxState)_N->m_Flags.bActive);
         if (T!=_N->m_Type) lbType->Font->Style = TFontStyles()<<fsItalic;
 		if (ebEntityRefs->Caption!=_N->m_EntityRefs) ebEntityRefs->Caption=MULTIPLESEL_CAPTION;
@@ -93,9 +93,9 @@ bool TfrmPropertiesRPoint::ApplyObjectsInfo(){
         seGroupID->ObjApplyInt(int(_O->m_dwGroupID));
         int f=_O->m_Flags.bActive; cbActive->ObjApply(f); _O->m_Flags.bActive=f;
         // orientation
-        float a = rad2deg(_O->PRotate.y);
+        float a = rad2deg(_O->PRotation.y);
         seHeading->ObjApplyFloat(a);
-        _O->PRotate.y = deg2rad(a);
+        _O->PRotation.y = deg2rad(a);
         // type
         if (bTypeChanged){
 	        if (ebTypePlayer->Down) 		_O->m_Type=CRPoint::etPlayer;

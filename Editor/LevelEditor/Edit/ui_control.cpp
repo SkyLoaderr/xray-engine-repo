@@ -153,6 +153,7 @@ bool __fastcall TUI_CustomControl::MovingStart(TShiftState Shift){
                         if((*_F)->Visible()&&(*_F)->Selected()) (*_F)->MoveTo(p,n);
                     }
             }
+			Scene.UndoSave();
         }
         return false;
     }else{
@@ -304,7 +305,7 @@ void __fastcall TUI_CustomControl::ScaleProcess(TShiftState _Shift)
                     continue;
                 }
                 if((*_F)->Visible()&&(*_F)->Selected())
-					(*_F)->LocalScale( amount );
+					(*_F)->Scale( amount );
             }
     }
 }

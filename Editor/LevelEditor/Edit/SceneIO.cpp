@@ -173,12 +173,7 @@ void EScene::Save(char *_FileName, bool bUndo){
         ObjectList& lst = (*it).second;
     	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
             F.open_chunk(count); count++;
-              	F.open_chunk	(CHUNK_OBJECT_CLASS);
-                F.Wdword		((*_F)->ClassID);
-            	F.close_chunk	();
-              	F.open_chunk	(CHUNK_OBJECT_BODY);
-            	(*_F)->Save		(F);
-            	F.close_chunk	();
+            SaveObject(*_F,&F);
             F.close_chunk();
         }
 //        int sz1 = F.tell();
@@ -194,6 +189,17 @@ void EScene::Save(char *_FileName, bool bUndo){
 	if (!bUndo) Engine.FS.UnlockFile	(0,_FileName,false);
     F.SaveTo							(_FileName,0);
 	if (!bUndo) Engine.FS.LockFile		(0,_FileName,false);
+}
+//--------------------------------------------------------------------------------------------------
+
+void EScene::SaveObject( CCustomObject* O, CFS_Base* F ){
+	R_ASSERT(F);
+    F->open_chunk	(CHUNK_OBJECT_CLASS);
+    F->Wdword		(O->ClassID);
+    F->close_chunk	();
+    F->open_chunk	(CHUNK_OBJECT_BODY);
+    O->Save			(*F);
+    F->close_chunk	();
 }
 //--------------------------------------------------------------------------------------------------
 

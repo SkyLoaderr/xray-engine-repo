@@ -57,17 +57,23 @@ bool __fastcall TUI_ControlObjectAdd::Start(TShiftState Shift){
         if (fraLeftBar->ebRandomAdd->Down){
             Fvector S;
             if (frmEditorPreferences->cbRandomRotation->Checked){
-                obj->PRotate.set(deg2rad(Random.randF(frmEditorPreferences->seRandomRotateMinX->Value,frmEditorPreferences->seRandomRotateMaxX->Value)),
-                                deg2rad(Random.randF(frmEditorPreferences->seRandomRotateMinY->Value,frmEditorPreferences->seRandomRotateMaxY->Value)),
-                                deg2rad(Random.randF(frmEditorPreferences->seRandomRotateMinZ->Value,frmEditorPreferences->seRandomRotateMaxZ->Value)));
+            	Fvector p;
+                p.set(	deg2rad(Random.randF(frmEditorPreferences->seRandomRotateMinX->Value,frmEditorPreferences->seRandomRotateMaxX->Value)),
+                 		deg2rad(Random.randF(frmEditorPreferences->seRandomRotateMinY->Value,frmEditorPreferences->seRandomRotateMaxY->Value)),
+                        deg2rad(Random.randF(frmEditorPreferences->seRandomRotateMinZ->Value,frmEditorPreferences->seRandomRotateMaxZ->Value)));
+                obj->PRotation = p;
             }
             if (frmEditorPreferences->cbRandomScale->Checked){
-                obj->PScale.set(Random.randF(frmEditorPreferences->seRandomScaleMinX->Value,frmEditorPreferences->seRandomScaleMaxX->Value),
-                                Random.randF(frmEditorPreferences->seRandomScaleMinY->Value,frmEditorPreferences->seRandomScaleMaxY->Value),
-                                Random.randF(frmEditorPreferences->seRandomScaleMinZ->Value,frmEditorPreferences->seRandomScaleMaxZ->Value));
+            	Fvector s;
+                s.set(	Random.randF(frmEditorPreferences->seRandomScaleMinX->Value,frmEditorPreferences->seRandomScaleMaxX->Value),
+                        Random.randF(frmEditorPreferences->seRandomScaleMinY->Value,frmEditorPreferences->seRandomScaleMaxY->Value),
+                        Random.randF(frmEditorPreferences->seRandomScaleMinZ->Value,frmEditorPreferences->seRandomScaleMaxZ->Value));
+                obj->PScale = s;
             }
             if (frmEditorPreferences->cbRandomSize->Checked){
-                obj->PScale.x=obj->PScale.y=obj->PScale.z=Random.randF(frmEditorPreferences->seRandomSizeMin->Value,frmEditorPreferences->seRandomSizeMax->Value);
+            	Fvector s;
+                s.x=s.y=s.z=Random.randF(frmEditorPreferences->seRandomSizeMin->Value,frmEditorPreferences->seRandomSizeMax->Value);
+                obj->PScale = s;
             }
         }
         obj->MoveTo(p,n);

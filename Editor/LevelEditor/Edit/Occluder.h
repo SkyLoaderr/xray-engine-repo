@@ -40,7 +40,7 @@ public:
 	virtual void    Rotate      (Fvector& center, Fvector& axis, float angle);
 	virtual void    Scale       (Fvector& center, Fvector& amount);
 	virtual void    ParentRotate(Fvector& axis, float angle);
-	virtual void    LocalScale	(Fvector& amount);
+	virtual void    Scale		(Fvector& amount);
 
   	virtual bool 	Load		(CStream&);
 	virtual void 	Save		(CFS_Base&);

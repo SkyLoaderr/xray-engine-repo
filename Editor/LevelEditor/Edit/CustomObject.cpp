@@ -29,14 +29,14 @@ CCustomObject::~CCustomObject()
 void CCustomObject::RemoveFromGroup()
 {
     m_pGroupObject = 0;
-    Scene.AddObject(this,true);
+    Scene.AddObject(this,false);
 }
 
 void CCustomObject::AppendToGroup(CGroupObject* group)
 {
 	R_ASSERT(group&&!m_pGroupObject);
     m_pGroupObject = group;
-    Scene.RemoveObject(this,true);
+    Scene.RemoveObject(this,false);
 }
 
 void CCustomObject::OnDestroy()
@@ -50,12 +50,12 @@ void CCustomObject::OnUpdateTransform()
 	m_bUpdateTransform		= FALSE;
     // update transform matrix
 	Fmatrix	mScale,mTranslate,mRotate;
-	mRotate.setHPB			(PRotate.y, PRotate.x, PRotate.z);
+	mRotate.setHPB			(PRotation.y, PRotation.x, PRotation.z);
 
 	mScale.scale			(PScale);
 	mTranslate.translate	(PPosition);
-	FTransform.mul			(mTranslate,mRotate);
-	FTransform.mulB			(mScale);
+	FTransformRP.mul		(mTranslate,mRotate);
+	FTransform.mul			(FTransformRP,mScale);
 }
 
 void CCustomObject::Select( BOOL flag )
@@ -97,7 +97,7 @@ bool CCustomObject::Load(CStream& F)
 
 	if(F.FindChunk(SCENEOBJECT_CHUNK_TRANSFORM)){
         F.Rvector	(FPosition);
-        F.Rvector	(FRotate);
+        F.Rvector	(FRotation);
         F.Rvector	(FScale);
     }
 
@@ -120,7 +120,7 @@ void CCustomObject::Save(CFS_Base& F)
 
 	F.open_chunk	(SCENEOBJECT_CHUNK_TRANSFORM);
     F.Wvector		(PPosition);
-    F.Wvector		(PRotate);
+    F.Wvector		(PRotation);
     F.Wvector		(PScale);
 	F.close_chunk	();
 }
@@ -138,8 +138,7 @@ void CCustomObject::Move(Fvector& amount)
     Fvector v=PPosition;
     if (fraTopBar->ebMoveToSnap->Down){
         SRayPickInfo pinf;
-		Fmatrix	mR;
-		mR.setHPB (PRotate.y, PRotate.x, PRotate.z);
+		Fmatrix	mR=FTransformRP;
         Fvector up,dn={0,-1,0};
         mR.transform_dir(dn);
         up.invert(dn);
@@ -169,7 +168,7 @@ void CCustomObject::Move(Fvector& amount)
                     M.set(vR,vN,vD,vR);
                     M.getXYZ(r);
 
-                    PRotate = r;
+                    PRotation = r;
 				}
             }
         else v.add(amount);
@@ -197,38 +196,54 @@ void CCustomObject::MoveTo(const Fvector& pos, const Fvector& up)
         vD.crossproduct(vR,vN); vD.normalize();
         mR.set(vR,vN,vD,vR);
         mR.getXYZ(r);
-        PRotate = r;
+        PRotation = r;
     }
     PPosition = v;
 }
 
-void CCustomObject::Rotate(Fvector& center, Fvector& axis, float angle)
+void CCustomObject::ParentRotate(const Fmatrix& prev_inv, const Fmatrix& current, Fvector& axis, float angle)
+{
+    Fvector p		= PPosition;
+    prev_inv.transform_tiny	(p);
+    current.transform_tiny	(p);
+    PPosition 			= p;
+
+    Fvector r	= PRotation;
+    r.mad		(axis,angle);
+    PRotation	= r;
+}
+
+void CCustomObject::LocalRotate(const Fmatrix& parent, Fvector& center, Fvector& axis, float angle)
 {
 	R_ASSERT(!Locked());
     UI.UpdateScene();
 
 	Fmatrix m;
-	m.rotation(axis, -angle);
+    // rotation
+	m.rotation	(axis, angle);
+    Fvector r;
+    FTransformRP.mulB(m);
+    FTransformRP.getXYZ(r);
+    PRotation	= r;
 
+    // position
+    Fvector A;
+    parent.transform_dir(A,axis);
+	m.rotation	(A, angle);
     Fvector p	= PPosition;
-    Fvector r	= PRotate;
-
 	p.sub		(center);
     m.transform_tiny(p);
 	p.add		(center);
-
-    r.mad		(axis,axis.z?-angle:angle);
 	PPosition 	= p;
-    PRotate		= r;
 }
 
 void CCustomObject::ParentRotate(Fvector& axis, float angle)
 {
 	R_ASSERT(!Locked());
     UI.UpdateScene();
-    Fvector r	= PRotate;
+    Fvector r	= PRotation;
     r.mad		(axis,angle);
-    PRotate		= r;
+    PRotation		= r;
 }
 
 void CCustomObject::LocalRotate(Fvector& axis, float angle)
@@ -236,12 +251,12 @@ void CCustomObject::LocalRotate(Fvector& axis, float angle)
     Fmatrix m;
     Fvector r;
     m.rotation(axis,angle);
-    FTransform.mulB(m);
-    FTransform.getXYZ(r);
-    PRotate		= r;
+    FTransformRP.mulB(m);
+    FTransformRP.getXYZ(r);
+    PRotation		= r;
 }
 
-void CCustomObject::Scale( Fvector& center, Fvector& amount )
+void CCustomObject::Scale( const Fmatrix& prev_inv, const Fmatrix& current, Fvector& center, Fvector& amount )
 {
 	R_ASSERT(!Locked());
     UI.UpdateScene();
@@ -251,20 +266,16 @@ void CCustomObject::Scale( Fvector& center, Fvector& amount )
 	if (s.x<EPS) s.x=EPS;
 	if (s.y<EPS) s.y=EPS;
 	if (s.z<EPS) s.z=EPS;
+    PScale		= s;
 
-	Fmatrix m;
-    Fvector S;
-    S.add(amount,1.f);
-	m.scale( S );
-	p.sub( center );
-	m.transform_tiny(p);
-	p.add( center );
+    // translate position
+    prev_inv.transform_tiny	(p);
+    current.transform_tiny	(p);
 
     PPosition	= p;
-    PScale		= s;
 }
 
-void CCustomObject::LocalScale( Fvector& amount )
+void CCustomObject::Scale( Fvector& amount )
 {
 	R_ASSERT(!Locked());
     UI.UpdateScene();                                                       
@@ -279,6 +290,6 @@ void CCustomObject::LocalScale( Fvector& amount )
 void CCustomObject::Render(int priority, bool strictB2F)
 {
 	if ((1==priority)&&(false==strictB2F)&&(Selected()))
-    	DU::DrawObjectAxis(FTransform);
+    	DU::DrawObjectAxis(FTransformRP);
 }
 

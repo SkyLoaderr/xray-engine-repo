@@ -85,7 +85,7 @@ bool SceneBuilder::BuildGame()
 				Packet.w_string		(rpt->Name);
    				Packet.w_u8 		(0xFE);
                 Packet.w_vec3		(rpt->PPosition);
-                Fvector a; a.set	(0,rpt->PRotate.y,0);
+                Fvector a; a.set	(0,rpt->PRotation.y,0);
                 Packet.w_vec3		(a);
                 Packet.w_u16		(0);
                 WORD fl 			= (rpt->m_Flags.bActive)?M_SPAWN_OBJECT_ACTIVE:0;

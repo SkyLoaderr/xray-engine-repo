@@ -75,7 +75,7 @@ void CEvent::SForm::GetBox(Fbox& bb)
 	Fmatrix T; 		GetTransform(T);
 	bb.min.set		(-0.5f,-0.5f,-0.5f);
 	bb.max.set		( 0.5f, 0.5f, 0.5f);
-    bb.transform	(T);
+    bb.xform		(T);
 }
 
 bool CEvent::SForm::Pick(float& distance, Fvector& start, Fvector& direction)
@@ -129,7 +129,7 @@ void CEvent::SForm::LocalRotate( Fvector& axis, float angle )
     vRotate.direct(vRotate,axis,angle);
 }
 
-void CEvent::SForm::LocalScale( Fvector& amount )
+void CEvent::SForm::Scale( Fvector& amount )
 {
 	vSize.add(amount);
     if (vSize.x<EPS) vSize.x=EPS;
@@ -241,7 +241,7 @@ void CEvent::Move(Fvector& amount){
 
 void CEvent::Rotate(Fvector& center, Fvector& axis, float angle){
 	R_ASSERT(!Locked());
-	inherited::Rotate(center,axis,angle);
+//S	inherited::Rotate(center,axis,angle);
     UI.UpdateScene();
 }
 
@@ -252,16 +252,16 @@ void CEvent::ParentRotate(Fvector& axis, float angle){
     UI.UpdateScene();
 }
 
-void CEvent::Scale( Fvector& center, Fvector& amount ){
+void CEvent::Scale( const Fmatrix& prev_inv, const Fmatrix& current, Fvector& center, Fvector& amount ){
 	R_ASSERT(!Locked());
-	inherited::Scale(center,amount);
+	inherited::Scale(prev_inv, current, center,amount);
     UI.UpdateScene();
 }
 
-void CEvent::LocalScale( Fvector& amount ){
+void CEvent::Scale( Fvector& amount ){
 	R_ASSERT(!Locked());
-	inherited::LocalScale(amount);
-//	for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) if (it->m_Selected) it->LocalScale(amount);
+	inherited::Scale(amount);
+//	for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) if (it->m_Selected) it->Scale(amount);
     UI.UpdateScene();
 }
 //----------------------------------------------------
