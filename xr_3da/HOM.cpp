@@ -116,24 +116,26 @@ IC	void	xform		(Fmatrix& X, Fvector& D, Fvector& S, float dim_2)
 	D.z	= z/w;
 }
 
-void CHOM::Render		(CFrustum& base)
+void CHOM::Render_DB	(CFrustum& base)
 {
-	if (0==m_pModel)	return;
-
-	Device.Statistic.RenderCALC_HOM.Begin	();
-	// Clear buffers
-	Raster.clear		();
-
 	// Query DB
 	XRC.frustum_options	(0);
 	XRC.frustum_query	(m_pModel,base);
+	if (0==XRC.r_count())	return;
 
-	// Perfrom selection, sorting, culling
+	// Prepare
 	CDB::RESULT*	it	= XRC.r_begin();
 	CDB::RESULT*	end	= XRC.r_end();
 	Fvector			COP = Device.vCameraPosition;
 	Fmatrix			XF	= Device.mFullTransform;
 	float			dim = occ_dim_0/2;
+
+	// Build frustum with near plane only
+	CFrustum	clip;
+	clip.CreateFromMatrix(XF,FRUSTUM_P_NEAR);
+	sPoly		src,dst;
+	
+	// Perfrom selection, sorting, culling
 	for (; it!=end; it++)
 	{
 		occTri& T	= m_pTris	[it->id];
@@ -143,21 +145,34 @@ void CHOM::Render		(CFrustum& base)
 		
 		// Access to triangle vertices
 		CDB::TRI& t	= m_pModel->get_tris() [it->id];
+		src.clear		();
+		src.push_back	(*t.verts[0]);
+		src.push_back	(*t.verts[1]);
+		src.push_back	(*t.verts[2]);
+		sPoly* P =		clip.ClipPoly	(src,dst);
+		if (0==P)		continue;
 		
-		// XForm
-		xform		(XF,T.raster[0],*t.verts[0],dim);
-		xform		(XF,T.raster[1],*t.verts[1],dim);
-		xform		(XF,T.raster[2],*t.verts[2],dim);
-		
-		// Rasterize
-		Raster.rasterize(&T);
+		// XForm and Rasterize
+		for (int v=1; v<P->size(); v++)
+		{
+			xform			(XF,T.raster[0],(*P)[0],	dim);
+			xform			(XF,T.raster[1],(*P)[v+0],	dim);
+			xform			(XF,T.raster[2],(*P)[v+1],	dim);
+			Raster.rasterize(&T);
+		}
 	}
+}
+void CHOM::Render		(CFrustum& base)
+{
+	if (0==m_pModel)	return;
 	
-	// Propagade
+	Device.Statistic.RenderCALC_HOM.Begin	();
+	Raster.clear		();
+	Render_DB			();
 	Raster.propagade	();
-	
 	Device.Statistic.RenderCALC_HOM.End		();
 }
+
 void CHOM::Debug		()
 {
 	// Texture
@@ -199,6 +214,8 @@ void CHOM::Debug		()
 
 BOOL CHOM::Visible		(Fbox& B)
 {
+	if (0==m_pModel)	return TRUE;
+
 	// Find min/max points of xformed-box
 	Fmatrix&	XF		= Device.mFullTransform;
 	Fbox		rect;

@@ -18,6 +18,8 @@ private:
 	CTexture*				pTexture;
 	Shader*					pShader;
 	CVertexStream*			pStream;
+	
+	void					Render_DB	(CFrustum& base);
 public:
 	void					Load		();
 	void					Unload		();
