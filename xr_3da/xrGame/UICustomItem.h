@@ -13,10 +13,10 @@ enum EUIItemAlign{
 class CUICustomItem
 {
 	Fvector2		vHalfPixel;
-	Fvector2		vTexSize;
-
-	Frect			Rect;
 	bool			bInit;
+protected:
+	Fvector2		vTexSize;
+	Frect			Rect;
 protected:
 	void			Init			(float tx_width, float tx_height);
 public:
@@ -26,6 +26,7 @@ public:
 	IC void			SetRect			(const Frect& r, float part_x, float part_y){Rect.lt.set(r.lt);Rect.rb.set(r.rb.x*part_x,r.rb.y*part_y);}
 	IC void			SetRect			(const Frect& r){Rect.set(r);}
 	const Frect&	GetRect			(){return Rect;}
+	void			Render			(FVF::TL*& Pointer, const Fvector2& pos, DWORD color, int x1, int y1, int x2, int y2);
 	void			Render			(FVF::TL*& Pointer, const Fvector2& pos, DWORD color);
 	void			Render			(FVF::TL*& Pointer, const Fvector2& pos, DWORD color, float angle);
 };

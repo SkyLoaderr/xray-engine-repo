@@ -787,16 +787,16 @@ void CActor::Statistic	( )
 // HUD
 void CActor::OnHUDDraw	(CCustomHUD* hud)
 {
+	CWeapon* W			= Weapons->ActiveWeapon();
+	if (W)				W->OnVisible		();
+/**
 	CHUDManager* HUD	= (CHUDManager*)hud;
 	CUI* pUI=HUD->GetUI	();
 	pUI->OutHealth		(iFloor(fHealth),iFloor(fArmor));
 	pUI->OutWeapon		(Weapons->ActiveWeapon());
 	pUI->SetHeading		(-r_torso.yaw);
 	
-	CWeapon* W			= Weapons->ActiveWeapon();
-	if (W)				W->OnVisible		();
 
-	/**
 	char buf[128];
 	sprintf(buf,"Position : %3.2f,%3.2f,%3.2f",VPUSH(vPosition));
 

@@ -43,7 +43,7 @@ public:
 	virtual		void		Render_Calcualte	();
 	virtual		void		Render_Affected		();
 	virtual		void		Render_Direct		();
-	virtual		void		OnMove				();
+	virtual		void		OnFrame				();
 
 	virtual		IC CUI*		GetUI				(){return pUI;}
 	virtual		void		UIActivate			();
@@ -58,10 +58,10 @@ public:
 	float					GetScale			(){return fScale;}
 	void					SetScale			(float s);
 
-	void					ClientToScreenScaled(float left, float top, Fvector2& dest, DWORD align);
+	void					ClientToScreenScaled(Fvector2& dest, float left, float top, DWORD align);
 	float					ClientToScreenScaledX(float left, DWORD align);
 	float					ClientToScreenScaledY(float top, DWORD align);
-	void					ClientToScreen		(float left, float top, Fvector2& dest, DWORD align);
+	void					ClientToScreen		(Fvector2& dest, float left, float top, DWORD align);
 	float					ClientToScreenX		(float left, DWORD align);
 	float					ClientToScreenY		(float top, DWORD align);
 	

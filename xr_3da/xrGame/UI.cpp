@@ -6,6 +6,7 @@
 #include "Entity.h"
 #include "HUDManager.h"
 #include "Group.h"
+#include "xr_weapon_list.h"
 
 static LPCSTR group_state_list[gsLast]={
 	{"Free hunting"},
@@ -17,21 +18,26 @@ static LPCSTR group_state_list[gsLast]={
 
 
 #define MSGS_OFFS 510
+#define MENU_OFFS 200
 
 //--------------------------------------------------------------------
-CUI::CUI(CHUDManager* p){
+CUI::CUI(CHUDManager* p)
+{
 	Level().HUD()->pUI = this;
 	UIZoneMap.Init	();
 	UIWeapon.Init	();
 	UIHealth.Init	();
 	UISquad.Init	();
+	UIFragList.Init	();
 
 	m_Parent		= p;
 	bActive			= false;
 	bShift			= false;
+	bDrawFragList	= false;
 	ResetSelected	();
 
 	msgs_offs		= m_Parent->ClientToScreenScaledY(MSGS_OFFS,alLeft|alBottom)/Level().HUD()->pHUDFont->GetScale();
+	menu_offs		= m_Parent->ClientToScreenScaledY(MENU_OFFS,alLeft|alTop)/Level().HUD()->pHUDFont->GetScale();
 }
 //--------------------------------------------------------------------
 
@@ -43,20 +49,6 @@ CUI::~CUI(){
 
 void CUI::ResetSelected(){
 	ZeroMemory		(bSelGroups,sizeof(bool)*10);
-}
-//--------------------------------------------------------------------
-
-bool CUI::Render(){
-	UIZoneMap.Render();
-	UIWeapon.Render();
-	UIHealth.Render();
-
-	CEntity* m_Actor = dynamic_cast<CEntity*>(Level().CurrentEntity());
-	if (m_Actor&&m_Actor->Local())
-		UISquad.Render(Level().Teams[m_Actor->id_Team].Squads[m_Actor->id_Squad],bSelGroups,bActive);
-
-	return false;
-//	if (bActive) UICursor.Render();
 }
 //--------------------------------------------------------------------
 
@@ -72,16 +64,49 @@ DWORD ScaleAlpha(DWORD val, float factor)
     return ((DWORD)(a<<24) | (r<<16) | (g<<8) | (b));
 }
 
-void CUI::OnMove()
+void CUI::OnFrame()
 {
 	CEntity* m_Actor = dynamic_cast<CEntity*>(Level().CurrentEntity());
-	if (m_Actor&&m_Actor->Local())
+	if (m_Actor&&m_Actor->Local()){
+		// radar
 		UIZoneMap.UpdateRadar(m_Actor,Level().Teams[m_Actor->id_Team]);
+		// viewport
+		float h,p;
+		Device.vCameraDirection.getHP	(h,p);
+		UIZoneMap.SetHeading			(-h);
+		// health&armor
+		UIHealth.Out(m_Actor->g_Health(),m_Actor->g_Armor());
+		// weapon
+		CWeaponList* wpns = m_Actor->GetItemList();
+		if (wpns&&wpns->ActiveWeapon()) UIWeapon.Out(wpns->ActiveWeapon());
+		// out GAME-style depend information
+		UIFragList.OnFrame();
+		switch (GAME){
+			case GAME_SINGLE:		
+				break;
+			case GAME_DEATHMATCH:
+				if (bDrawFragList) UIFragList.OnFrame();
+				break;
+			case GAME_CTF:			
+				// time
+				break;
+			case GAME_ASSAULT:
+				break;
+			default: THROW;
+		}
+	}
 
 	if (bActive){
-		m_Parent->pSmallFont->OutSet		(-1.f,-0.3f);
-		m_Parent->pSmallFont->Color			(0xffffffff);
-		m_Parent->pSmallFont->OutNext		("R: %s",group_state_list[0]);
+		m_Parent->pHUDFont->OutSet			(0,menu_offs);
+		m_Parent->pHUDFont->Color			(0xffffffff);
+		m_Parent->pHUDFont->OutNext			("0: xyz");
+		m_Parent->pHUDFont->OutNext			("1: xyz");
+		m_Parent->pHUDFont->OutNext			("2: xyz");
+		m_Parent->pHUDFont->OutNext			("3: xyz");
+		m_Parent->pHUDFont->OutNext			("4: xyz");
+		m_Parent->pHUDFont->OutNext			("5: xyz");
+		m_Parent->pHUDFont->OutNext			("6: xyz");
+/*		m_Parent->pSmallFont->OutNext		("R: %s",group_state_list[0]);
 		m_Parent->pSmallFont->OutNext		("T: %s",group_state_list[1]);
 		m_Parent->pSmallFont->OutNext		("Y: %s",group_state_list[2]);
 		m_Parent->pSmallFont->OutNext		("U: %s",group_state_list[3]);
@@ -89,7 +114,7 @@ void CUI::OnMove()
 		m_Parent->pSmallFont->OutNext		("F: Agressive");
 		m_Parent->pSmallFont->OutNext		("G: Quiet");
 		m_Parent->pSmallFont->OutNext		("F1:cfg_load s.ltx");
-	}
+*/	}
 
 	if (!messages.empty()){
 		m_Parent->pHUDFont->OutSet(0,msgs_offs);
@@ -111,6 +136,39 @@ void CUI::OnMove()
 	}
 }
 //--------------------------------------------------------------------
+
+bool CUI::Render()
+{
+	UIZoneMap.Render();
+	UIWeapon.Render();
+	UIHealth.Render();
+
+	UIFragList.Render();
+
+	// out GAME-style depend information
+	switch (GAME){
+	case GAME_SINGLE:		
+		break;
+	case GAME_DEATHMATCH:
+		if (bDrawFragList) UIFragList.Render();
+		break;
+	case GAME_CTF:			
+		// time
+		break;
+	case GAME_ASSAULT:
+		break;
+	default: THROW;
+	}
+
+	CEntity* m_Actor = dynamic_cast<CEntity*>(Level().CurrentEntity());
+	if (m_Actor&&m_Actor->Local())
+		UISquad.Render(Level().Teams[m_Actor->id_Team].Squads[m_Actor->id_Squad],bSelGroups,bActive);
+
+	return false;
+	//	if (bActive) UICursor.Render();
+}
+//--------------------------------------------------------------------
+
 bool CUI::FindGroup(int idx)
 {
 	CEntity* m_Actor = dynamic_cast<CEntity*>(Level().CurrentEntity());
@@ -225,27 +283,6 @@ void CUI::Deactivate(){
 }
 //--------------------------------------------------------------------
 
-void CUI::OutHealth(float health, float armor){
-	UIHealth.Out(health, armor);
-}
-//--------------------------------------------------------------------
-
-void CUI::OutWeapon(CWeapon* wpn){
-	UIWeapon.Out(wpn);
-}
-//--------------------------------------------------------------------
-
-void CUI::SetHeading(float heading){
-	UIZoneMap.SetHeading(heading);
-}
-
-void CUI::SetHeading(const Fvector& dir){
-	float heading;
-	Fvector DHeading; DHeading.set(dir.x,0.f,dir.z); DHeading.normalize_safe();
-	if (DHeading.x>=0)	heading = acosf(DHeading.z);
-	else				heading = 2*PI-acosf(DHeading.z);
-	UIZoneMap.SetHeading(heading);
-}
 
 void CUI::AddMessage(LPCSTR S, LPCSTR M, DWORD C, float life_time){
 	if (messages.size()==MAX_UIMESSAGES){ 

@@ -34,11 +34,13 @@ CHUDManager::~CHUDManager()
 }
 //--------------------------------------------------------------------
 
-void CHUDManager::ClientToScreenScaled(float left, float top, Fvector2& dest, DWORD align){
+void CHUDManager::ClientToScreenScaled(Fvector2& dest, float left, float top, DWORD align)
+{
 	dest.set(ClientToScreenScaledX(left,align),	ClientToScreenScaledY(top,align));
 }
 
-float CHUDManager::ClientToScreenScaledX(float left, DWORD align){
+float CHUDManager::ClientToScreenScaledX(float left, DWORD align)
+{
 	if (align&alRight)	return Device.dwWidth-UI_BASE_WIDTH*fScale + left*fScale;
 	else				return left*fScale;
 }
@@ -48,7 +50,7 @@ float CHUDManager::ClientToScreenScaledY(float top, DWORD align){
 	else				return top*fScale;
 }
 
-void CHUDManager::ClientToScreen(float left, float top, Fvector2& dest, DWORD align){
+void CHUDManager::ClientToScreen(Fvector2& dest, float left, float top, DWORD align){
 	dest.set(ClientToScreenX(left,align),	ClientToScreenY(top,align));
 }
 
@@ -68,9 +70,9 @@ void CHUDManager::Load()
 	pUI				= new CUI(this);
 }
 //--------------------------------------------------------------------
-void CHUDManager::OnMove()
+void CHUDManager::OnFrame()
 {
-	if (pUI) pUI->OnMove();
+	if (pUI) pUI->OnFrame();
 }
 //--------------------------------------------------------------------
 

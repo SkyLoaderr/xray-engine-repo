@@ -1008,6 +1008,18 @@
 					RelativePath=".\UIDynamicItem.h">
 				</File>
 				<File
+					RelativePath="UIFragList.cpp">
+				</File>
+				<File
+					RelativePath="UIFragList.h">
+				</File>
+				<File
+					RelativePath="UIFrameRect.cpp">
+				</File>
+				<File
+					RelativePath="UIFrameRect.h">
+				</File>
+				<File
 					RelativePath=".\UIGroup.cpp">
 				</File>
 				<File

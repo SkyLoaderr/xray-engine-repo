@@ -25,21 +25,27 @@ void CUICustomItem::Init(float tx_width, float tx_height){
 }
 //--------------------------------------------------------------------
 
-void CUICustomItem::Render(FVF::TL*& Pointer, const Fvector2& pos, DWORD color)
+void CUICustomItem::Render(FVF::TL*& Pointer, const Fvector2& pos, DWORD color, int x1, int y1, int x2, int y2)
 {
 	Fvector2 LTp,RBp;
 	Fvector2 LTt,RBt;
 	float sc		= Level().HUD()->GetScale();
-	LTp.mad			(pos,Rect.lt,sc);
-	RBp.mad			(pos,Rect.rb,sc);
+	LTp.set			(pos.x+x1*sc,pos.y+y1*sc);
+	RBp.set			(pos.x+x2*sc,pos.y+y2*sc);
 
-	LTt.set			(Rect.x1/vTexSize.x+vHalfPixel.x,Rect.y1/vTexSize.y+vHalfPixel.y);
-	RBt.set			(Rect.x2/vTexSize.x+vHalfPixel.x,Rect.y2/vTexSize.y+vHalfPixel.y);
-	
+	LTt.set			(x1/vTexSize.x+vHalfPixel.x,y1/vTexSize.y+vHalfPixel.y);
+	RBt.set			(x2/vTexSize.x+vHalfPixel.x,y2/vTexSize.y+vHalfPixel.y);
+
 	Pointer->set	(LTp.x,	RBp.y,	color, LTt.x, RBt.y); Pointer++;
 	Pointer->set	(LTp.x,	LTp.y,	color, LTt.x, LTt.y); Pointer++;
 	Pointer->set	(RBp.x,	RBp.y,	color, RBt.x, RBt.y); Pointer++;
 	Pointer->set	(RBp.x,	LTp.y,	color, RBt.x, LTt.y); Pointer++;
+}
+//--------------------------------------------------------------------
+
+void CUICustomItem::Render(FVF::TL*& Pointer, const Fvector2& pos, DWORD color)
+{
+	Render(Pointer,pos,color,Rect.x1,Rect.y1,Rect.x2,Rect.y2);
 }
 //--------------------------------------------------------------------
 

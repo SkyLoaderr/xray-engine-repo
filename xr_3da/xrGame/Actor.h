@@ -205,6 +205,9 @@ public:
 	virtual	float			ffGetFov			()			{ return 90.f;		}	
 	virtual	float			ffGetRange			()			{ return 500.f;		}
 
+	// misc
+	virtual CWeaponList*	GetItemList			(){return Weapons;}
+
 	// Fire control
 	virtual void			g_fireParams		(Fvector& P, Fvector& D);
 	virtual void			g_fireStart			( );

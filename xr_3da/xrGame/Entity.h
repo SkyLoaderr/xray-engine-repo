@@ -13,6 +13,7 @@
 // refs
 class ENGINE_API CCameraBase;
 class ENGINE_API C3DSound;
+class CWeaponList;
 
 //
 class CEntity : public CGameObject
@@ -107,6 +108,9 @@ public:
 	int						g_Team				()	{ return id_Team;	}
 	int						g_Squad				()	{ return id_Squad;	}
 	int						g_Group				()	{ return id_Group;	}
+
+	// misc
+	virtual CWeaponList*	GetItemList			(){return 0;}
 
 	// Health calculations
 	virtual	void			Hit					(float P, Fvector &dir,			CObject* who);

@@ -11,6 +11,10 @@ class CUIStaticItem: public CUICustomItem
 
 	Fvector2		vPos;
 	DWORD			dwColor;
+	int				iTileX;
+	int				iTileY;
+	int				iRemX;
+	int				iRemY;
 protected:
 	typedef CUICustomItem inherited;
 public:
@@ -18,6 +22,7 @@ public:
 	virtual			~CUIStaticItem	();
 	void			Init			(LPCSTR tex, LPCSTR sh, float left, float top, float tx_width, float tx_height, DWORD align);
 	void			Init			(float left, float top, float tx_width, float tx_height, DWORD align);
+	void			SetTile			(int tile_x, int tile_y, int rem_x, int rem_y){iTileX=tile_x;iTileY=tile_y;iRemX=rem_x;iRemY=rem_y;}
 	void			SetPos			(float left, float top){vPos.set(left,top);}
 	void			SetPosX			(float left){vPos.x = left;}
 	void			SetPosY			(float top)	{vPos.y = top;}

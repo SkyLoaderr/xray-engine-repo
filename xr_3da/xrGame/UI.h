@@ -7,6 +7,7 @@
 #include "UIWeapon.h"
 #include "UIHealth.h"
 #include "UIGroup.h"
+#include "UIFragList.h"
 
 #define UI_BASE_WIDTH	800
 #define UI_BASE_HEIGHT	600
@@ -47,16 +48,23 @@ class CUI{
 	CUIWeapon			UIWeapon;
 	CUIHealth			UIHealth;
 	CUISquad			UISquad;
+
+	CUIFragList			UIFragList;
+
 	bool				bActive;
 
 	CHUDManager*		m_Parent;
 
 	// messages
 	float				msgs_offs;
+	float				menu_offs;
 	UIMsgSVec			messages;
 
-	// group management
+	// 
 	bool				bShift;
+	bool				bDrawFragList;
+
+	// group management
 	bool				bSelGroups			[MAX_GROUPS];
 
 	void				ResetSelected		();
@@ -70,24 +78,17 @@ public:
 	virtual				~CUI				();
 
 	bool				Render				();
-	void				OnMove				();
+	void				OnFrame				();
+
 	bool				OnKeyboardPress		(int dik);
 	bool				OnKeyboardRelease	(int dik);
 	bool				OnMouseMove			(int dx, int dy);
-
-	void				OutHealth			(float health, float armor);
-	void				OutWeapon			(CWeapon* wpn);
 
 	// --- depends on game type
 	// frag		(g_fraglimit)
 	// time		(g_timelimit)
 	// frag-list.....
-	// --- 
-	// OutHealth - CurrentView entity
-	// SetHeading - Camera
 
-	void				SetHeading			(float heading);
-	void				SetHeading			(const Fvector& direction);
 	void				AddMessage			(LPCSTR S, LPCSTR M, DWORD C=0xffffffff, float life_time=LIFE_TIME);
 
 	void				Activate			();
