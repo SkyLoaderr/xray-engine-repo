@@ -48,5 +48,6 @@ void CStateManagerStalker::reload			(LPCSTR section)
 void CStateManagerStalker::update			(u32 time_delta)
 {
 	inherited::update		(time_delta);
+	execute					();
 	set_dest_state			(eStalkerStateNoALife);
 }

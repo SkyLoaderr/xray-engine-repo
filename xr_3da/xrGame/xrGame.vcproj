@@ -603,6 +603,28 @@
 						RelativePath=".\sound_player_inline.h">
 					</File>
 				</Filter>
+				<Filter
+					Name="Graph"
+					Filter="">
+					<File
+						RelativePath=".\graph_abstract.h">
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCustomBuildTool"/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\graph_abstract_inline.h">
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCustomBuildTool"/>
+						</FileConfiguration>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="AEval"
