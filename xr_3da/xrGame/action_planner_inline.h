@@ -140,7 +140,7 @@ void CPlanner::update				(u32 time_delta)
 #endif
 
 #ifdef DEBUG
-	if (m_failed) {
+	if (m_failed && psAI_Flags.test(aiLua)) {
 		// printing current world state
 		{
 			Msg					("! ERROR!!! : there is no action sequence, which can transfer current world state to the target world state!!!");
