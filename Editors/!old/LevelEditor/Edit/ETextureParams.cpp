@@ -193,9 +193,9 @@ void STextureParams::FillProp(LPCSTR base_name, PropItemVec& items, PropValue::T
         PHelper().CreateFlag32		(items, "Flags\\Dither Each MIP",	&flags,				flDitherEachMIPLevel);
         PHelper().CreateFlag32		(items, "Flags\\Implicit Lighted",	&flags,				flImplicitLighted);
 
-        PHelper().CreateFlag32		(items, "Fade\\Enabled Color",		&flags,				flFadeToColor);
-        PHelper().CreateFlag32		(items, "Fade\\Enabled Alpha",		&flags,				flFadeToAlpha);
-        PHelper().CreateU32			(items, "Fade\\Amount",				&fade_amount,		0,1000,0);
+        PHelper().CreateFlag32		(items, "Fade\\Enable Color",		&flags,				flFadeToColor);
+//		PHelper().CreateFlag32		(items, "Fade\\Enabled Alpha",		&flags,				flFadeToAlpha);
+//		PHelper().CreateU32			(items, "Fade\\Amount",				&fade_amount,		0,1000,0);
         PHelper().CreateColor	   	(items, "Fade\\Color",				&fade_color			);
 
         PHelper().CreateFlag32		(items, "Border\\Enabled Color",	&flags,				flColorBorder);
