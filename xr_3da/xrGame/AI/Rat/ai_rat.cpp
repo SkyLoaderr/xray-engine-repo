@@ -129,10 +129,7 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	m_tSpawnPosition.set(vPosition);
 	INIT_SQUAD_AND_LEADER;
 
-	if (Leader == this)
-		tStateStack.push(eCurrentState = aiRatFreeHunting);
-	else
-		tStateStack.push(eCurrentState = aiRatFollowLeader);
+	tStateStack.push(eCurrentState = aiRatFreeHunting);
 	
 	return TRUE;
 }

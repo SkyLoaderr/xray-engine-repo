@@ -110,7 +110,7 @@ void CAI_Zombie::FreeHunting()
 	if (!m_bStateChanged)
 		SetDirectionLook();
 
-	CHECK_IF_SWITCH_TO_NEW_STATE(Level().AI.bfTooBigAngle(r_torso_target.yaw, r_torso_current.yaw, PI_DIV_6),aiZombieTurnOver);
+	CHECK_IF_SWITCH_TO_NEW_STATE(Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw, PI_DIV_6),aiZombieTurnOver);
 
 	vfStopFire();
 

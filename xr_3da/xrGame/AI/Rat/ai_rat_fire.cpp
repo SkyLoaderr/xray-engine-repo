@@ -62,13 +62,13 @@ float CAI_Rat::EnemyHeuristics(CEntity* E)
 	if (E->g_Team()  == g_Team())	
 		return flt_max;		// don't attack our team
 	
-	float	g_strench = E->g_Armor()+E->g_Health();
-	
-	if (g_strench <= 0)					
+	if (E->g_Health() <= 0)					
 		return flt_max;		// don't attack dead enemiyes
 	
+	float	g_strength = E->g_Armor()+E->g_Health();
+	
 	float	f1	= Position().distance_to_sqr(E->Position());
-	float	f2	= float(g_strench);
+	float	f2	= float(g_strength);
 	float   f3  = 1;
 	if (E==Level().CurrentEntity())  f3 = .5f;
 	return  f1*f2*f3;

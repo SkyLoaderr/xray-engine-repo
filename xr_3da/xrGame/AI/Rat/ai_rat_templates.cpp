@@ -199,7 +199,7 @@ void CAI_Rat::vfSetFire(bool bFire, CGroup &Group)
 void CAI_Rat::vfSetMovementType(char cBodyState, float fSpeed)
 {
 	StandUp();
-	m_fCurSpeed = fSpeed;
+	m_fSpeed = m_fCurSpeed = fSpeed;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -487,6 +487,7 @@ void CAI_Rat::GoToPointViaSubnodes(Fvector &tLeaderPosition)
 
 		/**/
 		if (!(tpNearestList.empty())) {
+			/**
 			for (CObjectSpace::NL_IT tppObjectIterator=tpNearestList.begin(); tppObjectIterator!=tpNearestList.end(); tppObjectIterator++) 
 			{
 				CObject* tpCurrentObject = (*tppObjectIterator);
@@ -533,6 +534,7 @@ void CAI_Rat::GoToPointViaSubnodes(Fvector &tLeaderPosition)
 						//}
 					}
 			}
+			/**/
 		}
 		/**/
 		// checking the nearest nodes
@@ -590,20 +592,20 @@ void CAI_Rat::GoToPointViaSubnodes(Fvector &tLeaderPosition)
 		VERIFY(iMySubNode >= 0);
 		Level().ObjectSpace.GetNearest(tpSubNodes[iMySubNode].tLeftDown,2*(Level().AI.GetHeader().size));
 		CObjectSpace::NL_TYPE &tpNearestList = Level().ObjectSpace.q_nearest;
-		if (!tpNearestList.empty()) {
-			for (CObjectSpace::NL_IT tppObjectIterator=tpNearestList.begin(); tppObjectIterator!=tpNearestList.end(); tppObjectIterator++) {
-				CObject* tpCurrentObject = *tppObjectIterator;
-				if ((tpCurrentObject->CLS_ID != CLSID_ENTITY) || (tpCurrentObject == this) || (tpCurrentObject == tSavedEnemy))
-					continue;
-				float fRadius = tpCurrentObject->Radius();
-				Fvector tCenter;
-				tpCurrentObject->clCenter(tCenter);
-				if (bfInsideSubNode(tCenter,fRadius,tpSubNodes[iMySubNode])) {
-					tpSubNodes[iMySubNode].bEmpty = false;
-					break;
-				}
-			}
-		}
+//		if (!tpNearestList.empty()) {
+//			for (CObjectSpace::NL_IT tppObjectIterator=tpNearestList.begin(); tppObjectIterator!=tpNearestList.end(); tppObjectIterator++) {
+//				CObject* tpCurrentObject = *tppObjectIterator;
+//				if ((tpCurrentObject->CLS_ID != CLSID_ENTITY) || (tpCurrentObject == this) || (tpCurrentObject == tSavedEnemy))
+//					continue;
+//				float fRadius = tpCurrentObject->Radius();
+//				Fvector tCenter;
+//				tpCurrentObject->clCenter(tCenter);
+//				if (bfInsideSubNode(tCenter,fRadius,tpSubNodes[iMySubNode])) {
+//					tpSubNodes[iMySubNode].bEmpty = false;
+//					break;
+//				}
+//			}
+//		}
 		AI_Path.TravelPath.clear();
 		AI_Path.TravelStart = 0;
 		if (tpSubNodes[iMySubNode].bEmpty) {

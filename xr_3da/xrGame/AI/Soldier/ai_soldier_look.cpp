@@ -719,7 +719,7 @@ bool CAI_Soldier::bfCheckForNodeVisibility(DWORD dwNodeID, bool bIfRayPick)
 	tDirection.normalize_safe();
 	SRotation tRotation;
 	mk_rotation(tDirection,tRotation);
-	if (Level().AI.bfTooBigAngle(r_current.yaw,tRotation.yaw,eye_fov*PI/180.f/2.f))
+	if (Level().AI.bfTooSmallAngle(r_current.yaw,tRotation.yaw,eye_fov*PI/180.f/2.f))
 		return(Level().AI.bfCheckNodeInDirection(AI_NodeID,vPosition,dwNodeID));
 	else
 		return(false);

@@ -26,7 +26,6 @@ class CAI_Rat : public CCustomMonster
 		aiRatDie = 0,
 		aiRatTurn,
 		aiRatFreeHunting,
-		aiRatFollowLeader,
 		aiRatAttackFire,
 		aiRatAttackRun,
 	};
@@ -117,8 +116,8 @@ class CAI_Rat : public CCustomMonster
 		EVENT			m_tpEventAssignPath;
 		
 		// ai
-		ERatStates	eCurrentState;
-		ERatStates	m_ePreviousState;
+		ERatStates		eCurrentState;
+		ERatStates		m_ePreviousState;
 		bool			bStopThinking;
 		
 				// action data
@@ -170,51 +169,25 @@ class CAI_Rat : public CCustomMonster
 		DWORD			m_dwHitInterval;
 		
 		// patrol structures
-		CLevel::SPath			*m_tpPath;
-		bool					m_bLessCoverLook;
-		DWORD					m_dwLoopCount;
-		float					m_fMinPatrolDistance;
-		float					m_fMaxPatrolDistance;
-		DWORD					m_dwStartAttackTime;
+		CLevel::SPath	*m_tpPath;
+		bool			m_bLessCoverLook;
+		DWORD			m_dwLoopCount;
+		float			m_fMinPatrolDistance;
+		float			m_fMaxPatrolDistance;
+		DWORD			m_dwStartAttackTime;
 
 		// finite state machine
-		stack<ERatStates>		tStateStack;
-		bool					m_bStateChanged;
+		stack<ERatStates>	tStateStack;
+		bool				m_bStateChanged;
 		
-		CRatSelectorAttack				SelectorAttack;
-		CRatSelectorFreeHunting			SelectorFreeHunting;
+		CRatSelectorAttack			SelectorAttack;
+		CRatSelectorFreeHunting		SelectorFreeHunting;
 
 		/**
-		void AttackRun();
-		void AttackFire();
-		
-		void Defend();
-		void FindEnemy();
-		void Injuring();
-		void MoreDeadThanAlive();
-		void NoWeapon();
-
-		void StandingUp();
-		void Sitting();
-		void LyingDown();
-
-		void Patrol();
-		void PatrolReturn();
-		void PatrolHurt();
-		void PatrolHurtAggressiveUnderFire();
-		void PatrolHurtNonAggressiveUnderFire();
-		void PatrolUnderFire();
-		void FollowLeaderPatrol();
-		void TurnOver();
-		
-		void Pursuit();
-		void Reload();
-		void Retreat();
 		void SenseSomething();
 		void UnderFire();
 		/**/
 		void Die();
-		void FollowLeader();
 		void FreeHunting();
 		void AttackFire();
 		void AttackRun();
