@@ -3468,6 +3468,8 @@
         </phrase_list>
     </dialog>
     <dialog id="bar_dolg_leader_quest_borov_start">
+      <has_info>bar_dolg_community_leader_done</has_info>
+      <dont_has_info>bar_kill_borov_start</dont_has_info>
         <phrase_list>
             <phrase id="1">
                 <text>bar_dolg_leader_quest_borov_start_1</text>
