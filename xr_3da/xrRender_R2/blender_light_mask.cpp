@@ -13,7 +13,7 @@ void	CBlender_accum_direct_mask::Compile(CBlender_Compile& C)
 	switch (C.iElement) 
 	{
 	case 0:	// white mask for skybox
-		C.r2_Pass				("null",		"r2_accum_direct_mask",FALSE,FALSE);
+		C.r2_Pass				("null",		"r2_bloom_mask",FALSE,FALSE);
 		C.r2_End				();
 		break;
 	case 1:	// stencil mask for directional light
