@@ -69,9 +69,9 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	}
 
 	// Net params
-	net_Local					= (E->s_flags&M_SPAWN_OBJECT_LOCAL);
+	setLocal					(E->s_flags&M_SPAWN_OBJECT_LOCAL);
+	setReady					(TRUE);
 	net_ID						= E->ID;
-	net_Ready					= TRUE;
 	pCreator->Objects.net_Register	(this);
 
 	// Sector detection

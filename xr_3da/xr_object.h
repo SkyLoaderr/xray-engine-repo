@@ -86,6 +86,7 @@ public:
 	IC BOOL								Local				()					{ return FLAGS.net_Local;	}
 	IC BOOL								Remote				()					{ return !FLAGS.net_Local;	}
 	IC DWORD							ID					()					{ return net_ID;			}
+	IC void								setID				(DWORD _ID)			{ net_ID = _ID;				}
 	virtual BOOL						Ready				()					{ return FLAGS.net_Ready;	}
 	virtual float						shedule_Scale		()					{ return Device.vCameraPosition.distance_to(Position())/200.f; }
 
