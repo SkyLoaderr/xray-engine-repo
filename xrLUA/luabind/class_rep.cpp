@@ -42,13 +42,13 @@ namespace luabind { namespace detail
 
 #ifndef LUABIND_NO_ERROR_CHECKING
 
-	xr_string luabind::detail::get_overload_signatures_candidates(
+	string_class luabind::detail::get_overload_signatures_candidates(
 			lua_State* L
 			, std::vector<const overload_rep_base*>::iterator start
 			, std::vector<const overload_rep_base*>::iterator end
-			, xr_string name)
+			, string_class name)
 	{
-		xr_string s;
+		string_class s;
 		for (; start != end; ++start)
 		{
 			s += name;
@@ -243,9 +243,9 @@ int luabind::detail::class_rep::gettable(lua_State* L)
 	if (std::strlen(key) != lua_strlen(L, 2))
 	{
 		{
-			xr_string msg("luabind does not support "
+			string_class msg("luabind does not support "
 				"member names with extra nulls:\n");
-			msg += xr_string(lua_tostring(L, 2), lua_strlen(L, 2));
+			msg += string_class(lua_tostring(L, 2), lua_strlen(L, 2));
 			lua_pushstring(L, msg.c_str());
 		}
 		lua_error(L);
@@ -325,7 +325,7 @@ bool luabind::detail::class_rep::settable(lua_State* L)
 #ifndef LUABIND_NO_ERROR_CHECKING
 			if (j->second.match(L, 3) < 0)
 			{
-				xr_string msg("the attribute '");
+				string_class msg("the attribute '");
 				msg += m_name;
 				msg += ".";
 				msg += key;
@@ -347,7 +347,7 @@ bool luabind::detail::class_rep::settable(lua_State* L)
 			// this means that we have a getter but no
 			// setter for an attribute. We will then fail
 			// because that attribute is read-only
-			xr_string msg("the attribute '");
+			string_class msg("the attribute '");
 			msg += m_name;
 			msg += ".";
 			msg += key;
@@ -477,7 +477,7 @@ int luabind::detail::class_rep::constructor_dispatcher(lua_State* L)
 	if (!found)
 	{
 		{
-			xr_string msg("no constructor of '");
+			string_class msg("no constructor of '");
 			msg += crep->name();
 			msg += "' matched the arguments (";
 			msg += stack_content_by_name(L, 2);
@@ -492,7 +492,7 @@ int luabind::detail::class_rep::constructor_dispatcher(lua_State* L)
 	else if (ambiguous)
 	{
 		{
-			xr_string msg("call of overloaded constructor '");
+			string_class msg("call of overloaded constructor '");
 			msg += crep->m_name;
 			msg +=  "(";
 			msg += stack_content_by_name(L, 2);
@@ -553,7 +553,7 @@ int luabind::detail::class_rep::constructor_dispatcher(lua_State* L)
 	catch(...)
 	{
 		{
-			xr_string msg = crep->name();
+			string_class msg = crep->name();
 			msg += "() threw an exception";
 			lua_pushstring(L, msg.c_str());
 		}
@@ -626,7 +626,7 @@ int luabind::detail::class_rep::function_dispatcher(lua_State* L)
 	if (!found)
 	{
 		{
-			xr_string msg = "no overload of  '";
+			string_class msg = "no overload of  '";
 			msg += rep->crep->name();
 			msg += ":";
 			msg += rep->name;
@@ -634,7 +634,7 @@ int luabind::detail::class_rep::function_dispatcher(lua_State* L)
 			msg += stack_content_by_name(L, 1);
 			msg += ")\ncandidates are:\n";
 
-			xr_string function_name;
+			string_class function_name;
 			function_name += rep->crep->name();
 			function_name += ":";
 			function_name += rep->name;
@@ -648,7 +648,7 @@ int luabind::detail::class_rep::function_dispatcher(lua_State* L)
 	else if (ambiguous)
 	{
 		{
-			xr_string msg = "call of overloaded  '";
+			string_class msg = "call of overloaded  '";
 			msg += rep->crep->name();
 			msg += ":";
 			msg += rep->name;
@@ -659,7 +659,7 @@ int luabind::detail::class_rep::function_dispatcher(lua_State* L)
 			std::vector<const overload_rep_base*> candidates;
 			find_exact_match(L, &rep->overloads().front(), rep->overloads().size(), sizeof(overload_rep), min_match, num_params, candidates);
 
-			xr_string function_name;
+			string_class function_name;
 			function_name += rep->crep->name();
 			function_name += ":";
 			function_name += rep->name;
@@ -707,7 +707,7 @@ int luabind::detail::class_rep::function_dispatcher(lua_State* L)
 	}
 	catch(...)
 	{
-		xr_string msg = rep->crep->name();
+		string_class msg = rep->crep->name();
 		msg += ":";
 		msg += rep->name;
 		msg += "() threw an exception";
@@ -731,10 +731,10 @@ int luabind::detail::class_rep::function_dispatcher(lua_State* L)
 
 namespace
 {
-	xr_string to_string(luabind::object const& o)
+	string_class to_string(luabind::object const& o)
 	{
 		using namespace luabind;
-		if (o.type() == LUA_TSTRING) return object_cast<xr_string>(o);
+		if (o.type() == LUA_TSTRING) return object_cast<string_class>(o);
 		lua_State* L = o.lua_state();
 		LUABIND_CHECK_STACK(L);
 
@@ -758,7 +758,7 @@ namespace
 	}
 
 
-	xr_string member_to_string(luabind::object const& e)
+	string_class member_to_string(luabind::object const& e)
 	{
 #if !defined(LUABIND_NO_ERROR_CHECKING)
         using namespace luabind;
@@ -798,7 +798,7 @@ namespace
 				for (std::vector<overload_rep>::const_iterator i = m->overloads().begin();
 					i != m->overloads().end(); ++i)
 				{
-					xr_string str;
+					string_class str;
 					i->get_signature(L, str);
 					s << "   " << str << "\n";
 				}
@@ -816,7 +816,7 @@ namespace
 	}
 }
 
-xr_string luabind::detail::class_rep::class_info_string(lua_State* L) const
+string_class luabind::detail::class_rep::class_info_string(lua_State* L) const
 {
 #ifdef BOOST_NO_STRINGSTREAM
 	std::strstream ret;
@@ -1003,7 +1003,7 @@ int luabind::detail::class_rep::super_callback(lua_State* L)
 		if (!found)
 		{
 			{
-				xr_string msg = "no constructor of '";
+				string_class msg = "no constructor of '";
 				msg += base->m_name;
 				msg += "' matched the arguments (";
 				msg += stack_content_by_name(L, 2);
@@ -1015,7 +1015,7 @@ int luabind::detail::class_rep::super_callback(lua_State* L)
 		else if (ambiguous)
 		{
 			{
-				xr_string msg = "call of overloaded constructor '";
+				string_class msg = "call of overloaded constructor '";
 				msg += base->m_name;
 				msg +=  "(";
 				msg += stack_content_by_name(L, 2);
@@ -1034,7 +1034,7 @@ int luabind::detail::class_rep::super_callback(lua_State* L)
 			if (!rep->overloads[match_index].has_wrapped_construct())
 			{
 				{
-					xr_string msg = "Cannot derive from C++ class '";
+					string_class msg = "Cannot derive from C++ class '";
 					msg += base->name();
 					msg += "'. It does not have a wrapped type";
 					lua_pushstring(L, msg.c_str());
@@ -1112,7 +1112,7 @@ int luabind::detail::class_rep::super_callback(lua_State* L)
 		}
 		catch(...)
 		{
-			xr_string msg = base->m_name;
+			string_class msg = base->m_name;
 			msg += "() threw an exception";
 			lua_pushstring(L, msg.c_str());
 		}
@@ -1225,7 +1225,7 @@ int luabind::detail::class_rep::construct_lua_class_callback(lua_State* L)
 	if (!lua_isfunction(L, -1))
 	{
 		{
-			xr_string msg = crep->name();
+			string_class msg = crep->name();
 			msg += ":__init is not defined";
 			lua_pushstring(L, msg.c_str());
 		}
@@ -1342,10 +1342,10 @@ int luabind::detail::class_rep::lua_class_settable(lua_State* L)
 
 	if (obj->flags() & object_rep::call_super)
 	{
-		// this block makes sure the xr_string is destructed
+		// this block makes sure the string_class is destructed
 		// before lua_error is called
 		{
-			xr_string msg = "derived class '";
+			string_class msg = "derived class '";
 			msg += crep->name();
 			msg += "'must call super on base";
 			lua_pushstring(L, msg.c_str());
@@ -1378,7 +1378,7 @@ int luabind::detail::class_rep::lua_class_settable(lua_State* L)
 		if (k != crep->m_getters.end())
 		{
 			{
-				xr_string msg = "cannot set property '";
+				string_class msg = "cannot set property '";
 				msg += crep->name();
 				msg += ".";
 				msg += key;
@@ -1440,7 +1440,7 @@ int luabind::detail::class_rep::static_class_gettable(lua_State* L)
 #ifndef LUABIND_NO_ERROR_CHECKING
 
 	{
-		xr_string msg = "no static '";
+		string_class msg = "no static '";
 		msg += key;
 		msg += "' in class '";
 		msg += crep->name();

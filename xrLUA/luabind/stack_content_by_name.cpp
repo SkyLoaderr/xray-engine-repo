@@ -26,9 +26,9 @@
 
 using namespace luabind::detail;
 
-xr_string luabind::detail::stack_content_by_name(lua_State* L, int start_index)
+string_class luabind::detail::stack_content_by_name(lua_State* L, int start_index)
 {
-	xr_string ret;
+	string_class ret;
 	int top = lua_gettop(L);
 	for (int i = start_index; i <= top; ++i)
 	{
