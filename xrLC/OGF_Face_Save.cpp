@@ -105,13 +105,18 @@ void OGF::Save			(IWriter &fs)
 		if (strchr(fname,'.')) *strchr(fname,'.')=0;
 		Tname += fname;
 	}
-	Tname				= string(pBuild->shader_render[pBuild->materials[material].shader].name) + "/" + Tname;
+	string1024			sid;
+	strconcat			(sid,
+		pBuild->shader_render[pBuild->materials[material].shader].name,
+		"/",
+		Tname.c_str()
+		);
 
 	// Create header
 	ogf_header			H;
 	H.format_version	= xrOGF_FormatVersion;
 	H.type				= MT_NORMAL;
-	H.shader_id			= RegisterShader			(Tname.c_str());
+	H.shader_id			= RegisterShader			(sid);
 
 	// Vertices
 	Shader_xrLC*	SH	=	pBuild->shaders.Get		(pBuild->materials[material].reserved);
@@ -149,13 +154,18 @@ void OGF_Reference::Save	(IWriter &fs)
 		if (strchr(fname,'.')) *strchr(fname,'.')=0;
 		Tname += fname;
 	}
-	Tname				= string(pBuild->shader_render[pBuild->materials[material].shader].name) + "/" + Tname;
+	string1024			sid;
+	strconcat			(sid,
+		pBuild->shader_render[pBuild->materials[material].shader].name,
+		"/",
+		Tname.c_str()
+		);
 
 	// Create header
 	ogf_header			H;
 	H.format_version	= xrOGF_FormatVersion;
 	H.type				= MT_TREE;
-	H.shader_id			= RegisterShader	(Tname.c_str());
+	H.shader_id			= RegisterShader	(sid);
 
 	// Vertices
 	fs.open_chunk		(OGF_VCONTAINER);

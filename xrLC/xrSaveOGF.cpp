@@ -67,24 +67,24 @@ void CBuild::SaveTREE(IWriter &fs)
 
 	Status				("Geometry : vertices ...");
 	MFS.clear			();
-	fs.open_chunk		(fsL_VBUFFERS_DX9 | CFS_CompressMark);
+	fs.open_chunk		(fsL_VB | CFS_CompressMark);
 	g_VB.Save			(MFS);
 	fs.w_compressed		(MFS.pointer(),MFS.size());
 	fs.close_chunk		();
 	//mem_Compact			();
 
 	Status				("Geometry : indices ...");
-	MFS.clear();
-	fs.open_chunk		(fsL_IBUFFERS | CFS_CompressMark);
+	MFS.clear			();
+	fs.open_chunk		(fsL_IB | CFS_CompressMark);
 	g_IB.Save			(MFS);
 	fs.w_compressed		(MFS.pointer(),MFS.size());
 	fs.close_chunk		();
 	//mem_Compact			();
 
-	Status				("String table...");
-	fs.open_chunk		(fsL_STRINGS);
-	fs.w_u32			(g_Strings.size());
-	for (xr_vector<LPCSTR>::iterator T=g_Strings.begin(); T!=g_Strings.end(); T++)
+	Status				("Shader table...");
+	fs.open_chunk		(fsL_SHADERS);
+	fs.w_u32			(g_Shaders.size());
+	for (xr_vector<LPCSTR>::iterator T=g_Shaders.begin(); T!=g_Shaders.end(); T++)
 		fs.w_stringZ	(*T);
 	fs.close_chunk		();
 	//mem_Compact			();
