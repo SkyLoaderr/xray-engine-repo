@@ -232,7 +232,7 @@ BOOL CPEDef::Load(IReader& F)
     if (pCreateEAction&&F.find_chunk(PED_CHUNK_EDATA)){
         m_EActionList.resize(F.r_u32());
         for (EPAVecIt it=m_EActionList.begin(); it!=m_EActionList.end(); it++){
-            PAPI::PDomainEnum type = (PAPI::PDomainEnum)F.r_u32();
+            PAPI::PActionEnum type = (PAPI::PActionEnum)F.r_u32();
             (*it)	= pCreateEAction(type);
             (*it)->Load		(F);
         }

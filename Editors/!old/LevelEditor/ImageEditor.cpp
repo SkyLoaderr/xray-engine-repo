@@ -34,8 +34,8 @@ void __fastcall TfrmImageLib::FormCreate(TObject *Sender)
 {
 	m_ItemProps 				= TProperties::CreateForm	("",paProperties,alClient);
     m_ItemList					= IItemList::CreateForm		("Items",paItems,alClient);
-    m_ItemList->SetOnItemsFocusedEvent	(TOnILItemsFocused	(this,&TfrmImageLib::OnItemsFocused));
-    m_ItemList->SetOnItemRemoveEvent	(TOnItemRemove		(&ImageLib,&CImageManager::RemoveTexture));
+    m_ItemList->SetOnItemsFocusedEvent	(TOnILItemsFocused().bind(this,&TfrmImageLib::OnItemsFocused));
+    m_ItemList->SetOnItemRemoveEvent	(TOnItemRemove().bind(&ImageLib,&CImageManager::RemoveTexture));
     m_ItemList->SetImages		(ImageList);
 }
 //---------------------------------------------------------------------------
