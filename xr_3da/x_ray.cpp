@@ -301,6 +301,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	logoWindow = CreateDialog	(GetModuleHandle(NULL),	MAKEINTRESOURCE(IDD_STARTUP), 0, logDlgProc );
 
 	// AVI
+	g_bIntroFinished		= TRUE;
 	/*
 	if (!IsDebuggerPresent())
 	{
