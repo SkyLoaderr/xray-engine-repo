@@ -26,10 +26,10 @@ public:
 	void 		MarkFile		(LPCSTR fn, bool bDeleteSource);
 	void 		BackupFile		(LPCSTR initial, LPCSTR fname, bool bMsg=FALSE);
 
-	BOOL		CheckLocking	(LPCSTR initial, LPCSTR fn, bool bOnlySelf, bool bMsg);
+	BOOL		CheckLocking	(LPCSTR initial, LPCSTR fn, bool bOnlySelf, bool bMsg, shared_str* owner=0);
 	BOOL		LockFile		(LPCSTR initial, LPCSTR fn, bool bLog=true);
 	BOOL		UnlockFile		(LPCSTR initial, LPCSTR fn, bool bLog=true);
-	LPCSTR		GetLockOwner	(LPCSTR initial, LPCSTR fn);
+	shared_str	GetLockOwner	(LPCSTR initial, LPCSTR fn);
 
 	void		RegisterAccess	(LPCSTR fn, LPCSTR start_msg, bool bLog=true);
 	void		WriteAccessLog	(LPCSTR fn, LPCSTR start_msg);
