@@ -196,10 +196,10 @@ void __fastcall	CSE_Visual::OnChangeVisual	(PropValue* sender)
 	UI.Command					(COMMAND_UPDATE_PROPERTIES);
 }
 
-void CSE_Visual::FillProp			(LPCSTR pref, PropItemVec& values)
+void CSE_Visual::FillProp		(LPCSTR pref, PropItemVec& values)
 {
     PropValue					*V = PHelper.CreateGameObject(values, PHelper.PrepareKey(pref,"Model"),visual_name,sizeof(visual_name));
-    V->SetEvents				(0,0,OnChangeVisual);
+    V->OnChangeEvent			= OnChangeVisual;
 }
 #endif
 

@@ -653,7 +653,7 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
 		if (!bFound)
 			startup_animation[0]= 0;
         PropValue				*tNetPacket = PHelper.CreateList	(values,	PHelper.PrepareKey(pref,s_name,"Startup animation"), startup_animation, &vec);
-        tNetPacket->SetEvents	(0,0,OnChangeAnim);
+        tNetPacket->OnChangeEvent			= OnChangeAnim;
 		// motions
         vec.clear				();
         _I						= ll_bones->begin();
