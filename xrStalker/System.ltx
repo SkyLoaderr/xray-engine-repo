@@ -274,20 +274,20 @@ visual				= equipments\projector.ogf
 
 [bloody_marks]
 wallmarks			= wm\wm_blood_1,wm\wm_blood_2,wm\wm_blood_3
-dist				= 3.0	;2.4	;(м) max расстояние отлета крови
-max_size			= 0.5	;0.3	;(м)радиус пятна при хите силой nominal hit по большому объекту (по маленькому *0.5)
+dist				= 2.0	;2.4	;(м) max расстояние отлета крови
+max_size			= 0.4	;0.3	;(м)радиус пятна при хите силой nominal hit по большому объекту (по маленькому *0.5)
 min_size			= 0.06			;(м)минимальный радиус пятна
-nominal_hit			= 20			;величина номинального хита, при котором разлетается максимум крови (max_size)
+nominal_hit			= 0.5			;величина номинального хита, при котором разлетается максимум крови (max_size)
 
 ;капли крови
 
 blood_drops			= wm\wm_blood_drop_1,wm\wm_blood_drop_2,wm\wm_blood_drop_3,wm\wm_blood_drop_4
-start_blood_size	= 0.00001			;размер раны чтоб начала капать кровь
-stop_blood_size		= 0.0			;размер раны чтоб кровь остановилась (должно быть меньше start_blood_size)
+start_blood_size	= 0.0005		;размер раны чтоб начала капать кровь
+stop_blood_size		= 0.0004		;размер раны чтоб кровь остановилась (должно быть меньше start_blood_size)
 
-blood_drop_time     = 0.1			;время (сек) через которое с раны размером 1.0 будет падать капля крови
-blood_drop_time_min = 0.1			;
-blood_drop_time_max = 0.5			;
+blood_drop_time     = 0.1			;OBSOLETE
+blood_drop_time_min = 0.3			;
+blood_drop_time_max = 2.0			;
 blood_drop_size		= 0.1			;размер капли (м) крови, которая упала
 
 
