@@ -11,12 +11,9 @@
 
 // spawn points
 #define SPAWN_POINT_VERSION			0x0001
-
 #define SPAWN_POINT_CHUNK_VERSION	0xffff
-
 // ALife objects, events and tasks
 #define ALIFE_VERSION				0x0001
-
 #define ALIFE_CHUNK_DATA			0x0000
 #define OBJECT_CHUNK_DATA			0x0001
 #define EVENT_CHUNK_DATA			0x0002
@@ -24,14 +21,11 @@
 #define GAME_TIME_CHUNK_DATA		0x0004
 #define ANOMALY_CHUNK_DATA			0x0005
 #define DISCOVERY_CHUNK_DATA		0x0006
-
 #define LOCATION_TYPE_COUNT			4
-
 #define SECTION_HEADER				"location_"
-
-#define SAVE_PATH					""//"SavedGames\\"
-#define SAVE_NAME					"game.sav"
+#define SAVE_EXTENSION				".sav"
 #define SPAWN_NAME					"game.spawn"
+//#define DEBUG_LOG
 
 class CSE_ALifeEventGroup;
 class CSE_ALifeDynamicObject;
@@ -61,7 +55,6 @@ namespace ALife {
 	const	u32	LOCATION_COUNT	= (u32(1) << (8*sizeof(_LOCATION_ID)));
 
 	DEFINE_VECTOR	(float,						FLOAT_VECTOR,					FLOAT_IT);
-	DEFINE_VECTOR	(CLASS_ID,					CLSID_VECTOR,					CLSID_IT);
 	DEFINE_VECTOR	(LPSTR,						LPSTR_VECTOR,					LPSTR_IT);
 	DEFINE_VECTOR	(Fvector,					FVECTOR_VECTOR,					FVECTOR_IT);
 	DEFINE_VECTOR	(_OBJECT_ID,				OBJECT_VECTOR,					OBJECT_IT);
@@ -88,9 +81,9 @@ namespace ALife {
 	DEFINE_MAP		(_EVENT_ID,					CSE_ALifeEvent*,				EVENT_MAP,					EVENT_PAIR_IT);
 	DEFINE_MAP		(_TASK_ID,					CSE_ALifeTask*,					TASK_MAP,					TASK_PAIR_IT);
 	DEFINE_MAP		(u8,						ALIFE_ENTITY_P_VECTOR*,			ALIFE_ENTITY_P_VECTOR_MAP,	ALIFE_ENTITY_P_VECTOR_PAIR_IT);
-	DEFINE_MAP		(LPCSTR,					CSE_ALifeDiscovery*,			DISCOVERY_P_MAP,			DISCOVERY_P_PAIR_IT);
-	DEFINE_MAP		(LPCSTR,					CSE_ALifeOrganization*,			ORGANIZATION_P_MAP,			ORGANIZATION_P_PAIR_IT);
-	DEFINE_MAP		(LPSTR,						u32,							ARTEFACT_COUNT_MAP,			ARTEFACT_COUNT_PAIR_IT);
+	DEFINE_MAP_PRED	(LPCSTR,					CSE_ALifeDiscovery*,			DISCOVERY_P_MAP,			DISCOVERY_P_PAIR_IT,	pred_str);
+	DEFINE_MAP_PRED	(LPCSTR,					CSE_ALifeOrganization*,			ORGANIZATION_P_MAP,			ORGANIZATION_P_PAIR_IT, pred_str);
+	DEFINE_MAP_PRED	(LPSTR,						u32,							ITEM_COUNT_MAP,				ITEM_COUNT_PAIR_IT,		pred_str);
 
 	typedef struct tagSGraphPoint {
 		ALIFE_ENTITY_P_VECTOR		tpObjects;
@@ -106,6 +99,38 @@ namespace ALife {
 	} SLevelPoint;
 
 	DEFINE_VECTOR	(SLevelPoint,				LEVEL_POINT_VECTOR,				LEVEL_POINT_IT);
+
+	typedef struct tagSTerrainPlace{
+		svector<_LOCATION_ID,LOCATION_TYPE_COUNT>	tMask;
+		u32											dwMinTime;
+		u32											dwMaxTime;
+	} STerrainPlace;
+
+	DEFINE_VECTOR(STerrainPlace, TERRAIN_VECTOR, TERRAIN_IT);
+
+	struct SArtefactOrder {
+		string64				m_caSection;
+		u32						m_dwCount;
+		u32						m_dwPrice;
+	};
+
+	DEFINE_VECTOR		(SArtefactOrder,				ARTEFACT_ORDER_VECTOR,			ARTEFACT_ORDER_IT);
+
+	struct SOrganizationOrder {
+		CSE_ALifeOrganization	*m_tpALifeOrganization;
+		u32						m_dwCount;
+	};
+
+	DEFINE_MAP_PRED		(u32,							SOrganizationOrder,				ORGANIZATION_ORDER_MAP,		ORGANIZATION_ORDER_PAIR_IT, std::greater<u32>);
+
+	struct STraderSupply {
+		string256				m_caSections;
+		u32						m_dwCount;
+		float					m_fMinFactor;
+		float					m_fMaxFactor;
+	};
+
+	DEFINE_VECTOR		(STraderSupply,					TRADER_SUPPLY_VECTOR,			TRADER_SUPPLY_IT);
 
 	enum EInjureType {
 		eInjureTypeNone = u32(0),
@@ -201,31 +226,6 @@ namespace ALife {
 		eResearchStateFreeze,
 		eResearchStateDummy = u32(-1),
 	};
-		
-	typedef struct tagSTerrainPlace{
-		svector<_LOCATION_ID,LOCATION_TYPE_COUNT>	tMask;
-		u32											dwMinTime;
-		u32											dwMaxTime;
-	} STerrainPlace;
-
-	DEFINE_VECTOR(STerrainPlace, TERRAIN_VECTOR, TERRAIN_IT);
-
-	struct SArtefactOrder {
-		string64				m_caSection;
-		u32						m_dwCount;
-		u32						m_dwPrice;
-	};
-
-	struct SOrganizationOrder {
-		CSE_ALifeOrganization	*m_tpALifeOrganization;
-		u32						m_dwCount;
-	};
-
-	DEFINE_VECTOR		(SArtefactOrder,				ARTEFACT_ORDER_VECTOR,			ARTEFACT_ORDER_IT);
-	
-	typedef xr_map<u32,SOrganizationOrder,std::greater<u32> >			ORGANIZATION_ORDER_MAP;
-	typedef xr_map<u32,SOrganizationOrder,std::greater<u32> >::iterator	ORGANIZATION_ORDER_PAIR_IT;
-	//DEFINE_MAP_PRED		(u32,		SOrganizationOrder,			ORGANIZATION_ORDER_MAP,		ORGANIZATION_ORDER_PAIR_IT, (std::greater<u32>));
 };
 
 #endif

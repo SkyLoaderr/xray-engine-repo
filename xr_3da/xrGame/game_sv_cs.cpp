@@ -17,7 +17,7 @@ cs_money::cs_money() {
 	}
 }
 
-void	game_sv_CS::Create			(LPCSTR options)
+void	game_sv_CS::Create			(LPSTR &options)
 {
 	__super::Create					(options);
 

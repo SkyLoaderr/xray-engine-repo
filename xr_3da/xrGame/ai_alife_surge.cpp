@@ -12,7 +12,7 @@
 
 void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i, CSE_ALifeDynamicObject *j, _SPAWN_ID tSpawnID)
 {
-	CSE_Abstract				*tpSE_Abstract = F_entity_Create	(j->s_name);
+	CSE_Abstract				*tpSE_Abstract = F_entity_Create(j->s_name);
 	R_ASSERT2					(tpSE_Abstract,"Can't create entity.");
 	i							= dynamic_cast<CSE_ALifeDynamicObject*>(tpSE_Abstract);
 	R_ASSERT2					(i,"Non-ALife object in the 'game.spawn'");
@@ -29,8 +29,9 @@ void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i
 	i->ID						= m_tpServer->PerformIDgen(0xffff);
 	m_tObjectRegistry.insert	(std::make_pair(i->ID,i));
 	vfUpdateDynamicData			(i);
+	i->m_bALifeControl			= true;
 
-	CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(i);
+	CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract	= dynamic_cast<CSE_ALifeMonsterAbstract*>(i);
 	if (l_tpALifeMonsterAbstract)
 		vfAssignGraphPosition	(l_tpALifeMonsterAbstract);
 
@@ -41,7 +42,7 @@ void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i
 		OBJECT_IT				E = l_tpALifeAbstractGroup->m_tpMembers.end();
 		for ( ; I != E; I++) {
 			LPCSTR						S = pSettings->r_string(i->s_name,"monster_section");
-			CSE_Abstract				*l_tpAbstract = F_entity_Create	(S);
+			CSE_Abstract				*l_tpAbstract = F_entity_Create(S);
 			R_ASSERT2					(l_tpAbstract,"Can't create entity.");
 			CSE_ALifeDynamicObject		*k = dynamic_cast<CSE_ALifeDynamicObject*>(l_tpAbstract);
 			R_ASSERT2					(k,"Non-ALife object in the 'game.spawn'");
@@ -58,6 +59,7 @@ void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i
 			k->ID						= m_tpServer->PerformIDgen(0xffff);
 			*I							= k->ID;
 			k->m_bDirectControl			= false;
+			k->m_bALifeControl			= true;
 			m_tObjectRegistry.insert	(std::make_pair(k->ID,k));
 			vfUpdateDynamicData			(k);
 		}
@@ -69,7 +71,7 @@ void CSE_ALifeSimulator::vfGenerateAnomalousZones()
 	// deactivating all the anomalous zones
 	OBJECT_PAIR_IT				B = m_tObjectRegistry.begin(), I = B, J;
 	OBJECT_PAIR_IT				E = m_tObjectRegistry.end();
-	for ( ; I != E; ) {
+	for ( ; I != E; I++) {
 		CSE_ALifeAnomalousZone *l_tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>((*I).second);
 		if (l_tpALifeAnomalousZone)
 			l_tpALifeAnomalousZone->m_maxPower = 0.f;
@@ -77,8 +79,10 @@ void CSE_ALifeSimulator::vfGenerateAnomalousZones()
 	// for each spawn group activate a zone if any
 	for (I = B; I != E; ) {
 		CSE_ALifeAnomalousZone *l_tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>((*I).second);
-		if (!l_tpALifeAnomalousZone)
+		if (!l_tpALifeAnomalousZone) {
+			I++;
 			continue;
+		}
 
 		// counting zones with the same group ID
 		// !
@@ -134,7 +138,7 @@ void CSE_ALifeSimulator::vfGenerateAnomalousZones()
 					break;
 			}
 			if (p < l_tpSpawnAnomalousZone->m_wItemCount) {
-				CSE_Abstract	*l_tpSE_Abstract = F_entity_Create	(l_tpSpawnAnomalousZone->m_cppArtefactSections[p]);
+				CSE_Abstract	*l_tpSE_Abstract = F_entity_Create(l_tpSpawnAnomalousZone->m_cppArtefactSections[p]);
 				R_ASSERT2		(l_tpSE_Abstract,"Can't create entity.");
 				CSE_ALifeDynamicObject	*i = dynamic_cast<CSE_ALifeDynamicObject*>(l_tpSE_Abstract);
 				R_ASSERT2		(i,"Non-ALife object in the 'game.spawn'");
@@ -146,6 +150,7 @@ void CSE_ALifeSimulator::vfGenerateAnomalousZones()
 				i->o_Position	= m_tpArtefactSpawnPositions[l_dwIndex].tPoint;
 				i->m_tNodeID	= m_tpArtefactSpawnPositions[l_dwIndex].tNodeID;
 				i->m_fDistance	= m_tpArtefactSpawnPositions[l_dwIndex].fDistance;
+				i->m_bALifeControl = true;
 
 				CSE_ALifeItemArtefact *l_tpALifeItemArtefact = dynamic_cast<CSE_ALifeItemArtefact*>(i);
 				R_ASSERT2		(l_tpALifeItemArtefact,"Anomalous zone can't generate non-artefact objects since they don't have an 'anomaly property'!");
@@ -177,71 +182,6 @@ void CSE_ALifeSimulator::vfGenerateAnomalyMap()
 	}
 }
 
-void CSE_ALifeSimulator::vfNewGame()
-{
-	CSE_ALifeGraphRegistry::Init	();
-	CSE_ALifeTraderRegistry::Init	();
-	CSE_ALifeScheduleRegistry::Init	();
-
-	ALIFE_ENTITY_P_IT			B = m_tpSpawnPoints.begin();
-	ALIFE_ENTITY_P_IT			E = m_tpSpawnPoints.end();
-	for (ALIFE_ENTITY_P_IT I = B ; I != E; ) {
-		u32						l_dwGroupID	= (*I)->m_dwSpawnGroup;
-		for (ALIFE_ENTITY_P_IT m = I + 1, j = I; (m != E) && ((*m)->m_dwSpawnGroup == l_dwGroupID); m++) ;
-
-		CSE_Abstract			*tpSE_Abstract = F_entity_Create	((*I)->s_name);
-		R_ASSERT2				(tpSE_Abstract,"Can't create entity.");
-
-		CSE_ALifeDynamicObject	*i = dynamic_cast<CSE_ALifeDynamicObject*>(tpSE_Abstract);
-		R_ASSERT2				(i,"Non-ALife object in the 'game.spawn'");
-
-		CSE_ALifeAnomalousZone	*tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(i);
-		if (tpALifeAnomalousZone) {
-			for ( ; j != m; j++) {
-				CSE_ALifeAnomalousZone	*tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(*j);
-				R_ASSERT2				(tpALifeAnomalousZone,"Anomalous zones are grouped with incompatible objects!");
-				vfCreateObjectFromSpawnPoint(i,*j,_SPAWN_ID(j - B));
-			}
-		}
-		I = m;
-	}
-
-	m_tGameTime					= u64(m_dwStartTime = Device.TimerAsync());
-	m_tZoneState				= eZoneStateSurge;
-	_TIME_ID					l_tFinishTime = m_tGameTime + 3*7*24*3600*1000; // 3 weeks in milliseconds
-	float						l_fTimeFactor = m_fTimeFactor;
-	m_fTimeFactor				= 100;
-
-	// simulating ALife during the given time period
-	while (tfGetGameTime() < l_tFinishTime) {
-		switch (m_tZoneState) {
-			case eZoneStateSurge : {
-				vfPerformSurge		();
-				m_tLastSurgeTime	= tfGetGameTime();
-				m_tNextSurgeTime	= m_tLastSurgeTime + 7*24*3600*1000; // a week in milliseconds
-				m_tZoneState		= eZoneStateAfterSurge;
-				break;
-								   }
-			case eZoneStateAfterSurge : {
-				if (tfGetGameTime() > m_tNextSurgeTime) {
-					m_tZoneState	= eZoneStateSurge;
-					break;
-				}
-
-				ALIFE_MONSTER_P_IT	B = m_tpScheduledObjects.begin(), I = B;
-				ALIFE_MONSTER_P_IT	E = m_tpScheduledObjects.end();
-				for ( ; I != E; I++)
-					vfProcessNPC	(*I);
-				break;
-										}
-			default : NODEFAULT;
-		}
-	}
-
-	m_fTimeFactor				= l_fTimeFactor;
-	Save						();
-}
-
 void CSE_ALifeSimulator::vfBallanceCreatures()
 {
 	// filling array of the survived creatures
@@ -267,31 +207,32 @@ void CSE_ALifeSimulator::vfBallanceCreatures()
 			for ( ; (I != E) && (l_dwSpawnGroup == (*I)->m_dwSpawnGroup); I++)
 				if (m_baAliveSpawnObjects[I - B]) {
 					bOk = true;
+					I++;
 					break;
 				}
-				if (!bOk) {
-					// there is no object being spawned from this spawn group -> spawn it!
-					float				l_fProbability = randF(0,1.f), l_fSum = 0.f;
-					ALIFE_ENTITY_P_IT	j = J;
-					ALIFE_ENTITY_P_IT	e = I;
-					for ( ; (j != e); j++) {
-						l_fSum			+= (*j)->m_fProbability;
-						if (l_fSum > l_fProbability)
-							break;
-					}
-					if (l_fSum > l_fProbability) {
-						CSE_ALifeAnomalousZone		*l_tpALifeAnomalousZone		= dynamic_cast<CSE_ALifeAnomalousZone*>(*j);
-						if (l_tpALifeAnomalousZone)
-							continue;
-
-						CSE_ALifeCreatureAbstract	*l_tpALifeCreatureAbstract	= dynamic_cast<CSE_ALifeCreatureAbstract*>(*j);
-						if (l_tpALifeCreatureAbstract)
-							continue;
-
-						CSE_ALifeDynamicObject		*l_tpALifeDynamicObject;
-						vfCreateObjectFromSpawnPoint(l_tpALifeDynamicObject,*j,_SPAWN_ID(j - B));
-					}
+			if (!bOk) {
+				// there is no object being spawned from this spawn group -> spawn it!
+				float				l_fProbability = randF(0,1.f), l_fSum = 0.f;
+				ALIFE_ENTITY_P_IT	j = J;
+				ALIFE_ENTITY_P_IT	e = I;
+				for ( ; (j != e); j++) {
+					l_fSum			+= (*j)->m_fProbability;
+					if (l_fSum > l_fProbability)
+						break;
 				}
+				if (l_fSum > l_fProbability) {
+					CSE_ALifeAnomalousZone		*l_tpALifeAnomalousZone		= dynamic_cast<CSE_ALifeAnomalousZone*>(*j);
+					if (l_tpALifeAnomalousZone)
+						continue;
+
+//					CSE_ALifeCreatureAbstract	*l_tpALifeCreatureAbstract	= dynamic_cast<CSE_ALifeCreatureAbstract*>(*j);
+//					if (l_tpALifeCreatureAbstract)
+//						continue;
+
+					CSE_ALifeDynamicObject		*l_tpALifeDynamicObject;
+					vfCreateObjectFromSpawnPoint(l_tpALifeDynamicObject,*j,_SPAWN_ID(j - B));
+				}
+			}
 		}
 	}
 
@@ -336,7 +277,7 @@ void CSE_ALifeSimulator::vfKillCreatures()
 				}
 			}
 			else
-				if (randI(100) > getAI().m_pfSurgeDeathProbability->ffGetValue())
+				if (randI(100) < getAI().m_pfSurgeDeathProbability->ffGetValue())
 					l_tpALifeCreatureAbstract->fHealth = 0.f;
 		}
 	}
@@ -356,10 +297,11 @@ void CSE_ALifeSimulator::vfUpdateOrganizations()
 		switch ((*I).second->m_tResearchState) {
 			case eResearchStateLeft : {
 				// asking if we have to join zone investigations
-				if (randF(1) < (*I).second->m_fJoinProbability)
-					(*I).second->m_tResearchState = eResearchStateJoin;
-				break;
-									  }
+				if (randF(1) >= (*I).second->m_fJoinProbability)
+					break;
+
+				(*I).second->m_tResearchState = eResearchStateJoin;
+			}
 			case eResearchStateJoin : {
 				// asking if we have to left zone investigations
 				if (!strlen((*I).second->m_caDiscoveryToInvestigate) && (*I).second->m_tpOrderedArtefacts.empty() && (randF(1) < (*I).second->m_fLeftProbability))
@@ -400,13 +342,20 @@ void CSE_ALifeSimulator::vfUpdateOrganizations()
 						ARTEFACT_ORDER_IT			ee = (*j).second->m_tpArtefactNeed.end();
 						bool						l_bIsReadyForInvention = true;
 						for ( ; ii != ee; ii++) {
-							ARTEFACT_COUNT_PAIR_IT	jj = m_tArtefactRegistry.find((LPSTR)(*ii).m_caSection);
-							if (jj == m_tArtefactRegistry.end()) {
+							bool					l_bFound = false;
+							LPSTR_IT				iii = m_tArtefactRegistry.begin();
+							LPSTR_IT				eee = m_tArtefactRegistry.end();
+							for ( ; iii != eee; ii++)
+								if (!strcmp(*iii,(*ii).m_caSection)) {
+									l_bFound = true;
+									break;
+								}
+							if (!l_bFound) {
 								l_bFoundDiscovery	= false;
 								break;
 							}
 							else {
-								jj = (*I).second->m_tpPurchasedArtefacts.find((LPSTR)(*ii).m_caSection);
+								ITEM_COUNT_PAIR_IT	jj = (*I).second->m_tpPurchasedArtefacts.find((LPSTR)(*ii).m_caSection);
 								if ((jj == (*I).second->m_tpPurchasedArtefacts.end()) || ((*jj).second < (*ii).m_dwCount))
 									l_bIsReadyForInvention = false;
 							}
@@ -433,7 +382,7 @@ void CSE_ALifeSimulator::vfUpdateOrganizations()
 						(*I).second->m_tpPurchasedArtefacts.clear();
 				}
 				break;
-									  }
+			}
 			case eResearchStateResearch : {
 				// getting pointer to discovery object from the discovery registry
 				DISCOVERY_P_PAIR_IT	i = m_tDiscoveryRegistry.find((*I).second->m_caDiscoveryToInvestigate);
@@ -468,7 +417,7 @@ void CSE_ALifeSimulator::vfUpdateOrganizations()
 						}
 				}
 				break;
-										  }
+			}
 			case eResearchStateFreeze : {
 				// getting pointer to discovery object from the discovery registry
 				DISCOVERY_P_PAIR_IT	i = m_tDiscoveryRegistry.find((*I).second->m_caDiscoveryToInvestigate);
@@ -477,7 +426,7 @@ void CSE_ALifeSimulator::vfUpdateOrganizations()
 				if (randF(1) < (*i).second->m_fUnfreezeProbability)
 					(*I).second->m_tResearchState = eResearchStateJoin;
 				break;
-										}
+			}
 			default : NODEFAULT;
 		}
 	}
@@ -486,7 +435,7 @@ void CSE_ALifeSimulator::vfUpdateOrganizations()
 void CSE_ALifeSimulator::vfSellArtefacts(CSE_ALifeTrader &tTrader)
 {
 	// filling temporary map with the purchased artefacts
-	m_tpTraderArtefacts.clear();
+	m_tpTraderItems.clear();
 	{
 		xr_vector<u16>::iterator	i = tTrader.children.begin();
 		xr_vector<u16>::iterator	e = tTrader.children.end();
@@ -494,23 +443,24 @@ void CSE_ALifeSimulator::vfSellArtefacts(CSE_ALifeTrader &tTrader)
 			// getting pointer to the purchased item from the object registry
 			OBJECT_PAIR_IT	j = m_tObjectRegistry.find(*i);
 			R_ASSERT2		(j != m_tObjectRegistry.end(),"Trader purchased unregistered item!");
+			
 			// checking if the purchased item is an artefact
 			CSE_ALifeItemArtefact *l_tpALifeItemArtefact = dynamic_cast<CSE_ALifeItemArtefact*>((*j).second);
 			if (!l_tpALifeItemArtefact)
 				continue;
 
 			// adding item to the temporary artefact map
-			ARTEFACT_COUNT_PAIR_IT	k = m_tpTraderArtefacts.find(l_tpALifeItemArtefact->s_name);
-			if (k == m_tpTraderArtefacts.end())
-				m_tpTraderArtefacts.insert(std::make_pair(l_tpALifeItemArtefact->s_name,1));
+			ITEM_COUNT_PAIR_IT		k = m_tpTraderItems.find(l_tpALifeItemArtefact->s_name);
+			if (k == m_tpTraderItems.end())
+				m_tpTraderItems.insert(std::make_pair(l_tpALifeItemArtefact->s_name,1));
 			else
 				(*k).second++;
 		}
 	}
 
 	// iterating on all the trader artefacts
-	ARTEFACT_COUNT_PAIR_IT		i = m_tpTraderArtefacts.begin();
-	ARTEFACT_COUNT_PAIR_IT		e = m_tpTraderArtefacts.end();
+	ITEM_COUNT_PAIR_IT				i = m_tpTraderItems.begin();
+	ITEM_COUNT_PAIR_IT				e = m_tpTraderItems.end();
 	for ( ; i != e; i++) {
 		m_tpSoldArtefacts.clear	();
 		// iterating on all the organizations
@@ -541,13 +491,34 @@ void CSE_ALifeSimulator::vfSellArtefacts(CSE_ALifeTrader &tTrader)
 			ORGANIZATION_ORDER_PAIR_IT	E = m_tpSoldArtefacts.end();
 			for ( ; I != E; I++) {
 				// checking if organization has already bought these artefacts
-				ARTEFACT_COUNT_PAIR_IT	j = (*I).second.m_tpALifeOrganization->m_tpPurchasedArtefacts.find((*i).first);
+				ITEM_COUNT_PAIR_IT		j = (*I).second.m_tpALifeOrganization->m_tpPurchasedArtefacts.find((*i).first);
 				if (j == (*I).second.m_tpALifeOrganization->m_tpPurchasedArtefacts.end())
 					(*I).second.m_tpALifeOrganization->m_tpPurchasedArtefacts.insert(std::make_pair((*i).first,(*I).second.m_dwCount));
 				else
 					(*j).second			+= (*I).second.m_dwCount;
 				// adding money to trader
-				tTrader.m_dwMoney		+= (*I).first;
+				tTrader.m_dwMoney		+= (*I).first*(*I).second.m_dwCount;
+				// removing sold objects from trader ownership
+				{
+					bool						l_bFoundObject = false;
+					xr_vector<u16>::iterator	ii = tTrader.children.begin();
+					xr_vector<u16>::iterator	ee = tTrader.children.end();
+					for ( ; ii != ee; ii++) {
+						// getting pointer to the purchased item from the object registry
+						OBJECT_PAIR_IT	jj = m_tObjectRegistry.find(*ii);
+						R_ASSERT2		(jj != m_tObjectRegistry.end(),"Trader purchased unregistered item!");
+						if (!strcmp((*i).first,(*jj).second->s_name)) {
+							CSE_Abstract				*l_tpAbstract = dynamic_cast<CSE_Abstract*>((*jj).second);
+							m_tpServer->entity_Destroy	(l_tpAbstract);
+							xr_delete					((*jj).second);
+							m_tObjectRegistry.erase		(*ii);
+							tTrader.children.erase		(ii);
+							l_bFoundObject				= true;
+							break;
+						}
+					}
+					R_ASSERT2					(l_bFoundObject,"Not enough objects to sell!");
+				}
 			}
 		}
 	}
@@ -575,13 +546,98 @@ void CSE_ALifeSimulator::vfUpdateArtefactOrders(CSE_ALifeTrader &tTrader)
 						bOk			= true;
 						break;
 					}
-					if (!bOk) {
-						SArtefactOrder	l_tArtefactOrder;
-						strcpy			(l_tArtefactOrder.m_caSection,(*i).m_caSection);
-						l_tArtefactOrder.m_dwCount = (*i).m_dwCount;
-						l_tArtefactOrder.m_dwPrice = (*i).m_dwPrice;
-						tTrader.m_tpOrderedArtefacts.push_back(l_tArtefactOrder);
-					}
+				if (!bOk) {
+					SArtefactOrder	l_tArtefactOrder;
+					strcpy			(l_tArtefactOrder.m_caSection,(*i).m_caSection);
+					l_tArtefactOrder.m_dwCount = (*i).m_dwCount;
+					l_tArtefactOrder.m_dwPrice = (*i).m_dwPrice;
+					tTrader.m_tpOrderedArtefacts.push_back(l_tArtefactOrder);
+				}
+			}
+		}
+	}
+}
+
+void CSE_ALifeSimulator::vfBuySupplies(CSE_ALifeTrader &tTrader)
+{
+	// filling temporary map with the purchased items
+	m_tpTraderItems.clear();
+	{
+		xr_vector<u16>::iterator	i = tTrader.children.begin();
+		xr_vector<u16>::iterator	e = tTrader.children.end();
+		for ( ; i != e; i++) {
+			// getting pointer to the purchased item from the object registry
+			OBJECT_PAIR_IT	j = m_tObjectRegistry.find(*i);
+			R_ASSERT2		(j != m_tObjectRegistry.end(),"Trader purchased unregistered item!");
+
+			// checking if the purchased item is an item
+			CSE_ALifeItem *l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>((*j).second);
+			if (!l_tpALifeItem)
+				continue;
+
+			// adding item to the temporary item map
+			ITEM_COUNT_PAIR_IT		k = m_tpTraderItems.find(l_tpALifeItem->s_name);
+			if (k == m_tpTraderItems.end())
+				m_tpTraderItems.insert(std::make_pair(l_tpALifeItem->s_name,1));
+			else
+				(*k).second++;
+		}
+	}
+
+	// iterating on all the supply orders
+	string64						S, S1;
+	TRADER_SUPPLY_IT				I = tTrader.m_tpSupplies.begin();
+	TRADER_SUPPLY_IT				E = tTrader.m_tpSupplies.end();
+	for ( ; I != E; I++) {
+		// choosing item to purchase
+		u32							l_dwIndex = randI(_GetItemCount((*I).m_caSections));
+		_GetItem					((*I).m_caSections,l_dwIndex,S);
+		
+		// checking if item dependent discoveries are invented
+		LPCSTR						l_caItemDependencies = pSettings->r_string(S,"discovery_dependency");
+		bool						l_bIndependent = true;
+		for (u32 i=0, n = _GetItemCount(l_caItemDependencies); i<n; i++)
+			if (m_tDiscoveryRegistry.end() == m_tDiscoveryRegistry.find(_GetItem(S,i,S1))) {
+				l_bIndependent = false;
+				break;
+			}
+		if (!l_bIndependent)
+			continue;
+		
+		// counting how much items of the "item" we have to purchase
+		ITEM_COUNT_PAIR_IT			j = m_tpTraderItems.find(S);
+		u32							l_dwItemCount = 0;
+		if (j != m_tpTraderItems.end())
+			l_dwItemCount			= (*j).second;
+		int							l_iDifference = int((*I).m_dwCount) - int(l_dwItemCount);
+		if (l_iDifference > 0) {
+			l_iDifference			= iFloor(float(l_iDifference)*randF((*I).m_fMinFactor,(*I).m_fMaxFactor) + .5f);
+			// purchase an item
+			for (int p=0; p<l_iDifference; p++) {
+				// create item object
+				CSE_Abstract	*l_tpSE_Abstract = F_entity_Create	(S);
+				R_ASSERT2		(l_tpSE_Abstract,"Can't create entity.");
+				CSE_ALifeDynamicObject	*i = dynamic_cast<CSE_ALifeDynamicObject*>(l_tpSE_Abstract);
+				R_ASSERT2		(i,"Non-ALife object in the 'game.spawn'");
+				CSE_ALifeItem	*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(i);
+				R_ASSERT2		(i,"Non-item object in the trader supplies string!");
+				
+				// checking if there is enough money to buy an item
+				if (l_tpALifeItem->m_dwCost > tTrader.m_dwMoney) {
+					xr_delete	(l_tpSE_Abstract);
+					break;
+				}
+				tTrader.m_dwMoney			-= l_tpALifeItem->m_dwCost;
+				l_tpALifeItem->ID			= m_tpServer->PerformIDgen(0xffff);
+				l_tpALifeItem->m_tSpawnID	= _SPAWN_ID(-1);
+				l_tpALifeItem->m_tGraphID	= tTrader.m_tGraphID;
+				l_tpALifeItem->o_Position	= tTrader.o_Position;
+				l_tpALifeItem->m_tNodeID	= tTrader.m_tNodeID;
+				l_tpALifeItem->m_fDistance	= tTrader.m_fDistance;
+				l_tpALifeItem->ID_Parent	= tTrader.ID;
+				l_tpALifeItem->m_bALifeControl = true;
+				m_tObjectRegistry.insert	(std::make_pair(i->ID,i));
+				vfUpdateDynamicData			(i);
 			}
 		}
 	}
@@ -609,9 +665,4 @@ void CSE_ALifeSimulator::vfPerformSurge()
 		for ( ; I != E; I++)
 			vfUpdateArtefactOrders	(**I);
 	}
-}
-
-void CSE_ALifeSimulator::vfBuySupplies(CSE_ALifeTrader &tTrader)
-{
-	
 }

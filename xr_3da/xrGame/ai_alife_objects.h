@@ -149,7 +149,6 @@ public:
 	DEMAND_P_VECTOR					m_tpArtefactDemand;
 	ARTEFACT_ORDER_VECTOR			m_tpArtefactNeed;
 	LPSTR_VECTOR					m_tpDependency;
-	CLSID_VECTOR					m_tpClassIDs;
 
 
 									CSE_ALifeDiscovery	(LPCSTR caSection);
@@ -168,7 +167,7 @@ public:
 	EResearchState					m_tResearchState;
 	_TIME_ID						m_tTimeFinish;				// this member is usd for keeping time where some state finishes (research or freeze)
 	ARTEFACT_ORDER_VECTOR			m_tpOrderedArtefacts;
-	ARTEFACT_COUNT_MAP				m_tpPurchasedArtefacts;
+	ITEM_COUNT_MAP					m_tpPurchasedArtefacts;
 	string64						m_caDiscoveryToInvestigate;
 
 

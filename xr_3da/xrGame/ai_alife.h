@@ -33,15 +33,14 @@ private:
 	u32								m_dwSwitchDelay;
 	xrServer						*m_tpServer;
 	bool							m_bActorEnabled;
+	string256						m_caSaveName;
 
 	
 	// buffer for union operations
 	TASK_VECTOR						m_tpBufferTaskIDs;
 
-	// temporary buffer for object being switched offline children
-	OBJECT_VECTOR					m_tpChildren;
 	// temporary buffer for purchesed by the particular trader artefacts
-	ARTEFACT_COUNT_MAP				m_tpTraderArtefacts;
+	ITEM_COUNT_MAP					m_tpTraderItems;
 	ORGANIZATION_ORDER_MAP			m_tpSoldArtefacts;
 
 	// comnmon
@@ -81,6 +80,7 @@ private:
 public:
 	// members
 	bool							m_bLoaded;
+	LPSTR							*m_cppServerOptions;
 	// methods
 									CSE_ALifeSimulator			(xrServer					*tpServer);
 	virtual							~CSE_ALifeSimulator			();
@@ -88,10 +88,11 @@ public:
 	virtual void					shedule_Update				(u32 dt);	
 	virtual BOOL					shedule_Ready				();
 	virtual LPCSTR					cName						();
-	virtual void					Load						(LPCSTR						caSaveName = SAVE_NAME);
-			void					Save						(LPCSTR						caSaveName = SAVE_NAME);
+	virtual void					Load						(LPCSTR						caSaveName);
+			void					Save						(LPCSTR						caSaveName);
+			void					Save						();
 			void					Generate					();
-			void					vfNewGame					();
+			void					vfNewGame					(LPCSTR						caSaveName);
 			void					vfRemoveObject				(CSE_Abstract				*tpSE_Abstract);
 #ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
 			void					vfListObjects				();

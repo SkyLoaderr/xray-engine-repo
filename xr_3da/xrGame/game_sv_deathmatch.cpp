@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "game_sv_deathmatch.h"
 
-void	game_sv_Deathmatch::Create					(LPCSTR options)
+void	game_sv_Deathmatch::Create					(LPSTR &options)
 {
 	__super::Create					(options);
 	fraglimit	= get_option_i		(options,"fraglimit",0);

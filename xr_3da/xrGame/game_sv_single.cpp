@@ -7,9 +7,19 @@ game_sv_Single::~game_sv_Single			()
 	xr_delete							(m_tpALife);
 }
 
-void	game_sv_Single::Create			(LPCSTR options)
+void	game_sv_Single::Create			(LPSTR &options)
 {
-	m_bALife			= !!strstr(options,"/alife");
+	if (strstr(options,"/alife")) {
+		m_tpALife						= xr_new<CSE_ALifeSimulator>(m_tpServer);
+		m_tpALife->m_cppServerOptions	= &options;
+		string64						S;
+		strcpy							(S,*m_tpALife->m_cppServerOptions);
+		LPSTR							l_cpPointer = strchr(S,'/');
+		R_ASSERT2						(l_cpPointer,"Invalid server options!");
+		*l_cpPointer					= 0;
+		m_tpALife->Load					(S);
+	}
+
 	switch_Phase		(GAME_PHASE_PENDING);
 }
 
@@ -31,11 +41,10 @@ BOOL	game_sv_Single::OnTouch			(u16 eid_who, u16 eid_what)
 	CSE_Abstract*		e_who	= get_entity_from_eid(eid_who);		VERIFY(e_who	);
 	CSE_Abstract*		e_what	= get_entity_from_eid(eid_what);	VERIFY(e_what	);
 
-	if (m_bALife) {
-		
-		CSE_ALifeTraderAbstract*tpTraderParams		= dynamic_cast<CSE_ALifeTraderAbstract*>	(e_who);
+	if (m_tpALife) {
+		CSE_ALifeTraderAbstract	*tpTraderParams		= dynamic_cast<CSE_ALifeTraderAbstract*>(e_who);
 		CSE_ALifeItem			*tpALifeItem		= dynamic_cast<CSE_ALifeItem*>			(e_what);
-		CSE_ALifeDynamicObject *tpDynamicObject	= dynamic_cast<CSE_ALifeDynamicObject*>(e_who);
+		CSE_ALifeDynamicObject	*tpDynamicObject	= dynamic_cast<CSE_ALifeDynamicObject*>	(e_who);
 		
 		if (tpTraderParams && tpALifeItem && tpDynamicObject && (m_tpALife->m_tObjectRegistry.find(e_who->ID) != m_tpALife->m_tObjectRegistry.end()) && (m_tpALife->m_tObjectRegistry.find(tpALifeItem->ID) != m_tpALife->m_tObjectRegistry.end()))
 			m_tpALife->vfAttachItem(*e_who,tpALifeItem,tpALifeItem->m_tGraphID,false);
@@ -45,7 +54,7 @@ BOOL	game_sv_Single::OnTouch			(u16 eid_who, u16 eid_what)
 
 BOOL	game_sv_Single::OnDetach		(u16 eid_who, u16 eid_what)
 {
-	if (m_bALife) {
+	if (m_tpALife) {
 		CSE_Abstract*		e_who	= get_entity_from_eid(eid_who);		VERIFY(e_who	);
 		CSE_Abstract*		e_what	= get_entity_from_eid(eid_what);	VERIFY(e_what	);
 

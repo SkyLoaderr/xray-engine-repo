@@ -38,7 +38,7 @@ CSE_ALifeDiscovery::CSE_ALifeDiscovery(LPCSTR caSection)
 	m_fSuccessProbability		= pSettings->r_float	(caSection,"success_probability");
 	m_fDestroyProbability		= pSettings->r_float	(caSection,"destroy_probability");
 	m_fUnfreezeProbability		= pSettings->r_float	(caSection,"unfreeze_probability");
-	m_fResultProbability		= pSettings->r_float	(caSection,"pSettings->r_float	");
+	m_fResultProbability		= pSettings->r_float	(caSection,"result_probability");
 	m_bAlreadyInvented			= !!pSettings->r_bool(caSection,"already_invented");
 
 	LPCSTR						S;
@@ -73,17 +73,6 @@ CSE_ALifeDiscovery::CSE_ALifeDiscovery(LPCSTR caSection)
 			_GetItem			(S,int(I - B),S1);
 			*I					= (char*)xr_malloc((strlen(S1) + 1)*sizeof(char));
 			strcpy				((char*)(*I),S1);
-		}
-	}
-	{
-		S						= pSettings->r_string	(caSection,"class_ids");
-		m_tpClassIDs.resize		(_GetItemCount(S));
-		CLSID_IT				B = m_tpClassIDs.begin(), I = B;
-		CLSID_IT				E = m_tpClassIDs.end();
-		for ( ; I != E; I++) {
-			_GetItem(S,int(I - B),S1);
-			R_ASSERT2			(strlen(S1) == 8,"Invalid class identifier!");
-			*I					= MK_CLSID(S1[0],S1[1],S1[2],S1[3],S1[4],S1[5],S1[6],S1[7]);
 		}
 	}
 }
@@ -124,16 +113,19 @@ CSE_ALifeOrganization::CSE_ALifeOrganization(LPCSTR caSection)
 	m_fLeftProbability			= pSettings->r_float	(caSection,"left_probability");
 	m_tTraderRank				= EStalkerRank			(pSettings->r_u32(caSection,"trader_rank"));
 	strcpy						(m_caDiscoveryToInvestigate,"");
+	m_tResearchState			= eResearchStateLeft;
 }
 
 CSE_ALifeOrganization::~CSE_ALifeOrganization()
 {
 	free_malloc_vector			(m_tpPossibleDiscoveries);
 	{
-		ARTEFACT_COUNT_PAIR_IT		I = m_tpPurchasedArtefacts.begin();
-		ARTEFACT_COUNT_PAIR_IT		E = m_tpPurchasedArtefacts.end();
-		for ( ; I != E; I++)
-			xr_free					((LPSTR)((*I).first));
+		ITEM_COUNT_PAIR_IT		I = m_tpPurchasedArtefacts.begin();
+		ITEM_COUNT_PAIR_IT		E = m_tpPurchasedArtefacts.end();
+		for ( ; I != E; I++) {
+			LPSTR				S = (*I).first;
+			xr_free				(S);
+		}
 	}
 }
 
@@ -143,22 +135,22 @@ void CSE_ALifeOrganization::Save(IWriter &tMemoryStream)
 	tMemoryStream.w				(&m_tTimeFinish,	sizeof(m_tTimeFinish));
 	tMemoryStream.w_string		(m_caDiscoveryToInvestigate);
 	{
-		tMemoryStream.w_u32			(m_tpOrderedArtefacts.size());
-		ARTEFACT_ORDER_IT			I = m_tpOrderedArtefacts.begin();
-		ARTEFACT_ORDER_IT			E = m_tpOrderedArtefacts.end();
+		tMemoryStream.w_u32		(m_tpOrderedArtefacts.size());
+		ARTEFACT_ORDER_IT		I = m_tpOrderedArtefacts.begin();
+		ARTEFACT_ORDER_IT		E = m_tpOrderedArtefacts.end();
 		for ( ; I != E; I++) {
-			tMemoryStream.w_string	((*I).m_caSection);
-			tMemoryStream.w_u32		((*I).m_dwCount);
-			tMemoryStream.w_u32		((*I).m_dwPrice);
+			tMemoryStream.w_string((*I).m_caSection);
+			tMemoryStream.w_u32	((*I).m_dwCount);
+			tMemoryStream.w_u32	((*I).m_dwPrice);
 		}
 	}
 	{
-		tMemoryStream.w_u32			(m_tpPurchasedArtefacts.size());
-		ARTEFACT_COUNT_PAIR_IT		I = m_tpPurchasedArtefacts.begin();
-		ARTEFACT_COUNT_PAIR_IT		E = m_tpPurchasedArtefacts.end();
+		tMemoryStream.w_u32		(m_tpPurchasedArtefacts.size());
+		ITEM_COUNT_PAIR_IT		I = m_tpPurchasedArtefacts.begin();
+		ITEM_COUNT_PAIR_IT		E = m_tpPurchasedArtefacts.end();
 		for ( ; I != E; I++) {
-			tMemoryStream.w_string	((*I).first);
-			tMemoryStream.w			(&((*I).second),sizeof((*I).second));
+			tMemoryStream.w_string((*I).first);
+			tMemoryStream.w		(&((*I).second),sizeof((*I).second));
 		}
 	}
 }

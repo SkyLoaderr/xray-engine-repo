@@ -73,5 +73,5 @@ public:
 public:
 	game_GameState();
 
-	virtual		void				Create					(LPCSTR options)	=	0;
+	virtual		void				Create					(LPSTR &options)	=	0;
 };

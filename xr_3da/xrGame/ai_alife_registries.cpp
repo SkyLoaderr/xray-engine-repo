@@ -51,8 +51,8 @@ void CSE_ALifeObjectRegistry::Save(IWriter &tMemoryStream)
 void CSE_ALifeObjectRegistry::Load(IReader &tFileStream)
 { 
 	R_ASSERT2					(tFileStream.find_chunk(OBJECT_CHUNK_DATA),"Can't find chunk OBJECT_CHUNK_DATA!");
-	m_tObjectRegistry.clear();
-	u32 dwCount = tFileStream.r_u32();
+	m_tObjectRegistry.clear		();
+	u32							dwCount = tFileStream.r_u32();
 	for (u32 i=0; i<dwCount; i++) {
 		NET_Packet				tNetPacket;
 		u16						u_id;
@@ -67,7 +67,7 @@ void CSE_ALifeObjectRegistry::Load(IReader &tFileStream)
 		// create entity
 		CSE_Abstract			*tpSE_Abstract = F_entity_Create	(s_name);
 		R_ASSERT2				(tpSE_Abstract,"Can't create entity.");
-		CSE_ALifeDynamicObject		*tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(tpSE_Abstract);
+		CSE_ALifeDynamicObject	*tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(tpSE_Abstract);
 		R_ASSERT2				(tpALifeDynamicObject,"Non-ALife object in the saved game!");
 		tpALifeDynamicObject->Spawn_Read(tNetPacket);
 
@@ -77,8 +77,6 @@ void CSE_ALifeObjectRegistry::Load(IReader &tFileStream)
 		tNetPacket.r_begin		(u_id);
 		R_ASSERT2				(M_UPDATE==u_id,"Invalid packet ID (!= M_UPDATE)");
 		tpALifeDynamicObject->UPDATE_Read(tNetPacket);
-		tpALifeDynamicObject->Init(tpALifeDynamicObject->s_name);
-
 		m_tObjectRegistry.insert(std::make_pair(tpALifeDynamicObject->ID,tpALifeDynamicObject));
 	}
 }
@@ -270,15 +268,19 @@ void CSE_ALifeGraphRegistry::vfRemoveObjectFromGraphPoint(CSE_ALifeDynamicObject
 			bOk = true;
 			break;
 		}
-		VERIFY							(bOk);
-		//.		Msg("ALife : removing object %s from graph point %d",tpALifeDynamicObject->s_name_replace,tGraphID);
+	VERIFY							(bOk);
+#ifdef DEBUG_LOG
+	Msg("ALife : removing object %s from graph point %d",tpALifeDynamicObject->s_name_replace,tGraphID);
+#endif
 }
 
 void CSE_ALifeGraphRegistry::vfAddObjectToGraphPoint(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tNextGraphPointID)
 {
 	m_tpGraphObjects[tNextGraphPointID].tpObjects.push_back(tpALifeDynamicObject);
 	tpALifeDynamicObject->m_tGraphID = tNextGraphPointID;
-	//.		Msg("ALife : adding object %s to graph point %d",tpALifeDynamicObject->s_name_replace,tNextGraphPointID);
+#ifdef DEBUG_LOG
+	Msg("ALife : adding object %s to graph point %d",tpALifeDynamicObject->s_name_replace,tNextGraphPointID);
+#endif
 }
 
 void CSE_ALifeGraphRegistry::vfChangeObjectGraphPoint(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tGraphPointID, _GRAPH_ID tNextGraphPointID)
@@ -316,12 +318,16 @@ void CSE_ALifeGraphRegistry::vfChangeEventGraphPoint(CSE_ALifeEvent *tpEvent, _G
 void CSE_ALifeGraphRegistry::vfAttachItem(CSE_Abstract &CSE_Abstract, CSE_ALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bAddChild)
 {
 	if (bAddChild) {
-		//.			Msg("ALife : (OFFLINE) Attaching item %s to object %s",tpALifeItem->s_name_replace,CSE_Abstract.s_name_replace);
+#ifdef DEBUG_LOG
+		Msg("ALife : (OFFLINE) Attaching item %s to object %s",tpALifeItem->s_name_replace,CSE_Abstract.s_name_replace);
+#endif
 		CSE_Abstract.children.push_back(tpALifeItem->ID);
 		tpALifeItem->ID_Parent = CSE_Abstract.ID;
 	}
-	//.		else
-	//.			Msg("ALife : (ONLINE) Attaching item %s to object %s",tpALifeItem->s_name_replace,CSE_Abstract.s_name_replace);
+#ifdef DEBUG_LOG
+	else
+		Msg("ALife : (ONLINE) Attaching item %s to object %s",tpALifeItem->s_name_replace,CSE_Abstract.s_name_replace);
+#endif
 
 	vfRemoveObjectFromGraphPoint(tpALifeItem,tGraphID);
 
@@ -434,7 +440,6 @@ void CSE_ALifeSpawnRegistry::Load(IReader	&tFileStream)
 		R_ASSERT2				(M_UPDATE == ID,"Invalid packet ID (!= M_UPDATE)!");
 		E->UPDATE_Read			(tNetPacket);
 
-		E->Init					(E->s_name);
 		CSE_ALifeObject			*tpALifeObject = dynamic_cast<CSE_ALifeObject*>(E);
 		VERIFY					(tpALifeObject);
 
@@ -495,12 +500,12 @@ CSE_ALifeOrganizationRegistry::CSE_ALifeOrganizationRegistry()
 {
 	m_tOrganizationRegistry.clear();
 	m_tDiscoveryRegistry.clear	();
-	
+
 	R_ASSERT2					(pSettings->section_exist("organizations"),"There is no section 'organizations' in the 'system.ltx'!");
 	LPCSTR						N,V;
 	for (u32 k = 0; pSettings->r_line("organizations",k,&N,&V); k++)
 		m_tOrganizationRegistry.insert(std::make_pair(N,xr_new<CSE_ALifeOrganization>(N)));
-	
+
 	ORGANIZATION_P_PAIR_IT		I = m_tOrganizationRegistry.begin();
 	ORGANIZATION_P_PAIR_IT		E = m_tOrganizationRegistry.end();
 	for ( ; I != E; I++) {
@@ -512,12 +517,21 @@ CSE_ALifeOrganizationRegistry::CSE_ALifeOrganizationRegistry()
 				m_tDiscoveryRegistry.insert(std::make_pair(*i,xr_new<CSE_ALifeDiscovery>(*i)));
 		}
 	}
+	LPCSTR						S = pSettings->r_string("alife","preknown_artefacts");
+	for (u32 i=0, n=_GetItemCount(S); i<n; i++) {
+		string64				S1;
+		_GetItem				(S,i,S1);
+		LPSTR					S2 = (LPSTR)xr_malloc((strlen(S1) + 1)*sizeof(char));
+		strcpy					(S2,S1);
+		m_tArtefactRegistry.push_back(S2);
+	}
 }
 
 CSE_ALifeOrganizationRegistry::~CSE_ALifeOrganizationRegistry()
 {
 	free_map					(m_tOrganizationRegistry);
 	free_map					(m_tDiscoveryRegistry);
+	free_malloc_vector			(m_tArtefactRegistry);
 }
 
 void CSE_ALifeOrganizationRegistry::Save(IWriter &tMemoryStream)
@@ -525,6 +539,11 @@ void CSE_ALifeOrganizationRegistry::Save(IWriter &tMemoryStream)
 	tMemoryStream.open_chunk	(DISCOVERY_CHUNK_DATA);
 	save_map					(m_tOrganizationRegistry,tMemoryStream);
 	save_map					(m_tDiscoveryRegistry,tMemoryStream);
+	tMemoryStream.w_u32			(m_tArtefactRegistry.size());
+	LPSTR_IT					I = m_tArtefactRegistry.begin();
+	LPSTR_IT					E = m_tArtefactRegistry.end();
+	for ( ; I != E; I++)
+		tMemoryStream.w_string	(*I);
 	tMemoryStream.close_chunk	();
 }
 
@@ -533,4 +552,11 @@ void CSE_ALifeOrganizationRegistry::Load(IReader &tFileStream)
 	R_ASSERT2					(tFileStream.find_chunk(DISCOVERY_CHUNK_DATA),"Can't find chunk DISCOVERY_CHUNK_DATA!");
 	load_initialized_map		(m_tOrganizationRegistry,tFileStream,cafChooseOrganizationKeyPredicate);
 	load_initialized_map		(m_tDiscoveryRegistry,tFileStream,cafChooseDiscoveryKeyPredicate);
+	m_tArtefactRegistry.resize	(tFileStream.r_u32());
+	LPSTR_IT					I = m_tArtefactRegistry.begin();
+	LPSTR_IT					E = m_tArtefactRegistry.end();
+	for ( ; I != E; I++) {
+		*I						= (LPSTR)xr_malloc(64*sizeof(char));
+		tFileStream.r_string	(*I);
+	}
 }

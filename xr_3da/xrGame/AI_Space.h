@@ -111,12 +111,12 @@ public:
 	// REF-counting
 	IC  BYTE		ref_add			(u32 ID)	
 	{
-		if (vfs && ID!=u32(-1))	return q_mark[ID] += BYTE(1);	
+		if (vfs && ID!=u32(-1))		return q_mark[ID] += BYTE(1);	
 		else						return BYTE(0);
 	}
 	IC	BYTE		ref_dec			(u32 ID)
 	{
-		if (vfs && ID!=u32(-1))	return q_mark[ID] -= BYTE(1);	
+ 		if (vfs && ID!=u32(-1))	return q_mark[ID] -= BYTE(1);	
 		else						return BYTE(0);
 	}
 

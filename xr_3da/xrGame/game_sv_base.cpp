@@ -229,7 +229,7 @@ void game_sv_GameState::OnPlayerDisconnect		(u32 id_who)
 	signal_Syncronize	();
 }
 
-void game_sv_GameState::Create					(LPCSTR options)
+void game_sv_GameState::Create					(LPSTR &options)
 {
 	string256	fn_game;
 	if (FS.exist(fn_game, "$level$", "level.game")) 

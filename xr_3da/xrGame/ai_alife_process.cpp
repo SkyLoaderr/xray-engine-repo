@@ -17,8 +17,8 @@ void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 	
 	switch (m_tZoneState) {
 		case eZoneStateSurge : {
-			//vfPerformSurge				();
-			Save						();
+			vfPerformSurge				();
+			Save						(m_caSaveName);
 			m_tLastSurgeTime			= tfGetGameTime();
 			m_tNextSurgeTime			= m_tLastSurgeTime + 7*24*3600*1000; // a week in milliseconds
 			m_tZoneState				= eZoneStateAfterSurge;
@@ -46,7 +46,9 @@ void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 				ProcessOnlineOfflineSwitches(*I);
 				if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= m_qwMaxProcessTime) {
 					m_dwObjectsBeingSwitched = (u32)(I - B + 1);
-//.					Msg("Not enough time (0)[%d : %d] !",E - B, I - M);
+#ifdef DEBUG_LOG
+					Msg("Not enough time (0)[%d : %d] !",E - B, I - M);
+#endif
 					return;
 				}
 			}
@@ -54,13 +56,17 @@ void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 				ProcessOnlineOfflineSwitches(*I);
 				if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= m_qwMaxProcessTime) {
 					m_dwObjectsBeingSwitched = (u32)(I - B + 1);
-//.					Msg("Not enough time (1)[%d : %d] !",E - B, E - M + I - B);
+#ifdef DEBUG_LOG
+					Msg("Not enough time (1)[%d : %d] !",E - B, E - M + I - B);
+#endif
 					return;
 				}
 			}
 			
 			if (CPU::GetCycleCount() - qwStartTime >= m_qwMaxProcessTime) {
-//.				Msg("Not enough time (2)[%d : %d] !",E - B,E - B);
+#ifdef DEBUG_LOG
+				Msg("Not enough time (2)[%d : %d] !",E - B,E - B);
+#endif
 				return;
 			}
 			
@@ -68,7 +74,9 @@ void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 			qwStartTime					= CPU::GetCycleCount();
 			
 			// updating objects being scheduled
-//.			Msg("Enough time (0) !");
+#ifdef DEBUG_LOG
+			Msg("Enough time (0) !");
+#endif
 			if (m_tpScheduledObjects.size()) {
 				ALIFE_MONSTER_P_IT		B = m_tpScheduledObjects.begin();
 				ALIFE_MONSTER_P_IT		M = B + m_dwObjectsBeingProcessed, I;

@@ -5,7 +5,7 @@ game_cl_GameState::game_cl_GameState()
 	local_player	= 0;
 }
 
-void	game_cl_GameState::Create			(LPCSTR options)
+void	game_cl_GameState::Create			(LPSTR &options)
 {
 }
 

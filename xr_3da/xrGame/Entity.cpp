@@ -7,6 +7,7 @@
 #include "hudmanager.h"
 #include "Entity.h"
 #include "ai_funcs.h"
+#include "inventory.h"
 
 #define MAX_ARMOR		200
 #define MAX_HEALTH		100
@@ -260,6 +261,15 @@ BOOL CEntityAlive::net_Spawn	(LPVOID DC)
 	//Movement.SetVelocity	(0,0,0);
 	return					TRUE;
 }
+
+void CEntityAlive::net_Destroy	()
+{
+	CInventoryOwner	*l_tpInventoryOwner = dynamic_cast<CInventoryOwner*>(this);
+	if (l_tpInventoryOwner)
+		l_tpInventoryOwner->m_inventory.ClearAll();
+	inherited::net_Destroy		();
+}
+
 void CEntityAlive::HitImpulse	(float amount, Fvector& vWorldDir, Fvector& vLocalDir)
 {
 //	float Q					= 2*float(amount)/Movement.GetMass();

@@ -27,11 +27,11 @@ void free_malloc_vector(xr_vector<T *> &tpVector)
 		xr_free					(*I);
 };
 
-template <class T1, class T2>
-void free_map(xr_map<T1,T2 *> &tpMap)
+template <class T1, class T2, class T3>
+void free_map(xr_map<T1,T2 *,T3> &tpMap)
 {
-	xr_map<T1,T2 *>::iterator	I = tpMap.begin();
-	xr_map<T1,T2 *>::iterator	E = tpMap.end();
+	xr_map<T1,T2 *,T3>::iterator	I = tpMap.begin();
+	xr_map<T1,T2 *,T3>::iterator	E = tpMap.end();
 	for ( ; I != E; I++)
 		xr_delete				((*I).second);
 };
@@ -161,25 +161,25 @@ void load_object_vector(xr_vector<T *> &tpVector, M &tNetPacket)
 template <class T, class M>
 void load_object_initialized_vector(xr_vector<T *> &tpVector, M &tNetPacket)
 {
-	R_ASSERT2					(tNetPacket.r_u32() != tpVector.size(),"Initialized and saved vector length mismatch!");
+	R_ASSERT2					(tNetPacket.r_u32() == tpVector.size(),"Initialized and saved vector length mismatch!");
 	xr_vector<T *>::iterator	I = tpVector.begin();
 	xr_vector<T *>::iterator	E = tpVector.end();
 	for ( ; I != E; I++)
 		(*I)->Load				(tNetPacket);
 };
 
-template <class T1, class T2, class M>
-void save_map(xr_map<T1,T2 *> &tpMap, M &tNetPacket)
+template <class T1, class T2, class T3, class M>
+void save_map(xr_map<T1,T2 *,T3> &tpMap, M &tNetPacket)
 {
-	tNetPacket.w_u32			(tpMap.size());
-	xr_map<T1,T2 *>::iterator	I = tpMap.begin();
-	xr_map<T1,T2 *>::iterator	E = tpMap.end();
+	tNetPacket.w_u32				(tpMap.size());
+	xr_map<T1,T2 *,T3>::iterator	I = tpMap.begin();
+	xr_map<T1,T2 *,T3>::iterator	E = tpMap.end();
 	for ( ; I != E; I++)
-		(*I).second->Save		(tNetPacket);
+		(*I).second->Save			(tNetPacket);
 };
 
-template <class T1, class T2, class M>
-void load_map(xr_map<T1,T2 *> &tpMap, M &tNetPacket, T1 tfGetKey(const T2 *))
+template <class T1, class T2, class T3, class M>
+void load_map(xr_map<T1,T2 *,T3> &tpMap, M &tNetPacket, T1 tfGetKey(const T2 *))
 {
 	tpMap.clear					();
 	u32							dwCount	= tNetPacket.r_u32();
@@ -190,8 +190,8 @@ void load_map(xr_map<T1,T2 *> &tpMap, M &tNetPacket, T1 tfGetKey(const T2 *))
 	}
 };
 
-template <class T1, class T2, class M>
-void load_map(xr_map<T1,T2> &tpMap, M &tNetPacket)
+template <class T1, class T2, class T3, class M>
+void load_map(xr_map<T1,T2,T3> &tpMap, M &tNetPacket)
 {
 	tpMap.clear					();
 	u32							dwCount	= tNetPacket.r_u32();
@@ -202,12 +202,12 @@ void load_map(xr_map<T1,T2> &tpMap, M &tNetPacket)
 	}
 };
 
-template <class T1, class T2, class M>
-void load_initialized_map(xr_map<T1,T2 *> &tpMap, M &tNetPacket, T1 tfGetKey(const T2 *))
+template <class T1, class T2, class T3, class M>
+void load_initialized_map(xr_map<T1,T2 *,T3> &tpMap, M &tNetPacket, T1 tfGetKey(const T2 *))
 {
-	R_ASSERT2					(tNetPacket.r_u32() != tpMap.size(),"Initialized and saved map length mismatch!");
-	xr_map<T1,T2 *>::iterator	I = tpMap.begin();
-	xr_map<T1,T2 *>::iterator	E = tpMap.end();
+	R_ASSERT2					(tNetPacket.r_u32() == tpMap.size(),"Initialized and saved map length mismatch!");
+	xr_map<T1,T2 *,T3>::iterator	I = tpMap.begin();
+	xr_map<T1,T2 *,T3>::iterator	E = tpMap.end();
 	for ( ; I != E; I++)
 		(*I).second->Load		(tNetPacket);
 };

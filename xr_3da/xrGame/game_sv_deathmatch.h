@@ -6,7 +6,7 @@ class	game_sv_Deathmatch			: public game_sv_GameState
 {
 protected:
 public:
-	virtual		void				Create					(LPCSTR options);
+	virtual		void				Create					(LPSTR &options);
 
 	// Events
 	virtual		void				OnRoundStart			();										// старт раунда

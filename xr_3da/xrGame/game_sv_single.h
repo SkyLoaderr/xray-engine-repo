@@ -11,17 +11,16 @@ private:
 public:
 	CSE_ALifeSimulator				*m_tpALife;
 	xrServer						*m_tpServer;
-	bool							m_bALife;
+
 									game_sv_Single			(xrServer *tpServer) : game_sv_GameState()
 	{
 		m_tpServer					= tpServer;
 		m_tpALife					= 0;
-		m_bALife					= false;
 	};
 
 	virtual							~game_sv_Single			();
 
-	virtual		void				Create					(LPCSTR options);
+	virtual		void				Create					(LPSTR &options);
 	virtual		CSE_Abstract*		get_entity_from_eid		(u16 id);
 
 	// Events

@@ -41,7 +41,6 @@ CAI_Space::~CAI_Space	()
 	Unload();
 	Device.seqDevCreate.Remove	(this);
 	Device.seqDevDestroy.Remove	(this);
-	Device.Shader.Delete		(sh_debug);
 	OnDeviceDestroy				();
 }
 
@@ -143,8 +142,11 @@ void CAI_Space::Load()
 #define NORMALIZE_VECTOR(t) t.x /= 10.f, t.x += tCameraPosition.x, t.y /= 10.f, t.y += 20.f, t.z /= 10.f, t.z += tCameraPosition.z;
 void CAI_Space::Render()
 {
+	/**
 	if (psAI_Flags.test(aiBrain)) {
 		if (bfCheckIfGraphLoaded()) {
+			if (!Level().CurrentEntity())
+				return;
 			Fvector tCameraPosition = Level().CurrentEntity()->Position();
 			CGameFont* F		= HUD().pFontDI;
 			for (int i=0; i<(int)GraphHeader().dwVertexCount; i++) {
@@ -191,7 +193,7 @@ void CAI_Space::Render()
 			}
 			if (Level().game.type == GAME_SINGLE) {
 				game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
-				if ((tpGame) && (tpGame->m_bALife)) {
+				if ((tpGame) && (tpGame->m_tpALife)) {
 					OBJECT_PAIR_IT	I = tpGame->m_tpALife->m_tObjectRegistry.begin();
 					OBJECT_PAIR_IT	E = tpGame->m_tpALife->m_tObjectRegistry.end();
 					for ( ; I != E; I++) {
@@ -395,6 +397,7 @@ void CAI_Space::Render()
 		}
 	}
 #endif
+	/**/
 }
 
 int	CAI_Space::q_LoadSearch(const Fvector& pos)

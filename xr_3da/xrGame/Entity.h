@@ -111,6 +111,7 @@ public:
 	// Core events
 	virtual void			Load					(LPCSTR section);
 	virtual BOOL			net_Spawn				(LPVOID DC);
+	virtual void			net_Destroy				();
 	virtual void			HitImpulse				(float amount, Fvector& vWorldDir, Fvector& vLocalDir);
 
 	virtual void			g_WeaponBones			(int &L, int &R1, int &R2)										= 0;

@@ -11,6 +11,45 @@
 #include "ai_space.h"
 #include "ai_alife_predicates.h"
 
+void CSE_ALifeSimulator::vfCreateNewTask(CSE_ALifeTrader *tpTrader)
+{
+	OBJECT_PAIR_IT						I = m_tObjectRegistry.begin();
+	OBJECT_PAIR_IT						E = m_tObjectRegistry.end();
+	for ( ; I != E; I++) {
+		CSE_ALifeItem *tpALifeItem = dynamic_cast<CSE_ALifeItem *>((*I).second);
+		if (tpALifeItem && !tpALifeItem->bfAttached()) {
+			CSE_ALifeTask				*tpTask = xr_new<CSE_ALifeTask>();
+			tpTask->m_tCustomerID		= tpTrader->ID;
+			Memory.mem_copy				(tpTask->m_tLocationID,getAI().m_tpaGraph[tpALifeItem->m_tGraphID].tVertexTypes,LOCATION_TYPE_COUNT*sizeof(_LOCATION_ID));
+			tpTask->m_tObjectID			= tpALifeItem->ID;
+			tpTask->m_tTimeID			= tfGetGameTime();
+			tpTask->m_tTaskType			= eTaskTypeSearchForItemOL;
+			CSE_ALifeTaskRegistry::Add	(tpTask);
+			tpTrader->m_tpTaskIDs.push_back(tpTask->m_tTaskID);
+			break;
+		}
+	}
+}
+
+CSE_ALifeTrader *CSE_ALifeSimulator::tpfGetNearestSuitableTrader(CSE_ALifeHumanAbstract *tpALifeHuman)
+{
+	float			fBestDistance = MAX_NODE_ESTIMATION_COST;
+	CSE_ALifeTrader *tpBestTrader = 0;
+	TRADER_P_IT		I = m_tpTraders.begin();
+	TRADER_P_IT		E = m_tpTraders.end();
+	Fvector			&tGlobalPoint = getAI().m_tpaGraph[tpALifeHuman->m_tGraphID].tGlobalPoint;
+	for ( ; I != E; I++) {
+		if ((*I)->m_tRank != tpALifeHuman->m_tRank)
+			break;
+		float		fCurDistance = getAI().m_tpaGraph[(*I)->m_tGraphID].tGlobalPoint.distance_to(tGlobalPoint);
+		if (fCurDistance < fBestDistance) {
+			fBestDistance = fCurDistance;
+			tpBestTrader = *I;
+		}
+	}
+	return			(tpBestTrader);
+}
+
 void CSE_ALifeSimulator::vfAssignGraphPosition(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract)
 {
 	tpALifeMonsterAbstract->m_tNextGraphID		= tpALifeMonsterAbstract->m_tPrevGraphID = tpALifeMonsterAbstract->m_tGraphID;
