@@ -168,7 +168,7 @@ void CBuild::IsolateVertices()
 	Phase				("Isolating vertices...");
 	Status				("Processing...");
 	{
-		u32 M1			= mem_Usage();
+		u32 M1				= Memory.mem_usage	();
 		g_bUnregister		= false;
 		u32 verts_old		= g_vertices.size();
 		for (int it=0; it<int(g_vertices.size()); it++)
@@ -180,7 +180,7 @@ void CBuild::IsolateVertices()
 		g_vertices.erase	(_end,g_vertices.end());
 		g_bUnregister		= true;
 		mem_Compact			();
-		u32 M2			= mem_Usage();
+		u32 M2				= Memory.mem_usage	();
 		Msg("Compact: %d / %d (%d), %d verts removed",M1/1024,M2/1024,(M1-M2)/1024,verts_old-g_vertices.size());
 	}
 }
