@@ -42,9 +42,9 @@ CAI_Stalker::CAI_Stalker			()
 	m_iSoundIndex					= -1;
 	m_dwSoundTime					= 0;
 	
-//	m_fAccuracy						= 100.f;
-//	m_fIntelligence					= 100.f;
-	
+//	m_fAccuracy						= 0.f;
+//	m_fIntelligence					= 0.f;
+
 	m_pPhysicsShell					= NULL;
 	m_saved_impulse					= 0.f;
 }

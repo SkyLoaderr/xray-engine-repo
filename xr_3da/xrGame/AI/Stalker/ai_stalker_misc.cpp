@@ -16,11 +16,12 @@
 void CAI_Stalker::vfBuildPathToDestinationPoint(CAISelectorBase *S, bool bCanStraighten, Fvector *tpDestinationPosition)
 {
 	// building a path from and to
-	if (AI_Path.DestNode == AI_NodeID && !tpDestinationPosition) {
+	if ((AI_Path.DestNode == AI_NodeID) && !tpDestinationPosition) {
 		AI_Path.Nodes.clear();
 		AI_Path.TravelPath.clear();
 		AI_Path.TravelStart = 0;
 		m_fCurSpeed = 0;
+		AI_Path.bNeedRebuild = FALSE;
 		return;
 	}
 
@@ -145,24 +146,35 @@ void CAI_Stalker::vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, C
 		
 //		m_dwLastRangeSearch = S.m_dwCurTime;
 		vfInitSelector(S,Squad,Leader);
+		float fOldCost;
+		if (AI_Path.DestNode != u32(-1)) {
+			NodeCompressed*	T = getAI().Node(AI_Path.DestNode);
+			BOOL			bStop;
+			fOldCost		= S.Estimate(T,getAI().u_SqrDistance2Node(vPosition,T),bStop);
+			Msg				("PrevNode : %d, cost : %f",AI_Path.DestNode,fOldCost);
+		}
 		Device.Statistic.AI_Node.Begin();
 		Squad.Groups[g_Group()].GetAliveMemberInfoWithLeader(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this,Leader);
 		Device.Statistic.AI_Node.End();
 		// search for the best node according to the 
 		// selector evaluation function in the radius N meteres
-		float fOldCost;
+		//Msg("[%f][%f][%f]",VPUSH(S.m_tEnemyPosition));
 		getAI().q_Range_Bit(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
 		
 		// if search has found _new_ best node then 
 //		if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
+		Msg("CurrNode : %d, cost %f",S.BestNode,S.BestCost);
 		if ((AI_Path.DestNode != S.BestNode) && (S.BestCost < (fOldCost - S.fLaziness))){
+			Msg("ChooNode : %d, cost %f",S.BestNode,S.BestCost);
 			AI_Path.DestNode		= S.BestNode;
 			AI_Path.bNeedRebuild	= TRUE;
 			//vfAddToSearchList();
 		} 
+		else
+			Msg("ChooNode : %d, cost %f",AI_Path.DestNode,fOldCost);
 		
-		if (AI_Path.TravelPath.empty() || (AI_Path.TravelPath.size() - 1 <= AI_Path.TravelStart))
-			AI_Path.bNeedRebuild = TRUE;
+//		if (AI_Path.TravelPath.empty() || (AI_Path.TravelPath.size() - 1 <= AI_Path.TravelStart))
+//			AI_Path.bNeedRebuild = TRUE;
 		
 //		if (AI_Path.bNeedRebuild)
 //			m_dwLastSuccessfullSearch = S.m_dwCurTime;

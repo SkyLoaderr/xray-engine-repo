@@ -113,10 +113,13 @@ void CAI_Stalker::SetDirectionLook()
 	if (i > 1) {
 		CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
 		tWatchDirection.sub(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
-		if (tWatchDirection.magnitude() > EPS_L) {
-			tWatchDirection.normalize();
-			mk_rotation(tWatchDirection,r_target);
-		}
+		tWatchDirection.getHP(r_target.yaw,r_target.pitch);
+		r_target.yaw *= -1;
+		r_target.pitch *= -1;
+//		if (tWatchDirection.magnitude() > EPS_L) {
+//			tWatchDirection.normalize();
+//			mk_rotation(tWatchDirection,r_target);
+//		}
 	}
 }
 

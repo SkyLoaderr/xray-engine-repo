@@ -226,8 +226,11 @@ void CAI_Space::Render()
 		vector<CObject*>::iterator	E = Level().Objects.objects.end();
 		for ( ; I != E; I++) {
 			CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster*>(*I);
-			if (tpCustomMonster)
+			if (tpCustomMonster) {
 				tpCustomMonster->OnRender();
+				if (!tpCustomMonster->AI_Path.TravelPath.empty())
+					RCache.dbg_DrawAABB(tpCustomMonster->AI_Path.TravelPath[tpCustomMonster->AI_Path.TravelPath.size() - 1].P,1.f,1.f,1.f,D3DCOLOR_XRGB(0,0,255));
+			}
 		}
 	}
 #endif
@@ -340,8 +343,11 @@ void CAI_Space::Render()
 	vector<CObject*>::iterator	E = Level().Objects.objects.end();
 	for ( ; I != E; I++) {
 		CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster*>(*I);
-		if (tpCustomMonster)
+		if (tpCustomMonster) {
 			tpCustomMonster->OnRender();
+			if (!tpCustomMonster->AI_Path.TravelPath.empty())
+				RCache.dbg_DrawAABB(tpCustomMonster->AI_Path.TravelPath[tpCustomMonster->AI_Path.TravelPath.size() - 1].P,1.f,1.f,1.f,D3DCOLOR_XRGB(0,0,255));
+		}
 	}
 #endif
 }

@@ -19,7 +19,7 @@ void CAI_Space::q_Range(u32 StartNode, const Fvector& BasePos, float Range, AI::
 	NodeCompressed*	Base = m_nodes_ptr	[StartNode];
 	Estimator.BestNode	= StartNode;
 	Estimator.BestCost = MAX_NODE_ESTIMATION_COST;
-	fOldCost = Estimator.BestCost = Estimator.Estimate(Base,u_SqrDistance2Node(BasePos,Base),bStop);
+	Estimator.BestCost = Estimator.Estimate(Base,u_SqrDistance2Node(BasePos,Base),bStop);
 	float range_sqr		= Range*Range;
 
 	// Cycle
@@ -86,7 +86,7 @@ void CAI_Space::q_Range_Bit(u32 StartNode, const Fvector& BasePos, float Range, 
 	NodeCompressed*	Base = m_nodes_ptr	[StartNode];
 	Estimator.BestNode	= StartNode;
 	Estimator.BestCost = MAX_NODE_ESTIMATION_COST;
-	fOldCost = Estimator.BestCost = Estimator.Estimate(Base,u_SqrDistance2Node(BasePos,Base),bStop);
+	Estimator.BestCost = Estimator.Estimate(Base,u_SqrDistance2Node(BasePos,Base),bStop);
 	float range_sqr		= Range*Range;
 
 	// Cycle
@@ -155,7 +155,6 @@ void CAI_Space::q_Range(u32 StartNode, const Fvector& BasePos, float Range, AI::
 	Estimator.BestCost = MAX_NODE_ESTIMATION_COST;
 	Estimator.BestCost = Estimator.Estimate(Base,u_SqrDistance2Node(BasePos,Base),bStop);
 	Estimator.BestCost += (float)(dwTimeDifference*COEFFICIENT);
-	fOldCost = Estimator.BestCost;
 	float range_sqr		= Range*Range;
 
 	// Cycle

@@ -48,12 +48,12 @@ float CStalkerSelectorRetreat::Estimate(NodeCompressed* tNode, float fDistance, 
 	m_fDistance = fDistance;
 	vfInit();
 	// computations
-	vfAddTravelCost();
-	CHECK_RESULT;
-	vfAddLightCost();
-	CHECK_RESULT;
+//	vfAddTravelCost();
+//	CHECK_RESULT;
+//	vfAddLightCost();
+//	CHECK_RESULT;
+	vfAddCoverFromEnemyCost();
 	vfAddDistanceToEnemyCost();
-	CHECK_RESULT;
 	return(m_fResult);
 }
 

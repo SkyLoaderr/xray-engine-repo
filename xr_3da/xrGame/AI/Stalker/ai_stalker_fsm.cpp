@@ -70,11 +70,13 @@ void CAI_Stalker::vfUpdateSearchPosition()
 			m_tNextGP					= getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
 			vfChooseNextGraphPoint		();
 			m_tNextGraphPoint.set		(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
-			AI_Path.DestNode			= getAI().m_tpaGraph[m_tNextGP].tNodeID;
+			if (m_eCurrentState == eStalkerStateAccomplishingTask)
+				AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
 			//Msg("Next graph point %d",m_tNextGP);
 		}
 		else
-			AI_Path.DestNode			= getAI().m_tpaGraph[m_tNextGP].tNodeID;
+			if (m_eCurrentState == eStalkerStateAccomplishingTask)
+				AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
 	}
 }
 
@@ -248,11 +250,13 @@ void CAI_Stalker::RetreatKnown()
 
 	SelectEnemy(m_tEnemy);
 
-	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(!m_tEnemy.Enemy);
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(Level().timeServer() - m_dwLostEnemyTime > 60000);
 
-	// I see enemy
-	EStalkerStates eState = EStalkerStates(dwfChooseAction(m_dwActionRefreshRate,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),eStalkerStateAttack,eStalkerStateDefend,eStalkerStateRetreatKnown));
-	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(eState != m_eCurrentState,eState);
+	if (m_tEnemy.Enemy) {
+		// I see enemy
+		EStalkerStates eState = EStalkerStates(dwfChooseAction(m_dwActionRefreshRate,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),eStalkerStateAttack,eStalkerStateDefend,eStalkerStateRetreatKnown));
+		CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(eState != m_eCurrentState,eState);
+	}
 
 	// I have to recharge active weapon
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(Weapons->ActiveWeapon() && !Weapons->ActiveWeapon()->GetAmmoElapsed(),eStalkerStateRecharge);
@@ -261,9 +265,10 @@ void CAI_Stalker::RetreatKnown()
 
 	//CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(m_tpWeaponToTake,eStalkerStateTakeItem);
 
-	vfChoosePointAndBuildPath	(m_tSelectorRetreat,true);
+//	Msg("[%f][%f][%f]",VPUSH(m_tSavedEnemyPosition));
+	vfChoosePointAndBuildPath	(m_tSelectorRetreat);
 
-	vfSetMovementType			(eBodyStateStand,eMovementTypeRun,eLookTypePoint,m_tEnemy.Enemy->Position());
+	vfSetMovementType			(eBodyStateStand,eMovementTypeRun,eLookTypePatrol);//,m_tEnemy.Enemy->Position());
 	
 	if (m_fCurSpeed < EPS_L)
 		r_torso_target.yaw		= r_target.yaw;
@@ -288,7 +293,7 @@ void CAI_Stalker::PursuitUnknown()
 
 	if (m_tSavedEnemy) {
 		INIT_SQUAD_AND_LEADER;
-		Squad.KnownEnemys.insert(m_tSavedEnemy);
+	 	Squad.KnownEnemys.insert(m_tSavedEnemy);
 		EStalkerStates eState = EStalkerStates(dwfChooseAction(m_dwActionRefreshRate,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),eStalkerStateAttack,eStalkerStateDefend,eStalkerStateRetreatKnown));
 		Squad.KnownEnemys.clear();
 		if (eState == eStalkerStateRetreatKnown)
