@@ -115,7 +115,7 @@ void	CLightDB_Static::Track	(CObject* O)
 			dest.lights.push_back	(CLightTrack::Light());
 			CLightTrack::Light&	L	= dest.lights.back();
 			L.L						= xrL;
-			L.L.diffuse.mul_rgb		(I->energy);
+			L.L.diffuse.mul_rgb		(I->energy/2);
 			L.energy				= E;
 		}
 	}

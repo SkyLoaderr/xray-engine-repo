@@ -140,7 +140,7 @@ IC int PLC_calc	(Fvector& P, Fvector& N, Flight* L, float energy, Fvector& O)
 	float	E		= PLC_energy(P,N,L,energy);
 	float	C1		= Device.vCameraPosition.distance_to_sqr(P)/S_distance2;
 	float	C2		= O.distance_to_sqr(P)/S_fade2;
-	float	A		= 1.f-.7f*E*(1.f-C1)*(1.f-C2);
+	float	A		= 1.f-E*(1.f-C1)*(1.f-C2);
 	return			iCeil(255.f*A);
 }
 
@@ -149,13 +149,10 @@ void CLightShadows::calculate	()
 {
 	if (casters.empty())		return;
 
+	BOOL bRTS					= FALSE;
 	Device.Statistic.RenderDUMP_Scalc.Begin	();
-	Device.Shader.set_RT		(RT_temp->pRT,0);
-	HW.pDevice->Clear			(0,0,D3DCLEAR_TARGET,D3DCOLOR_XRGB(255,255,255),1,0);
+	HW.pDevice->SetRenderState	(D3DRS_ZENABLE, D3DZB_FALSE);
 	
-	// set shader
-	Device.Shader.set_Shader	(sh_Texture);
-
 	// iterate on objects
 	int	slot_id		= 0;
 	int slot_line	= S_rt_size/S_size;
@@ -176,6 +173,14 @@ void CLightShadows::calculate	()
 			CLightTrack::Light&	L	=	lights[l_it];
 			if (L.energy<S_level)	continue;
 			
+			// setup rt+state(s) for first use
+			if (!bRTS)	{
+				bRTS						= TRUE;
+				Device.Shader.set_RT		(RT_temp->pRT,0);
+				Device.Shader.set_Shader	(sh_Texture);
+				HW.pDevice->Clear			(0,0,D3DCLEAR_TARGET,D3DCOLOR_XRGB(255,255,255),1,0);
+			}
+
 			// calculate light center
 			Fvector		Lpos	= L.L.position;
 			float		Lrange	= L.L.range;
@@ -245,6 +250,7 @@ void CLightShadows::calculate	()
 	casters.clear	();
 	
 	// Blur
+	if (bRTS)
 	{
 		float						dim				= S_rt_size;
 		Fvector2					shift,p0,p1,a0,a1,b0,b1,c0,c1,d0,d1;
@@ -287,6 +293,7 @@ void CLightShadows::calculate	()
 	}
 	
 	// Finita la comedia
+	HW.pDevice->SetRenderState				(D3DRS_ZENABLE, D3DZB_TRUE);
 	Device.Statistic.RenderDUMP_Scalc.End	();
 	
 	Device.set_xform_project	(Device.mProject);

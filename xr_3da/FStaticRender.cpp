@@ -373,7 +373,7 @@ void	CRender::rmNear		()
 }
 void	CRender::rmFar		()
 {
-	D3DVIEWPORT8 VP = {0,0,Device.dwWidth,Device.dwHeight,0.99f,1.f };
+	D3DVIEWPORT8 VP = {0,0,Device.dwWidth,Device.dwHeight,0.99999f,1.f };
 	CHK_DX(HW.pDevice->SetViewport(&VP));
 }
 void	CRender::rmNormal	()
@@ -535,7 +535,7 @@ void	CRender::Render		()
 	
 	// Postprocess
 	Target.End				();
-	HOM.Debug				();
+	// HOM.Debug			();
 	L_Projector.finalize	();
 	
 	// HUD
