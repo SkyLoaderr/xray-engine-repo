@@ -127,6 +127,12 @@
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\SQLDMO.h">
+			</File>
+			<File
+				RelativePath=".\SQLDMOid.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
