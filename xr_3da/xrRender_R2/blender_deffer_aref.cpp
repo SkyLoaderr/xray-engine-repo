@@ -19,7 +19,7 @@ void	CBlender_deffer_aref::Load	(	IReader& fs, u16 version )
 void	CBlender_deffer_aref::Compile(CBlender_Compile& C)
 {
 	IBlender::Compile		(C);
-	C.SetParams				(1,false);
+	C.SetParams				(1,false);	//.
 
 	// codepath is the same, only the shaders differ
 	// ***only pixel shaders differ***
