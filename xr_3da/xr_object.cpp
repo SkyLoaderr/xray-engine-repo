@@ -46,7 +46,7 @@ CObject::CObject		( )
 	bVisible					= true;
 
 	pSector						= 0;
-	SectorMode					= EPM_AUTO_AI;
+	SectorMode					= EPM_AUTO;
 	vPositionPrevious.set		(flt_min,flt_min,flt_min);
 
 	ObjectName					= 0;
@@ -136,18 +136,6 @@ BOOL CObject::Spawn(BOOL bLocal, int server_id, Fvector4& o_pos)
 	net_ID				= server_id;
 	net_Ready			= TRUE;
 
-	// AI-DB connectivity
-	Fvector				nPos = vPosition;
-	nPos.y				+= .1f;
-	int node			= pCreator->AI.q_LoadSearch(nPos);
-	if (node<0)			{
-		Msg				("! ERROR: AI node not found. (%f,%f,%f)",nPos.x,nPos.y,nPos.z);
-		R_ASSERT		(node>=0);
-	}
-	AI_NodeID			= DWORD(node);
-	AI_Node				= pCreator->AI.Node(AI_NodeID);
-	AI_Lighting			= (AI_Node?float(AI_Node->light):255);
-
 	// Sector detection
 	DetectSector		();
 	return TRUE;
@@ -180,41 +168,22 @@ void CObject::Update	( DWORD T )
 		// ai space
 		{
 			Fvector		Pos;
-			pVisual->bv_BBox.getcenter(Pos);
+			pVisual->bv_BBox.getcenter	(Pos);
 			Pos.add		(vPosition);
-			AI_NodeID	= pCreator->AI.q_Node	(AI_NodeID,vPosition);
-			AI_Node		= pCreator->AI.Node		(AI_NodeID);
+			AI_NodeID	= pCreator->AI.q_Node			(AI_NodeID,vPosition);
+			AI_Node		= pCreator->AI.Node				(AI_NodeID);
 		}
 
 		// sector
-		switch (SectorMode) {
-		case EPM_AUTO_AI:
-			if (0==AI_Node) {
-				DetectSector();	// undefined sector
-			} else {
-				if (AI_Node->sector == 255)	DetectSector();	// undefined sector
-				else	{
-					CSector*	P = Render.getSector(AI_Node->sector);
-					if	(P && P!=pSector) {
-						if (pSector)	pSector->objectRemove	(this);
-						pSector = P;
-						if (pSector)	pSector->objectAdd		(this);
-					}
-				}
-			}
-			break;
-		case EPM_AUTO_POLYGONAL:
-			DetectSector();
-			break;
-		};
+		if (SectorMode!=EPM_AT_LOAD)	Sector_Detect	();
 	}
 }
 
-void CObject::OnMoveVisible()
+void CObject::OnMoveVisible	()
 {
 }
 
-void CObject::DetectSector()
+void CObject::Sector_Detect	()
 {
 	// Detect sector
 	CSector*	P = 0;
@@ -224,7 +193,11 @@ void CObject::DetectSector()
 	pVisual->bv_BBox.getcenter(Pos);
 	Pos.add		(vPosition);
 	P			= Render.detectSector(vPosition);
-	
+	Sector_Move	(P);
+}
+
+void CObject::Sector_Move	(CSector* P)
+{
 	// Update
 	if (P && P!=pSector) {
 		if (pSector)	pSector->objectRemove	(this);

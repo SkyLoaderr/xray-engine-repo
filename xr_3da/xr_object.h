@@ -14,7 +14,7 @@ class ENGINE_API CCustomHUD;
 class ENGINE_API NET_Packet;
 struct ENGINE_API NodeCompressed;
 
-enum ESectorMode						{EPM_AT_LOAD, EPM_AUTO_POLYGONAL, EPM_AUTO_AI };
+enum ESectorMode						{EPM_AT_LOAD, EPM_AUTO };
 
 //-----------------------------------------------------------------------------------------------------------
 //CXR_Object
@@ -48,7 +48,6 @@ protected:
 	CSector*							pSector;
 	ESectorMode							SectorMode;
 	Fvector								vPositionPrevious;
-	void								DetectSector	();
 
 	// Shadow
 	Shader*								sh_Shader;
@@ -62,11 +61,6 @@ public:
 	BOOL								net_Ready;
 	IC BOOL								Local()			{ return net_Local;		}
 	IC BOOL								Remote()		{ return !net_Local;	}
-
-	// AI connection
-	DWORD								AI_NodeID;
-	NodeCompressed*						AI_Node;
-	float								AI_Lighting;
 
 	// Geometry management
 	Fmatrix								svTransform;
@@ -109,7 +103,9 @@ public:
 
 	virtual void						Load			(CInifile* ini, const char * section);
 	virtual BOOL						Spawn			(BOOL bLocal, int server_id, Fvector4& o_pos);
-
+	virtual void						Sector_Detect	();
+	virtual void						Sector_Move		(CSector* P);
+	
 	// Update
 	virtual void						OnMoveVisible	(void );
 	virtual void						Update			(DWORD dt);
@@ -122,7 +118,7 @@ public:
 	virtual void						OnNear			(CObject* near)		{};
 
 	// HUD
-	virtual void						OnHUDDraw		(CCustomHUD* hud){;}
+	virtual void						OnHUDDraw		(CCustomHUD* hud)	{};
 
 	// Device dependance
 	virtual void						OnDeviceDestroy	();

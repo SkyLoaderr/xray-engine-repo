@@ -121,6 +121,14 @@ SOURCE=.\Entity.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\GameObject.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\GameObject.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\MovementControl.cpp
 # End Source File
 # Begin Source File
