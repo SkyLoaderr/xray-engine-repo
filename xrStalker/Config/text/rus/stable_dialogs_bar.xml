@@ -1011,6 +1011,33 @@
     <string id="bar_svoboda_volkodav_info_dp_14">
         <text>Я передумал.</text>
     </string>
+    <string id="bar_svoboda_volkodav_noquest_11">
+        <text>Да есть такое.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_noquest_111">
+        <text>Давай обмен. Ты мне флешку а я с тобой деньгами поделюсь и снаряжением. Идет? </text>
+    </string>
+    <string id="bar_svoboda_volkodav_noquest_1111">
+        <text>Договорились.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_noquest_11111">
+        <text>Значится так, я с собой вещей дорогих в поле не таскаю. В баре есть мой человек, осведомитель, он информацией торгует. Скажи, что ты от меня, он тебе насыпет барахлишка, может и информацией поделится.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_noquest_1112">
+        <text>Нет, мужик, эта информация мне тоже нужна. Не пойдет.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_noquest_11121">
+        <text>Это ты поступил необдуманно. Взять его!</text>
+    </string>
+    <string id="bar_svoboda_volkodav_noquest_111211">
+        <text>Ах ты сволочь!</text>
+    </string>
+    <string id="bar_svoboda_volkodav_noquest_12">
+        <text>Да нет, а что на ней?</text>
+    </string>
+    <string id="bar_svoboda_volkodav_noquest_121">
+        <text>Информация, которая интересует только нас. Тебя она не касается. В общем, не смею тебя задерживать. Счастливо.</text>
+    </string>
     <string id="bar_svoboda_volkodav_request_dp_0">
         <text>По поводу задания.</text>
     </string>
@@ -1049,6 +1076,9 @@
     </string>
     <string id="bar_svoboda_volkodav_start_41">
         <text>Да, Меченый, ты монстр. На досуге подумай о вступлении в мой отряд. Такие люди нам нужны.</text>
+    </string>
+    <string id="bar_svoboda_volkodav_start_51">
+        <text>Здорово, мужик. Нам тут одна штука нужна, неболшая такая флешка. Ты случайно ее не находил? </text>
     </string>
     <string id="barman_dialog_0">
         <text>default text</text>
