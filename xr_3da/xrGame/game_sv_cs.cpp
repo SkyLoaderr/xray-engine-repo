@@ -37,6 +37,15 @@ void	game_sv_CS::OnRoundStart	()
 		}
 		Unlock	();
 	}
+	// clear "ready" flag
+	Lock	();
+	u32		cnt		= get_count	();
+	for		(u32 it=0; it<cnt; it++)	
+	{
+		game_PlayerState*	ps	=	get_it	(it);
+		ps->flags				&=	~GAME_PLAYER_FLAG_READY;
+	}
+	Unlock	();
 }
 
 void	game_sv_CS::OnRoundEnd		()
