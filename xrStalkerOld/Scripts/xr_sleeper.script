@@ -63,7 +63,7 @@ function action_sleeper_activity:initialize()
 
 	self.move_mgr:initialize()
 
-	self:reset_scheme()
+	self:reset_scheme()	
 end
 
 function action_sleeper_activity:reset_scheme()
@@ -122,8 +122,21 @@ function action_sleeper_activity:reset_scheme()
 end	
 
 function action_sleeper_activity:callback(mode, number)
-	printf("callback called")
 	self.state = state_sleeping
+
+	local position = nil
+	if patrol(self.st.path_main):count() == 2 then
+		position = patrol(self.st.path_main):point(1)
+	end
+	
+	if self.st.wakeable then
+		state_mgr.set_state(self.object, "sit", nil, nil, {look_position = position})
+		xr_sound.sound_update(self.object, self.sound_w)
+	else
+		state_mgr.set_state(self.object, "sleep", nil, nil, {look_position = position})
+		xr_sound.sound_update(self.object, self.sound_s)
+	end
+	
 	return true
 end
 	
@@ -141,13 +154,6 @@ function action_sleeper_activity:execute()
 	end
 
 	if self.state == state_sleeping then
-		if self.st.wakeable then
-			state_mgr.set_state(self.object, "sit")
-			xr_sound.sound_update(self.object, self.sound_w)
-		else
-			state_mgr.set_state(self.object, "sleep")
-			xr_sound.sound_update(self.object, self.sound_s)
-		end
 		if xr_logic.try_switch_to_another_section(self.object, self.st, db.actor) then
 			return
 		end
