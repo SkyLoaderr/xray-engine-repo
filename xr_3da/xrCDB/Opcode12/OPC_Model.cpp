@@ -228,7 +228,6 @@ bool OPCODE_Model::Build(const OPCODECREATE& create)
 		if(mQuantized)	mTree = xr_new<AABBQuantizedTree>();
 		else			mTree = xr_new<AABBCollisionTree>();
 	}
-	CHECKALLOC(mTree);
 
 	// 3-2) Create optimized tree
 	if(!mTree->Build(mSource))	return false;

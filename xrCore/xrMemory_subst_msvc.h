@@ -65,7 +65,9 @@ struct xr_special_free
 {
 	void operator()(T* &ptr)
 	{
-		Memory.mem_free	(dynamic_cast<void*>(ptr));
+		void*	_real_ptr	= dynamic_cast<void*>(ptr);
+		ptr->~T			();
+		Memory.mem_free	(_real_ptr);
 	}
 };
 
@@ -74,6 +76,7 @@ struct xr_special_free<false,T>
 {
 	void operator()(T* &ptr)
 	{
+		ptr->~T			();
 		Memory.mem_free	(ptr);
 	}
 };
@@ -95,7 +98,6 @@ IC	void	xr_delete	(T* &ptr)
 {
 	if (ptr) 
 	{
-		ptr->~T();
 		xr_special_free<is_polymorphic<T>::result,T>()(ptr);
 //		xr_special_free<is_polymorphic<T>::result>(ptr);
 		ptr = NULL;
@@ -106,7 +108,6 @@ IC	void	xr_delete	(T* const &ptr)
 {
 	if (ptr) 
 	{
-		ptr->~T();
 		xr_special_free<is_polymorphic<T>::result,T>(ptr);
 //		xr_special_free<is_polymorphic<T>::result>(ptr);
 		const_cast<T*&>(ptr) = NULL;
