@@ -47,6 +47,7 @@ function action_door:initialize()
 	self.object:set_nonscript_usable(false)
 	self.object:set_use_callback(self, "door_callback")
 
+	printf("_bp: action_door: setting physics callback from initialize")
 	level.add_call(self, "close_check", "close_action")
 
 	if self.st.snd_init then
@@ -172,6 +173,7 @@ function action_door:close_door(disable_snd)
 	end
 
 	-- Ставим коллбек для отлова окончания закрытия двери (чтобы заблокировать ее и проиграть звук, если нужно):
+	printf("_bp: action_door: setting physics callback from close_door")
 	level.add_call(self, "close_check", "close_action")
 
 	printf("_bp: action_door:close_door()")
