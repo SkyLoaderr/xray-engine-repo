@@ -8,6 +8,7 @@
 #include "../../../sound_player.h"
 #include "../../../level.h"
 #include "../../../ai_monster_space.h"
+#include "../../../level_debug.h"
 
 CBurer::CBurer()
 {
@@ -149,6 +150,28 @@ void CBurer::shedule_Update(u32 dt)
 
 	TTelekinesis::schedule_update();
 	TScanner::schedule_update	 ();
+
+	//CActor *obj = smart_cast<CActor *>(Level().CurrentEntity());
+
+	//if (obj->ps_Size() < 2) return;
+
+	//CObject::SavedPosition	pos0 = obj->ps_Element(obj->ps_Size() - 2);
+	//CObject::SavedPosition	pos1 = obj->ps_Element(obj->ps_Size() - 1);
+
+	//float vel = (pos1.vPosition.distance_to(pos0.vPosition) /
+	//			(float(pos1.dwTime)/1000.f - float(pos0.dwTime)/1000.f));
+
+	//if (vel > 5.0f) {
+	//	
+	//	float ph_vel	= obj->movement_control()->GetVelocityActual();
+	//	float ph_vel2	= obj->movement_control()->GetVelocityMagnitude();
+	//	Msg("-- Vel = [%f] vel_act=[%f] vel_mag=[%f]", vel, ph_vel, ph_vel2);
+	//	
+	//	//for (u32 i = 0; i<obj->ps_Size();i++) {
+	//	//	CObject::SavedPosition	val = obj->ps_Element(i);
+	//	//	Msg("P[%u] Pos = [%f,%f,%f] Time = [%u]", i, VPUSH(val.vPosition), val.dwTime);	
+	//	//}
+	//}
 }
 
 void CBurer::CheckSpecParams(u32 spec_params)
@@ -342,3 +365,20 @@ void CBurer::on_scan_success()
 
 	EnemyMan.add_enemy(pA);
 }
+
+#ifdef DEBUG
+CBaseMonster::SDebugInfo CBurer::show_debug_info()
+{
+	CBaseMonster::SDebugInfo info = inherited::show_debug_info();
+	if (!info.active) return CBaseMonster::SDebugInfo();
+
+	string128 text;
+	sprintf(text, "Scan Value = [%f]", TScanner::get_scan_value());
+	DBG().text(this).add_item(text, info.x, info.y+=info.delta_y, info.color);
+	DBG().text(this).add_item("---------------------------------------", info.x, info.y+=info.delta_y, info.delimiter_color);
+
+	return CBaseMonster::SDebugInfo();
+}
+#endif
+
+
