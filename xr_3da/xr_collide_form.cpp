@@ -190,8 +190,8 @@ CCF_Skeleton::CCF_Skeleton(CObject* O) : CCFModel(O)
 	CKinematics* K	= PKinematics(O->Visual());
 	model.resize	(K->LL_BoneCount());
 
-	base_box.set	(K->bv_BBox);
-	bv_box.set		(K->bv_BBox);
+	base_box.set	(K->vis.box);
+	bv_box.set		(K->vis.box);
 	bv_box.getsphere(bv_sphere.P,bv_sphere.R);
 }
 
@@ -223,12 +223,12 @@ void CCF_Skeleton::BuildTopLevel()
 {
 	dwFrameTL			= Device.dwFrame;
 	CVisual* K			= owner->Visual();
-	Fbox& B				= K->bv_BBox;
+	Fbox& B				= K->vis.box;
 	bv_box.min.average	(B.min);
 	bv_box.max.average	(B.max);
 	bv_box.grow			(0.05f);
-	bv_sphere.P.average	(K->bv_Position);
-	bv_sphere.R			+= K->bv_Radius;
+	bv_sphere.P.average	(K->vis.sphere.P);
+	bv_sphere.R			+= K->vis.sphere.R;
 	bv_sphere.R			*= 0.5f;
 }
 
@@ -321,9 +321,9 @@ CCF_EventBox::CCF_EventBox( CObject* O ) : CCFModel(O)
 
 BOOL CCF_EventBox::Contact(CObject* O)
 {
-	CVisual*	V = O->Visual();
-	Fvector&		P = V->bv_Position;
-	float			R = V->bv_Radius;
+	CVisual*	V		= O->Visual();
+	Fvector&		P	= V->vis.sphere.P;
+	float			R	= V->vis.sphere.R;
 	
 	Fvector			PT;
 	O->svXFORM().transform_tiny(PT,P);

@@ -42,9 +42,9 @@ void CObject::setEnabled		(BOOL _enabled)
 	FLAGS.bEnabled = _enabled?1:0;	
 	if (cfModel) cfModel->Enable(_enabled); 
 }
-void	CObject::svCenter			(Fvector& C)	const	{ VERIFY(pVisual); svTransform.transform_tiny(C,pVisual->bv_Position);	}
-void	CObject::clCenter			(Fvector& C)	const	{ VERIFY(pVisual); clTransform.transform_tiny(C,pVisual->bv_Position);	}
-float	CObject::Radius				()				const	{ VERIFY(pVisual); return pVisual->bv_Radius;							}
+void	CObject::svCenter			(Fvector& C)	const	{ VERIFY(pVisual); svTransform.transform_tiny(C,pVisual->vis.sphere.P);	}
+void	CObject::clCenter			(Fvector& C)	const	{ VERIFY(pVisual); clTransform.transform_tiny(C,pVisual->vis.sphere.P);	}
+float	CObject::Radius				()				const	{ VERIFY(pVisual); return pVisual->vis.sphere.R;						}
 
 //----------------------------------------------------------------------
 // Class	: CXR_Object
@@ -220,7 +220,7 @@ void CObject::Sector_Detect	()
 	
 	if (pVisual)	{
 		Fvector		Pos;
-		pVisual->bv_BBox.getcenter(Pos);
+		pVisual->vis.box.getcenter(Pos);
 		Pos.add		(vPosition);
 		Pos.y		=	_max(Pos.y,vPosition.y);
 		Pos.y		+=	EPS_L;

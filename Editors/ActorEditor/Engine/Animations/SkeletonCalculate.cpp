@@ -112,8 +112,8 @@ void CKinematics::Calculate(BOOL bLight)
 {
 	Update();
 
-	if (Device.dwFrame == dwFrame) return;
-	dwFrame = Device.dwFrame; 
+	if (Device.dwFrame == Update_Frame) return;
+	Update_Frame		= Device.dwFrame; 
 
 	// Calculate bones
 	Device.Statistic.Animation.Begin();
@@ -139,11 +139,11 @@ repeat:
 	Device.Statistic.Animation.End	();
 
 	// Calculate BOXes/Spheres if needed
-	iUpdateID++; 
-	if (int(iUpdateID)>=psSkeletonUpdate) 
+	Update_ID++; 
+	if (Update_ID>=psSkeletonUpdate) 
 	{
 		// mark
-		iUpdateID=0;
+		Update_ID		= -(::Random.randI(16));
 
 		// the update itself
 		Fbox	Box; Box.invalidate();
@@ -167,8 +167,8 @@ repeat:
 		}
 
 		// previous frame we have updated box - update sphere
-		bv_BBox.min.average	(Box.min);
-		bv_BBox.max.average	(Box.max);
-		bv_BBox.getsphere	(bv_Position,bv_Radius);
+		vis.box.min.average	(Box.min);
+		vis.box.max.average	(Box.max);
+		vis.box.getsphere	(vis.sphere.P,vis.sphere.R);
 	}
 }

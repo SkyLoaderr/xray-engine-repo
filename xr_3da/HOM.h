@@ -6,6 +6,8 @@
 #define AFX_HOM_H__94471B51_E215_4C67_B753_B02F66D79911__INCLUDED_
 #pragma once
 
+#include "vis_common.h"
+
 class ENGINE_API occTri;
 
 class ENGINE_API CHOM  
@@ -33,6 +35,7 @@ public:
 	void					Render_ZB	();
 	void					Debug		();
 
+	BOOL					visible		(vis_data& vis);
 	BOOL					visible		(Fbox& B);
 	BOOL					visible		(sPoly& P);
 	

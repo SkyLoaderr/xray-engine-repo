@@ -285,11 +285,11 @@ CBlend*	CKinematics::LL_PlayCycle(int part, int motion, BOOL  bMixing,	float ble
 
 void CKinematics::Update ()
 {
-	if (dwUpdate_LastTime==Device.dwTimeGlobal) return;
-	u32 DT = Device.dwTimeGlobal-dwUpdate_LastTime;
+	if (Update_LastTime==Device.dwTimeGlobal) return;
+	u32 DT = Device.dwTimeGlobal-Update_LastTime;
 	if (DT>66) DT=66;
 	float dt = float(DT)/1000.f;
-	dwUpdate_LastTime = Device.dwTimeGlobal;
+	Update_LastTime = Device.dwTimeGlobal;
 
 	BlendListIt	I,E;
 
@@ -528,7 +528,7 @@ void CKinematics::Copy(CVisual *P)
 		B->SetParent(this);
 	}
 
-	iUpdateID	= rand()%psSkeletonUpdate;
+	Update_ID		= ::Random.randI(psSkeletonUpdate);
 }
 
 void CKinematics::Load(const char* N, CStream *data, u32 dwFlags)

@@ -47,7 +47,7 @@ void CPSVisual::Update(u32 dt)
 	float dT_delta 		= dT/(iCount_Create?iCount_Create:1);
 	float p_size		= 0;
 	Fvector Pos; float size;
-	bv_BBox.invalidate	();
+	vis.box.invalidate	();
 	for (i=0; i<int(m_Particles.size()); i++)
 	{
 		if (fTime>m_Particles[i].m_Time.end) {
@@ -70,7 +70,7 @@ void CPSVisual::Update(u32 dt)
 		float T 		= fTime-P.m_Time.start;
 		float k 		= T/(P.m_Time.end-P.m_Time.start);
 		
-		PS::SimulatePosition(Pos, &P,T,k);		bv_BBox.modify		(Pos);
+		PS::SimulatePosition(Pos, &P,T,k);		vis.box.modify		(Pos);
 		PS::SimulateSize	(size,&P,k,1-k);	if (size>p_size)	p_size = size;
 	}
 	
@@ -86,17 +86,17 @@ void CPSVisual::Update(u32 dt)
 		// Simulate
 		float T 					=	fTime-P.m_Time.start;
 		float k 					=	T/(P.m_Time.end-P.m_Time.start);
-		PS::SimulatePosition		(Pos, &P,T,k);		bv_BBox.modify		(Pos);
+		PS::SimulatePosition		(Pos, &P,T,k);		vis.box.modify		(Pos);
 		PS::SimulateSize			(size,&P,k,1-k);	if (size>p_size)	p_size = size;
 	}
 	
 	if (m_Particles.empty())	{
-		bv_BBox.set			(m_Emitter->m_Position, m_Emitter->m_Position);
-		bv_BBox.grow		(0.1f);
-		bv_BBox.getsphere	(bv_Position,bv_Radius);
+		vis.box.set			(m_Emitter->m_Position, m_Emitter->m_Position);
+		vis.box.grow		(0.1f);
+		vis.box.getsphere	(vis.sphere.P,vis.sphere.R);
 	} else {
-		bv_BBox.grow		(p_size);
-		bv_BBox.getsphere	(bv_Position,bv_Radius);
+		vis.box.grow		(p_size);
+		vis.box.getsphere	(vis.sphere.P,vis.sphere.R);
 	}
 }
 
@@ -189,7 +189,7 @@ u32 CPSVisual::RenderTO	(FVF::TL* dest)
 	rb.set		(1.f,1.f);
 	
 	// actual rendering
-	bv_BBox.invalidate	();
+	vis.box.invalidate	();
 	float			p_size	= 0;
 	FVF::TL*		pv_start= dest;
 	FVF::TL*		pv		= pv_start;
@@ -221,7 +221,7 @@ u32 CPSVisual::RenderTO	(FVF::TL* dest)
             Fvector Pos;
             
             PS::SimulatePosition(Pos,&*P,T,k);			// this moves the particle using the last known velocity and the time that has passed
-			bv_BBox.modify		(Pos);
+			vis.box.modify		(Pos);
             PS::SimulateColor	(C,&*P,k,k_inv,mb_v);	// adjust current Color from calculated Deltas and time elapsed.
             PS::SimulateSize	(sz,&*P,k,k_inv);		// adjust current Size & Angle
 			if (sz>p_size)		p_size = sz;
@@ -256,12 +256,12 @@ u32 CPSVisual::RenderTO	(FVF::TL* dest)
         }
     }
 	if (m_Particles.empty())	{
-		bv_BBox.set			(m_Emitter->m_Position,m_Emitter->m_Position);
-		bv_BBox.grow		(0.1f);
-		bv_BBox.getsphere	(bv_Position,bv_Radius);
+		vis.box.set			(m_Emitter->m_Position,m_Emitter->m_Position);
+		vis.box.grow		(0.1f);
+		vis.box.getsphere	(vis.sphere.P,vis.sphere.R);
 	} else {
-		bv_BBox.grow		(p_size);
-		bv_BBox.getsphere	(bv_Position,bv_Radius);
+		vis.box.grow		(p_size);
+		vis.box.getsphere	(vis.sphere.P,vis.sphere.R);
 	}
 	
 	return pv-pv_start;

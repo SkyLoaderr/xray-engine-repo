@@ -1632,6 +1632,9 @@
 			<Filter
 				Name="Visibility"
 				Filter="">
+				<File
+					RelativePath="vis_common.h">
+				</File>
 				<Filter
 					Name="Sector - portal"
 					Filter="">

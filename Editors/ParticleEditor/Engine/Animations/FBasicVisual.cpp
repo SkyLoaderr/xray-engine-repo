@@ -20,12 +20,8 @@ CVisual::CVisual		()
 	Type				= 0;
 	hShader				= 0;
 	hGeom				= 0;
-
-	bv_Radius			= 0.f;
-	bv_Position.set		(0,0,0);
-	bv_BBox.invalidate	();
-
-	dwFrame				= 0xfffffffe;
+ 
+	vis.clear			();
 }
 
 CVisual::~CVisual		()
@@ -55,12 +51,12 @@ void CVisual::Load		(const char* N, CStream *data, u32 dwFlags)
 	ogf_bbox bbox;
 	if (data->ReadChunkSafe(OGF_BBOX,&bbox,sizeof(bbox)))
 	{
-		bv_BBox.set		(bbox.min,bbox.max);
-		bv_Position.sub	(bbox.max,bbox.min);
-		bv_Position.div	(2);
-		bv_Radius		= bv_Position.magnitude();
-		bv_Position.add	(bbox.min);
-		bv_BBox.grow	(EPS_S);
+		vis.box.set		(bbox.min,bbox.max);
+		vis.sphere.P.sub(bbox.max,bbox.min);
+		vis.sphere.P.div(2);
+		vis.sphere.R	= vis.sphere.P.magnitude();
+		vis.sphere.P.add(bbox.min);
+		vis.box.grow	(EPS_S);
 	} else {
 		THROW;
 	}
@@ -68,8 +64,8 @@ void CVisual::Load		(const char* N, CStream *data, u32 dwFlags)
 	// Sphere (if exists)
 	if (data->FindChunk(OGF_BSPHERE))
 	{
-		data->Read(&bv_Position,3*sizeof(float));
-		data->Read(&bv_Radius,sizeof(float));
+		data->Read(&vis.sphere.P,3*sizeof(float));
+		data->Read(&vis.sphere.R,sizeof(float));
 	}
 
 	// textures
@@ -97,8 +93,6 @@ void	CVisual::Copy(CVisual *pFrom)
 	PCOPY(Type);
 	PCOPY(hShader);
 	PCOPY(hGeom);
-	PCOPY(bv_Position);
-	PCOPY(bv_Radius);
-	PCOPY(bv_BBox);
+	PCOPY(vis);
 }
 

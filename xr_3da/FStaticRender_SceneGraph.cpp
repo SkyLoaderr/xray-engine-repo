@@ -28,7 +28,7 @@ float r_ssaHZBvsTEX;
 
 IC	float	CalcSSA(float& distSQ, Fvector& C, CVisual* V)
 {
-	float R	= V->bv_Radius;
+	float R	= V->vis.sphere.R;
 	distSQ	= Device.vCameraPosition.distance_to_sqr(C);
 	return	R*R/distSQ;
 }
@@ -65,22 +65,22 @@ void CRender::InsertSG_Dynamic	(CVisual *pVisual, Fvector& Center)
 
 void CRender::InsertSG_Static(CVisual *pVisual)
 {
-	if (pVisual->dwFrame!= Device.dwFrame) 
+	if (pVisual->vis.frame != Device.dwFrame) 
 	{
-		pVisual->dwFrame = Device.dwFrame;
+		pVisual->vis.frame = Device.dwFrame;
 		
 		float distSQ;
-		float SSA    = CalcSSA(distSQ,pVisual->bv_Position,pVisual);
+		float SSA    = CalcSSA		(distSQ,pVisual->vis.sphere.P,pVisual);
 
 		if (SSA<=r_ssaDISCARD)		return;
 
 		// Select List and add to it
-		ShaderElement*		sh		= ((_sqrt(distSQ)-pVisual->bv_Radius)<20)?pVisual->hShader->lod0:pVisual->hShader->lod1;
+		ShaderElement*		sh		= ((_sqrt(distSQ)-pVisual->vis.sphere.R)<20)?pVisual->hShader->lod0:pVisual->hShader->lod1;
 		if (sh->Flags.bStrictB2F) {
 			SceneGraph::mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
 			N->val.pVisual			= pVisual;
 			N->val.Matrix			= Fidentity;
-			N->val.vCenter.set		(pVisual->bv_Position);
+			N->val.vCenter.set		(pVisual->vis.sphere.P);
 		} else {
 			for (u32 pass_id=0; pass_id<sh->Passes.size(); pass_id++)
 			{
@@ -153,7 +153,7 @@ void CRender::add_leafs_Dynamic(CVisual *pVisual)
 			// General type of visual
 			// Calculate distance to it's center
 			Fvector		Tpos;
-			val_pTransform->transform_tiny(Tpos, pVisual->bv_Position);
+			val_pTransform->transform_tiny(Tpos, pVisual->vis.sphere.P);
 			InsertSG_Dynamic(pVisual,Tpos);
 		}
 		return;
@@ -162,7 +162,7 @@ void CRender::add_leafs_Dynamic(CVisual *pVisual)
 
 void CRender::add_leafs_Static(CVisual *pVisual)
 {
-	if (!HOM.visible(pVisual->bv_BBox))		return;
+	if (!HOM.visible(pVisual->vis))		return;
 
 	// Visual is 100% visible - simply add it
 	vector<CVisual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
@@ -191,8 +191,8 @@ void CRender::add_leafs_Static(CVisual *pVisual)
 		{
 			FLOD		* pV	= (FLOD*) pVisual;
 			float		D;
-			float		ssa		= CalcSSA(D,pV->bv_Position,pV);
-			if (ssa<r_ssaLOD_A)	
+			float		ssa		= CalcSSA	(D,pV->vis.sphere.P,pV);
+			if (ssa<r_ssaLOD_A)
 			{
 				SceneGraph::mapLOD_Node*	N	= mapLOD.insertInAnyWay(D);
 				N->val.ssa						= ssa;
@@ -225,8 +225,8 @@ BOOL CRender::add_Dynamic(CVisual *pVisual, u32 planes)
 	Fvector		Tpos;	// transformed position
 	EFC_Visible	VIS;
 
-	val_pTransform->transform_tiny	(Tpos, pVisual->bv_Position);
-	VIS = View->testSphere			(Tpos,pVisual->bv_Radius,planes);
+	val_pTransform->transform_tiny	(Tpos, pVisual->vis.sphere.P);
+	VIS = View->testSphere			(Tpos, pVisual->vis.sphere.R,planes);
 	if (fcvNone==VIS) return FALSE;
 
 	// If we get here visual is visible or partially visible
@@ -277,11 +277,12 @@ void CRender::add_Static(CVisual *pVisual, u32 planes)
 //	VIS = View->testSphere(pVisual->bv_Position,pVisual->bv_Radius,planes);
 //	VIS = (View->testSphere_dirty(pVisual->bv_Position,pVisual->bv_Radius))?fcvFully:fcvNone;
 //	VIS = View->testAABB(pVisual->bv_BBox.min,pVisual->bv_BBox.max,planes);
-	VIS = View->testSAABB	(pVisual->bv_Position,pVisual->bv_Radius,pVisual->bv_BBox.min,pVisual->bv_BBox.max,planes);
+	vis_data&	vis			= pVisual->vis;
+	VIS = View->testSAABB	(vis.sphere.P,vis.sphere.R,vis.box.min,vis.box.max,planes);
 	if (fcvNone==VIS){
 		return;
 	}
-	if (!HOM.visible(pVisual->bv_BBox))	return;
+	if (!HOM.visible(vis))	return;
 	
 	// If we get here visual is visible or partially visible
 	vector<CVisual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
@@ -318,7 +319,7 @@ void CRender::add_Static(CVisual *pVisual, u32 planes)
 		{
 			FLOD		* pV	= (FLOD*) pVisual;
 			float		D;
-			float		ssa		= CalcSSA(D,pV->bv_Position,pV);
+			float		ssa		= CalcSSA	(D,pV->vis.sphere.P,pV);
 			if (ssa<r_ssaLOD_A)	
 			{
 				SceneGraph::mapLOD_Node*	N	= mapLOD.insertInAnyWay(D);

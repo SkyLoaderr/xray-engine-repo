@@ -48,9 +48,9 @@ void CRender::flush_LODs()
 		// calculate direction and shift
 		FLOD*							lodV		= (FLOD*)P.pVisual;
 		Fvector							Ldir,shift,_P;
-		Ldir.sub						(lodV->bv_Position,Device.vCameraPosition);
+		Ldir.sub						(lodV->vis.sphere.P,Device.vCameraPosition);
 		Ldir.normalize					();
-		shift.mul						(Ldir,-.5f * lodV->bv_Radius);
+		shift.mul						(Ldir,-.5f * lodV->vis.sphere.R);
 
 		// gen geometry
 		FLOD::_face*					facets		= lodV->facets;

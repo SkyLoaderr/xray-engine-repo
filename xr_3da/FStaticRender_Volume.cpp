@@ -25,7 +25,7 @@ void CRender::RenderBox			(CSector* S, Fbox& BB, int sh)
 				E = pV->children.end		();
 				for (; I!=E; I++)		{
 					CVisual* T			= *I;
-					if (BB.intersect(T->bv_BBox))	lstVisuals.push_back(T);
+					if (BB.intersect(T->vis.box))	lstVisuals.push_back(T);
 				}
 			}
 			break;
@@ -38,7 +38,7 @@ void CRender::RenderBox			(CSector* S, Fbox& BB, int sh)
 				E = pV->children.end		();
 				for (; I!=E; I++)		{
 					CVisual* T			= *I;
-					if (BB.intersect(T->bv_BBox))	lstVisuals.push_back(T);
+					if (BB.intersect(T->vis.box))	lstVisuals.push_back(T);
 				}
 			}
 			break;

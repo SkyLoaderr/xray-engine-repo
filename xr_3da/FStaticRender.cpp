@@ -254,7 +254,7 @@ IC float calcLOD	(float fDistSq, float R)
 void __fastcall normal_L2(FixedMAP<float,CVisual*>::TNode *N)
 {
 	CVisual *V = N->val;
-	V->Render(calcLOD(N->key,V->bv_Radius));
+	V->Render(calcLOD(N->key,V->vis.sphere.R));
 }
 
 extern void __fastcall render_Cached(vector<FCached*>& cache);
@@ -284,7 +284,7 @@ void __fastcall matrix_L2	(SceneGraph::mapMatrixItem::TNode *N)
 	CVisual *V				= N->val.pVisual;
 	RCache.set_xform_world	(N->val.Matrix);
 	gm_SetLighting			(N->val.pObject);
-	V->Render				(calcLOD(N->key,V->bv_Radius));
+	V->Render				(calcLOD(N->key,V->vis.sphere.R));
 }
 
 void __fastcall matrix_L1	(SceneGraph::mapMatrix_Node *N)
@@ -301,7 +301,7 @@ void __fastcall sorted_L1	(SceneGraph::mapSorted_Node *N)
 	RCache.set_Shader		(V->hShader);
 	RCache.set_xform_world	(N->val.Matrix);
 	gm_SetLighting			(N->val.pObject);
-	V->Render				(calcLOD(N->key,V->bv_Radius));
+	V->Render				(calcLOD(N->key,V->vis.sphere.R));
 }
 
 void CRender::flush_Models	()

@@ -123,9 +123,9 @@ void CSector::Render(CFrustum &F)
 			CObject* O = *I;
 			if (O->getVisible()) 
 			{
-				CVisual*	pV = O->Visual	();
-				O->clXFORM().transform_tiny	(Tpos, pV->bv_Position);
-				if (F.testSphere_dirty(Tpos,pV->bv_Radius))	
+				vis_data&	vis				= O->Visual	()->vis;
+				O->clXFORM().transform_tiny	(Tpos, vis.sphere.P);
+				if (F.testSphere_dirty(Tpos,vis.sphere.R))	
 				{
 					::Render->set_Object	(O);
 					O->OnVisible			();
@@ -141,17 +141,17 @@ void CSector::Render(CFrustum &F)
 				CTempObject* pV = tempObjects[i];
 				if (pV->Alive())
 				{
-					u32 planes	=	F.getMask();
-					CVisual* V	=	pV->Visual();
-					if (F.testSAABB(V->bv_Position,V->bv_Radius,V->bv_BBox.min,V->bv_BBox.max,planes)!=fcvNone)
+					u32 planes		=	F.getMask();
+					vis_data&	vis	=	pV->Visual()->vis;
+					if (F.testSAABB(vis.sphere.P,vis.sphere.R,vis.box.min,vis.box.max,planes)!=fcvNone)
 						::Render->add_Geometry	(pV->Visual());
 				}
 				else
 				{
 					if (pV->IsAutomatic())
 					{
-						tempObjects.erase(tempObjects.begin()+i);
-						xr_delete(pV);
+						tempObjects.erase	(tempObjects.begin()+i);
+						xr_delete			(pV);
 						i--;
 					}
 				}
@@ -257,7 +257,7 @@ void CSector::ll_GetObjects	(CFrustum& F, Fvector& vBase, Fmatrix& mFullXFORM)
 
 void CSector::DebugDump()
 {
-	Fbox&	B = pRoot->bv_BBox;
+	Fbox&	B = pRoot->vis.box;
 	Fvector C;
 	B.getcenter	(C);
 

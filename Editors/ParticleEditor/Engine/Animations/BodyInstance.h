@@ -252,8 +252,9 @@ private:
 	BlendList								blend_cycles	[MAX_PARTS];
 	BlendList								blend_fx;
 
-	u32										iUpdateID;
-	u32										dwUpdate_LastTime;
+	int										Update_ID;
+	u32										Update_LastTime;
+	u32										Update_Frame;
 
 	// internal functions
 	void									IBoneInstances_Create	();
@@ -312,7 +313,7 @@ public:
 	void						LL_CloseCycle	(int partition);
 	
 	// Main functionality
-	void						Update			();	// Update motions
+	void						Update			();						// Update motions
 	void						Calculate		(BOOL bLight=FALSE);	// Recalculate skeleton (Light mode can be used to avoid interpolation)
 
 	// cycles
@@ -322,7 +323,7 @@ public:
 	CBlend*						PlayCycle		(CMotionDef* M,  BOOL bMixIn=TRUE, PlayCallback Callback=0, LPVOID CallbackParam=0)
 	{	VERIFY(M); return M->PlayCycle(this,bMixIn,Callback,CallbackParam); }
 	void						Invalidate		()
-	{	dwFrame = 0xffffff; }
+	{	Update_Frame = 0xffffff; }
 
 	// fx'es
 	CMotionDef*					ID_FX			(LPCSTR  N);

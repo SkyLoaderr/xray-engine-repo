@@ -40,7 +40,7 @@ void FLOD::Copy			(CVisual *pFrom	)
 void FLOD::Render		(float LOD		)
 {
 	Fvector				Ldir;
-	Ldir.sub			(bv_Position,Device.vCameraPosition);
+	Ldir.sub			(vis.sphere.P,Device.vCameraPosition);
 	Ldir.normalize		();
 
 	int					best_id		= 0;
