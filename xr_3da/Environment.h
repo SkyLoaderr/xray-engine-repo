@@ -17,6 +17,7 @@ enum {
 
 class ENGINE_API	CEnvDescriptor
 {
+public:
 	Fvector3		sky_color;
 
 	float			far_plane;
@@ -45,7 +46,7 @@ public:
 	int							Music_Fade;
 public:
 	// Environments
-	SEnvDef						Current;
+	CEnvDescriptor				Current;
 	xr_vector<CEnvDescriptor>	Palette;
 
 	// Skydome
@@ -57,7 +58,6 @@ public:
 
 	void			Music_Play			(int id);
 	void			set_EnvMode			(int id, float s)		{ /*CurrentID=id; CurrentSpeed=s;*/ }
-	void			SetGradient			(float b);
 	void			Load				(CInifile *pIni, char* section);
 	void			Load_Music			(CInifile* INI);
 

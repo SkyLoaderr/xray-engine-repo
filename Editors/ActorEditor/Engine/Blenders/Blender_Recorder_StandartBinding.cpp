@@ -58,8 +58,8 @@ class cl_fog_params	: public R_constant_setup {
             float s_fog, e_fog;
 		    Tools.GetCurrentFog(fog_color, s_fog, e_fog);
 #else
-			f_near	= g_pGameLevel->Environment->c_FogNear;
-			f_far	= 1/(g_pGameLevel->Environment->c_FogFar - f_near);
+			f_near	= g_pGameLevel->Environment->Current.fog_far;
+			f_far	= 1/(g_pGameLevel->Environment->Current.fog_far - f_near);
 #endif
 		}
 		RCache.set_c	(C,f_near,f_far,0,0);

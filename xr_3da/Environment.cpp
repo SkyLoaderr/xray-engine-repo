@@ -38,8 +38,32 @@ CEnvironment::~CEnvironment	()
 	Render->model_Delete	(pSkydome,TRUE);
 }
 
-void CEnvDescriptor::load	(LPCSTR sect)
+void CEnvDescriptor::load	(LPCSTR S)
 {
+	sky_color				= pSettings->r_fvector3	(S,"sky_color");
+	far_plane				= pSettings->r_float	(S,"far_plane");
+	fog_color				= pSettings->r_fvector3	(S,"fog_color");
+	fog_density				= pSettings->r_float	(S,"fog_density");
+	ambient					= pSettings->r_fvector3	(S,"ambient");
+	lmap_color				= pSettings->r_fvector3	(S,"lmap_color");
+	hemi_color				= pSettings->r_fvector3	(S,"hemi_color");
+	sun_color				= pSettings->r_fvector3	(S,"sun_color");
+	sun_dir					= pSettings->r_fvector3	(S,"sun_dir");
+}
+void CEnvDescriptor::lerp	(CEnvDescriptor& A, CEnvDescriptor& B, float f)
+{
+	float	fi	= 1-f;
+	sky_color.lerp			(A.sky_color,B.sky_color,f);
+	far_plane				= fi*A.far_plane + f*B.far_plane;
+	fog_color.lerp			(A.fog_color,B.fog_color,f);
+	fog_density				= fi*A.fog_density + f*B.fog_density;
+	fog_near				= (1.0f - fog_density)*0.85f * far_plane;
+	fog_far					= 0.95f * far_plane;
+	ambient.lerp			(A.ambient,B.ambient,f);
+	lmap_color.lerp			(A.lmap_color,B.lmap_color,f);
+	hemi_color.lerp			(A.hemi_color,B.hemi_color,f);
+	sun_color.lerp			(A.sun_color,B.sun_color,f);
+	sun_dir.lerp			(A.sun_dir,B.sun_dir,f);					sun_dir.normalize();
 }
 
 void CEnvironment::Load		(CInifile *pIni, char *section)
@@ -78,15 +102,6 @@ void CEnvironment::Load		(CInifile *pIni, char *section)
 	} else {
 		pSkydome			= 0;
 	}
-
-	c_Invalidate		();
-	Current.Sky.set		(0,0,0,0);
-	Current.Ambient.set	(0,0,0,0);
-	Current.Fog.set		(0,0,0,0);
-	Current.Fogness		= 1;
-	Current.Far			= 99;
-	CurrentID			= 0;
-	CurrentSpeed		= 20;
 
 	// update suns
 	for(u32 i=0; i<Suns.size(); i++) Suns[i]->Update();
@@ -143,49 +158,23 @@ void CEnvironment::Music_Play(int id)
 
 void CEnvironment::OnFrame()
 {
-	// ******************** Viewport params
-	// float src = 10*Device.fTimeDelta;	clamp(src,0.f,1.f);
-	// float dst = 1-src;
-
 	// ******************** Environment params (interpolation)
-	float _s	= CurrentSpeed*Device.fTimeDelta;	clamp(_s,0.f,1.f);
-	float _d	= 1-_s;
-	SEnvDef&	Dest	= Palette[CurrentID%Palette.size()];
-	Current.Sky.r		= Current.Sky.r*_d		+ Dest.Sky.r*_s;
-	Current.Sky.g		= Current.Sky.g*_d		+ Dest.Sky.g*_s;
-	Current.Sky.b		= Current.Sky.b*_d		+ Dest.Sky.b*_s;
-	Current.Sky.a		= Current.Sky.a*_d		+ Dest.Sky.a*_s;
-	Current.Ambient.r	= Current.Ambient.r*_d	+ Dest.Ambient.r*_s;
-	Current.Ambient.g	= Current.Ambient.g*_d	+ Dest.Ambient.g*_s;
-	Current.Ambient.b	= Current.Ambient.b*_d	+ Dest.Ambient.b*_s;
-	Current.Fog.r		= Current.Fog.r*_d		+ Dest.Fog.r*_s;
-	Current.Fog.g		= Current.Fog.g*_d		+ Dest.Fog.g*_s;
-	Current.Fog.b		= Current.Fog.b*_d		+ Dest.Fog.b*_s;
-	Current.Fogness		= Current.Fogness*_d	+ Dest.Fogness*_s;
-	Current.Far			= Current.Far*_d		+ Dest.Far*_s;
+	float		t_pos	= Device.fTimeGlobal/10;
+	float		t_ip;
+	float		t_fact	= modff		(t_pos, &t_ip);
+	int			f_1		= iFloor	(t_ip)	% Palette.size();
+	int			f_2		= (f_1 + 1)			% Palette.size();
+	CEnvDescriptor&	_A	= Palette	[f_1];
+	CEnvDescriptor&	_B	= Palette	[f_2];
+	Current.lerp		(_A,_B,t_fact);
 
 	// ******************** Environment params (setting)
-	u32	_amb		= Current.Ambient.get	();
-	if (_amb!=c_Ambient){ CHK_DX(HW.pDevice->SetRenderState	( D3DRS_AMBIENT, _amb )); c_Ambient = _amb; }
 	u32	_fog		= Current.Fog.get		();
-	if (_fog!=c_Fog)	{ CHK_DX(HW.pDevice->SetRenderState	( D3DRS_FOGCOLOR, _fog )); c_Fog = _fog; }
-	if (!fsimilar(c_Fogness,Current.Fogness) || !fsimilar(c_Far,Current.Far)) {
-		c_Fogness	= Current.Fogness;
-		c_Far		= Current.Far;
+	CHK_DX			(HW.pDevice->SetRenderState	( D3DRS_FOGCOLOR, _fog )); 
+	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGSTART,	*(u32 *)(&Current.fog_near)	));
+	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGEND,	*(u32 *)(&Current.fog_far)	));
 
-		// update fog params
-		c_FogNear	= (1.0f - c_Fogness)*0.85f * c_Far;
-		c_FogFar	= 0.93f * c_Far;
-		CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGSTART,	*(u32 *)(&c_FogNear)	));
-		CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGEND,	*(u32 *)(&c_FogFar)		));
-
-		// update suns
-		for(u32 i=0; i<Suns.size(); i++) Suns[i]->Update();
-	}
-}
-
-void CEnvironment::SetGradient(float b)
-{
+	for(u32 i=0; i<Suns.size(); i++) Suns[i]->Update();
 }
 
 extern float psHUD_FOV;
