@@ -681,6 +681,7 @@ function Projector:__init (obj, speedh, speedv, script, points, rand, target)
 	self.time_cycle = false
 	self.ctime = 0
 	self.target = target
+	self.target_set = false
 	if self.target ~= nil then self.target_set = true
 	else self.target_set = false end
 end
@@ -691,12 +692,13 @@ end
 
 function Projector:set_target (obj)
 	self.target = obj
+	
 	if obj == nil then 
        self.target_set = false
 	else 
 	   self.target_set = true 
        reset_action (self.projector, self.script)
-       (self.projector, look (self.target, self.speedh, self.speedv), cond (cond.time_end, time_infinite))
+       action (self.projector, look (self.target, self.speedh, self.speedv), cond (cond.time_end, time_infinite))
     end   
 end
 
@@ -717,6 +719,7 @@ function Projector:process ()
 	   	  action (self.projector, look (self.points[1], self.speedh, self.speedv), cond (cond.look_end))
        else
     	  return
+       end	  
     end	  	  
 	   	  
 
