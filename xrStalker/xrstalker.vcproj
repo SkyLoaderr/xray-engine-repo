@@ -92,6 +92,9 @@
 				RelativePath=".\Config\game.ltx">
 			</File>
 			<File
+				RelativePath=".\config\prefetch.ltx">
+			</File>
+			<File
 				RelativePath=".\Config\script.ltx">
 			</File>
 			<File
