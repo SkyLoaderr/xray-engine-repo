@@ -25,6 +25,19 @@ IC	bool compare_safe(const luabind::object &o1 , const luabind::object &o2)
 #define left_comment				concatenizer(/,*)
 #define right_comment				concatenizer(*,/)
 #define param_generator(a,b,c,d)	a##b##c d##b
+
+#ifdef XRAY_EXCEPTIONS
+#	define process_error \
+		catch(luabind::error &e) {\
+			if (e.state())\
+				ai().script_engine().print_output(e.state(),"",LUA_ERRRUN);\
+			else\
+				ai().script_engine().print_output(ai().script_engine().lua(),"",LUA_ERRRUN);\
+		}\
+#else
+#	define process_error
+#endif
+
 #define function_body_ex(_1,_2,_3,_4,_c,_5,_6) \
 	_1 _3 _2\
 	IC return_type operator() (_4) _c\
@@ -41,12 +54,7 @@ IC	bool compare_safe(const luabind::object &o1 , const luabind::object &o2)
 						macros_return_operator ((*m_functor)(_6));\
 				}\
 			}\
-			catch(luabind::error &e) {\
-				if (e.state())\
-					ai().script_engine().print_output(e.state(),"",LUA_ERRRUN);\
-				else\
-					ai().script_engine().print_output(ai().script_engine().lua(),"",LUA_ERRRUN);\
-			}\
+			process_error\
 			catch(std::exception &) {\
 				ai().script_engine().print_output(ai().script_engine().lua(),"",LUA_ERRRUN);\
 			}\
@@ -56,6 +64,8 @@ IC	bool compare_safe(const luabind::object &o1 , const luabind::object &o2)
 		}			\
 		macros_return_operator (0);\
 	}
+
+#undef process_error
 
 #define function_body(_1,_2,_3,_4,_5,_6) \
 	function_body_ex(_1,_2,_3,_4,const,_5,_6)\
