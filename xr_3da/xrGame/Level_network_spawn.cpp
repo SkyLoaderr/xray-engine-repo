@@ -33,7 +33,7 @@ void CLevel::g_sv_Spawn		(xrServerEntity* E)
 	CTimer		T;
 
 #ifdef DEBUG
-	Msg					("CLIENT: Spawn: %s, ID=%d", E->s_name, E->ID);
+	Msg					("* CLIENT: Spawn: %s, ID=%d", E->s_name, E->ID);
 #endif
 
 	// Client spawn
