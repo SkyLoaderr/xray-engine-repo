@@ -44,6 +44,7 @@ function load_dialog:FillList()
 		printf("file name=%s; file_size=%d;file_modif=%s",fl:NameFull(),fl:Size(),fl:Modif() )
 	end]]
 	----------------------------------------------------------------
+	flist:Sort(FS.FS_sort_by_modif_down)
 	
 	for	it=0, f_cnt-1 	do
 		local file		=	flist:GetAt(it)			
