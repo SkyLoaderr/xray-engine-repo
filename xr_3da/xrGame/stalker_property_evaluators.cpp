@@ -54,8 +54,7 @@ _value_type CStalkerPropertyEvaluatorEnemies::evaluate	()
 
 _value_type CStalkerPropertyEvaluatorSeeEnemy::evaluate	()
 {
-	VERIFY				(m_object->enemy());
-	return				(m_object->visible(m_object->enemy()));
+	return				(m_object->enemy() ? m_object->visible(m_object->enemy()) : false);
 }
 
 //////////////////////////////////////////////////////////////////////////
