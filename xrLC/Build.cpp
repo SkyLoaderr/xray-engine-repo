@@ -74,6 +74,7 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 	Status					("Faces...");
 	{
 		F = FS.OpenChunk		(EB_Faces);
+		R_ASSERT				(F);
 		DWORD f_count			=	F->Length()/sizeof(b_face);
 		g_faces.reserve			(f_count);
 		for (i=0; i<f_count; i++)
