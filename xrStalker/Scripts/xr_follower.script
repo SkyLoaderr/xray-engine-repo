@@ -55,6 +55,7 @@ local leader_stop                       = 2
 local leader_speak						= 3
 local leader_speak_enable				= 4
 local leader_return                     = 5  
+local leader_free                       = 6
 
 local num_phrases = 10
 
@@ -215,6 +216,17 @@ function action_follow:execute ()
        self.object:set_item (object.activate, self.object:best_weapon ())     
     end   
     
+    
+    if self.a.leader_command == leader_free then
+       self.a.stage = 0 
+       self.a.enabled = false
+       local st = xr_gulag.isUnderFraction (self.object)
+       if st ~= nil then
+          xr_gulag.resetJob (st, self.object)
+       end   
+       return 
+    end   
+    
     --if self.dist ~= self.a.distance then
        self:recalculate_position ()
       -- self.dist = self.a.distance
@@ -248,6 +260,10 @@ function action_follow:move_callback (obj, action_type, index)
     if patrol (self.object:patrol ()):flag (index, 6) == true then
        self.a.stage = 0 
        self.a.enabled = false
+       local st = xr_gulag.isUnderFraction (self.object)
+       if st ~= nil then
+          xr_gulag.resetJob (st, self.object)
+       end   
     end   
 end
 --------------

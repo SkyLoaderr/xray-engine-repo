@@ -58,6 +58,7 @@ local leader_stop                       = 2
 local leader_speak						= 3
 local leader_speak_enable				= 4
 local leader_return                     = 5  
+local leader_free                       = 6
 ---------------------------------------------------------------------------------------------------------------------
 -- Some functions
 ---------------------------------------------------------------------------------------------------------------------
@@ -344,13 +345,18 @@ function action_single_patrol:move_callback (obj, action_type, index)
     self.waypoint = index
     local ptr = patrol (self.object:patrol ())
     
-    if self.stage == 3 then
+--    if self.stage == 3 then
        if ptr:flag (index, 6) == true then
           self.a.enabled = false
           self.stage = 0
-       end           
+          self:set_command (leader_free)
+          local st = xr_gulag.isUnderFraction (self.object)
+          if st ~= nil then
+             xr_gulag.resetJob (st, self.object)
+          end   
        return
-    end    
+       end           
+  --  end    
     
     if ptr:flag (index, 0) == true then
        self.object:set_movement_type (move.stand)
