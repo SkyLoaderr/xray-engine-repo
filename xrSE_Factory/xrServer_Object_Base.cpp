@@ -12,6 +12,10 @@
 #include "game_base_space.h"
 #include "script_value_container_impl.h"
 
+#ifndef AI_COMPILER
+#	include "object_factory.h"
+#endif
+
 #ifndef XRSE_FACTORY_EXPORTS
 #	include "xrEProps.h"
 	
