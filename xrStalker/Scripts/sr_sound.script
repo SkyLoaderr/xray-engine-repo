@@ -166,9 +166,9 @@ function set_scheme( obj, ini, scheme, section, gulag_name )
 		local t = parse_names( ini:r_string( section, "type" ) )
 
 		for i, v in t do
-			if v == "random" then
-				st.pos_type = pos_random
-			end
+--			if v == "random" then
+--				st.pos_type = pos_random
+--			end
 
 			table_include( st.sound_names, sound_types[v] )
 		end
