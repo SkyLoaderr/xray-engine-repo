@@ -43,16 +43,6 @@ public:
 	CALifeGraph::SLevel			m_tLevel;
 	ALIFE_OBJECT_P_VECTOR		m_tpSpawnPoints;
 	u32							m_dwLevelID;
-//	u32							m_dwAStarStaticCounter;
-//	SNode						*m_tpHeap;
-//	SNode						**m_tppHeap;
-//	SIndexNode					*m_tpIndexes;
-//	vector<u32>					m_tpaNodes;
-//	CAStarSearch<CAIMapShortestPathNode,SAIMapData> m_tpMapPath;
-//	SAIMapData					m_tData;
-//	u32							m_dwMaxNodeCount;
-//	DWORD_VECTOR				m_tpSpawnNodes;
-//	DWORD_VECTOR				m_tpGraphNodes;
 	CAI_Map						*m_tpAI_Map;
 	CALifeCrossTable			*m_tpCrossTable;
 
@@ -134,26 +124,11 @@ public:
 				(*J).second.clear();
 			}
 		}
-
-//		m_dwAStarStaticCounter	= 0;
-//		u32 S1					= (m_tpAI_Map->m_header.count + 2)*sizeof(SNode);
-//		m_tpHeap				= (SNode *)xr_malloc(S1);
-//		ZeroMemory				(m_tpHeap,S1);
-//		u32 S2					= (m_tpAI_Map->m_header.count)*sizeof(SIndexNode);
-//		m_tpIndexes				= (SIndexNode *)xr_malloc(S2);
-//		ZeroMemory				(m_tpIndexes,S2);
-//		u32 S3					= (m_tpAI_Map->m_header.count)*sizeof(SNode *);
-//		m_tppHeap				= (SNode **)xr_malloc(S3);
-//		ZeroMemory				(m_tppHeap,S3);
-//		m_dwMaxNodeCount		= m_tpAI_Map->m_header.count;
 	};
 	virtual 					~CSpawn()
 	{
 		for (int i=0; i<(int)m_tpSpawnPoints.size(); i++)
 			xr_delete(m_tpSpawnPoints[i]);
-//		xr_free(m_tpHeap);
-//		xr_free(m_tpIndexes);
-//		xr_free(m_tppHeap);
 		xr_delete(m_tpAI_Map);
 		xr_delete(m_tpCrossTable);
 	};
@@ -161,8 +136,6 @@ public:
 	void						Execute()
 	{
 		thProgress				= 0.0f;
-//		m_tpGraphNodes.resize	(tpGraph->m_tGraphHeader.dwVertexCount);
-//		m_tpSpawnNodes.resize	(m_tpSpawnPoints.size());
 		u32						dwStart = tpGraph->m_tGraphHeader.dwVertexCount, dwFinish = tpGraph->m_tGraphHeader.dwVertexCount, dwCount = 0;
 		for (int i=0; i<(int)tpGraph->m_tGraphHeader.dwVertexCount; i++)
 			if (tpGraph->m_tpaGraph[i].tLevelID == m_dwLevelID)
@@ -170,26 +143,20 @@ public:
 		float fRelation = float(dwCount)/(float(dwCount) + 2*m_tpSpawnPoints.size());
 		for (int i=0; i<(int)tpGraph->m_tGraphHeader.dwVertexCount; i++)
 			if (tpGraph->m_tpaGraph[i].tLevelID == m_dwLevelID) {
-				//m_tpGraphNodes[i] = tpGraph->m_tpaGraph[i].tNodeID;
 				if (dwStart > (u32)i)
 					dwStart = (u32)i;
 				thProgress = float(i - dwStart + 1)/float(dwCount)*float(fRelation);
 			}
 			else {
-				//m_tpGraphNodes[i] = -1;
 				if ((dwStart <= (u32)i) && (dwFinish > (u32)i)) {
 					dwFinish = i;
 					break;
 				}
 			}
-//		DWORD_IT				BB = m_tpGraphNodes.begin();
-//		DWORD_IT				B = BB + dwStart;
-//		DWORD_IT				E = BB + dwFinish;
 		if (dwStart >= dwFinish) {
 			string4096			S;
 			sprintf				(S,"There are no graph vertices in the game graph for the level '%s' !\n",m_tLevel.caLevelName);
 			R_ASSERT2			(dwStart < dwFinish,S);
-
 		}
 		for (int i=0; i<(int)m_tpSpawnPoints.size(); i++, thProgress = fRelation + float(i)/float(m_tpSpawnPoints.size())*(1.f - fRelation)) {
 			if ((m_tpSpawnPoints[i]->m_tNodeID = m_tpAI_Map->dwfFindCorrespondingNode(m_tpSpawnPoints[i]->o_Position)) == -1) {
@@ -201,41 +168,6 @@ public:
 				S += sprintf(S,"Spawn point : [%7.2f][%7.2f][%7.2f]\n",VPUSH(m_tpSpawnPoints[i]->o_Position));
 				R_ASSERT2(false,S1);
 			}
-//			m_tpSpawnPoints[i]->m_tNodeID = m_tpSpawnNodes[i];
-//			//sort(B,E,CSpawnComparePredicate(m_tpSpawnNodes[i],*m_tpAI_Map));
-//			DWORD_IT			I = B;
-//			float				fCurrentBestDistance = MAX_DISTANCE_TO_CONNECT;
-//			u32					dwBest = u32(-1);
-//			for ( ; I != E; I++) {
-//				//if (m_tpAI_Map->ffGetDistanceBetweenNodeCenters(m_tpSpawnNodes[i],*I) >= fCurrentBestDistance)
-//				//	continue;
-//				m_tData.dwFinishNode	= *I;
-//				m_tData.m_tpAI_Map		= m_tpAI_Map;
-//				float					fDistance;
-//				if (m_tpSpawnNodes[i] != *I) {
-//					m_tpMapPath.vfFindOptimalPath(
-//						m_tppHeap,
-//						m_tpHeap,
-//						m_tpIndexes,
-//						m_dwAStarStaticCounter,
-//						m_tData,
-//						m_tpSpawnNodes[i],
-//						*I,
-//						fDistance,
-//						fCurrentBestDistance,
-//						m_tpSpawnPoints[i]->o_Position,
-//						tpGraph->m_tpaGraph[I - BB].tLocalPoint,
-//						m_tpaNodes,
-//						m_dwMaxNodeCount);
-//				}
-//				else
-//					fDistance = m_tpSpawnPoints[i]->o_Position.distance_to(tpGraph->m_tpaGraph[I - BB].tLocalPoint);
-//				if (fDistance < fCurrentBestDistance) {
-//					fCurrentBestDistance = fDistance;
-//					dwBest = I - BB;
-//				}
-//			}
-//			Msg	("%d -> %f (%d -> %f)",m_tpCrossTable->m_tpaCrossTable[m_tpSpawnNodes[i]].tGraphIndex,m_tpCrossTable->m_tpaCrossTable[m_tpSpawnNodes[i]].fDistance,dwBest,fCurrentBestDistance);
 			u32 dwBest = m_tpCrossTable->m_tpaCrossTable[m_tpSpawnPoints[i]->m_tNodeID].tGraphIndex;
 			float fCurrentBestDistance = m_tpCrossTable->m_tpaCrossTable[m_tpSpawnPoints[i]->m_tNodeID].fDistance;
 			if (dwBest == u32(-1)) {
