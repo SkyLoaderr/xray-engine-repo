@@ -133,6 +133,8 @@ void CAI_Stalker::Load				(LPCSTR section)
 
 BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 {
+	m_pPhysics_support->in_NetSpawn();
+
 	if (!inherited::net_Spawn(DC))
 		return						(FALSE);
 	if (!CInventoryOwner::net_Spawn(DC))
@@ -169,7 +171,6 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 
 	setEnabled						(true);
 
-	m_pPhysics_support->in_NetSpawn();
 	m_PhysicMovementControl.SetPosition	(Position());
 	m_PhysicMovementControl.SetVelocity	(0,0,0);
 
@@ -284,9 +285,10 @@ void CAI_Stalker::UpdateCL(){
 		CObjectHandler::update			(Level().timeServer() - m_dwLastUpdateTime);
 		float							s_k		= ((eBodyStateCrouch == m_tBodyState) ? CROUCH_SOUND_FACTOR : 1.f);
 		float							s_vol	= s_k*((eMovementTypeRun == m_tMovementType) ? 1.f : ACCELERATED_SOUND_FACTOR);
-		float							k		= (eBodyStateCrouch == m_tBodyState) ? 0.75f : 1.f;
-		float							tm		= (eMovementTypeRun == m_tMovementType) ? (PI/(k*10.f)) : (PI/(k*7.f));
-		CMaterialManager::update		(Device.fTimeDelta,s_vol,tm,!!fis_zero(speed()));
+//		float							k		= (eBodyStateCrouch == m_tBodyState) ? 0.75f : 1.f;
+//		float							tm		= (eMovementTypeRun == m_tMovementType) ? (PI/(k*10.f)) : (PI/(k*7.f));
+		float							step_time = !fis_zero(CMovementManager::speed()) ? .725f/CMovementManager::speed() : 1.f;
+		CMaterialManager::update		(Device.fTimeDelta,1.f+0*s_vol,step_time,!!fis_zero(speed()));
 	}
 
 	if (this == Level().CurrentViewEntity())

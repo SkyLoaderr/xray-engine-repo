@@ -103,10 +103,16 @@ void CStateManagerAbstract::execute	()
 		return;
 
 	for (;;) {
-		if (!state(path().front()).completed()) {
+		if (
+			(internal_state(path().front()).priority() <= internal_state(path().back()).priority()) 
+			&& 
+			!state(path().front()).completed()
+			)
+		{
 			state(path().front()).execute();
 			return;
 		}
+
 		state(path().front()).finalize();
 		go_path			();
 		state(path().front()).initialize();

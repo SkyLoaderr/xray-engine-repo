@@ -351,7 +351,9 @@ void CStalkerAnimations::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 				}
 			}
 		}
-		if (missile) {
+		
+#pragma todo("Dima to Designers : make missile throw animations!")
+		if (missile && (stalker->body_state() == eBodyStateStand)) {
 			switch (missile->State()) {
 				case MS_SHOWING	 : {
 //					Msg				("%6d : weapon state %s",Level().timeServer(),"Showing");

@@ -69,6 +69,8 @@ void CMaterialManager::update		(float time_delta, float volume, float step_time,
 		}
 		m_time_to_step								-= time_delta;
 	}
+	else
+		m_time_to_step								= 0;
 
 	if (m_step_sound[0].feedback)		{
 		m_step_sound[0].set_position	(position);

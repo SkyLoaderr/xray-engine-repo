@@ -29,10 +29,10 @@ void CStateManagerStalker::Init				()
 
 void CStateManagerStalker::Load				(LPCSTR section)
 {
-	add_state				(xr_new<CStateManagerDeath>("DeathManager"),eStalkerStateDeath,		0);
-	add_state				(xr_new<CStateManagerNoALife>("NoALife"),	eStalkerStateNoALife,	3);
-	add_state				(xr_new<CStateManagerCombat>("Combat"),		eStalkerStateCombat,	1);
-	//	add						(xr_new<CStateManagerALife>(),	eStalkerStateALife,		2);
+	add_state				(xr_new<CStateManagerDeath>("DeathManager"),	eStalkerStateDeath,		0);
+	add_state				(xr_new<CStateManagerNoALife>("NoALife"),		eStalkerStateNoALife,	3);
+	add_state				(xr_new<CStateManagerCombat>("Combat"),			eStalkerStateCombat,	1);
+//	add						(xr_new<CStateManagerALife>(),					eStalkerStateALife,		2);
 	add_transition			(eStalkerStateNoALife,eStalkerStateDeath,1);
 	add_transition			(eStalkerStateNoALife,eStalkerStateCombat,1,1);
 	
