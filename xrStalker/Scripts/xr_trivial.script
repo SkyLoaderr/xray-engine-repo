@@ -145,9 +145,9 @@ function add_zombe(obj)
                           }
     --„тение данных из кастом даты
     local char_ini = obj:spawn_ini()
-    if( char_ini:section_exist ("zombe") == true ) then
-        if( char_ini:line_exist("zombe", "path") == true ) then
-            st.path = char_ini:r_string("zombe", "path")
+    if( char_ini:section_exist ("zombie") == true ) then
+        if( char_ini:line_exist("zombie", "path") == true ) then
+            st.path = char_ini:r_string("zombie", "path")
         else
         	printf( "________Error.    Section zombe/path not found" )
         end
@@ -694,7 +694,11 @@ function novice3_attack:initialize ()
     self.object:set_item             ( object.activate, self.object:best_weapon() )
     self.object:set_dest_level_vertex_id(patrol(self.a.enemy_path):level_vertex_id(0) )
 
-    xr_sounds.play_sound (self.object, 0, "trivial", 4, 3)
+    if(self.a.say_kill == false) then
+    	--ќдин раз говорит, что убем бандитов и больше токого не говорим
+    	xr_sounds.play_sound (self.object, 0, "trivial", 4, 3)
+        self.a.say_kill = true
+    end
 end
 ---------------------------------------------------------------------------------------------------------------------
 function novice3_attack:execute ()
@@ -786,7 +790,7 @@ end
 
 
 function bind_object( obj, name )
-    if( name == "zombe" ) then
+    if( name == "zombie" ) then
     	this.add_zombe ( obj )
     elseif( name == "novice" ) then
     	this.add_novice( obj )
