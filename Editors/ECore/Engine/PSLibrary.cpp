@@ -75,6 +75,7 @@ PS::SDef* CPSLibrary::FindPS			(LPCSTR Name)
 
 PS::PEDIt CPSLibrary::FindPEDIt(LPCSTR Name)
 {
+	if (!Name) return m_PEDs.end();
 #ifdef _EDITOR
 	for (PS::PEDIt it=m_PEDs.begin(); it!=m_PEDs.end(); it++)
     	if (0==xr_strcmp((*it)->Name(),Name)) return it;
@@ -94,6 +95,7 @@ PS::CPEDef* CPSLibrary::FindPED(LPCSTR Name)
 
 PS::PGDIt CPSLibrary::FindPGDIt(LPCSTR Name)
 {
+	if (!Name) return m_PGDs.end();
 #ifdef _EDITOR
 	for (PS::PGDIt it=m_PGDs.begin(); it!=m_PGDs.end(); it++)
     	if (0==xr_strcmp((*it)->m_Name,Name)) return it;
