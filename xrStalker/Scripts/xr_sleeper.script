@@ -83,11 +83,16 @@ function action_sleeper_activity:execute()
 					self.object:add_animation(a, true)
 				end
 			end
-		end		
+		end
+		if self.object:active_sound_count() == 0 then
+			self.object:play_sound (sounds["sleep"] , 1, 0, 1, 0, 0)
+		end
 	end
 end
 function action_sleeper_activity:finalize()
 	xr_state.change_state(self.object, 0)
+	self.object:set_sound_mask (-1)
+    	self.object:set_sound_mask (0)
     	action_base.finalize(self)
 end
 
@@ -99,13 +104,17 @@ function add_to_binder(npc, char_ini)
   	local operators    = {}
   	local properties  = {}
 
+	sounds["sleep"] 	= xr_sounds_id.stohe_kamp_base + 1
+
+	npc:add_sound("script_replics\\soldier_1\\idle\\soldier_sleep_", 20, snd_type.talk, 2, 1, sounds["sleep"])
+
   	local manager = npc:motivation_action_manager()
 
-  	properties["need_sleeper"]   = xr_evaluators_id.zmey_sleeper_base + 1
-  	properties["state_end"]      = xr_evaluators_id.state_change
-  	properties["position"]	= xr_evaluators_id.position
+  	properties["need_sleeper"]   	= xr_evaluators_id.zmey_sleeper_base + 1
+  	properties["state_end"]      	= xr_evaluators_id.state_change
+  	properties["position"]		= xr_evaluators_id.position
 
-  	operators["action_sleeper"]   = xr_actions_id.zmey_sleeper_base + 1
+  	operators["action_sleeper"]   	= xr_actions_id.zmey_sleeper_base + 1
 
   	-- // evaluators
   	manager:add_evaluator (properties["need_sleeper"],   this.evaluator_need_sleeper  (xr_motivator.storage[npc:id()].sleeper))
