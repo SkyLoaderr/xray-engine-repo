@@ -11,8 +11,7 @@ class CContextMenu;
 class CHUDCursor;
 
 class CHUDManager :
-	public CCustomHUD,
-	public pureDeviceCreate 
+	public CCustomHUD
 {
 	friend class CUI;
 private:
@@ -28,7 +27,7 @@ private:
 	// Cтруктурка буфера для надписей выводимых шрифтами
 	struct					FontBuffer
 	{
-		shared_str				buf;
+		shared_str			buf;
 		float				outX, outY;
 		FontBuffer():		buf(NULL), outX(0), outY(0) {}
 	};
