@@ -128,7 +128,7 @@ public:
 								wP.from_bary(V1->P,V2->P,V3->P,B);
 								wN.from_bary(V1->N,V2->N,V3->N,B);
 								wN.normalize();
-								LightPoint	(&DB, RCAST_Model, C, wP, wN, pBuild->L_static, 0, F);
+								LightPoint	(&DB, RCAST_Model, C, wP, wN, pBuild->L_static, (b_nosun?LP_dont_sun:0), F);
 								Fcount		++;
 							}
 						}
