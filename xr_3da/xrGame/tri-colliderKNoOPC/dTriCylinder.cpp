@@ -634,9 +634,9 @@ if(code==0){
 	norm[2]=triAx[2]*signum;
 
 
-  dReal Q1 = signum*dDOT14(triAx,R+0);
-  dReal Q2 = signum*dDOT14(triAx,R+1);
-  dReal Q3 = signum*dDOT14(triAx,R+2);
+  dReal Q1 = dDOT14(norm,R+0);
+  dReal Q2 = dDOT14(norm,R+1);
+  dReal Q3 = dDOT14(norm,R+2);
   dReal factor =_sqrt(Q1*Q1+Q3*Q3);
   dReal	C1,C3;
   dReal centerDepth;//depth in the cirle centre
@@ -654,7 +654,7 @@ if(code==0){
   }
   
   dReal A1 = radius *		C1;//cosinus
-  dReal A2 = hlz*Q2;
+  dReal A2 = hlz;//Q2
   dReal A3 = radius *		C3;//sinus 
 	
   if(factor>0.f) centerDepth=outDepth-A1*Q1-A3*Q3; else centerDepth=outDepth;
@@ -663,9 +663,9 @@ if(code==0){
   pos[1]=p[1];
   pos[2]=p[2];
  
-  pos[0]+= A2>0 ? hlz*R[1]:-hlz*R[1];
-  pos[1]+= A2>0 ? hlz*R[5]:-hlz*R[5];
-  pos[2]+= A2>0 ? hlz*R[9]:-hlz*R[9];
+  pos[0]+= Q2>0 ? hlz*R[1]:-hlz*R[1];
+  pos[1]+= Q2>0 ? hlz*R[5]:-hlz*R[5];
+  pos[2]+= Q2>0 ? hlz*R[9]:-hlz*R[9];
 
   
   
@@ -721,10 +721,10 @@ if(dFabs(Q2)>M_SQRT1_2){
 	   dDOT(cross2,CONTACT(contact,ret*skip)->pos)-ds2>0.f) ++ret;
 } else {
 
-  CONTACT(contact,ret*skip)->pos[0]=contact->pos[0]-2.f*(A2>0 ? hlz*R[1]:-hlz*R[1]);
-  CONTACT(contact,ret*skip)->pos[1]=contact->pos[1]-2.f*(A2>0 ? hlz*R[5]:-hlz*R[5]);
-  CONTACT(contact,ret*skip)->pos[2]=contact->pos[2]-2.f*(A2>0 ? hlz*R[9]:-hlz*R[9]);
-  CONTACT(contact,ret*skip)->depth=outDepth-Q2*2.f*A2;
+  CONTACT(contact,ret*skip)->pos[0]=contact->pos[0]-2.f*(Q2>0 ? hlz*R[1]:-hlz*R[1]);
+  CONTACT(contact,ret*skip)->pos[1]=contact->pos[1]-2.f*(Q2>0 ? hlz*R[5]:-hlz*R[5]);
+  CONTACT(contact,ret*skip)->pos[2]=contact->pos[2]-2.f*(Q2>0 ? hlz*R[9]:-hlz*R[9]);
+  CONTACT(contact,ret*skip)->depth=outDepth-dFabs(Q2*2.f*A2);
 
   if(CONTACT(contact,ret*skip)->depth>0.f)
     if(dDOT(cross0,CONTACT(contact,ret*skip)->pos)-ds0>0.f && 
