@@ -64,10 +64,12 @@ typedef struct {
 class CAviPlayerCustom
 {
 protected:
+	CAviPlayerCustom	*alpha;
+protected:
 	AVIINDEXENTRY		*m_pMovieIndex;
 	BYTE				*m_pMovieData;
 	HIC					m_aviIC;
-	BYTE * m_pDecompressedBuf;
+	BYTE				*m_pDecompressedBuf;
 
 	BITMAPINFOHEADER	m_biOutFormat;
 	BITMAPINFOHEADER	m_biInFormat;

@@ -29,7 +29,15 @@ CAviPlayerCustom::~CAviPlayerCustom( )
 //---------------------------------
 BOOL CAviPlayerCustom::Load (char* fname)
 {
-	
+	// Check for alpha
+	string_path		aname;
+	strconcat		(aname,fname,"_alpha");
+	if (FS.exist(aname))	
+	{
+		alpha		= xr_new<CAviPlayerCustom>	();
+		alpha->Load	(aname);
+	}
+
 	// Открыть через mmioOpen( ) AVI файл
 	HMMIO hmmioFile = mmioOpen( fname, NULL, MMIO_READ /*MMIO_EXCLUSIVE*/ );
 	if( hmmioFile == NULL ) {
@@ -249,6 +257,11 @@ BOOL CAviPlayerCustom::Load (char* fname)
 	// Закрыть AVI файл через mmioClose( )
 	mmioClose( hmmioFile, 0 );
 
+	if (alpha)	{
+		R_ASSERT(m_dwWidth  == alpha->m_dwWidth	);
+		R_ASSERT(m_dwHeight == alpha->m_dwHeight);
+	}
+
 //-----------------------------------------------------------------
 	return TRUE;
 }
@@ -267,8 +280,23 @@ BOOL CAviPlayerCustom::DecompressFrame( DWORD dwFrameNum )
 	dwFlags |= (m_biInFormat.biSizeImage) ? 0 : ICDECOMPRESS_NULLFRAME;
 
 	if( ICERR_OK != ICDecompress(m_aviIC, dwFlags, &m_biInFormat, (m_pMovieData + pCurrFrameIndex->dwChunkOffset + 8), &m_biOutFormat, m_pDecompressedBuf) ) {
-
 		return	FALSE;
+	}
+
+	if (alpha)	{
+		// update
+		BYTE*	alpha_buf;
+		alpha->GetFrame(&alpha_buf);
+		u32*	dst		= (u32*)m_pDecompressedBuf;
+		u32*	src		= (u32*)alpha_buf;
+		u32*	end		= dst+u32(m_dwWidth*m_dwHeight);
+		for (; dst!=end; src++,dst++)
+		{
+			u32&	d	= *dst;
+			u32		s	= *src;
+			u32		a	= (color_get_R(s)+color_get_G(s)+color_get_B(s))/3;
+			d			= subst_alpha	(d,a);
+		}
 	}
 
 	return	TRUE;
