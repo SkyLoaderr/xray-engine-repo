@@ -82,9 +82,4 @@ void	CBuild::xrPhase_ResolveMaterials()
 		}
 	}
 	clMsg				("%d subdivisions.",g_XSplit.size());
-
-	// Models
-	Status				("Models...");
-	for	(u32 m=0; m<mu_models.size(); m++)
-		mu_models[m]->calc_materials();
 }

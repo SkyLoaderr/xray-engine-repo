@@ -38,7 +38,10 @@ public:
 
 		// Light models
 		for (m=0; m<pBuild->mu_models.size(); m++)
+		{
+			pBuild->mu_models[m]->calc_materials();
 			pBuild->mu_models[m]->calc_lighting	();
+		}
 
 		// Light references
 		for (m=0; m<pBuild->mu_refs.size(); m++)
