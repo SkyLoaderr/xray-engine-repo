@@ -56,7 +56,7 @@ public:
 	ICF	SelfRef	modify		(T x, T y, T z)					{ _vector3<T> tmp = {x,y,z}; return		modify(tmp);	}
 	IC	SelfRef	merge		(SelfCRef b)					{ modify(b.min); modify(b.max);			return *this;	};
 	IC	SelfRef	merge		(SelfCRef b1, SelfCRef b2)		{ invalidate(); merge(b1); merge(b2);	return *this;	}
-	IC	SelfRef	xform		(SelfCRef B, const Tmatrix &m)
+	ICF	SelfRef	xform		(SelfCRef B, const Tmatrix &m)
 	{
 		// The three edges transformed: you can efficiently transform an X-only vector3
 		// by just getting the "X" column of the matrix
@@ -82,7 +82,7 @@ public:
 		if(negative(vz.z))	min.z += vz.z; else max.z += vz.z;
 		return *this;
 	}
-	IC	SelfRef	xform		(const Tmatrix &m)
+	ICF	SelfRef	xform		(const Tmatrix &m)
     {
 		Self b;
         b.set(*this);
