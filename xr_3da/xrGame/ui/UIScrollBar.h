@@ -94,7 +94,7 @@ public:
 	int				GetPageSize		() {return m_iPageSize;}
 	// положение каретки
 	void			SetScrollPos	(int iPos) { SetScrollPosClamped(iPos); UpdateScrollBar();}
-	int				GetScrollPos	() {return m_iScrollPos;}
+	int				GetScrollPos	() {return _max(m_iMinPos,m_iScrollPos);}
 	// базовые размеры для кнопок
 	enum {SCROLLBAR_WIDTH = 16, SCROLLBAR_HEIGHT = 16};
 	void			TryScrollInc	();

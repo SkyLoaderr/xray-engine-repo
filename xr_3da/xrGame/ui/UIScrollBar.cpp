@@ -83,7 +83,7 @@ void CUIScrollBar::SetRange(int iMin, int iMax)
 void CUIScrollBar::UpdateScrollBar()
 {	
 	Show						(!!(0!=ScrollSize()));
-	if (IsShown){
+	if (IsShown()){
 		//уcтановить размер и положение каретки
 		int box_sz				= iFloor(float(m_ScrollWorkArea)*float(m_iPageSize)/float(m_iMaxPos-m_iMinPos));
 		if(m_bIsHorizontal){	
