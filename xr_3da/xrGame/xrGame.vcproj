@@ -351,6 +351,12 @@
 						RelativePath=".\WeaponAutoRifle.h">
 					</File>
 					<File
+						RelativePath="WeaponCustomPistol.cpp">
+					</File>
+					<File
+						RelativePath="WeaponCustomPistol.h">
+					</File>
+					<File
 						RelativePath=".\WeaponHUD.cpp">
 					</File>
 					<File
@@ -489,6 +495,36 @@
 					</File>
 					<File
 						RelativePath=".\WeaponHPSA.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="PM"
+					Filter="">
+					<File
+						RelativePath="WeaponPM.cpp">
+					</File>
+					<File
+						RelativePath="WeaponPM.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="FORT"
+					Filter="">
+					<File
+						RelativePath="WeaponFORT.cpp">
+					</File>
+					<File
+						RelativePath="WeaponFORT.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="Binocular"
+					Filter="">
+					<File
+						RelativePath="WeaponBinocular.cpp">
+					</File>
+					<File
+						RelativePath="WeaponBinocular.h">
 					</File>
 				</Filter>
 			</Filter>
@@ -763,21 +799,6 @@
 					Filter="">
 					<File
 						RelativePath="Car.cpp">
-						<FileConfiguration
-							Name="Debug|Win32">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Mixed|Win32">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="Car.h">
