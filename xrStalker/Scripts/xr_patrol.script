@@ -224,6 +224,7 @@ function action_single_patrol:execute ()
        printf ("ACTION_SINGLE_PATROL, STAGE 0, TIME %d", device ():time_global ())
        if self.move_type == move.walk then printf ("ACTION_SINGLE_PATROL - MOVE_WALK") end
        if self.move_type == move.stand then printf ("ACTION_SINGLE_PATROL - MOVE_STAND") end
+       if self.move_type == move.run then printf ("ACTION_SINGLE_PATROL - MOVE_RUN") end
     elseif self.stage == 1 then
         if self.object:animation_count () == 0 then
            self.stage = 0
