@@ -6,17 +6,17 @@
 class xrLIGHT       : public Flight
 {
 public:
-	DWORD			dwFrame;
-	DWORD			dwController;
+	u32			dwFrame;
+	u32			dwController;
 };
 
 class xrLIGHT_control
 {
 public:
-	DWORD			dwFrame;
+	u32			dwFrame;
 	CConstant*		dest;
 	string64		name;
-	vector<DWORD>	data;
+	vector<u32>	data;
 };
 #pragma pack(pop)
 

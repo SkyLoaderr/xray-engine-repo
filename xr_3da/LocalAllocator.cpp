@@ -9,7 +9,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CLocalAllocator::CLocalAllocator(DWORD max_blocks, DWORD max_block_size)
+CLocalAllocator::CLocalAllocator(u32 max_blocks, u32 max_block_size)
 {
 	// Aligned on 8b boundary
 	dwSize	= ((max_block_size>>3)+1)<<3;
@@ -22,22 +22,22 @@ CLocalAllocator::CLocalAllocator(DWORD max_blocks, DWORD max_block_size)
 	pMemory = (char *)xr_malloc(dwCount*dwSize);
 
 	// Mark all blocks as FREE
-	for (DWORD i=0; i<dwCount; i++)	bFree[i]=TRUE;
+	for (u32 i=0; i<dwCount; i++)	bFree[i]=TRUE;
 }
 
 CLocalAllocator::~CLocalAllocator()
 {
 #ifdef DEBUG
-	for (DWORD i=0; i<dwCount; i++) {
+	for (u32 i=0; i<dwCount; i++) {
 		VERIFY(bFree[i]);
 	}
 #endif
 	xr_free(pMemory);
 }
 
-void*	CLocalAllocator::Alloc(DWORD _size) {
+void*	CLocalAllocator::Alloc(u32 _size) {
 	VERIFY(_size <= dwSize);
-	for (DWORD i=0; i<dwCount; i++) {
+	for (u32 i=0; i<dwCount; i++) {
 		if (bFree[i]) {
 			bFree[i]=FALSE;
 			return (void *)( pMemory + i*dwSize );
@@ -48,7 +48,7 @@ void*	CLocalAllocator::Alloc(DWORD _size) {
 }
 
 void	CLocalAllocator::Free(void *ptr) {
-	DWORD idx = (((char *)ptr)-pMemory)/dwSize;
+	u32 idx = (((char *)ptr)-pMemory)/dwSize;
 	VERIFY(bFree[idx]);
 	bFree[idx]=TRUE;
 }

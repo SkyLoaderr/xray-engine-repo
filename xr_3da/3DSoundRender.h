@@ -18,7 +18,7 @@ class ENGINE_API CSoundRender
 private:
 	struct SListener 
 	{
-		DWORD			dwSize;
+		u32			dwSize;
 		Fvector			vPosition;
 		Fvector			vVelocity;
 		Fvector			vOrientFront;

@@ -9,8 +9,8 @@ void CDetailManager::cache_Initialize	()
 
 	// Initialize cache-grid
 	Slot*	slt = cache_pool;
-	for (DWORD i=0; i<dm_cache_line; i++)
-		for (DWORD j=0; j<dm_cache_line; j++, slt++)
+	for (u32 i=0; i<dm_cache_line; i++)
+		for (u32 j=0; j<dm_cache_line; j++, slt++)
 		{
 			cache			[i][j]	= slt;
 			cache_Task		(j,i,slt);
@@ -32,7 +32,7 @@ void 	CDetailManager::cache_Task		(int gx, int gz, Slot* D)
 	DetailSlot&	DS			= QueryDB	(sx,sz);
 
 	// Unpacking
-	DWORD old_type			= D->type;
+	u32 old_type			= D->type;
 	D->type					= stPending;
 	D->sx					= sx;
 	D->sz					= sz;
@@ -132,10 +132,10 @@ void	CDetailManager::cache_Update	(int v_x, int v_z, Fvector& view, int limit)
 	// Task performer
 	for (int iteration=0; cache_task.size() && (iteration<limit); iteration++)
 	{
-		DWORD	best_id		= 0;
+		u32	best_id		= 0;
 		float	best_dist	= flt_max;
 
-		for (DWORD entry=0; entry<cache_task.size(); entry++)
+		for (u32 entry=0; entry<cache_task.size(); entry++)
 		{
 			// Gain access to data
 			Slot*		S	= cache_task[entry];
@@ -166,7 +166,7 @@ DetailSlot&	CDetailManager::QueryDB(int sx, int sz)
 	int db_z = sz+dtH.offs_z;
 	if ((db_x>=0) && (db_x<int(dtH.size_x)) && (db_z>=0) && (db_z<int(dtH.size_z)))
 	{
-		DWORD linear_id				= db_z*dtH.size_x + db_x;
+		u32 linear_id				= db_z*dtH.size_x + db_x;
 		return dtSlots				[linear_id];
 	} else {
 		// Empty slot

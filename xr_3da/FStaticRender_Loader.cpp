@@ -55,7 +55,7 @@ void CRender::level_Unload()
 {
 	if (0==pCreator)		return;
 
-	DWORD I;
+	u32 I;
 
 	// HOM
 	HOM.Unload				();
@@ -102,20 +102,20 @@ void CRender::level_Unload()
 void CRender::LoadBuffers	(CStream *base_fs)
 {
 	Device.Shader.Evict		();
-	DWORD	dwUsage			= D3DUSAGE_WRITEONLY | (HW.Caps.vertex.bSoftware?D3DUSAGE_SOFTWAREPROCESSING:0);
+	u32	dwUsage			= D3DUSAGE_WRITEONLY | (HW.Caps.vertex.bSoftware?D3DUSAGE_SOFTWAREPROCESSING:0);
 	D3DPOOL	dwPool			= HW.Caps.vertex.bSoftware?D3DPOOL_SYSTEMMEM:D3DPOOL_DEFAULT;
 
 	// Vertex buffers
 	{
 		destructor<CStream>		fs	(base_fs->OpenChunk(fsL_VBUFFERS));
-		DWORD count				= fs().Rdword();
+		u32 count				= fs().Rdword();
 		FVF.resize				(count);
 		VB.resize				(count);
-		for (DWORD i=0; i<count; i++)
+		for (u32 i=0; i<count; i++)
 		{
-			DWORD vFVF			= fs().Rdword	();
-			DWORD vCount		= fs().Rdword	();
-			DWORD vSize			= D3DXGetFVFVertexSize(vFVF);
+			u32 vFVF			= fs().Rdword	();
+			u32 vCount		= fs().Rdword	();
+			u32 vSize			= D3DXGetFVFVertexSize(vFVF);
 			Msg("* [Loading VB] %d verts, %d Kb",vCount,(vCount*vSize)/1024);
 
 			FVF[i]				= vFVF;
@@ -135,11 +135,11 @@ void CRender::LoadBuffers	(CStream *base_fs)
 	if (base_fs->FindChunk(fsL_IBUFFERS))
 	{
 		destructor<CStream>		fs	(base_fs->OpenChunk	(fsL_IBUFFERS));
-		DWORD count				= fs().Rdword();
+		u32 count				= fs().Rdword();
 		IB.resize				(count);
-		for (DWORD i=0; i<count; i++)
+		for (u32 i=0; i<count; i++)
 		{
-			DWORD iCount		= fs().Rdword	();
+			u32 iCount		= fs().Rdword	();
 			Msg("* [Loading IB] %d indices, %d Kb",iCount,(iCount*2)/1024);
 
 			// Create and fill
@@ -157,7 +157,7 @@ void CRender::LoadBuffers	(CStream *base_fs)
 void CRender::LoadVisuals(CStream *fs)
 {
 	CStream*		chunk	= 0;
-	DWORD			index	= 0;
+	u32			index	= 0;
 	CVisual*		V		= 0;
 	ogf_header		H;
 
@@ -195,14 +195,14 @@ struct b_portal
 void CRender::LoadSectors(CStream* fs)
 {
 	// allocate memory for portals
-	DWORD size = fs->FindChunk(fsL_PORTALS); 
+	u32 size = fs->FindChunk(fsL_PORTALS); 
 	R_ASSERT(0==size%sizeof(b_portal));
-	DWORD count = size/sizeof(b_portal);
+	u32 count = size/sizeof(b_portal);
 	Portals.resize(count);
 
 	// load sectors
 	CStream* S = fs->OpenChunk(fsL_SECTORS);
-	for (DWORD i=0; ; i++)
+	for (u32 i=0; ; i++)
 	{
 		CStream* P = S->OpenChunk(i);
 		if (0==P) break;
@@ -226,11 +226,11 @@ void CRender::LoadSectors(CStream* fs)
 			Portals[i].Setup(P.vertices.begin(),P.vertices.size(),
 				getSector(P.sector_front),
 				getSector(P.sector_back));
-			for (DWORD j=2; j<P.vertices.size(); j++)
+			for (u32 j=2; j<P.vertices.size(); j++)
 				CL.add_face_packed(
 				P.vertices[0],P.vertices[j-1],P.vertices[j],
 				CDB::edge_open,CDB::edge_open,CDB::edge_open,
-				0,0,DWORD(&Portals[i])
+				0,0,u32(&Portals[i])
 				);
 		}
 		if (CL.getTS()<2)

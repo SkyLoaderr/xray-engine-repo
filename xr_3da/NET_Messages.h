@@ -1,7 +1,7 @@
 #pragma once
 #pragma pack(push,1)
 
-IC DWORD	net_flags	(BOOL bReliable=FALSE, BOOL bSequental=TRUE, BOOL bHighPriority=FALSE)
+IC u32	net_flags	(BOOL bReliable=FALSE, BOOL bSequental=TRUE, BOOL bHighPriority=FALSE)
 {
 	return 
 		(bReliable?DPNSEND_GUARANTEED:DPNSEND_NOCOMPLETE) | 
@@ -12,24 +12,24 @@ IC DWORD	net_flags	(BOOL bReliable=FALSE, BOOL bSequental=TRUE, BOOL bHighPriori
 
 struct	MSYS_CONFIG	// server 2 client - first packet ever, uncompressed
 {
-	DWORD			sign1;	// 0x12071980;
-	DWORD			sign2;	// 0x26111975;
+	u32			sign1;	// 0x12071980;
+	u32			sign2;	// 0x26111975;
 	WORD			send	[256];
 	WORD			receive	[256];
 };
 struct	MSYS_PING
 {
-	DWORD			sign1;	// 0x12071980;
-	DWORD			sign2;	// 0x26111975;
-	DWORD			dwTime_ClientSend;
-	DWORD			dwTime_Server;
-	DWORD			dwTime_ClientReceive;
+	u32			sign1;	// 0x12071980;
+	u32			sign2;	// 0x26111975;
+	u32			dwTime_ClientSend;
+	u32			dwTime_Server;
+	u32			dwTime_ClientReceive;
 };
 
 /*
 CL_PING
 {
-	DWORD	dwTimeLocal;
+	u32	dwTimeLocal;
 }
 */
 

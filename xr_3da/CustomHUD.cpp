@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CustomHUD.h"
 
-DWORD psHUD_Flags = 0;
+u32 psHUD_Flags = 0;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

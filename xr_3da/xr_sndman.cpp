@@ -15,8 +15,8 @@
 CSoundManager*		pSounds = NULL;
 
 // sound props
-DWORD	psSoundFreq			= 0;
-DWORD	psSoundModel		= 0;
+u32	psSoundFreq			= 0;
+u32	psSoundModel		= 0;
 float	psSoundVMaster		= 0.7f;
 float	psSoundVEffects		= 1.0f;
 float	psSoundVMusic		= 0.7f;
@@ -234,12 +234,12 @@ void CSoundManager::GetDeviceInfo( )
 void CSoundManager::SetFreq	()
 {
 	if (!bPresent)	return;
-	clamp			( psSoundFreq, DWORD(sf_11K), DWORD(sf_44K) );
+	clamp			( psSoundFreq, u32(sf_11K), u32(sf_44K) );
 
 	dwFreq			= psSoundFreq;
 
 	WAVEFORMATEX wfm;
-	DWORD		 ret;
+	u32		 ret;
 	ZeroMemory	( &wfm, sizeof( wfm ) );
 	pBuffer->GetFormat( &wfm, sizeof(wfm), &ret );
 
@@ -258,7 +258,7 @@ void CSoundManager::SetFreq	()
 void CSoundManager::SetModel()
 {
 	if ( !bPresent ) return;
-	clamp			( psSoundModel, DWORD(sq_DEFAULT), DWORD(sq_HIGH) );
+	clamp			( psSoundModel, u32(sq_DEFAULT), u32(sq_HIGH) );
 
 	dwModel			= psSoundModel;
 	pSoundRender->Reload	();

@@ -127,7 +127,7 @@ void CCDA::OnMove( )
 			if (state == CDA_STATE_STOP) Play ( );
 			if (state != CDA_STATE_STOP) bWorking	= false;
 		}else{
-			if (!bPaused) lKeepTime -= DWORD(Device.fTimeDelta*1000);
+			if (!bPaused) lKeepTime -= u32(Device.fTimeDelta*1000);
 		}
 	}
 }

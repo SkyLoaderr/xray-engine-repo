@@ -19,8 +19,8 @@ public:
 	Fvector			raster		[3];		
 	Fplane			plane;
 	float			area;
-	DWORD			flags;
-	DWORD			skip;
+	u32			flags;
+	u32			skip;
 };
 
 class ENGINE_API	occRasterizer  
@@ -40,7 +40,7 @@ public:
 
 	void			clear		();
 	void			propagade	();
-	DWORD			rasterize	(occTri* T);
+	u32			rasterize	(occTri* T);
 	BOOL			test		(float x0, float y0, float x1, float y1, float z);
 	
 	occTri**		get_frame	()			{ return &(bufFrame[0][0]);	}

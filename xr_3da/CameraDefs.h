@@ -19,7 +19,7 @@ enum ECameraStyle       {
 	csLookAt,
     csMax,
 	csFixed,
-	cs_forcedword = DWORD(-1)
+	cs_forcedword = u32(-1)
 };
 
 enum EEffectorType		{

@@ -14,8 +14,8 @@
 class ENGINE_API			CVisual
 {
 public:
-	DWORD					Type;					// visual's type
-	DWORD					dwFrame;				// mark
+	u32					Type;					// visual's type
+	u32					dwFrame;				// mark
 
 	// Common data for rendering
 	Shader*					hShader;				// pipe state, shared
@@ -25,7 +25,7 @@ public:
 	Fbox					bv_BBox;
 
 	virtual void			Render					(float LOD)		{};		// LOD - Level Of Detail  [0..1], Ignored
-	virtual void			Load					(const char* N, CStream *data, DWORD dwFlags);
+	virtual void			Load					(const char* N, CStream *data, u32 dwFlags);
 	virtual void			Release					();						// Shared memory release
 	virtual void			Copy					(CVisual* from);
 

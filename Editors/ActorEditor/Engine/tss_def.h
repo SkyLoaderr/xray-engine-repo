@@ -8,17 +8,17 @@ class	ENGINE_API SimulatorStates
 private:
 	struct State
 	{
-		DWORD	type;		// 0=RS, 1=TSS
-		DWORD	v1,v2,v3;
+		u32	type;		// 0=RS, 1=TSS
+		u32	v1,v2,v3;
 		
-		IC void	set_RS	(DWORD a, DWORD b)
+		IC void	set_RS	(u32 a, u32 b)
 		{
 			type	= 0;
 			v1		= a;
 			v2		= b;
 			v3		= 0;
 		}
-		IC void	set_TSS	(DWORD a, DWORD b, DWORD c)
+		IC void	set_TSS	(u32 a, u32 b, u32 c)
 		{
 			type	= 1;
 			v1		= a;
@@ -29,10 +29,10 @@ private:
 private:
 	vector<State>	States;
 public:
-	void			set_RS	(DWORD a, DWORD b);
-	void			set_TSS	(DWORD a, DWORD b, DWORD c);
+	void			set_RS	(u32 a, u32 b);
+	void			set_TSS	(u32 a, u32 b, u32 c);
 	BOOL			equal	(SimulatorStates& S);
 	void			clear	();
-	DWORD			record	();
+	u32			record	();
 };
 #endif

@@ -4,9 +4,9 @@
 
 using namespace	Collide;
 
-const DWORD	clStatic	= clQUERY_STATIC+clGET_TRIS;
+const u32	clStatic	= clQUERY_STATIC+clGET_TRIS;
 
-void CObjectSpace::BoxQuery(const Fbox& B, const Fmatrix& M, DWORD flags)
+void CObjectSpace::BoxQuery(const Fbox& B, const Fmatrix& M, u32 flags)
 {
 	dwQueryID++;
 	q_result.Clear	();

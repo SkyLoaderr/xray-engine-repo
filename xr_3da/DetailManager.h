@@ -34,14 +34,14 @@ public:
 		Fvector				P;
 		float				scale;
 		float				C;
-		DWORD				C_dw;
+		u32				C_dw;
 		float				scale_calculated;           
 		Fmatrix				mRotY;
-		DWORD				vis_ID;
+		u32				vis_ID;
 	};
 	struct	SlotPart
 	{
-		DWORD				id;	
+		u32				id;	
 		vector<SlotItem*>	items;
 	};
 	enum	SlotType
@@ -53,7 +53,7 @@ public:
 	};
 	struct Slot 
 	{
-		DWORD				type;
+		u32				type;
 		int					sx,sz;
 		Fbox				BB;
 		SlotPart			G[dm_obj_in_slot];
@@ -100,13 +100,13 @@ public:
 	// Hardware processor
 	CVS*							hw_VS_wave;
 	CVS*							hw_VS_still;
-	DWORD							hw_BatchSize;
+	u32							hw_BatchSize;
 	IDirect3DVertexBuffer8*			hw_VB;
 	IDirect3DIndexBuffer8*			hw_IB;
 	void							hw_Load			();
 	void							hw_Unload		();
 	void							hw_Render		();
-	void							hw_Render_dump	(CVS* vs, vis_list& vis, DWORD c_base);
+	void							hw_Render_dump	(CVS* vs, vis_list& vis, u32 c_base);
 
 public:
 	DetailSlot&						QueryDB			(int sx, int sz);

@@ -20,7 +20,7 @@ BOOL psLibrary_Load(const char *Name, PS::PSVec &LIB)
     CCompressedStream F	(Name,PS_LIB_SIGN);
     WORD version = F.Rword();
     if (version!=PARTICLESYSTEM_VERSION) return false;
-    DWORD count = F.Rdword();
+    u32 count = F.Rdword();
     if (count){
         LIB.resize		(count);
         F.Read			(&*LIB.begin(), count*sizeof(PS::SDef));
@@ -38,7 +38,7 @@ void psLibrary_Save(const char *Name, PS::PSVec &LIB)
     F.SaveTo(Name,PS_LIB_SIGN);
 }
 
-DWORD	psLibrary_GetCount	(const char *Name)
+u32	psLibrary_GetCount	(const char *Name)
 {
     CCompressedStream F(Name,PS_LIB_SIGN);
     return F.Rdword();

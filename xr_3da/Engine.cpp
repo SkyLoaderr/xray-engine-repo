@@ -67,12 +67,12 @@ void CEngine::mem_Compact()
 	HeapCompact			(GetProcessHeap(),0);
 }
 
-DWORD CEngine::mem_Usage()
+u32 CEngine::mem_Usage()
 {
 	_HEAPINFO		hinfo;
 	int				heapstatus;
 	hinfo._pentry	= NULL;
-	DWORD	total	= 0;
+	u32	total	= 0;
 	while( ( heapstatus = _heapwalk( &hinfo ) ) == _HEAPOK )
 	{ 
 		if (hinfo._useflag == _USEDENTRY)	total += hinfo._size;

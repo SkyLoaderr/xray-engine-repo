@@ -7,9 +7,9 @@
 
 #include "lzhuf.h"
 
-extern ENGINE_API void *	FileDownload	(const char *fn, DWORD* pdwSize=NULL);
-extern ENGINE_API void		FileCompress	(const char *fn, const char* sign, void* data, DWORD size);
-extern ENGINE_API void *	FileDecompress	(const char *fn, const char* sign, DWORD* size=NULL);
+extern ENGINE_API void *	FileDownload	(const char *fn, u32* pdwSize=NULL);
+extern ENGINE_API void		FileCompress	(const char *fn, const char* sign, void* data, u32 size);
+extern ENGINE_API void *	FileDecompress	(const char *fn, const char* sign, u32* size=NULL);
 
 #define CFS_CompressMark	(1ul << 31ul)
 #define CFS_AlignMark		(1ul << 30ul)
@@ -20,7 +20,7 @@ private:
 	std::stack<int>	chunk_pos;
 	int				align_correction;
 
-	IC DWORD		correction	(DWORD p)
+	IC u32		correction	(u32 p)
 	{
 		if (p%16) {
 			return ((p%16)+1)*16 - p;
@@ -34,13 +34,13 @@ public:
 	}
 
 	// kernel
-	virtual void	write	(const void* ptr, DWORD count)	= 0;
-	virtual void	seek	(DWORD pos)						= 0;
-	virtual DWORD	tell	()								= 0;
+	virtual void	write	(const void* ptr, u32 count)	= 0;
+	virtual void	seek	(u32 pos)						= 0;
+	virtual u32	tell	()								= 0;
 
 	// generalized writing functions
-	IC void	Wdword(DWORD d)
-	{	write(&d,sizeof(DWORD));	}
+	IC void	Wdword(u32 d)
+	{	write(&d,sizeof(u32));	}
 	IC void	Wword(WORD d)
 	{	write(&d,sizeof(WORD));		}
 	IC void	Wfloat(float d)
@@ -61,20 +61,20 @@ public:
 	{	write(&v,4*sizeof(float));	}
 
 	// generalized chunking
-	DWORD		align				();
-	void		open_chunk			(DWORD type);
+	u32		align				();
+	void		open_chunk			(u32 type);
 	void		close_chunk			();
-	DWORD		chunk_size			();					// returns size of currently opened chunk, 0 otherwise
-	void		write_compressed	(void* ptr, DWORD count);
-	void		write_chunk			(DWORD type, void* data, DWORD size);
+	u32		chunk_size			();					// returns size of currently opened chunk, 0 otherwise
+	void		write_compressed	(void* ptr, u32 count);
+	void		write_chunk			(u32 type, void* data, u32 size);
 };
 
 class ENGINE_API CFS_Memory : public CFS_Base
 {
 	BYTE*		data;
-	DWORD		position;
-	DWORD		mem_size;
-	DWORD		file_size;
+	u32		position;
+	u32		mem_size;
+	u32		file_size;
 public:
 	CFS_Memory() {
 		data		= 0;
@@ -85,16 +85,16 @@ public:
 	virtual ~CFS_Memory();
 
 	// kernel
-	virtual void	write	(const void* ptr, DWORD count);
+	virtual void	write	(const void* ptr, u32 count);
 
-	virtual void	seek	(DWORD pos)	
+	virtual void	seek	(u32 pos)	
 	{	position = pos;		}
-	virtual DWORD	tell	() 
+	virtual u32	tell	() 
 	{	return position;	}
 
 	// specific
 	BYTE*	pointer	()	{ return data; }
-	DWORD	size	()	{ return file_size;	}
+	u32	size	()	{ return file_size;	}
 	void	clear	()  { file_size=0; position=0;	}
 	void	SaveTo	(const char* fn, const char* sign);
 };
@@ -119,13 +119,13 @@ public:
 	}
 	
 	// kernel
-	virtual void	write	(const void* ptr, DWORD count) {
+	virtual void	write	(const void* ptr, u32 count) {
 		fwrite(ptr,count,1,hf);
 	};
-	virtual void	seek	(DWORD pos) {
+	virtual void	seek	(u32 pos) {
 		fseek(hf,pos,SEEK_SET);	
 	};
-	virtual DWORD	tell	() {
+	virtual u32	tell	() {
 		return ftell(hf);
 	};
 };
@@ -136,7 +136,7 @@ protected:
 	int			Pos;
 	int			Size;
 
-	IC DWORD		correction	(DWORD p)
+	IC u32		correction	(u32 p)
 	{
 		if (p%16) {
 			return ((p%16)+1)*16 - p;
@@ -200,8 +200,8 @@ public:
 		while ((src[Pos]!=0) && (!Eof())) Pos++;
 		Pos		++;
 	};
-	IC DWORD	Rdword(void)
-	{	DWORD tmp;	Read(&tmp,sizeof(tmp)); return tmp;	};
+	IC u32	Rdword(void)
+	{	u32 tmp;	Read(&tmp,sizeof(tmp)); return tmp;	};
 	IC BYTE		Rbyte(void)
 	{	BYTE tmp;	Read(&tmp,sizeof(tmp));	return tmp; };
 	IC char		Rchar(void)
@@ -221,9 +221,9 @@ public:
 	void	Rewind	(void)
 	{	Seek(0); }
 	
-	DWORD		FindChunk(DWORD ID, BOOL* bCompressed=0)	// поиск XR Chunk'ов - возврат - размер или 0
+	u32		FindChunk(u32 ID, BOOL* bCompressed=0)	// поиск XR Chunk'ов - возврат - размер или 0
 	{
-		DWORD	dwSize,dwType;
+		u32	dwSize,dwType;
 		
 		Rewind();
 		while (!Eof()) {
@@ -238,24 +238,24 @@ public:
 		}
 		return 0;
 	};
-	BOOL		ReadChunk(DWORD ID, void *dest)	// чтение XR Chunk'ов (4b-ID,4b-size,??b-data)
+	BOOL		ReadChunk(u32 ID, void *dest)	// чтение XR Chunk'ов (4b-ID,4b-size,??b-data)
 	{
-		DWORD	dwSize = FindChunk(ID);
+		u32	dwSize = FindChunk(ID);
 		if (dwSize!=0) {
 			Read(dest,dwSize);
 			return TRUE;
 		} else return FALSE;
 	};
-	BOOL		ReadChunkSafe	(DWORD ID, void *dest, DWORD dest_size)	// чтение XR Chunk'ов (4b-ID,4b-size,??b-data)
+	BOOL		ReadChunkSafe	(u32 ID, void *dest, u32 dest_size)	// чтение XR Chunk'ов (4b-ID,4b-size,??b-data)
 	{
-		DWORD	dwSize = FindChunk(ID);
+		u32	dwSize = FindChunk(ID);
 		if (dwSize!=0) {
 			R_ASSERT(dwSize==dest_size);
 			Read	(dest,dwSize);
 			return TRUE;
 		} else return FALSE;
 	};
-	CStream*	OpenChunk(DWORD ID);
+	CStream*	OpenChunk(u32 ID);
 	void		Close();
 };
 
@@ -272,7 +272,7 @@ class ENGINE_API CFileStream : public CStream
 public:
 	CFileStream(const char *name)
 	{
-		data	= (char *)FileDownload(name,(DWORD *)&Size);
+		data	= (char *)FileDownload(name,(u32 *)&Size);
 		Pos		= 0;
 	};
 	virtual ~CFileStream();
@@ -282,7 +282,7 @@ class ENGINE_API CCompressedStream : public CStream
 public:
 	CCompressedStream(const char *name, const char *sign)
 	{
-		data	= (char *)FileDecompress(name,sign,(DWORD*)&Size);
+		data	= (char *)FileDecompress(name,sign,(u32*)&Size);
 		Pos		= 0;
 	}
 	virtual ~CCompressedStream();

@@ -23,13 +23,13 @@ public:
 
 	void					CreateD3D				();
 	void					DestroyD3D				();
-	DWORD					CreateDevice			(HWND hw,DWORD &dwWidth,DWORD &dwHeight);
+	u32					CreateDevice			(HWND hw,u32 &dwWidth,u32 &dwHeight);
 	void					DestroyDevice			();
 
 	D3DFORMAT				selectDepthStencil		(D3DFORMAT);
-	DWORD					selectPresentInterval	();
-	DWORD					selectGPU				();
-	DWORD					selectRefresh			(DWORD dwWidth, DWORD dwHeight);
+	u32					selectPresentInterval	();
+	u32					selectGPU				();
+	u32					selectRefresh			(u32 dwWidth, u32 dwHeight);
 
 #ifdef DEBUG
 	void	Validate(void)	{	VERIFY(pDevice); VERIFY(pD3D); };

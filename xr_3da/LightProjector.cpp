@@ -205,7 +205,7 @@ void CLightProjector::calculate	()
 		shift.set(.5f/dim,-.5f/dim); c0.add(p0,shift); c1.add(p1,shift); d0.sub(p0,shift); d1.sub(p1,shift);
 		
 		// Fill VB
-		DWORD C						=	0xffffffff, Offset;
+		u32 C						=	0xffffffff, Offset;
 		FVF::TL2uv* pv				=	(FVF::TL2uv*) Device.Streams.Vertex.Lock	(8,vs_Blur->dwStride,Offset);
 		pv->set							(0.f,	dim,	C, a0.x, a1.y, b0.x, b1.y);	pv++;
 		pv->set							(0.f,	0.f,	C, a0.x, a0.y, b0.x, b0.y);	pv++;
@@ -269,8 +269,8 @@ void CLightProjector::render	()
 		p1.set					((P_rt_size+.5f)/P_rt_size, (P_rt_size+.5f)/P_rt_size);
 		
 		// Fill vertex buffer
-		DWORD C			=	0xffffffff, Offset;
-		DWORD _w		=	P_rt_size/2, _h = P_rt_size/2;
+		u32 C			=	0xffffffff, Offset;
+		u32 _w		=	P_rt_size/2, _h = P_rt_size/2;
 		FVF::TL* pv		=	(FVF::TL*) vs_Screen->Lock(4,Offset);
 		pv->set(0,			float(_h),	.0001f,.9999f, C, p0.x, p1.y);	pv++;
 		pv->set(0,			0,			.0001f,.9999f, C, p0.x, p0.y);	pv++;

@@ -45,7 +45,7 @@ public:
 		char	Event[128],Param[128];
 		Event[0]=0; Param[0]=0;
 		sscanf	(args,"%[^,],%s",Event,Param);
-		Engine.Event.Signal	(Event,(DWORD)Param);
+		Engine.Event.Signal	(Event,(u32)Param);
 	}
 };
 //-----------------------------------------------------------------------
@@ -126,7 +126,7 @@ public:
 		if (strchr(l_name,'/'))		*strchr(l_name,'/') = 0;
 		int id		= pApp->Level_ID(l_name);
 		if (id>=0) {
-			Engine.Event.Defer("KERNEL:server",DWORD(xr_strdup(args)));
+			Engine.Event.Defer("KERNEL:server",u32(xr_strdup(args)));
 		} else {
 			Log("! Cannot find level '%s'.",args);
 		}
@@ -145,7 +145,7 @@ public:
 		string256	fn;
 		if (Engine.FS.Exist(fn,"",args,".save"))
 		{
-			Engine.Event.Defer("KERNEL:server_load",DWORD(xr_strdup(fn)));
+			Engine.Event.Defer("KERNEL:server_load",u32(xr_strdup(fn)));
 		} else {
 			Log("! Cannot find save-game '%s'.",fn);
 		}
@@ -161,7 +161,7 @@ public:
 			Log("! Please disconnect/unload first");
 			return;
 		}
-		Engine.Event.Defer("KERNEL:client",DWORD(xr_strdup(args)));
+		Engine.Event.Defer("KERNEL:client",u32(xr_strdup(args)));
 	}
 };
 
@@ -295,7 +295,7 @@ extern float		psDetail_w_speed;
 extern float		psDetail_l_ambient;
 extern float		psDetail_l_aniso;
 extern int			psSupersample;
-extern DWORD		psEnvFlags;
+extern u32		psEnvFlags;
 
 void CCC_Register()
 {

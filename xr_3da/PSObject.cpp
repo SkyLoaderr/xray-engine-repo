@@ -34,7 +34,7 @@ void CPSObject::UpdateSector(CSector* sect)
 	if (m_pCurSector) m_pCurSector->tempobjAdd(this);
 }
 
-void CPSObject::Update(DWORD dt)
+void CPSObject::Update(u32 dt)
 {
 	CPSVisual* V	= (CPSVisual*)m_pVisual;
 	V->Update		(dt);

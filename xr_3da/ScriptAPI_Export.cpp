@@ -42,13 +42,13 @@ void SAPI_Export()
 		"float _41, _42, _43, _44;\n"
 		"};\n"
 
-		"typedef unsigned int DWORD;\n"
+		"typedef unsigned int u32;\n"
 
 		"c_import void  msg(char *,...);\n"
 		"c_import void  xrIdentity(Fmatrix *p);\n"
 		"c_import int   xrRand();\n"
 		"import float fTimeDelta;\n"
-		"import DWORD dwNumTStages;\n"
+		"import u32 dwNumTStages;\n"
 	);
 
 	xray_hdr_mem = xr_strdup(xray_hdr);

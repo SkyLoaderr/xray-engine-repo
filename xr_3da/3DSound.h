@@ -24,7 +24,7 @@ public:
 		stSimulating,
 		stSimulatingLooped,
 		
-		stFORCEDWORD	= DWORD(-1)
+		stFORCEDWORD	= u32(-1)
 	};
 private:
 	sound*					owner;
@@ -34,17 +34,17 @@ private:
 	float 					fRealVolume;
 	soundOccluder			occluder;
 
-	DWORD					dwTimeTotal;			// всего
-	DWORD					dwTimeStarted;			// time of "Start"
-	DWORD					dwTimeToStop;			// time to "Stop"
-	DWORD					dwTimeToPropagade;
+	u32					dwTimeTotal;			// всего
+	u32					dwTimeStarted;			// time of "Start"
+	u32					dwTimeToStop;			// time to "Stop"
+	u32					dwTimeToPropagade;
 
-	DWORD					dwState;
+	u32					dwState;
 
     LPDIRECTSOUNDBUFFER     pBuffer;
     LPDIRECTSOUND3DBUFFER   pBuffer3D;
 	LPKSPROPERTYSET			pExtensions;
-	DWORD					dwBytesPerMS;
+	u32					dwBytesPerMS;
 	F3dbuffer				ps;						// property sets for the 3d-buffer
 	BOOL					bNeedUpdate;
 
@@ -54,10 +54,10 @@ private:
 
 	BOOL					_3D;
 	BOOL					_Freq;
-	DWORD					dwFreq;
-	DWORD					dwFreqBase;
+	u32					dwFreq;
+	u32					dwFreqBase;
 
-	DWORD					dwLastTimeActive;
+	u32					dwLastTimeActive;
 private:
 	LPDIRECTSOUNDBUFFER		LoadWaveAs3D			(LPCSTR name,	BOOL bCtrlFreq);
 	LPDIRECTSOUNDBUFFER		LoadWaveAs2D			(LPCSTR name,	BOOL bCtrlFreq);
@@ -74,7 +74,7 @@ public:
 	void					Rewind					();
 	void					Stop					(void);
 	void					SetPosition				(const Fvector &pos);
-	void					SetFrequency			(DWORD freq);
+	void					SetFrequency			(u32 freq);
 	void					SetFrequencyScale		(float scale);
 	void					SetMinMax				(float min, float max);
 	void					SetVolume				(float vol)			{ fVolume = vol; bNeedUpdate = true; }

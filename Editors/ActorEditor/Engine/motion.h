@@ -31,7 +31,7 @@ enum EChannelType{
 struct st_BoneMotion{
 	LPSTR		name;
 	CEnvelope*	envs[ctMaxChannel];
-	DWORD		flag;
+	u32		flag;
     			st_BoneMotion(){name=0; flag=0; ZeroMemory(envs,sizeof(CEnvelope*)*ctMaxChannel);}
     void        SetName(LPCSTR nm){_FREE(name); name=xr_strdup(nm);}
 };
@@ -46,7 +46,7 @@ protected:
 	{
 		mtObject	= 0,
 		mtSkeleton,
-		ForceDWORD	= DWORD(-1)
+		ForceDWORD	= u32(-1)
 	};
 	EMotionType		mtype;
 	string256		name;
@@ -113,7 +113,7 @@ public:
     float			fAccrue;
     float			fFalloff;
     float			fPower;
-	DWORD			m_dwFlags;
+	u32			m_dwFlags;
 
     void			Clear			();
 public:
@@ -128,7 +128,7 @@ public:
     st_BoneMotion*	FindBoneMotion	(LPCSTR name);
     BoneMotionVec&	BoneMotions		()				{return bone_mots;}
 	void			SetBoneOrPart	(int idx)		{iBoneOrPart=idx;}
-	DWORD			GetMotionFlag	(int bone_idx)	{return bone_mots[bone_idx].flag;}
+	u32			GetMotionFlag	(int bone_idx)	{return bone_mots[bone_idx].flag;}
 
 	virtual void	Save			(CFS_Base& F);
 	virtual bool	Load			(CStream& F);

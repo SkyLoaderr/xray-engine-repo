@@ -91,7 +91,7 @@ void CFrustum::SimplifyPoly_AABB(sPoly* poly, Fplane& plane)
 	Fvector2	min,max;
 	min.set		(flt_max,flt_max);
 	max.set		(flt_min,flt_min);
-	for (DWORD i=0; i<poly->size(); i++)
+	for (u32 i=0; i<poly->size(); i++)
 	{
 		Fvector2 tmp;
 		mView.transform_tiny32(tmp,(*poly)[i]);
@@ -164,7 +164,7 @@ sPoly*	CFrustum::ClipPoly(sPoly& S, sPoly& D) const
 
 		// classify all points relative to plane #i
 		float	cls	[FRUSTUM_SAFE];
-		for (DWORD j=0; j<src->size(); j++) cls[j]=P.classify((*src)[j]);
+		for (u32 j=0; j<src->size(); j++) cls[j]=P.classify((*src)[j]);
 
 		// clip everything to this plane
 		cls[src->size()] = cls[0];
@@ -227,7 +227,7 @@ BOOL CFrustum::CreateFromClipPoly(Fvector* p, int count, Fvector& vBase, CFrustu
 	return	true;
 }
 
-void CFrustum::CreateFromMatrix(Fmatrix &M, DWORD mask)
+void CFrustum::CreateFromMatrix(Fmatrix &M, u32 mask)
 {
 	p_count			= 0;
 

@@ -2,7 +2,7 @@
 #include "flod.h"
 #include "fmesh.h"
 
-void FLOD::Load			(LPCSTR N, CStream *data, DWORD dwFlags)
+void FLOD::Load			(LPCSTR N, CStream *data, u32 dwFlags)
 {
 	inherited::Load		(N,data,dwFlags);
 
@@ -54,7 +54,7 @@ void FLOD::Render		(float LOD		)
 
 	// Fill VB
 	_face&		F					= facets[best_id];
-	DWORD		vOffset				= 0;
+	u32		vOffset				= 0;
 	FVF::LIT*	V					= (FVF::LIT*) Device.Streams.Vertex.Lock(4,hVS->dwStride,vOffset);
 	V[0].set	(F.v[0].v,F.v[0].c,F.v[0].t.x,F.v[0].t.y);
 	V[1].set	(F.v[1].v,F.v[1].c,F.v[1].t.x,F.v[1].t.y);

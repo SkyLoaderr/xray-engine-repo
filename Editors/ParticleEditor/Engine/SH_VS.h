@@ -5,9 +5,9 @@
 class ENGINE_API		CVS 
 {
 public:
-	DWORD				dwReference;
-	DWORD				dwHandle;
-	DWORD				dwStride;
+	u32				dwReference;
+	u32				dwHandle;
+	u32				dwStride;
 	BOOL				bFFP;
 };
 

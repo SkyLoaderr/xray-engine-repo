@@ -19,7 +19,7 @@
 /* c is written as first byte in the datastream                */
 /* one could do without c, but then you have an additional if  */
 /* per outputbyte.                                             */
-void NET_Compressor::start_encoding		( BYTE* dest, DWORD header_size )
+void NET_Compressor::start_encoding		( BYTE* dest, u32 header_size )
 {  
 	dest			+=	header_size-1;
 	RNGC.low		=	0;				/* Full code range */
@@ -88,9 +88,9 @@ void NET_Compressor::encode_shift	( freq sy_f, freq lt_f, freq shift )
 /* actually not that many bytes need to be output, but who   */
 /* cares. I output them because decode will read them :)     */
 /* the return value is the number of bytes written           */
-DWORD NET_Compressor::done_encoding	( )
+u32 NET_Compressor::done_encoding	( )
 {   
-	DWORD tmp;
+	u32 tmp;
 
     encode_normalize	();     /* now we have a normalized state */
     RNGC.bytecount		+= 3;
@@ -112,7 +112,7 @@ DWORD NET_Compressor::done_encoding	( )
 }
 
 /* Start the decoder                                         */
-int NET_Compressor::start_decoding	( BYTE* src, DWORD header_size )
+int NET_Compressor::start_decoding	( BYTE* src, u32 header_size )
 {
 	src			+= header_size;
 	RNGC.ptr	= src;
@@ -177,14 +177,14 @@ void NET_Compressor::decode_update		( freq sy_f, freq lt_f, freq tot_f )
 /* Decode a byte/short without modelling                     */
 BYTE NET_Compressor::decode_byte		( )
 {
-	DWORD tmp	=	decode_culshift(8);
+	u32 tmp	=	decode_culshift(8);
     decode_update	( 1,tmp,(freq)1<<8 );
     return BYTE(tmp);
 }
 
 WORD NET_Compressor::decode_short		( )
 {   
-	DWORD tmp	=	decode_culshift(16);
+	u32 tmp	=	decode_culshift(16);
     decode_update	( 1,tmp,(freq)1<<16);
     return WORD(tmp);
 }
@@ -222,7 +222,7 @@ void NET_Compressor::Initialize	(NET_Compressor_FREQ& compress, NET_Compressor_F
 	CS.Leave		();
 }
 
-WORD NET_Compressor::Compress	(BYTE* dest, BYTE* src, DWORD count)
+WORD NET_Compressor::Compress	(BYTE* dest, BYTE* src, u32 count)
 {
 	R_ASSERT		(dest && src && count);
 
@@ -234,18 +234,18 @@ WORD NET_Compressor::Compress	(BYTE* dest, BYTE* src, DWORD count)
     start_encoding	(dest, 2);
 	
 	// output the encoded symbols
-	DWORD	cum	= freqCompress[256];
+	u32	cum	= freqCompress[256];
 	BYTE*	end	= src+count;
 	for(; src!=end; ) 
 	{
 		int ch				=	*src++;
-		DWORD freq			=	freqCompress[ch];
+		u32 freq			=	freqCompress[ch];
 		encode_freq			(freqCompress[ch+1]-freq, freq, cum);
 	}
 
     // close the encoder
 	*LPWORD(dest)			=	WORD(count);
-	DWORD size				=	done_encoding(); //-1+2;
+	u32 size				=	done_encoding(); //-1+2;
 	CS.Leave		();
 
     return WORD(size);
@@ -253,7 +253,7 @@ WORD NET_Compressor::Compress	(BYTE* dest, BYTE* src, DWORD count)
 }
 
 
-WORD NET_Compressor::Decompress	(BYTE* dest, BYTE* src, DWORD count)
+WORD NET_Compressor::Decompress	(BYTE* dest, BYTE* src, u32 count)
 {  
 	R_ASSERT(dest && src && count);
 
@@ -262,20 +262,20 @@ WORD NET_Compressor::Decompress	(BYTE* dest, BYTE* src, DWORD count)
 
 	/*
 	CS.Enter		();
-	DWORD			size	= DWORD(*LPWORD(src));
+	u32			size	= u32(*LPWORD(src));
 
 	start_decoding	(src, 2);
 	
-	DWORD			cum = freqDecompress[256];
-	for (DWORD i=0; i<size; i++)
+	u32			cum = freqDecompress[256];
+	for (u32 i=0; i<size; i++)
 	{
 		freq	cf, symbol;
 		cf		= decode_culfreq(cum);
 
 		// 1
-		DWORD*	begin	= freqDecompress.table;
-		DWORD*	end		= begin+257;
-		DWORD*	pEqual	= std::upper_bound(begin,end,DWORD(cf));
+		u32*	begin	= freqDecompress.table;
+		u32*	end		= begin+257;
+		u32*	pEqual	= std::upper_bound(begin,end,u32(cf));
 		symbol	= pEqual-begin-1;
 
 		// 2
@@ -296,7 +296,7 @@ WORD NET_Compressor::Decompress	(BYTE* dest, BYTE* src, DWORD count)
 void NET_Compressor_FREQ::Normalize()
 {
 	// summarize counters
-	DWORD I, total	= 0;
+	u32 I, total	= 0;
 	for (I=0; I<256; I++)	total += table[I];
 	
 	if (total>60000)	{

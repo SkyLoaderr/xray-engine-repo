@@ -4,7 +4,7 @@
 
 char* _TrimRight( char* str )
 {
-	DWORD	num = strlen( str ) - 1;
+	u32	num = strlen( str ) - 1;
 	while ( (num > 0)&&(isspace(BYTE(str[num]))))
 	{
 		num--;
@@ -27,10 +27,10 @@ char* _GetFileExt ( char* name )
 	return NULL;
 }
 
-const char* _SetPos (const char* src, DWORD pos )
+const char* _SetPos (const char* src, u32 pos )
 {
 	const char*	res			= src;
-	DWORD		p			= 0;
+	u32		p			= 0;
 	while( p<pos && (0!=(res=strchr(res,','))) )
 	{
 		res		++;
@@ -42,7 +42,7 @@ const char* _SetPos (const char* src, DWORD pos )
 char* _CopyVal ( const char* src, char* dst )
 {
 	char*		p;
-	DWORD		n;
+	u32		n;
 	p			= strchr	( src, ',' );
 	n			= (p>0) ? (p-src) : strlen(src);
 	strncpy		( dst, src, n );
@@ -53,7 +53,7 @@ char* _CopyVal ( const char* src, char* dst )
 int				_GetItemCount ( const char* src )
 {
 	const char*	res			= src;
-	DWORD		p			= 0;
+	u32		p			= 0;
 	while( 0!=(res=strchr(res,',')) )
 	{
 		res		++;
@@ -72,15 +72,15 @@ char* _GetItem ( const char* src, int index, char* dst, char* def )
 	return		dst;
 }
 
-DWORD _ParseItem ( char* src, xr_token* token_list )
+u32 _ParseItem ( char* src, xr_token* token_list )
 {
 	for( int i=0; token_list[i].name; i++ )
 		if( !stricmp(src,token_list[i].name) )
 			return token_list[i].id;
-	return DWORD(-1);
+	return u32(-1);
 }
 
-DWORD _ParseItem ( char* src, int ind, xr_token* token_list )
+u32 _ParseItem ( char* src, int ind, xr_token* token_list )
 {
 	char dst[128];
 	_GetItem(src, ind, dst);
@@ -101,10 +101,10 @@ char* _TrimLeft( char* str )
 {
 	char* p = str;
 	while( *p && isspace(*p) ) p++;
-	DWORD	num1 = strlen( str );
-	DWORD	num2 = strlen( p );
+	u32	num1 = strlen( str );
+	u32	num2 = strlen( p );
 	if (num1 == num2) return str;
-	for (DWORD	i = 0; i < num1; i++)
+	for (u32	i = 0; i < num1; i++)
 	{
 		if (i < num2) str[i] = p[i];
 			else str[i] = 0;

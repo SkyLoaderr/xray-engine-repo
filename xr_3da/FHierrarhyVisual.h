@@ -15,7 +15,7 @@ public:
 	vector<CVisual*>		children;
 	BOOL					bDontDelete;
 
-	virtual void	Load	(const char* N, CStream *data, DWORD dwFlags);
+	virtual void	Load	(const char* N, CStream *data, u32 dwFlags);
 	virtual void	Copy	(CVisual *pFrom);
 
 	FHierrarhyVisual();

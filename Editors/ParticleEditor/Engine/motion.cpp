@@ -127,7 +127,7 @@ CSMotion::CSMotion(CSMotion* source):CCustomMotion(source){
 	// bone motions
 	st_BoneMotion*	src;
 	st_BoneMotion*	dest;
-    for(DWORD i=0; i<bone_mots.size(); i++){
+    for(u32 i=0; i<bone_mots.size(); i++){
     	dest 		= &bone_mots[i];
     	src 		= &source->bone_mots[i];
 		for (int ch=0; ch<ctMaxChannel; ch++)
@@ -164,7 +164,7 @@ void CSMotion::CopyMotion(CSMotion* source){
 	st_BoneMotion*	src;
 	st_BoneMotion*	dest;
     bone_mots.resize(source->bone_mots.size());
-    for(DWORD i=0; i<bone_mots.size(); i++){
+    for(u32 i=0; i<bone_mots.size(); i++){
     	dest 		= &bone_mots[i];
     	src 		= &source->bone_mots[i];
 		for (int ch=0; ch<ctMaxChannel; ch++)

@@ -30,29 +30,29 @@ void FProgressive::Release	()
 {
 	CVisual::Release	();
 
-	for (DWORD I=0; I<LODs.size(); I++)
+	for (u32 I=0; I<LODs.size(); I++)
 		LODs[I].P.Release();
 }
 
-void FProgressive::Load		(const char* N, CStream *data, DWORD dwFlags)
+void FProgressive::Load		(const char* N, CStream *data, u32 dwFlags)
 {
 	CVisual::Load(N,data,dwFlags);
 	
 	LODs.reserve(8);
 	CStream*	lods = data->OpenChunk	(OGF_P_LODS);
 	R_ASSERT	(lods);
-	DWORD		lod_id=0;
+	u32		lod_id=0;
 	while (lods->FindChunk(lod_id))
 	{
 		CStream* ONE = lods->OpenChunk(lod_id);
 		primLOD	LOD;
 		
 		// read vertices
-		DWORD dwVertStart=0;
+		u32 dwVertStart=0;
 		if (ONE->FindChunk(OGF_VCONTAINER)) 
 		{
 #ifndef _EDITOR
-			DWORD ID		= ONE->Rdword();
+			u32 ID		= ONE->Rdword();
 			dwVertStart		= ONE->Rdword();
 			LOD.dwVertCount	= ONE->Rdword();
 			LOD.P.VB_Attach	(::Render->getFVF(ID),::Render->getVB(ID));
@@ -60,7 +60,7 @@ void FProgressive::Load		(const char* N, CStream *data, DWORD dwFlags)
 		} else {
 			R_ASSERT(ONE->FindChunk(OGF_VERTICES));
 			
-			DWORD dwVertType;
+			u32 dwVertType;
 			
 			dwVertStart		= 0;
 			dwVertType		= ONE->Rdword();
@@ -77,7 +77,7 @@ void FProgressive::Load		(const char* N, CStream *data, DWORD dwFlags)
 		LOD.dwPrimsCount = 0;
 
 		R_ASSERT(ONE->FindChunk(OGF_INDICES));
-		DWORD	dwCount = ONE->Rdword();
+		u32	dwCount = ONE->Rdword();
 		R_ASSERT(dwCount%3 == 0);
 		
 		LOD.P.IB_Create(dwVertStart,dwCount,

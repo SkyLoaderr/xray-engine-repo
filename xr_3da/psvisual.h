@@ -18,12 +18,12 @@ public:
 	virtual				~CPSVisual		();
 
 	// Visual
-	DWORD				RenderTO		(FVF::TL* V);
+	u32				RenderTO		(FVF::TL* V);
 	virtual void		Render			(float LOD);
 	virtual void		Copy			(CVisual* pFrom);
 
 	// Functionality
-	void				Update			(DWORD dt);
+	void				Update			(u32 dt);
 	void				Compile			(PS::SDef_RT* source, PS::SEmitter* E);
 	IC int				ParticleCount	()	{ return m_Particles.size();}
 	IC void				Stop			()	{ m_Particles.clear();      }

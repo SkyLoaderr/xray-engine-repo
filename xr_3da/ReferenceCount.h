@@ -8,7 +8,7 @@
 
 class ENGINE_API CReferenceCount  
 {
-	DWORD		dwReference;
+	u32		dwReference;
 public:
 	IC void		ref_inc		()	{ dwReference++; }
 	IC void		ref_release	()	{ dwReference--; if (0==dwReference) delete this; }

@@ -6,14 +6,14 @@ class ENGINE_API	CObject;
 class ENGINE_API	CInifile;
 
 // t-defs
-const DWORD	clGET_TRIS			= (1<<0);
-const DWORD	clGET_BOXES			= (1<<1);
-const DWORD	clGET_SPHERES		= (1<<2);
-const DWORD	clQUERY_ONLYFIRST	= (1<<3);	// stop if was any collision
-const DWORD	clQUERY_TOPLEVEL	= (1<<4);	// get only top level of model box/sphere
-const DWORD	clQUERY_STATIC		= (1<<5);	// static
-const DWORD	clQUERY_DYNAMIC		= (1<<6);	// dynamic
-const DWORD	clCOARSE			= (1<<7);	// coarse test (triangles vs obb)
+const u32	clGET_TRIS			= (1<<0);
+const u32	clGET_BOXES			= (1<<1);
+const u32	clGET_SPHERES		= (1<<2);
+const u32	clQUERY_ONLYFIRST	= (1<<3);	// stop if was any collision
+const u32	clQUERY_TOPLEVEL	= (1<<4);	// get only top level of model box/sphere
+const u32	clQUERY_STATIC		= (1<<5);	// static
+const u32	clQUERY_DYNAMIC		= (1<<6);	// dynamic
+const u32	clCOARSE			= (1<<7);	// coarse test (triangles vs obb)
 
 struct clQueryTri
 {
@@ -90,7 +90,7 @@ protected:
 	CObject*		owner;			// владелец
 	Irect			last_rect;		// последние занимаемые слоты
 	Fbox			s_box;			// BBox объекта
-	DWORD			dwQueryID;
+	u32			dwQueryID;
 
 public:
 	Fsphere			Sphere;
@@ -101,7 +101,7 @@ public:
 
 	virtual BOOL	_clRayTest		( RayQuery& Q) = 0;
 	virtual BOOL	_svRayTest		( RayQuery& Q) = 0;
-	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, DWORD flags) = 0;
+	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags) = 0;
 
 	IC CObject*		Owner			( )						{ return owner;}
 	IC BOOL			GetEnable		( )						{ return enabled;}
@@ -124,7 +124,7 @@ public:
 
 	virtual BOOL	_clRayTest		( RayQuery& Q);
 	virtual BOOL	_svRayTest		( RayQuery& Q);
-	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, DWORD flags);
+	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 
 	BOOL			LoadModel		( CInifile* ini, const char *section );
 	CDB::TRI*		GetTris			() { return model.get_tris();	}
@@ -146,8 +146,8 @@ private:
 	Fbox			base_box;
 	vector<xOBB>	model;
 
-	DWORD			dwFrame;		// The model itself
-	DWORD			dwFrameTL;		// Top level
+	u32			dwFrame;		// The model itself
+	u32			dwFrameTL;		// Top level
 
 	void			BuildState		();
 	void			BuildTopLevel	();
@@ -156,7 +156,7 @@ public:
 
 	virtual BOOL	_clRayTest		( RayQuery& Q );
 	virtual BOOL	_svRayTest		( RayQuery& Q );
-	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, DWORD flags);
+	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 };
 
 class ENGINE_API	CCF_EventBox : public CCFModel
@@ -168,7 +168,7 @@ public:
 
 	virtual BOOL	_clRayTest		( RayQuery& Q);
 	virtual BOOL	_svRayTest		( RayQuery& Q);
-	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, DWORD flags);
+	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 
 	BOOL			Contact			( CObject* O );
 };
@@ -192,7 +192,7 @@ public:
 
 	virtual BOOL	_clRayTest		( RayQuery& Q);
 	virtual BOOL	_svRayTest		( RayQuery& Q);
-	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, DWORD flags);
+	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 
 	void			add_sphere		( Fsphere& S	);
 	void			add_box			( Fmatrix& B	);

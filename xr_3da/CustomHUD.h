@@ -4,7 +4,7 @@
 
 #include "fcontroller.h"
 
-ENGINE_API extern DWORD psHUD_Flags;
+ENGINE_API extern u32 psHUD_Flags;
 #define HUD_CROSSHAIR			(1<<0)
 #define HUD_CROSSHAIR_DIST		(1<<1)
 #define HUD_WEAPON				(1<<2)
@@ -29,7 +29,7 @@ public:
 	virtual		void		Render_Direct			() {;}
 	
 	virtual		void		OnFrame					(){;}
-	virtual		void		OnEvent					(EVENT E, DWORD P1, DWORD P2){;}
+	virtual		void		OnEvent					(EVENT E, u32 P1, u32 P2){;}
 
 	virtual		void		Hit						(int idx){;}
 

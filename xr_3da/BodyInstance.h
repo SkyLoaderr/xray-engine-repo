@@ -64,7 +64,7 @@ public:
 		eFixed,
 		eAccrue,
 		eFalloff,
-		eFORCEDWORD = DWORD(-1)
+		eFORCEDWORD = u32(-1)
 	};
 public:
 	float			blendAmount;
@@ -85,7 +85,7 @@ public:
 	PlayCallback	Callback;
 	void*			CallbackParam;
 	
-	DWORD			dwFrame;
+	u32			dwFrame;
 };
 typedef svector<CBlend*,MAX_BLENDED>	BlendList;
 typedef BlendList::iterator				BlendListIt;
@@ -130,12 +130,12 @@ public:
 		Callback		= C; 
 		Callback_Param	= Param; 
 	}
-	IC	void		set_param		(DWORD idx, float data)
+	IC	void		set_param		(u32 idx, float data)
 	{
 		VERIFY		(idx<MAX_BONE_PARAMS);
 		param[idx]	= data;
 	}
-	IC	float		get_param		(DWORD idx)
+	IC	float		get_param		(u32 idx)
 	{
 		VERIFY		(idx<MAX_BONE_PARAMS);
 		return		param[idx];
@@ -164,7 +164,7 @@ public:
 	void			Calculate		(CKinematics* K, Fmatrix *Parent);
 	void			DebugQuery		(BoneDebug& L)
 	{
-		for (DWORD i=0; i<children.size(); i++)
+		for (u32 i=0; i<children.size(); i++)
 		{
 			L.push_back(SelfID);
 			L.push_back(children[i]->SelfID);
@@ -188,7 +188,7 @@ public:
 	WORD	power;		// quantized: 0..10
 	WORD	accrue;		// quantized: 0..10
 	WORD	falloff;	// quantized: 0..10
-    DWORD	flags;
+    u32	flags;
 
 	IC float	Dequantize(WORD V) 
 	{	return  float(V)/655.35f; }
@@ -196,7 +196,7 @@ public:
 	{	int		t = iFloor(V*655.35f); clamp(t,0,65535); return WORD(t); }
 
 	void		Load		(CKinematics* P, CInifile* INI, LPCSTR section, BOOL bCycle);
-	void		Load		(CKinematics* P, CStream* MP, DWORD fl);
+	void		Load		(CKinematics* P, CStream* MP, u32 fl);
 	CBlend*		PlayCycle	(CKinematics* P, BOOL bMixIn, PlayCallback Callback, LPVOID Callback_Param);
 	CBlend*		PlayFX		(CKinematics* P);
 };
@@ -252,8 +252,8 @@ private:
 	BlendList								blend_cycles	[MAX_PARTS];
 	BlendList								blend_fx;
 
-	DWORD									iUpdateID;
-	DWORD									dwUpdate_LastTime;
+	u32									iUpdateID;
+	u32									dwUpdate_LastTime;
 
 	// internal functions
 	void									IBoneInstances_Create	();
@@ -332,7 +332,7 @@ public:
 
 	// General "Visual" stuff
 	virtual void				Copy			(CVisual *pFrom);
-	virtual void				Load			(const char* N, CStream *data, DWORD dwFlags);
+	virtual void				Load			(const char* N, CStream *data, u32 dwFlags);
 	virtual void				Release			();
 	virtual						~CKinematics	();
 };

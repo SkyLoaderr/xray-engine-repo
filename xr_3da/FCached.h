@@ -12,11 +12,11 @@ class ENGINE_API FCached  : public CVisual
 {
 public:
 	LPVOID			pVertices;
-	DWORD			vCount;
+	u32			vCount;
 	LPWORD			pIndices;
-	DWORD			iCount;
+	u32			iCount;
 
-	virtual void	Load	(const char* N, CStream *data, DWORD dwFlags);
+	virtual void	Load	(const char* N, CStream *data, u32 dwFlags);
 	virtual void	Release	();						// Shared memory release
 	virtual void	Copy	(CVisual* from);
 
@@ -24,8 +24,8 @@ public:
 	virtual ~FCached();
 };
 
-void TransferGeometry	(LPVOID vDest, LPVOID vSrc, DWORD vCount, DWORD vStride,
-						 LPWORD iDest, LPWORD iSrc, DWORD iCount, DWORD iOffset,
+void TransferGeometry	(LPVOID vDest, LPVOID vSrc, u32 vCount, u32 vStride,
+						 LPWORD iDest, LPWORD iSrc, u32 iCount, u32 iOffset,
 						 Fmatrix* xform = NULL);
 
 #endif // !defined(AFX_FCACHED_H__A095957D_9524_4616_BB39_F029F617477E__INCLUDED_)

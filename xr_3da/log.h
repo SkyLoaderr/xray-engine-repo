@@ -7,7 +7,7 @@ void ENGINE_API __cdecl Msg		(const char *format, ...);
 void ENGINE_API			Log		(const char *msg);
 void ENGINE_API			Log		(const char *msg);
 void ENGINE_API			Log		(const char *msg, const char*	dop);
-void ENGINE_API			Log		(const char *msg, DWORD			dop);
+void ENGINE_API			Log		(const char *msg, u32			dop);
 void ENGINE_API			Log		(const char *msg, int  			dop);
 void ENGINE_API			Log		(const char *msg, float			dop);
 void ENGINE_API			Log		(const char *msg, const Fvector& dop);

@@ -37,7 +37,7 @@ void CFastSprite::Render(float L)
 	FVF::TL			PT;
 	VSprites::iterator i	= sprites.begin();
 	VSprites::iterator end	= sprites.end();
-	DWORD			vOffset;
+	u32			vOffset;
 	FVF::TL*		pv_start= (FVF::TL*)Stream->Lock(sprites.size()*4,vOffset);
 	FVF::TL*		pv		= pv_start;
 
@@ -46,7 +46,7 @@ void CFastSprite::Render(float L)
 		if (i->alpha < (3.f/255.f) ) continue;
 
 		BYTE C			= BYTE(i->alpha*255.f);
-		DWORD clr		= D3DCOLOR_RGBA(C,C,C,C);
+		u32 clr		= D3DCOLOR_RGBA(C,C,C,C);
 		PT.transform	( i->pos, mSpriteTransform );
 		float size		= Device.dwWidth * i->size/PT.p.w;
 
@@ -97,7 +97,7 @@ void CFastSprite::Render(float L)
 	}
 
 	// unlock VB and Render it as triangle list
-	DWORD dwNumVerts = pv-pv_start;
+	u32 dwNumVerts = pv-pv_start;
 	Stream->Unlock(dwNumVerts);
 	if (dwNumVerts)
 		Device.Primitive.Draw(Stream,dwNumVerts,dwNumVerts/2,vOffset,Device.Streams_QuadIB);

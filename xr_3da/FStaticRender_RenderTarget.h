@@ -6,11 +6,11 @@ class CRenderTarget		: public CRender_target
 {
 private:
 	BOOL				bAvailable;
-	DWORD				rtWidth;
-	DWORD				rtHeight;
+	u32				rtWidth;
+	u32				rtHeight;
 
-	DWORD				curWidth;
-	DWORD				curHeight;
+	u32				curWidth;
+	u32				curHeight;
 
 	CRT*				RT;
 	IDirect3DSurface8*	ZB;
@@ -40,6 +40,6 @@ public:
 	virtual void		set_blur			(float f)		{ param_blur=f;		}
 	virtual void		set_gray			(float f)		{ param_gray=f;		}
 
-	virtual DWORD		get_width			()				{ return curWidth;	}
-	virtual DWORD		get_height			()				{ return curHeight;	}
+	virtual u32		get_width			()				{ return curWidth;	}
+	virtual u32		get_height			()				{ return curHeight;	}
 };

@@ -25,8 +25,8 @@ class ENGINE_API CDemoPlay :
 	float				fSpeed;
 	BOOL				bCycle;
 
-	DWORD				dwStartTime;
-	DWORD				dwStartFrame;
+	u32				dwStartTime;
+	u32				dwStartFrame;
 	
 	void				stat_Start	();
 	void				stat_Stop	();

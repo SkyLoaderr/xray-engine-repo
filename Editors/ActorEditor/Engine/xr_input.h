@@ -15,7 +15,7 @@ const int default_key			= mouse_device_key | keyboard_device_key ;
 
 ENGINE_API extern float			psMouseSens;
 ENGINE_API extern float			psMouseSensScale;
-ENGINE_API extern DWORD			psMouseInvert;
+ENGINE_API extern u32			psMouseInvert;
 
 class ENGINE_API CInput 
 #ifndef M_BORLAND
@@ -36,7 +36,7 @@ public:
 		DIDEVCAPS					capabilities;
 		DIDEVICEINSTANCE			deviceInfo;
 		DIDEVICEOBJECTINSTANCE		objectInfo;
-		DWORD						mouse_dt;
+		u32						mouse_dt;
 	};
 	struct sxr_key
 	{
@@ -49,8 +49,8 @@ private:
 	LPDIRECTINPUTDEVICE7		pMouse;			// The DIDevice7 interface
 	LPDIRECTINPUTDEVICE7		pKeyboard;		// The DIDevice7 interface
 	//----------------------
-	DWORD						timeStamp	[COUNT_MOUSE_AXIS];
-	DWORD						timeSave	[COUNT_MOUSE_AXIS];
+	u32						timeStamp	[COUNT_MOUSE_AXIS];
+	u32						timeSave	[COUNT_MOUSE_AXIS];
 	int 						offs		[COUNT_MOUSE_AXIS];
 	BOOL						mouseState	[COUNT_MOUSE_BUTTONS];
 
@@ -58,8 +58,8 @@ private:
 	BOOL						KBState		[COUNT_KB_BUTTONS];
 
 	HRESULT						CreateInputDevice(	LPDIRECTINPUTDEVICE7* device, GUID guidDevice,
-													const DIDATAFORMAT* pdidDataFormat, DWORD dwFlags,
-													DWORD buf_size );
+													const DIDATAFORMAT* pdidDataFormat, u32 dwFlags,
+													u32 buf_size );
 
 	stack<CController*>			cbStack;
 
@@ -69,7 +69,7 @@ private:
 public:
 	sxr_mouse					mouse_property;
 	sxr_key						key_property;
-	DWORD						dwCurTime;
+	u32						dwCurTime;
 
 	void						SetAllAcquire				( BOOL bAcquire = TRUE );
 	void						SetMouseAcquire				( BOOL bAcquire );

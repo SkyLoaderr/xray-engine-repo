@@ -30,25 +30,25 @@ public:
 	
 	struct SavedPosition
 	{
-		DWORD	dwTime;
+		u32	dwTime;
 		Fvector	vPosition;
 	};
 	union ObjectFlags
 	{
 		struct 
 		{
-			DWORD	bEnabled		:	1;
-			DWORD	bVisible		:	1;
-			DWORD	bActive			:	1;
-			DWORD	bDestroy		:	1;
-			DWORD	net_Local		:	1;
-			DWORD	net_Ready		:	1;
+			u32	bEnabled		:	1;
+			u32	bVisible		:	1;
+			u32	bActive			:	1;
+			u32	bDestroy		:	1;
+			u32	net_Local		:	1;
+			u32	net_Ready		:	1;
 		};
-		DWORD	storage;
+		u32	storage;
 	};
 private:
 	ObjectFlags							FLAGS;
-	DWORD								net_ID;
+	u32								net_ID;
 
 	// Some property variables
 	LPSTR								NameObject;
@@ -80,13 +80,13 @@ protected:
 	// Parentness
 	CObject*							Parent;
 public:
-	DWORD								dwFrame_UpdateCL;
+	u32								dwFrame_UpdateCL;
 
 	// Network
 	IC BOOL								Local				()					{ return FLAGS.net_Local;	}
 	IC BOOL								Remote				()					{ return !FLAGS.net_Local;	}
-	IC DWORD							ID					()					{ return net_ID;			}
-	IC void								setID				(DWORD _ID)			{ net_ID = _ID;				}
+	IC u32							ID					()					{ return net_ID;			}
+	IC void								setID				(u32 _ID)			{ net_ID = _ID;				}
 	virtual BOOL						Ready				()					{ return FLAGS.net_Ready;	}
 	virtual float						shedule_Scale		()					{ return Device.vCameraPosition.distance_to(Position())/200.f; }
 
@@ -153,7 +153,7 @@ public:
 	
 	// Update
 	virtual void						OnVisible			(void);								// returns lighting level
-	virtual void						Update				(DWORD dt);							// Called by sheduler
+	virtual void						Update				(u32 dt);							// Called by sheduler
 	virtual void						UpdateCL			();									// Called each frame, so no need for dt
 	virtual BOOL						net_Spawn			(LPVOID data);
 	virtual void						net_Destroy			();
@@ -164,8 +164,8 @@ public:
 	virtual void						net_MigrateActive	(NET_Packet& P)	{ FLAGS.net_Local = TRUE;		};
 
 	// Position stack
-	IC DWORD							ps_Size				()				{ return PositionStack.size(); }
-	virtual	SavedPosition				ps_Element			(DWORD ID);
+	IC u32							ps_Size				()				{ return PositionStack.size(); }
+	virtual	SavedPosition				ps_Element			(u32 ID);
 
 	// HUD
 	virtual void						OnHUDDraw			(CCustomHUD* hud)	{};
@@ -181,7 +181,7 @@ public:
 	// Device dependance
 	virtual void						OnDeviceDestroy		();
 	virtual void						OnDeviceCreate		();
-	virtual void						OnEvent				(EVENT E, DWORD P1, DWORD P2) {};
+	virtual void						OnEvent				(EVENT E, u32 P1, u32 P2) {};
 };
 
 #endif //__XR_OBJECT_H__

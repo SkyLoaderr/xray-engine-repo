@@ -14,15 +14,15 @@ struct SHADOW_V
 	WORD*   pwShadVolIndices;      // tri indices into vertex buffer VB for DrawPrim
 	WORD*   pwShadVolSideIndices;  // ptrs into main index array pwShadVolIndices for Side tris of shadow volume
 	WORD*   pwShadVolCapIndices;   // ptrs into main index array pwShadVolIndices for cap tris of shadow volume
-	DWORD   dwNumVertices;
-	DWORD   dwNumSideIndices;
-	DWORD   dwNumCapIndices;
+	u32   dwNumVertices;
+	u32   dwNumSideIndices;
+	u32   dwNumCapIndices;
 };
 #pragma pack(push)
 #pragma pack(1)
 struct COLORVERTEX {
 	Fvector p;
-	DWORD	c;
+	u32	c;
 };
 #pragma pack(pop)
 
@@ -31,7 +31,7 @@ class FShadowForm : public CVisual
 	// Data
 	LPDIRECT3DVERTEXBUFFER7	pVB;
 	vector<WORD>			Indices;
-	DWORD					dwNumVertices;
+	u32					dwNumVertices;
 
 	BOOL					g_bDrawShadowVolCaps;
 
@@ -45,7 +45,7 @@ public:
 	void					RenderShadow		(LPDIRECT3DVERTEXBUFFER7 pv);
 	void					MakeShadowVolume	(_vector &L, _matrix &mWorld );
 
-	virtual	void			Load(CStream *data, DWORD dwFlags);
+	virtual	void			Load(CStream *data, u32 dwFlags);
 	virtual void			Render(float LOD);
 
 	FShadowForm();

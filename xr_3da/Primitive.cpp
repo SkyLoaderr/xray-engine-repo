@@ -1,10 +1,10 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-extern void	 ConvertVertices(DWORD dwTypeDest, void *pDest, DWORD dwTypeSrc, void *pSource, DWORD dwCount);
+extern void	 ConvertVertices(u32 dwTypeDest, void *pDest, u32 dwTypeSrc, void *pSource, u32 dwCount);
 
 //***** VB interface
-void	CPrimitive::VB_Attach	(DWORD FVF, IDirect3DVertexBuffer8* VB)
+void	CPrimitive::VB_Attach	(u32 FVF, IDirect3DVertexBuffer8* VB)
 {
 	_RELEASE(pVertices);
 	pVertices	= VB;
@@ -12,7 +12,7 @@ void	CPrimitive::VB_Attach	(DWORD FVF, IDirect3DVertexBuffer8* VB)
 	vShader		= FVF;
 	vSize		= D3DXGetFVFVertexSize(FVF);
 }
-void	CPrimitive::VB_Create	(DWORD FVF, DWORD dwCount,DWORD dwUsage, DWORD srcFVF, VOID* pData)
+void	CPrimitive::VB_Create	(u32 FVF, u32 dwCount,u32 dwUsage, u32 srcFVF, VOID* pData)
 {
 	Device.Shader.Evict		();
 	
@@ -30,7 +30,7 @@ void	CPrimitive::VB_Create	(DWORD FVF, DWORD dwCount,DWORD dwUsage, DWORD srcFVF
 		VB_Unlock();
 	}
 }
-void*	CPrimitive::VB_Lock		(DWORD dwFlags)
+void*	CPrimitive::VB_Lock		(u32 dwFlags)
 {
 	BYTE* pData;
 	VERIFY(pVertices);
@@ -48,7 +48,7 @@ void	CPrimitive::VB_Destroy	()
 }
 
 //***** IB interface
-void	CPrimitive::IB_SetBase	(DWORD dwBaseVert)
+void	CPrimitive::IB_SetBase	(u32 dwBaseVert)
 {
 	dwBaseVertex=dwBaseVert;
 }
@@ -66,7 +66,7 @@ void	CPrimitive::IB_Replicate(CPrimitive& P)
 	IB_Create(P.dwBaseVertex,desc.Size/2,desc.Usage,data);
 	P.IB_Unlock();
 }
-void	CPrimitive::IB_Create	(DWORD dwBaseVert, DWORD dwCount, DWORD dwUsage,VOID* pData)
+void	CPrimitive::IB_Create	(u32 dwBaseVert, u32 dwCount, u32 dwUsage,VOID* pData)
 {
 	Device.Shader.Evict		();
 	
@@ -81,7 +81,7 @@ void	CPrimitive::IB_Create	(DWORD dwBaseVert, DWORD dwCount, DWORD dwUsage,VOID*
 		IB_Unlock	();
 	}
 }
-WORD*	CPrimitive::IB_Lock				(DWORD dwFlags)
+WORD*	CPrimitive::IB_Lock				(u32 dwFlags)
 {
 	BYTE* pData;
 	VERIFY(pIndices);

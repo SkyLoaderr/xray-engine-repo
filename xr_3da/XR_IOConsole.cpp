@@ -412,8 +412,8 @@ BOOL CConsole::GetBool(char *name)
 {
 	ioc_command *cmd = (ioc_command *)bsearch(name, ioc_cmd_array,ioc_num_cmd,sizeof(ioc_command),ioc_compare_search_cmd);
 	if (cmd!=NULL && cmd->type==cmdMASK) {
-		DWORD *v  = (DWORD *) cmd->ptr;
-		DWORD mask= cmd->mask;
+		u32 *v  = (u32 *) cmd->ptr;
+		u32 mask= cmd->mask;
 		return BOOL(*v & mask);
 	}
 	return FALSE;
@@ -433,7 +433,7 @@ char * CConsole::GetValue(char *name)
 {
 	ioc_command *cmd = (ioc_command *)bsearch(name, ioc_cmd_array,ioc_num_cmd,sizeof(ioc_command),ioc_compare_search_cmd);
 	if (cmd!=NULL && cmd->type==cmdVALUE) {
-		DWORD *v = (DWORD *) cmd->ptr; // pointer to value
+		u32 *v = (u32 *) cmd->ptr; // pointer to value
 		xr_token *tok=cmd->tok;
 		while (tok->name) {
 			if (tok->id==(int)(*v)) {
@@ -449,7 +449,7 @@ char * CConsole::GetNextValue(char *name)
 {
 	ioc_command *cmd = (ioc_command *)bsearch(name, ioc_cmd_array,ioc_num_cmd,sizeof(ioc_command),ioc_compare_search_cmd);
 	if (cmd!=NULL && cmd->type==cmdVALUE) {
-		DWORD *v = (DWORD *) cmd->ptr; // pointer to value
+		u32 *v = (u32 *) cmd->ptr; // pointer to value
 		xr_token *tok=cmd->tok;
 		while (tok->name) {
 			if (tok->id==(int)(*v)) {
@@ -468,7 +468,7 @@ char * CConsole::GetPrevValue(char *name)
 {
 	ioc_command *cmd = (ioc_command *)bsearch(name, ioc_cmd_array,ioc_num_cmd,sizeof(ioc_command),ioc_compare_search_cmd);
 	if (cmd!=NULL && cmd->type==cmdVALUE) {
-		DWORD *v = (DWORD *) cmd->ptr; // pointer to value
+		u32 *v = (u32 *) cmd->ptr; // pointer to value
 		xr_token *tok=cmd->tok;
 		while (tok->name) {
 			if (tok->id==(int)(*v)) {

@@ -69,7 +69,7 @@ public:
 
 	Sect&		ReadSection		( LPCSTR S );
 	BOOL		LineExists		( LPCSTR S, LPCSTR L );
-	DWORD		LineCount		( LPCSTR S );
+	u32		LineCount		( LPCSTR S );
 	BOOL		SectionExists	( LPCSTR S );
 	Root&		Sections		( ){return DATA;}
 
@@ -77,7 +77,7 @@ public:
 	LPCSTR 		ReadSTRING		( LPCSTR S, LPCSTR L );
 	int 		ReadINT			( LPCSTR S, LPCSTR L );
 	float		ReadFLOAT		( LPCSTR S, LPCSTR L );
-	DWORD		ReadCOLOR		( LPCSTR S, LPCSTR L );
+	u32		ReadCOLOR		( LPCSTR S, LPCSTR L );
 	Fvector		ReadVECTOR		( LPCSTR S, LPCSTR L );
 	Fvector2	ReadVECTOR2		( LPCSTR S, LPCSTR L );
 	BOOL		ReadBOOL		( LPCSTR S, LPCSTR L );
@@ -88,7 +88,7 @@ public:
     void		WriteFloat		( LPCSTR S, LPCSTR L, float				V, LPCSTR comment=0 );
     void		WriteInteger	( LPCSTR S, LPCSTR L, int				V, LPCSTR comment=0 );
     void		WriteColor		( LPCSTR S, LPCSTR L, const Fcolor&		V, LPCSTR comment=0 );
-    void		WriteColor		( LPCSTR S, LPCSTR L, DWORD				V, LPCSTR comment=0 );
+    void		WriteColor		( LPCSTR S, LPCSTR L, u32				V, LPCSTR comment=0 );
     void		WriteVector		( LPCSTR S, LPCSTR L, const Fvector&	V, LPCSTR comment=0 );
 };
 

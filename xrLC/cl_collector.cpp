@@ -15,22 +15,22 @@ namespace CDB
 	void Collector::calc_adjacency()
 	{
 		// Dumb algorithm O(N^2) :)
-		for (DWORD f=0; f<faces.size(); f++)
+		for (u32 f=0; f<faces.size(); f++)
 		{
-			for (DWORD t=0; t<faces.size(); t++)
+			for (u32 t=0; t<faces.size(); t++)
 			{
 				if (t==f)	continue;
 
-				for (DWORD f_e=0; f_e<3; f_e++)
+				for (u32 f_e=0; f_e<3; f_e++)
 				{
-					DWORD f1	= faces[f].IDverts()[(f_e+0)%3];
-					DWORD f2	= faces[f].IDverts()[(f_e+1)%3];
+					u32 f1	= faces[f].IDverts()[(f_e+0)%3];
+					u32 f2	= faces[f].IDverts()[(f_e+1)%3];
 					if (f1>f2)	swap(f1,f2);
 
-					for (DWORD t_e=0; t_e<3; t_e++)
+					for (u32 t_e=0; t_e<3; t_e++)
 					{
-						DWORD t1	= faces[t].IDverts()[(t_e+0)%3];
-						DWORD t2	= faces[t].IDverts()[(t_e+1)%3];
+						u32 t1	= faces[t].IDverts()[(t_e+0)%3];
+						u32 t2	= faces[t].IDverts()[(t_e+1)%3];
 						if (t1>t2)	swap(t1,t2);
 						
 						if (f1==t1 && f2==t2) 
@@ -68,11 +68,11 @@ namespace CDB
 					VM[ix][iy][iz].reserve	(_average);
 	}
 	
-	DWORD	CollectorPacked::VPack(Fvector& V)
+	u32	CollectorPacked::VPack(Fvector& V)
 	{
-		DWORD P = 0xffffffff;
+		u32 P = 0xffffffff;
 		
-		DWORD ix,iy,iz;
+		u32 ix,iy,iz;
 		ix = iFloor(float(V.x-VMmin.x)/VMscale.x*clpMX);
 		iy = iFloor(float(V.y-VMmin.y)/VMscale.y*clpMY);
 		iz = iFloor(float(V.z-VMmin.z)/VMscale.z*clpMZ);
@@ -94,7 +94,7 @@ namespace CDB
 			
 			VM[ix][iy][iz].push_back(P);
 			
-			DWORD ixE,iyE,izE;
+			u32 ixE,iyE,izE;
 			ixE = iFloor(float(V.x+VMeps.x-VMmin.x)/VMscale.x*clpMX);
 			iyE = iFloor(float(V.y+VMeps.y-VMmin.y)/VMscale.y*clpMY);
 			izE = iFloor(float(V.z+VMeps.z-VMmin.z)/VMscale.z*clpMZ);

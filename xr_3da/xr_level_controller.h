@@ -46,7 +46,7 @@ enum	EKeyBinding
 	kSCREENSHOT		,
 	kQUIT			,
 
-	kFORCEDWORD		= DWORD(-1)
+	kFORCEDWORD		= u32(-1)
 };
 
 struct ENGINE_API _keybind {

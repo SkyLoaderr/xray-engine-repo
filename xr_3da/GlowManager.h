@@ -15,7 +15,7 @@ public:
 	float	R;
 	float	fade;
 	Shader*	hShader;
-	DWORD	dwFrame;
+	u32	dwFrame;
 
 	// Ray-testing cache
 	BOOL				bTestResult;
@@ -28,10 +28,10 @@ class ENGINE_API CGlowManager
 {
 	vector<CGlow>		Glows;
 	CGlow*				Selected[MAX_GlowsPerFrame];
-	DWORD				Selected_Count;
+	u32				Selected_Count;
 	CVS*				VS;
 
-	DWORD				dwTestID;
+	u32				dwTestID;
 public:
 	void	add				(vector<WORD> &V);
 

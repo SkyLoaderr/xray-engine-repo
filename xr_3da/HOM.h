@@ -13,7 +13,7 @@ class ENGINE_API CHOM
 private:
 	CDB::MODEL*				m_pModel;
 	occTri*					m_pTris;
-	vector<DWORD>			m_ZB;
+	vector<u32>			m_ZB;
 
 	Shader*					m_Shader;
 	CVS*					m_VS;

@@ -241,11 +241,11 @@ BOOL	CInifile::LineExists( LPCSTR S, LPCSTR L )
 	return (A!=I.end() && strcmp(A->first,L)==0);
 }
  
-DWORD	CInifile::LineCount	(LPCSTR Sname)
+u32	CInifile::LineCount	(LPCSTR Sname)
 {
 	Sect&	S = ReadSection(Sname);
 	SectIt	I = S.begin();
-	DWORD	C = 0;
+	u32	C = 0;
 	for (; I!=S.end(); I++)	if (I->first) C++;
 	return  C;
 }                 
@@ -298,10 +298,10 @@ float CInifile::ReadFLOAT(LPCSTR S, LPCSTR L)
 	return		float(atof( C ));
 }
 
-DWORD CInifile::ReadCOLOR( LPCSTR S, LPCSTR L )
+u32 CInifile::ReadCOLOR( LPCSTR S, LPCSTR L )
 {
 	LPCSTR		C = ReadSTRING(S,L);
-	DWORD		r=0,g=0,b=0,a=255;
+	u32		r=0,g=0,b=0,a=255;
 	sscanf		(C,"%d,%d,%d,%d",&r,&g,&b,&a);
 	return D3DCOLOR_RGBA(r,g,b,a);
 }
@@ -416,12 +416,12 @@ void	CInifile::WriteColor	( LPCSTR S, LPCSTR L, const Fcolor&		V, LPCSTR comment
 }
 
 #ifndef RGBA_GETALPHA
-#define RGBA_GETALPHA(rgb)      DWORD((rgb) >> 24)
-#define RGBA_GETRED(rgb)        DWORD(((rgb) >> 16) & 0xff)
-#define RGBA_GETGREEN(rgb)      DWORD(((rgb) >> 8) & 0xff)
-#define RGBA_GETBLUE(rgb)       DWORD((rgb) & 0xff)
+#define RGBA_GETALPHA(rgb)      u32((rgb) >> 24)
+#define RGBA_GETRED(rgb)        u32(((rgb) >> 16) & 0xff)
+#define RGBA_GETGREEN(rgb)      u32(((rgb) >> 8) & 0xff)
+#define RGBA_GETBLUE(rgb)       u32((rgb) & 0xff)
 #endif
-void	CInifile::WriteColor	( LPCSTR S, LPCSTR L, DWORD				V, LPCSTR comment )
+void	CInifile::WriteColor	( LPCSTR S, LPCSTR L, u32				V, LPCSTR comment )
 {
 	char temp[128];	sprintf		(temp,"%d,%d,%d", RGBA_GETRED(V), RGBA_GETGREEN(V), RGBA_GETBLUE(V));
 	WriteString	(S,L,temp,comment);

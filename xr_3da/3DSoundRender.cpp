@@ -10,7 +10,7 @@
 #include "xr_ini.h"
 
 int		psSoundRelaxTime		= 3;
-DWORD	psSoundFlags			= ssWaveTrace;
+u32	psSoundFlags			= ssWaveTrace;
 float	psSoundOcclusionScale	= 0.85f;
 float	psSoundCull				= 0.07f;
 float	psSoundRolloff			= 0.3f;
@@ -52,9 +52,9 @@ void CSoundRender::OnMove()
 {
 	// Update states
 	defer.clear	();
-	for (DWORD i=0; i<sounds.size(); i++) 
+	for (u32 i=0; i<sounds.size(); i++) 
 	{
-		for (DWORD j=0; j<sounds[i].size(); j++) 
+		for (u32 j=0; j<sounds[i].size(); j++) 
 		{
 			CSound *pSnd = sounds[i][j];
 			pSnd->OnMove		(defer);
@@ -63,7 +63,7 @@ void CSoundRender::OnMove()
 				Device.Statistic.dwSND_Played++;
 				pSnd->dwLastTimeActive = Device.dwTimeGlobal;
 			} else {
-				if (j && (Device.dwTimeGlobal-pSnd->dwLastTimeActive) > DWORD(psSoundRelaxTime*1000))
+				if (j && (Device.dwTimeGlobal-pSnd->dwLastTimeActive) > u32(psSoundRelaxTime*1000))
 				{
 					_DELETE			(pSnd);
 					sounds[i].erase	(sounds[i].begin()+j);
@@ -91,7 +91,7 @@ void CSoundRender::OnMove()
 }
 
 int CSoundRender::FindByName			(LPCSTR name, BOOL _3D, BOOL _Freq) {
-	for (DWORD i=0; i<sounds.size(); i++) {
+	for (u32 i=0; i<sounds.size(); i++) {
 		if (sounds[i].size()) {
 			if ((stricmp(sounds[i][0]->fName,name)==0)&&(_3D==sounds[i][0]->_3D)&&(_Freq==sounds[i][0]->_Freq))  
 				return i;
@@ -102,7 +102,7 @@ int CSoundRender::FindByName			(LPCSTR name, BOOL _3D, BOOL _Freq) {
 
 int CSoundRender::FindEmptySlot		()
 {
-	for (DWORD i=0; i<sounds.size(); i++) {
+	for (u32 i=0; i<sounds.size(); i++) {
 		if (sounds[i].size()==0) return i;
 	}
 	return -1;
@@ -176,7 +176,7 @@ void CSoundRender::DeleteSound		(int& hSound)
 	refcounts[hSound]-=1;
 	if (refcounts[hSound]==0) {
 		// all references destroyed - destroy sound as itself
-		for (DWORD i=0; i<sounds[hSound].size(); i++)
+		for (u32 i=0; i<sounds[hSound].size(); i++)
 		{
 			_DELETE(sounds[hSound][i]);
 		}
@@ -189,7 +189,7 @@ CSound* CSoundRender::GetFreeSound(int hSound)
 {
 	VERIFY(hSound>=0);
 	VERIFY(hSound<int(sounds.size()));
-	for (DWORD i=0; i<sounds[hSound].size(); i++)
+	for (u32 i=0; i<sounds[hSound].size(); i++)
 	{
 		if (!sounds[hSound][i]->isPlaying())
 			return sounds[hSound][i];
@@ -209,7 +209,7 @@ void CSoundRender::Play(int hSound, sound* P, BOOL bLoop, int iLoopCnt)
 
 void CSoundRender::Reload()
 {
-	for (DWORD i=0; i<sounds.size(); i++) {
+	for (u32 i=0; i<sounds.size(); i++) {
 		if (sounds[i].size()) {
 			// Main sound
 			sounds[i][0]->Stop();
@@ -222,7 +222,7 @@ void CSoundRender::Reload()
 			}
 
 			// Clones
-			for (DWORD j=1; j<sounds[i].size(); j++) {
+			for (u32 j=1; j<sounds[i].size(); j++) {
 				sounds[i][j]->Stop();
 				_RELEASE(sounds[i][j]->pBuffer3D);
 				_RELEASE(sounds[i][j]->pBuffer);

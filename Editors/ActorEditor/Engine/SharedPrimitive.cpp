@@ -7,10 +7,10 @@ void	CSharedStreams::OnDeviceCreate	()
 {
 	// Create Quad-IB
 	{
-		const DWORD dwTriCount	= 4*1024;
-		const DWORD dwIdxCount	= dwTriCount*2*3;
+		const u32 dwTriCount	= 4*1024;
+		const u32 dwIdxCount	= dwTriCount*2*3;
 		WORD	*Indices		= 0;
-		DWORD	dwUsage			= D3DUSAGE_WRITEONLY;
+		u32	dwUsage			= D3DUSAGE_WRITEONLY;
 		if (HW.Caps.vertex.bSoftware)	dwUsage|=D3DUSAGE_SOFTWAREPROCESSING;
 		R_CHK(HW.pDevice->CreateIndexBuffer(dwIdxCount*2,dwUsage,D3DFMT_INDEX16,D3DPOOL_DEFAULT,&QuadIB));
 		R_CHK(QuadIB->Lock(0,0,(BYTE**)&Indices,0));

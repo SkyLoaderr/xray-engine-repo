@@ -14,7 +14,7 @@
 // memory
 CFS_Memory::~CFS_Memory() 
 {	_FREE(data);	}
-void CFS_Memory::write	(const void* ptr, DWORD count)
+void CFS_Memory::write	(const void* ptr, u32 count)
 {
 	if (position+count > mem_size) {
 		// reallocate
@@ -44,14 +44,14 @@ void	CFS_Memory::SaveTo	(const char* fn, const char* sign)
 }
 
 
-DWORD	CFS_Base::align		()
+u32	CFS_Base::align		()
 {
-	DWORD bytes = correction(tell());
-	DWORD copy  = bytes;
+	u32 bytes = correction(tell());
+	u32 copy  = bytes;
 	while (bytes) { Wbyte(0); bytes--; }
 	return copy;
 }
-void	CFS_Base::open_chunk	(DWORD type)
+void	CFS_Base::open_chunk	(u32 type)
 {
 	Wdword(type);
 	chunk_pos.push(tell());
@@ -69,12 +69,12 @@ void	CFS_Base::close_chunk	()
 	seek			(pos);
 	chunk_pos.pop	();
 }
-DWORD	CFS_Base::chunk_size	()					// returns size of currently opened chunk, 0 otherwise
+u32	CFS_Base::chunk_size	()					// returns size of currently opened chunk, 0 otherwise
 {
 	if (chunk_pos.empty())	return 0;
 	return tell() - chunk_pos.top()-4-align_correction;
 }
-void	CFS_Base::write_compressed(void* ptr, DWORD count)
+void	CFS_Base::write_compressed(void* ptr, u32 count)
 {
 	BYTE*		dest	= 0;
 	unsigned	dest_sz	= 0;
@@ -83,7 +83,7 @@ void	CFS_Base::write_compressed(void* ptr, DWORD count)
 		write(dest,dest_sz);
 	xr_free		(dest);
 }
-void	CFS_Base::write_chunk(DWORD type, void* data, DWORD size)
+void	CFS_Base::write_chunk(u32 type, void* data, u32 size)
 {
 	open_chunk	(type);
 	if (type & CFS_CompressMark)	write_compressed(data,size);
@@ -93,10 +93,10 @@ void	CFS_Base::write_chunk(DWORD type, void* data, DWORD size)
 
 //---------------------------------------------------
 // base stream
-CStream*	CStream::OpenChunk(DWORD ID)
+CStream*	CStream::OpenChunk(u32 ID)
 {
 	BOOL	bCompressed;
-	DWORD	dwSize = FindChunk(ID,&bCompressed);
+	u32	dwSize = FindChunk(ID,&bCompressed);
 	if (dwSize!=0) {
 		if (bCompressed) {
 			BYTE*		dest;
@@ -142,10 +142,10 @@ CCompressedStream::~CCompressedStream()
 
 
 //---------------------------------------------------
-ENGINE_API void *FileDownload(const char *fn, DWORD *pdwSize)
+ENGINE_API void *FileDownload(const char *fn, u32 *pdwSize)
 {
 	int		hFile;
-	DWORD	size;
+	u32	size;
 	void*	buf;
 
 	hFile	= open(fn,O_RDONLY|O_BINARY|O_SEQUENTIAL);
@@ -163,7 +163,7 @@ typedef char MARK[9];
 IC void mk_mark(MARK& M, const char* S)
 {	strncpy(M,S,8); }
 
-ENGINE_API void		FileCompress	(const char *fn, const char* sign, void* data, DWORD size)
+ENGINE_API void		FileCompress	(const char *fn, const char* sign, void* data, u32 size)
 {
 	MARK M; mk_mark(M,sign);
 
@@ -174,7 +174,7 @@ ENGINE_API void		FileCompress	(const char *fn, const char* sign, void* data, DWO
 	_close	(H);
 }
 
-ENGINE_API void *	FileDecompress	(const char *fn, const char* sign, DWORD* size)
+ENGINE_API void *	FileDecompress	(const char *fn, const char* sign, u32* size)
 {
 	MARK M,F; mk_mark(M,sign);
 
@@ -186,7 +186,7 @@ ENGINE_API void *	FileDecompress	(const char *fn, const char* sign, DWORD* size)
 	}
     R_ASSERT(strncmp(M,F,8)==0);
 
-	void* ptr = 0; DWORD SZ;
+	void* ptr = 0; u32 SZ;
 	SZ = _readLZ (H, ptr, filelength(H)-8);
 	_close	(H);
 	if (size) *size = SZ;

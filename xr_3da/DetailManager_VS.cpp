@@ -8,7 +8,7 @@ const int			c_hdr	= 14;
 const int			c_base	= c_hdr;
 const int			c_size	= 4;
 
-static DWORD dwDecl	[] =
+static u32 dwDecl	[] =
 {
 	D3DVSD_STREAM	(0),
 		D3DVSD_REG		(0,	D3DVSDT_FLOAT3),	// pos
@@ -36,24 +36,24 @@ void CDetailManager::hw_Load()
 	hw_VS_still		= Device.Shader._CreateVS	("detail_still",dwDecl,sizeof(vertHW));
 
 	// Analyze batch-size
-	hw_BatchSize	= (DWORD(HW.Caps.vertex.dwRegisters)-c_hdr)/c_size;
+	hw_BatchSize	= (u32(HW.Caps.vertex.dwRegisters)-c_hdr)/c_size;
 	clamp			(hw_BatchSize,0ul,46ul);
-	Msg("* [DETAILS] VertexConsts(%d), Batch(%d)",DWORD(HW.Caps.vertex.dwRegisters),hw_BatchSize);
+	Msg("* [DETAILS] VertexConsts(%d), Batch(%d)",u32(HW.Caps.vertex.dwRegisters),hw_BatchSize);
 
 	// Pre-process objects
-	DWORD			dwVerts		= 0;
-	DWORD			dwIndices	= 0;
+	u32			dwVerts		= 0;
+	u32			dwIndices	= 0;
 	for (u32 o=0; o<objects.size(); o++)
 	{
 		CDetail& D	=	*objects[o];
 		dwVerts		+=	D.number_vertices*hw_BatchSize;
 		dwIndices	+=	D.number_indices*hw_BatchSize;
 	}
-	DWORD			vSize		= sizeof(vertHW);
+	u32			vSize		= sizeof(vertHW);
 	Msg("* [DETAILS] %d v(%d), %d p",dwVerts,vSize,dwIndices/3);
 
 	// Determine POOL & USAGE
-	DWORD dwUsage	=	D3DUSAGE_WRITEONLY;
+	u32 dwUsage	=	D3DUSAGE_WRITEONLY;
 	D3DPOOL dwPool	=	D3DPOOL_DEFAULT;
 	if (HW.Caps.vertex.bSoftware)	{
 		dwUsage	|=	D3DUSAGE_SOFTWAREPROCESSING;
@@ -75,7 +75,7 @@ void CDetailManager::hw_Load()
 			CDetail& D		=	*objects[o];
 			for (u32 batch=0; batch<hw_BatchSize; batch++)
 			{
-				DWORD mid	=	batch*c_size+c_base;
+				u32 mid	=	batch*c_size+c_base;
 				for (u32 v=0; v<D.number_vertices; v++)
 				{
 					Fvector&	vP = D.vertices[v].P;
@@ -169,16 +169,16 @@ void CDetailManager::hw_Render()
 	hw_Render_dump			(hw_VS_still,	visible[0], c_hdr );
 }
 
-void	CDetailManager::hw_Render_dump	(CVS* vs, vis_list& list, DWORD c_offset)
+void	CDetailManager::hw_Render_dump	(CVS* vs, vis_list& list, u32 c_offset)
 {
 	// Matrices and offsets
-	DWORD		vOffset	=	0;
-	DWORD		iOffset	=	0;
+	u32		vOffset	=	0;
+	u32		iOffset	=	0;
 
 	// Iterate
 	CVS_Constants& VSC				=	Device.Shader.VSC;
 	Device.Primitive.setVertices	(vs->dwHandle,vs->dwStride,hw_VB);
-	for (DWORD O=0; O<objects.size(); O++)
+	for (u32 O=0; O<objects.size(); O++)
 	{
 		vector<SlotItem*>&	vis = list		[O];
 		CDetail&	Object		= *objects	[O];
@@ -188,12 +188,12 @@ void	CDetailManager::hw_Render_dump	(CVS* vs, vis_list& list, DWORD c_offset)
 			// Setup matrices + colors (and flush it as nesessary)
 			Device.Shader.set_Shader		(Object.shader);
 
-			DWORD dwBatch	= 0;
-			for (DWORD item = 0; item<vis.size(); item++)
+			u32 dwBatch	= 0;
+			for (u32 item = 0; item<vis.size(); item++)
 			{
 				SlotItem&	Instance	= *(vis[item]);
 				float	scale			= Instance.scale_calculated;
-				DWORD	cBase			= dwBatch*c_size+c_offset;
+				u32	cBase			= dwBatch*c_size+c_offset;
 				float	C				= Instance.C;
 
 				// Build matrix
@@ -208,8 +208,8 @@ void	CDetailManager::hw_Render_dump	(CVS* vs, vis_list& list, DWORD c_offset)
 				{
 					// flush
 					VSC.flush						();
-					DWORD dwCNT_verts				= dwBatch * Object.number_vertices;
-					DWORD dwCNT_prims				= (dwBatch * Object.number_indices)/3;
+					u32 dwCNT_verts				= dwBatch * Object.number_vertices;
+					u32 dwCNT_prims				= (dwBatch * Object.number_indices)/3;
 					Device.Primitive.setIndices		(vOffset, hw_IB);
 					Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,dwCNT_verts,iOffset,dwCNT_prims);
 
@@ -222,8 +222,8 @@ void	CDetailManager::hw_Render_dump	(CVS* vs, vis_list& list, DWORD c_offset)
 			if (dwBatch)
 			{
 				VSC.flush						();
-				DWORD dwCNT_verts				= dwBatch * Object.number_vertices;
-				DWORD dwCNT_prims				= (dwBatch * Object.number_indices)/3;
+				u32 dwCNT_verts				= dwBatch * Object.number_vertices;
+				u32 dwCNT_prims				= (dwBatch * Object.number_indices)/3;
 				Device.Primitive.setIndices		(vOffset, hw_IB);
 				Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,dwCNT_verts,iOffset,dwCNT_prims);
 			}

@@ -5,12 +5,12 @@
 extern float r_ssaLOD_A;
 extern float r_ssaLOD_B;
 
-#define RGBA_GETALPHA(rgb)      DWORD((rgb) >> 24)
-#define RGBA_GETRED(rgb)        DWORD(((rgb) >> 16) & 0xff)
-#define RGBA_GETGREEN(rgb)      DWORD(((rgb) >> 8) & 0xff)
-#define RGBA_GETBLUE(rgb)       DWORD((rgb) & 0xff)
+#define RGBA_GETALPHA(rgb)      u32((rgb) >> 24)
+#define RGBA_GETRED(rgb)        u32(((rgb) >> 16) & 0xff)
+#define RGBA_GETGREEN(rgb)      u32(((rgb) >> 8) & 0xff)
+#define RGBA_GETBLUE(rgb)       u32((rgb) & 0xff)
 
-IC DWORD	color		(DWORD Base, DWORD Alpha)
+IC u32	color		(u32 Base, u32 Alpha)
 {
 	return D3DCOLOR_RGBA(RGBA_GETRED(Base),RGBA_GETGREEN(Base),RGBA_GETBLUE(Base),Alpha);
 }
@@ -24,10 +24,10 @@ void CRender::flush_LODs()
 	CVisual*					firstV		= lstLODs[0].pVisual;
 	Shader*						cur_S		= firstV->hShader;
 	int							cur_count	= 0;
-	DWORD						vOffset;
+	u32						vOffset;
 	FVF::LIT*					V	= (FVF::LIT*)Device.Streams.Vertex.Lock	(lstLODs.size()*4,firstV->hVS->dwStride, vOffset);
 	float	ssaRange				= r_ssaLOD_A - r_ssaLOD_B;
-	for (DWORD i=0; i<lstLODs.size(); i++)
+	for (u32 i=0; i<lstLODs.size(); i++)
 	{
 		// sort out redundancy
 		SceneGraph::_LodItem		&P = lstLODs[i];
@@ -42,7 +42,7 @@ void CRender::flush_LODs()
 		float	ssaDiff					= P.ssa-r_ssaLOD_B;
 		float	scale					= ssaDiff/ssaRange;
 		int		iA						= iFloor((1-scale)*255.f);	clamp(iA,0,255);
-		DWORD	uA						= DWORD(iA);
+		u32	uA						= u32(iA);
 		// float	shift_scale				= scale;					clamp(shift_scale,0.f,1.f);
 
 		// calculate direction and shift
@@ -78,7 +78,7 @@ void CRender::flush_LODs()
 
 	// *** Render
 	int current=0;
-	for (DWORD g=0; g<vecGroups.size(); g++)
+	for (u32 g=0; g<vecGroups.size(); g++)
 	{
 		int p_count						= vecGroups[g];
 		Device.Shader.set_Shader		(lstLODs[current].pVisual->hShader);

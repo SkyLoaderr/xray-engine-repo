@@ -49,12 +49,12 @@ private:
 	// Debug
 	Shader*							sh_debug;
 	
-	DWORD							dwQueryID;
+	u32							dwQueryID;
 	BOOL							nl_append		( int x, int z, const Fvector2& O, const Fvector2& D );
 
 	struct SLOT
 	{
-		DWORD				dwQueryID;
+		u32				dwQueryID;
 		vector<CObject*>	lst;
 	};
 
@@ -90,7 +90,7 @@ public:
 
 	clQueryCollision				q_debug;
 	vector<Fmatrix>					dbg_E;
-	vector<pair<Fsphere,DWORD> >	dbg_S;
+	vector<pair<Fsphere,u32> >	dbg_S;
 	vector<Fvector2>				dbg_Slot;
 
 public:
@@ -111,7 +111,7 @@ public:
 	BOOL							RayPickW			( const Fvector &start, const Fvector &dir, float range, float width, Collide::ray_query& R);
 
 	// General collision query
-	void							BoxQuery			( const Fbox& B, const Fmatrix& M, DWORD flags=clGET_TRIS|clGET_BOXES|clQUERY_STATIC|clQUERY_DYNAMIC);
+	void							BoxQuery			( const Fbox& B, const Fmatrix& M, u32 flags=clGET_TRIS|clGET_BOXES|clQUERY_STATIC|clQUERY_DYNAMIC);
 
 	void							cl_Move				( const CCFModel *object, const Fmatrix& T, const Fvector& velocity, const Fbox& bb, const Fbox& bb_foots, Fvector& final_pos, Fvector& final_vel, float sq_vel, BOOL bDynamic=false);
 	BOOL							EllipsoidCollide	( CCFModel *object, const Fmatrix& T, const Fvector& center_pos, const Fbox& bb);

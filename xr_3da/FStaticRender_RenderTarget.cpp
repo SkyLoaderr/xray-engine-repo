@@ -96,16 +96,16 @@ void CRenderTarget::End		()
 	if (!Perform())		return;
 	
 	// Draw full-screen quad textured with our scene image
-	DWORD	Offset;
-	DWORD	Cgray		= D3DCOLOR_RGBA	(90,90,90,0);
+	u32	Offset;
+	u32	Cgray		= D3DCOLOR_RGBA	(90,90,90,0);
 	int		A			= iFloor		((1-param_gray)*255.f); clamp(A,0,255);
-	DWORD	Calpha		= D3DCOLOR_RGBA	(255,255,255,A);
+	u32	Calpha		= D3DCOLOR_RGBA	(255,255,255,A);
 	float	tw			= float(rtWidth);
 	float	th			= float(rtHeight);
 	float	_w			= float(Device.dwWidth);
 	float	_h			= float(Device.dwHeight);
-	DWORD	xW			= 64;
-	DWORD	xH			= 64;
+	u32	xW			= 64;
+	u32	xH			= 64;
 	
 	// UV
 	Fvector2			shift,p0,p1;

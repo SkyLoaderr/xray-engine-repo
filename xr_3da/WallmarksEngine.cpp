@@ -76,7 +76,7 @@ void		CWallmarksEngine::wm_render			(wallmark*	W, FVF::LIT* &V)
 {
 	float		a	= 1-(W->ttl/W_TTL);
 	int			aC	= iFloor	( a * 255.f);	clamp	(aC,0,255);
-	DWORD		C	= D3DCOLOR_RGBA(128,128,128,aC);
+	u32		C	= D3DCOLOR_RGBA(128,128,128,aC);
 
 	FVF::LIT*	S	= &*W->verts.begin	();
 	FVF::LIT*	E	= &*W->verts.end	();
@@ -129,7 +129,7 @@ void CWallmarksEngine::RecurseTri(CDB::TRI* T, Fmatrix &mView, CWallmarksEngine:
 		mView.transform_tiny(UV, (*P)[1]);
 		V1.set				((*P)[1],0,(1+UV.x)*.5f,(1-UV.y)*.5f);
 
-		for (DWORD i=2; i<P->size(); i++)
+		for (u32 i=2; i<P->size(); i++)
 		{
 			mView.transform_tiny(UV, (*P)[i]);
 			V2.set				((*P)[i],0,(1+UV.x)*.5f,(1-UV.y)*.5f);
@@ -233,13 +233,13 @@ void CWallmarksEngine::Render()
 
 	Device.Statistic.RenderDUMP_WM.Begin	();
 
-	DWORD				w_offset= 0;
+	u32				w_offset= 0;
 	FVF::LIT*			w_verts = (FVF::LIT*)	Device.Streams.Vertex.Lock	(MAX_TRIS*3,VS->dwStride,w_offset);
 	FVF::LIT*			w_start = w_verts;
 
 	Shader*	w_S			= marks.front()->shader;
 	float	ssaCLIP		= r_ssaDISCARD/4;
-	for (DWORD i=0; i<marks.size(); i++)
+	for (u32 i=0; i<marks.size(); i++)
 	{
 		wallmark* W		= marks	[i];
 		if (::Render->ViewBase.testSphere_dirty(W->bounds.P,W->bounds.R)) 
@@ -248,7 +248,7 @@ void CWallmarksEngine::Render()
 			float ssa = W->bounds.R * W->bounds.R / dst;
 			if (ssa>=ssaCLIP)	
 			{
-				DWORD w_count	= w_verts-w_start;
+				u32 w_count	= w_verts-w_start;
 				if (((w_count+W->verts.size())>=(MAX_TRIS*3))||(w_S!=W->shader))
 				{
 					if (w_count)	
@@ -274,7 +274,7 @@ void CWallmarksEngine::Render()
 	}
 
 	// Flush stream
-	DWORD w_count			= w_verts-w_start;
+	u32 w_count			= w_verts-w_start;
 	Device.Streams.Vertex.Unlock	(w_count,VS->dwStride);
 	if (w_count)			{
 		Device.Shader.set_Shader		(w_S);

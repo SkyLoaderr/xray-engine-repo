@@ -9,7 +9,7 @@ CController dummyController;
 
 ENGINE_API float	psMouseSens			= 1.f;
 ENGINE_API float	psMouseSensScale	= 1.f;
-ENGINE_API DWORD	psMouseInvert		= TRUE;
+ENGINE_API u32	psMouseInvert		= TRUE;
 
 #define MOUSEBUFFERSIZE			64
 #define KEYBOARDBUFFERSIZE		64
@@ -88,7 +88,7 @@ CInput::~CInput(void)
 // Name: CreateInputDevice()
 // Desc: Create a DirectInput device.
 //-----------------------------------------------------------------------------
-HRESULT CInput::CreateInputDevice( LPDIRECTINPUTDEVICE7* device, GUID guidDevice, const DIDATAFORMAT* pdidDataFormat, DWORD dwFlags, DWORD buf_size )
+HRESULT CInput::CreateInputDevice( LPDIRECTINPUTDEVICE7* device, GUID guidDevice, const DIDATAFORMAT* pdidDataFormat, u32 dwFlags, u32 buf_size )
 {
 	// Obtain an interface to the input device
 	CHK_DX( pDI->CreateDeviceEx( guidDevice, IID_IDirectInputDevice7, (void**)device, NULL ) );
@@ -137,9 +137,9 @@ void CInput::SetKBDAcquire( BOOL bAcquire )
 void CInput::KeyUpdate	( )
 {
 	HRESULT						hr;
-	DWORD dwElements			= KEYBOARDBUFFERSIZE;
+	u32 dwElements			= KEYBOARDBUFFERSIZE;
 	DIDEVICEOBJECTDATA			od[KEYBOARDBUFFERSIZE];
-	DWORD key					= 0;
+	u32 key					= 0;
 
 	VERIFY(pKeyboard);
 
@@ -151,7 +151,7 @@ void CInput::KeyUpdate	( )
 		if ( hr != S_OK ) return;
 	}
 
-	for (DWORD i = 0; i < dwElements; i++){
+	for (u32 i = 0; i < dwElements; i++){
 		key					= od[i].dwOfs;
 		KBState[key]		= od[i].dwData & 0x80;
 		if ( KBState[key])	cbStack.top()->OnKeyboardPress		( key );
@@ -174,7 +174,7 @@ BOOL CInput::iGetAsyncBtnState( int btn )
 void CInput::MouseUpdate( )
 {
 	HRESULT hr;
-	DWORD dwElements	= MOUSEBUFFERSIZE;
+	u32 dwElements	= MOUSEBUFFERSIZE;
 	DIDEVICEOBJECTDATA	od[MOUSEBUFFERSIZE];
 
 	VERIFY(pMouse);
@@ -188,7 +188,7 @@ void CInput::MouseUpdate( )
 	};
 
 	offs[0] = offs[1] = 0;
-	for (DWORD i = 0; i < dwElements; i++){
+	for (u32 i = 0; i < dwElements; i++){
 		switch (od[i].dwOfs){
 		case DIMOFS_X:	offs[0]	+= od[i].dwData; timeStamp[0] = od[i].dwTimeStamp;	break;
 		case DIMOFS_Y:	offs[1]	+= od[i].dwData; timeStamp[1] = od[i].dwTimeStamp;	break;

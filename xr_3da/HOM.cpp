@@ -30,7 +30,7 @@ CHOM::~CHOM()
 struct HOM_poly			
 {
 	Fvector	v1,v2,v3;
-	DWORD	flags;
+	u32	flags;
 };
 #pragma pack(pop)
 
@@ -71,7 +71,7 @@ void CHOM::Load			()
 
 	// Create RASTER-triangles
 	m_pTris				= (occTri*) xr_malloc(CL.getTS()*sizeof(occTri));
-	for (DWORD it=0; it<CL.getTS(); it++)
+	for (u32 it=0; it<CL.getTS(); it++)
 	{
 		CDB::TRI&	clT = CL.getT()[it];
 		occTri&		rT	= m_pTris[it];
@@ -195,7 +195,7 @@ void CHOM::Render_DB	(CFrustum& base)
 			m_ZB.push_back	(it->id);
 
 			if (T.skip)		{ T.skip--; continue; }
-			DWORD	next	= ::Random.randI(7,30);
+			u32	next	= ::Random.randI(7,30);
 
 			// Test for good occluder - should be improved :)
 			if (!(T.flags || (T.plane.classify(COP)>0)))	
@@ -211,7 +211,7 @@ void CHOM::Render_DB	(CFrustum& base)
 			if (0==P)		{ T.skip=next; continue; }
 
 			// XForm and Rasterize
-			DWORD	pixels	= 0;
+			u32	pixels	= 0;
 			int		limit	= int(P->size())-1;
 			for (int v=1; v<limit; v++)
 			{
@@ -244,14 +244,14 @@ void CHOM::Render_ZB	()
 	if (m_ZB.empty())		return;
 
 	// Fill VB
-	DWORD							vCount	= m_ZB.size()*3;
-	DWORD							vOffset;
+	u32							vCount	= m_ZB.size()*3;
+	u32							vOffset;
 	FVF::L*		V					= (FVF::L*) Device.Streams.Vertex.Lock	(vCount,m_VS->dwStride, vOffset);
 
-	vector<DWORD>::iterator	I		= m_ZB.begin	();
-	vector<DWORD>::iterator	E		= m_ZB.end		();
+	vector<u32>::iterator	I		= m_ZB.begin	();
+	vector<u32>::iterator	E		= m_ZB.end		();
 
-	DWORD C							= D3DCOLOR_RGBA	(0xff,0,0,0xff);
+	u32 C							= D3DCOLOR_RGBA	(0xff,0,0,0xff);
 	for (; I!=E; I++)
 	{
 		CDB::TRI& t					= m_pModel->get_tris() [*I];
@@ -288,7 +288,7 @@ void CHOM::Debug		()
 			int		D	= pD[y*occ_dim_0+x];
 			int		V	= iFloor(Raster.d2float(D)*255.f);
 			clamp	(V,0,255);
-			DWORD	C	= D3DCOLOR_XRGB(V,V,V);
+			u32	C	= D3DCOLOR_XRGB(V,V,V);
 			LPDWORD(R.pBits)[y*occ_dim_0+x]	= C;
 		}
 	}
@@ -300,8 +300,8 @@ void CHOM::Debug		()
 	p1.set			((occ_dim_0+.5f)/occ_dim_0, (occ_dim_0+.5f)/occ_dim_0);
 	
 	// Fill vertex buffer
-	DWORD Offset, C=0xffffffff;
-	DWORD _w = occ_dim_0*2, _h = occ_dim_0*2;
+	u32 Offset, C=0xffffffff;
+	u32 _w = occ_dim_0*2, _h = occ_dim_0*2;
 	FVF::TL* pv = (FVF::TL*) pStream->Lock(4,Offset);
 	pv->set(0,			float(_h),	.0001f,.9999f, C, p0.x, p1.y);	pv++;
 	pv->set(0,			0,			.0001f,.9999f, C, p0.x, p0.y);	pv++;

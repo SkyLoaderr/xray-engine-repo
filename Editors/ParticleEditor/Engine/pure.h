@@ -22,7 +22,7 @@ DECLARE_MESSAGE(AppDeactivate);
 struct _REG_INFO {
 	void*	Object;
 	int		Prio;
-	DWORD	Flags;
+	u32	Flags;
 };
 
 ENGINE_API extern int	__cdecl	_REG_Compare(const void *, const void *);
@@ -39,7 +39,7 @@ public:
 	{ Count = 0; }
 
 	//
-	void Add	(T *obj, int priority=REG_PRIORITY_NORMAL, DWORD flags=0)
+	void Add	(T *obj, int priority=REG_PRIORITY_NORMAL, u32 flags=0)
 	{
 		VERIFY(obj);
 #ifdef DEBUG

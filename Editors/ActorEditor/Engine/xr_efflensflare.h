@@ -8,7 +8,7 @@ class ENGINE_API CLensFlare : public pureDeviceCreate, public pureDeviceDestroy
 protected:
 	BOOL			bInit;
 	float			fBlend;
-	DWORD			dwFrame;
+	u32			dwFrame;
 
 	Fvector			vSunDir;
 	Fvector			vecLight;
@@ -41,7 +41,7 @@ public:
     	flSource	= (1<<1),
     	flGradient 	= (1<<2)
     };
-	DWORD			m_dwFlags;
+	u32			m_dwFlags;
     // source
     SFlare			m_Source;
     // gradient

@@ -21,7 +21,7 @@ void msCreate		(LPCSTR name)
 
 void msRead			(void) 
 {
-    DWORD cbMessage, cMessage, cbRead;
+    u32 cbMessage, cMessage, cbRead;
 	BOOL fResult;
 	LPSTR lpszBuffer; 
 
@@ -57,7 +57,7 @@ void msRead			(void)
 void	msWrite(char *name, char* dest, char *msg) 
 {
 	HANDLE	hFile; 
-	DWORD	cbWritten;
+	u32	cbWritten;
 	BOOL	fResult;
 	char    cName[256];
 
@@ -74,7 +74,7 @@ void	msWrite(char *name, char* dest, char *msg)
 	fResult = WriteFile(
 		hFile, 
 		msg, 
-		(DWORD) lstrlen(msg) + 1,
+		(u32) lstrlen(msg) + 1,
 		&cbWritten,     
 		(LPOVERLAPPED) NULL);  
 	fResult = CloseHandle(hFile);

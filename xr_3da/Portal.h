@@ -23,8 +23,8 @@ private:
 public:
 	Fplane					P;
 	Fsphere					S;
-	DWORD					dwFrame;
-	DWORD					dwFrameObject;
+	u32					dwFrame;
+	u32					dwFrameObject;
 	BOOL					bDualRender;
 
 	void					Setup(Fvector* V, int vcnt, CSector* face, CSector* back);
@@ -56,7 +56,7 @@ class ENGINE_API CSector
 public:
 	struct	objQuery
 	{
-		DWORD			dwMark;
+		u32			dwMark;
 		objSET*			Collector;
 		objQualifier*	Qualifier;
 		void*			Param;

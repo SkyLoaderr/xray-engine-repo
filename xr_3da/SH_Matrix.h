@@ -16,15 +16,15 @@ public:
 		tcmScale		= (1<<0),
 		tcmRotate		= (1<<1),
 		tcmScroll		= (1<<2),
-		tcmFORCE32		= DWORD(-1)
+		tcmFORCE32		= u32(-1)
 	};
 public:
 	Fmatrix			xform;
 
-	DWORD			dwReference;
-	DWORD			dwFrame;
-	DWORD			dwMode;
-	DWORD			tcm;				// mask for tc-modifiers
+	u32			dwReference;
+	u32			dwFrame;
+	u32			dwMode;
+	u32			tcm;				// mask for tc-modifiers
 	WaveForm		scaleU, scaleV;
 	WaveForm		rotate;
 	WaveForm		scrollU,scrollV;

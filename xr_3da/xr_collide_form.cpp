@@ -127,7 +127,7 @@ BOOL CCF_Polygonal::_svRayTest( RayQuery& Q)
 	return FALSE;
 }
 
-void CCF_Polygonal::_BoxQuery( const Fbox& B, const Fmatrix& M, DWORD flags)
+void CCF_Polygonal::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
 {
 	if ((flags&clQUERY_TOPLEVEL) || (((flags&clGET_TRIS)==0) && (flags&clGET_BOXES)))
 	{
@@ -205,7 +205,7 @@ void CCF_Skeleton::BuildState()
 	
 	const Fmatrix &L2W	= owner->clXFORM();
 	Fmatrix Mbox,T,TW;
-	for (DWORD i=0; i<model.size(); i++)
+	for (u32 i=0; i<model.size(); i++)
 	{
 		Fobb& B				=	K->LL_GetBox(i);
 		Fmatrix& Mbone		=	K->LL_GetTransform(i);
@@ -259,7 +259,7 @@ BOOL CCF_Skeleton::_clRayTest( RayQuery& Q)
 	return _svRayTest(Q);
 }
 
-void CCF_Skeleton::_BoxQuery( const Fbox& B, const Fmatrix& M, DWORD flags)
+void CCF_Skeleton::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
 {
 	if ((flags&clQUERY_TOPLEVEL) || ((flags&clGET_BOXES)==0))
 	{
@@ -331,7 +331,7 @@ BOOL CCF_EventBox::_svRayTest(RayQuery& Q)
 {	return FALSE; }
 BOOL CCF_EventBox::_clRayTest(RayQuery& Q)
 {	return FALSE; }
-void CCF_EventBox::_BoxQuery(const Fbox& B, const Fmatrix& M, DWORD flags)
+void CCF_EventBox::_BoxQuery(const Fbox& B, const Fmatrix& M, u32 flags)
 {   return; }
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
@@ -343,7 +343,7 @@ BOOL CCF_Shape::_svRayTest(RayQuery& Q)
 {	return TRUE; }
 BOOL CCF_Shape::_clRayTest(RayQuery& Q)
 {	return FALSE; }
-void CCF_Shape::_BoxQuery(const Fbox& B, const Fmatrix& M, DWORD flags)
+void CCF_Shape::_BoxQuery(const Fbox& B, const Fmatrix& M, u32 flags)
 {   return; }
 
 

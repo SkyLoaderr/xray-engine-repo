@@ -8,18 +8,18 @@
 #include "Image.h"
 #include "tga.h"
 
-void CImage::Create(DWORD w, DWORD h, DWORD* data)
+void CImage::Create(u32 w, u32 h, u32* data)
 {
 	Create(w,h);
-    CopyMemory(pData,data,w*h*sizeof(DWORD));
+    CopyMemory(pData,data,w*h*sizeof(u32));
 }
 
-void CImage::Create(DWORD w, DWORD h)
+void CImage::Create(u32 w, u32 h)
 {
 	_FREE		(pData);
 	dwWidth		= w;
 	dwHeight	= h;
-	pData		= LPDWORD(xr_malloc(w*h*sizeof(DWORD)));
+	pData		= LPDWORD(xr_malloc(w*h*sizeof(u32)));
 }
 
 void CImage::SaveTGA(LPCSTR name, BOOL b24)
@@ -39,11 +39,11 @@ void CImage::SaveTGA(LPCSTR name, BOOL b24)
 void CImage::Vflip()
 {
 	R_ASSERT(pData);
-	for (DWORD y=0; y<dwHeight/2; y++)
+	for (u32 y=0; y<dwHeight/2; y++)
 	{
-		DWORD y2 = dwHeight-y-1;
-		for (DWORD x=0; x<dwWidth; x++) {
-			DWORD t = GetPixel(x,y);
+		u32 y2 = dwHeight-y-1;
+		for (u32 x=0; x<dwWidth; x++) {
+			u32 t = GetPixel(x,y);
 			PutPixel(x,y, GetPixel(x,y2));
 			PutPixel(x,y2,t);
 		}
@@ -52,11 +52,11 @@ void CImage::Vflip()
 void CImage::Hflip()
 {
 	R_ASSERT(pData);
-	for (DWORD y=0; y<dwHeight; y++)
+	for (u32 y=0; y<dwHeight; y++)
 	{
-		for (DWORD x=0; x<dwWidth/2; x++) {
-			DWORD x2 = dwWidth-x-1;
-			DWORD t = GetPixel(x,y);
+		for (u32 x=0; x<dwWidth/2; x++) {
+			u32 x2 = dwWidth-x-1;
+			u32 t = GetPixel(x,y);
 			PutPixel(x,y, GetPixel(x2,y));
 			PutPixel(x2,y,t);
 		}
@@ -77,8 +77,8 @@ void CImage::Contrast(float _fc)
     // Apply contrast correction
     char *ptr       = (char *)pData;
     float fc        = _fc*2.f;
-    for (DWORD i=0; i<dwHeight; i++) {
-		for (DWORD j=0; j<dwWidth; j++) {
+    for (u32 i=0; i<dwHeight; i++) {
+		for (u32 j=0; j<dwWidth; j++) {
 			BYTE *p = (BYTE *) &(ptr[i*dwWidth*4 + j*4]);
 			p[0] = ClampColor(128.f + fc*(float(p[0]) - 128.f)); // red
 			p[1] = ClampColor(128.f + fc*(float(p[1]) - 128.f)); // green
@@ -91,8 +91,8 @@ void CImage::Grayscale()
 	R_ASSERT(pData);
 
 	char *ptr = (char *)pData;
-	for (DWORD i=0; i<dwHeight; i++) {
-		for (DWORD j=0; j<dwWidth; j++) {
+	for (u32 i=0; i<dwHeight; i++) {
+		for (u32 j=0; j<dwWidth; j++) {
             BYTE *p = (BYTE *) &(ptr[i*dwWidth*4 + j*4]);
 			// Approximate values for each component's contribution to luminance.
 			// Based upon the NTSC standard described in ITU-R Recommendation BT.709.
@@ -109,14 +109,14 @@ void CImage::Grayscale()
 #pragma pack(push,8)
 struct _fileT {
 	D3DFORMAT      fmt;
-	DWORD                   dwFlags;
-	DWORD                   dwWidth;
-	DWORD                   dwHeight;
-	DWORD                   dwMipCount;
+	u32                   dwFlags;
+	u32                   dwWidth;
+	u32                   dwHeight;
+	u32                   dwMipCount;
 
-	DWORD                   dwPitch;
+	u32                   dwPitch;
 
-	DWORD                   reserved[32-6];
+	u32                   reserved[32-6];
 };
 #pragma pack(pop)
 
@@ -124,12 +124,12 @@ void CImage::LoadT(char *name)
 {
 	void*	data	= DownloadFile(name);
 	_fileT*	hdr     = (_fileT*)data;
-	DWORD*	pixels	= (DWORD *) ((char *)data + sizeof(_fileT));
+	u32*	pixels	= (u32 *) ((char *)data + sizeof(_fileT));
 	dwWidth = hdr->dwWidth;
 	dwHeight= hdr->dwHeight;
 	bAlpha	= TUisAlphaPresents(hdr->fmt);
 
-	pData	= (DWORD*)xr_malloc(dwWidth*dwHeight*4);
+	pData	= (u32*)xr_malloc(dwWidth*dwHeight*4);
 	// CopyMemory(pData,pixels,dwWidth*dwHeight*4);
 
 	xr_free(data);
@@ -151,10 +151,10 @@ void CImage::LoadT(char *name)
 #define LITERAL         2
 
 #ifndef RGBA_GETALPHA
-#define RGBA_GETALPHA(rgb)      DWORD((rgb) >> 24)
-#define RGBA_GETRED(rgb)        DWORD(((rgb) >> 16) & 0xff)
-#define RGBA_GETGREEN(rgb)      DWORD(((rgb) >> 8) & 0xff)
-#define RGBA_GETBLUE(rgb)       DWORD((rgb) & 0xff)
+#define RGBA_GETALPHA(rgb)      u32((rgb) >> 24)
+#define RGBA_GETRED(rgb)        u32(((rgb) >> 16) & 0xff)
+#define RGBA_GETGREEN(rgb)      u32(((rgb) >> 8) & 0xff)
+#define RGBA_GETBLUE(rgb)       u32((rgb) & 0xff)
 #endif
 
 #pragma pack(push,1)     // Gotta pack these structures!
@@ -217,12 +217,12 @@ bool CImage::LoadTGA(LPCSTR name)
 	bAlpha 		= (hdr.pixsize==32);
 
 	// Alloc memory
-	pData		= (DWORD*)xr_malloc(dwWidth*dwHeight*4);
+	pData		= (u32*)xr_malloc(dwWidth*dwHeight*4);
 
-    DWORD pixel;
-	DWORD*	ptr	= pData;
+    u32 pixel;
+	u32*	ptr	= pData;
     for( int y=0; y<hdr.height; y++ ){
-        DWORD dwOffset = y*hdr.width;
+        u32 dwOffset = y*hdr.width;
 
         if( 0 == ( hdr.desc & 0x0010 ) ) dwOffset = (hdr.height-y-1)*hdr.width;
         for( int x=0; x<hdr.width; ){
@@ -260,14 +260,14 @@ bool CImage::LoadTGA(LPCSTR name)
 	if (hdr.pixsize==24)
 	{	// 24bpp
 		bAlpha = FALSE;
-		DWORD	pixel	= 0;
-		DWORD*	ptr		= pData;
+		u32	pixel	= 0;
+		u32*	ptr		= pData;
 		for(int iy = 0; iy<hdr.height; ++iy) {
 			for(int ix=0; ix<hdr.width; ++ix) {
 				TGA.Read(&pixel,3); *ptr++=pixel;
-//				DWORD R = RGBA_GETRED	(pixel)/2;
-//				DWORD G = RGBA_GETGREEN	(pixel)/2;
-//				DWORD B = RGBA_GETBLUE	(pixel)/2;
+//				u32 R = RGBA_GETRED	(pixel)/2;
+//				u32 G = RGBA_GETGREEN	(pixel)/2;
+//				u32 B = RGBA_GETBLUE	(pixel)/2;
 //				*ptr++ = D3DCOLOR_XRGB(R,G,B);
 			}
 		}

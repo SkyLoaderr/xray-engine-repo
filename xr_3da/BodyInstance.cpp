@@ -14,7 +14,7 @@ int			psSkeletonUpdate	= 32;
 const float	fAA					= 1.5f;	// anim-change acceleration
 
 // High level control
-void CMotionDef::Load(CKinematics* P, CStream* MP, DWORD fl)
+void CMotionDef::Load(CKinematics* P, CStream* MP, u32 fl)
 {
 	// params
 	bone_or_part= MP->Rword(); // bCycle?part_id:bone_id;
@@ -201,7 +201,7 @@ void	CKinematics::LL_FadeCycle(int part, float falloff)
 {
 	BlendList&	Blend	= blend_cycles[part];
 	
-	for (DWORD I=0; I<Blend.size(); I++)
+	for (u32 I=0; I<Blend.size(); I++)
 	{
 		CBlend& B		= *Blend[I];
 		B.blend			= CBlend::eFalloff;
@@ -286,7 +286,7 @@ CBlend*	CKinematics::LL_PlayCycle(int part, int motion, BOOL  bMixing,	float ble
 void CKinematics::Update ()
 {
 	if (dwUpdate_LastTime==Device.dwTimeGlobal) return;
-	DWORD DT = Device.dwTimeGlobal-dwUpdate_LastTime;
+	u32 DT = Device.dwTimeGlobal-dwUpdate_LastTime;
 	if (DT>66) DT=66;
 	float dt = float(DT)/1000.f;
 	dwUpdate_LastTime = Device.dwTimeGlobal;
@@ -294,7 +294,7 @@ void CKinematics::Update ()
 	BlendListIt	I,E;
 
 	// Cycles
-	for (DWORD part=0; part<MAX_PARTS; part++) 
+	for (u32 part=0; part<MAX_PARTS; part++) 
 	{
 		if (0==(*partition)[part].Name)	continue;
 
@@ -401,7 +401,7 @@ void CKinematics::DebugRender(Fmatrix& XFORM)
 	Fvector Z;  Z.set(0,0,0);
 	Fvector H1; H1.set(0.01f,0.01f,0.01f);
 	Fvector H2; H2.mul(H1,2);
-	for (DWORD i=0; i<dbgLines.size(); i+=2)
+	for (u32 i=0; i<dbgLines.size(); i+=2)
 	{
 		Fmatrix& M1 = bone_instances[dbgLines[i]].mTransform;
 		Fmatrix& M2 = bone_instances[dbgLines[i+1]].mTransform;
@@ -417,7 +417,7 @@ void CKinematics::DebugRender(Fmatrix& XFORM)
 		Device.Primitive.dbg_DrawOBB(M,H2,D3DCOLOR_XRGB(255,255,255));
 	}
 
-	for (DWORD b=0; b<bones->size(); b++)
+	for (u32 b=0; b<bones->size(); b++)
 	{
 		Fobb&		obb		= (*bones)[b]->obb;
 		Fmatrix&	Mbone	= bone_instances[b].mTransform;
@@ -445,7 +445,7 @@ void CKinematics::Release()
 		xr_free(B->first);
 
 	// xr_free partition
-	for (DWORD i=0; i<MAX_PARTS; i++)
+	for (u32 i=0; i<MAX_PARTS; i++)
 		xr_free((*partition)[i].Name);
 	
 	// xr_free bones
@@ -472,13 +472,13 @@ CKinematics::~CKinematics	()
 void	CKinematics::IBoneInstances_Create()
 {
 	R_ASSERT		(bones);
-	DWORD			size	= bones->size();
+	u32			size	= bones->size();
 	void*			ptr		= _aligned_malloc(size*sizeof(CBoneInstance),64);
 #ifndef _EDITOR
-	R_ASSERT		(DWORD(ptr)%64 == 0);
+	R_ASSERT		(u32(ptr)%64 == 0);
 #endif
 	bone_instances			= (CBoneInstance*)ptr;
-	for (DWORD i=0; i<size; i++)
+	for (u32 i=0; i<size; i++)
 		bone_instances[i].construct();
 }
 
@@ -507,7 +507,7 @@ void CKinematics::Copy(CVisual *P)
 	IBlend_Startup			();
 	IBoneInstances_Create	();
 
-	for (DWORD i=0; i<children.size(); i++) 
+	for (u32 i=0; i<children.size(); i++) 
 	{
 		CVisual*	V = children[i];
 		CSkeletonX*		B = NULL;
@@ -534,7 +534,7 @@ void CKinematics::Copy(CVisual *P)
 	iUpdateID	= rand()%psSkeletonUpdate;
 }
 
-void CKinematics::Load(const char* N, CStream *data, DWORD dwFlags)
+void CKinematics::Load(const char* N, CStream *data, u32 dwFlags)
 {
 	inherited::Load(N,data, dwFlags);
 
@@ -549,7 +549,7 @@ void CKinematics::Load(const char* N, CStream *data, DWORD dwFlags)
 	vector<LPSTR>	L_parents;
 
 	R_ASSERT(data->FindChunk(OGF_BONE_NAMES));
-	DWORD dwCount = data->Rdword();
+	u32 dwCount = data->Rdword();
 
 	for (; dwCount; dwCount--)
 	{
@@ -571,7 +571,7 @@ void CKinematics::Load(const char* N, CStream *data, DWORD dwFlags)
 
 	// Attach bones to their parents
 	iRoot = -1;
-	for (DWORD i=0; i<bones->size(); i++) {
+	for (u32 i=0; i<bones->size(); i++) {
 		LPCSTR 	P = L_parents[i];
 		CBoneData*	B = (*bones)[i];
 		if (!P[0]) {
@@ -588,26 +588,26 @@ void CKinematics::Load(const char* N, CStream *data, DWORD dwFlags)
 	R_ASSERT(-1 != iRoot);
 
 	// Free parents
-	for (DWORD aaa=0; aaa<L_parents.size(); aaa++)
+	for (u32 aaa=0; aaa<L_parents.size(); aaa++)
 		xr_free(L_parents[aaa]);
 
 	// Load animation
 	CStream* MS = data->OpenChunk(OGF_MOTIONS);
-	DWORD dwCNT = 0;
+	u32 dwCNT = 0;
 	MS->ReadChunkSafe	(0,&dwCNT,sizeof(dwCNT));
-	for (DWORD M=0; M<dwCNT; M++)
+	for (u32 M=0; M<dwCNT; M++)
 	{
 		R_ASSERT(MS->FindChunk(M+1));
         char mname[128];
 		MS->RstringZ(mname);
 		motion_map->insert(make_pair(xr_strdup(strlwr(mname)),M));
 
-		DWORD dwLen = MS->Rdword();
+		u32 dwLen = MS->Rdword();
 		for (i=0; i<bones->size(); i++)
 		{
 			CMotion TMP;
 			TMP.Keys.reserve(dwLen);
-			for (DWORD k=0; k<dwLen; k++)
+			for (u32 k=0; k<dwLen; k++)
 			{
 				CKeyQ K;
 				MS->Read(&K,sizeof(K));
@@ -642,7 +642,7 @@ void CKinematics::Load(const char* N, CStream *data, DWORD dwFlags)
         WORD mot_count			= MP->Rword();
         for (WORD mot_i=0; mot_i<mot_count; mot_i++){
             MP->RstringZ(buf);
-	        DWORD dwFlags		= MP->Rdword();
+	        u32 dwFlags		= MP->Rdword();
             CMotionDef	D;		D.Load(this,MP,dwFlags);
             if (dwFlags&esmFX)	m_fx->insert(make_pair(_strlwr(xr_strdup(buf)),D));
             else				m_cycle->insert(make_pair(_strlwr(xr_strdup(buf)),D));

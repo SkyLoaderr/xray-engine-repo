@@ -23,7 +23,7 @@ FHierrarhyVisual::FHierrarhyVisual()  : CVisual()
 FHierrarhyVisual::~FHierrarhyVisual()
 {
 	if (!bDontDelete) {
-		for (DWORD i=0; i<children.size(); i++)	
+		for (u32 i=0; i<children.size(); i++)	
 #ifdef _EDITOR
 			::Device.Models.Delete(children[i]);
 #else
@@ -33,19 +33,19 @@ FHierrarhyVisual::~FHierrarhyVisual()
 	children.clear();
 }
 
-void FHierrarhyVisual::Load(const char* N, CStream *data, DWORD dwFlags)
+void FHierrarhyVisual::Load(const char* N, CStream *data, u32 dwFlags)
 {
 	CVisual::Load(N,data,dwFlags);
 	if (data->FindChunk(OGF_CHIELDS_L)) 
 	{
 		// From Link
-		DWORD cnt = data->Rdword();
+		u32 cnt = data->Rdword();
 		children.resize(cnt);
-		for (DWORD i=0; i<cnt; i++) {
+		for (u32 i=0; i<cnt; i++) {
 #ifdef _EDITOR
 			THROW;
 #else
-			DWORD ID	= data->Rdword();
+			u32 ID	= data->Rdword();
 			children[i]	= ::Render->getVisual(ID);
 #endif
 		}
@@ -110,7 +110,7 @@ void	FHierrarhyVisual::Copy(CVisual *pSrc)
 
 	children.clear	();
 	children.reserve(pFrom->children.size());
-	for (DWORD i=0; i<pFrom->children.size(); i++) {
+	for (u32 i=0; i<pFrom->children.size(); i++) {
 #ifdef _EDITOR
 		CVisual *p = ::Device.Models.Instance_Duplicate(pFrom->children[i]);
 #else

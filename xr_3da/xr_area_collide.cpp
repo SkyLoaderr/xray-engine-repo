@@ -45,7 +45,7 @@ BOOL CObjectSpace::BBoxCollide(CCFModel *object, const Fmatrix& M_bbox ){
 			collide_list.push_back(target);
 
 			Fmatrix *pM = (target->owner)?&(target->owner->mTransform):0;
-			for (DWORD i=0; i<XRC.GetBBoxContactCount(); i++)
+			for (u32 i=0; i<XRC.GetBBoxContactCount(); i++)
 				AddToTrisList( pM, &target->model.tris[XRC.BBoxContact[i].id] );
 		}// nearest cycle
 	}
@@ -53,7 +53,7 @@ BOOL CObjectSpace::BBoxCollide(CCFModel *object, const Fmatrix& M_bbox ){
 	//XRC.BBoxCollide( precalc_identity, &Static, M_bbox, object->s_box );
 	//if ( !XRC.GetBBoxContactCount() ) return 0;
 	//collide_list.push_back(0);
-	//for (DWORD i=0; i<XRC.GetBBoxContactCount(); i++)
+	//for (u32 i=0; i<XRC.GetBBoxContactCount(); i++)
 	//	AddToTrisList( &Static.tris[XRC.BBoxContact[i].id] );
 	//return q_tris.size();
 }
@@ -82,7 +82,7 @@ BOOL CObjectSpace::BBoxCollide( const Fbox& s_box, const Fmatrix& M_bbox ){
 			collide_list.push_back(target);
 
 			Fmatrix *pM = (target->owner)?&(target->owner->mTransform):0;
-			for (DWORD i=0; i<XRC.GetBBoxContactCount(); i++)
+			for (u32 i=0; i<XRC.GetBBoxContactCount(); i++)
 				AddToTrisList( pM, &target->model.tris[XRC.BBoxContact[i].id] );
 			
 		}// nearest cycle
@@ -95,7 +95,7 @@ BOOL CObjectSpace::BBoxCollide( const Fbox& s_box, const Fmatrix& M_bbox ){
 	if ( !XRC.GetBBoxContactCount() ) return 0;
 	collide_list.push_back(0);
 
-	for (DWORD i=0; i<XRC.GetBBoxContactCount(); i++)
+	for (u32 i=0; i<XRC.GetBBoxContactCount(); i++)
 		AddToTrisList( &Static.tris[XRC.BBoxContact[i].id] );
 	return q_tris.size();
 }
@@ -135,7 +135,7 @@ BOOL CObjectSpace::BBoxCollide( const Fvector &start, const Fvector &dir, float 
 			collide_list.push_back(target);
 
 			Fmatrix *pM = (target->owner)?&(target->owner->mTransform):0;
-			for (DWORD i=0; i<XRC.GetBBoxContactCount(); i++)
+			for (u32 i=0; i<XRC.GetBBoxContactCount(); i++)
 				AddToTrisList( pM, &target->model.tris[XRC.BBoxContact[i].id] );
 			
 		}// nearest cycle
@@ -147,7 +147,7 @@ BOOL CObjectSpace::BBoxCollide( const Fvector &start, const Fvector &dir, float 
 	if ( !XRC.GetBBoxContactCount() ) return 0;
 	collide_list.push_back(0);
 
-	for (DWORD i=0; i<XRC.GetBBoxContactCount(); i++)
+	for (u32 i=0; i<XRC.GetBBoxContactCount(); i++)
 			AddToTrisList(&Static.tris[XRC.BBoxContact[i].id] );
 	return q_tris.size();
 }

@@ -99,11 +99,11 @@ void CDetailManager::Load		()
 	// Header
 	dtFS->ReadChunkSafe	(0,&dtH,sizeof(dtH));
 	R_ASSERT			(dtH.version == DETAIL_VERSION);
-	DWORD m_count		= dtH.object_count;
+	u32 m_count		= dtH.object_count;
 	
 	// Models
 	CStream* m_fs	= dtFS->OpenChunk(1);
-	for (DWORD m_id = 0; m_id < m_count; m_id++)
+	for (u32 m_id = 0; m_id < m_count; m_id++)
 	{
 		CDetail*		dt	= new CDetail;
 		CStream* S			= m_fs->OpenChunk(m_id);
@@ -185,8 +185,8 @@ void CDetailManager::Render		(Fvector& vecEYE)
 			Slot&	S		= *CS;
 
 			// Transfer visibile and partially visible slot contents
-			DWORD mask		= 0xff;
-			DWORD res		= View.testAABB(S.BB.min,S.BB.max,mask);
+			u32 mask		= 0xff;
+			u32 res		= View.testAABB(S.BB.min,S.BB.max,mask);
 			if ((fcvPartial==res)&&UseVS())	res = fcvFully;
 			switch (res)
 			{
@@ -217,7 +217,7 @@ void CDetailManager::Render		(Fvector& vecEYE)
 								
 								float	ssa		= radius*radius/dist_sq;
 								if (ssa < r_ssaDISCARD) continue;
-								DWORD	vis_id	= Item.vis_ID;
+								u32	vis_id	= Item.vis_ID;
 								if (ssa < r_ssaCHEAP)	vis_id=0;
 								
 								Item.scale_calculated = scale;			//alpha;
@@ -250,7 +250,7 @@ void CDetailManager::Render		(Fvector& vecEYE)
 
 							float	ssa		= radius*radius/dist_sq;
 							if (ssa < r_ssaDISCARD) continue;
-							DWORD	vis_id	= Item.vis_ID;
+							u32	vis_id	= Item.vis_ID;
 							if (ssa < r_ssaCHEAP)	vis_id=0;
 
 							Item.scale_calculated = scale;			//alpha;

@@ -14,12 +14,12 @@ public:
 		flLIGHT_Sharp		= 1<<5
 	};
 	struct Flags {
-		DWORD bCollision			: 1;
-		DWORD bRendering			: 1;
-		DWORD bOptimizeUV			: 1;
-		DWORD bLIGHT_Vertex			: 1;
-		DWORD bLIGHT_CastShadow		: 1;
-		DWORD bLIGHT_Sharp			: 1;
+		u32 bCollision			: 1;
+		u32 bRendering			: 1;
+		u32 bOptimizeUV			: 1;
+		u32 bLIGHT_Vertex			: 1;
+		u32 bLIGHT_CastShadow		: 1;
+		u32 bLIGHT_Sharp			: 1;
 	};
 public:
 	char		Name		[128];

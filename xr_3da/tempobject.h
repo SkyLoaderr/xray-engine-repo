@@ -18,7 +18,7 @@ public:
 	IC CVisual*			Visual			(){return m_pVisual;}
 	IC void				SetLifeTime		(float life_time){m_iLifeTime=iFloor(life_time*1000);}
 	
-	virtual void		Update			(DWORD dt);
+	virtual void		Update			(u32 dt);
 	virtual BOOL		Ready			()  { return TRUE; }
 };
 #endif /*_INCDEF_TempObject_H_*/

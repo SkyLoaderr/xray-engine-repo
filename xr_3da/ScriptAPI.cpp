@@ -95,7 +95,7 @@ void CScriptAPI::Initialize()
 		CLASS_ID signature = MK_CLSID('T','P','I','R','C','S','r','x');
 		if ((!bExist) || (!FT_ModifyEqual(tS,tC))) {
 			Msg("   compiling '%s'",S.name);
-			DWORD size;
+			u32 size;
 			char *file_text = (char *)FileDownload(fname, &size);
 			file_text[size-1]=0;
 			S.S=scCompile_Text(file_text);
@@ -134,7 +134,7 @@ void CScriptAPI::Initialize()
 
 void CScriptAPI::Destroy()
 {
-	for (DWORD i=0; i<Scripts.size(); i++)
+	for (u32 i=0; i<Scripts.size(); i++)
 		_FREE(Scripts[i].S);
 	Scripts.clear	();
 }

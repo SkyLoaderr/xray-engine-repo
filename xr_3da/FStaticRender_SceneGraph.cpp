@@ -82,7 +82,7 @@ void CRender::InsertSG_Static(CVisual *pVisual)
 			N->val.Matrix			= Fidentity;
 			N->val.vCenter.set		(pVisual->bv_Position);
 		} else {
-			for (DWORD pass_id=0; pass_id<sh->Passes.size(); pass_id++)
+			for (u32 pass_id=0; pass_id<sh->Passes.size(); pass_id++)
 			{
 				CPass&									pass	= sh->Passes[pass_id];
 				SceneGraph::mapNormalCodes&				codes	= mapNormal	[sh->Flags.iPriority][pass_id];
@@ -128,7 +128,7 @@ void CRender::InsertSG_Cached(CVisual *V)
 		
 		// Select List and add to it
 		ShaderElement*		sh		= ShowLM?pVisual->hShader->lighting:pVisual->hShader->lod0;
-		for (DWORD pass_id=0; pass_id<sh->Passes.size(); pass_id++)
+		for (u32 pass_id=0; pass_id<sh->Passes.size(); pass_id++)
 		{
 			CPass&									pass	= sh->Passes[pass_id];
 			SceneGraph::mapNormalCodes&				codes	= mapNormal	[sh->Flags.iPriority][pass_id];
@@ -265,7 +265,7 @@ void CRender::add_leafs_Static(CVisual *pVisual)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-BOOL CRender::add_Dynamic(CVisual *pVisual, DWORD planes)
+BOOL CRender::add_Dynamic(CVisual *pVisual, u32 planes)
 {
 	// Check frustum visibility and calculate distance to visual's center
 	Fvector		Tpos;	// transformed position
@@ -316,7 +316,7 @@ BOOL CRender::add_Dynamic(CVisual *pVisual, DWORD planes)
 	return TRUE;
 }
 
-void CRender::add_Static(CVisual *pVisual, DWORD planes)
+void CRender::add_Static(CVisual *pVisual, u32 planes)
 {
 	// Check frustum visibility and calculate distance to visual's center
 	EFC_Visible	VIS;

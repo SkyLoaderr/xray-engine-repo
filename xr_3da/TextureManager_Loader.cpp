@@ -8,7 +8,7 @@
 
 void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures) 
 {
-	DWORD it;
+	u32 it;
 
 	if (Device.bReady) return;
 

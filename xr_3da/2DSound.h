@@ -21,7 +21,7 @@ private:
 	float					fTimeTotal;			// всего
 	float					fTimeRested;		// осталось
 
-	DWORD					dwStatus;
+	u32					dwStatus;
 
     LPDIRECTSOUNDBUFFER     pBuffer;
 	BOOL					bNeedUpdate;
@@ -39,7 +39,7 @@ public:
 
 	void					Play			(BOOL bLoop=false, int lcnt=0);
 	void					Stop			(void);
-	void					SetFrequency		(DWORD freq);
+	void					SetFrequency		(u32 freq);
 	void					SetVolume		(float vol)			{ fVolume = vol; bNeedUpdate = true; }
 
 	void					OnMove			(void);

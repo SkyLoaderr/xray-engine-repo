@@ -207,7 +207,7 @@ void CObjectSpace::clCheckCollision(SCollisionData& cl)
 	float			distToPlaneIntersection;
 	float			distToEllipsoidIntersection;
 	
-	for (DWORD i_t=0; i_t!=clContactedT.size(); i_t++)
+	for (u32 i_t=0; i_t!=clContactedT.size(); i_t++)
 	{
 		tri& T=clContactedT[i_t];
 		
@@ -284,7 +284,7 @@ void CObjectSpace::clCheckCollision(SCollisionData& cl)
 	} // for all faces	
 	
 	// for all elipsoids
-	for (DWORD i_e=0; i_e!=clContactedE.size(); i_e++)
+	for (u32 i_e=0; i_e!=clContactedE.size(); i_e++)
 	{
 		elipsoid& E = clContactedE[i_e];
 		Fvector	Vxform,Pxform;
@@ -344,7 +344,7 @@ void CObjectSpace::clResolveStuck(SCollisionData& cl, Fvector& position)
 		stuckCount		= 0;
 		
 		// for all faces
-		for (DWORD i_t=0; i_t!=clContactedT.size(); i_t++)
+		for (u32 i_t=0; i_t!=clContactedT.size(); i_t++)
 		{
 			tri& T=clContactedT[i_t];
 			Fvector N_inv;
@@ -373,7 +373,7 @@ void CObjectSpace::clResolveStuck(SCollisionData& cl, Fvector& position)
 		}
 
 		// for all elipsoids
-		for (DWORD i_e=0; i_e!=clContactedE.size(); i_e++)
+		for (u32 i_e=0; i_e!=clContactedE.size(); i_e++)
 		{
 			elipsoid& E = clContactedE[i_e];
 			Fvector	SRE; 

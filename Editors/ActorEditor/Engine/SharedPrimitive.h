@@ -19,9 +19,9 @@ class ENGINE_API _VertexStream
 	friend class				CRender;
 private :
 	IDirect3DVertexBuffer8*		pVB;
-	DWORD						mSize;			// size in bytes
-	DWORD						mPosition;		// position in bytes
-	DWORD						mDiscardID;		// ID of discard - usually for caching
+	u32						mSize;			// size in bytes
+	u32						mPosition;		// position in bytes
+	u32						mDiscardID;		// ID of discard - usually for caching
 private:
 	void						_clear	()
 	{ ZeroMemory	(this,sizeof(*this)); }
@@ -29,18 +29,18 @@ private:
 	void						Destroy	();
 public:
 	IC IDirect3DVertexBuffer8*	Buffer()		{ return pVB;			}
-	IC DWORD					DiscardID()		{ return mDiscardID;	}
+	IC u32					DiscardID()		{ return mDiscardID;	}
 	IC void						Flush()			{ mPosition=mSize;		}
 
-	IC void*					Lock			( DWORD vl_Count, DWORD Stride, DWORD& vOffset )
+	IC void*					Lock			( u32 vl_Count, u32 Stride, u32& vOffset )
 	{
 		// Ensure there is enough space in the VB for this data
-		DWORD	bytes_need	= vl_Count*Stride;
+		u32	bytes_need	= vl_Count*Stride;
 		R_ASSERT			(bytes_need<=mSize);
 
 		// Vertex-local info
-		DWORD vl_mSize		= mSize/Stride;
-		DWORD vl_mPosition	= mPosition/Stride + 1;
+		u32 vl_mSize		= mSize/Stride;
+		u32 vl_mPosition	= mPosition/Stride + 1;
 		
 		// Check if there is need to flush and perform lock
 		BYTE* pData			= 0;
@@ -64,7 +64,7 @@ public:
 		return LPVOID		( pData );
 	}
 
-	IC void						Unlock			( DWORD Count, DWORD Stride)
+	IC void						Unlock			( u32 Count, u32 Stride)
 	{
 		mPosition			+=	Count*Stride;
 
@@ -83,9 +83,9 @@ class ENGINE_API _IndexStream
 	friend class				CRender;
 private :
 	IDirect3DIndexBuffer8*		pIB;
-	DWORD						mSize;		// real size (usually mCount, aligned on 512b boundary)
-	DWORD						mPosition;
-	DWORD						mDiscardID;
+	u32						mSize;		// real size (usually mCount, aligned on 512b boundary)
+	u32						mPosition;
+	u32						mDiscardID;
 private:
 	void						_clear	()
 	{ ZeroMemory				(this,sizeof(*this)); }
@@ -93,10 +93,10 @@ private:
 	void						Destroy	();
 public:
 	IC IDirect3DIndexBuffer8*	Buffer()		{ return pIB;			}
-	IC DWORD					DiscardID()		{ return mDiscardID;	}
+	IC u32					DiscardID()		{ return mDiscardID;	}
 	void						Flush()			{ mPosition=mSize;		}
 
-	IC WORD*					Lock			( DWORD Count, DWORD& vOffset )
+	IC WORD*					Lock			( u32 Count, u32& vOffset )
 	{
 		vOffset					= 0;
 		BYTE* pLockedData		= 0;
@@ -107,7 +107,7 @@ public:
 		// If either user forced us to flush,
 		// or there is not enough space for the index data,
 		// then flush the buffer contents
-		DWORD dwFlags = LOCKFLAGS_APPEND;
+		u32 dwFlags = LOCKFLAGS_APPEND;
 		if ( 2*( Count + mPosition ) >= mSize )
 		{
 			mPosition	= 0;						// clear position
@@ -121,7 +121,7 @@ public:
 
 		return					LPWORD(pLockedData);
 	}
-	IC void						Unlock(DWORD RealCount)
+	IC void						Unlock(u32 RealCount)
 	{
 		mPosition				+=	RealCount;
 		VERIFY					(pIB);

@@ -9,12 +9,12 @@
 #include "xr_object.h"
 #include "feel_sound.h"
 
-extern	DWORD			psSoundModel;
-extern	DWORD			psSoundFreq;
+extern	u32			psSoundModel;
+extern	u32			psSoundFreq;
 extern	float			psSoundVEffects;
 extern	CSoundManager*	pSounds;
 
-const	DWORD			dwLoopAheadMS	= 75;
+const	u32			dwLoopAheadMS	= 75;
 const	float			fOcclusionSpeed	= 1.f;
 
 //////////////////////////////////////////////////////////////////////
@@ -147,7 +147,7 @@ void CSound::PropagadeEvent()
 
 void CSound::OnMove		(vector<sound_defer>& plist)
 {
-	DWORD	dwTime			= Device.TimerAsync	();
+	u32	dwTime			= Device.TimerAsync	();
 
 	switch (dwState)	
 	{
@@ -250,16 +250,16 @@ void CSound::SetPosition	(const Fvector &pos)
 	bNeedUpdate			= true;
 }
 
-void CSound::SetFrequency	(DWORD freq)
+void CSound::SetFrequency	(u32 freq)
 {
 	dwFreq				= freq;
-	clamp				(dwFreq,DWORD(DSBFREQUENCY_MIN),DWORD(DSBFREQUENCY_MAX));
+	clamp				(dwFreq,u32(DSBFREQUENCY_MIN),u32(DSBFREQUENCY_MAX));
 	bNeedUpdate			= true;
 }
 void CSound::SetFrequencyScale(float S)
 {
 	dwFreq				= iFloor(float(dwFreqBase)*S);
-	clamp				(dwFreq,DWORD(DSBFREQUENCY_MIN),DWORD(DSBFREQUENCY_MAX));
+	clamp				(dwFreq,u32(DSBFREQUENCY_MIN),u32(DSBFREQUENCY_MAX));
 	bNeedUpdate			= true;
 }
 void CSound::SetMinMax		(float min, float max)
@@ -293,8 +293,8 @@ void CSound::Stop			()
 void CSound::Rewind			()
 {
 	pBuffer->SetCurrentPosition	(0);
-	DWORD dwTime				= Device.TimerAsync();
-	DWORD dwDiff				= dwTime-dwTimeStarted;
+	u32 dwTime				= Device.TimerAsync();
+	u32 dwDiff				= dwTime-dwTimeStarted;
 	dwTimeStarted				+= dwDiff;
 	dwTimeToStop				+= dwDiff;
 	dwTimeToPropagade			= dwTime;

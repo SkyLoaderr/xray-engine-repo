@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 // Device dependance
-const DWORD Lines_BatchSize = 64;
+const u32 Lines_BatchSize = 64;
 void CDraw::OnDeviceCreate()
 {
 //	vsTL = Device.Streams.Create(FVF::F_TL,Lines_BatchSize*4);
@@ -17,7 +17,7 @@ void CDraw::Lines_Begin	(int count)
 {
 	pCurrent = pStart = (FVF::TL*)vsTL->Lock(count*4,dwLN_Offset);
 }
-void CDraw::Lines_Draw	(Fvector& P1, Fvector& P2, float width, DWORD C)
+void CDraw::Lines_Draw	(Fvector& P1, Fvector& P2, float width, u32 C)
 {
 	FVF::TL			s1,s2;
 	s1.transform	(P1,Device.mFullTransform); float l1 = width/sqrtf(s1.p.w); l1=0.005f;
@@ -35,7 +35,7 @@ void CDraw::Lines_Draw	(Fvector& P1, Fvector& P2, float width, DWORD C)
 
 void CDraw::Lines_End	()
 {
-	DWORD			C = pCurrent-pStart;
+	u32			C = pCurrent-pStart;
 	vsTL->Unlock	(C);
 	if (C)			Draw(vsTL,C,C/2,dwLN_Offset,Device.Streams_QuadIB);
 }
@@ -58,7 +58,7 @@ void CDraw::dbg_Draw(D3DPRIMITIVETYPE T, FVF::L* pVerts, int pcnt)
 }
 
 #define RGBA_GETALPHA(rgb)      ((rgb) >> 24)
-void CDraw::dbg_DrawOBB	(Fmatrix& T, Fvector& half_dim, DWORD C)
+void CDraw::dbg_DrawOBB	(Fmatrix& T, Fvector& half_dim, u32 C)
 {
 	Fmatrix mL2W_Transform,mScaleTransform;
 
@@ -81,7 +81,7 @@ void CDraw::dbg_DrawOBB	(Fmatrix& T, Fvector& half_dim, DWORD C)
 	Device.set_xform_world	(mL2W_Transform);
 	dbg_Draw(D3DPT_LINELIST,aabb,8,aabb_id,12);
 }
-void CDraw::dbg_DrawTRI	(Fmatrix& T, Fvector& p1, Fvector& p2, Fvector& p3, DWORD C)
+void CDraw::dbg_DrawTRI	(Fmatrix& T, Fvector& p1, Fvector& p2, Fvector& p3, u32 C)
 {
 	FVF::L	tri[3];
 	tri[0].p = p1; tri[0].color = C;
@@ -91,7 +91,7 @@ void CDraw::dbg_DrawTRI	(Fmatrix& T, Fvector& p1, Fvector& p2, Fvector& p3, DWOR
 	Device.set_xform_world	(T);
 	dbg_Draw(D3DPT_TRIANGLESTRIP,tri,1);
 }
-void CDraw::dbg_DrawLINE(Fmatrix& T, Fvector& p1, Fvector& p2, DWORD C)
+void CDraw::dbg_DrawLINE(Fmatrix& T, Fvector& p1, Fvector& p2, u32 C)
 {
 	FVF::L	line[2];
 	line[0].p = p1; line[0].color = C;
@@ -100,7 +100,7 @@ void CDraw::dbg_DrawLINE(Fmatrix& T, Fvector& p1, Fvector& p2, DWORD C)
 	Device.set_xform_world	(T);
 	dbg_Draw(D3DPT_LINELIST,line,1);
 }
-void CDraw::dbg_DrawEllipse(Fmatrix& T, DWORD C)
+void CDraw::dbg_DrawEllipse(Fmatrix& T, u32 C)
 {
 	float gVertices[] =
 	{

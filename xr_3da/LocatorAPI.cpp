@@ -26,7 +26,7 @@ CLocatorAPI::~CLocatorAPI()
 	
 }
 
-void CLocatorAPI::Register		(LPCSTR name, DWORD vfs, DWORD ptr, DWORD size, BOOL bCompressed)
+void CLocatorAPI::Register		(LPCSTR name, u32 vfs, u32 ptr, u32 size, BOOL bCompressed)
 {
 	// Register file
 	file				desc;
@@ -78,10 +78,10 @@ void CLocatorAPI::ProcessArchive(const char* path)
 		hdr->RstringZ	(name);
 		strconcat		(full,base,name);
 
-		DWORD vfs		= archives.size()-1;
+		u32 vfs		= archives.size()-1;
 		BOOL  bPacked	= (hdr->Rdword())?FALSE:TRUE;
-		DWORD ptr		= hdr->Rdword();
-		DWORD size		= hdr->Rdword();
+		u32 ptr		= hdr->Rdword();
+		u32 size		= hdr->Rdword();
 		Register		(full,vfs,ptr,size,bPacked);
 	}
 	hdr->Close			();
@@ -170,7 +170,7 @@ BOOL CLocatorAPI::Exist			(char* fn, const char* path, const char* name, const c
 	return Exist(fn);
 }
 
-void CLocatorAPI::List			(vector<char*>& dest, const char* path, DWORD flags)
+void CLocatorAPI::List			(vector<char*>& dest, const char* path, u32 flags)
 {
 	VERIFY			(flags);
 	

@@ -7,7 +7,7 @@
 #include "xr_creator.h"
 #include "render.h"
 
-const DWORD MAX_POLYGONS=1024*8;
+const u32 MAX_POLYGONS=1024*8;
 const float MAX_DISTANCE=50.f;
 
 //////////////////////////////////////////////////////////////////////
@@ -45,19 +45,19 @@ void CLightPPA::Render	(CVS* VS)
 	// Query collision DB (Select polygons)
 	XRC.box_options		(0);
 	XRC.box_query		(pCreator->ObjectSpace.GetStaticModel(),sphere.P,size);
-	DWORD	triCount	= XRC.r_count	();
+	u32	triCount	= XRC.r_count	();
 	if (0==triCount)	return;
 	CDB::TRI* tris		= pCreator->ObjectSpace.GetStaticTris();
 
 	// Lock
-	DWORD	vOffset;
+	u32	vOffset;
 	CLightPPA_Vertex* VB = (CLightPPA_Vertex*)Device.Streams.Vertex.Lock(triCount*3,VS->dwStride,vOffset);
 
 	// Cull and triangulate polygons
 	Fvector	cam		= Device.vCameraPosition;
 	float	r2		= sphere.R*2;
-	DWORD	actual	= 0;
-	for (DWORD t=0; t<triCount; t++)
+	u32	actual	= 0;
+	for (u32 t=0; t<triCount; t++)
 	{
 		CDB::TRI&	T	= tris	[XRC.r_begin()[t].id];
 
@@ -121,7 +121,7 @@ void CLightPPA_Manager::Render()
 	Device.set_xform_project	(Device.mProject);
 
 	Device.Shader.set_Shader	(SH);
-	for (DWORD L=0; L<container.size(); L++)
+	for (u32 L=0; L<container.size(); L++)
 	{
 		CLightPPA&	PPL = *container[L];
 		float	alpha	= Device.vCameraPosition.distance_to(PPL.sphere.P)/MAX_DISTANCE;

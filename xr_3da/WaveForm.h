@@ -13,7 +13,7 @@ struct WaveForm
 		fSQUARE,
 		fSAWTOOTH,
 		fINVSAWTOOTH,
-		fFORCE32		= DWORD(-1)
+		fFORCE32		= u32(-1)
 	};
 	IC float signf		(float t) { return t/_abs(t); }
 	IC float Func		(float t)

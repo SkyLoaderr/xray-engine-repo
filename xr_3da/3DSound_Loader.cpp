@@ -4,12 +4,12 @@
 #include "xr_sndman.h"
 #include "xr_ini.h"
 
-void* ParseWave		(CStream *data, LPWAVEFORMATEX &wfx, DWORD &len)
+void* ParseWave		(CStream *data, LPWAVEFORMATEX &wfx, u32 &len)
 {
-    DWORD	dwRiff		= data->Rdword();
-    DWORD	dwLength	= data->Rdword();
-    DWORD	dwType		= data->Rdword();
-	DWORD	dwPos;
+    u32	dwRiff		= data->Rdword();
+    u32	dwLength	= data->Rdword();
+    u32	dwType		= data->Rdword();
+	u32	dwPos;
 	void	*ptr		= NULL;
 	wfx					= NULL;
 
@@ -41,7 +41,7 @@ void* ParseWave		(CStream *data, LPWAVEFORMATEX &wfx, DWORD &len)
 	return NULL;
 }
 
-DWORD Freq2Size(DWORD freq) {
+u32 Freq2Size(u32 freq) {
 	switch (freq) {
 	case 11025:	return 1;
 	case 22050: return 2;
@@ -52,10 +52,10 @@ DWORD Freq2Size(DWORD freq) {
 
 // Convert data to SRC bits -MONO- PB Hz
 // MONO - because sound must be 3D source - elsewhere performance penalty occurs
-void *ConvertWave(WAVEFORMATEX &wfx_dest, LPWAVEFORMATEX &wfx, void *data, DWORD &dwLen)
+void *ConvertWave(WAVEFORMATEX &wfx_dest, LPWAVEFORMATEX &wfx, void *data, u32 &dwLen)
 {
 	HACMSTREAM	hc;
-	DWORD		dwNewLen;
+	u32		dwNewLen;
 	if (FAILED(acmStreamOpen(&hc, NULL, wfx, &wfx_dest, NULL, NULL, 0, ACM_STREAMOPENF_NONREALTIME))) return NULL;
 	if (!hc) return NULL;
 	if (FAILED(acmStreamSize(hc,dwLen,&dwNewLen,ACM_STREAMSIZEF_SOURCE))) return NULL;
@@ -100,7 +100,7 @@ LPDIRECTSOUNDBUFFER CSound::LoadWaveAs2D	(LPCSTR pName, BOOL bCtrlFreq)
 	// Load file into memory and parse WAV-format
 	destructor<CStream>		data	(Engine.FS.Open(pName));
 	WAVEFORMATEX*			pFormat;
-	DWORD					dwLen;
+	u32					dwLen;
 	void *					wavedata = ParseWave(&data(),pFormat,dwLen);
 	if (!wavedata)			return NULL;
 
@@ -145,7 +145,7 @@ LPDIRECTSOUNDBUFFER CSound::LoadWaveAs2D	(LPCSTR pName, BOOL bCtrlFreq)
 	// Creating buffer and fill it with data
 	if (SUCCEEDED(pSounds->pDevice->CreateSoundBuffer(&dsBD, &pBuf, NULL))){
 		LPVOID	pMem1,		pMem2;
-		DWORD	dwSize1,	dwSize2;
+		u32	dwSize1,	dwSize2;
 
 		if (SUCCEEDED(pBuf->Lock(0, 0, &pMem1, &dwSize1, &pMem2, &dwSize2, DSBLOCK_ENTIREBUFFER)))
 		{
@@ -196,7 +196,7 @@ LPDIRECTSOUNDBUFFER CSound::LoadWaveAs3D(LPCSTR pName, BOOL bCtrlFreq)
 	// Load file into memory and parse WAV-format
 	destructor<CStream>	data(Engine.FS.Open(pName));
 	WAVEFORMATEX*	pFormat;
-	DWORD			dwLen;
+	u32			dwLen;
 	void *			wavedata = ParseWave(&data(),pFormat,dwLen);
 	if (!wavedata)	return NULL;
 
@@ -245,7 +245,7 @@ LPDIRECTSOUNDBUFFER CSound::LoadWaveAs3D(LPCSTR pName, BOOL bCtrlFreq)
 	// Creating buffer and fill it with data
     if (SUCCEEDED(pSounds->pDevice->CreateSoundBuffer(&dsBD, &pBuf, NULL))){
         LPVOID	pMem1, pMem2;
-        DWORD	dwSize1, dwSize2;
+        u32	dwSize1, dwSize2;
 
         if (SUCCEEDED(pBuf->Lock(0, 0, &pMem1, &dwSize1, &pMem2, &dwSize2, DSBLOCK_ENTIREBUFFER)))
         {

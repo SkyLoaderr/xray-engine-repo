@@ -27,7 +27,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 ENGINE_API float	psGravity = 30.f;
-ENGINE_API DWORD	psEnvFlags= effSunGlare;
+ENGINE_API u32	psEnvFlags= effSunGlare;
 
 CEnvironment::CEnvironment()
 {
@@ -42,7 +42,7 @@ CEnvironment::CEnvironment()
 
 CEnvironment::~CEnvironment()
 {
-	for(DWORD i=0; i<Suns.size(); i++) delete Suns[i];
+	for(u32 i=0; i<Suns.size(); i++) delete Suns[i];
 	Device.seqDevCreate.Remove	(this);
 	Device.seqDevDestroy.Remove	(this);
 	OnDeviceDestroy				();
@@ -71,8 +71,8 @@ void CEnvironment::Load(CInifile *pIni, char *section)
 		FILE_NAME	name;
 		CSun*		pSun;
 		S = pIni->ReadSTRING(section,"suns");
-		DWORD scnt = _GetItemCount(S);
-		for (DWORD i=0; i<scnt; i++){
+		u32 scnt = _GetItemCount(S);
+		for (u32 i=0; i<scnt; i++){
 			_GetItem(S,i,name,"");
 			pSun	= new CSun(pIni, name);
 			Suns.push_back(pSun);
@@ -89,7 +89,7 @@ void CEnvironment::Load(CInifile *pIni, char *section)
 	CurrentSpeed		= 20;
 
 	// update suns
-	for(DWORD i=0; i<Suns.size(); i++) Suns[i]->Update();
+	for(u32 i=0; i<Suns.size(); i++) Suns[i]->Update();
 	if (Device.bReady) OnDeviceCreate();
 }
 
@@ -162,9 +162,9 @@ void CEnvironment::OnMove()
 	Current.Far			= Current.Far*_d		+ Dest.Far*_s;
 
 	// ******************** Environment params (setting)
-	DWORD	_amb		= Current.Ambient.get	();
+	u32	_amb		= Current.Ambient.get	();
 	if (_amb!=c_Ambient){ CHK_DX(HW.pDevice->SetRenderState	( D3DRS_AMBIENT, _amb )); c_Ambient = _amb; }
-	DWORD	_fog		= Current.Fog.get		();
+	u32	_fog		= Current.Fog.get		();
 	if (_fog!=c_Fog)	{ CHK_DX(HW.pDevice->SetRenderState	( D3DRS_FOGCOLOR, _fog )); c_Fog = _fog; }
 	if (!fsimilar(c_Fogness,Current.Fogness) || !fsimilar(c_Far,Current.Far)) {
 		c_Fogness	= Current.Fogness;
@@ -173,11 +173,11 @@ void CEnvironment::OnMove()
 		// update fog params
 		float start	= (1.0f - c_Fogness)*0.85f * c_Far;
 		float end	= 0.93f * c_Far;
-		CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGSTART,	*(DWORD *)(&start)	));
-		CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGEND,	*(DWORD *)(&end)	));
+		CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGSTART,	*(u32 *)(&start)	));
+		CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGEND,	*(u32 *)(&end)	));
 
 		// update suns
-		for(DWORD i=0; i<Suns.size(); i++) Suns[i]->Update();
+		for(u32 i=0; i<Suns.size(); i++) Suns[i]->Update();
 	}
 
 //	if (pWeather) ((CPSObject*)pWeather)->Update();
@@ -244,11 +244,11 @@ void CEnvironment::RenderFirst()
 
 	// Sun sources
 	if (psEnvFlags&effSunGlare)
-		for(DWORD i=0; i<Suns.size(); i++) Suns[i]->RenderSource();
+		for(u32 i=0; i<Suns.size(); i++) Suns[i]->RenderSource();
 }
 
 void CEnvironment::RenderLast()
 {
 	if (psEnvFlags&effSunGlare)
-		for(DWORD i=0; i<Suns.size(); i++) Suns[i]->RenderFlares();
+		for(u32 i=0; i<Suns.size(); i++) Suns[i]->RenderFlares();
 }

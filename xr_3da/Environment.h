@@ -39,8 +39,8 @@ public:
 	svector<SEnvDef,32>		Palette;
 
 	// Environment cache
-	DWORD					c_Ambient;	
-	DWORD					c_Fog;		
+	u32					c_Ambient;	
+	u32					c_Fog;		
 	float					c_Fogness;	
 	float					c_Far;
 	IC void					c_Invalidate() {
@@ -71,7 +71,7 @@ public:
 	virtual void	OnDeviceDestroy		();
 };
 
-ENGINE_API extern DWORD		psEnvFlags;
+ENGINE_API extern u32		psEnvFlags;
 ENGINE_API extern float		psGravity;
 
 #endif // !defined(AFX_ENVIRONMENT_H__155A6D9E_2ECC_4DCC_80B2_27CD3F070B41__INCLUDED_)

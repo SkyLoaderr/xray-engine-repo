@@ -50,11 +50,11 @@ void CGlowManager::Load(CStream* fs)
 	OnDeviceCreate		();
 
 	// glows itself
-	DWORD size  = fs->Length();
+	u32 size  = fs->Length();
 	R_ASSERT	(size);
-	DWORD one	= 4*sizeof(float)+2*sizeof(DWORD);
+	u32 one	= 4*sizeof(float)+2*sizeof(u32);
 	R_ASSERT	(size%one == 0);
-	DWORD count	= size/one;
+	u32 count	= size/one;
 	Glows.reserve(count);
 
 	for (;count;count--)
@@ -63,8 +63,8 @@ void CGlowManager::Load(CStream* fs)
 		fs->Read(&G.C,3*sizeof(float));
 		fs->Read(&G.R,1*sizeof(float));
 
-		DWORD T		= fs->Rdword();
-		DWORD S		= fs->Rdword();
+		u32 T		= fs->Rdword();
+		u32 S		= fs->Rdword();
 		G.hShader	= pCreator->LL_CreateShader(S,T,-1,-1);
 
 		G.fade		= 255.f;
@@ -82,7 +82,7 @@ void CGlowManager::Unload()
 	OnDeviceDestroy		();
 
 	// shaders
-	for(DWORD i=0; i<Glows.size(); i++) 
+	for(u32 i=0; i<Glows.size(); i++) 
 		Device.Shader.Delete(Glows[i].hShader);
 
 	// glows
@@ -103,7 +103,7 @@ void CGlowManager::add(vector<WORD> &V)
 	Device.Statistic.RenderDUMP_Glows.Begin();
 
 	Fvector &start	= Device.vCameraPosition;
-	DWORD	mark	= Device.dwFrame;
+	u32	mark	= Device.dwFrame;
 	float	dt		= Device.fTimeDelta;
 	float	dlim2	= MAX_GlowsDist2;
 
@@ -153,7 +153,7 @@ void CGlowManager::Render()
 		Fvector &start	= Device.vCameraPosition;
 		for (int i=0; i<psGlowsPerFrame; i++,dwTestID++)
 		{
-			DWORD	ID	= dwTestID%Selected_Count;
+			u32	ID	= dwTestID%Selected_Count;
 			CGlow&	G	= *Selected[ID];
 			if (G.dwFrame=='test')	break;
 
@@ -170,7 +170,7 @@ void CGlowManager::Render()
 		FVF::TL		*pv;
 		FVF::TL		TL;
 		
-		DWORD		pos = 0, count;
+		u32		pos = 0, count;
 		Shader*		T;
 
 		float		dlim2	= MAX_GlowsDist2;
@@ -180,8 +180,8 @@ void CGlowManager::Render()
 			count	= 0;
 			while	((pos+count<Selected_Count) && (Selected[pos+count]->hShader==T)) count++;
 			
-			DWORD		vOffset;
-			DWORD		end		= pos+count;
+			u32		vOffset;
+			u32		end		= pos+count;
 			FVF::TL	*	pvs		= pv = (FVF::TL*) Device.Streams.Vertex.Lock(count*4,VS->dwStride,vOffset);
 			for (; pos<end; pos++)
 			{
@@ -195,8 +195,8 @@ void CGlowManager::Render()
 				float cx        = (1+TL.p.x)*_width_2;
 				float cy        = (1+TL.p.y)*_height_2;
 				float dist		= Device.vCameraPosition.distance_to_sqr(G.C);
-				DWORD C			= iFloor(G.fade*(1-(dist/dlim2)));
-				DWORD clr		= D3DCOLOR_RGBA(C,C,C,C);
+				u32 C			= iFloor(G.fade*(1-(dist/dlim2)));
+				u32 clr		= D3DCOLOR_RGBA(C,C,C,C);
 				
 				pv->set(cx - size, cy + size, TL.p.z, TL.p.w, clr, 0, 1); pv++;
 				pv->set(cx - size, cy - size, TL.p.z, TL.p.w, clr, 0, 0); pv++;

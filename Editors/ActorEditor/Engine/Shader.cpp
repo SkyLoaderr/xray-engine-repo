@@ -36,7 +36,7 @@ BOOL ShaderElement::equal	(ShaderElement& S)
 	if (Flags.bStrictB2F != S.Flags.bStrictB2F)	return FALSE;
 	if (Flags.bLighting	!= S.Flags.bLighting)	return FALSE;
 	if (Passes.size() != S.Passes.size())		return FALSE;
-	for (DWORD p=0; p<Passes.size(); p++)
+	for (u32 p=0; p<Passes.size(); p++)
 		if (!Passes[p].equal(S.Passes[p]))		return FALSE;
 	return TRUE;
 }

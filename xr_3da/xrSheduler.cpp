@@ -79,7 +79,7 @@ void CSheduler::Unregister		(CSheduled* O)
 {
 	if (O->shedule_RT)
 	{
-		for (DWORD i=0; i<ItemsRT.size(); i++)
+		for (u32 i=0; i<ItemsRT.size(); i++)
 		{
 			if (ItemsRT[i].Object==O) {
 				ItemsRT.erase(ItemsRT.begin()+i);
@@ -87,7 +87,7 @@ void CSheduler::Unregister		(CSheduled* O)
 			}
 		}
 	} else {
-		for (DWORD i=0; i<Items.size(); i++)
+		for (u32 i=0; i<Items.size(); i++)
 		{
 			if (Items[i].Object==O) {
 				Items.erase(Items.begin()+i);
@@ -101,7 +101,7 @@ void CSheduler::EnsureOrder	(CSheduled* Before, CSheduled* After)
 {
 	VERIFY(Before->shedule_RT && After->shedule_RT);
 
-	for (DWORD i=0; i<ItemsRT.size(); i++)
+	for (u32 i=0; i<ItemsRT.size(); i++)
 	{
 		if (ItemsRT[i].Object==After) 
 		{
@@ -127,7 +127,7 @@ void CSheduler::Pop		()
 
 void CSheduler::ProcessStep			()
 {
-	DWORD	dwTime					= Device.dwTimeGlobal;
+	u32	dwTime					= Device.dwTimeGlobal;
 
 	// Normal priority
 	if (Items.empty())				return;
@@ -135,13 +135,13 @@ void CSheduler::ProcessStep			()
 	{
 		// Update
 		Item	T					= Top	();
-		DWORD	Elapsed				= dwTime-T.dwTimeOfLastExecute;
+		u32	Elapsed				= dwTime-T.dwTimeOfLastExecute;
 
 		// Calc next update interval
-		DWORD	dwMin				= T.Object->shedule_Min;
-		DWORD	dwMax				= T.Object->shedule_Max;
+		u32	dwMin				= T.Object->shedule_Min;
+		u32	dwMax				= T.Object->shedule_Max;
 		float	scale				= T.Object->shedule_Scale(); 
-		DWORD	dwUpdate			= dwMin+iFloor(float(dwMax-dwMin)*scale);
+		u32	dwUpdate			= dwMin+iFloor(float(dwMax-dwMin)*scale);
 		clamp	(dwUpdate,dwMin,dwMax);
 
 		// Fill item structure
@@ -176,14 +176,14 @@ void CSheduler::Switch				()
 
 void CSheduler::Update				()
 {
-	DWORD	mcs						= psSheduler;
-	DWORD	dwTime					= Device.dwTimeGlobal;
+	u32	mcs						= psSheduler;
+	u32	dwTime					= Device.dwTimeGlobal;
 
 	// Realtime priority
 	for (u32 it=0; it<ItemsRT.size(); it++)
 	{
 		Item&	T					= ItemsRT[it];
-		DWORD	Elapsed				= dwTime-T.dwTimeOfLastExecute;
+		u32	Elapsed				= dwTime-T.dwTimeOfLastExecute;
 		if (T.Object->Ready())		T.Object->Update(Elapsed);
 		T.dwTimeOfLastExecute		= dwTime;
 	}

@@ -5,28 +5,28 @@
 
 // The most used wrappers --- recomendation DON'T USE AT ALL :)
 /*
-IC void CDraw::Draw			(CPrimitive& P,		DWORD dwNumVerts, DWORD dwNumPrimitives)
+IC void CDraw::Draw			(CPrimitive& P,		u32 dwNumVerts, u32 dwNumPrimitives)
 {
 	setVertices	(P.vShader,P.vSize,P.pVertices);
 	setIndices	(P.dwBaseVertex,P.pIndices);
 	Render		(D3DPT_TRIANGLELIST,0,dwNumVerts,0,dwNumPrimitives);
 	UPDATEC		(dwNumVerts,dwNumPrimitives,1);
 }
-IC void CDraw::Draw			(CVS* S,	DWORD dwNumVerts, DWORD dwNumPrimitives, DWORD dwBase, IDirect3DIndexBuffer8* IB)
+IC void CDraw::Draw			(CVS* S,	u32 dwNumVerts, u32 dwNumPrimitives, u32 dwBase, IDirect3DIndexBuffer8* IB)
 {
 	setVertices	(S->dwHandle,S->dwStride,Device.Streams.Vertex.getBuffer());
 	setIndices	(dwBase,IB);;
 	Render		(D3DPT_TRIANGLELIST,0,dwNumVerts,0,dwNumPrimitives);
 	UPDATEC		(dwNumVerts,dwNumPrimitives,1);
 }
-IC void CDraw::Draw			(CVS* S,	DWORD dwNumPrimitives, DWORD dwBase)
+IC void CDraw::Draw			(CVS* S,	u32 dwNumPrimitives, u32 dwBase)
 {
 	setVertices	(S->mFVF,S->mStride,S->pVB);
 	setIndices	(0,0);
 	Render		(D3DPT_TRIANGLELIST,dwBase,dwNumPrimitives);
 	UPDATEC		(dwNumPrimitives*3,dwNumPrimitives,1);
 }
-IC void CDraw::Draw			(CVertexStream* S,  DWORD dwNumVerts, DWORD dwNumPrimitives, DWORD vBase, CIndexStream* IS, DWORD iBase)
+IC void CDraw::Draw			(CVertexStream* S,  u32 dwNumVerts, u32 dwNumPrimitives, u32 vBase, CIndexStream* IS, u32 iBase)
 {
 	setVertices	(S->mFVF,S->mStride,S->pVB);
 	setIndices	(vBase, IS->getBuffer());
@@ -35,7 +35,7 @@ IC void CDraw::Draw			(CVertexStream* S,  DWORD dwNumVerts, DWORD dwNumPrimitive
 }
 */
 /*
-IC void CDraw::DrawSubset	(CPrimitive& P, DWORD dwStartVertex,DWORD dwNumVerts, DWORD dwStartIndex, DWORD dwNumPrimitives)
+IC void CDraw::DrawSubset	(CPrimitive& P, u32 dwStartVertex,u32 dwNumVerts, u32 dwStartIndex, u32 dwNumPrimitives)
 {
 	setVertices	(P.vShader,P.vSize,P.pVertices);
 	setIndices	(P.dwBaseVertex,P.pIndices);

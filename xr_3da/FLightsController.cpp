@@ -55,9 +55,9 @@ void CLightDB_Static::Load			(CStream *fs)
 		while (!F->Eof())
 		{
 			F->Read				(temp.name,sizeof(temp.name));
-			DWORD cnt			= F->Rdword();
+			u32 cnt			= F->Rdword();
 			temp.data.resize	(cnt);
-			F->Read				(temp.data.begin(),cnt*sizeof(DWORD));
+			F->Read				(temp.data.begin(),cnt*sizeof(u32));
 			strconcat			(c_name,"$light$",temp.name);
 			temp.dest			= Device.Shader._CreateConstant(c_name);
 			Layers.push_back	(temp);
@@ -70,15 +70,15 @@ void CLightDB_Static::Load			(CStream *fs)
 	{
 		F				= fs->OpenChunk		(fsL_LIGHT_DYNAMIC);
 
-		DWORD size		= F->Length();
-		DWORD element	= sizeof(Flight)+4;
-		DWORD count		= size/element;
+		u32 size		= F->Length();
+		u32 element	= sizeof(Flight)+4;
+		u32 count		= size/element;
 		R_ASSERT		(count*element == size);
 		Lights.resize	(count);
 		Distance.resize	(count);
 		Enabled.resize	(count);
 
-		for (DWORD i=0; i<count; i++) 
+		for (u32 i=0; i<count; i++) 
 		{
 			
 			F->Read						(&Lights[i].dwController,4);
@@ -102,8 +102,8 @@ void CLightDB_Static::Load			(CStream *fs)
 
 void CLightDB_Static::Unload		(void)
 {
-	for (DWORD i=0; i<Lights.size(); i++) Disable(i);
-	for (DWORD L=0; L<Layers.size(); L++) Device.Shader._DeleteConstant(Layers[L].dest);
+	for (u32 i=0; i<Lights.size(); i++) Disable(i);
+	for (u32 L=0; L<Layers.size(); L++) Device.Shader._DeleteConstant(Layers[L].dest);
 
 	Layers.clear			();
 	Lights.clear			();

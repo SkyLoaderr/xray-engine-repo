@@ -10,7 +10,7 @@
 
 struct	NET_Compressor_FREQ
 {
-	DWORD	table	[257];
+	u32	table	[257];
 
 	NET_Compressor_FREQ		()	
 	{	
@@ -18,20 +18,20 @@ struct	NET_Compressor_FREQ
 	}
 	void	setIdentity		()
 	{
-		for (DWORD I=0; I<256; I++) table[I] = 1;
+		for (u32 I=0; I<256; I++) table[I] = 1;
 	}
 	void	setZero			()
 	{
-		for (DWORD I=0; I<256; I++) table[I] = 0;
+		for (u32 I=0; I<256; I++) table[I] = 0;
 	}
 	void	setFromWORDS	(WORD* data)
 	{
-		for (DWORD I=0; I<256; I++) table[I] = DWORD(data[I]);
+		for (u32 I=0; I<256; I++) table[I] = u32(data[I]);
 	}
 	void	Cumulate		()
 	{
 		// summarize counters
-		DWORD I, total	= 0;
+		u32 I, total	= 0;
 		for (I=0; I<256; I++)	total += table[I];
 
 		// calculate cumulative freq
@@ -40,23 +40,23 @@ struct	NET_Compressor_FREQ
 	}
 	void	Normalize		();
 
-	IC DWORD&	operator[]	(int id)	{ return table[id]; }
+	IC u32&	operator[]	(int id)	{ return table[id]; }
 };
 
 // typedefs
 class	NET_Compressor  
 {
 public:
-	typedef DWORD			code_value;		/* Type of an rangecode value			*/
-	typedef DWORD			freq;			
+	typedef u32			code_value;		/* Type of an rangecode value			*/
+	typedef u32			freq;			
 private:
 	CCriticalSection		CS;
 
 	// main structure
 	struct rangecoder {
-		DWORD				low,range,help;
+		u32				low,range,help;
 		BYTE				buffer;
-		DWORD				bytecount;
+		u32				bytecount;
 		BYTE*				ptr;
 
 		IC void				byte_out		(BYTE B)	{ *ptr++ = B;		}
@@ -68,7 +68,7 @@ private:
 private:
 	/* Start the encoder                                         */
 	/* c is written as first byte in the datastream (header,...) */
-	void				start_encoding		( BYTE* dest, DWORD header_size );
+	void				start_encoding		( BYTE* dest, u32 header_size );
 
 	/* Encode a symbol using frequencies                         */
 	/* sy_f is the interval length (frequency of the symbol)     */
@@ -86,11 +86,11 @@ private:
 	
 	/* Finish encoding                                           */
 	/* returns number of bytes written                           */
-	DWORD				done_encoding		( );
+	u32				done_encoding		( );
 
 	/* Start the decoder                                         */
 	/* returns the char from start_encoding or EOF               */
-	int					start_decoding		( BYTE* src, DWORD header_size );
+	int					start_decoding		( BYTE* src, u32 header_size );
 	
 	/* Calculate culmulative frequency for next symbol. Does NO update!*/
 	/* tot_f is the total frequency                              */
@@ -119,8 +119,8 @@ public:
 	~NET_Compressor			();
 
 	void					Initialize	(NET_Compressor_FREQ& compress, NET_Compressor_FREQ& decompress);
-	WORD					Compress	(BYTE* dest, BYTE* src, DWORD count);	// return size of compressed
-	WORD					Decompress	(BYTE* dest, BYTE* src, DWORD count);	// return decompressed size
+	WORD					Compress	(BYTE* dest, BYTE* src, u32 count);	// return size of compressed
+	WORD					Decompress	(BYTE* dest, BYTE* src, u32 count);	// return decompressed size
 };
 
 #endif // !defined(AFX_NET_COMPRESSOR_H__21E1ED1C_BF92_4BF0_94A8_18A27486EBFD__INCLUDED_)

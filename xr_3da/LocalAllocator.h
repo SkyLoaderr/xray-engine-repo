@@ -13,13 +13,13 @@ class CLocalAllocator
 {
 	char*	pMemory;
 	BOOL	bFree[LA_MAX_BLOCK_NUMBER];
-	DWORD	dwCount;
-	DWORD	dwSize;
+	u32	dwCount;
+	u32	dwSize;
 public:
-	CLocalAllocator		(DWORD max_blocks, DWORD max_block_size);
+	CLocalAllocator		(u32 max_blocks, u32 max_block_size);
 	~CLocalAllocator	();
 
-	void*	Alloc		(DWORD size	);
+	void*	Alloc		(u32 size	);
 	void	Free		(void *ptr	);
 };
 

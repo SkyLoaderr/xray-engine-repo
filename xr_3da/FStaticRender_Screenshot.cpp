@@ -4,14 +4,14 @@
 #include "tga.h"
 #include "xr_creator.h"
 
-#define RGBA_GETALPHA(rgb)      DWORD((rgb) >> 24)
-#define RGBA_GETRED(rgb)        DWORD(((rgb) >> 16) & 0xff)
-#define RGBA_GETGREEN(rgb)      DWORD(((rgb) >> 8) & 0xff)
-#define RGBA_GETBLUE(rgb)       DWORD((rgb) & 0xff)
+#define RGBA_GETALPHA(rgb)      u32((rgb) >> 24)
+#define RGBA_GETRED(rgb)        u32(((rgb) >> 16) & 0xff)
+#define RGBA_GETGREEN(rgb)      u32(((rgb) >> 8) & 0xff)
+#define RGBA_GETBLUE(rgb)       u32((rgb) & 0xff)
 
-IC DWORD convert(float c)
+IC u32 convert(float c)
 {
-	DWORD C=iFloor(c);
+	u32 C=iFloor(c);
 	if (C>255) C=255;
 	return C;
 }
@@ -53,8 +53,8 @@ void CRender::Screenshot		()
 	R_CHK(pFB->LockRect(&D,0,D3DLOCK_NOSYSLOCK));
 	
 	// Image processing
-	DWORD* pPixel	= (DWORD*)D.pBits;
-	DWORD* pEnd		= pPixel+(Device.dwWidth*Device.dwHeight);
+	u32* pPixel	= (u32*)D.pBits;
+	u32* pEnd		= pPixel+(Device.dwWidth*Device.dwHeight);
 	
 	D3DGAMMARAMP G;
 	Device.Gamma.GenLUT(G);
@@ -66,7 +66,7 @@ void CRender::Screenshot		()
 	
 	for (;pPixel!=pEnd; pPixel++)
 	{
-		DWORD p = *pPixel;
+		u32 p = *pPixel;
 		*pPixel = D3DCOLOR_XRGB(
 			G.red	[RGBA_GETRED(p)],
 			G.green	[RGBA_GETGREEN(p)],

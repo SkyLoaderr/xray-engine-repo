@@ -7,14 +7,14 @@
 #pragma once
 
 namespace CDB {
-	const DWORD edge_open = 0xffffffff;
+	const u32 edge_open = 0xffffffff;
 
 	class ENGINE_API Collector  
 	{
 		vector<Fvector>	verts;
 		vector<TRI>		faces;
 
-		IC DWORD		VPack(Fvector& V, float eps)
+		IC u32		VPack(Fvector& V, float eps)
 		{
 			vector<Fvector>::iterator I,E;
 			I=verts.begin(); E=verts.end();
@@ -25,8 +25,8 @@ namespace CDB {
 	public:
 		void			add_face(
 			Fvector& v0, Fvector& v1, Fvector& v2,	// vertices
-			DWORD e01, DWORD e12, DWORD e20,		// edges
-			WORD material, WORD sector, DWORD dummy	// misc
+			u32 e01, u32 e12, u32 e20,		// edges
+			WORD material, WORD sector, u32 dummy	// misc
 			)
 		{
 			TRI T;
@@ -47,8 +47,8 @@ namespace CDB {
 		}
 		void			add_face_packed(
 			Fvector& v0, Fvector& v1, Fvector& v2,	// vertices
-			DWORD e01, DWORD e12, DWORD e20,		// edges
-			WORD material, WORD sector, DWORD dummy,// misc
+			u32 e01, u32 e12, u32 e20,		// edges
+			WORD material, WORD sector, u32 dummy,// misc
 			float eps = EPS
 			)
 		{
@@ -76,7 +76,7 @@ namespace CDB {
 
 	class ENGINE_API CollectorPacked
 	{
-		typedef vector<DWORD>		DWORDList;
+		typedef vector<u32>		DWORDList;
 		typedef DWORDList::iterator	DWORDIt;
 
 		vector<Fvector>	verts;
@@ -86,14 +86,14 @@ namespace CDB {
 		DWORDList		VM[clpMX+1][clpMY+1][clpMZ+1];
 		Fvector			VMeps;
 
-		DWORD			VPack(Fvector& V);
+		u32			VPack(Fvector& V);
 	public:
 		CollectorPacked	(const Fbox &bb, int apx_vertices=5000, int apx_faces=5000);
 		
 		void			add_face(
 			Fvector& v0, Fvector& v1, Fvector& v2,	// vertices
-			DWORD e01, DWORD e12, DWORD e20,		// edges
-			WORD material, WORD sector, DWORD dummy	// misc
+			u32 e01, u32 e12, u32 e20,		// edges
+			WORD material, WORD sector, u32 dummy	// misc
 			)
 		{
 			TRI T;

@@ -3,7 +3,7 @@
 
 #include "detailmanager.h"
 
-const DWORD	vs_size				= 3000;
+const u32	vs_size				= 3000;
 
 void CDetailManager::soft_Load		()
 {
@@ -27,49 +27,49 @@ void CDetailManager::soft_Render	()
 	_IndexStream&	_IS		= Device.Streams.Index;
 	_VertexStream&	_VS		= Device.Streams.Vertex;
 
-	for (DWORD O=0; O<objects.size(); O++)
+	for (u32 O=0; O<objects.size(); O++)
 	{
 		vector<SlotItem*>&	vis = visible[0][O];
 		if (vis.empty())	continue;
 
 		CDetail&	Object		= *objects[O];
-		DWORD	vCount_Object	= Object.number_vertices;
-		DWORD	iCount_Object	= Object.number_indices;
-		DWORD	vCount_Total	= vis.size()*vCount_Object;
+		u32	vCount_Object	= Object.number_vertices;
+		u32	iCount_Object	= Object.number_indices;
+		u32	vCount_Total	= vis.size()*vCount_Object;
 
 		// calculate lock count needed
-		DWORD	lock_count		= vCount_Total/vs_size;
+		u32	lock_count		= vCount_Total/vs_size;
 		if	(vCount_Total>(lock_count*vs_size))	lock_count++;
 
 		// calculate objects per lock
-		DWORD	o_total			= vis.size();
-		DWORD	o_per_lock		= o_total/lock_count;
+		u32	o_total			= vis.size();
+		u32	o_per_lock		= o_total/lock_count;
 		if  (o_total > (o_per_lock*lock_count))	o_per_lock++;
 
 		// Fill VB (and flush it as nesessary)
 		Device.Shader.set_Shader		(Object.shader);
 
 		Fmatrix		mXform;
-		for (DWORD L_ID=0; L_ID<lock_count; L_ID++)
+		for (u32 L_ID=0; L_ID<lock_count; L_ID++)
 		{
 			// Calculate params 
-			DWORD	item_start	= L_ID*o_per_lock;
-			DWORD	item_end	= item_start+o_per_lock;
+			u32	item_start	= L_ID*o_per_lock;
+			u32	item_end	= item_start+o_per_lock;
 			if (item_end>o_total)	item_end = o_total;
 			if (item_end<=item_start)	break;
-			DWORD	item_range	= item_end-item_start;
+			u32	item_range	= item_end-item_start;
 
 			// Calc Lock params
-			DWORD	vCount_Lock	= item_range*vCount_Object;
-			DWORD	iCount_Lock = item_range*iCount_Object;
+			u32	vCount_Lock	= item_range*vCount_Object;
+			u32	iCount_Lock = item_range*iCount_Object;
 
 			// Lock buffers
-			DWORD	vBase,iBase,iOffset=0;
+			u32	vBase,iBase,iOffset=0;
 			CDetail::fvfVertexOut* vDest	= (CDetail::fvfVertexOut*)	_VS.Lock(vCount_Lock,soft_VS->dwStride,vBase);
 			WORD*	iDest					= (WORD*)					_IS.Lock(iCount_Lock,iBase);
 
 			// Filling itself
-			for (DWORD item=item_start; item<item_end; item++)
+			for (u32 item=item_start; item<item_end; item++)
 			{
 				SlotItem&	Instance	= *(vis[item]);
 				float	scale			= Instance.scale_calculated;
@@ -83,7 +83,7 @@ void CDetailManager::soft_Render	()
 
 				// Transfer vertices
 				{
-					DWORD					C = Instance.C_dw;
+					u32					C = Instance.C_dw;
 					CDetail::fvfVertexIn	*srcIt = Object.vertices, *srcEnd = Object.vertices+Object.number_vertices;
 					CDetail::fvfVertexOut	*dstIt = vDest;
 
@@ -99,8 +99,8 @@ void CDetailManager::soft_Render	()
 				// Transfer indices (in 32bit lines)
 				VERIFY	(iOffset<65535);
 				{
-					DWORD	item	= (iOffset<<16) | iOffset;
-					DWORD	count	= Object.number_indices/2;
+					u32	item	= (iOffset<<16) | iOffset;
+					u32	count	= Object.number_indices/2;
 					LPDWORD	sit		= LPDWORD(Object.indices);
 					LPDWORD	send	= sit+count;
 					LPDWORD	dit		= LPDWORD(iDest);
@@ -120,7 +120,7 @@ void CDetailManager::soft_Render	()
 			// Render
 			Device.Primitive.setVertices	(soft_VS->dwHandle,soft_VS->dwStride,_VS.Buffer());
 			Device.Primitive.setIndices		(vBase, _IS.Buffer());
-			DWORD	dwNumPrimitives			= iCount_Lock/3;
+			u32	dwNumPrimitives			= iCount_Lock/3;
 			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount_Lock,iBase,dwNumPrimitives);
 		}
 

@@ -9,7 +9,7 @@ public:
 	{
 		Fvector		v;
 		Fvector2	t;
-		DWORD		c;
+		u32		c;
 	};
 	struct _face
 	{
@@ -20,6 +20,6 @@ public:
 	_face			facets		[8];
 public:
 	virtual void Render			(float LOD		);									// LOD - Level Of Detail  [0.0f - min, 1.0f - max], Ignored
-	virtual void Load			(LPCSTR N, CStream *data, DWORD dwFlags);
+	virtual void Load			(LPCSTR N, CStream *data, u32 dwFlags);
 	virtual void Copy			(CVisual *pFrom	);
 };

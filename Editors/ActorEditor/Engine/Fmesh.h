@@ -42,7 +42,7 @@
                           D3DFVF_TEX1 )
 */
 
-BOOL ValidateIndices(DWORD vCount, DWORD iCount, WORD* pIndices);
+BOOL ValidateIndices(u32 vCount, u32 iCount, WORD* pIndices);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 // MESH as it is represented in file
@@ -113,46 +113,46 @@ struct ogf_bsphere {
 //  Z-String - shader
 
 // OGF_TEXTURE_L
-//	DWORD T_link
-//  DWORD S_link
+//	u32 T_link
+//  u32 S_link
 
 // OGF_MATERIAL
 //  Fmaterial
 
 // OGF_CHIELDS
-//	DWORD Count
+//	u32 Count
 //  Z-String [Count] - names
 
 // OGF_CHIELDS_L
-//	DWORD	Count
-//	DWORD	idx[0...Count-1]
+//	u32	Count
+//	u32	idx[0...Count-1]
 
 // OGF_VERTICES
-//	DWORD		dwVertType;			// Type of vertices it contains
-//	DWORD		dwVertCount;		// Count of vertices
+//	u32		dwVertType;			// Type of vertices it contains
+//	u32		dwVertCount;		// Count of vertices
 //	..vertices itself
 
 // OGF_INDICES
-//	DWORD		Count
+//	u32		Count
 //  ..indices itself (WORD[Count]);
 
 // OGF_P_MAP
 //		PMAP_HEADER = 0x1
-//			DWORD		MinVertCount
-//			DWORD		I_Current
+//			u32		MinVertCount
+//			u32		I_Current
 //		PMAP_VSPLIT	= 0x2
 //			VSPLIT[dwVertCount-MinVertCount]
 //		PMAP_FACES	= 0x3
-//			DWORD dwCount
+//			u32 dwCount
 //			WORD[dwCount]
 
 // OGF_SF_LINK
 //  Z-String - name of visual
 
 // OGF_VCONTAINER
-// DWORD		CID;		// Container ID
-// DWORD		Offset;		// Add for every IDX and use as the start vertex
-// DWORD		Count;		// Number of vertices
+// u32		CID;		// Container ID
+// u32		Offset;		// Add for every IDX and use as the start vertex
+// u32		Count;		// Number of vertices
 
 // OGF_BONES
 // BYTE			Count;

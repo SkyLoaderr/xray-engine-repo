@@ -32,13 +32,13 @@ namespace CDB
 		TRI*			adj		[3];	// 3*4 = 12b	(24b)
 		WORD			material;		// 2b			(26b)
 		WORD			sector;			// 2b			(28b)
-		DWORD			dummy;			// 4b			(32b)
+		u32			dummy;			// 4b			(32b)
 
 	public:		
 		IC Fvector&		V(int id)	{ return *(verts[id]); }
 		
-		IC DWORD*		IDverts()	{ return (DWORD*)	verts;	}
-		IC DWORD*		IDadj()		{ return (DWORD*)	adj;	}
+		IC u32*		IDverts()	{ return (u32*)	verts;	}
+		IC u32*		IDadj()		{ return (u32*)	adj;	}
 		void			convert_I2P	(Fvector* pBaseV, TRI* pBaseTri);
 		void			convert_P2I	(Fvector* pBaseV, TRI* pBaseTri);
 	};
@@ -64,8 +64,8 @@ namespace CDB
 
 		IC TRI*			get_tris	()	{ return tris;	}
 
-		virtual DWORD	build		(Fvector* V, int Vcnt, TRI* T, int Tcnt, BOOL bPrivateHeap=FALSE);
-		virtual DWORD	memory		();
+		virtual u32	build		(Fvector* V, int Vcnt, TRI* T, int Tcnt, BOOL bPrivateHeap=FALSE);
+		virtual u32	memory		();
 	};
 
 	// Collider result
@@ -89,9 +89,9 @@ namespace CDB
 	class XRCDB_API COLLIDER 
 	{
 		// Ray data and methods
-		DWORD			ray_mode;
-		DWORD			box_mode;
-		DWORD			frustum_mode;
+		u32			ray_mode;
+		u32			box_mode;
+		u32			frustum_mode;
 
 		// Result management
 		RESULT*			rd_ptr;
@@ -101,13 +101,13 @@ namespace CDB
 		COLLIDER		();
 		~COLLIDER		();
 		
-		IC void			ray_options		(DWORD f)	{	ray_mode = f;		}
+		IC void			ray_options		(u32 f)	{	ray_mode = f;		}
 		void			ray_query		(const MODEL *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range = 10000.f);
 		
-		IC void			box_options		(DWORD f)	{	box_mode = f;		}
+		IC void			box_options		(u32 f)	{	box_mode = f;		}
 		void			box_query		(const MODEL *m_def, const Fvector& b_center, const Fvector& b_dim);
 		
-		IC void			frustum_options	(DWORD f)	{	frustum_mode = f;	}
+		IC void			frustum_options	(u32 f)	{	frustum_mode = f;	}
 		void			frustum_query	(const MODEL *m_def, const CFrustum& F);
 		
 		IC RESULT*		r_begin			()	{	return rd_ptr;				};
@@ -119,18 +119,18 @@ namespace CDB
 		IC void			r_clear			()	{	rd_count = 0;				};
 	};
 
-	const DWORD			err_ok			= 0;
-	const DWORD			err_memory_0	= 1;
-	const DWORD			err_memory_1	= 2;
-	const DWORD			err_memory_2	= 3;
-	const DWORD			err_build		= 4;
+	const u32			err_ok			= 0;
+	const u32			err_memory_0	= 1;
+	const u32			err_memory_1	= 2;
+	const u32			err_memory_2	= 3;
+	const u32			err_build		= 4;
 };
 
 extern "C" 
 {
 	XRCDB_API	void*	__cdecl		cdb_model_create	();
 	XRCDB_API	void	__cdecl		cdb_model_destroy	(void*);
-	XRCDB_API	DWORD	__cdecl		cdb_model_build		(CDB::MODEL *m_def, Fvector* V, int Vcnt, CDB::TRI* T, int Tcnt);
+	XRCDB_API	u32	__cdecl		cdb_model_build		(CDB::MODEL *m_def, Fvector* V, int Vcnt, CDB::TRI* T, int Tcnt);
 	XRCDB_API	void*	__cdecl		cdb_collider_create	();
 	XRCDB_API	void	__cdecl		cdb_collider_destroy(void*);
 	XRCDB_API	void	__cdecl		cdb_query_ray		(const CDB::COLLIDER* C, const CDB::MODEL *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range = 10000.f);

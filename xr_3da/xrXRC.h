@@ -12,7 +12,7 @@ class ENGINE_API xrXRC
 {
 	CDB::COLLIDER	CL;
 public:
-	IC void			ray_options		(DWORD f)		
+	IC void			ray_options		(u32 f)		
 	{ 
 		CL.ray_options(f); 
 	}
@@ -23,7 +23,7 @@ public:
 		Device.Statistic.clRAY.End	();
 	}
 	
-	IC void			box_options		(DWORD f)	
+	IC void			box_options		(u32 f)	
 	{	
 		CL.box_options(f);
 	}
@@ -34,7 +34,7 @@ public:
 		Device.Statistic.clBOX.End	();
 	}
 	
-	IC void			frustum_options	(DWORD f)
+	IC void			frustum_options	(u32 f)
 	{
 		CL.frustum_options(f);
 	}

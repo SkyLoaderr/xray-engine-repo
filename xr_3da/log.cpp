@@ -31,7 +31,7 @@ void AddOne				(const char *split)
 	if (logControl) 
 	{
 		SendMessage	( logControl, LB_ADDSTRING, 0, (LPARAM)split );
-		DWORD dwCnt = SendMessage	( logControl, LB_GETCOUNT, 0, 0);
+		u32 dwCnt = SendMessage	( logControl, LB_GETCOUNT, 0, 0);
 		SendMessage	( logControl, LB_SETTOPINDEX, dwCnt-1, 0);
 		UpdateWindow( logWindow);
 	}
@@ -76,7 +76,7 @@ void Log(const char *msg, const char *dop) {
 	Log		(buf);
 }
 
-void Log(const char *msg, DWORD dop) {
+void Log(const char *msg, u32 dop) {
 	char buf[1024];
 
 	sprintf	(buf,"%s %d",msg,dop);
@@ -184,7 +184,7 @@ void CloseLog(void)
 	CloseLogWindow();
 	// Don't cleanup log
 	/*
-	for (DWORD i=0; i<LogFile.size(); i++) {
+	for (u32 i=0; i<LogFile.size(); i++) {
 		_FREE(LogFile[i]);
 	}
 	*/

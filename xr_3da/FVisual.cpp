@@ -32,7 +32,7 @@ void Fvisual::Release	()
 	_RELEASE			(pIndices);
 }
 
-void Fvisual::Load		(const char* N, CStream *data, DWORD dwFlags)
+void Fvisual::Load		(const char* N, CStream *data, u32 dwFlags)
 {
 	CVisual::Load		(N,data,dwFlags);
 
@@ -40,7 +40,7 @@ void Fvisual::Load		(const char* N, CStream *data, DWORD dwFlags)
 	if ((dwFlags&VLOAD_NOVERTICES)==0) {
 		if (data->FindChunk(OGF_VCONTAINER)) {
 #ifndef _EDITOR
-			DWORD ID			= data->Rdword				();
+			u32 ID			= data->Rdword				();
 			vBase				= data->Rdword				();
 			vCount				= data->Rdword				();
 			hVS					= Device.Shader._CreateVS	(::Render->getFVF(ID));
@@ -50,12 +50,12 @@ void Fvisual::Load		(const char* N, CStream *data, DWORD dwFlags)
 		} else {
 			R_ASSERT			(data->FindChunk(OGF_VERTICES));
 			vBase				= 0;
-			DWORD F				= data->Rdword			();
+			u32 F				= data->Rdword			();
 			vCount				= data->Rdword			();
 			hVS					= Device.Shader._CreateVS	(F);
 
 			BOOL	bSoft		= HW.Caps.vertex.bSoftware || (dwFlags&VLOAD_FORCESOFTWARE);
-			DWORD	dwUsage		= D3DUSAGE_WRITEONLY | (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);
+			u32	dwUsage		= D3DUSAGE_WRITEONLY | (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);
 			D3DPOOL	dwPool		= bSoft?D3DPOOL_SYSTEMMEM:D3DPOOL_DEFAULT;
 			BYTE*	bytes		= 0;
 			R_CHK				(HW.pDevice->CreateVertexBuffer(vCount*hVS->dwStride,dwUsage,0,dwPool,&pVertices));
@@ -70,7 +70,7 @@ void Fvisual::Load		(const char* N, CStream *data, DWORD dwFlags)
 	if ((dwFlags&VLOAD_NOINDICES)==0) {
 		if (data->FindChunk(OGF_ICONTAINER)) {
 #ifndef _EDITOR
-			DWORD ID			= data->Rdword			();
+			u32 ID			= data->Rdword			();
 			iBase				= data->Rdword			();
 			iCount				= data->Rdword			();
 			dwPrimitives		= iCount/3;
@@ -84,7 +84,7 @@ void Fvisual::Load		(const char* N, CStream *data, DWORD dwFlags)
 			dwPrimitives		= iCount/3;
 
 			BOOL	bSoft		= HW.Caps.vertex.bSoftware || (dwFlags&VLOAD_FORCESOFTWARE);
-			DWORD	dwUsage		= D3DUSAGE_WRITEONLY | (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);
+			u32	dwUsage		= D3DUSAGE_WRITEONLY | (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);
 			D3DPOOL	dwPool		= bSoft?D3DPOOL_SYSTEMMEM:D3DPOOL_DEFAULT;
 			BYTE*	bytes		= 0;
 

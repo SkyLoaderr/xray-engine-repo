@@ -8,7 +8,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 #define MAX_CHARS	1024
-CGameFont::CGameFont(LPCSTR shader, LPCSTR texture, int tsize, int iCPL, DWORD flags)
+CGameFont::CGameFont(LPCSTR shader, LPCSTR texture, int tsize, int iCPL, u32 flags)
 {
 	fScale						= 1.f;
 	dwFlags						= flags;
@@ -72,17 +72,17 @@ void CGameFont::OnDeviceDestroy()
 }
 
 #ifndef RGBA_GETALPHA
-#define RGBA_GETALPHA(rgb)      DWORD((rgb) >> 24)
-#define RGBA_GETRED(rgb)        DWORD(((rgb) >> 16) & 0xff)
-#define RGBA_GETGREEN(rgb)      DWORD(((rgb) >> 8) & 0xff)
-#define RGBA_GETBLUE(rgb)       DWORD((rgb) & 0xff)
+#define RGBA_GETALPHA(rgb)      u32((rgb) >> 24)
+#define RGBA_GETRED(rgb)        u32(((rgb) >> 16) & 0xff)
+#define RGBA_GETGREEN(rgb)      u32(((rgb) >> 8) & 0xff)
+#define RGBA_GETBLUE(rgb)       u32((rgb) & 0xff)
 #endif
 
 void CGameFont::OnRender()
 {
 	if (pShader) Device.Shader.set_Shader	(pShader);
 
-	for (DWORD i=0; i<strings.size(); ) 
+	for (u32 i=0; i<strings.size(); ) 
 	{
 		// calculate first-fit
 		int		count	=	1;
@@ -98,12 +98,12 @@ void CGameFont::OnRender()
 		}
 
 		// lock AGP memory
-		DWORD	vOffset;
+		u32	vOffset;
 		FVF::TL* v		= (FVF::TL*)Device.Streams.Vertex.Lock	(length*4,VS->dwStride,vOffset);
 		FVF::TL* start	= v;
 		
 		// fill vertices
-		DWORD last=i+count;
+		u32 last=i+count;
 		for (; i<last; i++) {
 			String		&PS	= strings[i];
 			int			len	= strlen(PS.string);
@@ -113,13 +113,13 @@ void CGameFont::OnRender()
 				float	S	= ConvertSize	(PS.size);
 				float	Y2	= Y+S; 
 
-				DWORD	clr,clr2; 
+				u32	clr,clr2; 
 				clr			= PS.c; 
 				if (dwFlags&fsGradient){
-					DWORD	_R	= RGBA_GETRED	(clr)/2;
-					DWORD	_G	= RGBA_GETGREEN	(clr)/2;
-					DWORD	_B	= RGBA_GETBLUE	(clr)/2;
-					DWORD	_A	= RGBA_GETALPHA	(clr);
+					u32	_R	= RGBA_GETRED	(clr)/2;
+					u32	_G	= RGBA_GETGREEN	(clr)/2;
+					u32	_B	= RGBA_GETBLUE	(clr)/2;
+					u32	_A	= RGBA_GETALPHA	(clr);
 					clr2		= D3DCOLOR_RGBA	(_R,_G,_B,_A);
 				}else{
 					clr2		= clr;
@@ -144,7 +144,7 @@ void CGameFont::OnRender()
 		}
 
 		// Unlock and draw
-		DWORD vCount = v-start;
+		u32 vCount = v-start;
 		Device.Streams.Vertex.Unlock		(vCount,VS->dwStride);
 		if (vCount) 
 		{
@@ -156,7 +156,7 @@ void CGameFont::OnRender()
 	strings.clear();
 }
 
-void CGameFont::Add(float _x, float _y, char *s, DWORD _c, float _size)
+void CGameFont::Add(float _x, float _y, char *s, u32 _c, float _size)
 {
 	VERIFY(strlen(s)<127);
 	String rs;

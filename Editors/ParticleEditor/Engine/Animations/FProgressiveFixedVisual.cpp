@@ -22,7 +22,7 @@ FProgressiveFixedVisual::~FProgressiveFixedVisual()
 	_RELEASE	(pIndices);
 }
 
-void FProgressiveFixedVisual::Load(const char* N, CStream *data, DWORD dwFlags)
+void FProgressiveFixedVisual::Load(const char* N, CStream *data, u32 dwFlags)
 {
 	// load base visual data
 	Fvisual::Load(N,data,dwFlags);
@@ -42,7 +42,7 @@ void FProgressiveFixedVisual::Load(const char* N, CStream *data, DWORD dwFlags)
 
 	// PMAP_FACES
 	R_ASSERT(fs->FindChunk(0x3));
-	DWORD fCount = fs->Rdword();
+	u32 fCount = fs->Rdword();
 	faces_affected = new WORD[fCount];
 	fs->Read(faces_affected,fCount*sizeof(WORD));
 
@@ -62,7 +62,7 @@ void FProgressiveFixedVisual::SetLOD(float LOD)
 	if (LOD<0)			return;
 	VERIFY				(LOD<=1.0f);
 	
-	DWORD dwCount = V_Minimal + iFloor(float(vCount-V_Minimal)*LOD+.4999f);
+	u32 dwCount = V_Minimal + iFloor(float(vCount-V_Minimal)*LOD+.4999f);
 	
 	VERIFY(dwCount>=V_Minimal);
 	VERIFY(dwCount<=vCount);
@@ -76,15 +76,15 @@ void FProgressiveFixedVisual::SetLOD(float LOD)
 			Vsplit&	S	=	vsplit[V_Current-V_Minimal];
 			
 			// fixup faces
-			DWORD	dwEnd = DWORD(S.numFixFaces)+FIX_Current;
+			u32	dwEnd = u32(S.numFixFaces)+FIX_Current;
 			WORD	V_Cur = WORD(V_Current);
-			for (DWORD I=FIX_Current; I<dwEnd; I++) {
+			for (u32 I=FIX_Current; I<dwEnd; I++) {
 				//				VERIFY(Indices[faces_affected[I]]==S.vsplitVert);
 				Indices[faces_affected[I]]=V_Cur;
 			};
 			
 			// correct numbers
-			I_Current	+=	3*DWORD(S.numNewTriangles);
+			I_Current	+=	3*u32(S.numNewTriangles);
 			V_Current	+=	1;
 			FIX_Current	+=	S.numFixFaces;
 		};
@@ -97,15 +97,15 @@ void FProgressiveFixedVisual::SetLOD(float LOD)
 			
 			// fixup faces
 			WORD V_New		= WORD(S.vsplitVert);
-			DWORD dwEnd		= FIX_Current;
-			DWORD dwStart	= dwEnd-S.numFixFaces;
-			for (DWORD I=dwStart; I<dwEnd; I++) {
+			u32 dwEnd		= FIX_Current;
+			u32 dwStart	= dwEnd-S.numFixFaces;
+			for (u32 I=dwStart; I<dwEnd; I++) {
 				//				VERIFY(Indices[faces_affected[I]]==V_Current);
 				Indices[faces_affected[I]]=V_New;
 			};
 			
 			// correct numbers
-			I_Current	-=	3*DWORD(S.numNewTriangles);
+			I_Current	-=	3*u32(S.numNewTriangles);
 			FIX_Current	-=	S.numFixFaces;
 		};
 

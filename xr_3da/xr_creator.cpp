@@ -41,7 +41,7 @@ CCreator::~CCreator	( )
 	Device.seqDevCreate.Remove	(Render);
 
 	// Unload sounds
-	for (DWORD i=0; i<Sounds.size(); i++)
+	for (u32 i=0; i<Sounds.size(); i++)
 		pSounds->Delete	(Sounds[i]);
 	Sounds.clear();
 
@@ -51,7 +51,7 @@ CCreator::~CCreator	( )
 }
 
 //-------------------------------------------------------------------------------------------
-BOOL CCreator::Load(DWORD dwNum) 
+BOOL CCreator::Load(u32 dwNum) 
 {
 //	Device.Reset				();
 
@@ -72,7 +72,7 @@ BOOL CCreator::Load(DWORD dwNum)
 	CStream	&fs					= *LL_Stream;
 	
 	CStream *chunk = 0;
-	DWORD	count,i;
+	u32	count,i;
 
 	Environment.Load			(pLevel, "environment");
 	

@@ -165,7 +165,7 @@ void CObject::UpdateCL	()
 	clTransform.set(svTransform);
 }
 
-void CObject::Update	( DWORD T )
+void CObject::Update	( u32 T )
 {
 	BOOL	bUpdate=FALSE;
 	if (PositionStack.empty())
@@ -205,7 +205,7 @@ void CObject::Update	( DWORD T )
 	}
 }
 
-CObject::SavedPosition CObject::ps_Element(DWORD ID)
+CObject::SavedPosition CObject::ps_Element(u32 ID)
 {
 	VERIFY(ID<ps_Size());
 	return PositionStack[ID];

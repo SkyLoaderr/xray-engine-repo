@@ -51,7 +51,7 @@ void CObjectSpace::_render()
 #ifdef _RENDER_BBOX_DATA
 //---------------------------------------------------------------------------------
 // draw OBB box
-	DWORD C = 0xffffffff;
+	u32 C = 0xffffffff;
 	Fmatrix T;
 	T.set(debug_last_bb_transform);
 	Device.Primitive.dbg_DrawOBB(T, debug_last_bb_size, C);
@@ -59,10 +59,10 @@ void CObjectSpace::_render()
 
 #ifdef _RENDER_TRIS_DATA
 // draw tris
-	DWORD TC = 0xff500000;
+	u32 TC = 0xff500000;
 	Fmatrix TT;
 	TT.identity();
-	for (DWORD i=0; i<debug_render_tris_list.count; i++)
+	for (u32 i=0; i<debug_render_tris_list.count; i++)
 		Device.Primitive.dbg_DrawTRI(TT,debug_render_tris_list[i].P,TC);
 //---------------------------------------------------------------------------------
 #endif

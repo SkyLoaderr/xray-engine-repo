@@ -11,7 +11,7 @@ enum EFC_Visible {
 	fcvNone = 0,
 	fcvPartial,
 	fcvFully,
-	fcv_forcedword = DWORD(-1)
+	fcv_forcedword = u32(-1)
 };
 
 #include "fixedvector.h"
@@ -79,17 +79,17 @@ public:
 	void			CreateOccluder		(Fvector* p, int count, Fvector& vBase, CFrustum& clip);
 	BOOL			CreateFromClipPoly	(Fvector* p, int count, Fvector& vBase, CFrustum& clip);	// returns 'false' if creation failed
 	void			CreateFromPoints	(Fvector* p, int count, Fvector& vBase );
-	void			CreateFromMatrix	(Fmatrix &M, DWORD mask);
+	void			CreateFromMatrix	(Fmatrix &M, u32 mask);
 	void			CreateFromPortal	(sPoly* P, Fvector& vBase, Fmatrix& mFullXFORM);
 	void			CreateFromPlanes	(Fplane* p, int count);
 
 	sPoly*			ClipPoly			(sPoly& src, sPoly& dest) const;
 
-	DWORD			getMask				() const { return (1<<p_count)-1; }
+	u32			getMask				() const { return (1<<p_count)-1; }
 
-	IC EFC_Visible	testSphere			(Fvector& c, float r, DWORD& test_mask) const
+	IC EFC_Visible	testSphere			(Fvector& c, float r, u32& test_mask) const
 	{
-		DWORD	bit = 1;
+		u32	bit = 1;
 		for (int i=0; i<p_count; i++, bit<<=1)
 		{
 			if (test_mask&bit) {
@@ -116,10 +116,10 @@ public:
 		}
 		return TRUE;
 	}
-	IC EFC_Visible	testAABB			(Fvector &m, Fvector &M, DWORD& test_mask) const
+	IC EFC_Visible	testAABB			(Fvector &m, Fvector &M, u32& test_mask) const
 	{
 		// go for trivial rejection or acceptance using "faster overlap test"
-		DWORD		bit = 1;
+		u32		bit = 1;
 
 		for (int i=0; i<p_count; i++, bit<<=1)
 		{
@@ -133,9 +133,9 @@ public:
 		}
 		return test_mask ? fcvPartial:fcvFully;
 	}
-	IC EFC_Visible	testSAABB			(Fvector& c, float r, Fvector &m, Fvector &M, DWORD& test_mask) const
+	IC EFC_Visible	testSAABB			(Fvector& c, float r, Fvector &m, Fvector &M, u32& test_mask) const
 	{
-		DWORD	bit = 1;
+		u32	bit = 1;
 		for (int i=0; i<p_count; i++, bit<<=1)
 		{
 			if (test_mask&bit) {

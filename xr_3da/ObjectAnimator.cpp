@@ -54,8 +54,8 @@ void CObjectAnimator::LoadMotions(const char* fname)
 			Device.Fatal("Can't find motion file '%s'.",fname);
 
 	CStream* F			= Engine.FS.Open(full_path);
-	DWORD dwMCnt		= F->Rdword(); VERIFY(dwMCnt);
-	for (DWORD i=0; i<dwMCnt; i++){
+	u32 dwMCnt		= F->Rdword(); VERIFY(dwMCnt);
+	for (u32 i=0; i<dwMCnt; i++){
 		COMotion* M		= new COMotion();
 		bool bRes		= M->Load(*F);
 		if (!bRes)		Device.Fatal("ERROR: Can't load motion. Incorrect file version.");

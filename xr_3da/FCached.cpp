@@ -8,8 +8,8 @@
 
 #define GeomBytes		24	// pos+norm
 
-void TransferGeometry	(LPVOID vDest, LPVOID vSrc, DWORD vCount, DWORD vStride,
-						 LPWORD iDest, LPWORD iSrc, DWORD iCount, DWORD iOffset,
+void TransferGeometry	(LPVOID vDest, LPVOID vSrc, u32 vCount, u32 vStride,
+						 LPWORD iDest, LPWORD iSrc, u32 iCount, u32 iOffset,
 						 Fmatrix* xform)
 {
 	// Transfer vertices
@@ -18,7 +18,7 @@ void TransferGeometry	(LPVOID vDest, LPVOID vSrc, DWORD vCount, DWORD vStride,
 		LPBYTE	sit		= LPBYTE(vSrc);
 		LPBYTE	send	= sit+vCount*vStride;
 		LPBYTE	dit		= LPBYTE(vDest);
-		DWORD	remain	= vStride-GeomBytes;		// 2fvector of 3 floats
+		u32	remain	= vStride-GeomBytes;		// 2fvector of 3 floats
 
 		switch (remain) {
 		case 8:		// 32 byte vertex	(pos(12)+norm(12)+uv1(8))
@@ -65,8 +65,8 @@ void TransferGeometry	(LPVOID vDest, LPVOID vSrc, DWORD vCount, DWORD vStride,
 	// Transfer indices (in 32bit lines)
 	{
 		VERIFY	(iOffset<65535);
-		DWORD	item	= (iOffset<<16) | iOffset;
-		DWORD	count	= iCount/2;
+		u32	item	= (iOffset<<16) | iOffset;
+		u32	count	= iCount/2;
 		LPDWORD	sit		= LPDWORD(iSrc);
 		LPDWORD	send	= sit+count;
 		LPDWORD	dit		= LPDWORD(iDest);
@@ -99,7 +99,7 @@ void FCached::Release()
 	_FREE			(pIndices);
 }
 
-void FCached::Load(const char* N, CStream *data, DWORD dwFlags)
+void FCached::Load(const char* N, CStream *data, u32 dwFlags)
 {
 	CVisual::Load(N,data,dwFlags);
 
@@ -107,13 +107,13 @@ void FCached::Load(const char* N, CStream *data, DWORD dwFlags)
 	if ((dwFlags&VLOAD_NOVERTICES)==0) {
 		R_ASSERT(data->FindChunk(OGF_VERTICES));
 		
-		DWORD dwVertType;
+		u32 dwVertType;
 		
 		dwVertType	= data->Rdword();
 		vCount		= data->Rdword();
 		hVS			= Device.Shader._CreateVS	(dwVertType);
 		
-		DWORD		mem_size = vCount*hVS->dwStride;
+		u32		mem_size = vCount*hVS->dwStride;
 		pVertices	= xr_malloc		(mem_size);
 		data->Read	(pVertices,mem_size);
 	}
@@ -124,7 +124,7 @@ void FCached::Load(const char* N, CStream *data, DWORD dwFlags)
 		iCount	= data->Rdword();
 		R_ASSERT(iCount%3 == 0);
 
-		DWORD		mem_size = iCount*2;
+		u32		mem_size = iCount*2;
 		pIndices	= (WORD*)xr_malloc(mem_size);
 		data->Read	(pIndices,mem_size);
 	}

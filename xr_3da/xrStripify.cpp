@@ -9,7 +9,7 @@ int xrSimulate (std::vector<WORD> &indices, int iCacheSize )
 	VertexCache C(iCacheSize);
 
 	int count=0;
-	for (DWORD i=0; i<indices.size(); i++)
+	for (u32 i=0; i<indices.size(); i++)
 	{
 		int id = indices[i];
 		if (C.InCache(id)) continue;
@@ -40,7 +40,7 @@ void xrStripify		(std::vector<WORD> &indices, std::vector<WORD> &perturb, int iC
 	R_ASSERT		(xPGROUP);
 
 	// Build perturberation table
-	for(DWORD index = 0; index < PGROUP->numIndices; index++)
+	for(u32 index = 0; index < PGROUP->numIndices; index++)
 	{
 		u16 oldIndex = PGROUP->indices	[index];
 		int newIndex = xPGROUP->indices	[index];

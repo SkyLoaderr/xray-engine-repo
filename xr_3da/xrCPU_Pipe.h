@@ -23,8 +23,8 @@ template<class T>	struct _matrix;
 // D: AGP,			32b aligned
 // S: SysMem		non-aligned
 // Bones: SysMem	64b aligned
-typedef void	__stdcall	xrSkin1W		(vertRender* D, vertBoned1W* S, DWORD vCount, CBoneInstance* Bones);
-typedef void	__stdcall	xrSkin2W		(vertRender* D, vertBoned2W* S, DWORD vCount, CBoneInstance* Bones);
+typedef void	__stdcall	xrSkin1W		(vertRender* D, vertBoned1W* S, u32 vCount, CBoneInstance* Bones);
+typedef void	__stdcall	xrSkin2W		(vertRender* D, vertBoned2W* S, u32 vCount, CBoneInstance* Bones);
 
 // Spherical-linear interpolation of quaternion
 // NOTE: Quaternions may be non-aligned in memory
@@ -40,14 +40,14 @@ typedef void	__stdcall	xrM44_Mul		(MATRIX* D, MATRIX* M1, MATRIX* M2);
 // iDest: SysMem/AGP,non aligned
 // iSrc:  SysMem,    32b aligned
 // xform: SysMem,    non aligned, may be NULL
-typedef void	__stdcall	xrTransfer		(LPVOID vDest, LPVOID vSrc, DWORD vCount, DWORD vStride,
-											 LPWORD iDest, LPWORD iSrc, DWORD iCount, DWORD iOffset,
+typedef void	__stdcall	xrTransfer		(LPVOID vDest, LPVOID vSrc, u32 vCount, u32 vStride,
+											 LPWORD iDest, LPWORD iSrc, u32 iCount, u32 iOffset,
 											 MATRIX* xform);
 
 // Memory routines
-typedef void	__stdcall	xrMemFill_32b	(LPVOID ptr,  DWORD count, DWORD value);
-typedef void	__stdcall	xrMemFill_8b	(LPVOID ptr,  DWORD count, DWORD value);
-typedef void	__stdcall	xrMemCopy_8b	(LPVOID dest, const void* src,  DWORD count);
+typedef void	__stdcall	xrMemFill_32b	(LPVOID ptr,  u32 count, u32 value);
+typedef void	__stdcall	xrMemFill_8b	(LPVOID ptr,  u32 count, u32 value);
+typedef void	__stdcall	xrMemCopy_8b	(LPVOID dest, const void* src,  u32 count);
 
 #pragma pack(push,8)
 struct xrDispatchTable
@@ -65,7 +65,7 @@ struct xrDispatchTable
 
 // Binder
 // NOTE: Engine calls function named "_xrBindPSGP"
-typedef void	__cdecl	xrBinder	(xrDispatchTable* T, DWORD dwFeatures);
+typedef void	__cdecl	xrBinder	(xrDispatchTable* T, u32 dwFeatures);
 
 #undef MATRIX
 #endif

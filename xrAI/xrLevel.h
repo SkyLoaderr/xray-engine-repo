@@ -20,7 +20,7 @@ enum fsEVisChunks {
 	fsV_LIGHTS,
 	fsV_GLOWS,
 	fsV_MAP,
-	fsV_forcedword = DWORD(-1)
+	fsV_forcedword = u32(-1)
 };
 enum fsESectorChunks {
 	fsP_Portals = 1,	// - portal polygons
@@ -28,32 +28,32 @@ enum fsESectorChunks {
 	fsP_Occluders,		// - occluders inside sector
 	fsP_Glows,			// - glows inside sector
 	fsP_Lights,			// - lights, which touches sector
-	fsP_forcedword = DWORD(-1)
+	fsP_forcedword = u32(-1)
 };
 enum fsSLS_Chunks {
 	fsSLS_Description	= 1,	// Name of level
 	fsSLS_ServerState,
 	fsSLS_UnitsSpecific,
-	fsSLS_forcedword = DWORD(-1)
+	fsSLS_forcedword = u32(-1)
 };
 
 #pragma pack(push,8)
 struct hdrLEVEL
 {
-	DWORD	XRLC_version;
+	u32	XRLC_version;
 	char	name[124];
 };
 struct hdrCFORM 
 {
-	DWORD	version;
-	DWORD	vertcount;
-	DWORD	facecount;
+	u32	version;
+	u32	vertcount;
+	u32	facecount;
 	Fbox	aabb;
 };
 struct	hdrNODES
 {
-	DWORD	version;
-	DWORD	count;
+	u32	version;
+	u32	count;
 	float	size;
 	float	size_y;
 	Fbox	aabb;

@@ -20,13 +20,13 @@ FDetailPatch::~FDetailPatch()
 
 }
 
-void FDetailPatch::Load(const char* N, CStream* fs, DWORD dwFlags)
+void FDetailPatch::Load(const char* N, CStream* fs, u32 dwFlags)
 {
 	CVisual::Load(N,fs,dwFlags);
 
-	DWORD size		= fs->FindChunk(OGF_DPATCH);	
+	u32 size		= fs->FindChunk(OGF_DPATCH);	
 	R_ASSERT		(size && (size%sizeof(DPatch) == 0));
-	DWORD count		= size/sizeof(DPatch);
+	u32 count		= size/sizeof(DPatch);
 	patches.resize	(count);
 	PSGP.memCopy	(&*patches.begin(),fs->Pointer(),size);
 
@@ -39,7 +39,7 @@ void FDetailPatch::Render(float LOD)
 	FVF::TL		PT;
 	DPatch*			i	= &*patches.begin();
 	DPatch*			end	= &*patches.end();
-	DWORD			vOffset;
+	u32			vOffset;
 	FVF::TL*	pv_start= (FVF::TL*)Stream->Lock(patches.size()*4,vOffset);
 	FVF::TL*	pv		= pv_start;
 
@@ -49,7 +49,7 @@ void FDetailPatch::Render(float LOD)
 	for (;i!=end; i++) {
 		PT.transform	( i->P, Device.mFullTransform );
 		float	size	= Device.dwWidth * i->S/PT.p.w;
-		DWORD	C;
+		u32	C;
 		if (PT.p.w<fade_start) 
 		{
 			C = i->C;
@@ -81,7 +81,7 @@ void FDetailPatch::Render(float LOD)
 	}
 
 	// unlock VB and Render it as triangle list
-	DWORD dwNumVerts = pv-pv_start;
+	u32 dwNumVerts = pv-pv_start;
 	Stream->Unlock(dwNumVerts);
 	if (dwNumVerts)
 		Device.Primitive.Draw(Stream,dwNumVerts,dwNumVerts/2,vOffset,Device.Streams_QuadIB);

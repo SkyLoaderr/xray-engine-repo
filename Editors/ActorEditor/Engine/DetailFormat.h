@@ -46,12 +46,12 @@
 	char*			shader;
 	char*			texture;
 
-	DWORD			flag;
+	u32			flag;
 	float			min_scale;
 	float	 		max_scale;
 
-	DWORD			vert_count;
-	DWORD			index_count;
+	u32			vert_count;
+	u32			index_count;
 
 	fvfVertexIn*	vertices;
 	WORD*			indices;
@@ -61,10 +61,10 @@
 
 struct DetailHeader
 {
-	DWORD		version;
-	DWORD		object_count;
+	u32		version;
+	u32		object_count;
 	int			offs_x,	offs_z;
-	DWORD		size_x,	size_z;
+	u32		size_x,	size_z;
 };
 
 struct DetailPalette

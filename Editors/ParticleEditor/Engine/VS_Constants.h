@@ -67,7 +67,7 @@ public:
 		dirty				(id,id+1);
 		access(id)->set		(A.x,A.y,A.z,A.w);		
 	}
-	IC void					set			(u32 id, DWORD A)		
+	IC void					set			(u32 id, u32 A)		
 	{ 
 		dirty				(id,id+1);
 		const float f		= 1.0f / 255.0f;

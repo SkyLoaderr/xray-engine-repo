@@ -277,7 +277,7 @@ void CLightShadows::calculate	()
 		shift.set(.5f/dim,-.5f/dim); c0.add(p0,shift); c1.add(p1,shift); d0.sub(p0,shift); d1.sub(p1,shift);
 		
 		// Fill VB
-		DWORD C							=	0xffffffff, Offset;
+		u32 C							=	0xffffffff, Offset;
 		FVF::TL2uv* pv					=	(FVF::TL2uv*) Device.Streams.Vertex.Lock(8,vs_Blur->dwStride,Offset);
 		pv->set							(0.f,	dim,	C, a0.x, a1.y, b0.x, b1.y);	pv++;
 		pv->set							(0.f,	0.f,	C, a0.x, a0.y, b0.x, b0.y);	pv++;
@@ -343,7 +343,7 @@ void CLightShadows::render	()
 	// Render shadows
 	Device.Shader.set_Shader	(sh_World);
 	int batch					= 0;
-	DWORD Offset				= 0;
+	u32 Offset				= 0;
 	FVF::LIT* pv				= (FVF::LIT*) Device.Streams.Vertex.Lock(batch_size*3,vs_World->dwStride,Offset);
 	for (u32 s_it=0; s_it<shadows.size(); s_it++)
 	{
@@ -456,7 +456,7 @@ void CLightShadows::render	()
 		
 		// Fill vertex buffer
 		C			=	0xffffffff;
-		DWORD _w	=	S_rt_size/2, _h = S_rt_size/2;
+		u32 _w	=	S_rt_size/2, _h = S_rt_size/2;
 		FVF::TL* pv =	(FVF::TL*) vs_Screen->Lock(4,Offset);
 		pv->set(0,			float(_h),	.0001f,.9999f, C, p0.x, p1.y);	pv++;
 		pv->set(0,			0,			.0001f,.9999f, C, p0.x, p0.y);	pv++;

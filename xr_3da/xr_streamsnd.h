@@ -12,13 +12,13 @@ class ENGINE_API CSoundStream
 protected:
 	struct sxr_riff{
 		char  id[4];  	// identifier string = "RIFF"
-		DWORD len;    	// remaining length after this header
+		u32 len;    	// remaining length after this header
 		char  wave_id[4];// "WAVE"
 	};
 	
 	struct sxr_hdr{
 		char  id[4];	// identifier, e.g. "fmt " or "data"
-		DWORD len; 		// remaining chunk length after header
+		u32 len; 		// remaining chunk length after header
 	};
 	
 private:
@@ -35,7 +35,7 @@ private:
 	BOOL					bNeedUpdate;
 	BOOL					bMustPlay;
 
-	DWORD					dwStatus;
+	u32					dwStatus;
 	BOOL					isPause;
 
     LPDIRECTSOUNDBUFFER     pBuffer;
@@ -45,23 +45,23 @@ private:
 	ACMSTREAMHEADER			stream;
 	WAVEFORMATEX*			pwfx;
 	WAVEFORMATEX*			psrc;
-	DWORD					dwFMT_Size;
-	DWORD					dwSrcBufSize;
-	DWORD					dwTotalSize;
+	u32					dwFMT_Size;
+	u32					dwSrcBufSize;
+	u32					dwTotalSize;
 	unsigned char			*WaveSource,*WaveDest;
 
-    DWORD					writepos;
+    u32					writepos;
 	BOOL					isPresentData; // признак окончания буфера
-	DWORD					dwDecPos;
+	u32					dwDecPos;
 	CStream*				hf;
 	int					    DataPos;
 
 private:
 //-----------------------------------------------------
 	BOOL					Decompress				(unsigned char *dest);
-	void					AppWriteDataToBuffer	(DWORD dwOffset,			// our own write cursor
+	void					AppWriteDataToBuffer	(u32 dwOffset,			// our own write cursor
 													 LPBYTE lpbSoundData,		// start of our data
-													 DWORD dwSoundBytes);		// size of block to copy
+													 u32 dwSoundBytes);		// size of block to copy
 
 	void					LoadADPCM				( );
 

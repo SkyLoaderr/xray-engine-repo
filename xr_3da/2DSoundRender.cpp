@@ -23,15 +23,15 @@ C2DSoundRender::~C2DSoundRender()
 
 void C2DSoundRender::OnMove()
 {
-	for (DWORD i=0; i<sounds.size(); i++) {
-		for (DWORD j=0; j<sounds[i].size(); j++) {
+	for (u32 i=0; i<sounds.size(); i++) {
+		for (u32 j=0; j<sounds[i].size(); j++) {
 			sounds[i][j]->OnMove();
 		}
 	}
 }
 
 int C2DSoundRender::FindByName(LPCSTR name) {
-	for (DWORD i=0; i<sounds.size(); i++) {
+	for (u32 i=0; i<sounds.size(); i++) {
 		if (sounds[i].size()) {
 			if (strcmp(sounds[i][0]->fName,name)==0)  return i;
 		}
@@ -40,7 +40,7 @@ int C2DSoundRender::FindByName(LPCSTR name) {
 }
 int C2DSoundRender::FindEmptySlot()
 {
-	for (DWORD i=0; i<sounds.size(); i++) {
+	for (u32 i=0; i<sounds.size(); i++) {
 		if (sounds[i].size()==0) return i;
 	}
 	return -1;
@@ -111,7 +111,7 @@ void C2DSoundRender::DeleteSound(int& hSound) {
 	refcounts[hSound]-=1;
 	if (refcounts[hSound]==0) {
 		// all references destroyed - destroy sound as itself
-		for (DWORD i=0; i<sounds[hSound].size(); i++)
+		for (u32 i=0; i<sounds[hSound].size(); i++)
 		{
 			_DELETE(sounds[hSound][i]);
 		}
@@ -123,7 +123,7 @@ void C2DSoundRender::DeleteSound(int& hSound) {
 C2DSound* C2DSoundRender::GetFreeSound(int hSound) {
 	VERIFY(hSound>=0);
 	VERIFY(hSound<int(sounds.size()));
-	for (DWORD i=0; i<sounds[hSound].size(); i++)
+	for (u32 i=0; i<sounds[hSound].size(); i++)
 	{
 		if (!sounds[hSound][i]->isPlaying())
 			return sounds[hSound][i];
@@ -144,7 +144,7 @@ C2DSound* C2DSoundRender::Play(int hSound, BOOL bLoop, int iLoopCnt)
 
 void C2DSoundRender::Reload()
 {
-	for (DWORD i=0; i<sounds.size(); i++) {
+	for (u32 i=0; i<sounds.size(); i++) {
 		if (sounds[i].size()) {
 			// Main sound
 			sounds[i][0]->Stop();
@@ -156,7 +156,7 @@ void C2DSoundRender::Reload()
 			}
 
 			// Clones
-			for (DWORD j=1; j<sounds[i].size(); j++) {
+			for (u32 j=1; j<sounds[i].size(); j++) {
 				sounds[i][j]->Stop();
 				_RELEASE(sounds[i][j]->pBuffer);
 				pSounds->pDevice->DuplicateSoundBuffer(sounds[i][0]->pBuffer,&sounds[i][j]->pBuffer);

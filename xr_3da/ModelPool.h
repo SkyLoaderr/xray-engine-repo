@@ -28,7 +28,7 @@ class ENGINE_API CModelPool : public pureDeviceDestroy
 
 	void				Destroy	();
 public:
-	CVisual*			Instance_Create		(DWORD Type);
+	CVisual*			Instance_Create		(u32 Type);
 	CVisual*			Instance_Duplicate	(CVisual* V);
 	CVisual*			Instance_Load		(LPCSTR N);
 	CVisual*			Instance_Load		(LPCSTR N, CStream* data);

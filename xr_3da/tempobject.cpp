@@ -20,7 +20,7 @@ CTempObject::~CTempObject()
 	Render->model_Delete(m_pVisual);
 }
 //----------------------------------------------------
-void CTempObject::Update(DWORD dt)
+void CTempObject::Update(u32 dt)
 {
 	m_iLifeTime		-= dt;
 }

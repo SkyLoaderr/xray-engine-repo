@@ -4,7 +4,7 @@
 #include "fcached.h"
 #include "fmesh.h"
 
-const DWORD	v_limit			= 2048;
+const u32	v_limit			= 2048;
 
 // Render of cached meshes
 void __fastcall render_Cached(std::vector<FCached*>& cache)
@@ -14,11 +14,11 @@ void __fastcall render_Cached(std::vector<FCached*>& cache)
 	_IndexStream*			is	= Device.Streams.Index;
 
 	Device.Primitive.Reset		();
-	for (DWORD Start=0; Start<cache.size(); )
+	for (u32 Start=0; Start<cache.size(); )
 	{
 		// Calculate lock parameters
-		DWORD	v_count=0,i_count=0,t;
-		for (DWORD End=Start; End<cache.size(); End++)
+		u32	v_count=0,i_count=0,t;
+		for (u32 End=Start; End<cache.size(); End++)
 		{
 			FCached& V	=	*(cache[End]);
 			if (V.VS!=vs)		break;
@@ -30,12 +30,12 @@ void __fastcall render_Cached(std::vector<FCached*>& cache)
 		vs				=	cache[Start]->VS;
 
 		// Transfer geometry
-		DWORD	vBase,	iBase;
-		DWORD	Stride	= vs->Stride();
+		u32	vBase,	iBase;
+		u32	Stride	= vs->Stride();
 		BYTE*	verts	= LPBYTE(vs->Lock(v_count,vBase));
 		WORD*	indices	= LPWORD(is->Lock(i_count,iBase));
-		DWORD	iOffset	= 0;
-		for (DWORD I=Start; I!=End; I++)
+		u32	iOffset	= 0;
+		for (u32 I=Start; I!=End; I++)
 		{
 			FCached& V	=	*(cache[I]);
 			
@@ -45,9 +45,9 @@ void __fastcall render_Cached(std::vector<FCached*>& cache)
 			// Transfer indices (in 32bit lines)
 			VERIFY	(iOffset<65535);
 			{
-				DWORD	iCount	= V.iCount;
-				DWORD	item	= (iOffset<<16) | iOffset;
-				DWORD	count	= iCount/2;
+				u32	iCount	= V.iCount;
+				u32	item	= (iOffset<<16) | iOffset;
+				u32	count	= iCount/2;
 				LPDWORD	sit		= LPDWORD(V.pIndices);
 				LPDWORD	send	= sit+count;
 				LPDWORD	dit		= LPDWORD(indices);
@@ -64,7 +64,7 @@ void __fastcall render_Cached(std::vector<FCached*>& cache)
 		is->Unlock		(i_count);
 
 		// Render
-		DWORD	dwNumPrimitives			= i_count/3;
+		u32	dwNumPrimitives			= i_count/3;
 		CHK_DX(HW.pDevice->SetVertexShader		(vs->getFVF()));
 		CHK_DX(HW.pDevice->SetStreamSource		(0,vs->getBuffer(),vs->Stride()));
 		CHK_DX(HW.pDevice->SetIndices			(is->getBuffer(),vBase));

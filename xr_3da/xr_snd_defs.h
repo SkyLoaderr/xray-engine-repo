@@ -23,11 +23,11 @@ struct	sound
 struct 	sound_defer
 {
 	LPDIRECTSOUNDBUFFER	P;
-	DWORD				F;
+	u32				F;
 
-	sound_defer(LPDIRECTSOUNDBUFFER _P, DWORD _F) : P(_P), F(_F) {};
+	sound_defer(LPDIRECTSOUNDBUFFER _P, u32 _F) : P(_P), F(_F) {};
 };
 
-const DWORD soundEventPulse	= 500;	// ms
+const u32 soundEventPulse	= 500;	// ms
 
 typedef Fvector soundOccluder[3];

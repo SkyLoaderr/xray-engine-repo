@@ -72,8 +72,8 @@ ENGINE_API char* TUsf2string(D3DFORMAT f) {
 */
 /*
 ENGINE_API IDirect3DTexture8*	TUCreateTexture(
-		DWORD *f, DWORD *w, DWORD *h, D3DFORMAT *fmt,
-		DWORD *m)
+		u32 *f, u32 *w, u32 *h, D3DFORMAT *fmt,
+		u32 *m)
 {
 	LPDIRECTDRAWSURFACE7	pSurf=NULL;
 	R_CHK(D3DXCreateTexture(
@@ -86,7 +86,7 @@ ENGINE_API IDirect3DTexture8*	TUCreateTexture(
 }
 
 ENGINE_API LPDIRECTDRAWSURFACE7	TUCreateSurfaceFromMemory(
-		DWORD _w, DWORD _h, DWORD _p, D3DFORMAT fmt, void *data)
+		u32 _w, u32 _h, u32 _p, D3DFORMAT fmt, void *data)
 {
     DDSURFACEDESC2       ddsd2;
     LPDIRECTDRAWSURFACE7 lpDDS;
@@ -113,7 +113,7 @@ ENGINE_API LPDIRECTDRAWSURFACE7	TUCreateSurfaceFromMemory(
 }
 
 ENGINE_API void					TULoadFromSurface	(
-		LPDIRECTDRAWSURFACE7 pDest, DWORD dwMipLevel,
+		LPDIRECTDRAWSURFACE7 pDest, u32 dwMipLevel,
 		LPDIRECTDRAWSURFACE7 pSrc,	D3DX_FILTERTYPE filter)
 {
 	R_ASSERT(pDest);
@@ -129,7 +129,7 @@ ENGINE_API void					TULoadFromSurface	(
 		));
 }
 
-ENGINE_API LPDIRECTDRAWSURFACE7	TUGetMipLevel(LPDIRECTDRAWSURFACE7 pS, DWORD L)
+ENGINE_API LPDIRECTDRAWSURFACE7	TUGetMipLevel(LPDIRECTDRAWSURFACE7 pS, u32 L)
 {
 	R_ASSERT				(pS);
 
@@ -148,8 +148,8 @@ ENGINE_API LPDIRECTDRAWSURFACE7	TUGetMipLevel(LPDIRECTDRAWSURFACE7 pS, DWORD L)
 }
 
 ENGINE_API void		TULoadFromMemory(
-		LPDIRECTDRAWSURFACE7 pDest, DWORD dwMipLevel,
-		DWORD* pSrc, D3DX_FILTERTYPE filter)
+		LPDIRECTDRAWSURFACE7 pDest, u32 dwMipLevel,
+		u32* pSrc, D3DX_FILTERTYPE filter)
 {
 	R_ASSERT(pDest);
 	R_ASSERT(pSrc);
@@ -181,7 +181,7 @@ ENGINE_API void		TULoadFromMemory(
 	R_CHK(pDest->Blt(NULL,pTMP,NULL,DDBLT_WAIT,NULL));
 */
 
-ENGINE_API DWORD*	TUBuild32MipLevel(ETextureMipgen ALG, DWORD &_w, DWORD &_h, DWORD &_p, DWORD *pdwPixelSrc)
+ENGINE_API u32*	TUBuild32MipLevel(ETextureMipgen ALG, u32 &_w, u32 &_h, u32 &_p, u32 *pdwPixelSrc)
 {
 	R_ASSERT(pdwPixelSrc);
 	R_ASSERT((_w%2)==0	);
@@ -189,26 +189,26 @@ ENGINE_API DWORD*	TUBuild32MipLevel(ETextureMipgen ALG, DWORD &_w, DWORD &_h, DW
 	R_ASSERT((_p%4)==0	);
 	R_ASSERT(ALG!=tmDisable);
 
-	DWORD	dwDestPitch	= (_w/2)*4;
-	DWORD*	pNewData	= (DWORD*)xr_malloc( (_h/2)*dwDestPitch );
+	u32	dwDestPitch	= (_w/2)*4;
+	u32*	pNewData	= (u32*)xr_malloc( (_h/2)*dwDestPitch );
 	BYTE*	pDest		= (BYTE *)pNewData;
 	BYTE*	pSrc		= (BYTE *)pdwPixelSrc;
 
-	for (DWORD y = 0; y < _h; y += 2)
+	for (u32 y = 0; y < _h; y += 2)
 	{
 		BYTE* pScanline = pSrc + y*_p;
-		for (DWORD x = 0; x < _w; x += 2)
+		for (u32 x = 0; x < _w; x += 2)
 		{
 			BYTE*	p1	= pScanline + x*4;
 			BYTE*	p2	= p1+4;
 			BYTE*	p3	= p1+_p;
 			BYTE*	p4	= p2+_p;
-			DWORD	c1	= DWORD(p1[0])+DWORD(p2[0])+DWORD(p3[0])+DWORD(p4[0]);
-			DWORD	c2	= DWORD(p1[1])+DWORD(p2[1])+DWORD(p3[1])+DWORD(p4[1]);
-			DWORD	c3	= DWORD(p1[2])+DWORD(p2[2])+DWORD(p3[2])+DWORD(p4[2]);
-			DWORD	c4	= DWORD(p1[3])+DWORD(p2[3])+DWORD(p3[3])+DWORD(p4[3]);
+			u32	c1	= u32(p1[0])+u32(p2[0])+u32(p3[0])+u32(p4[0]);
+			u32	c2	= u32(p1[1])+u32(p2[1])+u32(p3[1])+u32(p4[1]);
+			u32	c3	= u32(p1[2])+u32(p2[2])+u32(p3[2])+u32(p4[2]);
+			u32	c4	= u32(p1[3])+u32(p2[3])+u32(p3[3])+u32(p4[3]);
 
-			DWORD	A	= (c4+c4/8)/4; clamp(A,0ul,255ul);
+			u32	A	= (c4+c4/8)/4; clamp(A,0ul,255ul);
 			*pDest++	= BYTE(c1/4);
 			*pDest++	= BYTE(c2/4);
 			*pDest++	= BYTE(c3/4);
@@ -229,10 +229,10 @@ ENGINE_API void TULoadFromBGR24(LPDIRECTDRAWSURFACE7 picSurf, void *picData )
     picDesc.dwSize = sizeof(picDesc);
 	CHK_DX(picSurf->Lock(0,&picDesc,DDLOCK_WAIT|DDLOCK_WRITEONLY,0));
 
-	DWORD	picW,picH;
+	u32	picW,picH;
 	WORD	off_r,off_g,off_b;
-	DWORD	mask_r,mask_g,mask_b;
-	DWORD	loopW,loopH;
+	u32	mask_r,mask_g,mask_b;
+	u32	loopW,loopH;
 
 	picW = picDesc.dwWidth;
 	picH = picDesc.dwHeight;
@@ -249,20 +249,20 @@ ENGINE_API void TULoadFromBGR24(LPDIRECTDRAWSURFACE7 picSurf, void *picData )
 	mask_g = picDesc.ddpfPixelFormat.dwGBitMask;
 	mask_b = picDesc.ddpfPixelFormat.dwBBitMask;
 
-	DWORD bitmapscansize = picW*3;
+	u32 bitmapscansize = picW*3;
 	if (bitmapscansize & 3) {
 		bitmapscansize = (bitmapscansize & ~3) + 4;
 	}
 
-	DWORD bytepixsize = picDesc.ddpfPixelFormat.dwRGBBitCount / 8;
+	u32 bytepixsize = picDesc.ddpfPixelFormat.dwRGBBitCount / 8;
 	LPBYTE px = (LPBYTE) picDesc.lpSurface;
 	LPBYTE orgdata = (LPBYTE) picData + bitmapscansize * picH;
 
 	loopW = picW;
 	loopH = picH;
 
-	DWORD addptr2 = picDesc.lPitch - loopW*bytepixsize;
-	DWORD addptr1 = bitmapscansize - picW*3;
+	u32 addptr2 = picDesc.lPitch - loopW*bytepixsize;
+	u32 addptr1 = bitmapscansize - picW*3;
 
 	__asm{
 
@@ -360,10 +360,10 @@ end:
 }
 */
 
-ENGINE_API void	TUSelectMipLevel(DWORD *w, DWORD *h, DWORD Q)
+ENGINE_API void	TUSelectMipLevel(u32 *w, u32 *h, u32 Q)
 {
 	// select LOD
-	DWORD d = Q+1;
+	u32 d = Q+1;
 	*w /= d;
 	*h /= d;
 	if ((*w==0)&&(*h==0)) { *w=1;  *h=1;  }
@@ -391,9 +391,9 @@ ENGINE_API void	TUSelectFMT_LM(D3DFORMAT *fmt)
 	}
 }
 
-IC DWORD GetPowerOf2Plus1	(DWORD v)
+IC u32 GetPowerOf2Plus1	(u32 v)
 {
-        DWORD cnt=0;
+        u32 cnt=0;
         while (v) {v>>=1; cnt++; };
         return cnt;
 }
@@ -416,19 +416,19 @@ ENGINE_API IDirect3DBaseTexture8*	TWLoader2D
 		const char *		fRName,
 		ETexturePF			Algorithm,
 		ETextureMipgen		Mipgen,
-		DWORD				Quality,
+		u32				Quality,
 		float				fContrast,
 		BOOL				bGrayscale,
 		BOOL				bSharpen,
 
 		// return values
 		D3DFORMAT&			fmt,
-		DWORD&				dwWidth,
-		DWORD&				dwHeight
+		u32&				dwWidth,
+		u32&				dwHeight
 		)
 {
 	CImage					Image;
-	DWORD					dwMipCount		= 9;
+	u32					dwMipCount		= 9;
 //	IDirect3DBaseTexture8*	pTexture		= NULL;
 	IDirect3DTexture8*		pTexture2D		= NULL;
 	IDirect3DCubeTexture8*	pTextureCUBE	= NULL;
@@ -649,11 +649,11 @@ _TGA:
 		// if (dwMipCount==0) dwMipCount=GetPowerOf2Plus1(_MIN(dwWidth,dwHeight));
 
 		// 'cause of quality reducing we have to skip some levels :(
-		DWORD dwP			= Image.dwWidth*4;
-		DWORD dwW			= Image.dwWidth;
-		DWORD dwH			= Image.dwHeight;
-		DWORD *pImagePixels	= (DWORD *)xr_malloc(dwH*dwP);
-		DWORD *pNewPixels	= NULL;
+		u32 dwP			= Image.dwWidth*4;
+		u32 dwW			= Image.dwWidth;
+		u32 dwH			= Image.dwHeight;
+		u32 *pImagePixels	= (u32 *)xr_malloc(dwH*dwP);
+		u32 *pNewPixels	= NULL;
 
 		PSGP.memCopy		(pImagePixels,Image.pData,dwH*dwP);
 		while (dwWidth!=dwW) {
@@ -665,7 +665,7 @@ _TGA:
 		//		pImagePixels	- contains data for the first mip-level of texture
 		//		pNewPixels		- NULL
 		//		dwW,dwH,dwP		- are correct
-		for (DWORD i=0; i<dwMipCount; i++) {
+		for (u32 i=0; i<dwMipCount; i++) {
 			IDirect3DSurface8*	pTMP;
 			R_CHK(pTexture2D->GetSurfaceLevel(i,&pTMP));
 			RECT RC = {0,0,dwW,dwH};

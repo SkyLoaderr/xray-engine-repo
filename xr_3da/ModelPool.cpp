@@ -15,7 +15,7 @@
 
 #include "x_ray.h"
 
-CVisual*	CModelPool::Instance_Create(DWORD type)
+CVisual*	CModelPool::Instance_Create(u32 type)
 {
 	CVisual *V = NULL;
 

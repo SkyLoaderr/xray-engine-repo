@@ -21,8 +21,8 @@ public:
 
 	int				LogStack		(EXCEPTION_POINTERS *pex);
 	void            Update			();
-	DWORD           GetCount		()			{return Stack.size();}
-    LPCSTR			GetName			(DWORD num)	{return Stack[num];  }
+	u32           GetCount		()			{return Stack.size();}
+    LPCSTR			GetName			(u32 num)	{return Stack[num];  }
 
 	CDebugKernel();
 	~CDebugKernel();

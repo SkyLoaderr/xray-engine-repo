@@ -12,7 +12,7 @@
 float		psDetailDensity		= 0.15f;
 
 //--------------------------------------------------- Decompression
-IC float	Interpolate			(float* base,		DWORD x, DWORD y, DWORD size)
+IC float	Interpolate			(float* base,		u32 x, u32 y, u32 size)
 {
 	float	f	= float(size);
 	float	fx	= float(x)/f; float ifx = 1.f-fx;
@@ -28,15 +28,15 @@ IC float	Interpolate			(float* base,		DWORD x, DWORD y, DWORD size)
 	return	(cx+cy)/2;
 }
 
-IC bool		InterpolateAndDither(float* alpha255,	DWORD x, DWORD y, DWORD sx, DWORD sy, DWORD size, int dither[16][16] )
+IC bool		InterpolateAndDither(float* alpha255,	u32 x, u32 y, u32 sx, u32 sy, u32 size, int dither[16][16] )
 {
 	clamp 	(x,0ul,size-1);
 	clamp 	(y,0ul,size-1);
 	int		c	= iFloor(Interpolate(alpha255,x,y,size)+.5f);
 	clamp   (c,0,255);
 
-	DWORD	row	= (y+sy) % 16;
-	DWORD	col	= (x+sx) % 16;
+	u32	row	= (y+sy) % 16;
+	u32	col	= (x+sx) % 16;
 	return	c	> dither[col][row];
 }
 
@@ -56,10 +56,10 @@ void		CDetailManager::cache_Decompress(Slot* S)
 	// Select polygons
 	SBoxPickInfoVec		pinf;
 	Scene.BoxPick		(D.BB,pinf,GetSnapObjects());
-	DWORD	triCount	= pinf.size();
+	u32	triCount	= pinf.size();
 #else
 	XRC.box_query		(pCreator->ObjectSpace.GetStaticModel(),bC,bD);
-	DWORD	triCount	= XRC.r_count	();
+	u32	triCount	= XRC.r_count	();
 	CDB::TRI* tris		= pCreator->ObjectSpace.GetStaticTris();
 #endif
 
@@ -78,7 +78,7 @@ void		CDetailManager::cache_Decompress(Slot* S)
 	// Prepare to selection
 	float		density		= psDetailDensity;
 	float		jitter		= density/1.7f;
-	DWORD		d_size		= iCeil	(dm_slot_size/density);
+	u32		d_size		= iCeil	(dm_slot_size/density);
 	svector<int,dm_obj_in_slot>		selected;
 
 	CRandom				r_selection	(0x12071980^::Random.randI(32760));
@@ -91,13 +91,13 @@ void		CDetailManager::cache_Decompress(Slot* S)
 	Bounds.invalidate	();
 
 	// Decompressing itself
-	for (DWORD z=0; z<=d_size; z++)
+	for (u32 z=0; z<=d_size; z++)
 	{
-		for (DWORD x=0; x<=d_size; x++)
+		for (u32 x=0; x<=d_size; x++)
 		{
 			// shift
-			DWORD shift_x =  r_jitter.randI(16);
-			DWORD shift_z =  r_jitter.randI(16);
+			u32 shift_x =  r_jitter.randI(16);
+			u32 shift_z =  r_jitter.randI(16);
 
 			// Iterpolate and dither palette
 			selected.clear();
@@ -108,7 +108,7 @@ void		CDetailManager::cache_Decompress(Slot* S)
 
 			// Select 
 			if (selected.empty())	continue;
-			DWORD index;
+			u32 index;
 			if (selected.size()==1)	index = selected[0];
 			else					index = selected[r_selection.randI(selected.size())]; 
 
@@ -126,7 +126,7 @@ void		CDetailManager::cache_Decompress(Slot* S)
 			Fvector	dir; dir.set(0,-1,0);
 
 			float		r_u,r_v,r_range;
-			for (DWORD tid=0; tid<triCount; tid++)
+			for (u32 tid=0; tid<triCount; tid++)
 			{
 #ifdef _EDITOR                
 				Fvector verts[3];

@@ -36,7 +36,7 @@ CObjectList::~CObjectList	( )
 
 void CObjectList::Unload	( )
 {
-	for (DWORD i=0; i<objects.size(); i++) {
+	for (u32 i=0; i<objects.size(); i++) {
 		CObject *pObject = objects[i];
 		_DELETE	( pObject );
 	}
@@ -146,7 +146,7 @@ void CObjectList::net_Import		(NET_Packet* Packet)
 	{
 		u16 ID;		Packet->r_u16	(ID);
 		u8  size;	Packet->r_u8	(size);
-		CObject* P  = net_Find		(DWORD(ID));
+		CObject* P  = net_Find		(u32(ID));
 		if (P)	P->net_Import		(*Packet);
 		else	Packet->r_advance	(size);
 	}
@@ -160,7 +160,7 @@ CObject* CObjectList::net_Find			(u32 ID)
 
 void	CObjectList::SLS_Save			(CFS_Base&	fs		)
 {
-	for (DWORD i=0; i<objects.size(); i++) 
+	for (u32 i=0; i<objects.size(); i++) 
 	{
 		CObject *O		= objects[i];
 		fs.open_chunk	(i);
@@ -185,7 +185,7 @@ void	CObjectList::SLS_Load			(CStream&	fs		)
 
 void	CObjectList::OnDeviceCreate	()
 {
-	for (DWORD i=0; i<objects.size(); i++) 
+	for (u32 i=0; i<objects.size(); i++) 
 	{
 		CObject *O			= objects[i];
 		O->OnDeviceCreate	();
@@ -194,7 +194,7 @@ void	CObjectList::OnDeviceCreate	()
 
 void	CObjectList::OnDeviceDestroy()
 {
-	for (DWORD i=0; i<objects.size(); i++) 
+	for (u32 i=0; i<objects.size(); i++) 
 	{
 		CObject *O			= objects[i];
 		O->OnDeviceDestroy	();

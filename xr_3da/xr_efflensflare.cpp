@@ -131,8 +131,8 @@ void CLensFlare::Load( CInifile* pIni, LPSTR section )
 		R = pIni->ReadSTRING ( section,"flare_radius" );
 		O = pIni->ReadSTRING ( section,"flare_opacity");
 		P = pIni->ReadSTRING ( section,"flare_position");
-		DWORD tcnt = _GetItemCount(T);
-		for (DWORD i=0; i<tcnt; i++){
+		u32 tcnt = _GetItemCount(T);
+		for (u32 i=0; i<tcnt; i++){
 			_GetItem(R,i,name); r=(float)atof(name);
 			_GetItem(O,i,name); o=(float)atof(name);
 			_GetItem(P,i,name); p=(float)atof(name);
@@ -253,7 +253,7 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 	dwLight.set							( LightColor );
 	svector<Shader*,MAX_Flares>			_2render;
 	
-	DWORD								VS_Offset;
+	u32								VS_Offset;
 	FVF::LIT *pv						= (FVF::LIT*) Device.Streams.Vertex.Lock(2*MAX_Flares*4,VS->dwStride,VS_Offset);
 	
 	float 	fDistance					= FAR_DIST*0.75f;
@@ -264,7 +264,7 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 		vecSy.mul			(vecY, m_Source.fRadius*fDistance);
 		color.set			( dwLight );
 
-		DWORD c				= color.get();
+		u32 c				= color.get();
 		pv->set				(vecLight.x+vecSx.x-vecSy.x, vecLight.y+vecSx.y-vecSy.y, vecLight.z+vecSx.z-vecSy.z, c, 0, 0); pv++;
 		pv->set				(vecLight.x+vecSx.x+vecSy.x, vecLight.y+vecSx.y+vecSy.y, vecLight.z+vecSx.z+vecSy.z, c, 0, 1); pv++;
 		pv->set				(vecLight.x-vecSx.x-vecSy.x, vecLight.y-vecSx.y-vecSy.y, vecLight.z-vecSx.z-vecSy.z, c, 1, 0); pv++;
@@ -288,7 +288,7 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 				float    cl			= F.fOpacity * fBlend;
 				color.set			( dwLight );
 				color.mul_rgba		( cl );
-				DWORD c				= color.get();
+				u32 c				= color.get();
 				pv->set				(vec.x+vecSx.x-vecSy.x, vec.y+vecSx.y-vecSy.y, vec.z+vecSx.z-vecSy.z, c, 0, 0); pv++;
 				pv->set				(vec.x+vecSx.x+vecSy.x, vec.y+vecSx.y+vecSy.y, vec.z+vecSx.z+vecSy.z, c, 0, 1); pv++;
 				pv->set				(vec.x-vecSx.x-vecSy.x, vec.y-vecSx.y-vecSy.y, vec.z-vecSx.z-vecSy.z, c, 1, 0); pv++;
@@ -306,7 +306,7 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 			color.set				( dwLight );
 			color.mul_rgba			( fGradientValue );
 
-			DWORD c					= color.get	();
+			u32 c					= color.get	();
 			pv->set					(vecLight.x+vecSx.x-vecSy.x, vecLight.y+vecSx.y-vecSy.y, vecLight.z+vecSx.z-vecSy.z, c, 0, 0); pv++;
 			pv->set					(vecLight.x+vecSx.x+vecSy.x, vecLight.y+vecSx.y+vecSy.y, vecLight.z+vecSx.z+vecSy.z, c, 0, 1); pv++;
 			pv->set					(vecLight.x-vecSx.x-vecSy.x, vecLight.y-vecSx.y-vecSy.y, vecLight.z-vecSx.z-vecSy.z, c, 1, 0); pv++;
@@ -319,13 +319,13 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 
 	Device.set_xform_world		(Fidentity);
 	Device.Primitive.setVertices(VS->dwHandle,VS->dwStride,Device.Streams.Vertex.Buffer());
-	for (DWORD i=0; i<_2render.size(); i++)
+	for (u32 i=0; i<_2render.size(); i++)
 	{
     	if (_2render[i])
 		{
 			Device.Shader.set_Shader		(_2render[i]);
 
-			DWORD							vBase	= i*4+VS_Offset;
+			u32							vBase	= i*4+VS_Offset;
 			Device.Primitive.setIndices		(vBase, Device.Streams.QuadIB);
 			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
 	    }

@@ -19,12 +19,12 @@ void CDetail::Load		(CStream* S)
 	R_ASSERT		(0==(number_indices%3));
 	
 	// Vertices
-	DWORD			size_vertices		= number_vertices*sizeof(fvfVertexIn); 
+	u32			size_vertices		= number_vertices*sizeof(fvfVertexIn); 
 	vertices		= (CDetail::fvfVertexIn *)	_aligned_malloc	(size_vertices,64);
 	S->Read			(vertices,size_vertices);
 	
 	// Indices
-	DWORD			size_indices		= number_indices*sizeof(WORD);
+	u32			size_indices		= number_indices*sizeof(WORD);
 	indices			= (WORD*)					_aligned_malloc	(size_indices,64);
 	S->Read			(indices,size_indices);
 	
@@ -34,7 +34,7 @@ void CDetail::Load		(CStream* S)
 	
 	// Calc BB & SphereRadius
 	bv_bb.invalidate	();
-	for (DWORD i=0; i<number_vertices; i++)
+	for (u32 i=0; i<number_vertices; i++)
 		bv_bb.modify	(vertices[i].P);
 	bv_bb.getsphere		(bv_sphere.P,bv_sphere.R);
 
@@ -61,7 +61,7 @@ void CDetail::Optimize	()
 
 		// Permute vertices
 		vector<fvfVertexIn>	verts	(vertices,vertices+number_vertices);
-		for(DWORD i=0; i<verts.size(); i++)
+		for(u32 i=0; i<verts.size(); i++)
 			vertices[i]=verts[vec_permute[i]];
 	}
 }
@@ -73,7 +73,7 @@ void CDetail::Unload	()
 	Device.Shader.Delete(shader);
 }
 
-void CDetail::Transfer	(Fmatrix& mXform, fvfVertexOut* vDest, DWORD C, WORD* iDest, DWORD iOffset)
+void CDetail::Transfer	(Fmatrix& mXform, fvfVertexOut* vDest, u32 C, WORD* iDest, u32 iOffset)
 {
 	// Transfer vertices
 	{
@@ -91,8 +91,8 @@ void CDetail::Transfer	(Fmatrix& mXform, fvfVertexOut* vDest, DWORD C, WORD* iDe
 	// Transfer indices (in 32bit lines)
 	VERIFY	(iOffset<65535);
 	{
-		DWORD	item	= (iOffset<<16) | iOffset;
-		DWORD	count	= number_indices/2;
+		u32	item	= (iOffset<<16) | iOffset;
+		u32	count	= number_indices/2;
 		LPDWORD	sit		= LPDWORD(indices);
 		LPDWORD	send	= sit+count;
 		LPDWORD	dit		= LPDWORD(iDest);

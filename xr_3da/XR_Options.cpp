@@ -248,7 +248,7 @@ void CXR_Options::OnMouseMove	(int dx, int dy)
 	if (Cursor->x> 1) Cursor->x=1;
 	if (Cursor->y<-1) Cursor->y=-1;
 	if (Cursor->y> 1) Cursor->y=1;
-	//	DToF("Btn: ",DWORD(GetButton()));
+	//	DToF("Btn: ",u32(GetButton()));
 }
 
 void CXR_Options::OnMousePress(int btn)
@@ -283,7 +283,7 @@ void CXR_Options::OnMousePress(int btn)
 	case mi_list:
 		{
 			char buf[64];
-			DWORD cx = int(X_TO_REAL(Cursor->x));
+			u32 cx = int(X_TO_REAL(Cursor->x));
 			char *v  = pConsole->GetValue(items[itm].cmd);
 			if (cx>(M_X+120) && cx<(M_X+140)) {
 				v = pConsole->GetPrevValue(items[itm].cmd);
@@ -300,7 +300,7 @@ void CXR_Options::OnMousePress(int btn)
 	case mi_scroll:
 		{
 			char buf[64];
-			DWORD cx = int(X_TO_REAL(Cursor->x));
+			u32 cx = int(X_TO_REAL(Cursor->x));
 			float v = pConsole->GetFloat(items[itm].cmd);
 			if (cx>(M_X+120) && cx<(M_X+140)) {
 				v-=.05f;	if (v<0) v=0;
@@ -325,13 +325,13 @@ void CXR_Options::OnMousePress(int btn)
 
 int CXR_Options::GetItem()
 {
-	DWORD cx = int(X_TO_REAL(Cursor->x));
-	DWORD cy = int(Y_TO_REAL(Cursor->y));
+	u32 cx = int(X_TO_REAL(Cursor->x));
+	u32 cy = int(Y_TO_REAL(Cursor->y));
 
 	if ((cx<M_X)||(cx>M_X+230)) return -1;
 	for (int i=0; i<items.count; i++) {
-		DWORD mi	= M_Y(i);
-		DWORD mip	= M_Y(i+1);
+		u32 mi	= M_Y(i);
+		u32 mip	= M_Y(i+1);
 		if (
 			(cy >= mi   ) &&
 			(cy <  mip  )

@@ -56,7 +56,7 @@ void CHWCaps::Update()
 
 
 	// Stencil relative caps
-    DWORD dwStencilCaps = caps.StencilCaps;
+    u32 dwStencilCaps = caps.StencilCaps;
     if( (!(dwStencilCaps & D3DSTENCILCAPS_INCR) && !(dwStencilCaps & D3DSTENCILCAPS_INCRSAT))
        ||(!(dwStencilCaps & D3DSTENCILCAPS_DECR) && !(dwStencilCaps & D3DSTENCILCAPS_DECRSAT)))
     {

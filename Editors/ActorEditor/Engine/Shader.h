@@ -18,15 +18,15 @@ class	ENGINE_API	CPS;
 #pragma warning(disable : 4275)
 struct	ENGINE_API	STextureList	: public svector<CTexture*,8>
 {
-	DWORD	dwReference;
+	u32	dwReference;
 };
 struct	ENGINE_API	SMatrixList		: public svector<CMatrix*,8>
 {
-	DWORD	dwReference;
+	u32	dwReference;
 };
 struct	ENGINE_API	SConstantList	: public svector<CConstant*,8>
 {
-	DWORD	dwReference;
+	u32	dwReference;
 };
 #pragma warning(default : 4275)
 
@@ -34,7 +34,7 @@ typedef svector<string64,8>			sh_list;
 
 struct	ENGINE_API		CPass 
 {
-	DWORD				dwStateBlock;
+	u32				dwStateBlock;
 	STextureList*		T;
 	SMatrixList*		M;
 	SConstantList*		C;
@@ -47,15 +47,15 @@ struct ENGINE_API		ShaderElement
 public:
 	struct SFlags
 	{
-		DWORD	iPriority	:	2;
-		DWORD	bStrictB2F	:	1;
-		DWORD	bLighting	:	1;
-		DWORD	bPixelShader:	1;
+		u32	iPriority	:	2;
+		u32	bStrictB2F	:	1;
+		u32	bLighting	:	1;
+		u32	bPixelShader:	1;
 	};
 public:
 	ShaderElement		();
 public:
-	DWORD					dwReference;
+	u32					dwReference;
 	SFlags					Flags;
 	svector<CPass,8>		Passes;
 	
@@ -66,7 +66,7 @@ public:
 struct ENGINE_API		Shader 
 {
 public:
-	DWORD					dwReference;
+	u32					dwReference;
 	union {
 		struct {
 			ShaderElement*		lod0;

@@ -33,7 +33,7 @@ CDemoPlay::CDemoPlay(const char *name, float ms, BOOL bc, float life_time) : CEf
 			pCreator->Cameras.RemoveEffector(cefDemo);
 			return;
 		}
-		DWORD sz	= 0;
+		u32 sz	= 0;
 		void *data	= FileDownload(name,&sz);
 		VERIFY(sz%sizeof(Fmatrix) == 0);
 		
@@ -63,8 +63,8 @@ void CDemoPlay::stat_Start()
 
 void CDemoPlay::stat_Stop()
 {
-	DWORD	dwFramesTotal	= Device.dwFrame-dwStartFrame;
-	DWORD	dwTimeTotal		= Device.dwTimeGlobal-dwStartTime;
+	u32	dwFramesTotal	= Device.dwFrame-dwStartFrame;
+	u32	dwTimeTotal		= Device.dwTimeGlobal-dwStartTime;
 
 	Msg("* [DEMO] FPS archivied: %f",float(1000.0 * double(dwFramesTotal)/double(dwTimeTotal)));
 }

@@ -15,7 +15,7 @@ class ENGINE_API CCDA
 	UINT					retLen;
 	MCIERROR				err;
 
-	DWORD					dwCurTrack;
+	u32					dwCurTrack;
 	BOOL					bWorking;
 	BOOL					bPaused;
 

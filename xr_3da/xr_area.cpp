@@ -124,7 +124,7 @@ IC int	CObjectSpace::GetNearest ( const Fvector &point, float range )
 	int 				ix, iz;
 	for (ix=rect.x1;ix<=rect.x2;ix++)
 		for (iz=rect.y1;iz<=rect.y2;iz++)
-			for (DWORD q=0; q<Dynamic(ix, iz).lst.size(); q++){
+			for (u32 q=0; q<Dynamic(ix, iz).lst.size(); q++){
 				t_object	= Dynamic(ix, iz).lst[q];
 				t_model		= t_object->CFORM();
 				if (!t_model->enabled)					continue;
@@ -217,7 +217,7 @@ void CObjectSpace::dbgRender()
 	
 	
 	Device.Shader.set_Shader(sh_debug);
-	for (DWORD i=0; i<q_debug.boxes.size(); i++)
+	for (u32 i=0; i<q_debug.boxes.size(); i++)
 	{
 		Fobb&		obb		= q_debug.boxes[i];
 		Fmatrix		X,S,R;
@@ -237,7 +237,7 @@ void CObjectSpace::dbgRender()
 
 	for (i=0; i<dbg_S.size(); i++)
 	{
-		pair<Fsphere,DWORD>& P = dbg_S[i];
+		pair<Fsphere,u32>& P = dbg_S[i];
 		Fsphere&	S = P.first;
 		Fmatrix		M;
 		M.scale		(S.R,S.R,S.R);
@@ -248,10 +248,10 @@ void CObjectSpace::dbgRender()
 
 	// render slots
 	Fvector c;
-	DWORD	C1		= D3DCOLOR_XRGB(0,64,0);
-	DWORD	C1s		= D3DCOLOR_XRGB(0,255,0);
-	DWORD	C2		= D3DCOLOR_XRGB(100,100,100);
-	DWORD	C2s		= D3DCOLOR_XRGB(170,170,170);
+	u32	C1		= D3DCOLOR_XRGB(0,64,0);
+	u32	C1s		= D3DCOLOR_XRGB(0,255,0);
+	u32	C2		= D3DCOLOR_XRGB(100,100,100);
+	u32	C2s		= D3DCOLOR_XRGB(170,170,170);
 
 	float cl = CL_SLOT_SIZE;
 	float cl_2 = CL_SLOT_SIZE/2-.05f;

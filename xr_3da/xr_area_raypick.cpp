@@ -27,7 +27,7 @@ BOOL CObjectSpace::nl_append(int x, int z, const Fvector2& O, const Fvector2& D)
 				dbg_Slot.back().set(float(x),float(z));
 			}
 	
-			for(DWORD I=0; I<S.lst.size(); I++) 
+			for(u32 I=0; I<S.lst.size(); I++) 
 			{
 				CObject*	O	= S.lst[I];
 				CCFModel*	M	= O->CFORM();
@@ -193,7 +193,7 @@ BOOL CObjectSpace::RayPick( const Fvector &start, const Fvector &dir, float rang
 	{
 		CCFModel&	M = *(*nl_idx)->CFORM();
 		
-		DWORD C = D3DCOLOR_XRGB(64,64,64);
+		u32 C = D3DCOLOR_XRGB(64,64,64);
 		if (M._svRayTest(Q)) {
 			C	= D3DCOLOR_XRGB(128,128,196);
 			if (Q.range<R.range) {
@@ -276,7 +276,7 @@ BOOL  CObjectSpace::RayPickW( const Fvector &start, const Fvector &dir, float ra
 		if (!XRC.GetBBoxContactCount()) continue;
 		// fill tris list
 		Fmatrix *pM = (target->owner)?&(target->owner->mTransform):0;
-		for (DWORD i=0; i<XRC.GetBBoxContactCount(); i++){
+		for (u32 i=0; i<XRC.GetBBoxContactCount(); i++){
 												AddToTrisList( pM, &target->model.tris[XRC.BBoxContact[i].id] );
 												if (range){
 													clQueryTri& t=q_tris[q_tris.size()-1];
@@ -318,7 +318,7 @@ BOOL  CObjectSpace::RayPickW( const Fvector &start, const Fvector &dir, float ra
 	collide_list.push_back(0);
 	
 	// fill tris list
-	for (DWORD i=0; i<XRC.GetBBoxContactCount(); i++)
+	for (u32 i=0; i<XRC.GetBBoxContactCount(); i++)
 	{
 		CDB::tri &T = Static.tris[XRC.BBoxContact[i].id];
 		if (range){

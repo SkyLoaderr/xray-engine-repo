@@ -7,7 +7,7 @@
 
 ENGINE_API occRasterizer	Raster;
 
-void __stdcall fillDW_8x	(LPDWORD ptr, DWORD size, DWORD value)
+void __stdcall fillDW_8x	(LPDWORD ptr, u32 size, u32 value)
 {
 	LPDWORD end = ptr+size;
 	for (; ptr!=end; ptr+=2)
@@ -58,7 +58,7 @@ occRasterizer::~occRasterizer	()
 
 void occRasterizer::clear		()
 {
-	DWORD size		= occ_dim*occ_dim;
+	u32 size		= occ_dim*occ_dim;
 	float f			= 1.f;
 	PSGP.memFill32	(bufFrame,size,0);
 	PSGP.memFill32	(bufDepth,size,*LPDWORD(&f));

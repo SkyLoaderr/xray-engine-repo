@@ -13,7 +13,7 @@
 #include "xr_creator.h"
 #include "std_classes.h"
 
-static DWORD COLORS[8] = 
+static u32 COLORS[8] = 
 {
 	D3DCOLOR_XRGB(0x7f,0x7f,0x7f),
 	D3DCOLOR_XRGB(0xff,0x00,0x00),
@@ -28,7 +28,7 @@ static DWORD COLORS[8] =
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-//extern DWORD num_portals;
+//extern u32 num_portals;
 
 void drawPoly(sPoly &P, CPortal* Portal)
 {
@@ -39,10 +39,10 @@ void drawPoly(sPoly &P, CPortal* Portal)
 	else										S=Portal->Front	();
 	
 	Fvector Center,End;
-	DWORD C		 = COLORS[S->SelfID % 8];
+	u32 C		 = COLORS[S->SelfID % 8];
 	HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_NONE);
 	Center.add(P[0],P[1]);
-	for (DWORD i=2; i<P.size(); i++)
+	for (u32 i=2; i<P.size(); i++)
 	{
 		Device.Primitive.dbg_DrawTRI(Fidentity,P[0],P[i-1],P[i],C);
 		Center.add(P[i]);
@@ -141,7 +141,7 @@ void CSector::Render(CFrustum &F)
 				CTempObject* pV = tempObjects[i];
 				if (pV->Alive())
 				{
-					DWORD planes	=	F.getMask();
+					u32 planes	=	F.getMask();
 					CVisual* V	=	pV->Visual();
 					if (F.testSAABB(V->bv_Position,V->bv_Radius,V->bv_BBox.min,V->bv_BBox.max,planes)!=fcvNone)
 						::Render->add_Geometry	(pV->Visual());
@@ -161,7 +161,7 @@ void CSector::Render(CFrustum &F)
 
 	// Search visible portals and go through them
 	CSector*	pLastSector		= ::Render->getSectorActive();
-	for (DWORD I=0; I<Portals.size(); I++)
+	for (u32 I=0; I<Portals.size(); I++)
 	{
 		sPoly	S,D;
 		if (Portals[I]->dwFrame != Device.dwFrame) {
@@ -235,7 +235,7 @@ void CSector::ll_GetObjects	(CFrustum& F, Fvector& vBase, Fmatrix& mFullXFORM)
 	}
 
 	// Search visible portals and go through them
-	for (DWORD I=0; I<Portals.size(); I++)
+	for (u32 I=0; I<Portals.size(); I++)
 	{
 		sPoly	S,D;
 		if (Portals[I]->dwFrameObject != oQuery.dwMark) {
@@ -262,7 +262,7 @@ void CSector::DebugDump()
 	B.getcenter	(C);
 
 	Log("-------------",SelfID);
-	for (DWORD i=0; i<Portals.size(); i++)
+	for (u32 i=0; i<Portals.size(); i++)
 	{
 		CPortal* P			= Portals[i];
 		vector<Fvector>& V	= P->getPoly();
@@ -283,8 +283,8 @@ void CSector::DebugDump()
 void CSector::Load(CStream& fs)
 {
 	// Assign portal polygons
-	DWORD size	= fs.FindChunk(fsP_Portals); R_ASSERT(0==(size&1));
-	DWORD count	= size/2;
+	u32 size	= fs.FindChunk(fsP_Portals); R_ASSERT(0==(size&1));
+	u32 count	= size/2;
 	while (count) {
 		WORD ID		= fs.Rword();
 		CPortal* P	= ::Render->getPortal	(ID);

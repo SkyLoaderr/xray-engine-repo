@@ -11,7 +11,7 @@ class ENGINE_API CGameFont: public pureDeviceDestroy, public pureDeviceCreate
 		string128	string;
 		float		x,y;
 		float		size;
-		DWORD		c;
+		u32		c;
 	};
 	LPSTR					cShader;
 	LPSTR					cTexture;
@@ -19,7 +19,7 @@ protected:
 	Fvector2				vHalfPixel;
 	Fvector2				vUVSize;	
 
-	DWORD					dwCurrentColor;
+	u32					dwCurrentColor;
 	float					fCurrentSize;
 	float					fCurrentX, fCurrentY;
 	Fvector2				vInterval;
@@ -32,7 +32,7 @@ protected:
 	Shader*					pShader;
 	CVS*					VS;
 
-	DWORD					dwFlags;
+	u32					dwFlags;
 	float					fScale;
 public:
 	enum{
@@ -47,14 +47,14 @@ protected:
 	IC	float				ConvertSize		(float sz)	{return (dwFlags&fsDeviceIndependent)?sz*Device.dwWidth:sz*fScale;}
 	IC	float				GetCurrentSize	()			{return (dwFlags&fsDeviceIndependent)?2*fCurrentSize:fCurrentSize*fScale;}
 public:
-							CGameFont		(LPCSTR shader, LPCSTR texture, int tsize, int iCPL=16, DWORD flags=0);
+							CGameFont		(LPCSTR shader, LPCSTR texture, int tsize, int iCPL=16, u32 flags=0);
 							~CGameFont		();
 
-	IC void					Color			(DWORD C)	{dwCurrentColor=C;};
+	IC void					Color			(u32 C)	{dwCurrentColor=C;};
 	IC void					Size			(float S)	{fCurrentSize=S;};
 	IC void					Scale			(float S)	{fScale=S;};
 	IC void					Interval		(float x, float y) {vInterval.set(x,y);};
-	IC void					Add				(float _x, float _y, char *s, DWORD _c=0xffffffff, float _size=0.01f);
+	IC void					Add				(float _x, float _y, char *s, u32 _c=0xffffffff, float _size=0.01f);
 	IC float				SizeOf			(char *s)	
 	{ 
 		if (dwFlags&fsVariableWidth){

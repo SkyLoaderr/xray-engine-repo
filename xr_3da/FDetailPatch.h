@@ -14,7 +14,7 @@ struct DPatch {
 	Fvector P;
 	Fvector	N;
 	float	S;
-	DWORD	C;
+	u32	C;
 };
 #pragma pack(pop)
 
@@ -23,7 +23,7 @@ class FDetailPatch : public CVisual
 	vector<DPatch>	patches;
 public:
 	virtual void	Render		(float LOD);
-	virtual void	Load		(const char* N, CStream *data, DWORD dwFlags);
+	virtual void	Load		(const char* N, CStream *data, u32 dwFlags);
 
 	FDetailPatch();
 	virtual ~FDetailPatch();

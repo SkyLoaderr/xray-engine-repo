@@ -119,14 +119,14 @@ void	CBlender_Compile::PassSET_ZB		(BOOL bZTest, BOOL bZWrite)
 	RS.SetRS	(D3DRS_ZWRITEENABLE,	BC(bZWrite));
 }
 
-void	CBlender_Compile::PassSET_Blend	(BOOL bABlend, DWORD abSRC, DWORD abDST, BOOL bATest, DWORD aRef)
+void	CBlender_Compile::PassSET_Blend	(BOOL bABlend, u32 abSRC, u32 abDST, BOOL bATest, u32 aRef)
 {
 	RS.SetRS(D3DRS_ALPHABLENDENABLE,	BC(bABlend));
 	RS.SetRS(D3DRS_SRCBLEND,			bABlend?abSRC:D3DBLEND_ONE	);
 	RS.SetRS(D3DRS_DESTBLEND,			bABlend?abDST:D3DBLEND_ZERO	);
 	RS.SetRS(D3DRS_ALPHATESTENABLE,		BC(bATest));
 	if (bATest)
-		RS.SetRS(D3DRS_ALPHAREF,		DWORD(aRef));
+		RS.SetRS(D3DRS_ALPHAREF,		u32(aRef));
 }
 void	CBlender_Compile::PassSET_LightFog	(BOOL bLight, BOOL bFog)
 {
@@ -144,25 +144,25 @@ void	CBlender_Compile::StageEnd		()
 {
 	dwStage	++;
 }
-void	CBlender_Compile::StageSET_Address	(DWORD adr)
+void	CBlender_Compile::StageSET_Address	(u32 adr)
 {
 	RS.SetTSS	(Stage(),D3DTSS_ADDRESSU,	adr);
 	RS.SetTSS	(Stage(),D3DTSS_ADDRESSV,	adr);
 }
-void	CBlender_Compile::StageSET_XForm	(DWORD tf, DWORD tc)
+void	CBlender_Compile::StageSET_XForm	(u32 tf, u32 tc)
 {
 	RS.SetTSS	(Stage(),D3DTSS_TEXTURETRANSFORMFLAGS,	tf);
 	RS.SetTSS	(Stage(),D3DTSS_TEXCOORDINDEX,			tc);
 }
-void	CBlender_Compile::StageSET_Color	(DWORD a1, DWORD op, DWORD a2)
+void	CBlender_Compile::StageSET_Color	(u32 a1, u32 op, u32 a2)
 {
 	RS.SetColor	(Stage(),a1,op,a2);
 }
-void	CBlender_Compile::StageSET_Color3	(DWORD a1, DWORD op, DWORD a2, DWORD a3)
+void	CBlender_Compile::StageSET_Color3	(u32 a1, u32 op, u32 a2, u32 a3)
 {
 	RS.SetColor3(Stage(),a1,op,a2,a3);
 }
-void	CBlender_Compile::StageSET_Alpha	(DWORD a1, DWORD op, DWORD a2)
+void	CBlender_Compile::StageSET_Alpha	(u32 a1, u32 op, u32 a2)
 {
 	RS.SetAlpha	(Stage(),a1,op,a2);
 }
@@ -201,7 +201,7 @@ void	CBlender_Compile::Stage_Matrix		(LPCSTR name, int iChannel)
 	passMatrices.push_back(M);
 
 	// Setup transform pipeline
-	DWORD	ID = Stage();
+	u32	ID = Stage();
 	if (M) {
 		switch (M->dwMode)
 		{

@@ -12,14 +12,14 @@ class ENGINE_API CEvent
 private:
 	char*					Name;
 	vector<CEventBase*>		Handlers;
-	DWORD					dwRefCount;
+	u32					dwRefCount;
 public:
 	CEvent	(const char* S);
 	~CEvent	();
 
 	LPCSTR	GetFull()
 	{	return Name; }
-	DWORD	RefCount()
+	u32	RefCount()
 	{	return dwRefCount; }
 
 	BOOL	Equal(CEvent& E)
@@ -36,9 +36,9 @@ public:
 		if (I!=Handlers.end())
 			Handlers.erase(I);
 	}
-	void	Signal(DWORD P1, DWORD P2)
+	void	Signal(u32 P1, u32 P2)
 	{
-		for (DWORD I=0; I<Handlers.size(); I++)
+		for (u32 I=0; I<Handlers.size(); I++)
 			Handlers[I]->OnEvent(this,P1,P2);
 	}
 };
@@ -59,7 +59,7 @@ IC bool ev_sort(CEvent*E1, CEvent*E2)
 void CEventAPI::Dump()
 {
 	std::sort(Events.begin(),Events.end(),ev_sort);
-	for (DWORD i=0; i<Events.size(); i++)
+	for (u32 i=0; i<Events.size(); i++)
 		Msg("* [%d] %s",Events[i]->RefCount(),Events[i]->GetFull());
 }
 
@@ -112,13 +112,13 @@ void	CEventAPI::Handler_Detach(EVENT& E, CEventBase* H)
 	Destroy		(E);
 	CS.Leave	();
 }
-void	CEventAPI::Signal(EVENT E, DWORD P1, DWORD P2)
+void	CEventAPI::Signal(EVENT E, u32 P1, u32 P2)
 {
 	CS.Enter	();
 	E->Signal	(P1,P2);	
 	CS.Leave	();
 }
-void	CEventAPI::Signal(LPCSTR N, DWORD P1, DWORD P2)
+void	CEventAPI::Signal(LPCSTR N, u32 P1, u32 P2)
 {
 	CS.Enter	();
 	EVENT		E = Create(N);
@@ -126,7 +126,7 @@ void	CEventAPI::Signal(LPCSTR N, DWORD P1, DWORD P2)
 	Destroy		(E);
 	CS.Leave	();
 }
-void	CEventAPI::Defer(EVENT E, DWORD P1, DWORD P2)
+void	CEventAPI::Defer(EVENT E, u32 P1, u32 P2)
 {
 	CS.Enter	();
 	E->dwRefCount++;
@@ -136,7 +136,7 @@ void	CEventAPI::Defer(EVENT E, DWORD P1, DWORD P2)
 	Events_Deferred.back().P2	= P2;
 	CS.Leave	();
 }
-void	CEventAPI::Defer(LPCSTR N, DWORD P1, DWORD P2)
+void	CEventAPI::Defer(LPCSTR N, u32 P1, u32 P2)
 {
 	CS.Enter	();
 	EVENT	E	= Create(N);
@@ -159,7 +159,7 @@ void	CEventAPI::OnFrame	()
 	msRead		();
 	CS.Enter	();
 	if (Events_Deferred.empty())	return;
-	for (DWORD I=0; I<Events_Deferred.size(); I++)
+	for (u32 I=0; I<Events_Deferred.size(); I++)
 	{
 		Deferred&	DEF = Events_Deferred[I];
 		Signal		(DEF.E,DEF.P1,DEF.P2);

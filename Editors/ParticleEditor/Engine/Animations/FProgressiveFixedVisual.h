@@ -25,18 +25,18 @@ struct ENGINE_API Vsplit
 class ENGINE_API FProgressiveFixedVisual : public Fvisual
 {
 protected:
-	DWORD			V_Minimal;
-	DWORD			V_Current;
-	DWORD			I_Current;
-	DWORD			FIX_Current;
-	DWORD			iRefresh;		// 0..PM_REFRESH
+	u32			V_Minimal;
+	u32			V_Current;
+	u32			I_Current;
+	u32			FIX_Current;
+	u32			iRefresh;		// 0..PM_REFRESH
 	WORD*			faces_affected;	// shared
 	Vsplit*			vsplit;			// shared
 
 	void			pm_copy			(CVisual *pFrom);
 public:
 	virtual void Render		(float LOD);	// LOD - Level Of Detail  [0.0f - min, 1.0f - max], Used
-	virtual void Load		(const char* N, CStream *data,DWORD dwFlags);
+	virtual void Load		(const char* N, CStream *data,u32 dwFlags);
 	virtual void Copy		(CVisual *pFrom);
 	virtual void Release	();
 

@@ -38,7 +38,7 @@ void CVisual::Release	()
 	Device.Shader._DeleteVS	(hVS);
 }
 
-void CVisual::Load		(const char* N, CStream *data, DWORD dwFlags)
+void CVisual::Load		(const char* N, CStream *data, u32 dwFlags)
 {
 	// header
 	VERIFY(data);
@@ -84,8 +84,8 @@ void CVisual::Load		(const char* N, CStream *data, DWORD dwFlags)
 	// textures
 	if (data->FindChunk(OGF_TEXTURE_L)) {
 #ifndef _EDITOR
-		DWORD T = data->Rdword();
-		DWORD S = data->Rdword();
+		u32 T = data->Rdword();
+		u32 S = data->Rdword();
 		hShader = pCreator->LL_CreateShader(S,T,-1,-1);
 #endif
 	} else {

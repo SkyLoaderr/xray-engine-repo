@@ -59,7 +59,7 @@ public:
 	CHOM											HOM;
 	
 	// Global vertex-buffer container
-	vector<DWORD>									FVF;
+	vector<u32>									FVF;
 	vector<IDirect3DVertexBuffer8*>					VB;
 	vector<IDirect3DIndexBuffer8*>					IB;
 	vector<CVisual*>								Visuals;
@@ -86,8 +86,8 @@ private:
 	void							LoadPortals				(CStream	*fs);
 	void							LoadSectors				(CStream	*fs);
 
-	BOOL							add_Dynamic				(CVisual	*pVisual, DWORD planes);	// normal processing
-	void							add_Static				(CVisual	*pVisual, DWORD planes);
+	BOOL							add_Dynamic				(CVisual	*pVisual, u32 planes);	// normal processing
+	void							add_Static				(CVisual	*pVisual, u32 planes);
 	void							add_leafs_Dynamic		(CVisual	*pVisual);					// if detected node's full visibility
 	void							add_leafs_Static		(CVisual	*pVisual);					// if detected node's full visibility
 	void							InsertSG_Dynamic		(CVisual	*pVisual, Fvector& Center);
@@ -111,7 +111,7 @@ public:
 	virtual CSector*				getSector				(int id);
 	virtual CSector*				getSectorActive			();
 	virtual CVisual*				getVisual				(int id);
-	virtual DWORD					getFVF					(int id);
+	virtual u32					getFVF					(int id);
 	virtual IDirect3DVertexBuffer8*	getVB					(int id);
 	virtual IDirect3DIndexBuffer8*	getIB					(int id);
 	virtual CSector*				detectSector			(Fvector& P);

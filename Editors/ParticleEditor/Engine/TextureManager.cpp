@@ -11,10 +11,10 @@
 #include "blenders\blender_recorder.h"
 
 //--------------------------------------------------------------------------------------------------------------
-DWORD		CShaderManager::_CreateCode		(SimulatorStates& code)
+u32		CShaderManager::_CreateCode		(SimulatorStates& code)
 {
 	// Search equal code
-	for (DWORD it=0; it<codes.size(); it++)
+	for (u32 it=0; it<codes.size(); it++)
 	{
 		sh_Code&			C		= codes[it];;
 		SimulatorStates&	base	= C.Code;
@@ -31,11 +31,11 @@ DWORD		CShaderManager::_CreateCode		(SimulatorStates& code)
 	codes.back().Code		= code;
 	return codes.back().SB;
 }
-void		CShaderManager::_DeleteCode		(DWORD& SB)
+void		CShaderManager::_DeleteCode		(u32& SB)
 {
 	R_ASSERT(SB);
 	// Dummy search
-	for (DWORD it=0; it<codes.size(); it++)
+	for (u32 it=0; it<codes.size(); it++)
 	{
 		sh_Code&			C		= codes[it];;
 		if (C.SB == SB)	{
@@ -48,7 +48,7 @@ void		CShaderManager::_DeleteCode		(DWORD& SB)
 	Device.Fatal("Failed to find compiled shader or stateblock");
 }
 //--------------------------------------------------------------------------------------------------------------
-CRT* CShaderManager::_CreateRT		(LPCSTR Name, DWORD w, DWORD h) 
+CRT* CShaderManager::_CreateRT		(LPCSTR Name, u32 w, u32 h) 
 {
 	R_ASSERT(Name && Name[0] && w && h);
 	
@@ -84,7 +84,7 @@ LPCSTR	CShaderManager::DBG_GetRTName	(CRT* T)
 		return 0;
 }
 //--------------------------------------------------------------------------------------------------------------
-CVS*	CShaderManager::_CreateVS		(LPCSTR cName, LPDWORD decl, DWORD stride) 
+CVS*	CShaderManager::_CreateVS		(LPCSTR cName, LPDWORD decl, u32 stride) 
 {
 	R_ASSERT			(cName && cName[0] && decl);
 	string256			Name;
@@ -124,7 +124,7 @@ CVS*	CShaderManager::_CreateVS		(LPCSTR cName, LPDWORD decl, DWORD stride)
 		return			VS;
 	}
 }
-CVS*	CShaderManager::_CreateVS	(DWORD FVF)
+CVS*	CShaderManager::_CreateVS	(u32 FVF)
 {
 	string256			Name;
 	sprintf				(Name,"FVF:%x",FVF);
@@ -148,7 +148,7 @@ CVS*	CShaderManager::_CreateVS	(DWORD FVF)
 
 		// Create shader
 		/*
-		DWORD			decl[MAX_FVF_DECL_SIZE];
+		u32			decl[MAX_FVF_DECL_SIZE];
 		R_CHK			(D3DXDeclaratorFromFVF(FVF,decl));
 		R_CHK			(HW.pDevice->CreateVertexShader(decl,0,&VS->dwHandle,0));
 		*/
@@ -294,7 +294,7 @@ LPCSTR	CShaderManager::DBG_GetMatrixName	(CMatrix* T)
 void	CShaderManager::ED_UpdateMatrix		(LPCSTR Name, CMatrix* data)
 {
 	CMatrix*	M	= _CreateMatrix	(Name);
-	DWORD		ref = M->dwReference;
+	u32		ref = M->dwReference;
 	*M				= *data;
 	M->dwReference	= ref-1;
 }
@@ -336,7 +336,7 @@ LPCSTR	CShaderManager::DBG_GetConstantName	(CConstant* T)
 void	CShaderManager::ED_UpdateConstant	(LPCSTR Name, CConstant* data)
 {
 	CConstant*	C	= _CreateConstant	(Name);
-	DWORD		ref = C->dwReference;
+	u32		ref = C->dwReference;
 	*C				= *data;
 	C->dwReference	= ref-1;
 }
@@ -381,7 +381,7 @@ void	CShaderManager::ED_UpdateBlender	(LPCSTR Name, CBlender* data)
 //--------------------------------------------------------------------------------------------------------------
 STextureList*	CShaderManager::_CreateTextureList(STextureList& L)
 {
-	for (DWORD it=0; it<lst_textures.size(); it++)
+	for (u32 it=0; it<lst_textures.size(); it++)
 	{
 		STextureList*	base		= lst_textures[it];
 		if (L.equal(*base))			{
@@ -396,17 +396,17 @@ STextureList*	CShaderManager::_CreateTextureList(STextureList& L)
 }
 void			CShaderManager::_DeleteTextureList(STextureList* &L)
 {
-	for (DWORD it=0; it<L->size(); it++)	{ CTexture* T = (*L)[it]; _DeleteTexture(T); };
+	for (u32 it=0; it<L->size(); it++)	{ CTexture* T = (*L)[it]; _DeleteTexture(T); };
 	L->dwReference	--;
 }
 //--------------------------------------------------------------------------------------------------------------
 SMatrixList*	CShaderManager::_CreateMatrixList(SMatrixList& L)
 {
 	BOOL bEmpty = TRUE;
-	for (DWORD i=0; i<L.size(); i++)	if (L[i]) { bEmpty=FALSE; break; }
+	for (u32 i=0; i<L.size(); i++)	if (L[i]) { bEmpty=FALSE; break; }
 	if (bEmpty)	return NULL;
 	
-	for (DWORD it=0; it<lst_matrices.size(); it++)
+	for (u32 it=0; it<lst_matrices.size(); it++)
 	{
 		SMatrixList*	base		= lst_matrices[it];
 		if (L.equal(*base))			{
@@ -422,17 +422,17 @@ SMatrixList*	CShaderManager::_CreateMatrixList(SMatrixList& L)
 void			CShaderManager::_DeleteMatrixList (	SMatrixList* &L )
 {
 	if (0==L)	return;
-	for (DWORD it=0; it<L->size(); it++)	{ CMatrix* M = (*L)[it]; _DeleteMatrix (M); };
+	for (u32 it=0; it<L->size(); it++)	{ CMatrix* M = (*L)[it]; _DeleteMatrix (M); };
 	L->dwReference	--;
 }
 //--------------------------------------------------------------------------------------------------------------
 SConstantList*	CShaderManager::_CreateConstantList(SConstantList& L)
 {
 	BOOL bEmpty = TRUE;
-	for (DWORD i=0; i<L.size(); i++)	if (L[i]) { bEmpty=FALSE; break; }
+	for (u32 i=0; i<L.size(); i++)	if (L[i]) { bEmpty=FALSE; break; }
 	if (bEmpty)	return NULL;
 
-	for (DWORD it=0; it<lst_constants.size(); it++)
+	for (u32 it=0; it<lst_constants.size(); it++)
 	{
 		SConstantList*	base		= lst_constants[it];
 		if (L.equal(*base))			{
@@ -448,7 +448,7 @@ SConstantList*	CShaderManager::_CreateConstantList(SConstantList& L)
 void			CShaderManager::_DeleteConstantList(SConstantList* &L )
 {
 	if (0==L)	return;
-	for (DWORD it=0; it<L->size(); it++)	{ CConstant* C = (*L)[it]; _DeleteConstant (C); };
+	for (u32 it=0; it<L->size(); it++)	{ CConstant* C = (*L)[it]; _DeleteConstant (C); };
 	L->dwReference	--;
 }
 
@@ -496,7 +496,7 @@ ShaderElement* CShaderManager::_CreateElement(	CBlender_Compile& C)
 	C.Compile			(&S);
 	
 	// Search equal in shaders array
-	for (DWORD it=0; it<elements.size(); it++) 
+	for (u32 it=0; it<elements.size(); it++) 
 	{
 		if (S.equal(*(elements[it])))	{
 			elements[it]->dwReference	++;
@@ -550,7 +550,7 @@ Shader*	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_cons
 	S.lighting			= _CreateElement	(C);
 	
 	// Search equal in shaders array
-	for (DWORD it=0; it<shaders.size(); it++) 
+	for (u32 it=0; it<shaders.size(); it++) 
 	{
 		if (S.equal(shaders[it]))	{
 			shaders[it]->dwReference	++;
@@ -569,7 +569,7 @@ void CShaderManager::_DeleteElement(ShaderElement* &S)
 {
 	if (0==S)	return;
 
-	for (DWORD p=0; p<S->Passes.size(); p++)
+	for (u32 p=0; p<S->Passes.size(); p++)
 	{
 		CPass& P = S->Passes[p];
 		_DeleteCode			(P.dwStateBlock);
@@ -593,7 +593,7 @@ void CShaderManager::Delete(Shader* &S)
 
 void	CShaderManager::OnFrameEnd	()
 {
-	for (DWORD stage=0; stage<HW.Caps.pixel.dwStages; stage++)
+	for (u32 stage=0; stage<HW.Caps.pixel.dwStages; stage++)
 		CHK_DX(HW.pDevice->SetTexture(0,0));
 	cache.Invalidate	();
 }
@@ -616,7 +616,7 @@ void	CShaderManager::ED_UpdateTextures(vector<LPSTR>* names)
 {
 	// 1. Unload
     if (names){
-        for (DWORD nid=0; nid<names->size(); nid++)
+        for (u32 nid=0; nid<names->size(); nid++)
         {
             map<LPSTR,CTexture*,str_pred>::iterator I = textures.find	((*names)[nid]);
             if (I!=textures.end())	I->second->Unload();
@@ -630,9 +630,9 @@ void	CShaderManager::ED_UpdateTextures(vector<LPSTR>* names)
 	DeferredUpload	();
 }
 
-DWORD	CShaderManager::_GetMemoryUsage()
+u32	CShaderManager::_GetMemoryUsage()
 {
-	DWORD mem = 0;
+	u32 mem = 0;
 	map<LPSTR,CTexture*,str_pred>::iterator I = textures.begin	();
 	map<LPSTR,CTexture*,str_pred>::iterator E = textures.end	();
 	for (; I!=E; I++)

@@ -47,7 +47,7 @@ namespace Feel {
 					query.begin(),query.end(),
 					diff.begin() );
 				diff.resize(E-diff.begin());
-				for (DWORD i=0; i<diff.size(); i++)
+				for (u32 i=0; i<diff.size(); i++)
 					o_new(diff[i]);
 			}
 		}
@@ -60,7 +60,7 @@ namespace Feel {
 				seen.begin(), seen.end(),
 				diff.begin() );
 			diff.resize(E-diff.begin());
-			for (DWORD i=0; i<diff.size(); i++)
+			for (u32 i=0; i<diff.size(); i++)
 				o_delete(diff[i]);
 		}
 

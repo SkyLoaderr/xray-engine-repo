@@ -9,8 +9,8 @@
 #include "xr_sndman.h"
 #include "xr_ini.h"
 
-extern DWORD psSoundModel;
-extern DWORD psSoundFreq;
+extern u32 psSoundModel;
+extern u32 psSoundFreq;
 extern float psSoundVEffects;
 extern CSoundManager* pSounds;
 
@@ -39,9 +39,9 @@ C2DSound::~C2DSound()
 	_FREE		( fName )
 }
 
-extern void* ParseWave(CStream *data, LPWAVEFORMATEX &wfx, DWORD &len);
-extern DWORD Freq2Size(DWORD freq);
-extern void *ConvertWave(WAVEFORMATEX &wfx_dest, LPWAVEFORMATEX &wfx, void *data, DWORD &dwLen);
+extern void* ParseWave(CStream *data, LPWAVEFORMATEX &wfx, u32 &len);
+extern u32 Freq2Size(u32 freq);
+extern void *ConvertWave(WAVEFORMATEX &wfx_dest, LPWAVEFORMATEX &wfx, void *data, u32 &dwLen);
 
 void C2DSound::Load		(CInifile *pIni, const char *pSection)
 {

@@ -2,7 +2,7 @@
 #include "occRasterizer.h"
 
 static occTri*	currentTri	= 0;
-static DWORD	dwPixels	= 0;
+static u32	dwPixels	= 0;
 static float	currentA[3],currentB[3],currentC[3];
 
 const int BOTTOM = 0, TOP = 1;
@@ -63,8 +63,8 @@ IC BOOL shared(occTri* T1, occTri* T2)
 }
 IC BOOL lesser(float& a, float& b)
 {
-	DWORD* A = LPDWORD(&a);
-	DWORD* B = LPDWORD(&b);
+	u32* A = LPDWORD(&a);
+	u32* B = LPDWORD(&b);
 	return *A<*B;
 }
 
@@ -302,7 +302,7 @@ void __stdcall i_section_t0	()
 void __stdcall i_section_t1	()
 {	i_section	(TOP,1);	}
 
-DWORD occRasterizer::rasterize	(occTri* T)
+u32 occRasterizer::rasterize	(occTri* T)
 {
 	// Order the vertices by Y
 	currentTri			= T;

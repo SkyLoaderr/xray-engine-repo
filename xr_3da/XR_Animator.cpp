@@ -63,7 +63,7 @@ Fcolor		cur;
 	} else {
 		cur.set(1,1,1,alpha);
 	}
-	DWORD cc=cur.get();
+	u32 cc=cur.get();
 	Vertex[0].set(cx+Size,cy-Size,fSZ,fRHW,cc,cc,tu,tv);
 	Vertex[1].set(cx+Size,cy+Size,fSZ,fRHW,cc,cc,tu,tv+fTexSize);
 	Vertex[2].set(cx-Size,cy-Size,fSZ,fRHW,cc,cc,tu+fTexSize,tv);

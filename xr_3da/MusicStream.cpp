@@ -25,7 +25,7 @@ CMusicStream::~CMusicStream()
 
 int CMusicStream::FindEmptySlot()
 {
-	for (DWORD i=0; i<streams.size(); i++) {
+	for (u32 i=0; i<streams.size(); i++) {
 		if (streams[i]==0) return i;
 	}
 	return -1;
@@ -64,7 +64,7 @@ CSoundStream* CMusicStream::CreateSound	(LPCSTR name	)
 void	CMusicStream::DeleteSound	(CSoundStream* pSnd)
 {
 	int slot=-1;
-	for (DWORD i=0; i<streams.size(); i++){
+	for (u32 i=0; i<streams.size(); i++){
 		if (streams[i]==pSnd) { slot = i; break; }
 	}
 
@@ -76,7 +76,7 @@ void	CMusicStream::DeleteSound	(CSoundStream* pSnd)
 
 void CMusicStream::OnMove()
 {
-	for(DWORD i=0; i<streams.size(); i++) streams[i]->OnMove();
+	for(u32 i=0; i<streams.size(); i++) streams[i]->OnMove();
 /*	if (psDeviceFlags&rsStatistic)
 	{
 		int cnt = 0;
@@ -93,6 +93,6 @@ void CMusicStream::Reload()
 
 void CMusicStream::Update()
 {
-	for (DWORD i=0; i<streams.size(); i++)
+	for (u32 i=0; i<streams.size(); i++)
 		if (streams[i]) streams[i]->bNeedUpdate=true;
 }

@@ -14,8 +14,8 @@ private:
 	// Saves
 	float					fMasterVolume;
 	float					fMusicVolume;
-	DWORD					dwFreq;
-	DWORD					dwModel;
+	u32					dwFreq;
+	u32					dwModel;
 	
 	// Children
 	CCDA*					pCDA;

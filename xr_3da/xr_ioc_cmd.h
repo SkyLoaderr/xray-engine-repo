@@ -49,10 +49,10 @@ public:
 
 class ENGINE_API CCC_Mask : public CConsoleCommand
 {
-	DWORD*			value;
-	DWORD			mask;
+	u32*			value;
+	u32			mask;
 public:
-	CCC_Mask(LPCSTR N, DWORD* V, DWORD M) :
+	CCC_Mask(LPCSTR N, u32* V, u32 M) :
 	  CConsoleCommand(N),
 	  value(V),
 	  mask(M)
@@ -74,10 +74,10 @@ public:
 
 class ENGINE_API CCC_Token : public CConsoleCommand
 {
-	DWORD*			value;
+	u32*			value;
 	xr_token*		tokens;
 public:
-	CCC_Token(LPCSTR N, DWORD* V, xr_token* T) :
+	CCC_Token(LPCSTR N, u32* V, xr_token* T) :
 	  CConsoleCommand(N),
 	  value(V),
 	  tokens(T)

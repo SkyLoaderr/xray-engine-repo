@@ -14,24 +14,24 @@ class ENGINE_API CDraw
 {
 	IDirect3DVertexBuffer8*	pCurVB;
 	IDirect3DIndexBuffer8*	pCurIB;
-	DWORD					vCurShader;
-	DWORD					vCurBase;
-	DWORD					vCurStride;
+	u32					vCurShader;
+	u32					vCurBase;
+	u32					vCurStride;
 
 public:
-	DWORD					stat_polys;
-	DWORD					stat_verts;
-	DWORD					stat_calls;
-	DWORD					stat_vs;
-	DWORD					stat_vb;
-	DWORD					stat_ib;
+	u32					stat_polys;
+	u32					stat_verts;
+	u32					stat_calls;
+	u32					stat_vs;
+	u32					stat_vb;
+	u32					stat_ib;
 public:
 	// Tight interface
 	IDirect3DIndexBuffer8*	&CurrentIB()	{ return pCurIB; }
 	IDirect3DVertexBuffer8*	&CurrentVB()	{ return pCurVB; }
 	
 	// Main interface
-	IC void setVertices		(DWORD vs,  DWORD STRIDE, IDirect3DVertexBuffer8* VB)
+	IC void setVertices		(u32 vs,  u32 STRIDE, IDirect3DVertexBuffer8* VB)
 	{
 		if (vs!=vCurShader)	
 		{
@@ -47,7 +47,7 @@ public:
 				HW.pDevice->SetStreamSource(0,pCurVB=VB,vCurStride=STRIDE);
 		}
 	}
-	IC void setIndices		(DWORD BASE, IDirect3DIndexBuffer8* IB)
+	IC void setIndices		(u32 BASE, IDirect3DIndexBuffer8* IB)
 	{
 		if (IB!=pCurIB)
 		{
@@ -58,14 +58,14 @@ public:
 				HW.pDevice->SetIndices(pCurIB=IB,vCurBase=BASE);
 		}
 	}
-	IC void Render			(D3DPRIMITIVETYPE T, DWORD SV, DWORD CV, DWORD SI, DWORD PC)
+	IC void Render			(D3DPRIMITIVETYPE T, u32 SV, u32 CV, u32 SI, u32 PC)
 	{	
 		stat_calls			++;
 		stat_verts			+= CV;
 		stat_polys			+= PC;		
 		HW.pDevice->DrawIndexedPrimitive(T,SV,CV,SI,PC);	
 	}
-	IC void Render			(D3DPRIMITIVETYPE T, DWORD SV, DWORD PC)
+	IC void Render			(D3DPRIMITIVETYPE T, u32 SV, u32 PC)
 	{	
 		stat_calls			++;
 		stat_verts			+= 3*PC;
@@ -86,15 +86,15 @@ public:
 	// Debug render
 	IC void dbg_Draw		(D3DPRIMITIVETYPE T, FVF::L* pVerts, int vcnt, WORD* pIdx, int pcnt);
 	IC void dbg_Draw		(D3DPRIMITIVETYPE T, FVF::L* pVerts, int pcnt);
-	IC void dbg_DrawAABB	(Fvector& T, float sx, float sy, float sz, DWORD C)
+	IC void dbg_DrawAABB	(Fvector& T, float sx, float sy, float sz, u32 C)
 	{	Fvector half_dim;	half_dim.set(sx,sy,sz); Fmatrix	TM;	TM.translate(T);
 		dbg_DrawOBB(TM,half_dim,C);	}
-	IC void dbg_DrawOBB		(Fmatrix& T, Fvector& half_dim, DWORD C);
-	IC void dbg_DrawTRI		(Fmatrix& T, Fvector* p, DWORD C)
+	IC void dbg_DrawOBB		(Fmatrix& T, Fvector& half_dim, u32 C);
+	IC void dbg_DrawTRI		(Fmatrix& T, Fvector* p, u32 C)
 	{ dbg_DrawTRI(T,p[0],p[1],p[2],C);	}
-	IC void dbg_DrawTRI		(Fmatrix& T, Fvector& p1, Fvector& p2, Fvector& p3, DWORD C);
-	IC void dbg_DrawLINE	(Fmatrix& T, Fvector& p1, Fvector& p2, DWORD C);
-	IC void dbg_DrawEllipse	(Fmatrix& T, DWORD C);
+	IC void dbg_DrawTRI		(Fmatrix& T, Fvector& p1, Fvector& p2, Fvector& p3, u32 C);
+	IC void dbg_DrawLINE	(Fmatrix& T, Fvector& p1, Fvector& p2, u32 C);
+	IC void dbg_DrawEllipse	(Fmatrix& T, u32 C);
 
 	CDraw()	: pCurVB(0), pCurIB(0), vCurShader(0) {};
 };

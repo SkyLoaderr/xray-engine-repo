@@ -27,14 +27,14 @@ public:
 		B.count=0; 
 		w_u16(type);	
 	}
-	IC void	w		( const void* p, DWORD count )
+	IC void	w		( const void* p, u32 count )
 	{
 		VERIFY		(p && count);
 		CopyMemory	(&B.data[B.count],p,count);
 		B.count		+= count;
 		VERIFY		(B.count<NET_PacketSizeLimit);
 	}
-	IC void w_seek	(u32 pos, const void* p, DWORD count)	// random write (only inside allocated region)
+	IC void w_seek	(u32 pos, const void* p, u32 count)	// random write (only inside allocated region)
 	{
 		VERIFY		(p && count && (pos+count<=B.count));
 		CopyMemory	(&B.data[pos],p,count);
@@ -113,13 +113,13 @@ public:
 	}
 	
 	// reading
-	IC DWORD	r_begin			( u16& type	)	// returns time of receiving
+	IC u32	r_begin			( u16& type	)	// returns time of receiving
 	{
 		r_pos		= 0;
 		r_u16		(type);
 		return		timeReceive;
 	}
-	IC void		r				( void* p, DWORD count)
+	IC void		r				( void* p, u32 count)
 	{
 		VERIFY		(p && count);
 		CopyMemory	(p,&B.data[r_pos],count);
@@ -130,7 +130,7 @@ public:
 	{
 		return r_pos>=B.count;
 	}
-	IC DWORD	r_elapsed		()
+	IC u32	r_elapsed		()
 	{
 		return B.count-r_pos;
 	}

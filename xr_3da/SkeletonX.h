@@ -18,7 +18,7 @@ struct vertBoned1W	// (3+3+2+1)*4 = 9*4 = 36 bytes
 	Fvector	P;
 	Fvector	N;
 	float	u,v;
-	DWORD	matrix;
+	u32	matrix;
 };
 struct vertBoned2W	// (1+3+3 + 1+3+3 + 2)*4 = 16*4 = 64 bytes
 {
@@ -47,14 +47,14 @@ protected:
 	CKinematics*			Parent;			// setted up by parent
 	vertBoned1W*			Vertices1W;		// shared
 	vertBoned2W*			Vertices2W;		// shared
-	DWORD					cache_DiscardID;
-	DWORD					cache_vCount;
-	DWORD					cache_vOffset;
+	u32					cache_DiscardID;
+	u32					cache_vCount;
+	u32					cache_vOffset;
 	
 	void					_Copy			(CSkeletonX *V);
-	void					_Render			(CVS* hVS, DWORD vCount, DWORD pCount, IDirect3DIndexBuffer8* IB);
+	void					_Render			(CVS* hVS, u32 vCount, u32 pCount, IDirect3DIndexBuffer8* IB);
 	void					_Release		();
-	void					_Load			(const char* N, CStream *data, DWORD& dwVertCount);
+	void					_Load			(const char* N, CStream *data, u32& dwVertCount);
 public:
 	virtual void			SetParent		(CKinematics* K) { Parent = K; }
 
@@ -72,7 +72,7 @@ private:
 	typedef Fvisual	inherited;
 public:
 	virtual void			Render			(float LOD);
-	virtual void			Load			(const char* N, CStream *data, DWORD dwFlags);
+	virtual void			Load			(const char* N, CStream *data, u32 dwFlags);
 	virtual void			Copy			(CVisual *pFrom);
 	virtual void			Release			();
 };
@@ -86,7 +86,7 @@ public:
 	CSkeletonX_PM()	: indices(0) {};
 	
 	virtual void			Render			(float LOD);
-	virtual void			Load			(const char* N, CStream *data, DWORD dwFlags);
+	virtual void			Load			(const char* N, CStream *data, u32 dwFlags);
 	virtual void			Copy			(CVisual *pFrom);
 	virtual void			Release			();
 };

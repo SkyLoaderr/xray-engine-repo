@@ -147,7 +147,7 @@ repeat:
 
 		// the update itself
 		Fbox	Box; Box.invalidate();
-		for (DWORD b=0; b<bones->size(); b++)
+		for (u32 b=0; b<bones->size(); b++)
 		{
 			Fobb&		obb		= (*bones)[b]->obb;
 			Fmatrix&	Mbone	= bone_instances[b].mTransform;

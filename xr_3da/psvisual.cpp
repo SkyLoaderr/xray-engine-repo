@@ -29,7 +29,7 @@ void CPSVisual::Copy(CVisual* pFrom)
 //////////////////////////////////////////////////
 // - доделать рождение/умирание без удаления и добавления в массив
 // 
-void CPSVisual::Update(DWORD dt)
+void CPSVisual::Update(u32 dt)
 {
 	float fTime		= Device.fTimeGlobal;
 	float dT		= float(dt)/1000.f;
@@ -101,7 +101,7 @@ void CPSVisual::Update(DWORD dt)
 }
 
 //----------------------------------------------------
-IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float radius, DWORD clr, float angle, float scale)
+IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float radius, u32 clr, float angle, float scale)
 {
 	FVF::TL			PT;
 
@@ -132,7 +132,7 @@ IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fv
 	pv->set	(c.x-sz*_sin1,	c.y-sz*_cos1,	PT.p.z, PT.p.w, clr, rb.x,lt.y);	pv++;
 }
 
-IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float radius, DWORD clr, const Fvector& D, float scale)
+IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float radius, u32 clr, const Fvector& D, float scale)
 {
 	Fvector			P1,P2;
     P1.mad			(pos,D,-radius);
@@ -160,9 +160,9 @@ IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fv
 
 void CPSVisual::Render		(float LOD)
 {
-	DWORD			vOffset;
+	u32			vOffset;
 	FVF::TL*		pv		= (FVF::TL*)Device.Streams.Vertex.Lock(m_Particles.size()*4,hVS->dwStride,vOffset);
-	DWORD			dwCount	= RenderTO(pv);
+	u32			dwCount	= RenderTO(pv);
 	Device.Streams.Vertex.Unlock(dwCount,hVS->dwStride);
 	if (dwCount)    {
 		Device.Primitive.setVertices	(hVS->dwHandle,hVS->dwStride,Device.Streams.Vertex.Buffer());
@@ -171,7 +171,7 @@ void CPSVisual::Render		(float LOD)
 	}
 }
  
-DWORD CPSVisual::RenderTO	(FVF::TL* dest)
+u32 CPSVisual::RenderTO	(FVF::TL* dest)
 {
 	float fTime					= Device.fTimeGlobal;
 	
@@ -193,7 +193,7 @@ DWORD CPSVisual::RenderTO	(FVF::TL* dest)
 	FVF::TL*		pv		= pv_start;
 	for (PS::ParticleIt P=m_Particles.begin(); P!=m_Particles.end(); P++)
 	{
-		DWORD 	C;
+		u32 	C;
 		float 	sz;
 		float 	angle;
         if (m_Definition->m_dwFlag&PS_MOTIONBLUR)

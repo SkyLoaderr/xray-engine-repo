@@ -11,13 +11,13 @@ CEnvelope::~CEnvelope()
 CEnvelope::CEnvelope(CEnvelope* source)
 {
 	*this 		= *source;
-	for (DWORD i=0; i<source->keys.size(); i++)
+	for (u32 i=0; i<source->keys.size(); i++)
     	keys[i]	= new st_Key(*source->keys[i]);
 }
 
 void CEnvelope::RotateKeys(float angle)
 {
-	for (DWORD i=0; i<keys.size(); i++)
+	for (u32 i=0; i<keys.size(); i++)
     	keys[i]->value += angle;
 }
 
@@ -37,7 +37,7 @@ void CEnvelope::Save(CFS_Base& F){
 void CEnvelope::Load(CStream& F){
 	F.Read		(behavior,sizeof(int)*2);
 	keys.resize	(F.Rdword());
-	for (DWORD i=0; i<keys.size(); i++){
+	for (u32 i=0; i<keys.size(); i++){
     	keys[i]	= new st_Key();
 		F.Read	(keys[i],sizeof(st_Key));
     }
@@ -54,7 +54,7 @@ void CEnvelope::LoadA(CStream& F){
 		F.Rstring(buf);
         int nkeys=atoi(buf);
 		keys.resize(nkeys);
-		for (DWORD i=0; i<keys.size(); i++){
+		for (u32 i=0; i<keys.size(); i++){
     		keys[i]	= new st_Key();
             st_Key& K=*keys[i];
 			F.Rstring(buf);

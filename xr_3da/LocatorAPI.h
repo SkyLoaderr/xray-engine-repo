@@ -10,7 +10,7 @@ enum FS_List
 {
 	FS_ListFiles	=(1<<0),
 	FS_ListFolders	=(1<<1),
-	FS_forcedword	=DWORD(-1)
+	FS_forcedword	=u32(-1)
 };
 
 class ENGINE_API CStream;
@@ -22,9 +22,9 @@ public:
 	struct	file
 	{
 		LPCSTR	name;			// low-case name
-		DWORD	vfs;			// 0xffffffff - standart file
-		DWORD	ptr;			// pointer inside vfs
-		DWORD	size;
+		u32	vfs;			// 0xffffffff - standart file
+		u32	ptr;			// pointer inside vfs
+		u32	size;
 		BOOL	bCompressed;
 	};
 	struct	file_pred		: public std::binary_function<file&, file&, bool> 
@@ -45,7 +45,7 @@ private:
 	set_files					files;
 	vec_archives				archives;
 
-	void						Register		(const char* name, DWORD vfs, DWORD ptr, DWORD size, BOOL bCompressed);
+	void						Register		(const char* name, u32 vfs, u32 ptr, u32 size, BOOL bCompressed);
 	void						ProcessArchive	(const char* path);
 	void						ProcessOne		(const char* path, LPVOID F);
 	void						Recurse			(const char* path);
@@ -60,7 +60,7 @@ public:
 	BOOL						Exist			(char* fn, const char* path, const char* name);
 	BOOL						Exist			(char* fn, const char* path, const char* name, const char* ext);
 
-	void						List			(vector<char*>& dest, const char* path, DWORD flags=FS_ListFiles);
+	void						List			(vector<char*>& dest, const char* path, u32 flags=FS_ListFiles);
 
 	CLocatorAPI();
 	~CLocatorAPI();

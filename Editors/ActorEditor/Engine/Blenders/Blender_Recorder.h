@@ -30,18 +30,18 @@ private:
 	STextureList		passTextures;
 	SMatrixList			passMatrices;
 	SConstantList		passConstants;
-	DWORD				dwStage;
+	u32				dwStage;
 
-	DWORD				BC					(BOOL v)	{ return v?0xff:0; }
+	u32				BC					(BOOL v)	{ return v?0xff:0; }
 public:
 	CSimulator&			R()					{ return RS; }
 	
 	void				SetParams			(int iPriority, bool bStrictB2F, bool bLighting, bool bPixelShader);
 
 	void				PassBegin			();
-	DWORD				Pass				()  { return SH->Passes.size(); }
+	u32				Pass				()  { return SH->Passes.size(); }
 	void				PassSET_ZB			(BOOL bZTest, BOOL bZWrite);
-	void				PassSET_Blend		(BOOL bABlend, DWORD abSRC, DWORD abDST, BOOL aTest, DWORD aRef);
+	void				PassSET_Blend		(BOOL bABlend, u32 abSRC, u32 abDST, BOOL aTest, u32 aRef);
 	void				PassSET_Blend_SET	()	{ PassSET_Blend	(FALSE,D3DBLEND_ONE,D3DBLEND_ZERO,FALSE,0);				}
 	void				PassSET_Blend_ADD	()	{ PassSET_Blend	(TRUE, D3DBLEND_ONE,D3DBLEND_ONE, FALSE,0);				}
 	void				PassSET_Blend_MUL	()	{ PassSET_Blend	(TRUE, D3DBLEND_DESTCOLOR,D3DBLEND_ZERO,FALSE,0);		}
@@ -51,13 +51,13 @@ public:
 	void				PassTemplate_Detail	(LPCSTR T);
 
 	void				StageBegin			();
-	DWORD				Stage				()	{ return dwStage; }
+	u32				Stage				()	{ return dwStage; }
 	void				StageTemplate_LMAP0	();
-	void				StageSET_Address	(DWORD adr);
-	void				StageSET_XForm		(DWORD tf, DWORD tc);
-	void				StageSET_Color		(DWORD a1, DWORD op, DWORD a2);
-	void				StageSET_Color3		(DWORD a1, DWORD op, DWORD a2, DWORD a3);
-	void				StageSET_Alpha		(DWORD a1, DWORD op, DWORD a2);
+	void				StageSET_Address	(u32 adr);
+	void				StageSET_XForm		(u32 tf, u32 tc);
+	void				StageSET_Color		(u32 a1, u32 op, u32 a2);
+	void				StageSET_Color3		(u32 a1, u32 op, u32 a2, u32 a3);
+	void				StageSET_Alpha		(u32 a1, u32 op, u32 a2);
 	void				StageSET_TMC		(LPCSTR T, LPCSTR M, LPCSTR C, int UVW_channel);
 	void				Stage_Texture		(LPCSTR name);
 	void				Stage_Matrix		(LPCSTR name, int UVW_channel);

@@ -78,7 +78,7 @@ CAviPlayerCustom::~CAviPlayerCustom( )
     AVIFileExit	();
 }
 
-BOOL CAviPlayerCustom::DecompressFrame(DWORD* pDest)
+BOOL CAviPlayerCustom::DecompressFrame(u32* pDest)
 {
 	R_ASSERT( pDest );
 

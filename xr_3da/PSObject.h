@@ -16,7 +16,7 @@ public:
 	virtual				~CPSObject		();
 
 	virtual float		shedule_Scale	()	{ return Device.vCameraPosition.distance_to(Position())/200.f; }
-	virtual void		Update			(DWORD dt);
+	virtual void		Update			(u32 dt);
 	virtual Fvector&	Position		(){return m_Emitter.m_Position;}
 	void				UpdateSector	(CSector* sect);
 	void				PlayAtPos		(const Fvector& pos);

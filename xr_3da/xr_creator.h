@@ -43,7 +43,7 @@ protected:
 	sound						Sounds_Ambience;
 	vector<sound>				Sounds;
 	vector<sound>				Sounds_Random;
-	DWORD						Sounds_dwNextTime;
+	u32						Sounds_dwNextTime;
 public:
 	CObjectList					Objects;
 	CEnvironment				Environment;
@@ -64,7 +64,7 @@ public:
 	virtual void				net_Save				( LPCSTR name )					= 0;
 	virtual void				net_Stop				( )								= 0;
 
-	virtual BOOL				Load					( DWORD dwNum );
+	virtual BOOL				Load					( u32 dwNum );
 	virtual BOOL				Load_GameSpecific_Before( ) { return TRUE; };	// before object loading
 	virtual BOOL				Load_GameSpecific_After	( ) { return TRUE; };	// after object loading
 

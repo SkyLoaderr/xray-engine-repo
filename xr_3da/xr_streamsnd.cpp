@@ -7,8 +7,8 @@
 #include "xr_tokens.h"
 #include "xr_ini.h"
 
-const DWORD dwDestBufSize = 44*1024;
-const DWORD dsBufferSize  = 88*1024;
+const u32 dwDestBufSize = 44*1024;
+const u32 dsBufferSize  = 88*1024;
 
 CSoundStream::CSoundStream	( )
 {
@@ -135,8 +135,8 @@ void CSoundStream::OnMove		( )
 
 	if (isPause)	return;
 
-	DWORD			currpos;
-    DWORD			delta;
+	u32			currpos;
+    u32			delta;
 
 	if (dwStatus & DSBSTATUS_PLAYING){
 		Update		();
@@ -195,7 +195,7 @@ void CSoundStream::Load( CInifile* ini, LPCSTR section )
 //--------------------------------------------------------------------------------------------------
 BOOL CSoundStream::Decompress(unsigned char *dest)
 {
-    DWORD				dwSrcSize = dwSrcBufSize;
+    u32				dwSrcSize = dwSrcBufSize;
 	BOOL				r = true;
 
 	VERIFY				(hAcmStream);
@@ -227,13 +227,13 @@ BOOL CSoundStream::Decompress(unsigned char *dest)
 //--------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------
 void CSoundStream::AppWriteDataToBuffer(
-                          DWORD dwOffset,             // our own write cursor
+                          u32 dwOffset,             // our own write cursor
                           LPBYTE lpbSoundData,        // start of our data
-                          DWORD dwSoundBytes)         // size of block to copy
+                          u32 dwSoundBytes)         // size of block to copy
 {
     LPVOID lpvPtr1, lpvPtr2;
-    DWORD dwBytes1;
-    DWORD dwBytes2;
+    u32 dwBytes1;
+    u32 dwBytes2;
 
     // Obtain memory address of write block. This will be in two parts
     // if the block wraps around.

@@ -33,7 +33,7 @@ void FShadowForm::Load(CStream *data)
 
 	// read vertices
 	if (data->FindChunk(OGF_VERTICES)) {
-		DWORD dwVertType;
+		u32 dwVertType;
 
 		dwVertType		= data->ReadDWORD();
 		VERIFY(dwVertType==(D3DFVF_XYZ|D3DFVF_DIFFUSE));
@@ -51,7 +51,7 @@ void FShadowForm::Load(CStream *data)
 
 	// indices
 	if (data->FindChunk(OGF_INDICES)) {
-		DWORD dwCount = data->ReadDWORD();
+		u32 dwCount = data->ReadDWORD();
 		VERIFY(dwCount%3 == 0);
 		Indices.resize(dwCount);
 		data->Read(Indices.begin(), sizeof(WORD)*dwCount);
@@ -74,8 +74,8 @@ void FShadowForm::Load(CStream *data)
 	S.pwShadVolIndices = new WORD[(dwNumVertices+1)*3];
 
 	// Allocate memory for the hull (max size is dwNumInVertices+1 times the
-	// the storage space for a DWORD and a ptr to a vertex
-	DWORD dwElementSize = sizeof(DWORD) + sizeof(COLORVERTEX*)+4;
+	// the storage space for a u32 and a ptr to a vertex
+	u32 dwElementSize = sizeof(u32) + sizeof(COLORVERTEX*)+4;
 	pwCHI = (WORD*)(new BYTE[(dwNumVertices+1)*dwElementSize]);
 }
 
@@ -84,14 +84,14 @@ void FShadowForm::Load(CStream *data)
 // Desc: Build the polygons of the shadow volume for a directional light
 //       pInVertices are copied into a vertex buffer created within S
 //-----------------------------------------------------------------------------
-extern VOID Find2DConvexHull(	DWORD dwNumInVertices, COLORVERTEX* pInVertices,
-								DWORD* pdwNumOutIndices, WORD* ppOutIndices );
+extern VOID Find2DConvexHull(	u32 dwNumInVertices, COLORVERTEX* pInVertices,
+								u32* pdwNumOutIndices, WORD* ppOutIndices );
 
 void FShadowForm::MakeShadowVolume( Fvector& vLDir, Fmatrix &matWorld )
 {
     Fmatrix matNewView,mInvWorld;
 	Fvector vL;
-    DWORD i;
+    u32 i;
 
 
 	// Transform LightDir into Local Coordinates
@@ -123,7 +123,7 @@ void FShadowForm::MakeShadowVolume( Fvector& vLDir, Fmatrix &matWorld )
 
     COLORVERTEX* pProjVertices;
     WORD*        pHullIndices = pwCHI;
-    DWORD        dwNumHullIndices;
+    u32        dwNumHullIndices;
 
     if( SUCCEEDED( pProjected->Lock(
 		DDLOCK_NOSYSLOCK | DDLOCK_WAIT | DDLOCK_SURFACEMEMORYPTR,

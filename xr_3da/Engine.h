@@ -27,7 +27,7 @@ public:
 	void				Initialize	();
 	void				Destroy		();
 	
-	DWORD				mem_Usage	();
+	u32				mem_Usage	();
 	void				mem_Compact ();
 
 	CEngine();

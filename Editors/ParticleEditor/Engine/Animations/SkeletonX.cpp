@@ -33,9 +33,9 @@ void CSkeletonX_PM::Copy(CVisual *V)
 	_Copy				((CSkeletonX*)X);
 	indices				= X->indices;
 
-	DWORD	dwCount		= dwPrimitives*3;
+	u32	dwCount		= dwPrimitives*3;
 	BOOL	bSoft		= HW.Caps.vertex.bSoftware;
-	DWORD	dwUsage		= D3DUSAGE_WRITEONLY | (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);
+	u32	dwUsage		= D3DUSAGE_WRITEONLY | (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);
 	D3DPOOL	dwPool		= bSoft?D3DPOOL_SYSTEMMEM:D3DPOOL_DEFAULT;
 	BYTE*	bytes		= 0;
 
@@ -60,9 +60,9 @@ void CSkeletonX_ST::Render	(float LOD)
 {
 	_Render		(hVS,vCount,dwPrimitives,pIndices);
 }
-void CSkeletonX::_Render	(CVS* hVS, DWORD vCount, DWORD pCount, IDirect3DIndexBuffer8* IB)
+void CSkeletonX::_Render	(CVS* hVS, u32 vCount, u32 pCount, IDirect3DIndexBuffer8* IB)
 {
-	DWORD vOffset			= cache_vOffset;
+	u32 vOffset			= cache_vOffset;
 
 	_VertexStream&	_VS		= Device.Streams.Vertex;
 	if (cache_DiscardID!=_VS.DiscardID() || vCount>=cache_vCount )
@@ -115,12 +115,12 @@ void CSkeletonX_ST::Release()
 	_Release	();
 }
 //////////////////////////////////////////////////////////////////////
-void CSkeletonX::_Load(const char* N, CStream *data, DWORD& dwVertCount) 
+void CSkeletonX::_Load(const char* N, CStream *data, u32& dwVertCount) 
 {
 	// Load vertices
 	R_ASSERT(data->FindChunk(OGF_VERTICES));
 			
-	DWORD dwVertType,size;
+	u32 dwVertType,size;
 	dwVertType	= data->Rdword(); 
 	dwVertCount	= data->Rdword();
 
@@ -144,7 +144,7 @@ void CSkeletonX::_Load(const char* N, CStream *data, DWORD& dwVertCount)
 	}
 }
 
-void CSkeletonX_PM::Load(const char* N, CStream *data, DWORD dwFlags) 
+void CSkeletonX_PM::Load(const char* N, CStream *data, u32 dwFlags) 
 {
 	_Load				(N,data,vCount);
 	inherited::Load		(N, data, dwFlags|VLOAD_NOVERTICES|VLOAD_NOINDICES);
@@ -152,14 +152,14 @@ void CSkeletonX_PM::Load(const char* N, CStream *data, DWORD dwFlags)
 
 	// Load indices with replication in mind
 	R_ASSERT			(data->FindChunk(OGF_INDICES));
-	DWORD				dwCount = data->Rdword();
+	u32				dwCount = data->Rdword();
 	R_ASSERT			(dwCount%3 == 0);
 	indices				= LPWORD(xr_malloc(dwCount*2));
 	PSGP.memCopy		(indices,data->Pointer(),dwCount*2);
 	dwPrimitives		= dwCount/3;
 
 	BOOL	bSoft		= HW.Caps.vertex.bSoftware || (dwFlags&VLOAD_FORCESOFTWARE);
-	DWORD	dwUsage		= D3DUSAGE_WRITEONLY | (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);
+	u32	dwUsage		= D3DUSAGE_WRITEONLY | (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);
 	D3DPOOL	dwPool		= bSoft?D3DPOOL_SYSTEMMEM:D3DPOOL_DEFAULT;
 	BYTE*	bytes		= 0;
 
@@ -169,7 +169,7 @@ void CSkeletonX_PM::Load(const char* N, CStream *data, DWORD dwFlags)
 	pIndices->Unlock	();
 }
 
-void CSkeletonX_ST::Load(const char* N, CStream *data, DWORD dwFlags) 
+void CSkeletonX_ST::Load(const char* N, CStream *data, u32 dwFlags) 
 {
 	_Load				(N,data,vCount);
 	inherited::Load		(N, data, dwFlags|VLOAD_NOVERTICES);

@@ -118,7 +118,7 @@ CXR_Menu::CXR_Menu()
 
 	// Levels
 	iCurrentLevel		= 0;
-	for (DWORD i=1; i<pApp->Levels.size(); i++)
+	for (u32 i=1; i<pApp->Levels.size(); i++)
 	{
 		Levels.Add(pApp->Levels[i].caption);
 	}
@@ -467,7 +467,7 @@ void CXR_Menu::OnMouseMove	(int dx, int dy)
 	if (Cursor.x> 1) Cursor.x=1;
 	if (Cursor.y<-1) Cursor.y=-1;
 	if (Cursor.y> 1) Cursor.y=1;
-	//	DToF("Btn: ",DWORD(GetButton()));
+	//	DToF("Btn: ",u32(GetButton()));
 }
 void CXR_Menu::OnMousePress	(int btn)
 {

@@ -29,7 +29,7 @@ CPortal*	CRender::getPortal			(int id)			{ VERIFY(id<int(Portals.size()));	retur
 CSector*	CRender::getSector			(int id)			{ VERIFY(id<int(Sectors.size()));	return Sectors[id];	}
 CSector*	CRender::getSectorActive	()					{ return pLastSector;									}
 CVisual*	CRender::getVisual			(int id)			{ VERIFY(id<int(Visuals.size()));	return Visuals[id];	}
-DWORD		CRender::getFVF				(int id)			{ VERIFY(id<int(FVF.size()));		return FVF[id];		}
+u32		CRender::getFVF				(int id)			{ VERIFY(id<int(FVF.size()));		return FVF[id];		}
 IDirect3DVertexBuffer8*	CRender::getVB	(int id)			{ VERIFY(id<int(VB.size()));		return VB[id];		}
 IDirect3DIndexBuffer8*	CRender::getIB	(int id)			{ VERIFY(id<int(IB.size()));		return IB[id];		}
 CRender_target* CRender::getTarget		()					{ return &Target;										}
@@ -84,7 +84,7 @@ float				g_fSCREEN;
 float				g_fLOD,g_fLOD_scale=1.f;
 static	Fmaterial	gm_Data;
 static	int			gm_Level	= 0;
-static	DWORD		gm_Ambient	= 0;
+static	u32		gm_Ambient	= 0;
 static	BOOL		gm_Nearer	= 0;
 static	CObject*	gm_Object	= 0;
 static	int			gm_Lcount	= 0;
@@ -99,7 +99,7 @@ IC		void		gm_SetLevel			(int iLevel)
 	}
 }
 
-IC		void		gm_SetAmbient		(DWORD C)
+IC		void		gm_SetAmbient		(u32 C)
 {
 	if (C!=gm_Ambient)	{
 		gm_Ambient	= C;
@@ -107,13 +107,13 @@ IC		void		gm_SetAmbient		(DWORD C)
 	}
 }
 
-IC		void		gm_SetAmbientLevel	(DWORD C)
+IC		void		gm_SetAmbientLevel	(u32 C)
 {
 	return;
 
-	DWORD Camb		= (C*3)/4;
+	u32 Camb		= (C*3)/4;
 	gm_SetAmbient	(D3DCOLOR_XRGB(Camb,Camb,Camb));
-	DWORD Clevel	= (C*4)/3;
+	u32 Clevel	= (C*4)/3;
 	gm_SetLevel		(Clevel);
 }
 IC		void		gm_SetNearer		(BOOL bNearer)
@@ -332,13 +332,13 @@ void CRender::flush_Models	()
 void CRender::flush_Patches	()
 {
 	// *** Fill VB
-	DWORD						vOffset;
+	u32						vOffset;
 	FVF::TL*					V		= (FVF::TL*)Device.Streams.Vertex.Lock	(vecPatches.size()*4,vsPatches->dwStride, vOffset);
 	svector<int,max_patches>	groups;
 	ShaderElement*				cur_S=vecPatches[0].S;
 	int							cur_count=0;
 	float						scale	= float	(getTarget()->get_width());
-	for (DWORD i=0; i<vecPatches.size(); i++)
+	for (u32 i=0; i<vecPatches.size(); i++)
 	{
 		// sort out redundancy
 		SceneGraph::_PatchItem	&P = vecPatches[i];
@@ -384,7 +384,7 @@ void CRender::flush_Patches	()
 	
 	// *** Render
 	int current=0;
-	for (DWORD g=0; g<groups.size(); g++)
+	for (u32 g=0; g<groups.size(); g++)
 	{
 		int p_count						= groups[g];
 		Device.Shader.set_Element		(vecPatches[current].S);
@@ -546,25 +546,25 @@ void	CRender::Render		()
 	Device.set_xform_world			(Fidentity);
 
 	// Sorting by SSA and changes minimizations
-	for (DWORD pr=0; pr<4; pr++)
+	for (u32 pr=0; pr<4; pr++)
 	{
 		if (0==mapNormal[pr][0].size())	continue;
 
-		for (DWORD pass_id=0; pass_id<8; pass_id++)	{
+		for (u32 pass_id=0; pass_id<8; pass_id++)	{
 			SceneGraph::mapNormalCodes&		codes	= mapNormal	[pr][pass_id];
 			if (0==codes.size())	break;
 			BOOL sort	= (pass_id==0);
 				
 			codes.getANY_P		(lstCodes);
 			if (sort) std::sort	(lstCodes.begin(), lstCodes.end(), cmp_codes);
-			for (DWORD code_id=0; code_id<lstCodes.size(); code_id++)
+			for (u32 code_id=0; code_id<lstCodes.size(); code_id++)
 			{
 				SceneGraph::mapNormalCodes::TNode*	Ncode	= lstCodes[code_id];
 				SceneGraph::mapNormalTextures&	textures	= Ncode->val;
 				Device.Shader.set_Code	(Ncode->key);
 
 				sort_tlist				(lstTextures, lstTexturesTemp, textures, sort); 
-				for (DWORD texture_id=0; texture_id<lstTextures.size(); texture_id++)
+				for (u32 texture_id=0; texture_id<lstTextures.size(); texture_id++)
 				{
 					SceneGraph::mapNormalTextures::TNode*	Ntexture	= lstTextures[texture_id];
 					SceneGraph::mapNormalMatrices& matrices				= Ntexture->val;
@@ -572,7 +572,7 @@ void	CRender::Render		()
 
 					matrices.getANY_P	(lstMatrices);
 					if (sort) std::sort	(lstMatrices.begin(),lstMatrices.end(), cmp_matrices);
-					for (DWORD matrix_id=0; matrix_id<lstMatrices.size(); matrix_id++) 
+					for (u32 matrix_id=0; matrix_id<lstMatrices.size(); matrix_id++) 
 					{
 						SceneGraph::mapNormalMatrices::TNode*	Nmatrix		= lstMatrices[matrix_id];
 						SceneGraph::mapNormalConstants& constants			= Nmatrix->val;
@@ -580,7 +580,7 @@ void	CRender::Render		()
 
 						constants.getANY_P	(lstConstants);
 						if (sort) std::sort	(lstConstants.begin(),lstConstants.end(), cmp_constants);
-						for (DWORD constant_id=0; constant_id<lstConstants.size(); constant_id++)
+						for (u32 constant_id=0; constant_id<lstConstants.size(); constant_id++)
 						{
 							SceneGraph::mapNormalConstants::TNode*	Nconstant	= lstConstants[constant_id];
 							SceneGraph::mapNormalItems&	items					= Nconstant->val;

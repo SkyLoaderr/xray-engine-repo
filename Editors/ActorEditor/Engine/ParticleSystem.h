@@ -31,7 +31,7 @@ struct ENGINE_API SEmitterDef
         emSphere,
         emBox,
 		emUser,
-        emForceDWORD = DWORD(-1)
+        emForceDWORD = u32(-1)
     };
     EEmitterType	m_EmitterType;
 	Fvector			m_Position;
@@ -48,7 +48,7 @@ struct ENGINE_API SEmitterDef
     WaveForm		m_BirthFunc;
     float			m_ParticleLimit;
 
-	DWORD			m_dwFlag;
+	u32			m_dwFlag;
     void			Reset()			{ ZeroMemory(this, sizeof(SEmitterDef));}
     void			InitDefault()	
 	{
@@ -124,7 +124,7 @@ struct ENGINE_API 	SParams
     SAnimation		m_Animation;
 
 	//member variables
-	DWORD			m_dwFlag;
+	u32			m_dwFlag;
 };
 
 struct ENGINE_API SDef: public SParams
@@ -133,7 +133,7 @@ struct ENGINE_API SDef: public SParams
 	string64			m_Computer;
     string64			m_ShaderName;
     string64			m_TextureName;
-	DWORD  				m_dwCreationTime;
+	u32  				m_dwCreationTime;
     SEmitterDef			m_DefaultEmitter;
 
     void 				Reset()
@@ -192,9 +192,9 @@ struct ENGINE_API SDef: public SParams
 			strcpy(m_Name,new_name);
 
 			// Computer
-			const DWORD comp = MAX_COMPUTERNAME_LENGTH + 1;
+			const u32 comp = MAX_COMPUTERNAME_LENGTH + 1;
 			char	buf	[comp];
-			DWORD	sz = comp;
+			u32	sz = comp;
 			GetComputerName(buf,&sz);
 			if (sz > 63) sz=63;
 			buf[sz] = 0;
@@ -388,7 +388,7 @@ IC void SimulatePosition(Fvector& pos, const SParticle* P, float T, float k)
     pos.y 		= P->m_vLocation.y+vel.y*T+(3*P->m_GravityStart.y+P->m_GravityLambda.y*T)*tt_6;
     pos.z 		= P->m_vLocation.z+vel.z*T+(3*P->m_GravityStart.z+P->m_GravityLambda.z*T)*tt_6;
 }
-IC void SimulateColor(DWORD& C, const SParticle* P, float k, float k_inv, float alpha_factor)
+IC void SimulateColor(u32& C, const SParticle* P, float k, float k_inv, float alpha_factor)
 {
     // adjust current Color from calculated Deltas and time elapsed.
 	int r = iFloor(P->m_Color.start.r*k_inv+P->m_Color.end.r*k);				clamp(r,0,255);

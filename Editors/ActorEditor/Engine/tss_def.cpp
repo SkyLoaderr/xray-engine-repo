@@ -3,10 +3,10 @@
 
 #include "tss_def.h"
 
-DWORD	SimulatorStates::record	()
+u32	SimulatorStates::record	()
 {
 	CHK_DX(HW.pDevice->BeginStateBlock());
-	for (DWORD it=0; it<States.size(); it++)
+	for (u32 it=0; it<States.size(); it++)
 	{
 		State& S = States[it];
 		switch (S.type) 
@@ -15,12 +15,12 @@ DWORD	SimulatorStates::record	()
 		case 1: CHK_DX(HW.pDevice->SetTextureStageState(S.v1,(D3DTEXTURESTAGESTATETYPE)S.v2,S.v3));	break;
 		}
 	}
-	DWORD SB = 0;
+	u32 SB = 0;
 	CHK_DX(HW.pDevice->EndStateBlock(&SB));
 	return SB;
 }
 
-void	SimulatorStates::set_RS	(DWORD a, DWORD b)
+void	SimulatorStates::set_RS	(u32 a, u32 b)
 {
 	// Search duplicates
 	for (int t=0; t<int(States.size()); t++)
@@ -38,7 +38,7 @@ void	SimulatorStates::set_RS	(DWORD a, DWORD b)
 	States.push_back(st);
 }
 
-void	SimulatorStates::set_TSS	(DWORD a, DWORD b, DWORD c)
+void	SimulatorStates::set_TSS	(u32 a, u32 b, u32 c)
 {
 	// Search duplicates
 	for (int t=0; t<int(States.size()); t++)
