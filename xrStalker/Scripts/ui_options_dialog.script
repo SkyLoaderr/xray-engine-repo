@@ -40,7 +40,7 @@ function options_dialog:InitControls()
 	local screen          = {width = 1024,height = 768}	
 	local main_rect       = {x = 0,
 							 y = 0,
-							 width = 800, 
+							 width = 700, 
 							 height = 400}	
 	main_rect.x = (screen.width - main_rect.width)/2
 	main_rect.y = (screen.height - main_rect.height)/2
