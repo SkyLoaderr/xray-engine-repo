@@ -661,7 +661,7 @@ void CCustomMonster::Die	(CObject* who)
 
 BOOL CCustomMonster::net_Spawn	(CSE_Abstract* DC)
 {
-	if (!movement().net_Spawn(DC) || !inherited::net_Spawn(DC) || !CScriptEntity::net_Spawn(DC))
+	if (!inherited::net_Spawn(DC) || !movement().net_Spawn(DC) || !CScriptEntity::net_Spawn(DC))
 		return					(FALSE);
 
 	CSE_Abstract				*e	= (CSE_Abstract*)(DC);

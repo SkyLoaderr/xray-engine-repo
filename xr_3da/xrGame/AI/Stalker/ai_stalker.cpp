@@ -191,10 +191,7 @@ BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 	R_ASSERT						(tpHuman);
 	m_demo_mode						= !!tpHuman->m_demo_mode;
 
-	if (!inherited::net_Spawn(DC) || 
-		!CObjectHandler::net_Spawn(DC) ||
-		!movement().net_Spawn(DC)
-		)
+	if (!inherited::net_Spawn(DC) || !CObjectHandler::net_Spawn(DC))
 		return						(FALSE);
 
 	m_pPhysics_support->in_NetSpawn	(e);
