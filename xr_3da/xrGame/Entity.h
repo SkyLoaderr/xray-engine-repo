@@ -43,6 +43,9 @@ public:
 		u32	bCrouch	:1;
 		float	fVelocity;
 	};
+	
+	float					m_fFood;
+
 public:
 	// General
 	CEntity					();
@@ -101,7 +104,6 @@ public:
 	EVENT					m_tpEventSay;
 	bool					m_bMobility;
 	u32						m_dwDeathTime;
-	float					m_fFood;
 public:
 	// General
 	CEntityAlive			();

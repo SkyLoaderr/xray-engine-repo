@@ -214,6 +214,7 @@ void CEntityAlive::Load		(LPCSTR section)
 	float	mass		= pSettings->ReadFLOAT	(section,"ph_mass"				);
 	Movement.SetCrashSpeeds	(cs_min,cs_max);
 	Movement.SetMass		(mass);
+	m_fFood				= mass*100;
 
 	// Movement: Frictions
 	float af, gf, wf;
@@ -243,7 +244,6 @@ void CEntityAlive::HitImpulse	(float amount, Fvector& vWorldDir, Fvector& vLocal
 CEntityAlive::CEntityAlive()
 {
 	m_dwDeathTime = 0;
-	m_fFood		  = Movement.GetMass()*100;
 }
 
 CEntityAlive::~CEntityAlive()

@@ -779,10 +779,11 @@ void CAI_Rat::EatCorp()
 			m_fSafeSpeed = m_fSpeed = m_fMaxSpeed;
 	
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+	vfSetFire(false,Group);
 	
 	if (m_Enemy.Enemy->Position().distance_to(vPosition) <= m_fAttackDistance) {
 		if (Level().AI.bfTooSmallAngle(r_torso_target.yaw, sTemp.yaw,m_fAttackAngle))
-			vfSetFire(true,Group);
+			m_Enemy.Enemy->m_fFood -= m_fHitPower;
 		else {
 			r_torso_target.yaw = sTemp.yaw;
 			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
