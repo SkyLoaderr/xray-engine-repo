@@ -12,13 +12,17 @@
 
 class CALifeSwitchManager : public virtual CALifeSimulatorBase, CRandom {
 protected:
-	typedef CALifeSimulatorBase inherited;
+	typedef CALifeSimulatorBase				inherited;
+	typedef ALife::OBJECT_VECTOR			OBJECT_VECTOR;
 
 protected:
 	float			m_switch_distance;
 	float			m_switch_factor;
 	float			m_online_distance;
 	float			m_offline_distance;
+
+private:
+	OBJECT_VECTOR	m_saved_chidren;
 
 protected:
 			bool	synchronize_location	(CSE_ALifeDynamicObject	*object);

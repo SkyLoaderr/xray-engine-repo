@@ -168,8 +168,22 @@ void CMissile::spawn_fake_missile()
 //	F_entity_Destroy	(D);
 	if (!getDestroy())
 	{
-		MSG1("spawn fake");
-		Level().spawn_item	(*cNameSect(),Position(),ai_location().level_vertex_id(),ID());
+		CSE_Abstract		*object = Level().spawn_item(
+			*cNameSect(),
+			Position(),
+			ai_location().level_vertex_id(),
+			ID(),
+			true
+		);
+
+		CSE_ALifeObject				*alife_object = smart_cast<CSE_ALifeObject*>(object);
+		VERIFY						(alife_object);
+		alife_object->m_flags.set	(CSE_ALifeObject::flCanSave,FALSE);
+
+		NET_Packet			P;
+		object->Spawn_Write	(P,TRUE);
+		Level().Send		(P,net_flags(TRUE));
+		F_entity_Destroy	(object);
 	}
 }
 

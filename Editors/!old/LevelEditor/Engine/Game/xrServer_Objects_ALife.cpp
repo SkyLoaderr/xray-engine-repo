@@ -363,7 +363,7 @@ bool CSE_ALifeObject::can_switch_offline	() const
 
 bool CSE_ALifeObject::can_save				() const
 {
-	return						(true);
+	return						(!!m_flags.is(flCanSave));
 }
 
 bool CSE_ALifeObject::interactive			() const

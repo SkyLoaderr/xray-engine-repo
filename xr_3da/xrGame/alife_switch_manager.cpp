@@ -119,12 +119,14 @@ void CALifeSwitchManager::add_online(CSE_ALifeDynamicObject *object, bool update
 
 void CALifeSwitchManager::remove_online(CSE_ALifeDynamicObject *object, bool update_registries)
 {
-	object->m_bOnline	= false;
-	//Msg("perform destroy from remove online [%d]",object->ID);
-	server().Perform_destroy		(object,net_flags(TRUE,TRUE));
-	_OBJECT_ID						l_tObjectID = object->ID;
-	object->ID						= server().PerformIDgen(l_tObjectID);
-	R_ASSERT2						(l_tObjectID == object->ID,"Can't reserve a particular object identifier");
+	object->m_bOnline			= false;
+	
+	m_saved_chidren				= object->children;
+	server().Perform_destroy	(object,net_flags(TRUE,TRUE));
+	VERIFY						(object->children.empty());
+
+	_OBJECT_ID					object_id = object->ID;
+	object->ID					= server().PerformIDgen(object_id);
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
@@ -132,49 +134,44 @@ void CALifeSwitchManager::remove_online(CSE_ALifeDynamicObject *object, bool upd
 	}
 #endif
 
-	CSE_ALifeTraderAbstract			*tpTraderParams = smart_cast<CSE_ALifeTraderAbstract*>(object);
-	if (tpTraderParams) {
-		for (int i=0, n=(int)object->children.size(); i<n; ++i) {
-			CSE_ALifeDynamicObject	*dynamic_object = smart_cast<CSE_ALifeDynamicObject*>(objects().object(object->children[i],true));
-			if (!dynamic_object) {
-				CSE_Abstract		*abstract = server().ID_to_entity(object->children[i]);
-				VERIFY				(abstract);
-				Msg					("ERROR : [%s][%s]",*object->s_name,object->name_replace());
-				R_ASSERT3			(false,*abstract->s_name,abstract->name_replace());
-			}
-			VERIFY					(dynamic_object);
-			CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = smart_cast<CSE_ALifeInventoryItem*>(dynamic_object);
-			VERIFY2					(l_tpALifeInventoryItem,"Non inventory item object has parent?!");
+	CSE_ALifeTraderAbstract			*inventory_owner = smart_cast<CSE_ALifeTraderAbstract*>(object);
+	if (inventory_owner) {
+		for (u32 i=0, n=m_saved_chidren.size(); i<n; ++i) {
+			CSE_ALifeDynamicObject	*child = smart_cast<CSE_ALifeDynamicObject*>(objects().object(m_saved_chidren[i],true));
+			if (!child)
+				continue;
+			R_ASSERT				(child);
+			child->m_bOnline		= false;
+
+			CSE_ALifeInventoryItem	*inventory_item = smart_cast<CSE_ALifeInventoryItem*>(child);
+			VERIFY2					(inventory_item,"Non inventory item object has parent?!");
 #ifdef DEBUG
 			if (psAI_Flags.test(aiALife)) {
-				Msg					("[LSS] Destroying item [%s][%s][%d]",l_tpALifeInventoryItem->base()->name_replace(),*l_tpALifeInventoryItem->base()->s_name,l_tpALifeInventoryItem->base()->ID);
+				Msg					("[LSS] Destroying item [%s][%s][%d]",inventory_item->base()->name_replace(),*inventory_item->base()->s_name,inventory_item->base()->ID);
 			}
 #endif
-			_OBJECT_ID				l_tObjectID = l_tpALifeInventoryItem->base()->ID;
-			l_tpALifeInventoryItem->base()->ID	= server().PerformIDgen(l_tpALifeInventoryItem->base()->ID);
-			VERIFY2					(l_tpALifeInventoryItem->base()->ID == l_tObjectID,"Object ID has changed during ID generation!");
-			dynamic_object->m_bOnline = false;
+			
+			_OBJECT_ID					item_id = inventory_item->base()->ID;
+			inventory_item->base()->ID	= server().PerformIDgen(item_id);
 
-			if (!dynamic_object->can_save()) {
-				graph().detach		(*object,smart_cast<CSE_ALifeInventoryItem*>(dynamic_object),object->m_tGraphID);
-				release				(dynamic_object);
+			if (!child->can_save()) {
+				release				(child);
 				--i;
 				--n;
+				continue;
 			}
+			inventory_owner->attach	(inventory_item,true,true);
 		}
 	}
 	else {
-		for (int i=0, n=(int)object->children.size(); i<n; ++i) {
-			CSE_ALifeDynamicObject	*child = objects().object(object->children[i],true);
+		for (u32 i=0, n=m_saved_chidren.size(); i<n; ++i) {
+			CSE_ALifeDynamicObject	*child = objects().object(m_saved_chidren[i],true);
 			if (child) {
-				int					_n = n;
 				release				(child);
-				VERIFY				((int)object->children.size() == (_n - 1));
 				--i;
 				--n;
 			}
 		}
-		object->children.clear		();
 	}
 
 	if (update_registries) {
@@ -383,7 +380,7 @@ void CALifeSwitchManager::switch_object	(CSE_ALifeDynamicObject	*I)
 			CSE_ALifeGroupAbstract *tpALifeGroupAbstract = smart_cast<CSE_ALifeGroupAbstract*>(I);
 			if (!tpALifeGroupAbstract) {
 				// checking if the object is ready to switch offline
-				if (I->can_switch_offline() && (graph().actor()->ID_Parent != I->ID) && (!I->can_switch_online() || (graph().actor()->o_Position.distance_to(I->o_Position) > offline_distance())))
+				if (I->can_switch_offline() && (!I->can_switch_online() || (graph().actor()->o_Position.distance_to(I->o_Position) > offline_distance())))
 					switch_offline(I);
 			}
 			else {

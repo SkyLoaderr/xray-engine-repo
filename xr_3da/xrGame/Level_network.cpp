@@ -8,6 +8,25 @@
 void CLevel::net_Stop		()
 {
 	Msg							("- Disconnect");
+	if (Server)					Server->SLS_Clear	();
+	ClientReceive				();
+	ProcessGameEvents			();
+
+	ClientReceive				();
+	ProcessGameEvents			();
+
+	ClientReceive				();
+	ProcessGameEvents			();
+	
+	ClientReceive				();
+	ProcessGameEvents			();
+
+	ClientReceive				();
+	ProcessGameEvents			();
+
+	ClientReceive				();
+	ProcessGameEvents			();
+
 	IGame_Level::net_Stop		();
 	IPureClient::Disconnect		();
 
