@@ -23,18 +23,31 @@ function ph_button:reset_scheme()
 end
 
 function ph_button:update(delta)
+	if xr_logic.try_switch_to_another_section(self.object, self.st, db.actor) then
+		return
+	end
+end
+
+function ph_button:try_switch()
+	local st = db.storage[self.object:id()]
+	if st.active_scheme and self.st.on_press then
+		--if xr_logic.try_switch_to_another_section(obj, self.st, db.actor) then
+		if xr_logic.switch_to_section(self.object, self.st,
+		   xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.on_press.condlist)) then
+			return true
+		end
+	end
+	return false
 end
 
 function ph_button:hit_callback(obj, amount, local_direction, who, bone_index)
 	printf("_bp: ph_button:hit_callback: obj='%s', amount=%d, who='%s'", obj:name(), amount,
 		if_then_else(who ~= nil, who:name(), "nil"))
 	if device():time_global() - self.last_hit_tm > 500 then
-		if db.storage[self.object:id()].active_scheme then
-			if xr_logic.try_switch_to_another_section(obj, self.st, db.actor) then
-				return
-			end
-		end
 		self.last_hit_tm = device():time_global()
+		if self:try_switch() then
+			return
+		end
 	end
 end
 
@@ -42,10 +55,8 @@ function ph_button:use_callback(victim, who)
 	printf("_bp: ph_button:use_callback: [%s] used by [%s]",
 		victim:name(), who:name())
 
-	if db.storage[self.object:id()].active_scheme then
-		if xr_logic.try_switch_to_another_section(victim, self.st, db.actor) then
-			return
-		end
+	if self:try_switch() then
+		return
 	end
 end
 
@@ -62,6 +73,8 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
 
 	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)
+	
+	st.on_press  = xr_logic.cfg_get_condlist(ini, section, "on_press", npc)
 
 	st.anim = utils.cfg_get_string(ini, section, "anim", npc, true, "")
 end
