@@ -70,7 +70,8 @@ end
 
 function main ()
 
-    for i = 1, table.getn( zone_name ) do
+	printf( "agroprom1 start" )    
+	for i = 1, table.getn( zone_name ) do
         table.insert( zone, level.object( zone_name[i] ) )
         if( zone[i] ) then
         	zone[i]:set_callback( this.on_enter, true )
