@@ -287,6 +287,7 @@ function action_idle:execute ()
        self.object:add_animation ("waunded_idle_0", true)
     end    
     xr_sound.sound_update(self.object, self.sounds)		
+    self.object:give_info_portion_via_pda (self.a.on_medikit.info, level.actor ())
 end    
 ------------
 function action_idle:finalize ()
@@ -385,6 +386,9 @@ function action_stand:finalize ()
     action_base.finalize (self)
     xr_meet.override_meet (self.object, false)
     self.a.sit = false
+    if self.a.on_medikit ~= nil then
+       xr_logic.pick_section_from_condlist (level.actor (), self.object, self.a.on_medikit.condlist) 
+    end   
 end    
 ------------------------------------------------------------------------------------------
 
@@ -446,6 +450,8 @@ function add_to_binder (object, char_ini)
 
     local operators     = {}
     local properties    = {}
+    
+    xr_motivator.storage[object:id()].wounded.on_medikit = xr_logic.cfg_get_condlist (char_ini, "wounded", "on_medikit", object))
     
     properties["enable"]        =   xr_evaluators_id.sidor_wounded_base + 0
     properties["wound"]         =   xr_evaluators_id.sidor_wounded_base + 1
