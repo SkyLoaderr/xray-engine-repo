@@ -64,14 +64,20 @@ void CUIOutfitSlot::AttachChild(CUIWindow *pChild)
 	//в этот слот могут помещаться только костюмы
 	R_ASSERT(pOutfit);
 
-	if (Game().type != GAME_SINGLE)
+	if (Game().type == GAME_SINGLE)
 	{
 		UIOutfitIcon.SetShader(GetMPCharIconsShader());
 		CObject *pInvOwner = dynamic_cast<CObject*>(Level().CurrentEntity());
 		std::string a = *pInvOwner->cNameVisual();
 		std::string::iterator it = std::find(a.rbegin(), a.rend(), '\\').base(); 
+
+		// Cut leading full path
 		if (it != a.begin())
 			a.erase(a.begin(), it);
+		// Cut trailing ".ogf"
+		R_ASSERT(xr_strlen(a.c_str()) > 4);
+		if ('.' == a[a.size() - 4])
+			a.erase(a.size() - 4);
 
 		int m_iSkinX = 0, m_iSkinY = 0;
 		sscanf(pSettings->r_string("multiplayer_skins", a.c_str()), "%i,%i", &m_iSkinX, &m_iSkinY);
