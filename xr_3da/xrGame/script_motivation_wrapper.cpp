@@ -19,7 +19,7 @@ void CScriptMotivationWrapper::reinit			(_object_type *object)
 	call_member<void>				("reinit",object);
 }
 
-void CScriptMotivationWrapper::reinit_static	(inherited *motivation, CLuaGameObject *object)
+void CScriptMotivationWrapper::reinit_static	(inherited *motivation, _object_type *object)
 {
 	motivation->inherited::reinit	(object);
 }

@@ -31,7 +31,9 @@ CScript::CScript(LPCSTR caNamespaceName)
 	
 #ifdef DEBUG
 	if( !CScriptDebugger::GetDebugger()->Active() )
-	lua_sethook			(lua(),CScriptEngine::lua_hook_call,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
+		lua_sethook		(lua(),CScriptEngine::lua_hook_call,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
+	else
+		lua_sethook		(lua(), CDbgLuaHelper::hookLua,			LUA_MASKLINE|LUA_MASKCALL|LUA_MASKRET, 0);
 #endif
 
 //	sprintf				(S,"function start_thread()\n%s.main()\nend\n",caNamespaceName);
@@ -74,8 +76,10 @@ bool CScript::Update()
 			ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeInfo,"Script %s is finished!",m_script_name);
 		}
 		else {
-			VERIFY		(m_current_stack_level);
-			--m_current_stack_level;
+			if( !CScriptDebugger::GetDebugger()->Active() ) {
+				VERIFY		(m_current_stack_level);
+				--m_current_stack_level;
+			}
 			VERIFY2		(!lua_gettop(lua()),"Do not pass any value to coroutine.yield()!");
 		}
 	
