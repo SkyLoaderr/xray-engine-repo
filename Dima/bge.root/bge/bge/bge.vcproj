@@ -1656,6 +1656,10 @@
 							RelativePath=".\othello_classic_board_script.cpp"
 							>
 						</File>
+						<File
+							RelativePath=".\othello_classic_board_try_move.cpp"
+							>
+						</File>
 					</Filter>
 					<Filter
 						Name="bitboard"

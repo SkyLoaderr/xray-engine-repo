@@ -55,8 +55,10 @@ void __cdecl main(char argc, char *argv[])
 	
 	u64						start, finish;
 
+#ifndef _DEBUG
 	SetPriorityClass		(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
 	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
+#endif
 	Sleep					(1);
 	
 	start					= CPU::cycles();

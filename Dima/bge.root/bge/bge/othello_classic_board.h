@@ -95,8 +95,13 @@ protected:
 	template <int increment, cell_type _color_to_move, cell_type opponent_color>
 	IC		void			try_flip_direction		(cell_type *start_cell, int &difference);
 	
+protected:
 	template <cell_type color_to_move>
 	IC		void			do_move					(const cell_index &index);
+
+protected:
+	template <cell_type color_to_move>
+	IC		bool			try_move				(const cell_index &index);
 
 protected:
 	template <cell_type opponent_color>
@@ -159,6 +164,9 @@ public:
 			void			do_move					(const cell_index &index);
 	IC		void			do_move					(const cell_index &index0, const cell_index &index1);
 	IC		void			do_move					(LPCSTR move);
+
+public:
+			bool			try_move				(const cell_index &index);
 
 public:
 	IC		void			undo_move				();

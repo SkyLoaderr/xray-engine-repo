@@ -1,92 +1,16 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: othello_classic_board_do_move.cpp
+//	Module 		: othello_classic_board_try_move.cpp
 //	Created 	: 08.12.2004
 //  Modified 	: 08.12.2004
 //	Author		: Dmitriy Iassenev
-//	Description : Othello classic board do move implementation
+//	Description : Othello classic board try move implementation
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
 #include "othello_classic_board.h"
 
-template <int increment, COthelloClassicBoard::cell_type _color_to_move, COthelloClassicBoard::cell_type opponent_color>
-IC	void COthelloClassicBoard::try_flip_direction(cell_type *start_cell, int &difference)
-{
-    COthelloClassicBoard::cell_type *current_cell = start_cell + increment;
-#if 1
-	if (*current_cell != opponent_color)
-		return;
-
-	current_cell		+= increment;
-	if (*current_cell != opponent_color)
-		goto check;
-			
-	current_cell		+= increment;
-	if (*current_cell != opponent_color)
-		goto check;
-			
-	current_cell		+= increment;
-	if (*current_cell != opponent_color)
-		goto check;
-			
-	current_cell		+= increment;
-	if (*current_cell != opponent_color)
-		goto check;
-			
-	current_cell		+= increment;
-	if (*current_cell != opponent_color)
-		goto check;
-			
-    current_cell		+= increment;
-
-check:
-	if (*current_cell != _color_to_move)
-		return;
-
-	current_cell		-= increment;
-	do {
-        *current_cell		= _color_to_move;
-		m_flip_stack.push	(CStackCell(current_cell));
-        current_cell		-= increment;
-		difference			+= _color_to_move == BLACK ? 2 : -2;
-    }
-	while (current_cell != start_cell);
-#else
-	cell_type						opponent_color = _color_to_move == BLACK ? WHITE : BLACK;
-
-	if (*current_cell == opponent_color) {
-		current_cell += increment;
-		if (*current_cell == opponent_color) {
-			current_cell += increment;
-			if (*current_cell == opponent_color) {
-				current_cell += increment;
-				if (*current_cell == opponent_color) {
-					current_cell += increment;
-					if (*current_cell == opponent_color) {
-						current_cell += increment;
-						if (*current_cell == opponent_color) {
-                            current_cell += increment;
-                        }
-                    }
-                }
-            }
-        }
-		if (*current_cell == _color_to_move) {
-			current_cell			-= increment;
-			do {
-                *current_cell		= _color_to_move;
-				m_flip_stack.push	(CStackCell(current_cell));
-                current_cell		-= increment;
-				difference			+= _color_to_move == BLACK ? 2 : -2;
-            }
-			while (current_cell != start_cell);
-        }
-    }
-#endif
-}
-
 template <COthelloClassicBoard::cell_type _color_to_move>
-IC	void COthelloClassicBoard::do_move		(const cell_index &index)
+IC	bool COthelloClassicBoard::try_move		(const cell_index &index)
 {
 	const cell_type color_to_move		= _color_to_move;
 	const cell_type	opponent_color		= (color_to_move == BLACK ? WHITE : BLACK);
@@ -165,7 +89,8 @@ IC	void COthelloClassicBoard::do_move		(const cell_index &index)
 		default : NODEFAULT;
 	}
 
-	VERIFY				(this->difference() != difference);
+	if (this->difference() == difference)
+		return			(false);
 
 	*start_cell			= color_to_move;
 	m_flip_stack.push	(CStackCell(start_cell));
@@ -174,24 +99,28 @@ IC	void COthelloClassicBoard::do_move		(const cell_index &index)
 	m_difference		= difference + (_color_to_move == BLACK ? 1 : -1);
 	m_color_to_move		= opponent_color;
 	--m_empties;
-//	m_free_cells.erase	(index);
+	return				(true);
 }
 
-void COthelloClassicBoard::do_move			(const cell_index &index)
+bool COthelloClassicBoard::try_move			(const cell_index &index)
 {
 	m_move_processor.on_do_move	();
 
 	if (index != MOVE_PASS) {
 		if (color_to_move() == BLACK)
-			do_move<BLACK>	(index);
+			if (!try_move<BLACK>(index))
+				return	(false);
 		else
-			do_move<WHITE>	(index);
-		return;
+			if (!try_move<WHITE>(index))
+				return	(false);
+		return			(true);
 	}
 	
-	VERIFY				(!can_move());
+	if (!can_move())
+		return			(false);
 	
 	change_color		();
 	m_flip_stack.push	(CStackCell(0,m_passed));
 	m_passed			= true;
+	return				(true);
 }
