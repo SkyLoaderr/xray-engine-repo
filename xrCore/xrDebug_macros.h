@@ -9,7 +9,7 @@
 #define R_CHK(expr) { HRESULT hr = expr; if (FAILED(hr)) ::Debug.error(hr,#expr,__FILE__, __LINE__); }
 
 #ifdef DEBUG
-#define	NODEFAULT VERIFY2(0,"nodefault: reached")
+#define	NODEFAULT Debug.fatal("nodefault: reached")
 #define VERIFY(expr) if (!(expr)) ::Debug.fail(#expr,__FILE__, __LINE__)
 #define VERIFY2(expr, e2) if (!(expr)) ::Debug.fail(#expr,e2,__FILE__, __LINE__)
 #define VERIFY3(expr, e2, e3) if (!(expr)) ::Debug.fail(#expr,e2,e3,__FILE__, __LINE__)
