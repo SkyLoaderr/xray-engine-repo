@@ -52,6 +52,7 @@ extern float		ps_r2_aa_kernel;			// r2-only
 extern int			ps_r2_GI_depth;				// 1..5
 extern int			ps_r2_GI_photons;			// 8..256
 extern float		ps_r2_GI_clip;				// EPS
+extern float		ps_r2_GI_refl;				// .9f
 
 enum
 {
