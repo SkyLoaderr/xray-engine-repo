@@ -37,7 +37,7 @@ function main ()
 --		cond		(cond.move_end)
 --	)
 
-	stalker:set_callback(animation_callback,game_object.animation)
+	stalker:set_callback(stalker_test.animation_callback,game_object.animation)
 	
 	action (
 		stalker, 
