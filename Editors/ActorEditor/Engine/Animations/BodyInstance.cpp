@@ -472,11 +472,8 @@ CKinematics::~CKinematics	()
 void	CKinematics::IBoneInstances_Create()
 {
 	R_ASSERT		(bones);
-	u32			size	= bones->size();
+	u32				size	= bones->size();
 	void*			ptr		= xr_malloc(size*sizeof(CBoneInstance));
-#ifndef _EDITOR
-	R_ASSERT		(u32(ptr)%64 == 0);
-#endif
 	bone_instances			= (CBoneInstance*)ptr;
 	for (u32 i=0; i<size; i++)
 		bone_instances[i].construct();
