@@ -7,6 +7,7 @@
 //
 // This file implements the dynamics of particle actions.
 #include "stdafx.h"
+#pragma hdrstop
 
 #include "general.h"
 using namespace PAPI;

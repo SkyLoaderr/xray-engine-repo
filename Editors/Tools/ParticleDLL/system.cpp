@@ -4,11 +4,11 @@
 //
 // This file implements the API calls that are not particle actions.
 #include "stdafx.h"
+#pragma hdrstop
 
 #include "general.h"
 
 // For Windows DLL.
-#ifdef WIN32
 BOOL APIENTRY DllMain( HANDLE hModule, 
                        DWORD  ul_reason_for_call, 
                        LPVOID lpReserved
@@ -17,7 +17,6 @@ BOOL APIENTRY DllMain( HANDLE hModule,
     switch (ul_reason_for_call)
 	{
 		case DLL_PROCESS_ATTACH: 
-			Core._initialize("ParticleDLL");
 			break;
 		case DLL_THREAD_ATTACH:
 		case DLL_THREAD_DETACH:
@@ -26,7 +25,6 @@ BOOL APIENTRY DllMain( HANDLE hModule,
     }
     return TRUE;
 }
-#endif
 
 namespace PAPI{
 float ParticleAction::dt;
@@ -147,7 +145,7 @@ _ParticleState __ps;
 _ParticleState& _GetPState()
 {
 	// This is the global state.
-	extern _ParticleState __ps;
+//	extern _ParticleState __ps;
 
 	return __ps;
 }
@@ -651,6 +649,8 @@ PARTICLEDLL_API void pDeleteActionLists(int action_list_num, int action_list_cou
 	_PUnLock();
 }
 
+void _pSendAction(ParticleAction *S, PActionEnum type, int size);
+
 PARTICLEDLL_API void pCallActionList(int action_list_num)
 {
 	_ParticleState &_ps = _GetPState();
@@ -658,7 +658,6 @@ PARTICLEDLL_API void pCallActionList(int action_list_num)
 	if(_ps.in_new_list)
 	{
 		// Add this call as an action to the current list.
-		extern void _pSendAction(ParticleAction *S, PActionEnum type, int size);
 
 		PACallActionList S;
 		S.action_list_num = action_list_num;
@@ -697,11 +696,11 @@ PARTICLEDLL_API void pSetActionListParenting(int action_list_num, const Fmatrix&
 	if(pa == NULL)
 		return; // ERROR
 
-	int num_actions = pa->count-1;
+	int num_act = pa->count-1;
 	PAHeader *action= pa+1;
 
 	// Step through all the actions in the action list.
-	for(int action = 0; action < num_actions; action++, pa++)
+	for(int act = 0; act < num_act; act++, action++)
 	{
 		if (!pa->flags.is(ParticleAction::ALLOW_PARENT)) continue;
 		switch(pa->type)

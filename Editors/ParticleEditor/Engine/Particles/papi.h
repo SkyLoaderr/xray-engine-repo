@@ -11,15 +11,10 @@
 // This is the major and minor version number of this release of the API.
 #define P_VERSION 120
 
-#ifdef WIN32
 #ifdef PARTICLEDLL_EXPORTS
 #define PARTICLEDLL_API __declspec(dllexport)
 #else
 #define PARTICLEDLL_API __declspec(dllimport)
-#endif
-
-#else
-#define PARTICLEDLL_API
 #endif
 
 // Actually this must be < sqrt(MAXFLOAT) since we store this value squared.
@@ -249,3 +244,5 @@ extern "C"{
 	}
 };
 #endif
+
+

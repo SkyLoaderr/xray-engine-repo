@@ -9,12 +9,12 @@
 
 #pragma once
 
-#define ENGINE_API
-#define Msg //
-
 #include <xrCore.h>
-#include "FS.h"
 
+#ifdef __BORLANDC__
+#pragma comment( lib, "x:\\xrCoreB.lib"	)
+#else
 #pragma comment( lib, "x:\\xrCore.lib"	)
+#endif
 
 #endif //stdafxH

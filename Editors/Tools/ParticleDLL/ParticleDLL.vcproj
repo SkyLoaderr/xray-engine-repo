@@ -151,22 +151,6 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Shared"
-			Filter="">
-			<File
-				RelativePath="FS.cpp">
-			</File>
-			<File
-				RelativePath="FS.h">
-			</File>
-			<File
-				RelativePath="LzHuf.cpp">
-			</File>
-			<File
-				RelativePath="lzhuf.h">
-			</File>
-		</Filter>
-		<Filter
 			Name="PAPI"
 			Filter="">
 			<File

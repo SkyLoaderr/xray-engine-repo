@@ -14,10 +14,8 @@
 #define M_PI 3.1415926535897932384626433f
 #endif
 
-#ifdef WIN32
 #define drand48() (((float) rand())/((float) RAND_MAX))
 #define srand48(x) srand(x)
-#endif
 
 class pVector
 {
