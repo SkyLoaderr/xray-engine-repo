@@ -15,12 +15,16 @@ public:
 	{
 		GetCursorPos(p.d3d());
 	}
-	IC void	iGetMousePosReal			(Ipoint &p)
+	IC void	iGetMousePosReal			(HANDLE hwnd, Ipoint &p)
 	{
 		iGetMousePosScreen(p);
-		if (Device.m_hWnd) ScreenToClient(Device.m_hWnd, p.d3d());
+		if (hwnd) ScreenToClient(Device.m_hWnd, p.d3d());
 	}
-	void	iGetMousePosIndependent		(Fpoint &f)
+	IC void	iGetMousePosReal			(Ipoint &p)
+	{
+		iGetMousePosReal(Device.m_hWnd,p);
+	}
+	IC void	iGetMousePosIndependent		(Fpoint &f)
 	{
 		Ipoint p;
 		iGetMousePosReal(p);
