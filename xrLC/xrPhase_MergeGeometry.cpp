@@ -107,7 +107,7 @@ void CBuild::xrPhase_MergeGeometry	()
 			if (selected == split)	break;	// No candidates for merge
 
 			// **OK**. Perform merge
-			subdiv.insert	(subdiv.end(), g_XSplit[selected]->begin(), g_XSplit[selected]->end());
+			subdiv.append	(g_XSplit[selected]->begin(), g_XSplit[selected]->end());
 			_DELETE			(g_XSplit[selected]);
 			g_XSplit.erase	(g_XSplit.begin()+selected);
 		}

@@ -87,6 +87,10 @@ public:
 		CopyMemory					( data+_count, L, cnt*sizeof(T) );
 		_count						+= cnt;
 	}
+	IC	void		append					( T* b, T* e)
+	{
+		append		(b,e-b);
+	}
 	IC	void		compact					( )
 	{
 		if (_size==_count)	return;
