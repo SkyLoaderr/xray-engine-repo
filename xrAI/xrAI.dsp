@@ -395,6 +395,10 @@ SOURCE=.\xr_ini.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\xr_tokens.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\xr_tokens.h
 # End Source File
 # Begin Source File
