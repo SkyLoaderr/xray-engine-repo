@@ -10,7 +10,7 @@
 #pragma once
 
 #ifdef DEBUG
-#define _HAS_EXCEPTIONS		1	/* predefine as 0 to disable exceptions */
+	#define _HAS_EXCEPTIONS		1	/* predefine as 0 to disable exceptions */
 #endif
 
 //#ifdef _EDITOR
