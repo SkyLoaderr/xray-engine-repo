@@ -123,12 +123,14 @@ static void CalculateRest(CBone* bone, Fmatrix& parent)
 
 void CEditableObject::CalculateAnimation(CSMotion* motion)
 {
-	CalculateAnim(m_Bones.front(),motion,Fidentity);
+	if (!m_Bones.empty())
+		CalculateAnim(m_Bones.front(),motion,Fidentity);
 }
 
 void CEditableObject::CalculateBindPose()
 {
-	CalculateRest(m_Bones.front(),Fidentity);
+	if (!m_Bones.empty())
+		CalculateRest(m_Bones.front(),Fidentity);
 }
 
 void CEditableObject::SetActiveSMotion(CSMotion* mot)
@@ -308,6 +310,7 @@ ICF void fill_bones_by_parent(BoneVec& bones,CBone* start)
 }
 void CEditableObject::PrepareBones()
 {
+	if (m_Bones.empty())return;
 	CBone* PARENT		= 0;
     // clear empty parent
     for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
