@@ -28,6 +28,7 @@ CStateBaseAbstract::~CStateBase			()
 TEMPLATE_SPECIALIZATION
 void CStateBaseAbstract::Init			()
 {
+	m_object			= 0;
 }
 
 TEMPLATE_SPECIALIZATION

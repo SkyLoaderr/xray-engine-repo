@@ -147,7 +147,6 @@ CSE_ALifeItemTorch::CSE_ALifeItemTorch		(LPCSTR caSection) : CSE_ALifeItem(caSec
 	glow_texture[0]				= 0;
 	glow_radius					= 0.1f;
     guid_bone					= u32(BI_NONE);
-	set_visual					("lights\\lights_torch");
 }
 
 CSE_ALifeItemTorch::~CSE_ALifeItemTorch		()

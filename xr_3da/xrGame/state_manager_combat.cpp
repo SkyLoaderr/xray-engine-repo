@@ -29,7 +29,7 @@ void CStateManagerCombat::Load			(LPCSTR section)
 
 void CStateManagerCombat::reinit		(CAI_Stalker *object)
 {
-	inherited::reinit		(object,u32(-1));
+	inherited::reinit		(object);
 }
 
 void CStateManagerCombat::reload		(LPCSTR section)

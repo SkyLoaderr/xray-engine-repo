@@ -29,19 +29,21 @@ IC	CAbstractGraphManager::CGraphManagerAbstract	()
 TEMPLATE_SPECIALIZATION
 CAbstractGraphManager::~CGraphManagerAbstract		()
 {
+	xr_delete				(m_graph);
 }
 
 TEMPLATE_SPECIALIZATION
 void CAbstractGraphManager::Init					()
 {
+	m_graph					= xr_new<CSGraphAbstract>();
 }
 
 TEMPLATE_SPECIALIZATION
-void CAbstractGraphManager::reinit					(const _vertex_id_type start_vertex_id)
+void CAbstractGraphManager::reinit					()
 {
-	VERIFY					(graph().vertex(start_vertex_id));
-
-	m_current_vertex_id		= m_dest_vertex_id = start_vertex_id;
+	xr_delete				(m_graph);
+	m_graph					= xr_new<CSGraphAbstract>();
+	m_current_vertex_id		= m_dest_vertex_id = _vertex_id_type(-1);
 	m_path.clear			();
 	m_actuality				= true;
 }

@@ -26,7 +26,7 @@ public:
 		_vertex_index_type
 	> CSGraphAbstract;
 private:
-	CSGraphAbstract				m_graph;
+	CSGraphAbstract				*m_graph;
 	_vertex_id_type				m_current_vertex_id;
 	_vertex_id_type				m_dest_vertex_id;
 	xr_vector<_vertex_id_type>	m_path;
@@ -39,7 +39,7 @@ public:
 	IC					CGraphManagerAbstract	();
 	virtual				~CGraphManagerAbstract	();
 			void		Init					();
-	virtual	void		reinit					(const _vertex_id_type start_vertex_id);
+	virtual	void		reinit					();
 	IC		void		set_dest_vertex_id		(const _vertex_id_type dest_vertex_id);
 	IC		const _vertex_id_type &dest_vertex_id	() const;
 	IC		const _vertex_id_type &current_vertex_id() const;
@@ -49,13 +49,15 @@ public:
 	virtual	void		update					(u32 time_delta);
 	IC		const CSGraphAbstract &graph		() const
 	{
-		return			(m_graph);
+		VERIFY			(m_graph);
+		return			(*m_graph);
 	}
 	IC		void		go_path					();
 protected:
 	IC		CSGraphAbstract	&graph				()
 	{
-		return			(m_graph);
+		VERIFY			(m_graph);
+		return			(*m_graph);
 	}
 };
 

@@ -520,13 +520,13 @@ void CAI_Stalker::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /*
 		}
 
 #ifdef DEBUG
-	if (tpGlobalAnimation)
-		Msg				("%6d Global animation : %s",Level().timeServer(),PSkeletonAnimated(Visual())->LL_MotionDefName_dbg(tpGlobalAnimation));
+//	if (tpGlobalAnimation)
+//		Msg				("%6d Global animation : %s",Level().timeServer(),PSkeletonAnimated(Visual())->LL_MotionDefName_dbg(tpGlobalAnimation));
 	
-	if (tpTorsoAnimation)
-		Msg				("%6d Torso animation : %s",Level().timeServer(),PSkeletonAnimated(Visual())->LL_MotionDefName_dbg(tpTorsoAnimation));
+//	if (tpTorsoAnimation)
+//		Msg				("%6d Torso animation : %s",Level().timeServer(),PSkeletonAnimated(Visual())->LL_MotionDefName_dbg(tpTorsoAnimation));
 	
-	if (tpLegsAnimation)
-		Msg				("%6d Legs animation : %s",Level().timeServer(),PSkeletonAnimated(Visual())->LL_MotionDefName_dbg(tpLegsAnimation));
+//	if (tpLegsAnimation)
+//		Msg				("%6d Legs animation : %s",Level().timeServer(),PSkeletonAnimated(Visual())->LL_MotionDefName_dbg(tpLegsAnimation));
 #endif
 }

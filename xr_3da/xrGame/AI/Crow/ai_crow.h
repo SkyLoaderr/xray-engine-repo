@@ -35,7 +35,7 @@ class CAI_Crow : public CEntityAlive
 	{
 		typedef			svector<ref_sound,MAX_SND_COUNT>		MotionSVec;
 		MotionSVec		m_Sounds;
-		ref_sound&			GetRandom	(){return m_Sounds[Random.randI(0,m_Sounds.size())];}
+		ref_sound&		GetRandom	(){return m_Sounds[Random.randI(0,m_Sounds.size())];}
 		void			Load		(LPCSTR prefix);
 		void			SetPosition	(const Fvector& pos);
 		void			Unload		();

@@ -21,7 +21,6 @@ CStateManagerNoALife::~CStateManagerNoALife	()
 
 void CStateManagerNoALife::Init				()
 {
-	add_state				(xr_new<CStateFreeNoAlife>(),	eNoALifeStateFree,		10);
 }
 
 void CStateManagerNoALife::Load				(LPCSTR section)
@@ -31,7 +30,10 @@ void CStateManagerNoALife::Load				(LPCSTR section)
 
 void CStateManagerNoALife::reinit			(CAI_Stalker *object)
 {
-	inherited::reinit		(object,eNoALifeStateFree);
+	inherited::reinit		(object);
+	add_state				(xr_new<CStateFreeNoAlife>(),	eNoALifeStateFree,		10);
+	set_current_state		(eNoALifeStateFree);
+	set_dest_state			(eNoALifeStateFree);
 }
 
 void CStateManagerNoALife::reload			(LPCSTR section)

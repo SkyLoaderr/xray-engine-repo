@@ -36,9 +36,9 @@ void CAbstractStateManager::Load			(LPCSTR section)
 }
 
 TEMPLATE_SPECIALIZATION
-void CAbstractStateManager::reinit			(const u32 start_vertex_id)
+void CAbstractStateManager::reinit			()
 {
-	inherited::reinit		(start_vertex_id);
+	inherited::reinit		();
 }
 
 TEMPLATE_SPECIALIZATION

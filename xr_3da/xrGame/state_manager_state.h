@@ -31,7 +31,7 @@ public:
 	virtual				~CStateManagerState		();
 			void		Init					();
 	virtual	void		Load					(LPCSTR section);
-	virtual	void		reinit					(_Object *object, u32 state_id);
+	virtual	void		reinit					(_Object *object);
 	virtual	void		reload					(LPCSTR section);
 	virtual	void		initialize				();
 	virtual	void		execute					();

@@ -25,11 +25,6 @@ CStateManagerStalker::~CStateManagerStalker	()
 
 void CStateManagerStalker::Init				()
 {
-	add_state				(xr_new<CStateManagerDeath>(),	eStalkerStateDeath,		0);
-	add_state				(xr_new<CStateManagerNoALife>(),eStalkerStateNoALife,	3);
-	add_transition			(eStalkerStateNoALife,eStalkerStateDeath,1);
-//	add						(xr_new<CStateManagerALife>(),	eStalkerStateALife,		2);
-//	add						(xr_new<CStateManagerCombat>(),	eStalkerStateCombat,	1);
 }
 
 void CStateManagerStalker::Load				(LPCSTR section)
@@ -39,7 +34,14 @@ void CStateManagerStalker::Load				(LPCSTR section)
 
 void CStateManagerStalker::reinit			(CAI_Stalker *object)
 {
-	inherited::reinit		(object,eStalkerStateNoALife);
+	inherited::reinit		(object);
+	add_state				(xr_new<CStateManagerDeath>(),	eStalkerStateDeath,		0);
+	add_state				(xr_new<CStateManagerNoALife>(),eStalkerStateNoALife,	3);
+	add_transition			(eStalkerStateNoALife,eStalkerStateDeath,1);
+	set_current_state		(eStalkerStateNoALife);
+	set_dest_state			(eStalkerStateNoALife);
+//	add						(xr_new<CStateManagerALife>(),	eStalkerStateALife,		2);
+//	add						(xr_new<CStateManagerCombat>(),	eStalkerStateCombat,	1);
 }
 
 void CStateManagerStalker::reload			(LPCSTR section)

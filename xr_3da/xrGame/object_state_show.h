@@ -18,10 +18,15 @@ public:
 	{
 	}
 
-	virtual	void		initialize			()
+	virtual	void		execute			()
 	{
 		VERIFY			(m_inventory_item);
 		m_object->inventory().Slot(m_inventory_item);
 		m_object->inventory().Activate(m_inventory_item->GetSlot());
+	}
+
+	virtual bool		completed		() const
+	{
+		return			(m_object->inventory().ActiveItem()->ID() == m_inventory_item->ID());
 	}
 };

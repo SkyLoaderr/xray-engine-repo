@@ -59,7 +59,7 @@ public:
 	virtual				~CStateManagerAbstract	();
 			void		Init					();
 	virtual	void		Load					(LPCSTR section);
-	virtual	void		reinit					(const u32 start_vertex_id);
+	virtual	void		reinit					();
 	virtual	void		reload					(LPCSTR section);
 	virtual	void		update					(u32 time_delta);
 	IC		T			&state					(const u32 state_id);

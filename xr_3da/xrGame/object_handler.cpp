@@ -58,12 +58,12 @@ void CObjectHandler::Load			(LPCSTR section)
 
 void CObjectHandler::reinit			(CAI_Stalker *object)
 {
-	graph().clear					();
+	inherited::reinit				(object);
+	CInventoryOwner::reinit			();
 	add_state						(xr_new<CObjectStateBase>((CInventoryItem*)0,CWeapon::EWeaponStates(-1)),u32(eObjectActionNoItems),0);
 	state(eObjectActionNoItems).initialize();
+	set_current_state				(eObjectActionNoItems);
 	set_dest_state					(eObjectActionNoItems);
-	inherited::reinit				(object,u32(eObjectActionNoItems));
-	CInventoryOwner::reinit			();
 }
 
 void CObjectHandler::reload			(LPCSTR section)
@@ -553,6 +553,11 @@ u32 CObjectHandler::object_state() const
 		}
 	}
 
+	CMissile		*missile = dynamic_cast<CMissile*>(inventory().ActiveItem());
+	if (missile) {
+		return		(current_state_id());
+	}
+
 #ifdef DEBUG
 	return			(u32(eObjectActionDummy));
 #endif
@@ -618,11 +623,11 @@ void CObjectHandler::add_item			(CInventoryItem *inventory_item)
 	}
 	else if (missile) {
 		add_state		(xr_new<CObjectStateBase>(inventory_item,CWeapon::eIdle,true),	uid(eObjectActionIdle,id),		0);
-		add_state		(xr_new<CObjectStateShow>(inventory_item,CWeapon::eShowing),uid(eObjectActionShow,id),		0);
-		add_state		(xr_new<CObjectStateHide>(inventory_item,CWeapon::eHiding),	uid(eObjectActionHide,id),		0);
-		add_state		(xr_new<CObjectStateBase>(inventory_item,CWeapon::eFire),	uid(eObjectActionFire1,id),		0);
-		add_state		(xr_new<CObjectStateBase>(inventory_item,CWeapon::eIdle),	uid(eObjectActionSwitch1,id),	0);
-		add_state		(xr_new<CObjectStateFirePrimary>(inventory_item,CWeapon::eFire),	uid(eObjectActionFire2,id),		0);
+		add_state		(xr_new<CObjectStateShow>(inventory_item,CWeapon::eShowing),	uid(eObjectActionShow,id),		0);
+		add_state		(xr_new<CObjectStateHide>(inventory_item,CWeapon::eHiding),		uid(eObjectActionHide,id),		0);
+		add_state		(xr_new<CObjectStateBase>(inventory_item,CWeapon::eFire),		uid(eObjectActionFire1,id),		0);
+		add_state		(xr_new<CObjectStateBase>(inventory_item,CWeapon::eIdle),		uid(eObjectActionSwitch1,id),	0);
+		add_state		(xr_new<CObjectStateFirePrimary>(inventory_item,CWeapon::eFire),uid(eObjectActionFire2,id),		0);
 
 		add_transition	(uid(eObjectActionShow,id),			uid(eObjectActionIdle,id),		1);
 		add_transition	(uid(eObjectActionIdle,id),			uid(eObjectActionHide,id),		1);
@@ -630,7 +635,7 @@ void CObjectHandler::add_item			(CInventoryItem *inventory_item)
 		add_transition	(uid(eObjectActionIdle,id),			uid(eObjectActionFire2,id),		1);
 		add_transition	(uid(eObjectActionFire2,id),		uid(eObjectActionSwitch1,id),	1);
 		add_transition	(uid(eObjectActionSwitch1,id),		uid(eObjectActionFire1,id),		1);
-		add_transition	(uid(eObjectActionFire1,id),		uid(u32(eObjectActionNoItems),id),1);
+		add_transition	(uid(eObjectActionFire1,id),		u32(eObjectActionNoItems),		1);
 	}
 
 	// нож, (еда, питьё), приборы
@@ -701,25 +706,21 @@ void CObjectHandler::remove_item		(CInventoryItem *inventory_item)
 #ifdef DEBUG
 void CObjectHandler::show_graph()
 {
-//	Msg						("\nGraph dump (%d vertices, %d edges)",graph().vertices().size(),graph().edge_count());
-//	state_iterator			I = graph().vertices().begin(), B = I;
-//	state_iterator			E = graph().vertices().end();
-//	for ( ;I != E; ++I) {
-//		string4096			S;
-//		char				*S1 = S;
-//		//			S1					+= sprintf(S1,"Vertex %3d[%x] : ",I - B,(*I).vertex_id());
-//		//			for (u32 i=0; i<(*I).edges().size(); ++i)
-//		//				sprintf			(S1,"[%x]",graph().vertices()[(*I).edges()[i].vertex_index()].vertex_id());
-//		//			S1					+= sprintf(S1,"Vertex %s",to_string((*I).vertex_id()));
-//		if ((*I).edges().empty())
-//			S1				+= sprintf(S1,"%32s -> %32s",to_string((*I).vertex_id()),"(no edges)");
-//		else
-//			for (u32 i=0; i<(*I).edges().size(); ++i) {
-//				S1				+= sprintf(S1,"%32s -> ",to_string((*I).vertex_id()));
-//				S1				+= sprintf(S1,"%32s%s",to_string(graph().vertices()[(*I).edges()[i].vertex_index()].vertex_id()),i != ((*I).edges().size() - 1) ? "\n" : "");
-//			}
-//			Msg					("%s",S);
-//	}
+	Msg						("\nGraph dump (%d vertices, %d edges)",graph().vertices().size(),graph().edge_count());
+	state_iterator			I = graph().vertices().begin(), B = I;
+	state_iterator			E = graph().vertices().end();
+	for ( ;I != E; ++I) {
+		string4096			S;
+		char				*S1 = S;
+		if ((*I).edges().empty())
+			S1				+= sprintf(S1,"%32s -> %32s",to_string((*I).vertex_id()),"(no edges)");
+		else
+			for (u32 i=0; i<(*I).edges().size(); ++i) {
+				S1				+= sprintf(S1,"%32s -> ",to_string((*I).vertex_id()));
+				S1				+= sprintf(S1,"%32s%s",to_string(graph().vertices()[(*I).edges()[i].vertex_index()].vertex_id()),i != ((*I).edges().size() - 1) ? "\n" : "");
+			}
+			Msg					("%s",S);
+	}
 }
 #endif
 
@@ -756,6 +757,16 @@ CInventoryItem *CObjectHandler::get_best_weapon() const
 		CWeapon		*weapon = dynamic_cast<CWeapon*>(*I);
 		if (weapon && (weapon->GetAmmoCurrent() > weapon->GetAmmoMagSize()/10)) {
 			ai().ef_storage().m_tpGameObject	= weapon;
+			u32	current_weapon_type = ai().ef_storage().m_pfPersonalWeaponType->dwfGetWeaponType();
+			if (current_weapon_type > best_weapon_type) {
+				best_weapon_type = current_weapon_type;
+				best_weapon		 = *I;
+			}
+			continue;
+		}
+		CMissile	*missile = dynamic_cast<CMissile*>(*I);
+		if (missile) {
+			ai().ef_storage().m_tpGameObject	= missile;
 			u32	current_weapon_type = ai().ef_storage().m_pfPersonalWeaponType->dwfGetWeaponType();
 			if (current_weapon_type > best_weapon_type) {
 				best_weapon_type = current_weapon_type;
