@@ -9,13 +9,13 @@
 #define COLOR_ENEMY		0xffff0000
 #define COLOR_FRIEND	0xffffffff
 #define COLOR_SELF		0xff00ff00
-#define COLOR_TARGET	0xFFFF00A2
+#define COLOR_TARGET	0xFFFFA0FF
 
 #define BASE_LEFT		9
 #define BASE_TOP		6
 #define MAP_LEFT		76
 #define MAP_TOP			80
-#define MAP_RADIUS		66
+#define MAP_RADIUS		65
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
