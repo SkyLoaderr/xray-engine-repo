@@ -14,10 +14,12 @@ private:
 	CDB::MODEL*				m_pModel;
 	occTri*					m_pTris;
 
+/*
 	IDirect3DTexture8*		m_pDBG;
 	CTexture*				pTexture;
 	Shader*					pShader;
 	CVertexStream*			pStream;
+*/
 	
 	void					Render_DB	(CFrustum& base);
 public:
