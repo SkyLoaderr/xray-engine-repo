@@ -279,7 +279,7 @@ void CBlender_LaEmB::compile_3	(CBlender_Recorder& RS, sh_list& L_textures, sh_l
 		RS.R().SetRS		(D3DRS_LIGHTING,					BC(FALSE));
 		RS.R().SetRS		(D3DRS_FOGENABLE,					BC(TRUE));
 		
-		// Stage0 - Lightmap
+		// Stage0 - [=] Lightmap
 		RS.StageBegin		();
 		{
 			RS.StageSET_Address	(D3DTADDRESS_WRAP);
@@ -291,26 +291,26 @@ void CBlender_LaEmB::compile_3	(CBlender_Recorder& RS, sh_list& L_textures, sh_l
 		}
 		RS.StageEnd			();
 		
-		// Stage1 - Base texture
+		// Stage1 - [+] Env-map
 		RS.StageBegin		();
 		{
 			RS.StageSET_Address	(D3DTADDRESS_WRAP);
-			RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_CURRENT);
-			RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_CURRENT);
-			RS.Stage_Texture	(oT_Name,		L_textures	);
-			RS.Stage_Matrix		(oT_xform,		L_matrices,	0);
+			RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_CURRENT);
+			RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_CURRENT);
+			RS.Stage_Texture	(oT2_Name,		L_textures	);
+			RS.Stage_Matrix		(oT2_xform,		L_matrices,	0);
 			RS.Stage_Constant	("$null",		L_constants	);
 		}
 		RS.StageEnd			();
 		
-		// Stage2 - Detail
+		// Stage2 - [*] Base
 		RS.StageBegin		();
 		{
 			RS.StageSET_Address	(D3DTADDRESS_WRAP);
-			RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,	D3DTA_CURRENT);
-			RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG2,	D3DTA_CURRENT);
-			RS.Stage_Texture	(oT2_Name,		L_textures	);
-			RS.Stage_Matrix		(oT2_xform,		L_matrices,	0);
+			RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_CURRENT);
+			RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_CURRENT);
+			RS.Stage_Texture	(oT_Name,		L_textures	);
+			RS.Stage_Matrix		(oT_xform,		L_matrices,	0);
 			RS.Stage_Constant	("$null",		L_constants	);
 		}
 		RS.StageEnd			();
