@@ -209,7 +209,7 @@ void CSightManager::Exec_Look		(float dt)
 
 	Fmatrix							mXFORM;
 //	mXFORM.setHPB					(-m_object->NET_Last.o_model,0,0);
-	mXFORM.setHPB					(-m_object->body().current().yaw,0,0);
+	mXFORM.setHPB					(-m_object->body_orientation().current.yaw,0,0);
 	mXFORM.c.set					(m_object->Position());
 	m_object->XFORM().set			(mXFORM);
 
