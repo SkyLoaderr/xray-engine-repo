@@ -81,7 +81,7 @@ void CUIScrollBar::UpdateScrollBar()
 }
 
 
-void CUIScrollBar::SendMessage(CUIWindow *pWnd, u16 msg, void *pData)
+void CUIScrollBar::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 	if(pWnd == &m_DecButton)
 	{

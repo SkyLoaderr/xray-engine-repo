@@ -26,6 +26,20 @@ public:
 
 	void SetParent(CUIWindow* pNewParent) {m_pParentWnd = pNewParent;}
 	CUIWindow* GetParent() {return m_pParentWnd;}
+	
+	//получить окно самого верхнего уровня
+	CUIWindow* GetTop() {if(m_pParentWnd == NULL)	
+								return  this;
+							else
+								return  m_pParentWnd->GetTop();}
+
+
+	//поднять на вершину списка выбранное дочернее окно
+	bool BringToTop(CUIWindow* pChild);
+
+	//поднять на вершину списка всех родителей окна и его самого
+	void BringAllToTop();
+	
 
 	////////////////////////////////////
 	//работа с внешними сообщениями (мышь, клавиатура, другие окна)
@@ -47,9 +61,9 @@ public:
 	//ф-ция должна переопределяться
 	//pWnd - указатель на окно, которое послало сообщение
 	//pData - указатель на дополнительные данные, которые могут понадобиться
-	virtual void SendMessage(CUIWindow* pWnd, u16 msg, void* pData = NULL);
-
-
+	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = NULL);
+	
+	
 
 	//запрещение/разрешение на ввод с клавиатуры
 	void Enable(bool status) {m_bIsEnabled =  status;}

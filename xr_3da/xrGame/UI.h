@@ -9,7 +9,20 @@
 #include "UIGroup.h"
 #include "UIGameCustom.h"
 
-/**
+
+
+///////////////////////////////
+// включает менюшку вместо игры
+////////////////////////////////
+
+//#define UI_INTERFACE_ON
+
+
+
+
+
+#ifdef UI_INTERFACE_ON
+
 #include "ui\UIFrameWindow.h"
 #include "ui\UIButton.h"
 #include "ui\UICheckButton.h"
@@ -18,7 +31,17 @@
 #include "ui\UIRadioGroup.h"
 
 #include "ui\UIScrollBar.h"
-/**/
+
+#include "ui\UIMessageBox.h"
+#include "ui\UIProgressBar.h"
+#include "ui\UIStatic.h"
+
+#include "ui\UIDragDropItem.h"
+#include "ui\UIDragDropList.h"
+
+#include "ui\UIInventoryWnd.h"
+
+#endif
 
 
 #define UI_BASE_WIDTH	800
@@ -66,8 +89,12 @@ class CUI{
 	// window tests begin
 	///////////////////////////////////
 
-/**
-	CUIFrameWindow		UIMainWindow;
+#ifdef UI_INTERFACE_ON
+
+	//CUIFrameWindow		UIMainWindow;
+
+	CUIInventoryWnd		UIMainWindow;
+
 	CUIButton			UIButton1;
 	CUIButton			UIButton2;
 	CUIButton			UIButton3;
@@ -77,7 +104,30 @@ class CUI{
 	CUIRadioButton		UIRadioButton2;
 
 	CUIScrollBar		UIScrollBar;
-/**/
+
+	CUIMessageBox		UIMessageBox; 
+	CUIMessageBox		UIMessageBox1;
+	CUIMessageBox		UIMessageBox2;
+
+	CUIProgressBar		UIProgressBar; 
+	
+	CUIStatic			UIStatic;
+	
+	CUIDragDropItem		UIDragDropItem;
+	CUIDragDropItem		UIDragDropItem1;
+	CUIDragDropItem		UIDragDropItem2;
+	CUIDragDropItem		UIDragDropItem3;
+	CUIDragDropItem		UIDragDropItem4;
+	CUIDragDropItem		UIDragDropItem5;
+	CUIDragDropItem		UIDragDropItem6;
+
+	CUIDragDropList		UIDragDropList; 
+	CUIDragDropList		UIDragDropList1; 
+	CUIDragDropList		UIDragDropList2;
+
+
+
+#endif
 
 	//////////////////////////////////
 	// window tests end
@@ -117,3 +167,4 @@ public:
 };
 
 #endif // __XR_UI_H__
+

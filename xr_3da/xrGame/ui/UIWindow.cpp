@@ -72,7 +72,7 @@ void CUIWindow::Draw()
 
 
 //
-// обновление окна передпрорисовкой
+// обновление окна перед прорисовкой
 //
 void CUIWindow::Update()
 {
@@ -175,7 +175,7 @@ void CUIWindow::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 
 	for(u16 i=0; i<m_ChildWndList.size(); i++, it++)
 	{
-		RECT	l_tRect = (*it)->GetWndRect();
+		RECT l_tRect = (*it)->GetWndRect();
 		if (PtInRect(&l_tRect, cursor_pos))
 		{
 			if((*it)->IsEnabled())
@@ -208,7 +208,7 @@ void CUIWindow::SetCapture(CUIWindow *pChildWindow, bool capture_status)
 
 
 //обработка сообщений 
-void CUIWindow::SendMessage(CUIWindow *pWnd, u16 msg, void *pData)
+void CUIWindow::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 	//оповестить дочерние окна
 	for(WINDOW_LIST_it it=m_ChildWndList.begin(); it!=m_ChildWndList.end(); it++)
@@ -216,3 +216,35 @@ void CUIWindow::SendMessage(CUIWindow *pWnd, u16 msg, void *pData)
 		(*it)->SendMessage(pWnd,msg,pData);
 	}
 }
+
+//перемесчтить окно на вершину.
+//false если такого дочернего окна нет
+bool CUIWindow::BringToTop(CUIWindow* pChild)
+{
+	//найти окно в списке
+	WINDOW_LIST_it it = std::find(m_ChildWndList.begin(), 
+										m_ChildWndList.end(), 
+										pChild);
+
+	if( it == m_ChildWndList.end()) return false;
+
+	//удалить со старого места
+	m_ChildWndList.erase(it);
+	//поместить на вершину списка
+	m_ChildWndList.push_back(pChild);
+
+	return true;
+}
+
+//поднять на вершину списка всех родителей окна и его самого
+void CUIWindow::BringAllToTop()
+{
+	if(GetParent() == NULL)	
+			return;
+	else
+	{
+		GetParent()->BringToTop(this);	
+		GetParent()->BringAllToTop();
+	}
+}
+	

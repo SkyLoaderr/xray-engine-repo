@@ -1706,10 +1706,40 @@
 						RelativePath=".\ui\UICheckButton.h">
 					</File>
 					<File
+						RelativePath=".\ui\UIDragDropItem.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIDragDropItem.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIDragDropList.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIDragDropList.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIFrameWindow.cpp">
 					</File>
 					<File
 						RelativePath=".\ui\UIFrameWindow.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIInventoryWnd.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIInventoryWnd.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIMessageBox.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIMessageBox.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIProgressBar.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIProgressBar.h">
 					</File>
 					<File
 						RelativePath=".\ui\UIRadioButton.cpp">
@@ -1734,6 +1764,12 @@
 					</File>
 					<File
 						RelativePath=".\ui\UIScrollBox.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIStatic.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIStatic.h">
 					</File>
 					<File
 						RelativePath=".\ui\UIWindow.cpp">

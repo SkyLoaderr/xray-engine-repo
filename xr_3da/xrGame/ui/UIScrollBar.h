@@ -25,7 +25,7 @@ public:
 	//сообщения, отправляемые родительскому окну
 	typedef enum{VSCROLL, HSCROLL} E_MESSAGE;
 
-	virtual void SendMessage(CUIWindow *pWnd, u16 msg, void *pData);
+	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 
 
 	//скролинг

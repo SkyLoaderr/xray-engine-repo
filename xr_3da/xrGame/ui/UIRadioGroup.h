@@ -28,7 +28,7 @@ public:
 	void DetachChild(CUIRadioButton* pChild);
 
 	
-	virtual void SendMessage(CUIWindow *pWnd, u16 msg, void *pData);
+	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 
 	//получение/установка позиции в группе
 	int GetCheckedPos();	

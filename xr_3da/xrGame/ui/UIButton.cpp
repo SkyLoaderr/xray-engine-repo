@@ -15,7 +15,7 @@ CUIButton:: CUIButton()
 	m_eButtonState = BUTTON_NORMAL;
 	m_ePressMode = NORMAL_PRESS;
 
-	m_str = "Hello";
+	m_str = " ";
 
 	m_bButtonClicked = false;
 	m_bCursorOverButton = false;
@@ -45,14 +45,23 @@ void  CUIButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 	bool cursor_on_button;
 
 	if(x>=0 && x<GetWidth() && y>=0 && y<GetHeight())
+	{
 		cursor_on_button = true;
+	}
 	else
+	{
 		cursor_on_button = false;
+	}
 
+	
 	m_bCursorOverButton = cursor_on_button;
 
 
 	m_bButtonClicked = false;
+
+
+	if(mouse_action == MOUSE_MOVE && m_eButtonState == BUTTON_NORMAL)
+			GetParent()->SetCapture(this, cursor_on_button);
 
 
 
@@ -165,6 +174,7 @@ void  CUIButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 
 }
 
+
 #define PUSH_OFFSET_RIGHT 2
 #define PUSH_OFFSET_DOWN  3
 
@@ -196,6 +206,20 @@ void  CUIButton::Draw()
 				
 }
 
+
+
+
+
+
+//#define TEXT_OFFSET_RIGHT 15
+//#define TEXT_OFFSET_DOWN  10
+
+#define TEXT_OFFSET_RIGHT (GetWidth()/2)
+#define TEXT_OFFSET_DOWN  10
+
+
+
+
 void  CUIButton::Update()
 {
 	RECT rect = GetAbsoluteRect();
@@ -214,16 +238,45 @@ void  CUIButton::Update()
 			down_offset = PUSH_OFFSET_DOWN;
 	}
 
-	GetFont()->SetColor(0xFFEEEEEE);
-	GetFont()->Out((float)rect.left + right_offset, 
-				   (float)rect.top + down_offset,
-				    m_str);
+
+	GetFont()->SetAligment(CGameFont::alCenter);
+	
 
 	if(m_bCursorOverButton)
 	{
-			GetFont()->SetColor(0xFF444444);
-			GetFont()->Out((float)rect.left + right_offset + 2, 
-					   (float)rect.top + down_offset + 2,
+			GetFont()->SetColor(0xFF999999);
+			GetFont()->Out((float)rect.left + right_offset + 1 +TEXT_OFFSET_RIGHT, 
+					   (float)rect.top + down_offset + 1  +TEXT_OFFSET_DOWN,
 					    m_str);
+			GetFont()->Out((float)rect.left + right_offset - 1 +TEXT_OFFSET_RIGHT, 
+					   (float)rect.top + down_offset - 1 +TEXT_OFFSET_DOWN,
+					    m_str);
+			GetFont()->Out((float)rect.left + right_offset - 1 +TEXT_OFFSET_RIGHT, 
+					   (float)rect.top + down_offset + 1 +TEXT_OFFSET_DOWN,
+					    m_str);
+			GetFont()->Out((float)rect.left + right_offset + 1 +TEXT_OFFSET_RIGHT, 
+					   (float)rect.top + down_offset - 1 +TEXT_OFFSET_DOWN,
+					    m_str);
+			GetFont()->Out((float)rect.left + right_offset + 1 +TEXT_OFFSET_RIGHT, 
+					   (float)rect.top + down_offset + 0 +TEXT_OFFSET_DOWN,
+					    m_str);
+			GetFont()->Out((float)rect.left + right_offset - 1 +TEXT_OFFSET_RIGHT, 
+					   (float)rect.top + down_offset - 0 +TEXT_OFFSET_DOWN,
+					    m_str);
+			GetFont()->Out((float)rect.left + right_offset - 0 +TEXT_OFFSET_RIGHT, 
+					   (float)rect.top + down_offset + 1 +TEXT_OFFSET_DOWN,
+					    m_str);
+			GetFont()->Out((float)rect.left + right_offset + 0 +TEXT_OFFSET_RIGHT,  
+					   (float)rect.top + down_offset - 1 +TEXT_OFFSET_DOWN,
+					    m_str);
+
 	}
+
+	GetFont()->SetColor(0xFFEEEEEE);
+	GetFont()->Out((float)rect.left + right_offset  +  TEXT_OFFSET_RIGHT, 
+				   (float)rect.top + down_offset  + TEXT_OFFSET_DOWN,
+				    m_str);
+
+	
+
 }

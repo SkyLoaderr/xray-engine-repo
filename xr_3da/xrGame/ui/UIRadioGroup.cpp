@@ -38,7 +38,7 @@ void CUIRadioGroup::DetachChild(CUIRadioButton* pChild)
 
 
 //обработка сообщений от радио кнопок
-void CUIRadioGroup::SendMessage(CUIWindow *pWnd, u16 msg, void *pData)
+void CUIRadioGroup::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 	//обрабатываем сообщения только от дочерних окон
 	if(pWnd->GetParent()!=this) return;

@@ -13,6 +13,8 @@
 
 CUIFrameWindow::CUIFrameWindow()
 {
+	m_bOverLeftTop = false; 
+	m_bOverLeftBottom = false;
 }
 
 CUIFrameWindow::~CUIFrameWindow()
@@ -28,14 +30,8 @@ CUIFrameWindow::~CUIFrameWindow()
 
 void CUIFrameWindow::Init(LPCSTR base_name, int x, int y, int width, int height)
 {
-	//"ui\\ui_hud_frame"
 	m_UIWndFrame.Init(base_name,x,y,width, height - BOTTOM_OFFSET,alNone);
 	
-	string256 buf;
-	m_UIStaticOverLeftTop.Init(strconcat(buf,base_name,"_over_lt"),
-								"hud\\default",	x,y,alNone);
-	m_UIStaticOverLeftBottom.Init(strconcat(buf,base_name,"_over_lb"),
-								"hud\\default",	x,y,alNone);
 	
 	CUIWindow::Init(x,y, width, height);
 }
@@ -47,21 +43,63 @@ void CUIFrameWindow::Init(LPCSTR base_name, RECT* pRect)
 				pRect->bottom - pRect->top);
 }
 
+
+
+
+void CUIFrameWindow::InitLeftTop(LPCSTR tex_name, int left_offset, int up_offset)
+{
+	m_iLeftTopOffset = left_offset;
+	m_iUpTopOffset = up_offset;
+
+	m_UIStaticOverLeftTop.Init(tex_name, "hud\\default", 
+										  GetWndRect().left - left_offset,
+  										  GetWndRect().top - up_offset,alNone);
+										  
+
+
+	m_bOverLeftTop = true;
+}
+void CUIFrameWindow::InitLeftBottom(LPCSTR tex_name, int left_offset, int up_offset)
+{
+	m_iLeftBottomOffset = left_offset;
+	m_iUpBottomOffset = up_offset;
+
+	m_UIStaticOverLeftBottom.Init(tex_name, "hud\\default", 
+											GetWndRect().left - left_offset,
+											GetWndRect().bottom - up_offset,alNone);
+
+	m_bOverLeftBottom = true;
+}
+
+
+
 //
 // прорисовка окна
 //
 void CUIFrameWindow::Draw()
 {
 	RECT rect = GetAbsoluteRect();
+
+
 	m_UIWndFrame.SetPos(rect.left, rect.top);
-	m_UIStaticOverLeftTop.SetPos(rect.left-LEFT_TOP_OFFSET, 
-								rect.top-UP_TOP_OFFSET);
-	m_UIStaticOverLeftBottom.SetPos(rect.left-LEFT_BOTTOM_OFFSET, 
-									rect.bottom - UP_BOTTOM_OFFSET - BOTTOM_OFFSET);
+
 
 	m_UIWndFrame.Render();
-	m_UIStaticOverLeftTop.Render();
-	m_UIStaticOverLeftBottom.Render();
+
+	if(m_bOverLeftTop)
+	{
+		m_UIStaticOverLeftTop.SetPos(rect.left- m_iLeftTopOffset, 
+								rect.top- m_iUpTopOffset);
+	
+		m_UIStaticOverLeftTop.Render();
+	}
+	
+	if(m_bOverLeftBottom)
+	{
+		m_UIStaticOverLeftBottom.SetPos(rect.left- m_iLeftBottomOffset, 
+									rect.bottom - m_iUpBottomOffset);
+		m_UIStaticOverLeftBottom.Render();
+	}
 
 	CUIWindow::Draw();
 }
