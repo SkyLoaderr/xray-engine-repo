@@ -14,7 +14,8 @@
 #include <shellapi.h>
 
 #include <cj60lib.h>
-#include "../xrGame/script_debugger_messages.h"
+//#include "../xrGame/script_debugger_messages.h"
+#include "/Projects/xray/xrGame/script_debugger_messages.h"
 
 #define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
@@ -25,18 +26,8 @@
 #include <scintilla.h>
 #include <SciLexer.h>
 
-//ss
-//#include <atlbase.h>
-//#include <atlapp.h>
 #include <comdef.h>
 
-//extern CAppModule _Module;
-
-//#include <atlwin.h>
-//#include <atlmisc.h>
-//#include <atlctrls.h>
-//#include <atlctrlx.h>
-//#include <atlddx.h>
 
 #include "ssauto.h"
 

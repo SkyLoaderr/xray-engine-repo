@@ -44,7 +44,6 @@ public:
 
 			v_TestHr(CLSIDFromProgID(L"SourceSafe", &clsid ));
 			v_TestHr(CoGetClassObject( clsid, CLSCTX_ALL, NULL, IID_IClassFactory, (void**)&pClf ));
-			IVSSDatabase* aaa;
 
 			v_TestHr(pClf->CreateInstance( NULL, IID_IVSSDatabase, (void **) &mp_vssDatabase));
 

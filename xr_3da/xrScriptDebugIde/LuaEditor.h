@@ -14,6 +14,7 @@
 // CLuaEditor window
 
 class CProjectFile;
+class CLuaView;
 
 class CLuaEditor : public CWnd
 {
@@ -69,6 +70,18 @@ public:
 	int LineFromPoint(CPoint& pt);
 	BOOL Create(CWnd* pParentWnd, UINT nCtrlID);
 	virtual ~CLuaEditor();
+//find 
+	CString GetSelText();
+	long	GetSelectionStart(BOOL bDirect=TRUE);
+	long	GetSelectionEnd(BOOL bDirect=TRUE);
+	int		GetSelText(char* text, BOOL bDirect = TRUE);
+	int		GetLength(BOOL bDirect = TRUE);
+	void	HideSelection(BOOL normal, BOOL bDirect = TRUE);
+	void	ReplaceSel(const char* text, BOOL bDirect = TRUE);
+	long	FindText(int flags, TextToFind* ft, BOOL bDirect = TRUE);
+	void	SetSel(long start, long end, BOOL bDirect = TRUE);
+	int		PointXFromPosition(long pos, BOOL bDirect = TRUE);
+	int		PointYFromPosition(long pos, BOOL bDirect = TRUE);
 
 // thread safe functions
 	//void tsAddText(const char *szMsg) {	AddText(szMsg); };

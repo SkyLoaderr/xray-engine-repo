@@ -248,6 +248,9 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\LuaEditor_find.cpp">
+			</File>
+			<File
 				RelativePath="LuaFrame.cpp">
 				<FileConfiguration
 					Name="Release|Win32">

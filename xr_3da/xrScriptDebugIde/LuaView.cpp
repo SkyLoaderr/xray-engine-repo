@@ -46,9 +46,12 @@ BEGIN_MESSAGE_MAP(CLuaView, CView)
 
 	ON_COMMAND(ID_EDIT_FIND, OnEditFind)
 	ON_COMMAND(ID_EDIT_REPLACE, OnEditReplace)
+	ON_COMMAND(ID_EDIT_FINDNEXT, OnEditFindNext)
+
 	ON_UPDATE_COMMAND_UI(ID_EDIT_GOTOLINE, OnUpdateGotoLineNumber)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_FIND, OnUpdateFind)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_REPLACE, OnUpdateFind)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_FINDNEXT, OnUpdateFind)
 
 
 	//}}AFX_MSG_MAP
@@ -265,7 +268,13 @@ void CLuaView::OnUpdateGotoLineNumber(CCmdUI* pCmdUI)
 }
 void CLuaView::OnUpdateFind(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable(FALSE);
+	long sz = GetEditor()->GetLength();
+	pCmdUI->Enable(sz>0);
+
+	if(pCmdUI->m_nID == ID_EDIT_FINDNEXT){
+		pCmdUI->Enable(m_strFind.GetLength()>0);
+	}
+	
 }
 
 void CLuaView::OnEditRedo() 
@@ -360,61 +369,6 @@ void CLuaView::Serialize(CArchive& ar)
 		CLuaEditor* pEditor = GetEditor();
 		pEditor->Load(ar.GetFile());
 	}
-/*
-  CScintillaCtrl& rCtrl = GetCtrl();
-  if (ar.IsLoading())
-  {
-    //Tell the control now to maintain any undo info while we stream the data 
-    rCtrl.Cancel();
-    rCtrl.SetUndoCollection(FALSE);
-
-    //Read the data in from the file in blocks
-    CFile* pFile = ar.GetFile();
-    char Buffer[4096];
-    int nBytesRead = 0;
-    do
-    {
-      nBytesRead = pFile->Read(Buffer, 4096);
-      if (nBytesRead)
-        rCtrl.AddText(nBytesRead, Buffer);
-    }
-    while (nBytesRead);
-
-    //Reinitialize the control settings
-    rCtrl.SetUndoCollection(TRUE);
-    rCtrl.EmptyUndoBuffer();
-    rCtrl.SetSavePoint();
-    rCtrl.GotoPos(0);
-  }
-  else
-  {
-    //Get the length of the document
-    int nDocLength = rCtrl.GetLength();
-
-    //Write the data in blocks to disk
-    CFile* pFile = ar.GetFile();
-    for (int i=0; i<nDocLength; i += 4095) //4095 because data will be returned NULL terminated
-    {
-      int nGrabSize = nDocLength - i;
-      if (nGrabSize > 4095)
-        nGrabSize = 4095;
-
-      //Get the data from the control
-	    TextRange tr;
-	    tr.chrg.cpMin = i;
-	    tr.chrg.cpMax = i + nGrabSize;
-      char Buffer[4096];
-	    tr.lpstrText = Buffer;
-	    rCtrl.GetTextRange(&tr);
-
-      //Write it to disk
-      pFile->Write(Buffer, nGrabSize);
-    }
-
-    //Tell the control that the document has now been saved
-    rCtrl.SetSavePoint();
-  }
-*/
 }
 ///////////////////////////////////////////////////////////////////////////////////
 void CLuaView::OnFindNext(LPCTSTR lpszFind, BOOL bNext, BOOL bCase, BOOL bWord, BOOL bRegularExpression)
@@ -470,7 +424,8 @@ void CLuaView::OnEditFindReplace(BOOL bFindOnly)
 			ASSERT_VALID(this);
 		}
 	}
-  CScintillaCtrl& rCtrl = GetCtrl();
+//  CScintillaCtrl& rCtrl = GetCtrl();
+	CLuaEditor& rCtrl = *GetEditor();
 	CString strFind = rCtrl.GetSelText();
 	//if selection is empty or spans multiple lines use old find text
 	if (strFind.IsEmpty() || (strFind.FindOneOf(_T("\n\r")) != -1))
@@ -506,8 +461,8 @@ BOOL CLuaView::FindTextSimple(LPCTSTR lpszFind, BOOL bNext, BOOL bCase, BOOL bWo
 {
 	USES_CONVERSION;
 
-  CScintillaCtrl& rCtrl = GetCtrl();
-
+//  CScintillaCtrl& rCtrl = GetCtrl();
+	CLuaEditor& rCtrl = *GetEditor();
 	ASSERT(lpszFind != NULL);
 	TextToFind ft;
   ft.chrg.cpMin = rCtrl.GetSelectionStart();
@@ -585,8 +540,8 @@ void CLuaView::OnReplaceSel(LPCTSTR lpszFind, BOOL bNext, BOOL bCase,	BOOL bWord
 			AdjustFindDialogPosition();
 		return;
 	}
-
-	GetCtrl().ReplaceSel(m_strReplace);
+	CLuaEditor& rCtrl = *GetEditor();
+	rCtrl.ReplaceSel(m_strReplace);
 	if (!FindText(m_strFind, m_bNext, m_bCase, m_bWord, m_bRegularExpression))
 		TextNotFound(m_strFind, m_bNext, m_bCase, m_bWord, m_bRegularExpression);
 	else
@@ -616,7 +571,8 @@ void CLuaView::OnReplaceAll(LPCTSTR lpszFind, LPCTSTR lpszReplace, BOOL bCase, B
 		}
 	}
 
-  CScintillaCtrl& rCtrl = GetCtrl();
+//	CScintillaCtrl& rCtrl = GetCtrl();
+	CLuaEditor& rCtrl = *GetEditor();
 	rCtrl.HideSelection(TRUE, FALSE);
 	do
 	{
@@ -638,8 +594,10 @@ BOOL CLuaView::SameAsSelected(LPCTSTR lpszCompare, BOOL bCase, BOOL /*bWord*/, B
 
 	// check length first
 	size_t nLen = lstrlen(lpszCompare);
-  CScintillaCtrl& rCtrl = GetCtrl();
-	int nStartChar = rCtrl.GetSelectionStart();
+//  CScintillaCtrl& rCtrl = GetCtrl();
+	CLuaEditor& rCtrl = *GetEditor();
+
+  int nStartChar = rCtrl.GetSelectionStart();
   int nEndChar = rCtrl.GetSelectionEnd();
 	if (nLen != (size_t)(nEndChar - nStartChar))
 		return FALSE;
@@ -651,7 +609,8 @@ BOOL CLuaView::SameAsSelected(LPCTSTR lpszCompare, BOOL bCase, BOOL /*bWord*/, B
 
 long CLuaView::FindAndSelect(DWORD dwFlags, TextToFind& ft)
 {
-  CScintillaCtrl& rCtrl = GetCtrl();
+//	CScintillaCtrl& rCtrl = GetCtrl();
+	CLuaEditor& rCtrl = *GetEditor();
 	long index = rCtrl.FindText(dwFlags, &ft);
 	if (index != -1) // i.e. we found something
     rCtrl.SetSel(ft.chrgText.cpMin, ft.chrgText.cpMax);
@@ -661,7 +620,8 @@ long CLuaView::FindAndSelect(DWORD dwFlags, TextToFind& ft)
 void CLuaView::AdjustFindDialogPosition()
 {
 	ASSERT(m_pFindReplaceDlg);
-  CScintillaCtrl& rCtrl = GetCtrl();
+//  CScintillaCtrl& rCtrl = GetCtrl();
+	CLuaEditor& rCtrl = *GetEditor();
   int nStart = rCtrl.GetSelectionStart();
 	CPoint point;
   point.x = rCtrl.PointXFromPosition(nStart);
@@ -698,6 +658,14 @@ void CLuaView::OnEditReplace()
 {
 	ASSERT_VALID(this);
 	OnEditFindReplace(FALSE);
+}
+
+void CLuaView::OnEditFindNext()
+{
+	ASSERT_VALID(this);
+	if (!FindText(m_strFind, m_bNext, m_bCase, m_bWord, m_bRegularExpression))
+		TextNotFound(m_strFind, m_bNext, m_bCase, m_bWord, m_bRegularExpression);
+
 }
 
 

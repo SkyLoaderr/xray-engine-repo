@@ -81,7 +81,7 @@ protected:
 	virtual long FindAndSelect(DWORD dwFlags, TextToFind& ft);
   virtual void AdjustFindDialogPosition();
   virtual CScintillaFindReplaceDlg* CreateFindReplaceDialog();
-
+	void OnEditFindNext();
 // Generated message map functions
 protected:
 	//{{AFX_MSG(CLuaView)

@@ -283,6 +283,8 @@ void CTreeViewFiles::OnDblclk(NMHDR* pNMHDR, LRESULT* pResult)
 	m_pTree->ScreenToClient(&pt);
 	UINT nFlags;
 	HTREEITEM hItem = m_pTree->HitTest(pt, &nFlags);
+	if(!hItem)
+		return;
 
 	CProjectFile* pPF = (CProjectFile*)m_pTree->GetItemData(hItem);
 	if ( pPF )
@@ -364,7 +366,7 @@ void CTreeViewFiles::VSSUpdateStatus(HTREEITEM itm)
 			if(pp){
 				CProjectFile* pf = (CProjectFile*)pp;
 				if(pf->m_lua_view)
-					pf->m_lua_view->GetEditor()->SetReadOnly(TRUE);
+					pf->m_lua_view->GetEditor()->SetReadOnly(stat!=-1);
 			}
 
 			}break;
@@ -387,6 +389,9 @@ void CTreeViewFiles::VSSUpdateStatus(HTREEITEM itm)
 
 long CTreeViewFiles::VSSGetStatus(HTREEITEM itm)
 {
+	if(!theApp.m_ssConnection.b_IsConnected())
+		return -1;
+
 	CString str;
 	str = m_pTree->GetItemText(itm);
 
@@ -428,6 +433,9 @@ void CTreeViewFiles::OnVSSDifference(){
 
 
 void CTreeViewFiles::VSSCheckIn(HTREEITEM itm){
+	if(!theApp.m_ssConnection.b_IsConnected())
+		return;
+
 	CString str;
 	str = m_pTree->GetItemText(itm);
 
@@ -452,6 +460,9 @@ void CTreeViewFiles::VSSCheckIn(HTREEITEM itm){
 }
 
 void CTreeViewFiles::VSSCheckOut(HTREEITEM itm){
+	if(!theApp.m_ssConnection.b_IsConnected())
+		return;
+
 	CString str;
 	str = m_pTree->GetItemText(itm);
 
@@ -475,6 +486,9 @@ void CTreeViewFiles::VSSCheckOut(HTREEITEM itm){
 }
 
 void CTreeViewFiles::VSSUndoCheckOut(HTREEITEM itm){
+	if(!theApp.m_ssConnection.b_IsConnected())
+		return;
+
 	CString str;
 	str = m_pTree->GetItemText(itm);
 

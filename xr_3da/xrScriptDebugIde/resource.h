@@ -97,6 +97,7 @@
 #define ID_VSS_UNDOCHECKOUT             32833
 #define ID_VSS_DIFFERENCE               32834
 #define ID_VSS_CHECKOUT                 32835
+#define ID_EDIT_FINDNEXT                32841
 
 // Next default values for new objects
 // 
@@ -104,7 +105,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        143
-#define _APS_NEXT_COMMAND_VALUE         32836
+#define _APS_NEXT_COMMAND_VALUE         32847
 #define _APS_NEXT_CONTROL_VALUE         1016
 #define _APS_NEXT_SYMED_VALUE           112
 #endif

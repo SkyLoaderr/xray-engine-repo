@@ -113,8 +113,7 @@ BOOL CIdeApp::InitInstance()
 	
 	LoadIcon(IDR_MAINFRAME);
 
-//	m_ssConnection = new CSSConnection();
-	m_ssConnection.b_Connect("","","\\\\X-RAY\\VSS$\\srcsafe.ini");
+//	m_ssConnection.b_Connect("","","\\\\X-RAY\\VSS$\\srcsafe.ini");
 	return TRUE;
 }
 
@@ -144,7 +143,11 @@ CLuaView* CIdeApp::FindProjectFilesView(CProjectFile *pPF)
 
 CLuaView* CIdeApp::LoadProjectFilesView(CProjectFile *pPF)
 {
-	CLuaDoc* pDoc = (CLuaDoc*)m_pLuaTemplate->OpenDocumentFile(pPF->GetPathName(),TRUE);
+	CString path_name = pPF->GetPathName();
+	if(!fileExist(path_name))
+		return NULL;
+
+	CLuaDoc* pDoc = (CLuaDoc*)m_pLuaTemplate->OpenDocumentFile(path_name,TRUE);
 	if ( pDoc )
 		return pDoc->GetView();
 	else
@@ -192,4 +195,19 @@ BOOL CIdeApp::SaveModifiedDocuments()
 	}
 
 	return bModified;
+}
+
+BOOL CIdeApp::fileExist(CString path_name)
+{
+	CFile f_test;
+
+	if ( !f_test.Open(path_name, CFile::modeRead) )
+	{
+		CString msg;
+		msg.Format("Unable to open file %s",path_name);
+		AfxMessageBox(msg);
+		return FALSE;
+	}
+
+	return TRUE;
 }

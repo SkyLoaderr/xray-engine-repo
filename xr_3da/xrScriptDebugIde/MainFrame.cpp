@@ -66,14 +66,10 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
 	ON_COMMAND(IDR_TOOLS_OPTIONS, OnToolsOptions)
 	ON_UPDATE_COMMAND_UI(IDR_TOOLS_OPTIONS, OnUpdateToolsOptions)
 
-	ON_NOTIFY(SCN_CHARADDED,101,OnSci_)
 	
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-void CMainFrame::OnSci_(NMHDR*, LRESULT*)
-{
-}
 
 static UINT indicators[] =
 {

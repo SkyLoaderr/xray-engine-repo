@@ -46,6 +46,7 @@ public:
 
 protected:
 	HMODULE m_hScintilla;
+	BOOL fileExist(CString path_name);
 public:
 	CSSConnection	m_ssConnection;
 
