@@ -121,20 +121,6 @@ void CObject::Load				(LPCSTR section )
 	// Visual
 	if (pSettings->LineExists(section,"visual")) cNameVisual_set	(pSettings->ReadSTRING(section,"visual"));
 	
-	// Collision model
-	cfModel						= NULL;
-	if (pSettings->LineExists(section,"cform")) {
-		LPCSTR cf				= pSettings->ReadSTRING(section, "cform");
-		
-		if (strcmp(cf,"skeleton")==0) cfModel	= new CCF_Skeleton(this);
-		else {
-			cfModel					= new CCF_Polygonal(this);
-			((CCF_Polygonal*)(cfModel))->LoadModel(pSettings, section);
-		}
-		pCreator->ObjectSpace.Object_Register	(this);
-		cfModel->OnMove();
-	}
-
 	setVisible					(true);
 }
 
@@ -161,6 +147,22 @@ void CObject::OnDeviceCreate	()
 	pVisual						= Render->model_Create	(cNameVisual());
 	pLights						= new CLightTrack;
 	Sector_Detect				();
+
+	// Collision model
+	if (0==cfModel) 
+	{
+		if (pSettings->LineExists(cNameSect(),"cform")) {
+			LPCSTR cf				= pSettings->ReadSTRING(cNameSect(), "cform");
+
+			if (strcmp(cf,"skeleton")==0) cfModel	= new CCF_Skeleton(this);
+			else {
+				cfModel					= new CCF_Polygonal(this);
+				((CCF_Polygonal*)(cfModel))->LoadModel(pSettings, cNameSect());
+			}
+			pCreator->ObjectSpace.Object_Register	(this);
+			cfModel->OnMove();
+		}
+	}
 }
 
 // Updates

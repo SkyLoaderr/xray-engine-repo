@@ -89,28 +89,6 @@ BOOL CDummyObject::net_Spawn(LPVOID DC)
 		pSounds->PlayAtPos		(s_sound,0,Position(),true);
 	}
 
-	if (!s_animator && (style&esModel))
-	{
-		// Physics (Box)
-		Fobb								obb;
-		Visual()->bv_BBox.get_CD			(obb.m_translate,obb.m_halfsize);
-		obb.m_rotate.identity				();
-
-		// Physics (Elements)
-		CPhysicsElement* E					= P_create_Element	();
-		R_ASSERT							(E);
-		E->add_Box							(obb);
-
-		// Physics (Shell)
-		m_pPhysicsShell						= P_create_Shell	();
-		R_ASSERT							(m_pPhysicsShell);
-		m_pPhysicsShell->add_Element		(E);
-		m_pPhysicsShell->setMass			(10.f);
-		m_pPhysicsShell->Activate			(svXFORM(),0,svXFORM());
-		m_pPhysicsShell->mDesired.identity	();
-		m_pPhysicsShell->fDesiredStrength	= 0.f;
-	}
-
 	return TRUE;
 }
 
@@ -159,7 +137,34 @@ void CDummyObject::OnDeviceCreate()
 	inherited::OnDeviceCreate();
 	CKinematics* V			= PKinematics	(Visual());
 	if (V)					V->PlayCycle	("idle");
+
+	if (!s_animator && (style&esModel) && (0==m_pPhysicsShell))
+	{
+		// Physics (Box)
+		Fobb								obb;
+		Visual()->bv_BBox.get_CD			(obb.m_translate,obb.m_halfsize);
+		obb.m_rotate.identity				();
+
+		// Physics (Elements)
+		CPhysicsElement* E					= P_create_Element	();
+		R_ASSERT							(E);
+		E->add_Box							(obb);
+
+		// Physics (Shell)
+		m_pPhysicsShell						= P_create_Shell	();
+		R_ASSERT							(m_pPhysicsShell);
+		m_pPhysicsShell->add_Element		(E);
+		m_pPhysicsShell->setMass			(10.f);
+		m_pPhysicsShell->Activate			(svXFORM(),0,svXFORM());
+		m_pPhysicsShell->mDesired.identity	();
+		m_pPhysicsShell->fDesiredStrength	= 0.f;
+	}
 }
+void CDummyObject::OnDeviceDestroy()
+{
+	inherited::OnDeviceDestroy	();
+}
+
 void CDummyObject::OnVisible	()
 {
 	inherited::OnVisible();
