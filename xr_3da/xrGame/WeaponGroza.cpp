@@ -66,11 +66,12 @@ void CWeaponGroza::FireStart()
 	if (!IsWorking() && IsValid()){ 
 		CWeapon::FireStart();
 		st_target	= eFire;
-		fTime		= 0;
+		fTime		= fTimeToFire;
 	}
 }
 
-void CWeaponGroza::FireEnd(){
+void CWeaponGroza::FireEnd()
+{
 	if (IsWorking())
 	{
 		CWeapon::FireEnd	();
@@ -177,7 +178,8 @@ void CWeaponGroza::Update(float dt, BOOL bHUDView)
 				// real fire
 				Collide::ray_query RQ;
 				if (FireTrace( p1, d, RQ )){
-					if (RQ.O){
+					if (RQ.O)
+					{
 						if (RQ.O->CLS_ID == CLSID_ENTITY)
 						{
 							CEntity* E = (CEntity*)RQ.O;
