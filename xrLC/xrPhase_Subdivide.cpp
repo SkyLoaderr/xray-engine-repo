@@ -90,7 +90,7 @@ void CBuild::xrPhase_Subdivide()
 				{
 					if (g_deflectors[it]==defl_base)	{
 						g_deflectors.erase	(g_deflectors.begin()+it);
-						_DELETE			(defl_base);
+						_DELETE				(defl_base);
 						break;
 					}
 				}
