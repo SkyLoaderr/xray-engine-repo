@@ -375,7 +375,7 @@ VOID CDeflector::Light()
 			DWORD	c_y			= BORDER*2;
 			DWORD   c_size		= c_x*c_y;
 			LPDWORD	compressed	= LPDWORD(malloc(c_size*4));
-			DWORD	c_fill		= RGBA_MAKE	(_r,_g,_b,255-BORDER);
+			DWORD	c_fill		= RGBA_MAKE	(_r,_g,_b,255);
 			for (DWORD p=0; p<c_size; p++)	compressed[p]=c_fill;
 
 			lm.pSurface			= compressed;
