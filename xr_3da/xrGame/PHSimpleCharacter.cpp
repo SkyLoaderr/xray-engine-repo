@@ -608,7 +608,7 @@ bool CPHSimpleCharacter::ValidateWalkOn()
 	for (CDB::RESULT* Res=R_begin; Res!=R_end; ++Res)
 	{
 		CDB::TRI* T = T_array + Res->id;
-		Point vertices[3]={Point((dReal*)T->verts[0]),Point((dReal*)T->verts[1]),Point((dReal*)T->verts[2])};
+		Point vertices[3]={Point((dReal*)&Res->verts[0]),Point((dReal*)&Res->verts[1]),Point((dReal*)&Res->verts[2])};
 		if(__aabb_tri(Point((float*)&center),Point((float*)&AABB),vertices)){
 			side0[0]=Res->verts[1].x-Res->verts[0].x;
 			side0[1]=Res->verts[1].y-Res->verts[0].y;
