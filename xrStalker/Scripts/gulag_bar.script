@@ -636,6 +636,74 @@ function load_job(sj, gname, type, squad, groups)
 	end
 
 
+
+	--- MONSTERS GULAGS
+	if type == "bar_roaming_dogs" then
+		t = { section = "logic@bar_roaming_dogs", 
+			idle = 0,
+			prior = 4, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "mon_gulag_sr_1"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_roaming_dogs", 
+			idle = 0,
+			prior = 4, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "mon_gulag_sr_1"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_roaming_dogs", 
+			idle = 0,
+			prior = 4, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "mon_gulag_sr_1"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_roaming_dogs", 
+			idle = 0,
+			prior = 4, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "mon_gulag_sr_1"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_roaming_dogs", 
+			idle = 0,
+			prior = 4, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "mon_gulag_sr_1"
+		}
+		table.insert(sj, t)
+
+		t = { section = "logic@bar_roaming_dogs", 
+			idle = 0,
+			prior = 4, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "mon_gulag_sr_2"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_roaming_dogs", 
+			idle = 0,
+			prior = 4, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "mon_gulag_sr_2"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_roaming_dogs", 
+			idle = 0,
+			prior = 4, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "mon_gulag_sr_2"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_roaming_dogs", 
+			idle = 0,
+			prior = 4, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "mon_gulag_sr_2"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_roaming_dogs", 
+			idle = 0,
+			prior = 4, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "mon_gulag_sr_2"
+		}
+		table.insert(sj, t)
+
+	end
+
+
 end
 
 function load_states(gname, type)
@@ -741,6 +809,26 @@ function load_states(gname, type)
 		end
 	end
 
+
+	if type == "bar_roaming_dogs" then        
+		return function (gulag)
+			if gulag.alarm_start == nil or
+				game.get_game_time():diffSec(gulag.alarm_start) > 300 
+			then
+				gulag.alarm_start = game.get_game_time()
+				if gulag.state == 0 then
+					return 1
+				else
+					return 0
+				end			
+			else
+				return gulag.state
+			end				
+		
+			return 0
+		end
+	end
+
 end
 
 function checkStalker(npc_community, gulag_type)
@@ -767,6 +855,15 @@ function checkStalker(npc_community, gulag_type)
 	end
 	if gulag_type == "bar_arena" then
 		return true
+	end
+	
+	return false
+end
+
+function checkMonster(npc_community, gulag_type)
+	if gulag_type == "bar_roaming_dogs" then
+		return npc_community == "dog" or
+		       npc_community == "pseudodog"
 	end
 	
 	return false
