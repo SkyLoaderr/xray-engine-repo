@@ -53,7 +53,9 @@ IC	void	xr_delete	(T* &ptr)
 	if (ptr) 
 	{
 		ptr->~T();
-		Memory.mem_free(ptr);
+
+		if (is_polymorphic<T>::result)	Memory.mem_free(dynamic_cast<void*>(ptr));
+		else							Memory.mem_free(ptr);
 		ptr = NULL;
 	}
 }
@@ -63,7 +65,8 @@ IC	void	xr_delete	(T* const &ptr)
 	if (ptr) 
 	{
 		ptr->~T();
-		Memory.mem_free(ptr);
+		if (is_polymorphic<T>::result)	Memory.mem_free(dynamic_cast<void*>(ptr));
+		else							Memory.mem_free(ptr);
 		const_cast<T*&>(ptr) = NULL;
 	}
 }

@@ -3,6 +3,8 @@
 
 using std::swap;
 
+#include "_type_traits.h"
+
 #ifdef __BORLANDC__
 
 #define xr_vector std::vector

@@ -385,6 +385,9 @@
 					RelativePath="_stl_extensions.h">
 				</File>
 				<File
+					RelativePath=".\_type_traits.h">
+				</File>
+				<File
 					RelativePath="clsid.cpp">
 				</File>
 				<File
