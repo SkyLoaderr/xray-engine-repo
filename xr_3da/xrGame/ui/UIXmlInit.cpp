@@ -7,7 +7,7 @@
 
 #include"UIXmlInit.h"
 
-#include"..\\hudmanager.h"
+#include"../hudmanager.h"
 
 
 #define HEADER_FONT_NAME		"header"

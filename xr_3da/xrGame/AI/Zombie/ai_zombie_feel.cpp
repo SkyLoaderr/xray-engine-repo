@@ -22,17 +22,15 @@ void CAI_Zombie::SetDirectionLook()
 	}
 	else
 		m_body.target.pitch = 0;
-	m_head.target = m_body.target;
 }
 
 void CAI_Zombie::vfAimAtEnemy()
 {
 	Fvector	pos1, pos2;
-	m_Enemy.m_enemy->Center(pos1);
+	enemy()->Center(pos1);
 	Center(pos2);
 	tWatchDirection.sub(pos1,pos2);
 	mk_rotation(tWatchDirection,m_body.target);
-	m_head.target.yaw = m_body.target.yaw;
 }
 
 BOOL CAI_Zombie::feel_vision_isRelevant(CObject* O)
@@ -61,12 +59,12 @@ void CAI_Zombie::feel_sound_new(CObject* who, int eType, Fvector& Position, floa
 			m_tLastSound.dwTime			= Level().timeServer();
 			m_tLastSound.fPower			= power;
 			m_tLastSound.tSavedPosition = Position;
-			m_tLastSound.tpEntity		= dynamic_cast<CEntity *>(who);
+			m_tLastSound.tpEntity		= dynamic_cast<CEntityAlive*>(who);
 			//float fDistance = (Position.distance_to(Position()) < 1.f ? 1.f : Position.distance_to(Position()));
 //			if ((eType & SOUND_TYPE_MONSTER_DYING) == SOUND_TYPE_MONSTER_DYING)
 //				m_fMorale += m_fMoraleDeathQuant;///fDistance;
 //			else
-//				if (((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING) && (!m_Enemy.m_enemy))
+//				if (((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING) && (!enemy()->m_object))
 //					m_fMorale += m_fMoraleFearQuant;///fDistance;
 //				else
 //					if ((eType & SOUND_TYPE_MONSTER_ATTACKING) == SOUND_TYPE_MONSTER_ATTACKING)

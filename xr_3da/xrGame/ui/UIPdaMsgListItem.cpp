@@ -7,7 +7,7 @@
 
 #include "UIPdaMsgListItem.h"
 
-#include "..\\Entity.h"
+#include "../Entity.h"
 
 #include "UIInventoryUtilities.h"
 using namespace InventoryUtilities;

@@ -17,37 +17,8 @@
 #define DODGE_AMPLITUDE					.5f
 #define MAX_DODGE_DISTANCE				1.5f
 
-void CAI_Stalker::vfInitSelector(PathManagers::CAbstractVertexEvaluator &S, CSquad &Squad, CEntity* &/**Leader/**/)
-{
-	S.m_hit_direction			= m_hit_direction;
-	S.m_hit_time		= m_hit_time;
-	S.m_dwCurTime		= m_current_update;
-	S.m_tMe				= this;
-	S.m_tpMyNode		= level_vertex();
-	S.m_tMyPosition		= Position();
-	
-	if (m_tEnemy.m_enemy) {
-		vfSaveEnemy();
-		S.m_tEnemy			= m_tEnemy.m_enemy;
-		S.m_tEnemyPosition	= m_tEnemy.m_enemy->Position();
-		S.m_dwEnemyNode		= m_tEnemy.m_enemy->level_vertex_id();
-		S.m_tpEnemyNode		= m_tEnemy.m_enemy->level_vertex();
-	}
-	else {
-		S.m_tEnemy			= m_tSavedEnemy;
-		S.m_tEnemyPosition	= m_tSavedEnemyPosition;
-		S.m_dwEnemyNode		= m_dwSavedEnemyNodeID;
-		R_ASSERT2			(ai().level_graph().valid_vertex_id(m_dwSavedEnemyNodeID), "Invalid enemy vertex");
-		S.m_tpEnemyNode		= m_tpSavedEnemyNode;
-	}
-	
-	S.m_taMembers		= &(Squad.Groups[g_Group()].Members);
-	S.m_dwStartNode		= level_vertex_id();
-	S.m_tStartPosition	= Position();
-}
-
-void CAI_Stalker::vfSearchForBetterPosition(PathManagers::CAbstractVertexEvaluator & /**tNodeEvaluator/**/, CSquad & /**Squad/**/, CEntity* & /**Leader/**/)
-{
+//void CAI_Stalker::vfSearchForBetterPosition(PathManagers::CAbstractVertexEvaluator & /**tNodeEvaluator/**/, CSquad & /**Squad/**/, CEntity* & /**Leader/**/)
+//{
 //	Device.Statistic.AI_Range.Begin();	// определение времени вып. функции
 //	
 //	if ((!m_previous_query_time) || (CDetailPathManager::m_path.empty()) || (int(CDetailPathManager::m_current_travel_point) > int(CDetailPathManager::m_path.size()) - 4) || (speed() < EPS_L) || ((tNodeEvaluator.m_dwCurTime - m_previous_query_time > MIN_RANGE_SEARCH_TIME_INTERVAL))) {
@@ -72,7 +43,7 @@ void CAI_Stalker::vfSearchForBetterPosition(PathManagers::CAbstractVertexEvaluat
 //		Device.Statistic.AI_Range.Begin();
 //
 ////		Msg									("Best : [%d][%f]",tNodeEvaluator.m_dwBestNode,tNodeEvaluator.m_fBestCost);
-////		Msg									("Params : %f - [%f][%f][%f][%f][%f][%f]",m_tEnemy.m_enemy->Position().distance_to(Position()),tNodeEvaluator.m_fMaxEnemyDistance,tNodeEvaluator.m_fOptEnemyDistance,tNodeEvaluator.m_fMinEnemyDistance,tNodeEvaluator.m_fMaxEnemyDistanceWeight,tNodeEvaluator.m_fOptEnemyDistanceWeight,tNodeEvaluator.m_fMinEnemyDistanceWeight);
+////		Msg									("Params : %f - [%f][%f][%f][%f][%f][%f]",m_tEnemy.m_object->Position().distance_to(Position()),tNodeEvaluator.m_fMaxEnemyDistance,tNodeEvaluator.m_fOptEnemyDistance,tNodeEvaluator.m_fMinEnemyDistance,tNodeEvaluator.m_fMaxEnemyDistanceWeight,tNodeEvaluator.m_fOptEnemyDistanceWeight,tNodeEvaluator.m_fMinEnemyDistanceWeight);
 ////		Msg									("Evaluator : [%f][%f][%f]",tNodeEvaluator.m_fMaxEnemyDistance,tNodeEvaluator.m_fOptEnemyDistance,tNodeEvaluator.m_fMinEnemyDistance);
 //		if ((m_level_dest_vertex_id != tNodeEvaluator.m_dwBestNode) && (tNodeEvaluator.m_fBestCost < fOldCost - 0.f)){
 //			m_level_dest_vertex_id		= tNodeEvaluator.m_dwBestNode;
@@ -88,10 +59,10 @@ void CAI_Stalker::vfSearchForBetterPosition(PathManagers::CAbstractVertexEvaluat
 //	}
 //
 //	Device.Statistic.AI_Range.End();
-}
+//}
 
-void CAI_Stalker::vfBuildPathToDestinationPoint(PathManagers::CAbstractVertexEvaluator * /**tpNodeEvaluator/**/)
-{
+//void CAI_Stalker::vfBuildPathToDestinationPoint(PathManagers::CAbstractVertexEvaluator * /**tpNodeEvaluator/**/)
+//{
 //	Device.Statistic.AI_Path.Begin();
 //	
 //	if (m_level_dest_vertex_id == level_vertex_id()) {
@@ -127,10 +98,10 @@ void CAI_Stalker::vfBuildPathToDestinationPoint(PathManagers::CAbstractVertexEva
 //		m_tPathState = ePathStateBuildTravelLine;
 //	
 //	Device.Statistic.AI_Path.End();
-}
+//}
 
-void CAI_Stalker::vfBuildTravelLine(Fvector * /**tpDestinationPosition/**/)
-{
+//void CAI_Stalker::vfBuildTravelLine(Fvector * /**tpDestinationPosition/**/)
+//{
 //	Device.Statistic.TEST1.Begin();
 //	
 //	if (m_tPathType == ePathTypeCriteria) {
@@ -244,10 +215,10 @@ void CAI_Stalker::vfBuildTravelLine(Fvector * /**tpDestinationPosition/**/)
 //	}
 //	
 //	Device.Statistic.TEST1.End();
-}
+//}
 
-void CAI_Stalker::vfDodgeTravelLine()
-{
+//void CAI_Stalker::vfDodgeTravelLine()
+//{
 //	//Device.Statistic.TEST0.Begin();
 //
 //	int							N = (int)m_tpaTempPath.size();
@@ -313,10 +284,10 @@ void CAI_Stalker::vfDodgeTravelLine()
 //	m_tPathState				= ePathStateSearchNode;
 //
 //	//Device.Statistic.TEST0.End();
-}
+//}
 
-void CAI_Stalker::vfChoosePointAndBuildPath(PathManagers::CAbstractVertexEvaluator * /**tpNodeEvaluator/**/, Fvector * /**tpDestinationPosition/**/, bool /**bSearchForNode/**/)
-{
+//void CAI_Stalker::vfChoosePointAndBuildPath(PathManagers::CAbstractVertexEvaluator * /**tpNodeEvaluator/**/, Fvector * /**tpDestinationPosition/**/, bool /**bSearchForNode/**/)
+//{
 //	INIT_SQUAD_AND_LEADER;
 //
 //	if (m_tPrevPathType != m_tPathType) {
@@ -390,10 +361,10 @@ void CAI_Stalker::vfChoosePointAndBuildPath(PathManagers::CAbstractVertexEvaluat
 //		}
 //	}
 //	m_tPathType = tPathType;
-}
+//}
 
-void CAI_Stalker::vfMarkVisibleNodes(CEntity * /**tpEntity/**/)
-{
+//void CAI_Stalker::vfMarkVisibleNodes(CEntity * /**tpEntity/**/)
+//{
 //	CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(tpEntity);
 //	if (!tpCustomMonster)
 //		return;
@@ -413,10 +384,10 @@ void CAI_Stalker::vfMarkVisibleNodes(CEntity * /**tpEntity/**/)
 //		Device.Statistic.AI_Think.Begin	();
 //		Device.Statistic.TEST2.Begin();
 //	}
-}
+//}
 
-void CAI_Stalker::vfFindAllSuspiciousNodes(u32 /**StartNode/**/, Fvector /**tPointPosition/**/, const Fvector& /**BasePos/**/, float /**Range/**/, CGroup &/**Group/**/)
-{
+//void CAI_Stalker::vfFindAllSuspiciousNodes(u32 /**StartNode/**/, Fvector /**tPointPosition/**/, const Fvector& /**BasePos/**/, float /**Range/**/, CGroup &/**Group/**/)
+//{
 //	Device.Statistic.TEST3.Begin	();
 //
 //	Group.m_tpaSuspiciousNodes.clear();
@@ -558,12 +529,12 @@ void CAI_Stalker::vfFindAllSuspiciousNodes(u32 /**StartNode/**/, Fvector /**tPoi
 //			AI.m_baNodeMarks[*it] = false;
 //	}
 //	Device.Statistic.TEST3.End();
-}
+//}
 
 #define GROUP_RADIUS	15.f
 
-void CAI_Stalker::vfClasterizeSuspiciousNodes(CGroup &/**Group/**/)
-{
+//void CAI_Stalker::vfClasterizeSuspiciousNodes(CGroup &/**Group/**/)
+//{
 // 	u32 N = Group.m_tpaSuspiciousNodes.size();
 //	for (int i=0, iGroupCounter = 1; i<(int)N; ++i, ++iGroupCounter) {
 //		if (!Group.m_tpaSuspiciousNodes[i].dwGroup) 
@@ -577,10 +548,10 @@ void CAI_Stalker::vfClasterizeSuspiciousNodes(CGroup &/**Group/**/)
 //	Group.m_tpaSuspiciousGroups.resize(--iGroupCounter);
 //	for ( i=0; i<iGroupCounter; ++i)
 //		Group.m_tpaSuspiciousGroups[i] = 0;
-}
+//}
 
-void CAI_Stalker::vfChooseSuspiciousNode(PathManagers::CAbstractVertexEvaluator &/**tSelector/**/)
-{
+//void CAI_Stalker::vfChooseSuspiciousNode(PathManagers::CAbstractVertexEvaluator &/**tSelector/**/)
+//{
 //	CGroup &Group = *getGroup();
 //	INIT_SQUAD_AND_LEADER;
 //	if (m_iCurrentSuspiciousNodeIndex >= (int)Group.m_tpaSuspiciousNodes.size())
@@ -647,10 +618,10 @@ void CAI_Stalker::vfChooseSuspiciousNode(PathManagers::CAbstractVertexEvaluator 
 //				}
 //			}
 //	}
-}
+//}
 
-int CAI_Stalker::ifGetSuspiciousAvailableNode(int /**iLastIndex/**/, CGroup &/**Group/**/)
-{
+//int CAI_Stalker::ifGetSuspiciousAvailableNode(int /**iLastIndex/**/, CGroup &/**Group/**/)
+//{
 //	int Index = -1;
 //	float fMin = 1000, m_cost;
 //	u32 dwNodeID = level_vertex_id();
@@ -690,5 +661,5 @@ int CAI_Stalker::ifGetSuspiciousAvailableNode(int /**iLastIndex/**/, CGroup &/**
 //		}
 //	}
 //	return(Index);
-	return(0);
-}
+//	return(0);
+//}

@@ -7,7 +7,7 @@
 #include "stdafx.h"
 #include "UIPropertiesBox.h"
 
-#include "..\\hudmanager.h"
+#include "../hudmanager.h"
 
 
 #define OFFSET_X 20

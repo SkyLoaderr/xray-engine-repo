@@ -12,6 +12,7 @@
 #include "../../targetcs.h"
 #include "../../customdetector.h"
 #include "../../bolt.h"
+#include "../../pda.h"
 
 IC BOOL BE	(BOOL A, BOOL B)
 {
@@ -36,7 +37,7 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 #ifndef SILENCE
 			Msg("Trying to take - %s (%d)", O->cName(),O->ID());
 #endif
-			if(/*g_Alive() && */m_inventory.Take(dynamic_cast<CGameObject*>(O))) {
+			if(m_inventory.Take(dynamic_cast<CGameObject*>(O))) {
 				O->H_SetParent(this);
 #ifndef SILENCE
 				Msg("TAKE - %s (%d)", O->cName(),O->ID());
@@ -48,107 +49,6 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 				Msg("TAKE - can't take! - Dropping for valid server information %s (%d)", O->cName(),O->ID());
 #endif
 			}
-
-
-
-			//// Test for Detector
-			//CCustomDetector* D	= dynamic_cast<CCustomDetector*>	(O);
-			//if (D) 
-			//{
-			//	R_ASSERT							(BE(Local(),D->Local()));	// remote can't take local
-			//	D->H_SetParent(this);
-			//	return;
-			//}
-
-			//// Test for Artefact
-			//CTargetCS* A	= dynamic_cast<CTargetCS*>	(O);
-			//if (A) 
-			//{
-			//	if(!BE(Local(),A->Local())) Log("TAKE ERROR: BE(Local(),A->Local()))");
-			//	R_ASSERT							(BE(Local(),A->Local()));	// remote can't take local
-			//	A->H_SetParent(this);
-			//	
-			//	// 
-			//	m_pArtifact			= A;
-			//	// 
-			//	return;
-			//}
-
-			//// Test for weapon
-			//CWeapon* W	= dynamic_cast<CWeapon*>	(O);
-			//if (W) 
-			//{
-			//	if(!BE(Local(),W->Local())) Log("TAKE ERROR: BE(Local(),W->Local()))");
-			//	R_ASSERT							(BE(Local(),W->Local()));				// remote can't take local
-			//	R_ASSERT							(Weapons->isSlotEmpty(W->GetSlot()));
-			//	W->H_SetParent						(this);
-			//	Weapons->weapon_add					(W);
-			//	Weapons->ActivateWeaponID			(W->GetSlot());
-			//	return;
-			//}
-		}
-		break;
-	case GE_TRADE_SELL:
-	case GE_OWNERSHIP_REJECT:
-		{
-			// Log			("CActor::OnEvent - REJECT - : ", cName());
-
-			P.r_u16		(id);
-			CObject* O	= Level().Objects.net_Find	(id);
-			
-			if(m_inventory.Drop(dynamic_cast<CGameObject*>(O))) {
-				O->H_SetParent(0);
-				feel_touch_deny(O,2000);
-			}
-
-			//// Test for Detector
-			//CCustomDetector* D	= dynamic_cast<CCustomDetector*>	(O);
-			//if (D) 
-			//{
-			//	D->H_SetParent						(0);
-			//	feel_touch_deny						(D,1000);
-			//	return;
-			//}
-
-			//// Test for weapon
-			//CWeapon* W	= dynamic_cast<CWeapon*>	(O);
-			//if (W) 
-			//{
-			//	//R_ASSERT							(BE(Local(),W->Local()));	// remote can't eject local
-			//	Weapons->weapon_remove				(W);
-			//	Weapons->ActivateWeaponHistory		();
-			//	W->H_SetParent						(0);
-			//	feel_touch_deny						(W,1000);
-			//	return;
-			//}
-
-			//// Test for Artefact
-			//CTargetCS* A	= dynamic_cast<CTargetCS*>	(O);
-			//if (A)
-			//{
-			//	// R_ASSERT							(BE(Local(),A->Local()));	// remote can't eject local
-			//	A->H_SetParent						(0);
-			//	feel_touch_deny						(A,1000);
-			//	return;
-			//}
-			//Log			("CActor::OnEvent - REJECT - Processed.");
-		}
-		break;
-	case GE_TRANSFER_AMMO:
-		{
-			//u16					from;
-			//P.r_u16				(from);
-
-			//CObject* Ofrom		= Level().Objects.net_Find	(from);
-			//if (0==Ofrom)		break;
-			//CWeapon* Wfrom		= dynamic_cast<CWeapon*>	(Ofrom);
-			//if (0==Wfrom)		break;
-			//CWeapon* Wto		= Weapons->getWeaponByWeapon(Wfrom);
-			//if (0==Wto)			break;
-
-			//// Test for locality
-			//Wto->Ammo_add		(Wfrom->Ammo_eject());
-			//Wfrom->setDestroy	(TRUE);
 		}
 		break;
 	}
@@ -171,13 +71,6 @@ void CAI_Stalker::feel_touch_new				(CObject* O)
 		P.w_u16			(u16(I->ID()));
 		u_EventSend		(P);
 	}
-//	else
-//		if (I) {
-//			float y = ai().level_graph().vertex_plane_y(level_vertex_id(),E->Position().x,E->Position().z);
-//			if (_abs(y - E->Position().y) > .2f) {
-//				
-//			}
-//		}
 }
 
 void CAI_Stalker::DropItemSendMessage(CObject *O)
@@ -193,4 +86,30 @@ void CAI_Stalker::DropItemSendMessage(CObject *O)
 	u_EventGen				(P,GE_OWNERSHIP_REJECT,ID());
 	P.w_u16					(u16(O->ID()));
 	u_EventSend				(P);
+}
+
+/////////////////////////
+//PDA functions
+void CAI_Stalker::ReceivePdaMessage(u16 who, EPdaMsg msg, int info_index)
+{
+	EPdaMsg pda_msg = ePdaMsgAccept;
+
+	if(GetPDA()->NeedToAnswer(who))
+	{
+		switch(msg)
+		{
+		case ePdaMsgTrade:
+			pda_msg = ePdaMsgAccept;
+			break;
+		case ePdaMsgNeedHelp:
+			pda_msg = ePdaMsgDecline;
+			break;
+		case ePdaMsgGoAway:
+			pda_msg = ePdaMsgDeclineRude;
+			break;
+		}
+
+		//реакция на сообщение
+		SendPdaMessage(who, pda_msg, info_index);
+	}
 }

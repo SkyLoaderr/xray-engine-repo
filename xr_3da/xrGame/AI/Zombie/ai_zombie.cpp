@@ -72,7 +72,6 @@ void CAI_Zombie::Die()
 	vfRemoveActiveMember();
 	--(Group.m_dwAliveCount);
 	m_eCurrentState = aiZombieDie;
-	m_dwDeathTime = Level().timeServer();
 //	Msg("%s : Death signal %d",cName(),Level().timeServer());
 }
 
@@ -159,8 +158,6 @@ BOOL CAI_Zombie::net_Spawn	(LPVOID DC)
 	vfAddActiveMember(true);
 	m_bStateChanged = true;
 
-	m_body.current = m_head.current;
-	m_body.target = m_head.target;
 	m_tHPB.x = m_body.current.yaw;
 	m_tHPB.y = m_body.current.pitch;
 	m_tHPB.z = 0;

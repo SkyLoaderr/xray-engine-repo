@@ -8,7 +8,7 @@
 using namespace InventoryUtilities;
 
 #include "uicharacterinfo.h"
-#include "..\\entity.h"
+#include "../entity.h"
 
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"

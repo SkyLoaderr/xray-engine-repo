@@ -171,13 +171,11 @@ void CAI_Zombie::FreeHuntingActive()
 		return;
 	}
 
-	SelectEnemy(m_Enemy);
-	
-	if (m_Enemy.m_enemy) {
+	if (enemy()) {
 		m_tpSoundBeingPlayed = &(m_tpaSoundNotice[::Random.randI(SND_NOTICE_COUNT)]);
 		::Sound->play_at_pos		(*m_tpSoundBeingPlayed,this,eye_matrix.c);
 		m_fGoalChangeTime = 0;
-		if ((m_Enemy.m_enemy->Position().distance_to(m_tSafeSpawnPosition) < m_fMaxPursuitRadius) || (Position().distance_to(m_tSafeSpawnPosition) > m_fMaxHomeRadius))
+		if ((enemy()->Position().distance_to(m_tSafeSpawnPosition) < m_fMaxPursuitRadius) || (Position().distance_to(m_tSafeSpawnPosition) > m_fMaxHomeRadius))
 			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieAttackRun)
 	}
 
@@ -253,9 +251,7 @@ void CAI_Zombie::FreeHuntingPassive()
 		return;
 	}
 
-	SelectEnemy(m_Enemy);
-	
-	if (m_Enemy.m_enemy) {
+	if (enemy()) {
 		m_fGoalChangeTime = 0;
 		vfAddActiveMember(true);
 		m_bStopThinking = false;
@@ -284,20 +280,15 @@ void CAI_Zombie::AttackFire()
 		return;
 	}
 
-	SelectEnemy		(m_Enemy);
-	
-	if (m_Enemy.m_enemy)
+	if (enemy())
 		m_dwLostEnemyTime = Level().timeServer();
 
-	if (!(m_Enemy.m_enemy) && m_tSavedEnemy && (Level().timeServer() - m_dwLostEnemyTime < m_dwLostMemoryTime))
-		m_Enemy.m_enemy = m_tSavedEnemy;
-
-	CHECK_IF_GO_TO_PREV_STATE(!(m_Enemy.m_enemy) || !m_Enemy.m_enemy->g_Alive());
+	CHECK_IF_GO_TO_PREV_STATE(!(enemy()) || !enemy()->g_Alive());
 		
-	CHECK_IF_GO_TO_NEW_STATE((m_Enemy.m_enemy->Position().distance_to(Position()) > m_fAttackDistance),aiZombieAttackRun)
+	CHECK_IF_GO_TO_NEW_STATE((enemy()->Position().distance_to(Position()) > m_fAttackDistance),aiZombieAttackRun)
 
 	Fvector			tTemp;
-	tTemp.sub		(m_Enemy.m_enemy->Position(),Position());
+	tTemp.sub		(enemy()->Position(),Position());
 	vfNormalizeSafe	(tTemp);
 	SRotation		sTemp;
 	mk_rotation		(tTemp,sTemp);
@@ -307,12 +298,10 @@ void CAI_Zombie::AttackFire()
 	CGroup			&Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	
 	Fvector			tDistance;
-	tDistance.sub	(Position(),m_Enemy.m_enemy->Position());
+	tDistance.sub	(Position(),enemy()->Position());
 
 	enable_movement	(false);
 	
-	vfSaveEnemy();
-
 	vfAimAtEnemy();
 
 	vfSetFire(true,Group);
@@ -332,30 +321,23 @@ void CAI_Zombie::AttackRun()
 
 	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
 
-	if (m_Enemy.m_enemy)
+	if (enemy())
 		m_dwLostEnemyTime = Level().timeServer();
 
-	SelectEnemy(m_Enemy);
+	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(enemy() && (m_tSafeSpawnPosition.distance_to(enemy()->Position()) > m_fMaxPursuitRadius),aiZombieReturnHome);
 
-	if (!(m_Enemy.m_enemy) && m_tSavedEnemy && (Level().timeServer() - m_dwLostEnemyTime < m_dwLostMemoryTime))
-		m_Enemy.m_enemy = m_tSavedEnemy;
-
-	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(m_Enemy.m_enemy && (m_tSafeSpawnPosition.distance_to(m_Enemy.m_enemy->Position()) > m_fMaxPursuitRadius),aiZombieReturnHome);
-
-	CHECK_IF_GO_TO_PREV_STATE(!(m_Enemy.m_enemy) || !m_Enemy.m_enemy->g_Alive());
-
-	vfSaveEnemy();
+	CHECK_IF_GO_TO_PREV_STATE(!(enemy()) || !enemy()->g_Alive());
 
 	Fvector tDistance;
-	tDistance.sub(Position(),m_Enemy.m_enemy->Position());
+	tDistance.sub(Position(),enemy()->Position());
 	
 	Fvector tTemp;
-	tTemp.sub(m_Enemy.m_enemy->Position(),Position());
+	tTemp.sub(enemy()->Position(),Position());
 	vfNormalizeSafe(tTemp);
 	SRotation sTemp;
 	mk_rotation(tTemp,sTemp);
 
-	if (m_Enemy.m_enemy->Position().distance_to(Position()) <= m_fAttackDistance) {
+	if (enemy()->Position().distance_to(Position()) <= m_fAttackDistance) {
 		if (angle_difference(m_body.target.yaw, sTemp.yaw) <= m_fAttackAngle) {
 			GO_TO_NEW_STATE_THIS_UPDATE(aiZombieAttackFire);
 		}
@@ -370,7 +352,7 @@ void CAI_Zombie::AttackRun()
 	INIT_SQUAD_AND_LEADER;
 	
 	if ((Level().timeServer() - m_previous_query_time > TIME_TO_GO) || !m_previous_query_time)
-		m_tGoalDir.set(m_Enemy.m_enemy->Position());
+		m_tGoalDir.set(enemy()->Position());
 	
 	vfUpdateTime(m_fTimeUpdateDelta);
 
@@ -412,12 +394,10 @@ void CAI_Zombie::Pursuit()
 
 	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
 
-	if (m_Enemy.m_enemy)
+	if (enemy())
 		m_dwLostEnemyTime = Level().timeServer();
 
-	SelectEnemy(m_Enemy);
-
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(m_Enemy.m_enemy,aiZombieAttackRun);
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(enemy(),aiZombieAttackRun);
 
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(Level().timeServer() - (int)m_tLastSound.dwTime >= m_dwLostMemoryTime);
 	
@@ -450,10 +430,7 @@ void CAI_Zombie::ReturnHome()
 
 	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
 
-	SelectEnemy(m_Enemy);
-	
-	if (m_Enemy.m_enemy && (m_tSafeSpawnPosition.distance_to(m_Enemy.m_enemy->Position()) < m_fMaxPursuitRadius)) {
-		SelectEnemy(m_Enemy);
+	if (enemy() && (m_tSafeSpawnPosition.distance_to(enemy()->Position()) < m_fMaxPursuitRadius)) {
 		m_fGoalChangeTime = 0;
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieAttackRun)
 	}

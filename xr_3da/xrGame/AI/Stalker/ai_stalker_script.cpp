@@ -56,9 +56,9 @@ CInventoryItem *CAI_Stalker::GetFood() const
 void CAI_Stalker::ResetScriptData(void *P)
 {
 	inherited::ResetScriptData	(P);
-	m_tEnemy.m_enemy	= 0;
+	CMemoryManager::Init		();
 	if (P)
-		vfSetParameters(0,0,false,eObjectActionIdle,ePathTypeNoPath,eDetailPathTypeSmooth,m_tBodyState,eMovementTypeStand,m_tMentalState,eLookTypeDirection);
+		vfSetParameters			(0,0,false,MonsterSpace::eObjectActionIdle,ePathTypeNoPath,eDetailPathTypeSmooth,m_tBodyState,eMovementTypeStand,m_tMentalState,eLookTypeDirection);
 }
 
 bool CAI_Stalker::bfAssignMovement(CEntityAction *tpEntityAction)

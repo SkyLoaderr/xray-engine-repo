@@ -10,14 +10,6 @@
 #include "ai_zombie.h"
 #include "../ai_monsters_misc.h"
 
-void CAI_Zombie::vfSaveEnemy()
-{
-	m_tSavedEnemy = m_Enemy.m_enemy;
-	m_tSavedEnemyPosition = m_Enemy.m_enemy->Position();
-	m_tpSavedEnemyNode = m_Enemy.m_enemy->level_vertex();
-	m_dwSavedEnemyNodeID = m_Enemy.m_enemy->level_vertex_id();
-}
-
 void CAI_Zombie::vfSetFire(bool bFire, CGroup &/**Group/**/)
 {
 	if (bFire) {
@@ -221,7 +213,7 @@ bool CAI_Zombie::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForwar
 	mXFORM.setHPB	(m_tHPB.x,m_tHPB.y,m_tHPB.z);
 	mXFORM.c.set	(Position());
 	XFORM().set		(mXFORM);
-	m_head.target.yaw	= m_body.target.yaw = -m_tHPB.x;
+	m_body.target.yaw = -m_tHPB.x;
 
 	// Update position
 //	Level().ObjectSpace.GetNearest(Position(),1.f);

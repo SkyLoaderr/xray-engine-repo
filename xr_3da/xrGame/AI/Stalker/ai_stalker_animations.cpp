@@ -96,25 +96,13 @@ LPCSTR caGlobalNames		[] = {
 	0
 };
 
-void CAI_Stalker::vfAssignBones(CInifile *ini, const char *section)
-{
-	int head_bone		= PKinematics(Visual())->LL_BoneID(ini->r_string(section,"bone_head"));
-	PKinematics(Visual())->LL_GetBoneInstance(u16(head_bone)).set_callback(HeadCallback,this);
-	
-	int shoulder_bone	= PKinematics(Visual())->LL_BoneID(ini->r_string(section,"bone_shoulder"));
-	PKinematics(Visual())->LL_GetBoneInstance(u16(shoulder_bone)).set_callback(ShoulderCallback,this);
-	
-	int spin_bone		= PKinematics(Visual())->LL_BoneID(ini->r_string(section,"bone_spin"));
-	PKinematics(Visual())->LL_GetBoneInstance(u16(spin_bone)).set_callback(SpinCallback,this);
-}
-
-void __stdcall CAI_Stalker::HeadCallback(CBoneInstance *B)
+void __stdcall CStalkerAnimations::HeadCallback(CBoneInstance *B)
 {
 	CAI_Stalker*			A = dynamic_cast<CAI_Stalker*> (static_cast<CObject*>(B->Callback_Param));
 	Fvector c				= B->mTransform.c;
 	Fmatrix					spin;
 	float					yaw_factor = 0, pitch_factor = 0;
-	switch(A->m_tLookType) {
+	switch(A->look_type()) {
 		case eLookTypeLookFireOver :
 		case eLookTypeFirePoint : {
 			yaw_factor		= y_head_fire_factor;
@@ -141,13 +129,13 @@ void __stdcall CAI_Stalker::HeadCallback(CBoneInstance *B)
 	B->mTransform.c			= c;
 }
 
-void __stdcall CAI_Stalker::ShoulderCallback(CBoneInstance *B)
+void __stdcall CStalkerAnimations::ShoulderCallback(CBoneInstance *B)
 {
 	CAI_Stalker*			A = dynamic_cast<CAI_Stalker*> (static_cast<CObject*>(B->Callback_Param));
 	Fvector c				= B->mTransform.c;
 	Fmatrix					spin;
 	float					yaw_factor = 0, pitch_factor = 0;
-	switch(A->m_tLookType) {
+	switch(A->look_type()) {
 		case eLookTypeLookFireOver :
 		case eLookTypeFirePoint : {
 			yaw_factor		= y_shoulder_fire_factor;
@@ -174,13 +162,13 @@ void __stdcall CAI_Stalker::ShoulderCallback(CBoneInstance *B)
 	B->mTransform.c			= c;
 }
 
-void __stdcall CAI_Stalker::SpinCallback(CBoneInstance *B)
+void __stdcall CStalkerAnimations::SpinCallback(CBoneInstance *B)
 {
 	CAI_Stalker*			A = dynamic_cast<CAI_Stalker*> (static_cast<CObject*>(B->Callback_Param));
 	Fvector c				= B->mTransform.c;
 	Fmatrix					spin;
 	float					yaw_factor = 0, pitch_factor = 0;
-	switch(A->m_tLookType) {
+	switch(A->look_type()) {
 		case eLookTypeLookFireOver :
 		case eLookTypeFirePoint : {
 			yaw_factor		= y_spin_fire_factor;
@@ -207,23 +195,25 @@ void __stdcall CAI_Stalker::SpinCallback(CBoneInstance *B)
 	B->mTransform.c			= c;
 }
 
-void CAI_Stalker::vfAssignGlobalAnimation(CMotionDef *&tpGlobalAnimation)
+void CStalkerAnimations::vfAssignGlobalAnimation(CMotionDef *&tpGlobalAnimation)
 {
-	if (g_Alive()) {
-		if ((eMentalStatePanic == m_tMentalState) && (speed() > EPS_L))
-			tpGlobalAnimation = m_tAnims.A[IsLimping() ? eBodyStateStandDamaged : eBodyStateStand].m_tGlobal.A[1].A[0];
+	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(this);
+	VERIFY					(stalker);
+	if (stalker->g_Alive()) {
+		if ((eMentalStatePanic == stalker->mental_state()) && (stalker->speed() > EPS_L))
+			tpGlobalAnimation = m_tAnims.A[stalker->IsLimping() ? eBodyStateStandDamaged : eBodyStateStand].m_tGlobal.A[1].A[0];
 	}
-	//else
-	//	tpGlobalAnimation = m_tAnims.A[eBodyStateStand].m_tGlobal.A[2].A[0];
 }
 
-void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
+void CStalkerAnimations::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 {
-	if (!g_Alive())
+	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(this);
+	VERIFY					(stalker);
+	if (!stalker->g_Alive())
 		return;
 	
-	CWeapon *tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
-	u32		dwCurrentAniSlot = 0;
+	CWeapon					*tpWeapon = dynamic_cast<CWeapon*>(stalker->inventory().ActiveItem());
+	u32						dwCurrentAniSlot = 0;
 	if (tpWeapon)
 		switch (tpWeapon->SUB_CLS_ID) {
 			case CLSID_OBJECT_W_VINTOREZ	:
@@ -268,54 +258,54 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 
 	
 //	Msg			("[%s] Current weapon slot   : %d",cName(),dwCurrentAniSlot);
-//	Msg			("[%s] Current movement type : %d",cName(),m_tMovementType);
+//	Msg			("[%s] Current movement type : %d",cName(),stalker->movement_type());
 
-	EBodyState l_tBodyState = (m_tBodyState == eBodyStateStand) && IsLimping() ? eBodyStateStandDamaged : m_tBodyState;
-	if (eMentalStateFree == m_tMentalState) {
+	EBodyState l_tBodyState = (eBodyStateStand == stalker->body_state()) && stalker->IsLimping() ? eBodyStateStandDamaged : stalker->body_state();
+	if (eMentalStateFree == stalker->mental_state()) {
 		tpTorsoAnimation = 0;
-		R_ASSERT2(eBodyStateStand == m_tBodyState,"Cannot run !free! animation when body state is not stand!");
-		if ((eMovementTypeStand == m_tMovementType) || fis_zero(speed()))
+		R_ASSERT2(eBodyStateStand == stalker->body_state(),"Cannot run !free! animation when body state is not stand!");
+		if ((eMovementTypeStand == stalker->movement_type()) || fis_zero(stalker->speed()))
 			tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[9].A[0];
 		else
-			tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[IsLimping() ? 9 : (7 + m_tMovementType)].A[IsLimping() ? 0 : 1];
+			tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[stalker->IsLimping() ? 9 : (7 + stalker->movement_type())].A[stalker->IsLimping() ? 0 : 1];
 		return;
 	}
-	if (m_inventory.ActiveItem()) {
-		CWeapon *tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
+	if (stalker->inventory().ActiveItem()) {
+		CWeapon *tpWeapon = dynamic_cast<CWeapon*>(stalker->inventory().ActiveItem());
 		if (tpWeapon) {
 			switch (tpWeapon->STATE) {
 				case CWeapon::eReload : {
-					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[4].A[0];
+					tpTorsoAnimation = m_tAnims.A[stalker->body_state()].m_tTorso.A[dwCurrentAniSlot].A[4].A[0];
 					break;
 				}
 				case CWeapon::eShowing : {
-					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[0].A[0];
+					tpTorsoAnimation = m_tAnims.A[stalker->body_state()].m_tTorso.A[dwCurrentAniSlot].A[0].A[0];
 					break;
 				}
 				case CWeapon::eHiding : {
-					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[3].A[0];
+					tpTorsoAnimation = m_tAnims.A[stalker->body_state()].m_tTorso.A[dwCurrentAniSlot].A[3].A[0];
 					break;
 				}
 				case CWeapon::eFire: {
 //					Msg				("Weapon is firing (%d)",m_current_update);
-					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[1].A[0];
+					tpTorsoAnimation = m_tAnims.A[stalker->body_state()].m_tTorso.A[dwCurrentAniSlot].A[1].A[0];
 					break;
 				}
 				case CWeapon::eFire2 : {
-					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[1].A[0];
+					tpTorsoAnimation = m_tAnims.A[stalker->body_state()].m_tTorso.A[dwCurrentAniSlot].A[1].A[0];
 					break;
 				}
 				default : {
-					if ((m_bFiring && (CWeapon::eIdle != tpWeapon->STATE)) || (eBodyStateStand != m_tBodyState))
-						tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[(IsLimping() && (eBodyStateStand == m_tBodyState)) ? 9 : 6].A[0];
+					if ((stalker->firing() && (CWeapon::eIdle != tpWeapon->STATE)) || (eBodyStateStand != stalker->body_state()))
+						tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[(stalker->IsLimping() && (eBodyStateStand == stalker->body_state())) ? 9 : 6].A[0];
 					else
-						if (fis_zero(speed())) {
-							tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[IsLimping() ? 9 : 6].A[0];
+						if (fis_zero(stalker->speed())) {
+							tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[stalker->IsLimping() ? 9 : 6].A[0];
 						}
 						else
-							switch (m_tMovementType) {
+							switch (stalker->movement_type()) {
 								case eMovementTypeStand : {
-									tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[IsLimping() ? 9 : 6].A[0];
+									tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[stalker->IsLimping() ? 9 : 6].A[0];
 									break;
 								}
 								case eMovementTypeWalk : {
@@ -323,7 +313,7 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 									break;
 								}
 								case eMovementTypeRun : {
-									tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[IsLimping() ? 7 : 8].A[0];
+									tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[stalker->IsLimping() ? 7 : 8].A[0];
 									break;
 								}
 								default : {
@@ -337,44 +327,46 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 		}
 	}
 	else
-		tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[0].A[6].A[0];
+		tpTorsoAnimation = m_tAnims.A[stalker->body_state()].m_tTorso.A[0].A[6].A[0];
 }
 
-void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
+void CStalkerAnimations::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 {
-	if (!g_Alive())
+	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(this);
+	VERIFY					(stalker);
+	if (!stalker->g_Alive())
 		return;
-	EBodyState l_tBodyState = (eBodyStateStand == m_tBodyState) && IsLimping() ? eBodyStateStandDamaged : m_tBodyState;
-	if ((speed() < EPS_L) || (eMovementTypeStand == m_tMovementType)) {
+	EBodyState l_tBodyState = (eBodyStateStand == stalker->body_state()) && stalker->IsLimping() ? eBodyStateStandDamaged : stalker->body_state();
+	if ((stalker->speed() < EPS_L) || (eMovementTypeStand == stalker->movement_type())) {
 		// standing
-		if (angle_difference(m_body.target.yaw,m_body.current.yaw) <= PI_DIV_6) {
-			tpLegsAnimation		= m_tAnims.A[m_tBodyState].m_tInPlace.A[0];
+		if (angle_difference(stalker->body_orientation().target.yaw,stalker->body_orientation().current.yaw) <= PI_DIV_6) {
+			tpLegsAnimation		= m_tAnims.A[stalker->body_state()].m_tInPlace.A[0];
 		}
 		else {
-			tpLegsAnimation		= m_tAnims.A[m_tBodyState].m_tInPlace.A[1];
+			tpLegsAnimation		= m_tAnims.A[stalker->body_state()].m_tInPlace.A[1];
 		}
 		return;
 	}
 	// moving
 	float					yaw, pitch;
-	GetDirectionAngles		(yaw,pitch);
+	stalker->GetDirectionAngles	(yaw,pitch);
 	yaw						= angle_normalize_signed(-yaw);
-//	float					fAngleDifference = _abs(angle_normalize_signed(m_body.current.yaw - m_head.current.yaw));
+//	float					fAngleDifference = _abs(angle_normalize_signed(stalker->body_orientation().current.yaw - stalker->head_orientation().current.yaw));
 	float					fAnimationSwitchFactor = 1.f;//fAngleDifference < PI_DIV_2 ? 1.f : 1.f - (fAngleDifference - PI_DIV_2)/(PI - PI_DIV_2);
 	if	(((eMovementDirectionForward == m_tDesirableDirection) && (eMovementDirectionBack == m_tMovementDirection))	||	((eMovementDirectionBack == m_tDesirableDirection) && (eMovementDirectionForward == m_tMovementDirection)))
 		fAnimationSwitchFactor = .0f;
 	if	(((eMovementDirectionRight == m_tDesirableDirection) && (eMovementDirectionLeft == m_tMovementDirection))	||	((eMovementDirectionLeft == m_tDesirableDirection) && (eMovementDirectionRight == m_tMovementDirection)))
 		fAnimationSwitchFactor = .0f;
 
-	if (eMentalStateDanger != m_tMentalState)
-		if (angle_difference(m_body.current.yaw,yaw) <= PI_DIV_6) {
-			tpLegsAnimation = m_tAnims.A[l_tBodyState].m_tMoves.A[m_tMovementType].A[eMovementDirectionForward].A[m_tMentalState];
+	if (eMentalStateDanger != stalker->mental_state())
+		if (angle_difference(stalker->body_orientation().current.yaw,yaw) <= PI_DIV_6) {
+			tpLegsAnimation = m_tAnims.A[l_tBodyState].m_tMoves.A[stalker->movement_type()].A[eMovementDirectionForward].A[stalker->mental_state()];
 			return;
 		}
 		else
 			fAnimationSwitchFactor = .0f;
 
-	if (angle_difference(yaw,m_head.current.yaw) <= MAX_HEAD_TURN_ANGLE) {
+	if (angle_difference(yaw,stalker->head_orientation().current.yaw) <= MAX_HEAD_TURN_ANGLE) {
 		// moving forward
 		if (eMovementDirectionForward == m_tMovementDirection)
 			m_dwDirectionStartTime	= Level().timeServer();
@@ -390,9 +382,9 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 				}
 	}
 	else {
-		if (angle_difference(yaw,m_head.current.yaw) <= 4*PI_DIV_6)
+		if (angle_difference(yaw,stalker->head_orientation().current.yaw) <= 4*PI_DIV_6)
 			// moving left|right
-			if (angle_difference(yaw,angle_normalize_signed(m_head.current.yaw + PI_DIV_2)) <= PI_DIV_4) {
+			if (angle_difference(yaw,angle_normalize_signed(stalker->head_orientation().current.yaw + PI_DIV_2)) <= PI_DIV_4) {
 				// moving right, looking left
 				if (eMovementDirectionRight == m_tMovementDirection)
 					m_dwDirectionStartTime	= Level().timeServer();
@@ -438,19 +430,23 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 					}
 		}
 	}
-//	Msg("----%d\n[W=%7.2f][TT=%7.2f][TC=%7.2f][T=%7.2f][C=%7.2f]",Level().timeServer(),yaw,m_body.target.yaw,m_body.current.yaw,m_head.target.yaw,m_head.current.yaw);
+//	Msg("----%d\n[W=%7.2f][TT=%7.2f][TC=%7.2f][T=%7.2f][C=%7.2f]",Level().timeServer(),yaw,stalker->body_orientation().target.yaw,stalker->body_orientation().current.yaw,stalker->head_orientation().target.yaw,stalker->head_orientation().current.yaw);
 //	Msg("Trying %s\nMoving %s",caMovementActionNames[m_tDesirableDirection],caMovementActionNames[m_tMovementDirection]);
-//	if (eMentalStateFree == m_tMentalState)
+//	if (eMentalStateFree == stalker->mental_state())
 //		m_tMovementDirection = eMovementDirectionForward;
 
-	tpLegsAnimation			= m_tAnims.A[l_tBodyState].m_tMoves.A[m_tMovementType].A[m_tMovementDirection].A[0];
-	m_body.target.yaw		= angle_normalize_signed(yaw + faTurnAngles[m_tMovementDirection]);
-//	Msg("[W=%7.2f][TT=%7.2f][TC=%7.2f][T=%7.2f][C=%7.2f]",yaw,m_body.target.yaw,m_body.current.yaw,m_head.target.yaw,m_head.current.yaw);
+	tpLegsAnimation					= m_tAnims.A[l_tBodyState].m_tMoves.A[stalker->movement_type()].A[m_tMovementDirection].A[0];
+	CMovementManager::SBoneRotation	body_orientation = stalker->body_orientation();
+	body_orientation.target.yaw		= angle_normalize_signed(yaw + faTurnAngles[m_tMovementDirection]);
+	stalker->set_body_orientation	(body_orientation);
+//	Msg("[W=%7.2f][TT=%7.2f][TC=%7.2f][T=%7.2f][C=%7.2f]",yaw,stalker->body_orientation().target.yaw,stalker->body_orientation().current.yaw,stalker->head_orientation().target.yaw,stalker->head_orientation().current.yaw);
 }
 
 void CAI_Stalker::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /**_move/**/, float /**speed/**/)
 {
-	CSkeletonAnimated		&tVisualObject		=	*(PSkeletonAnimated(Visual()));
+	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(this);
+	VERIFY					(stalker);
+	CSkeletonAnimated		&tVisualObject		=	*(PSkeletonAnimated(stalker->Visual()));
 
 	if (m_tAnims.A.empty())
 		return;
@@ -465,7 +461,7 @@ void CAI_Stalker::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /*
 			m_tpCurrentGlobalBlend = tVisualObject.PlayCycle(m_tpCurrentGlobalAnimation = tpGlobalAnimation);
 	}
 	else
-		if (g_Alive()) {
+		if (stalker->g_Alive()) {
 			CMotionDef				*tpTorsoAnimation	=	0;
 			CMotionDef				*tpLegsAnimation	=	0;
 			m_tpCurrentGlobalBlend	= 0;

@@ -310,6 +310,19 @@ BOOL CAI_Trader::UsedAI_Locations()
 	return					(TRUE);
 }
 
+void CAI_Trader::reinit	()
+{
+	CEntityAlive::reinit	();
+	CInventoryOwner::reinit	();
+	CScriptMonster::reinit	();
+}
+
+void CAI_Trader::reload	(LPCSTR section)
+{
+	CEntityAlive::reload	(section);
+	CInventoryOwner::reload	(section);
+	CScriptMonster::reload	(section);
+}
 
 //////////////////////////////////////////////////////////////////////////
 void CAI_Trader::set_callback(const luabind::functor<void> &tpTradeCallback, bool bOnStart)

@@ -137,12 +137,19 @@ protected:
 		float				m_fHitPower;
 		u32					m_dwHitInterval;
 		
+		typedef struct tagSSimpleSound {
+			ESoundTypes		eSoundType;
+			u32				dwTime;
+			float			fPower;
+			Fvector			tSavedPosition;
+			CEntityAlive	*tpEntity;
+		} SSimpleSound;
+
 		// SOUND BEING FELT
 		SSimpleSound		m_tLastSound;
 		
 		// ENEMY
-		SEnemySelected		m_Enemy;
-		CEntity*			m_tSavedEnemy;
+		CEntityAlive*		m_tSavedEnemy;
 		Fvector				m_tSavedEnemyPosition;
 		u32					m_dwLostEnemyTime;
 		const CLevelGraph::CVertex* 	m_tpSavedEnemyNode;
@@ -199,6 +206,9 @@ protected:
 		float				m_fSoundThreshold;
 		u32					m_dwTimeToLie;
 		u32					m_dwToWaitBeforeDestroy;
+
+		float				m_fMaxSpeed;
+		float				m_fMinSpeed;
 
 		//////////////////////////
 		// INLINE FUNCTIONS
@@ -294,7 +304,6 @@ protected:
 		void	vfLoadAnimations();
 		void	SetDirectionLook();
 		void	vfAimAtEnemy();
-		void	vfSaveEnemy();
 		void	vfSetFire(bool bFire, CGroup &Group);
 		void	vfSetMovementType(float fSpeed);
 		void	vfUpdateDynamicObjects() {};
@@ -321,8 +330,6 @@ protected:
 		virtual void  Die();
 		virtual void  Load( LPCSTR section );
 		virtual void  Think();
-		virtual float EnemyHeuristics(CEntity* E);
-		virtual void  SelectEnemy(SEnemySelected& S);
 		virtual void  SelectAnimation( const Fvector& _view, const Fvector& _move, float speed );
 		virtual void  Exec_Action			(float dt);
 		virtual	void  feel_sound_new		(CObject* who, int type, Fvector& Position, float power);

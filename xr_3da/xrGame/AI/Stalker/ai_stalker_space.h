@@ -8,7 +8,6 @@
 
 #pragma once
 
-#define MAX_DYNAMIC_OBJECTS 			32
 #define MAX_DYNAMIC_SOUNDS  			32
 #define MAX_HURT_COUNT					32
 #define MAX_SEARCH_COUNT				32
@@ -46,5 +45,14 @@ namespace StalkerSpace {
 	enum ESearchState {
 		eSearchStateMarkVisibleNodes = 0,
 		eSearchStateFindSuspiciousNodes,
+	};
+	
+	enum EStalkerSounds {
+		eStalkerSoundDie = u32(0),
+		eStalkerSoundInjuring,
+		eStalkerSoundHumming,
+		eStalkerSoundAlarm,
+		eStalkerSoundSurrender,
+		eStalkerSoundDummy = u32(-1),
 	};
 };

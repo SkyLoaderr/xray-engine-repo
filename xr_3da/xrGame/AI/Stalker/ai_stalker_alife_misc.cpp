@@ -127,64 +127,17 @@ void CAI_Stalker::vfSetCurrentTask(_TASK_ID &tTaskID)
 
 bool CAI_Stalker::bfAssignDestinationNode()
 {
-//	if ((level_vertex_id() == m_level_dest_vertex_id) && (ai().cross_table().vertex(level_vertex_id()) == m_tNextGraphID)) {
-	if (m_tpALife) {
-		if (ai().cross_table().vertex(level_vertex_id()).game_vertex_id() == m_tNextGraphID) {
-			m_tGraphID = m_tNextGraphID;
-			if (++m_dwCurGraphPathNode < m_tpGraphPath.size()) {
-				m_tNextGraphID	= _GRAPH_ID(m_tpGraphPath[m_dwCurGraphPathNode]);
-			}
-			else
-				return(false);
-		}
+//	if ((level_vertex_id() == m_level_dest_vertex_id) && (ai().cross_table().vertex(level_vertex_id()) == game_dest_vertex_id())) {
+	if (m_tpALife)
+		return				(!CMovementManager::path_completed());
 
-		set_level_dest_vertex(ai().game_graph().vertex(m_tNextGraphID)->level_vertex_id());
-		return	(true);
+	if (ai().game_graph().vertex(game_dest_vertex_id())->level_vertex_id() != level_vertex_id()) {
+		set_level_dest_vertex(ai().game_graph().vertex(game_dest_vertex_id())->level_vertex_id());
+		return				(true);
 	}
-	else {
-		if (ai().game_graph().vertex(m_tNextGraphID)->level_vertex_id() != level_vertex_id()) {
-			set_level_dest_vertex(ai().game_graph().vertex(m_tNextGraphID)->level_vertex_id());
-			return(true);
-		}
-		_GRAPH_ID						tGraphID		= m_tNextGraphID;
-		CGameGraph::const_iterator		i,e;
-		ai().game_graph().begin			(tGraphID,i,e);
-		int								iPointCount		= (int)m_tpaTerrain.size();
-		int								iBranches		= 0;
-		for ( ; i != e; ++i)
-			for (int j=0; j<iPointCount; ++j)
-				if (ai().game_graph().mask(m_tpaTerrain[j].tMask,ai().game_graph().vertex((*i).vertex_id())->vertex_type()) && ((*i).vertex_id() != m_tGraphID))
-					++iBranches;
 
-		ai().game_graph().begin			(tGraphID,i,e);
-
-		if (!iBranches) {
-			for ( ; i != e; ++i) {
-				for (int j=0; j<iPointCount; ++j)
-					if (ai().game_graph().mask(m_tpaTerrain[j].tMask,ai().game_graph().vertex((*i).vertex_id())->vertex_type())) {
-						m_tGraphID		= m_tNextGraphID;
-						m_tNextGraphID	= (*i).vertex_id();
-						set_level_dest_vertex(ai().game_graph().vertex(m_tNextGraphID)->level_vertex_id());
-						return(true);
-					}
-			}
-		}
-		else {
-			int							iChosenBranch = ::Random.randI(0,iBranches);
-			iBranches					= 0;
-			for ( ; i != e; ++i) {
-				for (int j=0; j<iPointCount; ++j)
-					if (ai().game_graph().mask(m_tpaTerrain[j].tMask,ai().game_graph().vertex((*i).vertex_id())->vertex_type()) && ((*i).vertex_id() != m_tGraphID)) {
-						if (iBranches == iChosenBranch) {
-							m_tGraphID	= m_tNextGraphID;
-							m_tNextGraphID	= (*i).vertex_id();
-							set_level_dest_vertex(ai().game_graph().vertex(m_tNextGraphID)->level_vertex_id());
-							return(true);
-						}
-						++iBranches;
-					}
-			}
-		}
-	}
-	return(true);
+	u32						vertex_id;
+	select_random_location	(game_vertex_id(),vertex_id);
+	set_game_dest_vertex	(ALife::_GRAPH_ID(vertex_id));
+	return					(true);
 }

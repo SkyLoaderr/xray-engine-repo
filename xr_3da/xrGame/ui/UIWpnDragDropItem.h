@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "..\\weapon.h"
+#include "../weapon.h"
 
 #include "UIDragDropItem.h"
 

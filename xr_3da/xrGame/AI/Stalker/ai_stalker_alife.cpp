@@ -61,7 +61,6 @@ void CAI_Stalker::vfChooseTask()
 				default				: NODEFAULT;
 			};
 			m_tTaskState			= eTaskStateAccomplishTask;
-			m_tpGraphPath.clear			();
 		}
 	}
 }
@@ -103,16 +102,14 @@ void CAI_Stalker::vfAccomplishTask()
 
 void CAI_Stalker::vfFinishTask()
 {
-	if (bfCheckIfTaskCompleted()) {
-		m_tpGraphPath.clear	();
+	if (bfCheckIfTaskCompleted())
 		m_tTaskState		= eTaskStateGoToCustomer;
-	}
 	else {
 		CSE_ALifeTask		*l_tpALifeTask = m_tpALife->tpfGetTaskByID(m_tTaskID);
 		switch (l_tpALifeTask->m_tTaskType) {
 			case eTaskTypeSearchForItemCG :
 			case eTaskTypeSearchForItemOG : {
-				if ((m_dwCurGraphPathNode + 1>= (m_tpGraphPath.size())) && (m_tGraphID == m_tNextGraphID)) {
+				if (CMovementManager::path_completed() && (game_vertex_id() == l_tpALifeTask->m_tGraphID)) {
 					++(l_tpALifeTask->m_dwTryCount);
 					m_tTaskState = eTaskStateChooseTask;
 				}

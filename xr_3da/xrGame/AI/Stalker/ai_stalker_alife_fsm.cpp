@@ -13,15 +13,10 @@
 
 void CAI_Stalker::vfContinueWithALifeGoals(PathManagers::CAbstractVertexEvaluator *tpNodeEvaluator)
 {
-	if (m_bStateChanged && !m_bPlayHumming && m_tpCurrentSound) {
-		m_tpCurrentSound->stop();
-		m_tpCurrentSound = 0;
-	}
+	set_sound_mask		(0);
 
 	// going via graph nodes
 	//WRITE_TO_LOG			("Accomplishing task");
-	m_bPlayHumming = true;
-
 	if (m_bStateChanged || path().empty() || (!CMovementManager::actual())) {
 		m_tActionState = !::Random.randI(1) ? eActionStateWatch : eActionStateDontWatch;
 		m_dwActionStartTime = Level().timeServer() + ::Random.randI(30000,50000);
@@ -42,19 +37,19 @@ void CAI_Stalker::vfContinueWithALifeGoals(PathManagers::CAbstractVertexEvaluato
 		return;
 	}
 
-	if (ai().cross_table().vertex(ai().game_graph().vertex(m_tNextGraphID)->level_vertex_id()).game_vertex_id() != m_tNextGraphID) {
+	if (ai().cross_table().vertex(ai().game_graph().vertex(game_dest_vertex_id())->level_vertex_id()).game_vertex_id() != game_dest_vertex_id()) {
 		string4096	S;
 		sprintf		(S,"Graph doesn't correspond to the cross table (graph vertex %d != CrossTable[Graph[%d].vertex(%d)].Vertex(%d)",
-			m_tNextGraphID,
-			m_tNextGraphID,
-			ai().game_graph().vertex(m_tNextGraphID)->level_vertex_id(),
-			ai().cross_table().vertex(ai().game_graph().vertex(m_tNextGraphID)->level_vertex_id()).game_vertex_id()
+			game_dest_vertex_id(),
+			game_dest_vertex_id(),
+			ai().game_graph().vertex(game_dest_vertex_id())->level_vertex_id(),
+			ai().cross_table().vertex(ai().game_graph().vertex(game_dest_vertex_id())->level_vertex_id()).game_vertex_id()
 		);
 		R_ASSERT2	(false,S);
 	}
 	
 	if (!ai().level_graph().valid_vertex_id(level_dest_vertex_id())) {
-		Msg("! Invalid graph point vertex (graph index %d)",m_tNextGraphID);
+		Msg("! Invalid graph point vertex (graph index %d)",game_dest_vertex_id());
 		for (ALife::_GRAPH_ID i=0; i<(int)ai().game_graph().header().vertex_count(); ++i)
 			Msg("%3d : %6d",i,ai().game_graph().vertex(i)->level_vertex_id());
 	}
@@ -66,7 +61,7 @@ void CAI_Stalker::vfContinueWithALifeGoals(PathManagers::CAbstractVertexEvaluato
 //		vfSetParameters(tpNodeEvaluator,0,false,eObjectActionIdle,!tpNodeEvaluator ? ePathTypeStraight : ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eMentalStateFree,eLookTypePathDirection);
 //	else
 //		vfSetParameters(tpNodeEvaluator,0,false,eObjectActionIdle,!tpNodeEvaluator ? ePathTypeStraight : ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eMentalStateFree,eLookTypeSearch);
-	vfSetParameters(tpNodeEvaluator,0,false,eObjectActionIdle,ePathTypeLevelPath,eDetailPathTypeSmooth,eBodyStateStand,eMovementTypeWalk,eMentalStateFree,eLookTypeSearch);
+	vfSetParameters(tpNodeEvaluator,0,0,MonsterSpace::eObjectActionIdle,ePathTypeLevelPath,eDetailPathTypeSmooth,eBodyStateStand,eMovementTypeWalk,eMentalStateFree,eLookTypeSearch);
 
 	switch (m_tActionState) {
 		case eActionStateWatch : {
@@ -75,20 +70,12 @@ void CAI_Stalker::vfContinueWithALifeGoals(PathManagers::CAbstractVertexEvaluato
 			break;
 		}
 		case eActionStateDontWatch : {
-			if (!m_tpCurrentSound) {
-				m_tpCurrentSound = &m_tpSoundHumming[::Random.randI((int)m_tpSoundHumming.size())];
-				m_tpCurrentSound->play_at_pos(this,eye_matrix.c);
-				m_tpCurrentSound->feedback->set_volume(1.f);
+			if (playing_sounds().empty()) {
+				play				(eStalkerSoundHumming);
+				m_tActionState		= eActionStateWatch;
+				m_dwActionStartTime = Level().timeServer() + ::Random.randI(10000,20000);
 			}
-			else
-				if (m_tpCurrentSound->feedback)
-					m_tpCurrentSound->feedback->set_position(eye_matrix.c);
-				else {
-					m_tpCurrentSound = 0;
-					m_tActionState = eActionStateWatch;
-					m_dwActionStartTime = Level().timeServer() + ::Random.randI(10000,20000);
-				}
-				break;
+			break;
 		}
 	}
 }

@@ -46,23 +46,50 @@ public:
 class CStalkerAnimations {
 public:
 	CAniCollection<CStateAnimations,caStateNames>	m_tAnims;
-	CMotionDef		*m_tpCurrentGlobalAnimation;
-	CMotionDef		*m_tpCurrentTorsoAnimation;
-	CMotionDef		*m_tpCurrentLegsAnimation;
-	CBlend			*m_tpCurrentGlobalBlend;
-	CBlend			*m_tpCurrentTorsoBlend;
-	CBlend			*m_tpCurrentLegsBlend;
-	u8				m_bAnimationIndex;
+	CMotionDef					*m_tpCurrentGlobalAnimation;
+	CMotionDef					*m_tpCurrentTorsoAnimation;
+	CMotionDef					*m_tpCurrentLegsAnimation;
+	CBlend						*m_tpCurrentGlobalBlend;
+	CBlend						*m_tpCurrentTorsoBlend;
+	CBlend						*m_tpCurrentLegsBlend;
+	u8							m_bAnimationIndex;
+	u32							m_dwDirectionStartTime;
+	u32							m_dwAnimationSwitchInterval;
+	EMovementDirection			m_tMovementDirection;
+	EMovementDirection			m_tDesirableDirection;
 	
-					CStalkerAnimations()
+							CStalkerAnimations				()
 	{
-		m_tpCurrentGlobalAnimation = 
-		m_tpCurrentTorsoAnimation = 
-		m_tpCurrentLegsAnimation = 0;
+	};
+
+	virtual	void			reinit							()
+	{
+		m_tpCurrentGlobalAnimation		= 
+		m_tpCurrentTorsoAnimation		= 
+		m_tpCurrentLegsAnimation		= 0;
+		m_dwAnimationSwitchInterval		= 500;
+		m_dwDirectionStartTime			= 0;
+		m_tMovementDirection			= eMovementDirectionForward;
+		m_tDesirableDirection			= eMovementDirectionForward;
+	}
+	
+	virtual	void			reload							(IRender_Visual *Visual, CInifile *ini, LPCSTR section)
+	{
+		m_tAnims.Load							(PSkeletonAnimated(Visual),"");
+		int										head_bone = PKinematics(Visual)->LL_BoneID(ini->r_string(section,"bone_head"));
+		PKinematics(Visual)->LL_GetBoneInstance	(u16(head_bone)).set_callback(HeadCallback,this);
+
+		int										shoulder_bone = PKinematics(Visual)->LL_BoneID(ini->r_string(section,"bone_shoulder"));
+		PKinematics(Visual)->LL_GetBoneInstance	(u16(shoulder_bone)).set_callback(ShoulderCallback,this);
+
+		int										spin_bone = PKinematics(Visual)->LL_BoneID(ini->r_string(section,"bone_spin"));
+		PKinematics(Visual)->LL_GetBoneInstance	(u16(spin_bone)).set_callback(SpinCallback,this);
 	};
 	
-	virtual	void	Load(CSkeletonAnimated *tpKinematics)
-	{
-		m_tAnims.Load	(tpKinematics,"");
-	};
+	static	void __stdcall	HeadCallback					(CBoneInstance *B);
+	static	void __stdcall	ShoulderCallback				(CBoneInstance *B);
+	static	void __stdcall	SpinCallback					(CBoneInstance *B);
+			void			vfAssignGlobalAnimation			(CMotionDef *&tpGlobalAnimation);
+			void			vfAssignTorsoAnimation			(CMotionDef *&tpGlobalAnimation);
+			void			vfAssignLegsAnimation			(CMotionDef *&tpLegsAnimation);
 };
