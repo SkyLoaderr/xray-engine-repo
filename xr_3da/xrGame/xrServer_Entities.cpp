@@ -607,12 +607,35 @@ void	xrSE_Enemy::FillProp			(LPCSTR pref, PropItemVec& items)
 void					xrSE_Visualed::visual_read(NET_Packet& P)
 {
 	P.r_string			(visual_name);
+#ifdef _EDITOR
+	OnChangeVisual		(0);
+#endif
 }
 
 void					xrSE_Visualed::visual_write(NET_Packet& P)
 {
 	P.w_string			(visual_name);
 }
+
+#ifdef _EDITOR
+#include "BodyInstance.h"
+void __fastcall			xrSE_Visualed::OnChangeVisual(PropValue* sender)
+{
+	Device.Models.Delete(visual);
+    visual				= Device.Models.Create(visual_name);
+    // play idle motion if skeleton
+    if (PKinematics(visual)){ 
+    	CMotionDef* M	= PKinematics(visual)->ID_Cycle_Safe("idle");
+    	if (M) PKinematics(visual)->PlayCycle(M); 
+        PKinematics(visual)->Calculate();
+    }
+}
+void 					xrSE_Visualed::FillProp(LPCSTR pref, PropItemVec& values)
+{
+    PropValue* V		= PHelper.CreateGameObject(values, PHelper.PrepareKey(pref,"Model"),visual_name,sizeof(visual_name));
+    V->SetEvents		(0,0,OnChangeVisual);
+}
+#endif
 
 void					xrSE_CFormed::cform_read			(NET_Packet& P)
 {
@@ -1370,6 +1393,7 @@ xrSE_HangingLamp::xrSE_HangingLamp(LPCSTR caSection) : xrServerEntity(caSection)
 	spot_range				= 10.f;
 	spot_cone_angle			= PI_DIV_3;
 	color					= 0xffffffff;
+    spot_brightness			= 1.f;
 }
 xrSE_HangingLamp::~xrSE_HangingLamp()
 {
@@ -1384,6 +1408,8 @@ void xrSE_HangingLamp::STATE_Read		(NET_Packet& P, u16 size)
 	P.r_string				(spot_bone);
 	P.r_float				(spot_range);
 	P.r_angle8				(spot_cone_angle);
+    if (m_wVersion>9)
+		P.r_float			(spot_brightness);
 }
 void xrSE_HangingLamp::STATE_Write		(NET_Packet& P)
 {
@@ -1395,6 +1421,7 @@ void xrSE_HangingLamp::STATE_Write		(NET_Packet& P)
 	P.w_string				(spot_bone);
 	P.w_float				(spot_range);
 	P.w_angle8				(spot_cone_angle);
+	P.w_float				(spot_brightness);
 }
 void xrSE_HangingLamp::UPDATE_Read		(NET_Packet& P)	{};
 void xrSE_HangingLamp::UPDATE_Write		(NET_Packet& P)	{};
@@ -1402,34 +1429,44 @@ void xrSE_HangingLamp::UPDATE_Write		(NET_Packet& P)	{};
 void	xrSE_HangingLamp::FillProp		(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp		(pref,values);
+	xrSE_Visualed::FillProp	(PHelper.PrepareKey(pref,s_name),values);
 	PHelper.CreateColor		(values, PHelper.PrepareKey(pref,s_name,"Color"),			&color);
 	PHelper.CreateLightAnim	(values, PHelper.PrepareKey(pref,s_name,"Light animator"),	animator,			sizeof(animator));
-	PHelper.CreateTexture	(values, PHelper.PrepareKey(pref,s_name,"Spot texture"),	spot_texture,		sizeof(spot_texture));
 	PHelper.CreateText		(values, PHelper.PrepareKey(pref,s_name,"Spot bone"),		spot_bone,			sizeof(spot_bone));
-	PHelper.CreateFloat		(values, PHelper.PrepareKey(pref,s_name,"Spot range"),		&spot_range,		0.1f, 1000.f);
-	PHelper.CreateAngle		(values, PHelper.PrepareKey(pref,s_name,"Spot angle"),		&spot_cone_angle,	0, PI_DIV_2);
+	PHelper.CreateTexture	(values, PHelper.PrepareKey(pref,s_name,"Texture"),			spot_texture,		sizeof(spot_texture));
+	PHelper.CreateFloat		(values, PHelper.PrepareKey(pref,s_name,"Range"),			&spot_range,		0.1f, 1000.f);
+	PHelper.CreateAngle		(values, PHelper.PrepareKey(pref,s_name,"Angle"),			&spot_cone_angle,	0, PI_DIV_2);
+    PHelper.CreateFloat		(values, PHelper.PrepareKey(pref,s_name,"Brightness"),		&spot_brightness,	0.1f, 5.f);
 }
 #endif
 
 //--------------------------------------------------------------------
 
 //***** Physic Object
-xrSE_PhysicObject::xrSE_PhysicObject(LPCSTR caSection) : xrServerEntity(caSection) {
-	type = epotBox;
-	mass = 10.f;
+xrSE_PhysicObject::xrSE_PhysicObject(LPCSTR caSection) : xrServerEntity(caSection) 
+{
+	type 		= epotBox;
+	mass 		= 10.f;
+    fixed_bone[0]=0;
 }
-xrSE_PhysicObject::~xrSE_PhysicObject() {
+xrSE_PhysicObject::~xrSE_PhysicObject() 
+{
 }
-void xrSE_PhysicObject::STATE_Read		(NET_Packet& P, u16 size) {
+void xrSE_PhysicObject::STATE_Read		(NET_Packet& P, u16 size) 
+{
 	visual_read				(P);
 	P.r_u32					(type);
 	P.r_float				(mass);
+    if (m_wVersion>9){
+		P.r_string			(fixed_bone);
+    }
 }
 void xrSE_PhysicObject::STATE_Write		(NET_Packet& P)
 {
 	visual_write			(P);
 	P.w_u32					(type);
 	P.w_float				(mass);
+	P.w_string				(fixed_bone);
 }
 void xrSE_PhysicObject::UPDATE_Read		(NET_Packet& P)	{};
 void xrSE_PhysicObject::UPDATE_Write	(NET_Packet& P)	{};
@@ -1437,12 +1474,16 @@ void xrSE_PhysicObject::UPDATE_Write	(NET_Packet& P)	{};
 xr_token po_types[]={
 	{ "Box",			epotBox			},
 	{ "Fixed chain",	epotFixedChain	},
+	{ "Free chain",		epotFreeChain	},
+	{ "Skeleton",		epotSkeleton	},
 	{ 0,				0				}
 };
 void	xrSE_PhysicObject::FillProp		(LPCSTR pref, PropItemVec& values) {
 	inherited::FillProp(pref,values);
-	PHelper.CreateToken(values, PHelper.PrepareKey(pref,s_name,"Type"), &type,	po_types, 1);
-	PHelper.CreateFloat(values, PHelper.PrepareKey(pref,s_name,"Mass"), &mass, 0.1f, 10000.f);
+	xrSE_Visualed::FillProp	(PHelper.PrepareKey(pref,s_name),values);
+	PHelper.CreateToken		(values, PHelper.PrepareKey(pref,s_name,"Type"), &type,	po_types, 1);
+	PHelper.CreateFloat		(values, PHelper.PrepareKey(pref,s_name,"Mass"), &mass, 0.1f, 10000.f);
+	PHelper.CreateText		(values, PHelper.PrepareKey(pref,s_name,"Fixed bone"),	fixed_bone,	sizeof(fixed_bone));
 }
 #endif
 

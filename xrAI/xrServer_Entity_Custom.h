@@ -4,7 +4,12 @@
 #include "xrMessages.h"
 #include "ai_alife_interfaces.h"
 
-#define SPAWN_VERSION	u16(9)
+#define SPAWN_VERSION	u16(10)
+//------------------------------------------------------------------------------
+// Version history
+//------------------------------------------------------------------------------
+// 10 - xrSE_PhysicObject append 	'fixed_bone'
+//------------------------------------------------------------------------------
 
 class xrClientData;
 

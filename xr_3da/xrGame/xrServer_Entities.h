@@ -49,11 +49,25 @@ public:
 class xrSE_Visualed
 {
 public:
+#ifdef _EDITOR
+	IVisual*						visual;
+    void __fastcall					OnChangeVisual		(PropValue* sender);
+#endif
 	string64						visual_name;
 public:
-									xrSE_Visualed		(){visual_name[0]=0;}
+									xrSE_Visualed		()
+    {
+	    visual_name[0]	= 0;
+#ifdef _EDITOR
+		visual			= 0;
+#endif
+    }
 	void							visual_read			(NET_Packet& P);
 	void							visual_write		(NET_Packet& P);
+    
+#ifdef _EDITOR
+    void 							FillProp			(LPCSTR pref, PropItemVec& values);
+#endif
 };
 
 // Some preprocessor help
@@ -86,6 +100,7 @@ xrSE_DECLARE_BEGIN2(xrSE_HangingLamp,xrServerEntity,xrSE_Visualed)
 	string32						spot_bone;
 	float							spot_range;
 	float							spot_cone_angle;
+    float							spot_brightness;
 									xrSE_HangingLamp	(LPCSTR caSection);
     virtual							~xrSE_HangingLamp	();
 xrSE_DECLARE_END
@@ -93,13 +108,16 @@ xrSE_DECLARE_END
 // Physyc Object ////////////////////////////////////////////////////
 enum EPOType {
 	epotBox,
-	epotFixedChain
+	epotFixedChain,
+    epotFreeChain,
+    epotSkeleton
 };
 xrSE_DECLARE_BEGIN2(xrSE_PhysicObject,xrServerEntity,xrSE_Visualed)
-	xrSE_PhysicObject	(LPCSTR caSection);
-    virtual ~xrSE_PhysicObject	();
-	u32 type;
-	f32 mass;
+	u32 							type;
+	f32 							mass;
+    string32 						fixed_bone;
+									xrSE_PhysicObject	(LPCSTR caSection);
+    virtual 						~xrSE_PhysicObject	();
 xrSE_DECLARE_END
 /////////////////////////////////////////////////////////////////////
 
