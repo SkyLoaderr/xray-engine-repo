@@ -14,7 +14,7 @@
 
 #define	FIRE_SAFETY_ANGLE				PI/10
 #define SPECIAL_SQUAD					6
-//#define LIGHT_FITTING			
+#define LIGHT_FITTING			
 
 bool CAI_Soldier::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint) 
 {
