@@ -14,7 +14,8 @@ public:
 
 	CRT					(){	ZeroMemory(this,sizeof(CRT));}
 
-	
+	void				Create	(LPCSTR Name, DWORD w, DWORD h);
+	void				Destroy	();
 };
 
 #endif // SH_RT_H
