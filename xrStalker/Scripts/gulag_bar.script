@@ -303,6 +303,15 @@ function load_job(sj, gname, type, squad, groups)
 			in_rest = "", out_rest = "bar_ecolog_crush_restrictor"
 		}
 		table.insert(sj, t)
+		t = { section = "logic@bar_ecolog_professor", 
+			idle = 0,
+			prior = 10, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "bar_ecolog_crush_restrictor",
+			predicate = function(obj)
+				         	return obj:profile_name() == "bar_ecolog_professor"
+			            end
+		}
+		table.insert(sj, t)
 	end
 
 	-- Свобода, атакующая ученных с целью отнимания инфы
