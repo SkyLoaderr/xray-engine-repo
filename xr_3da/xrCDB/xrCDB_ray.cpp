@@ -6,6 +6,83 @@
 using namespace CDB;
 using namespace Opcode;
 
+IC u32& IR		(float &x) { return (u32&)x; }
+IC BOOL Pick2	(const Fvector& origin, const Fvector& dir, Fvector& coord)
+{
+	Fvector				MaxT;
+	MaxT.x=MaxT.y=MaxT.z=-1.0f;
+	BOOL Inside			= TRUE;
+
+	// Find candidate planes.
+	if(origin[0] < min[0]) {
+		coord[0]	= min[0];
+		Inside		= FALSE;
+		if(IR(dir[0]))	MaxT[0] = (min[0] - origin[0]) / dir[0]; // Calculate T distances to candidate planes
+	} else if(origin[0] > max[0]) {
+		coord[0]	= max[0];
+		Inside		= FALSE;
+		if(IR(dir[0]))	MaxT[0] = (max[0] - origin[0]) / dir[0]; // Calculate T distances to candidate planes
+	}
+	if(origin[1] < min[1]) {
+		coord[1]	= min[1];
+		Inside		= FALSE;
+		if(IR(dir[1]))	MaxT[1] = (min[1] - origin[1]) / dir[1]; // Calculate T distances to candidate planes
+	} else if(origin[1] > max[1]) {
+		coord[1]	= max[1];
+		Inside		= FALSE;
+		if(IR(dir[1]))	MaxT[1] = (max[1] - origin[1]) / dir[1]; // Calculate T distances to candidate planes
+	}
+	if(origin[2] < min[2]) {
+		coord[2]	= min[2];
+		Inside		= FALSE;
+		if(IR(dir[2]))	MaxT[2] = (min[2] - origin[2]) / dir[2]; // Calculate T distances to candidate planes
+	} else if(origin[2] > max[2]) {
+		coord[2]	= max[2];
+		Inside		= FALSE;
+		if(IR(dir[2]))	MaxT[2] = (max[2] - origin[2]) / dir[2]; // Calculate T distances to candidate planes
+	}
+
+	// Ray origin inside bounding box
+	if(Inside)		{
+		coord		= origin;
+		return		true;
+	}
+
+	// Get largest of the maxT's for final choice of intersection
+	u32 WhichPlane = 0;
+	if	(MaxT[1] > MaxT[0])				WhichPlane = 1;
+	if	(MaxT[2] > MaxT[WhichPlane])	WhichPlane = 2;
+
+	// Check final candidate actually inside box
+	if(IR(MaxT[WhichPlane])&0x80000000) return false;
+
+	if  (0==WhichPlane)	{
+		// 1 & 2
+		coord[1] = origin[1] + MaxT[0] * dir[1];
+		if((coord[1] < min[1]) || (coord[1] > max[1]))	return false;
+		coord[2] = origin[2] + MaxT[0] * dir[2];
+		if((coord[2] < min[2]) || (coord[2] > max[2]))	return false;
+		return true;
+	}
+	if (1==WhichPlane)	{
+		// 0 & 2
+		coord[0] = origin[0] + MaxT[1] * dir[0];
+		if((coord[0] < min[0]) || (coord[0] > max[0]))	return false;
+		coord[2] = origin[2] + MaxT[1] * dir[2];
+		if((coord[2] < min[2]) || (coord[2] > max[2]))	return false;
+		return true;
+	}
+	if (2==WhichPlane)	{
+		// 0 & 1
+		coord[0] = origin[0] + MaxT[2] * dir[0];
+		if((coord[0] < min[0]) || (coord[0] > max[0]))	return false;
+		coord[1] = origin[1] + MaxT[2] * dir[1];
+		if((coord[1] < min[1]) || (coord[1] > max[1]))	return false;
+		return true;
+	}
+	return false;
+}
+
 template <bool bCull, bool bFirst, bool bNearest>
 class ray_collider
 {

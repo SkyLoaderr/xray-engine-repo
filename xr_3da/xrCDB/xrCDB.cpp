@@ -123,14 +123,12 @@ void	MODEL::build_internal	(Fvector* V, int Vcnt, TRI* T, int Tcnt, build_callba
 	OPCC.NoLeaf		= true;
 	OPCC.Quantized	= false;
 	tree			= xr_new<OPCODE_Model> ();
-	if (!tree->Build(OPCC)) 
-	{
+	if (!tree->Build(OPCC)) {
 		xr_free		(verts);
 		xr_free		(tris);
 		xr_free		(temp_tris);
 		return;
 	};
-
 
 	// Free temporary tris
 	xr_free			(temp_tris);

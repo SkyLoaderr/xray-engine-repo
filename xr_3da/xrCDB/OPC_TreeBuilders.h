@@ -21,8 +21,7 @@
 #define __OPC_TREEBUILDERS_H__
 
 	//! Tree splitting rules
-	enum SplittingRules
-	{
+	enum SplittingRules			{
 		// Tree
 		SPLIT_COMPLETE			= (1<<0),		//!< Build a complete tree (2*N-1 nodes)
 		// Primitive split
