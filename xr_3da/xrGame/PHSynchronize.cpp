@@ -24,3 +24,13 @@ void	SPHNetState::net_Import(NET_Packet&	P)
 	previous_quaternion.set(quaternion);//P.r_vec4(*((Fvector4*)&previous_quaternion));
 	enabled=!!P.r_u8	();
 }
+
+void SPHNetState::net_Save(NET_Packet &P)
+{
+	net_Export(P);
+}
+
+void SPHNetState::net_Load(NET_Packet &P)
+{
+	net_Import(P);
+}

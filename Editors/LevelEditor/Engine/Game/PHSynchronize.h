@@ -24,6 +24,8 @@ struct SPHNetState
 	bool		enabled;
 	void								net_Export			(		NET_Packet&		P);					
 	void								net_Import			(		NET_Packet&		P);
+	void								net_Save			(		NET_Packet&		P);					
+	void								net_Load			(		NET_Packet&		P);
 };
 class CPHSynchronize
 {
@@ -37,5 +39,5 @@ public:
 protected:
 private:
 };
-
+DEFINE_VECTOR(SPHNetState,PHNETSTATE_VECTOR,PHNETSTATE_I);
 #endif
