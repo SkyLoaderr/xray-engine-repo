@@ -58,7 +58,7 @@ public:
 	void						PropagadeEvent			();
 	BOOL						isPlaying				(void)					{ return state!=stStopped; }
 
-	virtual void				switch_to_2D			()						{ /*b2D = TRUE;*/										}
+	virtual void				switch_to_2D			()						{ b2D = TRUE;											}
 	virtual void				set_position			(const Fvector &pos)	{ p_source.position	= pos; bMoved=TRUE;					}
 	virtual void				set_frequency			(float scale)			{ p_source.freq=scale;									}
 	virtual void				set_range				(float min, float max)	{ p_source.min_distance=min; p_source.max_distance=max;	}
