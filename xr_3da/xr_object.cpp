@@ -153,7 +153,7 @@ void CObject::UpdateCL			()
 {
 	// consistency check
 	if (Device.dwFrame==chk_update_cl)	
-		Debug.fatal	("UpdateCL called twice per frame for %s",cName());
+		Debug.fatal	("'UpdateCL' called twice per frame for %s",cName());
 	chk_update_cl	= Device.dwFrame;
 }
 
