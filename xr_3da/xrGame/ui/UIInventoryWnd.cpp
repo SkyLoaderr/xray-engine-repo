@@ -345,24 +345,35 @@ void CUIInventoryWnd::Hide()
 
 bool CUIInventoryWnd::ToSlot()
 {
+	u32 item_slot = m_pCurrentItem->GetSlot();
 	// Если целевой слот - слот с одеждой, то попробуем убрать текущую одежду
-	if (OUTFIT_SLOT == m_pCurrentItem->GetSlot()) UndressOutfit();
+	if (OUTFIT_SLOT == item_slot) UndressOutfit();
 
 	// Убираем текущую вещь в слоте, если это не одежда, и текущая вещь и вешь в слоте не одно и то же
-	if (OUTFIT_SLOT != m_pCurrentItem->GetSlot() && m_pCurrentItem->GetSlot() < SLOTS_NUM)
+	if (OUTFIT_SLOT != item_slot && item_slot<SLOTS_NUM )
 	{
-		DRAG_DROP_LIST &DDList = UITopList[m_pCurrentItem->GetSlot()].GetDragDropItemsList();
+		DRAG_DROP_LIST &DDList = UITopList[item_slot].GetDragDropItemsList();
 
 		if (!DDList.empty() &&
-			m_pCurrentDragDropItem != *DDList.begin())
+			m_pCurrentDragDropItem != DDList.front())
 		{
+			CUIDragDropItem* slot_dditem = DDList.front();
+			PIItem slot_iitem = (PIItem)( slot_dditem->GetData() );
 			// Берем текущую вещь в слоте...
-			(*DDList.begin())->MoveOnNextDrop();
+			slot_dditem->MoveOnNextDrop();
 			// ...и посылаем слоту сообщение переместить эту вещь в себя
-			UIBagList.SendMessage(
-				*DDList.begin(), 
-				DRAG_DROP_ITEM_DROP,
-				NULL);
+			
+			if( GetInventory()->CanPutInBelt(slot_iitem) ){
+				UIBeltList.SendMessage(
+					slot_dditem, 
+					DRAG_DROP_ITEM_DROP,
+					NULL);
+			}else{
+				UIBagList.SendMessage(
+					slot_dditem, 
+					DRAG_DROP_ITEM_DROP,
+					NULL);
+			}
 		}
 	}
 
@@ -376,10 +387,10 @@ bool CUIInventoryWnd::ToSlot()
 
 	((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->DetachChild(m_pCurrentDragDropItem);
 
-	if(m_pCurrentItem->GetSlot() == OUTFIT_SLOT)
+	if(item_slot == OUTFIT_SLOT)
 		UIOutfitSlot.AttachChild(m_pCurrentDragDropItem);
 	else
-		UITopList[m_pCurrentItem->GetSlot()].AttachChild(m_pCurrentDragDropItem);
+		UITopList[item_slot].AttachChild(m_pCurrentDragDropItem);
 			
 	m_pMouseCapturer = NULL;
 
