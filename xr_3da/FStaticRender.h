@@ -7,8 +7,6 @@
 #pragma once
 
 #include "FLightsController.h"
-#include "LightPPA.h"
-#include "fbasicvisual.h"
 #include "scenegraph.h"
 #include "glowmanager.h"
 #include "wallmarksengine.h"
@@ -18,10 +16,13 @@
 #include "detailmanager.h"
 #include "fstaticrender_rendertarget.h"
 #include "hom.h"
+#include "lightShadows.h"
+#include "lightPPA.h"
 
 // refs
-class ENGINE_API CStream;
-class ENGINE_API FCached;
+class ENGINE_API	CStream;
+class ENGINE_API	FCached;
+class ENGINE_API	FBasicVisual;
 
 // defs
 const int max_patches = 512;
