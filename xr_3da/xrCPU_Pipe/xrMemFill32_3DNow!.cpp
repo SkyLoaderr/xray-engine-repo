@@ -1,15 +1,13 @@
 #include "stdafx.h"
 
-void	__stdcall	xrMemFill32_x86		()
-
 /*
 block fill:fill a number of DWORDs at DWORD aligned destination
 with DWORD initializer using cacheable stores
 */
-void	__stdcall	xrMemFill32_MMX		(LPVOID ptr,  DWORD count, DWORD value)
+void	__stdcall	xrMemFill32_MMX		(LPVOID dest,  DWORD count, DWORD value)
 {
 	__asm {
-		MOV EDI,[ptr ];								// pointer to dst,DWORD aligned
+		MOV EDI,[dest];								// pointer to dst,DWORD aligned
 		MOV ECX,[count ];							// number of DWORDs to copy
 		MOVD MM0,[value ];							// initialization data
 		PUNPCKLDQ MM0,MM0;							// extend fill data to QWORD
