@@ -128,7 +128,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 
 			if (!AI_NodeID || (AI_NodeID == u32(-1))) {
 				Msg					("! GameObject::NET_Spawn : Corresponding node hasn't been found for object %s",cName());
-				R_ASSERT			(!dynamic_cast<CCustomMonster*>(this));
+				R_ASSERT3			(!getAI().bfCheckIfMapLoaded(),"Cannot find a proper node for object ",cName());
 				AI_NodeID			= u32(-1);
 				AI_Node				= NULL;
 			}
@@ -145,6 +145,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 
 			if (node<=0)			{
 				Msg					("! ERROR: AI node not found for object '%s'. (%f,%f,%f)",cName(),nPos.x,nPos.y,nPos.z);
+				R_ASSERT3			(!getAI().bfCheckIfMapLoaded(),"Cannot find a proper node for object ",cName());
 				AI_NodeID			= u32(-1);
 				AI_Node				= NULL;
 			} else {
