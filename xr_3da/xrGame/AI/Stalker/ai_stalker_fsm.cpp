@@ -948,6 +948,7 @@ void CAI_Stalker::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 		tPoint.mul(100.f);
 		tPoint.add(eye_matrix.c);
 		vfSetParameters(tpNodeEvaluator,0,false,eWeaponStateIdle,!tpNodeEvaluator ? ePathTypeStraight : ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eStateTypeNormal,eLookTypeDirection,tPoint);
+		r_target.yaw = r_torso_target.yaw;
 	}
 	else
 		vfSetParameters(tpNodeEvaluator,0,false,eWeaponStateIdle,!tpNodeEvaluator ? ePathTypeStraight : ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eStateTypeNormal,eLookTypeSearch);
