@@ -30,6 +30,10 @@ void CALifeTimeManager::init			(LPCSTR section)
 	m_game_time					= m_start_game_time;
 	m_start_time				= Device.TimerAsync();
 	m_surge_interval			= generate_time(1,1,1,pSettings->r_u32(section,"surge_interval"),0,0);
+	
+	sscanf						(pSettings->r_string(section,"autosave_interval"),"%d:%d:%d",&hours,&minutes,&seconds);
+	m_autosave_interval			= (u32)generate_time(1,1,1,hours,minutes,seconds);
+	m_last_autosave_time		= Device.dwTimeGlobal;
 }
 
 void CALifeTimeManager::save			(IWriter	&memory_stream)

@@ -45,3 +45,18 @@ IC	void CALifeTimeManager::last_surge_time					(ALife::_TIME_ID last_surge_time)
 	m_last_surge_time			= last_surge_time;
 	m_next_surge_time			= m_last_surge_time + m_surge_interval;
 }
+
+IC	u32 CALifeTimeManager::autosave_interval				() const
+{
+	return						(m_autosave_interval);
+}
+
+IC	u32 CALifeTimeManager::last_autosave_time				() const
+{
+	return						(m_last_autosave_time);
+}
+
+IC	void CALifeTimeManager::update_autosave_time				()
+{
+	m_last_autosave_time		= Device.dwTimeGlobal;
+}

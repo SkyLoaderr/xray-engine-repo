@@ -192,6 +192,11 @@ void CALifeUpdateManager::update(bool switch_objects)
 			scheduled().update			();
 			STOP_PROFILE
 
+			if (switch_objects && (time_manager().last_autosave_time() + time_manager().autosave_interval() < Device.dwTimeGlobal)) {
+				time_manager().update_autosave_time	();
+				save								("autosave",false);
+			}
+
 			break;
 		}
 		default : NODEFAULT;
