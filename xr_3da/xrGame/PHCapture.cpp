@@ -151,7 +151,7 @@ void CPHCapture::PullingUpdate()
 
 	m_taget_element->applyForce(dir,m_pull_force);
 
-	m_character->ApplyForce(dir,-m_pull_force/2.f);
+	///m_character->ApplyForce(dir,-m_pull_force/2.f);
 
 }
 
