@@ -381,6 +381,7 @@ void CConsole::SelectCommand()
 	int		p,k;
 	BOOL	found=false;
 	for (p=LogFile.size()-1, k=0; p>=0; p--) {
+		if (0==*LogFile[p])		continue;
 		if (LogFile[p][0]=='~') {
 			k--;
 			if (k==cmd_delta) {
