@@ -256,11 +256,11 @@ void	CResourceManager::ED_UpdateTextures(AStringVec* names)
 	if (names){
 		for (u32 nid=0; nid<names->size(); nid++)
 		{
-			xr_map<LPSTR,CTexture*,str_pred>::iterator I = m_textures.find	((*names)[nid].c_str());
+			map_TextureIt I = m_textures.find	((*names)[nid].c_str());
 			if (I!=m_textures.end())	I->second->Unload();
 		}
 	}else{
-		for (xr_map<LPSTR,CTexture*,str_pred>::iterator t=m_textures.begin(); t!=m_textures.end(); t++)
+		for (map_TextureIt t=m_textures.begin(); t!=m_textures.end(); t++)
 			t->second->Unload();
 	}
 

@@ -157,7 +157,7 @@ void CLensFlare::OnFrame(int id)
 	// color
     float tf		= g_pGamePersistent->Environment.fTimeFactor;
     Fvector& c		= g_pGamePersistent->Environment.CurrentEnv.sun_color;
-	LightColor.set	(c.x,c.y,c.z,1.f);
+	LightColor.set	(c.x,c.y,c.z,1.f); 
 
     CLensFlareDescriptor* desc = (id==-1)?0:&m_Palette[id];
 

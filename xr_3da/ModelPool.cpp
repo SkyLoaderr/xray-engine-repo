@@ -12,7 +12,8 @@
     #include "..\fvisual.h"
     #include "..\fprogressivefixedvisual.h"
     #include "..\fhierrarhyvisual.h"
-    #include "..\bodyinstance.h"
+    #include "..\SkeletonAnimated.h"
+    #include "..\SkeletonRigid.h"
     #include "..\fcached.h"
     #include "..\flod.h"
     #include "..\skeletonx.h"
@@ -26,7 +27,8 @@
     #include "ParticleGroup.h"
     #include "skeletonX.h"
     #include "fhierrarhyvisual.h"
-    #include "bodyinstance.h"
+    #include "SkeletonAnimated.h"
+    #include "SkeletonRigid.h"
 #endif
 
 IRender_Visual*	CModelPool::Instance_Create(u32 type)
@@ -44,8 +46,11 @@ IRender_Visual*	CModelPool::Instance_Create(u32 type)
 	case MT_PROGRESSIVE:		// dynamic-resolution visual
 		V	= xr_new<FProgressiveFixedVisual> ();
 		break;
-	case MT_SKELETON:
-		V	= xr_new<CKinematics> ();
+	case MT_SKELETON_ANIM:
+		V	= xr_new<CSkeletonAnimated> ();
+		break;
+	case MT_SKELETON_RIGID:
+		V	= xr_new<CSkeletonRigid> ();
 		break;
 	case MT_SKELETON_GEOMDEF_PM:
 		V	= xr_new<CSkeletonX_PM> ();
@@ -332,7 +337,8 @@ void 	CModelPool::Render(IRender_Visual* m_pVisual, const Fmatrix& mTransform, i
     // render visual
     RCache.set_xform_world(mTransform);
     switch (m_pVisual->Type){
-    case MT_SKELETON:
+    case MT_SKELETON_ANIM:
+    case MT_SKELETON_RIGID:
     case MT_HIERRARHY:{
         FHierrarhyVisual* pV			= dynamic_cast<FHierrarhyVisual*>(m_pVisual); R_ASSERT(pV);
         xr_vector<IRender_Visual*>::iterator 		I,E;
