@@ -1,6 +1,17 @@
 #ifndef _STD_EXT_internal
 #define _STD_EXT_internal
 
+#ifdef abs
+#undef abs
+#endif
+
+#ifdef _MIN
+#undef _MIN
+#undef _MAX
+#undef min
+#undef max
+#endif
+
 // float
 IC float	_abs	(float x)		{ return fabsf(x); }
 IC float	_sqrt	(float x)		{ return sqrtf(x); }

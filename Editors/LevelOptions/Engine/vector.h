@@ -15,17 +15,6 @@
 #undef FLT_MIN
 #endif
 
-#ifdef abs
-#undef abs
-#endif
-
-#ifdef _MIN
-#undef _MIN
-#undef _MAX
-#undef min
-#undef max
-#endif
-
 // Select platform
 #ifdef	_MSC_VER
 #define	M_VISUAL
@@ -33,10 +22,6 @@
 #ifdef	__BORLANDC__
 #define M_BORLAND
 #endif
-
-// Define types and namespaces (CPU & FPU)
-#include	"_types.h"
-#include	"_math.h"
 
 // Constants
 #ifdef M_VISUAL
@@ -77,12 +62,18 @@ const	float		PI_DIV_8	= 0.3926990816987241548078304229099f;
 #define				PI_DIV_8	0.3926990816987241548078304229099f
 #endif
 
+// Define types and namespaces (CPU & FPU)
+#include	"_types.h"
+#include	"_math.h"
+#include	"_bitwise.h"
+#include	"_std_extensions.h"
+
 // comparisions
 IC BOOL  fsimilar		( float		a, float	b, float	cmp=EPS )		{ return _abs(a-b)<cmp;	}
-IC BOOL  dsimilar		( double	a, double	b, double	cmp=EPS )		{ return fabs(a-b)<cmp;		}
+IC BOOL  dsimilar		( double	a, double	b, double	cmp=EPS )		{ return _abs(a-b)<cmp;		}
 
 IC BOOL  fis_zero		( float		val, float	cmp=EPS_S )					{ return _abs(val)<cmp;	}
-IC BOOL  dis_zero		( double	val, double	cmp=EPS_S )					{ return fabs(val)<cmp;		}
+IC BOOL  dis_zero		( double	val, double	cmp=EPS_S )					{ return _abs(val)<cmp;		}
 
 // degree 2 radians and vice-versa
 template <class T>		
@@ -130,8 +121,6 @@ struct _color;		// floating point based color definition
 #pragma pack(push)
 #pragma pack(1)
 
-#include "_bitwise.h"
-#include "_std_extensions.h"
 #include "_random.h"
 
 #ifndef NO_XR_COLOR
