@@ -55,7 +55,6 @@ void CDetail::Load		(CStream* S)
 	FILE_NAME		fnT,fnS;
 	S->RstringZ		(fnS);
 	S->RstringZ		(fnT);
-//	strcpy			(fnS,"grass");
 	shader			= Device.Shader.Create(fnS,fnT);
 
 	// Params
@@ -68,34 +67,11 @@ void CDetail::Load		(CStream* S)
 	DWORD			size_vertices		= number_vertices*sizeof(fvfVertexIn); 
 	vertices		= (CDetail::fvfVertexIn *)	_aligned_malloc	(size_vertices,64);
 	S->Read			(vertices,size_vertices);
-	
+
 	// Indices
 	DWORD			size_indices		= number_indices*sizeof(WORD);
 	indices			= (WORD*)					_aligned_malloc	(size_indices,64);
 	S->Read			(indices,size_indices);
-
-	/*
-	///*-----
-	number_vertices	= 3;
-	number_indices	= 6;
-
-	DWORD			size_vertices		= number_vertices*sizeof(fvfVertexIn); 
-	vertices		= (CDetail::fvfVertexIn *)	_aligned_malloc	(size_vertices,64);
-	vertices[0].P.set(0,0,0);
-	vertices[0].u=0;
-	vertices[0].v=1;
-	vertices[1].P.set(0,1,0);
-	vertices[1].u=0;
-	vertices[1].v=0;
-	vertices[1].P.set(0,1,0);
-	vertices[1].u=0;
-	vertices[1].v=0;
-	
-	// Indices
-	DWORD			size_indices		= number_indices*sizeof(WORD);
-	indices			= (WORD*)					_aligned_malloc	(size_indices,64);
-	///*-----
-	*/
 
 	// Calc BB & SphereRadius
 	Fbox bb;
@@ -366,9 +342,10 @@ void CDetailManager::Render		(Fvector& EYE)
 				vDest					+=	vCount_Object;
 				iDest					+=	iCount_Object;
 				iOffset					+=	vCount_Object;
-
+				/*
 				Fvector obbr; obbr.set(.1f,.1f,.1f);
 				Device.Primitive.dbg_DrawOBB	(mXform,obbr,0xffffffff);
+				*/
 			}
 			VS->Unlock	(vCount_Lock);
 			IS->Unlock	(iCount_Lock);
@@ -384,16 +361,14 @@ void CDetailManager::Render		(Fvector& EYE)
 					Msg("%4d: %d",t,dbgIndices[t]);
 			}
 			*/
-			/*
-			Device.Shader.Set		(Object.shader);
-			Device.Shader.SetupPass	(0);
 			Device.Primitive.setVertices	(VS->getFVF(),VS->getStride(),VS->getBuffer());
 			Device.Primitive.setIndicesUC	(vBase, IS->getBuffer());
 			DWORD	dwNumPrimitives			= iCount_Lock/3;
 			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount_Lock,iBase,dwNumPrimitives);
 			UPDATEC							(vCount_Lock,dwNumPrimitives,1);
+			/*
+			Device.Primitive.Draw			(VS,vCount_Lock/3,vBase);
 			*/
-//			Device.Primitive.Draw			(VS,vCount_Lock/3,vOffset);
 		}
 
 		// Clean up
