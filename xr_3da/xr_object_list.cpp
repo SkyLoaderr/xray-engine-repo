@@ -100,19 +100,8 @@ VOID CObjectList::OnMove	( )
 
 	// Clients
 	Device.Statistic.UpdateClient.Begin		();
-	/*
-	float limit = pCreator->Environment.Current.Far; 
-	limit*=2.f;
-	*/
 	for (OBJ_IT O=objects.begin(); O!=objects.end(); O++) 
-	{
 		(*O)->UpdateCL();
-		/*
-		CObject* P = *O;
-		BOOL bRelevant = P->net_Ready && (Device.vCameraPosition.distance_to_sqr(P->Position())<limit);
-		if (bRelevant) 
-		*/
-	}
 	Device.Statistic.UpdateClient.End		();
 }
 
@@ -122,8 +111,8 @@ VOID CObjectList::net_Export	(NET_Packet* Packet)
 	{
 		CObject* P = *O;
 		if (P->net_Relevant())	{
-			Packet->w_u8	(u8(P->net_ID));
-			P->net_Export	(Packet);
+			Packet->w_u16			(u16(P->net_ID));
+			P->net_Export			(Packet);
 		}
 	}
 }
@@ -132,8 +121,9 @@ VOID CObjectList::net_Import	(NET_Packet* Packet)
 {
 	while (!Packet->r_eof())
 	{
-		CObject* P  = net_Find	(DWORD(Packet->r_u8()));
-		if (P) P->net_Import	(Packet);
+		u16 ID;		Packet->r_u16	(ID);
+		CObject* P  = net_Find		(DWORD(ID));
+		if (P) P->net_Import		(Packet);
 	}
 }
 
@@ -142,7 +132,7 @@ CObject* CObjectList::net_Find	(DWORD ID)
 	for (OBJ_IT O=objects.begin(); O!=objects.end(); O++) 
 	{
 		CObject* P = *O;
-		if (P->net_ID == ID)	return P;
+		if (P->net_ID == ID)		return P;
 	}
 	return 0;
 }

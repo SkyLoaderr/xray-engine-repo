@@ -99,7 +99,7 @@ public:
 	IC DWORD r_begin	( u16& type	)	// returns time of receiving
 	{
 		r_pos		= 0;
-		type		= r_u16();
+		r_u16		(type);
 		return		timeReceive;
 	}
 	IC void r		( void* p, DWORD count)
@@ -162,9 +162,9 @@ public:
 	}
 	IC void		r_matrix		(Fmatrix& M)
 	{
-		M.i		= r_vec3	();	M._14_	= 0;
-		M.j		= r_vec3	();	M._24_	= 0;
-		M.k		= r_vec3	();	M._34_	= 0;
-		M.c		= r_vec3	();	M._44_	= 1;
+		r_vec3	(M.i);	M._14_	= 0;
+		r_vec3	(M.j);	M._24_	= 0;
+		r_vec3	(M.k);	M._34_	= 0;
+		r_vec3	(M.c);	M._44_	= 1;
 	}
 };
