@@ -44,19 +44,34 @@ function main()
 	stalker1:script	(true,script_01.script_name())
 	stalker2:script	(true,script_01.script_name())
 
+		printf("ddd!")
+		flush()
+
+
 			action(                                                                                                       
 			    stalker1,
 			  	move	(move.standing, move.walk,move.line,patrol("way0002")),
 				cond	(cond.time_end, 500000)
 			)
-			action(                                                                                                       
+	
+		printf("ccc!")
+		flush()
+
+
+		action(                                                                                                       
 			    stalker2,
 			  	move	(move.standing, move.walk,move.line,patrol("way0001")),
 				cond	(cond.time_end, 500000)
 			)
 
+			printf("aaa!")
+			flush()
+
 	while stalker1:action() and stalker2:action() do
 		if is_actor_entered == false and stalker1:see(actor) == false and stalker2:see(actor) == false then 
+
+			printf("aa!")
+			flush()
 
 			stalker1:script	(false, script_01.script_name())
 			stalker1:script	(true,  script_01.script_name())
