@@ -428,20 +428,20 @@ int	CAI_Space::q_LoadSearch(const Fvector& pos)
 			}
 		}
 	}
-	if (selected == u32(-1)) {
-		float		min_dist = 32767.f;
-		selected	= -1;
-		for (u32 I=0; I<m_header.count; I++) {
-			NodeCompressed	*N = m_nodes_ptr[I];
-			float			f = u_SqrDistance2Node(pos,N);
-			if (f < min_dist) {
-				min_dist = f;
-				selected = I;
-			}
-		}
-	}
-	if (selected == u32(-1))
-		Msg			("Can't find an appropriate node for the specified position! (% : [%f][%f][%f])",VPUSH(pos));
-	R_ASSERT2		(selected != u32(-1),"Can't find an appropriate node for the specified position!");
+//	if (selected == u32(-1)) {
+//		float		min_dist = 32767.f;
+//		selected	= -1;
+//		for (u32 I=0; I<m_header.count; I++) {
+//			NodeCompressed	*N = m_nodes_ptr[I];
+//			float			f = u_SqrDistance2Node(pos,N);
+//			if (f < min_dist) {
+//				min_dist = f;
+//				selected = I;
+//			}
+//		}
+//	}
+//	if (selected == u32(-1))
+//		Msg			("Can't find an appropriate node for the specified position! (% : [%f][%f][%f])",VPUSH(pos));
+//	R_ASSERT2		(selected != u32(-1),"Can't find an appropriate node for the specified position!");
 	return selected;
 }
