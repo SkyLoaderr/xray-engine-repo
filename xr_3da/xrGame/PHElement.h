@@ -118,7 +118,7 @@ public:
 	virtual void			add_Shape						(const SBoneShape& shape);														//aux
 	virtual void			add_Shape						(const SBoneShape& shape,const Fmatrix& offset);								//aux
 	virtual CODEGeom*		last_geom						(){return m_geoms.back();}														//aux
-	
+	virtual bool			has_geoms						(){return !m_geoms.empty();}
 	virtual void			set_ContactCallback				(ContactCallbackFun* callback);													//aux (may not be)
 	virtual void			set_DynamicLimits				(float l_limit=default_l_limit,float w_limit=default_w_limit);					//aux (may not be)
 	virtual void			set_DynamicScales				(float l_scale=default_l_scale,float w_scale=default_w_scale);					//aux (may not be)

@@ -483,7 +483,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 				fracture.m_start_el_num				=u16(elements.size());
 				fracture.m_start_jt_num				=u16(joints.size());	 
 				fracture.MassSetFirst				(*(E->getMassTensor()));
-				fracture.pos_in_element				.set(vs_root_position.c);
+				fracture.m_pos_in_element			.set(vs_root_position.c);
 				VERIFY								(u16(-1)!=fracture.m_start_geom_num);
 				fracture.m_break_force				=joint_data.break_force;
 				fracture.m_break_torque				=joint_data.break_torque;
@@ -721,7 +721,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 		E=root_e;
 	}
 	
-	if(m_spliter_holder)
+	if(m_spliter_holder&&E->has_geoms())
 	{
 		m_spliter_holder->AddToGeomMap(mk_pair(id,E->last_geom())); 
 	}

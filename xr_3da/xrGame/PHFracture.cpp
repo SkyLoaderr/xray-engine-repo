@@ -46,6 +46,12 @@ element_fracture CPHFracturesHolder::SplitFromEnd(CPHElement* element,u16 fractu
 	float density=element->getDensity();
 	InitNewElement(new_element,shift_pivot,density);
 
+	dBodyAddForce(new_element->get_body(),fract_i->m_pos_in_element[0],
+										  fract_i->m_pos_in_element[1],
+										  fract_i->m_pos_in_element[2]);
+	//dBodyAddTorque(new_element->get_body(),fract_i->m_break_force,
+	//									   fract_i->m_break_torque,
+	//									   fract_i->m_add_torque_z);
 	element_fracture ret	=mk_pair(new_element,(CShellSplitInfo)(*fract_i));
 
 	if(m_fractures.size()-fracture>0) 
@@ -56,7 +62,7 @@ element_fracture CPHFracturesHolder::SplitFromEnd(CPHElement* element,u16 fractu
 		}
 		PassEndFractures(fracture,new_element);
 	}
-
+	
 	return ret;
 }
 
@@ -433,8 +439,7 @@ bool CPHFracture::Update(CPHElement* element)
 	Fvector gravity_force;
 	gravity_force.set(0.f,-world_gravity*m_firstM.mass,0.f);
 	first_part_force.add(gravity_force);
-	gravity_force.set(0.f,-world_gravity*m_secondM.mass,0.f);
-	second_part_torque.add(gravity_force);
+	second_part_force.add(gravity_force);
 	dMatrix3 glI1,glI2,glInvI,tmp;	
 
 	// compute inertia tensors in global frame
@@ -460,8 +465,8 @@ bool CPHFracture::Update(CPHElement* element)
 	break_torque.sub(vtemp);
 
 	//Fvector first_in_bone,second_in_bone;
-	//first_in_bone.sub(*((const Fvector*)m_firstM.c),pos_in_element);
-	//second_in_bone.sub(*((const Fvector*)m_secondM.c),pos_in_element);
+	//first_in_bone.sub(*((const Fvector*)m_firstM.c),m_pos_in_element);
+	//second_in_bone.sub(*((const Fvector*)m_secondM.c),m_pos_in_element);
 
 	//vtemp.crossproduct(second_in_bone,second_part_force);
 	//break_torque.add(vtemp);
@@ -472,7 +477,11 @@ bool CPHFracture::Update(CPHElement* element)
 #endif
 	if(break_torque.magnitude()/10000000.f>m_break_torque)
 	{
-
+		//m_break_torque.set(second_part_torque);
+		m_pos_in_element.set(second_part_force);
+		m_break_force=second_part_torque.x;
+		m_break_torque=second_part_torque.y;
+		m_add_torque_z=second_part_torque.z;
 		m_breaked=true;
 #ifndef DBG_BREAK		
 			return m_breaked;
@@ -496,6 +505,12 @@ bool CPHFracture::Update(CPHElement* element)
 #endif
 	if(m_break_force<break_force.magnitude())
 	{
+		
+		m_pos_in_element.set(second_part_force);
+		m_pos_in_element.add(break_force);
+		m_break_force=second_part_torque.x;
+		m_break_torque=second_part_torque.y;
+		m_add_torque_z=second_part_torque.z;
 		m_breaked=true;
 #ifndef DBG_BREAK		
 		return m_breaked;

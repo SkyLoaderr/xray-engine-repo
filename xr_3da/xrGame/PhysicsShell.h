@@ -89,6 +89,7 @@ public:
 	virtual void			add_Shape				(const SBoneShape& shape)						= 0;
 	virtual void			add_Shape				(const SBoneShape& shape,const Fmatrix& offset)	= 0;
 	virtual CODEGeom*		last_geom				()												= 0;
+	virtual bool			has_geoms				()												= 0;
 	virtual void			add_Mass				(const SBoneShape& shape,const Fmatrix& offset,const Fvector& mass_center,float mass,CPHFracture* fracture=NULL)=0;
 	virtual	void			set_ParentElement		(CPhysicsElement* p)							= 0;
 	virtual	void			set_BoxMass				(const Fobb& box, float mass)					= 0;	

@@ -1073,9 +1073,9 @@ void CActor::shedule_Update	(u32 DT)
 
 	R_ASSERT(GAMEMTL_NONE!=last_gmtl_id);
 	SGameMtlPair* mtl_pair		= GMLib.GetMaterialPair(self_gmtl_id,last_gmtl_id);
-	R_ASSERT3(mtl_pair,"Undefined material pair: Actor # ", *GMLib.GetMaterial(last_gmtl_id)->m_Name);
+	//R_ASSERT3(mtl_pair,"Undefined material pair: Actor # ", *GMLib.GetMaterial(last_gmtl_id)->m_Name);
 	// ref_sound step
-	if ((mstate_real&mcAnyMove)&&(!(mstate_real&(mcJump|mcFall|mcLanding|mcLanding2)))){
+	if (mtl_pair&&(mstate_real&mcAnyMove)&&(!(mstate_real&(mcJump|mcFall|mcLanding|mcLanding2)))){
 		if(m_fTimeToStep<0){
 			bStep				= !bStep;
 			float k				= (mstate_real&mcCrouch)?0.75f:1.f;
@@ -1103,7 +1103,7 @@ void CActor::shedule_Update	(u32 DT)
 	}
 
 	// landing sounds
-	if (!sndLanding.feedback&&(mstate_real&(mcLanding|mcLanding2))){
+	if (mtl_pair&&!sndLanding.feedback&&(mstate_real&(mcLanding|mcLanding2))){
 		sndLanding.clone	(mtl_pair->CollideSounds[0]);
 		::Sound->play_at_pos	(sndLanding,this,s_pos);
 		sndLanding.feedback->set_volume(.2f);
