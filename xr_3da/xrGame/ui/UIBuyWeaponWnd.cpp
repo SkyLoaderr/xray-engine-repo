@@ -732,7 +732,7 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		}
 	}
 	// Кнопки ОК и Отмена
-	else if (&UIBtnOK == pWnd && CUIButton::BUTTON_CLICKED == msg)
+	else if (&UIBtnOK == pWnd && CUIButton::BUTTON_CLICKED == msg && CanBuyAllItems())
 	{
 		HUD().GetUI()->UIGame()->StartStopMenu(this);
 		HUD().GetUI()->UIGame()->OnBuyMenu_Ok();

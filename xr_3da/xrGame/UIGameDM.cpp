@@ -377,7 +377,7 @@ bool		CUIGameDM::CanBeReady				()
 	res &=	pCurBuyMenu->GetWeaponIndex(GRENADE_SLOT);
 	res &=	~(pCurBuyMenu->GetBeltSize());
 
-	if (res == 0xff) 
+	if (res == 0xff || !pCurBuyMenu->CanBuyAllItems())
 	{
 		StartStopMenu(pCurBuyMenu);
 		return false;
