@@ -615,110 +615,128 @@ function loadJob(sj, gname, type, squad, groups)
 		t = { section = "kamp1@gar_dolg",
 			idle = 0,
 			prior = 0, state = {0},
-			in_rest = "", out_rest = "gar_golg_restrictor"
+			in_rest = "", out_rest = "gar_golg_restrictor",
+			actor_dialogs = "dolg@gar_dolg_kamp_actor_dialogs"
 		}
 		table.insert(sj, t)
 		t = { section = "kamp1@gar_dolg",
 			idle = 0,
 			prior = 0, state = {0},
-			in_rest = "", out_rest = "gar_golg_restrictor"
+			in_rest = "", out_rest = "gar_golg_restrictor",
+			actor_dialogs = "dolg@gar_dolg_kamp_actor_dialogs"
 		}
 		table.insert(sj, t)				
 		t = { section = "kamp1@gar_dolg",
 			idle = 0,
 			prior = 0, state = {0},
-			in_rest = "", out_rest = "gar_golg_restrictor"
+			in_rest = "", out_rest = "gar_golg_restrictor",
+			actor_dialogs = "dolg@gar_dolg_kamp_actor_dialogs"
 		}
 		t = { section = "kamp2@gar_dolg",
 			idle = 15*60*1000,
 			prior = 2, state = {0},
-			in_rest = "", out_rest = "gar_golg_restrictor"
+			in_rest = "", out_rest = "gar_golg_restrictor",
+			actor_dialogs = "dolg@gar_dolg_kamp_actor_dialogs"
 		}
 		table.insert(sj, t)				
 		t = { section = "kamp3@gar_dolg",
 			idle = 15*60*1000,
 			prior = 3, state = {0},
-			in_rest = "", out_rest = "gar_golg_restrictor"
+			in_rest = "", out_rest = "gar_golg_restrictor",
+			actor_dialogs = "dolg@gar_dolg_kamp_actor_dialogs"
 		}
 		table.insert(sj, t)				
 		t = { section = "kamp1@gar_dolg",
 			idle = 0,
 			prior = 0, state = {0},
-			in_rest = "", out_rest = "gar_golg_restrictor"
+			in_rest = "", out_rest = "gar_golg_restrictor",
+			actor_dialogs = "dolg@gar_dolg_kamp_actor_dialogs"
 		}
 		table.insert(sj, t)				
 		t = { section = "kamp1@gar_dolg",
 			idle = 0,
 			prior = 0, state = {0},
-			in_rest = "", out_rest = "gar_golg_restrictor"
+			in_rest = "", out_rest = "gar_golg_restrictor",
+			actor_dialogs = "dolg@gar_dolg_kamp_actor_dialogs"
 		}
 		table.insert(sj, t)		
 		t = { section = "patrol1@gar_dolg",
 			idle = 2 * 1000 * 60 * 60,
 			prior = 8, state = {0},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
+			actor_dialogs = "dolg@gar_dolg_kamp_actor_dialogs"
 		}
 		table.insert(sj, t)		
 		t = { section = "follower1@gar_dolg",
 			idle = 2 * 1000 * 60 * 60,
 			prior = 4, state = {0},
 			in_rest = "", out_rest = "",
-			leader = "patrol1@gar_dolg"
+			leader = "patrol1@gar_dolg",
+			actor_dialogs = "dolg@gar_dolg_kamp_actor_dialogs"
 		}
 		table.insert(sj, t)		
 		t = { section = "follower1@gar_dolg",
 			idle = 2 * 1000 * 60 * 60,
 			prior = 4, state = {0},
 			in_rest = "", out_rest = "",
-			leader = "patrol1@gar_dolg"
+			leader = "patrol1@gar_dolg",
+			actor_dialogs = "dolg@gar_dolg_kamp_actor_dialogs"
 		}
 		table.insert(sj, t)		
 		t = { section = "zoneguard1@gar_dolg",
 			idle = 0,
 			prior = 10, state = {0, 1},
-			in_rest = "", out_rest = "gar_golg_restrictor"
+			in_rest = "", out_rest = "gar_golg_restrictor",
+			actor_dialogs = "dolg@gar_dolg_kamp_actor_dialogs"
 		}
 		table.insert(sj, t)		
 		t = { section = "zoneguard2@gar_dolg",
 			idle = 0,
 			prior = 10, state = {0, 1},
-			in_rest = "", out_rest = "gar_golg_restrictor"
+			in_rest = "", out_rest = "gar_golg_restrictor",
+			actor_dialogs = "dolg@gar_dolg_kamp_actor_dialogs"
 		}
 		table.insert(sj, t)		
 		t = { section = "zoneguard3@gar_dolg",
 			idle = 0,
 			prior = 10, state = {0, 1},
-			in_rest = "", out_rest = "gar_golg_restrictor"
+			in_rest = "", out_rest = "gar_golg_restrictor",
+			actor_dialogs = "dolg@gar_dolg_kamp_actor_dialogs"
 		}
 		table.insert(sj, t)			
 		t = { section = "camper1@gar_dolg",
 			idle = 0,
 			prior = 10, state = {1},
-			in_rest = "", out_rest = "gar_golg_restrictor"
+			in_rest = "", out_rest = "gar_golg_restrictor",
+			actor_dialogs = "dolg@gar_dolg_kamp_actor_dialogs"
 		}
 		table.insert(sj, t)			
 		t = { section = "camper2@gar_dolg",
 			idle = 0,
 			prior = 10, state = {1},
-			in_rest = "", out_rest = "gar_golg_restrictor"
+			in_rest = "", out_rest = "gar_golg_restrictor",
+			actor_dialogs = "dolg@gar_dolg_kamp_actor_dialogs"
 		}
 		table.insert(sj, t)			
 		t = { section = "camper3@gar_dolg",
 			idle = 0,
 			prior = 10, state = {1},
-			in_rest = "", out_rest = "gar_golg_restrictor"
+			in_rest = "", out_rest = "gar_golg_restrictor",
+			actor_dialogs = "dolg@gar_dolg_kamp_actor_dialogs"
 		}
 		table.insert(sj, t)			
 		t = { section = "camper4@gar_dolg",
 			idle = 0,
 			prior = 10, state = {1},
-			in_rest = "", out_rest = "gar_golg_restrictor"
+			in_rest = "", out_rest = "gar_golg_restrictor",
+			actor_dialogs = "dolg@gar_dolg_kamp_actor_dialogs"
 		}
 		table.insert(sj, t)			
 		t = { section = "camper5@gar_dolg",
 			idle = 0,
 			prior = 10, state = {1},
-			in_rest = "", out_rest = "gar_golg_restrictor"
+			in_rest = "", out_rest = "gar_golg_restrictor",
+			actor_dialogs = "dolg@gar_dolg_kamp_actor_dialogs"
 		}
 		table.insert(sj, t)			
     end	    

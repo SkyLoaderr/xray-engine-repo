@@ -418,6 +418,7 @@ function add_to_binder (npc, ini, scheme, section, storage)
     action:add_precondition (world_property(properties["escape"], false))
     action:add_precondition (world_property(properties["raid"], false))
     action:add_precondition (world_property(properties["enabled"], true))
+    xr_motivator.addCommonPrecondition(action)
     action:add_effect (world_property(properties["enabled"], false))
     manager:add_action (operators["patrol"], action)
 

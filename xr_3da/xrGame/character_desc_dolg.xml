@@ -57,6 +57,8 @@
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>gar_dolg_acces</actor_dialog>
+		<actor_dialog>gar_dolg_about</actor_dialog>		
 	</specific_character>
 
 	<specific_character id="dolg_regular_default2" team_default = "1">
@@ -87,6 +89,8 @@
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>gar_dolg_acces</actor_dialog>
+		<actor_dialog>gar_dolg_about</actor_dialog>	
 	</specific_character>
 <!---------------------------DOLG SNIPER---------------------->
 	<specific_character id="dolg_sniper_default1" team_default = "1">
