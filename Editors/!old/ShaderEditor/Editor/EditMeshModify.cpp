@@ -254,8 +254,10 @@ void CEditableMesh::Optimize(BOOL NoOpt)
 			std::sort	(mark_for_del.begin(),mark_for_del.end());
 			std::reverse(mark_for_del.begin(),mark_for_del.end());
 			// delete degenerate faces
-			for (IntIt i_it=mark_for_del.begin(); i_it!=mark_for_del.end(); i_it++)
-				m_Faces.erase(m_Faces.begin()+(*i_it));
+			for (IntIt i_it=mark_for_del.begin(); i_it!=mark_for_del.end(); i_it++){
+				m_Faces.erase	(m_Faces.begin()+(*i_it));
+                m_SGs.erase		(m_SGs.begin()+(*i_it));
+            }
 			// delete degenerate faces refs
 			for (IntIt m_d=mark_for_del.begin(); m_d!=mark_for_del.end(); m_d++){
 				for (SurfFacesPairIt plp_it=m_SurfFaces.begin(); plp_it!=m_SurfFaces.end(); plp_it++){
@@ -273,5 +275,6 @@ void CEditableMesh::Optimize(BOOL NoOpt)
 		}
 	}
     UpdateAdjacency();
+    VERIFY(m_SGs.size()==m_Faces.size());
 }
 
