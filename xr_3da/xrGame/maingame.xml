@@ -1,12 +1,10 @@
-<?xml version='1.0' encoding="UTF-8"?>
+<?xml version='1.0' encoding="UTF-8" ?>
 <window x="0" y="0" w="640" h="480" r="227" g="121" b="222" texture="1">
-
 	<!-- health -->
 	<static x="860" y="635" width="150" height="200" align="rb">
 		<text x="80" y="5" font="small" r="255" g="255" b="255" a="130">health</text>
 		<texture>ui\ui_mn_health</texture>
 	</static>
-	
 	<!-- WEAPON -->
 	<static x="860" y="685" width="200" height="100" align="rb">
 		<text x="0" y="4" font="small" r="255" g="255" b="255" a="130"></text>
@@ -19,138 +17,112 @@
 	<!-- weapon icon -->
 	<static x="12" y="10" width="50" height="50"></static>
 	<!-- power bar static -->
-	<power_bar_static x="70" y="685" width="20" height="60" align="lb">
-	</power_bar_static>
-
+	<power_bar_static x="70" y="685" width="20" height="60" align="lb"></power_bar_static>
 	<!-- pda online icon -->
 	<static x="1" y="187" width="200" height="32">
 		<texture>ui\ui_mg_back_pager</texture>
 		<text x="103" y="2" font="normal" r="239" g="154" b="29" a="230"></text>
 	</static>
-
 	<!-- tips static -->
-	
 	<quick_info x="1" y="700" width="1022" height="50">
-	<!-- id numbers must be same with EActorAction enumeration members, -->
-	<!-- which located in actor_defs.h file -->		
+		<!-- id numbers must be same with EActorAction enumeration members, -->
+		<!-- which located in actor_defs.h file -->
 		<tip id="1">Pickup item (default E)</tip>
 		<tip id="2">Talk with the person (default E)</tip>
 		<tip id="3">Open door (default E)</tip>
 		<tip id="4">Search corpse (default E)</tip>
 	</quick_info>
-	
 	<!-- PDA Message List-->
-	<pda_msg_list_sp x="15" y="465" width="525" height="220" item_height = "70"></pda_msg_list_sp>
-	<pda_msg_list_sp2 x="100" y="700" width="824" height="68" item_height = "70"></pda_msg_list_sp2>
+	<pda_msg_list_sp x="15" y="465" width="525" height="220" item_height="70"></pda_msg_list_sp>
+	<pda_msg_list_sp2 x="100" y="650" width="824" height="114" item_height="57"></pda_msg_list_sp2>
+	<!--pda_msg_list_sp2 x="100" y="456" width="824" height="68" item_height="70"></pda_msg_list_sp2-->
 	<pda_msg_list_mp x="15" y="325" width="525" height="420" item_height="15" fade="3000"></pda_msg_list_mp>
-	
 	<!--list x="15" y="325" width="525" height="420" item_height = "70"></list -->
-
+	
+	
 	<!-- PDA Message List-->
-	<info_list x="512" y="615" width="525" height="120" item_height = "20" fade="2000">
-		<font font="letterica25" r="255" g="0" b="0"/>
+	<info_list x="512" y="615" width="525" height="120" item_height="20" fade="2000">
+		<font font="letterica25" r="255" g="0" b="0" />
 	</info_list>
-
 	<!-- health bar -->
 	<progress_bar x="16" y="23" length="120" broad="20" horz="1" min="0" max="100" pos="0">
 		<texture tile="0" length="120" r="255" g="50" b="50">ui\ui_mg_progress_efficiency_full</texture>
 		<background x="0" y="0">ui\ui_mg_progress_efficiency_empty</background>
 	</progress_bar>
-
 	<!-- armor bar -->
 	<progress_bar x="16" y="23" length="120" broad="20" horz="1" min="0" max="100" pos="0">
 		<texture tile="0" length="120" r="0" g="0" b="255">ui\ui_mg_progress_efficiency_full</texture>
 		<background x="0" y="0">ui\ui_mg_progress_efficiency_empty</background>
 	</progress_bar>
-
 	<!-- battery bar -->
 	<progress_bar x="16" y="23" length="120" broad="20" horz="1" min="0" max="100" pos="0">
 		<texture tile="0" length="120" r="0" g="255" b="0">ui\ui_mg_progress_efficiency_full</texture>
 		<background x="0" y="0">ui\ui_mg_progress_efficiency_empty</background>
 	</progress_bar>
-	
 	<!-- car health bar -->
 	<car_health_progress_bar x="16" y="23" length="120" broad="20" horz="1" min="0" max="100" pos="0">
 		<texture tile="0" length="120" r="0" g="255" b="0">ui\ui_mg_progress_efficiency_full</texture>
 		<background x="0" y="0">ui\ui_mg_progress_efficiency_empty</background>
 	</car_health_progress_bar>
-
 	<!-- armor -->
 	<static x="860" y="590" width="150" height="200" align="rb">
 		<text x="80" y="5" font="small" r="255" g="255" b="255" a="130">armor</text>
 		<texture>ui\ui_mn_health</texture>
 	</static>
-
 	<!-- BATTERY -->
 	<battery_static x="860" y="545" width="150" height="200" align="rb">
 		<text x="80" y="5" font="small" r="255" g="255" b="255" a="130">battery</text>
 		<texture>ui\ui_mn_health</texture>
 	</battery_static>
-
-
 	<!--WARNING ICONS-->
-	<weapon_jammed_static	x="940" y="190" width="50" height="50">
+	<weapon_jammed_static x="940" y="190" width="50" height="50">
 		<texture>ui\ui_mn_weapons_jammed</texture>
 	</weapon_jammed_static>
-
-	<radiation_static		x="940" y="270" width="50" height="50">
+	<radiation_static x="940" y="270" width="50" height="50">
 		<texture>ui\ui_mn_radiations_hard</texture>
 	</radiation_static>
-
-	<wound_static			x="940" y="350" width="50" height="50">
+	<wound_static x="940" y="350" width="50" height="50">
 		<texture>ui\ui_mn_wounds_hard</texture>
 	</wound_static>
-
-	<starvation_static		x="940" y="430" width="50" height="50">
+	<starvation_static x="940" y="430" width="50" height="50">
 		<texture>ui\ui_mn_starvation_hard</texture>
 	</starvation_static>
-
-	<fatigue_static			x="940" y="510" width="50" height="50">
+	<fatigue_static x="940" y="510" width="50" height="50">
 		<texture>ui\ui_mn_fatigue_hard</texture>
 	</fatigue_static>
-    
 	<!-- MONEY INDICATORS. MP ONLY -->
-	<money_mt_static		x="860" y="40" width="200" height="200">
+	<money_mt_static x="860" y="40" width="200" height="200">
 		<text x="85" y="4" font="small" r="255" g="255" b="255" a="130">money</text>
 		<texture>ui\ui_mn_weapons</texture>
-		
 		<phrase x="20" y="15" font="graffiti50" r="238" g="155" b="23" a="255"></phrase>
 		<phrase x="20" y="65" font="graffiti32" r="238" g="155" b="23" a="255">
 			<animation anim="fade" period="3" cyclic="0"></animation>
 		</phrase>
 	</money_mt_static>
-
 	<!-- FLASHING ICONS INDICATORS -->
 	<flashing_icons>
- 		<flashing_icon x="19" y="220" width="100" height="50" type="pda" period="500">
+		<flashing_icon x="19" y="220" width="100" height="50" type="pda" period="500">
 			<texture x="300" y="650" width="100" height="50">ui\ui_icon_equipment</texture>
 		</flashing_icon>
 	</flashing_icons>
-
 	<!-- CLAWS ANIMATION PARAMETERS -->
-	<claws_animation period="5000" duartion="2500"/>
-
+	<claws_animation period="5000" duartion="2500" />
 	<!-- CHAT !!! OLD!!!! MOVED TO CHAT_MP.xml -->
-	<chat_log_list x="20" y="280" width="500" height="320" item_height = "18" fade="1000">
-		<font font="letterica18" r="255" g="255" b="255"/>
+	<chat_log_list x="20" y="280" width="500" height="320" item_height="18" fade="1000">
+		<font font="letterica18" r="255" g="255" b="255" />
 	</chat_log_list>
-	
-	
 	<!-- CAR_HEALTH -->
 	<car_health_static x="860" y="545" width="150" height="200" align="rb">
 		<text x="80" y="5" font="small" r="255" g="255" b="255" a="130">vehicle</text>
 		<texture>ui\ui_mn_health</texture>
 	</car_health_static>
-	
 	<car_panel x="860" y="545" width="150" height="200" align="rb"></car_panel>
 	<!-- MOTION_ICON -->
 	<motion_icon x="0" y="685" width="100" height="100" align="rb"></motion_icon>
-	
 	<!-- POWER BAR -->
-    <power_bar x="0" y="0" length="60" broad="20" horz="0" min="0" max="100" pos="0">
-        <texture tile="0" length="60" r="0" g="255" b="0">ui\ui_inv_progress_end</texture>
-    </power_bar>
-	
+	<power_bar x="0" y="0" length="60" broad="20" horz="0" min="0" max="100" pos="0">
+		<texture tile="0" length="60" r="0" g="255" b="0">ui\ui_inv_progress_end</texture>
+	</power_bar>
 	<!-- artefact panel -->
 	<artefact_panel x="70" y="710" width="400" height="50" scale="0.75"></artefact_panel>
 </window>

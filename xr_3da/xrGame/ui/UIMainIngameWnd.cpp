@@ -117,11 +117,11 @@ void CUIMainIngameWnd::Init()
 	AttachChild(&UIWeaponBack);
 	xml_init.InitStatic(uiXml, "static", 1, &UIWeaponBack);
 	
-	AttachChild(&UIStaticPower);
-	xml_init.InitStatic(uiXml, "power_bar_static", 0, &UIStaticPower);
+	//AttachChild(&UIStaticPower);
+	//xml_init.InitStatic(uiXml, "power_bar_static", 0, &UIStaticPower);
 
-	UIStaticPower.AttachChild(&UIPowerBar);
-	xml_init.InitProgressBar(uiXml, "power_bar", 0, &UIPowerBar);
+	//UIStaticPower.AttachChild(&UIPowerBar);
+	//xml_init.InitProgressBar(uiXml, "power_bar", 0, &UIPowerBar);
 
 	UIWeaponBack.AttachChild(&UIWeaponSignAmmo);
 	xml_init.InitStatic(uiXml, "static", 2, &UIWeaponSignAmmo);
@@ -154,7 +154,7 @@ void CUIMainIngameWnd::Init()
 
 	AttachChild(&UIPdaMsgListWnd);
 
-	if (GameID() != GAME_SINGLE)
+	if (GameID() == GAME_SINGLE)
         xml_init.InitListWnd(uiXml, "pda_msg_list_sp", 0, &UIPdaMsgListWnd);
 	else
 		xml_init.InitListWnd(uiXml, "pda_msg_list_mp", 0, &UIPdaMsgListWnd);
@@ -361,8 +361,11 @@ void CUIMainIngameWnd::Draw()
 		if(m_bShowHudInfo)
 		{
 			//отрисовать остальные иконки
+			UIPdaMsgListWnd2.Show(false);
 			CUIWindow::Draw();
-			UIZoneMap.Render();
+			UIPdaMsgListWnd2.Show(true);
+
+			UIZoneMap.Render();			
 		}
 		if (m_bShowHudCrosshair && !zoom_mode)
 		{
@@ -387,6 +390,7 @@ void CUIMainIngameWnd::Draw()
 }
 
 void CUIMainIngameWnd::DrawPdaMessages(){
+	FadeUpdate(&UIPdaMsgListWnd);	
 	FadeUpdate(&UIPdaMsgListWnd2);	
 	UIPdaMsgListWnd2.Draw();
 }
@@ -569,7 +573,7 @@ void CUIMainIngameWnd::Update()
 	// health&armor
 	//	UIHealth.Out(m_Actor->g_Health(),m_Actor->g_Armor());
 	UIHealthBar.SetProgressPos((s16)m_pActor->g_Health());
-	UIPowerBar.SetProgressPos(s16(m_pActor->conditions().GetPower()*100));
+	//UIPowerBar.SetProgressPos(s16(m_pActor->conditions().GetPower()*100));
 	EWarningIcons i = ewiWeaponJammed;
 		
 	while (i <= ewiFatigue)
@@ -629,6 +633,7 @@ void CUIMainIngameWnd::Update()
 
 	// Fade animations
 	FadeUpdate(&UIPdaMsgListWnd);//, m_iPdaMessagesFade_mSec);
+	FadeUpdate(&UIPdaMsgListWnd2);//, m_iPdaMessagesFade_mSec);
 	FadeUpdate(&UIInfoMessages);//, m_iInfoMessagesFade_mSec);
 
 	UpdateFlashingIcons();
@@ -908,16 +913,29 @@ void CUIMainIngameWnd::ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, 
 	R_ASSERT(pSender);
 
 	CUIPdaMsgListItem* pItem = NULL;
+	CUIPdaMsgListItem* pItem2 = NULL;
+
 	pItem = xr_new<CUIPdaMsgListItem>();
-	UIPdaMsgListWnd.AddItem<CUIListItem>(pItem, 0);	/*---*/ UIPdaMsgListWnd2.AddItem<CUIListItem>(pItem, 0); 
+	pItem2 = xr_new<CUIPdaMsgListItem>();
+
+	UIPdaMsgListWnd.AddItem<CUIListItem>(pItem, 0);	/*---*/ UIPdaMsgListWnd2.AddItem<CUIListItem>(pItem2, 0); 
 	UIPdaMsgListWnd.ScrollToBegin();				/*---*/ UIPdaMsgListWnd2.ScrollToBegin();
 
 	pItem->InitCharacter(smart_cast<CInventoryOwner*>(pSender));
+	pItem2->InitCharacter(smart_cast<CInventoryOwner*>(pSender));
+
 	CUIColorAnimatorWrapper *p = xr_new<CUIColorAnimatorWrapper>("ui_main_msgs");
+	CUIColorAnimatorWrapper *p2 = xr_new<CUIColorAnimatorWrapper>("ui_main_msgs");
+
 	R_ASSERT(p);
+	R_ASSERT(p2);
+
 	p->Cyclic(false);
+	p2->Cyclic(false);
+
 //	p->SetColorToModify(&pItem->UIMsgText.GetColorRef());
 	pItem->SetData(p);
+	pItem2->SetData(p2);
 
 
 	UIPdaMsgListWnd.Show(true);	/*---*/ UIPdaMsgListWnd2.Show(true);
@@ -927,6 +945,7 @@ void CUIMainIngameWnd::ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, 
 		CInfoPortion info_portion;
 		info_portion.Load(info_index);
 		pItem->UIMsgText.SetText(*CStringTable()(info_portion.GetText()));
+		pItem2->UIMsgText.SetText(*CStringTable()(info_portion.GetText()));
 	}
 	else
 	{
@@ -942,7 +961,7 @@ bool CUIMainIngameWnd::SetDelayForPdaMessage(int iValue, int iDelay){
 	if (index >= 0)
 	{
         CUIPdaMsgListItem* item = smart_cast<CUIPdaMsgListItem*>(UIPdaMsgListWnd.GetItem(index));
-        item->SetDelay(iDelay);
+        item->SetDelay(iDelay*10000);
 
 		index = UIPdaMsgListWnd2.FindItemWithValue(iValue);
 
@@ -950,7 +969,7 @@ bool CUIMainIngameWnd::SetDelayForPdaMessage(int iValue, int iDelay){
 		R_ASSERT2(index >= 0, "Item exist only in first list");
 #endif
 		item = smart_cast<CUIPdaMsgListItem*>(UIPdaMsgListWnd2.GetItem(index));
-        item->SetDelay(iDelay);
+        item->SetDelay(iDelay*10000);
 
 		return true;
 	}

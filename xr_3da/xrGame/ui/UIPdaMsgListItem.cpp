@@ -57,7 +57,8 @@ void CUIPdaMsgListItem::Init(int x, int y, int width, int height)
 	}
 
 	AttachChild(&UIMsgText);
-	xml_init.InitStatic(uiXml, "text_static", 0, &UIMsgText);
+	xml_init.InitStatic(uiXml, "text_static", 0, &UIMsgText);	
+	UIMsgText.SetWidth(width - UIIcon.GetWidth());
 }
 
 void CUIPdaMsgListItem::SetDelay(int iDelay){
