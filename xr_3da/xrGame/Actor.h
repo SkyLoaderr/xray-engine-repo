@@ -384,11 +384,13 @@ protected:
 	//расстояние подсветки предметов
 	float					m_fPickupInfoRadius;
 
-	void					PickupModeOn		();
-	void					PickupModeOff		();
 	void					PickupModeUpdate	();
 	void					PickupInfoDraw		(CObject* object);
 	void					PickupModeUpdate_COD ();
+
+public:
+	void					PickupModeOn		();
+	void					PickupModeOff		();
 
 
 
