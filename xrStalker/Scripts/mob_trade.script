@@ -78,7 +78,7 @@ function add_to_binder(npc, ini, scheme, section, storage)
 end
 
 function set_scheme(npc, ini, scheme, section, gulag_name)
-	if self.object:clsid() ~= clsid.trader then
+	if npc:clsid() ~= clsid.trader then
 		utils.abort("object '%s': attempt to use mob_trade script on non-trader mobile", npc:name())
 	end
 
