@@ -43,6 +43,7 @@ vector3	xform			(const vector3& v, const matrix& m)
 	float	y = v.x*m._12 + v.y*m._22 + v.z*m._32 + m._42;
 	float	z = v.x*m._13 + v.y*m._23 + v.z*m._33 + m._43;
 	float	w = v.x*m._14 + v.y*m._24 + v.z*m._34 + m._44;
+	assert	(w>0);
 	return	vector3(x/w,y/w,z/w);	// RVO
 }
 void	xform_array		(vector3* dst, const vector3* src, const matrix& m, int count)
@@ -293,17 +294,13 @@ void CPracticalPSM::BuildLIPSMProjectionMatrix	()
 			DumbConvexVolume		hull;
 			static int				facetable[6][4]	= 
 			{
-				{ 0, 3, 5, 7 },
-				{ 1, 2, 3, 0 },
-				{ 6, 7, 5, 4 },
-				{ 4, 2, 1, 6 },
-				{ 3, 2, 4, 5 },
-				{ 1, 0, 7, 6 },
+				{ 0, 3, 5, 7 },		{ 1, 2, 3, 0 },
+				{ 6, 7, 5, 4 },		{ 4, 2, 1, 6 },
+				{ 3, 2, 4, 5 },		{ 1, 0, 7, 6 },
 			};
 			hull.points.resize		(8);
 			xform_array				(&*hull.points.begin(),A,modelViewProjection_inv,8);
-			for (int plane=0; plane<6; plane++)
-			{
+			for (int plane=0; plane<6; plane++)	{
 				hull.polys.push_back(DumbConvexVolume::_poly());
 				for (int pt=0; pt<4; pt++)	hull.polys.back().points.push_back(facetable[plane][pt]);
 			}
@@ -355,28 +352,28 @@ void CPracticalPSM::BuildLIPSMProjectionMatrix	()
 
 		// temporal light view
 		matrix		lightview;
-		D3DXMatrixLookAtLH		(&lightview,&pos_view,&(pos_view+dir_light),&up);
+		D3DXMatrixLookAtLH	(&lightview,&pos_view,&(pos_view+dir_light),&up);
 
 		//transform the light volume points from world into light space
 		//calculate the AABB of the light space extents of the intersection body
 		//and save the two extreme points min and max
-		vector3			min,max;
+		vector3			min,max,minz,maxz;
 		calc_xaabb		(min,max,&*points_receivers.begin(),lightview,points_receivers.size());
-
+		calc_xaabb		(minz,maxz,&*points_casters.begin(),lightview,points_casters.size());
 		{
-			float	_z_near			=	m_bUnitCubeClip?min.y:ZNEAR_MIN;
-			float	_z_far			=	m_bUnitCubeClip?max.y:ZFAR_MAX;
+			float	_z_near			=	ZNEAR_MIN;	//m_bUnitCubeClip?min.y:ZNEAR_MIN;
+			float	_z_far			=	ZFAR_MAX;	//m_bUnitCubeClip?max.y:ZFAR_MAX;
 					_z_near			=	max(_z_near,ZNEAR_MIN);	//??? unnecessary?
 					_z_far			=	min(_z_far, ZFAR_MAX);	//??? unnecessary?
 			float	factor			=	1.0f/cosGamma;
 			float	z_n				=	factor*_z_near;			//often 1 
-			float	d				=	fabsf(_z_far-_z_near);	//perspective transform depth - light space y extents
+			float	d				=	fabsf(max.y-min.y);		//perspective transform depth - light space y extents
 			float	z_f				=	z_n + d*cosGamma;
 			float	n = m_fLiSPSM_N =	m_fBiasLiSPSM * (z_n+sqrt(z_f*z_n))/cosGamma;	// m_fLiSPSM_N - for display purposes only
 			float	f				=	n+d;
 
 			//new observer point n-1 behind eye position
-			vector3		pos			= pos_view - up * (n-_z_near);
+			vector3		pos			= pos_view - up * (n-_z_near);	// minz.z?
 			D3DXMatrixLookAtLH		(&lightview,&pos,&(pos+dir_light),&up);
 
 			//one possibility for a simple perspective transformation matrix
@@ -393,14 +390,11 @@ void CPracticalPSM::BuildLIPSMProjectionMatrix	()
 
 			//transform the light volume points from world into the distorted light space
 			//calculate the AABB of the light space extents of the intersection body
-			calc_xaabb			(min,max,&*points_receivers.begin(),lispsm,points_receivers.size());
-
 			//and then find the casters depth bounds, of course in the painfully slow way :)
 			//replace receciver bounds depth with casters
-			vector3				minz,maxz;
-			calc_xaabb			(minz,maxz,&*points_casters.begin(),lispsm,points_casters.size());
-			min.z				= minz.z;
-			max.z				= maxz.z;
+			calc_xaabb			(min,max,	&*points_receivers.begin(),	lispsm,points_receivers.size());
+			calc_xaabb			(minz,maxz,	&*points_casters.begin(),	lispsm,points_casters.size());
+			min.z=minz.z; max.z=maxz.z;		// avoid clipping
 		}
 
 		// refit to unit cube (in D3D way :)
@@ -415,7 +409,7 @@ void CPracticalPSM::BuildLIPSMProjectionMatrix	()
 			matrix	translate,scale;
 			D3DXMatrixTranslation	(&translate,-center.x,-center.y,-center.z);		//*. translate center to (0,0,0)
 			D3DXMatrixScaling		(&scale,	2.f/size.x,2.f/size.y,1.f/size.z);	//*. scale: sx=2,sy=2,sz=1
-			D3DXMatrixMultiply		(&refit, &translate, &scale);					//*. final: first-translate, then scale
+			D3DXMatrixMultiply		(&refit,	&translate, &scale);					//*. final: first-translate, then scale
 		}
 
 		//together
