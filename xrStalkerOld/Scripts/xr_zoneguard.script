@@ -234,8 +234,6 @@ function add_to_binder(npc, ini, scheme, section, storage)
 	local operators    = {}
 	local properties  = {}
 
-	npc:add_sound("Scripts\\trader\\pryach_orujie", 20, snd_type.talk, 2, 1, xr_sounds_id.zmey_zoneguard_base)
-
 	local manager = npc:motivation_action_manager()
 
 	properties["need_zoneguard"] = xr_evaluators_id.zmey_zoneguard_base + 1
