@@ -256,12 +256,13 @@ void CCustomMonster::net_Import(NET_Packet* P)
 	VERIFY					(Weapons);
 	net_update				N;
 
-	N.dwTimeStamp			= P->r_u32	();
-	u8 flags				= P->r_u8	();
-	N.p_pos					= P->r_vec3	();
-	N.o_model				= P->r_angle8();
-	N.o_torso.yaw			= P->r_angle8();
-	N.o_torso.pitch			= P->r_angle8();
+	u8 flags;
+	P->r_u32				(N.dwTimeStamp);
+	P->r_u8					(flags);
+	P->r_vec3				(N.p_pos);
+	P->r_angle8				(N.o_model);
+	P->r_angle8				(N.o_torso.yaw);
+	P->r_angle8				(N.o_torso.pitch);
 
 	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	{
 		NET.push_back			(N);
@@ -506,10 +507,10 @@ BOOL CCustomMonster::Spawn( BOOL bLocal, int sid, int team, int squad, int group
 	{
 		net_update		N;
 		N.dwTimeStamp	= Level().timeServer()-NET_Latency;
-		N.o_model		= o_pos.w;
-		N.o_torso.yaw	= o_pos.w;
+		N.o_model		= o_angle.y;
+		N.o_torso.yaw	= o_angle.y;
 		N.o_torso.pitch	= 0;
-		N.p_pos.set		(o_pos.x,o_pos.y,o_pos.z);
+		N.p_pos.set		(o_pos);
 		NET.push_back	(N);
 
 		N.dwTimeStamp	+= NET_Latency;
