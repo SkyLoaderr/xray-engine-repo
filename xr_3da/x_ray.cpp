@@ -97,6 +97,19 @@ void destroyEngine()
 	Engine.Destroy				( );
 }
 
+void execUserScript()
+{
+// Execute script
+	strcpy						(Console->ConfigFile,"user.ltx");
+	if (strstr(Core.Params,"-ltx ")) {
+		string64				c_name;
+		sscanf					(strstr(Core.Params,"-ltx ")+5,"%[^ ] ",c_name);
+		strcpy					(Console->ConfigFile,c_name);
+	}
+	if (!FS.exist(Console->ConfigFile))
+		strcpy					(Console->ConfigFile,"user.ltx");
+	Console->ExecuteScript		(Console->ConfigFile);
+}
 
 void Startup				( )
 {
@@ -115,8 +128,8 @@ void Startup				( )
 	Console->Initialize			( );
 	Engine.External.Initialize	( );
 */	
-	// Execute script
-	{
+		execUserScript();
+/*	{
 		strcpy						(Console->ConfigFile,"user.ltx");
 		if (strstr(Core.Params,"-ltx ")) {
 			string64				c_name;
@@ -126,8 +139,7 @@ void Startup				( )
 		if (!FS.exist(Console->ConfigFile))
 			strcpy					(Console->ConfigFile,"user.ltx");
 		Console->ExecuteScript		(Console->ConfigFile);
-	}
-
+	}*/
 	InitInput();
 //	BOOL bCaptureInput			= !strstr(Core.Params,"-i");
 //	pInput						= xr_new<CInput>		(bCaptureInput);
@@ -282,6 +294,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	InitConsole();
 	
 //	g_bBenchmark = true;
+//	execUserScript();
 	if (strstr(lpCmdLine,"-launcher")) 
 	{
 		int l_res = doLauncher();
@@ -571,6 +584,7 @@ void FreeLauncher(){
 
 int doLauncher()
 {
+	execUserScript();
 	InitLauncher();
 	int res = pLauncher(0);
 	FreeLauncher();
@@ -596,6 +610,7 @@ int doLauncher()
 			}
 
 			Engine.External.Initialize	( );
+			execUserScript();
 			Startup	 				();
 		}
 		Core._destroy			();
