@@ -54,8 +54,8 @@ Fvector		GetPixel_5x5		(CDB::RESULT& rpinf)
 		}
 	}
 	R.div	(25.f);
-	R.add	(1.f);	// make it appear more like white material
-	R.div	(2.f);
+	//R.add	(1.f);	// make it appear more like white material
+	//R.div	(2.f);
 	return	R;
 }
 
