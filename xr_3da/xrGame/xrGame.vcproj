@@ -4131,19 +4131,6 @@
 							</File>
 						</Filter>
 						<Filter
-							Name="SoundUserData"
-							Filter="">
-							<File
-								RelativePath=".\stalker_sound_data.cpp">
-							</File>
-							<File
-								RelativePath=".\stalker_sound_data.h">
-							</File>
-							<File
-								RelativePath=".\stalker_sound_data_inline.h">
-							</File>
-						</Filter>
-						<Filter
 							Name="SoundDataVisitor"
 							Filter="">
 							<File
@@ -4154,6 +4141,19 @@
 							</File>
 							<File
 								RelativePath=".\stalker_sound_data_visitor_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="SoundUserData"
+							Filter="">
+							<File
+								RelativePath=".\stalker_sound_data.cpp">
+							</File>
+							<File
+								RelativePath=".\stalker_sound_data.h">
+							</File>
+							<File
+								RelativePath=".\stalker_sound_data_inline.h">
 							</File>
 						</Filter>
 					</Filter>
