@@ -144,6 +144,9 @@ function main()
         wait( 500 )
     end
 
+    local snd = sound_object( "ambient\\gunfire" )
+    snd:play_at_pos( npcs[1], npcs[1]:position() )
+
     heli:heli_go_to_point( heli_pos, heli_prepos, combat_duration * 0.001 )
 
     zone:clear_callback( true )
