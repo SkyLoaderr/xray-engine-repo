@@ -41,12 +41,12 @@ BOOL CRenderTarget::Create	()
 		HW.Caps.fTarget,
 		D3DUSAGE_RENDERTARGET,
 		D3DRTYPE_TEXTURE,
-		D3DFMT_R5G6B5
+		HW.Caps.fTarget
 		);
 	if (FAILED(_hr))													return FALSE;
 	
 	// Try to create texture/surface
-	_hr = HW.pDevice->CreateTexture(Device.dwWidth,Device.dwHeight,1,D3DUSAGE_RENDERTARGET,D3DFMT_R5G6B5,D3DPOOL_DEFAULT,&pSurface);
+	_hr = HW.pDevice->CreateTexture(Device.dwWidth,Device.dwHeight,1,D3DUSAGE_RENDERTARGET,HW.Caps.fTarget,D3DPOOL_DEFAULT,&pSurface);
 	if (FAILED(_hr) || (0==pSurface))									return FALSE;
 	
 	// OK
