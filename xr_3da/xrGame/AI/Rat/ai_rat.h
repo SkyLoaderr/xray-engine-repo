@@ -72,7 +72,7 @@ class CAI_Rat : public CCustomMonster
 		//////////////////////////
 		// CLASS MEMBERS
 		//////////////////////////
-		
+
 		// FSM
 		stack<ERatStates>	tStateStack;
 		ERatStates			eCurrentState;
@@ -326,6 +326,7 @@ class CAI_Rat : public CCustomMonster
 		void	vfSetFire(bool bFire, CGroup &Group);
 		void	vfSetMovementType(char cBodyState, float fSpeed);
 		void	vfUpdateDynamicObjects() {};
+		void	CreateSkeleton();
 		//////////////////////////
 		// FSM STATES
 		//////////////////////////
@@ -360,6 +361,9 @@ class CAI_Rat : public CCustomMonster
 		virtual objQualifier* GetQualifier();
 		virtual	void  feel_sound_new(CObject* who, int type, Fvector& Position, float power);
 		virtual void  OnDeviceCreate();
+		virtual void  Update(u32 dt);
+		virtual void  UpdateCL();
+		//virtual void  Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse);
 };
 		
 #endif

@@ -137,12 +137,13 @@ void CAI_Rat::Death()
 			m_dwLastRangeSearch = Level().timeServer();
 		setVisible(false);
 		if (Level().timeServer() - m_dwLastRangeSearch > 10000) {
-			setEnabled(false);
+//			setEnabled(false);
 //			NET_Packet			P;
 //			u_EventGen			(P,GE_DESTROY,ID());
 //			u_EventSend			(P);
 		}
 	}
+
 }
 
 void CAI_Rat::Turn()

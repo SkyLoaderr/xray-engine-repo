@@ -50,6 +50,7 @@ void CEntity::OnEvent		(NET_Packet& P, u16 type)
 
 void CEntity::Hit			(float perc, Fvector &dir, CObject* who, s16 element,Fvector position_in_object_space, float impulse) 
 {
+	inherited::Hit(perc,dir,who,element,position_in_object_space,impulse);
 	if (bDebug)				Log("Process HIT: ", cName());
 
 	// *** process hit calculations

@@ -42,6 +42,7 @@ CAI_Rat::CAI_Rat()
 	m_bActive				= false;
 	m_dwStartAttackTime		= 0;
 	q_look.o_look_speed		= PI;
+	m_pPhysicsShell			= NULL;
 }
 
 CAI_Rat::~CAI_Rat()
@@ -49,6 +50,8 @@ CAI_Rat::~CAI_Rat()
 	DELETE_SOUNDS(SND_HIT_COUNT,	m_tpaSoundHit);
 	DELETE_SOUNDS(SND_DIE_COUNT,	m_tpaSoundDie);
 	DELETE_SOUNDS(SND_VOICE_COUNT,	m_tpaSoundVoice);
+	xr_delete				(m_pPhysicsShell);
+
 }
 
 void CAI_Rat::Die()
@@ -70,6 +73,8 @@ void CAI_Rat::Die()
 	Group.m_dwAliveCount--;
 	eCurrentState = aiRatDie;
 	m_dwDeathTime = Level().timeServer();
+	CreateSkeleton();
+	
 }
 
 void CAI_Rat::OnDeviceCreate()
@@ -230,3 +235,88 @@ void CAI_Rat::net_Import(NET_Packet& P)
 	setVisible				(TRUE);
 	setEnabled				(TRUE);
 }
+void CAI_Rat::CreateSkeleton(){
+	
+	CPhysicsElement* element=P_create_Element();
+	Fobb box;
+	box.m_rotate.identity();
+	box.m_translate.set(0,0.1f,-0.15f);
+	box.m_halfsize.set(0.10f,0.085f,0.25f);
+	element->add_Box(box);
+	Fsphere sphere;
+	sphere.P.set(0,0,0);
+	sphere.R=0.25;
+	//element->add_Sphere(sphere);
+	element->setMass(200.f);
+	element->SetMaterial("creatures\\rat");
+	m_pPhysicsShell=P_create_Shell();
+	m_pPhysicsShell->add_Element(element);
+	m_pPhysicsShell->Activate(svXFORM(),0,svXFORM());
+	
+	/*
+	CKinematics* M		= PKinematics(pVisual);			VERIFY(M);
+	m_pPhysicsShell		= P_create_Shell();
+	m_pPhysicsShell->set_Kinematics(M);
+	//get bone instance
+	int id=M->LL_BoneID("bip01_pelvis");
+	CBoneInstance& instance=M->LL_GetInstance				(id);
+
+	//create root element
+	CPhysicsElement* element=P_create_Element				();
+	element->mXFORM.identity();
+	instance.set_callback(m_pPhysicsShell->GetBonesCallback(),element);
+	Fobb box;
+	box.m_rotate.identity();
+	box.m_translate.set(0,0,0);
+	box.m_halfsize.set(0.10f,0.085f,0.25f);
+	element->add_Box(box);
+
+	element->setMass(200.f);
+	m_pPhysicsShell->add_Element(element);
+	element->SetMaterial("materials\\skel1");
+
+	//set shell start position
+	Fmatrix m;
+	m.set(mRotate);
+	m.c.set(vPosition);
+	m_pPhysicsShell->mXFORM.set(m);
+	*/
+}
+
+void CAI_Rat::Update(u32 dt){
+
+	inherited::Update( dt);
+	if(m_pPhysicsShell){
+		m_pPhysicsShell->Update();
+		mRotate.set(m_pPhysicsShell->mXFORM);
+		mRotate.c.set(0,0,0);
+		UpdateTransform					();
+		vPosition.set(m_pPhysicsShell->mXFORM.c);
+		svTransform.set(m_pPhysicsShell->mXFORM);
+		
+	//	CKinematics* M		= PKinematics(pVisual);			VERIFY(M);
+	//	int id=M->LL_BoneID("bip01_pelvis");
+	//	CBoneInstance& instance=M->LL_GetInstance				(id);
+	//	instance.mTransform.set(m_pPhysicsShell->mXFORM);
+			
+	}
+	
+	
+}
+
+void CAI_Rat::UpdateCL(){
+
+	 inherited::UpdateCL();
+	if(m_pPhysicsShell){
+		m_pPhysicsShell->Update();
+		clTransform.set(m_pPhysicsShell->mXFORM);
+		
+	}
+	
+	
+}
+
+//void CAI_Rat::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse){
+//	inherited::Hit(P,dir,who,element,p_in_object_space,impulse);
+
+//}
