@@ -117,7 +117,20 @@
             </phrase>
         </phrase_list>
     </dialog>
-
+    
+    <dialog id="assistance_dialog" priority="-1">
+        <phrase_list>
+            <phrase id="0">
+                <text>Не хочешь составить мне компанию?</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>Конечно.</text>
+                <action>xr_assistance.set_assistance</action>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    
     <dialog id="actor_break_dialog" priority="-1">
 	<phrase_list>
 	    <phrase id="0">
