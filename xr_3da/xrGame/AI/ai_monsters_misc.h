@@ -181,6 +181,28 @@
 		);
 	}
 
+	DWORD dwRandSeed;
+
+	IC void  vfSetStartSeed(DWORD dwStartSeed) {
+		dwRandSeed = dwStartSeed;
+	}
+
+	IC DWORD dwfRandom(DWORD dwRange)
+	{
+		DWORD dwResult;
+		
+		__asm {
+				MOV     EAX,dwRange
+				IMUL    EDX,dwRandSeed,08088405H
+				INC     EDX
+				MOV     dwRandSeed,EDX
+				MUL     EDX
+				MOV     dwResult,EDX
+		}
+		
+		return(dwResult);
+	}
+
 	typedef struct tagSSubNode {
 		Fvector tLeftDown;
 		Fvector tRightUp;
