@@ -403,29 +403,19 @@ IC static void CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup)
 		}
 
 		if(usr_data_2){
-			pushing_neg=	(usr_data_2->pushing_b_neg
-				&& !GMLib.GetMaterialByIdx(usr_data_2->b_neg_tri.T->material)->Flags.is(SGameMtl::flPassable)
-				)
-				||	
-				(usr_data_2->pushing_neg
-				&& !GMLib.GetMaterialByIdx(usr_data_2->neg_tri.T->material)->Flags.is(SGameMtl::flPassable)
-				);
+			usr_data_2->pushing_b_neg	=	usr_data_2->pushing_b_neg	&& !GMLib.GetMaterialByIdx(usr_data_2->b_neg_tri.T->material)->Flags.is(SGameMtl::flPassable);
+			usr_data_2->pushing_neg		=	usr_data_2->pushing_neg		&& !GMLib.GetMaterialByIdx(usr_data_2->neg_tri.T->material)->Flags.is(SGameMtl::flPassable);
+			pushing_neg=usr_data_2->pushing_b_neg||usr_data_2->pushing_neg;
 			if(usr_data_2->ph_object){
 				usr_data_2->ph_object->InitContact(&c,do_collide);
-
 			}
 
 		}
 		///////////////////////////////////////////////////////////////////////////////////////
 		if(usr_data_1){ 
-
-			pushing_neg=	(usr_data_1->pushing_b_neg
-				&& !GMLib.GetMaterialByIdx(usr_data_1->b_neg_tri.T->material)->Flags.is(SGameMtl::flPassable)
-				)
-				||	
-				(usr_data_1->pushing_neg
-				&& !GMLib.GetMaterialByIdx(usr_data_1->neg_tri.T->material)->Flags.is(SGameMtl::flPassable)
-				);
+			usr_data_1->pushing_b_neg	=	usr_data_1->pushing_b_neg	&& !GMLib.GetMaterialByIdx(usr_data_1->b_neg_tri.T->material)->Flags.is(SGameMtl::flPassable);
+			usr_data_1->pushing_neg		=	usr_data_1->pushing_neg		&& !GMLib.GetMaterialByIdx(usr_data_1->neg_tri.T->material)->Flags.is(SGameMtl::flPassable);
+			pushing_neg=usr_data_1->pushing_b_neg||usr_data_1->pushing_neg;
 			if(usr_data_1->ph_object){
 				usr_data_1->ph_object->InitContact(&c,do_collide);
 

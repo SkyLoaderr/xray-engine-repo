@@ -5,6 +5,7 @@ struct dxBox {
 	dVector3 side;	// side lengths (x,y,z)
 };
 
+float	dBoxProj(dxGeom* box,const dReal* normal);
 int dTriBox (
 			 const dReal* v0,const dReal* v1,const dReal* v2,
 			 CDB::TRI* T,

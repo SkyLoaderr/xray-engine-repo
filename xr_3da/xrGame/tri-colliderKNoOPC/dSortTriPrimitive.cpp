@@ -7,15 +7,15 @@
 static 	xr_vector<Triangle> pos_tries;
 static 	xr_vector<Triangle> neg_tries;
 
-int dSortTriPrimitiveCollide (	dTriPrimitiveType dTriPrimitive,
+int dSortTriPrimitiveCollide (	
+							  dPrimitiveProjType dPrimitiveProj,
+							  dTriPrimitiveType			dTriPrimitive,
 							  dSortedTriPrimitiveType	dSortedTriPrimitive,
-							  dxGeom *o1,		dxGeom *o2,
-							  int flags,		dContactGeom *contact,	int skip,
-							  CDB::RESULT*		R_begin,
-							  CDB::RESULT*		R_end ,
-							  CDB::TRI*		T_array,
-							  const Fvector*	V_array,
-							  Fvector			AABB
+							  dxGeom		*o1,		dxGeom			*o2,
+							  int			flags,		dContactGeom	*contact,	int skip,
+							  CDB::RESULT*	R_begin,	CDB::RESULT*	R_end ,
+							  CDB::TRI*		T_array,	const Fvector*	V_array,
+							  const Fvector&	AABB
 							  )
 {
 
@@ -35,16 +35,10 @@ int dSortTriPrimitiveCollide (	dTriPrimitiveType dTriPrimitive,
 	bool	intersect	=	false	;
 	bool	no_last_pos	=last_pos[0]==-dInfinity;
 
-	dVector3 hside;
-	dGeomBoxGetLengths(o1,hside);
-	hside[0]/=2.f;hside[2]/=2.f;hside[2]/=2.f;
-	const dReal *R = dGeomGetRotation(o1);
+
 
 	if(*pushing_neg){
-		dReal sidePr=
-			dFabs(dDOT14(neg_tri->norm,R+0)*hside[0])+
-			dFabs(dDOT14(neg_tri->norm,R+1)*hside[1])+
-			dFabs(dDOT14(neg_tri->norm,R+2)*hside[2]);
+		dReal sidePr=dPrimitiveProj(o1,neg_tri->norm);
 		neg_tri->dist=dDOT(p,neg_tri->norm)-neg_tri->pos;
 		neg_tri->depth=sidePr-neg_tri->dist;
 
@@ -58,13 +52,9 @@ int dSortTriPrimitiveCollide (	dTriPrimitiveType dTriPrimitive,
 	}
 
 	if(*pushing_b_neg){
-		dReal sidePr=
-			dFabs(dDOT14(b_neg_tri->norm,R+0)*hside[0])+
-			dFabs(dDOT14(b_neg_tri->norm,R+1)*hside[1])+
-			dFabs(dDOT14(b_neg_tri->norm,R+2)*hside[2]);
+		dReal sidePr=dPrimitiveProj(o1,b_neg_tri->norm);
 		b_neg_tri->dist=dDOT(p,b_neg_tri->norm)-b_neg_tri->pos;
 		b_neg_tri->depth=sidePr-b_neg_tri->dist;
-
 		if(b_neg_tri->dist<0.f)
 			b_neg_depth=b_neg_tri->depth;
 		else{
@@ -91,11 +81,7 @@ int dSortTriPrimitiveCollide (	dTriPrimitiveType dTriPrimitive,
 		tri.T=T;
 		dCROSS(tri.norm,=,tri.side0,tri.side1);
 		dNormalize3(tri.norm);
-		dReal sidePr=
-			dFabs(dDOT14(tri.norm,R+0)*hside[0])+
-			dFabs(dDOT14(tri.norm,R+1)*hside[1])+
-			dFabs(dDOT14(tri.norm,R+2)*hside[2]);
-
+		dReal sidePr=dPrimitiveProj(o1,tri.norm);
 		tri.pos=dDOT((dReal*)&Res->verts[0],tri.norm);
 		tri.dist=dDOT(p,tri.norm)-tri.pos;
 		tri.depth=sidePr-tri.dist;
@@ -136,7 +122,7 @@ int dSortTriPrimitiveCollide (	dTriPrimitiveType dTriPrimitive,
 							{
 								neg_depth=tri.depth;
 								(*neg_tri)=tri;
-
+								if(intersect)*pushing_neg=true;
 							}
 
 
@@ -146,13 +132,13 @@ int dSortTriPrimitiveCollide (	dTriPrimitiveType dTriPrimitive,
 						if(b_neg_depth>tri.depth&&dDOT(b_neg_tri->norm,tri.norm)>-M_SQRT1_2){
 							b_neg_depth=tri.depth;
 							(*b_neg_tri)=tri;
-
+							if(intersect)*pushing_b_neg=true;
 						}
 					}
 				}
 		}
 		else{
-			if(!(*pushing_neg||*pushing_b_neg))
+		
 				ret+=dTriPrimitive(
 				(const dReal*)&V_array[T->verts[0]],
 				(const dReal*)&V_array[T->verts[1]],

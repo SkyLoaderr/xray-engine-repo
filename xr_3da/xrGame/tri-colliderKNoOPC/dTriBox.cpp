@@ -2,6 +2,19 @@
 #include "dTriColliderCommon.h"
 #include "dTriBox.h"
 
+float	dBoxProj(dxGeom* box,const dReal* normal)
+{
+	dIASSERT (dGeomGetClass(box)== dBoxClass);
+	float hside[3];
+	dGeomBoxGetLengths(box,hside);
+	hside[0]*=.5f;hside[1]*=0.5f;hside[2]*=0.5f;
+	const dReal* R=dGeomGetRotation(box);
+	return
+			dFabs(dDOT14(normal,R+0)*hside[0])+
+			dFabs(dDOT14(normal,R+1)*hside[1])+
+			dFabs(dDOT14(normal,R+2)*hside[2]);
+}
+
 int dSortedTriBox (
 						const dReal* triSideAx0,const dReal* triSideAx1,
 						const dReal* triAx,

@@ -5,6 +5,19 @@
 //////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
+float	dCylinderProj(dxGeom* cylinder,const dReal* normal)
+{
+	dIASSERT (dGeomGetClass(cylinder)== dCylinderClassUser);
+	float hlz,radius;
+	dGeomCylinderGetParams(cylinder,&radius,&hlz);
+	const dReal* R=dGeomGetRotation(cylinder);
+	hlz*=0.5f;
+	float cos1=dFabs(dDOT14(normal,R+1));
+	cos1=cos1<REAL(1.) ? cos1 : REAL(1.); //cos1 may slightly exeed 1.f
+	float sin1=_sqrt(REAL(1.)-cos1*cos1);
+	//////////////////////////////
+	return cos1*hlz+sin1*radius;
+}
 bool circleLineIntersection(const dReal* cn,const dReal* cp,dReal r,const dReal* lv,const dReal* lp,dReal sign,dVector3 point){
 
 dVector3 LC={lp[0]-cp[0],lp[1]-cp[1],lp[2]-cp[2]};
@@ -54,6 +67,162 @@ else{			point[0]=O2[0];
 
 return true;
 }
+}
+
+int dSortedTriCyl (
+				   const dReal* triSideAx0,const dReal* triSideAx1,
+				   const dReal* triAx,
+				   //const dReal* v0,
+				   //const dReal* v1,
+				   //const dReal* v2,
+				   CDB::TRI* T,
+				   dReal dist,
+				   dxGeom *o1, dxGeom *o2,
+				   int flags, dContactGeom *contact, int skip
+				   )
+{
+	
+	dIASSERT (dGeomGetClass(o1)== dCylinderClassUser);
+
+	const dReal *R = dGeomGetRotation(o1);
+	const dReal* p=dGeomGetPosition(o1);
+	dReal radius;
+	dReal hlz;
+	dGeomCylinderGetParams(o1,&radius,&hlz);
+	hlz/=2.f;
+
+	// find number of contacts requested
+	int maxc = flags & NUMC_MASK;
+	if (maxc < 1) maxc = 1;
+	if (maxc > 3) maxc = 3;	// no more than 3 contacts per box allowed
+	
+	dReal signum, outDepth,cos1,sin1;
+	////////////////////////////////////////////////////////////////////////////
+	//sepparation along tri plane normal;///////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+
+
+	//cos0=dDOT14(triAx,R+0);
+	cos1=dFabs(dDOT14(triAx,R+1));
+	//cos2=dDOT14(triAx,R+2);
+
+	//sin1=_sqrt(cos0*cos0+cos2*cos2);
+
+	////////////////////////
+	//another way //////////
+	cos1=cos1<REAL(1.) ? cos1 : REAL(1.); //cos1 may slightly exeed 1.f
+	sin1=_sqrt(REAL(1.)-cos1*cos1);
+	//////////////////////////////
+
+	dReal sidePr=cos1*hlz+sin1*radius;
+
+	
+	if(dist>0.f) 
+		return 0;
+	dReal depth=sidePr-dist;
+	outDepth=depth;
+	signum=-1.f;
+
+	int code=0;
+	if(depth<0.f) return 0;
+
+	dVector3 norm;
+	unsigned int ret=0;
+	dVector3 pos;
+	if(code==0){
+		norm[0]=triAx[0]*signum;
+		norm[1]=triAx[1]*signum;
+		norm[2]=triAx[2]*signum;
+
+
+		dReal Q1 = signum*dDOT14(triAx,R+0);
+		dReal Q2 = signum*dDOT14(triAx,R+1);
+		dReal Q3 = signum*dDOT14(triAx,R+2);
+		dReal factor =_sqrt(Q1*Q1+Q3*Q3);
+		dReal	C1,C3;
+		dReal centerDepth;//depth in the cirle centre
+		if(factor>0.f)
+		{
+			C1=Q1/factor;
+			C3=Q3/factor;
+
+		}
+		else
+		{
+			C1=1.f;
+			C3=0.f;
+
+		}
+
+		dReal A1 = radius *		C1;//cosinus
+		dReal A2 = hlz*Q2;
+		dReal A3 = radius *		C3;//sinus 
+
+		if(factor>0.f) centerDepth=outDepth-A1*Q1-A3*Q3; else centerDepth=outDepth;
+
+		pos[0]=p[0];
+		pos[1]=p[1];
+		pos[2]=p[2];
+
+		pos[0]+= A2>0 ? hlz*R[1]:-hlz*R[1];
+		pos[1]+= A2>0 ? hlz*R[5]:-hlz*R[5];
+		pos[2]+= A2>0 ? hlz*R[9]:-hlz*R[9];
+
+
+
+
+		ret=0;
+		contact->pos[0] = pos[0]+A1*R[0]+A3*R[2];
+		contact->pos[1] = pos[1]+A1*R[4]+A3*R[6];
+		contact->pos[2] = pos[2]+A1*R[8]+A3*R[10];
+
+			{
+				contact->depth = outDepth;
+				ret=1;
+			}
+
+			if(dFabs(Q2)>M_SQRT1_2){
+
+				A1=(-C1*M_COS_PI_3-C3*M_SIN_PI_3)*radius;
+				A3=(-C3*M_COS_PI_3+C1*M_SIN_PI_3)*radius;
+				CONTACT(contact,ret*skip)->pos[0]=pos[0]+A1*R[0]+A3*R[2];
+				CONTACT(contact,ret*skip)->pos[1]=pos[1]+A1*R[4]+A3*R[6];
+				CONTACT(contact,ret*skip)->pos[2]=pos[2]+A1*R[8]+A3*R[10];
+				CONTACT(contact,ret*skip)->depth=centerDepth+Q1*A1+Q3*A3;
+
+				if(CONTACT(contact,ret*skip)->depth>0.f)++ret;
+
+				A1=(-C1*M_COS_PI_3+C3*M_SIN_PI_3)*radius;
+				A3=(-C3*M_COS_PI_3-C1*M_SIN_PI_3)*radius;
+				CONTACT(contact,ret*skip)->pos[0]=pos[0]+A1*R[0]+A3*R[2];
+				CONTACT(contact,ret*skip)->pos[1]=pos[1]+A1*R[4]+A3*R[6];
+				CONTACT(contact,ret*skip)->pos[2]=pos[2]+A1*R[8]+A3*R[10];
+				CONTACT(contact,ret*skip)->depth=centerDepth+Q1*A1+Q3*A3;
+
+				if(CONTACT(contact,ret*skip)->depth>0.f)++ret;
+			} else {
+
+				CONTACT(contact,ret*skip)->pos[0]=contact->pos[0]-2.f*(A2>0 ? hlz*R[1]:-hlz*R[1]);
+				CONTACT(contact,ret*skip)->pos[1]=contact->pos[1]-2.f*(A2>0 ? hlz*R[5]:-hlz*R[5]);
+				CONTACT(contact,ret*skip)->pos[2]=contact->pos[2]-2.f*(A2>0 ? hlz*R[9]:-hlz*R[9]);
+				CONTACT(contact,ret*skip)->depth=outDepth-Q2*2.f*A2;
+
+				if(CONTACT(contact,ret*skip)->depth>0.f)++ret;
+			}
+	}
+
+	if((int)ret>maxc) ret=(unsigned int)maxc;
+
+	for (unsigned int i=0; i<ret; ++i) {
+		CONTACT(contact,i*skip)->g1 = const_cast<dxGeom*> (o2);
+		CONTACT(contact,i*skip)->g2 = const_cast<dxGeom*> (o1);
+		CONTACT(contact,i*skip)->normal[0] = norm[0];
+		CONTACT(contact,i*skip)->normal[1] = norm[1];
+		CONTACT(contact,i*skip)->normal[2] = norm[2];
+		SURFACE(contact,i*skip)->mode=T->material;
+	}
+	if(ret&&dGeomGetUserData(o1)->callback)dGeomGetUserData(o1)->callback(T,contact);
+	return ret;  
 }
 
 //////////////////////////////////////////////////////////////////////////////////

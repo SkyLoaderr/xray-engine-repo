@@ -81,7 +81,7 @@ int dcTriListCollider::CollideBox(dxGeom* Box, int Flags, dContactGeom* Contacts
 	int OutTriCount = 0;
 
 	return dSortTriPrimitiveCollide
-		(dTriBox,dSortedTriBox,
+		(dBoxProj,dTriBox,dSortedTriBox,
 		Box,
 		Geometry,
 		3,
@@ -135,22 +135,30 @@ int dcTriListCollider::CollideCylinder(dxGeom* Cylinder, int Flags, dContactGeom
 
 	///@slipch
 
-	for (CDB::RESULT* Res=R_begin; Res!=R_end; ++Res)
-	{
-		CDB::TRI* T = T_array + Res->id;
-		OutTriCount+=dTriCyl (
-			(const dReal*)&V_array[T->verts[0]],
-			(const dReal*)&V_array[T->verts[1]],
-			(const dReal*)&V_array[T->verts[2]],
-			T,
-			Cylinder,
-			Geometry,
-			3,
-			CONTACT(Contacts, OutTriCount * Stride),   Stride);
-	}
-	return OutTriCount;
+	//for (CDB::RESULT* Res=R_begin; Res!=R_end; ++Res)
+	//{
+	//	CDB::TRI* T = T_array + Res->id;
+	//	OutTriCount+=dTriCyl (
+	//		(const dReal*)&V_array[T->verts[0]],
+	//		(const dReal*)&V_array[T->verts[1]],
+	//		(const dReal*)&V_array[T->verts[2]],
+	//		T,
+	//		Cylinder,
+	//		Geometry,
+	//		3,
+	//		CONTACT(Contacts, OutTriCount * Stride),   Stride);
+	//}
+	//return OutTriCount;
 
-
+	return dSortTriPrimitiveCollide
+		(dCylinderProj,dTriCyl,dSortedTriCyl,
+		Cylinder,
+		Geometry,
+		3,
+		CONTACT(Contacts, OutTriCount * Stride),   
+		Stride,
+		R_begin,R_end,T_array,V_array,AABB
+		);
 
 }
 
@@ -201,8 +209,8 @@ int dcTriListCollider::CollideCylinder(dxGeom* Cylinder, int Flags, dContactGeom
 						 CDB::RESULT*    R_begin                         = XRC.r_begin();
 						 CDB::RESULT*    R_end                           = XRC.r_end();
 						 CDB::TRI*       T_array                         = Level().ObjectSpace.GetStaticTris();
-						 const Fvector*	 V_array						 = Level().ObjectSpace.GetStaticVerts();
-						 return dSortTriPrimitiveCollide(dTriSphere,dSortedTriSphere,Sphere,Geometry,Flags,Contacts,Stride,R_begin,R_end,T_array,V_array,AABB);
+				 		 const Fvector*	 V_array						 = Level().ObjectSpace.GetStaticVerts();
+						 return dSortTriPrimitiveCollide(dSphereProj,dTriSphere,dSortedTriSphere,Sphere,Geometry,Flags,Contacts,Stride,R_begin,R_end,T_array,V_array,AABB);
 
 					 }
 

@@ -1,6 +1,8 @@
 #ifndef D_TRI_SPHERE_H
 #define D_TRI_SPHERE_H
 
+float	dSphereProj(dxGeom* sphere,const dReal* /**normal/**/);
+
 int dSortedTriSphere(const dReal*	/**v1/**/,const dReal*	/**v2/**/,
 					 const dReal* triAx,
 					 CDB::TRI* T,
