@@ -86,17 +86,17 @@
 	
 	<mp_friend_mini_spot width="3" height="3" alignment="c"> 
 		<texture r="0" g="255" b="0">ui\hud_map_point</texture>
-	</mp_friend_mini_spot>
+	</mp_friend_mini_spot>stretch = "1"
 	
-	<mp_af_friend_mini_spot width="6" height="6" alignment="c"> 
+	<mp_af_friend_mini_spot width="6" height="6" stretch = "1" alignment="c"> 
 		<texture r="255" g="255" b="0" stretch = "1">ui\hud_map_point</texture>
 	</mp_af_friend_mini_spot>
 
-	<mp_af_enemy_mini_spot width="6" height="6" alignment="c"> 
+	<mp_af_enemy_mini_spot width="6" height="6" stretch = "1" alignment="c"> 
 		<texture r="255" g="0" b="0" stretch = "1">ui\hud_map_point</texture>
 	</mp_af_enemy_mini_spot>
 	
-	<mp_af_neutral_mini_spot width="6" height="6" alignment="c"> 
+	<mp_af_neutral_mini_spot width="6" height="6" stretch = "1" alignment="c"> 
 		<texture r="255" g="255" b="255" stretch = "1">ui\hud_map_point</texture>
 	</mp_af_neutral_mini_spot>
 <!-- pointers definitions -->
