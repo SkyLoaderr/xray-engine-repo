@@ -175,10 +175,13 @@ void CParticleTools::OnDeviceCreate(){
     L.direction.set(0,1,0); L.direction.normalize();
 	Device.SetLight(4,L);
 	Device.LightEnable(4,true);
+
 	if (m_TestObject) m_TestObject->OnDeviceCreate();
+    if (m_EditGroup) m_EditGroup->OnDeviceCreate();
 }
 
 void CParticleTools::OnDeviceDestroy(){
+    if (m_EditGroup) m_EditGroup->OnDeviceDestroy();
 	if (m_TestObject) m_TestObject->OnDeviceDestroy();
 }
 

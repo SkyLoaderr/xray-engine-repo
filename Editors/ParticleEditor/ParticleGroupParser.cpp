@@ -8,41 +8,6 @@
 #include "engine/particles/papi.h"
 #include "engine/particles/general.h"
 
-xr_token					al_command_token	[ ]={
-	{ "pAvoid",				PAAvoidID			},			
-	{ "pBounce",			PABounceID			},			
-	{ "pCallActionList",	PACallActionListID	},	
-	{ "pCopyVertexB",		PACopyVertexBID		},	
-	{ "pDamping",			PADampingID			},		
-	{ "pExplosion",			PAExplosionID		},		
-	{ "pFollow",			PAFollowID			},			
-    { "pFrame",				PAFrameID			},
-	{ "pGravitate",			PAGravitateID		},		
-	{ "pGravity",			PAGravityID			},		
-	{ "pJet",				PAJetID				},			
-	{ "pKillOld",			PAKillOldID			},		
-	{ "pMatchVelocity",		PAMatchVelocityID	},	
-	{ "pMove",				PAMoveID			},			
-	{ "pOrbitLine",			PAOrbitLineID		},		
-	{ "pOrbitPoint",		PAOrbitPointID		},		
-	{ "pRandomAccel",		PARandomAccelID		},	
-	{ "pRandomDisplace",	PARandomDisplaceID	},	
-	{ "pRandomVelocity",	PARandomVelocityID	},	
-	{ "pRestore",			PARestoreID			},		
-	{ "pSink",				PASinkID			},			
-	{ "pSinkVelocity",		PASinkVelocityID	},	
-	{ "pSource",			PASourceID			},			
-	{ "pSpeedLimit",		PASpeedLimitID		},		
-	{ "pTargetColor",		PATargetColorID		},	
-	{ "pTargetSize",		PATargetSizeID		},
-    { "pTargetRotate",		PATargetRotateID	},
-    { "pTargetRotateD",		PATargetRotateDID	},
-	{ "pTargetVelocity",	PATargetVelocityID	},	
-	{ "pTargetVelocityD",	PATargetVelocityDID	},	
-	{ "pVortex",			PAVortexID			},			
-	{ 0,					0				   	},
-};
-
 xr_token					domain_token		[ ]={
 	{ "PDPoint",	  		PDPoint				},
 	{ "PDLine",	  			PDLine				},
@@ -58,87 +23,94 @@ xr_token					domain_token		[ ]={
 	{ 0,					0				   	},
 };
 
-IC int get_int(LPCSTR src, int idx, int p_cnt, u32& err, int def=0)
+enum PParamType{
+	ptUnknown=-1,
+    ptDomain=0,
+    ptBOOL,
+    ptFloat,
+    ptInt,
+    ptWORD,
+    ptDWORD,
+    ptString,
+};
+xr_token					type_token		[ ]={
+	{ "PDomainEnum",		ptDomain			},
+	{ "BOOL",		  		ptBOOL				},
+	{ "float",		  		ptFloat				},
+	{ "int",		  		ptInt				},
+	{ "WORD",		  		ptWORD				},
+	{ "DWORD",		  		ptDWORD				},
+    { "LPSTR",				ptString			},
+    { "LPCSTR",				ptString			},
+	{ 0,					0				   	},
+};
+
+IC bool get_int(LPCSTR a, int& val)
 {
-	if (idx<p_cnt){
-		string128 a;
-	    _GetItem(src,idx,a,',');
-    	int res = atoi(a);
-        for (int k=0; a[k]; k++){
-        	if (!isdigit(a[k])&&(a[k]!='-')&&(a[k]!='+'))
-        		err |= (1<<idx);
-        }
-        return res;
-    }else return def;
+    for (int k=0; a[k]; k++)
+        if (!isdigit(a[k])&&(a[k]!='-')&&(a[k]!='+'))
+            return false;
+    val = atoi(a);
+    return true;
 }
 
-IC float get_float(LPCSTR src, int idx, int p_cnt, u32& err, float def=0)
+IC bool get_float(LPCSTR a, float& val)
 {
-	if (idx<p_cnt){
-		string128 a;
-	    _GetItem(src,idx,a,',');
-    	float res = atof(a);
-        for (int k=0; a[k]; k++){
-        	if (!isdigit(a[k])&&(a[k]!='.')&&(a[k]!='-')&&(a[k]!='+'))
-        		err |= (1<<idx);
-        }
-        return res;
-    }else return def;
+	if (strstr(a,"P_MAXFLOAT")) return P_MAXFLOAT;
+	if (strstr(a,"P_EPS")) return P_EPS;
+    for (int k=0; a[k]; k++){
+        if (!isdigit(a[k])&&(a[k]!='.')&&(a[k]!='-')&&(a[k]!='+')&&(a[k]!='f')&&(a[k]!='F'))
+            return false;
+    }
+    val = atof(a);
+    return true;
 }
 
-IC BOOL get_bool(LPCSTR src, int idx, int p_cnt, u32& err, BOOL def=TRUE)
+IC bool get_bool(LPCSTR a, BOOL& val)
 {
-	if (idx<p_cnt){
-		string128 a;
-	    _GetItem(src,idx,a,',');
-        bool b0 = (0==stricmp(a,"false"));
-        bool b1 = (0==stricmp(a,"true"));
-        if (b0==b1) 
-        	err |= (1<<idx);
-    	return b1;
-    }else return def;
+    bool b0 = (0==stricmp(a,"false"));
+    bool b1 = (0==stricmp(a,"true"));
+    if (b0==b1) return false;
+    val = b1;
+    return true;
 }
 
-IC AnsiString get_string(LPCSTR src, int idx, int p_cnt, u32& err, AnsiString def="")
+IC bool get_string(LPCSTR src, LPSTR val)
 {
-	if (idx<p_cnt){
-		AnsiString a,b;
-	    _GetItem(src,idx,a,',');
-        _GetItem(a.c_str(),1,b,'"');
-    	return b;
-    }else return def;
+    _GetItem(src,1,val,'"');
+   	return src&&src[0];
 }
 
-IC _get_token_ID(xr_token* token_list, LPCSTR name){
+IC int get_token_ID(xr_token* token_list, LPCSTR name){
 	for( int i=0; token_list[i].name; i++ )
 		if( !strcmp(name,token_list[i].name) )
 			return token_list[i].id;
     return -1;
 }
 
-struct SDomain{
-	PDomainEnum	dtype;
-    float 		a[9];
-    SDomain		(){a[0]=0.f;a[1]=0.f;a[2]=0.f;a[3]=0.f;a[4]=0.f;a[5]=0.f;a[6]=0.f;a[7]=0.f;a[8]=0.f;dtype=PDPoint;}
-};
-
-IC bool ParseDomainType(LPCSTR src, SDomain& s, int start_p, u32& err)
+IC bool get_domain_type(LPCSTR src, PDomainEnum& val)
 {
-	string128 dtype,a;
-    _GetItem(src,start_p,dtype,',');
-    int itm_cnt = _GetItemCount(src);
-    if (itm_cnt<start_p) return false;
-    s.dtype = (PDomainEnum)_get_token_ID(domain_token,dtype);
-    if (-1==(int)s.dtype) err |= (1<<start_p);
-    for (int k=start_p+1; k<itm_cnt; k++)
-	    s.a[k-start_p-1] = get_float(src,k,itm_cnt,err);
-    return true;
+    val = (PDomainEnum)get_token_ID(domain_token,src);
+    return val>=0;
 }
 
-#define EXPAND_DOMAIN(D) D.dtype,D.a[0],D.a[1],D.a[2],D.a[3],D.a[4],D.a[5],D.a[6],D.a[7],D.a[8]
+// error constants
+static const int BAD_COMMAND	= 0;
+static const int FEW_PARAMS 	= 1;
+static const int BAD_PARAM	 	= 2;
 
+void ErrMsg(int c, int l, int v, LPCSTR line)
+{
+    switch (c){
+    case BAD_COMMAND: 	ELog.DlgMsg(mtError,"[Error] (%d): Unrecognized command: '%s'",l+1,line); break;
+    case FEW_PARAMS: 	ELog.DlgMsg(mtError,"[Error] Too few parameters in call to '%s'",line); break;
+    case BAD_PARAM: 	ELog.DlgMsg(mtError,"[Error] (%d): Bad parameter '%d' - '%s'",l+1,v,line); break;
+    }
+}
 
 class PFunction{
+public:
+	CParticleGroup*		parent;
 	// command
 	AnsiString 			command;
     // type
@@ -146,40 +118,177 @@ class PFunction{
     	ftState,
         ftAction
     };
-    Type				type
+    Type				type;
     // params
 	struct Param{
-    	enum Type{
-        	ptBOOL,
-            ptFloat,
-            ptInt,
-            ptDomain
-        };
-        Type	type;
+        PParamType		type;
+        AnsiString      hint;
         union{
         	struct{BOOL 		_BOOL;	};
         	struct{float 		_float; };
         	struct{int 			_int;   };
-        	struct{PDomainEnum 	_domain;};
+        	struct{PDomainEnum	_domain;};
+        	struct{string128	_string;};
+            LPVOID		data;
         };
     };
     int 				req_params;
     DEFINE_VECTOR(Param,ParamVec,ParamIt);
     ParamVec			params;
 public:    
-	int					LoadTemplate(const AnsiString& line);
-    int					Parse		(const AnsiString& line); // err_code
-    const AnsiString&	Command		(){return command;}
-    const Param&		Param		(int num){R_ASSERT(num<params.size()); return params[num];}
+						PFunction	(){req_params=-1;parent=0;}
+	bool				LoadTemplate(const AnsiString& line)
+    {
+        AnsiString 		pms;
+        _GetItem		(line.c_str(),0,command,'(');
+        _GetItem		(line.c_str(),1,pms,'(');
+        _GetItem		(pms.c_str(),0,pms,')');
+        bool bRes		= true;
+        int p_cnt 		= _GetItemCount(pms.c_str());
+        for (int k=0; k<p_cnt; k++){
+	        AnsiString 	pm,t,v,d;
+        	params.push_back(Param());
+            Param& P	= params.back();
+        	_GetItem	(pms.c_str(),k,pm);
+            _GetItem	(pm.c_str(),0,t,' ');								R_ASSERT(!t.IsEmpty());
+            P.type 		= (PParamType)get_token_ID(type_token,t.c_str());	
+            R_ASSERT2(P.type!=ptUnknown,"Unknown PParamType!");
+            _GetItems	(pm.c_str(),1,1000,v,' ');
+            if (_GetItemCount(v.c_str(),'=')==2){
+	            _GetItem	(v.c_str(),0,P.hint,'=');
+    	        _GetItem	(v.c_str(),1,d,'=');
+            }else{
+	            P.hint	= v;
+            }
+            if (!d.IsEmpty()){
+                switch(P.type){
+                case ptDomain:	bRes=get_domain_type(d.c_str(),P._domain);	break;
+                case ptBOOL:    bRes=get_bool(d.c_str(),P._BOOL);			break;
+                case ptFloat:	bRes=get_float(d.c_str(),P._float); 		break;
+                case ptInt:
+                case ptWORD:
+                case ptDWORD:	bRes=get_int(d.c_str(),P._int); 			break;
+                case ptString:	bRes=get_string(d.c_str(),P._string);		break;
+                }
+            }else{
+            	req_params = k+1;
+            }
+            if (!bRes){ 
+            	ErrMsg(BAD_PARAM,0,k,d.c_str());
+            	break;
+            }
+        }
+        return bRes;
+    }
+    bool				Parse		(int l, const AnsiString& line)
+    {
+        AnsiString 		pms,pm;
+        _GetItem		(line.c_str(),1,pms,'(');
+        _GetItem		(pms.c_str(),0,pms,')');
+        bool bRes		= true;
+        int p_cnt 		= _GetItemCount(pms.c_str());
+        if (p_cnt<req_params){
+        	ErrMsg		(FEW_PARAMS,l,0,line.c_str());
+        	return false;
+        }
+        for (int k=0; k<p_cnt; k++){
+            Param& P	= params[k];
+        	_GetItem	(pms.c_str(),k,pm);
+            switch(P.type){
+            case ptDomain:	bRes=get_domain_type(pm.c_str(),P._domain);	break;
+            case ptBOOL:    bRes=get_bool(pm.c_str(),P._BOOL);			break;
+            case ptFloat:	bRes=get_float(pm.c_str(),P._float); 		break;
+            case ptInt:
+            case ptWORD:
+            case ptDWORD:	bRes=get_int(pm.c_str(),P._int); 			break;
+            case ptString:	bRes=get_string(pm.c_str(),P._string);		break;
+            }
+            if (!bRes){ 
+            	ErrMsg(BAD_PARAM,l,k,pm.c_str());
+            	break;
+            }
+        }
+        return bRes;
+    }
+    int p_num;
+    #define B params[p_num=0]._BOOL
+    #define F params[p_num=0]._float
+    #define I params[p_num=0]._int
+    #define D params[p_num=0]._domain,F,F,F,F,F,F,F,F,F
+    #define S params[p_num=0]._string
+    #define b params[p_num++]._BOOL
+    #define f params[p_num++]._float
+    #define i params[p_num++]._int
+    #define d params[p_num++]._domain,F,F,F,F,F,F,F,F,F
+    #define s params[p_num++]._string
+    void Execute()
+    {
+    	// state
+		if (command==	  "pColor")				pColor			(F,f,f,f);
+        else if (command=="pColorD")			pColorD			(F,d);
+        else if (command=="pVelocity")			pVelocity		(F,f,f);
+        else if (command=="pVelocityD")			pVelocityD		(D);
+        else if (command=="pVertexB")			pVertexB		(F,f,f);
+        else if (command=="pVertexBD")			pVertexBD		(D);
+        else if (command=="pVertexBTracks")		pVertexBTracks	(B);
+        else if (command=="pSize")				pSize			(F,f,f);
+        else if (command=="pSizeD")				pSizeD   		(D);
+        else if (command=="pRotate")			pRotate			(F,f,f);
+        else if (command=="pRotateD")			pRotateD 		(D);
+        else if (command=="pStartingAge")		pStartingAge   	(F,f);
+        else if (command=="pTimeStep")			pTimeStep	   	(F);
+        else if (command=="pSetMaxParticles")	pSetMaxParticles(F);
+        else if (command=="pSprite")			parent->pSprite	(S,s);
+        else if (command=="pFrameSet")			parent->pFrameSet(I,i,i,i);
+        // actions
+        else if (command=="pAnimate")			pAnimate		(B,b,b,i,f);		
+        else if (command=="pAvoid")				pAvoid			(F,f,f,d);
+        else if (command=="pBounce")			pBounce			(F,f,f,d);
+//        else if (command=="pCallActionList")	pCallActionList	();
+        else if (command=="pCopyVertexB")		pCopyVertexB	(B,b);
+        else if (command=="pDamping")			pDamping		(F,f,f,f,f);
+        else if (command=="pExplosion")			pExplosion		(F,f,f,f,f,f,f,f);
+        else if (command=="pFollow")			pFollow			(F,f,f);
+        else if (command=="pGravitate")			pGravitate		(F,f,f);
+        else if (command=="pGravity")			pGravity		(F,f,f);
+        else if (command=="pJet")				pJet			(F,f,f,f,f,f);
+        else if (command=="pKillOld")			pKillOld		(F,b);
+        else if (command=="pMatchVelocity")		pMatchVelocity	(F,f,f);
+        else if (command=="pMove")				pMove			();
+        else if (command=="pOrbitLine")			pOrbitLine		(F,f,f,f,f,f,f,f,f);
+        else if (command=="pOrbitPoint")		pOrbitPoint		(F,f,f,f,f,f);
+        else if (command=="pRandomAccel")		pRandomAccel	(D);
+        else if (command=="pRandomDisplace")	pRandomDisplace	(D);
+        else if (command=="pRandomVelocity")	pRandomVelocity	(D);
+        else if (command=="pRestore")			pRestore		(F);
+        else if (command=="pSink")				pSink			(B,d);
+        else if (command=="pSinkVelocity")		pSinkVelocity	(B,d);
+        else if (command=="pSource")			pSource			(F,d);
+        else if (command=="pSpeedLimit")		pSpeedLimit		(F,f);
+        else if (command=="pTargetColor")		pTargetColor	(F,f,f,f,f);
+        else if (command=="pTargetSize")		pTargetSize		(F,f,f,f,f,f);
+        else if (command=="pTargetRotate")		pTargetRotate	(F,f,f,f);
+        else if (command=="pTargetRotateD")		pTargetRotateD	(F,d);
+        else if (command=="pTargetVelocity")	pTargetVelocity	(F,f,f,f);
+        else if (command=="pTargetVelocityD")	pTargetVelocityD(F,d);
+        else if (command=="pVortex")			pVortex			(F,f,f,f,f,f,f,f,f);
+    }
+    #undef B
+    #undef F
+    #undef I
+    #undef D
+    #undef S
+    #undef b
+    #undef f
+    #undef i
+    #undef d
+    #undef s
 };
 
-DEFINE_MAP(AnsiString,PFunction,CTMap,CTPairIt);
+DEFINE_MAP(AnsiString,PFunction,PFuncMap,PFuncPairIt);
+DEFINE_VECTOR(PFunction,PFuncVec,PFuncIt);
 
-static CTMap CommandTemplates;
-
-// error constants
-static const int BAD_COMMAND	= (1<<31);
-static const int FEW_PARAMS 	= (1<<30);
+static PFuncMap CommandTemplates;
 
 static LPCSTR PStateCommands[]={
 	"pRotate(float rot_x, float rot_y=0.f, float rot_z=0.f);",
@@ -196,10 +305,14 @@ static LPCSTR PStateCommands[]={
 	"pVertexBD(PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",
 	"pVertexBTracks(BOOL track_vertex = TRUE);",
 	"pSetMaxParticles(int max_count);",
+// our     
+    "pSprite(LPCSTR sh_name, LPCSTR tex_name);",
+    "pFrameSet(WORD texture_width=128, WORD texture_height=128, WORD frame_width=32, WORD frame_height=32);",
+    0
 };
 
-static LPCSTR PActionCommnds[]={
-	"pFrame(BOOL animated=FALSE, BOOL random_frame=FALSE, BOOL random_playback=FALSE, WORD frame_count=16, float speed=24.f);",
+static LPCSTR PActionCommands[]={
+	"pAnimate(BOOL animated=FALSE, BOOL random_frame=FALSE, BOOL random_playback=FALSE, WORD frame_count=16, float speed=24.f);",
 	"pAvoid(float magnitude, float epsilon, float look_ahead,  PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",
 	"pBounce(float friction, float resilience, float cutoff, PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",
 	"pCopyVertexB(BOOL copy_pos = TRUE, BOOL copy_vel = FALSE);",
@@ -230,21 +343,77 @@ static LPCSTR PActionCommnds[]={
 	"pTargetVelocity(float vel_x, float vel_y, float vel_z, float scale);",
 	"pTargetVelocityD(float scale, PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",
 	"pVertex(float x, float y, float z);",
-	"pVortex(float center_x, float center_y, float center_z, float axis_x, float axis_y, float axis_z, float magnitude = 1.0f, float epsilon = P_EPS, float max_radius = P_MAXFLOAT);"
+	"pVortex(float center_x, float center_y, float center_z, float axis_x, float axis_y, float axis_z, float magnitude = 1.0f, float epsilon = P_EPS, float max_radius = P_MAXFLOAT);",
+    0
 };
 
-bool InitCommandTemplates(CTMap& CommandTemplates)
+bool InitCommandTemplates(PFuncMap& ct)
 {
+    bool bRes=true;
+    do{
+    	int k;
+        // load state commands
+        for (k=0; PStateCommands[k]; k++){
+            PFunction F; F.type = PFunction::ftState;
+            if (!(bRes=F.LoadTemplate(PStateCommands[k]))) break;
+            ct[F.command] = F;
+        }
+	    if (!bRes) break;
+		// load action commands
+        for (k=0; PActionCommands[k]; k++){
+            PFunction F; F.type = PFunction::ftAction;
+            if (!(bRes=F.LoadTemplate(PActionCommands[k]))) break;
+            ct[F.command] = F;
+        }
+    }while(0);
+    if (!bRes) ct.clear();
+    return bRes;
 }
 
 void CParticleGroup::ParseCommandList(LPCSTR txt)
 {
 	// load templates
-	if (CommandTemplates.empty()) R_ASSERT(InitCommandTemplates(CommandTemplates)));
-    
+	if (CommandTemplates.empty()) R_ASSERT(InitCommandTemplates(CommandTemplates));
+
     // parse
     AStringVec 			lst;
-    SequenceToList		();//lst,txt,';');
+    SequenceToList		(lst,txt,';');
+    
+	static PFuncVec 	Commands;
+    Commands.clear		();
+    bool bRes=true;
+	for (int i_line=0; i_line<(int)lst.size(); i_line++){
+		AStringIt it	= lst.begin() + i_line;
+        AnsiString		command;
+        _GetItem		(it->c_str(),0,command,'(');
+        // comment
+        if (1==command.Pos("//")) continue;
+        // find command in templates
+    	PFuncPairIt pfp_it = CommandTemplates.find(command);
+        if (pfp_it==CommandTemplates.end()){
+        	ErrMsg		(BAD_COMMAND,i_line,0,it->c_str());
+            bRes		= false;
+            break;
+        }
+        Commands.push_back(PFunction());
+		PFunction& F	= Commands.back();
+        F				= pfp_it->second;
+        F.parent		= this;
+        // parse params
+        if (!(bRes=F.Parse(i_line,it->c_str()))) break;
+    }
+    if (!bRes) return;
+    // execute commands
+    PFuncIt pf_it;
+    // at first state commands
+    for (pf_it=Commands.begin(); pf_it!=Commands.end(); pf_it++)
+    	if (PFunction::ftState==pf_it->type) pf_it->Execute();             
+    // at next action commands
+	pNewActionList	(m_HandleActionList);
+    for (pf_it=Commands.begin(); pf_it!=Commands.end(); pf_it++)
+    	if (PFunction::ftAction==pf_it->type) pf_it->Execute();             
+	pEndActionList	();
+/*    
 
     int err_code		= 0;
 	bool bBadCommand	= false;
@@ -474,5 +643,6 @@ void CParticleGroup::ParseCommandList(LPCSTR txt)
 		pNewActionList(m_HandleActionList);
         pEndActionList();
     }
+*/
 }
 
