@@ -108,7 +108,14 @@ class DumbSoldier extends Soldier
 }
 
 
-//////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////
+class Trigger 
+{
+public:
+	bool	bActive;
+	bool	bSignaled;
+};
+
 class TriggerAttention		: public Trigger
 {
 public:
@@ -118,7 +125,8 @@ public:
 		foreach if isNeutral	signal();
 	}
 };
-class TriggerTime			: public Trigger
+
+class TriggerTimer			: public Trigger
 {
 public:
 	void	update			()
@@ -127,12 +135,52 @@ public:
 	}
 };
 
-
 class SoldierController		: public Controller
 {
-	vector<Trigger*>		triggers;
-	void triggered
+	TriggerSight*			tEnemy;
+	TriggerAttention*		tAttention;
+	TriggerNear*			tInterest;
+	TriggerTimer*			tIdle;
+	TriggerTimer*			tToilet;
+	TriggerNear*			tAgression;
+
+	void					triggered		()
+	{
+		if (tEnemy)							set_normal_ai	();
+		if (tAttention->bSignaled)			set_state		state_attention	();
+		if (tInterest->bSignaled)			set_state		state_attention	();
+	}
+	void					export			()
+	{
+		add_trigger();
+	}
+	void					state_attention	()	
 	{
 	}
-	void state
+	void					state_interest	()
+	{
+	}
+	void					state_patrol	()
+	{
+	}
+	void					state_idle		()
+	{
+	}
 };
+
+/*
+FSM:
+	condition(states,triggers,variables)	code();
+	condition(states,triggers,variables)	code();
+	condition(states,triggers,variables)	code();
+	condition(states,triggers,variables)	code();
+
+states: 
+	from where it can go to us
+
+triggers:
+	boolean - analyzers/reactors to environment, who is near, who is seen, time
+
+variables:
+	can be modified inside code to set something or somehow communicate between states
+*/
