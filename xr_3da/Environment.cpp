@@ -19,11 +19,28 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-ENGINE_API float	psGravity = 20.f;
-ENGINE_API Flags32	psEnvFlags= {effSunGlare};
+ENGINE_API float	psGravity	= 20.f;
+ENGINE_API Flags32	psEnvFlags	= {effSunGlare};
+
+class CBlender_skybox		: public IBlender  
+{
+public:
+	virtual		LPCSTR		getComment()	{ return "INTERNAL: combiner";	}
+	virtual		BOOL		canBeDetailed()	{ return FALSE;	}
+	virtual		BOOL		canBeLMAPped()	{ return FALSE;	}
+
+	virtual		void		Compile			(CBlender_Compile& C)
+	{
+		C.r_Pass			("null",			"r1_sky2",		FALSE,	TRUE, FALSE);
+		C.r_Sampler			("s_sky0",			"null",			D3DTADDRESS_CLAMP,D3DTEXF_LINEAR,D3DTEXF_NONE,D3DTEXF_LINEAR);
+		C.r_Sampler			("s_sky1",			"null",			D3DTADDRESS_CLAMP,D3DTEXF_LINEAR,D3DTEXF_NONE,D3DTEXF_LINEAR);
+		C.r_End				();
+	}
+};
 
 CEnvironment::CEnvironment	()
 {
+	sh_2sky					= 
 }
 
 CEnvironment::~CEnvironment	()
