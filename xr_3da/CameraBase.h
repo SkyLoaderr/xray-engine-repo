@@ -37,6 +37,7 @@ public:
 					CCameraBase		( CObject* p, BOOL rlink );
 	virtual			~CCameraBase	( );
 
+	void			SetParent		( CObject* p ){parent=p;}
 	virtual	void	OnActivate		( CCameraBase* old_cam ){;}
 	virtual	void	OnDeactivate	( ){;}
 	virtual void	Move			( int cmd, float val=0 ) {;}
