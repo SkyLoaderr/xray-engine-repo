@@ -82,7 +82,18 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 	// c) Should not cast shadows
 	// d) Should be rendered to accumulation buffer in the second pass
 	if (sh->Flags.bEmissive) {
-		mapEmissive_Node* N		= mapEmissive.insertInAnyWay	(distSQ);
+		mapSorted_Node* N		= mapEmissive.insertInAnyWay	(distSQ);
+		N->val.ssa				= SSA;
+		N->val.pObject			= RI.val_pObject;
+		N->val.pVisual			= pVisual;
+		N->val.Matrix			= *RI.val_pTransform;
+		N->val.se				= &*pVisual->hShader->E[4];		// 4=L_special
+	}
+	// Distortive geometry should be marked and R2 special-cases it
+	// a) Allow to optimize RT order
+	// d) Should be rendered to special distort buffer in another pass
+	if (sh->Flags.bEmissive) {
+		mapSorted_Node* N		= mapDistort.insertInAnyWay	(distSQ);
 		N->val.ssa				= SSA;
 		N->val.pObject			= RI.val_pObject;
 		N->val.pVisual			= pVisual;
