@@ -140,11 +140,28 @@
     <!-- FREEDOM ATTACK ECOLOG -->
     <info_portion id="bar_freedom_attack_ecolog"></info_portion>
     
+    <!-- BAR BARMEN JOB -->
+        <!-- FIND DOCUMENTS -->
+    <info_portion id="bar_darklab_document_start">
+		<action>level_tasks.notify_new_task</action>
+    </info_portion>
+	<info_portion id="bar_darklab_document_gain"></info_portion>
+	<info_portion id="bar_darklab_document_done"></info_portion>
     
+		 <!-- DECODING DOCUMENTS -->
+    <info_portion id="bar_decoding_start">
+		<action>level_tasks.notify_new_task</action>
+    </info_portion>
+	<info_portion id="yan_decoding_give"></info_portion>
+	<info_portion id="yan_decoding_gain"></info_portion>
+    <info_portion id="bar_decoding_done"></info_portion>
     
-    
-    
-    
-    
+		<!-- DEACTIVATE RADAR -->
+    <info_portion id="bar_deactivate_radar_start">
+		<action>level_tasks.notify_new_task</action>
+    </info_portion>
+	<info_portion id="bar_deactivate_radar_done"></info_portion>
+
+     
     
 </game_information_portions>
