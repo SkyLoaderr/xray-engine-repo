@@ -1,17 +1,9 @@
 #include "stdafx.h"
-#define SHAREDLIBIMPORT __declspec (dllimport)
-#define SHAREDLIBEXPORT __declspec (dllexport)
-#include <include/ode/common.h>
-#include <include/ode/geom.h>
-#include <include/ode/rotation.h>
-#include <include/ode/odemath.h>
-#include <ode/src/geom_internal.h>
-
 #include "dTriCollideK.h"
-#include "../dBoxGeomA.h"
+#include "../dCylinder/dCylinder.h"
 #define CONTACT(Ptr, Stride) ((dContactGeom*) (((byte*)Ptr) + (Stride)))
-extern int dCylinderClass;
 
+#define NUMC_MASK (0xffff)
 
 extern "C" int dSortedTriBox (
 						const dReal* triSideAx0,const dReal* triSideAx1,
@@ -20,20 +12,21 @@ extern "C" int dSortedTriBox (
 						const dReal* v1,
 						const dReal* v2,
 						dReal dist,
-						const dxGeom *o1, const dxGeom *o2,
+						dxGeom *o1, dxGeom *o2,
 						int flags, dContactGeom *contact, int skip
 						)
 {
 
   dIASSERT (skip >= (int)sizeof(dContactGeom));
-  dIASSERT ((o1->_class->num == dBoxClass)||(o1->_class->num == dBoxAClass));
+  dIASSERT (dGeomGetClass(o1) == dBoxClass);
   
-  dxBox *box = (dxBox*) CLASSDATA(o1);
+
   
-  const dReal *R = o1->R;
-  const dReal* p=o1->pos;
-  const dVector3 hside={box->side[0]/2.f,box->side[1]/2.f,box->side[2]/2.f,-1};
- // dVector3 triSideAx2={v0[0]-v2[0],v0[1]-v2[1],v0[2]-v2[2]};
+  const dReal *R = dGeomGetRotation(o1);
+  const dReal* p=dGeomGetPosition(o1);
+  dVector3 hside;
+  dGeomBoxGetLengths(o1,hside);
+  hside[0]/=2.f;hside[1]/=2.f;hside[2]/=2.f;
     // find number of contacts requested
   int maxc = flags & NUMC_MASK;
   if (maxc < 1) maxc = 1;
@@ -42,8 +35,6 @@ extern "C" int dSortedTriBox (
   int code=0;
   dReal outDepth;
   char signum;//,sn;
-  //sepparation along tri plane normal;
-//dNormalize3(triAx);
 
 
  dReal sidePr=
@@ -51,7 +42,7 @@ extern "C" int dSortedTriBox (
 	dFabs(dDOT14(triAx,R+1)*hside[1])+
 	dFabs(dDOT14(triAx,R+2)*hside[2]);
 
-//dReal dist=dDOT(triAx,v0)-dDOT(triAx,p);
+
 dReal depth=sidePr-dist;//dFabs(dist);
 outDepth=depth;
 signum=-1;//dist<0.f ? -1 : 1;
@@ -61,152 +52,6 @@ if(depth<0.f) return 0;
 
 unsigned int i;
 
-//dVector3 axis,outAx;
-/*
-if(dist<0.f) goto toch;
-//if(dist>0.f){
-bool isPdist0,isPdist1,isPdist2;
-bool test0=true,test1=true,test2=true;
-bool test00,test01,test02;
-bool test10,test11,test12;
-bool test20,test21,test22;
-
-dReal depth0,depth1,depth2;
-dReal dist0,dist1,dist2;
-
-
-
-#define CMP(sd,c)	\
-if(depth0>depth1)\
-		if(depth0>depth2) \
-			if(test0##sd){\
-			  if(test0)\
-				if(depth0<outDepth)\
-					{\
-					outDepth=depth0;\
-					signum=-sn;\
-					code=c;\
-					}\
-			}\
-			else return 0;\
-		else\
-			if(test2##sd){\
-			  if(test2)\
-				if(depth2<outDepth) \
-					{\
-					outDepth=depth2;\
-					signum=-sn;\
-					code=c+2;\
-					}\
-			}\
-			else return 0;\
-else\
-		if(depth1>depth2)\
-			if(test1##sd){\
-			  if(test1)\
-				if(depth1<outDepth) \
-					{\
-					outDepth=depth1;\
-					signum=-sn;\
-					code=c+1;\
-					}\
-			}\
-			else return 0;\
-\
-		else\
-			if(test2##sd){\
-			  if(test2)\
-				if(depth2<outDepth) \
-					{\
-					outDepth=depth2;\
-					signum=sn;\
-					code=c+2;\
-					}\
-			}\
-			else return 0;
-
-
-#define TEST(sd, c) \
-\
-sn=dDOT14(triAx,R+sd)>0.f ? 1 : -1;\
-dist0=-sn*(dDOT14(v0,R+sd)-dDOT14(p,R+sd));\
-dist1=-sn*(dDOT14(v1,R+sd)-dDOT14(p,R+sd));\
-dist2=-sn*(dDOT14(v2,R+sd)-dDOT14(p,R+sd));\
-\
-isPdist0=dist0>0.f;\
-isPdist1=dist1>0.f;\
-isPdist2=dist2>0.f;\
-\
-depth0=hside[sd]-dist0;\
-depth1=hside[sd]-dist1;\
-depth2=hside[sd]-dist2;\
-test0##sd = depth0>0.f;\
-test1##sd = depth1>0.f;\
-test2##sd = depth2>0.f;\
-\
-test0 =test0 && test0##sd;\
-test1 =test1 && test1##sd;\
-test2 =test2 && test2##sd;\
-\
-if(isPdist0==isPdist1 && isPdist1==isPdist2)\
-{\
-CMP(sd,c)\
-}
-
-TEST(0,1)
-TEST(1,4)
-TEST(2,7)
-
-#undef CMP
-#undef TEST
-
-
-#define TEST(ax,ox,c) \
-for(i=0;i<3;i++){\
-	dCROSS114(axis,=,triSideAx##ax,R+i);\
-	dNormalize3(axis);\
-	sn=dDOT(triAx,axis)>0.f ? 1 : -1;\
-	int ix1=(i+1)%3;\
-	int ix2=(i+2)%3;\
-	sidePr=\
-		dFabs(dDOT14(axis,R+ix1)*hside[ix1])+\
-		dFabs(dDOT14(axis,R+ix2)*hside[ix2]);\
-\
-	dist##ax=-sn*(dDOT(v##ax,axis)-dDOT(p,axis));\
-	dist##ox=-sn*(dDOT(v##ox,axis)-dDOT(p,axis));\
-\
-isPdist##ax=dist##ax>0.f;\
-isPdist##ox=dist##ox>0.f;\
-if(isPdist##ax != isPdist##ox) continue;\
-\
-depth##ax=sidePr-dist##ax;\
-depth##ox=sidePr-dist##ox;\
-	if(depth##ax>depth##ox){\
-			if(depth##ax>0.f){\
-				if(depth##ax<outDepth) \
-					{\
-						signum=-sn;\
-						outDepth=depth##ax;\
-						outAx[0]=axis[0];\
-						outAx[1]=axis[1];\
-						outAx[2]=axis[2];\
-						code=c+i;\
-					}\
-				}\
-			else return 0;\
-	}\
-}
-
-TEST(0,2,10)
-TEST(1,0,13)
-TEST(2,1,16)
-
-#undef TEST
-//}
-//////////////////////////////////////////////////////////////////////
-///if we get to this poit tri touches box
-toch:;
-*/
 dVector3 norm,pos;
 unsigned int ret=1;
 
@@ -304,115 +149,7 @@ if (maxc == 1) goto done;
 ////////////////////////////////////////////////////////////// end (from geom.cpp dCollideBP)
   
 	}
-/*
-else if(code<=9)
-{
-	switch((code-1)%3){
-	case 0:
-	pos[0]=v0[0];
-	pos[1]=v0[1];
-	pos[2]=v0[2];
-	break;
-	case 1:
-	pos[0]=v1[0];
-	pos[1]=v1[1];
-	pos[2]=v1[2];
-	break;
-	case 2:
-	pos[0]=v2[0];
-	pos[1]=v2[1];
-	pos[2]=v2[2];
-	break;
-	}
-switch((code-1)/3){
-	case 0:
-		{
-		norm[0]=R[0]*signum;
-		norm[1]=R[4]*signum;
-		norm[2]=R[8]*signum;
-		}
-	break;
 
-	case 1:	
-		{
-		norm[0]=R[1]*signum;
-		norm[1]=R[5]*signum;
-		norm[2]=R[9]*signum;
-		}
-	break;
-	case 2:
-		{
-		norm[0]=R[2]*signum;
-		norm[1]=R[6]*signum;
-		norm[2]=R[10]*signum;
-		}
-	break;
-	}
-}
-else {
-	norm[0]=outAx[0]*signum;
-	norm[1]=outAx[1]*signum;
-	norm[2]=outAx[2]*signum;
-
-
-
-/////////////
- 
-  dReal Q1 = -signum*dDOT14(outAx,R+0);
-  dReal Q2 = -signum*dDOT14(outAx,R+1);
-  dReal Q3 = -signum*dDOT14(outAx,R+2);
-  dReal A1 = 2.f*hside[0] * Q1;
-  dReal A2 = 2.f*hside[1] * Q2;
-  dReal A3 = 2.f*hside[2] * Q3;
-  pos[0]=p[0];
-  pos[1]=p[1];
-  pos[2]=p[2];
-
-#define FOO(i,op) \
-  pos[0] op hside[i] * R[0+i]; \
-  pos[1] op hside[i] * R[4+i]; \
-  pos[2] op hside[i] * R[8+i];
-#define BAR(i,iinc) if (A ## iinc > 0) { FOO(i,-=) } else { FOO(i,+=) }
-  BAR(0,1);
-  BAR(1,2);
-  BAR(2,3);
-#undef FOO
-#undef BAR
-////////////////
-
-
-switch((code-10)/3){
-
-case 0:
-			CrossProjLine1(v0,triSideAx0,pos,R+(code-10),pos);
-			if(pos[0]==dInfinity){
-									pos[0]=(v1[0]+v0[0])/2.f;
-									pos[1]=(v1[1]+v0[1])/2.f;
-									pos[2]=(v1[2]+v0[2])/2.f;
-								}
-break;
-
-case 1:
-			CrossProjLine1(v1,triSideAx1,pos,R+(code-13),pos);
-			if(pos[0]==dInfinity){
-									pos[0]=(v2[0]+v1[0])/2.f;
-									pos[1]=(v2[1]+v1[1])/2.f;
-									pos[2]=(v2[2]+v1[2])/2.f;
-									}
-break;
-
-case 2:
-			CrossProjLine1(v0,triSideAx2,pos,R+(code-16),pos);
-			if(pos[0]==dInfinity){
-									pos[0]=(v2[0]+v0[0])/2.f;
-									pos[1]=(v2[1]+v0[1])/2.f;
-									pos[2]=(v2[2]+v0[2])/2.f;
-								}
-}
-}
-
-
-*/
 
 contact->pos[0] = pos[0];
 contact->pos[1] = pos[1];
@@ -437,19 +174,21 @@ contact->depth = outDepth;
 }
 extern "C" int dTriBox (
 						const dReal* v0,const dReal* v1,const dReal* v2,
-						const dxGeom *o1, const dxGeom *o2,
+						dxGeom *o1, dxGeom *o2,
 						int flags, dContactGeom *contact, int skip
 						)
 {
 
   dIASSERT (skip >= (int)sizeof(dContactGeom));
-  dIASSERT ((o1->_class->num == dBoxClass)||(o1->_class->num == dBoxAClass));
+  dIASSERT (dGeomGetClass(o1) == dBoxClass);
   
-  dxBox *box = (dxBox*) CLASSDATA(o1);
   
-  const dReal *R = o1->R;
-  const dReal* p=o1->pos;
-  const dVector3 hside={box->side[0]/2.f,box->side[1]/2.f,box->side[2]/2.f,-1};
+  
+  const dReal *R = dGeomGetRotation(o1);
+  const dReal* p=dGeomGetPosition(o1);
+  dVector3 hside;
+  dGeomBoxGetLengths(o1,hside);
+  hside[0]/=2.f;hside[1]/=2.f;hside[2]/=2.f;
 
     // find number of contacts requested
   int maxc = flags & NUMC_MASK;
@@ -978,7 +717,7 @@ bool inline cylinderCrossesLine(const dReal* p,const dReal* R,dReal hlz,
 
 extern "C" int dTriCyl (
 						const dReal* v0,const dReal* v1,const dReal* v2,
-						const dxGeom *o1, const dxGeom *o2,
+						dxGeom *o1, dxGeom *o2,
 						int flags, dContactGeom *contact, int skip
 						
 
@@ -986,15 +725,17 @@ extern "C" int dTriCyl (
 {
 
  // dIASSERT (skip >= (int)sizeof(dContactGeom));
-  dIASSERT (o1->_class->num == dCylinderClass);
+  dIASSERT (dGeomGetClass(o1)== dCylinderClassUser);
   
 
-  dxCylinder *cylinder = (dxCylinder*) CLASSDATA(o1);
   
-  const dReal *R = o1->R;
-  const dReal* p=o1->pos;
-  const dReal radius=cylinder->radius;
-  const dReal hlz=cylinder->lz/2.f;
+  
+  const dReal *R = dGeomGetRotation(o1);
+  const dReal* p=dGeomGetPosition(o1);
+  dReal radius;
+  dReal hlz;
+  dGeomCylinderGetParams(o1,&radius,&hlz);
+  hlz/=2.f;
 
     // find number of contacts requested
   int maxc = flags & NUMC_MASK;

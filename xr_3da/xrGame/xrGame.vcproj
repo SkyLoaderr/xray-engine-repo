@@ -58,7 +58,7 @@
 				OutputFile="x:\xrGame.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="&quot;C:\SDK\odeLast\!ode-dll\lib&quot;"
+				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="x:\xrGame.pdb"
 				ImportLibrary="x:\xrGame.lib"/>
@@ -1384,12 +1384,6 @@
 			</File>
 			<File
 				RelativePath="PhysicsShell.h">
-			</File>
-			<File
-				RelativePath="dBoxGeomA.cpp">
-			</File>
-			<File
-				RelativePath="dBoxGeomA.h">
 			</File>
 			<File
 				RelativePath="dCylinder\dCylinder.cpp">

@@ -1,8 +1,7 @@
 #ifndef EXTENDED_GEOM
 #define EXTENDED_GEOM
-#include <ode\src\objects.h>
-#include <ode\src\geom_internal.h>
 #include "PHObject.h"
+#include <ode/ode.h>
 enum Material {
 weels,
 cardboard,
@@ -50,16 +49,6 @@ struct Triangle {
 	}
 };
 
-struct dxExtendedGeom :public dxGeom{
-dVector3 last_pos;
-bool pushing_neg,pushing_b_neg;
-Triangle neg_tri,b_neg_tri;
-dxExtendedGeom(){
-pushing_neg=false;
-pushing_b_neg=false;
-last_pos[0]=dInfinity;
-}
-};
 
 struct dxGeomUserData {
 dVector3 last_pos;
@@ -71,32 +60,32 @@ CPHObject* ph_object;
 
 inline void dGeomCreateUserData(dxGeom* geom){
 if(!geom) return;
-geom->data=new dxGeomUserData();
-((dxGeomUserData*)geom->data)->pushing_neg=false;
-((dxGeomUserData*)geom->data)->pushing_b_neg=false;
-((dxGeomUserData*)geom->data)->last_pos[0]=dInfinity;
-((dxGeomUserData*)geom->data)->last_pos[1]=dInfinity;
-((dxGeomUserData*)geom->data)->last_pos[2]=dInfinity;
-((dxGeomUserData*)geom->data)->ph_object=NULL;
+dGeomSetData(geom,new dxGeomUserData());
+((dxGeomUserData*)dGeomGetData(geom))->pushing_neg=false;
+((dxGeomUserData*)dGeomGetData(geom))->pushing_b_neg=false;
+((dxGeomUserData*)dGeomGetData(geom))->last_pos[0]=dInfinity;
+((dxGeomUserData*)dGeomGetData(geom))->last_pos[1]=dInfinity;
+((dxGeomUserData*)dGeomGetData(geom))->last_pos[2]=dInfinity;
+((dxGeomUserData*)dGeomGetData(geom))->ph_object=NULL;
 }
 
 inline void dGeomDestroyUserData(dxGeom* geom){
 if(!geom) return;
-if(geom->data) delete geom->data;
-geom->data=0;
+if(dGeomGetData(geom)) delete dGeomGetData(geom);
+dGeomSetData(geom,0);
 }
 
-inline dxGeomUserData* dGeomGetUserData(const dxGeom* geom){
-return (dxGeomUserData*) geom->data;
+inline dxGeomUserData* dGeomGetUserData(dxGeom* geom){
+return (dxGeomUserData*) dGeomGetData(geom);
 }
 
 inline void dGeomUserDataSetFriction(dxGeom* geom,dReal friction){
-((dxGeomUserData*)geom->data)->friction=friction;
+((dxGeomUserData*)dGeomGetData(geom))->friction=friction;
 
 }
 
 inline void dGeomUserDataSetPhObject(dxGeom* geom,CPHObject* phObject){
-((dxGeomUserData*)geom->data)->ph_object=phObject;
+((dxGeomUserData*)dGeomGetData(geom))->ph_object=phObject;
 
 }
 #endif

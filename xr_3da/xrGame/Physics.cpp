@@ -1,13 +1,10 @@
-#define INTERNAL_BUILD
 #include "StdAfx.h"
 #include "PHDynamicData.h"
 #include "Physics.h"
 #include "tri-colliderknoopc/dTriList.h"
 #include "dRay/include/dRay.h"
-#include <ode\src\objects.h>
-#include <ode\src\geom_internal.h>
 #include "ExtendedGeom.h"
-#include "dBoxGeomA.h"
+union dInfBytes dInfinityValue = {{0,0,0x80,0x7f}};
 // #include "contacts.h"
 float friction_table[2]={5000.f,100.f};
 
@@ -22,7 +19,7 @@ static dVector3 RayO;
 
 dWorldID phWorld;
 /////////////////////////////////////
-static void FUNCCALL NearCallback(void* /*data*/, dGeomID o1, dGeomID o2);
+static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2);
 /*
 Log("fgfgfgf","ffff");
 
@@ -569,7 +566,7 @@ dBodyAddRelTorque(Bodies[0], 300, 0, 0);
 void CPHWorld::Create(){
 
 	phWorld = dWorldCreate();
-	Space = dHashSpaceCreate();
+	Space = dHashSpaceCreate(0);
 	ContactGroup = dJointGroupCreate(0);		
 	dWorldSetGravity(phWorld, 0,-2.f*9.81f, 0);//-2.f*9.81f
 	Mesh.Create(Space,phWorld);
@@ -730,7 +727,7 @@ void CPHWorld::Step(dReal step)
 */
 }
 
-static void FUNCCALL NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
+static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 		const ULONG N = 100;
 		dContact contacts[N];
 		// get the contacts up to a maximum of N contacts
@@ -810,7 +807,7 @@ else
         contacts[i].surface.mode =dContactApprox1; //dContactBounce|dContactApprox1;
 		contacts[i].surface.mu =1.f;// 5000.f;
 		bool pushing_neg=false;
-		if(contacts[i].geom.g2->data){ 
+		if(dGeomGetUserData(contacts[i].geom.g2)){ 
 			//contacts[i].surface.mu=dGeomGetUserData(contacts[i].geom.g2)->friction;
 			if(dGeomGetClass(contacts[i].geom.g2)==dGeomTransformClass){
 				const dGeomID geom=dGeomTransformGetGeom(contacts[i].geom.g2);
@@ -827,7 +824,7 @@ else
 					continue;
 			}
 		}
-		if(contacts[i].geom.g1->data){ 
+		if(dGeomGetUserData(contacts[i].geom.g1)){ 
 			//contacts[i].surface.mu=dGeomGetUserData(contacts[i].geom.g1)->friction;
 			if(dGeomGetClass(contacts[i].geom.g1)==dGeomTransformClass){
 				const dGeomID geom=dGeomTransformGetGeom(contacts[i].geom.g1);
@@ -895,7 +892,7 @@ void CPHElement::			add_Box		(const Fobb&		V){
 
 void CPHElement::			create_Box		(Fobb&		V){
 														dGeomID geom,trans;
-														geom=dCreateBoxA(0,
+														geom=dCreateBox(0,
 																		V.m_halfsize.x*2.f,
 																		V.m_halfsize.y*2.f,
 																		V.m_halfsize.z*2.f);

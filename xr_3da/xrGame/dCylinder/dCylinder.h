@@ -3,7 +3,7 @@
 #define dCylinder_h
 
 struct dxCylinder;
-extern int dCylinderClass;
+extern int dCylinderClassUser;
 
 
 dxGeom *dCreateCylinder (dSpaceID space, dReal r, dReal lz);

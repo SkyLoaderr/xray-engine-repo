@@ -1,6 +1,6 @@
 #include "stdafx.h"
 // Ripped from Magic Software
-#include "ode\ode.h"
+
 
 
 #include "Include\dRay.h"

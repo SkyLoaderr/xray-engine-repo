@@ -1,11 +1,11 @@
-#include "stdafx.h"
 
+#include "stdafx.h"
 #include "Include/dRay.h"
 #include "dxRay.h"
 
-int dRayClass = -1;
+int dRayClassUser = -1;
 
-void FUNCCALL dAABBRay(dxGeom* Ray, dReal AABB[6]){
+void dAABBRay(dxGeom* Ray, dReal AABB[6]){
 
 	dVector3 Start, End;
 	dGeomRayGet(Ray, Start, End);
@@ -81,7 +81,7 @@ void FUNCCALL dAABBRay(dxGeom* Ray, dReal AABB[6]){
 
 
 
-dColliderFn* FUNCCALL dRayColliderFn(int num){
+dColliderFn* dRayColliderFn(int num){
 
 	//if (num == dPlaneClass) return (dColliderFn*)&dCollidePR;
 
@@ -97,9 +97,9 @@ dColliderFn* FUNCCALL dRayColliderFn(int num){
 
 
 
-dxGeom*  FUNCCALL dGeomCreateRay(dSpaceID space, dReal Length){
+dxGeom*  dGeomCreateRay(dSpaceID space, dReal Length){
 
-	if (dRayClass == -1){
+	if (dRayClassUser == -1){
 
 		dGeomClass c;
 
@@ -115,13 +115,13 @@ dxGeom*  FUNCCALL dGeomCreateRay(dSpaceID space, dReal Length){
 
 
 
-		dRayClass = dCreateGeomClass(&c);
+		dRayClassUser = dCreateGeomClass(&c);
 
 	}
 
 
 
-	dxGeom* g = dCreateGeom(dRayClass);
+	dxGeom* g = dCreateGeom(dRayClassUser);
 
 	if (space) dSpaceAdd(space, g);
 
@@ -231,5 +231,5 @@ void dGeomRayGet(dxGeom* g, dVector3 Origin, dVector3 Direction){
 }
 
 int dRayClassGet(){
-	return dRayClass;
+	return dRayClassUser;
 }

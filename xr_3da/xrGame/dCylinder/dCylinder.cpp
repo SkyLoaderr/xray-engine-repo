@@ -1,18 +1,5 @@
 #include "stdafx.h"
-#include <ode/common.h>
-#include <ode/geom.h>
-#include <ode/rotation.h>
-#include <ode/odemath.h>
-#include <ode/memory.h>
-#include <ode/misc.h>
-#include <ode/objects.h>
-#include <ode/matrix.h>
-
-//#include <ode/src/objects.h>
-//#include "array.h"
-#include <ode/src/geom_internal.h>
 #include "dCylinder.h"
-#include "../dBoxGeomA.h"
 // given a pointer `p' to a dContactGeom, return the dContactGeom at
 // p + skip bytes.
 
@@ -20,16 +7,9 @@ struct dxCylinder {	// cylinder
   dReal radius,lz;	// radius, length along y axis //
 };
 
-struct dxSphere {
-  dReal radius;		// sphere radius
-};
+int dCylinderClassUser = -1;
 
-struct dxBox {
-  dVector3 side;	// side lengths (x,y,z)
-};
-
-int dCylinderClass = -1;
-
+#define NUMC_MASK (0xffff)
 
 #define CONTACT(p,skip) ((dContactGeom*) (((char*)p) + (skip)))
 
@@ -954,25 +934,25 @@ if (*code == 6) {
 //****************************************************************************
 
 
-int dCollideCylS (const dxGeom *o1, const dxGeom *o2, int flags,
+int dCollideCylS (dxGeom *o1, dxGeom *o2, int flags,
 		dContactGeom *contact, int skip)
 {
  
 
   dIASSERT (skip >= (int)sizeof(dContactGeom));
-  dIASSERT (o2->_class->num == dSphereClass);
-  dIASSERT (o1->_class->num == dCylinderClass);
-  dxSphere *sphere = (dxSphere*) CLASSDATA(o2);
-  dxCylinder *cyl = (dxCylinder*) CLASSDATA(o1);
-
-  const dReal* p1=o1->pos;
-  const dReal* p2=o2->pos;
-  const dReal* R=o1->R;
+  dIASSERT (dGeomGetClass(o2) == dSphereClass);
+  dIASSERT (dGeomGetClass(o1) == dCylinderClassUser);
+  const dReal* p1=dGeomGetPosition(o1);
+  const dReal* p2=dGeomGetPosition(o2);
+  const dReal* R=dGeomGetRotation(o1);
   dVector3 p,normalC,normal;
   const dReal *normalR = 0;
-  dReal cylRadius=cyl->radius;
-  dReal sphereRadius=sphere->radius;
-  dReal hl=cyl->lz/2.f;
+  dReal cylRadius;
+  dReal hl;
+  dGeomCylinderGetParams(o1,&cylRadius,&hl);
+  dReal sphereRadius;
+  sphereRadius=dGeomSphereGetRadius(o2);
+  
   int i,invert_normal;
 
   // get vector from centers of cyl to shere
@@ -1090,16 +1070,19 @@ return 1;
 
 
 
-int dCollideCylB (const dxGeom *o1, const dxGeom *o2, int flags,
+int dCollideCylB (dxGeom *o1, dxGeom *o2, int flags,
 		dContactGeom *contact, int skip)
 {
   dVector3 normal;
   dReal depth;
   int code;
-  dxBox *b = (dxBox*) CLASSDATA(o2);
-  dxCylinder *c = (dxCylinder*) CLASSDATA(o1);
-  int num = dCylBox (o1->pos,o1->R,c->radius,c->lz, o2->pos,o2->R,b->side,
-		     normal,&depth,&code,flags & NUMC_MASK,contact,skip);
+  dReal cylRadius,cylLength;
+  dVector3 boxSides;
+  dGeomCylinderGetParams(o1,&cylRadius,&cylLength);
+  dGeomBoxGetLengths(o2,boxSides);
+  int num = dCylBox(dGeomGetPosition(o1),dGeomGetRotation(o1),cylRadius,cylLength, 
+					dGeomGetPosition(o2),dGeomGetRotation(o2),boxSides,
+					normal,&depth,&code,flags & NUMC_MASK,contact,skip);
   for (int i=0; i<num; i++) {
     CONTACT(contact,i*skip)->normal[0] = -normal[0];
     CONTACT(contact,i*skip)->normal[1] = -normal[1];
@@ -1110,17 +1093,20 @@ int dCollideCylB (const dxGeom *o1, const dxGeom *o2, int flags,
   return num;
 }
 
-int dCollideCylCyl (const dxGeom *o1, const dxGeom *o2, int flags,
+int dCollideCylCyl (dxGeom *o1, dxGeom *o2, int flags,
 		dContactGeom *contact, int skip)
 {
   dVector3 normal;
   dReal depth;
   int code;
-  dxCylinder *c1 = (dxCylinder*) CLASSDATA(o1);
-  dxCylinder *c2 = (dxCylinder*) CLASSDATA(o2);
+dReal cylRadius1,cylRadius2;
+dReal cylLength1,cylLength2;
+dGeomCylinderGetParams(o1,&cylRadius1,&cylLength1);
+dGeomCylinderGetParams(o1,&cylRadius2,&cylLength2);
+int num = dCylCyl (dGeomGetPosition(o1),dGeomGetRotation(o1),cylRadius1,cylLength1,
+				   dGeomGetPosition(o2),dGeomGetRotation(o2),cylRadius2,cylRadius2,
+				     normal,&depth,&code,flags & NUMC_MASK,contact,skip);
 
-  int num = dCylCyl (o1->pos,o1->R,c1->radius,c1->lz, o2->pos,o2->R,c2->radius,c2->lz,
-		     normal,&depth,&code,flags & NUMC_MASK,contact,skip);
   for (int i=0; i<num; i++) {
     CONTACT(contact,i*skip)->normal[0] = -normal[0];
     CONTACT(contact,i*skip)->normal[1] = -normal[1];
@@ -1138,24 +1124,26 @@ struct dxPlane {
 
 int dCollideCylPlane 
 	(
-	const dxGeom *o1, const dxGeom *o2, int flags,
+	dxGeom *o1, dxGeom *o2, int flags,
 			  dContactGeom *contact, int skip){
   dIASSERT (skip >= (int)sizeof(dContactGeom));
-  dIASSERT (o1->_class->num == dCylinderClass);
-  dIASSERT (o2->_class->num == dPlaneClass);
+  dIASSERT (dGeomGetClass(o1) == dCylinderClassUser);
+  dIASSERT (dGeomGetClass(o2) == dPlaneClass);
   contact->g1 = const_cast<dxGeom*> (o1);
   contact->g2 = const_cast<dxGeom*> (o2);
-  dxCylinder *cylinder = (dxCylinder*) CLASSDATA(o1);
-  dxPlane *plane = (dxPlane*) CLASSDATA(o2);
-  unsigned int ret = 0;
+  
+ unsigned int ret = 0;
 
- const dReal radius=cylinder->radius;
- const dReal hlz=cylinder->lz/2.f;
- const dReal *R = o1->R;// rotation of cylinder
- const dReal* p=o1->pos;
- const dReal *n = plane->p;		// normal vector
- const dReal pp=plane->p[3];
-
+ dReal radius;
+ dReal hlz;
+ dGeomCylinderGetParams(o1,&radius,&hlz);
+ 
+ const dReal *R	=	dGeomGetRotation(o1);// rotation of cylinder
+ const dReal* p	=	dGeomGetPosition(o1);
+ dVector4 n;		// normal vector
+ dReal pp;
+ dGeomPlaneGetParams (o2, n);
+ pp=n[3];
  dReal cos1,sin1;
   cos1=dFabs(dDOT14(n,R+1));
 
@@ -1246,53 +1234,58 @@ if(dFabs(Q2)>M_SQRT1_2){
   return ret;  
 }
 
-static  dColliderFn * FUNCCALL dCylinderColliderFn (int num)
+static  dColliderFn * dCylinderColliderFn (int num)
 {
   if (num == dBoxClass) return (dColliderFn *) &dCollideCylB;
-  if (num == dBoxAClass) return (dColliderFn *) &dCollideCylB;
   if (num == dSphereClass) return (dColliderFn *) &dCollideCylS;
-  if (num == dCylinderClass) return (dColliderFn *) &dCollideCylCyl;
+  if (num == dCylinderClassUser) return (dColliderFn *) &dCollideCylCyl;
   if (num == dPlaneClass) return (dColliderFn *) &dCollideCylPlane;
   return 0;
 }
 
 
-static  void FUNCCALL dCylinderAABB (dxGeom *geom, dReal aabb[6])
+static  void dCylinderAABB (dxGeom *geom, dReal aabb[6])
 {
-  dxCylinder *b = (dxCylinder*) CLASSDATA(geom);
-  dReal xrange =  dFabs (geom->R[0] * b->radius) +
-    REAL(0.5) *dFabs (geom->R[1] * b->lz) + dFabs (geom->R[2] * b->radius);
+  dReal radius,lz;
+  dGeomCylinderGetParams(geom,&radius,&lz);
+const dReal* R= dGeomGetRotation(geom);
+const dReal* pos= dGeomGetPosition(geom);
+  dReal xrange =  dFabs (R[0] *radius) +
+    REAL(0.5) *dFabs (R[1] * lz) + dFabs (R[2] * radius);
 
-  dReal yrange = dFabs (geom->R[4] * b->radius) +
-    REAL(0.5) * dFabs (geom->R[5] * b->lz) + dFabs (geom->R[6] * b->radius);
+  dReal yrange = dFabs (R[4] *radius) +
+    REAL(0.5) * dFabs (R[5] * lz) + dFabs (R[6] * radius);
 
-  dReal zrange =  dFabs (geom->R[8] * b->radius) +
-    REAL(0.5) *dFabs (geom->R[9] * b->lz) + dFabs (geom->R[10] * b->radius);
+  dReal zrange =  dFabs (R[8] * radius) +
+    REAL(0.5) *dFabs (R[9] * lz) + dFabs (R[10] * radius);
 
-  aabb[0] = geom->pos[0] - xrange;
-  aabb[1] = geom->pos[0] + xrange;
-  aabb[2] = geom->pos[1] - yrange;
-  aabb[3] = geom->pos[1] + yrange;
-  aabb[4] = geom->pos[2] - zrange;
-  aabb[5] = geom->pos[2] + zrange;
+  aabb[0] = pos[0] - xrange;
+  aabb[1] = pos[0] + xrange;
+  aabb[2] = pos[1] - yrange;
+  aabb[3] = pos[1] + yrange;
+  aabb[4] = pos[2] - zrange;
+  aabb[5] = pos[2] + zrange;
 }
 
 dxGeom *dCreateCylinder (dSpaceID space, dReal r, dReal lz)
 {
-  dAASSERT (r > 0 && lz > 0);
-  if (dCylinderClass == -1) {
+ dAASSERT (r > 0 && lz > 0);
+ if (dCylinderClassUser == -1)
+  {
     dGeomClass c;
     c.bytes = sizeof (dxCylinder);
     c.collider = &dCylinderColliderFn;
     c.aabb = &dCylinderAABB;
     c.aabb_test = 0;
     c.dtor = 0;
-    dCylinderClass = dCreateGeomClass (&c);
+    dCylinderClassUser=dCreateGeomClass (&c);
+
   }
 
-  dxGeom *g = dCreateGeom (dCylinderClass);
+  dGeomID g = dCreateGeom (dCylinderClassUser);
   if (space) dSpaceAdd (space,g);
-  dxCylinder *c = (dxCylinder*) CLASSDATA(g);
+  dxCylinder *c = (dxCylinder*) dGeomGetClassData(g);
+
   c->radius = r;
   c->lz = lz;
   return g;
@@ -1302,9 +1295,9 @@ dxGeom *dCreateCylinder (dSpaceID space, dReal r, dReal lz)
 
 void dGeomCylinderSetParams (dGeomID g, dReal radius, dReal length)
 {
-  dUASSERT (g && g->_class->num == dCCylinderClass,"argument not a ccylinder");
+  dUASSERT (g && dGeomGetClass(g) == dCCylinderClass,"argument not a ccylinder");
   dAASSERT (radius > 0 && length > 0);
-  dxCylinder *c = (dxCylinder*) CLASSDATA(g);
+  dxCylinder *c = (dxCylinder*) dGeomGetClassData(g);
   c->radius = radius;
   c->lz = length;
 }
@@ -1313,8 +1306,8 @@ void dGeomCylinderSetParams (dGeomID g, dReal radius, dReal length)
 
 void dGeomCylinderGetParams (dGeomID g, dReal *radius, dReal *length)
 {
-  dUASSERT (g && g->_class->num == dCylinderClass ,"argument not a cylinder");
-  dxCylinder *c = (dxCylinder*) CLASSDATA(g);
+  dUASSERT (g && dGeomGetClass(g) == dCylinderClassUser ,"argument not a cylinder");
+  dxCylinder *c = (dxCylinder*) dGeomGetClassData(g);
   *radius = c->radius;
   *length = c->lz;
 }

@@ -1,23 +1,13 @@
 
 
-#include <ode/common.h>
-#include <ode/geom.h>
-#include <ode/rotation.h>
-#include <ode/odemath.h>
-#include <ode/memory.h>
-#include <ode/misc.h>
-#include <ode/objects.h>
-#include <ode/matrix.h>
-#include <ode/src/objects.h>
-#include <ode/src/array.h>
-#include <ode/src/geom_internal.h>
+
 
 #ifndef DTROCOLLIDERH
 #define DTROCOLLIDERH
 
 extern "C" int dTriBox (
 						const dReal* v0,const dReal* v1,const dReal* v2,
-						const dxGeom *o1, const dxGeom *o2,
+						dxGeom *o1,dxGeom *o2,
 						int flags, dContactGeom *contact, int skip
 						);
 extern "C" int dSortedTriBox (
@@ -27,13 +17,13 @@ extern "C" int dSortedTriBox (
 						const dReal* v1,
 						const dReal* v2,
 						dReal dist,
-						const dxGeom *o1, const dxGeom *o2,
+						dxGeom *o1, dxGeom *o2,
 						int flags, dContactGeom *contact, int skip
 						);
 
 extern "C" int dTriCyl (
 						const dReal* v0,const dReal* v1,const dReal* v2,
-						const dxGeom *o1, const dxGeom *o2,
+						dxGeom *o1, dxGeom *o2,
 						int flags, dContactGeom *contact, int skip
 						
 

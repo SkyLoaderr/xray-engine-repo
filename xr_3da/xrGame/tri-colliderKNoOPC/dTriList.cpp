@@ -1,14 +1,5 @@
 #include "stdafx.h"
-#define INTERNAL_BUILD
-#include <include/ode/common.h>
-#include <include/ode/geom.h>
-#include <include/ode/rotation.h>
-#include <include/ode/odemath.h>
-#include <include/ode/memory.h>
-#include <include/ode/misc.h>
-#include <include/ode/objects.h>
-#include <include/ode/matrix.h>
-#include <ode/src/geom_internal.h>
+
 #include "dTriCollideK.h"
 #include "dxTriList.h"
 #include "dcTriListCollider.h"
@@ -16,7 +7,7 @@
 #include "../ExtendedGeom.h"
 #include "__aabb_tri.h"
 #include "dcTriListCollider.cpp"	// Allow inlining
-#include "../dBoxGeomA.h"
+
 
 
 int dTriListClass = -1;
@@ -65,7 +56,7 @@ inline bool ValidateCollision(dxGeom* o1, dxGeom* o2){
 
 
 
-int FUNCCALL dCollideSTL(dxGeom* TriList, dxGeom* Sphere, int Flags, dContactGeom* Contact, int Stride) throw()
+int dCollideSTL(dxGeom* TriList, dxGeom* Sphere, int Flags, dContactGeom* Contact, int Stride) throw()
 {
 
 	if (ValidateCollision(Sphere, TriList)){
@@ -80,7 +71,7 @@ int FUNCCALL dCollideSTL(dxGeom* TriList, dxGeom* Sphere, int Flags, dContactGeo
 
 
 
-int FUNCCALL dCollideBTL(dxGeom* TriList, dxGeom* Box, int Flags, dContactGeom* Contact, int Stride)throw()
+int dCollideBTL(dxGeom* TriList, dxGeom* Box, int Flags, dContactGeom* Contact, int Stride)throw()
 {
 
 	if (ValidateCollision(Box, TriList)){
@@ -108,13 +99,10 @@ int dCollideCTL(dxGeom* TriList, dxGeom* Cyl, int Flags, dContactGeom* Contact, 
 
 
 
-dColliderFn* FUNCCALL dTriListColliderFn(int num)
+dColliderFn* dTriListColliderFn(int num)
 {
 //	Log("in dTriListColliderFn ");
 //	Msg("num=%d",num);
-	if (num ==dBoxAClass){ 
-		return 	(dColliderFn*)&dCollideBTL;
-	}
 	if (num ==dBoxClass){ 
 		return 	(dColliderFn*)&dCollideBTL;
 	}
@@ -122,30 +110,21 @@ dColliderFn* FUNCCALL dTriListColliderFn(int num)
 		return (dColliderFn*)&dCollideSTL;
 	}
 
-	if (num == dCylinderClass) return (dColliderFn*)&dCollideCTL;
-	/*
-	if (num ==dCylinderClass) {
-		return (dColliderFn*)&dCollideSTL;
-	}
-*/
+	if (num == dCylinderClassUser) return (dColliderFn*)&dCollideCTL;
+
 	return 0;
 
 }
 
-int FUNCCALL dAABBTestTL(dxGeom* TriList, dxGeom* Object, dReal AABB[6]) throw()
+int dAABBTestTL(dxGeom* TriList, dxGeom* Object, dReal AABB[6]) throw()
 {
 
 	return 1;
 }
 
-void FUNCCALL dDestroyTriList(dGeomID g){
+void dDestroyTriList(dGeomID g){
 
 	//External Creating & Destroing!!!!!!!!
-
-	//dxTriList* Data = (dxTriList*)dGeomGetClassData(g);
-
-	//delete Data->Collider;
-
 }
 
 

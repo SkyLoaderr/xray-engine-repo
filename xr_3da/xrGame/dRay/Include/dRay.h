@@ -1,11 +1,11 @@
-#include "ode\ode.h"//
+#include <ode\ode.h>
 
 // Class ID 
-extern int dRayClass;
+extern int dRayClassUser;
 
 // Creates a ray 
 
-dxGeom* FUNCCALL dGeomCreateRay(dSpaceID space, dReal Length);
+dxGeom* dGeomCreateRay(dSpaceID space, dReal Length);
 
 
 

@@ -43,7 +43,7 @@ Triangle neg_tri={NULL,NULL,NULL,{0,0,0,0},{0,0,0,0},{0,0,0,0},0,0,0},b_neg_tri=
 */
 
 extern "C" int dSortTriBoxCollide (
-								   const dxGeom *o1, const dxGeom *o2,
+								   dxGeom *o1, dxGeom *o2,
 								   int flags, dContactGeom *contact, int skip,
 								   CDB::RESULT*    R_begin,
 								   CDB::RESULT*    R_end ,
@@ -68,12 +68,15 @@ extern "C" int dSortTriBoxCollide (
 	//pos_dist=dInfinity,
 	dReal neg_depth=dInfinity,b_neg_depth=dInfinity;
 	//dReal max_proj=-dInfinity,proj;
-	const dReal* p=o1->pos;
+	const dReal* p=dGeomGetPosition(o1);
 	UINT b_count=0;
 	//dVector3 pos_vect={last_pos[0]-p[0],last_pos[1]-p[1],last_pos[2]-p[2]};
-	dxBox *box = (dxBox*) CLASSDATA(o1);
-	const dVector3 hside={box->side[0]/2.f,box->side[1]/2.f,box->side[2]/2.f,-1};
-	const dReal *R = o1->R;
+
+	
+	dVector3 hside;
+	dGeomBoxGetLengths(o1,hside);
+	hside[0]/=2.f;hside[2]/=2.f;hside[2]/=2.f;
+	const dReal *R = dGeomGetRotation(o1);
 
 	//if(last_pos[0]==dInfinity) memcpy(last_pos,p,sizeof(dVector3));
 
@@ -284,8 +287,9 @@ int dcTriListCollider::CollideBox(dxGeom* Box, int Flags, dContactGeom* Contacts
 
 	//dGeomBoxGetLengths(Box, BoxSides);
 
-	dxBox *box = (dxBox*) CLASSDATA(Box);
-	const dVector3 BoxSides={box->side[0],box->side[1],box->side[2],-1};
+
+	dVector3 BoxSides;
+	dGeomBoxGetLengths(Box,BoxSides);
 	memcpy( &BoxExtents,&BoxSides,sizeof(Fvector));
 
 	dReal* R=const_cast<dReal*>(dGeomGetRotation(Box));
