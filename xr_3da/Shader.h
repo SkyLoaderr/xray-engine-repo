@@ -97,8 +97,8 @@ typedef	resptr_core<ShaderElement,resptr_base<ShaderElement> >								ref_seleme
 //////////////////////////////////////////////////////////////////////////
 struct ENGINE_API		Shader			: public xr_resource									{
 public:
-	ref_selement		E		[4];	// R1 - 0=lod0,		1=lod1, 2=lighting, 3=_undefined_
-										// R2 - 0=deffer,	1=dsm,	2=psm,		3=ssm		(or special usage)
+	ref_selement		E		[4];	// R1 - 0=combi_lod0(det),	1=combi_lod1(normal),	2=L_for_models,	3=L_base,	4=L_point,	5=L_spot, 6=final/diffuse,	7=final/fog
+										// R2 - 0=deffer,			1=dsm,					2=psm,			3=ssm		(or special usage)
 						~Shader			();
 	BOOL				equal			(Shader& S);
 	BOOL				equal			(Shader* S);
@@ -110,6 +110,15 @@ struct ENGINE_API		resptrcode_shader	: public resptr_base<Shader>
 	void				destroy			()	{ _set(NULL);		}
 };
 typedef	resptr_core<Shader,resptrcode_shader>												ref_shader;
+
+enum	SE_R1
+{
+	SE_R1_L_BASE			= 0,	//	= base lighting
+	SE_R1_L_POINT			= 1,	//	+ addititional point source
+	SE_R1_L_SPOT			= 2,	//	+ addititional spot source
+	SE_R1_FINAL_DIFFUSE		= 3,	//	* diffuse pass
+	SE_R1_FINAL_FOG			= 4,	//	^ fogging
+};
 
 #pragma pack(pop)
 
