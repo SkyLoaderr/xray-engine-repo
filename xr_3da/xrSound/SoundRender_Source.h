@@ -23,7 +23,7 @@ public:
 	float					m_fVolume;
 	float					m_fMinDist;
 	float					m_fMaxDist;
-	float					m_fAIMaxDist;
+	float					m_fMaxAIDist;
 	u32						m_uGameType;
 private:
 	void 					i_decompress_fr			(char* dest, u32 size);    

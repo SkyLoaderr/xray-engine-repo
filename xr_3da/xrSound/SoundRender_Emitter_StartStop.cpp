@@ -15,7 +15,7 @@ void CSoundRender_Emitter::start(ref_sound* _owner, BOOL _loop, float delay)
 	p_source.max_distance	= source->m_fMaxDist;	// 300.f;
 	p_source.volume			= source->m_fVolume; 	// 1.f
 	p_source.freq			= 1.f;
-	p_source.max_ai_distance= source->m_fAIMaxDist;	// 300.f;
+	p_source.max_ai_distance= source->m_fMaxAIDist;	// 300.f;
 
     if (fis_zero(delay,EPS_L)){
 		state				= _loop?stStartingLooped:stStarting;
