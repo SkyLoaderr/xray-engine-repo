@@ -831,7 +831,7 @@ function events:corpseType(obj)
 
 	if 	otype == clsid.actor or
   	   	otype == clsid.soldier or
-	   	otype == clsid.stalker or
+	   	otype == clsid.script_stalker or
 	   	otype == clsid.trader
 	then
 		type = "stalker"

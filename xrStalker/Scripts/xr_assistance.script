@@ -193,7 +193,7 @@ function get_sound_for_enemy(enemy)
 
 	if 	otype == clsid.actor or
   	   	otype == clsid.soldier or
-	   	otype == clsid.stalker or
+	   	otype == clsid.script_stalker or
 	   	otype == clsid.trader
 	then
 		sound.themes = {"reac_find_enemy"}

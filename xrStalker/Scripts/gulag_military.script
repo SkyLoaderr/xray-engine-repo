@@ -389,7 +389,7 @@ function check_state (gulag)
         enemy = v:best_enemy ()
         if enemy ~= nil then
            enemy_type = get_clsid (enemy)
-           if enemy_type == clsid.actor or enemy_type == clsid.soldier or enemy_type == clsid.stalker then
+           if enemy_type == clsid.actor or enemy_type == clsid.soldier or enemy_type == clsid.script_stalker then
               return 1
            end
         end

@@ -134,7 +134,7 @@ function evaluator_need_talker:evaluate ()
 		local vo_id = vo:id()
 		if is_object_online(vo_id) and vo:alive() then
 			local otype = get_clsid(vo)
-			if otype == clsid.soldier or otype == clsid.stalker then
+			if otype == clsid.soldier or otype == clsid.script_stalker then
 				if o.value >= self.object:visibility_threshold() then
 					local distance = vo:position():distance_to(self.object:position())
 					--printf("dist: %d", distance)

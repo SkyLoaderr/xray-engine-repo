@@ -616,7 +616,7 @@ function add_npc( self, obj )
 		o_id = self:obj_id( obj )
 		o    = sim:object( o_id )
 
-		if obj:clsid() == clsid.stalker then
+		if obj:clsid() == clsid.script_stalker then
 			oT = cast_alife_object_to_trader_abstract( o ):community()	
 		else
 			oT = monster_classes[obj:clsid()]
@@ -624,7 +624,7 @@ function add_npc( self, obj )
 
 		printf( "community=%s", oT )
 
-		if xr_gulag.checkNpc( oT, obj:clsid() == clsid.stalker, self.gparams.type ) then
+		if xr_gulag.checkNpc( oT, obj:clsid() == clsid.script_stalker, self.gparams.type ) then
 			o = cast_alife_object_to_creature( o )
 
 			self.npcs[o_id] = {
@@ -771,7 +771,7 @@ function on_touch( self, obj )
 	end
 
 	local cls = obj:clsid()
-	if cls == clsid.stalker or monster_classes[cls] then
+	if cls == clsid.script_stalker or monster_classes[cls] then
 		ini = obj:spawn_ini()
 
 		if ( ini and not ini:section_exist( "no_smart" ) ) or not ini then
