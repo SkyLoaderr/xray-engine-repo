@@ -900,9 +900,14 @@ void SSceneSummary::FillProp(PropItemVec& items)
         }else{
             int tex_mem		= T->MemoryUsage();
             mem_usage		+= tex_mem;
-            PHelper.CreateCaption(items,PHelper.PrepareKey("Textures", t_it->c_str(), "Format"),		T->FormatString());
-            PHelper.CreateCaption(items,PHelper.PrepareKey("Textures", t_it->c_str(), "Size"), 			AnsiString().sprintf("%d x %d x %s",T->_Width(),T->_Height(),T->_Format().HasAlpha()?"32b":"24b"));
-            PHelper.CreateCaption(items,PHelper.PrepareKey("Textures", t_it->c_str(), "Memory Usage"),	AnsiString().sprintf("%d Kb",iFloor(tex_mem/1024)));
+            AnsiString pref	= AnsiString("Textures\\")+*t_it;
+            PHelper.CreateCaption(items,PHelper.PrepareKey(pref.c_str(),"Format"),			T->FormatString());
+            PHelper.CreateCaption(items,PHelper.PrepareKey(pref.c_str(),"Size"), 			AnsiString().sprintf("%d x %d x %s",T->_Width(),T->_Height(),T->_Format().HasAlpha()?"32b":"24b"));
+            PHelper.CreateCaption(items,PHelper.PrepareKey(pref.c_str(),"Memory Usage"),	AnsiString().sprintf("%d Kb",iFloor(tex_mem/1024)));
+        	if (T->_Format().flags.is(STextureParams::flHasDetailTexture)){
+	            PHelper.CreateCaption(items,PHelper.PrepareKey(pref.c_str(),"Detail Texture"),	T->_Format().detail_name);
+	            PHelper.CreateCaption(items,PHelper.PrepareKey(pref.c_str(),"Detail Scale"),	T->_Format().detail_scale);
+            }
         }
         xr_delete(T);
     }
@@ -927,6 +932,24 @@ void EScene::ShowSummaryInfo()
             if ((*_F)->GetSummaryInfo(&summary)) bRes=true;
         }
 	}
+    // append detail textures
+	AnsiString nm = "textures.ltx";
+    Engine.FS.m_GameTextures.Update(nm);
+    if (Engine.FS.Exist(nm.c_str())){
+        CInifile* ini = xr_new<CInifile>(nm.c_str(), FALSE, FALSE, TRUE);
+        if (ini->SectionExists("association")){
+            CInifile::Sect& 	data = ini->ReadSection("association");
+            for (CInifile::SectIt I=data.begin(); I!=data.end(); I++){
+                string256		T;
+                CInifile::Item& item		= *I;
+                sscanf			(item.second,"%[^,]",T);
+            	summary.textures.push_back(T);
+			}
+        }    
+        xr_delete(ini);
+    }
+
+    
 	PropItemVec items;
 	if (bRes){
         // fill items

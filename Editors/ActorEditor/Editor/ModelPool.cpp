@@ -59,8 +59,8 @@ CVisual*	CModelPool::Instance_Duplicate	(CVisual* V)
 CVisual*	CModelPool::Instance_Load		(const char* N)
 {
 	CVisual	*V;
-	FILE_NAME		fn;
-	FILE_NAME		name;
+	string256		fn;
+	string256		name;
 
 	// Add default ext if no ext at all
 	if (0==strext(N))	strconcat	(name,N,".ogf");

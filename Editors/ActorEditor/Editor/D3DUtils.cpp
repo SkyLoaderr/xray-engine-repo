@@ -140,9 +140,9 @@ void OnDeviceCreate(){
     	boxvert[i*6+5].set(p.x,p.y,p.z-S.z*0.25f);
     }
     // create render stream
-	vs_L 		= Device.Shader.CreateGeom(FVF::F_L,RCache.Vertex.Buffer(),0);
-    vs_TL		= Device.Shader.CreateGeom(FVF::F_TL,RCache.Vertex.Buffer(),0);
-    vs_LIT		= Device.Shader.CreateGeom(FVF::F_LIT,RCache.Vertex.Buffer(),0);
+	vs_L 		= Device.Shader.CreateGeom(FVF::F_L,RCache.Vertex.Buffer(),RCache.Index.Buffer());
+    vs_TL		= Device.Shader.CreateGeom(FVF::F_TL,RCache.Vertex.Buffer(),RCache.Index.Buffer());
+    vs_LIT		= Device.Shader.CreateGeom(FVF::F_LIT,RCache.Vertex.Buffer(),RCache.Index.Buffer());
 }
 
 void OnDeviceDestroy(){
@@ -360,7 +360,7 @@ void DrawSphere(const Fvector& p, float radius, DWORD clr)
     StreamI->Unlock(DU_SPHERE_NUMFACES*3);
 
 	// and Render it as triangle list
-	Device.DIP		(D3DPT_TRIANGLELIST,vs_L,0,vBase,DU_SPHERE_NUMVERTEX, iBase,DU_SPHERE_NUMFACES);
+	Device.DIP		(D3DPT_TRIANGLELIST,vs_L,vBase,0,DU_SPHERE_NUMVERTEX, iBase,DU_SPHERE_NUMFACES);
 }
 
 void DrawLineSphere(const Fvector& p, float radius, DWORD c, bool bCross)
