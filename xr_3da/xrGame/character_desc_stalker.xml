@@ -86,7 +86,7 @@
 
 	<specific_character id="stalker_esc_tutorial_wounded" team_default = "1">
 		<name>Неизвестный новичок</name>
-		<icon x="24" y="2"></icon>
+		<icon x="30" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Просто сталкер.</bio>
 
