@@ -208,10 +208,12 @@ public:
 			void				vfSetCurrentTask				(_TASK_ID		&tTaskID);
 			bool				bfAssignDestinationNode			();
 			void				vfFinishTask					();
-	virtual const SRotation		Orientation				() const
+	virtual const SRotation		Orientation						() const
 	{
 		return					(m_head.current);
 	};
+
+	virtual bool				use_model_pitch					() const;
 };
 
 #include "ai_stalker_inline.h"

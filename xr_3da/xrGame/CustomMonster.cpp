@@ -411,9 +411,11 @@ void CCustomMonster::UpdateCL	()
 		XFORM().rotateY				(NET_Last.o_model);
 		XFORM().translate_over		(NET_Last.p_pos);
 
-		Fmatrix M;
-		M.setXYZi (NET_Last.o_torso.pitch, 0.0f, 0.0f);
-		XFORM().mulB(M);
+		if (use_model_pitch()) {
+			Fmatrix M;
+			M.setXYZi (NET_Last.o_torso.pitch, 0.0f, 0.0f);
+			XFORM().mulB(M);
+		}
 	}
 }
 
@@ -497,7 +499,7 @@ extern void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvecto
 void CCustomMonster::OnRender()
 {
 	//if (!bDebug)					return;
-	if (!psAI_Flags.test(aiDebug))	return;
+	//if (!psAI_Flags.test(aiDebug))	return;
 
 //	m_PhysicMovementControl.DBG_Render();
 
@@ -626,6 +628,40 @@ void CCustomMonster::OnRender()
 	}
 //	if (bDebug) PKinematics(Visual())->DebugRender(XFORM());
 
+	static ref_shader sh_debug;
+	static int i = 0;
+	
+	if (i==0) {
+		sh_debug.create("debug\\ai_nodes","$null");
+		i++;
+	}
+	
+
+	RCache.set_Shader(sh_debug);
+
+	u32 vertex = dynamic_cast<CAI_ObjectLocation *>(Level().CurrentEntity())->level_vertex_id();
+	xr_vector<u32> nodes;
+	ai().graph_engine().search(ai().level_graph(),vertex,vertex,&nodes,CGraphEngine::CFlooder(6.f));
+	
+	for (u32 i=0; i < nodes.size(); i++) {
+		float	cover	= ai().level_graph().vertex_cover(nodes[i]);
+		Fvector pos		= ai().level_graph().vertex_position(nodes[i]);
+		u32 col = D3DCOLOR_XRGB(0,0,u32(cover/4.0*255));
+
+		CLevelGraph::SContour contour;
+		ai().level_graph().contour(contour,nodes[i]);
+		
+		// render quad
+		RCache.dbg_DrawTRI	(Fidentity,contour.v1,contour.v2,contour.v3,col);
+		RCache.dbg_DrawTRI	(Fidentity,contour.v1,contour.v3,contour.v4,col);
+		
+
+		
+//		RCache.dbg_DrawAABB(pos,.35f,.35f,.35f,D3DCOLOR_XRGB(col,0,0));
+//		RCache.dbg_DrawAABB(pos,.34f,.34f,.34f,D3DCOLOR_XRGB(col,0,0));
+//		RCache.dbg_DrawAABB(pos,.33f,.33f,.33f,D3DCOLOR_XRGB(col,0,0));
+//		RCache.dbg_DrawAABB(pos,.32f,.32f,.32f,D3DCOLOR_XRGB(col,0,0));
+	}
 
 }
 #endif
@@ -773,4 +809,9 @@ void CCustomMonster::net_Destroy()
 BOOL CCustomMonster::UsedAI_Locations()
 {
 	return					(TRUE);
+}
+
+bool CCustomMonster::use_model_pitch	() const
+{
+	return					(true);
 }

@@ -418,3 +418,8 @@ float CAI_Stalker::Radius() const
 	if (W) R	+= W->Radius();
 	return R;
 }
+
+bool CAI_Stalker::use_model_pitch	() const
+{
+	return					(false);
+}

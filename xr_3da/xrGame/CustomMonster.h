@@ -175,6 +175,7 @@ public:
 	{
 		return					(m_body.current);
 	};
+	virtual bool				use_model_pitch			() const;
 };
 
 #include "custommonster_inline.h"
