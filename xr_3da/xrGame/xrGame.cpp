@@ -23,6 +23,7 @@ ENGINE_API extern float		psHUD_FOV;
 extern int	 				psPhysicsFPS;
 extern float				psSqueezeVelocity;
 DWORD						GAME			= GAME_SINGLE;
+int							g_team			= 0;
 int							g_fraglimit		= 0;
 int							g_timelimit		= 0;
 DWORD						g_flags			= 0;
