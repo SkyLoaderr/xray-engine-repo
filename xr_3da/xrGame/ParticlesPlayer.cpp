@@ -182,13 +182,14 @@ void CParticlesPlayer::UpdateParticlesPosition(CObject* pObject,
 												CParticlesObject* pParticles,
 												int bone_num, 
 												const Fvector& bone_pos,
-												const Fvector& dir)
+												const Fvector& dir,
+												const Fvector& vel,
+												bool set_xform)
 {
 	VERIFY				(pObject);
 
 	Fmatrix				  l_tMatrix;
 
-//#pragma todo("Dandy to Oles : Create 'CObject::Visual() const' if possible")
 	CBoneInstance	  	 &l_tBoneInstance = PKinematics(pObject->Visual())->LL_GetBoneInstance((u16)bone_num);
 	
 	l_tMatrix.identity();
@@ -198,13 +199,17 @@ void CParticlesPlayer::UpdateParticlesPosition(CObject* pObject,
 	l_tMatrix.mulA(l_tBoneInstance.mTransform);
 	l_tMatrix.mulA(pObject->XFORM());
 
-	Fvector vel;
+/*	Fvector vel;
 	CGameObject* pGameObject = dynamic_cast<CGameObject*>(pObject);
 	if(pGameObject)
 		pGameObject->PHGetLinearVell(vel);
 	else
-		vel = zero_vel;
+		vel = zero_vel;*/
 
 
-	pParticles->UpdateParent(l_tMatrix, vel);
+	if(set_xform)
+		pParticles->SetXFORM(l_tMatrix);
+	else	
+		pParticles->UpdateParent(l_tMatrix, vel);
+
 }

@@ -69,7 +69,9 @@ public:
 										CParticlesObject* pParticles,
 										int bone_num, 
 										const Fvector& bone_pos,
-										const Fvector& dir);
+										const Fvector& dir,
+										const Fvector& vel = zero_vel,
+										bool set_xform = false);
 
 	virtual BONE_INFO_VECTOR& GetParticleBones() {return m_ParticlesBonesList;}
 
