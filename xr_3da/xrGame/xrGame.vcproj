@@ -1346,6 +1346,9 @@
 				RelativePath="PHMovementControl.h">
 			</File>
 			<File
+				RelativePath="PHObject.h">
+			</File>
+			<File
 				RelativePath="Physics.cpp">
 			</File>
 			<File
