@@ -118,7 +118,7 @@ public:
 	};
 	
 	// Detects if this box intersect other
-	IC	BOOL	intersect	(SelfCRef box )
+	ICF	BOOL	intersect	(SelfCRef box )
 	{
 		if( max.x < box.min.x )	return FALSE;
 		if( max.y < box.min.y )	return FALSE;

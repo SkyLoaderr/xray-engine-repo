@@ -663,7 +663,7 @@ void CSkeletonAnimated::Load(const char* N, IReader *data, u32 dwFlags)
 //------------------------------------------------------------------------------
 // calculate
 //------------------------------------------------------------------------------
-IC void	KEY_Interp	(CKey& D, CKey& K1, CKey& K2, float delta)
+ICF void	KEY_Interp	(CKey& D, CKey& K1, CKey& K2, float delta)
 {
 	D.Q.slerp		(K1.Q,K2.Q,delta);
 	D.T.lerp		(K1.T,K2.T,delta);

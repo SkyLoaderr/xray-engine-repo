@@ -79,7 +79,7 @@ public:
 		u32								ps;
 		u32								vb;
 		u32								ib;
-		u32								states;		// Number of times the shader-state changes
+		u32								states;			// Number of times the shader-state changes
 		u32								textures;		// Number of times the shader-tex changes
 		u32								matrices;		// Number of times the shader-xform changes
 		u32								constants;		// Number of times the shader-consts changes
@@ -119,21 +119,21 @@ public:
 	IC	void						set_Shader			(Shader* S, u32 pass=0);
 	IC	void						set_Shader			(ref_shader& S, u32 pass=0)			{ set_Shader(&*S,pass);			}
 
-	IC	void						set_States			(IDirect3DStateBlock9* _state);
-	IC	void						set_States			(ref_state& _state)					{ set_States(_state->state);	}
+	ICF	void						set_States			(IDirect3DStateBlock9* _state);
+	ICF	void						set_States			(ref_state& _state)					{ set_States(_state->state);	}
 
-	IC  void						set_Format			(IDirect3DVertexDeclaration9* _decl);
+	ICF  void						set_Format			(IDirect3DVertexDeclaration9* _decl);
 
-	IC  void						set_PS				(IDirect3DPixelShader9* _ps);
-	IC  void						set_PS				(ref_ps& _ps)						{ set_PS(_ps->ps);				}
+	ICF void						set_PS				(IDirect3DPixelShader9* _ps);
+	ICF void						set_PS				(ref_ps& _ps)						{ set_PS(_ps->ps);				}
 
-	IC  void						set_VS				(IDirect3DVertexShader9* _vs);
-	IC  void						set_VS				(ref_vs& _vs)						{ set_VS(_vs->vs);				}
+	ICF void						set_VS				(IDirect3DVertexShader9* _vs);
+	ICF void						set_VS				(ref_vs& _vs)						{ set_VS(_vs->vs);				}
 
-	IC	void						set_Vertices		(IDirect3DVertexBuffer9* _vb, u32 _vb_stride);
-	IC	void						set_Indices			(IDirect3DIndexBuffer9* _ib);
-	IC  void						set_Geometry		(SGeometry* _geom);
-	IC  void						set_Geometry		(ref_geom& _geom)					{	set_Geometry(&*_geom);		}
+	ICF	void						set_Vertices		(IDirect3DVertexBuffer9* _vb, u32 _vb_stride);
+	ICF	void						set_Indices			(IDirect3DIndexBuffer9* _ib);
+	ICF void						set_Geometry		(SGeometry* _geom);
+	ICF void						set_Geometry		(ref_geom& _geom)					{	set_Geometry(&*_geom);		}
 	IC  void						set_Stencil			(u32 _enable, u32 _func=D3DCMP_ALWAYS, u32 _ref=0x00, u32 _mask=0x00, u32 _writemask=0x00, u32 _fail=D3DSTENCILOP_KEEP, u32 _pass=D3DSTENCILOP_KEEP, u32 _zfail=D3DSTENCILOP_KEEP);
 	IC  void						set_ColorWriteEnable(u32 _mask = D3DCOLORWRITEENABLE_RED | D3DCOLORWRITEENABLE_GREEN | D3DCOLORWRITEENABLE_BLUE | D3DCOLORWRITEENABLE_ALPHA);
 	IC  void						set_CullMode		(u32 _mode);
@@ -141,35 +141,35 @@ public:
 	void							set_ClipPlanes		(u32 _enable, Fmatrix*	_xform =NULL, u32 fmask=0xff);
 
 	// constants
-	IC	R_constant*					get_c				(LPCSTR		n)														{ if (ctable)	return ctable->get(n);else return 0;}
-	IC	R_constant*					get_c				(shared_str&	n)														{ if (ctable)	return ctable->get(n);else return 0;}
+	ICF	R_constant*					get_c				(LPCSTR			n)													{ if (ctable)	return ctable->get(n);else return 0;}
+	ICF	R_constant*					get_c				(shared_str&	n)													{ if (ctable)	return ctable->get(n);else return 0;}
 
 	// constants - direct (fast)
-	IC	void						set_c				(R_constant* C, const Fmatrix& A)									{ if (C)		constants.set(C,A);					}
-	IC	void						set_c				(R_constant* C, const Fvector4& A)									{ if (C)		constants.set(C,A);					}
-	IC	void						set_c				(R_constant* C, float x, float y, float z, float w)					{ if (C)		constants.set(C,x,y,z,w);			}
-	IC	void						set_ca				(R_constant* C, u32 e, const Fmatrix& A)							{ if (C)		constants.seta(C,e,A);				}
-	IC	void						set_ca				(R_constant* C, u32 e, const Fvector4& A)							{ if (C)		constants.seta(C,e,A);				}
-	IC	void						set_ca				(R_constant* C, u32 e, float x, float y, float z, float w)			{ if (C)		constants.seta(C,e,x,y,z,w);		}
+	ICF	void						set_c				(R_constant* C, const Fmatrix& A)									{ if (C)		constants.set(C,A);					}
+	ICF	void						set_c				(R_constant* C, const Fvector4& A)									{ if (C)		constants.set(C,A);					}
+	ICF	void						set_c				(R_constant* C, float x, float y, float z, float w)					{ if (C)		constants.set(C,x,y,z,w);			}
+	ICF	void						set_ca				(R_constant* C, u32 e, const Fmatrix& A)							{ if (C)		constants.seta(C,e,A);				}
+	ICF	void						set_ca				(R_constant* C, u32 e, const Fvector4& A)							{ if (C)		constants.seta(C,e,A);				}
+	ICF	void						set_ca				(R_constant* C, u32 e, float x, float y, float z, float w)			{ if (C)		constants.seta(C,e,x,y,z,w);		}
 
 	// constants - LPCSTR (slow)
-	IC	void						set_c				(LPCSTR n, const Fmatrix& A)										{ if(ctable)	set_c	(ctable->get(n),A);			}
-	IC	void						set_c				(LPCSTR n, const Fvector4& A)										{ if(ctable)	set_c	(ctable->get(n),A);			}
-	IC	void						set_c				(LPCSTR n, float x, float y, float z, float w)						{ if(ctable)	set_c	(ctable->get(n),x,y,z,w);	}
-	IC	void						set_ca				(LPCSTR n, u32 e, const Fmatrix& A)									{ if(ctable)	set_ca	(ctable->get(n),e,A);		}
-	IC	void						set_ca				(LPCSTR n, u32 e, const Fvector4& A)								{ if(ctable)	set_ca	(ctable->get(n),e,A);		}
-	IC	void						set_ca				(LPCSTR n, u32 e, float x, float y, float z, float w)				{ if(ctable)	set_ca	(ctable->get(n),e,x,y,z,w);	}
+	ICF	void						set_c				(LPCSTR n, const Fmatrix& A)										{ if(ctable)	set_c	(ctable->get(n),A);			}
+	ICF	void						set_c				(LPCSTR n, const Fvector4& A)										{ if(ctable)	set_c	(ctable->get(n),A);			}
+	ICF	void						set_c				(LPCSTR n, float x, float y, float z, float w)						{ if(ctable)	set_c	(ctable->get(n),x,y,z,w);	}
+	ICF	void						set_ca				(LPCSTR n, u32 e, const Fmatrix& A)									{ if(ctable)	set_ca	(ctable->get(n),e,A);		}
+	ICF	void						set_ca				(LPCSTR n, u32 e, const Fvector4& A)								{ if(ctable)	set_ca	(ctable->get(n),e,A);		}
+	ICF	void						set_ca				(LPCSTR n, u32 e, float x, float y, float z, float w)				{ if(ctable)	set_ca	(ctable->get(n),e,x,y,z,w);	}
 
 	// constants - shared_str (average)
-	IC	void						set_c				(shared_str& n, const Fmatrix& A)										{ if(ctable)	set_c	(ctable->get(n),A);			}
-	IC	void						set_c				(shared_str& n, const Fvector4& A)										{ if(ctable)	set_c	(ctable->get(n),A);			}
-	IC	void						set_c				(shared_str& n, float x, float y, float z, float w)					{ if(ctable)	set_c	(ctable->get(n),x,y,z,w);	}
-	IC	void						set_ca				(shared_str& n, u32 e, const Fmatrix& A)								{ if(ctable)	set_ca	(ctable->get(n),e,A);		}
-	IC	void						set_ca				(shared_str& n, u32 e, const Fvector4& A)								{ if(ctable)	set_ca	(ctable->get(n),e,A);		}
-	IC	void						set_ca				(shared_str& n, u32 e, float x, float y, float z, float w)				{ if(ctable)	set_ca	(ctable->get(n),e,x,y,z,w);	}
+	ICF	void						set_c				(shared_str& n, const Fmatrix& A)									{ if(ctable)	set_c	(ctable->get(n),A);			}
+	ICF	void						set_c				(shared_str& n, const Fvector4& A)									{ if(ctable)	set_c	(ctable->get(n),A);			}
+	ICF	void						set_c				(shared_str& n, float x, float y, float z, float w)					{ if(ctable)	set_c	(ctable->get(n),x,y,z,w);	}
+	ICF	void						set_ca				(shared_str& n, u32 e, const Fmatrix& A)							{ if(ctable)	set_ca	(ctable->get(n),e,A);		}
+	ICF	void						set_ca				(shared_str& n, u32 e, const Fvector4& A)							{ if(ctable)	set_ca	(ctable->get(n),e,A);		}
+	ICF	void						set_ca				(shared_str& n, u32 e, float x, float y, float z, float w)			{ if(ctable)	set_ca	(ctable->get(n),e,x,y,z,w);	}
 
-	IC	void						Render				(D3DPRIMITIVETYPE T, u32 baseV, u32 startV, u32 countV, u32 startI, u32 PC);
-	IC	void						Render				(D3DPRIMITIVETYPE T, u32 startV, u32 PC);
+	ICF	void						Render				(D3DPRIMITIVETYPE T, u32 baseV, u32 startV, u32 countV, u32 startI, u32 PC);
+	ICF	void						Render				(D3DPRIMITIVETYPE T, u32 startV, u32 PC);
 
 	// Device create / destroy / frame signaling
 	void							CreateQuadIB		();
@@ -193,5 +193,5 @@ public:
 	CBackend()						{	Invalidate(); };
 };
 
-extern ENGINE_API CBackend RCache;
+extern ENGINE_API CBackend			RCache;
 #endif
