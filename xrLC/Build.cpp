@@ -243,15 +243,15 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 	for (DWORD m=0; m<materials.size(); m++)
 	{
 		b_material &M	= materials[m];
-		Msg				("*** %20s / %-20s",shader_render[M.shader].name, shader_compile[M.shader_xrlc].name);
 
 		if (65535==M.shader_xrlc)	{
 			// No compiler shader
 			M.reserved	= WORD(-1);
 		} else {
+			Msg		("*** %20s / %-20s",shader_render[M.shader].name, shader_compile[M.shader_xrlc].name);
 			int id = shaders.GetID(shader_compile[M.shader_xrlc].name);
 			if (id<0) {
-				Msg("ERROR: Shader '%s' not found in library",shader_compile[M.shader].name);
+				Msg	("ERROR: Shader '%s' not found in library",shader_compile[M.shader].name);
 				R_ASSERT(id>=0);
 			}
 			M.reserved = WORD(id);
