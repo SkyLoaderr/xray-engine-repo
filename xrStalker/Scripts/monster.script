@@ -4,6 +4,10 @@ module("pripyat_football")
 module("monster_gameplay")
 
 function bind(obj)
+end
+
+function test()
+	
 	local char_ini	= obj:spawn_ini()
 	
 	if(char_ini == nil) then return end
