@@ -53,11 +53,11 @@ void	CBuild::xrPhase_ResolveMaterials()
 		
 		for (vecFaceIt F_it=g_faces.begin(); F_it!=g_faces.end(); F_it++)
 		{
-			Face*	F			= *F_it;
+			Face*	F							= *F_it;
+			if (!F->Shader().flags.bRendering)	continue;
+
 			for (DWORD I=0; I<counts.size(); I++)
 			{
-				if (!F->Shader().flags.bRendering)			continue;
-				
 				if (F->dwMaterial == counts[I].dwMaterial)
 				{
 					g_XSplit[I]->push_back	(F);
@@ -65,6 +65,13 @@ void	CBuild::xrPhase_ResolveMaterials()
 			}
 			Progress(float(F_it-g_faces.begin())/float(g_faces.size()));
 		}
+	}
+
+	Status				("Removing empty subdivs...");
+	{
+		for (int SP = 0; SP<int(g_XSplit.size()); SP++) 
+			if (g_XSplit[SP]->empty())	_DELETE			(g_XSplit[SP]);
+		g_XSplit.erase(remove(g_XSplit.begin(),g_XSplit.end(),(vecFace*) NULL),g_XSplit.end());
 	}
 	
 	Status		("Detaching subdivs...");

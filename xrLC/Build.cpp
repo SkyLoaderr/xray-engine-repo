@@ -201,13 +201,13 @@ extern int RegisterString(string &T);
 
 void CBuild::Run()
 {
-	CFS_File fs((string(g_params.L_path)+"level.").c_str());
-	fs.open_chunk(fsL_HEADER);
-	hdrLEVEL H; ZeroMemory(&H,sizeof(H));
+	CFS_File fs		((string(g_params.L_path)+"level.").c_str());
+	fs.open_chunk(	fsL_HEADER);
+	hdrLEVEL H;		ZeroMemory(&H,sizeof(H));
 	H.XRLC_version = XRCL_PRODUCTION_VERSION;
-	strcpy(H.name,g_params.L_name);
-	fs.write(&H,sizeof(H));
-	fs.close_chunk();
+	strcpy			(H.name,g_params.L_name);
+	fs.write		(&H,sizeof(H));
+	fs.close_chunk	();
 
 	FPU::m64r		();
 	Phase			("Tesselating...");
