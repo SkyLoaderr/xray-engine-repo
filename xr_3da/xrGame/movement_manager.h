@@ -12,7 +12,6 @@
 #include "level_path_manager.h"
 #include "detail_path_manager.h"
 #include "location_selector.h"
-#include "gameobject.h"
 
 class CPHMovementControl;
 

@@ -8,8 +8,18 @@
 
 #pragma once
 
+#include "path_manager_selector.h"
+#include "gameobject.h"
+
 class CLocationSelector : virtual public CGameObject {
 protected:
+	struct SEnemySelected
+	{
+		CEntity*			Enemy;
+		bool				bVisible;
+		float				fCost;
+	};
+
 	Fvector					m_tHitDirection;
 	u32						m_dwHitTime;
 	u32						m_dwCurrentUpdate;
@@ -18,6 +28,6 @@ protected:
 public:
 					CLocationSelector		();
 	virtual			~CLocationSelector		();
-	virtual void	init_evaluator			(CAbstractNodeEvaluator *node_evaluator);
-			void	select_location			(CAbstractNodeEvaluator *node_evaluator);
+	virtual void	init_evaluator			(PathManagers::CAbstractNodeEvaluator *node_evaluator);
+			void	select_location			(PathManagers::CAbstractNodeEvaluator *node_evaluator);
 };

@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "location_selector.h"
 #include "ai_space.h"
+#include "entity.h"
 
 CLocationSelector::CLocationSelector		()
 {
@@ -18,25 +19,25 @@ CLocationSelector::~CLocationSelector		()
 {
 }
 
-void CLocationSelector::init_evaluator		(CAbstractNodeEvaluator *node_evaluator)
+void CLocationSelector::init_evaluator		(PathManagers::CAbstractNodeEvaluator *node_evaluator)
 {
 	CEntity								*l_tpEntity = dynamic_cast<CEntity*>(this);
 	VERIFY								(l_tpEntity);
-	CSquad								&Squad = Level().Teams[g_Team()].Squads[g_Squad()];
+	CSquad								&Squad = Level().Teams[l_tpEntity->g_Team()].Squads[l_tpEntity->g_Squad()];
 	CEntity								*Leader = Squad.Leader;
 	if (Leader->g_Health() <= 0)
-		Leader							= this;
+		Leader							= l_tpEntity;
 	R_ASSERT							(Leader);
 	node_evaluator->m_tHitDir			= m_tHitDirection;
 	node_evaluator->m_dwHitTime			= m_dwHitTime;
 	node_evaluator->m_dwCurTime			= m_dwCurrentUpdate;
-	node_evaluator->m_tMe				= this;
+	node_evaluator->m_tMe				= l_tpEntity;
 	node_evaluator->m_tpMyNode			= m_tpLevelVertex;
 	node_evaluator->m_tMyPosition		= Position();
 	node_evaluator->m_tEnemy			= m_tEnemy.Enemy;
 	node_evaluator->m_tEnemyPosition	= m_tEnemy.Enemy->Position();
-	node_evaluator->m_dwEnemyNode		= m_tEnemy.Enemy->m_dwLevelVertexID;
-	R_ASSERT2							(ai().level_graph().valid_vertex_id(m_dwSavedEnemyNodeID), "Invalid enemy vertex");
+	node_evaluator->m_dwEnemyNode		= m_dwLevelVertexID;
+	R_ASSERT2							(ai().level_graph().valid_vertex_id(m_dwLevelVertexID), "Invalid enemy vertex");
 	node_evaluator->m_tpEnemyNode		= m_tEnemy.Enemy->m_tpLevelVertex;
 	node_evaluator->m_taMembers			= &(Squad.Groups[g_Group()].Members);
 	node_evaluator->m_dwStartNode		= m_dwLevelVertexID;

@@ -58,7 +58,7 @@ void CLevelPathManager::build_level_path()
 					ai().level_graph(),
 					m_level_start_node,
 					m_level_dest_node,
-					m_level_path,
+					&m_level_path,
 					CGraphSearchEngine::CObstacleParams(
 						m_max_range,
 						m_max_iterations,
@@ -73,7 +73,7 @@ void CLevelPathManager::build_level_path()
 					ai().level_graph(),
 					m_level_start_node,
 					m_level_dest_node,
-					m_level_path,
+					&m_level_path,
 					CGraphSearchEngine::CObstaclesLightCover(
 						m_max_range,
 						m_max_iterations,
@@ -91,7 +91,7 @@ void CLevelPathManager::build_level_path()
 					ai().level_graph(),
 					m_level_start_node,
 					m_level_dest_node,
-					m_level_path,
+					&m_level_path,
 					CGraphSearchEngine::CObstaclesLightCoverEnemy(
 						m_max_range,
 						m_max_iterations,

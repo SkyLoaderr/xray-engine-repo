@@ -229,7 +229,7 @@ void CLevelGraph::render()
 	CPosition			Local;
 	vertex_position		(Local,P);
 
-	u32 ID				= O->AI_NodeID;
+	u32 ID				= O->m_dwLevelVertexID;
 
 	CGameFont* F		= HUD().pFontDI;
 	F->SetSize			(.02f);
@@ -487,7 +487,7 @@ void CLevelGraph::compute_path() const
 	u32						l_dwFinishNodeID	= vertex(m_finish_point);
 	VERIFY					(inside(vertex(l_dwFinishNodeID),m_finish_point));
 	xr_vector<u32>			l_tpNodePath;
-	ai().graph_search_engine().build_path(ai().level_graph(),l_dwStartNodeID,l_dwFinishNodeID,l_tpNodePath,CGraphSearchEngine::CObstacleParams());
+	ai().graph_search_engine().build_path(ai().level_graph(),l_dwStartNodeID,l_dwFinishNodeID,&l_tpNodePath,CGraphSearchEngine::CObstacleParams());
 	compute_travel_line		(l_tpNodePath,l_dwStartNodeID,l_dwFinishNodeID);
 }
 

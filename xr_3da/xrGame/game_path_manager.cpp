@@ -42,7 +42,7 @@ bool CGamePathManager::valid			(u32 node_id) const
 void CGamePathManager::build_game_path	()
 {
 	if (!m_game_path_actual && valid(m_game_start_node) && valid(m_game_dest_node)) {
-		m_game_path_actual		= ai().graph_search_engine().build_path(ai().game_graph(),m_game_start_node,m_game_dest_node,m_game_path,CGraphSearchEngine::CBaseParameters());
+		m_game_path_actual		= ai().graph_search_engine().build_path(ai().game_graph(),m_game_start_node,m_game_dest_node,&m_game_path,CGraphSearchEngine::CBaseParameters());
 		if (m_game_path_actual)
 			m_game_cur_node_index	= 0;
 		m_game_path_actual		= true;

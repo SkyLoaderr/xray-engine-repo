@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "movement_manager.h"
 #include "PHMovementControl.h"
+#include "gameobject.h"
 
 CMovementManager::CMovementManager	()
 {
@@ -127,8 +128,8 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, fl
 	Device.Statistic.Physics.End	();
 }
 
-void CMovementManager::find_path(PathManagers::CAbstractNodeEvaluator *tpNodeEvaluator)
-{
+//void CMovementManager::find_path(PathManagers::CAbstractNodeEvaluator *tpNodeEvaluator)
+//{
 //	Device.Statistic.AI_Path.Begin();
 //	
 //	if (m_level_dest_node == m_dwLevelVertexID) {
@@ -164,80 +165,80 @@ void CMovementManager::find_path(PathManagers::CAbstractNodeEvaluator *tpNodeEva
 //		m_tPathState = ePathStateBuildTravelLine;
 //	
 //	Device.Statistic.AI_Path.End();
-}
+//}
 
 void CMovementManager::build_path(PathManagers::CAbstractNodeEvaluator *node_evluator, Fvector *tpDestinationPosition, bool bSearchForNode)
 {
 	if (node_evluator)
-		init_evaluator			(*node_evluator);
+		init_evaluator			(node_evluator);
 
-	if (m_path_state_previous != m_path_state) {
-		m_path_state_previous	= m_path_state;
-		m_path_state			= ePathStateSearchNode;
-		m_level_path.clear		();
-	}
-
-	EPathType					tPathType = m_tPathType;
-	switch (m_tPathType) {
-		case ePathTypeStraight : {
-			m_tPathType			= ePathTypeStraight;
-			break;
-		}
-		case ePathTypeDodge : {
-			m_tPathType			= ePathTypeDodge;
-			break;
-		}
-		case ePathTypeCriteria : {
-			m_tPathType			= ePathTypeCriteria;
-			break;
-		}
-		case ePathTypeStraightDodge : {
-			if (::Random.randI(0,100) < (int)m_dwRandomFactor)
-				m_tPathType		= ePathTypeStraight;
-			else
-				m_tPathType		= ePathTypeDodge;
-			break;
-		}
-		case ePathTypeDodgeCriteria : {
-			if (::Random.randI(0,100) < (int)m_dwRandomFactor)
-				m_tPathType		= ePathTypeDodge;
-			else
-				m_tPathType		= ePathTypeCriteria;
-			break;
-		}
-	}
-	switch (m_tPathState) {
-		case ePathStateSearchNode : {
-			if (tpNodeEvaluator && bSearchForNode)
-				find_position	(*tpNodeEvaluator,Squad,Leader);
-			else
-				if (!bSearchForNode || !tpDestinationPosition || !m_detail_path.size() || (m_detail_path[m_detail_path.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L))
-					m_tPathState = ePathStateBuildNodePath;
-			break;
-		}
-		case ePathStateBuildNodePath : {
-			if ((m_level_dest_node != m_dwLevelVertexID) && (m_level_path.empty() || (m_level_path[m_level_path.size() - 1] != m_level_dest_node) || m_detail_path.empty() || ((m_detail_path.size() - 1) <= m_detail_cur_point_index)))
-				vfBuildPathToDestinationPoint(tpNodeEvaluator);
-			else
-				if ((m_level_dest_node == m_dwLevelVertexID) && tpDestinationPosition) {
-					m_level_path.clear();
-					m_level_path.push_back(m_dwLevelVertexID);
-					m_tPathState = ePathStateBuildTravelLine;
-				}
-				else
-					if (bSearchForNode && tpNodeEvaluator)
-						m_tPathState = ePathStateSearchNode;
-
-			break;
-		}
-		case ePathStateBuildTravelLine : {
-			vfBuildTravelLine(tpDestinationPosition);
-			break;
-		}
-		case ePathStateDodgeTravelLine : {
-			vfDodgeTravelLine();
-			break;
-		}
-	}
-	m_tPathType = tPathType;
+//	if (m_path_state_previous != m_path_state) {
+//		m_path_state_previous	= m_path_state;
+//		m_path_state			= ePathStateSearchNode;
+//		m_level_path.clear		();
+//	}
+//
+//	EPathType					tPathType = m_tPathType;
+//	switch (m_tPathType) {
+//		case ePathTypeStraight : {
+//			m_tPathType			= ePathTypeStraight;
+//			break;
+//		}
+//		case ePathTypeDodge : {
+//			m_tPathType			= ePathTypeDodge;
+//			break;
+//		}
+//		case ePathTypeCriteria : {
+//			m_tPathType			= ePathTypeCriteria;
+//			break;
+//		}
+//		case ePathTypeStraightDodge : {
+//			if (::Random.randI(0,100) < (int)m_dwRandomFactor)
+//				m_tPathType		= ePathTypeStraight;
+//			else
+//				m_tPathType		= ePathTypeDodge;
+//			break;
+//		}
+//		case ePathTypeDodgeCriteria : {
+//			if (::Random.randI(0,100) < (int)m_dwRandomFactor)
+//				m_tPathType		= ePathTypeDodge;
+//			else
+//				m_tPathType		= ePathTypeCriteria;
+//			break;
+//		}
+//	}
+//	switch (m_tPathState) {
+//		case ePathStateSearchNode : {
+//			if (tpNodeEvaluator && bSearchForNode)
+//				find_position	(*tpNodeEvaluator,Squad,Leader);
+//			else
+//				if (!bSearchForNode || !tpDestinationPosition || !m_detail_path.size() || (m_detail_path[m_detail_path.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L))
+//					m_tPathState = ePathStateBuildNodePath;
+//			break;
+//		}
+//		case ePathStateBuildNodePath : {
+//			if ((m_level_dest_node != m_dwLevelVertexID) && (m_level_path.empty() || (m_level_path[m_level_path.size() - 1] != m_level_dest_node) || m_detail_path.empty() || ((m_detail_path.size() - 1) <= m_detail_cur_point_index)))
+//				vfBuildPathToDestinationPoint(tpNodeEvaluator);
+//			else
+//				if ((m_level_dest_node == m_dwLevelVertexID) && tpDestinationPosition) {
+//					m_level_path.clear();
+//					m_level_path.push_back(m_dwLevelVertexID);
+//					m_tPathState = ePathStateBuildTravelLine;
+//				}
+//				else
+//					if (bSearchForNode && tpNodeEvaluator)
+//						m_tPathState = ePathStateSearchNode;
+//
+//			break;
+//		}
+//		case ePathStateBuildTravelLine : {
+//			vfBuildTravelLine(tpDestinationPosition);
+//			break;
+//		}
+//		case ePathStateDodgeTravelLine : {
+//			vfDodgeTravelLine();
+//			break;
+//		}
+//	}
+//	m_tPathType = tPathType;
 }
