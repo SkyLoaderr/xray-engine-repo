@@ -7,7 +7,7 @@
 //---------------------------------------------------------------------------
 const DWORD BONE_NONE 	= 0xffffffff;
 const float KEY_Quant	= 32767.f;
-const int clpMX = 28, clpMY=16, clpMZ=28;
+const int clpSMX = 28, clpSMY=16, clpSMZ=28;
 //---------------------------------------------------------------------------
 // refs
 class CEditableObject;
@@ -66,7 +66,7 @@ protected:
     SkelFaceVec		m_Faces;
 
     Fvector			m_VMmin, m_VMscale;
-    DWORDVec		m_VM[clpMX+1][clpMY+1][clpMZ+1];
+    DWORDVec		m_VM[clpSMX+1][clpSMY+1][clpSMZ+1];
     Fvector			m_VMeps;
 
     DWORD			VPack(SSkelVert& V);

@@ -5,7 +5,7 @@
 
 #include "progmesh.h"
 //---------------------------------------------------------------------------
-const int clpMX = 28, clpMY=16, clpMZ=28;
+const int clpOGFMX = 28, clpOGFMY=16, clpOGFMZ=28;
 //---------------------------------------------------------------------------
 // refs
 class CEditableObject;
@@ -51,7 +51,7 @@ protected:
     OGFFaceVec		m_Faces;
 
     Fvector			m_VMmin, m_VMscale;
-    DWORDVec		m_VM[clpMX+1][clpMY+1][clpMZ+1];
+    DWORDVec		m_VM[clpOGFMX+1][clpOGFMY+1][clpOGFMZ+1];
     Fvector			m_VMeps;
 
     DWORD			VPack(SOGFVert& V);

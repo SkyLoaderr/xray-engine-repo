@@ -310,11 +310,14 @@ public:
 	void 			OnDeviceDestroy			();
 
     // export routine
+    // skeleton
 	bool			ExportSkeletonOGF		(LPCSTR fname);
-    bool			ExportObjectOGF			(LPCSTR fname);
     bool			PrepareSVGeometry		(CFS_Base& F);
     bool			PrepareSVMotions		(CFS_Base& F);
     bool			PrepareSV				(CFS_Base& F);
+    // ogf
+    bool			ExportObjectOGF			(LPCSTR fname);
+    bool			PrepareOGF				(CFS_Base& F);
 #ifdef _MAX_EXPORT
 	CSurface*		CreateSurface			(Mtl* M, DWORD m_id);
 	LPCSTR			GenerateSurfaceName		(const char* base_name);

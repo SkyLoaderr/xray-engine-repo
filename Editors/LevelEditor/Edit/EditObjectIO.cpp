@@ -331,5 +331,11 @@ bool CEditableObject::ExportSkeletonOGF(LPCSTR fn){
 //------------------------------------------------------------------------------
 bool CEditableObject::ExportObjectOGF(LPCSTR fname)
 {
+	CFS_Memory F;
+    if (PrepareOGF(F)){
+    	F.SaveTo(fname,0);
+        return true;
+    }
+    return false;
 }
 #endif

@@ -19,10 +19,10 @@ DWORD CObjectOGFCollectorPacked::VPack(SOGFVert& V){
     DWORD P 	= 0xffffffff;
 
     DWORD ix,iy,iz;
-    ix = iFloor(float(V.P.x-m_VMmin.x)/m_VMscale.x*clpMX);
-    iy = iFloor(float(V.P.y-m_VMmin.y)/m_VMscale.y*clpMY);
-    iz = iFloor(float(V.P.z-m_VMmin.z)/m_VMscale.z*clpMZ);
-    R_ASSERT(ix<=clpMX && iy<=clpMY && iz<=clpMZ);
+    ix = iFloor(float(V.P.x-m_VMmin.x)/m_VMscale.x*clpOGFMX);
+    iy = iFloor(float(V.P.y-m_VMmin.y)/m_VMscale.y*clpOGFMY);
+    iz = iFloor(float(V.P.z-m_VMmin.z)/m_VMscale.z*clpOGFMZ);
+    R_ASSERT(ix<=clpOGFMX && iy<=clpOGFMY && iz<=clpOGFMZ);
 
 	int similar_pos=-1;
     {
@@ -47,11 +47,11 @@ DWORD CObjectOGFCollectorPacked::VPack(SOGFVert& V){
         m_VM[ix][iy][iz].push_back(P);
 
         DWORD ixE,iyE,izE;
-        ixE = iFloor(float(V.P.x+m_VMeps.x-m_VMmin.x)/m_VMscale.x*clpMX);
-        iyE = iFloor(float(V.P.y+m_VMeps.y-m_VMmin.y)/m_VMscale.y*clpMY);
-        izE = iFloor(float(V.P.z+m_VMeps.z-m_VMmin.z)/m_VMscale.z*clpMZ);
+        ixE = iFloor(float(V.P.x+m_VMeps.x-m_VMmin.x)/m_VMscale.x*clpOGFMX);
+        iyE = iFloor(float(V.P.y+m_VMeps.y-m_VMmin.y)/m_VMscale.y*clpOGFMY);
+        izE = iFloor(float(V.P.z+m_VMeps.z-m_VMmin.z)/m_VMscale.z*clpOGFMZ);
 
-        R_ASSERT(ixE<=clpMX && iyE<=clpMY && izE<=clpMZ);
+        R_ASSERT(ixE<=clpOGFMX && iyE<=clpOGFMY && izE<=clpOGFMZ);
 
         if (ixE!=ix)							m_VM[ixE][iy][iz].push_back	(P);
         if (iyE!=iy)							m_VM[ix][iyE][iz].push_back	(P);
@@ -68,7 +68,7 @@ CObjectOGFCollectorPacked::CObjectOGFCollectorPacked(const Fbox &bb, int apx_ver
     // Params
     m_VMscale.set	(bb.max.x-bb.min.x, bb.max.y-bb.min.y, bb.max.z-bb.min.z);
     m_VMmin.set		(bb.min);
-    m_VMeps.set		(m_VMscale.x/clpMX/2,m_VMscale.y/clpMY/2,m_VMscale.z/clpMZ/2);
+    m_VMeps.set		(m_VMscale.x/clpOGFMX/2,m_VMscale.y/clpOGFMY/2,m_VMscale.z/clpOGFMZ/2);
     m_VMeps.x		= (m_VMeps.x<EPS_L)?m_VMeps.x:EPS_L;
     m_VMeps.y		= (m_VMeps.y<EPS_L)?m_VMeps.y:EPS_L;
     m_VMeps.z		= (m_VMeps.z<EPS_L)?m_VMeps.z:EPS_L;
@@ -77,11 +77,11 @@ CObjectOGFCollectorPacked::CObjectOGFCollectorPacked(const Fbox &bb, int apx_ver
     m_Verts.reserve	(apx_vertices);
     m_Faces.reserve	(apx_faces);
 
-    int		_size	= (clpMX+1)*(clpMY+1)*(clpMZ+1);
+    int		_size	= (clpOGFMX+1)*(clpOGFMY+1)*(clpOGFMZ+1);
     int		_average= (apx_vertices/_size)/2;
-    for (int ix=0; ix<clpMX+1; ix++)
-        for (int iy=0; iy<clpMY+1; iy++)
-            for (int iz=0; iz<clpMZ+1; iz++)
+    for (int ix=0; ix<clpOGFMX+1; ix++)
+        for (int iy=0; iy<clpOGFMY+1; iy++)
+            for (int iz=0; iz<clpOGFMZ+1; iz++)
                 m_VM[ix][iy][iz].reserve	(_average);
 }
 //----------------------------------------------------
@@ -233,31 +233,15 @@ bool CExportObjectOGF::ExportGeometry(CFS_Base& F)
 
     R_ASSERT(m_Source->IsDynamic());
 
-    UI.ProgressStart(5+m_Source->MeshCount()*2+m_Source->SurfaceCount(),"Export skeleton geometry...");
+    UI.ProgressStart(5+m_Source->MeshCount()*2+m_Source->SurfaceCount(),"Export OGF geometry...");
     UI.ProgressInc();
 
-    vector<FvectorVec>	bone_points;
-	bone_points.resize	(m_Source->BoneCount());
-
-    FvectorVec vnormals;
     DWORD mtl_cnt=0;
 	UI.SetStatus("Split meshes...");
     for(EditMeshIt mesh_it=m_Source->FirstMesh();mesh_it!=m_Source->LastMesh();mesh_it++){
         CEditableMesh* MESH = *mesh_it;
         // generate normals
-        if (!(MESH->m_LoadState&EMESH_LS_FNORMALS)) MESH->Generate();
-        vnormals.clear();
-        Fvector N;
-        for(FvectorIt pt=MESH->m_Points.begin();pt!=MESH->m_Points.end();pt++){
-            N.set(0,0,0);
-            INTVec& a_lst = MESH->m_Adjs[pt-MESH->m_Points.begin()];
-            VERIFY(a_lst.size());
-            for (INTIt i_it=a_lst.begin(); i_it!=a_lst.end(); i_it++)
-                N.add(MESH->m_FNormals[*i_it]);
-            N.normalize_safe();
-            vnormals.push_back(N);
-        }
-	    UI.ProgressInc();
+        if (!(MESH->m_LoadState&EMESH_LS_PNORMALS)) MESH->GeneratePNormals();
         // fill faces
         for (SurfFacesPairIt sp_it=MESH->m_SurfFaces.begin(); sp_it!=MESH->m_SurfFaces.end(); sp_it++){
             INTVec& face_lst = sp_it->second;
@@ -273,10 +257,9 @@ bool CExportObjectOGF::ExportGeometry(CFS_Base& F)
             for (INTIt f_it=face_lst.begin(); f_it!=face_lst.end(); f_it++){
                 st_Face& face = MESH->m_Faces[*f_it];
                 {
-                    SSkelVert v[3];
+                    SOGFVert v[3];
                     for (int k=0; k<3; k++){
                         st_FaceVert& 	fv = face.pv[k];
-                        st_SVert& 		sv = MESH->m_SVertices[fv.pindex];
                         int offs = 0;
                         Fvector2* 		uv = 0;
                         for (DWORD t=0; t<dwTexCnt; t++){
@@ -286,78 +269,57 @@ bool CExportObjectOGF::ExportGeometry(CFS_Base& F)
                             uv					= &vmap.getUV(vm_pt.index);
                         }
                         R_ASSERT2(uv,"uv empty");
-                        Fvector N;
-		                CBone* B		= m_Source->GetBone(sv.bone);
-        		        B->LITransform().transform_dir(N,vnormals[fv.pindex]);
-                        v[k].set(MESH->m_Points[fv.pindex],sv.offs,N,*uv,sv.bone); //sv.norm
+                        v[k].set(MESH->m_Points[fv.pindex],MESH->m_PNormals[fv.pindex],*uv);
                     }
                     split.add_face(v[0], v[1], v[2]);
+			        if (surf->_2Sided()){
+                    	v[0].N.invert(); v[1].N.invert(); v[2].N.invert();
+                    	split.add_face(v[0], v[2], v[1]);
+                    }
                 }
             }
         }
         // mesh fin
-        MESH->UnloadSVertices();
+        MESH->UnloadPNormals();
         MESH->UnloadFNormals();
 	    UI.ProgressInc();
     }
     UI.SetStatus("Make progressive...");
-    // fill per bone vertices
-    for (SplitIt split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++){
-		SkelVertVec& lst = split_it->getV_Verts();
-	    for (SkelVertIt sv_it=lst.begin(); sv_it!=lst.end(); sv_it++)
-		    bone_points[sv_it->B].push_back(sv_it->O);
-        if (m_Source->IsFlag(CEditableObject::eoProgressive)) split_it->MakeProgressive();
-		UI.ProgressInc();
-    }
-	UI.ProgressInc();
 
 	// create OGF
 
 	// Saving geometry...
-    Fbox rootBB;
+    Fbox BBox;
 
     // Header
     ogf_header 		H;
     H.format_version= xrOGF_FormatVersion;
-    H.type			= MT_SKELETON;
+    H.type			= MT_HIERRARHY;
     H.flags			= 0;
     F.write_chunk	(OGF_HEADER,&H,sizeof(H));
 
     // OGF_CHILDREN
     F.open_chunk	(OGF_CHILDREN);
     int chield=0;
-    for (split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++){
+    for (SplitIt split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++){
 	    F.open_chunk(chield++);
     	    split_it->Save(F);
 	    F.close_chunk();
-		rootBB.merge(split_it->m_Box);
+		BBox.merge(split_it->m_Box);
     }
     F.close_chunk();
     UI.ProgressInc();
 
-
     UI.SetStatus("Compute bounding volume...");
     // BBox (already computed)
     F.open_chunk(OGF_BBOX);
-    F.write(&rootBB,sizeof(Fbox));
+    F.write(&BBox,sizeof(Fbox));
     F.close_chunk();
 	UI.ProgressInc();
 
-    // BoneNames
-    F.open_chunk(OGF_BONE_NAMES);
-    F.Wdword(m_Source->BoneCount());
-    int bone_idx=0;
-    for (BoneIt bone_it=m_Source->FirstBone(); bone_it!=m_Source->LastBone(); bone_it++,bone_idx++){
-        F.WstringZ	((*bone_it)->Name());
-        F.WstringZ	(((*bone_it)->ParentIndex()==-1)?"":(*bone_it)->Parent());
-        Fobb	obb;
-        ComputeOBB	(obb,bone_points[bone_idx]);
-        F.write	(&obb,sizeof(Fobb));
-    }
-    F.close_chunk();
 	UI.ProgressInc();
     UI.ProgressEnd();
-*/
+
     return true;
 }
 //------------------------------------------------------------------------------
