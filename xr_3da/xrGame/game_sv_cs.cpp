@@ -345,7 +345,7 @@ void	game_sv_CS::Update			()
 				if (timelimit) if (s32(Device.TimerAsync()-u32(start_time))>timelimit) OnTimelimitExceed();
 		} break;
 		case GAME_PHASE_PENDING : {
-				if ((Device.TimerAsync()-start_time)>u32(10*1000)) OnRoundStart();
+				if ((Device.TimerAsync()-start_time)>u32(60*1000)) OnRoundStart();
 		} break;
 	}
 }
