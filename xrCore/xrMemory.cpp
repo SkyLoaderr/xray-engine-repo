@@ -17,6 +17,13 @@ extern		pso_MemFill		xrMemFill_x86;
 extern		pso_MemFill32	xrMemFill32_MMX;
 extern		pso_MemFill32	xrMemFill32_x86;
 
+xrMemory::xrMemory()
+{
+	mem_copy	= xrMemCopy_x86;
+	mem_fill	= xrMemFill_x86;
+	mem_fill32	= xrMemFill32_x86;
+}
+
 void	xrMemory::_initialize	()
 {
 	DWORD	features		= CPU::ID.feature & CPU::ID.os_support;

@@ -8,6 +8,7 @@
 class XRCORE_API	xrMemory
 {
 public:
+	xrMemory			();
 	void				_initialize	();
 	void				_destroy	();
 
@@ -25,6 +26,7 @@ public:
 	pso_MemFill*		mem_fill;
 	pso_MemFill32*		mem_fill32;
 };
+
 extern XRCORE_API	xrMemory	Memory;
 
 #undef ZeroMemory
