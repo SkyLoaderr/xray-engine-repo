@@ -340,7 +340,7 @@ void __fastcall TItemList::tvItemsAfterSelectionChange(TObject *Sender)
 void __fastcall TItemList::FormShow(TObject *Sender)
 {
     InplaceEdit->Editor->Color		= TColor(0x00A0A0A0);
-    InplaceEdit->Editor->BorderStyle= bsNone;
+    InplaceEdit->Editor->AutoSelect	= true;
 	// check window position
 	UI.CheckWindowPos(this);
 }
@@ -421,7 +421,7 @@ void __fastcall TItemList::InplaceEditValidateResult(
 		FHelper.MakeName			(IE->Item,0,old_name,false);
 	    _ReplaceItem				(old_name.c_str(),IE->Item->Level,new_text.c_str(),new_name,'\\');
 	    TElTreeItem* find_item		= FHelper.FindItem(tvItems,new_name);
-    	InputValid 					= (find_item==IE->Item)||(!find_item);
+    	InputValid 					= (!find_item);
     }
 }
 //---------------------------------------------------------------------------
@@ -567,4 +567,5 @@ void TItemList::RenameSelItem()
     }
 }
 //---------------------------------------------------------------------------
+
 

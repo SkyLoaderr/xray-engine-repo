@@ -22,13 +22,14 @@ class TfrmObjectList : public TForm
 {
 __published:	// IDE-managed Components
     TPanel *Panel1;
-    TExtBtn *sbClose;
-    TExtBtn *sbRefreshList;
 	TRadioGroup *rgSO;
 	TExtBtn *ebShowSel;
 	TExtBtn *ebHideSel;
 	TElTree *tvItems;
 	TFormStorage *fsStorage;
+	TPanel *Panel2;
+	TExtBtn *sbRefreshList;
+	TExtBtn *sbClose;
     void __fastcall sbCloseClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
     void __fastcall ebHideSelClick(TObject *Sender);

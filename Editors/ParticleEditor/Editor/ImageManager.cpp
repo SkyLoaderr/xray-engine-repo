@@ -615,7 +615,7 @@ BOOL CImageManager::CreateOBJThumbnail(LPCSTR tex_name, CEditableObject* obj, in
 BOOL CImageManager::RemoveTexture(LPCSTR fname, EItemType type)
 {
 	if (TYPE_FOLDER==type){
-    	FS.dir_delete			(fname);
+    	FS.dir_delete			(fname,FALSE);
 		return TRUE;
     }else if (TYPE_OBJECT==type){
         AnsiString src_name;

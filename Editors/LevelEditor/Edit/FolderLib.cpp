@@ -444,20 +444,23 @@ bool CFolderHelper::RenameItem(TElTree* tv, TElTreeItem* node, AnsiString& new_t
                 VERIFY(node->Level<_GetItemCount(full_name.c_str(),'\\'));
                 AnsiString new_full_name;
                 _ReplaceItem(full_name.c_str(),node->Level,new_text.c_str(),new_full_name,'\\');
-                OnRename(full_name.c_str(),new_full_name.c_str(),TYPE_OBJECT);
+		        if (full_name!=new_full_name)
+        	        OnRename(full_name.c_str(),new_full_name.c_str(),TYPE_OBJECT);
             }
         }
         AnsiString new_full_name;
         MakeName(node,0,full_name,true);
         _ReplaceItem(full_name.c_str(),node->Level,new_text.c_str(),new_full_name,'\\');
-		OnRename(full_name.c_str(),new_full_name.c_str(),TYPE_FOLDER);
+        if (full_name!=new_full_name)
+			OnRename(full_name.c_str(),new_full_name.c_str(),TYPE_FOLDER);
     }else if (IsObject(node)){
     	// is object - rename only this item
         MakeName(node,0,full_name,false);
         VERIFY(node->Level<_GetItemCount(full_name.c_str(),'\\'));
         AnsiString new_full_name;
         _ReplaceItem(full_name.c_str(),node->Level,new_text.c_str(),new_full_name,'\\');
-		OnRename(full_name.c_str(),new_full_name.c_str(),TYPE_OBJECT);
+        if (full_name!=new_full_name)
+			OnRename(full_name.c_str(),new_full_name.c_str(),TYPE_OBJECT);
     }
     tv->Selected=node;
     return true;

@@ -181,7 +181,7 @@ int ELibrary::GetObjects(FS_QueryMap& files)
 BOOL ELibrary::RemoveObject(LPCSTR _fname, EItemType type)   
 {
 	if (TYPE_FOLDER==type){
-    	FS.dir_delete			(_objects_,_fname);
+    	FS.dir_delete			(_objects_,_fname,FALSE);
 		return TRUE;
     }else if (TYPE_OBJECT==type){
         AnsiString src_name;
@@ -209,7 +209,7 @@ BOOL ELibrary::RemoveObject(LPCSTR _fname, EItemType type)
 void ELibrary::RenameObject(LPCSTR nm0, LPCSTR nm1, EItemType type)
 {
 	if (TYPE_FOLDER==type){
-    	FS.dir_delete			(_objects_,nm0);
+    	FS.dir_delete			(_objects_,nm0,FALSE);
     }else if (TYPE_OBJECT==type){
         AnsiString fn0,fn1;
         // rename base file
