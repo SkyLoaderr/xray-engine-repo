@@ -66,8 +66,8 @@ void CEngine::Initialize(void)
 	xrBinder*	bindCPU	    = (xrBinder*)	GetProcAddress(hPSGP,"xrBind_PSGP");	R_ASSERT(bindCPU);
 	bindCPU		            (&PSGP, CPU::ID.feature & CPU::ID.os_support);
     // for compliance with editor
-    PSGP.skin1W				= xrSkin1W_x86;
-    PSGP.skin2W				= xrSkin2W_x86;
+//T    PSGP.skin1W				= xrSkin1W_x86;
+//T    PSGP.skin2W				= xrSkin2W_x86;
 #endif
 }
 

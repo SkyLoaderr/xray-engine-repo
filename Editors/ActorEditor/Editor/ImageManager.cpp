@@ -68,7 +68,7 @@ void CImageManager::MakeThumbnailImage(EImageThumbnail* THM, DWORD* data, int w,
 	THM->m_TexParams.height= h;
     if (a) 	THM->m_TexParams.flag |= STextureParams::flHasAlpha;
     else	THM->m_TexParams.flag &=~STextureParams::flHasAlpha;
-	imf_Process(THM->m_Pixels.begin(),THUMB_WIDTH,THUMB_HEIGHT,data,THM->_Width(),THM->_Height(),imf_box);
+//T	imf_Process(THM->m_Pixels.begin(),THUMB_WIDTH,THUMB_HEIGHT,data,THM->_Width(),THM->_Height(),imf_box);
     THM->VFlip();
 }
 
@@ -335,8 +335,8 @@ BOOL CImageManager::CheckCompliance(LPCSTR fname, int& compl)
     LPDWORD pScaled     = LPDWORD(malloc((w_2)*(h_2)*4));
     LPDWORD pRestored   = LPDWORD(malloc(w*h*4));
     try {
-    	imf_Process     (pScaled,	w_2,h_2,data.begin(),w,h,imf_lanczos3	);
-        imf_Process		(pRestored,	w,h,pScaled,w_2,h_2,imf_filter 		    );
+//T    	imf_Process     (pScaled,	w_2,h_2,data.begin(),w,h,imf_lanczos3	);
+//T        imf_Process		(pRestored,	w,h,pScaled,w_2,h_2,imf_filter 		    );
     } catch (...)
     {
         Msg             ("* ERROR: imf_Process");
@@ -531,7 +531,7 @@ void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR tex_name, int tgt_w, int 
     Engine.FS.VerifyPath(out_name.c_str());
     
     CImage* I = new CImage();
-    I->Create	(tgt_w*samples,tgt_h,new_pixels.begin());
+    I->Create	(tgt_w*samples,tgt_h,(u32*)new_pixels.begin()); //T
     I->Vflip	();
     I->SaveTGA	(out_name.c_str());
     _DELETE		(I);

@@ -63,7 +63,7 @@ void EImageThumbnail::CreateFromData(LPDWORD p, int w, int h)
 	R_ASSERT(p&&(w>0)&&(h>0));
 //	imf_filter	imf_box  imf_triangle  imf_bell  imf_b_spline  imf_lanczos3  imf_mitchell
 	m_Pixels.resize(THUMB_SIZE);
-	imf_Process(m_Pixels.begin(),THUMB_WIDTH,THUMB_HEIGHT,p,w,h,imf_box);
+//T	imf_Process(m_Pixels.begin(),THUMB_WIDTH,THUMB_HEIGHT,p,w,h,imf_box);
     m_TexParams.width = w;
     m_TexParams.height= h;
     m_TexParams.flag&=~STextureParams::flHasAlpha;
@@ -73,7 +73,7 @@ void EImageThumbnail::CreateFromData(LPDWORD p, int w, int h, int fc, int vc)
 {
 	R_ASSERT(p&&(w>0)&&(h>0));
 	m_Pixels.resize(THUMB_SIZE);
-	imf_Process(m_Pixels.begin(),THUMB_WIDTH,THUMB_HEIGHT,p,w,h,imf_box);
+//T	imf_Process(m_Pixels.begin(),THUMB_WIDTH,THUMB_HEIGHT,p,w,h,imf_box);
     m_TexParams.vertex_count = vc;
     m_TexParams.face_count	 = fc;
 }
@@ -125,7 +125,7 @@ bool EImageThumbnail::Load(LPCSTR src_name, FSPath* path)
         m_TexParams.height		= F.Rdword();
 
         if (F.FindChunk(THM_CHUNK_TEXTURE_TYPE)){
-            m_TexParams.type	= F.Rdword();
+            m_TexParams.type	= (STextureParams::ETType)F.Rdword();
         }
     
         if (F.FindChunk(THM_CHUNK_DETAIL_EXT)){

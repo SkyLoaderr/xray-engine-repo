@@ -9,8 +9,13 @@ typedef	signed		short	s16;
 typedef	unsigned	short	u16;
 
 typedef	signed		int		s32;
-typedef	unsigned	int		u32;
 
+#ifdef _EDITOR
+typedef	unsigned	long	u32;
+#else
+typedef	unsigned	int		u32;
+#endif
+                                         
 typedef	signed		__int64	s64;
 typedef	unsigned	__int64	u64;
 

@@ -25,7 +25,7 @@ bool g_ErrorMode=false;
 CLog ELog;
 void Log	(const char *msg){ ELog.Msg(mtInformation,msg); }
 void Log	(const char *msg, const char*	dop){ ELog.Msg(mtInformation,"%s%s",msg,dop); }
-void Log	(const char *msg, DWORD			dop){ ELog.Msg(mtInformation,"%s%d",msg,dop); }
+void Log	(const char *msg, u32			dop){ ELog.Msg(mtInformation,"%s%d",msg,dop); }
 void Log	(const char *msg, int  			dop){ ELog.Msg(mtInformation,"%s%d",msg,dop); }
 void Log	(const char *msg, float			dop){ ELog.Msg(mtInformation,"%s%f",msg,dop); }
 void Log	(const char *msg, const Fvector& dop){ ELog.Msg(mtInformation,"%s [%f,%f,%f]",msg,dop.x,dop.y,dop.z); }

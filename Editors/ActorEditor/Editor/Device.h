@@ -181,15 +181,10 @@ enum {
     rsForceHWTransform	= (1ul<<27ul)
 };
 
-extern DWORD psDeviceFlags;
-
 #define DEFAULT_CLEARCOLOR 0x00555555
-
 extern DWORD dwClearColor;
 
 // textures
-extern int psTextureLOD;
-
 #include "TextureManager_Runtime.h"
 #include "PrimitivesR_Runtime.h"
 
