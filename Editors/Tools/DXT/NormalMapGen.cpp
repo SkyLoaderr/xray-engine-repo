@@ -688,6 +688,16 @@ IC	void	TW_Iterate_2OP(u32 width, u32 height, u32 pitch, u8* dst, u8* src0, u8* 
 	}
 }
 
+u32	hsample	(s32 w, s32 h, s32 p, s32 x, s32 y, u8* src)
+{
+	if	(x<0)	x+=w;
+				x%=w;
+	if	(y<0)	y+=h;
+				y%=h;
+
+	return color_get_R( *(((u32*)((u8*)src + (y * pitch)))+x) );
+}
+
 #include "ETextureParams.h"
 #include "Image_DXTC.h"
 extern bool DXTCompressImage	(LPCSTR out_name, u8* raw_data, u32 w, u32 h, u32 pitch, 
@@ -703,7 +713,7 @@ bool DXTCompressBump(LPCSTR out_name, u8* T_height_gloss, u32 w, u32 h, u32 pitc
 	// stage 0 
 	ConvertToNormalMap	(pSrc,KERNEL_5x5,fmt->bump_virtual_height*100.f);
 	u8* T_normal_1		= pSrc->GetImageDataPointer();
-	TW_Iterate_1OP		(w,h,pitch,T_normal_1,T_height_gloss,it_gloss_rev);
+	TW_Iterate_1OP		(w,h,pitch,T_normal_1,T_height_gloss,it_gloss_rev);		// T_height_gloss.a (gloss) -> T_normal_1 + reverse of channels
 
 	STextureParams		fmt0;
 	fmt0.flags.assign	(STextureParams::flGenerateMipMaps);
@@ -721,11 +731,49 @@ bool DXTCompressBump(LPCSTR out_name, u8* T_height_gloss, u32 w, u32 h, u32 pitc
 			u8* T_normal_1U	= CI->GetDecompDataPointer();
 
 			// Calculate difference
-			u8*	T_normal_1D	= (u8*) calloc( w * h * 4, sizeof( u8 ));
+			u8*	T_normal_1D	= (u8*) calloc( w * h, sizeof( u32 ));
 			TW_Iterate_2OP	(w,h,pitch,T_normal_1D,T_normal_1,T_normal_1U,it_difference);
 
+			// Calculate bounds for centering
+			u32	h_average=0, h_min=255, h_max=0;
+			{
+				for (u32 y=0; y<h; y++)
+				{
+					for (u32 x=0; x<w; x++)
+					{
+						u32		sh	= *	(((u32*)((u8*)T_height_gloss + (y * pitch)))+x);
+						u32		h	= 	color_get_R(sh);	// height -> R-channel
+						h_average	+=	h;
+						if (h<h_min)	h_min	= h;
+						if (h>h_max)	h_max	= h;
+					}
+				}
+			}
+			// final median, which will be used for centering
+			u32		h_median	=	9*(h_average/(w*h)) + 1*( (h_max-h_min)/2 + h_min );
+					h_median	/=	10;	
+			s32		h_correction=	s32(127)-s32(h_median);
+
+			// Calculate filtered and corrected height
+			u8*		T_height_pf	=	(u8*) calloc( w * h, sizeof( u32 ));	// filtered for parallax
+			for (s32 y=0; y<h; y++)
+			{
+				u32		p = pitch;
+				u32*	T = T_height_gloss;
+				for (s32 x=0; x<w; x++)
+				{
+					u32&	dst		= *	(((u32*)((u8*)T_height_pf + (y * pitch)))+x);
+					u32		val		= 
+						hsample(w,h,p,x-1,y-1,T) + hsample(w,h,p,x+0,y-1,T) + hsample(w,h,p,x+1,y-1,T) +
+						hsample(w,h,p,x-1,y+0,T) + hsample(w,h,p,x+0,y+0,T) + hsample(w,h,p,x+1,y+0,T) +
+						hsample(w,h,p,x-1,y+1,T) + hsample(w,h,p,x+0,y+1,T) + hsample(w,h,p,x+1,y+1,T);
+					s32		r		= clampr( s32(val/9) + h_correction, 0, 255);
+							dst		= color_rgba(r,r,r,r);
+				}
+			}
+
 			// Reverse channels back + transfer heightmap
-			TW_Iterate_1OP	(w,h,pitch,T_normal_1D,T_height_gloss,it_height_rev);
+			TW_Iterate_1OP	(w,h,pitch,T_normal_1D,T_height_pf,it_height_rev);
 			
 			// Compress
 			STextureParams	fmt0;
@@ -737,6 +785,7 @@ bool DXTCompressBump(LPCSTR out_name, u8* T_height_gloss, u32 w, u32 h, u32 pitc
 			strcat			(out_name1,"#.dds");
 			bRes			|= DXTCompressImage(out_name1, T_normal_1D, w, h, pitch, &fmt0, depth);
 
+			free			(T_height_pf);
 			free			(T_normal_1D);
 		}else{
 			bRes			= false;
