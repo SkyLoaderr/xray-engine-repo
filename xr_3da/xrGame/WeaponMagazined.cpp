@@ -469,7 +469,7 @@ void CWeaponMagazined::switch2_Reload()
 {
 	Sound->play_at_pos		(sndReload,H_Root(),vLastFP);
 	if (sndReload.feedback)
-		sndReload.feedback->set_volume(.4f);
+		sndReload.feedback->set_volume(.2f);
 	m_pHUD->animPlay		(mhud_reload[Random.randI(mhud_reload.size())],FALSE,this);
 }
 void CWeaponMagazined::switch2_Hiding()
