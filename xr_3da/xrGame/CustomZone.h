@@ -5,6 +5,8 @@
 
 class CActor;
 
+
+
 struct SZonePPInfo 
 {
 	float duality_h, duality_v, blur, gray, noise, noise_scale;
@@ -81,6 +83,9 @@ public:
 	float GetMaxPower() {return m_fMaxPower;}
 
 	//вычисление силы хита в зависимости от расстояния до центра зоны
+	//относительный размер силы (от 0 до 1)
+	virtual float RelativePower(float dist);
+	//абсолютный размер
 	virtual float Power(float dist);
 
 	//воздействие зоной на объект
@@ -99,6 +104,43 @@ protected:
 	
 	float m_fHitImpulseScale;
 
+	//тип наносимого хита
+	ALife::EHitType m_eHitTypeBlowout;
+
+	
+	//различные состояния в которых может находиться зона
+	typedef enum {
+		eZoneStateIdle = 0,		//состояние зоны, когда внутри нее нет активных объектов
+		eZoneStateAwaking,		//пробуждение зоны (объект попал в зону)
+		eZoneStateBlowout,		//выброс
+        eZoneStateAccumulate,	//накапливание энергии, после выброса
+		eZoneStateMax
+	} EZoneState;
+
+	EZoneState m_eZoneState;
+
+
+	//текущее время пребывания зоны в определенном состоянии 
+	int m_iStateTime;
+	
+	//массив с временами, сколько каждое состояние должно 
+	//длиться (если 0, то мгновенно -1 - бесконечность, 
+	//-2 - вообще не должно вызываться)
+	typedef	svector<int, eZoneStateMax> StateTimeSVec;
+	StateTimeSVec m_StateTime;
+
+	virtual void SwitchZoneState(EZoneState new_state);
+
+	//обработка зоны в различных состояниях
+	virtual bool IdleState();
+	virtual bool AwakingState();
+	virtual bool BlowoutState();
+	virtual bool AccumulateState();
+
+	//воздействовать на все объекты в зоне
+	virtual void AffectObjects();
+
+		
 	u32 m_dwDeltaTime;
 	u32 m_dwPeriod;
 	bool m_bZoneReady;

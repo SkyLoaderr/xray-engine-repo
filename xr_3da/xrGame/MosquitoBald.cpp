@@ -24,3 +24,17 @@ void CMosquitoBald::Load(LPCSTR section)
 void CMosquitoBald::Postprocess(f32 /**val/**/) 
 {
 }
+
+bool CMosquitoBald::BlowoutState()
+{
+	bool result = inherited::BlowoutState();
+
+	//если мы перешли в следующее состояние
+	if(result)
+	{
+		AffectObjects();
+		return true;
+	}
+
+	return false;
+}

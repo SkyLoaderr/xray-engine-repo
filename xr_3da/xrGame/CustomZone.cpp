@@ -21,6 +21,7 @@ CCustomZone::CCustomZone(void)
 	m_bIgnoreNonAlive = false;
 	m_bIgnoreSmall = false;
 
+	m_eHitTypeBlowout = ALife::eHitTypeWound;
 
 	m_pLocalActor = NULL;
 
@@ -36,11 +37,14 @@ CCustomZone::CCustomZone(void)
 
 
 	m_pLight = NULL;
+
+	m_StateTime.resize(eZoneStateMax);
+	for(int i=0; i<eZoneStateMax; i++)
+		m_StateTime[i] = 0;
 }
 
 CCustomZone::~CCustomZone(void) 
-{
-	m_idle_sound.destroy();
+{	m_idle_sound.destroy();
 	m_blowout_sound.destroy();
 	m_hit_sound.destroy();
 	m_entrance_sound.destroy();
@@ -60,10 +64,17 @@ void CCustomZone::Load(LPCSTR section)
 
 	m_iDisableHitTime = pSettings->r_s32(section,"disable_time");	
 	m_iDisableIdleTime = pSettings->r_s32(section,"disable_idle_time");	
-	m_fHitImpulseScale = pSettings->r_float(section,"hit_impulse_scale");	
+	m_fHitImpulseScale = pSettings->r_float(section,"hit_impulse_scale");
+	m_eHitTypeBlowout = ALife::g_tfString2HitType(pSettings->r_string(section, "hit_type"));
 
 	m_bIgnoreNonAlive = !!pSettings->r_bool(section, "ignore_nonalive");
 	m_bIgnoreSmall	  = !!pSettings->r_bool(section, "ignore_small");
+
+	//загрузить времена дл€ зоны
+	m_StateTime[eZoneStateIdle]			= -1;
+	m_StateTime[eZoneStateAwaking]		= pSettings->r_s32(section, "awaking_time");
+	m_StateTime[eZoneStateBlowout]		= pSettings->r_s32(section, "blowout_time");
+	m_StateTime[eZoneStateAccumulate]	= pSettings->r_s32(section, "accamulate_time");
 	
 //////////////////////////////////////////////////////////////////////////
 	ISpatial*		self				=	dynamic_cast<ISpatial*> (this);
@@ -177,6 +188,8 @@ BOOL CCustomZone::net_Spawn(LPVOID DC)
 
 	m_effector.SetRadius(CFORM()->getSphere().R);
 
+	SwitchZoneState(eZoneStateIdle);
+
 	return bOk;
 }
 
@@ -189,13 +202,87 @@ void CCustomZone::net_Destroy()
 		m_pLight->set_active(false);
 }
 
+
+
+void CCustomZone::SwitchZoneState(EZoneState new_state)
+{
+	m_eZoneState = new_state;
+	m_iStateTime = 0;
+}
+
+
+bool CCustomZone::IdleState()
+{
+	return false;
+}
+
+bool CCustomZone::AwakingState()
+{
+	if(m_iStateTime>=m_StateTime[eZoneStateAwaking])
+	{
+		SwitchZoneState(eZoneStateBlowout);
+		return true;
+	}
+	return false;
+}
+
+bool CCustomZone::BlowoutState()
+{
+	if(m_iStateTime>=m_StateTime[eZoneStateBlowout])
+	{
+		SwitchZoneState(eZoneStateAccumulate);
+		return true;
+	}
+	return false;
+}
+bool CCustomZone::AccumulateState()
+{
+	if(m_iStateTime>=m_StateTime[eZoneStateAccumulate])
+	{
+		if(m_bZoneActive)
+			SwitchZoneState(eZoneStateBlowout);
+		else
+			SwitchZoneState(eZoneStateIdle);
+
+		return true;
+	}
+	return false;
+}
+
+
 void CCustomZone::UpdateCL() 
 {
 	inherited::UpdateCL();
 
+
+	const Fsphere& s		= CFORM()->getSphere();
+	Fvector					P;
+	XFORM().transform_tiny(P,s.P);
+	feel_touch_update		(P,s.R);
+
+
+	m_iStateTime += (int)Device.dwTimeDelta;
+	switch(m_eZoneState)
+	{
+	case eZoneStateIdle:
+		IdleState();
+		break;
+	case eZoneStateAwaking:
+		AwakingState();
+		break;
+	case eZoneStateBlowout:
+		BlowoutState();
+		break;
+	case eZoneStateAccumulate:
+		AccumulateState();
+		break;
+	default: NODEFAULT;
+	}
+
+
 	//вычислить врем€ срабатывани€ зоны
 	if(m_bZoneActive)
-		m_dwDeltaTime += Device.dwTimeDelta;	
+		m_dwDeltaTime += Device.dwTimeDelta;
 	else
 		m_dwDeltaTime = 0;
 
@@ -206,21 +293,6 @@ void CCustomZone::UpdateCL()
 	}
 
 
-	const Fsphere& s		= CFORM()->getSphere();
-	Fvector					P;
-	XFORM().transform_tiny(P,s.P);
-	feel_touch_update		(P,s.R);
-	
-	if(m_bZoneReady) 
-	{
-		xr_set<CObject*>::iterator it;
-		for(it = m_inZone.begin(); m_inZone.end() != it; ++it) 
-		{
-			Affect(*it);
-		}
-		m_bZoneReady = false;
-	}
-	
 	if (EnableEffector())
 		m_effector.Update(Level().CurrentEntity()->Position().distance_to(Position()));
 
@@ -259,6 +331,11 @@ void CCustomZone::shedule_Update(u32 dt)
 			m_bZoneActive = true;
 	}
 
+
+	//в зону попал объект, разбудить ее
+	if(m_bZoneActive && eZoneStateIdle ==  m_eZoneState)
+		SwitchZoneState(eZoneStateAwaking);
+	
 	inherited::shedule_Update(dt);
 }
 
@@ -319,40 +396,18 @@ BOOL CCustomZone::feel_touch_contact(CObject* O)
 	return ((CCF_Shape*)CFORM())->Contact(O);
 }
 
-float CCustomZone::Power(float dist) 
-{
-	float radius = CFORM()->getRadius()*3/4.f;
 
-//	f32 l_r = Visual()->vis.sphere.R;
-//	return l_r < dist ? 0 : m_fMaxPower * (1.f - m_fAttenuation*dist/l_r);
-	float power = radius < dist ? 0 : m_fMaxPower * (1.f - m_fAttenuation*(dist/radius)*(dist/radius));
+float CCustomZone::RelativePower(float dist)
+{
+	float radius = Radius()*3/4.f;
+	float power = radius < dist ? 0 : (1.f - m_fAttenuation*(dist/radius)*(dist/radius));
 	return power < 0 ? 0 : power;
 }
-/*
-void CCustomZone::spatial_register()
-{
-	R_ASSERT2				(CFORM(),"Invalid or no CForm!");
-	Fvector					P;
-	XFORM().transform_tiny	(P,CFORM()->getSphere().P);
-	spatial.center.set		(P);
-	spatial.radius			= CFORM()->getRadius();
-	ISpatial::spatial_register();
-}
 
-void CCustomZone::spatial_unregister()
+float CCustomZone::Power(float dist) 
 {
-	ISpatial::spatial_unregister();
+	return  m_fMaxPower * RelativePower(dist);
 }
-
-void CCustomZone::spatial_move()
-{
-	R_ASSERT2				(CFORM(),"Invalid or no CForm!");
-	Fvector					P;
-	XFORM().transform_tiny	(P,CFORM()->getSphere().P);
-	spatial.center.set		(P);
-	spatial.radius			= CFORM()->getRadius();
-	ISpatial::spatial_move	();
-}*/
 
 
 void CCustomZone::Center(Fvector& C) const
@@ -446,14 +501,13 @@ void CCustomZone::Affect(CObject* O)
 		l_P.w_s16	((s16)0);
 		l_P.w_vec3	(position_in_bone_space);
 		l_P.w_float	(impulse);
-		l_P.w_u16	(ALife::eHitTypeWound);
+		l_P.w_u16	((u16)m_eHitTypeBlowout);
 		u_EventSend	(l_P);
 
 
 		PlayHitParticles(pGameObject);
 		PlayBlowoutParticles();
 	}
-	
 }
 
 
@@ -649,5 +703,14 @@ void CCustomZone::UpdateBlowoutLight	()
 		m_dwLightTimeLeft = 0;
 		m_pLight->set_active(false);
 		m_pLight->set_range(0.1f);
+	}
+}
+
+void CCustomZone::AffectObjects()
+{
+	xr_set<CObject*>::iterator it;
+	for(it = m_inZone.begin(); m_inZone.end() != it; ++it) 
+	{
+		Affect(*it);
 	}
 }

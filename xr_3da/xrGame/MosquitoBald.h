@@ -13,6 +13,8 @@ public:
 	virtual void Postprocess(f32 val);
 	virtual bool EnableEffector() {return true;}
 
+protected:
 	ref_str m_pHitEffect;
 
+	virtual bool BlowoutState();
 };
