@@ -53,7 +53,7 @@ function load_dialog:InitControls()
 	
 	----- DATA ----	
 	local info_rect       = {x = 0, 
-						     y = self.top_align_indent,
+						     y = self.top_align_y,
 						     width = 128, 
 						     height = 300}
 	info_rect.x = self.right_align_x - info_rect.width
