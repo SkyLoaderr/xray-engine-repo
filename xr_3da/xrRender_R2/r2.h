@@ -68,19 +68,13 @@ private:
 	void							add_Static					(IRender_Visual	*pVisual, u32 planes);
 	void							add_leafs_Dynamic			(IRender_Visual	*pVisual);					// if detected node's full visibility
 	void							add_leafs_Static			(IRender_Visual	*pVisual);					// if detected node's full visibility
-	void							InsertSG_Dynamic			(IRender_Visual	*pVisual, Fvector& Center);
-	void							InsertSG_Static				(IRender_Visual	*pVisual);
 
-	void							flush_Models				();
-	void							flush_LODs					();
+	virtual		ShaderElement*		rimp_select_sh_static		(IRender_Visual	*pVisual, float cdist_sq);
+	virtual		ShaderElement*		rimp_select_sh_dynamic		(IRender_Visual	*pVisual, float cdist_sq);
 
-	IRender_Sector*					detectSector				(Fvector& P, Fvector& D);
-public:
-	void							render_scenegraph			();
-	void							render_hud					();
+	IRender_Sector*					rimp_detectSector			(Fvector& P, Fvector& D);
 	void							render_smap_direct			(Fmatrix& mCombined);
-	void							render_smap_sector			(CSector* S, Fmatrix& mCombined, Fvector& C);
-
+public:
 	IRender_Portal*					getPortal					(int id);
 	IRender_Sector*					getSectorActive				();
 	IRender_Visual*					model_CreatePE				(LPCSTR name);

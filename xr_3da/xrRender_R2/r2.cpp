@@ -6,6 +6,18 @@
  
 CRender										RImplementation;
 
+//////////////////////////////////////////////////////////////////////////
+ShaderElement*			CRender::rimp_select_sh_dynamic	(IRender_Visual	*pVisual, float cdist_sq)
+{
+	return pVisual->hShader->E[RImplementation.phase]._get();
+}
+//////////////////////////////////////////////////////////////////////////
+ShaderElement*			CRender::rimp_select_sh_static	(IRender_Visual	*pVisual, float cdist_sq)
+{
+	return pVisual->hShader->E[RImplementation.phase]._get();
+}
+
+//////////////////////////////////////////////////////////////////////////
 // Just two static storage
 LPCSTR					r2p(LPCSTR name)
 {
