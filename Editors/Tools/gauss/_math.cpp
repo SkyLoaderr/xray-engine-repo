@@ -8,9 +8,9 @@ XRCORE_API CRandom			Random;
 
 u16 getFPUsw() 
 {
-	u16 SW;
-	__asm fstcw SW;
-	return SW;
+	u16		SW;
+	__asm	fstcw SW;
+	return	SW;
 }
 
 namespace FPU 

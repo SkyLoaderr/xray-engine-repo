@@ -153,10 +153,12 @@
 #pragma warning (disable : 4201 )		// nonstandard extension used : nameless struct/union
 #pragma warning (disable : 4100 )		// unreferenced formal parameter
 #pragma warning (disable : 4127 )		// conditional expression is constant
-//#pragma warning (disable : 4324 )		// structure was padded due to __declspec(align())
-//#pragma warning (disable : 4714 )		// 'function' marked as __forceinline not inlined
 #pragma warning (disable : 4530 )		// C++ exception handler used, but unwind semantics are not enabled
 #pragma warning (disable : 4345 )
+
+#ifdef _M_AMD64
+#pragma warning (disable : 4512 )
+#endif
 
 // stl
 #include <algorithm>

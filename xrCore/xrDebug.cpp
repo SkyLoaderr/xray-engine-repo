@@ -18,6 +18,12 @@
 	static BOOL			bException	= FALSE;
 #endif
 
+#ifdef _M_AMD64
+#define DEBUG_INVOKE	DebugBreak	()
+#else
+#define DEBUG_INVOKE	__asm		{ int 3 }
+#endif
+
 XRCORE_API	xrDebug		Debug;
 
 // Dialog support
@@ -25,7 +31,7 @@ static const char * dlgExpr		= NULL;
 static const char * dlgFile		= NULL;
 static char			dlgLine		[16];
 
-static BOOL CALLBACK DialogProc	( HWND hw, UINT msg, WPARAM wp, LPARAM lp )
+static INT_PTR CALLBACK DialogProc	( HWND hw, UINT msg, WPARAM wp, LPARAM lp )
 {
 	switch( msg ){
 	case WM_INITDIALOG:
@@ -90,7 +96,7 @@ void xrDebug::backend(const char* reason, const char *file, int line)
 		else				RaiseException	(0, 0, 0, NULL);
 		break;
 	case IDC_DEBUG:
-		__asm { int 3 };
+		DEBUG_INVOKE;
 		break;
 	}
 
@@ -148,10 +154,10 @@ void __cdecl xrDebug::fatal(const char* F,...)
 	backend		(reason,0,0);
 }
 
-int __cdecl _out_of_memory(unsigned size)
+int __cdecl _out_of_memory	(size_t size)
 {
-	Debug.fatal	("Out of memory. Memory request: %d K",size/1024);
-	return 1;
+	Debug.fatal				("Out of memory. Memory request: %d K",size/1024);
+	return					1;
 }
 
 // based on dbghelp.h
