@@ -8,39 +8,35 @@ static const char *		logFName		= "engine.log";
 static HWND				logWindow		= NULL;
 static HWND				logoWindow		= NULL;
 static HWND				logControl		= NULL;
-static DWORD			dwMainThreadID	= 0;
+static CCriticalSection	logCS			= 0;
 std::vector <char *>	LogFile;
-std::vector <char *>	LogFileAddons;
 
-void AddOne(char *split) 
+void AddOne				(char *split) 
 {
-	LogFile.push_back(split);
+	logCS.Enter			();
+
 #ifdef _DEBUG
-	OutputDebugString(split);
-	OutputDebugString("\n");
+	OutputDebugString	(split);
+	OutputDebugString	("\n");
 #endif
-	if (GetCurrentThreadId()==dwMainThreadID) {
-		if (LogFileAddons.size()) {
-			// firstly we transfer other threads output to window
-			if (logControl) {
-				for (DWORD i=0; i<LogFileAddons.size(); i++) {
-					SendMessage	(
-						logControl, LB_ADDSTRING,
-						0, (LPARAM)LogFileAddons[i] );
-				}
-			}
-			LogFileAddons.clear();
-		}
-		// now transfer the string itself
-		if (logControl) {
-			SendMessage	( logControl, LB_ADDSTRING, 0, (LPARAM)split );
-			DWORD dwCnt = SendMessage	( logControl, LB_GETCOUNT, 0, 0);
-			SendMessage	( logControl, LB_SETTOPINDEX, dwCnt-1, 0);
-			UpdateWindow( logWindow);
-		}
-	} else {
-		LogFileAddons.push_back(split);
+
+	f = fopen			(logFName, "at");
+	if (f) {
+		fprintf				(f, "%s\n", s);
+		fclose				(f);
 	}
+
+	LogFile.push_back	(split);
+
+	if (logControl) 
+	{
+		SendMessage	( logControl, LB_ADDSTRING, 0, (LPARAM)split );
+		DWORD dwCnt = SendMessage	( logControl, LB_GETCOUNT, 0, 0);
+		SendMessage	( logControl, LB_SETTOPINDEX, dwCnt-1, 0);
+		UpdateWindow( logWindow);
+	}
+
+	logCS.Leave			();
 }
 
 void Log(const char *s) 
@@ -48,12 +44,6 @@ void Log(const char *s)
 	FILE	*f;
 	int		i,j;
 	char	split[1024];
-
-	f = fopen(logFName, "at");
-	if (f) {
-		fprintf(f, "%s\n", s);
-		fclose(f);
-	}
 
 	for (i=0,j=0; s[i]!=0; i++) {
 		if (s[i]=='\n') {
@@ -84,45 +74,45 @@ void Log(const char *msg, const char *dop) {
 	if (dop)	sprintf(buf,"%s %s",msg,dop);
 	else		sprintf(buf,"%s",msg);
 
-	Log(buf);
+	Log		(buf);
 }
 
 void Log(const char *msg, DWORD dop) {
 	char buf[1024];
 
-	sprintf(buf,"%s %d",msg,dop);
-	Log(buf);
+	sprintf	(buf,"%s %d",msg,dop);
+	Log		(buf);
 }
 
 void Log(const char *msg, int dop) {
 	char buf[1024];
 
-	sprintf(buf,"%s %d",msg,dop);
-	Log(buf);
+	sprintf	(buf,"%s %d",msg,dop);
+	Log		(buf);
 }
 
 void Log(const char *msg, float dop) {
 	char buf[1024];
 
-	sprintf(buf,"%s %f",msg,dop);
-	Log(buf);
+	sprintf	(buf,"%s %f",msg,dop);
+	Log		(buf);
 }
 
 void Log(const char *msg, const Fvector &dop) {
 	char buf[1024];
 
-	sprintf(buf,"%s (%f,%f,%f)",msg,dop.x,dop.y,dop.z);
-	Log(buf);
+	sprintf	(buf,"%s (%f,%f,%f)",msg,dop.x,dop.y,dop.z);
+	Log		(buf);
 }
 
 void Log(const char *msg, const Fmatrix &dop) {
 	char buf[1024];
 
-	sprintf(buf,"Matrix:\n%f,%f,%f,%f\n%f,%f,%f,%f\n%f,%f,%f,%f\n%f,%f,%f,%f\n"	,dop.i.x,dop.i.y,dop.i.z,dop._14_
+	sprintf	(buf,"Matrix:\n%f,%f,%f,%f\n%f,%f,%f,%f\n%f,%f,%f,%f\n%f,%f,%f,%f\n"	,dop.i.x,dop.i.y,dop.i.z,dop._14_
 																				,dop.j.x,dop.j.y,dop.j.z,dop._24_
 																				,dop.k.x,dop.k.y,dop.k.z,dop._34_
 																				,dop.c.x,dop.c.y,dop.c.z,dop._44_);
-	Log(buf);
+	Log		(buf);
 }
 
 static BOOL CALLBACK logDlgProc( HWND hw, UINT msg, WPARAM wp, LPARAM lp )
@@ -153,8 +143,6 @@ static int day_in_month[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }
 
 void CreateLog(BOOL bQuiet)
 {
-	dwMainThreadID = GetCurrentThreadId();
-
 	FILE *f;
 	f = fopen(logFName, "wt");
 	if (f==NULL) abort();
@@ -202,7 +190,6 @@ void CloseLog(void)
 	}
 	*/
 	LogFile.clear();
-	LogFileAddons.clear();
 }
 
 void CloseLogWindow(void) {
