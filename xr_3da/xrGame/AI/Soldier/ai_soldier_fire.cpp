@@ -238,15 +238,16 @@ bool CAI_Soldier::bfCheckForDanger()
 {
 	DWORD dwCurTime = Level().timeServer();
 
-	if ((dwHitTime) && (dwCurTime - dwHitTime < HIT_REACTION_TIME))
+	if (bfAmIHurt())
 		return(true);
 	
-	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+	CGroup *Group = getGroup();
 	
-	if ((Group.m_dwLastHitTime) && (dwCurTime - Group.m_dwLastHitTime < HIT_REACTION_TIME))
+	if (bfIsMemberHurt())
 		return(true);
 
 	SelectSound(m_iSoundIndex);
+
 	return(m_iSoundIndex > -1);
 }
 

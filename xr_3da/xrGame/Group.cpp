@@ -16,7 +16,7 @@ CGroup::CGroup()
 	m_dwLeaderChangeCount = 0;
 	m_tLastHitDirection.set(1,0,0);
 	m_tHitPosition.set(1,0,0);
-	m_dwLastHitTime = 0;
+	m_dwLastHitTime = DWORD(-1);
 	m_dwFiring = 0;
 	m_bEnemyNoticed = false;
 	m_bLessCoverLook = false;

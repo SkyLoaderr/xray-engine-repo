@@ -491,7 +491,7 @@ class CAI_Soldier : public CCustomMonster
 		void vfStopFire();
 		void SelectSound(int &iIndex);
 		void vfUpdateSounds(DWORD dwTimeDelta);
-	IC  CGroup getGroup() {return Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];};
+	IC  CGroup *getGroup() {return(&(Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()]));};
 		bool bfCheckForEntityVisibility(CEntity *tpEntity);
 		bool bfCheckForVisibility(CEntity* tpEntity);
 		void vfLoadSounds();
@@ -534,6 +534,7 @@ class CAI_Soldier : public CCustomMonster
 		}
 	IC	bool bfAmIDead()		{return(g_Health() <= 0);}
 	IC	bool bfAmIHurt()		{return(Level().timeServer() > dwHitTime);}
+	IC	bool bfIsMemberHurt()	{return(Level().timeServer() > getGroup()->m_dwLastHitTime);}
 	IC  bool bfDoesEnemyExist()	{return(Enemy.Enemy != 0);}
 	IC  bool bfIsEnemyVisible()	{return(Enemy.bVisible);}
 	IC  bool bfFireEnemy(CEntity *tpEntity)		

@@ -353,7 +353,7 @@ void CAI_Soldier::OnAttackAloneNonFireFire()
 
 	vfAimAtEnemy(true);
 
-	vfSetFire(true,getGroup());
+	vfSetFire(true,*getGroup());
 	
 	Squat();
 	vfSetMovementType(WALK_NO);
