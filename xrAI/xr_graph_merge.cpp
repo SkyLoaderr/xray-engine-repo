@@ -323,6 +323,7 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 		tLevel.tLevelID				= Ini->r_s32(N,"id");
 		::CLevelGameGraph			*tpLevelGraph = xr_new<::CLevelGameGraph>(tLevel,S1,dwOffset,tLevel.id(), Ini);
 		dwOffset					+= tpLevelGraph->m_tpGraph->header().vertex_count();
+		R_ASSERT2					(tpGraphs.find(tLevel.id()) == tpGraphs.end(),"Level ids _MUST_ be different!");
 		tpGraphs.insert				(mk_pair(tLevel.id(),tpLevelGraph));
 		tGraphHeader.tpLevels.insert(std::make_pair(tLevel.id(),tLevel));
     }
