@@ -12,7 +12,6 @@ class CStateControlAttack : public CState<_Object> {
 		eActionCompleted
 	} m_action;
 
-	u32				time_enemy_last_faced;
 	u32				time_control_started;
 
 public:
@@ -29,7 +28,6 @@ public:
 	virtual bool 	check_start_conditions	();
 
 private:
-			void	face_enemy				();
 
 			void	execute_hit_fire		();
 			void	execute_hit_continue	();

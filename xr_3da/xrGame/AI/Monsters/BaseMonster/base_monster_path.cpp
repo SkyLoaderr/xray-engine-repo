@@ -15,22 +15,6 @@
 #include "../../../cover_manager.h"
 #include "../../../cover_point.h"
 
-// Развернуть объект в направление движения по пути
-void CBaseMonster::SetDirectionLook(bool bReversed)
-{
-	float yaw,pitch;
-	
-	// get prev
-	CDetailPathManager::direction().getHP(yaw,pitch);
-
-	if (fsimilar(yaw,0.f,EPS_S)) return;
-
-	m_body.target.yaw = -yaw;
-
-	if (bReversed) m_body.target.yaw = angle_normalize(m_body.target.yaw + PI);
-	else m_body.target.yaw = angle_normalize(m_body.target.yaw);
-}
-
 // каждый монстр может по-разному реализвать эту функ (e.g. кровосос с поворотом головы и т.п.)
 void CBaseMonster::LookPosition(Fvector to_point, float angular_speed)
 {
@@ -45,24 +29,6 @@ void CBaseMonster::LookPosition(Fvector to_point, float angular_speed)
 
 	// установить текущий угол
 	m_body.target.yaw = angle_normalize(-yaw);
-}
-
-
-void CBaseMonster::FaceTarget(const CEntity *entity) 
-{
-	FaceTarget(entity->Position());
-}
-
-void CBaseMonster::FaceTarget(const Fvector &position) 
-{
-	float yaw, pitch;
-	Fvector dir;
-
-	dir.sub(position, Position());
-	dir.getHP(yaw,pitch);
-	yaw *= -1;
-	yaw = angle_normalize(yaw);
-	m_body.target.yaw = yaw;
 }
 
 void CBaseMonster::on_travel_point_change()

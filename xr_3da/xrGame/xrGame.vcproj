@@ -2270,6 +2270,16 @@
 									RelativePath=".\ai\Monsters\critical_action_info.h">
 								</File>
 							</Filter>
+							<Filter
+								Name="Direction Manager"
+								Filter="">
+								<File
+									RelativePath=".\ai\Monsters\direction_manager.cpp">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\direction_manager.h">
+								</File>
+							</Filter>
 						</Filter>
 					</Filter>
 					<Filter
@@ -2613,6 +2623,16 @@
 								</File>
 								<File
 									RelativePath=".\ai\Monsters\States\state_custom_action_inline.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="Test"
+								Filter="">
+								<File
+									RelativePath=".\ai\Monsters\States\state_test_look_actor.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\States\state_test_look_actor_inline.h">
 								</File>
 							</Filter>
 						</Filter>
@@ -3083,6 +3103,22 @@
 								RelativePath=".\controller_state_panic_inline.h">
 							</File>
 						</Filter>
+					</Filter>
+					<Filter
+						Name="Cat"
+						Filter="">
+						<File
+							RelativePath=".\ai\Monsters\Cat\cat.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Cat\cat.h">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Cat\cat_state_manager.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Cat\cat_state_manager.h">
+						</File>
 					</Filter>
 				</Filter>
 				<Filter
@@ -9562,6 +9598,9 @@
 				</File>
 				<File
 					RelativePath=".\M_burer.ltx">
+				</File>
+				<File
+					RelativePath=".\M_Cat.ltx">
 				</File>
 				<File
 					RelativePath=".\M_Chimera.ltx">

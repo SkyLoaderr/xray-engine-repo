@@ -18,8 +18,6 @@ void CBurerAttackGravi::Init()
 	m_tAction					= ACTION_GRAVI_STARTED;
 
 	time_gravi_started			= 0;
-	time_enemy_last_faced		= 0;
-
 }
 
 void CBurerAttackGravi::Run()
@@ -65,12 +63,8 @@ void CBurerAttackGravi::Run()
 			break;
 	}
 
-	pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;	
-
-	DO_IN_TIME_INTERVAL_BEGIN(time_enemy_last_faced, 1200);
-		pMonster->FaceTarget(enemy);
-	DO_IN_TIME_INTERVAL_END();
-
+	pMonster->MotionMan.m_tAction	= ACT_STAND_IDLE;	
+	pMonster->DirMan.face_target	(enemy, 1200);
 }
 
 void CBurerAttackGravi::Done()

@@ -69,9 +69,6 @@ void CBaseMonsterAttack::Init()
 	}
 	pMonster->AS_Start();				// учитывать атак-стопы
 
-	
-	m_dwFaceEnemyLastTime		= 0; 
-
 	b_in_threaten				= false;
 	ThreatenTimeStarted			= 0;
 	ThreatenMinDelay			= 0;
@@ -214,9 +211,7 @@ void CBaseMonsterAttack::Run()
 //			}
 
 			// Смотреть на врага 
-			DO_IN_TIME_INTERVAL_BEGIN(m_dwFaceEnemyLastTime, 1200);
-				pMonster->FaceTarget(enemy);
-			DO_IN_TIME_INTERVAL_END();
+			pMonster->DirMan.face_target(enemy, 1200);
 			
 			if (flags.is(AF_CAN_ATTACK_FROM_BACK)) {
 				pMonster->MotionMan.SetSpecParams(ASP_BACK_ATTACK);
@@ -249,9 +244,7 @@ void CBaseMonsterAttack::Run()
 			pMonster->MotionMan.m_tAction	= ACT_STAND_IDLE;
 
 			// Смотреть на врага 
-			DO_IN_TIME_INTERVAL_BEGIN(m_dwFaceEnemyLastTime, 1200);
-				pMonster->FaceTarget(enemy);
-			DO_IN_TIME_INTERVAL_END();
+			pMonster->DirMan.face_target(enemy, 1200);
 
 			pMonster->MotionMan.SetSpecParams(ASP_THREATEN);
 
@@ -331,9 +324,7 @@ void CBaseMonsterAttack::Run()
 			pMonster->MotionMan.m_tAction	= ACT_ATTACK;
 			
 			// Смотреть на врага 
-			DO_IN_TIME_INTERVAL_BEGIN(m_dwFaceEnemyLastTime, 1200);
-				pMonster->FaceTarget(enemy);
-			DO_IN_TIME_INTERVAL_END();
+			pMonster->DirMan.face_target(enemy,1200);
 
 			pMonster->MotionMan.SetSpecParams(ASP_PSI_ATTACK);
 			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundPsyAttack);

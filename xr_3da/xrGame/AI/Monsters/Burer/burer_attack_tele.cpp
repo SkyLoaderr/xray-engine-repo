@@ -26,7 +26,6 @@ void CBurerAttackTele::Init()
 	SelectObjects();
 
 	time_started			= 0;
-	time_enemy_last_faced	= 0;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -80,10 +79,7 @@ void CBurerAttackTele::Run()
 	}
 
 	pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
-
-	DO_IN_TIME_INTERVAL_BEGIN(time_enemy_last_faced, 700);
-		pMonster->FaceTarget(enemy);
-	DO_IN_TIME_INTERVAL_END();
+	pMonster->DirMan.face_target(enemy, 700);
 
 }
 

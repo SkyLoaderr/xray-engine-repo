@@ -64,6 +64,8 @@ CBaseMonster::CBaseMonster()
 	CStepManager::init_external		(this);
 	
 	CriticalActionInfo				= xr_new<CCriticalActionInfo>();
+
+	DirMan.init_external			(this);
 }
 
 CBaseMonster::~CBaseMonster()
@@ -283,31 +285,9 @@ void CBaseMonster::ChangeTeam(int team, int squad, int group)
 }
 
 
-void CBaseMonster::ProcessTurn()
+void CBaseMonster::SetTurnAnimation(bool turn_left)
 {
-	float delta_yaw = angle_difference(m_body.target.yaw, m_body.current.yaw);
-	if (delta_yaw < deg(1)) return;
-
-	EMotionAnim anim = MotionMan.GetCurAnim();
-
-	bool turn_left = true;
-	if (from_right(m_body.target.yaw, m_body.current.yaw)) turn_left = false; 
-
-	switch (anim) {
-		case eAnimStandIdle: 
-			(turn_left) ? MotionMan.SetCurAnim(eAnimStandTurnLeft) : MotionMan.SetCurAnim(eAnimStandTurnRight);
-			return;
-		case eAnimJumpLeft:
-		case eAnimJumpRight:
-			MotionMan.SetCurAnim(anim);
-			return;
-		default:
-			if (delta_yaw > deg(30)) {
-				(turn_left) ? MotionMan.SetCurAnim(eAnimStandTurnLeft) : MotionMan.SetCurAnim(eAnimStandTurnRight);
-			}
-			return;
-	}
-
+	(turn_left) ? MotionMan.SetCurAnim(eAnimStandTurnLeft) : MotionMan.SetCurAnim(eAnimStandTurnRight);
 }
 
 bool CBaseMonster::IsVisibleObject(const CGameObject *object)
@@ -387,4 +367,82 @@ BOOL CBaseMonster::feel_touch_on_contact	(CObject *O)
 bool CBaseMonster::can_eat_now()
 {
 	return (CorpseMan.get_corpse() && ((GetSatiety() < get_sd()->m_fMinSatiety) || flagEatNow));
+}
+
+void CBaseMonster::TranslateActionToPathParams()
+{
+	if (!CMonsterMovement::b_enable_movement) return;
+
+	bool bEnablePath = true;
+	u32 vel_mask = 0;
+	u32 des_mask = 0;
+
+	switch (MotionMan.m_tAction) {
+	case ACT_STAND_IDLE: 
+	case ACT_SIT_IDLE:	 
+	case ACT_LIE_IDLE:
+	case ACT_EAT:
+	case ACT_SLEEP:
+	case ACT_REST:
+	case ACT_LOOK_AROUND:
+	case ACT_ATTACK:
+	case ACT_TURN:
+		bEnablePath = false;
+		break;
+
+	case ACT_WALK_FWD:
+		if (m_bDamaged) {
+			vel_mask = eVelocityParamsWalkDamaged;
+			des_mask = eVelocityParameterWalkDamaged;
+		} else {
+			vel_mask = eVelocityParamsWalk;
+			des_mask = eVelocityParameterWalkNormal;
+		}
+		break;
+	case ACT_WALK_BKWD:
+		break;
+	case ACT_RUN:
+		if (m_bDamaged) {
+			vel_mask = eVelocityParamsRunDamaged;
+			des_mask = eVelocityParameterRunDamaged;
+		} else {
+			vel_mask = eVelocityParamsRun;
+			des_mask = eVelocityParameterRunNormal;
+		}
+		break;
+	case ACT_DRAG:
+		vel_mask = eVelocityParameterDrag;
+		des_mask = eVelocityParameterDrag;
+
+		MotionMan.SetSpecParams(ASP_MOVE_BKWD);
+
+		break;
+	case ACT_STEAL:
+		vel_mask = eVelocityParameterSteal;
+		des_mask = eVelocityParameterSteal;
+		break;
+	case ACT_JUMP:
+		break;
+	}
+
+	if (state_invisible) {
+		vel_mask = eVelocityParamsInvisible;
+		des_mask = eVelocityParameterInvisible;
+	}
+
+	if (force_real_speed) vel_mask = des_mask;
+
+	if (bEnablePath) {
+		set_velocity_mask	(vel_mask);	
+		set_desirable_mask	(des_mask);
+		enable_path			();		
+	} else {
+		disable_path		();
+	}
+}
+
+u32 CBaseMonster::get_attack_rebuild_time()
+{
+	float dist = EnemyMan.get_enemy()->Position().distance_to(Position());
+	return (100 + u32(50.f * dist));
 }

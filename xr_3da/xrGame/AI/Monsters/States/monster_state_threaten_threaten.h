@@ -6,8 +6,6 @@ template<typename _Object>
 class CStateMonsterThreatenThreaten : public CStateBase<_Object> {
 	typedef CStateBase<_Object> inherited;
 
-	TTime				time_faced_enemy;
-
 public:
 						CStateMonsterThreatenThreaten	(LPCSTR state_name);
 	virtual				~CStateMonsterThreatenThreaten	();

@@ -77,7 +77,7 @@ bool CBurerAttackRunAround::IsCompleted()
 	if ((time_started + 3500 < Level().timeServer()) || 
 		(pMonster->IsMovingOnPath() && pMonster->IsPathEnd(2.f))) {
 
-		pMonster->FaceTarget(enemy);
+		pMonster->DirMan.face_target(enemy);
 		return true;
 	}
 
@@ -104,7 +104,7 @@ void CBurerAttackFaceTarget::Init()
 void CBurerAttackFaceTarget::Run()
 {
 	pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
-	pMonster->FaceTarget(point);
+	pMonster->DirMan.face_target(point);
 	pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 }
 

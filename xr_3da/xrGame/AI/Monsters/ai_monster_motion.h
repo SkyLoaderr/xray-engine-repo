@@ -237,6 +237,9 @@ public:
 		bool	IsCriticalAction		();
 
 		void	CheckVelocityBounce		();
+
+	// Other
+		void	SetTurnAnimation		();
 public:
 		
 		// информация о текущей анимации

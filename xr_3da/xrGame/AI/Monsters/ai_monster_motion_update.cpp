@@ -16,7 +16,7 @@ void CMotionManager::Update()
 	if (TA_IsActive()) return;
 
 	// Установка Yaw
-	if (pMonster->IsMovingOnPath()) pMonster->SetDirectionLook( ((spec_params & ASP_MOVE_BKWD) == ASP_MOVE_BKWD) );
+	if (pMonster->IsMovingOnPath()) pMonster->DirMan.use_path_direction( ((spec_params & ASP_MOVE_BKWD) == ASP_MOVE_BKWD) );
 
 	SelectAnimation		();
 	SelectVelocities	();
@@ -42,8 +42,30 @@ void CMotionManager::SelectAnimation()
 
 	CheckReplacedAnim				();
 
-	pMonster->ProcessTurn			();
+	SetTurnAnimation				();
 }
+
+#define MOVE_TURN_ANGLE		deg(30)
+#define STAND_TURN_ANGLE	deg(1)
+
+void CMotionManager::SetTurnAnimation()
+{
+	float delta_yaw = angle_difference(pMonster->m_body.target.yaw, pMonster->m_body.current.yaw);
+
+	bool turn_left = true;
+	if (from_right(pMonster->m_body.target.yaw, pMonster->m_body.current.yaw)) turn_left = false; 
+
+	if (IsStandCurAnim() && (delta_yaw > STAND_TURN_ANGLE)) {
+		pMonster->SetTurnAnimation(turn_left);
+		return;
+	}
+	
+	if (pMonster->IsMovingOnPath() && (delta_yaw > MOVE_TURN_ANGLE)) {
+		pMonster->SetTurnAnimation(turn_left);
+		return;
+	}
+}
+
 
 
 //////////////////////////////////////////////////////////////////////////

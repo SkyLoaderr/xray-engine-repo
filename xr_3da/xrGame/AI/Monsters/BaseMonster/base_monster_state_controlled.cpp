@@ -23,7 +23,6 @@ void CBaseMonsterControlled::Init()
 	enemy				= 0;
 	m_tAction			= m_tPrevAction = ACTION_RUN;
 	LastTimeRebuild		= 0;
-	FaceEnemyLastTime	= 0;
 
 	pMonster->CMonsterMovement::initialize_movement();
 
@@ -106,12 +105,7 @@ void CBaseMonsterControlled::ExecuteAttack()
 		// *********************
 			
 			pMonster->MotionMan.m_tAction	= ACT_ATTACK;
-
-			// Смотреть на врага 
-			DO_IN_TIME_INTERVAL_BEGIN(FaceEnemyLastTime, 1200);
-				pMonster->FaceTarget(enemy);
-			DO_IN_TIME_INTERVAL_END();
-
+			pMonster->DirMan.face_target(enemy, 1200);
 			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 			break;
 	}

@@ -8,7 +8,6 @@ class CBurerAttackMelee : public IState {
 
 	const CEntityAlive			*enemy;
 	
-	TTime time_enemy_last_faced;
 	TTime time_path_last_rebuild;
 
 	enum {

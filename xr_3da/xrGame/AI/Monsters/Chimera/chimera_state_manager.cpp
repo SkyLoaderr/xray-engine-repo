@@ -6,46 +6,15 @@
 #include "../states/monster_state_attack.h"
 #include "../states/monster_state_panic.h"
 #include "../states/monster_state_eat.h"
-
 #include "../states/monster_state_hear_int_sound.h"
 #include "../states/monster_state_hear_danger_sound.h"
 #include "../states/monster_state_hitted.h"
-
 #include "chimera_state_threaten.h"
-
-#include "../states/state_look_point.h"
+#include "../states/state_test_look_actor.h"
 
 
 CStateManagerChimera::CStateManagerChimera(CChimera *obj) : inherited(obj)
 {
-	//add_state(
-	//	eStateRest, 
-	//	xr_new<CStateMonsterRest<CChimera> > (obj, 
-	//		xr_new<CStateMonsterRestSleep<CChimera> >(obj), 
-	//		xr_new<CStateMonsterRestWalkGraph<CChimera> >(obj)
-	//	)
-	//);
-
-	//add_state(
-	//	eStateAttack, xr_new<CStateMonsterAttack<CChimera> > (obj,
-	//		xr_new<CStateMonsterAttackRun<CChimera> >(obj), 
-	//		xr_new<CStateMonsterAttackMelee<CChimera> >(obj)
-	//	)
-	//);
-
-	//add_state(
-	//	eStateFindEnemy, xr_new<CStateMonsterFindEnemy<CChimera> > (obj,
-	//		xr_new<CStateMonsterFindEnemyRun<CChimera> >(obj), 
-	//		xr_new<CStateMonsterFindEnemyLook<CChimera> >(obj,
-	//			xr_new<CStateMonsterMoveToPoint<CChimera> >(obj), 
-	//			xr_new<CStateMonsterCustomAction<CChimera> >(obj),
-	//			xr_new<CStateMonsterLookToPoint<CChimera> >(obj)),
-	//		xr_new<CStateMonsterFindEnemyAngry<CChimera> >(obj), 
-	//		xr_new<CStateMonsterFindEnemyWalkAround<CChimera> >(obj)
-	//	)
-	//);
-	
-
 	add_state(eStateRest,				xr_new<CStateMonsterRest<CChimera> >					(obj));
 	add_state(eStatePanic,				xr_new<CStateMonsterPanic<CChimera> >					(obj));
 	add_state(eStateAttack,				xr_new<CStateMonsterAttack<CChimera> >					(obj));
@@ -53,21 +22,9 @@ CStateManagerChimera::CStateManagerChimera(CChimera *obj) : inherited(obj)
 	add_state(eStateInterestingSound,	xr_new<CStateMonsterHearInterestingSound<CChimera> >	(obj));
 	add_state(eStateDangerousSound,		xr_new<CStateMonsterHearDangerousSound<CChimera> >		(obj));
 	add_state(eStateHitted,				xr_new<CStateMonsterHitted<CChimera> >					(obj));
+	//add_state(eStateThreaten,			xr_new<CStateChimeraThreaten<CChimera> >				(obj));
 
-	add_state(eStateFindEnemy,			xr_new<CStateMonsterLookToPoint<CChimera> >			(obj));
-
-//	add_state(
-//		eStateThreaten, xr_new<CStateChimeraThreaten<CChimera> > (
-//			xr_new<CStateMonsterThreatenWalk<CChimera> >, 
-//			xr_new<CStateMonsterThreatenThreaten<CChimera> >
-//		)	
-//	);
-//
-//	add_state(
-//		eStatePanic, xr_new<CStateMonsterPanic<CChimera> > (
-//			xr_new<CStateMonsterPanicRun<CChimera> > 
-//		)
-//	);
+	add_state(eStateThreaten,			xr_new<CStateMonsterLookActor<CChimera> >				(obj));
 }
 
 CStateManagerChimera::~CStateManagerChimera()
@@ -81,15 +38,19 @@ void CStateManagerChimera::execute()
 	const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
 	const CEntityAlive* corpse	= object->CorpseMan.get_corpse();
 
-
 	if (enemy) {
-		switch (object->EnemyMan.get_danger_type()) {
-			case eVeryStrong:	state_id = eStatePanic; break;
-			case eStrong:		
-			case eNormal:
-			case eWeak:			state_id = eStatePanic; break;
-		}
+		state_id = eStateThreaten;
 
+		//if (get_state(eStateThreaten)->check_start_conditions()) {
+		//	state_id = eStateThreaten;
+		//} else {
+		//	switch (object->EnemyMan.get_danger_type()) {
+		//		case eVeryStrong:	state_id = eStatePanic; break;
+		//		case eStrong:		
+		//		case eNormal:
+		//		case eWeak:			state_id = eStateAttack; break;
+		//	}
+		//}
 	} else if (object->HitMemory.is_hit()) {
 		state_id = eStateHitted;
 	} else if (object->hear_dangerous_sound) {
@@ -110,20 +71,9 @@ void CStateManagerChimera::execute()
 		else			state_id = eStateRest;
 	}
 
-
-	state_id = eStateFindEnemy;
+	state_id = eStateThreaten;
 
 	select_state(state_id); 
-
-
-	CState<CChimera> *state = get_state_current();
-	if (current_substate == eStateFindEnemy) {
-		SStateDataLookToPoint data;
-		data.point				= Level().CurrentEntity()->Position();
-		data.action.action		= ACT_STAND_IDLE;
-		state->fill_data_with(&data, sizeof(SStateDataLookToPoint));
-	}
-
 
 	// выполнить текущее состояние
 	get_state_current()->execute();

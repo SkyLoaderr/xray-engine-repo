@@ -28,8 +28,8 @@ void CBaseMonsterRunAway::Run()
 		pMonster->CMonsterMovement::set_generic_parameters	();
 		break;
 	case ACTION_LOOK_AROUND:
-		pMonster->set_action	(ACT_LOOK_AROUND);
-		pMonster->FaceTarget	(danger_pos);
+		pMonster->set_action		(ACT_LOOK_AROUND);
+		pMonster->DirMan.face_target(danger_pos);
 		break;
 	}
 	pMonster->set_state_sound(MonsterSpace::eMonsterSoundPanic);

@@ -386,7 +386,7 @@ EAction CMotionManager::VelocityIndex2Action(u32 velocity_index)
 		case pMonster->eVelocityParameterInvisible:		return ACT_RUN;
 	}
 
-	return ACT_STAND_IDLE;
+	return pMonster->CustomVelocityIndex2Action(velocity_index);
 }
 
 EAction CMotionManager::GetActionFromPath()
@@ -477,7 +477,7 @@ void CMotionManager::ValidateAnimation()
 	bool is_moving_on_path	= pMonster->IsMovingOnPath();
 
 	if (is_moving_on_path && is_moving_anim) {
-		pMonster->SetDirectionLook(item_it->first == eAnimDragCorpse);
+		pMonster->DirMan.use_path_direction(item_it->first == eAnimDragCorpse);
 		return;
 	}
 

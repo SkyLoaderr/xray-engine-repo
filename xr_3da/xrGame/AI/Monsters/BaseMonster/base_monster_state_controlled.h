@@ -14,7 +14,6 @@ class CBaseMonsterControlled : public IState {
 	} m_tAction, m_tPrevAction;
 
 	TTime	LastTimeRebuild;
-	TTime	FaceEnemyLastTime;
 public:
 					CBaseMonsterControlled	(CBaseMonster *p);
 	virtual void	Init				();

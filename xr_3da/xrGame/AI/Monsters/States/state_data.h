@@ -90,10 +90,12 @@ struct SStateHideFromPoint {
 //////////////////////////////////////////////////////////////////////////
 struct SStateDataLookToPoint {
 	Fvector				point;
+	u32					face_delay;
 	SStateDataAction	action;
 
 	SStateDataLookToPoint() {
 		point.set		(0.f,0.f,0.f);
+		face_delay		= 0;
 	}
 };
 

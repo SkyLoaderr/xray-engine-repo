@@ -27,7 +27,7 @@ void CStateMonsterLookToPointAbstract::execute()
 {
 	object->MotionMan.m_tAction				= data.action.action;
 	object->MotionMan.SetSpecParams			(data.action.spec_params);
-	object->FaceTarget						(data.point);
+	object->DirMan.face_target				(data.point, data.face_delay);
 
 	if (data.action.sound_type != u32(-1)) {
 		if (data.action.sound_delay != u32(-1))

@@ -16,7 +16,6 @@ class CPseudodogGrowling : public IState {
 
 	const CEntityAlive *enemy;
 
-	TTime				m_dwFaceEnemyLastTime;
 	TTime				time_next_psi_attack;
 
 public:

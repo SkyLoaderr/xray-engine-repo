@@ -22,7 +22,6 @@ class CBurerAttackTele : public IState {
 	} m_tAction;
 
 	TTime						time_started;
-	TTime						time_enemy_last_faced;
 
 public:
 

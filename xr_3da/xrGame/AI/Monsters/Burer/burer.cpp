@@ -132,7 +132,6 @@ void CBurer::Load(LPCSTR section)
 		MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle); 
 
 		MotionMan.AA_Load(pSettings->r_string(section, "attack_params"));
-		//MotionMan.STEPS_Load(pSettings->r_string(section, "step_params"), get_legs_number());
 
 		MotionMan.finish_load_shared();
 
@@ -142,31 +141,6 @@ void CBurer::Load(LPCSTR section)
 	MotionMan.accel_chain_test		();
 #endif
 
-}
-
-void CBurer::ProcessTurn()
-{
-	float delta_yaw = angle_difference(m_body.target.yaw, m_body.current.yaw);
-	if (delta_yaw < deg(1)) {
-		//m_body.current.yaw = m_body.target.yaw;
-		return;
-	}
-
-	EMotionAnim anim = MotionMan.GetCurAnim();
-
-	bool turn_left = true;
-	if (from_right(m_body.target.yaw, m_body.current.yaw)) turn_left = false; 
-
-	switch (anim) {
-		case eAnimStandIdle: 
-			(turn_left) ? MotionMan.SetCurAnim(eAnimStandTurnLeft) : MotionMan.SetCurAnim(eAnimStandTurnRight);
-			return;
-		default:
-			if (delta_yaw > deg(30)) {
-				(turn_left) ? MotionMan.SetCurAnim(eAnimStandTurnLeft) : MotionMan.SetCurAnim(eAnimStandTurnRight);
-			}
-			return;
-	}
 }
 
 void CBurer::shedule_Update(u32 dt)

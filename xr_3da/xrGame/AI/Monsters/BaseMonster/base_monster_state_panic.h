@@ -17,7 +17,6 @@ class CBaseMonsterPanic : public IState {
 	u32				target_vertex_id;
 
 	TTime			last_time_cover_selected;
-	TTime			m_dwFaceEnemyLastTime;
 
 public:
 					CBaseMonsterPanic			(CBaseMonster *p);

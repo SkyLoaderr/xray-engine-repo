@@ -47,6 +47,8 @@ void CBaseMonster::reinit()
 	EnemyMan.reinit						();
 	CorpseMan.reinit					();
 
+	DirMan.reinit						();
+	
 	StateMan->reinit					();
 	CriticalActionInfo->reinit			();
 

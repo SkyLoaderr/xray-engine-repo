@@ -1,5 +1,4 @@
 #pragma once
-
 #include "../state.h"
 
 template<typename _Object>
@@ -8,30 +7,34 @@ protected:
 	typedef CState<_Object> inherited;
 	typedef CState<_Object>* state_ptr;
 
-	enum EAttackStates {
+	enum {
 		eStateWalk			= u32(0),
+		eStateFaceEnemy,
 		eStateThreaten,
+		eStateSteal
 	};
 
+	enum {
+		eActionThreatenFirst,
+		eActionSteal,
+		eActionWalk,
+		eActionThreatenSecond,
+		eActionNone
+	} m_action;
+
 public:
-						CStateChimeraThreaten	(_Object *obj, state_ptr state_walk, state_ptr state_threaten);
+						CStateChimeraThreaten	(_Object *obj);
 	virtual				~CStateChimeraThreaten	();
 
-	virtual	void		execute					();
-};
+	virtual	void		initialize				();
 
-//////////////////////////////////////////////////////////////////////////
+	virtual bool 		check_start_conditions	();
+	virtual	void		reselect_state			();
+	virtual	void		setup_substates			();
+	virtual void 		finalize				();
+	virtual void 		critical_finalize		();
 
-template<typename _Object>
-class	CStateChimeraTest : public CState<_Object> {
-	typedef CState<_Object> inherited;
-
-public:
-						CStateChimeraTest	(_Object *obj) : inherited(obj){};
-	virtual				~CStateChimeraTest	() {}
-
-	virtual void		initialize			();
-	virtual	void		execute				();
+			void		select_action			();
 };
 
 #include "chimera_state_threaten_inline.h"

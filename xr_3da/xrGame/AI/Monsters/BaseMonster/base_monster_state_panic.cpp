@@ -22,7 +22,6 @@ void CBaseMonsterPanic::Init()
 
 	target_vertex_id			= u32(-1);
 	last_time_cover_selected	= 0;
-	m_dwFaceEnemyLastTime		= 0;
 
 	pMonster->CMonsterMovement::initialize_movement	();
 }
@@ -80,7 +79,7 @@ void CBaseMonsterPanic::Run()
 			pMonster->MotionMan.SetSpecParams(ASP_STAND_SCARED);
 			pMonster->MotionMan.m_tAction	= ACT_STAND_IDLE;
 
-			pMonster->FaceTarget(position);
+			pMonster->DirMan.face_target(position);
 
 			if (angle_difference(pMonster->m_body.current.yaw, pMonster->m_body.target.yaw) < deg(10)) {
 				if (pMonster->EnemyMan.get_enemy_time_last_seen() == m_dwCurrentTime) m_tAction = ACTION_RUN;
@@ -94,9 +93,7 @@ void CBaseMonsterPanic::Run()
 			pMonster->MotionMan.m_tAction	= ACT_ATTACK;
 
 			// Смотреть на врага 
-			DO_IN_TIME_INTERVAL_BEGIN(m_dwFaceEnemyLastTime, 1200);
-				pMonster->FaceTarget(pMonster->EnemyMan.get_enemy());
-			DO_IN_TIME_INTERVAL_END();
+			pMonster->DirMan.face_target(pMonster->EnemyMan.get_enemy(), 1200);
 
 			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 			break;

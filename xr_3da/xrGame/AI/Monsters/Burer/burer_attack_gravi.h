@@ -17,7 +17,6 @@ class CBurerAttackGravi : public IState {
 	} m_tAction;
 
 	TTime			time_gravi_started;
-	TTime			time_enemy_last_faced;
 
 public:
 

@@ -40,7 +40,7 @@ void CStateMonsterLookToUnprotectedAreaAbstract::execute()
 {
 	object->MotionMan.m_tAction				= data.action;
 	object->MotionMan.SetSpecParams			(data.spec_params);
-	object->FaceTarget						(target_point);
+	object->DirMan.face_target				(target_point);
 
 	if (data.sound_type != u32(-1)) {
 		if (data.sound_delay != u32(-1))

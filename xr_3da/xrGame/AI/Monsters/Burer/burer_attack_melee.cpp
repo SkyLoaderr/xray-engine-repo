@@ -17,7 +17,6 @@ void CBurerAttackMelee::Init()
 
 	enemy = pMonster->EnemyMan.get_enemy();	
 
-	time_enemy_last_faced	= 0;
 	time_path_last_rebuild	= 0;
 
 	m_tAction = ACTION_RUN;
@@ -47,9 +46,7 @@ void CBurerAttackMelee::Run()
 			pMonster->MotionMan.m_tAction	= ACT_ATTACK;
 
 			// Смотреть на врага 
-			DO_IN_TIME_INTERVAL_BEGIN(time_enemy_last_faced, 1200);
-				pMonster->FaceTarget(enemy);
-			DO_IN_TIME_INTERVAL_END();
+			pMonster->DirMan.face_target(enemy,1200);
 
 			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 

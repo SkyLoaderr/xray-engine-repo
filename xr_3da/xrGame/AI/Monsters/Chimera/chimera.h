@@ -1,28 +1,46 @@
 #pragma once
-#include "../../monsters/BaseMonster/base_monster.h"
+#include "../BaseMonster/base_monster.h"
+#include "../jump_ability.h"
 
 class CStateManagerChimera;
 
-class CChimera : public CBaseMonster {
-
+class CChimera : public CBaseMonster, public CJumpingAbility {
 	typedef		CBaseMonster	inherited;
 
 	bool		b_upper_state;
+
+	enum EMovementParametersChimera {
+		eVelocityParameterUpperWalkFwd		= eVelocityParameterCustom << 1,
+		eVelocityParameterJumpOne			= eVelocityParameterCustom << 2,
+		eVelocityParameterJumpTwo			= eVelocityParameterCustom << 3,
+
+		eVelocityParamsJump					= eVelocityParameterJumpOne | eVelocityParameterJumpTwo,
+		
+		eVelocityParamsUpperWalkFwd			= eVelocityParameterStand | eVelocityParameterUpperWalkFwd,
+	};
+	
+	SVelocityParam	m_fsVelocityWalkUpper;
+	SVelocityParam	m_fsVelocityJumpOne;
+	SVelocityParam	m_fsVelocityJumpTwo;
+
 
 public:
 					CChimera			();
 	virtual			~CChimera			();	
 
 	virtual void	Load				(LPCSTR section);
-
 	virtual void	reinit				();
+	virtual	void	UpdateCL			();
 
-	virtual	void	ProcessTurn			();
+	virtual	void	SetTurnAnimation			(bool turn_left);
+	virtual void	CheckSpecParams				(u32 spec_params);
+	virtual	EAction	CustomVelocityIndex2Action	(u32 velocity_index);
+	virtual	void	TranslateActionToPathParams ();
+			
+			void	try_to_jump					();
+	virtual void	HitEntityInJump				(const CEntity *pEntity);
 
-	virtual void	CheckSpecParams		(u32 spec_params);
-
-	IC		void	SetUpperState		(bool state = true) {b_upper_state = state;}
-
+	IC		void	SetUpperState				(bool state = true) {b_upper_state = state;}
 };
 
 

@@ -24,6 +24,7 @@
 
 #include "../../../step_manager.h"
 #include "../monster_event_manager.h"
+#include "../direction_manager.h"
 
 class CMonsterDebug;
 class CCharacterPhysicsSupport;
@@ -177,7 +178,7 @@ public:
 
 	virtual void			Exec_Look						( float dt );
 
-	virtual void			ProcessTurn						();
+	virtual void			SetTurnAnimation				(bool turn_left);
 	virtual void			AA_CheckHit						();
 	// установка специфических анимаций 
 	virtual	void			CheckSpecParams					(u32 /**spec_params/**/) {}
@@ -213,10 +214,6 @@ public:
 			void			vfUpdateParameters				();
 			void			HitEntity						(const CEntity *pEntity, float fDamage, float impulse, Fvector &dir);
 	virtual	void			HitEntityInJump					(const CEntity *pEntity) {}
-
-	// Other 
-			void			SetDirectionLook				(bool bReversed = false);
-	
 			
 			CBoneInstance *GetBoneInstance					(LPCTSTR bone_name);
 			CBoneInstance *GetBoneInstance					(int bone_id);
@@ -290,20 +287,21 @@ public:
 	// -----------------------------------------------------------------------------
 	CMonsterEventManager	EventMan;
 	CMotionManager			MotionMan; 
+	CDirectionManager		DirMan;
 	// -----------------------------------------------------------------------------
 
 	bool					RayPickEnemy			(const CObject *target_obj, const Fvector &trace_from, const Fvector &dir, float dist, float radius, u32 num_picks);
 
 
 	float					GetRealDistToEnemy		(const CEntity *pE);
+	u32						get_attack_rebuild_time	();
 
-	void					FaceTarget				(const CEntity *entity);
-	void					FaceTarget				(const Fvector &position);
-	
 	bool					b_script_state_must_execute;
 
-	void					TranslateActionToPathParams ();
-
+	IC	virtual	EAction		CustomVelocityIndex2Action	(u32 velocity_index) {return ACT_STAND_IDLE;}
+		virtual	void		TranslateActionToPathParams ();
+	
+	
 	bool					state_invisible;
 
 	// проиграть звук у актера

@@ -217,6 +217,9 @@ void CLevel::IR_OnKeyboardPress(int key)
 		case DIK_2:
 			monster->SetUpperState(false);
 			break;
+		case DIK_5:
+			monster->try_to_jump();
+			break;
 		}
 	}
 #endif

@@ -21,7 +21,7 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterAttackMeleeAbstract::execute()
 {
 	object->set_action			(ACT_ATTACK);
-	object->FaceTarget			(object->EnemyMan.get_enemy());
+	object->DirMan.face_target	(object->EnemyMan.get_enemy(), 1200);
 	object->set_state_sound		(MonsterSpace::eMonsterSoundAttack);
 
 #ifdef DEBUG

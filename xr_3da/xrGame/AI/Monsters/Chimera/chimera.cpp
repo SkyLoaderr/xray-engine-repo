@@ -1,32 +1,30 @@
 #include "stdafx.h"
 #include "chimera.h"
-#include "../ai_monster_utils.h"
 #include "chimera_state_manager.h"
-#include "../ai_monster_debug.h"
+#include "../../../../skeletonanimated.h"
 
 CChimera::CChimera()
 {
-	StateMan = xr_new<CStateManagerChimera>(this);
+	StateMan = xr_new<CStateManagerChimera>	(this);
+
+	CJumpingAbility::init_external			(this);
 }
 
 CChimera::~CChimera()
 {
 	xr_delete(StateMan);
 }
-void CChimera::reinit()
-{
-	inherited::reinit();
-
-	b_upper_state					= false;
-}
-
 void CChimera::Load(LPCSTR section)
 {
-	inherited::Load	(section);
+	inherited::Load			(section);
+	CJumpingAbility::load	(section);
 
 	MotionMan.accel_load			(section);
 	MotionMan.accel_chain_add		(eAnimWalkFwd,		eAnimRun);
 	MotionMan.accel_chain_add		(eAnimWalkDamaged,	eAnimRunDamaged);
+
+	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimRun,		eAnimRunDamaged);
+	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimWalkFwd,	eAnimWalkDamaged);
 
 	//*****************************************************************************
 	// load shared motion data
@@ -64,7 +62,7 @@ void CChimera::Load(LPCSTR section)
 		MotionMan.AddAnim(eAnimStandToUpperStand,	"stand_upper_",			-1, &inherited::get_sd()->m_fsVelocityNone,			PS_STAND);
 		MotionMan.AddAnim(eAnimUppperStandToStand,	"stand_up_to_down_",	-1, &inherited::get_sd()->m_fsVelocityNone,			PS_STAND_UPPER);
 
-		MotionMan.AddAnim(eAnimUpperWalkFwd,		"stand_up_walk_fwd_",	-1, &inherited::get_sd()->m_fsVelocityWalkFwdNormal,PS_STAND_UPPER);
+		MotionMan.AddAnim(eAnimUpperWalkFwd,		"stand_up_walk_fwd_",	-1, &m_fsVelocityWalkUpper,							PS_STAND_UPPER);
 		MotionMan.AddAnim(eAnimUpperThreaten,		"stand_up_threaten_",	-1, &inherited::get_sd()->m_fsVelocityNone,			PS_STAND_UPPER);
 		MotionMan.AddAnim(eAnimUpperAttack,			"stand_up_attack_",		-1, &inherited::get_sd()->m_fsVelocityStandTurn,	PS_STAND_UPPER);
 
@@ -89,6 +87,8 @@ void CChimera::Load(LPCSTR section)
 		MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimLookAround);
 		MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle); 
 
+		MotionMan.AA_Load(pSettings->r_string(section, "attack_params"));
+
 		MotionMan.finish_load_shared();
 	}
 
@@ -97,46 +97,53 @@ void CChimera::Load(LPCSTR section)
 #endif
 
 	//*****************************************************************************
+
+	m_fsVelocityWalkUpper.Load	(section, "Velocity_Walk_Upper");
+	m_fsVelocityJumpOne.Load	(section, "Velocity_Jump_Stand");
+	m_fsVelocityJumpTwo.Load	(section, "Velocity_Jump_Forward");
 }
 
-void CChimera::ProcessTurn()
+void CChimera::reinit()
 {
-	float delta_yaw = angle_difference(m_body.target.yaw, m_body.current.yaw);
-	if (delta_yaw < deg(1)) return;
-	
-	EMotionAnim anim = MotionMan.GetCurAnim();
-	
-	bool turn_left = true;
-	if (from_right(m_body.target.yaw, m_body.current.yaw)) turn_left = false; 
- 
-	switch (anim) {
-		case eAnimStandIdle: 
-			if (b_upper_state)
-				(turn_left) ? MotionMan.SetCurAnim(eAnimUpperStandTurnLeft) : MotionMan.SetCurAnim(eAnimUpperStandTurnRight);
-			else 
-				(turn_left) ? MotionMan.SetCurAnim(eAnimStandTurnLeft)		: MotionMan.SetCurAnim(eAnimStandTurnRight);
+	inherited::reinit();
+	b_upper_state					= false;
 
-			return;
-		default:
-			if (delta_yaw > deg(30)) {
-				if (b_upper_state) 
-					(turn_left) ? MotionMan.SetCurAnim(eAnimUpperStandTurnLeft) : MotionMan.SetCurAnim(eAnimUpperStandTurnRight);
-				else 
-					(turn_left) ? MotionMan.SetCurAnim(eAnimStandTurnLeft)		: MotionMan.SetCurAnim(eAnimStandTurnRight);
-			}
-			return;
-	}
+	m_movement_params.insert		(std::make_pair(eVelocityParameterUpperWalkFwd,	STravelParams(m_fsVelocityWalkUpper.velocity.linear,	m_fsVelocityWalkUpper.velocity.angular_path, m_fsVelocityWalkUpper.velocity.angular_real)));
+	m_movement_params.insert		(std::make_pair(eVelocityParameterJumpOne,	STravelParams(m_fsVelocityJumpOne.velocity.linear,	m_fsVelocityJumpOne.velocity.angular_path, m_fsVelocityJumpOne.velocity.angular_real)));
+	m_movement_params.insert		(std::make_pair(eVelocityParameterJumpTwo,	STravelParams(m_fsVelocityJumpTwo.velocity.linear,	m_fsVelocityJumpTwo.velocity.angular_path, m_fsVelocityJumpTwo.velocity.angular_real)));
+
+
+	CMotionDef			*def1, *def2, *def3;
+	CSkeletonAnimated	*pSkel = smart_cast<CSkeletonAnimated*>(Visual());
+
+	def1 = pSkel->ID_Cycle_Safe("jump_attack_0");	VERIFY(def1);
+	def2 = pSkel->ID_Cycle_Safe("jump_attack_1");	VERIFY(def2);
+	def3 = pSkel->ID_Cycle_Safe("jump_attack_2");	VERIFY(def3);
+
+	CJumpingAbility::reinit(def1, def2, def3);
+}
+
+void CChimera::SetTurnAnimation(bool turn_left)
+{
+	if (b_upper_state) 
+		(turn_left) ? MotionMan.SetCurAnim(eAnimUpperStandTurnLeft) : MotionMan.SetCurAnim(eAnimUpperStandTurnRight);
+	else 
+		(turn_left) ? MotionMan.SetCurAnim(eAnimStandTurnLeft)		: MotionMan.SetCurAnim(eAnimStandTurnRight);
 }
 
 void CChimera::CheckSpecParams(u32 spec_params)
 {
 	if ((spec_params & ASP_THREATEN) == ASP_THREATEN) {
-		MotionMan.SetCurAnim(eAnimUpperThreaten);
+		if (b_upper_state)
+			MotionMan.SetCurAnim(eAnimUpperThreaten);
+		else 
+			MotionMan.SetCurAnim(eAnimThreaten);
 	}
 	
 	if (b_upper_state) {
 		switch (MotionMan.GetCurAnim()) {
 			case eAnimAttack:			MotionMan.SetCurAnim(eAnimUpperAttack);			break;
+			case eAnimRun:
 			case eAnimWalkFwd:			MotionMan.SetCurAnim(eAnimUpperWalkFwd);		break;
 			case eAnimStandTurnLeft:	MotionMan.SetCurAnim(eAnimUpperStandTurnLeft);	break;
 			case eAnimStandTurnRight:	MotionMan.SetCurAnim(eAnimUpperStandTurnRight); break;
@@ -144,5 +151,109 @@ void CChimera::CheckSpecParams(u32 spec_params)
 			case eAnimStandIdle:		MotionMan.SetCurAnim(eAnimUpperStandIdle);		break;
 		}
 	}
+}
+
+EAction CChimera::CustomVelocityIndex2Action(u32 velocity_index) 
+{
+	switch (velocity_index) {
+		case eVelocityParameterUpperWalkFwd: return ACT_WALK_FWD;
+	}
+	
+	return ACT_STAND_IDLE;
+}
+
+void CChimera::TranslateActionToPathParams()
+{
+	if (!CMonsterMovement::b_enable_movement) return;
+
+	bool bEnablePath = true;
+	u32 vel_mask = 0;
+	u32 des_mask = 0;
+
+	switch (MotionMan.m_tAction) {
+	case ACT_STAND_IDLE: 
+	case ACT_SIT_IDLE:	 
+	case ACT_LIE_IDLE:
+	case ACT_EAT:
+	case ACT_SLEEP:
+	case ACT_REST:
+	case ACT_LOOK_AROUND:
+	case ACT_ATTACK:
+	case ACT_TURN:
+		bEnablePath = false;
+		break;
+	case ACT_WALK_FWD:
+		if (b_upper_state) {
+			vel_mask = eVelocityParamsUpperWalkFwd;
+			des_mask = eVelocityParameterUpperWalkFwd;
+		} else {
+			if (m_bDamaged) {
+				vel_mask = eVelocityParamsWalkDamaged;
+				des_mask = eVelocityParameterWalkDamaged;
+			} else {
+				vel_mask = eVelocityParamsWalk;
+				des_mask = eVelocityParameterWalkNormal;
+			}
+		}
+		break;
+	case ACT_WALK_BKWD:
+		break;
+	case ACT_RUN:
+		if (b_upper_state) {
+			vel_mask = eVelocityParamsUpperWalkFwd;
+			des_mask = eVelocityParameterUpperWalkFwd;
+		} else {
+			if (m_bDamaged) {
+				vel_mask = eVelocityParamsRunDamaged;
+				des_mask = eVelocityParameterRunDamaged;
+			} else {
+				vel_mask = eVelocityParamsRun;
+				des_mask = eVelocityParameterRunNormal;
+			}
+		}
+		break;
+	case ACT_DRAG:
+		vel_mask = eVelocityParameterDrag;
+		des_mask = eVelocityParameterDrag;
+
+		MotionMan.SetSpecParams(ASP_MOVE_BKWD);
+
+		break;
+	case ACT_STEAL:
+		vel_mask = eVelocityParameterSteal;
+		des_mask = eVelocityParameterSteal;
+		break;
+	case ACT_JUMP:
+		break;
+	}
+
+	if (force_real_speed) vel_mask = des_mask;
+
+	if (bEnablePath) {
+		set_velocity_mask	(vel_mask);	
+		set_desirable_mask	(des_mask);
+		enable_path			();		
+	} else {
+		disable_path		();
+	}
+}
+
+void CChimera::HitEntityInJump(const CEntity *pEntity)
+{
+}
+
+void CChimera::UpdateCL()
+{
+	inherited::UpdateCL				();
+	CJumpingAbility::update_frame	();
+}
+
+void CChimera::try_to_jump()
+{
+	CObject *target = const_cast<CEntityAlive *>(EnemyMan.get_enemy());
+	if (!target || !EnemyMan.see_enemy_now()) return;
+
+	if (CJumpingAbility::can_jump(target))
+		CJumpingAbility::jump(target, eVelocityParamsJump);
 }
 

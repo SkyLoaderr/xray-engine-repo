@@ -25,8 +25,6 @@ class CBaseMonsterAttack : public IState {
 	float			m_fDistMax;						//!< максимально допустимое расстояние для аттаки
 	float			dist;							// текущая дистанция
 
-	TTime			m_dwFaceEnemyLastTime;			// время последней установки target.yaw при развороте лицом к противнику 
-
 	bool			bCanThreaten;					// может пугать
 	TTime			ThreatenTimeStarted;			// время начала Threaten
 	TTime			ThreatenMinDelay;

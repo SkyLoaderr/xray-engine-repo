@@ -21,7 +21,6 @@ void CPseudodogGrowling::Init()
 
 	VERIFY(enemy);
 
-	m_dwFaceEnemyLastTime	= 0;
 	time_next_psi_attack	= 0;
 
 }
@@ -33,9 +32,7 @@ void CPseudodogGrowling::Run()
 	if (pMonster->EnemyMan.get_enemy() != enemy) Init();
 	
 	// Смотреть на врага 
-	DO_IN_TIME_INTERVAL_BEGIN(m_dwFaceEnemyLastTime, 1000);
-		pMonster->FaceTarget(pMonster->EnemyMan.get_enemy_position());
-	DO_IN_TIME_INTERVAL_END();
+	pMonster->DirMan.face_target(pMonster->EnemyMan.get_enemy_position());
 
 	m_tAction = ACTION_THREATEN;
 	if (CheckPsiAttack()) m_tAction = ACTION_PSI_ATTACK; 

@@ -25,7 +25,6 @@ void CStateControllerControlHitAbstract::initialize()
 	inherited::initialize();
 	
 	m_action				= eActionPrepare;
-	time_enemy_last_faced	= 0;
 	time_control_started	= 0;
 }
 
@@ -57,7 +56,7 @@ void CStateControllerControlHitAbstract::execute()
 	}
 
 	object->MotionMan.m_tAction = ACT_STAND_IDLE;	
-	face_enemy();
+	object->DirMan.face_target(object->EnemyMan.get_enemy(), 1200);
 
 	object->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,object->get_sd()->m_dwAttackSndDelay);
 
@@ -100,15 +99,6 @@ void CStateControllerControlHitAbstract::critical_finalize()
 	inherited::critical_finalize();
 	
 	object->MotionMan.TA_Deactivate();
-}
-
-TEMPLATE_SPECIALIZATION
-void CStateControllerControlHitAbstract::face_enemy()
-{
-	if (time_enemy_last_faced + 1200 < object->m_current_update) {
-		object->FaceTarget(object->EnemyMan.get_enemy());
-		time_enemy_last_faced = object->m_current_update;
-	}
 }
 
 //////////////////////////////////////////////////////////////////////////
