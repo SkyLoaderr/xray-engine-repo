@@ -443,7 +443,7 @@ BOOL	IPureClient::net_HasBandwidth	()
 		R_ASSERT			(NET);
 		
 		// check queue for "empty" state
-		u32				dwPending=0;
+		DWORD				dwPending=0;
 		hr					= NET->GetSendQueueInfo(&dwPending,0,0);
 		if (FAILED(hr))		return FALSE;
 
@@ -477,7 +477,7 @@ void	IPureClient::Sync_Thread	()
 		// Waiting for queue empty state
 		if (net_Syncronised)	Sleep(3000);
 		else {
-			u32			dwPending=0;
+			DWORD			dwPending=0;
 			do {
 				Sleep			(1);
 				R_CHK			(NET->GetSendQueueInfo(&dwPending,0,0));

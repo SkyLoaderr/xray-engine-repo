@@ -21,9 +21,9 @@ void msCreate		(LPCSTR name)
 
 void msRead			(void) 
 {
-    u32 cbMessage, cMessage, cbRead;
-	BOOL fResult;
-	LPSTR lpszBuffer; 
+    DWORD	cbMessage, cMessage, cbRead;
+	BOOL	fResult;
+	LPSTR	lpszBuffer; 
 
     cbMessage = cMessage = cbRead = 0;
     fResult = GetMailslotInfo(hLocalSlot,	// mailslot handle
@@ -38,7 +38,7 @@ void msRead			(void)
 		// Allocate memory for the message.  
 		lpszBuffer = (LPSTR) GlobalAlloc(GPTR, cbMessage);          
 		lpszBuffer[0] = '\0'; 
-		fResult = ReadFile(hLocalSlot, lpszBuffer, cbMessage, &cbRead, (LPOVERLAPPED) NULL);  
+		fResult = ReadFile	(hLocalSlot, lpszBuffer, cbMessage, &cbRead, (LPOVERLAPPED) NULL);  
 		if (!fResult) {
 			GlobalFree((HGLOBAL) lpszBuffer);
 			return;
@@ -57,7 +57,7 @@ void msRead			(void)
 void	msWrite(char *name, char* dest, char *msg) 
 {
 	HANDLE	hFile; 
-	u32	cbWritten;
+	DWORD	cbWritten;
 	BOOL	fResult;
 	char    cName[256];
 

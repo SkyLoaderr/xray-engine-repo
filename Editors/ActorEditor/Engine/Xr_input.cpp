@@ -137,9 +137,9 @@ void CInput::SetKBDAcquire( BOOL bAcquire )
 void CInput::KeyUpdate	( )
 {
 	HRESULT						hr;
-	u32 dwElements			= KEYBOARDBUFFERSIZE;
+	DWORD dwElements			= KEYBOARDBUFFERSIZE;
 	DIDEVICEOBJECTDATA			od[KEYBOARDBUFFERSIZE];
-	u32 key					= 0;
+	DWORD key					= 0;
 
 	VERIFY(pKeyboard);
 
@@ -174,7 +174,7 @@ BOOL CInput::iGetAsyncBtnState( int btn )
 void CInput::MouseUpdate( )
 {
 	HRESULT hr;
-	u32 dwElements	= MOUSEBUFFERSIZE;
+	DWORD dwElements	= MOUSEBUFFERSIZE;
 	DIDEVICEOBJECTDATA	od[MOUSEBUFFERSIZE];
 
 	VERIFY(pMouse);

@@ -53,7 +53,7 @@ void CTexture::Apply	(u32 dwStage)
 		D3DLOCKED_RECT R;
 		R_CHK	(T2D->LockRect(0,&R,NULL,0));
 		R_ASSERT(R.Pitch == int(pAVI->dwWidth*4));
-		R_ASSERT(pAVI->DecompressFrame(LPDWORD(R.pBits)));
+		R_ASSERT(pAVI->DecompressFrame((u32*)(R.pBits)));
 		R_CHK	(T2D->UnlockRect(0));
 	} else if (!seqDATA.empty()) {
 		// SEQ

@@ -208,7 +208,7 @@ ENGINE_API u32*	TUBuild32MipLevel(ETextureMipgen ALG, u32 &_w, u32 &_h, u32 &_p,
 			u32	c3	= u32(p1[2])+u32(p2[2])+u32(p3[2])+u32(p4[2]);
 			u32	c4	= u32(p1[3])+u32(p2[3])+u32(p3[3])+u32(p4[3]);
 
-			u32	A	= (c4+c4/8)/4; clamp(A,0ul,255ul);
+			u32	A	= (c4+c4/8)/4; clamp(A,0u,255u);
 			*pDest++	= BYTE(c1/4);
 			*pDest++	= BYTE(c2/4);
 			*pDest++	= BYTE(c3/4);

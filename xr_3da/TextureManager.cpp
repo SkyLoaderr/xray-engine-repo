@@ -116,7 +116,7 @@ CVS*	CShaderManager::_CreateVS		(LPCSTR cName, LPDWORD decl, u32 stride)
 		CStream*		fs		= Engine.FS.Open(fname);
 		R_CHK			(D3DXAssembleShader(LPCSTR(fs->Pointer()),fs->Length(),0,NULL,&code,&errors));
 		Engine.FS.Close	(fs);
-		R_CHK			(HW.pDevice->CreateVertexShader(decl,LPDWORD(code->GetBufferPointer()),&VS->dwHandle,0));
+		R_CHK			(HW.pDevice->CreateVertexShader(decl,LPDWORD(code->GetBufferPointer()),LPDWORD(&VS->dwHandle),0));
 		_RELEASE		(code);
 		_RELEASE		(errors);
 		

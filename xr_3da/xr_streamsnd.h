@@ -11,14 +11,14 @@ class ENGINE_API CSoundStream
 {
 protected:
 	struct sxr_riff{
-		char  id[4];  	// identifier string = "RIFF"
-		u32 len;    	// remaining length after this header
-		char  wave_id[4];// "WAVE"
+		char	id[4];  	// identifier string = "RIFF"
+		u32		len;    	// remaining length after this header
+		char	wave_id[4];	// "WAVE"
 	};
 	
 	struct sxr_hdr{
-		char  id[4];	// identifier, e.g. "fmt " or "data"
-		u32 len; 		// remaining chunk length after header
+		char  id[4];		// identifier, e.g. "fmt " or "data"
+		u32		len; 		// remaining chunk length after header
 	};
 	
 private:
@@ -35,7 +35,7 @@ private:
 	BOOL					bNeedUpdate;
 	BOOL					bMustPlay;
 
-	u32					dwStatus;
+	u32						dwStatus;
 	BOOL					isPause;
 
     LPDIRECTSOUNDBUFFER     pBuffer;

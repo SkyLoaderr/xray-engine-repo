@@ -16,7 +16,7 @@ u32	SimulatorStates::record	()
 		}
 	}
 	u32 SB = 0;
-	CHK_DX(HW.pDevice->EndStateBlock(&SB));
+	CHK_DX(HW.pDevice->EndStateBlock(LPDWORD(&SB)));
 	return SB;
 }
 

@@ -197,7 +197,7 @@ u32 CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 	}
 
 	// Capture misc data
-	R_CHK	(pDevice->CreateStateBlock			(D3DSBT_ALL,&dwDebugSB));
+	R_CHK	(pDevice->CreateStateBlock			(D3DSBT_ALL,LPDWORD(&dwDebugSB)));
 	R_CHK	(pDevice->GetRenderTarget			(&pBaseRT));
 	R_CHK	(pDevice->GetDepthStencilSurface	(&pBaseZB));
 	R_CHK	(pDevice->CreateDepthStencilSurface	(512,512,fDepth,D3DMULTISAMPLE_NONE,&pTempZB));

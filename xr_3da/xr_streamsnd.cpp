@@ -79,7 +79,7 @@ void CSoundStream::Play	( BOOL loop, int cnt )
 		CHK_DX(acmStreamClose(hAcmStream,0));
 	}
 	CHK_DX(acmStreamOpen(&hAcmStream,0,psrc,pwfx,0,NULL,0,0));
-	CHK_DX(acmStreamSize(hAcmStream,dwDestBufSize,&dwSrcBufSize,ACM_STREAMSIZEF_DESTINATION));
+	CHK_DX(acmStreamSize(hAcmStream,dwDestBufSize,LPDWORD(&dwSrcBufSize),ACM_STREAMSIZEF_DESTINATION));
 	// alloc source data buffer
 	VERIFY(dwSrcBufSize);
 	_FREE(WaveSource);
@@ -131,7 +131,7 @@ void CSoundStream::OnMove		( )
 {
 	VERIFY			( pBuffer );
 
-	pBuffer->GetStatus( &dwStatus );
+	pBuffer->GetStatus( LPDWORD(&dwStatus) );
 
 	if (isPause)	return;
 
@@ -140,7 +140,7 @@ void CSoundStream::OnMove		( )
 
 	if (dwStatus & DSBSTATUS_PLAYING){
 		Update		();
-		pBuffer->GetCurrentPosition(&currpos,0);
+		pBuffer->GetCurrentPosition(LPDWORD(&currpos),0);
 		if (writepos<currpos) delta=currpos-writepos; else delta=dsBufferSize-(writepos-currpos);
 		if(isPresentData && (delta>stream.cbDstLengthUsed)) {
 			isPresentData = Decompress	(WaveDest);
@@ -231,9 +231,9 @@ void CSoundStream::AppWriteDataToBuffer(
                           LPBYTE lpbSoundData,        // start of our data
                           u32 dwSoundBytes)         // size of block to copy
 {
-    LPVOID lpvPtr1, lpvPtr2;
-    u32 dwBytes1;
-    u32 dwBytes2;
+    LPVOID	lpvPtr1, lpvPtr2;
+    DWORD	dwBytes1;
+    DWORD	dwBytes2;
 
     // Obtain memory address of write block. This will be in two parts
     // if the block wraps around.

@@ -267,14 +267,14 @@ int		CDebugKernel::UpdateStack	(EXCEPTION_POINTERS *pex, int iSkip)
 //------------------------------------------------------------------------------------------------------------------------
 BOOL	CDebugKernel::GetFunctionName(HINSTANCE instance, void *pointer, char *text){
 	char				symbol_buffer[sizeof(IMAGEHLP_SYMBOL)+1024];
-	u32				displacement=0;
+	DWORD				displacement=0;
 	HANDLE              process=GetCurrentProcess();
 	PIMAGEHLP_SYMBOL    psymbol=(PIMAGEHLP_SYMBOL)symbol_buffer;
 
 	ZeroMemory(symbol_buffer, sizeof(symbol_buffer));
 	psymbol->SizeOfStruct  = sizeof(symbol_buffer);
 	psymbol->MaxNameLength = 1024;
-	if(SymGetSymFromAddr(process, (u32) pointer, &displacement, psymbol))    {
+	if(SymGetSymFromAddr(process, (DWORD) pointer, &displacement, psymbol))    {
         strcpy(text, psymbol->Name);
         strcat(text, "()");
         return TRUE;

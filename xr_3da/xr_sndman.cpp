@@ -223,11 +223,11 @@ void CSoundManager::GetDeviceInfo( )
 	Msg("* Free HW mix buf               all: %d, stat: %d, strm: %d", dsCaps.dwFreeHwMixingAllBuffers, dsCaps.dwFreeHwMixingStaticBuffers, dsCaps.dwFreeHwMixingStreamingBuffers);
 	Msg("* Max  3D HW buf                all: %d, stat: %d, strm: %d", dsCaps.dwMaxHw3DAllBuffers, dsCaps.dwMaxHw3DStaticBuffers, dsCaps.dwMaxHw3DStreamingBuffers);
 	Msg("* Free 3D HW buf                all: %d, stat: %d, strm: %d", dsCaps.dwFreeHw3DAllBuffers, dsCaps.dwFreeHw3DStaticBuffers, dsCaps.dwFreeHw3DStreamingBuffers);
-	Log("* Total HW Mem kbytes:         ", dsCaps.dwTotalHwMemBytes);
-	Log("* Free  HW Mem kbytes:         ", dsCaps.dwFreeHwMemBytes);
-	Log("* Max   HW block size kbytes:  ", dsCaps.dwMaxContigFreeHwMemBytes);
-	Log("* Max   HW transfer rate kb/s: ", dsCaps.dwUnlockTransferRateHwBuffers);
-	Log("* CPU overhead SW buffers:     ", dsCaps.dwPlayCpuOverheadSwBuffers);
+	Log("* Total HW Mem kbytes:         ", u32(dsCaps.dwTotalHwMemBytes));
+	Log("* Free  HW Mem kbytes:         ", u32(dsCaps.dwFreeHwMemBytes));
+	Log("* Max   HW block size kbytes:  ", u32(dsCaps.dwMaxContigFreeHwMemBytes));
+	Log("* Max   HW transfer rate kb/s: ", u32(dsCaps.dwUnlockTransferRateHwBuffers));
+	Log("* CPU overhead SW buffers:     ", u32(dsCaps.dwPlayCpuOverheadSwBuffers));
 	Log("\n");
 }
 /*

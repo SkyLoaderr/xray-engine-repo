@@ -55,7 +55,7 @@ u32 Freq2Size(u32 freq) {
 void *ConvertWave(WAVEFORMATEX &wfx_dest, LPWAVEFORMATEX &wfx, void *data, u32 &dwLen)
 {
 	HACMSTREAM	hc;
-	u32		dwNewLen;
+	DWORD		dwNewLen;
 	if (FAILED(acmStreamOpen(&hc, NULL, wfx, &wfx_dest, NULL, NULL, 0, ACM_STREAMOPENF_NONREALTIME))) return NULL;
 	if (!hc) return NULL;
 	if (FAILED(acmStreamSize(hc,dwLen,&dwNewLen,ACM_STREAMSIZEF_SOURCE))) return NULL;
@@ -145,7 +145,7 @@ LPDIRECTSOUNDBUFFER CSound::LoadWaveAs2D	(LPCSTR pName, BOOL bCtrlFreq)
 	// Creating buffer and fill it with data
 	if (SUCCEEDED(pSounds->pDevice->CreateSoundBuffer(&dsBD, &pBuf, NULL))){
 		LPVOID	pMem1,		pMem2;
-		u32	dwSize1,	dwSize2;
+		DWORD	dwSize1,	dwSize2;
 
 		if (SUCCEEDED(pBuf->Lock(0, 0, &pMem1, &dwSize1, &pMem2, &dwSize2, DSBLOCK_ENTIREBUFFER)))
 		{
@@ -245,7 +245,7 @@ LPDIRECTSOUNDBUFFER CSound::LoadWaveAs3D(LPCSTR pName, BOOL bCtrlFreq)
 	// Creating buffer and fill it with data
     if (SUCCEEDED(pSounds->pDevice->CreateSoundBuffer(&dsBD, &pBuf, NULL))){
         LPVOID	pMem1, pMem2;
-        u32	dwSize1, dwSize2;
+        DWORD	dwSize1, dwSize2;
 
         if (SUCCEEDED(pBuf->Lock(0, 0, &pMem1, &dwSize1, &pMem2, &dwSize2, DSBLOCK_ENTIREBUFFER)))
         {
