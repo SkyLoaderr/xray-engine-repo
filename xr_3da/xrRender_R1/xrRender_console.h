@@ -38,7 +38,8 @@ extern float		ps_r2_ssaHZBvsTEX;
 // R2-specific
 extern float		ps_r2_ls_dynamic_range;	// r2-only
 extern float		ps_r2_ls_bloom_kernel;	// r2-only
-extern float		ps_r2_ls_
+extern float		ps_r2_ls_dsm_kernel;	// r2-only
+extern float		ps_r2_ls_psm_kernel;	// r2-only
 
 extern void			xrRender_initconsole	();
 #endif

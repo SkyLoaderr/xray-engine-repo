@@ -39,6 +39,8 @@ float		ps_r2_ssaHZBvsTEX		= 256.f;
 // R2-specific
 float		ps_r2_ls_dynamic_range	= 2.f;	// r2-only
 float		ps_r2_ls_bloom_kernel	= 3.3f;	// r2-only
+float		ps_r2_ls_dsm_kernel		= .7f;	// r2-only
+float		ps_r2_ls_psm_kernel		= .7f;	// r2-only
 
 #ifndef _EDITOR
 #include	"..\xr_ioconsole.h"

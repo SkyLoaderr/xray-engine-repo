@@ -96,7 +96,7 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	if (_C)
 	{
 		Fvector4	J;
-		float		scale			= 1.f/100.f;
+		float		scale			= ps_r2_ls_psm_kernel/100.f;
 		J.set(-1,-1,-1); J.mul(scale); RCache.set_ca	(_C,0,J);
 		J.set(+1,-1,-1); J.mul(scale); RCache.set_ca	(_C,1,J);
 		J.set(-1,-1,+1); J.mul(scale); RCache.set_ca	(_C,2,J);
