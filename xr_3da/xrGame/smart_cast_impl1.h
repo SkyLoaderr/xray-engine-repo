@@ -16,6 +16,7 @@
 #endif
 
 #define MAX_SEQUENCE_LENGTH 1
+//#define SHOW_SMART_CAST_UNOPTIMIZED_CASES
 
 namespace SmartDynamicCast {
 
@@ -400,6 +401,9 @@ namespace SmartDynamicCast {
 		template <>
 		IC	static T1* smart_cast<Loki::NullType>(T2 *p)
 		{
+#ifdef SHOW_SMART_CAST_UNOPTIMIZED_CASES
+#pragma todo("Dima to all : this smart_cast is not optimized!")
+#endif
 #ifdef DEBUG
 			add_smart_cast_stats(typeid(T2*).name(),typeid(T1*).name());
 #endif
@@ -449,6 +453,9 @@ namespace SmartDynamicCast {
 		template <>
 		IC	static void* smart_cast<void>(T2* p)
 		{
+#ifdef SHOW_SMART_CAST_UNOPTIMIZED_CASES
+#pragma todo("Dima to all : this smart_cast is not optimized!")
+#endif
 #ifdef DEBUG
 			add_smart_cast_stats(typeid(T2*).name(),typeid(void*).name());
 #endif
