@@ -67,8 +67,7 @@ BOOL CScriptBinder::net_Spawn		(LPVOID DC)
 {
 	CSE_Abstract			*abstract = (CSE_Abstract*)DC;
 	CSE_ALifeObject			*object = dynamic_cast<CSE_ALifeObject*>(abstract);
-	VERIFY					(object);
-	if (m_object && !m_object->net_Spawn(object))
+	if (object && m_object && !m_object->net_Spawn(object))
 		return				(FALSE);
 
 	return					(TRUE);
