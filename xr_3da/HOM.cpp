@@ -5,7 +5,6 @@
 #include "stdafx.h"
 #include "HOM.h"
 #include "occRasterizer.h"
-#include "cl_collector.h"
  
 float	psOSSR		= .001f;
 
