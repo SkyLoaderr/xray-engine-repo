@@ -21,7 +21,11 @@ struct SBaseParameters {
 	IC	SBaseParameters(
 			_dist_type		max_range				= _dist_type(6000),
 			_iteration_type	max_iteration_count		= _iteration_type(-1),
+#ifndef AI_COMPILER
+			u32				max_visited_node_count	= 65500
+#else
 			u32				max_visited_node_count	= u32(-1)
+#endif
 		) :
 			max_range				(max_range),
 			max_iteration_count		(max_iteration_count),

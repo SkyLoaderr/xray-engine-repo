@@ -95,7 +95,7 @@ protected:
 #ifdef AI_COMPILER
 	typedef CVertexAllocatorFixed<1024*1024>				CVertexAllocator;
 #else
-	typedef CVertexAllocatorFixed<128*1024>					CVertexAllocator;
+	typedef CVertexAllocatorFixed<64*1024>					CVertexAllocator;
 #endif
 	typedef CVertexAllocatorFixed<4*1024>					CSolverVertexAllocator;
 
