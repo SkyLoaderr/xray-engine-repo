@@ -57,7 +57,7 @@ IC	bool CSpaceRestriction::intersects			(SpaceRestrictionHolder::CBaseRestrictio
 		if (bridge0->inside(*I))
 			return					(true);
 	
-	m_temp.clear					();
+	m_temp.resize					(bridge0->border().size() + bridge1->border().size());
 	xr_vector<u32>::iterator		J = set_intersection(
 		bridge0->border().begin(),
 		bridge0->border().end(),
