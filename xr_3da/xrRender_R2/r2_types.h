@@ -45,5 +45,6 @@ const u32					TEX_NCM				= 512;
 
 const u32					BLOOM_size_X		= 256;
 const u32					BLOOM_size_Y		= 256;
+const u32					LUMINANCE_size		= 16;
 
 const u32					occq_size			= 128;
