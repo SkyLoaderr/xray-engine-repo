@@ -152,7 +152,7 @@ void __cdecl logThread(void *dummy)
 	if ((0==xr_strcmp(u_name,"oles"))||(0==xr_strcmp(u_name,"alexmx")))	bHighPriority	= TRUE;
 
 	// Main cycle
-	u32	LogSize = 0;
+	u32		LogSize = 0;
 	float	PrSave	= 0;
 	while (TRUE)
 	{
@@ -178,6 +178,7 @@ void __cdecl logThread(void *dummy)
 				SendMessage	( hwLog, LB_ADDSTRING, 0, (LPARAM) S);
 			}
 			SendMessage		( hwLog, LB_SETTOPINDEX, LogSize-1, 0);
+			FlushLog		( );
 		}
 		if (_abs(PrSave-progress)>EPS_L) {
 			bWasChanges = TRUE;
