@@ -85,8 +85,8 @@ void	CCar::Load					( LPCSTR section )
 {
 	inherited::Load					(section);
 
-
-
+	ISpatial*		self				=	dynamic_cast<ISpatial*> (this);
+	if (self)		self->spatial.type	|=	STYPE_VISIBLEFORAI;	
 }
 
 BOOL	CCar::net_Spawn				(LPVOID DC)

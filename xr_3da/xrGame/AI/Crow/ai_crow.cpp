@@ -156,6 +156,10 @@ void CAI_Crow::switch2_FlyIdle()
 }
 void CAI_Crow::switch2_DeathDead()
 {
+	// AI need to pickup this
+	ISpatial*		self				=	dynamic_cast<ISpatial*> (this);
+	if (self)		self->spatial.type	|=	STYPE_VISIBLEFORAI;	
+	//
 	PSkeletonAnimated(Visual())->PlayCycle	(m_Anims.m_death_dead.GetRandom());
 }
 void CAI_Crow::switch2_DeathFall()
