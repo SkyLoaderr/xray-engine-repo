@@ -5,7 +5,6 @@ module("script_zone")
 Чугай Саша
 
 Сделать:
-	- условия создания фракции в custom data
 	- если зона создалась, а сталкер не добавился
 	- если нету такого типа гулага
 	- fraction types->gulag
@@ -222,7 +221,8 @@ function zone_fractions:__init( zone, ini )
 			ffi.duration_min, ffi.duration_max  = r_nums( ini, sect, "duration",   100000, 100001 )
 --			ffi.prefix                          = r_str ( ini, sect, "prefix",     self.zone:name() )
 			ffi.capacity                        = r_num ( ini, sect, "capacity",   100 )
-			ffi.stay_min, ffi.stay_max          = r_nums( ini, sect, "stay",       24,     48 )
+			ffi.stay_min, ffi.stay_max          = r_nums( ini, sect, "stay",       100000, 100001 )
+			ffi.probability                     = r_num ( ini, sect, "p",          100 )
 			ffi.squad                           = r_num ( ini, sect, "squad" )
 			ffi.group                           = r_num ( ini, sect, "group" )
 			ffi.preconditions                   = r_str ( ini, sect, "preconditions" )
@@ -252,7 +252,7 @@ function zone_fractions:add_stalker( obj )
 		local n = self.fraction:get_population()
 
 --		printf( "%d %d %d", n, self.capacity, self.fraction:get_capacity() )
-		if n < self.capacity and n < self.fraction:get_capacity() then
+		if n < self.capacity and n < self.fraction:get_capacity() and math.random( 100 ) <= self.probability then
 			if self.fraction:addObject( obj ) then
 				self.stalkers[obj:id()] = {
 					group    = obj:group(),
@@ -315,6 +315,7 @@ function zone_fractions:create_fraction()
 		self.fraction_name = self.zone:name() --.. "_" .. fparams.type
 --		self.prefix        = fparams.prefix
 		self.duration_end  = math.random( fparams.duration_min, fparams.duration_max ) * h2ms + game.time()
+		self.probability   = fparams.probability
 		self.capacity      = fparams.capacity
 		self.squad         = fparams.squad
 		self.group         = fparams.group
