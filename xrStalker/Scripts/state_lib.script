@@ -137,12 +137,19 @@ states = {
 				animstate = "stand",
 				animation = "prisluh"
 			},
-	choosing = {	weapon = "strapped",
+	choose	 = {weapon = "strapped",
 				movement = move.stand,
 				mental = anim.free,
 				bodystate = move.standing,
 				animstate = "stand",
 				animation = "choosing"
+			},
+	ward	 = {weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "warding"
 			},
 
 
@@ -161,7 +168,7 @@ states = {
 				animstate = "sleep",
 				animation = "sleeping"
 			},
-	eating = {	weapon = "strapped",
+	eat	 = {	weapon = "strapped",
 				movement = move.stand,
 				mental = anim.free,
 				bodystate = move.standing,
@@ -188,6 +195,44 @@ states = {
 
 
 	-- Бармен
+	bar_fas = {	weapon = "unstrapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "bar_fas"
+			},
+	bar_left= {	weapon = "unstrapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "bar_left"
+			},
+	bar_head= {	weapon = "unstrapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "bar_head"
+			},
+	bar_sleep= {weapon = "unstrapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "bar_sleep"
+			},
+	bar_right= {weapon = "unstrapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "bar_right"
+			},
+
+
+	
 	barman_walk = {	weapon = nil,
 				movement = move.walk,
 				mental = anim.free,
@@ -203,5 +248,7 @@ states = {
 				animstate = "stand",
 				animation = nil
 			}
+
+
 			
 }
