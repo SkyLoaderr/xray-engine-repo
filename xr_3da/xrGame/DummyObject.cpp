@@ -65,28 +65,22 @@ BOOL CDummyObject::net_Spawn(LPVOID DC)
 	clTransform.set			(svTransform);
 	relation.set			(svTransform);
 
-	P.r_u8					(style);
+	style					= E->s_style;
 	if (style&esAnimated)		{
 		// Load animator
-		string256				fn;
-		P.r_string				(fn);
 		s_animator				= new CObjectAnimator		();
-		s_animator->Load		(fn);
+		s_animator->Load		(E->s_Animation);
 		s_animator->PlayMotion	("idle",true);
 	}
 	if (style&esModel)			{
 		// Load model
-		string256				fn;
-		P.r_string				(fn);
-		s_model					= ::Render->model_Create	(fn);
+		s_model					= ::Render->model_Create	(E->s_Model);
 		CKinematics* V			= PKinematics(s_model);
 		if (V)					V->PlayCycle("idle");
 	}
 	if (style&esParticles)		{
 		// Load model
-		string256				fn;
-		P.r_string				(fn);
-		s_particles				= ::Render->model_CreatePS	(fn,&s_emitter);
+		s_particles				= ::Render->model_CreatePS	(E->s_Particles,&s_emitter);
 		CPSVisual* V			= dynamic_cast<CPSVisual*>	(s_particles);
 		if (V)					{
 			s_emitter.m_Position.set	(Position());
@@ -94,10 +88,8 @@ BOOL CDummyObject::net_Spawn(LPVOID DC)
 		}
 	}
 	if (style&esSound)			{
-		// Load model
-		string256				fn;
-		P.r_string				(fn);
-		pSounds->Create			(s_sound,TRUE,fn);
+		// Load sound
+		pSounds->Create			(s_sound,TRUE,E->s_Sound);
 		pSounds->PlayAtPos		(s_sound,0,Position(),true);
 	}
 
