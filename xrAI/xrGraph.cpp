@@ -164,6 +164,21 @@ u32 dwfErasePoints()
 	return(dwPointsWONodes);
 }
 
+void vfOptimizeGraph()
+{
+	Progress(0.0f);
+//	for (int i=0, iCount = (int)tpaGraph.size(); i<iCount; i++) {
+//		SGraphVertex &tGraphVertex = tpaGraph[i]; 
+//		int iNeighbourCount = (int)tGraphVertex.dwNeighbourCount;
+//		for (int j=0; j<iNeighbourCount - 1; j++) {
+//			for (int k=j+1; k<iNeighbourCount; k++) {
+//				if (tpaGraph[tGraphVertex.tpaEdges[j].dwVertexNumber].tpaEdges)
+//			}
+//		}
+//	}
+	Progress(1.0f);
+}
+
 void xrBuildGraph(LPCSTR name)
 {
 	CThreadManager		tThreadManager;
@@ -196,6 +211,7 @@ void xrBuildGraph(LPCSTR name)
 	for (u32 thID=0, dwThreadCount = THREAD_COUNT, N = tpaGraph.size(), M = 0, K; thID<dwThreadCount; M += K, thID++)
 		tThreadManager.start(new CGraphThread(thID,M, ((thID + 1) == dwThreadCount) ? N - 1 : M + (K = GET_INDEX((N - M),(dwThreadCount - thID))),MAX_DISTANCE_TO_CONNECT,tCriticalSection));
 	tThreadManager.wait();
+	
 	for (int i=0, j=0; i<(int)tpaGraph.size(); i++)
 		j += tpaGraph[i].dwNeighbourCount;
 	Msg("%d edges built",j);
@@ -208,6 +224,9 @@ void xrBuildGraph(LPCSTR name)
 	else
 		Msg("Graph is connected");
 	
+	Phase("Optimizing graph");
+	vfOptimizeGraph();
+
 	Phase("Saving graph");
 	vfSaveGraph(name);
 

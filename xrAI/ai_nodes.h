@@ -111,7 +111,7 @@ class CGraphThread : public CThread
 	CCriticalSection	*m_tpCriticalSection;
 
 public:
-	CGraphThread (u32 ID, u32 dwStart, u32 dwEnd, float fMaxDistance, CCriticalSection &tCriticalSection) : CThread(ID)
+	CGraphThread(u32 ID, u32 dwStart, u32 dwEnd, float fMaxDistance, CCriticalSection &tCriticalSection) : CThread(ID)
 	{
 		m_dwAStarStaticCounter	= 0;
 		u32 S1					= (m_header.count)*sizeof(TNode);
