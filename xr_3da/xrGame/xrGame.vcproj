@@ -5147,6 +5147,26 @@
 						RelativePath=".\ui\UIBuyWeaponWnd.h">
 					</File>
 				</Filter>
+				<Filter
+					Name="NewsWnd"
+					Filter="">
+					<File
+						RelativePath=".\ui\UINewsWnd.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UINewsWnd.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="TaskWnd"
+					Filter="">
+					<File
+						RelativePath=".\ui\UITaskWnd.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UITaskWnd.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="UIWindows"
