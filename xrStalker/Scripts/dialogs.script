@@ -12,6 +12,30 @@ function get_money_then_leave(first_speaker, second_speaker)
 	xr_motivator.storage[first_speaker:id()].robber.enabled = true
 end
 
+-----------------------------------------------------------------------------------
+-- TRADE
+-----------------------------------------------------------------------------------
+--' Инициализация торговли
+function trade_init(seller, buyer)
+	xr_motivator.storage[seller:id()].meet.begin_wait_to_see.begin = device():time_global()/1000
+	xr_position.setPosition(xr_motivator.storage[seller:id()].meet.Seller, 
+							xr_motivator.storage[seller:id()].meet.Seller:level_vertex_id())
+	xr_motivator.storage[seller:id()].meet.Buyer = buyer
+end
+
+function want_trade(seller, buyer)
+	if seller:relation(buyer) == game_object.friend or
+		seller:relation(buyer) == game_object.neutral
+	then
+		return true
+	else
+		return false
+	end
+end
+
+function dont_want_trade(seller, buyer)	
+	return not want_trade(seller,buyer)
+end
 
 -----------------------------------------------------------------------------------
 -- helper

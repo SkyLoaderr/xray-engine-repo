@@ -125,9 +125,17 @@
 	   	<phrase id="2">
 			<text>Чай, кофе, поторгуем?</text>
 			<next>21</next>
+			<next>22</next>
 		</phrase>
 	   	<phrase id="21">
+	   		<precondition>dialogs.want_trade</precondition>
 			<text>Оки доки Босс.</text>
+			<action>dialogs.trade_init</action>
+			<next>10</next>
+		</phrase>
+	   	<phrase id="22">
+	   		<precondition>dialogs.dont_want_trade</precondition>
+			<text>Не, чего-то неохота.</text>
 			<next>10</next>
 		</phrase>
 	   	<phrase id="3">

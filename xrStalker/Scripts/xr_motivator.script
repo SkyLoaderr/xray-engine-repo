@@ -15,10 +15,10 @@ function motivator_binder:__init (obj) super(obj)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:reinit()
-    object_binder.reinit(self)
-    self.object:set_pda_callback(pda_callback)
+	object_binder.reinit(self)
+	self.object:set_pda_callback(pda_callback)
 
-  self.object:set_hear_callback(hear_callback)
+	self.object:set_hear_callback(hear_callback)
 
 end
 ----------------------------------------------------------------------------------------------------------------------
@@ -60,19 +60,19 @@ function motivator_binder:reload (section)
 
     local char_ini = self.object:spawn_ini()
 
-    -- Bind other scripts
+    --' Bind other scripts
     printf("Base evaluator ID %d", stalker_ids.property_script)
     printf("Base action ID %d", stalker_ids.action_script)
     self.object:disable_talk()
 
-    --загрузка озвучки
+    --' загрузка озвучки
     xr_sounds.load_sounds (self.object)
 ----------------------------------------------------------------------------------------------------------------------
 -- Общие скрипты
 ----------------------------------------------------------------------------------------------------------------------
 	xr_sound.load_sound(self.object)
     xr_motivator.storage[self.object:id()] = {  followers = {} }
-    -- Положения тела
+    --' Положения тела
     xr_motivator.storage[self.object:id()].state = {
             body_state = 0,
             target_state = 0,
@@ -81,7 +81,7 @@ function motivator_binder:reload (section)
             anim = xr_state.anims(self.object)
         }
     xr_state.add_to_binder(self.object)
-    -- Настройка схемы реакции
+    --' Настройка схемы реакции
 	xr_motivator.storage[self.object:id()].reactions = {
 		enabled = true,
 		time_wait = 5*60*1000,
@@ -108,9 +108,9 @@ function motivator_binder:reload (section)
             enabled = false,
             over = false,
             actor = nil,
-            noweap = false, -- игнорируем наличие оружия у актора
-            distance = 15, -- расстояние, в пределах которого мы реагируем
-            shoot_distance = 5 -- расстояние, в пределах которого мы стреляем
+            noweap = false,			--' игнорируем наличие оружия у актора
+            distance = 15,			--' расстояние, в пределах которого мы реагируем
+            shoot_distance = 5		--' расстояние, в пределах которого мы стреляем
         }  
     xr_meet.add_to_binder(self.object, char_ini)
 

@@ -14,37 +14,3 @@ end
 function evaluator_const:evaluate()
 	return self.value
 end
-
-----------------------------------------------------------------------------------------------------------------------
--- эвалуаторы Финальные                          
-----------------------------------------------------------------------------------------------------------------------
--- Торговля инициализированна (цель для скрипта: )
-class "evaluator_trade_init" (property_evaluator)
-function evaluator_trade_init:__init(storage) super()
-	self.a = storage
-end
-function evaluator_trade_init:evaluate()
-	if self.a.Buyer == nil then
---		printf("[EVA] Trade Init: FALSE")
-		return false
-	else
---		printf("[EVA] Trade Init: TRUE")
-		return true
-	end
-end
-
--- Торговля обработана
-class "evaluator_trade_finished" (property_evaluator)
-function evaluator_trade_finished:__init(storage) super()
-	self.a = storage
-end
-function evaluator_trade_finished:evaluate()                    
-	if self.a.Buyer == nil then
---		printf("[EVA] Can go? true")
-		return true
-	else
---		printf("[EVA] Can go? false")
-		return false
-	end
-end
-
