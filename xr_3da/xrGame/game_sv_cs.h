@@ -23,7 +23,7 @@ public:
 	virtual		void				OnPlayerDisconnect		(u32 id_who);
 	virtual		void				OnPlayerBuy				(u32 id_who, u16 eid_who, LPCSTR what);
 	virtual		void				OnPlayerReady			(u32 id_who);
-	virtual		void				OnPlayerChangeTeam		(u32 id_who);
+	virtual		void				OnPlayerChangeTeam		(u32 id_who, s16 team);
 	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed);
 
 	virtual		void				OnFraglimitExceed		()								{};
@@ -33,6 +33,10 @@ public:
 	virtual		void				Update					();
 
 	u8 AutoTeam();
+	void SavePlayerWeapon(u32 it, CFS_Memory &store);
+	void SaveDefaultWeapon(CFS_Memory &store);
+	void SpawnArtifacts();
+	void SpawnPlayer(u32 it, CFS_Memory &weapon);
 
 	BOOL m_delayedRoundEnd;
 	u32 m_roundEndDelay;

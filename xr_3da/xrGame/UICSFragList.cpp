@@ -47,6 +47,7 @@ void CUICSFragList::OnFrame()
 	y+=1*h;
 	for (ItemIt mI=items.begin(); mI!=items.end(); mI++){
 		game_cl_GameState::Player* P = (game_cl_GameState::Player*)*mI;
+		if(P->flags&GAME_PLAYER_FLAG_CS_SPECTATOR) continue;
 		if(P->team != 0) continue;
 		if (P->flags&GAME_PLAYER_FLAG_LOCAL)	H->SetColor(0xf0a0ffa0);
 		else									H->SetColor(0xb0a0a0a0);
@@ -65,12 +66,31 @@ void CUICSFragList::OnFrame()
 	k=1;
 	for (ItemIt mI=items.begin(); mI!=items.end(); mI++){
 		game_cl_GameState::Player* P = (game_cl_GameState::Player*)*mI;
+		if(P->flags&GAME_PLAYER_FLAG_CS_SPECTATOR) continue;
 		if(P->team != 1) continue;
 		if (P->flags&GAME_PLAYER_FLAG_LOCAL)	H->SetColor(0xf0a0ffa0);
 		else									H->SetColor(0xb0a0a0a0);
 		H->Out			(x0,y,"%3d.",		k++);
 		H->Out			(x1,y,"%-20s",		P->name);
 		H->Out			(x2,y,"%-8s",		P->flags&GAME_PLAYER_FLAG_VERY_VERY_DEAD?"dead":"");
+		H->Out			(x3,y,"%-5d",		P->kills);
+		H->Out			(x4,y,"ping:%-4d",	P->ping);
+		y				+= h;
+	}
+	y+=2*h;
+	H->SetColor			(0xf0afafaf); 
+	H->Out				(x0,y,"Spectators", Game().teams[1].num_targets);
+	H->Out				(x0,y,"__________________________________________________________");
+	y+=1*h;
+	k=1;
+	for (ItemIt mI=items.begin(); mI!=items.end(); mI++){
+		game_cl_GameState::Player* P = (game_cl_GameState::Player*)*mI;
+		if(!(P->flags&GAME_PLAYER_FLAG_CS_SPECTATOR)) continue;
+		if (P->flags&GAME_PLAYER_FLAG_LOCAL)	H->SetColor(0xf0a0ffa0);
+		else									H->SetColor(0xb0a0a0a0);
+		H->Out			(x0,y,"%3d.",		k++);
+		H->Out			(x1,y,"%-20s",		P->name);
+		H->Out			(x2,y,"%-8s",		P->flags&GAME_PLAYER_FLAG_VERY_VERY_DEAD?"    ":"");
 		H->Out			(x3,y,"%-5d",		P->kills);
 		H->Out			(x4,y,"ping:%-4d",	P->ping);
 		y				+= h;

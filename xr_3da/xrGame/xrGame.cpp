@@ -59,7 +59,7 @@ public:
 };
 class CCC_Team : public CConsoleCommand {
 public:
-	CCC_Team(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = true; };
+	CCC_Team(LPCSTR N) : CConsoleCommand(N)  { };
 	virtual void Execute(LPCSTR args) {
 		CObject *l_pObj = Level().CurrentEntity();
 		CActor *l_pActor = dynamic_cast<CActor*>(l_pObj);
@@ -80,10 +80,14 @@ public:
 		}
 		CGameObject *l_pPlayer = dynamic_cast<CGameObject*>(l_pObj);
 		if(l_pPlayer) {
+			u32 l_team = 2;
+			sscanf(args, "%d", &l_team);
 			NET_Packet		P;
 			l_pPlayer->u_EventGen		(P,GEG_PLAYER_CHANGE_TEAM,l_pPlayer->ID()	);
 			P.w_u16			(u16(l_pPlayer->ID())	);
-			P.w_u32			(0);
+			P.w_s16			(s16(l_team));
+			P.w_s16			((s16)0);
+			//P.w_u32			(0);
 			l_pPlayer->u_EventSend		(P);
 		}
 	}

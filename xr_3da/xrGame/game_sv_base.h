@@ -47,7 +47,7 @@ public:
 	virtual		void				OnPlayerConnect			(u32 id_who);
 	virtual		void				OnPlayerDisconnect		(u32 id_who);
 	virtual		void				OnPlayerReady			(u32 id_who)							{};
-	virtual		void				OnPlayerChangeTeam		(u32 id_who)							{};
+	virtual		void				OnPlayerChangeTeam		(u32 id_who, s16 team)							{};
 	virtual		void				OnPlayerBuy				(u32 id_who, u16 eid_who, LPCSTR what)	{};
 	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)	= 0;
 	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_target)	= 0;			// TRUE=allow ownership, FALSE=denied

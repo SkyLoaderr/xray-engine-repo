@@ -17,117 +17,77 @@ void	game_sv_CS::Create			(LPCSTR options)
 	m_delayedRoundEnd = false;
 }
 
-void	game_sv_CS::OnRoundStart	()
-{
-	m_delayedRoundEnd = false;
+void game_sv_CS::SavePlayerWeapon(u32 it, CFS_Memory &store) {
+	xrServer *l_pServer = Level().Server;
+	u32 l_chunk = 0;
 	NET_Packet l_packet;
-	vector<CFS_Memory> l_memAr;
-	if(round!=-1) {							// Если раунд не первый сохраняем игроков и их оружие
-		xrServer *l_pServer = Level().Server;
-		u32 cnt = get_count();
-		l_memAr.resize(cnt);
-		for(u32 it = 0; it < cnt; it++) {
-			if(get_it(it)->flags&GAME_PLAYER_FLAG_VERY_VERY_DEAD) continue;
-			u32 l_chunk = 0;
-			CFS_Memory &l_mem = l_memAr[it];
-			vector<u16>* l_pCilds = get_children(get_it_2_id(it));
-			for(u32 cit = 0; cit < l_pCilds->size(); cit++) {
-				xrSE_Weapon *l_pWeapon = dynamic_cast<xrSE_Weapon*>(l_pServer->ID_to_entity((*l_pCilds)[cit]));
-				if(!l_pWeapon) continue;
-				u16 id_save = l_pWeapon->ID;			// save wpn entity ID 
-				l_pWeapon->ID = 0xffff;					// set 0xffff to get new gen ID
-				l_pWeapon->Spawn_Write(l_packet, true);
-				l_pWeapon->ID = id_save;				// restore wpn entity ID 
-				l_mem.open_chunk(l_chunk++); l_mem.write(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
-			}
-		}
+	CFS_Memory &l_mem = store;
+	vector<u16>* l_pCilds = get_children(get_it_2_id(it));
+	for(u32 cit = 0; cit < l_pCilds->size(); cit++) {
+		xrSE_Weapon *l_pWeapon = dynamic_cast<xrSE_Weapon*>(l_pServer->ID_to_entity((*l_pCilds)[cit]));
+		if(!l_pWeapon) continue;
+		u16 id_save = l_pWeapon->ID;			// save wpn entity ID 
+		l_pWeapon->ID = 0xffff;					// set 0xffff to get new gen ID
+		l_pWeapon->Spawn_Write(l_packet, true);
+		l_pWeapon->ID = id_save;				// restore wpn entity ID 
+		l_mem.open_chunk(l_chunk++); l_mem.write(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
 	}
-	{
-		string256 fn;
-		if (Engine.FS.Exist(fn,Path.GameData,"game_cs.ltx")) {
-			CInifile* ini = CInifile::Create(fn);
-			LPCSTR prim = ini->ReadSTRING("cs_start_Arms","primary");
-			u32 prim_ammo = ini->ReadINT("cs_start_Arms","primary_ammo");
-			LPCSTR pistol = ini->ReadSTRING("cs_start_Arms","pistol");
-			u32 pistol_ammo = ini->ReadINT("cs_start_Arms","pistol_ammo");
-			xrSE_Weapon *W_prim = 0, *W_pistol = 0;
-			if(prim) {
-				W_prim = dynamic_cast<xrSE_Weapon*>(spawn_begin(prim));
-				if(W_prim) {
-					strcpy(W_prim->s_name_replace,prim);
-					W_prim->s_flags = M_SPAWN_OBJECT_ACTIVE|M_SPAWN_OBJECT_LOCAL;
-					W_prim->ID_Parent = 0;
-					W_prim->ID = 0xffff;
-					W_prim->a_elapsed = W_prim->get_ammo_magsize();
-					W_prim->a_current = u16(prim_ammo) * W_prim->a_elapsed;
-				}
+}
+
+void game_sv_CS::SaveDefaultWeapon(CFS_Memory &store) {		//@@@ WT: Это надо переделать, чтоб читать ltx только один раз.
+	string256 fn;
+	if (Engine.FS.Exist(fn,Path.GameData,"game_cs.ltx")) {
+		CInifile* ini = CInifile::Create(fn);
+		LPCSTR prim = ini->ReadSTRING("cs_start_Arms","primary");
+		u32 prim_ammo = ini->ReadINT("cs_start_Arms","primary_ammo");
+		LPCSTR pistol = ini->ReadSTRING("cs_start_Arms","pistol");
+		u32 pistol_ammo = ini->ReadINT("cs_start_Arms","pistol_ammo");
+		xrSE_Weapon *W_prim = 0, *W_pistol = 0;
+		if(prim) {
+			W_prim = dynamic_cast<xrSE_Weapon*>(spawn_begin(prim));
+			if(W_prim) {
+				strcpy(W_prim->s_name_replace,prim);
+				W_prim->s_flags = M_SPAWN_OBJECT_ACTIVE|M_SPAWN_OBJECT_LOCAL;
+				W_prim->ID_Parent = 0;
+				W_prim->ID = 0xffff;
+				W_prim->a_elapsed = W_prim->get_ammo_magsize();
+				W_prim->a_current = u16(prim_ammo) * W_prim->a_elapsed;
 			}
-			if(pistol) {
-				W_pistol = dynamic_cast<xrSE_Weapon*>(spawn_begin(pistol));
-				if(W_pistol) {
-					strcpy(W_pistol->s_name_replace,pistol);
-					W_pistol->s_flags = M_SPAWN_OBJECT_ACTIVE|M_SPAWN_OBJECT_LOCAL;
-					W_pistol->ID_Parent = 0;
-					W_pistol->ID = 0xffff;
-					W_pistol->a_elapsed = W_pistol->get_ammo_magsize();
-					W_pistol->a_current = u16(pistol_ammo) * W_pistol->a_elapsed;
-				}
-			}
-			CInifile::Destroy	(ini);
-			u32 cnt = get_count();
-			l_memAr.resize(cnt);
-			for(u32 it = 0; it < cnt; it++) {
-				if(!(get_it(it)->flags&GAME_PLAYER_FLAG_VERY_VERY_DEAD) && (round!=-1)) continue;
-				u32 l_chunk = 0;
-				CFS_Memory &l_mem = l_memAr[it];
-				if(W_prim) {
-					W_prim->Spawn_Write(l_packet, true);
-					l_mem.open_chunk(l_chunk++); l_mem.write(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
-				}
-				if(W_pistol) {
-					W_pistol->Spawn_Write(l_packet, true);
-					l_mem.open_chunk(l_chunk); l_mem.write(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
-				}
-			}
-			if(W_prim) F_entity_Destroy(W_prim);
-			if(W_pistol) F_entity_Destroy(W_pistol);
 		}
+		if(pistol) {
+			W_pistol = dynamic_cast<xrSE_Weapon*>(spawn_begin(pistol));
+			if(W_pistol) {
+				strcpy(W_pistol->s_name_replace,pistol);
+				W_pistol->s_flags = M_SPAWN_OBJECT_ACTIVE|M_SPAWN_OBJECT_LOCAL;
+				W_pistol->ID_Parent = 0;
+				W_pistol->ID = 0xffff;
+				W_pistol->a_elapsed = W_pistol->get_ammo_magsize();
+				W_pistol->a_current = u16(pistol_ammo) * W_pistol->a_elapsed;
+			}
+		}
+		CInifile::Destroy	(ini);
+		u32 l_chunk = 0;
+		NET_Packet l_packet;
+		CFS_Memory &l_mem = store;
+		if(W_prim) {
+			W_prim->Spawn_Write(l_packet, true);
+			l_mem.open_chunk(l_chunk++); l_mem.write(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
+		}
+		if(W_pistol) {
+			W_pistol->Spawn_Write(l_packet, true);
+			l_mem.open_chunk(l_chunk); l_mem.write(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
+		}
+		if(W_prim) F_entity_Destroy(W_prim);
+		if(W_pistol) F_entity_Destroy(W_pistol);
 	}
+}
 
-	__super::OnRoundStart	();
-
-	if (0==round)	
-	{
-		// give $1000 to everybody
-		u32		cnt = get_count();
-		for		(u32 it=0; it<cnt; it++)	
-		{
-			game_PlayerState*	ps	=	get_it	(it);
-			ps->money_total			=	1000;
-			ps->money_for_round		=	0;
-			ps->flags = 0;
-			ps->deaths = 0;
-			ps->kills = 0;
-		}
-	} else {
-		// sum-up money for round with total
-		u32		cnt = get_count();
-		for		(u32 it=0; it<cnt; it++)	
-		{
-			game_PlayerState*	ps	=	get_it	(it);
-			ps->money_total			=	ps->money_total + ps->money_for_round;
-			ps->money_for_round		=	0;
-			ps->flags = 0;
-		}
-		teams[0].num_targets = teams[1].num_targets = 0;
-	}
-
-	// Spawn "artifacts"
+void game_sv_CS::SpawnArtifacts() {
 	vector<RPoint>&		rp	= rpoints[2];
 	srand				( (unsigned)time( NULL ) );
 	random_shuffle		( rp.begin( ), rp.end( ) );
 	for(s32 i = 0; i < 3; i++) {
-		xrServerEntity*		E	=	spawn_begin	("m_target_cs");									// create SE
+		xrServerEntity*		E	=	spawn_begin	("m_target_cs");								// create SE
 		xrSE_Target_CS*	A		=	(xrSE_Target_CS*) E;					
 		A->s_flags				=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL;				// flags
 		RPoint&				r	= rp[i];
@@ -135,40 +95,245 @@ void	game_sv_CS::OnRoundStart	()
 		A->o_Angle.set		(r.A);
 		spawn_end			(A,0);
 	}
+}
 
-	// Respawn all players and some info
-	u32		cnt = get_count();
-	for		(u32 it=0; it<cnt; it++)	
-	{
-		// init
-		game_PlayerState*	ps	=	get_it	(it);
-		//ps->kills				=	0;
-		//ps->deaths				=	0;
+void game_sv_CS::SpawnPlayer(u32 it, CFS_Memory &weapon) {
+	game_PlayerState *l_pPS = get_it(it);
 
-		// spawn
-		LPCSTR	options			=	get_name_it	(it);
-		xrServerEntity*		E	=	spawn_begin	(ps->team?"actor_cs_2":"actor_cs_1");													// create SE
-		xrSE_Actor*	A			=	(xrSE_Actor*) E;					
-		strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
-		A->s_team				=	u8(ps->team);															// team
-		A->s_flags				=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER;// flags
-		assign_RP				(A);
-		spawn_end				(A,get_it_2_id(it));
+	LPCSTR	options = get_name_it(it);
+	xrServerEntity *E;
+	if(l_pPS->flags&GAME_PLAYER_FLAG_CS_SPECTATOR) {
+		l_pPS->flags |= GAME_PLAYER_FLAG_VERY_VERY_DEAD;
+		E = spawn_begin("spectator");
+	} else {
+		E = spawn_begin(l_pPS->team?"actor_cs_2":"actor_cs_1");
+		xrSE_Actor *A = (xrSE_Actor*)E;					
+		A->s_team = u8(l_pPS->team);
+	}
+	strcpy(E->s_name_replace,get_option_s(options,"name","Player"));
+	E->s_flags = M_SPAWN_OBJECT_ACTIVE|M_SPAWN_OBJECT_LOCAL|M_SPAWN_OBJECT_ASPLAYER;
+	vector<RPoint> &rp = rpoints[l_pPS->team];
+	RPoint &r = rp[it%rp.size()];
+	E->o_Position.set(r.P);
+	E->o_Angle.set(r.A);
+	spawn_end(E,get_it_2_id(it));
 
-		if(l_memAr.size() > it) {
-			CFS_Memory &l_mem = l_memAr[it];
-			u32 l_chunk = 0;
-			u16 skip_header;
-			CStream l_stream(l_mem.pointer(), l_mem.size()), *l_pS;
-			while(NULL != (l_pS = l_stream.OpenChunk(l_chunk++))) {
-				l_packet.B.count = l_pS->Length();
-				l_pS->Read(l_packet.B.data, l_packet.B.count);
-				l_packet.r_begin(skip_header);
-				Level().Server->Process_spawn(l_packet,get_it_2_id(it),true);
-			}
+	if(!(l_pPS->flags&GAME_PLAYER_FLAG_CS_SPECTATOR)) {
+		NET_Packet l_packet;
+		CFS_Memory &l_mem = weapon;
+		u32 l_chunk = 0;
+		u16 skip_header;
+		CStream l_stream(l_mem.pointer(), l_mem.size()), *l_pS;
+		while(NULL != (l_pS = l_stream.OpenChunk(l_chunk++))) {
+			l_packet.B.count = l_pS->Length();
+			l_pS->Read(l_packet.B.data, l_packet.B.count);
+			l_packet.r_begin(skip_header);
+			Level().Server->Process_spawn(l_packet,get_it_2_id(it),true);
 		}
 	}
 }
+
+void game_sv_CS::OnRoundStart() {
+	m_delayedRoundEnd = false;
+	u32 l_cnt = get_count();
+
+	// Сохраняем оружие для следующего раунда
+	// Для живых - то что у них есть, для мертвых - дефолтное.
+	vector<CFS_Memory> l_memAr; l_memAr.resize(l_cnt);
+	for(u32 i = 0; i < l_cnt; i++) {
+		game_PlayerState *l_pPS = get_it(i);
+		if(l_pPS->flags&GAME_PLAYER_FLAG_CS_SPECTATOR) continue;		// Наблюдателей это не касается
+		if(l_pPS->flags&GAME_PLAYER_FLAG_VERY_VERY_DEAD) SaveDefaultWeapon(l_memAr[i]);
+		else SavePlayerWeapon(i, l_memAr[i]);
+	}
+
+	__super::OnRoundStart();
+
+	// Обновляем состаяние всех игроков и команд
+	if(round == 0) {
+		for(u32 i = 0; i < l_cnt; i++) {
+			game_PlayerState *l_pPS = get_it(i);
+			if(l_pPS->flags&GAME_PLAYER_FLAG_CS_SPECTATOR) continue;		// Наблюдателей это не касается
+			l_pPS->money_total = 1000;
+			l_pPS->money_for_round = 0;
+			l_pPS->flags = 0;
+			l_pPS->deaths = 0;
+			l_pPS->kills = 0;
+		}
+	} else {
+		for(u32 i = 0; i < l_cnt; i++) {
+			game_PlayerState *l_pPS = get_it(i);
+			if(l_pPS->flags&GAME_PLAYER_FLAG_CS_SPECTATOR) continue;		// Наблюдателей это не касается
+			l_pPS->money_total = l_pPS->money_total + l_pPS->money_for_round;
+			l_pPS->money_for_round = 0;
+			l_pPS->flags = 0;
+		}
+	}
+	teams[0].num_targets = teams[1].num_targets = 0;
+	SpawnArtifacts();
+	srand((unsigned)time(NULL));
+	vector<RPoint> &rp1 = rpoints[0];
+	random_shuffle(rp1.begin(), rp1.end());
+	vector<RPoint> &rp2 = rpoints[0];
+	random_shuffle(rp2.begin(), rp2.end());
+	for(u32 i = 0; i < l_cnt; i++) {
+		SpawnPlayer(i, l_memAr[i]);
+	}
+}
+
+
+//void	game_sv_CS_OnRoundStart	()
+//{
+//	m_delayedRoundEnd = false;
+//	NET_Packet l_packet;
+//	vector<CFS_Memory> l_memAr;
+//	if(round!=-1) {							// Если раунд не первый сохраняем игроков и их оружие
+//		xrServer *l_pServer = Level().Server;
+//		u32 cnt = get_count();
+//		l_memAr.resize(cnt);
+//		for(u32 it = 0; it < cnt; it++) {
+//			if(get_it(it)->flags&GAME_PLAYER_FLAG_VERY_VERY_DEAD) continue;
+//			u32 l_chunk = 0;
+//			CFS_Memory &l_mem = l_memAr[it];
+//			vector<u16>* l_pCilds = get_children(get_it_2_id(it));
+//			for(u32 cit = 0; cit < l_pCilds->size(); cit++) {
+//				xrSE_Weapon *l_pWeapon = dynamic_cast<xrSE_Weapon*>(l_pServer->ID_to_entity((*l_pCilds)[cit]));
+//				if(!l_pWeapon) continue;
+//				u16 id_save = l_pWeapon->ID;			// save wpn entity ID 
+//				l_pWeapon->ID = 0xffff;					// set 0xffff to get new gen ID
+//				l_pWeapon->Spawn_Write(l_packet, true);
+//				l_pWeapon->ID = id_save;				// restore wpn entity ID 
+//				l_mem.open_chunk(l_chunk++); l_mem.write(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
+//			}
+//		}
+//	}
+//	{
+//		string256 fn;
+//		if (Engine.FS.Exist(fn,Path.GameData,"game_cs.ltx")) {
+//			CInifile* ini = CInifile::Create(fn);
+//			LPCSTR prim = ini->ReadSTRING("cs_start_Arms","primary");
+//			u32 prim_ammo = ini->ReadINT("cs_start_Arms","primary_ammo");
+//			LPCSTR pistol = ini->ReadSTRING("cs_start_Arms","pistol");
+//			u32 pistol_ammo = ini->ReadINT("cs_start_Arms","pistol_ammo");
+//			xrSE_Weapon *W_prim = 0, *W_pistol = 0;
+//			if(prim) {
+//				W_prim = dynamic_cast<xrSE_Weapon*>(spawn_begin(prim));
+//				if(W_prim) {
+//					strcpy(W_prim->s_name_replace,prim);
+//					W_prim->s_flags = M_SPAWN_OBJECT_ACTIVE|M_SPAWN_OBJECT_LOCAL;
+//					W_prim->ID_Parent = 0;
+//					W_prim->ID = 0xffff;
+//					W_prim->a_elapsed = W_prim->get_ammo_magsize();
+//					W_prim->a_current = u16(prim_ammo) * W_prim->a_elapsed;
+//				}
+//			}
+//			if(pistol) {
+//				W_pistol = dynamic_cast<xrSE_Weapon*>(spawn_begin(pistol));
+//				if(W_pistol) {
+//					strcpy(W_pistol->s_name_replace,pistol);
+//					W_pistol->s_flags = M_SPAWN_OBJECT_ACTIVE|M_SPAWN_OBJECT_LOCAL;
+//					W_pistol->ID_Parent = 0;
+//					W_pistol->ID = 0xffff;
+//					W_pistol->a_elapsed = W_pistol->get_ammo_magsize();
+//					W_pistol->a_current = u16(pistol_ammo) * W_pistol->a_elapsed;
+//				}
+//			}
+//			CInifile::Destroy	(ini);
+//			u32 cnt = get_count();
+//			l_memAr.resize(cnt);
+//			for(u32 it = 0; it < cnt; it++) {
+//				if(!(get_it(it)->flags&GAME_PLAYER_FLAG_VERY_VERY_DEAD) && (round!=-1)) continue;
+//				u32 l_chunk = 0;
+//				CFS_Memory &l_mem = l_memAr[it];
+//				if(W_prim) {
+//					W_prim->Spawn_Write(l_packet, true);
+//					l_mem.open_chunk(l_chunk++); l_mem.write(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
+//				}
+//				if(W_pistol) {
+//					W_pistol->Spawn_Write(l_packet, true);
+//					l_mem.open_chunk(l_chunk); l_mem.write(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
+//				}
+//			}
+//			if(W_prim) F_entity_Destroy(W_prim);
+//			if(W_pistol) F_entity_Destroy(W_pistol);
+//		}
+//	}
+//
+//	__super::OnRoundStart	();
+//
+//	if (0==round)	
+//	{
+//		// give $1000 to everybody
+//		u32		cnt = get_count();
+//		for		(u32 it=0; it<cnt; it++)	
+//		{
+//			game_PlayerState*	ps	=	get_it	(it);
+//			ps->money_total			=	1000;
+//			ps->money_for_round		=	0;
+//			ps->flags = 0;
+//			ps->deaths = 0;
+//			ps->kills = 0;
+//		}
+//	} else {
+//		// sum-up money for round with total
+//		u32		cnt = get_count();
+//		for		(u32 it=0; it<cnt; it++)	
+//		{
+//			game_PlayerState*	ps	=	get_it	(it);
+//			ps->money_total			=	ps->money_total + ps->money_for_round;
+//			ps->money_for_round		=	0;
+//			ps->flags = 0;
+//		}
+//	}
+//	teams[0].num_targets = teams[1].num_targets = 0;
+//
+//	// Spawn "artifacts"
+//	vector<RPoint>&		rp	= rpoints[2];
+//	srand				( (unsigned)time( NULL ) );
+//	random_shuffle		( rp.begin( ), rp.end( ) );
+//	for(s32 i = 0; i < 3; i++) {
+//		xrServerEntity*		E	=	spawn_begin	("m_target_cs");									// create SE
+//		xrSE_Target_CS*	A		=	(xrSE_Target_CS*) E;					
+//		A->s_flags				=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL;				// flags
+//		RPoint&				r	= rp[i];
+//		A->o_Position.set	(r.P);
+//		A->o_Angle.set		(r.A);
+//		spawn_end			(A,0);
+//	}
+//
+//	// Respawn all players and some info
+//	u32		cnt = get_count();
+//	for		(u32 it=0; it<cnt; it++)	
+//	{
+//		// init
+//		game_PlayerState*	ps	=	get_it	(it);
+//		//ps->kills				=	0;
+//		//ps->deaths				=	0;
+//
+//		// spawn
+//		LPCSTR	options			=	get_name_it	(it);
+//		xrServerEntity*		E	=	spawn_begin	(ps->team==2?"spectator":(ps->team?"actor_cs_2":"actor_cs_1"));						// create SE
+//		xrSE_Actor*	A			=	(xrSE_Actor*) E;					
+//		strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
+//		A->s_team				=	u8(ps->team);															// team
+//		A->s_flags				=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER;// flags
+//		assign_RP				(A);
+//		spawn_end				(A,get_it_2_id(it));
+//
+//		if(l_memAr.size() > it) {
+//			CFS_Memory &l_mem = l_memAr[it];
+//			u32 l_chunk = 0;
+//			u16 skip_header;
+//			CStream l_stream(l_mem.pointer(), l_mem.size()), *l_pS;
+//			while(NULL != (l_pS = l_stream.OpenChunk(l_chunk++))) {
+//				l_packet.B.count = l_pS->Length();
+//				l_pS->Read(l_packet.B.data, l_packet.B.count);
+//				l_packet.r_begin(skip_header);
+//				Level().Server->Process_spawn(l_packet,get_it_2_id(it),true);
+//			}
+//		}
+//	}
+//}
 
 void	game_sv_CS::OnRoundEnd		(LPCSTR reason)
 {
@@ -441,6 +606,7 @@ void	game_sv_CS::OnPlayerReady	(u32 id)
 	game_PlayerState*	ps	=	get_id	(id);
 	if (ps)
 	{
+		if(ps->flags&GAME_PLAYER_FLAG_CS_SPECTATOR) return;
 		if (ps->flags & GAME_PLAYER_FLAG_READY)	
 		{
 			ps->flags &= ~GAME_PLAYER_FLAG_READY;
@@ -453,7 +619,7 @@ void	game_sv_CS::OnPlayerReady	(u32 id)
 			for		(u32 it=0; it<cnt; it++)	
 			{
 				ps		=	get_it	(it);
-				if (ps->flags & GAME_PLAYER_FLAG_READY)	ready++;
+				if((ps->flags&GAME_PLAYER_FLAG_READY) || (ps->flags&GAME_PLAYER_FLAG_CS_SPECTATOR))	ready++;
 			}
 
 			if (ready == cnt)
@@ -463,7 +629,16 @@ void	game_sv_CS::OnPlayerReady	(u32 id)
 		}
 	}
 }
-void game_sv_CS::OnPlayerChangeTeam(u32 id_who) {
+void game_sv_CS::OnPlayerChangeTeam(u32 id_who, s16 team) {
+	if(team == 0 || team == 1) {
+		s16 l_old_team = get_id(id_who)->team;
+		get_id(id_who)->team = team;
+		get_id(id_who)->flags &= ~GAME_PLAYER_FLAG_CS_SPECTATOR;
+		if(get_alive_count(l_old_team) == 0) OnRoundEnd("????");
+	} else {
+		get_id(id_who)->flags |= GAME_PLAYER_FLAG_CS_SPECTATOR|GAME_PLAYER_FLAG_VERY_VERY_DEAD;
+		if(get_alive_count(0)+get_alive_count(1) == 0) OnRoundEnd("????");
+	}
 }
 
 void game_sv_CS::OnPlayerConnect	(u32 id_who)
