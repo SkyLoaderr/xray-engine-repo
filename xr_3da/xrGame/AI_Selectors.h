@@ -2,6 +2,8 @@
 
 #include "group.h"
 
+#define SQR(x) ((x)*(x))
+
 class	SelectorBase	: public AI::NodeEstimator
 {
 public:
@@ -10,10 +12,13 @@ public:
 	float			costLight,costCover,costMembers,costTarget,costTravel;
 	float			distTargetMin,distTargetMax,distMemberMin;
 
-	Fvector			posMy;
-	Fvector			posTarget;
-	Fvector			tTargetDirection;
-	MemberPlacement	Members;
+	CEntity			*tMe;
+	EntityVec		taMembers;
+	CEntity			*tEnemy;
+	//Fvector			posMy;
+	//Fvector			posTarget;
+	//Fvector			tTargetDirection;
+	//MemberPlacement	Members;
 
 	virtual	void	Load	(CInifile* ini, const char* section)
 	{
@@ -48,21 +53,8 @@ public:
 };
 
 //*****************************************************************************************************************
+//	Evaluation function for range search in the mode "Follow me"
 //*****************************************************************************************************************
-//*****************************************************************************************************************
-#define SQR(x) ((x)*(x))
-#define OPTIMAL_PLAYER_DISTANCE  30.f
-#define OPTIMAL_MEMBER_DISTANCE  80.f
-#define MIN_PLAYER_PENALTY		1000.f
-#define MAX_PLAYER_PENALTY		1000.f
-#define MIN_MEMBER_PENALTY		 100.f
-#define MAX_MEMBER_PENALTY		 100.f
-#define MIN_PLAYER_DISTANCE		distTargetMin
-#define MAX_PLAYER_DISTANCE		distTargetMax
-#define MIN_MEMBER_DISTANCE		3*distTargetMin
-#define MAX_MEMBER_DISTANCE		2*distTargetMax
-#define Y_PENALTY				1000.f;
-
 class	SelectorFollow	: public SelectorBase
 {
 public:
@@ -70,7 +62,37 @@ public:
 
 	virtual void	Load	(CInifile* ini, const char* section)
 	{
-		SelectorBase::Load	(ini,section);
+		sscanf(ini->ReadSTRING(section,Name),"%f,%f,%f,%f,%f,%f,%f,%f,%f",
+			fDistanceWeight,
+			
+			fLightWeight,
+			
+			fCoverFromLeaderWeight,
+			
+			fCoverFromMembersWeight,
+			
+			fCoverFromEnemyWeight,
+
+			fOptimalLeaderDistance,
+			fLeaderDistanceWeight,
+			
+			fOptimalMemberDistance,
+			fMemberDistanceWeight,
+			
+			fOptimalEnemyDistance,
+			fEnemyDistanceWeight,
+			
+			fMaxHeightDistance,
+			fMaxHeightDistanceWeight,
+
+			fLeaderViewDeviationWeight,
+			
+			fMemberViewDeviationWeight,
+			
+			fEnemyViewDeviationWeight,
+
+			fTotalViewVectorWeight,
+		);
 	};
 
 /**/
@@ -158,7 +180,7 @@ virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)	// m
 		}
 	}
 	// exit
-	if (fResult<EPS)	bStop = TRUE;
+	//if (fResult<EPS)	bStop = TRUE;
 	return	fResult;
 }
 
@@ -230,11 +252,11 @@ public:
 	if (fResult>BestCost)
 		return(fResult);
 	
-	tDirection.normalize();
+	tDirection.normalize(); 
 	
-	fResult += ENEMY_VIEW_PENALTY*(1.f - sqrt(SQR(tDirection.x - tTargetDirection.x) + SQR(tDirection.y - tTargetDirection.y) + SQR(tDirection.z - tTargetDirection.z)));
-	if (fResult>BestCost)
-		return(fResult);
+	//fResult += ENEMY_VIEW_PENALTY*(1.f - sqrt(SQR(tDirection.x - tTargetDirection.x) + SQR(tDirection.y - tTargetDirection.y) + SQR(tDirection.z - tTargetDirection.z)));
+	//if (fResult>BestCost)
+	//	return(fResult);
 	
 	//if (tDirection.y > 2.0)
 	//	fResult += tDirection.y*Y_PENALTY;
@@ -279,7 +301,7 @@ public:
 	fResult += SURROUND_PENALTY*sqrt(SQR(tDirection.x) + SQR(tDirection.y) + SQR(tDirection.z));
 
 	// exit
-	if (fResult<EPS)	bStop = TRUE;
+	//if (fResult<EPS)	bStop = TRUE;
 	return	fResult;
 	}
 };
@@ -377,7 +399,7 @@ virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)	// m
 		}
 	}
 	// exit
-	if (fResult<EPS)	bStop = TRUE;
+	//if (fResult<EPS)	bStop = TRUE;
 	return	fResult;
 }
 
@@ -410,7 +432,60 @@ virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)	// m
 				+ (float)(tNode->cover[2])/255.f + (float)(tNode->cover[3])/255.f);
 
 	// exit
-	if (fResult<EPS)	bStop = TRUE;
+	//if (fResult<EPS)	bStop = TRUE;
+	return	fResult;
+}
+};
+
+//****************************************************************************
+// Selector for evaluating nodes in mode "Under Fire!"
+//****************************************************************************
+#define COVER_UNDER_FIRE			10.f
+#define DEVIATION_FROM_DIRECTION	100.f
+#define WRONG_DIRECTION_PENALTY		100.f
+
+class	SelectorUnderFire	: public SelectorBase
+{
+public:
+
+SelectorUnderFire() 
+{ 
+	Name = "sel_free_hunting"; 
+};
+
+virtual void	Load	(CInifile* ini, const char* section)
+{
+	SelectorBase::Load	(ini,section);
+};
+
+virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)	// min - best, max - worse
+{
+	// distance to node
+	float fResult = 0.0;//*fDistance*costTravel;
+	// node lighting
+	fResult += ((float)(tNode->light)/255.f)*costLight;
+	if (fResult>BestCost)
+		return(fResult);
+
+	// cover
+	fResult += COVER_UNDER_FIRE*((float)(tNode->cover[0])/255.f + (float)(tNode->cover[1])/255.f
+				+ (float)(tNode->cover[2])/255.f + (float)(tNode->cover[3])/255.f);
+
+	/**/
+	Fvector tNodeCentre;
+	tNodeCentre.x = (float(tNode->p0.x)/255.f + float(tNode->p1.x)/255.f)/2.f - posMy.x;
+	tNodeCentre.y = (float(tNode->p0.y)/255.f + float(tNode->p1.y)/255.f)/2.f - posMy.y;
+	tNodeCentre.z = (float(tNode->p0.z)/255.f + float(tNode->p1.z)/255.f)/2.f - posMy.z;
+
+	float cos_alpha = tNodeCentre.dotproduct(tTargetDirection);
+	float sin_alpha = sqrt(1 - SQR(cos_alpha));
+	float deviation = tNodeCentre.square_magnitude()*sin_alpha;
+
+	fResult += DEVIATION_FROM_DIRECTION*deviation;
+
+	fResult += (cos_alpha < 0.f ? WRONG_DIRECTION_PENALTY : 0.f);
+	/**/
+	// exit
 	return	fResult;
 }
 

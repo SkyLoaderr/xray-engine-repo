@@ -443,8 +443,8 @@ void CCustomMonster::OnRender()
 	{
 	for (DWORD I=1; I<AI_Path.TravelPath.size(); I++)
 	{
-		CTrevelNode&	N1 = AI_Path.TravelPath[I-1];	Fvector	P1; P1.set(N1.P); P1.y+=0.1f;
-		CTrevelNode&	N2 = AI_Path.TravelPath[I];		Fvector	P2; P2.set(N2.P); P2.y+=0.1f;
+		CTravelNode&	N1 = AI_Path.TravelPath[I-1];	Fvector	P1; P1.set(N1.P); P1.y+=0.1f;
+		CTravelNode&	N2 = AI_Path.TravelPath[I];		Fvector	P2; P2.set(N2.P); P2.y+=0.1f;
 		Device.Primitive.dbg_DrawLINE(precalc_identity,P1,P2,D3DCOLOR_XRGB(0,255,0));
 		Device.Primitive.dbg_DrawAABB(P1,.1f,.1f,.1f,D3DCOLOR_XRGB(0,0,255));
 	}
@@ -482,6 +482,10 @@ void CCustomMonster::OnRender()
 }
 
 void CCustomMonster::HitSignal(int perc, Fvector& vLocalDir, CEntity* who)
+{
+}
+
+void CCustomMonster::SenseSignal(int perc, Fvector& vLocalDir, CEntity* who)
 {
 }
 

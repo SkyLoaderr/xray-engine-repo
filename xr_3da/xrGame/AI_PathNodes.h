@@ -2,7 +2,7 @@
 
 class CCustomMonster;
 
-class CTrevelNode
+class CTravelNode
 {
 public:
 	Fvector	P;
@@ -24,7 +24,7 @@ public:
 	DWORD				DestNode;
 
 	DWORD				TravelStart;
-	CList<CTrevelNode>	TravelPath;
+	CList<CTravelNode>	TravelPath;
 	CList<PSegment>		Segments;
 
 	float				fSpeed;

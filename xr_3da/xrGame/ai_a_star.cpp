@@ -24,6 +24,8 @@ float fSize,fYSize,fSize2,fYSize2;
 
 TNode  *taHeap,**tpaIndexes;
 
+#define OPTINAL_ENEMY_DISTANCE 40.f
+
 __forceinline float ffCriteria(NodeCompressed tNode0, NodeCompressed tNode1)
 {
 	/**
@@ -50,6 +52,42 @@ __forceinline float ffCriteria(NodeCompressed tNode0, NodeCompressed tNode1)
 	float fLight = (float)(tNode1.light)/255.f;
 	
 	return(fLight*10 + fCover*5 + 30*(float)sqrt((float)(fSize2*(SQR(x2 - x1) + SQR(z2 - z1)) + fYSize2*SQR(y2 - y1))));
+	/**/
+}
+
+__forceinline float ffAttackCriteria(NodeCompressed tNode0, NodeCompressed tNode1, NodeCompressed tEnemyNode)
+{
+	/**
+	float x1 = (fSize*(float)(tNode0.p1.x) + fSize*(float)(tNode0.p0.x))/2;
+	float y1 = (fYSize*(float)(tNode0.p1.y) + fYSize*(float)(tNode0.p0.y))/2;
+	float z1 = (fSize*(float)(tNode0.p1.z) + fSize*(float)(tNode0.p0.z))/2;
+	
+	float x2 = (fSize*(float)(tNode1.p1.x) + fSize*(float)(tNode1.p0.x))/2;
+	float y2 = (fYSize*(float)(tNode1.p1.y) + fYSize*(float)(tNode1.p0.y))/2;
+	float z2 = (fSize*(float)(tNode1.p1.z) + fSize*(float)(tNode1.p0.z))/2;
+	
+	return((float)sqrt((float)(SQR(x2 - x1) + SQR(z2 - z1) + SQR(y2 - y1))));
+	/**/
+	float x1 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
+	float y1 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
+	float z1 = (float)(tNode0.p1.z) + (float)(tNode0.p0.z);
+	
+	float x2 = (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
+	float y2 = (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
+	float z2 = (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
+
+	/**
+	float x3 = (float)(tEnemyNode.p1.x) + (float)(tEnemyNode.p0.x);
+	float y3 = (float)(tEnemyNode.p1.y) + (float)(tEnemyNode.p0.y);
+	float z3 = (float)(tEnemyNode.p1.z) + (float)(tEnemyNode.p0.z);
+	/**/
+
+	float fCover = (float)(tNode1.cover[0])/255.f + (float)(tNode1.cover[1])/255.f + (float)(tNode1.cover[2])/255.f  + (float)(tNode1.cover[3])/255.f;
+
+	float fLight = (float)(tNode1.light)/255.f;
+	
+	return(fLight*10 + fCover*5 + 30*(float)sqrt((float)(fSize2*(SQR(x2 - x1) + SQR(z2 - z1)) + fYSize2*SQR(y2 - y1))));
+	//return(0.f*SQR((float)sqrt((float)(fSize2*(SQR(x3 - x1) + SQR(z3 - z1)) + fYSize2*SQR(y3 - y1))) - OPTINAL_ENEMY_DISTANCE) + fLight*10 + fCover*5 + 30*(float)sqrt((float)(fSize2*(SQR(x2 - x1) + SQR(z2 - z1)) + fYSize2*SQR(y2 - y1))));
 	/**/
 }
 
@@ -100,13 +138,17 @@ void CAI_Space::vfUnloadSearch()
 	free(tpaIndexes);
 }
 
-float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path& Result)
+float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path& Result, MemberNodes& MemberPlaces)
 {
 	// initialization
 	uint uiHeap = 0;
 
 	memset(taHeap,0,(this->m_header.count + 1)*sizeof(TNode));
 	memset(tpaIndexes,0,this->m_header.count*sizeof(TNode *));
+
+	//init member points
+	for (int ii=0; ii<MemberPlaces.size(); ii++)
+		q_mark[MemberPlaces[ii]] = true;
 
 	TNode  *tpOpenedList = taHeap + uiHeap++,
 		   *tpTemp       = tpaIndexes[dwStartNode] = taHeap + uiHeap++,
@@ -137,6 +179,9 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 		// check if that node is our goal
 		if (tpBestNode->iIndex == dwGoalNode) {
 
+			for ( ii=0; ii<MemberPlaces.size(); ii++)
+				q_mark[MemberPlaces[ii]] = false;
+
 			float fDistance = 0.0;
 			tpTemp1 = tpBestNode;
 			tpTemp = tpTemp1->tpBack;
@@ -159,7 +204,10 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 		if (iCount) {
 			iNodeIndex = this->UnpackLink(taLinks[0]);
 			tpTemp = tpaIndexes[iNodeIndex];
-			for (int i=0; i<iCount; i++)
+			for (int i=0; i<iCount; i++) {
+				// checking if that node the members' node
+				if (q_mark[iNodeIndex])
+					continue;
 				// checking if that node is in the path of the BESTNODE ones
 				if (tpTemp = tpaIndexes[iNodeIndex = this->UnpackLink(taLinks[i])]) {
 					bool bOk = true;
@@ -253,11 +301,191 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 					tpBestNode->tpForward = tpTemp2;
 					tpTemp2->tpNext = tpTemp1;
 				}
+			}
 		}
 		uiNodeCount++;
 		if (uiNodeCount >= MAX_NODES)
 			break;
 	}
 	
+	for ( ii=0; ii<MemberPlaces.size(); ii++)
+		q_mark[MemberPlaces[ii]] = false;
+
+	return(MAX_VALUE);
+}
+
+float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path& Result, MemberNodes& MemberPlaces, NodeCompressed& tEnemyNode)
+{
+	// initialization
+	uint uiHeap = 0;
+
+	memset(taHeap,0,(this->m_header.count + 1)*sizeof(TNode));
+	memset(tpaIndexes,0,this->m_header.count*sizeof(TNode *));
+
+	//init member points
+	for (int ii=0; ii<MemberPlaces.size(); ii++)
+		q_mark[MemberPlaces[ii]] = true;
+
+	TNode  *tpOpenedList = taHeap + uiHeap++,
+		   *tpTemp       = tpaIndexes[dwStartNode] = taHeap + uiHeap++,
+		   *tpTemp1,
+		   *tpTemp2,
+		   *tpBestNode;
+
+	tpOpenedList->tpOpenedNext = tpTemp;
+	tpTemp->iIndex = dwStartNode;
+	tpTemp->g = 0.0;
+	tpTemp->h = ffAttackCriteria(mNodeStructure(dwStartNode),mNodeStructure(dwGoalNode), tEnemyNode);
+	tpTemp->tpOpenedPrev = tpOpenedList;
+	tpTemp->ucOpenCloseMask = OPEN_MASK;
+	ASSIGN_GOODNESS(tpTemp)
+	
+	uint uiNodeCount = 0;
+	while (tpOpenedList->tpOpenedNext) {
+		
+		// finding the node being estimated as the cheapest among the opened ones
+		tpBestNode = tpOpenedList->tpOpenedNext;
+		
+		// remove that node from the opened list and put that node to the closed list
+		tpOpenedList->tpOpenedNext = tpBestNode->tpOpenedNext;
+		if (tpBestNode->tpOpenedNext)
+			tpBestNode->tpOpenedNext->tpOpenedPrev = tpOpenedList;
+		tpBestNode->ucOpenCloseMask = 0;
+
+		// check if that node is our goal
+		if (tpBestNode->iIndex == dwGoalNode) {
+
+			for ( ii=0; ii<MemberPlaces.size(); ii++)
+				q_mark[MemberPlaces[ii]] = false;
+
+			float fDistance = 0.0;
+			tpTemp1 = tpBestNode;
+			tpTemp = tpTemp1->tpBack;
+			for (uint i=1; tpTemp; tpTemp1 = tpTemp, tpTemp = tpTemp->tpBack, i++)
+				fDistance += ffAttackCriteria(mNodeStructure(tpTemp1->iIndex),mNodeStructure(tpTemp->iIndex), tEnemyNode);
+
+			Result.Nodes.resize(i);
+
+			tpTemp1 = tpBestNode;
+			Result.Nodes[--i] = tpBestNode->iIndex;
+			tpTemp = tpTemp1->tpBack;
+			for (uint j=1; tpTemp; tpTemp = tpTemp->tpBack, j++)
+				Result.Nodes[i - j] = tpTemp->iIndex;
+				
+			return(fDistance);
+		}
+		
+		NodeLink *taLinks = (NodeLink *)((uchar *)mNode(tpBestNode->iIndex) + sizeof(NodeCompressed));
+		int iCount = iCount = mNode(tpBestNode->iIndex)->link_count, iNodeIndex;
+		if (iCount) {
+			iNodeIndex = this->UnpackLink(taLinks[0]);
+			tpTemp = tpaIndexes[iNodeIndex];
+			for (int i=0; i<iCount; i++) {
+				// checking if that node the members' node
+				if (q_mark[iNodeIndex])
+					continue;
+				// checking if that node is in the path of the BESTNODE ones
+				if (tpTemp = tpaIndexes[iNodeIndex = this->UnpackLink(taLinks[i])]) {
+					bool bOk = true;
+					if (!(tpTemp->ucOpenCloseMask)) {
+						int iBestIndex = tpBestNode->iIndex;
+						tpTemp2 = tpTemp->tpForward;
+						while (tpTemp2) {
+							if (tpTemp2->iIndex == iBestIndex) {
+								bOk = false;
+								break;
+							}
+							tpTemp2 = tpTemp2->tpForward;
+						}
+						if (!bOk)
+							continue;
+					}
+					
+					// initialize node
+					float dG = tpBestNode->g + ffAttackCriteria(mNodeStructure(tpBestNode->iIndex),mNodeStructure(iNodeIndex), tEnemyNode);
+					
+					// check if this node is already in the opened list
+					if (tpTemp->ucOpenCloseMask) {
+						if (tpTemp->g > dG) {
+							tpTemp->g = dG;
+							ASSIGN_GOODNESS(tpTemp)
+							tpTemp->tpBack = tpBestNode;
+							if (tpTemp->tpOpenedPrev->f > tpTemp->f) {
+								tpTemp->tpOpenedPrev->tpOpenedNext = tpTemp->tpOpenedNext;
+								if (tpTemp->tpOpenedNext)
+									tpTemp->tpOpenedNext->tpOpenedPrev = tpTemp->tpOpenedPrev;
+								float dTemp = tpTemp->f;
+								tpTemp1 = tpTemp;
+								for (tpTemp = tpTemp->tpOpenedPrev; tpTemp; tpTemp = tpTemp->tpOpenedPrev)
+									if (tpTemp->f <= dTemp) {
+										tpTemp1->tpOpenedNext = tpTemp->tpOpenedNext;
+										tpTemp1->tpOpenedPrev = tpTemp;
+										if (tpTemp->tpOpenedNext)
+											tpTemp->tpOpenedNext->tpOpenedPrev = tpTemp1;
+										tpTemp->tpOpenedNext = tpTemp1;
+										break;
+									}
+							}
+						}
+						continue;
+					}
+
+					if (!(tpTemp->ucOpenCloseMask)) {
+						if (tpTemp->g > dG) {
+							vfUpdateSuccessors(tpTemp,tpTemp->g - dG);
+							tpTemp->g = dG;
+							ASSIGN_GOODNESS(tpTemp)
+							tpTemp->tpBack = tpBestNode;
+						}
+						continue;
+					}
+				}
+				else {
+					tpTemp2 = tpaIndexes[iNodeIndex] = taHeap + uiHeap++;
+					tpTemp2->iIndex = iNodeIndex;
+					tpTemp2->tpBack = tpBestNode;
+					tpTemp2->g = tpBestNode->g + ffAttackCriteria(mNodeStructure(tpBestNode->iIndex),mNodeStructure(iNodeIndex), tEnemyNode);
+
+					// put that node to the opened list if wasn't found there and in the closed one
+					tpTemp2->h = ffAttackCriteria(mNodeStructure(dwGoalNode),mNodeStructure(iNodeIndex), tEnemyNode);
+					ASSIGN_GOODNESS(tpTemp2)
+					
+					tpTemp  = tpOpenedList;
+					tpTemp1 = tpOpenedList->tpOpenedNext;
+					float dTemp = tpTemp2->f;
+					bool bOk = false;
+					while (tpTemp1) {
+						if (tpTemp1->f >= dTemp) {
+							tpTemp2->tpOpenedNext = tpTemp1;
+							tpTemp2->tpOpenedPrev = tpTemp;
+							tpTemp->tpOpenedNext = tpTemp2;
+							tpTemp1->tpOpenedPrev = tpTemp2;
+							bOk = true;
+							break;
+						}
+						tpTemp  = tpTemp1;
+						tpTemp1 = tpTemp1->tpOpenedNext;
+					}
+					if (!bOk) {
+						tpTemp->tpOpenedNext = tpTemp2;
+						tpTemp2->tpOpenedPrev = tpTemp;
+					}
+					tpTemp2->ucOpenCloseMask = OPEN_MASK;
+					
+					// make it a BESTNODE successor
+					tpTemp1 = tpBestNode->tpForward;
+					tpBestNode->tpForward = tpTemp2;
+					tpTemp2->tpNext = tpTemp1;
+				}
+			}
+		}
+		uiNodeCount++;
+		if (uiNodeCount >= MAX_NODES)
+			break;
+	}
+	
+	for ( ii=0; ii<MemberPlaces.size(); ii++)
+		q_mark[MemberPlaces[ii]] = false;
+
 	return(MAX_VALUE);
 }

@@ -12,25 +12,135 @@
 #include "CustomMonster.h"
 
 namespace AI {
-	// 		aiHenDie
+//******************************************************************
+// Mode "Die"
+//******************************************************************
 	class _HenDie					: public State
 	{
+		// hit data
+		DWORD					hitTime;
+		Fvector					hitDir;
+		// sense data
+		DWORD					senseTime;
+		Fvector					senseDir;
 	public:
 		_HenDie()					: State(aiHenDie)
 		{
 		}
 		virtual BOOL	Parse	(CCustomMonster* Me);
 	};
-	// 		aiHenUnderFire
+//******************************************************************
+// Mode "Under Fire!"
+//******************************************************************
 	class _HenUnderFire					: public State
 	{
+		// hit data
+		DWORD					hitTime;
+		Fvector					hitDir;
+		// sense data
+		DWORD					senseTime;
+		Fvector					senseDir;
 	public:
-		_HenUnderFire()					: State(aiHenUnderFire)
+		_HenUnderFire();
+		virtual BOOL Parse(CCustomMonster* Me);
+		virtual void Hit(Fvector &dir);
+		virtual void Sense(Fvector &dir);
+	};
+//******************************************************************
+// Mode "Sense Something"
+//******************************************************************
+	class _HenSenseSomething			: public State
+	{
+		// hit data
+		DWORD					hitTime;
+		Fvector					hitDir;
+		// sense data
+		DWORD					senseTime;
+		Fvector					senseDir;
+	public:
+		_HenSenseSomething();
+		virtual BOOL Parse(CCustomMonster* Me);
+		virtual void Hit(Fvector &dir);
+		virtual void Sense(Fvector &dir);
+	};
+//******************************************************************
+// Mode "Follow me"
+//******************************************************************
+	class _HenFollowMe			: public State
+	{
+		// hit data
+		DWORD					hitTime;
+		Fvector					hitDir;
+		// sense data
+		DWORD					senseTime;
+		Fvector					senseDir;
+	public:
+		_HenFollowMe();
+		virtual BOOL Parse(CCustomMonster* Me);
+		virtual void Hit(Fvector &dir);
+		virtual void Sense(Fvector &dir);
+	};
+//******************************************************************
+// Mode "Attack!"
+//******************************************************************
+	class _HenAttack				: public State
+	{
+		BOOL					bBuildPathToLostEnemy;
+	public:
+		CEntity*				EnemySaved;			// жертва
+		_HenAttack()				: State(aiHenAttack)
 		{
+			EnemySaved			= 0;
+		}
+		virtual BOOL	Parse		(CCustomMonster* Me);
+	};
+//******************************************************************
+// Mode "Free Hunting"
+//******************************************************************
+	class _HenFreeHunting			: public State
+	{
+		DWORD					hitTime;
+		Fvector					hitDir;
+	public:
+		_HenFreeHunting()			: State(aiHenFreeHunting)
+		{
+			hitTime				= 0;
+			hitDir.set			(0,0,1);
 		}
 		virtual BOOL	Parse	(CCustomMonster* Me);
+		virtual void	Hit			(Fvector &dir);
 	};
-	// 		aiHenGoInThisDirection
+//******************************************************************
+// Mode "Pursuit"
+//******************************************************************
+	class _HenPursuit				: public State
+	{
+	public:
+		CEntity*				victim;				// жертва
+		Fvector					PositionPredicted;
+		Fvector					savedPosition;
+		DWORD					savedTime;
+		DWORD					savedNode;
+		BOOL					bDirectPathBuilded;
+
+		_HenPursuit(CEntity* E);
+		_HenPursuit();
+		virtual BOOL	Parse		(CCustomMonster* Me);
+	};
+//******************************************************************
+// Mode "Retreat"
+//******************************************************************
+	class _HenRetreat			: public State
+	{
+	public:
+		_HenRetreat()			: State(aiHenRetreat)
+		{
+		}
+		virtual BOOL	Parse		(CCustomMonster* Me);
+	};
+//******************************************************************
+// Mode "Go In This Direction"
+//******************************************************************
 	class _HenGoDirection			: public State
 	{
 	public:
@@ -46,7 +156,9 @@ namespace AI {
 		}
 		virtual BOOL	Parse	(CCustomMonster* Me);
 	};
-	// 		aiHenGoToThatPosition
+//******************************************************************
+// Mode "Go To That Position"
+//******************************************************************
 	class _HenGoPosition			: public State
 	{
 	public:
@@ -63,7 +175,9 @@ namespace AI {
 		}
 		virtual BOOL	Parse	(CCustomMonster* Me);
 	};
-	// 		aiHenHoldition
+//******************************************************************
+// Mode "Hold That Position"
+//******************************************************************
 	class _HenHoldPosition			: public State
 	{
 	public:
@@ -80,7 +194,9 @@ namespace AI {
 		}
 		virtual BOOL	Parse	(CCustomMonster* Me);
 	};
-	// 		aiHenHoldUnderFire
+//******************************************************************
+// Mode "Under Fire Holding Position"
+//******************************************************************
 	class _HenHoldUnderFire			: public State
 	{
 	public:
@@ -97,53 +213,9 @@ namespace AI {
 		}
 		virtual BOOL	Parse	(CCustomMonster* Me);
 	};
-	// 		aiHenFreeHunting,			
-	class _HenFreeHunting			: public State
-	{
-		DWORD					hitTime;
-		Fvector					hitDir;
-	public:
-		_HenFreeHunting()			: State(aiHenFreeHunting)
-		{
-			hitTime				= 0;
-			hitDir.set			(0,0,1);
-		}
-		virtual BOOL	Parse	(CCustomMonster* Me);
-		virtual void	Hit			(Fvector &dir);
-	};
-	//		aiHenFollowMe
-	class _HenFollowMe			: public State
-	{
-		Fvector					vLook;
-
-		DWORD					hitTime;
-		Fvector					hitDir;
-	public:
-		_HenFollowMe()			: State(aiHenFollowMe)
-		{
-			hitTime				= 0;
-			vLook.set			(0,0,1);
-			hitDir.set			(0,0,1);
-		}
-
-		void			u_orientate	(DWORD node, Fvector& look);
-
-		virtual BOOL	Parse		(CCustomMonster* Me);
-		virtual void	Hit			(Fvector &dir);
-	};
-	//		aiHenAttack
-	class _HenAttack				: public State
-	{
-		BOOL					bBuildPathToLostEnemy;
-	public:
-		CEntity*				EnemySaved;			// жертва
-		_HenAttack()				: State(aiHenAttack)
-		{
-			EnemySaved			= 0;
-		}
-		virtual BOOL	Parse		(CCustomMonster* Me);
-	};
-	//		aiHenDefend
+//******************************************************************
+// Mode "Defend!"
+//******************************************************************
 	class _HenDefend				: public State
 	{
 		BOOL					bBuildPathToLostEnemy;
@@ -155,33 +227,8 @@ namespace AI {
 		}
 		virtual BOOL	Parse		(CCustomMonster* Me);
 	};
-	//		aiHenPusuit
-	class _HenPursuit				: public State
-	{
-	public:
-		CEntity*				victim;				// жертва
-		Fvector					PositionPredicted;
-		Fvector					savedPosition;
-		DWORD					savedTime;
-		DWORD					savedNode;
-		BOOL					bDirectPathBuilded;
-
-		_HenPursuit(CEntity* E);
-		_HenPursuit();
-		virtual BOOL	Parse		(CCustomMonster* Me);
-	};
-	//		aiHenRetreat
-	class _HenRetreat			: public State
-	{
-	public:
-		_HenRetreat()			: State(aiHenRetreat)
-		{
-		}
-		virtual BOOL	Parse		(CCustomMonster* Me);
-	};
 	//----------------------------------------------------------------------------------
 };
-
 
 class CAI_Hen : public CCustomMonster  
 {
@@ -198,6 +245,7 @@ protected:
 public:
 	virtual void		Update					(DWORD DT);
 	virtual void		HitSignal				(int amount, Fvector& vLocalDir, CEntity* who);
+	virtual void		SenseSignal				(int amount, Fvector& vLocalDir, CEntity* who);
 	virtual void		Die						();
 	virtual void		Load					( CInifile* ini, const char* section );
 

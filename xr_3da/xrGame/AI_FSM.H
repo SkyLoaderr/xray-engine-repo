@@ -19,6 +19,7 @@ namespace AI {
 
 		aiHenDie,
 		aiHenUnderFire,
+		aiHenSenseSomething,
 		aiHenGoInThisDirection,		
 		aiHenGoToThatPosition,		
 		aiHenWaitOnPosition,			
@@ -61,6 +62,7 @@ namespace AI {
 
 		virtual BOOL	Parse	(CCustomMonster* Me)=0;
 		virtual void	Hit		(Fvector &dir)	{};
+		virtual void	Sense	(Fvector &dir)	{};
 	};
 	class _Die					: public State
 	{

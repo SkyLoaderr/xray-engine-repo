@@ -28,6 +28,16 @@ void CGroup::GetMemberPlacement(MemberPlacement& MP, CEntity* Me)
 	}
 	vCentroid.div	(float(Members.size()));
 }
+void CGroup::GetMemberPlacementN(MemberNodes& MP, CEntity* Me)
+{
+	R_ASSERT		(Members.size()<16);
+	MP.clear		();
+	for (DWORD I=0; I<Members.size(); I++) 
+	{
+		CEntity*	E = Members[I];
+		if (E!=Me)	MP.push_back(E->AI_NodeID);
+	}
+}
 void CGroup::GetMemberDedication(MemberPlacement& MP, CEntity* Me)
 {
 	R_ASSERT		(Members.size()<16);
@@ -51,6 +61,19 @@ void CGroup::GetMemberDedication(MemberPlacement& MP, CEntity* Me)
 		}
 	}
 	vCentroid.div	(float(Members.size()));
+}
+void CGroup::GetMemberDedicationN(MemberNodes& MP, CEntity* Me)
+{
+	R_ASSERT		(Members.size()<16);
+	MP.clear		();
+	for (DWORD I=0; I<Members.size(); I++) 
+	{
+		CEntity*		E = Members[I];
+		if (E!=Me)	{
+			CCustomMonster* M = (CCustomMonster*)E;
+			MP.push_back		(M->AI_Path.DestNode);
+		}
+	}
 }
 
 const Fvector& CGroup::GetCentroid()

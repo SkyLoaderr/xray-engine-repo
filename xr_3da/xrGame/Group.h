@@ -24,6 +24,7 @@ enum	EGroupTriggers
 DEFINE_VECTOR(CEntity*,EntityVec,EntityIt);
 
 typedef svector<Fvector,16>		MemberPlacement;
+typedef svector<DWORD,16>		MemberNodes;
 class CGroup
 {
 public:
@@ -53,5 +54,7 @@ public:
 	// Internal communication
 	void						GetMemberPlacement	(MemberPlacement& P, CEntity* Me);
 	void						GetMemberDedication	(MemberPlacement& P, CEntity* Me);
+	void						GetMemberPlacementN	(MemberNodes& P, CEntity* Me);
+	void						GetMemberDedicationN(MemberNodes& P, CEntity* Me);
 	const Fvector&				GetCentroid			();
 };

@@ -66,7 +66,8 @@ public:
 	SelectorFollow		fuzzyFollow;
 	SelectorAttack		fuzzyAttack;
 	SelectorPursuit		fuzzyPursuit;
-	SelectorFreeHunting fuzzyFreeHunting;
+	SelectorFreeHunting sfFreeHunting;
+	SelectorUnderFire	sfUnderFire;
 
 	stack<AI::State*>	STATE;
 	EGroupState			Goal()					{ return Level().get_group(id_Team,id_Squad,id_Group).State; }
@@ -137,6 +138,7 @@ public:
 	virtual BOOL		Spawn					( BOOL bLocal, int sid, int team, int squad, int group, Fvector4& o_pos );
 	virtual void		Die						( );
 	virtual void		HitSignal				( int iHitAmount, Fvector& vLocalDir, CEntity* who);
+	virtual void		SenseSignal				( int iSenseAmount, Fvector& vLocalDir, CEntity* who);
 	virtual void		Load					( CInifile* ini, const char* section );
 	virtual void		Update					( DWORD DT );
 	virtual void		UpdateCL				( );
@@ -163,5 +165,11 @@ public:
 	// HUD
 	virtual void		OnHUDDraw				(CCustomHUD* hud);
 };
+
+namespace AI{
+	#define _FB_sense_RelevantTime _FB_hit_RelevantTime 
+	#define HIT_REACTION_TIME		30000
+	#define SENSE_REACTION_TIME		30000
+}
 
 #endif // !defined(AFX_CUSTOMMONSTER_H__D44439C3_D752_41AE_AD49_C68E5DE3045F__INCLUDED_)

@@ -196,7 +196,7 @@ BOOL SegmentsIntersect(Fvector& dst, Fvector& v1, Fvector& v2, Fvector& v3, Fvec
 void CPathNodes::BuildTravelLine(const Fvector& current_pos)
 {
 	R_ASSERT				(!Nodes.empty());
-	CTrevelNode				current,next;
+	CTravelNode				current,next;
 	bNeedRebuild			= FALSE;
 
 	// start point
@@ -270,6 +270,7 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 		fSpeed	= 0;
 		return	;
 	}
+	//Msg("TP %d",TravelPath.size());
 	if (dt<EPS)			return;
 	float	dist		=	speed*dt;
 	float	dist_save	=	dist;
