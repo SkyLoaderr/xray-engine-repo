@@ -35,9 +35,9 @@ protected:
 	// ref-counting
 	void				_inc	()									{	if (0==p_) return;	p_->dwReference++;														}
 	void				_dec	()									{	if (0==p_) return;	p_->dwReference--; if (0==p_->dwReference) xr_delete(p_);				}
+public:
 	void				_set	(T * rhs) 							{	if (0!=rhs) rhs->dwReference++;	_dec(); p_ = rhs;											}
 	void				_set	(resptr_base<T> const & rhs)		{	T* prhs = rhs._get(); _set(prhs);															}
-public:
 	T *					_get	() const							{	return p_;																					}
 	void				_clear	()									{	p_ = 0;																						}
 };
@@ -58,7 +58,6 @@ public:
 
 						// assignment
 	self &				operator=		(const self & rhs)								{	_set(rhs);	return (self&)*this;	}
-	self &				operator=		(T * rhs)										{	_set(rhs);	return (self&)*this;	}
 
 						// accessors
 	T &					operator*() const												{	return *p_;	}
