@@ -63,7 +63,7 @@ public:
 	// Poltergeist ability
 			void	PhysicalImpulse		(const Fvector &position);
 
-			void	StrangeSounds		();
+			void	StrangeSounds		(const Fvector &position);
 
 	
 

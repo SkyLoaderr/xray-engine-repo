@@ -337,6 +337,7 @@ public:
 	
 	bool					b_velocity_reset;
 
+	bool					force_real_speed;
 
 #ifdef DEBUG
 	CMonsterDebug	*HDebug;

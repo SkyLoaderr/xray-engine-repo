@@ -217,6 +217,7 @@ void CAI_Biting::ProcessScripts()
 	// во время выполнения скриптового действия
 	EnemyMan.unforce_enemy();
 	CorpseMan.unforce_corpse();
+	force_real_speed	= false;
 }
 
 CEntity *CAI_Biting::GetCurrentEnemy()
@@ -290,7 +291,7 @@ void CAI_Biting::TranslateActionToPathParams()
 		des_mask = eVelocityParameterInvisible;
 	}
 
-	//if (force_real_speed) vel_mask = des_mask;
+	if (force_real_speed) vel_mask = des_mask;
 
 	if (bEnablePath) {
 		set_velocity_mask	(vel_mask);	
