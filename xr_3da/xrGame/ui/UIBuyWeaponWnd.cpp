@@ -1999,6 +1999,7 @@ void CUIBuyWeaponWnd::ClearRealRepresentationFlags()
 	{
 		m_vDragDropItems[i].m_bHasRealRepresentation = false;
 		m_vDragDropItems[i].SetColor(cAbleToBuy);
+		m_vDragDropItems[i].EnableDragDrop(true);
 	}
 }
 
