@@ -127,7 +127,7 @@ void					CRender::add_Visual				(IRender_Visual* V ){ add_leafs_Dynamic(V);					
 void					CRender::add_Geometry			(IRender_Visual* V ){ add_Static(V,View->getMask());						}
 void					CRender::add_Wallmark			(ref_shader& S, const Fvector& P, float s, CDB::TRI* T, Fvector* verts)
 {
-	Wallmarks->AddWallmark	(T,P,&*S,s);
+	Wallmarks->AddWallmark	(T,verts,P,&*S,s);
 }
 void					CRender::set_Object				(IRenderable*		O )	
 {

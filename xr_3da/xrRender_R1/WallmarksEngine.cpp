@@ -137,7 +137,7 @@ void CWallmarksEngine::RecurseTri(u32 t, Fmatrix &mView, CWallmarksEngine::wallm
 			u32 adj					= sml_adjacency[3*t+i];
 			if (0xffffffff==adj)	continue;
 			CDB::TRI*	SML			= sml_collector.getT() + adj;
-			v_ids					= SML->IDverts();
+			v_ids					= SML->verts;
 
 			Fvector test_normal;
 			test_normal.mknormal	(v_data[v_ids[0]],v_data[v_ids[1]],v_data[v_ids[2]]);
