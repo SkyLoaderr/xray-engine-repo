@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../../effectorPP.h"
-#include "../CameraEffector.h"
-#include "../../cameramanager.h"
+#include "../../../effectorPP.h"
+#include "../../../CameraEffector.h"
+#include "../../../cameramanager.h"
 
 //////////////////////////////////////////////////////////////////////////
 // Vampire Postprocess Effector
