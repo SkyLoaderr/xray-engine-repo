@@ -37,15 +37,18 @@ u64	generate_time	(u32 years, u32 months, u32 days, u32 hours, u32 minutes, u32 
 	result					= result*u64(60) + u64(seconds);
 	result					= result*u64(1000) + u64(milliseconds);
 
-//	u32 _years; u32 _months; u32 _days; u32 _hours; u32 _minutes; u32 _seconds; u32 _milliseconds;
-//	split_time				(result,_years,_months,_days,_hours,_minutes,_seconds,_milliseconds);
-//	VERIFY					(years == _years);
-//	VERIFY					(months == _months);
-//	VERIFY					(days == _days);
-//	VERIFY					(hours == _hours);
-//	VERIFY					(minutes == _minutes);
-//	VERIFY					(seconds == _seconds);
-//	VERIFY					(milliseconds == _milliseconds);
+#if 0
+	u32 _years; u32 _months; u32 _days; u32 _hours; u32 _minutes; u32 _seconds; u32 _milliseconds;
+	split_time				(result,_years,_months,_days,_hours,_minutes,_seconds,_milliseconds);
+	VERIFY					(years == _years);
+	VERIFY					(months == _months);
+	VERIFY					(days == _days);
+	VERIFY					(hours == _hours);
+	VERIFY					(minutes == _minutes);
+	VERIFY					(seconds == _seconds);
+	VERIFY					(milliseconds == _milliseconds);
+#endif
+
 	return					(result);
 }
 
