@@ -68,6 +68,17 @@ CStalkerActionFreeNoALife::CStalkerActionFreeNoALife	(CAI_Stalker *object, LPCST
 {
 }
 
+void CStalkerActionFreeNoALife::initialize	()
+{
+	m_stop_weapon_handling_time		= Level().timeServer() + ::Random.randI(120000,180000);
+}
+
+void CStalkerActionFreeNoALife::finalize	()
+{
+	m_object->set_sound_mask		(u32(eStalkerSoundMaskNoHumming));
+	m_object->set_sound_mask		(0);
+}
+
 void CStalkerActionFreeNoALife::execute		()
 {
 	inherited::execute		();
@@ -87,8 +98,10 @@ void CStalkerActionFreeNoALife::execute		()
 #ifdef OLD_OBJECT_HANDLER
 	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
 #else
-	m_object->CObjectHandlerGOAP::set_goal		(eObjectActionIdle);
-//	m_object->CObjectHandlerGOAP::set_goal		(eObjectActionFire1,m_object->best_weapon());
+	if (Level().timeServer() >= m_stop_weapon_handling_time)
+		m_object->CObjectHandlerGOAP::set_goal	(eObjectActionIdle);
+	else
+		m_object->CObjectHandlerGOAP::set_goal	(eObjectActionIdle,m_object->best_weapon());
 #endif
 }
 

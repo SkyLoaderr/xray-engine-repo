@@ -20,7 +20,7 @@ typedef CStalkerPropertyEvaluator::_value_type _value_type;
 
 _value_type CStalkerPropertyEvaluatorALife::evaluate	()
 {
-	return			(!!ai().get_alife());
+	return			(false);//!!ai().get_alife());
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -286,7 +286,7 @@ IC	void CProblemSolverAbstract::solve			()
 	m_actuality					= true;
 	m_solution_changed			= true;
 	m_current_state.clear		();
-	bool						successful = ai().graph_engine().search(*this,target_state(),CState(),&m_solution,CGraphEngine::CSolverBaseParameters());
+	bool						successful = ai().graph_engine().search(*this,target_state(),CState(),&m_solution,CGraphEngine::CSolverBaseParameters(CGraphEngine::_solver_dist_type(-1),CGraphEngine::_solver_condition_type(-1),4050));
 	m_failed					= !successful;
 #endif
 }

@@ -49,9 +49,14 @@ class CStalkerActionFreeNoALife : public CStalkerActionBase {
 protected:
 	typedef CStalkerActionBase inherited;
 
+protected:
+	u32					m_stop_weapon_handling_time;
+
 public:
 						CStalkerActionFreeNoALife	(CAI_Stalker *object, LPCSTR action_name = "");
+	virtual void		initialize					();
 	virtual void		execute						();
+	virtual void		finalize					();
 };
 
 //////////////////////////////////////////////////////////////////////////
