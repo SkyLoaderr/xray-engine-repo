@@ -563,8 +563,8 @@ void CActorTools::FillObjectProperties()
     FILL_PROP(values, "Transform\\Position",	&m_pEditObject->a_vPosition, 	PROP::CreateVector	(-10000,	10000,0.01,2,0,0,0,OnChangeTransform));
     FILL_PROP(values, "Transform\\Rotation",	&m_pEditObject->a_vRotate, 		PROP::CreateVector	(-10000,	10000,0.1,1,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw));
 
-    m_pEditObject->FillPropSurf		(values,OnChangeShader);
-    m_pEditObject->FillPropSummary	(values);
+    m_pEditObject->FillPropSurf		(0,values,OnChangeShader);
+    m_pEditObject->FillPropSummary	(0,values);
     
 	m_ObjectProps->AssignValues(values,false);
 }
