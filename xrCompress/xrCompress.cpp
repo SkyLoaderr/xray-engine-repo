@@ -74,7 +74,9 @@ int main			(int argc, char* argv[])
 		printf("ERROR: u must pass folder name as parameter.\n");
 		return 3;
 	}
-	printf			("Compressing files...");
+	printf			("[settings] SKIP: '*.key','build.*'\n");
+	printf			("[settings] VFS:  'level.*'\n");
+	printf			("\nCompressing files...");
 	if (0==chdir(argv[1]))
 	{
 		DWORD			dwTimeStart	= timeGetTime();
