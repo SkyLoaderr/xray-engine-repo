@@ -119,8 +119,11 @@ struct CCF_OBB
 	Fbox		B;
 	// Ready to use OBB
 	Fobb		OBB;
-	u16			bone_id;
-	CCF_OBB(){bone_id=u16(-1);}
+	u16			elem_id;
+public:
+				CCF_OBB():elem_id(u16(-1)){;}
+				CCF_OBB(u16 id):elem_id(id){;}
+	BOOL		valid(){return elem_id!=u16(-1);}
 };
 
 class ENGINE_API	CCF_Skeleton : public ICollisionForm
@@ -145,7 +148,7 @@ class ENGINE_API	CCF_Rigid : public ICollisionForm
 {
 private:
 	Fbox			base_box;
-	xr_vector<CCF_OBB>	model;
+	xr_vector<CCF_OBB>	models;
 
 	u32				dwFrame;		// The model itself
 	u32				dwFrameTL;		// Top level

@@ -164,31 +164,36 @@ void CCF_Skeleton::BuildState()
 	
 	if (K->LL_VisibleBoneCount() != models.size())
 	{
-		models.resize	(K->LL_BoneCount());
+		u64 F=K->LL_GetBonesVisible()&((u64(1)<<u64(K->LL_BoneCount()))-1); 
+		u64 cnt = btwCount1(F);
+
+		models.resize	(K->LL_VisibleBoneCount());
 		base_box.set	(K->vis.box);
 		bv_box.set		(K->vis.box);
 		bv_box.getsphere(bv_sphere.P,bv_sphere.R);
+		for (u16 i=0,idx=0; i<K->LL_BoneCount(); i++){
+			if (!K->LL_GetBoneVisible(i)) continue;
+			models[idx].elem_id = K->LL_GetData(i).shape.flags.is(SBoneShape::sfNoPickable)?u16(-1):i;
+			idx++;
+		}
 	}
 
 	const Fmatrix &L2W	= owner->XFORM();
 	Fmatrix Mbox,T,TW;
-	for (u16 i=0; i<K->LL_BoneCount(); i++)
+	for (xr_vector<CCF_OBB>::iterator I=models.begin(); I!=models.end(); I++) 
 	{
-		if (!K->LL_GetBoneVisible(i)) continue;
-		VERIFY				(i<models.size());
-		if (K->LL_GetData(i).shape.flags.is(SBoneShape::sfNoPickable)) continue;
-		Fobb& B				=	K->LL_GetBox(i);
-		Fmatrix& Mbone		=	K->LL_GetTransform(i);
-		B.xform_get				(Mbox);
-		T.mul_43				(Mbone,Mbox);	// model space
-		TW.mul_43				(L2W,T);		// world space
-		models[i].OBB.xform_set	(TW);
-		models[i].IM.invert		(TW);
-		models[i].B.set			(
-			-B.m_halfsize.x,-B.m_halfsize.y,-B.m_halfsize.z,
-			B.m_halfsize.x,B.m_halfsize.y,B.m_halfsize.z
-			);
-		models[i].bone_id	=	i;
+		if (!I->valid())	continue;
+		Fobb& B				= K->LL_GetBox(I->elem_id);
+		Fmatrix& Mbone		= K->LL_GetTransform(I->elem_id);
+		B.xform_get			(Mbox);
+		T.mul_43			(Mbone,Mbox);	// model space
+		TW.mul_43			(L2W,T);		// world space
+		I->OBB.xform_set	(TW);
+		I->IM.invert		(TW);
+		I->B.set			(
+							-B.m_halfsize.x,-B.m_halfsize.y,-B.m_halfsize.z,
+							B.m_halfsize.x,B.m_halfsize.y,B.m_halfsize.z
+							);
 	}
 }
 
@@ -224,12 +229,14 @@ BOOL CCF_Skeleton::_RayQuery( const Collide::ray_defs& Q, Collide::rq_results& R
 	BOOL bHIT = FALSE;
 	for (xr_vector<CCF_OBB>::iterator I=models.begin(); I!=models.end(); I++) 
 	{
-		if (I->bone_id==u16(-1))	continue;
+		if (!I->valid()){
+			continue;
+		}
 		float range		= Q.range;
 		if (RAYvsOBB(*I,Q.start,Q.dir,range,Q.flags&CDB::OPT_CULL)) 
 		{
 			bHIT		= TRUE;
-			R.append_result(owner,range,int(I-models.begin()),Q.flags&CDB::OPT_ONLYNEAREST);
+			R.append_result(owner,range,I->elem_id,Q.flags&CDB::OPT_ONLYNEAREST);
 			if (Q.flags&CDB::OPT_ONLYFIRST) return TRUE;
 		}
 	}
@@ -265,14 +272,14 @@ CCF_Rigid::CCF_Rigid(CObject* O) : ICollisionForm(O)
 {
 	FHierrarhyVisual* pH= dynamic_cast<FHierrarhyVisual*>(O->Visual());
 	if (pH){
-		model.resize	(pH->children.size());
+		models.resize	(pH->children.size());
 		base_box.set	(pH->vis.box);
 		bv_box.set		(pH->vis.box);
 		bv_box.getsphere(bv_sphere.P,bv_sphere.R);
 	}else{ 
 		IRender_Visual* pV	= O->Visual();
 		if (pV){
-			model.resize	(1);
+			models.resize	(1);
 			base_box.set	(pV->vis.box);
 			bv_box.set		(pV->vis.box);
 			bv_box.getsphere(bv_sphere.P,bv_sphere.R);
@@ -306,11 +313,11 @@ void CCF_Rigid::BuildState()
 	dwFrame			= Device.dwFrame;
 	FHierrarhyVisual* pH= dynamic_cast<FHierrarhyVisual*>(owner->Visual());
 	if (pH){
-		for (u32 i=0; i<model.size(); i++)
-			UpdateModel		(model[i],pH->children[i]->vis.box);
+		for (u32 i=0; i<models.size(); i++)
+			UpdateModel		(models[i],pH->children[i]->vis.box);
 	}else{
 		IRender_Visual* pV	= owner->Visual();
-		UpdateModel			(model[0],pV->vis.box);
+		UpdateModel			(models[0],pV->vis.box);
 	}
 }
 
@@ -344,11 +351,11 @@ BOOL CCF_Rigid::_RayQuery( const Collide::ray_defs& Q, Collide::rq_results& R)
 	if (dwFrame!=Device.dwFrame)			BuildState();
 
 	BOOL bHIT = FALSE;
-	for (xr_vector<CCF_OBB>::iterator I=model.begin(); I!=model.end(); I++){
+	for (xr_vector<CCF_OBB>::iterator I=models.begin(); I!=models.end(); I++){
 		float range		= Q.range;
 		if (RAYvsOBB(*I,Q.start,Q.dir,range,Q.flags&CDB::OPT_CULL)){
 			bHIT		= TRUE;
-			R.append_result(owner,range,int(I-model.begin()),Q.flags&CDB::OPT_ONLYNEAREST);
+			R.append_result(owner,range,int(I-models.begin()),Q.flags&CDB::OPT_ONLYNEAREST);
 			if (CDB::OPT_ONLYFIRST) return TRUE;
 		}
 	}
@@ -370,7 +377,7 @@ void CCF_Rigid::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
 		clQueryCollision& Q = g_pGameLevel->ObjectSpace.q_result;
 
 #pragma todo("CCF_Rigid::_BoxQuery - Actual test BOX vs SkeletonNODE")
-		for (xr_vector<CCF_OBB>::iterator I=model.begin(); I!=model.end(); I++) 
+		for (xr_vector<CCF_OBB>::iterator I=models.begin(); I!=models.end(); I++) 
 		{
 			Q.AddBox(I->OBB);
 		}
