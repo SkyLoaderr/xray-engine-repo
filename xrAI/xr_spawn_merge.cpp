@@ -405,7 +405,7 @@ void xrMergeSpawns(LPCSTR name)
 	tMemoryStream.close_chunk	();
 
 	string256					l_caFileName;
-	FS.update_path				(l_caFileName,"$game_spawns$",cafGetActorLevelName(tpLevels,S));
+	FS.update_path				(l_caFileName,"$game_spawn$",cafGetActorLevelName(tpLevels,S));
 	tMemoryStream.save_to		(l_caFileName);
 
 	Phase						("Freeing resources being allocated");
