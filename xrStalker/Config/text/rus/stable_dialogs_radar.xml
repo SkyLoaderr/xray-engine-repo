@@ -106,7 +106,7 @@
         <text>Ладно я понимаю, удачи!t</text>
     </string>
     <string id="rad_found_deputy_dialog_1_200">
-        <text>Я тебе ничего не могу дать, денег нет. Если хочешь можешь оставить его барахло! </text>
+        <text>Я тебе ничего не могу дать, денег нет. Если хочешь можешь оставить его барахло!</text>
     </string>
     <string id="rad_found_deputy_dialog_1_300">
         <text>Денег нет! Свободен!</text>
@@ -123,23 +123,14 @@
     <string id="rad_found_stalkers_dialog_1_100">
         <text>Спасибо, значит они погибли, думаю тогда нет смысла идти на Припять пока что! Одна проблема остается, я не могу отдать тебе деньги за задание. Мой заместитель, пропал и с ним все деньги!</text>
     </string>
-    <string id="rad_found_stalkers_dialog_1_1000">
-        <text>Это еще что за история! Я выполнили задание? Выполнил! Гони бабки сука!!!</text>
-    </string>
     <string id="rad_found_stalkers_dialog_1_1001">
         <text>Хорошо, я его найду! Скажи мне где его искать? И не вздумай меня кинуть на этот раз!!!</text>
-    </string>
-    <string id="rad_found_stalkers_dialog_1_110">
-        <text>Ну нет у меня денег, ничего не поделаешь, где я тебе их возму? Найдешь заместителя получишь свои денги, если они тебе нужны, а я тебе дать их не могу, у меня их нет.</text>
     </string>
     <string id="rad_found_stalkers_dialog_1_200">
         <text>Я думаю он не ушел далеко, он может быть, дай я тебе на карте отмечу, здесь или здесь! Как найдешь его верни его сюда, или его пда!</text>
     </string>
     <string id="rad_found_stalkers_dialog_1_2000">
         <text>Хорошо, жди меня!!!</text>
-    </string>
-    <string id="rad_found_stalkers_dialog_1_2001">
-        <text>Нет, я передумал.</text>
     </string>
     <string id="rad_found_stalkers_dialog_2_0">
         <text>Я еще не нашел их.</text>
