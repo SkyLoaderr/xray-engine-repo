@@ -193,12 +193,6 @@
 				RelativePath="r2_loader.cpp">
 			</File>
 			<File
-				RelativePath="r2_rendertarget.cpp">
-			</File>
-			<File
-				RelativePath="r2_rendertarget.h">
-			</File>
-			<File
 				RelativePath="r2_scenegraph.cpp">
 			</File>
 			<File
@@ -213,6 +207,28 @@
 			<File
 				RelativePath="r2_types.h">
 			</File>
+			<Filter
+				Name="R_Target"
+				Filter="">
+				<File
+					RelativePath="r2_rendertarget.cpp">
+				</File>
+				<File
+					RelativePath="r2_rendertarget.h">
+				</File>
+				<File
+					RelativePath="r2_rendertarget_phase_accumulator.cpp">
+				</File>
+				<File
+					RelativePath="r2_rendertarget_phase_combine.cpp">
+				</File>
+				<File
+					RelativePath="r2_rendertarget_phase_scene.cpp">
+				</File>
+				<File
+					RelativePath="r2_rendertarget_phase_smap_D.cpp">
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Details"
