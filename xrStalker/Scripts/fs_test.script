@@ -1,24 +1,11 @@
 
 function main()
-	local f = getFS()
-	local flist = f:file_list_open("$screenshots$",FS.FS_ListFiles)
-	local f_cnt = flist:Size()
+
+	local fs_list = FS_file_list_ex("$screenshots$",FS.FS_ListFiles,"*.*")
+	local sz = fs_list:Size()
 	
-//	for	it=0, f_cnt-1 	do
-	local it = 50
-	local file		=	flist:GetAt(it)
-	printf("file[%d]=%s",it,file)
-	local pth = f:update_path("$screenshots$", file) 
-	printf("full path=%s",pth)
-	
-	printf("file age is [%s]",f:get_file_age_str(pth))
-	
-	local file_struct = f:exist("$screenshots$", file)
-	if file_struct~=nil then
-	printf("name=%s;modif=%d",file_struct.name,file_struct.modif)
+	for it=0,sz-1 do
+	local fl = fs_list:GetAt(it)
+		printf("file name=%s; file_size=%d;file_modif=%s",fl:NameFull(),fl:Size(),fl:Modif)
 	end
-		
-//   end
-	
-	flist:Free()
 end
