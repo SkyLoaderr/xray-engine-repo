@@ -7,24 +7,17 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#pragma hdrstop
-
 #include "xrMessages.h"
-
-#ifdef AI_COMPILER
-	#include "net_utils.h"
-	#include "clsid_game.h"
-	#include "bone.h"
-#else
-	#include "..\bone.h"
-#endif
-
-#ifdef _EDITOR
-	#include "clsid_game.h"
-    #include "skeletoncustom.h"
-#endif
-
+#include "net_utils.h"
+#include "clsid_game.h"
 #include "xrServer_Objects_ALife_Items.h"
+
+#ifndef XRGAME_EXPORTS
+#	include "bone.h"
+#else
+#	include "..\bone.h"
+#endif
+
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeInventoryItem
@@ -152,7 +145,6 @@ void CSE_ALifeInventoryItem::UPDATE_Read	(NET_Packet &tNetPacket)
 	tNetPacket.r_float				( State.quaternion.w );	
 };
 
-#ifdef _EDITOR
 void CSE_ALifeInventoryItem::FillProp		(LPCSTR pref, PropItemVec& values)
 {
 	PHelper().CreateFloat			(values, PHelper().PrepareKey(pref, base()->s_name, "Item condition"), 		&m_fCondition, 			0.f, 1.f);
@@ -160,7 +152,6 @@ void CSE_ALifeInventoryItem::FillProp		(LPCSTR pref, PropItemVec& values)
 	R_ASSERT						(alife_object);
 	PHelper().CreateFlag32			(values, PHelper().PrepareKey(pref, base()->s_name,"ALife\\Useful for AI"),	&alife_object->m_flags,	CSE_ALifeObject::flUsefulForAI);
 }
-#endif
 
 bool CSE_ALifeInventoryItem::bfUseful		()
 {
@@ -224,13 +215,11 @@ void CSE_ALifeItem::UPDATE_Read				(NET_Packet &tNetPacket)
 	inherited2::UPDATE_Read		(tNetPacket);
 };
 
-#ifdef _EDITOR
 void CSE_ALifeItem::FillProp				(LPCSTR pref, PropItemVec& values)
 {
 	inherited1::FillProp		(pref,	 values);
 	inherited2::FillProp		(pref,	 values);
 }
-#endif
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemTorch
@@ -304,7 +293,6 @@ void CSE_ALifeItemTorch::UPDATE_Write		(NET_Packet	&tNetPacket)
 	tNetPacket.w_u8				(m_active ? 1 : 0);
 }
 
-#ifdef _EDITOR
 void CSE_ALifeItemTorch::FillProp			(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp			(pref,	 values);
@@ -327,7 +315,6 @@ void CSE_ALifeItemTorch::FillProp			(LPCSTR pref, PropItemVec& values)
     }
 */
 }
-#endif
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemWeapon
@@ -444,7 +431,6 @@ u16	 CSE_ALifeItemWeapon::get_ammo_magsize	()
 		return					0;
 }
 
-#ifdef _EDITOR
 void CSE_ALifeItemWeapon::FillProp			(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref, items);
@@ -461,7 +447,6 @@ void CSE_ALifeItemWeapon::FillProp			(LPCSTR pref, PropItemVec& items)
 	if ((EWeaponAddonStatus)pSettings->r_s32(s_name,"grenade_launcher_status") == eAddonAttachable)
         PHelper().CreateFlag8	(items,PHelper().PrepareKey(pref,s_name,"Addons\\Podstvolnik"),&m_addon_flags,eWeaponAddonGrenadeLauncher);
 }
-#endif
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemAmmo
@@ -503,12 +488,10 @@ void CSE_ALifeItemAmmo::UPDATE_Write		(NET_Packet	&tNetPacket)
 	tNetPacket.w_u16			(a_elapsed);
 }
 
-#ifdef _EDITOR
 void CSE_ALifeItemAmmo::FillProp			(LPCSTR pref, PropItemVec& values) {
   	inherited::FillProp			(pref,values);
 	PHelper().CreateU16			(values, PHelper().PrepareKey(pref, s_name, "Ammo: left"), &a_elapsed, 0, m_boxSize, m_boxSize);
 }
-#endif
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemDetector
@@ -542,12 +525,10 @@ void CSE_ALifeItemDetector::UPDATE_Write	(NET_Packet	&tNetPacket)
 	inherited::UPDATE_Write		(tNetPacket);
 }
 
-#ifdef _EDITOR
 void CSE_ALifeItemDetector::FillProp		(LPCSTR pref, PropItemVec& items)
 {
   	inherited::FillProp			(pref,items);
 }
-#endif
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemDetector
@@ -581,13 +562,11 @@ void CSE_ALifeItemArtefact::UPDATE_Write	(NET_Packet	&tNetPacket)
 	inherited::UPDATE_Write		(tNetPacket);
 }
 
-#ifdef _EDITOR
 void CSE_ALifeItemArtefact::FillProp		(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref,items);
 	PHelper().CreateFloat			(items, PHelper().PrepareKey(pref, s_name, "Anomaly value:"), &m_fAnomalyValue, 0.f, 200.f);
 }
-#endif
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemPDA
@@ -625,12 +604,10 @@ void CSE_ALifeItemPDA::UPDATE_Write	(NET_Packet	&tNetPacket)
 	inherited::UPDATE_Write		(tNetPacket);
 }
 
-#ifdef _EDITOR
 void CSE_ALifeItemPDA::FillProp		(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref,items);
 }
-#endif
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemDocument
@@ -666,13 +643,11 @@ void CSE_ALifeItemDocument::UPDATE_Write	(NET_Packet	&tNetPacket)
 	inherited::UPDATE_Write		(tNetPacket);
 }
 
-#ifdef _EDITOR
 void CSE_ALifeItemDocument::FillProp		(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref,items);
 	PHelper().CreateU16			(items, PHelper().PrepareKey(pref, s_name, "Document index :"), &m_wDocIndex, 0, 65535);
 }
-#endif
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemGrenade
@@ -706,12 +681,10 @@ void CSE_ALifeItemGrenade::UPDATE_Write		(NET_Packet	&tNetPacket)
 	inherited::UPDATE_Write		(tNetPacket);
 }
 
-#ifdef _EDITOR
 void CSE_ALifeItemGrenade::FillProp			(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref,items);
 }
-#endif
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemExplosive
@@ -744,13 +717,10 @@ void CSE_ALifeItemExplosive::UPDATE_Write		(NET_Packet	&tNetPacket)
 	inherited::UPDATE_Write		(tNetPacket);
 }
 
-#ifdef _EDITOR
 void CSE_ALifeItemExplosive::FillProp			(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref,items);
 }
-#endif
-
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemBolt
@@ -788,12 +758,10 @@ bool CSE_ALifeItemBolt::can_save			() const
 	return						(false);//!attached());
 }
 
-#ifdef _EDITOR
 void CSE_ALifeItemBolt::FillProp			(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp			(pref,	 values);
 }
-#endif
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemCustomOutfit
@@ -827,9 +795,7 @@ void CSE_ALifeItemCustomOutfit::UPDATE_Write		(NET_Packet	&tNetPacket)
 	inherited::UPDATE_Write		(tNetPacket);
 }
 
-#ifdef _EDITOR
 void CSE_ALifeItemCustomOutfit::FillProp			(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref,items);
 }
-#endif

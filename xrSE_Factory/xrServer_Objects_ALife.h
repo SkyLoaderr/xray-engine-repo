@@ -12,7 +12,6 @@
 #include "xrServer_Objects.h"
 #include "alife_space.h"
 
-
 #pragma warning(push)
 #pragma warning(disable:4005)
 
@@ -20,10 +19,7 @@
 	class 	CALifeSimulator;
 #endif
 
-#ifdef _EDITOR
-	class CSE_ALifeItemWeapon;
-#endif
-
+class CSE_ALifeItemWeapon;
 class CSE_ALifeDynamicObject;
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeSchedulable,IPureSchedulableObject)
@@ -182,13 +178,11 @@ public:
 		return						(inherited1::base());
 	}
 
-	#ifdef _EDITOR
 	virtual void FillProp			(LPCSTR pref, PropItemVec& items)
 	{
    		inherited1::FillProp		(pref, items);
    		inherited2::FillProp		(pref, items);
 	};	
-	#endif
 };
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeDynamicObject,CSE_ALifeObject)

@@ -55,7 +55,8 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeTrader,CSE_ALifeDynamicObjectVisual,CSE_AL
 #ifdef _EDITOR
 	int 							supplies_count;
     void 							OnSuppliesCountChange	(PropValue* sender);
-#endif    
+#endif
+
 #ifdef XRGAME_EXPORTS
 			u32						dwfGetItemCost			(CSE_ALifeInventoryItem *tpALifeInventoryItem);
 	virtual void					spawn_supplies			();
