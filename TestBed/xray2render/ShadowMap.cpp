@@ -773,7 +773,7 @@ HRESULT CMyD3DApplication::RenderFAT	()
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILZFAIL,		D3DSTENCILOP_KEEP	);
 
 	// Shader and params
-	R_shader&	S							= s_Scene2fat_base;
+	R_shader&	S							= s_Scene2fat_bump;
 	m_pd3dDevice->SetPixelShader			(S.ps);
 	m_pd3dDevice->SetVertexShader			(S.vs);
 	m_pd3dDevice->SetVertexDeclaration		(m_pDeclVert);
