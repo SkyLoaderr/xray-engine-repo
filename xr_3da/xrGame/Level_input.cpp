@@ -26,7 +26,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 	switch (key) {
 #ifdef DEBUG
 	case DIK_RETURN:
-		if (Game().type == GAME_SINGLE)
+//		if (Game().type == GAME_SINGLE)
 			bDebug	= !bDebug;
 		return;
 #endif
