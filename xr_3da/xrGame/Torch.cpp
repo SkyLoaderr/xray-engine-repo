@@ -65,7 +65,7 @@ BOOL CTorch::net_Spawn(LPVOID DC)
 	R_ASSERT				(Visual());
 	lanim					= LALib.FindItem(torch->animator);
 
-	VERIFY						(m_pPhysicsShell);
+	///VERIFY						(m_pPhysicsShell);
 	///CSE_Abstract *l_pE = (CSE_Abstract*)DC;
 	//if(l_pE->ID_Parent==0xffff) m_pPhysicsShell->Activate(XFORM(),0,XFORM());
 	
