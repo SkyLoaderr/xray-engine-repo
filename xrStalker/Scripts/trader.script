@@ -83,6 +83,8 @@ function CTrader:reload(section)
 		repeats		= 0,
 		especial	= nil			// Особенная анимация, которая проигруется вместе со звуком
 	}
+
+	self.last_update = 0
 end
 
 
@@ -169,6 +171,9 @@ end
 function CTrader:update(delta)
 	object_binder.update(self, delta)
 
+	printf("__update time = %d", device():time_global() - self.last_update)
+	self.last_update = device():time_global()
+	
 	// Когда проспаунились, ждем появления актера, для того, чтоб прочитать у него инфу
 	if(self.need_init) then
 		if(level.actor()) then
