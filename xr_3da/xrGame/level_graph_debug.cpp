@@ -261,16 +261,16 @@ void CLevelGraph::render()
 	for (u32 Nid=0; Nid<header().vertex_count(); ++Nid)
 	{
 		CLevelGraph::CVertex&	N	= *vertex(Nid);
-		Fvector			PC,P0;//,P1;
+		Fvector			PC;
 		PC				= vertex_position(N);
 
 		if (Device.vCameraPosition.distance_to(PC)>30) continue;
 
 		float			sr	= header().cell_size();
 		if (::Render->ViewBase.testSphere_dirty(PC,sr)) {
-			u32	LL		= u32(N.light());
+			u32	LL		= iFloor(float(N.light())/15.f*255.f);
 			u32	CC		= D3DCOLOR_XRGB(0,0,255);
-			u32	CT		= D3DCOLOR_XRGB(LL,LL,LL);
+			u32	CT		= D3DCOLOR_XRGB(0,255,0);
 			u32	CH		= D3DCOLOR_XRGB(0,128,0);
 
 			BOOL	bHL		= FALSE;
@@ -284,14 +284,14 @@ void CLevelGraph::render()
 			// unpack plane
 			Fplane PL; Fvector vNorm;
 			pvDecompress(vNorm,N.plane());
-			PL.build	(P0,vNorm);
+			PL.build	(PC,vNorm);
 
 			// create vertices
 			Fvector		v,v1,v2,v3,v4;
-			v.set(P0.x-st,P0.y,P0.z-st);	PL.intersectRayPoint(v,DUP,v1);	v1.mad(v1,PL.n,tt);	// minX,minZ
-			v.set(P0.x+st,P0.y,P0.z-st);	PL.intersectRayPoint(v,DUP,v2);	v2.mad(v2,PL.n,tt);	// maxX,minZ
-			v.set(P0.x+st,P0.y,P0.z+st);	PL.intersectRayPoint(v,DUP,v3);	v3.mad(v3,PL.n,tt);	// maxX,maxZ
-			v.set(P0.x-st,P0.y,P0.z+st);	PL.intersectRayPoint(v,DUP,v4);	v4.mad(v4,PL.n,tt);	// minX,maxZ
+			v.set(PC.x-st,PC.y,PC.z-st);	PL.intersectRayPoint(v,DUP,v1);	v1.mad(v1,PL.n,tt);	// minX,minZ
+			v.set(PC.x+st,PC.y,PC.z-st);	PL.intersectRayPoint(v,DUP,v2);	v2.mad(v2,PL.n,tt);	// maxX,minZ
+			v.set(PC.x+st,PC.y,PC.z+st);	PL.intersectRayPoint(v,DUP,v3);	v3.mad(v3,PL.n,tt);	// maxX,maxZ
+			v.set(PC.x-st,PC.y,PC.z+st);	PL.intersectRayPoint(v,DUP,v4);	v4.mad(v4,PL.n,tt);	// minX,maxZ
 
 			// render quad
 			RCache.dbg_DrawTRI	(Fidentity,v3,v2,v1,CT);
