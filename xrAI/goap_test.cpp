@@ -155,8 +155,24 @@ void test_goap	()
 //					show_operator			(*(*I).m_operator,(*I).m_operator_id);
 //			}
 //		}
+
+
+		show_condition					(problem_solver.current_state());
+		show_condition					(problem_solver.target_state(),1);
+
+		{
+			CSProblemSolver::const_iterator	I = problem_solver.operators().begin();
+			CSProblemSolver::const_iterator	E = problem_solver.operators().end();
+			for ( ; I != E; ++I)
+				show_operator			(*(*I).m_operator,(*I).m_operator_id);
+		}
+
+
+
+
 		u64 start						= CPU::GetCycleCount();
-		graph_engine->search			(problem_solver,problem_solver.target_state(),problem_solver.current_state(),&path,CBaseParameters());
+//		graph_engine->search			(problem_solver,problem_solver.target_state(),problem_solver.current_state(),&path,CBaseParameters());
+		graph_engine->search			(problem_solver,problem_solver.current_state(),problem_solver.target_state(),&path,CBaseParameters());
 		u64 finish						= CPU::GetCycleCount();
 		total							+= finish - start;
 		vertex_count					+= graph_engine->solver_algorithm().data_storage().get_visited_node_count();
