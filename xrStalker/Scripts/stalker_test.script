@@ -67,22 +67,22 @@ function main ()
 --		cond		(cond.move_end)
 --	)
 
-	stalker_test:action1 (
-		stalker, 
-		move		(move.standing, move.walk, move.line, patrol ("way0000")),
-		look		(look.path_dir),
-		anim		(anim.danger),
-		cond		(cond.move_end)
-	)
+--	stalker_test:action1 (
+--		stalker, 
+--		move		(move.standing, move.walk, move.line, patrol ("way0000")),
+--		look		(look.path_dir),
+--		anim		(anim.danger),
+--		cond		(cond.move_end)
+--	)
 	
-	wait			(2000)
+--	wait			(2000)
 	
-	stalker_test:action_first1 (
-		stalker, 
-		move		(move.standing, move.stand, move.line, patrol ("way0000")),
-		anim		("stoya_ruje_ 0"),
-		cond		(cond.time_end, 10000)
-	)
+--	stalker_test:action_first1 (
+--		stalker, 
+--		move		(move.standing, move.stand, move.line, patrol ("way0000")),
+--		anim		("stoya_ruje_ 0"),
+--		cond		(cond.time_end, 10000)
+--	)
 	
 	while stalker:action() do
 		wait		();
