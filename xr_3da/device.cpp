@@ -85,9 +85,9 @@ void CRenderDevice::overdrawEnd		()
 	CHK_DX(HW.pDevice->SetVertexShader	( FVF::F_TL ));
 
 	// Render gradients
-	for (int I=0; I<8; I++ ) 
+	for (int I=0; I<12; I++ ) 
 	{
-		DWORD	_c	= I*256/9;
+		DWORD	_c	= I*256/13;
 		DWORD	c	= D3DCOLOR_XRGB(_c,_c,_c);
 		
 		FVF::TL	pv[4];
