@@ -23,7 +23,10 @@ public:
     virtual BOOL	IsLooped			(){return GetTimeLimit()<0.f;}
 
 	virtual const ref_str	Name		()=0;
+
+	virtual IParticleCustom*	dcast_ParticleCustom	()				{ return this;	}
 };
+
 //---------------------------------------------------------------------------
 #endif //ParticleCustomH
  

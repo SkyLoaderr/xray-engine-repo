@@ -16,6 +16,7 @@
 class	ENGINE_API				CSkeletonAnimated;
 class	ENGINE_API				CSkeletonRigid;
 class	ENGINE_API				CKinematics;
+class	ENGINE_API				IParticleCustom;
 
 // The class itself
 class	ENGINE_API				IRender_Visual
@@ -44,6 +45,7 @@ public:
 	virtual	CKinematics*		dcast_PKinematics		()				{ return 0;	}
 	virtual	CSkeletonRigid*		dcast_PSkeletonRigid	()				{ return 0;	}
 	virtual	CSkeletonAnimated*	dcast_PSkeletonAnimated	()				{ return 0;	}
+	virtual IParticleCustom*	dcast_ParticleCustom	()				{ return 0;	}
 
 	IRender_Visual			();
 	virtual ~IRender_Visual();
