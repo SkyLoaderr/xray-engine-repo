@@ -297,26 +297,28 @@ void CEnvironment::SelectEnvs(float gt)
     }
 }
 
-static float gt				= 0.f;
+#ifdef _EDITOR
+	float fGameTime				= 0.f;
+#endif
 void CEnvironment::OnFrame()
 {
 #ifdef _EDITOR
 	if (!psDeviceFlags.is(rsEnvironment)) return;
-	gt 						+= Device.fTimeDelta*ed_speed;
-    if (gt>ed_to_time)		gt=gt-ed_to_time+ed_from_time;
-    if (gt<ed_from_time)	gt=ed_from_time;
+	fGameTime				+= Device.fTimeDelta*ed_speed;
+    if (fGameTime>ed_to_time)	fGameTime=fGameTime-ed_to_time+ed_from_time;
+    if (fGameTime<ed_from_time)	fGameTime=ed_from_time;
 #else
-	float gt				= Level().GetGameDayTime_sec();
+	float fGameTime			= Level().GetGameDayTime_sec();
 #endif
-	SelectEnvs				(gt);
+	SelectEnvs				(fGameTime);
     VERIFY					(CurrentA&&CurrentB);
 
     float t_fact;
     if (bTerminator){
-	    float x				= gt>CurrentA->exec_time?gt-CurrentA->exec_time:(day_tm-CurrentA->exec_time)+gt;
+	    float x				= fGameTime>CurrentA->exec_time?fGameTime-CurrentA->exec_time:(day_tm-CurrentA->exec_time)+fGameTime;
 	    t_fact				= x/((day_tm-CurrentA->exec_time)+CurrentB->exec_time); 
     }else{
-	    t_fact				= (gt-CurrentA->exec_time)/(CurrentB->exec_time-CurrentA->exec_time); 
+	    t_fact				= (fGameTime-CurrentA->exec_time)/(CurrentB->exec_time-CurrentA->exec_time); 
     }
     clamp					(t_fact,0.f,1.f);
     
