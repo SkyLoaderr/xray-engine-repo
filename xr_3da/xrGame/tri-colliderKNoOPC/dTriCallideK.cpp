@@ -2,7 +2,6 @@
 #include "dTriCollideK.h"
 #include "../dCylinder/dCylinder.h"
 
-
 #define CONTACT(Ptr, Stride) ((dContactGeom*) (((byte*)Ptr) + (Stride)))
 #define SURFACE(Ptr, Stride) ((dSurfaceParameters*) (((byte*)Ptr) + (Stride-sizeof(dSurfaceParameters))))
 #define NUMC_MASK (0xffff)
@@ -706,18 +705,18 @@ return true;
 
 bool inline cylinderCrossesLine(const dReal* p,const dReal* R,dReal hlz,
 						 const dReal* v0,const dReal* v1,const dReal* l,dVector3 pos){
-	dReal cos=dDOT14(l,R);
+	dReal _cos=dDOT14(l,R);
 
-	if(!(dFabs(cos)<1.f)) return false;
+	if(!(dFabs(_cos)<1.f)) return false;
 	
-	dReal sin2=1.f-cos*cos;
+	dReal sin2=1.f-_cos*_cos;
 
 	dVector3 vp={v0[0]-p[0],v0[1]-p[1],v0[2]-p[2]};
     dReal c1=dDOT(vp,l);
 	dReal c2=dDOT14(vp,R);
 
-	dReal t=(c2*cos-c1)/sin2;
-	dReal q=(c2-c1*cos)/sin2;
+	dReal t=(c2*_cos-c1)/sin2;
+	dReal q=(c2-c1*_cos)/sin2;
 
 	if(dFabs(q)>hlz) return false;
 
@@ -732,7 +731,6 @@ bool inline cylinderCrossesLine(const dReal* p,const dReal* R,dReal hlz,
 
 	return true;
 	
-
 }
 /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////

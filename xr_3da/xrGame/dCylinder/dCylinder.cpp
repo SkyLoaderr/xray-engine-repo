@@ -27,11 +27,11 @@ int dCylinderClassUser = -1;
 inline bool circleIntersection(const dReal* n1,const dReal* cp1,dReal r1,const dReal* n2,const dReal* cp2,dReal r2,dVector3 point){
 dReal c1=dDOT14(cp1,n1);
 dReal c2=dDOT14(cp2,n2);
-dReal cos=dDOT44(n1,n2);
-dReal cos_2=cos*cos;
+dReal _cos=dDOT44(n1,n2);
+dReal cos_2=_cos*_cos;
 dReal sin_2=1-cos_2;
-dReal p1=(c1-c2*cos)/sin_2;
-dReal p2=(c2-c1*cos)/sin_2;
+dReal p1=(c1-c2*_cos)/sin_2;
+dReal p2=(c2-c1*_cos)/sin_2;
 dVector3 lp={p1*n1[0]+p2*n2[0],p1*n1[4]+p2*n2[4],p1*n1[8]+p2*n2[8]};
 dVector3 n;
 dCROSS144(n,=,n1,n2);
@@ -280,7 +280,7 @@ extern "C" int dCylBox (const dVector3 p1, const dMatrix3 R1,
 // separating axis is a normal to the cylinder axis passing across the nearest box vertex
 //used when a box vertex touches the lateral surface of the cylinder
 
-dReal proj,boxProj,cos,sin,cos1,cos3;
+dReal proj,boxProj,_cos,_sin,cos1,cos3;
 dVector3 tAx,Ax,pb;
 {
 //making Ax which is perpendicular to cyl ax to box position//
@@ -329,11 +329,11 @@ dNormalize3(tAx);
 //making perpendicular to tAx lying in the plane which is normal to the cylinder axis
 //it is tangent in the point where projection of tAx on cylinder's ring intersect edge circle
 
-cos=dDOT14(tAx,R1+0);
-sin=dDOT14(tAx,R1+2);
-tAx[0]=R1[2]*cos-R1[0]*sin;
-tAx[1]=R1[6]*cos-R1[4]*sin;
-tAx[2]=R1[10]*cos-R1[8]*sin;
+_cos=dDOT14(tAx,R1+0);
+_sin=dDOT14(tAx,R1+2);
+tAx[0]=R1[2]*_cos-R1[0]*_sin;
+tAx[1]=R1[6]*_cos-R1[4]*_sin;
+tAx[2]=R1[10]*_cos-R1[8]*_sin;
 
 
 //use cross between tAx and first ax of the box as separating axix 
@@ -345,12 +345,12 @@ boxProj=dFabs(dDOT14(Ax,R2+1)*B2)+
 		dFabs(dDOT14(Ax,R2+0)*B1)+
 		dFabs(dDOT14(Ax,R2+2)*B3);
 
-  cos=dFabs(dDOT14(Ax,R1+1));
+  _cos=dFabs(dDOT14(Ax,R1+1));
   cos1=dDOT14(Ax,R1+0);
   cos3=dDOT14(Ax,R1+2);
-  sin=_sqrt(cos1*cos1+cos3*cos3);
+  _sin=_sqrt(cos1*cos1+cos3*cos3);
 
-TEST(p[0]*Ax[0]+p[1]*Ax[1]+p[2]*Ax[2],(sin*radius+cos*hlz+boxProj),Ax[0],Ax[1],Ax[2],5);
+TEST(p[0]*Ax[0]+p[1]*Ax[1]+p[2]*Ax[2],(_sin*radius+_cos*hlz+boxProj),Ax[0],Ax[1],Ax[2],5);
 
 
 //same thing with the second axis of the box
@@ -362,11 +362,11 @@ tAx[2]=-p1[2]+p2[2]+R2[9]*proj;
 dNormalize3(tAx);
 
 
-cos=dDOT14(tAx,R1+0);
-sin=dDOT14(tAx,R1+2);
-tAx[0]=R1[2]*cos-R1[0]*sin;
-tAx[1]=R1[6]*cos-R1[4]*sin;
-tAx[2]=R1[10]*cos-R1[8]*sin;
+_cos=dDOT14(tAx,R1+0);
+_sin=dDOT14(tAx,R1+2);
+tAx[0]=R1[2]*_cos-R1[0]*_sin;
+tAx[1]=R1[6]*_cos-R1[4]*_sin;
+tAx[2]=R1[10]*_cos-R1[8]*_sin;
 
 dCROSS114(Ax,=,tAx,R2+1);
 dNormalize3(Ax);
@@ -375,11 +375,11 @@ boxProj=dFabs(dDOT14(Ax,R2+0)*B1)+
 		dFabs(dDOT14(Ax,R2+1)*B2)+
 		dFabs(dDOT14(Ax,R2+2)*B3);
 
-  cos=dFabs(dDOT14(Ax,R1+1));
+  _cos=dFabs(dDOT14(Ax,R1+1));
   cos1=dDOT14(Ax,R1+0);
   cos3=dDOT14(Ax,R1+2);
-  sin=_sqrt(cos1*cos1+cos3*cos3);
-TEST(p[0]*Ax[0]+p[1]*Ax[1]+p[2]*Ax[2],(sin*radius+cos*hlz+boxProj),Ax[0],Ax[1],Ax[2],6);
+  _sin=_sqrt(cos1*cos1+cos3*cos3);
+TEST(p[0]*Ax[0]+p[1]*Ax[1]+p[2]*Ax[2],(_sin*radius+_cos*hlz+boxProj),Ax[0],Ax[1],Ax[2],6);
 
 //same thing with the third axis of the box
 proj=dDOT14(p1,R2+2)-dDOT14(p2,R2+2);
@@ -389,11 +389,11 @@ Ax[1]=-p1[1]+p2[1]+R2[6]*proj;
 Ax[2]=-p1[2]+p2[2]+R2[10]*proj;
 dNormalize3(tAx);
 
-cos=dDOT14(tAx,R1+0);
-sin=dDOT14(tAx,R1+2);
-tAx[0]=R1[2]*cos-R1[0]*sin;
-tAx[1]=R1[6]*cos-R1[4]*sin;
-tAx[2]=R1[10]*cos-R1[8]*sin;
+_cos=dDOT14(tAx,R1+0);
+_sin=dDOT14(tAx,R1+2);
+tAx[0]=R1[2]*_cos-R1[0]*_sin;
+tAx[1]=R1[6]*_cos-R1[4]*_sin;
+tAx[2]=R1[10]*_cos-R1[8]*_sin;
 
 dCROSS114(Ax,=,tAx,R2+2);
 dNormalize3(Ax);
@@ -401,11 +401,11 @@ boxProj=dFabs(dDOT14(Ax,R2+1)*B2)+
 		dFabs(dDOT14(Ax,R2+2)*B3)+
 		dFabs(dDOT14(Ax,R2+0)*B1);
 
-  cos=dFabs(dDOT14(Ax,R1+1));
+  _cos=dFabs(dDOT14(Ax,R1+1));
   cos1=dDOT14(Ax,R1+0);
   cos3=dDOT14(Ax,R1+2);
-  sin=_sqrt(cos1*cos1+cos3*cos3);
-TEST(p[0]*Ax[0]+p[1]*Ax[1]+p[2]*Ax[2],(sin*radius+cos*hlz+boxProj),Ax[0],Ax[1],Ax[2],7);
+  _sin=_sqrt(cos1*cos1+cos3*cos3);
+TEST(p[0]*Ax[0]+p[1]*Ax[1]+p[2]*Ax[2],(_sin*radius+_cos*hlz+boxProj),Ax[0],Ax[1],Ax[2],7);
 
 
 #undef TEST
@@ -414,9 +414,9 @@ TEST(p[0]*Ax[0]+p[1]*Ax[1]+p[2]*Ax[2],(sin*radius+cos*hlz+boxProj),Ax[0],Ax[1],A
 // normal (n1,n2,n3) is relative to box 1.
 
 #define TEST(expr1,expr2,n1,n2,n3,cc) \
-  s2 = dFabs(expr1) - (expr2); \
+  s2 = _abs(expr1) - (expr2); \
   if (s2 > 0) return 0; \
-  l = dSqrt ((n1)*(n1) + (n2)*(n2) + (n3)*(n3)); \
+  l = _sqrt ((n1)*(n1) + (n2)*(n2) + (n3)*(n3)); \
   if (l > 0) { \
     s2 /= l; \
     if (s2 > s) { \
@@ -570,7 +570,7 @@ extern "C" int dCylCyl (const dVector3 p1, const dMatrix3 R1,
   hlz1 = lz1*REAL(0.5);
   hlz2 = lz2*REAL(0.5); 
 
- dReal proj,cos,sin,cos1,cos3;
+ dReal proj,_cos,_sin,cos1,cos3;
 
 
 
@@ -588,12 +588,12 @@ extern "C" int dCylCyl (const dVector3 p1, const dMatrix3 R1,
   invert_normal = 0;
   *code = 0;
 
-  cos=dFabs(dDOT44(R1+1,R2+1));
-  sin=_sqrt(1.f-(cos>1.f ? 1.f : cos));
+  _cos=dFabs(dDOT44(R1+1,R2+1));
+  _sin=_sqrt(1.f-(_cos>1.f ? 1.f : _cos));
 
-  TEST (pp1[1],(hlz1 + radius2*sin + hlz2*cos ),R1+1,0);//pp
+  TEST (pp1[1],(hlz1 + radius2*_sin + hlz2*_cos ),R1+1,0);//pp
 
-  TEST (pp2[1],(radius1*sin + hlz1*cos + hlz2),R2+1,1);
+  TEST (pp2[1],(radius1*_sin + hlz1*_cos + hlz2),R2+1,1);
 
 
 
@@ -659,12 +659,12 @@ TEST(p[0]*Ax[0]+p[1]*Ax[1]+p[2]*Ax[2],radius1+radius2,Ax[0],Ax[1],Ax[2],6);
 dNormalize3(Ax);
 
 
-  cos=dFabs(dDOT14(Ax,R2+1));
+  _cos=dFabs(dDOT14(Ax,R2+1));
   cos1=dDOT14(Ax,R2+0);
   cos3=dDOT14(Ax,R2+2);
-  sin=_sqrt(cos1*cos1+cos3*cos3);
+  _sin=_sqrt(cos1*cos1+cos3*cos3);
 
-TEST(p[0]*Ax[0]+p[1]*Ax[1]+p[2]*Ax[2],radius1+cos*hlz2+sin*radius2,Ax[0],Ax[1],Ax[2],3);
+TEST(p[0]*Ax[0]+p[1]*Ax[1]+p[2]*Ax[2],radius1+_cos*hlz2+_sin*radius2,Ax[0],Ax[1],Ax[2],3);
 
 
 
@@ -709,12 +709,12 @@ dNormalize3(Ax);
 
 
 
-  cos=dFabs(dDOT14(Ax,R1+1));
+  _cos=dFabs(dDOT14(Ax,R1+1));
   cos1=dDOT14(Ax,R1+0);
   cos3=dDOT14(Ax,R1+2);
-  sin=_sqrt(cos1*cos1+cos3*cos3);
+  _sin=_sqrt(cos1*cos1+cos3*cos3);
 
-TEST(p[0]*Ax[0]+p[1]*Ax[1]+p[2]*Ax[2],radius2+cos*hlz1+sin*radius1,Ax[0],Ax[1],Ax[2],4);
+TEST(p[0]*Ax[0]+p[1]*Ax[1]+p[2]*Ax[2],radius2+_cos*hlz1+_sin*radius1,Ax[0],Ax[1],Ax[2],4);
 
 
 ////test circl
@@ -771,17 +771,17 @@ dVector3 point;
 dNormalize3(Ax);
 dReal cyl1Pr,cyl2Pr;
 
- cos=dFabs(dDOT14(Ax,R1+1));
+ _cos=dFabs(dDOT14(Ax,R1+1));
  cos1=dDOT14(Ax,R1+0);
  cos3=dDOT14(Ax,R1+2);
- sin=_sqrt(cos1*cos1+cos3*cos3);
- cyl1Pr=cos*hlz1+sin*radius1;
+ _sin=_sqrt(cos1*cos1+cos3*cos3);
+ cyl1Pr=_cos*hlz1+_sin*radius1;
 
- cos=dFabs(dDOT14(Ax,R2+1));
+ _cos=dFabs(dDOT14(Ax,R2+1));
  cos1=dDOT14(Ax,R2+0);
  cos3=dDOT14(Ax,R2+2);
- sin=_sqrt(cos1*cos1+cos3*cos3);
- cyl2Pr=cos*hlz2+sin*radius2;
+ _sin=_sqrt(cos1*cos1+cos3*cos3);
+ cyl2Pr=_cos*hlz2+_sin*radius2;
 TEST(p[0]*Ax[0]+p[1]*Ax[1]+p[2]*Ax[2],cyl1Pr+cyl2Pr,Ax[0],Ax[1],Ax[2],5);
 
 
@@ -995,7 +995,7 @@ unsigned char code;
  
 //making ax which is perpendicular to cyl1 ax to sphere center//
  
-dReal proj,cos,sin,cos1,cos3;
+dReal proj,_cos,_sin,cos1,cos3;
 dVector3 Ax;
 	proj=dDOT14(p2,R+1)-dDOT14(p1,R+1);
 
@@ -1030,11 +1030,11 @@ Ax[1]=p2[1]-pa[1];
 Ax[2]=p2[2]-pa[2];
 dNormalize3(Ax);
 
- cos=dFabs(dDOT14(Ax,R+1));
+ _cos=dFabs(dDOT14(Ax,R+1));
  cos1=dDOT14(Ax,R+0);
  cos3=dDOT14(Ax,R+2);
- sin=_sqrt(cos1*cos1+cos3*cos3);
-TEST(dDOT(p,Ax),sphereRadius+cylRadius*sin+hl*cos,Ax[0],Ax[1],Ax[2],14);
+ _sin=_sqrt(cos1*cos1+cos3*cos3);
+TEST(dDOT(p,Ax),sphereRadius+cylRadius*_sin+hl*_cos,Ax[0],Ax[1],Ax[2],14);
 
 
 #undef TEST
