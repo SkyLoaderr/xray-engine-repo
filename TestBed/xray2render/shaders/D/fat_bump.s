@@ -82,7 +82,7 @@ p2f 	p_main	( v2p_in IN )
   half4 Nu	= tex2D		(s_nmap,	IN.tc0);				// IN:  normal.gloss
 
   // Sample normal and rotate it by matrix
-  half3 Ns	= half3(-1,-1,-1) + ((half3)Nu)*2;				// Signed normal
+  half3 Ns	= 2*(half3)Nu - 1;								// Signed normal
   half3 Ne	= mul		(half3x3(IN.M1, IN.M2, IN.M3), Ns);	// Normal in eye-space : unnormalized
   half3 NeN	= normalize	(Ne);								// Normal in eye-space : normalized		// texCUBE	(s_NCM,Ne);	
   
