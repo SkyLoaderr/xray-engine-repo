@@ -12,7 +12,6 @@
 #include "ai_script_actions.h"
 #include "ai_script_sound.h"
 #include "ai_script_hit.h"
-#include "ai_script_snd_info.h"
 #include "luabind/return_reference_to_policy.hpp"
 #include "luabind/out_value_policy.hpp"
 #include "luabind/adopt_policy.hpp"

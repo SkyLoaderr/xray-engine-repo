@@ -37,6 +37,8 @@ void CStateMonsterMoveToPointAbstract::execute()
 		object->MotionMan.accel_activate	(EAccelType(data.accel_type));
 		object->MotionMan.accel_set_braking (data.braking);
 	}
+
+	Msg("*MState :: Move to point action Executed :: time = [%u]", Level().timeServer());
 }
 
 TEMPLATE_SPECIALIZATION

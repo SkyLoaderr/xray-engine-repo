@@ -350,6 +350,22 @@ CLuaSoundInfo CLuaGameObject::GetSoundInfo()
 	return			(ret_val);
 }
 
+CLuaMonsterHitInfo CLuaGameObject::GetMonsterHitInfo()
+{
+	CLuaMonsterHitInfo	ret_val;
+
+	CAI_Biting *l_tpMonster = dynamic_cast<CAI_Biting *>(m_tpGameObject);
+	if (l_tpMonster) {
+		if (l_tpMonster->HitMemory.is_hit()) {
+			CGameObject *pO = dynamic_cast<CGameObject *>(l_tpMonster->HitMemory.get_last_hit_object());
+			ret_val.set((pO) ?  pO->lua_game_object() : 0, l_tpMonster->HitMemory.get_last_hit_dir(), l_tpMonster->HitMemory.get_last_hit_time());
+		}
+	} else {
+		ai().script_engine().script_log(ScriptStorage::eLuaMessageTypeError,"CLuaGameObject : cannot access class member GetMonsterHitInfo!");
+	}
+	return			(ret_val);
+}
+
 
 
 //////////////////////////////////////////////////////////////////////////

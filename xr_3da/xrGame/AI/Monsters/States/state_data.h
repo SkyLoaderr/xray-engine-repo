@@ -16,4 +16,5 @@ struct SStateDataLookToPoint {
 
 struct SStateDataCustomAction {
 	EAction		action;
+	u32			time_out;
 };

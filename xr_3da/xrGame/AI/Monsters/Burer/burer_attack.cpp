@@ -60,8 +60,10 @@ void CBurerAttack::Run()
 	// ≈сли враг изменилс€, инициализировать состо€ние
 	if (pMonster->EnemyMan.get_enemy() != enemy) {
 		Init();
-		cur_state->CriticalInterrupt();
-		cur_state->Reset();
+		if (cur_state) {
+			cur_state->CriticalInterrupt();
+			cur_state->Reset();
+		}
 		b_need_reselect = true;		
 	}
 

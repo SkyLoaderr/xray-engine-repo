@@ -30,6 +30,8 @@ void CStateMonsterLookToPointAbstract::execute()
 
 	object->MotionMan.m_tAction				= data.action;
 	object->FaceTarget						(data.point);
+
+	Msg("*MState :: Look point action Executed :: time = [%u]", Level().timeServer());
 }
 
 TEMPLATE_SPECIALIZATION

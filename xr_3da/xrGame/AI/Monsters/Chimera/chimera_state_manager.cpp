@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "chimera.h"
 #include "chimera_state_manager.h"
+#include "../../ai_monster_debug.h"
 #include "../states/monster_state_rest.h"
 #include "../states/monster_state_rest_sleep.h"
 #include "../states/monster_state_rest_walk_graph.h"
@@ -38,8 +39,8 @@ CStateManagerChimera::CStateManagerChimera(CChimera *obj) : inherited(obj)
 			xr_new<CStateMonsterFindEnemyRun<CChimera> >(obj), 
 			xr_new<CStateMonsterFindEnemyLook<CChimera> >(obj,
 				xr_new<CStateMonsterMoveToPoint<CChimera> >(obj), 
-				xr_new<CStateMonsterLookToPoint<CChimera> >(obj),
-				xr_new<CStateMonsterCustomAction<CChimera> >(obj)),
+				xr_new<CStateMonsterCustomAction<CChimera> >(obj),
+				xr_new<CStateMonsterLookToPoint<CChimera> >(obj)),
 			xr_new<CStateMonsterFindEnemyAngry<CChimera> >(obj), 
 			xr_new<CStateMonsterFindEnemyWalkAround<CChimera> >(obj)
 		)

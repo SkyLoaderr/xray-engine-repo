@@ -12,8 +12,6 @@ public:
 	virtual	BOOL	net_Spawn				(LPVOID DC);
 	virtual void    StateSelector			();
 
-	//virtual	bool	AA_CheckHit				();
-
 	virtual	void	CheckSpecParams			(u32 spec_params);
 	virtual void	ProcessTurn				();
 	virtual u8		get_legs_number			() {return QUADRUPEDAL;}

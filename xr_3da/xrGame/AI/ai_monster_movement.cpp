@@ -1,9 +1,9 @@
 #include "stdafx.h"
-
 #include "ai_monster_movement.h"
 #include "ai_monster_utils.h"
 #include "biting/ai_biting.h"
 #include "ai_monster_motion_stats.h"
+#include "../phmovementcontrol.h"
 
 CMonsterMovement::CMonsterMovement()
 {
@@ -62,7 +62,10 @@ void CMonsterMovement::Frame_Update()
 	CDetailPathManager::set_try_min_time			(b_try_min_time); 
 	CDetailPathManager::set_use_dest_orientation	(b_use_dest_orient);
 	
-	enable_movement									(b_enable_movement);
+	if (pMonster->m_PhysicMovementControl->JumpState()) 
+		enable_movement(false);
+	else 
+		enable_movement								(b_enable_movement);
 	
 	update_path								();
 }

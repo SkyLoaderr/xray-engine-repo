@@ -154,7 +154,7 @@ public:
 	// ---------------------------------------------------------------------------------
 
 	virtual void			ProcessTurn						() {}
-	virtual bool			AA_CheckHit						();
+	virtual void			AA_CheckHit						();
 	// установка специфических анимаций 
 	virtual	void			CheckSpecParams					(u32 /**spec_params/**/) {}
 	virtual void			LookPosition					(Fvector to_point, float angular_speed = PI_DIV_3);		// каждый монстр может по-разному реализвать эту функ (e.g. кровосос с поворотом головы и т.п.)
@@ -168,6 +168,7 @@ public:
 	virtual bool			ability_can_drag				() {return false;}
 	virtual bool			ability_psi_attack				() {return false;}
 	virtual bool			ability_earthquake				() {return false;}
+	virtual bool			ability_can_jump				() {return false;}
 
 	// ---------------------------------------------------------------------------------
 			u16				m_FootBones[eLegsMaxNumber];

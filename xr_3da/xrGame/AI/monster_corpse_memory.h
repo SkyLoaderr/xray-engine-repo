@@ -22,10 +22,9 @@ public:
 	u32					get_corpse_count		() {return m_objects.size();}
 
 	void				clear					() {m_objects.clear();}
+	void				add_corpse				(const CEntityAlive *corpse);
 
 private:
-
-	void				add_corpse				(const CEntityAlive *corpse);
 	void				remove_non_actual		();
 
 	CORPSE_MAP_IT		find_best_corpse		();

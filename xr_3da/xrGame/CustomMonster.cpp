@@ -288,8 +288,8 @@ void CCustomMonster::shedule_Update	( u32 DT )
 			Center(C);
 			R = Radius();
 			//////////////////////////////////////
-#pragma todo("Oles to all AI guys: perf/logical problem: Only few objects needs 'feel_touch' why to call update for everybody?")
-			feel_touch_update		(C,R);
+/// #pragma todo("Oles to all AI guys: perf/logical problem: Only few objects needs 'feel_touch' why to call update for everybody?")
+///			feel_touch_update		(C,R);
 
 			net_update				uNext;
 			uNext.dwTimeStamp		= Level().timeServer();
@@ -710,43 +710,6 @@ void CCustomMonster::OnHUDDraw(CCustomHUD* /**hud/**/)
 	*/
 }
 #endif
-
-//void CCustomMonster::feel_touch_new				(CObject* O)
-//{
-//	NET_Packet	P;
-//
-//	// Test for weapon
-//	CWeapon* W	= dynamic_cast<CWeapon*>	(O);
-//	if (W)
-//	{
-//		// Search if we have similar type of weapon
-//		/*
-//		CWeapon* T = Weapons->getWeaponByWeapon	(W);
-//		if (T)	
-//		{
-//			// We have similar weapon - just get ammo out of it
-//			u_EventGen	(P,GE_TRANSFER_AMMO,ID());
-//			P.w_u16		(u16(W->ID()));
-//			P.w_u16		(u16(T->ID()));
-//			u_EventSend	(P);
-//			return;
-//		} else {
-//			// We doesn't have similar weapon - pick up it
-//			u_EventGen	(P,GE_OWNERSHIP_TAKE,ID());
-//			P.w_u16		(u16(W->ID()));
-//			u_EventSend	(P);
-//			return;
-//		}
-//		*/
-//		Log("~~~~~~~~~~~~~~~~~~~~~ EVENT");
-//		// We doesn't have similar weapon - pick up it
-//		u_EventGen	(P,GE_OWNERSHIP_TAKE,ID());
-//		P.w_u16		(u16(W->ID()));
-//		u_EventSend	(P);
-//		return;
-//	}
-//
-//	// 
 
 
 void CCustomMonster::Exec_Action(float /**dt/**/)

@@ -335,18 +335,21 @@ void CAI_Biting::UpdateCL()
 	// Проверка состояния анимации (атака)
 	if (g_Alive()) {
 		AA_CheckHit();
-
 		MotionMan.STEPS_Update(get_legs_number());
 	}
-
 	
-	CJumping *pJumping = dynamic_cast<CJumping *>(this);
-	if (!pJumping || !pJumping->IsActive())
-		PitchCorrection();
+	// Поправка Pitch
+	bool b_need_pitch_correction = true;
+	if (ability_can_jump()) {
+		CJumping *pJumping = dynamic_cast<CJumping *>(this);
+		if (pJumping && pJumping->IsActive()) b_need_pitch_correction = false;
+	}
+	if (b_need_pitch_correction) PitchCorrection();
 
 
 	m_pPhysics_support->in_UpdateCL();
 
+	// Обновить угловую и линейную скорости движения
 	CMonsterMovement::update_velocity();
 	m_fCurSpeed		= m_velocity_linear.current;
 
@@ -354,6 +357,7 @@ void CAI_Biting::UpdateCL()
 		m_body.speed	= m_velocity_angular.target * m_velocity_linear.current / (m_velocity_linear.target + EPS_L);
 	else 
 		m_body.speed	= m_velocity_angular.target;
+
 
 #ifdef DEBUG
 	HDebug->M_Update	();
@@ -366,7 +370,6 @@ void CAI_Biting::shedule_Update(u32 dt)
 	inherited::shedule_Update(dt);
 	
 	m_pPhysics_support->in_shedule_Update(dt);
-
 }
 
 

@@ -22,5 +22,13 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterCustomActionAbstract::execute()
 {
 	object->MotionMan.m_tAction	= data.action;
+
+	Msg("*MState :: Custom action Executed :: time = [%u]", Level().timeServer());
 }
 
+TEMPLATE_SPECIALIZATION
+bool CStateMonsterCustomActionAbstract::check_completion()
+{	
+	if (time_state_started + data.time_out > Level().timeServer()) return false;
+	return true;
+}

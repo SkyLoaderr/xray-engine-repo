@@ -48,6 +48,7 @@ protected:
 			void				export_action_management	();
 			void				export_motivation_management();
 			void				export_sound_info			();
+			void				export_monster_hit_info		();
 
 public:
 								CScriptEngine				();

@@ -25,6 +25,8 @@
 #include "motivation_action_manager.h"
 #include "object_handler.h"
 #include "ai_script_snd_info.h"
+#include "ai_script_monster_hit_info.h"
+
 
 class CInventoryItem;
 class CLuaHit;
@@ -605,6 +607,7 @@ public:
 			CLuaGameObject		*GetEnemy			() const;
 			CLuaGameObject		*GetCorpse			() const;
 			CLuaSoundInfo		GetSoundInfo		();
+			CLuaMonsterHitInfo	GetMonsterHitInfo	();
 
 	IC		void				bind_object			(CScriptBinderObject *object)
 	{

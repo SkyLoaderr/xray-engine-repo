@@ -116,3 +116,15 @@ TTime CMonsterHitMemory::get_last_hit_time()
 
 	return last_hit.time;
 }
+
+CObject	*CMonsterHitMemory::get_last_hit_object()
+{
+	SMonsterHit		last_hit;
+	last_hit.object	= 0;
+
+	for (u32 i = 0; i < m_hits.size(); i++) {
+		if (m_hits[i].time > last_hit.time)	last_hit = m_hits[i];
+	}
+
+	return last_hit.object;
+}

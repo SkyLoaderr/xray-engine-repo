@@ -13,6 +13,7 @@
 #include "ai_script_sound.h"
 #include "ai_script_hit.h"
 #include "ai_script_snd_info.h"
+#include "ai_script_monster_hit_info.h"
 #include "luabind/return_reference_to_policy.hpp"
 #include "luabind/out_value_policy.hpp"
 #include "luabind/adopt_policy.hpp"
@@ -345,5 +346,16 @@ void CScriptEngine::export_sound_info()
 			.def_readwrite("power",				&CLuaSoundInfo::power)
 			.def_readwrite("time",				&CLuaSoundInfo::time)
 	];
+}
+
+void CScriptEngine::export_monster_hit_info()
+{
+	module(lua())
+		[
+			class_<CLuaMonsterHitInfo>("MonsterHitInfo")
+			.def_readwrite("who",				&CLuaMonsterHitInfo::who)
+			.def_readwrite("direction",			&CLuaMonsterHitInfo::direction)
+			.def_readwrite("time",				&CLuaMonsterHitInfo::time)
+		];
 }
 

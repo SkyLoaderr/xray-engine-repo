@@ -8,21 +8,19 @@
 
 #include "stdafx.h"
 #include "ai_biting.h"
-#include "../../phmovementcontrol.h"
 #include "../ai_monster_debug.h"
 #include "../ai_monster_group.h"
 
 
 void CAI_Biting::Think()
 {
-	if (!g_Alive()) return;
-	
+	if (!g_Alive())		return;
+	if (getDestroy())	return;
+
 #ifdef DEEP_TEST_SPEED	
 	if (time_next_update > Level().timeServer()) return;
 	time_next_update = Level().timeServer() + 1000 / UPS;
 #endif
-
-	if (getDestroy()) return;
 
 	m_dwLastUpdateTime						= m_current_update;
 	m_current_update						= Level().timeServer();
@@ -30,8 +28,6 @@ void CAI_Biting::Think()
 	MotionStats->update						();
 	
 	vfUpdateParameters						();
-
-	if (m_PhysicMovementControl->JumpState()) enable_movement(false);
 
 	CMonsterMovement::Frame_Init();
 
@@ -67,12 +63,6 @@ void CAI_Biting::Think()
 #ifdef DEBUG
 	HDebug->SetActive						(true);
 #endif
-
-//	m_velocity_linear.current = 0.f;
-//	m_velocity_linear.target = 0.f;
-//
-//	m_fCurSpeed = 0.f;
-//	Msg("Monster [%s], Dest orient = [%u]", *cName(), CDetailPathManager::use_dest_orientation());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
