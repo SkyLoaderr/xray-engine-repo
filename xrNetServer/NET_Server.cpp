@@ -54,7 +54,8 @@ IPureServer::IPureServer	(CTimer* timer)
 
 IPureServer::~IPureServer	()
 {
-	BannedAdresses.clear();
+	for	(u32 it=0; it<BannedAddresses.size(); it++)	xr_delete(BannedAddresses[it]);
+	BannedAddresses.clear();
 }
 
 void IPureServer::pCompress	(NET_Packet& D, NET_Packet& S)
@@ -372,10 +373,21 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 		{
 			PDPNMSG_INDICATE_CONNECT msg = (PDPNMSG_INDICATE_CONNECT)pMessage;
 
+			char HAddr[4] = {0, 0, 0, 0};
+			GetClientAddress(msg->pAddressPlayer, HAddr);
+
+			if (GetBannedClient(HAddr)) 
+			{				
+				return S_FALSE;
+			};
+
+/*
 			WCHAR wstrHostname[ 256 ] = {0};
 			DWORD dwSize = sizeof(wstrHostname);
 			DWORD dwDataType = 0;
 			msg->pAddressPlayer->GetComponentByName( DPNA_KEY_HOSTNAME, wstrHostname, &dwSize, &dwDataType );
+
+			GetClientAddress()
 
 
 			string256				HostName;
@@ -388,9 +400,7 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 			{
 				HAddr[i] = char(atol(a[i]));
 			};		
-
-//			int x=0;
-//			x=x;
+*/
 		}break;
     }
 	
@@ -554,6 +564,61 @@ bool			IPureServer::DisconnectClient	(IClient* C)
 	return true;
 };
 
+void			IPureServer::GetClientAddress	(IDirectPlay8Address* pClientAddress, char* Address)
+{
+	if (!Address) return;
+	Address[0] = 0; Address[1] = 0; Address[2] = 0; Address[3] = 0;
+	if (!pClientAddress) return;
+
+	WCHAR wstrHostname[ 256 ] = {0};
+	DWORD dwSize = sizeof(wstrHostname);
+	DWORD dwDataType = 0;
+	CHK_DX(pClientAddress->GetComponentByName( DPNA_KEY_HOSTNAME, wstrHostname, &dwSize, &dwDataType ));
+
+	string256				HostName;
+	CHK_DX(WideCharToMultiByte(CP_ACP,0,wstrHostname,-1,HostName,sizeof(HostName),0,0));
+	char HAddr[4] = {0, 0, 0, 0};
+	char a[4][4] = {0, 0, 0, 0};
+	sscanf(HostName, "%[^'.'].%[^'.'].%[^'.'].%s", a[0], a[1], a[2], a[3]);
+
+	for (int i=0; i<4; i++)
+	{
+		Address[i] = char(atol(a[i]));
+	};		
+};
+
+void			IPureServer::GetClientAddress	(ClientID ID, char* Address)
+{
+	if (!Address) return;
+	Address[0] = 0; Address[1] = 0; Address[2] = 0; Address[3] = 0;
+
+	IDirectPlay8Address* pClAddr = NULL;
+	CHK_DX(NET->GetClientAddress(ID.value(), &pClAddr, 0));
+
+	GetClientAddress(pClAddr, Address);
+};
+
+IBannedClient*			IPureServer::GetBannedClient	(const char* Address)
+{
+	for	(u32 it=0; it<BannedAddresses.size(); it++)	
+	{
+		IBannedClient* pBClient = BannedAddresses[it];
+		if ((*pBClient) == Address ) return pBClient;
+	}
+	return NULL;
+};
+
 void			IPureServer::BanClient			(IClient* C, u32 BanTime)
 {
+	char ClAddress[4];
+	GetClientAddress(C->ID, ClAddress);
+	
+	if (GetBannedClient(ClAddress)) 
+	{
+		Msg("Already banned\n");
+		return;
+	};
+
+	IBannedClient* pNewClient = xr_new<IBannedClient>(ClAddress, BanTime);
+	if (pNewClient) BannedAddresses.push_back(pNewClient);
 };

@@ -60,7 +60,17 @@ public:
 		BanTime = 0;
 	};
 
-	bool	operator==		(const char* Addr)
+	IBannedClient (const char* Address, const u32 Time)
+	{
+		HAddr[0] = Address[0];
+		HAddr[1] = Address[1];
+		HAddr[2] = Address[2];
+		HAddr[3] = Address[3];
+
+		BanTime = Time;
+	};
+
+	bool	operator == 		(const char* Addr)
 	{
 		for (int i=0; i<4; i++)
 		{
@@ -68,7 +78,7 @@ public:
 			if (HAddr[i] != Addr[0]) return false;
 		};
 		return true;
-	};
+	};	
 };
 
 class XRNETSERVER_API IPureServer
@@ -87,7 +97,7 @@ protected:
 
 	int						psNET_Port;	
 
-	xr_vector<IBannedClient*>		BannedAdresses;
+	xr_vector<IBannedClient*>		BannedAddresses;
 
 	// Compressor configuration
 	MSYS_CONFIG				msgConfig;
@@ -108,6 +118,10 @@ protected:
 	CTimer*					device_timer;
 
 	virtual void			new_client			(ClientID clientID, LPCSTR name, bool bLocal)   =0;
+			void			GetClientAddress	(ClientID ID, char* Address);
+			void			GetClientAddress	(IDirectPlay8Address* pClientAddress, char* Address);
+
+			IBannedClient*	GetBannedClient		(const char* Address);
 
 public:
 	IPureServer				(CTimer* timer);
