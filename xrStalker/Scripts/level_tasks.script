@@ -203,8 +203,15 @@ function proceed(actor)
 	end 
 
 	if	actor:has_info("bar_kill_borov_start") and
+ 		actor:dont_has_info("val_borov_info_gain") and
+		actor:object("borov_flash") ~= nil
+	then		
+		actor:give_info_portion("val_borov_info_gain")
+		set_task_state(task.completed, "bar_dolg_borov_quest", 1)
+	end 
+
+	if	actor:has_info("bar_kill_borov_start") and
  		actor:has_info("bar_kill_borov_voronin") and
- 		actor:has_info("val_borov_info_gain") and
  		actor:dont_has_info("bar_kill_borov_done")
 	then		
 		actor:give_info_portion("bar_kill_borov_done")
