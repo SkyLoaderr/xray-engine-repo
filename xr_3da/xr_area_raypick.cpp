@@ -63,8 +63,8 @@ void CObjectSpace::CaptureSlots(const Fvector& start, const Fvector& dir, float 
 	int x2	= TransX(end.x);
 	int z2	= TransZ(end.z);
 
-	int dx	= _abs(x2 - x1); Msg("[%d=%d-%d] a:%d b:%d",x2 - x1,x2,x1,abs(x2 - x1),_abs(x2 - x1));
-	int dz	= _abs(z2 - z1); Msg("[%d=%d-%d] a:%d b:%d",z2 - z1,z2,z1,abs(z2 - z1),_abs(z2 - z1));
+	int dx	= _abs(x2 - x1);// Msg("[%d=%d-%d] a:%d b:%d",x2 - x1,x2,x1,abs(x2 - x1),_abs(x2 - x1));
+	int dz	= _abs(z2 - z1);// Msg("[%d=%d-%d] a:%d b:%d",z2 - z1,z2,z1,abs(z2 - z1),_abs(z2 - z1));
     int sx	= x2 >= x1 ? 1 : -1;
     int sz	= z2 >= z1 ? 1 : -1;
 	
