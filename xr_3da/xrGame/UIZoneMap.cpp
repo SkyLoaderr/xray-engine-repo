@@ -108,7 +108,7 @@ void CUIZoneMap::Init()
 					align);
 	
 	landscape.SetRect(0,0,2*map_radius,2*map_radius);
-	landscape.SetColor(subst_alpha(landscape.GetColor(), 50));
+	landscape.SetColor(subst_alpha(landscape.GetColor(), 128));
 
 #pragma todo("Correct ininializing params")
 	if (Level().pLevel->section_exist("level_map"))	
