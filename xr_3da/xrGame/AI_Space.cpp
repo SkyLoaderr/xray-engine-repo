@@ -105,7 +105,6 @@ void CAI_Space::unload				()
 	xr_delete				(m_graph_engine);
 	xr_delete				(m_level_graph);
 	xr_delete				(m_cross_table);
-	xr_delete				(m_cover_manager);
 	lua_settop				(m_lua_virtual_machine,0);
 }
 
