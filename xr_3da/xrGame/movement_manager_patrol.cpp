@@ -94,8 +94,10 @@ void CMovementManager::process_patrol_path()
 			}
 			default : NODEFAULT;
 		}
+
 		if (time_over() || (m_path_state == prev_state))
 			break;
+
 		prev_state		= m_path_state;
 	}
 }
