@@ -187,7 +187,7 @@ MotionID CStalkerAnimationManager::missile_animation	(u32 slot, const EBodyState
 
 MotionID CStalkerAnimationManager::assign_torso_animation	()
 {
-	_body_state		= body_state();
+	EBodyState		_body_state	= body_state();
 	VERIFY			((_body_state != eBodyStateCrouch) || (_body_state == object().movement().body_state()));
 	if (!object().inventory().ActiveItem())
 		return		(no_object_animation(_body_state));
