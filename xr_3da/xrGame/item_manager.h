@@ -11,7 +11,6 @@
 #include "object_manager.h"
 #include "gameobject.h"
 
-class CRestrictedObject;
 class CCustomMonster;
 
 class CItemManager : public CObjectManager<const CGameObject > {
