@@ -17,7 +17,6 @@ protected:
 public:
 	virtual			~CScriptValueContainer	();
 	IC		void	assign					();
-	
-	template <typename T, typename _type>
-	IC		void	add						(_type object, LPCSTR name);
+	IC		void	clear					();
+	IC		void	add						(CScriptValue *value);
 };

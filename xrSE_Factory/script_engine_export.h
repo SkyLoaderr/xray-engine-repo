@@ -12,6 +12,7 @@
 #include "script_fmatrix.h"
 #include "script_engine.h"
 #include "script_token_list.h"
+#include "script_rtoken_list.h"
 #include "script_ini_file.h"
 #include "script_net_packet.h"
 #include "object_factory.h"

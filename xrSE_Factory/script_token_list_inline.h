@@ -8,12 +8,21 @@
 
 #pragma once
 
+
+IC	CScriptTokenList::CScriptTokenList	()
+{
+	clear					();
+}
+
 IC	void CScriptTokenList::add		(LPCSTR name, int id)
 {
 	VERIFY					((token(name) == m_token_list.end()) && (token(id) == m_token_list.end()));
 	xr_token				temp;
-	temp.name				= name;
+	temp.name				= xr_strdup(name);
 	temp.id					= id;
+	m_token_list.pop_back	();
+	m_token_list.push_back	(temp);
+	Memory.mem_fill			(&temp,0,sizeof(temp));
 	m_token_list.push_back	(temp);
 }
 
@@ -27,6 +36,9 @@ IC	void CScriptTokenList::remove	(LPCSTR name)
 IC	void CScriptTokenList::clear	()
 {
 	m_token_list.clear		();
+	xr_token				temp;
+	Memory.mem_fill			(&temp,0,sizeof(temp));
+	m_token_list.push_back	(temp);
 }
 
 IC	int	 CScriptTokenList::id		(LPCSTR name)

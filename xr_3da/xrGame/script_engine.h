@@ -66,6 +66,11 @@ public:
 
 	template <typename _result_type>
 	IC		luabind::functor<_result_type>	create_object_creator	(LPCSTR class_name, LPCSTR arguments);
+			
+	template <typename T>
+			T					get_value_from_object		(luabind::object object);
+	IC		void				initialize_return_passed_object();
+
 			void				load_class_registrators		();
 	
 #ifdef XRGAME_EXPORTS

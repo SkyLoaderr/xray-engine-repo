@@ -9,21 +9,20 @@
 #pragma once
 
 #include "object_broker.h"
-#include "script_value_wrapper.h"
+#include "script_value.h"
 
 IC	CScriptValueContainer::~CScriptValueContainer	()
 {
-	delete_data	(m_values);
+	clear				();
 }
 
-template <typename T, typename _type>
-IC	void CScriptValueContainer::add			(_type object, LPCSTR name)
+IC	void CScriptValueContainer::add			(CScriptValue *new_value)
 {
 	CScriptValue		*value = 0;
 	xr_vector<CScriptValue*>::const_iterator	I = m_values.begin();
 	xr_vector<CScriptValue*>::const_iterator	E = m_values.end();
 	for ( ; I != E; ++I)
-		if (!xr_strcmp((*I)->name() == name)) {
+		if (!xr_strcmp((*I)->name(),new_value->name())) {
 			value		= *I;
 			break;
 		}
@@ -31,7 +30,7 @@ IC	void CScriptValueContainer::add			(_type object, LPCSTR name)
 	if (value)
 		return;
 
-	m_values.push_back	(xr_new<CLuaValueWrapper<T> >(object,name));
+	m_values.push_back	(new_value);
 }
 
 IC	void CScriptValueContainer::assign		()
@@ -40,4 +39,9 @@ IC	void CScriptValueContainer::assign		()
 	xr_vector<CScriptValue*>::iterator	E = m_values.end();
 	for ( ; I != E; ++I)
 		(*I)->assign	();
+}
+
+IC	void CScriptValueContainer::clear		()
+{
+	delete_data			(m_values);
 }

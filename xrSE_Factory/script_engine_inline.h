@@ -108,3 +108,22 @@ IC	luabind::functor<_result_type> CScriptEngine::create_object_creator	(LPCSTR c
 	R_ASSERT				(functor(function_name,result));
 	return					(result);
 }
+
+IC	void CScriptEngine::initialize_return_passed_object	()
+{
+	static bool			initialized = false;
+	if (!initialized) {
+		initialized		= true;
+		lua_dostring	(lua(),"function return_passed_object(obj) return obj end");
+	}
+}
+
+template <typename T>
+T	CScriptEngine::get_value_from_object(luabind::object object)
+{
+	initialize_return_passed_object();
+	luabind::functor<T>	f;
+	R_ASSERT			(functor("return_passed_object",f));
+	return				(f(object));
+}
+

@@ -15,6 +15,8 @@
 
 using namespace luabind;
 
+struct CChooseType {};
+
 template <typename T>
 T& set(T *self, const typename T::TYPE mask, bool value)
 {
@@ -51,6 +53,12 @@ bool equal(T *self, const T &f, const typename T::TYPE mask)
 	return	(!!self->equal(f,mask));
 }
 
+template <typename T>
+void one(T *self)
+{
+	self->assign(typename T::TYPE(-1));
+}
+
 extern CScriptPropertiesListHelper *g_property_list_helper;
 
 CScriptPropertiesListHelper *properties_helper()
@@ -64,9 +72,10 @@ void CScriptPropertiesListHelper::script_register(lua_State *L)
 {
 	module(L) [
 //		class_<Flags8>		("flags8")
+//			.def(			constructor<>())
 //			.def("get",		&Flags8::get)
 //			.def("zero",	&Flags8::zero)
-//			.def("one",		&Flags8::one)
+//			.def("one",		&one<Flags8>)
 //			.def("invert",	(Flags8& (Flags8::*)())(&Flags8::invert))
 //			.def("invert",	(Flags8& (Flags8::*)(const Flags8&))(&Flags8::invert))
 //			.def("invert",	(Flags8& (Flags8::*)(const Flags8::TYPE))(&Flags8::invert))
@@ -84,9 +93,10 @@ void CScriptPropertiesListHelper::script_register(lua_State *L)
 //			.def("equal",	(bool (*)(Flags8*,const Flags8&,const Flags8::TYPE))(&equal<Flags8>)),
 //
 		class_<Flags16>		("flags16")
+			.def(			constructor<>())
 			.def("get",		&Flags16::get)
 			.def("zero",	&Flags16::zero)
-			.def("one",		&Flags16::one)
+			.def("one",		&one<Flags16>)
 			.def("invert",	(Flags16& (Flags16::*)())(&Flags16::invert))
 			.def("invert",	(Flags16& (Flags16::*)(const Flags16&))(&Flags16::invert))
 			.def("invert",	(Flags16& (Flags16::*)(const Flags16::TYPE))(&Flags16::invert))
@@ -103,7 +113,8 @@ void CScriptPropertiesListHelper::script_register(lua_State *L)
 			.def("equal",	(bool (*)(Flags16*,const Flags16&))(&equal<Flags16>))
 			.def("equal",	(bool (*)(Flags16*,const Flags16&,const Flags16::TYPE))(&equal<Flags16>)),
 
-		class_<Flags32>		("flags16")
+		class_<Flags32>		("flags32")
+			.def(			constructor<>())
 			.def("get",		&Flags32::get)
 			.def("zero",	&Flags32::zero)
 			.def("one",		&Flags32::one)
@@ -135,6 +146,7 @@ void CScriptPropertiesListHelper::script_register(lua_State *L)
 		class_<U8Value>		("u8_value"),
 		class_<U16Value>	("u16_value"),
 		class_<U32Value>	("u32_value"),
+		class_<FloatValue>	("u32_value"),
 		class_<BOOLValue>	("bool_value"),
 		class_<VectorValue>	("vector_value"),
 		class_<ColorValue>	("color_value"),
@@ -145,9 +157,33 @@ void CScriptPropertiesListHelper::script_register(lua_State *L)
 		class_<Token8Value>	("token8_value"),
 		class_<Token16Value>("token16_value"),
 		class_<Token32Value>("token32_value"),
-		class_<RToken8Value>("rtoken8_value"),
-		class_<RToken16Value>("rtoken16_value"),
-		class_<RToken32Value>("rtoken32_value"),
+//		class_<RToken8Value>("rtoken8_value"),
+//		class_<RToken16Value>("rtoken16_value"),
+//		class_<RToken32Value>("rtoken32_value"),
+		class_<ListValue>	("list_value"),
+		
+		class_<CChooseType>	("choose_type")
+			.enum_("choose_type")
+			[
+				value("custom",				int(smCustom)),
+				value("sound_source",		int(smSoundSource)),
+				value("sound_environment",	int(smSoundEnv)),
+				value("library_object",		int(smObject)),
+				value("engine_shader",		int(smEShader)),
+				value("compiler_shader",	int(smCShader)),
+				value("particle_effect",	int(smPE)),
+				value("particle_system",	int(smParticles)),
+				value("texture",			int(smTexture)),
+				value("entity",				int(smEntityType)),
+				value("spawn_item",			int(smSpawnItem)),
+				value("light_animation",	int(smLAnim)),
+				value("visual",				int(smVisual)),
+				value("skeleton_animations",int(smSkeletonAnims)),
+				value("skeleton_bones",		int(smSkeletonBones)),
+				value("material",			int(smGameMaterial)),
+				value("game_animation",		int(smGameAnim)),
+				value("game_motion",		int(smGameSMotions))
+			],
 
 		class_<CScriptPropertiesListHelper>("properties_list_helper")
 			.def("vector_on_after_edit",	&CScriptPropertiesListHelper::FvectorRDOnAfterEdit)
@@ -164,67 +200,68 @@ void CScriptPropertiesListHelper::script_register(lua_State *L)
 			.def("create_canvas",&CScriptPropertiesListHelper::CreateCanvas)
 			.def("create_button",&CScriptPropertiesListHelper::CreateButton)
 			
-			.def("create_choose", (ChooseValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR,  LPCSTR*, u32))					(&CScriptPropertiesListHelper::CreateChoose))
-			.def("create_choose", (ChooseValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR,  LPCSTR*, u32, LPCSTR))			(&CScriptPropertiesListHelper::CreateChoose))
+			.def("create_choose", (ChooseValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR,  luabind::object , LPCSTR , u32))					(&CScriptPropertiesListHelper::CreateChoose))
+			.def("create_choose", (ChooseValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR,  luabind::object , LPCSTR , u32, LPCSTR))			(&CScriptPropertiesListHelper::CreateChoose))
+			.def("create_choose", (ChooseValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR,  luabind::object , LPCSTR , u32, LPCSTR, LPCSTR))	(&CScriptPropertiesListHelper::CreateChoose))
 			
-//			.def("create_s8", (S8Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR,  s8*))					(&CScriptPropertiesListHelper::CreateS8))
-//			.def("create_s8", (S8Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR,  s8*,  s8))				(&CScriptPropertiesListHelper::CreateS8))
-//			.def("create_s8", (S8Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR,  s8*,  s8,  s8))			(&CScriptPropertiesListHelper::CreateS8))
-//			.def("create_s8", (S8Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR,  s8*,  s8,  s8,  s8))	(&CScriptPropertiesListHelper::CreateS8))
+//			.def("create_s8", (S8Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR,  luabind::object , LPCSTR ))					(&CScriptPropertiesListHelper::CreateS8))
+//			.def("create_s8", (S8Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR,  luabind::object , LPCSTR ,  s8))				(&CScriptPropertiesListHelper::CreateS8))
+//			.def("create_s8", (S8Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR,  luabind::object , LPCSTR ,  s8,  s8))			(&CScriptPropertiesListHelper::CreateS8))
+//			.def("create_s8", (S8Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR,  luabind::object , LPCSTR ,  s8,  s8,  s8))	(&CScriptPropertiesListHelper::CreateS8))
 			
-			.def("create_s16",(S16Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, s16*))					(&CScriptPropertiesListHelper::CreateS16))
-			.def("create_s16",(S16Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, s16*, s16))				(&CScriptPropertiesListHelper::CreateS16))
-			.def("create_s16",(S16Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, s16*, s16, s16))		(&CScriptPropertiesListHelper::CreateS16))
-			.def("create_s16",(S16Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, s16*, s16, s16, s16))	(&CScriptPropertiesListHelper::CreateS16))
+			.def("create_s16",(S16Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR ))					(&CScriptPropertiesListHelper::CreateS16))
+			.def("create_s16",(S16Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , s16))				(&CScriptPropertiesListHelper::CreateS16))
+			.def("create_s16",(S16Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , s16, s16))		(&CScriptPropertiesListHelper::CreateS16))
+			.def("create_s16",(S16Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , s16, s16, s16))	(&CScriptPropertiesListHelper::CreateS16))
 
-			.def("create_s32",(S32Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, s32*))					(&CScriptPropertiesListHelper::CreateS32))
-			.def("create_s32",(S32Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, s32*, s32))				(&CScriptPropertiesListHelper::CreateS32))
-			.def("create_s32",(S32Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, s32*, s32, s32))		(&CScriptPropertiesListHelper::CreateS32))
-			.def("create_s32",(S32Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, s32*, s32, s32, s32))	(&CScriptPropertiesListHelper::CreateS32))
+			.def("create_s32",(S32Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR ))					(&CScriptPropertiesListHelper::CreateS32))
+			.def("create_s32",(S32Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , s32))				(&CScriptPropertiesListHelper::CreateS32))
+			.def("create_s32",(S32Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , s32, s32))		(&CScriptPropertiesListHelper::CreateS32))
+			.def("create_s32",(S32Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , s32, s32, s32))	(&CScriptPropertiesListHelper::CreateS32))
 			
-			.def("create_u8", (U8Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR,  u8*))					(&CScriptPropertiesListHelper::CreateU8))
-			.def("create_u8", (U8Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR,  u8*,  u8))				(&CScriptPropertiesListHelper::CreateU8))
-			.def("create_u8", (U8Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR,  u8*,  u8,  u8))			(&CScriptPropertiesListHelper::CreateU8))
-			.def("create_u8", (U8Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR,  u8*,  u8,  u8,  u8))	(&CScriptPropertiesListHelper::CreateU8))
+			.def("create_u8", (U8Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR,  luabind::object , LPCSTR ))					(&CScriptPropertiesListHelper::CreateU8))
+			.def("create_u8", (U8Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR,  luabind::object , LPCSTR ,  u8))				(&CScriptPropertiesListHelper::CreateU8))
+			.def("create_u8", (U8Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR,  luabind::object , LPCSTR ,  u8,  u8))			(&CScriptPropertiesListHelper::CreateU8))
+			.def("create_u8", (U8Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR,  luabind::object , LPCSTR ,  u8,  u8,  u8))	(&CScriptPropertiesListHelper::CreateU8))
 
-			.def("create_u16",(U16Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, u16*))					(&CScriptPropertiesListHelper::CreateU16))
-			.def("create_u16",(U16Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, u16*, u16))				(&CScriptPropertiesListHelper::CreateU16))
-			.def("create_u16",(U16Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, u16*, u16, u16))		(&CScriptPropertiesListHelper::CreateU16))
-			.def("create_u16",(U16Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, u16*, u16, u16, u16))	(&CScriptPropertiesListHelper::CreateU16))
+			.def("create_u16",(U16Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR ))					(&CScriptPropertiesListHelper::CreateU16))
+			.def("create_u16",(U16Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , u16))				(&CScriptPropertiesListHelper::CreateU16))
+			.def("create_u16",(U16Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , u16, u16))		(&CScriptPropertiesListHelper::CreateU16))
+			.def("create_u16",(U16Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , u16, u16, u16))	(&CScriptPropertiesListHelper::CreateU16))
 
-			.def("create_u32",(U32Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, u32*))					(&CScriptPropertiesListHelper::CreateU32))
-			.def("create_u32",(U32Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, u32*, u32))				(&CScriptPropertiesListHelper::CreateU32))
-			.def("create_u32",(U32Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, u32*, u32, u32))		(&CScriptPropertiesListHelper::CreateU32))
-			.def("create_u32",(U32Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, u32*, u32, u32, u32))	(&CScriptPropertiesListHelper::CreateU32))
+			.def("create_u32",(U32Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR ))					(&CScriptPropertiesListHelper::CreateU32))
+			.def("create_u32",(U32Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , u32))				(&CScriptPropertiesListHelper::CreateU32))
+			.def("create_u32",(U32Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , u32, u32))		(&CScriptPropertiesListHelper::CreateU32))
+			.def("create_u32",(U32Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , u32, u32, u32))	(&CScriptPropertiesListHelper::CreateU32))
 
-			.def("create_float",(FloatValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, float*))					(&CScriptPropertiesListHelper::CreateFloat))
-			.def("create_float",(FloatValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, float*, float))				(&CScriptPropertiesListHelper::CreateFloat))
-			.def("create_float",(FloatValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, float*, float, float))		(&CScriptPropertiesListHelper::CreateFloat))
-			.def("create_float",(FloatValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, float*, float, float, float))(&CScriptPropertiesListHelper::CreateFloat))
-			.def("create_float",(FloatValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, float*, float, float, float,int))(&CScriptPropertiesListHelper::CreateFloat))
+			.def("create_float",(FloatValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR ))					(&CScriptPropertiesListHelper::CreateFloat))
+			.def("create_float",(FloatValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , float))				(&CScriptPropertiesListHelper::CreateFloat))
+			.def("create_float",(FloatValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , float, float))		(&CScriptPropertiesListHelper::CreateFloat))
+			.def("create_float",(FloatValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , float, float, float))(&CScriptPropertiesListHelper::CreateFloat))
+			.def("create_float",(FloatValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , float, float, float,int))(&CScriptPropertiesListHelper::CreateFloat))
 
 			.def("create_bool",&CScriptPropertiesListHelper::CreateBOOL)
 
-			.def("create_vector",(VectorValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, Fvector*))					(&CScriptPropertiesListHelper::CreateVector))
-			.def("create_vector",(VectorValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, Fvector*, float))				(&CScriptPropertiesListHelper::CreateVector))
-			.def("create_vector",(VectorValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, Fvector*, float, float))		(&CScriptPropertiesListHelper::CreateVector))
-			.def("create_vector",(VectorValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, Fvector*, float, float, float))(&CScriptPropertiesListHelper::CreateVector))
-			.def("create_vector",(VectorValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, Fvector*, float, float, float,int))(&CScriptPropertiesListHelper::CreateVector))
+			.def("create_vector",(VectorValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR ))					(&CScriptPropertiesListHelper::CreateVector))
+			.def("create_vector",(VectorValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , float))				(&CScriptPropertiesListHelper::CreateVector))
+			.def("create_vector",(VectorValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , float, float))		(&CScriptPropertiesListHelper::CreateVector))
+			.def("create_vector",(VectorValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , float, float, float))(&CScriptPropertiesListHelper::CreateVector))
+			.def("create_vector",(VectorValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , float, float, float,int))(&CScriptPropertiesListHelper::CreateVector))
 			
-			.def("create_flag8",(Flag8Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, Flags8*, u8))					(&CScriptPropertiesListHelper::CreateFlag8))
-			.def("create_flag8",(Flag8Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, Flags8*, u8,LPCSTR))			(&CScriptPropertiesListHelper::CreateFlag8))
-			.def("create_flag8",(Flag8Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, Flags8*, u8,LPCSTR,LPCSTR))		(&CScriptPropertiesListHelper::CreateFlag8))
-			.def("create_flag8",(Flag8Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, Flags8*, u8,LPCSTR,LPCSTR,u32))	(&CScriptPropertiesListHelper::CreateFlag8))
+			.def("create_flag8",(Flag8Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , u8))					(&CScriptPropertiesListHelper::CreateFlag8))
+			.def("create_flag8",(Flag8Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , u8,LPCSTR))			(&CScriptPropertiesListHelper::CreateFlag8))
+			.def("create_flag8",(Flag8Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , u8,LPCSTR,LPCSTR))		(&CScriptPropertiesListHelper::CreateFlag8))
+			.def("create_flag8",(Flag8Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , u8,LPCSTR,LPCSTR,u32))	(&CScriptPropertiesListHelper::CreateFlag8))
 			
-			.def("create_flag16",(Flag16Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, Flags16*, u16))					(&CScriptPropertiesListHelper::CreateFlag16))
-			.def("create_flag16",(Flag16Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, Flags16*, u16,LPCSTR))			(&CScriptPropertiesListHelper::CreateFlag16))
-			.def("create_flag16",(Flag16Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, Flags16*, u16,LPCSTR,LPCSTR))		(&CScriptPropertiesListHelper::CreateFlag16))
-			.def("create_flag16",(Flag16Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, Flags16*, u16,LPCSTR,LPCSTR,u32))	(&CScriptPropertiesListHelper::CreateFlag16))
+			.def("create_flag16",(Flag16Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , u16))					(&CScriptPropertiesListHelper::CreateFlag16))
+			.def("create_flag16",(Flag16Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , u16,LPCSTR))			(&CScriptPropertiesListHelper::CreateFlag16))
+			.def("create_flag16",(Flag16Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , u16,LPCSTR,LPCSTR))		(&CScriptPropertiesListHelper::CreateFlag16))
+			.def("create_flag16",(Flag16Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , u16,LPCSTR,LPCSTR,u32))	(&CScriptPropertiesListHelper::CreateFlag16))
 
-			.def("create_flag32",(Flag32Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, Flags32*, u32))					(&CScriptPropertiesListHelper::CreateFlag32))
-			.def("create_flag32",(Flag32Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, Flags32*, u32,LPCSTR))			(&CScriptPropertiesListHelper::CreateFlag32))
-			.def("create_flag32",(Flag32Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, Flags32*, u32,LPCSTR,LPCSTR))		(&CScriptPropertiesListHelper::CreateFlag32))
-			.def("create_flag32",(Flag32Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, Flags32*, u32,LPCSTR,LPCSTR,u32))	(&CScriptPropertiesListHelper::CreateFlag32))
+			.def("create_flag32",(Flag32Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , u32))					(&CScriptPropertiesListHelper::CreateFlag32))
+			.def("create_flag32",(Flag32Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , u32,LPCSTR))			(&CScriptPropertiesListHelper::CreateFlag32))
+			.def("create_flag32",(Flag32Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , u32,LPCSTR,LPCSTR))		(&CScriptPropertiesListHelper::CreateFlag32))
+			.def("create_flag32",(Flag32Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , u32,LPCSTR,LPCSTR,u32))	(&CScriptPropertiesListHelper::CreateFlag32))
 
 			.def("create_token8",	&CScriptPropertiesListHelper::CreateToken8)
 			.def("create_token16",	&CScriptPropertiesListHelper::CreateToken16)
@@ -234,27 +271,29 @@ void CScriptPropertiesListHelper::script_register(lua_State *L)
 //			.def("create_rtoken16",	&CScriptPropertiesListHelper::CreateRToken16)
 //			.def("create_rtoken32",	&CScriptPropertiesListHelper::CreateRToken32)
 
+			.def("create_list",	&CScriptPropertiesListHelper::CreateList)
+
 			.def("create_color",&CScriptPropertiesListHelper::CreateColor)
 			.def("create_fcolor",&CScriptPropertiesListHelper::CreateFColor)
 			.def("create_vcolor",&CScriptPropertiesListHelper::CreateVColor)
 			
 			.def("create_text",&CScriptPropertiesListHelper::CreateRText)
 
-			.def("create_time",(FloatValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, float*))						(&CScriptPropertiesListHelper::CreateTime))
-			.def("create_time",(FloatValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, float*, float))				(&CScriptPropertiesListHelper::CreateTime))
-			.def("create_time",(FloatValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, float*, float, float))		(&CScriptPropertiesListHelper::CreateTime))
+			.def("create_time",(FloatValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR ))						(&CScriptPropertiesListHelper::CreateTime))
+			.def("create_time",(FloatValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , float))				(&CScriptPropertiesListHelper::CreateTime))
+			.def("create_time",(FloatValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , float, float))		(&CScriptPropertiesListHelper::CreateTime))
 
-			.def("create_angle",(FloatValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, float*))					(&CScriptPropertiesListHelper::CreateAngle))
-			.def("create_angle",(FloatValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, float*, float))				(&CScriptPropertiesListHelper::CreateAngle))
-			.def("create_angle",(FloatValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, float*, float, float))		(&CScriptPropertiesListHelper::CreateAngle))
-			.def("create_angle",(FloatValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, float*, float, float, float))(&CScriptPropertiesListHelper::CreateAngle))
-			.def("create_angle",(FloatValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, float*, float, float, float,int))(&CScriptPropertiesListHelper::CreateAngle))
+			.def("create_angle",(FloatValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR ))					(&CScriptPropertiesListHelper::CreateAngle))
+			.def("create_angle",(FloatValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , float))				(&CScriptPropertiesListHelper::CreateAngle))
+			.def("create_angle",(FloatValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , float, float))		(&CScriptPropertiesListHelper::CreateAngle))
+			.def("create_angle",(FloatValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , float, float, float))(&CScriptPropertiesListHelper::CreateAngle))
+			.def("create_angle",(FloatValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , float, float, float,int))(&CScriptPropertiesListHelper::CreateAngle))
 
-			.def("create_vangle",(VectorValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, Fvector*))					(&CScriptPropertiesListHelper::CreateAngle3))
-			.def("create_vangle",(VectorValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, Fvector*, float))				(&CScriptPropertiesListHelper::CreateAngle3))
-			.def("create_vangle",(VectorValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, Fvector*, float, float))		(&CScriptPropertiesListHelper::CreateAngle3))
-			.def("create_vangle",(VectorValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, Fvector*, float, float, float))(&CScriptPropertiesListHelper::CreateAngle3))
-			.def("create_vangle",(VectorValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, Fvector*, float, float, float,int))(&CScriptPropertiesListHelper::CreateAngle3))
+			.def("create_vangle",(VectorValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR ))					(&CScriptPropertiesListHelper::CreateAngle3))
+			.def("create_vangle",(VectorValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , float))				(&CScriptPropertiesListHelper::CreateAngle3))
+			.def("create_vangle",(VectorValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , float, float))		(&CScriptPropertiesListHelper::CreateAngle3))
+			.def("create_vangle",(VectorValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , float, float, float))(&CScriptPropertiesListHelper::CreateAngle3))
+			.def("create_vangle",(VectorValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR, luabind::object , LPCSTR , float, float, float,int))(&CScriptPropertiesListHelper::CreateAngle3))
 
 		,def("properties_helper",	&properties_helper)
 	];

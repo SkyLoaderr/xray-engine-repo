@@ -8,7 +8,6 @@
 
 #include "stdafx.h"
 #include "xrServer_Objects.h"
-#include "script_value_container_impl.h"
 #include "xrMessages.h"
 #include "game_base_space.h"
 
@@ -22,6 +21,8 @@
 		return(*(IPropHelper*)0);
 #	endif
 	}
+#else
+#	include "script_value_container_impl.h"
 #endif
 
 LPCSTR script_section = "script";
@@ -127,7 +128,9 @@ void CSE_Abstract::Spawn_Write				(NET_Packet	&tNetPacket, BOOL bLocal)
 	
 	tNetPacket.w_u16			(script_server_object_version());
 
+#ifdef XRSE_FACTORY_EXPORTS
 	CScriptValueContainer::assign();
+#endif
 
 	// write specific data
 	u32	position				= tNetPacket.w_tell();
@@ -237,6 +240,9 @@ void CSE_Abstract::FillProps				(LPCSTR pref, PropItemVec& items)
 
 void CSE_Abstract::FillProp					(LPCSTR pref, PropItemVec &items)
 {
+#ifdef XRSE_FACTORY_EXPORTS
 	CScriptValueContainer::assign();
+	CScriptValueContainer::clear();
+#endif
 	FillProps					(pref,items);
 }

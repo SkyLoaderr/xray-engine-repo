@@ -499,7 +499,7 @@ public:
     {
         ref_str 		draw_val;
         if (!OnDrawText.empty())	OnDrawText(this, draw_val);
-        else			for(int i=0; token[i].name; i++) if (token[i].id==GetValue()) return token[i].name;
+        else			for(int i=0; token[i].name; i++) if (token[i].id==(int)GetValue()) return token[i].name;
         return draw_val.c_str();
     }
 };

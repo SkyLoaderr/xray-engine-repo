@@ -9,19 +9,82 @@
 #pragma once
 
 #include "script_value.h"
+#include "ai_space.h"
+#include "script_engine.h"
 
 template <typename _type>
-class CScriptValueWrapper : public CScriptValue {
+class CScriptValueWrapperImpl : public CScriptValue {
 private:
 	typedef CScriptValue inherited;
 
-private:
+protected:
 	_type			m_value;
 
 public:
-	IC				CScriptValueWrapper	(luabind::object &object, LPCSTR name);
-	virtual	void	assign				();
-	virtual	_type	*value				();
+	IC				CScriptValueWrapperImpl	(luabind::object object, LPCSTR name);
+	virtual	void	assign					();
+	virtual	_type	*value					();
+};
+
+template <typename _type>
+class CScriptValueWrapper : public CScriptValueWrapperImpl<_type> {
+private:
+	typedef CScriptValueWrapperImpl<_type> inherited;
+
+public:
+	IC				CScriptValueWrapper		(luabind::object object, LPCSTR name);
+};
+
+template <>
+class CScriptValueWrapperImpl<bool> : public CScriptValue {
+private:
+	typedef CScriptValue inherited;
+
+protected:
+	BOOL			m_value;
+
+public:
+	IC				CScriptValueWrapperImpl	(luabind::object object, LPCSTR name) : inherited(object,name)
+	{
+		m_value		= ai().script_engine().get_value_from_object<bool>(object[name]);
+	}
+
+	virtual	void	assign					()
+	{
+		m_object[*m_name]	= !!m_value;
+	}
+
+	virtual	BOOL	*value					()
+	{
+		return		(&m_value);
+	}
+};
+
+template <>
+class CScriptValueWrapperImpl<ref_str> : public CScriptValue {
+private:
+	typedef CScriptValue inherited;
+
+protected:
+	ref_str			m_value;
+
+public:
+	IC				CScriptValueWrapperImpl	(luabind::object object, LPCSTR name) : inherited(object,name)
+	{
+		m_value		= ai().script_engine().get_value_from_object<LPCSTR>(object[name]);
+	}
+
+	virtual	void	assign					()
+	{
+		if (!*m_value)
+			m_value			= ref_str("");
+		m_object[*m_name]	= *m_value;
+	}
+
+	virtual	ref_str	*value					()
+	{
+		return		(&m_value);
+	}
 };
 
 #include "script_value_wrapper_inline.h"
