@@ -15,6 +15,7 @@ function ph_button:reset_scheme()
 	--local visual = self.object:Visual()
 	--local ska = visual:dcast_PSkeletonAnimated()
 	--ska:PlayCycle(self.st.anim)
+	self.object:play_cycle(self.st.anim)
 
 	self.last_hit_tm = device():time_global()
 	self.object:set_callback(callback.hit, self.hit_callback, self)
