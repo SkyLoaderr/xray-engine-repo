@@ -4,11 +4,7 @@
 -- Разработчик: Andrey Fidrya (Zmey) af@svitonline.com
 ----------------------------------------------------------------------------------------------------
 
-stype_stalker = 0
-stype_mobile = 1
-stype_item = 2
-
-function gulag_activate(npc, ini, section, gulag_name, stype)
+function gulag_activate(npc, ini, section, gulag_name)
 	if npc == nil then
 		utils.abort("gulag_activate: npc is nil")
 	end
@@ -23,12 +19,12 @@ function gulag_activate(npc, ini, section, gulag_name, stype)
 
 	xr_motivator.storage[npc_id]["active_section"] = nil
 	xr_motivator.storage[npc_id]["gulag_name"] = if_then_else(gulag_name, gulag_name, "")
-	xr_motivator.storage[npc_id]["stype"] = stype
+	xr_motivator.storage[npc_id]["stype"] = stypes[utils.get_scheme_by_section(section)]
 
 	activate_by_section(npc, ini, section)
 end
 
-function enable_scripts(npc, ini, stype)
+function enable_scripts(npc, ini)
 	printf("DEBUG: stalker_enable_scripts")
 	printf("_bp: obj:name()=%s, obj:id()=%s", npc:name(), npc:id())
 
@@ -36,14 +32,13 @@ function enable_scripts(npc, ini, stype)
 
 	xr_motivator.storage[npc_id]["active_section"] = nil
 	xr_motivator.storage[npc_id]["gulag_name"] = ""
-	xr_motivator.storage[npc_id]["stype"] = stype
 
 	if ini:section_exist("logic") then
 		local active_section = utils.cfg_get_string(ini, "logic", "active", npc, true, "")
 		if active_section == "nil" then
 			printf("WARNING: object '%s': active section is 'nil'", npc:name())
-		
 		else
+			xr_motivator.storage[npc_id]["stype"] = stypes[utils.get_scheme_by_section(active_section)]
 			activate_by_section(npc, ini, active_section)
 		end
 	else
@@ -87,10 +82,10 @@ function activate_by_section(npc, ini, section)
 		-- schemes[scheme] даст имя файла (модуля), в котором реализована схема
 		-- _G[] даст указатель на неймспейс (таблицу) этого модуля
 		if not schemes[scheme] then
-			utils.abort("ERROR: xr_logic: scheme '%s' is not registered in modules.script", scheme)
+			utils.abort("xr_logic: scheme '%s' is not registered in modules.script", scheme)
 		end
 		if not _G[schemes[scheme]] then
-			utils.abort("ERROR: xr_logic: can't call %s.set_scheme() - a nil value", schemes[scheme])
+			utils.abort("xr_logic: can't call %s.set_scheme() - a nil value", schemes[scheme])
 		end
 		_G[schemes[scheme]].set_scheme(npc, ini, scheme, section, xr_motivator.storage[npc_id]["gulag_name"])
 		printf("DEBUG: activate_by_section: scheme '%s' activated from section '%s'", scheme, section)

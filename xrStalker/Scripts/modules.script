@@ -1,3 +1,9 @@
+
+-- Типы схем:
+stype_stalker = 0
+stype_mobile = 1
+stype_item = 2
+
 ----------------------------------------------------------------------
 -- Загрузка схем:
 ----------------------------------------------------------------------
@@ -89,24 +95,24 @@ module ("monster")
 ----------------------------------------------------------------------
 -- Загрузка модулей сталкеров:
 ----------------------------------------------------------------------
-load_scheme("xr_walker",      "walker")
-load_scheme("xr_remark",      "remark")
-load_scheme("xr_sleeper",     "sleeper")
-load_scheme("xr_kamp",        "kamp")
-load_scheme("xr_camper",      "camper")
-load_scheme("xr_comm_ptr",    "patrol")
-load_scheme("xr_follower",    "follower")
-load_scheme("xr_test",        "test")
-load_scheme("xr_heli_hunter", "heli_hunter")
-load_scheme("xr_zoneguard",   "zoneguard")
+load_scheme("xr_walker",      "walker",      stype_stalker)
+load_scheme("xr_remark",      "remark",      stype_stalker)
+load_scheme("xr_sleeper",     "sleeper",     stype_stalker)
+load_scheme("xr_kamp",        "kamp",        stype_stalker)
+load_scheme("xr_camper",      "camper",      stype_stalker)
+load_scheme("xr_comm_ptr",    "patrol",      stype_stalker)
+load_scheme("xr_follower",    "follower",    stype_stalker)
+load_scheme("xr_test",        "test",        stype_stalker)
+load_scheme("xr_heli_hunter", "heli_hunter", stype_stalker)
+load_scheme("xr_zoneguard",   "zoneguard",   stype_stalker)
 
 ----------------------------------------------------------------------
 -- Загрузка модулей монстров:
 ----------------------------------------------------------------------
-load_scheme("mob_remark",     "mob_remark")
+load_scheme("mob_remark",     "mob_remark",  stype_mobile)
 
 ----------------------------------------------------------------------
 -- Загрузка модулей физических объектов:
 ----------------------------------------------------------------------
-load_scheme("ph_door",     "ph_door")
+load_scheme("ph_door",        "ph_door",     stype_item)
 

@@ -1,12 +1,14 @@
-schemes = {}
+schemes = {} -- соответствие схем модулям
+stypes = {} -- типы схем
 
 -- Загружает схему из файла на диске и активирует в мотиваторе.
 -- Здесь:
 -- 	filename - имя файла, в котором реализована схема, без расширения
 -- 	scheme - имя схемы
-function load_scheme(filename, scheme)
+function load_scheme(filename, scheme, stype)
 	module(filename)
 	schemes[scheme] = filename
+	stypes[scheme] = stype
 end
 
 ----------------------------------------------------------------------
