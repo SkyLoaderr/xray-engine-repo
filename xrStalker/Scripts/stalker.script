@@ -3,14 +3,14 @@ class "stalker_script" (object_binder)
 function stalker_script:__init		(object) super(object)
 end
 
---function stalker_script:reinit		()
---end
+function stalker_script:reinit		()
+end
 
 function stalker_script:reload		(section)
 end
 
 function stalker_script:net_spawn	(server_object)
-	return			true
+	return	object_binder.net_spawn	(server_object)
 end
 
 function stalker_script:net_destroy	()
