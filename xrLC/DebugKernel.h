@@ -26,15 +26,15 @@ public:
 extern CDebugKernel Debug;
 
 // ---==( Extended Debugging Support (R) )==---
-ENGINE_API void __fastcall _verify(const char *expr, char *file, int line);
-#define R_ASSERT(expr)	if (!(expr)) _verify(#expr, __FILE__, __LINE__)
-#define R_CHK(expr)		{ HRESULT hr = expr; if (FAILED(hr)) Device.Error(hr, __FILE__, __LINE__); }
+ENGINE_API void __fastcall _verify	(const char *expr, char *file, int line);
+#define R_ASSERT(expr)				if (!(expr)) _verify(#expr, __FILE__, __LINE__)
+#define R_CHK(expr)					{ HRESULT hr = expr; if (FAILED(hr)) Device.Error(hr, __FILE__, __LINE__); }
+#define VERIFY(expr)				if (!(expr)) _verify(#expr, __FILE__, __LINE__)
+#define VERIFY2(expr, info)			if (!(expr)) { char buf[128]; sprintf(buf,"%s, %s",#expr,info); _verify(buf, __FILE__, __LINE__); }
+#define VERIFY3(expr, info, info2)	if (!(expr)) { char buf[128]; sprintf(buf,"%s, %s, %s",#expr,info,info2); _verify(buf, __FILE__, __LINE__); }
 
 #ifdef DEBUG
 #define	NODEFAULT	VERIFY2(0,"nodefault: reached")
-#define VERIFY(expr) if (!(expr)) _verify(#expr, __FILE__, __LINE__)
-#define VERIFY2(expr, info) if (!(expr)) { char buf[128]; sprintf(buf,"%s, %s",#expr,info); _verify(buf, __FILE__, __LINE__); }
-#define VERIFY3(expr, info, info2) if (!(expr)) { char buf[128]; sprintf(buf,"%s, %s, %s",#expr,info,info2); _verify(buf, __FILE__, __LINE__); }
 template <class T> T* _P(T* p) {
 	VERIFY(p);
 	VERIFY(_CrtIsValidHeapPointer(p));
@@ -43,9 +43,6 @@ template <class T> T* _P(T* p) {
 #define CHK_DX(a)			{ HRESULT hr = a; if (FAILED(hr)) Device.Error(hr, __FILE__, __LINE__); }
 #else
 #define NODEFAULT   __assume(0)
-#define VERIFY(expr)
-#define VERIFY2(expr, info)
-#define VERIFY3(expr, info, info2)
 #define _P(s) s
 #define CHK_DX(a)			a
 #endif
