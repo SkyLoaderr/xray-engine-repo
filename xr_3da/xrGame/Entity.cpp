@@ -158,9 +158,9 @@ BOOL CEntity::net_Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o
 
 void CEntity::net_Destroy	()
 {
-	CSquad& S			= Level().get_squad	(E->g_Team(),E->g_Squad());
-	CGroup& G			= Level().get_group	(E->g_Team(),E->g_Squad(),E->g_Group());
-	if (E==S.Leader)	
+	CSquad& S			= Level().get_squad	(g_Team(),g_Squad());
+	CGroup& G			= Level().get_group	(g_Team(),g_Squad(),g_Group());
+	if (this==S.Leader)	
 	{
 		S.Leader		= 0;
 		if (!G.Members.empty())	{
@@ -169,7 +169,7 @@ void CEntity::net_Destroy	()
 		}
 	}
 	else {
-		G.Member_Remove	(E);
+		G.Member_Remove	(this);
 	}
 
 	inherited::net_Destroy	();
