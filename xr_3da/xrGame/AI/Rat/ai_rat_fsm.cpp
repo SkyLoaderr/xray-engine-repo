@@ -12,8 +12,9 @@
 
 using namespace NAI_Rat_Constants;
 		   
+/**
 #define WRITE_TO_LOG(s) bStopThinking = true;
-//{\
+{\
 	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
 	if (!feel_visible.size())\
 		Msg("* No objects in frustum",feel_visible.size());\
@@ -32,6 +33,7 @@ using namespace NAI_Rat_Constants;
 	}\
 	bStopThinking = true;\
 }
+/**/
 
 #ifndef DEBUG
 	#define WRITE_TO_LOG(s)
@@ -374,7 +376,7 @@ void CAI_Rat::AttackFire()
 	
 	SelectEnemy(m_Enemy);
 	
-	ERatStates eState = ERatStates(dwfChooseAction(ACTION_REFRESH_RATE,MIN_PROBABILITY,g_Team(),g_Squad(),g_Group(),eCurrentState,eCurrentState,aiRatRetreat));
+	ERatStates eState = ERatStates(dwfChooseAction(m_dwAttackRefreshRate,MIN_PROBABILITY,g_Team(),g_Squad(),g_Group(),eCurrentState,eCurrentState,aiRatRetreat));
 	if (eState != eCurrentState)
 		GO_TO_NEW_STATE_THIS_UPDATE(eState);
 
@@ -424,7 +426,7 @@ void CAI_Rat::AttackRun()
 
 	SelectEnemy(m_Enemy);
 
-	ERatStates eState = ERatStates(dwfChooseAction(ACTION_REFRESH_RATE,MIN_PROBABILITY,g_Team(),g_Squad(),g_Group(),eCurrentState,eCurrentState,aiRatRetreat));
+	ERatStates eState = ERatStates(dwfChooseAction(m_dwAttackRefreshRate,MIN_PROBABILITY,g_Team(),g_Squad(),g_Group(),eCurrentState,eCurrentState,aiRatRetreat));
 	if (eState != eCurrentState) {
 		GO_TO_NEW_STATE_THIS_UPDATE(eState);
 	}
@@ -508,7 +510,7 @@ void CAI_Rat::Retreat()
 
 	if (m_Enemy.Enemy) {
 		vfSaveEnemy();
-		ERatStates eState = ERatStates(dwfChooseAction(ACTION_REFRESH_RATE,MIN_PROBABILITY,g_Team(),g_Squad(),g_Group(),aiRatAttackRun,aiRatAttackRun,aiRatRetreat));
+		ERatStates eState = ERatStates(dwfChooseAction(m_dwAttackRefreshRate,MIN_PROBABILITY,g_Team(),g_Squad(),g_Group(),aiRatAttackRun,aiRatAttackRun,aiRatRetreat));
 		if (eState != eCurrentState)
 			GO_TO_NEW_STATE_THIS_UPDATE(eState);
 		m_dwLostEnemyTime = Level().timeServer();

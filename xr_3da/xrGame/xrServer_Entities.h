@@ -207,7 +207,8 @@ xrSE_DECLARE_BEGIN(xrSE_Enemy,xrSE_Teamed)
 xrSE_DECLARE_END
 
 xrSE_DECLARE_BEGIN(xrSE_Rat,xrSE_Enemy)
-	u32						u32AttackRefreshRate;	// server(game) timestamp
+	u32						u32AttackRefreshRate;	// attack refresh rate
+							xrSE_Rat();				// constructor for variable initialization
 xrSE_DECLARE_END
 
 // 
