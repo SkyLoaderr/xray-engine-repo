@@ -63,8 +63,7 @@ namespace PAPI
 	// refs
 	struct PAHeader;
 
-	#pragma pack (push,4)
-
+	#pragma pack (push,1)
 	// A single particle
 	struct Particle
 	{
@@ -73,18 +72,20 @@ namespace PAPI
 			DYING		= (1<<1),
 			ANIMATE_CCW	= (1<<2),
 		};
-		pVector	pos;
-		pVector	posB;
-		pVector	size;
-		pVector	rot;
-		pVector	vel;     
-		pVector	color;	// Color must be next to alpha so glColor4fv works.
-		float	alpha;	// This is both cunning and scary.
-		float	age;
-		float	frame;
-		Flags32	flags;
-	};
+		pVector	pos;	// 12
+		pVector	posB;   // 12
+		pVector	vel;    // 12  	
+		pVector	size;   // 12
+		pVector	rot;	// 12   60
+		u32		color;	// 4
+		float	age;	// 2
+		u16		frame;	// 2
+		Flags8	flags;	// 1
+	};                  // 		69
+	#pragma pack (pop)
+    
 
+	#pragma pack (push,4)
 	// A effect of particles - Info and an array of Particles
 	struct PARTICLEDLL_API ParticleEffect
 	{
@@ -101,8 +102,7 @@ namespace PAPI
 		}
 
 		IC BOOL Add(const pVector &pos, const pVector &posB,
-			const pVector &size, const pVector &rot, const pVector &vel, const pVector &color,
-			const float alpha = 1.0f,
+			const pVector &size, const pVector &rot, const pVector &vel, u32 color,
 			const float age = 0.0f, float frame=0, u32 flags=Particle::BIRTH)
 		{
 			if(p_count >= max_particles)
@@ -115,9 +115,7 @@ namespace PAPI
 				P.size = size;
 				P.rot = rot;
 				P.vel = vel;
-//				P.velB = vel;	// XXX This should be fixed.
 				P.color = color;
-				P.alpha = alpha;
 				P.age = age;
 				P.frame = frame;
 				P.flags.set(flags);
