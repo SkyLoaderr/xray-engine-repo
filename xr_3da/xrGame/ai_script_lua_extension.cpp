@@ -22,17 +22,42 @@ int __cdecl Lua::LuaOut(Lua::ELuaMessageType tLuaMessageType, LPCSTR caFormat, .
 	switch (tLuaMessageType) {
 		case Lua::eLuaMessageTypeInfo : {
 			S	= "* [LUA] ";
-			SS	= "[INFO]    ";
+			SS	= "[INFO]        ";
 			break;
 		}
 		case Lua::eLuaMessageTypeError : {
 			S	= "! [LUA] ";
-			SS	= "[ERROR]   ";
+			SS	= "[ERROR]       ";
 			break;
 		}
 		case Lua::eLuaMessageTypeMessage : {
 			S	= "[LUA] ";
-			SS	= "[MESSAGE] ";
+			SS	= "[MESSAGE]     ";
+			break;
+		}
+		case Lua::eLuaMessageTypeHookCall : {
+			S	= "[LUA][HOOK_CALL] ";
+			SS	= "[CALL]        ";
+			break;
+		}
+		case Lua::eLuaMessageTypeHookReturn : {
+			S	= "[LUA][HOOK_RETURN] ";
+			SS	= "[RETURN]      ";
+			break;
+		}
+		case Lua::eLuaMessageTypeHookLine : {
+			S	= "[LUA][HOOK_LINE] ";
+			SS	= "[LINE]        ";
+			break;
+		}
+		case Lua::eLuaMessageTypeHookCount : {
+			S	= "[LUA][HOOK_COUNT] ";
+			SS	= "[COUNT]       ";
+			break;
+		}
+		case Lua::eLuaMessageTypeHookTailReturn : {
+			S	= "[LUA][HOOK_TAIL_RETURN] ";
+			SS	= "[TAIL_RETURN] ";
 			break;
 		}
 		default : NODEFAULT;
@@ -78,6 +103,8 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 {
 	luabind::open	(tpLuaVirtualMachine);
 
+	lua_atpanic		(tpLuaVirtualMachine,Script::LuaPanic);
+
 	vfExportGlobals	(tpLuaVirtualMachine);
 	vfExportFvector	(tpLuaVirtualMachine);
 	vfExportFmatrix	(tpLuaVirtualMachine);
@@ -90,6 +117,8 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 	vfExportActions	(tpLuaVirtualMachine);
 	vfExportObject	(tpLuaVirtualMachine);
 	vfExportEffector(tpLuaVirtualMachine);
+
+	lua_sethook		(tpLuaVirtualMachine, LuaHookCall,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
 
 	vfLoadStandardScripts(tpLuaVirtualMachine);
 }

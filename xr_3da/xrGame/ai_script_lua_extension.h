@@ -33,4 +33,6 @@ namespace Script {
 	LPCSTR		cafEventToString			(int				iEventCode);
 	void		vfPrintError				(CLuaVirtualMachine *tpLuaVirtualMachine, int		iErrorCode);
 	bool		bfListLevelVars				(CLuaVirtualMachine *tpLuaVirtualMachine, int		iStackLevel);
+	void		LuaHookCall					(CLuaVirtualMachine *tpLuaVirtualMachine, lua_Debug *tpLuaDebug);
+	int			LuaPanic					(CLuaVirtualMachine *tpLuaVirtualMachine);
 };

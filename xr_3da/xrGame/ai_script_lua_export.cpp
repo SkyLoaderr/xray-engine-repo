@@ -59,51 +59,47 @@ CLuaGameObject *get_object_by_name(LPCSTR caObjectName)
 		return		(0);
 }
 
-int LuaPanic(CLuaVirtualMachine *tpLuaVirtualMachine)
+int Script::LuaPanic(CLuaVirtualMachine *tpLuaVirtualMachine)
 {
 	if (!bfPrintOutput(tpLuaVirtualMachine,"unknown script"));
 		vfPrintError(tpLuaVirtualMachine,LUA_ERRRUN);
 	return(0);
 }
 
-void LuaHookCall(CLuaVirtualMachine *tpLuaVirtualMachine, lua_Debug *tpLuaDebug)
+void Script::LuaHookCall(CLuaVirtualMachine *tpLuaVirtualMachine, lua_Debug *tpLuaDebug)
 {
-	lua_getstack	(tpLuaVirtualMachine,0,tpLuaDebug);
-	if (tpLuaDebug->event)
-		return;
-	LuaOut			(Lua::eLuaMessageTypeInfo,"%s : called %s %s",tpLuaDebug->short_src,tpLuaDebug->namewhat,tpLuaDebug->name);
-}
+	lua_getinfo(tpLuaVirtualMachine,"nSlu",tpLuaDebug);
+	Lua::ELuaMessageType	l_tLuaMessageType = Lua::eLuaMessageTypeError;
+	LPCSTR	S = "";
+	switch (tpLuaDebug->event) {
+		case LUA_HOOKCALL		: {
+			l_tLuaMessageType = Lua::eLuaMessageTypeHookCall;
+			break;
+		}
+		case LUA_HOOKRET		: {
+			l_tLuaMessageType = Lua::eLuaMessageTypeHookReturn;
+			break;
+		}
+		case LUA_HOOKLINE		: {
+			l_tLuaMessageType = Lua::eLuaMessageTypeHookLine;
+			break;
+		}
+		case LUA_HOOKCOUNT		: {
+			l_tLuaMessageType = Lua::eLuaMessageTypeHookCount;
+			break;
+		}
+		case LUA_HOOKTAILRET	: {
+			l_tLuaMessageType = Lua::eLuaMessageTypeHookTailReturn;
+			break;
+		}
+		default					: NODEFAULT;
+	}
 
-void LuaHookReturn(CLuaVirtualMachine *tpLuaVirtualMachine, lua_Debug *tpLuaDebug)
-{
-//	lua_getstack	(tpLuaVirtualMachine,0,tpLuaDebug);
-	if (tpLuaDebug->event & LUA_HOOKTAILRET)
-		return;
-	LuaOut			(Lua::eLuaMessageTypeInfo,"%s : returned %s %s",tpLuaDebug->short_src,tpLuaDebug->namewhat,tpLuaDebug->name);
-}
-
-void LuaHookLine(CLuaVirtualMachine *tpLuaVirtualMachine, lua_Debug *tpLuaDebug)
-{
-//	lua_getstack	(tpLuaVirtualMachine,0,tpLuaDebug);
-	if (tpLuaDebug->currentline > -1)
-		LuaOut		(Lua::eLuaMessageTypeInfo,"%s : %s %s : current line is %d",tpLuaDebug->short_src,tpLuaDebug->namewhat,tpLuaDebug->name,tpLuaDebug->currentline);
-}
-
-void LuaHookCount(CLuaVirtualMachine *tpLuaVirtualMachine, lua_Debug *tpLuaDebug)
-{
-//	lua_getstack	(tpLuaVirtualMachine,0,tpLuaDebug);
+	LuaOut		(l_tLuaMessageType,tpLuaDebug->event == LUA_HOOKLINE ? "%s%s : %s %s %s (current line %d)\n" : "%s%s : %s %s %s\n",S,tpLuaDebug->short_src,tpLuaDebug->what,tpLuaDebug->namewhat,tpLuaDebug->name ? tpLuaDebug->name : "\b",tpLuaDebug->currentline);
 }
 
 void Script::vfExportGlobals(CLuaVirtualMachine *tpLuaVirtualMachine)
 {
-	lua_atpanic		(tpLuaVirtualMachine,LuaPanic);
-#ifdef DEBUG
-	lua_sethook		(tpLuaVirtualMachine, LuaHookCall,		LUA_HOOKCALL,	0);
-	lua_sethook		(tpLuaVirtualMachine, LuaHookReturn,	LUA_HOOKRET,	0);
-	lua_sethook		(tpLuaVirtualMachine, LuaHookCall,		LUA_HOOKLINE,	0);
-//	lua_sethook		(tpLuaVirtualMachine, LuaHookCall,		LUA_HOOKCOUNT,	0);
-#endif
-
 	function		(tpLuaVirtualMachine,	"log",	LuaLog);
 #ifdef DEBUG
 	function		(tpLuaVirtualMachine,	"flush",FlushLog);
