@@ -17,13 +17,15 @@
 	<info_portion id="tutorial_trader_give_medikit">
 	</info_portion>
 
-	<info_portion id="esc_trader_how_to_talk">
-	</info_portion>
 	<info_portion id="tips_esc_trader_how_to_talk">
 	</info_portion>
 
- 	<info_portion id="esc_trader_about_anomalies">
+	<info_portion id="tips_esc_trader_activate_pda">
 	</info_portion>
+
+	<info_portion id="tips_esc_trader_activate_map">
+	</info_portion>
+
  	<info_portion id="tips_esc_trader_about_anomalies">
 	</info_portion>
 
