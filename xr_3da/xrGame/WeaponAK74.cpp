@@ -195,7 +195,6 @@ void CWeaponAK74::Update(float dt, BOOL bHUDView)
 	}
 
 	// cycle update
-	if (st_current == eFire) UpdateFP(bHUDView);
 	switch (st_current)
 	{
 	case eIdle:
@@ -204,6 +203,7 @@ void CWeaponAK74::Update(float dt, BOOL bHUDView)
 		break;
 	case eFire:
 		{
+			UpdateFP	(bHUDView);
 			VERIFY		(m_pParent);
 			fTime		-=dt;
 			Fvector		p1, d;
@@ -215,7 +215,7 @@ void CWeaponAK74::Update(float dt, BOOL bHUDView)
 				fTime			+=fTimeToFire;
 
 				if (bHUDView)	{
-					CEffectorShot*	S = (CEffectorShot*)Level().Cameras.GetEffector(cefShot);
+					CEffectorShot*	S = dynamic_cast<CEffectorShot*>(Level().Cameras.GetEffector(cefShot));
 					if (S)			S->Shot();
 				}
 

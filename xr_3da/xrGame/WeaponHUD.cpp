@@ -83,7 +83,7 @@ void CWeaponHUD::Shoot()
 { 
 	VERIFY			(mShoots.size());
 	new_mstate		= hsShoot; 
-	int sh_id		= Random.randI(mShoots.size());
+	int sh_id		= Random.randI(0,mShoots.size());
 	PKinematics(pVisual)->PlayCycle(mShoots[sh_id],FALSE);
 }
 
@@ -93,7 +93,7 @@ void CWeaponHUD::UpdateAnimation()
 	if (cur_mstate!=new_mstate)
 	{
 		switch(new_mstate){
-		case hsIdle:		PKinematics(pVisual)->PlayCycle(mIdle);							break;
+		case hsIdle:		PKinematics(pVisual)->PlayCycle(mIdle);				break;
 		case hsFireSpinup:	if (mFireSpinup) PKinematics(pVisual)->PlayCycle(mFireSpinup);	break;
 		case hsFireCycle:	if (mFireCycled) PKinematics(pVisual)->PlayCycle(mFireCycled);	break;
 		}
