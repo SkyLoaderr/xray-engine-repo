@@ -185,8 +185,10 @@ void CCustomDetector::UpdateCL()
 			
 		if((float)zone_info.snd_time > current_snd_time)
 		{
-			zone_info.snd_time = 0;
-			zone_type.detect_snd->play_at_pos(this, H_Parent()->Center(), sound_2d?sm_2D:0);
+			Fvector				C;
+			H_Parent()->Center	(C);
+			zone_info.snd_time	= 0;
+			zone_type.detect_snd->play_at_pos(this,C,sound_2d?sm_2D:0);
 		} 
 		else 
 			zone_info.snd_time += Device.dwTimeDelta;

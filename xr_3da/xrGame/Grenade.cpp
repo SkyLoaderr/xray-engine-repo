@@ -49,7 +49,9 @@ u32 CGrenade::State(u32 state)
 	{
 		//UpdateFP();
 #pragma todo("Oles to Yura: position can be under level, use 'Center' instead")
-		PlaySound	(sndCheckout,Center());	// 
+		Fvector		C;
+		Center		(C);
+		PlaySound	(sndCheckout,C);	// 
 	}
 	return inherited::State(state);
 }
