@@ -131,7 +131,7 @@ void CAI_Space::Render()
 			F->SetColor(0xffffffff);
 			F->Out(S.x,-S.y,"%d",i);
 		}
-		if (m_tpAStar->m_tpaNodes.size()) {
+		if ((m_tpAStar) && (m_tpAStar->m_tpaNodes.size())) {
 			Fvector t1 = m_tpaGraph[m_tpAStar->m_tpaNodes[0]].tGlobalPoint;
 			t1.y += .6f;
 			NORMALIZE_VECTOR(t1);
@@ -154,7 +154,7 @@ void CAI_Space::Render()
 		}
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
-			if (tpGame->m_bALife) {
+			if ((tpGame) && (tpGame->m_bALife)) {
 				OBJECT_PAIR_IT	I = tpGame->m_tpALife->m_tObjectRegistry.begin();
 				OBJECT_PAIR_IT	E = tpGame->m_tpALife->m_tObjectRegistry.end();
 				for ( ; I != E; I++) {
