@@ -324,7 +324,7 @@ public:
 	{
 		m_tMentalState		= tMentalState;
 		m_tGoalType			= eGoalTypeMental;
-		m_bCompleted		= false;
+		m_bCompleted		= true;
 	}
 };
 
@@ -390,13 +390,11 @@ public:
 		m_bStartedToPlay	= false;
 		string256			l_caFileName;
 		if (FS.exist(l_caFileName,"$game_sounds$",m_caSoundToPlay,".wav")) {
-			::Sound->create	(*(m_tpSound = xr_new<ref_sound>()),TRUE,m_caSoundToPlay);
 			m_bStartedToPlay= false;
 			m_bCompleted	= false;
 		}
 		else {
 			LuaOut			(Lua::eLuaMessageTypeError,"File not found \"%s\"!",l_caFileName);
-			m_tpSound		= 0;
 			m_bStartedToPlay= true;
 			m_bCompleted	= true;
 		}

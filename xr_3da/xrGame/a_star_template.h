@@ -132,12 +132,12 @@ public:
 			CTemplateNode::iterator tEnd;
 			tTemplateNode.begin(iBestIndex,tIterator,tEnd);
 			for (  ; tIterator != tEnd; tIterator++) {
-				// checking if that node is in the path of the BESTNODE ones
+				// get node index
 				int iNodeIndex = tTemplateNode.get_value(tIterator);
-				// checking if that node the node of the moving object 
+				// checking if this node is accessible 
 				if ((bUseMarks) && (!tTemplateNode.bfCheckIfAccessible(iNodeIndex)))
 					continue;
-				// checking if that node is in the path of the BESTNODE ones
+				// checking if pointer to node we got is the pointer we used during this pathfinding session
 				if (tpIndexes[iNodeIndex].dwTime == dwAStarStaticCounter) {
 					// check if this node is already in the opened list
 					tpTemp = tpIndexes[iNodeIndex].tpNode;
@@ -198,7 +198,7 @@ public:
 					tpTemp2->h = tTemplateNode.ffAnticipate();
 					tpTemp2->f = tpTemp2->g + tpTemp2->h;
 					
-					// put that node to the opened list if wasn't found there and in the closed one
+					// put that node to the opened list
 					float fTemp = tpTemp2->f;
 					for (tpTemp = tpOpenedList->tpOpenedNext; ; tpTemp = tpTemp->tpOpenedNext)
 						if (tpTemp->f >= fTemp) {
