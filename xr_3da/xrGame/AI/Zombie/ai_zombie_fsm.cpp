@@ -114,21 +114,15 @@ void CAI_Zombie::Death()
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
 	AI_Path.TravelPath.clear();
 
-	//setEnabled	(false);
-	
-	if (m_bFiring) {
-		AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,.1f);
-		float fY = ffGetY(*AI_Node,vPosition.x,vPosition.z);
-		if (vPosition.y - fY > EPS_L) {
-			Fvector tAccelezombieion;
-			tAccelezombieion.set(0,m_fJumpSpeed,0);
-			Movement.SetPosition(vPosition);
-			Movement.Calculate	(tAccelezombieion,0,0,.1f,false);
-			Movement.GetPosition(vPosition);
+	if (m_fFood <= 0) {
+		if (m_dwLastRangeSearch <= m_dwDeathTime)
+			m_dwLastRangeSearch = Level().timeServer();
+		setVisible(false);
+		if (Level().timeServer() - m_dwLastRangeSearch > 10000) {
+			NET_Packet			P;
+			u_EventGen			(P,GE_DESTROY,ID());
+			u_EventSend			(P);
 		}
-		else
-			vPosition.set(vPosition.x,fY,vPosition.z);
-		UpdateTransform();
 	}
 }
 
@@ -171,15 +165,13 @@ void CAI_Zombie::FreeHuntingActive()
 			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieAttackRun)
 	}
 
-//	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(m_fMorale < m_fMoraleNormalValue,aiZombieUnderFire);
-	
-//	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && ((!m_tLastSound.tpEntity) || (m_tLastSound.tpEntity->g_Team() != g_Team())) && (!m_Enemy.Enemy)) {
-//		if (m_tLastSound.tpEntity)
-//			m_tSavedEnemy = m_tLastSound.tpEntity;
-//		m_tSavedEnemyPosition = m_tLastSound.tSavedPosition;
-//		m_dwLostEnemyTime = Level().timeServer();
-//		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieFreeRecoil);
-//	}
+	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && (m_tLastSound.tpEntity) && (m_tLastSound.tpEntity->g_Team() != g_Team())) {
+		if (m_tLastSound.tpEntity)
+			m_tSavedEnemy = m_tLastSound.tpEntity;
+		m_tSavedEnemyPosition = m_tLastSound.tSavedPosition;
+		m_dwLostEnemyTime = Level().timeServer();
+		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombiePursuit);
+	}
     m_tSpawnPosition.set(m_tSafeSpawnPosition);
 	m_fGoalChangeDelta		= m_fSafeGoalChangeDelta;
 	m_tVarGoal.set			(m_tGoalVariation);
@@ -278,13 +270,7 @@ void CAI_Zombie::FreeHuntingPassive()
 		return;
 	}
 
-//	if (m_fMorale < m_fMoraleNormalValue) {
-//		vfAddActiveMember(true);
-//		bStopThinking = false;
-//		return;
-//	}
-	
-	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && ((!m_tLastSound.tpEntity) || (m_tLastSound.tpEntity->g_Team() != g_Team()))) {
+	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && (m_tLastSound.tpEntity) && (m_tLastSound.tpEntity->g_Team() != g_Team())) {
 		vfAddActiveMember(true);
 		bStopThinking = false;
 		return;

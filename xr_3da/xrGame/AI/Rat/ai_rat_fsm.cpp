@@ -130,30 +130,14 @@ void CAI_Rat::Death()
 
 	//setEnabled	(false);
 	
-	if (m_bFiring) {
-		AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,.1f);
-		float fY = ffGetY(*AI_Node,vPosition.x,vPosition.z);
-		if (vPosition.y - fY > EPS_L) {
-			Fvector tAcceleration;
-			tAcceleration.set(0,m_fJumpSpeed,0);
-			Movement.SetPosition(vPosition);
-			Movement.Calculate	(tAcceleration,0,0,.1f,false);
-			Movement.GetPosition(vPosition);
-		}
-		else
-			vPosition.set(vPosition.x,fY,vPosition.z);
-		UpdateTransform();
-	}
-	else {
-		if (m_fFood <= 0) {
-			if (m_dwLastRangeSearch <= m_dwDeathTime)
-				m_dwLastRangeSearch = Level().timeServer();
-			setVisible(false);
-			if (Level().timeServer() - m_dwLastRangeSearch > 10000) {
-				NET_Packet			P;
-				u_EventGen			(P,GE_DESTROY,ID());
-				u_EventSend			(P);
-			}
+	if (m_fFood <= 0) {
+		if (m_dwLastRangeSearch <= m_dwDeathTime)
+			m_dwLastRangeSearch = Level().timeServer();
+		setVisible(false);
+		if (Level().timeServer() - m_dwLastRangeSearch > 10000) {
+			NET_Packet			P;
+			u_EventGen			(P,GE_DESTROY,ID());
+			u_EventSend			(P);
 		}
 	}
 }
