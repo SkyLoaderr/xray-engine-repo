@@ -15,20 +15,19 @@ using namespace Script;
 
 CScript::CScript(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caFileName)
 {
+	m_bActive		= false;
 	strcpy			(m_caScriptFileName,caFileName);
 	Msg				("* Loading design script %s",caFileName);
 
-	if (!bfLoadFile(tpLuaVirtualMachine,caFileName,true)) {
-		m_bActive	= false;
+	if (!bfLoadFile(tpLuaVirtualMachine,caFileName,true))
 		return;
-	}
+
 	string256		l_caNamespaceName, S;
 	_splitpath		(caFileName,0,0,l_caNamespaceName,0);
 	sprintf			(S,"\nfunction script_name()\nreturn \"%s\"\nend\n",l_caNamespaceName);
-	if (!bfLoadBuffer(tpLuaVirtualMachine,S,strlen(S),caFileName)) {
-		m_bActive	= false;
+	if (!bfLoadBuffer(tpLuaVirtualMachine,S,strlen(S),caFileName))
 		return;
-	}
+
 	lua_call		(tpLuaVirtualMachine,0,0);
 	
 	m_tpLuaThread	= lua_newthread(m_tpLuaVirtualMachine = tpLuaVirtualMachine);
@@ -38,6 +37,8 @@ CScript::CScript(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caFileName)
 		lua_pop		(tpLuaVirtualMachine,2);
 		return;
 	}
+
+	m_bActive		= true;
 }
 
 CScript::~CScript()

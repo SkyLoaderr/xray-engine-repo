@@ -43,6 +43,7 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 	vfExportHit		(tpLuaVirtualMachine);
 	vfExportActions	(tpLuaVirtualMachine);
 	vfExportObject	(tpLuaVirtualMachine);
+	vfExportEffector(tpLuaVirtualMachine);
 
 	vfLoadStandardScripts(tpLuaVirtualMachine);
 }

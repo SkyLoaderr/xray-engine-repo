@@ -12,6 +12,8 @@
 #include "ParticlesObject.h"
 #include "ai_script_classes.h"
 #include "ai_script_actions.h"
+#include "..\\cameramanager.h"
+#include "..\\effectorpp.h"
 
 using namespace Script;
 
@@ -551,5 +553,35 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("object_count",				&CLuaGameObject::GetInventoryObjectCount)
 			.def("object",						(CLuaGameObject *(CLuaGameObject::*)(LPCSTR))(CLuaGameObject::GetObjectByName))
 			.def("object",						(CLuaGameObject *(CLuaGameObject::*)(int))(CLuaGameObject::GetObjectByIndex))
+	];
+}
+
+void Script::vfExportEffector(CLuaVirtualMachine *tpLuaVirtualMachine)
+{
+	module(tpLuaVirtualMachine)
+	[
+		class_<SPPInfo::SDuality>("duality")
+			.def_readwrite("h",					&SPPInfo::SDuality::h)
+			.def_readwrite("v",					&SPPInfo::SDuality::v),
+
+		class_<SPPInfo::SNoise::SColor>("color")
+			.def_readwrite("r",					&SPPInfo::SNoise::SColor::r)
+			.def_readwrite("g",					&SPPInfo::SNoise::SColor::g)
+			.def_readwrite("b",					&SPPInfo::SNoise::SColor::b)
+			.def_readwrite("a",					&SPPInfo::SNoise::SColor::a),
+
+		class_<SPPInfo::SNoise>("noise")
+			.def_readwrite("intensity",			&SPPInfo::SNoise::intensity)
+			.def_readwrite("grain",				&SPPInfo::SNoise::grain),
+
+		class_<SPPInfo>("pp_params")
+			.def_readwrite("blur",				&SPPInfo::blur)
+			.def_readwrite("gray",				&SPPInfo::gray)
+			.def_readwrite("dual",				&SPPInfo::duality)
+			.def_readwrite("noise",				&SPPInfo::noise),
+
+		class_<CEffectorPP>("pp_effector")
+			.def(								constructor<EEffectorPPType,float>())
+			.def("process",						&CEffectorPP::Process)
 	];
 }
