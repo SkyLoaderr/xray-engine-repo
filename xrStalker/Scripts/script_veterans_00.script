@@ -14,32 +14,6 @@ function main()
 
 			action(
 				stalker_veteran01,
-			  	move	(move.standing, move.walk,move.line,patrol("way0000")),
-				look	(look.fire_point, stalker_veteran02),
-				anim	(anim.free),
-				cond	(cond.move_end)
-			)
-			action(
-				stalker_veteran02,
-			  	move	(move.standing, move.walk,move.line,patrol("way0000")),
-				anim	(anim.free),
-				cond	(cond.move_end)
-			)
-			action(
-				stalker_veteran01,
-			  	move	(move.standing, move.walk,move.line,patrol("way0001")),
-				look	(look.fire_point, stalker_veteran02),
-				anim	(anim.free),
-				cond	(cond.move_end)
-			)
-			action(
-				stalker_veteran02,
-			  	move	(move.standing, move.walk,move.line,patrol("way0001")),
-				anim	(anim.free),
-				cond	(cond.move_end)
-			)
-			action(
-				stalker_veteran01,
 			  	move	(move.standing, move.walk,move.line,patrol("way0002")),
 				look	(look.fire_point, stalker_veteran02),
 				anim	(anim.free),
