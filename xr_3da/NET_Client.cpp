@@ -198,11 +198,11 @@ void IPureClient::Disconnect()
 	net_csEnumeration.Leave			();
 
 	// Release interfaces
-	_SHOW_REF	("netADR_Server",net_Address_server);
+	_SHOW_REF	("cl_netADR_Server",net_Address_server);
 	_RELEASE	(net_Address_server);
-	_SHOW_REF	("netADR_Device",net_Address_device);
+	_SHOW_REF	("cl_netADR_Device",net_Address_device);
 	_RELEASE	(net_Address_device);
-	_SHOW_REF	("netCORE",NET);
+	_SHOW_REF	("cl_netCORE",NET);
 	_RELEASE	(NET);
 }
 
