@@ -5,10 +5,12 @@ struct Shader_xrLC
 {
 public:
 	struct Flags {
-		DWORD bCollision	: 1;
-		DWORD bOptimizeUV	: 1;
-		DWORD bLIGHT_Vertex	: 1;
-		DWORD bLIGHT_Sharp	: 1;
+		DWORD bCollision			: 1;
+		DWORD bRendering			: 1;
+		DWORD bOptimizeUV			: 1;
+		DWORD bLIGHT_Vertex			: 1;
+		DWORD bLIGHT_CastShadow		: 1;
+		DWORD bLIGHT_Sharp			: 1;
 	};
 public:
 	char		Name		[128];
@@ -20,13 +22,15 @@ public:
 	Shader_xrLC()	{
 		ZeroMemory	(this,sizeof(*this));
 		strcpy		(Name,"unknown");
-		flags.bCollision	= TRUE;
-		flags.bOptimizeUV	= TRUE;
-		flags.bLIGHT_Vertex	= FALSE;
-		flags.bLIGHT_Sharp	= TRUE;
-		vert_translucency	= .5f;
-		vert_ambient		= .0f;
-		lm_density			= 1.f;
+		flags.bCollision		= TRUE;
+		flags.bRendering		= TRUE;
+		flags.bOptimizeUV		= TRUE;
+		flags.bLIGHT_Vertex		= FALSE;
+		flags.bLIGHT_CastShadow = TRUE;
+		flags.bLIGHT_Sharp		= TRUE;
+		vert_translucency		= .5f;
+		vert_ambient			= .0f;
+		lm_density				= 1.f;
 	}
 };
 
