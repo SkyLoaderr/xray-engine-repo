@@ -1,36 +1,21 @@
-if (editor() == false) and (user_name ~= nil or user_name() == "Andy") then
-	module	("ce_new_game_dm")
-end
 
-function register(object_factory)
-
-
-	if(user_name == nil or user_name() ~= "Andy") then return end
-	
-	if (editor() == false) then
-		object_factory:register ("ce_new_game_dm.C_new_game_sv_Deathmatch","GM_NEWDM","new_game_sv_Deathmatch")
-	end
-end
-
-function get_game_clsid(game_type_option)
+function get_ui_clsid(game_type_option)
 
 	if(game_type_option == "single") then 
-		return "GM_SINGL" end
+		return "UI_SINGL" end
 
 	if(game_type_option == "deathmatch") then 
-		return "GM_DM" end
+		return "UI_DM" end
 
 	if(game_type_option == "teamdeathmatch") then 
-		return "GM_TDM" end
+		return "UI_TDM" end
 
 	if(game_type_option == "artefacthunt") then 
-		return "GM_AHUNT" end
+		return "UI_AHUNT" end
 
---	if(game_type_option == "cs") then 
---		return "GM_CS" end
+	if(game_type_option == "cs") then 
+		return "UI_CS" end
 
-	if(game_type_option == "new_dm") then 
-		return "GM_NEWDM" end
 
 
 end
