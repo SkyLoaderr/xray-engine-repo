@@ -90,8 +90,9 @@ void CCar::SWheelSteer::Init()
 	}
 	
 	pos_right=pos_right>0.f ? -1.f : 1.f;
-
-	dJointSetHinge2Param(pwheel->joint, dParamFMax, pKinematics->LL_UserData()->r_float("car_definition","steering_torque"));
+	float steering_torque=pKinematics->LL_UserData()->r_float("car_definition","steering_torque");
+	dJointSetHinge2Param(pwheel->joint, dParamFMax, steering_torque);
+	dJointSetHinge2Param(pwheel->joint, dParamFudgeFactor, 0.005f/steering_torque);
 	dJointSetHinge2Param(pwheel->joint, dParamVel, 0.f);
 	limited=false;
 }

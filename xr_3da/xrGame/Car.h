@@ -54,6 +54,7 @@ public:
 	bool b_stalling;
 	u32	 m_dwStartTime;
 	float m_fuel;
+	float m_fuel_tank;
 	float m_fuel_consumption;
 	struct SWheel 
 	{
@@ -338,7 +339,7 @@ private:
 	void UpdateExhausts					();
 	void ClearExhausts					();
 	void UpdateFuel						(float time_delta);
-	void AddFuel						(float ammount);
+	float AddFuel						(float ammount); //ammount - fuel to load, ret - fuel loaded
 	////////////////////////////////////////////////////
 
 	void					OnCameraChange		(int type);

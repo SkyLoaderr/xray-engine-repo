@@ -365,7 +365,8 @@ void CCar::ParseDefinitions()
 	///////////////////////////////sound///////////////////////////////////////////////////////
 	m_car_sound->Init();
     ///////////////////////////////fuel///////////////////////////////////////////////////
-	m_fuel=ini->r_float("car_definition","fuel");
+	m_fuel_tank=ini->r_float("car_definition","fuel_tank");
+	m_fuel=m_fuel_tank;
 	m_fuel_consumption=ini->r_float("car_definition","fuel_consumption");
 	m_fuel_consumption/=100000.f;
 }
@@ -939,17 +940,19 @@ float CCar::EnginePower()
 
 float CCar::EngineDriveSpeed()
 {
-	float wheel_speed,drive_speed=dInfinity;
+	//float wheel_speed,drive_speed=dInfinity;
+	float drive_speed=0.f;
 	xr_vector<SWheelDrive>::iterator i,e;
 	i=m_driving_wheels.begin();
 	e=m_driving_wheels.end();
 	for(;i!=e;i++)
 	{
-		wheel_speed=i->ASpeed();
-		if(wheel_speed<drive_speed)drive_speed=wheel_speed;
+		drive_speed+=i->ASpeed();
+		//if(wheel_speed<drive_speed)drive_speed=wheel_speed;
 	}
-	if(drive_speed<dInfinity) return dFabs(drive_speed*m_current_gear_ratio);
-	else					  return 0.f;
+	return dFabs(drive_speed*m_current_gear_ratio)/m_driving_wheels.size();
+	//if(drive_speed<dInfinity) return dFabs(drive_speed*m_current_gear_ratio);
+	//else					  return 0.f;
 }
 
 
@@ -964,9 +967,19 @@ void CCar::UpdateFuel(float time_delta)
 	if(m_fuel<EPS) StopEngine();
 }
 
-void CCar::AddFuel(float ammount)
+float CCar::AddFuel(float ammount)
 {
-m_fuel+=ammount;
+	float free_space=m_fuel_tank-m_fuel;
+	if(ammount < free_space)
+	{
+		m_fuel+=ammount;
+		return ammount;
+	}
+	else
+	{
+		m_fuel=m_fuel_tank;
+		return free_space;
+	}
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CCar::SExhaust::~SExhaust()
