@@ -114,21 +114,19 @@
 
 	
 	<info_portion id="escape_stalker_help">
-			<location>
+		<location>
 			<level>l01_escape</level>
 			<object>005</object>
 			<icon name="ящик" x="5" y="1" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 			<text>¬ернувшийс€ из рейда сталкер.</text>
-		</location>	
+		</location>
+		<task>esc_help_wounded_from_raid</task>	
 	</info_portion>
-
 	<info_portion id="escape_stalker_spawn">	
 	</info_portion>
-		
 	<info_portion id="escape_stalker_done">
 		<disble>escape_stalker_help</disble>
 	</info_portion>
-
 	<info_portion id="escape_stalker_die">
 		<disble>escape_stalker_help</disble>
 	</info_portion>
