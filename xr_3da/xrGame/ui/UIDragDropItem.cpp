@@ -211,16 +211,7 @@ void  CUIDragDropItem::OnMouse(int x, int y, EUIMessages mouse_action)
 void CUIDragDropItem::Draw()
 {
 	Irect rect = GetAbsoluteRect();
-
-	//отцентрировать текстуру по центру ее окна
-	int right_offset = (GetWidth()-m_UIStaticItem.GetOriginalRectScaled().width())/2;
-	int down_offset = (GetHeight()-m_UIStaticItem.GetOriginalRectScaled().height())/2;
-
 	m_UIStaticItem.SetPos(rect.left , rect.top);
-//.	m_UIStaticItem.SetPos(rect.left + right_offset, rect.top + down_offset);
-	
-//.	if(m_bClipper)
-//.		TextureClipper(right_offset, down_offset);
 
 	if (m_bInFloat) UI()->PushScissor(UI()->ScreenRect(),true);
 	m_UIStaticItem.Render();
