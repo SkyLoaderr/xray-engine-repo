@@ -257,4 +257,3 @@ void CObject::OnDeactivate	()
 {
 	bActive = FALSE;
 }
-
