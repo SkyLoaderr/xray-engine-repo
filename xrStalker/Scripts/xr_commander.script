@@ -828,7 +828,7 @@ function action_commander:move_callback( obj, action_type, index )
 end
 
 function action_commander:zone_callback( zone, obj )
-    if obj:id() == self.object:id() then
+    if not self.box_alarm and obj:id() == self.object:id() then
         self.act_before_box = self.act
         self.act = look_box
     end
