@@ -77,7 +77,7 @@ void	CLightDB_Static::Track(Fvector &pos, float fRadius, CLightTrack& dest)
 		if (pCreator->ObjectSpace.RayTest(LP,D,f,false,&I->Cache))	I->test -=	lt_dec*dt;
 		else														I->test +=	lt_inc*dt;
 
-		clamp			(I->test,-1.f,1.f);
+		clamp			(I->test,-.5f,1.f);
 		I->energy		= I->test; //.9f*I->energy + .1f*I->test;
 
 		float	E		= I->energy * xrL.diffuse.magnitude_rgb();
