@@ -41,6 +41,7 @@ function action(obj,...)
 	return	entity_action(act)
 end
 
+[[--
 function action_first(obj,...)
 	local act = entity_action()
 	local i = 1
@@ -57,6 +58,7 @@ function action_first(obj,...)
 	end
 	return	entity_action(act)
 end
+]]
 
 class "pp_effector" (effector)
 
