@@ -96,7 +96,7 @@ void CActor::IR_OnKeyboardPress(int cmd)
 	case kWPN_FIRE:	g_fireStart		(); 						break;
 	case kWPN_ZOOM:	g_fire2Start	();							break;
 	case kTORCH:{ 
-		PIItem I = m_inventory.Get("device_torch",true); 
+		PIItem I = m_inventory.Get("device_torch",false); 
 		if (I){
 			CTorch* torch = dynamic_cast<CTorch*>(I);
 			if (torch) torch->Switch();
