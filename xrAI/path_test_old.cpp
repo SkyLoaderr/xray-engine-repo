@@ -9,6 +9,8 @@
 #include "stdafx.h"
 #include "ai_nodes.h"
 
+#define TEST_COUNT 1000
+
 class CSearch {
 	u32					m_dwAStarStaticCounter;
 	SNode				*m_tpHeap;
@@ -65,6 +67,18 @@ void path_test_old(LPCSTR caLevelName)
 	CAI_Map					*graph			= xr_new<CAI_Map>				(caLevelName);
 	CSearch					*search			= xr_new<CSearch>				(graph);
 
+	xr_vector<u32>			a;
+//	a.resize				(ROWS*COLUMNS);
+//	for (int i=0, n = ROWS*COLUMNS; i<n; ++i)
+//		a[i] = (i/COLUMNS + 1)*(COLUMNS + 2) + i%COLUMNS + 1;
+
+	a.resize				(graph->get_node_count());
+	for (int i=0, n = (int)a.size(); i<n; ++i)
+		a[i] = i;
+	
+	std::random_shuffle		(a.begin(),a.end());
+	Msg						("%d times",_min((int)a.size(),TEST_COUNT));
+
 	u64						start, finish;
 	SetPriorityClass		(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
 	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
@@ -72,12 +86,13 @@ void path_test_old(LPCSTR caLevelName)
 	start					= CPU::GetCycleCount();
 	float f;
 	u32 v;
-	for (int i=0; i<100; ++i)
-		search->Find		(1+i,graph->get_node_count() - 1 - i,f,v);
+	for (int i=0, n=_min((int)a.size(),TEST_COUNT); i<n; i++)
+		search->Find		(a[i],a[n - 1 - i],f,v);
 	finish					= CPU::GetCycleCount();
 	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
 	SetPriorityClass		(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
 	Msg						("%f microseconds",float(s64(finish - start))*CPU::cycles2microsec);
+	Msg						("%f microseconds per search",float(s64(finish - start))*CPU::cycles2microsec/_min((int)a.size(),TEST_COUNT));
 
 	xr_delete				(graph);
 	xr_delete				(search);

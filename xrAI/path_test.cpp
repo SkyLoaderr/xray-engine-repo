@@ -11,25 +11,38 @@
 #include "ai_alife_graph.h"
 #include "test_table.h"
 
+#include "boost\\d_heap.hpp"
+#include "boost\\f_heap.hpp"
+#include "boost\\l_heap.hpp"
+#include "boost\\p_heap.hpp"
+//#include "boost\\r_heap.hpp"
+#include "boost\\s_heap.hpp"
+
+#include "data_storage_priority_queue.h"
 #include "data_storage_heap.h"
 #include "data_storage_list.h"
+//#include "data_storage.h"
 #include "path_manager.h"
 #include "a_star.h"
 
 #include "path_test_old.h"
 #include "path_test.h"
 
-#define ROWS	30
-#define COLUMNS 30
-typedef float _dist_type;
+#define TEST_COUNT 1000
+
+#define ROWS	300
+#define COLUMNS 300
+typedef u32		_dist_type;
 
 //typedef CAI_Map																CGraph;
-typedef CSE_ALifeGraph														CGraph;
-//typedef CTestTable<_dist_type,ROWS,COLUMNS>									CGraph;	
+//typedef CSE_ALifeGraph														CGraph;
+typedef CTestTable<_dist_type,ROWS,COLUMNS>									CGraph;	
 
-typedef CDataStorageMultiBinaryHeap<2,_dist_type,u32,u32,true,24,8>			CDataStorage;
-//typedef CDataStorageBinaryHeap<_dist_type,u32,u32,true,24,8>				CDataStorage;
-//typedef CDataStorageUL<_dist_type,u32,u32,true,24,8>						CDataStorage;
+//typedef CDataStorageMultiBinaryHeap<4,_dist_type,u32,u32,true,24,8>			CDataStorage;
+//typedef CDataStorageBinaryHeap<_dist_type,u32,u32,true,24,8>					CDataStorage;
+//typedef CDataStorageDLSL<_dist_type,u32,u32,true,24,8>						CDataStorage;
+typedef CDataStorageCheapList<25,true,true,_dist_type,u32,u32,true,24,8>	CDataStorage;
+//typedef CDataStoragePriorityQueue<boost::lazy_fibonacci_heap,_dist_type,u32,u32,true,24,8>CDataStorage;
 typedef CPathManager<CGraph,CDataStorage,_dist_type,u32,u32>				CDistancePathManager;
 typedef CAStar<CDataStorage,CDistancePathManager,CGraph,u32,_dist_type>		CAStarSearch;
 
@@ -39,7 +52,7 @@ void path_test(LPCSTR caLevelName)
 {
 	xr_vector<u32>			path, path1;
 	string256				fName;
-	if (true)
+	if (false)
 		strconcat			(fName,caLevelName,"level.graph");
 	else
 		strcpy				(fName,caLevelName);
@@ -52,16 +65,16 @@ void path_test(LPCSTR caLevelName)
 
 #ifdef TIME_TEST
 	xr_vector<u32>			a;
-//	a.resize				(ROWS*COLUMNS);
-//	for (int i=0, n = ROWS*COLUMNS; i<n; ++i)
-//		a[i] = (i/COLUMNS + 1)*(COLUMNS + 2) + i%COLUMNS + 1;
-	
-	a.resize				(graph->get_node_count());
-	for (int i=0, n = (int)a.size(); i<n; ++i)
-		a[i] = i;
+	a.resize				(ROWS*COLUMNS);
+	for (int i=0, n = ROWS*COLUMNS; i<n; ++i)
+		a[i] = (i/COLUMNS + 1)*(COLUMNS + 2) + i%COLUMNS + 1;
+
+//	a.resize				(graph->get_node_count());
+//	for (int i=0, n = (int)a.size(); i<n; ++i)
+//		a[i] = i;
 	
 	std::random_shuffle		(a.begin(),a.end());
-	Msg						("%d times",_min((int)a.size(),1000));
+	Msg						("%d times",_min((int)a.size(),TEST_COUNT));
 
 	u64						start, finish;
 	SetPriorityClass		(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
@@ -69,7 +82,7 @@ void path_test(LPCSTR caLevelName)
 	Sleep					(1);
 	start					= CPU::GetCycleCount();
 //	for (int i=0, n = graph->get_node_count(); i<n; ++i) {
-	for (int i=0, n=_min((int)a.size(),1000); i<n; i++) {
+	for (int i=0, n=_min((int)a.size(),TEST_COUNT); i<n; i++) {
 		path_manager->setup		(
 			graph,
 			data_storage,
@@ -83,9 +96,9 @@ void path_test(LPCSTR caLevelName)
 	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
 	SetPriorityClass		(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
 	Msg						("%f microseconds",float(s64(finish - start))*CPU::cycles2microsec);
-	Msg						("%f microseconds per search",float(s64(finish - start))*CPU::cycles2microsec/_min(ROWS*COLUMNS,1000));
+	Msg						("%f microseconds per search",float(s64(finish - start))*CPU::cycles2microsec/_min((int)a.size(),TEST_COUNT));
 #else
-	for (int I=1, N = graph->get_node_count(); I<N; ++I) {
+	for (int I=1, N = graph->get_node_count() - 1; I<N; ++I) {
 //		int _i = I/(COLUMNS + 2), _j = I % (COLUMNS + 2);
 //		if (!_i || !_j || (_i == ROWS + 1) || (_j == COLUMNS + 1))
 //			continue;

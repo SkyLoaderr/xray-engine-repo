@@ -152,7 +152,7 @@ public:
 		std::push_heap			(heap_head,++heap_tail,CGraphNodePredicate());
 	}
 
-	IC		void		decrease_opened	(CGraphNode &node)
+	IC		void		decrease_opened	(CGraphNode &node, const _dist_type value)
 	{
 		VERIFY					(!is_opened_empty());
 		for (CGraphNode **i = heap_head; *i != &node; ++i);
@@ -361,7 +361,7 @@ public:
 			}
 	}
 
-	IC		void		decrease_opened	(CGraphNode &node)
+	IC		void		decrease_opened	(CGraphNode &node, const _dist_type value)
 	{
 		VERIFY					(!is_opened_empty());
 

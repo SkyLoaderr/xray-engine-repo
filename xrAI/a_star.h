@@ -88,13 +88,14 @@ public:
 					if (neighbour.g() > g) {
 						// so, new path is better
 						// assign corresponding values to the node
+						_dist_type		d = neighbour.g() - g;
 						neighbour.g()	= g;
 						neighbour.f()	= neighbour.g() + neighbour.h();
 						// assign correct parent to the node to be able
 						// to retreive a path
 						data_storage.assign_parent	(neighbour,&best);
 						// notify data storage about node decreasing value
-						data_storage.decrease_opened(neighbour);
+						data_storage.decrease_opened(neighbour,d);
 						// continue iterating on neighbours
 						continue;
 					}
@@ -146,12 +147,12 @@ public:
 				// so, this neighbour node is not in the opened or closed lists
 				// put neighbour node to the opened list
 				CGraphNode				&neighbour = data_storage.create_node(graph.get_value(i));
-				// assign best node as its parent
-				data_storage.assign_parent(neighbour,&best);
 				// fill the corresponding node parameters 
 				neighbour.g()			= best.g() + path_manager.evaluate(best.index(),graph.get_value(i),i);
 				neighbour.h()			= path_manager.estimate(neighbour.index());
 				neighbour.f()			= neighbour.g() + neighbour.h();
+				// assign best node as its parent
+				data_storage.assign_parent(neighbour,&best);
 				// add start node to the opened list
 				data_storage.add_opened	(neighbour);
 				// continue iterating on neighbours

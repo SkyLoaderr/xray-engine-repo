@@ -498,6 +498,9 @@
 						<File
 							RelativePath=".\data_storage_list.h">
 						</File>
+						<File
+							RelativePath=".\data_storage_priority_queue.h">
+						</File>
 					</Filter>
 					<Filter
 						Name="path_machines"
