@@ -876,8 +876,8 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
         // now renormalize
         for ( unsigned int b = 0; b < positions.size(); b += 3 ) 
         {
-            *reinterpret_cast<vec3*>(&output[(*tangent).second].floatVector_[b]) = normalize(avgS[b / 3]);  // s
-            *reinterpret_cast<vec3*>(&output[(*binormal).second].floatVector_[b]) = normalize(avgT[b / 3]);  // T
+            *reinterpret_cast<vec3*>(&output[(*tangent).second].floatVector_[b])	= normalize(avgS[b / 3]);  // s
+            *reinterpret_cast<vec3*>(&output[(*binormal).second].floatVector_[b])	= normalize(avgT[b / 3]);  // T
         }
 	}
 
