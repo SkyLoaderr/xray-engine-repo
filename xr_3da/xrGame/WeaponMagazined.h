@@ -4,8 +4,6 @@
 
 #include "weapon.h"
 
-#define SND_RIC_COUNT 5
- 
 class CWeaponMagazined: public CWeapon
 {
 private:
@@ -30,10 +28,11 @@ private:
 
 	EState			st_current, st_target;
 protected:
+	virtual void	FireShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R);
 	virtual void	OnMagazineEmpty	();
 
-	virtual void	MediaLOAD		();
-	virtual void	MediaUNLOAD		();
+	virtual void	MediaLOAD		()				{};
+	virtual void	MediaUNLOAD		()				{};
 	virtual void	switch2_Idle	(BOOL bHUDView)	{};
 	virtual void	switch2_Fire	(BOOL bHUDView)	{};
 	virtual void	switch2_Empty	(BOOL bHUDView)	{};
@@ -41,7 +40,7 @@ protected:
 	virtual void	OnShot			(BOOL bHUDView)	{};
 	virtual void	OnEmptyClick	(BOOL bHUDView)	{};
 	virtual void	OnDrawFlame		(BOOL bHUDView)	{};
-	virtual void	OnShotmark		(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R);
+	virtual void	OnShotmark		(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R) {};
 protected:
 	virtual void	UpdateFP		(BOOL bHUD);
 	virtual void	UpdateXForm		(BOOL bHUD);

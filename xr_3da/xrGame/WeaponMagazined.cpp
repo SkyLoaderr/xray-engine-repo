@@ -9,7 +9,7 @@
 #include "hudmanager.h"
 
 #include "WeaponHUD.h"
-#include "WeaponAK74.h"
+#include "WeaponMagazined.h"
 #include "entity.h"
 #include "xr_weapon_list.h"
 
@@ -133,7 +133,7 @@ void CWeaponMagazined::FireEnd			()
 
 void CWeaponMagazined::OnMagazineEmpty	()
 {
-	st_target	=	eMagazineEmpty;
+	st_target	=	eMagEmpty;
 	fTime		=	fTimeToEmptyClick;
 }
 
@@ -200,7 +200,7 @@ void CWeaponMagazined::Update(float dt, BOOL bHUDView)
 			while		(fTime<0)
 			{
 				fTime			+=  fTimeToEmptyClick;
-				OnEmptyClick	();
+				OnEmptyClick	(bHUDView);
 			}
 		}
 		break;
