@@ -425,22 +425,31 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 			N.x								= normal[3 * i + 0];
 			N.y								= normal[3 * i + 1];
 			N.z								= normal[3 * i + 2];
+			D3DXVec3Normalize				(&N,&N);
 			T.x								= tangent[3 * i + 0];
 			T.y								= tangent[3 * i + 1];
 			T.z								= tangent[3 * i + 2];
+			D3DXVec3Normalize				(&T,&T);
 			B.x								= binormal[3 * i + 0];
 			B.y								= binormal[3 * i + 1];
 			B.z								= binormal[3 * i + 2];
+			D3DXVec3Normalize				(&B,&B);
 
-			vertexBufferNew[i].n.x			= normal[3 * i + 0];
-			vertexBufferNew[i].n.y			= normal[3 * i + 1];
-			vertexBufferNew[i].n.z			= normal[3 * i + 2];
-			vertexBufferNew[i].tangent.x	= tangent[3 * i + 0];
-			vertexBufferNew[i].tangent.y	= tangent[3 * i + 1];
-			vertexBufferNew[i].tangent.z	= tangent[3 * i + 2];
-			vertexBufferNew[i].binormal.x	= binormal[3 * i + 0];
-			vertexBufferNew[i].binormal.y	= binormal[3 * i + 1];
-			vertexBufferNew[i].binormal.z	= binormal[3 * i + 2];
+			// ortho-normalize
+			D3DXVec3Cross					(&T,&B,&N);
+			D3DXVec3Normalize				(&T,&T);
+			D3DXVec3Cross					(&B,&N,&T);
+			D3DXVec3Normalize				(&B,&B);
+
+			vertexBufferNew[i].n.x			= N.x;
+			vertexBufferNew[i].n.y			= N.y;
+			vertexBufferNew[i].n.z			= N.z;
+			vertexBufferNew[i].tangent.x	= T.x;
+			vertexBufferNew[i].tangent.y	= T.y;
+			vertexBufferNew[i].tangent.z	= T.z;
+			vertexBufferNew[i].binormal.x	= B.x;
+			vertexBufferNew[i].binormal.y	= B.y;
+			vertexBufferNew[i].binormal.z	= B.z;
 		}
 		m_pModelVB->Unlock();
 
