@@ -1,3 +1,12 @@
+// File:        UIListWndEx_script.cpp
+// Description: Exports to script
+//              ListWndEx, ListItemEx, ListItemPair
+// Created:     10.11.2004
+// Author:      Serhiy O. Vynnychenko
+// Mail:        narrator@gsc-game.kiev.ua
+
+// Copyright:   2004 GSC Game World
+
 #include "stdafx.h"
 #include "UIListWndEx.h"
 #include "UIListItemPair.h"

@@ -1,5 +1,6 @@
 // File:        UIListWndEx.h
-// Description: 
+// Description: This List Box compatible with ListItemEx.
+//              Requiered to use feature "Selected Item"
 // Created:     10.11.2004
 // Author:      Serhiy O. Vynnychenko
 // Mail:        narrator@gsc-game.kiev.ua
