@@ -51,7 +51,7 @@ void	CBlender_Model::Compile	(CBlender_Compile& C)
 		case 0:	// Highest LOD
 			C.r_Pass			("r1_model_def_hq","r1_model_def_hq",TRUE);
 			C.r_Sampler			("s_base",	C.L_textures[0]);
-			C.r_Sampler			("s_lmap",	"$user$projector"); //, D3DTADDRESS_CLAMP, D3DTEXF_LINEAR, D3DTEXF_NONE,D3DTEXF_LINEAR);
+			C.r_Sampler			("s_lmap",	"$user$projector", D3DTADDRESS_CLAMP, D3DTEXF_LINEAR, D3DTEXF_NONE,D3DTEXF_LINEAR);
 			C.r_End				();
 			break;
 		case 1:	// Lowest LOD
