@@ -8881,6 +8881,12 @@
 					Name="MainIngame"
 					Filter="">
 					<File
+						RelativePath=".\ui\UIArtefactPanel.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIArtefactPanel.h">
+					</File>
+					<File
 						RelativePath=".\ui\UICarPanel.cpp">
 					</File>
 					<File
