@@ -518,6 +518,7 @@ function stalker_novice3_action:initialize ()
     self.object:enable_talk()
     self:init_state_walk()
     self.b.time_speak = device():time_global() - 60000
+    self.object:set_item             ( object.deactivate, self.object:best_weapon() )
 end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_novice3_action:execute ()
