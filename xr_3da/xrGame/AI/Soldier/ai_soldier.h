@@ -86,6 +86,7 @@ class CAI_Soldier : public CCustomMonster
 		bool bfCheckPath(AI::Path &Path);
 	
 		CSoldierSelectorAttack		SelectorAttack;
+		CSoldierSelectorFindEnemy	SelectorFindEnemy;
 		CSoldierSelectorFreeHunting SelectorFreeHunting;
 		CSoldierSelectorFollow		SelectorFollow;
 		CSoldierSelectorPursuit		SelectorPursuit;

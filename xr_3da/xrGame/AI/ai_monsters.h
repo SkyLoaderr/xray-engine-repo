@@ -101,6 +101,7 @@ class CAISelectorBase : public AI::NodeEstimator
 		Fvector			m_tEnemyPosition;
 		Fvector			m_tEnemyDirection;
 		Fvector			m_tEnemySurroundDirection;
+		Fvector			m_tLastEnemyPosition;
 		
 		// postion being tested
 		float			m_fDistance;
@@ -125,6 +126,7 @@ class CAISelectorBase : public AI::NodeEstimator
 		void vfAddDeviationFromMemberViewCost();
 		void vfAddDeviationFromPreviousDirectionCost();
 		void vfAddDistanceToEnemyCost();
+		void vfAddDistanceToLastPositionCost();
 		void vfAddDistanceToLeaderCost();
 		void vfAddDistanceToMemberCost();
 		void vfAddEnemyLookCost();

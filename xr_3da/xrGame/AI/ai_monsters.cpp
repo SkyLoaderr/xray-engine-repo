@@ -395,3 +395,9 @@ void CAISelectorBase::vfAddDeviationFromPreviousDirectionCost()
 	m_fResult += fAlpha * fMemberViewDeviationWeight;
 }
 
+void CAISelectorBase::vfAddDistanceToLastPositionCost()
+{
+	Fvector tTemp;
+	tTemp.sub(m_tCurrentPosition,m_tLastEnemyPosition);
+	m_fResult += 200.f*tTemp.square_magnitude();
+}

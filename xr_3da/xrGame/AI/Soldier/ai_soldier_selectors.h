@@ -18,6 +18,13 @@ class CSoldierSelectorAttack : public CAISelectorBase
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
+class CSoldierSelectorFindEnemy : public CAISelectorBase
+{
+	public:
+		CSoldierSelectorFindEnemy();
+		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
+};
+
 class CSoldierSelectorFreeHunting : public CAISelectorBase
 {
 	public:
