@@ -14,14 +14,14 @@
 #include "../game_base_space.h"
 
 #define LIST_ITEM_HEIGHT	15
-#define TITLE_INDENT_Y		30
-#define TITLE_INDENT_X		-8
+#define TITLE_INDENT_Y		33
+#define TITLE_INDENT_X		18
 
 CUIOutfitInfo::CUIOutfitInfo(){
 	AttachChild(&m_listWnd);
 	AttachChild(&m_staticTitle);
-	m_pFont = UI()->Font()->pFontMedium;
-	m_textColor = 0xfff0f0f0;
+	m_pFont = UI()->Font()->pFontLetterica16Russian;
+	m_textColor = 0xfff0D9B6;
 }
 
 CUIOutfitInfo::~CUIOutfitInfo(){
@@ -38,7 +38,7 @@ void CUIOutfitInfo::Init(int x, int y, int width, int height){
 		
 	// header
 	m_staticTitle.SetFont(UI()->Font()->pFontGraffiti22Russian);
-	m_staticTitle.SetTextColor(0xfff0f0f0);
+	m_staticTitle.SetTextColor(0xffE79916);
 	
 	m_itemBurnProtection = xr_new<CUIListItem>();
 	m_itemChemicalBurnProtection = xr_new<CUIListItem>();
