@@ -895,7 +895,7 @@ BOOL CImageManager::CreateSmallerCubeMap(LPCSTR src_name, LPCSTR dst_name)
         }
         // generate smaller
 	    U32Vec sm_data	(sm_wf*sm_h,0);
-        cm.scale_map	(data,w,h,sm_data,sm_w,sm_h,2.f);
+        cm.scale_map	(data,w,h,sm_data,sm_w,sm_h,3.f);
         // write texture
         std::string out_name;
 /*

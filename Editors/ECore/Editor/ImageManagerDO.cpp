@@ -174,7 +174,7 @@ int CImageManager::CreateMergedTexture(const RStringVec& _names, LPCSTR dest_nam
 
     // all right. make texture.
     AnsiString fn		= ChangeFileExt	(dest_name,".dds");
-    MakeGameTexture		(fn.c_str(),dest_pixels.begin(),dest_width,dest_height,fmt,true);
+    MakeGameTexture		(fn.c_str(),dest_pixels.begin(),dest_width,dest_height,fmt,STextureParams::ttImage,STextureParams::flDitherColor|STextureParams::flGenerateMipMaps);
 
     return 1;
 }

@@ -286,6 +286,23 @@ void TfrmImageLib::OnTypeChange(PropValue* prop)
 	UpdateProperties();
 }
 
+void TfrmImageLib::OnCubeMapBtnClick(PropValue* value, bool& bModif, bool& bSafe)
+{
+	ButtonValue* B = dynamic_cast<ButtonValue*>(value); R_ASSERT(B);
+    bModif = false;
+	switch(B->btn_num){
+    case 0:{
+        RStringVec items;
+        if (0!=m_ItemList->GetSelected(items)){
+            for (RStringVecIt it=items.begin(); it!=items.end(); it++){
+                AnsiString new_name = AnsiString(it->c_str())+"#small";
+                ImageLib.CreateSmallerCubeMap(it->c_str(),new_name.c_str());	
+            }
+        }
+    }break;
+	}
+}
+
 void TfrmImageLib::OnItemsFocused(ListItemsVec& items)
 {
 	PropItemVec props;
@@ -313,6 +330,10 @@ void TfrmImageLib::OnItemsFocused(ListItemsVec& items)
                 }
                 m_THM_Current.push_back	(thm);
                 thm->FillProp			(props,PropValue::TOnChange().bind(this,&TfrmImageLib::OnTypeChange));
+				if (thm->_Format().type==STextureParams::ttCubeMap){
+				    ButtonValue* B		= PHelper().CreateButton (props, "CubeMap\\Edit", "Make Small", 0);
+        			B->OnBtnClickEvent.bind(this,&TfrmImageLib::OnCubeMapBtnClick);
+                }
             }
         }
     }
@@ -357,4 +378,5 @@ void TfrmImageLib::OnFrame()
     	ELog.DlgMsg(mtError,"At first select item!");
     }
 */
+
 

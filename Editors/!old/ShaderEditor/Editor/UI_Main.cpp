@@ -375,6 +375,7 @@ void TUI::Redraw(){
 
             // draw axis
             DU.DrawAxis(Device.m_Camera.GetTransform());
+
             // end draw
             Device.End();
         }
