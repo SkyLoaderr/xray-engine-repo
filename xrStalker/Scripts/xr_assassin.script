@@ -1,0 +1,106 @@
+---------------------------------------------------------------------------------------------------------------------
+class "evaluator_need_assassin" (property_evaluator)
+
+function evaluator_need_assassin:__init(storage) super()
+  	self.st = storage
+end
+
+function evaluator_need_assassin:evaluate()
+	--printf("assassin [%s] best_target = ", self.object:name()--[[,
+	--	if_then_else(self.object:best_target(), self.object:best_target():name(), "none")]])
+	if not self.st.target_obj then
+		if self.st.target == "actor" then
+			self.st.target_obj = level.actor()
+		else
+			self.st.target_obj = level.object(self.st.target)
+		end
+	end
+
+  	return self.st.enabled == true and self.st.target_obj ~= nil and self.st.target_obj:alive()
+end
+
+----------------------------------------------------------------------------------------------------------------------
+class "action_assassin_activity" (action_base)
+
+function action_assassin_activity:__init (npc_name, action_name, storage) super(nil, action_name)
+	self.st = storage
+end
+
+function action_assassin_activity:initialize()
+	--printf("_bp: action_assassin_activity: initialize")
+	action_base.initialize(self)
+	self.object:set_node_evaluator()
+	self.object:set_path_evaluator()
+	self.object:set_desired_position()
+	self.object:set_desired_direction()
+
+	self:reset_scheme()
+end
+
+
+function action_assassin_activity:reset_scheme()
+end	
+
+function action_assassin_activity:execute()
+	action_base.execute(self)
+	
+	printf("Plr, you will die")
+end
+
+function action_assassin_activity:finalize()
+	self.move_mgr:finalize()
+	action_base.finalize(self)
+end
+
+----------------------------------------------------------------------------------------------------------------------
+--assassin binder
+----------------------------------------------------------------------------------------------------------------------
+function add_to_binder(npc, char_ini)
+	if char_ini == nil  or char_ini:section_exist ("assassin") == true then
+  		local operators	= {}
+	  	local properties  = {}
+
+	   	local manager = npc:motivation_action_manager()
+
+		properties["event"] = xr_evaluators_id.reaction
+		properties["state_end"] = xr_evaluators_id.state_change
+	 	properties["need_assassin"] = xr_evaluators_id.zmey_assassin_base + 1
+
+	 	operators["action_assassin"] = xr_actions_id.zmey_assassin_base + 1
+	 	operators["action_assassin_2"] = xr_actions_id.zmey_assassin_base + 2
+
+	   	-- // evaluators
+		manager:add_evaluator(properties["need_assassin"], this.evaluator_need_assassin(xr_motivator.storage[npc:id()].assassin))
+
+		local new_action = this.action_assassin_activity(npc, "action_assassin_activity", xr_motivator.storage[npc:id()].assassin)
+		new_action:add_precondition(world_property(stalker_ids.property_alive, true))
+		new_action:add_precondition(world_property(stalker_ids.property_enemy, false))
+		new_action:add_precondition(world_property(properties["need_assassin"], true))
+		new_action:add_precondition(world_property(properties["event"], false))
+		new_action:add_precondition(world_property(properties["state_end"], true))
+	   	new_action:add_effect(world_property(properties["need_assassin"], false))
+		manager:add_action(operators["action_assassin"], new_action)
+
+	  	new_action = manager:action(stalker_ids.action_puzzle_solver)
+	  	new_action:add_precondition(world_property(properties["need_assassin"], false))
+
+		if char_ini ~= nil then
+			xr_assassin.set_assassin(npc)
+		end
+	end
+end
+
+-- ¬ключение схемы
+function set_assassin(object, enabled, target)
+	local char_ini = object:spawn_ini()
+	local st = xr_motivator.storage[object:id()].assassin
+
+	st.enabled = utils.conf_get_bool(char_ini, "assassin", "enabled", enabled, object, true)
+	st.target = utils.conf_get_string(char_ini, "assassin", "target", target, object, true)
+
+	if st.action ~= nil then
+		st.action.reset_scheme(st.action)
+	end
+	xr_motivator.checkStorage(object)
+end
+
