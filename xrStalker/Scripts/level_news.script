@@ -15,7 +15,7 @@ function main()
 			end
 			begin = game.time()
 		end		
-		printf("%d of %d",game.time() - begin, delta)
+		--printf("%d of %d",game.time() - begin, delta)
 		wait()
 	end
 end
