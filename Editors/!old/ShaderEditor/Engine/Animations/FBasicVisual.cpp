@@ -55,7 +55,7 @@ void IRender_Visual::Load		(const char* N, IReader *data, u32 dwFlags)
 		string256		fnT,fnS;
 		data->r_stringZ	(fnT,sizeof(fnT));
 		data->r_stringZ	(fnS,sizeof(fnS));
-		hShader.create	(fnS,fnT);
+		shader.create	(fnS,fnT);
 	}
 
     // desc
@@ -69,8 +69,7 @@ void IRender_Visual::Load		(const char* N, IReader *data, u32 dwFlags)
 void	IRender_Visual::Copy(IRender_Visual *pFrom)
 {
 	PCOPY(Type);
-	PCOPY(hShader);
-	PCOPY(hGeom);
+	PCOPY(shader);
 	PCOPY(vis);
 #ifdef _EDITOR
 	PCOPY(desc);
