@@ -207,6 +207,10 @@ void C3DSound::Stop			()
 
 void C3DSound::Rewind		()
 {
-	pBuffer->SetCurrentPosition(0);
-	bNeedUpdate = true;
+	pBuffer->SetCurrentPosition	(0);
+	DWORD dwTime				= Device.TimerAsync();
+	DWORD dwDiff				= dwTime-dwTimeStarted;
+	dwTimeStarted				+= dwDiff;
+	dwTimeToStop				+= dwDiff;
+	bNeedUpdate					= true;
 }
