@@ -236,10 +236,10 @@ void xrMergeGraphs(LPCSTR name)
 		Memory.mem_copy				(S1,V,strlen(V) + 1);
 		strconcat					(S2,name,S1);
 		strconcat					(S1,S2,"\\");//level.graph");
-		u32							id = Ini->r_s32(N,"id");
-		CLevelGraph					*tpLevelGraph = xr_new<CLevelGraph>(tLevel,S1,dwOffset,id);
+		tLevel.dwLevelID			= Ini->r_s32(N,"id");
+		CLevelGraph					*tpLevelGraph = xr_new<CLevelGraph>(tLevel,S1,dwOffset,tLevel.dwLevelID);
 		dwOffset					+= tpLevelGraph->m_tGraphHeader.dwVertexCount;
-		tpGraphs.insert				(make_pair(id,tpLevelGraph));
+		tpGraphs.insert				(make_pair(tLevel.dwLevelID,tpLevelGraph));
 		tGraphHeader.tpLevels.push_back(tLevel);
     }
 	R_ASSERT(tpGraphs.size());
