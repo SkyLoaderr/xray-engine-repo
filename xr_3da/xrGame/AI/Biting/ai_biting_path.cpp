@@ -45,21 +45,21 @@ void CAI_Biting::vfInitSelector(PathManagers::CAbstractVertexEvaluator &S, bool 
 // high level 
 void CAI_Biting::Path_GetAwayFromPoint(CEntity *pE, Fvector position, float dist, TTime rebuild_time)
 {
-//	if (pE) {
-//		m_tEnemy.Set(pE,0);									// forse enemy selection
-//		vfInitSelector(*m_tSelectorGetAway, false);
-//	} else {
-//		vfInitSelector(*m_tSelectorGetAway, true);
-//		m_tSelectorGetAway->m_tEnemyPosition = position;
-//	}
-//	
-//	float dist_to_point = position.distance_to(Position());
-//
-//	m_tSelectorGetAway->m_fMinEnemyDistance = dist_to_point + 3.f;
-//	m_tSelectorGetAway->m_fMaxEnemyDistance = m_tSelectorGetAway->m_fMinEnemyDistance + m_tSelectorGetAway->m_fSearchRange + dist;
-//	m_tSelectorGetAway->m_fOptEnemyDistance = m_tSelectorGetAway->m_fMaxEnemyDistance;
-//
-//	vfChoosePointAndBuildPath(m_tSelectorGetAway, 0, true, 0, rebuild_time);
+	if (pE) {
+		m_tEnemy.Set(pE,0);									// forse enemy selection
+		vfInitSelector(*m_tSelectorGetAway, false);
+	} else {
+		vfInitSelector(*m_tSelectorGetAway, true);
+		m_tSelectorGetAway->m_tEnemyPosition = position;
+	}
+	
+	float dist_to_point = position.distance_to(Position());
+
+	m_tSelectorGetAway->m_fMinEnemyDistance = dist_to_point + 3.f;
+	m_tSelectorGetAway->m_fMaxEnemyDistance = m_tSelectorGetAway->m_fMinEnemyDistance + m_tSelectorGetAway->m_fSearchRange + dist;
+	m_tSelectorGetAway->m_fOptEnemyDistance = m_tSelectorGetAway->m_fMaxEnemyDistance;
+
+	CLevelLocationSelector::set_evaluator(m_tSelectorGetAway);
 }
 
 void CAI_Biting::Path_CoverFromPoint(CEntity *pE, Fvector position, TTime rebuild_time)
@@ -90,31 +90,28 @@ void CAI_Biting::Path_ApproachPoint(CEntity *pE, Fvector position, TTime rebuild
 		vfInitSelector(*m_tSelectorApproach, true);
 		m_tSelectorApproach->m_tEnemyPosition = position;
 	}
+
+	CLevelLocationSelector::set_evaluator(m_tSelectorApproach);
 }
 
 // Развернуть объект в направление движения
 void CAI_Biting::SetDirectionLook(bool bReversed)
 {
-	Fvector vstart,vnext;
-	vstart	= CDetailPathManager::path()[CDetailPathManager::curr_travel_point_index()].m_position;
-	vnext	= CDetailPathManager::path()[CDetailPathManager::curr_travel_point_index() + 1].m_position;
-	
-	Fvector dir;
-	dir.sub(vnext,vstart);
-	
-	if (dir.magnitude() < EPS_L) return;
-	
-	vfNormalizeSafe(dir);
-	
+
 	float yaw,pitch;
-	dir.getHP(yaw,pitch);
+	
+	// get prev
+	CDetailPathManager::direction().getHP(yaw,pitch);
 
 	m_body.target.yaw = -yaw;
 	m_body.target.pitch = 0;
 
 	if (bReversed) m_body.target.yaw = angle_normalize(m_body.target.yaw + PI);
 	else m_body.target.yaw = angle_normalize(m_body.target.yaw);
-	
+
+	LOG_EX2("DIRLOOK: current [%f], target [%f]", *"*/ m_body.current.yaw, m_body.target.yaw /*"*);
+
+
 	m_head.target = m_body.target;
 }
 
@@ -132,4 +129,10 @@ void CAI_Biting::LookPosition(Fvector to_point)
 
 	// установить текущий угол
 	m_body.target.yaw = angle_normalize(-yaw);
+}
+
+Fvector CAI_Biting::CheckPosition(CEntity *pE, Fvector v)
+{
+	if (ai().level_graph().inside(pE->level_vertex(), v)) return v;
+	else return ai().level_graph().vertex_position(pE->level_vertex());
 }

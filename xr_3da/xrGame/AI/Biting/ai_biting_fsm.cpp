@@ -29,11 +29,13 @@ void CAI_Biting::Think()
 	StateSelector			();
 	CurrentState->Execute	(m_current_update);
 
+	// Update path
+	CDetailPathManager::set_path_type(eDetailPathTypeSmooth);
+	set_desirable_speed		(m_fCurSpeed);
+	update_path				();
+
 	MotionMan.ProcessAction();
 
-	// Update path
-	update_path				();
-	set_desirable_speed		(m_fCurSpeed);
 
 	// process sound
 	ControlSound(m_current_update);

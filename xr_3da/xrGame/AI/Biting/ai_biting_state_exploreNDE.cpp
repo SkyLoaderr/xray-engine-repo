@@ -51,8 +51,7 @@ void CBitingExploreNDE::Run()
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 		
 		// если монстр дошел до конца пути, перейти к следующему заданию
-		if ( !pMonster->CDetailPathManager::path().empty() && 
-			((pMonster->CDetailPathManager::path().size() - 1 ) <= pMonster->CDetailPathManager::curr_travel_point_index())) m_tAction = ACTION_LOOK_AROUND; 
+		if ( pMonster->CDetailPathManager::completed(pMonster->Position())) m_tAction = ACTION_LOOK_AROUND; 
 
 		break;
 	case ACTION_LOOK_AROUND:

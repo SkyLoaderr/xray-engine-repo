@@ -287,7 +287,7 @@ void CMotionManager::ProcessAction()
 		cur_anim = MI.anim;
 
 		// установить target.yaw
-		if (pMonster->valid()) pMonster->SetDirectionLook( ((spec_params & ASP_MOVE_BKWD) == ASP_MOVE_BKWD) );
+		if (!pMonster->CDetailPathManager::path().empty()) pMonster->SetDirectionLook( ((spec_params & ASP_MOVE_BKWD) == ASP_MOVE_BKWD) );
 
 		// если новая анимация не совпадает с предыдущей, проверить переход
 		if (prev_anim != cur_anim) CheckTransition(prev_anim, cur_anim);
@@ -358,6 +358,9 @@ void CMotionManager::OnAnimationEnd()
 // если монстр стоит на месте и играет анимацию движения - force stand idle
 void CMotionManager::FixBadState()
 {	
+	if (IsMoving() && pMonster->CDetailPathManager::completed(pMonster->Position()))
+		cur_anim = eAnimStandIdle;
+
 //	bool is_moving_action = IsMoving();
 //	bool is_action_changed = prev_action != m_tAction;
 //	TTime cur_time = Level().timeServer();
@@ -385,6 +388,7 @@ void CMotionManager::FixBadState()
 //	}
 //
 //	prev_action = m_tAction;
+
 }
 
 void CMotionManager::CheckReplacedAnim()

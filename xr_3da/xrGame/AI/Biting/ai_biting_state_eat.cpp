@@ -91,16 +91,18 @@ void CBitingEat::Run()
 	switch (m_tAction) {
 	case ACTION_CORPSE_APPROACH_RUN:	// бежать к трупу
 		pMonster->set_level_dest_vertex (pCorpse->level_vertex_id());
-		//pMonster->vfChoosePointAndBuildPath(0,&nearest_bone_pos, true, 0);
-
+		pMonster->set_dest_position(nearest_bone_pos);
+		pMonster->set_path_type (CMovementManager::ePathTypeLevelPath);
+		
 		pMonster->MotionMan.m_tAction = ACT_RUN;
 
 		if (cur_dist < DIST_SLOW_APPROACH_TO_CORPSE) m_tAction = ACTION_CORPSE_APPROACH_WALK;
 		break;
 	case ACTION_CORPSE_APPROACH_WALK:
 
-		pMonster->set_level_dest_vertex	(pCorpse->level_vertex_id());
-		//pMonster->vfChoosePointAndBuildPath(0,&nearest_bone_pos, true, 0);
+		pMonster->set_level_dest_vertex (pCorpse->level_vertex_id());
+		pMonster->set_dest_position(nearest_bone_pos);
+		pMonster->set_path_type (CMovementManager::ePathTypeLevelPath);
 
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 		
@@ -116,7 +118,8 @@ void CBitingEat::Run()
 		break;
 	case ACTION_EAT:
 		pMonster->MotionMan.m_tAction = ACT_EAT;
-		
+		pMonster->enable_movement	(false);
+
 		bEating = true;
 		if (pMonster->GetSatiety() >= 1.0f) bHideAfterLunch = true;
 
@@ -152,6 +155,8 @@ void CBitingEat::Run()
 
 		break;
 	case ACTION_LITTLE_REST:
+		pMonster->enable_movement	(false);
+
 		pMonster->MotionMan.m_tAction = ACT_REST; 
 		if (m_dwTimeStartRest + REST_AFTER_LUNCH_TIME < m_dwCurrentTime) {
 			pMonster->flagEatNow	= false;
@@ -164,8 +169,9 @@ void CBitingEat::Run()
 
 	case ACTION_WALK:
 
-		pMonster->set_level_dest_vertex	(pCorpse->level_vertex_id());
-//		pMonster->vfChoosePointAndBuildPath(0,&nearest_bone_pos, true, 0,500);
+		pMonster->set_level_dest_vertex (pCorpse->level_vertex_id());
+		pMonster->set_dest_position(nearest_bone_pos);
+		pMonster->set_path_type (CMovementManager::ePathTypeLevelPath);
 
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD; 
 
@@ -193,6 +199,7 @@ void CBitingEat::Run()
 		break;
 
 	case ACTION_DRAG:
+		
 		pMonster->Path_GetAwayFromPoint(pCorpse, pCorpse->Position(), saved_dist, 500);
 
 		// ”становить параметры движени€

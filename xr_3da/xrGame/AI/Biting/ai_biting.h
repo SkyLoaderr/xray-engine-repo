@@ -217,6 +217,7 @@ public:
 			
 			bool			IsRightSide						(float ty, float cy) {return ((angle_normalize_signed(ty - cy) > 0));}
 
+			Fvector			CheckPosition					(CEntity *pE, Fvector v);
 // members
 public:
 

@@ -17,13 +17,16 @@ CAI_Biting::CAI_Biting()
 {
 	m_PhysicMovementControl.AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
 	m_pPhysics_support=xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etBitting,this);
+
+	m_tSelectorApproach				= xr_new<PathManagers::CVertexEvaluator<aiSearchRange | aiEnemyDistance>  >();
+	m_tSelectorGetAway				= xr_new<PathManagers::CVertexEvaluator<aiSearchRange | aiEnemyDistance>  >();
 }
 
 CAI_Biting::~CAI_Biting()
 {
 	xr_delete(m_pPhysics_support);
-
 	xr_delete(m_tSelectorApproach);
+	xr_delete(m_tSelectorGetAway);
 }
 
 void CAI_Biting::Init()
@@ -99,10 +102,11 @@ void CAI_Biting::Load(LPCSTR section)
 
 	m_pPhysics_support				->in_Load(section);
 	
+	m_tSelectorApproach->Load		(section,"selector_approach");
+	m_tSelectorGetAway->Load		(section,"selector_getaway");
+
 	LoadSounds						(section);
 
-	m_tSelectorApproach				= xr_new<PathManagers::CVertexEvaluator<aiSearchRange | aiEnemyDistance>  >(section,"selector_approach");
-	
 	eye_fov							= pSettings->r_float(section,"EyeFov");
 	eye_range						= pSettings->r_float(section,"eye_range");
 

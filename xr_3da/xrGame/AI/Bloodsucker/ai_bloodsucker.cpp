@@ -3,6 +3,8 @@
 #include "ai_bloodsucker_effector.h"
 #include "../ai_monsters_misc.h"
 
+#include "..\\..\\hudmanager.h"
+
 CAI_Bloodsucker::CAI_Bloodsucker()
 {
 	stateRest			= xr_new<CBitingRest>			(this);
@@ -226,11 +228,19 @@ void CAI_Bloodsucker::UpdateCL()
 	bool NewVis		=	CMonsterInvisibility::Update();
 	if (NewVis != PrevVis) setVisible(NewVis);
 
+	
+	HUD().pFontSmall->OutSet	(400,200);
+	HUD().pFontSmall->OutNext	("Cur = [%f], Target=[%f]", m_body.current.yaw, m_body.target.yaw);
 }
 
 void CAI_Bloodsucker::StateSelector()
 {
 	VisionElem ve;
+
+//	if (C || D || E || F) SetState(statePanic);
+//	else SetState(stateRest);
+//
+//	return;
 
 	if (C && H && I)			SetState(statePanic);
 	else if (C && H && !I)		SetState(statePanic);
@@ -250,7 +260,9 @@ void CAI_Bloodsucker::StateSelector()
 	else if (F && !H && !I) 	SetState(stateAttack);		
 	else if (A && !K)			SetState(stateExploreNDE); 
 	else if (B && !K)			SetState(stateExploreNDE); 
-	else if ((GetCorpse(ve) && (ve.obj->m_fFood > 1)) && ((GetSatiety() < 0.85f) || flagEatNow))
+
+	else if ((GetCorpse(ve) && (ve.obj->m_fFood > 1)))
+//	else if ((GetCorpse(ve) && (ve.obj->m_fFood > 1)) && ((GetSatiety() < 0.85f) || flagEatNow))
 		SetState(stateEat);	
 	else						SetState(stateRest);
 

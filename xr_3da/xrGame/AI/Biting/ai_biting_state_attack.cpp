@@ -116,22 +116,22 @@ void CBitingAttack::Run()
 	if (((pMonster->flagsEnemy & FLAG_ENEMY_GO_FARTHER_FAST) == FLAG_ENEMY_GO_FARTHER_FAST) && (m_dwStateStartedTime + 4000 < m_dwCurrentTime)) bEnemyDoesntSeeMe = false;
 	if ((ACTION_RUN == m_tAction) && bEnemyDoesntSeeMe) m_tAction = ACTION_STEAL;
 
-	if (CheckThreaten()) m_tAction = ACTION_THREATEN;
+//	if (CheckThreaten()) m_tAction = ACTION_THREATEN;
 
-#pragma todo("Jim to Jim: fix nesting: Bloodsucker in Biting state")
-	if (m_bInvisibility && ACTION_THREATEN != m_tAction) {
-		CAI_Bloodsucker *pBS =	dynamic_cast<CAI_Bloodsucker *>(pMonster);
-		CActor			*pA  =  dynamic_cast<CActor*>(Level().CurrentEntity());
-
-		if (pBS && pA && (pA->Position().distance_to(pBS->Position()) < pBS->m_fEffectDist)) {
-			if ((dist < pBS->m_fInvisibilityDist) && (pBS->GetPower() > pBS->m_fPowerThreshold)) {
-				if (pBS->CMonsterInvisibility::Switch(false)) {
-					pBS->ChangePower(pBS->m_ftrPowerDown);
-					pBS->ActivateEffector(pBS->CMonsterInvisibility::GetInvisibleInterval() / 1000.f);
-				}
-			}
-		}
-	}
+//#pragma todo("Jim to Jim: fix nesting: Bloodsucker in Biting state")
+//	if (m_bInvisibility && ACTION_THREATEN != m_tAction) {
+//		CAI_Bloodsucker *pBS =	dynamic_cast<CAI_Bloodsucker *>(pMonster);
+//		CActor			*pA  =  dynamic_cast<CActor*>(Level().CurrentEntity());
+//
+//		if (pBS && pA && (pA->Position().distance_to(pBS->Position()) < pBS->m_fEffectDist)) {
+//			if ((dist < pBS->m_fInvisibilityDist) && (pBS->GetPower() > pBS->m_fPowerThreshold)) {
+//				if (pBS->CMonsterInvisibility::Switch(false)) {
+//					pBS->ChangePower(pBS->m_ftrPowerDown);
+//					pBS->ActivateEffector(pBS->CMonsterInvisibility::GetInvisibleInterval() / 1000.f);
+//				}
+//			}
+//		}
+//	}
 
 
 	// Выполнение состояния
@@ -140,7 +140,7 @@ void CBitingAttack::Run()
 			delay = ((m_bAttackRat)? 0: 300);
 
 			pMonster->set_level_dest_vertex(m_tEnemy.obj->level_vertex_id());
-			pMonster->set_dest_position(m_tEnemy.obj->Position());
+			pMonster->set_dest_position(pMonster->CheckPosition(m_tEnemy.obj, m_tEnemy.obj->Position()));
 			pMonster->set_path_type (CMovementManager::ePathTypeLevelPath);
 
 			pMonster->MotionMan.m_tAction = ACT_RUN;
@@ -182,7 +182,7 @@ void CBitingAttack::Run()
 			if (dist < (m_fDistMax + 2.f)) bEnemyDoesntSeeMe = false;
 
 			pMonster->set_level_dest_vertex(m_tEnemy.obj->level_vertex_id());
-			pMonster->set_dest_position(m_tEnemy.obj->Position());
+			pMonster->set_dest_position(pMonster->CheckPosition(m_tEnemy.obj, m_tEnemy.obj->Position()));
 			pMonster->set_path_type (CMovementManager::ePathTypeLevelPath);
 
 			pMonster->MotionMan.m_tAction = ACT_STEAL;

@@ -55,23 +55,22 @@ void CBitingPanic::Run()
 		pMonster->m_body.target.yaw = angle_normalize(pMonster->m_body.target.yaw + PI);
 	} 
 
-#pragma todo("Jim to Jim: fix nesting: Bloodsucker in Biting state")
-	if (m_bInvisibility) {
-		CAI_Bloodsucker *pBS =	dynamic_cast<CAI_Bloodsucker *>(pMonster);
-		CActor			*pA  =  dynamic_cast<CActor*>(Level().CurrentEntity());
-
-		if (pBS && pA && (pA->Position().distance_to(pBS->Position()) < pBS->m_fEffectDist)) {
-			if (pBS->GetPower() > pBS->m_fPowerThreshold) {
-				if (pBS->CMonsterInvisibility::Switch(false)) {
-					pBS->ChangePower(pBS->m_ftrPowerDown);
-					pBS->ActivateEffector(pBS->CMonsterInvisibility::GetInvisibleInterval() / 1000.f);
-				}
-			}
-		}
-	}
+//#pragma todo("Jim to Jim: fix nesting: Bloodsucker in Biting state")
+//	if (m_bInvisibility) {
+//		CAI_Bloodsucker *pBS =	dynamic_cast<CAI_Bloodsucker *>(pMonster);
+//		CActor			*pA  =  dynamic_cast<CActor*>(Level().CurrentEntity());
+//
+//		if (pBS && pA && (pA->Position().distance_to(pBS->Position()) < pBS->m_fEffectDist)) {
+//			if (pBS->GetPower() > pBS->m_fPowerThreshold) {
+//				if (pBS->CMonsterInvisibility::Switch(false)) {
+//					pBS->ChangePower(pBS->m_ftrPowerDown);
+//					pBS->ActivateEffector(pBS->CMonsterInvisibility::GetInvisibleInterval() / 1000.f);
+//				}
+//			}
+//		}
+//	}
 
 	pMonster->SetSound(SND_TYPE_ATTACK, pMonster->_sd->m_dwAttackSndDelay);
-
 
 	if (!cur_pos.similar(prev_pos)) {
 		bFacedOpenArea = false;
@@ -79,18 +78,17 @@ void CBitingPanic::Run()
 	} else if (0 == m_dwStayTime) m_dwStayTime = m_dwCurrentTime;
 
 	pMonster->Path_GetAwayFromPoint(m_tEnemy.obj,m_tEnemy.position, 30, 2000);
-	
+
 	if (!bFacedOpenArea) {
 			pMonster->MotionMan.m_tAction = ACT_RUN;
 	} else {
-		// try to rebuild path 
-#pragma todo("Dima to Jim : Ypu do not have an access to the CMovementManager private members. Please decide here what to do")
-//		if (pMonster->CDetailPathManager::m_path.size() > 5) {
-//			pMonster->MotionMan.m_tAction = ACT_RUN;
-//		} else {
-//			pMonster->MotionMan.SetSpecParams(ASP_STAND_SCARED);
-//			pMonster->MotionMan.m_tAction	= ACT_STAND_IDLE;
-//		}
+		// try to rebuild path if there is need
+		if (!pMonster->CDetailPathManager::completed(pMonster->Position()))
+			pMonster->MotionMan.m_tAction = ACT_RUN;
+		else  {
+			pMonster->MotionMan.SetSpecParams(ASP_STAND_SCARED);
+			pMonster->MotionMan.m_tAction	= ACT_STAND_IDLE;
+		}
 	}
 	
 	prev_pos = cur_pos;

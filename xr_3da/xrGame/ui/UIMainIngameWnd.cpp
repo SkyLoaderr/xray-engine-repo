@@ -157,16 +157,17 @@ void CUIMainIngameWnd::Update()
 		return;
 	}
 
-	if(m_pActor->GetPDA() && m_pActor->GetPDA()->ActiveContactsNum()>0)
-	{
-		string256 text;
-		sprintf(&text[0], "%d", m_pActor->GetPDA()->ActiveContactsNum());
-		UIPdaOnline.SetText(&text[0]);
-	}
-	else
-	{
-		UIPdaOnline.SetText("");
-	}
+#pragma todo("JIM: I temporary commented it")
+//	if(m_pActor->GetPDA() && m_pActor->GetPDA()->ActiveContactsNum()>0)
+//	{
+//		string256 text;
+//		sprintf(&text[0], "%d", m_pActor->GetPDA()->ActiveContactsNum());
+//		UIPdaOnline.SetText(&text[0]);
+//	}
+//	else
+//	{
+//		UIPdaOnline.SetText("");
+//	}
 
 
 	if(m_pActor->m_inventory.GetActiveSlot() < m_pActor->m_inventory.m_slots.size()) 
