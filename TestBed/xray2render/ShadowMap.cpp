@@ -798,12 +798,11 @@ void	CalcGauss	(
 {
 	// calculate
 	vector<float>	w;
-	for (int i=-n; i<=n; i++)
+	for (int i=-n; i<=0; i++)
 	{
-		w.push_back		(1.f);
-		// w.push_back		(expf(-float(i*i)/(2*r*r)));	// weight
+		//w.push_back		(1.f);
+		w.push_back		(expf(-float(i*i)/(2*r*r)));	// weight
 
-		if (i>=0)		continue;						// exploit symmetry : offsets
 		float offset	= bs*float(-i); 
 		H.push_back		(D3DXVECTOR4(offset/tw,0,0,0));
 		V.push_back		(D3DXVECTOR4(0,offset/th,0,0));
