@@ -161,7 +161,7 @@ void CAI_ALife::Load()
 	string256					caFileName;
 	IReader						*tpStream;
 	if (!FS.exist(caFileName,SAVE_PATH,SAVE_NAME)) {
-		R_ASSERT				(FS.exist(caFileName, ::Path.GameData, SPAWN_NAME));
+		R_ASSERT				(FS.exist(caFileName, "$game_data$", SPAWN_NAME));
 		tpStream				= FS.r_open(caFileName);
 		Log						("* Loading spawn registry");
 		CALifeSpawnRegistry::Load(*tpStream);

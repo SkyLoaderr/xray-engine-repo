@@ -30,8 +30,7 @@ CAI_Space::CAI_Space	()
 	m_tpAStar					= 0;
 	
 	string256					caFileName;
-	strconcat					(caFileName,::Path.GameData,GRAPH_NAME);
-	if (FS.exist(caFileName))
+	if (FS.exist(caFileName,"$game_data$",GRAPH_NAME))
 		CALifeGraph::Load		(caFileName);
 }
 
