@@ -93,17 +93,17 @@ void CRenderTarget::accum_spot	(light* L)
 	// Shadow xform (+texture adjustment matrix)
 	Fmatrix			m_Shadow;
 	{
-		float			fTexelOffs			= (.5f / RImplementation.LR.S_size);
+		float			fTexelOffs			= (.5f / DSM_size);
 		float			view_dim			= float(RImplementation.LR.S_size)/float(DSM_size);
 		float			view_sx				= float(RImplementation.LR.S_posX)/float(DSM_size);
 		float			view_sy				= float(RImplementation.LR.S_posY)/float(DSM_size);
 		float			fRange				= float(1.f);
 		float			fBias				= -0.0003f*fRange;
 		Fmatrix			m_TexelAdjust		= {
-			view_dim,							0.0f,								0.0f,		0.0f,
-			0.0f,								-view_dim,							0.0f,		0.0f,
-			0.0f,								0.0f,								fRange,		0.0f,
-			view_dim + view_sx + fTexelOffs,	view_dim + view_sy + fTexelOffs,	fBias,		1.0f
+			view_dim/2.f,							0.0f,									0.0f,		0.0f,
+			0.0f,									-view_dim/2.f,							0.0f,		0.0f,
+			0.0f,									0.0f,									fRange,		0.0f,
+			view_dim/2.f + view_sx + fTexelOffs,	view_dim/2.f + view_sy + fTexelOffs,	fBias,		1.0f
 		};
 
 		// compute xforms
