@@ -58,7 +58,7 @@ void xrServer::Update	()
 		E->Spawn_Write		(Packet,FALSE);
 		u16					ID;
 		Packet.r_begin		(ID);	R_ASSERT(M_SPAWN==ID);
-		Process_spawn		(Packet,0);
+		Process_spawn		(Packet,0xffff);
 	}
 
 	// 

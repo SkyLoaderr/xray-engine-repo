@@ -361,6 +361,8 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 void CWeapon::net_Destroy	()
 {
 	inherited::net_Destroy	();
+
+	if (m_pPhysicsShell)	m_pPhysicsShell->Deactivate	();
 }
 
 void CWeapon::net_Export	(NET_Packet& P)
