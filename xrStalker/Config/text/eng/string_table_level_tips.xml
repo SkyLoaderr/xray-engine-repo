@@ -48,4 +48,7 @@
     <string id="escape_stalker_helped">
         <text>Well done, Marked. If it continues, you’ll acquire many friends. Come into mine, we’ll have a chat.</text>
     </string>
+    <string id="info_esc_give_agroprom_task">
+        <text>empty text</text>
+    </string>    
 </string_table>
