@@ -160,7 +160,6 @@ struct astr_pred : public std::binary_function<const AnsiString&, const AnsiStri
 #pragma comment(lib,"xrCoreB.lib")
 #pragma comment(lib,"xrSoundB.lib")
 #pragma comment(lib,"xrCDBB.lib")
-#pragma comment(lib,"ParticleDLLB.lib")
 
 #pragma comment(lib,"dinput.lib")
 #pragma comment(lib,"freeimageB.lib")
