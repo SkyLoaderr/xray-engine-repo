@@ -43,6 +43,7 @@ enum {
 	M_CLIENT_REQUEST_CONNECTION_DATA,
 
 	M_CHAT_MESSAGE,
+	M_CHANGE_LEVEL_GAME,
 	//-----------------------------------------------------
 	MSG_FORCEDWORD				= u32(-1)
 };

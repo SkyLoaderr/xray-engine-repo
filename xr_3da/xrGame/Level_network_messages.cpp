@@ -161,6 +161,38 @@ void CLevel::ClientReceive()
 			{
 				Game().OnChatMessage(P);
 			}break;
+		case M_CHANGE_LEVEL_GAME:
+			{
+				if (OnClient())
+				{
+					Engine.Event.Defer	("KERNEL:disconnect");
+					Engine.Event.Defer	("KERNEL:start",size_t(xr_strdup(*m_caServerOptions)),size_t(xr_strdup(*m_caClientOptions)));
+				}
+				else
+				{
+					const char* m_SO = m_caServerOptions.c_str();
+					const char* m_CO = m_caClientOptions.c_str();
+
+					m_SO = strchr(m_SO, '/'); if (m_SO) m_SO++;
+					m_SO = strchr(m_SO, '/'); 
+
+					string128 LevelName = "";
+					string128 GameType = "";
+
+					P->r_stringZ(LevelName);
+					P->r_stringZ(GameType);
+
+					string4096 NewServerOptions = "";
+					sprintf(NewServerOptions, "%s/%s", LevelName, GameType);
+
+					if (m_SO) strcat(NewServerOptions, m_SO);
+					m_caServerOptions = NewServerOptions;
+
+					Engine.Event.Defer	("KERNEL:disconnect");
+					Engine.Event.Defer	("KERNEL:start",size_t(xr_strdup(*m_caServerOptions)),size_t(xr_strdup(*m_caClientOptions)));
+				};
+			}break;
+
 		}
 
 		net_msg_Release();

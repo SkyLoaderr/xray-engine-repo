@@ -293,6 +293,11 @@ u32 xrServer::OnMessage(NET_Packet& P, ClientID sender)			// Non-Zero means broa
 			xrClientData *l_pC	= ID_to_client(sender);
 			OnChatMessage(&P, l_pC);
 		}break;
+	case M_CHANGE_LEVEL_GAME:
+		{
+			ClientID CID; CID.set(0xffffffff);
+			SendBroadcast		(CID,P,net_flags(TRUE,TRUE));
+		}break;
 	}
 
 	VERIFY							(verify_entities());

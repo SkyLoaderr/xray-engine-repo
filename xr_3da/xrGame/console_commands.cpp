@@ -713,8 +713,6 @@ public:
 		if (!OnServer())	return;
 		
 		char	Name[128];	Name[0]=0;
-		int Num = 0;
-		sscanf	(args,"%d", Num);
 		sscanf	(args,"%s", Name);
 		
 		u32	cnt = Level().Server->game->get_players_count();
@@ -765,6 +763,76 @@ public:
 	virtual void	Info	(TInfo& I)		
 	{
 		strcpy(I,"List Players"); 
+	}
+};
+
+
+
+class CCC_ChangeLevelGameType : public IConsole_Command {
+public:
+	CCC_ChangeLevelGameType(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = false; };
+	virtual void Execute(LPCSTR args) 
+	{
+		if (!OnServer())	return;
+		char	LevelName[256];	LevelName[0]=0;
+		char	GameType[256];	GameType[0]=0;
+		sscanf	(args,"%s %s", LevelName, GameType);
+
+		NET_Packet P;
+		P.w_begin(M_CHANGE_LEVEL_GAME);
+		P.w_stringZ(LevelName);
+		P.w_stringZ(GameType);
+		Level().Send(P);
+	};
+
+	virtual void	Info	(TInfo& I)		
+	{
+		strcpy(I,"Changing level and game type"); 
+	}
+};
+
+class CCC_ChangeGameType : public CCC_ChangeLevelGameType {
+public:
+	CCC_ChangeGameType(LPCSTR N) : CCC_ChangeLevelGameType(N)  { bEmptyArgsHandled = false; };
+	virtual void Execute(LPCSTR args) 
+	{
+
+		if (!OnServer())	return;
+
+		char	GameType[256];	GameType[0]=0;
+		sscanf	(args,"%s", GameType);
+
+		char	argsNew[1024];
+		sprintf(argsNew, "%s %s", Level().name().c_str(), GameType);
+
+		CCC_ChangeLevelGameType::Execute((LPCSTR)argsNew);
+	};
+
+	virtual void	Info	(TInfo& I)		
+	{
+		strcpy(I,"Changing Game Type"); 
+	};
+};
+
+class CCC_ChangeLevel : public CCC_ChangeLevelGameType {
+public:
+	CCC_ChangeLevel(LPCSTR N) : CCC_ChangeLevelGameType(N)  { bEmptyArgsHandled = false; };
+	virtual void Execute(LPCSTR args) 
+	{
+		if (!OnServer())	return;
+
+		char	LevelName[256];	LevelName[0]=0;
+		sscanf	(args,"%s", LevelName);
+
+		char	argsNew[1024];
+		sprintf(argsNew, "%s %s", LevelName, Level().Server->game->type_name());
+
+		CCC_ChangeLevelGameType::Execute((LPCSTR)argsNew);
+	};
+
+	virtual void	Info	(TInfo& I)		
+	{
+		strcpy(I,"Changing Game Type"); 
 	}
 };
 
@@ -1158,6 +1226,10 @@ void CCC_RegisterCommands()
 #endif
 
 	CMD1(CCC_KickPlayer,	"g_kick"					);		// graph-point info
-	CMD1(CCC_ListPlayers,	"g_listplayers"					);		// graph-point info
+	CMD1(CCC_ListPlayers,	"g_listplayers"				);		// graph-point info
+	
+	CMD1(CCC_ChangeGameType,	"g_changegametype"			);
+	CMD1(CCC_ChangeLevel,		"g_changelevel"				);
+	CMD1(CCC_ChangeLevelGameType,		"g_changelevelgametype"				);
 }
 
