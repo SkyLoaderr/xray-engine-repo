@@ -164,7 +164,7 @@ void CSpectator::cam_Update	(CActor* A)
 {
 	if (A){
 		const Fmatrix& M			= A->clXFORM();
-		CCameraBase* cam		= cameras[cam_active];
+		CCameraBase* cam			= cameras[cam_active];
 		switch(cam_active) {
 		case eacFirstEye:{
 			Fvector P;
