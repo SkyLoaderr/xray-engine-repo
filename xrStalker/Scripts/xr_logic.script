@@ -208,10 +208,8 @@ function set_generic_schemes(ini, npc, stype, death, combat, actor_dialogs)
 
 		--' actor dialogs
 		if actor_dialogs == nil then
-			printf("*GULAG_ACTIVATE1*: nil")
 			xr_meet.set_actor_dialogs(npc, ini, "actor_dialogs", utils.cfg_get_string (ini, "logic", "actor_dialogs", npc, false, ""))
 		else
-			printf("*GULAG_ACTIVATE1*: %s", actor_dialogs)
 			xr_meet.set_actor_dialogs(npc, ini, "actor_dialogs", actor_dialogs)
 		end
 		
