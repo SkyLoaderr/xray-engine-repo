@@ -9,6 +9,11 @@
 #include "stdafx.h"
 #include "ai_rat.h"
 #include "..\\..\\xr_weapon_list.h"
+#include "..\\..\\actor.h"
+#include "..\\..\\hudmanager.h"
+
+#define SPECIAL_SQUAD					6
+#define LIGHT_FITTING			
 
 void CAI_Rat::Exec_Action(float dt)
 {
@@ -122,7 +127,28 @@ void CAI_Rat::SelectEnemy(SEnemySelected& S)
 	S.Enemy					= 0;
 	S.bVisible			= FALSE;
 	S.fCost				= flt_max-1;
-	if (Known.size()==0)	return;
+	
+#ifdef LIGHT_FITTING
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	// this code is dummy
+	// only for fitting light coefficients
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	bool bActorInCamera = false;
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#endif
+
+	if (Known.size()==0) {
+#ifdef LIGHT_FITTING
+		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		// this code is dummy
+		// only for fitting light coefficients
+		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		if (!bActorInCamera && (g_Squad() == SPECIAL_SQUAD))
+			Level().HUD()->outMessage(0xffffffff,cName(),"I don't see you");
+		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#endif
+		return;
+	}
 	
 	// Get visible list
 	ai_Track.o_get	(tpaVisibleObjects);
@@ -138,8 +164,34 @@ void CAI_Rat::SelectEnemy(SEnemySelected& S)
 		float		H = EnemyHeuristics(E);
 		if (H<S.fCost) {
 			if (!Group.m_bEnemyNoticed)
+#ifdef LIGHT_FITTING
+				// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				// this code is dummy
+				// only for fitting light coefficients
+				// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				if (g_Squad() == SPECIAL_SQUAD) {
+					bool bB = bfCheckForVisibility(E);
+					CActor *tpActor = dynamic_cast<CActor *>(E);
+					if (tpActor) {
+						Level().HUD()->outMessage(0xffffffff,cName(),bB ? "I see you" : "I don't see you");
+						bActorInCamera = true;
+						continue;
+					}
+					else
+						if (!bB)
+							continue;
+				}
+				else
+					if (!bfCheckForVisibility(E))
+						continue;
+#else
+				// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				// this code is correct
+				// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 				if (!bfCheckForVisibility(E))
 					continue;
+				// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#endif
 				// Calculate local visibility
 				CObject**	ins	 = lower_bound(tpaVisibleObjects.begin(),tpaVisibleObjects.end(),(CObject*)E);
 				bool	bVisible = ((ins==tpaVisibleObjects.end())?FALSE:((E==*ins)?TRUE:FALSE)) && (bfCheckForVisibility(E));
@@ -152,4 +204,13 @@ void CAI_Rat::SelectEnemy(SEnemySelected& S)
 				}
 		}
 	}
+#ifdef LIGHT_FITTING
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	// this code is dummy
+	// only for fitting light coefficients
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	if (!bActorInCamera && (g_Squad() == SPECIAL_SQUAD))
+		Level().HUD()->outMessage(0xffffffff,cName(),"I don't see you");
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#endif
 }
