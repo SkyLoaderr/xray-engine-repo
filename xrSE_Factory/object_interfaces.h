@@ -14,7 +14,7 @@ class NET_Packet;
 #ifdef XRSE_FACTORY_EXPORTS
 #	define xr_interface __interface
 #else
-#	define xr_interface class
+#	define xr_interface interface
 #endif
 
 xr_interface IPureDestroyableObject {
