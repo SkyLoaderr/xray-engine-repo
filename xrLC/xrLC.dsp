@@ -365,6 +365,7 @@ SOURCE=.\tga.h
 # Begin Source File
 
 SOURCE=.\Image.cpp
+# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
