@@ -14,7 +14,7 @@ CUICursor::CUICursor()
 	vPos.set		(0.f,0.f);
 
 	Stream		= Device.Streams.Create	(FVF::F_TL,4);
-	hShader		= Device.Shader.Create	("font","ui\\ui_cursor",FALSE);
+	hShader		= Device.Shader.Create	("hud\\cursor","ui\\ui_cursor",FALSE);
 }
 //--------------------------------------------------------------------
 

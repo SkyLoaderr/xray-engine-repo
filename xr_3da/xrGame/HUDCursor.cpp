@@ -47,7 +47,7 @@ void CHUDCursor::OnDeviceCreate()
 {
 	REQ_CREATE	();
 	Stream		= Device.Streams.Create	(FVF::F_TL,4);
-	hShader		= Device.Shader.Create	("font","ui\\cursor",FALSE);
+	hShader		= Device.Shader.Create	("hud\\cursor","ui\\cursor",FALSE);
 }
 
 void CHUDCursor::Render()
