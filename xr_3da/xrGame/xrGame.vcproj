@@ -2226,7 +2226,7 @@
 									</File>
 								</Filter>
 								<Filter
-									Name="Grenades"
+									Name="Grenades &amp; Missiles"
 									Filter="">
 									<File
 										RelativePath=".\Explosive.cpp">
@@ -2291,90 +2291,6 @@
 										RelativePath="WeaponMagazinedWGrenade.h">
 									</File>
 								</Filter>
-							</Filter>
-							<Filter
-								Name="Weapon M134"
-								Filter="">
-								<File
-									RelativePath=".\WeaponM134.cpp">
-									<FileConfiguration
-										Name="Debug|Win32"
-										ExcludedFromBuild="TRUE">
-										<Tool
-											Name="VCCLCompilerTool"/>
-									</FileConfiguration>
-									<FileConfiguration
-										Name="Mixed|Win32"
-										ExcludedFromBuild="TRUE">
-										<Tool
-											Name="VCCLCompilerTool"/>
-									</FileConfiguration>
-									<FileConfiguration
-										Name="Release|Win32"
-										ExcludedFromBuild="TRUE">
-										<Tool
-											Name="VCCLCompilerTool"/>
-									</FileConfiguration>
-								</File>
-								<File
-									RelativePath=".\WeaponM134.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="Weapon Rail"
-								Filter="">
-								<File
-									RelativePath=".\WeaponRail.cpp">
-									<FileConfiguration
-										Name="Debug|Win32"
-										ExcludedFromBuild="TRUE">
-										<Tool
-											Name="VCCLCompilerTool"/>
-									</FileConfiguration>
-									<FileConfiguration
-										Name="Mixed|Win32"
-										ExcludedFromBuild="TRUE">
-										<Tool
-											Name="VCCLCompilerTool"/>
-									</FileConfiguration>
-									<FileConfiguration
-										Name="Release|Win32"
-										ExcludedFromBuild="TRUE">
-										<Tool
-											Name="VCCLCompilerTool"/>
-									</FileConfiguration>
-								</File>
-								<File
-									RelativePath=".\WeaponRail.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="Weapon Protecta"
-								Filter="">
-								<File
-									RelativePath=".\WeaponProtecta.cpp">
-									<FileConfiguration
-										Name="Debug|Win32"
-										ExcludedFromBuild="TRUE">
-										<Tool
-											Name="VCCLCompilerTool"/>
-									</FileConfiguration>
-									<FileConfiguration
-										Name="Mixed|Win32"
-										ExcludedFromBuild="TRUE">
-										<Tool
-											Name="VCCLCompilerTool"/>
-									</FileConfiguration>
-									<FileConfiguration
-										Name="Release|Win32"
-										ExcludedFromBuild="TRUE">
-										<Tool
-											Name="VCCLCompilerTool"/>
-									</FileConfiguration>
-								</File>
-								<File
-									RelativePath=".\WeaponProtecta.h">
-								</File>
 							</Filter>
 							<Filter
 								Name="Effectors"
@@ -2846,10 +2762,16 @@
 								RelativePath=".\antirad.h">
 							</File>
 							<File
-								RelativePath=".\bread.cpp">
+								RelativePath=".\BottleItem.cpp">
 							</File>
 							<File
-								RelativePath=".\bread.h">
+								RelativePath=".\BottleItem.h">
+							</File>
+							<File
+								RelativePath=".\FoodItem.cpp">
+							</File>
+							<File
+								RelativePath=".\FoodItem.h">
 							</File>
 							<File
 								RelativePath="ItemHealth.cpp">
