@@ -8,6 +8,7 @@
 
 #include "Blender_Recorder.h"
 #include "Blender_Params.h"
+#include "Blender_CLSID.h"
 
 #define		BP_W_MARKER(a)	BP_write_c(FS,BPID_MARKER,a,0,0)
 #define		BP_WRITE(a,b,c)	BP_write_c(FS,b,a,&c,sizeof(c))
@@ -17,9 +18,18 @@
 class ENGINE_API CBlender_DESC
 {
 public:
+	CLSID		CLS;
 	char		cName		[128];
 	char		cComputer	[32];
 	DWORD		cTime;
+
+	CBlender_DESC()	
+	{
+		CLS			= 0;
+		cName		= "";
+		cComputer	= "";
+		cTime		= 0;
+	}
 
 	void					Setup	(LPCSTR N)
 	{
