@@ -64,11 +64,8 @@ function main ()
     
     
     while true do
-          --if current_state == wait_for_start_patrol then
-             this.wait_for_start ()
-          --elseif current_state == wait_for_patrol_finish then
-             this.wait_for_finish ()
-          --end      
+          this.wait_for_start ()
+          this.wait_for_finish ()
           wait (1000)
     end        
        
@@ -77,10 +74,6 @@ end
 function wait_for_start ()
    
     if xr_gulag.needRaid ("blockpost") == false then return end
-    
-    --local time = local_hours ()
---    printf ("LOCAL TIME = %d hours", time)
-    --if time ~= 9 and time ~= 15 and time ~= 21 then return end
     
     local raid_moved = false
     for a = 1, table.getn (patrols), 1 do
@@ -124,6 +117,7 @@ end
 -------------------------------------------------------------------------------------------
 function on_enter (zone, obj)
     if time_delay ~= 0 then return end
+    printf ("Object %s entered to sone %s at %d time", obj:name (), zone:name (), device ():time_global ())
     if obj == nil or zone == nil then return end
     for a = 1, table.getn (patrols), 1 do
         for b = 1, table.getn (patrols[a]), 1 do
