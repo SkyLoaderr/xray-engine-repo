@@ -162,7 +162,7 @@ struct astr_pred : public std::binary_function<const AnsiString&, const AnsiStri
 #pragma comment(lib,"xrCDBB.lib")
 #pragma comment(lib,"ParticleDLLB.lib")
 
-#pragma comment(lib,"dinputB.lib")
+#pragma comment(lib,"dinput.lib")
 #pragma comment(lib,"freeimageB.lib")
 #pragma comment(lib,"d3d9.lib")
 #pragma comment(lib,"dxtB.lib")
