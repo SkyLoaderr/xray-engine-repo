@@ -479,6 +479,7 @@ xr_motivator.storage[self.object:id()].reactions = {
     if char_ini:section_exist ("fraction") == true then
         if char_ini:line_exist("fraction", "name") == true then
             xr_gulag.addMember(char_ini:r_string("fraction", "name"), self.object)
+	    xr_gulag.add_to_binder(self.object)
         end
     else
         -- включение схем
