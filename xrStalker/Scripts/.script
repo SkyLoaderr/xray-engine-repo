@@ -15,6 +15,7 @@ module ("escape_bobik")
 
 module ("xr_motivator")
 module ("xr_sounds")
+module ("xr_zones")
 
 module ("xr_reactions")
 module ("xr_state")
