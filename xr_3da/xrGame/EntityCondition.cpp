@@ -410,15 +410,11 @@ CWound* CEntityCondition::ConditionHit(CObject* who, float hit_power, ALife::EHi
 	case ALife::eHitTypeExplosion:
 	case ALife::eHitTypeWound:
 		hit_power *= m_HitTypeK[hit_type];
-		m_fHealthLost = hit_power*m_fHealthHitPart;
+		m_fHealthLost = hit_power*m_fHealthHitPart*m_fHitBoneScale;
 		m_fDeltaHealth -= m_fHealthLost;
 		m_fDeltaPower -= hit_power*m_fPowerHitPart;
 		break;
 	}
-
-	//коэффициент косточки
-	m_fDeltaHealth *= m_fHitBoneScale;
-
 
 	//раны добавл€ютс€ только живому
 	if(GetHealth()>0)

@@ -468,7 +468,7 @@ void CEntityAlive::UpdateBloodDrops()
 		if(!fis_zero(blood_size))
 		{
 			pWound->m_fUpdateTime += Device.fTimeDelta;
-			float drop_time = m_fBloodDropTime*(1.f/blood_size)*Random.randF(0.8f, 1.2f);
+			float drop_time = m_fBloodDropTime*blood_size*Random.randF(0.8f, 1.2f);
 			if(pWound->m_fUpdateTime>drop_time)
 			{
 				VERIFY(m_pBloodDropsVector);
