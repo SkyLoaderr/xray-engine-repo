@@ -26,7 +26,7 @@ bool CAI_Soldier::bfCheckPath(AI::Path &Path) {
 		return(true);
 }
 
-void CAI_Soldier::vfBuildPathToDestinationPoint(CSoldierSelectorAttack *S)
+void CAI_Soldier::vfBuildPathToDestinationPoint(CAISelectorBase *S)
 {
 	// building a path from and to
 	if (S)

@@ -344,8 +344,9 @@ DWORD CAI_Soldier::tfGetAloneFightType()
 
 	if (Enemy.Enemy) {
 		CEntity *tpEntity = dynamic_cast<CEntity *>(KnownEnemies[0].key);
-		if ((tpEntity) && (!bfCheckForEntityVisibility(tpEntity)) && !bfNeedRecharge() && !bfCheckHistoryForState(aiSoldierAttackAloneFireFire,100000))
-			return(FIGHT_TYPE_ATTACK);
+		if ((tpEntity) && (!bfCheckForEntityVisibility(tpEntity)) && !bfNeedRecharge()) 
+			if (!bfCheckHistoryForState(aiSoldierAttackAloneFireFire,100000))
+				return(FIGHT_TYPE_ATTACK);
 	}
 
 	if (!Enemy.Enemy)
@@ -581,7 +582,7 @@ DWORD CAI_Soldier::tfGetAloneFightType()
 		}
 	}
 
-	return(FIGHT_TYPE_ATTACK);
+	return(FIGHT_TYPE_RETREAT);
 //	if (fFightCoefficient > 400)
 //		return(FIGHT_TYPE_RETREAT);
 //	else
@@ -1187,4 +1188,25 @@ int CAI_Soldier::ifGetSuspiciousAvailableNode(int iLastIndex, CGroup &Group)
 		}
 	}
 	return(Index);
+}
+
+bool CAI_Soldier::bfCheckIfIHaveToChangePosition()
+{
+	return(true);
+}
+
+float CAI_Soldier::ffGetDistanceToNearestMember()
+{
+	float fDistance = 1000.f;
+	INIT_SQUAD_AND_LEADER;
+	CGroup &Group = Squad.Groups[g_Group()];
+	if (Leader != this)
+		fDistance = min(fDistance,vPosition.distance_to(Leader->Position()));
+	for (int i=0; i<Group.Members.size(); i++)
+		if (Group.Members[i] != this) {
+			CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(Group.Members[i]);
+			if (!tpCustomMonster || (tpCustomMonster->AI_Path.fSpeed < EPS_L))
+				fDistance = min(fDistance,vPosition.distance_to(Group.Members[i]->Position()));
+		}
+	return(fDistance);
 }

@@ -35,6 +35,8 @@ float CSoldierSelectorAttack::Estimate(NodeCompressed* tNode, float fDistance, B
 	CHECK_RESULT;
 	vfAddEnemyLookCost();
 	CHECK_RESULT;
+	vfAddMemberDanger();
+	CHECK_RESULT;
 	if (taMemberPositions.size()) {
 		if (m_iAliveMemberCount) {
 			for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) {

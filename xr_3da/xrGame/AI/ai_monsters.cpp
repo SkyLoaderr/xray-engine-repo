@@ -12,6 +12,7 @@
 //#define OLD_COVER_COST
 #define DEST_POSITIONS
 #define ATTACK_HIT_REACTION_TIME	30000
+#define FIRE_SAFETY_ANGLE			PI/10
 
 IC float ffGetDistance(Fvector P1, Fvector P2)
 {
@@ -413,4 +414,17 @@ void CAISelectorBase::vfAddDistanceToLastPositionCost()
 	Fvector tTemp;
 	tTemp.sub(m_tCurrentPosition,m_tLastEnemyPosition);
 	m_fResult += 20.f*tTemp.magnitude();
+}
+
+void CAISelectorBase::vfAddMemberDanger()
+{
+	for (int i=0; i<taMemberPositions.size(); i++) {
+		float fAlpha = m_tEnemyDirection.dotproduct(taMemberPositions[i]);
+		clamp(fAlpha,-.99999f,+.99999f);
+		fAlpha = acosf(fAlpha);
+		if (fAlpha < FIRE_SAFETY_ANGLE) {
+			m_fResult += 1000.f;
+			break;
+		}
+	}
 }

@@ -239,7 +239,7 @@ class CAI_Soldier : public CCustomMonster
 		}SNormalAnimations;
 
 		////////////////////////////////////////////////////////////////////////////
-		// crouch animations
+		// crouch animations xyu
 		////////////////////////////////////////////////////////////////////////////
 
 		// global animations
@@ -564,11 +564,14 @@ class CAI_Soldier : public CCustomMonster
 		void SetDirectionLook();
 		void SetSmartLook(NodeCompressed *tNode, Fvector &tEnemyDirection);
 		void vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
-		void vfBuildPathToDestinationPoint(CSoldierSelectorAttack *S);
+		void vfBuildPathToDestinationPoint(CAISelectorBase *S);
 		void vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
 		void vfSearchForBetterPositionWTime(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
 		void vfAimAtEnemy(bool bInaccuracy = false);
 		void vfSaveEnemy();
+		
+		float ffGetDistanceToNearestMember();
+		bool bfCheckIfIHaveToChangePosition();
 		bool bfCheckIfCanKillMember();
 		bool bfCheckIfCanKillEnemy();
 		void vfSetFire(bool bFire, CGroup &Group);

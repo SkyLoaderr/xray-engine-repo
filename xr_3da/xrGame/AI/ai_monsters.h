@@ -140,6 +140,7 @@ class CAISelectorBase : public AI::NodeEstimator
 		void vfInit();
 		void vfComputeMemberDirection();
 		void vfComputeSurroundEnemy();
+		void vfAddMemberDanger();
 };
 
 #endif
