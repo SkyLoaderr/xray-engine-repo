@@ -12,7 +12,7 @@
 CBlender_Screen_SET::CBlender_Screen_SET()
 {
 	description.CLS		= B_SCREEN_SET;
-	description.version	= 2;
+	description.version	= 3;
 	oBlend.Count		= VER_2_oBlendCount;
 	oBlend.IDselected	= 0;
 	oAREF.value			= 32;
@@ -54,17 +54,28 @@ void	CBlender_Screen_SET::Save	( CFS_Base& FS	)
 	xrPWRITE_PROP		(FS,"Fog",			xrPID_BOOL,		oFog);
 }
 
-void	CBlender_Screen_SET::Load	( CStream& FS	)
+void	CBlender_Screen_SET::Load	( CStream& FS, WORD version)
 {
 	CBlender::Load	(FS);
 
-	// Blend mode
-	xrPREAD_PROP		(FS,xrPID_TOKEN,		oBlend);	oBlend.Count =   VER_2_oBlendCount;
-	xrPREAD_PROP		(FS,xrPID_INTEGER,		oAREF);
-	xrPREAD_PROP		(FS,xrPID_BOOL,			oZTest);
-	xrPREAD_PROP		(FS,xrPID_BOOL,			oZWrite);
-	xrPREAD_PROP		(FS,xrPID_BOOL,			oLighting);
-	xrPREAD_PROP		(FS,xrPID_BOOL,			oFog);
+	switch (version)	{
+	case 2:
+		xrPREAD_PROP		(FS,xrPID_TOKEN,		oBlend);	oBlend.Count =   VER_2_oBlendCount;
+		xrPREAD_PROP		(FS,xrPID_INTEGER,		oAREF);
+		xrPREAD_PROP		(FS,xrPID_BOOL,			oZTest);
+		xrPREAD_PROP		(FS,xrPID_BOOL,			oZWrite);
+		xrPREAD_PROP		(FS,xrPID_BOOL,			oLighting);
+		xrPREAD_PROP		(FS,xrPID_BOOL,			oFog);
+		break;
+	default:
+		xrPREAD_PROP		(FS,xrPID_TOKEN,		oBlend);	oBlend.Count =   VER_2_oBlendCount;
+		xrPREAD_PROP		(FS,xrPID_BOOL,			oClamp);
+		xrPREAD_PROP		(FS,xrPID_INTEGER,		oAREF);
+		xrPREAD_PROP		(FS,xrPID_BOOL,			oZTest);
+		xrPREAD_PROP		(FS,xrPID_BOOL,			oZWrite);
+		xrPREAD_PROP		(FS,xrPID_BOOL,			oLighting);
+		xrPREAD_PROP		(FS,xrPID_BOOL,			oFog);
+	}
 }
 
 void	CBlender_Screen_SET::Compile	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param, BOOL bEditor)
