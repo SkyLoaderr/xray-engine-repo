@@ -109,7 +109,7 @@ void CObjectHandler::OnItemTake		(CInventoryItem *inventory_item)
 void CObjectHandler::OnItemDrop		(CInventoryItem *inventory_item)
 {
 	CInventoryOwner::OnItemDrop	(inventory_item);
-	if (m_infinite_ammo) {
+	if (m_infinite_ammo && m_object->g_Alive()) {
 		CWeaponAmmo				*weapon_ammo = smart_cast<CWeaponAmmo*>(inventory_item);
 		if (weapon_ammo)
 			Level().spawn_item	(*weapon_ammo->cNameSect(),m_object->Position(),m_object->level_vertex_id(),m_object->ID());
