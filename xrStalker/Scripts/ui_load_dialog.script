@@ -157,21 +157,16 @@ function load_dialog:OnButton_cancel_clicked()
 end
 
 function load_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
-   CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
-     
-   DIK_RETURN = 28
-   WINDOW_KEY_PRESSED = 6
+   ui_base_dialog.base_dialog.OnKeyboard(self,dik,keyboard_action)
+	
+	DIK_RETURN = 28
+	WINDOW_KEY_PRESSED = 6
+	
+	if dik == DIK_RETURN and keyboard_action == WINDOW_KEY_PRESSED then
+		level.start_stop_menu(self,true)
+	end
    
-   local bind = dik_to_bind(dik)
-   if bind == key_bindings.kQUIT then
-      level.start_stop_menu(self,true)
-   end  
-   
-   if dik == DIK_RETURN and keyboard_action == WINDOW_KEY_PRESSED then
-	self:OnButton_ok_clicked()
-   end
-   
-   return true
+	return true
 end
 
 function load_dialog:AddItemToList(file_name, date_time)
@@ -179,6 +174,8 @@ function load_dialog:AddItemToList(file_name, date_time)
 	
 	new_item:SetTextFileName(file_name)
 	new_item:SetTextDateTime(date_time)
+	new_item:SetFileNameFont(self.list_file_font)
+	new_item:SetDateTimeFont(self.list_date_font)
 	
 	--new_item:SetText(file_name)
 	
