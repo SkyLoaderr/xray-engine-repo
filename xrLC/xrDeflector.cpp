@@ -204,11 +204,9 @@ void CDeflector::OA_Export()
 
 BOOL CDeflector::OA_Place	(Face *owner)
 {
-#pragma todo("Is it correct to rely solely on normal-split-angle for lmaps?")
-	/*
-	float cosa = N.dotproduct(owner->N);
-	if (cosa<_cos(deg2rad(g_params.m_lm_split_angle))) return FALSE;
-	*/
+	// It is not correct to rely solely on normal-split-angle for lmaps - imagine smooth sphere
+	float cosa = normal.dotproduct(owner->N);
+	if (cosa<_cos(deg2rad(g_params.m_sm_angle+1))) return FALSE;
 
 	UVtri				T;
 	T.owner				= owner;
