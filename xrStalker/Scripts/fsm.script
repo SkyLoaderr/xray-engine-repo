@@ -54,7 +54,6 @@ function FSM:run()
 		local transition_vector = self.transition_matrix[self.current_state]
 		table.foreach(transition_vector, 
 					  function(to_state_num, cond_func) 
-							printf("check_condition %d", to_state_num)
 							if cond_func(self.npc) == true then
 								self.current_state = to_state_num
 								return true
