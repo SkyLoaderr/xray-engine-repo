@@ -46,7 +46,7 @@ public:
 class ENGINE_API CDetailManager  
 {
 public:
-	struct SlotItem
+	struct	SlotItem
 	{
 		Fvector	P;
 		float	yaw;
@@ -55,13 +55,22 @@ public:
 		float	phase_z;
 		DWORD	C;
 	};
-	struct SlotPart
+	struct	SlotPart
 	{
 		DWORD				id;	
 		CList<SlotItem>		items;
 	};
+	enum	SlotType
+	{
+		stReady		= 0,	// Ready to use
+		stInvalid,			// Invalid cache entry
+		stPending,			// Pending for decompression
+
+		stFORCEDWORD = 0xffffffff
+	};
 	struct Slot 
 	{
+		DWORD				type;
 		int					sx,sz;
 		DWORD				dwFrameUsed;	// LRU cache
 		Fbox				BB;
@@ -79,6 +88,8 @@ public:
 
 	void					Decompress		(int sx, int sz, Slot& D);
 	Slot&					Query			(int sx, int sz);
+	DetailSlot&				QueryDB			(int sx, int sz);
+	void					UpdateCache		(int limit);
 	
 	void					Load			();
 	void					Unload			();

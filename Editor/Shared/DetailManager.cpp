@@ -151,6 +151,7 @@ void CDetailManager::Load		()
 	}
 	ZeroMemory(&visible,sizeof(visible));	visible.resize	(dm_max_objects);
 	ZeroMemory(&cache,sizeof(cache));		cache.resize	(dm_cache_size);	
+	for (DWORD s=0; s<cache.size(); s++)	cache[s].type	= stInvalid;
 
 	// Make dither matrix
 	bwdithermap		(2,dither);
@@ -169,6 +170,8 @@ void CDetailManager::Render		(Fvector& EYE)
 {
 	int s_x	= iFloor			(EYE.x/slot_size+.5f);
 	int s_z	= iFloor			(EYE.z/slot_size+.5f);
+
+	UpdateCache					(1);
 
 	float fade_limit	= 11.5f;fade_limit=fade_limit*fade_limit;
 	float fade_start	= 6.f;	fade_start=fade_start*fade_start;
@@ -344,7 +347,6 @@ IC bool InterpolateAndDither(float* alpha255, DWORD x, DWORD y, DWORD size, int 
  	return	c	> dither[col][row];
 }
 
-const	float phase_range = PI/16;
 void 	CDetailManager::Decompress		(int sx, int sz, Slot& D)
 {
 	// Debug purposes
@@ -365,68 +367,93 @@ void 	CDetailManager::Decompress		(int sx, int sz, Slot& D)
 	DS.items[3].id			= 0xff;
 
 	// Unpacking
-	D.sx	= sx;
-	D.sz	= sz;
-	
-	D.BB.min.set(sx*slot_size,			DS.y_min,	sz*slot_size);
-	D.BB.max.set(D.BB.min.x+slot_size,	DS.y_max,	D.BB.min.z+slot_size);
+	D.type					= stPending;
+	D.sx					= sx;
+	D.sz					= sz;
 
-	float		density		= 0.1f;
-	DWORD		d_size		= iCeil		(slot_size/density);
-
-	float		alpha255	[dm_obj_in_slot][4];
+	D.BB.min.set			(sx*slot_size,			DS.y_min,	sz*slot_size);
+	D.BB.max.set			(D.BB.min.x+slot_size,	DS.y_max,	D.BB.min.z+slot_size);
 
 	for (int i=0; i<dm_obj_in_slot; i++)
 	{
-		alpha255[i][0]	= 255.f*float(DS.items[i].palette.a0)/15.f;
-		alpha255[i][1]	= 255.f*float(DS.items[i].palette.a1)/15.f;
-		alpha255[i][2]	= 255.f*float(DS.items[i].palette.a2)/15.f;
-		alpha255[i][3]	= 255.f*float(DS.items[i].palette.a3)/15.f;
 		D.G[i].id		= DS.items[i].id;
+		D.G.items.clear	();
 	}
+}
 
-	svector<int,dm_obj_in_slot>		selected;
-
-	CRandom				r_selection	(0x12071980);
-	CRandom				r_yaw		(DS.r_yaw);
-	CRandom				r_scale		(DS.r_scale);
-
-	for (DWORD z=0; z<d_size; z++)
+const	float phase_range = PI/16;
+void CDetailManager::UpdateCache	(int limit)
+{
+	for (int entry=0; limit && (entry<cache.size()); entry++)
 	{
-		for (DWORD x=0; x<d_size; x++)
+		if (cache[entry].type != stPending)	continue;
+		
+		// Gain access to data
+		Slot&		D	= cache[entry];
+		DetailSlot&	DS	= QueryDB(D.sx,D.sz);
+		D.type			= stReady;
+		
+		// Build shading table
+		float		alpha255	[dm_obj_in_slot][4];
+		for (int i=0; i<dm_obj_in_slot; i++)
 		{
-			// Iterpolate and dither palette
-			selected.clear();
-			if ((DS.items[0].id!=0xff)&& InterpolateAndDither(alpha255[0],x,z,d_size,dither))	selected.push_back(0);
-			if ((DS.items[1].id!=0xff)&& InterpolateAndDither(alpha255[1],x,z,d_size,dither))	selected.push_back(1);
-			if ((DS.items[2].id!=0xff)&& InterpolateAndDither(alpha255[2],x,z,d_size,dither))	selected.push_back(2);
-			if ((DS.items[3].id!=0xff)&& InterpolateAndDither(alpha255[3],x,z,d_size,dither))	selected.push_back(3);
-
-			// Select 
-			if (selected.empty())	continue;
-			DWORD ID,index;
-			if (selected.size()==1)	{ index = selected[0]; ID = DS.items[index].id; }
-			else					{ index = selected[r_selection.randI(selected.size())]; ID = DS.items[index].id; }
-
-
-			SlotItem	Item;
-
-			// Position
-			float		rx = (float(x)/float(d_size))*slot_size + D.BB.min.x;
-			float		rz = (float(z)/float(d_size))*slot_size + D.BB.min.z;
-			Item.P.set	(rx,0,rz);
-
-			// Angles and scale
-			Item.yaw	= r_yaw.randF		(0,PI_MUL_2);
-			Item.scale	= r_scale.randF		(0.3f,1.8f);
-			Item.phase_x= ::Random.randFs	(phase_range);
-			Item.phase_z= ::Random.randF	(phase_range);
-
-			// Color
-			Item.C		= 0xffffffff;
-			
-			// Save it
-			D.G[index].items.push_back(Item);
+			alpha255[i][0]	= 255.f*float(DS.items[i].palette.a0)/15.f;
+			alpha255[i][1]	= 255.f*float(DS.items[i].palette.a1)/15.f;
+			alpha255[i][2]	= 255.f*float(DS.items[i].palette.a2)/15.f;
+			alpha255[i][3]	= 255.f*float(DS.items[i].palette.a3)/15.f;
+			D.G[i].id		= DS.items[i].id;
 		}
+		
+		// Prepare to selection
+		float		density		= 0.1f;
+		DWORD		d_size		= iCeil	(slot_size/density);
+		svector<int,dm_obj_in_slot>		selected;
+		
+		CRandom				r_selection	(0x12071980);
+		CRandom				r_yaw		(DS.r_yaw);
+		CRandom				r_scale		(DS.r_scale);
+		
+		// Decompressing itself
+		for (DWORD z=0; z<d_size; z++)
+		{
+			for (DWORD x=0; x<d_size; x++)
+			{
+				// Iterpolate and dither palette
+				selected.clear();
+				if ((DS.items[0].id!=0xff)&& InterpolateAndDither(alpha255[0],x,z,d_size,dither))	selected.push_back(0);
+				if ((DS.items[1].id!=0xff)&& InterpolateAndDither(alpha255[1],x,z,d_size,dither))	selected.push_back(1);
+				if ((DS.items[2].id!=0xff)&& InterpolateAndDither(alpha255[2],x,z,d_size,dither))	selected.push_back(2);
+				if ((DS.items[3].id!=0xff)&& InterpolateAndDither(alpha255[3],x,z,d_size,dither))	selected.push_back(3);
+				
+				// Select 
+				if (selected.empty())	continue;
+				DWORD ID,index;
+				if (selected.size()==1)	{ index = selected[0]; ID = DS.items[index].id; }
+				else					{ index = selected[r_selection.randI(selected.size())]; ID = DS.items[index].id; }
+				
+				
+				SlotItem	Item;
+				
+				// Position
+				float		rx = (float(x)/float(d_size))*slot_size + D.BB.min.x;
+				float		rz = (float(z)/float(d_size))*slot_size + D.BB.min.z;
+				Item.P.set	(rx,0,rz);
+				
+				// Angles and scale
+				Item.yaw	= r_yaw.randF		(0,PI_MUL_2);
+				Item.scale	= r_scale.randF		(0.3f,1.8f);
+				Item.phase_x= ::Random.randFs	(phase_range);
+				Item.phase_z= ::Random.randF	(phase_range);
+				
+				// Color
+				Item.C		= 0xffffffff;
+				
+				// Save it
+				D.G[index].items.push_back(Item);
+			}
+		}
+
+		// Check for number of decompressions
+		limit--;
 	}
 }
