@@ -151,9 +151,9 @@ void CAI_Rat::vfAddMorale(float fValue, float fRadius)
 {
 	CEntity *tpLeader = Level().Teams[g_Team()].Squads[g_Squad()].Leader;
 	if (tpLeader->g_Alive())
-		tpLeader->m_fMorale += m_fMoraleDecreaseQuant;
+		tpLeader->m_fMorale += fValue;
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	for (int i=0; i<(int)Group.Members.size(); i++)
 		if (Group.Members[i]->g_Alive())
-			Group.Members[i]->m_fMorale += m_fMoraleDecreaseQuant;
+			Group.Members[i]->m_fMorale += fValue;
 }

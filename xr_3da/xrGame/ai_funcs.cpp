@@ -9,7 +9,7 @@
 #include "stdafx.h"
 #include "ai_funcs.h"
 
-//#define WRITE_TO_LOG
+#define WRITE_TO_LOG
 #define AI_PATH			"ai\\"
 
 CPatternFunction::CPatternFunction()
@@ -268,12 +268,9 @@ float CPersonalCreatureTypeFunction::ffGetValue()
 			m_fLastValue = 20;
 			break;
 		}
-		case CLSID_AI_FRACTURE	: {
-			m_fLastValue = 21;
-			break;
-		}
+		case CLSID_AI_FRACTURE	:
 		case CLSID_AI_DOG_BLACK	: {
-			m_fLastValue = 22;
+			m_fLastValue = 21;
 			break;
 		}
 	}

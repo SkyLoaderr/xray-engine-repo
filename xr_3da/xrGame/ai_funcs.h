@@ -205,7 +205,7 @@ class CEnemyCreatureTypeFunction : public CBaseFunction {
 public:
 	CEnemyCreatureTypeFunction() {
 		m_fMinResultValue = 0.0;
-		m_fMaxResultValue = 22.0;
+		m_fMaxResultValue = 21.0;
 		strcat(m_caName,"EnemyCreatureType");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	}
@@ -245,11 +245,12 @@ public:
 	CEnemyWeaponTypeFunction		pfEnemyWeaponType;
 
 	// complex functions
-	CPatternFunction				pfPersonalStatus;
-	CPatternFunction				pfEnemyStatus;
+	//CPatternFunction				pfPersonalStatus;
+	//CPatternFunction				pfEnemyStatus;
 	CPatternFunction				pfWeaponEffectiveness;
 	CPatternFunction				pfAttackSuccessProbability;
 	CPatternFunction				pfDefendSuccessProbability;
+	CPatternFunction				pfCreatureEffectiveness;
 
 	void vfLoad() {	
 		fpaBaseFunctions[0] = &pfDistance;
@@ -264,11 +265,12 @@ public:
 		fpaBaseFunctions[43] = &pfEnemyCreatureType;
 		fpaBaseFunctions[44] = &pfEnemyWeaponType;
 
-		pfPersonalStatus.			vfLoadEF("common\\PersonalStatus.dat");
-		pfEnemyStatus.				vfLoadEF("common\\EnemyStatus.dat");
+		//pfPersonalStatus.			vfLoadEF("common\\PersonalStatus.dat");
+		//pfEnemyStatus.				vfLoadEF("common\\EnemyStatus.dat");
 		pfWeaponEffectiveness.		vfLoadEF("common\\WeaponEffectiveness.dat");
 		pfAttackSuccessProbability.	vfLoadEF("common\\AttackSuccessProbability.dat");
 		pfDefendSuccessProbability.	vfLoadEF("common\\DefendSuccessProbability.dat");
+		pfCreatureEffectiveness.	vfLoadEF("common\\CreatureEffectiveness.dat");
 	}
 };
 
