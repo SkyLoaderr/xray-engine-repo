@@ -18,13 +18,14 @@
 //////////////////////////////////////////////////////////////////////
 CWeaponLR300::CWeaponLR300() : CWeaponMagazined("LR300")
 {
-	pSounds->Create3D(sndFireLoop,	 "weapons\\LR300_fire");
-	pSounds->Create3D(sndEmptyClick, "weapons\\empty_click");
-	pSounds->Create3D(sndRicochet[0],"weapons\\ric1");
-	pSounds->Create3D(sndRicochet[1],"weapons\\ric2");
-	pSounds->Create3D(sndRicochet[2],"weapons\\ric3");
-	pSounds->Create3D(sndRicochet[3],"weapons\\ric4");
-	pSounds->Create3D(sndRicochet[4],"weapons\\ric5");
+	pSounds->Create3D(sndFireLoop,		"weapons\\LR300_fire");
+	pSounds->Create3D(sndEmptyClick,	"weapons\\generic_empty");
+	pSounds->Create3D(sndReload,		"weapons\\generic_reload");
+	pSounds->Create3D(sndRicochet[0],	"weapons\\ric1");
+	pSounds->Create3D(sndRicochet[1],	"weapons\\ric2");
+	pSounds->Create3D(sndRicochet[2],	"weapons\\ric3");
+	pSounds->Create3D(sndRicochet[3],	"weapons\\ric4");
+	pSounds->Create3D(sndRicochet[4],	"weapons\\ric5");
 	
 	iFlameDiv		= 0;
 	fFlameLength	= 0;

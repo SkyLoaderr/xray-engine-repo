@@ -13,8 +13,9 @@ private:
 private:
 	// Media :: sounds
 	sound3D			sndFireLoop;
-	sound3D			sndRicochet		[SND_RIC_COUNT];
 	sound3D			sndEmptyClick;
+	sound3D			sndReload;
+	sound3D			sndRicochet		[SND_RIC_COUNT];
 
 	// Media :: flames
 	vector<Shader*>	hFlames;
