@@ -59,3 +59,39 @@ void CSoundRender_Core::OnFrame	()
 	for (it=0; it<s_targets_defer.size(); it++)
 		s_targets_defer[it]->render	();
 }
+
+BOOL	CSoundRender_Core::get_occlusion(Fvector& P, float R, Fvector* occ)
+{
+	if (0==geom_MODEL)		return FALSE;
+
+	// Calculate RAY params
+	Fvector base			= Device.vCameraPosition;
+	Fvector	pos,dir;
+	float	range;
+	pos.random_dir			();
+	pos.mul					(R);
+	pos.add					(P);
+	dir.sub					(pos,base);
+	range = dir.magnitude	();
+	dir.div					(range);
+
+	// 1. Check cached polygon
+	float _u,_v,_range;
+	if (CDB::TestRayTri(base,dir,occ,_u,_v,_range,true))
+		if (_range>0 && _range<range) return TRUE;
+
+	// 2. Polygon doesn't picked up - real database query
+	DB.ray_options			(CDB::OPT_ONLYNEAREST);
+	DB.ray_query			(pGeometry,base,dir,range);
+	if (0==DB.r_count()) {
+		return FALSE;
+	} else {
+		// cache polygon
+		const CDB::RESULT*	R = DB.r_begin();
+		const CDB::TRI&		T = pGeometry->get_tris() [ R->id ];
+		occ[0].set	(*T.verts[0]);
+		occ[1].set	(*T.verts[1]);
+		occ[2].set	(*T.verts[2]);
+		return TRUE;
+	}
+}

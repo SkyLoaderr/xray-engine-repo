@@ -142,3 +142,76 @@ void CSoundRender_Environment::save			(IWriter* fs)
 	fs->w_float		(D_BandWidth);
 	fs->w_float		(D_Cutoff	);
 }
+
+
+//////////////////////////////////////////////////////////////////////////
+void	SoundEnvironment_LIB::Load	(LPCSTR name)
+{
+	IReader* F			= FS.r_open(name);
+	IReader* C;
+	library.reserve		(256);
+	for (u32 chunk=0; 0!=(C=F->open_chunk(chunk)); chunk++)
+	{
+		CSoundRender_Environment*	E	= xr_new<CSoundRender_Environment>	();
+		E->load							(C);
+		library.push_back				(E);
+	}
+	FS.r_close			(F);
+}
+void	SoundEnvironment_LIB::Save	(LPCSTR name)
+{
+	IWriter* F			= FS.w_open(name);
+	for (u32 chunk=0; chunk<library.size(); chunk++)
+	{
+		F->open_chunk		(chunk);
+		library[chunk]->save(F);
+		F->close_chunk		();
+	}
+	FS.w_close			(F);
+}
+void	SoundEnvironment_LIB::Unload	()
+{
+	for (u32 chunk=0; chunk<library.size(); chunk++)
+		xr_delete(library[chunk]);
+	library.clear		();
+}
+int		SoundEnvironment_LIB::GetID		(LPCSTR name)
+{
+	for (SE_IT it=library.begin(); it!=library.end(); it++)
+		if (0==stricmp(name,(*it)->name)) return it-library.begin();
+	return -1;
+}
+CSoundRender_Environment*	SoundEnvironment_LIB::Get		(LPCSTR name)
+{
+	for (SE_IT it=library.begin(); it!=library.end(); it++)
+		if (0==stricmp(name,(*it)->name)) return *it;
+	return NULL;
+}
+CSoundRender_Environment*	SoundEnvironment_LIB::Get		(int id)
+{
+	return library[id];
+}
+CSoundRender_Environment*	SoundEnvironment_LIB::Append	(CSoundRender_Environment* parent)
+{
+	library.push_back	(parent?xr_new<CSoundRender_Environment>(*parent):xr_new<CSoundRender_Environment>());
+	return library.back	();
+}
+void						SoundEnvironment_LIB::Remove	(LPCSTR name)
+{
+	for (SE_IT it=library.begin(); it!=library.end(); it++)
+		if (0==stricmp(name,(*it)->name))
+		{
+			xr_delete		(*it);
+			library.erase	(it);
+			break;
+		}
+}
+void						SoundEnvironment_LIB::Remove	(int id)
+{
+	xr_delete		(library[id]);
+	library.erase	(library.begin()+id);
+}
+SoundEnvironment_LIB::SE_VEC& SoundEnvironment_LIB::Library	()	
+{ 
+	return library;
+}

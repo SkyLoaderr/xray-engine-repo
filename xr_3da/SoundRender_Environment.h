@@ -33,3 +33,22 @@ public:
 	CSoundRender_Environment(void);
 	~CSoundRender_Environment(void);
 };
+
+class SoundEnvironment_LIB
+{
+public:
+	DEFINE_VECTOR				(CSoundRender_Environment*,SE_VEC,SE_IT);
+private:
+	SE_VEC						library;
+public:
+	void						Load	(LPCSTR name);
+	void						Save	(LPCSTR name);
+	void						Unload	();
+	int							GetID	(LPCSTR name);
+	CSoundRender_Environment*	Get		(LPCSTR name);
+	CSoundRender_Environment*	Get		(int id);
+	CSoundRender_Environment*	Append	(CSoundRender_Environment* parent=0);
+	void						Remove	(LPCSTR name);
+	void						Remove	(int id);
+	SE_VEC&						Library	();
+};
