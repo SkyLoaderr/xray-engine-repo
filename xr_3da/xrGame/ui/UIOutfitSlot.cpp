@@ -130,11 +130,11 @@ void CUIOutfitSlot::OnMouse(int x, int y, EUIMessages mouse_action)
 	{
 		GetMessageTarget()->SendMessage(this, UNDRESS_OUTFIT, NULL);
 	}
-//	else if (CUIWindow::LBUTTON_DOWN == mouse_action && GetCurrentOutfit())
-//	{
-//		CUIDragDropItem *pDDItem = GetCurrentOutfit();
-//		pDDItem->Show(true);
-//	}
+	else if (WINDOW_LBUTTON_DOWN == mouse_action && GetCurrentOutfit())
+	{
+		CUIDragDropItem *pDDItem = GetCurrentOutfit();
+		pDDItem->Show(true);
+	}
 	else if (WINDOW_LBUTTON_UP == mouse_action && GetCurrentOutfit())
 	{
 		CUIDragDropItem *pDDItem = GetCurrentOutfit();
