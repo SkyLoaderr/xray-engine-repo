@@ -1,99 +1,120 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
-    <string id="rad_regular_stalker_dialog_0">
-        <text>Приветсвую!</text>
+    <string id="rad_chief_start_dialog_0">
+        <text>Приветсвую Сталкер!</text>
     </string>
-    <string id="rad_regular_stalker_dialog_1">
-        <text>text in default</text>
+    <string id="rad_chief_start_dialog_100">
+        <text>Привет тебе!</text>
     </string>
-    <string id="radar_test_dialog_0">
+    <string id="rad_find_stalkers_dialog_0">
         <text>Приветствую! Кто ты? Как ты тут оказался?</text>
     </string>
-    <string id="radar_test_dialog_1">
+    <string id="rad_find_stalkers_dialog_1">
         <text>Привет! Я Меченый, бармен послал меня отключить Антенны! С чем я справился, были проблемы я их решил. А сейчас думаю что делать дальше, может пойду искать Монолит!</text>
     </string>
-    <string id="radar_test_dialog_100">
+    <string id="rad_find_stalkers_dialog_100">
         <text>Здраствуй! Я? А че ты не слыхал кто Я? Я Стрелок! Я иду к Монолиту!</text>
     </string>
-    <string id="radar_test_dialog_1000">
-        <text>Дароф! Тебя ебет кто я? А ну бабки все сюда собрал по братве! </text>
+    <string id="rad_find_stalkers_dialog_1000">
+        <text>Дароф! Тебя ебет кто я? А ну бабки все сюда собрал по братве!</text>
     </string>
-    <string id="radar_test_dialog_101">
-        <text>Можно я не против, так мы быстрее доберемся до центра и наконец найдем этот чертов Монолит! </text>
+    <string id="rad_find_stalkers_dialog_101">
+        <text>Можно я не против, так мы быстрее доберемся до центра и наконец найдем этот чертов Монолит!</text>
     </string>
-    <string id="radar_test_dialog_102">
+    <string id="rad_find_stalkers_dialog_102">
         <text>Спасибо за предложение браток, но я справлюсь сам! Монолит Мой и только Мой!</text>
     </string>
-    <string id="radar_test_dialog_103">
-        <text>Хорошо! Ну а если они погибли? </text>
+    <string id="rad_find_stalkers_dialog_103">
+        <text>Хорошо! Ну а если они погибли?</text>
     </string>
-    <string id="radar_test_dialog_104">
+    <string id="rad_find_stalkers_dialog_104">
         <text>Хорошо!</text>
     </string>
-    <string id="radar_test_dialog_1100">
+    <string id="rad_find_stalkers_dialog_1100">
         <text>Нюхни САМ ЗНАЕШЬ ЧЕГО!</text>
     </string>
-    <string id="radar_test_dialog_1101">
+    <string id="rad_find_stalkers_dialog_1101">
         <text>text in default</text>
     </string>
-    <string id="radar_test_dialog_120">
+    <string id="rad_find_stalkers_dialog_120">
         <text>Ого! Да я слышал! Неужели тот самый легендарный Стрелок! Не может быть! Не думал что увижу тебя живым! Живая легенда Зоны! \nКакое совпадение я и моя банда так же идем искать Монолит! Может объеденим усилия?</text>
     </string>
-    <string id="radar_test_dialog_130">
+    <string id="rad_find_stalkers_dialog_130">
         <text>Отлично! Вместе мы точно найдем Монолит! \nНо есть одна проблема, я послал пару своих ребят посмотреть, что же творится на Припяти, но они пропали, их задача была разведать происходящее на Припяти и вернутся доложить мне. Прошли уже целые сутки! А их до сих пор нет, а ведь они мои лучшие ребята, Бревно и Лом. Если, хочешь к нам присоединится тебе надо заслужить мое доверие! Как тебе это подходит?</text>
     </string>
-    <string id="radar_test_dialog_131">
+    <string id="rad_find_stalkers_dialog_131">
         <text>Найди их ПДА и принеси мне!</text>
     </string>
-    <string id="radar_test_dialog_2">
-        <text>Думаю это хорошая идея! Я согласен! </text>
+    <string id="rad_find_stalkers_dialog_2">
+        <text>Думаю это хорошая идея! Я согласен!</text>
     </string>
-    <string id="radar_test_dialog_20">
+    <string id="rad_find_stalkers_dialog_20">
         <text>Значит так, говоришь что бармен тебя сюда прислал, для того чтоб отключить антенны? Я вижу ты чудесным образом справился с заданием и открыл дорогу к центру зоны. Может нам стоит объединить усилия и вместе искать монолит?</text>
     </string>
-    <string id="radar_test_dialog_22">
-        <text>Нет, сам найду Монолит! Спасибо за предложение! </text>
+    <string id="rad_find_stalkers_dialog_22">
+        <text>Нет, сам найду Монолит! Спасибо за предложение!</text>
     </string>
-    <string id="radar_test_dialog_23">
+    <string id="rad_find_stalkers_dialog_23">
         <text>Давай о какой услуге идет речь?</text>
     </string>
-    <string id="radar_test_dialog_24">
-        <text>Хорошо! Ну а если они погибли? </text>
+    <string id="rad_find_stalkers_dialog_24">
+        <text>Хорошо! Ну а если они погибли?</text>
     </string>
-    <string id="radar_test_dialog_25">
+    <string id="rad_find_stalkers_dialog_25">
         <text>Нет меня это не интересует!</text>
     </string>
-    <string id="radar_test_dialog_26">
+    <string id="rad_find_stalkers_dialog_26">
         <text>Договорились!</text>
     </string>
-    <string id="radar_test_dialog_3">
+    <string id="rad_find_stalkers_dialog_3">
         <text>Да подходит! Хорошо, я найду для тебя твоих ребят!</text>
     </string>
-    <string id="radar_test_dialog_30">
+    <string id="rad_find_stalkers_dialog_30">
         <text>Вот и чудесно, но есть одна проблема, я послал пару своих ребят посмотреть, что же творится на Припяти, но они пропали, их задача была разведать происходящее на Припяти и вернутся доложить мне. Прошли уже целые сутки! А их до сих пор нет, а ведь они мои лучшие ребята, Бревно и Лом зову их так. Если, хочешь к нам присоединится к моей комманде. Тебе надо заслужить мое доверие! Тебе это подходит?</text>
     </string>
-    <string id="radar_test_dialog_33">
+    <string id="rad_find_stalkers_dialog_33">
         <text>Очень жаль! Тогда может я могу тебя попросить об услуге?</text>
     </string>
-    <string id="radar_test_dialog_34">
+    <string id="rad_find_stalkers_dialog_34">
         <text>Я послал пару своих ребят посмотреть, что же творится на Припяти, но они пропали, их задача была разведать происходящее на Припяти и вернутся доложить мне. Прошли уже целые сутки! А их до сих пор нет, а ведь они мои лучшие ребята, Бревно и Лом зову их так. Надешь их я тебе заплачу 1000! Как по рукам?</text>
     </string>
-    <string id="radar_test_dialog_35">
-        <text>Принеси их ПДА и получишь 1000! </text>
+    <string id="rad_find_stalkers_dialog_35">
+        <text>Принеси их ПДА и получишь 1000!</text>
     </string>
-    <string id="radar_test_dialog_36">
+    <string id="rad_find_stalkers_dialog_36">
         <text>Жаль! Желаю тебе удачи!</text>
     </string>
-    <string id="radar_test_dialog_4">
+    <string id="rad_find_stalkers_dialog_4">
         <text>Спасибо брателло я найду для тебя Бревно и Лома!</text>
     </string>
-    <string id="radar_test_dialog_40">
+    <string id="rad_find_stalkers_dialog_40">
         <text>Ну а если они погибли, принеси мне их ПДА! После этого и поговорим! Удачи тебе, Меченый!</text>
     </string>
-    <string id="radar_test_dialog_5">
+    <string id="rad_find_stalkers_dialog_5">
         <text>Нет, пожалуй я откажусь!</text>
     </string>
-    <string id="radar_test_dialog_50">
+    <string id="rad_find_stalkers_dialog_50">
         <text>Жаль! Желаю тебе удачи!</text>
+    </string>
+    <string id="rad_found_stalkers_dialog_0">
+        <text>Здаров! Ну как ты нашел парней?</text>
+    </string>
+    <string id="rad_found_stalkers_dialog_100">
+        <text>Да я нашел их, от них мало что осталось, вот принес тебе оружие как доказательство.</text>
+    </string>
+    <string id="rad_found_stalkers_dialog_1000">
+        <text>Спасибо, получается моих парней прикончили, надеюсь они перед смертью кучу народа завалили!!!\nТы доказал, мне что достоин вступления в банду. Единственное у меня есть задание для тебя, мне надо чтоб ты нашел моего заместителя, он забрал мои вещи и сбежал, как возьмешься за это дело?\n\n</text>
+    </string>
+    <string id="rad_found_stalkers_dialog_105">
+        <text>Нет не нашел ничего.</text>
+    </string>
+    <string id="rad_found_stalkers_dialog_110">
+        <text>Нашел, покажи мне сначала деньги!!!</text>
+    </string>
+    <string id="rad_found_stalkers_dialog_200">
+        <text>Хорошо я согласен взяться за это дело, но ты мне должен сказать, куда он мог пойти?</text>
+    </string>
+    <string id="rad_found_stalkers_dialog_205">
+        <text>Знаешь, я выполнил свое обещание нашел для тебя парней, мне жаль что они погибли, но договор был я найду ребят и мы идем на Припять вместе, а сейчас получается мне надо еще искать еще когото? Пожалуй я иду к Монолиту сам!!! </text>
     </string>
 </string_table>
