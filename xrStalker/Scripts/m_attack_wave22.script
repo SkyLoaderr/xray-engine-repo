@@ -17,6 +17,12 @@ function on_enter (zone, obj)
     h.type  = hit.strike
     barricade:hit (h)
     
+    h:bone ("bone_17")
+    barricade:hit (h)
+    
+    h:bone ("bone_19")
+    barricade:hit (h)
+    
     entered = true
 
 end
