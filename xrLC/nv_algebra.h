@@ -148,7 +148,15 @@ struct DECLSPEC_NV_MATH vec3
         z+= u.z;
         return *this;
     }
-	nv_scalar normalize();
+	nv_scalar normalize()
+	{
+		float r = norm();
+		float n = 1/r;
+		x*= n;
+		y*= n;
+		z*= n;
+		return r;
+	}
 	nv_scalar sq_norm() const { return x * x + y * y + z * z; }
 	nv_scalar norm() const { return _sqrt(sq_norm()); }
 
@@ -573,18 +581,18 @@ inline nv_scalar nv_norm(const vec4 & n)
 
 // computes the cross product ( v cross w) and stores the result in u
 // i.e.     u = v cross w
-extern vec3 & cross(vec3 & u, const vec3 & v, const vec3 & w);
+extern vec3 & __cdecl cross(vec3 & u, const vec3 & v, const vec3 & w);
 
 // computes the dot product ( v dot w) and stores the result in u
 // i.e.     u = v dot w
-extern nv_scalar & dot(nv_scalar & u, const vec3 & v, const vec3 & w);
-extern nv_scalar dot(const vec3 & v, const vec3 & w);
-extern nv_scalar & dot(nv_scalar & u, const vec4 & v, const vec4 & w);
-extern nv_scalar dot(const vec4 & v, const vec4 & w);
-extern nv_scalar & dot(nv_scalar & u, const vec3 & v, const vec4 & w);
-extern nv_scalar dot(const vec3 & v, const vec4 & w);
-extern nv_scalar & dot(nv_scalar & u, const vec4 & v, const vec3 & w);
-extern nv_scalar dot(const vec4 & v, const vec3 & w);
+extern nv_scalar & __cdecl dot(nv_scalar & u, const vec3 & v, const vec3 & w);
+extern nv_scalar __cdecl dot(const vec3 & v, const vec3 & w);
+extern nv_scalar & __cdecl dot(nv_scalar & u, const vec4 & v, const vec4 & w);
+extern nv_scalar __cdecl dot(const vec4 & v, const vec4 & w);
+extern nv_scalar & __cdecl dot(nv_scalar & u, const vec3 & v, const vec4 & w);
+extern nv_scalar __cdecl dot(const vec3 & v, const vec4 & w);
+extern nv_scalar & __cdecl dot(nv_scalar & u, const vec4 & v, const vec3 & w);
+extern nv_scalar __cdecl dot(const vec4 & v, const vec3 & w);
 
 // compute the reflected vector R of L w.r.t N - vectors need to be 
 // normalized
