@@ -22,6 +22,11 @@ void CRenderTarget::accum_direct	()
 	RCache.set_xform_view			(xf_view	);
 	RCache.set_xform_project		(xf_project	);
 
+	// compute c_hpos
+	Fvector4		c_hpos;
+	RCache.xforms.m_wvp.transform	(c_hpos,Device.vCameraPosition);
+	c_hpos.mul						(1/c_hpos.w);
+
 	// Draw full-screen quad textured with our scene image
 	{
 		u32		Offset;
@@ -43,6 +48,7 @@ void CRenderTarget::accum_direct	()
 
 		// Shader + constants
 		RCache.set_Shader			(s_accum_direct);
+		RCache.set_c				("c_hpos",c_hpos);
 		Fvector4 J; float scale		= (2.0f / DSM_size)/11.f;
 		R_constant* _C				= RCache.get_c			("jitter");
 		J.set(11, 0,  0);		J.sub(11); J.mul(scale);	RCache.set_ca	(_C,0,J.x,J.y,-J.y,-J.x);
