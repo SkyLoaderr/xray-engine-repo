@@ -77,17 +77,12 @@ void CRender::Calculate()
 
 	// ******************** Geometry detail
 	float	fFar = 50.f;
-	fGLOD	= QualityControl.fGeometryLOD*2.f/(fFar*fFar); // *QualityControl.fScaleGLOD
-	fPOWER	= (1.f-QualityControl.fScaleGLOD)*40.f + 1.f;
-
 	ViewBase.CreateFromViewMatrix(Device.mFullTransform);
 	View = 0;
 
 	// Transfer to global space to avoid deep pointer access
 	g_fFarSq	=	fFar; 
 	g_fFarSq	*=	g_fFarSq;
-	g_fGLOD		=	fGLOD;
-	g_fPOWER	=	fPOWER;
 	g_fSCREEN	=	float(Device.dwWidth*Device.dwHeight);
 
 	// Build lights visibility & perform basic initialization
