@@ -49,9 +49,9 @@ void	CBlender_Screen_GRAY::Compile	(CBlender_Compile& C)
 				C.StageSET_Address	(D3DTADDRESS_CLAMP);
 				C.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_DIFFUSE);
 				C.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_DIFFUSE);
-				C.Stage_Texture		(oT_Name,	C.L_textures);
-				C.Stage_Matrix		(oT_xform,	C.L_matrices,	0);
-				C.Stage_Constant		("$null",	C.L_constants);
+				C.Stage_Texture		(oT_Name);
+				C.Stage_Matrix		(oT_xform,	0);
+				C.Stage_Constant		("$null");
 			}
 			C.StageEnd			();
 			
@@ -61,9 +61,9 @@ void	CBlender_Screen_GRAY::Compile	(CBlender_Compile& C)
 				C.StageSET_Address	(D3DTADDRESS_CLAMP);
 				C.StageSET_Color		(D3DTA_CURRENT,	  D3DTOP_DOTPRODUCT3,	D3DTA_TFACTOR);
 				C.StageSET_Alpha		(D3DTA_CURRENT,	  D3DTOP_DOTPRODUCT3,	D3DTA_TFACTOR);
-				C.Stage_Texture		(oT_Name,	C.L_textures);
-				C.Stage_Matrix		(oT_xform,	C.L_matrices,	0);
-				C.Stage_Constant		("$null",	C.L_constants);
+				C.Stage_Texture		(oT_Name);
+				C.Stage_Matrix		(oT_xform,	0);
+				C.Stage_Constant		("$null");
 			}
 			C.StageEnd			();
 		} else {
@@ -72,9 +72,9 @@ void	CBlender_Screen_GRAY::Compile	(CBlender_Compile& C)
 				C.StageSET_Address	(D3DTADDRESS_CLAMP);
 				C.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
 				C.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
-				C.Stage_Texture		(oT_Name,	C.L_textures);
-				C.Stage_Matrix		(oT_xform,	C.L_matrices,	0);
-				C.Stage_Constant		("$null",	C.L_constants);
+				C.Stage_Texture		(oT_Name);
+				C.Stage_Matrix		(oT_xform,	0);
+				C.Stage_Constant		("$null");
 			}
 			C.StageEnd			();
 		}

@@ -117,27 +117,27 @@ void	CBlender_Screen_SET::Compile	(CBlender_Compile& C)
 			C.StageSET_Address	(oClamp.value?D3DTADDRESS_CLAMP:D3DTADDRESS_WRAP);
 			C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
 			C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-			C.Stage_Texture	(oT_Name,	C.L_textures);
-			C.Stage_Matrix		("$null",	C.L_matrices,	0);
-			C.Stage_Constant	("$null",	C.L_constants);
+			C.Stage_Texture		(oT_Name);
+			C.Stage_Matrix		("$null",0);
+			C.Stage_Constant	("$null");
 			C.StageEnd			();
 
 			C.StageBegin		();
 			C.StageSET_Address	(oClamp.value?D3DTADDRESS_CLAMP:D3DTADDRESS_WRAP);
 			C.StageSET_Color	(D3DTA_DIFFUSE,	  D3DTOP_BLENDDIFFUSEALPHA,	D3DTA_CURRENT);
 			C.StageSET_Alpha	(D3DTA_DIFFUSE,	  D3DTOP_SELECTARG2,		D3DTA_CURRENT);
-			C.Stage_Texture	("$null",	C.L_textures);
-			C.Stage_Matrix		("$null",	C.L_matrices,	0);
-			C.Stage_Constant	("$null",	C.L_constants);
+			C.Stage_Texture		("$null");
+			C.Stage_Matrix		("$null",	0);
+			C.Stage_Constant	("$null");
 			C.StageEnd			();
 		} else {
 			C.StageBegin		();
 			C.StageSET_Address	(oClamp.value?D3DTADDRESS_CLAMP:D3DTADDRESS_WRAP);
 			C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
 			C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
-			C.Stage_Texture	(oT_Name,	C.L_textures);
-			C.Stage_Matrix		(oT_xform,	C.L_matrices,	0);
-			C.Stage_Constant	("$null",	C.L_constants);
+			C.Stage_Texture		(oT_Name);
+			C.Stage_Matrix		(oT_xform,	0);
+			C.Stage_Constant	("$null");
 			C.StageEnd			();
 		}
 	}
