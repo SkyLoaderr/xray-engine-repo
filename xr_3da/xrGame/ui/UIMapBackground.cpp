@@ -430,10 +430,17 @@ void CUIMapBackground::UpdateMapSpots()
 			ConvertToLocal(m_vMapSpots[i]->m_vWorldPos, pos);
 		}
 
-		if(m_vMapSpots[i]->m_bCenter)
-			m_vMapSpots[i]->MoveWindow(pos.x - MAP_ICON_WIDTH/2, pos.y - MAP_ICON_HEIGHT);
-		else
+		
+		switch(m_vMapSpots[i]->m_eAlign) {
+		case CUIMapSpot::eBottom:
+            m_vMapSpots[i]->MoveWindow(pos.x - MAP_ICON_WIDTH/2, pos.y - MAP_ICON_HEIGHT);
+			break;
+		case CUIMapSpot::eCenter:
+			m_vMapSpots[i]->MoveWindow(pos.x - MAP_ICON_WIDTH/2, pos.y - MAP_ICON_HEIGHT/2);
+			break;
+		default:
 			m_vMapSpots[i]->MoveWindow(pos.x, pos.y);
+		}
 	}
 }
 

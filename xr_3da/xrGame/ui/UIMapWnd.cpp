@@ -241,7 +241,7 @@ void CUIMapWnd::InitMap()
 			map_location.icon_width*ICON_GRID_WIDTH,
 			map_location.icon_height*ICON_GRID_HEIGHT);
 
-		map_spot->m_bCenter = true;
+		map_spot->m_eAlign = CUIMapSpot::eBottom;
 		map_spot->m_sDescText.SetText("");
 		map_spot->m_sNameText.SetText("");
 		if(xr_strlen(map_location.text)>1)
@@ -280,7 +280,7 @@ void CUIMapWnd::InitMap()
 	map_spot->SetHeight(32);
 
 	map_spot->MoveWindow(P.x + left, P.y + top);
-	map_spot->m_bCenter = true;
+	map_spot->m_eAlign = CUIMapSpot::eCenter;
 	map_spot->m_sDescText.SetText("It's you.");
 	map_spot->m_sNameText.SetText("You");
 
@@ -320,7 +320,7 @@ void CUIMapWnd::AddObjectSpot(CGameObject* pGameObject)
 	map_spot->SetWidth(MAP_ICON_WIDTH);
 	map_spot->SetHeight(MAP_ICON_HEIGHT);
 	map_spot->MoveWindow(P.x + left, P.y + top);
-	map_spot->m_bCenter = true;
+	map_spot->m_eAlign = CUIMapSpot::eBottom;
 	map_spot->m_sDescText.SetText("");
 	map_spot->m_sNameText.SetText("");
 

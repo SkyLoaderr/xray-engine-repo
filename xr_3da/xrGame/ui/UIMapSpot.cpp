@@ -10,7 +10,8 @@ CUIMapSpot::CUIMapSpot()
 	m_pObject = NULL;
 	m_vWorldPos.set(0,0,0);
 
-	m_bCenter = false;
+	m_eAlign = eNone;
+
 	m_sDescText.SetText("");
 	m_sNameText.SetText("");
 

@@ -38,8 +38,10 @@ public:
 	//если есть текст с описанием 
 	CUIString m_sDescText;
 	
-	//центрирование иконки (вкл/выкл)
-	bool m_bCenter;
+	//центрирование иконки 
+	enum EMapSpotAlign {eBottom, eCenter, eNone};
+	EMapSpotAlign m_eAlign;
+	
 	//направление иконки
 	float m_fHeading;
 };
