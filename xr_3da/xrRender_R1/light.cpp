@@ -259,7 +259,7 @@ void	light::gi_generate	()
 		light_indirect		LI;
 		LI.P.mad			(position,dir,R->range);
 		LI.D.reflect		(dir,TN);
-		LI.E				= (1-R->range/range);
+		LI.E				= (1-R->range/range) / float(indirect_photons);
 		if (LI.E*LE < ps_r2_GI_clip)	continue;
 		LI.S				= spatial.sector;	//BUG
 
