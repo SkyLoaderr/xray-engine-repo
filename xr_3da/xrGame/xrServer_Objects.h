@@ -46,9 +46,15 @@
 // 32 - CSE_ALifeDynamicObjectVisual	the only this class saves and loads visual object
 //------------------------------------------------------------------------------
 
+class CPureServerObject : public IPureServerObject {
+public:
+	virtual void					Load(IReader	&tFileStream);
+	virtual void					Save(IWriter	&tMemoryStream);
+};
+
 class xrClientData;
 
-class CSE_Abstract : public IPureServerObject {
+class CSE_Abstract : public CPureServerObject {
 public:
 	BOOL							net_Ready;
 	BOOL							net_Processed;	// Internal flag for connectivity-graph

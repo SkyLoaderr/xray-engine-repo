@@ -13,7 +13,7 @@
 #include "ai_alife_space.h"
 using namespace ALife;
 
-SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeEvent,IPureServerObject)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeEvent,CPureServerObject)
 	_EVENT_ID						m_tEventID;
 	_TIME_ID						m_tTimeID;
 	_GRAPH_ID						m_tGraphID;
@@ -24,7 +24,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeEvent,IPureServerObject)
 									CSE_ALifeEvent	(LPCSTR caSection);
 SERVER_ENTITY_DECLARE_END
 
-SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifePersonalEvent,IPureServerObject)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifePersonalEvent,CPureServerObject)
 	_EVENT_ID						m_tEventID;
 	_TIME_ID						m_tTimeID;
 	_TASK_ID						m_tTaskID;
@@ -37,7 +37,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifePersonalEvent,IPureServerObject)
 	};
 SERVER_ENTITY_DECLARE_END
 
-SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeTask,IPureServerObject)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeTask,CPureServerObject)
 	_TASK_ID						m_tTaskID;
 	_TIME_ID						m_tTimeID;
 	_OBJECT_ID						m_tCustomerID;

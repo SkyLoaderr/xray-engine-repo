@@ -30,20 +30,6 @@ public:
 	virtual void					STATE_Read	(NET_Packet &tNetPacket, u16 size)		= 0;
 	virtual void					UPDATE_Write(NET_Packet &tNetPacket)				= 0;
 	virtual void					UPDATE_Read	(NET_Packet &tNetPacket)				= 0;
-	virtual void					Save		(IWriter	&tMemoryStream)
-	{
-		NET_Packet					l_tNetPacket;
-		UPDATE_Write				(l_tNetPacket);
-		tMemoryStream.w_u32			(l_tNetPacket.B.count);
-		tMemoryStream.w				(l_tNetPacket.B.data,l_tNetPacket.B.count);
-	}
-	
-	virtual void					Load		(IReader	&tFileStream)
-	{
-		NET_Packet					l_tNetPacket;
-		l_tNetPacket.B.count		= tFileStream.r_u32();
-		tFileStream.r				(l_tNetPacket.B.data,l_tNetPacket.B.count);
-		UPDATE_Read					(l_tNetPacket);
-	}
 };
+
 #endif

@@ -22,6 +22,25 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
+// CPureServerObject
+////////////////////////////////////////////////////////////////////////////
+void CPureServerObject::Save				(IWriter	&tMemoryStream)
+{
+	NET_Packet					l_tNetPacket;
+	UPDATE_Write				(l_tNetPacket);
+	tMemoryStream.w_u32			(l_tNetPacket.B.count);
+	tMemoryStream.w				(l_tNetPacket.B.data,l_tNetPacket.B.count);
+}
+
+void CPureServerObject::Load				(IReader	&tFileStream)
+{
+	NET_Packet					l_tNetPacket;
+	l_tNetPacket.B.count		= tFileStream.r_u32();
+	tFileStream.r				(l_tNetPacket.B.data,l_tNetPacket.B.count);
+	UPDATE_Read					(l_tNetPacket);
+}
+
+////////////////////////////////////////////////////////////////////////////
 // CSE_Abstract
 ////////////////////////////////////////////////////////////////////////////
 CSE_Abstract::CSE_Abstract					(LPCSTR caSection)
