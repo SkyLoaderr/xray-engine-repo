@@ -297,10 +297,10 @@ void SGameMtlPair::TransferFromParent(SGameMtlPair* parent)
 //------------------------------------------------------------------------------
 LPCSTR CGameMtlLibrary::MtlPairToName		(int mtl0, int mtl1)
 {
-    static string128 buf;
+    static string512 buf;
     SGameMtl* M0	= GetMaterialByID(mtl0);	R_ASSERT(M0);
     SGameMtl* M1	= GetMaterialByID(mtl1);	R_ASSERT(M1);
-    string64 buf0, buf1;
+    string256 buf0, buf1;
     strcpy			(buf0,*M0->m_Name);	_ChangeSymbol	(buf0,'\\','/');
     strcpy			(buf1,*M1->m_Name);	_ChangeSymbol	(buf1,'\\','/');
     sprintf			(buf,"%s\\%s",buf0,buf1);
@@ -308,7 +308,7 @@ LPCSTR CGameMtlLibrary::MtlPairToName		(int mtl0, int mtl1)
 }
 void CGameMtlLibrary::NameToMtlPair			(LPCSTR name, int& mtl0, int& mtl1)
 {
-    string64 		buf0, buf1;
+    string256 		buf0, buf1;
     if (_GetItemCount(name,'\\')<2){
         mtl0		= GAMEMTL_NONE;
         mtl1		= GAMEMTL_NONE;
@@ -323,7 +323,7 @@ void CGameMtlLibrary::NameToMtlPair			(LPCSTR name, int& mtl0, int& mtl1)
 }
 void CGameMtlLibrary::MtlNameToMtlPair		(LPCSTR name, int& mtl0, int& mtl1)
 {
-    string128 buf;
+    string256 buf;
     SGameMtl* M0 	= GetMaterial(_GetItem(name,0,buf,','));	R_ASSERT(M0); 	mtl0=M0->GetID();
     SGameMtl* M1 	= GetMaterial(_GetItem(name,1,buf,','));	R_ASSERT(M1);	mtl1=M1->GetID();
 }
@@ -463,7 +463,7 @@ void SGameMtl::Save(IWriter& fs)
 
 void SGameMtlPair::Load(IReader& fs)
 {
-	string128			buf;
+	ref_str				buf;
 
 	R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_PAIR));
     mtl0				= fs.r_u32();
@@ -473,15 +473,15 @@ void SGameMtlPair::Load(IReader& fs)
     OwnProps.set		(fs.r_u32());
 
     R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_BREAKING));
-    fs.r_stringZ			(buf); 	BreakingSounds	= buf;
+    fs.r_stringZ			(buf); 	BreakingSounds	= *buf;
     
     R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_STEP));
-    fs.r_stringZ			(buf);	StepSounds		= buf;
+    fs.r_stringZ			(buf);	StepSounds		= *buf;
     
     R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_COLLIDE));
-    fs.r_stringZ			(buf);	CollideSounds	= buf;
-    fs.r_stringZ			(buf);	CollideParticles= buf;
-    fs.r_stringZ			(buf);	CollideMarks	= buf;
+    fs.r_stringZ			(buf);	CollideSounds	= *buf;
+    fs.r_stringZ			(buf);	CollideParticles= *buf;
+    fs.r_stringZ			(buf);	CollideMarks	= *buf;
 }
 
 void SGameMtlPair::Save(IWriter& fs)
