@@ -12,7 +12,7 @@ CImageManager ImageManager;
 #pragma package(smart_init)
 extern bool IsFormatRegister(LPCSTR ext);
 extern FIBITMAP* Surface_Load(char* full_name);
-extern "C" __declspec(dllexport)
+extern "C" __declspec(dllimport)
 bool DXTCompress(LPCSTR out_name, BYTE* raw_data, DWORD w, DWORD h, DWORD pitch,
 				 STextureParams* options, DWORD depth);
 

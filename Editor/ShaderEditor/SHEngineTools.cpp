@@ -262,6 +262,15 @@ void CSHEngineTools::Save(BOOL bForVisUpdate){
         }
         F.close_chunk();
     }
+    // Save blender names
+    {
+    	F.open_chunk(3);
+		F.Wdword(m_Blenders.size());
+		for (BlenderPairIt b=m_Blenders.begin(); b!=m_Blenders.end(); b++)
+        	F.WstringZ(b->first);
+        F.close_chunk();
+    }
+
     // copy exist file
     FS.MarkFile(fn);
     // save new file

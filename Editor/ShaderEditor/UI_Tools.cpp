@@ -186,4 +186,3 @@ void CShaderTools::ApplyChanges()
     else if (ActiveEditor()==aeCompiler)Tools.Compiler.ApplyChanges();
 }
 
-

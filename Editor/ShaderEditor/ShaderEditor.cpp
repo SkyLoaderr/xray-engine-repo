@@ -112,6 +112,7 @@ USEUNIT("UI_MainShader.cpp");
 USEUNIT("Editor\EditMeshPick.cpp");
 USEFORM("Editor\TopBar.cpp", fraTopBar); /* TFrame: File Type */
 USEUNIT("Editor\EditObjectEditor.cpp");
+USELIB("Lib\memmgr.lib");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"
