@@ -9,6 +9,17 @@
 #include "blenders\blender.h"
 #include "blenders\blender_recorder.h"
 
+template <class T>
+BOOL	reclaim		(xr_vector<T*>& vec, T* ptr)
+{
+	xr_vector<T*>::iterator it	= vec.begin	();
+	xr_vector<T*>::iterator end	= vec.end	();
+	for (; it!=end; it++)
+		if (*it == ptr)	{ vec.erase	(it); return TRUE; }
+	return FALSE;
+}
+
+
 //--------------------------------------------------------------------------------------------------------------
 SState*		CShaderManager::_CreateState		(SimulatorStates& state_code)
 {
@@ -26,19 +37,10 @@ SState*		CShaderManager::_CreateState		(SimulatorStates& state_code)
 	v_states.back()->state_code		= state_code;
 	return v_states.back();
 }
-
 void		CShaderManager::_DeleteState		(SState* state)
 {
-	// Dummy search
-	for (u32 it=0; it<v_states.size(); it++)
-		if (v_states[it] == state)	
-		{
-			xr_delete		(v_states[it]);
-			v_states.erase	(v_states.begin()+it);
-		}
-
-	// Fail
-	Msg	("! ERROR: Failed to find compiled shader or stateblock");
+	if (reclaim(v_states,state))	return;
+	Msg	("! ERROR: Failed to find compiled stateblock");
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -51,9 +53,10 @@ SPass*		CShaderManager::_CreatePass			(SPass& P)
 	return v_passes.back();
 }
 
-void		CShaderManager::_DeletePass			(SPass* &P)
+void		CShaderManager::_DeletePass			(SPass* P)
 {
-	P	=	NULL;
+	if (reclaim(v_passes,P))		return;
+	Msg	("! ERROR: Failed to find compiled pass");
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -66,13 +69,13 @@ static BOOL	dcl_equal			(D3DVERTEXELEMENT9* a, D3DVERTEXELEMENT9* b)
 	return 0==memcmp	(a,b,a_size*sizeof(D3DVERTEXELEMENT9));
 }
 
-IDirect3DVertexDeclaration9*	CShaderManager::_CreateDecl	(D3DVERTEXELEMENT9* dcl)
+SDeclaration*	CShaderManager::_CreateDecl	(D3DVERTEXELEMENT9* dcl)
 {
 	// Search equal code
 	for (u32 it=0; it<v_declarations.size(); it++)
 	{
-		SDeclaration&		D		= *v_declarations[it];;
-		if (dcl_equal(dcl,&*D.dcl_code.begin()))	return D.dcl;
+		SDeclaration*		D		= v_declarations[it];;
+		if (dcl_equal(dcl,&*D->dcl_code.begin()))	return D;
 	}
 
 	// Create _new
@@ -81,22 +84,13 @@ IDirect3DVertexDeclaration9*	CShaderManager::_CreateDecl	(D3DVERTEXELEMENT9* dcl
 	CHK_DX					(HW.pDevice->CreateVertexDeclaration(dcl,&D->dcl));
 	D->dcl_code.assign		(dcl,dcl+dcl_size);
 	v_declarations.push_back(D);
-	return D->dcl;
+	return D;
 }
 
-void		CShaderManager::_DeleteDecl		(IDirect3DVertexDeclaration9*& dcl)
+void		CShaderManager::_DeleteDecl		(SDeclaration* dcl)
 {
-	R_ASSERT(dcl);
-
-	// Dummy search
-	for (u32 it=0; it<v_declarations.size(); it++)
-	{
-		SDeclaration&		D	= *(v_declarations[it]);
-		if (D.dcl == dcl)	return;
-	}
-
-	// Fail
-	Debug.fatal("Failed to find compiled declaration");
+	if (reclaim(v_declarations,dcl))		return;
+	Msg	("! ERROR: Failed to find compiled vertex-declarator");
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -156,9 +150,14 @@ SVS*	CShaderManager::_CreateVS		(LPCSTR name)
 		return		_vs;
 	}
 }
-void	CShaderManager::_DeleteVS			(IDirect3DVertexShader9* &vs)
+
+void	CShaderManager::_DeleteVS			(SVS* vs)
 {
-	vs = NULL;
+	for (map_VSIt v=m_vs.begin(); v!=m_vs.end(); v++)
+	{
+		xr_free		((char*)v->first);
+		xr_delete	(v->second);
+	}
 }
 
 //--------------------------------------------------------------------------------------------------------------

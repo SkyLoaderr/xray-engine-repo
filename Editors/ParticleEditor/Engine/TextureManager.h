@@ -117,8 +117,8 @@ public:
 	SState*							_CreateState		(SimulatorStates& Code);
 	void							_DeleteState		(SState* SB);
 
-	IDirect3DVertexDeclaration9*	_CreateDecl			(D3DVERTEXELEMENT9* dcl);
-	void							_DeleteDecl			(IDirect3DVertexDeclaration9* dcl);
+	SDeclaration*					_CreateDecl			(D3DVERTEXELEMENT9* dcl);
+	void							_DeleteDecl			(SDeclaration* dcl);
 
 	STextureList*					_CreateTextureList	(STextureList& L);
 	void							_DeleteTextureList	(STextureList* L);

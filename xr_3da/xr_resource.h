@@ -1,11 +1,18 @@
 #pragma once
 
 // resource itself, the base class for all derived resources
-class	ENGINE_API	xr_resorce	{
+class	ENGINE_API	xr_resource	{
 public:
 	u32				dwReference;
 
-	xr_resorce()	: dwReference(0) { }
+	xr_resource()	: dwReference(0)	{ }
+};
+class	ENGINE_API	xr_resource_named	:	public xr_resource		{
+public:
+	const char *	cName;
+
+	xr_resource_named()	: cName(0)		{ }
+	~xr_resource_named()				{ xr_free(cName);	}
 };
 
 

@@ -27,25 +27,25 @@ class	ENGINE_API			CRTC;
 #pragma pack(push,4)
 
 //////////////////////////////////////////////////////////////////////////
-struct	ENGINE_API		STextureList	: public xr_resorce, public svector<ref_texture,8>	{
+struct	ENGINE_API		STextureList	: public xr_resource, public svector<ref_texture,8>	{
 						~STextureList	();
 };
 typedef	resptr_core<STextureList,resptr_base<STextureList> >								ref_texture_list;
 
 //////////////////////////////////////////////////////////////////////////
-struct	ENGINE_API		SMatrixList		: public xr_resorce, public svector<ref_matrix,4>	{
+struct	ENGINE_API		SMatrixList		: public xr_resource, public svector<ref_matrix,4>	{
 						~SMatrixList	();
 };
 typedef	resptr_core<SMatrixList,resptr_base<SMatrixList> >									ref_matrix_list;
 
 //////////////////////////////////////////////////////////////////////////
-struct	ENGINE_API		SConstantList	: public xr_resorce, public svector<ref_constant,4>	{
+struct	ENGINE_API		SConstantList	: public xr_resource, public svector<ref_constant,4>	{
 						~SConstantList	();
 };
 typedef	resptr_core<SConstantList,resptr_base<SConstantList> >								ref_constant_list;
 
 //////////////////////////////////////////////////////////////////////////
-struct	ENGINE_API		SGeometry		: public xr_resorce									{
+struct	ENGINE_API		SGeometry		: public xr_resource									{
 	ref_declaration						dcl;
 	IDirect3DVertexBuffer9*				vb;
 	IDirect3DIndexBuffer9*				ib;
@@ -62,7 +62,7 @@ struct ENGINE_API		resptrcode_geom	: public resptr_base<SGeometry>
 typedef	resptr_core<SGeometry,resptrcode_geom>												ref_geom;
 
 //////////////////////////////////////////////////////////////////////////
-struct	ENGINE_API		SPass			: public xr_resorce									{
+struct	ENGINE_API		SPass			: public xr_resource									{
 	ref_state							state;		// Generic state, like Z-Buffering, samplers, etc
 	ref_ps								ps;			// may be NULL = FFP, in that case "state" must contain TSS setup
 	ref_vs								vs;			// may be NULL = FFP, in that case "state" must contain RS setup, *and* FVF-compatible declaration must be used
@@ -78,7 +78,7 @@ struct	ENGINE_API		SPass			: public xr_resorce									{
 typedef	resptr_core<SPass,resptr_base<SPass> >												ref_pass;
 
 //////////////////////////////////////////////////////////////////////////
-struct ENGINE_API		ShaderElement	: public xr_resorce									{
+struct ENGINE_API		ShaderElement	: public xr_resource									{
 public:
 	struct SFlags
 	{
@@ -98,7 +98,7 @@ public:
 typedef	resptr_core<ShaderElement,resptr_base<ShaderElement> >								ref_selement;
 
 //////////////////////////////////////////////////////////////////////////
-struct ENGINE_API		Shader			: public xr_resorce									{
+struct ENGINE_API		Shader			: public xr_resource									{
 public:
 	ref_selement		E		[4];	// R1 - 0=lod0,		1=lod1, 2=lighting, 3=_undefined_
 										// R2 - 0=deffer,	1=dsm,	2=psm,		3=ssm		(or special usage)

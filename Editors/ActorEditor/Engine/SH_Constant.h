@@ -7,7 +7,7 @@
 class	ENGINE_API	IReader;
 class	ENGINE_API	IWriter;
 
-class	ENGINE_API	CConstant	: public xr_resorce									{
+class	ENGINE_API	CConstant	: public xr_resource_named									{
 public:
 	enum			{ modeProgrammable=0, modeWaveForm	};
 public:

@@ -9,7 +9,7 @@
 //////////////////////////////////////////////////////////////////////////
 // Atomic resources
 //////////////////////////////////////////////////////////////////////////
-struct	ENGINE_API		SVS				: public xr_resorce									{
+struct	ENGINE_API		SVS				: public xr_resource_named							{
 	IDirect3DVertexShader9*				vs;
 	R_constant_table					constants;
 	~SVS			();
@@ -17,7 +17,7 @@ struct	ENGINE_API		SVS				: public xr_resorce									{
 typedef	resptr_core<SVS,resptr_base<SVS> >													ref_vs;
 
 //////////////////////////////////////////////////////////////////////////
-struct	ENGINE_API		SPS				: public xr_resorce									{
+struct	ENGINE_API		SPS				: public xr_resource_named							{
 	IDirect3DPixelShader9*				ps;
 	R_constant_table					constants;
 	~SPS			();
@@ -25,7 +25,7 @@ struct	ENGINE_API		SPS				: public xr_resorce									{
 typedef	resptr_core<SPS,resptr_base<SPS> >													ref_ps;
 
 //////////////////////////////////////////////////////////////////////////
-struct	ENGINE_API		SState			: public xr_resorce									{
+struct	ENGINE_API		SState			: public xr_resource									{
 	IDirect3DStateBlock9*				state;
 	SimulatorStates						state_code;
 	~SState			();
@@ -33,7 +33,7 @@ struct	ENGINE_API		SState			: public xr_resorce									{
 typedef	resptr_core<SState,resptr_base<SState> >											ref_state;
 
 //////////////////////////////////////////////////////////////////////////
-struct	ENGINE_API		SDeclaration	: public xr_resorce									{
+struct	ENGINE_API		SDeclaration	: public xr_resource									{
 	IDirect3DVertexDeclaration9*		dcl;
 	xr_vector<D3DVERTEXELEMENT9>		dcl_code;
 	~SDeclaration	();

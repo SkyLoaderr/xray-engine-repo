@@ -4,8 +4,7 @@
 
 class	ENGINE_API	CTexture;
 
-class	ENGINE_API	CRT
-{
+class	ENGINE_API	CRT		:	public xr_resource_named	{
 public:
 	IDirect3DTexture9*	pSurface;
 	IDirect3DSurface9*	pRT;
@@ -18,7 +17,6 @@ public:
 
 	CRT					()
 	{
-		Memory.mem_fill	(this,0,sizeof(CRT));
 	}
 
 	void				Create	(LPCSTR Name, u32 w, u32 h, D3DFORMAT f);
@@ -26,8 +24,7 @@ public:
 	IC BOOL				Valid	()	{ return 0!=pTexture; }
 };
 
-class	ENGINE_API	CRTC
-{
+class	ENGINE_API	CRTC	:	public xr_resource_named	{
 public:
 	IDirect3DCubeTexture9*	pSurface;
 	IDirect3DSurface9*		pRT[6];

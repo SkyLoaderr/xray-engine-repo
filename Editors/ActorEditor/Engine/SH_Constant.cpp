@@ -5,7 +5,7 @@
 #include "xr_resource.h"
 
 // res
-class	test_resource	: public xr_resorce	{
+class	test_resource	: public xr_resource	{
 public:
 	void				_release_	(test_resource * ptr)	{	xr_delete	(ptr);	}
 };
