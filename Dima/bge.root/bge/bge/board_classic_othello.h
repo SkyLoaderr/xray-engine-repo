@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "script_export_space.h"
+
 class CBoardClassicOthello {
 public:
 	enum EBoardConstants {
@@ -40,20 +42,11 @@ protected:
 	IC		void			show_cell				(const cell_type &value) const;
 
 protected:
-	template <
-		int increment, 
-		cell_type color_to_move, 
-		cell_type opponent_color
-	>
-	IC		void			try_flip_direction		(cell_type *start_cell, int &difference);
-
-	template <
-		cell_type color_to_move
-	>
+	template <cell_type color_to_move>
 	IC		bool			do_move					(const u8 &index);
 
 public:
-							CBoardClassicOthello	();
+	IC						CBoardClassicOthello	();
 			void			start_position			();
 			void			show					() const;
 			bool			do_move					(const u8 &index);
@@ -68,6 +61,10 @@ public:
 	IC		const cell_type	&color_to_move			() const;
 	IC		u8				empties					() const;
 	IC		int				difference				() const;
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+add_to_type_list(CBoardClassicOthello)
+#undef script_type_list
+#define script_type_list save_type_list(CBoardClassicOthello)
 
 #include "board_classic_othello_inline.h"

@@ -1627,6 +1627,10 @@
 							RelativePath=".\board_classic_othello_inline.h"
 							>
 						</File>
+						<File
+							RelativePath=".\board_classic_othello_script.cpp"
+							>
+						</File>
 					</Filter>
 					<Filter
 						Name="bitboard"

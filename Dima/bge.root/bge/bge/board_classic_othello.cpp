@@ -23,11 +23,6 @@ const u8 CBoardClassicOthello::flipping_directions[BOARD_SIZE] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 };
 
-CBoardClassicOthello::CBoardClassicOthello	()
-{
-	start_position	();
-}
-
 void CBoardClassicOthello::start_position	()
 {
 	Memory::mem_fill(m_board,DUMMY,sizeof(m_board));
@@ -76,10 +71,10 @@ void CBoardClassicOthello::show				() const
 	}
 }
 
-template <int increment, CBoardClassicOthello::cell_type _color_to_move, CBoardClassicOthello::cell_type opponent_color>
-IC	void CBoardClassicOthello::try_flip_direction(cell_type *start_cell, int &difference)
+template <int increment, CBoardClassicOthello::cell_type color_to_move, CBoardClassicOthello::cell_type opponent_color>
+IC	void try_flip_direction(CBoardClassicOthello::cell_type *start_cell, int &difference)
 {
-    cell_type *current_cell = start_cell + increment;
+    CBoardClassicOthello::cell_type *current_cell = start_cell + increment;
 	if (*current_cell == opponent_color) {
 		current_cell += increment;
 		if (*current_cell == opponent_color) {
@@ -97,12 +92,12 @@ IC	void CBoardClassicOthello::try_flip_direction(cell_type *start_cell, int &dif
                 }
             }
         }
-		if (*current_cell == _color_to_move) {
-			current_cell -= increment;
+		if (*current_cell == color_to_move) {
+			current_cell		-= increment;
 			do {
-                *current_cell = _color_to_move;
-                current_cell -= increment;
-                difference += 2;
+                *current_cell	= color_to_move;
+                current_cell	-= increment;
+                difference		+= 2;
             }
 			while (current_cell != start_cell);
         }
