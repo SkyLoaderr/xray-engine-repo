@@ -974,6 +974,9 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 		CMD4(CCC_Integer,			"hud_adjust_mode",			&g_bHudAdjustMode,	0, 3);
 		CMD4(CCC_Float,				"hud_adjust_value",			&g_fHudAdjustValue,	0.0f, 1.0f);
 
+		// Enable/disable news
+		CMD4(CCC_Integer,			"hud_news_disable",			&g_bNewsDisable,	0, 1);
+
 		// Network
 		CMD4(CCC_Integer,	"net_cl_update_rate",	&psNET_ClientUpdate,1,		100				);
 		CMD4(CCC_Integer,	"net_cl_pending_lim",	&psNET_ClientPending,0,		10				);

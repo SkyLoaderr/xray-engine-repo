@@ -29,6 +29,7 @@ using namespace InventoryUtilities;
 //hud adjust mode
 int			g_bHudAdjustMode			= 0;
 float		g_fHudAdjustValue			= 0.0f;
+int			g_bNewsDisable				= 0;
 
 const u32	g_clWhite					= 0xffffffff;
 
@@ -216,10 +217,13 @@ void CUIMainIngameWnd::Draw()
 
 	//отрендерить текстуру объектива снайперского прицела или бинокля
 	if(m_pActor->HUDview() && m_pWeapon && m_pWeapon->IsZoomed() && 
-		!m_pWeapon->IsRotatingToZoom() && m_pWeapon->ZoomTexture())
+		!m_pWeapon->IsRotatingToZoom() && m_pWeapon->ZoomHideCrosshair())
 	{
-		m_pWeapon->ZoomTexture()->SetPos(0,0);
-		m_pWeapon->ZoomTexture()->Render(0,0, Device.dwWidth, Device.dwHeight);
+		if(m_pWeapon->ZoomTexture())
+		{
+			m_pWeapon->ZoomTexture()->SetPos(0,0);
+			m_pWeapon->ZoomTexture()->Render(0,0, Device.dwWidth, Device.dwHeight);
+		}
 
 		if(psHUD_Flags.test(HUD_CROSSHAIR))
 		{
@@ -665,14 +669,6 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 		}
 	}
 
-	if (DIK_Y == dik)
-	{
-		ALife::SGameNews nI;
-		nI.m_game_time	= 3618876748;
-		nI.m_news_type	= static_cast<ALife::ENewsType>(1);
-		OnNewsReceived(nI);
-	}
-
 	return false;
 }
 
@@ -795,21 +791,24 @@ void CUIMainIngameWnd::OnNewsReceived(const ALife::SGameNews &newsItem)
 	sprintf(time, "%02i:%02i\\n", m_CurrHours, m_CurrMins);
 	strconcat(result, locationName, time, newsPhrase);
 
-	CUIPdaMsgListItem* pItem = NULL;
-	pItem = xr_new<CUIPdaMsgListItem>();
-	UIPdaMsgListWnd.AddItem(pItem, true); 
-	UIPdaMsgListWnd.ScrollToBegin();
+	if (!g_bNewsDisable)
+	{
+		CUIPdaMsgListItem* pItem = NULL;
+		pItem = xr_new<CUIPdaMsgListItem>();
+		UIPdaMsgListWnd.AddItem(pItem, true); 
+		UIPdaMsgListWnd.ScrollToBegin();
 
-	pItem->InitCharacter(dynamic_cast<CInventoryOwner*>(Level().CurrentEntity()));
-	int* pShowTime = xr_new<int>();
-	*pShowTime = m_dwMaxShowTime;
-	pItem->SetData(pShowTime);
+		pItem->InitCharacter(dynamic_cast<CInventoryOwner*>(Level().CurrentEntity()));
+		int* pShowTime = xr_new<int>();
+		*pShowTime = m_dwMaxShowTime;
+		pItem->SetData(pShowTime);
 
-	UIPdaMsgListWnd.Show(true);	
+		UIPdaMsgListWnd.Show(true);	
 
-	pItem->UIMsgText.SetText(result);
+		pItem->UIMsgText.SetText(result);
 
-	m_dwMsgShowingTime = m_dwMaxShowTime;
+		m_dwMsgShowingTime = m_dwMaxShowTime;
+	}
 
 	CUIGameSP* pGameSP		= dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 	pGameSP->PdaMenu.AddNewsItem(result);
@@ -841,6 +840,7 @@ void CUIMainIngameWnd::LoadNewsTemplates()
 bool CUIMainIngameWnd::CheckForNewNews()
 {
 	// Нет симуляции или время проверки еще не пришло
+	// Либо ньюсы принудительно отключены из консоли
 	if (!ai().get_alife() || m_iPrevTime + NEWS_CHECK_INTERVAL > Level().GetGameTime())
 	{
 		return false;
