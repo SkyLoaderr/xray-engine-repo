@@ -48,7 +48,7 @@ void CAI_Biting::Init()
 	
 	InitMemory						(10000,10000);
 
-	Motion.Init						();
+	Motion.Init						(this);
 
 	m_dwPathBuiltLastTime			= 0;
 	

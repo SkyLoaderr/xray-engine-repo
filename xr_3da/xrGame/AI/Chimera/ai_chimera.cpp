@@ -64,7 +64,7 @@ void CAI_Chimera::Think()
 
 	VisionElem ve;
 
-	if (Motion.m_tSeq.Active())	{
+	if (Motion.m_tSeq.isActive())	{
 		Motion.m_tSeq.Cycle(m_dwCurrentUpdate);
 	}else {
 		//- FSM 1-level 

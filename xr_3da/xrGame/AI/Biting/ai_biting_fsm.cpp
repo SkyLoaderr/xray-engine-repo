@@ -63,15 +63,15 @@ void CAI_Biting::OnMotionSequenceEnd()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingMotion implementation
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CBitingMotion::Init()
+void CBitingMotion::Init(CAI_Biting *pData)
 {
-	m_tSeq
+	m_tSeq.Setup(pData);
 	m_tSeq.Init();
 }
 
 void CBitingMotion::SetFrameParams(CAI_Biting *pData) 
 {
-	if (!m_tSeq.Active()) {
+	if (!m_tSeq.isActive()) {
 
 		m_tParams.ApplyData(pData);
 		m_tTurn.CheckTurning(pData);
@@ -80,12 +80,11 @@ void CBitingMotion::SetFrameParams(CAI_Biting *pData)
 		if ((pData->m_tAnimPrevFrame == eMotionLieIdle) && (pData->m_tAnim != eMotionLieIdle)){
 			m_tSeq.Add(eMotionStandUp,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			m_tSeq.Switch();
-			m_tSeq.ApplyData(pData);
 		}
 
 		//!---
 	} else {
-		m_tSeq.ApplyData(pData);
+		m_tSeq.ApplyData();
 	}
 }
 
