@@ -38,9 +38,10 @@ void				OGF_Base::CalcBounds	()
 	bbox.getsphere				(S2.P,S2.R);
 	S2.R = -1;
 	for (I=V.begin(); I!=V.end(); I++)	{
-		float d = S2.P.distance_to(*I);
+		float d = S2.P.distance_to_sqr(*I);
 		if (d>S2.R) S2.R=d;
 	}
+	S2.R = _sqrt (S2.R);
 	BOOL B2						= SphereValid(V,S2);
 	R_ASSERT					(B2);
 
