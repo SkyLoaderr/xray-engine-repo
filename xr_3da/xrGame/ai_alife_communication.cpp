@@ -307,20 +307,29 @@ bool CSE_ALifeSimulator::bfCheckForInventoryCapacity(CSE_ALifeHumanAbstract *tpA
 			string4096		S;
 			char			*S1 = S;	
 			S1				+= sprintf(S1,"Trader1 -> ");
+			
 			if (iSum1) {
 				for (int i=0, n=l_tpIndexes1.size(); i<n ;i++)
 					S1		+= sprintf(S1,"%3d",l_tpIndexes1[i]);
 			}
-			if (iSum1 < iBallance + iSum2)
+			
+			if (iSum1 < iBallance + iSum2) {
 				S1			+= sprintf(S1," + $%d",iBallance + iSum2 - iSum1);
+				tpALifeHumanAbstract1->m_dwMoney -= iBallance + iSum2 - iSum1;
+			}
 			
 			S1				+= sprintf(S1,"\nTrader2 -> ");
+			
 			if (iSum2) {
 				for (int i=0, n=l_tpIndexes2.size(); i<n ;i++)
 					S1		+= sprintf(S1,"%3d",l_tpIndexes2[i]);
 			}
-			if (iSum1 > iBallance + iSum2)
+			
+			if (iSum1 > iBallance + iSum2) {
 				S1			+= sprintf(S1," + $%d",iSum1 - iBallance - iSum2);
+				tpALifeHumanAbstract2->m_dwMoney -= iSum1 - iBallance - iSum2;
+			}
+
 			Msg				("%s\n Can trade!",S);
 #endif
 			return			(true);
