@@ -38,11 +38,11 @@ void CUIAutobuyIndication::Init(int x, int y, int width, int height){
 
 	for (int i = 0; i < 3; i++)
 	{
-		m_p[i].Init(_x, 0, WIDTH, HEIGHT);
+		m_p[i].Init(_x + INDENT, 0, WIDTH, HEIGHT);
 		m_p[i].SetShader(GetBuyMenuShader());
 		m_p[i].SetOriginalRect(0, 1010, 39, 14);
 		m_p[i].TextureOff();
-		m_p[i].SetTextColor(COLOR_DISABLED);
+		m_p[i].SetTextColor(COLOR_DISABLED);		
 		_x += WIDTH + INDENT;
 	}
 }
