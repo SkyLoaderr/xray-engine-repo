@@ -51,3 +51,4 @@ jon_sounds              = global_sounds + 5000
 
 zombe_walk_speak        = jon_sounds + 0
 zombe_stand_speak       = jon_sounds + 1
+
