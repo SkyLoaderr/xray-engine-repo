@@ -7,6 +7,7 @@
 
 #include "EditMesh.h"
 #include "EditObject.h"
+#include "Bone.h"
 
 CEditableMesh::~CEditableMesh(){
 	Clear();
@@ -162,9 +163,6 @@ void CEditableMesh::GeneratePNormals()
     m_LoadState.set(LS_PNORMALS,TRUE);
 }
 
-#ifdef _EDITOR
-#include "Bone.h"
-
 void CEditableMesh::GenerateSVertices()
 {
 	if (!m_Parent->IsSkeleton()) return;
@@ -193,7 +191,7 @@ void CEditableMesh::GenerateSVertices()
                     if (wb.back().bone<=-1){
                         ELog.DlgMsg(mtError,"Can't find bone assigned to weight map %s",VM.name);
                         m_SVertices.clear();
-                        THROW2("Editor crashed.");
+                        Debug.fatal("Editor crashed.");
                         return;
                     }
                 }else if(VM.type==vmtUV){	
@@ -206,7 +204,7 @@ void CEditableMesh::GenerateSVertices()
             CBone* B=0;
             switch (cnt){
                 case 0:
-                	THROW2("Vertex has't any weights attached.");
+                	Debug.fatal("Vertex has't any weights attached.");
                 break;
                 case 1:{
                     SV.bone0 	= wb[0].bone;
@@ -228,7 +226,7 @@ void CEditableMesh::GenerateSVertices()
                     B->_LITransform().transform_dir(SV.norm1,N);
                 }break;
                 default:
-                    THROW2("More than 2 weight per vertex found!");
+                    Debug.fatal("More than 2 weight per vertex found!");
             }
         }
 	}
@@ -237,7 +235,6 @@ void CEditableMesh::GenerateSVertices()
     // restore active motion
     m_Parent->SetActiveSMotion(active_motion);
 }
-#endif
 
 CSurface*	CEditableMesh::GetSurfaceByFaceID(u32 fid)
 {

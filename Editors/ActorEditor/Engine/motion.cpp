@@ -220,11 +220,11 @@ BOOL COMotion::NormalizeKeys(float from_time, float to_time, float speed)
 //------------------------------------------------------------------------------------------
 // Skeleton Motion
 //------------------------------------------------------------------------------------------
-#include "SkeletonCustom.h"
+//#include "SkeletonCustom.h"
 CSMotion::CSMotion():CCustomMotion()
 {
 	mtype			=mtSkeleton;
-    m_BoneOrPart	=BI_NONE;
+//    m_BoneOrPart	=BI_NONE;
     fSpeed			=1.0f;
     fAccrue			=2.0f;
     fFalloff		=2.0f;

@@ -57,11 +57,11 @@ public:
 	IC void			w_u8	(u8 d)				{	write(&d,sizeof(u8));		}
 	IC void			w_string(const char *p)
 	{
-    	write(p,strlen(p));
+    	write(p,xr_strlen(p));
 		w_u8(13);
 		w_u8(10);
     }
-	IC void			w_stringZ(const char *p) 	{	write(p,strlen(p)+1); if (!(strlen(p)&1)) w_u8(0);}
+	IC void			w_stringZ(const char *p) 	{	write(p,xr_strlen(p)+1); if (!(xr_strlen(p)&1)) w_u8(0);}
 	IC void			w_vector(Fvector v)			{	revbytes(&v,4,3); write(&v,3*sizeof(float));	}
 	IC void			w_color	(Fcolor c)			{	revbytes(&c,4,4); write(&c,4*sizeof(float));	}
 
