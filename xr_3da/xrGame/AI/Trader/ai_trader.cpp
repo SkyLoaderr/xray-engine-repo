@@ -123,10 +123,10 @@ void CAI_Trader::OnEvent		(NET_Packet& P, u16 type)
 			P.r_u16		(id);
 			CObject* O	= Level().Objects.net_Find	(id);
 
-			Log("Trying to take - ", O->cName());
+			//Log("Trying to take - ", O->cName());
 			if(g_Alive() && m_inventory.Take(dynamic_cast<CGameObject*>(O))) {
 				O->H_SetParent(this);
-				Log("TAKE - ", O->cName());
+				//Log("TAKE - ", O->cName());
 			}
 		}
 		break;
