@@ -1,7 +1,9 @@
 #ifndef xr_efflensflareH
 #define xr_efflensflareH
 
-#include "xr_collide_defs.h"
+#ifndef _EDITOR
+#	include "xr_collide_defs.h"
+#endif
 
 class ENGINE_API CInifile;
 
@@ -85,7 +87,9 @@ protected:
     LFState				m_State;
     float				m_StateBlend;
 
+#ifndef _EDITOR
 	Collide::ray_cache	m_ray_cache;
+#endif
 public:
 						CLensFlare		();
 	virtual				~CLensFlare		();
