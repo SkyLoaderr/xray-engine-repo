@@ -3,8 +3,7 @@
 #pragma hdrstop
 
 #include "ParticleGroup.h"
-#include "papi.h"
-#include "general.h"
+#include "psystem.h"
 
 using namespace PAPI;
 using namespace PS;
@@ -43,7 +42,7 @@ void CPGDef::pFrame(BOOL random_frame, u32 frame_count, u32 tex_width, u32 tex_h
 {
 	m_Flags.set			(flFramed,TRUE);
 	m_Flags.set			(flRandomFrame,random_frame);
-	m_Frame.Set			(frame_count, tex_width, tex_height, frame_width, frame_height);
+	m_Frame.Set			(frame_count, (float)tex_width, (float)tex_height, (float)frame_width, (float)frame_height);
 }
 void CPGDef::pAnimate(float speed, BOOL random_playback)
 {
@@ -57,7 +56,7 @@ void CPGDef::pFrameInitExecute(ParticleGroup *group)
 		Particle &m = group->list[i];
         if (m_Flags.is(Particle::BIRTH)){
             if (m_Flags.is(flRandomFrame))
-                m.frame	= Random.randI(m_Frame.m_iFrameCount);
+                m.frame	= (float)Random.randI(m_Frame.m_iFrameCount);
             if (m_Flags.is(flAnimated)&&m_Flags.is(flRandomPlayback)&&Random.randI(2))
                 m.flags.set(Particle::ANIMATE_CCW,TRUE);
         }

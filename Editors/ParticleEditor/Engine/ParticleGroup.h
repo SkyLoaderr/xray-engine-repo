@@ -15,16 +15,16 @@ namespace PS{
 class PFunction;
 struct SFrame
 {
-    Fvector2			m_TexSize;
-    Fvector2			m_FrameSize;
+    Fvector2			m_fTexSize;
+    Fvector2			m_fFrameSize;
     int     			m_iFrameDimX;
     int 				m_iFrameCount;
     float				m_fSpeed;
 
     IC void 			InitDefault()
     {
-        m_FrameSize.set	(32.f,64.f);
-        m_TexSize.set	(32.f/256.f,64.f/128.f);
+        m_fFrameSize.set(32.f,64.f);
+        m_fTexSize.set	(32.f/256.f,64.f/128.f);
         m_iFrameDimX 	= 8;
         m_iFrameCount 	= 16;
         m_fSpeed		= 24.f;
@@ -32,16 +32,16 @@ struct SFrame
     IC void 			Set(int frame_count, float w, float h, float fw, float fh)
     {
         m_iFrameCount 	= frame_count;
-        m_FrameSize.set	(fw,fh);
-        m_TexSize.set	(fw/w,fh/h);
-        m_iFrameDimX 	= iFloor(1.f/m_TexSize.x);
+        m_fFrameSize.set(fw,fh);
+        m_fTexSize.set	(fw/w,fh/h);
+        m_iFrameDimX 	= iFloor(1.f/m_fTexSize.x);
     }
     IC void       		CalculateTC(int frame, Fvector2& lt, Fvector2& rb)
     {
-        lt.x       	 	= (frame%m_iFrameDimX)*m_TexSize.x;
-        lt.y        	= (frame/m_iFrameDimX)*m_TexSize.y;
-        rb.x        	= lt.x+m_TexSize.x;
-        rb.y        	= lt.y+m_TexSize.y;
+        lt.x       	 	= (frame%m_iFrameDimX)*m_fTexSize.x;
+        lt.y        	= (frame/m_iFrameDimX)*m_fTexSize.y;
+        rb.x        	= lt.x+m_fTexSize.x;
+        rb.y        	= lt.y+m_fTexSize.y;
     }
 };
 

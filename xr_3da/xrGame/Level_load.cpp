@@ -254,18 +254,18 @@ BOOL CLevel::Load_GameSpecific_After()
 	{
 		IRender_Sector* S;
 		CPGObject* pStaticPG;
-		Fvector p0				= {2,1,2};
+		Fvector p0				= {0,1,0};
 		S						= ::Render->detectSector	(p0);
 		pStaticPG				= xr_new<CPGObject>("test",S,false);
 		pStaticPG->play_at_pos	(p0);
 		m_StaticParticles.push_back(pStaticPG);
-/*
+
 		Fvector p1				= {2,1,2};
 		S						= ::Render->detectSector	(p1);
 		pStaticPG				= xr_new<CPGObject>("test",S,false);
 		pStaticPG->play_at_pos	(p1);
 		m_StaticParticles.push_back(pStaticPG);
-*/	}
+	}
 
 	return TRUE;
 }
