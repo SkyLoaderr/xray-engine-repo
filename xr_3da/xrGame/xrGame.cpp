@@ -2,7 +2,6 @@
 //
  
 #include "stdafx.h"
-#include "clsid_game.h"
 #include "..\xr_ioconsole.h"
 #include "..\xr_ioc_cmd.h"
 #include "..\customhud.h"

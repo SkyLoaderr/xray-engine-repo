@@ -15,6 +15,8 @@
 #define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
 
 #include "..\stdafx.h"
+#include "clsid_game.h"
+
 #include "..\xr_object.h"
 #include "..\xr_creator.h"
 #include "..\xr_sndman.h"
