@@ -175,8 +175,8 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 			AI_Node						= O->AI_Node;
 		}
 
-#pragma todo("Oles to Dima: Incorrect spawning, just hackery?")
-#pragma todo("Dima to Oles: Parent will be assigned after object's net_spawn, though I need it filled correctly during net_spawn to prevent illegal node ref_add/ref_dec in the sector_detect")
+#pragma todo("Oles to Dima : Incorrect spawning, just hackery?")
+#pragma todo("Dima to Oles : Parent will be assigned after object's net_spawn, though I need it filled correctly during net_spawn to prevent illegal node ref_add/ref_dec in the sector_detect")
 	if ((E->ID_Parent != 0xffff) && !Parent) {
 		Parent						= this;
 		inherited::net_Spawn		(DC);

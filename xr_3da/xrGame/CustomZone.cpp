@@ -12,8 +12,8 @@ CCustomZone::CCustomZone(void)
 	m_period = 1000;
 	m_ready = false;
 	m_pLocalActor = NULL;
-#pragma todo("AlexMX to Oles: Can't dynamic cast ICollidable to ISpatial!!!")
-#pragma todo("AlexMX: Remove next line after Oles fix bug.")
+#pragma todo("AlexMX to Oles : Can't dynamic cast ICollidable to ISpatial!!!")
+#pragma todo("AlexMX : Remove next line after Oles fix bug.")
 	ISpatial*		self				=	dynamic_cast<ISpatial*> (this);
 	if (self)		self->spatial.type	|=	STYPE_COLLIDEABLE;
 }
