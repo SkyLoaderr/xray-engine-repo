@@ -2,7 +2,6 @@
 #pragma hdrstop
 
 #include "ItemDialog.h"
-#include "ui_main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "mxPlacemnt"

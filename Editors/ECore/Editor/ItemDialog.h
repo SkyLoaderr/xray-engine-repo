@@ -16,7 +16,7 @@
 #include "MXCtrls.hpp"
 #include "mxPlacemnt.hpp"
 
-class TfrmItemDialog : public TForm
+class XR_EPROPS_API TfrmItemDialog : public TForm
 {
 __published:	// IDE-managed Components
 	TExtBtn *eb0;

@@ -9,13 +9,13 @@
       FolderLib.obj ColorPicker.obj NumericVector.obj ShaderFunction.obj 
       TextForm.obj xrEProps.obj ChoseForm.obj EThumbnail.obj 
       EThumbnailObject.obj EThumbnailSound.obj EThumbnailTexture.obj 
-      xrImage_Resampler.obj ETextureParams.obj"/>
+      xrImage_Resampler.obj ETextureParams.obj ItemDialog.obj"/>
     <RESFILES value="xrEPropsB.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) ItemList.dfm PropertiesList.dfm NumericVector.dfm 
-      ShaderFunction.dfm TextForm.dfm ChoseForm.dfm"/>
+      ShaderFunction.dfm TextForm.dfm ChoseForm.dfm ItemDialog.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value="editor.lib elpackB6.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib elpackB6.lib editor.lib bcbsmp.lib vclx.lib"/>
@@ -84,6 +84,7 @@
       <FILE FILENAME="ETextureParams.cpp" FORMNAME="" UNITNAME="ETextureParams" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="ai_sounds.h" FORMNAME="" UNITNAME="ai_sounds.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="resource.res" FORMNAME="" UNITNAME="resource.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ItemDialog.cpp" FORMNAME="frmItemDialog" UNITNAME="ItemDialog" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
