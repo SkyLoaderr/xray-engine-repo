@@ -558,6 +558,7 @@ public:
 	struct Item {
 		u32				ID;
 		AnsiString		str;
+        				Item			(u32 id, const AnsiString& nm){ID=id; str=nm;}
 	};
     DEFINE_VECTOR		(Item,ItemVec,ItemIt);
     const ItemVec*		items;

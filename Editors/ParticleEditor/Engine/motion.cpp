@@ -220,10 +220,11 @@ BOOL COMotion::NormalizeKeys(float from_time, float to_time, float speed)
 //------------------------------------------------------------------------------------------
 // Skeleton Motion
 //------------------------------------------------------------------------------------------
+#include "SkeletonCustom.h"
 CSMotion::CSMotion():CCustomMotion()
 {
 	mtype			=mtSkeleton;
-    iBoneOrPart		=-1;
+    m_BoneOrPart	=BI_NONE;
     fSpeed			=1.0f;
     fAccrue			=2.0f;
     fFalloff		=2.0f;
@@ -322,7 +323,7 @@ void CSMotion::Save(IWriter& F)
 	CCustomMotion::Save(F);
 	F.w_u16		(EOBJ_SMOTION_VERSION);
 	F.w_s8		(m_Flags.get());
-    F.w_s16		((s16)iBoneOrPart);
+    F.w_u16		(m_BoneOrPart);
     F.w_float	(fSpeed);           
     F.w_float	(fAccrue);
     F.w_float	(fFalloff);
@@ -341,7 +342,7 @@ bool CSMotion::Load(IReader& F)
 	CCustomMotion::Load(F);
 	u16 vers	= F.r_u16();
 	if (vers==0x0004){
-	    iBoneOrPart	= F.r_u32();          
+	    m_BoneOrPart= u16(F.r_u32()&0xffff);
 		m_Flags.set	(esmFX,F.r_u8());
 		m_Flags.set	(esmStopAtEnd,F.r_u8());
 		fSpeed		= F.r_float();
@@ -361,7 +362,7 @@ bool CSMotion::Load(IReader& F)
 	}else{
 		if (vers==0x0005){
             m_Flags.set	((u8)F.r_u32());
-            iBoneOrPart	= F.r_u32();
+            m_BoneOrPart= u16(F.r_u32()&0xffff);
             fSpeed		= F.r_float();
             fAccrue		= F.r_float();
             fFalloff	= F.r_float();
@@ -380,7 +381,7 @@ bool CSMotion::Load(IReader& F)
         }else{
             if (vers!=EOBJ_SMOTION_VERSION) return false;
             m_Flags.set	(F.r_u8());
-            iBoneOrPart	= F.r_s16();
+            m_BoneOrPart= F.r_u16();
             fSpeed		= F.r_float();
             fAccrue		= F.r_float();
             fFalloff	= F.r_float();

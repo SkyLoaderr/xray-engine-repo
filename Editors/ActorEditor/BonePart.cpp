@@ -96,7 +96,7 @@ void __fastcall TfrmBonePart::tvPartDragDrop(TObject *Sender,
 {
 	for (int k=0; k<(int)FDragItems.size(); k++){
 		FHelper.AppendObject(((TElTree*)Sender),FDragItems[k]->Text);
-        if (ebMoveMode->Down) FDragItems[k]->Delete();
+        FDragItems[k]->Delete();
     }
     FDragItems.clear();
     UpdateCount();
@@ -117,17 +117,32 @@ void __fastcall TfrmBonePart::ebSaveClick(TObject *Sender)
 {
 	for (int k=0; k<4; k++){
     	if (T[k]->Items->Count&&E[k]->Text.IsEmpty()){
-        	ShowMessage("Verify parts name.");
+        	ELog.DlgMsg(mtError,"Verify parts name.");
         	return;
         }
         for (int i=k-1; i>=0; i--){
 	    	if (!T[k]->Items->Count) continue;
         	if (E[k]->Text.UpperCase()==E[i]->Text.UpperCase()){
-                ShowMessage("Unique name required.");
+                ELog.DlgMsg(mtError,"Unique name required.");
                 return;
             }
         }
     }
+
+    // verify
+	U8Vec b_use(m_EditObject->BoneCount(),0);
+    for (k=0; k<4; k++){
+    	if (T[k]->Items->Count)
+		    for ( TElTreeItem* node = T[k]->Items->GetFirstNode(); node; node = node->GetNext())
+	        	b_use[m_EditObject->BoneIDByName(AnsiString(node->Text).c_str())]++;
+    }
+    for (U8It u_it=b_use.begin(); u_it!=b_use.end(); u_it++)
+    	if (*u_it!=1){ 
+            ELog.DlgMsg	(mtError,"Invalid bone part found (missing or duplicate bones).");
+        	return;
+        }
+
+	// save    
 	m_BoneParts->clear();
     for (k=0; k<4; k++){
     	if (T[k]->Items->Count){
@@ -163,7 +178,9 @@ void __fastcall TfrmBonePart::ExtBtn1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmBonePart::ExtBtn2Click(TObject *Sender)
+
+/*
+void __fastcall TfrmBonePart::ebAllClick(TObject *Sender)
 {
 	TExtBtn* B = dynamic_cast<TExtBtn*>(Sender); VERIFY(B); int idx = B->Tag;
     T[idx]->IsUpdating = true;
@@ -173,9 +190,8 @@ void __fastcall TfrmBonePart::ExtBtn2Click(TObject *Sender)
     T[idx]->IsUpdating = false;
     UpdateCount();
 }
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmBonePart::ExtBtn6Click(TObject *Sender)
+*/
+void __fastcall TfrmBonePart::ebClearClick(TObject *Sender)
 {
 	TExtBtn* B = dynamic_cast<TExtBtn*>(Sender); VERIFY(B); int idx = B->Tag;
     T[idx]->IsUpdating = true;

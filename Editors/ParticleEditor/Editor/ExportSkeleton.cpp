@@ -486,6 +486,8 @@ bool CExportSkeleton::ExportMotionDefs(IWriter& F)
     	return false;
     }
 
+    bool bRes=true;
+
     UI.ProgressStart	(3,"Export skeleton motions defs...");
     UI.ProgressInc		();
     // save smparams
@@ -494,13 +496,18 @@ bool CExportSkeleton::ExportMotionDefs(IWriter& F)
     // bone parts
     BPVec& bp_lst 		= m_Source->BoneParts();
     if (bp_lst.size()){
-		F.w_u16(bp_lst.size());
-    	for (BPIt bp_it=bp_lst.begin(); bp_it!=bp_lst.end(); bp_it++){
-    		F.w_stringZ(bp_it->alias.c_str());
-            F.w_u16(bp_it->bones.size());
-	        for (int i=0; i<int(bp_it->bones.size()); i++)
-            	F.w_u32(bp_it->bones[i]);
-    	}
+		if (m_Source->VerifyBoneParts()){
+            F.w_u16(bp_lst.size());
+            for (BPIt bp_it=bp_lst.begin(); bp_it!=bp_lst.end(); bp_it++){
+                F.w_stringZ(bp_it->alias.c_str());
+                F.w_u16(bp_it->bones.size());
+                for (int i=0; i<int(bp_it->bones.size()); i++)
+                    F.w_u32(bp_it->bones[i]);
+            }
+        }else{
+            ELog.Msg	(mtError,"Invalid bone parts (missing or duplicate bones).");
+            bRes 		= false;
+        }
     }else{
 		F.w_u16(1);
 		F.w_stringZ("default");
@@ -509,13 +516,12 @@ bool CExportSkeleton::ExportMotionDefs(IWriter& F)
     }
     UI.ProgressInc		();
     // motion defs
-    bool bRes=true;
     SMotionVec& sm_lst 		= m_Source->SMotions();
 	F.w_u16(sm_lst.size());
     for (SMotionIt motion_it=sm_lst.begin(); motion_it!=sm_lst.end(); motion_it++){
         CSMotion* motion = *motion_it;
         // verify
-        if ((motion->iBoneOrPart==-1)&&(!motion->m_Flags.is(esmFX))){
+        if ((motion->m_BoneOrPart==BI_NONE)&&(!motion->m_Flags.is(esmFX))){
         	ELog.Msg(mtError,"Invalid Bone Part of motion: '%s'.",motion->Name());
             bRes=false;
             continue;
@@ -524,7 +530,7 @@ bool CExportSkeleton::ExportMotionDefs(IWriter& F)
 	    	// export
             F.w_stringZ	(motion->Name());
             F.w_u32		(motion->m_Flags.get());
-            F.w_s16		(motion->iBoneOrPart);
+            F.w_u16		(motion->m_BoneOrPart);
             F.w_u16		(motion_it-sm_lst.begin());
             F.w_float	(motion->fSpeed);
             F.w_float	(motion->fPower);

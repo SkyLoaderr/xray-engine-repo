@@ -30,23 +30,17 @@ __published:	// IDE-managed Components
 	TExtBtn *ebSave;
 	TExtBtn *ebCancel;
 	TFormStorage *fsStorage;
-	TExtBtn *ebCopyMode;
-	TExtBtn *ebMoveMode;
 	TExtBtn *ExtBtn1;
-	TExtBtn *ExtBtn2;
-	TExtBtn *ExtBtn3;
-	TExtBtn *ExtBtn4;
-	TExtBtn *ExtBtn5;
-	TExtBtn *ExtBtn6;
-	TExtBtn *ExtBtn7;
-	TExtBtn *ExtBtn8;
-	TExtBtn *ExtBtn9;
 	TLabel *lbPart1;
 	TLabel *lbPart3;
 	TLabel *lbPart4;
 	TLabel *lbPart2;
 	TLabel *Label1;
 	TLabel *lbTotalBones;
+	TExtBtn *ExtBtn2;
+	TExtBtn *ExtBtn3;
+	TExtBtn *ExtBtn4;
+	TExtBtn *ExtBtn5;
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
@@ -59,8 +53,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebSaveClick(TObject *Sender);
 	void __fastcall ebCancelClick(TObject *Sender);
 	void __fastcall ExtBtn1Click(TObject *Sender);
-	void __fastcall ExtBtn2Click(TObject *Sender);
-	void __fastcall ExtBtn6Click(TObject *Sender);
+	void __fastcall ebClearClick(TObject *Sender);
 private:	// User declarations
 	xr_vector<TElTreeItem*> FDragItems;
     CEditableObject* m_EditObject;

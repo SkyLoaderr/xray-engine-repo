@@ -123,7 +123,7 @@ enum ESMFlags{
 class ENGINE_API CSMotion: public CCustomMotion{
 	BoneMotionVec	bone_mots;
 public:
-    s32				iBoneOrPart;
+    u16				m_BoneOrPart;
     float			fSpeed;
     float			fAccrue;
     float			fFalloff;
@@ -142,7 +142,6 @@ public:
 
     st_BoneMotion*	FindBoneMotion	(LPCSTR name);
     BoneMotionVec&	BoneMotions		()				{return bone_mots;}
-	void			SetBoneOrPart	(s16 idx)		{iBoneOrPart=idx;}
 	Flags8			GetMotionFlags	(int bone_idx)	{return bone_mots[bone_idx].m_Flags;}
 
 	virtual void	Save			(IWriter& F);

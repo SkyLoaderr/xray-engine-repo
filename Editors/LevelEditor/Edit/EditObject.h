@@ -282,6 +282,7 @@ public:
     CSMotion*		GetActiveSMotion		()	{return m_ActiveSMotion; }
 	void			SetActiveSMotion		(CSMotion* mot);
 	bool 			CheckBoneCompliance		(CSMotion* M);
+    bool			VerifyBoneParts			();
 
 	bool 			LoadBoneData			(IReader& F);
 	void 			SaveBoneData			(IWriter& F);

@@ -85,9 +85,9 @@ void CActorTools::EngineModel::PlayMotion(CSMotion* M)
             }        
         	m_pBlend = PSkeletonAnimated(m_pVisual)->PlayFX(M->Name(),1.f);
         }else{	
-        	R_ASSERT(M->iBoneOrPart<MAX_PARTS);
-            int idx 		= M->iBoneOrPart;
-        	if (-1==idx)	for (int k=0; k<MAX_PARTS; k++) m_BPPlayCache[k] = M->Name();
+        	R_ASSERT(M->m_BoneOrPart<MAX_PARTS);
+            u16 idx 		= M->m_BoneOrPart;
+        	if (BI_NONE==idx)for (int k=0; k<MAX_PARTS; k++) m_BPPlayCache[k] = M->Name();
             else			m_BPPlayCache[idx] = M->Name();
             m_pBlend		= 0;
 
