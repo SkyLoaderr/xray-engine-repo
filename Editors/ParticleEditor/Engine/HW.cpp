@@ -81,6 +81,7 @@ u32 CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 	// Select width/height
 	dwWidth	= psCurrentMode;
 	switch (dwWidth) {
+	case 320:	dwHeight = 240;		break;
 	case 512:	dwHeight = 384;		break;
 	case 640:	dwHeight = 480;		break;
 	case 800:	dwHeight = 600;		break;

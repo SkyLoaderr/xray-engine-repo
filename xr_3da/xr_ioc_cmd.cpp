@@ -26,7 +26,6 @@ xr_token							snd_model_token							[ ]={
 	{ 0,							0											}
 };
 xr_token							vid_mode_token							[ ]={
-	{ "160x120",					160											},
 	{ "320x240",					320											},
 	{ "512x384",					512											},
 	{ "640x480",					640											},
