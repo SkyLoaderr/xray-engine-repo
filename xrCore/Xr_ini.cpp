@@ -111,8 +111,8 @@ void	CInifile::Load(IReader* F, LPCSTR path)
 {
 	R_ASSERT(F);
 	Sect	Current;	Current.Name = 0;
-	char	str			[1024];
-	char	str2		[1024];
+	char	str			[4096];
+	char	str2		[4096];
 
 	while (!F->eof())
 	{
