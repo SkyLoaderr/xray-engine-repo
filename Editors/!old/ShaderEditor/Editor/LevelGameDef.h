@@ -50,7 +50,9 @@ enum EWayType{
 	- chunk #0
         vector3	(PPosition);
         vector3	(PRotation);
-        dword	(m_dwTeamId);
+        u8		(team_id);
+        u8		(type)
+        u16		(reserved)
     ...
     - chunk #n
 - chunk ENVMOD_CHUNK
