@@ -1,6 +1,5 @@
-module("ui_save_dialog")
-module("ui_load_dialog")
---[[
+
+
 function dump_time(t)
 	printf(t:dateToString(game.CTime.DateToDay))
 	printf(t:dateToString(game.CTime.DateToMonth))
@@ -12,24 +11,11 @@ function dump_time(t)
 	
 	printf(t:timeToString(game.CTime.TimeToMilisecs))
 	
-printf("")
+	printf("")
 end
-]]
 
-function main()
-	for i=1,10000 do
-		printf("%d spam log qwekfjqhwkjbvfqldjkvhqljkefvhqlkerjh",i)
-	end
-	
-end
---[[
+
 function main_()
-for i in 1,100000	do
-		printf("spam log qwekfjqhwkjbvfqldjkvhqljkefvhqlkerjh")
-	end
-
-//	get_console():execute("test")
-//	get_console():execute("pause")
 	
 	local dt = game.CTime()
 	dt:setHMSms(3,4,5,67)
@@ -57,4 +43,3 @@ for i in 1,100000	do
 
 
 end
-]]
