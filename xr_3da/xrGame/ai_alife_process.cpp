@@ -30,6 +30,7 @@ void CSE_ALifeSimulator::vfProcessAllTheSwitches()
 				// this map cannnot be empty, because at least actor must belong to it
 				R_ASSERT2				(!m_tpCurrentLevel->empty(),"Impossible situation : current level contains no objects! (where is an actor, for example?)");
 				m_tNextFirstSwitchObjectID = (*m_tpCurrentLevel->begin()).second->ID;
+				m_bSwitchChanged		= true;
 				continue;
 			}
 		}
@@ -70,6 +71,7 @@ void CSE_ALifeSimulator::vfProcessUpdates()
 					// this map cannnot be empty, because at least actor must belong to it
 					R_ASSERT2				(!m_tpScheduledObjects.empty(),"Impossible situation : current level contains no objects! (where is an actor, for example?)");
 					m_tNextFirstProcessObjectID = (*m_tpScheduledObjects.begin()).second->ID;
+					m_bUpdateChanged		= true;
 					continue;
 				}
 			}

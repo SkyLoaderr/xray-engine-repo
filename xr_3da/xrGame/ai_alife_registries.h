@@ -108,8 +108,10 @@ public:
 			void					Init						();
 			void					Update						(CSE_ALifeDynamicObject *tpALifeDynamicObject);
 			void					vfAssignGraphPosition		(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
-			void					vfRemoveObjectFromGraphPoint(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID		tGraphID,			bool bUpdateSwitchObjects = true);
+			void					vfAddObjectToCurrentLevel	(CSE_ALifeDynamicObject *tpALifeDynamicObject);
+			void					vfRemoveObjectFromCurrentLevel(CSE_ALifeDynamicObject *tpALifeDynamicObject);
 			void					vfAddObjectToGraphPoint		(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID		tNextGraphPointID,	bool bUpdateSwitchObjects = true);
+			void					vfRemoveObjectFromGraphPoint(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID		tGraphID,			bool bUpdateSwitchObjects = true);
 			void					vfChangeObjectGraphPoint	(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID		tGraphPointID,		_GRAPH_ID tNextGraphPointID);
 			// events
 			void					vfRemoveEventFromGraphPoint	(CSE_ALifeEvent			*tpEvent,				_GRAPH_ID		tGraphID);

@@ -21,9 +21,11 @@ void CSE_ALifeSimulator::vfReleaseObject(CSE_Abstract *tpSE_Abstract, bool bALif
 	m_tObjectRegistry.erase			(tpSE_Abstract->ID);
 	
 	if (!tpALifeDynamicObject->m_bOnline) {
-		vfRemoveObjectFromGraphPoint	(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
-		vfRemoveObjectFromScheduled		(tpALifeDynamicObject);
+		vfRemoveObjectFromGraphPoint(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID,false);
+		vfRemoveObjectFromScheduled	(tpALifeDynamicObject);
 	}
+	else
+		vfRemoveObjectFromCurrentLevel(tpALifeDynamicObject);
 
 	tpSE_Abstract->m_bALifeControl	= false;
 
@@ -156,7 +158,7 @@ void CSE_ALifeSimulator::vfSwitchObjectOnline(CSE_ALifeDynamicObject *tpALifeDyn
 		}
 		tpALifeAbstractGroup->m_bCreateSpawnPositions = false;
 		vfRemoveObjectFromScheduled	(tpALifeDynamicObject);
-		vfRemoveObjectFromGraphPoint(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
+		vfRemoveObjectFromGraphPoint(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID,false);
 	}
 	else
 		vfCreateOnlineObject		(tpALifeDynamicObject);
@@ -200,7 +202,7 @@ void CSE_ALifeSimulator::vfSwitchObjectOffline(CSE_ALifeDynamicObject *tpALifeDy
 		for ( ; I != E; I++)
 			vfRemoveOnlineObject	(tpfGetObjectByID(*I),false);
 		vfAddObjectToScheduled		(tpALifeDynamicObject);
-		vfAddObjectToGraphPoint		(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
+		vfAddObjectToGraphPoint		(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID,false);
 	}
 	else
 		vfRemoveOnlineObject		(tpALifeDynamicObject);
