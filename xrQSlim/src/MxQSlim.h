@@ -67,7 +67,6 @@ protected:
     unsigned int check_local_degree(unsigned int v1, unsigned int v2, const float *vnew);
     void apply_mesh_penalties(MxQSlimEdge *);
     void create_edge(MxVertexID i, MxVertexID j);
-    void collect_edges();
 
     void compute_target_placement(MxQSlimEdge *);
     void finalize_edge_update(MxQSlimEdge *);
@@ -82,15 +81,16 @@ public:
     MxEdgeQSlim(MxStdModel*);
     virtual ~MxEdgeQSlim();
 
-    void initialize();
-    void initialize(const MxEdge *edges, unsigned int count);
-    bool decimate(unsigned int target);
+    void initialize			();
+	void collect_edges		();
+	void collect_edges		(const MxEdge *edges, unsigned int count);
+    bool decimate			(unsigned int target);
 
-    void apply_contraction(const MxPairContraction& conx);
-    void apply_expansion(const MxPairContraction& conx);
+    void apply_contraction	(const MxPairContraction& conx);
+    void apply_expansion	(const MxPairContraction& conx);
 
-    unsigned int edge_count() const { return heap.size(); }
-    const MxQSlimEdge *edge(unsigned int i) const {return (MxQSlimEdge *)heap.item(i);}
+    unsigned int edge_count	() const { return heap.size(); }
+    const MxQSlimEdge *edge	(unsigned int i) const {return (MxQSlimEdge *)heap.item(i);}
 
 public:
     void (*contraction_callback)(const MxPairContraction&, float);

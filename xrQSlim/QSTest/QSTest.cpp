@@ -45,11 +45,11 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	m->add_color	(0,1,1);
 	m->add_color	(1,1,1);
 
-	MxQSlim* slim	= xr_new<MxEdgeQSlim>(m);
-	slim->meshing_penalty = 10000.f;
-	slim->initialize();
-	slim->constraint_manual(0,3, 0);
-	slim->constraint_manual(0,5,5);
+	MxEdgeQSlim* slim		= xr_new<MxEdgeQSlim>(m);
+	slim->initialize		();
+//	slim->constraint_manual	(0,3,0);
+	slim->constraint_manual	(4,5,2);
+	slim->collect_edges		();
 
 	slim->decimate			(8);
 	m->compact_vertices		();
