@@ -49,18 +49,18 @@ int dcTriListCollider::CollideBox(dxGeom* Box, int Flags, dContactGeom* Contacts
 	
 	dGeomBoxGetLengths(Box, BoxSides);
 	memcpy( &BoxExtents,&BoxSides,sizeof(Fvector));
-	Fmatrix33 RM;
+	//Fmatrix33 RM;
 	dReal* R=const_cast<dReal*>(dGeomGetRotation(Box));
 
-	memcpy( &RM.i,R+0,sizeof(Fvector));
-	memcpy( &RM.j,R+4,sizeof(Fvector));
-	memcpy( &RM.k,R+8,sizeof(Fvector));
-	RM.transpose();
+	//memcpy( &RM.i,R+0,sizeof(Fvector));
+	//memcpy( &RM.j,R+4,sizeof(Fvector));
+	//memcpy( &RM.k,R+8,sizeof(Fvector));
+	//RM.transpose();
 
 
-	AABB.x=dFabs(BoxSides[0]*R[0])+dFabs(BoxSides[1]*R[4])+dFabs(BoxSides[2]*R[8]);
-	AABB.y=dFabs(BoxSides[0]*R[1])+dFabs(BoxSides[1]*R[5])+dFabs(BoxSides[2]*R[9]);
-	AABB.z=dFabs(BoxSides[0]*R[2])+dFabs(BoxSides[1]*R[6])+dFabs(BoxSides[2]*R[10]);
+	AABB.x=(dFabs(BoxSides[0]*R[0])+dFabs(BoxSides[1]*R[4])+dFabs(BoxSides[2]*R[8]))/2.f;
+	AABB.y=(dFabs(BoxSides[0]*R[1])+dFabs(BoxSides[1]*R[5])+dFabs(BoxSides[2]*R[9]))/2.f;
+	AABB.z=(dFabs(BoxSides[0]*R[2])+dFabs(BoxSides[1]*R[6])+dFabs(BoxSides[2]*R[10]))/2.f;
 
 	        //
         XRC.box_options                (0);
@@ -121,9 +121,9 @@ int dcTriListCollider::CollideSphere(dxGeom* Sphere, int Flags, dContactGeom* Co
 
 	
 	/* Make AABB */
-	AABB.x=SphereRadius*2.f;
-	AABB.y=SphereRadius*2.f;
-	AABB.z=SphereRadius*2.f;
+	AABB.x=SphereRadius;//*2.f;
+	AABB.y=SphereRadius;//*2.f;
+	AABB.z=SphereRadius;//*2.f;
 
 	
 
