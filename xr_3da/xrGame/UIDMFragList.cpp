@@ -16,6 +16,8 @@ CUIDMFragList::CUIDMFragList()
 	SetHeaderColumnText(1, "Frags");
 	SetHeaderColumnText(2, "Deaths");
 	SetHeaderColumnText(3, "Ping");
+
+	Show();
 }
 
 CUIDMFragList::~CUIDMFragList()
