@@ -2,10 +2,10 @@
 
 #include "..\FLightsController.h"
 #include "..\modelpool.h"
-#include "..\hom.h"
 #include "..\PSLibrary.h"
 
 #include "portal.h"
+#include "hom.h"
 #include "lightShadows.h"
 #include "lightProjector.h"
 #include "detailmanager.h"
