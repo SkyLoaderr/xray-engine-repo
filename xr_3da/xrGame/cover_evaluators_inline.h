@@ -15,8 +15,14 @@ IC	CCoverEvaluatorBase::CCoverEvaluatorBase	(CRestrictedObject *object)
 {
 	m_inertia_time			= 0;
 	m_last_update			= 0;
+	m_inertia_time			= 0;
+	m_best_value			= flt_max;
+	m_initialized			= false;
+	m_start_position.set	(flt_max,flt_max,flt_max);
 	m_selected				= 0;
 	m_object				= object;
+	m_actuality				= true;
+	m_last_radius			= flt_max;
 }
 
 IC	CCoverPoint *CCoverEvaluatorBase::selected	() const
@@ -29,9 +35,11 @@ IC	void CCoverEvaluatorBase::set_inertia		(u32 inertia_time)
 	m_inertia_time			= inertia_time;
 }
 
-IC	bool CCoverEvaluatorBase::inertia			() const
+IC	bool CCoverEvaluatorBase::inertia			(float radius)
 {
-	return					(Level().timeServer() < m_last_update + m_inertia_time);
+	m_actuality				= m_actuality && fsimilar(m_last_radius,radius);
+	m_last_radius			= radius;
+	return					(actual() && (Level().timeServer() < m_last_update + m_inertia_time));
 }
 
 IC	void CCoverEvaluatorBase::setup				()
@@ -51,6 +59,7 @@ IC	void CCoverEvaluatorBase::initialize		(const Fvector &start_position)
 IC	void CCoverEvaluatorBase::finalize			()
 {
 	m_initialized			= false;
+	m_actuality				= true;
 }
 
 IC	bool CCoverEvaluatorBase::initialized		() const
@@ -68,12 +77,24 @@ IC	CRestrictedObject &CCoverEvaluatorBase::object	() const
 	VERIFY					(m_object);
 	return					(*m_object);
 }
+
+IC	bool CCoverEvaluatorBase::actual				() const
+{
+	return					(m_actuality);
+}
+
 //////////////////////////////////////////////////////////////////////////
 // CCoverEvaluatorCloseToEnemy
 //////////////////////////////////////////////////////////////////////////
 
 IC	CCoverEvaluatorCloseToEnemy::CCoverEvaluatorCloseToEnemy	(CRestrictedObject *object) : inherited(object)
 {
+	m_enemy_position.set	(flt_max,flt_max,flt_max);
+	m_deviation				= flt_max;
+	m_min_distance			= flt_max;
+	m_max_distance			= flt_max;
+	m_best_distance			= flt_max;
+	m_current_distance		= flt_max;
 }
 
 IC	void CCoverEvaluatorCloseToEnemy::initialize(const Fvector &start_position)
@@ -85,9 +106,17 @@ IC	void CCoverEvaluatorCloseToEnemy::initialize(const Fvector &start_position)
 IC	void CCoverEvaluatorCloseToEnemy::setup		(const Fvector &enemy_position, float min_enemy_distance, float	max_enemy_distance, float deviation)
 {
 	inherited::setup		();
+	
+//	m_actuality				= m_actuality && m_enemy_position.similar(enemy_position);
 	m_enemy_position		= enemy_position;
+
+//	m_actuality				= m_actuality && fsimilar(m_deviation,deviation);
 	m_deviation				= deviation;
+	
+//	m_actuality				= m_actuality && fsimilar(m_min_distance,min_enemy_distance);
 	m_min_distance			= min_enemy_distance;
+
+//	m_actuality				= m_actuality && fsimilar(m_max_distance,max_enemy_distance);
 	m_max_distance			= max_enemy_distance;
 }
 
@@ -97,11 +126,16 @@ IC	void CCoverEvaluatorCloseToEnemy::setup		(const Fvector &enemy_position, floa
 
 IC	CCoverEvaluatorAngle::CCoverEvaluatorAngle	(CRestrictedObject *object) : inherited(object)
 {
+	m_direction.set		(flt_max,flt_max,flt_max);
+	m_best_direction.set(flt_max,flt_max,flt_max);
+	m_best_alpha		= flt_max;;
+	m_level_vertex_id	= u32(-1);
 }
 
 IC	void CCoverEvaluatorAngle::setup		(const Fvector &enemy_position, float min_enemy_distance, float	max_enemy_distance, u32 level_vertex_id)
 {
 	inherited::setup		(enemy_position,min_enemy_distance,max_enemy_distance);
+//	m_actuality				= m_actuality && (m_level_vertex_id == level_vertex_id);
 	m_level_vertex_id		= level_vertex_id;
 }
 
@@ -123,11 +157,13 @@ IC	CCoverEvaluatorBest::CCoverEvaluatorBest	(CRestrictedObject *object) : inheri
 
 IC	CCoverEvaluatorSafe::CCoverEvaluatorSafe	(CRestrictedObject *object) : inherited(object)
 {
+	m_min_distance			= flt_max;
 }
 
 IC	void CCoverEvaluatorSafe::setup		(float min_distance)
 {
 	inherited::setup		();
+//	m_actuality				= m_actuality && fsimilar(m_min_distance,min_distance);
 	m_min_distance			= min_distance;
 }
 
@@ -137,6 +173,9 @@ IC	void CCoverEvaluatorSafe::setup		(float min_distance)
 
 IC	CCoverEvaluatorRandomGame::CCoverEvaluatorRandomGame	(CRestrictedObject *object) : inherited(object)
 {
+	m_game_vertex_id		= GameGraph::_GRAPH_ID(-1);
+	m_start_position.set	(flt_max,flt_max,flt_max);
+	m_max_distance_sqr		= flt_max;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -146,4 +185,7 @@ IC	CCoverEvaluatorRandomGame::CCoverEvaluatorRandomGame	(CRestrictedObject *obje
 IC	CCoverEvaluatorAmbush::CCoverEvaluatorAmbush			(CRestrictedObject *object) :
 	inherited	(object)
 {
+	m_my_position.set		(flt_max,flt_max,flt_max);
+	m_enemy_position.set	(flt_max,flt_max,flt_max);
+	m_min_enemy_distance	= flt_max;;
 }

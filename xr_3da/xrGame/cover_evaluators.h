@@ -27,17 +27,20 @@ protected:
 	bool				m_initialized;
 	Fvector				m_start_position;
 	CRestrictedObject	*m_object;
+	bool				m_actuality;
+	float				m_last_radius;
 
 public:
 	IC					CCoverEvaluatorBase	(CRestrictedObject *object);
 	IC		CCoverPoint	*selected			() const;
-	IC		bool		inertia				() const;
+	IC		bool		inertia				(float radius);
 	IC		bool		initialized			() const;
 	IC		void		setup				();
 	IC		void		set_inertia			(u32 inertia_time);
 	IC		void		initialize			(const Fvector &start_position);
 	virtual void		finalize			();
 	IC		bool		accessible			(const Fvector &position);
+	IC		bool		actual				() const;
 	IC		CRestrictedObject &object		() const;
 };
 
@@ -71,9 +74,6 @@ public:
 class CCoverEvaluatorFarFromEnemy : public CCoverEvaluatorCloseToEnemy {
 protected:
 	typedef CCoverEvaluatorCloseToEnemy inherited;
-
-protected:
-	float				m_best_distance;
 
 public:
 	IC					CCoverEvaluatorFarFromEnemy	(CRestrictedObject *object);

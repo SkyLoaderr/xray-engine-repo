@@ -181,7 +181,10 @@ void CCoverEvaluatorSafe::evaluate			(CCoverPoint *cover_point, float weight)
 void CCoverEvaluatorRandomGame::setup		(GameGraph::_GRAPH_ID game_vertex_id, float max_distance)
 {
 	inherited::setup		();
+	
+//	m_actuality				= m_actuality && (m_game_vertex_id == game_vertex_id);
 	m_game_vertex_id		= game_vertex_id;
+
 	m_start_position		= ai().game_graph().vertex(game_vertex_id)->level_point();
 	m_max_distance_sqr		= _sqr(max_distance);
 	m_covers.clear			();
@@ -211,8 +214,14 @@ void CCoverEvaluatorRandomGame::finalize	()
 void CCoverEvaluatorAmbush::setup			(const Fvector &my_position, const Fvector &enemy_position, float min_enemy_distance)
 {
 	inherited::setup		();
+
+//	m_actuality				= m_actuality && m_my_position.similar(my_position);
 	m_my_position			= my_position;
+
+//	m_actuality				= m_actuality && m_enemy_position.similar(enemy_position);
 	m_enemy_position		= enemy_position;
+
+//	m_actuality				= m_actuality && fsimilar(m_min_enemy_distance,min_enemy_distance);
 	m_min_enemy_distance	= min_enemy_distance;
 }
 
