@@ -3,6 +3,10 @@
 #include "Physics.h"
 #include "tri-colliderknoopc/dTriList.h"
 #include "PHContactBodyEffector.h"
+
+#include "ParticlesObject.h"
+
+
 ///////////////////////////////////////////////////////////////
 #pragma warning(disable:4995)
 #pragma warning(disable:4267)
@@ -636,8 +640,6 @@ void SaveContacts(dGeomID o1, dGeomID o2,dJointGroupID jointGroup){
 
 void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 {
-	return ;
-	/*
 	dBodyID b=dGeomGetBody(c->g1);
 	dxGeomUserData* data;
 	if(!b) 
@@ -683,6 +685,28 @@ void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 						SELECT_RANDOM(mtl_pair->CollideSounds) ,0,*((Fvector*)c->pos)
 						);
 				}
+
+
+				LPCSTR ps_name = (mtl_pair->CollideParticles.empty())?
+					NULL:
+					*mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.size())];
+				
+				if(ps_name)
+				{
+					//отыграть партиклы столкновения в материалов
+					CParticlesObject* pStaticPG;
+					pStaticPG = xr_new<CParticlesObject>(ps_name);
+
+					Fmatrix pos; 
+					Fvector zero_vel = {0.f,0.f,0.f};
+					pos.k.set(*((Fvector*)c->normal));
+					Fvector::generate_orthonormal_basis(pos.k, pos.i, pos.j);
+					pos.c.set(*((Fvector*)c->pos));
+
+					pStaticPG->UpdateParent(pos,zero_vel);
+					pStaticPG->Play();
+				}
+
 			}
 
 		}
@@ -694,7 +718,6 @@ void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 		//				T);
 
 	} 
-	*/
 }
 
 
