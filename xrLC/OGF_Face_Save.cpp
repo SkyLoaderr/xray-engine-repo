@@ -286,6 +286,8 @@ void	OGF::PreSave			()
 
 	// Faces
 	g_IB.Register		(LPWORD(&*faces.begin()),LPWORD(&*faces.end()),&ib_id,&ib_start);
+
+	// SWI, if need it
 }
 
 void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
