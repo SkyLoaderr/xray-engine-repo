@@ -431,6 +431,9 @@ IC	bool	cmp_constants		(SceneGraph::mapNormalConstants::TNode* N1, SceneGraph::m
 IC	bool	cmp_vs				(SceneGraph::mapNormalVS::TNode* N1, SceneGraph::mapNormalVS::TNode* N2)
 {	return (N1->val.ssa > N2->val.ssa);		}
 
+IC	bool	cmp_cs				(SceneGraph::mapNormalConstants::TNode* N1, SceneGraph::mapNormalConstants::TNode* N2)
+{	return (N1->val.ssa > N2->val.ssa);		}
+
 IC	bool	cmp_vb				(SceneGraph::mapNormalVB::TNode* N1, SceneGraph::mapNormalVB::TNode* N2)
 {	return (N1->val.ssa > N2->val.ssa);		}
 
