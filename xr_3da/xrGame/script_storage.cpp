@@ -171,7 +171,7 @@ bool CScriptStorage::load_buffer	(CLuaVirtualMachine *L, LPCSTR caBuffer, size_t
 local function script_name() \
 return \"%s\" \
 end \
-local this = {} \
+local this = {_G=_G} \
 %s this %s \
 setmetatable(this, {__index = _G}) \
 setfenv(1, this) \
