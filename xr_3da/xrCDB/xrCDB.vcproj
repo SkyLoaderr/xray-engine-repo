@@ -287,6 +287,12 @@
 				RelativePath=".\StdAfx.h">
 			</File>
 			<File
+				RelativePath="cl_collector.cpp">
+			</File>
+			<File
+				RelativePath="cl_collector.h">
+			</File>
+			<File
 				RelativePath=".\cl_raypick.cpp">
 				<FileConfiguration
 					Name="Release|Win32"
@@ -306,6 +312,9 @@
 			</File>
 			<File
 				RelativePath=".\xrCDB.h">
+			</File>
+			<File
+				RelativePath="xrCDB_Collector.cpp">
 			</File>
 			<File
 				RelativePath=".\xrCDB_box.cpp">
