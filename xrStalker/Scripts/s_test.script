@@ -1,6 +1,5 @@
 function main ()
 
-	set_current_time (19, 00, 00)
 
 	local n1 = get_level_object ("naparnik1")
 	local n2 = get_level_object ("naparnik2")
@@ -20,6 +19,9 @@ function main ()
 	action (stalker, object (torch, object.activate), cond (cond.time_end, time_infinite))
 
 	wait (5000)
+	set_current_time (19, 00, 00)
+	wait (5000)
+	set_current_time (12, 00, 00)
 
 	while stalker:action () do wait () end
 
