@@ -168,7 +168,6 @@ void CUIWindow::script_register(lua_State *L)
 				
 	// CUITabControl
 				value("TAB_CHANGED",					int(TAB_CHANGED)),
-				value("TAB_SELECT",						int(TAB_SELECT)),
 
 	// CUICheckButton
 				value("CHECK_BUTTON_SET",				int(CHECK_BUTTON_SET)),
