@@ -50,7 +50,7 @@ void CStateChimeraThreatenAbstract::execute()
 	float dist, m_fDistMin, m_fDistMax;
 	dist = m_object->GetEnemyDistances(m_fDistMin, m_fDistMax);
 
-	const CEntity *enemy = m_object->m_tEnemy.obj;
+	//const CEntity *enemy = m_object->m_tEnemy.obj;
 
 	// установить целевое состояние
 	bool b_came = false;
