@@ -53,7 +53,7 @@ function options_dialog:InitControls()
 	local btn_rect = {x = 0, y = 0, width = 135, height = 40}
 		  btn_rect.x = indent --(main_rect.width - btn_rect.width)/2
 	local btn_video_rect    = {x = btn_rect.x,
-							 y = caption_rect.y + caption_rect.height + indent,
+							 y = indent,
 							 width = btn_rect.width,
 							 height = btn_rect.height}
 							 
