@@ -46,11 +46,11 @@ element_fracture CPHFracturesHolder::SplitFromEnd(CPHElement* element,u16 fractu
 	float density=element->getDensity();
 	InitNewElement(new_element,shift_pivot,density);
 
-	//dBodyID new_element_body=new_element->get_body();
-	//dBodyAddForce(new_element_body,fract_i->m_pos_in_element[0],
-	//									  fract_i->m_pos_in_element[1],
-	//									  fract_i->m_pos_in_element[2]);
-	//BodyCutForce(new_element_body,default_l_limit,default_w_limit);
+	dBodyID new_element_body=new_element->get_body();
+	dBodyAddForce(new_element_body,fract_i->m_pos_in_element[0],
+										  fract_i->m_pos_in_element[1],
+										  fract_i->m_pos_in_element[2]);
+	BodyCutForce(new_element_body,default_l_limit,default_w_limit);
 	//dBodyAddTorque(new_element->get_body(),fract_i->m_break_force,
 	//									   fract_i->m_break_torque,
 	//									   fract_i->m_add_torque_z);
