@@ -241,8 +241,8 @@ function main_menu:OnKeyboard(dik, keyboard_action)  --virtual function
 	local bind = dik_to_bind(dik)
 	local console = get_console()
 	
-	if keyboard_action == ui_events.WINDOW_KEY_RELEASED then
-		if bind == key_bindings.kQUIT then
+	if keyboard_action == ui_events.WINDOW_KEY_PRESSED then
+		if dik == DIK_keys.DIK_ESCAPE then
 			if level.present() then
 				console:execute("main_menu off")
 			end
