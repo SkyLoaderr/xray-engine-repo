@@ -312,7 +312,8 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	ph_Movement.SetPosition	(vPosition);
 	ph_Movement.SetVelocity	(0,0,0);
 
-	xrSE_Actor*			E	= (xrSE_Actor*)DC;
+	xrServerEntity			*e	= (xrServerEntity*)(DC);
+	xrSE_Actor				*E	= dynamic_cast<xrSE_Actor*>(e);
 
 	// Dima : 24.02.2003
 	cNameVisual_set			(E->get_visual());

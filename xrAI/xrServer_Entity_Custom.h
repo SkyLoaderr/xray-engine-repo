@@ -4,7 +4,7 @@
 #include "xrMessages.h"
 #include "ai_alife_interfaces.h"
 
-#define SPAWN_VERSION	u16(19)
+#define SPAWN_VERSION	u16(20)
 //------------------------------------------------------------------------------
 // Version history
 //------------------------------------------------------------------------------
@@ -18,6 +18,7 @@
 // 17 - xrSE_...		  append 	inherited from xrSE_Visualed for smart Level Editor
 // 18 - xrSE_HangingLamp  append 	'startup_animation'
 // 19 - xrSE_Teamed		  didn't save health parameter
+// 20 - CALife...		  saving vectors in UPDATE_Read/UPDATE_Write changed to STATE_Read/STATE_Write
 //------------------------------------------------------------------------------
 
 class xrClientData;
@@ -74,10 +75,6 @@ public:
 	}
 	
 	virtual void					OnEvent			(NET_Packet &tNetPacket, u16 type, u32 time, u32 sender ){};
-	virtual u8						g_team			(){return 0;};
-	virtual u8						g_squad			(){return 0;};
-	virtual u8						g_group			(){return 0;};
-
 	virtual void					Init			(LPCSTR	caSection){};
 	void							Spawn_Write		(NET_Packet &tNetPacket, BOOL bLocal);
 	BOOL							Spawn_Read		(NET_Packet &tNetPacket);

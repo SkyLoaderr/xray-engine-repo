@@ -16,7 +16,7 @@
 #include "PropertiesListHelper.h"
 #endif
 
-class CALifeObject : public xrServerEntity {
+class CALifeObject : virtual public xrServerEntity {
 public:
 	typedef xrServerEntity inherited;
 	_CLASS_ID						m_tClassID;
@@ -77,13 +77,13 @@ public:
 #endif
 };
 
-class CALifeTraderAbstract : public CALifeTraderParams {
+class CALifeTraderAbstract : public CALifeTraderParams, virtual public xrServerEntity {
 public:
 	typedef CALifeTraderParams inherited;
 	PERSONAL_EVENT_P_VECTOR			m_tpEvents;
 	TASK_VECTOR						m_tpTaskIDs;
 
-									CALifeTraderAbstract(LPCSTR caSection) : CALifeTraderParams(caSection)
+									CALifeTraderAbstract(LPCSTR caSection) : CALifeTraderParams(caSection), xrServerEntity(caSection)
 	{
 		m_tpEvents.clear			();
 		m_tpTaskIDs.clear			();
@@ -106,7 +106,7 @@ public:
 	u16								m_wCountBefore;
 	u16								m_wCountAfter;
 	
-									CALifeEventGroup(LPCSTR caSection) : CALifeObject(caSection)
+									CALifeEventGroup(LPCSTR caSection) : CALifeObject(caSection), xrServerEntity(caSection)
 	{
 		m_wCountAfter				= m_wCountBefore;
 	};
@@ -215,7 +215,7 @@ public:
 	_TIME_ID						m_tTimeID;
 	u32								m_dwLastSwitchTime;
 	
-									CALifeDynamicObject(LPCSTR caSection) : CALifeObject(caSection)
+									CALifeDynamicObject(LPCSTR caSection) : CALifeObject(caSection), xrServerEntity(caSection)
 	{
 		m_tTimeID					= 0;
 		m_dwLastSwitchTime			= 1;
@@ -235,7 +235,7 @@ public:
 	u32								m_dwCost;
 	s32								m_iHealthValue;
 	
-									CALifeItem(LPCSTR caSection) : CALifeDynamicObject(caSection)
+									CALifeItem(LPCSTR caSection) : CALifeDynamicObject(caSection), xrServerEntity(caSection)
 	{
 		m_fMass						= pSettings->r_float(caSection, "inv_weight");
 		m_dwCost					= pSettings->r_u32(caSection, "cost");
@@ -257,7 +257,7 @@ public:
 
 class CALifeAnomalousZone : public CALifeDynamicObject, public CALifeZone {
 public:
-									CALifeAnomalousZone(LPCSTR caSection) : CALifeDynamicObject(caSection), CALifeZone(caSection)
+									CALifeAnomalousZone(LPCSTR caSection) : CALifeDynamicObject(caSection), CALifeZone(caSection), xrServerEntity(caSection)
 	{
 	};
 
@@ -269,7 +269,7 @@ public:
 
 class CALifeTrader : public CALifeDynamicObject, public CALifeTraderAbstract {
 public:
-									CALifeTrader(LPCSTR caSection) : CALifeDynamicObject(caSection), CALifeTraderAbstract(caSection)
+									CALifeTrader(LPCSTR caSection) : CALifeDynamicObject(caSection), CALifeTraderAbstract(caSection), xrServerEntity(caSection)
 	{
 	};
 
@@ -279,13 +279,13 @@ public:
 	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
 };
 
-class CALifeAbstractGroup : public IPureServerObject {
+class CALifeAbstractGroup : virtual public xrServerEntity {
 public:
 	OBJECT_VECTOR				m_tpMembers;
 	bool						m_bCreateSpawnPositions;
 	u16							m_wCount;
 
-								CALifeAbstractGroup(LPCSTR caSection)
+								CALifeAbstractGroup(LPCSTR caSection) : xrServerEntity(caSection)
 	{
 		m_tpMembers.clear		();
 		m_bCreateSpawnPositions	= true;
@@ -302,17 +302,19 @@ public:
 		P.r_u32					(dwDummy);
 		m_bCreateSpawnPositions = !!dwDummy;
 		P.r_u16					(m_wCount);
+		if (m_wVersion > 19)
+			load_base_vector	(m_tpMembers,P);
 	};
 
 	virtual void STATE_Write	(NET_Packet& P)
 	{
 		P.w_u32					(m_bCreateSpawnPositions);
 		P.w_u16					(m_wCount);
+		save_base_vector		(m_tpMembers,P);
 	};
 
 	virtual void UPDATE_Read	(NET_Packet& P)
 	{
-		load_base_vector		(m_tpMembers,P);
 		u32						dwDummy;
 		P.r_u32					(dwDummy);
 		m_bCreateSpawnPositions = !!dwDummy;
@@ -320,7 +322,6 @@ public:
 
 	virtual void UPDATE_Write	(NET_Packet& P)
 	{
-		save_base_vector		(m_tpMembers,P);
 		P.w_u32					(m_bCreateSpawnPositions);
 	};
 
@@ -336,7 +337,7 @@ template<class __A> class CALifeGroupTemplate : public __A, public CALifeAbstrac
 	typedef __A					inherited1;
 	typedef CALifeAbstractGroup inherited2;
 public:
-								CALifeGroupTemplate(LPCSTR caSection) : __A(caSection), CALifeAbstractGroup(caSection)
+								CALifeGroupTemplate(LPCSTR caSection) : __A(caSection), CALifeAbstractGroup(caSection), xrServerEntity(caSection)
 	{
 	};
 	

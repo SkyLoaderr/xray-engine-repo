@@ -31,7 +31,8 @@ void CHangingLamp::Load		(LPCSTR section)
 
 BOOL CHangingLamp::net_Spawn(LPVOID DC)
 {
-	xrSE_HangingLamp* lamp	= (xrSE_HangingLamp*)(DC);
+	xrServerEntity			*e	= (xrServerEntity*)(DC);
+	xrSE_HangingLamp		*lamp	= dynamic_cast<xrSE_HangingLamp*>(e);
 	R_ASSERT				(lamp);
 	cNameVisual_set			(lamp->get_visual());
 	inherited::net_Spawn	(DC);

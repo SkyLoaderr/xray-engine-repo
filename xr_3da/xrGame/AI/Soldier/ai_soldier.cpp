@@ -162,7 +162,8 @@ BOOL CAI_Soldier::net_Spawn	(LPVOID DC)
 	if (!inherited::net_Spawn(DC))	return FALSE;
 
 	//tSavedEnemyPosition = vPosition;
-	xrSE_Enemy						*O = (xrSE_Enemy*)(DC);
+	xrServerEntity					*e	= (xrServerEntity*)(DC);
+	xrSE_Enemy						*O = dynamic_cast<xrSE_Enemy*>(e);
 	r_torso_current.yaw				= r_torso_target.yaw	= -O->o_Angle.y;
 	r_torso_current.pitch			= r_torso_target.pitch	= 0;
 

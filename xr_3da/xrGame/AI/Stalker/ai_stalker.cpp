@@ -229,7 +229,8 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 		return						(FALSE);
 	Movement.SetPLastMaterial		(&m_dwLastMaterialID);
 
-	xrSE_Human						*tpHuman = (xrSE_Human*)(DC);
+	xrServerEntity					*e	= (xrServerEntity*)(DC);
+	xrSE_Human						*tpHuman = dynamic_cast<xrSE_Human*>(e);
 	R_ASSERT						(tpHuman);
 	cNameVisual_set					(tpHuman->get_visual());
 	

@@ -23,9 +23,9 @@ void	game_sv_Deathmatch::OnRoundStart			()
 		ps->deaths				=	0;
 
 		// spawn
-		LPCSTR	options			=	get_name_it	(it);
-		xrServerEntity*		E	=	spawn_begin	("actor");													// create SE
-		xrSE_Actor*	A			=	(xrSE_Actor*) E;					
+		LPCSTR					options	=	get_name_it	(it);
+		xrServerEntity			*E		=	spawn_begin	("actor");													// create SE
+		xrSE_Actor				*A		=	dynamic_cast<xrSE_Actor*>(E);
 		strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
 		A->s_team				=	u8(0);																	// no-team
 		A->s_flags.set			(M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);	// flags
@@ -162,8 +162,8 @@ void game_sv_Deathmatch::OnPlayerConnect	(u32 id_who)
 	LPCSTR	options			=	get_name_id	(id_who);
 
 	// Spawn "actor"
-	xrServerEntity*		E	=	spawn_begin	("actor");													// create SE
-	xrSE_Actor*	A			=	(xrSE_Actor*) E;					
+	xrServerEntity			*E	=	spawn_begin	("actor");													// create SE
+	xrSE_Actor				*A	=	dynamic_cast<xrSE_Actor*>(E);
 	strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
 	A->s_team				=	u8(0);																	// no-team
 	A->s_flags.set			(M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);	// flags

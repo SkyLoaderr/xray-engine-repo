@@ -9,7 +9,7 @@
 	#include "ui_main.h"
 #endif
 
-xrSE_Weapon::xrSE_Weapon(LPCSTR caSection) : CALifeItem(caSection)
+xrSE_Weapon::xrSE_Weapon(LPCSTR caSection) : CALifeItem(caSection), xrServerEntity(caSection)
 {
 	a_current			= 90;
 	a_elapsed			= 0;
@@ -103,7 +103,7 @@ void	xrSE_Weapon::FillProp		(LPCSTR pref, PropItemVec& items)
 #endif
 
 //***** WeaponAmmo
-xrSE_WeaponAmmo::xrSE_WeaponAmmo(LPCSTR caSection) : CALifeItem(caSection)
+xrSE_WeaponAmmo::xrSE_WeaponAmmo(LPCSTR caSection) : CALifeItem(caSection), xrServerEntity(caSection)
 {
 	a_elapsed = m_boxSize = pSettings->r_s32(caSection, "box_size");
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
@@ -142,7 +142,7 @@ void xrSE_WeaponAmmo::FillProp(LPCSTR pref, PropItemVec& values) {
 #endif
 
 //
-xrSE_Teamed::xrSE_Teamed(LPCSTR caSection) : CALifeDynamicObject(caSection)
+xrSE_Teamed::xrSE_Teamed(LPCSTR caSection) : CALifeDynamicObject(caSection), xrServerEntity(caSection)
 {
 	s_team = s_squad = s_group = 0;
 	fHealth						= 100;
@@ -252,7 +252,7 @@ void	xrSE_Dummy::FillProp			(LPCSTR pref, PropItemVec& values)
 #endif
 
 //***** MercuryBall
-xrSE_MercuryBall::xrSE_MercuryBall(LPCSTR caSection) : CALifeItem(caSection)
+xrSE_MercuryBall::xrSE_MercuryBall(LPCSTR caSection) : CALifeItem(caSection), xrServerEntity(caSection)
 {
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
         set_visual		(pSettings->r_string(caSection,"visual"));
@@ -475,7 +475,7 @@ void xrSE_Spectator::FillProp		(LPCSTR pref, PropItemVec& items)
 #endif
 
 //***** Actor
-xrSE_Actor::xrSE_Actor				(LPCSTR caSection) : xrSE_Teamed(caSection), CALifeTraderParams(caSection)
+xrSE_Actor::xrSE_Actor				(LPCSTR caSection) : xrSE_Teamed(caSection), CALifeTraderParams(caSection), xrServerEntity(caSection)
 {
 	set_visual						("actors\\Different_stalkers\\stalker_hood_multiplayer.ogf");
 }
@@ -798,7 +798,7 @@ void CALifeMonsterAbstract::UPDATE_Read(NET_Packet &tNetPacket)
 // Rat
 //////////////////////////////////////////////////////////////////////////
 
-xrSE_Rat::xrSE_Rat(LPCSTR caSection) : CALifeMonsterAbstract(caSection)
+xrSE_Rat::xrSE_Rat(LPCSTR caSection) : CALifeMonsterAbstract(caSection), xrServerEntity(caSection)
 {
 	set_visual						("monsters\\rat\\rat_1");
 	// personal charactersitics
@@ -937,7 +937,7 @@ void xrSE_Rat::FillProp(LPCSTR pref, PropItemVec& items)
 // Zombie
 //////////////////////////////////////////////////////////////////////////
 
-xrSE_Zombie::xrSE_Zombie(LPCSTR caSection) : CALifeMonsterAbstract(caSection)
+xrSE_Zombie::xrSE_Zombie(LPCSTR caSection) : CALifeMonsterAbstract(caSection), xrServerEntity(caSection)
 {
 	set_visual						("monsters\\zombie\\zombie_1");
 	// personal charactersitics
@@ -1036,7 +1036,7 @@ void xrSE_Zombie::FillProp(LPCSTR pref, PropItemVec& items)
 // Dog
 //////////////////////////////////////////////////////////////////////////
 
-xrSE_Dog::xrSE_Dog(LPCSTR caSection) : CALifeMonsterAbstract(caSection)
+xrSE_Dog::xrSE_Dog(LPCSTR caSection) : CALifeMonsterAbstract(caSection), xrServerEntity(caSection)
 {
 	set_visual						("monsters\\dog\\dog_1");
 	// personal charactersitics
@@ -1175,7 +1175,7 @@ void xrSE_Dog::FillProp(LPCSTR pref, PropItemVec& items)
 // Biting
 //////////////////////////////////////////////////////////////////////////
 
-xrSE_Biting::xrSE_Biting(LPCSTR caSection) : CALifeMonsterAbstract(caSection)
+xrSE_Biting::xrSE_Biting(LPCSTR caSection) : CALifeMonsterAbstract(caSection), xrServerEntity(caSection)
 {
     set_visual						(pSettings->r_string(caSection,"visual"));
 }
@@ -1218,7 +1218,7 @@ void xrSE_Biting::FillProp(LPCSTR pref, PropItemVec& items)
 
 
 // Zone
-xrSE_Zone::xrSE_Zone(LPCSTR caSection) : CALifeDynamicObject(caSection)
+xrSE_Zone::xrSE_Zone(LPCSTR caSection) : CALifeDynamicObject(caSection), xrServerEntity(caSection)
 {
 	m_maxPower = 100.f;
 	m_attn = 1.f;
@@ -1361,7 +1361,7 @@ void xrGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
 }
 #endif
 
-xrSE_Human::xrSE_Human(LPCSTR caSection) : CALifeMonsterAbstract(caSection), CALifeTraderParams(caSection)
+xrSE_Human::xrSE_Human(LPCSTR caSection) : CALifeMonsterAbstract(caSection), CALifeTraderParams(caSection), xrServerEntity(caSection)
 {
 	set_visual						("actors\\Different_stalkers\\stalker_no_hood_singleplayer");
 	// personal charactersitics
@@ -1411,7 +1411,7 @@ void xrSE_Human::FillProp(LPCSTR pref, PropItemVec& items)
 #endif
 
 
-xrSE_Idol::xrSE_Idol(LPCSTR caSection) : xrSE_Human(caSection)
+xrSE_Idol::xrSE_Idol(LPCSTR caSection) : xrSE_Human(caSection), xrServerEntity(caSection)
 {
 	m_dwAniPlayType		= 0;
 	m_caAnimations[0]	= 0;
@@ -1553,7 +1553,7 @@ void	xrSE_HangingLamp::FillProp		(LPCSTR pref, PropItemVec& values)
 }
 #endif
 
-xrSE_DeviceTorch::xrSE_DeviceTorch(LPCSTR caSection) : CALifeItem(caSection), xrSE_Visualed("lights\\lights_torch")
+xrSE_DeviceTorch::xrSE_DeviceTorch(LPCSTR caSection) : CALifeItem(caSection), xrSE_Visualed("lights\\lights_torch"), xrServerEntity(caSection)
 {
 	strcpy					(spot_texture,"");
 	strcpy					(animator,"");
@@ -1605,7 +1605,7 @@ void	xrSE_DeviceTorch::FillProp		(LPCSTR pref, PropItemVec& values)
 //--------------------------------------------------------------------
 
 //***** Physic Object
-xrSE_PhysicObject::xrSE_PhysicObject(LPCSTR caSection) : CALifeDynamicObject(caSection) 
+xrSE_PhysicObject::xrSE_PhysicObject(LPCSTR caSection) : CALifeDynamicObject(caSection) , xrServerEntity(caSection)
 {
 	type 		= epotBox;
 	mass 		= 10.f;

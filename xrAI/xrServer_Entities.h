@@ -234,7 +234,7 @@ xrSE_DECLARE_END
 //***** Health
 xrSE_DECLARE_BEGIN2(xrSE_Health,CALifeItem,xrSE_Visualed)
 	u8								amount;
-									xrSE_Health		(LPCSTR caSection) : CALifeItem(caSection)
+									xrSE_Health		(LPCSTR caSection) : CALifeItem(caSection), xrServerEntity(caSection)
 	{
 		if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
     	    set_visual		(pSettings->r_string(caSection,"visual"));
@@ -259,6 +259,7 @@ xrSE_DECLARE_END
 xrSE_DECLARE_BEGIN(xrSE_Target_CSBase,xrSE_Target)
 	float							radius;
 	u8								s_team;
+	virtual u8						g_team() {return s_team;};
 									xrSE_Target_CSBase(LPCSTR caSection);
 xrSE_DECLARE_END
 
@@ -279,6 +280,7 @@ xrSE_DECLARE_BEGIN(xrSE_Spectator,xrServerEntity)
 									xrSE_Spectator	(LPCSTR caSection) : xrServerEntity(caSection)
 	{
 	};
+	virtual u8						g_team() {return 0;};
 xrSE_DECLARE_END
 
 //***** Actor
@@ -301,7 +303,7 @@ xrSE_DECLARE_BEGIN(xrSE_Enemy,xrSE_Teamed)
 	u8								flags;
 	float							o_model;				// model yaw
 	SRotation						o_torso;				// torso in world coords
-									xrSE_Enemy		(LPCSTR caSection) : xrSE_Teamed(caSection)
+									xrSE_Enemy		(LPCSTR caSection) : xrSE_Teamed(caSection), xrServerEntity(caSection)
 	{
 	}
 xrSE_DECLARE_END
@@ -318,7 +320,7 @@ public:
 	float							m_fDistanceToPoint;
 	TERRAIN_VECTOR					m_tpaTerrain;
 	
-									CALifeMonsterAbstract(LPCSTR caSection)	: xrSE_Enemy(caSection)
+									CALifeMonsterAbstract(LPCSTR caSection)	: xrSE_Enemy(caSection), xrServerEntity(caSection)
 	{
 		m_tNextGraphID				= m_tGraphID;
 		m_tPrevGraphID				= m_tGraphID;
@@ -357,7 +359,7 @@ public:
 
 class CALifeDynamicAnomalousZone : public CALifeMonsterAbstract, public CALifeZone {
 public:
-									CALifeDynamicAnomalousZone(LPCSTR caSection) : CALifeMonsterAbstract(caSection), CALifeZone(caSection)
+									CALifeDynamicAnomalousZone(LPCSTR caSection) : CALifeMonsterAbstract(caSection), CALifeZone(caSection), xrServerEntity(caSection)
 	{
 	};
 	virtual void					STATE_Write	(NET_Packet &tNetPacket);
@@ -368,7 +370,7 @@ public:
 
 class CALifeMonster : public CALifeMonsterAbstract {
 public:
-									CALifeMonster(LPCSTR caSection) : CALifeMonsterAbstract(caSection)
+									CALifeMonster(LPCSTR caSection) : CALifeMonsterAbstract(caSection), xrServerEntity(caSection)
 	{
 	};
 	virtual void					STATE_Write	(NET_Packet &tNetPacket);
@@ -388,7 +390,7 @@ public:
 	u32								m_dwCurTask;
 	float							m_fSearchSpeed;
 
-									CALifeHumanAbstract(LPCSTR caSection) : CALifeMonsterAbstract(caSection), CALifeTraderAbstract(caSection)
+									CALifeHumanAbstract(LPCSTR caSection) : CALifeMonsterAbstract(caSection), CALifeTraderAbstract(caSection), xrServerEntity(caSection)
 	{
 		m_tpaVertices.clear			();
 		m_baVisitedVertices.clear	();
@@ -414,7 +416,7 @@ public:
 
 class CALifeHuman : public CALifeHumanAbstract {
 public:
-									CALifeHuman	(LPCSTR caSection) : CALifeHumanAbstract(caSection)
+									CALifeHuman	(LPCSTR caSection) : CALifeHumanAbstract(caSection), xrServerEntity(caSection)
 	{
 	};
 	virtual void					STATE_Write	(NET_Packet &tNetPacket);

@@ -124,12 +124,19 @@ BOOL CEntity::net_Spawn		(LPVOID DC)
 {
 	inherited::net_Spawn	(DC);
 
-	xrSE_Teamed*		E	= (xrSE_Teamed*)DC;
-
-	// 
-	id_Team					= E->g_team();
-	id_Squad				= E->g_squad();
-	id_Group				= E->g_group();
+	xrServerEntity			*e	= (xrServerEntity*)(DC);
+	xrSE_Teamed				*E	= dynamic_cast<xrSE_Teamed*>(e);
+	if (!E) {
+		// Car only!!!!
+		xrSE_Car			*C	= dynamic_cast<xrSE_Car*>(e);
+		R_ASSERT2			(C,"Invalid entity (no inheritance from xrSE_Teamed and xrSE_Car)!");
+		id_Team				= id_Squad = id_Group = 0;
+	}
+	else {
+		id_Team					= E->g_team();
+		id_Squad				= E->g_squad();
+		id_Group				= E->g_group();
+	}
 
 	// Register
 	CSquad& S				= Level().get_squad	(id_Team,id_Squad);

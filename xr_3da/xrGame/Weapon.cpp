@@ -366,7 +366,8 @@ void CWeapon::Load		(LPCSTR section)
 BOOL CWeapon::net_Spawn		(LPVOID DC)
 {
 	BOOL bResult					= inherited::net_Spawn	(DC);
-	xrSE_Weapon*	E				= (xrSE_Weapon*)DC;
+	xrServerEntity					*e	= (xrServerEntity*)(DC);
+	xrSE_Weapon						*E	= dynamic_cast<xrSE_Weapon*>(e);
 
 	//iAmmoCurrent					= E->a_current;
 	iAmmoElapsed					= E->a_elapsed;

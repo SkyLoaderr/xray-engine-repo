@@ -133,7 +133,8 @@ BOOL CAI_Dog::net_Spawn	(LPVOID DC)
 	if (!inherited::net_Spawn(DC))	return FALSE;
 	
 	//////////////////////////////////////////////////////////////////////////
-	xrSE_Dog *tpSE_Dog = (xrSE_Dog *)DC;
+	xrServerEntity					*e	= (xrServerEntity*)(DC);
+	xrSE_Dog						*tpSE_Dog	= dynamic_cast<xrSE_Dog*>(e);
 	// model
 	cNameVisual_set					(tpSE_Dog->get_visual());
 	// personal characteristics

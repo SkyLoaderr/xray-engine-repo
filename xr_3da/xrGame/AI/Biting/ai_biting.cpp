@@ -165,7 +165,8 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	if (!inherited::net_Spawn(DC))
 		return(FALSE);
 
-	xrSE_Biting						*l_tpSE_Biting = (xrSE_Biting*)DC;
+	xrServerEntity					*e	= (xrServerEntity*)(DC);
+	xrSE_Biting						*l_tpSE_Biting	= dynamic_cast<xrSE_Biting*>(e);
 	
 	cNameVisual_set					(l_tpSE_Biting->get_visual());
 	

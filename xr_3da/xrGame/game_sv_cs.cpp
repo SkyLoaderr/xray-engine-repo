@@ -138,7 +138,7 @@ void game_sv_CS::SpawnPlayer(u32 it, CMemoryWriter &weapon) {
 		E = spawn_begin("spectator");
 	} else {
 		E = spawn_begin("actor"/*l_pPS->team?"actor_cs_2":"actor_cs_1"*/);
-		xrSE_Actor *A = (xrSE_Actor*)E;					
+		xrSE_Actor *A = dynamic_cast<xrSE_Actor*>(E);					
 		A->s_team = u8(l_pPS->team);
 	}
 	strcpy(E->s_name_replace,get_option_s(options,"name","Player"));

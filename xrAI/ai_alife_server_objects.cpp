@@ -95,22 +95,24 @@ void CALifeTraderParams::FillProp(LPCSTR pref, PropItemVec& items)
 // CALifeTraderAbstract
 void CALifeTraderAbstract::STATE_Write(NET_Packet &tNetPacket)
 {
+	save_vector					(m_tpEvents,tNetPacket);
+	save_base_vector			(m_tpTaskIDs,tNetPacket);
 }
 
 void CALifeTraderAbstract::STATE_Read(NET_Packet &tNetPacket, u16 size)
 {
+	if (m_wVersion > 19) {
+		load_vector				(m_tpEvents,tNetPacket);
+		load_base_vector		(m_tpTaskIDs,tNetPacket);
+	}
 }
 
 void CALifeTraderAbstract::UPDATE_Write(NET_Packet &tNetPacket)
 {
-	save_vector					(m_tpEvents,tNetPacket);
-	save_base_vector			(m_tpTaskIDs,tNetPacket);
 };
 
 void CALifeTraderAbstract::UPDATE_Read(NET_Packet &tNetPacket)
 {
-	load_vector					(m_tpEvents,tNetPacket);
-	load_base_vector			(m_tpTaskIDs,tNetPacket);
 };
 
 // CALifeEventGroup
@@ -168,10 +170,12 @@ void CALifeEvent::UPDATE_Read(NET_Packet &tNetPacket)
 // CALifePersonalEvent
 void CALifePersonalEvent::STATE_Write(NET_Packet &tNetPacket)
 {
+	save_base_vector			(m_tpItemIDs, tNetPacket);
 }
 
 void CALifePersonalEvent::STATE_Read(NET_Packet &tNetPacket, u16 size)
 {
+	load_base_vector		(m_tpItemIDs, tNetPacket);
 }
 
 void CALifePersonalEvent::UPDATE_Write(NET_Packet &tNetPacket)
@@ -181,7 +185,6 @@ void CALifePersonalEvent::UPDATE_Write(NET_Packet &tNetPacket)
 	tNetPacket.w				(&m_tTaskID,			sizeof(m_tTaskID));
 	tNetPacket.w_u32			(m_iHealth);
 	tNetPacket.w				(&m_tRelation,			sizeof(m_tRelation));
-	save_base_vector			(m_tpItemIDs, tNetPacket);
 };
 
 void CALifePersonalEvent::UPDATE_Read(NET_Packet &tNetPacket)
@@ -191,7 +194,6 @@ void CALifePersonalEvent::UPDATE_Read(NET_Packet &tNetPacket)
 	tNetPacket.r				(&m_tTaskID,		sizeof(m_tTaskID));
 	tNetPacket.r_s32			(m_iHealth);
 	tNetPacket.r				(&m_tRelation,		sizeof(m_tRelation));
-	load_base_vector			(m_tpItemIDs, tNetPacket);
 };
 
 // CALifeTask
@@ -456,12 +458,20 @@ void CALifeHumanAbstract::STATE_Write(NET_Packet &tNetPacket)
 {
 	CALifeMonsterAbstract::STATE_Write(tNetPacket);
 	CALifeTraderAbstract::STATE_Write(tNetPacket);
+	save_base_vector			(m_tpaVertices,tNetPacket);
+	save_bool_vector			(m_baVisitedVertices,tNetPacket);
+	save_vector					(m_tpTasks,tNetPacket);
 }
 
 void CALifeHumanAbstract::STATE_Read(NET_Packet &tNetPacket, u16 size)
 {
 	CALifeMonsterAbstract::STATE_Read(tNetPacket, size);
 	CALifeTraderAbstract::STATE_Read(tNetPacket, size);
+	if (m_wVersion > 19) {
+		load_base_vector			(m_tpaVertices,tNetPacket);
+		load_bool_vector			(m_baVisitedVertices,tNetPacket);
+		load_vector					(m_tpTasks,tNetPacket);
+	}
 }
 
 void CALifeHumanAbstract::UPDATE_Write(NET_Packet &tNetPacket)
@@ -469,9 +479,6 @@ void CALifeHumanAbstract::UPDATE_Write(NET_Packet &tNetPacket)
 	// calling inherited
 	CALifeMonsterAbstract::UPDATE_Write(tNetPacket);
 	CALifeTraderAbstract::UPDATE_Write(tNetPacket);
-	save_base_vector			(m_tpaVertices,tNetPacket);
-	save_bool_vector			(m_baVisitedVertices,tNetPacket);
-	save_vector					(m_tpTasks,tNetPacket);
 	tNetPacket.w				(&m_tTaskState,sizeof(m_tTaskState));
 	tNetPacket.w_u32			(m_dwCurNode);
 	tNetPacket.w_u32			(m_dwCurTaskLocation);
@@ -484,9 +491,6 @@ void CALifeHumanAbstract::UPDATE_Read(NET_Packet &tNetPacket)
 	// calling inherited
 	CALifeMonsterAbstract::UPDATE_Read	(tNetPacket);
 	CALifeTraderAbstract::UPDATE_Read	(tNetPacket);
-	load_base_vector			(m_tpaVertices,tNetPacket);
-	load_bool_vector			(m_baVisitedVertices,tNetPacket);
-	load_vector					(m_tpTasks,tNetPacket);
 	tNetPacket.r				(&m_tTaskState,sizeof(m_tTaskState));
 	tNetPacket.r_u32			(m_dwCurNode);
 	tNetPacket.r_u32			(m_dwCurTaskLocation);

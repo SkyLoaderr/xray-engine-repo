@@ -261,7 +261,18 @@ void				game_sv_GameState::assign_RP				(xrServerEntity* E)
 {
 	VERIFY				(E);
 
-	xr_vector<RPoint>&		rp	= rpoints[E->g_team()];
+	u8					l_uc_team;
+	xrSE_Spectator		*tpSpectator = dynamic_cast<xrSE_Spectator*>(E);
+	if (tpSpectator)
+		l_uc_team = tpSpectator->g_team();
+	else {
+		xrSE_Teamed		*tpTeamed = dynamic_cast<xrSE_Teamed*>(E);
+		if (tpTeamed)
+			l_uc_team = tpTeamed->g_team();
+		else
+			R_ASSERT2(tpTeamed,"Non-teamed object is assigning to respawn point!");
+	}
+	xr_vector<RPoint>&		rp	= rpoints[l_uc_team];
 	RPoint&				r	= rp[::Random.randI(rp.size())];
 	E->o_Position.set	(r.P);
 	E->o_Angle.set		(r.A);

@@ -169,7 +169,8 @@ void CAI_Rat::Load(LPCSTR section)
 BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 {
 	//////////////////////////////////////////////////////////////////////////
-	xrSE_Rat						*tpSE_Rat = (xrSE_Rat *)DC;
+	xrServerEntity					*e	= (xrServerEntity*)(DC);
+	xrSE_Rat						*tpSE_Rat = dynamic_cast<xrSE_Rat*>(e);
 	// model
 	cNameVisual_set					(tpSE_Rat->get_visual());
 	if (!inherited::net_Spawn(DC))

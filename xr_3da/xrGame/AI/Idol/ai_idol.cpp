@@ -29,7 +29,9 @@ void CAI_Idol::Load					(LPCSTR section)
 
 BOOL CAI_Idol::net_Spawn			(LPVOID DC)
 {
-	xrSE_Idol						*tpIdol = (xrSE_Idol*)(DC);
+	xrServerEntity					*e	= (xrServerEntity*)(DC);
+	xrSE_Idol						*tpIdol	= dynamic_cast<xrSE_Idol*>(e);
+	
 	R_ASSERT						(tpIdol);
 	cNameVisual_set					(tpIdol->get_visual());
 	
