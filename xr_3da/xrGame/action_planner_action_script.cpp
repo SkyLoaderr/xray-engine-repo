@@ -1,0 +1,24 @@
+////////////////////////////////////////////////////////////////////////////
+//	Module 		: action_planner_action_script.cpp
+//	Created 	: 28.01.2004
+//  Modified 	: 10.03.2004
+//	Author		: Dmitriy Iassenev
+//	Description : Action planner action script export
+////////////////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
+#include "script_action_planner_action_wrapper.h"
+#include "script_space.h"
+#include "script_game_object.h"
+
+using namespace luabind;
+
+void CActionPlannerAction<CScriptGameObject>::script_register(lua_State *L)
+{
+	module(L)
+	[
+		class_<CScriptActionPlannerAction,CScriptActionPlannerActionWrapper,bases<CScriptActionPlanner,CScriptActionBase> >("planner_action")
+			.def(			constructor<>())
+			.def("reinit",	&CScriptActionPlannerAction::reinit,	&CScriptActionPlannerActionWrapper::reinit_static)
+	];
+}
