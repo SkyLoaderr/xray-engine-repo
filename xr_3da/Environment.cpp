@@ -62,11 +62,52 @@ const	u32 v_skybox_fvf	= D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX2 | D3DFVF_T
 #pragma pack(pop)
 
 //////////////////////////////////////////////////////////////////////////
+// half box def
+static	Fvector3	hbox_verts[24]	=
+{
+	{-1.f,	-1.f,	-1.f}, {-1.f,	-1.01f,	-1.f},	// down
+	{ 1.f,	-1.f,	-1.f}, { 1.f,	-1.01f,	-1.f},	// down
+	{-1.f,	-1.f,	 1.f}, {-1.f,	-1.01f,	 1.f},	// down
+	{ 1.f,	-1.f,	 1.f}, { 1.f,	-1.01f,	 1.f},	// down
+	{-1.f,	 1.f,	-1.f}, {-1.f,	 1.f,	-1.f},
+	{ 1.f,	 1.f,	-1.f}, { 1.f,	 1.f,	-1.f},
+	{-1.f,	 1.f,	 1.f}, {-1.f,	 1.f,	 1.f},
+	{ 1.f,	 1.f,	 1.f}, { 1.f,	 1.f,	 1.f},
+	{-1.f,	 0.f,	-1.f}, {-1.f,	-1.f,	-1.f},	// half
+	{ 1.f,	 0.f,	-1.f}, { 1.f,	-1.f,	-1.f},	// half
+	{ 1.f,	 0.f,	 1.f}, { 1.f,	-1.f,	 1.f},	// half
+	{-1.f,	 0.f,	 1.f}, {-1.f,	-1.f,	 1.f}	// half
+};
+static	u16			hbox_faces[20*3]	=
+{
+	0,	 2,	 3,
+	3,	 1,	 0,
+	4,	 5,	 7,
+	7,	 6,	 4,
+	0,	 1,	 9,
+	9,	 8,	 0,
+	8,	 9,	 5,
+	5,	 4,	 8,
+	1,	 3,	10,
+	10,	 9,	 1,
+	9,	10,	 7,
+	7,	 5,	 9,
+	3,	 2,	11,
+	11,	10,	 3,
+	10,	11,	 6,
+	6,	 7,	10,
+	2,	 0,	 8,
+	8,	11,	 2,
+	11,	 8,	 4,
+	4,	 6,	11
+};
+
+//////////////////////////////////////////////////////////////////////////
 // environment
 CEnvironment::CEnvironment	()
 {
 	sh_2sky.create			(&b_skybox,"skybox_2t");
-	sh_2geom.create			(v_skybox_fvf,RCache.Vertex.Buffer(), RCache.QuadIB);
+	sh_2geom.create			(v_skybox_fvf,RCache.Vertex.Buffer(), RCache.Index.Buffer());
 }
 CEnvironment::~CEnvironment	()
 {
