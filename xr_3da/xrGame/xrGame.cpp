@@ -106,12 +106,13 @@ extern "C" {
 		case CLSID_OBJECT_FLYER:	P = new CFlyer();			break;
 		case CLSID_OBJECT_DUMMY:	P = new CDummyObject();		break;
 		case CLSID_EVENT:			P = new CCustomEvent();		break;
-		//case CLSID_AI_HUMAN:		P = new CAI_Human();		break;
-		case CLSID_AI_HEN:			P = new CAI_Hen();			break;
-		case CLSID_AI_RAT:			P = new CAI_Rat();			break;
 		case CLSID_OBJECT_DOOR:		P = new CCustomDoor();		break;
 		case CLSID_OBJECT_LIFT:		P = new CCustomLift();		break;
 		case CLSID_OBJECT_DACTOR:	P = new CDemoActor();		break;
+		//case CLSID_AI_HUMAN:		P = new CAI_Human();		break;
+		case CLSID_AI_HEN:			P = new CAI_Hen();			break;
+		case CLSID_AI_SOLDIER:		P =	new CAI_Hen();			break;
+		case CLSID_AI_RAT:			P = new CAI_Rat();			break;
 		}
 		R_ASSERT(P);
 		P->SUB_CLS_ID = cls;
