@@ -679,9 +679,13 @@ public:
 			const CCoverPoint	*best_cover				(const Fvector &position, const Fvector &enemy_position, float radius, float min_enemy_distance, float max_enemy_distance);
 			CScriptIniFile		*spawn_ini				() const;
 
-			const xr_vector<CVisibleObject>	&memory_visible_objects	() const;
-			const xr_vector<CSoundObject>	&memory_sound_objects	() const;
-			const xr_vector<CHitObject>		&memory_hit_objects		() const;
+			const xr_vector<CVisibleObject>			&memory_visible_objects	() const;
+			const xr_vector<CSoundObject>			&memory_sound_objects	() const;
+			const xr_vector<CHitObject>				&memory_hit_objects		() const;
+			const xr_vector<CNotYetVisibleObject>	&not_yet_visible_objects() const;
+			float				visibility_threshold	() const;
+			
+
 			void air_attack					(CLuaGameObject*);
 			void air_attack_wait			(CLuaGameObject*, float, float);
 			bool air_attack_active			();

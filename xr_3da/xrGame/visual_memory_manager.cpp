@@ -60,7 +60,7 @@ void CVisualMemoryManager::Load					(LPCSTR section)
 	m_max_view_distance_danger			= pSettings->r_float(section,"max_view_distance_danger");
 	m_min_view_distance_free			= pSettings->r_float(section,"min_view_distance_free");
 	m_max_view_distance_free			= pSettings->r_float(section,"max_view_distance_free");
-	m_visibility_value					= pSettings->r_float(section,"visibility_value");
+	m_visibility_threshold				= pSettings->r_float(section,"visibility_threshold");
 	m_always_visible_distance_danger	= pSettings->r_float(section,"always_visible_distance_danger");
 	m_always_visible_distance_free		= pSettings->r_float(section,"always_visible_distance_free");
 	m_time_quant						= pSettings->r_float(section,"time_quant");
@@ -144,7 +144,7 @@ float CVisualMemoryManager::get_visible_value	(float distance, float object_dist
 		always_visible_distance			= m_always_visible_distance_danger;
 
 	if (distance <= always_visible_distance + EPS_L)
-		return							(m_visibility_value);
+		return							(m_visibility_threshold);
 
 	return								(
 		time_delta / 
@@ -211,12 +211,12 @@ bool CVisualMemoryManager::visible				(const CGameObject *game_object, float tim
 		new_object.m_prev_time	= get_prev_time(game_object);
 		add_not_yet_visible_object(new_object);
 #ifdef VISIBILITY_TEST
-		if ((new_object.m_value > m_visibility_value) && dynamic_cast<const CActor*>(game_object))
+		if ((new_object.m_value > m_visibility_threshold) && dynamic_cast<const CActor*>(game_object))
 			Msg					("Object %s IS visible",*game_object->cName());
-		if ((new_object.m_value <= m_visibility_value) && dynamic_cast<const CActor*>(game_object))
+		if ((new_object.m_value <= m_visibility_threshold) && dynamic_cast<const CActor*>(game_object))
 			Msg					("Object %s IS NOT visible",*game_object->cName());
 #endif
-		return					(new_object.m_value >= m_visibility_value);
+		return					(new_object.m_value >= m_visibility_threshold);
 	}
 	
 	object->m_updated			= true;
@@ -224,13 +224,13 @@ bool CVisualMemoryManager::visible				(const CGameObject *game_object, float tim
 	object->m_prev_time			= get_prev_time(game_object);
 
 #ifdef VISIBILITY_TEST
-	if ((object->m_value > m_visibility_value) && dynamic_cast<const CActor*>(game_object))
+	if ((object->m_value > m_visibility_threshold) && dynamic_cast<const CActor*>(game_object))
 		Msg						("Object %s IS visible",*game_object->cName());
-	if ((object->m_value <= m_visibility_value) && dynamic_cast<const CActor*>(game_object))
+	if ((object->m_value <= m_visibility_threshold) && dynamic_cast<const CActor*>(game_object))
 		Msg						("Object %s IS NOT visible",*game_object->cName());
 #endif
 
-	return						(object->m_value >= m_visibility_value);
+	return						(object->m_value >= m_visibility_threshold);
 }
 
 void CVisualMemoryManager::add_visible_object	(const CObject *object, float time_delta)

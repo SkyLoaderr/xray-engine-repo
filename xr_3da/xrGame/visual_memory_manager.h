@@ -57,7 +57,7 @@ private:
 	float							m_max_view_distance_danger;
 	float							m_min_view_distance_free;
 	float							m_max_view_distance_free;
-	float							m_visibility_value;
+	float							m_visibility_threshold;
 	float							m_always_visible_distance_danger;
 	float							m_always_visible_distance_free;
 	float							m_time_quant;
@@ -84,12 +84,14 @@ public:
 	virtual	void	reload							(LPCSTR section);
 	IC		const xr_vector<CVisibleObject>	&memory_visible_objects() const;
 	IC		const xr_vector<CObject*>	&visible_objects() const;
+	IC		const xr_vector<CNotYetVisibleObject> &not_yet_visible_objects() const;
 			bool	visible							(const CGameObject *game_object, float time_delta);
 			bool	visible							(u32 level_vertex_id, float yaw, float eye_fov) const;
 	IC		void	set_squad_objects				(xr_vector<CVisibleObject> *squad_objects);
 	IC		bool	visible_now						(const CGameObject *game_object) const;
 			bool	see								(const CEntityAlive *object0, const CEntityAlive *object1) const;
 	IC		void	enable							(const CObject *object, bool enable);
+	IC		float	visibility_threshold			() const;
 };
 
 #include "visual_memory_manager_inline.h"

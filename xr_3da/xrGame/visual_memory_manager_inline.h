@@ -36,3 +36,13 @@ IC	void CVisualMemoryManager::enable		(const CObject *object, bool enable)
 		return;
 	(*J).m_enabled					= enable;
 }
+
+IC	const xr_vector<CNotYetVisibleObject> &CVisualMemoryManager::not_yet_visible_objects() const
+{
+	return							(m_not_yet_visible_objects);
+}
+
+IC	float CVisualMemoryManager::visibility_threshold	() const
+{
+	return							(m_visibility_threshold);
+}

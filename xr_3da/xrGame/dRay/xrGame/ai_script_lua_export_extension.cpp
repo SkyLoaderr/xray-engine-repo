@@ -90,6 +90,11 @@ u32	vertex_in_direction(u32 level_vertex_id, Fvector direction, float max_distan
 	return			(result);
 }
 
+CLuaGameObject *not_yet_visible_object(const MemorySpace::CNotYetVisibleObject &object)
+{
+	return			(object.m_object->lua_game_object());
+}
+
 void map_add_object_icon(CLuaGameObject* lua_object, u16 text_id)
 {
 	Level().AddObjectMapLocation(lua_object->object());
@@ -98,7 +103,6 @@ void map_remove_object_icon(CLuaGameObject* lua_object)
 {
 	Level().RemoveMapLocationByID(lua_object->object()->ID());
 }
-
 
 void CScriptEngine::export_artifact_merger()
 {
@@ -342,7 +346,11 @@ void CScriptEngine::export_memory_objects()
 		def("bit_and",						bit_and),
 		def("bit_or",						bit_or),
 		def("bit_xor",						bit_xor),
-		def("bit_not",						bit_not)
+		def("bit_not",						bit_not),
+
+		class_<MemorySpace::CNotYetVisibleObject>("not_yet_visible_object")
+			.def_readonly("value",			&MemorySpace::CNotYetVisibleObject::m_value)
+			.def("object",					&not_yet_visible_object)
 
 	];
 }

@@ -810,7 +810,7 @@ const xr_vector<CVisibleObject>	&CLuaGameObject::memory_visible_objects	() const
 {
 	CCustomMonster	*monster = dynamic_cast<CCustomMonster*>(m_tpGameObject);
 	if (!monster) {
-		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member visible_objects!");
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member memory_visible_objects!");
 		NODEFAULT;
 	}
 	return			(monster->memory_visible_objects());
@@ -820,7 +820,7 @@ const xr_vector<CSoundObject>	&CLuaGameObject::memory_sound_objects	() const
 {
 	CCustomMonster	*monster = dynamic_cast<CCustomMonster*>(m_tpGameObject);
 	if (!monster) {
-		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member visible_objects!");
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member memory_sound_objects!");
 		NODEFAULT;
 	}
 	return			(monster->sound_objects());
@@ -830,11 +830,32 @@ const xr_vector<CHitObject>		&CLuaGameObject::memory_hit_objects		() const
 {
 	CCustomMonster	*monster = dynamic_cast<CCustomMonster*>(m_tpGameObject);
 	if (!monster) {
-		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member visible_objects!");
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member memory_hit_objects!");
 		NODEFAULT;
 	}
 	return			(monster->hit_objects());
 }
+
+const xr_vector<CNotYetVisibleObject> &CLuaGameObject::not_yet_visible_objects() const
+{
+	CMemoryManager	*manager = dynamic_cast<CMemoryManager*>(m_tpGameObject);
+	if (!manager) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member not_yet_visible_objects!");
+		NODEFAULT;
+	}
+	return					(manager->not_yet_visible_objects());
+}
+
+float CLuaGameObject::visibility_threshold	() const
+{
+	CMemoryManager	*manager = dynamic_cast<CMemoryManager*>(m_tpGameObject);
+	if (!manager) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member visibility_threshold!");
+		NODEFAULT;
+	}
+	return					(manager->visibility_threshold());
+}
+
 void CLuaGameObject::air_attack (CLuaGameObject * object)
 {
 	CHelicopter		*helicopter = dynamic_cast<CHelicopter*>(m_tpGameObject);
@@ -844,6 +865,7 @@ void CLuaGameObject::air_attack (CLuaGameObject * object)
 	}
 	helicopter->doHunt(object->m_tpGameObject);
 }
+
 void CLuaGameObject::air_attack_wait (CLuaGameObject* object, float dist, float t)
 {
 	CHelicopter		*helicopter = dynamic_cast<CHelicopter*>(m_tpGameObject);

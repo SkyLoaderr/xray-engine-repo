@@ -199,7 +199,8 @@ void CScriptEngine::export_object()
 			.def("memory_visible_objects",		&CLuaGameObject::memory_visible_objects, return_stl_iterator)
 			.def("memory_sound_objects",		&CLuaGameObject::memory_sound_objects, return_stl_iterator)
 			.def("memory_hit_objects",			&CLuaGameObject::memory_hit_objects, return_stl_iterator)
-
+			.def("not_yet_visible_objects",		&CLuaGameObject::not_yet_visible_objects, return_stl_iterator)
+			.def("visibility_threshold",		&CLuaGameObject::visibility_threshold)
 
 			// sight manager
 			.def("set_sight",					&CLuaGameObject::set_sight)
