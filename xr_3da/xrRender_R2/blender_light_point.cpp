@@ -10,9 +10,9 @@ void	CBlender_accum_point::Compile(CBlender_Compile& C)
 {
 	CBlender::Compile		(C);
 
-	C.r2_Pass				("null",		"r2_accum_direct_1",TRUE,FALSE,FALSE);
+	C.r2_Pass				("null",		"r2_accum_point",TRUE,FALSE,FALSE);
 	C.r2_Sampler_rtf		("s_position",	r2_RT_P);
 	C.r2_Sampler_rtf		("s_normal",	r2_RT_N);
-	C.r2_Sampler_rtf		("s_smap",		r2_RT_smap_d);
+	C.r2_Sampler_rtf		("s_smap",		r2_RT_smap_p);
 	C.r2_End				();
 }
