@@ -30,7 +30,7 @@ function main()
 
 		wait(10000)
     	
-		helicopter:heli_goto_stay_point( vecVia, time_infinite )
+		helicopter:heli_goto_stay_point( vecVia, 60000000 )
 
 --	end
 		
