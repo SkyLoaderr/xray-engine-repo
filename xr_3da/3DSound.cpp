@@ -354,7 +354,7 @@ void C3DSound::SetMinMax	(float min, float max)
 	bNeedUpdate			= true;
 }
 
-void C3DSound::Play(C3DSound** P, BOOL bLoop, int iLoopCount)
+void C3DSound::Play			(C3DSound** P, BOOL bLoop, int iLoopCount)
 {
 	VERIFY((dwStatus & DSBSTATUS_PLAYING) == 0);
 	owner		= P;
@@ -369,7 +369,7 @@ void C3DSound::Play(C3DSound** P, BOOL bLoop, int iLoopCount)
 	}
 }
 
-void C3DSound::Stop()
+void C3DSound::Stop			()
 {
 	bMustPlay = false;
 	pBuffer->Stop				();
@@ -377,7 +377,7 @@ void C3DSound::Stop()
 	internalStopOrComplete		();
 }
 
-void C3DSound::Rewind()
+void C3DSound::Rewind		()
 {
 	pBuffer->SetCurrentPosition(0);
 	bNeedUpdate = true;
