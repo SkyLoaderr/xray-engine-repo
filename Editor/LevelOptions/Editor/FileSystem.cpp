@@ -184,7 +184,15 @@ bool CFileSystem::GetSaveName( FSPath& initial, char *buffer, int sz_buf, LPCSTR
     string512 path; strcpy(path,(offset&&offset[0])?offset:initial.m_Path);
 	ofn.lpstrInitialDir = path;
 	ofn.Flags 			= OFN_HIDEREADONLY|OFN_OVERWRITEPROMPT|OFN_NOCHANGEDIR;
-	return !!GetSaveFileName( &ofn );
+
+	bool bRes = !!GetSaveFileName( &ofn );
+    if (!bRes){
+	    DWORD err = CommDlgExtendedError();
+	    switch(err){
+        case FNERR_BUFFERTOOSMALL: 	ELog.DlgMsg(mtError,"Too many file selected."); break;
+        }
+	}
+	return bRes;
 }
 //----------------------------------------------------
 #ifdef M_BORLAND
@@ -454,7 +462,7 @@ BOOL CFileSystem::LockFile(FSPath *initial, LPSTR fname, bool bLog)
 		HANDLE handle=CreateFile(fn,GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
     	if (INVALID_HANDLE_VALUE!=handle){
         	LPSTR lp_fn=fn;
-			pair<HANDLEPairIt, bool> I=m_LockFiles.insert(std::make_pair(lp_fn,handle));
+			std::pair<HANDLEPairIt, bool> I=m_LockFiles.insert(std::make_pair(lp_fn,handle));
             R_ASSERT(I.second);
             if (bLog) RegisterAccess(fname);
             bRes=true;
