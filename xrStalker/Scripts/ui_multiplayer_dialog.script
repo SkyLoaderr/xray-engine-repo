@@ -16,6 +16,7 @@ end
 class "multiplayer_dialog" (ui_base_dialog.base_dialog)
 
 function multiplayer_dialog:__init() super()
+	self:InitControls()
 end
 
 function multiplayer_dialog:__finalize()
