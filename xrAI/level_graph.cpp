@@ -78,7 +78,7 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position, bool ful
 		return				(current_node_id);
 	}
 
-	u32						id, id_prev = valid_vertex_id(current_node_id) ? current_node_id : 1;
+	u32						id, id_prev = valid_vertex_id(current_node_id) ? current_node_id : 0;
 	CGraphSearchEngine::CPositionParameters	position_params(position,1.f,30.f);
 
 	if (ai().graph_search_engine().build_path(*this,id_prev,id_prev,0,position_params)) {
