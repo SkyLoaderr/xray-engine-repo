@@ -5658,6 +5658,9 @@
 					<File
 						RelativePath=".\object_factory_inline.h">
 					</File>
+					<File
+						RelativePath=".\object_factory_register.cpp">
+					</File>
 				</Filter>
 				<Filter
 					Name="Random32"
