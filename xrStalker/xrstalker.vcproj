@@ -1348,7 +1348,10 @@
 					RelativePath=".\scripts\se_new_attachable_item.script">
 				</File>
 				<File
-					RelativePath=".\scripts\se_smart_terrain.script">
+					RelativePath=".\scripts\se_stalker.script">
+				</File>
+				<File
+					RelativePath=".\scripts\se_switcher.script">
 				</File>
 				<File
 					RelativePath=".\scripts\secret_lab_killer.script">

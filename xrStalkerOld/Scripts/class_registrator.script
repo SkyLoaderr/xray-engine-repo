@@ -1,19 +1,60 @@
-if (editor() == false) then
-module ("ce_switcher")
-module ("ui_main_menu")
+local s_module = module
 
-//	module	("ce_new_attachable_item")
+function c_module(client_object_class)
+	if (editor() == false) then
+		module	(client_object_class)
+	end
 end
-module ("se_smart_terrain")
-module ("smart_terrain")
-module ("se_switcher")
 
+function cs_module(client_object_class, server_object_class)
+	c_module(client_object_class)
+	s_module(server_object_class)
+end
+
+function cs_register(factory,client_object_class,server_object_class,clsid,script_clsid)
+	factory:register	(client_object_class,server_object_class,clsid,script_clsid)
+end
+
+function c_register(factory,client_object_class,clsid,script_clsid)
+	if (editor() == false) then
+		factory:register(client_object_class,clsid,script_clsid)
+	end
+end
+
+cs_module	("ce_switcher","se_switcher")
+c_module	("ui_main_menu")
+s_module	("smart_terrain")
+s_module	("se_stalker")
 
 function register(object_factory)
-	object_factory:register	("ce_script_zone","smart_terrain.se_smart_terrain","SMRTTRRN","smart_terrain")
-	object_factory:register	("ce_switcher.ce_switcher","se_switcher.cse_switcher","O_SWITCH","switcher")
-if (editor() == false) then
-	object_factory:register	("ui_main_menu.main_menu","MAIN_MNU","main_menu")
-end	
+	cs_register	(
+		object_factory,
+		"ce_script_zone",
+		"smart_terrain.se_smart_terrain",
+		"SMRTTRRN",
+		"smart_terrain"
+	)
 
+	cs_register	(
+		object_factory,
+		"ce_switcher.ce_switcher",
+		"se_switcher.cse_switcher",
+		"O_SWITCH",
+		"switcher"
+	)
+	
+	c_register	(
+		object_factory,
+		"ui_main_menu.main_menu",
+		"MAIN_MNU",
+		"main_menu"
+	)
+	
+	cs_register	(
+		object_factory,
+		"CAI_Stalker",
+		"se_stalker.se_stalker",
+		"AI_STL_S",
+		"script_stalker"
+	)
 end
