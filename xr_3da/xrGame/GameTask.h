@@ -21,6 +21,8 @@ struct SGameTaskObjective
 	SGameTaskObjective() {}
 	//текстовое описание
 	shared_str description;
+	//id статьи в энциклопедии или дневнике (если есть)
+	shared_str article_id;
 	//прикрипленная иконка
 	shared_str icon_texture_name;
 	int icon_x, icon_y, icon_width, icon_height;
@@ -67,10 +69,12 @@ public:
 	SGameTaskData* data() { VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
 
 public:
-	virtual u32			ObjectivesNum	();
+	virtual u32				ObjectivesNum	();
 	virtual shared_str		ObjectiveDesc	(u32 index);
 	virtual shared_str		ObjectiveTitle	() {return data()->title;}
-	virtual ETaskState	ObjectiveState  (u32 index);
+	virtual shared_str		ObjectiveArticle(u32 index);
+	virtual ETaskState		ObjectiveState  (u32 index);
+	virtual void			ObjectiveIcon	(u32 index, shared_str& tex_name, int& x, int& y, int& width, int& height);
 	//инициализируется значениями из реестра актера
 	TASK_STATE_VECTOR	m_ObjectiveStates;
 	ALife::_TIME_ID		m_ReceiveTime;
