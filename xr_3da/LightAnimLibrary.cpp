@@ -128,7 +128,7 @@ u32 CLAItem::Interpolate(int frame)
 
 u32 CLAItem::CalculateBGR(float T, int& frame)
 {
-    frame	= iFloor(fmodf(Device.fTimeGlobal,float(iFrameCount)/fFPS)*fFPS);
+    frame	= iFloor(fmodf(T,float(iFrameCount)/fFPS)*fFPS);
     return Interpolate(frame);
 }
 
