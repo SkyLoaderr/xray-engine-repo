@@ -453,7 +453,7 @@ void CCustomMonster::OnMoveVisible()
 	Fvector P;	clCenter(P);
 	TEST.SetPosition	(P);
 	TEST.SetRange		(4.f);
-	TEST.SetColor		(0,0,1.f);
+	TEST.SetColor		(0,0,.7f);
 	::Render.Lights_Dynamic.Add	(&TEST);
 
 	// weapons
