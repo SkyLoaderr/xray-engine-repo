@@ -2,7 +2,7 @@
 #include "cl_collector.h"
 #include "build.h"
 
-CDB::MODEL	RCAST_Model;
+CDB::MODEL*	RCAST_Model	= 0;
 
 void CBuild::BuildRapid()
 {
@@ -10,7 +10,6 @@ void CBuild::BuildRapid()
 	float	p_cost  = 1.f/(g_faces.size());
 
 	Status("Converting faces...");
-	HeapCompact(GetProcessHeap(),0);
 
 	CDB::CollectorPacked	CL	(scene_bb,g_vertices.size(),g_faces.size());
 	for (vecFaceIt it=g_faces.begin(); it!=g_faces.end(); it++)
@@ -24,8 +23,9 @@ void CBuild::BuildRapid()
 		Progress(p_total+=p_cost);
 	}
 	Status				("Building OBB tree..");
-	RCAST_Model.build	(CL.getV(),CL.getVS(),CL.getT(),CL.getTS());
-	Msg					("%d K memory usage",RCAST_Model.memory()/1024);
+	RCAST_Model			= new CDB::MODEL;
+	RCAST_Model->build	(CL.getV(),CL.getVS(),CL.getT(),CL.getTS());
+	Msg					("%d K memory usage",RCAST_Model->memory()/1024);
 	
 	// Saving for AI/DO usage
 	Status			("Saving...");

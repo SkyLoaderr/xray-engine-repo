@@ -117,7 +117,7 @@ float getLastRP_Scale(CDB::COLLIDER* DB, R_Light& L, Face* skip)
 			CDB::RESULT& rpinf = DB->r_begin()[I];
 			
 			// Access to texture
-			CDB::TRI& clT								= RCAST_Model.get_tris()[rpinf.id];
+			CDB::TRI& clT								= RCAST_Model->get_tris()[rpinf.id];
 			Face* F										= (Face*)(clT.dummy);
 			if (0==F)									continue;
 			if (skip==F)								continue;
