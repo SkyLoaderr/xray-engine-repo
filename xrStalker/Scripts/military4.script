@@ -6,6 +6,10 @@ function main ()
 
     hero:script (true, military4.script_name ())
     niva:script (true, military4.script_name ())
+
+	action (niva, object ("left_light", object.activate), cond (cond.time_end, 1000))
+	action (niva, object ("right_light", object.activate), cond (cond.time_end, 1000))
+
     action (hero, anim ("mashina_0"), cond (cond.time_end, 1000000))
 
     wait (5000)
