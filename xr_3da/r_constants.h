@@ -2,6 +2,8 @@
 #define r_constantsH
 #pragma once
 
+class ENGINE_API	R_constant_setup;
+
 enum
 {
 	RC_float	= 0,
@@ -48,8 +50,9 @@ struct	R_constant
 	R_constant_load			ps;
 	R_constant_load			vs;
 	R_constant_load			samp;
+	R_constant_setup*		handler;
 
-	R_constant() : type(u16(-1)), destination(0) { name[0]=0; };
+	R_constant() : type(u16(-1)), destination(0), handler(NULL) { name[0]=0; };
 
 	IC BOOL					equal		(R_constant& C)
 	{
@@ -61,22 +64,14 @@ struct	R_constant
 	}
 };
 
-// standart mapping (xforms, etc)
-struct	R_mapping						
+// Automatic constant setup
+struct	ENGINE_API			R_constant_setup
 {
-	BOOL					empty;
-	R_constant*				c_w;
-	R_constant*				c_v;
-	R_constant*				c_p;
-	R_constant*				c_wv;
-	R_constant*				c_vp;
-	R_constant*				c_wvp;	
+	virtual void			setup		(R_constant* C)	= 0;
 };
 
-class	ENGINE_API R_constant_table
+class	ENGINE_API			R_constant_table
 {
-public:
-	R_mapping				mapping;
 private:
 	typedef svector<R_constant*,32>		c_table;
 
@@ -92,7 +87,6 @@ public:
 	{
 		return 0==table.size();
 	}
-
 	IC BOOL					equal		(R_constant_table& C)
 	{
 		if (table.size() != C.table.size())	return FALSE;
