@@ -314,6 +314,254 @@ SOURCE=.\xrCDB_ray.cpp
 # Begin Group "Opcode"
 
 # PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\OPC_AABB.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_AABB.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_AABBCollider.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_AABBCollider.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_AABBTree.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_AABBTree.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_BoxBoxOverlap.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_BVTCache.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_Collider.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_Collider.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_Common.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_Common.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_Container.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_Container.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_FPU.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_Matrix3x3.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_Matrix3x3.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_Matrix4x4.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_Matrix4x4.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_MemoryMacros.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_Model.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_Model.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_OBB.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_OBB.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_OBBCollider.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_OBBCollider.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_OptimizedTree.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_OptimizedTree.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_Plane.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_Plane.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_PlanesAABBOverlap.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_PlanesCollider.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_PlanesCollider.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_PlanesTriOverlap.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_Point.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_Point.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_Preprocessor.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_Ray.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_Ray.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_RayAABBOverlap.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_RayCollider.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_RayCollider.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_RayTriOverlap.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_Settings.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_SphereAABBOverlap.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_SphereCollider.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_SphereCollider.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_SphereTriOverlap.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_TreeBuilders.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_TreeBuilders.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_TreeCollider.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_TreeCollider.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_Triangle.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_Triangle.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_TriBoxOverlap.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_TriTriOverlap.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_Types.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_VolumeCollider.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_VolumeCollider.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Opcode.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Opcode.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ReadMe.txt
+# End Source File
 # End Group
 # End Target
 # End Project
