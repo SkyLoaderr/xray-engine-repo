@@ -7,6 +7,8 @@
 #include "../../ai_monster_debug.h"
 
 
+#define SCAN_STATE_TIME 4000
+
 CBurer::CBurer()
 {
 	stateRest			= xr_new<CBitingRest>		(this);
@@ -18,9 +20,12 @@ CBurer::CBurer()
 	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
 	stateExploreDNE		= xr_new<CBitingExploreDNE>	(this);
 	stateNull			= xr_new<CBitingNull>		();
+	stateScan			= xr_new<CBurerScan>		(this);
 
 	CurrentState					= stateRest;
 	CurrentState->Reset				();
+
+	TScanner::init_external(this);
 }
 
 CBurer::~CBurer()
@@ -40,8 +45,11 @@ CBurer::~CBurer()
 void CBurer::reinit()
 {
 	inherited::reinit			();
+	TScanner::reinit			();
 
 	DeactivateShield			();
+
+	time_last_scan				= 0;
 }
 
 
@@ -79,6 +87,7 @@ void CBurer::reload(LPCSTR section)
 void CBurer::Load(LPCSTR section)
 {
 	inherited::Load				(section);
+	TScanner::load				(section);
 
 	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimStandIdle,		eAnimStandDamaged);	
 	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimRun,			eAnimRunDamaged);
@@ -94,7 +103,7 @@ void CBurer::Load(LPCSTR section)
 	CSoundPlayer::add(pSettings->r_string(section,"sound_gravi_attack"),	16,	SOUND_TYPE_MONSTER_ATTACKING,	2,	u32(1 << 31) | 16,	MonsterSpace::eMonsterSoundGraviAttack, "bip01_head");
 	CSoundPlayer::add(pSettings->r_string(section,"sound_tele_attack"),		16,	SOUND_TYPE_MONSTER_ATTACKING,	2,	u32(1 << 31) | 17,	MonsterSpace::eMonsterSoundTeleAttack, "bip01_head");
 	
-	::Sound->create(sound_gravi_wave,TRUE, pSettings->r_string(section,"sound_gravi_wave"), SOUND_TYPE_WORLD);
+	::Sound->create(sound_gravi_wave,	TRUE, pSettings->r_string(section,"sound_gravi_wave"),	SOUND_TYPE_WORLD);
 
 	m_gravi_speed					= pSettings->r_u32(section,"Gravi_Speed");
 	m_gravi_step					= pSettings->r_u32(section,"Gravi_Step");
@@ -152,7 +161,7 @@ void CBurer::Load(LPCSTR section)
 	MotionMan.LinkAction(ACT_DRAG,			eAnimWalkFwd);
 	MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack);
 	MotionMan.LinkAction(ACT_STEAL,			eAnimSteal);
-	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimStandIdle);
+	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimScared);
 	MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle); 
 
 	MotionMan.AA_Load(pSettings->r_string(section, "attack_params"));
@@ -177,9 +186,13 @@ void CBurer::StateSelector()
 	} else if (hear_dangerous_sound || hear_interesting_sound) {
 		if (hear_dangerous_sound)			state = stateExploreNDE;		
 		if (hear_interesting_sound)			state = stateExploreNDE;	
+	} else if (time_last_scan + SCAN_STATE_TIME > m_current_update){
+		state = stateScan;
 	} else	if (CorpseMan.get_corpse() && ((GetSatiety() < get_sd()->m_fMinSatiety) || flagEatNow))					
 											state = stateEat;	
 	else									state = stateRest;
+		
+	(!EnemyMan.get_enemy()) ? TScanner::enable() : TScanner::disable();
 
 	SetState(state); 
 }
@@ -220,6 +233,7 @@ void CBurer::shedule_Update(u32 dt)
 	inherited::shedule_Update(dt);
 
 	TTelekinesis::schedule_update();
+	TScanner::schedule_update	 ();
 }
 
 void CBurer::CheckSpecParams(u32 spec_params)
@@ -335,6 +349,7 @@ void CBurer::UpdateGraviObject()
 void CBurer::UpdateCL()
 {
 	inherited::UpdateCL();
+	TScanner::frame_update(Device.dwTimeDelta);
 
 	UpdateGraviObject();
 }
@@ -396,3 +411,15 @@ void CBurer::Die()
 	CTelekinesis::Deactivate();
 }
 
+void CBurer::on_scanning()
+{
+	time_last_scan = Level().timeServer();
+}
+
+void CBurer::on_scan_success()
+{
+	CActor *pA = dynamic_cast<CActor *>(Level().CurrentEntity());
+	if (!pA) return;
+
+	EnemyMan.add_enemy(pA);
+}

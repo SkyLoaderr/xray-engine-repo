@@ -136,3 +136,9 @@ void CMonsterEnemyManager::reinit()
 	prev_enemy		= 0;
 	danger_type		= eNone;
 }
+
+
+void CMonsterEnemyManager::add_enemy(const CEntityAlive *enemy)
+{
+	monster->EnemyMemory.add_enemy(enemy);
+}

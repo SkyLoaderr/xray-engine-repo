@@ -145,7 +145,6 @@ void CAI_Biting::Load(LPCSTR section)
 	CSoundPlayer::add(pSettings->r_string(section,"sound_steal"),		16,		SOUND_TYPE_MONSTER_STEP,		4,	u32(1 << 31) | 5,	MonsterSpace::eMonsterSoundSteal,		"bip01_head");	
 	CSoundPlayer::add(pSettings->r_string(section,"sound_panic"),		16,		SOUND_TYPE_MONSTER_STEP,		4,	u32(1 << 31) | 6,	MonsterSpace::eMonsterSoundPanic,		"bip01_head");	
 	CSoundPlayer::add(pSettings->r_string(section,"sound_growling"),	16,		SOUND_TYPE_MONSTER_STEP,		5,	u32(1 << 31) | 7,	MonsterSpace::eMonsterSoundGrowling,	"bip01_head");	
-
 }
 
 void CAI_Biting::load_shared(LPCSTR section)

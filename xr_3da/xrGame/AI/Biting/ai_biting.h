@@ -173,6 +173,7 @@ public:
 	virtual bool			ability_psi_attack				() {return false;}
 	virtual bool			ability_earthquake				() {return false;}
 	virtual bool			ability_can_jump				() {return false;}
+	virtual bool			ability_distant_feel			() {return false;}
 
 	// ---------------------------------------------------------------------------------
 			u16				m_FootBones[eLegsMaxNumber];

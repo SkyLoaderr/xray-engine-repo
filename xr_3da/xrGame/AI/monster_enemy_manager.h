@@ -45,4 +45,6 @@ public:
 	u32					get_enemies_count		();
 
 	void				reinit					();
+
+	void				add_enemy				(const CEntityAlive *);
 };

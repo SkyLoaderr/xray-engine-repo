@@ -25,10 +25,11 @@ public:
 	const ENEMIES_MAP	&get_memory				() {return m_objects;}
 
 	void				clear					() {m_objects.clear();}
+	
+	void				add_enemy				(const CEntityAlive *enemy);
 
 private:
 
-	void				add_enemy				(const CEntityAlive *enemy);
 	void				remove_non_actual		();
 
 	ENEMIES_MAP_IT		find_best_enemy			();

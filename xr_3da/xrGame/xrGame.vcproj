@@ -2365,6 +2365,16 @@
 								RelativePath=".\ai\ai_monster_jump.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="Scan"
+							Filter="">
+							<File
+								RelativePath=".\ai\scanning_ability.h">
+							</File>
+							<File
+								RelativePath=".\ai\scanning_ability_inline.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Burer"
@@ -2404,6 +2414,12 @@
 						</File>
 						<File
 							RelativePath=".\ai\Monsters\Burer\burer_attack_tele.h">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Burer\burer_scan.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Burer\burer_scan.h">
 						</File>
 						<File
 							RelativePath=".\ai\Monsters\Burer\burer_states.h">

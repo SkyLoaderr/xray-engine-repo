@@ -2,16 +2,21 @@
 #include "../../biting/ai_biting.h"
 #include "../../telekinesis.h"
 #include "../../anim_triple.h"
+#include "../../scanning_ability.h"
 
 class CCharacterPhysicsSupport;
 
 class CBurer :	public CAI_Biting,
-				public CTelekinesis {
+				public CTelekinesis,
+				public CScanningAbility<CBurer> {
 
 	typedef		CAI_Biting					inherited;
+	typedef		CScanningAbility<CBurer>	TScanner;
 
 	u32			last_hit_frame;
 
+	u32			time_last_scan;
+	
 public:
 	typedef		CTelekinesis				TTelekinesis;
 
@@ -51,6 +56,7 @@ public:
 	LPCSTR	 particle_tele_object;
 
 	ref_sound	sound_gravi_wave;
+	ref_sound	sound_scan;
 
 	u32		m_gravi_speed;
 	u32		m_gravi_step;
@@ -105,9 +111,15 @@ public:
 			void	ActivateShield		() {m_shield_active = true;}
 			void	DeactivateShield	() {m_shield_active = false;}
 
+	virtual bool	ability_distant_feel() {return true;}
+
+	virtual void	on_scanning			();
+	virtual void	on_scan_success		();
+
 private:
 
 	IState			*stateBurerAttack;
+	IState			*stateScan;
 
 public:
 	CAnimTriple		anim_triple_gravi;
