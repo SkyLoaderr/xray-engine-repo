@@ -104,7 +104,7 @@ BOOL CDemoPlay::Process(Fvector &P, Fvector &D, Fvector &N, float& fFov, float& 
 		m_MParam.Update(Device.fTimeDelta,1.f,true);
 		fLifeTime		-= Device.fTimeDelta;
 		if (m_MParam.bWrapped)	{ stat_Stop(); stat_Start(); }
-		mRotate.setXYZ	(R);
+		mRotate.setXYZi	(R.y,R.x,R.z);
 		D.set			(mRotate.k);
 		N.set			(mRotate.j);
 	}

@@ -20,6 +20,7 @@ class CVehicleHelicopter :
 {
 	typedef CGameObject inherited;
 protected:
+	ref_sound		m_engine_sound;
 	CObjectAnimator	*m_animator;
 	ref_str			m_animation_sting;
 	CMotionDef		*m_animation;
@@ -41,8 +42,6 @@ public:
 	virtual void	feel_touch_delete	(CObject	*O);
 	virtual BOOL	feel_touch_contact	(CObject	*O);
 protected:
-			void	select_animation	();
-
 	IC		const CObjectAnimator	*animator	() const;
 	IC		const ref_str			&animation	() const;
 };
