@@ -45,6 +45,8 @@ IC	CHashFixedVertexManager::CDataStorage		(const u32 vertex_count) :
 TEMPLATE_SPECIALIZATION
 CHashFixedVertexManager::~CDataStorage		()
 {
+	xr_free					(m_hash);
+	xr_free					(m_vertices);
 }
 
 TEMPLATE_SPECIALIZATION
