@@ -161,7 +161,7 @@ function base_dialog:InitControls(caption)
 	self.message_box:SetAutoDelete(true)
 	self.message_box:SetWindowName("message_box")
 	self.message_box:SetFont(GetFontLetterica25())
-	self.message_box:Init("ui\\ui_frame",self.message_rect.x, 
+	self.message_box:Init("ui\\ui_frame_dialog",self.message_rect.x, 
 										 self.message_rect.y, 
 										 self.message_rect.width, 
 										 self.message_rect.height)

@@ -188,10 +188,10 @@ void CUIScrollBar::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 											m_ScrollBox.GetHeight());
 
 
-				m_iScrollPos = (s16)iFloor(0.5f +            
-					        float(m_ScrollBox.GetWndRect().top - 2*SCROLLBAR_HEIGHT)*
+				m_iScrollPos = (s16)iFloor(0.5f +
+					        float(m_ScrollBox.GetWndRect().top - SCROLLBAR_HEIGHT)*
 							float(m_iMaxPos-m_iMinPos+1)/
-							float((s16)GetHeight() - 2*SCROLLBAR_HEIGHT) + m_iMinPos);
+							float((s16)GetHeight() - 3*SCROLLBAR_HEIGHT) + m_iMinPos);
 
 				if(m_iScrollPos+m_iPageSize>=m_iMaxPos)
                     m_iScrollPos = m_iMaxPos - m_iPageSize + 1;

@@ -159,7 +159,7 @@ end
 
 function main_menu:OnButton_save_clicked()
 	local dlg = ui_save_dialog.save_dialog()
-	level:start_stop_menu(dlg, true)
+	self:GetHolder():start_stop_menu(dlg, true)
 end
 
 function main_menu:OnButton_findsrv()
@@ -233,17 +233,21 @@ function main_menu:OnKeyboard(dik, keyboard_action)  --virtual function
 	CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
 	
 	local bind = dik_to_bind(dik)
+	local console = get_console()
 	
-	if bind == key_bindings.kQUIT then
-		if level.present() then
-			self:GetHolder():start_stop_menu(self, true)
+	if keyboard_action == ui_events.WINDOW_KEY_RELEASED then
+		if bind == key_bindings.kQUIT then
+			if level.present() then
+				console:execute("main_menu off")
+			end
 		end
-	end
 	
-  	if bind == key_bindings.kCONSOLE then
-		local console = get_console()
-		console:show()
-	end  	
+	
+		if bind == key_bindings.kCONSOLE then
+			console:show()
+		end
+	
+	end
    
 	return true
 end

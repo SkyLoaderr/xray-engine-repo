@@ -54,7 +54,7 @@ function save_dialog:InitControls()
 	local edit_rect       = {x = self.left_align_x,
 						     y = self.top_align_y,
 						     width =  257,
-						     height = 22}
+						     height = 23}
 		
 	local list_rect_f     = {x = self.left_align_x,
 						     y = edit_rect.y + edit_rect.height + self.indent,
@@ -72,9 +72,9 @@ function save_dialog:InitControls()
 	----- CODE -------
 	
 	-- EDIT box --
-	local frame_edit = CUIFrameWindow()  
+	local frame_edit = CUIFrameLineWnd()  
     frame_edit:SetAutoDelete(true)
-    frame_edit:Init("ui\\ui_frame_very_small", edit_rect.x, edit_rect.y, edit_rect.width, edit_rect.height)
+    frame_edit:Init("ui\\ui_string_06", edit_rect.x, edit_rect.y, edit_rect.width, edit_rect.height, true)
     self.main_frame:AttachChild(frame_edit)
 	
 	local edit_filename = CUIEditBox()
