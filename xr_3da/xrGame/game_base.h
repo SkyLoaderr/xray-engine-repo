@@ -17,6 +17,13 @@ enum
 	GAME_PLAYER_FLAG_FORCEDWORD	= DWORD(-1)
 };
 
+enum
+{
+	GAME_PHASE_INPROGRESS		= 0,
+	GAME_PHASE_PENDING,
+
+	GAME_PHASE_FORCEDWORD		= DWORD(-1)
+};
 
 #pragma pack(push,1)
 struct	game_PlayerState
