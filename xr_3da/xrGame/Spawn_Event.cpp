@@ -131,14 +131,16 @@ void CSpawn_Event::Execute(CStream& FS_CFORM)
 		P.w_u8			(A.bOnce.value);
 		P.w_u64			(A.Target.Selected);
 		ExportAction	(P,A.OnEnter);
-		ExportAction	(P,A.OnExit);
+		ExportAction	(P,A.OnLeave);
 	}
 
 	// Save size
+	/*
 	u32 end		= P.w_tell();
 	P.w_seek	(size_pos);
 	P.w_u16		(end-size_pos);
 	P.w_seek	(end);
+	*/
 }
 
 #else
