@@ -8,7 +8,11 @@ function fe(item, parent)
 	parent:drop_item(item,p)
 end
 
-function main ()
+function main()
+	db.actor:give_game_news("general_new_task", "ui\\ui_icons_task", 150,100,50,500, 0)
+end
+
+function ___main ()
 	local info = "tutorial_artefact_start" 
 	if db.actor:has_info(info) then
 		db.actor:disable_info_portion(info)
