@@ -62,6 +62,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:reinit()
     object_binder.reinit(self)
+    self.object:set_pda_callback(pda_call_back)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:net_destroy()
@@ -352,7 +353,6 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function AddToMotivator(npc)
     npc:bind_object(this.motivator_binder(npc))
-    npc:set_pda_callback(pda_call_back)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function checkStorage(npc)
