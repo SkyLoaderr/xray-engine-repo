@@ -662,7 +662,7 @@ public:
 		m_bCompleted		= false;
 	}
 
-							CObjectAction		(CLuaGameObject *tpLuaGameObject, MonsterSpace::EObjectAction tObjectActionType, u32 dwQueueSize = 1)
+							CObjectAction		(CLuaGameObject *tpLuaGameObject, MonsterSpace::EObjectAction tObjectActionType, u32 dwQueueSize = u32(-1))
 	{
 		SetObject			(tpLuaGameObject);
 		SetObjectAction		(tObjectActionType);

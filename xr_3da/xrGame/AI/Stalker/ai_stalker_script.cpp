@@ -172,7 +172,10 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 		return			(true);
 
 	CWeapon				*l_tpWeapon				= dynamic_cast<CWeapon*>(inventory().ActiveItem());
-//	CWeaponMagazined	*l_tpWeaponMagazined	= dynamic_cast<CWeaponMagazined*>(inventory().ActiveItem());
+	CWeaponMagazined	*l_tpWeaponMagazined	= dynamic_cast<CWeaponMagazined*>(inventory().ActiveItem());
+
+	if (l_tpWeaponMagazined)
+		l_tpWeaponMagazined->SetQueueSize		(l_tObjectAction.m_dwQueueSize);
 
 	switch (l_tObjectAction.m_tGoalType) {
 		case eObjectActionIdle : {
