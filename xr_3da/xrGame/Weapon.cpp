@@ -447,7 +447,7 @@ void CWeapon::net_Import	(NET_Packet& P)
 	{
 		m_flagsAddOnState = NewAddonState;
 		UpdateAddonsVisibility();
-		InitAddons();
+//		InitAddons();
 	};
 
 	u8 ammoType, wstate;
