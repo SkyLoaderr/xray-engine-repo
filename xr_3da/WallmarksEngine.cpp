@@ -166,7 +166,7 @@ void CWallmarksEngine::Render()
 		Device.Statistic.RenderDUMP_WM.Begin	();
 
 		DWORD				w_offset;
-		CWallmark::Vertex*	w_verts = VS->Lock	(MAX_TRIS*3,w_offset);
+		CWallmark::Vertex*	w_verts = (CWallmark::Vertex*)VS->Lock	(MAX_TRIS*3,w_offset);
 		CWallmark::Vertex*	w_start = w_verts;
 
 		Shader*	w_S			= marks.front().hShader;
@@ -187,7 +187,7 @@ void CWallmarksEngine::Render()
 						Device.Primitive.Draw	(VS,w_count/3,w_offset);
 
 						// Restart (re-lock/re-calc)
-						w_verts		= VS->Lock	(MAX_TRIS*3,w_offset);
+						w_verts		= (CWallmark::Vertex*) VS->Lock	(MAX_TRIS*3,w_offset);
 						w_start		= w_verts;
 						w_S			= W.hShader;
 					}
@@ -201,8 +201,10 @@ void CWallmarksEngine::Render()
 		// Flush stream
 		DWORD w_count			= w_verts-w_start;
 		VS->Unlock				(w_count);
-		Device.Shader.Set		(w_S);
-		Device.Primitive.Draw	(VS,w_count/3,w_offset);
+		if (w_count)			{
+			Device.Shader.Set		(w_S);
+			Device.Primitive.Draw	(VS,w_count/3,w_offset);
+		}
 
 		// Remove last used wallmarks
 		while (!marks.empty() && (marks.front().ttl<=EPS_S)) marks.pop_front();
