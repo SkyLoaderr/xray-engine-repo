@@ -19,8 +19,8 @@ CSoundRender_Source::CSoundRender_Source	()
 
 CSoundRender_Source::~CSoundRender_Source	()
 {
-	xr_delete	(ovf);
 	unload		();
+	xr_delete	(ovf);
 }
 
 bool ov_error(int res)
