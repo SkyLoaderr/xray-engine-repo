@@ -262,12 +262,6 @@
 				RelativePath="_d3d_extensions.h">
 			</File>
 			<File
-				RelativePath=".\clsid.cpp">
-			</File>
-			<File
-				RelativePath=".\clsid.h">
-			</File>
-			<File
 				RelativePath=".\defines.h">
 			</File>
 			<File

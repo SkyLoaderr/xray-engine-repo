@@ -69,27 +69,20 @@ void Startup(LPSTR     lpCmdLine)
 	
 	// Load project
 	name[0]=0;				sscanf(strstr(cmd,"-f")+2,"%s",name);
-	string prjName			= "gamedata\\levels\\"+string(name)+"\\build.prj";
-	Phase					(("Reading project ["+string(name)+"]...").c_str());
+	string256				prjName;
+	FS.update_path			(prjName,"$game_levels$",strconcat(prjName,name,"\\build.prj"));
+	Phase					((string("Reading project [")+string(name)+string("]...")).c_str());
 
-	string32	ID			= BUILD_PROJECT_MARK;
-	string32	id;
-	IReader*	F			= xr_new<CFileReader> (prjName.c_str());
-	F->r		(&id,8);
-	if (0==strcmp(id,ID))	{
-		xr_delete		(F);
-		F				= xr_new<CCompressedReader> (prjName.c_str(),ID);
-	}
-	IReader&				FS	= *F;
+	IReader*	F			= FS.r_open(prjName);
 
 	// Version
 	DWORD version;
-	FS.r_chunk			(EB_Version,&version);
+	F->r_chunk			(EB_Version,&version);
 	R_ASSERT(XRCL_CURRENT_VERSION==version);
 
 	// Header
 	b_params				Params;
-	FS.r_chunk			(EB_Parameters,&Params);
+	F->r_chunk			(EB_Parameters,&Params);
 
 	// Show options if needed
 	if (bModifyOptions)		
@@ -109,7 +102,7 @@ void Startup(LPSTR     lpCmdLine)
 	// Conversion
 	Phase					("Converting data structures...");
 	pBuild					= xr_new<CBuild>();
-	pBuild->Load			(Params,FS);
+	pBuild->Load			(Params,*F);
 	xr_delete				(F);
 	
 	// Call for builder

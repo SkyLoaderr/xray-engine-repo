@@ -77,7 +77,7 @@ BOOL	Surface_Detect(LPSTR F, LPSTR N)
 {
 	for (u32 i=0; i<formats.size(); i++)
 	{
-		FS.update_path	(F,"$textures$",strconcat(dest,N,".",formats[i]));
+		FS.update_path	(F,"$textures$",strconcat(F,N,".",formats[i]));
 		int h = _open(F,O_RDONLY|O_BINARY);
 		if (h>0)	{
 			_close(h);

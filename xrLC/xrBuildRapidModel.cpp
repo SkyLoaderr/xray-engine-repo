@@ -93,7 +93,7 @@ void CBuild::BuildRapid()
 	// Saving for AI/DO usage
 	Status					("Saving...");
 
-	CFileWriter		MFS		((pBuild->path+"build.cform").c_str());
+	IWriter*		MFS		= FS.w_open	((pBuild->path+"build.cform").c_str());
 
 	vector<b_rc_face>		rc_faces;
 	rc_faces.resize			(CL.getTS());
@@ -111,21 +111,21 @@ void CBuild::BuildRapid()
 		cf.t[2].set			(cuv[2]);
 	}
 
-	MFS.open_chunk			(0);
+	MFS->open_chunk			(0);
 	// Header
 	hdrCFORM hdr;
 	hdr.version				= CFORM_CURRENT_VERSION;
 	hdr.vertcount			= CL.getVS();
 	hdr.facecount			= CL.getTS();
 	hdr.aabb				= scene_bb;
-	MFS.w					(&hdr,sizeof(hdr));
+	MFS->w					(&hdr,sizeof(hdr));
 
 	// Data
-	MFS.w					(CL.getV(),CL.getVS()*sizeof(Fvector));
-	MFS.w					(CL.getT(),CL.getTS()*sizeof(CDB::TRI));
-	MFS.close_chunk			();
+	MFS->w					(CL.getV(),CL.getVS()*sizeof(Fvector));
+	MFS->w					(CL.getT(),CL.getTS()*sizeof(CDB::TRI));
+	MFS->close_chunk		();
 
-	MFS.open_chunk			(1);
-	MFS.w					(rc_faces.begin(),rc_faces.size()*sizeof(b_rc_face));
-	MFS.close_chunk			();
+	MFS->open_chunk			(1);
+	MFS->w					(rc_faces.begin(),rc_faces.size()*sizeof(b_rc_face));
+	MFS->close_chunk		();
 }

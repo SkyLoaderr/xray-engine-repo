@@ -56,14 +56,14 @@ void CBuild::Run	(string& P)
 {
 	path			= P+"\\";
 
-	CFileWriter fs	((path+"level.").c_str());
+	IWriter* fs		= FS.w_open((path+"level.").c_str());
 
-	fs.open_chunk	(fsL_HEADER);
+	fs->open_chunk	(fsL_HEADER);
 	hdrLEVEL H;		ZeroMemory(&H,sizeof(H));
 	H.XRLC_version = XRCL_PRODUCTION_VERSION;
 	strcpy			(H.name,g_params.L_name);
-	fs.w			(&H,sizeof(H));
-	fs.close_chunk	();
+	fs->w			(&H,sizeof(H));
+	fs->close_chunk	();
 
 	FPU::m64r		();
 	Phase			("Tesselating...");
@@ -93,12 +93,12 @@ void CBuild::Run	(string& P)
 	FPU::m64r();
 	Phase			("Building collision database...");
 	mem_Compact		();
-	BuildCForm		(fs);
+	BuildCForm		(*fs);
 
 	FPU::m64r		();
 	Phase			("Building volume-pick database...");
 	mem_Compact		();
-	BuildPortals	(fs);
+	BuildPortals	(*fs);
 
 	//****************************************** Starting MU
 	FPU::m64r		();
@@ -183,29 +183,29 @@ void CBuild::Run	(string& P)
 	FPU::m64r		();
 	Phase			("Saving lights, glows, occlusion planes...");
 	mem_Compact		();
-	SaveLights		(fs);
+	SaveLights		(*fs);
 
 	// Glows
-	fs.open_chunk(fsL_GLOWS);
+	fs->open_chunk(fsL_GLOWS);
 	for (u32 i=0; i<glows.size(); i++)
 	{
 		b_glow&	G = glows[i];
-		fs.w(&G,4*sizeof(float));
+		fs->w(&G,4*sizeof(float));
 		string T = textures		[materials[G.dwMaterial].surfidx].name;
 		string S = shader_render[materials[G.dwMaterial].shader].name;
-		fs.w_u32(RegisterString(T));
-		fs.w_u32(RegisterString(S));
+		fs->w_u32(RegisterString(T));
+		fs->w_u32(RegisterString(S));
 	}
-	fs.close_chunk	();
+	fs->close_chunk	();
 
 	FPU::m64r		();
 	Phase			("Saving static geometry...");
 	mem_Compact		();
-	SaveTREE		(fs);
+	SaveTREE		(*fs);
 
 	Phase			("Saving sectors...");
 	mem_Compact		();
-	SaveSectors		(fs);
+	SaveSectors		(*fs);
 
 	err_save		();
 }
@@ -217,7 +217,8 @@ void CBuild::err_save	()
 	GetUserName		(log_user,(DWORD*)&buffer_size);
 	strconcat		(log_name,"build_",strlwr(log_user),".err");
 
-	CFileWriter		err(log_name);
+	IWriter*		fs	= FS.w_open(log_name);
+	IWriter&		err = *fs;
 
 	// t-junction
 	err.open_chunk	(0);

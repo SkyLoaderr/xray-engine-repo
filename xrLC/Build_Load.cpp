@@ -33,7 +33,7 @@ return 0;
 
 void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 {
-	IReader&	FS	= const_cast<IReader&>(_in_FS);
+	IReader&	fs	= const_cast<IReader&>(_in_FS);
 	// HANDLE		hLargeHeap	= HeapCreate(0,64*1024*1024,0);
 	// clMsg		("* <LargeHeap> handle: %X",hLargeHeap);
 
@@ -50,7 +50,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 	//*******
 	Status					("Vertices...");
 	{
-		F = FS.open_chunk		(EB_Vertices);
+		F = fs.open_chunk		(EB_Vertices);
 		u32 v_count			=	F->length()/sizeof(b_vertex);
 		g_vertices.reserve		(3*v_count/2);
 		scene_bb.invalidate		();
@@ -70,7 +70,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 	//*******
 	Status					("Faces...");
 	{
-		F = FS.open_chunk		(EB_Faces);
+		F = fs.open_chunk		(EB_Faces);
 		R_ASSERT				(F);
 		u32 f_count			=	F->length()/sizeof(b_face);
 		g_faces.reserve			(f_count);
@@ -118,7 +118,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 
 	//*******
 	Status	("Models and References");
-	F = FS.open_chunk		(EB_MU_models);
+	F = fs.open_chunk		(EB_MU_models);
 	if (F)
 	{
 		while (!F->eof())
@@ -128,7 +128,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 		}
 		F->close				();
 	}
-	F = FS.open_chunk		(EB_MU_refs);
+	F = fs.open_chunk		(EB_MU_refs);
 	if (F)
 	{
 		while (!F->eof())
@@ -141,19 +141,19 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 
 	//*******
 	Status	("Other transfer...");
-	transfer("materials",	materials,			FS,		EB_Materials);
-	transfer("shaders",		shader_render,		FS,		EB_Shaders_Render);
-	transfer("shaders_xrlc",shader_compile,		FS,		EB_Shaders_Compile);
-	transfer("glows",		glows,				FS,		EB_Glows);
-	transfer("portals",		portals,			FS,		EB_Portals);
-	transfer("LODs",		lods,				FS,		EB_LOD_models);
+	transfer("materials",	materials,			fs,		EB_Materials);
+	transfer("shaders",		shader_render,		fs,		EB_Shaders_Render);
+	transfer("shaders_xrlc",shader_compile,		fs,		EB_Shaders_Compile);
+	transfer("glows",		glows,				fs,		EB_Glows);
+	transfer("portals",		portals,			fs,		EB_Portals);
+	transfer("LODs",		lods,				fs,		EB_LOD_models);
 
 	// Load lights
 	Status	("Loading lights...");
 	{
 		// Controlles/Layers
 		{
-			F = FS.open_chunk		(EB_Light_control);
+			F = fs.open_chunk		(EB_Light_control);
 			L_control_data.assign	(LPBYTE(F->pointer()),LPBYTE(F->pointer())+F->length());
 
 			R_Layer			temp;
@@ -172,7 +172,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 		}
 		// Static
 		{
-			F = FS.open_chunk(EB_Light_static);
+			F = fs.open_chunk(EB_Light_static);
 			b_light_static	temp;
 			u32 cnt			= F->length()/sizeof(temp);
 			for				(i=0; i<cnt; i++)
@@ -221,14 +221,14 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 		L_layers.erase	(L_layers.begin()+1,L_layers.end());
 
 		// Dynamic
-		transfer("d-lights",	L_dynamic,			FS,		EB_Light_dynamic);
+		transfer("d-lights",	L_dynamic,			fs,		EB_Light_dynamic);
 	}
 	
 	// process textures
 	Status			("Processing textures...");
 	{
 		Surface_Init		();
-		F = FS.open_chunk	(EB_Textures);
+		F = fs.open_chunk	(EB_Textures);
 		u32 tex_count	= F->length()/sizeof(b_texture);
 		for (u32 t=0; t<tex_count; t++)
 		{
@@ -244,11 +244,25 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 			LPSTR N			= BT.name;
 			if (strchr(N,'.')) *(strchr(N,'.')) = 0;
 			strlwr			(N);
-			char th_name[256]; strconcat(th_name,"\\\\x-ray\\stalkerdata$\\textures\\",N,".thm");
-			CCompressedReader THM	(th_name,THM_SIGN);
+			char			th_name[256]; 
+			FS.update_path	(th_name,"$textures$",strconcat(th_name,N,".thm"));
+			IReader* THM	= FS.r_open(th_name);
+
+			// version
+			u32 version = 0;
+			R_ASSERT(THM->r_chunk(THM_CHUNK_VERSION,&version));
+			if( version!=THM_CURRENT_VERSION )	Debug.fatal("Unsupported version of THM file.");
 
 			// analyze thumbnail information
-			R_ASSERT		(THM.r_chunk(THM_CHUNK_TEXTUREPARAM,&BT.THM));
+			R_ASSERT(THM->find_chunk(THM_CHUNK_TEXTUREPARAM));
+			THM->r                  (&BT.THM.fmt,sizeof(STextureParams::ETFormat));
+			BT.THM.flags.set		(THM->r_u32());
+			BT.THM.border_color		= THM->r_u32();
+			BT.THM.fade_color		= THM->r_u32();
+			BT.THM.fade_amount		= THM->r_u32();
+			BT.THM.mip_filter		= THM->r_u32();
+			BT.THM.width			= THM->r_u32();
+			BT.THM.height           = THM->r_u32();
 			BOOL			bLOD=FALSE;
 			if (N[0]=='l' && N[1]=='o' && N[2]=='d' && N[3]=='\\') bLOD = TRUE;
 
