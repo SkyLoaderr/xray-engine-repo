@@ -38,7 +38,7 @@ void CBuild::xrPhase_Subdivide()
 		if  	(size.x>g_params.m_SS_maxsize)					bSplit	= TRUE;
 		if		(size.z>g_params.m_SS_maxsize)					bSplit	= TRUE;
 		if		(int(g_XSplit[X].size()) > g_params.m_SS_High)	bSplit	= TRUE;
-		CDeflector*	defl_base	=	g_XSplit[X].front().pDeflector;
+		CDeflector*	defl_base	= (CDeflector*)g_XSplit[X].front()->pDeflector;
 		if		(!bSplit && defl_base)	{
 			if (defl_base->dwWidth>=	(512-2*BORDER))		bSplit	= TRUE;
 			if (defl_base->dwHeight>=(512-2*BORDER))		bSplit	= TRUE;
@@ -63,7 +63,7 @@ void CBuild::xrPhase_Subdivide()
 				}
 				
 		// Process all faces and rearrange them
-		for (vecFaceIt F=g_XSplit[X].begin(); F!=g_XSplit[X].end(); F++) 
+		for (F=g_XSplit[X].begin(); F!=g_XSplit[X].end(); F++) 
 		{
 			Face *XF = *F;
 			Fvector C;
