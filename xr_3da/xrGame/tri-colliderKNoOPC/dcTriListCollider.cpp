@@ -238,9 +238,9 @@ extern "C" int dSortTriBoxCollide (
 	if(b_neg_depth<dInfinity&&ret==0){
 		bool include = true;
 		for(i=pos_tries.begin();i!=pos_tries.end();i++){
-			if(!(((dDOT(b_neg_tri->norm,i->v0)-b_neg_tri->pos)>0.f)&&
-				((dDOT(b_neg_tri->norm,i->v1)-b_neg_tri->pos)>0.f)&&
-				((dDOT(b_neg_tri->norm,i->v2)-b_neg_tri->pos)>0.f))
+			if((((dDOT(b_neg_tri->norm,i->v0)-b_neg_tri->pos)<0.f)||
+				((dDOT(b_neg_tri->norm,i->v1)-b_neg_tri->pos)<0.f)||
+				((dDOT(b_neg_tri->norm,i->v2)-b_neg_tri->pos)<0.f))
 				){
 					include=false;
 					break;
