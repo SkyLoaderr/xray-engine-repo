@@ -902,11 +902,12 @@ function action_alarm:initialize()
 	self.object:set_desired_direction()    
 
 	local enemy = self.object:best_enemy()
-    	if enemy and is_object_online( enemy:id() ) then
+    	if enemy and is_object_online( enemy:id() )
+    	then
         	if get_clsid(enemy) == clsid.stalker or get_clsid(enemy) == clsid.actor then
 			local f = xr_gulag.isUnderFraction(self.object)
 
-			if f ~= nil then
+			if f ~= nil and f == "blockpost" then
 				xr_gulag.setFractionState(f, 1)
 			end
 		end
