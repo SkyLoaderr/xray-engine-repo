@@ -24,7 +24,6 @@ void	xrMU_Model::_vertex::calc_normal_adjacent	()
 	N.normalize_safe();
 }
 
-
 // face utilities
 void			xrMU_Model::_face::CalcNormal	()
 {

@@ -284,8 +284,6 @@ void	o_test (int iA, int iB, int count, base_color* A, base_color* B, float& C, 
 
 void xrMU_Reference::calc_lighting	()
 {
-	xr_vector<base_color>		color;
-
 	model->calc_lighting		(color,xform,RCAST_Model,pBuild->L_static,LP_DEFAULT);
 
 	R_ASSERT					(color.size()==model->color.size());
@@ -310,12 +308,5 @@ void xrMU_Reference::calc_lighting	()
 
 		for (u32 index=0; index<5; index++)
 			o_test	(4,index,color.size(),&model->color.front(),&color.front(),_s[index],_b[index]);
-
-		/*
-		clMsg				("\tscale[%2.2f, %2.2f, %2.2f, %2.2f, %2.2f], bias[%2.2f, %2.2f, %2.2f, %2.2f, %2.2f]",
-								c_scale.rgb.x,c_scale.rgb.y,c_scale.rgb.z,c_scale.hemi,c_scale.sun,
-								c_bias.rgb.x,c_bias.rgb.y,c_bias.rgb.z,c_bias.hemi,c_bias.sun
-							);
-		*/
 	}
 }

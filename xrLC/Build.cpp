@@ -219,8 +219,7 @@ void CBuild::Run	(LPCSTR P)
 	{
 		u32 m;
 		Status			("MU : Models...");
-		for (m=0; m<mu_models.size(); m++)
-		{
+		for (m=0; m<mu_models.size(); m++)	{
 			mu_models[m]->calc_ogf			();
 			mu_models[m]->export_geometry	();
 		}
