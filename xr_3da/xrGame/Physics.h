@@ -182,11 +182,16 @@ static dJointGroupID ContactGroup;
 ///////////////////////////Implemetation//for//CPhysicsElement//////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //using namespace std;
-class CPHElement: public CPhysicsElement {
-	vector <dGeomID> m_geoms;
-	vector <dGeomID> m_trans;
-	vector <Fsphere> m_spheras_data;
-	vector <Fobb>    m_boxes_data;
+class CPHElement;
+class CPHElement:  public CPhysicsElement {
+
+	vector <dGeomID>		m_geoms;
+	vector <dGeomID>		m_trans;
+	vector <Fsphere>		m_spheras_data;
+	vector <Fobb>			m_boxes_data;
+	bool					bActive;
+	bool					bActivating;
+	float					m_start_time;
 	float m_volume;
 	Fvector m_mass_center;
 	
@@ -195,47 +200,11 @@ class CPHElement: public CPhysicsElement {
 	dBodyID m_body;
 	dGeomID m_group;
 	Fmatrix m_m0,m_m2;
-	void			create_Sphere				(Fsphere&	V);
-	void			create_Box					(Fobb&		V);
-	void			calculate_it_data			(const Fvector& mc,float mass);
-	void			calculate_it_data_use_density(const Fvector& mc,float density);
-public:
-	Fmatrix m_inverse_local_transform;
-	///
-	virtual	void			add_Sphere				(const Fsphere&	V);
+///////////////////////////////
 
-	virtual	void			add_Box					(const Fobb&		V);
-
-	void			build(dSpaceID space);
-	void			destroy();
-	Fvector			get_mc_data();
-	Fvector			get_mc_geoms();
-	void			Start();
-	dBodyID			get_body(){return m_body;};
-	float			get_volume(){get_mc_data();return m_volume;};
-	void			SetTransform(const Fmatrix& m0);
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-	virtual void			Activate				(const Fmatrix& m0, float dt01, const Fmatrix& m2,bool disable=false);
-	virtual void			Deactivate				();
-	virtual void			setMass					(float M);
-	virtual void			applyForce				(const Fvector& dir, float val){;};
-	virtual void			applyImpulse			(const Fvector& dir, float val){;};
-	virtual void			Update					();
-	CPHElement(dSpaceID a_space){ 
-		m_space=a_space;
-		m_body=NULL;};
-		//CPHElement(){ m_space=ph_world->GetSpace();};
-		virtual ~CPHElement	();
-};
-///////////////////////////////////////////////////////////////////////
-class CPHShell: public CPhysicsShell,public CPHObject {
-	vector<CPHElement*> elements;
-	Fmatrix m_m2;
-	Fmatrix m_m0;
-	dBodyID m_body;
+	CPHElement* m_parent_element;
 	CPHInterpolation m_body_interpolation;
-	Fmatrix m_inverse_local_transform;
+
 
 /////disable///////////////////////
 //dVector3 mean_w;
@@ -252,39 +221,112 @@ dReal previous_dev;
 dReal previous_v;
 UINT dis_count_f;
 UINT dis_count_f1;
-/////////////////////////////////////////////////////////////////////////////
-list<CPHObject*>::iterator m_ident;
-	void					Disable					();				
 public:
+
+/////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////
+private:
+	void			create_Sphere				(Fsphere&	V);
+	void			create_Box					(Fobb&		V);
+	void			calculate_it_data			(const Fvector& mc,float mass);
+	void			calculate_it_data_use_density(const Fvector& mc,float density);
+	void			Disable						();
+public:
+
+
+	void					CallBack				(CBoneInstance* B);
+	void					PhDataUpdate			(dReal step);
+	virtual void			set_ParentElement		(CPhysicsElement* p){m_parent_element=(CPHElement*)p;}
+
+	virtual void			applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val)	;
+	Fmatrix m_inverse_local_transform;
+	///
+	virtual	void			add_Sphere				(const Fsphere&	V);
+
+	virtual	void			add_Box					(const Fobb&		V);
+	
+	void			InterpolateGlobalTransform(Fmatrix* m);
+	void			build(dSpaceID space);
+	void			destroy();
+	Fvector			get_mc_data();
+	Fvector			get_mc_geoms();
+	void			Start();
+	dBodyID			get_body(){return m_body;};
+	float			get_volume(){get_mc_data();return m_volume;};
+	void			SetTransform(const Fmatrix& m0);
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	virtual void			Activate				(const Fmatrix& m0, float dt01, const Fmatrix& m2,bool disable=false);
+	virtual void			Activate				();
+	virtual void			Deactivate				();
+	virtual void			setMass					(float M);
+	virtual void			applyForce				(const Fvector& dir, float val){
+																					if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
+																					dBodyAddForce(m_body,dir.x*val,dir.y*val,dir.z*val);
+																					};
+	virtual void			applyImpulse			(const Fvector& dir, float val){
+																					if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
+																					dBodyAddForce(m_body,dir.x*val/fixed_step,dir.y*val/fixed_step,dir.z*val/fixed_step);
+																					};
+	virtual void			Update					();
+	CPHElement(dSpaceID a_space){ 
+		m_space=a_space;
+		m_body=NULL;
+		bActive=false;
+		bActivating=false;
+		dis_count_f=0;
+		dis_count_f1=0;
+	};
+		//CPHElement(){ m_space=ph_world->GetSpace();};
+		virtual ~CPHElement	();
+};
+
+///////////////////////////////////////////////////////////////////////
+class CPHShell: public CPhysicsShell,public CPHObject {
+	vector<CPHElement*> elements;
+	Fmatrix m_m2;
+	Fmatrix m_m0;
+
+list<CPHObject*>::iterator m_ident;
+				
+public:
+
 	CPHShell				()							{bActive=false;
-														dis_count_f=0;
-														dis_count_f1=0;
+
 											
 																		};
 	~CPHShell				()							{if(bActive) Deactivate();}
 
+	static void __stdcall	BonesCallback				(CBoneInstance* B);
+	virtual	BoneCallbackFun* GetBonesCallback		()	{return BonesCallback ;}
 	virtual	void			add_Element				(CPhysicsElement* E)		  {
 		elements.push_back((CPHElement*)E);
 	};
+
 	virtual	void			add_Joint				(CPhysicsJoint* E, int E1, int E2)					{};
 	virtual void			applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val)	;
 
 	virtual void			Update					()	;											
 
 	virtual void			Activate				(const Fmatrix& m0, float dt01, const Fmatrix& m2,bool disable=false);
+	virtual void			Activate				();
 	virtual void			Deactivate				()		;
 
 	virtual void			setMass					(float M)									;
 
 	virtual void			applyForce				(const Fvector& dir, float val)				{
-																								if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
-																								dBodyAddForce(m_body,dir.x*val,dir.y*val,dir.z*val);
+																								(*elements.begin())->applyForce				( dir, val);
 																								};
-	virtual void			applyImpulse			(const Fvector& dir, float val)				{dBodyAddForce(m_body,dir.x*val/fixed_step,dir.y*val/fixed_step,dir.z*val/fixed_step);};
+	virtual void			applyImpulse			(const Fvector& dir, float val)				{
+																								(*elements.begin())->applyImpulse			( dir, val);
+																								};
 	virtual	void PhDataUpdate(dReal step);
 	virtual	void PhTune(dReal step);
 	virtual void InitContact(dContact* c){};
 	virtual void StepFrameUpdate(dReal step){};
+private:
+	
 
 };
 

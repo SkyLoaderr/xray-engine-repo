@@ -1072,11 +1072,7 @@ void		CPHElement::	setMass		(float M){
 calculate_it_data_use_density(get_mc_data(),M);
 
 }
-void		CPHElement::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disable){
-	//mXFORM.set(m0);
-	//m_m0.set(m0);
-	//m_m2.set(m2);
-}
+
 void		CPHElement::Start(){
 	//mXFORM.set(m0);
 	build(m_space);
@@ -1107,9 +1103,7 @@ void CPHElement::SetTransform(const Fmatrix &m0){
 CPHElement::~CPHElement	(){
 
 }
-void		CPHElement::Update(){
-	//mXFORM.identity();
-}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 void CPHShell::setMass(float M){
@@ -1133,12 +1127,20 @@ void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disa
 		
 		mXFORM.set(m0);
 		for(i=elements.begin();i!=elements.end();i++){
-														(*i)->Start();
-														(*i)->SetTransform(m0);
+														//(*i)->Start();
+														//(*i)->SetTransform(m0);
+														(*i)->Activate(m0,dt01, m2, disable);
 			}
-	i=elements.begin();
-	m_body=(*i)->get_body();
-	m_inverse_local_transform.set((*i)->m_inverse_local_transform);
+	bActive=true;
+}
+
+void CPHElement::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disable){
+	mXFORM.set(m0);
+	Start();
+	SetTransform(m0);
+	//i=elements.begin();
+	//m_body=(*i)->get_body();
+	//m_inverse_local_transform.set((*i)->m_inverse_local_transform);
 	//Fmatrix33 m33;
 	//Fmatrix m,m1;
 	//m1.set(m0);
@@ -1150,11 +1152,11 @@ void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disa
 	//dMatrix3 R;
 	//PHDynamicData::FMX33toDMX(m33,R);
 	dBodySetLinearVel(m_body,m2.c.x-m0.c.x,m2.c.y-m0.c.y,m2.c.z-m0.c.z);
-	//dBodySetPosition(m_body,m0.c.x,m0.c.y+1.,m0.c.z);
+
 
 	PSGP.memCopy(m_safe_position,dBodyGetPosition(m_body),sizeof(dVector3));
 	PSGP.memCopy(m_safe_velocity,dBodyGetLinearVel(m_body),sizeof(dVector3));
-	bActive=true;
+
 
 //////////////////////////////////////////////////////////////
 //initializing values for disabling//////////////////////////
@@ -1187,18 +1189,27 @@ bActive=false;
 }
 
 void CPHShell::PhDataUpdate(dReal step){
-//////////////////////////////////////////////////////////////////////
-////limit velocity of the main body/////////////////////////////////
-/////////////////////////////////////////////////////////////////////
+
+vector<CPHElement*>::iterator i;
+for(i=elements.begin();i!=elements.end();i++)
+					(*i)->PhDataUpdate(step);
+}
+
+void CPHElement::PhDataUpdate(dReal step){
 //m_body_interpolation.UpdatePositions();
 //m_body_interpolation.UpdateRotations();
 //return;
+
 
 	if( !dBodyIsEnabled(m_body)) {
 					if(previous_p[0]!=dInfinity) previous_p[0]=dInfinity;
 					return;
 				}
-/////////////////////////////////////////////////////////////////
+   ////////////////////////////////////////////////////////////////////
+  //limit velocity of the main body///////////////////////////////////
+ ////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////
 				const dReal scale=1.01f;
 				const dReal scalew=1.01f;
 				const dReal* vel1= dBodyGetLinearVel(m_body);
@@ -1267,7 +1278,7 @@ void CPHShell::PhDataUpdate(dReal step){
 
 }
 
-void	CPHShell::Disable(){
+void	CPHElement::Disable(){
 //return;
 /////////////////////////////////////////////////////////////////////////////////////
 ////////disabling main body//////////////////////////////////////////////////////////
@@ -1398,7 +1409,10 @@ void CPHShell::Update(){
 	vector<CPHElement*>::iterator i;
 	for(i=elements.begin();i!=elements.end();i++)
 	(*i)->Update();
+	mXFORM.set((*elements.begin())->mXFORM);
+}
 
+void CPHElement::Update(){
 if( !dBodyIsEnabled(m_body)) return;
 				
 		//		PHDynamicData::DMXPStoFMX(dBodyGetRotation(m_body),
@@ -1414,9 +1428,127 @@ if( !dBodyIsEnabled(m_body)) return;
 }
 
 void	CPHShell::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val){
+	(*elements.begin())->applyImpulseTrace		( pos,  dir,  val);
+}
+
+void	CPHElement::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val){
 	if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
 	val/=fixed_step;
 	Fvector body_pos;
 	body_pos.sub(pos,m_inverse_local_transform.c);
 	dBodyAddForceAtRelPos       (m_body, dir.x*val,dir.y*val,dir.z*val,body_pos.x, body_pos.y, body_pos.z);
+}
+
+void __stdcall CPHShell:: BonesCallback				(CBoneInstance* B){
+CPHElement*	E			= dynamic_cast<CPHElement*>	(static_cast<CObject*>(B->Callback_Param));
+E->CallBack(B);
+}
+
+void CPHElement::CallBack(CBoneInstance* B){
+	if(!bActive && !bActivating){
+		mXFORM.set(B->mTransform);
+		bActivating=true;
+		m_start_time=Device.fTimeGlobal;
+		return;
+	}
+
+	if(bActivating){
+
+	Start();
+	SetTransform(mXFORM);
+//	Fmatrix33 m33;
+	Fmatrix m,m1,m2;
+	m1.set(mXFORM);
+	m2.set(B->mTransform);
+	//m1.identity();
+	m1.invert();
+	m.mul(m1,m2);
+	float dt01=Device.fTimeGlobal-m_start_time;
+	m.mul(1.f/dt01);
+	//m33.set(m);
+	//dMatrix3 R;
+	//PHDynamicData::FMX33toDMX(m33,R);
+	dBodySetLinearVel(m_body,m.c.x,m.c.y,m.c.z);
+	PSGP.memCopy(m_safe_position,dBodyGetPosition(m_body),sizeof(dVector3));
+	PSGP.memCopy(m_safe_velocity,dBodyGetLinearVel(m_body),sizeof(dVector3));
+
+
+//////////////////////////////////////////////////////////////
+//initializing values for disabling//////////////////////////
+//////////////////////////////////////////////////////////////
+
+	previous_p[0]=dInfinity;
+	previous_r[0]=0.f;
+	dis_count_f=0;
+
+	m_body_interpolation.SetBody(m_body);
+	//previous_f[0]=dInfinity;
+	return;
+	}
+	
+	Fmatrix parent;
+	InterpolateGlobalTransform(&B->mTransform);
+	m_parent_element->InterpolateGlobalTransform(&parent);
+	parent.invert();
+	B->mTransform.mulB(parent);
+}
+
+void CPHElement::InterpolateGlobalTransform(Fmatrix* m){
+	m_body_interpolation.InterpolateRotation(*m);
+	m_body_interpolation.InterpolatePosition(m->c);
+	m->mulB(m_inverse_local_transform);
+	
+}
+
+void CPHShell::Activate(){
+	if(bActive)
+		return;
+	m_ident=ph_world->AddObject(this);
+
+		vector<CPHElement*>::iterator i;
+
+		for(i=elements.begin();i!=elements.end();i++){
+														//(*i)->Start();
+														//(*i)->SetTransform(m0);
+														(*i)->Activate();
+			}
+	bActive=true;
+}
+void CPHElement::Activate(){
+	//mXFORM.set(m0);
+	Start();
+	//SetTransform(m0);
+	//i=elements.begin();
+	//m_body=(*i)->get_body();
+	//m_inverse_local_transform.set((*i)->m_inverse_local_transform);
+	//Fmatrix33 m33;
+	//Fmatrix m,m1;
+	//m1.set(m0);
+	//m1.identity();
+	//m1.invert();
+	//m.mul(m1,m2);
+	//m.mul(1.f/dt01);
+	//m33.set(m);
+	//dMatrix3 R;
+	//PHDynamicData::FMX33toDMX(m33,R);
+	//dBodySetLinearVel(m_body,m2.c.x-m0.c.x,m2.c.y-m0.c.y,m2.c.z-m0.c.z);
+	//dBodySetPosition(m_body,m0.c.x,m0.c.y+1.,m0.c.z);
+
+	PSGP.memCopy(m_safe_position,dBodyGetPosition(m_body),sizeof(dVector3));
+	PSGP.memCopy(m_safe_velocity,dBodyGetLinearVel(m_body),sizeof(dVector3));
+
+
+//////////////////////////////////////////////////////////////
+//initializing values for disabling//////////////////////////
+//////////////////////////////////////////////////////////////
+
+	previous_p[0]=dInfinity;
+	previous_r[0]=0.f;
+	dis_count_f=0;
+
+	m_body_interpolation.SetBody(m_body);
+	//previous_f[0]=dInfinity;
+//	if(disable) dBodyDisable(m_body);
+
+
 }
