@@ -46,22 +46,88 @@ void CAI_ALife::vfListTasks()
 
 void CAI_ALife::vfListLocations()
 {
-	TASK_PAIR_IT	it = m_tTaskRegistry.m_tpMap.begin();
-	TASK_PAIR_IT	E  = m_tTaskRegistry.m_tpMap.end();
+	OBJECT_VECTOR_IT	it = m_tpLocationOwners.begin();
+	OBJECT_VECTOR_IT	E  = m_tpLocationOwners.end();
 	Msg("%s->Listing location owners :",cName());
-	for (int i=0; it != E; it++, i++)
-		Msg("* %4d : [ID=%4d][CID=%1d][TT=][GID=%4d][UPD=%d]",i,(*it).first,(*it).second.tCustomerID,(*it).second.tTaskType,(*it).second.tGraphID,(*it).second.tTimeID);
-	Msg("Total %d location owners",i);
+	string4096			S;
+	for (int i=0; it != E; it++, i++) {
+		OBJECT_IT   it1 = (*it).begin();
+		OBJECT_IT   E1  = (*it).end();
+		S[0] = 0;
+		string16		S1;
+		for (int j=0; it1 != E1; it1++, j++) {
+			if (j)
+				strcat(S,",");
+			strcat(S,itoa(*it1,S1,10));
+		}
+
+		if (j) {
+			const u32 u = 105;
+			string128	S2;
+			for (int k=0, l=strlen(S), m=((l - 1)/u) + 1; k<m; k++) {
+				memcpy(S2,S + k*u,u*sizeof(char));
+				if (k == m - 1)
+					S2[l - k*u]=0;
+				else
+					S2[u] = 0;
+				if (!k)
+					if (m > 1) {
+						Msg("* Graph vertex ID %d : %d[\n* %s",i,j,S2);
+					}
+					else
+						Msg("* Graph vertex ID %d : %d[%s]",i,j,S2);
+				else
+					if (k == m - 1)
+						Msg("* %s]",S2);
+					else
+						Msg("* %s",S2);
+			}
+		}
+	}
+	Msg("Total %d graph vertexes",i);
 }
 
 void CAI_ALife::vfListTerrain()
 {
-	TASK_PAIR_IT	it = m_tTaskRegistry.m_tpMap.begin();
-	TASK_PAIR_IT	E  = m_tTaskRegistry.m_tpMap.end();
-	Msg("%s->Listing terrain :",cName());
-	for (int i=0; it != E; it++, i++)
-		Msg("* %4d : [ID=%4d][CID=%1d][TT=][GID=%4d][UPD=%d]",i,(*it).first,(*it).second.tCustomerID,(*it).second.tTaskType,(*it).second.tGraphID,(*it).second.tTimeID);
-	Msg("Total %d terrain",i);
+	GRAPH_VECTOR_IT	it = m_tpTerrain.begin();
+	GRAPH_VECTOR_IT	E  = m_tpTerrain.end();
+	Msg("%s->Listing terrain locations :",cName());
+	char *S = (char *)xr_malloc(128*1024*sizeof(char));
+	for (int i=0; it != E; it++, i++) {
+		GRAPH_IT   it1 = (*it).begin();
+		GRAPH_IT   E1  = (*it).end();
+		S[0] = 0;
+		string16		S1;
+		for (int j=0; it1 != E1; it1++, j++) {
+			if (j)
+				strcat(S,",");
+			strcat(S,itoa(*it1,S1,10));
+		}
+
+		if (j) {
+			const u32 u = 105;
+			string128	S2;
+			for (int k=0, l=strlen(S), m=((l - 1)/u) + 1; k<m; k++) {
+				memcpy(S2,S + k*u,u*sizeof(char));
+				if (k == m - 1)
+					S2[l - k*u]=0;
+				else
+					S2[u] = 0;
+				if (!k)
+					if (m > 1)
+						Msg("* Terrain location ID %d : %d[\n* %s",i,j,S2);
+					else
+						Msg("* Terrain location ID %d : %d[%s]",i,j,S2);
+				else
+					if (k == m - 1)
+						Msg("* %s]",S2);
+					else
+						Msg("* %s",S2);
+			}
+		}
+	}
+	_FREE(S);
+	Msg("Total %d terrain locations",i);
 }
 
 void CAI_ALife::vfListSpawnPoints()
