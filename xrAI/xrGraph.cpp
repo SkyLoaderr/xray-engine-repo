@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 
+#include "levelgamedef.h"
 #include "xrLevel.h"
 #include "xrGraph.h"
 
@@ -16,6 +17,11 @@ hdrNODES						m_header;		// m_header
 BYTE*							m_nodes;		// virtual nodes DATA array
 NodeCompressed**				m_nodes_ptr;	// pointers to node's data
 vector<bool>					q_mark_bit;		// temporal usage mark for queries
+
+typedef struct tagRPoint {
+	Fvector	P;
+	Fvector A;
+} RPoint;
 
 typedef struct tagSGraphEdge {
 	u32		dwVertexNumber;
@@ -61,13 +67,51 @@ void vfLoafAIMap(LPCSTR name)
 	q_mark_bit.assign	(m_header.count,false);
 }
 
-void vfLoadGraphVertexes(LPCSTR name)
+void vfLoadAIPoints(LPCSTR name)
+{
+	FILE_NAME	fName;
+	strconcat	(fName,name,"level.game");
+	CVirtualFileStream	F(fName);
+
+	CStream *O = 0;
+
+	if (0!=(O = F.OpenChunk	(AIPOINT_CHUNK)))
+	{
+		for (int id=0; O->FindChunk(id); id++)
+		{
+			SGraphVertex tGraphVertex;
+			O->Rvector(tGraphVertex.tPoint);
+			tpaGraph.push_back(tGraphVertex);
+		}
+		O->Close();
+	}
+}
+
+void vfLoadRespawnPoints(LPCSTR name)
 {
 	FILE_NAME	fName;
 	strconcat	(fName,name,"level.spawn");
-	CVirtualFileStream	FN(fName);
+	CVirtualFileStream	F(fName);
 
-	tpaGraph.clear();
+	CStream *O = 0;
+
+	if (0!=(O = F.OpenChunk	(RPOINT_CHUNK)))
+	{
+		for (int id=0; O->FindChunk(id); id++)
+		{
+			RPoint			R;
+			int				team;
+
+			O->Rvector		(R.P);
+			O->Rvector		(R.A);
+			team			= O->Rdword	();
+			
+			SGraphVertex	tGraphVertex;
+			tGraphVertex.tPoint = R.P;
+			tpaGraph.push_back(tGraphVertex);
+		}
+		O->Close();
+	}
 }
 
 void vfBuildGraph(LPCSTR name)
@@ -90,9 +134,16 @@ void xrBuildGraph(LPCSTR name)
 	vfLoafAIMap(name);
 	Msg("%d nodes loaded",int(m_header.count));
 	
-	Phase("Loading graph vertexes");
-	vfLoadGraphVertexes(name);
-	Msg("%d vertexes loaded",int(tpaGraph.size()));
+	tpaGraph.clear();
+
+	Phase("Loading AI points");
+	vfLoadAIPoints(name);
+	u32 dwAIPoints;
+	Msg("%d vertexes loaded",int(dwAIPoints = tpaGraph.size()));
+
+	Phase("Loading respawn points");
+	vfLoadRespawnPoints(name);
+	Msg("%d vertexes loaded",int(tpaGraph.size() - dwAIPoints));
 
 	Phase("Building graph");
 	vfBuildGraph(name);
