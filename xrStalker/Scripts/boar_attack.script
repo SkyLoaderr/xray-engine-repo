@@ -11,7 +11,7 @@ local boar = get_level_object ("boar")
 function on_enter_pzone (zone, obj)
 	zone:clear_callback (true)
 	reset_action (boar, boar_attack.script_name ())
-	action (boar, move (move.act_run, move.force_type, patrol ("boar_way2"), cond (cond.move_end))
+	action (boar, move (move.act_run, move.force_type, patrol ("boar_way2")), cond (cond.move_end))
 end
 
 function on_enter_bzone (zone, obj)
