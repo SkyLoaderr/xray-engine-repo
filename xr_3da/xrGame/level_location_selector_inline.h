@@ -15,11 +15,5 @@
 
 #define CLevelLocationSelector CBaseLocationSelector<CLevelGraph,_VertexEvaluator,_vertex_id_type>
 
-TEMPLATE_SPECIALIZATION
-IC	void CLevelLocationSelector::Init(_Graph *graph = 0)
-{
-	inherited::Init(graph);
-}
-
 #undef TEMPLATE_SPECIALIZATION
 #undef CLevelLocationSelector

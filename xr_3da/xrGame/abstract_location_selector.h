@@ -18,7 +18,7 @@ private:
 	bool						m_failed;
 	_VertexEvaluator			*m_evaluator;
 	_vertex_id_type				m_selected_vertex_id;
-	_Graph						*m_graph;
+	const _Graph				*m_graph;
 
 	IC		void				perform_search				(const _vertex_id_type game_vertex_id);
 protected:
@@ -27,7 +27,7 @@ protected:
 public:
 	IC							CAbstractLocationSelector	();
 	IC	virtual					~CAbstractLocationSelector	();
-	IC	virtual void			Init						(_Graph *graph = 0);
+		virtual void			Init						(const _Graph *graph = 0);
 
 	IC			_vertex_id_type get_selected_vertex_id		() const;
 
@@ -51,9 +51,9 @@ template <
 class 
 	CBaseLocationSelector :
 	public CAbstractLocationSelector <
-		typename _Graph,
-		typename _VertexEvaluator,
-		typename _vertex_id_type
+		_Graph,
+		_VertexEvaluator,
+		_vertex_id_type
 	>
 {
 };

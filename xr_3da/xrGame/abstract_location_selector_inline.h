@@ -28,7 +28,7 @@ IC	CSelectorTemplate::~CAbstractLocationSelector	()
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CSelectorTemplate::Init					(_Graph *graph)
+IC	void CSelectorTemplate::Init					(const _Graph *graph)
 {
 	m_failed				= true;
 	m_selected_vertex_id	= _vertex_id_type(-1);
@@ -102,4 +102,5 @@ IC	void CSelectorTemplate::perform_search		(const _vertex_id_type vertex_id)
 		m_selected_vertex_id	= m_evaluator->selected_vertex_id();
 }
 
+#undef CSelectorTemplate
 #undef TEMPLATE_SPECIALIZATION

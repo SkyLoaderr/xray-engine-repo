@@ -17,7 +17,7 @@
 #define CLevelManagerTemplate CBasePathManager<CLevelGraph,_VertexEvaluator,_vertex_id_type,_index_type>
 
 TEMPLATE_SPECIALIZATION
-IC	void CLevelManagerTemplate::Init(const CLevelGraph *graph = 0)
+IC	void CLevelManagerTemplate::Init(const CLevelGraph *graph)
 {
 	inherited::Init	(graph);
 	CAI_ObjectLocation::Init();

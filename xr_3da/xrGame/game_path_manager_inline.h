@@ -17,7 +17,7 @@
 #define CGameManagerTemplate CBasePathManager<CGameGraph,_VertexEvaluator,_vertex_id_type,_index_type>
 
 TEMPLATE_SPECIALIZATION
-IC	void CGameManagerTemplate::Init(const CGameGraph *graph = 0)
+IC	void CGameManagerTemplate::Init(const CGameGraph *graph)
 {
 	inherited::Init	(graph);
 	CAI_ObjectLocation::Init();

@@ -17,7 +17,7 @@
 #define CGameLocationSelector CBaseLocationSelector<CGameGraph,_VertexEvaluator,_vertex_id_type>
 
 TEMPLATE_SPECIALIZATION
-IC	void CGameLocationSelector::Init				(_Graph *graph = 0)
+void CGameLocationSelector::Init				(const CGameGraph *graph)
 {
 	// initializing inherited
 	inherited::Init					(graph);
