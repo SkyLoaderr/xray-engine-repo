@@ -1,5 +1,7 @@
 #pragma once
 
+#include "xrSyncronize.h"
+
 class ENGINE_API	CEvent;
 typedef CEvent*		EVENT;
 
