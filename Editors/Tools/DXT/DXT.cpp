@@ -24,7 +24,7 @@ const DWORD fcc_DXT3 = MAKEFOURCC('D','X','T','3');
 const DWORD fcc_DXT4 = MAKEFOURCC('D','X','T','4');
 const DWORD fcc_DXT5 = MAKEFOURCC('D','X','T','5');
 
-void WriteDTXnFile (DWORD count, void *buffer)
+void __cdecl WriteDTXnFile (DWORD count, void *buffer)
 {
 	if (count==sizeof(DDS_HEADER)){
 	// correct DDS header
@@ -45,7 +45,7 @@ void WriteDTXnFile (DWORD count, void *buffer)
 }
 
 
-void ReadDTXnFile (DWORD count, void *buffer)
+void __cdecl ReadDTXnFile (DWORD count, void *buffer)
 {
     _read(gFileIn, buffer, count);
 }

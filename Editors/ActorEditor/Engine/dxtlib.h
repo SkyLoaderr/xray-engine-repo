@@ -29,7 +29,7 @@ Comments:
 
 
 
-typedef HRESULT (*MIPcallback)(void * data, int miplevel, DWORD size);
+typedef HRESULT (__cdecl *MIPcallback)(void * data, int miplevel, DWORD size);
 // call back
 // pointer to data
 // mip level
@@ -79,7 +79,7 @@ inline bool IsPower2(unsigned int x)
    Compresses an image with a user supplied callback with the data for each MIP level created
    Only supports input of RGB 24 or ARGB 32 bpp
 */
-HRESULT nvDXTcompress(unsigned char * raw_data, // pointer to data (24 or 32 bit)
+HRESULT __cdecl nvDXTcompress(unsigned char * raw_data, // pointer to data (24 or 32 bit)
                 unsigned long w, // width in texels
                 unsigned long h, // height in texels
                 DWORD byte_pitch,
@@ -93,8 +93,8 @@ HRESULT nvDXTcompress(unsigned char * raw_data, // pointer to data (24 or 32 bit
 // void ReadDTXnFile(count, buffer);
 // 
 //
-void WriteDTXnFile(DWORD count, void * buffer);
-void ReadDTXnFile(DWORD count, void * buffer);
+void __cdecl WriteDTXnFile(DWORD count, void * buffer);
+void __cdecl ReadDTXnFile(DWORD count, void * buffer);
 
 
 
