@@ -211,7 +211,7 @@ void CRender::Render		()
 
 					// calculate
 					LR.compute_xfp_1						(pls_phase, L);
-					render_smap_sector						((CSector*)L->spatial.sector, LR.L_combine, L->position);
+					r_dsgraph_render_subspace				(L->spatial.sector, LR.L_combine, L->position, TRUE);
 					LR.compute_xfp_2						(pls_phase, L);
 
 					// rendering
@@ -236,7 +236,7 @@ void CRender::Render		()
 
 				// calculate
 				LR.compute_xfs_1						(0, L);
-				render_smap_sector						((CSector*)L->spatial.sector, LR.L_combine, L->position);
+				r_dsgraph_render_subspace				(L->spatial.sector, LR.L_combine, L->position, TRUE);
 				LR.compute_xfs_2						(0, L);
 
 				// rendering
