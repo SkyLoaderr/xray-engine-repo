@@ -151,6 +151,7 @@ public:
 		eVelocityParamsRun				= eVelocityParameterStand | eVelocityParameterWalkNormal | eVelocityParameterRunNormal,
 		eVelocityParamsAttackNorm		= eVelocityParameterStand | eVelocityParameterWalkNormal | eVelocityParameterRunNormal,
 		eVelocityParamsAttackDamaged	= eVelocityParameterStand | eVelocityParameterWalkDamaged | eVelocityParameterRunDamaged,
+		eVelocityParamsSteal			= eVelocityParameterStand | eVelocityParameterSteal,
 	};
 
 public:
@@ -363,8 +364,8 @@ public:
 
 	
 	// PathManagement Bridge
-	void MoveToTarget			(CEntity *entity); 
-	void MoveToTarget			(const Fvector &pos, u32 node_id);
+	void MoveToTarget			(CEntity *entity,u32 vel_mask, u32 des_mask); 
+	void MoveToTarget			(const Fvector &pos, u32 node_id,u32 vel_mask, u32 des_mask);
 	void FaceTarget				(CEntity *entity);
 	void FaceTarget				(const Fvector &position);
 	bool IsObjectPositionValid	(CEntity *entity);
