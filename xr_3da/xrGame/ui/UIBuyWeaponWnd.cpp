@@ -395,7 +395,7 @@ bool CUIBuyWeaponWnd::SlotProc2(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	if(!this_inventory->CanPutInSlot(pDDItemMP, RIFLE_SLOT)) return false;
 
 	this_inventory->SlotToSection(RIFLE_SLOT);
-	
+	/*
 	// Если есть аддоны, то показать их
 	if (pDDItemMP->bAddonsAvailable)
 	{
@@ -408,7 +408,7 @@ bool CUIBuyWeaponWnd::SlotProc2(CUIDragDropItem* pItem, CUIDragDropList* pList)
 		this_inventory->MenuLevelUp();
 		this_inventory->MenuLevelUp();
 	}
-
+	*/
 	// И отнимаем от денег стоимость вещи.
 	if (!pDDItemMP->m_bAlreadyPaid)
 	{
