@@ -14,6 +14,7 @@ public:
 	{
 		m_tpServer					= tpServer;
 		m_tpALife					= 0;
+		m_bALife					= false;
 	};
 
 	virtual							~game_sv_Single			()

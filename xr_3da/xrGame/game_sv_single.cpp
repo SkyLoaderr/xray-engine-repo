@@ -3,7 +3,7 @@
 
 void	game_sv_Single::Create			(LPCSTR options)
 {
-	m_bALife			= !!get_option_i(options,"alife",0);
+	m_bALife			= !!strstr(options,"/alife");
 	switch_Phase		(GAME_PHASE_PENDING);
 }
 
