@@ -27,6 +27,9 @@ CAI_Stalker::CAI_Stalker			()
 	
 	m_dwTimeToChange				= 0;
 	m_dwHitTime						= 0;
+
+	m_dwActionRefreshRate			= 1000;
+	m_fAttackSuccessProbability		= .7f;
 	
 	m_pPhysicsShell					= NULL;
 	m_saved_impulse					= 0.f;
@@ -58,6 +61,7 @@ void CAI_Stalker::Load				(LPCSTR section)
 	setEnabled						(false);
 	inherited::Load					(section);
 	m_tSelectorFreeHunting.Load		(section);
+	m_tSelectorReload.Load			(section);
 	// visibility
 	m_dwMovementIdleTime			= pSettings->ReadINT(section,"MovementIdleTime");
 	m_fMaxInvisibleSpeed			= pSettings->ReadFLOAT(section,"MaxInvisibleSpeed");
@@ -127,8 +131,12 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	fHealth							= tpHuman->fHealth;
 	m_tCurGP						= tpHuman->m_tGraphID;
 	m_tNextGP						= tpHuman->m_tNextGraphID;
+	
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	m_tNextGP						= m_tCurGP = getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-	m_tStateStack.push				(m_eCurrentState = eStalkerStateLookingOver);
+	m_tStateStack.push				(m_eCurrentState = eStalkerStateAccomplishingTask);
 	vfAddStateToList				(m_eCurrentState);
 
 	CStalkerAnimations::Load		(PKinematics(pVisual));

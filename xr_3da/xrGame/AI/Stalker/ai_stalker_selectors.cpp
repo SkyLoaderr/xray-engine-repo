@@ -22,3 +22,17 @@ float CStalkerSelectorFreeHunting::Estimate(NodeCompressed* tNode, float fDistan
 	return(m_tEnemyPosition.distance_to(m_tCurrentPosition)*1000.f);
 }
 
+CStalkerSelectorReload::CStalkerSelectorReload()
+{ 
+	Name = "selector_reload"; 
+}
+
+float CStalkerSelectorReload::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
+{
+	m_tpCurrentNode = tNode;
+	m_fDistance = fDistance;
+	vfInit();
+	vfAddCoverFromEnemyCost();
+	return(m_fResult);
+}
+

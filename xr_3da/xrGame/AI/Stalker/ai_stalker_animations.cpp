@@ -198,33 +198,34 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 	if (g_Health() <= 0)
 		return;
 	if (Weapons->ActiveWeapon())
-		if (m_eCurrentState == eStalkerStateRecharge) {
+//		if (m_eCurrentState == eStalkerStateRecharge) {
+//			switch (Weapons->ActiveWeaponID()) {
+//				case 0 : {
+//					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[3].A[5].A[0];
+//					break;
+//				}
+//				case 1 : {
+//					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[1].A[5].A[0];
+//					break;
+//				}
+//				case 2 : {
+//					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[2].A[5].A[0];
+//					break;
+//				}
+//			}
+//		}
+//		else 
+		{
 			switch (Weapons->ActiveWeaponID()) {
 				case 0 : {
-					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[3].A[5].A[0];
-					break;
-				}
-				case 1 : {
-					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[1].A[5].A[0];
-					break;
-				}
-				case 2 : {
-					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[2].A[5].A[0];
-					break;
-				}
-			}
-		}
-		else {
-			switch (Weapons->ActiveWeaponID()) {
-				case 0 : {
-					if (m_eCurrentState == eStalkerStateSearching)
+					if (m_eCurrentState == eStalkerStateAccomplishingTask)
 						tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[3].A[7+m_tMovementType].A[0];
 					else
 						tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[3].A[0].A[0];
 					break;
 				}
 				case 1 : {
-					if (m_eCurrentState == eStalkerStateSearching)
+					if (m_eCurrentState == eStalkerStateAccomplishingTask)
 						tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[1].A[7+m_tMovementType].A[0];
 					else
 						tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[1].A[0].A[0];

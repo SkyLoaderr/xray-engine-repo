@@ -110,6 +110,7 @@ void CAI_Stalker::vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, C
 	{
 		
 //		m_dwLastRangeSearch = S.m_dwCurTime;
+		vfInitSelector(S,Squad,Leader);
 		Device.Statistic.AI_Node.Begin();
 		Squad.Groups[g_Group()].GetAliveMemberInfoWithLeader(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this,Leader);
 		Device.Statistic.AI_Node.End();

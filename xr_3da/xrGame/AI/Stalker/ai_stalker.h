@@ -25,16 +25,15 @@ private:
 	
 	enum EStalkerStates {
 		eStalkerStateDie = 0,
-		eStalkerStateTurnOver,
-		eStalkerStateWaitForAnimation,
-		eStalkerStateWaitForTime,
+		eStalkerStateAccomplishingTask,
+		eStalkerStateAttack,
+		eStalkerStateDefend,
+		eStalkerStateRetreatKnown,
+		eStalkerStateRetreatUnknown,
+		eStalkerStatePursuitKnown,
+		eStalkerStatePursuitUnknown,
+		eStalkerStatePursuitSearchCorp,
 		eStalkerStateRecharge,
-		eStalkerStateDrop,
-		eStalkerStateLookingOver,
-		eStalkerStateSearching,
-		eStalkerStateFiring,
-		eStalkerStateUnderFire,
-		eStalkerStatePursuit,
 	};
 
 	enum EBodyState {
@@ -91,7 +90,7 @@ private:
 	
 	// VISIBILITY
 	objSET					m_tpaVisibleObjects;
-	SEnemySelected			m_Enemy;
+	SEnemySelected			m_tEnemy;
 		
 	//HIT PHYS
 	float					m_saved_impulse;
@@ -118,6 +117,7 @@ private:
 	float					m_fGoingSpeed;
 	TERRAIN_VECTOR			m_tpaTerrain;
 	Fvector					m_tNextGraphPoint;
+	
 	// FSM
 	stack<EStalkerStates>	m_tStateStack;
 	svector<SStalkerStates,MAX_STATE_LIST_SIZE>	m_tStateList;
@@ -129,6 +129,10 @@ private:
 	EStalkerStates			m_ePreviousState;
 	bool					m_bStateChanged;
 	CStalkerSelectorFreeHunting	m_tSelectorFreeHunting;
+	CStalkerSelectorReload	m_tSelectorReload;
+	u32						m_dwActionRefreshRate;
+	float					m_fAttackSuccessProbability;
+	
 	// visibility constants
 	u32						m_dwMovementIdleTime;
 	float					m_fMaxInvisibleSpeed;
@@ -157,16 +161,15 @@ private:
 			// state machine
 			void			vfAddStateToList				(EStalkerStates eState);
 			// states
-			void			TurnOver						();
-			void			WaitForAnimation				();
-			void			WaitForTime						();
+			void			AccomplishTask					();
+			void			Attack							();
+			void			Defend							();
+			void			RetreatKnown					();
+			void			RetreatUnknown					();
+			void			PursuitKnown					();
+			void			PursuitUnknown					();
+			void			SearchCorp						();
 			void			Recharge						();
-			void			Drop							();
-			void			LookingOver						();
-			void			Searching						();
-			void			Firing							();
-			void			UnderFire						();
-			void			Pursuit							();
 
 			// selectors
 			void			vfBuildPathToDestinationPoint	(CAISelectorBase *S, bool bCanStraighten);

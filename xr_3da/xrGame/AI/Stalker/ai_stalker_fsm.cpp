@@ -11,9 +11,9 @@
 #include "..\\ai_monsters_misc.h"
 
 #undef	WRITE_TO_LOG
-//Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
 //#define WRITE_TO_LOG(s) m_bStopThinking = true;
 #define WRITE_TO_LOG(s) {\
+	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
 	m_bStopThinking = true;\
 }
 
@@ -21,93 +21,6 @@
 	#undef	WRITE_TO_LOG
 	#define WRITE_TO_LOG(s) m_bStopThinking = true;
 #endif
-
-void CAI_Stalker::vfUpdateSearchPosition()
-{
-	if (!g_Alive())
-		return;
-	INIT_SQUAD_AND_LEADER;
-	if (this != Leader)	{
-		CAI_Stalker *tpLeader = dynamic_cast<CAI_Stalker*>(Leader);
-		if (tpLeader) {
-			if (m_tNextGraphPoint.distance_to(tpLeader->m_tNextGraphPoint) > EPS_L)
-				m_eCurrentState = eStalkerStateSearching;
-			m_tNextGraphPoint			= tpLeader->m_tNextGraphPoint;
-		}
-	}
-	else {
-		//Msg("%s : %d -> %d (%d)",cName(),m_tCurGP,m_tNextGP,m_dwTimeToChange);
-		if ((Level().timeServer() >= m_dwTimeToChange) && (getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex == m_tNextGP)) {
-			m_tNextGP					= getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
-			vfChooseNextGraphPoint		();
-			m_tNextGraphPoint.set		(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
-			AI_Path.DestNode			= getAI().m_tpaGraph[m_tNextGP].tNodeID;
-			//Msg("Next graph point %d",m_tNextGP);
-		}
-		else
-			AI_Path.DestNode			= getAI().m_tpaGraph[m_tNextGP].tNodeID;
-	}
-}
-
-void CAI_Stalker::Think()
-{
-	//vfUpdateSearchPosition();
-	m_dwUpdateCount++;
-	m_dwLastUpdate			= m_dwCurrentUpdate;
-	m_dwCurrentUpdate		= Level().timeServer();
-	m_bStopThinking			= false;
-	do {
-		m_ePreviousState	= m_eCurrentState;
-		switch (m_eCurrentState) {
-			case eStalkerStateDie : {
-				Death();
-				break;
-			}
-			case eStalkerStateTurnOver : {
-				TurnOver();
-				break;
-			}
-			case eStalkerStateWaitForAnimation : {
-				WaitForAnimation();
-				break;
-			}
-			case eStalkerStateWaitForTime : {
-				WaitForTime();
-				break;
-			}
-			case eStalkerStateRecharge : {
-				Recharge();
-				break;
-			}
-			case eStalkerStateDrop : {
-				Drop();
-				break;
-			}
-			case eStalkerStateLookingOver : {
-				LookingOver();
-				break;
-			}
-			case eStalkerStateSearching: {
-				Searching();
-				break;
-			}
-			case eStalkerStateFiring: {
-				Firing();
-				break;
-			}
-			case eStalkerStateUnderFire: {
-				UnderFire();
-				break;
-			}
-			case eStalkerStatePursuit: {
-				Pursuit();
-				break;
-			}
-		}
-		m_bStateChanged		= m_ePreviousState != m_eCurrentState;
-	}
-	while (!m_bStopThinking);
-};
 
 void CAI_Stalker::vfAddStateToList(EStalkerStates eState)
 {
@@ -133,92 +46,175 @@ void CAI_Stalker::Death()
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
 }
 
-void CAI_Stalker::TurnOver()
+void CAI_Stalker::Defend()
 {
-	WRITE_TO_LOG("Turn over");
+	WRITE_TO_LOG("Defending");
 }
 
-void CAI_Stalker::WaitForAnimation()
+void CAI_Stalker::RetreatKnown()
 {
-	WRITE_TO_LOG("Wait for animation");
+	WRITE_TO_LOG("Retreating known");
 }
 
-void CAI_Stalker::WaitForTime()
+void CAI_Stalker::RetreatUnknown()
 {
-	WRITE_TO_LOG("Wait for time");
+	WRITE_TO_LOG("Retreating unknown");
 }
 
-void CAI_Stalker::Drop()
+void CAI_Stalker::PursuitKnown()
 {
-	WRITE_TO_LOG("Drop");
-	VERIFY(Weapons->ActiveWeapon());
-	DropItem();
+	WRITE_TO_LOG("Pursuiting known");
+	
+//	VERIFY(Weapons->ActiveWeapon());
+//	Weapons->ActiveWeapon()->Reload();
+//	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(Weapons->ActiveWeapon()->GetAmmoElapsed());
 }
 
-void CAI_Stalker::LookingOver()
+void CAI_Stalker::PursuitUnknown()
 {
-	WRITE_TO_LOG("Looking over");
-	m_fCurSpeed = 0.f;
-	SWITCH_TO_NEW_STATE_AND_UPDATE(eStalkerStateSearching);
+	WRITE_TO_LOG("Pursuiting unknown");
+}
+
+void CAI_Stalker::SearchCorp()
+{
+	WRITE_TO_LOG("Searching corp");
+}
+
+void CAI_Stalker::vfUpdateSearchPosition()
+{
+	if (!g_Alive())
+		return;
+	INIT_SQUAD_AND_LEADER;
+	if (this != Leader)	{
+		CAI_Stalker *tpLeader = dynamic_cast<CAI_Stalker*>(Leader);
+		if (tpLeader) {
+//			if (m_tNextGraphPoint.distance_to(tpLeader->m_tNextGraphPoint) > EPS_L)
+//				m_eCurrentState = eStalkerStateSearching;
+			m_tNextGraphPoint			= tpLeader->m_tNextGraphPoint;
+		}
+	}
+	else {
+		//Msg("%s : %d -> %d (%d)",cName(),m_tCurGP,m_tNextGP,m_dwTimeToChange);
+		if ((Level().timeServer() >= m_dwTimeToChange) && (getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex == m_tNextGP)) {
+			m_tNextGP					= getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
+			vfChooseNextGraphPoint		();
+			m_tNextGraphPoint.set		(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
+			AI_Path.DestNode			= getAI().m_tpaGraph[m_tNextGP].tNodeID;
+			//Msg("Next graph point %d",m_tNextGP);
+		}
+		else
+			AI_Path.DestNode			= getAI().m_tpaGraph[m_tNextGP].tNodeID;
+	}
 }
 
 void CAI_Stalker::Recharge()
 {
-	WRITE_TO_LOG("Recharge");
+	WRITE_TO_LOG("Pursuiting known");
+	
+	SelectEnemy(m_tEnemy);
+
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(!m_tEnemy.Enemy);
+
 	VERIFY(Weapons->ActiveWeapon());
 	Weapons->ActiveWeapon()->Reload();
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(Weapons->ActiveWeapon()->GetAmmoElapsed());
-}
 
-void CAI_Stalker::UnderFire()
-{
-	WRITE_TO_LOG("Under fire");
+	vfChoosePointAndBuildPath	(m_tSelectorReload);
 
-
-}
-
-void CAI_Stalker::Pursuit()
-{
-	WRITE_TO_LOG("Pursuit");
-}
-
-void CAI_Stalker::Firing()
-{
-	WRITE_TO_LOG("Searching");
-
-	SelectEnemy(m_Enemy);
-
-	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(!m_Enemy.Enemy);
-
-//	vfChoosePointAndBuildPath();
-
-	vfSetMovementType(eBodyStateStand,eMovementTypeWalk,eLookTypePoint,m_Enemy.Enemy->Position());
-
-//	vfSetFire(true);
+	vfSetMovementType			(eBodyStateStand,eMovementTypeWalk,eLookTypePoint, m_tEnemy.Enemy->Position());
 	
-	if (m_fCurSpeed < EPS_L)
-		r_torso_target.yaw = r_target.yaw;
-}
-
-void CAI_Stalker::Searching()
-{
-	WRITE_TO_LOG				("Searching");
-
-////	SelectEnemy(m_Enemy);
-//
-////	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(m_Enemy.Enemy,eStalkerStateFiring);
-//
-////	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(Level().timeServer() - m_dwLastHitTime > 3000,eStalkerStateUnderFire);
-//
-//	if (!AI_Path.Nodes.size() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode))
-//		vfBuildPathToDestinationPoint		(0);
-//
-//	vfSetMovementType(eBodyStateStand,eMovementTypeWalk,eLookTypeSearch);
-	
-	vfChoosePointAndBuildPath	(m_tSelectorFreeHunting,true);
-
-	vfSetMovementType			(eBodyStateStand,eMovementTypeWalk,eLookTypeDanger);
-
 	if (m_fCurSpeed < EPS_L)
 		r_torso_target.yaw		= r_target.yaw;
 }
+
+void CAI_Stalker::AccomplishTask()
+{
+	WRITE_TO_LOG				("Accomplishing task");
+
+	SelectEnemy(m_tEnemy);
+
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(m_tEnemy.Enemy,eStalkerStateAttack);
+
+	if (!AI_Path.Nodes.size() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode))
+		vfBuildPathToDestinationPoint		(0,true);
+
+	vfSetMovementType			(eBodyStateStand,eMovementTypeWalk,eLookTypeDanger);
+	
+	if (m_fCurSpeed < EPS_L)
+		r_torso_target.yaw		= r_target.yaw;
+}
+
+void CAI_Stalker::Attack()
+{
+	WRITE_TO_LOG("Attacking");
+	SelectEnemy(m_tEnemy);
+
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(!m_tEnemy.Enemy);
+
+	EStalkerStates eState = EStalkerStates(dwfChooseAction(m_dwActionRefreshRate,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),eStalkerStateAttack,eStalkerStateDefend,eStalkerStateRetreatKnown));
+	if (eState != m_eCurrentState)
+		GO_TO_NEW_STATE_THIS_UPDATE(eState);
+
+	vfChoosePointAndBuildPath	(m_tSelectorReload);
+
+	vfSetMovementType			(eBodyStateStand,eMovementTypeWalk,eLookTypeFirePoint,m_tEnemy.Enemy->Position());
+	
+	if (m_fCurSpeed < EPS_L)
+		r_torso_target.yaw		= r_target.yaw;
+}
+
+void CAI_Stalker::Think()
+{
+	vfUpdateSearchPosition();
+	m_dwUpdateCount++;
+	m_dwLastUpdate			= m_dwCurrentUpdate;
+	m_dwCurrentUpdate		= Level().timeServer();
+	m_bStopThinking			= false;
+	do {
+		m_ePreviousState	= m_eCurrentState;
+		switch (m_eCurrentState) {
+			case eStalkerStateDie : {
+				Death();
+				break;
+			}
+			case eStalkerStateAccomplishingTask : {
+				AccomplishTask();
+				break;
+			}
+			case eStalkerStateAttack : {
+				Attack();
+				break;
+			}
+			case eStalkerStateDefend : {
+				Defend();
+				break;
+			}
+			case eStalkerStateRetreatKnown : {
+				RetreatKnown();
+				break;
+			}
+			case eStalkerStateRetreatUnknown : {
+				RetreatUnknown();
+				break;
+			}
+			case eStalkerStatePursuitKnown : {
+				PursuitKnown();
+				break;
+			}
+			case eStalkerStatePursuitUnknown : {
+				PursuitUnknown();
+				break;
+			}
+			case eStalkerStatePursuitSearchCorp : {
+				SearchCorp();
+				break;
+			}
+			case eStalkerStateRecharge : {
+				Recharge();
+				break;
+			}
+		}
+		m_bStateChanged		= m_ePreviousState != m_eCurrentState;
+	}
+	while (!m_bStopThinking);
+};
