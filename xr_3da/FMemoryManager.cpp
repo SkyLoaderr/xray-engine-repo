@@ -94,12 +94,12 @@ void mmgrInitialize(int dbgLevel)
 			long Time;	time(&Time);
 			fprintf(memLOG, "%s\n", ctime(&Time));
 		}
-		_CrtSetDbgFlag( CRTflag );
-		_CrtSetAllocHook( MyAllocHook );
-		_CrtSetReportHook( MyReportHook );
-		_CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_FILE);
-		_CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_FILE);
-		_CrtSetReportMode(_CRT_ASSERT, _CRTDBG_MODE_FILE);
+		_CrtSetDbgFlag		( CRTflag			);
+		_CrtSetAllocHook	( MyAllocHook		);
+		_CrtSetReportHook	( MyReportHook		);
+		_CrtSetReportMode	(_CRT_WARN, _CRTDBG_MODE_FILE);
+		_CrtSetReportMode	(_CRT_ERROR, _CRTDBG_MODE_FILE);
+		_CrtSetReportMode	(_CRT_ASSERT, _CRTDBG_MODE_FILE);
 		break;
 	case 0:
 	default:
