@@ -59,7 +59,8 @@ protected:
 	CBlender_DESC	description;
 	BP_Integer		oPriority;
 	BP_BOOL			oStrictSorting;
-	string64		oTC;
+	string64		oT_Name;
+	string64		oT_xform;
 protected:
 	DWORD		BC			(BOOL v)		{ return v?0xff:0; }
 	

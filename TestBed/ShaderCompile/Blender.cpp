@@ -14,6 +14,8 @@ CBlender::CBlender()
 	oPriority.min	= 0;
 	oPriority.max	= 3;
 	oPriority.value	= 1;
+	oT_Name[0]		= 0;
+	oT_xform[0]		= 0;
 }
 
 CBlender::~CBlender()
@@ -37,14 +39,6 @@ DWORD CBlender::BP_read_c(CStream& FS)
 	return		T;
 }
 
-BOOL	CBlender::c_XForm()
-{
-	// Detect if XForm is needed at all
-	if (oTCS.tcs != BP_TCS::tcsGeometry)	return TRUE;
-	if (oTCM.tcm != 0)						return TRUE;
-	return FALSE;
-}
-
 void	CBlender::Save(	CFS_Base& FS )
 {
 	FS.write	(&description,sizeof(description));
@@ -52,7 +46,8 @@ void	CBlender::Save(	CFS_Base& FS )
 	BP_WRITE	("Priority",		BPID_INTEGER,	oPriority);
 	BP_WRITE	("Strict sorting",	BPID_BOOL,		oStrictSorting);
 	BP_W_MARKER	("Base Texture");
-	BP_WRITE	("UV Transform",	BPID_MATRIX,	oTC);
+	BP_WRITE	("Name",			BPID_TEXTURE,	oT_Name);
+	BP_WRITE	("Transform",		BPID_MATRIX,	oT_xform);
 }
 
 void	CBlender::Load(	CStream& FS )
@@ -62,7 +57,8 @@ void	CBlender::Load(	CStream& FS )
 	BP_READ		(BPID_INTEGER,	oPriority);
 	BP_READ		(BPID_BOOL,		oStrictSorting);
 	BP_R_MARKER	();
-	BP_READ		(BPID_MATRIX,	oTC);
+	BP_READ		(BPID_TEXTURE,	oT_Name);
+	BP_READ		(BPID_MATRIX,	oT_xform);
 }
 //////////////////////////////////////////////////////////////////////
 #include "blender_clsid.h"
