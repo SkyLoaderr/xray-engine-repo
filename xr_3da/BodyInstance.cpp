@@ -225,7 +225,7 @@ CBlend*	CKinematics::PlayFX			(LPCSTR  N, float power_scale)
 	else					{ Debug.fatal("! MODEL: can't find FX: %s", N); return 0; }
 }
 
-CBlend*	CKinematics::LL_PlayFX(int bone, int motion, float blendAccrue, float blendFalloff, float Speed, float Power)
+CBlend*	CKinematics::LL_PlayFX		(int bone, int motion, float blendAccrue, float blendFalloff, float Speed, float Power)
 {
 	if (motion<0)	return 0;
 //.	if (blend_fx.size()>=MAX_BLENDED) return 0;
