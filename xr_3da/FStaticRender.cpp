@@ -90,16 +90,6 @@ void CRender::Calculate()
 	g_fPOWER	=	fPOWER;
 	g_fSCREEN	=	float(Device.dwWidth*Device.dwHeight);
 
-	// Sleep
-/*
-	float time_to_sleep = 3.f*(1.0f/QualityControl.fMaxFPS-1.0f/Device.Statistic.fFPS);
-	if (time_to_sleep>0)
-	{
-		CTimer T; T.Start();
-//		while (T.GetAsync()<time_to_sleep) Sleep(0);
-	}
-*/
-
 	// Build lights visibility & perform basic initialization
 	// Lights
 	Lights.UnselectAll				();
