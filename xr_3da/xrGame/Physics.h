@@ -30,16 +30,17 @@ class CPHJeep {
 	dGeomID Geoms[NofGeoms];
 	dJointID Joints[NofJoints];
 	dVector3 startPosition;
-
+	bool weels_limited;
 	void CreateDynamicData();
 public:
-	//CPHJeep(){}
+	CPHJeep(){weels_limited=true;}
 
 	void Create(dSpaceID space, dWorldID world);
 	void Create1(dSpaceID space, dWorldID world);
 	void Destroy();
 	void Steer1(const char& velocity, const char& steering);
 	void Steer(const char& steering);
+	void LimitWeels();
 	void Drive(const char& velocity,dReal force=500.f);
 	void Drive();
 	void NeutralDrive();

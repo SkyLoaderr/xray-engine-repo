@@ -440,25 +440,48 @@ void CPHJeep::Steer(const char& steering)
 		break;
 
 	default: // case 0
-		for(i = 0; i < 4; ++i)
+		weels_limited=false;
+		for(i = 2; i < 4; ++i)
 		{
 			dReal angle = dJointGetHinge2Angle1(Joints[i]);
+	
+			
 			if(angle < 0)
 			{
 				dJointSetHinge2Param(Joints[i], dParamHiStop, 0);
-				dJointSetHinge2Param(Joints[i], dParamLoStop, 0);///
+			
 				dJointSetHinge2Param(Joints[i], dParamVel, steeringRate);
 			}
 			else
 			{	
-				dJointSetHinge2Param(Joints[i], dParamHiStop, 0);//
+
 				dJointSetHinge2Param(Joints[i], dParamLoStop, 0);
 				dJointSetHinge2Param(Joints[i], dParamVel, -steeringRate);
 			}
+		
 		}
 		break;
 	}
 
+}
+
+void CPHJeep::LimitWeels()
+{
+if(weels_limited) return;
+
+	for(int i = 2; i < 4; ++i)
+		{
+			dReal angle = dJointGetHinge2Angle1(Joints[i]);
+			if(dFabs(angle)<M_PI/180.f)
+			{
+				
+				dJointSetHinge2Param(Joints[i], dParamHiStop, 0);
+				dJointSetHinge2Param(Joints[i], dParamLoStop, 0);///
+				dJointSetHinge2Param(Joints[i], dParamVel, 0);
+				weels_limited=true;
+			}
+		}
+	
 }
 ////////////////////////////////////////////////////////////////
 void CPHJeep::Drive(const char& velocity,dReal force)

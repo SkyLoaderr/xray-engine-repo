@@ -155,7 +155,7 @@ void CDummyObject::OnDeviceCreate()
 		R_ASSERT							(m_pPhysicsShell);
 		m_pPhysicsShell->add_Element		(E);
 		m_pPhysicsShell->setMass			(200.f);
-		m_pPhysicsShell->Activate			(svXFORM(),0,svXFORM(),false);
+		m_pPhysicsShell->Activate			(svXFORM(),0,svXFORM(),true);
 		m_pPhysicsShell->mDesired.identity	();
 		m_pPhysicsShell->fDesiredStrength	= 0.f;
 	}
