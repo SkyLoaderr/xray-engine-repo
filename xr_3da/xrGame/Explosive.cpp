@@ -109,7 +109,8 @@ void CExplosive::net_Destroy	()
 /////////////////////////////////////////////////////////
 void CExplosive::Explode()
 {
-	VERIFY(0xffff != m_iCurrentParentID && m_bReadyToExplode);
+	VERIFY(0xffff != m_iCurrentParentID);
+	VERIFY(m_bReadyToExplode);
 
 	Fvector& pos = m_vExplodePos;
 	Fvector& dir = m_vExplodeDir;
