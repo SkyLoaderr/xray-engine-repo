@@ -59,6 +59,7 @@ public:
 
 	float						priority				();
 	void						start					(sound* _owner, BOOL _loop);
+	void						cancel					();						// manager forces out of rendering
 	void						update					(float dt);
 	BOOL						update_culling			(float dt);
 	void						update_environment		(float dt);

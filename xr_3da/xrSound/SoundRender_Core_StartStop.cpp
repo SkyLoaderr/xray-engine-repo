@@ -22,7 +22,11 @@ void	CSoundRender_Core::i_start		(CSoundRender_Emitter* E)
 			Ptarget	= Ttest->priority;
 		}
 	}
-	
+
+	// Stop currently playing
+	if (T->get_emitter())
+		T->get_emitter()->cancel();
+
 	// Associate
 	E->target			= T;
 	T->start			(E);
