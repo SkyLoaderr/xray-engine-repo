@@ -70,7 +70,7 @@ function SPatrol:process ()
     if ctime - self.anim_time < anim_interval then return end
     
     if table.getn (self.anims) == 0 then return end
-    local nanim = math.random (1, table.getn (self.anims) + 1)
+    local nanim = math.random (1, table.getn (self.anims))
     printf ("Set animation %s", self.anims[nanim])
     action_first (self.npc, anim (self.anims[nanim], self.flags[nanim]), cond (cond.anim_end))
     self.animation = true
