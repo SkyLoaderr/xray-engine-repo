@@ -157,6 +157,13 @@ states = {
 				animstate = "stand",
 				animation = "warding"
 			},
+	search = {weapon = nil,
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "poisk"
+			},
 
 
 	-- Сидячие состояния
