@@ -159,6 +159,7 @@ protected:
 	CUIStatic			UIWoundIcon;
 	CUIStatic			UIStarvationIcon;
 	CUIStatic			UIFatigueIcon;
+	CUIStatic			UIInvincibleIcon;
 
 public:	
 	CUIArtefactPanel    m_artefactPanel;
@@ -173,7 +174,8 @@ public:
 		ewiRadiation,
 		ewiWound,
 		ewiStarvation,
-		ewiFatigue
+		ewiFatigue,
+		ewiInvincible,
 	};
 
 	// Задаем цвет соответствующей иконке

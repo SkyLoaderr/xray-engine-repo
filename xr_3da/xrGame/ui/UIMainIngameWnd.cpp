@@ -231,18 +231,23 @@ void CUIMainIngameWnd::Init()
 	xml_init.InitStatic(uiXml, "fatigue_static", 0, &UIFatigueIcon);
 	UIFatigueIcon.GetStaticItem()->SetScaleXY(0.75f,0.75f);
 
-	shared_str warningStrings[5] = 
+	AttachChild(&UIInvincibleIcon);
+	xml_init.InitStatic(uiXml, "invincible_static", 0, &UIInvincibleIcon);
+	UIInvincibleIcon.GetStaticItem()->SetScaleXY(0.75f,0.75f);
+
+	shared_str warningStrings[6] = 
 	{	
 		"jammed",
 		"radiation",
 		"wounds",
 		"starvation",
-		"fatigue"
+		"fatigue",
+		"invincible"
 	};
 
 	// «агружаем пороговые значени€ дл€ индикаторов
 	EWarningIcons j = ewiWeaponJammed;
-	while (j <= ewiFatigue)
+	while (j <= ewiInvincible)
 	{
 		// „итаем данные порогов дл€ каждого индикатора
 		shared_str cfgRecord = pSettings->r_string("main_ingame_indicators_thresholds", *warningStrings[static_cast<int>(j) - 1]);
@@ -586,7 +591,7 @@ void CUIMainIngameWnd::Update()
 	
 	EWarningIcons i = ewiWeaponJammed;
 		
-	while (i <= ewiFatigue)
+	while (i <= ewiInvincible)
 	{
 		float value = 0;
 		switch (i)
@@ -607,6 +612,9 @@ void CUIMainIngameWnd::Update()
 			break;
 		case ewiFatigue:
 			value = 1 - m_pActor->conditions().GetPower();
+			break;
+		case ewiInvincible:
+			value = (GodMode()) ? 1.0f : float(Game().local_player->testFlag(GAME_PLAYER_FLAG_INVINCIBLE));
 			break;
 		default:
 			R_ASSERT(!"Unknown type of warning icon");
@@ -1161,6 +1169,9 @@ void CUIMainIngameWnd::SetWarningIconColor(EWarningIcons icon, const u32 cl)
 		if (bMagicFlag) break;
 	case ewiFatigue:
 		UIFatigueIcon.SetColor(cl);
+		if (bMagicFlag) break;
+	case ewiInvincible:
+		UIInvincibleIcon.SetColor(cl);
 		break;
 	default:
 		R_ASSERT(!"Unknown warning icon type");
