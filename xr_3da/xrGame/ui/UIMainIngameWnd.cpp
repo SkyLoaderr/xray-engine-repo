@@ -5,7 +5,6 @@
 #include "stdafx.h"
 #include "UIMainIngameWnd.h"
 
-#include "xrXMLParser.h"
 #include "UIXmlInit.h"
 
 #include "UIPdaMsgListItem.h"
@@ -90,7 +89,7 @@ CUIMainIngameWnd::CUIMainIngameWnd()
 
 CUIMainIngameWnd::~CUIMainIngameWnd()
 {
-
+	DestroyFlashingIcons();
 }
 
 void CUIMainIngameWnd::Init()
@@ -244,6 +243,11 @@ void CUIMainIngameWnd::Init()
 		xml_init.InitMultiTextStatic(uiXml, "money_mt_static", 0, &UIMoneyIndicator);
 //		ChangeTotalMoneyIndicator("100$");
 	}
+
+	// Flashing icons initialize
+	uiXml.SetLocalRoot(uiXml.NavigateToNode("flashing_icons"));
+	InitFlashingIcons(uiXml);
+	SetFlashIconState(efiPda, true);
 }
 
 void CUIMainIngameWnd::Draw()
@@ -507,6 +511,8 @@ void CUIMainIngameWnd::Update()
 
 	// Check for new news
 	CheckForNewNews();
+
+	UpdateFlashingIcons();
 
 	CUIWindow::Update();
 }
@@ -1098,5 +1104,95 @@ void CUIMainIngameWnd::FadeUpdate(CUIListWnd *pWnd, int fadeDuration)
 		}
 		else
 			pWnd->RemoveItem(i);
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIMainIngameWnd::SetFlashIconState(EFlashingIcons type, bool enable)
+{
+	// ¬ключаем анимацию требуемой иконки
+	FlashingIcons_it icon = m_FlashingIcons.find(type);
+	R_ASSERT2(icon != m_FlashingIcons.end(), "Flashin icon with this type not existed");
+
+	icon->second.second = enable ? 0 : -1;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIMainIngameWnd::InitFlashingIcons(CUIXml &node)
+{
+	const char * const flashingIconNodeName = "flashing_icon";
+	int staticsCount = node.GetNodesNum("", 0, flashingIconNodeName);
+
+	CUIXmlInit xml_init;
+	CUIStatic *pIcon = NULL;
+	// ѕробегаемс€ по всем нодам и инициализируем из них статики
+	for (int i = 0; i < staticsCount; ++i)
+	{
+		pIcon = xr_new<CUIStatic>();
+		xml_init.InitStatic(node, flashingIconNodeName, i, pIcon);
+		ref_str iconType = node.ReadAttrib(flashingIconNodeName, i, "type", "none");
+
+		// “еперь запоминаем иконку и ее тип
+		EFlashingIcons type = efiPda;
+
+		if		(iconType == "pda")		type = efiPda;
+		else if (iconType == "mail")	type = efiMail;
+		else	R_ASSERT(!"Unknown type of mainingame flashing icon");
+
+		R_ASSERT2(m_FlashingIcons.find(type) == m_FlashingIcons.end(), "Flashing icon with this type already exists");
+		m_FlashingIcons[type] = std::make_pair(pIcon, -1);
+		AttachChild(pIcon);
+		pIcon->Show(false);
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIMainIngameWnd::DestroyFlashingIcons()
+{
+	for (FlashingIcons_it it = m_FlashingIcons.begin(); it != m_FlashingIcons.end(); ++it)
+	{
+		DetachChild(it->second.first);
+		xr_delete(it->second.first);
+	}
+
+	m_FlashingIcons.clear();
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIMainIngameWnd::UpdateFlashingIcons()
+{
+	static u32			prevTimeGlobal	= 0;
+	static const int	flipPeriod		= 1000; // In ms
+
+	if (0 == prevTimeGlobal) prevTimeGlobal = Device.dwTimeGlobal;
+
+	int tmpTime = 0;
+	for (FlashingIcons_it it = m_FlashingIcons.begin(); it != m_FlashingIcons.end(); ++it)
+	{
+		// ≈сли анимаци€ включена (second в паре value у мапы больше -1), то вычисл€ем стадию анимации
+		// данной иконки
+		int &flipTime = it->second.second;
+		tmpTime += flipTime;
+
+		if (flipTime >= 0)
+		{
+			tmpTime += static_cast<int>(Device.dwTimeGlobal - prevTimeGlobal);
+
+			if (tmpTime >= flipPeriod && flipTime < flipPeriod)
+			{
+				it->second.first->Show(true);
+			}
+			else if (tmpTime >= (flipPeriod * 2) && flipTime < (flipPeriod * 2))
+			{
+				it->second.first->Show(false);
+			}
+
+			prevTimeGlobal = Device.dwTimeGlobal;
+			flipTime = tmpTime % (flipPeriod * 2);
+		}
 	}
 }

@@ -20,6 +20,8 @@
 #include "../weapon.h"
 #include "../alife_space.h"
 
+#include "xrXMLParser.h"
+
 //для режима настройки HUD
 extern int				g_bHudAdjustMode;
 extern float			g_fHudAdjustValue;
@@ -158,7 +160,27 @@ public:
 	typedef Thresholds::iterator						Thresholds_it;
 	Thresholds	m_Thresholds;
 
+	// Енум перечисления возможных мигающих иконок
+	enum EFlashingIcons
+	{
+		efiPda	= 0,
+		efiMail
+	};
+	
+	// Вкл/выкл мигающую иконку
+	void SetFlashIconState(EFlashingIcons type, bool enable);
+	
 protected:
+
+	void				InitFlashingIcons(CUIXml &node);
+	void				DestroyFlashingIcons();
+	void				UpdateFlashingIcons();
+
+	// first - иконка, second - время прошедшее с начала периода мигания иконки.
+	// Если -1, то иконка выключена (не мигает)
+	typedef				std::pair<CUIStatic*, int> IconInfo;
+	DEF_MAP				(FlashingIcons, EFlashingIcons, IconInfo);
+	FlashingIcons		m_FlashingIcons;
 
 	//для текущего активного актера и оружия
 	CActor*				m_pActor;	
@@ -171,9 +193,9 @@ protected:
 	// Добавлено для поддержки fadein/fadeout реалтаймовых подсказок
 	float				fuzzyShowInfo;
 	// Отображение подсказок при наведении прицела на объект
-	void RenderQuickInfos();
+	void				RenderQuickInfos();
 	// Просчитать анимационные параметры фейда для айтемов листа
-	void FadeUpdate(CUIListWnd *pWnd, int fadeDuration);
+	void				FadeUpdate(CUIListWnd *pWnd, int fadeDuration);
 
 	// для лога сообщений на экране устанавливаем время постепенного исчезновения надписи
 	int					m_iPdaMessagesFade_mSec;
@@ -184,7 +206,7 @@ protected:
 	//-----------------------------------------------------------------------------/
 
 	// Читаем заготовки стандартных собщений
-	void LoadNewsTemplates();
+	void				LoadNewsTemplates();
 
 	// Структурка описывающая ньюс
 	typedef struct tagNewsTemplate
@@ -201,12 +223,12 @@ protected:
 	NewsTemplates							m_NewsTemplates;
 
 	// Обработчик события получения новости
-	void OnNewsReceived(const CALifeNews &newsItem);
+	void				OnNewsReceived(const CALifeNews &newsItem);
 	// Проверяем не появились ли новые ньюсы
 	// Return:	true - новые новости есть
-	bool CheckForNewNews();
+	bool				CheckForNewNews();
 
 	// Период проверки ньюсов в моллисекундах
-	static const int						NEWS_CHECK_INTERVAL = 1000;
-	ALife::_TIME_ID							m_iPrevTime;
+	static const int	NEWS_CHECK_INTERVAL = 1000;
+	ALife::_TIME_ID		m_iPrevTime;
 };

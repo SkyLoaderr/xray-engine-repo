@@ -278,14 +278,15 @@ int CUIXml::GetNodesNum(LPCSTR path, int index, LPCSTR  tag_name)
 {
 	XML_NODE* node = NULL;
 	
+	XML_NODE *root = GetLocalRoot()?GetLocalRoot():GetRoot();
 	if(path!=NULL)
 	{
 		node = NavigateToNode(path, index);
 
-		if(node==NULL) node = m_root;
+		if(node==NULL) node = root;
 	}
 	else
-		node = m_root;
+		node = root;
 	
 	if(node == NULL) return 0;
 
