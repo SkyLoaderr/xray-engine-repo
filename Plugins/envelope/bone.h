@@ -1,5 +1,5 @@
 //----------------------------------------------------
-#ifndef _Bone_H_
+# ifndef _Bone_H_
 #define _Bone_H_
 
 #ifdef LWO_EXPORTS
