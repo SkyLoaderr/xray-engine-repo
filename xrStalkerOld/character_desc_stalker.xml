@@ -131,6 +131,29 @@
 		<actor_dialog>gar_seriy_help</actor_dialog>
 	</specific_character>	
 
+	<specific_character id="stalker_gar_dram_novice" team_default = "1">
+		<name>Юрик</name>
+		<icon x="26" y="10"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Сталкер новичок. Делает первые шаги в Зоне.</bio>
+
+		<class>Stalker_novice</class>
+		<community>stalker</community>
+		
+		<rank>20</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\novice\green_stalker_1</visual>
+		<supplies>
+			[spawn] \n
+			device_torch \n
+			garbage_seriy_flash \n
+		</supplies>
+					
+		<start_dialog>gar_seriy_start</start_dialog>
+		<actor_dialog>gar_seriy_help</actor_dialog>
+	</specific_character>	
+
 	<specific_character id="stalker_agr_krot" team_default = "1">
 		<name>Сталкер "Крот"</name>
 		<icon x="16" y="10"></icon>
