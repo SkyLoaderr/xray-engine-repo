@@ -294,8 +294,6 @@ void CAI_Rat::AttackFire()
 	Fvector			tDistance;
 	tDistance.sub	(Position(),enemy()->Position());
 	
-//	vfAimAtEnemy	();
-
 	m_fSpeed		= 0.f;
 
 	vfSetFire		(true,Level().get_group(g_Team(),g_Squad(),g_Group()));

@@ -9,16 +9,6 @@
 #include "stdafx.h"
 #include "ai_rat.h"
 
-void CAI_Rat::vfAimAtEnemy()
-{
-	Fvector	pos1, pos2;
-	//m_Enemy.m_object->Center(pos1);
-	pos1 = enemy()->Position();
-	Center(pos2);
-	tWatchDirection.sub(pos1,pos2);
-	mk_rotation(tWatchDirection,m_body.target);
-}
-
 BOOL CAI_Rat::feel_vision_isRelevant(CObject* O)
 {
 	if (CLSID_ENTITY!=O->CLS_ID)			

@@ -226,7 +226,6 @@ public:
 			void				vfUpdateMoraleBroadcast	(float fValue, float fRadius);
 			void				vfUpdateMorale			();
 			void				vfLoadAnimations		();
-			void				vfAimAtEnemy			();
 			void				vfSetFire				(bool bFire, CGroup &Group);
 			void				vfSetMovementType		(float fSpeed);
 			void				vfUpdateDynamicObjects	() {};
