@@ -265,8 +265,11 @@ BOOL CEntityAlive::net_Spawn	(LPVOID DC)
 void CEntityAlive::net_Destroy	()
 {
 	CInventoryOwner	*l_tpInventoryOwner = dynamic_cast<CInventoryOwner*>(this);
-	if (l_tpInventoryOwner)
+	if (l_tpInventoryOwner) {
 		l_tpInventoryOwner->m_inventory.ClearAll();
+		l_tpInventoryOwner->m_trade_storage.ClearAll();
+	}
+
 	inherited::net_Destroy		();
 }
 

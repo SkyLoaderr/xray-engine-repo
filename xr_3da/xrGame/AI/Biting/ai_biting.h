@@ -34,9 +34,7 @@ enum EBitingPathState {
 	PATH_STATE_PATH_BUILT
 };
 
-
 typedef VisionElem SEnemy;
-
 
 // Attack 
 typedef struct {
@@ -101,21 +99,23 @@ public:
 			void			vfBuildTravelLine				(Fvector *tpDestinationPosition);
 			void			vfChoosePointAndBuildPath		(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode, bool bSelectorPath = false, u32 TimeToRebuild = 0);
 			void			vfChooseNextGraphPoint			();
-			void			vfUpdateDetourPoint();
-
+			void			vfUpdateDetourPoint				();
+			void			SetReversedDirectionLook		();
+			
 			void			vfUpdateParameters				();
 			void			OnAnimationEnd					();
-			void			SetReversedDirectionLook		();
+			
+		
 			void			DoDamage						(CEntity *pEntity);
 
 			void			CreateSkeleton					();
-
-			virtual	void	FillAttackStructure(u32, TTime) = 0;
 			void			SetState(IState *pS, bool bSkipInertiaCheck = false);
-			void			ControlAnimation();
 
-			
-			virtual	void	MotionToAnim(EMotionAnim motion, int &index1, int &index2, int &index3) = 0;
+	// Animation control
+			void			ControlAnimation();
+	virtual	void			FillAttackStructure(u32, TTime) = 0;
+	virtual	void			MotionToAnim(EMotionAnim motion, int &index1, int &index2, int &index3) = 0;
+	virtual	bool			IsInMotion();
 
 // members
 public:

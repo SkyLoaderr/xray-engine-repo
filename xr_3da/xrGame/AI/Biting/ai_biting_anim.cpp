@@ -97,3 +97,12 @@ void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, flo
 		}
 }
 
+bool CAI_Biting::IsInMotion()
+{
+	if ((m_tAnim != eMotionStandTurnLeft) && (m_tAnim != eMotionWalkFwd) && (m_tAnim != eMotionWalkBkwd) && 
+		(m_tAnim != eMotionWalkTurnLeft) && (m_tAnim != eMotionWalkTurnRight) && (m_tAnim != eMotionRun) && 
+		(m_tAnim != eMotionRunTurnLeft) && (m_tAnim != eMotionRunTurnRight) && (m_tAnim != eMotionFastTurnLeft)) {
+		return true;
+	}
+	return false;
+}

@@ -19,6 +19,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 	u16 id;
 	switch (type)
 	{
+	case GE_BUY:
 	case GE_OWNERSHIP_TAKE:
 		{
 			// Log("CActor::OnEvent - TAKE - ", cName());
@@ -79,6 +80,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			//}
 		}
 		break;
+	case GE_SELL:
 	case GE_OWNERSHIP_REJECT:
 		{
 			// Log			("CActor::OnEvent - REJECT - : ", cName());

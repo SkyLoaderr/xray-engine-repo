@@ -42,12 +42,16 @@ void __stdcall CAI_Chimera::SpinCallback(CBoneInstance *B)
 {
 	CAI_Chimera* A = dynamic_cast<CAI_Chimera*> (static_cast<CObject*>(B->Callback_Param));
 
-	A->SpinBone(B);
+	A->SpinBoneInMotion(B);
+	A->SpinBoneInAttack(B);
 }
 
 
-void CAI_Chimera::SpinBone(CBoneInstance *B)
+void CAI_Chimera::SpinBoneInMotion(CBoneInstance *B)
 {
+	// выполнять вращение только во время движения
+	if (!IsInMotion()) return;
+	
 	// реализация по формуле SY = A * sin((alfa-a)* Pi / (b-a))
 	// где A		- амплитуда, 
 	//     alfa		- текущий угол
@@ -65,6 +69,7 @@ void CAI_Chimera::SpinBone(CBoneInstance *B)
 
 	float SY;	// текущий угол поворота для боны
 	if (getAI().bfTooSmallAngle(fFinishYaw,fStartYaw,EPS_L)) SY = 0.f;	// если разница == 0, пропустить деление на 0 :)
+	else if (getAI().bfTooSmallAngle(Mty,Mcy,EPS_L)) SY = 0.f;				// если поворот не требуется
 	else SY = Amp * _sin((_abs(angle_normalize_signed(Mcy-fStartYaw))) * PI / (_abs(angle_normalize_signed(fFinishYaw - fStartYaw)))) ;
 
 	// поворот вправо?
@@ -93,6 +98,11 @@ void CAI_Chimera::SpinBone(CBoneInstance *B)
 
 	// Сохранить текущее значение target.yaw
 	fPrevMty = Mty;
+}
+
+void CAI_Chimera::SpinBoneInAttack(CBoneInstance *B)
+{
+
 }
 
 

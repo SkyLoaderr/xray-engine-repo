@@ -575,10 +575,12 @@ CInventorySlot::~CInventorySlot() {}
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // CInventoryOwner class //////////////////////////////////////////////////////////////////////////
 CInventoryOwner::CInventoryOwner() {
-	m_inventory.m_pOwner = this;
-	m_trade		= NULL;
-	m_dwMoney	= 0;
-	m_tRank		= eStalkerRankNone;
+	m_inventory.m_pOwner		= this;
+	m_trade_storage.m_pOwner	= this;
+	m_trade						= NULL;
+
+	m_dwMoney					= 0;
+	m_tRank						= eStalkerRankNone;
 }
 
 CInventoryOwner::~CInventoryOwner() 
