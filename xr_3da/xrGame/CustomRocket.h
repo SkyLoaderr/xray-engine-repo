@@ -10,6 +10,16 @@
 
 class CRocketLauncher;
 
+struct SRoketContact
+{
+	bool contact;
+	Fvector pos;
+	Fvector up;
+	SRoketContact()
+	{
+		contact = false;
+	}
+};
 
 class CCustomRocket : public CPhysicItem,
 					  public CPHUpdateObject
@@ -69,7 +79,7 @@ protected:
 	//указатель на владельца RocketLauncher - который стреляет ракету
 	CGameObject*			m_pOwner;
 
-
+	SRoketContact			m_contact;
 	//параметры которые задаются RocketLauncher-ом перед пуском
 	Fmatrix					m_LaunchXForm;
 	Fvector					m_vLaunchVelocity;
@@ -97,6 +107,7 @@ protected:
 
 	//обработка столкновения
 	virtual void			Contact(const Fvector &pos, const Fvector &normal);
+			 void			PlayContact();
 	static	void __stdcall	ObjectContactCallback(bool& do_colide,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/);
 
 

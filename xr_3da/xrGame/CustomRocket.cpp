@@ -204,9 +204,16 @@ void  CCustomRocket::reload		(LPCSTR section)
 		m_sFlyParticles	= pSettings->r_string(section,"fly_particles");
 }
 
-
 void CCustomRocket::Contact(const Fvector &pos, const Fvector &normal)
 {
+m_contact.contact=true;
+m_contact.pos.set(pos);
+m_contact.up.set(normal);
+}
+void CCustomRocket::PlayContact()
+{
+	
+	if(!m_contact.contact)return;
 	if(eCollide == m_eState) return;
 
 	StopEngine();
@@ -224,7 +231,8 @@ void CCustomRocket::Contact(const Fvector &pos, const Fvector &normal)
 	}
 //	if (OnClient()) return;
 
-	Position().set(pos);
+	Position().set(m_contact.pos);
+	m_contact.contact=false;
 }
 
 
@@ -251,6 +259,7 @@ void CCustomRocket::UpdateCL()
 {
 	inherited::UpdateCL();
 	
+	PlayContact();
 	switch (m_eState)
 	{
 	case eInactive:
