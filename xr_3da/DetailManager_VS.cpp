@@ -30,7 +30,6 @@ void CDetailManager::VS_Load()
 
 	// Analyze batch-size
 	DWORD batch_size= (DWORD(HW.Caps.vertex.dwRegisters)-1)/5;
-	Log("* [DETAILS] Batch size: ",batch_size);
 
 	// Pre-process objects
 	DWORD			dwVerts		= 0;
@@ -55,10 +54,48 @@ void CDetailManager::VS_Load()
 	CHK_DX			(HW.pDevice->ResourceManagerDiscardBytes(0));
 	R_CHK			(HW.pDevice->CreateVertexBuffer(dwVerts*vSize,dwUsage,0,dwPool,&VS_VB));
 	R_CHK			(HW.pDevice->CreateIndexBuffer(dwIndices*2,dwUsage,D3DFMT_INDEX16,&VS_IB));
-
+	Msg("* [DETAILS] Batch(%d), VB(%dK), IB(%dK)",batch_size,(dwVerts*vSize)/1024, (dwIndices*2)/1024);
+	
 	// Fill VB
-	vertHW*			pV;
-	R_CHK			(VS_VB->Lock(0,0,&pV,0));
+	{
+		vertHW*			pV;
+		R_CHK			(VS_VB->Lock(0,0,&pV,0));
+		for (o=0; o<objects.size(); o++)
+		{
+			CDetail& D		=	objects[o];
+			for (u32 batch=0; batch<batch_size; batch++)
+			{
+				DWORD mid	=	batch*5+1;
+				DWORD M		=	D3DCOLOR_RGBA	(mid,mid,mid,mid);
+				for (u32 v=0; v<D.number_vertices; v++)
+				{
+					pV->P.set	(D.vertices[v].P);
+					pV->M	=	M;
+					pV->UV.set	(D.vertices[v].u,D.vertices[v].v);
+					pV++;
+				}
+			}
+		}
+		R_CHK			(VS_VB->Unlock());
+	}
+
+	// Fill IB
+	{
+		u16*			pI;
+		R_CHK			(VS_IB->Lock(0,0,(u8**)(&pI),0));
+		for (o=0; o<objects.size(); o++)
+		{
+			CDetail& D		=	objects[o];
+			u16		offset	=	0;
+			for (u32 batch=0; batch<batch_size; batch++)
+			{
+				for (u32 i=0; i<D.number_indices; i++)
+					*pI++	=	D.indices[i] + offset;
+				offset		+=	D.number_vertices;
+			}
+		}
+		R_CHK			(VS_IB->Unlock());
+	}
 }
 
 void CDetailManager::VS_Unload()
