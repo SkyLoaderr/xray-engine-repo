@@ -563,7 +563,8 @@ void CParticleTools::RealApplyParent()
 void __fastcall	CParticleTools::OnApplyClick()
 {
 	if (m_LibPED) m_LibPED->Compile();
-	m_EditPE->Compile(m_LibPED);
+	m_EditPE->Compile	(m_LibPED);
+    RealApplyParent		();
     if (m_EditText&&m_EditText->Modified()) Modified();
 }
 
