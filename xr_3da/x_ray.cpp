@@ -36,9 +36,14 @@ void Startup()
 	Engine.External.Initialize	( );
 	
 	// Execute script
+	strcpy						(Console.ConfigFile,"user.ltx");
 	Console.ExecuteScript		("startup.ltx");
-	if (strstr(Engine.Params,"-ltx "))
-		Console.Execute			(strstr(Engine.Params,"-ltx ")+5);
+	if (strstr(Engine.Params,"-ltx ")) {
+		string64				c_name;
+		sscanf					(strstr(Engine.Params,"-ltx ")+5,"%s",c_name);
+		strcpy					(Console.ConfigFile,c_name);
+		Console.ExecuteScript	(c_name);
+	}
 
 	// Creation
 	pSettings					= new CInifile		("system.ltx",TRUE);
