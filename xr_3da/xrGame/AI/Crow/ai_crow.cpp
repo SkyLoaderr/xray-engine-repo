@@ -381,7 +381,7 @@ void CAI_Crow::UpdatePhysicsShell()
 	XFORM().set				(m_pPhysicsShell->mXFORM);
 }
 
-void CAI_Crow::Hit(float P, Fvector &dir, CObject* who, s16 element,Fvector p_in_object_space, float impulse)
+void CAI_Crow::Hit(float P, Fvector &dir, CObject* who, s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 {
-	inherited::Hit(P,dir,who,element,p_in_object_space,impulse/100.f);
+	inherited::Hit(P,dir,who,element,p_in_object_space,impulse/100.f, hit_type);
 }

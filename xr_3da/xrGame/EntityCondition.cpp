@@ -118,9 +118,23 @@ void CEntityCondition::ChangeRadiation(float value)
 {
 	m_fDeltaRadiation += value;
 }
+
+void CEntityCondition::ChangeBleeding(float percent)
+{
+	//затянуть раны на заданное кол-во процентов
+	for(WOUND_PAIR_IT it = m_mWound.begin(); it!=m_mWound.end(); it++)
+	{
+		(*it).second -= (*it).second*percent;
+		//рана полность зажила
+		if((*it).second<0) (*it).second = 0;
+	}
+}
+
 //вычисление параметров с ходом времени
 void CEntityCondition::UpdateCondition()
 {
+	if(GetHealth()<=0) return;
+
 	u64 cur_time = Level().GetGameTime();
 
 	if(m_bTimeValid)
@@ -166,6 +180,8 @@ void CEntityCondition::UpdateCondition()
 
 void CEntityCondition::Sleep(float hours)
 {
+	if(GetHealth()<=0) return;
+
 	//u64 cur_time = Level().GetGameTime();
 
 	//час здорового сна
@@ -251,12 +267,14 @@ void CEntityCondition::ConditionHit(CObject* who, float hit_power, ALife::EHitTy
 			//новая рана
 			if (it == m_mWound.end())
 			{
-				m_mWound[element] = hit_power*m_fV_Bleeding;
+				m_mWound[element] = hit_power*m_fV_Bleeding*
+									::Random.randF(0.5f,1.5f);
 			}
 			//старая 
 			else
 			{
-				m_mWound[element] += hit_power*m_fV_Bleeding;
+				m_mWound[element] += hit_power*m_fV_Bleeding*
+									::Random.randF(0.5f,1.5f);
 			}
 		}
 		break;
@@ -292,6 +310,8 @@ void CEntityCondition::UpdateHealth()
 		//рана полность зажила
 		if((*it).second<0) (*it).second = 0;
 	}
+
+	//убрать все зашившие раны из списка
 }
 void CEntityCondition::UpdatePower()
 {

@@ -113,4 +113,7 @@ protected:
 	void DropItem();
 	//съесть элемент
 	void EatItem();
+
+	//для сортировки вещей
+	TIItemList ruck_list;
 };

@@ -264,7 +264,7 @@ void CUIInventoryWnd::InitInventory(CInventory* pInv)
 	}
 
 
-	TIItemList ruck_list(pInv->m_ruck);
+	ruck_list = pInv->m_ruck;
 	ruck_list.sort(GreaterRoomInRuck);
 
 	//аўъчръ
@@ -490,6 +490,7 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		if(l_pA)
 		{
 			l_pA->ChangeHealth(l_pA->m_fMedkit);
+			l_pA->ChangeBleeding(l_pA->m_fMedkitWound);
 		}
 	}
 	else if(pWnd == &UIButton5 && msg == CUIButton::BUTTON_CLICKED)

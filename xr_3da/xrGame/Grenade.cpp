@@ -7,8 +7,10 @@
 #include "ParticlesObject.h"
 
 #define INVSQRT2 .70710678118654752440084436210485f
-static void GetBasis(const Fvector &n, Fvector &u, Fvector &v) {
-	if(_abs(n.z) > INVSQRT2) {
+static void GetBasis(const Fvector &n, Fvector &u, Fvector &v) 
+{
+	if(_abs(n.z) > INVSQRT2) 
+	{
 		FLOAT a = n.y * n.y + n.z * n.z;
 		FLOAT k = 1.f / _sqrt(a);
 		u.x = 0;
@@ -29,7 +31,8 @@ static void GetBasis(const Fvector &n, Fvector &u, Fvector &v) {
 	}
 }
 
-CGrenade::CGrenade(void) {
+CGrenade::CGrenade(void) 
+{
 	m_pFake = NULL;
 	m_blast = 50.f;
 	m_blastR = 10.f;
@@ -45,7 +48,8 @@ CGrenade::CGrenade(void) {
 	hWallmark = 0;
 }
 
-CGrenade::~CGrenade(void) {
+CGrenade::~CGrenade(void) 
+{
 	hWallmark.destroy		();
 	::Render->light_destroy	(m_pLight);
 	SoundDestroy(sndExplode);
@@ -57,7 +61,8 @@ CGrenade::~CGrenade(void) {
 	SoundDestroy(sndRicochet[4]);
 }
 
-void CGrenade::Load(LPCSTR section) {
+void CGrenade::Load(LPCSTR section) 
+{
 	inherited::Load(section);
 	m_blast = pSettings->r_float(section,"blast");
 	m_blastR = pSettings->r_float(section,"blast_r");
@@ -72,8 +77,11 @@ void CGrenade::Load(LPCSTR section) {
 	strcpy(m_effectsSTR, pSettings->r_string(section,"effects"));
 	char* l_effectsSTR = m_effectsSTR; R_ASSERT(l_effectsSTR);
 	m_effects.clear(); m_effects.push_back(l_effectsSTR);
-	while(*l_effectsSTR) {
-		if(*l_effectsSTR == ',') {
+	
+	while(*l_effectsSTR) 
+	{
+		if(*l_effectsSTR == ',') 
+		{
 			*l_effectsSTR = 0; l_effectsSTR++;
 			while(*l_effectsSTR == ' ' || *l_effectsSTR == '\t') l_effectsSTR++;
 			m_effects.push_back(l_effectsSTR);
@@ -94,7 +102,8 @@ void CGrenade::Load(LPCSTR section) {
 	SoundCreate(sndRicochet[4], "ric5", m_eSoundRicochet);
 }
 
-BOOL CGrenade::net_Spawn(LPVOID DC) {
+BOOL CGrenade::net_Spawn(LPVOID DC) 
+{
 	if(0==pstrWallmark) hWallmark	= 0; 
 	else hWallmark.create		("effects\\wallmark",pstrWallmark);
 	return inherited::net_Spawn	(DC);
@@ -106,9 +115,11 @@ void CGrenade::net_Destroy()
 	inherited::net_Destroy	();
 }
 
-void CGrenade::OnH_A_Chield() {
+void CGrenade::OnH_A_Chield() 
+{
 	inherited::OnH_A_Chield();
-	if(!m_pFake && !dynamic_cast<CGrenade*>(H_Parent())) {
+	if(!m_pFake && !dynamic_cast<CGrenade*>(H_Parent())) 
+	{
 		CSE_Abstract		*D	= F_entity_Create(cNameSect());
 		R_ASSERT			(D);
 		CSE_ALifeDynamicObject				*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
@@ -133,35 +144,42 @@ void CGrenade::OnH_A_Chield() {
 	}
 }
 
-void CGrenade::OnH_B_Independent() {
+void CGrenade::OnH_B_Independent() 
+{
 	inherited::OnH_B_Independent();
 	//if(dynamic_cast<CGrenade*>(H_Parent())) inherited::OnH_B_Independent();
 	//else CInventoryItem::OnH_B_Independent();
 }
 
-u32 CGrenade::State(u32 state) {
-	if(state == MS_THREATEN) {
+u32 CGrenade::State(u32 state) 
+{
+	if(state == MS_THREATEN) 
+	{
 		Sound->play_at_pos(sndCheckout, 0, Position(), false);
 	}
 	return inherited::State(state);
 }
 
-bool CGrenade::Activate() {
+bool CGrenade::Activate() 
+{
 	Show();
 	return true;
 }
 
-void CGrenade::Deactivate() {
+void CGrenade::Deactivate() 
+{
 	Hide();
 }
 
-void CGrenade::Throw() {
+void CGrenade::Throw() 
+{
 	if(!m_pFake) return;
 	inherited::Throw();
 	CGrenade *l_pG = m_pFake;
 	if(l_pG) {
 		l_pG->m_destroyTime = 3500;
-		l_pG->m_force = m_force; m_force = 0;
+		l_pG->m_force = m_force; 
+		m_force = 0;
 		{
 			NET_Packet P;
 			u_EventGen(P,GE_OWNERSHIP_REJECT,ID());
@@ -171,13 +189,15 @@ void CGrenade::Throw() {
 	}
 }
 
-void CGrenade::Destroy() {
+void CGrenade::Destroy() 
+{
 	Explode();
 	m_expoldeTime = 5000;
 	//inherited::Destroy();
 }
 
-void CGrenade::Explode() {
+void CGrenade::Explode() 
+{
 	setVisible(false);
 	Sound->play_at_pos(sndExplode, 0, Position(), false);
 	Fvector l_dir; f32 l_dst;
@@ -185,49 +205,88 @@ void CGrenade::Explode() {
 	feel_touch_update(Position(), m_blastR);
 	xr_list<s16>		l_elsemnts;
 	xr_list<Fvector>	l_bs_positions;
-	while(m_blasted.size()) {
+	while(m_blasted.size()) 
+	{
 		CGameObject *l_pGO = *m_blasted.begin();
-		Fvector l_goPos; if(l_pGO->Visual()) l_pGO->Center(l_goPos); else l_goPos.set(l_pGO->Position());
-		l_dir.sub(l_goPos, Position()); l_dst = l_dir.magnitude(); l_dir.div(l_dst); l_dir.y += .2f;
+		Fvector l_goPos; 
+		if(l_pGO->Visual()) 
+			l_pGO->Center(l_goPos); 
+		else 
+			l_goPos.set(l_pGO->Position());
+		
+		l_dir.sub(l_goPos, Position()); 
+		l_dst = l_dir.magnitude(); 
+		l_dir.div(l_dst); l_dir.y += .2f;
 		f32 l_S = (l_pGO->Visual()?l_pGO->Radius()*l_pGO->Radius():0);
-		if(l_pGO->Visual()) {
-			const Fbox &l_b1 = l_pGO->BoundingBox(); Fbox l_b2; l_b2.invalidate();
-			Fmatrix l_m; l_m.identity(); l_m.k.set(l_dir); GetBasis(l_m.k, l_m.i, l_m.j);
-			for(int i = 0; i < 8; i++) { Fvector l_v; l_b1.getpoint(i, l_v); l_m.transform_tiny(l_v); l_b2.modify(l_v); }
-			Fvector l_c, l_d; l_b2.get_CD(l_c, l_d);
+		if(l_pGO->Visual()) 
+		{
+			const Fbox &l_b1 = l_pGO->BoundingBox(); 
+			Fbox l_b2; 
+			l_b2.invalidate();
+			Fmatrix l_m; l_m.identity(); 
+			l_m.k.set(l_dir); 
+			GetBasis(l_m.k, l_m.i, l_m.j);
+			
+			for(int i = 0; i < 8; i++) 
+			{ 
+				Fvector l_v; 
+				l_b1.getpoint(i, l_v); 
+				l_m.transform_tiny(l_v); 
+				l_b2.modify(l_v); 
+			}
+			
+			Fvector l_c, l_d; 
+			l_b2.get_CD(l_c, l_d);
 			l_S = l_d.x*l_d.y;
 		}
 		f32 l_impuls = m_blast * (1.f - (l_dst/m_blastR)*(l_dst/m_blastR)) * l_S;
-		if(l_impuls > .001f) {
+
+		if(l_impuls > .001f) 
+		{
 			setEnabled(false);
 			l_impuls *= l_pGO->ExplosionEffect(Position(), m_blastR, l_elsemnts, l_bs_positions);
 			setEnabled(true);
 		}
-		if(l_impuls > .001f) while(l_elsemnts.size()) {
-			s16 l_element = *l_elsemnts.begin();
-			Fvector l_bs_pos = *l_bs_positions.begin();
-			NET_Packet		P;
-			u_EventGen		(P,GE_HIT,l_pGO->ID());
-			P.w_u16			(u16(ID()));
-			P.w_dir			(l_dir);
-			P.w_float		(l_impuls);
-			P.w_s16			(l_element);
-			P.w_vec3		(l_bs_pos);
-			P.w_float		(l_impuls);
-			P.w_u16			(u16(eHitTypeWound));
-			u_EventSend		(P);
-			l_elsemnts.pop_front();
-			l_bs_positions.pop_front();
+		if(l_impuls > .001f) 
+		{
+			while(l_elsemnts.size()) 
+			{
+				s16 l_element = *l_elsemnts.begin();
+				Fvector l_bs_pos = *l_bs_positions.begin();
+				NET_Packet		P;
+				u_EventGen		(P,GE_HIT,l_pGO->ID());
+				P.w_u16			(u16(ID()));
+				P.w_dir			(l_dir);
+				P.w_float		(l_impuls);
+				P.w_s16			(l_element);
+				P.w_vec3		(l_bs_pos);
+				P.w_float		(l_impuls);
+				P.w_u16			(u16(eHitTypeWound));
+				u_EventSend		(P);
+				l_elsemnts.pop_front();
+				l_bs_positions.pop_front();
+			}
 		}
 		m_blasted.pop_front();
 	}
 	Collide::ray_query RQ;
 	setEnabled(false);
-	for(s32 i = 0; i < m_frags; i++) {
-		l_dir.set(::Random.randF(-.5f,.5f), ::Random.randF(-.5f,.5f), ::Random.randF(-.5f,.5f)); l_dir.normalize();
-		if(Level().ObjectSpace.RayPick(Position(), l_dir, m_fragsR, RQ)) {
-			Fvector l_end, l_bs_pos; l_end.mad(Position(),l_dir,RQ.range); l_bs_pos.set(0, 0, 0);
-			if(RQ.O) {
+	
+	for(s32 i = 0; i < m_frags; i++) 
+	{
+		l_dir.set(::Random.randF(-.5f,.5f), 
+				  ::Random.randF(-.5f,.5f), 
+				  ::Random.randF(-.5f,.5f)); 
+		l_dir.normalize();
+
+		if(Level().ObjectSpace.RayPick(Position(), l_dir, m_fragsR, RQ)) 
+		{
+			Fvector l_end, l_bs_pos; 
+			l_end.mad(Position(),l_dir,RQ.range); 
+			l_bs_pos.set(0, 0, 0);
+			
+			if(RQ.O) 
+			{
 				f32 l_hit = m_fragHit * (1.f - (RQ.range/m_fragsR)*(RQ.range/m_fragsR));
 				CEntity* E = dynamic_cast<CEntity*>(RQ.O);
 				if(E) l_hit *= E->HitScale(RQ.element);
@@ -246,17 +305,22 @@ void CGrenade::Explode() {
 		}
 	}
 	CParticlesObject* pStaticPG; s32 l_c = (s32)m_effects.size();
-	for(s32 i = 0; i < l_c; i++) {
+
+	for(s32 i = 0; i < l_c; i++) 
+	{
 		pStaticPG = xr_new<CParticlesObject>(m_effects[i],Sector()); pStaticPG->play_at_pos(Position());
 	}
-	m_pLight->set_position(Position()); m_pLight->set_active(true);
+	m_pLight->set_position(Position()); 
+	m_pLight->set_active(true);
 	setEnabled(true);
 }
 
-void CGrenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R) {
+void CGrenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R) 
+{
 	if (!hWallmark)	return;
 	
-	if (R.O) {
+	if (R.O) 
+	{
 		if (R.O->CLS_ID==CLSID_ENTITY)
 		{
 			IRender_Sector* S	= R.O->Sector();
@@ -302,12 +366,14 @@ void CGrenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd, Collide::
 
 }
 
-void CGrenade::feel_touch_new(CObject* O) {
+void CGrenade::feel_touch_new(CObject* O) 
+{
 	CGameObject *l_pGO = dynamic_cast<CGameObject*>(O);
 	if(l_pGO && l_pGO != this) m_blasted.push_back(l_pGO);
 }
 
-bool CGrenade::Useful() {
+bool CGrenade::Useful() 
+{
 	// ≈сли IItem еще не полностью использованый, вернуть true
 	return m_destroyTime == 0xffffffff;
 }
@@ -316,25 +382,33 @@ void CGrenade::OnEvent(NET_Packet& P, u16 type)
 {
 	inherited::OnEvent(P,type);
 	u16 id;
-	switch (type){
-		case GE_OWNERSHIP_TAKE : {
+	switch (type)
+	{
+	case GE_OWNERSHIP_TAKE: 
+		{
 			P.r_u16(id);
 			CGrenade *l_pG = dynamic_cast<CGrenade*>(Level().Objects.net_Find(id));
 			m_pFake = l_pG;
 			l_pG->H_SetParent(this);
-		} break;
-		case GE_OWNERSHIP_REJECT : {
+		} 
+		break;
+	case GE_OWNERSHIP_REJECT: 
+		{
 			P.r_u16(id);
 			CGrenade *l_pG = dynamic_cast<CGrenade*>(Level().Objects.net_Find(id));
 			m_pFake = NULL;
 			l_pG->H_SetParent(0);
-		} break;
+		} 
+break;
 	}
 }
 
-void CGrenade::OnAnimationEnd() {
-	switch(inherited::State()) {
-		case MS_END : {
+void CGrenade::OnAnimationEnd() 
+{
+	switch(inherited::State()) 
+	{
+	case MS_END:
+		{
 			if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
 			xr_delete(m_pPhysicsShell);
 			m_pInventory->Ruck(this); 
@@ -346,51 +420,86 @@ void CGrenade::OnAnimationEnd() {
 
 			CGrenade *l_pNext = dynamic_cast<CGrenade*>(m_pInventory->Same(this));
 			if(!l_pNext) l_pNext = dynamic_cast<CGrenade*>(m_pInventory->SameSlot(m_slot));
-			if(l_pNext) { m_pInventory->Slot(l_pNext); m_pInventory->Activate(l_pNext->m_slot); }
+			if(l_pNext) 
+			{ 
+				m_pInventory->Slot(l_pNext); 
+				m_pInventory->Activate(l_pNext->m_slot); 
+			}
 
-		} break;
+		} 
+		break;
 		default : inherited::OnAnimationEnd();
 	}
 }
 
-void CGrenade::UpdateCL() {
+void CGrenade::UpdateCL() 
+{
 	inherited::UpdateCL();
-	if(m_expoldeTime > 0 && m_expoldeTime <= Device.dwTimeDelta) {
+	if(m_expoldeTime > 0 && m_expoldeTime <= Device.dwTimeDelta) 
+	{
 		m_expoldeTime = 0;
 		m_pLight->set_active(false);
 		inherited::Destroy();
-	} else if(m_expoldeTime < 0xffffffff) {
+	} 
+	else if(m_expoldeTime < 0xffffffff) 
+	{
 		m_expoldeTime -= Device.dwTimeDelta;
-		if(m_expoldeTime > (5000 - m_lightTime)) {
+		
+		if(m_expoldeTime > (5000 - m_lightTime)) 
+		{
 			f32 l_scale = f32(m_expoldeTime - (5000 - m_lightTime))/f32(m_lightTime);
-			m_pLight->set_color(m_lightColor.r*l_scale, m_lightColor.g*l_scale, m_lightColor.b*l_scale);
+			m_pLight->set_color(m_lightColor.r*l_scale, 
+								m_lightColor.g*l_scale, 
+								m_lightColor.b*l_scale);
+			
 			m_pLight->set_range(m_lightRange*l_scale);
-		} else m_pLight->set_range(0);
-	} else m_pLight->set_active(false);
+		} 
+		else m_pLight->set_range(0);
+	} 
+	else m_pLight->set_active(false);
 }
 
-bool CGrenade::Action(s32 cmd, u32 flags) {
+bool CGrenade::Action(s32 cmd, u32 flags) 
+{
 	if(inherited::Action(cmd, flags)) return true;
-	switch(cmd) {
-		case kWPN_NEXT : {
-			if(flags&CMD_START) {
-				if(m_pInventory) {
+
+	switch(cmd) 
+	{
+	case kWPN_NEXT:
+		{
+            if(flags&CMD_START) 
+			{
+				if(m_pInventory) 
+				{
 					PPIItem l_it = m_pInventory->m_belt.begin();
 					while(l_it != m_pInventory->m_belt.end() && strcmp((*l_it)->cNameSect(), cNameSect())) l_it++;
-					if(l_it != m_pInventory->m_belt.end()) {
-						while(l_it != m_pInventory->m_belt.end()) {
+					
+					if(l_it != m_pInventory->m_belt.end()) 
+					{
+						while(l_it != m_pInventory->m_belt.end()) 
+						{
 							CGrenade *l_pG = dynamic_cast<CGrenade*>(*l_it);
-							if(l_pG && strcmp(l_pG->cNameSect(), cNameSect())) {
-								m_pInventory->Ruck(this); m_pInventory->Slot(l_pG); m_pInventory->Belt(this); m_pInventory->Activate(l_pG->m_slot);
+							if(l_pG && strcmp(l_pG->cNameSect(), cNameSect())) 
+							{
+								m_pInventory->Ruck(this); 
+								m_pInventory->Slot(l_pG); 
+								m_pInventory->Belt(this); 
+								m_pInventory->Activate(l_pG->m_slot);
 								return true;
 							}
 							l_it++;
 						}
 						l_it = m_pInventory->m_belt.begin();
-						while(*l_it != this) {
+
+						while(*l_it != this) 
+						{
 							CGrenade *l_pG = dynamic_cast<CGrenade*>(*l_it);
-							if(l_pG && strcmp(l_pG->cNameSect(), cNameSect())) {
-								m_pInventory->Ruck(this); m_pInventory->Slot(l_pG); m_pInventory->Belt(this); m_pInventory->Activate(l_pG->m_slot);
+							if(l_pG && strcmp(l_pG->cNameSect(), cNameSect())) 
+							{
+								m_pInventory->Ruck(this); 
+								m_pInventory->Slot(l_pG); 
+								m_pInventory->Belt(this); 
+								m_pInventory->Activate(l_pG->m_slot);
 								return true;
 							}
 							l_it++;

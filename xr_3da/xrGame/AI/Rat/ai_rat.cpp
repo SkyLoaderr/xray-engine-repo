@@ -374,8 +374,8 @@ void CAI_Rat::UpdateCL(){
 			CreateSkeleton();
 }
 
-void CAI_Rat::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse){
-	inherited::Hit(P,dir,who,element,p_in_object_space,impulse);
+void CAI_Rat::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type){
+	inherited::Hit(P,dir,who,element,p_in_object_space,impulse, hit_type);
 	if(!m_pPhysicsShell){
 		m_saved_impulse=impulse;
 		m_saved_hit_dir.set(dir);

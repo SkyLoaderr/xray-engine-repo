@@ -55,28 +55,41 @@ CWeaponRPG7Grenade::~CWeaponRPG7Grenade()
 	SoundDestroy(sndRicochet[4]);
 }
 
-void __stdcall CWeaponRPG7Grenade::ObjectContactCallback(bool& do_colide,dContact& c) {
+void __stdcall CWeaponRPG7Grenade::ObjectContactCallback(bool& do_colide,dContact& c) 
+{
 	do_colide = false;
 	dxGeomUserData *l_pUD1 = NULL;
 	dxGeomUserData *l_pUD2 = NULL;
-	if(dGeomGetClass(c.geom.g1)==dGeomTransformClass) {
+	if(dGeomGetClass(c.geom.g1)==dGeomTransformClass) 
+	{
 		const dGeomID geom=dGeomTransformGetGeom(c.geom.g1);
 		l_pUD1 = dGeomGetUserData(geom);
-	} else l_pUD1 = dGeomGetUserData(c.geom.g1);
-	if(dGeomGetClass(c.geom.g2)==dGeomTransformClass) {
+	}
+	else 
+		l_pUD1 = dGeomGetUserData(c.geom.g1);
+
+	if(dGeomGetClass(c.geom.g2)==dGeomTransformClass) 
+	{
 		const dGeomID geom=dGeomTransformGetGeom(c.geom.g2);
 		l_pUD2 = dGeomGetUserData(geom);
-	} else l_pUD2 = dGeomGetUserData(c.geom.g2);
+	} 
+	else 
+		l_pUD2 = dGeomGetUserData(c.geom.g2);
 
 	CWeaponRPG7Grenade *l_this = l_pUD1 ? dynamic_cast<CWeaponRPG7Grenade*>(l_pUD1->ph_ref_object) : NULL;
 	if(!l_this) l_this = l_pUD2 ? dynamic_cast<CWeaponRPG7Grenade*>(l_pUD2->ph_ref_object) : NULL;
+	
 	if(!l_this) return;
 	CGameObject *l_pOwner = l_pUD1 ? dynamic_cast<CGameObject*>(l_pUD1->ph_ref_object) : NULL;
 	if(!l_pOwner || l_pOwner == (CGameObject*)l_this) l_pOwner = l_pUD2 ? dynamic_cast<CGameObject*>(l_pUD2->ph_ref_object) : NULL;
-	if(!l_pOwner || l_pOwner != l_this->m_pOwner) {
-		if(l_this->m_pOwner) {
+	if(!l_pOwner || l_pOwner != l_this->m_pOwner) 
+	{
+		if(l_this->m_pOwner) 
+		{
 			Fvector l_pos; l_pos.set(l_this->Position());
-			if(!l_pUD1||!l_pUD2) {
+			
+			if(!l_pUD1||!l_pUD2) 
+			{
 				dxGeomUserData *&l_pUD = l_pUD1?l_pUD1:l_pUD2;
 				if(l_pUD->pushing_neg) 
 				{
@@ -87,16 +100,18 @@ void __stdcall CWeaponRPG7Grenade::ObjectContactCallback(bool& do_colide,dContac
 					float dist=l_pUD->neg_tri.dist/cosinus;
 					velocity.mul(dist);
 					l_pos.sub(velocity);
-
 				}
 			}
 			l_this->Explode(l_pos, *(Fvector*)&c.geom.normal);
 		}
-	} else {
+	} 
+	else 
+	{
 	}
 }
 
-void CWeaponRPG7Grenade::Load(LPCSTR section) {
+void CWeaponRPG7Grenade::Load(LPCSTR section) 
+{
 	inherited::Load(section);
 	m_blast = pSettings->r_float(section,"blast");
 	m_blastR = pSettings->r_float(section,"blast_r");
@@ -115,8 +130,10 @@ void CWeaponRPG7Grenade::Load(LPCSTR section) {
 	strcpy(m_effectsSTR, pSettings->r_string(section,"effects"));
 	char* l_effectsSTR = m_effectsSTR; R_ASSERT(l_effectsSTR);
 	m_effects.clear(); m_effects.push_back(l_effectsSTR);
-	while(*l_effectsSTR) {
-		if(*l_effectsSTR == ',') {
+	while(*l_effectsSTR) 
+	{
+		if(*l_effectsSTR == ',') 
+		{
 			*l_effectsSTR = 0; l_effectsSTR++;
 			while(*l_effectsSTR == ' ' || *l_effectsSTR == '\t') l_effectsSTR++;
 			m_effects.push_back(l_effectsSTR);
@@ -125,10 +142,15 @@ void CWeaponRPG7Grenade::Load(LPCSTR section) {
 	}
 
 	strcpy(m_trailEffectsSTR, pSettings->r_string(section,"trail"));
-	char* l_trailEffectsSTR = m_trailEffectsSTR; R_ASSERT(l_trailEffectsSTR);
-	m_trailEffects.clear(); m_trailEffects.push_back(l_trailEffectsSTR);
-	while(*l_trailEffectsSTR) {
-		if(*l_trailEffectsSTR == ',') {
+	char* l_trailEffectsSTR = m_trailEffectsSTR; 
+	R_ASSERT(l_trailEffectsSTR);
+	m_trailEffects.clear(); 
+	m_trailEffects.push_back(l_trailEffectsSTR);
+	
+	while(*l_trailEffectsSTR) 
+	{
+		if(*l_trailEffectsSTR == ',') 
+		{
 			*l_trailEffectsSTR = 0; l_trailEffectsSTR++;
 			while(*l_trailEffectsSTR == ' ' || *l_trailEffectsSTR == '\t') l_trailEffectsSTR++;
 			m_trailEffects.push_back(l_trailEffectsSTR);
@@ -136,7 +158,9 @@ void CWeaponRPG7Grenade::Load(LPCSTR section) {
 		l_trailEffectsSTR++;
 	}
 
-	sscanf(pSettings->r_string(section,"light_color"), "%f,%f,%f", &m_lightColor.r, &m_lightColor.g, &m_lightColor.b); m_lightColor.a=1.f;
+	sscanf(pSettings->r_string(section,"light_color"), "%f,%f,%f", 
+			&m_lightColor.r, &m_lightColor.g, &m_lightColor.b); 
+	m_lightColor.a=1.f;
 	m_lightColor.normalize_rgb(); m_lightColor.mul_rgb(3.f);
 	m_lightRange = pSettings->r_float(section,"light_range");
 	m_lightTime = pSettings->r_u32(section,"light_time");
@@ -153,6 +177,8 @@ void CWeaponRPG7Grenade::Load(LPCSTR section) {
 static const u32 EXPLODE_TIME	= 5000;
 static const u32 FLASH_TIME		= 300;
 static const u32 ENGINE_TIME	= 3000;
+
+//взрыв гранаты
 void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal) 
 {
 	m_state			= stExplode;
@@ -160,58 +186,120 @@ void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal)
 	m_flashTime		= FLASH_TIME;
 	setVisible(false);
 	xr_list<CParticlesObject*>::iterator l_it;
-	for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->Stop();
+	for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); 	l_it++) 
+		(*l_it)->Stop();
+	
 	Sound->play_at_pos(sndExplode, 0, Position(), false);
-	Fvector l_dir; f32 l_dst;
+	Fvector l_dir; 
+	f32 l_dst;
 	m_blasted.clear();
 	feel_touch.clear();
 	feel_touch_update(Position(), m_blastR);
 	xr_list<s16>		l_elsemnts;
 	xr_list<Fvector>	l_bs_positions;
-	while(m_blasted.size()) {
+	
+	while(m_blasted.size()) 
+	{
 		CGameObject *l_pGO = *m_blasted.begin();
-		Fvector l_goPos; if(l_pGO->Visual()) l_pGO->Center(l_goPos); else l_goPos.set(l_pGO->Position());
-		l_dir.sub(l_goPos, Position()); l_dst = l_dir.magnitude(); l_dir.div(l_dst); 
+		Fvector l_goPos; 
+		
+		if(l_pGO->Visual())
+			l_pGO->Center(l_goPos);
+        else 
+			l_goPos.set(l_pGO->Position());
+
+		//расстояние между очагом взрыва и объектом
+		l_dir.sub(l_goPos, Position());
+		
+		//попытаться направить импульс вверх (так прикольнее :) by Dandy
+		l_dir.y += 1.3f;
+
+		l_dst = l_dir.magnitude();
+		l_dir.div(l_dst);
+		
 		f32 l_S = (l_pGO->Visual()?l_pGO->Radius()*l_pGO->Radius():0);
-		if(l_pGO->Visual()) {
-			const Fbox &l_b1 = l_pGO->BoundingBox(); Fbox l_b2; l_b2.invalidate();
-			Fmatrix l_m; l_m.identity(); l_m.k.set(l_dir); GetBasis(l_m.k, l_m.i, l_m.j);
-			for(int i = 0; i < 8; i++) { Fvector l_v; l_b1.getpoint(i, l_v); l_m.transform_tiny(l_v); l_b2.modify(l_v); }
-			Fvector l_c, l_d; l_b2.get_CD(l_c, l_d);
+		
+		if(l_pGO->Visual()) 
+		{
+			const Fbox &l_b1 = l_pGO->BoundingBox();
+			Fbox l_b2;
+			l_b2.invalidate();
+			Fmatrix l_m;
+			l_m.identity();
+			l_m.k.set(l_dir);
+			GetBasis(l_m.k, l_m.i, l_m.j);
+			
+			for(int i = 0; i < 8; i++)
+			{
+				Fvector l_v;
+				l_b1.getpoint(i, l_v);
+				l_m.transform_tiny(l_v);
+				l_b2.modify(l_v);
+			}
+			
+			Fvector l_c, l_d;
+			l_b2.get_CD(l_c, l_d);
 			l_S = l_d.x*l_d.y;
 		}
+		
+		///////////////////////////////
+		//поражение взрывной волной
+
+		//вычислить импульс взрыва для объекта
 		f32 l_impuls = m_blast * (1.f - (l_dst/m_blastR)*(l_dst/m_blastR)) * l_S;
-		if(l_impuls > .001f) {
+
+		if(l_impuls > .001f)
+		{
 			setEnabled(false);
-			l_impuls *= l_pGO->ExplosionEffect(Position(), m_blastR, l_elsemnts, l_bs_positions);
+			//проверить попадение по объекту
+			l_impuls *= l_pGO->ExplosionEffect(Position(), m_blastR,
+											  l_elsemnts, l_bs_positions);
 			setEnabled(true);
 		}
-		if(l_impuls > .001f) while(l_elsemnts.size()) {
-			l_dir.y += .2f;
-			s16 l_element = *l_elsemnts.begin();
-			Fvector l_bs_pos = *l_bs_positions.begin();
-			NET_Packet		P;
-			u_EventGen		(P,GE_HIT,l_pGO->ID());
-			P.w_u16			(u16(ID()));
-			P.w_dir			(l_dir);
-			P.w_float		(l_impuls);
-			P.w_s16			(l_element);
-			P.w_vec3		(l_bs_pos);
-			P.w_float		(l_impuls);
-			P.w_u16			(eHitTypeWound);
-			u_EventSend		(P);
-			l_elsemnts.pop_front();
-			l_bs_positions.pop_front();
-		}
+	
+		if(l_impuls > .001f) 
+			while(l_elsemnts.size())
+			{
+                l_dir.y += .2f;
+				s16 l_element = *l_elsemnts.begin();
+				Fvector l_bs_pos = *l_bs_positions.begin();
+				NET_Packet		P;
+				u_EventGen		(P,GE_HIT,l_pGO->ID());
+				P.w_u16			(u16(ID()));
+				P.w_dir			(l_dir);
+				P.w_float		(l_impuls);
+				P.w_s16			(l_element);
+				P.w_vec3		(l_bs_pos);
+				P.w_float		(l_impuls);
+				P.w_u16			(eHitTypeWound);
+				u_EventSend		(P);
+				l_elsemnts.pop_front();
+				l_bs_positions.pop_front();
+			}
+
 		m_blasted.pop_front();
 	}
+
+	//////////////////////////////
+	//поражение осколками
+
 	Collide::ray_query RQ;
 	setEnabled(false);
-	for(s32 i = 0; i < m_frags; i++) {
-		l_dir.set(::Random.randF(-.5f,.5f), ::Random.randF(-.5f,.5f), ::Random.randF(-.5f,.5f)); l_dir.normalize();
-		if(Level().ObjectSpace.RayPick(Position(), l_dir, m_fragsR, RQ)) {
-			Fvector l_end, l_bs_pos; l_end.mad(Position(),l_dir,RQ.range); l_bs_pos.set(0, 0, 0);
-			if(RQ.O) {
+	for(s32 i = 0; i < m_frags; i++) 
+	{
+		l_dir.set(::Random.randF(-.5f,.5f), 
+				  ::Random.randF(-.5f,.5f), 
+				  ::Random.randF(-.5f,.5f)); 
+		l_dir.normalize();
+		
+		if(Level().ObjectSpace.RayPick(Position(), l_dir, m_fragsR, RQ)) 
+		{
+			Fvector l_end, l_bs_pos; 
+			l_end.mad(Position(),l_dir,RQ.range); 
+			l_bs_pos.set(0, 0, 0);
+			
+			if(RQ.O) 
+			{
 				f32 l_hit = m_fragHit * (1.f - (RQ.range/m_fragsR)*(RQ.range/m_fragsR));
 				CEntity* E = dynamic_cast<CEntity*>(RQ.O);
 				if(E) l_hit *= E->HitScale(RQ.element);
@@ -226,12 +314,21 @@ void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal)
 				P.w_u16			(eHitTypeWound);
 				u_EventSend		(P);
 			}
+
+			//показать эффекты
 			FragWallmark(l_dir, l_end, RQ);
 		}
 	}
-	CParticlesObject* pStaticPG; s32 l_c = (s32)m_effects.size();
-	Fmatrix l_m; l_m.identity(); l_m.c.set(pos);l_m.j.set(normal); GetBasis(normal, l_m.k, l_m.i);
-	for(s32 i = 0; i < l_c; i++) {
+	
+	CParticlesObject* pStaticPG; 
+	s32 l_c = (s32)m_effects.size();
+	Fmatrix l_m; 
+	l_m.identity(); 
+	l_m.c.set(pos);l_m.j.set(normal); 
+	GetBasis(normal, l_m.k, l_m.i);
+	
+	for(s32 i = 0; i < l_c; i++) 
+	{
 		pStaticPG = xr_new<CParticlesObject>(m_effects[i],Sector());
 		pStaticPG->SetTransform(l_m);
 		pStaticPG->Play();
@@ -282,10 +379,19 @@ BOOL CWeaponRPG7Grenade::net_Spawn(LPVOID DC)
 		
 		Fvector ax;
 		float	radius;
-		CHOOSE_MAX(	obb.m_halfsize.x,ax.set(obb.m_rotate.i) ; ax.mul(obb.m_halfsize.x); radius=_min(obb.m_halfsize.y,obb.m_halfsize.z) ;obb.m_halfsize.y/=2.f;obb.m_halfsize.z/=2.f,
-					obb.m_halfsize.y,ax.set(obb.m_rotate.j) ; ax.mul(obb.m_halfsize.y); radius=_min(obb.m_halfsize.x,obb.m_halfsize.z) ;obb.m_halfsize.x/=2.f;obb.m_halfsize.z/=2.f,
-					obb.m_halfsize.z,ax.set(obb.m_rotate.k) ; ax.mul(obb.m_halfsize.z); radius=_min(obb.m_halfsize.y,obb.m_halfsize.x) ;obb.m_halfsize.y/=2.f;obb.m_halfsize.x/=2.f
-					)
+		CHOOSE_MAX(	obb.m_halfsize.x,ax.set(obb.m_rotate.i); 
+					ax.mul(obb.m_halfsize.x); 
+					radius=_min(obb.m_halfsize.y,obb.m_halfsize.z);
+					obb.m_halfsize.y/=2.f;obb.m_halfsize.z/=2.f,
+					obb.m_halfsize.y,ax.set(obb.m_rotate.j); 
+					ax.mul(obb.m_halfsize.y); 
+					radius=_min(obb.m_halfsize.x,obb.m_halfsize.z);
+					obb.m_halfsize.x/=2.f;
+					obb.m_halfsize.z/=2.f,
+					obb.m_halfsize.z,ax.set(obb.m_rotate.k); 
+					ax.mul(obb.m_halfsize.z); 
+					radius=_min(obb.m_halfsize.y,obb.m_halfsize.x);
+					obb.m_halfsize.y/=2.f;obb.m_halfsize.x/=2.f	)
 		//radius*=1.4142f;
 		Fsphere sphere1,sphere2;
 		sphere1.P.add						(obb.m_translate,ax);
@@ -364,19 +470,26 @@ void CWeaponRPG7Grenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd,
 
 }
 
-void CWeaponRPG7Grenade::feel_touch_new(CObject* O) {
+void CWeaponRPG7Grenade::feel_touch_new(CObject* O)
+{
 	CGameObject *l_pGO = dynamic_cast<CGameObject*>(O);
 	if(l_pGO && l_pGO != this) m_blasted.push_back(l_pGO);
 }
 
-void CWeaponRPG7Grenade::net_Destroy() {
+void CWeaponRPG7Grenade::net_Destroy() 
+{
 	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
 	xr_delete(m_pPhysicsShell);
-	while(m_trailEffectsPSs.size()) { xr_delete(*(m_trailEffectsPSs.begin())); m_trailEffectsPSs.pop_front(); }
+	while(m_trailEffectsPSs.size()) 
+	{ 
+		xr_delete(*(m_trailEffectsPSs.begin())); 
+		m_trailEffectsPSs.pop_front(); 
+	}
 	inherited::net_Destroy();
 }
 
-void CWeaponRPG7Grenade::OnH_B_Independent() {
+void CWeaponRPG7Grenade::OnH_B_Independent() 
+{
 	inherited::OnH_B_Independent();
 	setVisible					(true);
 	setEnabled					(true);
@@ -384,11 +497,15 @@ void CWeaponRPG7Grenade::OnH_B_Independent() {
 	R_ASSERT		(E);
 	XFORM().set(E->XFORM()); XFORM().c.set(m_pos);
 	Position().set(XFORM().c);
-	if(m_pPhysicsShell) {
+	if(m_pPhysicsShell) 
+	{
 		Fmatrix trans;
 		Level().Cameras.unaffected_Matrix(trans);
 		CWeaponRPG7 *l_pW = dynamic_cast<CWeaponRPG7*>(E);
-		Fmatrix l_p1, l_r; l_r.rotateY(M_PI*2.f); l_p1.mul(l_pW->GetHUDmode()?trans:XFORM(), l_r); l_p1.c.set(/*m_pos*/*l_pW->m_pGrenadePoint);
+		Fmatrix l_p1, l_r; 
+		l_r.rotateY(M_PI*2.f); 
+		l_p1.mul(l_pW->GetHUDmode()?trans:XFORM(), l_r); 
+		l_p1.c.set(/*m_pos*/*l_pW->m_pGrenadePoint);
 		Fvector a_vel; a_vel.set(0, 0, 0);
 		m_pPhysicsShell->Activate(l_p1, m_vel, a_vel);
 		XFORM().set(m_pPhysicsShell->mXFORM);
@@ -402,7 +519,8 @@ void CWeaponRPG7Grenade::OnH_B_Independent() {
 
 		CParticlesObject* pStaticPG; s32 l_c = (s32)m_trailEffects.size();
 		Fmatrix l_m; l_m.set(XFORM());// GetBasis(normal, l_m.k, l_m.i);
-		for(s32 i = 0; i < l_c; i++) {
+		for(s32 i = 0; i < l_c; i++) 
+		{
 			pStaticPG = xr_new<CParticlesObject>(m_trailEffects[i],Sector(),false);
 			pStaticPG->SetTransform(l_m);
 			pStaticPG->Play();
@@ -411,7 +529,8 @@ void CWeaponRPG7Grenade::OnH_B_Independent() {
 	}
 }
 
-void CWeaponRPG7Grenade::UpdateCL() {
+void CWeaponRPG7Grenade::UpdateCL() 
+{
 	inherited::UpdateCL();
 	switch (m_state){
 	case stInactive:
@@ -419,19 +538,30 @@ void CWeaponRPG7Grenade::UpdateCL() {
 	case stDestroying: 
 		return;
 	case stExplode: 
-		if(m_explodeTime <= 0) {
-			while(m_trailEffectsPSs.size()) { xr_delete(*(m_trailEffectsPSs.begin())); m_trailEffectsPSs.pop_front(); }
+		if(m_explodeTime <= 0) 
+		{
+			while(m_trailEffectsPSs.size()) 
+			{ 
+				xr_delete(*(m_trailEffectsPSs.begin())); 
+				m_trailEffectsPSs.pop_front(); 
+			}
 			m_state			= stDestroying;
 			NET_Packet		P;
 			u_EventGen		(P, GE_DESTROY, ID());
 			u_EventSend		(P);
 			return;
-		}else
+		}
+		else
 			m_explodeTime	-= Device.dwTimeDelta;
-		if(m_flashTime <= 0){
+		
+		if(m_flashTime <= 0)
+		{
 			m_pLight->set_active(false);
-		}else{
-			if(m_pLight->get_active()){
+		}
+		else
+		{
+			if(m_pLight->get_active())
+			{
 				float scale	= float(m_flashTime)/float(FLASH_TIME);
 				m_curColor.mul_rgb	(m_lightColor,scale);
 				m_pLight->set_color	(m_curColor);
@@ -440,16 +570,20 @@ void CWeaponRPG7Grenade::UpdateCL() {
 		}
 		break;
 	case stEngine:
-		if(getVisible() && m_pPhysicsShell) {
+		if(getVisible() && m_pPhysicsShell) 
+		{
 			m_pPhysicsShell->Update	();
 			XFORM().set	(m_pPhysicsShell->mXFORM);
 			Position().set	(m_pPhysicsShell->mXFORM.c);
-			if(m_engineTime <= 0) {
+			if(m_engineTime <= 0) 
+			{
 				m_state		= stFlying;
 				// остановить двигатель
 				xr_list<CParticlesObject*>::iterator l_it;
 				for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->Stop();
-			}else{
+			}
+			else
+			{
 				// двигатель все еще работает
 				m_engineTime -= Device.dwTimeDelta;
 				Fvector l_pos, l_dir;; l_pos.set(0, 0, 3.f); l_dir.set(XFORM().k); l_dir.normalize();
@@ -462,12 +596,14 @@ void CWeaponRPG7Grenade::UpdateCL() {
 				Fvector vel;
 				m_pPhysicsShell->get_LinearVel(vel);
 				// обновить эффекты
-				for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->UpdateParent(XFORM(),vel);
+				for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) 
+							(*l_it)->UpdateParent(XFORM(),vel);
 			}
 		}
 		break;
 	case stFlying:
-		if(getVisible() && m_pPhysicsShell) {
+		if(getVisible() && m_pPhysicsShell) 
+		{
 			m_pPhysicsShell->Update	();
 			XFORM().set	(m_pPhysicsShell->mXFORM);
 			Position().set	(m_pPhysicsShell->mXFORM.c);
@@ -476,7 +612,8 @@ void CWeaponRPG7Grenade::UpdateCL() {
 	}
 }
 
-void CWeaponRPG7Grenade::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq) {
+void CWeaponRPG7Grenade::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq) 
+{
 	string256	name,temp;
 	strconcat	(name,"weapons\\","rpg7","_",s_name,".wav");
 	if (FS.exist(temp,"$game_sounds$",name)) 
@@ -493,11 +630,13 @@ void CWeaponRPG7Grenade::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, 
 	Debug.fatal	("Can't find ref_sound '%s' for weapon '%s'", name, "rpg_grenade");
 }
 
-void CWeaponRPG7Grenade::SoundDestroy(ref_sound& dest) {
+void CWeaponRPG7Grenade::SoundDestroy(ref_sound& dest) 
+{
 	dest.destroy();
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////
-CWeaponRPG7::CWeaponRPG7(void) : CWeaponCustomPistol("RPG7") {
+CWeaponRPG7::CWeaponRPG7(void) : CWeaponCustomPistol("RPG7") 
+{
 	m_weight = 5.f;
 	m_slot = 2;
 	m_hideGrenade = false;
@@ -505,7 +644,8 @@ CWeaponRPG7::CWeaponRPG7(void) : CWeaponCustomPistol("RPG7") {
 	m_pGrenadePoint = &vLastFP;
 }
 
-CWeaponRPG7::~CWeaponRPG7(void) {
+CWeaponRPG7::~CWeaponRPG7(void) 
+{
 }
 
 void CWeaponRPG7::Load	(LPCSTR section)
@@ -514,7 +654,8 @@ void CWeaponRPG7::Load	(LPCSTR section)
 	fMaxZoomFactor			= pSettings->r_float	(section,"max_zoom_factor");
 }
 
-BOOL CWeaponRPG7::net_Spawn(LPVOID DC) {
+BOOL CWeaponRPG7::net_Spawn(LPVOID DC) 
+{
 	m_pGrenadePoint = &vLastFP;
 	BOOL l_res = inherited::net_Spawn(DC);
 	CKinematics* V = PKinematics(m_pHUD->Visual()); R_ASSERT(V);
@@ -522,7 +663,8 @@ BOOL CWeaponRPG7::net_Spawn(LPVOID DC) {
 	V = PKinematics(Visual()); R_ASSERT(V);
 	V->LL_GetInstance(V->LL_BoneID("grenade")).set_callback(GrenadeCallback, this);
 	m_hideGrenade = !iAmmoElapsed;
-	if(iAmmoElapsed && !m_pGrenade) {
+	if(iAmmoElapsed && !m_pGrenade) 
+	{
 		CSE_Abstract*		D	= F_entity_Create("wpn_rpg7_missile");
 		R_ASSERT			(D);
 		CSE_Temporary		*l_tpTemporary = dynamic_cast<CSE_Temporary*>(D);
@@ -548,19 +690,23 @@ BOOL CWeaponRPG7::net_Spawn(LPVOID DC) {
 	return l_res;
 }
 
-void __stdcall CWeaponRPG7::GrenadeCallback(CBoneInstance* B) {
+void __stdcall CWeaponRPG7::GrenadeCallback(CBoneInstance* B) 
+{
 	CWeaponRPG7* l_pW = dynamic_cast<CWeaponRPG7*>(static_cast<CObject*>(B->Callback_Param)); R_ASSERT(l_pW);
 	if(l_pW->m_hideGrenade) B->mTransform.scale(EPS, EPS, EPS);
 }
 
-void CWeaponRPG7::OnStateSwitch(u32 S) {
+void CWeaponRPG7::OnStateSwitch(u32 S) 
+{
 	inherited::OnStateSwitch(S);
 	m_hideGrenade = (!iAmmoElapsed && !(S == eReload));
 }
 
-void CWeaponRPG7::ReloadMagazine() {
+void CWeaponRPG7::ReloadMagazine() 
+{
 	inherited::ReloadMagazine();
-	if(iAmmoElapsed && !m_pGrenade) {
+	if(iAmmoElapsed && !m_pGrenade) 
+	{
 		CSE_Abstract*		D	= F_entity_Create("wpn_rpg7_missile");
 		R_ASSERT			(D);
 		CSE_Temporary		*l_tpTemporary = dynamic_cast<CSE_Temporary*>(D);
@@ -584,9 +730,11 @@ void CWeaponRPG7::ReloadMagazine() {
 		F_entity_Destroy	(D);
 	}
 }
-void CWeaponRPG7::SwitchState(u32 S) {
+void CWeaponRPG7::SwitchState(u32 S) 
+{
 	inherited::SwitchState(S);
-	if(STATE == eIdle && S==eFire && m_pGrenade) {
+	if(STATE == eIdle && S==eFire && m_pGrenade) 
+	{
 		Fvector						p1, d; p1.set(vLastFP); d.set(vLastFD);
 		CEntity*					E = dynamic_cast<CEntity*>(H_Parent());
 		if (E) E->g_fireParams		(p1,d);
@@ -664,7 +812,8 @@ void CWeaponRPG7::switch2_Fire	()
 //	u_EventSend(P);
 //}
 
-void CWeaponRPG7::OnEvent(NET_Packet& P, u16 type) {
+void CWeaponRPG7::OnEvent(NET_Packet& P, u16 type) 
+{
 	inherited::OnEvent(P,type);
 	u16 id;
 	switch (type) {
@@ -683,18 +832,21 @@ void CWeaponRPG7::OnEvent(NET_Packet& P, u16 type) {
 	}
 }
 
-void CWeaponRPG7::Fire2Start () {
+void CWeaponRPG7::Fire2Start () 
+{
 	inherited::Fire2Start();
 	OnZoomIn();
 	fZoomFactor = fMaxZoomFactor;
 }
-void CWeaponRPG7::Fire2End () {
+void CWeaponRPG7::Fire2End () 
+{
 	inherited::Fire2End();
 	OnZoomOut();
 	fZoomFactor = DEFAULT_FOV;
 }
 
-bool CWeaponRPG7::Action(s32 cmd, u32 flags) {
+bool CWeaponRPG7::Action(s32 cmd, u32 flags) 
+{
 	if(inherited::Action(cmd, flags)) return true;
 	switch(cmd) {
 		case kWPN_ZOOM : {

@@ -394,9 +394,9 @@ void CAI_Stalker::UpdateCL(){
 		}
 }
 
-void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse){
+void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type){
 
-if(m_pPhysics_support->isAlive())inherited::Hit(P,dir,who,element,p_in_object_space,impulse);
+if(m_pPhysics_support->isAlive())inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
 m_pPhysics_support->in_Hit(P,dir,who,element,p_in_object_space,impulse);
 }
 

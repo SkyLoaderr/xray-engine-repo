@@ -30,6 +30,8 @@ public:
 	void ChangeSatiety(float value);
 	void ChangeRadiation(float value);
 
+	void ChangeBleeding(float percent);
+
 	//hit_power задается от 0 до 100 (сложилось исторически)
 	virtual void ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element = 0);
 	//обновления состояния с течением времени

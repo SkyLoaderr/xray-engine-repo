@@ -383,7 +383,7 @@ class CAI_Rat : public CCustomMonster, CEatableItem
 		virtual void  feel_touch_new(CObject* O);
 		virtual void  shedule_Update(u32 dt);
 		virtual void  UpdateCL();
-		virtual void  Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse);
+		virtual void  Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type = eHitTypeWound);
 		virtual BOOL  feel_vision_isRelevant(CObject*);
 
 		/////////////////////////////////////
@@ -392,8 +392,6 @@ class CAI_Rat : public CCustomMonster, CEatableItem
 		virtual void OnH_B_Chield		();
 		virtual void OnH_B_Independent	();
 		virtual void OnEvent(NET_Packet& P, u16 type) {inherited::OnEvent(P,type);}
-		virtual	void Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type = eHitTypeWound) 
-					{inherited::Hit(P,dir,who,element,position_in_object_space,impulse,hit_type);}
 		virtual void renderable_Render() {inherited::renderable_Render();}
 		virtual void OnRender() {inherited::OnRender();}
 		virtual bool Useful();		

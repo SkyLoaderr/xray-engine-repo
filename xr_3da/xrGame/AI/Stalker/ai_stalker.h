@@ -419,7 +419,7 @@ public:
 	virtual void			Exec_Look						(float dt);
 	virtual void			shedule_Update					(u32 dt);
 	virtual void			UpdateCL						();
-	virtual void			Hit								(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse);
+	virtual void			Hit								(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type = eHitTypeWound);
 	virtual float			EnemyHeuristics					(CEntity* E);
 	virtual void			SelectEnemy						(SEnemySelected& S);
 	virtual void			feel_sound_new					(CObject* who, int eType, const Fvector &Position, float power);

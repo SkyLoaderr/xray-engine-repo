@@ -295,13 +295,30 @@ void CGameObject::Hit(float P, Fvector &dir, CObject* who, s16 element,
 		if(m_pPhysicsShell) m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,impulse);
 }
 
-f32 CGameObject::ExplosionEffect(const Fvector &expl_centre, const f32 expl_radius, xr_list<s16> &elements, xr_list<Fvector> &bs_positions) {
+//проверка на попадание "осколком" по объекту
+f32 CGameObject::ExplosionEffect(const Fvector &expl_centre, const f32 expl_radius, xr_list<s16> &elements, xr_list<Fvector> &bs_positions) 
+{
 	Collide::ray_query RQ;
-	Fvector l_pos; Center(l_pos);
-	Fvector l_dir; l_dir.sub(l_pos, expl_centre); l_dir.normalize();
+	Fvector l_pos; 
+	Center(l_pos);
+	Fvector l_dir; 
+	l_dir.sub(l_pos, expl_centre); 
+	l_dir.normalize();
 	if(!Level().ObjectSpace.RayPick(expl_centre, l_dir, expl_radius, RQ)) return 0;
+	//осколок не попал или попал, но не по нам
 	if(RQ.O != this) return 0;
+	
+/*	//предотвращение вылетания
+	if((s16)RQ.element != -1)
+	{
+		elements.push_back((s16)RQ.element);
+	}
+	else
+	{
+		elements.push_back(0);
+	}*/
 	elements.push_back((s16)RQ.element);
+	
 	l_pos.set(0, 0, 0);
 	bs_positions.push_back(l_pos);
 	return 1.f;
