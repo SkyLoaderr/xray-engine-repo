@@ -1,24 +1,24 @@
 class "stalker_script"
 
-function stalker_script::__init() super()
+function stalker_script:__init() super()
 end
 
-function stalker_script::reinit()
+function stalker_script:reinit()
 end
 
-function stalker_script::reload(section)
+function stalker_script:reload(section)
 end
 
-function stalker_script::net_spawn(server_object)
+function stalker_script:net_spawn(server_object)
 end
 
-function stalker_script::net_destroy()
+function stalker_script:net_destroy()
 end
 
-function stalker_script::net_export(packet)
+function stalker_script:net_export(packet)
 end
 
-function stalker_script::net_import(packet)
+function stalker_script:net_import(packet)
 end
 
 function init()
