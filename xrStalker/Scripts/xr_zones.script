@@ -375,12 +375,16 @@ end
 -- callback на вход в зону
 function zone_fractions:on_enter( obj )
 	if get_clsid( obj ) == clsid.stalker then
-		if self.fraction then
-			self:add_stalker( obj )
-		else
-			if not self.idle_end or self.idle_end < game.time() then
-				self:create_fraction()
+		local ini = obj:spawn_ini()
+
+		if ini and ini:section_exist( "zones" ) then
+			if self.fraction then
 				self:add_stalker( obj )
+			else
+				if not self.idle_end or self.idle_end < game.time() then
+					self:create_fraction()
+					self:add_stalker( obj )
+				end
 			end
 		end
 	end
