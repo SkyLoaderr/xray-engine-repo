@@ -15,34 +15,14 @@
 
 class CObjectFactory {
 private:
+#ifndef _EDITOR
 	typedef DLL_Pure				CLIENT_BASE_CLASS;
+#endif
 	typedef CSE_Abstract			SERVER_BASE_CLASS;
 
 private:
 #ifndef _EDITOR
 	struct CInternal{};
-
-	struct CClientClassInvalid : public CLIENT_BASE_CLASS
-	{
-		IC							CClientClassInvalid	()
-		{
-			NODEFAULT;
-		}
-	};
-
-	struct CServerClassInvalid : public SERVER_BASE_CLASS
-	{
-		IC							CServerClassInvalid	(LPCSTR section) :
-			SERVER_BASE_CLASS		(section)
-		{
-			NODEFAULT;
-		}
-
-		virtual void				STATE_Write			(NET_Packet &tNetPacket){};
-		virtual void				STATE_Read			(NET_Packet &tNetPacket, u16 size){};
-		virtual void				UPDATE_Write		(NET_Packet &tNetPacket){};
-		virtual void				UPDATE_Read			(NET_Packet &tNetPacket){};
-	};
 #endif
 
 protected:
@@ -64,13 +44,25 @@ protected:
 	};
 
 	template <typename _client_type, typename _server_type>
+	class CObjectItemCS : public CObjectItemAbstract {
+	protected:
+		typedef CObjectItemAbstract	inherited;
+		typedef _client_type		CLIENT_TYPE;
+		typedef _server_type		SERVER_TYPE;
+
+	public:
+		IC							CObjectItemCS		(const CLASS_ID &clsid, LPCSTR script_clsid);
+#ifndef _EDITOR
+		virtual CLIENT_BASE_CLASS	*client_object		() const;
+#endif
+		virtual SERVER_BASE_CLASS	*server_object		(LPCSTR section) const;
+	};
+
+	template <typename _unknown_type, bool _client_type>
 	class CObjectItem : public CObjectItemAbstract {
 	protected:
-		typedef CObjectItemAbstract			inherited;
-#ifndef _EDITOR
-		typedef _client_type		CLIENT_TYPE;
-#endif
-		typedef _server_type		SERVER_TYPE;
+		typedef CObjectItemAbstract	inherited;
+		typedef _unknown_type		SERVER_TYPE;
 
 	public:
 		IC							CObjectItem			(const CLASS_ID &clsid, LPCSTR script_clsid);
@@ -79,6 +71,21 @@ protected:
 #endif
 		virtual SERVER_BASE_CLASS	*server_object		(LPCSTR section) const;
 	};
+
+#ifndef _EDITOR
+	template <typename _unknown_type>
+	class CObjectItem<_unknown_type,true> : public CObjectItemAbstract {
+	protected:
+		typedef CObjectItemAbstract	inherited;
+		typedef _unknown_type		CLIENT_TYPE;
+
+	public:
+		IC							CObjectItem			(const CLASS_ID &clsid, LPCSTR script_clsid);
+		virtual CLIENT_BASE_CLASS	*client_object		() const;
+		virtual SERVER_BASE_CLASS	*server_object		(LPCSTR section) const;
+	};
+#endif
+
 
 	struct CObjectItemPredicate {
 		IC	bool					operator()			(const CObjectItemAbstract *item1, const CObjectItemAbstract *item2) const;
@@ -98,21 +105,6 @@ protected:
 
 		IC							CObjectItemPredicateScript	(const ref_str &script_clsid_name);
 		IC	bool					operator()					(const CObjectItemAbstract *item) const;
-	};
-
-	template <typename _base, typename _derived, typename _default>
-	struct CType {
-		template <typename _derived, typename _default, bool value>
-		struct CInternalType {
-			typedef _default value;
-		};
-
-		template <typename _derived, typename _default>
-		struct CInternalType<_derived,_default,true> {
-			typedef _derived value;
-		};
-
-		typedef typename CInternalType<_derived,_default,boost::is_base_and_derived<_base,_derived>::value>::value type;
 	};
 #endif
 

@@ -61,24 +61,70 @@ IC	bool CObjectFactory::CObjectItemPredicateScript::operator()	(const CObjectIte
 #endif
 
 template <typename _client_type, typename _server_type>
-IC	CObjectFactory::CObjectItem<_client_type,_server_type>::CObjectItem	(const CLASS_ID &clsid, LPCSTR script_clsid) :
+IC	CObjectFactory::CObjectItemCS<_client_type,_server_type>::CObjectItemCS	(const CLASS_ID &clsid, LPCSTR script_clsid) :
 	inherited			(clsid,script_clsid)
 {
 }
 
 #ifndef _EDITOR
 template <typename _client_type, typename _server_type>
-CObjectFactory::CLIENT_BASE_CLASS *CObjectFactory::CObjectItem<_client_type,_server_type>::client_object	() const
+CObjectFactory::CLIENT_BASE_CLASS *CObjectFactory::CObjectItemCS<_client_type,_server_type>::client_object	() const
 {
 	return				(xr_new<CLIENT_TYPE>());
 }
 #endif
 
 template <typename _client_type, typename _server_type>
-CObjectFactory::SERVER_BASE_CLASS *CObjectFactory::CObjectItem<_client_type,_server_type>::server_object	(LPCSTR section) const
+CObjectFactory::SERVER_BASE_CLASS *CObjectFactory::CObjectItemCS<_client_type,_server_type>::server_object	(LPCSTR section) const
 {
 	return				(xr_new<SERVER_TYPE>(section));
 }
+
+template <typename _unknown_type, bool _client_object>
+IC	CObjectFactory::CObjectItem<_unknown_type,_client_object>::CObjectItem	(const CLASS_ID &clsid, LPCSTR script_clsid) :
+	inherited			(clsid,script_clsid)
+{
+}
+
+#ifndef _EDITOR
+template <typename _unknown_type, bool _client_object>
+CObjectFactory::CLIENT_BASE_CLASS *CObjectFactory::CObjectItem<_unknown_type,_client_object>::client_object	() const
+{
+	NODEFAULT;
+#ifdef DEBUG
+	return				(0);
+#endif
+}
+#endif
+
+template <typename _unknown_type, bool _client_object>
+CObjectFactory::SERVER_BASE_CLASS *CObjectFactory::CObjectItem<_unknown_type,_client_object>::server_object	(LPCSTR section) const
+{
+	return				(xr_new<SERVER_TYPE>(section));
+}
+
+#ifndef _EDITOR
+template <typename _unknown_type>
+IC	CObjectFactory::CObjectItem<_unknown_type,true>::CObjectItem	(const CLASS_ID &clsid, LPCSTR script_clsid) :
+	inherited			(clsid,script_clsid)
+{
+}
+
+template <typename _unknown_type>
+CObjectFactory::CLIENT_BASE_CLASS *CObjectFactory::CObjectItem<_unknown_type,true>::client_object	() const
+{
+	return				(xr_new<CLIENT_TYPE>());
+}
+
+template <typename _unknown_type>
+CObjectFactory::SERVER_BASE_CLASS *CObjectFactory::CObjectItem<_unknown_type,true>::server_object	(LPCSTR section) const
+{
+	NODEFAULT;
+#ifdef DEBUG
+	return				(0);
+#endif
+}
+#endif
 
 IC	const CObjectFactory::OBJECT_ITEM_STORAGE &CObjectFactory::clsids	() const
 {
@@ -108,7 +154,7 @@ IC	const CObjectFactory::CObjectItemAbstract *CObjectFactory::item	(const CLASS_
 template <typename _client_type, typename _server_type>
 IC	void CObjectFactory::add	(const CLASS_ID &clsid, LPCSTR script_clsid)
 {
-	add					(xr_new<CObjectItem<_client_type,_server_type> >(clsid,script_clsid));
+	add					(xr_new<CObjectItemCS<_client_type,_server_type> >(clsid,script_clsid));
 }
 
 template <typename _unknown_type>
@@ -117,16 +163,9 @@ IC	void CObjectFactory::add	(const CLASS_ID &clsid, LPCSTR script_clsid)
 	add					(
 		xr_new<
 			CObjectItem<
-				CType<
-					CLIENT_BASE_CLASS,
-					_unknown_type,
-					CClientClassInvalid
-				>::type,
-				CType<
-					SERVER_BASE_CLASS,
-					_unknown_type,
-					CServerClassInvalid
-				>::type> 
+				_unknown_type,
+				boost::is_base_and_derived<CLIENT_BASE_CLASS,_unknown_type>::value
+			>
 		>
 		(clsid,script_clsid)
 	);
@@ -135,7 +174,7 @@ IC	void CObjectFactory::add	(const CLASS_ID &clsid, LPCSTR script_clsid)
 template <typename _unknown_type>
 IC	void CObjectFactory::add	(const CLASS_ID &clsid, LPCSTR script_clsid)
 {
-	add					(xr_new<CObjectItem<_unknown_type,_unknown_type> >(clsid,script_clsid));
+	add					(xr_new<CObjectItem<_unknown_type,false> >(clsid,script_clsid));
 }
 #endif
 
