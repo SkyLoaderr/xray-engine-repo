@@ -144,7 +144,7 @@ void CBuild::BuildCForm	()
 
 	// bb?
 	BB.invalidate	();
-	for (int it = 0; it<CL.getVS(); it++)
+	for (size_t it = 0; it<CL.getVS(); it++)
 		BB.modify( CL.getV()[it] );
 
 	// Saving

@@ -81,11 +81,11 @@ void CFontManager::Render()
 //--------------------------------------------------------------------
 CHUDManager::CHUDManager()
 { 
-#pragma todo("Yura, what is this and why? Oles.")
+	// #pragma todo("Yura, what is this and why? Oles.")
 	// Level().pHUD	= this;
 	
 	pUI						= 0;
-//	if (Device.bReady) OnDeviceCreate();
+	// if (Device.bReady) OnDeviceCreate();
 
 	m_pHUDCursor			= xr_new<CHUDCursor>();
 }
