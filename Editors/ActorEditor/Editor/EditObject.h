@@ -2,6 +2,7 @@
 #define EditObjectH
 
 #include "Bone.h"
+#include "Motion.h"
 #include "SceneClassList.h"
 #ifdef _EDITOR
 	#include "PropertiesListTypes.h"
@@ -12,8 +13,6 @@
 struct 	SRayPickInfo;
 class 	CEditableMesh;
 class 	CFrustum;
-class 	CSMotion;
-class 	COMotion;
 class 	CCustomMotion;
 class	CBone;
 class	Shader;
@@ -29,8 +28,12 @@ struct	SXRShaderData;
 #endif
 
 #ifdef _LW_IMPORT
-#include <lwobjimp.h>
-#include <lwsurf.h>
+	#include <lwobjimp.h>
+	#include <lwsurf.h>
+#endif
+
+#ifdef _MAX_EXPORT
+	#define ref_shader LPVOID
 #endif
 
 #define LOD_SHADER_NAME 	"def_shaders\\lod"
@@ -172,7 +175,7 @@ class CEditableObject{
     BPVec			m_BoneParts;
     CSMotion*		m_ActiveSMotion;
 public:
-    st_AnimParams	m_SMParam;
+    SAnimParams		m_SMParam;
 public:
 	// options
 	Flags32			m_Flags;

@@ -175,21 +175,22 @@ bool CEditableObject::AppendSMotion(LPCSTR fname, SMotionVec* inserted)
 {
 	VERIFY(IsSkeleton());
 
-    bool bRes = true;
+    bool bRes	= true;
     
-	AnsiString ext=ExtractFileExt(fname).LowerCase();
-    if (ext==".skl"){
+	LPCSTR ext	= strext(fname);
+    if (0==stricmp(ext,".skl")){
         CSMotion* M = xr_new<CSMotion>();
         if (!M->LoadMotion(fname)){
             ELog.DlgMsg(mtError,"Motion '%s' can't load. Append failed.",fname);
             xr_delete(M);
             bRes = false;
         }else{
-        	AnsiString name=ChangeFileExt(ExtractFileName(fname),"");
+        	string256 name;
+			_splitpath(fname,0,0,name,0);
             if (CheckBoneCompliance(M)){
                 M->SortBonesBySkeleton(m_Bones);
                 string256 			m_name;
-                GenerateSMotionName	(m_name,name.c_str(),M);
+                GenerateSMotionName	(m_name,name,M);
                 M->SetName			(m_name);
                 m_SMotions.push_back(M);
                 if (inserted)		inserted->push_back(M);
@@ -199,7 +200,7 @@ bool CEditableObject::AppendSMotion(LPCSTR fname, SMotionVec* inserted)
 	            bRes = false;
             }
         }
-    }else if (ext==".skls"){
+    }else if (0==stricmp(ext,".skls")){
         IReader* F	= FS.r_open(fname);
         // object motions
         int cnt 	= F->r_u32();

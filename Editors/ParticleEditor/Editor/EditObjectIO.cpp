@@ -21,7 +21,6 @@ bool CEditableObject::Load(const char* fname)
     if 	(ext==".lwo")    		return Import_LWO(fname,false);
     else return LoadObject(fname);
 }
-#endif
 
 bool CEditableObject::LoadObject(const char* fname)
 {
@@ -34,6 +33,7 @@ bool CEditableObject::LoadObject(const char* fname)
     if (bRes) m_LoadName = fname;
     return bRes;
 }
+#endif
 
 void CEditableObject::SaveObject(const char* fname)
 {
@@ -60,169 +60,6 @@ void CEditableObject::SaveObject(const char* fname)
 
     F.save_to		(fname);
 	m_LoadName 		= fname;
-}
-
-
-bool CEditableObject::Load(IReader& F){
-    bool bRes = true;
-	do{
-        u32 version = 0;
-        char buf[255];
-        char sh_name[255];
-        R_ASSERT(F.r_chunk(EOBJ_CHUNK_VERSION,&version));
-        if (version!=EOBJ_CURRENT_VERSION){
-            ELog.DlgMsg( mtError, "CEditableObject: unsupported file version. Object can't load.");
-            bRes = false;
-            break;
-        }
-
-        R_ASSERT(F.r_chunk(EOBJ_CHUNK_FLAGS, &m_Flags.flags));
-
-        if (F.find_chunk	(EOBJ_CHUNK_CLASSSCRIPT)){
-            F.r_stringZ		(m_ClassScript);
-        }
-
-        // file version
-        R_ASSERT(F.find_chunk(EOBJ_CHUNK_LIB_VERSION));
-        m_Version			= F.r_s32();
-        // surfaces
-        if (F.find_chunk(EOBJ_CHUNK_SURFACES3)){
-            u32 cnt = F.r_u32();
-            m_Surfaces.resize(cnt);
-            for (SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
-                *s_it 		= xr_new<CSurface>();
-                F.r_stringZ	(buf);	(*s_it)->SetName		(buf);
-                F.r_stringZ	(buf);	(*s_it)->SetShader		(buf);
-                F.r_stringZ	(buf);	(*s_it)->SetShaderXRLC	(buf);
-                F.r_stringZ	(buf);	(*s_it)->SetGameMtl		(buf);
-                F.r_stringZ	(buf); 	(*s_it)->SetTexture		(buf);
-                F.r_stringZ	(buf); 	(*s_it)->SetVMap		(buf);
-                (*s_it)->m_Flags.set(F.r_u32());
-                (*s_it)->SetFVF		(F.r_u32());
-                cnt 				= F.r_u32();
-                if (cnt>1) ELog.DlgMsg(mtError,"Object surface '%s' has more than one TC's.",buf);
-                R_ASSERT(1<=cnt);
-            }
-        }else if (F.find_chunk(EOBJ_CHUNK_SURFACES2)){
-            u32 cnt = F.r_u32();
-            m_Surfaces.resize(cnt);
-            for (SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
-                *s_it 		= xr_new<CSurface>();
-                F.r_stringZ	(buf);	(*s_it)->SetName		(buf);
-                F.r_stringZ	(buf);	(*s_it)->SetShader		(buf);
-                F.r_stringZ	(buf);	(*s_it)->SetShaderXRLC	(buf);
-                F.r_stringZ	(buf); 	(*s_it)->SetTexture		(buf);
-                F.r_stringZ	(buf); 	(*s_it)->SetVMap		(buf);
-                (*s_it)->m_Flags.set(F.r_u32()); 
-                (*s_it)->SetFVF		(F.r_u32());
-                cnt 				= F.r_u32();
-                if (cnt>1) ELog.DlgMsg(mtError,"Object surface '%s' has more than one TC's.",buf);
-                R_ASSERT(1<=cnt);
-            }
-        }else{
-            R_ASSERT(F.find_chunk(EOBJ_CHUNK_SURFACES));
-            u32 cnt = F.r_u32();
-            m_Surfaces.resize(cnt);
-            for (SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
-                *s_it = xr_new<CSurface>();
-                F.r_stringZ(buf);
-                (*s_it)->SetName(buf);
-                F.r_stringZ(sh_name);
-                (*s_it)->m_Flags.set(CSurface::sf2Sided,!!F.r_u8());
-                (*s_it)->SetFVF		(F.r_u32());
-                cnt 				= F.r_u32();
-                if (cnt>1) ELog.DlgMsg(mtError,"Object surface '%s' has more than one TC's.",buf);
-                R_ASSERT(1<=cnt);
-                F.r_stringZ			(buf); (*s_it)->SetTexture(buf);
-                F.r_stringZ			(buf); (*s_it)->SetVMap(buf);
-                (*s_it)->SetShader		(sh_name);
-                (*s_it)->SetShaderXRLC	("default");
-            }
-
-            // surfaces xrlc part
-            if(F.find_chunk(EOBJ_CHUNK_SURFACES_XRLC))
-                for (s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
-                    F.r_stringZ(buf); (*s_it)->SetShaderXRLC(buf);
-                }
-        }
-
-        // Load meshes
-        IReader* OBJ = F.open_chunk(EOBJ_CHUNK_EDITMESHES);
-        if(OBJ){
-            IReader* M   = OBJ->open_chunk(0);
-            for (int count=1; M; count++) {
-                CEditableMesh* mesh=xr_new<CEditableMesh>(this);
-                if (mesh->LoadMesh(*M))
-                    m_Meshes.push_back(mesh);
-                else{
-                    xr_delete(mesh);
-                    ELog.DlgMsg( mtError, "CEditableObject: Can't load mesh!", buf );
-                    bRes = false;
-                }
-                M->close();
-                if (!bRes)	break;
-                M = OBJ->open_chunk(count);
-            }
-            OBJ->close();
-        }
-
-        // bones
-        IReader* B_CHUNK = F.open_chunk(EOBJ_CHUNK_BONES2);
-		if (B_CHUNK){
-            int chunk = 0;
-        	IReader* O;
-            while (0!=(O=B_CHUNK->open_chunk(chunk++))){
-            	m_Bones.push_back(xr_new<CBone>());
-                m_Bones.back()->Load_1(*O);
-                O->close();
-            }
-            B_CHUNK->close();
-            PrepareBones();
-        }else if (F.find_chunk(EOBJ_CHUNK_BONES)){
-            m_Bones.resize(F.r_u32());
-            for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
-                *b_it = xr_new<CBone>();
-                (*b_it)->Load_0(F);
-            }
-            PrepareBones();
-        }
-
-        // skeleton motions
-        if (F.find_chunk(EOBJ_CHUNK_SMOTIONS)){
-            m_SMotions.resize(F.r_u32());
-            for (SMotionIt s_it=m_SMotions.begin(); s_it!=m_SMotions.end(); s_it++){
-                *s_it = xr_new<CSMotion>();
-                if (!(*s_it)->Load(F)){
-                    ELog.Msg(mtError,"Motions has different version. Load failed.");
-                    xr_delete(*s_it);
-                    m_SMotions.clear();
-                    break;
-                }
-            }
-        }
-
-        // bone parts
-        if (F.find_chunk(EOBJ_CHUNK_BONEPARTS)){
-            m_BoneParts.resize(F.r_u32());
-	        for (BPIt bp_it=m_BoneParts.begin(); bp_it!=m_BoneParts.end(); bp_it++){
-    	        F.r_stringZ	(buf); bp_it->alias=buf;
-	            bp_it->bones.resize(F.r_u32());
-                F.r(&*bp_it->bones.begin(),bp_it->bones.size()*sizeof(int));
-	        }
-    	}
-
-		if (F.find_chunk	(EOBJ_CHUNK_ACTORTRANSFORM)){
-	        F.r_fvector3	(a_vPosition);
-    	    F.r_fvector3	(a_vRotate);
-		}
-
-        ResetSAnimation();
-
-        if (!bRes) break;
-        UpdateBox();
-    }while(0);
-
-    return bRes;
 }
 
 void CEditableObject::Save(IWriter& F)
@@ -317,6 +154,169 @@ void CEditableObject::Save(IWriter& F)
 }
 //------------------------------------------------------------------------------
 #ifdef _EDITOR
+bool CEditableObject::Load(IReader& F)
+{
+	bool bRes = true;
+	do{
+		u32 version = 0;
+		char buf[255];
+		char sh_name[255];
+		R_ASSERT(F.r_chunk(EOBJ_CHUNK_VERSION,&version));
+		if (version!=EOBJ_CURRENT_VERSION){
+			ELog.DlgMsg( mtError, "CEditableObject: unsupported file version. Object can't load.");
+			bRes = false;
+			break;
+		}
+
+		R_ASSERT(F.r_chunk(EOBJ_CHUNK_FLAGS, &m_Flags.flags));
+
+		if (F.find_chunk	(EOBJ_CHUNK_CLASSSCRIPT)){
+			F.r_stringZ		(m_ClassScript);
+		}
+
+		// file version
+		R_ASSERT(F.find_chunk(EOBJ_CHUNK_LIB_VERSION));
+		m_Version			= F.r_s32();
+		// surfaces
+		if (F.find_chunk(EOBJ_CHUNK_SURFACES3)){
+			u32 cnt = F.r_u32();
+			m_Surfaces.resize(cnt);
+			for (SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
+				*s_it 		= xr_new<CSurface>();
+				F.r_stringZ	(buf);	(*s_it)->SetName		(buf);
+				F.r_stringZ	(buf);	(*s_it)->SetShader		(buf);
+				F.r_stringZ	(buf);	(*s_it)->SetShaderXRLC	(buf);
+				F.r_stringZ	(buf);	(*s_it)->SetGameMtl		(buf);
+				F.r_stringZ	(buf); 	(*s_it)->SetTexture		(buf);
+				F.r_stringZ	(buf); 	(*s_it)->SetVMap		(buf);
+				(*s_it)->m_Flags.set(F.r_u32());
+				(*s_it)->SetFVF		(F.r_u32());
+				cnt 				= F.r_u32();
+				if (cnt>1) ELog.DlgMsg(mtError,"Object surface '%s' has more than one TC's.",buf);
+				R_ASSERT(1<=cnt);
+			}
+		}else if (F.find_chunk(EOBJ_CHUNK_SURFACES2)){
+			u32 cnt = F.r_u32();
+			m_Surfaces.resize(cnt);
+			for (SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
+				*s_it 		= xr_new<CSurface>();
+				F.r_stringZ	(buf);	(*s_it)->SetName		(buf);
+				F.r_stringZ	(buf);	(*s_it)->SetShader		(buf);
+				F.r_stringZ	(buf);	(*s_it)->SetShaderXRLC	(buf);
+				F.r_stringZ	(buf); 	(*s_it)->SetTexture		(buf);
+				F.r_stringZ	(buf); 	(*s_it)->SetVMap		(buf);
+				(*s_it)->m_Flags.set(F.r_u32()); 
+				(*s_it)->SetFVF		(F.r_u32());
+				cnt 				= F.r_u32();
+				if (cnt>1) ELog.DlgMsg(mtError,"Object surface '%s' has more than one TC's.",buf);
+				R_ASSERT(1<=cnt);
+			}
+		}else{
+			R_ASSERT(F.find_chunk(EOBJ_CHUNK_SURFACES));
+			u32 cnt = F.r_u32();
+			m_Surfaces.resize(cnt);
+			for (SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
+				*s_it = xr_new<CSurface>();
+				F.r_stringZ(buf);
+				(*s_it)->SetName(buf);
+				F.r_stringZ(sh_name);
+				(*s_it)->m_Flags.set(CSurface::sf2Sided,!!F.r_u8());
+				(*s_it)->SetFVF		(F.r_u32());
+				cnt 				= F.r_u32();
+				if (cnt>1) ELog.DlgMsg(mtError,"Object surface '%s' has more than one TC's.",buf);
+				R_ASSERT(1<=cnt);
+				F.r_stringZ			(buf); (*s_it)->SetTexture(buf);
+				F.r_stringZ			(buf); (*s_it)->SetVMap(buf);
+				(*s_it)->SetShader		(sh_name);
+				(*s_it)->SetShaderXRLC	("default");
+			}
+
+			// surfaces xrlc part
+			if(F.find_chunk(EOBJ_CHUNK_SURFACES_XRLC))
+				for (s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
+					F.r_stringZ(buf); (*s_it)->SetShaderXRLC(buf);
+				}
+		}
+
+		// Load meshes
+		IReader* OBJ = F.open_chunk(EOBJ_CHUNK_EDITMESHES);
+		if(OBJ){
+			IReader* M   = OBJ->open_chunk(0);
+			for (int count=1; M; count++) {
+				CEditableMesh* mesh=xr_new<CEditableMesh>(this);
+				if (mesh->LoadMesh(*M))
+					m_Meshes.push_back(mesh);
+				else{
+					xr_delete(mesh);
+					ELog.DlgMsg( mtError, "CEditableObject: Can't load mesh!", buf );
+					bRes = false;
+				}
+				M->close();
+				if (!bRes)	break;
+				M = OBJ->open_chunk(count);
+			}
+			OBJ->close();
+		}
+
+		// bones
+		IReader* B_CHUNK = F.open_chunk(EOBJ_CHUNK_BONES2);
+		if (B_CHUNK){
+			int chunk = 0;
+			IReader* O;
+			while (0!=(O=B_CHUNK->open_chunk(chunk++))){
+				m_Bones.push_back(xr_new<CBone>());
+				m_Bones.back()->Load_1(*O);
+				O->close();
+			}
+			B_CHUNK->close();
+			PrepareBones();
+		}else if (F.find_chunk(EOBJ_CHUNK_BONES)){
+			m_Bones.resize(F.r_u32());
+			for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
+				*b_it = xr_new<CBone>();
+				(*b_it)->Load_0(F);
+			}
+			PrepareBones();
+		}
+
+		// skeleton motions
+		if (F.find_chunk(EOBJ_CHUNK_SMOTIONS)){
+			m_SMotions.resize(F.r_u32());
+			for (SMotionIt s_it=m_SMotions.begin(); s_it!=m_SMotions.end(); s_it++){
+				*s_it = xr_new<CSMotion>();
+				if (!(*s_it)->Load(F)){
+					ELog.Msg(mtError,"Motions has different version. Load failed.");
+					xr_delete(*s_it);
+					m_SMotions.clear();
+					break;
+				}
+			}
+		}
+
+		// bone parts
+		if (F.find_chunk(EOBJ_CHUNK_BONEPARTS)){
+			m_BoneParts.resize(F.r_u32());
+			for (BPIt bp_it=m_BoneParts.begin(); bp_it!=m_BoneParts.end(); bp_it++){
+				F.r_stringZ	(buf); bp_it->alias=buf;
+				bp_it->bones.resize(F.r_u32());
+				F.r(&*bp_it->bones.begin(),bp_it->bones.size()*sizeof(int));
+			}
+		}
+
+		if (F.find_chunk	(EOBJ_CHUNK_ACTORTRANSFORM)){
+			F.r_fvector3	(a_vPosition);
+			F.r_fvector3	(a_vRotate);
+		}
+
+		ResetSAnimation();
+
+		if (!bRes) break;
+		UpdateBox();
+	}while(0);
+
+	return bRes;
+}
+
 bool CEditableObject::ExportOGF(LPCSTR fn){
 	CMemoryWriter F;
     if (PrepareOGF(F)){
