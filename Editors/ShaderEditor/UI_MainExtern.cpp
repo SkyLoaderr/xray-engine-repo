@@ -92,7 +92,7 @@ void TUI::Idle()
 //    ELog.Msg(mtInformation,"%f",Device.m_FrameDTime);
     Sleep(5);
 	Device.UpdateTimer();
-    EEditorState est = GetEState();
+//    EEditorState est = GetEState();
     if (bRedraw){
         Tools.Update();
         Redraw();

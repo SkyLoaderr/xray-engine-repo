@@ -86,14 +86,22 @@ __published:	// IDE-managed Components
 	TMenuItem *Refresh1;
 	TMenuItem *Checknewtextures1;
 	TElTabSheet *tsMaterial;
-	TBevel *Bevel2;
-	TPanel *Panel2;
-	TExtBtn *ExtBtn1;
-	TExtBtn *ExtBtn2;
-	TExtBtn *ExtBtn3;
-	TExtBtn *ExtBtn6;
-	TElTree *tvMaterial;
 	TElTreeInplaceAdvancedEdit *InplaceMaterialEdit;
+	TElTabSheet *tsMaterialPair;
+	TPanel *Panel2;
+	TExtBtn *ebMaterialRemove;
+	TExtBtn *ebMaterialClone;
+	TExtBtn *ExtBtn3;
+	TExtBtn *ebMaterialCreate;
+	TBevel *Bevel2;
+	TElTree *tvMaterial;
+	TElTree *tvMaterialPair;
+	TBevel *Bevel4;
+	TPanel *Panel3;
+	TExtBtn *ExtBtn1;
+	TExtBtn *ebMaterialPairClone;
+	TExtBtn *ExtBtn6;
+	TExtBtn *ebMaterialPairCreate;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebReloadClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);
@@ -113,7 +121,7 @@ __published:	// IDE-managed Components
 	void __fastcall CreateFolder1Click(TObject *Sender);
 	void __fastcall ExpandAll1Click(TObject *Sender);
 	void __fastcall CollapseAll1Click(TObject *Sender);
-	void __fastcall tvEngineItemFocused(TObject *Sender);
+	void __fastcall tvItemFocused(TObject *Sender);
 	void __fastcall ebEngineShaderCloneClick(TObject *Sender);
 	void __fastcall tvEngineKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
@@ -133,10 +141,17 @@ __published:	// IDE-managed Components
 	void __fastcall ImageEditor1Click(TObject *Sender);
 	void __fastcall Refresh1Click(TObject *Sender);
 	void __fastcall Checknewtextures1Click(TObject *Sender);
+	void __fastcall ebMaterialCreateClick(TObject *Sender);
+	void __fastcall ebMaterialCloneClick(TObject *Sender);
+	void __fastcall ebMaterialPairModeClick(TObject *Sender);
+	void __fastcall ebMaterialPairCreateClick(TObject *Sender);
+	void __fastcall ebMaterialPairCloneClick(TObject *Sender);
 private:	// User declarations
 	void __fastcall TemplateClick	(TObject *Sender);
     TElTree*		CurrentView		(){ if (pcShaders->ActivePage==tsEngine) 		return tvEngine;
 									    else if (pcShaders->ActivePage==tsCompiler)	return tvCompiler;
+                                        else if (pcShaders->ActivePage==tsMaterial) return tvMaterial;
+                                        else if (pcShaders->ActivePage==tsMaterialPair) return tvMaterialPair;
                                         THROW;
     								  }
 	void __fastcall RenameItem(LPCSTR p0, LPCSTR p1);
@@ -148,12 +163,21 @@ public:		// User declarations
 	void 			ChangeTarget	(int tgt);
     void 			UpdateBar		();
     void 			InitPalette		(TemplateVec& lst);
+// blender
 	void 			AddBlender		(LPCSTR full_name);
-	void 			AddCShader		(LPCSTR full_name);
     void			SetCurrentBlender(LPCSTR full_name);
-    void			SetCurrentCShader(LPCSTR full_name);
 	void 			ClearEShaderList();
+// cshader
+	void 			AddCShader		(LPCSTR full_name);
+    void			SetCurrentCShader(LPCSTR full_name);
     void			ClearCShaderList();
+// material
+	void 			AddMaterial		(LPCSTR full_name);
+    void			SetCurrentMaterial(LPCSTR full_name);
+    void			ClearMaterialList();
+	void 			AddMaterialPair	(LPCSTR full_name);
+    void			SetCurrentMaterialPair(LPCSTR full_name);
+    void			ClearMaterialPairList();
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfraLeftBar *fraLeftBar;

@@ -76,41 +76,43 @@ private:	// User declarations
 
     EImageThumbnail* m_Thm;
 
+    void 	InitItemsList(const char* nm=0);
+
+    bool 	bMultiSel;
+    int 	iMultiSelLimit;
+    bool 	bIgnoreExt;
+// fill routines    
+    void __fastcall FillSound		();
+    void __fastcall FillObject		();
+    void __fastcall FillLAnim		();
+    void __fastcall FillShader		();
+    void __fastcall FillShaderXRLC	();
+    void __fastcall FillPS			();
+    void __fastcall FillTexture		();
+    void __fastcall FillEntity		();
+    void __fastcall FillGameObject	();
+    void __fastcall FillGameMaterial();
+public:		// User declarations
     enum ESelectMode{
-    	smSound,
+    	smSound = 0,
         smObject,
     	smShader,
         smShaderXRLC,
         smPS,
         smTexture,
         smEntity,
-        smEntityCLSID,
         smLAnim,
         smGameObject,
+        smGameMaterial,
         smMaxMode
     };
-    ESelectMode Mode;
+protected:
+    static ESelectMode Mode;
     static AnsiString m_LastSelection[smMaxMode];
-
-    void InitItemsList(const char* nm=0);
-
-    bool bMultiSel;
-    int iMultiSelLimit;
-    bool bIgnoreExt;
 public:		// User declarations
-    __fastcall TfrmChoseItem(TComponent* Owner);
-// static function
-    static LPCSTR __fastcall SelectSound	(bool bMulti=false, LPCSTR init_name=0, bool bIgnoreExt=false);
-    static LPCSTR __fastcall SelectObject	(bool bMulti=false, LPCSTR start_folder=0, LPCSTR init_name=0);
-    static LPCSTR __fastcall SelectLAnim	(bool bMulti=false, LPCSTR start_folder=0, LPCSTR init_name=0);
-    static LPCSTR __fastcall SelectShader	(LPCSTR init_name=0);
-    static LPCSTR __fastcall SelectShaderXRLC(LPCSTR init_name=0);
-    static LPCSTR __fastcall SelectPS		(LPCSTR start_folder=0, LPCSTR init_name=0);
-    static LPCSTR __fastcall SelectTexture	(bool bMulti=false, LPCSTR init_name=0, bool bIgnoreExt=false);
-    static LPCSTR __fastcall SelectEntity	(LPCSTR init_name=0);
-    static LPCSTR __fastcall SelectEntityCLSID(LPCSTR init_name=0);
-    static LPCSTR __fastcall SelectGameObject(bool bMulti=false, LPCSTR start_folder=0, LPCSTR init_name=0);
-    static bool __fastcall Visible(){return !!form;}
+    __fastcall 					TfrmChoseItem	(TComponent* Owner);
+    static int	 	__fastcall 	SelectItem		(ESelectMode mode, LPCSTR& dest, int sel_cnt=1, LPCSTR init_name=0, bool bIgnoreExt=false);
+    static bool 	__fastcall 	Visible			(){return !!form;}
 };
 //---------------------------------------------------------------------------
 #endif

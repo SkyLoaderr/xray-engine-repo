@@ -372,6 +372,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 else			   	Surface->Draw(R.Left,R.Top+3,m_BMDot);
             }break;
             case PROP_WAVE:
+            case PROP_LIBPS:
             case PROP_LIBSOUND:
             case PROP_LIGHTANIM:
             case PROP_LIBOBJECT:
@@ -379,6 +380,10 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             case PROP_ENTITY:
             case PROP_TEXTURE:
             case PROP_TEXTURE2:
+			case PROP_GAMEMTL:
+            case PROP_A_GAMEMTL:
+            case PROP_A_LIBPS:
+            case PROP_A_LIBSOUND:
             case PROP_A_TEXTURE:
             case PROP_A_ESHADER:
             case PROP_A_CSHADER:
@@ -547,6 +552,8 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
         case PROP_WAVE: 			WaveFormClick(item); 		break;
         case PROP_FCOLOR: 			
         case PROP_COLOR: 			ColorClick(item); 			break;
+		case PROP_GAMEMTL:
+        case PROP_LIBPS:
         case PROP_LIBSOUND:
         case PROP_LIGHTANIM:
         case PROP_LIBOBJECT:
@@ -555,6 +562,9 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
         case PROP_TEXTURE:
         case PROP_ESHADER:
         case PROP_CSHADER:		CustomTextClick(item);      break;
+        case PROP_A_GAMEMTL:
+        case PROP_A_LIBPS:
+		case PROP_A_LIBSOUND:
         case PROP_A_TEXTURE:
         case PROP_A_ESHADER:
         case PROP_A_CSHADER:	CustomAnsiTextClick(item);	break;
@@ -653,12 +663,13 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
 			AnsiString edit_val	 	= V->GetValue();
 			if (V->OnBeforeEdit) 	V->OnBeforeEdit(V,&edit_val);
             LPCSTR new_val 		 	= 0;
+            bool bRes				= false;
         	if (mi->Tag==0){
-            	new_val 		 	= TfrmChoseItem::SelectTexture(false,edit_val.c_str(),true);
+            	bRes				= TfrmChoseItem::SelectItem(TfrmChoseItem::smTexture,new_val,V->subitem,edit_val.c_str(),true);
             }else if (mi->Tag>=2){
             	new_val			 	= TEXTUREString[mi->Tag];
             }
-            if (new_val){
+            if (bRes){
                 edit_val		 	= new_val;
                 if (V->OnAfterEdit) V->OnAfterEdit(V,&edit_val);
                 if (V->ApplyValue(edit_val.c_str())){
@@ -756,18 +767,21 @@ void __fastcall TProperties::CustomTextClick(TElTreeItem* item)
 	AnsiString edit_val		= V->GetValue();
 	if (V->OnBeforeEdit) 	V->OnBeforeEdit(V,&edit_val);
     LPCSTR new_val=0;
+    TfrmChoseItem::ESelectMode mode;
     switch (V->type){
-    case PROP_ESHADER:		new_val	= TfrmChoseItem::SelectShader(edit_val.c_str());			break;
-	case PROP_CSHADER:		new_val	= TfrmChoseItem::SelectShaderXRLC(edit_val.c_str());		break;
-    case PROP_TEXTURE:		new_val = TfrmChoseItem::SelectTexture(false,edit_val.c_str(),true);break;
-	case PROP_LIGHTANIM:	new_val = TfrmChoseItem::SelectLAnim(false,0,edit_val.c_str());		break;
-    case PROP_LIBOBJECT:	new_val = TfrmChoseItem::SelectObject(false,0,edit_val.c_str());	break;
-    case PROP_GAMEOBJECT:	new_val = TfrmChoseItem::SelectGameObject(false,0,edit_val.c_str());break;
-    case PROP_ENTITY:		new_val = TfrmChoseItem::SelectEntity(edit_val.c_str());			break;
-    case PROP_LIBSOUND:		new_val = TfrmChoseItem::SelectSound(false,edit_val.c_str(),true);	break;
+    case PROP_ESHADER:		mode = TfrmChoseItem::smShader;		break;
+	case PROP_CSHADER:		mode = TfrmChoseItem::smShaderXRLC;	break;
+    case PROP_TEXTURE:		mode = TfrmChoseItem::smTexture;	break;
+	case PROP_LIGHTANIM:	mode = TfrmChoseItem::smLAnim;		break;
+    case PROP_LIBOBJECT:	mode = TfrmChoseItem::smObject;		break;
+    case PROP_GAMEOBJECT:	mode = TfrmChoseItem::smGameObject;	break;
+    case PROP_ENTITY:		mode = TfrmChoseItem::smEntity;		break;
+    case PROP_LIBSOUND:		mode = TfrmChoseItem::smSound;		break;
+    case PROP_LIBPS:		mode = TfrmChoseItem::smPS;			break;
+    case PROP_GAMEMTL:		mode = TfrmChoseItem::smGameMaterial; break;
     default: THROW2("Unknown prop");
     }
-    if (new_val){
+    if (TfrmChoseItem::SelectItem(mode,new_val,V->subitem,edit_val.c_str())){
         edit_val			= new_val;
         if (V->OnAfterEdit) V->OnAfterEdit(V,&edit_val);
         if (V->ApplyValue(edit_val.c_str())){	
@@ -781,17 +795,21 @@ void __fastcall TProperties::CustomTextClick(TElTreeItem* item)
 
 void __fastcall TProperties::CustomAnsiTextClick(TElTreeItem* item)
 {
-	ATextValue* V		= (ATextValue*)item->Tag;
+	ATextValue* V			= (ATextValue*)item->Tag;
 	AnsiString edit_val		= V->GetValue();
 	if (V->OnBeforeEdit) 	V->OnBeforeEdit(V,&edit_val);
-    LPCSTR new_val=0;
+    LPCSTR new_val			= 0;
+    TfrmChoseItem::ESelectMode mode;
     switch (V->type){
-    case PROP_A_ESHADER:	new_val	= TfrmChoseItem::SelectShader(edit_val.c_str());			break;
-	case PROP_A_CSHADER:	new_val	= TfrmChoseItem::SelectShaderXRLC(edit_val.c_str());		break;
-    case PROP_A_TEXTURE:	new_val = TfrmChoseItem::SelectTexture(false,edit_val.c_str(),true);break;
-    default: THROW2("Unknown props");
+    case PROP_A_ESHADER:   	mode = TfrmChoseItem::smShader;		break;
+	case PROP_A_CSHADER:   	mode = TfrmChoseItem::smShaderXRLC;	break;
+    case PROP_A_TEXTURE:   	mode = TfrmChoseItem::smTexture;	break;
+    case PROP_A_LIBSOUND:  	mode = TfrmChoseItem::smSound;		break;
+    case PROP_A_LIBPS:		mode = TfrmChoseItem::smPS;			break;
+    case PROP_A_GAMEMTL:	mode = TfrmChoseItem::smGameMaterial; break;
+    default: THROW2("Unknown prop");
     }
-    if (new_val){
+    if (TfrmChoseItem::SelectItem(mode,new_val,V->subitem,edit_val.c_str())){
         edit_val				= new_val;
         if (V->OnAfterEdit) 	V->OnAfterEdit(V,&edit_val);
         if (V->ApplyValue(edit_val)){ 

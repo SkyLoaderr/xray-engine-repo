@@ -522,11 +522,13 @@ BOOL CFileSystem::CheckLocking(FSPath *initial, LPSTR fname, bool bOnlySelf, boo
 	if (initial) initial->Update(fn);
 
 	if (bOnlySelf) return (m_LockFiles.find(fn)!=m_LockFiles.end());
-	HANDLE handle=CreateFile(fn,GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
-    CloseHandle(handle);
-    if (bMsg&&(INVALID_HANDLE_VALUE==handle))
-		ELog.DlgMsg(mtError,"Access denied.\nFile: '%s'\ncurrently locked by user: '%s'.",fn,GetLockOwner(0,fn));
-    return (INVALID_HANDLE_VALUE==handle);
+    if (Exist(fn)){
+        HANDLE handle=CreateFile(fn,GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
+        CloseHandle(handle);
+        if (bMsg&&(INVALID_HANDLE_VALUE==handle))
+            ELog.DlgMsg(mtError,"Access denied.\nFile: '%s'\ncurrently locked by user: '%s'.",fn,GetLockOwner(0,fn));
+	    return (INVALID_HANDLE_VALUE==handle);
+    }else return FALSE;
 }
 
 BOOL CFileSystem::LockFile(FSPath *initial, LPSTR fname, bool bLog)
@@ -572,7 +574,7 @@ LPCSTR CFileSystem::GetLockOwner(FSPath *initial, LPSTR fname)
 
     CInifile*	ini = CInifile::Create(m_LastAccessFN,true);
 	static string256 comp;
-    strcpy(comp,ini->ReadSTRING("last_access",fn));
+    strcpy(comp,ini->LineExists("last_access",fn)?ini->ReadSTRING("last_access",fn):"unknown");
     CInifile::Destroy(ini);
 
 	return comp;

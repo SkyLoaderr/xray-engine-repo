@@ -12,6 +12,7 @@
 #include "Library.h"
 #include "D3DUtils.h"
 #include "ImageEditor.h"
+#include "PSLibrary.h"
 
 #include "UI_Main.h"
 
@@ -34,6 +35,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
                 bRes=false;
             	break;
             }
+            PSLib.OnCreate	();
             Lib.OnCreate	();
 
 		    Command			(COMMAND_CLEAR);
@@ -45,6 +47,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	}break;
 	case COMMAND_DESTROY:
 		Tools.OnDestroy	();
+		PSLib.OnDestroy	();
 		Lib.OnDestroy	();
         UI.OnDestroy	();
         Engine.Destroy	();
@@ -70,10 +73,9 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	    frmEditorPreferences->ShowModal();
         break;
 	case COMMAND_SAVE:
-    	// engine shaders
     	Tools.SEngine.Save();
-    	// compiler
     	Tools.SCompiler.Save();
+    	Tools.SMaterial.Save();
 		Command(COMMAND_UPDATE_CAPTION);
     	break;
     case COMMAND_SAVE_BACKUP:
@@ -88,6 +90,10 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	    	if (!Tools.SCompiler.IfModified()) return false;
             if (ELog.DlgMsg(mtConfirmation,"Reload shaders?")==mrYes)
                 Tools.SCompiler.Reload();
+        }else if (Tools.ActiveEditor()==aeMaterial){
+	    	if (!Tools.SMaterial.IfModified()) return false;
+            if (ELog.DlgMsg(mtConfirmation,"Reload materials?")==mrYes)
+                Tools.SMaterial.Reload();
         }
 		Command(COMMAND_UPDATE_CAPTION);
     	break;
@@ -195,7 +201,7 @@ void __fastcall TUI::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
 //---------------------------------------------------------------------------
 char* TUI::GetCaption()
 {
- 	return "shaders";
+ 	return "shaders&materials";
 }
 char* TUI::GetTitle()
 {

@@ -34,7 +34,12 @@ enum EPropType{
     PROP_LIGHTANIM,
     PROP_LIBOBJECT,
     PROP_LIBSOUND,
+    PROP_A_LIBSOUND,
+    PROP_LIBPS,
+    PROP_A_LIBPS,
     PROP_GAMEOBJECT,
+    PROP_GAMEMTL,
+	PROP_A_GAMEMTL,
     PROP_ENTITY,
 	PROP_WAVE 			
 };
@@ -61,6 +66,7 @@ public:
 	TElTreeItem*		item; 
     bool				bEnabled;
     int 				tag;
+    int					subitem;		// multiple selection for each item (SelectTexture for example)
 public:
 	// base events
     TAfterEdit			OnAfterEdit;
@@ -69,7 +75,7 @@ public:
     TOnChange			OnChange;
 public:
 						PropValue		(TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):
-                        				item(0),key(0),tag(0),bEnabled(true),bDiff(false),OnAfterEdit(after),
+                        				item(0),key(0),tag(0),bEnabled(true),bDiff(false),subitem(1),OnAfterEdit(after),
                                         OnBeforeEdit(before),OnDrawValue(draw),OnChange(change){};
 	virtual 			~PropValue		(){_FREE(key);};
     virtual LPCSTR		GetText			()=0;
@@ -788,6 +794,24 @@ public:
 		V->type			= PROP_LIBSOUND;
         return V;
     }
+    ATextValue*			CreateALibSound(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    {
+        ATextValue* V	= new ATextValue(after,before,draw,change);
+		V->type			= PROP_A_LIBSOUND;
+        return V;
+    }
+    TextValue*			CreateLibPS(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    {
+        TextValue* V	= new TextValue(lim,after,before,draw,change);
+		V->type			= PROP_LIBPS;
+        return V;
+    }
+    ATextValue*			CreateALibPS(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    {
+        ATextValue* V	= new ATextValue(after,before,draw,change);
+		V->type			= PROP_A_LIBPS;
+        return V;
+    }
 	TextValue* 			CreateEntity	(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
         TextValue* V	= new TextValue(lim,after,before,draw,change);
@@ -800,6 +824,18 @@ public:
         V->type			= PROP_WAVE;
         return V;
     }     
+    TextValue*			CreateGameMtl(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    {
+        TextValue* V	= new TextValue(lim,after,before,draw,change);
+		V->type			= PROP_GAMEMTL;
+        return V;
+    }
+    ATextValue*			CreateAGameMtl(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    {
+        ATextValue* V	= new ATextValue(after,before,draw,change);
+		V->type			= PROP_A_GAMEMTL;
+        return V;
+    }
 //------------------------------------------------------------------------------
     IC PropValue* 		InitFirst			(PropValueVec& values,	LPCSTR key,	LPVOID val, PropValue* v)
     {

@@ -105,8 +105,8 @@ void CPSLibrary::Reload(){
 }
 //----------------------------------------------------
 PS::SDef* CPSLibrary::ChoosePS(bool bSetCurrent){
-	LPCSTR T = TfrmChoseItem::SelectPS(0,m_CurrentPS.c_str());
-    if (T){
+	LPCSTR T=0;
+    if (TfrmChoseItem::SelectItem(TfrmChoseItem::smPS,T,1,m_CurrentPS.c_str())){
     	if (bSetCurrent) m_CurrentPS = T;
         return FindPS(T);
     }else return 0;

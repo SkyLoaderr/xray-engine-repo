@@ -10,6 +10,7 @@
 #include "UI_Tools.h"
 #include "FolderLib.h"
 #include "PropertiesList.h"
+#include "ChoseForm.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ExtBtn"
@@ -206,6 +207,11 @@ void TfraLeftBar::ClearCShaderList(){
 }
 //---------------------------------------------------------------------------
 
+void TfraLeftBar::ClearMaterialList(){
+    tvMaterial->Items->Clear();
+}
+//---------------------------------------------------------------------------
+
 void TfraLeftBar::AddBlender(LPCSTR full_name){
 	FHelper.AppendObject(tvEngine,full_name);
 }
@@ -216,36 +222,52 @@ void TfraLeftBar::AddCShader(LPCSTR full_name){
 }
 //---------------------------------------------------------------------------
 
+void TfraLeftBar::AddMaterial(LPCSTR full_name)
+{
+	FHelper.AppendObject(tvMaterial,full_name);
+}
+//---------------------------------------------------------------------------
+
+void TfraLeftBar::AddMaterialPair(LPCSTR full_name)
+{
+	FHelper.AppendObject(tvMaterialPair,full_name);
+}
+//---------------------------------------------------------------------------
+
 void TfraLeftBar::SetCurrentBlender(LPCSTR full_name)
 {
-	TElTreeItem* node = full_name?FHelper.FindItem(tvEngine,full_name):0;
-	bFocusedAffected = false;
-	tvEngine->Selected=node;
-	bFocusedAffected = true;
-    tvEngine->EnsureVisibleBottom(node);
+	FHelper.RestoreSelection(tvEngine,full_name);
 }
 //---------------------------------------------------------------------------
 void TfraLeftBar::SetCurrentCShader(LPCSTR full_name)
 {
-	TElTreeItem* node = full_name?FHelper.FindItem(tvCompiler,full_name):0;
-	bFocusedAffected = false;
-	tvCompiler->Selected=node;
-	bFocusedAffected = true;
-    tvCompiler->EnsureVisibleBottom(node);
+	FHelper.RestoreSelection(tvCompiler,full_name);
+}
+//---------------------------------------------------------------------------
+
+void TfraLeftBar::SetCurrentMaterial(LPCSTR full_name)
+{
+	FHelper.RestoreSelection(tvMaterial,full_name);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::CreateFolder1Click(TObject *Sender)
 {
-	AnsiString folder;
-    AnsiString start_folder;
-    FHelper.MakeName(CurrentView()->Selected,0,start_folder,true);
-    FHelper.GenerateFolderName(CurrentView(),CurrentView()->Selected,folder);
-    folder = start_folder+folder;
-	TElTreeItem* node = FHelper.AppendFolder(CurrentView(),folder.c_str());
-    if (CurrentView()->Selected) CurrentView()->Selected->Expand(false);
-    CurrentView()->EditItem(node,-1);
-	Tools.Modified();
+	switch (Tools.ActiveEditor()){
+    case aeEngine:
+    case aeCompiler:
+    case aeMaterial:{
+        AnsiString folder;
+        AnsiString start_folder;
+        FHelper.MakeName(CurrentView()->Selected,0,start_folder,true);
+        FHelper.GenerateFolderName(CurrentView(),CurrentView()->Selected,folder);
+        folder = start_folder+folder;
+        TElTreeItem* node = FHelper.AppendFolder(CurrentView(),folder.c_str());
+        if (CurrentView()->Selected) CurrentView()->Selected->Expand(false);
+        CurrentView()->EditItem(node,-1);
+        Tools.Modified();
+    }break;
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -264,9 +286,10 @@ void __fastcall TfraLeftBar::CollapseAll1Click(TObject *Sender)
 BOOL __fastcall TfraLeftBar::RemoveItem(LPCSTR p0)
 {
 	switch (Tools.ActiveEditor()){
-    case aeEngine: 		Tools.SEngine.RemoveBlender(p0); 	break;
-    case aeCompiler: 	Tools.SCompiler.RemoveShader(p0); 	break;
-    case aeMaterial:	Tools.SMaterial.RemoveMaterial(p0);	break;
+    case aeEngine: 		Tools.SEngine.RemoveBlender(p0); 		break;
+    case aeCompiler: 	Tools.SCompiler.RemoveShader(p0); 		break;
+    case aeMaterial:	Tools.SMaterial.RemoveMaterial(p0);		break;
+    case aeMaterialPair:Tools.SMaterial.RemoveMaterialPair(p0);	break;
     }
     return TRUE;
 }
@@ -283,6 +306,7 @@ void TfraLeftBar::AfterRemoveItem()
         Tools.SCompiler.ResetCurrentShader();
     break;
     case aeMaterial:
+    case aeMaterialPair:
     	Tools.SMaterial.ResetCurrentMaterial();
     break;
     }
@@ -290,17 +314,16 @@ void TfraLeftBar::AfterRemoveItem()
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::tvEngineItemFocused(TObject *Sender)
+void __fastcall TfraLeftBar::tvItemFocused(TObject *Sender)
 {
 	if (!bFocusedAffected) return;
-	if (pcShaders->ActivePage==tsEngine){
-    	AnsiString name;
-    	FHelper.MakeName(tvEngine->Selected, 0, name, false);
-	    Tools.SEngine.SetCurrentBlender(name.c_str());
-    }else if (pcShaders->ActivePage==tsCompiler){
-    	AnsiString name;
-    	FHelper.MakeName(tvCompiler->Selected, 0, name, false);
-	    Tools.SCompiler.SetCurrentShader(name.c_str());
+   	AnsiString name;
+   	FHelper.MakeName(CurrentView()->Selected, 0, name, false);
+	switch (Tools.ActiveEditor()){
+    case aeEngine: 		Tools.SEngine.SetCurrentBlender(name.c_str());       break;
+    case aeCompiler:	Tools.SCompiler.SetCurrentShader(name.c_str());      break;
+    case aeMaterial:    Tools.SMaterial.SetCurrentMaterial(name.c_str());    break;
+    case aeMaterialPair:Tools.SMaterial.SetCurrentMaterialPair(name.c_str());    break;
     }
 }
 //---------------------------------------------------------------------------
@@ -344,8 +367,8 @@ void __fastcall TfraLeftBar::InplaceEditValidateResult(TObject *Sender, bool &In
     case aeMaterial:	IE=InplaceMaterialEdit;	break;
     }
 
-    AnsiString new_text = AnsiString(IE->Editor->Text).LowerCase();
-    IE->Editor->Text = new_text;
+    AnsiString new_text	= AnsiString(IE->Editor->Text).LowerCase();
+    IE->Editor->Text 	= new_text;
 
     TElTreeItem* node = IE->Item;
     for (TElTreeItem* item=node->GetFirstSibling(); item; item=item->GetNextSibling()){
@@ -389,6 +412,82 @@ void __fastcall TfraLeftBar::ebCShaderCreateClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::ebMaterialCreateClick(TObject *Sender)
+{
+    AnsiString folder;
+	FHelper.MakeName(tvMaterial->Selected,0,folder,true);
+	Tools.SMaterial.SetCurrentMaterial(Tools.SMaterial.AppendMaterial(folder.c_str(),0));
+	Tools.SMaterial.Modified();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::ebMaterialCloneClick(TObject *Sender)
+{
+    TElTreeItem* pNode = tvMaterial->Selected;
+    if (pNode&&FHelper.IsObject(pNode)){
+		AnsiString full_name;
+		FHelper.MakeName(pNode,0,full_name,false);
+		Tools.SMaterial.SetCurrentMaterial(Tools.SMaterial.CloneMaterial(full_name.c_str()));
+		Tools.SMaterial.Modified();
+    }else{
+		ELog.DlgMsg(mtInformation, "At first select item.");
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::ebMaterialPairCreateClick(TObject *Sender)
+{
+    LPCSTR M=0;
+    int cnt = TfrmChoseItem::SelectItem(TfrmChoseItem::smGameMaterial,M,2);
+    if (2==cnt){
+    	int mtl0,mtl1;
+    	GMLib.MtlNameToMtlPair(M,mtl0,mtl1);
+		Tools.SMaterial.SetCurrentMaterialPair(Tools.SMaterial.AppendMaterialPair(mtl0,mtl1,0));
+		Tools.SMaterial.Modified();
+    }else{
+    	if (1==cnt) ELog.DlgMsg(mtError,"Select 2 material.");
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::ebMaterialPairCloneClick(TObject *Sender)
+{
+    TElTreeItem* pNode = tvMaterialPair->Selected;
+    if (pNode&&FHelper.IsObject(pNode)){
+    	// find parent
+		AnsiString full_name;
+		FHelper.MakeName(pNode,0,full_name,false);
+        SGameMtlPair* parent = GMLib.GetMaterialPair(full_name.c_str());
+        // select pair
+        LPCSTR M=0;
+        int cnt = TfrmChoseItem::SelectItem(TfrmChoseItem::smGameMaterial,M,2);
+        if (2==cnt){
+            int mtl0,mtl1;
+            GMLib.MtlNameToMtlPair(M,mtl0,mtl1);
+            Tools.SMaterial.SetCurrentMaterialPair(Tools.SMaterial.AppendMaterialPair(mtl0,mtl1,parent));
+            Tools.SMaterial.Modified();
+        }else{
+            if (1==cnt) ELog.DlgMsg(mtError,"Select 2 material.");
+        }
+
+    }else{
+		ELog.DlgMsg(mtInformation, "At first select item.");
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::SetCurrentMaterialPair(LPCSTR full_name)
+{
+	FHelper.RestoreSelection(tvMaterialPair,full_name);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::ebMaterialPairModeClick(TObject *Sender)
+{
+	//
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfraLeftBar::pcShadersChange(TObject *Sender)
 {
 	Tools.OnChangeEditor();
@@ -397,7 +496,7 @@ void __fastcall TfraLeftBar::pcShadersChange(TObject *Sender)
 
 void __fastcall TfraLeftBar::ebShaderRemoveClick(TObject* Sender)
 {
-	TElTree* tv = dynamic_cast<TElTree*>(Sender); VERIFY(tv);
+	TElTree* tv = CurrentView(); VERIFY(tv);
 	FHelper.RemoveItem(tv,tv->Selected,RemoveItem);
 }
 //---------------------------------------------------------------------------
@@ -464,4 +563,8 @@ void __fastcall TfraLeftBar::Checknewtextures1Click(TObject *Sender)
 
 }
 //---------------------------------------------------------------------------
+
+
+
+
 

@@ -128,9 +128,9 @@ object frmEditorPreferences: TfrmEditorPreferences
             Height = 18
             LWSensitivity = 0.1
             ButtonKind = bkLightWave
-            Decimal = 1
             Increment = 0.05
             MaxValue = 10
+            MinValue = 0.01
             ValueType = vtFloat
             Value = 0.1
             AutoSize = False
@@ -143,7 +143,6 @@ object frmEditorPreferences: TfrmEditorPreferences
             Height = 18
             LWSensitivity = 0.1
             ButtonKind = bkLightWave
-            Decimal = 1
             MaxValue = 10000
             MinValue = 10
             ValueType = vtFloat

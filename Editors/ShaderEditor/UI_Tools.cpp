@@ -35,16 +35,18 @@ void CShaderTools::OnChangeEditor()
     case aeEngine: 		SEngine.UpdateProperties(); 	break;
     case aeCompiler: 	SCompiler.UpdateProperties(); 	break;
     case aeMaterial:	SMaterial.UpdateProperties(); 	break;
+    case aeMaterialPair:SMaterial.UpdateProperties(); 	break;
     };
 }
 //---------------------------------------------------------------------------
 
 EActiveEditor CShaderTools::ActiveEditor()
 {
-	if (fraLeftBar->pcShaders->ActivePage==fraLeftBar->tsEngine) return aeEngine;
-	else if (fraLeftBar->pcShaders->ActivePage==fraLeftBar->tsCompiler)	return aeCompiler;
-    else if (fraLeftBar->pcShaders->ActivePage==fraLeftBar->tsMaterial) return aeMaterial;
-    return -1;
+	if (fraLeftBar->pcShaders->ActivePage==fraLeftBar->tsEngine) 			return aeEngine;
+	else if (fraLeftBar->pcShaders->ActivePage==fraLeftBar->tsCompiler)		return aeCompiler;
+    else if (fraLeftBar->pcShaders->ActivePage==fraLeftBar->tsMaterial) 	return aeMaterial;
+    else if (fraLeftBar->pcShaders->ActivePage==fraLeftBar->tsMaterialPair) return aeMaterialPair;
+    THROW;
 }
 //---------------------------------------------------------------------------
 
@@ -53,6 +55,7 @@ void CShaderTools::Modified(){
     case aeEngine: 		SEngine.Modified(); 	break;
     case aeCompiler: 	SCompiler.Modified(); 	break;
     case aeMaterial:	SMaterial.Modified();	break;
+    case aeMaterialPair:SMaterial.Modified();	break;
     }
 }
 //---------------------------------------------------------------------------
@@ -68,14 +71,20 @@ bool CShaderTools::OnCreate(){
 	AnsiString lc_fn = "shaders_xrlc.xr"; Engine.FS.m_GameRoot.Update(lc_fn);
 	if (Engine.FS.CheckLocking(0,lc_fn.c_str(),false,true))
     	return false;
+	// material test locking
+	AnsiString gm_fn = "gamemtl.xr"; Engine.FS.m_GameRoot.Update(gm_fn);
+	if (Engine.FS.CheckLocking(0,gm_fn.c_str(),false,true))
+    	return false;
 	//
     Device.seqDevCreate.Add(this);
     Device.seqDevDestroy.Add(this);
 	SEngine.OnCreate();
     SCompiler.OnCreate();
+    SMaterial.OnCreate();
 	// lock
     Engine.FS.LockFile(0,sh_fn.c_str());
     Engine.FS.LockFile(0,lc_fn.c_str());
+    Engine.FS.LockFile(0,gm_fn.c_str());
     return true;
 }
 
@@ -89,6 +98,7 @@ void CShaderTools::OnDestroy(){
     Device.seqDevDestroy.Remove(this);
 	SEngine.OnDestroy();
     SCompiler.OnDestroy();
+    SMaterial.OnDestroy();
 	// destroy props
 	TProperties::DestroyForm(m_Props);
 }
@@ -107,6 +117,9 @@ void CShaderTools::Update(){
     	SCompiler.Update();
     break;
     case aeMaterial:
+    	SMaterial.Update();
+    break;
+    case aeMaterialPair:
     	SMaterial.Update();
     break;
     };
@@ -166,7 +179,7 @@ void CShaderTools::SelectPreviewObject(int p){
         case 1: fn="editor\\ShaderTest_Box"; 	break;
         case 2: fn="editor\\ShaderTest_Sphere"; break;
         case 3: fn="editor\\ShaderTest_Teapot";	break;
-        case -1: fn=m_EditObject?m_EditObject->GetName():""; fn=TfrmChoseItem::SelectObject(false,0,fn); if (!fn) return; m_bCustomEditObject = true; break;
+        case -1: fn=m_EditObject?m_EditObject->GetName():""; if (!TfrmChoseItem::SelectItem(TfrmChoseItem::smObject,fn)) return; m_bCustomEditObject = true; break;
         default: THROW2("Failed select test object.");
     }
     Lib.RemoveEditObject(m_EditObject);
@@ -215,9 +228,10 @@ void CShaderTools::UpdateObjectShader(){
 
 void CShaderTools::ApplyChanges()
 {
-    if (ActiveEditor()==aeEngine)		SEngine.ApplyChanges();
-    else if (ActiveEditor()==aeCompiler)SCompiler.ApplyChanges();
-    else if (ActiveEditor()==aeMaterial)SMaterial.ApplyChanges();
+    if (ActiveEditor()==aeEngine)			SEngine.ApplyChanges();
+    else if (ActiveEditor()==aeCompiler)	SCompiler.ApplyChanges();
+    else if (ActiveEditor()==aeMaterial)	SMaterial.ApplyChanges();
+    else if (ActiveEditor()==aeMaterialPair)SMaterial.ApplyChanges();
 }
 
 void CShaderTools::ShowProperties()

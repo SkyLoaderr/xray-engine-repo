@@ -182,8 +182,9 @@ void CSHEngineTools::UpdateProperties()
         TElTreeItem* marker_node=0;
         TElTreeItem* node;
 
-        P->AddItem	(0,"Type",(void*)m_CurrentBlender->getComment(),PHelper.CreateMarker());
-        P->AddItem	(0,"Name",(LPSTR)&desc->cName,PHelper.CreateText(sizeof(desc->cName),NameOnAfterEdit,FHelper.NameBeforeEdit,FHelper.NameDraw));
+        P->AddItem		(0,"Type",(void*)m_CurrentBlender->getComment(),PHelper.CreateMarker());
+        PropValue* V	= PHelper.CreateText(sizeof(desc->cName),NameOnAfterEdit,FHelper.NameBeforeEdit,FHelper.NameDraw);
+        V->tag			= (int)P->AddItem(0,"Name",desc->cName,V); VERIFY(V->tag);
 
         while (!data.Eof()){
             int sz=0;

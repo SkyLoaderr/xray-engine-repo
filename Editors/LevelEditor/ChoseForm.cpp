@@ -18,10 +18,8 @@
 #include "SoundManager.h"
 #include "xr_ini.h"
 #include "ui_main.h"
-
-#ifdef _LEVEL_EDITOR
 #include "PSLibrary.h"
-#endif
+#include "GameMtlLib.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ElXPThemedControl"
@@ -31,300 +29,201 @@
 #pragma link "ElXPThemedControl"
 #pragma resource "*.dfm"
 TfrmChoseItem *TfrmChoseItem::form=0;
+TfrmChoseItem::ESelectMode TfrmChoseItem::Mode;
 AnsiString TfrmChoseItem::select_item="";
-
 AnsiString TfrmChoseItem::m_LastSelection[smMaxMode];
 //---------------------------------------------------------------------------
-// Constructors
-//---------------------------------------------------------------------------
-LPCSTR __fastcall TfrmChoseItem::SelectEntity(LPCSTR init_name)
+int __fastcall TfrmChoseItem::SelectItem(ESelectMode mode, LPCSTR& dest, int sel_cnt, LPCSTR init_name, bool bIgnoreExt)
 {
 	VERIFY(!form);
 	form 							= new TfrmChoseItem(0);
-    form->Caption					= "Select Entity";
-	form->Mode 						= smEntity;
-    form->bMultiSel 				= false;
-	// init
-	if (init_name) m_LastSelection[form->Mode] = init_name;
-	form->tvItems->IsUpdating		= true;
-    form->tvItems->Selected 		= 0;
-    form->tvItems->Items->Clear		();
-    // append specific type
-    FHelper.AppendObject(form->tvItems,AIPOINT_CHOOSE_NAME);
-    FHelper.AppendObject(form->tvItems,RPOINT_CHOOSE_NAME);
-    // fill object list
-	AnsiString fld;
-    CInifile* sys_ini;
-    CInifile::Root& data = pSettings->Sections();
-    for (CInifile::RootIt it=data.begin(); it!=data.end(); it++)
-    {
-    	LPCSTR val;
-    	if (it->LineExists("$spawn",&val))
-			if (CInifile::IsBOOL(val)) FHelper.AppendObject(form->tvItems,it->Name);
-    }
-    // redraw
-	form->tvItems->IsUpdating		= false;
-	// show
-    if (form->ShowModal()!=mrOk) return 0;
-    return select_item.c_str();
-}
-//---------------------------------------------------------------------------
-LPCSTR __fastcall TfrmChoseItem::SelectEntityCLSID(LPCSTR init_name)
-{
-	VERIFY(!form);
-	form 							= new TfrmChoseItem(0);
-    form->Caption					= "Select Entity CLSID";
-	form->Mode 						= smEntityCLSID;
-    form->bMultiSel 				= false;
-	// init
-	if (init_name) m_LastSelection[form->Mode] = init_name;
-	form->tvItems->IsUpdating		= true;
-    form->tvItems->Selected 		= 0;
-    form->tvItems->Items->Clear		();
-    // fill object list
-	AnsiString fld;
-    CInifile::Root& data = pSettings->Sections();
-	FHelper.AppendObject(form->tvItems,"O_ACTOR");
-    for (CInifile::RootIt it=data.begin(); it!=data.end(); it++)
-    {
-    	AnsiString sect=it->Name;
-        if (1==sect.Pos("m_"))
-        	if (pSettings->LineExists(it->Name,"class")){
-            	LPCSTR N=pSettings->ReadSTRING(it->Name,"class");
-        		FHelper.AppendObject(form->tvItems,N);
-            }
-    }
-    // redraw
-	form->tvItems->IsUpdating		= false;
-	// show
-    if (form->ShowModal()!=mrOk) return 0;
-    return select_item.c_str();
-}
-//---------------------------------------------------------------------------
-LPCSTR __fastcall TfrmChoseItem::SelectSound(bool bMulti, LPCSTR init_name, bool bIgnoreExt){
-	VERIFY(!form);
-	form 							= new TfrmChoseItem(0);
-    form->Caption					= "Select Sound";
-	form->Mode 						= smSound;
-    form->bMultiSel 				= bMulti;
-    form->iMultiSelLimit 			= 32;
+	form->Mode						= mode;
+    form->bMultiSel 				= sel_cnt>1;
+    form->iMultiSelLimit 			= sel_cnt;
     form->bIgnoreExt 				= bIgnoreExt;
 	// init
 	if (init_name) m_LastSelection[form->Mode] = init_name;
-	form->tvItems->IsUpdating	= true;
-    form->tvItems->Selected 	= 0;
-    form->tvItems->Items->Clear	();
+	form->tvItems->IsUpdating		= true;
+    form->tvItems->Selected 		= 0;
+    form->tvItems->Items->Clear		();
+
+    // insert [none]
+    FHelper.AppendObject			(form->tvItems,NONE_CAPTION);
+
     // fill
+    switch (form->Mode){
+    case smSound: 		form->FillSound();		break;
+    case smObject: 		form->FillObject();		break;
+    case smShader: 		form->FillShader();		break;
+    case smShaderXRLC: 	form->FillShaderXRLC();	break;
+    case smPS: 			form->FillPS();			break;
+    case smTexture: 	form->FillTexture();	break;
+    case smEntity: 		form->FillEntity();		break;
+    case smLAnim: 		form->FillLAnim();		break;
+    case smGameObject: 	form->FillGameObject();	break;
+    case smGameMaterial:form->FillGameMaterial();break;
+    default: 
+    	THROW2("ChooseForm: Unknown Item Type");
+    }
+    // redraw
+	form->tvItems->IsUpdating = false;
+
+	// show
+    bool bRes 			= (form->ShowModal()==mrOk);
+    dest				= 0;
+    if (bRes){
+		int item_cnt	= _GetItemCount(select_item.c_str(),',');
+	    if (bIgnoreExt){
+	    	AnsiString	temp="", p;
+            for (int k=0; k<item_cnt; k++){
+                if(k!=0)temp+=",";
+            	_GetItem(select_item.c_str(),k,p,',');
+	        	p = ChangeFileExt(p,"");
+                temp	+= p;
+            }
+            select_item	= temp;
+        }
+    	dest 			= (select_item==NONE_CAPTION)?0:select_item.c_str();
+	    m_LastSelection[Mode]=select_item;
+        return 			item_cnt;
+    }
+    return 0;
+}
+// Constructors
+//---------------------------------------------------------------------------
+void __fastcall TfrmChoseItem::FillEntity()
+{
+    form->Caption					= "Select Entity";
+    CInifile::Root& data 			= pSettings->Sections();
+    for (CInifile::RootIt it=data.begin(); it!=data.end(); it++){
+    	LPCSTR val;
+    	if (it->LineExists("$spawn",&val))
+			if (CInifile::IsBOOL(val)){
+			    TElTreeItem* node		= FHelper.AppendObject(form->tvItems,it->Name);
+			    node->CheckBoxEnabled 	= form->bMultiSel;
+			    node->ShowCheckBox 		= form->bMultiSel;
+            }
+    }
+}
+//---------------------------------------------------------------------------
+void __fastcall TfrmChoseItem::FillSound()
+{
+    form->Caption					= "Select Sound";
     FileMap lst;
     if (SoundManager.GetSounds(lst)){
 	    FilePairIt it=lst.begin();
-    	FilePairIt _E=lst.end();   // check without extension
-	    for (; it!=_E; it++)
-        	FHelper.AppendObject(form->tvItems,it->first.c_str());
-    }
-    // redraw
-	form->tvItems->IsUpdating		= false;
-
-	// show
-    if (form->ShowModal()!=mrOk) return 0;
-    if (bIgnoreExt) select_item = ChangeFileExt(select_item,"");
-    return select_item.c_str();
-}
-//---------------------------------------------------------------------------
-LPCSTR __fastcall TfrmChoseItem::SelectObject(bool bMulti, LPCSTR start_folder, LPCSTR start_name){
-	VERIFY(!form);
-	form 							= new TfrmChoseItem(0);
-    form->Caption					= "Select Object";
-	form->Mode 						= smObject;
-    form->bMultiSel 				= bMulti;
-    form->iMultiSelLimit 			= 32;
-	// init
-	if (start_name) m_LastSelection[form->Mode] = start_name;
-	form->tvItems->IsUpdating		= true;
-    form->tvItems->Selected 		= 0;
-    form->tvItems->Items->Clear		();
-    // fill object list
-	AnsiString fld;
-    FileMap& lst = Lib.Objects();
-    FilePairIt it=lst.begin();
-    FilePairIt _E=lst.end();   		// check without extension
-    for (; it!=_E; it++)
-		if (!start_folder||(start_folder&&(stricmp(start_folder,FHelper.GetFolderName(it->first.c_str(),fld))==0))){
+    	FilePairIt _E=lst.end();
+	    for (; it!=_E; it++){
         	TElTreeItem* node=FHelper.AppendObject(form->tvItems,it->first.c_str());
-            node->CheckBoxEnabled 	= bMulti;
-            node->ShowCheckBox 		= bMulti;
+            node->CheckBoxEnabled 	= form->bMultiSel;
+            node->ShowCheckBox 		= form->bMultiSel;
         }
-    // redraw
-	form->tvItems->IsUpdating		= false;
-	// show
-    if (form->ShowModal()!=mrOk) return 0;
-    return select_item.c_str();
+    }
 }
 //---------------------------------------------------------------------------
-LPCSTR __fastcall TfrmChoseItem::SelectGameObject(bool bMulti, LPCSTR start_folder, LPCSTR start_name){
-	VERIFY(!form);
-	form 							= new TfrmChoseItem(0);
+void __fastcall TfrmChoseItem::FillObject()
+{
+    form->Caption					= "Select Library Object";
+    FileMap& lst 					= Lib.Objects();
+    FilePairIt it					= lst.begin();
+    FilePairIt _E					= lst.end();   		// check without extension
+    for (; it!=_E; it++){
+        TElTreeItem* node			= FHelper.AppendObject(form->tvItems,it->first.c_str());
+        node->CheckBoxEnabled 		= form->bMultiSel;
+        node->ShowCheckBox 			= form->bMultiSel;
+    }
+}
+//---------------------------------------------------------------------------
+void __fastcall TfrmChoseItem::FillGameObject()
+{
     form->Caption					= "Select OGF";
-	form->Mode 						= smGameObject;
-    form->bMultiSel 				= bMulti;
-    form->iMultiSelLimit 			= 32;
-	// init
-	if (start_name) m_LastSelection[form->Mode] = start_name;
-	form->tvItems->IsUpdating		= true;
-    form->tvItems->Selected 		= 0;
-    form->tvItems->Items->Clear		();
-    // fill object list
     FileMap lst;
     Engine.FS.GetFileList			(Engine.FS.m_GameMeshes.m_Path,lst,true,true,false,"*.ogf");
-	AnsiString fld;
-    FilePairIt it=lst.begin();
-    FilePairIt _E=lst.end();   		// check without extension
-    for (; it!=_E; it++)
-		if (!start_folder||(start_folder&&(stricmp(start_folder,FHelper.GetFolderName(it->first.c_str(),fld))==0))){
-        	TElTreeItem* node=FHelper.AppendObject(form->tvItems,it->first.c_str());
-            node->CheckBoxEnabled 	= bMulti;
-            node->ShowCheckBox 		= bMulti;
-        }
-    // redraw
-	form->tvItems->IsUpdating		= false;
-	// show
-    if (form->ShowModal()!=mrOk) return 0;
-    return select_item.c_str();
+    FilePairIt it					= lst.begin();
+    FilePairIt _E					= lst.end();
+    for (; it!=_E; it++){
+        TElTreeItem* node			= FHelper.AppendObject(form->tvItems,it->first.c_str());
+        node->CheckBoxEnabled 		= form->bMultiSel;
+        node->ShowCheckBox 			= form->bMultiSel;
+	}               
 }
 //---------------------------------------------------------------------------
-LPCSTR __fastcall TfrmChoseItem::SelectLAnim(bool bMulti, LPCSTR start_folder, LPCSTR start_name)
+void __fastcall TfrmChoseItem::FillLAnim()
 {
-	VERIFY(!form);
-	form 							= new TfrmChoseItem(0);
     form->Caption					= "Select Light Animation";
-	form->Mode 						= smLAnim;
-    form->bMultiSel 				= bMulti;
-    form->iMultiSelLimit 			= 32;
-	// init
-	if (start_name) m_LastSelection[form->Mode] = start_name;
-	form->tvItems->IsUpdating		= true;
-    form->tvItems->Selected 		= 0;
-    form->tvItems->Items->Clear		();
-    // fill object list
-	AnsiString fld;
-    LAItemVec& lst = LALib.Objects();
-    LAItemIt it=lst.begin();
-    LAItemIt _E=lst.end();   		// check without extension
-    for (; it!=_E; it++)
-		if (!start_folder||(start_folder&&(stricmp(start_folder,FHelper.GetFolderName((*it)->cName,fld))==0))){
-        	TElTreeItem* node=FHelper.AppendObject(form->tvItems,(*it)->cName);
-            node->CheckBoxEnabled 	= bMulti;
-            node->ShowCheckBox 		= bMulti;
-        }
-    // redraw
-	form->tvItems->IsUpdating		= false;
-	// show
-    if (form->ShowModal()!=mrOk) return 0;
-    return select_item.c_str();
+    LAItemVec& lst 					= LALib.Objects();
+    LAItemIt it						= lst.begin();
+    LAItemIt _E						= lst.end();
+    for (; it!=_E; it++){
+        TElTreeItem* node			= FHelper.AppendObject(form->tvItems,(*it)->cName);
+        node->CheckBoxEnabled 		= form->bMultiSel;
+        node->ShowCheckBox 			= form->bMultiSel;
+    }
 }
 //---------------------------------------------------------------------------
-LPCSTR __fastcall TfrmChoseItem::SelectShader(LPCSTR init_name){
-	VERIFY(!form);
-	form = new TfrmChoseItem(0);
+void __fastcall TfrmChoseItem::FillShader()
+{
     form->Caption					= "Select Engine Shader";
-	form->Mode = smShader;
-	// init
-	if (init_name) m_LastSelection[form->Mode] = init_name;
-	form->tvItems->IsUpdating	= true;
-    form->tvItems->Selected 	= 0;
-    form->tvItems->Items->Clear	();
-    // fill shaders list
     CShaderManager::BlenderMap& blenders = Device.Shader._GetBlenders();
 	CShaderManager::BlenderPairIt _F = blenders.begin();
 	CShaderManager::BlenderPairIt _E = blenders.end();
-	for (CShaderManager::BlenderPairIt _S = _F; _S!=_E; _S++)
-		FHelper.AppendObject(form->tvItems,_S->first);
-    // redraw
-	form->tvItems->IsUpdating		= false;
-	// show
-    if (form->ShowModal()!=mrOk) return 0;
-    return select_item.c_str();
-}
-//---------------------------------------------------------------------------
-LPCSTR __fastcall TfrmChoseItem::SelectShaderXRLC(LPCSTR init_name){
-	VERIFY(!form);
-	form = new TfrmChoseItem(0);
-    form->Caption					= "Select Compiler Shader";
-	form->Mode = smShaderXRLC;
-	// init
-	if (init_name) m_LastSelection[form->Mode] = init_name;
-	form->tvItems->IsUpdating	= true;
-    form->tvItems->Selected 	= 0;
-    form->tvItems->Items->Clear	();
-    // fill shaders list
-    Shader_xrLCVec& shaders = Device.ShaderXRLC.Library();
-	Shader_xrLCIt _F = shaders.begin();
-	Shader_xrLCIt _E = shaders.end();
-	for ( ;_F!=_E;_F++)
-		FHelper.AppendObject(form->tvItems,_F->Name);
-    // redraw
-	form->tvItems->IsUpdating		= false;
-	// show
-    if (form->ShowModal()!=mrOk) return 0;
-    return select_item.c_str();
-}
-//---------------------------------------------------------------------------
-#ifdef _LEVEL_EDITOR
-LPCSTR __fastcall TfrmChoseItem::SelectPS(LPCSTR start_folder, LPCSTR init_name){
-	VERIFY(!form);
-	form = new TfrmChoseItem(0);
-    form->Caption					= "Select Particel System";
-	form->Mode = smPS;
-	// init
-	if (init_name) m_LastSelection[form->Mode] = init_name;
-	form->tvItems->IsUpdating	= true;
-    form->tvItems->Selected 	= 0;
-    form->tvItems->Items->Clear	();
-	AnsiString fld;
-    // fill
-    for (PS::SDef* S=PSLib.FirstPS(); S!=PSLib.LastPS(); S++){
-		if (!start_folder||(start_folder&&stricmp(start_folder,FHelper.GetFolderName(S->m_Name,fld))))
-			FHelper.AppendObject(form->tvItems,S->m_Name);
+	for (CShaderManager::BlenderPairIt _S = _F; _S!=_E; _S++){
+		TElTreeItem* node			= FHelper.AppendObject(form->tvItems,_S->first);
+        node->CheckBoxEnabled 		= form->bMultiSel;
+        node->ShowCheckBox 			= form->bMultiSel;
     }
-    // redraw
-	form->tvItems->IsUpdating		= false;
-	// show
-    if (form->ShowModal()!=mrOk) return 0;
-    return select_item.c_str();
 }
-#endif
 //---------------------------------------------------------------------------
-LPCSTR __fastcall TfrmChoseItem::SelectTexture(bool msel, LPCSTR init_name, bool bIgnoreExt){
-	VERIFY(!form);
-	form = new TfrmChoseItem(0);
+void __fastcall TfrmChoseItem::FillShaderXRLC()
+{
+    form->Caption					= "Select Compiler Shader";
+    Shader_xrLCVec& shaders 		= Device.ShaderXRLC.Library();
+	Shader_xrLCIt _F 				= shaders.begin();
+	Shader_xrLCIt _E 				= shaders.end();
+	for ( ;_F!=_E;_F++){
+		TElTreeItem* node			= FHelper.AppendObject(form->tvItems,_F->Name);
+        node->CheckBoxEnabled 		= form->bMultiSel;
+        node->ShowCheckBox 			= form->bMultiSel;
+    }
+}
+//---------------------------------------------------------------------------
+void __fastcall TfrmChoseItem::FillPS()
+{
+    form->Caption					= "Select Particle System";
+    for (PS::SDef* S=PSLib.FirstPS(); S!=PSLib.LastPS(); S++){
+        TElTreeItem* node			= FHelper.AppendObject(form->tvItems,S->m_Name);
+        node->CheckBoxEnabled 		= form->bMultiSel;
+        node->ShowCheckBox 			= form->bMultiSel;
+    }
+}
+//---------------------------------------------------------------------------
+void __fastcall TfrmChoseItem::FillTexture()
+{
     form->Caption					= "Select Texture";
-	form->Mode = smTexture;
-    form->bMultiSel = msel;
-    form->iMultiSelLimit = 8;
-    form->bIgnoreExt = bIgnoreExt;
-	// init
-	if (init_name) m_LastSelection[form->Mode] = init_name;
-	form->tvItems->IsUpdating	= true;
-    form->tvItems->Selected 	= 0;
-    form->tvItems->Items->Clear	();
-    // fill
     FileMap lst;
     if (ImageManager.GetTextures(lst)){
-	    FilePairIt it=lst.begin();
-    	FilePairIt _E=lst.end();   // check without extension
-	    for (; it!=_E; it++)
-        	FHelper.AppendObject(form->tvItems,it->first.c_str());
+	    FilePairIt it				= lst.begin();
+    	FilePairIt _E				= lst.end();
+	    for (; it!=_E; it++){
+        	TElTreeItem* node		= FHelper.AppendObject(form->tvItems,it->first.c_str());
+            node->CheckBoxEnabled 	= form->bMultiSel;
+            node->ShowCheckBox 		= form->bMultiSel;
+        }
     }
-    // redraw
-	form->tvItems->IsUpdating		= false;
-
-	// show
-    if (form->ShowModal()!=mrOk) return 0;
-    if (bIgnoreExt) select_item = ChangeFileExt(select_item,"");
-    return select_item.c_str();
 }
 //---------------------------------------------------------------------------
-
+void __fastcall TfrmChoseItem::FillGameMaterial()
+{
+    form->Caption					= "Select Game Material";
+	GameMtlIt _F 					= GMLib.FirstMaterial();
+	GameMtlIt _E 					= GMLib.LastMaterial();
+	for ( ;_F!=_E;_F++){
+		TElTreeItem* node			= FHelper.AppendObject(form->tvItems,(*_F)->name);
+        node->CheckBoxEnabled 		= form->bMultiSel;
+        node->ShowCheckBox 			= form->bMultiSel;
+    }
+}
+//---------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
 // implementation
@@ -367,7 +266,9 @@ void __fastcall TfrmChoseItem::sbSelectClick(TObject *Sender)
     	    FHelper.MakeName(tvItems->Selected,0,select_item,false);
 	        Close();
     	    ModalResult = mrOk;
-	    }
+	    }else{
+			ELog.DlgMsg(mtInformation,"Select item first.");
+        }
     }
 }
 //---------------------------------------------------------------------------
@@ -389,7 +290,7 @@ void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
 {
     tvItems->ShowCheckboxes 	= bMultiSel;
 	int itm_cnt = _GetItemCount(m_LastSelection[form->Mode].c_str());
-	if (bMultiSel&&(itm_cnt>1)){
+	if (bMultiSel){
 	    char T[MAX_OBJ_NAME];
         for (int i=0; i<itm_cnt; i++){
             TElTreeItem* itm_node = FHelper.FindObject(tvItems,_GetItem(m_LastSelection[form->Mode].LowerCase().c_str(),i,T),0,0,bIgnoreExt);
@@ -406,10 +307,6 @@ void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
         TElTreeItem* itm_node = FHelper.FindObject(tvItems,m_LastSelection[form->Mode].LowerCase().c_str(),0,0,bIgnoreExt);
         TElTreeItem* fld_node = 0;
         if (itm_node){
-        	if (bMultiSel){
-				tvMulti->Items->AddObject(0,itm_node->Text,(void*)TYPE_OBJECT);
-//            	itm_node->Checked = true;
-            }
             tvItems->Selected = itm_node;
             tvItems->EnsureVisible(itm_node);
             fld_node=itm_node->Parent;
@@ -474,7 +371,14 @@ void __fastcall TfrmChoseItem::tvItemsItemChange(TObject *Sender,
         FHelper.MakeName(Item,0,fn,false);
 	    TElTreeItem *node = tvMulti->Items->LookForItem(0,fn.c_str(),0,0,false,true,false,true,true);
         if (node&&!Item->Checked) node->Delete();
-        if (!node&&Item->Checked) tvMulti->Items->AddObject(0,fn,(void*)TYPE_OBJECT);
+        if (!node&&Item->Checked){
+	    	if ((tvMulti->Items->Count+1)<=iMultiSelLimit){
+    	        tvMulti->Items->AddObject(0,fn,(void*)TYPE_OBJECT);
+            }else{
+            	Item->Checked = false;
+	        	ELog.DlgMsg(mtInformation,"Limit %d item(s).",iMultiSelLimit);
+            }
+        }
     }
 }
 //---------------------------------------------------------------------------

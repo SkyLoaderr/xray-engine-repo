@@ -15,7 +15,8 @@ class TProperties;
 enum EActiveEditor{
 	aeEngine = 0,
     aeCompiler,
-    aeMaterial
+    aeMaterial,
+    aeMaterialPair
 };
 
 enum EAction{
