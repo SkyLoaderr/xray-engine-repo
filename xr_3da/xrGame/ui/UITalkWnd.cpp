@@ -83,6 +83,8 @@ void CUITalkWnd::InitTalkDialog()
 
 	//имена собеседников
 	UITalkDialogWnd.UICharacterInfoLeft.InitCharacter(m_pOurInvOwner);
+	UITalkDialogWnd.UICharacterInfoLeft.UIRelation.Show(false);
+	UITalkDialogWnd.UICharacterInfoLeft.UIRelationCaption.Show(false);
 	UITalkDialogWnd.UICharacterInfoRight.InitCharacter(m_pOthersInvOwner);
 	UITalkDialogWnd.UIDialogFrame.UITitleText.SetText(m_pOthersInvOwner->CharacterInfo().Name());
 	UITalkDialogWnd.UIOurPhrasesFrame.UITitleText.SetText(m_pOurInvOwner->CharacterInfo().Name());

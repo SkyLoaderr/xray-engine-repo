@@ -20,15 +20,17 @@ class CUIMultiTextStatic: public CUIStatic
 public:
 	typedef struct SPh
 	{
-		float			outX;
-		float			outY;
-		CUITextBanner	effect;
-		ref_str			str;
+		float						outX;
+		float						outY;
+		int							maxWidth;
+		CUIStatic::EElipsisPosition elipsisPos;
+		CUITextBanner				effect;
+		ref_str						str;
 
-		void			SetText	(const char *fmt, ...);
+		void						SetText	(const char *fmt, ...);
 
-		// Ctor
-		SPh						();
+		// Ctor		
+		SPh							();
 	} SinglePhrase;
 
 	typedef xr_vector<SinglePhrase>	Phrases;

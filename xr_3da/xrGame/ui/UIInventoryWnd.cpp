@@ -115,7 +115,6 @@ void CUIInventoryWnd::Init()
 	UIDescrWnd.AttachChild(&UIDropButton);
 	xml_init.InitButton(uiXml, "drop_button", 0, &UIDropButton);
 	UIDropButton.SetMessageTarget(this);
-	UIDropButton.SetTextureOffset(5, 10);
 	UIDropButton.SetTextAlign(CGameFont::alLeft);
 
 	////////////////////////////////////
@@ -138,8 +137,7 @@ void CUIInventoryWnd::Init()
 
 
 	UIPersonalWnd.AttachChild(&UIStaticPersonal);
-	UIStaticPersonal.Init("ui\\ui_inv_personal_over_b", 
-						-3,UIPersonalWnd.GetHeight() - 209 ,260,260);
+	UIStaticPersonal.Init("ui\\ui_inv_personal_over_b", -1, UIPersonalWnd.GetHeight() - 175, 260, 260);
 
 	//информация о персонаже
 	UIStaticPersonal.AttachChild(&UICharacterInfo);
@@ -151,17 +149,10 @@ void CUIInventoryWnd::Init()
 	xml_init.InitAutoStatic(uiXml, "auto_static", this);
 
 
-	//кнопки внизу
-	AttachChild(&UISleepButton);
-	xml_init.InitButton(uiXml, "sleep_button", 0, &UISleepButton);
-
 	//окошко для диалога параметров сна
 	AttachChild(&UISleepWnd);
-	xml_init.InitWindow(uiXml, "sleep_window", 0, &UISleepWnd);
+	xml_init.InitStatic(uiXml, "sleep_window", 0, &UISleepWnd);
 	UISleepWnd.Init();
-	UISleepWnd.Hide();
-	
-
 
 	//Списки Drag&Drop
 	AttachChild(&UIBeltList);
@@ -219,6 +210,10 @@ void CUIInventoryWnd::Init()
 	// Weight indicator
 	UIPersonalWnd.AttachChild(&UIStaticWeight);
 	xml_init.InitStatic(uiXml, "weight_static", 0, &UIStaticWeight);
+
+	// Exit button
+	AttachChild(&UIExitButton);
+	xml_init.InitButton(uiXml, "exit_button", 0, &UIExitButton);
 }
 
 void CUIInventoryWnd::InitInventory() 
@@ -236,7 +231,6 @@ void CUIInventoryWnd::InitInventory()
 	
 	UIPropertiesBox.Hide();
 	UIArtifactMergerWnd.Hide();
-	StopSleepWnd();
 
 	m_pInv = pInv;
 
@@ -726,60 +720,23 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			return;
 
 		pActor->GoSleep(*reinterpret_cast<u32*>(pData));
-		StopSleepWnd();
 		Game().StartStopMenu(this);
-	}
-	else if(pWnd == &UISleepWnd && msg == CUISleepWnd::CLOSE_BUTTON_CLICKED)
-	{
-		StopSleepWnd();
-	}
-
-	//кнопки cheats
-	else if(pWnd == &UISleepButton && msg == CUIButton::BUTTON_CLICKED)
-	{
-		if(UISleepWnd.IsShown())
-			StopSleepWnd();
-		else
-			StartSleepWnd();
-			/*
-			 	
-			 if(!pActor->IsSleeping())
-			{
-				CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-				if(!pGameSP) return;
-				
-				pActor->GoSleep();
-
-				pGameSP->StartStopMenu(this);
-
-				return;
-			}
-			else
-				pActor->Awoke();
-				*/
 	}
 	else if (CUIOutfitSlot::UNDRESS_OUTFIT == msg)
 	{
 		UndressOutfit();
 	}
-	else if (&UIDropButton == pWnd)
+	else if (&UIDropButton == pWnd && CUIButton::BUTTON_CLICKED == msg)
 	{
-		switch (msg)
-		{
-		case CUIButton::BUTTON_FOCUS_RECEIVED:
-			UIDropButton.SetColor(0xffffffff);
-			break;
-		case CUIButton::BUTTON_FOCUS_LOST:
-			UIDropButton.SetColor(0xc0c8c8c8);
-			break;
-		case CUIButton::BUTTON_CLICKED:
-			if (m_pCurrentDragDropItem && m_pCurrentItem) DropItem();
-			break;
-		}
+		if (m_pCurrentDragDropItem && m_pCurrentItem) DropItem();
 	}
 	else if (CUIDragDropList::REFRESH_ACTIVE_ITEM == msg)
 	{
 		if (m_pCurrentDragDropItem) m_pCurrentDragDropItem->Highlight(true);
+	}
+	else if (&UIExitButton == pWnd && CUIButton::BUTTON_CLICKED == msg)
+	{
+		Game().StartStopMenu(this);
 	}
 
 	CUIWindow::SendMessage(pWnd, msg, pData);
@@ -1311,34 +1268,6 @@ void CUIInventoryWnd::SetCurrentItem(CInventoryItem* pItem)
 	UIItemInfo.AlignRight(UIItemInfo.UIWeight, offset);
 	UIItemInfo.AlignRight(UIItemInfo.UICost, offset);
 	UIItemInfo.AlignRight(UIItemInfo.UICondition, offset);
-}
-/////////////////////////////////////////////////
-//запуск и остановка диалога параметров сна
-void  CUIInventoryWnd::StartSleepWnd()
-{
-	UISleepWnd.InitSleepWnd();
-	UISleepWnd.Show();
-	UISleepButton.Enable(false);
-	UISleepButton.Show(false);
-
-}
-void  CUIInventoryWnd::StopSleepWnd()
-{
-	UISleepWnd.Hide();
-
-	UISleepButton.Reset();
-
-	// Для мультиплеера мы ее отключаем кнопку сна
-	if (GameID() != GAME_SINGLE)
-	{
-		UISleepButton.SetTextColor(0xff808080);
-		UISleepButton.GetUIStaticItem().SetColor(0xff808080);
-		UISleepButton.Enable(false);
-	}
-	else
-		UISleepButton.Enable(true);
-
-	UISleepButton.Show(true);
 }
 
 //-----------------------------------------------------------------------------/

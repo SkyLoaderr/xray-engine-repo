@@ -53,9 +53,11 @@ void CUITalkDialogWnd::Init(int x, int y, int width, int height)
 	//основной фрейм диалога
 	AttachChild(&UIDialogFrame);
 	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIDialogFrame);
+	UIDialogFrame.UITitleText.SetElipsis(CUIStatic::eepEnd, 10);
 	// Фрейм с нащими фразами
 	AttachChild(&UIOurPhrasesFrame);
 	xml_init.InitFrameWindow(uiXml, "frame_window", 1, &UIOurPhrasesFrame);
+	UIOurPhrasesFrame.UITitleText.SetElipsis(CUIStatic::eepEnd, 10);
 
 	// поле отображения имени актра-игрока
 //	UIDialogFrame.AttachChild(&UICharacterName);

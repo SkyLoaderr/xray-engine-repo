@@ -142,6 +142,8 @@ void CUIMapWnd::Init()
 	xml_init.InitAutoStatic(uiXml, "auto_static", this);
 
 	m_sGlobalMapLocFrameName = uiXml.Read("map_location_frame", 0, "");
+
+	InitMaps();
 }
 
 void CUIMapWnd::InitLocalMap()

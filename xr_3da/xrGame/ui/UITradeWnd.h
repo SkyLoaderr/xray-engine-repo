@@ -109,8 +109,14 @@ protected:
 
 	//pop-up меню вызываемое по нажатию правой кнопки
 	CUIPropertiesBox UIPropertiesBox;
-	//окно с сообщением
-	CUIMessageBox	 UIMessageBox;
+	// сообщения о результатах сделки
+//	CUIMessageBox	 UIMessageBox;
+	CUIStatic		UIDealMsg;
+	CUIButton		UIDealClose;
+	bool			m_bDealControlsVisible;
+
+	void SwitchDealControls(bool on);
+	bool GetDealControlStatus() { return m_bDealControlsVisible; }
 
 	//список элементов drag drop
 	DD_ITEMS_VECTOR	m_vDragDropItems;

@@ -9,10 +9,10 @@
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
 
-class CUISleepWnd: public CUIFrameWindow
+class CUISleepWnd: public CUIStatic
 {
 private:
-	typedef CUIFrameWindow inherited;
+	typedef CUIStatic inherited;
 public:
 	CUISleepWnd();
 	virtual ~CUISleepWnd();
@@ -25,13 +25,6 @@ public:
 				 PERFORM_BUTTON_CLICKED} E_MESSAGE;
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 
-	void InitSleepWnd();
-
-	void Show();
-	void Hide();
-
-	virtual void Update();
-
 	// Изменяем текущее установленное время отдыха на дельта-значения
 	void ModifyRestTime(s8 dHours, s8 dMinutes);
 	// Сбрасываем время в 0
@@ -39,8 +32,6 @@ public:
 protected:
 	// Устанавливаем на отображение время для сна
 	void SetRestTime(u8 hours, u8 minutes);
-	// Апдейтим текущее время
-	void UpdateCurrentTime();
 	// Текущее запоменное время отдыха
 	s8 m_Hours, m_Minutes;
 	// Время индицирующее утро и вечер
@@ -49,10 +40,7 @@ protected:
 	u8 m_CurrMins, m_CurrHours;
 
 	// Контролы
-	CUIStatic UIStaticCurrTime;
 	CUIStatic UIStaticRestAmount;
 	CUIButton UIPlusBtn, UIMinusBtn;
-	CUIButton UIIncRestTime1Btn, UIIncRestTime2Btn, UIIncRestTime3Btn;
-	CUIButton UIRestUntilMorningBtn, UIRestUntilEveningBtn;
-	CUIButton UIRestBtn, UICloseBtn;
+	CUIButton UIRestBtn;
 };

@@ -19,6 +19,7 @@
 #include "../inventory.h"
 #include "../level.h"
 #include "UIInventoryWnd.h"
+#include "../string_table.h"
 
 #include "../InventoryOwner.h"
 #include "../character_info.h"
@@ -36,8 +37,8 @@ const char * const TRADE_ITEM_XML		= "trade_item.xml";
 //////////////////////////////////////////////////////////////////////
 
 CUITradeWnd::CUITradeWnd()
-	:	m_pCurrentDragDropItem	(NULL)
-
+	:	m_pCurrentDragDropItem	(NULL),
+		m_bDealControlsVisible	(false)
 {
 	Init();
 	Hide();
@@ -45,10 +46,14 @@ CUITradeWnd::CUITradeWnd()
 	SetFont(HUD().pFontMedium);
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 CUITradeWnd::~CUITradeWnd()
 {
 	ClearDragDrop(m_vDragDropItems);
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUITradeWnd::Init()
 {
@@ -123,11 +128,10 @@ void CUITradeWnd::Init()
 	UIPropertiesBox.Init("ui\\ui_frame",0,0,300,300);
 	UIPropertiesBox.Hide();
 
-	AttachChild(&UIMessageBox);
-	UIMessageBox.Init("ui\\ui_frame", 0, 0, 300, 300);
-	UIMessageBox.AutoCenter();
-	UIMessageBox.Hide();
-	
+//	AttachChild(&UIMessageBox);
+//	UIMessageBox.Init("ui\\ui_frame", 0, 0, 300, 300);
+//	UIMessageBox.AutoCenter();
+//	UIMessageBox.Hide();
 	
 	//////
 	UIOurBagList.SetCheckProc(OurBagProc);
@@ -146,7 +150,18 @@ void CUITradeWnd::Init()
 
 	AttachChild(&UIToTalkButton);
 	xml_init.InitButton(uiXml, "button", 1, &UIToTalkButton);
+
+	UIDescWnd.AttachChild(&UIDealMsg);
+	xml_init.InitStatic(uiXml, "deal_static", 0, &UIDealMsg);
+	UIDealMsg.Show(false);
+
+	UIDescWnd.AttachChild(&UIDealClose);
+	xml_init.InitButton(uiXml, "deal_button", 0, &UIDealClose);
+	UIDealClose.Show(false);
+	UIDealClose.SetMessageTarget(this);
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUITradeWnd::InitTrade(CInventoryOwner* pOur, CInventoryOwner* pOthers)
 {
@@ -160,11 +175,12 @@ void CUITradeWnd::InitTrade(CInventoryOwner* pOur, CInventoryOwner* pOthers)
 
 	m_pInvOwner = pOur;
 	m_pOthersInvOwner = pOthers;
-	string256	buf;
-	strconcat(buf, m_pOthersInvOwner->CharacterInfo().Name(), "'s items");
-	UIOthersPriceCaption.GetPhraseByIndex(0)->str = buf;
+	UIOthersPriceCaption.GetPhraseByIndex(0)->SetText(*CStringTable()("Opponent Items"));
 
 	UICharacterInfoLeft.InitCharacter(m_pInvOwner);
+	UICharacterInfoLeft.UIRelationCaption.Show(false);
+	UICharacterInfoLeft.UIRelation.Show(false);
+
 	UICharacterInfoRight.InitCharacter(m_pOthersInvOwner);
 
 	m_pInv = &m_pInvOwner->inventory();
@@ -176,15 +192,12 @@ void CUITradeWnd::InitTrade(CInventoryOwner* pOur, CInventoryOwner* pOthers)
 	m_pMouseCapturer = NULL;
 	UIPropertiesBox.Hide();
 
-	UIMessageBox.Hide();
+//	UIMessageBox.Hide();
 	EnableAll();
 
 	ClearDragDrop(m_vDragDropItems);
 	UpdateLists();
 }  
-
-
-
 
 //------------------------------------------------
 //как только подняли элемент, сделать его текущим
@@ -192,13 +205,11 @@ void CUITradeWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 	if(pWnd == &UIToTalkButton && msg == CUIButton::BUTTON_CLICKED)
 	{
-		//GetMessageTarget()->SendMessage(this, TRADE_WND_CLOSED);
 		SwitchToTalk();
 	}
-	else if(pWnd == &UIMessageBox && msg == CUIMessageBox::OK_CLICKED)
+	else if(pWnd == &UIDealClose && msg == CUIButton::BUTTON_CLICKED)
 	{
-		GetTop()->SetCapture(&UIMessageBox, false);
-		UIMessageBox.Hide();
+		SwitchDealControls(false);
 		EnableAll();
 	}
 	else if(pWnd == &UIPerformTradeButton && msg == CUIButton::BUTTON_CLICKED)
@@ -245,10 +256,14 @@ void CUITradeWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void CUITradeWnd::Draw()
 {
 	inherited::Draw();
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUITradeWnd::Update()
 {
@@ -272,6 +287,8 @@ void CUITradeWnd::Update()
 	inherited::Update();
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void CUITradeWnd::Show()
 {
 	inherited::Show(true);
@@ -280,14 +297,14 @@ void CUITradeWnd::Show()
 	ResetAll();
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void CUITradeWnd::Hide()
 {
 	inherited::Show(false);
 	inherited::Enable(false);
 
 }
-
-
 
 //при вызове проверки необходимо помнить 
 //иерархию окон, чтоб знать какой именно из
@@ -302,6 +319,9 @@ bool CUITradeWnd::OurBagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 
 	return true;
 }
+
+//////////////////////////////////////////////////////////////////////////
+
 bool CUITradeWnd::OthersBagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
 	CUITradeWnd* this_trade_wnd =  dynamic_cast<CUITradeWnd*>(pList->GetParent()->GetParent());
@@ -311,6 +331,9 @@ bool CUITradeWnd::OthersBagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 
 	return true;
 }
+
+//////////////////////////////////////////////////////////////////////////
+
 bool CUITradeWnd::OurTradeProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
 	CUITradeWnd* this_trade_wnd =  dynamic_cast<CUITradeWnd*>(pList->GetParent()->GetParent());
@@ -320,6 +343,9 @@ bool CUITradeWnd::OurTradeProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 
 	return true;
 }
+
+//////////////////////////////////////////////////////////////////////////
+
 bool CUITradeWnd::OthersTradeProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
 	CUITradeWnd* this_trade_wnd =  dynamic_cast<CUITradeWnd*>(pList->GetParent()->GetParent());
@@ -330,6 +356,7 @@ bool CUITradeWnd::OthersTradeProc(CUIDragDropItem* pItem, CUIDragDropList* pList
 	return true;
 }
 
+//////////////////////////////////////////////////////////////////////////
 
 bool CUITradeWnd::ToOurTrade()
 {
@@ -342,6 +369,9 @@ bool CUITradeWnd::ToOurTrade()
 
 	return true;
 }
+
+//////////////////////////////////////////////////////////////////////////
+
 bool CUITradeWnd::ToOthersTrade()
 {	
 	((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->DetachChild(m_pCurrentDragDropItem);
@@ -353,6 +383,9 @@ bool CUITradeWnd::ToOthersTrade()
 
 	return true;
 }
+
+//////////////////////////////////////////////////////////////////////////
+
 bool CUITradeWnd::ToOurBag()
 {
 	((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->DetachChild(m_pCurrentDragDropItem);
@@ -364,6 +397,9 @@ bool CUITradeWnd::ToOurBag()
 
 	return true;
 }
+
+//////////////////////////////////////////////////////////////////////////
+
 bool CUITradeWnd::ToOthersBag()
 {
 	((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->DetachChild(m_pCurrentDragDropItem);
@@ -375,6 +411,8 @@ bool CUITradeWnd::ToOthersBag()
 
 	return true;
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 u32 CUITradeWnd::CalcItemsPrice(CUIDragDropList* pList, CTrade* pTrade)
 {
@@ -393,11 +431,14 @@ u32 CUITradeWnd::CalcItemsPrice(CUIDragDropList* pList, CTrade* pTrade)
 	return iPrice;
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void CUITradeWnd::PerformTrade()
 {
-	if(UIMessageBox.IsShown()) return;
+	if(GetDealControlStatus()) return;
 
-	
+	if (UIOurTradeList.GetDragDropItemsList().empty() && UIOthersTradeList.GetDragDropItemsList().empty()) return;
+
 	int our_money = (int)m_pInvOwner->m_dwMoney;
 	int others_money = (int)m_pOthersInvOwner->m_dwMoney;
 
@@ -405,14 +446,16 @@ void CUITradeWnd::PerformTrade()
 
 	our_money+=delta_price;
 	others_money-=delta_price;
-		
+
+	CStringTable stbl;
+
 	if(our_money<0) 
 	{
-		UIMessageBox.SetText("You don't have enought money!");
+		UIDealMsg.SetText(*stbl("You don't have enought money!"));
 	} 
 	else if(others_money<0) 
 	{
-		UIMessageBox.SetText("Your opponent doesn't have enought money!");
+		UIDealMsg.SetText(*stbl("Your opponent doesn't have enought money!"));
 	}
 	//денег хватает, продать вещи
 	else if(m_iOurTradePrice>0 || m_iOthersTradePrice>0)
@@ -422,13 +465,15 @@ void CUITradeWnd::PerformTrade()
 		SellItems(&UIOthersTradeList, &UIOurBagList, m_pOthersTrade);
 		UpdatePrices();
 		
-
-		UIMessageBox.SetText("The deal is done!");
+		UIDealMsg.SetText(*stbl("The deal is done!"));
 	}
 
-	UIMessageBox.Show();
+	SwitchDealControls(true);
 	DisableAll();
 }
+
+//////////////////////////////////////////////////////////////////////////
+
 void CUITradeWnd::DisableAll()
 {
 	UIOurBagWnd.Enable(false);
@@ -436,6 +481,9 @@ void CUITradeWnd::DisableAll()
 	UIOurTradeWnd.Enable(false);
 	UIOthersTradeWnd.Enable(false);
 }
+
+//////////////////////////////////////////////////////////////////////////
+
 void CUITradeWnd::EnableAll()
 {
 	UIOurBagWnd.Enable(true);
@@ -443,6 +491,8 @@ void CUITradeWnd::EnableAll()
 	UIOurTradeWnd.Enable(true);
 	UIOthersTradeWnd.Enable(true);
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUITradeWnd::UpdatePrices()
 {
@@ -484,6 +534,8 @@ void CUITradeWnd::SellItems(CUIDragDropList* pSellList,
 	}
 	pSellList->DropAll();
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUITradeWnd::UpdateLists()
 {
@@ -586,6 +638,8 @@ void CUITradeWnd::UpdateLists()
 	}
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void CUITradeWnd::SetCurrentItem(CInventoryItem* pItem)
 {
 	m_pCurrentItem = pItem;
@@ -623,4 +677,20 @@ void CUITradeWnd::DropCurrentItem()
 void CUITradeWnd::SwitchToTalk()
 {
 	GetMessageTarget()->SendMessage(this, TRADE_WND_CLOSED);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUITradeWnd::SwitchDealControls(bool on)
+{
+	m_bDealControlsVisible = on;
+
+	UIDealClose.Show(on);
+	UIDealClose.SetCapture(this, on);
+	UIDealClose.Enable(on);
+	UIDealClose.HighlightItem(false);
+
+	UIDealMsg.Show(on);
+
+	UIItemInfo.Show(!on);
 }

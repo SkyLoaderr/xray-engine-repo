@@ -59,23 +59,24 @@ public:
 
 	// Установить параметры визуализации баннера. Флаги см. перечисление TextBannerStyles
 	EffectParams * SetStyleParams(const TextBannerStyles styleName);
-	void	ResetAnimation		(const TextBannerStyles styleName);
+	void		ResetAnimation		(const TextBannerStyles styleName);
 
 	// Font
-	void	SetFont				(CGameFont *pFont)	{ m_pFont = pFont; }
-	void	SetFontSize			(float sz)	{ fontSize = sz; }
-	void	SetFontAlignment	(CGameFont::EAligment al) {aligment = al;}
+	void		SetFont				(CGameFont *pFont)	{ m_pFont = pFont; }
+	CGameFont	*GetFont			() const { return m_pFont; }
+	void		SetFontSize			(float sz)	{ fontSize = sz; }
+	void		SetFontAlignment	(CGameFont::EAligment al) {aligment = al;}
 
 	// Color
-	void	SetTextColor		(u32 cl);
-	u32		GetTextColor		();
+	void		SetTextColor		(u32 cl);
+	u32			GetTextColor		();
 
 	// Вкл/выкл анимации
-	void	PlayAnimation		()					{ m_bAnimate = true;	}
-	void	StopAnimation		()					{ m_bAnimate = false;	}
+	void		PlayAnimation		()					{ m_bAnimate = true;	}
+	void		StopAnimation		()					{ m_bAnimate = false;	}
 
 	// Меняем режим вывода
-	void	SetNewRenderMethod	(bool bNew)			{ m_bNewRenderMethod = bNew; }
+	void		SetNewRenderMethod	(bool bNew)			{ m_bNewRenderMethod = bNew; }
 
 protected:
 	// Переменные времени для каждого из стилей.

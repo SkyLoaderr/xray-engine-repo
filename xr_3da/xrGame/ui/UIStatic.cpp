@@ -685,73 +685,9 @@ void CUIStatic::Elipsis(const RECT &rect, EElipsisPosition elipsisPos)
 {
 	if (eepNone == elipsisPos) return;
 
-	CGameFont *pFont = GetFont();
-	R_ASSERT(pFont);
-	R_ASSERT(m_str);
-
-	// Quick check
-	if (pFont->SizeOf(m_str) <= rect.right - rect.left) return;
-
-	// Applying elipsis cut
-	int length = 0, elipsisWidth = static_cast<int>(pFont->SizeOf("..."));
-	STRING_IT cutPos = m_sEdit.begin(), left, right;
-	bool moveLeft;
-
-	// Depend elipsis position
-	switch (m_ElipsisPos)
-	{
-	case eepBegin:
-		for (STRING::reverse_iterator it = m_sEdit.rbegin(); it != m_sEdit.rend(); ++it)
-		{
-			length = length + static_cast<int>(pFont->SizeOf(*it));
-			if (length > rect.right - rect.left - elipsisWidth)
-			{
-				STRING tmp;
-				tmp.assign(++it.base(), m_sEdit.end());
-				m_sEdit.swap(tmp);
-				m_sEdit.insert(m_sEdit.end(), 0);
-				cutPos = m_sEdit.begin();
-				break;
-			}
-		}
-		break;
-	case eepEnd:
-		for (STRING_IT it = m_sEdit.begin(); it != m_sEdit.end(); ++it)
-		{
-			length = length + static_cast<int>(pFont->SizeOf(*it));
-			if (length > rect.right - rect.left - elipsisWidth)
-			{
-				*it = 0;
-				m_sEdit.resize(std::distance(m_sEdit.begin(), it));
-				cutPos = m_sEdit.end();
-				break;
-			}
-		}
-		break;
-	case eepCenter:
-		left = m_sEdit.begin();
-		right = m_sEdit.end() - 1;
-		moveLeft = true;
-		while (length < rect.right - rect.left - elipsisWidth && left <= right)
-		{
-			moveLeft ?	length = length + static_cast<int>(pFont->SizeOf(*left++)):
-						length = length + static_cast<int>(pFont->SizeOf(*right--));
-			moveLeft = !moveLeft;
-		}
-
-		// Cut center
-		if (--left < ++right)
-		{
-			m_sEdit.erase(left, right);
-			cutPos = m_sEdit.begin() + std::distance(m_sEdit.begin(), m_sEdit.end()) / 2;
-		}
-		break;
-	default:
-		NODEFAULT;
-	}
+	CUIStatic::Elipsis(m_sEdit, rect, elipsisPos, GetFont());
 
 	// Now paste elipsis
-	m_sEdit.insert(cutPos, 3, '.');
 	m_str = &m_sEdit.front();
 	str_len = m_sEdit.size();
 	buf_str.resize(str_len + 1);
@@ -770,4 +706,77 @@ void CUIStatic::SetElipsis(EElipsisPosition pos, int indent)
 void CUIStatic::SetClipRect(RECT r)
 {
 	m_ClipRect = r;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIStatic::Elipsis(STRING &str, const RECT &rect, EElipsisPosition elipsisPos, CGameFont *pFont)
+{
+	if (eepNone == elipsisPos) return;
+
+	R_ASSERT(pFont);
+	R_ASSERT(!str.empty());
+
+	// Quick check
+	if (pFont->SizeOf(&str.front()) <= rect.right - rect.left) return;
+
+	// Applying elipsis cut
+	int length = 0, elipsisWidth = static_cast<int>(pFont->SizeOf("..."));
+	STRING_IT cutPos = str.begin(), left, right;
+	bool moveLeft;
+
+	// Depend elipsis position
+	switch (elipsisPos)
+	{
+	case eepBegin:
+		for (STRING::reverse_iterator it = str.rbegin(); it != str.rend(); ++it)
+		{
+			length = length + static_cast<int>(pFont->SizeOf(*it));
+			if (length > rect.right - rect.left - elipsisWidth)
+			{
+				STRING tmp;
+				tmp.assign(++it.base(), str.end());
+				str.swap(tmp);
+				str.insert(str.end(), 0);
+				cutPos = str.begin();
+				break;
+			}
+		}
+		break;
+	case eepEnd:
+		for (STRING_IT it = str.begin(); it != str.end(); ++it)
+		{
+			length = length + static_cast<int>(pFont->SizeOf(*it));
+			if (length > rect.right - rect.left - elipsisWidth)
+			{
+				*it = 0;
+				str.resize(std::distance(str.begin(), it));
+				cutPos = str.end();
+				break;
+			}
+		}
+		break;
+	case eepCenter:
+		left = str.begin();
+		right = str.end() - 1;
+		moveLeft = true;
+		while (length < rect.right - rect.left - elipsisWidth && left <= right)
+		{
+			moveLeft ?	length = length + static_cast<int>(pFont->SizeOf(*left++)):
+		length = length + static_cast<int>(pFont->SizeOf(*right--));
+		moveLeft = !moveLeft;
+		}
+
+		// Cut center
+		if (--left < ++right)
+		{
+			str.erase(left, right);
+			cutPos = str.begin() + std::distance(str.begin(), str.end()) / 2;
+		}
+		break;
+	default:
+		NODEFAULT;
+	}
+
+	str.insert(cutPos, 3, '.');
 }

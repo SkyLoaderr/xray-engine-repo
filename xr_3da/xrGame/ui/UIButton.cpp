@@ -32,7 +32,7 @@ CUIButton:: CUIButton()
 	m_iPushOffsetX				= PUSH_OFFSET_RIGHT;
     m_iPushOffsetY				= PUSH_OFFSET_DOWN;
 
-	SetTextAlign(CGameFont::alCenter);
+	SetTextAlign				(CGameFont::alCenter);
 
 	m_HighlightColor			= 0xFF999999;
 	m_uAccelerator				= static_cast<u32>(-1);
@@ -42,6 +42,9 @@ CUIButton:: CUIButton()
 
 	m_bNewRenderMethod			= false;
 	m_bEnableTextHighlighting	= true;
+
+	m_iShadowOffsetX			= 0;
+	m_iShadowOffsetY			= 0;
 }
 
  CUIButton::~ CUIButton()
@@ -126,7 +129,7 @@ void  CUIButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 			if(mouse_action == LBUTTON_DOWN || mouse_action == LBUTTON_DB_CLICK)
 			{
 				m_eButtonState = BUTTON_PUSHED;
-			
+				GetMessageTarget()->SendMessage(this, BUTTON_DOWN, NULL);
 				GetParent()->SetCapture(this, true);
 			}
 		}
@@ -253,8 +256,8 @@ void  CUIButton::Draw()
 	int right_offset;
 	int down_offset;
 
-	if(m_eButtonState == BUTTON_UP || m_eButtonState == BUTTON_NORMAL
-		|| !m_bAvailableTexture)
+	if(m_eButtonState == BUTTON_UP || m_eButtonState == BUTTON_NORMAL)
+		//|| !m_bAvailableTexture)
 	{
 		right_offset = 0;
 		down_offset = 0;
@@ -274,36 +277,36 @@ void  CUIButton::Draw()
 		{
 			GetFont()->SetColor(m_HighlightColor);
 			HUD().OutText(GetFont(), GetClipRect(), 
-				(float)rect.left + right_offset + 1 +m_iTextOffsetX, 
-				(float)rect.top + down_offset + 1  +m_iTextOffsetY,
+				(float)rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
+				(float)rect.top + down_offset + 1  +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
 			HUD().OutText(GetFont(), GetClipRect(), 
-				(float)rect.left + right_offset - 1 +m_iTextOffsetX, 
-				(float)rect.top + down_offset - 1 +m_iTextOffsetY,
+				(float)rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
+				(float)rect.top + down_offset - 1 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
 			HUD().OutText(GetFont(), GetClipRect(),
-				(float)rect.left + right_offset - 1 +m_iTextOffsetX, 
-				(float)rect.top + down_offset + 1 +m_iTextOffsetY,
+				(float)rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
+				(float)rect.top + down_offset + 1 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
 			HUD().OutText(GetFont(), GetClipRect(), 
-				(float)rect.left + right_offset + 1 +m_iTextOffsetX, 
-				(float)rect.top + down_offset - 1 +m_iTextOffsetY,
+				(float)rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
+				(float)rect.top + down_offset - 1 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
 			HUD().OutText(GetFont(), GetClipRect(),
-				(float)rect.left + right_offset + 1 +m_iTextOffsetX, 
-				(float)rect.top + down_offset + 0 +m_iTextOffsetY,
+				(float)rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
+				(float)rect.top + down_offset + 0 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
 			HUD().OutText(GetFont(), GetClipRect(),
-				(float)rect.left + right_offset - 1 +m_iTextOffsetX, 
-				(float)rect.top + down_offset - 0 +m_iTextOffsetY,
+				(float)rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
+				(float)rect.top + down_offset - 0 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
 			HUD().OutText(GetFont(), GetClipRect(),
-				(float)rect.left + right_offset - 0 +m_iTextOffsetX, 
-				(float)rect.top + down_offset + 1 +m_iTextOffsetY,
+				(float)rect.left + right_offset - 0 +m_iTextOffsetX + m_iShadowOffsetX, 
+				(float)rect.top + down_offset + 1 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
 			HUD().OutText(GetFont(), GetClipRect(),
-				(float)rect.left + right_offset + 0 +m_iTextOffsetX,  
-				(float)rect.top + down_offset - 1 +m_iTextOffsetY,
+				(float)rect.left + right_offset + 0 +m_iTextOffsetX + m_iShadowOffsetX,  
+				(float)rect.top + down_offset - 1 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
 		}
 
@@ -345,7 +348,8 @@ void  CUIButton::Update()
 
 void CUIButton::UpdateTextAlign()
 {
-	m_iTextOffsetY = (GetHeight() - (int)GetFont()->CurrentHeight())/2;
+	if (m_iTextOffsetY < 0)
+		m_iTextOffsetY = (GetHeight() - (int)GetFont()->CurrentHeight())/2;
 
 	if(m_eTextAlign == CGameFont::alCenter)
 	{

@@ -188,8 +188,8 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path,
 		pWnd->SetTextAlign(CGameFont::alLeft);
 
 	// Text coordinates
-	int text_x = xml_doc.ReadAttribInt(*text_path, index, "x");
-	int text_y = xml_doc.ReadAttribInt(*text_path, index, "y");
+	int text_x = xml_doc.ReadAttribInt(*text_path, index, "x", -1);
+	int text_y = xml_doc.ReadAttribInt(*text_path, index, "y", -1);
 	ref_str text = xml_doc.Read(*text_path, index, NULL);
 
 	pWnd->SetTextX(text_x);
@@ -212,6 +212,22 @@ bool CUIXmlInit::InitButton(CUIXml& xml_doc, LPCSTR path,
 
 	u32 accel = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "accel", -1));
 	pWnd->SetAccelerator(accel);
+
+	u32 hA = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "hA", 255));
+	u32 hR = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "hR", 153));
+	u32 hG = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "hG", 153));
+	u32 hB = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "hB", 153));
+
+	int shadowOffsetX	= xml_doc.ReadAttribInt(path, index, "shadow_offset_x", 0);
+	int shadowOffsetY	= xml_doc.ReadAttribInt(path, index, "shadow_offset_y", 0);
+
+	int pushOffsetX		= xml_doc.ReadAttribInt(path, index, "push_off_x", 2);
+	int pushOffsetY		= xml_doc.ReadAttribInt(path, index, "push_off_y", 3);
+
+	pWnd->SetHighlightColor(color_argb(hA, hR, hG, hB));
+	pWnd->SetShadowOffset(shadowOffsetX, shadowOffsetY);
+	pWnd->SetPushOffsetX(pushOffsetX);
+	pWnd->SetPushOffsetY(pushOffsetY);
 	
 	return true;
 }
@@ -568,9 +584,10 @@ bool CUIXmlInit::InitMultiTextStatic(CUIXml &xml_doc, const char *path, int inde
 	{
 		p = pWnd->AddPhrase();
 
-		status	&= InitTextBanner(xml_doc, ph, i, &p->effect);
-		p->outX	= static_cast<float>(xml_doc.ReadAttribInt(ph, i, "x", 0));
-		p->outY = static_cast<float>(xml_doc.ReadAttribInt(ph, i, "y", 0));
+		status			&= InitTextBanner(xml_doc, ph, i, &p->effect);
+		p->outX			= static_cast<float>(xml_doc.ReadAttribInt(ph, i, "x", 0));
+		p->outY			= static_cast<float>(xml_doc.ReadAttribInt(ph, i, "y", 0));
+		p->maxWidth		= xml_doc.ReadAttribInt(ph, i, "width", -1);
 
 		CGameFont *pFont;
 		InitFont(xml_doc, ph, i, argb, pFont);
@@ -633,14 +650,23 @@ bool CUIXmlInit::InitTexture(CUIXml &xml_doc, const char *path, int index, CUISt
 
 	pWnd->InitTexture(*texture);
 
-	int x			= xml_doc.ReadAttribInt(buf, 0, "x", 0);
-	int y			= xml_doc.ReadAttribInt(buf, 0, "y", 0);
-	int width		= xml_doc.ReadAttribInt(buf, 0, "width", 0);
-	int height		= xml_doc.ReadAttribInt(buf, 0, "height", 0);
-	int	a			= xml_doc.ReadAttribInt(buf, 0, "a", 255);
-	int	r			= xml_doc.ReadAttribInt(buf, 0, "r", 255);
-	int	g			= xml_doc.ReadAttribInt(buf, 0, "g", 255);
-	int	b			= xml_doc.ReadAttribInt(buf, 0, "b", 255);
+	int x			= xml_doc.ReadAttribInt(buf, index, "x", 0);
+	int y			= xml_doc.ReadAttribInt(buf, index, "y", 0);
+	int width		= xml_doc.ReadAttribInt(buf, index, "width", 0);
+	int height		= xml_doc.ReadAttribInt(buf, index, "height", 0);
+	int	a			= xml_doc.ReadAttribInt(buf, index, "a", 255);
+	int	r			= xml_doc.ReadAttribInt(buf, index, "r", 255);
+	int	g			= xml_doc.ReadAttribInt(buf, index, "g", 255);
+	int	b			= xml_doc.ReadAttribInt(buf, index, "b", 255);
+	ref_str mirrorM = xml_doc.ReadAttrib(buf, index, "mirror", "none");
+
+	if (0 == xr_strcmp(mirrorM, "v"))
+		pWnd->GetUIStaticItem().SetMirrorMode(tmMirrorVertical);
+	else if (0 == xr_strcmp(mirrorM, "h"))
+		pWnd->GetUIStaticItem().SetMirrorMode(tmMirrorHorisontal);
+	else if (0 == xr_strcmp(mirrorM, "both"))
+		pWnd->GetUIStaticItem().SetMirrorMode(tmMirrorBoth);
+
 
 	pWnd->SetColor(color_rgba(r, g, b, a));
 

@@ -24,10 +24,11 @@ class CInventory;
 #include "UICharacterInfo.h"
 #include "UIItemInfo.h"
 
-
+//////////////////////////////////////////////////////////////////////////
 
 class CArtifact;
 
+//////////////////////////////////////////////////////////////////////////
 
 class CUIInventoryWnd: public CUIDialogWnd
 {
@@ -79,10 +80,12 @@ protected:
 	CUIStatic			UIDescrWnd;
 	CUIFrameWindow		UIPersonalWnd;
 
-	//конпка активации окошка сна
-	CUIButton			UISleepButton;
+	// Подокошко сна
+	CUISleepWnd			UISleepWnd;
+	
 	// Кнопка выброса активного предмета
 	CUIButton			UIDropButton;
+	CUIButton			UIExitButton;
 
 	CUIStatic			UIStaticTop;
 	CUIStatic			UIStaticBelt;
@@ -115,9 +118,6 @@ protected:
 	CUIPropertiesBox	UIPropertiesBox;
 	//менюшка для работы с устройством производства артефактов
 	CUIArtifactMerger	UIArtifactMergerWnd;
-	//окошко для параметров сна
-	CUISleepWnd			UISleepWnd;
-	
 	
 	//информация о персонаже
 	CUICharacterInfo UICharacterInfo;
@@ -178,10 +178,6 @@ protected:
 	//запуск и остановка меню работы с артефактами
 	void StartArtifactMerger();
 	void StopArtifactMerger();
-
-	//запуск и остановка меню работы с артефактами
-	void StartSleepWnd();
-	void StopSleepWnd();
 
 	//присоединение/отсоединение аддонов к оружию
 	void AttachAddon();

@@ -174,6 +174,9 @@ protected:
 
 	// Clip rect
 	RECT	m_ClipRect;
+
+public:
+	static void Elipsis(STRING &str, const RECT &rect, EElipsisPosition elipsisPos, CGameFont *pFont);
 };
 
 #endif // _UI_STATIC_H_
