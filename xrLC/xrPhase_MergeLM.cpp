@@ -112,7 +112,7 @@ void CBuild::xrPhase_MergeLM()
 
 			// Select first deflectors which can fit
 			Status		("Selection 3...");
-			int maxarea		= lmap_size*lmap_size*5;	// Max up to 6 lm selected
+			int maxarea		= lmap_size*lmap_size*5;	// Max up to 5 lm selected
 			int curarea		= 0;
 			int merge_count	= 0;
 			for (it=0; it<(int)Layer.size(); it++)
