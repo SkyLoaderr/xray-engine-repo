@@ -7,7 +7,7 @@
 			<level>l01_escape</level>
 			<object>002</object>
 			<text>јртефакт.</text>
-			<icon name="ящик" x="5" y="1" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+			<icon name="" x="5" y="1" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 		</location>
 		<task>tutorial_find_artefact</task>
 	</info_portion>

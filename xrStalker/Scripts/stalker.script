@@ -40,6 +40,7 @@ end
 
 	if self.object:object("af_night_star") ~= nil then
 		self.object:give_info_portion("tutorial_artefact_gain")
+		self.object:set_task_state(task.completed, "tutorial_find_artefact", 0)
 	end 
 
 --[[       		if self.object:has_info("escape_trader_need_artefact") and
