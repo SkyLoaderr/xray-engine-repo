@@ -6687,6 +6687,19 @@
 						RelativePath=".\xrgame_dll_detach.cpp">
 					</File>
 				</Filter>
+				<Filter
+					Name="Profiler"
+					Filter="">
+					<File
+						RelativePath=".\profiler.cpp">
+					</File>
+					<File
+						RelativePath=".\profiler.h">
+					</File>
+					<File
+						RelativePath=".\profiler_inline.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Server"

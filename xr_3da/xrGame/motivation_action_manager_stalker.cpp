@@ -14,6 +14,7 @@
 #include "ai/stalker/ai_stalker.h"
 #include "stalker_decision_space.h"
 #include "script_game_object.h"
+#include "profiler.h"
 
 #ifdef DEBUG
 extern EStalkerBehaviour	g_stalker_behaviour;
@@ -102,6 +103,9 @@ void CMotivationActionManagerStalker::reload			(LPCSTR section)
 
 void CMotivationActionManagerStalker::update			(u32 time_delta)
 {
+	START_PROFILE("ai")
+	START_PROFILE("ai/stalker_manager")
+	START_PROFILE("ai/stalker_manager/update")
 #ifdef LOG_ACTION
 	if ((psAI_Flags.test(aiGOAP) && !m_use_log) || (!psAI_Flags.test(aiGOAP) && m_use_log)) {
 		m_use_log			= !m_use_log;
@@ -163,6 +167,9 @@ void CMotivationActionManagerStalker::update			(u32 time_delta)
 #ifdef DEBUG
 	m_stalker_behaviour		= g_stalker_behaviour;
 #endif
+	STOP_PROFILE
+	STOP_PROFILE
+	STOP_PROFILE
 }
 
 void CMotivationActionManagerStalker::add_motivations	()

@@ -22,6 +22,7 @@ extern Flags32					psAI_Flags;
 #define aiAnimation				(1<<9)
 #define aiVision				(1<<10)
 #define aiMonsterDebug			(1<<11)
+#define aiStats					(1<<12)
 
 #ifdef DEBUG
 enum EStalkerBehaviour {

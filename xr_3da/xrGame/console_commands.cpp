@@ -886,6 +886,7 @@ void CCC_RegisterCommands()
 	CMD3(CCC_Mask,				"ai_dbg_anim",			&psAI_Flags,	aiAnimation);
 	CMD3(CCC_Mask,				"ai_dbg_vision",		&psAI_Flags,	aiVision);
 	CMD3(CCC_Mask,				"ai_dbg_monster",		&psAI_Flags,	aiMonsterDebug);
+	CMD3(CCC_Mask,				"ai_stats",				&psAI_Flags,	aiStats);
 
 	CMD1(CCC_Script,			"run_script");
 	CMD1(CCC_ScriptCommand,		"run_string");

@@ -6,6 +6,11 @@
 #include "../xr_ioconsole.h"
 #include "gamemtllib.h"
 
+#ifndef _EDITOR
+#	include "ai_debug.h"
+#	include "profiler.h"
+#endif
+
 CGamePersistent::CGamePersistent(void)
 {
 	BOOL	bDemoMode	= (0!=strstr(Core.Params,"-demomode "));
@@ -109,4 +114,7 @@ void CGamePersistent::OnEvent(EVENT E, u64 P1, u64 P2)
 
 void CGamePersistent::Statistics	(CGameFont* F)
 {
+#ifndef _EDITOR
+	profiler().show_stats	(F,!!psAI_Flags.test(aiStats));
+#endif
 }
