@@ -32,7 +32,7 @@ IC bool RayPick(RAPID::XRCollide* DB, Fvector& P, Fvector& D, float r, RayCache&
 		return true;
 	}
 }
-
+ 
 IC int	calcSphereSector(Fvector& dir)
 {
 	Fvector2			flat;
