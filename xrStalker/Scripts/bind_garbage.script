@@ -23,6 +23,19 @@ function CRushMonster:update(delta)
 		self.object:script(true, script_name())
 	end
 	self:set_action()
+    if (self.object:position ():distance_to (self.rest_way:point (self.rest_way:count () - 1)) < 1) then
+       self.end_work = true
+	   if (self.object:get_script ()) then
+		  self.object:script (false, script_name ())
+	   end
+	   self.sim	= alife()
+	   if (self.sim) then
+		  self.sim:set_switch_online (self.object:id (), true)
+		  self.sim:set_switch_offline (self.object:id (), true)
+		  self.sim:set_interactive (self.object:id (), true)
+	   end
+    end        
+
 end
 
 function CRushMonster:set_action()
