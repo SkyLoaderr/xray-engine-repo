@@ -232,8 +232,8 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 	
 	// Ammo
 	iAmmoElapsed	--;
-	if (iAmmoElapsed==0) { m_pParent->g_fireEnd(); break; }
-				
+	if (iAmmoElapsed==0) m_pParent->g_fireEnd();
+
 	return				bResult;
 }
 
