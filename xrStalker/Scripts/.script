@@ -7,7 +7,7 @@ module ("xr_evaluators")
 module ("xr_storyline")
 
 module ("gramofon")
-//module ("escape_bobic")
+module ("escape_bobic")
 
 module ("xr_motivator")
 module ("xr_sounds")
