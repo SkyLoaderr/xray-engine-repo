@@ -127,7 +127,7 @@ void CBulletManager::Update()
 	m_dwTimeRemainder = delta_time%m_dwStepTime;
 	
 
-	for(int k=m_Bullets.size()-1; k<=0; k--){
+	for(int k=m_Bullets.size()-1; k>=0; k--){
 		SBullet& bullet = m_Bullets[k];
 		//для пули пущенной на этом же кадре считаем только 1 шаг
 		//(хотя по теории вообще ничего считать на надо)

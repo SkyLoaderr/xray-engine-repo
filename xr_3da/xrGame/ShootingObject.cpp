@@ -339,19 +339,9 @@ void CShootingObject::FireBullet(const Fvector& pos,
 		m_fCurrentFireDist = fireDistance;
 		m_iCurrentParentID = parent_id;
 
-		SBullet* bullet =  xr_new<SBullet>();
-		bullet->Init(
-			pos, dir, 
-			m_fStartBulletSpeed,
-			float(iHitPower),
-			fHitImpulse,
-			parent_id,
-			weapon_id,
-			ALife::eHitTypeFireWound,
-			fireDistance,
-			cartridge);
-
-		Level().BulletManager().AddBullet(bullet);
+		Level().BulletManager().AddBullet(	pos, dir, m_fStartBulletSpeed, float(iHitPower), 
+											fHitImpulse, parent_id, weapon_id, 
+											ALife::eHitTypeFireWound, fireDistance, cartridge);
 	}
 
 	// light

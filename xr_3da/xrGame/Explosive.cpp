@@ -162,17 +162,9 @@ void CExplosive::Explode()
 		cartridge.m_kPierce = 1.f;
 		cartridge.fWallmarkSize = m_fCurrentWallmarkSize;
 
-		SBullet* bullet =  xr_new<SBullet>();
-		bullet->Init(m_vCurrentShootPos, m_vCurrentShootDir,
-			tracerHeadSpeed,
-			m_fCurrentHitPower,
-			m_fCurrentHitImpulse,
-			m_iCurrentParentID,
-			ID(),
-			m_eCurrentHitType,
-			m_fCurrentFireDist,
-			cartridge);
-		Level().BulletManager().AddBullet(bullet);
+		Level().BulletManager().AddBullet(	m_vCurrentShootPos, m_vCurrentShootDir, tracerHeadSpeed,
+											m_fCurrentHitPower, m_fCurrentHitImpulse, m_iCurrentParentID,
+											ID(), m_eCurrentHitType, m_fCurrentFireDist, cartridge);
 	}	
 
 	if (Remote()) return;
