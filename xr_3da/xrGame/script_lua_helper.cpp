@@ -80,7 +80,7 @@ void CDbgLuaHelper::PrepareLuaBind()
 
 int CDbgLuaHelper::OutputTop(lua_State* L)
 {
-	CScriptDebugger::GetDebugger()->Write(luaL_check_string(L, -1));
+	CScriptDebugger::GetDebugger()->Write(luaL_checkstring(L, -1));
 	CScriptDebugger::GetDebugger()->Write("\n");
 	return 0;
 }
@@ -347,13 +347,13 @@ bool CDbgLuaHelper::Eval(const char *szCode, char* szRet)
 	int top = lua_gettop(L);	
 	int status = luaL_loadbuffer(L, szCode, xr_strlen(szCode), szCode);
 	if ( status )
-		sprintf(szRet, "%s", luaL_check_string(L, -1));
+		sprintf(szRet, "%s", luaL_checkstring(L, -1));
 	else
 	{
 		status = lua_pcall(L, 0, LUA_MULTRET, 0);  /* call main */
 		if ( status )
 		{
-			const char* szErr = luaL_check_string(L, -1);
+			const char* szErr = luaL_checkstring(L, -1);
 			const char* szErr2 = strstr(szErr, ": ");
 			sprintf(szRet, "%s", szErr2?(szErr2+2):szErr);
 		}
