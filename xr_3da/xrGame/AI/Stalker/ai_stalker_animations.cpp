@@ -94,35 +94,35 @@ bool CAI_Stalker::bfCheckIfCanKillEnemy()
 		return(false);
 
 	return(true);
-	Fvector fire_pos;
-	fire_pos.sub(m_tEnemy.Enemy->Position(),vPosition);
-	float yaw1,yaw2,pitch1,pitch2;
-	fire_pos.getHP(yaw1,pitch1);
-	yaw1 = angle_normalize_signed(yaw1);
-	pitch1 = angle_normalize_signed(pitch1);
-	//fire_dir.getHP(yaw2,pitch2);
-
-	float yaw_factor = 0, pitch_factor = 0;
-	switch(m_tLookType) {
-		case eLookTypeFirePoint : {
-			yaw_factor		= y_shoulder_fire_factor;
-			pitch_factor	= p_shoulder_fire_factor;
-			break;
-		}
-		case eLookTypePatrol :
-		case eLookTypeSearch :
-		case eLookTypeDanger :
-		case eLookTypePoint : {
-			yaw_factor		= y_shoulder_factor;
-			pitch_factor	= p_shoulder_factor;
-			break;
-		}
-		default : NODEFAULT;
-	}
-	yaw2		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(r_current.yaw - r_torso_current.yaw) + r_torso_current.yaw);
-	pitch2		= angle_normalize_signed(-pitch_factor * (r_current.pitch - r_torso_current.pitch) + r_torso_current.pitch);
-	Msg("If can kill enemy : %f - %f",yaw1,yaw2);
-	return(getAI().bfTooSmallAngle(yaw1,yaw2,PI_DIV_4) && getAI().bfTooSmallAngle(pitch1,pitch2,PI_DIV_4));
+//	Fvector fire_pos;
+//	fire_pos.sub(m_tEnemy.Enemy->Position(),vPosition);
+//	float yaw1,yaw2,pitch1,pitch2;
+//	fire_pos.getHP(yaw1,pitch1);
+//	yaw1 = angle_normalize_signed(yaw1);
+//	pitch1 = angle_normalize_signed(pitch1);
+//	//fire_dir.getHP(yaw2,pitch2);
+//
+//	float yaw_factor = 0, pitch_factor = 0;
+//	switch(m_tLookType) {
+//		case eLookTypeFirePoint : {
+//			yaw_factor		= y_shoulder_fire_factor;
+//			pitch_factor	= p_shoulder_fire_factor;
+//			break;
+//		}
+//		case eLookTypePatrol :
+//		case eLookTypeSearch :
+//		case eLookTypeDanger :
+//		case eLookTypePoint : {
+//			yaw_factor		= y_shoulder_factor;
+//			pitch_factor	= p_shoulder_factor;
+//			break;
+//		}
+//		default : NODEFAULT;
+//	}
+//	yaw2		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(r_current.yaw - r_torso_current.yaw) + r_torso_current.yaw);
+//	pitch2		= angle_normalize_signed(-pitch_factor * (r_current.pitch - r_torso_current.pitch) + r_torso_current.pitch);
+//	Msg("If can kill enemy : %f - %f",yaw1,yaw2);
+//	return(getAI().bfTooSmallAngle(yaw1,yaw2,PI_DIV_4) && getAI().bfTooSmallAngle(pitch1,pitch2,PI_DIV_4));
 }
 
 void CAI_Stalker::vfAssignBones(CInifile *ini, const char *section)

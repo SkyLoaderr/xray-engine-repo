@@ -56,3 +56,48 @@ float CStalkerSelectorRetreat::Estimate(NodeCompressed* tNode, float fDistance, 
 	CHECK_RESULT;
 	return(m_fResult);
 }
+
+CStalkerSelectorAttack::CStalkerSelectorAttack()
+{ 
+	Name = "selector_attack"; 
+}
+
+float CStalkerSelectorAttack::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
+{
+	// initialization
+	m_tpCurrentNode = tNode;
+	m_fDistance = fDistance;
+	vfInit();
+	// computations
+	vfAddTravelCost();
+	CHECK_RESULT;
+	vfAddLightCost();
+	CHECK_RESULT;
+	vfAddTotalCoverCost();
+	CHECK_RESULT;
+	vfAddDistanceToEnemyCost();
+	CHECK_RESULT;
+	vfAddCoverFromEnemyCost();
+	CHECK_RESULT;
+	vfAddEnemyLookCost();
+	CHECK_RESULT;
+	vfAddMemberDanger();
+	CHECK_RESULT;
+	if (taMemberPositions.size()) {
+		if (m_iAliveMemberCount) {
+			for ( m_iCurrentMember=0 ; m_iCurrentMember<(int)taMemberPositions.size(); m_iCurrentMember++) {
+				vfAssignMemberPositionAndNode();
+				vfComputeMemberDirection();
+				vfAddDistanceToMemberCost();
+				vfComputeSurroundEnemy();
+				vfAddCoverFromMemberCost();
+				vfAddDeviationFromMemberViewCost();
+			}
+			vfAddSurroundEnemyCost();
+		}
+	}
+	// checking for epsilon
+	vfCheckForEpsilon(bStop);
+	// returning a value
+	return(m_fResult);
+}

@@ -198,7 +198,7 @@ void CAI_Stalker::Attack()
 
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(Weapons->ActiveWeapon() && !Weapons->ActiveWeapon()->GetAmmoElapsed(),eStalkerStateRecharge);
 
-	vfChoosePointAndBuildPath	(m_tSelectorFreeHunting);
+	vfChoosePointAndBuildPath	(m_tSelectorAttack);
 
 	vfSetFire					(true,*getGroup());
 
@@ -287,7 +287,10 @@ void CAI_Stalker::PursuitUnknown()
 	m_dwMyNodeID			= m_tpaDynamicSounds[iIndex].dwMyNodeID;
 
 	if (m_tSavedEnemy) {
+		INIT_SQUAD_AND_LEADER;
+		Squad.KnownEnemys.insert(m_tSavedEnemy);
 		EStalkerStates eState = EStalkerStates(dwfChooseAction(m_dwActionRefreshRate,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),eStalkerStateAttack,eStalkerStateDefend,eStalkerStateRetreatKnown));
+		Squad.KnownEnemys.clear();
 		if (eState == eStalkerStateRetreatKnown)
 			GO_TO_NEW_STATE_THIS_UPDATE(eStalkerStateRetreatKnown);
 	}

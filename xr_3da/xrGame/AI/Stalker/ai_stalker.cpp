@@ -76,6 +76,7 @@ void CAI_Stalker::Load				(LPCSTR section)
 	m_tSelectorFreeHunting.Load		(section);
 	m_tSelectorReload.Load			(section);
 	m_tSelectorRetreat.Load			(section);
+	m_tSelectorAttack.Load			(section);
 	// visibility
 	m_dwMovementIdleTime			= pSettings->ReadINT(section,"MovementIdleTime");
 	m_fMaxInvisibleSpeed			= pSettings->ReadFLOAT(section,"MaxInvisibleSpeed");

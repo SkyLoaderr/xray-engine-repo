@@ -21,3 +21,10 @@ class CStalkerSelectorRetreat : public CAISelectorBase
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
+class CStalkerSelectorAttack : public CAISelectorBase
+{
+	public:
+		CStalkerSelectorAttack();
+		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
+};
+

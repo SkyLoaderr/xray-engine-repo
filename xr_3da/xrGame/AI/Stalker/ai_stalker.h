@@ -175,6 +175,7 @@ private:
 	CStalkerSelectorFreeHunting	m_tSelectorFreeHunting;
 	CStalkerSelectorReload	m_tSelectorReload;
 	CStalkerSelectorRetreat	m_tSelectorRetreat;
+	CStalkerSelectorAttack	m_tSelectorAttack;
 	u32						m_dwActionRefreshRate;
 	float					m_fAttackSuccessProbability;
 	Fvector					m_tMySavedPosition;
