@@ -411,8 +411,8 @@ bool CAI_Soldier::bfCheckIfCanKillMember(CAISelectorBase &S, CEntity* &Leader)
 				break;
 			}
 
-	//return(false);
-	return(bCanKillMember);
+	return(false);
+	//return(bCanKillMember);
 }
 
 void CAI_Soldier::vfSetFire(bool bFire, CAISelectorBase &S, CEntity* &Leader)
