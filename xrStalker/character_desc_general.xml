@@ -3,7 +3,7 @@
 <!-- INFORMATION  ABOUT A SPECIFIC CHARACTERS IN GAME-->
 
 <xml>
-	<specific_character id="stalker_default">
+	<specific_character id="stalker_default" team_default = "1">
 		<name>Unknown stalker</name>
 		<icon x="0" y="0"></icon>
 		<map_icon x="0" y="0"></map_icon>
@@ -190,7 +190,7 @@
 		<actor_dialog>general_pda_talk</actor_dialog>		
 	</specific_character>
 
-	<specific_character id="trader">
+	<specific_character id="trader" team_default = "1">
 		<name>Agent Mr. Smith</name>
 		<icon x="0" y="9"></icon>
 		<map_icon x="0" y="4"></map_icon>
@@ -207,7 +207,7 @@
 		<actor_dialog>actor_break_dialog</actor_dialog>
 	</specific_character>
 
-	<specific_character id="actor">
+	<specific_character id="actor" team_default = "1">
 		<name>Gunner</name>
 		<icon x="0" y="9"></icon>
 		<map_icon x="0" y="4"></map_icon>
