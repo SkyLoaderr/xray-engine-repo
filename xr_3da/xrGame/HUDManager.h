@@ -35,6 +35,14 @@ public:
 	//חאדמכמגמקםûי רנטפע
 	CGameFont*				pFontHeaderRussian;
 	CGameFont*				pFontHeaderEurope;
+
+	CGameFont*				pArialN21Russian;
+	CGameFont*				pFontGraffiti19Russian;
+	CGameFont*				pFontGraffiti22Russian;
+	CGameFont*				pFontLetterica16Russian;
+	CGameFont*				pFontLetterica16Russian;
+
+
 public:
 							CHUDManager			();
 	virtual					~CHUDManager		();

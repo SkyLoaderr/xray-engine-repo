@@ -21,6 +21,12 @@ CHUDManager::CHUDManager()
 
 	pFontHeaderEurope = xr_new<CGameFont> ("ui_font_header_europe");
 	pFontHeaderRussian = xr_new<CGameFont> ("ui_font_header_russian");
+
+	pArialN21Russian = xr_new<CGameFont> ("ui_font_arial_n_21_russian");
+	pFontGraffiti19Russian = xr_new<CGameFont> ("ui_font_graffiti19_russian");
+	pFontGraffiti22Russian = xr_new<CGameFont> ("ui_font_graffiti22_russian");
+	pFontLetterica16Russian = xr_new<CGameFont> ("ui_font_letterica16_russian");
+	pFontLetterica18Russian = xr_new<CGameFont> ("ui_font_letterica18_russian");
 	
 
 	pUI				= 0;
