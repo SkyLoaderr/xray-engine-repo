@@ -52,6 +52,12 @@ function CSE_NewAttachableItem:__init		(section) super(section)
 	self._vector_4				= vector():set(0.4,0.4,0.4)
 	// vcolor
 	self._vcolor_0				= vector():set(0,0,0)
+	// angle
+	self._angle_0				= 1.0
+	self._angle_1				= 0.9
+	self._angle_2				= 0.8
+	self._angle_3				= 0.7
+	self._angle_4				= 0.6
 	// vangle
 	self._vangle_0				= vector():set(0.0,0.0,0.0)
 	self._vangle_1				= vector():set(0.1,0.1,0.1)
@@ -125,6 +131,12 @@ function CSE_NewAttachableItem:STATE_Write	(packet)
 	packet:w_vec3				(self._vector_4)
 	// vcolor
 	packet:w_vec3				(self._vcolor_0)
+	// angle
+	packet:w_float				(self._angle_0)
+	packet:w_float				(self._angle_1)
+	packet:w_float				(self._angle_2)
+	packet:w_float				(self._angle_3)
+	packet:w_float				(self._angle_4)
 	// vangle
 	packet:w_vec3				(self._vangle_0)
 	packet:w_vec3				(self._vangle_1)
@@ -192,6 +204,12 @@ function CSE_NewAttachableItem:STATE_Read	(packet, size)
 	packet:r_vec3				(self._vector_4)
 	// vcolor
 	packet:r_vec3				(self._vcolor_0)
+	// angle								   
+	self._angle_0				= packet:r_float()
+	self._angle_1				= packet:r_float()
+	self._angle_2				= packet:r_float()
+	self._angle_3				= packet:r_float()
+	self._angle_4				= packet:r_float()
 	// vangle
 	packet:r_vec3				(self._vangle_0)
 	packet:r_vec3				(self._vangle_1)
@@ -259,7 +277,13 @@ function CSE_NewAttachableItem:FillProps	(pref,items)
 	properties_helper():create_vector(items,"script\\vector\\4",self,"_vector_4",-10,10,0.5,4)
 	// vcolor
 	properties_helper():create_vcolor(items,"script\\vcolor\\0",self,"_vcolor_0")
-	// vector
+	// angle
+	properties_helper():create_float(items,"script\\angle\\0",self,"_angle_0")
+	properties_helper():create_float(items,"script\\angle\\1",self,"_angle_1",0)
+	properties_helper():create_float(items,"script\\angle\\2",self,"_angle_2",0,10)
+	properties_helper():create_float(items,"script\\angle\\3",self,"_angle_3",0,10,0.1)
+	properties_helper():create_float(items,"script\\angle\\4",self,"_angle_4",0,10,0.1,3)
+	// vangle
 	properties_helper():create_vangle(items,"script\\vangle\\0",self,"_vangle_0")
 	properties_helper():create_vangle(items,"script\\vangle\\1",self,"_vangle_1",-1)
 	properties_helper():create_vangle(items,"script\\vangle\\2",self,"_vangle_2",-10,10)
