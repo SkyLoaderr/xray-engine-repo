@@ -45,7 +45,7 @@ BOOL APIENTRY DllMain(HANDLE hModule, u32 ul_reason_for_call, LPVOID lpReserved)
 			// xml parser options
 			XML_DisableStringCaching	();
 			// script registration
-			ai().script_engine().export	();
+			ai().script_engine().script_export	();
 			break;
 		}
 
