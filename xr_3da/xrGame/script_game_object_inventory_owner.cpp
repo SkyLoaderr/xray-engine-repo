@@ -11,23 +11,23 @@
 #include "xrMessages.h"
 #include "character_info.h"
 
-bool CScriptGameObject::GiveInfoPortion(LPCSTR info_index)
+bool CScriptGameObject::GiveInfoPortion(LPCSTR info_id)
 {
 	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
 	if(!pInventoryOwner) return false;
-	pInventoryOwner->TransferInfo(CInfoPortion::StrToID(info_index), true);
+	pInventoryOwner->TransferInfo(CInfoPortion::IdToIndex(info_id), true);
 	return			true;
 }
 
-bool CScriptGameObject::DisableInfoPortion(LPCSTR info_index)
+bool CScriptGameObject::DisableInfoPortion(LPCSTR info_id)
 {
 	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
 	if(!pInventoryOwner) return false;
-	pInventoryOwner->TransferInfo(CInfoPortion::StrToID(info_index), false);
+	pInventoryOwner->TransferInfo(CInfoPortion::IdToIndex(info_id), false);
 	return true;
 }
 
-bool CScriptGameObject::GiveInfoPortionViaPda(LPCSTR info_index, CScriptGameObject* pFromWho)
+bool CScriptGameObject::GiveInfoPortionViaPda(LPCSTR info_id, CScriptGameObject* pFromWho)
 {
 	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
 	if(!pInventoryOwner) return false;
@@ -42,26 +42,26 @@ bool CScriptGameObject::GiveInfoPortionViaPda(LPCSTR info_index, CScriptGameObje
 	m_tpGameObject->u_EventGen(P,GE_PDA,pInventoryOwner->GetPDA()->ID());
 	P.w_u16			(u16(pFromWhoInvOwner->GetPDA()->ID()));		//отправитель
 	P.w_s16			(ePdaMsgInfo);									
-	P.w_s32			(CInfoPortion::StrToID(info_index));									
+	P.w_s32			(CInfoPortion::IdToIndex(info_id));
 	m_tpGameObject->u_EventSend(P);
 	return			true;
 }
 
 
-bool  CScriptGameObject::HasInfo				(LPCSTR info_index)
+bool  CScriptGameObject::HasInfo				(LPCSTR info_id)
 {
 	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
 	if(!pInventoryOwner) return false;
 	if(!pInventoryOwner->GetPDA()) return false;
-	return pInventoryOwner->HasInfo(CInfoPortion::StrToID(info_index));
+	return pInventoryOwner->HasInfo(CInfoPortion::IdToIndex(info_id));
 
 }
-bool  CScriptGameObject::DontHasInfo			(LPCSTR info_index)
+bool  CScriptGameObject::DontHasInfo			(LPCSTR info_id)
 {
 	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
 	if(!pInventoryOwner) return true;
 	if(!pInventoryOwner->GetPDA()) return true;
-	return !pInventoryOwner->HasInfo(CInfoPortion::StrToID(info_index));
+	return !pInventoryOwner->HasInfo(CInfoPortion::IdToIndex(info_id));
 }
 
 

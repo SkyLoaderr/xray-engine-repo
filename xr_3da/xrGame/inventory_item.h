@@ -71,7 +71,6 @@ public:
 											float impulse, 
 											ALife::EHitType hit_type = ALife::eHitTypeWound);
 
-			bool	DetachAll			();										// Разобрать иерархию объектов. Объект должен быть в рюкзаке
 			void	Drop				();										// Если объект в инвенторе, то он будет выброшен
 
 			u32		Cost				() const	{return m_cost;}
@@ -206,8 +205,6 @@ protected:
 	bool			m_useful_for_NPC;
 
 public:
-	virtual void	BuildInventoryMask		(const CInventory *inventory);
-	IC		u64		InventoryMask			() const;
 	IC		int		GetVolume				() const;
 	IC		int		GetHeight				() const;
 	IC		int		GetWidth				() const;

@@ -3,7 +3,6 @@
 #include "actor.h"
 #include "trade.h"
 #include "weapon.h"
-//#include "Physics.h"
 
 #include "ui/UIInventoryUtilities.h"
 
@@ -108,20 +107,34 @@ bool CInventory::Take(CGameObject *pObj, bool bNotActivate)
 	pIItem->m_drop = false;
 
 	m_all.insert(pIItem);
-	
-	if(CanPutInSlot(pIItem))
-	{
-		bool result = Slot(pIItem, bNotActivate); R_ASSERT(result);
-	} 
-	else if (CanPutInBelt(pIItem))
-	{
-		bool result = Belt(pIItem); R_ASSERT(result);
-	}
-	else
-	{
-		bool result = Ruck(pIItem); R_ASSERT(result);
-	}
 
+	bool result = false;
+	switch(pIItem->m_eItemPlace)
+	{
+	case eItemPlaceBelt:
+		result = Belt(pIItem); R_ASSERT(result);
+		break;
+	case eItemPlaceRuck:
+		result = Ruck(pIItem); R_ASSERT(result);
+		break;
+	case eItemPlaceSlot:
+		result = Slot(pIItem, bNotActivate); R_ASSERT(result);
+		break;
+	default:
+		if(CanPutInSlot(pIItem))
+		{
+			result = Slot(pIItem, bNotActivate); R_ASSERT(result);
+		} 
+		else if (CanPutInBelt(pIItem))
+		{
+			result = Belt(pIItem); R_ASSERT(result);
+		}
+		else
+		{
+			result = Ruck(pIItem); R_ASSERT(result);
+		}
+	}
+	
 	m_pOwner->OnItemTake		(pIItem);
 	CalcTotalWeight();
 
@@ -212,9 +225,7 @@ bool CInventory::Slot(PIItem pIItem, bool bNotActivate)
 	if ((m_iActiveSlot == NO_ACTIVE_SLOT) && (!bNotActivate))
 		Activate(pIItem->GetSlot());
 
-
 	pIItem->m_eItemPlace = eItemPlaceSlot;
-
 	pIItem->OnMoveToSlot();
 
 	return true;

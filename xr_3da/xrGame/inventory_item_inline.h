@@ -8,11 +8,6 @@
 
 #pragma once
 
-IC	u64	CInventoryItem::InventoryMask			() const
-{
-	return				(m_inventory_mask);
-}
-
 IC	int	CInventoryItem::GetVolume				() const
 {
 	return				(m_iGridWidth*m_iGridHeight);

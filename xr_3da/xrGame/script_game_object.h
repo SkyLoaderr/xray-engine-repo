@@ -283,12 +283,12 @@ public:
 	// CInventoryOwner
 	
 	//передача порции информации InventoryOwner
-	bool GiveInfoPortion		(LPCSTR info_index);
-	bool DisableInfoPortion		(LPCSTR info_index);
-	bool GiveInfoPortionViaPda	(LPCSTR info_index, CScriptGameObject* pFromWho);
+	bool GiveInfoPortion		(LPCSTR info_id);
+	bool DisableInfoPortion		(LPCSTR info_id);
+	bool GiveInfoPortionViaPda	(LPCSTR info_id, CScriptGameObject* pFromWho);
 	//предикаты наличия/отсутствия порции информации у персонажа
-	bool HasInfo				(LPCSTR info_index);
-	bool DontHasInfo			(LPCSTR info_index);
+	bool HasInfo				(LPCSTR info_id);
+	bool DontHasInfo			(LPCSTR info_id);
 
 
 	bool SendPdaMessage(EPdaMsg pda_msg, CScriptGameObject* pForWho);

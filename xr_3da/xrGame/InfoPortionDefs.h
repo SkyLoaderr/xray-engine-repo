@@ -11,6 +11,7 @@
 typedef int			INFO_ID;
 typedef ref_str		INFO_STR_ID;
 
+
 struct INFO_DATA
 {
 	INFO_DATA():id(NO_INFO_INDEX),receive_time(0){};
@@ -22,3 +23,8 @@ struct INFO_DATA
 };
 
 DEFINE_VECTOR		(INFO_DATA, KNOWN_INFO_VECTOR, KNOWN_INFO_VECTOR_IT);
+
+//статьи в энциклопедии
+typedef int			ARTICLE_ID;
+typedef ref_str		ARTICLE_STR_ID;
+DEFINE_VECTOR		(ARTICLE_ID, ARTICLE_VECTOR, ARTICLE_IT);

@@ -96,14 +96,14 @@ void  CLevel::AddObjectMapLocation		(const CGameObject* object)
 	{
 		map_location.icon_x = pInvOwner->CharacterInfo().MapIconX();
 		map_location.icon_y = pInvOwner->CharacterInfo().MapIconY();
-		map_location.name.SetText(pInvOwner->CharacterInfo().Name());
+		map_location.name = pInvOwner->CharacterInfo().Name();
 	}
 	else
 	{
 		map_location.icon_x = entity->GetMapIconX();
 		map_location.icon_y = entity->GetMapIconY();
-		map_location.name.SetText(*entity->cName());
+		map_location.name = entity->cName();
 	}
-	map_location.text.SetText("");
+	map_location.text = "";
 	AddMapLocation(map_location);
 }

@@ -16,7 +16,7 @@
 
 SInfoPortionData::SInfoPortionData ()
 {
-	m_InfoId = NO_INFO_INDEX;
+	m_InfoIndex	= NO_INFO_INDEX;
 	m_pGameTask = NULL;
 }
 SInfoPortionData::~SInfoPortionData ()
@@ -29,60 +29,6 @@ SInfoPortionData::~SInfoPortionData ()
 //	class CInfoPortion
 //
 
-//статический вектор, для хранения строк идентификаторов в по порядку
-//для получения чилсового ID
-CInfoPortion::STR_ID_VECTOR* CInfoPortion::m_pStrToID = NULL;
-
-CInfoPortion::STR_ID_VECTOR& CInfoPortion::StrIdVector ()
-{
-	if(!m_pStrToID)
-	{
-		m_pStrToID = xr_new<STR_ID_VECTOR >();
-
-		CUIXml uiXml;
-		bool xml_result = uiXml.Init("$game_data$", INFO_PORTION_XML);
-		R_ASSERT2(xml_result, "xml file not found");
-
-		//общий список info_portions
-		int info_num = uiXml.GetNodesNum(uiXml.GetRoot(), "info_portion");
-		for(int i=0; i<info_num; ++i)
-		{
-			LPCSTR info_name = uiXml.ReadAttrib(uiXml.GetRoot(), "info_portion", i, "id", NULL);
-
-			string128 buf;
-			sprintf(buf, "%d", i);
-			R_ASSERT3(info_name, "id for info portion don't set. Info num:", buf);
-
-			//проверетить ID на уникальность
-			STR_ID_VECTOR_IT it = std::find(m_pStrToID->begin(), m_pStrToID->end(), info_name);
-			R_ASSERT3(m_pStrToID->end() == it, "duplicate info id", info_name);
-			
-			m_pStrToID->push_back(info_name);
-		}
-	}
-
-	return *m_pStrToID;
-}
-
-INFO_ID CInfoPortion::StrToID(const INFO_STR_ID& str_id)
-{
-	STR_ID_VECTOR_IT it = std::find(StrIdVector().begin(), StrIdVector().end(), str_id);
-	R_ASSERT3(StrIdVector().end() != it, "info not found", *str_id);
-	return (INFO_ID)(it-StrIdVector().begin());
-}
-
-
-INFO_STR_ID CInfoPortion::IDToStr(INFO_ID info_id)
-{
-	return StrIdVector()[info_id];
-}
-
-void CInfoPortion::DeleteStrToID	()
-{
-	xr_delete(m_pStrToID);
-}
-
-
 CInfoPortion::CInfoPortion()
 {
 }
@@ -93,24 +39,30 @@ CInfoPortion::~CInfoPortion ()
 
 void CInfoPortion::Load	(INFO_STR_ID info_str_id)
 {
-	Load	(StrToID(info_str_id));
+	Load	(id_to_index::IdToIndex(info_str_id));
 }
 
-void CInfoPortion::Load	(INFO_ID info_id)
+void CInfoPortion::Load	(INFO_ID info_index)
 {
-	m_InfoId = info_id;
-	inherited_shared::load_shared(m_InfoId, INFO_PORTION_XML);
+	m_InfoIndex = info_index;
+	inherited_shared::load_shared(m_InfoIndex, INFO_PORTION_XML);
 }
 
-void CInfoPortion::load_shared	(LPCSTR xml_file)
+
+void CInfoPortion::load_shared	(LPCSTR)
 {
+	const id_to_index::ITEM_DATA& item_data = id_to_index::GetByIndex(m_InfoIndex);
+
 	CUIXml uiXml;
-	bool xml_result = uiXml.Init("$game_data$", xml_file);
-	R_ASSERT2(xml_result, "xml file not found");
+	string128 xml_file_full;
+	strconcat(xml_file_full, *ref_str(item_data.file_name), ".xml");
+
+	bool xml_result = uiXml.Init("$game_data$", xml_file_full);
+	R_ASSERT3(xml_result, "xml file not found", xml_file_full);
 
 	//loading from XML
-	XML_NODE* pNode = uiXml.NavigateToNodeWithAttribute("info_portion", "id", *IDToStr(m_InfoId));
-	R_ASSERT3(pNode, "info_portion id=", *IDToStr(m_InfoId));
+	XML_NODE* pNode = uiXml.NavigateToNode(id_to_index::tag_name, item_data.pos_in_file);
+	R_ASSERT3(pNode, "info_portion id=", *ref_str(item_data.id));
 
 	//текст
 	info_data()->m_text = uiXml.Read(pNode, "text", 0);
@@ -131,7 +83,7 @@ void CInfoPortion::load_shared	(LPCSTR xml_file)
 	info_data()->m_DisableInfo.clear();
 	for(i=0; i<disable_num; ++i)
 	{
-		INFO_ID info_id = CInfoPortion::StrToID(uiXml.Read(pNode, "disable", NULL));
+		INFO_ID info_id = CInfoPortion::IdToIndex(uiXml.Read(pNode, "disable", NULL));
 		info_data()->m_DisableInfo.push_back(info_id);
 	}
 
@@ -145,6 +97,15 @@ void CInfoPortion::load_shared	(LPCSTR xml_file)
 		info_data()->m_pGameTask = xr_new<CGameTask>();
 		info_data()->m_pGameTask->Load(uiXml, pTaskNode);
 	}
+	//индексы статей
+	ARTICLE_ID article_id;
+	info_data()->m_Articles.clear();
+	int articles_num = uiXml.GetNodesNum(pNode, "article");
+	for(i=0; i<articles_num; ++i)
+	{
+		LPCSTR article_str_id = uiXml.Read(pNode, "article", i, NULL);
+	}
+	
 
 	//загрузить позиции на карте
 	SMapLocation map_location;
@@ -157,19 +118,19 @@ void CInfoPortion::load_shared	(LPCSTR xml_file)
 
 		if(pMapNode)
 		{
-			map_location.info_portion_id = m_InfoId;
+			map_location.info_portion_id = m_InfoIndex;
 
-			map_location.level_num = uiXml.ReadInt(pMapNode,"level",0);
+			map_location.level_name = uiXml.Read(pMapNode,"level",0);
 			map_location.x = (float)atof(uiXml.Read(pMapNode,"x",0));
 			map_location.y = (float)atof(uiXml.Read(pMapNode,"y",0));
 
-			map_location.name.SetText(uiXml.ReadAttrib(pMapNode, "icon", 0, "name"));
+			map_location.name = uiXml.ReadAttrib(pMapNode, "icon", 0, "name");
 			map_location.icon_x = uiXml.ReadAttribInt(pMapNode, "icon", 0, "x");
 			map_location.icon_y = uiXml.ReadAttribInt(pMapNode, "icon", 0, "y");
 			map_location.icon_width = uiXml.ReadAttribInt(pMapNode, "icon", 0, "width");
 			map_location.icon_height = uiXml.ReadAttribInt(pMapNode, "icon", 0, "height");
 
-			map_location.text.SetText(uiXml.Read(pMapNode, "text", 0));
+			map_location.text = uiXml.Read(pMapNode, "text", 0);
 
 			//присоединить к объекту на уровне, если тот задан
 			if(uiXml.NavigateToNode(pMapNode,"object",0))
@@ -198,4 +159,12 @@ void CInfoPortion::load_shared	(LPCSTR xml_file)
 LPCSTR  CInfoPortion::GetText ()
 {
 	return *info_data()->m_text;
+}
+
+void   CInfoPortion::InitXmlIdToIndex()
+{
+	if(!id_to_index::tag_name)
+		id_to_index::tag_name = "info_portion";
+	if(!id_to_index::file_str)
+		id_to_index::file_str = pSettings->r_string("info_portions", "files");
 }

@@ -12,6 +12,7 @@
 #include "map_location.h"
 #include "PhraseScript.h"
 #include "GameTask.h"
+#include "xml_str_id_loader.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -23,7 +24,7 @@ struct SInfoPortionData : CSharedResource
 	virtual ~SInfoPortionData ();
 
 	//уникальный индекс порции информации
-	INFO_ID		m_InfoId;
+	INFO_ID		m_InfoIndex;
 
 	//массив с именами диалогов, которые могут быть инициированы
 	//из этого InfoPortion
@@ -32,6 +33,8 @@ struct SInfoPortionData : CSharedResource
 
 	//список локаций на карте
 	LOCATIONS_VECTOR	m_MapLocations;
+	//список статей в энциклопедии, которые становятся известными 
+	ARTICLE_VECTOR		m_Articles;
 	
 	//присоединенное задание
 	CGameTask*			m_pGameTask;
@@ -50,16 +53,20 @@ struct SInfoPortionData : CSharedResource
 };
 
 
-
+class CInfoPortion;
 
 //квант  - порция информации
-class CInfoPortion : public CSharedClass<SInfoPortionData, INFO_ID>
+class CInfoPortion : public CSharedClass<SInfoPortionData, INFO_ID>,
+					 public CXML_IdToIndex<INFO_STR_ID,	INFO_ID, CInfoPortion>
 {
 private:
 	typedef CSharedClass<SInfoPortionData, INFO_ID> inherited_shared;
+	typedef CXML_IdToIndex<INFO_STR_ID, INFO_ID, CInfoPortion>	id_to_index;
+
+	friend id_to_index;
 public:
-				CInfoPortion(void);
-	virtual		~CInfoPortion(void);
+				CInfoPortion	(void);
+	virtual		~CInfoPortion	(void);
 
 	//инициализация info данными
 	//если info с таким id раньше не использовался
@@ -81,20 +88,10 @@ public:
 
 
 protected:
-    INFO_ID	m_InfoId;
+    INFO_ID	m_InfoIndex;
 
-	void load_shared	(LPCSTR xml_file);
+	void load_shared	(LPCSTR);
 	SInfoPortionData* info_data() { VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
 
-	//для работы с ID (строковыми и числовыми)
-public:
-	static INFO_ID		StrToID			(const INFO_STR_ID& info_str_id);
-	static INFO_STR_ID	IDToStr			(INFO_ID info_id);
-	//удаление статичекого массива
-	static void			DeleteStrToID	();
-
-	DEFINE_VECTOR(ref_str, STR_ID_VECTOR, STR_ID_VECTOR_IT);
-	static STR_ID_VECTOR& StrIdVector ();
-protected:
-	static xr_vector<ref_str>* m_pStrToID;
+	static void InitXmlIdToIndex();
 };

@@ -163,53 +163,6 @@ bool CInventoryItem::Useful() const
 	// Если IItem нельзя использовать, вернуть false
 	return true;
 }
-/*
-bool CInventoryItem::Attach(PIItem pIItem, bool force) 
-{
-	// Аргумент force всегда равен false
-	// наследник должен изменить его на true
-	// если данный IItem МОЖЕТ быть к нему присоединен,
-	// и вызвать return CInventoryItem::Attach(pIItem, force);
-	if(force) 
-	{
-		m_subs.insert(m_subs.end(), pIItem);
-		return true;
-	} 
-	else 
-		return false;
-}*/
-/*
-bool CInventoryItem::Detach(PIItem pIItem, bool force) 
-{
-	// Аргумент force всегда равен true
-	// наследник должен изменить его на false
-	// если данный IItem НЕ МОЖЕТ быть отсоединен,
-	// и вызвать return CInventoryItem::Detach(pIItem, force);
-	if(force) 
-	{
-		if(m_subs.erase(std::find(m_subs.begin(), m_subs.end(), pIItem)) != m_subs.end()) 
-		{
-			return true;
-		}
-		return false;
-	}
-	else return false; 
-}*/
-
-bool CInventoryItem::DetachAll()
-{
-	if(!m_pInventory || std::find(m_pInventory->m_ruck.begin(), 
-								    m_pInventory->m_ruck.end(), this) == 
-									m_pInventory->m_ruck.end()) return false;
-
-/*	for(PPIItem it = m_subs.begin(); m_subs.end() != it; ++it) 
-	{
-		Detach(*it);
-		//m_pInventory->m_ruck.insert(m_pInventory->m_ruck.end(), *l_it);
-		(*it)->DetachAll();
-	}*/
-	return true;
-}
 
 bool CInventoryItem::Activate() 
 {
@@ -255,8 +208,6 @@ void CInventoryItem::OnH_B_Chield		()
 void CInventoryItem::OnH_A_Chield		()
 {
 	inherited::OnH_A_Chield		();
-	if (m_pInventory)
-		BuildInventoryMask		(m_pInventory);
 }
 
 void CInventoryItem::UpdateCL()
@@ -361,8 +312,8 @@ BOOL CInventoryItem::net_Spawn			(LPVOID DC)
 
 	CSE_ALifeInventoryItem			*pSE_InventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(e);
 	if(!pSE_InventoryItem) return res;
-
-	
+	//!!!
+	m_eItemPlace = pSE_InventoryItem->m_eItemPlace;
 	m_fCondition = pSE_InventoryItem->m_fCondition;
 	if (Game().type != GAME_SINGLE)
 	{
@@ -773,14 +724,6 @@ void CInventoryItem::make_Interpolation	()
 #endif
 }
 
-void CInventoryItem::BuildInventoryMask	(const CInventory	*inventory)
-{
-	R_ASSERT					(inventory);
-	R_ASSERT2					((GetWidth() <= (int)inventory->RuckWidth()) && (GetHeight() <= (int)inventory->RuckHeight()),"Invalid inventory grid sizes");
-	m_inventory_mask			= 0;
-	for (int i=0; i<GetHeight(); ++i)
-		m_inventory_mask		|= ((u64(1) << GetWidth()) - 1) << (i*inventory->RuckWidth());
-}
 
 void CInventoryItem::renderable_Render	()
 {

@@ -14,24 +14,24 @@ struct SMapLocation
 	SMapLocation() 
 	{
 		info_portion_id = NO_INFO_INDEX;
-		level_num = 0;
+		level_name = NULL;
 		x = y = 0;
-		name.SetText("");
-		text.SetText("");
+		name = NULL;
+		text = NULL;
 
 		attached_to_object = false;
 		object_id = 0xffff;
 	}
 
-	//номер уровня
-	int level_num;
+	//имя уровня
+	ref_str level_name;
 	//координаты на уровне
 	float x;
 	float y;
 	//имя локации
-	CUIString name;
+	ref_str name;
 	//текст описания
-	CUIString text;
+	ref_str text;
 
 	//присоединина ли локация к объекту
 	bool attached_to_object;
