@@ -41,6 +41,13 @@ void CUI::Load()
 }
 //--------------------------------------------------------------------
 
+void CUI::ShowBuyMenu(BOOL bShow)
+{
+	bShowBuyMenu=bShow;
+	if (bShow)	UIBuyMenu.OnActivate();
+	else		UIBuyMenu.OnDeactivate();
+}
+
 DWORD ScaleAlpha(DWORD val, float factor)
 {
 	DWORD	r, g, b, a;

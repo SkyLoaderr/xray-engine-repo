@@ -38,6 +38,7 @@ public:
 	enum{
 		fsGradient			= (1<<0),
 		fsDeviceIndependent	= (1<<1),
+		fsVariableWidth		= (1<<2),
 		fsForceDWORD		= (-1)
 	};
 protected:
@@ -54,13 +55,28 @@ public:
 	IC void					Scale			(float S)	{fScale=S;};
 	IC void					Interval		(float x, float y) {vInterval.set(x,y);};
 	IC void					Add				(float _x, float _y, char *s, DWORD _c=0xffffffff, float _size=0.01f);
-	IC float				SizeOf			(char *s)	{ return fCurrentSize*.66f*float(strlen(s)); }
+	IC float				SizeOf			(char *s)	
+	{ 
+		if (dwFlags&fsVariableWidth){
+			int		len			= strlen(s);
+			float	X			= 0;
+			if (len) {
+				for (int j=0; j<len; j++) {
+					float cw	= WFMap		[s[j]];
+					X			+=cw;
+				}
+			}
+			return X*fCurrentSize*vInterval.x; 
+		}else{
+			return fCurrentSize*vInterval.x*float(strlen(s)); 
+		}
+	}
 	IC float				GetScale		()			{return fScale;}
 	void					OutSet			(float x, float y) { fCurrentX=x; fCurrentY=y; }
 	void __cdecl            OutNext			(char *fmt, ...);
 	void __cdecl            OutPrev			(char *fmt, ...);
 	void __cdecl 			Out				(float _x, float _y, char *fmt, ...);
-	IC void					OutSkip			()			{ 	fCurrentY += fCurrentSize*2.f; }
+	IC void					OutSkip			()			{fCurrentY += GetCurrentSize()*vInterval.y;}
 	
 	virtual void			OnRender		();
 	virtual void			OnDeviceCreate	();

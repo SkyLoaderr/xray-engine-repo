@@ -86,7 +86,7 @@ public:
 
 	// misc
 	void				ShowFragList		(BOOL bShow){bShowFragList=bShow;}
-	void				ShowBuyMenu			(BOOL bShow){bShowBuyMenu=bShow;}
+	void				ShowBuyMenu			(BOOL bShow);
 };
 
 #endif // __XR_UI_H__

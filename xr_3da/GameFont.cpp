@@ -38,9 +38,11 @@ CGameFont::CGameFont(LPCSTR shader, LPCSTR texture, int tsize, int iCPL, DWORD f
 			WFMap[i]			= ini->ReadFLOAT("Char Widths",itoa(i,buf,10))/fCurrentSize;
 		CInifile::Destroy		(ini);
 		vInterval.set			(1.f,1.f);
+		dwFlags					|= fsVariableWidth;
 	}else{
 		if (dwFlags&fsDeviceIndependent)	vInterval.set	(0.65f,1.f);
 		else								vInterval.set	(0.75f,1.f);
+		dwFlags					&=~fsVariableWidth;
 	}
 
 	OnDeviceCreate				();
@@ -127,15 +129,16 @@ void CGameFont::OnRender()
 				for (int j=0; j<len; j++) {
 					int c		= CharMap	[PS.string[j]];
 					float cw	= WFMap		[PS.string[j]];
+					float scw	= S*cw;
 					if (c>=0){
 						tu		= (c%iNumber)*vUVSize.x+vHalfPixel.x;
 						tv		= (c/iNumber)*vUVSize.y+vHalfPixel.y;
 						v->set(X,		Y2,	clr2,tu,				tv+vUVSize.y);	v++;
 						v->set(X,		Y,	clr, tu,				tv);			v++;
-						v->set(X+S*cw,	Y2,	clr2,tu+vUVSize.x*cw,	tv+vUVSize.y);	v++;
-						v->set(X+S*cw,	Y,	clr, tu+vUVSize.x*cw,	tv);			v++;
+						v->set(X+scw,	Y2,	clr2,tu+vUVSize.x*cw,	tv+vUVSize.y);	v++;
+						v->set(X+scw,	Y,	clr, tu+vUVSize.x*cw,	tv);			v++;
 					}
-					X			+=S*cw*vInterval.x;
+					X			+=scw*vInterval.x;
 				}
 			}
 		}
