@@ -229,7 +229,7 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	-- self.dialog_mgr:reset(self.object, team) UNCOMMENT ME
 
 	self.last_index = nil
-	self.last_look_pos = nil
+	self.last_look_index = nil
 	-- self:simulate_callback_if_neccessary() WORKAROUND
 end
 
@@ -421,7 +421,19 @@ function move_mgr:time_callback()
 	end
 end
 
+function move_mgr:scheme_set_signal(sig)
+	local npc_id = self.object:id()
+	local stor = db.storage[npc_id]
+	local signals = stor[stor.active_scheme].signals
+	signals[sig] = true
+end
+
 function move_mgr:turn_end_callback()
+	local sig = self.path_look_info[self.last_look_index]["sig"]
+	if sig then
+		self:scheme_set_signal(sig)
+	end
+
 	if self.retval_after_rotation then
 		if not self.move_cb_info then
 			utils.abort("object '%s': path_look '%s': ret flag is set, but " ..
@@ -448,7 +460,8 @@ function move_mgr:turn_end_callback()
 			return
 		end
 		-- Callback не перехватил управление, нужно восстановить таймер:
-		self:update_standing_state(self.last_look_pos)
+		local look_pos = self.patrol_look:point(self.last_look_index)
+		self:update_standing_state(look_pos)
 	end
 end
 
@@ -542,10 +555,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 
 	local sig = self.path_walk_info[index]["sig"]
 	if sig then
-		local npc_id = self.object:id()
-		local stor = db.storage[npc_id]
-		local signals = stor[stor.active_scheme].signals
-		signals[sig] = true
+		self:scheme_set_signal(sig)
 	end
 
 	local stop_probability = self.path_walk_info[index]["p"]
@@ -626,7 +636,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 			self.pt_wait_time = nil
 		end
 		local look_pos = self.patrol_look:point(pt_chosen_idx)
-		self.last_look_pos = look_pos
+		self.last_look_index = pt_chosen_idx
 		self:update_standing_state(look_pos)
 
 		self.state = state_standing
