@@ -1124,11 +1124,6 @@ function switch_offline (npc)
     end   
 end
 -------------------------------------------------------------------------------------------
-function get_level_actor_id()
-	if(level.actor() == nil) then return -1 end
-	return level.actor():id()
-end
--------------------------------------------------------------------------------------------
 function get_actor_id()
 	if(level.actor() == nil) then return -1 end
 	return level.actor():id()
