@@ -1,0 +1,489 @@
+--[[------------------------------------------------------------------------------------------------------------------
+Схема "Разведчик" (управляет разведчиком, который водит за собой follower'ов)
+Чугай Саша
+
+Сделать:
+--------------------------------------------------------------------------------------------------------------------]]
+
+local animations = {
+                   {anim = "stoya_ruje_ 0",       flag = true},
+                   {anim = "vishka_3",            flag = false},
+                   {anim = "norm_torso_2_idle_1", flag = false},
+                   {anim = "norm_torso_2_idle_2", flag = true},
+                   {anim = "norm_torso_2_idle_3", flag = false},
+                   {anim = "norm_torso_2_idle_4", flag = true},
+                   {anim = "norm_torso_2_idle_5", flag = false},
+                   {anim = "norm_torso_2_idle_6", flag = false}
+                   }
+
+
+local anim_pris = {
+                  {anim = "prisluh_0", flag = false},
+                  {anim = "prisluh_1", flag = false},
+                  {anim = "prisluh_2", flag = false}
+                  }
+
+local commander_snd                     = xr_sounds_id.sound_patrol_base
+local soldiers_idle_snd                 = commander_snd + 1
+local soldiers_hear_snd                 = commander_snd + 2
+local soldiers_idle2_snd                = commander_snd + 3
+local soldiers_replics_snd              = commander_snd + 4
+
+local leader_move = 0
+local leader_stop = 1
+
+local num_hear_phrases      =   9
+local num_phrases_idle2     =   2
+
+local max_dist              =   5  
+
+
+-- rotate vector around Y axis
+function vector_rotate_y( v, angle )
+    angle = angle * 0.017453292519943295769236907684886
+    local c = math.cos( angle )
+    local s = math.sin( angle )
+    return vector():set( v.x * c - v.z * s, v.y, v.x * s + v.z * c )
+end
+
+function set_soldier_positions( scout, a )
+    local size = table.getn( a.followers )
+    if size == 0 then
+        return
+    end
+
+    local dir = scout:direction()
+    dir.y = 0.0
+    dir:normalize ()
+
+    local step = 180.0 / size
+    local angle = 90.0
+
+    for i, v in ipairs( a.followers ) do
+        if i == 1 then
+            angle = angle + step * 0.5
+        else
+            angle = angle + step
+        end
+
+        local vec = this.vector_rotate_y( dir, angle )
+
+        v.direction = vec
+        v.distance  = 3.0
+    end
+end
+
+function set_command( a, command )
+    for i, v in ipairs( a.followers ) do
+        v.leader_command = command
+    end
+end
+
+---------------------------------------------------------------------------------------------------------------------
+-- Evaluators
+---------------------------------------------------------------------------------------------------------------------
+class "evaluator_scout" (property_evaluator)
+
+function evaluator_scout:__init( name, storage ) super ()
+    self.a = storage
+end
+
+function evaluator_scout:evaluate ()
+    --printf( "s1" )
+    local b = self.a.enabled == true
+--    if b then sb = "true" else sb = "false" end
+--    printf( "s2 "..sb )
+    return b
+end
+
+---------------------------------------------------------------------------------------------------------------------
+-- Evaluators
+---------------------------------------------------------------------------------------------------------------------
+class "evaluator_in_pos" (property_evaluator)
+
+function evaluator_in_pos:__init( name, npc, storage ) super ()
+    self.a   = storage
+    self.npc = npc
+end
+
+function evaluator_in_pos:evaluate ()
+--    printf( "p1" )
+    local b = self.npc:level_vertex_id() == self.a.pos_vert_id
+--    if b then sb = "true" else sb = "false" end
+--    printf( sb )
+--    printf( "p2" )
+    return b
+end
+
+---------------------------------------------------------------------------------------------------------------------
+-- Evaluators
+---------------------------------------------------------------------------------------------------------------------
+class "evaluator_timer" (property_evaluator)
+
+function evaluator_timer:__init( name, storage ) super ()
+    self.a = storage
+end
+
+function evaluator_timer:evaluate ()
+--    printf( "t1" )
+    local b = ( self.a.timer ~= nil ) and self.a.timer <= device():time_global()
+--    printf( "t2" )
+    return b
+end
+
+---------------------------------------------------------------------------------------------------------------------
+-- Эвалуатор свойства "перехвачено ли уже событие смерти сталкера?"
+---------------------------------------------------------------------------------------------------------------------
+class "evaluator_dead_hook" ( property_evaluator )
+
+function evaluator_dead_hook:__init( storage ) super()
+    self.a = storage
+end
+
+function evaluator_dead_hook:evaluate()
+    return self.a.dead_hook
+end
+
+---------------------------------------------------------------------------------------------------------------------
+-- Actions
+---------------------------------------------------------------------------------------------------------------------
+
+class "action_go_to_pos" (action_base)
+
+function action_go_to_pos:__init( name, storage ) super( nil, name )
+    self.aa = storage
+    self.a  = storage.scout
+end
+
+function action_go_to_pos:initialize()
+    action_base.initialize( self )
+
+    self.object:set_node_evaluator      ()
+    self.object:set_path_evaluator      ()
+    self.object:set_desired_direction   ()
+    self.object:set_sight               ( look.danger, nil, 0 )
+    self.object:set_item                ( object.idle, self.object:best_weapon() )
+    self.object:set_body_state          ( move.standing )
+    self.object:set_movement_type       ( move.walk )
+    self.object:set_mental_state        ( anim.danger )
+    self.object:set_path_type           ( game_object.level_path )
+    self.object:set_detail_path_type    ( move.line )
+    self.object:set_dest_level_vertex_id( self.a.pos_vert_id )
+    self.object:set_desired_position    ( self.a.pos )
+
+    this.set_command( self.aa, leader_move )
+
+    printf( "go_to_pos initialized" )
+end
+
+function action_go_to_pos:execute()
+    action_base.execute( self )
+    this.set_soldier_positions( self.object, self.aa )
+end
+
+function action_go_to_pos:finalize()
+    action_base.finalize( self )
+    self.object:clear_animations()
+end
+
+---------------------------------------------------------------------------------------------------------------------
+-- Actions
+---------------------------------------------------------------------------------------------------------------------
+
+class "action_look_around" (action_base)
+
+function action_look_around:__init( name, storage ) super( nil, name )
+    self.aa = storage
+    self.a  = storage.scout
+end
+
+function action_look_around:initialize()
+    action_base.initialize( self )
+
+    self.object:set_node_evaluator      ()
+    self.object:set_path_evaluator      ()
+    self.object:set_desired_direction   ()
+    self.object:set_sight               ( look.danger, nil, 0 )
+    self.object:set_item                ( object.idle, self.object:best_weapon() )
+    self.object:set_body_state          ( move.standing )
+    self.object:set_movement_type       ( move.stand )
+    self.object:set_mental_state        ( anim.danger )
+
+    self.a.timer = device():time_global() + 5000
+
+    this.set_command( self.aa, leader_stop )
+
+    printf( "look_around initialized" )
+end
+
+function action_look_around:execute()
+    action_base.execute( self )
+--    this.set_soldier_positions( self.object, self.aa )
+end
+
+function action_look_around:finalize()
+    action_base.finalize( self )
+    self.object:clear_animations()
+end
+
+---------------------------------------------------------------------------------------------------------------------
+-- Actions
+---------------------------------------------------------------------------------------------------------------------
+
+class "action_free" (action_base)
+
+function action_free:__init( name, storage ) super( nil, name )
+    self.a = storage
+end
+
+function action_free:initialize()
+    action_base.initialize( self )
+    self.a.enabled = false
+    printf( "free initialized" )
+end
+
+function action_free:execute()
+    action_base.execute( self )
+end
+
+function action_free:finalize()
+    action_base.finalize( self )
+end
+
+---------------------------------------------------------------------------------------------------------------------
+-- Действие для перехвата смерти сталкера
+---------------------------------------------------------------------------------------------------------------------
+class "action_dead_hook" ( action_base )
+
+function action_dead_hook:__init( name, storage ) super( nil, name )
+    self.aa = storage
+    self.a  = storage.scout
+end
+
+function action_dead_hook:initialize()
+    action_base.initialize( self )
+
+    self.a.dead_hook = true
+
+    -- назначить первого попавшегося живого follower-a новым лидером
+    for i, v in ipairs( self.aa.followers ) do
+        if v.npc:alive() then
+            for ii, vv in ipairs( self.aa.followers ) do
+                vv.leader_name = v.npc:name()
+                vv.leader      = v.npc
+                vv.enabled     = true -- иногда до перехвата смерти командира некоторые успевают выйти из-под схемы follower
+            end
+
+            -- командир теперь scout, а не follower
+            xr_motivator.storage[v.npc:id()].scout.enabled = true
+            v.enabled = false
+
+            break
+        end
+    end
+
+    printf( "dead_hook initialized" )
+end
+
+function action_dead_hook:execute()
+    action_base.execute( self )
+end
+
+function action_dead_hook:finalize()
+    action_base.finalize( self )
+end
+
+---------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------
+--[[class "action_scout" (action_base)
+
+function action_scout:__init( name, storage ) super (nil, name)
+    self.a = storage
+    self.waypoint = -1
+    self.stage = 0
+    self.current_animation = 0
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_scout:initialize ()
+    action_base.initialize (self)
+      
+    self.object:set_callback (self, "move_callback", game_object.movement)
+    
+    self.object:set_node_evaluator        ()
+    self.object:set_path_evaluator        ()
+    self.object:set_desired_position      ()
+    self.object:set_item                  (object.idle, self.object:best_weapon ())
+    self.object:set_detail_path_type      (move.line)
+    self.object:set_body_state            (move.standing)
+    self.object:set_movement_type         (move.walk)
+    self.object:set_path_type             (game_object.patrol_path)
+    self.object:set_patrol_path           (self.a.patrol_path, patrol.nearest, patrol.continue, true)
+    self.object:set_mental_state          (anim.free)
+    self.object:set_sight                 (look.path_dir, nil, 0)
+    
+    self.stage = 0
+    self.current_animation = 0
+    self:set_soldier_positions ()
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_scout:set_soldier_positions ()
+    local size = table.getn (self.a.followers)
+    if size == 0 then return end
+    local dir = self.object:direction ()
+    dir.y = 0.0
+    dir:normalize ()
+    local step = 180.0 / size
+    local angle = 90.0
+    for a = 1, size, 1 do
+        if a == 1 then angle = angle + step * 0.5
+        else angle = angle + step end
+        local vec = this.vector_rotate_y (dir, angle)
+        self.a.followers[a].direction = vec
+        self.a.followers[a].distance = 3.0
+    end
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_scout:execute ()
+    action_base.execute (self)
+    self.object:set_item                  (object.idle, self.object:best_weapon ())
+    
+    if self.stage == 0 then
+       self:set_soldier_positions ()
+       self:set_command (leader_move)
+    elseif self.stage == 1 then
+        if self.object:animation_count () == 0 then
+           self.stage = 0
+           self.object:set_movement_type (move.walk) 
+           self.object:set_patrol_path   (self.a.patrol_path, patrol.nearest, patrol.continue, true)
+        end   
+    elseif self.stage == 2 then
+        if self.object:animation_count () == 0 then
+           self.stage = 0
+           self.object:set_movement_type (move.walk) 
+           self.object:set_patrol_path   (self.a.patrol_path, patrol.nearest, patrol.continue, true)
+        end   
+    end    
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_scout:finalize ()
+    action_base.finalize (self)
+    self.object:clear_animations ()
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_scout:set_command (command)
+    local size = table.getn (self.a.followers)
+    if size == 0 then return end
+    for a = 1, size, 1 do
+        self.a.followers[a].leader_command = command
+    end
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_scout:move_callback (obj, action_type, index)
+    if index == -1 then return end
+    self.waypoint = index
+    local ptr = patrol (self.object:patrol ())
+    
+    if ptr:flag (index, 0) == true then
+       self.object:set_movement_type (move.stand)
+       self:set_animation ()
+       self:set_command (leader_stop)
+       self.stage = 1
+       return
+    end    
+   
+    if ptr:flag (index, 1) then
+       self.object:set_movement_type (move.stand)
+       self:set_animation ()
+       self:set_command (leader_stop)
+       self.stage = 2
+       return 
+    end   
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_scout:set_animation ()
+
+    self.current_animation = self.current_animation + 1
+    if self.current_animation > table.getn (animations) then
+       self.current_animation = 1
+    end
+
+    self.object:add_animation (animations[self.current_animation].anim, animations[self.current_animation].flag)
+end
+]]
+
+
+
+----------------------------------------------------------------------------------------------------------------------
+--patrol binder
+----------------------------------------------------------------------------------------------------------------------
+function add_to_binder( obj )
+    local operators  = {}
+    local properties = {}
+
+    obj:add_sound ("Scripts\\Patrol\\Commander1_", 20, snd_type.talk, 2, 1, commander_snd)
+    obj:add_sound ("Scripts\\Patrol\\soldier_idle_", 20, snd_type.talk, 2, 1, soldiers_idle_snd)
+    obj:add_sound ("script_replics\\soldier_1\\idle\\soldier_idle_", 20, snd_type.talk, 2, 1, soldiers_idle2_snd)
+    obj:add_sound ("script_replics\\soldier_1\\replics\\soldier_replic_", 20, snd_type.talk, 2, 1, soldiers_replics_snd)
+    obj:add_sound ("script_replics\\soldier_1\\hear_something\\soldier_hear_", 20, snd_type.talk, 2, 1, soldiers_hear_snd)
+
+    local base_id = xr_evaluators_id.chugai_scout_base
+    properties["scout"]      = base_id + 0
+    properties["in_pos"]     = base_id + 1
+    properties["timer"]      = base_id + 2
+    properties["dead_hook"]  = base_id + 3
+
+    base_id = xr_actions_id.chugai_scout_base
+    operators["go_to_pos"]   = base_id + 0
+    operators["look_around"] = base_id + 1
+    operators["free"]        = base_id + 2
+    operators["dead_hook"]   = base_id + 3
+    
+
+    local aa = xr_motivator.storage[obj:id()]
+    local a  = aa.scout
+
+    a.path        = patrol( a.path_name )
+    a.pos_vert_id = a.path:level_vertex_id( 0 )
+    a.pos         = a.path:point( 0 )
+
+    local manager = obj:motivation_action_manager ()
+    manager:add_evaluator( properties["scout"],     this.evaluator_scout ("property_scout", a ) )
+    manager:add_evaluator( properties["in_pos"],    this.evaluator_in_pos("property_in_pos", obj, a ) )
+    manager:add_evaluator( properties["timer"],     this.evaluator_timer ("property_timer", a ) )
+    manager:add_evaluator( properties["dead_hook"], this.evaluator_timer ("property_timer", a ) )
+    
+    local action = this.action_go_to_pos( "action_go_to_pos", aa )
+    action:add_precondition( world_property( stalker_ids.property_alive, true  ) )
+    action:add_precondition( world_property( stalker_ids.property_enemy, false ) )
+    --action:add_precondition( world_property( properties["in_pos"],       false ) )
+    action:add_effect      ( world_property( properties["in_pos"],       true  ) )
+    manager:add_action     ( operators["go_to_pos"], action )
+
+    action = this.action_look_around( "action_look_around", aa )
+    action:add_precondition( world_property( stalker_ids.property_alive, true  ) )
+    action:add_precondition( world_property( stalker_ids.property_enemy, false ) )
+    action:add_precondition( world_property( properties["in_pos"],       true  ) )
+    --action:add_precondition( world_property( properties["timer"],        false ) )
+    action:add_effect      ( world_property( properties["timer"],        true  ) )
+    manager:add_action     ( operators["look_around"], action )
+
+    action = this.action_free( "action_free", a )
+    action:add_precondition( world_property( stalker_ids.property_alive, true  ) )
+    action:add_precondition( world_property( stalker_ids.property_enemy, false ) )
+    action:add_precondition( world_property( properties["timer"],        true  ) )
+    action:add_effect      ( world_property( properties["scout"],        false ) )
+    manager:add_action     ( operators["free"], action )
+
+    action = manager:action( stalker_ids.action_free_no_alife )
+    action:add_precondition( world_property (properties["scout"], false ) )
+    
+    action = this.action_dead_hook( "action_dead_hook", aa )
+    action:add_effect( world_property( properties["dead_hook"], true ) )
+    manager:add_action( operators["dead_hook"], action )
+
+    action = manager:action( stalker_ids.action_dead )
+    action:add_precondition( world_property( properties["dead_hook"], true ) )
+end
