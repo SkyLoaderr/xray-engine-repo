@@ -205,5 +205,4 @@ public:
 		CloseHandle		(hSrcFile);
 	}
 };
-
 #endif // fsH

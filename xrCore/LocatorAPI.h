@@ -23,6 +23,7 @@ public:
 	enum{
     	flRecurse	= (1<<0),
     	flNotif		= (1<<1),
+    	flNeedRescan= (1<<2),
     };
 public:
 	LPSTR		m_Path;
@@ -34,7 +35,7 @@ public:
 #ifdef __BORLANDC__
 	const AnsiString& _update(AnsiString& dest) const;
 	const AnsiString& _update(AnsiString& dest, LPCSTR src) const;
-    void __fastcall rescan_path();
+    void __fastcall rescan_path_cb();
 #endif
 public:
 	FS_Path		(LPCSTR _Root, LPCSTR _Add, LPCSTR _DefExt=0, LPCSTR _FilterString=0, u32 flags=0);
@@ -112,7 +113,11 @@ public:
     DEFINE_VECTOR(archive,archives_vec,archives_it);
 
     TShellChangeThread*			FThread;
+    
+    BOOL						bNeedRescan;
     void						rescan_path		(LPCSTR full_path, BOOL bRecurse);
+    void						rescan_pathes	();
+    IC void						check_pathes	(){if (bNeedRescan) rescan_pathes();}
 private:
 	files_set					files;
     archives_vec				archives;

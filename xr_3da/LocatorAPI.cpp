@@ -53,9 +53,10 @@ const AnsiString& FS_Path::_update(AnsiString& dest, LPCSTR src)const
     R_ASSERT(src);
 	return dest=AnsiString(AnsiString(m_Path)+src).LowerCase();
 }
-void __fastcall FS_Path::rescan_path()
+void __fastcall FS_Path::rescan_path_cb()
 {
-	FS.rescan_path(m_Path,m_Flags.is(flRecurse));
+	m_Flags.set(flNeedRescan,TRUE);
+    FS.bNeedRescan	= TRUE;
 }
 #endif
 
@@ -65,6 +66,7 @@ void __fastcall FS_Path::rescan_path()
 CLocatorAPI::CLocatorAPI()
 {
 	FThread				= 0;
+    bNeedRescan			= 0;
 }
 
 CLocatorAPI::~CLocatorAPI()
@@ -289,6 +291,9 @@ void CLocatorAPI::_destroy		()
 
 const CLocatorAPI::file* CLocatorAPI::exist			(const char* F)
 {
+	// проверить нужно ли пересканировать пути
+    check_pathes	();
+
 	string256		N;
 	strcpy			(N,F);
 	strlwr			(N);
@@ -374,6 +379,9 @@ void	CLocatorAPI::file_list_close	(vector<char*>* &lst)
 
 IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 {
+	// проверить нужно ли пересканировать пути
+    check_pathes	();
+
 	// correct path
 	string512		fname;
 	strcpy			(fname,_fname);
@@ -447,6 +455,9 @@ void	CLocatorAPI::w_close(IWriter* &fs, bool bDiscard)
 
 CLocatorAPI::files_it CLocatorAPI::file_find(LPCSTR fname)
 {
+	// проверить нужно ли пересканировать пути
+    check_pathes	();
+
 	file			desc_f;
 	desc_f.name		= strlwr(xr_strdup(fname));
     files_it I		= files.find(desc_f);
@@ -577,5 +588,15 @@ void CLocatorAPI::rescan_path(LPCSTR full_path, BOOL bRecurse)
     bNoRecurse	= !bRecurse;
     Recurse		(full_path);
     Log			("Rescan path: ",full_path);
+}
+
+void  CLocatorAPI::rescan_pathes()
+{
+	for (PathPairIt p_it=pathes.begin(); p_it!=pathes.end(); p_it++)
+    {
+    	FS_Path* P	= p_it->second;
+        if (P->m_Flags.is(FS_Path::flNeedRescan))
+			rescan_path(P->m_Path,P->m_Flags.is(FS_Path::flRecurse));
+    }
 }
 
