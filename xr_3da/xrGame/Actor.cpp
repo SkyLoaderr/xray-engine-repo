@@ -1491,7 +1491,7 @@ void CActor::OnHUDDraw	(CCustomHUD* /**hud/**/)
 	}
 
 
-#ifdef DEBUG
+#ifndef NDEBUG
 	string128 buf;
 	HUD().pFontSmall->SetColor	(0xffffffff);
 	HUD().pFontSmall->OutSet	(170,530);
@@ -1536,9 +1536,9 @@ void CActor::OnRender	()
 {
 	if (!bDebug)				return;
 
-	m_PhysicMovementControl.dbg_Draw			();
+	m_PhysicMovementControl.dbg_Draw	();
 	//if(g_Alive()>0)
-	m_PhysicMovementControl.dbg_Draw();
+	m_PhysicMovementControl.dbg_Draw	();
 	//CCameraBase* C				= cameras	[cam_active];
 	//dbg_draw_frustum			(C->f_fov, 230.f, 1.f, C->Position(), C->vDirection, C->vNormal);
 }
