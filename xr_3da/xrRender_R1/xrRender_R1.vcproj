@@ -337,6 +337,12 @@
 			Name="Lights"
 			Filter="">
 			<File
+				RelativePath="FLightsController.cpp">
+			</File>
+			<File
+				RelativePath="FLightsController.h">
+			</File>
+			<File
 				RelativePath="LightPPA.cpp">
 			</File>
 			<File
@@ -353,6 +359,12 @@
 			</File>
 			<File
 				RelativePath="LightShadows.h">
+			</File>
+			<File
+				RelativePath="LightTrack.cpp">
+			</File>
+			<File
+				RelativePath="LightTrack.h">
 			</File>
 		</Filter>
 		<Filter

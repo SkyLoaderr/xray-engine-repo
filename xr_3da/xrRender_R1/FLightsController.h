@@ -1,24 +1,22 @@
-#ifndef _LIGHT_CONTROL_H
-#define _LIGHT_CONTROL_H
 #pragma once
 
 #include "light.h"
-
-DEF_VECTOR(vecI,int);
 
 class ENGINE_API IReader;
 class ENGINE_API CObject;
 class ENGINE_API CLightTrack;
 
-class ENGINE_API CLightDB_Static 
+class CLightDB_Static 
 {
+	DEF_VECTOR(vecI,int);
+
 	vector<xrLIGHT_control>	Layers;
 	vector<xrLIGHT>			Lights;			// -- Lights itself
 	vector<BYTE>			Enabled;		// -- is Enabled
 	vecI					Distance;		// -- Only selected are valid!!!
 
 	vecI					Selected;		// Selected (static only) in one frame
-
+private:
 	IC	void	Disable		(int num) {
 		if (Enabled[num]) {
 			Enabled[num]=false;
@@ -45,5 +43,3 @@ public:
 	void	Unload			(void);
 	void	Render			(void);
 };
-
-#endif
