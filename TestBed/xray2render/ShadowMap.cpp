@@ -21,7 +21,6 @@
 #define SHADOW_MAP_FORMAT	D3DFMT_R32F
 #define SHADOW_MAP_SIZE		256
 #define OVERLAY_SIZE		128
-
 #define DEPTH_RANGE			4.0f
 
 typedef struct
@@ -29,7 +28,6 @@ typedef struct
     D3DXVECTOR4 p;
     FLOAT       tu, tv;
 } TVERTEX;
-
 #define TVERTEX_FVF (D3DFVF_XYZRHW | D3DFVF_TEX1)
 
 typedef struct
@@ -83,6 +81,10 @@ class CMyD3DApplication : public CD3DApplication
 	LPDIRECT3DSURFACE9				d_Color_S;
 	LPDIRECT3DTEXTURE9				d_Accumulator;	// 32bit		(r,g,b,specular)
 	LPDIRECT3DSURFACE9				d_Accumulator_S;
+
+	// Shaders
+	LPDIRECT3DVERTEXSHADER9			dvs_Scene2fat;
+	LPDIRECT3DPIXELSHADER9			dps_Scene2fat;
 
 	//  ************************
 	//	**** Shadow mapping ****
@@ -210,7 +212,7 @@ HRESULT CMyD3DApplication::OneTimeSceneInit()
 // Desc: Called once per frame, the call is the entry point for animating
 //       the scene.
 //-----------------------------------------------------------------------------
-HRESULT CMyD3DApplication::FrameMove()
+HRESULT CMyD3DApplication::FrameMove	()
 {
 	UpdateTransform();
 
@@ -223,18 +225,15 @@ HRESULT CMyD3DApplication::FrameMove()
 //       rendering. This function sets up render states, clears the
 //       viewport, and renders the scene.
 //-----------------------------------------------------------------------------
-HRESULT CMyD3DApplication::Render()
+HRESULT CMyD3DApplication::Render		()
 {
     // Begin the scene
     if (SUCCEEDED(m_pd3dDevice->BeginScene()))
     {
-		RenderShadowMap();
-
-		// Clear the viewport
+		RenderShadowMap	();
 		m_pd3dDevice->Clear(0L, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, 0x00404080, 1.0f, 0L);
-
-		RenderScene();
-		RenderOverlay();
+		RenderScene		();
+		RenderOverlay	();
 
         // Output statistics
         m_pFont->DrawText(OVERLAY_SIZE + 12,  0, D3DCOLOR_ARGB(255,255,255,0), m_strFrameStats);
@@ -352,10 +351,32 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 // Desc: Restore device-memory objects and state after a device is created or
 //       resized.
 //-----------------------------------------------------------------------------
+
+HRESULT CreateRT(IDirect3DDevice9* D, DWORD w, DWORD h, D3DFORMAT f, LPDIRECT3DTEXTURE9* pT, LPDIRECT3DSURFACE9* pS)
+{
+	if (FAILED(D->CreateTexture(w,h, 1, D3DUSAGE_RENDERTARGET, f, D3DPOOL_DEFAULT, pT, NULL)))	return E_FAIL;
+	if (FAILED((*pT)->GetSurfaceLevel(0, pS)))														return E_FAIL;
+	return S_OK;
+}
+
 HRESULT CMyD3DApplication::RestoreDeviceObjects()
 {
     m_pFont->RestoreDeviceObjects();
 
+	UpdateTransform	();
+
+	// Create targets
+	DWORD				w = m_d3dsdBackBuffer.Width, h = m_d3dsdBackBuffer.Height;
+	CreateRT			(m_pd3dDevice,w,h,D3DFMT_A16B16G16R16F,&d_Position,&d_Position_S);
+	CreateRT			(m_pd3dDevice,w,h,D3DFMT_A16B16G16R16F,&d_Normal,&d_Normal_S);
+	CreateRT			(m_pd3dDevice,w,h,D3DFMT_A16B16G16R16F,&d_Color,&d_Color_S);
+	CreateRT			(m_pd3dDevice,w,h,D3DFMT_A16B16G16R16F,&d_Accumulator,&d_Accumulator_S);
+
+	// Create shaders
+	hlsl_VertexShader	(m_pd3dDevice,"shaders\\D\\fat_base.hlsl",&dvs_Scene2fat);
+	hlsl_PixelShader	(m_pd3dDevice,"shaders\\D\\fat_base.hlsl",&dps_Scene2fat);
+
+	/*
 	// Create shadow map texture and retrieve surface
 	if (FAILED(m_pd3dDevice->CreateTexture(SHADOW_MAP_SIZE, SHADOW_MAP_SIZE, 1, 
 		D3DUSAGE_RENDERTARGET, SHADOW_MAP_FORMAT, D3DPOOL_DEFAULT, &m_pShadowMap, NULL)))
@@ -367,8 +388,6 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 		D3DFMT_D16, D3DMULTISAMPLE_NONE, 0, TRUE, &m_pShadowMapZ, NULL)))
 		return E_FAIL;
 
-	UpdateTransform();
-
     m_pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
     // Create model shaders
@@ -377,12 +396,6 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 	SAFE_RELEASE(m_pScenePS);
 	LoadPixelShader(m_pd3dDevice, "shaders\\shadowscene.psh", &m_pScenePS);
 
-	// Test
-	/*
-	IDirect3DPixelShader9*	test_ps	= 0;
-	LoadPixelShader	(m_pd3dDevice, "shaders\\fp_fatpass.ps", &test_ps);
-	*/
-
 	// Create shadow map shaders
 	SAFE_RELEASE(m_pShadowMapVS);
 	LoadVertexShader(m_pd3dDevice, "shaders\\shadowmap.vsh", &m_pShadowMapVS);
@@ -390,6 +403,7 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 	LoadPixelShader(m_pd3dDevice, "shaders\\shadowmap.psh", &m_pShadowMapPS);
 	SAFE_RELEASE(m_pShowMapPS);
 	LoadPixelShader(m_pd3dDevice, "shaders\\showmap.psh", &m_pShowMapPS);
+	*/
 
     m_ArcBall.SetWindow(m_d3dsdBackBuffer.Width, m_d3dsdBackBuffer.Height, 1.0f);
     m_ArcBall.SetRadius(3.0f);
