@@ -13,7 +13,6 @@ IC	CPatrolPathManager::CPatrolPathManager			(CRestrictedObject *object, CGameObj
 	m_object				= object;
 	VERIFY					(game_object);
 	m_game_object			= game_object;
-	m_extrapolate_callback	= 0;
 	m_path					= 0;
 	m_path_name				= "";
 	m_start_type			= ePatrolStartTypeDummy;
@@ -116,4 +115,9 @@ IC	CRestrictedObject &CPatrolPathManager::object	() const
 {
 	VERIFY					(m_object);
 	return					(*m_object);
+}
+
+IC	CPatrolPathManager::CExtrapolateCallback &CPatrolPathManager::extrapolate_callback	()
+{
+	return					(m_extrapolate_callback);
 }

@@ -23,3 +23,8 @@ IC	u32	CEnemyManager::last_enemy_time	() const
 {
 	return						(m_last_enemy_time);
 }
+
+IC	CEnemyManager::USEFULE_CALLBACK &CEnemyManager::useful_callback	()
+{
+	return						(m_useful_callback);
+}

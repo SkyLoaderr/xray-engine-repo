@@ -15,9 +15,9 @@
 #define left_comment				concatenizer(/,*)
 #define right_comment				concatenizer(*,/)
 #define param_generator(a,b,c,d)	a##b##c d##b
-#define function_body(_1,_2,_3,_4,_5,_6) \
+#define function_body_ex(_1,_2,_3,_4,_c,_5,_6) \
 	_1 _3 _2\
-	IC return_type operator() (_4)\
+	IC return_type operator() (_4) _c\
 	{\
 		try {					\
 			if (m_functor) {\
@@ -28,11 +28,14 @@
 			}\
 		}\
 		catch (...) {\
-			clear			();\
+			const_cast<CScriptCallbackEx<return_type>*>(this)->clear();\
 		}			\
 		macros_return_operator (0);\
 	}
 
+#define function_body(_1,_2,_3,_4,_5,_6) \
+	function_body_ex(_1,_2,_3,_4,const,_5,_6)\
+	function_body_ex(_1,_2,_3,_4,,_5,_6)
 
 template <typename _return_type>
 class CScriptCallbackEx_ {
@@ -50,7 +53,6 @@ protected:
 
 private:
 	IC			functor_type	*functor			() const;
-	IC			object_type		*object				() const;
 	IC			void			init				();
 
 public:
@@ -73,4 +75,5 @@ public:
 #undef left_comment
 #undef right_comment
 #undef param_generator
+#undef function_body_ex
 #undef function_body

@@ -18,6 +18,7 @@
 #include "ai_object_location.h"
 #include "level_graph.h"
 #include "level.h"
+#include "script_game_object.h"
 
 #define USE_EVALUATOR
 
@@ -49,7 +50,7 @@ bool CEnemyManager::useful					(const CEntityAlive *entity_alive) const
 		)
 		return				(false);
 
-	return					(true);
+	return					(m_useful_callback ? m_useful_callback(m_object->lua_game_object(),entity_alive->lua_game_object()) : true);
 }
 
 float CEnemyManager::do_evaluate			(const CEntityAlive *object) const
@@ -100,6 +101,7 @@ void CEnemyManager::reload					(LPCSTR section)
 	m_max_ignore_distance		= READ_IF_EXISTS(pSettings,r_float,section,"max_ignore_distance",0.f);
 	m_visible_now				= false;
 	m_last_enemy_time			= 0;
+	m_useful_callback.clear		();
 	VERIFY						(m_ready_to_save);
 }
 

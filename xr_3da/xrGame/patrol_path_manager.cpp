@@ -34,18 +34,6 @@ bool show_restrictions(CRestrictedObject *object)
 
 CPatrolPathManager::~CPatrolPathManager			()
 {
-	xr_delete				(m_extrapolate_callback);
-}
-
-void CPatrolPathManager::set_extrapolate_callback()
-{
-	xr_delete				(m_extrapolate_callback);
-}
-
-void CPatrolPathManager::set_extrapolate_callback(CExtrapolateCallback &callback)
-{
-	xr_delete				(m_extrapolate_callback);
-	m_extrapolate_callback	= xr_new<CExtrapolateCallback>(callback);
 }
 
 bool CPatrolPathManager::extrapolate_path		()
@@ -54,7 +42,7 @@ bool CPatrolPathManager::extrapolate_path		()
 	if (!m_extrapolate_callback)
 		return				(true);
 	
-	return					((*m_extrapolate_callback)(m_curr_point_index));
+	return					(m_extrapolate_callback(m_curr_point_index));
 }
 
 void CPatrolPathManager::reinit					()
@@ -63,7 +51,7 @@ void CPatrolPathManager::reinit					()
 	m_actuality				= true;
 	m_failed				= false;
 	m_completed				= true;
-	m_extrapolate_callback	= 0;
+	m_extrapolate_callback.clear();
 
 	reset					();
 }

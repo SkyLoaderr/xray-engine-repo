@@ -117,13 +117,16 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 		
 		.def("set_callback",				(void (CScriptGameObject::*)(GameObject::ECallbackType, const luabind::functor<void> &))(CScriptGameObject::SetCallback))
 		.def("set_callback",				(void (CScriptGameObject::*)(GameObject::ECallbackType, const luabind::functor<void> &, const luabind::object &))(CScriptGameObject::SetCallback))
-		.def("clear_callback",				(void (CScriptGameObject::*)(GameObject::ECallbackType))(CScriptGameObject::ClearCallback))
+		.def("set_callback",				(void (CScriptGameObject::*)(GameObject::ECallbackType))(CScriptGameObject::SetCallback))
 
-		//.def("set_callback",				(void (CScriptGameObject::*)(const luabind::object &, LPCSTR, const ScriptEntity::EActionType))(CScriptGameObject::SetCallback))
-		//.def("set_callback",				(void (CScriptGameObject::*)(const luabind::functor<void> &, const ScriptEntity::EActionType))(CScriptGameObject::SetCallback))
-		//.def("clear_callback",				(void (CScriptGameObject::*)(bool))(CScriptGameObject::ClearCallback))
-		//.def("clear_callback",				(void (CScriptGameObject::*)(const ScriptEntity::EActionType))(CScriptGameObject::ClearCallback))
-		
+		.def("set_patrol_extrapolate_callback",	(void (CScriptGameObject::*)())(CScriptGameObject::set_patrol_extrapolate_callback))
+		.def("set_patrol_extrapolate_callback",	(void (CScriptGameObject::*)(const luabind::functor<bool> &))(CScriptGameObject::set_patrol_extrapolate_callback))
+		.def("set_patrol_extrapolate_callback",	(void (CScriptGameObject::*)(const luabind::functor<bool> &, const luabind::object &))(CScriptGameObject::set_patrol_extrapolate_callback))
+
+		.def("set_enemy_callback",			(void (CScriptGameObject::*)())(CScriptGameObject::set_enemy_callback))
+		.def("set_enemy_callback",			(void (CScriptGameObject::*)(const luabind::functor<bool> &))(CScriptGameObject::set_enemy_callback))
+		.def("set_enemy_callback",			(void (CScriptGameObject::*)(const luabind::functor<bool> &, const luabind::object &))(CScriptGameObject::set_enemy_callback))
+
 		.def("patrol",						&CScriptGameObject::GetPatrolPathName)
 
 		.def("get_ammo_in_magazine",		&CScriptGameObject::GetAmmoElapsed)
@@ -191,10 +194,6 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 		.def("clear_animations",			&CScriptGameObject::clear_animations)
 		.def("animation_count",				&CScriptGameObject::animation_count)
 		.def("eat",							&CScriptGameObject::eat)
-
-		.def("set_patrol_extrapolate_callback",	(void (CScriptGameObject::*)())(CScriptGameObject::set_patrol_extrapolate_callback))
-		.def("set_patrol_extrapolate_callback",	(void (CScriptGameObject::*)(const luabind::functor<bool> &))(CScriptGameObject::set_patrol_extrapolate_callback))
-		.def("set_patrol_extrapolate_callback",	(void (CScriptGameObject::*)(const luabind::functor<bool> &, const luabind::object &))(CScriptGameObject::set_patrol_extrapolate_callback))
 
 		.def("extrapolate_length",			(float (CScriptGameObject::*)() const)(CScriptGameObject::extrapolate_length))
 		.def("extrapolate_length",			(void (CScriptGameObject::*)(float))(CScriptGameObject::extrapolate_length))

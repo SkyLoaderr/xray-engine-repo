@@ -29,7 +29,6 @@
 #include "custommonster.h"
 #include "entitycondition.h"
 #include "space_restrictor.h"
-#include "script_callback_ex.h"
 #include "detail_path_manager.h"
 
 class CScriptBinderObject;
@@ -364,9 +363,7 @@ void CScriptGameObject::set_patrol_extrapolate_callback(const luabind::functor<b
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CCustomMonster : cannot access class member set_patrol_extrapolate_callback!");
 		return;
 	}
-	CScriptCallbackEx<bool>	callback;
-	callback.set			(functor);
-	monster->movement().patrol().set_extrapolate_callback(callback);
+	monster->movement().patrol().extrapolate_callback().set(functor);
 }
 
 void CScriptGameObject::set_patrol_extrapolate_callback(const luabind::functor<bool> &functor, const luabind::object &object)
@@ -376,9 +373,7 @@ void CScriptGameObject::set_patrol_extrapolate_callback(const luabind::functor<b
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CCustomMonster : cannot access class member set_patrol_extrapolate_callback!");
 		return;
 	}
-	CScriptCallbackEx<bool>	callback;
-	callback.set			(functor,object);
-	monster->movement().patrol().set_extrapolate_callback(callback);
+	monster->movement().patrol().extrapolate_callback().set(functor,object);
 }
 
 void CScriptGameObject::set_patrol_extrapolate_callback()
@@ -388,7 +383,7 @@ void CScriptGameObject::set_patrol_extrapolate_callback()
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CCustomMonster : cannot access class member set_patrol_extrapolate_callback!");
 		return;
 	}
-	monster->movement().patrol().set_extrapolate_callback();
+	monster->movement().patrol().extrapolate_callback().clear();
 }
 
 void CScriptGameObject::extrapolate_length		(float extrapolate_length)
@@ -409,31 +404,6 @@ float CScriptGameObject::extrapolate_length		() const
 		return				(0.f);
 	}
 	return					(monster->movement().detail().extrapolate_length());
-}
-
-//////////////////////////////////////////////////////////////////////////
-void CScriptGameObject::SetCallback(GameObject::ECallbackType type, const luabind::functor<void> &functor)
-{
-	CGameObject *obj = smart_cast<CGameObject *>(&object());
-	VERIFY		(obj);
-
-	obj->callback(type).set(functor);
-}
-
-void CScriptGameObject::SetCallback(GameObject::ECallbackType type, const luabind::functor<void> &functor, const luabind::object &object)
-{
-	CGameObject *obj = smart_cast<CGameObject *>(&this->object());
-	VERIFY		(obj);
-
-	obj->callback(type).set(functor, object);
-}
-
-void CScriptGameObject::ClearCallback(GameObject::ECallbackType type)
-{
-	CGameObject *obj = smart_cast<CGameObject *>(&object());
-	VERIFY		(obj);
-
-	obj->callback(type).clear();
 }
 
 void CScriptGameObject::set_fov					(float new_fov)

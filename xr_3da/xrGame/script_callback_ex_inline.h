@@ -87,11 +87,5 @@ IC	typename CSScriptCallbackEx::functor_type *CSScriptCallbackEx::functor	() con
 	return				(m_functor);
 }
 
-TEMPLATE_SPECIALIZATION
-IC	typename CSScriptCallbackEx::object_type	*CSScriptCallbackEx::object	() const
-{
-	return				(m_object);
-}
-
 #undef TEMPLATE_SPECIALIZATION
 #undef CSScriptCallbackEx

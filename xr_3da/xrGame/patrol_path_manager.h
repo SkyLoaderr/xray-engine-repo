@@ -13,6 +13,7 @@
 #include "patrol_path_storage.h"
 #include "patrol_path.h"
 #include "patrol_path_manager_space.h"
+#include "script_callback_ex.h"
 
 template <typename _return_type>
 class CScriptCallbackEx;
@@ -42,7 +43,7 @@ private:
 	u32								m_prev_point_index;
 	u32								m_start_point_index;
 	Fvector							m_dest_position;
-	CExtrapolateCallback			*m_extrapolate_callback;
+	CExtrapolateCallback			m_extrapolate_callback;
 	CRestrictedObject				*m_object;
 	CGameObject						*m_game_object;
 
@@ -56,8 +57,7 @@ public:
 	IC								CPatrolPathManager		(CRestrictedObject *object, CGameObject *game_object);
 		virtual						~CPatrolPathManager		();
 		virtual	void				reinit					();
-				void				set_extrapolate_callback();
-				void				set_extrapolate_callback(CExtrapolateCallback &callback);
+	IC			CExtrapolateCallback&extrapolate_callback	();
 	IC			void				make_inactual			();
 	IC			const CPatrolPath	*get_path				() const;
 	IC			void				set_path				(const CPatrolPath *path, shared_str path_name);

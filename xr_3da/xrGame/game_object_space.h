@@ -34,5 +34,9 @@ namespace GameObject {
 
 		eHelicopterOnPoint,
 		eHelicopterOnHit,
+
+		ePatrolExtrapolateCallback,
+		
+		eEnemyCallback,
 	};
 };

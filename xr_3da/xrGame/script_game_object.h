@@ -261,8 +261,15 @@ public:
 	// Callbacks			
 			void				SetCallback			(GameObject::ECallbackType type, const luabind::functor<void> &functor);
 			void				SetCallback			(GameObject::ECallbackType type, const luabind::functor<void> &functor, const luabind::object &object);
-			void				ClearCallback		(GameObject::ECallbackType type);
-			
+			void				SetCallback			(GameObject::ECallbackType type);
+
+			void				set_patrol_extrapolate_callback(const luabind::functor<bool> &functor);
+			void				set_patrol_extrapolate_callback(const luabind::functor<bool> &functor, const luabind::object &object);
+			void				set_patrol_extrapolate_callback();
+
+			void				set_enemy_callback	(const luabind::functor<bool> &functor);
+			void				set_enemy_callback	(const luabind::functor<bool> &functor, const luabind::object &object);
+			void				set_enemy_callback	();
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////use calback///////////////////////////////////////////////
@@ -273,9 +280,6 @@ public:
 //////////////////////////////////////////////////////////////////////////
 
 			LPCSTR				GetPatrolPathName	();
-			void				SetCallback			(const luabind::object &lua_object, LPCSTR method, const ScriptEntity::EActionType tActionType);
-			void				SetCallback			(const luabind::functor<void> &lua_function, const ScriptEntity::EActionType tActionType);
-			void				ClearCallback		(const ScriptEntity::EActionType tActionType);
 			u32					GetAmmoElapsed		();
 			void				SetAmmoElapsed		(int ammo_elapsed);
 			u32					GetAmmoCurrent		() const;
@@ -368,9 +372,6 @@ public:
 			u32					get_current_patrol_point_index();
 			bool				path_completed			() const;
 			void				patrol_path_make_inactual();
-			void				set_patrol_extrapolate_callback(const luabind::functor<bool> &functor);
-			void				set_patrol_extrapolate_callback(const luabind::functor<bool> &functor, const luabind::object &object);
-			void				set_patrol_extrapolate_callback();
 			void				extrapolate_length		(float extrapolate_length);
 			float				extrapolate_length		() const;
 			void				enable_memory_object	(CScriptGameObject *object, bool enable);

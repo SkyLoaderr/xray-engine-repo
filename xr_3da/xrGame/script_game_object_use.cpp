@@ -13,12 +13,11 @@
 #include "ai/stalker/ai_stalker.h"
 #include "searchlight.h"
 #include "script_callback_ex.h"
-
-struct ScriptCallbackInfo{
-	CScriptCallbackEx<void>		m_callback;
-	s16							m_event;
-	ScriptCallbackInfo():m_event(-1){}
-};
+#include "game_object_space.h"
+#include "memory_manager.h"
+#include "enemy_manager.h"
+#include "movement_manager.h"
+#include "patrol_path_manager.h"
 
 void CScriptGameObject::SetTipText (LPCSTR tip_text)
 {
@@ -222,4 +221,49 @@ CScriptMonsterHitInfo CScriptGameObject::GetMonsterHitInfo()
 		ai().script_engine().script_log(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject : cannot access class member GetMonsterHitInfo!");
 	}
 	return			(ret_val);
+}
+
+void CScriptGameObject::set_enemy_callback	(const luabind::functor<bool> &functor)
+{
+	CCustomMonster			*monster = smart_cast<CCustomMonster*>(&object());
+	if (!monster) {
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CCustomMonster : cannot access class member set_enemy_callback!");
+		return;
+	}
+	monster->memory().enemy().useful_callback().set(functor);
+}
+
+void CScriptGameObject::set_enemy_callback	(const luabind::functor<bool> &functor, const luabind::object &object)
+{
+	CCustomMonster			*monster = smart_cast<CCustomMonster*>(&this->object());
+	if (!monster) {
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CCustomMonster : cannot access class member set_enemy_callback!");
+		return;
+	}
+	monster->memory().enemy().useful_callback().set(functor,object);
+}
+
+void CScriptGameObject::set_enemy_callback	()
+{
+	CCustomMonster			*monster = smart_cast<CCustomMonster*>(&object());
+	if (!monster) {
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CCustomMonster : cannot access class member set_enemy_callback!");
+		return;
+	}
+	monster->memory().enemy().useful_callback().clear();
+}
+
+void CScriptGameObject::SetCallback(GameObject::ECallbackType type, const luabind::functor<void> &functor)
+{
+	object().callback(type).set(functor);
+}
+
+void CScriptGameObject::SetCallback(GameObject::ECallbackType type, const luabind::functor<void> &functor, const luabind::object &object)
+{
+	this->object().callback(type).set(functor, object);
+}
+
+void CScriptGameObject::SetCallback(GameObject::ECallbackType type)
+{
+	object().callback(type).clear();
 }
