@@ -75,6 +75,7 @@ const float p_c		= 32.7f;
 const float p_r		= 25.4f;
 const float p_r2	= 30.4f;
 const float p_a		= .1f;
+#define ADJ_NONE	((occTri*)0xffffffff)
 
 void edges(occTri& T)
 {
@@ -105,8 +106,8 @@ int __cdecl main	(int argc, char* argv[])
 		// setup tri(s)
 		occTri	T1,T2;
 		T1.adjacent[0]	= &T2;
-		T1.adjacent[1]	= 0;
-		T1.adjacent[2]	= 0;
+		T1.adjacent[1]	= ADJ_NONE;
+		T1.adjacent[2]	= ADJ_NONE;
 		T1.raster[0].x	= p_c + p_r*cosf(a0);
 		T1.raster[0].y	= p_c + p_r*sinf(a0);
 		T1.raster[0].z	= 0.1f;
@@ -121,8 +122,8 @@ int __cdecl main	(int argc, char* argv[])
 		
 		T2 = T1;
 		T2.adjacent[0]	= &T1;
-		T2.adjacent[1]	= 0;
-		T2.adjacent[2]	= 0;
+		T2.adjacent[1]	= ADJ_NONE;
+		T2.adjacent[2]	= ADJ_NONE;
 		T2.raster[2].x	= p_c + p_r2*cosf(a3);
 		T2.raster[2].y	= p_c + p_r2*sinf(a3);
 		T2.raster[2].z	= 0.99f;
