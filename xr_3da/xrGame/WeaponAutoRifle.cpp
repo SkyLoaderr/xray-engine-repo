@@ -6,7 +6,6 @@
 #include "WeaponHUD.h"
 #include "WeaponAutoRifle.h"
 #include "entity.h"
-#include "xr_weapon_list.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

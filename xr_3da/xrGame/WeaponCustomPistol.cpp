@@ -50,7 +50,7 @@ void CWeaponCustomPistol::OnEmptyClick	()
 void	CWeaponCustomPistol::state_Fire	(float dt) {
 	fTime					-=dt;
 }
-void	CWeaponCustomPistol::state_MagEmpty	(float dt) 
+void	CWeaponCustomPistol::state_MagEmpty	(float /**dt/**/) 
 {
 }
 void CWeaponCustomPistol::OnAnimationEnd() {
