@@ -30,7 +30,7 @@ local snd_idle	  = 1
 -------------------------------------------------------------------------------------------------------------------
 class "evaluator_ambush" ( property_evaluator )
 
-function evaluator_ambush:__init( name, a ) super()
+function evaluator_ambush:__init( name, a ) super(nil, name)
 	self.a = a
 end
 
@@ -43,7 +43,7 @@ end
 -------------------------------------------------------------------------------------------------------------------
 class "evaluator_attack" ( property_evaluator )
 
-function evaluator_attack:__init( name, a ) super()
+function evaluator_attack:__init( name, a ) super(nil, name)
     self.a = a
 end
 
