@@ -77,12 +77,18 @@ function NPC:shoot_then_reload_actions(whom)
                        anim(anim.danger),
 		       cond(cond.move_end, time_infinite)
 		)
-		--]]
 		action(self.npc,
 		       look(look.fire_point, whom),
 		       anim(anim.danger),
 		       move(move.standing, move.stand, move.line, whom),
 		       object(self.wpn, object.reload),
+		       cond(cond.time_end, 2000)
+		)
+		--]]
+		action(self.npc,
+		       look(look.fire_point, whom),
+		       anim(anim.danger),
+		       move(move.standing, move.stand, move.line, whom),
 		       cond(cond.time_end, 2000)
 		)
 	end
