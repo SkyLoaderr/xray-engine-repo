@@ -742,13 +742,6 @@ void CCustomMonster::Exec_Action(float dt)
 // Развернуть объект в направление движения
 void CCustomMonster::SetDirectionLook()
 {
-	int k = ps_Size();
-	Msg("PositionStack: [Size = %i]", k);
-	for (int j =0; j < k; j++) {
-		Msg("Elem[%i] = %f,%f,%f]",j,VPUSH(ps_Element(k-j-1).vPosition));
-	}
-
-
 	int i = ps_Size();		// position stack size
 	if (i > 1) {
 		CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
@@ -761,5 +754,4 @@ void CCustomMonster::SetDirectionLook()
 	else
 		r_torso_target.pitch = 0;
 	r_target = r_torso_target;
-	
 }
