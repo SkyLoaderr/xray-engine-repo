@@ -24,13 +24,49 @@ function loadJob(sj, gname, type, squad, groups)
 	if type == "garbage_bandits" then
 		t = { section = "walker1@gar_bandits",
 			idle = 0,
-			prior = 0, state = {0},
+			prior = 3, state = {0},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		
 		t = { section = "walker2@gar_bandits",
 			idle = 0,
-			prior = 0, state = {1},
+			prior = 3, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "walker3@gar_bandits",
+			idle = 0,
+			prior = 3, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "kamp1@gar_bandits",
+			idle = 0,
+			prior = 1, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "kamp1@gar_bandits",
+			idle = 0,
+			prior = 1, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "kamp1@gar_bandits",
+			idle = 0,
+			prior = 1, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "kamp1@gar_bandits",
+			idle = 0,
+			prior = 1, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "kamp1@gar_bandits",
+			idle = 0,
+			prior = 1, state = {0},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		
