@@ -98,7 +98,7 @@ protected:
 	virtual void	UpdateXForm		(BOOL bHUD)	= 0;
 
 protected:			// Utilities
-	void			SoundCreate		(sound3D& dest, LPCSTR name);
+	void			SoundCreate		(sound3D& dest, LPCSTR name, int iType);
 	void			SoundDestroy	(sound3D& dest);
 	void			ShaderCreate	(Shader* &dest, LPCSTR S, LPCSTR T);
 	void			ShaderDestroy	(Shader* &dest);

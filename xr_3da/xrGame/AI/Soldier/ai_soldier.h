@@ -15,7 +15,7 @@
 #include "..\\..\\group.h"
 #include "..\\..\\..\\bodyinstance.h"
 
-class CAI_Soldier : public CCustomMonster  
+class CAI_Soldier : public CCustomMonster, public soundListener
 {
 	enum ESoundCcount {
 		SND_HIT_COUNT=8,
@@ -226,6 +226,7 @@ class CAI_Soldier : public CCustomMonster
 		ESoldierStates	eCurrentState;
 		ESoldierStates	m_ePreviousState;
 		bool			bStopThinking;
+//		float			m_fAddAngle;
 		
 		// action data
 		bool			m_bActionStarted;
@@ -320,10 +321,11 @@ class CAI_Soldier : public CCustomMonster
 		CSoldierSelectorSenseSomething		SelectorSenseSomething;
 		CSoldierSelectorUnderFire			SelectorUnderFire;
 
-		/**
+		/**/
 		void AttackRun();
 		void AttackFire();
 		
+		void Die();
 		void Defend();
 		void FindEnemy();
 		void FollowLeader();
@@ -352,8 +354,6 @@ class CAI_Soldier : public CCustomMonster
 		void PatrolReturn();
 		void FollowLeaderPatrol();
 		/**/
-		
-		void Die();
 		// miscellanious funtions	
 	IC  CGroup getGroup() {return Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];};
 		bool bfCheckForVisibility(CEntity* tpEntity);
@@ -397,6 +397,7 @@ class CAI_Soldier : public CCustomMonster
 		virtual void  OnEvent(EVENT E, DWORD P1, DWORD P2);
 		virtual BOOL  Spawn( BOOL bLocal, int sid, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags );
 		virtual objQualifier* GetQualifier();
+		virtual	void  soundEvent(CObject* who, int type, Fvector& Position, float power);
 };
 		
 #endif

@@ -22,7 +22,7 @@
 #define MIN_SPINE_TURN_ANGLE			PI_DIV_6
 #define EYE_WEAPON_DELTA				(0*PI/30.f)
 
-/**
+/**/
 void CAI_Soldier::AttackFire()
 {
 	WRITE_TO_LOG("Shooting enemy...");
@@ -814,6 +814,8 @@ void CAI_Soldier::Patrol()
 	}
 	
 	SET_LOOK_FIRE_MOVEMENT(false, BODY_STATE_STAND,m_fMinSpeed)
+
+//	SetDirectionLook();
 }
 
 void CAI_Soldier::PatrolReturn()
@@ -1132,7 +1134,7 @@ void CAI_Soldier::Think()
 	do {
 		m_ePreviousState = eCurrentState;
 		switch(eCurrentState) {
-			/**
+			/**/
 			case aiSoldierAttackRun : {
 				AttackRun();
 				break;
@@ -1217,7 +1219,6 @@ void CAI_Soldier::Think()
 				LyingDown();
 				break;
 			}
-			
 			case aiSoldierPatrolRoute : {
 				Patrol();
 				break;
@@ -1238,7 +1239,6 @@ void CAI_Soldier::Think()
 				Recharge();
 				break;
 			}
-			/**/
 			case aiSoldierDie : {
 				Die();
 				break;

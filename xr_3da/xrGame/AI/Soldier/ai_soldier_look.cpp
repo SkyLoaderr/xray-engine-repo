@@ -78,6 +78,9 @@ void CAI_Soldier::SetDirectionLook()
 		if (tWatchDirection.square_magnitude() > EPS_L) {
 			tWatchDirection.normalize();
 			mk_rotation(tWatchDirection,r_torso_target);
+//			r_torso_target.yaw += m_fAddAngle;
+//			while (r_torso_target.yaw > PI_MUL_2)
+//				r_torso_target.yaw -= PI_MUL_2;
 			r_target.yaw = r_torso_target.yaw;
 			ASSIGN_SPINE_BONE;
 			q_look.o_look_speed=PI_DIV_4;

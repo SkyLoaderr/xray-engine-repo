@@ -11,6 +11,7 @@
 #include "tracer.h"
 #include "rain.h"
 #include "ai_space.h"
+#include "ai_sounds.h"
 #include "..\fixedset.h"
 
 class CHUDManager;

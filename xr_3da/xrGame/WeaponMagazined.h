@@ -20,6 +20,14 @@ protected:
 	sound3D			sndEmptyClick;
 	sound3D			sndReload;
 	sound3D			sndRicochet		[SND_RIC_COUNT];
+
+	ESoundTypes		m_eSoundShow;
+	ESoundTypes		m_eSoundHide;
+	ESoundTypes		m_eSoundShot;
+	ESoundTypes		m_eSoundEmptyClick;
+	ESoundTypes		m_eSoundReload;
+	ESoundTypes		m_eSoundRicochet;
+					
 	// HUD :: Animations
 	CMotionDef*		mhud_idle;
 	CMotionDef*		mhud_reload;

@@ -52,8 +52,8 @@ CAI_Soldier::CAI_Soldier()
 
 CAI_Soldier::~CAI_Soldier()
 {
-	for (int i=0; i<SND_HIT_COUNT; i++) pSounds->Delete3D(sndHit[i]);
-	for (i=0; i<SND_DIE_COUNT; i++) pSounds->Delete3D(sndDie[i]);
+	//for (int i=0; i<SND_HIT_COUNT; i++) pSounds->Delete3D(sndHit[i]);
+	//for (i=0; i<SND_DIE_COUNT; i++) pSounds->Delete3D(sndDie[i]);
 	Engine.Event.Handler_Detach (m_tpEventSay,this);
 	Engine.Event.Handler_Detach (m_tpEventAssignPath,this);
 }
@@ -134,6 +134,9 @@ void CAI_Soldier::Load(CInifile* ini, const char* section)
 	m_dwUnderFireReturn = ini->ReadINT(section,"UnderFireReturn");
 
 	m_dwMaxDynamicObjectsCount = ini->ReadINT(section,"DynamicObjectsCount");
+
+//	tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[0] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[1] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[2] = PKinematics(pVisual)->ID_Cycle(ini->ReadSTRING(section,"TestAnimation"));
+//	m_fAddAngle = ini->ReadFLOAT(section,"AddAngle");
 }
 
 BOOL CAI_Soldier::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
@@ -236,3 +239,7 @@ void CAI_Soldier::OnEvent(EVENT E, DWORD P1, DWORD P2)
 		}
 }
 
+void CAI_Soldier::soundEvent(CObject* who, int type, Fvector& Position, float power)
+{
+	Msg("%s - sound type %i from %s at %d in (.2f,%.2f,%.2f) with power %.2f",cName(),type,who->cName(),Level().timeServer(),Position.x,Position.y,Position.z,power);
+}

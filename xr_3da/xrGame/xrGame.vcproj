@@ -616,6 +616,9 @@
 				<File
 					RelativePath=".\AI\ai_monsters_misc.h">
 				</File>
+				<File
+					RelativePath="ai_sounds.h">
+				</File>
 				<Filter
 					Name="ai_hen"
 					Filter="">

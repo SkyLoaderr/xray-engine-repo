@@ -43,16 +43,16 @@ void CWeaponMagazined::Load(CInifile* ini, const char* section)
 	inherited::Load	(ini, section);
 	bFlame			= FALSE;
 	// Sounds
-	SoundCreate			(sndShow,		"draw");
-	SoundCreate			(sndHide,		"holster");
-	SoundCreate			(sndShot,		"shoot");
-	SoundCreate			(sndEmptyClick,	"empty");
-	SoundCreate			(sndReload,		"reload");
-	SoundCreate			(sndRicochet[0],"ric1");
-	SoundCreate			(sndRicochet[1],"ric2");
-	SoundCreate			(sndRicochet[2],"ric3");
-	SoundCreate			(sndRicochet[3],"ric4");
-	SoundCreate			(sndRicochet[4],"ric5");
+	SoundCreate			(sndShow,		"draw"    ,m_eSoundShow);
+	SoundCreate			(sndHide,		"holster" ,m_eSoundHide);
+	SoundCreate			(sndShot,		"shoot"   ,m_eSoundShot);
+	SoundCreate			(sndEmptyClick,	"empty"   ,m_eSoundEmptyClick);
+	SoundCreate			(sndReload,		"reload"  ,m_eSoundReload);
+	SoundCreate			(sndRicochet[0],"ric1"    ,m_eSoundRicochet);
+	SoundCreate			(sndRicochet[1],"ric2"    ,m_eSoundRicochet);
+	SoundCreate			(sndRicochet[2],"ric3"    ,m_eSoundRicochet);
+	SoundCreate			(sndRicochet[3],"ric4"    ,m_eSoundRicochet);
+	SoundCreate			(sndRicochet[4],"ric5"    ,m_eSoundRicochet);
 	// HUD :: Anims
 	R_ASSERT			(m_pHUD);
 	mhud_idle			= m_pHUD->animGet("idle"	);
