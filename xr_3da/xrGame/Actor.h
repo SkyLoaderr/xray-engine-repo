@@ -372,6 +372,11 @@ protected:
 	CGameObject*			m_pObjectWeLookingAt;
 	// Tip for action for object we're looking at
 	shared_str				m_sDefaultObjAction;
+	
+	shared_str				m_sCharacterUseAction;
+	shared_str				m_sDeadCharacterUseAction;
+	shared_str				m_sCarCharacterUseAction;
+	shared_str				m_sInventoryItemUseAction;
 
 	//режим подбирания предметов
 	bool					m_bPickupMode;

@@ -373,6 +373,13 @@ void CActor::Load	(LPCSTR section )
 	//-----------------------------------------
 	m_AutoPickUp_AABB				= READ_IF_EXISTS(pSettings,r_fvector3,section,"AutoPickUp_AABB",Fvector().set(0.02f, 0.02f, 0.02f));
 	m_AutoPickUp_AABB_Offset		= READ_IF_EXISTS(pSettings,r_fvector3,section,"AutoPickUp_AABB_offs",Fvector().set(0, 0, 0));
+
+	CStringTable string_table;
+	m_sCharacterUseAction			= string_table("character_use");
+	m_sDeadCharacterUseAction		= string_table("dead_character_use");
+	m_sCarCharacterUseAction		= string_table("car_character_use");
+	m_sInventoryItemUseAction		= string_table("inventory_item_use");
+
 }
 
 void CActor::PHHit(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type /* = ALife::eHitTypeWound */)
@@ -978,7 +985,7 @@ void CActor::shedule_Update	(u32 DT)
 		
 		if (GameID() == GAME_SINGLE )
 		{
-			CStringTable string_table;
+//			CStringTable string_table;
 			// Анализируем какой объект мы видим, и назначаем соответсвующее
 			// действие по умолчанию, которое будет определять всплывающую 
 			// подсказку
@@ -989,16 +996,16 @@ void CActor::shedule_Update	(u32 DT)
 			else
 			{
 				if (m_pPersonWeLookingAt && pEntityAlive->g_Alive())
-					m_sDefaultObjAction = string_table("character_use");
+					m_sDefaultObjAction = m_sCharacterUseAction;//string_table("character_use");
 
 				else if (pEntityAlive && !pEntityAlive->g_Alive())
-					m_sDefaultObjAction = string_table("dead_character_use");
+					m_sDefaultObjAction = m_sDeadCharacterUseAction;//string_table("dead_character_use");
 
 				else if (m_pVehicleWeLookingAt)
-					m_sDefaultObjAction = string_table("car_character_use");
+					m_sDefaultObjAction = m_sCarCharacterUseAction;//string_table("car_character_use");
 
 				else if (inventory().m_pTarget)
-					m_sDefaultObjAction = string_table("inventory_item_use");
+					m_sDefaultObjAction = m_sInventoryItemUseAction;//string_table("inventory_item_use");
 				else 
 					m_sDefaultObjAction = NULL;
 			}
