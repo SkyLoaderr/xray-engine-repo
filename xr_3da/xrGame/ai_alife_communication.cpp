@@ -347,9 +347,16 @@ void CSE_ALifeSimulator::vfRunFunctionByIndex(CSE_ALifeHumanAbstract *tpALifeHum
 	}
 }
 
-int  CSE_ALifeSimulator::ifComputeBallance(CSE_ALifeHumanAbstract *tpALifeHumanAbstract1, CSE_ALifeHumanAbstract *tpALifeHumanAbstract2)
+int  CSE_ALifeSimulator::ifComputeBallance(CSE_ALifeHumanAbstract *tpALifeHumanAbstract, ITEM_P_VECTOR &tpItemVector)
 {
-	return(0);
+	int				l_iDebt = 0;
+	OBJECT_VECTOR	&l_tpChildren = tpALifeHumanAbstract->children;
+	ITEM_P_IT		I = tpItemVector.begin();
+	ITEM_P_IT		E = tpItemVector.end();
+	for ( ; I != E; I++)
+		if (std::find(l_tpChildren.begin(),l_tpChildren.end(),(*I)->ID) != l_tpChildren.end())
+			l_iDebt	-= (*I)->m_dwCost;
+	return(l_iDebt);
 }
 
 void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAbstract1, CSE_ALifeHumanAbstract *tpALifeHumanAbstract2)
@@ -433,9 +440,9 @@ void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAb
 		}
 	}
 
-	if (!bfCheckIfCanNullTradersBallance(tpALifeHumanAbstract1,tpALifeHumanAbstract2,ifComputeBallance(tpALifeHumanAbstract1,tpALifeHumanAbstract2))) {
-		tpALifeHumanAbstract1->vfDetachAll();
-		tpALifeHumanAbstract2->vfDetachAll();
+	if (!bfCheckIfCanNullTradersBallance(tpALifeHumanAbstract1,tpALifeHumanAbstract2,ifComputeBallance(tpALifeHumanAbstract1,m_tpItems2) - ifComputeBallance(tpALifeHumanAbstract2,m_tpItems1))) {
+		tpALifeHumanAbstract1->children.clear();
+		tpALifeHumanAbstract2->children.clear();
 		{
 			ITEM_P_IT		I = m_tpItems1.begin();
 			ITEM_P_IT		E = m_tpItems1.end();

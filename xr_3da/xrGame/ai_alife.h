@@ -105,7 +105,7 @@ class CSE_ALifeSimulator :
 			void					vfFinishCombat				(ECombatResult				tCombatResult);
 	// trading routines
 			void					vfRunFunctionByIndex		(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract1,		CSE_ALifeHumanAbstract	*tpALifeHumanAbstract2,			int			i,					int				j,					int						&i1,						int				&i2);
-			int						ifComputeBallance			(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract1,		CSE_ALifeHumanAbstract	*tpALifeHumanAbstract2);
+			int						ifComputeBallance			(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		ITEM_P_VECTOR			&tpItemVector);
 			void					vfGenerateSums				(ITEM_P_VECTOR				&tpTrader,					INT_VECTOR				&tpSums);
 			bool					bfGetItemIndexes			(ITEM_P_VECTOR				&tpTrader,					int						iSum1,							INT_VECTOR	&tpIndexes,			SSumStackCell	*tpStack,			int						iStartI,					int				iStackPointer);
 			bool					bfCheckInventoryCapacity	(CSE_ALifeTraderAbstract	*tpALifeTraderAbstract1,	ITEM_P_VECTOR			&tpTrader1,						int			iSum1,				int				iMoney1,			CSE_ALifeTraderAbstract *tpALifeTraderAbstract2,	ITEM_P_VECTOR	&tpTrader2,		int			iSum2,		int iMoney2, int iBallance);
