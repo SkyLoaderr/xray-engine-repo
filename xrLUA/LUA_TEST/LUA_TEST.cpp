@@ -1301,7 +1301,7 @@ bool do_file(lua_State *L, LPCSTR N, LPCSTR S, bool bCall)
 {
 	LPSTR				SS = (LPSTR)xr_malloc(4096), SS1 = (LPSTR)xr_malloc(4096);
 	string256			S1;
-	sprintf				(SS,"local this = %s\n",N);
+	sprintf				(SS,"local this = %s; function %s.script_name() return \"%s\" end local function script_name() return \"%s\" end ",N,N,N,N);
 	strcpy				(S1,"@");
 	strcat				(S1,S);
 //	luaL_loadbuffer		(L,SS,xr_strlen(SS),S1);
@@ -1477,5 +1477,8 @@ int __cdecl main(int argc, char* argv[])
 //	}
 
 	lua_close		(L);
-}
 
+//	check if we are yielded
+
+//	L->ci->state & CI_YIELD
+}
