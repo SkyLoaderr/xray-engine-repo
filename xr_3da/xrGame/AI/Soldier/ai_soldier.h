@@ -111,8 +111,10 @@ class CAI_Soldier : public CCustomMonster
 		bool			m_bFiring;
 
 		// patrol array
-		vector<DWORD>	tpaPatrolPoints;
 		int				m_iCurrentPoint;
+		vector<Fvector>	tpaPatrolPoints;
+		vector<DWORD>	tpaPatrolNodes;
+		vector<vector<CTravelNode> > tpaPatrolPathes;
 		
 		// finite state machine
 		stack<ESoldierStates>	tStateStack;
@@ -152,6 +154,7 @@ class CAI_Soldier : public CCustomMonster
 		void UnderFire();
 
 		// miscellanious funtions	
+		void vfCreateStraightForwardPath(Fvector &tStartPoint, Fvector tFinishPoint, DWORD dwStartNode, DWORD dwFinishNode, vector<CTravelNode> &tpaPath);
 		void vfComputeCircle(DWORD dwNode0, DWORD dwNode1, float &fRadius, Fvector &tPosition);
 		float bfCheckForChange(DWORD dwNode0, DWORD dwNode1, float fSwitchAngle, float fSwitchDistance);
 	IC	bool bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);

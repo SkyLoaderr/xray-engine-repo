@@ -114,20 +114,23 @@ void CAI_Soldier::Load(CInifile* ini, const char* section)
 		R_ASSERT(path_count && (path_count % 3 == 0));
 
 		path_count /= 3;
+		tpaPatrolNodes.resize(path_count);
 		tpaPatrolPoints.resize(path_count);
 
 		for (int i=0; i<path_count; i++) {
-			Fvector tTemp;
-			sscanf(buf2,"%f,%f,%f",&(tTemp.x),&(tTemp.y),&(tTemp.z));
-			tpaPatrolPoints[i] = Level().AI.q_LoadSearch(tTemp);
+			sscanf(buf2,"%f,%f,%f",&(tpaPatrolPoints[i].x),&(tpaPatrolPoints[i].y),&(tpaPatrolPoints[i].z));
+			tpaPatrolNodes[i] = Level().AI.q_LoadSearch(tpaPatrolPoints[i]);
 			for (int komas=0; komas<3; buf2++)
 				if (*buf2 == ',')
 					komas++;
 		}
 
-		SelectorPatrol.m_tpEnemyNode = Level().AI.Node(tpaPatrolPoints[0]);
-		AI_Path.DestNode = tpaPatrolPoints[m_iCurrentPoint = 1];
+		m_iCurrentPoint = 0;
 		AI_Path.bNeedRebuild = TRUE;
+		tpaPatrolPathes.resize(path_count);
+		for ( i=0; i<path_count; i++)
+			vfCreateStraightForwardPath(tpaPatrolPoints[i], tpaPatrolPoints[(i < path_count - 1) ? (i + 1) : 0], tpaPatrolNodes[i], tpaPatrolNodes[(i < path_count - 1) ? (i + 1) : 0], tpaPatrolPathes[i]);
+		
 	}
 }
 
