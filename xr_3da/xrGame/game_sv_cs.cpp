@@ -292,7 +292,7 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u32 eid_who, LPCSTR what)
 			}
 		}
 	}
-		
+
 	// check if has money to pay
 	game_PlayerState*	ps_who	=	get_id	(id_who);
 	if(ps_who->money_total < cost)	return;
