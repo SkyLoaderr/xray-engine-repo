@@ -16,6 +16,7 @@
 #include "ai\\soldier\\ai_soldier.h"
 #include "ai\\stalker\\ai_stalker.h"
 #include "ai\\zombie\\ai_zombie.h"
+#include "ai\\idol\\ai_idol.h"
 #include "car.h"
 #include "dummyobject.h"
 #include "customtarget.h"

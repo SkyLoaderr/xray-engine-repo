@@ -17,7 +17,7 @@ CAI_Idol::~CAI_Idol					()
 {
 }
 
-void CAI_Idol::Load					( LPCSTR section )
+void CAI_Idol::Load					(LPCSTR section)
 {
 	inherited::Load					(section);
 	m_tpaAnims.clear				();
