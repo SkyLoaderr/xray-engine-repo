@@ -29,6 +29,8 @@ function gar_dm_nearest_bandit(actor, npc)
 end
 
 function gar_dm_2nd_nearest_bandit(actor, npc)
+	printf("_bp: xr_conditions: 2nd nearest [%s]? %s", npc:name(),
+			if_then_else(xr_conditions_impl.gar_dm_nearest_bandit(actor, npc, 2), "true", "false"))
 	return xr_conditions_impl.gar_dm_nearest_bandit(actor, npc, 2)
 end
 

@@ -37,6 +37,8 @@ function gar_dm_bandits_fight(actor, npc)
 end
 
 function gar_dm_bandit_demand(actor, npc)
+	printf("_bp: gar_dm_bandit_demand: actor=%s", actor:name())
+
 	if actor:has_info("gar_dm_bandit1_demand") or
 	   actor:has_info("gar_dm_bandit2_demand") or
 	   actor:has_info("gar_dm_bandit3_demand") then

@@ -1,45 +1,31 @@
-function gar_dm_nearest_bandit(actor, npc, n)
-	local nearest = nil
-	local nearest_dist = nil
-	local second_nearest = nil
-	
+
+function dist_less(a1, a2)
+	return a1.dist < a2.dist
+end
+
+function gar_dm_nearest_bandit(actor, npc, which)
+	local dists = {}
+	local n = 1
+
 	local bandit1 = level.object("gar_dramscene_bandit1")
 	if bandit1 and bandit1:alive() then
-		local dist = distance_between(actor, bandit1)
-		if not nearest_dist or dist < nearest_dist then
-			second_nearest = nearest
-			nearest = bandit1
-			nearest_dist = dist
-		end
+		dists[n] = { who = bandit1, dist = distance_between(actor, bandit1) }
+		n = n + 1
 	end
 
 	local bandit2 = level.object("gar_dramscene_bandit2")
 	if bandit2 and bandit2:alive() then
-		local dist = distance_between(actor, bandit2)
-		if not nearest_dist or dist < nearest_dist then
-			second_nearest = nearest
-			nearest = bandit2
-			nearest_dist = dist
-		end
+		dists[n] = { who = bandit2, dist = distance_between(actor, bandit2) }
+		n = n + 1
 	end
 
 	local bandit3 = level.object("gar_dramscene_bandit3")
 	if bandit3 and bandit3:alive() then
-		local dist = distance_between(actor, bandit3)
-		if not nearest_dist or dist < nearest_dist then
-			second_nearest = nearest
-			nearest = bandit3
-			nearest_dist = dist
-		end
+		dists[n] = { who = bandit3, dist = distance_between(actor, bandit3) }
+		n = n + 1
 	end
 
-	if n == 1 and nearest and npc:id() == nearest:id() then
-		return true
-	end
+	table.sort(dists, dist_less)
 
-	if n == 2 and second_nearest and npc:id() == second_nearest:id() then
-		return true
-	end
-
-	return false
+	return dists[which].who:id() == npc:id()
 end

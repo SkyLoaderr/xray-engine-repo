@@ -159,7 +159,7 @@ function action_remark_activity:step()
 	if self.state == state_initial then
 		xr_state.anim_update(nil, self.object)
 		local mental_state
-		if self.st.no_danger or self.object:relation(actor) == game_object.friend then
+		if self.st.no_danger or self.object:relation(self.target) == game_object.friend then
 			mental_state = anim.free
 		else
 			mental_state = anim.danger
