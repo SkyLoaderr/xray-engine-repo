@@ -160,7 +160,7 @@ private:
 	float					hinge_vel;
 	float					skel_fatal_impulse_factor;
 	int						skel_ddelay;
-
+	bool					b_death_anim_on;
 	// Graph
 	_GRAPH_ID				m_tCurGP;
 	_GRAPH_ID				m_tNextGP;

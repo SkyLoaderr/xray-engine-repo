@@ -28,7 +28,7 @@ void CAI_Stalker::Init()
 	//	m_tStateList.clear				();
 	//	while (m_tStateStack.size())
 	//		m_tStateStack.pop			();
-
+	b_death_anim_on					= false;
 	m_tMovementDirection			= eMovementDirectionForward;
 	m_tDesirableDirection			= eMovementDirectionForward;
 	m_tLookType						= eLookTypeDirection;
@@ -405,6 +405,7 @@ void CAI_Stalker::CreateSkeleton()
 if(m_pPhysicsShell) return;
 #ifndef NO_PHYSICS_IN_AI_MOVE
 	Movement.GetDeathPosition	(Position());
+	Movement.DestroyCharacter();
 	//Position().y+=.1f;
 	//#else
 	//Position().y+=0.1f;
@@ -421,22 +422,24 @@ if(m_pPhysicsShell) return;
 
 	m_pPhysicsShell->set_PhysicsRefObject(this);
 	CInifile* ini = PKinematics(Visual())->LL_UserData();
-	if(! ini) return;
+	R_ASSERT2(ini,"NO INI FILE IN MODEL");
 
 	///////////////////////////car definition///////////////////////////////////////////////////
 	m_pPhysicsShell->set_DisableParams(default_disl*ini->r_float("disable","linear_factor"),default_disw*ini->r_float("disable","angular_factor"));
 	m_pPhysicsShell->Activate(true);
-	PKinematics(Visual())->PlayCycle("death_init");
+
 	PKinematics(Visual())->Calculate();
+	b_death_anim_on=false;
 }
 
 void CAI_Stalker::UpdateCL(){
 
 	inherited::UpdateCL();
-	if(m_pPhysicsShell&&m_pPhysicsShell->bActive)
+	if(m_pPhysicsShell&&m_pPhysicsShell->bActive&&!m_pPhysicsShell->bActivating)
 	{
-		XFORM().set(m_pPhysicsShell->mXFORM);
 
+		//XFORM().set(m_pPhysicsShell->mXFORM);
+		m_pPhysicsShell->InterpolateGlobalPosition(&(XFORM().c));
 	}
 		if (Level().CurrentViewEntity() == this) {
 			Exec_Visibility();
@@ -611,6 +614,11 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 	{	
 		if(m_pPhysicsShell->bActive)
 	{
+		if(!m_pPhysicsShell->bActivating&&!b_death_anim_on)
+		{
+			PKinematics(Visual())->PlayCycle("death_init");
+			b_death_anim_on=true;
+		}
 
 		if(m_saved_impulse!=0.f)
 		{
@@ -624,26 +632,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 			//m_pPhysicsShell->SetAirResistance()
 
 		}
-		//if(skel_ddelay==-10)
-		//{
-		//m_pPhysicsShell->set_JointResistance(5.f*hinge_force_factor1);//5.f*hinge_force_factor1
-		//m_pPhysicsShell->SetAirResistance()
-
-		//}
-
 		skel_ddelay--;
-
-		///mRotate.set(m_pPhysicsShell->mXFORM);
-		//mRotate.c.set(0,0,0);
-		//UpdateTransform					();
-		//Position().set(m_pPhysicsShell->mXFORM.c);
-		//XFORM().set(m_pPhysicsShell->mXFORM);
-		//UpdateTransform();		
-		//	CKinematics* M		= PKinematics(Visual());			VERIFY(M);
-		//	int id=M->LL_BoneID("bip01_pelvis");
-		//	CBoneInstance& instance=M->LL_GetInstance				(id);
-		//	instance.mTransform.set(m_pPhysicsShell->mXFORM);
-
 	}
 
 	}

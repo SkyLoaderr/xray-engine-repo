@@ -121,7 +121,7 @@ void CWeapon::SoundDestroy	(	ref_sound& dest)
 
 void CWeapon::ShaderCreate	(ref_shader &dest, LPCSTR S, LPCSTR T)
 {
-	if	(dest)	return;
+	if (dest())	return;
 	string256	name,temp;
 
 	// test 'WEAPONS' folder 
@@ -386,8 +386,8 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 
 	ShaderCreate				(hUIIcon,"hud\\default","");
 
-	if (0==pstrWallmark)		hWallmark			= 0; 
-	else						hWallmark.create	("effects\\wallmark",pstrWallmark);
+	if (0==pstrWallmark)		hWallmark	= 0; 
+	else						hWallmark	= Device.Shader.Create("effects\\wallmark",pstrWallmark);
 
 	if (0==m_pPhysicsShell)
 	{
@@ -667,7 +667,7 @@ void CWeapon::UpdatePosition(const Fmatrix& trans)
 
 void CWeapon::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R) 
 {
-	if (!hWallmark)	return;
+	if (0==hWallmark())	return;
 	
 	if (R.O) {
 		if (R.O->CLS_ID==CLSID_ENTITY)
@@ -682,7 +682,7 @@ void CWeapon::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::r
 		}
 	} else {
 		::Render->add_Wallmark	(
-			hWallmark,
+			hWallmark(),
 			vEnd,
 			fWallmarkSize,
 			g_pGameLevel->ObjectSpace.GetStaticTris()+R.element);
@@ -820,7 +820,7 @@ void CWeapon::OnDrawFlame	()
 			f		*= 0.9f;
 			float	S = f+f*::Random.randF	();
 			float	A = ::Random.randF		(PI_MUL_2);
-			::Render->add_Patch				(hFlames[Random.randI(hFlames.size())],P,S,A,hud_mode);
+			::Render->add_Patch				(hFlames[Random.randI(hFlames.size())](),P,S,A,hud_mode);
 			P.add(D);
 		}
 		fFlameTime -= Device.fTimeDelta;

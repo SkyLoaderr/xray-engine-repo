@@ -18,8 +18,7 @@ class CPHElement	:  public CPhysicsElement
 	xr_vector <Fsphere>		m_spheras_data;
 	xr_vector <Fobb>		m_boxes_data;
 	xr_vector <Fcylinder>	m_cylinders_data;
-	bool					bActive;
-	bool					bActivating;
+
 	float					m_start_time;
 	float					m_volume;
 	Fvector					m_mass_center;
@@ -67,6 +66,12 @@ class CPHElement	:  public CPhysicsElement
 	ObjectContactCallbackFun*	temp_for_push_out;
 	u32							push_untill;
 
+public:
+	bool					bActive;
+	bool					bActivating;
+	/////////////////////////////////////////////////////////////////////////////
+
+	////////////////////////////
 private:
 	void					create_Sphere					(const Fsphere&		V);
 	void					create_Box						(const Fobb&		V);
@@ -113,6 +118,7 @@ public:
 	virtual void			add_Mass						(const SBoneShape& shape,const Fmatrix& offset,const Fvector& mass_center,float mass);
 	virtual float			getRadius						();
 	virtual void			InterpolateGlobalTransform		(Fmatrix* m);
+	virtual void			InterpolateGlobalPosition		(Fvector* v);
 	void			SetShell								(CPHShell* p){m_shell=p;}
 	void			SetPhObjectInGeomData					(CPHObject* O);
 

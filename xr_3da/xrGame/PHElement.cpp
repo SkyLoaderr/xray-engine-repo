@@ -18,6 +18,10 @@
 #include "PHShell.h"
 #include "PHElement.h"
 
+
+
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////Implementation for CPhysicsElement
 void CPHElement::			add_Box		(const Fobb&		V){
@@ -583,6 +587,9 @@ void		CPHElement::Deactivate(){
 	bActivating=false;
 }
 void CPHElement::SetTransform(const Fmatrix &m0){
+	Fmatrix m;
+	m.set(m0);
+	R_ASSERT2(_valid(m),"invalid_form_in_set_transform");
 	Fvector mc;
 	mc.set(m_mass_center);
 	m0.transform_tiny(mc);
@@ -592,6 +599,10 @@ void CPHElement::SetTransform(const Fmatrix &m0){
 	dMatrix3 R;
 	PHDynamicData::FMX33toDMX(m33,R);
 	dBodySetRotation(m_body,R);
+
+
+	R_ASSERT2(dV_valid(dBodyGetPosition(m_body)),"invalid body position ");
+	R_ASSERT2(dM_valid(dBodyGetRotation(m_body)),"invalid body rotation in update interpolation");
 
 }
 
@@ -705,13 +716,13 @@ void CPHElement::Update(){
 
 	m_body_interpolation.InterpolateRotation(mXFORM);	
 	m_body_interpolation.InterpolatePosition(mXFORM.c);
-
-
+	
+	
 	mXFORM.mulB(m_inverse_local_transform);
 
 	if(push_untill)//temp_for_push_out||(!temp_for_push_out&&object_contact_callback)
 		if(push_untill<Device.dwTimeGlobal) unset_Pushout();
-
+	R_ASSERT2(_valid(mXFORM),"invalid position in update");
 }
 
 
@@ -805,9 +816,11 @@ void CPHElement::PhDataUpdate(dReal step){
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////disable///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	//
+	if(!dBodyIsEnabled(m_body)) return;
 	ReEnable();
 	Disabling();
-	if(!dBodyIsEnabled(m_body)) return;
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//////////////////air resistance/////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -823,7 +836,8 @@ void CPHElement::PhDataUpdate(dReal step){
 	//dBodyAddForce(m_body,-pos[0]*mag*k_l,-pos[1]*mag*k_l,-pos[2]*mag*k_l);
 	if(!fis_zero(l_air))
 		dBodyAddForce(m_body,-pos[0]*l_air,-pos[1]*l_air,-pos[2]*l_air);
-
+R_ASSERT2(dV_valid(dBodyGetPosition(m_body)),"invalid body position");
+R_ASSERT2(dM_valid(dBodyGetRotation(m_body)),"invalid body rotation");
 	m_body_interpolation.UpdatePositions();
 	m_body_interpolation.UpdateRotations();
 
@@ -957,7 +971,7 @@ void	CPHElement::Disabling(){
 void CPHElement::ResetDisable(){
 	previous_p[0]=dInfinity;
 	previous_r[0]=0.f;
-	dis_count_f	 =0;
+	dis_count_f	 =1;
 	dis_count_f1 =0;
 }
 
@@ -1039,6 +1053,12 @@ void CPHElement::InterpolateGlobalTransform(Fmatrix* m){
 	m_body_interpolation.InterpolateRotation(*m);
 	m_body_interpolation.InterpolatePosition(m->c);
 	m->mulB(m_inverse_local_transform);
+
+}
+
+void CPHElement::InterpolateGlobalPosition(Fvector* v){
+	m_body_interpolation.InterpolatePosition(*v);
+	//v->add(m_inverse_local_transform.c);
 
 }
 
@@ -1272,21 +1292,39 @@ void CPHElement::CallBack1(CBoneInstance* B)
 {
 	Fmatrix parent;
 
-	if(bActivating){
+	if(bActivating)
+	{
 		if(ph_world->GetSpace()->lock_count) return;
 		mXFORM.set(B->mTransform);
 		m_start_time=Device.fTimeGlobal;
 		Fmatrix global_transform;
 		global_transform.set(m_shell->mXFORM);
+		//if(m_parent_element)
 		global_transform.mulB(mXFORM);
 		SetTransform(global_transform);
+		m_body_interpolation.UpdatePositions();
+		m_body_interpolation.UpdateRotations();
+		m_body_interpolation.UpdatePositions();
+		m_body_interpolation.UpdateRotations();
 		if(!dBodyIsEnabled(m_body))
 			dBodyEnable(m_body);
 		bActivating=false;
+		if(!m_parent_element) 
+		{
+			m_shell->m_object_in_root.set(mXFORM.c);
+			m_shell->m_object_in_root.invert();
+			m_shell->bActivating=false;
+		}
 		return;
 	}
 
-	if(m_parent_element){
+	if(!m_parent_element)
+	{
+			m_shell->InterpolateGlobalPosition(&(m_shell->mXFORM.c));
+	}
+	
+	//if(m_parent_element)
+	{
 		InterpolateGlobalTransform(&mXFORM);
 
 		parent.set(m_shell->mXFORM);
@@ -1294,16 +1332,17 @@ void CPHElement::CallBack1(CBoneInstance* B)
 		mXFORM.mulA(parent);
 		B->mTransform.set(mXFORM);
 	}
-	else{
+	//else
+	//{
 
-		InterpolateGlobalTransform(&m_shell->mXFORM);
-		mXFORM.identity();
-		B->mTransform.set(mXFORM);
+	//	InterpolateGlobalTransform(&m_shell->mXFORM);
+	//	mXFORM.identity();
+	//	B->mTransform.set(mXFORM);
 		//parent.set(B->mTransform);
 		//parent.invert();
 		//m_shell->mXFORM.mulB(parent);
 
-	}
+	//}
 
 	if(push_untill)//temp_for_push_out||(!temp_for_push_out&&object_contact_callback)
 		if(push_untill<Device.dwTimeGlobal) unset_Pushout();

@@ -48,6 +48,8 @@ public:
 	virtual void			Activate				(const Fmatrix& m0, float dt01, const Fmatrix& m2,bool disable=false)		= 0;
 	virtual void			Activate				(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel,bool disable=false)	= 0;
 	virtual void			Activate				(bool  place_current_forms=false,bool disable=false)																			= 0;
+	virtual void			InterpolateGlobalTransform(Fmatrix* m)											= 0;
+	virtual void			InterpolateGlobalPosition (Fvector* v)											= 0;
 
 	virtual void			Deactivate				()														= 0;
 	virtual void			Enable					()														= 0;
@@ -83,7 +85,6 @@ class	CPhysicsElement		: public CPhysicsBase
 
 public:
 	int						m_SelfID;
-	virtual void			InterpolateGlobalTransform(Fmatrix* m)									= 0;
 	virtual void			set_ContactCallback		(ContactCallbackFun* callback)					= 0;
 	virtual	void			add_Sphere				(const Fsphere&		V)							= 0;
 	virtual	void			add_Box					(const Fobb&		V)							= 0;
@@ -133,6 +134,7 @@ protected:
 	CPhysicsElement* pFirst_element;
 	CPhysicsElement* pSecond_element;
 	bool bActive;
+
 //	CPhysicsJoint(CPhysicsElement* first,CPhysicsElement* second,enumType type){pFirst_element=first; pSecond_element=second; eType=type;bActive=false;}
 	IC CPhysicsElement* PFirst_element(){return pFirst_element;};
 	IC CPhysicsElement* PSecond_element(){return pSecond_element;};
@@ -176,6 +178,7 @@ protected:
 CKinematics* m_pKinematics;
 public:
 	BOOL					bActive;
+	bool					bActivating;
 public:
 IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	void						set_Kinematics			(CKinematics* p)	{m_pKinematics=p;}
@@ -191,6 +194,7 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	virtual CPhysicsElement*	get_Element				(s16 bone_id)										= 0;
 	virtual CPhysicsElement*	get_Element				(LPCSTR bone_name)									= 0;
 	virtual void				build_FromKinematics	(CKinematics* K,BONE_P_MAP* p_geting_map=NULL)		= 0;
+	virtual void				UpdateRoot				()													= 0;
 	virtual void                ZeroCallbacks			()													= 0;
 	virtual						~CPhysicsShell		     (){}
 	//build_FromKinematics		in returns elements  & joint pointers according bone IDs;

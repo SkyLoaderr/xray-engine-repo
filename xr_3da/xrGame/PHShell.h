@@ -12,11 +12,12 @@ class CPHShell: public CPhysicsShell,public CPHObject {
 	xr_vector<CPHElement*> elements;
 	xr_vector<CPHJoint*>	joints;
 	dSpaceID			m_space;
-	bool bActivating;
+
 	xr_list<CPHObject*>::iterator m_ident;
 
 
 public:
+	Fvector											m_object_in_root;
 
 	CPHShell				()							
 			{
@@ -24,6 +25,7 @@ public:
 													bActivating=false;
 													m_space=NULL;
 													m_pKinematics=NULL;
+													m_object_in_root.set(0,0,0);
 			};
 
 virtual ~CPHShell				()							
@@ -125,7 +127,10 @@ virtual ~CPHShell				()
 	virtual void				build_FromKinematics		(CKinematics* K,BONE_P_MAP* p_geting_map=NULL);
 	virtual void                ZeroCallbacks				();
 	virtual void				set_DisableParams			(float dis_l=default_disl,float dis_w=default_disw);
-	virtual void			SmoothElementsInertia(float k);
+	virtual void				UpdateRoot					();
+	virtual void				SmoothElementsInertia		(float k);
+	virtual void				InterpolateGlobalTransform	(Fmatrix* m);
+	virtual void				InterpolateGlobalPosition	(Fvector* v);
 
 	dSpaceID GetSpace()
 	{

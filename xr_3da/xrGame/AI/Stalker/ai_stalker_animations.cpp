@@ -208,8 +208,8 @@ void CAI_Stalker::vfAssignGlobalAnimation(CMotionDef *&tpGlobalAnimation)
 		if ((m_tStateType == eStateTypePanic) && (AI_Path.fSpeed > EPS_L))
 			tpGlobalAnimation = m_tAnims.A[eBodyStateStand].m_tGlobal.A[1].A[0];
 	}
-	else
-		tpGlobalAnimation = m_tAnims.A[eBodyStateStand].m_tGlobal.A[2].A[0];
+	//else
+	//	tpGlobalAnimation = m_tAnims.A[eBodyStateStand].m_tGlobal.A[2].A[0];
 }
 
 void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)

@@ -142,6 +142,7 @@ void CPHShell::Update(){
 	for(i=elements.begin();i!=elements.end();i++)
 		(*i)->Update();
 	mXFORM.set((*elements.begin())->mXFORM);
+	R_ASSERT2(_valid(mXFORM),"invalid position in update");
 }
 
 
@@ -726,4 +727,25 @@ void CPHShell::set_DisableParams(float dis_l/* =default_disl */,float dis_w/* =d
 	i=elements.begin(); e=elements.end();
 	for( ;i!=e;i++)
 		(*i)->set_DisableParams(dis_l,dis_w);
+}
+
+void CPHShell::UpdateRoot()
+{
+
+xr_vector<CPHElement*>::iterator i=elements.begin();
+if( (!(*i)->bActive) || (*i)->bActivating ) return;
+
+(*i)->InterpolateGlobalTransform(&mXFORM);
+
+}
+
+void CPHShell::InterpolateGlobalTransform(Fmatrix* m)
+{
+(*elements.begin())->InterpolateGlobalTransform(m);
+}
+
+void CPHShell::InterpolateGlobalPosition(Fvector* v)
+{
+	(*elements.begin())->InterpolateGlobalPosition(v);
+	v->add(m_object_in_root);
 }
