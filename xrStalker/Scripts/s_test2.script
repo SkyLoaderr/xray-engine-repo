@@ -1,15 +1,18 @@
 function update_action (npc, script, ...)
+	
+	if npc == nil then return end
 
-	local action = npc:action ()
-	if action == nil or arg.n == 0 then
+	local act = npc:action ()
+	if act == nil or arg.n == 0 then
 	   return
 	end
 
 	for a = 1, arg.n, 1 do
-		if arg[a] ~= nil then action:set (arg[i])
+		if arg[a] ~= nil then act:set (arg[i])
 	end		
 	reset_action (npc, script)
-    npc:command (action, false)
+    npc:command (act, false)
+
 end
 
 function main ()
