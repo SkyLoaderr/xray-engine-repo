@@ -4,36 +4,26 @@ function main()
 	obj1     = get_level_object("m_boar_e0000")                                                                     
 	obj1:script(true,monster.script_name())                                                                                
 	
---	action(                                                                                                       
---	    obj1,                                                                                                      
-	    
-	--  	move(move.standing,move.stand,move.line,level.object("localhost/jim"):position()),
-	--	move(move.act_drag, level.object("localhost/jim"):position()),
-
-	--	move(move.act_walk_fwd, patrol("way0002")),	
-
-
-	--  move(move.standing,move.walk,move.line,level.object("localhost/jim"):position()),                        
-	--  move(move.standing,move.walk,move.line,patrol("way0000")),                        
-	--  move(vector():set(level.object("localhost/dima"):position()):add(vector():set(0,30,0)),1),                
-	--    cond(cond.time_end,10000)                                                                                 
---	)                                                                                                             
-
 	action(                                                                                                       
 	    obj1,                                                                                                      
-		move(move.act_walk_fwd, patrol("way0000")),
-	    cond(cond.time_end,10000)                                                                                 
+		move(move.act_walk_fwd, level.object("m_blood"):position()),
+	    cond(cond.time_end + cond.move_end,10000)                                                                                 
 	)                                                                                                             
 
 	action(                                                                                                       
-	    obj1,                                                                                                      
-		move(move.act_walk_fwd, patrol("way0002")),
-	    cond(cond.time_end,10000)                                                                                 
+	    obj1,    
+		object(level.object("m_blood"),object.take),
+	    cond(cond.time_end,3000)                                                                                 
 	)                                                                                                             
 	action(
 		obj1,
-		move(move.act_run, level.object("localhost/jim"):position()),
-	    cond(cond.time_end ,10000)                                                                                 
+		move(move.act_drag, level.object("localhost/jim"):position()),
+	    cond(cond.time_end + cond.move_end,10000)                                                                                 
+	)	                                               	
+	action(
+		obj1,
+		object(level.object("m_blood"),object.drop),
+	    cond(cond.time_end,3000)                                                                                 
 	)	                                               	
 
 	while obj1:action() do                                                        
