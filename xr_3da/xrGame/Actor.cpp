@@ -977,11 +977,12 @@ void CActor::shedule_Update	(u32 DT)
 
 	if(RQ.O &&  RQ.range<inventory().GetTakeDist()) 
 	{
-		m_pUsableObject					= smart_cast<CUsableScriptObject*>(RQ.O);
-		inventory().m_pTarget			= smart_cast<PIItem>(RQ.O);
-		m_pPersonWeLookingAt			= smart_cast<CInventoryOwner*>(RQ.O);
-		m_pVehicleWeLookingAt			= smart_cast<CHolderCustom*>(RQ.O);
-		CEntityAlive* pEntityAlive		= smart_cast<CEntityAlive*>(RQ.O);
+		CGameObject						*game_object = smart_cast<CGameObject*>(RQ.O);
+		m_pUsableObject					= smart_cast<CUsableScriptObject*>(game_object);
+		inventory().m_pTarget			= smart_cast<PIItem>(game_object);
+		m_pPersonWeLookingAt			= smart_cast<CInventoryOwner*>(game_object);
+		m_pVehicleWeLookingAt			= smart_cast<CHolderCustom*>(game_object);
+		CEntityAlive* pEntityAlive		= smart_cast<CEntityAlive*>(game_object);
 		
 		if (GameID() == GAME_SINGLE )
 		{
