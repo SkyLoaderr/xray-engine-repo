@@ -494,7 +494,7 @@ void CUITradeWnd::SellItems(CUIDragDropList* pSellList,
 		CUIDragDropItem* pDragDropItem = *it;
 		pTrade->SellItem((PIItem)pDragDropItem->GetData());
 			
-		//заносим в списко того, кто покупает товар
+		//заносим в список того, кто покупает товар
 		//если это простой сталкер, то 
 		//вещь обязана появиться у него,
 		//а с  торговцем надо решать.
