@@ -48,7 +48,7 @@ void CSector::BuildHierrarhy()
 	delimiter *= 2;
 
 	int		iLevel = 1;
-	float	SizeLimit = g_params.m_SS_maxsize/8;
+	float	SizeLimit = g_params.m_SS_maxsize/4.f;
 	if		(SizeLimit<4.f) SizeLimit=4.f;
 	for (; SizeLimit<=delimiter; SizeLimit*=2)
 	{
@@ -60,16 +60,16 @@ void CSector::BuildHierrarhy()
 			if (g_tree[I]->bConnected)		 continue;
 			if (g_tree[I]->Sector != SelfID) continue;
 
-			OGF_Node* pNode = new OGF_Node(iLevel,WORD(SelfID));
-			pNode->AddChield(I);
+			OGF_Node* pNode					= new OGF_Node(iLevel,WORD(SelfID));
+			pNode->AddChield				(I);
 
 			// Find best object to connect with
 			for (;;) 
 			{
-
 				// Find best object to connect with
 				int		best_id		= -1;
 				float	best_volume	= flt_max;
+
 				for (int J=0; J<iSize; J++)
 				{
 					OGF_Base* candidate = g_tree[J];
@@ -87,15 +87,15 @@ void CSector::BuildHierrarhy()
 				}
 
 				// Analyze
-				if (best_id<0)	break;
-				pNode->AddChield	(J);
-				pNode->CalcBounds	();
+				if (best_id<0)		break;
+				pNode->AddChield	(best_id);
 			}
 
-			if (pNode->chields.size()>1) {
-				pNode->CalcBounds();
-				g_tree.push_back(pNode);
-				bAnyNode = TRUE;
+			if (pNode->chields.size()>1) 
+			{
+				pNode->CalcBounds		();
+				g_tree.push_back		(pNode);
+				bAnyNode				= TRUE;
 			} else {
 				g_tree[I]->bConnected = false;
 				delete pNode;
