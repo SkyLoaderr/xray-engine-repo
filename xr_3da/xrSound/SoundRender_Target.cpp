@@ -49,12 +49,12 @@ void	CSoundRender_Target::_initialize		()
 	// Fill caps structure
 	DSBUFFERDESC	dsBD	= {0};
 	dsBD.dwSize				= sizeof(dsBD);
-	dsBD.dwFlags			= 
+	dsBD.dwFlags			=
 		DSBCAPS_CTRL3D | 
 		DSBCAPS_CTRLFREQUENCY | 
 		DSBCAPS_CTRLVOLUME |
 		DSBCAPS_GETCURRENTPOSITION2 |
-		psSoundFlags.test(ssHardware) ? 0 : (DSBCAPS_LOCSOFTWARE | DSBCAPS_CTRLFX)
+		(psSoundFlags.test(ssHardware) ? 0 : (DSBCAPS_LOCSOFTWARE | DSBCAPS_CTRLFX))
 		;
 	dsBD.dwBufferBytes		= buf_size;
 	dsBD.dwReserved			= 0;
