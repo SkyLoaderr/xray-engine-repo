@@ -198,6 +198,7 @@ public:
 	void			add_box			( Fmatrix& B	);
 	void			ComputeBounds	( );
 	BOOL			Contact			( CObject* O	);
+	vector<shape_def>&	Shapes		(){return shapes;}
 };
 
 #endif //__XR_COLLIDE_FORM_H__
