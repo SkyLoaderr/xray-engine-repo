@@ -60,7 +60,7 @@ class ISpatialWrapper : public heritage<base,luabind_base>::result {
 public:
 	IC						ISpatialWrapper				() {};
 	virtual					~ISpatialWrapper			() {};
-	
+/*	
 	virtual	void			spatial_register			()
 	{
 		call_member<void>(this,"spatial_register");
@@ -100,7 +100,7 @@ public:
 	{
 		return	(self->base::spatial_sector_point());
 	}
-
+	
 	virtual	CObject*		dcast_CObject				()
 	{
 		return	(call_member<CObject*>(this,"dcast_CObject"));
@@ -140,6 +140,7 @@ public:
 	{
 		return	(self->base::dcast_Light());
 	}
+*/
 };
 
 typedef ISpatialWrapper<ISpatial,luabind::wrap_base> CISpatialWrapper;
@@ -180,6 +181,7 @@ public:
 	IC				IRenderableWrapper				()  {};
 	virtual			~IRenderableWrapper				()  {};
 	
+/*
 	virtual	void	renderable_Render				()
 	{
 		call_member<void>(this,"renderable_Render");
@@ -189,7 +191,7 @@ public:
 	{
 		ai().script_engine().script_log(eLuaMessageTypeError,"You are trying to call a pure virtual function IRenderable::renderable_Render!");
 	}
-		
+
 	virtual	BOOL	renderable_ShadowGenerate		()
 	{
 		return		((BOOL)call_member<bool>(this,"renderable_ShadowGenerate"));
@@ -209,6 +211,7 @@ public:
 	{
 		return		(!!	self->IRenderable::renderable_ShadowReceive());
 	}
+*/
 };
 
 typedef IRenderableWrapper<IRenderable,luabind::wrap_base> CIRenderableWrapper;
