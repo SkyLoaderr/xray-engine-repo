@@ -14,7 +14,7 @@ local time_camper_look		= 7000              --Сколько приглядываемся, когда кемп
 --Включена ли схема. Еще в этом евалуаторе вычисляется видимые враги и монстры
 class "enabled_evaluator_new" (property_evaluator)
 
-function enabled_evaluator_new:__init (name, storage) super ()
+function enabled_evaluator_new:__init (name, storage) super (nil, name)
     self.a = storage
 end
 
@@ -26,7 +26,7 @@ end
 
 --Видим ли монстра рядом
 class "monster_evaluator" (property_evaluator)
-function monster_evaluator:__init (name, storage) super ()
+function monster_evaluator:__init (name, storage) super (nil, name)
     self.a       = storage
     self.monster   = nil
     self.enabled    = false          --Реагируем ли мы на данного монстра
@@ -45,7 +45,7 @@ end
 
 --Видим ли врага
 class "see_enemy_evaluator" (property_evaluator)
-function see_enemy_evaluator:__init (name, storage) super ()
+function see_enemy_evaluator:__init (name, storage) super (nil, name)
     self.a       = storage
     self.time	 = device():time_global()
 end
@@ -68,7 +68,7 @@ end
 
 --Находится ли враг ближе некоторого расстояния
 class "enemy_near_evaluator" (property_evaluator)
-function enemy_near_evaluator:__init (name, storage) super ()
+function enemy_near_evaluator:__init (name, storage) super (nil, name)
     self.a = storage
 end
 
@@ -505,10 +505,10 @@ function add_to_binder(obj, char_ini)
 
     local manager  = obj:motivation_action_manager ()
 
-    manager:add_evaluator (properties["enabled"],     this.enabled_evaluator_new ("alife_sniper", xr_motivator.storage[obj:id()].sniper))
-    manager:add_evaluator (properties["see_monster"], this.monster_evaluator     ("see_monster",  xr_motivator.storage[obj:id()].sniper))
-    manager:add_evaluator (properties["see_enemy"],   this.see_enemy_evaluator   ("see_enemy",    xr_motivator.storage[obj:id()].sniper))
-    manager:add_evaluator (properties["enemy_near"],  this.enemy_near_evaluator  ("enemy_near",   xr_motivator.storage[obj:id()].sniper))
+    manager:add_evaluator (properties["enabled"],     this.enabled_evaluator_new ("sniper_alife", xr_motivator.storage[obj:id()].sniper))
+    manager:add_evaluator (properties["see_monster"], this.monster_evaluator     ("sniper_see_monster",  xr_motivator.storage[obj:id()].sniper))
+    manager:add_evaluator (properties["see_enemy"],   this.see_enemy_evaluator   ("sniper_see_enemy",    xr_motivator.storage[obj:id()].sniper))
+    manager:add_evaluator (properties["enemy_near"],  this.enemy_near_evaluator  ("sniper_enemy_near",   xr_motivator.storage[obj:id()].sniper))
 
     local action = this.action_sniper_idle ("sniper_idle", xr_motivator.storage[obj:id()].sniper)
 
