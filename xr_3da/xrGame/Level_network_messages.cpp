@@ -57,7 +57,6 @@ void CLevel::ClientReceive()
 			{
 				P->r_u16		(ID);
 				u32 Ping = P->r_u32();
-//				P->r_advance(1);
 				CGameObject*	O	= dynamic_cast<CGameObject*>(Objects.net_Find		(ID));
 				if (0 == O)		break;
 				O->net_Import(*P);
@@ -81,6 +80,13 @@ void CLevel::ClientReceive()
 				}
 			}break;
 		//------------------------------------------------
+		case M_CL_INPUT:
+			{
+				P->r_u16		(ID);
+				CObject*	O	= Objects.net_Find		(ID);
+				if (0 == O)		break;
+				O->net_ImportInput(*P);
+			}break;
 		case 	M_SV_CONFIG_NEW_CLIENT:
 			InitializeClientGame(*P);
 			break;
@@ -128,13 +134,6 @@ void CLevel::ClientReceive()
 				Msg		("- %s",buffer);
 			}
 			break;
-		case M_CL_INPUT:
-			{
-				P->r_u16		(ID);
-				CObject*	O	= Objects.net_Find		(ID);
-				if (0 == O)		break;
-				O->net_ImportInput(*P);
-			}break;
 		case M_GAMEMESSAGE:
 			{
 				Game().OnGameMessage(*P);
