@@ -9,6 +9,11 @@
 
 #define NO_GOODWILL -1
 
+typedef int			PROFILE_INDEX;
+typedef ref_str		PROFILE_ID;
+#define NO_PROFILE	PROFILE_INDEX(-1)
+
+
 //структура, описывающая отношение одного персонажа к другому
 struct SRelation
 {

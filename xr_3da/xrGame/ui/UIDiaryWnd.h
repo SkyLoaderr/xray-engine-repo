@@ -76,5 +76,5 @@ protected:
 	void				InitDiary();
 
 	//id торговца, для списка контрактов
-	u32					m_TraderID;
+	u16					m_TraderID;
 };

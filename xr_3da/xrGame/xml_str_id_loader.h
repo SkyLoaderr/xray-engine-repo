@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include "ui/xrxmlparser.h"
+
 //T_ID    - уникальный текстовый идентификатор (аттрибут id в XML файле)
 //T_INDEX - уникальный числовой индекс 
 //T_INIT -  класс где определена статическая InitXmlIdToIndex
@@ -132,7 +134,7 @@ typename CSXML_IdToIndex::T_VECTOR&	CSXML_IdToIndex::ItemDataVector ()
 			bool xml_result = uiXml.Init("$game_data$", xml_file_full);
 			R_ASSERT3(xml_result, "xml file not found", xml_file_full);
 
-			//общий список info_portions
+			//общий список
 			int items_num = uiXml.GetNodesNum(uiXml.GetRoot(), tag_name);
 			for(int i=0; i<items_num; ++i)
 			{

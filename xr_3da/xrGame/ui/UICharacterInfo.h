@@ -21,6 +21,7 @@ public:
 
 	void Init(int x, int y, int width, int height, const char* xml_name);
 	void InitCharacter(CInventoryOwner* pInvOwner, bool withPrefixes = true);
+	void InitCharacter(CCharacterInfo* pCharInfo, bool withPrefixes = true);
 	void SetRelation(ALife::ERelationType relation, bool withPrefix = true);
 	
 	void ResetAllStrings();

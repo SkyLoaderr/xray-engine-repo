@@ -15,6 +15,7 @@
 #include "../HUDManager.h"
 #include "../level.h"
 #include "../encyclopedia_article.h"
+#include "../string_table.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -153,7 +154,8 @@ void CUIEncyclopediaWnd::AddArticle(ARTICLE_INDEX article_index)
 		if (pos != std::string::npos)
 		{
 			oneLevel.assign(group, 0, pos - 1);
-			groupTree.push_back(oneLevel.c_str());
+			ref_str str(oneLevel.c_str());
+			groupTree.push_back(CStringTable()(str));
 			group.erase(0, pos + 1);
 		}
 		else
@@ -205,7 +207,7 @@ void CUIEncyclopediaWnd::AddArticle(ARTICLE_INDEX article_index)
 	if (!pTVItemChilds)
 	{
 		pTVItemChilds = xr_new<CUITreeViewItem>();
-		pTVItemChilds->SetText(*groupTree.front());
+		pTVItemChilds->SetText(*CStringTable()(*groupTree.front()));
 		pTVItemChilds->SetFont(m_pTreeRootFont);
 		pTVItemChilds->SetTextColor(m_uTreeRootColor);
 		pTVItemChilds->SetRoot(true);
@@ -229,7 +231,7 @@ void CUIEncyclopediaWnd::AddArticle(ARTICLE_INDEX article_index)
 	pTVItem		= xr_new<CUITreeViewItem>();
 	pTVItem->SetFont(m_pTreeItemFont);
 	pTVItem->SetTextColor(m_uTreeItemColor);
-	pTVItem->SetText(*name);
+	pTVItem->SetText(*CStringTable()(*name));
 	pTVItem->SetValue(m_ArticlesDB.size() - 1);
 	pTVItemChilds->AddItem(pTVItem);
 //	}
@@ -246,7 +248,7 @@ CUITreeViewItem * CUIEncyclopediaWnd::AddTreeTail(GroupTree_it it, GroupTree &co
 	{
 		pNewItem = xr_new<CUITreeViewItem>();
 		pItemToIns->AddItem(pNewItem);
-		pNewItem->SetText(*(*it2));
+		pNewItem->SetText(*CStringTable()(*(*it2)));
 		pNewItem->SetFont(m_pTreeRootFont);
 		pNewItem->SetTextColor(m_uTreeRootColor);
 		pNewItem->SetRoot(true);
@@ -278,8 +280,9 @@ void CUIEncyclopediaWnd::SendMessage(CUIWindow *pWnd, s16 msg, void* pData)
 
 			// Отображаем новые
 			CUIString str;
-			str.SetText(*m_ArticlesDB[pTVItem->GetValue()]->data()->text);
+			str.SetText(*CStringTable()(*m_ArticlesDB[pTVItem->GetValue()]->data()->text));
 			UIInfoList.AddParsedItem<CUIListItem>(str, 0, 0xffffffff);
+			UIInfoList.GetItem(UIInfoList.GetSize() - 1)->SetNewRenderMethod(true);
 			UIEncyclopediaInfoBkg.AttachChild(&m_ArticlesDB[pTVItem->GetValue()]->data()->image);
 			m_ArticlesDB[pTVItem->GetValue()]->data()->image.SetMask(&UIImgMask);
 

@@ -11,6 +11,7 @@
 
 #include "xrServer_Objects_ALife.h"
 #include "xrServer_Objects_ALife_Items.h"
+#include "character_info_defs.h"
 
 #pragma warning(push)
 #pragma warning(disable:4005)
@@ -22,7 +23,10 @@ SERVER_ENTITY_DECLARE_BEGIN0(CSE_ALifeTraderAbstract)
 	ALife::EStalkerRank				m_tRank;
 	float							m_fMaxItemMass;
 	ALife::PERSONAL_EVENT_P_VECTOR	m_tpEvents;
-	
+
+	//character profile info
+	PROFILE_INDEX					m_iCharacterProfile;
+public:	
 									CSE_ALifeTraderAbstract(LPCSTR caSection);
 	virtual							~CSE_ALifeTraderAbstract();
 	// we need this to prevent virtual inheritance :-(

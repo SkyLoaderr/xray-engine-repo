@@ -94,42 +94,49 @@ void CUICharacterInfo::Init(int x, int y, int width, int height, const char* xml
 	}
 }
 
-void CUICharacterInfo::InitCharacter(CInventoryOwner* pInvOwner, bool withPrefixes)
+
+void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo, bool withPrefixes)
 {
-	VERIFY(pInvOwner);
+	VERIFY(pCharInfo);
 
 	static const ref_str withPrefixesPatterns[3] =
 	{
 		"name: %s",
-		"rank: %s",
-		"community: %s"
+			"rank: %s",
+			"community: %s"
 	};
 
 	static const ref_str withoutPrefixesPatterns[3] =
 	{
 		"%s",
-		"%s",
-		"%s"
+			"%s",
+			"%s"
 	};
 
 	const ref_str * patterns = withPrefixes ? withPrefixesPatterns : withoutPrefixesPatterns;
 
 	string256 str;
-	sprintf(str, *patterns[0], pInvOwner->CharacterInfo().Name());
+	sprintf(str, *patterns[0], pCharInfo->Name());
 	UIName.SetText(str);
 
-	sprintf(str, *patterns[1], pInvOwner->CharacterInfo().Rank());
+	sprintf(str, *patterns[1], pCharInfo->Rank());
 	UIRank.SetText(str);
 
-	sprintf(str, *patterns[2], pInvOwner->CharacterInfo().Community());
+	sprintf(str, *patterns[2], pCharInfo->Community());
 	UICommunity.SetText(str);
 
 	UIIcon.SetShader(GetCharIconsShader());
 	UIIcon.GetUIStaticItem().SetOriginalRect(
-					pInvOwner->CharacterInfo().TradeIconX()*ICON_GRID_WIDTH,
-					pInvOwner->CharacterInfo().TradeIconY()*ICON_GRID_HEIGHT,
-					pInvOwner->CharacterInfo().TradeIconX()+CHAR_ICON_WIDTH*ICON_GRID_WIDTH,
-					pInvOwner->CharacterInfo().TradeIconY()+CHAR_ICON_HEIGHT*ICON_GRID_HEIGHT);
+		pCharInfo->TradeIconX()*ICON_GRID_WIDTH,
+		pCharInfo->TradeIconY()*ICON_GRID_HEIGHT,
+		pCharInfo->TradeIconX()+CHAR_ICON_WIDTH*ICON_GRID_WIDTH,
+		pCharInfo->TradeIconY()+CHAR_ICON_HEIGHT*ICON_GRID_HEIGHT);
+}
+
+void CUICharacterInfo::InitCharacter(CInventoryOwner* pInvOwner, bool withPrefixes)
+{
+	VERIFY(pInvOwner);
+	InitCharacter(&pInvOwner->CharacterInfo(), withPrefixes);
 }
 
 void  CUICharacterInfo::SetRelation(ALife::ERelationType relation, bool withPrefix)

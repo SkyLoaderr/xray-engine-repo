@@ -21,6 +21,9 @@
 #include "script_space.h"
 #include "PhraseDialog.h"
 
+#include "xrServer_Objects_ALife_Monsters.h"
+
+
 //////////////////////////////////////////////////////////////////////////
 // CInventoryOwner class 
 //////////////////////////////////////////////////////////////////////////
@@ -83,37 +86,36 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 	CGameObject			*pThis = dynamic_cast<CGameObject*>(this);
 	if(!pThis) return FALSE;
 
+
+	CSE_Abstract* E	= (CSE_Abstract*)(DC);
+	CSE_ALifeTraderAbstract* pTrader = NULL;
+	if(E) pTrader = dynamic_cast<CSE_ALifeTraderAbstract*>(E);
+	if(!pTrader) return FALSE;
 	
-	bool init_default_profile = true;
-	if (pThis->spawn_ini() && pThis->spawn_ini()->section_exist("game_info"))
+	if(NO_PROFILE != pTrader->m_iCharacterProfile)
 	{
-		LPCSTR name_id = pThis->spawn_ini()->r_string("game_info", "name_id");
-		init_default_profile = !CharacterInfo().Load(name_id);
-		
+		CharacterInfo().Load(pTrader->m_iCharacterProfile);
+
 		CAI_PhraseDialogManager* dialog_manager = dynamic_cast<CAI_PhraseDialogManager*>(this);
-		if(dialog_manager && CharacterInfo().m_iStartDialog != NO_DIALOG)
-			dialog_manager->SetStartDialog(CPhraseDialog::IndexToId(CharacterInfo().m_iStartDialog));
-
+		if(dialog_manager && CharacterInfo().data()->m_iStartDialog != NO_DIALOG)
+			dialog_manager->SetStartDialog(CPhraseDialog::IndexToId(CharacterInfo().data()->m_iStartDialog));
 	}
-	
-	if(init_default_profile)
+	else
 	{
-		CharacterInfo().m_sGameName = pThis->cName();
-		CEntity*		 pEntity = dynamic_cast<CEntity*>(pThis);
-		VERIFY(pEntity);
-		CharacterInfo().m_iIconX = pEntity->GetTradeIconX();
-		CharacterInfo().m_iIconY = pEntity->GetTradeIconY();
+		CharacterInfo().data()->m_sGameName = pThis->cName();
+		CEntity* pEntity = dynamic_cast<CEntity*>(pThis); VERIFY(pEntity);
+		CharacterInfo().data()->m_iIconX = pEntity->GetTradeIconX();
+		CharacterInfo().data()->m_iIconY = pEntity->GetTradeIconY();
 
-		CharacterInfo().m_iMapIconX = pEntity->GetMapIconX();
-		CharacterInfo().m_iMapIconY = pEntity->GetMapIconY();
-
+		CharacterInfo().data()->m_iMapIconX = pEntity->GetMapIconX();
+		CharacterInfo().data()->m_iMapIconY = pEntity->GetMapIconY();
 	}
 
 	
 	if(!pThis->Local())  return TRUE;
 
 #ifdef DEBUG
-	CSE_Abstract			*E	= (CSE_Abstract*)(DC);
+	//CSE_Abstract			*E	= (CSE_Abstract*)(DC);
 	CSE_ALifeDynamicObject	*dynamic_object = dynamic_cast<CSE_ALifeDynamicObject*>(E);
 	VERIFY					(dynamic_object);
 #endif
@@ -144,7 +146,7 @@ void	CInventoryOwner::save	(NET_Packet &output_packet)
 	else
 		output_packet.w_u8((u8)inventory().GetActiveSlot());
 
-	output_packet.w_s16((s16)CharacterInfo().m_iStartDialog);
+	output_packet.w_s16((s16)CharacterInfo().data()->m_iStartDialog);
 }
 void	CInventoryOwner::load	(IReader &input_packet)
 {
@@ -154,7 +156,7 @@ void	CInventoryOwner::load	(IReader &input_packet)
 	else
 		inventory().SetActiveSlot(active_slot);
 
-	CharacterInfo().m_iStartDialog = input_packet.r_s16();
+	CharacterInfo().data()->m_iStartDialog = input_packet.r_s16();
 }
 
 

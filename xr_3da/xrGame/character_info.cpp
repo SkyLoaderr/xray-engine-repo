@@ -9,8 +9,8 @@
 #include "ui/xrXMLParser.h"
 
 
+//////////////////////////////////////////////////////////////////////////
 
-//RELATION_MAP m_RelationMap;
 
 SRelation::SRelation()
 {
@@ -40,14 +40,29 @@ void SRelation::SetGoodwill(int new_goodwill)
 
 
 //////////////////////////////////////////////////////////////////////////
+SCharacterProfile::SCharacterProfile()
+{
+	m_sGameName		= NULL;
+	m_iStartDialog  = NO_DIALOG;
+
+	m_iIconX = m_iIconY = -1;
+	m_iMapIconX = m_iMapIconY = -1;
+}
+
+SCharacterProfile::~SCharacterProfile()
+{
+}
+
+
+
 //////////////////////////////////////////////////////////////////////////
 
 CCharacterInfo::CCharacterInfo()
 {
-	m_sGameName		= "noname";
+	m_iProfileIndex = NO_PROFILE;
+
 	m_sTeamName		= "NA";
 	m_sRank			= "novice";
-	m_iStartDialog  = NO_DIALOG;
 }
 
 
@@ -56,47 +71,65 @@ CCharacterInfo::~CCharacterInfo()
 }
 
 
-bool CCharacterInfo::Load(LPCSTR name_id, LPCSTR xml_file)
+void CCharacterInfo::InitXmlIdToIndex()
 {
-	CUIXml xml_doc;
-	bool xml_result = xml_doc.Init("$game_data$", xml_file);
-	R_ASSERT2(xml_result, "xml file not found");
-	if (!xml_result) return false;
+	if(!id_to_index::tag_name)
+		id_to_index::tag_name = "character";
+	if(!id_to_index::file_str)
+		id_to_index::file_str = pSettings->r_string("profiles", "files");
+}
 
-	int charInfosCount = xml_doc.GetNodesNum("", 0, "character");
+void CCharacterInfo::Load(PROFILE_ID id)
+{
+	Load(id_to_index::IdToIndex(id));
+}
+
+void CCharacterInfo::Load(PROFILE_INDEX index)
+{
+	m_iProfileIndex = index;
+	inherited_shared::load_shared(m_iProfileIndex, NULL);
+}
+
+
+void CCharacterInfo::load_shared	(LPCSTR)
+{
+	CUIXml uiXml;
+	const id_to_index::ITEM_DATA& item_data = id_to_index::GetByIndex(m_iProfileIndex);
+
+	string128 xml_file_full;
+	strconcat(xml_file_full, *ref_str(item_data.file_name), ".xml");
+
+	bool xml_result = uiXml.Init("$game_data$", xml_file_full);
+	R_ASSERT3(xml_result, "xml file not found", xml_file_full);
+
+	//loading from XML
+	XML_NODE* item_node = uiXml.NavigateToNode(id_to_index::tag_name, item_data.pos_in_file);
+	R_ASSERT3(item_node, "profile id=", *ref_str(item_data.id));
+
+	uiXml.SetLocalRoot(item_node);
+
+	//игровое имя персонажа
+	data()->m_sGameName		= uiXml.Read("name", 0, NULL);
+	//!!! временно, пока нет соответствующих RPG компонент
+	m_sTeamName		= uiXml.Read("team", 0, NULL);
+	m_sRank			= uiXml.Read("rank", 0, NULL);
 	
-	for (int i = 0; i < charInfosCount; ++i)
-	{
-		if (0 == xr_strcmp(xml_doc.ReadAttrib("character", i, "name_id", ""), name_id))
-		{
-			XML_NODE* tab_node	= xml_doc.NavigateToNode("character", i);
-			xml_doc.SetLocalRoot(tab_node);
+	LPCSTR start_dialog = uiXml.Read("start_dialog", 0, NULL);
+	if(start_dialog)
+		data()->m_iStartDialog	= CPhraseDialog::IdToIndex(start_dialog);
+	else
+		data()->m_iStartDialog	= NO_DIALOG;
 
-			m_sGameName			= xml_doc.Read("name", 0, NULL);
-			m_sTeamName			= xml_doc.Read("team", 0, NULL);
-			m_sRank				= xml_doc.Read("rank", 0, NULL);
-			m_sVisualName		= xml_doc.Read("visual", 0, NULL);
-			LPCSTR start_dialog = xml_doc.Read("start_dialog", 0, NULL);
-			if(start_dialog)
-				m_iStartDialog = CPhraseDialog::IdToIndex(start_dialog);
-			else
-				m_iStartDialog = NO_DIALOG;
-
-			m_iIconX			= xml_doc.ReadAttribInt("icon", 0, "x");
-			m_iIconY			= xml_doc.ReadAttribInt("icon", 0, "y");
-			m_iMapIconX			= xml_doc.ReadAttribInt("map_icon", 0, "x");
-			m_iMapIconY			= xml_doc.ReadAttribInt("map_icon", 0, "y");
-			return true;
-		}
-	}
-
-	return false;
+	data()->m_iIconX		= uiXml.ReadAttribInt("icon", 0, "x");
+	data()->m_iIconY		= uiXml.ReadAttribInt("icon", 0, "y");
+	data()->m_iMapIconX		= uiXml.ReadAttribInt("map_icon", 0, "x");
+	data()->m_iMapIconY		= uiXml.ReadAttribInt("map_icon", 0, "y");
 }
 
 
 LPCSTR CCharacterInfo::Name() const 
 {
-	return	*m_sGameName;
+	return	*data()->m_sGameName;
 }
 LPCSTR CCharacterInfo::Rank() const 
 {

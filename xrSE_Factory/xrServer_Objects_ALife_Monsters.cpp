@@ -13,6 +13,8 @@
 #include "object_broker.h"
 #include "alife_event_personal.h"
 
+#include "character_info.h"
+
 #ifndef AI_COMPILER
 #	include "ai_space.h"
 #endif
@@ -36,6 +38,8 @@ CSE_ALifeTraderAbstract::CSE_ALifeTraderAbstract(LPCSTR caSection)
 	m_tRank						= ALife::EStalkerRank(pSettings->r_u32(caSection, "rank"));
 	m_fMaxItemMass				= pSettings->r_float(caSection, "max_item_mass");
 	m_tpEvents.clear			();
+
+	m_iCharacterProfile			= NO_PROFILE;
 }
 
 CSE_Abstract *CSE_ALifeTraderAbstract::init	()
@@ -67,6 +71,29 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 			load_data			(l_tpTaskIDs,tNetPacket);
 		if (m_wVersion > 62)
 			tNetPacket.r_u32	(m_dwMoney);
+	}
+
+	//запоминаем index profile
+
+	if (xr_strlen(base()->m_ini_string)) {
+#pragma warning(push)
+#pragma warning(disable:4238)
+			CInifile					ini(
+				&IReader			(
+				(void*)(*(base()->m_ini_string)),
+				base()->m_ini_string.size()
+				)
+				);
+#pragma warning(pop)
+
+		LPCSTR profile_id = NULL;
+		if (ini.section_exist("game_info") && ini.line_exist("game_info","name_id"))
+			profile_id = ini.r_string("game_info", "name_id");
+
+		if(NULL == profile_id)
+			m_iCharacterProfile = NO_PROFILE;
+		else
+            m_iCharacterProfile = CCharacterInfo::IdToIndex(PROFILE_ID(profile_id));
 	}
 }
 

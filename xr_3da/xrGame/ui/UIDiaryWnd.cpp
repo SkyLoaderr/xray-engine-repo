@@ -18,8 +18,6 @@
 #include "../ai/trader/ai_trader.h"
 
 #include "../xrserver.h"
-//#include "../xrServer_Objects_ALife.h"
-//#include "../xrServer_Objects_ALife_Items.h"
 #include "../xrServer_Objects_ALife_Monsters.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -160,10 +158,27 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				break;
 
 			case idContracts:
-				VERIFY(m_pLeftHorisontalLine);
-				r = m_pLeftHorisontalLine->GetWndRect();
-				m_pLeftHorisontalLine->MoveWindow(r.left, r.top + contractsOffset);
-				m_pActiveSubdialog = &UIContractsWnd;
+				{
+					VERIFY(m_pLeftHorisontalLine);
+					r = m_pLeftHorisontalLine->GetWndRect();
+					m_pLeftHorisontalLine->MoveWindow(r.left, r.top + contractsOffset);
+					m_pActiveSubdialog = &UIContractsWnd;
+
+
+					CSE_Abstract* E = Level().Server->game->get_entity_from_eid(m_TraderID);
+					CSE_ALifeTrader* pTrader = NULL;
+					if(E) pTrader = dynamic_cast<CSE_ALifeTrader*>(E);
+
+					if(pTrader)
+					{
+						CCharacterInfo character_info;
+						if(NO_PROFILE != pTrader->m_iCharacterProfile)
+					 	{				
+							character_info.Load(pTrader->m_iCharacterProfile);
+							UIContractsWnd.UICharInfo.InitCharacter(&character_info);
+						}
+					}
+				}
 				break;
 
 			case idNews:
@@ -287,10 +302,13 @@ void CUIDiaryWnd::InitDiary()
 			if(pTrader)
 			{
 				CCharacterInfo character_info;
-				CSE_ALifeObject *O = dynamic_cast<CSE_ALifeObject*>(E);
 				bool init_default_profile =true;
-				if(*O->m_sCharacterProfileID)
-					init_default_profile = !character_info.Load(*O->m_sCharacterProfileID);
+				
+				if(NO_PROFILE != pTrader->m_iCharacterProfile)
+				{				
+					character_info.Load(pTrader->m_iCharacterProfile);
+					init_default_profile = false;
+				}
 
 				CUITreeViewItem* pTVItemSub = xr_new<CUITreeViewItem>();
 				pTVItemSub->SetText(init_default_profile?E->name():character_info.Name());
