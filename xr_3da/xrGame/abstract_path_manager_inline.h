@@ -12,134 +12,101 @@
 #include "ai_space.h"
 #include "graph_engine.h"
 
-template <
-	typename _Graph,
-	typename _VertexEvaluator,
-	typename _vertex_id_type
+#define TEMPLATE_SPECIALIZATION template <\
+	typename _Graph,\
+	typename _VertexEvaluator,\
+	typename _vertex_id_type\
 >
-IC	CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>::CAbstractPathManager		()
+
+#define CPathManagerTemplate CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>
+
+TEMPLATE_SPECIALIZATION
+IC	CPathManagerTemplate::CAbstractPathManager		()
 {
 	Init					();
 }
 
-template <
-	typename _Graph,
-	typename _VertexEvaluator,
-	typename _vertex_id_type
->
-IC	CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>::~CAbstractPathManager	()
+TEMPLATE_SPECIALIZATION
+IC	CPathManagerTemplate::~CAbstractPathManager	()
 {
 }
 
-template <
-	typename _Graph,
-	typename _VertexEvaluator,
-	typename _vertex_id_type
->
-IC	void CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>::Init				(_Graph *graph)
+TEMPLATE_SPECIALIZATION
+IC	void CPathManagerTemplate::Init				(_Graph *graph)
 {
 	m_actuality				= false;
-	m_intermediate_index	= u32(-1);
-	m_path.clear			();
+	m_failed				= false;
 	m_evaluator				= 0;
 	m_graph					= graph;
+	m_current_index			= _index_type(-1);
+	m_intermediate_index	= _index_type(-1);
+	m_path.clear			();
 }
 
-template <
-	typename _Graph,
-	typename _VertexEvaluator,
-	typename _vertex_id_type
->
-IC	void CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>::build_path	(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id)
+TEMPLATE_SPECIALIZATION
+IC	void CPathManagerTemplate::build_path	(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id)
 {
-	VERIFY					(m_graph);
-	VERIFY					(m_evaluator);
-	if (!actual(start_vertex_id, dest_vertex_id) && m_graph->valid_vertex_id(start_vertex_id) && m_graph->valid_vertex_id(dest_vertex_id)) {
-		m_actuality			= ai().graph_engine().search(*m_graph,start_vertex_id,dest_vertex_id,&m_path,*m_evaluator);
-		if (m_actuality)
-			m_intermediate_index = 0;
-		m_actuality			= true;
+	VERIFY					(m_graph && m_evaluator && m_graph->valid_vertex_id(start_vertex_id) && m_graph->valid_vertex_id(dest_vertex_id));
+	m_failed				= ai().graph_engine().search(*m_graph,start_vertex_id,dest_vertex_id,&m_path,*m_evaluator);
+	if (failed()) {
+		m_current_index		= _index_type(-1);
+		m_intermediate_index= _index_type(-1);
 	}
+	else {
+		m_current_index		= _index_type(0);
+		m_intermediate_index= _index_type(0);
+	}
+	m_actuality				= !failed();
 }
 
-template <
-	typename _Graph,
-	typename _VertexEvaluator,
-	typename _vertex_id_type
->
-IC	void CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>::select_intermediate_vertex()
+TEMPLATE_SPECIALIZATION
+IC	void CPathManagerTemplate::select_intermediate_vertex()
 {
-	VERIFY					(!m_path.empty());
+	VERIFY					(!failed() && !m_path.empty());
 	m_intermediate_index	= m_path.size() - 1;
 }
 
-template <
-	typename _Graph,
-	typename _VertexEvaluator,
-	typename _vertex_id_type
->
-IC	_vertex_id_type CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>::get_intermediate_vertex_id() const
+TEMPLATE_SPECIALIZATION
+IC	_vertex_id_type CPathManagerTemplate::get_intermediate_vertex_id() const
+{
+	VERIFY					(m_intermediate_index < m_path.size());
+	return					(m_path[m_intermediate_index]);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	u32 CPathManagerTemplate::get_intermediate_index() const
 {
 	return					(m_intermediate_index);
 }
 
-template <
-	typename _Graph,
-	typename _VertexEvaluator,
-	typename _vertex_id_type
->
-IC	u32 CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>::get_intermediate_index() const
+TEMPLATE_SPECIALIZATION
+IC	bool CPathManagerTemplate::actual(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id) const
 {
-	return					(m_intermediate_index);
+	return					(m_actuality);
 }
 
-template <
-	typename _Graph,
-	typename _VertexEvaluator,
-	typename _vertex_id_type
->
-IC	bool CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>::actual(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id) const
+TEMPLATE_SPECIALIZATION
+IC	bool CPathManagerTemplate::completed() const
 {
-	return				(!m_path.empty());
+	return					(m_intermediate_index == m_path.size() - 1);
 }
 
-template <
-	typename _Graph,
-	typename _VertexEvaluator,
-	typename _vertex_id_type
->
-IC	bool CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>::completed() const
+TEMPLATE_SPECIALIZATION
+IC	bool CPathManagerTemplate::failed() const
 {
-	return				(true);
+	return					(m_failed);
 }
 
-template <
-	typename _Graph,
-	typename _VertexEvaluator,
-	typename _vertex_id_type
->
-IC	bool CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>::failed() const
+TEMPLATE_SPECIALIZATION
+IC	void CPathManagerTemplate::set_evaluator(_VertexEvaluator *evaluator)
 {
-	return				(false);
+	if ((evaluator != m_evaluator) || !m_evaluator->actual())
+		m_actuality			= false;
+	m_evaluator				= evaluator;
 }
 
-template <
-	typename _Graph,
-	typename _VertexEvaluator,
-	typename _vertex_id_type
->
-IC	void CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>::set_evaluator(_VertexEvaluator *evaluator)
+TEMPLATE_SPECIALIZATION
+IC	const xr_vector<_vertex_id_type> &CPathManagerTemplate::path	() const
 {
-	m_evaluator			= evaluator;
-}
-
-template <
-	typename _Graph,
-	typename _VertexEvaluator,
-	typename _vertex_id_type
->
-IC	const xr_vector<_vertex_id_type> &
-CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>::path	() const
-{
-	return				(m_path);
+	return					(m_path);
 }

@@ -61,9 +61,9 @@ TEMPLATE_SPECIALIZATION
 IC	bool CSelectorTemplate::actual(const _vertex_id_type start_vertex_id)
 {
 	if (!used())
-		return			(true);
-	perform_search		(start_vertex_id);
-	return				(failed());
+		return				(true);
+	perform_search			(start_vertex_id);
+	return					(failed());
 }
 
 TEMPLATE_SPECIALIZATION
@@ -81,21 +81,20 @@ IC	bool CSelectorTemplate::used() const
 TEMPLATE_SPECIALIZATION
 IC	void CSelectorTemplate::select_location	(const _vertex_id_type start_vertex_id, _vertex_id_type &dest_vertex_id)
 {
-	if (!failed()) {
+	if (used()) {
 		perform_search		(start_vertex_id);
-		if (failed())
-			dest_vertex_id	= start_vertex_id;
-		else
+		if (!failed())
 			dest_vertex_id	= m_selected_vertex_id;
-		return;
 	}
+	else
+		m_failed			= false;
 }
 
 TEMPLATE_SPECIALIZATION
 IC	void CSelectorTemplate::perform_search		(const _vertex_id_type vertex_id)
 {
-	VERIFY				(m_evaluator && m_graph);
-	ai().graph_engine().search(*m_graph,vertex_id,vertex_id,0,*m_evaluator);
+	VERIFY						(m_evaluator && m_graph);
+	ai().graph_engine().search	(*m_graph,vertex_id,vertex_id,0,*m_evaluator);
 	m_failed	= 
 		!m_graph->valid_vertex_id(m_evaluator->selected_vertex_id()) || 
 		(m_evaluator->selected_vertex_id() == m_selected_vertex_id);

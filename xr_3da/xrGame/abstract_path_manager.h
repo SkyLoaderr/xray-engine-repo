@@ -17,7 +17,9 @@ class CAbstractPathManager {
 private:
 	_Graph										*m_graph;
 	bool										m_actuality;
+	bool										m_failed;
 	_VertexEvaluator							*m_evaluator;
+	u32											m_current_index;
 	u32											m_intermediate_index;
 	xr_vector<_vertex_id_type>					m_path;
 public:
