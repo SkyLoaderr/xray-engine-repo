@@ -8,7 +8,7 @@
 #include "xr_ioc_cmd.h"
 #include "render.h"
 #include "xr_object.h"
-#include "std_classes.h"
+#include "std_classes.h" 
 #include "CustomHUD.h"
 
 //************************************************ Input
