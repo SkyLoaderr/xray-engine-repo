@@ -45,7 +45,7 @@ void CStateWatchOver::reload			(LPCSTR section)
 void CStateWatchOver::initialize		()
 {
 	inherited::initialize			();
-	set_inertia_time				(::Random.randI(10000,30000));
+	set_inertia_time				(::Random.randI(5000,10000));
 }
 
 void CStateWatchOver::execute			()

@@ -31,12 +31,12 @@ void CStateManagerNoALife::Init				()
 
 void CStateManagerNoALife::Load				(LPCSTR section)
 {
-	add_state				(xr_new<CStateFreeNoAlife>("FreeNoALife"),	eNoALifeStateFree,			0);
-	add_state				(xr_new<CStateGatherItems>("GatherItems"),	eNoALifeGatherItems,		0);
-	add_state				(xr_new<CStateGatherItems>("AnomalyCheck"),	eNoALifeAnomalyCheck,		0);
-	add_state				(xr_new<CStateGatherItems>("GatherItems"),	eNoALifeHiddenEnemyCheck,	0);
-	add_state				(xr_new<CStateGatherItems>("GatherItems"),	eNoALifeBackEnemyCheck,		0);
-	add_state				(xr_new<CStateGatherItems>("GatherItems"),	eNoALifeWatchOver,			0);
+	add_state				(xr_new<CStateFreeNoAlife>		("FreeNoALife"),		eNoALifeStateFree,			0);
+	add_state				(xr_new<CStateGatherItems>		("GatherItems"),		eNoALifeGatherItems,		0);
+	add_state				(xr_new<CStateAnomalyCheck>		("AnomalyCheck"),		eNoALifeAnomalyCheck,		0);
+	add_state				(xr_new<CStateHiddenEnemyCheck>	("HiddenEnemyCheck"),	eNoALifeHiddenEnemyCheck,	0);
+	add_state				(xr_new<CStateBackEnemyCheck>	("BackEnemyCheck"),		eNoALifeBackEnemyCheck,		0);
+	add_state				(xr_new<CStateWatchOver>		("WatchOver"),			eNoALifeWatchOver,			0);
 
 	add_transition			(eNoALifeStateFree,eNoALifeGatherItems,				1,1);
 	add_transition			(eNoALifeStateFree,eNoALifeAnomalyCheck,			1,1);
@@ -57,10 +57,10 @@ void CStateManagerNoALife::Load				(LPCSTR section)
 	inherited::Load			(section);
 	
 	m_free_probability		= .50f;
-	m_watch_probability		= .25f;
-	m_anomaly_probability	= .25f;
-	m_hidden_probability	= 0.f;
-	m_back_probability		= 0.f;
+	m_watch_probability		= .00f;
+	m_anomaly_probability	= .50f;
+	m_hidden_probability	= .00f;
+	m_back_probability		= .00f;
 }
 
 void CStateManagerNoALife::reinit			(CAI_Stalker *object)
@@ -80,32 +80,45 @@ void CStateManagerNoALife::initialize		()
 	inherited::initialize	();
 }
 
+void CStateManagerNoALife::choose_state		()
+{
+	if (m_object->item()) {
+		set_dest_state		(eNoALifeGatherItems);
+		return;
+	}
+	else
+		if (!current_state().completed() || (current_state_id() != dest_state_id()))
+			return;
+
+	float			rand_value = ::Random.randF(0,1.f);
+
+	if (rand_value < m_watch_probability) {
+		set_dest_state	(eNoALifeWatchOver);
+		return;
+	}
+	
+	rand_value		-= m_watch_probability;
+	if (rand_value < m_anomaly_probability) {
+		set_dest_state	(eNoALifeAnomalyCheck);
+		return;
+	}
+	
+	rand_value		-= m_anomaly_probability;
+	if (rand_value < m_hidden_probability) {
+		set_dest_state	(eNoALifeHiddenEnemyCheck);
+		return;
+	}
+	
+	rand_value		-= m_hidden_probability;
+	if (rand_value < m_back_probability)
+		set_dest_state	(eNoALifeBackEnemyCheck);
+	else
+		set_dest_state	(eNoALifeStateFree);
+}
+
 void CStateManagerNoALife::execute			()
 {
-	if (m_object->item())
-		set_dest_state		(eNoALifeGatherItems);
-	else
-		if (current_state().completed()) {
-//			float			rand_value = ::Random.randF(0,1.f);
-//			
-//			if (rand_value < m_watch_probability)
-//				set_dest_state	(eNoALifeWatchOver);
-//			rand_value		-= m_watch_probability;
-//
-//			if (rand_value < m_anomaly_probability)
-//				set_dest_state	(eNoALifeAnomalyCheck);
-//			rand_value		-= m_anomaly_probability;
-//
-//			if (rand_value < m_hidden_probability)
-//				set_dest_state	(eNoALifeHiddenEnemyCheck);
-//			rand_value		-= m_hidden_probability;
-//
-//			if (rand_value < m_back_probability)
-//				set_dest_state	(eNoALifeBackEnemyCheck);
-//			
-			set_dest_state	(eNoALifeStateFree);
-		}
-
+	choose_state			();
 	inherited::execute		();
 }
 

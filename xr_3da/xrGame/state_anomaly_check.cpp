@@ -46,7 +46,7 @@ void CStateAnomalyCheck::reload			(LPCSTR section)
 void CStateAnomalyCheck::initialize		()
 {
 	inherited::initialize			();
-	set_inertia_time				(::Random.randI(10000,30000));
+	set_inertia_time				(::Random.randI(5000,10000));
 }
 
 void CStateAnomalyCheck::execute			()

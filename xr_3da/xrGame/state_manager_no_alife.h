@@ -35,6 +35,7 @@ public:
 	virtual	void		initialize				();
 	virtual	void		execute					();
 	virtual	void		finalize				();
+			void		choose_state			();
 
 private:
 	float				m_free_probability;
