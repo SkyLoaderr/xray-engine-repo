@@ -586,7 +586,8 @@ void CUITradeWnd::UpdateLists()
 			if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
 
 			//установить коэффициент масштабирования
-			UIDragDropItem.SetTextureScaleXY(TRADE_ICONS_SCALE, TRADE_ICONS_SCALE);
+//.			UIDragDropItem.SetTextureScaleXY(TRADE_ICONS_SCALE, TRADE_ICONS_SCALE);
+			UIDragDropItem.SetStretchTexture(true);
 				
 			UIOurBagList.AttachChild(&UIDragDropItem);
 //			++m_iUsedItems;
@@ -630,8 +631,8 @@ void CUITradeWnd::UpdateLists()
 			if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
 
 			//установить коэффициент масштабирования
-			UIDragDropItem.SetTextureScaleXY(TRADE_ICONS_SCALE,TRADE_ICONS_SCALE);
-				
+//.			UIDragDropItem.SetTextureScaleXY(TRADE_ICONS_SCALE,TRADE_ICONS_SCALE);
+			UIDragDropItem.SetStretchTexture(true);
 			UIOthersBagList.AttachChild(&UIDragDropItem);
 //			++m_iUsedItems;
 		}

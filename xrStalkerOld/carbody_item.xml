@@ -31,6 +31,6 @@
 	<static_3d x="0" y="-175" width="250" height="190"></static_3d>
 
 	<!-- IMAGE STATIC -->
-	<image_static x="10" y="0" width="240" height="190"/>
+	<image_static x="130" y="95" width="240" height="190" alignment="c"/>
 </window>
 

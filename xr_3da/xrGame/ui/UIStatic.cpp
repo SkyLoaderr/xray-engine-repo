@@ -93,8 +93,11 @@ void  CUIStatic::Draw()
 		Irect clip_rect;
 		if (-1 == m_ClipRect.left && -1 == m_ClipRect.right &&
 			-1 == m_ClipRect.top && -1 == m_ClipRect.left){
-			if(GetParent())	clip_rect = GetParent()->GetAbsoluteRect();
-			else			clip_rect = GetAbsoluteRect();
+			Irect our_rect	= GetAbsoluteRect();
+			clip_rect		= our_rect;
+			if(GetParent())
+				clip_rect.intersection(our_rect,GetParent()->GetAbsoluteRect());
+			
 		}else				clip_rect = m_ClipRect;
 		UI()->PushScissor	(clip_rect);
 	}
@@ -132,7 +135,12 @@ void  CUIStatic::Draw()
 
 			m_UIStaticItem.SetRect(0, 0, rect.width(), rect.height());
 //			m_UIStaticItem.Render(0, 0, rect.width(), rect.height());
-		} 
+		}else{
+			Irect r={0,0,
+						m_UIStaticItem.GetOriginalRectScaled().width(),
+						m_UIStaticItem.GetOriginalRectScaled().height()};
+			m_UIStaticItem.SetRect(r);
+		}
 
 		if( Heading() ){
 			m_UIStaticItem.Render( GetHeading() );
