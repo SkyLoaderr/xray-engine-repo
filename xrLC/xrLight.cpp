@@ -29,11 +29,13 @@ void CBuild::Light()
 		);
 
 	// Main process (4 threads)
+	const	DWORD			thNUM = 4;
 	DWORD	dwTimeStart = timeGetTime();
-	CLMThread*	threads[4] = {0,0,0,0};
+	CLMThread*	threads[thNUM];
+	ZeroMemory	(threads,sizeof(threads));
 	DWORD		N=0;
 	for (;;) {
-		for (int L=0; L<4; L++) {
+		for (int L=0; L<thNUM; L++) {
 			if ((0==threads[L]) || threads[L]->thCompleted)
 			{
 				_DELETE	(threads[L]);
@@ -47,7 +49,9 @@ void CBuild::Light()
 				Status	("Calculating surface up to #%d...",N);
 			}
 		}
-		if		((0==threads[0])&&(0==threads[1])&&(0==threads[2])&&(0==threads[3]))	break;
+		DWORD	thOK	= 0;
+		for (L=0; L<thNUM; L++)	thOK += (threads[L]?0:1);
+		if		(thOK==thNUM)	break;
 		Sleep	(50);
 	}
 	Msg("%d seconds",(timeGetTime()-dwTimeStart)/1000);

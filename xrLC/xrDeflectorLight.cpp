@@ -368,7 +368,6 @@ VOID CDeflector::Light()
 		// Compress if needed
 		if (rms_test(lm,_r,_g,_b,rms))
 		{
-//			Msg		("*** ZERO compress");
 			_FREE	(lm.pSurface);		// release OLD
 			DWORD	c_x			= BORDER*2;
 			DWORD	c_y			= BORDER*2;
@@ -380,6 +379,7 @@ VOID CDeflector::Light()
 			lm.pSurface			= compressed;
 			lm.dwHeight			= 0;
 			lm.dwWidth			= 0;
+			Msg("*** %3d/%3d",	lm.dwWidth,lm.dwHeight);
 			return;
 		} else {
 			// *** Try to bilinearly filter lightmap down and up
