@@ -1,5 +1,6 @@
 	+ TODO: NET: Can't connect
 	+ TODO: Level-unload
+	. TODO: ltx
 	. TODO: NET: Server Disconnect
 	. TODO: NET: Client Disconnect
 	. TODO: Detail texturing

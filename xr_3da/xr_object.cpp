@@ -167,6 +167,7 @@ void CObject::OnDeviceDestroy	()
 {
 	if (pVisual)				Render->model_Delete	(pVisual);
 	_DELETE						(pLights);
+	if (pSector)				pSector->objectRemove	(this);
 }
 
 void CObject::OnDeviceCreate	()
@@ -175,6 +176,7 @@ void CObject::OnDeviceCreate	()
 	REQ_CREATE					();
 	pVisual						= Render->model_Create	(pVisualName);
 	pLights						= new CLightTrack;
+	Sector_Detect				();
 }
 
 // Updates
