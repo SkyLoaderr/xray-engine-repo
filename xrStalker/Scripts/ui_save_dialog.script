@@ -240,40 +240,23 @@ function save_dialog:OnButton_ok_clicked()
 	
 	// check for empty name
 	if string.len(new_save) == 0 then
-		message_box:SetStyle(0)		
+		message_box:SetStyle(CUIMessageBox.STYLE_OK)		
 		message_box:SetText("The file name is empty. Please enter valid name!")
 		message_box:Show()
 		return
 	end
-
+	
+	// check for match name
 	local f = getFS()
 	local file_struct = f:exist("$game_saves$", new_save)
-	
-	
-	local flist = f:file_list_open("$game_saves$",FS.FS_ListFiles)
-	local f_cnt = flist:Size()
-	
-//	for	it=0, f_cnt-1 	do
-	local it = 50
-	local file		=	flist:GetAt(it)
-	printf("file[%d]=%s",it,file)
-	local pth = f:update_path("$game_saves$", file) 
-	printf("full path=%s",pth)
-	
-	printf("file age is [%s]",f:get_file_age_str(pth))
-	
-	
-	if file_struct~=nil then
-	printf("name=%s;modif=%d",file_struct.name,file_struct.modif)
+	if file_struct =~ nil
+		message_box:SetStyle(CUIMessageBox.STYLE_YES_NO)
+		message_box:SetText("The file with this name already exist. Do you want to owerwrite it?")
+		message_box:Show()
+		return
 	end
-		
-//   end
 	
-	flist:Free()
-
---		
---	
---		
+	self:SaveFile(new_save)
 
 end
 
@@ -309,7 +292,7 @@ function save_dialog:AddItemToList(item)
 	
 end
 
-function save_dialog:ItemIsInList(item)
-	return false
+function save_dialog:SaveFile(fileName)
+	
 end
 
