@@ -13,6 +13,10 @@
 class CEntityAction;
 
 class CScriptMonster : virtual public CGameObject {
+public:
+//	enum EActionType {
+//		eActionType
+//	};
 protected:
 	typedef CGameObject inherited;
 	xr_deque<CEntityAction*>	m_tpActionQueue;
