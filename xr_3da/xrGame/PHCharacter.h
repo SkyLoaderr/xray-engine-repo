@@ -91,6 +91,12 @@ const Fvector&	Velocity									() {return m_velocity;}
 const float&	ContactVelocity								() {return m_contact_velocity;}
 Fvector			IPosition									() {
 																Fvector pos;
+																if(!b_exist){
+																	pos.set(m_safe_position[0],
+																			m_safe_position[1],
+																			m_safe_position[2]);
+																	return pos;
+																}
 																m_body_interpolation.InterpolatePosition(pos);
 																pos.y-=m_radius;
 																return pos;

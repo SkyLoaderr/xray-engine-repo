@@ -590,8 +590,9 @@ m_update_time=Device.fTimeGlobal;
 }
 
 void CPHSimpleCharacter::SetAcceleration(Fvector accel){
+	if(!b_exist) return;
 
-	if(!dBodyIsEnabled(m_body)&& b_exist)
+	if(!dBodyIsEnabled(m_body))
 		if(accel.magnitude()!=0.f)
 					dBodyEnable(m_body);
 m_acceleration=accel;
