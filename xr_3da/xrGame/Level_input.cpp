@@ -160,7 +160,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 		break;
 	}
 
-	CObject			*obj		= Level().Objects.FindObjectByName("tele");
+//	CObject			*obj		= Level().Objects.FindObjectByName("tele");
 //	if (obj) {
 //		CAI_Bloodsucker *monster = dynamic_cast<CAI_Bloodsucker *>(obj);
 //
@@ -173,12 +173,12 @@ void CLevel::IR_OnKeyboardPress(int key)
 //		}
 //	}
 
-	if (obj) {
-		CBurer		*monster	= dynamic_cast<CBurer *>(obj);
-
-		Fvector pos;
-		pos = Level().CurrentEntity()->Position();
-		pos.y+=3.f;
+//	if (obj) {
+//		CBurer		*monster	= dynamic_cast<CBurer *>(obj);
+//
+//		Fvector pos;
+//		pos = Level().CurrentEntity()->Position();
+//		pos.y+=3.f;
 
 //		if (monster) {
 //			switch (key) {
@@ -193,7 +193,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 //			break;
 //			}
 //		}
-	}
+//	}
 
 //////////////////////////////////////////////////////////////////////////
 //	TEST	
