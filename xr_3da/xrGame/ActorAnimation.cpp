@@ -120,9 +120,6 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		// Torso
 		CWeapon* W = dynamic_cast<CWeapon*>(Weapons->ActiveWeapon());
 		if (W){
-			if (!Local()){
-				int y=0;
-			}
 			SActorState::STorsoWpn* TW	= &ST->m_torso[W->HandDependence()-1];
 			if (!b_DropActivated&&!fis_zero(f_DropPower)){
 				M_torso					= TW->drop;
