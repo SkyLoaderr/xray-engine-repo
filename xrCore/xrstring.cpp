@@ -88,6 +88,7 @@ void		str_container::verify	()
 		str_value*	sv		= *it;
 		u32			crc		= crc32	(sv->value,sv->dwLength);
 		R_ASSERT3	(crc==sv->dwCRC, "CorePanic: read-only memory corruption (shared_strings)", sv->value);
+		R_ASSERT3	(sv->dwLength == xr_strlen(sv->value), "CorePanic: read-only memory corruption (shared_strings, internal structures)", sv->value);
 	}
 	cs.Leave	();
 }
