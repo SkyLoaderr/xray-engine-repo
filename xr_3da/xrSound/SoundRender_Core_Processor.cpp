@@ -49,16 +49,19 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
 	}
 
 	// Update listener
-	clamp								(dt,EPS_S,1.f/10.f);
-	Listener.vVelocity.sub				(P, Listener.vPosition );
-	Listener.vVelocity.div				(dt);
-	Listener.vPosition.set				(P);
-	Listener.vOrientFront.set			(D);
-	Listener.vOrientTop.set				(N);
-	Listener.fDopplerFactor				= psSoundDoppler;
-	Listener.fRolloffFactor				= psSoundRolloff;
-	pListener->SetAllParameters			((DS3DLISTENER*)&Listener, DS3D_DEFERRED );
-	pListener->CommitDeferredSettings	();
+	if (pListener)
+	{
+		clamp								(dt,EPS_S,1.f/10.f);
+		Listener.vVelocity.sub				(P, Listener.vPosition );
+		Listener.vVelocity.div				(dt);
+		Listener.vPosition.set				(P);
+		Listener.vOrientFront.set			(D);
+		Listener.vOrientTop.set				(N);
+		Listener.fDopplerFactor				= psSoundDoppler;
+		Listener.fRolloffFactor				= psSoundRolloff;
+		pListener->SetAllParameters			((DS3DLISTENER*)&Listener, DS3D_DEFERRED );
+		pListener->CommitDeferredSettings	();
+	}
 
 	// Start rendering of pending targets
 	for (it=0; it<s_targets_defer.size(); it++)
