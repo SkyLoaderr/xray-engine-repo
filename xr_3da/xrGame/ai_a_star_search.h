@@ -168,20 +168,20 @@ public:
 					continue;
 				// checking if that node is in the path of the BESTNODE ones
 				if (tpIndexes[iNodeIndex].dwTime == dwAStarStaticCounter) {
-					bool bOk = true;
 					tpTemp = tpIndexes[iNodeIndex].tpNode;
-					if (!(tpTemp->ucOpenCloseMask)) {
-						tpTemp2 = tpTemp->tpForward;
-						while (tpTemp2) {
-							if (tpTemp2->iIndex == iBestIndex) {
-								bOk = false;
-								break;
-							}
-							tpTemp2 = tpTemp2->tpForward;
-						}
-						if (!bOk)
-							continue;
-					}
+//					bool bOk = true;
+//					if (!(tpTemp->ucOpenCloseMask)) {
+//						tpTemp2 = tpTemp->tpForward;
+//						while (tpTemp2) {
+//							if (tpTemp2->iIndex == iBestIndex) {
+//								bOk = false;
+//								break;
+//							}
+//							tpTemp2 = tpTemp2->tpForward;
+//						}
+//						if (!bOk)
+//							continue;
+//					}
 					
 					// initialize node
 					float dG = tpBestNode->g + tTemplateNode.ffEvaluate(iBestIndex,iNodeIndex,tIterator);
@@ -211,8 +211,7 @@ public:
 						}
 						continue;
 					}
-
-					if (!(tpTemp->ucOpenCloseMask)) {
+					else {
 						if (tpTemp->g > dG) {
 							vfUpdateSuccessors(tpTemp,tpTemp->g - dG);
 							tpTemp->g = dG;

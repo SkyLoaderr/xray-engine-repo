@@ -91,8 +91,18 @@ public:
 				else
 					if (min(id1,id2) < 0)
 						Msg("! invalid vertex number (%d)!",min(id1,id2));
-					else
-						Msg("* %7.2f",Level().AI.ffFindMinimalPath(id1,id2,Level().AI.m_tpaNodes));
+					else {
+//						SetPriorityClass	(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
+//						SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
+						Sleep				(1);
+						u64 t1x = CPU::GetCycleCount();
+						float fValue = Level().AI.ffFindMinimalPath(id1,id2,Level().AI.m_tpaNodes);
+						u64 t2x = CPU::GetCycleCount();
+//						SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
+//						SetPriorityClass	(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
+						t2x -= t1x;
+						Msg("* %7.2f[%d] : %11I64u cycles (%.3f microseconds)",fValue,Level().AI.m_tpaNodes.size(),t2x,CPU::cycles2microsec*t2x);
+					}
 			else
 				Msg("! not enough parameters!");
 	}

@@ -179,21 +179,21 @@ void vfFindTheShortestPath(TNode *taHeap, TIndexNode *tpaIndexes, u32 &dwAStarSt
 				iNodeIndex = UnpackLink(taLinks[i]);
 				// checking if that node is in the path of the BESTNODE ones
 				if (tpaIndexes[iNodeIndex].dwTime == dwAStarStaticCounter) {
-					bool bOk = true;
 					tpTemp = tpaIndexes[iNodeIndex].tpNode;
-					if (!(tpTemp->ucOpenCloseMask)) {
-						int iBestIndex = tpBestNode->iIndex;
-						tpTemp2 = tpTemp->tpForward;
-						while (tpTemp2) {
-							if (tpTemp2->iIndex == iBestIndex) {
-								bOk = false;
-								break;
-							}
-							tpTemp2 = tpTemp2->tpForward;
-						}
-						if (!bOk)
-							continue;
-					}
+//					bool bOk = true;
+//					if (!(tpTemp->ucOpenCloseMask)) {
+//						int iBestIndex = tpBestNode->iIndex;
+//						tpTemp2 = tpTemp->tpForward;
+//						while (tpTemp2) {
+//							if (tpTemp2->iIndex == iBestIndex) {
+//								bOk = false;
+//								break;
+//							}
+//							tpTemp2 = tpTemp2->tpForward;
+//						}
+//						if (!bOk)
+//							continue;
+//					}
 					
 					// initialize node
 					float dG = tpBestNode->g + ffCriteria(mNodeStructure(tpBestNode->iIndex),mNodeStructure(iNodeIndex));
@@ -223,8 +223,7 @@ void vfFindTheShortestPath(TNode *taHeap, TIndexNode *tpaIndexes, u32 &dwAStarSt
 						}
 						continue;
 					}
-
-					if (!(tpTemp->ucOpenCloseMask)) {
+					else {
 						if (tpTemp->g > dG) {
 							vfUpdateSuccessors(tpTemp,tpTemp->g - dG);
 							tpTemp->g = dG;
