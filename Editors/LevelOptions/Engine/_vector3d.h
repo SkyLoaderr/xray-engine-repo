@@ -300,6 +300,10 @@ public:
 	}
 };
 typedef _vector<float>	Fvector;
+typedef _vector<float>	Fvector3;
 typedef _vector<double> Dvector;
+typedef _vector<double> Dvector3;
+typedef _vector<s32>	Ivector;
+typedef _vector<s32>	Ivector3;
 
 #endif

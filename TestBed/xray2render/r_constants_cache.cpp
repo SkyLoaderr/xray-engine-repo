@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "r_cosnstants_cache.h"
+#include "r_constants_cache.h"
 
 void R_constants::flush_cache(IDirect3DDevice9* D)
 {
