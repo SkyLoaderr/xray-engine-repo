@@ -395,7 +395,7 @@ bool AABBNoLeafTree::Build(AABBTree* tree)
 	if(!(Data&1))													\
 	{																\
 		/* Compute box number */									\
-		udword Nb = (Data - udword(Nodes))/Nodes[i].GetNodeSize();	\
+		size_t Nb = (Data - uintptr_t(Nodes))/Nodes[i].GetNodeSize();	\
 		Data = uintptr_t(&mNodes[Nb]);									\
 	}																\
 	/* ...remapped */												\
@@ -459,7 +459,7 @@ bool AABBQuantizedTree::Build(AABBTree* tree)
 		INIT_QUANTIZATION
 
 		// Quantize
-		udword Data;
+		uintptr_t Data;
 		for(i=0;i<mNbNodes;i++)
 		{
 			PERFORM_QUANTIZATION
