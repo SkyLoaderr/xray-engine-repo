@@ -55,12 +55,12 @@ function zone_binder:net_spawn( server_object )
 		end
 	end
 
-	if ini:section_exist( "monster" ) then
-		self.managers.monster = script_zone.monster_zone( self.object, ini )
-		if not self.managers.monster.ini_ok then
-			utils.abort( "'monster' manager NOT initialized" )
-		end
-	end
+	--if ini:section_exist( "monster" ) then
+	--	self.managers.monster = script_zone.monster_zone( self.object, ini )
+	--	if not self.managers.monster.ini_ok then
+	--		utils.abort( "'monster' manager NOT initialized" )
+	--	end
+	--end
 
 	if ini:section_exist( "zone_spawner" ) then
 		self.managers.z_spawner = zone_spawner.zone_spawner( self.object, ini )
