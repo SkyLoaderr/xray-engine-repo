@@ -18,8 +18,8 @@ typedef u32 TTime;
 	
 #else
 
-	#define LOG_EX(str) Msg(str)
-	#define LOG_EX2(str,params) Msg(str,/params/)
+	#define LOG_EX(str) Msg(str);
+	#define LOG_EX2(str,params) Msg(str,/params/);
 
 #endif
 
