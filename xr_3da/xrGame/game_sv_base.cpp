@@ -153,6 +153,7 @@ void game_sv_GameState::net_Export_Update						(NET_Packet& P, u32 id_to, u32 id
 void game_sv_GameState::OnRoundStart			()
 {
 	phase		= GAME_PHASE_INPROGRESS;
+	start_time	= Device.TimerAsync	();
 
 	// clear "ready" flag
 	Lock	();
