@@ -526,6 +526,10 @@
 			<File
 				RelativePath="ModelPool.h">
 			</File>
+			<Filter
+				Name="Visuals"
+				Filter="">
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Visibility"
