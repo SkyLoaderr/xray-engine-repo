@@ -232,7 +232,7 @@ LONG UnhandledFilter	( struct _EXCEPTION_POINTERS *pExceptionInfo )
 			if (INVALID_HANDLE_VALUE==hFile)	
 			{
 				// try to place into current directory
-				MoveMemory	(szDumpPath,szDumpPath+5);
+				MoveMemory	(szDumpPath,szDumpPath+5,strlen(szDumpPath));
 				hFile		= ::CreateFile( szDumpPath, GENERIC_WRITE, FILE_SHARE_WRITE, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL );
 			}
 			if (hFile!=INVALID_HANDLE_VALUE)
