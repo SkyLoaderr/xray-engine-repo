@@ -1,90 +1,90 @@
 function main()
 
-	walker01 = get_level_object("walker01")
-	walker02 = get_level_object("walker02")
-	walker03 = get_level_object("walker03")
+	walker04 = get_level_object("walker04")
+	walker05 = get_level_object("walker05")
+	walker06 = get_level_object("walker06")
 
 			wait(1000)			
 
-			walker01:script	(true,  script_veterans_01.script_name())
-			walker02:script	(true,  script_veterans_01.script_name())
-			walker03:script	(true,  script_veterans_01.script_name())
+			walker04:script	(true,  script_veterans_01.script_name())
+			walker05:script	(true,  script_veterans_01.script_name())
+			walker06:script	(true,  script_veterans_01.script_name())
 
 			action(
-				walker01,
-			  	move	(move.standing, move.walk,move.line,patrol("guard_way03")),
+				walker04,
+			  	move	(move.standing, move.walk,move.line,patrol("guard_way04")),
 				sound	("scripts\\idle\\movie_footsteps","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),true),
 				anim	(anim.free),
 				cond	(cond.move_end)
 			)
 			action(
-				walker02,
-			  	move	(move.standing, move.walk,move.line,patrol("guard_way03")),
+				walker05,
+			  	move	(move.standing, move.walk,move.line,patrol("guard_way04")),
 				anim	(anim.free),
 				cond	(cond.move_end)
 			)
 			action(
-				walker03,
-			  	move	(move.standing, move.walk,move.line,patrol("guard_way03")),
+				walker06,
+			  	move	(move.standing, move.walk,move.line,patrol("guard_way04")),
 				anim	(anim.free),
 				cond	(cond.move_end)
 			)
 
-	while walker01:action() do
-		if walker01:see(actor) or walker02:see(actor) or walker03:see(actor) then
-			walker01:script	(false,  script_veterans_01.script_name())
-			walker02:script	(false,  script_veterans_01.script_name())
-			walker03:script	(false,  script_veterans_01.script_name())
-			walker01:script	(true,  script_veterans_01.script_name())
-			walker02:script	(true,  script_veterans_01.script_name())
-			walker03:script	(true,  script_veterans_01.script_name())
+	while walker04:action() do
+		if walker04:see(actor) or walker05:see(actor) or walker06:see(actor) then
+			walker04:script	(false,  script_veterans_01.script_name())
+			walker05:script	(false,  script_veterans_01.script_name())
+			walker06:script	(false,  script_veterans_01.script_name())
+			walker04:script	(true,  script_veterans_01.script_name())
+			walker05:script	(true,  script_veterans_01.script_name())
+			walker06:script	(true,  script_veterans_01.script_name())
 
 			action(
-				walker01,
+				walker04,
 			  	move	(move.standing, move.stand,move.line,patrol("way0002")),
 				look	(look.fire_point, actor),
 				anim	(anim.danger),
 				cond	(cond.time_end, 50000)
 			)
 			action(
-				walker02,
+				walker05,
 			  	move	(move.standing, move.stand,move.line,patrol("way0002")),
 				look	(look.fire_point, actor),
 				anim	(anim.danger),
 				cond	(cond.time_end, 50000)
 			)
 			action(
-				walker03,
+				walker06,
 			  	move	(move.standing, move.stand,move.line,patrol("way0002")),
 				look	(look.fire_point, actor),
 				anim	(anim.danger),
 				cond	(cond.time_end, 50000)
 			)
 
-			prof_chert:play_at_pos				(walker01,walker01:position(),0);
+			prof_chert:play_at_pos				(walker04,walker04:position(),0);
 			wait(2000)		
-			prof_kgm4:play_at_pos	(walker01,walker01:position(),0);
+			prof_kgm4:play_at_pos	(walker04,walker04:position(),0);
 			wait(1500)			
-			prof_blin:play_at_pos	(walker01,walker01:position(),0);
+			prof_blin:play_at_pos	(walker04,walker04:position(),0);
 			wait(1000)			
-			prof_1_2_3:play_at_pos	(walker01,walker01:position(),0);
+			prof_1_2_3:play_at_pos	(walker04,walker04:position(),0);
 			wait(3000)			
-			prof_sam_naprosilsya:play_at_pos	(walker01,walker01:position(),0);
+			prof_sam_naprosilsya:play_at_pos	(walker04,walker04:position(),0);
 			wait(1000)			
 
-			rainbow_mochi_ego:play_at_pos		(walker02,walker02:position(),0);
-			walker01:script	(false,  script_veterans_01.script_name())
-			walker02:script	(false,  script_veterans_01.script_name())
-			walker03:script	(false,  script_veterans_01.script_name())
+			rainbow_mochi_ego:play_at_pos		(walker05,walker05:position(),0);
+			walker04:script	(false,  script_veterans_01.script_name())
+			walker05:script	(false,  script_veterans_01.script_name())
+			walker06:script	(false,  script_veterans_01.script_name())
 		end
 		wait()
 		break
 	end
 
 	while true do
-		if walker01.health <= 0 and walker02.health > 0 then
+		if walker04.health <= 0 and walker05.health > 0 then
 			wait(2000)			
-			prof_ti_ubil_sivogo:play_at_pos		(walker02,walker02:position(),0);
+			prof_ti_ubil_sivogo:play_at_pos		(walker05,walker05:position(),0);
 			wait(3000)			
 		break
 		end
@@ -92,9 +92,9 @@ function main()
 	end
 
 	while true do
-		if walker02.health <= 0 and walker01.health > 0 then
+		if walker05.health <= 0 and walker04.health > 0 then
 			wait(2000)			
-			rainbow_suka_ti_cherta_ubil:play_at_pos		(walker01,walker01:position(),0);
+			rainbow_suka_ti_cherta_ubil:play_at_pos		(walker04,walker04:position(),0);
 			wait(3000)			
 		break
 		end
@@ -103,41 +103,41 @@ function main()
 
 
 	while true do
-		if actor.health <= 0 and walker01.health > 0 then
+		if actor.health <= 0 and walker04.health > 0 then
 		wait(2000)			
-			prof_zaslujil_eto_zasranec:play_at_pos		(walker01,walker01:position(),0);
+			prof_zaslujil_eto_zasranec:play_at_pos		(walker04,walker04:position(),0);
 		wait(4000)			
 		break
 		end
 		wait()			
 	end
 
-	while walker01:action() do
+	while walker04:action() do
 		wait()			
 	end
 
-			walker01:script	(false,  script_veterans_01.script_name())
-			walker02:script	(false,  script_veterans_01.script_name())
-			walker03:script	(false,  script_veterans_01.script_name())
-			walker01:script	(true,  script_veterans_01.script_name())
-			walker02:script	(true,  script_veterans_01.script_name())
-			walker03:script	(true,  script_veterans_01.script_name())
+			walker04:script	(false,  script_veterans_01.script_name())
+			walker05:script	(false,  script_veterans_01.script_name())
+			walker06:script	(false,  script_veterans_01.script_name())
+			walker04:script	(true,  script_veterans_01.script_name())
+			walker05:script	(true,  script_veterans_01.script_name())
+			walker06:script	(true,  script_veterans_01.script_name())
 
 			action(
-				walker01,
+				walker04,
 			  	move	(move.standing, move.walk,move.line,patrol("guard_way03")),
 				sound	("scripts\\idle\\movie_footsteps","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),true),
 				anim	(anim.free),
 				cond	(cond.move_end)
 			)
 			action(
-				walker02,
+				walker05,
 			  	move	(move.standing, move.walk,move.line,patrol("guard_way03")),
 				anim	(anim.free),
 				cond	(cond.move_end)
 			)
 			action(
-				walker03,
+				walker06,
 			  	move	(move.standing, move.walk,move.line,patrol("guard_way03")),
 				anim	(anim.free),
 				cond	(cond.move_end)
