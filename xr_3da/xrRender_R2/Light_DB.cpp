@@ -61,6 +61,8 @@ void CLight_DB::Load			(IReader *fs)
 
 				sun_tm_next			=	0;
 				sun_dir_base		=	sun_dir;
+				sun_dir_0			=	sun_dir;
+				sun_dir_1			=	sun_dir;
 			}
 			else
 			{
@@ -166,10 +168,12 @@ void			CLight_DB::Update()
 
 		sun_dir_0.set			(sun_dir_1);
 		sun_dir_1.random_dir	();
+		sun_dir_1.add			(sun_dir_base);
+		sun_dir_1.normalize		();
 	}
 	
 	sun_dir.lerp			(sun_dir_0,sun_dir_1,float(t-sun_tm_base)/float(sun_tm_next-sun_tm_base));
 	sun_dir.normalize		();
-	sun_dir.lerp			(sun_dir,sun_dir_base,.5f);
+	sun_dir.lerp			(sun_dir,sun_dir_base,.6f);
 	sun_dir.normalize		();
 }

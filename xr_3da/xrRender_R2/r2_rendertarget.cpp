@@ -40,7 +40,7 @@ void	CRenderTarget::OnDeviceCreate	()
 		u32 size = PSM_size;
 		R_CHK						(HW.pDevice->CreateDepthStencilSurface	(size,size,HW.Caps.fDepth,D3DMULTISAMPLE_NONE,0,TRUE,&rt_smap_p_ZB,NULL));
 		rt_smap_p					= Device.Shader._CreateRTC	(r2_RT_smap_p,				size,D3DFMT_R32F);
-		s_accum_point				= Device.Shader.Create_B	(b_accum_point,				"r2\\accum_point");
+		//s_accum_point				= Device.Shader.Create_B	(b_accum_point,				"r2\\accum_point");
 	}
 
 	// COMBINE
