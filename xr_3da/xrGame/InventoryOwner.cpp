@@ -101,8 +101,6 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 		F_entity_Destroy					(D);
 	}
 	
-	if (ai().get_alife())
-		return					(TRUE);
 	//////////////////////////////////////////////
 	//проспавнить PDA каждому inventory owner
 	//////////////////////////////////////////////

@@ -63,7 +63,7 @@ private:
 	ALife::OBJECT_VECTOR		m_tpKnownCustomers;
 
 	int							m_r_hand;
-	int							m_r_finger1;
+	int							m_l_finger1;
 	int							m_r_finger2;
 
 public:

@@ -34,7 +34,7 @@ void CAI_Stalker::g_WeaponBones	(int &L, int &R1, int &R2)
 	if ((IsLimping() && (m_tMentalState == eMentalStateFree)) || (GetCurrentAction() && !GetCurrentAction()->m_tAnimationAction.m_bHandUsage))
 		L			= R2;
 	else
-		L			= m_r_finger1;
+		L			= m_l_finger1;
 }
 
 void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 element)
