@@ -247,6 +247,7 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 		if (65535==M.shader_xrlc)	{
 			// No compiler shader
 			M.reserved	= WORD(-1);
+			Msg		("*** %20s",shader_render[M.shader].name);
 		} else {
 			Msg		("*** %20s / %-20s",shader_render[M.shader].name, shader_compile[M.shader_xrlc].name);
 			int id = shaders.GetID(shader_compile[M.shader_xrlc].name);
