@@ -95,7 +95,6 @@ BOOL CIdeApp::InitInstance()
 	if (!g_mainFrame->LoadFrame(IDR_MAINFRAME))
 		return FALSE;
 
-
 	g_mainFrame->SetMode(CMainFrame::modeNoProject);
 	g_mainFrame->OpenDefaultProject();
 
@@ -112,6 +111,8 @@ BOOL CIdeApp::InitInstance()
 	// The main window has been initialized, so show and update it.
 	g_mainFrame->ShowWindow(m_nCmdShow);
 	g_mainFrame->UpdateWindow();
+	
+	LoadIcon(IDR_MAINFRAME);
 
 	return TRUE;
 }

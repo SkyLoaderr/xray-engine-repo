@@ -464,7 +464,8 @@ void CMainFrame::OnDebugGo()
 	CMailSlotMsg msg;
 //	msg.w_int(DMSG_SHOW_IDE);
 	msg.w_int(DMSG_DEBUG_GO);
-	SendMailslotMessage(DEBUGGER_MAIL_SLOT,msg);
+	if(CheckExisting(DEBUGGER_MAIL_SLOT))
+		SendMailslotMessage(DEBUGGER_MAIL_SLOT,msg);
 
 	m_needAnswer = FALSE;
 	OnUpdateFrameTitle(TRUE);
@@ -477,7 +478,8 @@ void CMainFrame::OnDebugStepinto()
 	CMailSlotMsg msg;
 //	msg.w_int(DMSG_SHOW_IDE);
 	msg.w_int(DMSG_DEBUG_STEP_INTO);
-	SendMailslotMessage(DEBUGGER_MAIL_SLOT,msg);
+	if(CheckExisting(DEBUGGER_MAIL_SLOT))
+		SendMailslotMessage(DEBUGGER_MAIL_SLOT,msg);
 	
 	m_needAnswer = FALSE;
 	OnUpdateFrameTitle(TRUE);
@@ -489,7 +491,8 @@ void CMainFrame::OnDebugStepover()
 	CMailSlotMsg msg;
 //	msg.w_int(DMSG_SHOW_IDE);
 	msg.w_int(DMSG_DEBUG_STEP_OVER);
-	SendMailslotMessage(DEBUGGER_MAIL_SLOT,msg);
+	if(CheckExisting(DEBUGGER_MAIL_SLOT))
+		SendMailslotMessage(DEBUGGER_MAIL_SLOT,msg);
 
 	m_needAnswer = FALSE;
 	OnUpdateFrameTitle(TRUE);
@@ -501,7 +504,8 @@ void CMainFrame::OnDebugStepout()
 	CMailSlotMsg msg;
 //	msg.w_int(DMSG_SHOW_IDE);
 	msg.w_int(DMSG_DEBUG_STEP_OUT);
-	SendMailslotMessage(DEBUGGER_MAIL_SLOT,msg);
+	if(CheckExisting(DEBUGGER_MAIL_SLOT))
+		SendMailslotMessage(DEBUGGER_MAIL_SLOT,msg);
 
 	m_needAnswer = FALSE;
 	OnUpdateFrameTitle(TRUE);
@@ -522,7 +526,8 @@ void CMainFrame::OnDebugRuntocursor()
 	CMailSlotMsg msg;
 //	msg.w_int(DMSG_SHOW_IDE);
 	msg.w_int(DMSG_DEBUG_RUN_TO_CURSOR);
-	SendMailslotMessage(DEBUGGER_MAIL_SLOT, msg);
+	if(CheckExisting(DEBUGGER_MAIL_SLOT))
+		SendMailslotMessage(DEBUGGER_MAIL_SLOT, msg);
 
 	m_needAnswer = FALSE;
 	OnUpdateFrameTitle(TRUE);
@@ -548,7 +553,8 @@ void CMainFrame::OnDebugStopdebugging()
 	CMailSlotMsg msg;
 //	msg.w_int(DMSG_SHOW_IDE);
 	msg.w_int(DMSG_STOP_DEBUGGING);
-	SendMailslotMessage(DEBUGGER_MAIL_SLOT, msg);
+	if(CheckExisting(DEBUGGER_MAIL_SLOT))
+		SendMailslotMessage(DEBUGGER_MAIL_SLOT, msg);
 
 	m_needAnswer = FALSE;
 	OnUpdateFrameTitle(TRUE);
@@ -700,7 +706,8 @@ void CMainFrame::StackLevelChanged(int nLevel)
 //	msg.w_int(DMSG_SHOW_IDE);
 	msg.w_int (DMSG_GOTO_STACKTRACE_LEVEL);
 	msg.w_int(nLevel);
-	SendMailslotMessage(DEBUGGER_MAIL_SLOT, msg);
+	if(CheckExisting(DEBUGGER_MAIL_SLOT))
+		SendMailslotMessage(DEBUGGER_MAIL_SLOT, msg);
 //	m_needAnswer = TRUE;
 	OnUpdateFrameTitle(TRUE);
 }
