@@ -43,6 +43,7 @@ BOOL x_vertex::similar	(OGF* ogf, x_vertex& V)
 	float		eu = 2.f/float	(B->dwWidth );
 	float		ev = 2.f/float	(B->dwHeight);
 	if (!UV.similar(V.UV,eu,ev))	return FALSE;
+	return TRUE;
 }
 u16 OGF::x_BuildVertex	(x_vertex& V1)
 {
@@ -73,7 +74,7 @@ void OGF::x_BuildFace	(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3)
 	F.v[1]	= x_BuildVertex(x_vertex(V2));
 	F.v[2]	= x_BuildVertex(x_vertex(V3));
 	if (!F.Degenerate()) {
-		for (itOGF_F I=x_faces.begin(); I!=x_faces.end(); I++)		if (I->Equal(F)) return;
+		//	for (itOGF_F I=x_faces.begin(); I!=x_faces.end(); I++)		if (I->Equal(F)) return;
 		x_faces.push_back(F);
 	} else {
 		if (x_vertices.size()>VertCount) 
@@ -82,7 +83,6 @@ void OGF::x_BuildFace	(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3)
 }
 void OGF::_BuildFace	(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3)
 {
-	x_BuildFace			(V1,V2,V3);
 	OGF_Face			F;
 	u32	VertCount = (u32)vertices.size();
 	F.v[0]	= _BuildVertex(V1);
@@ -90,7 +90,8 @@ void OGF::_BuildFace	(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3)
 	F.v[2]	= _BuildVertex(V3);
 	if (!F.Degenerate()) {
 		for (itOGF_F I=faces.begin(); I!=faces.end(); I++)		if (I->Equal(F)) return;
-		faces.push_back(F);
+		faces.push_back	(F);
+		x_BuildFace		(V1,V2,V3);
 	} else {
 		if (vertices.size()>VertCount) 
 			vertices.erase(vertices.begin()+VertCount,vertices.end());
