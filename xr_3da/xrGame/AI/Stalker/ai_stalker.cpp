@@ -313,7 +313,7 @@ void CAI_Stalker::net_Import		(NET_Packet& P)
 
 	setVisible						(TRUE);
 	setEnabled						(TRUE);
-	CScriptBinder::net_Export		(P);
+	CScriptBinder::net_Import		(P);
 }
 
 void CAI_Stalker::UpdateCL(){
