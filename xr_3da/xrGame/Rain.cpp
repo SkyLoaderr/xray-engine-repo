@@ -111,7 +111,7 @@ void	CEffect_Rain::Born		(Item& dest, float radius, float height)
 void	CEffect_Rain::RayTest	(Item& dest, float height)
 {
 	Collide::ray_query	RQ;
-	CEntity* E = Level().CurrentViewEntity();
+	CObject* E = Level().CurrentViewEntity();
 	E->bEnabled = FALSE;
 	if (Level().ObjectSpace.RayPick(dest.P,dest.D,height*2,RQ))	
 	{
