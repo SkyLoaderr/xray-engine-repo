@@ -13,7 +13,10 @@
 #include "game_base_space.h"
 #include "object_broker.h"
 #include "restriction_space.h"
-#include "character_info.h"
+
+#ifndef AI_COMPILER
+#	include "character_info.h"
+#endif
 
 #ifndef XRGAME_EXPORTS
 #	include "bone.h"
@@ -68,12 +71,14 @@ struct SFillPropData{
             story_names.push_back	(xr_rtoken(V,atoi(N)));
 
 
+#ifndef AI_COMPILER
 		//character profiles indexes
 		VERIFY					(character_profile_indxs.empty());
 		for(PROFILE_INDEX i = 0; i<CCharacterInfo::GetMaxIndex(); i++)
 		{
 			character_profile_indxs.push_back(xr_rtoken(*CCharacterInfo::IndexToId(i),i));
 		}
+#endif
 		
         // destroy ini
         xr_delete				(Ini);
@@ -1504,8 +1509,9 @@ void CSE_ALifeTraderAbstract::FillProps	(LPCSTR pref, PropItemVec& items)
 {
 	PHelper().CreateU32			(items, PrepareKey(pref,*base()->s_name,"Money"), 	&m_dwMoney,	0, u32(-1));
 	PHelper().CreateFlag32		(items,	PrepareKey(pref,*base()->s_name,"Trader\\Infinite ammo"),&m_trader_flags, eTraderFlagInfiniteAmmo);
-
+#ifndef AI_COMPILER
 	PHelper().CreateRToken16	(items,	PrepareKey(pref,*base()->s_name,"npc profile"),	 
 		(u16*)&m_iCharacterProfile, 
 		&*fp_data.character_profile_indxs.begin(), fp_data.character_profile_indxs.size());
+#endif
 }
