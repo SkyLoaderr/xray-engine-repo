@@ -606,11 +606,13 @@ ENGINE_API IDirect3DTexture8*	TWLoader2D(
 
 _DDS:
 	D3DXIMAGE_INFO IMG;
+	
+	R_CHK(D3DXGetImageInfoFromFile(fn,&IMG));
 	R_CHK(D3DXCreateTextureFromFileEx(
 		HW.pDevice,
 		fn,
 		D3DX_DEFAULT,D3DX_DEFAULT,
-		0,
+		IMG.MipLevels,
 		0,
 		D3DFMT_UNKNOWN,
 		D3DPOOL_MANAGED,
