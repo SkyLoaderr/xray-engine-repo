@@ -5,6 +5,8 @@
 #include "SkeletonAnimated.h"
 //#include "LevelGameDef.h"
 
+ref_sound choose_snd;
+
 namespace ChoseEvents{
 void __stdcall  FillEntity(ChooseItemVec& items, void* param)
 {
@@ -19,8 +21,8 @@ void __stdcall  FillEntity(ChooseItemVec& items, void* param)
 //---------------------------------------------------------------------------
 void __stdcall  SelectSoundSource(SChooseItem* item, PropItemVec& info_items)
 {
-	ref_sound snd;
-//	snd.create	(true,item->name.c_str(),0);
+	choose_snd.create			(true,item->name.c_str(),0);
+    choose_snd.play				(0,sm_2D);
 //    snd.pla
 /*
 //.
@@ -234,6 +236,7 @@ void FillChooseEvents()
 void ClearChooseEvents()
 {
 	TfrmChoseItem::ClearEvents	();
+    choose_snd.destroy			();
 }
 
 //---------------------------------------------------------------------------
