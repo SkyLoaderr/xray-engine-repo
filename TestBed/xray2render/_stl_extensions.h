@@ -35,6 +35,17 @@ public:
 	reference operator[]		(size_type _Pos)				{ {VERIFY(_Pos<size());} return (*(begin() + _Pos)); }
 };
 
+template	<>												
+class	xr_vector<bool>	: public std::vector<bool>{ 
+	typedef	bool		T;
+public: 
+			xr_vector<T>		()								: std::vector<T>	()				{}
+			xr_vector<T>		(size_t _count, const T& _value): std::vector<T>	(_count,_value)	{}
+	explicit xr_vector<T>		(size_t _count)					: std::vector<T>	(_count)		{}
+	u32		size() const										{ return (u32)std::vector<T>::size();	} 
+	void	clear()												{ erase(begin(),end());				} 
+};
+
 #else
 
 template <class T>
