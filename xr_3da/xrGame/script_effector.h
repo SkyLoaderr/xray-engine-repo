@@ -16,11 +16,11 @@ class CScriptEffector : public CEffectorPP {
 public:
 	typedef CEffectorPP inherited;
 	EEffectorPPType		m_tEffectorType;
-	SPPInfo				m_tInfo;
 
 	IC					CScriptEffector		(int iType, float time);
 	virtual				~CScriptEffector	();
 	virtual	BOOL		Process				(SPPInfo &pp);
+	virtual	bool		process				(SPPInfo *pp);
 	virtual	void		Add					();
 	virtual	void		Remove				();
 	DECLARE_SCRIPT_REGISTER_FUNCTION

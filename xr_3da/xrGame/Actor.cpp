@@ -430,16 +430,12 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 	else
 		hit_slowmo = 0.f;
 	//---------------------------------------------------------------
-	if (Level().CurrentViewEntity() == this)
-	{
-		if (g_bShowHitSectors)
-		{
-			if (who && !Level().MapManager().HasMapLocation(ENEMY_HIT_SPOT, who->ID()))
-			{
+	if (Level().CurrentViewEntity() == this){
+		if (g_bShowHitSectors){
+			if (who && !Level().MapManager().HasMapLocation(ENEMY_HIT_SPOT, who->ID())){
 				Level().MapManager().RemoveMapLocation(ENEMY_HIT_SPOT, who->ID());
 			}
-			if (who && who != this)
-			{
+			if (who && who != this){
 				CEntityAlive* pEntityAlive = smart_cast<CEntityAlive*>(who);
 				if (pEntityAlive)
 					Level().MapManager().AddMapLocation(ENEMY_HIT_SPOT, who->ID());

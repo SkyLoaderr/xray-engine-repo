@@ -16,7 +16,12 @@ CScriptEffector::~CScriptEffector	()
 
 BOOL CScriptEffector::Process		(SPPInfo	&pp)
 {
-	return							(inherited::Process(pp));
+	return							(!!process(&pp));
+}
+
+bool CScriptEffector::process		(SPPInfo *pp)
+{
+	return							(!!inherited::Process(*pp));
 }
 
 void CScriptEffector::Add			()

@@ -263,16 +263,17 @@ void CEntityAlive::Hit(float P, Fvector &dir,CObject* who, s16 element,Fvector p
 	//изменить состояние, перед тем как родительский класс обработает хит
 	CWound* pWound = conditions().ConditionHit(who, P, hit_type, element);
 
-	if(pWound)
-	{
+	if(pWound){
 		if(ALife::eHitTypeBurn == hit_type)
 			StartFireParticles(pWound);
 		else if(ALife::eHitTypeWound == hit_type || ALife::eHitTypeFireWound == hit_type)
 			StartBloodDrops(pWound);
 	}
 
-	//добавить кровь на стены
-	BloodyWallmarks (P, dir, element, position_in_object_space);
+	if (hit_type != ALife::eHitTypeTelepatic){
+		//добавить кровь на стены
+		BloodyWallmarks (P, dir, element, position_in_object_space);
+	}
 
 	//-------------------------------------------
 	conditions().SetConditionDeltaTime(0);

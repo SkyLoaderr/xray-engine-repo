@@ -13,14 +13,12 @@ CScriptEffectorWrapper::~CScriptEffectorWrapper	()
 {
 }
 
-BOOL CScriptEffectorWrapper::Process		(SPPInfo &pp)
+bool CScriptEffectorWrapper::process		(SPPInfo *pp)
 {
-	BOOL		l_bResult = !!luabind::call_member<bool>(this,"process",pp);
-	pp			= m_tInfo;
-	return		(l_bResult);
+	return		(luabind::call_member<bool>(this,"process",pp));
 }
 
-bool CScriptEffectorWrapper::Process_static	(CScriptEffector *tpLuaEffector, SPPInfo &pp)
+bool CScriptEffectorWrapper::process_static	(CScriptEffector *tpLuaEffector, SPPInfo *pp)
 {
-	return		(!!tpLuaEffector->CScriptEffector::Process(pp));
+	return		(!!tpLuaEffector->CScriptEffector::process(pp));
 }

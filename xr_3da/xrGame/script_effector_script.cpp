@@ -12,20 +12,26 @@
 
 using namespace luabind;
 
+void SPPInfo_assign(SPPInfo *self, SPPInfo *obj)
+{
+	*self	= *obj;
+}
+
 void CScriptEffector::script_register(lua_State *L)
 {
 	module(L)
 	[
-			class_<SPPInfo::SDuality>("duality")
+		class_<SPPInfo::SDuality>("duality")
 			.def_readwrite("h",					&SPPInfo::SDuality::h)
 			.def_readwrite("v",					&SPPInfo::SDuality::v)
 			.def(								constructor<>()),
 
-			class_<SPPInfo::SColor>	("color")
+		class_<SPPInfo::SColor>	("color")
 			.def_readwrite("r",					&SPPInfo::SColor::r)
 			.def_readwrite("g",					&SPPInfo::SColor::g)
 			.def_readwrite("b",					&SPPInfo::SColor::b)
-			.def(								constructor<>()),
+			.def(								constructor<>())
+			.def("set",							&SPPInfo::SColor::set),
 
 		class_<SPPInfo::SNoise>("noise")
 			.def_readwrite("intensity",			&SPPInfo::SNoise::intensity)
@@ -41,13 +47,13 @@ void CScriptEffector::script_register(lua_State *L)
 			.def_readwrite("color_base",		&SPPInfo::color_base)
 			.def_readwrite("color_gray",		&SPPInfo::color_gray)
 			.def_readwrite("color_add",			&SPPInfo::color_add)
-			.def(								constructor<>()),
+			.def(								constructor<>())
+			.def("assign",						&SPPInfo_assign),
 
 		class_<CScriptEffector, CScriptEffectorWrapper>("effector")
-			.def_readwrite("info",				&CScriptEffector::m_tInfo)
 			.def(								constructor<int,float>())
 			.def("start",						&CScriptEffector::Add)
 			.def("finish",						&CScriptEffector::Remove)
-			.def("process",						&CScriptEffector::Process,	&CScriptEffectorWrapper::Process_static)
+			.def("process",	 					&CScriptEffector::process,	&CScriptEffectorWrapper::process_static)
 	];
 }
