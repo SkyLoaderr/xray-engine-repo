@@ -25,7 +25,7 @@ same,occq-delay:	~25.9
 +BUG:	mt_physics
 +BUG:	particles
 +BUG:	self-illum
-BUG:	optimized sphere around cone-shape
++BUG:	optimized sphere around cone-shape
 BUG:	scissor	- reprojection
 BUG:	light - spanning multiple sectors -> connect to portals
 
@@ -38,8 +38,8 @@ OPT:	occlusion culling of light volumes
 OPT:	precompute invisible list (visuals) for static lights at load time
 
 FEAT:	shadows from transparent particles - 2x for light boost + colorful shadows?
-FEAT:	
 
++FEATURE:	incremental object level culling
 +FEATURE:	stats:
 +FEATURE:	materials:
 +FEATURE:	anisotropic
@@ -53,9 +53,9 @@ FEAT:
 +BUG	:	fucking light-flickering!!!
 +BUG	:	DX-WARN: RT used while bound
 +FEATURE:	self-ilum
++BUG	:	fucking light near viewpoint!!!
 
 hw-pointlight
-incremental object level culling
 volume-fog
 z-fade particles
 
