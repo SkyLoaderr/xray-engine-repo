@@ -628,6 +628,7 @@ const float SphereRadius = dGeomSphereGetRadius(Sphere);
 					SURFACE(Contacts,0)->bounce_vel=GMLib.GetMaterial(T->material)->fPHBounceStartVelocity;
 					SURFACE(Contacts,0)->soft_cfm=GMLib.GetMaterial(T->material)->fPHSpring;
 					SURFACE(Contacts,0)->soft_erp=GMLib.GetMaterial(T->material)->fPHDamping;
+					SURFACE(Contacts,0)->mode=GMLib.GetMaterial(T->material)->Flags.is(SGameMtl::flClimbable);
 					//////////////////////////////////
 				//	OutTriCount++;
 					return 1;

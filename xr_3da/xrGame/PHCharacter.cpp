@@ -11,6 +11,7 @@ const float JUMP_INCREASE_VELOCITY_RATE=1.2f;
 
 CPHCharacter::CPHCharacter(void)
 {
+b_climb=false;
 m_friction_factor=1.f;
 m_body=NULL;
 m_wheel_body=NULL;
@@ -458,8 +459,12 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 		if(is_control&& (dDOT(m_control_force,c->geom.normal))<-M_SQRT1_2)
 															b_side_contact=true;
 
-
-	c->surface.mode =dContactApprox1|dContactSoftCFM|dContactSoftERP;
+		if(c->surface.mode && (b_side_contact|| dFabs(c->geom.normal[1])>M_SQRT1_2)) {
+																				  b_climb=true;
+																				  b_clamb_jump=true;
+		}
+		else																	  b_climb=false;
+	//c->surface.mode =dContactApprox1|dContactSoftCFM|dContactSoftERP;
 	//c->surface.soft_cfm=0.0001f;
 	//c->surface.soft_erp=0.2f;
 	c->surface.soft_cfm*=spring_rate;//0.01f;
@@ -554,7 +559,7 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 	m_friction_factor=c->surface.mu<1.f ? c->surface.mu : 1.f;
 
 	if(is_control&&!b_lose_control||b_jumping){
-					c->surface.mode =dContactApprox1|dContactSoftCFM|dContactSoftERP;// dContactBounce;|dContactFDir1
+					//c->surface.mode =dContactApprox1|dContactSoftCFM|dContactSoftERP;// dContactBounce;|dContactFDir1
 					c->surface.mu = 0.00f;
 					//c->surface.mu2 = dInfinity;
 					//c->surface.soft_cfm=0.0001f;
@@ -567,7 +572,7 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 					}
 		else
 		{
-		c->surface.mode =dContactApprox1|dContactSoftCFM|dContactSoftERP;
+		//c->surface.mode =dContactApprox1|dContactSoftCFM|dContactSoftERP;
 		//c->surface.soft_cfm=0.0001f;
 		//c->surface.soft_erp=0.2f;
 		c->surface.soft_cfm*=spring_rate;//0.01f;
@@ -667,7 +672,13 @@ m_control_force[1]=dFabs(m_control_force[1]);
 m_control_force[0]=m_control_force[0]*accel[0]>0.f ? m_control_force[0] : -m_control_force[0];
 m_control_force[2]=m_control_force[2]*accel[2]>0.f ? m_control_force[2] : -m_control_force[2];
 }
-	
+
+if(b_climb){
+//m_control_force[0]*=4.f;
+	m_control_force[1]+=m.mass*60.f;
+//m_control_force[2]*=4.f;
+}
+
 m_control_force[0]*=m_friction_factor;
 m_control_force[1]*=m_friction_factor;
 m_control_force[2]*=m_friction_factor;

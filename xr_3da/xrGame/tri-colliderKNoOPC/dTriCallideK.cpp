@@ -1251,7 +1251,7 @@ else {//7-12
 	SURFACE(contact,i*skip)->bounce_vel=GMLib.GetMaterial(T->material)->fPHBounceStartVelocity;
 	SURFACE(contact,i*skip)->soft_cfm=GMLib.GetMaterial(T->material)->fPHSpring;
 	SURFACE(contact,i*skip)->soft_erp=GMLib.GetMaterial(T->material)->fPHDamping;
-	
+	SURFACE(contact,i*skip)->mode=GMLib.GetMaterial(T->material)->Flags.is(SGameMtl::flClimbable);
   }
   return ret;  
 }
