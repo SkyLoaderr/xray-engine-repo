@@ -69,7 +69,8 @@ public:
 	IC void					SetInterval		(const Fvector2& v) {vInterval.set(v);};
 	IC void					SetAligment		(EAligment aligment){ eCurrentAlignment=aligment; }
 	IC void					Add				(float _x, float _y, LPCSTR s, u32 _c=0xffffffff, float _size=0.01f);
-	float					SizeOf			(char s, float size);
+	float					SizeOf			(char c, float size);
+	IC float				SizeOf			(char c){return SizeOf(c,fCurrentSize);}
 	float					SizeOf			(LPCSTR s, float size);
 	IC float				SizeOf			(LPCSTR s){return SizeOf(s,fCurrentSize);}
 	IC float				CurrentHeight	(){return fCurrentSize*vInterval.y*((uFlags&fsDeviceIndependent)?2.f:1.f);}
