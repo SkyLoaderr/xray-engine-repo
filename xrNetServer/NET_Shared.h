@@ -50,5 +50,10 @@ public:
 	IC u32	getDroppedCount		()	{ return ci_last.dwPacketsDropped;		}
 	IC u32	getMPS_Receive		()  { return mps_recive;	}
 	IC u32	getMPS_Send			()	{ return mps_send;		}
+
+	//-----------------------------------------------------------------------
+	u32		dwTimesBlocked;
+	u32		dwBytesSended;
+	u32		dwBytesPerSec;
 };
 

@@ -458,6 +458,7 @@ void	IPureClient::Send(NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 	NET_Buffer	Compressed;
 	Compressed.count	= net_Compressor.Compress	(Compressed.data,P.B.data,P.B.count);
 
+	net_Statistic.dwBytesSended += Compressed.count;
 	// send it
 	DPN_BUFFER_DESC		desc;
 	desc.dwBufferSize	= Compressed.count;
@@ -495,7 +496,11 @@ BOOL	IPureClient::net_HasBandwidth	()
 		hr					= NET->GetSendQueueInfo(&dwPending,0,0);
 		if (FAILED(hr))		return FALSE;
 
-		if (dwPending > u32(psNET_ClientPending))	return FALSE;
+		if (dwPending > u32(psNET_ClientPending))	
+		{
+			net_Statistic.dwTimesBlocked++;
+			return FALSE;
+		};
 
 		// Query network statistic for this client
 		DPN_CONNECTION_INFO	CI;

@@ -32,7 +32,15 @@ public:
 	{
 		bytes_out	= bytes_out_real=0;
 		bytes_in	= bytes_in_real	=0;
+
+		dwBytesSended = 0;
+		dwSendTime = 0;
+		dwBytesPerSec = 0;
 	}
+
+	u32					dwBytesSended;
+	u32					dwSendTime;
+	u32					dwBytesPerSec;
 };
 
 class XRNETSERVER_API IPureServer

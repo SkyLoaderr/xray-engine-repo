@@ -22,6 +22,9 @@ void IClientStatistic::Update(DPN_CONNECTION_INFO& CI)
 		u32	cur_msend	= CI.dwMessagesTransmittedHighPriority+CI.dwMessagesTransmittedNormalPriority+CI.dwMessagesTransmittedLowPriority;
 		mps_send		= cur_msend - mps_send_base;
 		mps_send_base	= cur_msend;
+
+		dwBytesPerSec = dwBytesSended;
+		dwBytesSended = 0;
 	}
 	ci_last	= CI;
 }
@@ -43,6 +46,7 @@ IPureServer::IPureServer	(CTimer* timer)
 {
 	device_timer			= timer;
 	stats.clear				();
+	stats.dwSendTime		= TimeGlobal(device_timer);
 }
 
 IPureServer::~IPureServer	()
@@ -332,7 +336,17 @@ void	IPureServer::SendTo		(DPNID ID, NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 	// first - compress message and setup buffer
 	NET_Packet	Compressed;
 	pCompress	(Compressed,P);
-	
+
+#ifdef _DEBUG
+	u32 time_global		= TimeGlobal(device_timer);
+	if (time_global - stats.dwSendTime > 999)
+	{
+		stats.dwBytesPerSec = stats.dwBytesSended;
+		stats.dwBytesSended = 0;
+		stats.dwSendTime = time_global;
+	};
+	stats.dwBytesSended += Compressed.B.count;
+#endif
 	SendTo_LL(ID,Compressed.B.data,Compressed.B.count,dwFlags,dwTimeout);
 }
 
@@ -408,7 +422,11 @@ BOOL IPureServer::HasBandwidth			(IClient* C)
 		hr					= NET->GetSendQueueInfo(C->ID,&dwPending,0,0);
 		if (FAILED(hr))		return FALSE;
 
-		if (dwPending > u32(psNET_ServerPending))	return FALSE;
+		if (dwPending > u32(psNET_ServerPending))	
+		{
+			C->stats.dwTimesBlocked++;
+			return FALSE;
+		};
 
 		// Query network statistic for this client
 		DPN_CONNECTION_INFO	CI;

@@ -221,7 +221,7 @@ void CLevel::OnFrame	()
 					Server->game->get_option_s(C->Name,"name",C->Name),
 //					C->Name,
 					C->stats.getPing(),
-					float(C->stats.getBPS())/1024,
+					float(C->stats.getBPS()),// /1024,
 					C->stats.getMPS_Receive	(),
 					C->stats.getMPS_Send	()
 					);
