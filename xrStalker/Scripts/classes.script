@@ -671,8 +671,9 @@ function Projector:process ()
 	   self.projector:script (true, self.script)
 	   self.first_call = false
     end	
-	
-    if self.time - game.time () > 0 then return end
+
+	if self.projector:action () then return end
+--    if self.time - game.time () > 0 then return end
 
 
 	local point
