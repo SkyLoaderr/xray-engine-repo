@@ -59,6 +59,7 @@ void CWeaponGroza::Load(CInifile* ini, const char* section){
 	char name[255];
 	for (DWORD i=0; i<scnt; i++)
 		hFlames.push_back(Device.Shader.Create("fire_trail",_GetItem(S,i,name),false));
+	bFlame			= FALSE;
 }
 
 void CWeaponGroza::FireStart()
