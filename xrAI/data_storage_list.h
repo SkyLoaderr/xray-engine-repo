@@ -742,22 +742,37 @@ public:
 
 	IC		void		add_cheap		(CGraphNode &node)
 	{
-		for (CGraphNode *i = cheap_list_tail->prev; i; i = i->prev) {
-			if (i->f() <= node.f()) {
-				node.next		= i->next;
-				node.prev		= i;
-				i->next->prev	= &node;
-				i->next			= &node;
-				cheap_count++;
-				return;
-			}
+		if (cheap_list_head->f() >= node.f()) {
+			cheap_list_head->prev	= &node;
+			node.next				= cheap_list_head;
+			node.prev				= 0;
+			cheap_list_head			= &node;
+			cheap_count++;
+			return;
 		}
 
-		cheap_list_head->prev	= &node;
-		node.next				= cheap_list_head;
-		node.prev				= 0;
-		cheap_list_head			= &node;
-		cheap_count++;
+//		if ((cheap_list_tail->f() - node.f())*1 < (node.f() - cheap_list_head->f())*3)
+			for (CGraphNode *i = cheap_list_tail->prev; ; i = i->prev) {
+				if (i->f() <= node.f()) {
+					node.next		= i->next;
+					node.prev		= i;
+					i->next->prev	= &node;
+					i->next			= &node;
+					cheap_count++;
+					return;
+				}
+			}
+//		else
+//			for (CGraphNode *i = cheap_list_head->next; ; i = i->next) {
+//				if (i->f() >= node.f()) {
+//					node.next		= i;
+//					node.prev		= i->prev;
+//					i->prev->next	= &node;
+//					i->prev			= &node;
+//					cheap_count++;
+//					return;
+//				}
+//			}
 	}
 
 	IC		void		add_cheap_tail	(CGraphNode &node)
