@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "xrHemisphere.h"
+#include "xrThread.h"
+#include "xrSyncronize.h"
 
 void __stdcall  hemi_callback	(float x, float y, float z, float E, LPVOID P)
 {
@@ -64,8 +66,8 @@ void CBuild::Light_R2			()
 	Status					("Calculating...");
 	DWORD	start_time		= timeGetTime();
 	CThreadManager			Threads;
-	DWORD	stride			= g_vertices->size()/NUM_THREADS;
-	DWORD	last			= g_vertices->size()-stride*(NUM_THREADS-1);
+	DWORD	stride			= g_vertices.size()/NUM_THREADS;
+	DWORD	last			= g_vertices.size()-stride*(NUM_THREADS-1);
 	for (DWORD thID=0; thID<NUM_THREADS; thID++)
 		Threads.start(xr_new<CR2Light>(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride)));
 	Threads.wait			();
