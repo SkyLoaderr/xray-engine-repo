@@ -37,15 +37,11 @@
 #include <windowsx.h>
 
 // mmsystem.h
-//#define MMNODRV
 #define MMNOSOUND
-//#define MMNOWAVE
 #define MMNOMIDI
 #define MMNOAUX
 #define MMNOMIXER
-//#define MMNOTIMER
 #define MMNOJOY
-#define MMNOMCI
 
 #include <mmsystem.h>
 
