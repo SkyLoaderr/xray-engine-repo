@@ -78,12 +78,16 @@ end
 
 -- включить возможность начала диалога
 function dialog_mgr:enable( ... )
-	self.a.dlgs = arg
+	if self.team then
+		self.a.dlgs = arg
+	end
 end
 
 -- выключить возможность начала диалога
 function dialog_mgr:disable()
-	self.a.dlgs = nil
+	if self.team then
+		self.a.dlgs = nil
+	end
 end
 
 -- текущий активный диалог
