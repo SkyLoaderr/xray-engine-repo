@@ -30,7 +30,7 @@ function add_to_binder(npc, ini, scheme, section, storage)
 
   	properties["combat"]   	= xr_evaluators_id.combat + 1
 
-  	manager:add_evaluator (properties["combat"],   this.evaluator_check_combat("evaluator_check_combat",storage))
+  	manager:add_evaluator (properties["combat"],   this.evaluator_check_combat("combat_check",storage))
 
   	action = manager:action(stalker_ids.action_combat_planner)
   	action:add_precondition(world_property(properties["combat"], true))
