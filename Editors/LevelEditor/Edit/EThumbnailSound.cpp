@@ -41,8 +41,8 @@ bool ESoundThumbnail::Load(LPCSTR src_name, LPCSTR path)
     R_ASSERT		(m_Type==ETSound);
 
     R_ASSERT		(F->find_chunk(THM_CHUNK_SOUNDPARAM));
-    m_fQuality 		= F->r_u32();
-    m_fMinDist	 	= F->r_u32();
+    m_fQuality 		= F->r_float();
+    m_fMinDist	 	= F->r_float();
 	
     m_Age 			= FS.get_file_age(fn.c_str());
 
@@ -66,8 +66,8 @@ void ESoundThumbnail::Save(int age, LPCSTR path)
 	F.close_chunk	();
 
     F.open_chunk	(THM_CHUNK_SOUNDPARAM);
-    F.w_u32			(m_fQuality);
-    F.w_u32			(m_fMinDist);
+    F.w_float		(m_fQuality);
+    F.w_float		(m_fMinDist);
     F.close_chunk	();
 
 	AnsiString fn 	= m_Name;
