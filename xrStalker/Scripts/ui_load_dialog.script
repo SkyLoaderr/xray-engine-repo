@@ -5,6 +5,11 @@
 -- Author:      Serhiy Vynnychenko (narrator@gsc-game.kiev.ua)
 -- Version:     0.1
 
+function main()
+	local dlg = ui_load_dialog.load_dialog()
+	level.start_stop_menu(dlg,true)
+end
+
 class "load_dialog" (CUIScriptWnd)
 
 function load_dialog:__init() super()
