@@ -50,14 +50,15 @@ void CUISpawnWnd::Init(	const char *strCaptionPrimary, const u32 ColorPrimary,
 	UIStaticTextPrimary.SetText(strCaptionPrimary);
 	UIStaticTextPrimary.SetTextColor(ColorPrimary);
 
+	// sign
+	UIFrameWndPrimary.AttachChild(&UITeamSign1);
+	xml_init.InitStatic(uiXml, "t1_static", 0, &UITeamSign1);
+
 	UIFrameWndPrimary.AttachChild(&UIButtonPrimary);
 	// Устанавливем получателем сообщений родительское окно, так как FrameWindow не обрабатывает сообщения
 	UIButtonPrimary.SetMessageTarget(this);
 	xml_init.InitButton(uiXml, "button", 0, &UIButtonPrimary);
 
-	// sign
-	UIFrameWndPrimary.AttachChild(&UITeamSign1);
-	xml_init.InitStatic(uiXml, "t1_static", 0, &UITeamSign1);
 
 	// вторичный фрейм не аттачится, так как по умолчанию режим отображения одиночный
 	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIFrameWndSecondary);
