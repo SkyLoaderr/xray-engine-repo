@@ -342,6 +342,13 @@ public:
 			void				set_mental_state	(MonsterSpace::EMentalState mental_state);
 			void				set_path_type		(MovementManager::EPathType path_type);
 			void				set_detail_path_type(DetailPathManager::EDetailPathType detail_path_type);
+
+	MonsterSpace::EBodyState			body_state			() const;
+	MonsterSpace::EMovementType			movement_type		() const;
+	MonsterSpace::EMentalState			mental_state		() const;
+	MovementManager::EPathType			path_type			() const;
+	DetailPathManager::EDetailPathType	detail_path_type	() const;
+
 			u32					add_sound			(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name);
 			u32					add_sound			(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type);
 			u32					add_sound			(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name, LPCSTR head_anim);

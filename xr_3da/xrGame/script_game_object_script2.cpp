@@ -168,6 +168,13 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 		.def("set_mental_state",			&CScriptGameObject::set_mental_state		)
 		.def("set_path_type",				&CScriptGameObject::set_path_type			)
 		.def("set_detail_path_type",		&CScriptGameObject::set_detail_path_type	)
+
+		.def("body_state",					&CScriptGameObject::body_state				)
+		.def("movement_type",				&CScriptGameObject::movement_type			)
+		.def("mental_state",				&CScriptGameObject::mental_state			)
+		.def("path_type",					&CScriptGameObject::path_type				)
+		.def("detail_path_type",			&CScriptGameObject::detail_path_type		)
+
 		//
 		.def("set_desired_position",		(void (CScriptGameObject::*)())(CScriptGameObject::set_desired_position))
 		.def("set_desired_position",		(void (CScriptGameObject::*)(const Fvector *))(CScriptGameObject::set_desired_position))

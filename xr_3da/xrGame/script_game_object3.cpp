@@ -29,6 +29,8 @@
 #include "hit_memory_manager.h"
 #include "sight_manager.h"
 #include "stalker_movement_manager.h"
+#include "movement_manager_space.h"
+#include "detail_path_manager_space.h"
 
 namespace MemorySpace {
 	struct CVisibleObject;
@@ -404,6 +406,56 @@ void  CScriptGameObject::set_detail_path_type	(DetailPathManager::EDetailPathTyp
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
 	else
 		stalker->movement().set_detail_path_type	(detail_path_type);
+}
+
+MonsterSpace::EBodyState CScriptGameObject::body_state					() const
+{
+	CAI_Stalker		*stalker = smart_cast<CAI_Stalker*>(&object());
+	if (!stalker) {
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member body_state!");
+		return		(MonsterSpace::eBodyStateStand);
+	}
+	return			(stalker->movement().body_state());
+}
+
+MonsterSpace::EMovementType CScriptGameObject::movement_type			() const
+{
+	CAI_Stalker		*stalker = smart_cast<CAI_Stalker*>(&object());
+	if (!stalker) {
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement_type!");
+		return		(MonsterSpace::eMovementTypeStand);
+	}
+	return			(stalker->movement().movement_type());
+}
+
+MonsterSpace::EMentalState CScriptGameObject::mental_state				() const
+{
+	CAI_Stalker		*stalker = smart_cast<CAI_Stalker*>(&object());
+	if (!stalker) {
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member mental_state!");
+		return		(MonsterSpace::eMentalStateDanger);
+	}
+	return			(stalker->movement().mental_state());
+}
+
+MovementManager::EPathType CScriptGameObject::path_type					() const
+{
+	CAI_Stalker		*stalker = smart_cast<CAI_Stalker*>(&object());
+	if (!stalker) {
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member path_type!");
+		return		(MovementManager::ePathTypeNoPath);
+	}
+	return			(stalker->movement().path_type());
+}
+
+DetailPathManager::EDetailPathType CScriptGameObject::detail_path_type	() const
+{
+	CAI_Stalker		*stalker = smart_cast<CAI_Stalker*>(&object());
+	if (!stalker) {
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member detail_path_type!");
+		return		(DetailPathManager::eDetailPathTypeSmooth);
+	}
+	return			(DetailPathManager::eDetailPathTypeSmooth);
 }
 
 void CScriptGameObject::set_sight		(SightManager::ESightType sight_type, const Fvector *vector3d, u32 dwLookOverDelay)
