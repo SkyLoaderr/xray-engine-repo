@@ -31,8 +31,8 @@ struct SCharacterProfile : CSharedResource
 	//иначе ищется случайно,удовлетворяющее шаблону
 	SPECIFIC_CHARACTER_INDEX m_iCharacterIndex;	
 
-	//требуемые параметры характера
-	CHARACTER_COMMUNITY		m_Community;
+	//требуемые параметры персонажа
+	CHARACTER_CLASS			m_Class;
 	CHARACTER_RANK			m_Rank;
 	CHARACTER_REPUTATION	m_Reputation;
 #endif

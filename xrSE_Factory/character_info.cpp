@@ -7,9 +7,9 @@
 #include "character_info.h"
 
 #ifdef XRGAME_EXPORTS
-	#include "ui/xrXMLParser.h"
+#	include "ui/xrXMLParser.h"
 #else
-	#include "xrXMLParser.h"
+#	include "xrXMLParser.h"
 #endif
 
 
@@ -97,10 +97,22 @@ void CCharacterInfo::load_shared	(LPCSTR)
 	LPCSTR spec_char = uiXml.Read("specific_character", 0, NULL);
 	if(!spec_char)
 	{
-		data()->m_iCharacterIndex = NO_SPECIFIC_CHARACTER;
-		data()->m_Community.set((CHARACTER_COMMUNITY_ID)uiXml.Read("team", 0, *NO_COMMUNITY_ID));
-		data()->m_Rank			= uiXml.ReadInt	("rank",		0,	NO_RANK);
-		data()->m_Reputation	= uiXml.ReadInt	("reputation",	0,	NO_REPUTATION);
+		data()->m_iCharacterIndex	= NO_SPECIFIC_CHARACTER;
+		
+		LPCSTR char_class			= uiXml.Read	("class",		0,	NULL);
+
+		if(char_class)
+		{
+			char* buf_str = xr_strdup(char_class);
+			xr_strlwr(buf_str);
+			data()->m_Class				= buf_str;
+			xr_free(buf_str);
+		}
+		else
+			data()->m_Class				= NO_CHARACTER_CLASS;
+			
+		data()->m_Rank				= uiXml.ReadInt	("rank",		0,	NO_RANK);
+		data()->m_Reputation		= uiXml.ReadInt	("reputation",	0,	NO_REPUTATION);
 	}
 	else
 		data()->m_iCharacterIndex = CSpecificCharacter::IdToIndex(spec_char);

@@ -29,7 +29,7 @@
 				FavorSizeOrSpeed="0"
 				EnableFiberSafeOptimizations="TRUE"
 				OptimizeForProcessor="2"
-				PreprocessorDefinitions="WIN32;_DEBUG;DEBUG;_WINDOWS;_USRDLL;XRGAME_EXPORTS;dSINGLE;MSVC"
+				PreprocessorDefinitions="WIN32;_DEBUG;DEBUG;_WINDOWS;_USRDLL;XRGAME_EXPORTS;dSINGLE;MSVC;PURE_DYNAMIC_CAST"
 				StringPooling="FALSE"
 				MinimalRebuild="TRUE"
 				ExceptionHandling="FALSE"
@@ -9365,6 +9365,12 @@
 				RelativePath=".\helicopter.ltx">
 			</File>
 			<File
+				RelativePath=".\immunities.ltx">
+			</File>
+			<File
+				RelativePath=".\items.ltx">
+			</File>
+			<File
 				RelativePath=".\monsters.ltx">
 			</File>
 			<File
@@ -9413,7 +9419,13 @@
 					RelativePath=".\M_controller.ltx">
 				</File>
 				<File
+					RelativePath=".\M_Crow.ltx">
+				</File>
+				<File
 					RelativePath=".\M_Dog.ltx">
+				</File>
+				<File
+					RelativePath=".\M_dog_.ltx">
 				</File>
 				<File
 					RelativePath=".\M_Flesh.ltx">
@@ -9426,6 +9438,9 @@
 				</File>
 				<File
 					RelativePath=".\M_giant.ltx">
+				</File>
+				<File
+					RelativePath=".\m_person.ltx">
 				</File>
 				<File
 					RelativePath=".\M_Poltergeist.ltx">
@@ -9456,6 +9471,9 @@
 					RelativePath=".\w_ak74.ltx">
 				</File>
 				<File
+					RelativePath=".\w_beretta.ltx">
+				</File>
+				<File
 					RelativePath=".\w_binoc.ltx">
 				</File>
 				<File
@@ -9463,6 +9481,12 @@
 				</File>
 				<File
 					RelativePath=".\w_bolt.ltx">
+				</File>
+				<File
+					RelativePath=".\w_colt1911.ltx">
+				</File>
+				<File
+					RelativePath=".\w_desert_eagle.ltx">
 				</File>
 				<File
 					RelativePath=".\w_f1.ltx">
@@ -9492,6 +9516,9 @@
 					RelativePath=".\w_lr300.ltx">
 				</File>
 				<File
+					RelativePath=".\w_mac10.ltx">
+				</File>
+				<File
 					RelativePath=".\w_mounted.ltx">
 				</File>
 				<File
@@ -9508,6 +9535,9 @@
 				</File>
 				<File
 					RelativePath=".\w_rpg7.ltx">
+				</File>
+				<File
+					RelativePath=".\w_spas12.ltx">
 				</File>
 				<File
 					RelativePath=".\w_svd.ltx">
@@ -9555,7 +9585,31 @@
 				Name="gameplay"
 				Filter="">
 				<File
+					RelativePath=".\character_desc_bandit.xml">
+				</File>
+				<File
+					RelativePath=".\character_desc_dolg.xml">
+				</File>
+				<File
+					RelativePath=".\character_desc_ecolog.xml">
+				</File>
+				<File
 					RelativePath=".\character_desc_general.xml">
+				</File>
+				<File
+					RelativePath=".\character_desc_killer.xml">
+				</File>
+				<File
+					RelativePath=".\character_desc_monolit.xml">
+				</File>
+				<File
+					RelativePath=".\character_desc_soldier.xml">
+				</File>
+				<File
+					RelativePath=".\character_desc_stalker.xml">
+				</File>
+				<File
+					RelativePath=".\character_desc_svoboda.xml">
 				</File>
 				<File
 					RelativePath=".\dialogs.xml">
