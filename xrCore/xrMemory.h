@@ -59,8 +59,9 @@ XRCORE_API char* __stdcall	xr_strdup	(const char* string);
 
 // Global new/delete override
 #if !(defined(__BORLANDC__) || defined(NO_XRNEW))
-	//IC void*		__cdecl operator new	(size_t size)		{	return xr_malloc(size?size:1);	}
-	//IC void		__cdecl operator delete (void *p)			{	xr_free(p);						}
+	IC void*	__cdecl operator new	(size_t size)		{	return xr_malloc(size?size:1);	}
+	IC void		__cdecl operator delete (void *p)			{	xr_free(p);						}
+
 	//void* operator new(std::size_t _Count) throw(bad_alloc);
 	//void* operator new(std::size_t _Count, const std::nothrow_t& ) throw( );
 	//void* operator new(std::size_t _Count, void* _Ptr) throw( );
