@@ -415,9 +415,9 @@ void CWeapon::net_update::lerp(CWeapon::net_update& A, CWeapon::net_update& B, f
 	ammo_current	= iFloor(invf*float(A.ammo_current)+f*float(B.ammo_current));
 	ammo_elapsed	= iFloor(invf*float(A.ammo_elapsed)+f*float(B.ammo_elapsed));
 	pos.lerp		(A.pos,B.pos,f);
-	angles.x		= u_lerp_angle	(A.angles.x,B.angles.x,	f);
-	angles.y		= u_lerp_angle	(A.angles.y,B.angles.y,	f);
-	angles.z		= u_lerp_angle	(A.angles.z,B.angles.z,	f);
+	angles.x		= CEntity::u_lerp_angle	(A.angles.x,B.angles.x,	f);
+	angles.y		= CEntity::u_lerp_angle	(A.angles.y,B.angles.y,	f);
+	angles.z		= CEntity::u_lerp_angle	(A.angles.z,B.angles.z,	f);
 	fpos.lerp		(A.fpos,B.fpos,f);
 	fdir.lerp		(A.fdir,B.fdir,f);	fdir.normalize	();
 }
