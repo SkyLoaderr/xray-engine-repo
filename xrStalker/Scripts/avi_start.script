@@ -49,10 +49,10 @@ function test_avi_dlg:InitControls()
 end
 
 
-function main()
+function _main()
 end
 
-function bk_main()
+function main()
 	local dlg = test_avi_dlg()
 	
 	local snd = sound_object(
