@@ -272,6 +272,7 @@ BOOL CHOM::visible		(vis_data& vis)
 	}
 	vis.hom_frame	= frame_current + delay;
 	vis.hom_tested	= frame_current;
+	if (result)		vis.hom_accept_frame = Device.dwFrame;
 
 	Device.Statistic.RenderCALC_HOM.End	();
 	return result;
