@@ -117,6 +117,7 @@
 #	include "hairszone.h"
 #	include "amebazone.h"
 
+#	include "trigger.h"
 #	include "simpledetector.h"
 
 #	include "torch.h"
@@ -318,6 +319,7 @@ void CObjectFactory::register_classes	()
 	// objects
 	ADD(CProjector				,CSE_ALifeObjectProjector		,CLSID_OBJECT_PROJECTOR			,"projector");
 	ADD(CWeaponMounted			,CSE_ALifeMountedWeapon			,CLSID_OBJECT_W_MOUNTED			,"wpn_mounted");
+	ADD(CTrigger				,CSE_Trigger					,CLSID_OBJECT_TRIGGER			,"trigger");
 
 	// entity
 	ADD(CHangingLamp			,CSE_ALifeObjectHangingLamp		,CLSID_OBJECT_HLAMP				,"hanging_lamp");

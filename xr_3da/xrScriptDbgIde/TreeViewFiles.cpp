@@ -1004,7 +1004,7 @@ HTREEITEM CTreeViewFiles::FindFolder(CString& name, HTREEITEM itm_root)
 	if(!itm_root)
 		itm_root = m_hRoot;
 	CString itm_name = m_pTree->GetItemText(itm_root);
-	if( (IsFolder(itm_root)||IsRoot(itm_root)) && itm_name.Compare(name)==0)
+	if( (IsFolder(itm_root)||IsRoot(itm_root)) && itm_name.CompareNoCase(name)==0)
 		return itm_root;
 
 	HTREEITEM itm = m_pTree->GetChildItem(itm_root);

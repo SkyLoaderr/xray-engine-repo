@@ -1567,3 +1567,47 @@ void CSE_ALifeTraderAbstract::FillProps	(LPCSTR pref, PropItemVec& items)
 	value->OnChangeEvent.bind	(this,&CSE_ALifeTraderAbstract::OnChangeProfile);
 #endif
 }
+
+CSE_Trigger::CSE_Trigger(LPCSTR section):inherited1(section),inherited2(section)
+{
+	m_state = 0;
+}
+
+CSE_Trigger::~CSE_Trigger()
+{
+}
+
+void CSE_Trigger::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+{
+//	inherited1::STATE_Read		(tNetPacket,size);
+	m_state = tNetPacket.r_u32();
+}
+
+void CSE_Trigger::STATE_Write	(NET_Packet	&tNetPacket)
+{
+//	inherited1::STATE_Write		(tNetPacket);
+	tNetPacket.w_u32(m_state);
+}
+
+void CSE_Trigger::UPDATE_Read	(NET_Packet	&tNetPacket)
+{
+//	inherited1::UPDATE_Read		(tNetPacket);
+	m_state = tNetPacket.r_u32();
+}
+
+void CSE_Trigger::UPDATE_Write	(NET_Packet	&tNetPacket)
+{
+//	inherited1::UPDATE_Write	(tNetPacket);
+	tNetPacket.w_u32(m_state);
+}
+
+void CSE_Trigger::FillProps		(LPCSTR pref, PropItemVec& values)
+{
+	inherited1::FillProps			(pref,values);
+	inherited2::FillProps			(pref,values);
+	PHelper().CreateU32		(values, PrepareKey(pref,*s_name,"InitialState"),			&m_state,			0, 10000);
+}
+CSE_Visual* CSE_Trigger::visual					()
+{
+	return this;
+}

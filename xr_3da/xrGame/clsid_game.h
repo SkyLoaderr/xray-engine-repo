@@ -118,6 +118,8 @@
 #define CLSID_OBJECT_HEALTH			MK_CLSID('O','_','H','E','A','L','T','H')
 #define CLSID_OBJECT_ARMOR			MK_CLSID('O','_','A','R','M','O','R',' ')
 
+#define CLSID_OBJECT_TRIGGER		MK_CLSID('O','_','T','R','I','G','E','R')
+
 // Targets
 #define CLSID_TARGET				MK_CLSID('T','_','B','A','S','E',' ',' ')
 #define CLSID_TARGET_ASSAULT		MK_CLSID('T','_','A','S','S',' ',' ',' ')
