@@ -610,22 +610,13 @@
 				Name="Sector/Portal"
 				Filter="">
 				<File
-					RelativePath="Portal.cpp">
-				</File>
-				<File
-					RelativePath="Portal.h">
-				</File>
-				<File
-					RelativePath="Portal_traversal.cpp">
-				</File>
-				<File
-					RelativePath=".\r__portal_traversal.cpp">
-				</File>
-				<File
 					RelativePath=".\r__sector.cpp">
 				</File>
 				<File
 					RelativePath=".\r__sector.h">
+				</File>
+				<File
+					RelativePath=".\r__sector_traversal.cpp">
 				</File>
 			</Filter>
 			<Filter
