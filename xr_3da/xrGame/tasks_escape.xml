@@ -66,6 +66,7 @@
 		<objective>
 			<text>esc_help_wounded_from_raid_1</text>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<article>storyline_fox_flash_info</article>
 		</objective>
 		<objective>
 			<text>esc_help_wounded_from_raid_2</text>
