@@ -219,7 +219,9 @@ void CWeaponMagazinedWGrenade::state_Fire(float dt)
 			if(Local()) 
 			{
 				m_magazine.pop	();
-				if(!(--iAmmoElapsed)) OnMagazineEmpty();
+				--iAmmoElapsed;
+				if(!iAmmoElapsed) 
+					OnMagazineEmpty();
 			}
 		}
 		UpdateSounds			();

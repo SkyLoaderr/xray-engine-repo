@@ -98,7 +98,8 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 		CheckForMisfire();
 	}
 
-	
+	VERIFY((u32)iAmmoElapsed == m_magazine.size());
+
 	return				bResult;
 }
 

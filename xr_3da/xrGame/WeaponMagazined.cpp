@@ -213,6 +213,8 @@ void CWeaponMagazined::UnloadMagazine()
 		m_magazine.pop(); 
 		--iAmmoElapsed;
 	}
+
+	VERIFY((u32)iAmmoElapsed == m_magazine.size());
 	
 	xr_map<LPCSTR, u16>::iterator l_it;
 	for(l_it = l_ammo.begin(); l_ammo.end() != l_it; ++l_it) 
@@ -263,6 +265,8 @@ void CWeaponMagazined::ReloadMagazine()
 		}
 	}
 
+	VERIFY((u32)iAmmoElapsed == m_magazine.size());
+
 	//нет патронов для перезарядки
 	if(!m_pAmmo) return;
 
@@ -271,6 +275,8 @@ void CWeaponMagazined::ReloadMagazine()
 		(!m_pAmmo || xr_strcmp(m_pAmmo->cNameSect(), 
 					 *m_magazine.top().m_ammoSect)))
 		UnloadMagazine();
+
+	VERIFY((u32)iAmmoElapsed == m_magazine.size());
 	
 	CCartridge l_cartridge;
 	while(iAmmoElapsed < iMagazineSize && m_pAmmo->Get(l_cartridge)) 
@@ -279,6 +285,8 @@ void CWeaponMagazined::ReloadMagazine()
 		m_magazine.push(l_cartridge);
 	}
 	m_ammoName = m_pAmmo->m_nameShort;
+
+	VERIFY((u32)iAmmoElapsed == m_magazine.size());
 
 	//выкинуть коробку патронов, если она пустая
 	if(!m_pAmmo->m_boxCurr) m_pAmmo->Drop();
@@ -289,6 +297,8 @@ void CWeaponMagazined::ReloadMagazine()
 		ReloadMagazine(); 
 		l_lockType = false; 
 	}
+
+	VERIFY((u32)iAmmoElapsed == m_magazine.size());
 }
 
 void CWeaponMagazined::OnStateSwitch	(u32 S)
@@ -332,25 +342,31 @@ void CWeaponMagazined::UpdateCL			()
 	float dt = Device.fTimeDelta;
 
 	
-	// cycle update
-	switch (STATE)
+
+	//когда происходит апдейт состояния оружия
+	//ничего другого не делать
+	if(NEXT_STATE == STATE)
 	{
-	case eShowing:
-	case eHiding:
-	case eReload:
-	case eIdle:
-		fTime			-=	dt;
-		if (fTime<0)	
-			fTime = 0;
-		break;
-	case eFire:			
-		state_Fire		(dt);	
-        if(fTime<=0)
-			StopShooting();
-		break;
-	case eMisfire:		state_Misfire	(dt);	break;
-	case eMagEmpty:		state_MagEmpty	(dt);	break;
-	case eHidden:		break;
+		switch (STATE)
+		{
+		case eShowing:
+		case eHiding:
+		case eReload:
+		case eIdle:
+			fTime			-=	dt;
+			if (fTime<0)	
+				fTime = 0;
+			break;
+		case eFire:			
+			VERIFY(iAmmoElapsed);
+			state_Fire		(dt);	
+			if(fTime<=0 || iAmmoElapsed == 0)
+				StopShooting();
+			break;
+		case eMisfire:		state_Misfire	(dt);	break;
+		case eMagEmpty:		state_MagEmpty	(dt);	break;
+		case eHidden:		break;
+		}
 	}
 
 	UpdateSounds		();
@@ -399,7 +415,8 @@ void CWeaponMagazined::state_Fire	(float dt)
 	else 
 		return;
 	
-	while (fTime<=0 && (IsWorking() || m_bFireSingleShot) && !m_magazine.empty())
+	VERIFY(!m_magazine.empty());
+	while (fTime<=0 && (IsWorking() || m_bFireSingleShot))
 	{
 		m_bFireSingleShot = false;
 

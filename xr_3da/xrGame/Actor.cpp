@@ -797,55 +797,8 @@ void CActor::shedule_Update	(u32 DT)
 	if(pHudItem && !pHudItem->getDestroy()) 
 		pHudItem->SetHUDmode(HUDview());
 
-	//вынесено в UpdateCL
-	///////////////////////////////////////////////////////////////
-	// для приблеженного режима приближения
-/*
-	CWeapon* pWeapon = dynamic_cast<CWeapon*>(inventory().ActiveItem());	
-	m_bZoomAimingMode = false;
 
 
-	//обновить положение камеры и FOV 
-
-	if (eacFirstEye == cam_active && pWeapon &&
-		pWeapon->IsZoomed() && (!pWeapon->ZoomTexture() ||
-		(!pWeapon->IsRotatingToZoom() && pWeapon->ZoomTexture())))
-		cam_Update(dt, pWeapon->GetZoomFactor());
-	else 
-		cam_Update(dt, DEFAULT_FOV);
-
-	if(pWeapon)
-	{
-		if(pWeapon->IsZoomed())
-		{
-			float full_fire_disp = pWeapon->GetFireDispersion();
-
-			CEffectorZoomInertion* S = dynamic_cast<CEffectorZoomInertion*>	(EffectorManager().GetEffector(eCEZoom));
-			if(S) S->SetParams(full_fire_disp);
-
-			//помнить, что если m_bZoomAimingMode = true
-			//pWeapon->GetFireDispersion() вернет значение дисперсии без
-			//учета положения стрелка, так как он спрашивает у нас GetWeaponAccuracy
-			m_bZoomAimingMode = true;
-		}
-
-		//if(eacFirstEye == cam_active)
-		if(this == dynamic_cast<CActor*>(Level().CurrentEntity()))
-		{
-			float only_weapon_fire_disp = pWeapon->GetFireDispersion();
-			HUD().SetCrosshairDisp(only_weapon_fire_disp);
-			HUD().ShowCrosshair(true);
-		}
-	}
-	else
-	{
-		if(this == dynamic_cast<CActor*>(Level().CurrentEntity()))
-		{
-			HUD().SetCrosshairDisp(0.f);
-			HUD().ShowCrosshair(false);
-		}
-	}
-*/
 	//что актер видит перед собой
 	Collide::rq_result& RQ = HUD().GetCurrentRayQuery();
 	
@@ -872,7 +825,6 @@ void CActor::shedule_Update	(u32 DT)
 
 		else if (inventory().m_pTarget)
 			m_eDefaultObjAction = eaaPickup;
-
 		else 
 			m_eDefaultObjAction = eaaNoAction;
 	}
@@ -880,6 +832,7 @@ void CActor::shedule_Update	(u32 DT)
 	{
 		inventory().m_pTarget	= NULL;
 		m_pPersonWeLookingAt	= NULL;
+		m_eDefaultObjAction		= eaaNoAction;
 	}
 
 

@@ -38,6 +38,7 @@ void CWeaponCustomPistol::switch2_Fire	()
 		dwFP_Frame					= 0xffffffff;
 		dwXF_Frame					= 0xffffffff;
 	}
+	bWorking = false;
 }
 
 /*

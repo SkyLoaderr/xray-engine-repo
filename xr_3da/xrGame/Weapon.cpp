@@ -428,6 +428,9 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 	}*/
 
 	m_dwWeaponIndependencyTime = 0;
+
+	VERIFY((u32)iAmmoElapsed == m_magazine.size());
+
 	return bResult;
 }
 
@@ -512,6 +515,7 @@ void CWeapon::net_Import	(NET_Packet& P)
 	};
 
 //	STATE = wstate;
+	VERIFY((u32)iAmmoElapsed == m_magazine.size());
 	
 }
 
@@ -968,6 +972,7 @@ CUIStaticItem* CWeapon::ZoomTexture()
 
 void CWeapon::OnMagazineEmpty	()
 {
+	VERIFY((u32)iAmmoElapsed == m_magazine.size());
 }
 
 void CWeapon::make_Interpolation ()
