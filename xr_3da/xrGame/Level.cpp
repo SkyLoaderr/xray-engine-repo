@@ -447,7 +447,7 @@ void CLevel::OnEvent(EVENT E, u64 P1, u64 /**P2/**/)
 		char RealName [256];
 		strcpy(RealName,name);
 		strcat(RealName,".xrdemo");
-		Cameras.AddEffector(xr_new<CDemoPlay> (RealName,1.3f));
+		Cameras.AddEffector(xr_new<CDemoPlay> (RealName,1.3f,0));
 	} else if (E==eChangeTrack && P1) {
 		// int id = atoi((char*)P1);
 		// Environment->Music_Play(id);

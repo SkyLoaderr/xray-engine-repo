@@ -52,7 +52,6 @@ CDemoPlay::CDemoPlay(const char *name, float ms, u32 cycles, float life_time) : 
 		FS.r_close		(fs);
 		Log				("~ Total key-frames: ",m_count);
 	}
-	stat_loop_id		= 0;
 	stat_started		= FALSE;
 	Device.PreCache		(50);
 }
@@ -71,7 +70,6 @@ void CDemoPlay::stat_Start	()
 	if (stat_started)		return;
 	stat_started			= TRUE				;
 	Sleep					(1)					;
-	stat_loop_id			+=	1				;
 	stat_StartFrame			=	Device.dwFrame	;
 	stat_Timer_frame.Start	()					;
 	stat_Timer_total.Start	()					;
