@@ -76,8 +76,9 @@ void CAI_Space::Load(LPCSTR name)
 
 void CAI_Space::Render()
 {
-	if (0==vfs)	return;
-
+	if (0==vfs)			return;
+	if (0==sh_debug)	return;
+	
 	CGameObject*	O	= (CGameObject*)Level().CurrentEntity();
 	Fvector	POSITION	= O->Position();
 	POSITION.y += 0.5f;
