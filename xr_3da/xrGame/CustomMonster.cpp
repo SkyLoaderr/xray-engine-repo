@@ -354,20 +354,21 @@ void CCustomMonster::UpdateCL	()
 	net_update&	N		= NET.back();
 	if ((dwTime > N.dwTimeStamp) || (NET.size() < 2)) {
 		// BAD.	extrapolation
-//		Msg				("%d : Bad extrapolation",Device.TimerAsync());
 		NET_Last		= N;
-//		if (SUB_CLS_ID != CLSID_AI_RAT) {
-//			if (dwTime - N.dwTimeStamp > Device.dwTimeDelta)
-//				AI_Path.Calculate(this,Position(),Position(),m_fCurSpeed,Device.fTimeDelta);
-//			else
-//				AI_Path.Calculate(this,Position(),Position(),m_fCurSpeed,float(dwTime - N.dwTimeStamp)/1000.f);
-//
-//			if (!bfScriptAnimation()) {
-//				Fvector				dir;
-//				AI_Path.Direction	(dir);
-//				SelectAnimation		(XFORM().k,dir,AI_Path.fSpeed);
-//			}
-//		}
+		if (SUB_CLS_ID != CLSID_AI_RAT) {
+			Fvector		l_tPosition = Position();
+			if (dwTime - N.dwTimeStamp > Device.dwTimeDelta)
+				AI_Path.Calculate(this,Position(),Position(),m_fCurSpeed,Device.fTimeDelta);
+			else
+				AI_Path.Calculate(this,Position(),Position(),m_fCurSpeed,float(dwTime - N.dwTimeStamp)/1000.f);
+
+			if (!bfScriptAnimation()) {
+				Fvector				dir;
+				AI_Path.Direction	(dir);
+				SelectAnimation		(XFORM().k,dir,AI_Path.fSpeed);
+			}
+			NET_Last.p_pos = Position();
+		}
 	}
 	else {
 		// OK.	interpolation
@@ -380,7 +381,7 @@ void CCustomMonster::UpdateCL	()
 		}
 		if (select>=0)
 		{
-			Msg						("%d : good interpolation",Device.TimerAsync());
+			Fvector		l_tPosition = Position();
 			// Interpolate state
 			net_update&	A			= NET[select+0];
 			net_update&	B			= NET[select+1];
