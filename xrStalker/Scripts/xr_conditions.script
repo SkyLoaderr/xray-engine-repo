@@ -49,3 +49,4 @@ function hit_by_actor(actor, npc)
 	local hit_by_actor = t ~= nil and t.who == actor:id()
 	printf("_bp: hit_by_actor: %s", if_then_else(hit_by_actor, "true", "false"))
 end
+

@@ -71,6 +71,7 @@ function log_bp1(actor, npc)
 	printf("xr_effects: log_bp1 (actor='%s', npc='%s'", actor:name(), npc:name())
 end
 
+-- FIXME: Ё“ќ Ќ≈ —ќ’–јЌя≈“—я !!!
 local counter = 0
 local need_monsters = 0
 function garbage_monster_death (actor, npc)
@@ -113,5 +114,18 @@ function garbage_monster_death (actor, npc)
        actor:give_info_portion ("gar_dolg_help_kill_rush_perfect")
     end    
     
+end
+
+-- ѕри смерти кровососа дать ему небольшой пинок в сторону вейпоинта, чтобы он упал
+-- с обрыва
+function val_bs_victim_dead(actor, npc)
+	local h = hit()
+	h.power = 1000
+	h.direction = patrol("val_bs_hit_direction"):point(0):sub(npc:position())
+	h.bone = "bip01_legs"
+	h.draftsman = bpc
+	h.impulse = 1000
+	h.type = hit.wound
+	npc:hit(h)
 end
 

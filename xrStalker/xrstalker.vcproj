@@ -1407,6 +1407,9 @@
 						RelativePath=".\scripts\mob_sound.script">
 					</File>
 					<File
+						RelativePath=".\Scripts\mob_state_mgr.script">
+					</File>
+					<File
 						RelativePath=".\scripts\move_mgr.script">
 					</File>
 					<File
