@@ -92,6 +92,9 @@ namespace AI {
 			Fvector			D;	
 			D.sub			(OP,P);
 			float			f	= D.magnitude();
+			// 03.06.2002 DI
+			I->fuzzy		= 0.f;
+			// end of 03.06.2002 DI
 			if				(f>fuzzy_guaranteed) {
 				D.div	(f);
 				if (pCreator->ObjectSpace.RayTest(P,D,f,false,&I->Cache))	I->fuzzy-=fuzzy_update_novis*dt;

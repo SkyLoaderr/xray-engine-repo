@@ -13,7 +13,7 @@
 #include "ai_soldier_selectors.h"
 #include "..\\..\\..\\bodyinstance.h"
 
-#define WRITE_LOG
+//#define WRITE_LOG
 #define MIN_RANGE_SEARCH_TIME_INTERVAL	500.f
 #define MAX_TIME_RANGE_SEARCH			150000.f
 #define	FIRE_ANGLE						PI/30
@@ -636,7 +636,7 @@ void CAI_Soldier::vfSetFire(bool bFire, CGroup &Group)
 		if ((!bSafeFire) && (m_bFiring))
 			Group.m_dwFiring++;
 		
-	Msg("firing : %d",Group.m_dwFiring);
+	//Msg("firing : %d",Group.m_dwFiring);
 }
 
 void CAI_Soldier::vfSetMovementType(bool bCrouched, float fSpeed)
@@ -685,9 +685,6 @@ void CAI_Soldier::AttackFire()
 		return;
 	}
 	
-	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-	vfSetFire(true,Group);
-
 	SelectEnemy(Enemy);
 	
 	if (!(Enemy.Enemy)) {
@@ -713,7 +710,12 @@ void CAI_Soldier::AttackFire()
 		return;
 	}
 		
-	if ((Group.m_dwFiring > 1) || ((Group.m_dwFiring == 1) && (!m_bFiring))) {
+	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+
+	Fvector tDistance;
+	tDistance.sub(Position(),Enemy.Enemy->Position());
+
+	if ((tDistance.square_magnitude() >= 25.f) && ((Group.m_dwFiring > 1) || ((Group.m_dwFiring == 1) && (!m_bFiring)))) {
 		eCurrentState = aiSoldierAttackRun;
 		m_dwLastRangeSearch = 0;
 		return;
@@ -732,6 +734,8 @@ void CAI_Soldier::AttackFire()
 	
 	vfAimAtEnemy();
 	
+	vfSetFire(true,Group);
+
 	vfSetMovementType(true,m_fMaxSpeed);
 
 	bStopThinking = true;
@@ -774,8 +778,11 @@ void CAI_Soldier::AttackRun()
 		
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 
-	//if ((!(Group.m_dwFiring)) && (Weapons->ActiveWeapon() && (Weapons->ActiveWeapon()->GetAmmoElapsed() > 0))){
-	if ((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() > 0)){
+	Fvector tDistance;
+	tDistance.sub(Position(),Enemy.Enemy->Position());
+	
+	if ((tDistance.square_magnitude() < 25.f) || ((!(Group.m_dwFiring)) && (Weapons->ActiveWeapon() && (Weapons->ActiveWeapon()->GetAmmoElapsed() > 0)))) {
+	//if ((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() > 0)){
 		eCurrentState = aiSoldierAttackFire;
 		m_dwLastRangeSearch = 0;
 		return;
@@ -792,7 +799,7 @@ void CAI_Soldier::AttackRun()
 	
 	vfAimAtEnemy();
 	
-	vfSetFire(true,Group);
+	vfSetFire(false,Group);
 
 	if ((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() <= Weapons->ActiveWeapon()->GetAmmoMagSize()*0.2f))
 		Weapons->ActiveWeapon()->Reload();
@@ -1172,7 +1179,7 @@ void CAI_Soldier::Pursuit()
 void CAI_Soldier::Reload()
 {
 #ifdef WRITE_LOG
-	Msg("creature : %s, mode : %s",cName(),"Reloading weapon...");
+	Msg("creature : %s, mode : %s",cName(),"Recharging...");
 #endif
 	if (g_Health() <= 0) {
 		eCurrentState = aiSoldierDie;
@@ -1194,6 +1201,7 @@ void CAI_Soldier::Reload()
 	
 	SelectEnemy(Enemy);
 
+	/**
 	if (!Enemy.Enemy) {
 		eCurrentState = tStateStack.top();
 		tStateStack.pop();
@@ -1201,6 +1209,7 @@ void CAI_Soldier::Reload()
 		m_dwLastRangeSearch = 0;
 		return;
 	}
+	/**/
 	
 	DWORD dwCurTime = Level().timeServer();
 	
@@ -1210,17 +1219,21 @@ void CAI_Soldier::Reload()
 	
 	vfInitSelector(SelectorReload,Squad,Leader);
 
-	if (AI_Path.bNeedRebuild)
-		vfBuildPathToDestinationPoint(0);
-	else
-		vfSearchForBetterPosition(SelectorReload,Squad,Leader);
-
-	tWatchDirection.sub(Enemy.Enemy->Position(),Position());
-	if (tWatchDirection.magnitude() > 0.0001f)
-		SetSmartLook(AI_Node,tWatchDirection);
-	else
-		SetLessCoverLook(AI_Node);
-
+	if (Enemy.Enemy) {
+		if (AI_Path.bNeedRebuild)
+			vfBuildPathToDestinationPoint(0);
+		else
+			vfSearchForBetterPosition(SelectorReload,Squad,Leader);
+		tWatchDirection.sub(Enemy.Enemy->Position(),Position());
+		if (tWatchDirection.magnitude() > 0.0001f)
+			SetSmartLook(AI_Node,tWatchDirection);
+		else
+			SetLessCoverLook(AI_Node);
+	}
+	else {
+		//SetLessCoverLook(AI_Node);
+	}
+	
 	vfSetFire(false,Group);
 	
 	if (Weapons->ActiveWeapon())

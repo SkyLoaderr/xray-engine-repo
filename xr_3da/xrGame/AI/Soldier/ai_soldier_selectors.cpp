@@ -300,14 +300,14 @@ float CSoldierSelectorReload::Estimate(NodeCompressed* tNode, float fDistance, B
 	m_fDistance = fDistance;
 	vfInit();
 	// computations
-	vfAddTravelCost();
-	CHECK_RESULT;
-	vfAddLightCost();
-	CHECK_RESULT;
-	vfAddTotalCoverCost();
-	CHECK_RESULT;
-	vfAddDistanceToEnemyCost();
-	CHECK_RESULT;
+	//vfAddTravelCost();
+	//CHECK_RESULT;
+	//vfAddLightCost();
+	//CHECK_RESULT;
+	//vfAddTotalCoverCost();
+	//CHECK_RESULT;
+	//vfAddDistanceToEnemyCost();
+	//CHECK_RESULT;
 	vfAddCoverFromEnemyCost();
 	CHECK_RESULT;
 	// checking for epsilon
@@ -322,6 +322,34 @@ CSoldierSelectorRetreat::CSoldierSelectorRetreat()
 }
 
 float CSoldierSelectorRetreat::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
+{
+	// initialization
+	m_tpCurrentNode = tNode;
+	m_fDistance = fDistance;
+	vfInit();
+	// computations
+	vfAddTravelCost();
+	CHECK_RESULT;
+	vfAddLightCost();
+	CHECK_RESULT;
+	vfAddTotalCoverCost();
+	CHECK_RESULT;
+	vfAddDistanceToEnemyCost();
+	CHECK_RESULT;
+	vfAddCoverFromEnemyCost();
+	CHECK_RESULT;
+	// checking for epsilon
+	vfCheckForEpsilon(bStop);
+	// returning a value
+	return(m_fResult);
+}
+
+CSoldierSelectorSenseSomething::CSoldierSelectorSenseSomething()
+{ 
+	Name = "selector_sense_something"; 
+}
+
+float CSoldierSelectorSenseSomething::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
 {
 	// initialization
 	m_tpCurrentNode = tNode;
@@ -384,34 +412,6 @@ float CSoldierSelectorUnderFire::Estimate(NodeCompressed* tNode, float fDistance
 	/**/
 	// checking for epsilon
 	//vfCheckForEpsilon(bStop);
-	// returning a value
-	return(m_fResult);
-}
-
-CSoldierSelectorSenseSomething::CSoldierSelectorSenseSomething()
-{ 
-	Name = "selector_sense_something"; 
-}
-
-float CSoldierSelectorSenseSomething::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
-{
-	// initialization
-	m_tpCurrentNode = tNode;
-	m_fDistance = fDistance;
-	vfInit();
-	// computations
-	vfAddTravelCost();
-	CHECK_RESULT;
-	vfAddLightCost();
-	CHECK_RESULT;
-	vfAddTotalCoverCost();
-	CHECK_RESULT;
-	vfAddDistanceToEnemyCost();
-	CHECK_RESULT;
-	vfAddCoverFromEnemyCost();
-	CHECK_RESULT;
-	// checking for epsilon
-	vfCheckForEpsilon(bStop);
 	// returning a value
 	return(m_fResult);
 }
