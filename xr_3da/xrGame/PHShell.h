@@ -36,12 +36,12 @@ virtual ~CPHShell				()
 						if(bActive) Deactivate();
 
 						xr_vector<CPHElement*>::iterator i;
-						for(i=elements.begin();i!=elements.end();i++)
+						for(i=elements.begin();elements.end()!=i;++i)
 							xr_delete(*i);
 						elements.clear();
 
 						xr_vector<CPHJoint*>::iterator j;
-						for(j=joints.begin();j!=joints.end();j++)
+						for(j=joints.begin();joints.end()!=j;++j)
 							xr_delete(*j);
 						joints.clear();
 						if(m_spliter_holder)xr_delete(m_spliter_holder);
@@ -64,7 +64,7 @@ virtual ~CPHShell				()
 	virtual void			SetAirResistance		(dReal linear=0.0002f, dReal angular=0.05f)
 	{
 		xr_vector<CPHElement*>::iterator i;
-		for(i=elements.begin();i!=elements.end();i++)
+		for(i=elements.begin();elements.end()!=i;++i)
 			(*i)->SetAirResistance(linear,angular);
 	}
 
@@ -109,7 +109,7 @@ virtual ~CPHShell				()
 	virtual void			set_JointResistance		(float force)
 	{
 		JOINT_I i;
-		for(i=joints.begin();i!=joints.end();i++)
+		for(i=joints.begin();joints.end() != i;++i)
 		{
 			(*i)->SetForce(force);
 			(*i)->SetVelocity();
