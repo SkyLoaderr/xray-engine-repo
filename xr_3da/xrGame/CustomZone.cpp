@@ -936,11 +936,6 @@ void CCustomZone::AffectObjects()
 
 	m_dwAffectFrameNum = Device.dwFrame;
 
-
-	// вермя срабатывания не чаще, чем заданный период
-	if(m_dwDeltaTime < m_dwPeriod) return;
-	m_dwDeltaTime = 0;
-
 	xr_set<CObject*>::iterator it;
 	for(it = m_inZone.begin(); m_inZone.end() != it; ++it) 
 	{
@@ -1022,22 +1017,31 @@ void	CCustomZone::OnEvent (NET_Packet& P, u16 type)
 				u8				S;
 				P.r_u8			(S);
 
+				if (bDebug) {
+					
+					
+					
+				}
+
+				string128 s1,s2;
+				sprintf(s2, " Time = [%u]", Device.dwTimeGlobal);
+
 				switch (S)
 				{
 				case eZoneStateIdle:
-					if(bDebug) HUD().outMessage(0xffffffff,cName(),"zone switch to State Idle");
+					if(bDebug) HUD().outMessage(0xffffffff,*cName(),strconcat(s1,"zone switch to State Idle",s2));
 					break;																
 				case eZoneStateAwaking:													
-					if(bDebug) HUD().outMessage(0xffffffff,cName(),"zone switch to State Awaking");
+					if(bDebug) HUD().outMessage(0xffffffff,*cName(),strconcat(s1,"zone switch to State Awaking",s2));
 					break;																
 				case eZoneStateBlowout:													
-					if(bDebug) HUD().outMessage(0xffffffff,cName(),"zone switch to State Blowout");
+					if(bDebug) HUD().outMessage(0xffffffff,*cName(),strconcat(s1,"zone switch to State Blowout",s2));
 					break;																
 				case eZoneStateAccumulate:												
-					if(bDebug) HUD().outMessage(0xffffffff,cName(),"zone switch to State Accumulate");
+					if(bDebug) HUD().outMessage(0xffffffff,*cName(),strconcat(s1,"zone switch to State Accumulate",s2));
 					break;
 				case eZoneStateDisabled:												
-					if(bDebug) HUD().outMessage(0xffffffff,cName(),"zone switch to State Disabled");
+					if(bDebug) HUD().outMessage(0xffffffff,*cName(),strconcat(s1,"zone switch to State Disabled",s2));
 					break;
 				};
 				OnStateSwitch(EZoneState(S));
