@@ -8,6 +8,8 @@
 
 #pragma once
 
+#define ALIFE_SUPPORT_CONSOLE_COMMANDS
+
 #include "..\\xrLevel.h"
 #include "ai_alife_interfaces.h"
 #include "ai_alife_templates.h"
@@ -39,12 +41,14 @@ public:
 		m_dwStartTime				= Device.dwTimeGlobal;
 	};
 	
+#ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
 	IC void							vfSetTimeFactor(float fTimeFactor)
 	{
 		m_tGameTime					= tfGetGameTime();
 		m_dwStartTime				= Device.dwTimeGlobal;
 		m_fTimeFactor				= fTimeFactor;
 	};
+#endif
 
 	IC _TIME_ID						tfGetGameTime()
 	{

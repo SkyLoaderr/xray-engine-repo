@@ -220,7 +220,7 @@ public:
 				tpGame->m_tpALife->vfListEvents();
 			}
 			else
-				Log("!ALife parameters are not loaded!");
+				Log("!ALife simulator is not loaded!");
 		}
 		else
 			Log("!Not a single player game!");
@@ -237,7 +237,7 @@ public:
 				tpGame->m_tpALife->vfListTasks();
 			}
 			else
-				Log("!ALife parameters are not loaded!");
+				Log("!ALife simulator is not loaded!");
 		}
 		else
 			Log("!Not a single player game!");
@@ -254,7 +254,7 @@ public:
 				tpGame->m_tpALife->vfListTerrain();
 			}
 			else
-				Log("!ALife parameters are not loaded!");
+				Log("!ALife simulator is not loaded!");
 		}
 		else
 			Log("!Not a single player game!");
@@ -271,7 +271,7 @@ public:
 				tpGame->m_tpALife->vfListSpawnPoints();
 			}
 			else
-				Log("!ALife parameters are not loaded!");
+				Log("!ALife simulator is not loaded!");
 		}
 		else
 			Log("!Not a single player game!");
@@ -293,7 +293,7 @@ public:
 					tpGame->m_tpALife->vfObjectInfo(id1);
 			}
 			else
-				Log("!ALife parameters are not loaded!");
+				Log("!ALife simulator is not loaded!");
 		}
 		else
 			Log("!Not a single player game!");
@@ -315,7 +315,7 @@ public:
 					tpGame->m_tpALife->vfEventInfo(id1);
 			}
 			else
-				Log("!ALife parameters are not loaded!");
+				Log("!ALife simulator is not loaded!");
 		}
 		else
 			Log("!Not a single player game!");
@@ -337,7 +337,7 @@ public:
 					tpGame->m_tpALife->vfTaskInfo(id1);
 			}
 			else
-				Log("!ALife parameters are not loaded!");
+				Log("!ALife simulator is not loaded!");
 		}
 		else
 			Log("!Not a single player game!");
@@ -361,7 +361,7 @@ public:
 //				}
 //			}
 //			else
-//				Log("!ALife parameters are not loaded!");
+//				Log("!ALife simulator is not loaded!");
 //		}
 //		else
 //			Log("!Not a single player game!");
@@ -407,7 +407,117 @@ public:
 					tpGame->m_tpALife->vfSetTimeFactor(id1);
 			}
 			else
-				Log("!ALife parameters are not loaded!");
+				Log("!ALife simulator is not loaded!");
+		}
+		else
+			Log("!Not a single player game!");
+	}
+};
+
+class CCC_ALifeOnlineDistance : public CConsoleCommand {
+public:
+	CCC_ALifeOnlineDistance(LPCSTR N) : CConsoleCommand(N)  { };
+	virtual void Execute(LPCSTR args) {
+		if (Level().game.type == GAME_SINGLE) {
+			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
+			if (tpGame && tpGame->m_tpALife->m_bLoaded) {
+				float id1 = 0.0f;
+				sscanf(args ,"%f",&id1);
+				if (id1 < 2.0f)
+					Msg("Invalid online distance! (%.4f)",id1);
+				else
+					tpGame->m_tpALife->vfSetOnlineDistance(id1);
+			}
+			else
+				Log("!ALife simulator is not loaded!");
+		}
+		else
+			Log("!Not a single player game!");
+	}
+};
+
+class CCC_ALifeProcessTime : public CConsoleCommand {
+public:
+	CCC_ALifeProcessTime(LPCSTR N) : CConsoleCommand(N)  { };
+	virtual void Execute(LPCSTR args) {
+		if (Level().game.type == GAME_SINGLE) {
+			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
+			if (tpGame && tpGame->m_tpALife->m_bLoaded) {
+				int id1 = 0;
+				sscanf(args ,"%d",&id1);
+				if (id1 < 1)
+					Msg("Invalid process time! (%d)",id1);
+				else
+					tpGame->m_tpALife->vfSetProcessTime(id1);
+			}
+			else
+				Log("!ALife simulator is not loaded!");
+		}
+		else
+			Log("!Not a single player game!");
+	}
+};
+
+class CCC_ALifeSwitchDelay : public CConsoleCommand {
+public:
+	CCC_ALifeSwitchDelay(LPCSTR N) : CConsoleCommand(N)  { };
+	virtual void Execute(LPCSTR args) {
+		if (Level().game.type == GAME_SINGLE) {
+			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
+			if (tpGame && tpGame->m_tpALife->m_bLoaded) {
+				int id1 = 0;
+				sscanf(args ,"%d",&id1);
+				if (id1 < 0)
+					Msg("Invalid process time! (%d)",id1);
+				else
+					tpGame->m_tpALife->vfSetSwitchDelay(id1);
+			}
+			else
+				Log("!ALife simulator is not loaded!");
+		}
+		else
+			Log("!Not a single player game!");
+	}
+};
+
+class CCC_ALifeScheduleMin : public CConsoleCommand {
+public:
+	CCC_ALifeScheduleMin(LPCSTR N) : CConsoleCommand(N)  { };
+	virtual void Execute(LPCSTR args) {
+		if (Level().game.type == GAME_SINGLE) {
+			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
+			if (tpGame && tpGame->m_tpALife->m_bLoaded) {
+				int id1 = 0;
+				sscanf(args ,"%d",&id1);
+				if (id1 < 0)
+					Msg("Invalid schedule min time! (%d)",id1);
+				else
+					tpGame->m_tpALife->vfSetScheduleMin(id1);
+			}
+			else
+				Log("!ALife simulator is not loaded!");
+		}
+		else
+			Log("!Not a single player game!");
+	}
+};
+
+class CCC_ALifeScheduleMax : public CConsoleCommand {
+public:
+	CCC_ALifeScheduleMax(LPCSTR N) : CConsoleCommand(N)  { };
+	virtual void Execute(LPCSTR args) {
+		if (Level().game.type == GAME_SINGLE) {
+			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
+			if (tpGame && tpGame->m_tpALife->m_bLoaded) {
+				int id1 = 0;
+				sscanf(args ,"%d",&id1);
+				if (id1 < 0)
+					Msg("Invalid schedule max time! (%d)",id1);
+				else
+					tpGame->m_tpALife->vfSetScheduleMax(id1);
+			}
+			else
+				Log("!ALife simulator is not loaded!");
 		}
 		else
 			Log("!Not a single player game!");
@@ -472,6 +582,11 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		CMD1(CCC_ALifeSpawnInfo,	"al_is"					);		// spawn-point info
 		CMD1(CCC_ALifeGraphInfo,	"al_ig"					);		// graph-point info
 		CMD1(CCC_ALifeTimeFactor,	"al_time_factor"		);		// set time factor
+		CMD1(CCC_ALifeOnlineDistance,"al_online_distance"	);		// set time factor
+		CMD1(CCC_ALifeProcessTime,	"al_process_time"		);		// set time factor
+		CMD1(CCC_ALifeSwitchDelay,	"al_switch_delay"		);		// set time factor
+		CMD1(CCC_ALifeScheduleMin,	"al_schedule_min"		);		// set time factor
+		CMD1(CCC_ALifeScheduleMax,	"al_schedule_max"		);		// set time factor
 #endif
 
 		// hud

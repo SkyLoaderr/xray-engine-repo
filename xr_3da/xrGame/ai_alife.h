@@ -11,8 +11,6 @@
 #include "ai_alife_objects.h"
 #include "ai_alife_registries.h"
 
-#define ALIFE_SUPPORT_CONSOLE_COMMANDS
-
 class CAI_ALife : 
 	public CALifeHeader, 
 	public CALifeGameTime,
@@ -94,5 +92,10 @@ public:
 			void					vfTaskInfo					(_TASK_ID &tTaskID);
 			void					vfSpawnPointInfo			(_SPAWN_ID &tSpawnID);
 			void					vfGraphVertexInfo			(_GRAPH_ID &tGraphID);
+			void					vfSetOnlineDistance			(float	fNewDistance);
+			void					vfSetProcessTime			(int	iMicroSeconds);
+			void					vfSetSwitchDelay			(int	iMilliSeconds);
+			void					vfSetScheduleMin			(int	iMilliSeconds);
+			void					vfSetScheduleMax			(int	iMilliSeconds);
 #endif
 };

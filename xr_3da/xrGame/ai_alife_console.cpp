@@ -500,4 +500,29 @@ void CAI_ALife::vfGraphVertexInfo(_GRAPH_ID &tGraphID)
 	for (int i=0; i<(int)tGraphVertex.tNeighbourCount; i++)
 		Msg("*   Vertex %d -> distance %7.2f",tpaEdges[i].dwVertexNumber, tpaEdges[i].fPathDistance);
 }
+
+void CAI_ALife::vfSetOnlineDistance			(float	fNewDistance)
+{
+	m_fOnlineDistance = fNewDistance;
+}
+
+void CAI_ALife::vfSetProcessTime			(int	iMicroSeconds)
+{
+	m_qwMaxProcessTime = iMicroSeconds*CPU::cycles_per_microsec;
+}
+
+void CAI_ALife::vfSetSwitchDelay			(int	iMilliSeconds)
+{
+	m_dwSwitchDelay = (u32)iMilliSeconds;
+}
+
+void CAI_ALife::vfSetScheduleMin			(int	iMilliSeconds)
+{
+	shedule_Min = iMilliSeconds;
+}
+
+void CAI_ALife::vfSetScheduleMax			(int	iMilliSeconds)
+{
+	shedule_Max = iMilliSeconds;
+}
 #endif
