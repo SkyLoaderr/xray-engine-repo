@@ -1897,6 +1897,16 @@
 							RelativePath=".\scripts\level_tasks.script">
 						</File>
 					</Filter>
+					<Filter
+						Name="test_levels"
+						Filter="">
+						<File
+							RelativePath=".\scripts\quest_agroprom.script">
+						</File>
+						<File
+							RelativePath=".\scripts\quest_garbage.script">
+						</File>
+					</Filter>
 				</Filter>
 			</Filter>
 			<Filter
