@@ -148,7 +148,10 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 		.def("switch_to_talk",				&CScriptGameObject::SwitchToTalk)
 		.def("run_talk_dialog",				&CScriptGameObject::RunTalkDialog)
 		.def("actor_sleep",					&CScriptGameObject::ActorSleep)
-
+		
+		.def("hide_weapon",					&CScriptGameObject::HideWeapon)
+		.def("restore_weapon",				&CScriptGameObject::RestoreWeapon)
+		
 		.def("set_start_dialog",			&CScriptGameObject::SetStartDialog)
 		.def("get_start_dialog",			&CScriptGameObject::GetStartDialog)
 		.def("restore_default_start_dialog",&CScriptGameObject::RestoreDefaultStartDialog)

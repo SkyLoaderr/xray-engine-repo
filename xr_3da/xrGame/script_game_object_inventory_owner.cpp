@@ -587,3 +587,16 @@ bool CScriptGameObject::attachable_item_enabled	() const
 	}
 	return									(attachable_item->enabled());
 }
+
+
+
+void  CScriptGameObject::RestoreWeapon		()
+{
+	CActor* pActor = smart_cast<CActor*>(object());	VERIFY(pActor);
+	pActor->RestoreHidedWeapon(GEG_PLAYER_RESTORE_CURRENT_SLOT);
+}
+void  CScriptGameObject::HideWeapon			()
+{
+	CActor* pActor = smart_cast<CActor*>(object());	VERIFY(pActor);
+	pActor->HideCurrentWeapon(GEG_PLAYER_DEACTIVATE_CURRENT_SLOT);
+}

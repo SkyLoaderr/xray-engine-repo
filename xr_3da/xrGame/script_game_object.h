@@ -232,6 +232,10 @@ public:
 			void				RunTalkDialog		(CScriptGameObject* pToWho);
 			void				ActorSleep			(int hours, int minutes);
 
+			void				HideWeapon			();
+			void				RestoreWeapon		();
+
+
 			bool				NeedToAnswerPda		();
 			void				AnswerPda			();
 
