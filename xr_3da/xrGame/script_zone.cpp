@@ -76,8 +76,9 @@ BOOL CScriptZone::net_Spawn	(LPVOID DC)
 
 void CScriptZone::net_Destroy	()
 {
-	m_tpOnEnter.clear();
-	m_tpOnExit.clear();
+	inherited::net_Destroy		();
+	m_tpOnEnter.clear			();
+	m_tpOnExit.clear			();
 }
 
 void CScriptZone::UpdateCL	()
