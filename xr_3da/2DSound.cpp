@@ -53,14 +53,11 @@ LPDIRECTSOUNDBUFFER C2DSound::LoadWaveAs2D(const char *pName)
     dsBD.dwFlags	= DSBCAPS_STATIC | DSBCAPS_CTRLVOLUME | DSBCAPS_LOCDEFER;
 
 	// Load file into memory and parse WAV-format
-	CStream *data	= new CFileStream(pName);
+	CFileStream		data	(pName);
 	WAVEFORMATEX*	pFormat;
 	DWORD			dwLen;
-	void *			wavedata = ParseWave(data,pFormat,dwLen);
-	if (!wavedata)	{
-		_DELETE(data);
-		return NULL;
-	}
+	void *			wavedata = ParseWave(&data,pFormat,dwLen);
+	if (!wavedata)	return NULL;
 
 	// Parsing OK, converting to best format
 	WAVEFORMATEX			wfxdest;
@@ -76,7 +73,6 @@ LPDIRECTSOUNDBUFFER C2DSound::LoadWaveAs2D(const char *pName)
 		wfxdest.nBlockAlign		= wfxdest.nChannels * wfxdest.wBitsPerSample / 8;
 		wfxdest.nAvgBytesPerSec = wfxdest.nSamplesPerSec * wfxdest.nBlockAlign;
 		void *conv				= ConvertWave(wfxdest, pFormat, wavedata, dwLen);
-		 _DELETE				(data);
 		 if (!conv)				{_FREE(pFormat); return NULL; }
 
 		// Secondly convert to best format for 2D
