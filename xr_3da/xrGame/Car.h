@@ -18,6 +18,7 @@ private:
 	CCameraBase*			camera[3];
 	CCameraBase*			active_camera;
 	CActor*					m_owner;
+	Fmatrix					fmPosDriver;
 	Fvector					m_vCamDeltaHP;
 
 	void					OnCameraChange		(int type);

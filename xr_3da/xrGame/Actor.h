@@ -119,6 +119,7 @@ protected:
 		SAnimState			m_run;
 		STorsoWpn			m_torso[2];
 		CMotionDef*			m_torso_idle;
+		CMotionDef*			m_steering;
 		void				Create(CKinematics* K, LPCSTR base);
 	};
 	BOOL					m_bAnimTorsoPlayed;
@@ -131,6 +132,7 @@ public:
 	// animation
 	CBlend*					m_current_legs_blend;
 	CBlend*					m_current_jump_blend;
+	CBlend*					m_current_all;
 	CMotionDef*				m_current_legs;
 	CMotionDef*				m_current_torso;
 	SActorState				m_normal;

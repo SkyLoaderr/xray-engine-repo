@@ -58,7 +58,8 @@ Flags32			psActorFlags={0};
 //////////////////////////////////////////////////////////////////////
 CActor::CActor() : CEntityAlive()
 {
-	
+	m_current_all			= 0;
+
 	// Cameras
 	cameras[eacFirstEye]	= xr_new<CCameraFirstEye>	(this, pSettings, "actor_firsteye_cam", false);
 	cameras[eacLookAt]		= xr_new<CCameraLook>		(this, pSettings, "actor_look_cam",		false);
@@ -680,6 +681,8 @@ void CActor::UpdateCL()
 	inherited::UpdateCL();
 if(m_vehicle)
 {
+	if (m_current_all) 
+		m_current_all->timeCurrent = 0;
 	m_vehicle->UpdateCL();
 	return;
 }
@@ -1877,11 +1880,16 @@ void CActor::attach_Vehicle(CCar* vehicle)
 		m_vehicle=NULL;
 		return;
 	}
-	
+	m_current_all = PKinematics	(pVisual)->PlayCycle(m_normal.m_steering);
 	ph_Movement.DestroyCharacter();
-	m_inventory.ActiveItem()->m_showHUD=false;
+	PIItem iitem=m_inventory.ActiveItem();
+	if(iitem)iitem->m_showHUD=false;
 	setVisible(true);
-	//HUD().Render_Calculate()
+	
+
+
+
+
 }
 void CActor::detach_Vehicle()
 {

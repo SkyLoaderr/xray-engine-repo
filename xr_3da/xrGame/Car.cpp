@@ -197,9 +197,11 @@ void	CCar::Update				( u32 T )
 	UpdateTransform					();
 	if(m_owner)
 	{
-
-		m_owner->Position().set(vPosition);
-		m_owner->Rotation().set(mRotate);
+		Fmatrix glob_driver_pos;
+		glob_driver_pos.mul(svTransform,fmPosDriver);
+		m_owner->Position().set(glob_driver_pos.c);
+		m_owner->Rotation().set(glob_driver_pos);
+		m_owner->Rotation().c.set(0,0,0);
 		m_owner->UpdateTransform();
 		//if(m_owner->IsMyCamera()) cam_Update	(Device.fTimeDelta);
 	}
@@ -232,9 +234,10 @@ void	CCar::UpdateCL				( )
 		cam_Update	(Device.fTimeDelta);
 	if(m_owner)
 	{
-	
-	m_owner->Position().set(clTransform.c);
-	m_owner->Rotation().set(clTransform);
+	Fmatrix glob_driver_pos;
+	glob_driver_pos.mul(clTransform,fmPosDriver);
+	m_owner->Position().set(glob_driver_pos.c);
+	m_owner->Rotation().set(glob_driver_pos);
 	m_owner->Rotation().c.set(0,0,0);
 	m_owner->UpdateTransform();
 	if(m_owner->IsMyCamera()) 
@@ -406,6 +409,16 @@ bool CCar::attach_Actor(CActor* actor)
 {
 if(m_owner) return false;
 m_owner=actor;
+
+
+
+//////////////////////////////////////////////////////////////////////////
+CKinematics* M		= PKinematics(pVisual);			VERIFY(M);
+int id=M->LL_BoneID("pos_driver");
+CBoneInstance& instance=M->LL_GetInstance				(id);
+/////////////////////////////////////////////////////////////////////////
+//instance.set_callback(m_phSkeleton->GetBonesCallback(),element);
+fmPosDriver.set(instance.mTransform);
 return true;
 }
 

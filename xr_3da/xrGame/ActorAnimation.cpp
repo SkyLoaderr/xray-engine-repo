@@ -87,6 +87,7 @@ void CActor::SActorState::Create(CKinematics* K, LPCSTR base)
 	jump_idle		= K->ID_Cycle(strconcat(buf,base,"_jump_idle"));
 	landing[0]		= K->ID_Cycle(strconcat(buf,base,"_jump_end"));
 	landing[1]		= K->ID_Cycle(strconcat(buf,base,"_jump_end_1"));
+	m_steering		= K->ID_Cycle("steering");
 }
 
 void CActor::g_SetAnimation( u32 mstate_rl )
