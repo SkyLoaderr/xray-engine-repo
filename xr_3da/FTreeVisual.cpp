@@ -46,8 +46,8 @@ void FTreeVisual::Load		(const char* N, IReader *data, u32 dwFlags)
 		u32 ID				= data->r_u32				();
 		vBase				= data->r_u32				();
 		vCount				= data->r_u32				();
-		vFormat				= ::Render->getVB_Format	(ID);
-		pVertices			= ::Render->getVB			(ID);
+		vFormat				= RImplementation.getVB_Format	(ID);
+		pVertices			= RImplementation.getVB			(ID);
 		pVertices->AddRef	();
 
 		// indices
@@ -56,7 +56,7 @@ void FTreeVisual::Load		(const char* N, IReader *data, u32 dwFlags)
 		iBase				= data->r_u32				();
 		iCount				= data->r_u32				();
 		dwPrimitives		= iCount/3;
-		pIndices			= ::Render->getIB			(ID);
+		pIndices			= RImplementation.getIB		(ID);
 		pIndices->AddRef	();
 	}
 
