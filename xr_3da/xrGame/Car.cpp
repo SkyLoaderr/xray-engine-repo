@@ -110,7 +110,7 @@ BOOL	CCar::net_Spawn				(LPVOID DC)
 {
 	BOOL R = inherited::net_Spawn	(DC);
 	setVisible						(TRUE);
-	m_jeep.SetPosition		(vPosition);
+	m_jeep.SetPosition				(vPosition);
 	pSounds->PlayAtPos				(snd_engine,this,vPosition,true);
 	return R;
 }
@@ -275,6 +275,9 @@ void CCar:: PhTune(dReal step){
 
 void CCar::OnDeviceCreate()
 {
+	inherited::OnDeviceCreate();
+
+	//
 	CKinematics*	M				= PKinematics(pVisual);
 	R_ASSERT						(M);
 	M->PlayCycle					("init");
