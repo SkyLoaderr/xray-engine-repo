@@ -11,8 +11,8 @@ class CScope : public CInventoryItem
 private:
 	typedef CInventoryItem inherited;
 public:
-	CScope (void);
-	virtual ~CScope(void);
+			CScope ();
+	virtual ~CScope();
 
 	virtual BOOL net_Spawn			(LPVOID DC);
 	virtual void Load				(LPCSTR section);

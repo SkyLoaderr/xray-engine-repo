@@ -9,11 +9,11 @@
 #include "scope.h"
 #include "PhysicsShell.h"
 
-CScope::CScope()
+CScope::CScope	()
 {
 }
 
-CScope::~CScope() 
+CScope::~CScope	() 
 {
 }
 

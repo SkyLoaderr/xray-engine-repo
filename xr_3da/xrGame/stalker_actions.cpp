@@ -297,9 +297,11 @@ void CStalkerActionGetEnemySeen::execute	()
 
 _edge_value_type CStalkerActionGetEnemySeen::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
 {
+#ifdef DEBUG
 	if ((g_stalker_behaviour == eStalkerBehaviourVeryAggressive) || (g_stalker_behaviour == eStalkerBehaviourAggressive))
 		return				(_edge_value_type(1));
 	else
+#endif
 		return				(_edge_value_type(100));
 }
 
@@ -571,9 +573,11 @@ void CStalkerActionGetReadyToKillVeryAggressive::execute	()
 
 _edge_value_type CStalkerActionGetReadyToKillVeryAggressive::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
 {
+#ifdef DEBUG
 	if (g_stalker_behaviour == eStalkerBehaviourVeryAggressive)
 		return				(_edge_value_type(1));
 	else
+#endif
 		return				(_edge_value_type(100));
 }
 
@@ -639,9 +643,11 @@ void CStalkerActionKillEnemyVeryAggressive::execute		()
 
 _edge_value_type CStalkerActionKillEnemyVeryAggressive::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
 {
+#ifdef DEBUG
 	if (g_stalker_behaviour == eStalkerBehaviourVeryAggressive)
 		return				(_edge_value_type(1));
 	else
+#endif
 		return				(_edge_value_type(100));
 }
 
@@ -721,9 +727,11 @@ void CStalkerActionGetReadyToKillAggressive::execute	()
 
 _edge_value_type CStalkerActionGetReadyToKillAggressive::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
 {
+#ifdef DEBUG
 	if (g_stalker_behaviour == eStalkerBehaviourAggressive)
 		return				(_edge_value_type(1));
 	else
+#endif
 		return				(_edge_value_type(100));
 }
 
@@ -807,9 +815,11 @@ void CStalkerActionKillEnemyAggressive::execute		()
 
 _edge_value_type CStalkerActionKillEnemyAggressive::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
 {
+#ifdef DEBUG
 	if (g_stalker_behaviour == eStalkerBehaviourAggressive)
 		return				(_edge_value_type(1));
 	else
+#endif
 		return				(_edge_value_type(100));
 }
 
@@ -960,9 +970,11 @@ void CStalkerActionGetReadyToKillAvoid::execute	()
 
 _edge_value_type CStalkerActionGetReadyToKillAvoid::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
 {
+#ifdef DEBUG
 	if (g_stalker_behaviour == eStalkerBehaviourAvoiding)
 		return				(_edge_value_type(1));
 	else
+#endif
 		return				(_edge_value_type(100));
 }
 
@@ -1030,9 +1042,11 @@ void CStalkerActionKillEnemyAvoid::execute		()
 
 _edge_value_type CStalkerActionKillEnemyAvoid::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
 {
+#ifdef DEBUG
 	if (g_stalker_behaviour == eStalkerBehaviourAvoiding)
 		return				(_edge_value_type(1));
 	else
+#endif
 		return				(_edge_value_type(100));
 }
 
@@ -1100,9 +1114,11 @@ void CStalkerActionRetreatFromEnemy::execute		()
 
 _edge_value_type CStalkerActionRetreatFromEnemy::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
 {
+#ifdef DEBUG
 	if (g_stalker_behaviour == eStalkerBehaviourRetreat)
 		return				(_edge_value_type(1));
 	else
+#endif
 		return				(_edge_value_type(100));
 }
 
@@ -1174,9 +1190,11 @@ void CStalkerActionCamp::execute	()
 
 _edge_value_type CStalkerActionCamp::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
 {
+#ifdef DEBUG
 	if ((g_stalker_behaviour == eStalkerBehaviourVeryAggressive) || (g_stalker_behaviour == eStalkerBehaviourAggressive))
 		return				(_edge_value_type(100));
 	else
+#endif
 		return				(_edge_value_type(100));
 }
 
@@ -1242,10 +1260,14 @@ void CStalkerActionGetReadyToKillModerate::execute	()
 
 _edge_value_type CStalkerActionGetReadyToKillModerate::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
 {
+#ifdef DEBUG
 	if (g_stalker_behaviour == eStalkerBehaviourModerate)
+#endif
 		return				(_edge_value_type(1));
+#ifdef DEBUG
 	else
 		return				(_edge_value_type(100));
+#endif
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -1331,10 +1353,14 @@ void CStalkerActionKillEnemyModerate::execute		()
 
 _edge_value_type CStalkerActionKillEnemyModerate::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
 {
+#ifdef DEBUG
 	if (g_stalker_behaviour == eStalkerBehaviourModerate)
+#endif
 		return				(_edge_value_type(1));
+#ifdef DEBUG
 	else
 		return				(_edge_value_type(100));
+#endif
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -1436,9 +1462,11 @@ void CStalkerActionGetEnemySeenModerate::execute	()
 
 _edge_value_type CStalkerActionGetEnemySeenModerate::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
 {
+#ifdef DEBUG
 	if ((g_stalker_behaviour == eStalkerBehaviourVeryAggressive) || (g_stalker_behaviour == eStalkerBehaviourAggressive))
 		return				(_edge_value_type(100));
 	else
+#endif
 		return				(_edge_value_type(1));
 }
 
@@ -1511,8 +1539,12 @@ void CStalkerActionKillEnemyLostModerate::execute		()
 
 _edge_value_type CStalkerActionKillEnemyLostModerate::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
 {
+#ifdef DEBUG
 	if (g_stalker_behaviour == eStalkerBehaviourModerate)
+#endif
 		return				(_edge_value_type(1));
+#ifdef DEBUG
 	else
 		return				(_edge_value_type(100));
+#endif
 }
