@@ -105,7 +105,7 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 	sound& S = m_tpSoundHit[::Random.randI(m_tpSoundHit.size())];
 	if (!S.feedback && g_Alive()) {
 		S.play_at_pos(this,eye_matrix.c);
-		S.feedback->set_volume(.4f);
+		S.feedback->set_volume(1.f);
 	}
 }
 

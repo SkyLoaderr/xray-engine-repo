@@ -135,7 +135,7 @@ void CAI_Stalker::Die				()
 
 	sound							&S  = m_tpSoundDie[::Random.randI(m_tpSoundDie.size())];
 	S.play_at_pos					(this,vPosition);
-	S.feedback->set_volume			(.4f);
+	S.feedback->set_volume			(1.f);
 	inherited::Die					();
 	m_bHammerIsClutched				= !::Random.randI(0,2);
 }

@@ -246,7 +246,7 @@ void CAI_Stalker::Panic()
 					if (!m_tpCurrentSound) {
 						m_tpCurrentSound = &m_tpSoundSurrender[::Random.randI(m_tpSoundSurrender.size())];
 						m_tpCurrentSound->play_at_pos(this,eye_matrix.c);
-						m_tpCurrentSound->feedback->set_volume(.4f);
+						m_tpCurrentSound->feedback->set_volume(1.f);
 					}
 					else
 						if (m_tpCurrentSound->feedback)
@@ -942,7 +942,7 @@ void CAI_Stalker::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 			if (!m_tpCurrentSound) {
 				m_tpCurrentSound = &m_tpSoundHumming[::Random.randI(m_tpSoundHumming.size())];
 				m_tpCurrentSound->play_at_pos(this,eye_matrix.c);
-				m_tpCurrentSound->feedback->set_volume(.4f);
+				m_tpCurrentSound->feedback->set_volume(1.f);
 			}
 			else
 				if (m_tpCurrentSound->feedback)
