@@ -181,25 +181,6 @@
 				<File
 					RelativePath=".\Config\creatures\stalkers.ltx">
 				</File>
-				<Filter
-					Name="config"
-					Filter="">
-					<File
-						RelativePath=".\Config\creatures\Config\evaluation.ltx">
-					</File>
-					<File
-						RelativePath=".\Config\creatures\Config\external.ltx">
-					</File>
-					<File
-						RelativePath=".\Config\creatures\Config\game.ltx">
-					</File>
-					<File
-						RelativePath=".\Config\creatures\Config\script.ltx">
-					</File>
-					<File
-						RelativePath=".\Config\creatures\Config\System.ltx">
-					</File>
-				</Filter>
 			</Filter>
 			<Filter
 				Name="gameplay"
