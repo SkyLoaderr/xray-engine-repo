@@ -40,6 +40,7 @@ public:
 	vector<FCached*>								vecCached;
 	vector<SceneGraph::mapNormalCodes::TNode*>		lstCodes;
 	vector<SceneGraph::mapNormalTextures::TNode*>	lstTextures;
+	vector<SceneGraph::mapNormalTextures::TNode*>	lstTexturesTemp;
 	vector<SceneGraph::mapNormalMatrices::TNode*>	lstMatrices;
 	vector<SceneGraph::mapNormalConstants::TNode*>	lstConstants;
 	vector<CVisual*>								lstVisuals;

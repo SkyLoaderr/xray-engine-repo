@@ -425,18 +425,35 @@ IC	bool	fnd_textures_ssa	(SceneGraph::mapNormalTextures::TNode* N1, const float 
 	return	(N1->val.ssa > ssa_important);
 }
 
-void		sort_tlist			(vector<SceneGraph::mapNormalTextures::TNode*>& lst)
+void		sort_tlist			
+	(
+	vector<SceneGraph::mapNormalTextures::TNode*>& lst, 
+	vector<SceneGraph::mapNormalTextures::TNode*>& temp, 
+	SceneGraph::mapNormalTextures& textures, 
+	BOOL bSSA
+	)
 {
-	if (psDeviceFlags&rsOverdrawView)
+	if (bSSA)	
 	{
-		// sort 
-		std::sort					(lst.begin(),lst.end(), cmp_textures_ssa);
+		// Split into 2 parts
+		SceneGraph::mapNormalTextures::TNode* _it	= textures.begin	();
+		SceneGraph::mapNormalTextures::TNode* _end	= textures.end		();
+		for (; _it!=_end; _it++)	{
+			if (_it->val.ssa > ssa_important)	lst.push_back	(_it);
+			else								temp.push_back	(_it);
+		}
 
-		// find delimiter
-		vector<SceneGraph::mapNormalTextures::TNode*>::iterator	it = std::lower_bound	(lst.begin(),lst.end(),ssa_important,fnd_textures_ssa);
+		// 1st - part - SSA, 2nd - lexicographically
+		std::sort					(lst.begin(),	lst.end(),	cmp_textures_ssa);
+		std::sort					(temp.begin(),	temp.end(),	cmp_textures_lex);
 
-		// sort remainder lexicographically
-		std::sort					(it, lst.end(), cmp_textures_lex);
+		// merge lists
+		lst.insert					(lst.end(),temp.begin(),temp.end());
+	}
+	else 
+	{
+		textures.getANY_P			(lst);
+		std::sort					(lst.begin(), lst.end(), cmp_textures_lex);
 	}
 }
 
@@ -478,7 +495,7 @@ void	CRender::Render		()
 	// Perform sorting based on ScreenSpaceArea
 	Device.set_xform_world			(Fidentity);
 
-	// Sorting by SSA
+	// Sorting by SSA and changes minimizations
 	for (DWORD pr=0; pr<4; pr++)
 	{
 		if (0==mapNormal[pr][0].size())	continue;
@@ -496,8 +513,7 @@ void	CRender::Render		()
 				SceneGraph::mapNormalTextures&	textures	= Ncode->val;
 				Device.Shader.set_Code	(Ncode->key);
 
-				textures.getANY_P	(lstTextures);
-				if (sort)			sort_tlist	(lstTextures); 
+				sort_tlist				(lstTextures, lstTexturesTemp, textures, sort); 
 				for (DWORD texture_id=0; texture_id<lstTextures.size(); texture_id++)
 				{
 					SceneGraph::mapNormalTextures::TNode*	Ntexture	= lstTextures[texture_id];
@@ -530,9 +546,10 @@ void	CRender::Render		()
 					matrices.clear		();
 					matrices.ssa		= 0;
 				}
-				lstTextures.clear	();
-				textures.clear		();
-				textures.ssa		= 0;
+				lstTextures.clear		();
+				lstTexturesTemp.clear	();
+				textures.clear			();
+				textures.ssa			= 0;
 			}
 			lstCodes.clear		();
 			codes.clear			();
