@@ -9,6 +9,7 @@
 
 CMincer::CMincer(void) 
 {
+	m_fActorBlowoutRadiusPercent=0.5f;
 }
 
 CMincer::~CMincer(void) 
@@ -40,6 +41,7 @@ void CMincer::Load (LPCSTR section)
 	m_telekinetics.set_destroing_particles(shared_str(pSettings->r_string(section,"tearing_particles")));
 	m_torn_particles=pSettings->r_string(section,"torn_particles");
 	m_tearing_sound.create(TRUE,pSettings->r_string(section,"body_tearing_sound"));
+	m_fActorBlowoutRadiusPercent=pSettings->r_float(section,"actor_blowout_radius_percent");
 	//pSettings->r_fvector3(section,whirlwind_center);
 }
 
@@ -154,20 +156,26 @@ void CMincer::OnOwnershipTake(u16 id)
 void CMincer::AffectPullAlife(CEntityAlive* EA,const Fvector& throw_in_dir,float dist)
 {
 	float power=Power(dist);
-	if (OnServer())
+	//Fvector dir;
+	//dir.random_dir(throw_in_dir,2.f*M_PI);
+	if(EA->CLS_ID!=CLSID_OBJECT_ACTOR)
 	{
-		NET_Packet	l_P;
-		u_EventGen	(l_P,GE_HIT, EA->ID());
-		l_P.w_u16	(ID());
-		l_P.w_u16	(ID());
-		l_P.w_dir	(throw_in_dir);
-		l_P.w_float	(power);
-		l_P.w_s16	(0/*(s16)BI_NONE*/);
-		l_P.w_vec3	(Fvector().set(0,0,0));
-		l_P.w_float	(0);
-		l_P.w_u16	((u16)m_eHitTypeBlowout);
-		u_EventSend	(l_P);
-	};
+		
+		if (OnServer())
+		{
+			NET_Packet	l_P;
+			u_EventGen	(l_P,GE_HIT, EA->ID());
+			l_P.w_u16	(ID());
+			l_P.w_u16	(ID());
+			l_P.w_dir	(throw_in_dir);
+			l_P.w_float	(power);
+			l_P.w_s16	(0/*(s16)BI_NONE*/);
+			l_P.w_vec3	(Fvector().set(0,0,0));
+			l_P.w_float	(0);
+			l_P.w_u16	((u16)m_eHitTypeBlowout);
+			u_EventSend	(l_P);
+		}
+	}
 	inherited::AffectPullAlife(EA,throw_in_dir,dist);
 
 }
@@ -216,4 +224,15 @@ void CMincer::OnRender()
 		}
 	}
 }
+
+bool CMincer::CheckAffectField(CPhysicsShellHolder* GO,float dist_to_radius)
+{
+	if(GO->CLS_ID!=CLSID_OBJECT_ACTOR)
+		return inherited::CheckAffectField(GO,dist_to_radius);
+	else
+	{
+		return dist_to_radius>m_fActorBlowoutRadiusPercent;
+	}
+}
+
 #endif

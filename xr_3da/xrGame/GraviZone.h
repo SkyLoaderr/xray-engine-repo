@@ -36,7 +36,7 @@ public:
 	virtual void	AffectPullDead(CPhysicsShellHolder* GO,const Fvector& throw_in_dir,float dist);
 	virtual void	AffectThrow(CPhysicsShellHolder* GO,const Fvector& throw_in_dir,float dist);
 	virtual void	ThrowInCenter(Fvector& C);
-
+	virtual bool	CheckAffectField(CPhysicsShellHolder* GO,float dist_to_radius);
 	virtual void	shedule_Update		(u32 dt);
 	virtual bool	BlowoutState();
 	virtual bool	IdleState();
@@ -53,6 +53,7 @@ protected:
 	float			m_fThrowInAtten;
 	//радиус действия выброса (в процентах от всего)
 	float			m_fBlowoutRadiusPercent;
+	
 
 	//параметры телекинеза	
 	float			m_fTeleHeight;

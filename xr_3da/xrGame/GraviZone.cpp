@@ -22,6 +22,7 @@
 CBaseGraviZone ::CBaseGraviZone (void)
 {
 	m_dwTeleTime = 0;
+
 }
 CBaseGraviZone ::~CBaseGraviZone (void)
 {
@@ -131,7 +132,10 @@ bool CBaseGraviZone ::IdleState()
 
 	return result;
 }
-
+bool CBaseGraviZone::CheckAffectField(CPhysicsShellHolder* /*GO*/,float dist_to_radius)
+{
+	return dist_to_radius>m_fBlowoutRadiusPercent;
+}
 void CBaseGraviZone ::Affect(CObject* O) 
 {
 	CPhysicsShellHolder* GO = smart_cast<CPhysicsShellHolder*>(O);
@@ -161,7 +165,7 @@ void CBaseGraviZone ::Affect(CObject* O)
 		CanApplyPhisImpulse &= (Level().CurrentControlEntity() && Level().CurrentControlEntity() == EA);
 	};*/
 	//---------------------------------------------------------	
-	if(dist_to_radius>m_fBlowoutRadiusPercent && CanApplyPhisImpulse)
+	if( CheckAffectField(GO,dist_to_radius)&& CanApplyPhisImpulse)
 	{
 		AffectPull(GO,throw_in_dir,dist);
 	}

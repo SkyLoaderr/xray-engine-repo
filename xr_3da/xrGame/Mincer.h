@@ -17,6 +17,7 @@ private:
 	CTeleWhirlwind m_telekinetics;
 	shared_str	   m_torn_particles;
 	ref_sound	   m_tearing_sound;
+	float		   m_fActorBlowoutRadiusPercent;
 public:
 	CMincer(void);
 	virtual ~CMincer(void);
@@ -31,6 +32,7 @@ public:
 	virtual void AffectPullDead				(CPhysicsShellHolder* GO,const Fvector& throw_in_dir,float dist){}
 	virtual void AffectPullAlife			(CEntityAlive* EA,const Fvector& throw_in_dir,float dist);
 	virtual void AffectThrow				(CPhysicsShellHolder* GO,const Fvector& throw_in_dir,float dist);
+	virtual bool CheckAffectField			(CPhysicsShellHolder* GO,float dist_to_radius);
 	virtual void ThrowInCenter				(Fvector& C);
 	virtual BOOL net_Spawn					(CSE_Abstract* DC);
 	virtual void net_Destroy				();
