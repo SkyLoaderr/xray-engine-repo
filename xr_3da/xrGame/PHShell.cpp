@@ -340,7 +340,7 @@ void CPHShell::get_AngularVel(Fvector& velocity)
 
 void	CPHShell::set_LinearVel(const Fvector& velocity)
 {
-	(*elements.begin())->set_AngularVel(velocity);
+	(*elements.begin())->set_LinearVel(velocity);
 }
 void	CPHShell::set_AngularVel(const Fvector& velocity)
 {
