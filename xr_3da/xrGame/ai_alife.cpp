@@ -109,7 +109,6 @@ void CAI_ALife::Load()
 void CAI_ALife::Save()
 {
 	CFS_Memory					tStream;
-	m_tGameTime					= tfGetGameTime();
 	CALifeHeader::Save			(tStream);
 	CALifeGameTime::Save		(tStream);
 	CALifeObjectRegistry::Save	(tStream);

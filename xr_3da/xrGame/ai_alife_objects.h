@@ -40,10 +40,11 @@ public:
 
 	virtual void					Save(CFS_Memory	&tMemoryStream)
 	{
+		m_tGameTime					= tfGetGameTime();
+		m_dwStartTime				= Level().timeServer();
 		tMemoryStream.open_chunk	(GAME_TIME_CHUNK_DATA);
 		tMemoryStream.write			(&m_tGameTime,		sizeof(m_tGameTime));
 		tMemoryStream.write			(&m_tTimeAfterSurge,sizeof(m_tTimeAfterSurge));
-		tMemoryStream.Wdword		(m_dwStartTime);
 		tMemoryStream.Wfloat		(m_fTimeFactor);
 		tMemoryStream.close_chunk	();
 	};
@@ -53,8 +54,8 @@ public:
 		R_ASSERT(tFileStream.FindChunk(GAME_TIME_CHUNK_DATA));
 		tFileStream.Read			(&m_tGameTime,		sizeof(m_tGameTime));
 		tFileStream.Read			(&m_tTimeAfterSurge,sizeof(m_tTimeAfterSurge));
-		m_dwStartTime				= tFileStream.Rdword();
 		m_fTimeFactor				= tFileStream.Rfloat();
+		m_dwStartTime				= Level().timeServer();
 	};
 	
 	IC void							vfSetTimeFactor(float fTimeFactor)
