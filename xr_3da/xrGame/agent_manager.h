@@ -63,7 +63,7 @@ public:
 		}
 	};
 
-	struct CDangerCover {
+	struct CDangerLocation {
 		Fvector			m_position;
 		u32				m_level_time;
 		u32				m_interval;
@@ -76,7 +76,7 @@ public:
 	};
 
 	struct CRemoveOldDangerCover {
-		IC	bool	operator()	(const CAgentManager::CDangerCover &cover) const
+		IC	bool	operator()	(const CAgentManager::CDangerLocation &cover) const
 		{
 			return						(Device.dwTimeGlobal > cover.m_level_time + cover.m_interval);
 		}
@@ -132,9 +132,10 @@ protected:
 	xr_vector<CSoundObject>					*m_sound_objects;
 	xr_vector<CHitObject>					*m_hit_objects;
 	xr_vector<CEnemy>						m_enemies;
-	mutable xr_vector<CMemberCorpse>		m_corpses;
-	mutable xr_vector<CMemberGrenade>		m_grenades;
-	mutable xr_vector<CDangerCover>			m_danger_covers;
+	xr_vector<CMemberCorpse>				m_corpses;
+	xr_vector<CMemberGrenade>				m_grenades;
+	xr_vector<u16>							m_grenades_to_remove;
+	xr_vector<CDangerLocation>				m_danger_covers;
 	CAgentManagerMotivationPlanner			*m_brain;
 
 protected:
@@ -174,7 +175,7 @@ public:
 			void							react_on_grenades	();
 			void							react_on_member_death();
 	IC		const CSetupAction				&action				(CAI_Stalker *object) const;
-	IC		const CMemberOrder				&member				(CAI_Stalker *object) const;
+	IC		const CMemberOrder				&member				(const CAI_Stalker *object) const;
 	IC		const MEMBER_STORAGE			&members			() const;
 	IC		MEMBER_STORAGE					&members			();
 	IC		MemorySpace::squad_mask_type	mask				(const CAI_Stalker *object) const;
@@ -183,22 +184,23 @@ public:
 	IC		void							set_squad_objects	(xr_vector<CHitObject> *objects);
 			bool							suitable_location	(CAI_Stalker *object, CCoverPoint *location, bool use_enemy_info) const;
 	IC		bool							group_behaviour		() const;
-			void							add_danger_cover	(CCoverPoint *cover, u32 time, u32 interval, float radius) const;
-			void							add_danger_location	(const Fvector &position, u32 time, u32 interval, float radius) const;
-	IC		CDangerCover					*danger_cover		(CCoverPoint *cover) const;
-	IC		CDangerCover					*danger_location	(const Fvector &position) const;
+			void							add_danger_location	(const Fvector &position, u32 time, u32 interval, float radius);
+	IC		CDangerLocation					*danger_location	(const Fvector &position);
 			float							cover_danger		(CCoverPoint *cover) const;
 	IC		void							clear_danger_covers	();
 	IC		shared_str						cName				() const;
 	IC		CAgentManagerMotivationPlanner	&brain				() const;
 
 public:
-	IC		void							register_corpse		(CAI_Stalker *corpse) const;
+	IC		void							register_corpse		(CAI_Stalker *corpse);
 	IC		xr_vector<CMemberCorpse>		&member_corpses		();
 
 public:
-	IC		void							register_grenade	(const CExplosive *grenade, const CGameObject *game_object) const;
+			void							register_grenade	(const CExplosive *grenade, const CGameObject *game_object);
 	IC		xr_vector<CMemberGrenade>		&member_grenades	();
+
+public:
+			void							remove_links		(CObject *object);
 };
 
 #include "agent_manager_inline.h"

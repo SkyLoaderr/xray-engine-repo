@@ -82,3 +82,11 @@ void CAgentManager::remove			(CEntity *member, bool no_assert)
 	}
 	m_members.erase				(I);
 }
+
+void CAgentManager::remove_links	(CObject *object)
+{
+	xr_vector<u16>::iterator		I = std::find(m_grenades_to_remove.begin(),m_grenades_to_remove.end(),object->ID());
+	if (I != m_grenades_to_remove.end())
+		m_grenades_to_remove.erase	(I);
+}
+

@@ -14,7 +14,7 @@
 #include "../../squad_hierarchy_holder.h"
 #include "../../group_hierarchy_holder.h"
 
-IC	const CAgentManager	&CAI_Stalker::agent_manager	() const
+IC	CAgentManager &CAI_Stalker::agent_manager	() const
 {
 	return	(Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).agent_manager());
 }

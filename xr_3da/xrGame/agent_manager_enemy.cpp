@@ -47,17 +47,26 @@ struct CEnemyFiller {
 	}
 };
 
-IC	CAgentManager::CDangerCover *CAgentManager::danger_cover	(CCoverPoint *cover) const
+void CAgentManager::register_grenade	(const CExplosive *grenade, const CGameObject *game_object)
 {
-	xr_vector<CDangerCover>::iterator	I = std::find(m_danger_covers.begin(),m_danger_covers.end(),cover->position());
-	if (I != m_danger_covers.end())
-		return							(&*I);
-	return								(0);
+	{
+		xr_vector<CMemberGrenade>::iterator	I = std::find(m_grenades.begin(),m_grenades.end(),grenade);
+		if (I != m_grenades.end())
+			return;
+	}
+	{
+		xr_vector<u16>::iterator	I = std::find(m_grenades_to_remove.begin(),m_grenades_to_remove.end(),game_object->ID());
+		if (I != m_grenades_to_remove.end())
+			return;
+	}
+	m_grenades_to_remove.push_back		(game_object->ID());
+//	Msg									("%6d : New grenade registered %s",Device.dwTimeGlobal,*game_object->cName());
+	m_grenades.push_back				(CMemberGrenade(grenade,game_object,0,Device.dwTimeGlobal));
 }
 
-IC	CAgentManager::CDangerCover *CAgentManager::danger_location	(const Fvector &position) const
+IC	CAgentManager::CDangerLocation *CAgentManager::danger_location	(const Fvector &position)
 {
-	xr_vector<CDangerCover>::iterator	I = std::find(m_danger_covers.begin(),m_danger_covers.end(),position);
+	xr_vector<CDangerLocation>::iterator	I = std::find(m_danger_covers.begin(),m_danger_covers.end(),position);
 	if (I != m_danger_covers.end())
 		return							(&*I);
 	return								(0);
@@ -337,16 +346,11 @@ void CAgentManager::setup_actions		()
 {
 }
 
-void CAgentManager::add_danger_cover	(CCoverPoint *cover, u32 time, u32 interval, float radius) const
+void CAgentManager::add_danger_location	(const Fvector &position, u32 time, u32 interval, float radius)
 {
-	add_danger_location				(cover->position(),time,interval,radius);
-}
-
-void CAgentManager::add_danger_location	(const Fvector &position, u32 time, u32 interval, float radius) const
-{
-	CDangerCover					*danger = danger_location(position);
+	CDangerLocation					*danger = danger_location(position);
 	if (!danger) {
-		CDangerCover				danger;
+		CDangerLocation				danger;
 		danger.m_position			= position;
 		danger.m_level_time			= time;
 		danger.m_interval			= interval;
@@ -363,15 +367,15 @@ void CAgentManager::add_danger_location	(const Fvector &position, u32 time, u32 
 
 void CAgentManager::remove_old_danger_covers	()
 {
-	xr_vector<CDangerCover>::iterator	I = remove_if(m_danger_covers.begin(),m_danger_covers.end(),CRemoveOldDangerCover());
+	xr_vector<CDangerLocation>::iterator	I = remove_if(m_danger_covers.begin(),m_danger_covers.end(),CRemoveOldDangerCover());
 	m_danger_covers.erase				(I,m_danger_covers.end());
 }
 
 float CAgentManager::cover_danger		(CCoverPoint *cover) const
 {
 	float			result = 1;
-	xr_vector<CDangerCover>::const_iterator	I = m_danger_covers.begin();
-	xr_vector<CDangerCover>::const_iterator	E = m_danger_covers.end();
+	xr_vector<CDangerLocation>::const_iterator	I = m_danger_covers.begin();
+	xr_vector<CDangerLocation>::const_iterator	E = m_danger_covers.end();
 	for ( ; I != E; ++I) {
 		if (Device.dwTimeGlobal > (*I).m_level_time + (*I).m_interval)
 			continue;

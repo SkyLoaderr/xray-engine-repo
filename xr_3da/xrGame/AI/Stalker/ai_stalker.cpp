@@ -732,3 +732,10 @@ DLL_Pure *CAI_Stalker::_construct			()
 	m_setup_manager						= xr_new<CSSetupManager>(this);
 	return								(this);
 }
+
+void CAI_Stalker::net_Relcase				(CObject*	 O)
+{
+	inherited::net_Relcase				(O);
+	if (g_Alive())
+		agent_manager().remove_links	(O);
+}

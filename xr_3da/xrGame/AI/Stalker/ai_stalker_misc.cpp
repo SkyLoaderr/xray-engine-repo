@@ -21,9 +21,8 @@
 bool CAI_Stalker::useful		(const CGameObject *object) const
 {
 	const CExplosive	*explosive = smart_cast<const CExplosive*>(object);
-	if (explosive && (explosive->CurrentParentID() != 0xffff)) {
+	if (explosive && (explosive->CurrentParentID() != 0xffff))
 		agent_manager().register_grenade(explosive,object);
-	}
 
 	if (!memory().item().useful(object))
 		return			(false);

@@ -60,12 +60,12 @@ IC	void CStalkerCombatPlanner::update_cover	()
 	if (!m_object->memory().enemy().selected())
 		return;
 
-	CMemoryInfo			memory_object = m_object->memory().memory(m_object->memory().enemy().selected());
+	CMemoryInfo						memory_object = m_object->memory().memory(m_object->memory().enemy().selected());
 	if ((memory_object.m_last_level_time == m_last_level_time) && (m_object->memory().enemy().selected()->ID() == m_last_enemy_id))
 		return;
 
-	m_last_enemy_id		= m_object->memory().enemy().selected()->ID();
-	m_last_level_time	= memory_object.m_last_level_time;
+	m_last_enemy_id					= m_object->memory().enemy().selected()->ID();
+	m_last_level_time				= memory_object.m_last_level_time;
 
 	Fvector							position = memory_object.m_object_params.m_position;
 	m_object->m_ce_best->setup		(position,10.f,170.f,10.f);
@@ -78,6 +78,7 @@ IC	void CStalkerCombatPlanner::update_cover	()
 	if (point == m_last_cover)
 		return;
 
+//	Msg								("%6d Changing cover for stalker %s",Device.dwTimeGlobal,*m_object->cName());
 	CScriptActionPlanner::m_storage.set_property(eWorldPropertyInCover,			false);
 	CScriptActionPlanner::m_storage.set_property(eWorldPropertyLookedOut,		false);
 	CScriptActionPlanner::m_storage.set_property(eWorldPropertyPositionHolded,	false);
@@ -109,7 +110,7 @@ void CStalkerCombatPlanner::react_on_grenades		()
 			m_object->sound().play	(StalkerSpace::eStalkerSoundFriendlyGrenadeAlarm);
 	}
 
-	reaction.clear				();
+	reaction.clear			();
 }
 
 void CStalkerCombatPlanner::react_on_member_death	()

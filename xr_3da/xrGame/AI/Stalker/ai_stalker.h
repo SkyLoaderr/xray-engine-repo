@@ -150,6 +150,7 @@ public:
 	virtual void						net_Destroy							();
 	virtual void						net_Save							(NET_Packet& P);
 	virtual	BOOL						net_SaveRelevant					();
+	virtual void						net_Relcase							(CObject*	 O);
 
 	//save/load server serialization
 	virtual void						save								(NET_Packet &output_packet);
@@ -229,7 +230,7 @@ public:
 			void						update_best_item_info	();
 	virtual float						GetWeaponAccuracy		() const;
 	virtual	void						spawn_supplies			();
-	IC		const CAgentManager			&agent_manager			() const;
+	IC		CAgentManager				&agent_manager			() const;
 	
 	virtual bool						human_being				() const
 	{

@@ -23,7 +23,7 @@ IC	const CSetupAction &CAgentManager::action	(CAI_Stalker *object) const
 	return				(member(object).action());
 }
 
-IC	const CMemberOrder &CAgentManager::member	(CAI_Stalker *object) const
+IC	const CMemberOrder &CAgentManager::member	(const CAI_Stalker *object) const
 {
 	const_iterator		I = std::find_if(members().begin(), members().end(), CMemberPredicate(object));
 	VERIFY				(I != members().end());
@@ -120,7 +120,7 @@ IC	CAgentManagerMotivationPlanner &CAgentManager::brain() const
 	return							(*m_brain);
 }
 
-IC	void CAgentManager::register_corpse	(CAI_Stalker *corpse) const
+IC	void CAgentManager::register_corpse	(CAI_Stalker *corpse)
 {
 	xr_vector<CMemberCorpse>::iterator	I = std::find(m_corpses.begin(),m_corpses.end(),corpse);
 	VERIFY2								(I == m_corpses.end(),"Cannot register corpse more than a time!");
@@ -130,14 +130,6 @@ IC	void CAgentManager::register_corpse	(CAI_Stalker *corpse) const
 IC	xr_vector<CAgentManager::CMemberCorpse> &CAgentManager::member_corpses	()
 {
 	return								(m_corpses);
-}
-
-IC	void CAgentManager::register_grenade	(const CExplosive *grenade, const CGameObject *game_object) const
-{
-	xr_vector<CMemberGrenade>::iterator	I = std::find(m_grenades.begin(),m_grenades.end(),grenade);
-	if (I != m_grenades.end())
-		return;
-	m_grenades.push_back				(CMemberGrenade(grenade,game_object,0,Device.dwTimeGlobal));
 }
 
 IC	xr_vector<CAgentManager::CMemberGrenade> &CAgentManager::member_grenades	()
