@@ -36,7 +36,7 @@ void CRender::Render	()
 	}
 	Device.Statistic.RenderDUMP.End			();
 
-	for (u32 dls_phase=0; dls_phase<2; dls_phase++)
+	for (u32 dls_phase=0; dls_phase<1; dls_phase++)
 	{
 		//******* Direct lighting+shadow		::: Calculate
 		Device.Statistic.RenderCALC.Begin		();

@@ -3,6 +3,7 @@
 void CRenderTarget::accum_direct	(u32 dls_phase)
 {
 	// *** assume accumulator setted up ***
+	float			z_bias				= dls_phase?0.005f:0.002f;
 
 	// texture adjustment matrix
 	float			fTexelOffs			= (.5f / DSM_size);
@@ -11,7 +12,7 @@ void CRenderTarget::accum_direct	(u32 dls_phase)
 		0.5f,				0.0f,				0.0f,			0.0f,
 		0.0f,				-0.5f,				0.0f,			0.0f,
 		0.0f,				0.0f,				1.0f,			0.0f,
-		0.5f + fTexelOffs,	0.5f + fTexelOffs,	0.0f - .005f,	1.0f
+		0.5f + fTexelOffs,	0.5f + fTexelOffs,	0.0f - z_bias,	1.0f
 	};
 
 	// compute xforms

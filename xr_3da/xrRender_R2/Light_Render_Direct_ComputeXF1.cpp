@@ -33,7 +33,7 @@ void ComputeFrustum				(Fvector* _F, float p_FOV, float p_A, float p_FAR, Fvecto
 void	CLight_Render_Direct::compute_xf_1	(u32 m_phase)
 {
 	float p_FOV				= Device.fFOV;
-	float p_DIST			= m_phase?DSM_distance_1:DSM_distance_2;
+	float p_DIST			= m_phase?DSM_distance_2:DSM_distance_1;
 
 	// Shadow-test
 	Fmatrix		mCam;		mCam.invert			(Device.mView);
