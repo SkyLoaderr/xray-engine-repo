@@ -934,16 +934,19 @@ void CWeapon::OnDrawFlame	()
 			P.add(D);
 		}
 		*/
-		CParticlesObject* pStaticPG;
-		pStaticPG = xr_new<CParticlesObject>("weapons\\generic_flame",Sector());
-		Fmatrix pos; 
-		pos.set(XFORM()); 
-		pos.c.set(vLastFP);
-		Fvector vel; 
-		vel.sub(Position(),ps_Element(0).vPosition); 
-		vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
-		pStaticPG->UpdateParent(pos, vel); 
-		pStaticPG->Play();
+
+		
+//		CParticlesObject* pStaticPG;
+//		pStaticPG = xr_new<CParticlesObject>("weapons\\generic_flame",Sector());
+//		Fmatrix pos; 
+//		pos.set(XFORM()); 
+//		pos.c.set(vLastFP);
+//		Fvector vel; 
+//		vel.sub(Position(),ps_Element(0).vPosition); 
+//		vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
+//		pStaticPG->UpdateParent(pos, vel); 
+//		pStaticPG->Play();
+
 
 		fFlameTime -= Device.fTimeDelta;
 	}

@@ -203,9 +203,10 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 		pJ->Check(Position(), l_tMovementAction.m_tDestinationPosition, 0);
 	} else 	if (MotionMan.m_tAction == ACT_DRAG) {
 		MotionMan.SetSpecParams(ASP_DRAG_CORPSE | ASP_MOVE_BKWD);
-		vfChoosePointAndBuildPath(0,&l_tMovementAction.m_tDestinationPosition, false, 0);
-		MotionMan.ProcessAction();
 	}
+	
+	vfChoosePointAndBuildPath(0,&l_tMovementAction.m_tDestinationPosition, false, 0);
+	MotionMan.ProcessAction();
 	return			(true);		
 }
 

@@ -707,6 +707,17 @@ void	CPHMovementControl::PHCaptureObject(CGameObject* object,u16 element)
 		element
 		);
 }
+
+Fvector CPHMovementControl::PHCaptureGetNearestElemPos(CGameObject* object)
+{
+	CPhysicsElement *ph_elem =  object->m_pPhysicsShell->NearestToPoint(vPosition);
+
+	Fvector v;
+	ph_elem->GetGlobalPositionDynamic(&v);	
+
+	return v;
+}
+
 void CPHMovementControl::PHReleaseObject()
 {
 	if(m_capture) m_capture->Release();

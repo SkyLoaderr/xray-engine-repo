@@ -63,12 +63,14 @@ void CMotionManager::LoadVisualData()
 		// Загрузка новых
 		Load(*item_it->second.target_name, &item_it->second.pMotionVect);
 	}
+
+	// Преобразование fx's на поздней стадии (когда известен визуал)
+	FX_ConvertMap();
+
 }
 
 void CMotionManager::AddTransition(EMotionAnim from, EMotionAnim to, EMotionAnim trans, bool chain)
 {
-	CHECK_SHARED_LOADED();
-
 	STransition new_item;
 
 	new_item.from.state_used	= false;
@@ -190,6 +192,7 @@ void CMotionManager::Load(LPCTSTR pmt_name, ANIM_VECTOR	*pMotionVect)
 		else break;
 	}
 }
+
 
 // Устанавливает текущую анимацию, которую необходимо проиграть.
 // Возвращает false, если в смене анимации нет необходимости
@@ -394,24 +397,6 @@ bool CMotionManager::IsMoving()
 		(m_tAction == ACT_DRAG) || (m_tAction == ACT_STEAL));
 }
 
-// FX plaing stuff
-void CMotionManager::AddHitFX(LPCTSTR name)
-{
-	_sd->m_tHitFXs.push_back(PSkeletonAnimated(pVisual)->ID_FX_Safe(name));
-}
-
-void CMotionManager::PlayHitFX(float amount)
-{
-	// info: check if function can be called more than once at a time
-
-	if (_sd->m_tHitFXs.empty()) return;
-
-	float power_factor = amount/100.f; 
-	clamp(power_factor,0.f,1.f);
-
-	//tpKinematics->PlayFX(_sd->m_tHitFXs[::Random.randI(_sd->m_tHitFXs.size())],power_factor);
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Работа с последовательностями
 void CMotionManager::Seq_Init()
@@ -562,6 +547,135 @@ void CMotionManager::UpdateVisual()
 	pVisual = pMonster->Visual();
 	LoadVisualData();
 }	
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+// Загружает из LTX временную карту соответствий
+// название боны -> индекс1, индекс2
+void CMotionManager::FX_LoadMap(LPCSTR section)
+{
+	Msg("FX:: 1. Try to load fx map from ltx, first attempt - try to load shared data");
+	
+	CHECK_SHARED_LOADED();
+
+	Msg("FX:: 2. Try to load fx map from ltx, second attempt - shared data loaded");
+	
+
+	string32 sect;
+	strconcat(sect,section,"_fx");
+
+	if (!pSettings->section_exist(sect)) return;
+
+	Msg("FX:: 3. Section exists = [%s]", sect);
+
+	_sd->default_fx_indexes.front	= -1;
+	_sd->default_fx_indexes.back	= -1;
+
+	LPCSTR		bone_name,val;
+	string16	first,second; 
+	t_fx_index	index;
+
+	for (u32 i=0; pSettings->r_line(sect,i,&bone_name,&val); i++) {
+		
+		_GetItem(val,0,first);
+		_GetItem(val,1,second);
+
+		if (strcmp(bone_name, "default") == 0) {
+			_sd->default_fx_indexes.front	= s8(atoi(first));
+			_sd->default_fx_indexes.back	= s8(atoi(second));
+			Msg("FX:: 4. Load default params (front = [%i], back = [%i])", _sd->default_fx_indexes.front, _sd->default_fx_indexes.back);
+		} else {
+			index.front	=	s8(atoi(first));
+			index.back	=	s8(atoi(second));
+
+			_sd->fx_map_string.insert(mk_pair(bone_name, index));
+			Msg("FX:: 4. Load bone (name = [%s] front = [%i], back = [%i])", bone_name, index.front, index.back);
+		}
+	}
+
+	_sd->map_converted = false;
+}
+
+// Call on NetSpawn
+void CMotionManager::FX_ConvertMap()
+{
+	Msg("FX:: 5. Try to convert name to boneid, first attempt - shared data loaded?");
+	if (_sd->map_converted) return;
+	_sd->map_converted = true;
+	Msg("FX:: 6. Try to convert name to boneid, second attempt - shared data loaded!");
+
+	// Преобразовать названия бон в их u16-индексы
+	for (FX_MAP_STRING_IT item_it = _sd->fx_map_string.begin(); item_it != _sd->fx_map_string.end(); item_it++) {
+		u16 bone_id = PKinematics(pVisual)->LL_BoneID(*item_it->first);
+		_sd->fx_map_u16.insert(mk_pair(bone_id,item_it->second)); 
+
+		Msg("FX:: 7. Converting... ");
+	}
+}
+
+void CMotionManager::FX_Play(u16 bone, bool is_front) 
+{
+	if (_sd->fx_map_u16.empty()) return;
+
+	
+	Msg("FX:: Play: Try to find bone_id = [%u]", bone);
+	FX_MAP_U16_IT	fx_it = _sd->fx_map_u16.find(bone);
+	
+	t_fx_index cur_fx;
+
+	if (fx_it != _sd->fx_map_u16.end()) {
+		cur_fx = fx_it->second;
+		Msg("FX:: Play: Bone Found!!! ");
+	}else {
+		Msg("FX:: Play: Bone not found, try to find appropriate bone which is closest!");
+		
+		// Найти минимальное расстояние до боны на которой есть fx
+		CBoneInstance *target_bone = &PKinematics(pVisual)->LL_GetBoneInstance(bone);
+		
+		float	best_dist = 10000.f;
+
+		for (FX_MAP_U16_IT it = _sd->fx_map_u16.begin(); it != _sd->fx_map_u16.end(); it++) {
+			CBoneInstance *cur_bone = &PKinematics(pVisual)->LL_GetBoneInstance(it->first);
+			
+			float cur_dist = target_bone->mTransform.c.distance_to(cur_bone->mTransform.c);
+			Msg("FX:: Play: looking up... cur_dist, = [%f] best_dist = [%f]",cur_dist, best_dist);
+			if (best_dist > cur_dist) {
+				best_dist = cur_dist;
+				cur_fx = it->second;
+			}
+		}
+
+		Msg("FX:: Play: Bone found with fx params = [%i][%i]",cur_fx.front,cur_fx.back);
+	}
+
+	Msg("FX:: Play: front shot? [%i]", is_front);
+	s8 fx_index;
+	fx_index = ((is_front)? fx_it->second.front : fx_it->second.back);
+	
+	// Если нет соответстующего fx'a - загрузить default
+	if (fx_index < 0) {
+		Msg("FX:: Play: load default... ");
+		fx_index = ((is_front)? _sd->default_fx_indexes.front :  _sd->default_fx_indexes.back);
+	}
+
+	if (fx_index < 0) {
+		Msg("FX:: Play: load default... Everything bad!");
+		return;
+	}
+	
+	string16 temp;
+	itoa(fx_index,temp,10);
+
+	string32 fx_name;
+	strconcat(fx_name,"fx_damage_",temp);
+	
+	
+	Msg("FX:: Playing...  Name = [%s]", fx_name);
+	PSkeletonAnimated(pVisual)->PlayFX(fx_name, 1.0f);
+}
+
+
 
 
 

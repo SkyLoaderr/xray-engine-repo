@@ -311,7 +311,6 @@ void CAI_Biting::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_o
 	if(m_pPhysics_support->isAlive())inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
 	m_pPhysics_support->in_Hit(P,dir,who,element,p_in_object_space,impulse);
 
-	if (g_Alive()) SetSoundOnce(SND_TYPE_TAKE_DAMAGE, m_dwCurrentTime);
 }
 
 CBoneInstance *CAI_Biting::GetBoneInstance(LPCTSTR bone_name)

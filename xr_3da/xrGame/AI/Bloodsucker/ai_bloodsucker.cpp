@@ -99,11 +99,8 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 600,	700,	center,		1.3f, inherited::_sd->m_fHitPower, 0.f,			PI_DIV_6);
 	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 500,	600,	center,		1.4f, inherited::_sd->m_fHitPower, PI_DIV_3,	PI_DIV_6);
 
-	// Hit fx's
-//	MotionMan.AddHitFX("hit_high_0"); 
-//	MotionMan.AddHitFX("hit_high_1");
-//	MotionMan.AddHitFX("hit_low_0"); 
-//	MotionMan.AddHitFX("hit_low_1");
+	MotionMan.FX_LoadMap(section); 
+
 
 	END_LOAD_SHARED_MOTION_DATA();
 }

@@ -189,20 +189,44 @@ DEFINE_VECTOR	(SAttackAnimation,	ATTACK_ANIM,			ATTACK_ANIM_IT);
 DEFINE_VECTOR	(SReplacedAnim,		REPLACED_ANIM,			REPLACED_ANIM_IT);
 
 
+#define HIT_SIDE_COUNT		2
+#define HIT_BACK	0
+#define HIT_FRONT	1
+
+#define HIT_HEIGHT_COUNT	2
+#define HIT_LOW		0
+#define HIT_HIGH	1
+
+
+struct t_fx_index {
+	s8 front;	
+	s8 back;	
+};
+
+DEFINE_MAP(u16,		t_fx_index,	FX_MAP_U16,			FX_MAP_U16_IT);			
+DEFINE_MAP(ref_str,	t_fx_index,	FX_MAP_STRING,		FX_MAP_STRING_IT);
+
+
 class _motion_shared : public CSharedResource {
 public:
 	ANIM_ITEM_MAP			m_tAnims;			// карта анимаций
 	MOTION_ITEM_MAP			m_tMotions;			// карта соответсвий EAction к SMotionItem
 	TRANSITION_ANIM_VECTOR	m_tTransitions;		// вектор переходов из одной анимации в другую
-	ANIM_VECTOR				m_tHitFXs;
 	ATTACK_ANIM				aa_all;				// список атак
+
+	t_fx_index				default_fx_indexes;
+	FX_MAP_STRING			fx_map_string;
+	FX_MAP_U16				fx_map_u16;
+	bool					map_converted;
 };
+
 
 //////////////////////////////////////////////////////////////////////////
 class CMotionManager : public CSharedClass<_motion_shared> {
 
 	REPLACED_ANIM			m_tReplacedAnims;	// анимации подмены
 	
+
 	CAI_Biting				*pMonster;
 	CJumping				*pJumping;
 	IRender_Visual			*pVisual;
@@ -296,11 +320,12 @@ public:
 	bool		AA_CheckTime			(TTime cur_time, SAttackAnimation &anim); 
 	void		AA_UpdateLastAttack		(TTime cur_time) {aa_time_last_attack = cur_time;}
 
-	// проиграть hit fx
-	void		AddHitFX				(LPCTSTR name);
-	void		PlayHitFX				(float amount);
+	// FX's
+	void		FX_LoadMap				(LPCSTR section);
+	void		FX_ConvertMap			();
+	void		FX_Play					(u16 bone, bool is_front);
 
-	// ќбновить tpKinematics
+		// ќбновить tpKinematics
 	void		UpdateVisual			();
 
 private:	
@@ -336,6 +361,3 @@ public:
 
 
 };
-
-
-

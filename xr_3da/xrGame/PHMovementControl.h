@@ -18,6 +18,8 @@ void				PHCaptureObject(CGameObject* object);
 void				PHCaptureObject(CGameObject* object,u16 element);
 CPHCapture*			PHCapture      (){return m_capture;}
 void				PHReleaseObject();
+Fvector				PHCaptureGetNearestElemPos(CGameObject* object);
+
 enum				JumpType 
 {
 					jtStrait, //end point before uppermost point

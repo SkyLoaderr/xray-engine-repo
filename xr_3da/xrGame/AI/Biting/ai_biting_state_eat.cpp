@@ -80,6 +80,8 @@ void CBitingEat::Run()
 	if (bHideAfterLunch) m_tAction = ACTION_GET_HIDE;
 	else if (bRestAfterLunch) m_tAction = ACTION_LITTLE_REST;
 
+	Fvector corpse_pos = pMonster->Movement.PHCaptureGetNearestElemPos(pCorpse);
+
 	// Выполнение состояния
 	switch (m_tAction) {
 		case ACTION_CORPSE_APPROACH_RUN:	// бежать к трупу
@@ -94,7 +96,7 @@ void CBitingEat::Run()
 		case ACTION_CORPSE_APPROACH_WALK:
 
 			pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
-			pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), true, 0);
+			pMonster->vfChoosePointAndBuildPath(0,&corpse_pos, true, 0);
 
 			pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 			

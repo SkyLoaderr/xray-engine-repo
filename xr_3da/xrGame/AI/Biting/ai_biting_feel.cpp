@@ -77,13 +77,18 @@ BOOL  CAI_Biting::feel_vision_isRelevant(CObject* O)
 
 void CAI_Biting::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 element)
 {
-	
-	// Save event
-	Fvector D;
-	XFORM().transform_dir(D,vLocalDir);
-	
 	feel_sound_new(who,SOUND_TYPE_WEAPON_SHOOTING,who->Position(),1.f);
+	if (g_Alive()) SetSoundOnce(SND_TYPE_TAKE_DAMAGE, m_dwCurrentTime);
 
-	MotionMan.PlayHitFX(amount);
+	if (element < 0) return;
+
+	// Определить направление хита (спереди || сзади)
+	float yaw,pitch;
+	vLocalDir.getHP(yaw,pitch);
+	
+	yaw = angle_normalize(yaw);
+	bool is_front = ( ((PI_DIV_2 <= yaw) && (yaw <= 3*PI_DIV_2))? false: true );
+
+	MotionMan.FX_Play(u16(element), is_front);
 }
 
