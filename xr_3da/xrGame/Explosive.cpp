@@ -116,17 +116,44 @@ void CExplosive::net_Destroy	()
 /////////////////////////////////////////////////////////
 
 //проверка на попадание "осколком" по объекту
+ICF static BOOL grenade_hit_callback(collide::rq_result& result, LPVOID params)
+{
+	float& shoot_factor	= *(float*)params;
+	u16 mtl_idx			= GAMEMTL_NONE_IDX;
+	if(result.O){	
+		CKinematics* V  = 0;
+		if (0!=(V=smart_cast<CKinematics*>(result.O->Visual()))){
+			CBoneData& B= V->LL_GetData((u16)result.element);
+			mtl_idx		= B.game_mtl_idx;
+		}
+	}else{
+		//получить треугольник и узнать его материал
+		CDB::TRI* T		= Level().ObjectSpace.GetStaticTris()+result.element;
+		mtl_idx			= T->material;
+	}	
+	SGameMtl* mtl		= GMLib.GetMaterialByIdx(mtl_idx);
+	shoot_factor		*=mtl->fShootFactor;
+	return				(shoot_factor>0.01f);
+}
 float CExplosive::ExplosionEffect(CGameObject* pExpObject,  const Fvector &expl_centre, const float expl_radius, xr_list<s16> &elements, xr_list<Fvector> &bs_positions) 
 {
-	collide::rq_result RQ;
+
 	Fvector l_pos; 
 	pExpObject->Center(l_pos);
 	Fvector l_dir; 
 	l_dir.sub(l_pos, expl_centre); 
 	l_dir.normalize();
-	if(!Level().ObjectSpace.RayPick(expl_centre, l_dir, expl_radius, collide::rqtBoth, RQ)) return 0;
+
+	pExpObject->setEnabled(FALSE);
+	
+	collide::ray_defs RD		(expl_centre,l_dir,expl_radius,CDB::OPT_CULL,collide::rqtBoth);
+	float	shoot_factor		= 1.f;
+	g_pGameLevel->ObjectSpace.RayQuery(RD,grenade_hit_callback,&shoot_factor);
+	pExpObject->setEnabled(TRUE);
+
+	//if(!Level().ObjectSpace.RayPick(expl_centre, l_dir, expl_radius, collide::rqtBoth, RQ)) return 0;
 	//осколок не попал или попал, но не по нам
-	if(pExpObject != RQ.O) return 0;
+	//if(pExpObject != RQ.O) return 0;
 
 	/*	//предотвращение вылетания
 	if(-1 != (s16)RQ.element)
@@ -137,11 +164,11 @@ float CExplosive::ExplosionEffect(CGameObject* pExpObject,  const Fvector &expl_
 	{
 	elements.push_back(0);
 	}*/
-	elements.push_back((s16)RQ.element);
+	elements.push_back(PKinematics(pExpObject->Visual())->LL_GetBoneRoot());
 
 	l_pos.sub(expl_centre,pExpObject->Position());
 	bs_positions.push_back(l_pos);
-	return 1.f;
+	return shoot_factor;
 }
 
 void CExplosive::Explode()
