@@ -152,21 +152,21 @@ BOOL SGameMtlPair::SetParent(int parent)
     return TRUE;
 }
 
-void __fastcall SGameMtlPair::OnParentClick(PropValue* sender, bool& bModif)
+void __fastcall SGameMtlPair::OnParentClick(PropValue* sender, bool& bModif, bool& bSafe)
 {
     bModif = false;
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
     case 0:{
         LPCSTR MP=0;
-	    AStringVec items;
+	    ChooseItemVec items;
         for (GameMtlIt m0_it=m_Owner->FirstMaterial(); m0_it!=m_Owner->LastMaterial(); m0_it++){
             SGameMtl* M0 		= *m0_it;
             for (GameMtlIt m1_it=m_Owner->FirstMaterial(); m1_it!=m_Owner->LastMaterial(); m1_it++){
                 SGameMtl* M1 	= *m1_it;
                 GameMtlPairIt p_it = GMLib.GetMaterialPairIt(M0->GetID(),M1->GetID());
                 if (p_it!=GMLib.LastMaterialPair())
-		        	items.push_back	(GMLib.MtlPairToName(M0->GetID(),M1->GetID()));
+		        	items.push_back	(SChooseItem(GMLib.MtlPairToName(M0->GetID(),M1->GetID()),""));
             }
         }
 	    SGameMtlPair* P	= m_Owner->GetMaterialPair(ID_parent);
@@ -192,21 +192,21 @@ void __fastcall SGameMtlPair::OnParentClick(PropValue* sender, bool& bModif)
 	}
 }
 
-void __fastcall SGameMtlPair::OnCommandClick(PropValue* sender, bool& bModif)
+void __fastcall SGameMtlPair::OnCommandClick(PropValue* sender, bool& bModif, bool& bSafe)
 {
     bModif = false;
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
     case 0:{
         LPCSTR MP=0;
-	    AStringVec items;
+	    ChooseItemVec items;
         for (GameMtlIt m0_it=m_Owner->FirstMaterial(); m0_it!=m_Owner->LastMaterial(); m0_it++){
             SGameMtl* M0 		= *m0_it;
             for (GameMtlIt m1_it=m_Owner->FirstMaterial(); m1_it!=m_Owner->LastMaterial(); m1_it++){
                 SGameMtl* M1 	= *m1_it;
                 GameMtlPairIt p_it = GMLib.GetMaterialPairIt(M0->GetID(),M1->GetID());
                 if (p_it!=GMLib.LastMaterialPair())
-		        	items.push_back	(GMLib.MtlPairToName(M0->GetID(),M1->GetID()));
+		        	items.push_back	(SChooseItem(GMLib.MtlPairToName(M0->GetID(),M1->GetID()),""));
             }
         }
 	    SGameMtlPair* P	= m_Owner->GetMaterialPair(ID_parent);

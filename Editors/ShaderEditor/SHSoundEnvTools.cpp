@@ -30,7 +30,7 @@ void CSHSoundEnvTools::OnActivate()
 	m_PreviewSnd->Play();
 	PropItemVec items;
     m_PreviewSnd->FillProp	("Sound",items);
-    Ext.m_PreviewProps->AssignItems(items,true);
+    Ext.m_PreviewProps->AssignItems(items);
     Ext.m_PreviewProps->ShowProperties();
 }
 //---------------------------------------------------------------------------
@@ -205,7 +205,7 @@ void CSHSoundEnvTools::ResetCurrentItem()
 	UseEnvironment	();
 }
 
-void __fastcall CSHSoundEnvTools::OnRevResetClick(PropValue* sender, bool& bModif)
+void __fastcall CSHSoundEnvTools::OnRevResetClick(PropValue* sender, bool& bModif, bool& bSafe)
 {
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
@@ -240,7 +240,7 @@ void CSHSoundEnvTools::RealUpdateProperties()
         PHelper.CreateFloat		(items, "Environment\\Decay\\DecayTime",					&S.DecayTime           ,EAXLISTENER_MINDECAYTIME, 			EAXLISTENER_MAXDECAYTIME				,0.01f,	3);
         PHelper.CreateFloat		(items, "Environment\\Decay\\DecayHFRatio",					&S.DecayHFRatio        ,EAXLISTENER_MINDECAYHFRATIO, 		EAXLISTENER_MAXDECAYHFRATIO				,0.01f,	3);
     }
-    Ext.m_ItemProps->AssignItems		(items,true);
+    Ext.m_ItemProps->AssignItems		(items);
     Ext.m_ItemProps->SetModifiedEvent	(Modified);
 }
 //---------------------------------------------------------------------------

@@ -14,8 +14,7 @@
       Intermediate\SHEngineToolsProperties.obj 
       Intermediate\SHGameMtlPairTools.obj Intermediate\SHGameMtlTools.obj 
       Intermediate\SHSoundEnvTools.obj Intermediate\SceneObject.obj 
-      Intermediate\CustomObject.obj Intermediate\CustomObjectMisc.obj 
-      Intermediate\SceneObjectIO.obj"/>
+      Intermediate\CustomObjectMisc.obj Intermediate\SceneObjectIO.obj"/>
     <RESFILES value="resource.res ShaderEditor.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -85,7 +84,6 @@
       <FILE FILENAME="SHGameMtlTools.cpp" FORMNAME="" UNITNAME="SHGameMtlTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SHSoundEnvTools.cpp" FORMNAME="" UNITNAME="SHSoundEnvTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SceneObject.cpp" FORMNAME="" UNITNAME="SceneObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="CustomObject.cpp" FORMNAME="" UNITNAME="CustomObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="CustomObjectMisc.cpp" FORMNAME="" UNITNAME="CustomObjectMisc" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SceneObjectIO.cpp" FORMNAME="" UNITNAME="SceneObjectIO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="resource.res" FORMNAME="" UNITNAME="resource.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>

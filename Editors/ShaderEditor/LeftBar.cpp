@@ -167,7 +167,7 @@ void __fastcall TfraLeftBar::CreateFolder1Click(TObject *Sender)
     FHelper.MakeName(STools->Current()->View()->Selected,0,start_folder,true);
     FHelper.GenerateFolderName(STools->Current()->View(),STools->Current()->View()->Selected,folder);
     folder = start_folder+folder;
-    TElTreeItem* node = FHelper.AppendFolder(STools->Current()->View(),folder.c_str());
+    TElTreeItem* node = FHelper.AppendFolder(STools->Current()->View(),folder.c_str(),true);
     if (STools->Current()->View()->Selected) STools->Current()->View()->Selected->Expand(false);
     STools->Current()->View()->EditItem(node,-1);
     STools->Modified();

@@ -118,7 +118,7 @@ void CSHGameMtlPairTools::RealUpdateProperties()
 {
 	PropItemVec items;
     if (m_MtlPair)	m_MtlPair->FillProp(items);
-    Ext.m_ItemProps->AssignItems		(items,true);
+    Ext.m_ItemProps->AssignItems		(items);
     Ext.m_ItemProps->SetModifiedEvent	(Modified);
 }
 //---------------------------------------------------------------------------

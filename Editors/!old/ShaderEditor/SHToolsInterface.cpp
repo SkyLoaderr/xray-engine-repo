@@ -15,7 +15,7 @@ ISHTools::ISHTools(ISHInit& init)
 
 void ISHTools::ViewAddItem(LPCSTR full_name)
 {
-	FHelper.AppendObject(Ext.tvView,full_name);
+	FHelper.AppendObject(Ext.tvView,full_name,false,true);
 }
 //---------------------------------------------------------------------------
 

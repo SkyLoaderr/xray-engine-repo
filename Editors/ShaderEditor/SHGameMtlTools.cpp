@@ -119,9 +119,9 @@ LPCSTR CSHGameMtlTools::GenerateItemName(LPSTR name, LPCSTR pref, LPCSTR source)
 LPCSTR CSHGameMtlTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
 {
     LPCSTR M=0;
-    AStringVec lst;
-    lst.push_back("Dynamic material");
-    lst.push_back("Static material");
+    ChooseItemVec lst;
+    lst.push_back(SChooseItem("Dynamic material",""));
+    lst.push_back(SChooseItem("Static material",""));
     if (!TfrmChoseItem::SelectItem(smCustom,M,1,0,&lst)||!M) return 0;
 	SGameMtl* parent 	= FindItem(parent_name);
     string64 new_name;
@@ -192,7 +192,7 @@ void CSHGameMtlTools::RealUpdateProperties()
 	PropItemVec items;
     if (m_Mtl)
     	m_Mtl->FillProp	(items,FHelper.FindObject(View(),*m_Mtl->m_Name));
-    Ext.m_ItemProps->AssignItems		(items,true);
+    Ext.m_ItemProps->AssignItems		(items);
     Ext.m_ItemProps->SetModifiedEvent	(Modified);
 }
 //---------------------------------------------------------------------------

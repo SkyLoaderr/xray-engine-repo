@@ -129,7 +129,7 @@ void CSHEngineTools::OnActivate()
 //    m_PreviewObject->FillProp			("Object",items);
     PropValue* V						= PHelper.CreateToken<u32>	(items,FHelper.PrepareKey("Object","Reference"), &m_PreviewObjectType, preview_obj_token); 
     V->Owner()->OnAfterEditEvent 		= OnPreviewObjectRefChange;
-    Ext.m_PreviewProps->AssignItems		(items,true);
+    Ext.m_PreviewProps->AssignItems		(items);
     Ext.m_PreviewProps->ShowProperties	();
 }
 //---------------------------------------------------------------------------
@@ -467,8 +467,9 @@ LPCSTR CSHEngineTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
 	CLASS_ID cls_id;
     if (!parent){
         LPCSTR M=0;
-        AStringVec lst;
-        for (TemplateIt it=m_TemplatePalette.begin(); it!=m_TemplatePalette.end(); it++) lst.push_back((*it)->getComment());
+        ChooseItemVec lst;
+        for (TemplateIt it=m_TemplatePalette.begin(); it!=m_TemplatePalette.end(); it++) 
+        	lst.push_back(SChooseItem((*it)->getComment(),""));
         if (!TfrmChoseItem::SelectItem(smCustom,M,1,0,&lst)||!M) return 0;
         for (it=m_TemplatePalette.begin(); it!=m_TemplatePalette.end(); it++) 
         	if (0==strcmp((*it)->getComment(),M)){ 

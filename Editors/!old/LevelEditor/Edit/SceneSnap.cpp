@@ -35,6 +35,7 @@ void EScene::RenderSnapList()
 
 bool EScene::AddToSnapList(CCustomObject* O, bool bUpdateScene)
 {
+	if (!O) return false;
     ObjectList* snap_objects = GetSnapList(true);
     if (snap_objects){
         if (std::find(snap_objects->begin(),snap_objects->end(),O)==snap_objects->end()){

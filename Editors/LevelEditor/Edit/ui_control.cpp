@@ -106,20 +106,24 @@ bool TUI_CustomControl::CheckSnapList(TShiftState Shift)
 {
 	if (fraLeftBar->ebSnapListMode->Down){
 	    CCustomObject* O=Scene.RayPickObject(flt_max,UI->m_CurrentRStart,UI->m_CurrentRNorm,OBJCLASS_SCENEOBJECT,0,0);
-        if (Scene.FindObjectInSnapList(O)){
-			if (Shift.Contains(ssAlt)){
-            	Scene.DelFromSnapList(O);
-            }else if (Shift.Contains(ssCtrl)){
-            	Scene.DelFromSnapList(O);
+        if (O){
+            if (Scene.FindObjectInSnapList(O)){
+                if (Shift.Contains(ssAlt)){
+                    Scene.DelFromSnapList(O);
+                }else if (Shift.Contains(ssCtrl)){
+                    Scene.DelFromSnapList(O);
+                }
+            }else{
+                if (!Shift.Contains(ssCtrl)&&!Shift.Contains(ssAlt)){
+                    Scene.AddToSnapList(O);
+                }else if (Shift.Contains(ssCtrl)){
+                    Scene.AddToSnapList(O);
+                }
             }
-		}else{
-            if (!Shift.Contains(ssCtrl)&&!Shift.Contains(ssAlt)){
-                Scene.AddToSnapList(O);
-            }else if (Shift.Contains(ssCtrl)){
-            	Scene.AddToSnapList(O);
-            }
+	        return true;
+        }else{
+        	return false;
         }
-        return true;
     }
     return false;
 }
