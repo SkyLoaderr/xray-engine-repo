@@ -1572,7 +1572,7 @@ void CPHElement::CallBack(CBoneInstance* B){
 //	bone.mulB(inv_shell);
 //	B->mTransform.set(bone);
 	Fmatrix parent;
-	
+	//if(!dBodyIsEnabled(m_body)) return;
 	if(m_parent_element){
 	//if(m_parent_element->bActivating || !m_parent_element->bActive) return;
 	InterpolateGlobalTransform(&B->mTransform);
@@ -1758,15 +1758,78 @@ anchor.set(x,y,z);
 
 void CPHJoint::SetAxis(const float x,const float y,const float z,const int axis_num)
 {
+	int ax=axis_num;
+
+	switch(eType){
+	case ball:					return;						break;
+	case hinge:					ax=0;
+															break;
+	case hinge2:
+	
+	
+	case universal_hinge:		
+														
+	case shoulder1:	
+														
+	case shoulder2:	
+														
+	case car_wheel:	
+								if(ax>1) ax=1;
+														break;
+	}
+			axes[ax].vs=vs_global;
+			axes[ax].direction.set(x,y,z);
 }
 
 void CPHJoint::SetAxisVsFirstElement(const float x,const float y,const float z,const int axis_num)
 {
+	int ax=axis_num;
 
+	switch(eType){
+	case ball:					return;						break;
+	case hinge:					ax=0;
+															break;
+	case hinge2:
+	
+	
+	case universal_hinge:		
+														
+	case shoulder1:	
+														
+	case shoulder2:	
+														
+	case car_wheel:	
+								if(ax>1) ax=1;
+														break;
+	}
+			axes[ax].vs=vs_first;
+			axes[ax].direction.set(x,y,z);
 }
 
 void CPHJoint::SetAxisVsSecondElement(const float x,const float y,const float z,const int axis_num)
 {
+	int ax=axis_num;
+
+	switch(eType){
+	case ball:					return;						break;
+	case hinge:					ax=0;
+															break;
+	case hinge2:
+	
+	
+	case universal_hinge:		
+														
+	case shoulder1:	
+														
+	case shoulder2:	
+														
+	case car_wheel:	
+								if(ax>1) ax=1;
+														break;
+	}
+			axes[ax].vs=vs_second;
+			axes[ax].direction.set(x,y,z);
+
 }
 
 void CPHJoint::SetLimits(const float low, const float high, const int axis_num)
