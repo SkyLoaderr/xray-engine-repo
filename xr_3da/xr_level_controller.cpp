@@ -17,6 +17,7 @@ _keybind  keybind[]		= {
 	{ "crouch",			kCROUCH			},
 	{ "crouch_toggle",	kCROUCH_TOGGLE	},
 	{ "accel",			kACCEL			},
+	{ "sprint_togle",   kSPRINT_TOGLE   },
 
 	{ "forward",		kFWD			},	
 	{ "back",			kBACK			},

@@ -225,6 +225,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 
 				if (mstate_real&mcCrouch)	scale *= m_fCrouchFactor;
 				if (mstate_real&mcClimb)	scale *= m_fClimbFactor;
+				if (mstate_real&mcSprint)	scale *= m_fSprintFactor;
 				vControlAccel.mul			(scale);
 			}else{
 				//				mstate_real	&= ~mcAnyMove;

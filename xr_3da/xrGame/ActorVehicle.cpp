@@ -50,13 +50,13 @@ void CActor::detach_Vehicle()
 	CCar* car=smart_cast<CCar*>(m_holder);
 	if(!car)return;
 	CPHShellSplitterHolder*sh= car->PPhysicsShell()->SplitterHolder();
-	sh->Deactivate();
+	if(sh)sh->Deactivate();
 	if(!ActivateBox(0))
 	{
-		sh->Activate();
+		if(sh)sh->Activate();
 		return;
 	}
-	sh->Activate();
+	if(sh)sh->Activate();
 	m_holder->detach_Actor();//
 
 	m_PhysicMovementControl->SetPosition(m_holder->ExitPosition());

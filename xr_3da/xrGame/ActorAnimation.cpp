@@ -92,6 +92,14 @@ void ACTOR_DEFS::SActorMotions::SActorState::SAnimState::Create(CSkeletonAnimate
 	legs_ls			= K->ID_Cycle(strconcat(buf,base0,base1,"_ls_0"));
 	legs_rs			= K->ID_Cycle(strconcat(buf,base0,base1,"_rs_0"));
 }
+
+void ACTOR_DEFS::SActorMotions::SActorState::SAnimState::CreateSprint(CSkeletonAnimated* K)
+{
+	legs_fwd		= K->ID_Cycle("escape_0");
+	legs_back		= K->ID_Cycle("escape_0");
+	legs_ls			= K->ID_Cycle("escape_0");
+	legs_rs			= K->ID_Cycle("escape_0");
+}
 void ACTOR_DEFS::SActorMotions::SActorState::CreateClimb(CSkeletonAnimated* K)
 {
 	string128		buf,buf1;
@@ -127,6 +135,8 @@ void ACTOR_DEFS::SActorMotions::SActorState::CreateClimb(CSkeletonAnimated* K)
 	for (int k=0; k<12; ++k)
 		m_damage[k]	= K->ID_FX(strconcat(buf,base,"_damage_",itoa(k,buf1,10)));
 }
+
+
 void ACTOR_DEFS::SActorMotions::SActorState::Create(CSkeletonAnimated* K, LPCSTR base)
 {
 	string128		buf,buf1;
@@ -136,7 +146,7 @@ void ACTOR_DEFS::SActorMotions::SActorState::Create(CSkeletonAnimated* K, LPCSTR
 	
 	m_walk.Create	(K,base,"_walk");
 	m_run.Create	(K,base,"_run");
-	
+	m_sprint.CreateSprint(K);
 	m_torso[0].Create(K,base,"_1");
 	m_torso[1].Create(K,base,"_2");
 	m_torso[2].Create(K,base,"_3");
@@ -227,7 +237,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 
 		if (isAccelerated(mstate_rl))	AS = &ST->m_run;
 		else							AS = &ST->m_walk;
-		
+		if	(mstate_rl&mcSprint)		AS  = &ST->m_sprint;
 		// анимации
 		CMotionDef* M_legs	= 0;
 		CMotionDef* M_torso	= 0;
@@ -244,6 +254,11 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		else if (mstate_rl&mcLStrafe)	M_legs	= AS->legs_ls;
 		else if (mstate_rl&mcRStrafe)	M_legs	= AS->legs_rs;
 	
+		if	(mstate_rl&mcSprint)
+		{
+			M_torso	= 0;
+			M_head	= 0;
+		}
 		// Torso
 		if(mstate_rl&mcClimb)
 		{
@@ -291,7 +306,13 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 			}
 		}
 
-		if (!M_legs)					M_legs	= ST->legs_idle;
+		if (!M_legs)
+		{
+			if((mstate_rl&mcCrouch)&&!(mstate_rl&mcAccel))
+				M_legs=smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle("cr_idle_0");
+			else 
+				M_legs	= ST->legs_idle;
+		}
 		if (!M_head)					M_head	= ST->m_head_idle;
 		if (!M_torso){				
 			if (m_bAnimTorsoPlayed)		M_torso	= m_current_torso;
@@ -377,3 +398,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 #endif
 }
 
+void CActor::g_SetSprintAnimation( u32 mstate_rl )
+{
+
+}

@@ -42,6 +42,7 @@ enum EMoveCommand
 	mcLanding2	= (1ul<<10ul),
 	mcClimb		= (1ul<<11ul),
 	mcCreep		= (1ul<<12ul),
+	mcSprint	= (1ul<<13ul),
 	mcAnyMove	= (mcFwd|mcBack|mcLStrafe|mcRStrafe)
 };
 
@@ -75,6 +76,7 @@ struct					SActorMotions
 			CMotionDef*	legs_ls;
 			CMotionDef*	legs_rs;
 			void		Create(CSkeletonAnimated* K, LPCSTR base0, LPCSTR base1);
+			void		CreateSprint(CSkeletonAnimated* K);
 		};
 		struct			STorsoWpn{
 			CMotionDef*	aim;
@@ -98,14 +100,15 @@ struct					SActorMotions
 		CMotionDef*		death;
 		SAnimState		m_walk;
 		SAnimState		m_run;
+		SAnimState		m_sprint;
 		STorsoWpn		m_torso[8];
 		CMotionDef*		m_torso_idle;
 		CMotionDef*		m_head_idle;
 
 		CMotionDef*		m_damage[DAMAGE_FX_COUNT];
-
 		void			Create(CSkeletonAnimated* K, LPCSTR base);
 		void			CreateClimb(CSkeletonAnimated* K);
+	
 	};
 	//CMotionDef*			m_steering_torso_left;
 	//CMotionDef*			m_steering_torso_right;
@@ -118,6 +121,7 @@ struct					SActorMotions
 	SActorState			m_normal;
 	SActorState			m_crouch;
 	SActorState			m_climb;
+	SActorState			m_sprint;
 	void				Create(CSkeletonAnimated* K);
 };
 
