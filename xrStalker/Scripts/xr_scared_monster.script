@@ -1,0 +1,132 @@
+
+local hit_distance = 1 -- 2 recommended
+
+local state_none = 0
+local state_running = 1
+local state_looking = 2
+local state_killing_vict = 3
+
+local act_none = 0
+local act_look = 1
+local act_follow = 2
+
+-- Bloodsucker name:
+local bs_name = "m_scared_bloodsucker"
+-- Flesh name:
+-- ...
+
+function main()
+	printf("xr_scared_monster: main()")
+	-- Bloodsucker init:
+	local bs = nil
+	local bs_script_finished = false
+	if not xr_scared.monster_info[bs_name] then
+		xr_scared.monster_info[bs_name] = {}
+	end
+	local bs_stor = nil
+	
+	-- Flesh init:
+	-- ...
+	
+	while true do
+		-- Process bloodsucker:
+		if not bs_script_finished then
+			if not bs then
+				printf("_bp2")
+				bs = level.object(bs_name)
+				bs:set_manual_invisibility(true)
+				bs:set_invisible(true)
+			end
+			if not bs_stor then
+				printf("_bp3")
+				bs_stor = xr_scared.monster_info[bs_name]
+			end
+			if bs and bs_stor then
+				bs_script_finished = process_bloodsucker(bs, bs_stor)
+				if bs_script_finished then
+					if bs:get_script() then
+						bs:script(false, "xr_scared_monster")
+					end
+					printf("krovosos dead")
+					bs_stor.dead = true
+					bs:set_manual_invisibility(false)
+				end
+			end
+		end
+
+		-- Process flesh:
+		-- ...
+
+		wait()
+	end
+end
+
+local bs_last_state = state_none
+local bs_last_action = act_none
+
+-- Return true when script is finished
+function process_bloodsucker(bs, st)
+	printf("process_bloodsucker: going_to_roof=%s", utils.to_str(st.going_to_roof))
+	if not bs:alive() then
+		return true
+	end
+	if not bs:get_script() then
+		bs:script(true, "xr_scared_monster")
+	end
+	printf("bp5")
+	if not st.stalker then
+		return false -- keep waiting for stalker to appear
+	end
+	printf("bp6")
+
+	if not st.stalker:alive() then
+		return true
+	end
+	
+	if st.going_to_roof then
+		bs:set_invisible(false)
+	end
+	
+	if bs:position():distance_to(st.stalker:position()) < hit_distance and
+	   (last_action ~= act_look or not bs:action()) then
+		printf("___bp_look")
+		reset_action(bs, "xr_scared_monster")
+		if st.finish_me_off then
+			action(bs, anim(anim.turn, 0), look(look.point,
+				st.stalker:position()), cond(cond.look_end))
+		end
+		last_action = act_look
+		last_state = state_looking
+	elseif not bs:action() then
+		printf("___bp_approach")
+		--action(bs, act(act.attack, st.stalker),
+		--	cond(cond.time_end, time_infinite))
+		action(bs, move(move.run_fwd, st.stalker, 1, move.force), sound(sound.attack), cond(cond.move_end))
+		last_action = act_follow
+		last_state = state_running
+	end
+
+	if last_state == state_looking and st.finish_me_off then
+		last_state = state_killing_vict
+		-- hit
+		local h = hit()
+		h.power = 1000
+		h.direction = bs:direction()
+		h.bone = "bip01_legs"
+		h.draftsman = bs
+		h.impulse = 1000
+		h.type = hit.wound
+		st.stalker:hit(h)
+			
+		reset_action(bs, "xr_scared_monster")
+		action(bs, anim(anim.attack, 0), sound(sound.attack),
+			cond(cond.time_end, 3000))
+
+		while bs:action() do
+			wait()
+		end
+		return true
+	end
+
+	return false
+end
