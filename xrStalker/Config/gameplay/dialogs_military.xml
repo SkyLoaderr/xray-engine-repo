@@ -129,15 +129,6 @@
                 <action>dialogs_military.mil_dolg_payment</action>
                 <next>60010</next>
             </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1000</next>
-                <next>2000</next>
-                <next>3000</next>
-                <next>4000</next>
-                <next>5000</next>
-                <next>6000</next>
-            </phrase>
             <phrase id="5000">
                 <text></text>
                 <has_info>mil_sniper_job_failed</has_info>
@@ -200,65 +191,14 @@
                 <give_info>mil_dolg_mission_complete</give_info>
                 <next>30020</next>
             </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="mil_zoneguard_dialog">
-        <phrase_list>
-            <phrase id="10">
-                <text>mil_zoneguard_dialog_10</text>
-                <next>100</next>
-            </phrase>
-            <phrase id="100">
-                <text>mil_zoneguard_dialog_100</text>
-                <next>1000</next>
-            </phrase>
-            <phrase id="1000">
-                <text>mil_zoneguard_dialog_1000</text>
-                <next>10000</next>
-            </phrase>
-            <phrase id="10000">
-                <text>mil_zoneguard_dialog_10000</text>
-                <next>100000</next>
-            </phrase>
-            <phrase id="100000">
-                <text>mil_zoneguard_dialog_100000</text>
-                <next>1000000</next>
-            </phrase>
-            <phrase id="1000000">
-                <text>mil_zoneguard_dialog_1000000</text>
-                <next>10000000</next>
-            </phrase>
-            <phrase id="10000000">
-                <text>mil_zoneguard_dialog_10000000</text>
-            </phrase>
-            <phrase id="20">
-                <text>mil_zoneguard_dialog_20</text>
-            </phrase>
-            <phrase id="30">
-                <text>mil_zoneguard_dialog_30</text>
-            </phrase>
-            <phrase id="1">
-                <text>mil_zoneguard_dialog_1</text>
-                <dont_has_info>mil_max_talk</dont_has_info>
-                <dont_has_info>mil_zoneguard_first</dont_has_info>
-                <give_info>mil_max_talk</give_info>
-                <next>10</next>
-            </phrase>
-            <phrase id="2">
-                <text>mil_zoneguard_dialog_2</text>
-                <has_info>mil_max_talk</has_info>
-                <next>20</next>
-            </phrase>
             <phrase id="0">
-                <text>mil_zoneguard_dialog_0</text>
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-            </phrase>
-            <phrase id="3">
-                <text>mil_zoneguard_dialog_3</text>
-                <has_info>mil_zoneguard_first</has_info>
-                <next>30</next>
+                <text></text>
+                <next>1000</next>
+                <next>2000</next>
+                <next>3000</next>
+                <next>4000</next>
+                <next>5000</next>
+                <next>6000</next>
             </phrase>
         </phrase_list>
     </dialog>
@@ -300,46 +240,14 @@
                 <text>mil_max_dialog_10</text>
                 <next>100</next>
             </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-            </phrase>
             <phrase id="105">
                 <text>mil_max_dialog_105</text>
                 <action>dialogs_military.transfer_flash</action>
                 <has_info>mil_max_flash_get</has_info>
                 <next>106</next>
             </phrase>
-            <phrase id="32">
-                <text>mil_max_dialog_32</text>
-                <next>33</next>
-            </phrase>
-            <phrase id="33">
-                <text>mil_max_dialog_33</text>
-            </phrase>
-            <phrase id="31">
-                <text>mil_max_dialog_31</text>
-                <next>32</next>
-            </phrase>
             <phrase id="106">
                 <text>mil_max_dialog_106</text>
-            </phrase>
-            <phrase id="2">
-                <text>mil_max_dialog_2</text>
-                <has_info>mil_max_talk</has_info>
-                <next>21</next>
-            </phrase>
-            <phrase id="3">
-                <text>mil_max_dialog_3</text>
-                <action>dialogs_military.transfer_flash</action>
-                <dont_has_info>mil_max_job_complete</dont_has_info>
-                <give_info>mil_max_job_complete</give_info>
-                <has_info>mil_max_talk</has_info>
-                <has_info>mil_max_job</has_info>
-                <has_info>mil_max_flash_get</has_info>
-                <next>31</next>
             </phrase>
             <phrase id="1">
                 <text>mil_max_dialog_1</text>
@@ -406,6 +314,116 @@
             <phrase id="1000005">
                 <text>mil_max_dialog_1000005</text>
                 <next>1000006</next>
+            </phrase>
+            <phrase id="2">
+                <text>mil_max_dialog_2</text>
+                <has_info>mil_max_talk</has_info>
+                <next>21</next>
+            </phrase>
+            <phrase id="3">
+                <text>mil_max_dialog_3</text>
+                <action>dialogs_military.transfer_flash</action>
+                <dont_has_info>mil_max_job_complete</dont_has_info>
+                <give_info>mil_max_job_complete</give_info>
+                <has_info>mil_max_talk</has_info>
+                <has_info>mil_max_job</has_info>
+                <has_info>mil_max_flash_get</has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="31">
+                <text>mil_max_dialog_31</text>
+                <next>32</next>
+            </phrase>
+            <phrase id="32">
+                <text>mil_max_dialog_32</text>
+                <next>33</next>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+            </phrase>
+            <phrase id="33">
+                <text>mil_max_dialog_33</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="mil_zoneguard_dialog">
+        <phrase_list>
+            <phrase id="10">
+                <text>mil_zoneguard_dialog_10</text>
+                <next>100</next>
+            </phrase>
+            <phrase id="100">
+                <text>mil_zoneguard_dialog_100</text>
+                <next>1000</next>
+            </phrase>
+            <phrase id="1000">
+                <text>mil_zoneguard_dialog_1000</text>
+                <next>10000</next>
+            </phrase>
+            <phrase id="10000">
+                <text>mil_zoneguard_dialog_10000</text>
+                <next>100000</next>
+            </phrase>
+            <phrase id="100000">
+                <text>mil_zoneguard_dialog_100000</text>
+                <next>1000000</next>
+            </phrase>
+            <phrase id="1000000">
+                <text>mil_zoneguard_dialog_1000000</text>
+                <next>10000000</next>
+            </phrase>
+            <phrase id="10000000">
+                <text>mil_zoneguard_dialog_10000000</text>
+            </phrase>
+            <phrase id="20">
+                <text>mil_zoneguard_dialog_20</text>
+            </phrase>
+            <phrase id="30">
+                <text>mil_zoneguard_dialog_30</text>
+            </phrase>
+            <phrase id="1">
+                <text>mil_zoneguard_dialog_1</text>
+                <dont_has_info>mil_max_talk</dont_has_info>
+                <dont_has_info>mil_zoneguard_first</dont_has_info>
+                <give_info>mil_max_talk</give_info>
+                <give_info>mil_zoneguard_first</give_info>
+                <next>10</next>
+            </phrase>
+            <phrase id="3">
+                <text>mil_zoneguard_dialog_3</text>
+                <dont_has_info>mil_max_talk</dont_has_info>
+                <has_info>mil_zoneguard_first</has_info>
+                <next>30</next>
+            </phrase>
+            <phrase id="2">
+                <text>mil_zoneguard_dialog_2</text>
+                <dont_has_info>mil_zoneguard_first</dont_has_info>
+                <has_info>mil_max_talk</has_info>
+                <next>20</next>
+            </phrase>
+            <phrase id="0">
+                <text>mil_zoneguard_dialog_0</text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="mil_lukash_dialog">
+        <phrase_list>
+            <phrase id="0">
+                <text>mil_lukash_dialog_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>mil_lukash_dialog_1</text>
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text>mil_lukash_dialog_2</text>
             </phrase>
         </phrase_list>
     </dialog>

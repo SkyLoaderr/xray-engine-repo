@@ -963,6 +963,16 @@
 				<File
 					RelativePath=".\Config\scripts\val_sos_bs.ltx">
 				</File>
+				<Filter
+					Name="Military"
+					Filter="">
+					<File
+						RelativePath=".\config\scripts\mil\mil_dolg_kamper2.ltx">
+					</File>
+					<File
+						RelativePath=".\config\scripts\mil\mil_dolg_zoneguard.ltx">
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
