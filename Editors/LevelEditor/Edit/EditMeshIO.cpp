@@ -134,9 +134,12 @@ bool CEditableMesh::LoadMesh(IReader& F){
     }
 	F.r					(&*m_Faces.begin(), m_Faces.size()*sizeof(st_Face));
 
-	m_SGs.resize		(m_Faces.size(),-1);
-	if (F.find_chunk(EMESH_CHUNK_SG))
+	m_SGs.resize		(m_Faces.size(),m_Flags.is(flSGMask)?0:-1);
+	int sg_chunk_size	= F.find_chunk(EMESH_CHUNK_SG);
+	if (sg_chunk_size){
+		VERIFY			(m_SGs.size()*sizeof(u32)==sg_chunk_size);
 		F.r				(&*m_SGs.begin(), m_SGs.size()*sizeof(u32));
+	}
 
     R_ASSERT(F.find_chunk(EMESH_CHUNK_VMREFS));
     m_VMRefs.resize		(F.r_u32());
