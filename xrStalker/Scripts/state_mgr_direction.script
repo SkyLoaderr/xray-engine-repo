@@ -3,26 +3,24 @@
 class "eva_state_mgr_direction" (property_evaluator)
 function eva_state_mgr_direction:__init(name, st) super (nil, name)
 	self.st = st
-	self.target_position = nil
 end
 function eva_state_mgr_direction:evaluate()
-	self.target_position = nil
+	self.st.target_position = nil
+
+	if self.st.look_position ~= nil then
+		self.st.target_position = self.st.look_position
+		--printf("changed for position")
+	end
 
 	if self.st.look_object ~= nil and
 	   self.object:see(self.st.look_object) == true
 	then
-		self.target_position = self.st.look_object:position()
+		self.st.target_position = self.st.look_object:position()
 		--printf("changed for object")
 	end
 		
-	if self.target_position == nil and
-	   self.st.look_position ~= nil
-	then
-		self.target_position = self.st.look_position
-		--printf("changed for position")
-	end
 	
-	if self.target_position == nil then
+	if self.st.target_position == nil then
 		-- если текущая позиция нулевая
 		if self.st.current_direction == nil then
 			return true
@@ -31,12 +29,11 @@ function eva_state_mgr_direction:evaluate()
 		end	
 	else	
 		-- если текущая позиция ненулевая
-		local dir = vector():sub(self.target_position, self.object:position())
+		local dir = vector():sub(self.st.target_position, self.object:position())
 		--printf("head: %f", yaw_degree(dir, self.object:head_orientation()))
 		--printf("body: %f", yaw_degree(dir, self.object:direction()))
 
 		if yaw_degree(dir, self.object:head_orientation()) > 5 then
-			self.st.planner:action(self.st.operators["direction_turn"]).target_position = self.target_position
 			return false
 		else
 			self:callback()
@@ -61,7 +58,7 @@ function eva_state_mgr_direction_search:__init(name, st) super (nil, name)
 	self.st = st
 end
 function eva_state_mgr_direction_search:evaluate()
-	return self.st.current_direction ~= nil
+	return self.st.target_position == nil and self.st.current_direction ~= nil
 end
 
 --' Поворачиваемся ли мы сейчас
@@ -80,19 +77,17 @@ end
 class "act_state_mgr_direction_turn" (action_base)
 function act_state_mgr_direction_turn:__init(name, st) super (nil, name)
 	self.st = st
-	self.target_position = nil
 end
 function act_state_mgr_direction_turn:initialize()
 	action_base.initialize(self)
-	--self.object:set_sight(look.direction, vector():sub(self.target_position, self.object:position()), true)
-	self.object:set_sight(look.point, self.target_position, true)	
+	self.object:set_sight(look.direction, vector():sub(self.st.target_position, self.object:position()), true)	
+	self.st.current_direction = self.st.target_position	
 end
 function act_state_mgr_direction_turn:execute()
 	action_base.execute(self)
-	self.object:set_sight(look.direction, vector():sub(self.target_position, self.object:position()), true)
+	self.object:set_sight(look.direction, vector():sub(self.st.target_position, self.object:position()), true)
 end
 function act_state_mgr_direction_turn:finalize()
-	self.st.current_direction = self.target_position
 	action_base.finalize(self)
 end
 
@@ -103,7 +98,7 @@ function act_state_mgr_direction_search:__init(name, st) super (nil, name)
 end
 function act_state_mgr_direction_search:initialize()
 	action_base.initialize(self)
-	self.object:set_sight(look.danger, nil, 0)
+	self.object:set_sight(look.path_dir, nil, 0)
 	self.st.current_direction = nil
 end
 function act_state_mgr_direction_search:execute()

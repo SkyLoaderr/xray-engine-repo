@@ -282,6 +282,14 @@ states = {
 				animation = nil
 			},
 
+	barman_talk = {	weapon = "none",
+				movement = move.stand,
+				mental = anim.danger,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = nil
+			},
+
 	barman_wait = {	weapon = "none",
 				movement = move.stand,
 				mental = anim.free,
