@@ -67,6 +67,7 @@ private:
 	EEnvironment		eEnvironment;
 	Fbox				aabb;
 	Fbox				boxes	[4];
+	DWORD				m_dwCurBox;
 	//Fvector				vFootCenter;			// задаются относительно Position()
 	//Fvector				vFootExt;				//
 
@@ -142,6 +143,8 @@ public:
 	void				CalcMaximumVelocity	(float& /**dest/**/, float /**accel/**/, float /**friction/**/){};
 
 	void				ActivateBox		(DWORD id)	{ 
+														if (m_dwCurBox == id) return;
+														m_dwCurBox = id;
 														aabb.set(boxes[id]);
 														if(!m_character) return;
 													    if(!m_character->b_exist) return;

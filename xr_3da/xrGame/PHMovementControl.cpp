@@ -50,6 +50,8 @@ CPHMovementControl::CPHMovementControl(void)
 	fContactSpeed		= 0.f;
 
 	m_character=NULL;
+
+	m_dwCurBox = 0xffffffff;
 }
 
 CPHMovementControl::~CPHMovementControl(void)

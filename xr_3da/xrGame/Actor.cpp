@@ -290,8 +290,6 @@ void CActor::Load	(LPCSTR section )
 	::Sound->create		(sndDie[2],			TRUE,	strconcat(buf,*cName(),"\\die2"),SOUND_TYPE_MONSTER_DYING);
 	::Sound->create		(sndDie[3],			TRUE,	strconcat(buf,*cName(),"\\die3"),SOUND_TYPE_MONSTER_DYING);
 
-//	m_PhysicMovementControl->ActivateBox	(0);
-	//m_PhysicMovementControl->ActivateBox	(0);
 	cam_Set					(eacFirstEye);
 
 	// motions
@@ -693,6 +691,11 @@ void CActor::shedule_Update	(u32 DT)
 		if (NET.size())
 		{
 //			NET_Last = NET.back();
+			if (NET_Last.mstate & mcCrouch)
+				m_PhysicMovementControl->ActivateBox(1);
+			else 
+				m_PhysicMovementControl->ActivateBox(0);
+
 			g_sv_Orientate				(NET_Last.mstate,dt			);
 			g_Orientate					(NET_Last.mstate,dt			);
 			g_Physics					(NET_Last.p_accel,Jump,dt	);
