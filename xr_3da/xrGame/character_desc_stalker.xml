@@ -600,6 +600,7 @@
 		<actor_dialog>rad_find_stalkers_dialog_1</actor_dialog>
 		<actor_dialog>rad_find_stalkers_dialog_2</actor_dialog>
 		<actor_dialog>rad_find_stalkers_dialog_3</actor_dialog>
+		<actor_dialog>rad_find_stalkers_dialog_4</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_veteran_default2" team_default = "1">
@@ -632,6 +633,7 @@
 		<actor_dialog>rad_find_stalkers_dialog_1</actor_dialog>
 		<actor_dialog>rad_find_stalkers_dialog_2</actor_dialog>
 		<actor_dialog>rad_find_stalkers_dialog_3</actor_dialog>
+		<actor_dialog>rad_find_stalkers_dialog_4</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_veteran_default3" team_default = "1">
@@ -664,6 +666,7 @@
 		<actor_dialog>rad_find_stalkers_dialog_1</actor_dialog>
 		<actor_dialog>rad_find_stalkers_dialog_2</actor_dialog>
 		<actor_dialog>rad_find_stalkers_dialog_3</actor_dialog>
+		<actor_dialog>rad_find_stalkers_dialog_4</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_veteran_default4" team_default = "1">
@@ -696,6 +699,7 @@
 		<actor_dialog>rad_find_stalkers_dialog_1</actor_dialog>
 		<actor_dialog>rad_find_stalkers_dialog_2</actor_dialog>
 		<actor_dialog>rad_find_stalkers_dialog_3</actor_dialog>
+		<actor_dialog>rad_find_stalkers_dialog_4</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_veteran_default5" team_default = "1">
@@ -728,6 +732,7 @@
 		<actor_dialog>rad_find_stalkers_dialog_1</actor_dialog>
 		<actor_dialog>rad_find_stalkers_dialog_2</actor_dialog>
 		<actor_dialog>rad_find_stalkers_dialog_3</actor_dialog>
+		<actor_dialog>rad_find_stalkers_dialog_4</actor_dialog>
 	</specific_character>
 
 <!---------------------------STALKER MASTER----------------------->
