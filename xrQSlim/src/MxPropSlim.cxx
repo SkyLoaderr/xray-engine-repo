@@ -424,9 +424,10 @@ void MxPropSlim::compute_target_placement(edge_info *info)
 		pack_to_vector(i, vi);
 		pack_to_vector(j, vj);
 
-		double ei=Q(vi), e		if( ei<ej )	{ e_min = ei; best = vi; }
-		else		{ e_min = ej; best = vj; }
-;}
+		double ei=Q(vi), ej=Q(vj);
+
+		if( ei<ej )	{ e_min = ei; best = vi; }
+		else		{ e_min = ej; best = vj; swap(info->v1,info->v2);}
 
 		if( placement_policy>=MX_PLACE_ENDORMID ){
 			MxVector mid(dim());
@@ -463,7 +464,8 @@ bool MxPropSlim::decimate(unsigned int target, float max_error, void* cb_params)
 
 		if( m->vertex_is_valid(v1) && m->vertex_is_valid(v2) ){
 			m->compute_contraction			(v1, v2, &conx);
-et[0] - m->vertex(v1)[0]);
+
+			conx.dv1[0] = float(info->target[0] - m->vertex(v1)[0]);
 			conx.dv1[1] = float(info->target[1] - m->vertex(v1)[1]);
 			conx.dv1[2] = float(info->target[2] - m->vertex(v1)[2]);
 			conx.dv2[0] = float(info->target[0] - m->vertex(v2)[0]);

@@ -30,7 +30,8 @@ public:
     MxPairContraction& operator=(const MxPairContraction& c);
 
     MxVertexID v1, v2;
-    float dv1[3], dv2[3];  // dv2 is not really necessary
+    MxVertexID v_new;		//.
+    float dv1[3], dv2[3];	// dv2 is not really necessary
 
     unsigned int delta_pivot;
     MxFaceList delta_faces;

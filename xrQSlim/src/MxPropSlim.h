@@ -31,10 +31,12 @@ public:
 	class edge_info : public MxHeapable
 	{
 	public:
-		MxVertexID arget;
+		MxVertexID v1, v2;
+		MxVector target;
 
-		edge_info(		edge_info(unsigned int D) : target(D) { }
-ge_info*, 6> edge_list;
+		edge_info(unsigned int D) : target(D) { }
+	};
+	typedef MxSizedDynBlock<edge_info*, 6> edge_list;
 	MxBlock<edge_list> edge_links;	// 1 per vertex
 	MxBlock<MxQuadric*> __quadrics;	// 1 per vertex
 
@@ -91,4 +93,5 @@ public:
 	const MxQuadric&	quadric					(unsigned int i) const { return *(__quadrics(i)); }
 };
 
-// MXPROPSLIM_INCLUD
+// MXPROPSLIM_INCLUDED
+#endif
