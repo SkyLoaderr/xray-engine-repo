@@ -224,7 +224,6 @@ typedef struct tagSNode {
 	float		h;
 	tagSNode	*tpForward;
 	tagSNode	*tpBack;
-	tagSNode	**tpIndex;
 } SNode;
 
 typedef struct tagSIndexNode {
@@ -276,10 +275,6 @@ public:
 				SNode *tpTemp = m_tppHeap[dwIndex];
 				m_tppHeap[dwIndex] = m_tppHeap[dwSmallest];
 				m_tppHeap[dwSmallest] = tpTemp;
-				
-				m_tppHeap[dwIndex]->tpIndex = m_tppHeap + dwIndex;
-				m_tppHeap[dwSmallest]->tpIndex = m_tppHeap + dwSmallest;
-				
 				dwIndex = dwSmallest;
 			}
 			else 
@@ -300,13 +295,9 @@ public:
 		float	fKey = tpNode->f;
 		while ((dwIndex > 1) && (m_tppHeap[dwIndex >> 1]->f > fKey)) {
 			m_tppHeap[dwIndex] = m_tppHeap[dwIndex >> 1];
-			
-			m_tppHeap[dwIndex]->tpIndex = m_tppHeap + dwIndex;
-			
 			dwIndex >>= 1;
 		}
 		m_tppHeap[dwIndex] = tpNode;
-		m_tppHeap[dwIndex]->tpIndex = m_tppHeap + dwIndex;
 	}
 	
 	IC void vfInsert(SNode *tpNode)
@@ -316,9 +307,8 @@ public:
 	
 	IC void vfDecreaseValue(SNode *tpNode)
 	{
-		//for (SNode **tpIndex = m_tppHeap + 1; *tpIndex != tpNode; tpIndex++);
-		//vfFloat(tpNode,tpIndex - m_tppHeap);
-		vfFloat(tpNode,tpNode->tpIndex - m_tppHeap);
+		for (SNode **tpIndex = m_tppHeap + 1; *tpIndex != tpNode; tpIndex++);
+		vfFloat(tpNode,tpIndex - m_tppHeap);
 	}
 	
 	void vfFindOptimalPath(
@@ -356,7 +346,6 @@ public:
 		tpTemp->ucOpenCloseMask = 1;
 		tpTemp->f = tpTemp->g + tpTemp->h;
 		m_tppHeap[m_dwHeapSize = 1] = tpTemp;
-		tpTemp->tpIndex = m_tppHeap + 1;
 		
 		//!!!
 		while (m_dwHeapSize) {
