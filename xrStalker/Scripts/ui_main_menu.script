@@ -76,18 +76,18 @@ function main_menu:InitControls()
 			  self.screen.height)
 	-- AVI
 
-	self.avi = CUIStatic()
-	self.avi:SetAutoDelete(true)
-	self.avi:SetWindowName("avi")
-	self.avi:Init("ui\\ui_vid_back_02", avi_rect.x, avi_rect.y, avi_rect.width, avi_rect.height)
-	self.avi:SetStretchTexture(true)
-	self:AttachChild(self.avi)
+--	self.avi = CUIStatic()
+--	self.avi:SetAutoDelete(true)
+--	self.avi:SetWindowName("avi")
+--	self.avi:Init("ui\\ui_vid_back_02", avi_rect.x, avi_rect.y, avi_rect.width, avi_rect.height)
+--	self.avi:SetStretchTexture(true)
+--	self:AttachChild(self.avi)
 
 	-- BACKGROUND 
 	self.background = CUIStatic()
 	self.background:SetAutoDelete(true)
 	self.background:SetWindowName("background")
-	self.background:Init("ui\\ui_static_mm_back_01",self.screen.x, self.screen.y, self.screen.width, self.screen.height)
+	self.background:Init("ui\\ui_static_mm_back_00",self.screen.x, self.screen.y, self.screen.width, self.screen.height)
 	self:AttachChild(self.background)
 	
 	-- MAIN WINDOW
