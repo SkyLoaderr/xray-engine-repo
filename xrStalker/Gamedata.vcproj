@@ -433,6 +433,9 @@
 				RelativePath=".\w_ak74.ltx">
 			</File>
 			<File
+				RelativePath=".\w_beretta.ltx">
+			</File>
+			<File
 				RelativePath=".\w_binoc.ltx">
 			</File>
 			<File
@@ -440,6 +443,9 @@
 			</File>
 			<File
 				RelativePath=".\w_bolt.ltx">
+			</File>
+			<File
+				RelativePath=".\w_colt1911.ltx">
 			</File>
 			<File
 				RelativePath=".\w_f1.ltx">
@@ -488,6 +494,9 @@
 			</File>
 			<File
 				RelativePath=".\w_rpg7.ltx">
+			</File>
+			<File
+				RelativePath=".\w_spas12.ltx">
 			</File>
 			<File
 				RelativePath=".\w_svd.ltx">
@@ -574,6 +583,9 @@
 				</File>
 				<File
 					RelativePath=".\M_Pseudodog.ltx">
+				</File>
+				<File
+					RelativePath=".\M_Snork.ltx">
 				</File>
 				<File
 					RelativePath=".\M_Zombie.ltx">
