@@ -46,7 +46,6 @@ void xrServer::Perform_reject(xrServerEntity* what, xrServerEntity* from)
 
 	NET_Packet	P;
 	u32			time		= Device.dwTimeGlobal;
-	DWORD		MODE		= net_flags(TRUE,TRUE);
 
 	P.w_begin				(what->ID);
 	Process_event_reject	(P,0xffffffff,time,from->ID);

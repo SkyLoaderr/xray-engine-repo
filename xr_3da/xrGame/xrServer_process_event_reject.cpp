@@ -2,6 +2,8 @@
 
 void	xrServer::Process_event_reject	(NET_Packet& P, DPNID sender, u32 time, u16 ID)
 {
+	DWORD		MODE		= net_flags(TRUE,TRUE);
+
 	// Parse message
 	u16					id_parent=ID,id_entity;
 	P.r_u16				(id_entity);

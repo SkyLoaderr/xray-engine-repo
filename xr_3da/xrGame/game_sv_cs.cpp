@@ -118,11 +118,16 @@ void	game_sv_CS::OnPlayerKillPlayer	(u32 id_killer, u32 id_killed)
 	}
 
 	// Drop everything
+	xrServer*	S					=	Level().Server;
 	vector<u16>*	C				=	get_children(id_killed);
 	if (0==C)						return;
 	for (u32 it=0; it<C->size(); it++)
 	{
-		u16		id						= (*C)[it];
+		u16		eid						= (*C)[it];
+
+		xrServerEntity*		from		= S->ID_to_entity(get_id_2_eid(id_killed));
+		xrServerEntity*		what		= S->ID_to_entity(eid);
+		S->Perform_reject				(what,from);
 	}
 }
 
