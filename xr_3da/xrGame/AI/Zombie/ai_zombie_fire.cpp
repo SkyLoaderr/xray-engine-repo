@@ -1,69 +1,58 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_soldier_misc.cpp
+//	Module 		: ai_zombie_misc.cpp
 //	Created 	: 23.07.2002
 //  Modified 	: 23.07.2002
 //	Author		: Dmitriy Iassenev
-//	Description : Fire and enemy parameters for monster "Soldier"
+//	Description : Fire and enemy parameters for monster "Zombie"
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "ai_soldier.h"
+#include "ai_zombie.h"
 #include "..\\..\\xr_weapon_list.h"
 
-bool CAI_Soldier::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint) 
+void CAI_Zombie::Exec_Action(float dt)
 {
-	Fvector tMemberDirection;
-	tMemberDirection.sub(tMyPoint,tMemberPoint);
-	vfNormalizeSafe(tMemberDirection);
-	float fAlpha = acosf(tFireVector.dotproduct(tMemberDirection));
-	//return(false);
-	return(fAlpha < FIRE_SAFETY_ANGLE);
-}
-
-bool CAI_Soldier::bfCheckIfCanKillEnemy() 
-{
-	Fvector tMyLook;
-	tMyLook.setHP	(r_torso_current.yaw + PI/6,r_torso_current.pitch);
-	if (Enemy.Enemy) {
-		Fvector tFireVector, tMyPosition = Position(), tEnemyPosition = Enemy.Enemy->Position();
-		tFireVector.sub(tMyPosition,tEnemyPosition);
-		vfNormalizeSafe(tFireVector);
-		float fAlpha = acosf(tFireVector.dotproduct(tMyLook));
-		return(true);
-		//return(fAlpha < FIRE_ANGLE);
-	}
-	else
-		return(true);
-}
-
-bool CAI_Soldier::bfCheckIfCanKillMember()
-{
-	Fvector tFireVector, tMyPosition = Position();
-	tFireVector.setHP	(r_torso_current.yaw,r_torso_current.pitch);
-	
-	bool bCanKillMember = false;
-	
-	for (int i=0, iTeam = g_Team(), iSquad = g_Squad(), iGroup = g_Group(); i<tpaVisibleObjects.size(); i++) {
-		CCustomMonster* CustomMonster = dynamic_cast<CCustomMonster*>(tpaVisibleObjects[i]);
-		if ((CustomMonster) && (CustomMonster->g_Team() == iTeam) && (CustomMonster->g_Squad() == iSquad) && (CustomMonster->g_Group() == iGroup))
-			if ((CustomMonster->g_Health() > 0) && (bfCheckForMember(tFireVector,tMyPosition,CustomMonster->Position()))) {
-				bCanKillMember = true;
-				break;
+	AI::C_Command* C	= &q_action;
+	AI::AIC_Action* L	= (AI::AIC_Action*)C;
+	switch (L->Command) {
+		case AI::AIC_Action::AttackBegin: {
+			
+			DWORD dwTime = Level().timeServer();
+			
+			if (!m_bActionStarted) {
+				m_dwStartFireAmmo = dwTime;
+				m_bActionStarted = true;
 			}
+				
+			if (dwTime - m_dwStartFireAmmo > m_dwHitInterval) {
+				
+				m_dwStartFireAmmo = dwTime;
+				
+				Fvector tDirection;
+				tDirection.sub(tSavedEnemy->Position(),this->Position());
+				tDirection.normalize();
+				
+				if ((this->Local()) && (tSavedEnemy) && (tSavedEnemy->CLS_ID == CLSID_ENTITY))
+					if (tSavedEnemy->g_Health() > 0)
+						tSavedEnemy->Hit(m_fHitPower,tDirection,this);
+					else
+						m_bActionStarted = false;
+			}
+
+			break;
+		}
+		case AI::AIC_Action::AttackEnd: {
+			m_bActionStarted = false;
+			break;
+		}
+		default:
+			break;
 	}
-	return(bCanKillMember);
+	if (Device.dwTimeGlobal>=L->o_timeout)	
+		L->setTimeout();
 }
 
-void CAI_Soldier::g_fireParams(Fvector &fire_pos, Fvector &fire_dir)
-{
-	//Weapons->GetFireParams(fire_pos, fire_dir);
-	if (Weapons->ActiveWeapon()) {
-		fire_pos.set	(Weapons->ActiveWeapon()->Position());
-		fire_dir.set	(eye_matrix.k);
-	}
-}
-
-float CAI_Soldier::EnemyHeuristics(CEntity* E)
+float CAI_Zombie::EnemyHeuristics(CEntity* E)
 {
 	if (E->g_Team()  == g_Team())	
 		return flt_max;		// don't attack our team
@@ -80,8 +69,8 @@ float CAI_Soldier::EnemyHeuristics(CEntity* E)
 	return  f1*f2*f3;
 }
 
-// when someone hit soldier
-void CAI_Soldier::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
+// when someone hit zombie
+void CAI_Zombie::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 {
 	// Save event
 	Fvector D;
@@ -106,14 +95,14 @@ void CAI_Soldier::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 	
 	if (iHealth > 0) {
 		if (::Random.randI(0,2))
-			PKinematics(pVisual)->PlayFX(tSoldierAnimations.tNormal.tTorso.tpDamageLeft);
+			PKinematics(pVisual)->PlayFX(tZombieAnimations.tNormal.tTorso.tpDamageLeft);
 		else
-			PKinematics(pVisual)->PlayFX(tSoldierAnimations.tNormal.tTorso.tpDamageRight);
+			PKinematics(pVisual)->PlayFX(tZombieAnimations.tNormal.tTorso.tpDamageRight);
 	}
 }
 
-// when someone hit soldier
-void CAI_Soldier::SenseSignal(int amount, Fvector& vLocalDir, CEntity* who)
+// when someone hit zombie
+void CAI_Zombie::SenseSignal(int amount, Fvector& vLocalDir, CEntity* who)
 {
 	// Save event
 	Fvector D;
@@ -122,7 +111,7 @@ void CAI_Soldier::SenseSignal(int amount, Fvector& vLocalDir, CEntity* who)
 	tSenseDir.set(D);
 }
 
-void CAI_Soldier::SelectEnemy(SEnemySelected& S)
+void CAI_Zombie::SelectEnemy(SEnemySelected& S)
 {
 	// Initiate process
 	objVisible&	Known	= Level().Teams[g_Team()].KnownEnemys;

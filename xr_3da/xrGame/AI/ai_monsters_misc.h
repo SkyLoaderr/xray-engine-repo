@@ -56,10 +56,10 @@
 			GO_TO_NEW_STATE(b)
 	/**
 	#define CHECK_FOR_DEATH \
-		CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+		CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiMonsterDie)
 		/**
 		if (g_Health() <= 0) {\
-			eCurrentState = aiSoldierDie;\
+			eCurrentState = aiMonsterDie;\
 			return;\
 		}
 		/**/
@@ -69,13 +69,13 @@
 		WRITE_TO_LOG(S);\
 		CHECK_FOR_DEATH\
 		SelectEnemy(Enemy);\
-		CHECK_IF_SWITCH_TO_NEW_STATE(Enemy.Enemy,aiSoldierAttackFire)\
+		CHECK_IF_SWITCH_TO_NEW_STATE(Enemy.Enemy,aiMonsterAttackFire)\
 		DWORD dwCurTime = Level().timeServer();\
-		CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiSoldierPatrolHurt)\
-		CHECK_IF_SWITCH_TO_NEW_STATE(dwCurTime - dwSenseTime < SENSE_JUMP_TIME,aiSoldierSenseSomething)\
+		CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiMonsterPatrolHurt)\
+		CHECK_IF_SWITCH_TO_NEW_STATE(dwCurTime - dwSenseTime < SENSE_JUMP_TIME,aiMonsterSenseSomething)\
 		INIT_SQUAD_AND_LEADER;\
 		CGroup &Group = Squad.Groups[g_Group()];\
-		CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime),aiSoldierPatrolUnderFire)
+		CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime),aiMonsterPatrolUnderFire)
 	/**/
 
 	/************************************************************************/
@@ -100,21 +100,6 @@
 			SetDirectionLook();\
 		\
 		vfSetFire(a,Group);\
-		\
-		vfSetMovementType(b,c);
-
-	#define SET_LOOK_MOVEMENT(b,c)\
-		if (!(Group.m_bLessCoverLook)) {\
-			Group.m_bLessCoverLook = m_bLessCoverLook = true;\
-			Group.m_dwLastViewChange = dwCurTime;\
-		}\
-		else\
-			if ((m_bLessCoverLook) && (dwCurTime - Group.m_dwLastViewChange > 5000))\
-				Group.m_bLessCoverLook = m_bLessCoverLook = false;\
-		if (m_bLessCoverLook)\
-			SetLessCoverLook(AI_Node);\
-		else\
-			SetDirectionLook();\
 		\
 		vfSetMovementType(b,c);
 
@@ -143,7 +128,7 @@
 				if (!m_bMicroAction##A) {\
 					m_bMicroAction##A = true;\
 					tStateStack.push(eCurrentState);\
-					eCurrentState = aiSoldierTestMicroAction##A;\
+					eCurrentState = aiMonsterTestMicroAction##A;\
 					return;\
 				}\
 			}\
@@ -151,7 +136,7 @@
 				m_bMicroAction##A = false;
 				
 		#define CASE_MICRO_ACTION(A) \
-			case aiSoldierTestMicroAction##A : {\
+			case aiMonsterTestMicroAction##A : {\
 				TestMicroAction##A();\
 				break;\
 			}
@@ -165,7 +150,7 @@
 				if (!m_bMacroAction##A) {\
 					m_bMacroAction##A = true;\
 					tStateStack.push(eCurrentState);\
-					eCurrentState = aiSoldierTestMacroAction##A;\
+					eCurrentState = aiMonsterTestMacroAction##A;\
 					return;\
 				}\
 			}\
@@ -173,7 +158,7 @@
 				m_bMacroAction##A = false;
 				
 		#define CASE_MACRO_ACTION(A) \
-			case aiSoldierTestMacroAction##A : {\
+			case aiMonsterTestMacroAction##A : {\
 				TestMacroAction##A();\
 				break;\
 			}

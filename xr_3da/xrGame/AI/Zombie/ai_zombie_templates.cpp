@@ -1,18 +1,18 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_soldier_templates.cpp
+//	Module 		: ai_zombie_templates.cpp
 //	Created 	: 23.07.2002
 //  Modified 	: 23.07.2002
 //	Author		: Dmitriy Iassenev
-//	Description : Templates for monster "Soldier"
+//	Description : Templates for monster "Zombie"
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "ai_soldier.h"
-#include "ai_soldier_selectors.h"
+#include "ai_zombie.h"
+#include "ai_zombie_selectors.h"
 #include "..\\..\\..\\xr_trims.h"
 #include "..\\..\\xr_weapon_list.h"
 
-bool CAI_Soldier::bfCheckPath(AI::Path &Path) {
+bool CAI_Zombie::bfCheckPath(AI::Path &Path) {
 	const vector<BYTE> &q_mark = Level().AI.tpfGetNodeMarks();
 	for (int i=1; i<Path.Nodes.size(); i++) 
 		if (q_mark[Path.Nodes[i]])
@@ -20,7 +20,7 @@ bool CAI_Soldier::bfCheckPath(AI::Path &Path) {
 		return(true);
 }
 
-void CAI_Soldier::vfBuildPathToDestinationPoint(CSoldierSelectorAttack *S)
+void CAI_Zombie::vfBuildPathToDestinationPoint(CZombieSelectorAttack *S)
 {
 	// building a path from and to
 	if (S)
@@ -40,7 +40,7 @@ void CAI_Soldier::vfBuildPathToDestinationPoint(CSoldierSelectorAttack *S)
 	}
 }
 
-void CAI_Soldier::vfCheckForSavedEnemy()
+void CAI_Zombie::vfCheckForSavedEnemy()
 {
 	if (!tSavedEnemy) {
 		tSavedEnemy = Enemy.Enemy;
@@ -56,7 +56,7 @@ void CAI_Soldier::vfCheckForSavedEnemy()
 	}
 }
 
-void CAI_Soldier::vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader)
+void CAI_Zombie::vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader)
 {
 	// checking if leader is dead then make myself a leader
 	if (Leader->g_Health() <= 0)
@@ -108,7 +108,7 @@ void CAI_Soldier::vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Le
 	//	S.taMembers.push_back(S.m_tLeader);
 }
 
-void CAI_Soldier::vfSaveEnemy()
+void CAI_Zombie::vfSaveEnemy()
 {
 	tSavedEnemy = Enemy.Enemy;
 	tSavedEnemyPosition = Enemy.Enemy->Position();
@@ -116,7 +116,7 @@ void CAI_Soldier::vfSaveEnemy()
 	dwSavedEnemyNodeID = Enemy.Enemy->AI_NodeID;
 }
 
-void CAI_Soldier::vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader)
+void CAI_Zombie::vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader)
 {
 	if ((!m_dwLastRangeSearch) || ((S.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SEARCH_TIME_INTERVAL) && (::Random.randF(0,1) < float(S.m_dwCurTime - m_dwLastRangeSearch)/MAX_TIME_RANGE_SEARCH))) {
 		
@@ -147,7 +147,7 @@ void CAI_Soldier::vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, C
 	}
 }
 
-void CAI_Soldier::vfSearchForBetterPositionWTime(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader)
+void CAI_Zombie::vfSearchForBetterPositionWTime(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader)
 {
 	DWORD dwTimeDifference = S.m_dwCurTime - m_dwLastSuccessfullSearch;
 	m_dwLastRangeSearch = S.m_dwCurTime;
@@ -172,68 +172,21 @@ void CAI_Soldier::vfSearchForBetterPositionWTime(CAISelectorBase &S, CSquad &Squ
 		m_dwLastSuccessfullSearch = S.m_dwCurTime;
 }
 
-void CAI_Soldier::vfSetFire(bool bFire, CGroup &Group)
+void CAI_Zombie::vfSetFire(bool bFire, CGroup &Group)
 {
-	bool bSafeFire = m_bFiring;
-	
-	if (bFire)
-		if (m_bFiring)
-			if (m_dwStartFireAmmo - Weapons->ActiveWeapon()->GetAmmoElapsed() > ::Random.randI(m_dwFireRandomMin,m_dwFireRandomMax + 1)) {
-				q_action.setup(AI::AIC_Action::FireEnd);
-				m_bFiring = false;
-				m_dwNoFireTime = Level().timeServer();
-			}
-			else {
-				if (bfCheckIfCanKillEnemy())
-					if (!bfCheckIfCanKillMember()) {
-						q_action.setup(AI::AIC_Action::FireBegin);
-						m_bFiring = true;
-					}
-					else {
-						q_action.setup(AI::AIC_Action::FireEnd);
-						m_bFiring = false;
-						m_dwNoFireTime = Level().timeServer();
-					}
-					else {
-						q_action.setup(AI::AIC_Action::FireEnd);
-						m_bFiring = false;
-						m_dwNoFireTime = Level().timeServer();
-					}
-			}
-			else {
-				if (Level().timeServer() - m_dwNoFireTime > ::Random.randI(m_dwNoFireTimeMin,m_dwNoFireTimeMax + 1))
-					if (bfCheckIfCanKillEnemy())
-						if (!bfCheckIfCanKillMember()) {
-							m_dwStartFireAmmo = Weapons->ActiveWeapon()->GetAmmoElapsed();
-							q_action.setup(AI::AIC_Action::FireBegin);
-							m_bFiring = true;
-						}
-						else {
-							q_action.setup(AI::AIC_Action::FireEnd);
-							m_bFiring = false;
-						}
-						else {
-							q_action.setup(AI::AIC_Action::FireEnd);
-							m_bFiring = false;
-						}
-						else {
-							q_action.setup(AI::AIC_Action::FireEnd);
-							m_bFiring = false;
-						}
-			}
-			else {
-				q_action.setup(AI::AIC_Action::FireEnd);
-				m_bFiring = false;
-			}
-			
-			if ((bSafeFire) && (!m_bFiring))
-				Group.m_dwFiring--;
-			else
-				if ((!bSafeFire) && (m_bFiring))
-					Group.m_dwFiring++;
+	if (bFire) {
+		if (!m_bActionStarted)
+			m_bActionStarted = true;
+		q_action.setup(AI::AIC_Action::AttackBegin);
+	}
+	else {
+		if (m_bActionStarted)
+			m_bActionStarted = false;
+		q_action.setup(AI::AIC_Action::AttackEnd);
+	}
 }
 
-void CAI_Soldier::vfSetMovementType(char cBodyState, float fSpeed)
+void CAI_Zombie::vfSetMovementType(char cBodyState, float fSpeed)
 {
 	switch (cBodyState) {
 		case BODY_STATE_STAND : {

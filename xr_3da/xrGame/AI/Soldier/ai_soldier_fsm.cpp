@@ -25,9 +25,7 @@ void CAI_Soldier::AttackFire()
 	
 	DWORD dwCurTime = Level().timeServer();
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE(
-		(dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime) && (m_cBodyState != BODY_STATE_LIE),
-		aiSoldierLyingDown)
+	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime) && (m_cBodyState != BODY_STATE_LIE),aiSoldierLyingDown)
 	
 	if (!(Enemy.Enemy)) {
 		vfSetFire(false,getGroup());
@@ -45,7 +43,7 @@ void CAI_Soldier::AttackFire()
 
 	//CHECK_IF_GO_TO_NEW_STATE((tDistance.square_magnitude() >= 25.f) && ((Group.m_dwFiring > 1) || ((Group.m_dwFiring == 1) && (!m_bFiring))),aiSoldierAttackRun)
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() == 0),aiSoldierReload)
+	CHECK_IF_SWITCH_TO_NEW_STATE((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() == 0),aiSoldierRecharge)
 
 	AI_Path.TravelPath.clear();
 	
@@ -153,7 +151,7 @@ void CAI_Soldier::FindEnemy()
 	CHECK_IF_GO_TO_PREV_STATE(Enemy.bVisible)
 	CHECK_IF_SWITCH_TO_NEW_STATE(
 		(Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() < AMMO_NEED_RELOAD),
-		aiSoldierReload)
+		aiSoldierRecharge)
 		
 	INIT_SQUAD_AND_LEADER;
 	
@@ -909,7 +907,7 @@ void CAI_Soldier::Pursuit()
 		vfSetMovementType(BODY_STATE_CROUCH,m_fMinSpeed);
 }
 
-void CAI_Soldier::Reload()
+void CAI_Soldier::Recharge()
 {
 	WRITE_TO_LOG("Recharging...");
 	
@@ -1814,8 +1812,8 @@ void CAI_Soldier::Think()
 				Pursuit();
 				break;
 			}
-			case aiSoldierReload : {
-				Reload();
+			case aiSoldierRecharge : {
+				Recharge();
 				break;
 			}
 			case aiSoldierRetreat : {
@@ -1835,7 +1833,7 @@ void CAI_Soldier::Think()
 				break;
 			}
 			#ifdef TEST_ACTIONS
-				case aiSoldierTestMicroActions : {
+				case aiMonsterTestMicroActions : {
 					TestMicroActions();
 					break;
 				}
@@ -1860,7 +1858,7 @@ void CAI_Soldier::Think()
 				CASE_MICRO_ACTION(U);
 				CASE_MICRO_ACTION(J);
 				CASE_MICRO_ACTION(M);
-				case aiSoldierTestMacroActions : {
+				case aiMonsterTestMacroActions : {
 					TestMacroActions();
 					break;
 				}

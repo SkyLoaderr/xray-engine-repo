@@ -221,9 +221,9 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 					}
 					switch (eCurrentState) {
 						#ifdef TEST_ACTIONS	
-							case aiSoldierTestMicroActionR : ;
+							case aiMonsterTestMicroActionR : ;
 						#endif
-						case aiSoldierReload : {
+						case aiSoldierRecharge : {
 							switch (m_cBodyState) {
 								case BODY_STATE_STAND : {
 									tpTorsoAnimation = tSoldierAnimations.tNormal.tTorso.tpReload;
@@ -386,7 +386,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 							tpLegsAnimation = AState->back;
 
 					switch (eCurrentState) {
-						case aiSoldierReload : {
+						case aiSoldierRecharge : {
 							switch (m_cBodyState) {
 								case BODY_STATE_STAND : {
 									tpTorsoAnimation = tSoldierAnimations.tNormal.tTorso.tpReload;

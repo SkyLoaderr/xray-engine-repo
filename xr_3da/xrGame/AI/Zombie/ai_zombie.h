@@ -1,106 +1,104 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_soldier.h
-//	Created 	: 25.04.2002
-//  Modified 	: 25.04.2002
+//	Module 		: ai_zombie.h
+//	Created 	: 07.05.2002
+//  Modified 	: 07.05.2002
 //	Author		: Dmitriy Iassenev
-//	Description : AI Behaviour for monster "Soldier"
+//	Description : AI Behaviour for monster "Zombie"
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef __XRAY_AI_SOLDIER__
-#define __XRAY_AI_SOLDIER__
+#ifndef __XRAY_AI_ZOMBIE__
+#define __XRAY_AI_ZOMBIE__
 
-#include "ai_soldier_selectors.h"
+#include "ai_zombie_selectors.h"
 #include "..\\ai_monsters_misc.h"
 #include "..\\..\\CustomMonster.h"
 #include "..\\..\\group.h"
 #include "..\\..\\..\\bodyinstance.h"
 
-class CAI_Soldier : public CCustomMonster  
+class CAI_Zombie : public CCustomMonster  
 {
 	enum ESoundCcount {
 		SND_HIT_COUNT=8,
 		SND_DIE_COUNT=4
 	};
 
-	enum ESoldierStates 	{
-		aiSoldierAttackRun = 0,
-		aiSoldierAttackFire,
-		aiSoldierDefend,
-		aiSoldierDie,
-		aiSoldierFindEnemy,
-		aiSoldierFollowLeader,
-		aiSoldierFreeHunting,
-		aiSoldierInjuring,
-		aiSoldierJumping,
+	enum EZombieStates 	{
+		aiZombieAttackFire = 0,
+		aiZombieAttackRun,
+		aiZombieDefend,
+		aiZombieDie,
+		aiZombieFindEnemy,
+		aiZombieFollowLeader,
+		aiZombieFreeHunting,
+		aiZombieInjuring,
+		aiZombieJumping,
 		
-		aiSoldierStandingUp,
-		aiSoldierSitting,
-		aiSoldierLyingDown,
+		aiZombieStandingUp,
+		aiZombieSitting,
+		aiZombieLyingDown,
 
-		aiSoldierMoreDeadThanAlive,
-		aiSoldierNoWeapon,
+		aiZombieMoreDeadThanAlive,
 		
-		aiSoldierPatrolReturnToRoute,
-		aiSoldierPatrolRoute,
-		aiSoldierFollowLeaderPatrol,
-		aiSoldierPatrolHurt,
-		aiSoldierPatrolHurtAggressiveUnderFire,
-		aiSoldierPatrolHurtNonAggressiveUnderFire,
-		aiSoldierPatrolUnderFire,
-		aiSoldierTurnOver,
+		aiZombiePatrolReturnToRoute,
+		aiZombiePatrolRoute,
+		aiZombieFollowLeaderPatrol,
+		aiZombiePatrolHurt,
+		aiZombiePatrolHurtAggressiveUnderFire,
+		aiZombiePatrolHurtNonAggressiveUnderFire,
+		aiZombiePatrolUnderFire,
+		aiZombieTurnOver,
 
-		aiSoldierPursuit,
-		aiSoldierReload,
-		aiSoldierRetreat,
-		aiSoldierSenseSomething,
-		aiSoldierUnderFire,
+		aiZombiePursuit,
+		aiZombieRetreat,
+		aiZombieSenseSomething,
+		aiZombieUnderFire,
 		
 		#ifdef TEST_ACTIONS
-			aiSoldierTestMicroActions,
-			aiSoldierTestMicroActionA,
-			aiSoldierTestMicroActionD,
-			aiSoldierTestMicroActionQ,
-			aiSoldierTestMicroActionE,
-			aiSoldierTestMicroActionZ,
-			aiSoldierTestMicroActionC,
-			aiSoldierTestMicroActionW,
-			aiSoldierTestMicroActionS,
-			aiSoldierTestMicroActionX,
-			aiSoldierTestMicroActionR,
-			aiSoldierTestMicroActionF,
-			aiSoldierTestMicroActionV,
-			aiSoldierTestMicroActionT,
-			aiSoldierTestMicroActionG,
-			aiSoldierTestMicroActionB,
-			aiSoldierTestMicroActionY,
-			aiSoldierTestMicroActionH,
-			aiSoldierTestMicroActionN,
-			aiSoldierTestMicroActionU,
-			aiSoldierTestMicroActionJ,
-			aiSoldierTestMicroActionM,
+			aiMonsterTestMicroActions,
+			aiMonsterTestMicroActionA,
+			aiMonsterTestMicroActionD,
+			aiMonsterTestMicroActionQ,
+			aiMonsterTestMicroActionE,
+			aiMonsterTestMicroActionZ,
+			aiMonsterTestMicroActionC,
+			aiMonsterTestMicroActionW,
+			aiMonsterTestMicroActionS,
+			aiMonsterTestMicroActionX,
+			aiMonsterTestMicroActionR,
+			aiMonsterTestMicroActionF,
+			aiMonsterTestMicroActionV,
+			aiMonsterTestMicroActionT,
+			aiMonsterTestMicroActionG,
+			aiMonsterTestMicroActionB,
+			aiMonsterTestMicroActionY,
+			aiMonsterTestMicroActionH,
+			aiMonsterTestMicroActionN,
+			aiMonsterTestMicroActionU,
+			aiMonsterTestMicroActionJ,
+			aiMonsterTestMicroActionM,
 
-			aiSoldierTestMacroActions,
-			aiSoldierTestMacroActionA,
-			aiSoldierTestMacroActionD,
-			aiSoldierTestMacroActionQ,
-			aiSoldierTestMacroActionE,
-			aiSoldierTestMacroActionZ,
-			aiSoldierTestMacroActionC,
-			aiSoldierTestMacroActionW,
-			aiSoldierTestMacroActionS,
-			aiSoldierTestMacroActionX,
-			aiSoldierTestMacroActionR,
-			aiSoldierTestMacroActionF,
-			aiSoldierTestMacroActionV,
-			aiSoldierTestMacroActionT,
-			aiSoldierTestMacroActionG,
-			aiSoldierTestMacroActionB,
-			aiSoldierTestMacroActionY,
-			aiSoldierTestMacroActionH,
-			aiSoldierTestMacroActionN,
-			aiSoldierTestMacroActionU,
-			aiSoldierTestMacroActionJ,
-			aiSoldierTestMacroActionM,
+			aiMonsterTestMacroActions,
+			aiMonsterTestMacroActionA,
+			aiMonsterTestMacroActionD,
+			aiMonsterTestMacroActionQ,
+			aiMonsterTestMacroActionE,
+			aiMonsterTestMacroActionZ,
+			aiMonsterTestMacroActionC,
+			aiMonsterTestMacroActionW,
+			aiMonsterTestMacroActionS,
+			aiMonsterTestMacroActionX,
+			aiMonsterTestMacroActionR,
+			aiMonsterTestMacroActionF,
+			aiMonsterTestMacroActionV,
+			aiMonsterTestMacroActionT,
+			aiMonsterTestMacroActionG,
+			aiMonsterTestMacroActionB,
+			aiMonsterTestMacroActionY,
+			aiMonsterTestMacroActionH,
+			aiMonsterTestMacroActionN,
+			aiMonsterTestMacroActionU,
+			aiMonsterTestMacroActionJ,
+			aiMonsterTestMacroActionM,
 		#endif
 	};
 	
@@ -113,7 +111,6 @@ class CAI_Soldier : public CCustomMonster
 		#define MAX_TIME_RANGE_SEARCH			150000.f
 		#define	FIRE_ANGLE						PI/10
 		#define	FIRE_SAFETY_ANGLE				PI/10
-		#define CUBE(x)							((x)*(x)*(x))
 		#define LEFT_NODE(Index)				((Index + 3) & 3)
 		#define RIGHT_NODE(Index)				((Index + 5) & 3)
 		#define FN(i)							(float(tNode->cover[(i)])/255.f)
@@ -135,132 +132,44 @@ class CAI_Soldier : public CCustomMonster
 
 		// global animations
 		typedef struct tagSNormalGlobalAnimations{
-			CMotionDef* tpaDeath[2];
-			CMotionDef* tpJumpBegin;
-			CMotionDef* tpJumpIdle;
-		}SNormalGlobalAnimations;
-
-		// torso animations
-		typedef struct tagSNormalTorsoAnimations{
-			CMotionDef* tpaIdle[2];
-			CMotionDef* tpaAim[2];
+			CMotionDef* tpaDeath[3];
 			CMotionDef* tpaAttack[2];
+			CMotionDef* tpIdle;
+			SAnimState  tWalk;
 			CMotionDef* tpDamageLeft;
 			CMotionDef* tpDamageRight;
-			CMotionDef* tpReload;
-		}SNormalTorsoAnimations;
+		}SNormalGlobalAnimations;
 
-		// legs animations
 		typedef struct tagSNormalLegsAnimations{
-			SAnimState  tRun;
-			SAnimState  tWalk;
-			CMotionDef* tpTurn;
-			CMotionDef* tpIdle;
+			CMotionDef *tpTurn;
 		}SNormalLegsAnimations;
 
-		// hands animations
-		typedef struct tagSNormalHandsAnimations{
-			CMotionDef* tpPointGesture;
-			CMotionDef* tpSmokeGesture;
-		}SNormalHandsAnimations;
+		typedef struct tagSNormalTorsoAnimations{
+			CMotionDef *tpDamageLeft;
+			CMotionDef *tpDamageRight;
+		}SNormalTorsoAnimations;
 
 		// normal animations
 		typedef struct tagSNormalAnimations{
 			SNormalGlobalAnimations tGlobal;
-			SNormalTorsoAnimations  tTorso;
-			SNormalLegsAnimations	tLegs;
-			SNormalHandsAnimations	tHands;
+			SNormalTorsoAnimations tTorso;
+			SNormalLegsAnimations tLegs;
 		}SNormalAnimations;
 
 		////////////////////////////////////////////////////////////////////////////
-		// crouch animations
+		// zombie animations
 		////////////////////////////////////////////////////////////////////////////
 
-		// global animations
-		typedef struct tagSCrouchGlobalAnimations{
-			CMotionDef* tpDeath;
-			CMotionDef* tpJumpBegin;
-			CMotionDef* tpJumpIdle;
-		}SCrouchGlobalAnimations;
-
-		// torso animations
-		typedef struct tagSCrouchTorsoAnimations{
-			CMotionDef* tpAim;
-		}SCrouchTorsoAnimations;
-
-		// legs animations
-		typedef struct tagSCrouchLegsAnimations{
-			SAnimState  tRun;
-			SAnimState  tWalk;
-			CMotionDef* tpTurn;
-			CMotionDef* tpIdle;
-		}SCrouchLegsAnimations;
-
-		// hands animations
-		typedef struct tagSCrouchHandsAnimations{
-			CMotionDef* tpPointGesture;
-		}SCrouchHandsAnimations;
-
-		// crouch animations
-		typedef struct tagSCrouchAnimations{
-			SCrouchGlobalAnimations	tGlobal;
-			SCrouchTorsoAnimations  tTorso;
-			SCrouchLegsAnimations	tLegs;
-			SCrouchHandsAnimations	tHands;
-		}SCrouchAnimations;
-
-		////////////////////////////////////////////////////////////////////////////
-		// lie animations
-		////////////////////////////////////////////////////////////////////////////
-
-		// global animations
-		typedef struct tagSLieGlobalAnimations{
-			CMotionDef* tpDeath;
-			CMotionDef* tpLieDown;
-		}SLieGlobalAnimations;
-
-		// torso animations
-		typedef struct tagSLieTorsoAnimations{
-			CMotionDef* tpIdle;
-			CMotionDef* tpReload;
-		}SLieTorsoAnimations;
-
-		// legs animations
-		typedef struct tagSLieLegsAnimations{
-			SAnimState  tWalk;
-		}SLieLegsAnimations;
-
-		// hands animations
-		typedef struct tagSLieHandsAnimations{
-			CMotionDef* tpPointGesture;
-		}SLieHandsAnimations;
-
-		// lie animations
-		typedef struct tagSLieAnimations{
-			SLieGlobalAnimations	tGlobal;
-			SLieTorsoAnimations		tTorso;
-			SLieLegsAnimations		tLegs;
-			SLieHandsAnimations		tHands;
-		}SLieAnimations;
-
-		////////////////////////////////////////////////////////////////////////////
-		// soldier animations
-		////////////////////////////////////////////////////////////////////////////
-
-		typedef struct tagSSoldierAnimations{
+		typedef struct tagSZombieAnimations{
 			SNormalAnimations	tNormal;
-			SCrouchAnimations	tCrouch;
-			SLieAnimations		tLie;
-		}SSoldierAnimations;
+		}SZombieAnimations;
 
-		SSoldierAnimations	tSoldierAnimations;
+		SZombieAnimations	tZombieAnimations;
 		CMotionDef*			m_tpCurrentGlobalAnimation;
 		CMotionDef*			m_tpCurrentTorsoAnimation;
-		CMotionDef*			m_tpCurrentHandsAnimation;
 		CMotionDef*			m_tpCurrentLegsAnimation;
 		CBlend*				m_tpCurrentGlobalBlend;
 		CBlend*				m_tpCurrentTorsoBlend;
-		CBlend*				m_tpCurrentHandsBlend;
 		CBlend*				m_tpCurrentLegsBlend;
 		
 		// head turns
@@ -276,8 +185,8 @@ class CAI_Soldier : public CCustomMonster
 		EVENT			m_tpEventAssignPath;
 		
 		// ai
-		ESoldierStates	eCurrentState;
-		ESoldierStates	m_ePreviousState;
+		EZombieStates	eCurrentState;
+		EZombieStates	m_ePreviousState;
 		bool			bStopThinking;
 		
 		// action data
@@ -335,6 +244,8 @@ class CAI_Soldier : public CCustomMonster
 		DWORD			m_dwFireRandomMax;
 		DWORD			m_dwNoFireTimeMin;
 		DWORD			m_dwNoFireTimeMax;
+		float			m_fHitPower;
+		DWORD			m_dwHitInterval;
 		
 		// patrol under fire constants
 		DWORD			m_dwPatrolShock;
@@ -354,22 +265,18 @@ class CAI_Soldier : public CCustomMonster
 		bool					m_bLessCoverLook;
 
 		// finite state machine
-		stack<ESoldierStates>	tStateStack;
+		stack<EZombieStates>	tStateStack;
 		bool					m_bStateChanged;
 		
-		CSoldierSelectorAttack				SelectorAttack;
-		CSoldierSelectorDefend				SelectorDefend;
-		CSoldierSelectorFindEnemy			SelectorFindEnemy;
-		CSoldierSelectorFollowLeader		SelectorFollowLeader;
-		CSoldierSelectorFreeHunting			SelectorFreeHunting;
-		CSoldierSelectorMoreDeadThanAlive	SelectorMoreDeadThanAlive;
-		CSoldierSelectorNoWeapon			SelectorNoWeapon;
-		CSoldierSelectorPatrol				SelectorPatrol;
-		CSoldierSelectorPursuit				SelectorPursuit;
-		CSoldierSelectorReload				SelectorReload;
-		CSoldierSelectorRetreat				SelectorRetreat;
-		CSoldierSelectorSenseSomething		SelectorSenseSomething;
-		CSoldierSelectorUnderFire			SelectorUnderFire;
+		CZombieSelectorAttack				SelectorAttack;
+		CZombieSelectorFindEnemy			SelectorFindEnemy;
+		CZombieSelectorFollowLeader			SelectorFollowLeader;
+		CZombieSelectorFreeHunting			SelectorFreeHunting;
+		CZombieSelectorPatrol				SelectorPatrol;
+		CZombieSelectorPursuit				SelectorPursuit;
+		CZombieSelectorRetreat				SelectorRetreat;
+		CZombieSelectorSenseSomething		SelectorSenseSomething;
+		CZombieSelectorUnderFire			SelectorUnderFire;
 
 		void AttackRun();
 		void AttackFire();
@@ -458,27 +365,26 @@ class CAI_Soldier : public CCustomMonster
 		void vfLoadSelectors(CInifile *ini, const char *section);
 		void vfAssignBones(CInifile *ini, const char *section);
 		void vfLoadAnimations();
-		bool bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
 		bool bfCheckPath(AI::Path &Path);
 		void SetLessCoverLook(NodeCompressed *tNode, bool bSpine = true);
 		void SetDirectionLook();
 		void SetSmartLook(NodeCompressed *tNode, Fvector &tEnemyDirection);
 		void vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
-		void vfBuildPathToDestinationPoint(CSoldierSelectorAttack *S);
+		void vfBuildPathToDestinationPoint(CZombieSelectorAttack *S);
 		void vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
 		void vfSearchForBetterPositionWTime(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
 		void vfAimAtEnemy();
 		void vfSaveEnemy();
-		bool bfCheckIfCanKillMember();
-		bool bfCheckIfCanKillEnemy();
 		void vfSetFire(bool bFire, CGroup &Group);
 		void vfSetMovementType(char cBodyState, float fSpeed);
 		void vfCheckForSavedEnemy();
 
 	public:
-					   CAI_Soldier();
-		virtual		  ~CAI_Soldier();
+					   CAI_Zombie();
+		virtual		  ~CAI_Zombie();
 		virtual void  Update(DWORD DT);
+		virtual void  net_Export(NET_Packet* P);
+		virtual void  net_Import(NET_Packet* P);
 		virtual void  HitSignal(int amount, Fvector& vLocalDir, CEntity* who);
 		virtual void  SenseSignal(int amount, Fvector& vLocalDir, CEntity* who);
 		virtual void  Death();
@@ -487,9 +393,8 @@ class CAI_Soldier : public CCustomMonster
 		virtual float EnemyHeuristics(CEntity* E);
 		virtual void  SelectEnemy(SEnemySelected& S);
 		virtual void  SelectAnimation( const Fvector& _view, const Fvector& _move, float speed );
-		virtual void  g_fireParams(Fvector &fire_pos, Fvector &fire_dir);
-		virtual void  OnVisible(); 
 		virtual void  Exec_Movement(float dt);
+		virtual void  Exec_Action(float dt);
 		virtual void  OnEvent(EVENT E, DWORD P1, DWORD P2);
 		virtual BOOL  Spawn( BOOL bLocal, int sid, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags );
 		virtual objQualifier* GetQualifier();

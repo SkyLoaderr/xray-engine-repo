@@ -1,105 +1,105 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_soldier_selectors.h
-//	Created 	: 25.04.2002
-//  Modified 	: 25.04.2002
+//	Module 		: ai_zombie_selectors.h
+//	Created 	: 07.05.2002
+//  Modified 	: 07.05.2002
 //	Author		: Dmitriy Iassenev
-//	Description : AI Behaviour for monster "Soldier"
+//	Description : AI Behaviour for monster "Zombie"
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef __XRAY_AI_SOLDIER_SELECTORS__
-#define __XRAY_AI_SOLDIER_SELECTORS__
+#ifndef __XRAY_AI_ZOMBIE_SELECTORS__
+#define __XRAY_AI_ZOMBIE_SELECTORS__
 
 #include "..\\ai_monsters.h"
 
-class CSoldierSelectorAttack : public CAISelectorBase
+class CZombieSelectorAttack : public CAISelectorBase
 {
 	public:
-		CSoldierSelectorAttack();
+		CZombieSelectorAttack();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
-class CSoldierSelectorDefend : public CAISelectorBase
+class CZombieSelectorDefend : public CAISelectorBase
 {
 	public:
-		CSoldierSelectorDefend();
+		CZombieSelectorDefend();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
-class CSoldierSelectorFindEnemy : public CAISelectorBase
+class CZombieSelectorFindEnemy : public CAISelectorBase
 {
 	public:
-		CSoldierSelectorFindEnemy();
+		CZombieSelectorFindEnemy();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
-class CSoldierSelectorFollowLeader : public CAISelectorBase
+class CZombieSelectorFollowLeader : public CAISelectorBase
 {
 	public:
-		CSoldierSelectorFollowLeader();
+		CZombieSelectorFollowLeader();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 
 };
 
-class CSoldierSelectorFreeHunting : public CAISelectorBase
+class CZombieSelectorFreeHunting : public CAISelectorBase
 {
 	public:
-		CSoldierSelectorFreeHunting();
+		CZombieSelectorFreeHunting();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
-class CSoldierSelectorMoreDeadThanAlive : public CAISelectorBase
+class CZombieSelectorMoreDeadThanAlive : public CAISelectorBase
 {
 	public:
-		CSoldierSelectorMoreDeadThanAlive();
+		CZombieSelectorMoreDeadThanAlive();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
-class CSoldierSelectorNoWeapon : public CAISelectorBase
+class CZombieSelectorNoWeapon : public CAISelectorBase
 {
 	public:
-		CSoldierSelectorNoWeapon();
+		CZombieSelectorNoWeapon();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
-class CSoldierSelectorPatrol : public CAISelectorBase
+class CZombieSelectorPatrol : public CAISelectorBase
 {
 	public:
-		CSoldierSelectorPatrol();
+		CZombieSelectorPatrol();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
-class CSoldierSelectorPursuit : public CAISelectorBase
+class CZombieSelectorPursuit : public CAISelectorBase
 {
 	public:
-		CSoldierSelectorPursuit();
+		CZombieSelectorPursuit();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
-class CSoldierSelectorReload : public CAISelectorBase
+class CZombieSelectorReload : public CAISelectorBase
 {
 	public:
-		CSoldierSelectorReload();
+		CZombieSelectorReload();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
-class CSoldierSelectorRetreat : public CAISelectorBase
+class CZombieSelectorRetreat : public CAISelectorBase
 {
 	public:
-		CSoldierSelectorRetreat();
+		CZombieSelectorRetreat();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
-class CSoldierSelectorSenseSomething : public CAISelectorBase
+class CZombieSelectorSenseSomething : public CAISelectorBase
 {
 	public:
-		CSoldierSelectorSenseSomething();
+		CZombieSelectorSenseSomething();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
-class CSoldierSelectorUnderFire : public CAISelectorBase
+class CZombieSelectorUnderFire : public CAISelectorBase
 {
 	public:
-		CSoldierSelectorUnderFire();
+		CZombieSelectorUnderFire();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 

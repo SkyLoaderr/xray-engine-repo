@@ -7,11 +7,11 @@
 #include "..\customhud.h"
 #include "ai_console.h"
 #include "Actor_Flags.h"
+#include "ai\\crow\\ai_crow.h"
 #include "ai\\hen\\ai_hen.h"
 #include "ai\\rat\\ai_rat.h"
 #include "ai\\soldier\\ai_soldier.h"
-#include "ai\\zomby\\ai_zomby.h"
-#include "ai\\crow\\ai_crow.h"
+#include "ai\\zombie\\ai_zombie.h"
     
 extern int	 				psPhysicsFPS;
 extern float				psSqueezeVelocity;
@@ -116,7 +116,7 @@ extern "C" {
 		case CLSID_AI_HEN:			P = new CAI_Hen();			break;
 		case CLSID_AI_RAT:			P = new CAI_Rat();			break;
 		case CLSID_AI_SOLDIER:		P =	new CAI_Soldier();		break;
-		case CLSID_AI_ZOMBY:		P = new CAI_Zomby();		break;
+		case CLSID_AI_ZOMBIE:		P = new CAI_Zombie();		break;
 		case CLSID_AI_CROW:			P = new CAI_Crow();			break;
 		}
 		R_ASSERT(P);
