@@ -59,6 +59,10 @@
 	</info_portion>
 
 
+	<info_portion id="actor_start05">
+		<dialog>job_weapon</dialog>
+	</info_portion>
+
 	<info_portion id="trader_start1">
 		<location >
 			<level>0</level>
@@ -102,6 +106,10 @@
 	<disable_info>actor_start01</disable_info> 
 	</info_portion>
 
+
+	<info_portion id="job_weapon_finished">
+	<disable_info>actor_start05</disable_info> 
+	</info_portion>
 	
 	
 	<info_portion id="test_task_info">
