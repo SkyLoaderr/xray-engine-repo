@@ -47,8 +47,8 @@ void CLevelGraph::on_render1()
 	// display
 	Fvector P			= POSITION;
 
-	CPosition			Local;
-	vertex_position		(Local,P);
+//	CPosition			Local;
+//	vertex_position		(Local,P);
 
 	u32 ID				= O->ai_location().level_vertex_id();
 
