@@ -2578,6 +2578,15 @@ SOURCE=.\PSObject.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\PSystem.cpp
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\PSystem.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\xrParticlesLib.cpp
 # End Source File
 # Begin Source File
