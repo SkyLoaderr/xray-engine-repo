@@ -4,8 +4,8 @@
 <!---------------------------SOLDIER NOVICE----------------------->
 	<specific_character id="soldier_novice_default" team_default = "1">
 		<name>Неизвестный солдат</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
+		<icon x="10" y="2"></icon>
+		<map_icon x="0" y="2"></map_icon>
 		<bio>Рядовой представитель вооруженных сил.</bio>
 
 		<team>Soldier_novice</team>
@@ -22,8 +22,8 @@
 <!---------------------------SOLDIER GENERAL---------------------->
 	<specific_character id="soldier_general_default" team_default = "1">
 		<name>Неизвестный солдат</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
+		<icon x="12" y="2"></icon>
+		<map_icon x="1" y="2"></map_icon>
 		<bio>Представитель армейского спецназа.</bio>
 
 		<team>Soldier_general</team>
@@ -41,8 +41,8 @@
 <!---------------------------SOLDIER VETERAN---------------------->
 	<specific_character id="soldier_veteran_default" team_default = "1">
 		<name>Неизвестный солдат</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
+		<icon x="6" y="4"></icon>
+		<map_icon x="2" y="2"></map_icon>
 		<bio>Представитель элитного армейского подразделения.</bio>
 
 		<team>Soldier_veteran</team>
@@ -59,8 +59,8 @@
 <!---------------------------SOLDIER MASTER----------------------->
 	<specific_character id="soldier_master_default" team_default = "1">
 		<name>Неизвестный солдат</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
+		<icon x="6" y="4"></icon>
+		<map_icon x="2" y="2"></map_icon>
 		<bio>Представитель элитного армейского подразделения.</bio>
 
 		<team>Soldier_master</team>
