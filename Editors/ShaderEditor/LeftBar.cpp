@@ -467,7 +467,7 @@ void __fastcall TfraLeftBar::tvEngineStartDrag(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::RenameItem(LPVOID p0, LPVOID p1)
+void __fastcall TfraLeftBar::RenameItem(LPCSTR p0, LPCSTR p1)
 {
 	switch (Tools.ActiveEditor()){
     case aeEngine: 		Tools.SEngine.RenameBlender((LPCSTR)p0,(LPCSTR)p1); 	break;

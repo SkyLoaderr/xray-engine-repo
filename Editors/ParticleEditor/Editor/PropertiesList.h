@@ -237,7 +237,7 @@ public:		// User declarations
         return (FloatValue*)AddItem 		(parent,PROP_FLOAT,key,MakeFloatValue(value,mn,mx,inc,decim,after,before,draw));
     }
     IC BOOLValue* 			AddBOOLItem		(TElTreeItem* parent, LPCSTR key, BOOL* value, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0){
-        return (BOOLValue*)	AddItem 		(parent,PROP_FLAG,key,MakeBOOLValue(value,after,before,draw));
+        return (BOOLValue*)	AddItem 		(parent,PROP_BOOLEAN,key,MakeBOOLValue(value,after,before,draw));
     }
     IC FlagValue* 			AddFlagItem		(TElTreeItem* parent, LPCSTR key, DWORD* value, DWORD mask, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0){
         return (FlagValue*)	AddItem 		(parent,PROP_FLAG,key,MakeFlagValue(value,mask,after,before,draw));
@@ -257,7 +257,7 @@ public:		// User declarations
 	IC ListValue* 			AddListItem		(TElTreeItem* parent, LPCSTR key, LPSTR value, AStringVec* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0){
     	return (ListValue*)	AddItem	    	(parent,PROP_LIST,key,MakeListValue(value,lst,after,before,draw));
     }
-	IC ListValue* 			AddListItem		(TElTreeItem* parent, LPCSTR key, LPSTR value, DWORD cnt, LPCSTR* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0){
+	IC ListValue* 			AddListItemA	(TElTreeItem* parent, LPCSTR key, LPSTR value, DWORD cnt, LPCSTR* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0){
     	return (ListValue*)	AddItem	    	(parent,PROP_LIST,key,MakeListValueA(value,cnt,lst,after,before,draw));
     }
     IC DWORDValue* 			AddColorItem	(TElTreeItem* parent, LPCSTR key, LPDWORD value, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0){

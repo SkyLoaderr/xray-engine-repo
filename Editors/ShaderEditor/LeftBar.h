@@ -136,7 +136,7 @@ private:	// User declarations
                                         THROW;
                                         return 0;
     								  }
-	void __fastcall RenameItem(LPVOID p0, LPVOID p1);
+	void __fastcall RenameItem(LPCSTR p0, LPCSTR p1);
     bool			bFocusedAffected;
 public:		// User declarations
         __fastcall TfraLeftBar		(TComponent* Owner);

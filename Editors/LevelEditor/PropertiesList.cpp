@@ -448,6 +448,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
 			pmEnum->Items->Add(mi);
 			for(int i=0; token_list[i].name; i++){
                 mi 			= new TMenuItem(0);
+                mi->Tag		= i;
                 mi->Caption = token_list[i].name;
                 mi->OnClick = PMItemClick;
                 pmEnum->Items->Add(mi);
@@ -462,6 +463,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
 			pmEnum->Items->Add(mi);
 			for(AStringIt it=lst.begin(); it!=lst.end(); it++){
                 mi 			= new TMenuItem(0);
+                mi->Tag		= it-lst.begin();
                 mi->Caption = *it;
                 mi->OnClick = PMItemClick;
                 pmEnum->Items->Add(mi);
@@ -475,6 +477,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
 			pmEnum->Items->Add(mi);
             for (DWORD i=0; i<T->cnt; i++){
                 mi 			= new TMenuItem(0);
+                mi->Tag		= i;
                 mi->Caption = T->items[i].str;
                 mi->OnClick = PMItemClick;
                 pmEnum->Items->Add(mi);
@@ -484,8 +487,12 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
             pmEnum->Items->Clear();
             ListValue* T = (ListValue*)item->Data;
             AStringVec& lst = T->items;
+            TMenuItem* mi	= new TMenuItem(0);
+			mi->Caption 	= "-";
+			pmEnum->Items->Add(mi);
 			for(AStringIt it=lst.begin(); it!=lst.end(); it++){
-                TMenuItem* mi = new TMenuItem(0);
+                mi = new TMenuItem(0);
+                mi->Tag		= it-lst.begin();
                 mi->Caption = *it;
                 mi->OnClick = PMItemClick;
                 pmEnum->Items->Add(mi);
@@ -514,8 +521,12 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
         break;
 		case PROP_TEXTURE2:{
             pmEnum->Items->Clear();
+            TMenuItem* mi	= new TMenuItem(0);
+			mi->Caption 	= "-";
+			pmEnum->Items->Add(mi);
             for (DWORD i=0; i<TSTRING_COUNT; i++){
-                TMenuItem* mi = new TMenuItem(0);
+                mi = new TMenuItem(0);
+                mi->Tag		= i;
                 mi->Caption = TEXTUREString[i];
                 mi->OnClick = PMItemClick;
                 pmEnum->Items->Add(mi);
@@ -547,7 +558,7 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
         	TokenValue* V				= (TokenValue*)item->Data;
             xr_token* token_list 	   	= V->token;
             DWORD old_val				= V->GetValue();
-            DWORD new_val				= token_list[mi->MenuIndex].id;
+            DWORD new_val				= token_list[mi->Tag].id; //mi->MenuIndex
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
 			V->ApplyValue				(new_val);
             if (old_val	!= new_val)		Modified();
@@ -556,7 +567,7 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
 		case PROP_TOKEN2:{
         	TokenValue2* V				= (TokenValue2*)item->Data;
             DWORD old_val				= V->GetValue();
-            DWORD new_val				= mi->MenuIndex;
+            DWORD new_val				= mi->Tag;//mi->MenuIndex;
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
 			V->ApplyValue				(new_val);
             if (old_val	!= new_val)		Modified();
@@ -565,7 +576,7 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
 		case PROP_TOKEN3:{
         	TokenValue3* V				= (TokenValue3*)item->Data;
             DWORD old_val				= V->GetValue();
-            DWORD new_val				= V->items[mi->MenuIndex].ID;
+            DWORD new_val				= V->items[mi->Tag].ID;//mi->MenuIndex
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
 			V->ApplyValue				(new_val);
             if (old_val	!= new_val)		Modified();
@@ -575,7 +586,7 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
         	ListValue* V				= (ListValue*)item->Data;
             AStringVec& lst				= V->items;
             string256 old_val;	strcpy(old_val,V->GetValue());
-            string256 new_val;	strcpy(new_val,lst[mi->MenuIndex].c_str());
+            string256 new_val;	strcpy(new_val,lst[mi->Tag].c_str());//mi->MenuIndex
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
 			V->ApplyValue				(new_val);
             if (strcmp(old_val,new_val))Modified();
@@ -587,10 +598,10 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
 			AnsiString edit_val			= V->GetValue();
 			if (V->OnBeforeEdit) 		V->OnBeforeEdit(item,V,&edit_val);
             LPCSTR new_val 				= 0;
-        	if (mi->MenuIndex==0){
+        	if (mi->Tag==0){
             	new_val 				= TfrmChoseItem::SelectTexture(false,edit_val.c_str(),true);
-            }else if (mi->MenuIndex>=2){
-            	new_val					= TEXTUREString[mi->MenuIndex];
+            }else if (mi->Tag>=2){
+            	new_val					= TEXTUREString[mi->Tag];
             }
             if (new_val){
                 edit_val			= new_val;

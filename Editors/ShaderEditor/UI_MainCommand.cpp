@@ -54,6 +54,12 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	_DELETE(fraBottomBar);
 		//----------------
     	break;
+    case COMMAND_EVICT_OBJECTS:
+    	Lib.EvictObjects();
+    	break;
+    case COMMAND_EVICT_TEXTURES:
+    	Device.Shader.Evict();
+    	break;
 	case COMMAND_EXIT:
     	bRes = Tools.IfModified();
         break;

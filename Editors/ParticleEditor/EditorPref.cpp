@@ -7,6 +7,8 @@
 #include "texture.h"
 #ifdef _LEVEL_EDITOR
 	#include "cursor3d.h"	
+#endif
+#ifdef _EDITOR
 	#include "ui_main.h"
 #endif
 #include "ColorPicker.h"

@@ -259,14 +259,15 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
             ImageProps->AddFlagItem		(M,"Color Enabled",	&fmt.flag,STextureParams::flColorBorder);
             ImageProps->AddFlagItem		(M,"Alpha Enabled",	&fmt.flag,STextureParams::flAlphaBorder);
             ImageProps->AddColorItem	(M,"Color",			&fmt.border_color);
-            M=ImageProps->AddMarkerItem	(0,"Flags")->item;
+            M=ImageProps->AddMarkerItem	(0,"Type")->item;
             ImageProps->AddFlagItem		(M,"Cube Map",		&fmt.flag,STextureParams::flCubeMap);
             ImageProps->AddFlagItem		(M,"Normal Map",	&fmt.flag,STextureParams::flNormalMap);
             ImageProps->AddFlagItem		(M,"Du Dv Map",		&fmt.flag,STextureParams::flDuDvMap);
+            M=ImageProps->AddMarkerItem	(0,"Flags")->item;
+            ImageProps->AddFlagItem		(M,"Grayscale",		&fmt.flag,STextureParams::flGreyScale);
             ImageProps->AddFlagItem		(M,"Binary Alpha",	&fmt.flag,STextureParams::flBinaryAlpha);
             ImageProps->AddFlagItem		(M,"Dither",		&fmt.flag,STextureParams::flDitherColor);
             ImageProps->AddFlagItem		(M,"Dither Each MIP",&fmt.flag,STextureParams::flDitherEachMIPLevel);
-            ImageProps->AddFlagItem		(M,"Grayscale",		&fmt.flag,STextureParams::flGreyScale);
             ImageProps->AddFlagItem		(M,"Implicit Lighted",&fmt.flag,STextureParams::flImplicitLighted);
             ImageProps->EndFillMode		();
             m_LastSelection = m_SelectedName;

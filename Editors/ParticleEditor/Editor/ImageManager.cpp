@@ -17,6 +17,13 @@ extern "C" __declspec(dllimport)
 bool DXTCompress(LPCSTR out_name, BYTE* raw_data, DWORD w, DWORD h, DWORD pitch,
 				 STextureParams* options, DWORD depth);
 
+bool IsValidSize(int w, int h){
+	if (!btwIsPow2(h)) return false;
+    if (h*6==w) return true;
+	if (!btwIsPow2(w)) return false;
+    return true;
+}
+                 
 bool Surface_Load(LPCSTR full_name, DWORDVec& data, int& w, int& h, int& a)
 {
     if (!Engine.FS.Exist(full_name,true)) return false;
@@ -29,8 +36,7 @@ bool Surface_Load(LPCSTR full_name, DWORDVec& data, int& w, int& h, int& a)
         a					= img.bAlpha;
         data.resize			(w*h);
 		CopyMemory			(data.begin(),img.pData,sizeof(DWORD)*data.size());
-		if (!btwIsPow2(w))	ELog.Msg(mtError,"Texture (%s) - invalid width: %d",full_name,w);
-		if (!btwIsPow2(h))	ELog.Msg(mtError,"Texture (%s) - invalid height: %d",full_name,h);
+		if (!IsValidSize(w,h))	ELog.Msg(mtError,"Texture (%s) - invalid size: [%d, %d]",full_name,w,h);
         return true;
     }else{
         FIBITMAP* bm 		= Surface_Load((LPSTR)full_name);
@@ -42,8 +48,7 @@ bool Surface_Load(LPCSTR full_name, DWORDVec& data, int& w, int& h, int& a)
             for (int y=h-1; y>=0; y--) CopyMemory(data.begin()+(h-y-1)*w,FreeImage_GetScanLine(bm,y),w4);
             a				= FIC_RGBALPHA==FreeImage_GetColorType(bm);
             FreeImage_Free	(bm);
-            if (!btwIsPow2(w))	ELog.Msg(mtError,"Texture (%s) - invalid width: %d",full_name,w);
-            if (!btwIsPow2(h))	ELog.Msg(mtError,"Texture (%s) - invalid height: %d",full_name,h);
+			if (!IsValidSize(w,h))	ELog.Msg(mtError,"Texture (%s) - invalid size: [%d, %d]",full_name,w,h);
             return true;
         }
     }
@@ -80,7 +85,7 @@ void CImageManager::CreateThumbnail(EImageThumbnail* THM, const AnsiString& src_
     MakeThumbnail(THM,data.begin(),w,h,a);
 	THM->m_Age = Engine.FS.GetFileAge(base_name);
 	THM->m_TexParams.fmt 	= (a)?STextureParams::tfDXT3:STextureParams::tfDXT1;
-    if ((h*6)==w) THM->m_TexParams.flag	|= flCubeMap;
+    if ((h*6)==w) THM->m_TexParams.flag	|= STextureParams::flCubeMap;
 }
 
 //------------------------------------------------------------------------------
@@ -231,7 +236,7 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
     	if (bForceGame||(sync_game&&bGame)){
         	if (!THM) THM = new EImageThumbnail(it->first.c_str(),EImageThumbnail::EITTexture);
             if (data.empty()){ bool bRes = Surface_Load(fn.c_str(),data,w,h,a); R_ASSERT(bRes);}
-			if (btwIsPow2(w)&&btwIsPow2(h)){
+			if (IsValidSize(w,h)){
                 AnsiString game_name=AnsiString(base_name)+".dds";
                 Engine.FS.m_GameTextures.Update(game_name);
                 MakeGameTexture(THM,game_name.c_str(),data.begin());
