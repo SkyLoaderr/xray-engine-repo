@@ -54,7 +54,7 @@ bool CParticleTools::OnCreate()
 {
 //.    UI->SendMail("RIP",UI->EditorName(),"info \"xxx\"");
 	// shader test locking
-	std::string fn; 
+    xr_string fn; 
     FS.update_path(fn,_game_data_,PSLIB_FILENAME);
     shared_str owner;
 	if (EFS.CheckLocking(0,fn.c_str(),false,false,&owner)){ 

@@ -40,7 +40,7 @@ PS::CPGDef* CPSLibrary::AppendPGD(PS::CPGDef* src)
 
 void CPSLibrary::Save()
 {
-	std::string 	fn;
+	xr_string	 	fn;
     FS.update_path	(fn,_game_data_,PSLIB_FILENAME);
     Save			(fn.c_str());
 }
