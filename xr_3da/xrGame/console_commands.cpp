@@ -28,6 +28,9 @@
 #include "game_sv_deathmatch.h"
 #include "date_time.h"
 #include "mt_config.h"
+#ifdef DEBUG
+#include "PHDebug.h"
+#endif
 
 extern void show_smart_cast_stats		();
 extern void clear_smart_cast_stats		();
@@ -1843,7 +1846,11 @@ void CCC_RegisterCommands()
 	CMD3(CCC_Mask,		"dbg_destroy",				&dbg_net_Draw_Flags,	(1<<7));
 	CMD3(CCC_Mask,		"dbg_draw_autopickupbox",	&dbg_net_Draw_Flags,	(1<<8));
 
+	CMD3(CCC_Mask,		"dbg_draw_ph_contacts",			&ph_dbg_draw_mask,	phDbgDrawContacts);
+	CMD3(CCC_Mask,		"dbg_draw_ph_anabled_aabbs",	&ph_dbg_draw_mask,	phDbgDrawEnabledAABBS);
 #endif
+
+
 
 #ifdef DEBUG
 	CMD4(CCC_Integer,	"string_table_error_msg",	&CStringTable::m_bWriteErrorsToLog,	0,	1);

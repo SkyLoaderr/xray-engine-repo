@@ -3,10 +3,12 @@
 #include "PHWorld.h"
 #include "tri-colliderknoopc/dTriList.h"
 #include "PhysicsCommon.h"
-#ifdef DRAW_CONTACTS
+
 #include "ExtendedGeom.h"
-#endif
 #include "draymotions.h"
+#ifdef    DEBUG
+#include "PHDebug.h"
+#endif
 
 //////////////////////////////////////////////////////////////
 //////////////CPHMesh///////////////////////////////////////////
@@ -35,42 +37,12 @@ void CPHMesh ::Destroy(){
 dGeomID plane;
 #endif
 
-#ifdef DRAW_CONTACTS 
+#ifdef DEBUG 
 
 void CPHWorld::OnRender()
 {
-	CONTACT_I i=Contacts.begin();
 
-	for(;(Contacts.end()-i)>0;i++)
-	{
-		try{
-		
-		dContact c=*i;
-		int geom_class;
-		if(dGeomID(0xbaadf00dLL)==c.geom.g1||dGeomID(0xbaadf00dLL)==c.geom.g2||
-			dGeomID(0xfeeefeeeLL)==c.geom.g1||dGeomID(0xfeeefeeeLL)==c.geom.g2
-		)continue;
-		if(dGeomGetBody(c.geom.g1))
-		{
-			geom_class=dGeomGetClass(retrieveGeom(c.geom.g1));
-		}
-		else
-		{
-			geom_class=dGeomGetClass(retrieveGeom(c.geom.g2));
-		}
-		bool is_cyl=geom_class==dCylinderClassUser;
-		RCache.dbg_DrawAABB			(*((Fvector*)c.geom.pos),.01f,.01f,.01f,D3DCOLOR_XRGB(255*is_cyl,0,255*!is_cyl));
-		Fvector dir;
-		dir.set(c.geom.normal[0],c.geom.normal[1],c.geom.normal[2]);
-		dir.mul(c.geom.depth*100.f);
-		dir.add(*((Fvector*)c.geom.pos));
-		RCache.dbg_DrawLINE(Fidentity,*((Fvector*)c.geom.pos),dir,D3DCOLOR_XRGB(255*is_cyl,0,255*!is_cyl));
-		}
-		catch(...)
-		{
-			continue;
-		}
-	}
+	PH_DBG_Render();
 }
 #endif
 CPHWorld::CPHWorld()
@@ -134,6 +106,10 @@ void CPHWorld::Destroy(){
 #ifdef PH_PLAIN
 	dGeomDestroy(plane);
 #endif
+#ifdef DRAW_CONTACTS
+	Contacts0.clear();
+	Contacts1.clear();
+#endif
 	dGeomDestroy(m_motion_ray);
 	dJointGroupEmpty(ContactGroup);
 	dJointGroupDestroy(ContactGroup);
@@ -174,21 +150,28 @@ void CPHWorld::Step()
 	--disable_count;
 
 	++m_steps_num;
-
-#ifdef DRAW_CONTACTS
-	Contacts.clear();
+#ifdef DEBUG
+	DBG_DrawFrameStart();
 #endif
-
 	Device.Statistic.ph_collision.Begin	();
 
 	for(i_object=m_objects.begin();m_objects.end() != i_object;)
 	{
 		CPHObject* obj=(*i_object);
 		obj->Collide();
+
 		++i_object;
 	}
 	Device.Statistic.ph_collision.End	();
 
+#ifdef DEBUG
+	for(i_object=m_objects.begin();m_objects.end() != i_object;)
+	{
+		CPHObject* obj=(*i_object);
+		DBG_DrawPHObject(obj);
+		++i_object;
+	}
+#endif
 
 	for(i_object=m_objects.begin();m_objects.end() != i_object;)
 	{	

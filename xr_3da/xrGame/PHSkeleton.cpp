@@ -105,7 +105,7 @@ bool CPHSkeleton::Spawn(CSE_Abstract *D)
 			CInifile* ini=K->LL_UserData();
 			if(ini&&ini->section_exist("collide"))
 			{
-				if(ini->r_bool("collide","not_collide_parts"))
+				if(ini->line_exist("collide","not_collide_parts"))
 				{
 					CGID gr= CPHCollideValidator::RegisterGroup();
 					obj->PPhysicsShell()->RegisterToCLGroup(gr);

@@ -7,6 +7,9 @@
 #include "gameobject.h"
 #include "PhysicsShellHolder.h"
 #include "PHCollideValidator.h"
+#ifdef DEBUG
+#include "PHDebug.h"
+#endif
 ///////////////////////////////////////////////////////////////
 #pragma warning(disable:4995)
 #pragma warning(disable:4267)
@@ -61,9 +64,7 @@ dWorldID	phWorld;
 dJointGroupID	ContactGroup;
 CBlockAllocator	<dJointFeedback,128>		ContactFeedBacks;
 CBlockAllocator	<CPHContactBodyEffector,128> ContactEffectors;
-#ifdef DRAW_CONTACTS
-CONTACT_VECTOR Contacts;
-#endif
+
 ///////////////////////////////////////////////////////////
 class SApplyBodyEffectorPred
 {
@@ -239,8 +240,8 @@ IC static int CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,C
 		if	(do_collide && collided_contacts<MAX_CONTACTS)
 		{
 			++collided_contacts;
-			#ifdef DRAW_CONTACTS
-			Contacts.push_back(c);
+			#ifdef DEBUG
+				DBG_DrawContact(c);
 			#endif
 			dJointID contact_joint	= dJointCreateContact(0, jointGroup, &c);
 			world->ConnectJoint(contact_joint);

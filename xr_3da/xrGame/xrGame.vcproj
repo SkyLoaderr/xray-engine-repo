@@ -8890,6 +8890,12 @@
 					RelativePath="ode_redefine.h">
 				</File>
 				<File
+					RelativePath=".\PHDebug.cpp">
+				</File>
+				<File
+					RelativePath=".\PHDebug.h">
+				</File>
+				<File
 					RelativePath=".\PHWorld.cpp">
 				</File>
 				<File

@@ -1,8 +1,6 @@
 #ifndef PH_WORLD_H
 #define PH_WORLD_H
 
-//#define DRAW_CONTACTS
-
 
 class CPHMesh {
 	dGeomID Geom;
@@ -16,7 +14,7 @@ public:
 ////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
 class CPHWorld	: public pureFrame
-#ifdef DRAW_CONTACTS
+#ifdef DEBUG
 , public pureRender
 #endif
 {
@@ -69,7 +67,7 @@ IC	dGeomID						GetMotionRayGeom				()							{return m_motion_ray;}
 IC	bool						Processing						()							{return b_processing;}
 	u32							CalcNumSteps					(u32 dTime)					;
 
-#ifdef DRAW_CONTACTS
+#ifdef DEBUG
 	virtual void 				OnRender						()							;
 #endif
 	virtual void				OnFrame							()							;

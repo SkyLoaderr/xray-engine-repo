@@ -398,7 +398,7 @@ void CLevel::OnRender()
 
 	autosave_manager().OnRender();
 
-#ifdef DRAW_CONTACTS
+#ifdef DEBUG
 	ph_world->OnRender	();
 #endif
 

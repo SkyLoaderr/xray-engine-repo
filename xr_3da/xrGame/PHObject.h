@@ -15,6 +15,9 @@ typedef void CollideCallback(CPHObject* obj1,CPHObject* obj2, dGeomID o1, dGeomI
 class CPHObject :
 	public ISpatial 
 {
+#ifdef DEBUG
+	friend void DBG_DrawPHObject(CPHObject* obj);
+#endif
 	DECLARE_PHLIST_ITEM(CPHObject)
 
 			Flags8	m_flags;

@@ -79,10 +79,7 @@ class CPHElement;
 class CPHShell;
 extern dJointGroupID ContactGroup;
 
-#ifdef DRAW_CONTACTS
-DEFINE_VECTOR(dContact,CONTACT_VECTOR,CONTACT_I);
-extern CONTACT_VECTOR Contacts;
-#endif
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 #endif PHYSICS_H
