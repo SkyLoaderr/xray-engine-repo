@@ -12,6 +12,11 @@ light::light(void)
 	range			= 8.f;
 	cone			= deg2rad(60.f);
 	color.set		(1,1,1,1);
+
+	s_spot_s		= NULL;
+	s_spot_uns		= NULL;
+	s_point_s		= NULL;
+	s_point_uns		= NULL;
 }
 
 light::~light(void)

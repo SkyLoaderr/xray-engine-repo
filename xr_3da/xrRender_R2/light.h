@@ -16,6 +16,11 @@ public:
 	Fcolor			color;
 	u32				controller;
 
+	Shader*			s_spot_s;
+	Shader*			s_spot_uns;
+	Shader*			s_point_s;
+	Shader*			s_point_uns;
+
 	u32				dwFrame;
 public:
 	virtual void	set_type		(LT type)						{ flags.type = type;		}
