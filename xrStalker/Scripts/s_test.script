@@ -1,37 +1,18 @@
 function main ()
 
+	local boar = get_level_object ("boar")
+	local way = patrol ("way")
 
-	local stalker = get_level_object ("m_stalker_e0000")
-	stalker:script (true, s_test.script_name ())
---	local torch = get_level_object ("torch")
---	if (torch ~= nil) then printf ("Getting torch") flush () end
+	boar:script (true, s_test.script_name ())
 
---	action (stalker, move (move.standing, move.walk, move.line, patrol ("way0000")),
---			look (look.search), anim (anim.free), object (torch, object.activate), 
---			cond (cond.time_end, 1000000000000))
+	action (boar, move (move.act_stand_idle, move.default, vector ():set (0, 0, 0)), cond (cond.time_end, time_infinite))
+	
+	wait (5000)
+	reset_action (boar, s_test.script_name ())
+	action (boar, move (move.act_run, move.force_type, way), cond (cond.move_end))
+	
+	while boar:action () do wait () end
 
---	while stalker:action () do 
---		  if stalker:alive () == false then break end
---		  wait () 
---		  end
-
---	stalker:script (false, s_test.script_name ())
-
-	local door = get_level_object ("door")
-	local bones = {"bone16", "bone22"}
-
-	local starthit = 10;
-	while true do
-		  wait (500)
-		  local h = hit ()	
-          h.power = 1
-          h.direction = vector:set (-1, 0, 0)
-          h:bone (bones[math.random (1, table.getn (bones))])
-          h.draftsman = get_actor ()
-          h.impulse = starthit
-          h.type  = hit.strike
-          door:hit (h)
-		  starthit = starthit + math.random (100, 200)
-	end			
+	boar:script (false, s_test.script_name ())
 
  end
