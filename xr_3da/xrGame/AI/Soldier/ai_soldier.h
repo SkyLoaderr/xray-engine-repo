@@ -628,6 +628,16 @@ class CAI_Soldier : public CCustomMonster
 			tSoldierStates.eState = eState;
 			tStateList.push_back(tSoldierStates);
 		}
+	IC	bool bfCheckStateHistory(ESoldierStates eState, DWORD dwTimeInterval)
+		{
+			for (int i=tStateList.size() - 1; i>=0; i--)
+				if (tStateList[i].eState == eState)
+					return(true);
+				else
+					if (Level().timeServer() - tStateList[i].dwTime > dwTimeInterval)
+						return(false);
+			return(false);
+		}
 
 
 	public:
