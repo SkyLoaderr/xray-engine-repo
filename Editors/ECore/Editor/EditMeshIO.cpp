@@ -114,7 +114,7 @@ bool CEditableMesh::LoadMesh(IReader& F){
     R_ASSERT(F.find_chunk(EMESH_CHUNK_VERTS));
 	u32 cnt			= F.r_u32();
     if (cnt<3){
-        ELog.Msg	(mtError, "CEditableMesh: Vertices<3.");
+        Log				("!CEditableMesh: Vertices<3.");
      	return false;
     }
     m_Points.resize		(cnt);
@@ -129,7 +129,7 @@ bool CEditableMesh::LoadMesh(IReader& F){
     R_ASSERT(F.find_chunk(EMESH_CHUNK_FACES));
 	m_Faces.resize		(F.r_u32());
     if (m_Faces.size()==0){
-        ELog.Msg		(mtError, "CEditableMesh: Faces==0.");
+        Log				("!CEditableMesh: Faces==0.");
      	return false;
     }
 	F.r					(&*m_Faces.begin(), m_Faces.size()*sizeof(st_Face));
@@ -159,7 +159,7 @@ bool CEditableMesh::LoadMesh(IReader& F){
         IntVec&			face_lst = m_SurfFaces[surf];
         face_lst.resize	(F.r_u32());
         if (face_lst.empty()){
-	        ELog.Msg	(mtError, "Empty surface found: %s",surf->_Name());
+	        Log			("!Empty surface found: %s",surf->_Name());
     	 	return false;
         }
         F.r				(&*face_lst.begin(), face_lst.size()*sizeof(int));

@@ -280,14 +280,14 @@ int CEditableMesh::GetSurfFaceCount(CSurface* surf, bool bMatch2Sided){
 }
 
 void CEditableMesh::DumpAdjacency(){
-	ELog.Msg(mtInformation,"Adjacency dump.");
-	ELog.Msg(mtInformation,"------------------------------------------------------------------------");
+	Log("Adjacency dump.");
+	Log("------------------------------------------------------------------------");
 /*    for (u32 i=0; i<m_Adjs.size(); i++){
         IntVec& a_lst	= m_Adjs[i];
         AnsiString s; s = "Point "; s+=AnsiString(i); s+=":";
         AnsiString s1;
         for (u32 j=0; j<a_lst.size(); j++){ s1=a_lst[j]; s+=" "+s1; }
-		ELog.Msg(mtInformation,s.c_str());
+		Log(s.c_str());
     }
 */
 }

@@ -45,8 +45,8 @@ int CEditableMesh::FindSimilarWeight(st_VMap* vmap, float _w)
 
 void CEditableMesh::RebuildVMaps()
 {
-	ELog.Msg		(mtInformation,"Rebuild VMaps...");
-	IntVec			m_PointVMap;
+	Log			("Rebuild VMaps...");
+	IntVec		m_PointVMap;
 	m_PointVMap.resize(m_Points.size(),-1);
 	VMapVec		nVMaps;
 	VMRefsVec	nVMRefs = m_VMRefs;
@@ -133,9 +133,9 @@ void CEditableMesh::RebuildVMaps()
 bool CEditableMesh::UpdateAdjacency()
 {
 	if (m_Faces.empty()) return false;
-    ELog.Msg(mtInformation,".. Update adjacency");
-    m_Adjs.clear();
-    m_Adjs.resize(m_Points.size());
+    Log				(".. Update adjacency");
+    m_Adjs.clear	();
+    m_Adjs.resize	(m_Points.size());
 	for (FaceIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++)
 		for (int k=0; k<3; k++) m_Adjs[f_it->pv[k].pindex].push_back(f_it-m_Faces.begin());
 	return true;
