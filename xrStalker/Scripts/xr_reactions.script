@@ -14,6 +14,9 @@ function evaluator_new:__init(name, storage) super()
 	self.a = storage
 end
 function evaluator_new:evaluate()
+	if self.object:alive() == false then
+		return false
+	end
 	-- если мы щас никого не обрабатываем и есть раздражители - нужно заполнить пробел
 
 	if self.object:best_enemy() ~= nil then 
@@ -270,14 +273,6 @@ function add_to_binder(object, char_ini)
 	local operators		= {}
 	local properties	= {}
 
-	sounds["wait"] 		= xr_sounds_id.stohe_reaction_base + 0
-	sounds["search"]	= xr_sounds_id.stohe_reaction_base + 1
-	sounds["relax"] 	= xr_sounds_id.stohe_reaction_base + 2
-
-	object:add_sound("script_replics\\soldier_1\\hear_something\\soldier_hear_", 10, snd_type.talk, 2, 1, sounds["wait"])
-	object:add_sound("script_replics\\soldier_1\\search_enemy\\soldier_search_", 10, snd_type.talk, 2, 1, sounds["search"])
-	object:add_sound("script_replics\\soldier_1\\idle\\soldier_idle_", 10, snd_type.talk, 2, 1, sounds["relax"])
-
 	local manager = object:motivation_action_manager()
 
 	properties["state_end"]		= xr_evaluators_id.state_change
@@ -389,38 +384,6 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 		end
 	end
 
---[[
-	--' определяем что нам известно о слышимости объекта
-	local stable = self.npc:memory_sound_objects()
-	if   stable == nil then return false end
-	for s in stable do
-		local so = s:object()
-		local continue = true
-		local type = nil
-
-		if continue then
-			-- заносим раздражитель в память
-			if self.arhive[so:id()] == nil then
-				self.arhive[so:id()] = {visibility = self.descr.visibility,
-							name = so:name(),
-							sound_kat = self.descr.sound_kat,
-							sound_power = self.descr.sound_power,
-							object_type = self.descr.object_type,
-							distance = self.descr.distance,
-							time = self.descr.time,
-							stalker = { relation = self.descr.stalker.relation},
-							monstr	= { power = self.descr.monstr.power},
-							item 	= { power = self.descr.item.power},
-							corpse	= { type = self.descr.corpse.type,
-								    relation = self.descr.corpse.relation,
-								    monstr_power = self.descr.corpse.monstr_power }}
-			end
-			-- указываем, что нам о нем известно
-			self.arhive[so:id()].point 		= so:level_vertex_id()
-			self.arhive[so:id()].time		= game.time()
-		end
-	end
-]]
 	-- определяем что нам известно о видимости объекта
 	local vtable = self.npc:not_yet_visible_objects()
 	if vtable == nil then return false end
