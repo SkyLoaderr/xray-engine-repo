@@ -6930,19 +6930,6 @@
 							</File>
 						</Filter>
 					</Filter>
-					<Filter
-						Name="!"
-						Filter="">
-						<File
-							RelativePath=".\trigger.cpp">
-						</File>
-						<File
-							RelativePath=".\trigger.h">
-						</File>
-						<File
-							RelativePath=".\trigger_script.cpp">
-						</File>
-					</Filter>
 				</Filter>
 				<Filter
 					Name="Game Materials"
