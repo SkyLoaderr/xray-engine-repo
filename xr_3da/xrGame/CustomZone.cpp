@@ -14,7 +14,7 @@ BOOL CCustomZone::net_Spawn		(LPVOID DC)
 	if(res) {
 		CCF_Shape *l_pShape = xr_new<CCF_Shape>(this);
 		cfModel = l_pShape;
-		xrSE_Zone* Z = (xrSE_Zone*)DC;
+		xrSE_Zone* Z		= (xrSE_Zone*)DC;
 		for (u32 i=0; i < Z->shapes.size(); i++) {
 			xrSE_CFormed::shape_def& S = Z->shapes[i];
 			switch (S.type) {
