@@ -210,22 +210,20 @@ begin
 	    SQL_CONFIG.initLibrary();
 	                      
 	    // Show Status
-		SetStatusWindow	( 0, "" );
-		Enable			( STATUSEX );
-		StatusUpdate	( ON, 100 );
-
-		PlaceWindow		(STATUSEX,100,100,CENTERED);	                      
+//		SetStatusWindow	( 0, "" );
+//		Enable			( STATUSEX );
+//		StatusUpdate	( ON, 100 );
     
 	    // Display a message; do not change the progress bar.
-	    SetStatusWindow (-1, @IDSL_PROGRESS_SETUP_SERVER);
+//	    SetStatusWindow (-1, @IDSL_PROGRESS_SETUP_SERVER);
     
-	    SetStatusWindow (10, @IDSL_PROGRESS_START_SERVER);
+//	    SetStatusWindow (10, @IDSL_PROGRESS_START_SERVER);
 	    StartServer		();
 	       
-	    SetStatusWindow (20, @IDSL_PROGRESS_CHECK_CONNECTION);
+//	    SetStatusWindow (20, @IDSL_PROGRESS_CHECK_CONNECTION);
 		bRes 			= SQL_CONFIG.testConnection(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_);
 		if (bRes = 0) then 
-		    SetStatusWindow (30, @IDSL_PROGRESS_TUNE_CONNECTION);
+//		    SetStatusWindow (30, @IDSL_PROGRESS_TUNE_CONNECTION);
 		    bRes = SQL_CONFIG.tuneServer(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_);
 		    if(bRes != 0) then
 		        MessageBox (@IDSL_ERROR_SERVER_CONFIGURE, SEVERE);
@@ -233,7 +231,7 @@ begin
 		        goto label_end;
 		    endif;
 
-		    SetStatusWindow (40, @IDSL_PROGRESS_CONNECT_DB+" 'KAS'");
+//		    SetStatusWindow (40, @IDSL_PROGRESS_CONNECT_DB+" 'KAS'");
 		    db_files = "["+TARGETDIR^"DATA\\KAS_Data.MDF] "+"["+TARGETDIR^"DATA\\KAS_Log.LDF]";
 		    bRes = SQL_CONFIG.attachDatabase(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,"KAS",db_files);
 		    if(bRes != 0) then
@@ -244,7 +242,7 @@ begin
 		    	bRes=TRUE;
 		    endif;
 		
-		    SetStatusWindow (50, @IDSL_PROGRESS_CONNECT_DB+" 'client_repl'");
+//		    SetStatusWindow (50, @IDSL_PROGRESS_CONNECT_DB+" 'client_repl'");
 		    db_files = "["+TARGETDIR^"DATA\\client_repl_Data.MDF] "+"["+TARGETDIR^"DATA\\client_repl_Log.LDF]";
 		    bRes = SQL_CONFIG.attachDatabase(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,"client_repl",db_files);
 		    if(bRes != 0) then
@@ -255,7 +253,7 @@ begin
 		    	bRes=TRUE;
 		    endif;
 		
-		    SetStatusWindow (60, @IDSL_PROGRESS_CONNECT_DB+" 'searchdb'");
+//		    SetStatusWindow (60, @IDSL_PROGRESS_CONNECT_DB+" 'searchdb'");
 		    db_files = "["+TARGETDIR^"DATA\\searchdb_Data.MDF] "+"["+TARGETDIR^"DATA\\searchdb_Log.LDF]";
 		    bRes = SQL_CONFIG.attachDatabase(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,"searchdb",db_files);
 		    if(bRes != 0) then
@@ -266,7 +264,7 @@ begin
 		    	bRes=TRUE;
 		    endif;
 		 
-		    SetStatusWindow (70, @IDSL_PROGRESS_REGISTER_SP);
+//		    SetStatusWindow (70, @IDSL_PROGRESS_REGISTER_SP);
 		 	// copy stored proc dll  
 			// register it in DB
 		    bRes = SQL_CONFIG.runSQLString	(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,
@@ -280,7 +278,7 @@ begin
 		    	bRes=TRUE;
 		    endif;
 		
-		    SetStatusWindow (80, @IDSL_PROGRESS_READ_INI);
+//		    SetStatusWindow (80, @IDSL_PROGRESS_READ_INI);
 			GetProfString	(SETUP_INI_FILE, INI_MAIN_SECTION_ID, INI_SERVER_ID, 		sServerName);
 			GetProfString	(SETUP_INI_FILE, INI_MAIN_SECTION_ID, INI_VERSION_EXE_ID,	sVersionEXE);
 			GetProfString	(SETUP_INI_FILE, INI_MAIN_SECTION_ID, INI_VERSION_DB_ID, 	sVersionDB);
@@ -290,7 +288,7 @@ begin
 			sSecReg			= "";	
 			ParseSerialNumber(g_sSerial,sPrimReg,sSecReg);
 		                           
-		    SetStatusWindow (90, @IDSL_PROGRESS_REGISTERING_USER);
+//		    SetStatusWindow (90, @IDSL_PROGRESS_REGISTERING_USER);
 			// prepare sql string
 			sInsertSQL = "insert into Summary (primary_reg_id, secondary_reg_id, unique_id, version_id, last_update)";
 			sInsertSQL = sInsertSQL+"values('"+sPrimReg+"','"+sSecReg+"',newId(),'"+sVersionEXE+"','"+sVersionDB+"')"; 
@@ -305,7 +303,7 @@ begin
 		    	bRes=TRUE;
 		    endif;
 		
-		    SetStatusWindow (95, @IDSL_PROGRESS_ADD_REGISTRY);
+//		    SetStatusWindow (95, @IDSL_PROGRESS_ADD_REGISTRY);
 			// insert registry keys
 			RegDBSetDefaultRoot		(HKEY_LOCAL_MACHINE);
 			if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", REG_VERSION_DB_ID, REGDB_STRING, sVersionDB,-1) < 0) then
@@ -325,8 +323,8 @@ begin
 		
 label_end:
 	    // Set the progress bar to 100% and displays a message.
-	    SetStatusWindow (100, @IDSL_PROGRESS_END);
-	    Disable			(STATUSEX);
+//	    SetStatusWindow (100, @IDSL_PROGRESS_END);
+//	    Disable			(STATUSEX);
 	
 	    SQL_CONFIG.deInitLibrary();
 	
@@ -686,7 +684,10 @@ begin
 
 	// Delete ServiceManager icon
     DeleteFolderIcon(FOLDER_STARTUP, "Service Manager");
-
+                      
+    // Под ответственность Яны Одарич
+	BATCH_INSTALL = TRUE;          
+          
     //{{IS_SCRIPT_TAG(Dlg_SdDinishEx)	
     if ( BATCH_INSTALL ) then
     	SdFinishReboot ( szTitle , szMsg1 , SYS_BOOTMACHINE , szMsg2 , 0 );
@@ -753,5 +754,7 @@ begin
 	// configure server           
 	if (FeatureIsItemSelected(MEDIA,"MSDE")) then
 		ConfigureServer();
+		// Delete ServiceManager icon (для уверенности еще раз удаляем)
+	    DeleteFolderIcon(FOLDER_STARTUP, "Service Manager");
 	endif;
 end;
