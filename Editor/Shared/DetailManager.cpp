@@ -506,22 +506,22 @@ DetailSlot&	CDetailManager::QueryDB(int sx, int sz)
 	DS.r_scale				= 0xaaaaaaaa;
 
 	DS.items[0].id			= 4;
-	DS.items[0].palette.a0	= 15/2;
-	DS.items[0].palette.a1	= 7/2;
-	DS.items[0].palette.a2	= 15/2;
-	DS.items[0].palette.a3	= 2/2;
+	DS.items[0].palette.a0	= 15/3;
+	DS.items[0].palette.a1	= 7/3;
+	DS.items[0].palette.a2	= 15/3;
+	DS.items[0].palette.a3	= 2/3;
 
 	DS.items[1].id			= 2;
-	DS.items[1].palette.a0	= 2/2;
-	DS.items[1].palette.a1	= 7/2;
-	DS.items[1].palette.a2	= 15/2;
-	DS.items[1].palette.a3	= 8/2;
+	DS.items[1].palette.a0	= 2/3;
+	DS.items[1].palette.a1	= 7/3;
+	DS.items[1].palette.a2	= 15/3;
+	DS.items[1].palette.a3	= 8/3;
 
 	DS.items[2].id			= 3;
-	DS.items[2].palette.a0	= 4/2;
-	DS.items[2].palette.a1	= 0/2;
-	DS.items[2].palette.a2	= 1/2;
-	DS.items[2].palette.a3	= 8/2;
+	DS.items[2].palette.a0	= 4/3;
+	DS.items[2].palette.a1	= 0/3;
+	DS.items[2].palette.a2	= 1/3;
+	DS.items[2].palette.a3	= 8/3;
 
 //	DS.items[1].id			= 0xff;
 //	DS.items[2].id			= 0xff;
