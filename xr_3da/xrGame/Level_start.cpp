@@ -67,7 +67,31 @@ BOOL CLevel::net_Start	( LPCSTR name, BOOL server )
 		case GAME_ASSAULT:
 			// Spawn at TEAM r-point
 			{
-				g_cl_Spawn("actor",0xFD,spawn_flags);
+				// Create
+				xrServerEntity*	E	= F_entity_Create("actor");
+				R_ASSERT			(E);
+				xrSE_Actor* A		= (xrSE_Actor*)E;
+
+				// Fill
+				strcpy				(A->s_name,"actor");
+				strcpy				(A->s_name_replace,"");
+				A->s_gameid			=	u8(GAME);
+				A->s_team			=	u8(g_team);
+				E->s_RP				=	0xff;
+
+				A->ID				=	0xffff;
+				A->ID_Parent		=	0xffff;
+				A->ID_Phantom		=	0xffff;
+				A->s_flags			=	spawn_flags;
+				A->RespawnTime		=	0;
+
+				// Send
+				NET_Packet			P;
+				A->Spawn_Write		(P,TRUE);
+				Send				(P,net_flags(TRUE));
+
+				// Destroy
+				F_entity_Destroy	(E);
 			}
 			break;
 		}
