@@ -151,14 +151,15 @@ end
 function save_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
    CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
    
-   DIK_RETURN = 28;
+   DIK_RETURN = 28
+   WINDOW_KEY_PRESSED = 6
    
    local bind = dik_to_bind(dik)
    if bind == key_bindings.kQUIT then
       level.start_stop_menu(self,true)
    end  
    
-   if dik == DIK_RETURN then
+   if dik == DIK_RETURN and keyboard_action == WINDOW_KEY_PRESSED then
 	self:OnButton_ok_clicked()
    end
    
