@@ -118,7 +118,7 @@ void xrServer::Update	()
 	{
 		// Initialize process and check for available bandwidth
 		xrClientData*	Client		= (xrClientData*) net_Players	[client];
-		if (!Client->net_Ready)		continue;		
+//		if (!Client->net_Ready)		continue;		
 		if (!HasBandwidth(Client))	continue;
 
 		// Send relevant entities to client
@@ -245,8 +245,6 @@ u32 xrServer::OnMessage(NET_Packet& P, ClientID sender)			// Non-Zero means broa
 			if (CL)	CL->net_Ready	= TRUE;
 			game->signal_Syncronize	();
 			VERIFY					(verify_entities());
-///			SendConnectionData		(CL);
-//			game->OnPlayerReady		(CL->ID);			
 		}break;
 	case M_SWITCH_DISTANCE:
 		{

@@ -176,17 +176,19 @@ void game_sv_GameState::net_Export_State						(NET_Packet& P, ClientID to)
 		}
 
 		game_PlayerState* A		=	get_it			(p_it);
+		if (A->Skip || !C->net_Ready) continue;
 		A->setName(p_name);
 		u16 tmp_flags = A->flags;
 
 		if (Base==A)	
 			A->setFlag(GAME_PLAYER_FLAG_LOCAL);
-
+/*
 		if (A->Skip || !C->net_Ready)
 		{
 			A->flags = tmp_flags;
 			continue;
 		};		
+*/
 		ClientID clientID = get_it_2_id	(p_it);
 		P.w_clientID			(clientID);
 //		P.w_stringZ				(p_name);

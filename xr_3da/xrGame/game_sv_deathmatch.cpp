@@ -56,8 +56,6 @@ void	game_sv_Deathmatch::Create					(ref_str& options)
 void	game_sv_Deathmatch::OnRoundStart			()
 {
 	/////////////////////////////////////////////////////////////////////////
-//	LoadAnomalySets();
-	/////////////////////////////////////////////////////////////////////////
 	for (u32 i=0; i<teams.size(); ++i)
 	{
 		teams[i].score			= 0;
@@ -65,18 +63,7 @@ void	game_sv_Deathmatch::OnRoundStart			()
 	};
 
 	inherited::OnRoundStart	();
-/*
-	/////////////////////////////////////////////////////////////////////////
-	//Disable all anomalies
-	xr_vector<CObject*>::iterator	I = Level().Objects.objects.begin();
-	xr_vector<CObject*>::iterator	E = Level().Objects.objects.end();
-	for ( ; I != E; ++I) 
-	{
-		CCustomZone	*pCustomZone = dynamic_cast<CCustomZone*>(*I);
-		if (pCustomZone) pCustomZone->ZoneDisable();
-	};
-	/////////////////////////////////////////////////////////////////////////
-*/
+
 	// Respawn all players and some info
 	u32		cnt = get_players_count();
 	for		(u32 it=0; it<cnt; ++it)	
@@ -84,7 +71,7 @@ void	game_sv_Deathmatch::OnRoundStart			()
 		// init
 		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
 		game_PlayerState* ps	= l_pC->ps;
-		if (!l_pC->net_Ready) continue;
+//		if (!l_pC->net_Ready) continue;
 
 		ps->clear();
 //		ClearPlayerState		(ps);

@@ -83,7 +83,7 @@ bool	game_cl_mp::OnKeyboardPress			(int key)
 	};
 */
 
-	if( (Phase() != GAME_PHASE_INPROGRESS) && (kQUIT != key) )
+	if( (Phase() != GAME_PHASE_INPROGRESS) && (kQUIT != key) && (kCONSOLE != key))
 		return true;
 
 	return inherited::OnKeyboardPress(key);
