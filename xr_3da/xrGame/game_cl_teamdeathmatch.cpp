@@ -179,7 +179,8 @@ void game_cl_TeamDeathmatch::SetCurrentBuyMenu	()
 		};
 	};
 
-	if (pCurBuyMenu) pCurBuyMenu->SetSkin(pCurSkinMenu->GetActiveIndex());
+//	if(!pCurSkinMenu)SetCurrentSkinMenu	();
+	if (pCurBuyMenu) pCurBuyMenu->SetSkin(local_player->skin);
 	if (!pCurBuyMenu) return;
 
 	if (!local_player) return;
@@ -196,6 +197,7 @@ void game_cl_TeamDeathmatch::SetCurrentSkinMenu	()
 		if (pCurSkinMenu && pCurSkinMenu->IsShown()) StartStopMenu(pCurSkinMenu);
 
 	pCurSkinMenu = pNewSkinMenu;
+	pCurSkinMenu->SwitchSkin(local_player->skin);
 };
 
 bool game_cl_TeamDeathmatch::CanBeReady				()
