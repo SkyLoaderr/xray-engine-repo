@@ -161,6 +161,9 @@ extern "C"{
 
 	PARTICLEDLL_API void __stdcall pFollow(float magnitude = 1.0f, float epsilon = P_EPS, float max_radius = P_MAXFLOAT);
 
+	PARTICLEDLL_API void __stdcall pFrame(BOOL animated=FALSE, BOOL random_frame=FALSE, BOOL random_playback=FALSE,
+		WORD frame_count=16, float speed=24.f);
+
 	PARTICLEDLL_API void __stdcall pGravitate(float magnitude = 1.0f, float epsilon = P_EPS, float max_radius = P_MAXFLOAT);
 
 	PARTICLEDLL_API void __stdcall pGravity(float dir_x, float dir_y, float dir_z);
@@ -242,8 +245,9 @@ extern "C"{
 
 	PARTICLEDLL_API void __stdcall pVertex(float x, float y, float z);
 
-	PARTICLEDLL_API void __stdcall pFrame(BOOL animated=FALSE, BOOL random_frame=FALSE, BOOL random_playback=FALSE,
-		WORD frame_count=16, float speed=24.f);
-
+	PARTICLEDLL_API void __stdcall pVortex(float center_x, float center_y, float center_z,
+		float axis_x, float axis_y, float axis_z,
+		float magnitude = 1.0f, float epsilon = P_EPS,
+		float max_radius = P_MAXFLOAT);
 };
 #endif
