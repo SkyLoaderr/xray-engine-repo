@@ -626,8 +626,6 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	unaffected_r_torso_yaw	 = r_torso.yaw;
 	unaffected_r_torso_pitch = r_torso.pitch;
 
-
-
 	cam_Set	(eacFirstEye);
 	cam_Active()->Set		(-E->o_torso.yaw,E->o_torso.pitch,0);		// set's camera orientation
 
@@ -795,6 +793,7 @@ void	CActor::OnChangeVisual()
 	m_vehicle_anims.	Create			(V);
 	CDamageManager::reload(pSettings->r_string(cNameSect(),"damage"),pSettings);
 	//-------------------------------------------------------------------------------
+	m_head				= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_head");
 	m_r_hand			= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(*cNameSect(),"weapon_bone0"));
 	m_l_finger1			= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(*cNameSect(),"weapon_bone1"));
 	m_r_finger2			= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(*cNameSect(),"weapon_bone2"));

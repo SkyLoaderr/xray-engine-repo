@@ -103,4 +103,6 @@ public:
 	virtual		void				SendVoteNoMessage		()	{};
 	virtual		void				OnVoteStart				(NET_Packet& P)	{};
 	virtual		void				OnVoteStop				(NET_Packet& P)	{};
+
+	virtual		void				OnRender				()	{};
 };

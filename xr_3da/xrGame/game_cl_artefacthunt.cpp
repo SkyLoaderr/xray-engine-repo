@@ -6,6 +6,7 @@
 #include "UIGameAHunt.h"
 #include "clsid_game.h"
 
+#define TEAM0_MENU		"artefacthunt_team0"
 #define	TEAM1_MENU		"artefacthunt_team1"
 #define	TEAM2_MENU		"artefacthunt_team2"
 
@@ -27,13 +28,13 @@ game_cl_ArtefactHunt::game_cl_ArtefactHunt()
 
 void game_cl_ArtefactHunt::Init ()
 {
-	string64	Team1, Team2;
-	std::strcpy(Team1, TEAM1_MENU);
-	std::strcpy(Team2, TEAM2_MENU);
-	m_aTeamSections.push_back(Team1);
-	m_aTeamSections.push_back(Team2);
-}
-
+//	string64	Team1, Team2;
+//	std::strcpy(Team1, TEAM1_MENU);
+//	std::strcpy(Team2, TEAM2_MENU);
+//	LoadTeamData(TEAM0_MENU);
+	LoadTeamData(TEAM1_MENU);
+	LoadTeamData(TEAM2_MENU);
+};
 game_cl_ArtefactHunt::~game_cl_ArtefactHunt()
 {
 	pMessageSounds[0].destroy();

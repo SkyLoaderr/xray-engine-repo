@@ -43,4 +43,6 @@ protected:
 	virtual	void		SetCurrentSkinMenu	();
 
 	virtual	bool		OnKeyboardPress		(int key);
+
+	virtual		void				OnRender				();
 };

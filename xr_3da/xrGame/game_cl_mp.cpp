@@ -23,6 +23,14 @@ game_cl_mp::~game_cl_mp()
 {
 	xr_delete(pChatWnd);
 	xr_delete(pChatLog);
+
+	CL_TEAM_DATA_LIST_it it = TeamList.begin();
+	for(;it!=TeamList.end();++it)
+	{
+		if (it->IndicatorShader)
+			it->IndicatorShader.destroy();
+	};
+	TeamList.clear();
 };
 
 CUIGameCustom*		game_cl_mp::createGameUI			()
@@ -338,3 +346,25 @@ void game_cl_mp::OnVoteEnd				(NET_Packet& P)
 {
 	SetVotingActive(false);
 };
+
+void game_cl_mp::LoadTeamData			(char* TeamName)
+{
+	cl_TeamStruct Team;
+	ZeroMemory(&Team, sizeof(Team));
+
+	Team.caSection = TeamName;
+	if (pSettings->section_exist(TeamName))
+	{
+		Team.Indicator_r1 =  pSettings->r_float(TeamName, "indicator_r1");
+		Team.Indicator_r2 =  pSettings->r_float(TeamName, "indicator_r2");
+
+		Team.IndicatorPos.x =  pSettings->r_float(TeamName, "indicator_x");
+		Team.IndicatorPos.y =  pSettings->r_float(TeamName, "indicator_y");
+		Team.IndicatorPos.z =  pSettings->r_float(TeamName, "indicator_z");
+		
+		LPCSTR ShaderType	= pSettings->r_string(TeamName, "indicator_shader");
+		LPCSTR ShaderTexture = pSettings->r_string(TeamName, "indicator_texture");
+		Team.IndicatorShader.create(ShaderType, ShaderTexture);
+	};
+	TeamList.push_back(Team);
+}

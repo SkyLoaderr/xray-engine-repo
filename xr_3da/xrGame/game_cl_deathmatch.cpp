@@ -36,15 +36,12 @@ game_cl_Deathmatch::game_cl_Deathmatch()
 
 void game_cl_Deathmatch::Init ()
 {
-	//-----------------------------------------------------------
-	string64	Team0;
-	std::strcpy(Team0, TEAM0_MENU);
-	m_aTeamSections.push_back(Team0);	
+	LoadTeamData(TEAM0_MENU);
 }
 
 game_cl_Deathmatch::~game_cl_Deathmatch()
 {
-	m_aTeamSections.clear();
+//	m_aTeamSections.clear();
 	xr_delete(pBuyMenuTeam0);
 	xr_delete(pSkinMenuTeam0);
 	xr_delete(pInventoryMenu);
@@ -99,10 +96,9 @@ CUIBuyWeaponWnd* game_cl_Deathmatch::InitBuyMenu			(LPCSTR BasePriceSection, s16
 		Team = local_player->team;
 	};
 
-	std::string *pTeamSect = &m_aTeamSections[ModifyTeam(Team)];
-
+	cl_TeamStruct *pTeamSect = &TeamList[ModifyTeam(Team)];
 	
-	CUIBuyWeaponWnd* pMenu	= xr_new<CUIBuyWeaponWnd>	((LPCSTR)pTeamSect->c_str(), BasePriceSection);
+	CUIBuyWeaponWnd* pMenu	= xr_new<CUIBuyWeaponWnd>	((LPCSTR)pTeamSect->caSection.c_str(), BasePriceSection);
 	pMenu->SetSkin(0);
 	return pMenu;
 };
@@ -115,9 +111,9 @@ CUISkinSelectorWnd* game_cl_Deathmatch::InitSkinMenu			(s16 Team)
 		Team = local_player->team;
 	};
 
-	std::string *pTeamSect = &m_aTeamSections[ModifyTeam(Team)];
+	cl_TeamStruct *pTeamSect = &TeamList[ModifyTeam(Team)];	
 
-	CUISkinSelectorWnd* pMenu	= xr_new<CUISkinSelectorWnd>	((char*)pTeamSect->c_str());
+	CUISkinSelectorWnd* pMenu	= xr_new<CUISkinSelectorWnd>	((char*)pTeamSect->caSection.c_str());
 	
 	return pMenu;
 };
@@ -390,3 +386,25 @@ void game_cl_Deathmatch::OnVoteEnd				(NET_Packet& P)
 		m_game_ui->SetVoteTimeResultMsg("");
 	}
 };
+
+void game_cl_Deathmatch::GetMapEntities(xr_vector<SZoneMapEntityData>& dst)
+{
+	SZoneMapEntityData D;
+	u32 color_self_team		=		0xff00ff00;
+	D.color					=		color_self_team;
+
+	PLAYERS_MAP_IT it = players.begin();
+	for(;it!=players.end();++it)
+	{
+		game_PlayerState* ps = it->second;
+		u16 id = ps->GameID;
+		if (ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) continue;
+		CObject* pObject = Level().Objects.net_Find(id);
+		if (!pObject) continue;
+		if (!pObject || pObject->SUB_CLS_ID != CLSID_OBJECT_ACTOR) continue;
+
+		VERIFY(pObject);
+		D.pos = pObject->Position();
+		dst.push_back(D);
+	}
+}

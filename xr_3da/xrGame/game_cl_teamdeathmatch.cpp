@@ -7,6 +7,7 @@
 #include "xr_level_controller.h"
 #include "clsid_game.h"
 
+#define	TEAM0_MENU		"teamdeathmatch_team0"
 #define	TEAM1_MENU		"teamdeathmatch_team1"
 #define	TEAM2_MENU		"teamdeathmatch_team2"
 
@@ -30,12 +31,14 @@ game_cl_TeamDeathmatch::game_cl_TeamDeathmatch()
 void game_cl_TeamDeathmatch::Init ()
 {
 	//-----------------------------------------------------------
-	string64	Team1, Team2;
-	std::strcpy(Team1, TEAM1_MENU);
-	std::strcpy(Team2, TEAM2_MENU);
-	m_aTeamSections.push_back(Team1);
-	m_aTeamSections.push_back(Team2);
-
+//	string64	Team1, Team2;
+//	std::strcpy(Team1, TEAM1_MENU);
+//	std::strcpy(Team2, TEAM2_MENU);
+//	m_aTeamSections.push_back(Team1);
+//	m_aTeamSections.push_back(Team2);
+//	LoadTeamData(TEAM0_MENU);
+	LoadTeamData(TEAM1_MENU);
+	LoadTeamData(TEAM2_MENU);
 }
 
 game_cl_TeamDeathmatch::~game_cl_TeamDeathmatch()
@@ -136,12 +139,12 @@ void game_cl_TeamDeathmatch::GetMapEntities(xr_vector<SZoneMapEntityData>& dst)
 			u16 id = it->second->GameID;
 			CObject* pObject = Level().Objects.net_Find(id);
 			if (!pObject) continue;
+			if (!pObject || pObject->SUB_CLS_ID != CLSID_OBJECT_ACTOR) continue;
 
 			VERIFY(pObject);
 			D.pos = pObject->Position();
 			dst.push_back(D);
 		}
-
 	}
 }
 
@@ -254,3 +257,27 @@ bool	game_cl_TeamDeathmatch::OnKeyboardPress			(int key)
 
 
 
+void	game_cl_TeamDeathmatch::OnRender				()
+{
+	if (local_player)
+	{
+		cl_TeamStruct *pTS = &TeamList[ModifyTeam(local_player->team)]; 
+		PLAYERS_MAP_IT it = players.begin();
+		for(;it!=players.end();++it)
+		{
+			game_PlayerState* ps = it->second;
+			u16 id = ps->GameID;
+			if (ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) continue;
+			CObject* pObject = Level().Objects.net_Find(id);
+			if (!pObject) continue;
+			if (!pObject || pObject->SUB_CLS_ID != CLSID_OBJECT_ACTOR) continue;
+			if (ps->team != local_player->team) continue;
+			//		if (ps == local_player) continue;
+
+			VERIFY(pObject);
+			CActor* pActor = smart_cast<CActor*>(pObject);
+			VERIFY(pActor);
+			pActor->RenderIndicator(pTS->IndicatorPos, pTS->Indicator_r1, pTS->Indicator_r2, pTS->IndicatorShader);
+		}
+	};
+}

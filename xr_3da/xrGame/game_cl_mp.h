@@ -6,13 +6,29 @@
 class CUIChatWnd;
 class CUIChatLog;
 
+struct cl_TeamStruct
+{
+	shared_str			caSection;		// имя секции комманды
+	//-----------------------------------
+	ref_shader			IndicatorShader;
+	Fvector				IndicatorPos;
+	float				Indicator_r1;
+	float				Indicator_r2;
+};
+
+DEF_DEQUE(CL_TEAM_DATA_LIST, cl_TeamStruct);
+
 class game_cl_mp :public game_cl_GameState
 {
 	typedef game_cl_GameState	inherited;
 protected:
+
+	CL_TEAM_DATA_LIST				TeamList;
+
 	CUIChatWnd*						pChatWnd;
 	CUIChatLog*						pChatLog;
 
+	virtual void			LoadTeamData			(char* TeamName);
 	virtual	void			ChatSayTeam				(const shared_str &phrase);
 	virtual	void			ChatSayAll				(const shared_str &phrase);
 	virtual	void			OnChatMessage			(NET_Packet* P);

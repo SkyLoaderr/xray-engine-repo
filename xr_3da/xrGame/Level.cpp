@@ -345,6 +345,7 @@ void CLevel::OnRender()
 {
 	inherited::OnRender	();
 	
+	Game().OnRender();
 	//отрисовать трассы пуль
 	//Device.Statistic.TEST1.Begin();
 	BulletManager().Render();

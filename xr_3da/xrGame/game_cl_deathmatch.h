@@ -29,10 +29,10 @@ public :
 
 // from UIGameDM
 protected:
-	DEF_VECTOR						(TEAMS_LIST, std::string);
+//	DEF_VECTOR						(TEAMS_LIST, std::string);
 	DEF_VECTOR						(PRESET_ITEMS, s16);
 
-	TEAMS_LIST						m_aTeamSections;
+//	TEAMS_LIST						m_aTeamSections;
 	PRESET_ITEMS					PresetItemsTeam0;
 	PRESET_ITEMS*					pCurPresetItems;
 
@@ -81,4 +81,6 @@ public:
 	virtual		void				OnVoteStart				(NET_Packet& P);
 	virtual		void				OnVoteStop				(NET_Packet& P);
 	virtual		void				OnVoteEnd				(NET_Packet& P);
+
+	virtual		void				GetMapEntities			(xr_vector<SZoneMapEntityData>& dst);
 };

@@ -444,6 +444,7 @@ protected:
 	int									m_r_hand;
 	int									m_l_finger1;
     int									m_r_finger2;
+	int									m_head;
 
 
 
@@ -531,6 +532,9 @@ protected:
 	virtual void			OnRender_Network();
 	//---------------------------------------------
 #endif
+
+	ref_geom 				hFriendlyIndicator;
+	ref_shader				hIndicatorShader;				
 	//////////////////////////////////////////////////////////////////////////
 	// Actor physics
 	//////////////////////////////////////////////////////////////////////////
@@ -558,7 +562,8 @@ public:
 
 	virtual void			ChangeVisual			( shared_str NewVisual );
 	virtual void			OnChangeVisual			();
-	
+
+	virtual void			RenderIndicator			(Fvector dpos, float r1, float r2, ref_shader IndShader);
 
 protected:
 	int						skel_ddelay;
