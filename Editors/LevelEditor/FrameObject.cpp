@@ -25,11 +25,9 @@ __fastcall TfraObject::TfraObject(TComponent* Owner)
     m_Current = 0;
 }
 //---------------------------------------------------------------------------
-bool __fastcall TfraObject::OnDrawObjectThumbnail(ListItem* sender, AnsiString& thm_fn, u32& thm_type)
+bool __fastcall TfraObject::OnDrawObjectThumbnail(ListItem* sender, TCanvas *Surface, TRect &R)
 {
-	thm_fn 	= sender->Key();
-    thm_type= EImageThumbnail::EITObject;
-    return true;
+	return FHelper.DrawThumbnail(Surface,R,sender->Key(),EImageThumbnail::EITObject);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfraObject::OnEnter()
@@ -42,11 +40,13 @@ void __fastcall TfraObject::OnEnter()
     
     FS_QueryMap lst;
     if (Lib.GetObjects(lst)){
-	    FS_QueryPairIt	it	  = lst.begin();
-    	FS_QueryPairIt	_E	  = lst.end();
+	    FS_QueryPairIt	it	= lst.begin();
+    	FS_QueryPairIt	_E	= lst.end();
 	    for (; it!=_E; it++){
-	    	ListItem* I=LHelper.CreateItem(items,it->first.c_str(),0,ListItem::flDrawThumbnail,0);
-            I->OnDrawThumbnail= OnDrawObjectThumbnail;
+            AnsiString fn 	= ChangeFileExt(it->first.c_str(),".thm");
+            FS.update_path	(_objects_,fn);
+	    	ListItem* I=LHelper.CreateItem(items,it->first.c_str(),0,FS.exist(fn.c_str())?ListItem::flDrawThumbnail:0,0);
+            if (I->m_Flags.is(ListItem::flDrawThumbnail)) I->OnDrawThumbnail= OnDrawObjectThumbnail;
         }
     }
     m_Items->AssignItems	(items,false,"Objects",true);

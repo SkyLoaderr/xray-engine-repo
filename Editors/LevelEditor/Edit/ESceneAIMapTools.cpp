@@ -333,10 +333,16 @@ void ESceneAIMapTools::RemoveNode(AINodeIt it)
 	for (AINodeIt I=V->begin(); I!=V->end(); I++)
     	if (node==*I) {V->erase(I); break;}
     // delete node & erase from list
+    xr_delete		(*it);
     m_Nodes.erase	(it);
-    xr_delete		(node);
 }
 
+struct invalid_node_pred : public std::unary_function<SAINode*, bool>
+{
+	int link;
+	invalid_node_pred(int _link):link(_link){;}
+	bool operator()(const SAINode*& x){ return x->Links()==link; }
+};
 void ESceneAIMapTools::RemoveInvalidNodes(int link)
 {
     UI.ProgressStart	(m_Nodes.size(), "Removing invalid nodes...");
@@ -348,20 +354,17 @@ void ESceneAIMapTools::RemoveInvalidNodes(int link)
     }
     // realy remove node
 	int count=0;
-    for (int k=0; k<(int)m_Nodes.size(); k++){
-        AINodeIt it = m_Nodes.begin()+k;
-        if (link==(*it)->Links()){
-        	RemoveNode	(it);
-            k--;
-            count++;
-        }
-        if (k%128==0) {
-            UI.ProgressInc	();
-            if (UI.NeedAbort()) break;
-        }
-    }
+    // remove sel nodes
+    AINodeIt result		= std::remove_if(m_Nodes.begin(), m_Nodes.end(), invalid_node_pred(link));
+    count				= m_Nodes.size();
+    for (AINodeIt r_it=m_Nodes.begin(); r_it!=m_Nodes.end(); r_it++) 
+        if ((*r_it)->Links()==link) xr_delete(*r_it);
+    m_Nodes.erase		(result,m_Nodes.end());
+    count				-= m_Nodes.size();
+    hash_Clear		   	();
+    hash_FillFromNodes 	();
     UI.ProgressEnd		();
-    ELog.DlgMsg			(mtInformation,"Removed '%d' invalid nodes.",count);
+    ELog.DlgMsg			(mtInformation,"Removed '%d' %d-link nodes.",count,link);
 	Scene.UndoSave		();
 }
 
@@ -381,7 +384,10 @@ int ESceneAIMapTools::SelectObjects(bool flag)
     UI.RedrawScene		();
     return count;
 }
-
+struct sel_node_pred : public std::unary_function<SAINode*, bool>
+{
+	bool operator()(const SAINode*& x){ return x->flags.is(SAINode::flSelected); }
+};
 int ESceneAIMapTools::RemoveSelection()
 {
 	int count=0;
@@ -391,20 +397,27 @@ int ESceneAIMapTools::RemoveSelection()
         	count 	= m_Nodes.size();
         	Clear	(true);
         }else{
+        	UI.ProgressStart	(4,"Removing nodes...");
         	// remove link to sel nodes
+    		UI.ProgressInc		("breaking links");
 	        for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++){
             	for (int k=0; k<4; k++) 
-                	if ((*it)->n[k]&&(*it)->n[k]->flags.is(SAINode::flSelected)) (*it)->n[k]=0;
+                	if ((*it)->n[k]&&(*it)->n[k]->flags.is(SAINode::flSelected))
+                    	(*it)->n[k]=0;
             }
+    		UI.ProgressInc		("erasing nodes");
             // remove sel nodes
-            for (int k=0; k<(int)m_Nodes.size(); k++){
-                AINodeIt it = m_Nodes.begin()+k;
-                if ((*it)->flags.is(SAINode::flSelected)){
-                	RemoveNode		(it);
-                    k--;
-                    count++;
-                }
-            }
+           	AINodeIt result		= std::remove_if(m_Nodes.begin(), m_Nodes.end(), sel_node_pred());
+            count				= m_Nodes.size();
+	        for (AINodeIt r_it=m_Nodes.begin(); r_it!=m_Nodes.end(); r_it++) 
+            	if ((*r_it)->flags.is(SAINode::flSelected)) xr_delete(*r_it);
+            m_Nodes.erase		(result,m_Nodes.end());
+            count				-= m_Nodes.size();
+    		UI.ProgressInc		("updating hash");
+            hash_Clear		   	();
+		    hash_FillFromNodes 	();
+    		UI.ProgressInc		("end");
+            UI.ProgressEnd		();
         }
     }break;
     }
@@ -465,9 +478,7 @@ int ESceneAIMapTools::ShowObjects(bool flag, bool bAllowSelectionFlag, bool bSel
 
 void ESceneAIMapTools::FillProp(LPCSTR pref, PropItemVec& items)
 {
-	PropValue* P;
-    P=PHelper.CreateFloat	(items, FHelper.PrepareKey(pref,"Visibility radius"),	&m_VisRadius, 10, 250);
-//    P->OnChangeEvent		= OnDensityChange;
-    PHelper.CreateU32		(items, FHelper.PrepareKey(pref,"Brush size"),	&m_BrushSize, 1, 100);
+    PHelper.CreateFloat	(items, FHelper.PrepareKey(pref,"Visibility radius"),	&m_VisRadius, 10, 250);
+    PHelper.CreateU32	(items, FHelper.PrepareKey(pref,"Brush size"),			&m_BrushSize, 1, 100);
 }
 

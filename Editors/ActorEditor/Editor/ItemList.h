@@ -41,6 +41,8 @@ __published:	// IDE-managed Components
 	TMenuItem *MenuItem3;
 	TMenuItem *MenuItem4;
 	TMenuItem *MenuItem5;
+	TMenuItem *N3;
+	TMenuItem *RefreshForm1;
 	void __fastcall 	FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall 	tvItemsClick(TObject *Sender);
 	void __fastcall 	tvItemsMouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift, int X, int Y);
@@ -66,6 +68,7 @@ __published:	// IDE-managed Components
 	void __fastcall tvItemsKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
 	void __fastcall tvItemsResize(TObject *Sender);
+	void __fastcall RefreshForm1Click(TObject *Sender);
 public:
 	DEFINE_VECTOR(TElTreeItem*,ElItemsVec,ElItemsIt);
     typedef void 	__fastcall (__closure *TOnItemsFocused)		(ListItemsVec& items);
@@ -88,8 +91,8 @@ public:
         ilDragAllowed	= (1<<2),
 
         // internal
-        ilFullExpand	= (1<<30),
-        ilUpdateLocked	= (1<<31),
+        ilRT_FullExpand	= (1<<30),
+        ilRT_UpdateLocked=(1<<31),
     };
     Flags32				m_Flags;
 	// events
@@ -97,11 +100,18 @@ public:
     TOnCloseEvent		OnCloseEvent;
     CFolderHelper::TOnItemRename	OnItemRename;
     CFolderHelper::TOnItemRemove	OnItemRemove;
+protected:
+	DEFINE_VECTOR(TItemList*,ILVec,ILIt);
+	static  ILVec		ILForms;
+
+	void 				OnFormFrame				();
 public:		// User declarations
 	__fastcall 			TItemList	       		(TComponent* Owner);
 	static TItemList* 	CreateForm				(TWinControl* parent=0, TAlign align=alNone, u32 flags=ilMultiSelect);
 	static TItemList* 	CreateModalForm			(const AnsiString& title, ListItemsVec& items, u32 flags=ilMultiSelect);
 	static void 		DestroyForm				(TItemList*& props);
+	static void 		OnFrame					();
+
     void __fastcall 	ShowListModal			();
     void __fastcall 	ShowList				();
     void __fastcall 	HideList				();
@@ -116,9 +126,9 @@ public:		// User declarations
     int __fastcall		GetSelected				(LPCSTR pref, ListItemsVec& items, bool bOnlyObject);
     TElTreeItem*		GetSelected				(){return (tvItems->MultiSelect)?0:tvItems->Selected;}
 
-    void 				LockUpdating			(){ tvItems->IsUpdating = true; m_Flags.set(ilUpdateLocked,TRUE); }
-    void 				UnlockUpdating			(){ tvItems->IsUpdating = false;m_Flags.set(ilUpdateLocked,FALSE); }
-    bool				IsLocked				(){ return m_Flags.is(ilUpdateLocked); }
+    void 				LockUpdating			(){ tvItems->IsUpdating = true; m_Flags.set(ilRT_UpdateLocked,TRUE); }
+    void 				UnlockUpdating			(){ tvItems->IsUpdating = false;m_Flags.set(ilRT_UpdateLocked,FALSE); }
+    bool				IsLocked				(){ return m_Flags.is(ilRT_UpdateLocked); }
 
     void				SetImages				(TImageList* image_list){tvItems->Images=image_list;}
 

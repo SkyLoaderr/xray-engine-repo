@@ -22,6 +22,7 @@
 #include "bottombar.h"
 #include "editorpref.h"
 
+#include "itemlist.h"
 TUI UI;
 
 TUI::TUI()
@@ -559,6 +560,8 @@ void TUI::Idle()
 	ResetBreak		();
 	// check mail
     CheckMailslot	();
+    // update item list
+    TItemList::OnFrame();
     // test quit
     if (m_Flags.is(flNeedQuit))			frmMain->Close();
 }

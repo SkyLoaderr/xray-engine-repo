@@ -47,7 +47,7 @@ struct SAINode					// definition of "patch" or "node"
 	SAINode*	nRight	()	{return n3;}
 	SAINode*	nBack	()	{return n4;}
 	
-    int			Links	()	{int cnt=0; for (int k=0; k<4; k++) if(n[k]) cnt++; return cnt;}
+    int			Links	()	const {int cnt=0; for (int k=0; k<4; k++) if(n[k]) cnt++; return cnt;}
 	void		PointLF	(Fvector& D, float patch_size);
 	void		PointFR	(Fvector& D, float patch_size);
 	void		PointRB	(Fvector& D, float patch_size);
@@ -57,6 +57,8 @@ struct SAINode					// definition of "patch" or "node"
     void   		Save	(IWriter&, ESceneAIMapTools*);
 };
 #pragma pack(pop)
+#define DEFINE_LIST(T,N,I)		typedef xr_list< T > N;		typedef N::iterator I;
+
 DEFINE_VECTOR(SAINode*,AINodeVec,AINodeIt);
 
 const int				HDIM_X	= 128;

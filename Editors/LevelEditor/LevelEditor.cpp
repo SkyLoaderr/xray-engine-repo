@@ -67,6 +67,7 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 		Application->Run			();
 
         TfrmLog::DestroyLog			();
+        Core._destroy				();
 //    }catch (Exception &exception){
 //           Application->ShowException(&exception);
 //    }

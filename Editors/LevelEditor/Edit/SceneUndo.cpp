@@ -21,7 +21,8 @@
 
 //----------------------------------------------------
 
-void EScene::UndoClear(){
+void EScene::UndoClear()
+{
 	while( !m_RedoStack.empty() ){
 		unlink( m_RedoStack.back().m_FileName );
 		m_RedoStack.pop_back(); }
@@ -30,9 +31,13 @@ void EScene::UndoClear(){
 		m_UndoStack.pop_back(); }
 }
 
-void EScene::UndoSave(){
+void EScene::UndoSave()
+{
     if (UI.GetEState()!=esEditScene) return;
+    Modified();
     UI.RedrawScene();
+
+    if (0==frmEditPrefs->seUndoLevels->Value) return;
 
 	UndoItem item;
 	GetTempFileName( FS.get_path(_temp_)->m_Path, "undo", 0, item.m_FileName );
@@ -47,11 +52,10 @@ void EScene::UndoSave(){
 	if( frmEditPrefs&&(m_UndoStack.size() > frmEditPrefs->seUndoLevels->Value) ){
 		unlink( m_UndoStack.front().m_FileName );
 		m_UndoStack.pop_front(); }
-
-    Modified();
 }
 
-bool EScene::Undo(){
+bool EScene::Undo()
+{
 //	if( !m_UndoStack.empty() ){
 	if( m_UndoStack.size()>1 ){
 		m_RedoStack.push_back( m_UndoStack.back() );
@@ -75,7 +79,8 @@ bool EScene::Undo(){
 	return false;
 }
 
-bool EScene::Redo(){
+bool EScene::Redo()
+{
 	if( !m_RedoStack.empty() ){
         Unload();
 		Load( m_RedoStack.back().m_FileName );

@@ -33,6 +33,19 @@
 #pragma link "ElPopBtn"
 #pragma resource "*.dfm"
 
+TItemList::ILVec TItemList::ILForms;
+//---------------------------------------------------------------------------
+void TItemList::OnFormFrame()
+{
+}
+//---------------------------------------------------------------------------
+
+void TItemList::OnFrame()
+{
+	for (ILIt it=ILForms.begin(); it!=ILForms.end(); it++)
+    	(*it)->OnFormFrame();
+}
+
 //---------------------------------------------------------------------------
 void TItemList::ClearParams(TElTreeItem* node)
 {
@@ -111,6 +124,7 @@ TItemList* TItemList::CreateForm(TWinControl* parent, TAlign align, u32 flags)
 	    props->tvItems->OnDragOver 	= 0;
         props->tvItems->DragAllowed	= false;
     }
+	ILForms.push_back(props);
 	return props;
 }
 
@@ -119,7 +133,7 @@ TItemList* TItemList::CreateModalForm(const AnsiString& title, ListItemsVec& ite
 	TItemList* props 			= xr_new<TItemList>((TComponent*)0);
     props->m_Flags.set			(flags);
     props->tvItems->MultiSelect	= props->m_Flags.is(ilMultiSelect);
-    props->AssignItems			(items,props->m_Flags.is(ilFullExpand),title);
+    props->AssignItems			(items,props->m_Flags.is(ilRT_FullExpand),title);
 	props->ShowListModal		();
     if (props->m_Flags.is(ilDragAllowed)){
 	    props->tvItems->OnStartDrag = FHelper.StartDrag;
@@ -130,12 +144,15 @@ TItemList* TItemList::CreateModalForm(const AnsiString& title, ListItemsVec& ite
 	    props->tvItems->OnDragOver 	= 0;
         props->tvItems->DragAllowed	= false;
     }
+	ILForms.push_back(props);
 	return props;
 }
 
 void TItemList::DestroyForm(TItemList*& props)
 {
 	VERIFY(props);
+    ILIt it						= std::find(ILForms.begin(),ILForms.end(),props); VERIFY(it!=ILForms.end());
+	ILForms.erase				(it);
     // destroy forms
 	props->ClearList			();
 	props->Close				();
@@ -359,6 +376,8 @@ void __fastcall TItemList::RefreshForm()
     	ListItem* prop = *it;
     	if (prop->m_Flags.is(ListItem::flDrawThumbnail)) 
         	prop->item->OwnerHeight = !miDrawThumbnails->Checked;
+        else
+        	prop->item->OwnerHeight = true;
     }
 	UnlockUpdating			();
 	tvItems->Repaint		();
@@ -369,16 +388,11 @@ void __fastcall TItemList::tvItemsItemDraw(TObject *Sender,
 {
     ListItem* prop 			= (ListItem*)Item->Tag;
     if (prop){
-        DrawText			(Surface->Handle, prop->key.c_str(), -1, &R, DT_LEFT | DT_SINGLELINE);
-        if (miDrawThumbnails->Checked){ 
+        DrawText			(Surface->Handle, AnsiString(Item->Text).c_str(), -1, &R, DT_LEFT | DT_SINGLELINE);
+        if (miDrawThumbnails->Checked&&prop->m_Flags.is(ListItem::flDrawThumbnail)){ 
             R.top			+= tvItems->ItemIndent;
-            if (prop->OnDrawThumbnail){ 
-            	AnsiString 	fn;
-                u32 		thm_type	= EImageThumbnail::EITUndef;
-            	if (prop->OnDrawThumbnail(prop,fn,thm_type)){
-		            FHelper.DrawThumbnail(Surface,R,fn.c_str(),thm_type);
-                }
-            }
+            if (prop->OnDrawThumbnail)
+            	prop->OnDrawThumbnail(prop,Surface,R);
         }
     }
 }
@@ -492,6 +506,13 @@ void __fastcall TItemList::tvItemsResize(TObject *Sender)
     tvItems->HeaderSections->Item[0]->Width = tvItems->Width;
     if (tvItems->VertScrollBarVisible)
     	tvItems->HeaderSections->Item[0]->Width -= tvItems->VertScrollBarStyles->Width;
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TItemList::RefreshForm1Click(TObject *Sender)
+{
+	RefreshForm();	
 }
 //---------------------------------------------------------------------------
 

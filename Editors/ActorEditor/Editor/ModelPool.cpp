@@ -57,7 +57,7 @@ IRender_Visual*	CModelPool::Instance_Create(u32 type)
 }
 IRender_Visual*	CModelPool::Instance_Duplicate	(IRender_Visual* V)
 {
-	R_ASSERT(V);
+	if (!V) return 0;
 	IRender_Visual* N = Instance_Create(V->Type);
 	N->Copy	(V);
 	return N;

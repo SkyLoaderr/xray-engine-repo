@@ -14,7 +14,7 @@ class ListItem{
 public:
     typedef void 	__fastcall (__closure *TOnListItemFocused)	(ListItem* sender);
     typedef void 	__fastcall (__closure *TOnClick)			(ListItem* sender);
-    typedef bool 	__fastcall (__closure *TOnDrawThumbnail)	(ListItem* sender, AnsiString& thm_fn, u32& thm_type);
+    typedef bool 	__fastcall (__closure *TOnDrawThumbnail)	(ListItem* sender, TCanvas *Surface, TRect &R);
 
     TOnClick			OnClickEvent;
     TOnListItemFocused	OnItemFocused;

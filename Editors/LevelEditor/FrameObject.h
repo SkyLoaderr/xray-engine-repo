@@ -60,7 +60,7 @@ private:	// User declarations
     TItemList* m_Items;
     void __fastcall OnItemFocused		(ListItemsVec& items);
     LPCSTR m_Current;
-	bool __fastcall OnDrawObjectThumbnail(ListItem* sender, AnsiString& thm_fn, u32& thm_type);
+	bool __fastcall OnDrawObjectThumbnail(ListItem* sender, TCanvas *Surface, TRect &R);
 public:		// User declarations
         __fastcall TfraObject(TComponent* Owner);
     void __fastcall OnEnter	();
