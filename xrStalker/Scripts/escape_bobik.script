@@ -85,13 +85,13 @@ function action_bobik:execute()
 	if this.alarm == true then
 		if self.time == nil or device():time_global() - self.time > self.timer then
 			globals.set_sound(self.object, self.sound_alarm, true)
-			escape_bobic.alarm = false
+			escape_bobik.alarm = false
 			self.time = device():time_global()
 		end
 	end
 	if this.die == true then
 		globals.set_sound(self.object, self.sound_die, true)
-		escape_bobic.die = false
+		escape_bobik.die = false
 	end
 end
 function action_bobik:finalize()
