@@ -2,7 +2,6 @@
 #define PH_GEOMETRY_OWNER_H
 #include "Geometry.h"
 #include "gamemtllib.h"
-#include "../fbasicvisual.h"
 
 DEFINE_VECTOR(CODEGeom*,GEOM_STORAGE,GEOM_I)
 

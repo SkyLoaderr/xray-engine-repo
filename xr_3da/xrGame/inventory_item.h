@@ -23,6 +23,7 @@ enum EHandDependence{
 class CFoodItem;
 class CMissile;
 class CHudItem;
+class CWeaponAmmo;
 
 class CInventoryItem : public CPhysicItem, public CHitImmunity
 {
@@ -37,6 +38,7 @@ public:
 	virtual CFoodItem		*cast_food_item		()	{return 0;}
 	virtual CMissile		*cast_missile		()	{return 0;}
 	virtual CHudItem		*cast_hud_item		()	{return 0;}
+	virtual CWeaponAmmo		*cast_weapon_ammo	()	{return 0;}
 
 public:
 	virtual void	Load				(LPCSTR section);

@@ -2,8 +2,6 @@
 #define CAR_LIGHTS_H
 #pragma once
 
-#include "../ispatial.h"
-
 class CCarLights;
 class CCar;
 class IRender_Glow;

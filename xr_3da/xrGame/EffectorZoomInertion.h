@@ -47,4 +47,5 @@ public:
 											float& fFar, float& fAspect);
 	virtual	void	SetRndSeed				(s32 Seed) { m_Random.seed(Seed); };
 
+	virtual CEffectorZoomInertion	*cast_effector_zoom_inertion	()	{return this;}
 };

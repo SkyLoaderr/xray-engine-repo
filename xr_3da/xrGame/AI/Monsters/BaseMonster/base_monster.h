@@ -80,11 +80,13 @@ public:
 	virtual					~CBaseMonster						();
 
 public:
+	virtual	Feel::Sound*				dcast_FeelSound				()	{ return this;	}
 	virtual	CCharacterPhysicsSupport*	character_physics_support	()	{return m_pPhysics_support;}
-	virtual CPHDestroyable*				ph_destroyable				()	;
+	virtual CPHDestroyable*				ph_destroyable				();
 	virtual CEntityAlive*				cast_entity_alive			()	{return this;}
 	virtual CEntity*					cast_entity					()	{return this;}
 	virtual CPhysicsShellHolder*		cast_physics_shell_holder	()	{return this;}
+	virtual CParticlesPlayer*			cast_particles_player		()	{return this;}
 
 public:
 	
@@ -94,7 +96,6 @@ public:
 	virtual void			Hit								(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
 	virtual	void			PHHit							(float P,Fvector &dir,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
 	virtual void			SelectAnimation					(const Fvector& _view, const Fvector& _move, float speed );
-	virtual	Feel::Sound*	dcast_FeelSound					()			{ return this;	}
 
 	virtual void			Load							(LPCSTR section);
 

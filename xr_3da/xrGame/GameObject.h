@@ -26,6 +26,7 @@ class CEntityAlive;
 class CInventoryOwner;
 class CActor;
 class CPhysicsShellHolder;
+class CParticlesPlayer;
 
 class CGameObject : 
 	public CObject, 
@@ -60,6 +61,8 @@ public:
 	virtual CGameObject*				cast_game_object			()						{return this;}
 	virtual CCustomZone*				cast_custom_zone			()						{return NULL;}
 	virtual CPhysicsShellHolder*		cast_physics_shell_holder	()						{return NULL;}
+	virtual IInputReceiver*				cast_input_receiver			()						{return NULL;}
+	virtual CParticlesPlayer*			cast_particles_player		()						{return NULL;}
 
 public:
 	virtual BOOL						feel_touch_on_contact	(CObject *)				{return TRUE;}

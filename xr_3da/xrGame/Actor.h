@@ -74,6 +74,7 @@ public:
 	virtual CInventoryOwner*			cast_inventory_owner	()						{return this;}
 	virtual CActor*						cast_actor				()						{return this;}
 	virtual CGameObject*				cast_game_object		()						{return this;}
+	virtual IInputReceiver*				cast_input_receiver		()						{return this;}
 public:
 
 	virtual void						Load				( LPCSTR section );

@@ -87,4 +87,5 @@ public:
 	void					SetParentVel			(const Fvector& vel) {parent_vel = vel;}
 	
 	bool					IsPlaying				() {return m_bActiveBones;}
+	virtual CParticlesPlayer*	cast_particles_player	()	{return this;}
 };

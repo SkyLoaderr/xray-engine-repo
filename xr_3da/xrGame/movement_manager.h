@@ -127,6 +127,7 @@ public:
 	virtual void	net_Destroy				();
 	virtual	void	Hit						(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
 	virtual CPhysicsShellHolder*		cast_physics_shell_holder	()	{return this;}
+	virtual CParticlesPlayer*			cast_particles_player		()	{return this;}
 	IC		bool	actual					() const;
 	IC		bool	actual_all				() const;
 	IC		void	set_path_type			(EPathType path_type);

@@ -120,6 +120,7 @@ public:
 	virtual CEntity*					cast_entity					()						{return this;}
 	virtual CGameObject*				cast_game_object			()						{return this;}
 	virtual CPhysicsShellHolder*		cast_physics_shell_holder	()						{return this;}
+	virtual CParticlesPlayer*			cast_particles_player		()						{return this;}
 	virtual	Feel::Sound*				dcast_FeelSound				()						{return this;}
 
 public:

@@ -6,9 +6,7 @@
 
 #pragma once
 
-#include "ShootingHitEffector.h"
 #include "alife_space.h"
-#include "../ispatial.h"
 
 class CCartridge;
 class CParticlesObject;

@@ -10,15 +10,13 @@
 
 #ifndef PURE_DYNAMIC_CAST
 #	ifdef XRGAME_EXPORTS
-#		include	"gameobject.h"
+#		include "../fbasicvisual.h"
 #		include "actor.h"
 #		include "custommonster.h"
-#		include "../ispatial.h"
-#		include "../fbasicvisual.h"
-#		include "inventory_item.h"
 #		include "ui/uiwindow.h"
 #		include "customzone.h"
 #		include "weapon.h"
+#		include "cameraeffector.h"
 #	endif
 #	include "xrServer_Objects_ALife_Items.h"
 #endif

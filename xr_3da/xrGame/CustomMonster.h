@@ -21,7 +21,6 @@
 #include "movement_manager.h"
 #include "selector_manager.h"
 #include "sound_player.h"
-#include "../fbasicvisual.h"
 
 using namespace MonsterSpace;
 
@@ -206,6 +205,7 @@ public:
 	virtual void				UpdatePositionAnimation	();
 	virtual void				set_ready_to_save		();
 	virtual CPhysicsShellHolder*		cast_physics_shell_holder	()	{return this;}
+	virtual CParticlesPlayer*			cast_particles_player		()	{return this;}
 };
 
 #include "custommonster_inline.h"

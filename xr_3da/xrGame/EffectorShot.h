@@ -29,6 +29,7 @@ public:
 
 			void	GetDeltaAngle		(Fvector& delta_angle);
 	virtual	void	SetRndSeed			(s32 Seed);
+	virtual CEffectorShot			*cast_effector_shot				()	{return this;}
 protected:
 			void	UpdateAngles	();
 			float	fAngleHorz;

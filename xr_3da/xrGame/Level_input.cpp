@@ -201,7 +201,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 			break;
 
 		if (CurrentEntity())		{
-			IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(CurrentEntity());
+			IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(smart_cast<CGameObject*>(CurrentEntity()));
 			if (IR)				IR->IR_OnKeyboardPress(key_binding[key]);
 		}
 	}break;
@@ -241,7 +241,7 @@ void CLevel::IR_OnKeyboardRelease(int key)
 	if ( Game().OnKeyboardRelease(key_binding[key]) ) return;
 
 	if (CurrentEntity())		{
-		IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(CurrentEntity());
+		IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(smart_cast<CGameObject*>(CurrentEntity()));
 		if (IR)				IR->IR_OnKeyboardRelease			(key_binding[key]);
 	}
 }
@@ -249,7 +249,7 @@ void CLevel::IR_OnKeyboardRelease(int key)
 void CLevel::IR_OnKeyboardHold(int key)
 {
 	if (CurrentEntity())		{
-		IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(CurrentEntity());
+		IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(smart_cast<CGameObject*>(CurrentEntity()));
 		if (IR)				IR->IR_OnKeyboardHold				(key_binding[key]);
 	}
 }
@@ -266,7 +266,7 @@ void CLevel::IR_OnMouseMove( int dx, int dy )
 {
 	if (pHUD->GetUI()->IR_OnMouseMove(dx,dy)) return;
 	if (CurrentEntity())		{
-		IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(CurrentEntity());
+		IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(smart_cast<CGameObject*>(CurrentEntity()));
 		if (IR)				IR->IR_OnMouseMove					(dx,dy);
 	}
 }

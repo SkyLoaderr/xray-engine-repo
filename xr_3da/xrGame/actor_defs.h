@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "../fbasicvisual.h"
+//#include "../fbasicvisual.h"
 
 class CMotionDef;
 

@@ -338,6 +338,7 @@ public:
 	virtual BOOL				net_SaveRelevant		()							{return inherited::net_SaveRelevant();}
 			bool				can_stand_here			();
 	virtual CPhysicsShellHolder*cast_physics_shell_holder	()	{return this;}
+	virtual CParticlesPlayer*	cast_particles_player		()	{return this;}
 };
 
 #include "ai_rat_inline.h"

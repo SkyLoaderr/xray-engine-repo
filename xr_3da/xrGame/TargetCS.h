@@ -44,4 +44,5 @@ public:
 	virtual void			activate_physic_shell();
 	virtual void			setup_physic_shell	();
 	virtual CPhysicsShellHolder*		cast_physics_shell_holder	()	{return this;}
+	virtual CParticlesPlayer*			cast_particles_player		()	{return this;}
 };

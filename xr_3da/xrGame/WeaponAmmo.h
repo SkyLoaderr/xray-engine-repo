@@ -25,6 +25,7 @@ public:
 	CWeaponAmmo(void);
 	virtual ~CWeaponAmmo(void);
 
+	virtual CWeaponAmmo		*cast_weapon_ammo	()	{return this;}
 	virtual void Load(LPCSTR section);
 	virtual BOOL net_Spawn(LPVOID DC);
 	virtual void net_Destroy();
