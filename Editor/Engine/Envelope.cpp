@@ -3,16 +3,6 @@
 
 #include "envelope.h"
 
-#ifdef LWO_EXPORTS
-	#include "fs.h"
-#else 
-#ifdef M_BORLAND
-	#include "fs.h"
-#else
-	#include "..\fs.h"
-#endif
-#endif
-
 CEnvelope::~CEnvelope(){
 	for (KeyIt k_it=keys.begin(); k_it!=keys.end(); k_it++)
     	_DELETE(*k_it);

@@ -4,16 +4,6 @@
 #include "motion.h"
 #include "envelope.h"
 
-#ifdef LWO_EXPORTS
-	#include "fs.h"
-#else 
-#ifdef M_BORLAND
-	#include "fs.h"
-#else
-	#include "..\fs.h"
-#endif
-#endif
-
 #define EOBJ_OMOTION   			0x1100
 #define EOBJ_SMOTION   			0x1200
 #define EOBJ_OMOTION_VERSION   	0x0003
