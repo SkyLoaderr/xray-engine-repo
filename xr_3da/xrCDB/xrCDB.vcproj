@@ -113,8 +113,8 @@
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile=".\Release/xrCDB.pch"
-				AssemblerListingLocation="$(IntDir)/"
-				ObjectFile="$(IntDir)/"
+				AssemblerListingLocation="Mixed\"
+				ObjectFile="Mixed\"
 				ProgramDataBaseFileName="$(OutDir)/"
 				BrowseInformation="0"
 				WarningLevel="3"
@@ -131,7 +131,8 @@
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
 				GenerateDebugInformation="TRUE"
-				ImportLibrary="x:\xrCDB.lib"/>
+				ImportLibrary="x:\xrCDB.lib"
+				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"

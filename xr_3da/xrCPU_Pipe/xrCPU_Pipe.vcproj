@@ -270,9 +270,9 @@
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile=".\Release/xrCPU_Pipe.pch"
 				AssemblerOutput="4"
-				AssemblerListingLocation=".\Release/"
-				ObjectFile=".\Release/"
-				ProgramDataBaseFileName=".\Release/"
+				AssemblerListingLocation="Mixed\"
+				ObjectFile="Mixed\"
+				ProgramDataBaseFileName="$(OutDir)/"
 				BrowseInformation="0"
 				WarningLevel="4"
 				SuppressStartupBanner="TRUE"
@@ -293,7 +293,8 @@
 				MapFileName="x:\xrCPU_Pipe.map"
 				MapExports="TRUE"
 				MapLines="TRUE"
-				ImportLibrary="x:\xrCPU_Pipe.lib"/>
+				ImportLibrary="x:\xrCPU_Pipe.lib"
+				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
