@@ -70,7 +70,7 @@ public:
 	IC	void		UnpackPosition	(Fvector& Pdest, const NodePosition& Psrc)
 	{
 		Pdest.x = float(Psrc[0])*m_header.size;
-		Pdest.y = (float(Psrc[1])/32767)*m_header.size_y;
+		Pdest.y = (float(Psrc[1])/65535)*m_header.size_y + m_header.aabb.min.y;
 		Pdest.z = float(Psrc[2])*m_header.size;
 	}
 	IC	DWORD		UnpackLink		(NodeLink& L)
@@ -78,14 +78,13 @@ public:
 
 	IC	void		PackPosition	(NodePosition& Pdest, const Fvector& Psrc)
 	{
-		float sy = 32767/m_header.size_y;
 		float sp = 1/m_header.size;
-		float sh = 0.5f*m_header.size;
-		
-		int px,py,pz;
-		px = iFloor((Psrc.x+sh)*sp+EPS_L);							Pdest[0]=short(px);
-		py = iFloor(Psrc.y*sy+EPS_L);		clamp(py,-32767,32767);	Pdest[1]=short(py);
-		pz = iFloor((Psrc.z+sh)*sp+EPS_L);							Pdest[2]=short(pz);
+		int px	= iFloor(Psrc.x*sp+EPS_L);
+		int py	= iFloor(65535.f*(Psrc.y-m_header.aabb.min.y)/(m_header.size_y)+EPS_L);
+		int pz	= iFloor(Psrc.z*sp+EPS_L);
+		clamp	(px,-32767,32767);	Pdest.x = s16	(px);
+		clamp	(py,0,     65535);	Pdest.y = u16	(py);
+		clamp	(pz,-32767,32767);	Pdest.z = s16	(pz);
 	}
 
 	// Utilities
