@@ -130,9 +130,13 @@ void CRenderTarget::e_render_noise	()
 	p0.set		(start_u,	start_v	);
 	p1.set		(end_u,		end_v	);
 
-	u32			Cblend				= iFloor		(param_noise*255.f);
-	clamp		(Cblend,0u,255u);
-	u32			Cgray				= param_noise_color | D3DCOLOR_RGBA	(0,0,0,Cblend);
+	Fcolor		c_gray, c_base, c_res;
+	c_base.set	(param_noise_color);
+	c_gray.set	(.502f,.502f,.502f,0);
+	c_res.lerp	(c_gray,c_base,param_noise);
+
+	s32			Cblend				= iFloor		((1.f-param_noise)*255.f);	clamp		(Cblend,0,255);
+	u32			Cgray				= subst_alpha	(c_res.get(),u32(Cblend));
 
 	// 
 	u32			Offset;

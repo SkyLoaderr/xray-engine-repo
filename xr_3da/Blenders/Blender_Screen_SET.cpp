@@ -118,7 +118,7 @@ void	CBlender_Screen_SET::Compile	(CBlender_Compile& C)
 			C.PassSET_Blend	(TRUE,	D3DBLEND_SRCALPHA,D3DBLEND_ONE,			TRUE,oAREF.value);
 			break;
 		case 6:	// MUL_2X + A-test
-			C.PassSET_Blend	(TRUE,	D3DBLEND_DESTCOLOR,D3DBLEND_SRCCOLOR,	TRUE,oAREF.value);
+			C.PassSET_Blend	(TRUE,	D3DBLEND_DESTCOLOR,D3DBLEND_SRCCOLOR,	FALSE,oAREF.value);
 			break;
 		case 7:	// SET (2r)
 			C.PassSET_Blend	(FALSE,	D3DBLEND_ONE,D3DBLEND_ZERO,				FALSE,0);
