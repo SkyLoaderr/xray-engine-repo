@@ -21,7 +21,6 @@ CSoundRender_Core*				SoundRender = 0;
 CSound_manager_interface*		Sound		= 0;
 
 CSoundRender_Core::CSoundRender_Core	()
-:Timer(false)
 {
 	bPresent					= FALSE;
     bEAX						= FALSE;
