@@ -6,13 +6,13 @@
 extern void LightPoint		(RAPID::XRCollide* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end);
 extern void Jitter_Select	(UVpoint* &Jitter, DWORD& Jcount);
 
-void CDeflector::L_Direct_Edge (UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size)
+void CDeflector::L_Direct_Edge (RAPID::XRCollide* DB, UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size)
 {
 	Fvector		vdir;
 	vdir.sub	(v2,v1);
-
+	
 	b_texture&	lm = layers.back().lm;
-
+	
 	UVpoint		size; 
 	size.u		= p2.u-p1.u;
 	size.v		= p2.v-p1.v;
@@ -20,7 +20,7 @@ void CDeflector::L_Direct_Edge (UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& 
 	int	dv		= iCeil(_abs(size.v)/texel_size);
 	int steps	= _max(du,dv);
 	if (steps<=0)	return;
-
+	
 	for (int I=0; I<=steps; I++)
 	{
 		float	time = float(I)/float(steps);
@@ -29,18 +29,18 @@ void CDeflector::L_Direct_Edge (UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& 
 		uv.v	= size.v*time+p1.v;
 		int	_x  = iFloor(uv.u*float(lm.dwWidth)); 
 		int _y	= iFloor(uv.v*float(lm.dwHeight));
-
+		
 		if ((_x<0)||(_x>=(int)lm.dwWidth))	continue;
 		if ((_y<0)||(_y>=(int)lm.dwHeight))	continue;
 		
 		DWORD& Lumel	= lm.pSurface[_y*lm.dwWidth+_x];
 		if (RGBA_GETALPHA(Lumel))			continue;
-
+		
 		// ok - perform lighting
 		Fcolor	C; C.set(0,0,0,0);
 		Fvector	P; P.direct(v1,vdir,time);
-		LightPoint	(&DB, C, P, N, LightsSelected.begin(), LightsSelected.end());
-
+		LightPoint	(DB, C, P, N, LightsSelected.begin(), LightsSelected.end());
+		
 		Fcolor	R;
 		R.lerp	(C,g_params.m_lm_amb_color,g_params.m_lm_amb_fogness);
 		R.a		= 1.f;
@@ -48,7 +48,7 @@ void CDeflector::L_Direct_Edge (UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& 
 	}
 }
 
-void CDeflector::L_Direct	(HASH& H)
+void CDeflector::L_Direct	(RAPID::XRCollide* DB, HASH& H)
 {
 	b_texture&	lm = layers.back().lm;
 
@@ -66,7 +66,7 @@ void CDeflector::L_Direct	(HASH& H)
 	Jitter_Select(Jitter, Jcount);
 	
 	// Lighting itself
-	DB.RayMode	(0);
+	DB->RayMode	(0);
 	
 	Fcolor		C[9];
 	for (DWORD J=0; J<9; J++)	C[J].set(0,0,0,0);
@@ -101,7 +101,7 @@ void CDeflector::L_Direct	(HASH& H)
 							if (F->Shader().flags.bLIGHT_Sharp)	{ wN.set(F->N); }
 							else								{ wN.from_bary(V1->N,V2->N,V3->N,B); wN.normalize(); }
 							try {
-								LightPoint	(&DB, C[J], wP, wN, LightsSelected.begin(), LightsSelected.end());
+								LightPoint	(DB, C[J], wP, wN, LightsSelected.begin(), LightsSelected.end());
 								Fcount		+= 1;
 							} catch (...) {
 								Msg("* ERROR (CDB). Recovered. ");
@@ -137,9 +137,9 @@ void CDeflector::L_Direct	(HASH& H)
 		Face*		F	= T.owner;
 		R_ASSERT	(F);
 		try {
-			L_Direct_Edge	(T.uv[0], T.uv[1], F->v[0]->P, F->v[1]->P, F->N, texel_size);
-			L_Direct_Edge	(T.uv[1], T.uv[2], F->v[1]->P, F->v[2]->P, F->N, texel_size);
-			L_Direct_Edge	(T.uv[2], T.uv[0], F->v[2]->P, F->v[0]->P, F->N, texel_size);
+			L_Direct_Edge	(DB,T.uv[0], T.uv[1], F->v[0]->P, F->v[1]->P, F->N, texel_size);
+			L_Direct_Edge	(DB,T.uv[1], T.uv[2], F->v[1]->P, F->v[2]->P, F->N, texel_size);
+			L_Direct_Edge	(DB,T.uv[2], T.uv[0], F->v[2]->P, F->v[0]->P, F->N, texel_size);
 		} catch (...)
 		{
 			Msg("* ERROR (Edge). Recovered. ");
