@@ -83,6 +83,7 @@ float		ps_r2_sun_depth_near_scale	= 1.00001f;			// 1.00001f
 float		ps_r2_sun_depth_near_bias	= -0.00004f;		// -0.00005f
 float		ps_r2_sun_lumscale			= 0.666f;			// 1.0f
 float		ps_r2_gmaterial				= 0.f;				// 
+float		ps_r2_zfill					= 0.1f;				// .1f
 
 #ifndef _EDITOR
 #include	"..\xr_ioconsole.h"
@@ -210,7 +211,6 @@ void		xrRender_initconsole	()
 
 	// R2-specific
 	CMD2(CCC_R2GM,		"r2em",					&ps_r2_gmaterial							);
-	CMD3(CCC_Mask,		"r2_zfill",				&ps_r2_ls_flags,			R2FLAG_ZFILL	);
 	CMD3(CCC_Mask,		"r2_tonemap",			&ps_r2_ls_flags,			R2FLAG_TONEMAP	);
 	CMD4(CCC_Float,		"r2_tonemap_middlegray",&ps_r2_tonemap_middlegray,	0.0f,	2.0f	);
 	CMD4(CCC_Float,		"r2_tonemap_adaptation",&ps_r2_tonemap_adaptation,	0.01f,	10.0f	);
@@ -226,7 +226,10 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Float,		"r2_ls_psm_kernel",		&ps_r2_ls_psm_kernel,		.1f,	3.f		);
 	CMD4(CCC_Float,		"r2_ls_ssm_kernel",		&ps_r2_ls_ssm_kernel,		.1f,	3.f		);
 	CMD4(CCC_Float,		"r2_ls_squality",		&ps_r2_ls_squality,			.001f,	3.f		);
-	
+
+	CMD3(CCC_Mask,		"r2_zfill",				&ps_r2_ls_flags,			R2FLAG_ZFILL	);
+	CMD4(CCC_Float,		"r2_zfill_depth",		&ps_r2_zfill,				.001f,	.5f		);
+
 	CMD3(CCC_Mask,		"r2_sun",				&ps_r2_ls_flags,			R2FLAG_SUN		);
 	CMD3(CCC_Mask,		"r2_sun_details",		&ps_r2_ls_flags,			R2FLAG_SUN_DETAILS);
 	CMD3(CCC_Mask,		"r2_sun_focus",			&ps_r2_ls_flags,			R2FLAG_SUN_FOCUS);
