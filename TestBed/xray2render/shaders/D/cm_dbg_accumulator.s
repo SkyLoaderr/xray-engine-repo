@@ -45,7 +45,7 @@ p2f 	p_main	( v2p_in IN )
   half4 D	= tex2D		(s_diffuse,		IN.Tex0);
   half4 L 	= tex2D		(s_accumulator, IN.Tex0);
   
-  half4 S	= half4		(C.w,C.w,C.w,C.w) * D.w;	// replicated specular * gloss
+  half4 S	= half4		(L.w,L.w,L.w,L.w) * D.w;	// replicated specular * gloss
   OUT.C 	= L + S;
   return OUT;
 }
