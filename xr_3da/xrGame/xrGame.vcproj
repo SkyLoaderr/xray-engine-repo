@@ -3964,46 +3964,6 @@
 						</File>
 					</Filter>
 				</Filter>
-				<Filter
-					Name="ScriptDebugger"
-					Filter="">
-					<File
-						RelativePath=".\mslotutils.h">
-					</File>
-					<File
-						RelativePath=".\script_callStack.cpp">
-					</File>
-					<File
-						RelativePath=".\script_callStack.h">
-					</File>
-					<File
-						RelativePath=".\script_debugger.cpp">
-					</File>
-					<File
-						RelativePath=".\script_debugger.h">
-					</File>
-					<File
-						RelativePath=".\script_debugger_messages.h">
-					</File>
-					<File
-						RelativePath=".\script_debugger_utils.cpp">
-					</File>
-					<File
-						RelativePath=".\script_debugger_utils.h">
-					</File>
-					<File
-						RelativePath=".\script_file.cpp">
-					</File>
-					<File
-						RelativePath=".\script_file.h">
-					</File>
-					<File
-						RelativePath=".\script_lua_helper.cpp">
-					</File>
-					<File
-						RelativePath=".\script_lua_helper.h">
-					</File>
-				</Filter>
 			</Filter>
 			<Filter
 				Name="ASound"
