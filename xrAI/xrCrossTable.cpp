@@ -34,7 +34,7 @@ void					vfRecurseUpdate(FLOAT_VECTOR &tDistances, CLevelGraph& tMap, xr_vector<
 	tMarks[dwStartNodeID] = false;
 }
 
-void					vfRecurseMark(CLevelGraph &tMap, xr_vector<bool> &tMarks, u32 dwStartNodeID)
+void					vfRecurseMark(const CLevelGraph &tMap, xr_vector<bool> &tMarks, u32 dwStartNodeID)
 {
 	CLevelGraph::CVertex		*tpNode = tMap.vertex(dwStartNodeID);
 	CLevelGraph::const_iterator	I, E;

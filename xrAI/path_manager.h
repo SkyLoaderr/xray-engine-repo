@@ -12,6 +12,9 @@
 #include "path_manager_params.h"
 #include "game_graph.h"
 #include "level_graph.h"
+#ifdef AI_COMPILER
+#include "test_table.h"
+#endif
 
 template <
 	typename _Graph,
@@ -618,3 +621,89 @@ public:
 		return					(inherited::estimate(node_index));
 	}
 };
+
+template <
+	typename _DataStorage,
+	typename _dist_type,
+	typename _index_type,
+	typename _iteration_type
+>	class CPathManager <
+		CLevelGraph,
+		_DataStorage,
+		PathManagers::SFlooder<
+			_dist_type,
+			_index_type,
+			_iteration_type
+		>,
+		_dist_type,
+		_index_type,
+		_iteration_type
+	> : public CPathManager <
+			CLevelGraph,
+			_DataStorage,
+			PathManagers::SBaseParameters<
+				_dist_type,
+				_index_type,
+				_iteration_type
+			>,
+			_dist_type,
+			_index_type,
+			_iteration_type
+		>
+{
+	typedef CLevelGraph _Graph;
+	typedef PathManagers::SFlooder<
+		_dist_type,
+		_index_type,
+		_iteration_type
+	> _Parameters;
+	typedef typename CPathManager <
+				_Graph,
+				_DataStorage,
+				PathManagers::SBaseParameters<
+					_dist_type,
+					_index_type,
+					_iteration_type
+				>,
+				_dist_type,
+				_index_type,
+				_iteration_type
+			> inherited;
+protected:
+	xr_vector<_index_type>	*m_flood;
+
+public:
+	virtual				~CPathManager	()
+	{
+	}
+
+	IC		void		setup			(
+				const _Graph			*_graph,
+				_DataStorage			*_data_storage,
+				xr_vector<_index_type>	*_path,
+				const _index_type		_start_node_index,
+				const _index_type		_goal_node_index,
+				_Parameters				&parameters
+			)
+	{
+		inherited::setup(
+			_graph,
+			_data_storage,
+			_path,
+			_start_node_index,
+			_goal_node_index,
+			parameters
+		);
+		m_flood			= parameters.m_flood;
+	}
+
+	IC	bool		is_goal_reached	(const _index_type node_index)
+	{
+		VERIFY					(m_flood);
+		m_flood->push_back		(node_index);
+		_Graph::CVertex			&tNode0 = *graph->vertex(node_index);
+		y1						= (float)(tNode0.position().y);
+		return					(false);
+	}
+};
+

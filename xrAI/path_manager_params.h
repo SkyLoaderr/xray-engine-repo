@@ -15,19 +15,52 @@ namespace PathManagers {
 		typename _iteration_type
 	>
 	struct SBaseParameters {
-		_index_type		max_visited_node_count;
 		_dist_type		max_range;
 		_iteration_type	max_iteration_count;
+		_index_type		max_visited_node_count;
 
 		IC	SBaseParameters(
-				_index_type		max_visited_node_count = _index_type(-1),
 				_dist_type		max_range = _dist_type(6000),
-				_iteration_type	max_iteration_count = _iteration_type(-1)
+				_iteration_type	max_iteration_count = _iteration_type(-1),
+				_index_type		max_visited_node_count = _index_type(-1)
 			) :
-			max_visited_node_count(max_visited_node_count),
 			max_range(max_range),
-			max_iteration_count(max_iteration_count)
+			max_iteration_count(max_iteration_count),
+			max_visited_node_count(max_visited_node_count)
 		{
+		}
+	};
+
+	template <
+		typename _dist_type,
+		typename _index_type,
+		typename _iteration_type
+	>
+	struct SFlooder  : public SBaseParameters<
+		_dist_type,
+		_index_type,
+		_iteration_type
+	> {
+		xr_vector<_index_type>	*m_flood;
+
+		IC	SFlooder (
+				xr_vector<_index_type>	&flood,
+				_dist_type				max_range = _dist_type(6000),
+				_iteration_type			max_iteration_count = _iteration_type(-1),
+				_index_type				max_visited_node_count = _index_type(-1)
+			)
+			:
+			SBaseParameters<
+				_dist_type,
+				_index_type,
+				_iteration_type
+			>(
+				max_range,
+				max_iteration_count,
+				max_visited_node_count
+			)
+		{
+			m_flood			= &flood;
 		}
 	};
 
@@ -44,15 +77,15 @@ namespace PathManagers {
 		bool	avoid_dynamic_obstacles;
 
 		IC	SObstacleParams (
-				_index_type		max_visited_node_count = _index_type(-1),
 				_dist_type		max_range = _dist_type(6000),
 				_iteration_type	max_iteration_count = _iteration_type(-1),
+				_index_type		max_visited_node_count = _index_type(-1),
 				bool			avoid_dynamic_obstacles = true
 			) :
 			SBaseParameters(
-				max_visited_node_count,
 				max_range,
-				max_iteration_count
+				max_iteration_count,
+				max_visited_node_count
 			),
 			avoid_dynamic_obstacles(avoid_dynamic_obstacles)
 		{
@@ -74,18 +107,18 @@ namespace PathManagers {
 		float	distance_weight;
 
 		IC SObstaclesLightCover(
-				_index_type		max_visited_node_count = _index_type(-1),
 				_dist_type		max_range = _dist_type(6000),
 				_iteration_type	max_iteration_count = _iteration_type(-1),
+				_index_type		max_visited_node_count = _index_type(-1),
 				bool			avoid_dynamic_obstacles = true,
 				float			light_weight = 10.f,
 				float			cover_weight = 20.f,
 				float			distance_weight = 40.f
 			) :
 			SObstacleParams (
-				max_visited_node_count,
 				max_range,
 				max_iteration_count,
+				max_visited_node_count,
 				avoid_dynamic_obstacles
 			),
 			light_weight(light_weight),
@@ -110,9 +143,9 @@ namespace PathManagers {
 		float					enemy_view_weight;
 
 		IC	SObstaclesLightCoverEnemy (
-				_index_type		max_visited_node_count = _index_type(-1),
 				_dist_type		max_range = _dist_type(6000),
 				_iteration_type	max_iteration_count = _iteration_type(-1),
+				_index_type		max_visited_node_count = _index_type(-1),
 				bool			avoid_dynamic_obstacles = true,
 				float			light_weight = 10.f,
 				float			cover_weight = 20.f,
@@ -122,9 +155,9 @@ namespace PathManagers {
 				float			enemy_view_weight = 100.f
 			) : 
 			SObstaclesLightCover(
-				max_visited_node_count,
 				max_range,
 				max_iteration_count,
+				max_visited_node_count,
 				avoid_dynamic_obstacles,
 				light_weight,
 				cover_weight,

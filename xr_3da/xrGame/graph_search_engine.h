@@ -52,14 +52,14 @@ public:
 
 	template <
 		typename _Graph,
-		typename _Parameters,
+		typename _Parameters
 	>
 	IC		bool	build_path				(
 				const _Graph			&graph, 
 				u32						start_node, 
 				u32						dest_node, 
 				xr_vector<u32>			&node_path,
-				const _Parameters		&parameters
+				_Parameters				&parameters
 			)
 	{
 		typedef CPathManager<_Graph, CDataStorage, _Parameters, _dist_type,_index_type,u32>	CPathManagerGeneric;
@@ -68,10 +68,10 @@ public:
 		CPathManagerGeneric			path_manager;
 		CAStarGeneric				a_star;
 
-		VERIFY						(graph->header().vertex_count() <= m_data_storage->get_max_node_count());
+		VERIFY						(graph.header().vertex_count() <= m_data_storage->get_max_node_count());
 
 		path_manager.setup			(
-			graph,
+			&graph,
 			m_data_storage,
 			&node_path,
 			start_node,
