@@ -30,7 +30,6 @@ USEFORM("ObjectList.cpp", frmObjectList);
 USEFORM("previewimage.cpp", frmPreviewImage);
 USEFORM("PropertiesEObject.cpp", frmPropertiesEObject);
 USEFORM("SceneProperties.cpp", frmSceneProperties);
-USEFORM("ShaderFunction.cpp", frmShaderFunction);
 USEFORM("Splash.cpp", frmSplash);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)

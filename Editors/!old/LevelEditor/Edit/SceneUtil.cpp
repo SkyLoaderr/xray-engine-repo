@@ -84,7 +84,7 @@ void EScene::GenObjectName( EObjClass cls_id, char *buffer, const char* pref )
         else   	  			sprintf( buffer, "%s%04d", ot->ClassName(), m_LastAvailObject++ );
 	}
 */
-    AnsiString result	= FHelper.GenerateName(pref&&pref[0]?pref:ot->ClassName(),4,FindObjectByNameCB);
+    AnsiString result	= FHelper.GenerateName(pref&&pref[0]?pref:ot->ClassName(),4,FindObjectByNameCB,true);
     strcpy				(buffer,result.c_str());
 }
 //------------------------------------------------------------------------------

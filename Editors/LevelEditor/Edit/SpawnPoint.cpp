@@ -24,7 +24,7 @@
 //----------------------------------------------------
 #define SPAWNPOINT_CHUNK_VERSION		0xE411
 #define SPAWNPOINT_CHUNK_POSITION		0xE412
-#define SPAWNPOINT_CHUNK_TEAMID			0xE413
+#define SPAWNPOINT_CHUNK_RPOINT			0xE413
 #define SPAWNPOINT_CHUNK_DIRECTION		0xE414
 #define SPAWNPOINT_CHUNK_SQUADID		0xE415
 #define SPAWNPOINT_CHUNK_GROUPID		0xE416
@@ -482,7 +482,11 @@ bool CSpawnPoint::Load(IReader& F){
         }
     	switch (m_Type){
         case ptRPoint:
-		    if (F.find_chunk(SPAWNPOINT_CHUNK_TEAMID)) 	m_RP_TeamID	= F.r_u32();
+		    if (F.find_chunk(SPAWNPOINT_CHUNK_RPOINT)){ 
+            	m_RP_TeamID	= F.r_u8();
+                m_RP_Type	= F.r_u8();
+                u16 res		= F.r_u16();
+            }
         break;
         case ptEnvMod:
 		    if (F.find_chunk(SPAWNPOINT_CHUNK_ENVMOD)){ 
@@ -524,7 +528,11 @@ void CSpawnPoint::Save(IWriter& F){
 		F.w_chunk	(SPAWNPOINT_CHUNK_TYPE,		&m_Type,	sizeof(u32));
     	switch (m_Type){
         case ptRPoint:
-	        F.w_chunk	(SPAWNPOINT_CHUNK_TEAMID,	&m_RP_TeamID,sizeof(u32));
+        	F.open_chunk(SPAWNPOINT_CHUNK_RPOINT);
+            F.w_u8		(m_RP_TeamID);
+            F.w_u8		(m_RP_Type);
+            F.w_u16		(0);
+            F.close_chunk();
         break;
         case ptEnvMod:
         	F.open_chunk(SPAWNPOINT_CHUNK_ENVMOD);
@@ -553,7 +561,9 @@ bool CSpawnPoint::ExportGame(SExportStreams& F)
 	        F.rpoint.stream.open_chunk	(F.rpoint.chunk++);
             F.rpoint.stream.w_fvector3	(PPosition);
             F.rpoint.stream.w_fvector3	(PRotation);
-            F.rpoint.stream.w_u32		(m_RP_TeamID);
+            F.rpoint.stream.w_u8		(m_RP_TeamID);
+            F.rpoint.stream.w_u8		(m_RP_Type);
+            F.rpoint.stream.w_u16		(0);
 			F.rpoint.stream.close_chunk	();
         break;
         case ptEnvMod:
@@ -581,7 +591,8 @@ void CSpawnPoint::FillProp(LPCSTR pref, PropItemVec& items)
     }else{
     	switch (m_Type){
         case ptRPoint:{
-			PHelper.CreateU32	(items, FHelper.PrepareKey(pref,"Respawn Point\\Team"), &m_RP_TeamID, 0,64,1);
+			PHelper.CreateU8	(items, FHelper.PrepareKey(pref,"Respawn Point\\Team"), 	&m_RP_TeamID, 	0,7);
+			PHelper.CreateToken<u8>(items, FHelper.PrepareKey(pref,"Respawn Point\\Type"), 	&m_RP_Type, 	rpoint_type);
         }break;
         case ptEnvMod:{
         	PHelper.CreateFloat	(items, FHelper.PrepareKey(pref,"Environment Modificator\\Radius"),			&m_EM_Radius, 	EPS_L,10000.f);

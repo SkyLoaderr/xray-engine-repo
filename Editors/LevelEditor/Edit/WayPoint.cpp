@@ -314,7 +314,7 @@ CWayPoint* CWayObject::AppendWayPoint()
 {
 	for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++)
     	(*it)->Select(0);
-    m_WayPoints.push_back(xr_new<CWayPoint>(FHelper.GenerateName("wp",2,FindWPByName).c_str()));
+    m_WayPoints.push_back(xr_new<CWayPoint>(FHelper.GenerateName("wp",2,FindWPByName,false).c_str()));
     m_WayPoints.back()->m_bSelected=true;
     return m_WayPoints.back();
 }

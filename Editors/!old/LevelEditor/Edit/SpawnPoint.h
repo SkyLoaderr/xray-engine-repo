@@ -49,7 +49,11 @@ public:
 
     EPointType		m_Type;
     union{
-	    u32			m_RP_TeamID;
+    	struct{
+		    u8		m_RP_TeamID;
+		    u8		m_RP_Type;
+            u16		reserved;
+        };
         struct{
         	float	m_EM_Radius;
             float 	m_EM_Power;

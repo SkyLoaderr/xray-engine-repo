@@ -17,17 +17,16 @@
       intermediate\FrameWayPoint.obj intermediate\LeftBar.obj 
       intermediate\ObjectList.obj intermediate\previewimage.obj 
       intermediate\PropertiesEObject.obj intermediate\SceneProperties.obj 
-      intermediate\ShaderFunction.obj intermediate\Splash.obj 
-      intermediate\UI_LevelTools.obj intermediate\UI_LevelMain.obj 
-      intermediate\WayPoint.obj intermediate\AIMapExport.obj 
-      intermediate\Builder.obj intermediate\BuilderCF.obj 
-      intermediate\BuilderCore.obj intermediate\BuilderGame.obj 
-      intermediate\BuilderLTX.obj intermediate\BuilderOGF.obj 
-      intermediate\BuilderRemote.obj intermediate\Cursor3D.obj 
-      intermediate\Custom2DProjector.obj intermediate\CustomObjectLE.obj 
-      intermediate\ESceneDOTools.obj intermediate\EditObjectExportLWO.obj 
-      intermediate\ELight.obj intermediate\EParticlesObject.obj 
-      intermediate\ESceneAIMapTools.obj 
+      intermediate\Splash.obj intermediate\UI_LevelTools.obj 
+      intermediate\UI_LevelMain.obj intermediate\WayPoint.obj 
+      intermediate\AIMapExport.obj intermediate\Builder.obj 
+      intermediate\BuilderCF.obj intermediate\BuilderCore.obj 
+      intermediate\BuilderGame.obj intermediate\BuilderLTX.obj 
+      intermediate\BuilderOGF.obj intermediate\BuilderRemote.obj 
+      intermediate\Cursor3D.obj intermediate\Custom2DProjector.obj 
+      intermediate\CustomObjectLE.obj intermediate\ESceneDOTools.obj 
+      intermediate\EditObjectExportLWO.obj intermediate\ELight.obj 
+      intermediate\EParticlesObject.obj intermediate\ESceneAIMapTools.obj 
       intermediate\ESceneAIMapTools_Controls.obj 
       intermediate\ESceneAIMapTools_Generate.obj 
       intermediate\ESceneAIMapTools_MotionSimulator.obj 
@@ -88,7 +87,7 @@
       FrameEmitter.dfm FrameGroup.dfm FrameLight.dfm FrameObject.dfm 
       FramePortal.dfm FramePS.dfm FrameSector.dfm FrameShape.dfm FrameSpawn.dfm 
       FrameWayPoint.dfm LeftBar.dfm ObjectList.dfm previewimage.dfm 
-      PropertiesEObject.dfm SceneProperties.dfm ShaderFunction.dfm Splash.dfm"/>
+      PropertiesEObject.dfm SceneProperties.dfm Splash.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value="elpackB6.lib editor.lib bcbsmp.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib"/>
@@ -163,7 +162,6 @@
       <FILE FILENAME="previewimage.cpp" FORMNAME="frmPreviewImage" UNITNAME="previewimage" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="PropertiesEObject.cpp" FORMNAME="frmPropertiesEObject" UNITNAME="PropertiesEObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SceneProperties.cpp" FORMNAME="frmSceneProperties" UNITNAME="SceneProperties" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="ShaderFunction.cpp" FORMNAME="frmShaderFunction" UNITNAME="ShaderFunction" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Splash.cpp" FORMNAME="frmSplash" UNITNAME="Splash" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\UI_LevelTools.cpp" FORMNAME="" UNITNAME="UI_LevelTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\UI_LevelMain.cpp" FORMNAME="" UNITNAME="UI_LevelMain" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
