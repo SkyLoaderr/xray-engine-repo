@@ -65,7 +65,7 @@ public:
 
 	//можно ли положить элемент в слот, рюкзак или на пояс
 	bool CanPutInSlot(PIItem pIItem) const;
-	bool CanPutInBelt(PIItem pIItem) const;
+	bool CanPutInBelt(PIItem pIItem);
 	bool CanPutInRuck(PIItem pIItem) const;
 
 	//можно ли взять вещь

@@ -117,7 +117,7 @@ bool CInventory::Take(CGameObject *pObj, bool bNotActivate, bool strict_placemen
 	pIItem->m_pInventory = this;
 	pIItem->m_drop = false;
 
-	m_all.insert(pIItem);
+	m_all.push_back(pIItem);
 
 	if(!strict_placement)
 		pIItem->m_eItemPlace = eItemPlaceUndefined;
@@ -179,7 +179,7 @@ bool CInventory::Drop(CGameObject *pObj, bool call_drop)
 {
 	CInventoryItem *pIItem = smart_cast<CInventoryItem*>(pObj);
 	
-	if(pIItem && (m_all.find(pIItem) != m_all.end())) 
+	if(pIItem && (std::find(m_all.begin(),m_all.end(),pIItem) != m_all.end())) 
 	{
 		if (pIItem->GetSlot() == m_iActiveSlot && pIItem->GetSlot() != 0xffffffff &&
 			m_slots[pIItem->GetSlot()].m_pIItem == pIItem)
@@ -190,7 +190,7 @@ bool CInventory::Drop(CGameObject *pObj, bool call_drop)
 		if (InRuck(pIItem) || Ruck(pIItem))
 		{
 			m_ruck.erase(std::find(m_ruck.begin(), m_ruck.end(), pIItem));
-			m_all.erase(pIItem);
+			m_all.erase(std::find(m_ruck.begin(), m_ruck.end(), pIItem));
 			pIItem->m_pInventory = NULL;
 
 			if (call_drop && smart_cast<CInventoryItem*>(pObj))
@@ -922,7 +922,7 @@ bool CInventory::CanPutInSlot(PIItem pIItem) const
 }
 //проверяет можем ли поместить вещь на пояс,
 //при этом реально ничего не меняется
-bool CInventory::CanPutInBelt(PIItem pIItem) const
+bool CInventory::CanPutInBelt(PIItem pIItem)
 {
 	if(InBelt(pIItem)) return false;
 	if(!m_bBeltUseful) return false;
