@@ -388,9 +388,6 @@ extern int			psNET_ServerUpdate;
 extern int			psNET_ServerPending;
 extern int			psNET_DedicatedSleep;
 extern char			psNET_Name[32];
-//extern int			psNET_Port;
-extern int			psSheduler;
-extern float		psShedulerLoadBalance;
 extern Flags32		psEnvFlags;
 extern float		r__dtex_range;
 ENGINE_API int			ps_r__Supersample			= 1;
@@ -420,8 +417,6 @@ void CCC_Register()
 	CMD3(CCC_Mask,		"mt_sound",				&psDeviceFlags,			mtSound);
 	CMD3(CCC_Mask,		"mt_physics",			&psDeviceFlags,			mtPhysics);
 	CMD3(CCC_Mask,		"mt_network",			&psDeviceFlags,			mtNetwork);
-	CMD4(CCC_Integer,	"mt_sheduler",			&psSheduler,			1000,	100000	);
-	CMD4(CCC_Float,		"mt_sheduler_load",		&psShedulerLoadBalance,	.1f,	10.f	);
 	
 	// Events
 	CMD1(CCC_E_Dump,	"e_list"				);

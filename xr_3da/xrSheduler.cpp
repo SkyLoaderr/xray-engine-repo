@@ -2,8 +2,9 @@
 #include "xrSheduler.h"
 #include "xr_object.h"
 
-int			psSheduler				= 3000;
-float		psShedulerLoadBalance	= 1.f;
+float			psShedulerCurrent		= 10.f	;
+float			psShedulerTarget		= 10.f	;
+const	float	psShedulerReaction		= 0.1f	;
 /*
 LPVOID 		fiber_main				= 0;
 LPVOID		fiber_thread			= 0;
@@ -149,11 +150,11 @@ void CSheduler::ProcessStep			()
 		}
 
 		// Calc next update interval
-		u32		dwMin				= iFloor					(1.f*T.Object->shedule.t_min);
-		u32		dwMax				= iFloor					(1.f*T.Object->shedule.t_max);
+		u32		dwMin				= _max(u32(30),T.Object->shedule.t_min);
+		u32		dwMax				= (1000+T.Object->shedule.t_max)/2;
 		float	scale				= T.Object->shedule_Scale	(); 
 		u32		dwUpdate			= dwMin+iFloor(float(dwMax-dwMin)*scale);
-		clamp	(dwUpdate,u32(_max(dwMin,u32(10))),dwMax);
+		clamp	(dwUpdate,u32(_max(dwMin,u32(20))),dwMax);
 
 		// Fill item structure
 		Item	TNext;
@@ -183,14 +184,19 @@ void CSheduler::ProcessStep			()
 		LPCSTR		N				= O?O->cName().c_str():"unknown";
 		VERIFY3						(T.Object->dbg_update_shedule == T.Object->dbg_startframe, "Broken sequence of calls to 'shedule_Update'", O?*O->cName():"unknown object" );
 		if (delta_ms> 3*dwUpdate)	{
-			Msg	("! xrSheduler: failed to shedule object [%s] (%dms)",			N, delta_ms	);
+			//Msg	("! xrSheduler: failed to shedule object [%s] (%dms)",		N, delta_ms	);
 		}
 		if (execTime> 10)			{
 			Msg	("! xrSheduler: too much time consumed by object [%s] (%dms)",	N, execTime	);
 		}
 #endif
 
-		if (CPU::GetCycleCount() > cycles_limit)	break;
+		// 
+		if (CPU::GetCycleCount() > cycles_limit)	{
+			// we have maxed out the load - increase heap
+			psShedulerTarget	+= psShedulerReaction * 2;
+			break;
+		}
 	}
 
 	// Push "processed" back
@@ -198,6 +204,9 @@ void CSheduler::ProcessStep			()
 		Push	(ItemsProcessed.back())	;
 		ItemsProcessed.pop_back		()	;
 	}
+
+	// always try to decrease target
+	psShedulerTarget	-= psShedulerReaction;
 }
 /*
 void CSheduler::Switch				()
@@ -211,7 +220,6 @@ void CSheduler::Switch				()
 */
 void CSheduler::Update				()
 {
-//	u32	mcs							= psSheduler;
 	u32	dwTime						= Device.dwTimeGlobal;
 
 	// Log				("------------- CSheduler::Update: ",u32(Device.dwFrame));
@@ -231,7 +239,9 @@ void CSheduler::Update				()
 	// Normal (sheduled)
 	Device.Statistic.Sheduler.Begin	();
 	cycles_start					= CPU::GetCycleCount			();
-	cycles_limit					= CPU::cycles_per_milisec * u64	(20) + cycles_start;
+	cycles_limit					= CPU::cycles_per_milisec * u64	(iCeil(psShedulerCurrent)) + cycles_start;
 	ProcessStep						();
+	clamp							(psShedulerTarget,3.f,50.f);
+	psShedulerCurrent				= 0.9f*psShedulerCurrent + 0.1f*psShedulerTarget;
 	Device.Statistic.Sheduler.End	();
 }

@@ -153,9 +153,9 @@ void CStats::Show()
 #define PPP(a) (100.f*float(a)/float(EngineTOTAL.result))
 		F.OutNext	("*** ENGINE:  %2.2fms",EngineTOTAL.result);	
 		F.OutNext	("Memory:      %2.2fa",fMem_calls);
-		F.OutNext	("uSheduled:   %2.2fms, %2.1f%%",Sheduler.result,		PPP(Sheduler.result));
 		F.OutNext	("uClients:    %2.2fms, %2.1f%%",UpdateClient.result,	PPP(UpdateClient.result));
-		F.OutNext	("uScripts:    %2.2fms, %d",Scripting.result,Scripting.count);
+		F.OutNext	("uSheduler:   %2.2fms, %2.1f%%",Sheduler.result,		PPP(Sheduler.result));
+		F.OutNext	("uSheduler_L: %2.2fms",fShedulerLoad);
 		F.OutNext	("spInsert:    %2.2fms, %2.1f%%",g_SpatialSpace->stat_insert.result, PPP(g_SpatialSpace->stat_insert.result));
 		F.OutNext	("spRemove:    %2.2fms, %2.1f%%",g_SpatialSpace->stat_remove.result, PPP(g_SpatialSpace->stat_remove.result));
 		F.OutNext	("Physics:     %2.2fms, %2.1f%%",Physics.result,		PPP(Physics.result));	
@@ -196,9 +196,9 @@ void CStats::Show()
 		F.OutNext	("  HIT/MISS:  %d/%d",  snd._cache_hits, snd._cache_misses);
 		F.OutSkip	();
 		F.OutNext	("Input:       %2.2fms",Input.result);
-		F.OutNext	("clRAY:       %2.2fms, %d, %2.0fK",clRAY.result,clRAY.count,r_ps);
-		F.OutNext	("clBOX:       %2.2fms, %d, %2.0fK",clBOX.result,clBOX.count,b_ps);
-		F.OutNext	("clFRUSTUM:   %2.2fms, %d",clFRUSTUM.result,clFRUSTUM.count);
+		F.OutNext	("clRAY:       %2.2fms, %d, %2.0fK",clRAY.result,		clRAY.count,r_ps);
+		F.OutNext	("clBOX:       %2.2fms, %d, %2.0fK",clBOX.result,		clBOX.count,b_ps);
+		F.OutNext	("clFRUSTUM:   %2.2fms, %d",		clFRUSTUM.result,	clFRUSTUM.count	);
 		F.OutSkip	();
 		F.OutNext	("netClient:   %2.2fms, %d",netClient.result,netClient.count);
 		F.OutNext	("netServer:   %2.2fms, %d",netServer.result,netServer.count);

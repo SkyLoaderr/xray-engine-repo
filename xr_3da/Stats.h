@@ -15,15 +15,15 @@ class ENGINE_API CStats
 public:
 	CGameFont*	pFont;
 
-	float		fFPS,fRFPS,fTPS;				// FPS, RenderFPS, TPS
-	float		fMem_calls;
-	u32			dwMem_calls;
+	float		fFPS,fRFPS,fTPS		;			// FPS, RenderFPS, TPS
+	float		fMem_calls			;
+	u32			dwMem_calls			;
 	u32			dwSND_Played,dwSND_Allocated;	// Play/Alloc
+	float		fShedulerLoad		;
 
 	CStatTimer	EngineTOTAL;		// 
 	CStatTimer	Sheduler;			// 
 	CStatTimer	UpdateClient;		// 
-	CStatTimer	Scripting;			// 
 	CStatTimer	Physics;			// movement+collision
 	CStatTimer	ph_collision;		// collision
 	CStatTimer	ph_core;			// collision
