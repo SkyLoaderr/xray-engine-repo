@@ -242,8 +242,8 @@ public:
 	void							vfUpdateTrader			(CALifeHuman			*tpALifeHuman);
 	void							vfUpdateHumanGroup		(CALifeHumanGroup		*tpALifeHumanGroup);
 	void							vfUpdateHuman			(CALifeHuman			*tpALifeHuman);
-	void							vfProcessItems			(CALifeHumanParams		&tHumanParams, _GRAPH_ID tGraphID, float fMaxItemMass);
-	void							vfCheckForItems			(CALifeHumanAbstract	*tpALifeHumanAbstract);
+	bool							bfProcessItems			(CALifeHumanParams		&tHumanParams, _GRAPH_ID tGraphID, float fMaxItemMass);
+	bool							bfCheckForItems			(CALifeHumanAbstract	*tpALifeHumanAbstract);
 	void							vfCheckForDeletedEvents	(CALifeHumanAbstract	*tpALifeHumanAbstract);
 	void							vfCheckForTheBattle		(CALifeMonsterAbstract	*tpALifeMonsterAbstract);
 	void							vfChooseNextRoutePoint	(CALifeMonsterAbstract	*tpALifeMonsterAbstract);

@@ -110,7 +110,7 @@ void CAI_ALife::vfUpdateHuman(CALifeHuman *tpALifeHuman)
 			break;
 		}
 		case eTaskStateGoing : {
-			if ((tpALifeHuman->m_dwCurNode >= (tpALifeHuman->m_tpaVertices.size() - 1)) && (tpALifeHuman->m_tGraphID == tpALifeHuman->m_tNextGraphID)) {
+			if ((tpALifeHuman->m_dwCurNode + 1 >= (tpALifeHuman->m_tpaVertices.size())) && (tpALifeHuman->m_tGraphID == tpALifeHuman->m_tNextGraphID)) {
 				if (bfCheckIfTaskCompleted(tpALifeHuman)) {
 					Level().AI.m_tpAStar->ffFindMinimalPath(tpALifeHuman->m_tGraphID,m_tObjectRegistry.m_tppMap[tpALifeHuman->m_tCurTask.tCustomerID]->m_tGraphID,tpALifeHuman->m_tpaVertices);
 					tpALifeHuman->m_dwCurNode = 0;
@@ -167,6 +167,5 @@ void CAI_ALife::vfUpdateHuman(CALifeHuman *tpALifeHuman)
 	};
 	vfChooseNextRoutePoint	(tpALifeHuman);
 	vfCheckForTheBattle		(tpALifeHuman);
-	vfCheckForItems			(tpALifeHuman);
 	vfCheckForDeletedEvents	(tpALifeHuman);
 }

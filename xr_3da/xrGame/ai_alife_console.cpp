@@ -350,8 +350,8 @@ void CAI_ALife::vfTaskInfo(_TASK_ID &tTaskID)
 		Msg("* Object ID   : %d",tTask.tObjectID);
 	}
 	else if (tTask.tTaskType == eTaskTypeSearchForItemOL) {
-		Msg("* Location ID : %d",tTask.tGraphID);
-		Msg("* Object ID   : %d",tTask.tLocationID);
+		Msg("* Location ID : %d",tTask.tLocationID);
+		Msg("* Object ID   : %d",tTask.tObjectID);
 	}
 	else if (tTask.tTaskType == eTaskTypeSearchForItemCG) {
 		string64 tString;
@@ -364,7 +364,7 @@ void CAI_ALife::vfTaskInfo(_TASK_ID &tTaskID)
 		string64 tString;
 		memcpy(tString,&(tTask.tClassID),sizeof(tTask.tClassID));
 		tString[sizeof(tTask.tClassID)] = 0;
-		Msg("* Location ID : %d",tTask.tGraphID);
+		Msg("* Location ID : %d",tTask.tLocationID);
 		Msg("* Class ID    : %d (%s)",tTask.tClassID,tString);
 	}
 	string4096	S;
