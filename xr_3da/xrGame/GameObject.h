@@ -185,7 +185,7 @@ public:
 		return				(m_ini_file);
 	}
 protected:
-			bool			frame_check			(u32 &frame)
+	IC		bool			frame_check			(u32 &frame)
 			{
 				if (Device.dwFrame == frame)	return	(false);
 				frame		= Device.dwFrame	;
