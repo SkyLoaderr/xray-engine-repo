@@ -220,6 +220,47 @@ void	IReader::r_stringZ	(char *dest)
 	*dest	=	0;
 	Pos		++;
 };
+void	IReader::skip_stringZ	()
+{
+	char *src = (char *) data;
+	while ((src[Pos]!=0) && (!eof())) Pos++;
+	Pos		++;
+};
+u32 	IReader::find_chunk		(u32 ID, BOOL* bCompressed)	
+{
+	u32	dwSize,dwType;
+
+	rewind();
+	while (!eof()) {
+		dwType = r_u32();
+		dwSize = r_u32();
+		if (dwType&CFS_AlignMark) advance(correction(tell()));
+		if ((dwType&(~CFS_CompressMark)) == ID) {
+			if (bCompressed) *bCompressed = dwType&CFS_CompressMark;
+			return dwSize;
+		}
+		else	advance(dwSize);
+	}
+	return 0;
+};
+BOOL	IReader::r_chunk		(u32 ID, void *dest)	// чтение XR Chunk'ов (4b-ID,4b-size,??b-data)
+{
+	u32	dwSize = find_chunk(ID);
+	if (dwSize!=0) {
+		r(dest,dwSize);
+		return TRUE;
+	} else return FALSE;
+};
+BOOL	IReader::r_chunk_safe	(u32 ID, void *dest, u32 dest_size)	// чтение XR Chunk'ов (4b-ID,4b-size,??b-data)
+{
+	u32	dwSize = find_chunk(ID);
+	if (dwSize!=0) {
+		R_ASSERT(dwSize==dest_size);
+		r(dest,dwSize);
+		return TRUE;
+	} else return FALSE;
+};
+
 
 
 //---------------------------------------------------

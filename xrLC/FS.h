@@ -141,6 +141,7 @@ public:
 
 	void			r_string	(char *dest);
 	void			r_stringZ	(char *dest);
+	void			skip_stringZ();
 
 #ifdef _EDITOR
 	IC void			r_stringZ	(AnsiString& dest)
@@ -151,12 +152,6 @@ public:
 		Pos		++;
 	};
 #endif
-	IC void			skip_stringZ()
-	{
-		char *src = (char *) data;
-		while ((src[Pos]!=0) && (!eof())) Pos++;
-		Pos		++;
-	};
 	IC u64			r_u64		()			{	u64 tmp;	r(&tmp,sizeof(tmp)); return tmp;	};
 	IC u32			r_u32		()			{	u32 tmp;	r(&tmp,sizeof(tmp)); return tmp;	};
 	IC u16			r_u16		()			{	u16 tmp;	r(&tmp,sizeof(tmp)); return tmp;	};
@@ -178,42 +173,11 @@ public:
 	IC void			rewind		()			{	seek(0); }
 	
 	// поиск XR Chunk'ов - возврат - размер или 0
-	IC u32 			find_chunk	(u32 ID, BOOL* bCompressed=0)	
-	{
-		u32	dwSize,dwType;
-		
-		rewind();
-		while (!eof()) {
-			dwType = r_u32();
-			dwSize = r_u32();
-			if (dwType&CFS_AlignMark) advance(correction(tell()));
-			if ((dwType&(~CFS_CompressMark)) == ID) {
-				if (bCompressed) *bCompressed = dwType&CFS_CompressMark;
-				return dwSize;
-			}
-			else	advance(dwSize);
-		}
-		return 0;
-	};
-	IC BOOL			r_chunk(u32 ID, void *dest)	// чтение XR Chunk'ов (4b-ID,4b-size,??b-data)
-	{
-		u32	dwSize = find_chunk(ID);
-		if (dwSize!=0) {
-			r(dest,dwSize);
-			return TRUE;
-		} else return FALSE;
-	};
-	IC BOOL			r_chunk_safe	(u32 ID, void *dest, u32 dest_size)	// чтение XR Chunk'ов (4b-ID,4b-size,??b-data)
-	{
-		u32	dwSize = find_chunk(ID);
-		if (dwSize!=0) {
-			R_ASSERT(dwSize==dest_size);
-			r(dest,dwSize);
-			return TRUE;
-		} else return FALSE;
-	};
-	IReader*		open_chunk(u32 ID);
-	void			close();
+	u32 			find_chunk	(u32 ID, BOOL* bCompressed=0);	
+	BOOL			r_chunk		(u32 ID, void *dest);					// чтение XR Chunk'ов (4b-ID,4b-size,??b-data)
+	BOOL			r_chunk_safe(u32 ID, void *dest, u32 dest_size);	// чтение XR Chunk'ов (4b-ID,4b-size,??b-data)
+	IReader*		open_chunk	(u32 ID);
+	void			close		();
 };
 
 class XRCORE_API CVirtualFileRW : public IReader
