@@ -26,7 +26,7 @@ public:
 	virtual void			Play			()	=0;
 
 	virtual void			shedule_Update		(u32 dt);
-	virtual	IRenderable*	dcast_Renderable	()	{ return 0;	}
+	virtual	IRenderable*	dcast_Renderable	()				{ return this;	}
 };
 
 #endif
