@@ -222,6 +222,8 @@ LONG UnhandledFilter	( struct _EXCEPTION_POINTERS *pExceptionInfo )
 
 			if (hFile!=INVALID_HANDLE_VALUE)
 			{
+				backend	("*** Internal Error ***\n",0,0);
+
 				_MINIDUMP_EXCEPTION_INFORMATION ExInfo;
 
 				ExInfo.ThreadId				= ::GetCurrentThreadId();
