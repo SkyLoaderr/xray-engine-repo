@@ -133,6 +133,20 @@ CBuild::CBuild(b_transfer * L)
 		
 		// analyze thumbnail information
 		R_ASSERT(THM.ReadChunk(THM_CHUNK_TEXTUREPARAM,&BT.THM));
+		/*
+		if (strstr(th_name,"terrain"))	{
+			Log("BT.THM.flag.bAlphaBorder",BT.THM.flag.bAlphaBorder?"TRUE":"FALSE");
+			BT.THM.flag.bBinaryAlpha;
+			BT.THM.flag.bColorBorder;
+			BT.THM.flag.bDitherColor;
+			BT.THM.flag.bDitherEachMIPLevel;
+			BT.THM.flag.bDuDvMap;
+			BT.THM.flag.bFadeToAlpha;
+			BT.THM.flag.bFadeToColor;
+			BT.THM.flag.bGenerateMipMaps;
+			BT.THM.flag.bGreyScale;
+		}
+		*/
 		
 		// load surface if it has an alpha channel or has "implicit lighting" flag
 		BT.dwWidth	= BT.THM.width;
