@@ -70,7 +70,7 @@ void CActorCondition::LoadCondition(LPCSTR entity_section)
 //вычисление параметров с ходом времени
 void CActorCondition::UpdateCondition()
 {
-	if (psActorFlags.test(AF_GODMODE)) return;
+	if (GodMode())/*(psActorFlags.test(AF_GODMODE))*/ return;
 	if (!object().g_Alive()) return;
 	
 //	if (object().Remote()) return;
@@ -87,7 +87,7 @@ void CActorCondition::UpdateCondition()
 
 CWound* CActorCondition::ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element)
 {
-	if (psActorFlags.test(AF_GODMODE)) return NULL;
+	if (GodMode())/*(psActorFlags.test(AF_GODMODE))*/ return NULL;
 	return inherited::ConditionHit(who, hit_power, hit_type, element);
 }
 

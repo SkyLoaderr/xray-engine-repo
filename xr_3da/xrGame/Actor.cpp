@@ -420,7 +420,7 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 		{
 			float hit_power	= HitArtefactsOnBelt(iLost, hit_type);
 
-			if (psActorFlags.test(AF_GODMODE))
+			if (GodMode())//psActorFlags.test(AF_GODMODE))
 			{
 				inherited::Hit(0.f,dir,who,element,position_in_bone_space,impulse, hit_type);
 				return;

@@ -8,3 +8,12 @@
 
 extern Flags32 psActorFlags;
 
+#include "game_base_space.h"
+#include "Level.h"
+IC BOOL		GodMode	()	
+{ 
+	if (GameID() == GAME_SINGLE) 
+		return psActorFlags.test(AF_GODMODE); 
+	return FALSE;	
+}
+

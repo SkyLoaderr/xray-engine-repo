@@ -201,7 +201,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 
 
 			//уменьшить силу игрока из-за выполненого прыжка
-			if (!psActorFlags.test(AF_GODMODE))	
+			if (!GodMode())//(!psActorFlags.test(AF_GODMODE))	
 				conditions().ConditionJump(inventory().TotalWeight()/
 				inventory().GetMaxWeight());
 		}
