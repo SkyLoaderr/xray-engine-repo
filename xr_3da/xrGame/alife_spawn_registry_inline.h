@@ -10,7 +10,7 @@
 
 IC	const CALifeSpawnHeader &CALifeSpawnRegistry::header	() const
 {
-	return				(m_header);
+	return					(m_header);
 }
 
 IC	void CALifeSpawnRegistry::assign_artefact_position		(CSE_ALifeAnomalousZone	*anomaly, CSE_ALifeDynamicObject *object)
@@ -27,7 +27,7 @@ IC	void CALifeSpawnRegistry::assign_artefact_position		(CSE_ALifeAnomalousZone	*
 #endif
 }
 
-IC	const ALife::D_OBJECT_P_VECTOR &CALifeSpawnRegistry::spawns	() const
+IC	const CALifeSpawnRegistry::SPAWN_GRAPH &CALifeSpawnRegistry::spawns	() const
 {
 	return					(m_spawns);
 }
@@ -39,5 +39,5 @@ IC	const ALife::ITEM_SET_MAP &CALifeSpawnRegistry::artefact_anomaly_map	() const
 
 IC	bool CALifeSpawnRegistry::valid_spawn_id				(ALife::_SPAWN_ID spawn_id) const
 {
-	return					((spawn_id >=0) && (spawn_id < (ALife::_SPAWN_ID)m_spawns.size()));
+	return					(!!m_spawns.vertex(spawn_id));
 }

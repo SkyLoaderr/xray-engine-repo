@@ -1740,6 +1740,19 @@
 									RelativePath=".\alife_spawn_registry_header_inline.h">
 								</File>
 							</Filter>
+							<Filter
+								Name="server_entity_wrapper"
+								Filter="">
+								<File
+									RelativePath=".\server_entity_wrapper.cpp">
+								</File>
+								<File
+									RelativePath=".\server_entity_wrapper.h">
+								</File>
+								<File
+									RelativePath=".\server_entity_wrapper_inline.h">
+								</File>
+							</Filter>
 						</Filter>
 						<Filter
 							Name="story_registry"

@@ -179,29 +179,29 @@ void CALifeUpdateManager::update(bool switch_objects)
 
 void CALifeUpdateManager::create_anomalies	()
 {
-	D_OBJECT_P_VECTOR::const_iterator	I = spawns().spawns().begin(), B = I, m, j;
-	D_OBJECT_P_VECTOR::const_iterator	E = spawns().spawns().end();
-	for ( ; I != E; ) {
-		u32								group_id	= (*I)->m_dwSpawnGroup;
-		for (m = I + 1, j = I; (m != E) && ((*m)->m_dwSpawnGroup == group_id); ++m) ;
-
-		CSE_Abstract					*object = F_entity_Create(*(*I)->s_name);
-		R_ASSERT2						(object,"Can't create entity.");
-
-		CSE_ALifeDynamicObject			*i = smart_cast<CSE_ALifeDynamicObject*>(object);
-		R_ASSERT2						(i,"Non-ALife object in the 'game.spawn'");
-
-		CSE_ALifeAnomalousZone			*tpALifeAnomalousZone = smart_cast<CSE_ALifeAnomalousZone*>(i);
-		if (tpALifeAnomalousZone) {
-			for ( ; j != m; ++j) {
-				CSE_ALifeAnomalousZone	*anomaly = smart_cast<CSE_ALifeAnomalousZone*>(*j);
-				R_ASSERT2				(anomaly,"Anomalous zones are grouped with incompatible objects!");
-				create					(i,*j,_SPAWN_ID(j - B));
-			}
-		}
-		xr_delete						(object);
-		I								= m;
-	}
+//	D_OBJECT_P_VECTOR::const_iterator	I = spawns().spawns().begin(), B = I, m, j;
+//	D_OBJECT_P_VECTOR::const_iterator	E = spawns().spawns().end();
+//	for ( ; I != E; ) {
+//		u32								group_id	= (*I)->m_dwSpawnGroup;
+//		for (m = I + 1, j = I; (m != E) && ((*m)->m_dwSpawnGroup == group_id); ++m) ;
+//
+//		CSE_Abstract					*object = F_entity_Create(*(*I)->s_name);
+//		R_ASSERT2						(object,"Can't create entity.");
+//
+//		CSE_ALifeDynamicObject			*i = smart_cast<CSE_ALifeDynamicObject*>(object);
+//		R_ASSERT2						(i,"Non-ALife object in the 'game.spawn'");
+//
+//		CSE_ALifeAnomalousZone			*tpALifeAnomalousZone = smart_cast<CSE_ALifeAnomalousZone*>(i);
+//		if (tpALifeAnomalousZone) {
+//			for ( ; j != m; ++j) {
+//				CSE_ALifeAnomalousZone	*anomaly = smart_cast<CSE_ALifeAnomalousZone*>(*j);
+//				R_ASSERT2				(anomaly,"Anomalous zones are grouped with incompatible objects!");
+//				create					(i,*j,_SPAWN_ID(j - B));
+//			}
+//		}
+//		xr_delete						(object);
+//		I								= m;
+//	}
 }
 
 void CALifeUpdateManager::new_game			(LPCSTR save_name)

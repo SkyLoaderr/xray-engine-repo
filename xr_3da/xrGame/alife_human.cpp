@@ -446,18 +446,18 @@ void CSE_ALifeHumanAbstract::vfProcessItems()
 	for ( ; I != E; ++I) {
 		CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = smart_cast<CSE_ALifeInventoryItem*>((*I).second);
 		if (l_tpALifeInventoryItem && l_tpALifeInventoryItem->bfUseful() && !(*I).second->m_bOnline)
-			if ((randF(1.0f) < m_fProbability)) {
+			if ((randF(1.0f) < m_detect_probability)) {
 				alife().m_temp_item_vector.push_back(l_tpALifeInventoryItem);
 #ifdef DEBUG
 				if (psAI_Flags.test(aiALife)) {
-					Msg		("[LSS] %s detected item %s on the graph point %d (probability %f, speed %f)",s_name_replace,l_tpALifeInventoryItem->base()->s_name_replace,m_tGraphID,m_fProbability,m_fCurSpeed);
+					Msg		("[LSS] %s detected item %s on the graph point %d (probability %f, speed %f)",s_name_replace,l_tpALifeInventoryItem->base()->s_name_replace,m_tGraphID,m_detect_probability,m_fCurSpeed);
 				}
 #endif
 			}
 			else {
 #ifdef DEBUG
 				if (psAI_Flags.test(aiALife)) {
-					Msg		("[LSS] %s didn't detect item %s on the graph point %d (probability %f, speed %f)",s_name_replace,l_tpALifeInventoryItem->base()->s_name_replace,m_tGraphID,m_fProbability,m_fCurSpeed);
+					Msg		("[LSS] %s didn't detect item %s on the graph point %d (probability %f, speed %f)",s_name_replace,l_tpALifeInventoryItem->base()->s_name_replace,m_tGraphID,m_detect_probability,m_fCurSpeed);
 				}
 #endif
 			}

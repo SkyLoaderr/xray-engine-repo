@@ -173,7 +173,7 @@ void CSE_ALifeHumanAbstract::vfAccomplishTask()
 {
 	// build path and wait until we go to the end of it
 	m_fCurSpeed		= m_fGoingSpeed;
-	m_fProbability	= m_fGoingSuccessProbability; 
+	m_detect_probability	= m_fGoingSuccessProbability; 
 	if (m_tpPath.empty()) {
 		ai().graph_engine().search(ai().game_graph(),m_tGraphID,m_tDestGraphPointIndex,&m_tpPath,CGraphEngine::CBaseParameters());
 		m_dwCurNode				= 0;
@@ -221,7 +221,7 @@ void CSE_ALifeHumanAbstract::vfAccomplishTask()
 void CSE_ALifeHumanAbstract::vfSearchObject()
 {
 	m_fCurSpeed		= m_fSearchSpeed;
-	m_fProbability	= m_fSearchSuccessProbability; 
+	m_detect_probability	= m_fSearchSuccessProbability; 
 	CALifeTask	*l_tpALifeTask = ai().alife().tasks().task(m_dwCurTaskID);
 	switch (l_tpALifeTask->m_tTaskType) {
 		case eTaskTypeSearchForItemCG :
