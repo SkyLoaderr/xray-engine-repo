@@ -198,7 +198,7 @@ void	CEffect_Rain::p_free(Particle* P)
 // startup new particle system
 void	CEffect_Rain::Hit		(Fvector& pos)
 {
-	if (0!=::Random.randI(4))	return;
+	if (0!=::Random.randI(3))	return;
 	Particle*	P	= p_allocate();
 	if (0==P)	return;
 
