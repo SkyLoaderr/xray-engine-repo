@@ -3,7 +3,7 @@
 #include "hudmanager.h"
 
 static
-f32 g_pp_fade = 5000.f;
+f32 g_pp_fade = 2000.f;
 
 CMosquitoBald::CMosquitoBald(void) {
 	m_time = 0;
