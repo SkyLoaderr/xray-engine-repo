@@ -367,7 +367,12 @@ void CActor::Die	( )
 
 void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 {
-	if (!g_Alive())					return;
+	if (!g_Alive())	{
+		mRotate.set(m_phSkeleton->mXFORM);
+		mRotate.c.set(0,0,0);
+		vPosition.set(m_phSkeleton->mXFORM.c);
+		return;
+	}
 	if (patch_frame<patch_frames)	return;
 
 	// Correct accel
