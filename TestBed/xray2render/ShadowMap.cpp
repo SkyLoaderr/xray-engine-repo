@@ -130,10 +130,10 @@ class CMyD3DApplication : public CD3DApplication
 	D3DXVECTOR4						m_vecLightDirFloor;
 
 	// Shadow map
-	LPDIRECT3DTEXTURE9				sm_pShadowMap;
-	LPDIRECT3DSURFACE9				sm_pShadowMapSurf;
-	LPDIRECT3DSURFACE9				sm_pShadowMapZ;
-    LPDIRECT3DVERTEXBUFFER9			sm_pOverlayVB;
+	LPDIRECT3DTEXTURE9				sm_ShadowMap;
+	LPDIRECT3DSURFACE9				sm_ShadowMap_S;
+	LPDIRECT3DSURFACE9				sm_ShadowMap_Z;
+    LPDIRECT3DVERTEXBUFFER9			sm_OverlayVB;
 
 	// Shaders
 	LPDIRECT3DVERTEXSHADER9			m_pSceneVS;
@@ -141,7 +141,6 @@ class CMyD3DApplication : public CD3DApplication
 	LPDIRECT3DVERTEXSHADER9			m_pShadowMapVS;
 	LPDIRECT3DPIXELSHADER9			m_pShadowMapPS;
 	LPDIRECT3DPIXELSHADER9			m_pShowMapPS;
-
 public:
     CMyD3DApplication();
 
@@ -593,13 +592,13 @@ HRESULT CMyD3DApplication::RenderShadowMap()
 
 	// Setup shadow map viewport
 	D3DVIEWPORT9	shadowViewport;
-	shadowViewport.X = 0;
-	shadowViewport.Y = 0;
-	shadowViewport.Width  = SHADOW_MAP_SIZE;
-	shadowViewport.Height = SHADOW_MAP_SIZE;
-	shadowViewport.MinZ = 0.0f;
-	shadowViewport.MaxZ = 1.0f;
-	m_pd3dDevice->SetViewport(&shadowViewport);
+	shadowViewport.X					= 0;
+	shadowViewport.Y					= 0;
+	shadowViewport.Width				= SHADOW_MAP_SIZE;
+	shadowViewport.Height				= SHADOW_MAP_SIZE;
+	shadowViewport.MinZ					= 0.0f;
+	shadowViewport.MaxZ					= 1.0f;
+	m_pd3dDevice->SetViewport				(&shadowViewport);
 
 	// Clear viewport
     m_pd3dDevice->Clear						(0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0xFFFFFFFF, 1.0f, 0L);
@@ -926,8 +925,8 @@ HRESULT CMyD3DApplication::UpdateTransform()
     D3DXVECTOR3 vUpVec			= D3DXVECTOR3(0.0f, 1.0f,  0.0f);
     FLOAT       fAspect			= (FLOAT)m_d3dsdBackBuffer.Width / (FLOAT)m_d3dsdBackBuffer.Height;
 
-	D3DXMATRIX	matWorldModel, matWorldFloor, matView, matProj, mat;
-	D3DXMATRIX	matShadowView, matShadowProj, mat2;
+	D3DXMATRIX	matWorldModel,	matWorldFloor, matView, matProj, mat;
+	D3DXMATRIX	matShadowView,	matShadowProj, mat2;
 
     D3DXMatrixLookAtLH			(&matView, &vEyePt, &vLookatPt, &vUpVec);
     D3DXMatrixPerspectiveFovLH	(&matProj, D3DX_PI / 3, fAspect, 1.0f, 100.0f);
@@ -941,6 +940,7 @@ HRESULT CMyD3DApplication::UpdateTransform()
 	D3DXMatrixTranslation		(&matTranslate, vModelOffs.x, vModelOffs.y, vModelOffs.z);
 	D3DXMatrixMultiply			(&matWorldModel, m_ArcBall.GetRotationMatrix(), &matTranslate);
 	dm_model2world				= matWorldModel;
+
 	D3DXMatrixMultiply			(&dm_model2world2view,				&dm_model2world, &dm_2view);
 	D3DXMatrixMultiply			(&dm_model2world2view2projection,	&dm_model2world, &dm_world2view2projection);
 	D3DXMatrixMultiplyTranspose	(&m_matModelMVP, &matWorldModel,	&mat);
