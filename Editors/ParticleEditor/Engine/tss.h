@@ -8,7 +8,7 @@ class ENGINE_API CSimulatorTSS
 {
 	u32	cache		[8][30];
 public:
-	IC void	Invalidate	()	{ memset(cache,0xff,sizeof(cache)); }
+	IC void	Invalidate	()	{ Memory.mem_fill(cache,0xff,sizeof(cache)); }
 	IC void Set			(SimulatorStates& container, u32 S, u32 N, u32 V) 
 	{
 		R_ASSERT(S<8 && N<30);
@@ -72,7 +72,7 @@ class ENGINE_API CSimulatorRS
 {
 	u32	cache		[256];
 public:
-	IC void	Invalidate	()	{ memset(cache,0xff,sizeof(cache)); }
+	IC void	Invalidate	()	{ Memory.mem_fill(cache,0xff,sizeof(cache)); }
 	IC void Set			(SimulatorStates& container, u32 N, u32 V)	
 	{
 		R_ASSERT(N<256);

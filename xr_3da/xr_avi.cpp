@@ -73,7 +73,7 @@ CAviPlayerCustom::~CAviPlayerCustom( )
 		aviIC		= 0;
 	}
 
-	_DELETEARRAY( pBuffer );
+	xr_free		( pBuffer );
 
     AVIFileExit	();
 }

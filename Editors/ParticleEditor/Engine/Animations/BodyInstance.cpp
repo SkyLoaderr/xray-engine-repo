@@ -433,16 +433,16 @@ void CKinematics::Release()
 	// xr_free accels
 	accel::iterator A;
 	for (A=motion_map->begin(); A!=motion_map->end(); A++)
-		xr_free(A->first);
+		xr_free((char*)A->first);
 	for (A=bone_map->begin(); A!=bone_map->end(); A++)
-		xr_free(A->first);
+		xr_free((char*)A->first);
 
 	// xr_free MDef's
 	mdef::iterator B;
 	for (B=m_cycle->begin(); B!=m_cycle->end(); B++)
-		xr_free(B->first);
+		xr_free((char*)B->first);
 	for (B=m_fx->begin(); B!=m_fx->end(); B++)
-		xr_free(B->first);
+		xr_free((char*)B->first);
 
 	// xr_free partition
 	for (u32 i=0; i<MAX_PARTS; i++)

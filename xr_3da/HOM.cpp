@@ -243,6 +243,7 @@ void CHOM::Render_ZB	()
 {
 	if (m_ZB.empty())		return;
 
+	/*
 	// Fill VB
 	u32							vCount	= m_ZB.size()*3;
 	u32							vOffset;
@@ -270,6 +271,7 @@ void CHOM::Render_ZB	()
 	CHK_DX(HW.pDevice->SetRenderState(D3DRS_COLORWRITEENABLE,0));
 	Device.Primitive.Render			(D3DPT_TRIANGLELIST,vOffset,vCount/3);
 	CHK_DX(HW.pDevice->SetRenderState(D3DRS_COLORWRITEENABLE,0xf));
+	*/
 }
 
 void CHOM::Debug		()

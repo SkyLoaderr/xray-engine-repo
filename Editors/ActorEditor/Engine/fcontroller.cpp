@@ -16,13 +16,13 @@ void	CController::iRelease					(void)
 	pInput->iRelease(this);
 }
 
-void	CController::iGetLastMouseDelta			(Ipoint& p)
+void	CController::iGetLastMouseDelta			(Ivector2& p)
 {
 	VERIFY(pInput);
 	pInput->iGetLastMouseDelta( p );
 }
 
-void CController::OnInputDeactivate			(void)
+void CController::OnInputDeactivate				(void)
 {
 	int i;
 	for (i = 0; i < CInput::COUNT_KB_BUTTONS; i++ )

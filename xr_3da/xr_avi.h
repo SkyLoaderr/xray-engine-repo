@@ -5,7 +5,7 @@
 class ENGINE_API		CAviPlayerCustom
 {
 public:
-	u32				dwBufferSize;
+	u32					dwBufferSize;
 	void				*pBuffer;
 
 	PAVISTREAM			aviStream;
@@ -14,12 +14,12 @@ public:
 	BITMAPINFOHEADER	aviInFormat;
 
 	float				fRate;
-	u32				dwFrameTotal;
-	u32				dwFrameCurrent;
+	u32					dwFrameTotal;
+	u32					dwFrameCurrent;
 
-	u32				dwWidth,dwHeight;
+	u32					dwWidth,dwHeight;
 
-	u32				CalcFrame()
+	u32					CalcFrame()
 	{	return iFloor(Device.fTimeGlobal*fRate)%dwFrameTotal; }
 public:
 						CAviPlayerCustom	( );

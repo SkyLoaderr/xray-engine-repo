@@ -135,12 +135,12 @@ void CLocatorAPI::Recurse		(const char* path)
 void CLocatorAPI::Initialize	()
 {
 	Log		("Initializing File System...");
-	DWORD	M1		= Core.mem_Usage();
+	DWORD	M1		= Memory.mem_usage();
 	bNoRecurse		= TRUE;
 	Recurse			("");
 	bNoRecurse		= FALSE;
 	Recurse			(Path.GameData);
-	DWORD	M2		= Engine.mem_Usage();
+	DWORD	M2		= Memory.mem_usage();
 	Msg		("FS: %d files cached, %dKb memory used.",files.size(),(M2-M1)/1024);
 }
 void CLocatorAPI::Destroy		()

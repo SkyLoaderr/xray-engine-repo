@@ -20,7 +20,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 	for (map<LPSTR,CRT*,str_pred>::iterator r=rtargets.begin(); r!=rtargets.end(); r++)
 	{
 		R_ASSERT	(0==r->second->dwReference);
-		xr_free		(r->first);
+		xr_free		((char*)r->first);
 		r->second->Destroy	();
 		xr_delete   (r->second);
 	}
@@ -87,7 +87,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 		for (map<LPSTR,CTexture*,str_pred>::iterator t=textures.begin(); t!=textures.end(); t++)
 		{
 			R_ASSERT	(0==t->second->dwReference);
-			xr_free		(t->first);
+			xr_free		((char*)t->first);
 			xr_delete	(t->second);
 		}
 		textures.clear	();
@@ -97,7 +97,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 	for (map<LPSTR,CMatrix*,str_pred>::iterator m=matrices.begin(); m!=matrices.end(); m++)
 	{
 		if (m->second->dwMode!=CMatrix::modeDetail)	R_ASSERT(0==m->second->dwReference);
-		xr_free		(m->first);
+		xr_free		((char*)m->first);
 		xr_delete	(m->second);
 	}
 	matrices.clear	();
@@ -106,7 +106,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 	for (map<LPSTR,CConstant*,str_pred>::iterator c=constants.begin(); c!=constants.end(); c++)
 	{
 		R_ASSERT	(0==c->second->dwReference);
-		xr_free		(c->first);
+		xr_free		((char*)c->first);
 		xr_delete	(c->second);
 	}
 	constants.clear	();
@@ -116,7 +116,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 	{
 		if (0!=v->second->dwReference)
 			Msg("! WARNING: Vertex shader still referenced [%d]: '%s'",v->second->dwReference,v->first);
-		xr_free		(v->first);
+		xr_free		((char*)v->first);
 		if (!v->second->bFFP)	R_CHK		(HW.pDevice->DeleteVertexShader(v->second->dwHandle));
 		xr_delete	(v->second);
 	}
@@ -125,7 +125,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 	// Release blenders
 	for (map<LPSTR,CBlender*,str_pred>::iterator b=blenders.begin(); b!=blenders.end(); b++)
 	{
-		xr_free		(b->first);
+		xr_free		((char*)b->first);
 		xr_delete	(b->second);
 	}
 	blenders.clear	();
@@ -133,9 +133,9 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 	// destroy TD
 	for (TDPairIt _t=td.begin(); _t!=td.end(); _t++)
 	{
-		xr_free((LPSTR)_t->first);
-		xr_free((LPSTR)_t->second.T);
-		xr_free((LPSTR)_t->second.M);
+		xr_free((char*)_t->first);
+		xr_free((char*&)_t->second.T);
+		xr_free((char*&)_t->second.M);
 	}
 	td.clear();
 }
