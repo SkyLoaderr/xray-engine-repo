@@ -22,22 +22,15 @@ class CWeaponProtecta: public CWeapon
 private:
 	// General
 	float			fTime;
-	BOOL			bFlame;
 
 	sound3D			sndFire;
 	sound3D			sndRicochet[SND_RIC_COUNT];
-
-	vector<Shader*>	hFlames;
 
 	Fvector			vFirePoint;
 
 	Fvector			vLastFP, vLastFD;
 	DWORD			dwFP_Frame;
 	DWORD			dwXF_Frame;
-
-	int				iFlameDiv;
-	float			fFlameLength;
-	float			fFlameSize;
 
 	int				iShotCount;
 	

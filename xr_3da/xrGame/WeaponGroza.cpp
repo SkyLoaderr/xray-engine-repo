@@ -31,6 +31,8 @@ CWeaponGroza::CWeaponGroza() : CWeapon("GROZA")
 
 	vLastFP.set		(0,0,0);
 	vLastFD.set		(0,0,0);
+	
+	fTime			= 0;
 }
 
 CWeaponGroza::~CWeaponGroza()

@@ -26,23 +26,19 @@ CWeaponProtecta::CWeaponProtecta() : CWeapon("PROTECTA")
 	pSounds->Create3D(sndRicochet[3],"weapons\\ric4");
 	pSounds->Create3D(sndRicochet[4],"weapons\\ric5");
 
-	iFlameDiv		= 0;
-	fFlameLength	= 0;
-	fFlameSize		= 0;
 	iShotCount		= 0;
 
 	vLastFP.set		(0,0,0);
 	vLastFD.set		(0,0,0);
+
+	fTime			= 0;
 }
 
 CWeaponProtecta::~CWeaponProtecta()
 {
-	for (DWORD i=0; i<hFlames.size(); i++)
-		Device.Shader.Delete(hFlames[i]);
-
 	// sounds
 	pSounds->Delete3D(sndFire);
-	for (i=0; i<SND_RIC_COUNT; i++) pSounds->Delete3D(sndRicochet[i]);
+	for (int i=0; i<SND_RIC_COUNT; i++) pSounds->Delete3D(sndRicochet[i]);
 	
 	_DELETE			(m_pShootPSVisual);
 }
@@ -55,18 +51,6 @@ void CWeaponProtecta::Load(CInifile* ini, const char* section){
 
 	vFirePoint		= ini->ReadVECTOR(section,"fire_point");
 	iShotCount		= ini->ReadINT(section,"shot_count");
-	
-	iFlameDiv		= ini->ReadINT	(section,"flame_div");
-	fFlameLength	= ini->ReadFLOAT(section,"flame_length");
-	fFlameSize		= ini->ReadFLOAT(section,"flame_size");
-
-	// flame textures
-	LPCSTR S		= ini->ReadSTRING(section,"flame");
-	DWORD scnt		= _GetItemCount(S);
-	char name[255];
-	for (DWORD i=0; i<scnt; i++)
-		hFlames.push_back(Device.Shader.Create("fire_trail",_GetItem(S,i,name),false));
-	bFlame			= FALSE;
 }
 
 void CWeaponProtecta::FireStart()
@@ -154,7 +138,6 @@ void CWeaponProtecta::Update(float dt, BOOL bHUDView)
 
 		switch(st_target){
 		case eIdle:
-			bFlame	= FALSE;
 			break;
 		case eShoot:
 			pSounds->Play3DAtPos(sndFire,vLastFP,true);
@@ -184,7 +167,6 @@ void CWeaponProtecta::Update(float dt, BOOL bHUDView)
 				m_pShootPSEmitter.Play();
 
 				// real shoot
-				bFlame	= TRUE;
 				VERIFY(m_pParent);
 				fTime+=fTimeToFire;
 				
@@ -244,22 +226,6 @@ void CWeaponProtecta::Render(BOOL bHUDView)
 
 		// Render PS Shoot
 		::Render.add_leafs_Dynamic	(m_pShootPSVisual);
-	}
-	if ((st_current==eShoot) && bFlame) 
-	{
-		UpdateFP	(bHUDView);
-
-		// fire flash
-		Fvector P = vLastFP;
-		Fvector D; D.mul(vLastFD,::Random.randF(fFlameLength)/float(iFlameDiv));
-		float f = fFlameSize;
-		for (int i=0; i<iFlameDiv; i++){
-			f*=0.9f;
-			float	S = f+f*::Random.randF	();
-			float	A = ::Random.randF		(PI_MUL_2);
-			::Render.add_Patch				(hFlames[Random.randI(hFlames.size())],P,S,A,bHUDView);
-			P.add(D);
-		}
 	}
 }
 
