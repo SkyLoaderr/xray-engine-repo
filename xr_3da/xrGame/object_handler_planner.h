@@ -39,6 +39,7 @@ protected:
 			void			add_operators			(CFoodItem		*food_item);
 			void			remove_evaluators		(CObject		*object);
 			void			remove_operators		(CObject		*object);
+			void			init_storage			();
 	IC		ObjectHandlerSpace::EWorldProperties object_property		(MonsterSpace::EObjectAction object_action) const;
 #ifdef LOG_ACTION
 	virtual LPCSTR			action2string			(const _action_id_type &action_id);

@@ -205,19 +205,24 @@ void CObjectHandlerPlanner::remove_operators	(CObject *object)
 	}
 }
 
-void CObjectHandlerPlanner::setup(CAI_Stalker *object)
+void CObjectHandlerPlanner::init_storage	()
+{
+	m_storage.set_property		(eWorldPropertyAimed1,false);
+	m_storage.set_property		(eWorldPropertyAimed2,false);
+	m_storage.set_property		(eWorldPropertyUseEnough,false);
+	m_storage.set_property		(eWorldPropertyStrapped,false);
+	m_storage.set_property		(eWorldPropertyStrapped2Idle,false);
+}
+
+void CObjectHandlerPlanner::setup	(CAI_Stalker *object)
 {
 	inherited::setup			(object);
 	CActionBase<CAI_Stalker>	*action;
 
 	clear						();
 
-	m_storage.set_property		(eWorldPropertyAimed1,false);
-	m_storage.set_property		(eWorldPropertyAimed2,false);
-	m_storage.set_property		(eWorldPropertyUseEnough,false);
-	m_storage.set_property		(eWorldPropertyStrapped,false);
-	m_storage.set_property		(eWorldPropertyStrapped2Idle,false);
-	
+	init_storage				();
+
 	add_evaluator				(u32(eWorldPropertyNoItems),			xr_new<CObjectPropertyEvaluatorNoItems>(m_object));
 	add_evaluator				(u32(eWorldPropertyNoItemsIdle),		xr_new<CObjectPropertyEvaluatorConst>(false));
 	action						= xr_new<CSObjectActionBase>(m_object,m_object,&m_storage,"no items idle");
@@ -263,8 +268,10 @@ void CObjectHandlerPlanner::add_item			(CInventoryItem *inventory_item)
 void CObjectHandlerPlanner::remove_item		(CInventoryItem *inventory_item)
 {
 	VERIFY					(target_state().conditions().size() == 1);
-	if (action_object_id(target_state().conditions().back().condition()) == inventory_item->object().ID())
+	if (action_object_id(target_state().conditions().back().condition()) == inventory_item->object().ID()) {
+		init_storage		();
 		set_goal			(MonsterSpace::eObjectActionIdle);
+	}
 
 	remove_evaluators		(&inventory_item->object());
 	remove_operators		(&inventory_item->object());
