@@ -259,8 +259,67 @@ function fract:loadJob(name) -- загружает список заданий
 			path_main = "dolg_sleep_6",
 			path_hideout = "dolg_sleep_6" }
 		table.insert(self.Job, t)			
+		t = { name = "sleeper",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = { 0 }, -- в каких состояниях это задание существует
+			running = false,
+			search_light = nil,
+			path_main = "dolg_sleep_6",
+			path_hideout = "dolg_sleep_6" }
+		table.insert(self.Job, t)			
+		t = { name = "bodyguard",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 2,
+			state = { 0 }, -- в каких состояниях это задание существует
+			path_main = "dolg_guard_2_main",
+			path_side = "dolg_guard_2_side",
+			path_guard = "dolg_guard_2_guard",
+			path_guard_radius = 2,
+			path_center = "dolg_guard_2_center"}
+		table.insert(self.Job, t)			
+		t = { name = "bodyguard",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 2,
+			state = { 0 }, -- в каких состояниях это задание существует
+			path_main = "dolg_guard_1_main",
+			path_side = "dolg_guard_1_side",
+			path_guard = "dolg_guard_1_guard",
+			path_guard_radius = 2,
+			path_center	= "dolg_guard_1_center"}
+		table.insert(self.Job, t)
+		t = { name = "bodyguard",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 2,
+			state = { 0 }, -- в каких состояниях это задание существует
+			path_main = "dolg_guard_3_main",
+			path_side = "dolg_guard_3_side",
+			path_guard = "dolg_guard_3_4_guard",
+			path_guard_radius = 2,
+			path_center	= "dolg_guard_3_4_center"}
+		table.insert(self.Job, t)			
+		t = { name = "bodyguard",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 2,
+			state = { 0 }, -- в каких состояниях это задание существует
+			path_main = "dolg_guard_4_main",
+			path_side = "dolg_guard_4_side",
+			path_guard = "dolg_guard_3_4_guard",
+			path_guard_radius = 2,
+			path_center	= "dolg_guard_4_main"}
+		table.insert(self.Job, t)			
 	end
-
+ 
 	if name == "blockpost" then
 		-- общие для всех состояний
 		local t = { name = "guard",
@@ -466,6 +525,11 @@ function fract:setJob(npc, job)
 		job.begin = game.time()
 	        xr_guard.set_guard(npc, true, job.path_main, job.path_hideout, job.running, job.search_light)
 	end
+	if job.name == "bodyguard" then
+		job.object = npc
+		job.begin = game.time()
+	        xr_bodyguard.set_bodyguard(npc, true, job.path_main, job.path_side, job.path_guard, job.path_guard_radius, job.path_center)
+	end
 	if job.name == "sleeper" then
 		job.object = npc
 		job.begin = game.time()
@@ -524,7 +588,8 @@ function fract:clearAllJob(npc)
 		   k == "scout" or
 		   k == "follower" or
 		   k == "patrol" or
-		   k == "guard"
+		   k == "guard" or
+		   k == "bodyguard" 
 		then
 			v.enabled = false
 		end
@@ -687,6 +752,8 @@ function addMember(name, npc, char_ini)
 		        xr_patrol.add_to_binder  (npc, nil)
 		elseif v == "follower" then
 		        xr_follower.add_to_binder(npc, nil)
+		elseif v == "bodyguard" then
+		        xr_bodyguard.add_to_binder(npc, nil)
 		end
 	end
 end
