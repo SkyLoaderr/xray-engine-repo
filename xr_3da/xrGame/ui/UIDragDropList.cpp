@@ -614,3 +614,9 @@ void CUIDragDropList::EnableScrollBar(bool enable)
 	}
 
 }
+
+bool CUIDragDropList::CanPlaceItem(CUIDragDropItem *pDDItem)
+{
+	int a, b;
+	return CanPlaceItemInGrid(pDDItem, a, b);
+}

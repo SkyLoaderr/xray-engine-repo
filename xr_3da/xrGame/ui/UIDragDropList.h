@@ -81,6 +81,8 @@ public:
 	void EnableScrollBar(bool enable);
 	bool IsScrollBarEnabled() {return m_bScrollBarEnabled;}
 
+	bool CanPlaceItem(CUIDragDropItem *pDDItem);
+
 protected:
 	//полоса прокрутки
 	CUIScrollBar m_ScrollBar;
