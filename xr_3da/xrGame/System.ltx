@@ -367,100 +367,6 @@ cost				= 0
 full_scale_icon_x	= 0			;иконка сталкера в без костюма в полный рост
 full_scale_icon_y	= 11
 
-[scientific_outfit]
-GroupControlSection	= spawn_group
-discovery_dependency = 
-$spawn 			= "outfit\scientific"
-$prefetch 		= 32
-class			= EQU_SCIE
-cform           = skeleton
-visual          = equipments\stalker_scient_suit	
-
-actor_visual	= actors\hero\stalker_scien.ogf
-
-inv_name			= "Scienific Outfit"
-inv_name_short		= "Scienific Outfit"
-inv_weight			= 6.5
-
-slot				= 6
-
-inv_grid_width		= 2
-inv_grid_height		= 3
-inv_grid_x			= 16
-inv_grid_y			= 13
-cost				= 3500
-
-full_scale_icon_x	= 8			;иконка сталкера в костюме в полный рост
-full_scale_icon_y	= 11
-
-
-burn_immunity = 0.5				;коэффициенты иммунитета самого костюма
-strike_immunity = 0.2	;1.0
-shock_immunity = 0.2
-wound_immunity = 0.5		
-radiation_immunity = 0.01
-telepatic_immunity = 0.01
-chemical_burn_immunity = 0.8
-explosion_immunity = 0.6
-fire_wound_immunity  = 0.5
-
-burn_protection = 0.3			;коэффициенты защиты костюма персонажем 
-strike_protection = 0.6	;0.9
-shock_protection = 0.6
-wound_protection = 0.6		
-radiation_protection = 0.1
-telepatic_protection = 0.3
-chemical_burn_protection = 0.6
-explosion_protection = 0.6
-fire_wound_protection  = 0.6
-
-[protection_outfit]
-GroupControlSection	= spawn_group
-discovery_dependency = 
-$spawn 			= "outfit\protection"
-$prefetch 		= 32
-class			= EQU_SCIE
-cform           = skeleton
-visual          = equipments\scientist_suit.ogf	
-
-actor_visual	= actors\nauchniy\nauchniy_0.ogf
-
-inv_name			= "Protection Outfit"
-inv_name_short		= "Protection Outfit"
-inv_weight			= 6.5
-
-slot				= 6
-
-inv_grid_width		= 2
-inv_grid_height		= 3
-inv_grid_x			= 16
-inv_grid_y			= 13
-cost				= 3500
-
-full_scale_icon_x	= 8			;иконка сталкера в костюме в полный рост
-full_scale_icon_y	= 11
-
-
-burn_immunity = 0.5				;коэффициенты иммунитета самого костюма
-strike_immunity = 0.2	;1.0
-shock_immunity = 0.2
-wound_immunity = 0.5		
-radiation_immunity = 0.01
-telepatic_immunity = 0.01
-chemical_burn_immunity = 0.8
-explosion_immunity = 0.6
-fire_wound_immunity  = 0.5
-
-burn_protection = 0.3			;коэффициенты защиты костюма персонажем 
-strike_protection = 0.6	;0.9
-shock_protection = 0.6
-wound_protection = 0.6		
-radiation_protection = 0.1
-telepatic_protection = 0.3
-chemical_burn_protection = 0.6
-explosion_protection = 0.6
-fire_wound_protection  = 0.6
-
 [stalker_outfit]
 GroupControlSection	= spawn_group
 discovery_dependency = 
@@ -554,52 +460,52 @@ chemical_burn_protection = 0.9
 explosion_protection = 0.9
 fire_wound_protection  = 0.8
 
-[military_stalker_outfit]
+[protection_outfit]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn 			= "outfit\military"
-;$prefetch 		= 32
-class			= EQU_MLTR
+$spawn 			= "outfit\protection"
+$prefetch 		= 32
+class			= EQU_SCIE
 cform           = skeleton
-visual          = equipments\stalker_killer_suit
+visual          = equipments\scientist_suit.ogf	
 
-actor_visual	= actors\hero\stalker_military.ogf	
+actor_visual	= actors\nauchniy\nauchniy_0.ogf
 
-inv_name			= "Military Outfit"
-inv_name_short		= "Military Outfit"
-inv_weight			= 10.0
+inv_name			= "Protection Outfit"
+inv_name_short		= "Protection Outfit"
+inv_weight			= 6.5
+
 slot				= 6
 
 inv_grid_width		= 2
 inv_grid_height		= 3
-inv_grid_x			= 6
-inv_grid_y			= 15
-cost				= 6500
+inv_grid_x			= 16
+inv_grid_y			= 13
+cost				= 3500
 
-full_scale_icon_x	= 4			;иконка сталкера в костюме в полный рост
+full_scale_icon_x	= 8			;иконка сталкера в костюме в полный рост
 full_scale_icon_y	= 11
 
 
-burn_immunity = 0.9				;коэффициенты иммунитета самого костюма
-strike_immunity = 0.9
-shock_immunity = 0.9
-wound_immunity = 0.9		
-radiation_immunity = 0.9
+burn_immunity = 0.5				;коэффициенты иммунитета самого костюма
+strike_immunity = 0.2	;1.0
+shock_immunity = 0.2
+wound_immunity = 0.5		
+radiation_immunity = 0.01
 telepatic_immunity = 0.01
 chemical_burn_immunity = 0.8
-explosion_immunity = 0.8
-fire_wound_immunity  = 0.6
+explosion_immunity = 0.6
+fire_wound_immunity  = 0.5
 
-burn_protection = 0.4			;коэффициенты защиты костюма персонажем 
-strike_protection = 0.8
-shock_protection = 0.8
+burn_protection = 0.3			;коэффициенты защиты костюма персонажем 
+strike_protection = 0.6	;0.9
+shock_protection = 0.6
 wound_protection = 0.8		
-radiation_protection = 0.5
-telepatic_protection = 0.6
-chemical_burn_protection = 0.9
-explosion_protection = 0.9
+radiation_protection = 0.1
+telepatic_protection = 0.3
+chemical_burn_protection = 0.5
+explosion_protection = 0.8
 fire_wound_protection  = 0.8
-
 
 [exo_outfit]
 GroupControlSection	= spawn_group
@@ -643,10 +549,106 @@ strike_protection = 0.5
 shock_protection = 0.5
 wound_protection = 0.5		
 radiation_protection = 0.7
-telepatic_protection = 1.0
+telepatic_protection = 0.6
 chemical_burn_protection = 0.5
 explosion_protection = 0.7
 fire_wound_protection  = 0.5
+
+[military_stalker_outfit]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 			= "outfit\military"
+;$prefetch 		= 32
+class			= EQU_MLTR
+cform           = skeleton
+visual          = equipments\stalker_killer_suit
+
+actor_visual	= actors\hero\stalker_military.ogf	
+
+inv_name			= "Military Outfit"
+inv_name_short		= "Military Outfit"
+inv_weight			= 10.0
+slot				= 6
+
+inv_grid_width		= 2
+inv_grid_height		= 3
+inv_grid_x			= 6
+inv_grid_y			= 15
+cost				= 6500
+
+full_scale_icon_x	= 4			;иконка сталкера в костюме в полный рост
+full_scale_icon_y	= 11
+
+
+burn_immunity = 0.9				;коэффициенты иммунитета самого костюма
+strike_immunity = 0.9
+shock_immunity = 0.9
+wound_immunity = 0.9		
+radiation_immunity = 0.9
+telepatic_immunity = 0.01
+chemical_burn_immunity = 0.8
+explosion_immunity = 0.8
+fire_wound_immunity  = 0.6
+
+burn_protection = 0.4			;коэффициенты защиты костюма персонажем 
+strike_protection = 0.8
+shock_protection = 0.8
+wound_protection = 0.8		
+radiation_protection = 0.5
+telepatic_protection = 0.6
+chemical_burn_protection = 0.6
+explosion_protection = 0.6
+fire_wound_protection  = 0.6
+
+[scientific_outfit]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 			= "outfit\scientific"
+$prefetch 		= 32
+class			= EQU_SCIE
+cform           = skeleton
+visual          = equipments\stalker_scient_suit	
+
+actor_visual	= actors\hero\stalker_scien.ogf
+
+inv_name			= "Scienific Outfit"
+inv_name_short		= "Scienific Outfit"
+inv_weight			= 6.5
+
+slot				= 6
+
+inv_grid_width		= 2
+inv_grid_height		= 3
+inv_grid_x			= 16
+inv_grid_y			= 13
+cost				= 3500
+
+full_scale_icon_x	= 8			;иконка сталкера в костюме в полный рост
+full_scale_icon_y	= 11
+
+
+burn_immunity = 0.5				;коэффициенты иммунитета самого костюма
+strike_immunity = 0.2	;1.0
+shock_immunity = 0.2
+wound_immunity = 0.5		
+radiation_immunity = 0.01
+telepatic_immunity = 0.01
+chemical_burn_immunity = 0.8
+explosion_immunity = 0.6
+fire_wound_immunity  = 0.5
+
+burn_protection = 0.3			;коэффициенты защиты костюма персонажем 
+strike_protection = 0.6	
+shock_protection = 0.6
+wound_protection = 0.6		
+radiation_protection = 0.1
+telepatic_protection = 0.3
+chemical_burn_protection = 0.6
+explosion_protection = 0.6
+fire_wound_protection  = 0.6
+
+
+
 
 
 
