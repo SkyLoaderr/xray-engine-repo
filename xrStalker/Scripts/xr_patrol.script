@@ -412,8 +412,9 @@ function action_single_patrol:move_callback (obj, action_type, index)
            xr_motivator.storage[self.object:id()].followers[a].raid_enabled = true
        end
     end   
-    printf ("PATROL LEADER GET CALLBACK ON %d WAYPOINT", index)
-    --self.object:set_movement_type (move.walk)
+    --printf ("PATROL LEADER GET CALLBACK ON %d WAYPOINT", index)
+    self.object:set_movement_type (move.walk)
+    self.object:set_mental_state (anim.free)
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_single_patrol:set_look_dir ()
