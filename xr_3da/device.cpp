@@ -115,8 +115,6 @@ void CRenderDevice::Run			()
 
 	while( WM_QUIT != msg.message  )
     {
-		u32		dbgMEM0				= Memory.mem_usage();
-
         bGotMsg = PeekMessage( &msg, NULL, 0U, 0U, PM_REMOVE );
         if( bGotMsg )
         {
@@ -170,14 +168,6 @@ void CRenderDevice::Run			()
 				LeaveCriticalSection		(&mt_csLeave);
 			}
         }
-
-		u32		dbgMEM_U			= 0;
-		u32		dbgMEM_F			= 0;
-		u32		dbgMEM1				= Memory.mem_usage(&dbgMEM_U,&dbgMEM_F);
-		if (dbgMEM1!=dbgMEM0)
-		{
-			Msg		("-  %d bytes [U=%d,F=%d]",int(dbgMEM1)-int(dbgMEM0),dbgMEM_U,dbgMEM_F);
-		}
     }
 
 	seqAppCycleEnd.Process	(rp_AppCycleEnd);

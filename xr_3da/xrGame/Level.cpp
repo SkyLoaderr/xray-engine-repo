@@ -209,7 +209,6 @@ void CLevel::OnFrame	()
 void CLevel::OnRender()
 {
 #pragma todo("MEMORY LEAK - begins here :)")
-
 	inherited::OnRender	();
 	Tracers.Render		();
 	eff_Rain.Render		();
@@ -219,7 +218,6 @@ void CLevel::OnRender()
 	if (bDebug)	{
 		ObjectSpace.dbgRender	();
 	}
-
 #pragma todo("MEMORY LEAK - and here is the end :)")
 }
 

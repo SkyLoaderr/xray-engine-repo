@@ -129,7 +129,7 @@ void CLightProjector::setup		(int id)
 void CLightProjector::calculate	()
 {
 	if (receivers.empty())		return;
-	
+
 	Device.Statistic.RenderDUMP_Pcalc.Begin	();
 	RCache.set_RT				(RT_temp->pRT);
 	RCache.set_ZB				(RImplementation.Target.pTempZB);
@@ -197,9 +197,8 @@ void CLightProjector::calculate	()
 		max.set						(C.C.x+p_R,	C.C.y+0,					C.C.z+p_R);
 		BB.set						(min,max);
 		RImplementation.RenderBox	(C.O->Sector(),BB,2);
-		boxes.push_back				(BB);
 	}
-	
+
 	// Blur
 	{
 		float						dim				= P_rt_size;
@@ -229,23 +228,8 @@ void CLightProjector::calculate	()
 		RCache.set_Shader		(sh_BlurTR	);
 		RCache.set_Geometry		(geom_Blur	);
 		RCache.Render			(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
-
-/*
-		for (int it=0; it<1; it++)	
-		{
-			// Actual rendering (pass1, real2temp)
-			RCache.set_RT		(RT_temp->pRT,	0);
-			RCache.set_Shader	(sh_BlurRT	);
-			RCache.Draw		(geom_Blur,	4, 2, Offset+4,	Device.Streams_QuadIB);
-			
-			// Actual rendering (pass2, temp2real)
-			RCache.set_RT		(RT->pRT,	0);
-			RCache.set_Shader	(sh_BlurTR	);
-			RCache.Draw		(geom_Blur,	4, 2, Offset,	Device.Streams_QuadIB);
-		}
-*/
 	}
-	
+
 	// Finita la comedia
 	Device.Statistic.RenderDUMP_Pcalc.End	();
 	

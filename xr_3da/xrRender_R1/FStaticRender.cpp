@@ -259,7 +259,7 @@ void CRender::Calculate()
 	pCreator->pHUD->Render_Last				();	
 	L_Shadows.calculate						();
 	L_Projector.calculate					();
-	
+
 	// End calc
 	Device.Statistic.RenderCALC.End	();
 }
