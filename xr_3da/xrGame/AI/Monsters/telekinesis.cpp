@@ -167,7 +167,7 @@ void CTelekinesis::PhDataUpdate(dReal step)
 	}
 }
 
-bool RemovePred(CTelekineticObject *tele_object)
+static bool RemovePred(CTelekineticObject *tele_object)
 {
 	return (!tele_object->get_object() || 
 		tele_object->get_object()->getDestroy() ||
@@ -175,15 +175,16 @@ bool RemovePred(CTelekineticObject *tele_object)
 		!tele_object->get_object()->PPhysicsShell()->bActive);
 }
 
-
+void  CTelekinesis::clear_notrelevant()
+{
+	//убрать все объеты со старыми параметрами
+	TELE_OBJECTS_IT it = remove_if(objects.begin(),objects.end(),RemovePred);
+	objects.erase(it, objects.end());
+}
 void  CTelekinesis::PhTune(dReal step)
 {
 	if (!active) return;
-
-	//убрать все объеты со старыми параметрами
-	TELE_OBJECTS_IT it = remove_if(objects.begin(),objects.end(), RemovePred);
-	objects.erase(it, objects.end());
-	
+	clear_notrelevant();
 	for (u32 i = 0; i < objects.size(); i++) {
 		switch (objects[i]->get_state()) {
 		case TS_Raise:	

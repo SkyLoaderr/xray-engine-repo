@@ -240,7 +240,7 @@ bool CTelekineticObject::check_raise_time_out()
 
 void CTelekineticObject::enable()
 {
-	object->m_pPhysicsShell->Enable();
+	if(object->m_pPhysicsShell)object->m_pPhysicsShell->Enable();
 }
 
 void CTelekineticObject::rotate()

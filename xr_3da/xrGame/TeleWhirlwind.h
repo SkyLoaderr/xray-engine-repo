@@ -48,6 +48,7 @@ public:
 		void					set_destroing_particles (const shared_str& destroying_particles){m_destroying_particles=destroying_particles;}
 		const shared_str&		destroing_particles		()										{return m_destroying_particles;}
 virtual void					clear					()										;
+virtual	void					clear_notrelevant		()										;
 virtual CTelekineticObject*		alloc_tele_object		()										{return static_cast<CTelekineticObject*>(xr_new<CTeleWhirlwindObject>());}
 };
 

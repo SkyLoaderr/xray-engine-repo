@@ -39,6 +39,19 @@ void CTeleWhirlwind::draw_out_impact(Fvector& dir,float& val)
 	m_saved_impacts.erase(m_saved_impacts.begin());
 }
 
+bool RemovePred(CTelekineticObject *tele_object)
+{
+	return (!tele_object->get_object() || 
+		tele_object->get_object()->getDestroy());
+}
+
+void CTeleWhirlwind::clear_notrelevant()
+{
+	//убрать все объеты со старыми параметрами
+	TELE_OBJECTS_IT it = remove_if(objects.begin(),objects.end(),RemovePred);
+	objects.erase(it, objects.end());
+}
+
 
 	CTeleWhirlwindObject::		CTeleWhirlwindObject()
 {
@@ -140,7 +153,7 @@ void		CTeleWhirlwindObject::		raise					(float step)
 {
 
 		CPhysicsShell*	p					=	get_object()	->PPhysicsShell();
-		if(!p)	
+		if(!p||!p->bActive)	
 			return;
 		else
 			{
@@ -262,3 +275,4 @@ bool CTeleWhirlwindObject::can_activate(CPhysicsShellHolder *obj)
 {
 	return (obj!=NULL);
 }
+

@@ -7,7 +7,8 @@
 
 
 class CTelekinesis : public CPHUpdateObject {
-	
+
+protected:
 	DEFINE_VECTOR(CTelekineticObject*,TELE_OBJECTS,TELE_OBJECTS_IT);
 	TELE_OBJECTS			objects;
 	bool					active;
@@ -29,6 +30,7 @@ public:
 			void	clear_deactivate	();
 			// clear 
 virtual		void	clear				();
+virtual		void	clear_notrelevant   ();
 			// деактивировать объект
 			void	deactivate			(CPhysicsShellHolder *obj);
 			void	remove_object		(TELE_OBJECTS_IT it);
@@ -47,7 +49,7 @@ virtual		void	clear				();
 
 			// вернуть активность объекта		
 			bool	is_active_object	(CPhysicsShellHolder *obj);
-
+			
 			// вернуть количество кониролируемых объектов
 			u32		get_objects_count	();
 			
