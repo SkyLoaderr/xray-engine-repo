@@ -313,7 +313,7 @@ function checkNpc(npc_community, gulag_type)
 	end
 	
 	if gulag_type == "gar_dolg" then
-	   return npc_community == "stalker"
+	   return npc_community == "dolg"
 	end    
 
 	if gulag_type == "test" or gulag_type == "test1"
