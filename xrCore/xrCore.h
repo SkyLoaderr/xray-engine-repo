@@ -32,6 +32,10 @@
 #define DOSWIN32
 #define _WIN32_DCOM
 
+#ifdef __BORLANDC__
+	#include <vcl.h>
+#endif
+
 #include <windows.h>
 
 #ifndef __BORLANDC__
@@ -75,7 +79,6 @@
 #endif
 
 #ifdef __BORLANDC__
-	#include <vcl.h>
 	#define MODULE_NAME 	"xrCoreB.dll"
     #ifndef DEBUG
     	#pragma inline_depth	( 254 )
