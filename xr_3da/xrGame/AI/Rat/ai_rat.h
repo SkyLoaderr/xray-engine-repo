@@ -77,8 +77,8 @@ class CAI_Rat : public CCustomMonster
 		DWORD			m_dwHitInterval;
 
 		bool			m_bStartAttack;
-		vector<SSubNode> tpFreeNeighbourNodes;
 		vector<SSubNode> tpSubNodes;
+		DWORD			m_dwLastUpdate;
 
 		// finite state machine
 		stack<ERatStates>	tStateStack;
@@ -98,7 +98,7 @@ class CAI_Rat : public CCustomMonster
 			void Retreat();
 			void Cover();
 			bool bfCheckPath(AI::Path &Path);
-		IC  void SetDirectionLook(NodeCompressed *tNode);
+		IC  void SetDirectionLook();
 			int	 ifDivideNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition, vector<SSubNode> &tpSubNodes);
 			int	 ifDivideNearestNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition, vector<SSubNode> &tpSubNodes);
 		IC	bool bfInsideSubNode(const Fvector &tCenter, const SSubNode &tpSubNode);
