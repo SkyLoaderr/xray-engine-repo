@@ -8,9 +8,47 @@
 #pragma warning(default:4995)
 #pragma warning(default:4267)
 #include "PhysicsCommon.h"
+
+
+class CPHIslandFlags
+{
+	static const	base				=8		;
+	static const	shift_to_variable	=base/2	;
+	static const	mask_static			=0xf	;
+	Flags8			flags						;
+
+	enum 
+	{
+		stActive					= 1<<0,
+		flPrefereExactIntegration	= 1<<1
+	};
+public:
+
+			CPHIslandFlags					()	{init();}
+
+	IC void init							()	{flags.zero();flags.set(stActive,TRUE);unmerge();}
+	IC BOOL is_active						()	{return flags.test(stActive<<shift_to_variable);}
+
+	IC void set_prefere_exact_integration	()	{flags.set(flPrefereExactIntegration,TRUE);}
+	IC void uset_prefere_exact_integration	()	{flags.set(flPrefereExactIntegration,FALSE);}
+
+	IC BOOL is_exact_integration_prefeared	()	{return flags.test(flPrefereExactIntegration<<shift_to_variable);}
+
+	IC void merge							(CPHIslandFlags& aflags) 
+	{
+		flags.flags |=  aflags.flags.flags & mask_static;
+		aflags.flags.set(stActive<<shift_to_variable,FALSE);
+	}
+	IC void unmerge							()
+	{
+		flags.flags=((flags.flags & mask_static)<<shift_to_variable)  | (flags.flags & mask_static);
+	}
+};
+
 class CPHIsland: public dxWorld
 {
-bool						b_active				;
+//bool						b_active				;
+CPHIslandFlags				m_flags					;
 dxBody						*m_first_body			;
 dxJoint						*m_first_joint			;
 dxJoint						**m_joints_tail			;
@@ -46,7 +84,7 @@ IC	bool			CanMerge(CPHIsland* island,int& MAX_JOINTS)
 	return MAX_JOINTS>0 && ((nb+island->nb)<BODIES_LIMIT);
 }
 
-IC	bool			IsActive()			{return b_active;}
+IC	bool			IsActive()			{return !!m_flags.is_active();}
 
 IC	dWorldID		DWorld()
 {
@@ -63,7 +101,7 @@ IC CPHIsland* DActiveIsland()
 }
 IC	void GoActive()
 {
-	while (!m_self_active->b_active) m_self_active=m_self_active->m_self_active;
+	while (!m_self_active->m_flags.is_active()) m_self_active=m_self_active->m_self_active;
 }
 IC	void			Merge(CPHIsland* island)
 {
@@ -88,7 +126,8 @@ IC	void			Merge(CPHIsland* island)
 	VERIFY(!(*(first_island->m_joints_tail)));
 	VERIFY(!((!(first_island->nj))&&(first_island->firstjoint)));
 	second_island->m_self_active=first_island;
-	second_island->b_active=false;
+	//second_island->b_active=false;
+	m_flags.merge(second_island->m_flags);
 }
 IC	void		Unmerge()
 {
@@ -105,7 +144,8 @@ IC	void		Unmerge()
 	}
 	*m_joints_tail=0;
 	*m_bodies_tail=0;
-	b_active=true;
+	//b_active=true;
+	m_flags.unmerge();
 	m_self_active=this;
 	nj=m_nj;
 	nb=m_nb;
@@ -113,7 +153,8 @@ IC	void		Unmerge()
 }
 IC	void			Init()
 {
-	b_active=true;
+	//b_active=true;
+	m_flags.init();
 	m_nj=nj=0;
 	m_nb=nb=0;
 	m_first_joint=firstjoint=0;
@@ -124,7 +165,7 @@ IC	void			Init()
 }
 IC	void			AddBody(dxBody* body)
 {
-	VERIFY2(m_nj==nj&&m_nb==nb&&b_active,"can not remove/add during processing phase");
+	VERIFY2(m_nj==nj&&m_nb==nb&& m_flags.is_active(),"can not remove/add during processing phase");
 	dWorldAddBody(DWorld(),body);
 	m_first_body=body;
 	if(m_nb==0)
@@ -135,7 +176,7 @@ IC	void			AddBody(dxBody* body)
 }
 IC void				RemoveBody(dxBody* body)
 {
-	VERIFY2(m_nj==nj&&m_nb==nb&&b_active,"can not remove/add during processing phase");
+	VERIFY2(m_nj==nj&&m_nb==nb && m_flags.is_active() ,"can not remove/add during processing phase");
 	if(m_first_body==body)m_first_body=(dxBody*)body->next;
 	if(m_bodies_tail==(dxBody**)(&(body->next)))
 	{
@@ -146,7 +187,7 @@ IC void				RemoveBody(dxBody* body)
 }
 IC	void			AddJoint(dxJoint* joint)
 {
-	VERIFY2(m_nj==nj&&m_nb==nb&&b_active,"can not remove/add during processing phase");
+	VERIFY2(m_nj==nj&&m_nb==nb&&m_flags.is_active(),"can not remove/add during processing phase");
 	dWorldAddJoint(DWorld(),joint);
 	m_first_joint=joint;
 	if(!m_nj)
@@ -184,7 +225,7 @@ IC				DisconnectBody(dxBody* body)
 }
 IC void			RemoveJoint(dxJoint* joint)
 {
-	VERIFY2(m_nj==nj&&m_nb==nb&&b_active,"can not remove/add during processing phase");
+	VERIFY2(m_nj==nj&&m_nb==nb&&m_flags.is_active(),"can not remove/add during processing phase");
 	if(m_first_joint==joint)
 		m_first_joint=(dxJoint*)joint->next;
 	if(m_joints_tail==(dxJoint**)(&(joint->next)))
@@ -195,7 +236,7 @@ IC void			RemoveJoint(dxJoint* joint)
 	VERIFY(!*(m_joints_tail));
 	m_nj--;
 }
-
+void			SetPrefereExactIntegration(){m_flags.set_prefere_exact_integration();}
 void			Step(dReal step);
 protected:
 private:

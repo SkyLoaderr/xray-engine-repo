@@ -39,8 +39,25 @@ transform is the identity.
 
 extern "C" void dBodyAddTorque (dBodyID, dReal fx, dReal fy, dReal fz);
 extern "C" void dBodyAddForce (dBodyID, dReal fx, dReal fy, dReal fz);
-const dReal min_stop_err				=					M_PI*0.1f;
+const dReal min_stop_err				=					M_PI*0.03f;//0.1f;//
+const dReal min_ball_err				=					0.0f;//0.01f;
+const dReal hinge_min_err_exis_par		=					0.000f;//0.01f;
 const dReal stop_early_reaction			=					M_PI*0.00f;
+//#define USE_STOPS_MIN_ERR									1
+
+static inline void add_min_err(dReal	&param,const dReal min_err)
+{
+	if(param>REAL(0.))
+	{
+		param-=min_err;
+		if(param<REAL(0.))param=REAL(0.);
+	}
+	else
+	{
+		param+=min_err;
+		if(param>REAL(0.))param=REAL(0.);
+	}
+}
 //****************************************************************************
 // utility
 
@@ -73,8 +90,12 @@ static inline void setBall (dxJoint *joint, dxJoint::Info2 *info,
   dReal k = info->fps * info->erp;
   if (joint->node[1].body) {
     for (int j=0; j<3; j++) {
-      info->c[j] = k * (a2[j] + joint->node[1].body->pos[j] -
-			a1[j] - joint->node[0].body->pos[j]);
+		dReal err=a2[j] + joint->node[1].body->pos[j] -
+			a1[j] - joint->node[0].body->pos[j];
+#ifdef		USE_BALL_MIN_ERR
+	  add_min_err(err,min_ball_err);
+#endif
+      info->c[j] = k * (err);
     }
   }
   else {
@@ -447,16 +468,25 @@ dReal dxJointLimitMotor::get (int num)
 
 int dxJointLimitMotor::testRotationalLimit (dReal angle)
 {
-  if (angle <= (lostop+stop_early_reaction)) {//
+  if (angle <= (lostop)) {//+stop_early_reaction
     limit = 1;
+#ifdef USE_STOPS_MIN_ERR
     limit_err = angle - lostop+min_stop_err;
 	if(limit_err>REAL(0.))limit_err=REAL(0.);
+#else
+	limit_err = angle - lostop;
+#endif
+
     return 1;
   }
-  else if (angle >= (histop-stop_early_reaction)) {//
+  else if (angle >= (histop)) {//-stop_early_reaction
     limit = 2;
+#ifdef USE_STOPS_MIN_ERR
     limit_err = angle - histop-min_stop_err;
 	if(limit_err<REAL(0.))limit_err=REAL(0.);
+#else
+	limit_err = angle - histop;
+#endif
     return 1;
   }
   else {
@@ -796,9 +826,43 @@ static void hingeGetInfo2 (dxJointHinge *joint, dxJoint::Info2 *info)
     ax2[2] = joint->axis2[2];
   }
   dCROSS (b,=,ax1,ax2);
+
+#ifdef USE_HINGE_MIN_ERR
+  dVector3 verr={b[0],b[1],b[2]};
+  dNormalize3(verr);
+  b[0]+=verr[0]*hinge_min_err_exis_par;
+  b[1]+=verr[1]*hinge_min_err_exis_par;
+  b[2]+=verr[2]*hinge_min_err_exis_par;
+#endif
+
   dReal k = info->fps * info->erp;
-  info->c[3] = k * dDOT(b,p);
-  info->c[4] = k * dDOT(b,q);
+  dReal er1=dDOT(b,p);
+  dReal er2=dDOT(b,q);
+
+  /*if(er1>0.f)
+  {
+		er1-=hinge_min_err_exis_par;
+		if(er1<0.f)er1=0.f;
+  }
+  else
+  {
+		er1+=hinge_min_err_exis_par;
+		if(er1>0.f)er1=0.f;
+  }
+
+  if(er2>0.f)
+  {
+	  er2-=hinge_min_err_exis_par;
+	  if(er2<0.f)er2=0.f;
+  }
+  else
+  {
+	  er2+=hinge_min_err_exis_par;
+	  if(er2>0.f)er2=0.f;
+  }*/
+
+  info->c[3] = k * er1;
+  info->c[4] = k * er2;
 
   // if the hinge is powered, or has joint limits, add in the stuff
   joint->limot.addLimot (joint,info,5,ax1,1);
