@@ -459,13 +459,14 @@ void	R_dsgraph_structure::r_dsgraph_render_subspace	(IRender_Sector* _sector, Fm
 		// Traverse object database
 		g_SpatialSpace->q_frustum
 			(
+			lstRenderables,
 			ISpatial_DB::O_ORDERED,
 			STYPE_RENDERABLE,
 			ViewBase
 			);
 
 		// Exact sorting order (front-to-back)
-		lstRenderables.swap					(g_SpatialSpace->q_result);
+		// lstRenderables.swap				(g_SpatialSpace->q_result);
 		// std::sort						(lstRenderables.begin(),lstRenderables.end(),pred_sp_sort);
 
 		// Determine visibility for dynamic part of scene
