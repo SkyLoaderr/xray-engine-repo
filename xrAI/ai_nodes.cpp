@@ -80,7 +80,7 @@ IC float ffGetY(NodeCompressed &tNode, float X, float Z)
 	return(v1.y);
 }
 
-IC bool bfInsideNode(NodeCompressed *tpNode, Fvector &tCurrentPosition)
+IC bool bfInsideNode(NodeCompressed *tpNode, Fvector &tCurrentPosition, bool bUseY = false)
 {
 	Fvector tP0, tP1;
 	float fHalfSubNodeSize = m_header.size*.5f;
@@ -91,7 +91,8 @@ IC bool bfInsideNode(NodeCompressed *tpNode, Fvector &tCurrentPosition)
 		(tCurrentPosition.z >= tP0.z - fHalfSubNodeSize - EPS) &&
 		(tCurrentPosition.x <= tP1.x + fHalfSubNodeSize + EPS) &&
 		(tCurrentPosition.z <= tP1.z + fHalfSubNodeSize + EPS) &&
-		(fabsf(tCurrentPosition.y - ffGetY(*tpNode,tCurrentPosition.x,tCurrentPosition.z)) < 1.f)
+		((!bUseY) || 
+		 (fabsf(tCurrentPosition.y - ffGetY(*tpNode,tCurrentPosition.x,tCurrentPosition.z)) < 1.f))
 	);
 }
 
@@ -359,9 +360,14 @@ float ffCheckPositionInDirection(u32 dwStartNode, Fvector tStartPoint, Fvector t
 	dwCurNode = dwStartNode;
 	tPrevPoint = tStartPoint;
 
-	while (!bfInsideNode(m_nodes_ptr[dwCurNode],tFinishPoint)) {
+	while (true) {
 		if (fCumulativeDistance > fMaxDistance)
 			return(fCumulativeDistance);
+		if (bfInsideNode(m_nodes_ptr[dwCurNode],tFinishPoint))
+			if (!bfInsideNode(m_nodes_ptr[dwCurNode],tFinishPoint,true))
+				return(MAX_VALUE);
+			else 
+				break;
 		UnpackContour(tCurContour,dwCurNode);
 		tpNode = Node(dwCurNode);
 //		if (dwCurNode == 60199) {
