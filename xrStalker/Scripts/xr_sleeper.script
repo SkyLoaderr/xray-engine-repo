@@ -133,7 +133,7 @@ function set_sleeper(object, enable, point)
 	local st = xr_motivator.storage[object:id()].sleeper
 
 	if enable == nil then
-       		if char_ini:line_exist("sleeper", "enabled") == true then
+       		if char_ini:section_exist ("sleeper") == true and char_ini:line_exist("sleeper", "enabled") == true then
                		st.enabled = char_ini:r_bool("sleeper", "enabled")
 		else
 			st.enabled = false
@@ -143,7 +143,7 @@ function set_sleeper(object, enable, point)
 	end	
 	if st.enabled == true then
 		if point == nil then
-        		if char_ini:line_exist("sleeper", "path_main") == true then
+        		if char_ini:section_exist ("sleeper") == true and char_ini:line_exist("sleeper", "path_main") == true then
 	        	        st.path_main = char_ini:r_string("sleeper", "path_main")
         		else
 	        	    	st.enabled = false
