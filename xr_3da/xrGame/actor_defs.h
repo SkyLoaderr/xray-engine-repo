@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include "../fbasicvisual.h"
+
 class CMotionDef;
 
 #define ACTOR_HEIGHT 1.75f

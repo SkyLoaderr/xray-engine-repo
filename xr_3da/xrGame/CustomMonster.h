@@ -21,6 +21,7 @@
 #include "movement_manager.h"
 #include "selector_manager.h"
 #include "sound_player.h"
+#include "../fbasicvisual.h"
 
 using namespace MonsterSpace;
 

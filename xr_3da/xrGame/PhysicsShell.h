@@ -6,6 +6,7 @@
 #include "PhysicsCommon.h"
 #include "alife_space.h"
 #include "script_export_space.h"
+#include "../fbasicvisual.h"
 
 ObjectContactCallbackFun PushOutCallback;
 class CPhysicsJoint;
