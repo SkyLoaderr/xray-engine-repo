@@ -196,26 +196,29 @@ void CApplication::OnEvent(EVENT E, DWORD P1, DWORD P2)
 			_FREE(Levels[i].folder	);
 			_FREE(Levels[i].name	);
 		}
-	} else if (E==eStartServerLoad) {
+	} else if (E==eStartServerLoad) 
+	{
+		/*
 		Console.Hide();
 		LPSTR		Name = LPSTR(P1);
 		R_ASSERT	(0==pCreator);
 		pCreator	= (CCreator*)	NEW_INSTANCE(CLSID_LEVEL);
 		R_ASSERT	(pCreator->net_Server(Name,TRUE));
 		_FREE		(Name);
+		*/
 	} else if (E==eStartServer) {
 		Console.Hide();
 		LPSTR		Name = LPSTR(P1);
 		R_ASSERT	(0==pCreator);
 		pCreator	= (CCreator*)	NEW_INSTANCE(CLSID_LEVEL);
-		R_ASSERT	(pCreator->net_Server(Name,FALSE));
+		R_ASSERT	(pCreator->net_Start(Name,TRUE));
 		_FREE		(Name);
 	} else if (E==eStartClient) {
 		Console.Hide();
 		LPSTR		Name = LPSTR(P1);
 		R_ASSERT	(0==pCreator);
 		pCreator	= (CCreator*)	NEW_INSTANCE(CLSID_LEVEL);
-		if			(!pCreator->net_Client(Name))
+		if			(!pCreator->net_Start(Name,FALSE))
 		{
 			Msg						("! FAILED TO CONNECT");
 			DEL_INSTANCE			(pCreator);
@@ -225,13 +228,13 @@ void CApplication::OnEvent(EVENT E, DWORD P1, DWORD P2)
 	} else if (E==eDisconnect) {
 		if (pCreator) {
 			Console.Hide			();
-			pCreator->net_Disconnect();
+			pCreator->net_Stop		();
 			DEL_INSTANCE			(pCreator);
 			Console.Show			();
 		}
 	}
 	Engine.mem_Compact	();
-	Msg			("* MEMORY USAGE: %d K",Engine.mem_Usage()/1024);
+	Msg					("* MEMORY USAGE: %d K",Engine.mem_Usage()/1024);
 }
 
 /*
