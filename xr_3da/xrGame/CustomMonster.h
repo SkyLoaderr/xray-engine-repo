@@ -248,6 +248,9 @@ protected:
 
 protected:
 	virtual	void					update_range_fov		(float &new_range, float &new_fov, float start_range, float start_fov);
+
+public:
+			void __stdcall			update_sound_player		();
 };
 
 #include "custommonster_inline.h"

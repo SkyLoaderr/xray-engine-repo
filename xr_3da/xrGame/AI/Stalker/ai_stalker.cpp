@@ -439,22 +439,6 @@ void CAI_Stalker::update_object_handler	()
 	}
 }
 
-void CAI_Stalker::update_sight_manager	()
-{
-	if (!g_Alive())
-		return;
-
-	try {
-		sight().update	();
-	}
-	catch(...) {
-		sight().setup	(CSightAction(SightManager::eSightTypeCurrentDirection));
-		sight().update	();
-	}
-	
-	Exec_Look			(Device.fTimeDelta);
-}
-
 void CAI_Stalker::UpdateCL()
 {
 	inherited::UpdateCL				();
@@ -470,13 +454,15 @@ void CAI_Stalker::UpdateCL()
 
 	if (g_Alive()) {
 		VERIFY						(!m_pPhysicsShell);
-		
-#if 0
-		if (g_mt_config.test(mtSightManager))
-			Device.seqParallel.push_back	(fastdelegate::FastDelegate0(this,&CAI_Stalker::update_sight_manager));
-		else
-#endif
-			update_sight_manager	();
+		try {
+			sight().update			();
+		}
+		catch(...) {
+			sight().setup			(CSightAction(SightManager::eSightTypeCurrentDirection));
+			sight().update			();
+		}
+
+		Exec_Look					(Device.fTimeDelta);
 
 		CStepManager::update		();
 	}
@@ -734,6 +720,9 @@ void CAI_Stalker::Think			()
 		brain().setup			(this);
 		brain().update			(update_delta);
 	}
+
+	if (!g_Alive())
+		return;
 
 	try {
 		movement().update		(update_delta);

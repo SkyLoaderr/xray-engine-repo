@@ -141,6 +141,20 @@ void CSoundPlayer::update_playing_sounds()
 	}
 }
 
+bool CSoundPlayer::need_bone_data	() const
+{
+	xr_vector<CSoundSingle>::const_iterator	I = m_playing_sounds.begin();
+	xr_vector<CSoundSingle>::const_iterator	E = m_playing_sounds.end();
+	for ( ; I != E; ++I) {
+		if ((*I).m_sound->feedback)
+			return					(true);
+		else
+			if (!(*I).started() && (Device.dwTimeGlobal >= (*I).m_start_time))
+				return				(true);
+	}
+	return							(false);
+}
+
 void CSoundPlayer::play				(u32 internal_type, u32 max_start_time, u32 min_start_time, u32 max_stop_time, u32 min_stop_time, u32 id)
 {
 	if (!check_sound_legacy(internal_type))
@@ -183,7 +197,7 @@ void CSoundPlayer::play				(u32 internal_type, u32 max_start_time, u32 min_start
 
 IC	Fvector CSoundPlayer::compute_sound_point(const CSoundSingle &sound)
 {
-	Fmatrix								l_tMatrix;
-	l_tMatrix.mul_43					(m_object->XFORM(),smart_cast<CKinematics*>(m_object->Visual())->LL_GetBoneInstance(sound.m_bone_id).mTransform);
-	return								(l_tMatrix.c);
+	Fmatrix						l_tMatrix;
+	l_tMatrix.mul_43			(m_object->XFORM(),smart_cast<CKinematics*>(m_object->Visual())->LL_GetBoneInstance(sound.m_bone_id).mTransform);
+	return						(l_tMatrix.c);
 }

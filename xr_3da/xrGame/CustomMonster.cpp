@@ -34,6 +34,7 @@
 #include "level.h"
 #include "material_manager.h"
 #include "sound_user_data_visitor.h"
+#include "mt_config.h"
 
 extern int g_AI_inactive_time;
 
@@ -339,12 +340,28 @@ void CCustomMonster::net_update::lerp(CCustomMonster::net_update& A, CCustomMons
 	fHealth	= A.fHealth*(1.f - f) + B.fHealth*f;
 }
 
+void CCustomMonster::update_sound_player()
+{
+	sound().update	(Device.fTimeDelta);
+}
+
 void CCustomMonster::UpdateCL	()
 { 
 	inherited::UpdateCL					();
 
 	CScriptEntity::process_sound_callbacks();
-	sound().update				(Device.fTimeDelta);
+
+	if (sound().need_bone_data()) {
+		// we do this because we know here would be virtual function call
+		CKinematics					*kinematics = smart_cast<CKinematics*>(Visual());
+		VERIFY						(kinematics);
+		kinematics->CalculateBones	();
+	}
+
+	if (g_mt_config.test(mtSoundPlayer))
+		Device.seqParallel.push_back	(fastdelegate::FastDelegate0(this,&CCustomMonster::update_sound_player));
+	else
+		update_sound_player	();
 
 	if	(NET.empty())	return;
 

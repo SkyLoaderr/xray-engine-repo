@@ -49,19 +49,20 @@ protected:
 	typedef xr_map<shared_str,CProfileStats,pred_rstr>	TIMERS;
 
 protected:
-	PORTIONS		m_portions;
-	TIMERS			m_timers;
-	bool			m_actual;
-	string256		m_temp;
+	PORTIONS			m_portions;
+	TIMERS				m_timers;
+	bool				m_actual;
+	string256			m_temp;
+	xrCriticalSection	m_section;
 
 protected:
-			void	setup_timer			(LPCSTR timer_id, u64 timer_time);
-	IC		void	convert_string		(LPCSTR str, shared_str &out, u32 max_string_size);
+			void		setup_timer			(LPCSTR timer_id, u64 timer_time);
+	IC		void		convert_string		(LPCSTR str, shared_str &out, u32 max_string_size);
 
 public:
-					CProfiler			();
-			void	show_stats			(CGameFont *game_font, bool show);
-	IC		void	add_profile_portion	(const CProfileResultPortion &profile_portion);
+						CProfiler			();
+			void		show_stats			(CGameFont *game_font, bool show);
+	IC		void		add_profile_portion	(const CProfileResultPortion &profile_portion);
 };
 
 extern 	CProfiler *g_profiler;

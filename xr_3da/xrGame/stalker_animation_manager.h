@@ -123,6 +123,9 @@ public:
 	IC		void					property_id				(_condition_type value);
 	IC		_value_type				property_value			() const;
 	IC		void					property_value			(_value_type value);
+	
+public:
+//	IC		const CAnimationPair	*animation				() const;
 };
 
 #include "stalker_animation_manager_inline.h"

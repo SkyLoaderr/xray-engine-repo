@@ -86,10 +86,14 @@ void CProfiler::setup_timer	(LPCSTR timer_id, u64 timer_time)
 void CProfiler::show_stats	(CGameFont *game_font, bool show)
 {
 	if (!show) {
+		m_section.Enter			();
 		m_portions.clear		();
+		m_section.Leave			();
 		return;
 	}
 		
+	m_section.Enter				();
+
 	if (!m_portions.empty()) {
 		std::sort				(m_portions.begin(),m_portions.end(),CProfilePortionPredicate());
 		u64						timer_time = 0;
@@ -108,6 +112,8 @@ void CProfiler::show_stats	(CGameFont *game_font, bool show)
 
 		m_portions.clear		();
 
+		m_section.Leave			();
+
 		if (!m_actual) {
 			u32					max_string_size = 0;
 			TIMERS::iterator	I = m_timers.begin();
@@ -121,6 +127,8 @@ void CProfiler::show_stats	(CGameFont *game_font, bool show)
 			m_actual			= true;
 		}
 	}
+	else
+		m_section.Leave			();
 	
 	TIMERS::iterator			I = m_timers.begin();
 	TIMERS::iterator			E = m_timers.end();

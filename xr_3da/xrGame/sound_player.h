@@ -121,6 +121,7 @@ public:
 	IC		void		remove_active_sounds		(u32 sound_mask);
 	IC		const xr_vector<CSoundSingle> &playing_sounds() const;
 	IC		u32			active_sound_count			(bool only_playing = false) const;
+			bool		need_bone_data				() const;
 };
 
 #include "sound_player_inline.h"
