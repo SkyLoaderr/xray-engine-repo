@@ -27,7 +27,9 @@ public:
 #ifdef DEBUG
 	virtual void	OnRender			();
 #endif
-
+protected:
+	virtual BOOL	UsedAI_Locations	();
+public:
 	const Fvector&	Axis				()const		{return m_axis;}
 	float			DDAxis				(Fvector& dir)const;
 
@@ -58,4 +60,5 @@ public:
 	void			LowerPoint			(Fvector	&P)const;
 	void			UpperPoint			(Fvector	&P)const;
 	void			DefineClimbState	(CPHCharacter	*actor)const;
+
 };

@@ -277,6 +277,11 @@ bool CClimableObject::BeforeLadder(CPHCharacter *actor)const
 	to_mag_and_dir(n);
 	return d.dotproduct(n)<-actor->FootRadius()/2.f;
 }
+
+BOOL CClimableObject::UsedAI_Locations()
+{
+	return FALSE;
+}
 #ifdef DEBUG
 void CClimableObject ::OnRender()
 {
