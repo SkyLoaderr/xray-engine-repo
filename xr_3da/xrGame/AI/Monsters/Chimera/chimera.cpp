@@ -89,7 +89,6 @@ void CChimera::Load(LPCSTR section)
 		MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack);
 		MotionMan.LinkAction(ACT_STEAL,			eAnimSteal);
 		MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimLookAround);
-		MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle); 
 
 		MotionMan.AA_Load(pSettings->r_string(section, "attack_params"));
 
@@ -186,7 +185,6 @@ void CChimera::TranslateActionToPathParams()
 	case ACT_REST:
 	case ACT_LOOK_AROUND:
 	case ACT_ATTACK:
-	case ACT_TURN:
 		bEnablePath = false;
 		break;
 	case ACT_WALK_FWD:
@@ -229,8 +227,6 @@ void CChimera::TranslateActionToPathParams()
 	case ACT_STEAL:
 		vel_mask = eVelocityParameterSteal;
 		des_mask = eVelocityParameterSteal;
-		break;
-	case ACT_JUMP:
 		break;
 	}
 

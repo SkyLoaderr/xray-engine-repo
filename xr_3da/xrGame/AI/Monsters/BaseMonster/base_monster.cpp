@@ -317,7 +317,6 @@ void CBaseMonster::TranslateActionToPathParams()
 	case ACT_REST:
 	case ACT_LOOK_AROUND:
 	case ACT_ATTACK:
-	case ACT_TURN:
 		bEnablePath = false;
 		break;
 
@@ -351,8 +350,6 @@ void CBaseMonster::TranslateActionToPathParams()
 	case ACT_STEAL:
 		vel_mask = eVelocityParameterSteal;
 		des_mask = eVelocityParameterSteal;
-		break;
-	case ACT_JUMP:
 		break;
 	}
 

@@ -107,7 +107,6 @@ void CController::Load(LPCSTR section)
 		MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack);
 		MotionMan.LinkAction(ACT_STEAL,			eAnimSteal);
 		MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimStandIdle);
-		MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle); 
 
 		MotionMan.AddTransition(PS_STAND,	PS_SIT,		eAnimStandSitDown,	false);
 		MotionMan.AddTransition(PS_SIT,		PS_STAND,	eAnimSitStandUp,	false);

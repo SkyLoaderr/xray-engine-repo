@@ -59,7 +59,6 @@ void CFracture::Load(LPCSTR section)
 		MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack);
 		MotionMan.LinkAction(ACT_STEAL,			eAnimSteal);
 		MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimLookAround);
-		MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle); 
 
 		MotionMan.AA_Load(pSettings->r_string(section, "attack_params"));
 		//MotionMan.STEPS_Load(pSettings->r_string(section, "step_params"), get_legs_number());

@@ -65,20 +65,19 @@ void CAI_Boar::Load(LPCSTR section)
 
 
 		// define links from Action to animations
-		MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle, eAnimStandTurnLeft, eAnimStandTurnRight, PI_DIV_6);
+		MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
 		MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimLieIdle);
 		MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimLieIdle);
 		MotionMan.LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
 		MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimDragCorpse);
-		MotionMan.LinkAction(ACT_RUN,			eAnimRun	, eAnimStandTurnLeft, eAnimStandTurnRight, PI_DIV_6);
+		MotionMan.LinkAction(ACT_RUN,			eAnimRun);
 		MotionMan.LinkAction(ACT_EAT,			eAnimEat);
 		MotionMan.LinkAction(ACT_SLEEP,			eAnimSleep);
 		MotionMan.LinkAction(ACT_REST,			eAnimLieIdle);
 		MotionMan.LinkAction(ACT_DRAG,			eAnimDragCorpse);
-		MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack, eAnimStandTurnLeft, eAnimStandTurnRight, PI_DIV_6/6);
+		MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack);
 		MotionMan.LinkAction(ACT_STEAL,			eAnimSteal);
 		MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimLookAround);
-		MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle,	eAnimStandTurnLeft, eAnimStandTurnRight, EPS_S); 
 
 		MotionMan.AA_Load	(pSettings->r_string(section, "attack_params"));
 		//MotionMan.STEPS_Load(pSettings->r_string(section, "step_params"), get_legs_number());

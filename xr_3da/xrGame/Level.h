@@ -27,6 +27,7 @@ class	CClientSpawnManager;
 class	CGameObject;
 class	CAutosaveManager;
 class	CPHCommander;
+class	CLevelDebug;
 
 DEFINE_VECTOR (SMapLocation*, LOCATIONS_PTR_VECTOR, LOCATIONS_PTR_VECTOR_IT);
 #define DEFAULT_FOV				90.f
@@ -69,6 +70,14 @@ protected:
 	EVENT						eEntitySpawn;
 
 	CStatGraph					*pStatGraph;
+	
+public:
+	
+#ifdef DEBUG
+	// level debugger
+	CLevelDebug					*m_level_debug;
+#endif
+
 public:
 	////////////// network ////////////////////////
 	u32							GetInterpolationSteps	();
@@ -259,6 +268,11 @@ IC CLevel&				Level()		{ return *((CLevel*) g_pGameLevel);			}
 IC game_cl_GameState&	Game()		{ return *Level().game;					}
 	u32					GameID();
 IC CHUDManager&			HUD()		{ return *((CHUDManager*)Level().pHUD);	}
+
+#ifdef DEBUG
+IC CLevelDebug&			DBG()		{return *((CLevelDebug*)Level().m_level_debug);}
+#endif
+
 
 IC CSpaceRestrictionManager	&CLevel::space_restriction_manager()
 {

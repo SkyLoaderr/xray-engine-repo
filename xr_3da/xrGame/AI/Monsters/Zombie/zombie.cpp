@@ -49,7 +49,6 @@ void CZombie::Load(LPCSTR section)
 		MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack);
 		MotionMan.LinkAction(ACT_STEAL,			eAnimWalkFwd);
 		MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimStandIdle);
-		MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle); 
 
 		MotionMan.AA_Load(pSettings->r_string(section, "attack_params"));
 

@@ -104,8 +104,7 @@ void CAI_Dog::Load(LPCSTR section)
 		MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack, eAnimStandTurnLeft,	eAnimStandTurnRight, PI_DIV_6);
 		MotionMan.LinkAction(ACT_STEAL,			eAnimSteal);	
 		MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimSniff);
-		MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle,	eAnimStandTurnLeft, eAnimStandTurnRight, EPS_S);
-
+		
 		MotionMan.AA_Load(pSettings->r_string(section, "attack_params"));
 		//MotionMan.STEPS_Load(pSettings->r_string(section, "step_params"), get_legs_number());
 

@@ -50,6 +50,12 @@
 
 #include "phcommander.h"
 
+#ifdef DEBUG
+#include "level_debug.h"
+#endif
+
+
+
 CPHWorld*	ph_world = 0;
 float		g_cl_lvInterp = 0;
 u32			lvInterpSteps = 0;
@@ -119,6 +125,10 @@ CLevel::CLevel():IPureClient(Device.GetTimerGlobal())
 	FS.update_path	(file_name,"$game_config$","system.ltx");
 	pSettings		= xr_new<CInifile>(file_name);
 #endif
+
+#ifdef DEBUG
+	m_level_debug	= xr_new<CLevelDebug>();
+#endif
 }
 
 extern CAI_Space *g_ai_space;
@@ -183,6 +193,12 @@ CLevel::~CLevel()
 	pActors4CrPr.clear();
 
 	ai().unload					();
+
+	//-----------------------------------------------------------	
+#ifdef DEBUG	
+	xr_delete					(m_level_debug);
+#endif
+	//-----------------------------------------------------------
 }
 
 // Game interface ////////////////////////////////////////////////////
@@ -410,6 +426,12 @@ void CLevel::OnRender()
 		HUD().Font().pFontSmall->SetSize	(8.0f);
 		//---------------------------------------------------------------------
 	}
+#endif
+
+#ifdef DEBUG
+	DBG().draw_object_info				();
+	DBG().draw_text						();
+	DBG().draw_level_info				();
 #endif
 }
 

@@ -131,7 +131,6 @@ void CBurer::Load(LPCSTR section)
 		MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack);
 		MotionMan.LinkAction(ACT_STEAL,			eAnimSteal);
 		MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimScared);
-		MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle); 
 
 		MotionMan.AA_Load(pSettings->r_string(section, "attack_params"));
 

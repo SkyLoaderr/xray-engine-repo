@@ -32,7 +32,6 @@ bool CBaseMonster::bfAssignMovement (CScriptEntityAction *tpEntityAction)
 	case eMA_WalkBkwd:	MotionMan.m_tAction = ACT_WALK_BKWD;	break;
 	case eMA_Run:		MotionMan.m_tAction = ACT_RUN;			break;
 	case eMA_Drag:		MotionMan.m_tAction = ACT_DRAG;			break;
-	case eMA_Jump:		MotionMan.m_tAction = ACT_JUMP;			break;
 	case eMA_Steal:		MotionMan.m_tAction = ACT_STEAL;		break;
 	}
 
@@ -129,7 +128,6 @@ bool CBaseMonster::bfAssignAnimation(CScriptEntityAction *tpEntityAction)
 	case eAA_Rest:			MotionMan.m_tAction = ACT_REST;			break;
 	case eAA_Attack:		MotionMan.m_tAction = ACT_ATTACK;		break;
 	case eAA_LookAround:	MotionMan.m_tAction = ACT_LOOK_AROUND;	break;
-	case eAA_Turn:			MotionMan.m_tAction = ACT_TURN;			break;
 	}
 
 	return				(true);

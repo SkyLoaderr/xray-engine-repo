@@ -8242,6 +8242,16 @@
 						</File>
 					</Filter>
 				</Filter>
+				<Filter
+					Name="Level Debug"
+					Filter="">
+					<File
+						RelativePath=".\level_debug.cpp">
+					</File>
+					<File
+						RelativePath=".\level_debug.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Server"

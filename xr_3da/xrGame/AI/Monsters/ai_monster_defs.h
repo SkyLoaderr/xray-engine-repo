@@ -233,9 +233,7 @@ enum EAction {
 	ACT_DRAG,
 	ACT_ATTACK,
 	ACT_STEAL,
-	ACT_LOOK_AROUND,
-	ACT_JUMP,
-	ACT_TURN,
+	ACT_LOOK_AROUND
 };
 
 enum EPState {

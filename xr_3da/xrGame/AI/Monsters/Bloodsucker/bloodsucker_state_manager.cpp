@@ -11,6 +11,8 @@
 
 #include "bloodsucker_vampire.h"
 
+#include "../../../level_debug.h"
+
 CStateManagerBloodsucker::CStateManagerBloodsucker(CAI_Bloodsucker *monster) : inherited(monster)
 {
 	add_state(eStateRest,				xr_new<CStateMonsterRest<CAI_Bloodsucker> >					(monster));
