@@ -80,14 +80,14 @@ void CFileSystem::OnCreate(){
 	m_ServerRoot.Init  		(m_Server, 		"",               		"",     			"" );
     m_ServerDataRoot.Init	(m_ServerData, 	"",               		"",     			"" );
     m_ServerBackupRoot.Init	(m_ServerBackup,"",               		"",     			"" );
-    m_GameLevels.Init		(m_Server, 		"game\\data\\levels\\",	"",     			"" );
-    m_GameSounds.Init		(m_Server, 		"game\\data\\sounds\\",	"*.wav",			"Wave files" );
-	m_GameRoot.Init 		(m_Server, 		"game\\",         		"",     			"" );
-	m_GameCForms.Init		(m_Server, 		"game\\data\\cforms\\",	"*.vcf",			"Collision form files" );
-	m_GameMeshes.Init		(m_Server, 		"game\\data\\meshes\\",	"*.ogf",			"Render model files" );
-    m_GameDO.Init			(m_Server,  	"game\\data\\meshes\\",	"*.do",				"Detail object files" );
-    m_GameTextures.Init		(m_Server,		"game\\data\\textures\\","*.dds",			"Texture files" );
-	m_GameKeys.Init			(m_Server,  	"game\\data\\meshes\\",	"*.key",			"XRay model key" );
+    m_GameLevels.Init		(m_Server, 		"gamedata\\levels\\",	"",     			"" );
+    m_GameSounds.Init		(m_Server, 		"gamedata\\sounds\\",	"*.wav",			"Wave files" );
+	m_GameRoot.Init 		(m_Server, 		"gamedata\\",      		"",     			"" );
+	m_GameCForms.Init		(m_Server, 		"gamedata\\cforms\\",	"*.vcf",			"Collision form files" );
+	m_GameMeshes.Init		(m_Server, 		"gamedata\\meshes\\",	"*.ogf",			"Render model files" );
+    m_GameDO.Init			(m_Server,  	"gamedata\\meshes\\",	"*.do",				"Detail object files" );
+    m_GameTextures.Init		(m_Server,		"gamedata\\textures\\",	"*.dds",			"Texture files" );
+	m_GameKeys.Init			(m_Server,  	"gamedata\\meshes\\",	"*.key",			"XRay model key" );
 
 	m_Groups.Init   		(m_Server, 		"objects\\",       		"*.group", 			"Groups" );
     m_Objects.Init  		(m_Server, 		"objects\\",       		"*.object;*.lwo",	"Editor objects" );
