@@ -211,8 +211,8 @@ CInventoryItem *CWeaponAmmo::can_make_killing	(const CInventory *inventory) cons
 {
 	VERIFY					(inventory);
 
-	CInventory::TIItemSet::const_iterator	I = inventory->m_all.begin();
-	CInventory::TIItemSet::const_iterator	E = inventory->m_all.end();
+	TIItemContainer::const_iterator	I = inventory->m_all.begin();
+	TIItemContainer::const_iterator	E = inventory->m_all.end();
 	for ( ; I != E; ++I) {
 		CWeapon		*weapon = smart_cast<CWeapon*>(*I);
 		if (!weapon)
