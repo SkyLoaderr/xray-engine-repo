@@ -4,7 +4,7 @@
 
 class	CThread
 {
-	static void __cdecl startup(void* P);
+	static void				startup			(void* P);
 protected:
 	volatile u32			thID;
 	volatile BOOL			Terminated;

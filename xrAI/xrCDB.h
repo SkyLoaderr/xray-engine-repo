@@ -88,7 +88,7 @@ namespace CDB
 			}
 		}
 
-		static	void	__cdecl	build_thread	(void*);
+		static	void			build_thread	(void*);
 		void					build_internal	(Fvector* V, int Vcnt, TRI* T, int Tcnt, build_callback* bc=NULL, void* bcp=NULL);
 		void					build			(Fvector* V, int Vcnt, TRI* T, int Tcnt, build_callback* bc=NULL, void* bcp=NULL);
 		u32						memory			();

@@ -275,7 +275,7 @@ void	thread_spawn	(thread_t*	entry, const char*	name, unsigned	stack, void* argl
 {
 	THREAD_STARTUP*		startup	= xr_new<THREAD_STARTUP>	();
 	startup->entry		= entry;
-	startup->name		= name;
+	startup->name		= (char*)name;
 	startup->args		= arglist;
 	_beginthread		(thread_entry,stack,startup);
 }

@@ -56,7 +56,7 @@ void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs)
 		CPU::Detect			();
 		if (strstr(Params,"-mem_debug"))	Memory._initialize		(TRUE);
 		else								Memory._initialize		(FALSE);
-		InitMath			();
+		_initialize_cpu		();
 		Debug._initialize	();
 
 		rtc_initialize		();
