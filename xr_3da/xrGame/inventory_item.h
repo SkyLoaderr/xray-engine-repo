@@ -1,0 +1,168 @@
+////////////////////////////////////////////////////////////////////////////
+//	Module 		: inventory_item.h
+//	Created 	: 24.03.2003
+//  Modified 	: 29.01.2004
+//	Author		: Victor Reutsky, Yuri Dobronravin
+//	Description : Inventory item
+////////////////////////////////////////////////////////////////////////////
+
+#pragma once
+
+#include "inventory_space.h"
+
+class CInventoryItem : virtual public CGameObject {
+	typedef CGameObject	inherited;
+public:
+					CInventoryItem		();
+	virtual			~CInventoryItem		();
+
+	virtual void	Load				(LPCSTR section);
+
+	virtual LPCSTR	Name				();
+	virtual LPCSTR	NameShort			();
+	virtual LPCSTR	NameComplex			();
+
+	
+	virtual void	OnEvent				(NET_Packet& P, u16 type);
+	
+	virtual bool	Useful				();									// !!! Переопределить. (см. в Inventory.cpp)
+	virtual bool	Attach				(PIItem pIItem) {return false;}
+	virtual bool	Detach				(PIItem pIItem) {return false;}
+	//при детаче спаунится новая вещь при заданно названии секции
+	virtual bool	Detach				(const char* item_section_name);
+	//проверяет может ли элемент быть присоединен
+	//не производя самого действия
+	virtual bool	CanAttach			(PIItem pIItem) {return false;}
+	virtual bool	CanDetach			(LPCSTR item_section_name) {return false;}
+
+	virtual bool	Activate			();									// !!! Переопределить. (см. в Inventory.cpp)
+	virtual void	Deactivate			();								// !!! Переопределить. (см. в Inventory.cpp)
+	virtual bool	Action				(s32 cmd, u32 flags) {return false;}	// true если известная команда, иначе false
+	
+	virtual bool	IsHidden			()					{return true;}	// вещь спрятано в инвентаре
+	virtual bool	IsPending			()					{return false;}	// true если вещь чем-то занята
+	
+	virtual void	OnAnimationEnd		() {}
+	virtual void	renderable_Render	() {}
+	
+	virtual s32		Sort				(PIItem pIItem);						// !!! Переопределить. (см. в Inventory.cpp)
+	virtual bool	Merge				(PIItem pIItem);						// !!! Переопределить. (см. в Inventory.cpp)
+
+	virtual void	OnH_B_Chield		();
+	virtual void	OnH_A_Chield		();
+	virtual void	OnH_B_Independent	();
+
+	virtual void	UpdateCL			();
+
+	virtual	void	Hit					(	float P, Fvector &dir,	
+											CObject* who, s16 element,
+											Fvector position_in_object_space, 
+											float impulse, 
+											ALife::EHitType hit_type = eHitTypeWound);
+
+			bool	DetachAll			();										// Разобрать иерархию объектов. Объект должен быть в рюкзаке
+			void	Drop				();										// Если объект в инвенторе, то он будет выброшен
+
+			u32		Cost				()	const	{return m_cost;}
+			float	Weight				() const	{return m_weight;}		
+
+public:
+	CInventory		*m_pInventory;								// Указатель на инвентарь. Всегда полезно знать где находишься :)
+	LPCSTR			m_name;
+	LPCSTR			m_nameShort;
+	char			m_nameComplex[255];
+	bool			m_drop;
+
+	virtual int		GetGridWidth		() {return m_iGridWidth;}
+	virtual int		GetGridHeight		() {return m_iGridHeight;}
+	virtual int		GetXPos				() {return m_iXPos;}
+	virtual int		GetYPos				() {return m_iYPos;}
+
+			float	GetCondition		() {return m_fCondition;}
+			void	ChangeCondition		(float fDeltaCondition);
+
+			u32		GetSlot				()  const{return m_slot;}
+			void	SetSlot				(u32 slot) {m_slot = slot;}
+
+			bool	Belt				() {return m_belt;}
+			void	Belt				(bool on_belt) {m_belt = on_belt;}
+			bool	Ruck				() {return m_ruck;}
+			void	Ruck				(bool on_ruck) {m_ruck = on_ruck;}
+protected:
+	// Слот в который можно установить объект (0xffffffff если нельзя)
+	u32				m_slot;
+	// Может ли объект быть на поясе или в рюкзаке
+	bool			m_belt, m_ruck;			
+
+	// цена по умолчанию
+	u32				m_cost;
+	// вес объекта (без подсоединненых вещей)
+	float			m_weight;
+	
+	//состояние вещи, 1.0 - полностью работоспособная
+	// 0 - испорченная
+	float			m_fCondition;
+	//флаг использования состояния для вещи
+	bool			m_bUsingCondition;
+
+	//коэффициенты изменения типов хитов (задается только там где надо)
+	float			m_fK_Burn;
+	float			m_fK_Strike;
+	float			m_fK_Shock;
+	float			m_fK_Wound;
+	float			m_fK_Radiation;
+	float			m_fK_Telepatic;
+	float			m_fK_ChemicalBurn;
+	float			m_fK_Explosion;
+	float			m_fK_FireWound;
+
+	int				m_iGridWidth;										//ширина в сетке инвенторя
+	int				m_iGridHeight;										//высота в сетке инвенторя
+
+	int 			m_iXPos;											//позиция X в сетке инвенторя
+	int 			m_iYPos;											//позиция Y в сетке инвенторя
+
+	////////// network //////////////////////////////////////////////////
+public:
+	virtual void	make_Interpolation	();
+	virtual void	PH_B_CrPr			(); // actions & operations before physic correction-prediction steps
+	virtual void	PH_I_CrPr			(); // actions & operations after correction before prediction steps
+	virtual void	PH_A_CrPr			(); // actions & operations after phisic correction-prediction steps
+
+	virtual void	net_Import			(NET_Packet& P);					// import from server
+	virtual void	net_Export			(NET_Packet& P);					// export to server
+
+protected:
+	struct net_update_IItem {
+		u32					dwTimeStamp;
+		SPHNetState			State;
+	};
+
+	xr_deque<net_update_IItem>	NET_IItem;
+	/////////////////////////////////////////////
+	bool			m_bHasUpdate;
+
+	Fvector			IStartPos;
+	Fquaternion		IStartRot;
+
+	Fvector			IEndPos;
+	Fquaternion		IEndRot;
+
+	SPHNetState		RecalculatedState;
+
+	bool			m_bInInterpolation;
+	u32				m_dwIStartTime;
+	u32				m_dwIEndTime;
+	u64				m_u64IEndStep;
+
+private:
+	u64				m_inventory_mask;
+public:
+	virtual void	BuildInventoryMask	(const CInventory *inventory);
+	IC		u64		InventoryMask		() const;
+	IC		int		GetVolume			() const;
+	IC		int		GetHeight			() const;
+	IC		int		GetWidth			() const;
+};
+
+#include "inventory_item_inline.h"

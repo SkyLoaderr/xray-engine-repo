@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "inventory.h"
+#include "eatable_item.h"
 
 class CBread: public CEatableItem
 {

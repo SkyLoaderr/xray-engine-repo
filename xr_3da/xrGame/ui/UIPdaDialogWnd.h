@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include "../inventory.h"
-
 #include "UIStatic.h"
 #include "UIButton.h"
 #include "UIEditBox.h"

@@ -9,7 +9,7 @@
 
 
 #include "../feel_touch.h"
-#include "inventory.h"
+#include "inventory_item.h"
 #include "ShootingObject.h"
 
 class CExplosive:
@@ -96,4 +96,5 @@ public:
 	virtual void			PH_B_CrPr			(); // actions & operations before physic correction-prediction steps
 	virtual void			PH_I_CrPr			(); // actions & operations after correction before prediction steps
 	virtual void			PH_A_CrPr			(); // actions & operations after phisic correction-prediction steps
+	virtual void			OnH_A_Chield		();
 };

@@ -4,7 +4,7 @@
 
 
 
-#include "../inventory.h"
+#include "../inventory_item.h"
 #include "../UIStaticItem.h"
 
 //размеры сетки в текстуре инвентаря

@@ -9,7 +9,7 @@
 #pragma once
 
 #include "../../CustomMonster.h"
-#include "../../inventory.h"
+#include "../../inventoryowner.h"
 #include "../../ai_space.h"
 #include "../script/ai_script_monster.h"
 #include "../ai_monster_bones.h"

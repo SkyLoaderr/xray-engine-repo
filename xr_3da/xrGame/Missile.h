@@ -1,6 +1,4 @@
 #pragma once
-#include "inventory.h"
-
 #include "HudItem.h"
 
 class CWeaponHUD;

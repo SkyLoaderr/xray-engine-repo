@@ -6,11 +6,9 @@
 
 #pragma once
 
-#include "inventory.h"
+#include "eatable_item.h"
 
-
-class CAntirad: public CEatableItem
-{
+class CAntirad: public CEatableItem {
 private:
     typedef	CEatableItem inherited;
 public:

@@ -9,7 +9,7 @@
 #include "stdafx.h"
 #include "state_death_already_dead.h"
 
-CStateDeathAlreadyDead::CStateDeathAlreadyDead	()
+CStateDeathAlreadyDead::CStateDeathAlreadyDead	(LPCSTR state_name) : inherited(state_name)
 {
 	Init							();
 }

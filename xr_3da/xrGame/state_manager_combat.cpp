@@ -10,7 +10,7 @@
 #include "state_manager_combat.h"
 #include "state_combat_attack_weak.h"
 
-CStateManagerCombat::CStateManagerCombat	()
+CStateManagerCombat::CStateManagerCombat	(LPCSTR state_name) : inherited(state_name)
 {
 	Init					();
 }
@@ -31,7 +31,7 @@ void CStateManagerCombat::Load			(LPCSTR section)
 void CStateManagerCombat::reinit		(CAI_Stalker *object)
 {
 	inherited::reinit		(object);
-	add_state				(xr_new<CStateAttackWeak>(),	eCombatStateAttackWeak,		0);
+	add_state				(xr_new<CStateAttackWeak>("AttackWeak"),	eCombatStateAttackWeak,		0);
 	set_current_state		(eCombatStateAttackWeak);
 	set_dest_state			(eCombatStateAttackWeak);
 }

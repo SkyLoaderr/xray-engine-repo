@@ -124,7 +124,7 @@ void CStalkerMovementManager::update(
 	if (tpDesiredPosition)
 		CDetailPathManager::set_dest_position			(*tpDesiredPosition);
 	else
-		if (tGlobalPathType != ePathTypePatrolPath)
+		if ((tGlobalPathType != ePathTypePatrolPath) && (tGlobalPathType != ePathTypeGamePath))
 			CDetailPathManager::set_dest_position		(ai().level_graph().vertex_position(CLevelPathManager::dest_vertex_id()));
 
 	if (tpDesiredDirection) {
@@ -199,6 +199,28 @@ void CStalkerMovementManager::update(
 	xr_map<u32,STravelParams>::const_iterator	I = m_movement_params.find(velocity_mask);
 	VERIFY							(I != m_movement_params.end());
 
+	if (CDetailPathManager::path().size()) {
+//		if (angle_difference(m_body.current.yaw,m_body.target.yaw) > PI_DIV_8)
+
+//		u32							path_velocity = CDetailPathManager::path()[CDetailPathManager::curr_travel_point_index()].velocity;
+//		xr_map<u32,STravelParams>::const_iterator	J = m_movement_params.find(path_velocity);
+//		VERIFY						(J != m_movement_params.end());
+//		if ((fis_zero((*J).second.angular_velocity) || ((*J).second.linear_velocity/(*J).second.angular_velocity) < ((*I).second.linear_velocity/(*I).second.angular_velocity + EPS_L)) &&
+//			(CDetailPathManager::path().size() > CDetailPathManager::curr_travel_point_index() + 1)) {
+//			Fvector					t;
+//			t.sub					(
+//				CDetailPathManager::path()[CDetailPathManager::curr_travel_point_index() + 1].position,
+//				CDetailPathManager::path()[CDetailPathManager::curr_travel_point_index()].position
+//			);
+//			float					y,p;
+//			t.getHP					(y,p);
+//			if (angle_difference(-y,m_body.current.yaw) > PI_DIV_8)
+//				I					= J;
+//		}
+//		if ((fis_zero((*J).second.angular_velocity) || ((*J).second.linear_velocity/(*J).second.angular_velocity) < ((*I).second.linear_velocity/(*I).second.angular_velocity - EPS_L)) &&
+//			(angle_difference(m_body.current.yaw,m_body.target.yaw) > PI_DIV_8))
+//			I					= J;
+	}
 	custom_monster->m_fCurSpeed		= (*I).second.linear_velocity;
 	m_body.speed					= 2.f*(*I).second.angular_velocity;
 	m_head.speed					= 3*PI_DIV_2;

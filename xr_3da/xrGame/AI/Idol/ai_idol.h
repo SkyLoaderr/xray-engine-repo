@@ -9,7 +9,7 @@
 #pragma once
 
 #include "../../CustomMonster.h"
-#include "../../inventory.h"
+#include "../../inventoryowner.h"
 
 class CAI_Idol : public CCustomMonster, public CInventoryOwner 
 {

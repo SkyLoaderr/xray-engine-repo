@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "inventory.h"
+#include "inventory_item.h"
 
 #include "ai_script_space.h"
 

@@ -21,7 +21,7 @@ protected:
 		eALifeStateDummy	= u32(-1),
 	};
 public:
-						CStateManagerALife		();
+						CStateManagerALife		(LPCSTR state_name);
 	virtual				~CStateManagerALife		();
 			void		Init					();
 	virtual	void		Load					(LPCSTR section);

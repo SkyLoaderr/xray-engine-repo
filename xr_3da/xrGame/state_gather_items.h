@@ -1,9 +1,9 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: state_combat_attack_weak.h
-//	Created 	: 24.01.2004
-//  Modified 	: 24.01.2004
+//	Module 		: state_gather_items.h
+//	Created 	: 28.01.2004
+//  Modified 	: 28.01.2004
 //	Author		: Dmitriy Iassenev
-//	Description : Combat state attacking weak enemy
+//	Description : Gathering items state
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once
@@ -12,7 +12,7 @@
 
 class CAI_Stalker;
 
-class CStateAttackWeak : public CStateBase<CAI_Stalker> {
+class CStateGatherItems : public CStateBase<CAI_Stalker> {
 protected:
 	typedef CStateBase<CAI_Stalker> inherited;
 
@@ -20,8 +20,8 @@ private:
 	u32					m_priority;
 
 public:
-						CStateAttackWeak	(LPCSTR state_name);
-	virtual				~CStateAttackWeak	();
+						CStateGatherItems	(LPCSTR state_name);
+	virtual				~CStateGatherItems	();
 			void		Init				();
 	virtual	void		Load				(LPCSTR section);
 	virtual	void		reinit				(CAI_Stalker *object);
@@ -31,4 +31,4 @@ public:
 	virtual	void		finalize			();
 };
 
-#include "state_combat_attack_weak_inline.h"
+#include "state_free_no_alife_inline.h"

@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "inventory.h"
+#include "inventory_item.h"
 
 class CInfoDocument: public CInventoryItem
 {

@@ -354,6 +354,7 @@ public:
 	virtual void			PH_B_CrPr			(); // actions & operations before physic correction-prediction steps
 	virtual void			PH_I_CrPr			(); // actions & operations after correction before prediction steps
 	virtual void			PH_A_CrPr			(); // actions & operations after phisic correction-prediction steps
+	virtual void			OnH_A_Chield		();
 };
 
 #endif // !defined(AFX_WEAPON_H__7C42AD7C_0EBD_4AD1_90DE_2F972BF538B9__INCLUDED_)

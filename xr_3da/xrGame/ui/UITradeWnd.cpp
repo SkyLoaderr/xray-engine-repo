@@ -19,6 +19,10 @@
 #include "../UIGameSP.h"
 
 #include "UIInventoryUtilities.h"
+
+#include "../inventoryowner.h"
+#include "../eatable_item.h"
+
 using namespace InventoryUtilities;
 
 #define TRADE_ICONS_SCALE (4.f/5.f)

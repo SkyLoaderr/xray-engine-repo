@@ -21,7 +21,7 @@ protected:
 		eCombatStateDummy		= u32(-1),
 	};
 public:
-						CStateManagerCombat		();
+						CStateManagerCombat		(LPCSTR state_name);
 	virtual				~CStateManagerCombat	();
 			void		Init					();
 	virtual	void		Load					(LPCSTR section);

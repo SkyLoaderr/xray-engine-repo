@@ -10,19 +10,16 @@
 #pragma once
 
 #include "../feel_touch.h"
-#include "inventory.h"
+#include "inventory_item.h"
 #include "InfoPortion.h"
 
 #include "PdaMsg.h"
 
 
 class CInventoryOwner;
-
-
-
+class CPda;
 
 DEF_LIST (PDA_LIST, CPda*);
-
 
 DEFINE_MAP (int, BOOL, KNOWN_INFO_MAP, KNOWN_INFO_PAIR_IT);
 

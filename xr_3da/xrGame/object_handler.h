@@ -11,7 +11,7 @@
 #include "ai_monster_space.h"
 #include "path_manager_level_selector.h"
 #include "state_manager_state.h"
-#include "inventory.h"
+#include "inventoryowner.h"
 
 class CAI_Stalker;
 class CWeapon;

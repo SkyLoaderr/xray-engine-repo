@@ -9,7 +9,7 @@
 #include "stdafx.h"
 #include "state_manager_alife.h"
 
-CStateManagerALife::CStateManagerALife	()
+CStateManagerALife::CStateManagerALife	(LPCSTR state_name) : inherited(state_name)
 {
 	Init					();
 }

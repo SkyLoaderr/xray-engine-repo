@@ -4,8 +4,6 @@
 
 #pragma once
 
-#include "../inventory.h"
-
 #include "UIDialogWnd.h"
 #include "UIStatic.h"
 #include "UIButton.h"
@@ -16,7 +14,7 @@
 #include "UITradeWnd.h"
 #include "UITalkDialogWnd.h"
 
-
+class CInventoryOwner;
 
 ///////////////////////////////////////
 //

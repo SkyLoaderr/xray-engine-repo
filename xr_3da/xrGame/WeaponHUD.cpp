@@ -5,7 +5,6 @@
 #include "stdafx.h"
 #include "WeaponHUD.h"
 #include "Weapon.h"
-#include "inventory.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

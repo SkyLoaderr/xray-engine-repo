@@ -4,8 +4,6 @@
 
 #pragma once
 
-#include "../inventory.h"
-
 #include "UIDialogWnd.h"
 #include "UIStatic.h"
 #include "UIButton.h"

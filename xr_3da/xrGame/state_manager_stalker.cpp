@@ -14,7 +14,7 @@
 #include "state_manager_combat.h"
 #include "ai/stalker/ai_stalker.h"
 
-CStateManagerStalker::CStateManagerStalker	()
+CStateManagerStalker::CStateManagerStalker	(LPCSTR state_name) : inherited(state_name)
 {
 	Init					();
 }
@@ -35,9 +35,9 @@ void CStateManagerStalker::Load				(LPCSTR section)
 void CStateManagerStalker::reinit			(CAI_Stalker *object)
 {
 	inherited::reinit		(object);
-	add_state				(xr_new<CStateManagerDeath>(),	eStalkerStateDeath,		0);
-	add_state				(xr_new<CStateManagerNoALife>(),eStalkerStateNoALife,	3);
-	add_state				(xr_new<CStateManagerCombat>(),	eStalkerStateCombat,	1);
+	add_state				(xr_new<CStateManagerDeath>("DeathManager"),eStalkerStateDeath,		0);
+	add_state				(xr_new<CStateManagerNoALife>("NoALife"),	eStalkerStateNoALife,	3);
+	add_state				(xr_new<CStateManagerCombat>("Combat"),		eStalkerStateCombat,	1);
 	add_transition			(eStalkerStateNoALife,eStalkerStateDeath,1);
 	add_transition			(eStalkerStateNoALife,eStalkerStateCombat,1,1);
 	set_current_state		(eStalkerStateNoALife);
@@ -59,10 +59,10 @@ void CStateManagerStalker::execute			()
 {
 	if (m_object->g_Alive())
 #ifndef NO_AI
-		if (!m_object->enemy())
+//		if (!m_object->enemy())
 			set_dest_state	(eStalkerStateNoALife);
-		else
-			set_dest_state	(eStalkerStateCombat);
+//		else
+//			set_dest_state	(eStalkerStateCombat);
 #else
 		set_dest_state	(eStalkerStateNoALife);
 #endif

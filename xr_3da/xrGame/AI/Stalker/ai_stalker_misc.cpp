@@ -81,6 +81,13 @@ bool CAI_Stalker::useful		(const CGameObject *object) const
 	if (bolt)
 		return			(false);
 
+	CInventory			*inventory_non_const = const_cast<CInventory*>(&inventory());
+	CInventoryItem		*inventory_item_non_const = const_cast<CInventoryItem*>(inventory_item);
+	if (!inventory_non_const->CanTakeItem(inventory_item_non_const)) {
+		inventory_non_const->CanTakeItem(inventory_item_non_const);
+		return			(false);
+	}
+
 	return				(true);
 }
 

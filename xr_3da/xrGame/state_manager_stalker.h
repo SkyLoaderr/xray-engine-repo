@@ -24,7 +24,7 @@ protected:
 		eStalkerStateDummy = u32(-1),
 	};
 public:
-						CStateManagerStalker	();
+						CStateManagerStalker	(LPCSTR state_name);
 	virtual				~CStateManagerStalker	();
 			void		Init					();
 	virtual	void		Load					(LPCSTR section);

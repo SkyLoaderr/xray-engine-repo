@@ -7,6 +7,7 @@
 #include "InfoDocument.h"
 #include "PhysicsShell.h"
 #include "PDA.h"
+#include "inventoryowner.h"
 
 CInfoDocument::CInfoDocument(void) 
 {

@@ -27,7 +27,7 @@ IC	bool CMemoryManager::visible	(const CObject *object) const
 	return					((*I).visible());
 }
 
-IC	const CObject *CMemoryManager::item	() const
+IC	const CGameObject *CMemoryManager::item	() const
 {
 	return					(CItemManager::selected());
 }

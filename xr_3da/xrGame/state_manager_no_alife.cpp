@@ -9,8 +9,10 @@
 #include "stdafx.h"
 #include "state_manager_no_alife.h"
 #include "state_free_no_alife.h"
+#include "state_gather_items.h"
+#include "ai/stalker/ai_stalker.h"
 
-CStateManagerNoALife::CStateManagerNoALife	()
+CStateManagerNoALife::CStateManagerNoALife	(LPCSTR state_name) : inherited(state_name)
 {
 	Init					();
 }
@@ -31,7 +33,9 @@ void CStateManagerNoALife::Load				(LPCSTR section)
 void CStateManagerNoALife::reinit			(CAI_Stalker *object)
 {
 	inherited::reinit		(object);
-	add_state				(xr_new<CStateFreeNoAlife>(),	eNoALifeStateFree,		10);
+	add_state				(xr_new<CStateFreeNoAlife>("FreeNoALife"),	eNoALifeStateFree,		0);
+	add_state				(xr_new<CStateGatherItems>("GatherItems"),	eNoALifeGatherItems,	0);
+	add_transition			(eNoALifeStateFree,eNoALifeGatherItems,1,1);
 	set_current_state		(eNoALifeStateFree);
 	set_dest_state			(eNoALifeStateFree);
 }
@@ -48,7 +52,11 @@ void CStateManagerNoALife::initialize		()
 
 void CStateManagerNoALife::execute			()
 {
-	set_dest_state			(eNoALifeStateFree);
+	if (!m_object->item())
+		set_dest_state		(eNoALifeStateFree);
+	else
+		set_dest_state		(eNoALifeGatherItems);
+
 	inherited::execute		();
 }
 

@@ -10,16 +10,15 @@
 #include "../UIStaticItem.h"
 #include "UIDragDropItem.h"
 #include "UIStatic.h"
+#include "../eatable_item.h"
 
 //буферный список для сортировки
 static TIItemList ruck_list;
-
-
-
 static ref_shader g_EquipmentIconsShader = NULL;
 static ref_shader g_CharIconsShader = NULL;
-
 static CUIStatic*	GetUIStatic();
+
+
 
 //для надписей на иконках с оружием
 void InventoryUtilities::AmmoUpdateProc(CUIDragDropItem* pItem)

@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "state_management_config.h"
+
 template <
 	typename _Object
 >
@@ -17,10 +19,24 @@ protected:
 	u32					m_start_level_time;
 	ALife::_TIME_ID		m_start_game_time;
 	u32					m_inertia_time;
+	enum EStateStates {
+		eStateStateConstructed = u32(0),
+		eStateStateLoaded,
+		eStateStateReinitialized,
+		eStateStateReloaded,
+		eStateStateInitialized,
+		eStateStateExecuted,
+		eStateStateFinalized,
+		eStateStateDummy = u32(-1),
+	};
+#ifdef LOG_STATE
+	bool				m_log;
+	LPCSTR				m_state_name;
+#endif
 public:
-							CStateBase			();
+							CStateBase			(LPCSTR state_name);
 	virtual					~CStateBase			();
-			void			Init				();
+			void			Init				(LPCSTR state_name);
 	virtual	void			Load				(LPCSTR section);
 	virtual	void			reinit				(_Object *object);
 	virtual	void			reload				(LPCSTR section);
@@ -28,6 +44,9 @@ public:
 	virtual	void			execute				();
 	virtual	void			finalize			();
 	virtual	bool			completed			() const;
+#ifdef LOG_STATE
+	virtual void			debug_log			(const EStateStates state_state) const;
+#endif
 	IC		u32				start_level_time	() const;
 	IC		ALife::_TIME_ID	start_game_time		() const;
 	IC		u32				inertia_time		() const;

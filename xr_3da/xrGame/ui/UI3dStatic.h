@@ -10,8 +10,6 @@
 
 #include "uiwindow.h"
 
-#include "../inventory.h"
-
 
 class CUI3dStatic : public CUIWindow  
 {

@@ -26,7 +26,7 @@ public:
 		bool		operator()						(const CVisibleObject &object) const
 		{
 			VERIFY	(object.m_object);
-			return	(!!object.m_object->getDestroy());
+			return	(!!object.m_object->getDestroy() || object.m_object->H_Parent());
 		}
 	};
 

@@ -11,7 +11,7 @@
 #include "state_death_recently_dead.h"
 #include "state_death_already_dead.h"
 
-CStateManagerDeath::CStateManagerDeath	()
+CStateManagerDeath::CStateManagerDeath	(LPCSTR state_name) : inherited(state_name)
 {
 	Init					();
 }
@@ -32,8 +32,8 @@ void CStateManagerDeath::Load			(LPCSTR section)
 void CStateManagerDeath::reinit			(CAI_Stalker *object)
 {
 	inherited::reinit		(object);
-	add_state				(xr_new<CStateDeathRecentlyDead>(),	eDeathStateRecentlyDead,	0);
-	add_state				(xr_new<CStateDeathAlreadyDead>(),	eDeathStateAlreadyDead,		0);
+	add_state				(xr_new<CStateDeathRecentlyDead>("RecentlyDead"),	eDeathStateRecentlyDead,	0);
+	add_state				(xr_new<CStateDeathAlreadyDead>("AlreadyDead"),		eDeathStateAlreadyDead,		0);
 	add_transition			(eDeathStateRecentlyDead,eDeathStateAlreadyDead,1);
 	set_current_state		(eDeathStateRecentlyDead);
 	set_dest_state			(eDeathStateRecentlyDead);

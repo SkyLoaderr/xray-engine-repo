@@ -26,7 +26,7 @@
 #include "ef_storage.h"
 #include "ai/stalker/ai_stalker.h"
 
-CObjectHandler::CObjectHandler		()
+CObjectHandler::CObjectHandler		() : inherited("")
 {
 	Init						();
 }

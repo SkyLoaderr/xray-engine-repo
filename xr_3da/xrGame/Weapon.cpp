@@ -1143,3 +1143,7 @@ void CWeapon::PH_A_CrPr			()
 	inherited::PH_A_CrPr		();
 }
 
+void CWeapon::OnH_A_Chield		()
+{
+	inherited::OnH_A_Chield		();
+}

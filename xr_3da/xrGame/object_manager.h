@@ -12,6 +12,7 @@ template <
 	typename T
 >
 class CObjectManager {
+private:
 protected:
 	xr_set<T*>		m_objects;
 	T				*m_selected;

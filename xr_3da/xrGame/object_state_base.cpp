@@ -13,7 +13,7 @@
 #include "ai/stalker/ai_stalker.h"
 #include "missile.h"
 
-CObjectStateBase::CObjectStateBase	(CInventoryItem *inventory_item, const u32 weapon_state, bool equality)
+CObjectStateBase::CObjectStateBase	(CInventoryItem *inventory_item, const u32 weapon_state, bool equality) : inherited("")
 {
 	Init							(inventory_item,weapon_state,equality);
 }

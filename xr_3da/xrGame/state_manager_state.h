@@ -27,7 +27,7 @@ protected:
 	IC		xr_vector<u32> &sequence();
 
 public:
-						CStateManagerState		();
+						CStateManagerState		(LPCSTR state_name);
 	virtual				~CStateManagerState		();
 			void		Init					();
 	virtual	void		Load					(LPCSTR section);

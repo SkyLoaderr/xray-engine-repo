@@ -2,8 +2,6 @@
 #include "bolt.h"
 #include "ParticlesObject.h"
 #include "PhysicsShell.h"
-#include "inventory.h"
-
 
 CBolt::CBolt(void) 
 {

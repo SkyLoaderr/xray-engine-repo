@@ -1,204 +1,12 @@
 #pragma once
 #include "gameobject.h"
-
+#include "inventory_item.h"
 
 #define CMD_START	(1<<0)
 #define CMD_STOP	(1<<1)
 
 class CInventory;
 class CInventoryItem;
-typedef CInventoryItem*			PIItem;
-typedef xr_set<PIItem>			TIItemSet;
-typedef xr_list<PIItem>			TIItemList;
-typedef TIItemSet::iterator		PSPIItem;
-typedef TIItemList::iterator	PPIItem;
-
-#define NO_ACTIVE_SLOT		0xffffffff
-#define KNIFE_SLOT			0
-#define PISTOL_SLOT			1
-#define RIFLE_SLOT			2
-#define GRENADE_SLOT		3
-#define APPARATUS_SLOT		4
-#define BOLT_SLOT			5
-#define OUTFIT_SLOT			6
-#define PDA_SLOT			7 
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-class CInventoryItem : virtual public CGameObject 					// Предок объектов инвентаря
-{
-private:
-	typedef CGameObject	inherited;
-public:
-	CInventoryItem();
-	virtual ~CInventoryItem();
-
-	virtual void Load(LPCSTR section);
-
-	virtual const char* Name();
-	virtual const char* NameShort();
-	virtual char*	NameComplex();
-
-	
-	virtual void OnEvent (NET_Packet& P, u16 type);
-	
-	virtual bool	Useful();									// !!! Переопределить. (см. в Inventory.cpp)
-	virtual bool	Attach(PIItem /**pIItem/**/) {return false;}
-	virtual bool	Detach(PIItem /**pIItem/**/) {return false;}
-	//при детаче спаунится новая вещь при заданно названии секции
-	virtual bool	Detach(const char* item_section_name);
-	//проверяет может ли элемент быть присоединен
-	//не производя самого действия
-	virtual bool	CanAttach(PIItem /**pIItem/**/) {return false;}
-	virtual bool	CanDetach(const char* /**item_section_name/**/) {return false;}
-
-
-	
-	virtual bool	Activate();									// !!! Переопределить. (см. в Inventory.cpp)
-	virtual void	Deactivate();								// !!! Переопределить. (см. в Inventory.cpp)
-	virtual bool	Action(s32 /**cmd/**/, u32 /**flags/**/) {return false;}	// true если известная команда, иначе false
-	
-	virtual bool	IsHidden()					{return true;}	// вещь спрятано в инвентаре
-	virtual bool	IsPending()					{return false;}	// true если вещь чем-то занята
-	
-	virtual void	OnAnimationEnd() {}
-	virtual void	renderable_Render() {}
-	
-	virtual s32		Sort(PIItem pIItem);						// !!! Переопределить. (см. в Inventory.cpp)
-	virtual bool	Merge(PIItem pIItem);						// !!! Переопределить. (см. в Inventory.cpp)
-
-	virtual void	OnH_B_Chield		();
-	virtual void	OnH_B_Independent	();
-
-	virtual void	UpdateCL	();
-
-	virtual	void	Hit	(float P, Fvector &dir,	
-								  CObject* who, s16 element,
-								  Fvector position_in_object_space, 
-								  float impulse, 
-								  ALife::EHitType hit_type = eHitTypeWound);
-
-	bool DetachAll();										// Разобрать иерархию объектов. Объект должен быть в рюкзаке
-	void Drop();											// Если объект в инвенторе, то он будет выброшен
-
-	u32		Cost()	const	{return m_cost;}
-	float	Weight()const	{return m_weight;}		
-
-	
-	CInventory *m_pInventory;								// Указатель на инвентарь. Всегда полезно знать где находишься :)
-	const char *m_name, *m_nameShort;
-	char m_nameComplex[255];
-	bool m_drop;
-
-	virtual int GetGridWidth() {return m_iGridWidth;}
-	virtual int GetGridHeight() {return m_iGridHeight;}
-	virtual int GetXPos() {return m_iXPos;}
-	virtual int GetYPos() {return m_iYPos;}
-
-	float GetCondition() {return m_fCondition;}
-	void  ChangeCondition(float fDeltaCondition);
-
-	u32	 GetSlot() {return m_slot;}
-	void SetSlot(u32 slot) {m_slot = slot;}
-
-	bool Belt() {return m_belt;}
-	void Belt(bool on_belt) {m_belt = on_belt;}
-	bool Ruck() {return m_ruck;}
-	void Ruck(bool on_ruck) {m_ruck = on_ruck;}
-protected:
-	// Слот в который можно установить объект (0xffffffff если нельзя)
-	u32 m_slot;
-	// Может ли объект быть на поясе или в рюкзаке
-	bool m_belt, m_ruck;			
-
-
-	// цена по умолчанию
-	u32	m_cost;
-	// вес объекта (без подсоединненых вещей)
-	float m_weight;
-	
-	//состояние вещи, 1.0 - полностью работоспособная
-	// 0 - испорченная
-	float m_fCondition;
-	//флаг использования состояния для вещи
-	bool m_bUsingCondition;
-
-	//коэффициенты изменения типов хитов (задается только там где надо)
-	float m_fK_Burn;
-	float m_fK_Strike;
-	float m_fK_Shock;
-	float m_fK_Wound;
-	float m_fK_Radiation;
-	float m_fK_Telepatic;
-	float m_fK_ChemicalBurn;
-	float m_fK_Explosion;
-	float m_fK_FireWound;
-
-	int m_iGridWidth;										//ширина в сетке инвенторя
-	int m_iGridHeight;										//высота в сетке инвенторя
-
-	int m_iXPos;											//позиция X в сетке инвенторя
-	int m_iYPos;											//позиция Y в сетке инвенторя
-
-	////////// network //////////////////////////////////////////////////
-public:
-	virtual void			make_Interpolation ();
-	virtual void			PH_B_CrPr		(); // actions & operations before physic correction-prediction steps
-	virtual void			PH_I_CrPr		(); // actions & operations after correction before prediction steps
-	virtual void			PH_A_CrPr		(); // actions & operations after phisic correction-prediction steps
-
-	virtual void			net_Import			(NET_Packet& P);					// import from server
-	virtual void			net_Export			(NET_Packet& P);					// export to server
-
-protected:
-	struct	net_update_IItem 		
-	{
-		u32					dwTimeStamp;
-		SPHNetState			State;
-	};
-
-	xr_deque<net_update_IItem>	NET_IItem;
-	/////////////////////////////////////////////
-	bool					m_bHasUpdate;
-
-	Fvector					IStartPos;
-	Fquaternion				IStartRot;
-
-	Fvector					IEndPos;
-	Fquaternion				IEndRot;
-
-	SPHNetState				RecalculatedState;
-
-	bool					m_bInInterpolation;
-	u32						m_dwIStartTime;
-	u32						m_dwIEndTime;
-	u64						m_u64IEndStep;
-};
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-// Съедобная вещь
-class CEatableItem : virtual public CInventoryItem 
-{
-private:
-	typedef CInventoryItem	inherited;
-public:
-	CEatableItem();
-	virtual ~CEatableItem();
-
-	virtual void Load(LPCSTR section);
-	virtual bool Useful();
-
-	//влияние при поедании вещи на параметры игрока
-	float	m_fHealthInfluence;
-	float	m_fPowerInfluence;
-	float	m_fSatietyInfluence;
-	float	m_fRadiationInfluence;
-
-	//количество порций еды, 
-	//-1 - порция одна и больше не бывает (чтоб не выводить надпись в меню)
-	int		m_iPortionsNum;
-};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class CInventorySlot					// Слот
@@ -221,7 +29,7 @@ public:
 	CInventory();
 	virtual ~CInventory();
 
-	f32 TotalWeight() const;										// Вес инвенторя
+	float TotalWeight() const;										// Вес инвенторя
 	bool Take(CGameObject *pObj, bool bNotActivate = false);// Взять объект. Объект попадает в рюкзак, если bNotActivate == false, то активировать объект, если у владельца инвентаря ничего не активировано (e.g. трейдер)
 	bool Drop(CGameObject *pObj, bool call_drop = true);							// Выбросить объект
 	bool DropAll();											// Выбросить все
@@ -233,26 +41,27 @@ public:
 	bool Ruck(PIItem pIItem);								// Полжить объект в рюкзак
 
 	//проверяет находится ли элемент в части инвенторя
-	bool InSlot(PIItem pIItem);
-	bool InBelt(PIItem pIItem);
-	bool InRuck(PIItem pIItem);
+	bool InSlot(PIItem pIItem) const;
+	bool InBelt(PIItem pIItem) const;
+	bool InRuck(PIItem pIItem) const;
 
 	//можно ли положить элемент в слот, рюкзак или на пояс
-	bool CanPutInSlot(PIItem pIItem);
+	bool CanPutInSlot(PIItem pIItem) const;
 	bool CanPutInBelt(PIItem pIItem);
 	bool CanPutInRuck(PIItem pIItem);
 
 		
 	bool Activate(u32 slot);								// Активировать объект в указанном слоте
 	PIItem ActiveItem() const;								// Возвращает указатель на объект в актовном слоте
+
 	bool Action(s32 cmd, u32 flags);						// true если известная команда, иначе false
 	void Update();											// Обновление
-	PIItem Same(const PIItem pIItem, bool bSearchRuck);		// Ищет на поясе аналогичный IItem
-	PIItem SameSlot(u32 slot,	 bool bSearchRuck);			// Ищет на поясе IItem для указанного слота
-	PIItem Get(const char *name, bool bSearchRuck);			// Ищет на поясе или в рюкзаке IItem с указанным именем (cName())
-	PIItem Get(const u32  id,	 bool bSearchRuck);			// Ищет на поясе или в рюкзаке IItem с указанным именем (id)
-	PIItem Get(CLASS_ID cls_id,  bool bSearchRuck);			// Ищет на поясе или в рюкзаке IItem с указанным CLS_ID
-	
+
+	PIItem Same(const PIItem pIItem, bool bSearchRuck) const;// Ищет на поясе аналогичный IItem
+	PIItem SameSlot(u32 slot,	 bool bSearchRuck) const;	// Ищет на поясе IItem для указанного слота
+	PIItem Get(const char *name, bool bSearchRuck) const;	// Ищет на поясе или в рюкзаке IItem с указанным именем (cName())
+	PIItem Get(const u32  id,	 bool bSearchRuck) const;	// Ищет на поясе или в рюкзаке IItem с указанным именем (id)
+	PIItem Get(CLASS_ID cls_id,  bool bSearchRuck) const;	// Ищет на поясе или в рюкзаке IItem с указанным CLS_ID
 	void   Clear();											// clearing Inventory
 	virtual u32		dwfGetSameItemCount(LPCSTR caSection);	// get all the items with the same section name
 	virtual bool	bfCheckForObject(_OBJECT_ID tObjectID);	// get all the items with the same object id
@@ -262,7 +71,7 @@ public:
 
 	bool Eat(PIItem pIItem);								// скушать предмет :)
 
-	u32 GetActiveSlot() {return m_activeSlot;}
+	u32 GetActiveSlot() const {return m_activeSlot;}
 
 	bool IsSlotsUseful() {return m_bSlotsUseful;}	 
 	void SetSlotsUseful(bool slots_useful) {m_bSlotsUseful = slots_useful;}
@@ -281,6 +90,14 @@ public:
 	u32  GetMaxRuck() {return m_maxRuck;}
 	void SetMaxRuck(u32 max_ruck) {m_maxRuck = max_ruck;}
 	u32 GetMaxBelt() {return m_maxBelt;}
+
+	u32 RuckWidth() const;
+	u32 RuckHeight() const;
+	u32 BeltWidth() const;
+	
+	u32 TotalVolume() const;
+	u32 GetMaxVolume() const;
+	
 
 	// Объект на который наведен прицел
 	PIItem m_pTarget;
@@ -322,9 +139,47 @@ protected:
 	TIItemList l_subs; 
 
 	void		SendActionEvent		(s32 cmd, u32 flags);
+
+public:
+	bool CanTakeItem(CInventoryItem *inventory_item);
+protected:
+	xr_vector<CInventoryItem*>	m_item_buffer;
+	xr_vector<CInventoryItem*>	m_slot_buffer;
+	xr_vector<u64>				m_inventory_mask;
+
+private:
+	struct CItemVolumeSortPredicate {
+		IC bool							operator()							(const CInventoryItem *inventory_item1, const CInventoryItem *inventory_item2)  const
+		{
+			return						(inventory_item1->GetVolume() > inventory_item2->GetVolume());
+		};
+	};
+
+	struct CRemoveStoredItems {
+		int								m_iMaxCount;
+		xr_vector<CInventoryItem*>		*m_slots;
+
+		CRemoveStoredItems				(xr_vector<CInventoryItem*> *slots, int dwMaxCount) : m_iMaxCount(dwMaxCount)
+		{
+			m_slots						= slots;
+		}
+
+		IC bool							operator()							(const CInventoryItem *inventory_item)
+		{
+			if ((inventory_item->GetSlot() < m_slots->size()) && ((*m_slots)[inventory_item->GetSlot()] == inventory_item))
+				return					(true);
+			
+			if ((inventory_item->GetHeight() == 1) && (inventory_item->GetWidth() < m_iMaxCount)) {
+				m_iMaxCount			-= inventory_item->GetWidth();
+				return					(true);
+			}
+
+			return						(false);
+		}
+	};
 };
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //для владельцев инвенторя
-#include "InventoryOwner.h"
+//#include "InventoryOwner.h"

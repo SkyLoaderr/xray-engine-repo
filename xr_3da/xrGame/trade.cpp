@@ -1,11 +1,11 @@
 #include "stdafx.h"
 #include "trade.h"
-#include "inventory.h"
 #include "actor.h"
 #include "ai/stalker/ai_stalker.h"
 #include "ai/trader/ai_trader.h"
-
 #include "artifact.h"
+
+class CInventoryOwner;
 
 TradeFactors CTrade::m_tTradeFactors;
 

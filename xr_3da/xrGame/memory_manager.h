@@ -33,8 +33,8 @@ public:
 	template <typename T>
 			void			update					(const xr_vector<T> &objects);
 	IC		bool			visible					(const CObject *object) const;
-	IC		const CEntityAlive *enemy				() const;
-	IC		const CObject	*item					() const;
+	IC		const CEntityAlive	*enemy				() const;
+	IC		const CGameObject	*item				() const;
 			const CMemoryObject<const CGameObject>	memory(const CObject *object) const;
 };
 

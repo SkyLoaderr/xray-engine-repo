@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "../inventory.h"
+class CInventory;
 
 #include "UIDialogWnd.h"
 #include "UIStatic.h"

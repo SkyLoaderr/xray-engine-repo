@@ -17,11 +17,12 @@ protected:
 	typedef CStateManagerState<CAI_Stalker> inherited;
 	enum ENoALifeStates {
 		eNoALifeStateFree = u32(0),
+		eNoALifeGatherItems,
 		eNoALifeStateDummy = u32(-1),
 	};
 
 public:
-						CStateManagerNoALife	();
+						CStateManagerNoALife	(LPCSTR state_name);
 	virtual				~CStateManagerNoALife	();
 			void		Init					();
 	virtual	void		Load					(LPCSTR section);

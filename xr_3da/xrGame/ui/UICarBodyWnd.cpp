@@ -21,6 +21,10 @@
 #include "../UIGameSP.h"
 #include "../gameobject.h"
 
+#include "../eatable_item.h"
+
+
+
 #include "UIInventoryUtilities.h"
 using namespace InventoryUtilities;
 

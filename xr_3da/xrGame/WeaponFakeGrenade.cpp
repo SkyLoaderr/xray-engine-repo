@@ -340,3 +340,7 @@ void CWeaponFakeGrenade::PH_A_CrPr			()
 {
 }
 
+void CWeaponFakeGrenade::OnH_A_Chield		()
+{
+	inherited::OnH_A_Chield		();
+}

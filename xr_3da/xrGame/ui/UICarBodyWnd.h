@@ -6,7 +6,9 @@
 
 #pragma once
 
-#include "../inventory.h"
+
+class CInventory;
+
 #include "../gameobject.h"
 
 

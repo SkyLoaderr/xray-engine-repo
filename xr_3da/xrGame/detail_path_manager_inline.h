@@ -46,7 +46,7 @@ IC	void CDetailPathManager::set_start_direction	(const Fvector &start_direction)
 
 IC	void CDetailPathManager::set_dest_position	(const Fvector &dest_position)
 {
-	m_actuality				= m_actuality && m_dest_position.similar(dest_position);
+	m_actuality				= m_actuality && m_dest_position.similar(dest_position, .1f);
 	m_dest_position			= dest_position;
 }
 

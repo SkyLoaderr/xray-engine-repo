@@ -4,9 +4,6 @@
 
 #pragma once
 
-#include "../inventory.h"
-
-
 #include "UIPdaContactsWnd.h"
 #include "UIPdaDialogWnd.h"
 
@@ -17,7 +14,7 @@
 #include "UIListWnd.h"
 #include "UIFrameWindow.h"
 
-
+class CInventoryOwner;
 
 ///////////////////////////////////////
 // Подложка и основные кнопки PDA

@@ -1,14 +1,10 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: state_management_config.h
+//	Module 		: state_gather_items_inline.h
 //	Created 	: 28.01.2004
 //  Modified 	: 28.01.2004
 //	Author		: Dmitriy Iassenev
-//	Description : Stalker management configuration file
+//	Description : Gathering items state inline functions
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once
 
-//#define NO_AI
-#ifdef DEBUG
-#define LOG_STATE
-#endif

@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "../inventory.h"
-
+class CInventoryOwner;
+class CEatableItem;
 
 #include "UIDialogWnd.h"
 #include "UIStatic.h"

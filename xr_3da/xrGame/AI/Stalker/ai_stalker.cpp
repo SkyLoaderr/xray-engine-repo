@@ -15,7 +15,7 @@
 #include "../../game_level_cross_table.h"
 #include "../../game_graph.h"
 
-CAI_Stalker::CAI_Stalker			()
+CAI_Stalker::CAI_Stalker			() : CStateManagerStalker("StalkerManager")
 {
 	Init							();
 	InitTrade						();

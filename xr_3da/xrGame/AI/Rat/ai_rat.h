@@ -9,7 +9,7 @@
 #pragma once
 
 #include "../../CustomMonster.h"
-#include "../../Inventory.h"
+#include "../../eatable_item.h"
 
 class CAI_Rat : public CCustomMonster, CEatableItem
 {
@@ -322,6 +322,7 @@ public:
 		virtual void				PH_B_CrPr			(); // actions & operations before physic correction-prediction steps
 		virtual void				PH_I_CrPr			(); // actions & operations after correction before prediction steps
 		virtual void				PH_A_CrPr			(); // actions & operations after phisic correction-prediction steps
+		virtual void				OnH_A_Chield		();
 };
 
 #include "ai_rat_inline.h"

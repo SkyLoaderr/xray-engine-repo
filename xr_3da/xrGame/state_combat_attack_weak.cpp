@@ -12,7 +12,7 @@
 #include "state_combat_attack_weak.h"
 #include "ai/stalker/ai_stalker.h"
 
-CStateAttackWeak::CStateAttackWeak	()
+CStateAttackWeak::CStateAttackWeak	(LPCSTR state_name) : inherited(state_name)
 {
 	Init							();
 }

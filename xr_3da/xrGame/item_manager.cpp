@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "item_manager.h"
+#include "inventory_item.h"
 
 bool CItemManager::useful			(const CGameObject  *object) const
 {

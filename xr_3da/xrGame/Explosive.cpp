@@ -301,3 +301,7 @@ void CExplosive::PH_A_CrPr			()
 {
 }
 
+void CExplosive::OnH_A_Chield		()
+{
+	inherited::OnH_A_Chield		();
+}

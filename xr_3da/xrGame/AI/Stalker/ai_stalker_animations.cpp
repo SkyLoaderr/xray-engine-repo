@@ -432,8 +432,11 @@ void CStalkerAnimations::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 			tpLegsAnimation = m_tAnims.A[l_tBodyState].m_tMoves.A[stalker->movement_type()].A[eMovementDirectionForward].A[stalker->mental_state()];
 			return;
 		}
-		else
-			fAnimationSwitchFactor = .0f;
+		else {
+			fAnimationSwitchFactor	= .0f;
+//			stalker->m_body.speed	= PI_DIV_2;
+//			stalker->m_head.speed	= 3*PI_DIV_2;
+		}
 
 	if (angle_difference(yaw,stalker->head_orientation().current.yaw) <= MAX_HEAD_TURN_ANGLE) {
 		// moving forward

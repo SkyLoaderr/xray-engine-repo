@@ -7,6 +7,7 @@
 
 #include "customoutfit.h"
 #include "PhysicsShell.h"
+#include "inventory_space.h"
 
 CCustomOutfit::CCustomOutfit()
 {

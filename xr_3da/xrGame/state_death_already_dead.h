@@ -20,7 +20,7 @@ private:
 	u32					m_priority;
 
 public:
-						CStateDeathAlreadyDead	();
+						CStateDeathAlreadyDead	(LPCSTR state_name);
 	virtual				~CStateDeathAlreadyDead	();
 			void		Init					();
 	virtual	void		Load					(LPCSTR section);

@@ -6,7 +6,6 @@
  
 #include "hudmanager.h"
 #include "Entity.h"
-#include "inventory.h"
 
 #include "actor.h"
 

@@ -1358,6 +1358,19 @@
 									RelativePath=".\state_free_no_alife_inline.h">
 								</File>
 							</Filter>
+							<Filter
+								Name="StateGatherItems"
+								Filter="">
+								<File
+									RelativePath=".\state_gather_items.cpp">
+								</File>
+								<File
+									RelativePath=".\state_gather_items.h">
+								</File>
+								<File
+									RelativePath=".\state_gather_items_inline.h">
+								</File>
+							</Filter>
 						</Filter>
 						<Filter
 							Name="StateManagerStalker"
@@ -2054,20 +2067,54 @@
 							RelativePath="Inventory.h">
 						</File>
 						<File
-							RelativePath=".\inventory_owner_inline.h">
+							RelativePath=".\inventory_space.h">
 						</File>
-						<File
-							RelativePath=".\InventoryOwner.cpp">
-						</File>
-						<File
-							RelativePath=".\InventoryOwner.h">
-						</File>
-						<File
-							RelativePath="trade.cpp">
-						</File>
-						<File
-							RelativePath="trade.h">
-						</File>
+						<Filter
+							Name="InventoryItem"
+							Filter="">
+							<File
+								RelativePath=".\inventory_item.cpp">
+							</File>
+							<File
+								RelativePath=".\inventory_item.h">
+							</File>
+							<File
+								RelativePath=".\inventory_item_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="InventoryOwner"
+							Filter="">
+							<File
+								RelativePath=".\inventory_owner_inline.h">
+							</File>
+							<File
+								RelativePath=".\InventoryOwner.cpp">
+							</File>
+							<File
+								RelativePath=".\InventoryOwner.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="Trade"
+							Filter="">
+							<File
+								RelativePath="trade.cpp">
+							</File>
+							<File
+								RelativePath="trade.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="EatableItem"
+							Filter="">
+							<File
+								RelativePath=".\eatable_item.cpp">
+							</File>
+							<File
+								RelativePath=".\eatable_item.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="_item"

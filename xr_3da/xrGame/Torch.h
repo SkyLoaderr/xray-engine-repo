@@ -1,5 +1,5 @@
 #pragma once
-#include "inventory.h"
+#include "inventory_item.h"
 #include "PHShellCreator.h"
 
 class CLAItem;

@@ -22,7 +22,7 @@ protected:
 		eDeathStateDummy		= u32(-1),
 	};
 public:
-						CStateManagerDeath		();
+						CStateManagerDeath		(LPCSTR state_name);
 	virtual				~CStateManagerDeath		();
 			void		Init					();
 	virtual	void		Load					(LPCSTR section);

@@ -15,7 +15,7 @@
 #define CStateManagerAbstract CStateManagerState<_Object>
 
 TEMPLATE_SPECIALIZATION
-CStateManagerAbstract::CStateManagerState	()
+CStateManagerAbstract::CStateManagerState	(LPCSTR state_name) : CSStateBase(state_name)
 {
 	Init					();
 }
@@ -90,10 +90,7 @@ bool CStateManagerAbstract::completed		() const
 TEMPLATE_SPECIALIZATION
 void CStateManagerAbstract::execute	()
 {
-//	if (!path().empty () && (path().size() < 2)) {
-//		VERIFY			(current_state_id() == path().front());
-//		go_path			();
-//	}
+	CSStateBase::execute			();
 
 	if (current_vertex_id() == dest_vertex_id()) {
 		IGraphManager				*state_manager_interface = dynamic_cast<IGraphManager*>(&current_state());

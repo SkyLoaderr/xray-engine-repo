@@ -20,7 +20,7 @@ private:
 	u32					m_priority;
 
 public:
-						CStateFreeNoAlife	();
+						CStateFreeNoAlife	(LPCSTR state_name);
 	virtual				~CStateFreeNoAlife	();
 			void		Init				();
 	virtual	void		Load				(LPCSTR section);
