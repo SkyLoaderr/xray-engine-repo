@@ -1162,7 +1162,7 @@ struct MI1 {
 };
 
 struct MI2 : public MI1, public MI0 {
-	virtual ~MI2(){};
+	virtual ~MI2(){printf("MI2::~MI2()\n");};
 	virtual void vf(int a)
 	{
 		a = a + 1;
@@ -1301,6 +1301,9 @@ void test1()
 
 	luabind::object		my_class(get_globals(L)["lua_class"]);
 	MI2					*p = object_cast<MI2*>(my_class(),adopt(result));
+	xr_delete		(p);
+
+	lua_setgcthreshold(L,0);
 
 	lua_close		(L);
 }
