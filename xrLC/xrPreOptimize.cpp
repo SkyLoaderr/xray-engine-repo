@@ -165,22 +165,19 @@ void CBuild::PreOptimize()
 
 void CBuild::IsolateVertices()
 {
-	Phase				("Isolating vertices...");
-	Status				("Processing...");
+	Status				("Isolating vertices...");
+	u32 M1				= Memory.mem_usage	();
+	g_bUnregister		= false;
+	u32 verts_old		= g_vertices.size();
+	for (int it=0; it<int(g_vertices.size()); it++)
 	{
-		u32 M1				= Memory.mem_usage	();
-		g_bUnregister		= false;
-		u32 verts_old		= g_vertices.size();
-		for (int it=0; it<int(g_vertices.size()); it++)
-		{
-			Progress(float(it)/float(g_vertices.size()));
-			if (g_vertices[it] && g_vertices[it]->adjacent.empty())	VertexPool.destroy(g_vertices[it]);
-		}
-		vecVertexIt	_end	= std::remove	(g_vertices.begin(),g_vertices.end(),(Vertex*)0);
-		g_vertices.erase	(_end,g_vertices.end());
-		g_bUnregister		= true;
-		mem_Compact			();
-		u32 M2				= Memory.mem_usage	();
-		Msg("Compact: %d / %d (%d), %d verts removed",M1/1024,M2/1024,(M1-M2)/1024,verts_old-g_vertices.size());
+		Progress(float(it)/float(g_vertices.size()));
+		if (g_vertices[it] && g_vertices[it]->adjacent.empty())	VertexPool.destroy(g_vertices[it]);
 	}
+	vecVertexIt	_end	= std::remove	(g_vertices.begin(),g_vertices.end(),(Vertex*)0);
+	g_vertices.erase	(_end,g_vertices.end());
+	g_bUnregister		= true;
+	mem_Compact			();
+	u32 M2				= Memory.mem_usage	();
+	Status				("::compact:: %d / %d (%d), %d verts removed",M1/1024,M2/1024,(M1-M2)/1024,verts_old-g_vertices.size());
 }
