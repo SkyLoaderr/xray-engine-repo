@@ -12,6 +12,7 @@
 #include "..\\ai_monsters_misc.h"
 #include "..\\..\\hudmanager.h"
 #include "..\\..\\..\\xr_trims.h"
+#include "..\\..\\a_star.h"
 
 #define MAX_PATROL_DISTANCE				6.f
 #define MIN_PATROL_DISTANCE				1.f
@@ -1238,7 +1239,7 @@ void CAI_Soldier::OnPatrolReturn()
 	else {
 		u32 dwTemp = Level().AI.dwfCheckPositionInDirection(AI_NodeID,vPosition,m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex]);
 		if (dwTemp != u32(-1)) {
-			Level().AI.ffFindMinimalPath(AI_NodeID,AI_Path.DestNode = dwTemp,AI_Path);
+			Level().AI.m_tpAStar->ffFindMinimalPath(AI_NodeID,AI_Path.DestNode = dwTemp,AI_Path);
 			if (!AI_Path.Nodes.empty()) {
 				AI_Path.BuildTravelLine(Position());
 				AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P = m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex];
@@ -1252,7 +1253,7 @@ void CAI_Soldier::OnPatrolReturn()
 		}
 		else
 			if (AI_Path.bNeedRebuild) {
-				Level().AI.ffFindMinimalPath(AI_NodeID,AI_Path.DestNode,AI_Path);
+				Level().AI.m_tpAStar->ffFindMinimalPath(AI_NodeID,AI_Path.DestNode,AI_Path);
 				if (AI_Path.Nodes.size() > 1) {
 					AI_Path.BuildTravelLine(Position());
 					if (Level().AI.bfInsideNode(Level().AI.Node(AI_Path.DestNode),m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex]))

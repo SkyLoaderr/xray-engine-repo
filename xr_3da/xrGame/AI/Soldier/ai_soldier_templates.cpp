@@ -11,6 +11,7 @@
 #include "ai_soldier_selectors.h"
 #include "..\\..\\..\\xr_trims.h"
 #include "..\\..\\xr_weapon_list.h"
+#include "..\\..\\a_star.h"
 
 // macroses
 #define MIN_RANGE_SEARCH_TIME_INTERVAL	1000.f
@@ -30,9 +31,9 @@ void CAI_Soldier::vfBuildPathToDestinationPoint(CAISelectorBase *S)
 {
 	// building a path from and to
 	if (S)
-		Level().AI.ffFindOptimalPath(AI_NodeID,AI_Path.DestNode,AI_Path,S->m_dwEnemyNode,S->fOptEnemyDistance);
+		Level().AI.m_tpAStar->ffFindOptimalPath(AI_NodeID,AI_Path.DestNode,AI_Path,S->m_dwEnemyNode,S->fOptEnemyDistance);
 	else
-		Level().AI.ffFindOptimalPath(AI_NodeID,AI_Path.DestNode,AI_Path);
+		Level().AI.m_tpAStar->ffFindOptimalPath(AI_NodeID,AI_Path.DestNode,AI_Path);
 	
 	if (AI_Path.Nodes.size() > 0) {
 		// if path is long enough then build travel line

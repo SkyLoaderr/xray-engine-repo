@@ -8,7 +8,6 @@
 
 //#include "virtualvector.h"
 #include "..\xrLevel.h"
-#include "ai_a_star_search.h"
 
 namespace AI {
 	typedef struct tagSGraphEdge {
@@ -62,135 +61,7 @@ namespace AI {
 	#define	DEFAULT_ENEMY_VIEW_WEIGHT	100.f
 };
 
-class CAI_Space;
-
-typedef struct tagSAIMapData {
-	CAI_Space	*tpAI_Space;
-	u32			dwFinishNode;
-} SAIMapData;
-
-typedef struct tagSAIMapDataL {
-	CAI_Space	*tpAI_Space;
-	u32			dwFinishNode;
-	float		fLight;
-	float		fCover;
-	float		fDistance;
-} SAIMapDataL;
-
-typedef struct tagSAIMapDataE {
-	CAI_Space	*tpAI_Space;
-	u32			dwFinishNode;
-	u32			dwEnemyNode;
-	float		fLight;
-	float		fCover;
-	float		fDistance;
-	float		fEnemyDistance;
-	float		fEnemyView;
-} SAIMapDataE;
-
-typedef struct tagSAIMapDataF {
-	CAI_Space	*tpAI_Space;
-	u32			dwFinishNode;
-	Fvector		tEnemyPosition;
-	float		fLight;
-	float		fCover;
-	float		fDistance;
-	float		fEnemyDistance;
-	float		fEnemyView;
-} SAIMapDataF;
-
-class CAIMapTemplateNode {
-public:
-	float		x1;
-	float		y1;
-	float		z1;
-	float		x2;
-	float		y2;
-	float		z2;
-	float		x3;
-	float		y3;
-	float		z3;
-	u32			m_dwLastBestNode;
-	typedef		NodeLink* iterator;
-};
-
-class CAIGraphTemplateNode {
-public:
-	u32			m_dwLastBestNode;
-	typedef		AI::SGraphEdge* iterator;
-	IC u32		get_value				(iterator &tIterator)
-	{
-		return(tIterator->dwVertexNumber);
-	}
-};
-
-class CAIMapShortestPathNode : public CAIMapTemplateNode {
-public:
-	SAIMapData	tData;
-				CAIMapShortestPathNode	(SAIMapData &tAIMapData);
-	IC void		begin					(u32 dwNode, iterator &tStart, iterator &tEnd);
-	IC u32		get_value				(iterator &tIterator);
-	IC bool		bfCheckIfAccessible		(u32 dwNode);
-	IC float	ffEvaluate				(u32 dwStartNode, u32 dwFinishNode, iterator &tIterator);
-	IC float	ffAnticipate			(u32 dwStartNode);
-	IC float	ffAnticipate			();
-};
-
-class CAIMapLCDPathNode : public CAIMapTemplateNode {
-public:
-	SAIMapDataL	tData;
-	float		m_fSum;
-				CAIMapLCDPathNode		(SAIMapDataL &tAIMapData);
-	IC void		begin					(u32 dwNode, iterator &tStart, iterator &tEnd);
-	IC u32		get_value				(iterator &tIterator);
-	IC bool		bfCheckIfAccessible		(u32 dwNode);
-	IC float	ffEvaluate				(u32 dwStartNode, u32 dwFinishNode, iterator &tIterator);
-	IC float	ffAnticipate			(u32 dwStartNode);
-	IC float	ffAnticipate			();
-};
-
-class CAIMapEnemyPathNode : public CAIMapTemplateNode {
-public:
-	float		x4;
-	float		y4;
-	float		z4;
-	SAIMapDataE	tData;
-	float		m_fSum;
-				CAIMapEnemyPathNode		(SAIMapDataE &tAIMapData);
-	IC void		begin					(u32 dwNode, iterator &tStart, iterator &tEnd);
-	IC u32		get_value				(iterator &tIterator);
-	IC bool		bfCheckIfAccessible		(u32 dwNode);
-	IC float	ffEvaluate				(u32 dwStartNode, u32 dwFinishNode, iterator &tIterator);
-	IC float	ffAnticipate			(u32 dwStartNode);
-	IC float	ffAnticipate			();
-};
-
-class CAIMapEnemyPositionPathNode : public CAIMapTemplateNode {
-public:
-	float		x4;
-	float		y4;
-	float		z4;
-	SAIMapDataF	tData;
-	float		m_fSum;
-				CAIMapEnemyPositionPathNode	(SAIMapDataF &tAIMapData);
-	IC void		begin					(u32 dwNode, iterator &tStart, iterator &tEnd);
-	IC u32		get_value				(iterator &tIterator);
-	IC bool		bfCheckIfAccessible		(u32 dwNode);
-	IC float	ffEvaluate				(u32 dwStartNode, u32 dwFinishNode, iterator &tIterator);
-	IC float	ffAnticipate			(u32 dwStartNode);
-	IC float	ffAnticipate			();
-};
-
-class CAIGraphShortestPathNode : public CAIGraphTemplateNode {
-public:
-	SAIMapData	tData;
-				CAIGraphShortestPathNode(SAIMapData &tAIMapData);
-	IC void		begin					(u32 dwNode, iterator &tStart, iterator &tEnd);
-	IC bool		bfCheckIfAccessible		(u32 dwNode);
-	IC float	ffEvaluate				(u32 dwStartNode, u32 dwFinishNode, iterator &tIterator);
-	IC float	ffAnticipate			(u32 dwStartNode);
-	IC float	ffAnticipate			();
-};
+class CAStar;
 
 class CAI_Space	: public pureDeviceCreate, pureDeviceDestroy
 {
@@ -225,31 +96,17 @@ public:
 	void			q_Range_Bit		(u32 StartNode, const Fvector& Pos,	float Range,	AI::NodeEstimator& Estimator, float &fOldCost);
 	void			q_Range_Bit		(u32 StartNode, const Fvector& BasePos, float Range, NodePosition* QueryPosition, u32 &BestNode, float &BestCost);
 	void			q_Range_Bit_X	(u32 StartNode, const Fvector& BasePos, float Range, NodePosition* QueryPosition, u32 &BestNode, float &BestCost);
-
-	AI::SGraphVertex	*m_tpaGraph;			// graph
-	SNode				*m_tpHeap;
-	SIndexNode			*m_tpIndexes;
-	u32					m_dwAStarStaticCounter;
-	float				m_fSize2,m_fYSize2;
-	CAStarSearch<CAIMapShortestPathNode,SAIMapData>
-		m_tpMapPath;
-	CAStarSearch<CAIMapLCDPathNode,SAIMapDataL>
-		m_tpLCDPath;
-	CAStarSearch<CAIMapEnemyPathNode,SAIMapDataE>
-		m_tpEnemyPath;
-	CAStarSearch<CAIMapEnemyPositionPathNode,SAIMapDataF>
-		m_tpEnemyPositionPath;
-	CAStarSearch<CAIGraphShortestPathNode,SAIMapData>
-		m_tpGraphPath;
-	vector<u32>		m_tpaNodes;
-	float			ffFindMinimalPath(u32 dwStartNode, u32 dwGoalNode, vector<u32> &tpaNodes);
-	float			ffFindMinimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, bool bUseMarks = false);
-	float			ffFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, float fLightWeight = DEFAULT_LIGHT_WEIGHT, float fCoverWeight = DEFAULT_COVER_WEIGHT, float fDistanceWeight = DEFAULT_DISTANCE_WEIGHT, bool bUseMarks = false);
-	float			ffFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, u32 dwEnemyNode, float fOptimalEnemyDistance, float fLightWeight = DEFAULT_LIGHT_WEIGHT, float fCoverWeight = DEFAULT_COVER_WEIGHT, float fDistanceWeight = DEFAULT_DISTANCE_WEIGHT, float fEnemyViewWeight = DEFAULT_ENEMY_VIEW_WEIGHT, bool bUseMarks = false);
-	float			ffFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, Fvector tEnemyPosition, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight, bool bUseMarks = false);
 	int				q_LoadSearch	(const Fvector& Pos);	// <0 - failure
-	IC	const AI::SGraphHeader& GraphHeader() {return m_tGraphHeader;}
-	IC	const CStream* GraphVFS() {return m_tpGraphVFS;}
+
+	// graph
+	AI::SGraphVertex	*m_tpaGraph;
+	IC	const AI::SGraphHeader& GraphHeader()	{return m_tGraphHeader;}
+	IC	bool			bfCheckIfGraphLoaded()	{return(m_tpGraphVFS != 0);}
+	IC	bool			bfCheckIfMapLoaded()	{return(vfs != 0);}
+
+	// a* algorithm		interfaces
+	float				m_fSize2,m_fYSize2;
+	CAStar				*m_tpAStar;
 
 	// Helper functions
 	IC	const hdrNODES&		Header()		{ return m_header; }

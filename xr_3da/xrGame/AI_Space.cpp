@@ -7,6 +7,7 @@
 #include "gameobject.h"
 #include "hudmanager.h"
 #include "ai_console.h"
+#include "a_star.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -14,27 +15,20 @@
 
 CAI_Space::CAI_Space	()
 {
+/*
 	m_nodes_ptr					= NULL;
 	vfs							= NULL;
 	m_tpGraphVFS				= NULL;
 	sh_debug					= 0;
-
-	m_tpHeap					= 0;
-	m_tpIndexes					= 0;
-	m_dwAStarStaticCounter		= 0;
-	m_tpaNodes.					clear();
 	Device.seqDevCreate.Add		(this);
 	Device.seqDevDestroy.Add	(this);
 	OnDeviceCreate				();
+	m_tpAStar					= 0;
+	*/
 }
 
 CAI_Space::~CAI_Space	()
 {
-	// for a* search
-	_FREE(m_tpHeap);
-	_FREE(m_tpIndexes);
-	//
-
 	Device.seqDevCreate.Remove	(this);
 	Device.seqDevDestroy.Remove	(this);
 	Device.Shader.Delete		(sh_debug);
@@ -43,6 +37,7 @@ CAI_Space::~CAI_Space	()
 	_FREE	(m_nodes_ptr);
 	_DELETE	(vfs);
 	_DELETE	(m_tpGraphVFS);
+	_DELETE	(m_tpAStar);
 }
 
 void CAI_Space::OnDeviceCreate()
@@ -96,17 +91,11 @@ void CAI_Space::Load(LPCSTR name)
 		m_tpaGraph				= (AI::SGraphVertex*)m_tpGraphVFS->Pointer();
 	}
 
-	// for a* search
-	m_fSize2				= _sqr(m_header.size)/4;
-	m_fYSize2				= _sqr((float)(m_header.size_y/32767.0))/4;
-	u32 S1					= (MAX_NODES + 1)*sizeof(SNode);
-	m_tpHeap				= (SNode *)xr_malloc(S1);
-	ZeroMemory				(m_tpHeap,S1);
-	u32 S2					= max(vfs ? m_header.count : 0,m_tpGraphVFS ? m_tGraphHeader.dwVertexCount + 1 : 0)*sizeof(SIndexNode);
-	m_tpIndexes				= (SIndexNode *)xr_malloc(S2);
-	ZeroMemory				(m_tpIndexes,S2);
-	Msg						("* AI path-finding structures: %d K",(S1 + S2)/(1024));
-	
+	// for a*
+	m_fSize2	= _sqr(Level().AI.m_header.size)/4;
+	m_fYSize2	= _sqr((float)(Level().AI.m_header.size_y/32767.0))/4;
+	m_tpAStar	= new CAStar(65535);
+
 //	SetPriorityClass	(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
 //	SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
 //	Sleep				(1);
@@ -149,13 +138,13 @@ void CAI_Space::Render()
 			F->SetColor(0xffffffff);
 			F->Out(S.x,-S.y,"%d",i);
 		}
-		if (m_tpaNodes.size()) {
-			Fvector t1 = m_tpaGraph[m_tpaNodes[0]].tPoint;
+		if (m_tpAStar->m_tpaNodes.size()) {
+			Fvector t1 = m_tpaGraph[m_tpAStar->m_tpaNodes[0]].tPoint;
 			t1.y += .6f;
 			NORMALIZE_VECTOR(t1);
 			Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
-			for (int i=1; i<(int)m_tpaNodes.size(); i++) {
-				Fvector t2 = m_tpaGraph[m_tpaNodes[i]].tPoint;
+			for (int i=1; i<(int)m_tpAStar->m_tpaNodes.size(); i++) {
+				Fvector t2 = m_tpaGraph[m_tpAStar->m_tpaNodes[i]].tPoint;
 				t2.y += .6f;
 				NORMALIZE_VECTOR(t2);
 				Device.Primitive.dbg_DrawAABB(t2,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
@@ -163,8 +152,8 @@ void CAI_Space::Render()
 				t1 = t2;
 			}
 //			i=1;
-//			for (; m_tpIndexes[m_tpHeap[i].iIndex].dwTime == m_dwAStarStaticCounter; i++) {
-//				Fvector t2 = m_tpaGraph[m_tpHeap[i].iIndex].tPoint;
+//			for (; m_tpIndexes[m_tpAStar->m_tpHeap[i].iIndex].dwTime == m_dwAStarStaticCounter; i++) {
+//				Fvector t2 = m_tpaGraph[m_tpAStar->m_tpHeap[i].iIndex].tPoint;
 //				t2.y += .6f;
 //				NORMALIZE_VECTOR(t2);
 //				Device.Primitive.dbg_DrawAABB(t2,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));

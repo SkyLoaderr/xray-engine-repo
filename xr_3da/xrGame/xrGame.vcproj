@@ -1576,10 +1576,19 @@
 				RelativePath=".\AI_qRange.cpp">
 			</File>
 			<File
-				RelativePath="ai_a_star_search.cpp">
+				RelativePath="a_star.cpp">
 			</File>
 			<File
-				RelativePath="ai_a_star_search.h">
+				RelativePath="a_star.h">
+			</File>
+			<File
+				RelativePath="a_star_interfaces.cpp">
+			</File>
+			<File
+				RelativePath="a_star_interfaces.h">
+			</File>
+			<File
+				RelativePath="a_star_template.h">
 			</File>
 			<File
 				RelativePath="ai_alife.cpp">

@@ -20,6 +20,7 @@
 #include "customtarget.h"
 #include "..\fdemorecord.h"
 #include "..\fdemoplay.h"
+#include "a_star.h"
     
 ENGINE_API extern u32		psAlwaysRun;
 ENGINE_API extern float		psHUD_FOV;
@@ -126,7 +127,7 @@ public:
 	virtual void Execute(LPCSTR args) {
 		int id1=-1, id2=-1;
 		sscanf(args ,"%d %d",&id1,&id2);
-		if (!Level().AI.GraphVFS())
+		if (!Level().AI.bfCheckIfGraphLoaded())
 			Msg("! there is no graph!");
 		else
 			if ((id1 != -1) && (id2 != -1))
@@ -140,12 +141,12 @@ public:
 //						SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
 						Sleep				(1);
 						u64 t1x = CPU::GetCycleCount();
-						float fValue = Level().AI.ffFindMinimalPath(id1,id2,Level().AI.m_tpaNodes);
+						float fValue = Level().AI.m_tpAStar->ffFindMinimalPath(id1,id2);
 						u64 t2x = CPU::GetCycleCount();
 //						SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
 //						SetPriorityClass	(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
 						t2x -= t1x;
-						Msg("* %7.2f[%d] : %11I64u cycles (%.3f microseconds)",fValue,Level().AI.m_tpaNodes.size(),t2x,CPU::cycles2microsec*t2x);
+						Msg("* %7.2f[%d] : %11I64u cycles (%.3f microseconds)",fValue,Level().AI.m_tpAStar->m_tpaNodes.size(),t2x,CPU::cycles2microsec*t2x);
 					}
 			else
 				Msg("! not enough parameters!");
