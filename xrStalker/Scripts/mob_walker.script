@@ -56,6 +56,8 @@ function mob_walker:reset_scheme()
 	self.cur_anim_set = default_anim_standing
 	self.pt_wait_time = default_wait_time -- сколько ждать в точке, где играем анимацию 
 
+	self.scheduled_snd = nil
+
 	self.last_index = nil
 	self.last_look_index = nil
 	
@@ -125,6 +127,11 @@ function mob_walker:waypoint_callback(obj, action_type, index)
 	end
 
 	self.last_index = index
+
+	local suggested_snd = self.path_walk_info[index]["s"]
+	if suggested_snd then
+		self.scheduled_snd = suggested_snd
+	end
 
 	local suggested_crouch = self.path_walk_info[index]["c"]
 	if suggested_crouch == "true" then
@@ -197,12 +204,25 @@ function mob_walker:update_movement_state()
 	else
 		m = move.walk_fwd
 	end
-	action(self.object, move(m, patrol(self.st.path_walk, patrol.next, patrol.continue)), cond(cond.move_end))
+
+	if self.scheduled_snd then
+		action(self.object, move(m, patrol(self.st.path_walk, patrol.next, patrol.continue)),
+			sound(sound[self.scheduled_snd]), cond(cond.move_end))
+		self.scheduled_snd = nil
+	else
+		action(self.object, move(m, patrol(self.st.path_walk, patrol.next, patrol.continue)), cond(cond.move_end))
+	end
 end
 
 function mob_walker:update_standing_state()
 	printf("_bp [%s]: update_standing_state", self.object:name())
-	action(self.object, anim(self.cur_anim_set, 0), cond(cond.time_end, self.pt_wait_time))
+	if self.scheduled_snd then
+		action(self.object, anim(self.cur_anim_set, 0),
+			sound(sound[self.scheduled_snd]), cond(cond.time_end, self.pt_wait_time))
+		self.scheduled_snd = nil
+	else
+		action(self.object, anim(self.cur_anim_set, 0), cond(cond.time_end, self.pt_wait_time))
+	end
 end
 
 function mob_walker:look_at_waypoint(pt)

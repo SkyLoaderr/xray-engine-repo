@@ -60,6 +60,10 @@ local snd = {
 		[[characters_voice\human_01\scenario\trader\trader_tutorial_rejection_1]]
 	},
 
+	trader_go_help_tolik = {
+		[[characters_voice\human_01\scenario\trader\trader_tutorial_go_help_tolik_2]]
+	},
+
 	trader_door_open_start = {
 		[[device\door_start]]
 	},

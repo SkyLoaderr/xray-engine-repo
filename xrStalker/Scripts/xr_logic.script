@@ -816,7 +816,7 @@ end
 
 function mob_capture(mob, reset_actions)
 	if reset_actions == nil then
-		utils.abort("mob_capture: no_reset parameter's value is not specified")
+		utils.abort("mob_capture: reset_actions parameter's value is not specified")
 	end
 
 	if reset_actions then
