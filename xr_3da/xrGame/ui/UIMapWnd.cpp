@@ -23,6 +23,12 @@ const				SCROLLBARS_SHIFT			= 5;
 const				VSCROLLBAR_STEP				= 20; // В пикселях
 const				HSCROLLBAR_STEP				= 20; // В пикселях
 
+const u32			activeLocalMapColor			= 0xffc80000;
+const u32			inactiveLocalMapColor		= 0xff438cd1;
+const u32			inactiveSmallLocalMapColor	= 0x00000000;
+const u32			ourLevelMapColor			= 0xffffffff;
+
+
 CUICustomMap::CUICustomMap ()
 {
 	m_BoundRect.set			(0,0,0,0);
@@ -58,7 +64,14 @@ void CUICustomMap::MoveWndDelta(const Ivector2& d)
 
 Irect CUICustomMap::ConvertRealToLocal  (const Fvector2& src)// meters->pixels (relatively own left-top pos)
 {
+	float kW = m_BoundRect.width()/GetWndRect().width();
+	float kH = m_BoundRect.height()/GetWndRect().height();
+	
 	Irect res;
+	res.lt.x = iFloor(src.x/kW);
+	res.lt.y = iFloor(src.y/kH);
+	res.rb.set(0,0);
+
 	return res;
 }
 
@@ -82,7 +95,15 @@ void CUICustomMap::FitToHeight	(u32 height)
 	m_zoom_factor = m_BoundRect.height()/h;
 }
 
+void CUICustomMap::OptimalFit(const Irect& r)
+{
+	float kBound	= m_BoundRect.width()/m_BoundRect.height();
+	if( kBound>0 )
+		FitToHeight(	r.height()	);
+	else
+		FitToWidth(		r.width()	);
 
+}
 
 
 CUIGlobalMap::CUIGlobalMap()
@@ -190,6 +211,7 @@ void CUIGlobalMap::OnBtnMaximizedClick()
 //////////////////////////////////////////////////////////////////////////
 
 CUILevelMap::CUILevelMap()
+:m_globalMapSpot(this)
 {
 }
 
@@ -203,6 +225,8 @@ void CUILevelMap::Init	(shared_str name, CInifile& gameLtx)
 
 	Fvector4 tmp = gameLtx.r_fvector4(name,"global_rect");
 	m_GlobalRect.set(tmp.x, tmp.y, tmp.z, tmp.w);
+
+	m_globalMapSpot.Init(inactiveLocalMapColor);
 }
 
 
@@ -275,12 +299,13 @@ void CUIMapWnd::Init()
 		for (;it!=end; it++){
 
 			R_ASSERT2	(m_GameMaps.end() == m_GameMaps.find(it->first), "Duplicate level name not allowed");
-			CUICustomMap*& l = m_GameMaps[it->first];
+			CUILevelMap*& l = m_GameMaps[it->first];
 
 			l = xr_new<CUILevelMap>();
 			l->Init(it->first, gameLtx);
-			l->FitToWidth( m_UILevelFrame.GetWidth()	);
-//			l->FitToHeight( m_UILevelFrame.GetHeight()	);
+
+			l->OptimalFit( m_UILevelFrame.GetWndRect() );
+			m_GlobalMap->AttachChild(l->GlobalMapSpot() );
 		}
 	}
 }
@@ -366,6 +391,13 @@ void CUIMapWnd::UpdateScroll()
 	m_UIMainScrollH.SetScrollPos(-w_pos.x);
 }
 
+void CUIMapWnd::UpdateScroll()
+{
+	Ivector2 w_pos				= m_activeLevelMap->GetWndPos();
+	m_UIMainScrollV.SetScrollPos(-w_pos.y);
+	m_UIMainScrollH.SetScrollPos(-w_pos.x);
+}
+
 void CUIMapWnd::OnScrollV()
 {
 	s16 s_pos					= m_UIMainScrollV.GetScrollPos();
@@ -377,6 +409,61 @@ void CUIMapWnd::OnScrollH()
 	s16 s_pos					= m_UIMainScrollH.GetScrollPos();
 	Ivector2 w_pos				= m_activeLevelMap->GetWndPos();
 	m_activeLevelMap->SetWndPos	(-s_pos,w_pos.y);
+}
+
+
+
+CUIGlobalMapSpot::CUIGlobalMapSpot		(CUILevelMap* m)
+{
+	m_map = m;
+}
+
+CUIGlobalMapSpot::~CUIGlobalMapSpot		()
+{}
+
+void CUIGlobalMapSpot::Draw		()
+{
+	UIBorder.Render();
+}
+
+void CUIGlobalMapSpot::Init	(u32 color)
+{
+	inherited::Init(0,0,20,20);
+	UIBorder.Init("ui\\ui_frame_very_small", 0, 0, 20, 20,alNone);
+	UIBorder.SetColor(color);
+}
+
+void CUIGlobalMapSpot::OnMouse	(int x, int y, EUIMessages mouse_action)
+{
+	inherited::OnMouse(x,y,mouse_action);
+		switch (mouse_action){
+			case WINDOW_MOUSE_MOVE:{
+
+				}break;
+			case WINDOW_LBUTTON_DOWN:{
+
+				}break;
+		}
+}
+
+void CUIGlobalMapSpot::Update()
+{
+	//rect, pos
+	CUICustomMap* w = (CUICustomMap*)GetParent();
+
+	Irect rect, tmp;
+
+	tmp = w->ConvertRealToLocal(m_map->GlobalRect().lt);
+	rect.lt = tmp.lt;
+
+	tmp = w->ConvertRealToLocal(m_map->GlobalRect().rb);
+	rect.rb = tmp.lt;
+	
+	SetWndRect				(rect);
+
+	Irect rectAbs =			GetAbsoluteRect();
+	UIBorder.SetPos			(rectAbs.left, rectAbs.top);
+	UIBorder.SetSize		( rectAbs.width(), rectAbs.height() );
 }
 
 
