@@ -152,7 +152,9 @@ public:
 			CScriptEntityAction	*GetCurrentAction	() const;
 			void				AddAction			(const CScriptEntityAction *tpEntityAction, bool bHighPriority = false);
 			void				ResetActionQueue	();
-
+	// Actor only
+			void				SetActorPosition	(Fvector pos);
+			void				SetActorDirection	(float dir);
 	// CCustomMonster
 			bool				CheckObjectVisibility(const CScriptGameObject *tpLuaGameObject);
 			bool				CheckTypeVisibility	(const char *section_name);

@@ -30,6 +30,7 @@
 #include "enemy_manager.h"
 #include "item_manager.h"
 #include "memory_space.h"
+#include "actor.h"
 
 void CScriptGameObject::explode	(u32 level_time)
 {
@@ -299,4 +300,23 @@ void CScriptGameObject::RestoreDefaultStartDialog()
 	CAI_PhraseDialogManager* pDialogManager = smart_cast<CAI_PhraseDialogManager*>(&object());
 	if(!pDialogManager) return;
 	pDialogManager->RestoreDefaultStartDialog();
+}
+
+void CScriptGameObject::SetActorPosition			(Fvector pos)
+{
+	CActor* actor = smart_cast<CActor*>(&object());
+	if(actor)
+		actor->XFORM().c = pos;
+	else
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"ScriptGameObject : attempt to call SetActorPosition method for non-actor object");
+
+}
+
+void CScriptGameObject::SetActorDirection		(float dir)
+{
+	CActor* actor = smart_cast<CActor*>(&object());
+	if(actor)
+		actor->XFORM().setXYZ(0,dir,0);
+	else
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"ScriptGameObject : attempt to call SetActorDirection method for non-actor object");
 }

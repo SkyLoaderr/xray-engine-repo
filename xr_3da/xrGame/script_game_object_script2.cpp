@@ -203,5 +203,7 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 
 		.def("head_orientation",			&CScriptGameObject::head_orientation)
 
+		.def("set_actor_position",			&CScriptGameObject::SetActorPosition)
+		.def("set_actor_direction",			&CScriptGameObject::SetActorDirection)
 	;return	(instance);
 }
