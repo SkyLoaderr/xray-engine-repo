@@ -5,8 +5,8 @@
 #include <oleauto.h>
 #include <atlconv.h>
 #include <initguid.h>
-#include <sqldmo.h>
-#include <sqldmoid.h>
+#include "sqldmo.h"
+#include "sqldmoid.h"
 
 bool GetSQLServer(LPSQLDMOSERVER* pSQLServer){
 	if FAILED(CoCreateInstance(CLSID_SQLDMOServer, NULL, CLSCTX_INPROC_SERVER,
