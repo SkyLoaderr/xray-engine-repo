@@ -49,10 +49,10 @@ function test_avi_dlg:InitControls()
 end
 
 
-function main()
+function _main()
 end
 
-function _main()
+function main()
 	local dlg = test_avi_dlg()
 	
 	local snd = sound_object(
@@ -74,5 +74,6 @@ function _main()
 	wait(16000)
 	level.remove_dialog_to_render(dlg)
 	
+	wait(10000)
 end
 
