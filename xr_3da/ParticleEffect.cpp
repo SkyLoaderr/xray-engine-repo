@@ -595,7 +595,7 @@ void CParticleEffect::Render(float LOD)
 	// Get a pointer to the particles in gp memory
 	ParticleEffect *pe 		= _GetEffectPtr(m_HandleEffect);
 	if((pe!=NULL)&&(pe->p_count>0)){
-		if (m_Def->m_Flags.is(CPEDef::dfSprite)){
+		if (m_Def&&m_Def->m_Flags.is(CPEDef::dfSprite)){
 			FVF::LIT* pv_start	= (FVF::LIT*)RCache.Vertex.Lock(pe->p_count*4*4,hGeom->vb_stride,dwOffset);
 			FVF::LIT* pv		= pv_start;
 
