@@ -179,23 +179,22 @@ void	light::xform_calc			()
 		{
 			// scale of identity sphere
 			float		L_R			= range;
-			Fmatrix		mScale;		
-			mScale.scale			(L_R,L_R,L_R);
-			//mScale.translate_over	(position);
-
-			// final xform
+			Fmatrix		mScale;		mScale.scale	(L_R,L_R,L_R);
 			m_xform.mul_43			(mR,mScale);
 		}
 		break;
 	case IRender_Light::SPOT		:
-	case IRender_Light::OMNIPART	:
 		{
 			// scale to account range and angle
 			float		s			= 2.f*range*tanf(cone/2.f);	
 			Fmatrix		mScale;		mScale.scale(s,s,range);	// make range and radius
-			//mR.c					= position;	mR._44	= 1;
-
-			// final xform
+			m_xform.mul_43			(mR,mScale);
+		}
+		break;
+	case IRender_Light::OMNIPART	:
+		{
+			float		L_R			= 2*range;		// volume is half-radius
+			Fmatrix		mScale;		mScale.scale	(L_R,L_R,L_R);
 			m_xform.mul_43			(mR,mScale);
 		}
 		break;

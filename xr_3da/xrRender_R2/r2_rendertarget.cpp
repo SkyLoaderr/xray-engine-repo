@@ -169,6 +169,8 @@ void	CRenderTarget::OnDeviceCreate	()
 		s_accum_point.create		(b_accum_point,				"r2\\accum_point_s");
 		accum_point_geom_create		();
 		g_accum_point.create		(D3DFVF_XYZ,				g_accum_point_vb, g_accum_point_ib);
+		accum_omnip_geom_create		();
+		g_accum_omnipart.create		(D3DFVF_XYZ,				g_accum_omnip_vb, g_accum_omnip_ib);
 	}
 
 	// SPOT
@@ -340,6 +342,7 @@ void	CRenderTarget::OnDeviceDestroy	()
 	_RELEASE					(rt_smap_ZB				);
 
 	accum_spot_geom_destroy		();
+	accum_omnip_geom_destroy	();
 	accum_point_geom_destroy	();
 
 	// Blenders

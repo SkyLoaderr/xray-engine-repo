@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "du_sphere_part.h"
 
 void CRenderTarget::draw_volume		(light* L)
 {
@@ -9,9 +10,12 @@ void CRenderTarget::draw_volume		(light* L)
 		RCache.Render			(D3DPT_TRIANGLELIST,0,0,DU_SPHERE_NUMVERTEX,0,DU_SPHERE_NUMFACES);
 		break;
 	case IRender_Light::SPOT		:
-	case IRender_Light::OMNIPART	:	//.!!! should be different
 		RCache.set_Geometry		(g_accum_spot);
 		RCache.Render			(D3DPT_TRIANGLELIST,0,0,DU_CONE_NUMVERTEX,0,DU_CONE_NUMFACES);
+		break;
+	case IRender_Light::OMNIPART	:	
+		RCache.set_Geometry		(g_accum_omnipart);
+		RCache.Render			(D3DPT_TRIANGLELIST,0,0,DU_SPHERE_PART_NUMVERTEX,0,DU_SPHERE_PART_NUMFACES);
 		break;
 	default:
 		break;
