@@ -256,7 +256,7 @@ BOOL IPureClient::Connect(LPCSTR options)
 
 	// Sync
 	net_Syncronize	();
-	return	TRUE;
+	return			TRUE;
 }
 
 void IPureClient::Disconnect()
