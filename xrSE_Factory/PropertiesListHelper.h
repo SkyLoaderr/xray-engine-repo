@@ -61,9 +61,9 @@ public:
     virtual RTextValue* 		__stdcall	CreateName		    (PropItemVec& items, ref_str key, ref_str* val, ListItem* owner);
 	virtual RTextValue* 		__stdcall	CreateNameCB		(PropItemVec& items, ref_str key, ref_str* val, TOnDrawTextEvent=0, RTextValue::TOnBeforeEditEvent=0, RTextValue::TOnAfterEditEvent=0);
 
-    virtual ref_str  			__stdcall	PrepareKey			(LPCSTR pref, 	LPCSTR key);
-    virtual ref_str  			__stdcall	PrepareKey			(LPCSTR pref0, 	LPCSTR pref1,	LPCSTR key);
-    virtual ref_str  			__stdcall	PrepareKey			(LPCSTR pref0,	LPCSTR pref1, 	LPCSTR pref2,	LPCSTR key);
+    virtual ref_str  			__stdcall	PrepareKey1			(LPCSTR pref, 	LPCSTR key);
+    virtual ref_str  			__stdcall	PrepareKey2			(LPCSTR pref0, 	LPCSTR pref1,	LPCSTR key);
+    virtual ref_str  			__stdcall	PrepareKey3			(LPCSTR pref0,	LPCSTR pref1, 	LPCSTR pref2,	LPCSTR key);
 };
 //---------------------------------------------------------------------------
 #endif
