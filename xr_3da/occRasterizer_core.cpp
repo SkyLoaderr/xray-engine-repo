@@ -102,38 +102,40 @@ void i_scan		(int curY, float leftX, float lhx, float rightX, float rhx, float s
 	float Zend		= startZ + (maxT - startR)/lenR * Zlen;		// interpolate Z to the end
 	float dZ		= (Zend-Z)/(maxT-minT);						// incerement in Z / pixel wrt dX
 	
-	// gain access to buffers
+	// gain access to buffers + quantize
+	int		_Z		= Raster.d2int(Z);
+	int		_dZ		= Raster.d2int(dZ);
 	occTri** pFrame	= Raster.get_frame();
-	float*	pDepth	= Raster.get_depth();
+	int*	pDepth	= Raster.get_depth();
 	
 	// left connector
 	int	i_base		= curY*occ_dim0;
 	int i			= i_base+minT;
 	int limit		= i_base+limLeft;
-	for (; i<limit; i++, Z+=dZ)
+	for (; i<limit; i++, _Z+=_dZ)
 	{
 		if (shared(currentTri,pFrame[i-1])) 
 		{
-			float ZR = (Z+pDepth[i-1])/2;
+			int ZR	= (_Z+pDepth[i-1])/2;
 			if (ZR<pDepth[i])	{ pFrame[i]	= currentTri; pDepth[i]	= ZR; }
 		}
 	}
 
 	// compute the scanline 
 	limit				= i_base+maxX;
-	for (; i<limit; i++, Z+=dZ) 
+	for (; i<limit; i++, _Z+=_dZ) 
 	{
-		if (Z<pDepth[i])		{ pFrame[i]	= currentTri; pDepth[i] = Z; }
+		if (_Z<pDepth[i])		{ pFrame[i]	= currentTri; pDepth[i] = _Z; }
 	}
 	
 	// right connector
 	i				= i_base+maxT-1;
 	limit			= i_base+limRight;
-	Z				= Zend-dZ;
-	for (; i>=limit; i--, Z-=dZ)
+	_Z				= Raster.d2int(Zend-dZ);
+	for (; i>=limit; i--, _Z-=_dZ)
 	{
 		if (shared(currentTri,pFrame[i+1])) {
-			float ZR = (Z+pDepth[i+1])/2;
+			int ZR = (_Z+pDepth[i+1])/2;
 			if (ZR<pDepth[i])	{ pFrame[i]	= currentTri; pDepth[i]	= ZR; }
 		}
 	}
@@ -152,11 +154,12 @@ IC void i_test_micro( int x, int y)
 	occTri* T2	= pFrame[pos_down	];
 	if (T1 && shared(T1,T2))	
 	{
-		float*		pDepth	= Raster.get_depth();
-		float ZR			= (pDepth[pos_up]+pDepth[pos_down])/2;
+		int*		pDepth	= Raster.get_depth();
+		int ZR				= (pDepth[pos_up]+pDepth[pos_down])/2;
 		if (ZR<pDepth[pos])	{ pFrame[pos] = T1; pDepth[pos] = ZR; }
 	}
 }
+
 void i_test		( int x, int y)
 {
 	i_test_micro	(x,y-1);
