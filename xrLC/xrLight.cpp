@@ -36,6 +36,7 @@ void CBuild::Light()
 		for (int L=0; L<3; L++) {
 			if ((0==threads[L]) || threads[L]->thCompleted)
 			{
+				Msg("   surface #%d calculated.",threads[L]->thID);
 				_DELETE	(threads[L]);
 				if (N>=g_deflectors.size())	continue;
 				threads[L] = new CLMThread(N,g_deflectors[N]);	N++;

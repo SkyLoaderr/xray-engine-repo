@@ -262,8 +262,8 @@ VOID CDeflector::Light()
 	if (LightsSelected.empty()) return;
 
 	Deflector			= this;
-	if (g_params.m_bRadiosity)	L_Radiosity	(P_Base,hash);
-	else						L_Direct	(P_Base,hash);
+	if (g_params.m_bRadiosity)	L_Radiosity	(hash);
+	else						L_Direct	(hash);
 
 	LightsSelected.clear	();
 }
