@@ -500,9 +500,11 @@ void CStalkerAnimations::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 				}
 	}
 	else {
-		if (angle_difference(yaw,stalker->head_orientation().current.yaw) <= 4*PI_DIV_6)
+		bool	left = (angle_difference(yaw,angle_normalize_signed(stalker->head_orientation().current.yaw + PI_DIV_2)) <= PI_DIV_4);
+		bool	back = left ? !(angle_difference(yaw,stalker->head_orientation().current.yaw) <= 2*PI_DIV_6) : !(angle_difference(yaw,stalker->head_orientation().current.yaw) <= 4*PI_DIV_6);
+		if (!back)
 			// moving left|right
-			if (angle_difference(yaw,angle_normalize_signed(stalker->head_orientation().current.yaw + PI_DIV_2)) <= PI_DIV_4) {
+			if (left) {
 				// moving right, looking left
 				if (eMovementDirectionRight == m_tMovementDirection)
 					m_dwDirectionStartTime	= Level().timeServer();
