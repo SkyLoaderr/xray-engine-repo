@@ -689,7 +689,7 @@ void CAI_Rat::vfUpdateSpawnPosition()
 			m_tNextGP					= getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
 			vfChooseNextGraphPoint		();
 			m_tSafeSpawnPosition.set	(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
-			//Msg("Next graph point %d",m_tNextGP);
+			Msg("Next graph point %d",m_tNextGP);
 		}
 
 	}
