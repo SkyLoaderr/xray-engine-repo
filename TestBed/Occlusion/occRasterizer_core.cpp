@@ -2,13 +2,13 @@
 #include "occRasterizer.h"
 
 static occTri*	currentTri=0;
+static float	currentA[3],currentB[3],currentC[3];
 
 const int BOTTOM = 0, TOP = 1;
 
 void i_order	(float* A, float* B, float* C)
 {
 	float *min, *max, *mid;
-	float t1[3],t2[3],t3[3];
 	if (A[1] <= B[1])
 	{
         if (B[1] <= C[1]) 
@@ -42,12 +42,9 @@ void i_order	(float* A, float* B, float* C)
 			}
 	}
 	
-	t1[0]	= min[0];	t2[0]	= mid[0];	t3[0]	= max[0];
-	t1[1]	= min[1];	t2[1]	= mid[1];	t3[1]	= max[1];
-	t1[2]	= min[2];	t2[2]	= mid[2];	t3[2]	= max[2];
-	A[0]	= t1[0];	B[0]	= t2[0];	C[0]	= t3[0];
-	A[1]	= t1[1];	B[1]	= t2[1];	C[1]	= t3[1];
-	A[2]	= t1[2];	B[2]	= t2[2];	C[2]	= t3[2];
+	currentA[0]	= min[0];	currentB[0]	= mid[0];	currentC[0]	= max[0];
+	currentA[1]	= min[1];	currentB[1]	= mid[1];	currentC[1]	= max[1];
+	currentA[2]	= min[2];	currentB[2]	= mid[2];	currentC[2]	= max[2];
 }
 
 // Find the closest min/max pixels of a point
@@ -204,7 +201,7 @@ IC float maxp(float a, float b)
 IC float minp(float a, float b)
 {	return a<b ? a:b;		}
 
-IC void i_section	(float *A, float *B, float *C, int Sect, BOOL bMiddle)
+IC void i_section	(int Sect, BOOL bMiddle)
 {
 	// Find the start/end Y pixel coord, set the starting pts for scan line ends
 	int		startY, endY;
@@ -212,34 +209,34 @@ IC void i_section	(float *A, float *B, float *C, int Sect, BOOL bMiddle)
 	float	E1[3], E2[3];
 
 	if (Sect == BOTTOM) { 
-		startY	= minPixel(A[1]); endY = maxPixel(B[1])-1; 
-		startp1 = startp2 = A;
+		startY	= minPixel(currentA[1]); endY = maxPixel(currentB[1])-1; 
+		startp1 = startp2 = currentA;
 		if (bMiddle)	endY ++;
 		
 		// check 'endY' for out-of-triangle 
-		int test = maxPixel(C[1]);
+		int test = maxPixel(currentC[1]);
 		if (endY>=test) endY --;
 		if (startY > endY) return;
 
 		// Find the edge differences
-		E1[0] = B[0]-A[0]; E2[0] = C[0]-A[0];
-		E1[1] = B[1]-A[1]; E2[1] = C[1]-A[1];
-		E1[2] = B[2]-A[2]; E2[2] = C[2]-A[2];
+		E1[0] = currentB[0]-currentA[0]; E2[0] = currentC[0]-currentA[0];
+		E1[1] = currentB[1]-currentA[1]; E2[1] = currentC[1]-currentA[1];
+		E1[2] = currentB[2]-currentA[2]; E2[2] = currentC[2]-currentA[2];
 	}
 	else { 
-		startY  = minPixel(B[1]); endY = maxPixel(C[1]); 
-		startp1 = A; startp2 = B;
+		startY  = minPixel(currentB[1]); endY = maxPixel(currentC[1]); 
+		startp1 = currentA; startp2 = currentB;
 		if (bMiddle)	startY --;
 		
 		// check 'startY' for out-of-triangle 
-		int test = minPixel(A[1]);
+		int test = minPixel(currentA[1]);
 		if (startY<test) startY ++;
 		if (startY > endY) return;
 
 		// Find the edge differences
-		E1[0] = C[0]-A[0]; E2[0] = C[0]-B[0];
-		E1[1] = C[1]-A[1]; E2[1] = C[1]-B[1];
-		E1[2] = C[2]-A[2]; E2[2] = C[2]-B[2];
+		E1[0] = currentC[0]-currentA[0]; E2[0] = currentC[0]-currentB[0];
+		E1[1] = currentC[1]-currentA[1]; E2[1] = currentC[1]-currentB[1];
+		E1[2] = currentC[2]-currentA[2]; E2[2] = currentC[2]-currentB[2];
 	}
 	
 	// Compute the inverse slopes of the lines, ie rate of change of X by Y
@@ -292,37 +289,33 @@ IC void i_section	(float *A, float *B, float *C, int Sect, BOOL bMiddle)
 	}
 }
 
-void __stdcall i_section_b0	(float *A, float *B, float *C)
-{	i_section	(A,B,C,BOTTOM,0);	}
-void __stdcall i_section_b1	(float *A, float *B, float *C)
-{	i_section	(A,B,C,BOTTOM,1);	}
-void __stdcall i_section_t0	(float *A, float *B, float *C)
-{	i_section	(A,B,C,TOP,0);	}
-void __stdcall i_section_t1	(float *A, float *B, float *C)
-{	i_section	(A,B,C,TOP,1);	}
+void __stdcall i_section_b0	()
+{	i_section	(BOTTOM,0);	}
+void __stdcall i_section_b1	()
+{	i_section	(BOTTOM,1);	}
+void __stdcall i_section_t0	()
+{	i_section	(TOP,0);	}
+void __stdcall i_section_t1	()
+{	i_section	(TOP,1);	}
 
 void occRasterizer::rasterize	(occTri* T)
 {
-	// Create local copy of the vertices
-	// Since I am reordering the vertices, changing A,B,C screws up the model
-	float a[3],  b[3],  c[3];
-	a[0] = T->raster[0].x; a[1] = T->raster[0].y; a[2] = T->raster[0].z;
-	b[0] = T->raster[1].x; b[1] = T->raster[1].y; b[2] = T->raster[1].z;
-	c[0] = T->raster[2].x; c[1] = T->raster[2].y; c[2] = T->raster[2].z;
-	
-	currentTri		= T;
-	i_order				(a, b, c);		// Order the vertices by Y
-	if (b[1]-iFloor(b[1])>0.5f)	
+	// Order the vertices by Y
+	currentTri			= T;
+	i_order				(T->raster[0].asDATA(), T->raster[1].asDATA(),T->raster[2].asDATA());
+
+	// Rasterize sections
+	if (currentB[1]-iFloor(currentB[1]) > .5f)	
 	{
-		i_section_b1	(a, b, c);	// Rasterise First Section
-		i_section_t0	(a, b, c);	// Rasterise Second Section
+		i_section_b1	();	// Rasterise First Section
+		i_section_t0	();	// Rasterise Second Section
 	} else {
-		i_section_b0	(a, b, c);	// Rasterise First Section
-		i_section_t1	(a, b, c);	// Rasterise Second Section
+		i_section_b0	();	// Rasterise First Section
+		i_section_t1	();	// Rasterise Second Section
 	}
 
 	// Rasterize (and Y-connect) edges
-	i_edge			(a[0],a[1],b[0],b[1]);
-	i_edge			(a[0],a[1],c[0],c[1]);
-	i_edge			(b[0],b[1],c[0],c[1]);
+	i_edge			(currentA[0],currentA[1],currentB[0],currentB[1]);
+	i_edge			(currentA[0],currentA[1],currentC[0],currentC[1]);
+	i_edge			(currentB[0],currentB[1],currentC[0],currentC[1]);
 }
