@@ -135,6 +135,7 @@ function Defender:process ()
 	    if monster.npc:alive () == true then
 	       local tdist = distance_between (monster.npc, self.npc)
 	       if tdist < dist and self.npc:see (monster.npc) == true then
+	          printf ("Monster found")
 	          dist = tdist
 	          enemy = monster
 	       end
