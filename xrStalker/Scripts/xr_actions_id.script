@@ -35,6 +35,7 @@ sidor_act_report_soldier= sidor_actions + 70
 sidor_act_rest          = sidor_actions + 80
 sidor_act_bar           = sidor_actions + 90
 sidor_act_chaser        = sidor_actions + 100
+sidor_act_sos           = sidor_actions + 110
 
 -- chugai
 chugai_actions                      = sidor_actions  + 1024
