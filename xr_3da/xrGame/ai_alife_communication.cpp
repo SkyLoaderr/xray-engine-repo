@@ -24,7 +24,7 @@ void CSE_ALifeSimulator::vfPrintItems(CSE_ALifeHumanAbstract *tpALifeHumanAbstra
 {
 	Msg				("%s",tpALifeHumanAbstract->s_name_replace);
 	ITEM_P_IT			I = tpItemVector.begin();
-	ITEM_P_IT			E = tpItemVector.begin();
+	ITEM_P_IT			E = tpItemVector.end();
 	for ( ; I != E; I++)
 		Msg				(" %s",(*I)->s_name_replace);
 }
@@ -34,7 +34,7 @@ u32	 CSE_ALifeSimulator::dwfComputeItemCost(ITEM_P_VECTOR &tpItemVector)
 {
 	u32					l_dwItemCost = 0;
 	ITEM_P_IT			I = tpItemVector.begin();
-	ITEM_P_IT			E = tpItemVector.begin();
+	ITEM_P_IT			E = tpItemVector.end();
 	for ( ; I != E; I++) {
 		l_dwItemCost	+= (*I)->m_dwCost;
 #ifdef ALIFE_LOG
