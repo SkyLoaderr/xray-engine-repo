@@ -66,6 +66,12 @@ function is_day (actor, npc)
     return utils.is_day ()
 end    
 
+function mob_has_enemy (actor, npc)
+    if npc == nil then return false end
+    --if npc:get_enemy () then printf ("ENEMY PRESENT") else printf ("ENEMY NOT PRESENT") end
+    return npc:get_enemy () ~= nil
+end    
+
 function actor_enemy(actor, npc)
 	return db.storage[npc:id()].enemy:id() == actor:id()
 end
