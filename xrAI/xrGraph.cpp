@@ -11,10 +11,16 @@
 #include "levelgamedef.h"
 #include "xrLevel.h"
 #include "xrThread.h"
+#include "xr_ini.h"
+#include "xrAI.h"
 
 #include "ai_nodes.h"
 #include "xrGraph.h"
 #include "xrSort.h"
+
+#include "xrServer_Entities.h"
+#include "game_base.h"
+#include "xr_spawn_merge.h"
 
 #define THREAD_COUNT				6
 
@@ -43,30 +49,44 @@ u32						*dwaEdgeOwner;  // edge owners
 void vfLoadAIPoints(LPCSTR name)
 {
 	string256			fName;
-	strconcat			(fName,name,"level.game");
+	strconcat			(fName,name,"level.spawn");
 	CVirtualFileStream	F(fName);
 
 	CStream *O = 0;
 
-	if (0!=(O = F.OpenChunk	(AIPOINT_CHUNK)))
-	{
-		for (int id=0; O->FindChunk(id); id++)
-		{
-			SGraphVertex					tGraphVertex;
-			O->Rvector						(tGraphVertex.tLocalPoint);
+	for (int id=0, i=0; 0!=(O = F.OpenChunk(id)); id++)	{
+		NET_Packet			P;
+		P.B.count			= O->Length();
+		O->Read				(P.B.data,P.B.count);
+		O->Close			();
+		u16					ID;
+		P.r_begin			(ID);
+		R_ASSERT			(M_SPAWN==ID);
+		string64			s_name;
+		P.r_string			(s_name);
+		xrServerEntity*	E	= F_entity_Create	(s_name);
+		R_ASSERT2(E,"Can't create entity.");
+		E->Spawn_Read		(P);
+		xrGraphPoint	*tpGraphPoint = dynamic_cast<xrGraphPoint*>(E);
+		if (tpGraphPoint) {
+			SGraphVertex	tGraphVertex;
+			tGraphVertex.tLocalPoint		= tpGraphPoint->o_Position;
 			tGraphVertex.tGlobalPoint		= tGraphVertex.tLocalPoint;
 			tGraphVertex.tNodeID			= 0;
 			tGraphVertex.tNeighbourCount	= 0;
-			tGraphVertex.tVertexType		= 0;
+			tGraphVertex.tVertexType		= tpGraphPoint->m_tLocBaseID || (tpGraphPoint->m_tLocAuxID << 16);
 			tGraphVertex.tLevelID			= 0;
 			tGraphVertex.tpaEdges			= 0;
-			tpaGraph.push_back				(tGraphVertex);
-			if (id % 100 == 0)
-				Status("Vertexes being read : %d",id);
+			tpaGraph.push_back(tGraphVertex);
+			i++;
 		}
-		O->Close();
-		Status("Vertexes being read : %d",id);
+		xr_delete(E);
+		if (i % 100 == 0)
+			Status("Vertexes being read : %d",i);
 	}
+	O->Close();
+	xr_delete(pSettings);
+	Status("Vertexes being read : %d",i);
 }
 
 void vfRemoveDuplicateAIPoints()
@@ -313,6 +333,7 @@ void xrBuildGraph(LPCSTR name)
 	CThreadManager		tThreadManager;		// multithreading
 	xrCriticalSection	tCriticalSection;	// thread synchronization
 	CAI_Map				*tpAI_Map;
+	pSettings			= xr_new<CInifile>(SYSTEM_LTX);
 
 	Msg("Building Level %s",name);
 
