@@ -1,0 +1,330 @@
+#include "stdafx.h"
+#pragma hdrstop
+
+#include "soundrender_TargetA.h"
+#include "soundrender.h"
+#include "soundrender_core.h"
+#include "soundrender_emitter.h"
+
+static xr_vector<u8> buf_temp_data;
+
+CSoundRender_Target::CSoundRender_Target(void)
+{
+	pBuffer_base	= NULL;
+	pBuffer			= NULL;
+	pControl		= NULL;
+
+	cache_hw_volume	= DSBVOLUME_MIN;
+	cache_hw_freq	= 11025;
+
+    cache_gain		= 0.f;
+    cache_pitch		= 1.f;
+
+	pEmitter		= 0;
+	pos_write		= 0;
+	rendering		= FALSE;
+}
+
+CSoundRender_Target::~CSoundRender_Target(void)
+{
+}
+
+void	CSoundRender_Target::_initialize		()
+{
+	// Calc format
+	WAVEFORMATEX			wfx_primary;
+	SoundRender.pBuffer->GetFormat(&wfx_primary,sizeof(wfx_primary),0);
+	wfx.wFormatTag			= WAVE_FORMAT_PCM;
+	wfx.nChannels			= 1;
+	wfx.nSamplesPerSec		= wfx_primary.nSamplesPerSec;
+	wfx.wBitsPerSample		= 16;
+	wfx.nBlockAlign			= wfx.nChannels * wfx.wBitsPerSample / 8;
+	wfx.nAvgBytesPerSec		= wfx.nSamplesPerSec * wfx.nBlockAlign;
+	wfx.cbSize				= 0;
+
+	// Calc storage
+	buf_time				= sdef_target_size;	
+	buf_size				= sdef_target_size*wfx.nAvgBytesPerSec/1000;
+	buf_block				= sdef_target_block*wfx.nAvgBytesPerSec/1000;
+    buf_temp_data.resize	(buf_block);
+
+	// Fill caps structure
+	DSBUFFERDESC	dsBD	= {0};
+	dsBD.dwSize				= sizeof(dsBD);
+	dsBD.dwFlags			=
+		DSBCAPS_CTRL3D | 
+		DSBCAPS_CTRLFREQUENCY | 
+		DSBCAPS_CTRLVOLUME |
+		DSBCAPS_GETCURRENTPOSITION2 |
+		(psSoundFlags.test(ssHardware) 	? 0 				: (DSBCAPS_LOCSOFTWARE));
+	dsBD.dwBufferBytes		= buf_size;
+	dsBD.dwReserved			= 0;
+	dsBD.lpwfxFormat		= &wfx;
+
+	switch (psSoundModel) 
+	{
+	case sq_DEFAULT:	dsBD.guid3DAlgorithm = DS3DALG_DEFAULT; 			break;
+	case sq_NOVIRT:		dsBD.guid3DAlgorithm = DS3DALG_NO_VIRTUALIZATION; 	break;
+	case sq_LIGHT:		dsBD.guid3DAlgorithm = DS3DALG_HRTF_LIGHT;			break;
+	case sq_HIGH:		dsBD.guid3DAlgorithm = DS3DALG_HRTF_FULL;			break;
+	default:			Debug.fatal("Unknown 3D-ref_sound algorithm");		break;
+	}
+    if (psSoundFlags.test(ssHardware)) 
+    	dsBD.guid3DAlgorithm = DS3DALG_HRTF_FULL;
+
+	// Create
+	bDX7				= FALSE;
+	R_CHK	(SoundRender.pDevice->CreateSoundBuffer(&dsBD, &pBuffer_base, NULL));
+	R_CHK	(pBuffer_base->QueryInterface(IID_IDirectSoundBuffer8,(void **)&pBuffer));
+	/*
+	if		(FAILED(pBuffer_base->QueryInterface(IID_IDirectSoundBuffer8,(void **)&pBuffer)))	{
+		Msg					("! WARNING: Can't use DX8 interface for sound control. Reverting to DX7 one.");
+		pBuffer				= (IDirectSoundBuffer8*)pBuffer_base;
+		pBuffer_base->AddRef();
+		bDX7				= TRUE;
+	}
+	*/
+	R_CHK	(pBuffer->QueryInterface(IID_IDirectSound3DBuffer8,	(void **)&pControl));
+	R_ASSERT(pBuffer_base && pBuffer && pControl);
+
+	R_CHK	(pControl->SetConeAngles		(DS3D_DEFAULTCONEANGLE,DS3D_DEFAULTCONEANGLE,DS3D_DEFERRED));
+	R_CHK	(pControl->SetConeOrientation	(0,0,1,DS3D_DEFERRED));
+	R_CHK	(pControl->SetConeOutsideVolume	(0,DS3D_DEFERRED));
+	R_CHK	(pControl->SetVelocity			(0,0,0,DS3D_DEFERRED));
+
+//A
+	// OpenAL
+	A_CHK(alGenBuffers	(sdef_target_count, pBuffers));	
+	A_CHK(alGenSources	(1, &pSource));                	
+	A_CHK(alSourcei		(pSource, AL_LOOPING, AL_FALSE));
+    A_CHK(alSourcef		(pSource, AL_MIN_GAIN, 0.f));
+    A_CHK(alSourcef		(pSource, AL_MAX_GAIN, 1.f));
+	A_CHK(alSourcef		(pSource, AL_GAIN, 	cache_gain));
+	A_CHK(alSourcef		(pSource, AL_PITCH,	cache_pitch));
+}
+
+void	CSoundRender_Target::_destroy		()
+{
+	_RELEASE(pControl);
+	_RELEASE(pBuffer);
+	_RELEASE(pBuffer_base);
+//A
+	// OpenAL
+	alDeleteSources		(1, &pSource);
+	alDeleteBuffers		(sdef_target_count, pBuffers);
+}
+
+void	CSoundRender_Target::start			(CSoundRender_Emitter* E)
+{
+	R_ASSERT		(E);
+
+	// *** Initial buffer startup ***
+	// 1. Fill parameters
+	// 4. Load 2 blocks of data (as much as possible)
+	// 5. Deferred-play-signal (emitter-exist, rendering-false)
+	pEmitter		= E;
+	pos_write		= 0;
+	rendering		= FALSE;
+}
+
+void	CSoundRender_Target::render			()
+{
+	for (u32 buf_idx=0; buf_idx<sdef_target_count; buf_idx++)
+		fill_block_al		(pBuffers[buf_idx]);
+
+	alSourceQueueBuffers(pSource, sdef_target_count, pBuffers);	VERIFY(alGetError()==AL_NO_ERROR);
+	alSourcePlay	(pSource);
+/*
+	fill_block		();
+	fill_block		();
+
+    R_CHK			(pBuffer->SetCurrentPosition	(0));
+	HRESULT _hr		= pBuffer->Play(0,0,DSBPLAY_LOOPING);
+	if (DSERR_BUFFERLOST==_hr)	{
+		R_CHK(pBuffer->Restore());
+		R_CHK(pBuffer->Play(0,0,DSBPLAY_LOOPING));
+	}else{
+		R_CHK		(_hr);
+	}
+*/
+	rendering		= TRUE;
+}
+
+void	CSoundRender_Target::stop			()
+{
+	if (rendering)
+	{
+		alSourceStop(pSource);
+        alSourcei	(pSource, AL_BUFFER,   NULL);
+//		R_CHK		(pBuffer->Stop());
+//		R_CHK		(pControl->SetMode(DS3DMODE_DISABLE,DS3D_DEFERRED));
+		// OpenAL
+		A_CHK		(alSourcei	(pSource, AL_SOURCE_RELATIVE,	FALSE));
+	}
+	pEmitter		= NULL;
+	rendering		= FALSE;
+}
+
+void	CSoundRender_Target::rewind			()
+{
+	R_ASSERT		(rendering);
+
+	R_CHK			(pBuffer->Stop	());
+	pos_write		= 0;
+	fill_block		();
+	fill_block		();
+
+	R_CHK			(pBuffer->SetCurrentPosition	(0));
+	HRESULT _hr		= pBuffer->Play(0,0,DSBPLAY_LOOPING);
+	if (DSERR_BUFFERLOST==_hr)	{
+		R_CHK(pBuffer->Restore());
+		R_CHK(pBuffer->Play(0,0,DSBPLAY_LOOPING));
+	}else{
+		R_CHK		(_hr);
+	}
+
+	// .
+	/*
+	u32		pos_2_play	= pos_write%buf_size;
+	fill_parameters		();
+	fill_block			();
+	R_CHK	(pBuffer->SetCurrentPosition	(pos_2_play));
+	*/
+}
+
+u32		CSoundRender_Target::calc_interval	(u32 ptr)
+{
+	u32		norm_ptr	= ptr%buf_size;
+	u32		range		= norm_ptr/buf_block;
+	return	range;
+}
+
+void	CSoundRender_Target::update			()
+{
+	R_ASSERT		(pEmitter);
+
+	// fill_parameters	();
+/*
+	// Analyze if we really need more data to stream them ahead
+	u32				cursor_write;
+	R_CHK			(pBuffer->GetCurrentPosition(0,LPDWORD(&cursor_write)));
+	u32				r_write		= calc_interval(pos_write);
+	u32				r_cursor	= (calc_interval(cursor_write)+1)%sdef_target_count;
+	if (r_write==r_cursor)	fill_block	();
+//	Msg				("write: 0x%8x",cursor_write);
+*/
+	ALint			processed;
+    // Get status
+    alGetSourcei	(pSource, AL_BUFFERS_PROCESSED, &processed);
+
+    if (processed > 0){
+        while (processed){
+			ALuint					BufferID;
+            A_CHK(alSourceUnqueueBuffers(pSource, 1, &BufferID));
+            fill_block_al				(BufferID);
+            A_CHK(alSourceQueueBuffers	(pSource, 1, &BufferID));
+            processed--;
+        }
+    } 
+/*
+    else // processed == 0
+    {
+        // check play status -- if stopped then queue is not being filled fast enough
+        alGetSourcei(pSource, AL_SOURCE_STATE, &state);
+        if (state != AL_PLAYING){
+            Log("Queuing underrun detected.");
+            alGetSourcei(pSource, AL_BUFFERS_PROCESSED, &processed);
+            alSourcePlay(pSource);
+        }
+    }
+*/
+}
+
+void	CSoundRender_Target::fill_parameters()
+{
+	VERIFY			(pEmitter);
+
+	// 1. Set 3D params (including mode)
+	{
+		Fvector&			p_pos	= pEmitter->p_source.position;
+		R_CHK(pControl->SetMode			(pEmitter->b2D ? DS3DMODE_DISABLE : DS3DMODE_NORMAL,DS3D_DEFERRED));
+		R_CHK(pControl->SetMinDistance	(pEmitter->p_source.min_distance,	DS3D_DEFERRED));
+		R_CHK(pControl->SetMaxDistance	(pEmitter->p_source.max_distance,	DS3D_DEFERRED));
+		R_CHK(pControl->SetPosition		(p_pos.x,p_pos.y,p_pos.z,			DS3D_DEFERRED));
+	}
+	
+	// 2. Set 2D params (volume, freq) + position(rewind)
+	{
+		float	_volume				= pEmitter->smooth_volume;				clamp	(_volume,EPS_S,1.f);
+		s32		hw_volume			= iFloor	(7000.f*logf(_volume)/5.f);	clamp	(hw_volume,DSBVOLUME_MIN,DSBVOLUME_MAX);
+		if (_abs(hw_volume-cache_hw_volume)>50)
+		{
+			cache_hw_volume			= hw_volume;
+			R_CHK(pBuffer->SetVolume(hw_volume));
+		}
+
+		float	_freq				= pEmitter->p_source.freq;
+		s32		hw_freq				= iFloor	(_freq * float(wfx.nSamplesPerSec) + EPS);
+		if (_abs(hw_freq-cache_hw_freq)>50)	{
+			cache_hw_freq			= hw_freq;
+			s32		hw_freq_set		= hw_freq;
+			clamp	(hw_freq_set,s32(SoundRender.dsCaps.dwMinSecondarySampleRate),s32(SoundRender.dsCaps.dwMaxSecondarySampleRate));
+			R_CHK	(pBuffer->SetFrequency	( hw_freq_set	));
+		}
+	}
+
+	// OpenAL
+    {
+    	// 3D params
+		A_CHK(alSourcef	(pSource, AL_REFERENCE_DISTANCE, 	pEmitter->p_source.min_distance));
+		A_CHK(alSourcef	(pSource, AL_MAX_DISTANCE, 			pEmitter->p_source.max_distance));
+        A_CHK(alSourcefv(pSource, AL_POSITION,	 			&pEmitter->p_source.position.x));
+		A_CHK(alSourcei	(pSource, AL_SOURCE_RELATIVE,		pEmitter->b2D));
+        // 2D params
+		A_CHK(alSourcef	(pSource, AL_ROLLOFF_FACTOR,		psSoundRolloff));
+		float	_gain	= pEmitter->smooth_volume;			clamp	(_gain,EPS_S,1.f);
+		if (!fsimilar(_gain,cache_gain)){
+			cache_gain	= _gain;
+            A_CHK(alSourcef	(pSource, AL_GAIN,				_gain));
+		}
+		float	_pitch	= pEmitter->p_source.freq;			clamp	(_pitch,EPS_S,2.f);
+		if (!fsimilar(_pitch,cache_pitch)){
+			cache_pitch	= _pitch;
+			A_CHK(alSourcef	(pSource, AL_PITCH,				_pitch));
+		}
+    }
+}
+
+void	CSoundRender_Target::fill_block		()
+{
+#pragma todo("check why pEmitter is NULL")
+	if (0==pEmitter)					return;
+
+	// Obtain memory address of write block. This will be in two parts if the block wraps around.
+    LPVOID			ptr1, ptr2;
+    u32				bytes1,bytes2;
+    R_CHK			(pBuffer->Lock(pos_write, buf_block, &ptr1, LPDWORD(&bytes1), &ptr2, LPDWORD(&bytes2), 0));
+	R_ASSERT		(0==ptr2 && 0==bytes2);
+
+	// Copy data (and clear the end)
+	pEmitter->fill_block(ptr1,buf_block);
+	pos_write		+= buf_block;
+    pos_write		%= buf_size;
+
+	R_CHK			(pBuffer->Unlock(ptr1, bytes1, ptr2, bytes2));
+}
+
+void	CSoundRender_Target::fill_block_al	(ALuint BufferID)
+{
+#pragma todo("check why pEmitter is NULL")
+	if (0==pEmitter)					return;
+
+	ALuint			Format;
+	if (wfx.nChannels == 1) 	Format = AL_FORMAT_MONO16;
+	else                        Format = AL_FORMAT_STEREO16;
+
+    data.resize(buf_block);
+	pEmitter->fill_block		(&data.front(),buf_block);
+    A_CHK			(alBufferData(BufferID, Format, &data.front(), buf_block, wfx.nSamplesPerSec));
+}
+
