@@ -20,7 +20,7 @@ public:
 		R_ASSERT	(name[0]);
 		VerifyPath	(fName);
 		hf			= fopen(fName, "wb");
-		R_ASSERT	(hf);
+		R_ASSERT3	(hf, "Can't write file. File may be open or in use.", fName );
 		setvbuf		(hf, 0, _IOFBF, 24*1024 );
 	}
 
