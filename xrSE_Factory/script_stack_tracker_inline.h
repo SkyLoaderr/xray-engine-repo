@@ -8,8 +8,3 @@
 
 #pragma once
 
-IC	lua_State *CScriptStackTracker::lua	()
-{
-	return				(m_virtual_machine);
-}
-

@@ -22,3 +22,8 @@ IC	int	 CScriptThread::thread_reference	() const
 {
 	return		(m_thread_reference);
 }
+
+IC	lua_State *CScriptThread::lua			() const
+{
+	return		(m_virtual_machine);
+}

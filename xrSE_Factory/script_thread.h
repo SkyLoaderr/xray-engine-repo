@@ -24,6 +24,7 @@ private:
 	shared_str				m_script_name;
 	int						m_thread_reference;
 	bool					m_active;
+	lua_State				*m_virtual_machine;
 
 #ifdef DEBUG
 protected:
@@ -37,6 +38,7 @@ public:
 	IC		bool			active				() const;
 	IC		shared_str		script_name			() const;
 	IC		int				thread_reference	() const;
+	IC		lua_State		*lua				() const;
 };
 
 #include "script_thread_inline.h"

@@ -34,7 +34,9 @@
 CScriptStorage::CScriptStorage		()
 {
 	m_current_thread		= 0;
+#ifdef DEBUG
 	m_stack_is_ready		= false;
+#endif
 	m_virtual_machine		= 0;
 	m_virtual_machine		= lua_open();
 	if (!m_virtual_machine) {
@@ -134,6 +136,7 @@ int CScriptStorage::vscript_log			(ScriptStorage::ELuaMessageType tLuaMessageTyp
 	return	(l_iResult);
 }
 
+#ifdef DEBUG
 void CScriptStorage::print_stack		()
 {
 	if (!m_stack_is_ready)
@@ -154,6 +157,7 @@ void CScriptStorage::print_stack		()
 				script_log	(ScriptStorage::eLuaMessageTypeError,"%2d : [%s] %s(%d) : %s",i,l_tDebugInfo.what,l_tDebugInfo.short_src,l_tDebugInfo.currentline,l_tDebugInfo.name);
 	}
 }
+#endif
 
 int __cdecl CScriptStorage::script_log	(ScriptStorage::ELuaMessageType tLuaMessageType, LPCSTR caFormat, ...)
 {
@@ -163,7 +167,8 @@ int __cdecl CScriptStorage::script_log	(ScriptStorage::ELuaMessageType tLuaMessa
 	int			result = vscript_log(tLuaMessageType,caFormat,marker);
 	va_end		(marker);
 
-#ifndef ENGINE_BUILD
+#ifdef DEBUG
+#	ifndef ENGINE_BUILD
 	static bool	reenterability = false;
 	if (!reenterability) {
 		reenterability = true;
@@ -171,6 +176,7 @@ int __cdecl CScriptStorage::script_log	(ScriptStorage::ELuaMessageType tLuaMessa
 			ai().script_engine().print_stack	();
 		reenterability = false;
 	}
+#	endif
 #endif
 
 	return		(result);
