@@ -551,9 +551,9 @@ void CDeflector::Save()
 		for (DWORD t=0; t<tris.size(); t++)
 		{
 			UVtri&		T	= tris[t];
-			UVpoint&	p1	= T.uv[0]; int x1=iFloor(p1.u*float(temp.dwWidth)+.5f); int y1=iFloor(p1.v*float(temp.dwHeight)+.5f);
-			UVpoint&	p2	= T.uv[1]; int x2=iFloor(p2.u*float(temp.dwWidth)+.5f); int y2=iFloor(p2.v*float(temp.dwHeight)+.5f);
-			UVpoint&	p3	= T.uv[2]; int x3=iFloor(p3.u*float(temp.dwWidth)+.5f); int y3=iFloor(p3.v*float(temp.dwHeight)+.5f);
+			UVpoint&	p1	= T.uv[0]; int x1=iFloor(p1.u*float(temp.dwWidth)); int y1=iFloor(p1.v*float(temp.dwHeight));
+			UVpoint&	p2	= T.uv[1]; int x2=iFloor(p2.u*float(temp.dwWidth)); int y2=iFloor(p2.v*float(temp.dwHeight));
+			UVpoint&	p3	= T.uv[2]; int x3=iFloor(p3.u*float(temp.dwWidth)); int y3=iFloor(p3.v*float(temp.dwHeight));
 			line		(x1,y1,x2,y2,&temp);
 			line		(x2,y2,x3,y3,&temp);
 			line		(x3,y3,x1,y1,&temp);
