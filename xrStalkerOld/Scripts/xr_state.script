@@ -55,7 +55,9 @@ function body_state:set_state(id)
 		self.npc:clear_animations()
 		self.target_state = id
 		self:transanim(self.npc, id)
+		return true
 	end
+	false
 end
 function body_state:transanim(object, target_state)
 	if self.tanim[self.current_state][target_state] ~= nil then
@@ -76,8 +78,7 @@ function finish_state(npc)
 	return xr_motivator.storage[npc:id()].state:finish_state()
 end
 function change_state(npc, id)
-	xr_motivator.storage[npc:id()].state:set_state(id)
-	return 0
+	return xr_motivator.storage[npc:id()].state:set_state(id)
 end
 
 
