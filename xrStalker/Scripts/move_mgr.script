@@ -118,7 +118,7 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 
 	--dialog_mgr:reset(self.object, team)
 
-	self.last_index = -1
+	self.last_index = nil
 	self:simulate_callback_if_neccessary()
 end
 
@@ -173,7 +173,7 @@ function move_mgr:get_highest_sync_val()
 	local v
 	local highest = -1
 	for i = 0, num_points - 1 do
-		v = self.path_walk_info[i]["sync"]
+		v = self.path_walk_info[i]["n"]
 		if v then
 			v = tonumber(v)
 			if v > highest then
@@ -283,7 +283,7 @@ function move_mgr:update()
 				-- Уже когда прибыли, повернулись и начали играть анимацию - только тогда помечаем
 				-- в синхронизаторе, что прибыли на данную точку
 				if self.team then
-					local sync_id = self.path_walk_info[self.last_index]["sync"]
+					local sync_id = self.path_walk_info[self.last_index]["n"]
 					if sync_id then
 						sync[self.team][self.object:id()] = tonumber(sync_id)
 					end
@@ -375,40 +375,40 @@ end
 
 function move_mgr:waypoint_callback(obj, action_type, index)
 	--printf("move_mgr:waypoint_callback()")
-	if index == -1 then
-		printf("ERROR: move_mgr: waypoint_callback: index is -1")
+	if index == -1 or index == nil then
+		printf("ERROR: move_mgr: waypoint_callback: index is -1 or nil")
 		return
 	end
 
 	self.last_index = index
 
 	-- <ЗВУК>
-	local suggested_snd = self.path_walk_info[index]["snd"]
+	local suggested_snd = self.path_walk_info[index]["s"]
 	if suggested_snd then
-		local snd_from = self.path_walk_info[index]["snd_from"]
+		local snd_from = self.path_walk_info[index]["sf"]
 		if snd_from then
 			snd_from = tonumber(snd_from)
 		end
-		local snd_to = self.path_walk_info[index]["snd_to"]
+		local snd_to = self.path_walk_info[index]["st"]
 		if snd_to then
 			snd_to = tonumber(snd_to)
 		end
 
-		local snd_prob = self.path_walk_info[index]["snd_prob"]
+		local snd_prob = self.path_walk_info[index]["sp"]
 		if snd_prob then
 			snd_prob = tonumber(snd_prob)
 		else
 			snd_prob = 100
 		end
 
-		local suggested_snd_once = self.path_walk_info[index]["snd_cont"]
+		local suggested_snd_once = self.path_walk_info[index]["sc"]
 		if suggested_snd_cont == "true" then
 			self.play_once = false
 		else
 			self.play_once = true
 		end
 
-		local snd_wait_anim = self.path_walk_info[index]["snd_wait_anim"]
+		local snd_wait_anim = self.path_walk_info[index]["sa"]
 		if snd_wait_anim == "true" then
 			self.play_sound_after_anim_start = true
 		else
@@ -438,14 +438,14 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 	end
 	-- </ЗВУК>
 
-	local suggested_running = self.path_walk_info[index]["run"]
+	local suggested_running = self.path_walk_info[index]["r"]
 	if suggested_running == "true" then
 		self.running = true
 	else
 		self.running = false
 	end
 
-	local suggested_danger = self.path_walk_info[index]["danger"]
+	local suggested_danger = self.path_walk_info[index]["d"]
 	if suggested_danger == "true" then
 		self.danger = true
 	else
@@ -493,7 +493,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 			-- Нашли точку с нужными флагами, но поскольку в пути могут быть еще такие-же
 			-- точки, возьмем текущую только с некоторой вероятностью:
 			-- Шанс, с которым на точку посмотрит персонаж:
-			local point_look_weight = self.path_look_info[look_idx]["prob"]
+			local point_look_weight = self.path_look_info[look_idx]["p"]
 			if point_look_weight then
 				point_look_weight = tonumber(point_look_weight)
 			else
@@ -514,14 +514,14 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 			self.retval_after_rotation = nil
 		end
 
-		local suggested_wait_time = self.path_look_info[pt_chosen_idx]["time"]
+		local suggested_wait_time = self.path_look_info[pt_chosen_idx]["t"]
 		if suggested_wait_time then
 			self.pt_wait_time = tonumber(suggested_wait_time)
 		else
 			self.pt_wait_time = default_wait_time
 		end
 
-		local suggested_anim_set = self.path_look_info[pt_chosen_idx]["anim"]
+		local suggested_anim_set = self.path_look_info[pt_chosen_idx]["a"]
 		if suggested_anim_set then
 			self.cur_anim_set = suggested_anim_set
 		else
@@ -544,9 +544,9 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 
 		--printf("[%s] pt_chosen_idx == %d", self.object:name(), pt_chosen_idx)
 		if not suggested_snd then -- в path_walk звук не задан, проверить, задан ли он на точке
-			suggested_snd = self.path_look_info[pt_chosen_idx]["snd"]
+			suggested_snd = self.path_look_info[pt_chosen_idx]["s"]
 			if suggested_snd then
-				local snd_prob = self.path_look_info[pt_chosen_idx]["snd_prob"]
+				local snd_prob = self.path_look_info[pt_chosen_idx]["sp"]
 				if snd_prob then
 					snd_prob = tonumber(snd_prob)
 				else

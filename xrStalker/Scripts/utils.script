@@ -103,7 +103,7 @@ function conf_get_string(char_ini, section, field, override, object, mandatory)
 	if not mandatory then
 		return nil
 	end
-	local err = "object name '" .. object:name() .. "': attempt to read a non-existant boolean field '" ..
+	local err = "object name '" .. object:name() .. "': attempt to read a non-existant string field '" ..
 		field .. "' in section '" .. section .. "'";
 	utils.abort("%s", err)
 end
