@@ -134,6 +134,18 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 	float SSA					= CalcSSA	(distSQ,pVisual->vis.sphere.P,pVisual);
 	if (SSA<=r_ssaDISCARD)		return;
 
+	// Distortive geometry should be marked and R2 special-cases it
+	// a) Allow to optimize RT order
+	// b) Should be rendered to special distort buffer in another pass
+	if (RImplementation.b_distortion && (&*pVisual->hShader->E[4]) && pVisual->hShader->E[4]->Flags.bDistort) {
+		mapSorted_Node* N		= mapDistort.insertInAnyWay		(distSQ);
+		N->val.ssa				= SSA;
+		N->val.pObject			= NULL;
+		N->val.pVisual			= pVisual;
+		N->val.Matrix			= Fidentity;
+		N->val.se				= &*pVisual->hShader->E[4];		// 4=L_special
+	}
+
 	// Select shader
 	ShaderElement*		sh		= RImplementation.rimp_select_sh_static(pVisual,distSQ);
 	if (0==sh)								return;
@@ -164,18 +176,6 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 		N->val.se				= &*pVisual->hShader->E[4];		// 4=L_special
 	}
 #endif
-
-	// Distortive geometry should be marked and R2 special-cases it
-	// a) Allow to optimize RT order
-	// b) Should be rendered to special distort buffer in another pass
-	if (sh->Flags.bDistort && RImplementation.b_distortion) {
-		mapSorted_Node* N		= mapDistort.insertInAnyWay		(distSQ);
-		N->val.ssa				= SSA;
-		N->val.pObject			= NULL;
-		N->val.pVisual			= pVisual;
-		N->val.Matrix			= Fidentity;
-		N->val.se				= &*pVisual->hShader->E[4];		// 4=L_special
-	}
 
 	if	(val_feedback && counter_S==val_feedback_breakp)	val_feedback->rfeedback_static(pVisual);
 

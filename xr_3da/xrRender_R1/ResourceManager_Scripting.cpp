@@ -227,7 +227,7 @@ Shader*	CResourceManager::_lua_Create		(LPCSTR d_shader, LPCSTR s_textures)
 		{
 			C.iElement			= 0;
 			C.bDetail			= FALSE;
-			S.E[1]				= C._lua_Compile(s_shader,"normal");
+			S.E[0]				= C._lua_Compile(s_shader,"normal");
 		}
 	}
 
