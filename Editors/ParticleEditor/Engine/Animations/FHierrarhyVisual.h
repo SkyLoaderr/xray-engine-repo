@@ -15,8 +15,8 @@ public:
 	xr_vector<IRender_Visual*>		children;
 	BOOL							bDontDelete;
 
-	virtual void	Load	(const char* N, IReader *data, u32 dwFlags);
-	virtual void	Copy	(IRender_Visual *pFrom);
+	virtual void	Load			(const char* N, IReader *data, u32 dwFlags);
+	virtual void	Copy			(IRender_Visual *pFrom);
 
 	FHierrarhyVisual();
 	virtual ~FHierrarhyVisual();

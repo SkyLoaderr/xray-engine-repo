@@ -39,9 +39,9 @@ void FHierrarhyVisual::Load(const char* N, IReader *data, u32 dwFlags)
 	if (data->find_chunk(OGF_CHIELDS_L)) 
 	{
 		// From Link
-		u32 cnt = data->r_u32();
-		children.resize(cnt);
-		for (u32 i=0; i<cnt; i++) {
+		u32 cnt = data->r_u32		();
+		children.resize				(cnt);
+		for (u32 i=0; i<cnt; i++)	{
 #ifdef _EDITOR
 			THROW;
 #else
@@ -63,12 +63,12 @@ void FHierrarhyVisual::Load(const char* N, IReader *data, u32 dwFlags)
 #ifdef _EDITOR
                     children.push_back	(::Device.Models.Create(O));
 #else
-					string256 name_load;
+					string256			name_load;
 					sprintf				(name_load,"%s_%d",N,count);
 					children.push_back	(::Render->model_Create(name_load,O));
 #endif
-                    O->close();
-                    O = OBJ->open_chunk(count);
+                    O->close			();
+                    O = OBJ->open_chunk	(count);
                 }
                 OBJ->close();
             }
@@ -78,11 +78,11 @@ void FHierrarhyVisual::Load(const char* N, IReader *data, u32 dwFlags)
 		{
 			// From FILE
 			if (data->find_chunk(OGF_CHIELDS)) {
-                string32	c_drv;
-                string256	c_dir;
-                string256	fn,fn_full;
-                _splitpath	(N,c_drv,c_dir,0,0);
-                int			cnt = data->r_u32();
+                string32		c_drv;
+                string256		c_dir;
+                string256		fn,fn_full;
+                _splitpath		(N,c_drv,c_dir,0,0);
+                int				cnt = data->r_u32();
                 children.reserve(cnt);
                 for (int i=0; i<cnt; i++) 
 				{
