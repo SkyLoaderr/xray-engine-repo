@@ -765,7 +765,7 @@ function on_touch( self, obj )
 			[clsid.flesh_s       ] = "flesh",
 			[clsid.fracture_s    ] = "fracture",
 			[clsid.poltergeist_s ] = "poltergeist",
-			[clsid.pseudo_gigant_s] = "pseudo_gigant",
+			[clsid.gigant_s      ] = "pseudo_gigant",
 			[clsid.snork_s       ] = "snork"
 		}		
 	end
