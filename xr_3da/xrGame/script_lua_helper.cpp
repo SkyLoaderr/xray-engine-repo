@@ -339,9 +339,6 @@ BOOL CDbgLuaHelper::GetCalltip(const char *szWord, char *szCalltip)
 	return FALSE;
 }
 
-typedef int (*LuaRegister)(lua_State*, HWND hWnd);
-
-
 
 BOOL CDbgLuaHelper::Eval(const char *szCode, char* szRet)
 {
