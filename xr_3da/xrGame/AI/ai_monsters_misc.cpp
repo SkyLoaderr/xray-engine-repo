@@ -551,7 +551,7 @@ bool bfGetActionSuccessProbability(EntityVec &Members, objVisible &VisibleEnemie
 	return(j >= J);
 }
 
-u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability0, float fMinProbability1, float fMinProbability2, float fMinProbability3, u32 dwTeam, u32 dwSquad, u32 dwGroup, u32 a0, u32 a1, u32 a2, u32 a3, u32 a4)
+u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability0, float fMinProbability1, float fMinProbability2, float fMinProbability3, u32 dwTeam, u32 dwSquad, u32 dwGroup, u32 a0, u32 a1, u32 a2, u32 a3, u32 a4, CEntity *tpEntity, float fGroupDistance)
 {
 	CGroup		&Group = Level().Teams[dwTeam].Squads[dwSquad].Groups[dwGroup];
 	
@@ -579,10 +579,17 @@ u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability0, float fMinP
 		}
 
 	EntityVec	Members;
-	for (int k=0; k<(int)Group.Members.size(); k++) {
-		if (Group.Members[k]->g_Alive())
-			Members.push_back(Group.Members[k]);
-	}
+	if (!tpEntity)
+		for (int k=0; k<(int)Group.Members.size(); k++) {
+			if (Group.Members[k]->g_Alive())
+				Members.push_back(Group.Members[k]);
+		}
+	else
+		for (int k=0; k<(int)Group.Members.size(); k++) {
+			if (Group.Members[k]->g_Alive())
+				if (tpEntity->Position().distance_to(Group.Members[k]) < fGroupDistance)
+					Members.push_back(Group.Members[k]);
+		}
 
 	WRITE_QUERY_TO_LOG("\nNew query");
 	if (bfGetActionSuccessProbability(Members,VisibleEnemies,fMinProbability0,getAI().pfVictoryProbability)) {
