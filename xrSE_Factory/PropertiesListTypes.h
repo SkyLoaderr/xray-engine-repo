@@ -123,7 +123,9 @@ class PropItem
     shared_str			key;
     EPropType			type;
 	void*				item;
+public:
 	DEFINE_VECTOR		(PropValue*,PropValueVec,PropValueIt);
+private:
     PropValueVec		values;
     TProperties* 		m_Owner;
 // events

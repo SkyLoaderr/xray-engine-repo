@@ -132,13 +132,15 @@ private:	// User declarations
     TOnItemFocused      OnItemFocused;
     TOnModifiedEvent 	OnModifiedEvent;
     TOnCloseEvent		OnCloseEvent;
-    void 				Modified				(){bModified=true; if (!OnModifiedEvent.empty()) OnModifiedEvent();}
     void 				ClearParams				(TElTreeItem* node=0);
     void 				ApplyEditControl		();
     void 				CancelEditControl		();
 
 	void 				OutBOOL					(BOOL val, TCanvas* Surface, TRect& R, bool bEnable);
 	void 				OutText					(LPCSTR text, TCanvas* Surface, TRect& R, bool bEnable, TGraphic* g=0, bool bArrow=false);
+
+public:
+    void 				Modified				(){bModified=true; if (!OnModifiedEvent.empty()) OnModifiedEvent();}
 public:
 	enum{
         plFolderStore	= (1<<0),
@@ -226,6 +228,7 @@ public:		// User declarations
     }
 
     void				SetReadOnly				(BOOL val){m_Flags.set(plReadOnly,val);}
+    PropItem*			FindItem 				(const shared_str& name);
 };
 //---------------------------------------------------------------------------
 #endif

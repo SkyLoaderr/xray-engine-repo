@@ -1731,3 +1731,9 @@ void __fastcall TProperties::tvPropertiesCompareItems(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
+PropItem* TProperties::FindItem(const shared_str& name)
+{
+	return PHelper().FindItem(m_Items,name,PROP_UNDEF);
+}
+//---------------------------------------------------------------------------
+
