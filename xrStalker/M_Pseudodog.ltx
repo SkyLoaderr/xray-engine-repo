@@ -5,11 +5,16 @@
 stand_attack_0	=	  	0.45,		25,		    200,        0.0, 1.0, 1.0,		 -1.6, 1.6, -1.6, 1.6,								  3.5
 jump_glide_0	=		0.45,		10,		    300,        0.0, 1.0, 1.0,		 -1.6, 1.6, -1.6, 1.6,								  3.5
 
-[m_pseudodog_step_params]
-;----------------------------------------------------------------------------------------------------------------
-;	anim			| time1 | power1 | time2 | power2 | time3 | power3 | time4 | power4 |
-;----------------------------------------------------------------------------------------------------------------
-stand_walk_fwd_0=	   0.2,     1,	  0.25,    0.7,    0.5,		1.0,     0.7,    1.0
+[m_pseudodog_step_params]                left             right            right           left
+;-----------------------------------------------------------------------------------------------------------
+;	anim			cycles | time1 | power1 | time2 | power2 | time3 | power3 | time4 | power4 |
+;-----------------------------------------------------------------------------------------------------------
+stand_walk_fwd_0	=   	1,	0.2,     1,	  0.5,     0.7,    0.75,    1.0,     0.9,    1.0
+stand_walk_fwd_dmg_0	=   	1,	0.2,     1,	  0.25,    0.7,    0.5,	    1.0,     0.7,    1.0
+stand_run_0		=	1,	0.2,     1,	  0.25,    0.7,    0.7,	    1.0,     0.7,    1.0
+stand_run_dmg_0		=	1,	0.2,     1,	  0.25,    0.7,    0.7,	    1.0,     0.7,    1.0
+stand_steal_0		=	1,	0.2,     1,	  0.25,    0.7,    0.7,	    1.0,     0.7,    1.0
+stand_drag_0		=	1,	0.2,     1,	  0.25,    0.7,    0.7,	    1.0,     0.7,    1.0
 
 
 [m_pseudodog_e]
@@ -201,7 +206,7 @@ attack_effector			= monster_attack_effector
 psi_effector			= pseudodog_psi_effector
 
 attack_params			= m_pseudodog_attack_params
-step_params				= m_pseudodog_step_params
+step_params			= m_pseudodog_step_params
 
 
 [pseudodog_psi_effector]
