@@ -4,7 +4,7 @@
 	<!-- LEVEL LOCATIONS  -->
 	<info_portion id="esc_map_locations">
 		<location>
-			<level>l01_escape</level>
+			<level>stohe_selo</level>
 			<x>105</x>
 			<y>-15</y>
 			<icon name="Заброшенная фабрика" x="0" y="0" width="1" height="1" r="238" g="155" b="23" marker="0" dyn="1">ui\ui_round_map_area</icon>
