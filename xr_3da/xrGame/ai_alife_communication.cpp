@@ -728,37 +728,37 @@ void CSE_ALifeSimulator::vfPerformCommunication()
 void CSE_ALifeSimulator::vfCommunicateWithCustomer(CSE_ALifeHumanAbstract *tpALifeHumanAbstract, CSE_ALifeTrader *tpALifeTrader)
 {
 	// process group of stalkers
-	CSE_ALifeGroupAbstract	*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeGroupAbstract*>(tpALifeHumanAbstract);
+	CSE_ALifeGroupAbstract					*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeGroupAbstract*>(tpALifeHumanAbstract);
 	if (l_tpALifeAbstractGroup) {
-		OBJECT_IT		I = l_tpALifeAbstractGroup->m_tpMembers.begin();
-		OBJECT_IT		E = l_tpALifeAbstractGroup->m_tpMembers.end();
+		OBJECT_IT							I = l_tpALifeAbstractGroup->m_tpMembers.begin();
+		OBJECT_IT							E = l_tpALifeAbstractGroup->m_tpMembers.end();
 		for ( ; I != E; ++I)
-			vfCommunicateWithCustomer(dynamic_cast<CSE_ALifeHumanAbstract*>(tpfGetObjectByID(*I)),tpALifeTrader);
+			vfCommunicateWithCustomer		(dynamic_cast<CSE_ALifeHumanAbstract*>(tpfGetObjectByID(*I)),tpALifeTrader);
 		return;
 	}
 	
 	// trade items
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
-		Msg				("Selling all the items to %s",tpALifeTrader->s_name_replace);
+		Msg									("Selling all the items to %s",tpALifeTrader->s_name_replace);
 	}
 #endif
-	tpALifeHumanAbstract->m_dwTotalMoney = tpALifeHumanAbstract->m_dwMoney;
+	tpALifeHumanAbstract->m_dwTotalMoney	= tpALifeHumanAbstract->m_dwMoney;
 	{
-		OBJECT_IT		I = tpALifeHumanAbstract->children.begin();
-		OBJECT_IT		E = tpALifeHumanAbstract->children.end();
+		OBJECT_IT							I = tpALifeHumanAbstract->children.begin();
+		OBJECT_IT							E = tpALifeHumanAbstract->children.end();
 		for ( ; I != E; ++I) {
-			CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(tpfGetObjectByID(*I));
+			CSE_ALifeInventoryItem			*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(tpfGetObjectByID(*I));
 			tpALifeHumanAbstract->vfDetachItem(l_tpALifeInventoryItem,0,true,false);
-			tpALifeTrader->vfAttachItem(l_tpALifeInventoryItem,true);
-			u32						l_dwItemCost = tpALifeTrader->dwfGetItemCost(l_tpALifeInventoryItem,this);
+			tpALifeTrader->vfAttachItem		(l_tpALifeInventoryItem,true);
+			u32								l_dwItemCost = tpALifeTrader->dwfGetItemCost(l_tpALifeInventoryItem,this);
 			tpALifeHumanAbstract->m_dwTotalMoney += l_dwItemCost;
-			tpALifeTrader->m_dwMoney-= l_dwItemCost;
+			tpALifeTrader->m_dwMoney		-= l_dwItemCost;
 		}
 		tpALifeHumanAbstract->children.clear();
 	}
 	
-	sort				(tpALifeTrader->children.begin(),tpALifeTrader->children.end());
+	sort									(tpALifeTrader->children.begin(),tpALifeTrader->children.end());
 
 	tpALifeHumanAbstract->m_dwMoney			= tpALifeHumanAbstract->m_dwTotalMoney;
 	
@@ -790,7 +790,7 @@ void CSE_ALifeSimulator::vfCommunicateWithCustomer(CSE_ALifeHumanAbstract *tpALi
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
-		Msg					("Assigning correct parents");
+		Msg									("Assigning correct parents");
 	}
 #endif
 	vfAttachGatheredItems					(tpALifeHumanAbstract,tpALifeTrader,m_tpBlockedItems1);
