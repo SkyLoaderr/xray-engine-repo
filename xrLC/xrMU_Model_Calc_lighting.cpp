@@ -213,7 +213,6 @@ void xrMU_Model::calc_lighting	(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL
 void xrMU_Model::calc_lighting		()
 {
 	clMsg				("model '%s' - REF_lighted.",m_name);
-	// calc_lighting		(color,Fidentity,0,0);
 	Fcolor ref;
 	ref.set				(.5f, .5f, .5f, 1.f);
 	color.assign		(m_vertices.size(),ref);

@@ -602,6 +602,9 @@
 				RelativePath=".\Build.h">
 			</File>
 			<File
+				RelativePath="Build_Load.cpp">
+			</File>
+			<File
 				RelativePath=".\Sector.cpp">
 			</File>
 			<File

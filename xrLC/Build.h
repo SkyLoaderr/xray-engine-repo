@@ -72,6 +72,7 @@ public:
 	vector<b_lod>			lods;
 
 	vector<R_Layer>			L_layers;
+	vector<R_Light>			L_hemi;
 	vector<b_light_dynamic>	L_dynamic;
 	
 	vector<BYTE>			L_control_data;
