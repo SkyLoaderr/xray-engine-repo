@@ -87,51 +87,6 @@ void CStalkerActionGetKillDistance::execute	()
 }
 
 //////////////////////////////////////////////////////////////////////////
-// CStalkerActionGetEnemy
-//////////////////////////////////////////////////////////////////////////
-
-CStalkerActionGetEnemy::CStalkerActionGetEnemy	(CAI_Stalker *object, LPCSTR action_name) :
-	inherited				(object,action_name)
-{
-	m_weight				= _edge_value_type(100);
-}
-
-void CStalkerActionGetEnemy::initialize	()
-{
-	inherited::initialize	();
-	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
-}
-
-void CStalkerActionGetEnemy::finalize	()
-{
-	inherited::finalize		();
-
-	if (!m_object->g_Alive())
-		return;
-
-	m_object->set_sound_mask(0);
-}
-
-void CStalkerActionGetEnemy::execute	()
-{
-	inherited::execute		();
-
-	m_object->set_level_dest_vertex	(m_object->level_vertex_id());
-	m_object->set_node_evaluator	(0);
-	m_object->set_path_evaluator	(0);
-	m_object->set_desired_position	(&m_object->Position());
-	m_object->set_desired_direction	(0);
-	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
-	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
-	m_object->set_body_state		(eBodyStateStand);
-	m_object->set_movement_type		(eMovementTypeWalk);
-	m_object->set_mental_state		(eMentalStateDanger);
-
-	m_object->CSightManager::setup				(SightManager::eSightTypeCurrentDirection);
-	m_object->CObjectHandler::set_goal		(eObjectActionIdle);
-}
-
-//////////////////////////////////////////////////////////////////////////
 // CStalkerActionGetEnemySeen
 //////////////////////////////////////////////////////////////////////////
 
