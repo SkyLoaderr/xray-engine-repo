@@ -17,6 +17,7 @@
 #include "ai\\zombie\\ai_zombie.h"
 #include "car.h"
 #include "dummyobject.h"
+#include "customtarget.h"
     
 ENGINE_API extern DWORD		psAlwaysRun;
 ENGINE_API extern float		psHUD_FOV;
@@ -125,8 +126,8 @@ extern "C" {
 		case CLSID_LEVEL:				P = new CLevel();				break;
 		case CLSID_HUDMANAGER:			P = new CHUDManager();			break;
 		case CLSID_OBJECT_ACTOR:		P = new CActor();				break;
-//		case CLSID_OBJECT_DUMMY:		P = new CDummyObject();			break;
-//		case CLSID_EVENT:				P = new CCustomEvent();			break;
+		case CLSID_TARGET:				P = new CCustomTarget();		break;
+
 		case CLSID_AI_HEN:				P = new CAI_Hen();				break;
 		case CLSID_AI_RAT:				P = new CAI_Rat();				break;
 		case CLSID_AI_SOLDIER:			P =	new CAI_Soldier();			break;
@@ -134,7 +135,6 @@ extern "C" {
 		case CLSID_AI_CROW:				P = new CAI_Crow();				break;
 		case CLSID_CAR_NIVA:			P = new CCar();					break;
 
-//		case CLSID_OBJECT_W_M134:		P = new CWeaponM134();			break;
 		case CLSID_OBJECT_W_FN2000:		P = new CWeaponFN2000();		break;
 		case CLSID_OBJECT_W_AK74:		P = new CWeaponAK74();			break;
 		case CLSID_OBJECT_W_LR300:		P = new CWeaponLR300();			break;
@@ -154,6 +154,9 @@ extern "C" {
 };
 
 /*
+//		case CLSID_OBJECT_DUMMY:		P = new CDummyObject();			break;
+//		case CLSID_EVENT:				P = new CCustomEvent();			break;
+//		case CLSID_OBJECT_W_M134:		P = new CWeaponM134();			break;
 //		case CLSID_OBJECT_W_RAIL:	P = new	CWeaponRail();		break;
 //		case CLSID_OBJECT_ITEM_STD:	P = new CCustomItem();		break;
 //		case CLSID_OBJECT_FLYER:	P = new CFlyer();			break;

@@ -971,6 +971,22 @@
 						</File>
 					</Filter>
 				</Filter>
+				<Filter
+					Name="Target"
+					Filter="">
+					<File
+						RelativePath="CustomTarget.cpp">
+					</File>
+					<File
+						RelativePath="CustomTarget.h">
+					</File>
+					<File
+						RelativePath="TargetAssault.cpp">
+					</File>
+					<File
+						RelativePath="TargetAssault.h">
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter

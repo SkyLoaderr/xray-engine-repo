@@ -44,5 +44,9 @@
 #define CLSID_OBJECT_HEALTH			MK_CLSID('O','_','H','E','A','L','T','H')
 #define CLSID_OBJECT_ARMOR			MK_CLSID('O','_','A','R','M','O','R',' ')
 
+// Targets
+#define CLSID_TARGET				MK_CLSID('T','_','B','A','S','E',' ',' ')
+#define CLSID_TARGET_ASSAULT		MK_CLSID('T','_','A','S','S',' ',' ',' ')
+
 // Standart level object
 #define CLSID_OBJECT_ITEM_STD		MK_CLSID('O','_','I','T','E','M',' ',' ')
