@@ -20,6 +20,8 @@ public:
 	IC		CScriptEngine	&script_engine	() const;
 };
 
+extern CAI_Space *g_ai_space;
+
 IC	CAI_Space	&ai	();
 
 #include "ai_space_inline.h"
