@@ -177,7 +177,7 @@
 #include "rt_compressor.h"
 
 // stl ext
-DEFINE_VECTOR(ref_str,RStrVec,RStrVecIt);
+DEFINE_VECTOR(ref_str,RStringVec,RStringVecIt);
 
 #include "FS.h"
 #include "log.h"

@@ -236,9 +236,9 @@ LPCSTR _GetItem ( LPCSTR src, int index, AnsiString& dst, char separator, LPCSTR
 	return		dst.c_str();
 }
 
-AnsiString& _ListToSequence(const AStringVec& lst)
+AnsiString _ListToSequence(const AStringVec& lst)
 {
-	static AnsiString out;
+	AnsiString out;
 	out = "";
 	if (lst.size()){
 		out			= lst.front();
@@ -248,9 +248,9 @@ AnsiString& _ListToSequence(const AStringVec& lst)
 	return out;
 }
 
-AnsiString& _ListToSequence2(const AStringVec& lst)
+AnsiString _ListToSequence2(const AStringVec& lst)
 {
-	static AnsiString out;
+	AnsiString out;
 	out = "";
 	if (lst.size()){
 		out			= lst.front();
@@ -325,6 +325,54 @@ std::string	_ListToSequence(const SStringVec& lst)
         	out		+= std::string(",")+(*s_it);
 	}
 	return out;
+}
+
+std::string& _TrimLeft( std::string& str )
+{
+	LPCSTR b		= str.c_str();
+	LPCSTR p 		= str.c_str();
+	while( *p && ((*p)<=' ') ) p++;
+    if (p!=b)
+    	str.erase	(0,p-b);
+	return str;
+}
+
+std::string& _TrimRight( std::string& str )
+{
+	LPCSTR b		= str.c_str();
+    u32 l			= str.length();
+	LPCSTR p 		= str.c_str()+l-1;
+	while( (p!=b) && ((*p)<=' ') ) p--;
+    if (p!=(str+b))	str.erase	(p-b+1,l-(p-b));
+	return str;
+}
+
+std::string& _Trim( std::string& str )
+{
+	_TrimLeft		( str );
+	_TrimRight		( str );
+	return str;
+}
+
+LPCSTR _CopyVal ( LPCSTR src, std::string& dst, char separator )
+{
+	LPCSTR	p;
+	u32		n;
+	p			= strchr	( src, separator );
+	n			= (p>0) ? (p-src) : xr_strlen(src);
+	dst			= src;
+	dst			= dst.erase	(n,dst.length());
+	return		dst.c_str();
+}
+
+LPCSTR _GetItem ( LPCSTR src, int index, std::string& dst, char separator, LPCSTR def )
+{
+	LPCSTR	ptr;
+	ptr			= _SetPos	( src, index, separator );
+	if( ptr )	_CopyVal	( ptr, dst, separator );
+	else	dst = def;
+	_Trim		(dst);
+	return		dst.c_str	();
 }
 
 
