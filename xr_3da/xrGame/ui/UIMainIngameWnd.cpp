@@ -247,17 +247,20 @@ void CUIMainIngameWnd::Init()
 	uiXml.SetLocalRoot(uiXml.NavigateToNode("flashing_icons"));
 	InitFlashingIcons(uiXml);
 
-	shared_str contactsAnimationName			= "ui_pda_contacts";
-	UIContactsAnimation.SetColorAnimation	(contactsAnimationName);
+	shared_str animationName				= "ui_pda_contacts";
+	UIContactsAnimation.SetColorAnimation	(animationName);
 	UIContactsAnimation.SetColorToModify	(&UIPdaOnline.GetColorRef());
 	UIContactsAnimation.Cyclic				(false);
 	UIContactsAnimation.Reset				();
 
 	// Claws animation
 	uiXml.SetLocalRoot(uiXml.GetRoot());
-//	m_ClawsAnimation.SetAnimationPeriod(uiXml.ReadAttribInt("claws_animation", 0, "period", 1000));
-//	m_ClawsAnimation.SetPlayDuration(uiXml.ReadAttribInt("claws_animation", 0, "duration", 2000));
-	m_ClawsTexture.SetRect(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
+	animationName							= "ui_claws_animation";
+	m_ClawsTexture.SetRect					(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
+	m_ClawsAnimation.SetColorAnimation		(animationName);
+	m_ClawsAnimation.SetColorToModify		(&m_ClawsTexture.GetColorRef());
+	m_ClawsAnimation.Cyclic					(false);
+	m_ClawsAnimation.Reset					();
 
 	AttachChild(&UIStaticBattery);
 	xml_init.InitStatic(uiXml, "battery_static", 0, &UIStaticBattery);
@@ -328,12 +331,11 @@ void CUIMainIngameWnd::Draw()
 	}
 
 	// Render claws
-//	if (CUIAnimationBase::easPlayed == m_ClawsAnimation.GetState() && m_ClawsTexture.GetShader())
-//	{
-//		m_ClawsTexture.SetPos(0, 0);
-//		m_ClawsTexture.Render(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
-//		Msg("%i", color_get_A(m_ClawsTexture.GetColor()));
-//	}
+	if (!m_ClawsAnimation.Done() && m_ClawsTexture.GetShader())
+	{
+		m_ClawsTexture.SetPos(0, 0);
+		m_ClawsTexture.Render(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////

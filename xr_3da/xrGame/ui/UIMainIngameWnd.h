@@ -231,8 +231,6 @@ private:
 	CUIStaticItem				m_ClawsTexture;
 	// Animation engine for claws
 	CUIColorAnimatorWrapper		m_ClawsAnimation;
-	// Update claws animation
-	void						UpdateClawsAnimation();
 
 public:
 	// Инициализировать текстуры когтей для монстров
