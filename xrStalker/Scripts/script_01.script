@@ -44,8 +44,6 @@ function main()
 	stalker1:script	(true,script_01.script_name())
 	stalker2:script	(true,script_01.script_name())
 
-	while true do
-		if is_actor_entered == false and stalker1:see(actor) == false and stalker2:see(actor) == false then 
 			action(                                                                                                       
 			    stalker1,
 			  	move	(move.standing, move.walk,move.line,patrol("way0002")),
@@ -56,6 +54,15 @@ function main()
 			  	move	(move.standing, move.walk,move.line,patrol("way0001")),
 				cond	(cond.time_end, 500000)
 			)
+
+	while stalker1:action() and stalker2:action() do
+		if is_actor_entered == false and stalker1:see(actor) == false and stalker2:see(actor) == false then 
+
+			stalker1:script	(false, script_01.script_name())
+			stalker1:script	(true,  script_01.script_name())
+			stalker2:script	(false, script_01.script_name())
+			stalker2:script	(true,  script_01.script_name())
+
 			action(                                                                                                       
 			    stalker1,
 				sound	("scripts\\idle\\cough1","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
