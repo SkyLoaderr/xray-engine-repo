@@ -4,7 +4,7 @@ void	CRenderTarget::phase_scene		()
 {
 	// Targets
 	if (RImplementation.b_nv3x)			u_setrt		(rt_Deffer,NULL,NULL,HW.pBaseZB);
-	else								u_setrt		(rt_Position,rt_Normal,rt_Color,HW.pBaseZB);
+	else								u_setrt		(rt_Generic,rt_Accumulator,rt_Color,HW.pBaseZB);
 
 	// Clear
 	CHK_DX(HW.pDevice->Clear			( 0L, NULL, D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL, 0x00, 1.0f, 0L));
