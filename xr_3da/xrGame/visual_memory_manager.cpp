@@ -97,9 +97,12 @@ void CVisualMemoryManager::reload				(LPCSTR section)
 {
 	m_max_object_count			= READ_IF_EXISTS(pSettings,r_s32,section,"DynamicObjectsCount",1);
 
-	m_danger.Load				(m_stalker ? pSettings->r_string(section,"vision_danger_section") : section,!!m_stalker);
-	if (m_stalker)
-		m_free.Load				(pSettings->r_string(section,"vision_free_section"),!!m_stalker);
+	if (m_stalker) {
+		m_free.Load		(pSettings->r_string(section,"vision_free_section"),true);
+		m_danger.Load	(pSettings->r_string(section,"vision_danger_section"),true);
+	}
+	else
+		m_free.Load		(section,false);
 }
 
 IC	const CVisionParameters &CVisualMemoryManager::current_state() const

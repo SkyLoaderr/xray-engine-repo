@@ -37,7 +37,7 @@ bool CEnemyManager::useful					(const CEntityAlive *entity_alive) const
 	if ((entity_alive->spatial.type & STYPE_VISIBLEFORAI) != STYPE_VISIBLEFORAI)
 		return				(false);
 
-	if ((m_object->ID() == entity_alive->ID()) || m_object->is_relation_enemy(entity_alive))
+	if ((m_object->ID() == entity_alive->ID()) || !m_object->is_relation_enemy(entity_alive))
 		return				(false);
 
 	if (!ai().get_level_graph() || !ai().level_graph().valid_vertex_id(entity_alive->ai_location().level_vertex_id()))
