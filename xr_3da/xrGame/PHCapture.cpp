@@ -43,7 +43,23 @@ void CPHCapture::PhDataUpdate(dReal /**step/**/)
 
 void CPHCapture::PhTune(dReal /**step/**/)
 {
-
+	if(b_failed) return;
+	bool act_capturer=m_character->CPHObject::IsActive();
+	bool act_taget=m_taget_object->PPhysicsShell()->isEnabled();
+	switch(e_state) 
+	{
+	case cstPulling:  ;
+		break;
+	case cstCaptured: if(!act_capturer&&!act_taget)dBodyDisable(m_body);
+		break;
+	case cstReleased: m_taget_element->Enable();
+		break;
+	default: NODEFAULT;
+	}
+	if(act_capturer)
+	{
+		m_taget_element->Enable();
+	}
 }
 
 void CPHCapture::PullingUpdate()
@@ -158,7 +174,10 @@ void CPHCapture::PullingUpdate()
 
 void CPHCapture::CapturedUpdate()
 {
-
+	if(m_character->CPHObject::IsActive())
+	{
+		m_taget_element->Enable();
+	}
 
 	if(!m_taget_element->bActive||dDOT(m_joint_feedback.f2,m_joint_feedback.f2)>m_capture_force*m_capture_force) 
 	{
@@ -231,9 +250,6 @@ void CPHCapture::object_contactCallbackFun(bool& do_colide,dContact& c)
 	l_pUD2 = retrieveGeomUserData(c.geom.g2);
 
 	if(! l_pUD1) return;
-
-	l_pUD2 = retrieveGeomUserData(c.geom.g2);
-
 	if(!l_pUD2) return;
 
 	CEntityAlive* capturer=dynamic_cast<CEntityAlive*>(l_pUD1->ph_ref_object);
@@ -242,8 +258,11 @@ void CPHCapture::object_contactCallbackFun(bool& do_colide,dContact& c)
 		CPHCapture* capture=capturer->m_PhysicMovementControl->PHCapture();
 		if(capture)
 		{
-			if(capture->m_taget_element->PhysicsRefObject()==l_pUD2->ph_ref_object) 
+			if(capture->m_taget_element->PhysicsRefObject()==l_pUD2->ph_ref_object)
+			{
 				do_colide = false;
+				capture->m_taget_element->Enable();
+			}
 			if(capture->e_state==CPHCapture::cstReleased) capture->ReleaseInCallBack();
 		}
 
@@ -256,8 +275,11 @@ void CPHCapture::object_contactCallbackFun(bool& do_colide,dContact& c)
 		CPHCapture* capture=capturer->m_PhysicMovementControl->PHCapture();
 		if(capture)
 		{
-			if(capture->m_taget_element->PhysicsRefObject()==l_pUD1->ph_ref_object) 
+			if(capture->m_taget_element->PhysicsRefObject()==l_pUD1->ph_ref_object)
+			{
 				do_colide = false;
+				capture->m_taget_element->Enable();
+			}
 			if(capture->e_state==CPHCapture::cstReleased) capture->ReleaseInCallBack();
 		}
 

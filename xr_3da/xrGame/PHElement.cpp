@@ -94,20 +94,13 @@ void CPHElement::			build	(){
 
 	dBodySetMass(m_body,&m_mass);
 
-	if(m_geoms.size()>1)
-	{
-		m_group=dSimpleSpaceCreate(0);
-		dSpaceSetCleanup(m_group,0);
-	}
+
 	m_inverse_local_transform.identity();
 	m_inverse_local_transform.c.set(m_mass_center);
 	m_inverse_local_transform.invert();
 	dBodySetPosition(m_body,m_mass_center.x,m_mass_center.y,m_mass_center.z);
 	///////////////////////////////////////////////////////////////////////////////////////
-	//GEOM_I i_geom=m_geoms.begin(),e=m_geoms.end();
-	//for(;i_geom!=e;++i_geom) build_Geom(**i_geom);
-	u16 geoms_size=u16(m_geoms.size());
-	for(u16 i=0;i<geoms_size;++i) build_Geom(i);
+	CPHGeometryOwner::build();
 	set_body(m_body);
 }
 
@@ -126,14 +119,7 @@ void CPHElement::RunSimulation()
 void CPHElement::destroy	()
 {
 	//dJointGroupDestroy(m_saved_contacts);
-	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
-
-
-	for(;i!=e;++i)
-	{
-		(*i)->destroy();
-	}
-
+	CPHGeometryOwner::destroy();
 	if(m_body)
 	{
 		dBodyDestroy(m_body);
@@ -146,64 +132,10 @@ void CPHElement::destroy	()
 	}
 }
 
-Fvector CPHElement::			get_mc_data	(){
-	Fvector s;
-	float pv;
-	m_mass_center.set(0,0,0);
-	m_volume=0.f;
-	GEOM_I i_geom=m_geoms.begin(),e=m_geoms.end();
-	for(;i_geom!=e;++i_geom)
-	{
-		pv=(*i_geom)->volume();
-		s.mul((*i_geom)->local_center(),pv);
-		m_volume+=pv;
-		m_mass_center.add(s);
-	}
-	m_mass_center.mul(1.f/m_volume);
-	return m_mass_center;
-}
-
-void CPHElement::			calc_volume_data	()
-{
-	m_volume=0.f;
-	GEOM_I i_geom=m_geoms.begin(),e=m_geoms.end();
-	for(;i_geom!=e;++i_geom)
-	{
-		m_volume+=(*i_geom)->volume();
-	}
-}
-
-Fvector CPHElement::			get_mc_geoms	(){
-	////////////////////to be implemented
-	Fvector mc;
-	mc.set(0.f,0.f,0.f);
-	return mc;
-}
-void CPHElement::set_BoxMass(const Fobb& box, float mass)
-{
-	dMassSetZero(&m_mass);
-	m_mass_center.set(box.m_translate);
-	const Fvector& hside=box.m_halfsize;
-	dMassSetBox(&m_mass,1,hside.x*2.f,hside.y*2.f,hside.z*2.f);
-	dMassAdjust(&m_mass,mass);
-	dMatrix3 DMatx;
-	PHDynamicData::FMX33toDMX(box.m_rotate,DMatx);
-	dMassRotate(&m_mass,DMatx);
-
-}
-
 void CPHElement::calculate_it_data(const Fvector& mc,float mas)
 {
 	float density=mas/m_volume;
 	calculate_it_data_use_density(mc,density);
-}
-
-
-void CPHElement::calculate_it_data_use_density(const Fvector& mc,float density)
-{
-	dMassSetZero(&m_mass);
-	GEOM_I i_geom=m_geoms.begin(),e=m_geoms.end();
-	for(;i_geom!=e;++i_geom)(*i_geom)->add_self_mass(m_mass,mc,density);
 }
 
 static float static_dencity;
@@ -683,6 +615,7 @@ void CPHElement::Activate(bool place_current_forms,bool disable){
 	if(disable) dBodyDisable(m_body);
 
 }
+
 void CPHElement::build(bool disable){
 
 	if(bActive) return;
@@ -837,22 +770,14 @@ void CPHElement::set_ContactCallback(ContactCallbackFun* callback)
 	for(;i!=e;++i) (*i)->set_contact_cb(callback);
 }
 
-void CPHElement::SetPhObjectInGeomData(CPHObject* O)
-{
-	if(!bActive) return;
-	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
-	for(;i!=e;++i) (*i)->set_ph_object(O);
-}
-
-
-
 void CPHElement::SetMaterial(u16 m)
 {
-	ul_material=m;
-	if(!bActive) return;
-	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
-	for(;i!=e;++i) (*i)->set_material(m);
+	CPHGeometryOwner::SetMaterial(m);
 }
+
+
+
+
 
 dMass*	CPHElement::getMassTensor()																						//aux
 {
@@ -1096,6 +1021,27 @@ void CPHElement::add_Mass(const SBoneShape& shape,const Fmatrix& offset,const Fv
 	dMassAdd(&m_mass,&m);
 	m_mass_center.set(new_mc);
 }
+
+void CPHElement::set_BoxMass(const Fobb& box, float mass)
+{
+	dMassSetZero(&m_mass);
+	m_mass_center.set(box.m_translate);
+	const Fvector& hside=box.m_halfsize;
+	dMassSetBox(&m_mass,1,hside.x*2.f,hside.y*2.f,hside.z*2.f);
+	dMassAdjust(&m_mass,mass);
+	dMatrix3 DMatx;
+	PHDynamicData::FMX33toDMX(box.m_rotate,DMatx);
+	dMassRotate(&m_mass,DMatx);
+
+}
+
+void CPHElement::calculate_it_data_use_density(const Fvector& mc,float density)
+{
+	dMassSetZero(&m_mass);
+	GEOM_I i_geom=m_geoms.begin(),e=m_geoms.end();
+	for(;i_geom!=e;++i_geom)(*i_geom)->add_self_mass(m_mass,mc,density);
+}
+
 float CPHElement::getRadius()
 {
 	if(!m_geoms.empty()) return m_geoms.back()->radius();
@@ -1147,12 +1093,7 @@ CPhysicsShell* CPHElement::PhysicsShell()
 	return dynamic_cast<CPhysicsShell*>(m_shell);
 }
 
-dGeomID CPHElement::dSpacedGeometry()
-{
-	if(!bActive) return 0;
-	if(m_group) return (dGeomID)m_group;
-	else return (*m_geoms.begin())->geometry_transform();
-}
+
 
 void CPHElement::PassEndGeoms(u16 from,u16 to,CPHElement* dest)
 {

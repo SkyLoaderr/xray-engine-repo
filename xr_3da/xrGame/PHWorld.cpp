@@ -163,11 +163,7 @@ void CPHWorld::Step()
 #endif
 	Device.Statistic.ph_core.End		();
 
-	for(i_update_object=m_update_objects.begin();m_update_objects.end() != i_update_object;)
-	{	CPHUpdateObject* obj=*i_update_object;
-		++i_update_object;
-		obj->PhDataUpdate(fixed_step);
-	}
+
 
 	for(i_object=m_objects.begin();m_objects.end() != i_object;)
 	{
@@ -175,6 +171,12 @@ void CPHWorld::Step()
 		++i_object;
 		obj->PhDataUpdate(fixed_step);
 		obj->spatial_move();
+	}
+
+	for(i_update_object=m_update_objects.begin();m_update_objects.end() != i_update_object;)
+	{	CPHUpdateObject* obj=*i_update_object;
+	++i_update_object;
+	obj->PhDataUpdate(fixed_step);
 	}
 
 	dJointGroupEmpty(ContactGroup);//this is to be called after PhDataUpdate!!!-the order is critical!!!

@@ -44,6 +44,7 @@ public:
 	virtual void			InterpolateGlobalPosition (Fvector* v)											= 0;
 	virtual void			GetGlobalPositionDynamic (Fvector* v)											= 0;
 	virtual bool			isBreakable				()														= 0;
+	virtual bool			isEnabled				()														= 0;
 	virtual void			Deactivate				()														= 0;
 	virtual void			Enable					()														= 0;
 	

@@ -15,7 +15,7 @@ DEFINE_VECTOR(ISpatial*,qResultVec,qResultIt)
 void CPHObject::Activate()
 {
 	if(b_activated)return;
-	if(b_freezed)	{UnFreeze();return;};
+	if(b_freezed)	{UnFreeze();return;}
 	ph_world->AddObject(this);
 	b_activated=true;
 

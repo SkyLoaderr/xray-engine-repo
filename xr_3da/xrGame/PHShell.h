@@ -122,7 +122,9 @@ public:
 	virtual CPHSynchronize*		get_ElementSync			  (u16 element);
 	virtual CPhysicsElement*	get_Element				  (ref_str bone_name);
 	virtual CPhysicsElement*	NearestToPoint			  (const Fvector& point);
-	virtual void				Enable						();
+	virtual void				Enable					  ();
+	virtual bool				isEnabled				  (){return CPHObject::IsActive();}
+
 
 	virtual	void				PhDataUpdate				(dReal step);
 	virtual	void				PhTune						(dReal step);
