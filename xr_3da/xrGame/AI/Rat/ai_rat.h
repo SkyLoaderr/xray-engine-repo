@@ -244,7 +244,7 @@ class CAI_Rat : public CCustomMonster
 		IC void vfAddStandingMember()
 		{
 			CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-			if (Group.m_dwAliveCount*m_dwStandingCountPercent/100 >= Group.m_dwStandingCount) {
+			if ((Group.m_dwAliveCount*m_dwStandingCountPercent/100 >= Group.m_dwStandingCount) && (!m_bStanding)) {
 				Group.m_dwStandingCount++;
 				m_bStanding = true;
 			}
@@ -256,6 +256,7 @@ class CAI_Rat : public CCustomMonster
 			if (m_bStanding) {
 				R_ASSERT(Group.m_dwStandingCount > 0);
 				Group.m_dwStandingCount--;
+				m_bStanding = false;
 			}
 		};
 		
