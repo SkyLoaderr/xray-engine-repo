@@ -39,9 +39,7 @@ void CPHElement::			create_Box	(const Fobb&		V){
 			V.m_translate.y-m_mass_center.y,
 			V.m_translate.z-m_mass_center.z};
 
-		if(dDOT(local_position,local_position)>0.0001||
-			m_spheras_data.size()+m_boxes_data.size()>1
-			){
+		if(m_group){
 				geom=dCreateBox(0,
 					V.m_halfsize.x*2.f,
 					V.m_halfsize.y*2.f,
@@ -114,9 +112,7 @@ void CPHElement::			create_Sphere	(const Fsphere&	V){
 		V.P.x-m_mass_center.x,
 			V.P.y-m_mass_center.y,
 			V.P.z-m_mass_center.z};
-		if(dDOT(local_position,local_position)>0.0001||
-			m_spheras_data.size()+m_boxes_data.size()>1
-			)
+		if(m_group)
 		{
 			geom=dCreateSphere(0,V.R);
 			m_geoms.push_back(geom);
@@ -129,7 +125,7 @@ void CPHElement::			create_Sphere	(const Fsphere&	V){
 			dGeomTransformSetInfo(trans,1);		
 			dGeomCreateUserData(geom);
 			//dGeomGetUserData(geom)->material=GMLib.GetMaterialIdx("box_default");
-			dGeomGetUserData(geom)->material=0;
+			dGeomGetUserData(geom)->material=ul_material;
 			if(contact_callback)dGeomUserDataSetContactCallback(geom,contact_callback);
 			if(object_contact_callback)dGeomUserDataSetObjectContactCallback(geom,object_contact_callback);
 		}
@@ -137,14 +133,16 @@ void CPHElement::			create_Sphere	(const Fsphere&	V){
 		{
 			geom=dCreateSphere(0,V.R);
 			m_geoms.push_back(geom);
-			dGeomSetPosition(geom,
-				m_mass_center.x,
-				m_mass_center.y,
-				m_mass_center.z);
-			dGeomSetBody(geom,m_body);
+			dGeomSetPosition(geom,local_position[0],local_position[1],local_position[2]);
+			trans=dCreateGeomTransform(0);
+			dGeomTransformSetGeom(trans,geom);
+			dGeomSetBody(trans,m_body);
+			m_trans.push_back(trans);
+			//dGeomGroupAdd(m_group,trans);
+			dGeomTransformSetInfo(trans,1);		
 			dGeomCreateUserData(geom);
 			//dGeomGetUserData(geom)->material=GMLib.GetMaterialIdx("box_default");
-			dGeomGetUserData(geom)->material=0;
+			dGeomGetUserData(geom)->material=ul_material;
 			if(contact_callback)dGeomUserDataSetContactCallback(geom,contact_callback);
 			if(object_contact_callback)dGeomUserDataSetObjectContactCallback(geom,object_contact_callback);
 		}
@@ -286,10 +284,7 @@ void CPHElement::RunSimulation()
 	if(m_group)
 		dSpaceAdd(m_shell->GetSpace(),m_group);
 	else
-		if(m_boxes_data.size()==0)
-			dSpaceAdd(m_shell->GetSpace(),*m_geoms.begin());
-		else
-			dSpaceAdd(m_shell->GetSpace(),*m_trans.begin());
+		dSpaceAdd(m_shell->GetSpace(),*m_trans.begin());
 
 	dBodyEnable(m_body);
 }

@@ -15,7 +15,7 @@
 
 #include "PHElement.h"
 #include "PHJoint.h"
-
+#include "PHShell.h"
 void CPHJoint::CreateBall()
 {
 
@@ -50,12 +50,12 @@ void CPHJoint::CreateBall()
 		second_matrix.identity();
 
 	}
-
+pos.set(0,0,0);
 	switch(vs_anchor){
 case vs_first :first_matrix.transform_tiny(pos,anchor); break;
 case vs_second:second_matrix.transform_tiny(pos,anchor); break;
-case vs_global:					
-default:pos.set(anchor);	
+case vs_global:pShell->mXFORM.transform_tiny(pos,anchor);break;				
+default:NODEFAULT;	
 	}
 
 	if(!(body1&&body2)) 
@@ -92,22 +92,22 @@ void CPHJoint::CreateHinge()
 	CPHElement* second=dynamic_cast<CPHElement*>(pSecond_element);
 	first->InterpolateGlobalTransform(&first_matrix);
 	second->InterpolateGlobalTransform(&second_matrix);
-
-	switch(vs_anchor){
+pos.set(0,0,0);
+switch(vs_anchor){
 case vs_first :first_matrix.transform_tiny(pos,anchor); break;
 case vs_second:second_matrix.transform_tiny(pos,anchor); break;
-case vs_global:					
-default:pos.set(anchor);	
+case vs_global:pShell->mXFORM.transform_tiny(pos,anchor);break;			
+default:NODEFAULT;	
 	}
 
 
-
+axis.set(0,0,0);
 	switch(axes[0].vs){
 
 case vs_first :first_matrix.transform_dir(axis,axes[0].direction);	break;
 case vs_second:second_matrix.transform_dir(axis,axes[0].direction); break;
-case vs_global:
-default:		axis.set(axes[0].direction);							
+case vs_global:pShell->mXFORM.transform_dir(axis,axes[1].direction);break;
+default:		NODEFAULT;							
 	}
 
 
@@ -195,21 +195,19 @@ void CPHJoint::CreateHinge2()
 	CPHElement* second=dynamic_cast<CPHElement*>(pSecond_element);
 	first->InterpolateGlobalTransform(&first_matrix);
 	second->InterpolateGlobalTransform(&second_matrix);
-
+	pos.set(0,0,0);
 	switch(vs_anchor)
 	{
 	case vs_first :first_matrix.transform_tiny(pos,anchor); break;
 	case vs_second:second_matrix.transform_tiny(pos,anchor); break;
-	case vs_global:					
-	default:pos.set(anchor);	
+	case vs_global:pShell->mXFORM.transform_tiny(pos,anchor);break;					
+	default:NODEFAULT;	
 	}
 	//////////////////////////////////////
 
 
 	dJointAttach(m_joint,first->get_body(),second->get_body());
 	dJointSetHinge2Anchor(m_joint,pos.x,pos.y,pos.z);
-
-	dJointAttach(m_joint,first->get_body(),second->get_body());
 
 	/////////////////////////////////////////////
 
@@ -224,12 +222,13 @@ void CPHJoint::CreateHinge2()
 	float hi;
 	//////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////
+	axis.set(0,0,0);
 	switch(axes[0].vs)
 	{
 	case vs_first :first_matrix.transform_dir(axis,axes[0].direction);	break;
 	case vs_second:second_matrix.transform_dir(axis,axes[0].direction); break;
-	case vs_global:
-	default:		axis.set(axes[0].direction);							
+	case vs_global:pShell->mXFORM.transform_dir(axis,axes[0].direction);break;
+	default:		NODEFAULT;							
 	}
 
 
@@ -279,8 +278,8 @@ void CPHJoint::CreateHinge2()
 	{
 	case vs_first :first_matrix.transform_dir(axis,axes[1].direction);	break;
 	case vs_second:second_matrix.transform_dir(axis,axes[1].direction); break;
-	case vs_global:
-	default		  :axis.set(axes[1].direction);							
+	case vs_global:pShell->mXFORM.transform_dir(axis,axes[1].direction);break;
+	default		  :NODEFAULT;							
 	}
 
 
@@ -318,11 +317,11 @@ void CPHJoint::CreateHinge2()
 
 	dJointSetHinge2Axis2 (m_joint, axis.x, axis.y, axis.z);
 
-	dJointSetAMotorParam(m_joint,dParamLoStop2 ,lo);
-	dJointSetAMotorParam(m_joint,dParamHiStop2 ,hi);
+	dJointSetHinge2Param(m_joint,dParamLoStop2 ,lo);
+	dJointSetHinge2Param(m_joint,dParamHiStop2 ,hi);
 	if(!(axes[1].force<0.f)){
-		dJointSetAMotorParam(m_joint,dParamFMax2 ,axes[1].force);
-		dJointSetAMotorParam(m_joint,dParamVel2 ,axes[1].velocity);
+		dJointSetHinge2Param(m_joint,dParamFMax2 ,axes[1].force);
+		dJointSetHinge2Param(m_joint,dParamVel2 ,axes[1].velocity);
 	}
 	//////////////////////////////////////////////////////////////////
 
@@ -383,12 +382,12 @@ void CPHJoint::CreateFullControl()
 
 
 
-
-	switch(vs_anchor){
+pos.set(0,0,0);
+switch(vs_anchor){
 case vs_first :first_matrix.transform_tiny(pos,anchor); break;
 case vs_second:second_matrix.transform_tiny(pos,anchor); break;
-case vs_global:					
-default:pos.set(anchor);	
+case vs_global:pShell->mXFORM.transform_tiny(pos,anchor);break;	
+default:NODEFAULT;	
 	}
 	//////////////////////////////////////
 
@@ -462,12 +461,13 @@ default:pos.set(anchor);
 	float hi;
 	//////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////
+axis.set(0,0,0);
 	switch(axes[0].vs){
 
 case vs_first :first_matrix.transform_dir(axis,axes[0].direction);	break;
 case vs_second:second_matrix.transform_dir(axis,axes[0].direction); break;
-case vs_global:
-default:		axis.set(axes[0].direction);							
+case vs_global:pShell->mXFORM.transform_dir(axis,axes[0].direction);break;
+default:		NODEFAULT;							
 	}
 
 
@@ -519,8 +519,8 @@ default:		axis.set(axes[0].direction);
 
 case vs_first :first_matrix.transform_dir(axis,axes[1].direction);	break;
 case vs_second:second_matrix.transform_dir(axis,axes[1].direction); break;
-case vs_global:
-default:		axis.set(axes[1].direction);							
+case vs_global:pShell->mXFORM.transform_dir(axis,axes[1].direction);break;
+default:		NODEFAULT;							
 	}
 
 
@@ -569,8 +569,8 @@ default:		axis.set(axes[1].direction);
 
 case vs_first :first_matrix.transform_dir(axis,axes[2].direction);	break;
 case vs_second:second_matrix.transform_dir(axis,axes[2].direction); break;
-case vs_global:
-default:		axis.set(axes[2].direction);							
+case vs_global:pShell->mXFORM.transform_dir(axis,axes[2].direction);break;
+default:		NODEFAULT;							
 	}
 
 
@@ -772,7 +772,7 @@ void CPHJoint::SetLimits(const float low, const float high, const int axis_num)
 			case vs_first :pFirst_element->mXFORM.transform_dir(axis,axes[ax].direction);	break;
 			case vs_second:pSecond_element->mXFORM.transform_dir(axis,axes[ax].direction); break;
 			case vs_global:
-			default:		axis.set(axes[0].direction);							
+			default:		axis.set(axes[ax].direction);							
 	}
 
 	axes[ax].low=low;
