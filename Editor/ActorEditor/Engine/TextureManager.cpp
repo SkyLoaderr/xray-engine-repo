@@ -73,9 +73,9 @@ CRT* CShaderManager::_CreateRT		(LPCSTR Name, DWORD w, DWORD h)
 }
 void	CShaderManager::_DeleteRT	(CRT* &RT)
 {
-	R_ASSERT(RT);
+	R_ASSERT		(RT);
 	RT->dwReference	--;
-	RT=0;
+	RT = 0;
 }
 LPCSTR	CShaderManager::DBG_GetRTName	(CRT* T)
 {

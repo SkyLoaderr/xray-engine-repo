@@ -7,6 +7,7 @@
 
 ENGINE_API CHW HW;
 
+DWORD dwDebugSB = 0;
 
 void CHW::CreateD3D()
 {
@@ -61,7 +62,6 @@ void	CHW::DestroyDevice	()
 	DestroyD3D				();
 }
 
-DWORD dwDebugSB = 0;
 DWORD CHW::CreateDevice		(HWND m_hWnd,DWORD &dwWidth,DWORD &dwHeight)
 {
 	CreateD3D				();
