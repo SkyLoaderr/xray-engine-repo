@@ -124,12 +124,17 @@ void CAI_Soldier::HitSignal(float amount, Fvector& vLocalDir, CObject* who)
 	Group.m_tLastHitDirection = tHitDir;
 	Group.m_tHitPosition = tHitPosition;
 	if (!Enemy.Enemy) {
-		Enemy.Enemy = who;
-		vfSaveEnemy();
+		CEntity *tpEntity = dynamic_cast<CEntity *>(who);
+		if (tpEntity) {
+			Enemy.Enemy = tpEntity;
+			vfSaveEnemy();
+		}
 	}
 	
 	if (fHealth > 0) {
-		vfAddHurtToList(who);
+		CEntity *tpEntity = dynamic_cast<CEntity *>(who);
+		if (tpEntity)
+			vfAddHurtToList(tpEntity);
 		if (::Random.randI(0,2))
 			PKinematics(pVisual)->PlayFX(tSoldierAnimations.tNormal.tTorso.tpDamageLeft);
 		else

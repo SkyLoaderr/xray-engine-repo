@@ -57,19 +57,19 @@ CPatternFunction::CPatternFunction(char *caFileName)
 
 	dwaVariableValues = (DWORD *)xr_malloc(dwVariableCount*sizeof(DWORD));
 	
-	FREE(dwaAtomicIndexes);
+	_FREE(dwaAtomicIndexes);
 }
 
 CPatternFunction::~CPatternFunction()
 {
-	FREE(dwaVariableTypes);
-	FREE(dwaAtomicFeatureRange);
-	FREE(dwaPatternIndexes);
+	_FREE(dwaVariableTypes);
+	_FREE(dwaAtomicFeatureRange);
+	_FREE(dwaPatternIndexes);
 	for (DWORD i=0; i<dwPatternCount; i++)
-		FREE(tpPatterns[i].dwaVariableIndexes);
-	FREE(tpPatterns);
-	FREE(daParameters);
-	FREE(dwaVariableValues);
+		_FREE(tpPatterns[i].dwaVariableIndexes);
+	_FREE(tpPatterns);
+	_FREE(daParameters);
+	_FREE(dwaVariableValues);
 }
 
 double CPatternFunction::dfGetValue(CCustomMonster *cAIMonster)

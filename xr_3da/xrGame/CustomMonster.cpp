@@ -54,13 +54,13 @@ CCustomMonster::CCustomMonster()
 	m_tpPath			= 0;
 	vfResetPatrolData	();
 	dwFunctionCount		= 6;
-	fpaTypeFunctions	= (CPatternFunction **)xr_malloc(dwFunctionCount*sizeof(CPatternFunction *));
+	fpaTypeFunctions	= (CPatternFunction::STypeFunction **)xr_malloc(dwFunctionCount*sizeof(CPatternFunction::STypeFunction *));
 }
 
 CCustomMonster::~CCustomMonster	()
 {
 	_DELETE		(Weapons);
-	FREE(fpaTypeFunctions);
+	_FREE(fpaTypeFunctions);
 
 #ifdef DEBUG
 	Device.seqRender.Remove	(this);
