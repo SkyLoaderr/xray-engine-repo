@@ -31,7 +31,7 @@ void CSE_ALifeMonsterAbstract::update		()
 		) {
 		vfCheckForPopulationChanges();
 		bContinue		= false;
-		if (!move_offline() && (m_tNextGraphID != m_tGraphID)) {
+		if (move_offline() && (m_tNextGraphID != m_tGraphID)) {
 			_TIME_ID					tCurTime = ai().alife().time_manager().game_time();
 			m_fDistanceFromPoint		+= float(tCurTime - m_tTimeID)/1000.f/ai().alife().time_manager().normal_time_factor()*m_fCurSpeed;
 			if (m_fDistanceToPoint - m_fDistanceFromPoint < EPS_L) {
@@ -46,7 +46,7 @@ void CSE_ALifeMonsterAbstract::update		()
 					tpALifeGroupAbstract->m_bCreateSpawnPositions = true;
 			}
 		}
-		if (!move_offline() && (m_tNextGraphID == m_tGraphID)) {
+		if (move_offline() && (m_tNextGraphID == m_tGraphID)) {
 			GameGraph::_GRAPH_ID tGraphID = m_tNextGraphID;
 			CGameGraph::const_iterator	i,e;
 			GameGraph::TERRAIN_VECTOR	&tpaTerrain = m_tpaTerrain;
