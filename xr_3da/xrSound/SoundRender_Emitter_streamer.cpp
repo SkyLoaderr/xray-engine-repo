@@ -24,7 +24,7 @@ void	CSoundRender_Emitter::fill_data		(u8* dest, u32 offset, u32 size)
 
 		// fill block
 		u32		blk_size	= _min(size,line_amount);
-		u8*		ptr			= (u8*)SoundRender.cache.get_dataptr(line);
+		u8*		ptr			= (u8*)SoundRender.cache.get_dataptr(source->CAT,line);
 		Memory.mem_copy		(dest,ptr+line_offs,blk_size);
 		
 		// advance
