@@ -402,7 +402,7 @@ void	CRender::Render		()
 	// Glows
 	Glows.Render			();
 
-	if (Target.Available())	Target.End		(0.f);
+	if (Target.Available())	Target.End		(1.f);
 	
 	// HUD
 	Device.Statistic.RenderDUMP_HUD.Begin	();
