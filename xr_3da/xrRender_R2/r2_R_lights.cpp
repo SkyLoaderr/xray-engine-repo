@@ -107,6 +107,7 @@ void	CRender::render_lights	(light_Package& LP)
 		xr_vector<light*>	L_spot_s;
 		if	(!LP.v_spot_s.empty())	{
 			stats.s_used++;
+
 			// generate spot shadowmap
 			Target.phase_smap_spot_clear	();
 			xr_vector<light*>&	source		= LP.v_spot_s;
@@ -123,17 +124,27 @@ void	CRender::render_lights	(light_Package& LP)
 
 				// render
 				phase									= PHASE_SMAP_S;
+				if (RImplementation.b_Tshadows)	r_pmask	(true,true	);
+				else							r_pmask	(true,false	);
 				L->svis[0].begin						();
 				r_dsgraph_render_subspace				(L->spatial.sector, L->X.S.combine, L->position, TRUE);
-				if (mapNormal[0].size() || mapMatrix[0].size())	{
+				bool	bNormal							= mapNormal[0].size() || mapMatrix[0].size();
+				bool	bSpecial						= mapNormal[1].size() || mapMatrix[1].size() || mapSorted.size();
+				if ( bNormal || bSpecial)	{
 					stats.s_merged						++;
 					Target.phase_smap_spot				(L);
 					RCache.set_xform_world				(Fidentity);
 					RCache.set_xform_view				(L->X.S.view);
 					RCache.set_xform_project			(L->X.S.project);
 					r_dsgraph_render_graph				(0);
+					if (bSpecial)						{
+						Target.phase_smap_spot_tsh			(L);
+						r_dsgraph_render_graph				(1);			// normal level, secondary priority
+						r_dsgraph_render_sorted				( );			// strict-sorted geoms
+					}
 				}
 				L->svis[0].end							();
+				r_pmask									(true,false);
 			}
 		}
 
