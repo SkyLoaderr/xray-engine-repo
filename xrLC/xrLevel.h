@@ -58,37 +58,25 @@ struct	hdrNODES
 class NodePosition {
 	u8	data[5];
 	
-	IC	void xz	(u32 value)
-	{
-		Memory.mem_copy	(data,&value,3);
-	}
-
-	IC	void y	(u16 value)
-	{
-		Memory.mem_copy	(data + 3,&value,2);
-	}
-
+	IC	void xz	(u32 value)	{ Memory.mem_copy	(data,&value,3);		}
+	IC	void y	(u16 value)	{ Memory.mem_copy	(data + 3,&value,2);	}
 public:
-	IC	u32	xz	() const
-	{
+	IC	u32	xz	() const	{
 		return			((*((u32*)data)) & 0x00ffffff);
 	}
-	IC	u32	x	(u32 row) const
-	{
+	IC	u32	x	(u32 row) const		{
 		return			(xz() / row);
 	}
-	IC	u32	z	(u32 row) const
-	{
+	IC	u32	z	(u32 row) const		{
 		return			(xz() % row);
 	}
-	IC	u32	y	() const
-	{
+	IC	u32	y	() const			{
 		return			(*((u16*)(data + 3)));
 	}
 
-	friend class CLevelGraph;
-	friend struct CNodePositionCompressor;
-	friend struct CNodePositionConverter;
+	friend class	CLevelGraph;
+	friend struct	CNodePositionCompressor;
+	friend struct	CNodePositionConverter;
 };
 
 struct NodeCompressed {
@@ -174,10 +162,10 @@ public:
 #endif
 	}
 
-	friend class CLevelGraph;
-	friend struct CNodeCompressed;
-	friend class CNodeRenumberer;
-	friend class CRenumbererConverter;
+	friend class	CLevelGraph;
+	friend struct	CNodeCompressed;
+	friend class	CNodeRenumberer;
+	friend class	CRenumbererConverter;
 };									// 2+2+5+12 = 21b
 #endif
 
@@ -281,7 +269,7 @@ typedef	SNodePositionOld NodePosition;
 #endif
 
 const u32 XRCL_CURRENT_VERSION		=	16;	// input
-const u32 XRCL_PRODUCTION_VERSION	=	12;	// output
+const u32 XRCL_PRODUCTION_VERSION	=	13;	// output
 const u32 CFORM_CURRENT_VERSION		=	4;
 const u32 XRAI_CURRENT_VERSION		=	7;
 const u32 MAX_NODE_BIT_COUNT		=	23;
