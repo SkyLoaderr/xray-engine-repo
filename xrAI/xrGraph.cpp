@@ -193,42 +193,8 @@ void xrBuildGraph(LPCSTR name)
 	Msg("%d points don't have corresponding nodes (they are deleted)",dwfErasePoints());
 
 	Phase("Building graph");
-	{
-//		u32 dwThreadCount = 2*NUM_THREADS;
-//		u32	stride	= tpaGraph.size()/dwThreadCount;
-//		u32	last	= tpaGraph.size() - stride*(dwThreadCount - 1);
-//		for (u32 thID=0; thID<dwThreadCount; thID++)
-//			tThreadManager.start(new CGraphThread(thID,thID*stride,thID*stride+((thID==(dwThreadCount - 1))?last:stride),MAX_DISTANCE_TO_CONNECT,tCriticalSection));
-//		u32 N = tpaGraph.size(), M = GET_INDEX(N);
-//		tThreadManager.start(new CGraphThread(0,0,M,MAX_DISTANCE_TO_CONNECT,tCriticalSection));
-//		tThreadManager.start(new CGraphThread(1,M,N,MAX_DISTANCE_TO_CONNECT,tCriticalSection));
-//		{
-//			u32 N, M, M1;
-//			N = tpaGraph.size();
-//			M = GET_INDEX(N,2);
-//			M1 = GET_INDEX(M,2);
-//			Msg("from %d to %d",0,M1);
-//			Msg("from %d to %d",M1,M);
-//			M1 = M + GET_INDEX((N - M),2);
-//			Msg("from %d to %d",M,M1);
-//			Msg("from %d to %d",M1,N);
-//		}
-//		u32 N, M, M1;
-//		N = tpaGraph.size();
-//		M = GET_INDEX(N,2);
-//		M1 = GET_INDEX(M,2);
-//		tThreadManager.start(new CGraphThread(0,0,M1,MAX_DISTANCE_TO_CONNECT,tCriticalSection));
-//		tThreadManager.start(new CGraphThread(1,M1,M,MAX_DISTANCE_TO_CONNECT,tCriticalSection));
-//		M1 = M + GET_INDEX((N - M),2);
-//		tThreadManager.start(new CGraphThread(2,M,M1,MAX_DISTANCE_TO_CONNECT,tCriticalSection));
-//		tThreadManager.start(new CGraphThread(3,M1,N,MAX_DISTANCE_TO_CONNECT,tCriticalSection));
-		{
-			for (u32 thID=0, dwThreadCount = NUM_THREADS, N = tpaGraph.size(), M = 0, K; thID<dwThreadCount; M += K, thID++)
-				Msg("from %d to %d",M, M + (K = GET_INDEX((N - M),(dwThreadCount - thID))));
-		}
-		for (u32 thID=0, dwThreadCount = NUM_THREADS, N = tpaGraph.size(), M = 0, K; thID<dwThreadCount; M += K, thID++)
-			tThreadManager.start(new CGraphThread(thID,M, M + (K = GET_INDEX((N - M),(dwThreadCount - thID))),MAX_DISTANCE_TO_CONNECT,tCriticalSection));
-	}
+	for (u32 thID=0, dwThreadCount = NUM_THREADS, N = tpaGraph.size(), M = 0, K; thID<dwThreadCount; M += K, thID++)
+		tThreadManager.start(new CGraphThread(thID,M, M + (K = GET_INDEX((N - M),(dwThreadCount - thID))),MAX_DISTANCE_TO_CONNECT,tCriticalSection));
 	tThreadManager.wait();
 	for (int i=0, j=0; i<(int)tpaGraph.size(); i++)
 		j += tpaGraph[i].dwNeighbourCount;
