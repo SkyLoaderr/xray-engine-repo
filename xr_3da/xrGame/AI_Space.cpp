@@ -10,6 +10,7 @@
 #include "a_star.h"
 #include "game_sv_single.h"
 #include "CustomMonster.h"
+#include "..\\net_client.h"
 using namespace AI;
 
 CAI_Space *	tpAI_Space = 0;
@@ -80,15 +81,16 @@ void CAI_Space::Load()
 
 	// dispatch table
 	m_nodes_ptr	= (NodeCompressed**)xr_malloc(m_header.count*sizeof(void*));
-	for (u32 I=0; I<m_header.count; I++)
 	{
-		m_nodes_ptr[I]	= (NodeCompressed*)vfs->pointer();
+		for (u32 I=0; I<m_header.count; I++) {
+			m_nodes_ptr[I]	= (NodeCompressed*)vfs->pointer();
 
-		NodeCompressed	C;
-		vfs->r			(&C,sizeof(C));
+			NodeCompressed	C;
+			vfs->r			(&C,sizeof(C));
 
-		u32			L	= C.links;
-		vfs->advance	(L*sizeof(NodeLink));
+			u32			L	= C.links;
+			vfs->advance	(L*sizeof(NodeLink));
+		}
 	}
 
 	
@@ -111,6 +113,28 @@ void CAI_Space::Load()
 		return;
 
 	CALifeCrossTable::Load	(fName);
+
+	bool bOk = false;
+	u32 N = m_tGraphHeader.dwLevelCount, I;
+	for ( I=0; I<N; I++)
+		if (!stricmp(m_tGraphHeader.tpLevels[I].caLevelName,Level().net_SessionName())) {
+			I = m_tGraphHeader.tpLevels[I].dwLevelID;
+			bOk = true;
+			break;
+		}
+
+	if (!bOk){
+		Msg("! There is no graph for the level %s",Level().net_SessionName());
+		return;
+	}
+
+	N = m_tGraphHeader.dwVertexCount;
+	for (_GRAPH_ID i=0; i<N; i++)
+		if ((m_tpaGraph[i].tLevelID == I) && (m_tpaCrossTable[m_tpaGraph[i].tNodeID].tGraphIndex != i)) {
+			Msg("! Graph doesn't correspond to the cross table");
+			R_ASSERT2(false,"Graph doesn't correspond to the cross table");
+		}
+	Msg("* Graph corresponds to the cross table");
 }
 
 #define NORMALIZE_VECTOR(t) t.x /= 10.f, t.x += tCameraPosition.x, t.y /= 10.f, t.y += 20.f, t.z /= 10.f, t.z += tCameraPosition.z;

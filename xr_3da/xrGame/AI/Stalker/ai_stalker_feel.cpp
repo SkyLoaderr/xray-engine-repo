@@ -558,6 +558,7 @@ void CAI_Stalker::vfUpdateVisibilityBySensitivity()
 				m_tMySavedPosition		= m_tpaDynamicSounds[m_iSoundIndex].tMySavedPosition;
 				m_dwMyNodeID			= m_tpaDynamicSounds[m_iSoundIndex].dwMyNodeID;
 				m_dwLastEnemySearch		= 0;
+				vfValidatePosition		(m_tSavedEnemyPosition,m_dwSavedEnemyNodeID);
 			}
 			break;
 		}

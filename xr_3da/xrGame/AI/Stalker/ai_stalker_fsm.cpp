@@ -777,6 +777,7 @@ void CAI_Stalker::ExploreDE()
 	m_dwSavedEnemyNodeID	= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
 	m_tMySavedPosition		= m_tpaDynamicSounds[m_iSoundIndex].tMySavedPosition;
 	m_dwMyNodeID			= m_tpaDynamicSounds[m_iSoundIndex].dwMyNodeID;
+	vfValidatePosition		(m_tSavedEnemyPosition,m_dwSavedEnemyNodeID);
 	if (m_tpaDynamicSounds[m_iSoundIndex].dwTime - m_dwLastSoundUpdate > SOUND_UPDATE_DELAY)
 		m_dwLastEnemySearch = 0;
 	m_dwLastSoundUpdate		= m_tpaDynamicSounds[m_iSoundIndex].dwTime;
@@ -791,6 +792,7 @@ void CAI_Stalker::ExploreNDE()
 	m_dwSavedEnemyNodeID	= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
 	m_tMySavedPosition		= m_tpaDynamicSounds[m_iSoundIndex].tMySavedPosition;
 	m_dwMyNodeID			= m_tpaDynamicSounds[m_iSoundIndex].dwMyNodeID;
+	vfValidatePosition		(m_tSavedEnemyPosition,m_dwSavedEnemyNodeID);
 	if (m_tpaDynamicSounds[m_iSoundIndex].dwTime - m_dwLastSoundUpdate > SOUND_UPDATE_DELAY)
 		m_dwLastEnemySearch = 0;
 	m_dwLastSoundUpdate		= m_tpaDynamicSounds[m_iSoundIndex].dwTime;
@@ -892,7 +894,12 @@ void CAI_Stalker::TakeItems()
 		tPoint.y			= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
 	else
 		tPoint				= getAI().tfGetNodeCenter(AI_Path.DestNode);
-	vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
+	
+	if (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,tPoint) != -1)
+		vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
+	else
+		vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeDanger);
+	
 	if (vPosition.distance_to(tPoint) < 5.f)
 		J = A = B = false;
 }
@@ -916,7 +923,7 @@ void CAI_Stalker::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 	}
 
 	AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
-	VERIFY(getAI().m_tpaCrossTable[getAI().m_tpaGraph[m_tNextGP].tNodeID].tGraphIndex == m_tNextGP);
+	//VERIFY(getAI().m_tpaCrossTable[getAI().m_tpaGraph[m_tNextGP].tNodeID].tGraphIndex == m_tNextGP);
 	if (!AI_Path.DestNode) {
 		Msg("! Invalid graph point node (graph index %d)",m_tNextGP);
 		for (int i=0; i<getAI().GraphHeader().dwVertexCount; i++)

@@ -362,3 +362,9 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 	
 	M = !!m_tpItemToTake;
 }
+
+void CAI_Stalker::vfValidatePosition(Fvector &tPosition, u32 dwNodeID)
+{
+	if (getAI().dwfCheckPositionInDirection(dwNodeID,getAI().tfGetNodeCenter(dwNodeID),tPosition) == u32(-1))
+		m_tSavedEnemyPosition = getAI().tfGetNodeCenter(dwNodeID);
+}

@@ -312,6 +312,7 @@ private:
 			void			vfUpdateVisibilityBySensitivity	();
 			bool			bfIf_I_SeePosition				(Fvector tPosition);
 			void			LoadSounds						(SOUND_VECTOR &tpSounds, LPCSTR	prefix, u32 dwMaxCount);
+			void			vfValidatePosition				(Fvector &tPosition, u32 dwNodeID);
 
 			// physics
 			void			CreateSkeleton					();
@@ -374,6 +375,7 @@ private:
 		m_dwLostEnemyTime		= Level().timeServer();
 		m_tMySavedPosition		= vPosition;
 		m_dwMyNodeID			= AI_NodeID;
+		vfValidatePosition		(m_tSavedEnemyPosition,m_dwSavedEnemyNodeID);
 	}
 
 	IC		void		vfAddToSearchList()

@@ -164,13 +164,14 @@ void CAI_Stalker::vfBuildTravelLine(Fvector *tpDestinationPosition)
 			else
 				if (tpDestinationPosition)
 					if (getAI().dwfCheckPositionInDirection(dwCurNode,tStartPosition,*tpDestinationPosition) == u32(-1)) {
+						VERIFY(false);
 						//if (dwCurNode != AI_Path.DestNode)
 						//	m_tpaPointNodes.push_back(AI_Path.DestNode);
 						//m_tpaPoints.push_back(*tpDestinationPosition);
 					}
 					else {
 						//if (dwCurNode != AI_Path.DestNode)
-							m_tpaPointNodes.push_back(AI_Path.DestNode);
+						m_tpaPointNodes.push_back(AI_Path.DestNode);
 						m_tpaPoints.push_back(*tpDestinationPosition);
 					}
 		
