@@ -91,9 +91,9 @@ void Progress		(const float F)
 
 void Phase			(const char *phase_name)
 {
-	csLog.Enter			();
 	while (!(hwPhaseTime && hwStage)) Sleep(1);
 
+	csLog.Enter			();
 	// Replace phase name with TIME:Name 
 	char	tbuf		[512];
 	bPhaseChange		= TRUE;
