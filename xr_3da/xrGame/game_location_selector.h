@@ -15,7 +15,7 @@ protected:
 	u32						m_game_locate_query_time;
 	u32						m_game_location_query_interval;
 	bool					m_game_selector_failed;
-	CAbstractNodeEvaluator	*m_game_node_evaluator;
+	CAbstractNodeEvaluator	*m_game_selector_evaluator;
 
 public:
 					CGameLocationSelector	();
