@@ -154,7 +154,7 @@ void game_cl_GameState::TranslateGameMessage	(u32 msg, NET_Packet& P)
 		}break;
 	case GAME_EVENT_ROUND_STARTED:
 		{
-			sprintf(Text, "%sRound statred !!!",Color_Main);
+			sprintf(Text, "%sRound started !!!",Color_Main);
 			CommonMessageOut(Text);
 		}break;
 	case GAME_EVENT_ROUND_END:
