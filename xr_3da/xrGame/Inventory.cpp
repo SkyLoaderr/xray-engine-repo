@@ -407,12 +407,6 @@ PIItem CInventory::ItemFormSlot(u32 slot) const
 	return m_slots[slot].m_pIItem;
 }
 
-PIItem CInventory::ItemFormSlot(u32 slot) const
-{
-	VERIFY(NO_ACTIVE_SLOT != slot);
-	return m_slots[slot].m_pIItem;
-}
-
 void CInventory::SendActionEvent(s32 cmd, u32 flags) 
 {
 	CActor *pActor = dynamic_cast<CActor*>(m_pOwner);
