@@ -69,6 +69,8 @@ enum {
 
 	GE_ZONE_STATE_CHANGE,
 
+	GE_MOVE_ACTOR,				//move actor to desired position instantly
+
 
 	GE_GAME_EVENT,
 /*

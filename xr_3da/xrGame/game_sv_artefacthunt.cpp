@@ -862,7 +862,6 @@ bool	game_sv_ArtefactHunt::CheckAlivePlayersInTeam	(s16 Team)
 	{
 		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
 		game_PlayerState* ps	= l_pC->ps;
-
 		if (ps->team != Team) continue;
 		if (ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD) || ps->Skip)	continue;
 		cnt_alive++;
@@ -872,4 +871,28 @@ bool	game_sv_ArtefactHunt::CheckAlivePlayersInTeam	(s16 Team)
 
 void	game_sv_ArtefactHunt::MoveAllAlivePlayers			()
 {
+	u32		cnt		= get_players_count	();
+	for		(u32 it=0; it<cnt; ++it)	
+	{
+		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
+		game_PlayerState* ps	= l_pC->ps;
+		if (ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD) || ps->Skip)	continue;
+		CSE_ALifeCreatureActor	*pA	=	dynamic_cast<CSE_ALifeCreatureActor*>(l_pC->owner);
+		if (!pA) continue;
+
+		Fvector Pos = pA->o_Position;
+		Fvector Angle = pA->o_Angle;
+
+		assign_RP(l_pC->owner);
+
+		NET_Packet	P;
+		u_EventGen(P, GE_MOVE_ACTOR, ps->GameID);
+		P.w_vec3(pA->o_Position);
+		P.w_vec3(pA->o_Angle);
+
+		pA->o_Position	= Pos;
+		pA->o_Angle		= Angle;
+//		u_EventSend(P);
+		m_server->SendTo(l_pC->ID,P,net_flags(TRUE,TRUE));
+	};
 };

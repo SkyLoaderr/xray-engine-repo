@@ -173,5 +173,19 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				}
 			};
 		}break;
+	case GE_MOVE_ACTOR:
+		{
+			Fvector NewPos, NewRot;
+			P.r_vec3(NewPos);
+			P.r_vec3(NewRot);
+			Fmatrix	M = Level().CurrentControlEntity()->XFORM();
+			M.translate(NewPos);
+			r_model_yaw				= NewRot.y;
+			r_torso.yaw				= NewRot.y;
+			r_torso.pitch			= -NewRot.x;
+			unaffected_r_torso_yaw	 = r_torso.yaw;
+			unaffected_r_torso_pitch = r_torso.pitch;
+			Level().CurrentControlEntity()->ForceTransform(M);
+		}break;
 	}
 }
