@@ -3,7 +3,7 @@
 void	CRenderTarget::phase_combine	()
 {
 	// Targets
-	u_setrt								(Device.dwWidth,Device.dwHeight,HW.pBaseRT,NULL,NULL,HW.pBaseZB);
+	u_setrt								(rt_Generic,NULL,NULL,HW.pBaseZB);
 	u32			Offset					= 0;
 	Fvector2	p0,p1;
 
@@ -38,7 +38,7 @@ void	CRenderTarget::phase_combine	()
 	RCache.set_Stencil	(TRUE,D3DCMP_LESSEQUAL,0x01,0xff,0x00);
 
 	// Draw full-screen quad textured with our scene image
-	if (0)	// combine
+	if (1)	// combine
 	{
 		u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
 		float	_w					= float(Device.dwWidth);
@@ -64,7 +64,9 @@ void	CRenderTarget::phase_combine	()
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
 
-	if (1)	// AA
+	// AA
+	u_setrt							(Device.dwWidth,Device.dwHeight,HW.pBaseRT,NULL,NULL,HW.pBaseZB);
+	if (1)	
 	{
 		struct v_aa	{
 			Fvector4	p;
