@@ -23,8 +23,15 @@ IC	void CObjectHandler::set_dest_state	(MonsterSpace::EObjectAction object_actio
 {
 	if (object_action == MonsterSpace::eObjectActionActivate)
 		object_action					= MonsterSpace::eObjectActionIdle;
+
 	if (object_action == MonsterSpace::eObjectActionDeactivate)
 		object_action					= MonsterSpace::eObjectActionNoItems;
+
+	if (object_action == MonsterSpace::eObjectActionNoItems) {
+		inherited::set_dest_state		(object_action);
+		return;
+	}
+
 	if (game_object)
 		inherited::set_dest_state		(uid(object_action, game_object->ID()));
 	else

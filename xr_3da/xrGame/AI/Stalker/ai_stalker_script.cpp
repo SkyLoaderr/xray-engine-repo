@@ -238,8 +238,9 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 					torch->Switch(true);
 					break;
 				}
-				m_inventory.Slot(l_tpInventoryItem);
-				m_inventory.Activate(l_tpInventoryItem->GetSlot());
+				CObjectHandler::set_dest_state(eObjectActionIdle,l_tpInventoryItem);
+//				m_inventory.Slot(l_tpInventoryItem);
+//				m_inventory.Activate(l_tpInventoryItem->GetSlot());
 				if (l_tpWeapon && (CWeapon::eShowing != l_tpWeapon->STATE))
 					l_tObjectAction.m_bCompleted = true;
 			}
@@ -255,7 +256,8 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 					torch->Switch(false);
 					break;
 				}
-				m_inventory.Activate(u32(-1));
+//				m_inventory.Activate(u32(-1));
+				CObjectHandler::set_dest_state(eObjectActionNoItems);
 				l_tObjectAction.m_bCompleted = true;
 			}
 			else
