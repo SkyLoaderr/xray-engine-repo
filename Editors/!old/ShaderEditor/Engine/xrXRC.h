@@ -12,6 +12,7 @@ class ENGINE_API xrXRC
 {
 	CDB::COLLIDER	CL;
 public:
+	IC CDB::COLLIDER* collider		(){return &CL;}
 	IC void			ray_options		(DWORD f)
 	{
 		CL.ray_options(f);
