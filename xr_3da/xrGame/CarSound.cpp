@@ -6,6 +6,7 @@ CCar::SCarSound::SCarSound(CCar* car)
 {
 	volume                 =1.f;
 	pcar=car;
+	relative_pos.set(0.f,0.5f,-1.f);
 }
 
 CCar::SCarSound::~SCarSound()
@@ -19,6 +20,11 @@ void CCar::SCarSound::Init()
 	{
 		volume  			= ini->r_float("car_sound","snd_volume");
 		snd_engine.create	(TRUE,ini->r_string("car_sound","snd_name"));//
+		if(ini->line_exist("car_sound","relative_pos"))
+		{
+			relative_pos.set(ini->r_fvector3("car_sound","relative_pos"));
+		}
+	
 	} else {
 		Msg					("! Car doesn't contain sound params");
 	}
@@ -33,7 +39,11 @@ void CCar::SCarSound::Update()
 
 #pragma todo("Dima to Kostya : С тебя - пиво (Черниговское белое 0.5л)!")
 	if (snd_engine.feedback)
-		snd_engine.set_position		(pcar->Position());
+	{
+		Fvector pos;
+		pcar->XFORM().transform_tiny(pos,relative_pos);
+		snd_engine.set_position		(pos);
+	}
 
 	switch (eCarSound)
 	{
