@@ -143,8 +143,6 @@ void CAI_Stalker::reload			(LPCSTR section)
 	m_r_finger2						= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(section,"weapon_bone2"));
 
 	m_panic_threshold				= pSettings->r_float(section,"panic_threshold");
-
-	m_brain->setup					(this);
 }
 
 void CAI_Stalker::Die				(CObject* who)
