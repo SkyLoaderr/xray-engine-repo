@@ -30,7 +30,6 @@ IDirect3DStateBlock9*	CShaderManager::_CreateState		(SimulatorStates& state_code
 	// Create New
 	v_states.push_back				(xr_new<SState>());
 	v_states.back()->state			= state_code.record();
-	v_states.back()->dwReference	= 1;
 	v_states.back()->state_code		= state_code;
 	return v_states.back()->state;
 }
@@ -43,10 +42,7 @@ void		CShaderManager::_DeleteState	(IDirect3DStateBlock9*& state)
 	for (u32 it=0; it<v_states.size(); it++)
 	{
 		SState&			C		= *(v_states[it]);
-		if (C.state == state)	{
-			C.dwReference	--;
-			return;
-		}
+		if (C.state == state)	return;
 	}
 
 	// Fail
@@ -86,16 +82,11 @@ IDirect3DVertexDeclaration9*	CShaderManager::_CreateDecl	(D3DVERTEXELEMENT9* dcl
 	for (u32 it=0; it<v_declarations.size(); it++)
 	{
 		SDeclaration&		D		= *v_declarations[it];;
-		if (dcl_equal(dcl,&*D.dcl_code.begin()))
-		{
-			D.dwReference	++;
-			return D.dcl;
-		}
+		if (dcl_equal(dcl,&*D.dcl_code.begin()))	return D.dcl;
 	}
 
 	// Create _new
 	SDeclaration* D			= xr_new<SDeclaration>();
-	D->dwReference			= 1;
 	u32 dcl_size			= D3DXGetDeclLength(dcl)+1;
 	CHK_DX					(HW.pDevice->CreateVertexDeclaration(dcl,&D->dcl));
 	D->dcl_code.assign		(dcl,dcl+dcl_size);
@@ -111,10 +102,7 @@ void		CShaderManager::_DeleteDecl		(IDirect3DVertexDeclaration9*& dcl)
 	for (u32 it=0; it<v_declarations.size(); it++)
 	{
 		SDeclaration&		D	= *(v_declarations[it]);
-		if (D.dcl == dcl)	{
-			D.dwReference	--;
-			return;
-		}
+		if (D.dcl == dcl)	return;
 	}
 
 	// Fail
@@ -126,18 +114,12 @@ SVS*	CShaderManager::_CreateVS		(LPCSTR name)
 {
 	LPSTR N				= LPSTR(name);
 	map_VS::iterator I	= m_vs.find	(N);
-	if (I!=m_vs.end())
-	{
-		SVS *vs				=	I->second;
-		vs->dwReference		+=	1;
-		return		vs;
-	}
+	if (I!=m_vs.end())	return I->second;
 	else
 	{
 		SVS*	_vs					= xr_new<SVS>	();
 		m_vs.insert					(mk_pair(xr_strdup(name),_vs));
 		if (0==stricmp(name,"null"))	{
-			_vs->dwReference	= 1;
 			_vs->vs				= NULL;
 			return _vs;
 		}
@@ -194,18 +176,12 @@ SPS*	CShaderManager::_CreatePS			(LPCSTR name)
 {
 	LPSTR N				= LPSTR(name);
 	map_PS::iterator I	= m_ps.find	(N);
-	if (I!=m_ps.end())
-	{
-		SPS *ps				=	I->second;
-		ps->dwReference		+=	1;
-		return		ps;
-	}
+	if (I!=m_ps.end())	return		I->second;
 	else
 	{
 		SPS*	_ps					= xr_new<SPS>	();
 		m_ps.insert					(mk_pair(xr_strdup(name),_ps));
 		if (0==stricmp(name,"null"))	{
-			_ps->dwReference	= 1;
 			_ps->ps				= NULL;
 			return _ps;
 		}
@@ -282,13 +258,11 @@ CRT*	CShaderManager::_CreateRT		(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f)
 	if (I!=m_rtargets.end())
 	{
 		CRT *RT				=	I->second;
-		RT->dwReference		+=	1;
 		return		RT;
 	}
 	else
 	{
 		CRT *RT				=	xr_new<CRT>();
-		RT->dwReference		=	1;
 		m_rtargets.insert		(mk_pair(xr_strdup(Name),RT));
 		if (Device.bReady)	RT->Create	(Name,w,h,f);
 		return				RT;
@@ -297,7 +271,6 @@ CRT*	CShaderManager::_CreateRT		(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f)
 void	CShaderManager::_DeleteRT		(CRT* &RT)
 {
 	if	(0==RT)		return;
-	RT->dwReference	--;
 	RT				= 0;
 }
 LPCSTR	CShaderManager::DBG_GetRTName	(CRT* T)
@@ -318,13 +291,11 @@ CRTC*	CShaderManager::_CreateRTC		(LPCSTR Name, u32 size,	D3DFORMAT f)
 	if (I!=m_rtargets_c.end())
 	{
 		CRTC *RT			=	I->second;
-		RT->dwReference		+=	1;
 		return		RT;
 	}
 	else
 	{
 		CRTC *RT			=	xr_new<CRTC>();
-		RT->dwReference		=	1;
 		m_rtargets_c.insert	(mk_pair(xr_strdup(Name),RT));
 		if (Device.bReady)	RT->Create	(Name,size,f);
 		return				RT;
@@ -333,7 +304,6 @@ CRTC*	CShaderManager::_CreateRTC		(LPCSTR Name, u32 size,	D3DFORMAT f)
 void	CShaderManager::_DeleteRTC		(CRTC* &RT)
 {
 	if	(0==RT)		return;
-	RT->dwReference	--;
 	RT				= 0;
 }
 //--------------------------------------------------------------------------------------------------------------
@@ -363,16 +333,10 @@ SGeometry*	CShaderManager::CreateGeom	(D3DVERTEXELEMENT9* decl, IDirect3DVertexB
 	for (u32 it=0; it<v_geoms.size(); it++)
 	{
 		SGeometry& G	= *(v_geoms[it]);
-		if ((G.dcl==dcl) && (G.vb==vb) && (G.ib==ib) && (G.vb_stride==vb_stride))
-		{
-			// match found
-			G.dwReference	++;
-			return v_geoms[it];
-		}
+		if ((G.dcl==dcl) && (G.vb==vb) && (G.ib==ib) && (G.vb_stride==vb_stride))	return v_geoms[it];
 	}
 
 	SGeometry *Geom		=	xr_new<SGeometry>();
-	Geom->dwReference	=	1;
 	Geom->dcl			=	dcl;
 	Geom->vb			=	vb;
 	Geom->vb_stride		=	vb_stride;
@@ -392,67 +356,9 @@ void	CShaderManager::DeleteGeom		(SGeometry* &Geom)
 {
 	if (Geom)
 	{
-		Geom->dwReference	--;
 		Geom = 0;
 	}
 }
-
-/*
-LPCSTR	CShaderManager::DBG_GetVSName(SGeometry* T)
-{
-	R_ASSERT(T);
-	for (map_VSIt I=m_vs.begin(); I!=vs.end(); I++)
-		if (I->second == T)	return I->first;
-	return 0;
-}
-
-//--------------------------------------------------------------------------------------------------------------
-CPS*	CShaderManager::_CreatePS		(LPCSTR cName)
-{
-	R_ASSERT			(cName && cName[0]);
-	string256			Name;
-	strlwr				(strcpy(Name,cName));
-	if (strext(Name))	*strext(Name)=0;
-
-	// ***** first pass - search already loaded shader
-	LPSTR N = LPSTR(Name);
-	PSMap::iterator I = ps.find	(N);
-	if (I!=ps.end())
-	{
-		CPS *PS			=	I->second;
-		PS->dwReference	+=	1;
-		return		PS;
-	}
-	else
-	{
-		CPS *PS			=	xr_new<CPS>();
-		PS->dwReference	=	1;
-		ps.insert		(mk_pair(xr_strdup(Name),PS));
-
-		// Load vertex shader
-		string256		fname;
-		strconcat		(fname,Path.GameData,"shaders\\",Name,".ps");
-		LPD3DXBUFFER	code	= 0;
-		LPD3DXBUFFER	errors	= 0;
-		IReader*		fs		= FS.r_open(fname);
-		R_CHK			(D3DXAssembleShader(LPCSTR(fs->Pointer()),fs->Length(),0,NULL,&code,&errors));
-		FS.r_close		(fs);
-		R_CHK			(HW.pDevice->CreatePixelShader(LPDWORD(code->GetBufferPointer()),&PS->dwHandle));
-		_RELEASE		(code);
-		_RELEASE		(errors);
-
-		// Return
-		return			PS;
-	}
-}
-
-void	CShaderManager::_DeletePS	(CPS* &PS)
-{
-	R_ASSERT		(PS);
-	PS->dwReference	--;
-	PS = 0;
-}
-*/
 
 //--------------------------------------------------------------------------------------------------------------
 CTexture* CShaderManager::_CreateTexture	(LPCSTR Name)
@@ -465,13 +371,11 @@ CTexture* CShaderManager::_CreateTexture	(LPCSTR Name)
 	if (I!=m_textures.end())
 	{
 		CTexture *T		=	I->second;
-		T->dwReference	+=	1;
 		return		T;
 	}
 	else
 	{
 		CTexture *T		= xr_new<CTexture>();
-		T->dwReference	= 1;
 		m_textures.insert	(mk_pair(xr_strdup(Name),T));
 		if (Device.bReady && !bDeferredLoad) T->Load(Name);
 		return		T;
@@ -480,7 +384,6 @@ CTexture* CShaderManager::_CreateTexture	(LPCSTR Name)
 void	CShaderManager::_DeleteTexture		(CTexture* &T)
 {
 	if (0==T)		return;
-	T->dwReference	--;
 	T=0;
 }
 LPCSTR	CShaderManager::DBG_GetTextureName	(CTexture* T)
@@ -501,13 +404,11 @@ CMatrix*	CShaderManager::_CreateMatrix	(LPCSTR Name)
 	if (I!=m_matrices.end())
 	{
 		CMatrix* M		=	I->second;
-		M->dwReference	+=	1;
 		return	M;
 	}
 	else
 	{
 		CMatrix* M		=	xr_new<CMatrix>();
-		M->dwReference	=	1;
 		m_matrices.insert	(mk_pair(xr_strdup(Name),M));
 		return	M;
 	}
@@ -515,7 +416,6 @@ CMatrix*	CShaderManager::_CreateMatrix	(LPCSTR Name)
 void	CShaderManager::_DeleteMatrix		(CMatrix* &M)
 {
 	if (0==M)	return;
-	M->dwReference	--;
 	M=0;
 }
 LPCSTR	CShaderManager::DBG_GetMatrixName	(CMatrix* T)
@@ -528,9 +428,7 @@ LPCSTR	CShaderManager::DBG_GetMatrixName	(CMatrix* T)
 void	CShaderManager::ED_UpdateMatrix		(LPCSTR Name, CMatrix* data)
 {
 	CMatrix*	M	= _CreateMatrix	(Name);
-	u32		ref = M->dwReference;
 	*M				= *data;
-	M->dwReference	= ref-1;
 }
 //--------------------------------------------------------------------------------------------------------------
 CConstant*	CShaderManager::_CreateConstant	(LPCSTR Name)
@@ -543,13 +441,11 @@ CConstant*	CShaderManager::_CreateConstant	(LPCSTR Name)
 	if (I!=m_constants.end())
 	{
 		CConstant* C	=	I->second;
-		C->dwReference	+=	1;
 		return	C;
 	}
 	else
 	{
 		CConstant* C	=	xr_new<CConstant>();
-		C->dwReference	=	1;
 		m_constants.insert	(mk_pair(xr_strdup(Name),C));
 		return	C;
 	}
@@ -557,7 +453,6 @@ CConstant*	CShaderManager::_CreateConstant	(LPCSTR Name)
 void	CShaderManager::_DeleteConstant		(CConstant* &C)
 {
 	if (0==C)	return;
-	C->dwReference	--;
 	C=0;
 }
 LPCSTR	CShaderManager::DBG_GetConstantName	(CConstant* T)
@@ -570,9 +465,7 @@ LPCSTR	CShaderManager::DBG_GetConstantName	(CConstant* T)
 void	CShaderManager::ED_UpdateConstant	(LPCSTR Name, CConstant* data)
 {
 	CConstant*	C	= _CreateConstant	(Name);
-	u32		ref = C->dwReference;
 	*C				= *data;
-	C->dwReference	= ref-1;
 }
 //--------------------------------------------------------------------------------------------------------------
 IBlender* CShaderManager::_GetBlender		(LPCSTR Name)
@@ -618,20 +511,15 @@ STextureList*	CShaderManager::_CreateTextureList(STextureList& L)
 	for (u32 it=0; it<lst_textures.size(); it++)
 	{
 		STextureList*	base		= lst_textures[it];
-		if (L.equal(*base))			{
-			base->dwReference	++;
-			return base;
-		}
+		if (L.equal(*base))			return base;
 	}
 	STextureList*	lst		= xr_new<STextureList>(L);
-	lst->dwReference		= 1;
 	lst_textures.push_back	(lst);
 	return lst;
 }
 void			CShaderManager::_DeleteTextureList(STextureList* &L)
 {
 	for (u32 it=0; it<L->size(); it++)	{ CTexture* T = (*L)[it]; _DeleteTexture(T); };
-	L->dwReference	--;
 }
 //--------------------------------------------------------------------------------------------------------------
 SMatrixList*	CShaderManager::_CreateMatrixList(SMatrixList& L)
@@ -643,13 +531,9 @@ SMatrixList*	CShaderManager::_CreateMatrixList(SMatrixList& L)
 	for (u32 it=0; it<lst_matrices.size(); it++)
 	{
 		SMatrixList*	base		= lst_matrices[it];
-		if (L.equal(*base))			{
-			base->dwReference	++;
-			return base;
-		}
+		if (L.equal(*base))			return base;
 	}
 	SMatrixList*	lst		= xr_new<SMatrixList>(L);
-	lst->dwReference		= 1;
 	lst_matrices.push_back	(lst);
 	return lst;
 }
@@ -657,7 +541,6 @@ void			CShaderManager::_DeleteMatrixList (	SMatrixList* &L )
 {
 	if (0==L)	return;
 	for (u32 it=0; it<L->size(); it++)	{ CMatrix* M = (*L)[it]; _DeleteMatrix (M); };
-	L->dwReference	--;
 }
 //--------------------------------------------------------------------------------------------------------------
 SConstantList*	CShaderManager::_CreateConstantList(SConstantList& L)
@@ -669,13 +552,9 @@ SConstantList*	CShaderManager::_CreateConstantList(SConstantList& L)
 	for (u32 it=0; it<lst_constants.size(); it++)
 	{
 		SConstantList*	base		= lst_constants[it];
-		if (L.equal(*base))			{
-			base->dwReference	++;
-			return base;
-		}
+		if (L.equal(*base))			return base;
 	}
 	SConstantList*	lst		= xr_new<SConstantList>(L);
-	lst->dwReference		= 1;
 	lst_constants.push_back	(lst);
 	return lst;
 }
@@ -683,7 +562,6 @@ void			CShaderManager::_DeleteConstantList(SConstantList* &L )
 {
 	if (0==L)	return;
 	for (u32 it=0; it<L->size(); it++)	{ CConstant* C = (*L)[it]; _DeleteConstant (C); };
-	L->dwReference	--;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -731,16 +609,10 @@ ShaderElement* CShaderManager::_CreateElement(	CBlender_Compile& C)
 
 	// Search equal in shaders array
 	for (u32 it=0; it<v_elements.size(); it++)
-	{
-		if (S.equal(*(v_elements[it])))	{
-			v_elements[it]->dwReference	++;
-			return v_elements[it];
-		}
-	}
+		if (S.equal(*(v_elements[it])))	return v_elements[it];
 
 	// Create _new_ entry
-	ShaderElement*	N	= xr_new<ShaderElement>(S);
-	N->dwReference		= 1;
+	ShaderElement*	N		= xr_new<ShaderElement>(S);
 	v_elements.push_back	(N);
 	return N;
 }
@@ -786,16 +658,10 @@ Shader*	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_cons
 
 	// Search equal in shaders array
 	for (u32 it=0; it<v_shaders.size(); it++)
-	{
-		if (S.equal(v_shaders[it]))	{
-			v_shaders[it]->dwReference	++;
-			return v_shaders[it];
-		}
-	}
+		if (S.equal(v_shaders[it]))	return v_shaders[it];
 
 	// Create _new_ entry
 	Shader*		N		= xr_new<Shader>(S);
-	N->dwReference		= 1;
 	v_shaders.push_back	(N);
 	return N;
 }
@@ -841,16 +707,10 @@ Shader*	CShaderManager::Create_B	(IBlender* B, LPCSTR s_shader, LPCSTR s_texture
 
 	// Search equal in shaders array
 	for (u32 it=0; it<v_shaders.size(); it++)
-	{
-		if (S.equal(v_shaders[it]))	{
-			v_shaders[it]->dwReference	++;
-			return v_shaders[it];
-		}
-	}
+		if (S.equal(v_shaders[it]))	return v_shaders[it];
 
 	// Create _new_ entry
 	Shader*		N		= xr_new<Shader>	(S);
-	N->dwReference		= 1;
 	v_shaders.push_back	(N);
 	return N;
 }
@@ -869,7 +729,6 @@ void CShaderManager::_DeleteElement(ShaderElement* &S)
 		_DeleteMatrixList	(P.M);
 		_DeleteConstantList	(P.C);
 	}
-	S->dwReference	--;
 }
 
 void CShaderManager::Delete(Shader* &S)
@@ -879,7 +738,6 @@ void CShaderManager::Delete(Shader* &S)
 	_DeleteElement	(S->E[2]);
 	_DeleteElement	(S->E[1]);
 	_DeleteElement	(S->E[0]);
-	S->dwReference	--;
 	S				= 0;
 }
 

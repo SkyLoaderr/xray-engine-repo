@@ -120,4 +120,8 @@ public:
 	void			Load		(IReader* fs);
 	void			Save		(IWriter* fs);
 };
+
+typedef	resptr_core<CMatrix,resptr_base<CMatrix> >	
+	ref_matrix;
+
 #endif

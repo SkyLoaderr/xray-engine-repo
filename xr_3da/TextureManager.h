@@ -87,10 +87,10 @@ public:
 #endif
 
 	// Low level resource creation
-	CTexture*						_CreateTexture		(LPCSTR Name);
-	void							_DeleteTexture		(CTexture* &T);
+	ref_texture						_CreateTexture		(LPCSTR Name);
+	void							_DeleteTexture		(CTexture* T);
 
-	CMatrix*						_CreateMatrix		(LPCSTR Name);
+	ref_matrix						_CreateMatrix		(LPCSTR Name);
 	void							_DeleteMatrix		(CMatrix*  &M);
 
 	CConstant*						_CreateConstant		(LPCSTR Name);
