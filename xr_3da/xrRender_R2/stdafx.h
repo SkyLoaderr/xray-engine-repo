@@ -1,12 +1,22 @@
 // stdafx.h : include file for standard system include files,
 // or project specific include files that are used frequently, but
 // are changed infrequently
-//
 
 #pragma once
 
-#define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
-// Windows Header Files:
-#include <windows.h>
+#pragma warning(disable:4995)
+#include "..\stdafx.h"
+#pragma warning(default:4995)
+#pragma warning( 4 : 4018 )
+#pragma warning( 4 : 4244 )
 
-// TODO: reference additional headers your program requires here
+#define		R_R1	1
+#define		R_R2	2
+#define		RENDER	R_R2
+
+#include "..\vis_common.h"
+#include "..\render.h"
+#include "..\xr_creator.h"
+#include "..\blenders\blender.h"
+#include "..\blenders\blender_clsid.h"
+#include "FStaticRender.h"

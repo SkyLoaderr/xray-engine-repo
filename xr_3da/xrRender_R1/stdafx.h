@@ -12,7 +12,7 @@
 
 #define		R_R1	1
 #define		R_R2	2
-#define		RENDER	1
+#define		RENDER	R_R1
 
 #include "..\vis_common.h"
 #include "..\render.h"
