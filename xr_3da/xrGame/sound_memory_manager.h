@@ -10,6 +10,7 @@
 
 #include "../feel_sound.h"
 #include "memory_space_impl.h"
+#include "entity_alive.h"
 
 class CSoundMemoryManager : public Feel::Sound {
 private:

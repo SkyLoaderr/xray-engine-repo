@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "WeaponBinoculars.h"
 #include "WeaponHUD.h"
-#include "level.h"
 #include "xr_level_controller.h"
+#include "level.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

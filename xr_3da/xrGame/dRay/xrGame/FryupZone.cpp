@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "FryupZone.h"
-#include "level.h"
 
 CFryupZone::CFryupZone()
 {

@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "artifact.h"
 #include "PhysicsShell.h"
-#include "level.h"
 #include "game_cl_base.h"
+#include "level.h"
 
 xr_set<CArtifact*> CArtifact::m_all;
 

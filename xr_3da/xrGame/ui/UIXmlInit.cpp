@@ -4,9 +4,7 @@
 
 
 #include "stdafx.h"
-
 #include "UIXmlInit.h"
-
 #include "../hudmanager.h"
 #include "../UI.h"
 #include "../level.h"

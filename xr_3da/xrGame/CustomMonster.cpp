@@ -17,7 +17,6 @@
 #include "ai/biting/ai_biting.h"
 #include "ai/stalker/ai_stalker.h"
 #include "xrserver_objects_alife_monsters.h"
-#include "level.h"
 #include "xrserver.h"
 
 Flags32		psAI_Flags	= {aiLua};

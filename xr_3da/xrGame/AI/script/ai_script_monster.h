@@ -9,7 +9,6 @@
 #pragma once
 
 #include "../../GameObject.h"
-#include "../../visual_memory_manager.h"
 #include "../../ai_script_callback.h"
 
 class CEntityAction;

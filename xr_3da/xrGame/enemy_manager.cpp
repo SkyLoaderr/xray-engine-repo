@@ -12,7 +12,6 @@
 #include "enemy_manager.h"
 #include "ef_storage.h"
 #include "hit_memory_manager.h"
-#include "level.h"
 
 bool CEnemyManager::useful					(const CEntityAlive *entity_alive) const
 {

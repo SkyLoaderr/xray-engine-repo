@@ -6,12 +6,8 @@
 
 #include "stdafx.h"
 #include "UITradeWnd.h"
-
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
-
-
-
 #include "../Entity.h"
 #include "../HUDManager.h"
 #include "../WeaponAmmo.h"
@@ -19,14 +15,11 @@
 #include "../Car.h"
 #include "../Trade.h"
 #include "../UIGameSP.h"
-
 #include "../eatable_item.h"
 #include "../inventory.h"
+#include "UIInventoryUtilities.h"
 #include "../level.h"
 
-
-
-#include "UIInventoryUtilities.h"
 using namespace InventoryUtilities;
 
 #define TRADE_ICONS_SCALE (4.f/5.f)

@@ -5,11 +5,10 @@
 
 #include "stdafx.h"
 #include "uidialogwnd.h"
-
 #include "../hudmanager.h"
-#include "../level.h"
 #include "../xr_level_controller.h"
 #include "../../xr_ioconsole.h"
+#include "../level.h"
 
 
 CUIDialogWnd:: CUIDialogWnd()

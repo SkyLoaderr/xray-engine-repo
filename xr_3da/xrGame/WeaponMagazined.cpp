@@ -1,5 +1,4 @@
 #include "stdafx.h"
-
 #include "PSObject.h"
 #include "hudmanager.h"
 #include "WeaponHUD.h"
@@ -12,14 +11,10 @@
 #include "silencer.h"
 #include "inventory.h"
 #include "xrserver_objects_alife_items.h"
-
 #include "ActorEffector.h"
 #include "EffectorZoomInertion.h"
-#include "level.h"
 #include "xr_level_controller.h"
-
-
-
+#include "level.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

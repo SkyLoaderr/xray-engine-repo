@@ -2,10 +2,7 @@
 //  Окно выбора скина в сетевой игре
 //-----------------------------------------------------------------------------/
 
-// PCH
 #include "StdAfx.h"
-
-// Another includes
 #include "UISkinSelector.h"
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"

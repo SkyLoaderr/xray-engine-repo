@@ -5,24 +5,17 @@
 
 #include "stdafx.h"
 #include "UITradeWnd.h"
-
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
-
-
-
 #include "../Entity.h"
 #include "../HUDManager.h"
 #include "../WeaponAmmo.h"
 #include "../Actor.h"
 #include "../Trade.h"
 #include "../UIGameSP.h"
-
 #include "UIInventoryUtilities.h"
-
 #include "../inventoryowner.h"
 #include "../eatable_item.h"
-
 #include "../inventory.h"
 #include "../level.h"
 

@@ -2,7 +2,7 @@
 #include "stdafx.h"
 #include "uistaticitem.h"
 #include "hudmanager.h"
-#include "../level.h"
+#include "level.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

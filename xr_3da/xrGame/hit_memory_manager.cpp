@@ -9,7 +9,6 @@
 #include "stdafx.h"
 #include "hit_memory_manager.h"
 #include "ai/script/ai_script_monster.h"
-#include "level.h"
 
 CHitMemoryManager::CHitMemoryManager		()
 {

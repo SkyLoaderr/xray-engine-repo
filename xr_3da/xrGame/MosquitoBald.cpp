@@ -4,7 +4,6 @@
 #include "ParticlesObject.h"
 #include "level.h"
 
-
 CMosquitoBald::CMosquitoBald(void) 
 {
 	m_dwDeltaTime = 0;

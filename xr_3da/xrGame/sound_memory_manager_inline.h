@@ -8,9 +8,6 @@
 
 #pragma once
 
-#include "entity_alive.h"
-#include "level.h"
-
 IC	void CSoundMemoryManager::update_sound_threshold			()
 {
 	VERIFY		(!fis_zero(m_decrease_factor));

@@ -10,6 +10,7 @@
 
 #include "memory_space.h"
 #include "gameobject.h"
+#include "level.h"
 
 template <typename T>
 IC	SRotation CObjectParams<T>::orientation	(const T *object) const

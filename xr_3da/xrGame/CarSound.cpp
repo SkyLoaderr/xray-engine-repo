@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "car.h"
-#include "level.h"
 
 
 CCar::SCarSound::SCarSound(CCar* car)
