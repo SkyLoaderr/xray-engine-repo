@@ -9,7 +9,7 @@ IInputReceiver		dummyController;
 
 ENGINE_API float	psMouseSens			= 1.f;
 ENGINE_API float	psMouseSensScale	= 1.f;
-ENGINE_API Flags32	psMouseInvert		= {TRUE};
+ENGINE_API Flags32	psMouseInvert		= {FALSE};
 
 #define MOUSEBUFFERSIZE			64
 #define KEYBOARDBUFFERSIZE		64
@@ -33,7 +33,7 @@ CInput::CInput						( BOOL bExclusive, int deviceForInit)
 	ZeroMemory							( offs,			sizeof(offs) );
 
 	//===================== Dummy pack
-	iCapture(&dummyController);
+	iCapture	(&dummyController);
 
 	if (!pDI) CHK_DX(DirectInputCreateEx( GetModuleHandle(NULL), DIRECTINPUT_VERSION, IID_IDirectInput7, (void**)&pDI, NULL ));
 
@@ -185,11 +185,12 @@ void CInput::MouseUpdate( )
 		if ( hr != S_OK ) return;
 	};
 
-	offs[0] = offs[1] = 0;
+	offs[0] = offs[1] = offs[2] = 0;
 	for (u32 i = 0; i < dwElements; i++){
 		switch (od[i].dwOfs){
 		case DIMOFS_X:	offs[0]	+= od[i].dwData; timeStamp[0] = od[i].dwTimeStamp;	break;
 		case DIMOFS_Y:	offs[1]	+= od[i].dwData; timeStamp[1] = od[i].dwTimeStamp;	break;
+		case DIMOFS_Z:	offs[2]	+= od[i].dwData; timeStamp[2] = od[i].dwTimeStamp;	break;
 		case DIMOFS_BUTTON0:
 			if ( od[i].dwData & 0x80 )	{ mouseState[0] = TRUE;				cbStack.top()->IR_OnMousePress(0);		}
 			if ( !(od[i].dwData & 0x80)){ mouseState[0] = FALSE;			cbStack.top()->IR_OnMouseRelease(0);	}
@@ -205,7 +206,8 @@ void CInput::MouseUpdate( )
 	if (mouseState[1])		cbStack.top()->IR_OnMouseHold(1);
 
 	if ( dwElements ){
-		if (offs[0] || offs[1]) cbStack.top()->IR_OnMouseMove( offs[0], offs[1] );
+		if (offs[0] || offs[1]) cbStack.top()->IR_OnMouseMove	( offs[0], offs[1] );
+		if (offs[2])			cbStack.top()->IR_OnMouseWheel	( offs[2] );
 	} else {
 		if (timeStamp[1] && ((dwCurTime-timeStamp[1])>=mouse_property.mouse_dt))	cbStack.top()->IR_OnMouseStop(DIMOFS_Y, timeStamp[1] = 0);
 		if (timeStamp[0] && ((dwCurTime-timeStamp[0])>=mouse_property.mouse_dt))	cbStack.top()->IR_OnMouseStop(DIMOFS_X, timeStamp[0] = 0);
