@@ -199,6 +199,11 @@ void CGrenade::Destroy()
 	Explode();
 	m_expoldeTime = 5000;
 	//inherited::Destroy();
+
+	//Generate Expode event
+	NET_Packet		P;
+	u_EventGen		(P,GE_GRENADE_EXPLODE,ID());	
+	u_EventSend		(P);
 }
 
 void CGrenade::Explode() 
@@ -206,8 +211,62 @@ void CGrenade::Explode()
 #pragma todo("Yura to Yura: adjust explosion effect to objects")
 
 	setVisible(false);
+
+	//играем звук
 	Sound->play_at_pos(sndExplode, 0, Position(), false);
+	
+	//показываем эффекты
+	CParticlesObject* pStaticPG; s32 l_c = (s32)m_effects.size();
+
+	for(s32 i = 0; i < l_c; ++i) 
+	{
+		pStaticPG = xr_new<CParticlesObject>(*m_effects[i],Sector()); pStaticPG->play_at_pos(Position());
+	}
+	m_pLight->set_position(Position()); 
+	m_pLight->set_active(true);
+
+	//trace frags
 	Fvector l_dir; f32 l_dst;
+	Collide::rq_result RQ;
+	setEnabled(false);
+	
+	//осколки
+	for(s32 i = 0; i < m_frags; ++i) 
+	{
+		l_dir.set(::Random.randF(-.5f,.5f), 
+				  ::Random.randF(-.5f,.5f), 
+				  ::Random.randF(-.5f,.5f)); 
+		l_dir.normalize();
+
+		if(Level().ObjectSpace.RayPick(Position(), l_dir, m_fragsR, Collide::rqtBoth, RQ)) 
+		{
+			Fvector l_end, l_bs_pos; 
+			l_end.mad(Position(),l_dir,RQ.range); 
+			l_bs_pos.set(0, 0, 0);
+			
+			if(RQ.O && Local()) 
+			{
+				f32 l_hit = m_fragHit * (1.f - (RQ.range/m_fragsR)*(RQ.range/m_fragsR));
+				CEntity* E = dynamic_cast<CEntity*>(RQ.O);
+				if(E) l_hit *= E->HitScale(RQ.element);
+				NET_Packet		P;
+				u_EventGen		(P,GE_HIT,RQ.O->ID());
+				P.w_u16			(u16(ID()));
+				P.w_dir			(l_dir);
+				P.w_float		(l_hit);
+				P.w_s16			((s16)RQ.element);
+				P.w_vec3		(l_bs_pos);
+				P.w_float		(l_hit/(E?E->HitScale(RQ.element):1.f));
+				P.w_u16			(eHitTypeWound);
+				u_EventSend		(P);
+			}
+			FragWallmark(l_dir, l_end, RQ);
+		}
+	}	
+	setEnabled(true);
+
+	if (Remote()) return;
+	
 	m_blasted.clear();
 	feel_touch_update(Position(), m_blastR);
 	xr_list<s16>		l_elsemnts;
@@ -277,54 +336,7 @@ void CGrenade::Explode()
 			}
 		}
 		m_blasted.pop_front();
-	}
-	Collide::rq_result RQ;
-	setEnabled(false);
-	
-	
-	//осколки
-	for(s32 i = 0; i < m_frags; ++i) 
-	{
-		l_dir.set(::Random.randF(-.5f,.5f), 
-				  ::Random.randF(-.5f,.5f), 
-				  ::Random.randF(-.5f,.5f)); 
-		l_dir.normalize();
-
-		if(Level().ObjectSpace.RayPick(Position(), l_dir, m_fragsR, Collide::rqtBoth, RQ)) 
-		{
-			Fvector l_end, l_bs_pos; 
-			l_end.mad(Position(),l_dir,RQ.range); 
-			l_bs_pos.set(0, 0, 0);
-			
-			if(RQ.O) 
-			{
-				f32 l_hit = m_fragHit * (1.f - (RQ.range/m_fragsR)*(RQ.range/m_fragsR));
-				CEntity* E = dynamic_cast<CEntity*>(RQ.O);
-				if(E) l_hit *= E->HitScale(RQ.element);
-				NET_Packet		P;
-				u_EventGen		(P,GE_HIT,RQ.O->ID());
-				P.w_u16			(u16(ID()));
-				P.w_dir			(l_dir);
-				P.w_float		(l_hit);
-				P.w_s16			((s16)RQ.element);
-				P.w_vec3		(l_bs_pos);
-				P.w_float		(l_hit/(E?E->HitScale(RQ.element):1.f));
-				P.w_u16			(eHitTypeWound);
-				u_EventSend		(P);
-			}
-			FragWallmark(l_dir, l_end, RQ);
-		}
-	}
-	
-	CParticlesObject* pStaticPG; s32 l_c = (s32)m_effects.size();
-
-	for(s32 i = 0; i < l_c; ++i) 
-	{
-		pStaticPG = xr_new<CParticlesObject>(*m_effects[i],Sector()); pStaticPG->play_at_pos(Position());
-	}
-	m_pLight->set_position(Position()); 
-	m_pLight->set_active(true);
-	setEnabled(true);
+	}	
 }
 
 void CGrenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd, Collide::rq_result& R) 
@@ -419,7 +431,11 @@ void CGrenade::OnEvent(NET_Packet& P, u16 type)
 			m_pFake = NULL;
 			pGrenade->H_SetParent(0);
 		} 
-break;
+		break;
+	case GE_GRENADE_EXPLODE:
+		{
+			Explode();
+		}break;
 	}
 }
 
