@@ -39,7 +39,7 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="escape_trader_done_tutorial_artefact">
+    <dialog id="escape_trader_done_tutorial_artefact" priority="10">
         <precondition>escape_dialog.have_tutorial_artefact</precondition>
         <dont_has_info>tutorial_artefact_done</dont_has_info>
         <phrase_list>
@@ -921,6 +921,7 @@
         </phrase_list>
     </dialog>
     <dialog id="escape_lager_volk_info">
+		<has_info>tutorial_wounded_help</has_info>
         <phrase_list>
             <phrase id="1">
                 <text>escape_lager_volk_info_1</text>
@@ -1014,6 +1015,7 @@
         </phrase_list>
     </dialog>
     <dialog id="escape_lager_volk_job">
+		<has_info>tutorial_wounded_help</has_info>
         <phrase_list>
             <phrase id="12">
                 <text>escape_lager_volk_job_12</text>
