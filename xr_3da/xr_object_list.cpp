@@ -8,12 +8,6 @@
 #include "xr_object.h"
 #include "net_utils.h"
 
-class fNameEQ {
-	LPCSTR	name;
-public:
-	fNameEQ(LPCSTR N) : name(N) {};
-	IC bool operator() (CObject* O) { return xr_strcmp(O->cName(),name)==0; }
-};
 class fClassEQ {
 	CLASS_ID cls;
 public:
@@ -32,11 +26,15 @@ CObjectList::~CObjectList	( )
 	R_ASSERT(map_NETID.empty()		);
 }
 
+CObject*	CObjectList::FindObjectByName	( ref_str name )
+{
+	for (xr_vector<CObject*>::iterator I=objects.begin(); I!=objects.end(); I++)
+		if ((*I)->cName().equal(name))	return (*I);
+	return	NULL;
+}
 CObject*	CObjectList::FindObjectByName	( LPCSTR name )
 {
-	xr_vector<CObject*>::iterator O	= std::find_if	(objects.begin(),objects.end(),fNameEQ(name));
-	if (O!=objects.end())	return *O;
-	else					return NULL;
+	return	FindObjectByName(ref_str(name));
 }
 
 CObject*	CObjectList::FindObjectByCLS_ID	( CLASS_ID cls )
