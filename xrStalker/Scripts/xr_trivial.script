@@ -319,9 +319,10 @@ end
 --2 - смотрим на артефакт и говорм фразу
 class "stalker_novice2_action" (action_base)
 function stalker_novice2_action:__init (name, storage) super (nil, name)
-    self.a 	  = storage
-    self.time = device():time_global()
-    self.look = 1
+    self.a 	   = storage
+    self.time  = device():time_global()
+    self.look  = 1
+    self.state = 8			--Какая анимация используется prislush_8 иди prislush_9
 end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_novice2_action:initialize ()
@@ -371,31 +372,31 @@ function stalker_novice2_action:walk( param )
 	    self.object:set_patrol_path     ( self.a.path, patrol.nearest, patrol.continue, true )
 	    self.object:set_path_type       ( game_object.patrol_path )
 	    self.object:set_item            ( object.activate, self.object:best_weapon() )
-	    self.object:set_sight           ( look.path_dir, nil, 0 )
-        self.object:set_sight           ( look.point, patrol( self.a.path ):point( 0 ), 0 )
+	    self.object:set_sight           ( look.danger, nil, 0 )
+--        self.object:set_sight           ( look.point, patrol( self.a.path ):point( 0 ), 0 )
     end
 
     self.object:set_item            	( object.activate, self.object:best_weapon() )
     self.object:set_mental_state    	( anim.free )
 
     --То смотрит вдоль патрульного пути,  то на артефакт
-    if( device():time_global() > self.time ) then
-    	if( self.look == 1 ) then
-            self.object:set_sight       ( look.point, patrol( self.a.path ):point(0), 0 )
-            self.look = 2
-            self.time = device():time_global() + math.random( 1500, 3000 )
-        elseif( self.object:position():distance_to( patrol( self.a.path ):point(0) ) < 30 ) then
-            self.object:set_sight       ( look.path_dir, nil, 0 )
-            self.look = 1
-        	self.time = device():time_global() + math.random( 2000, 6000 )
-        end
-    end
+--    if( device():time_global() > self.time ) then
+--    	if( self.look == 1 ) then
+--            self.object:set_sight       ( look.point, patrol( self.a.path ):point(0), 0 )
+--            self.look = 2
+--            self.time = device():time_global() + math.random( 1500, 3000 )
+--        elseif( self.object:position():distance_to( patrol( self.a.path ):point(0) ) < 30 ) then
+--            self.object:set_sight       ( look.path_dir, nil, 0 )
+--            self.look = 1
+--        	self.time = device():time_global() + math.random( 2000, 6000 )
+--        end
+--    end
 end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_novice2_action:action( param )
 	if( param ) then
     	self.a.curState		= 2
-		self.a.time 		= device():time_global() + 4000
+		self.a.time 		= device():time_global() + 3000
         self.object:set_sight           ( look.point, patrol( self.a.path ):point( 0 ), 0 )
         self.object:set_movement_type   ( move.stand )
     end
@@ -403,28 +404,48 @@ function stalker_novice2_action:action( param )
   	if( self.a.curState == 2 and                                     --Угол до точки, куда надо повернуть меньше 0.1
        yaw( self.object:direction(), patrol( self.a.path ):point( 0 ) : sub( self.object:position() ) ) < 0.3 ) then
     	printf( "Play sound" )
-        self.object:play_sound		( walk_speak, 5000, 2000, 1, 0, math.random( 0, 5 ) )
-        if( math.random() > 0 ) then
+        if( math.random() < 0.5 ) then
+        	self.object:play_sound      ( walk_speak, 5000, 2000, 1, 0, math.random( 0, 5 ) )
 	        self.object:add_animation   ( "prisluh_8_0", true )
---	        self.object:add_animation   ( "prisluh_8_2", true )
             self.object:add_animation   ( "prisluh_8_3", true )
+            self.object:add_animation   ( "prisluh_8_6", true )
+	        self.object:add_animation   ( "prisluh_8_1", true )
+        	self.time   = device():time_global() + 8000--+ math.random(6000, 10000)
+            self.state  = 8
         else
+        	self.object:play_sound      ( walk_speak, 3000, 2000, 1, 0, math.random( 0, 5 ) )
             self.object:add_animation   ( "prisluh_9_0", true )
---	        self.object:add_animation   ( "prisluh_9_2", true )
-            self.object:add_animation   ( "prisluh_9_3", true )
+	        self.object:add_animation   ( "prisluh_9_2", true )
+        	self.time   = device():time_global() + 5000--+ math.random(6000, 10000)
+            self.state  = 9
         end
 
         self.a.curState = 3
         self.a.time = self.a.time + 20000
+
     end
 
-    if( self.a.curState == 3 ) then
+	if( self.a.curState == 3 ) then
+    	if( device():time_global() > self.time ) then
+        	self.object:clear_animations()
+            if( self.staet == 8 ) then
+            	self.object:add_animation   ( "prisluh_8_7", true )
+            else
+                self.object:add_animation   ( "prisluh_9_3", true )
+            end
+            self.a.curState  = 4
+        end
+    end
+
+    if( self.a.curState == 4 ) then
     	if(  self.object:animation_count() == 0 ) then
         	self.object:set_sight       ( look.path_dir, nil, 0 )
+            self.object:clear_animations()
             self.a.time = device():time_global() + 600
-            self.a.curState = 4
+            self.a.curState = 5
         end
 	end
+
     self.object:set_mental_state        ( anim.free )
 end
 ---------------------------------------------------------------------------------------------------------------------
