@@ -120,6 +120,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 				P.w_u32				(timestamp);
 				P.w_u16				(type);
 				P.w_u16				(destination);
+				P.w_u16				(id_src);
 				P.w_u32				(c_src->ID);
 			}
 			SendBroadcast		(0xffffffff,P,net_flags(TRUE,TRUE));
