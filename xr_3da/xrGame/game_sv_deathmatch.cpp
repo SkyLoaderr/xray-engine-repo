@@ -593,7 +593,6 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(u32 id_who, NET_Packet& P)
 		{
 			CSE_Abstract* pItem = Level().Server->game->get_entity_from_eid(*I);
 			R_ASSERT(pItem);
-			//		if (!IsBuyableItem(pItem->s_name)) continue;
 			WeaponDataStruct* pWpnS = NULL;
 
 			TEAM_WPN_LIST	WpnList = TeamList[ps->team].aWeapons;
@@ -602,7 +601,6 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(u32 id_who, NET_Packet& P)
 			pWpnS = &(*pWpnI);
 			//-------------------------------------------
 			bool	found = false;
-//			xr_vector<s16>::iterator	it = ItemsDesired.begin();
 			for (u32 it = 0; it < ItemsDesired.size(); it++)
 			{
 				s16 ItemID = ItemsDesired[it];
@@ -610,6 +608,20 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(u32 id_who, NET_Packet& P)
 
 				found = true;
 				ItemsDesired.erase(ItemsDesired.begin()+it);
+				//----- Check for Addon Changes ---------------------
+				CSE_ALifeItemWeapon		*pWeapon	=	dynamic_cast<CSE_ALifeItemWeapon*>(pItem);
+				if (pWeapon)
+				{
+					u8 OldAddons  = pWeapon->m_addon_flags.get();
+					u8 NewAddons  = u8(ItemID&0x00ff)>>0x05;
+					if (OldAddons != NewAddons)
+					{
+						NET_Packet	P;
+//						u_EventGen(P, GE_ADDON_CHANGE, pWeapon->ID);
+//						u_EventSend(P);
+					}
+				};
+				//---------------------------------------------------
 				break;
 			};
 			if (found) continue;
@@ -628,15 +640,10 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(u32 id_who, NET_Packet& P)
 	}
 
 	//-------------------------------------------------------------
-	ps->BeltItems.clear();
 	ps->pItemList.clear();
 	for (u32 it = 0; it<ItemsDesired.size(); it++)
 	{
-		game_PlayerState::PlayersItem	NewItem;
-		NewItem.ItemID		= ItemsDesired[it];
-		NewItem.ItemCost	= 0;//GetItemCost(id_who, NewItem.ItemID);
-
-		ps->pItemList.push_back(NewItem);
+		ps->pItemList.push_back(ItemsDesired[it]);
 	};
 	//-------------------------------------------------------------
 	if (!e_Actor) return;
@@ -658,16 +665,12 @@ void	game_sv_Deathmatch::ClearPlayerState		(game_PlayerState* ps)
 
 void	game_sv_Deathmatch::ClearPlayerItems		(game_PlayerState* ps)
 {
-	Memory.mem_fill(ps->Slots, 0xff, sizeof(ps->Slots));
-
-	ps->BeltItems.clear();
 	ps->pItemList.clear();
 	ps->LastBuyAcount = 0;
 };
 
 void	game_sv_Deathmatch::SetPlayersDefItems		(game_PlayerState* ps)
 {
-	ps->BeltItems.clear();
 	ps->pItemList.clear();
 	ps->LastBuyAcount = 0;
 	//-------------------------------------------
@@ -679,85 +682,14 @@ void	game_sv_Deathmatch::SetPlayersDefItems		(game_PlayerState* ps)
 
 		for (u16 i=0; i<aDefItems.size(); i++)
 		{
-			game_PlayerState::PlayersItem NewItem;
-			NewItem.ItemID		= aDefItems[i];
-			NewItem.ItemCost	= 0;
-			ps->pItemList.push_back(NewItem);
+//			game_PlayerState::PlayersItem NewItem;
+//			NewItem.ItemID		= aDefItems[i];
+//			NewItem.ItemCost	= 0;
+			ps->pItemList.push_back(aDefItems[i]);
 		}
 	};
 };
 
-const char* game_sv_Deathmatch::GetItemForSlot		(u8 SlotNum, u8 ItemID, game_PlayerState* ps)
-{
-	if (!ps) return NULL;
-	
-	if (ItemID == 0xff)
-	{
-		if (0xff == ps->Slots[SlotNum]) return NULL;
-		ItemID = ps->Slots[SlotNum];
-	};
-
-	if (!(ps->team < s16(TeamList.size()))) return NULL;
-    	
-	TEAM_WPN_LIST	WpnList = TeamList[ps->team].aWeapons;
-
-	s16 cID = (s16(SlotNum) << 0x08) | (s16(ItemID) & 0x1f);
-	TEAM_WPN_LIST_it pWpnI	= std::find(WpnList.begin(), WpnList.end(), cID);
-
-	WeaponDataStruct* pWpn = NULL;
-	if (pWpnI == WpnList.end() || (*pWpnI).SlotItem_ID != cID) return NULL;
-	pWpn = &(*pWpnI);
-
-//	return &(*pWpnI)/*(*pWpnI).WeaponName.c_str()*/;
-	return ((WpnList.begin() + (pWpnI - WpnList.begin())))->WeaponName.c_str();
-
-	/*
-
-	if (!(SlotNum<WpnList.size())) return NULL;
-
-	WPN_SLOT_NAMES WpnSectNames = WpnList[SlotNum];
-
-	s16 ItemWID = (s16(SlotNum)) << 8 | (ItemID & 0x1f);
-	WPN_SLOT_NAMES_it	pWpnSlotData = WpnSectNames.find(ItemWID);
-
-	if (pWpnSlotData == WpnSectNames.end() || !pWpnSlotData->first) return NULL;
-
-	return ((std::string) pWpnSlotData->second.first).c_str();
-	
-//	if (!((ItemID & 0x1f) < u8(WpnSectNames.size()))) return NULL;
-	
-//	std::string Wpn = (WpnSectNames[ItemID & 0x1f]);//->first;
-
-//	return TeamList[ps->team].aWeapons[SlotNum][ItemID & 0x1f].c_str();
-*/
-};
-
-u8 		game_sv_Deathmatch::GetItemAddonsForSlot	(u8 SlotNum, u8 ItemID, game_PlayerState* ps)
-{
-	if (!ps) return 0;
-
-	if (ItemID == 0xff)
-	{
-		if (0xff == ps->Slots[SlotNum]) return 0;
-		ItemID = ps->Slots[SlotNum];	
-	};
-
-	u8 res = (ItemID >> 0x05);
-
-	return res;
-};
-/*
-void	game_sv_Deathmatch::SpawnItem4Actor			(u32 actorId, LPCSTR N)
-{
-	if (!N) return;
-	CSE_Abstract			*E	=	spawn_begin	(N);
-	E->ID_Parent = u16(actorId);
-
-	E->s_flags.set			(M_SPAWN_OBJECT_LOCAL);	// flags
-
-	spawn_end				(E,Level().Server->GetServer_client()->ID);
-};
-*/
 void	game_sv_Deathmatch::SpawnWeapon4Actor		(u32 actorId,  LPCSTR N, u8 Addons)
 {
 	if (!N) return;
@@ -775,20 +707,6 @@ void	game_sv_Deathmatch::SpawnWeapon4Actor		(u32 actorId,  LPCSTR N, u8 Addons)
 		pWeapon->a_elapsed = pWeapon->get_ammo_magsize();
 
 		pWeapon->m_addon_flags.set(Addons);
-		/*
-		if (Addons & CSE_ALifeItemWeapon::eWeaponAddonScope)
-		{
-			pWeapon->m_addon_flags.or(CSE_ALifeItemWeapon::eWeaponAddonScope);
-		}
-		if (Addons & CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher)
-		{
-			pWeapon->m_addon_flags.or(CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher);
-		}
-		if (Addons & CSE_ALifeItemWeapon::eWeaponAddonSilencer)
-		{
-			pWeapon->m_addon_flags.or(CSE_ALifeItemWeapon::eWeaponAddonSilencer);
-		}
-		*/
 	};
 	/////////////////////////////////////////////////////////////////////////////////
 
@@ -804,16 +722,15 @@ void	game_sv_Deathmatch::SpawnWeaponsForActor(CSE_Abstract* pE, game_PlayerState
 	if (!(ps->team < s16(TeamList.size()))) return;
 
 	TEAM_WPN_LIST	WpnList = TeamList[ps->team].aWeapons;
-
-	game_PlayerState::PlayersItem *pItem = NULL;
+	
 	for (u32 i = 0; i<ps->pItemList.size(); i++)
 	{
-		pItem = &(ps->pItemList[i]);
-		TEAM_WPN_LIST_it pWpnI	= std::find(WpnList.begin(), WpnList.end(), (pItem->ItemID & 0xFF1f));
+		u16 ItemID = ps->pItemList[i];
+		TEAM_WPN_LIST_it pWpnI	= std::find(WpnList.begin(), WpnList.end(), (ItemID & 0xFF1f));
 
-		if (pWpnI == WpnList.end() || !((*pWpnI) == (pItem->ItemID & 0xFF1f))) continue;
+		if (pWpnI == WpnList.end() || !((*pWpnI) == (ItemID & 0xFF1f))) continue;
 
-		SpawnWeapon4Actor(pA->ID, (*pWpnI).WeaponName.c_str(), u8(pItem->ItemID & 0x00FF)>>0x05);
+		SpawnWeapon4Actor(pA->ID, (*pWpnI).WeaponName.c_str(), u8(ItemID & 0x00FF)>>0x05);
 	};
 
 	ps->money_for_round = ps->money_for_round + ps->LastBuyAcount;
@@ -859,50 +776,6 @@ void	game_sv_Deathmatch::LoadWeaponsForTeam		(char* caSection, TEAM_WPN_LIST *pT
 			pTeamWpnList->push_back(NewWpnData);
 		}
 	}
-	/*
-	WPN_SLOT_NAMES		wpnOneType;
-	string16			wpnSection;	
-	string256			wpnNames, wpnSingleName;
-	
-	// Поле strSectionName должно содержать имя секции
-	R_ASSERT(xr_strcmp(caSection,""));
-
-	pTeamWpnList->clear();
-
-	for (int i = 1; i < 20; ++i)
-	{
-		// Очищаем буфер
-		wpnOneType.clear();
-
-		// Имя поля
-		sprintf(wpnSection, "slot%i", i);
-		if (!pSettings->line_exist(caSection, wpnSection)) 
-		{
-			pTeamWpnList->push_back(wpnOneType);
-			continue;
-		}
-
-		// Читаем данные этого поля
-		std::strcpy(wpnNames, pSettings->r_string(caSection, wpnSection));
-		u32 count	= _GetItemCount(wpnNames);
-		// теперь для каждое имя оружия, разделенные запятыми, заносим в массив
-		for (u32 j = 0; j < count; ++j)
-		{
-			_GetItem(wpnNames, j, wpnSingleName);
-			s16 WeaponCost = pSettings->r_s16(m_sBaseWeaponCostSection, wpnSingleName);
-			if (pSettings->line_exist(caSection, wpnSingleName))
-				WeaponCost = pSettings->r_s16(caSection, wpnSingleName);
-
-			WPN_DATA	NewWpnData = mk_pair(wpnSingleName, WeaponCost);
-			s16 WpnID = s16(i) << 8 | s16(j);
-			wpnOneType.insert(mk_pair(WpnID, NewWpnData));
-//			wpnOneType.push_back(wpnSingleName);
-		}
-
-//		if (!wpnOneType.empty())
-		pTeamWpnList->push_back(wpnOneType);
-	}
-	*/
 };
 
 void	game_sv_Deathmatch::LoadSkinsForTeam		(char* caSection, TEAM_SKINS_NAMES* pTeamSkins)
@@ -950,7 +823,6 @@ void	game_sv_Deathmatch::LoadDefItemsForTeam	(char* caSection, TEAM_WPN_LIST *pW
 	for (u32 i = 0; i < count; ++i)
 	{
 		_GetItem(DefItems, i, ItemName);
-//		pDefItems->push_back(ItemName);
 		TEAM_WPN_LIST_it pWpnI	= std::find(pWpnList->begin(), pWpnList->end(), ItemName);
 		if (pWpnI == pWpnList->end() || !((*pWpnI) == ItemName)) continue;
 		
@@ -970,9 +842,6 @@ void	game_sv_Deathmatch::SetSkin					(CSE_Abstract* E, u16 Team, u16 ID)
 	//загружены ли скины для этой комманды
 	if (SkinID != -1) ID = u16(SkinID);
 
-//	if (!SkinsTeamSectStorage.empty() && 
-//		SkinsTeamSectStorage.size() > Team && 
-//		!SkinsTeamSectStorage[Team].Skins.empty())
 	if (!TeamList.empty()	&&
 		TeamList.size() > Team	&&
 		!TeamList[Team].aSkins.empty())
@@ -1190,6 +1059,7 @@ void game_sv_Deathmatch::Money_SetStart			(u32	id_who)
 	ps_who->money_for_round = pTeamData->m_iM_Start;
 }
 
+/*
 s16 game_sv_Deathmatch::GetItemCost			(u32 id_who, s16 ItemID)
 {
 	s16	res = 0;
@@ -1238,7 +1108,7 @@ s16 game_sv_Deathmatch::GetItemCost			(u32 id_who, s16 ItemID)
 	}
 	return res;
 }
-
+*/
 void	game_sv_Deathmatch::RemoveItemFromActor		(CSE_Abstract* pItem)
 {
 	if (!pItem) return;

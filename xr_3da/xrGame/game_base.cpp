@@ -14,7 +14,6 @@ game_PlayerState::game_PlayerState()
 
 	Skip = false;
 	//---------------------------------
-	BeltItems.clear();
 	pItemList.clear();
 
 	LastBuyAcount = 0;
@@ -22,7 +21,6 @@ game_PlayerState::game_PlayerState()
 
 game_PlayerState::~game_PlayerState()
 {
-	BeltItems.clear();
 	pItemList.clear();
 	LastBuyAcount = 0;
 };

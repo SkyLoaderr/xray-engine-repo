@@ -1978,8 +1978,9 @@ void CUIBuyWeaponWnd::SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bReal
 //					else
 //						IgnoreMoney(false);
 
-					DDItemMP.m_bHasRealRepresentation = bRealRepresentationSet;
+					
 					SendMessage(&DDItemMP, CUIDragDropItem::ITEM_DB_CLICK, NULL);
+					DDItemMP.m_bHasRealRepresentation = bRealRepresentationSet;
 					// Проверяем индекс на наличие флагов аддонов, и если они есть, то 
 					// аттачим аддоны к мувнутому оружию
 					if (uAddonFlags != 0)

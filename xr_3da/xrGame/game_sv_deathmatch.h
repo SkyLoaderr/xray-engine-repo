@@ -146,8 +146,6 @@ public:
 	virtual		void				SetPlayersDefItems		(game_PlayerState* ps);
 
 	virtual		void				SpawnWeaponsForActor	(CSE_Abstract* pE, game_PlayerState*	ps);
-	virtual		const char *		GetItemForSlot			(u8 SlotNum, u8 ItemID, game_PlayerState* ps);
-	virtual		u8 					GetItemAddonsForSlot	(u8 SlotNum, u8 ItemID, game_PlayerState* ps);
 
 	virtual		void				LoadTeams				();
 	virtual		void				LoadTeamData			(char* caSection);
@@ -160,5 +158,5 @@ public:
 	void							RemoveItemFromActor		(CSE_Abstract* pItem);
 	//----- Money routines -----------------------------------------------------------------
 	virtual		void				Money_SetStart			(u32	id_who);
-	virtual		s16					GetItemCost				(u32 id_who, s16 ItemID);
+//	virtual		s16					GetItemCost				(u32 id_who, s16 ItemID);
 };

@@ -34,31 +34,13 @@ struct	game_PlayerState
 	void	net_Export		(NET_Packet& P);
 	void	net_Import		(NET_Packet& P);
 #endif
-
-	//selected weapons & etc.
-	u8			Slots[8];
-	struct		BeltItem
-	{
-		u8		SlotID;
-		u8		ItemID;
-
-		BeltItem(u8 IDSlot, u8 IDItem):
-			SlotID(IDSlot),
-			ItemID(IDItem)
-		{
-		};
-	};
-	DEF_VECTOR	(BELT_ITEMS_LIST, BeltItem);
-
-	BELT_ITEMS_LIST	BeltItems;
 	//---------------------------------------
-	
-	struct PlayersItem
-	{
-		u16			ItemID;
-		s16			ItemCost;
-	};
-	DEF_VECTOR(PLAYER_ITEMS_LIST, PlayersItem);
+//	struct PlayersItem
+//	{
+//		u16			ItemID;
+//		s16			ItemCost;
+//	};
+	DEF_VECTOR(PLAYER_ITEMS_LIST, u16);
 
 	PLAYER_ITEMS_LIST	pItemList;
 
