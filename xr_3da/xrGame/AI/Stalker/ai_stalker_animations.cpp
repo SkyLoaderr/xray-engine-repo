@@ -279,7 +279,7 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 					break;
 				}
 				case CWeapon::eFire: {
-					Msg				("Weapon is firing (%d)",m_dwCurrentUpdate);
+//					Msg				("Weapon is firing (%d)",m_dwCurrentUpdate);
 					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[1].A[0];
 					break;
 				}

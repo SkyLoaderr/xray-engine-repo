@@ -153,9 +153,15 @@ void CLevel::OnFrame	()
 
 			// Msg				("--- event[%d] for [%d]",type,dest);
 			CObject*	 O	= Objects.net_Find	(dest);
-			if (0==O)		{ Msg("! c_EVENT[%d] : unknown dest"); continue; }
+			if (0==O)		{
+				Msg("! c_EVENT[%d] : unknown dest",dest);
+				continue;
+			}
 			CGameObject* GO = dynamic_cast<CGameObject*>(O);
-			if (0==GO)		{ Msg("! c_EVENT[%d] : non-game-object"); continue; }
+			if (!GO)		{
+				Msg("! c_EVENT[%d] : non-game-object",dest);
+				continue;
+			}
 			GO->OnEvent		(P,type);
 		}
 	}

@@ -34,6 +34,7 @@ private:
 	xrServer						*m_tpServer;
 	bool							m_bActorEnabled;
 	string256						m_caSaveName;
+	bool							m_bFirstUpdate;
 
 	
 	// buffer for union operations

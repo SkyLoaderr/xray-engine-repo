@@ -17,6 +17,7 @@ CSE_ALifeSimulator::CSE_ALifeSimulator(xrServer *tpServer)
 	m_tpActor			= 0;
 	m_caSaveName[0]		= 0;
 	shedule_register	();
+	m_bFirstUpdate		= true;
 }
 
 CSE_ALifeSimulator::~CSE_ALifeSimulator()
@@ -226,6 +227,7 @@ void CSE_ALifeSimulator::vfNewGame(LPCSTR caSaveName)
 	CSE_ALifeTraderRegistry::Init	();
 	CSE_ALifeScheduleRegistry::Init	();
 
+	m_tpServer->PerformIDgen	(0x0000);
 	ALIFE_ENTITY_P_IT			B = m_tpSpawnPoints.begin();
 	ALIFE_ENTITY_P_IT			E = m_tpSpawnPoints.end();
 	for (ALIFE_ENTITY_P_IT I = B ; I != E; ) {

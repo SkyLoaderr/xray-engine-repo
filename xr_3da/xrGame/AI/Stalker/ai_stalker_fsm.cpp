@@ -1088,7 +1088,7 @@ void CAI_Stalker::Think()
 
 #ifndef SILENCE
 	if (g_Alive())
-		;//Msg("%s : [S=%d][A=%d][B=%d][C=%d][D=%d][E=%d][F=%d][G=%d][H=%d][I=%d][J=%d][K=%d][L=%d][M=%d]",cName(),m_bStateChanged ? 1 : 0,A,B,C,D,E,F,G,H,I,J,K,L,M);
+		Msg("%s : [S=%d][A=%d][B=%d][C=%d][D=%d][E=%d][F=%d][G=%d][H=%d][I=%d][J=%d][K=%d][L=%d][M=%d]",cName(),m_bStateChanged ? 1 : 0,A,B,C,D,E,F,G,H,I,J,K,L,M);
 #endif
 	
 	if (!g_Alive()) {

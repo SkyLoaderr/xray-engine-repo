@@ -35,41 +35,48 @@ void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 				return;
 			}
 			u64							qwStartTime	= CPU::GetCycleCount();
-
-			// processing online/offline switches
-			R_ASSERT2					(m_tpCurrentLevel,"There is no actor in the game!");
-			ALIFE_ENTITY_P_PAIR_IT		B = m_tpCurrentLevel->begin();
-			ALIFE_ENTITY_P_PAIR_IT		E = m_tpCurrentLevel->end();
-			ALIFE_ENTITY_P_PAIR_IT		M = m_tpCurrentLevel->find(m_tNextFirstSwitchObjectID), I;
-			int i=1;
-			for (I = M ; I != E; I++, i++) {
-				ProcessOnlineOfflineSwitches((*I).second);
-				if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= m_qwMaxProcessTime) {
-					m_tNextFirstSwitchObjectID = (++I == E) ? (*B).second->ID : (*I).second->ID;
+			if (m_bFirstUpdate) {
+				ALIFE_ENTITY_P_PAIR_IT		B = m_tpCurrentLevel->begin(), I = B;
+				ALIFE_ENTITY_P_PAIR_IT		E = m_tpCurrentLevel->end();
+				for ( ; I != E; I++)
+					ProcessOnlineOfflineSwitches((*I).second);
+				m_tNextFirstSwitchObjectID = (*B).second->ID;
+				m_bFirstUpdate				= false;
+			}
+			else {
+				// processing online/offline switches
+				R_ASSERT2					(m_tpCurrentLevel,"There is no actor in the game!");
+				ALIFE_ENTITY_P_PAIR_IT		B = m_tpCurrentLevel->begin();
+				ALIFE_ENTITY_P_PAIR_IT		E = m_tpCurrentLevel->end();
+				ALIFE_ENTITY_P_PAIR_IT		M = m_tpCurrentLevel->find(m_tNextFirstSwitchObjectID), I;
+				int i=1;
+				for (I = M ; I != E; I++, i++) {
+					ProcessOnlineOfflineSwitches((*I).second);
+					if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= m_qwMaxProcessTime) {
+						m_tNextFirstSwitchObjectID = (++I == E) ? (*B).second->ID : (*I).second->ID;
 #ifdef DEBUG_LOG
-//					Msg("Not enough time (0)[%d : %d] !",E - B, I - M);
+						Msg("Not enough time (0)[%d : %d] !",i - 1, m_tpCurrentLevel->size() - i);
+#endif
+						return;
+					}
+				}
+				for (I = B; I != M; I++, i++) {
+					ProcessOnlineOfflineSwitches((*I).second);
+					if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= m_qwMaxProcessTime) {
+						m_tNextFirstSwitchObjectID = (++I == E) ? (*B).second->ID : (*I).second->ID;
+#ifdef DEBUG_LOG
+						Msg("Not enough time (1)[%d : %d] !",i - 1, m_tpCurrentLevel->size() - i);
+#endif
+						return;
+					}
+				}
+				if (CPU::GetCycleCount() - qwStartTime >= m_qwMaxProcessTime) {
+#ifdef DEBUG_LOG
+					Msg("Not enough time (2)[%d : %d] !",m_tpCurrentLevel->size(),m_tpCurrentLevel->size());
 #endif
 					return;
 				}
 			}
-			for (I = B; I != M; I++, i++) {
-				ProcessOnlineOfflineSwitches((*I).second);
-				if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= m_qwMaxProcessTime) {
-					m_tNextFirstSwitchObjectID = (++I == E) ? (*B).second->ID : (*I).second->ID;
-#ifdef DEBUG_LOG
-//					Msg("Not enough time (1)[%d : %d] !",E - B, E - M + I - B);
-#endif
-					return;
-				}
-			}
-			
-			if (CPU::GetCycleCount() - qwStartTime >= m_qwMaxProcessTime) {
-#ifdef DEBUG_LOG
-//				Msg("Not enough time (2)[%d : %d] !",E - B,E - B);
-#endif
-				return;
-			}
-			
 			u64							qwMaxProcessTime = m_qwMaxProcessTime - qwStartTime;
 			qwStartTime					= CPU::GetCycleCount();
 			
@@ -105,6 +112,8 @@ void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 
 void CSE_ALifeSimulator::vfProcessNPC(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract)
 {
+	if (tpALifeMonsterAbstract->fHealth <= 0)
+		return;
 	CSE_ALifeHumanAbstract *tpHuman = dynamic_cast<CSE_ALifeHumanAbstract *>(tpALifeMonsterAbstract);
 	if (tpHuman)
 		vfUpdateHuman(tpHuman);
@@ -247,7 +256,7 @@ void CSE_ALifeSimulator::vfUpdateHuman(CSE_ALifeHumanAbstract *tpALifeHuman)
 //		}
 //		default : NODEFAULT;
 //	};
-	VERIFY					(!tpALifeHuman->m_bOnline);
+	R_ASSERT2				(!tpALifeHuman->m_bOnline,"Can't update online object!");
 	vfChooseNextRoutePoint	(tpALifeHuman);
 	vfCheckForTheBattle		(tpALifeHuman);
 	bfCheckForItems			(tpALifeHuman);

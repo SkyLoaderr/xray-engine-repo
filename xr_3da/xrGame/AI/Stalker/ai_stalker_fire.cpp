@@ -307,7 +307,7 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 				tpWeaponMagazined->SetQueueSize(1);
 	}
 
-	Msg	("Time : %d\nDESIRED : %s\nREAL : %s\nFIRING : %d",m_dwCurrentUpdate,(tWeaponState == eWeaponStateIdle) ? "IDLE" : "FIRE",(tpWeapon->STATE == CWeapon::eFire) ? "FIRING" : ((tpWeapon->STATE == CWeapon::eIdle) ? "IDLE" : ((tpWeapon->STATE == CWeapon::eReload) ? "RELOAD" : "UNKNOWN")),int(m_bFiring));
+//	Msg	("Time : %d\nDESIRED : %s\nREAL : %s\nFIRING : %d",m_dwCurrentUpdate,(tWeaponState == eWeaponStateIdle) ? "IDLE" : "FIRE",(tpWeapon->STATE == CWeapon::eFire) ? "FIRING" : ((tpWeapon->STATE == CWeapon::eIdle) ? "IDLE" : ((tpWeapon->STATE == CWeapon::eReload) ? "RELOAD" : "UNKNOWN")),int(m_bFiring));
 	if (tWeaponState == eWeaponStateIdle) {
 		m_bFiring = false;
 		if (tpWeapon->STATE == CWeapon::eFire)
@@ -347,7 +347,7 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 						if (dwStartFireAmmo && (m_dwCurrentUpdate > m_dwNoFireTime)) {
 							if (m_bFiring && (m_dwCurrentUpdate - m_dwStartFireTime > TIME_FIRE_DELTA)) {
 								m_inventory.Action(kWPN_FIRE, CMD_START);
-								Msg				("Weapon could fire (%d)",m_dwCurrentUpdate);
+//								Msg				("Weapon could fire (%d)",m_dwCurrentUpdate);
 							}
 							else {
 								m_dwNoFireTime = m_dwCurrentUpdate;
@@ -355,7 +355,7 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 							}
 							if (!m_bFiring) {
 								m_dwStartFireTime	= m_dwCurrentUpdate;
-								Msg				("Weapon shouldn't fire (%d)",m_dwCurrentUpdate);
+//								Msg				("Weapon shouldn't fire (%d)",m_dwCurrentUpdate);
 							}
 							m_bFiring = true;
 						}
