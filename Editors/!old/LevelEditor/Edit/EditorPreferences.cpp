@@ -187,7 +187,7 @@ void CEditorPreferences::OnCreate()
 
 	// read recent list    
     for (u32 i=0; i<scene_recent_count; i++){
-	    ref_str fn		= R_STRING_SAFE	("editor_prefs",AnsiString().sprintf("recent_files_%d",i).c_str(),ref_str("") );
+    	shared_str fn  	= R_STRING_SAFE	("editor_prefs",AnsiString().sprintf("recent_files_%d",i).c_str(),shared_str("") );
         if (fn.size())	scene_recent_list.push_back(*fn);
     }
 

@@ -310,7 +310,7 @@ void __fastcall TfrmSoundLib::OnControlClick(PropValue* sender, bool& bModif, bo
     case 2:{ 
     	ButtonValue* B = dynamic_cast<ButtonValue*>(sender); VERIFY(B);
     	bAutoPlay=!bAutoPlay; 
-        B->value[V->btn_num] = ref_str().sprintf("Auto (%s)",bAutoPlay?"on":"off");
+        B->value[V->btn_num] = shared_str().sprintf("Auto (%s)",bAutoPlay?"on":"off");
     }break;
 	}
     bModif = false;
@@ -365,8 +365,8 @@ void __fastcall TfrmSoundLib::OnItemsFocused(ListItemsVec& items)
         u32 size=0;
         u32 time=0;
 		PlaySound(thm->SrcName(), size, time);
-        PHelper().CreateCaption(props,"File Length",	ref_str().sprintf("%.2f Kb",float(size)/1024.f));
-        PHelper().CreateCaption(props,"Total Time",	ref_str().sprintf("%.2f sec",float(time)/1000.f));
+        PHelper().CreateCaption(props,"File Length",	shared_str().sprintf("%.2f Kb",float(size)/1024.f));
+        PHelper().CreateCaption(props,"Total Time",		shared_str().sprintf("%.2f sec",float(time)/1000.f));
         ButtonValue* B=PHelper().CreateButton	(props, "Control",	"Play,Stop",ButtonValue::flFirstOnly);
         B->OnBtnClickEvent.bind(this,&TfrmSoundLib::OnControlClick);
         B=PHelper().CreateButton	(props, "Auto Play",bAutoPlay?"on":"off",ButtonValue::flFirstOnly);

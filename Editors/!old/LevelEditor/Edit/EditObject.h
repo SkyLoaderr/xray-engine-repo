@@ -52,12 +52,12 @@ public:
 	enum EFlags{
     	sf2Sided		= (1<<0),
     };
-	ref_str			m_Name;
-    ref_str			m_Texture;	//
-    ref_str			m_VMap;		//
-    ref_str			m_ShaderName;
-    ref_str			m_ShaderXRLCName;
-    ref_str			m_GameMtlName;
+    shared_str			m_Name;
+    shared_str			m_Texture;	//
+    shared_str			m_VMap;		//
+    shared_str			m_ShaderName;
+    shared_str			m_ShaderXRLCName;
+    shared_str			m_GameMtlName;
     Flags32			m_Flags;
     u32				m_dwFVF;
 #ifdef _MAX_EXPORT
@@ -137,7 +137,7 @@ DEFINE_VECTOR	(COMotion*,OMotionVec,OMotionIt);
 DEFINE_VECTOR	(CSMotion*,SMotionVec,SMotionIt);
 
 struct ECORE_API SBonePart{
-	ref_str 		alias;
+	shared_str 		alias;
     RStringVec 		bones;
 };
 DEFINE_VECTOR(SBonePart,BPVec,BPIt);
@@ -159,13 +159,13 @@ class ECORE_API CEditableObject{
 	ref_geom 		vs_SkeletonGeom;
 #endif
 // desc
-	ref_str			m_CreateName;
+	shared_str			m_CreateName;
     time_t			m_CreateTime;
-	ref_str			m_ModifName;
+	shared_str			m_ModifName;
     time_t			m_ModifTime;
     
 // general
-	ref_str			m_ClassScript;
+	shared_str			m_ClassScript;
 
 	SurfaceVec		m_Surfaces;
 	EditMeshVec		m_Meshes;
@@ -179,7 +179,7 @@ class ECORE_API CEditableObject{
     CSMotion*		m_ActiveSMotion;
 public:
     SAnimParams		m_SMParam;
-    ref_str			m_SMotionRefs;
+    shared_str			m_SMotionRefs;
 public:
 	// options
 	Flags32			m_Flags;
@@ -286,7 +286,7 @@ public:
 ///    IC bool			CheckVersion			()  {if(m_LibRef) return (m_ObjVer==m_LibRef->m_ObjVer); return true;}
     // get object properties methods
 
-	IC ref_str		GetClassScript			()	{return m_ClassScript;}
+	IC shared_str		GetClassScript			()	{return m_ClassScript;}
     IC const Fbox&	GetBox					() 	{return m_Box;}
 
     // animation

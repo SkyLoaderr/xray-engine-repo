@@ -66,7 +66,7 @@ protected:
     };
     Flags32			m_RT_Flags;
 public:
-	ref_str			FName;
+	shared_str			FName;
 
     // orientation
     Fvector 		FPosition;
@@ -81,7 +81,7 @@ public:
 	Fmatrix 		FITransform;
 
     CCustomObject*	m_pOwnerObject;
-	void __stdcall  OnObjectNameAfterEdit	(PropValue* sender, ref_str& edit_val, bool& accepted);
+	void __stdcall  OnObjectNameAfterEdit	(PropValue* sender, shared_str& edit_val, bool& accepted);
     void __stdcall 	OnTransformChange		(PropValue* value); 
 	void __stdcall  OnMotionableChange		(PropValue* sender);
     void __stdcall 	OnMotionCommandsClick	(PropValue* value, bool& bModif, bool& bSafe);

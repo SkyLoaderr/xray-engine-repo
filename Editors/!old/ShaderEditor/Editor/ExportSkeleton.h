@@ -114,8 +114,8 @@ public:
 class ECORE_API CExportSkeletonCustom{
 protected:
     struct ECORE_API SSplit: public CSkeletonCollectorPacked{
-        ref_str			m_Shader;
-        ref_str			m_Texture;
+    	shared_str		m_Shader;
+        shared_str		m_Texture;
         Fbox			m_Box;
 
         // Progressive

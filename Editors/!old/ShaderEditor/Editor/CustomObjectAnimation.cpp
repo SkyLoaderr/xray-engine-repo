@@ -269,9 +269,9 @@ void CCustomObject::AnimationFillProp(LPCSTR pref, PropItemVec& items)
 		V				= PHelper().CreateFloat		(items,PrepareKey(pref,"Motion\\End Frame (sec)"),		&m_MotionParams->max_t, m_MotionParams->min_t, 10000.f, 	1.f/30.f, 3);
     	V->OnChangeEvent.bind(this,&CCustomObject::OnMotionFrameChange);
 		V				= PHelper().CreateFloat		(items,PrepareKey(pref,"Motion\\Current Frame (sec)"),	&m_MotionParams->t, -10000.f, 10000.f,	1.f/30.f, 3);
-    	V->OnChangeEvent.bind(this,&CCustomObject::OnMotionCurrentFrameChange);
-        				  PHelper().CreateCaption		(items,PrepareKey(pref,"Motion\\Key Count"),			ref_str().sprintf("%d",m_Motion->KeyCount()));
-        				  PHelper().CreateCaption		(items,PrepareKey(pref,"Motion\\Length (sec)"),		ref_str().sprintf("%3.2f",m_Motion->GetLength()));
+    	V->OnChangeEvent.bind(this,&CCustomObject::OnMotionCurrentFrameChange);                                     
+        				  PHelper().CreateCaption		(items,PrepareKey(pref,"Motion\\Key Count"),			shared_str().sprintf("%d",m_Motion->KeyCount()));
+        				  PHelper().CreateCaption		(items,PrepareKey(pref,"Motion\\Length (sec)"),		shared_str().sprintf("%3.2f",m_Motion->GetLength()));
 	}
 }
  

@@ -44,7 +44,7 @@ void CBone::ResetData()
 void CBone::Save(IWriter& F)
 {
 #ifdef _LW_EXPORT
-	extern void ReplaceSpaceAndLowerCase(ref_str& s);
+	extern void ReplaceSpaceAndLowerCase(shared_str& s);
 	ReplaceSpaceAndLowerCase(name);			
 	ReplaceSpaceAndLowerCase(parent_name);	
 #endif

@@ -128,7 +128,7 @@ struct astr_pred : public std::binary_function<const AnsiString&, const AnsiStri
 	DEFINE_VECTOR(FVF::L,FLvertexVec,FLvertexIt);
 	DEFINE_VECTOR(FVF::TL,FTLvertexVec,FTLvertexIt);
 	DEFINE_VECTOR(FVF::LIT,FLITvertexVec,FLITvertexIt);
-	DEFINE_VECTOR(ref_str,RStrVec,RStrVecIt);
+	DEFINE_VECTOR(shared_str,RStrVec,RStrVecIt);
 
 	#include "xrXRC.h"
 

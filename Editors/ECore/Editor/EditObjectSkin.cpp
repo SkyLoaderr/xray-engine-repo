@@ -65,7 +65,7 @@ bool CEditableObject::LoadBoneData(IReader& F)
     }
     // load bone part
     if (F.find_chunk(EOBJ_CHUNK_BONEPARTS2)){
-    	ref_str 	buf;
+    	shared_str 	buf;
         m_BoneParts.resize(F.r_u32());
         for (BPIt bp_it=m_BoneParts.begin(); bp_it!=m_BoneParts.end(); bp_it++){
             F.r_stringZ			(buf); bp_it->alias=buf;

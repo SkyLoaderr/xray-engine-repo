@@ -179,7 +179,7 @@ bool CEditableObject::Load(IReader& F)
 	bool bRes = true;
 	do{
 		u32 version = 0;
-        ref_str buf;
+        shared_str buf;
 		char sh_name[255];
 		R_ASSERT(F.r_chunk(EOBJ_CHUNK_VERSION,&version));
 		if (version!=EOBJ_CURRENT_VERSION){

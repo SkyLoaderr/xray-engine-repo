@@ -96,9 +96,9 @@ struct EParticleAction
     DEFINE_MAP(AnsiString,PInt,		PIntMap,	PIntMapIt);
 	DEFINE_MAP(AnsiString,PVector,	PVectorMap,	PVectorMapIt);
 
-	ref_str 		actionName;
-	ref_str 		actionType;
-    ref_str			hint;
+    shared_str 		actionName;
+	shared_str 		actionType;
+    shared_str		hint;
     enum{
     	flEnabled	= (1<<0),
     	flDraw		= (1<<1),

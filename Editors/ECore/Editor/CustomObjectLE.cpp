@@ -174,7 +174,7 @@ void CCustomObject::Scale( Fvector& amount )
     PScale		= s;
 }
 
-void CCustomObject::OnObjectNameAfterEdit(PropValue* sender, ref_str& edit_val, bool& accepted)
+void CCustomObject::OnObjectNameAfterEdit(PropValue* sender, shared_str& edit_val, bool& accepted)
 {
 	RTextValue* V = dynamic_cast<RTextValue*>(sender); VERIFY(V);
     edit_val 	= (AnsiString(edit_val.c_str()).LowerCase()).c_str();

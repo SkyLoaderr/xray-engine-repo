@@ -76,11 +76,11 @@ struct ECORE_API SECommand{
         			SShortcut		(u32 k, BOOL a, BOOL c, BOOL s):key(k){ext.assign((a?flAlt:0)|(c?flCtrl:0)|(s?flShift:0));}
         			SShortcut		(){}
     };
-    ref_str			caption;
+    shared_str		caption;
 	SShortcut 		shortcut;
     TECommandEvent	command;
                     SECommand		(){}
-    				SECommand		(ref_str capt, const SShortcut& shrt, TECommandEvent cmd):caption(capt),shortcut(shrt),command(cmd){}
+    				SECommand		(shared_str capt, const SShortcut& shrt, TECommandEvent cmd):caption(capt),shortcut(shrt),command(cmd){}
 };
 DEFINE_VECTOR(SECommand,ECommandVec,ECommandVecIt);
 

@@ -22,8 +22,8 @@ enum EEditorState{
 };
 
 struct SPBItem{
-    ref_str		text;
-    ref_str		info;
+	shared_str	text;
+    shared_str	info;
     float 		max;
     float 		progress;
                 SPBItem				(LPCSTR txt, LPCSTR inf, float mx):text(txt),info(inf),max(mx){}
