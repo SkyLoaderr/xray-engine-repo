@@ -46,7 +46,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebCancelClick(TObject *Sender);
 	void __fastcall ExtBtn1Click(TObject *Sender);
 private:	// User declarations
-	vector<TElTreeItem*> FDragItems;
+	xr_vector<TElTreeItem*> FDragItems;
     CEditableObject* m_EditObject;
 	BPVec* m_BoneParts;
 	void __fastcall FillBoneParts();

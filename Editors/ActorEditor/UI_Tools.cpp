@@ -120,6 +120,7 @@ CActorTools::CActorTools()
     m_bMotionModified	= false;
     m_bNeedUpdateMotionKeys	= false;
     m_bNeedUpdateMotionDefs = false;
+    m_bNeedUpdateGeometry = false;
     m_ObjectProps 		= 0;
     m_MotionProps 		= 0;
     m_bReady			= false;
@@ -184,8 +185,10 @@ bool CActorTools::IfModified(){
 
 void CActorTools::OnObjectModified()
 {
-	if (m_pEditObject) m_pEditObject->Modified();
-	m_bObjectModified = true;
+	if (m_pEditObject) 		m_pEditObject->Modified();
+	m_bObjectModified 		= true;
+    m_bNeedUpdateGeometry 	= true;
+    OnGeometryModified		();
 	UI.Command(COMMAND_UPDATE_CAPTION);
 }
 //---------------------------------------------------------------------------
@@ -236,7 +239,10 @@ void CActorTools::Render(){
         mTranslate.translate	(m_pEditObject->a_vPosition);
         mTransform.mul			(mTranslate,mRotate);
         if (m_RenderObject.IsRenderable()&&fraLeftBar->ebRenderEngineStyle->Down){
-        	m_RenderObject.Render(Fidentity);//mTransform);
+			for (int k=0; k<4; k++){ 
+            	Device.Models.Render(m_RenderObject.m_pVisual,Fidentity,k,false,m_RenderObject.m_fLOD);
+            	Device.Models.Render(m_RenderObject.m_pVisual,Fidentity,k,true,m_RenderObject.m_fLOD);
+            }
         }else{
 	        // update transform matrix
     		m_pEditObject->RenderSkeletonSingle(mTransform);
@@ -325,7 +331,8 @@ void CActorTools::Clear(){
 	m_bMotionModified 	= false;
     m_bNeedUpdateMotionKeys = false;
 	m_bNeedUpdateMotionDefs = false;
-
+    m_bNeedUpdateGeometry = false;
+    
     UI.RedrawScene();
 }
 
@@ -365,17 +372,10 @@ bool CActorTools::Save(LPCSTR name)
 	return false;
 }
 
-bool CActorTools::ExportSkeleton(LPCSTR name)
+bool CActorTools::ExportOGF(LPCSTR name)
 {
 	VERIFY(m_bReady);
-    if (m_pEditObject&&m_pEditObject->ExportSkeletonOGF(name)) return true;
-    return false;
-}
-
-bool CActorTools::ExportObject(LPCSTR name)
-{
-	VERIFY(m_bReady);
-    if (m_pEditObject&&m_pEditObject->ExportObjectOGF(name)) return true;
+    if (m_pEditObject&&m_pEditObject->ExportOGF(name)) return true;
     return false;
 }
 

@@ -38,7 +38,7 @@ __published:	// IDE-managed Components
 	TMenuItem *CreateFolder1;
 	TMenuItem *Load1;
 	TMenuItem *Save2;
-	TMenuItem *miExportSkeleton;
+	TMenuItem *miExportOGF;
 	TMenuItem *SaevAs1;
 	TMenuItem *N5;
 	TMenuItem *Import1;
@@ -51,7 +51,6 @@ __published:	// IDE-managed Components
 	TMenuItem *none1;
 	TMenuItem *Preferences1;
 	TMenuItem *Clear1;
-	TMenuItem *miExportObject;
 	TMenuItem *N4;
 	TPanel *paSkeletonPart;
 	TSplitter *Splitter1;
@@ -154,7 +153,7 @@ __published:	// IDE-managed Components
 	void __fastcall LoadClick(TObject *Sender);
 	void __fastcall miSaveMotionsClick(TObject *Sender);
 	void __fastcall ebMotionsClearClick(TObject *Sender);
-	void __fastcall miExportSkeletonClick(TObject *Sender);
+	void __fastcall miExportOGFClick(TObject *Sender);
 	void __fastcall ebMakePreviewClick(TObject *Sender);
 	void __fastcall ebRenderStyleClick(TObject *Sender);
 	void __fastcall Custom1Click(TObject *Sender);
@@ -163,7 +162,6 @@ __published:	// IDE-managed Components
 	void __fastcall ebPreviewObjectClickMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
 	void __fastcall Clear1Click(TObject *Sender);
-	void __fastcall miExportObjectClick(TObject *Sender);
 	void __fastcall Refresh1Click(TObject *Sender);
 	void __fastcall Checknewtextures1Click(TObject *Sender);
 	void __fastcall ebSceneCommands1MouseDown(TObject *Sender,

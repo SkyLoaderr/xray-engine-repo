@@ -72,43 +72,6 @@ bool CActorTools::EngineModel::UpdateVisual(CEditableObject* source, bool bUpdGe
 
 //---------------------------------------------------------------------------
 
-void CActorTools::EngineModel::Render(const Fmatrix& mTransform)
-{
-    // render visual
-    RCache.set_xform_world(mTransform);
-    switch (m_pVisual->Type)
-    {
-    case MT_SKELETON:{
-        CKinematics* pV					= (CKinematics*)m_pVisual;
-        vector<IVisual*>::iterator I,E;
-        I = pV->children.begin			();
-        E = pV->children.end			();
-        for (; I!=E; I++)
-        {
-            IVisual* V					= *I;
-            RCache.set_Shader			(V->hShader);
-            V->Render					(m_fLOD);
-        }
-    }break;
-    case MT_HIERRARHY:{
-        FHierrarhyVisual* pV			= (FHierrarhyVisual*)m_pVisual;
-        vector<IVisual*>::iterator 		I,E;
-        I = pV->children.begin			();
-        E = pV->children.end			();
-        for (; I!=E; I++)
-        {
-            IVisual* V					= *I;
-            RCache.set_Shader			(V->hShader);
-            V->Render					(m_fLOD);
-        }
-    }break;
-    default:
-        RCache.set_Shader				(m_pVisual->hShader);
-        m_pVisual->Render				(m_fLOD);
-        break;
-    }
-}
-
 void CActorTools::EngineModel::PlayMotion(CSMotion* M)
 {
     if (M&&IsRenderable()){
@@ -178,6 +141,19 @@ void CActorTools::OnMotionDefsModified()
     if (fraLeftBar->ebRenderEngineStyle->Down){
         m_bNeedUpdateMotionDefs = false;
         if (m_RenderObject.UpdateVisual(m_pEditObject,false,false,true)){
+            PlayMotion();
+        }else{
+            m_RenderObject.DeleteVisual();
+            fraLeftBar->SetRenderStyle(false);
+        }
+    }
+}
+
+void CActorTools::OnGeometryModified()
+{
+    if (fraLeftBar->ebRenderEngineStyle->Down){
+        m_bNeedUpdateGeometry = false;
+        if (m_RenderObject.UpdateVisual(m_pEditObject,true,false,false)){
             PlayMotion();
         }else{
             m_RenderObject.DeleteVisual();
@@ -334,6 +310,7 @@ void CActorTools::PlayMotion()
         else if (fraLeftBar->ebRenderEngineStyle->Down) {
         	if (m_bNeedUpdateMotionKeys){ OnMotionKeysModified();	}
         	if (m_bNeedUpdateMotionDefs){ OnMotionDefsModified(); 	}
+        	if (m_bNeedUpdateGeometry)	{ OnGeometryModified(); 	}
             m_RenderObject.PlayMotion(m_pEditObject->GetActiveSMotion());
         }
 }

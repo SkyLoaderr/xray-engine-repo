@@ -103,16 +103,10 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
             }
         }
     	}break;
-    case COMMAND_EXPORT_SKELETON:{
+    case COMMAND_EXPORT_OGF:{
     	AnsiString fn;
     	if (EFS.GetSaveName("$game_meshes$",fn))
-            if (Tools.ExportSkeleton(fn.c_str()))	ELog.DlgMsg(mtInformation,"Export complete.");
-            else			        		    	ELog.DlgMsg(mtError,"Export failed.");
-    	}break;
-    case COMMAND_EXPORT_OBJECT:{
-    	AnsiString fn;
-    	if (EFS.GetSaveName("$game_meshes$",fn))
-            if (Tools.ExportObject(fn.c_str()))	ELog.DlgMsg(mtInformation,"Export complete.");
+            if (Tools.ExportOGF(fn.c_str()))	ELog.DlgMsg(mtInformation,"Export complete.");
             else			        		    	ELog.DlgMsg(mtError,"Export failed.");
     	}break;
     case COMMAND_LOAD:{

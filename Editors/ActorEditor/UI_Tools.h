@@ -92,8 +92,7 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
         }
         bool 			UpdateVisual		(CEditableObject* source, bool bUpdGeom, bool bUpdKeys, bool bUpdDefs);
         bool			IsRenderable		(){return !!m_pVisual;}
-        void			Render				(const Fmatrix& mTransform);
-        void			PlayMotion			(CSMotion* motion);
+        void			PlayMotion			(CSMotion* motion); 
         void			RestoreParams		(TFormStorage* s);
         void			SaveParams			(TFormStorage* s);
     };
@@ -101,6 +100,7 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
     bool				m_bObjectModified;
     bool				m_bMotionModified;
     bool				m_bReady;
+    bool				m_bNeedUpdateGeometry;
     bool				m_bNeedUpdateMotionKeys;
     bool				m_bNeedUpdateMotionDefs;
 
@@ -155,6 +155,7 @@ public:
     void __fastcall		OnObjectModified	(void);
     void __fastcall		OnMotionDefsModified(void); 
     void 				OnMotionKeysModified(void); 
+	void 				OnGeometryModified	(void);
 
     bool				IsVisualPresent		(){return m_RenderObject.IsRenderable();}
 
@@ -181,8 +182,7 @@ public:
 
     bool				Load				(LPCSTR name);
     bool				Save				(LPCSTR name);
-    bool				ExportSkeleton		(LPCSTR name);
-    bool				ExportObject		(LPCSTR name);
+    bool				ExportOGF			(LPCSTR name);
     bool				LoadMotions			(LPCSTR name);
     bool				SaveMotions			(LPCSTR name);
     bool				AppendMotion		(LPCSTR name, LPCSTR fn);

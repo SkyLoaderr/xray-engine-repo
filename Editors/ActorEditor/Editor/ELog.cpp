@@ -33,7 +33,7 @@
 //		MessageBox(0,buf,"Information",	MB_OK|MB_ICONINFORMATION);
 	}
 #endif
-#ifdef _MAYA_EXPORT
+#ifdef _MAYA_PLUGIN
 	void __stdcall ELogCallback(LPCSTR txt)
 	{
 		if (0!=txt[0]){
@@ -42,8 +42,8 @@
 		}
 	}
 #endif
-	//----------------------------------------------------
 
+//----------------------------------------------------
 CLog ELog;
 //----------------------------------------------------
 
