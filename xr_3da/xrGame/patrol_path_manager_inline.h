@@ -121,3 +121,10 @@ IC	ref_str	CPatrolPathManager::path_name	() const
 	VERIFY					(m_path);
 	return					(m_path_name);
 }
+
+IC	void CPatrolPathManager::set_previous_point	(int point_index)
+{
+	VERIFY					(m_path);
+	VERIFY					((int)(m_path->tpaWayPoints.size()) > point_index);
+	m_prev_point_index		= point_index;
+}

@@ -61,6 +61,7 @@ public:
 	IC			void	set_route_type				(const EPatrolRouteType patrol_route_type);
 	IC			void	set_random					(bool random);
 	IC			ref_str	path_name					() const;
+	IC			void	set_previous_point			(int point_index);
 };
 
 #include "patrol_path_manager_inline.h"

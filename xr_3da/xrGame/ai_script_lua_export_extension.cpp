@@ -463,6 +463,7 @@ void CScriptEngine::export_object()
 			.def("play_sound",					(void (CLuaGameObject::*)(u32,u32,u32,u32,u32))(CLuaGameObject::play_sound))
 			.def("play_sound",					(void (CLuaGameObject::*)(u32,u32,u32,u32,u32,u32))(CLuaGameObject::play_sound))
 			.def("binded_object",				&CLuaGameObject::binded_object)
+			.def("set_previous_point",			&CLuaGameObject::set_previous_point)
 
 			// sight manager
 			.def("set_sight",					&CLuaGameObject::set_sight)
