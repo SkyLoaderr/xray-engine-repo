@@ -687,6 +687,9 @@
 				RelativePath=".\xrPhase_Subdivide.cpp">
 			</File>
 			<File
+				RelativePath="xrPhase_TangentBasis.cpp">
+			</File>
+			<File
 				RelativePath=".\xrPhase_Tesselate.cpp">
 			</File>
 			<File
