@@ -137,8 +137,8 @@ void CEffect_Rain::p_destroy	()
 void CEffect_Rain::p_remove	(Particle* P, Particle* &LST)
 {
 	VERIFY		(P);
-	Particle*	prev		= P->prev;
-	Particle*	next		= P->next;
+	Particle*	prev		= P->prev;	P->prev = NULL;
+	Particle*	next		= P->next;	P->next	= NULL;
 	if (prev) prev->next	= next;
 	if (next) next->prev	= prev;
 	if ((0==prev) && (0==next))	LST = 0;
