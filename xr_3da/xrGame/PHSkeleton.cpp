@@ -215,7 +215,7 @@ void __stdcall PushOutCallback2(bool& do_colide,dContact& c);
 void CPHSkeleton::UnsplitSingle(CPHSkeleton* SO)
 {
 	//Msg("%o,received has %d,",this,m_unsplited_shels.size());
-	//if (0==m_unsplited_shels.size())	return;	//. hack
+	if (0==m_unsplited_shels.size())	return;	//. hack
 	CPhysicsShellHolder* obj = PPhysicsShellHolder();
 	CPhysicsShellHolder* O =SO->PPhysicsShellHolder();
 	VERIFY2(m_unsplited_shels.size(),"NO_SHELLS !!");
