@@ -126,40 +126,40 @@ hit_type = wound
 
 ;entity condition
 
-satiety_v = 0.1				;0.01			;скорость уменьшения сытости со временем
-radiation_v = 0.00001		;0.004			;скорость уменьшения радиации
-satiety_power_v = 0.001		;0.01			;увеличение силы при уменьшении сытости 
-satiety_health_v = 0.001	;0.03			;увеличение здоровья при уменьшении сытости 
-satiety_critical = 0		;0.25						;критическое значения сытости (в процентах от 0..1) когда здоровье начианает уменьшаться
-radiation_health_v = 0.01	;0.006			;уменьшение здоровья при воздействии радиации
-bleeding_v = 0.05			;0.02			;потеря крови при максимальной ране
-wound_incarnation_v = 0.01	;0.001		    ;скорость заживания раны 
-morale_v			= 0.01					;скорость восстановления морали
-health_hit_part = 1.0		;0.8			;процент хита, уходящий на отнимание здоровья
-power_hit_part = 1.0		;0.9			;процент хита, уходящий на отнимание силы
+satiety_v 			= 0.01			;скорость уменьшения сытости со временем
+radiation_v 			= 0.00001 ;0.004	;скорость уменьшения радиации
+satiety_power_v 		= 0.001	;0.01		;увеличение силы при уменьшении сытости 
+satiety_health_v 		= 0.001	;0.03		;увеличение здоровья при уменьшении сытости 
+satiety_critical 		= 0	;0.25		;критическое значения сытости (в процентах от 0..1) когда здоровье начианает уменьшаться
+radiation_health_v 		= 0.01	;0.006		;уменьшение здоровья при воздействии радиации
+bleeding_v 			= 0.05	;0.02		;потеря крови при максимальной ране
+wound_incarnation_v 		= 0.01	;0.001	 	;скорость заживания раны 
+morale_v			= 0.01			;скорость восстановления морали
+health_hit_part 		= 0.05	;0.8		;процент хита, уходящий на отнимание здоровья
+power_hit_part 			= 0.05	;0.9		;процент хита, уходящий на отнимание силы
 
-burn_immunity = 0.8				;коэффициенты иммунитета 
-strike_immunity = 0.7
-shock_immunity = 1.0
-wound_immunity = 0.15	;0.30	;1.0		
-radiation_immunity = 0.2
-telepatic_immunity = 1.0
-chemical_burn_immunity = 0.9
-explosion_immunity = 0.7
-fire_wound_immunity  = 0.05
+burn_immunity 			= 0.5			;коэффициенты иммунитета 
+strike_immunity 		= 0.5
+shock_immunity 			= 1.0
+wound_immunity 			= 0.15	;0.30	;1.0		
+radiation_immunity 		= 0.2
+telepatic_immunity 		= 1.0
+chemical_burn_immunity		= 0.9
+explosion_immunity 		= 0.5
+fire_wound_immunity  		= 0.05
 
-sleep_health = 1.0		;1.5				;коэффициенты скоростей изменения параметров во время сна
-sleep_power = 1.0		;1.5
-sleep_satiety = 1.0		;0.8
-sleep_radiation = 1.0	;1.1
+sleep_health 			= 1.0		;1.5	;коэффициенты скоростей изменения параметров во время сна
+sleep_power 			= 1.0		;1.5
+sleep_satiety 			= 1.0		;0.8
+sleep_radiation 		= 1.0	;1.1
 
 eat_freq			=	5.0		; частота укусов в сек
 eat_slice			=	0.001	; увеличение сытости при 1 укусе
-eat_slice_weight	=	10.0	; уменьшение еды у трупа
+eat_slice_weight		=	10.0	; уменьшение еды у трупа
 
 
 ; Morale
-MoraleSuccessAttackQuant	= 0.3;
+MoraleSuccessAttackQuant		= 0.3;
 MoraleDeathQuant			= -0.3;
 MoraleFearQuant				= -0.002
 MoraleRestoreQuant			= 0.001
