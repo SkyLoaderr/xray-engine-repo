@@ -371,7 +371,7 @@ void CStalkerMovementManager::parse_velocity_mask	()
 	}
 	
 	object().m_fCurSpeed	= current_velocity.linear_velocity;
-	m_body.speed	= current_velocity.real_angular_velocity;
+	m_body.speed			= current_velocity.real_angular_velocity;
 	set_desirable_speed		(object().m_fCurSpeed);
 
 	switch (point.velocity & eVelocityBodyState) {
