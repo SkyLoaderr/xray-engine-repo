@@ -310,12 +310,13 @@ void CSE_ALifeObject::FillProps				(LPCSTR pref, PropItemVec& items)
 		PHelper().CreateFlag32	(items,	PrepareKey(pref,*s_name,"ALife\\Can switch offline"),	&m_flags,			flSwitchOffline);
 	}                            
 	PHelper().CreateFlag32		(items,	PrepareKey(pref,*s_name,"ALife\\Interactive"),			&m_flags,			flInteractive);
+	PHelper().CreateFlag32		(items,	PrepareKey(pref,*s_name,"ALife\\Used AI locations"),	&m_flags,			flUsedAI_Locations);
 	PHelper().CreateRToken32	(items,	PrepareKey(pref,*s_name,"ALife\\Story ID"),				&m_story_id,		&*fp_data.story_names.begin(), fp_data.story_names.size());
 }
 
 bool CSE_ALifeObject::used_ai_locations		() const
 {
-	return						(true);
+	return						(!!m_flags.is(flUsedAI_Locations));
 }
 
 bool CSE_ALifeObject::can_switch_online		() const

@@ -65,18 +65,19 @@ add_to_type_list(CSE_ALifeGraphPoint)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeObject,CSE_Abstract,CRandom)
 	enum {
-		flUseSwitches	= u32(1) << 0,
-		flSwitchOnline	= u32(1) << 1,
-		flSwitchOffline	= u32(1) << 2,
-		flInteractive	= u32(1) << 3,
-		flVisibleForAI	= u32(1) << 4,
-		flUsefulForAI	= u32(1) << 5,
-		flOfflineNoMove = u32(1) << 6,
+		flUseSwitches		= u32(1) << 0,
+		flSwitchOnline		= u32(1) << 1,
+		flSwitchOffline		= u32(1) << 2,
+		flInteractive		= u32(1) << 3,
+		flVisibleForAI		= u32(1) << 4,
+		flUsefulForAI		= u32(1) << 5,
+		flOfflineNoMove		= u32(1) << 6,
+		flUsedAI_Locations	= u32(1) << 7,
 	};
 
 public:
 	typedef CSE_Abstract inherited;
-	GameGraph::_GRAPH_ID				m_tGraphID;
+	GameGraph::_GRAPH_ID			m_tGraphID;
 	float							m_fDistance;
 	bool							m_bOnline;
 	bool							m_bDirectControl;

@@ -50,6 +50,7 @@ class CGameObject :
 	u32						m_dwFrameBeforeChild;
 	u32						m_dwFrameBeforeIndependent;
 	bool					m_spawned;
+	Flags32					m_server_flags;
 	CAI_ObjectLocation		*m_ai_location;
 
 protected:

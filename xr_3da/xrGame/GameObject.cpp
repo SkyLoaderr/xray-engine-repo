@@ -35,6 +35,7 @@ CGameObject::CGameObject		()
 	m_bCrPr_Activated			= false;
 	m_dwCrPr_ActivationStep		= 0;
 	m_ai_location				= xr_new<CAI_ObjectLocation>();
+	m_server_flags.one			();
 }
 
 CGameObject::~CGameObject		()
@@ -220,7 +221,9 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	setReady						(TRUE);
 	g_pGameLevel->Objects.net_Register	(this);
 
+	m_server_flags.one				();
 	if (O) {
+		m_server_flags					= O->m_flags;
 		if (O->m_flags.is(CSE_ALifeObject::flVisibleForAI))
 			spatial.type				|= STYPE_VISIBLEFORAI;
 		else
@@ -476,7 +479,7 @@ void CGameObject::OnRender()
 
 BOOL CGameObject::UsedAI_Locations()
 {
-	return					(TRUE);
+	return					(m_server_flags.test(CSE_ALifeObject::flUsedAI_Locations));
 }
 
 void CGameObject::add_visual_callback		(visual_callback *callback)
