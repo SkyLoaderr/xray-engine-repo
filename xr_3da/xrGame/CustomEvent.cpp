@@ -12,20 +12,15 @@ void	EV_LIST::_CreateOne(const char* DEF)
 	sscanf	(DEF,"%[^,],%s",Event,Param);
 	if (Event[0]) {
 		// Parse param's macroses
-		char	Parsed	[128];
-		char	Name	[128];
-		LPSTR	pRP_Name	=	strstr(Param,"$rp$");
-		if (pRP_Name)	{
-			strncpy			(Parsed,pRP_Name,pRP_Name-Param);
-			Parsed			[pRP_Name-Param]	= 0;
-			sscanf			(pRP_Name,"$rp$%[^$]$",Name);
-			int id			= Level().get_RPID(Name);
-			R_ASSERT		(id>=0);
-
+		char	Parsed	[128], sBegin[128], sName[128], sEnd[128], sBuf[128];
+		sscanf	(Param,"%[^$]$rp$%[^$]%[]",sBegin,sName,sEnd);
+		if (sName[0])	{
+			int id		= Level().get_RPID(sName);
+			R_ASSERT	(id>=0);
+			strconcat	(Parsed,sBegin,itoa(id,sBuf,10),sEnd);
 		} else {
-			strcpy(Parsed,Param);
+			strcpy		(Parsed,Param);
 		}
-
 
 		// Create
 		EV_DEF	D;

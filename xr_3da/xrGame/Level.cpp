@@ -220,12 +220,29 @@ BOOL CLevel::Load_GameSpecific_Before()
 	CInifile::Sect& S = pLevel->ReadSection("respawn_point");
 	for (CInifile::SectIt I=S.begin(); I!=S.end(); I++) {
 		Fvector4	pos;
-		const char*	sVal = I->second;
 		int			team;
+		const char*	sVal = I->second;
 		sscanf(sVal,"%f,%f,%f,%d,%f",&pos.x,&pos.y,&pos.z,&team,&pos.w);
 		Level().get_team(team).RespawnPoints.push_back(pos);
 	}
 	return TRUE;
+}
+int	CLevel::get_RPID(LPCSTR name)
+{
+	// Gain access to string
+	LPCSTR	params = pLevel->ReadSTRING("respawn_point",name);
+	if (0==params)	return -1;
+
+	// Read data
+	Fvector4	pos;
+	int			team;
+	sscanf		(params,"%f,%f,%f,%d,%f",&pos.x,&pos.y,&pos.z,&team,&pos.w);
+
+	// Search respawn point
+	svector<Fvector4,maxRP>	&rp = Level().get_team(team).RespawnPoints;
+	for (int i=0; i<int(rp.size()); i++)
+		if (pos.similar(rp[i],EPS_L))	return i;
+	return -1;
 }
 
 BOOL CLevel::Load_GameSpecific_After()

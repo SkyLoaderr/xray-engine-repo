@@ -13,7 +13,7 @@
 
 class CHUDManager;
 
-const int maxGroups				= 16;
+const int maxGroups				= 32;
 class CSquad
 {
 public:
@@ -26,8 +26,8 @@ public:
 	int							Size			(){return Groups.size();}
 };
 
-const int maxTeams				= 16;
-const int maxRP					= 32;
+const int maxTeams				= 32;
+const int maxRP					= 64;
 typedef FixedSET<CObject*>		objVisible;
 class CTeam
 {
@@ -112,6 +112,7 @@ public:
 		if (G >= int(SQ.Groups.size()))	SQ.Groups.resize(G+1);
 		return SQ.Groups[G];
 	}
+	int							get_RPID				(LPCSTR name);
 
 
 	// Game
