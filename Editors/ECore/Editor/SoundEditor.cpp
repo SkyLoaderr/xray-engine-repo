@@ -335,12 +335,14 @@ void __stdcall TfrmSoundLib::OnAttClick(PropValue* sender, bool& bModif, bool& b
 	ButtonValue* V 			= dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     ESoundThumbnail* thm	= m_THM_Current.back();
     switch (V->btn_num){
-    case 0: 
-    	thm->SetMaxDist		(thm->MinDist()/(0.01f*psSoundRolloff));
-   	break;
-    case 1: 
-    	thm->SetMinDist		(psSoundRolloff*thm->MaxDist()*0.01f);
-    break;
+    case 0:{
+    	float dist			= thm->MinDist()/(0.01f*psSoundRolloff);
+    	thm->SetMaxDist		(dist+0.05f*dist);
+   	}break;
+    case 1:{
+    	float dist			= psSoundRolloff*(thm->MaxDist()-0.04761f*thm->MaxDist())*0.01f;
+    	thm->SetMinDist		(dist);
+    }break;
 	}
 }
 
