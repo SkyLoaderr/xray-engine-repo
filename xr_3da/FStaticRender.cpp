@@ -311,8 +311,8 @@ IC	bool	cmp_constants	(SceneGraph::mapNormalConstants::TNode* N1, SceneGraph::ma
 void	CRender::Render		()
 {
 	Device.Statistic.RenderDUMP.Begin();
-
-	if (Target.Available())	Target.Begin	();
+	Target.set_gray	((1+sinf(Device.fTimeGlobal))/2);
+	Target.Begin	();
 	
 	// Details
 	CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d()));
