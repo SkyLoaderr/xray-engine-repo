@@ -30,9 +30,11 @@ short QC (float v)
 void CDetailManager::VS_Load()
 {
 	// Load vertex shader
-	LPD3DXBUFFER	code  = 0;
-	LPD3DXBUFFER	errors= 0;
-	R_CHK			(D3DXAssembleShaderFromFile("data\\shaders\\detail.vs",0,NULL,&code,&errors));
+	LPD3DXBUFFER	code	= 0;
+	LPD3DXBUFFER	errors	= 0;
+	CStream*		fs		= Engine.FS.Open("data\\shaders\\detail.vs");
+	R_CHK			(D3DXAssembleShader(LPCSTR(fs->Pointer()),fs->Length(),0,NULL,&code,&errors));
+	Engine.FS.Close	(fs);
 	R_CHK			(HW.pDevice->CreateVertexShader(dwDecl,LPDWORD(code->GetBufferPointer()),&VS_Code,0));
 	_RELEASE		(code);
 	_RELEASE		(errors);
