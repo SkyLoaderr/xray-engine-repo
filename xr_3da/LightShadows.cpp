@@ -12,7 +12,7 @@
 const	float	S_distance	= 48;
 const	float	S_distance2	= S_distance*S_distance;
 const	float	S_level		= .1f;
-const	int		S_size		= 64;
+const	int		S_size		= 256;
 const	int		S_rt_size	= 512;
 const	int		batch_size	= 128;
 const	float	S_tess		= .5f;
@@ -243,7 +243,7 @@ void CLightShadows::calculate	()
 	{
 		float						dim				= S_rt_size;
 		Fvector2					shift,p0,p1,t0,t1;
-		shift.set					(.5f/dim, .5f/dim);
+		shift.set					(.7f/dim, .7f/dim);
 		p0.set						(.5f/dim, .5f/dim);
 		p1.set						((dim+.5f)/dim, (dim+.5f)/dim);
 		p0.add						(shift);
