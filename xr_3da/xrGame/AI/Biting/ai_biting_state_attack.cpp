@@ -178,19 +178,18 @@ void CBitingAttack::Run()
 			pSquad = monster_squad().get_squad(pMonster);
 			squad_active = pSquad && pSquad->SquadActive();
 			
+			// Получить команду
+			SSquadCommand command;
+			pSquad->GetCommand(pMonster, command);
+			if (!squad_active || (command.type != SC_ATTACK)) squad_active = false;
+
+
 			if (bNeedRebuild) {
-				// Получить позицию, определённую груп. интелл.
-				if (squad_active) {
-					//TTime			squad_ai_last_updated;
-					//Fvector			target = pSquad->GetTargetPoint(pMonster, squad_ai_last_updated);
-					//pMonster->set_dest_direction	(target);
-				}
-				
 				pMonster->MoveToTarget(enemy);
+				if (squad_active) pMonster->set_dest_direction(command.direction);
 			}
 			
-			if (squad_active)
-				pMonster->set_use_dest_orient	(true);
+			if (squad_active) pMonster->set_use_dest_orient	(true);
 			
 			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 			

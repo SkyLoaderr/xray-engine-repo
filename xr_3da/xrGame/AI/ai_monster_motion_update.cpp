@@ -147,6 +147,8 @@ void CMotionManager::FrameUpdate()
 	if (!seq_playing && !TA_IsActive() && (!pJumping || (pJumping && !pJumping->IsActive()))) {
 		Update				();	
 		// ValidateAnimation();
+	} else {
+		pMonster->disable_path();
 	}
 }
 
@@ -160,5 +162,7 @@ void CMotionManager::UpdateScheduled()
 	if (!seq_playing && !TA_IsActive() && (!pJumping || (pJumping && !pJumping->IsActive()))) {
 		b_forced_velocity	= false;
 		Update				();	
+	} else {
+		pMonster->disable_path();
 	}
 }

@@ -46,11 +46,14 @@ void CAI_Biting::Think()
 		if (!UpdateStateManager()) {
 			StateSelector					();
 			CurrentState->Execute			(m_current_update);
+			squad_notify();
 		}
 	} else {
 		disable_path();
 	}
 	STOP_PROFILE;
+
+	
 
 
 	TranslateActionToPathParams				();
@@ -99,4 +102,22 @@ void CAI_Biting::State_PlaySound(u32 internal_type, u32 max_stop_time)
 		CSoundPlayer::play(MonsterSpace::eMonsterSoundGrowling, 0, 0, get_sd()->m_dwAttackSndDelay);
 	else 
 		CSoundPlayer::play(internal_type, 0, 0, max_stop_time);
+}
+
+void CAI_Biting::squad_notify()
+{
+	CMonsterSquad	*squad = monster_squad().get_squad(this);
+	SMemberGoal		goal;
+
+	// для определения глобального состояние можно использовать current_substate
+	// для определения конкретного типа состояния можно использовать get_state_type()
+
+	if (CurrentState == stateAttack) {
+
+		goal.type	= MG_AttackEnemy;
+		goal.entity	= const_cast<CEntityAlive*>(EnemyMan.get_enemy());
+
+	}  
+
+	squad->UpdateGoal(this, goal);
 }

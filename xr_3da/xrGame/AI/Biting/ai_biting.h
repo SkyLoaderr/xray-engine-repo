@@ -164,6 +164,7 @@ public:
 	// Process FSM
 	virtual bool			UpdateStateManager				() {return false;}
 	virtual void            StateSelector					() {}  
+			void			squad_notify					();
 	// ---------------------------------------------------------------------------------
 	
 	virtual void			Exec_Look						( float dt );
