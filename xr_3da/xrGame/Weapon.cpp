@@ -162,6 +162,7 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 	Collide::ray_query	RQ;
 
 	// direct it by dispersion factor
+	fireDispersion_Current	+= fireDispersion_Inc;
 	Fvector				dir;
 	dir.random_dir		(D,fireDispersion,Random);
 
