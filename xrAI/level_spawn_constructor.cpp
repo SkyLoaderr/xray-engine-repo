@@ -317,6 +317,25 @@ void CLevelSpawnConstructor::correct_objects					()
 	}
 }
 
+struct remove_too_far_predicate {
+	float				m_radius_sqr;
+	const CLevelGraph	*m_graph;
+	Fvector				m_position;
+
+	IC			remove_too_far_predicate	(const CLevelGraph *graph, const Fvector &position, float radius)
+	{
+		VERIFY			(graph);
+		m_graph			= graph;
+		m_position		= position;
+		m_radius_sqr	= _sqr(radius);
+	}
+
+	IC	bool	operator()					(const u32 &vertex_id) const
+	{
+		return			(m_graph->vertex_position(vertex_id).distance_to_sqr(m_position) > m_radius_sqr);
+	}
+};
+
 void CLevelSpawnConstructor::generate_artefact_spawn_positions	()
 {
 	// create graph engine
@@ -332,7 +351,41 @@ void CLevelSpawnConstructor::generate_artefact_spawn_positions	()
 		if (!zone)
 			continue;
 
-		graph_engine().search(level_graph(),zone->m_tNodeID,zone->m_tNodeID,&l_tpaStack,SFlooder<float,u32,u32>((float)zone->m_fRadius,u32(-1),u32(-1)));
+		zone->m_tNodeID						= level_graph().vertex(zone->m_tNodeID,zone->o_Position);
+		if (!level_graph().valid_vertex_position(zone->o_Position) || !level_graph().inside(zone->m_tNodeID,zone->o_Position))
+			zone->m_tNodeID					= level_graph().vertex(u32(-1),zone->o_Position);
+		const CGameLevelCrossTable::CCell	&cell = cross_table().vertex(zone->m_tNodeID);
+		zone->m_tGraphID					= cell.game_vertex_id();
+		zone->m_fDistance					= cell.distance();
+
+		graph_engine().search			(
+			level_graph(),
+			zone->m_tNodeID,
+			zone->m_tNodeID,
+			&l_tpaStack,
+			SFlooder<
+				float,
+				u32,
+				u32
+			>(
+				zone->m_fRadius,
+				u32(-1),
+				u32(-1)
+			)
+		);
+		
+		l_tpaStack.erase				(
+			remove_if(
+				l_tpaStack.begin(),
+				l_tpaStack.end(),
+				remove_too_far_predicate(
+					&level_graph(),
+					zone->o_Position,
+					zone->m_fRadius
+				)
+			),
+			l_tpaStack.end()
+		);
 
 		if (zone->m_wArtefactSpawnCount >= l_tpaStack.size())
 			zone->m_wArtefactSpawnCount	= (u16)l_tpaStack.size();
@@ -341,6 +394,9 @@ void CLevelSpawnConstructor::generate_artefact_spawn_positions	()
 
 		zone->m_dwStartIndex			= m_level_points.size();
 		m_level_points.resize			(zone->m_dwStartIndex + zone->m_wArtefactSpawnCount);
+
+//		Msg								("%s  %f [%f][%f][%f] : artefact spawn positions",zone->name_replace(),zone->m_fRadius,VPUSH(zone->o_Position));
+
 		LEVEL_POINT_STORAGE::iterator	I = m_level_points.begin() + zone->m_dwStartIndex;
 		LEVEL_POINT_STORAGE::iterator	E = m_level_points.end();
 		xr_vector<u32>::iterator		i = l_tpaStack.begin();
@@ -348,6 +404,7 @@ void CLevelSpawnConstructor::generate_artefact_spawn_positions	()
 			(*I).tNodeID				= *i;
 			(*I).tPoint					= level_graph().vertex_position(*i);
 			(*I).fDistance				= cross_table().vertex(*i).distance();
+//			Msg							("    [%f][%f][%f] : %f",VPUSH((*I).tPoint),zone->o_Position.distance_to((*I).tPoint));
 		}
 		
 		l_tpaStack.clear				();
@@ -409,6 +466,9 @@ void CLevelSpawnConstructor::update_artefact_spawn_positions	()
 		if (zone) {
 			zone->m_dwStartIndex		= level_point_count;
 			level_point_count			+= zone->m_wArtefactSpawnCount;
+//			Msg							("%s  %f [%f][%f][%f] : artefact spawn positions",zone->name_replace(),zone->m_fRadius,VPUSH(zone->o_Position));
+//			for (u32 i=zone->m_dwStartIndex; i<level_point_count; ++i)
+//				Msg						("    [%f][%f][%f] : %f",VPUSH(m_level_points[i].tPoint),zone->o_Position.distance_to(m_level_points[i].tPoint));
 		}
 	}
 

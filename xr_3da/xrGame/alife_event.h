@@ -18,7 +18,7 @@ class CALifeEvent : public IPureSerializeObject<IReader,IWriter> {
 public:
 	ALife::_EVENT_ID		m_tEventID;
 	ALife::_TIME_ID			m_tTimeID;
-	GameGraph::_GRAPH_ID		m_tGraphID;
+	GameGraph::_GRAPH_ID	m_tGraphID;
 	ALife::ECombatResult	m_tCombatResult;
 	CALifeEventGroup		*m_tpMonsterGroup1;
 	CALifeEventGroup		*m_tpMonsterGroup2;
