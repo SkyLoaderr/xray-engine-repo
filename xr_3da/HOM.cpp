@@ -94,6 +94,14 @@ void CHOM::Unload		()
 	_FREE		(m_pTris);
 }
 
+IC	void	xform		(Fmatrix& X, Fvector& D, Fvector& S, float dim_2)
+{
+	float w	= S.x*X._14 + S.y*X._24 + S.z*X._34 + X._44;
+	D.x	= ((S.x*X._11 + S.y*X._21 + S.z*X._31 + X._41)/w+1.f)*dim_2;
+	D.y	= ((S.x*X._12 + S.y*X._22 + S.z*X._32 + X._42)/w+1.f)*dim_2;
+	D.z	= (S.x*X._13 + S.y*X._23 + S.z*X._33 + X._43)/w;
+}
+
 void CHOM::Render		(CFrustum& base)
 {
 	if (0==m_pModel)	return;
@@ -111,6 +119,7 @@ void CHOM::Render		(CFrustum& base)
 	CDB::RESULT*	end	= XRC.r_end();
 	Fvector			COP = Device.vCameraPosition;
 	Fmatrix			XF	= Device.mFullTransform;
+	float			dim = occ_dim_0/2;
 	for (; it!=end; it++)
 	{
 		occTri& T	= m_pTris	[it->id];
@@ -122,9 +131,9 @@ void CHOM::Render		(CFrustum& base)
 		CDB::TRI& t	= m_pModel->get_tris() [it->id];
 
 		// XForm
-		XF.transform	(T.raster[0],*t.verts[0]);
-		XF.transform	(T.raster[1],*t.verts[1]);
-		XF.transform	(T.raster[2],*t.verts[2]);
+		xform		(T.raster[0],*t.verts[0]);
+		xform		(T.raster[1],*t.verts[1]);
+		xform		(T.raster[2],*t.verts[2]);
 		
 		// Rasterize
 		Raster.rasterize(&T);
@@ -134,4 +143,20 @@ void CHOM::Render		(CFrustum& base)
 	Raster.propagade	();
 
 	Device.Statistic.RenderCALC_HOM.End		();
+}
+
+BOOL CHOM::Visible		(Fbox& B)
+{
+	// Find min/max points of xformed-box
+	Fmatrix&	XF		= Device.mFullTransform;
+	Fbox		rect;
+	Fvector		test,src;
+	B.getpoint(0,src);	XF.transform(test,src); rect.set	(test,test);
+	B.getpoint(1,src);	XF.transform(test,src); rect.modify	(test);
+	B.getpoint(2,src);	XF.transform(test,src); rect.modify	(test);
+	B.getpoint(3,src);	XF.transform(test,src); rect.modify	(test);
+	B.getpoint(4,src);	XF.transform(test,src); rect.modify	(test);
+	B.getpoint(5,src);	XF.transform(test,src); rect.modify	(test);
+	B.getpoint(6,src);	XF.transform(test,src); rect.modify	(test);
+	B.getpoint(7,src);	XF.transform(test,src); rect.modify	(test);
 }
