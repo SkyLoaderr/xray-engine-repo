@@ -391,12 +391,6 @@ void CUIMapWnd::UpdateScroll()
 	m_UIMainScrollH.SetScrollPos(-w_pos.x);
 }
 
-void CUIMapWnd::UpdateScroll()
-{
-	Ivector2 w_pos				= m_activeLevelMap->GetWndPos();
-	m_UIMainScrollV.SetScrollPos(-w_pos.y);
-	m_UIMainScrollH.SetScrollPos(-w_pos.x);
-}
 
 void CUIMapWnd::OnScrollV()
 {
