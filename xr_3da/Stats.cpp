@@ -34,7 +34,6 @@ void CStats::Show()
 		EngineTOTAL.FrameEnd		();	
 		Sheduler.FrameEnd			();	
 		UpdateClient.FrameEnd		();	
-		Scripting.FrameEnd			();	
 		Physics.FrameEnd			();	
 		ph_collision.FrameEnd		();
 		ph_core.FrameEnd			();
@@ -275,7 +274,6 @@ void CStats::Show()
 		EngineTOTAL.FrameStart		();	
 		Sheduler.FrameStart			();	
 		UpdateClient.FrameStart		();	
-		Scripting.FrameStart		();	
 		Physics.FrameStart			();	
 		ph_collision.FrameStart		();
 		ph_core.FrameStart			();
