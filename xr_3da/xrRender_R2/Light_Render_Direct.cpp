@@ -1,8 +1,6 @@
 #include "StdAfx.h"
 #include "light_render_direct.h"
 
-const u32	SMAP_SIZE = 1024;
-
 CLight_Render_Direct::CLight_Render_Direct	()
 {
 }
@@ -13,7 +11,7 @@ CLight_Render_Direct::~CLight_Render_Direct	()
 
 void	CLight_Render_Direct::Create		()
 {
-	u32	w=SMAP_SIZE, h=SMAP_SIZE;
+	u32	w=DSM_size, h=DSM_size;
 
 	R_CHK		(HW.pDevice->CreateDepthStencilSurface	(w,h,HW.Caps.fDepth,D3DMULTISAMPLE_NONE,0,TRUE,&rt_ZB,NULL));
 	rt_smap		= Device.Shader._CreateRT	(r2_RT_smap_d,	w,h,D3DFMT_R32F);

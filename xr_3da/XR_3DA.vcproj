@@ -1495,16 +1495,6 @@
 				<File
 					RelativePath=".\light.h">
 				</File>
-				<Filter
-					Name="research : ShadowMaps"
-					Filter="">
-					<File
-						RelativePath="Light_rSM.cpp">
-					</File>
-					<File
-						RelativePath="Light_rSM.h">
-					</File>
-				</Filter>
 			</Filter>
 			<Filter
 				Name="Font output"
