@@ -11,7 +11,7 @@ public:
 	IC T* add()
 	{
 		if(block_position==block_size)next_block();
-		block_position++;
+		++block_position;
 		return &current_block[block_position-1];
 	}
 	IC void empty()
@@ -36,7 +36,7 @@ public:
 	~BlockAllocator()
 	{
 		xr_vector<T*>::iterator i=blocks.begin(),e=blocks.end();
-		for(;i!=e;i++) xr_free(*i);
+		for(;i!=e;++i) xr_free(*i);
 		blocks.clear();
 	}
 private:
@@ -49,7 +49,7 @@ private:
 
 		if(block_count==blocks.size()) add_block();
 		current_block=blocks[block_count];
-		block_count++;
+		++block_count;
 		block_position=0;
 	}
 };

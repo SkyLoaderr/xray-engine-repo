@@ -6,9 +6,9 @@
 ///////////////////////////////////////////////////////////////
 #pragma warning(disable:4995)
 #pragma warning(disable:4267)
-#include "..\ode\src\collision_kernel.h"
-#include <..\ode\src\joint.h>
-#include <..\ode\src\objects.h>
+#include "../ode/src/collision_kernel.h"
+#include <../ode/src/joint.h>
+#include <../ode/src/objects.h>
 #pragma warning(default:4267)
 #pragma warning(default:4995)
 
@@ -156,12 +156,12 @@ void CPHWorld::Step(dReal step)
 		return;
 	}
 	/*
-	m_update_delay_count++;
+	++m_update_delay_count;
 
 	if(m_update_delay_count==update_delay){
 	if(m_delay){
-	if(m_delay<m_previous_delay) m_reduce_delay--;
-	else 	m_reduce_delay++;
+	if(m_delay<m_previous_delay) --m_reduce_delay;
+	else 	++m_reduce_delay;
 	}
 	m_previous_delay=m_delay;
 	m_update_delay_count=0;
@@ -169,14 +169,14 @@ void CPHWorld::Step(dReal step)
 
 	m_delay+=(it_number-m_reduce_delay-1);
 */
-	//for(UINT i=0;i<(m_reduce_delay+1);i++)
-	for(UINT i=0; i<it_number;i++)
+	//for(UINT i=0;i<(m_reduce_delay+1);++i)
+	for(UINT i=0; i<it_number;++i)
 		{
 				
-			disable_count++;		
+			++disable_count;		
 			if(disable_count==dis_frames+1) disable_count=0;
 			
-			m_steps_num++;
+			++m_steps_num;
 			//double dif=m_frame_sum-Time();
 			//if(fabs(dif)>fixed_step) 
 			//	m_start_time+=dif;
@@ -194,7 +194,7 @@ void CPHWorld::Step(dReal step)
 		Device.Statistic.ph_collision.End	();
 
 		Device.Statistic.ph_core.Begin		();
-		for(iter=m_objects.begin();iter!=m_objects.end();iter++)
+		for(iter=m_objects.begin();m_objects.end() != iter;++iter)
 			(*iter)->PhTune(fixed_step);	
 
 		#ifdef ODE_SLOW_SOLVER
@@ -204,7 +204,7 @@ void CPHWorld::Step(dReal step)
 		#endif
 		Device.Statistic.ph_core.End		();
 
-		for(iter=m_objects.begin();iter!=m_objects.end();iter++)
+		for(iter=m_objects.begin();m_objects.end() != iter;++iter)
 				(*iter)->PhDataUpdate(fixed_step);
 		dJointGroupEmpty(ContactGroup);//this is to be called after PhDataUpdate!!!-the order is critical!!!
 		ContactFeedBacks.empty();
@@ -212,7 +212,7 @@ void CPHWorld::Step(dReal step)
 
 
 
-		//	for(iter=m_objects.begin();iter!=m_objects.end();iter++)
+		//	for(iter=m_objects.begin();m_objects.end()!=iter;++iter)
 		//			(*iter)->StepFrameUpdate(step);
 
 	}
@@ -235,7 +235,7 @@ static dContact contacts[N];
 
 	for(i = 0; i < n; ++i)
 	{
-		if(i!=0) {
+		if(!i) {
 		  dReal dif=dFabs(contacts[i-1].geom.pos[0]-contacts[i].geom.pos[0])+
 				dFabs(contacts[i-1].geom.pos[1]-contacts[i].geom.pos[1])+
 				dFabs(contacts[i-1].geom.pos[2]-contacts[i].geom.pos[2]);
@@ -243,8 +243,8 @@ static dContact contacts[N];
 		}
 
        
-		if(dGeomGetClass(contacts[i].geom.g1)!=dTriListClass &&
-			dGeomGetClass(contacts[i].geom.g2)!=dTriListClass){
+		if(dTriListClass != dGeomGetClass(contacts[i].geom.g1) &&
+			dTriListClass != dGeomGetClass(contacts[i].geom.g2)){
 											contacts[i].surface.mu =1.f;// 5000.f;
 											contacts[i].surface.soft_erp=1.f;//ERP(world_spring,world_damping);
 											contacts[i].surface.soft_cfm=1.f;//CFM(world_spring,world_damping);
@@ -361,7 +361,7 @@ dContact contacts[N];
 
 	for(i = 0; i < n; ++i)
 	{
-		if(i!=0) {
+		if(!i) {
 		  dReal dif=dFabs(contacts[i-1].geom.pos[0]-contacts[i].geom.pos[0])+
 				dFabs(contacts[i-1].geom.pos[1]-contacts[i].geom.pos[1])+
 				dFabs(contacts[i-1].geom.pos[2]-contacts[i].geom.pos[2]);
@@ -369,8 +369,8 @@ dContact contacts[N];
 		}
 
        
-		if(dGeomGetClass(contacts[i].geom.g1)!=dTriListClass &&
-			dGeomGetClass(contacts[i].geom.g2)!=dTriListClass){
+		if(dTriListClass != dGeomGetClass(contacts[i].geom.g1) &&
+			dTriListClass != dGeomGetClass(contacts[i].geom.g2)){
 											contacts[i].surface.mu =1.f;// 5000.f;
 											contacts[i].surface.soft_erp=1.f;//ERP(world_spring,world_damping);
 											contacts[i].surface.soft_cfm=1.f;//CFM(world_spring,world_damping);
@@ -657,7 +657,7 @@ void BodyCutForce(dBodyID body,float l_limit,float w_limit)
 	if(wa_mag>wa_limit)
 	{
 		//scale w 
-		for(int i=0;i<3;i++)wa[i]*=wa_limit/wa_mag;
+		for(int i=0;i<3;++i)wa[i]*=wa_limit/wa_mag;
 		dVector3 new_torqu;
 
 		dMULTIPLY0_331(new_torqu,I,wa);
@@ -677,9 +677,9 @@ void dMassSub(dMass *a,const dMass *b)
 	int i;
 	dAASSERT (a && b);
 	dReal denom = dRecip (a->mass-b->mass);
-	for (i=0; i<3; i++) a->c[i] = (a->c[i]*a->mass - b->c[i]*b->mass)*denom;
+	for (i=0; i<3; ++i) a->c[i] = (a->c[i]*a->mass - b->c[i]*b->mass)*denom;
 	a->mass-=b->mass;
-	for (i=0; i<12; i++) a->I[i] -= b->I[i];
+	for (i=0; i<12; ++i) a->I[i] -= b->I[i];
 }
 
 void __stdcall PushOutCallback(bool& do_colide,dContact& c)
