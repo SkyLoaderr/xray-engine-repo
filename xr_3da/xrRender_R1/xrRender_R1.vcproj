@@ -277,9 +277,6 @@
 				RelativePath="FStaticRender_RenderTarget.h">
 			</File>
 			<File
-				RelativePath="FStaticRender_Screenshot.cpp">
-			</File>
-			<File
 				RelativePath=".\Particle.h">
 			</File>
 			<File
@@ -305,6 +302,9 @@
 			</File>
 			<File
 				RelativePath=".\r__dsgraph_types.h">
+			</File>
+			<File
+				RelativePath=".\r__screenshot.cpp">
 			</File>
 			<File
 				RelativePath=".\Texture.cpp">

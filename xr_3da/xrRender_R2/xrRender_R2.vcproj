@@ -292,9 +292,6 @@
 				RelativePath=".\r2_R_sun.cpp">
 			</File>
 			<File
-				RelativePath="r2_screenshot.cpp">
-			</File>
-			<File
 				RelativePath="r2_sector_detect.cpp">
 			</File>
 			<File
@@ -320,6 +317,9 @@
 			</File>
 			<File
 				RelativePath=".\r__occlusion.h">
+			</File>
+			<File
+				RelativePath=".\r__screenshot.cpp">
 			</File>
 			<File
 				RelativePath=".\Texture.cpp">

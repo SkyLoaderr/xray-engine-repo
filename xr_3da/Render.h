@@ -103,6 +103,14 @@ public:
 class	ENGINE_API	IRender_interface
 {
 public:
+	enum ScreenshotMode
+	{
+		SM_NORMAL					= 0,		// jpeg,	name ignored
+		SM_FOR_CUBEMAP				= 1,		// tga,		name used as postfix
+		SM_FOR_GAMESAVE				= 2,		// dds/dxt1,name used as full-path
+		SM_forcedword				= u32(-1)
+	};
+public:
 	// options
 	s32								m_skinning;
 
@@ -192,7 +200,7 @@ public:
 	// Main
 	virtual void					Calculate				()											= 0;
 	virtual void					Render					()											= 0;
-	virtual void					Screenshot				(LPCSTR postfix=0, BOOL bSquare=FALSE)		= 0;
+	virtual void					Screenshot				(ScreenshotMode mode=SM_NORMAL, LPCSTR name = 0) = 0;
 
 	// Render mode
 	virtual void					rmNear					()											= 0;
