@@ -250,7 +250,7 @@ void CWeaponM134::Update(float dt, BOOL bHUDView)
 				pSounds->Play3DAtPos(sndFireLoop,vLastFP,true);
 				if (sndServo.feedback) sndServo.feedback->Stop();
 			}
-			Level().Cameras.SetEffector(new CEffectorShot(.5f,PI_DIV_6));
+			Level().Cameras.SetEffector(new CEffectorShot(.05f,deg2rad(.2f)));
 			break;
 		}
 		st_current=st_target;
@@ -297,6 +297,9 @@ void CWeaponM134::Update(float dt, BOOL bHUDView)
 			while (fTime<0)
 			{
 				fTime			+=fTimeToFire;
+				
+				CEffectorShot*	S = (CEffectorShot*)Level().Cameras.GetEffector();
+				if (S)			S->Shot();
 
 				UpdateFP		(bHUDView);
 				FireTrace		(p1,vLastFP,d);

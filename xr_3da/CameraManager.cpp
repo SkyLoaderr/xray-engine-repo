@@ -53,16 +53,28 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 	vDirection.inertion		(D,	psCamInert);
 	vNormal.inertion		(N,	psCamInert);
 	
-	if (pEffector) {
-		pEffector->Process(vPosition,vDirection,vNormal);
-		if (pEffector->fLifeTime<=0) _DELETE(pEffector);
-	}
-	
+	// Normalize
 	Fvector					R;
 	vDirection.normalize	();
 	vNormal.normalize		();
 	R.crossproduct			(vNormal,vDirection);
 	vNormal.crossproduct	(vDirection,R);
+
+	// Save un-affected matrix
+	mView.build_camera_dir	(vPosition,vDirection,vNormal);
+
+	if (pEffector) 
+	{
+		pEffector->Process(vPosition,vDirection,vNormal);
+		if (pEffector->fLifeTime<=0) _DELETE(pEffector);
+		
+		// Normalize
+		Fvector					R;
+		vDirection.normalize	();
+		vNormal.normalize		();
+		R.crossproduct			(vNormal,vDirection);
+		vNormal.crossproduct	(vDirection,R);
+	}
 	
 	Device.mView.build_camera_dir(vPosition,vDirection,vNormal);
 	
