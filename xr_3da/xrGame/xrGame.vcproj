@@ -1970,6 +1970,9 @@
 			RelativePath=".\Shedule.txt">
 		</File>
 		<File
+			RelativePath="AI\Stalker\System.ltx">
+		</File>
+		<File
 			RelativePath="..\network.txt">
 		</File>
 		<File
