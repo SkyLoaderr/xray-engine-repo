@@ -65,13 +65,15 @@ function fract:calculate() -- просчет лагеря
 	   device():time_global() - self.checkBegin > self.checkTime then
 		order = true
 	end
+
+	-- и затем итерировать на этой таблице при выдаче работы
 	if order then
 		self.checkBegin = device():time_global()
 		for k,v in self.Object do
 			self:setJob(v)
 		end
+		self:print()
 	end
-	self:print()
 end
 function fract:print()
 	printf("---------------------- %s ----------------------", self.name)
@@ -92,27 +94,48 @@ function fract:loadJob(name) -- загружает список заданий
 	if name == "blockpost" then
 		local t = { name = "guard",
 			object = nil,
-			prior = 9,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 6,
 			state = { 0, 1 }, -- в каких состояниях это задание существует
+			search_light = nil,
 			path_main = "blockpost_guard_left",
 			path_hideout = "blockpost_guard_left" }
 		table.insert(self.Job, t)			
 		t = { name = "guard",
 			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
 			prior = 9,
 			state = { 0, 1 }, -- в каких состояниях это задание существует
+			search_light = nil,
 			path_main = "blockpost_guard_right",
 			path_hideout = "blockpost_guard_right" }
 		table.insert(self.Job, t)			
 		t = { name = "guard",
 			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 9,
+			state = { 0, 1 }, -- в каких состояниях это задание существует
+			search_light = "blockpost_search_light",
+			path_main = "blockpost_guard_light",
+			path_hideout = "blockpost_guard_light" }
+		table.insert(self.Job, t)			
+		t = { name = "guard",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
 			prior = 10,
 			state = { 0, 1 }, -- в каких состояниях это задание существует
+			search_light = nil,
 			path_main = "blockpost_guard_center",
 			path_hideout = "blockpost_guard_center" }
 		table.insert(self.Job, t)
 		t = { name = "patrol",
 			object = nil,
+			begin = nil, 
+			idle = 600000,	-- раз в какое время запускается работа
 			prior = 8,
 			state = { 0, 1 }, -- в каких состояниях это задание существует
 			patrol_path = "blockpost_patrol_0",
@@ -120,50 +143,58 @@ function fract:loadJob(name) -- загружает список заданий
 		table.insert(self.Job, t)			
 		t = { name = "follower",
 			object = nil,
+			begin = nil, 
+			idle = 600000,	-- раз в какое время запускается работа
 			prior = 7,
 			state = { 0, 1 }, -- в каких состояниях это задание существует
 			leader_name = nil,
 			escape_path = "blockpost_escape_0" }
 		table.insert(self.Job, t)			
-		t = { name = "follower",
-			object = nil,
-			prior = 7,
-			state = { 0, 1 }, -- в каких состояниях это задание существует
-			leader_name = nil,
-			escape_path = "blockpost_escape_0" }
 		table.insert(self.Job, t)			
 		t = { name = "sleeper",
 			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
 			prior = 1,
 			state = { 0, 1 }, -- в каких состояниях это задание существует
 			path_main = "blockpost_sleep_1"}
 		table.insert(self.Job, t)			
 		t = { name = "sleeper",
 			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
 			prior = 1,
 			state = { 0, 1 }, -- в каких состояниях это задание существует
 			path_main = "blockpost_sleep_2"}
 		table.insert(self.Job, t)			
 		t = { name = "sleeper",
 			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
 			prior = 1,
 			state = { 0, 1 }, -- в каких состояниях это задание существует
 			path_main = "blockpost_sleep_3"}
 		table.insert(self.Job, t)			
 		t = { name = "sleeper",
 			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
 			prior = 1,
 			state = { 0, 1 }, -- в каких состояниях это задание существует
 			path_main = "blockpost_sleep_4"}
 		table.insert(self.Job, t)			
 		t = { name = "sleeper",
 			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
 			prior = 1,
 			state = { 0, 1 }, -- в каких состояниях это задание существует
 			path_main = "blockpost_sleep_5"}
 		table.insert(self.Job, t)			
 		t = { name = "sleeper",
 			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
 			prior = 1,
 			state = { 0, 1 }, -- в каких состояниях это задание существует
 			path_main = "blockpost_sleep_6"}
@@ -173,14 +204,6 @@ end
 function fract:setJob(npc) -- выбирает для данного npc наиболее приоритетное задание
 	-- оно должно иметь приоритет выше, чем текущее
 	local t
-
-	-- устанавливаем приоритет текущего задания
-	for k,v in self.Job do
-		if v.object == npc:id() then
-			t = v
-			break
-		end
-	end
 
 	for k,v in self.Job do
 		local ena = false
@@ -193,8 +216,16 @@ function fract:setJob(npc) -- выбирает для данного npc наиболее приоритетное зад
 		end
 		-- проверка что данное задание не занято
 		if v.object ~= nil then ena = false end
+		-- проверка что пришло время.
+		if v.begin ~= nil then
+			printf("Time checking %s %s, %d %d %d", npc:name(), v.name, device():time_global(), v.begin, device():time_global()-v.begin)
+		end
 
-		if ena then
+		if v.begin ~= nil and device():time_global() - v.begin < v.idle then
+			ena = false
+		end
+		
+		if ena == true then
 			if t == nil then
 				t = v
 			else
@@ -204,33 +235,59 @@ function fract:setJob(npc) -- выбирает для данного npc наиболее приоритетное зад
 				end
 			end
 		end
+
 	end
+	-- если приоритет выше, чем приоритет текущего задания - тогда пропускаем.
+	if t ~= nil then
+		for k,v in self.Job do
+			if v.object == npc:id() then
+				if v.prior >= t.prior then
+					t = nil
+					break
+				end
+			end
+		end
+	end
+
 	if t ~= nil then
 		-- удаляем у этого npc все работы (в сторадже)
 		self:clearAllJob(npc)
+
 		--устанавливаем данные для текущей работы	
 		if t.name == "guard" then
 			t.object = npc:id()
-		        xr_guard.set_guard(npc, true, t.path_main, t.path_hideout)			
+			t.begin = device():time_global()
+		        xr_guard.set_guard(npc, true, t.path_main, t.path_hideout, t.search_light)
 		end
 		if t.name == "sleeper" then
 			t.object = npc:id()
+			t.begin = device():time_global()
 		        xr_sleeper.set_sleeper(npc, true, t.path_main)			
 		end
 		if t.name == "patrol" then
 			t.object = npc:id()
+			t.begin = device():time_global()
 		        xr_patrol.set_patrol(npc, true, t.patrol_path, t.escape_path)			
 		end
 		if t.name == "follower" then
 			local nn = self:nameStalkerOnJob("patrol")
 			if nn ~= nil then
 				t.object = npc:id()
+				t.begin = device():time_global()
 			        xr_follower.set_follower(npc, true, nn, t.escape_path)			
 			end
 		end
 	end
 end
 function fract:clearAllJob(npc)
+	-- изменения в списке заданий
+	for k,v in self.Job do
+		if v.object == npc:id() then	
+			v.object = nil
+		end
+	end
+
+	-- изменения в сторадже
 	for k,v in xr_motivator.storage[npc:id()] do
 		if k == "sleeper" or
 		   k == "camper" or
@@ -272,10 +329,8 @@ function fract:setState(id)
 end
 function fract:stalkerExsist(npc)
 	-- существует ли сталкер
-	for k,v in self.Object do
-		if v.id == npc:id() then	
-			return true
-		end
+	if self.Object[npc:id()] ~= nil then	
+		return true
 	end
 	return false
 end
@@ -301,5 +356,7 @@ function isUnderFraction(npc)
 	return nil
 end             
 function resetJob(fraction, npc)
+	printf("CALLED resetJob: %s, %s", fraction, npc:name())
 	xr_gulag.fraction[fraction]:clearAllJob(npc)
+	xr_gulag.fraction[fraction]:setJob(npc)
 end         
