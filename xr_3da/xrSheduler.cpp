@@ -10,6 +10,7 @@ CSheduled::CSheduled	()
 	shedule_Min			= 20;
 	shedule_Max			= 1000;
 	shedule_TimeStamp	= 0;
+	shedule_PMON		= 0;
 	shedule_Register	();
 }
 
@@ -95,7 +96,8 @@ void CSheduler::UpdateLevel			(DWORD Priority, DWORD mcs)
 			u64		cycles_save		= cycles_elapsed;
 			T.Object->Update		(Elapsed);
 			cycles_elapsed			= CPU::GetCycleCount()-cycles_start;
-			T.Object->shedule_PMON	= float(u64(cycles_elapsed-cycles_save))*CPU::cycles2microsec;
+			float PMON				= float(u64(cycles_elapsed-cycles_save))*CPU::cycles2microsec;
+			T.Object->shedule_PMON	= .7f * T.Object->shedule_PMON + .3f * PMON;
 		}
 	}
 }

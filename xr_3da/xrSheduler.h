@@ -56,7 +56,7 @@ private:
 	{
 		return Items.front();
 	}
-	void			UpdateLevel	(DWORD P, DWORD mcs)
+	void			UpdateLevel	(DWORD P, DWORD mcs);
 public:
 	void			Update		();
 	void			Register	(CSheduled* A, DWORD priority=SHEDULE_NORMAL);
