@@ -50,17 +50,7 @@
 		<text x="103" y="2" font="normal" r="239" g="154" b="29" a="230"></text>
 	</static>
 
-	<!-- tips static -->
-	<quick_info x="1" y="600" width="1022" height="50">
-		<!-- id numbers must be same with EActorAction enumeration members, -->
-		<!-- which located in actor_defs.h file -->
-		<tip id="0">A</tip> <!-- no action -->
-		<tip id="1">Pickup item (default E)</tip>
-		<tip id="2">Talk with the person (default E)</tip>
-		<tip id="3">Open door (default E)</tip>
-		<tip id="4">Search corpse (default E)</tip>
-	</quick_info>
-	
+
 	<!-- PDA Message List-->
 	<list x="15" y="325" width="525" height="420" item_height = "70"></list>
 	
