@@ -1625,6 +1625,10 @@
 						</File>
 					</Filter>
 					<Filter
+						Name="Motivations"
+						Filter="">
+					</Filter>
+					<Filter
 						Name="MovementManager"
 						Filter="">
 						<File
