@@ -44,13 +44,13 @@ void CRenderTarget::accum_direct	()
 		// Shader + constants
 		RCache.set_Shader			(s_accum_direct);
 		Fvector4 J; float scale		= (3.f / DSM_size)/11.f;
-		R_constant* C				= RCache.set_c			("jitter");
-		J.set(11, 0,  0);		J.sub(11); J.mul(scale);	RCache.set_ca	(C,0,J.x,J.y,-J.y,-J.x);
-		J.set(19, 3,  0);		J.sub(11); J.mul(scale);	RCache.set_ca	(C,1,J.x,J.y,-J.y,-J.x);
-		J.set(22, 11, 0);		J.sub(11); J.mul(scale);	RCache.set_ca	(C,2,J.x,J.y,-J.y,-J.x);
-		J.set(19, 19, 0);		J.sub(11); J.mul(scale);	RCache.set_ca	(C,3,J.x,J.y,-J.y,-J.x);
-		J.set(9,  7,  15, 9);	J.sub(11); J.mul(scale);	RCache.set_ca	(C,4,J.x,J.y,J.w,J.z);
-		J.set(13, 15, 7,  13);	J.sub(11); J.mul(scale);	RCache.set_ca	(C,5,J.x,J.y,J.w,J.z);
+		R_constant* _C				= RCache.get_c			("jitter");
+		J.set(11, 0,  0);		J.sub(11); J.mul(scale);	RCache.set_ca	(_C,0,J.x,J.y,-J.y,-J.x);
+		J.set(19, 3,  0);		J.sub(11); J.mul(scale);	RCache.set_ca	(_C,1,J.x,J.y,-J.y,-J.x);
+		J.set(22, 11, 0);		J.sub(11); J.mul(scale);	RCache.set_ca	(_C,2,J.x,J.y,-J.y,-J.x);
+		J.set(19, 19, 0);		J.sub(11); J.mul(scale);	RCache.set_ca	(_C,3,J.x,J.y,-J.y,-J.x);
+		J.set(9,  7,  15, 9);	J.sub(11); J.mul(scale);	RCache.set_ca	(_C,4,J.x,J.y,J.w,J.z);
+		J.set(13, 15, 7,  13);	J.sub(11); J.mul(scale);	RCache.set_ca	(_C,5,J.x,J.y,J.w,J.z);
 
 		// Render
 		RCache.set_Geometry			(g_combine);
