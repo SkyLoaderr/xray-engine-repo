@@ -69,7 +69,6 @@ void CGameObject::reinit	()
 
 	m_visual_callback.clear		();
 	CAI_ObjectLocation::reinit	();
-//	CPrefetchManager::reinit	();
 	m_tpALife					= 0;
 }
 

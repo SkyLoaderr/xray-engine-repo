@@ -46,6 +46,7 @@ void CInventoryOwner::reload				(LPCSTR section)
 
 void CInventoryOwner::reinit				()
 {
+	CAttachmentOwner::reinit	();
 	inventory().m_pOwner		= this;
 	m_trade_storage->m_pOwner	= this;
 
