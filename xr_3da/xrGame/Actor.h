@@ -57,7 +57,7 @@ public:
 protected:
 	// Weapons and Items
 	CWeaponList*			Weapons;
-	CTargetCS*			m_pArtifact;
+	CTargetCS*				m_pArtifact;
 
 	// Respawning after DIE
 	BOOL					die_bWantRespawn;
