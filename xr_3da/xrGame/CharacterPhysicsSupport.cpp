@@ -99,13 +99,23 @@ void CCharacterPhysicsSupport::SpawnInitPhysics(CSE_Abstract* e)
 void CCharacterPhysicsSupport::in_NetDestroy()
 {
 	m_PhysicMovementControl.DestroyCharacter();
-	if((!b_skeleton_in_shell||m_pPhysicsShell)&&m_physics_skeleton)//.
+	//if((!b_skeleton_in_shell||m_pPhysicsShell)&&m_physics_skeleton)//.
+	//{
+	//		m_physics_skeleton->Deactivate();
+	//		xr_delete(m_physics_skeleton);
+	//		b_skeleton_in_shell=false;
+	//} 
+	if(m_physics_skeleton)
 	{
-			m_physics_skeleton->Deactivate();
-			xr_delete(m_physics_skeleton);
-			b_skeleton_in_shell=false;
+		m_physics_skeleton->Deactivate();
+		xr_delete(m_physics_skeleton);
 	}
-	
+	if(m_pPhysicsShell)
+	{
+		m_pPhysicsShell->Deactivate();
+		xr_delete(m_pPhysicsShell);
+	}
+	b_skeleton_in_shell=false;
 	CPHSkeleton::RespawnInit();
 	CPHDestroyable::RespawnInit();
 	m_eState=esAlive;
