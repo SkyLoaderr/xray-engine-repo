@@ -259,11 +259,11 @@ float LightPoint(CDB::COLLIDER& DB, Fvector &Pold, Fvector &N, LSelection& SEL)
 			if (!RayPick(DB,Pnew,Ldir,1000.f,*L))	amount+=D*L->amount;
 		} else {
 			// Distance
-			float sqD	= P.distance_to_sqr(L->position);
+			float sqD	= Pnew.distance_to_sqr(L->position);
 			if (sqD > L->range2) continue;
 			
 			// Dir
-			Ldir.sub	(L->position,P);
+			Ldir.sub	(L->position,Pnew);
 			Ldir.normalize_safe();
 			float D		= Ldir.dotproduct( N );
 			if( D <=0 ) continue;
