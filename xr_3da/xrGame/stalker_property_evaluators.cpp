@@ -9,6 +9,8 @@
 #include "stdafx.h"
 #include "stalker_property_evaluators.h"
 #include "ai/stalker/ai_stalker.h"
+#include "stalker_decision_space.h"
+using namespace StalkerDecisionSpace;
 
 typedef CStalkerPropertyEvaluator::_value_type _value_type;
 
@@ -109,5 +111,49 @@ _value_type CStalkerPropertyEvaluatorReadyToKill::evaluate	()
 _value_type CStalkerPropertyEvaluatorKillDistance::evaluate	()
 {
 	return				(m_object->kill_distance());
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorSafeToKill
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerPropertyEvaluatorSafeToKill::CStalkerPropertyEvaluatorSafeToKill(CPropertyStorage *storage)
+{
+	m_storage			= storage;
+	m_last_cover_time	= 0;
+}
+
+_value_type CStalkerPropertyEvaluatorSafeToKill::evaluate	()
+{
+	if (!m_object->enemy())
+		return			(false);
+
+	CMemoryInfo			mem_object = m_object->memory(m_object->enemy());
+	if (!mem_object.m_object)
+		return			(false);
+
+	if (!m_object->visible(m_object->enemy())) {
+		Fvector			direction;
+		float			y,p;
+		direction.sub	(mem_object.m_object_params.m_position,m_object->Position());
+		direction.getHP	(y,p);
+		float			cover = ai().level_graph().cover_in_direction(y,m_object->level_vertex_id());
+		if (cover <= .2f)
+			m_last_cover_time = Level().timeServer();
+		else
+			if ((Level().timeServer() <= mem_object.m_level_time + 10000) &&
+				(Level().timeServer() > m_last_cover_time + 10000))
+				return	(false);
+	}
+	else
+		if (Level().timeServer() >= m_last_cover_time + 10000)
+			return		(false);
+		else
+			return		(true);
+
+	if (m_storage->property(eWorldPropertyFireEnough))
+		return			(false);
+
+	return				(true);
 }
 

@@ -414,11 +414,17 @@ void CStalkerAnimations::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 								break;
 							}
 							case eMovementTypeWalk : {
-								tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[7].A[0];
+								if (stalker->body_state() == eBodyStateStand)
+									tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[7].A[0];
+								else
+									tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[6].A[0];
 								break;
 							}
 							case eMovementTypeRun : {
-								tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[stalker->IsLimping() ? 7 : 8].A[0];
+								if (stalker->body_state() == eBodyStateStand)
+									tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[stalker->IsLimping() ? 7 : 8].A[0];
+								else
+									tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[6].A[0];
 								break;
 							}
 							default : NODEFAULT;

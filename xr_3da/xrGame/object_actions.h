@@ -131,19 +131,6 @@ public:
 };
 
 //////////////////////////////////////////////////////////////////////////
-// CObjectActionAim
-//////////////////////////////////////////////////////////////////////////
-
-class CObjectActionAim : public CObjectActionMember<CInventoryItem> {
-protected:
-	typedef CObjectActionMember<CInventoryItem> inherited;
-
-public:
-						CObjectActionAim	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, _condition_type condition_id, _value_type value, LPCSTR action_name = "");
-	virtual void		initialize			();
-};
-
-//////////////////////////////////////////////////////////////////////////
 // CObjectActionStrapping
 //////////////////////////////////////////////////////////////////////////
 
@@ -232,6 +219,20 @@ protected:
 
 public:
 						CObjectActionThreaten	(CAI_Stalker *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name = "");
+	virtual void		execute					();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CObjectActionAim
+//////////////////////////////////////////////////////////////////////////
+
+class CObjectActionAim : public CObjectActionMember<CInventoryItem> {
+protected:
+	typedef CObjectActionMember<CInventoryItem> inherited;
+
+public:
+						CObjectActionAim		(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, _condition_type condition_id, _value_type value, LPCSTR action_name = "");
+	virtual void		initialize				();
 	virtual void		execute					();
 };
 

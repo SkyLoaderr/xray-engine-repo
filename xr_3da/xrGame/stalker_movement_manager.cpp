@@ -57,16 +57,16 @@ void CStalkerMovementManager::Load					(LPCSTR section)
 	m_movement_params.insert		(std::make_pair(eMovementParameterWalkFreePositive						,STravelParams(m_fWalkFreeFactor					,PI_DIV_8/1	,cf*PI_DIV_8/1	)));
 	m_movement_params.insert		(std::make_pair(eMovementParameterRunFreePositive						,STravelParams(m_fRunFreeFactor						,PI_DIV_8/2	,cf*PI_DIV_8/2	)));
 	m_movement_params.insert		(std::make_pair(eMovementParameterWalkDangerStandPositive				,STravelParams(m_fWalkFactor						,100*PI		,cf*PI			)));
-	m_movement_params.insert		(std::make_pair(eMovementParameterWalkDangerCrouchPositive				,STravelParams(m_fWalkFactor*m_fCrouchFactor		,3*PI_DIV_2	,cf*3*PI_DIV_2	)));
-	m_movement_params.insert		(std::make_pair(eMovementParameterRunDangerStandPositive				,STravelParams(m_fRunFactor							,100*PI		,cf*PI_DIV_2	)));
-	m_movement_params.insert		(std::make_pair(eMovementParameterRunDangerCrouchPositive				,STravelParams(m_fRunFactor*m_fCrouchFactor			,PI			,cf*PI			)));
+	m_movement_params.insert		(std::make_pair(eMovementParameterWalkDangerCrouchPositive				,STravelParams(m_fWalkFactor*m_fCrouchFactor		,100*PI_DIV_2,cf*100*PI_DIV_2)));
+	m_movement_params.insert		(std::make_pair(eMovementParameterRunDangerStandPositive				,STravelParams(m_fRunFactor							,100*PI		,2*cf*PI_DIV_2	)));
+	m_movement_params.insert		(std::make_pair(eMovementParameterRunDangerCrouchPositive				,STravelParams(m_fRunFactor*m_fCrouchFactor			,100*PI		,cf*100*PI		)));
 	m_movement_params.insert		(std::make_pair(eMovementParameterRunPanicStandPositive					,STravelParams(m_fPanicFactor						,PI_DIV_8/2	,cf*PI_DIV_8/2	)));
 																																											
 	m_movement_params.insert		(std::make_pair(eMovementParameterWalkFreeDamagedPositive				,STravelParams(m_fDamagedWalkFreeFactor				,PI_DIV_8	,cf*PI_DIV_8	)));
 	m_movement_params.insert		(std::make_pair(eMovementParameterRunFreeDamagedPositive				,STravelParams(m_fDamagedRunFreeFactor				,PI_DIV_8/2	,cf*PI_DIV_8/2	)));
 	m_movement_params.insert		(std::make_pair(eMovementParameterWalkDangerStandDamagedPositive		,STravelParams(m_fDamagedWalkFactor					,PI			,cf*PI			)));
 	m_movement_params.insert		(std::make_pair(eMovementParameterWalkDangerCrouchDamagedPositive		,STravelParams(m_fWalkFactor*m_fCrouchFactor		,3*PI_DIV_2	,cf*3*PI_DIV_2	)));
-	m_movement_params.insert		(std::make_pair(eMovementParameterRunDangerStandDamagedPositive			,STravelParams(m_fDamagedRunFactor					,PI_DIV_2	,cf*PI_DIV_2	)));
+	m_movement_params.insert		(std::make_pair(eMovementParameterRunDangerStandDamagedPositive			,STravelParams(m_fDamagedRunFactor					,PI_DIV_2	,2*cf*PI_DIV_2	)));
 	m_movement_params.insert		(std::make_pair(eMovementParameterRunDangerCrouchDamagedPositive		,STravelParams(m_fRunFactor*m_fCrouchFactor			,PI			,cf*PI			)));
 	m_movement_params.insert		(std::make_pair(eMovementParameterRunPanicDamagedStandPositive			,STravelParams(m_fDamagedPanicFactor				,PI_DIV_8/2	,cf*PI_DIV_8/2	)));
 																																											

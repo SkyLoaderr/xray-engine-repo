@@ -24,6 +24,7 @@ CScript::CScript(LPCSTR caNamespaceName)
 
 	m_virtual_machine	= lua_newthread(ai().script_engine().lua());
 	VERIFY2				(lua(),"Cannot create new Lua thread");
+	m_thread_reference	= luaL_ref(ai().script_engine().lua(),LUA_REGISTRYINDEX);
 	
 #ifdef DEBUG
 	lua_sethook			(lua(),CScriptEngine::lua_hook_call,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
@@ -45,7 +46,8 @@ CScript::CScript(LPCSTR caNamespaceName)
 
 CScript::~CScript()
 {
-	xr_delete			(m_script_name);
+	luaL_unref				(ai().script_engine().lua(),LUA_REGISTRYINDEX,m_thread_reference);
+	xr_delete				(m_script_name);
 }
 
 bool CScript::Update()

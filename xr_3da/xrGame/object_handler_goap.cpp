@@ -405,7 +405,7 @@ void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
 	add_operator		(uid(id,eWorldOperatorStrapped),	action);
 
 	// aim1
-	action				= xr_new<CObjectActionMember<CInventoryItem> >(weapon,m_object,&m_storage,eWorldPropertyAimed1,true,"aim1");
+	action				= xr_new<CObjectActionAim>(weapon,m_object,&m_storage,eWorldPropertyAimed1,true,"aim1");
 	add_condition		(action,id,eWorldPropertyHidden,	false);
 	add_condition		(action,id,eWorldPropertySwitch1,	true);
 	add_effect			(action,id,eWorldPropertyAimed1,	true);
@@ -414,7 +414,7 @@ void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
 	add_operator		(uid(id,eWorldOperatorAim1),		action);
 
 	// aim2
-	action				= xr_new<CObjectActionMember<CInventoryItem> >(weapon,m_object,&m_storage,eWorldPropertyAimed2,true,"aim2");
+	action				= xr_new<CObjectActionAim>(weapon,m_object,&m_storage,eWorldPropertyAimed2,true,"aim2");
 	add_condition		(action,id,eWorldPropertyHidden,	false);
 	add_condition		(action,id,eWorldPropertySwitch2,	true);
 	add_effect			(action,id,eWorldPropertyAimed2,	true);
@@ -505,7 +505,7 @@ void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
 	add_operator		(uid(id,eWorldOperatorSwitch2),		action);
 
 	// aiming ready1
-	action				= xr_new<CObjectActionMember<CInventoryItem> >(weapon,m_object,&m_storage,eWorldPropertyAimed1,true,"aim_ready1");
+	action				= xr_new<CObjectActionAim>(weapon,m_object,&m_storage,eWorldPropertyAimed1,true,"aim_ready1");
 	add_condition		(action,id,eWorldPropertyHidden,	false);
 	add_condition		(action,id,eWorldPropertySwitch1,	true);
 	add_condition		(action,id,eWorldPropertyReady1,	true);
@@ -515,7 +515,7 @@ void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
 	add_operator		(uid(id,eWorldOperatorAimingReady1),action);
 
 	// aiming ready2
-	action				= xr_new<CObjectActionMember<CInventoryItem> >(weapon,m_object,&m_storage,eWorldPropertyAimed2,true,"aim_ready2");
+	action				= xr_new<CObjectActionAim>(weapon,m_object,&m_storage,eWorldPropertyAimed2,true,"aim_ready2");
 	add_condition		(action,id,eWorldPropertyHidden,	false);
 	add_condition		(action,id,eWorldPropertySwitch2,	true);
 	add_effect			(action,id,eWorldPropertyAimed2,	true);

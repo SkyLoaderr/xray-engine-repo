@@ -14,6 +14,7 @@
 class CScript : public CScriptStackTracker {
 protected:
 	LPSTR	m_script_name;
+	int		m_thread_reference;
 
 public:
 	bool	m_bActive;

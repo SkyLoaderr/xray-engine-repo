@@ -251,3 +251,22 @@ void CObjectActionThreaten::execute			()
 		m_object->inventory().Action(kWPN_FIRE,	CMD_STOP);
 #endif
 }
+
+//////////////////////////////////////////////////////////////////////////
+// CObjectActionAim
+//////////////////////////////////////////////////////////////////////////
+
+CObjectActionAim::CObjectActionAim			(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, _condition_type condition_id, _value_type value, LPCSTR action_name) :
+	inherited							(item,owner,storage,condition_id,value,action_name)
+{
+}
+
+void CObjectActionAim::initialize			()
+{
+	inherited::inherited::initialize	();
+}
+
+void CObjectActionAim::execute				()
+{
+	inherited::execute					();
+}

@@ -60,7 +60,8 @@ void CMotivationActionManagerStalker::reinit			(CAI_Stalker *object, bool clear_
 	m_storage.clear			();
 	m_storage.set_property	(eWorldPropertyDead,false);
 	m_storage.set_property	(eWorldPropertyEnemyAimed,false);
-	m_storage.set_property	(eWorldPropertyEnemyLost,false);
+	m_storage.set_property	(eWorldPropertyFireEnough,false);
+	m_storage.set_property	(eWorldPropertySafeToKill,false);
 
 #ifdef LOG_ACTION
 	if (psAI_Flags.test(aiGOAP))
@@ -129,6 +130,8 @@ void CMotivationActionManagerStalker::add_evaluators		()
 	add_evaluator			(eWorldPropertyPuzzleSolved		,xr_new<CStalkerPropertyEvaluatorConst>				(false));
 
 	add_evaluator			(eWorldPropertyDead				,xr_new<CStalkerPropertyEvaluatorMember>			(&m_storage,eWorldPropertyDead,true));
+	add_evaluator			(eWorldPropertyEnemyAimed		,xr_new<CStalkerPropertyEvaluatorMember>			(&m_storage,eWorldPropertyEnemyAimed,true,true));
+	add_evaluator			(eWorldPropertyFireEnough		,xr_new<CStalkerPropertyEvaluatorMember>			(&m_storage,eWorldPropertyFireEnough,true,true));
 	
 	add_evaluator			(eWorldPropertyALife			,xr_new<CStalkerPropertyEvaluatorALife>				());
 	add_evaluator			(eWorldPropertyAlive			,xr_new<CStalkerPropertyEvaluatorAlive>				());
@@ -142,8 +145,7 @@ void CMotivationActionManagerStalker::add_evaluators		()
 	add_evaluator			(eWorldPropertyFoundAmmo		,xr_new<CStalkerPropertyEvaluatorFoundAmmo>			());
 	add_evaluator			(eWorldPropertyReadyToKill		,xr_new<CStalkerPropertyEvaluatorReadyToKill>		());
 	add_evaluator			(eWorldPropertyKillDistance		,xr_new<CStalkerPropertyEvaluatorKillDistance>		());
-	add_evaluator			(eWorldPropertyEnemyAimed		,xr_new<CStalkerPropertyEvaluatorMember>			(&m_storage,eWorldPropertyEnemyAimed,true,true));
-	add_evaluator			(eWorldPropertyEnemyLost		,xr_new<CStalkerPropertyEvaluatorMember>			(&m_storage,eWorldPropertyEnemyLost,true,true));
+	add_evaluator			(eWorldPropertySafeToKill		,xr_new<CStalkerPropertyEvaluatorSafeToKill>		(&m_storage));
 }
 
 void CMotivationActionManagerStalker::add_actions			()
@@ -276,17 +278,6 @@ void CMotivationActionManagerStalker::add_actions			()
 	add_effect				(action,eWorldPropertyEnemy,		false);
 	add_operator			(eWorldOperatorKillEnemyAggressive,	action);
 
-	action					= xr_new<CStalkerActionAimEnemy>	(m_object,"aim_enemy");
-	add_condition			(action,eWorldPropertyAlive,		true);
-	add_condition			(action,eWorldPropertyEnemy,		true);
-	add_condition			(action,eWorldPropertySeeEnemy,		true);
-	add_condition			(action,eWorldPropertyKillDistance,	true);
-	add_condition			(action,eWorldPropertyReadyToKill,	true);
-	add_condition			(action,eWorldPropertyItemToKill,	true);
-	add_condition			(action,eWorldPropertyItemCanKill,	true);
-	add_effect				(action,eWorldPropertyEnemyAimed,	true);
-	add_operator			(eWorldOperatorAimEnemy,			action);
-
 	action					= xr_new<CStalkerActionGetReadyToKillAvoid>(m_object,"get_ready_to_kill_avoid");
 	add_condition			(action,eWorldPropertyAlive,		true);
 	add_condition			(action,eWorldPropertyItemToKill,	true);
@@ -324,6 +315,7 @@ void CMotivationActionManagerStalker::add_actions			()
 	add_condition			(action,eWorldPropertyAlive,		true);
 	add_condition			(action,eWorldPropertyEnemy,		true);
 	add_condition			(action,eWorldPropertyReadyToKill,	true);
+//	add_condition			(action,eWorldPropertySafeToKill,	true);
 	add_condition			(action,eWorldPropertySeeEnemy,		false);
 	add_effect				(action,eWorldPropertySeeEnemy,		true);
 	add_operator			(eWorldOperatorGetEnemySeenModerate,action);
@@ -345,11 +337,12 @@ void CMotivationActionManagerStalker::add_actions			()
 	add_condition			(action,eWorldPropertyItemToKill,	true);
 	add_condition			(action,eWorldPropertyItemCanKill,	true);
 	add_condition			(action,eWorldPropertyEnemyAimed,	true);
-	add_condition			(action,eWorldPropertyEnemyLost,	false);
+//	add_condition			(action,eWorldPropertySafeToKill,	true);
+	add_condition			(action,eWorldPropertyFireEnough,	false);
 	add_effect				(action,eWorldPropertyEnemy,		false);
 	add_operator			(eWorldOperatorKillEnemyModerate,	action);
 
-	action					= xr_new<CStalkerActionKillEnemyLostModerate>	(m_object,"kill_enemy_moderate_lost");
+	action					= xr_new<CStalkerActionAimEnemy>	(m_object,"aim_enemy");
 	add_condition			(action,eWorldPropertyAlive,		true);
 	add_condition			(action,eWorldPropertyEnemy,		true);
 	add_condition			(action,eWorldPropertySeeEnemy,		true);
@@ -357,7 +350,42 @@ void CMotivationActionManagerStalker::add_actions			()
 	add_condition			(action,eWorldPropertyReadyToKill,	true);
 	add_condition			(action,eWorldPropertyItemToKill,	true);
 	add_condition			(action,eWorldPropertyItemCanKill,	true);
-	add_condition			(action,eWorldPropertyEnemyLost,	true);
-	add_effect				(action,eWorldPropertyEnemy,		false);
-	add_operator			(eWorldOperatorKillEnemyLostModerate,action);
+	add_effect				(action,eWorldPropertyEnemyAimed,	true);
+//	add_condition			(action,eWorldPropertySafeToKill,	true);
+	add_condition			(action,eWorldPropertyFireEnough,	false);
+	add_operator			(eWorldOperatorAimEnemy,			action);
+
+//	action					= xr_new<CStalkerActionKillEnemyLostModerate>	(m_object,"kill_enemy_moderate_lost");
+//	add_condition			(action,eWorldPropertyAlive,		true);
+//	add_condition			(action,eWorldPropertyEnemy,		true);
+//	add_condition			(action,eWorldPropertySeeEnemy,		true);
+//	add_condition			(action,eWorldPropertyKillDistance,	true);
+//	add_condition			(action,eWorldPropertyReadyToKill,	true);
+//	add_condition			(action,eWorldPropertyItemToKill,	true);
+//	add_condition			(action,eWorldPropertyItemCanKill,	true);
+//	add_condition			(action,eWorldPropertySafeToKill,	false);
+//	add_effect				(action,eWorldPropertyEnemy,		false);
+//	add_operator			(eWorldOperatorKillEnemyLostModerate,action);
+//
+//	action					= xr_new<CStalkerActionTakeCover>	(m_object,"take_cover");
+//	add_condition			(action,eWorldPropertyAlive,		true);
+//	add_condition			(action,eWorldPropertyEnemy,		true);
+//	add_condition			(action,eWorldPropertyKillDistance,	true);
+//	add_condition			(action,eWorldPropertyReadyToKill,	true);
+//	add_condition			(action,eWorldPropertyItemToKill,	true);
+//	add_condition			(action,eWorldPropertyItemCanKill,	true);
+//	add_condition			(action,eWorldPropertySafeToKill,	false);
+//	add_effect				(action,eWorldPropertySafeToKill,	true);
+//	add_operator			(eWorldOperatorTakeCover,			action);
+
+	action					= xr_new<CStalkerActionTakeCover>	(m_object,"take_cover");
+	add_condition			(action,eWorldPropertyAlive,		true);
+	add_condition			(action,eWorldPropertyEnemy,		true);
+	add_condition			(action,eWorldPropertyKillDistance,	true);
+	add_condition			(action,eWorldPropertyReadyToKill,	true);
+	add_condition			(action,eWorldPropertyItemToKill,	true);
+	add_condition			(action,eWorldPropertyItemCanKill,	true);
+	add_condition			(action,eWorldPropertyFireEnough,	true);
+	add_effect				(action,eWorldPropertyFireEnough,	false);
+	add_operator			(eWorldOperatorTakeCover,			action);
 }

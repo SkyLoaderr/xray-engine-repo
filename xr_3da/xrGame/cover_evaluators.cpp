@@ -91,6 +91,7 @@ void CCoverEvaluatorBest::evaluate			(CCoverPoint *cover_point)
 	direction.sub			(m_enemy_position,cover_point->position());
 	direction.getHP			(y,p);
 	float					cover_value = ai().level_graph().cover_in_direction(y,cover_point->level_vertex_id());
+//	float					cover_value = ai().level_graph().compute_square(y,PI_DIV_2,cover_point->level_vertex_id());
 	if (cover_value >= m_best_value)
 		return;
 
@@ -136,8 +137,8 @@ void CCoverEvaluatorAngle::evaluate			(CCoverPoint *cover_point)
 	direction.sub			(cover_point->position(),m_enemy_position);
 	direction.getHP			(y,p);
 	float					cover_value = ai().level_graph().cover_in_direction(y + PI,cover_point->level_vertex_id());
-	if (cover_value >= 2.f*m_best_value)
-		return;
+//	if (cover_value >= 2.f*m_best_value)
+//		return;
 
 	direction.normalize_safe();
 	float					cos_a = direction.dotproduct(m_best_direction);

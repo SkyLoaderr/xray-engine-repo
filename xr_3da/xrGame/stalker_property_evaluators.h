@@ -150,4 +150,21 @@ public:
 	virtual _value_type	evaluate						();
 };
 
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorSafeToKill
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerPropertyEvaluatorSafeToKill : public CStalkerPropertyEvaluator {
+protected:
+	typedef CStalkerPropertyEvaluator inherited;
+
+protected:
+	u32					m_last_cover_time;
+
+public:
+						CStalkerPropertyEvaluatorSafeToKill	(CPropertyStorage *storage);
+	virtual _value_type	evaluate							();
+};
+
+
 #include "stalker_property_evaluators_inline.h"

@@ -69,8 +69,7 @@ void CScriptProcessor::update()
 		strcpy	(m_caOutput,"");
 		g_ca_stdout = m_caOutput;
 		if (!m_tpScripts[i]->Update()) {
-			remove_thread	(m_tpScripts[i]);
-			xr_delete		(m_tpScripts[i]);
+			xr_delete	(m_tpScripts[i]);
 			m_tpScripts.erase(m_tpScripts.begin() + i);
 			--i;
 			--n;
@@ -91,17 +90,4 @@ void CScriptProcessor::add_script	(LPCSTR	script_name)
 void CScriptProcessor::add_string	(LPCSTR	string_to_run)
 {
 	m_strings_to_run.push_back(xr_strdup(string_to_run));
-}
-
-void CScriptProcessor::remove_thread(CScript *script)
-{
-	bool				ok = false;
-	CLuaVirtualMachine	*L = ai().script_engine().lua(), *T = script->lua();
-	for (int i=1, n=lua_gettop(L); i<=n; ++i)
-		if ((lua_type(L,i) == LUA_TTHREAD) && (lua_tothread(L,i) == T)) {
-			lua_remove(L,i);
-			ok	= true;
-			break;
-		}
-	VERIFY2				(ok,"Cannot find LUA thread in the LUA stack!");
 }
