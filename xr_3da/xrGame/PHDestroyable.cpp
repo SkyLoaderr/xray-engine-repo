@@ -145,3 +145,8 @@ void CPHDestroyable::RespawnInit()
 	m_flags.set(fl_destroyed,FALSE);
 	m_destroyed_obj_visual_names.clear();
 }
+
+void CPHDestroyable::NotificateDestroy(CPHDestroyableNotificate *dn)
+{
+
+}

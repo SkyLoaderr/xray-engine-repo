@@ -3,7 +3,7 @@
 
 class CPhysicsShellHolder;
 class CSE_Abstract;
-
+class CPHDestroyableNotificate;
 class CPHDestroyable
 {
 			xr_vector<shared_str>		m_destroyed_obj_visual_names																											;
@@ -23,6 +23,7 @@ public:
 
 			void						Load						(LPCSTR section)																							;
 			void						Load						(CInifile* ini,LPCSTR section)																				;
+			void						NotificateDestroy			(CPHDestroyableNotificate *dn);
 IC			bool						CanDestroy					()												{return m_flags.test(fl_destroyable)&&!m_flags.test(fl_destroyed);}
 virtual		void						GenSpawnReplace				(u16 source_id,LPCSTR section,shared_str visual_name)														;
 virtual		void						InitServerObject			(CSE_Abstract*				D)																				;

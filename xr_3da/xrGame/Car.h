@@ -34,6 +34,7 @@ class CCar :
 	public CPHDestroyable,
 	public CPHCollisionDamageReceiver,
 	public CHitImmunity
+	//public CExplosive
 {
 	static BONE_P_MAP bone_map; //interface for PhysicsShell
 	virtual void						PhDataUpdate				(dReal step)			;

@@ -189,9 +189,8 @@ BOOL CCar::net_SaveRelevant()
 
 void CCar::SaveNetState(NET_Packet& P)
 {
-	CPHSkeleton::SaveNetState	   (P);
-	P.w_float(fEntityHealth);
 
+	CPHSkeleton::SaveNetState	   (P);
 	P.w_vec3(Position());
 	Fvector Angle;
 	XFORM().getHPB(Angle);
@@ -213,6 +212,7 @@ void CCar::SaveNetState(NET_Packet& P)
 		for(;i!=e;++i)
 			i->second.SaveNetState(P);
 	}
+	P.w_float(fEntityHealth);
 }
 
 void CCar::RestoreNetState(CSE_PHSkeleton* po)

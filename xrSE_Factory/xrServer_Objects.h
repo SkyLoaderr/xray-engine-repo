@@ -109,8 +109,9 @@
 // 90 - CSE_ALifeItemPDA				appended with m_specific_character, m_info_portion
 // 91 - CSE_ALifeHumanStalker			appended with property demo_mode
 // 92 - CSE_AlifeCreatureActor			added base class CSE_PHSkeleton
+// 93 - CSE_AlifeCar					health added in STATE_Read STATE_Write
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(92)
+#define SPAWN_VERSION	u16(93)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:

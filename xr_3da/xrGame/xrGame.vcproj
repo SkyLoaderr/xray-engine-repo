@@ -6857,6 +6857,12 @@
 							Name="PhysicsSkeletonObject"
 							Filter="">
 							<File
+								RelativePath=".\PHDestroyableNotificate.cpp">
+							</File>
+							<File
+								RelativePath=".\PHDestroyableNotificate.h">
+							</File>
+							<File
 								RelativePath=".\PhysicsSkeletonObject.cpp">
 							</File>
 							<File

@@ -1198,12 +1198,15 @@ void CSE_ALifeCar::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
 		inherited2::STATE_Read		(tNetPacket,size);
 		if ((m_wVersion > 52) && (m_wVersion < 55))
 		tNetPacket.r_float		();
+	if(m_wVersion>92)
+			health=tNetPacket.r_float();
 }
 
 void CSE_ALifeCar::STATE_Write			(NET_Packet	&tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
 	inherited2::STATE_Write		(tNetPacket);
+	tNetPacket.w_float(health);
 }
 
 void CSE_ALifeCar::UPDATE_Read			(NET_Packet	&tNetPacket)
@@ -1234,7 +1237,7 @@ void CSE_ALifeCar::data_load(NET_Packet	&tNetPacket)
 	//inherited1::data_load(tNetPacket);
 	inherited2::data_load(tNetPacket);
 	//VERIFY(door_states.empty());
-	health=tNetPacket.r_float();
+
 	tNetPacket.r_vec3(o_Position);
 	tNetPacket.r_vec3(o_Angle);
 	door_states.clear();
@@ -1257,7 +1260,6 @@ void CSE_ALifeCar::data_save(NET_Packet &tNetPacket)
 {
 	//inherited1::data_save(tNetPacket);
 	inherited2::data_save(tNetPacket);
-	tNetPacket.w_float(health);
 	tNetPacket.w_vec3(o_Position);
 	tNetPacket.w_vec3(o_Angle);
 	{
@@ -1301,6 +1303,7 @@ void CSE_ALifeCar::FillProps				(LPCSTR pref, PropItemVec& values)
 {
   	inherited1::FillProps			(pref,values);
 	inherited2::FillProps			(pref,values);
+	PHelper().CreateFloat		(values, PrepareKey(pref,*s_name,"Health"),			&health,			0.f, 100.f);
 }
 
 ////////////////////////////////////////////////////////////////////////////
