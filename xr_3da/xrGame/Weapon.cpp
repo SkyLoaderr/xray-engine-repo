@@ -112,6 +112,7 @@ void CWeapon::Load		(CInifile* ini, const char* section)
 	light_var_color		= ini->ReadFLOAT	(section,"light_var_color"	);
 	light_var_range		= ini->ReadFLOAT	(section,"light_var_range"	);
 	light_lifetime		= 1.f;
+	light_time			= -1.f;
 	iHitPower			= ini->ReadINT		(section,"hit_power"		);
 
 	bVisible			= FALSE;
