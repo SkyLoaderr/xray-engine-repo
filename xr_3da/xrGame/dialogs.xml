@@ -210,6 +210,7 @@
 	</dialog>
 
 	<dialog id="stalker_talk_about">
+	<precondition>trader_job.if_not_a_trader</precondition>
 	    <has_info>actor_start</has_info>
 		<phrase_list>
 			<phrase id="0">

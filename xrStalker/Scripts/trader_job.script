@@ -32,6 +32,14 @@ function is_trader (first_speaker, second_speaker)
 	return false
 end
 
+function if_not_a_trader (first_speaker, second_speaker)
+
+	if (clsid.trader == second_speaker:clsid()) then
+		return false
+    end
+	return true
+end
+
 function is_box_present(first_speaker, second_speaker)
 
 	printf("whether we have box: first %s, second %s", first_speaker:name(), second_speaker:name())
