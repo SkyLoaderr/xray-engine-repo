@@ -334,7 +334,7 @@ void CPathNodes::BuildTravelLine(const Fvector& current_pos)
 	Fvector		Last		= AI.tfGetNodeCenter(Nodes.back());
 
 	// segmentation
-	PContour					Ccur,Cnext;
+	PContour				Ccur,Cnext;
 	UnpackContour			(Ccur,Nodes[0]);
 	Segments.clear			();
 	for (DWORD I=1; I<Nodes.size(); I++)
@@ -388,6 +388,7 @@ void CPathNodes::BuildTravelLine(const Fvector& current_pos)
 			Msg("AI_BuildTravelLine : suspicious Y-point found");
 		}
 	/**/
+	Engine.Sheduler.Slice	();
 }
 
 void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, float speed, float dt)

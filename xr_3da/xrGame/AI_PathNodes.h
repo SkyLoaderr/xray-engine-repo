@@ -28,7 +28,7 @@ public:
 	vector<PSegment>	Segments;
 
 	float				fSpeed;
-	bool				m_bCollision;
+	BOOL				m_bCollision;
 
 	CPathNodes()	{
 		bNeedRebuild	= FALSE;

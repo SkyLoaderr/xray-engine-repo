@@ -349,7 +349,4 @@ void CMovementControl::CheckEnvironment()
 			}
 		}
 	}
-
-	//
-	Engine.Sheduler.Slice();
 }
