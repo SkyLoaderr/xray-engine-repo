@@ -14,15 +14,24 @@ BOOL CMercuryBall::net_Spawn(LPVOID DC) {
 	return TRUE;
 }
 
-void CMercuryBall::OnH_A_Chield		()
-{
+void CMercuryBall::OnH_A_Chield() {
 	inherited::OnH_A_Chield		();
 	setVisible					(false);
 	setEnabled					(false);
 }
-void CMercuryBall::OnH_B_Independent	()
-{
+
+void CMercuryBall::OnH_B_Independent() {
 	inherited::OnH_B_Independent();
 	setVisible					(true);
 	setEnabled					(true);
+}
+
+void CMercuryBall::OnDeviceCreate() {
+	inherited::OnDeviceCreate();
+	CKinematics* V = PKinematics(Visual());
+	if(V) V->PlayCycle("idle");
+}
+
+void CMercuryBall::OnDeviceDestroy() {
+	inherited::OnDeviceDestroy	();
 }
