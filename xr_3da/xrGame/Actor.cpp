@@ -3,19 +3,15 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "..\xr_area.h"
-#include "..\bodyinstance.h"
 #include "..\effectorfall.h"
 #include "..\CameraLook.h"
 #include "..\CameraFirstEye.h"
 #include "..\xr_level_controller.h"
-#include "..\fmesh.h"
 #include "EffectorBobbing.h"
 #include "customitem.h"
 #include "hudmanager.h"
 #include "Actor_Flags.h"
 #include "UI.h"
-#include "..\3dsound.h"
 
 // breakpoints
 #include "..\xr_input.h"

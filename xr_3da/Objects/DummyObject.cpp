@@ -3,9 +3,6 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "..\bodyinstance.h"
-#include "..\fmesh.h"
-#include "..\3dsound.h"
 
 #include "DummyObject.h"
 #include "..\ObjectAnimator.h"
@@ -14,24 +11,16 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CDummyObject::CDummyObject()
+CDummyObject::CDummyObject	()
 {
 	animator = 0;
 	style = 0;
-	Device.seqRender.Add(this,REG_PRIORITY_LOW-1111);
 }
 
-CDummyObject::~CDummyObject()
+CDummyObject::~CDummyObject	()
 {
-	Device.seqRender.Remove(this);
 	_DELETE(animator);
 	pSounds->Delete(sndDummy);
-}
-
-void CDummyObject::OnRender()
-{
-	if (bDebug)
-		PKinematics(pVisual)->DebugRender(svTransform);
 }
 
 void CDummyObject::Update(DWORD dt)

@@ -1,6 +1,4 @@
 #include "stdafx.h"
-#include "..\bodyinstance.h"
-#include "..\fmesh.h"
 #include "..\CameraFirstEye.h"
 #include "..\environment.h"
 #include "..\xr_streamsnd.h"

@@ -13,7 +13,6 @@
 #include "..\\ai_monsters_misc.h"
 #include "..\\..\\CustomMonster.h"
 #include "..\\..\\group.h"
-#include "..\\..\\..\\bodyinstance.h"
 
 class CAI_Zombie : public CCustomMonster  
 {

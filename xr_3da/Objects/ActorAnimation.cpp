@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Actor.h"
 #include "ActorAnimation.h"
-#include "..\bodyinstance.h"
 #include "..\xr_level_controller.h"
 
 void CActor::SActorState::SAnimState::Create(CKinematics* K, LPCSTR base0, LPCSTR base1){

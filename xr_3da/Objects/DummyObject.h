@@ -7,30 +7,31 @@
 #pragma once
 
 // refs
-class ENGINE_API C3DSound;
 class CObjectAnimator;
 
-class CDummyObject : public CObject, public pureRender
+class CDummyObject		: public CObject
 {
-	CObjectAnimator*	animator;
-	Fvector				start_position;
+	typedef	CObject		inherited;
 
+private:
 	enum SStyle{
-		esAnimated		= 0x0001,
-		esSkeleton		= 0x0002
+		esAnimated	=1<<0,	
+		esSkeleton	=1<<1, 
+		esParticles	=1<<2, 
+		esSound		=1<<3
 	};
 	DWORD				style;
+private:
+	CObjectAnimator*	animator;
+	Fvector				start_position;
+	sound				snd;
 
-	sound				sndDummy;
-
-	typedef	CObject		inherited;
 public:
-	virtual void		Load			(CInifile* ini, const char* section);
+	virtual void		Load			( CInifile* ini, LPCSTR section);
 	virtual void		Update			( DWORD dt );
 
-	void				PlayDemo		(LPCSTR N);
+	void				PlayDemo		( LPCSTR N );
 
-	virtual void		OnRender		( );
 	CDummyObject		();
 	virtual ~CDummyObject();
 };

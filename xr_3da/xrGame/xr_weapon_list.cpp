@@ -1,7 +1,4 @@
 #include "stdafx.h"
-#include "..\bodyinstance.h"
-#include "..\fmesh.h"
-
 #include "xr_weapon_list.h"
 #include "entity.h"
 

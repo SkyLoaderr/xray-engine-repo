@@ -8,7 +8,6 @@
 
 #include "stdafx.h"
 #include "..\\..\\xr_weapon_list.h"
-#include "..\\..\\..\\3dsound.h"
 #include "ai_hen.h"
 #include "ai_hen_selectors.h"
 

@@ -2,7 +2,6 @@
 #include "car.h"
 #include "..\camerabase.h"
 #include "..\cameralook.h"
-#include "..\bodyinstance.h"
 #include "..\xr_level_controller.h"
 
 CCar::CCar(void)

@@ -12,7 +12,6 @@
 #include "..\\ai_monsters_misc.h"
 #include "..\\..\\xr_weapon_list.h"
 #include "..\\..\\hudmanager.h"
-#include "..\\..\\..\\3dsound.h"
 #include "..\\..\\..\\xr_trims.h"
 
 CAI_Soldier::CAI_Soldier()

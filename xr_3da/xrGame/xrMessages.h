@@ -82,9 +82,32 @@ M_SPAWN
 		u8			g_team;			// user defined
 		u8			g_squad;		// user defined
 		u8			g_group;		// user defined
-		
 	}
+	dummy
+	{
+		u8				style;				// esAnimated=1<<0,	esSkeleton=1<<1, esParticles=1<<2, esSound=1<<3
 
+		esAnimated
+		{
+			u8			count;
+			stringZ		names[...count...];	// names of animations files
+		}
+		esSkeleton
+		{
+			u8			count;
+			stringZ		names[...count...];	// animations
+		}
+		esParticles
+		{
+			u8			count;
+			stringZ		names[...count...];	// name of PS in library 
+		}
+		esSound
+		{
+			u8			count;
+			stringZ		names[...count...];	// name of sound file
+		}
+	}
 	zone
 	{
 		cform {

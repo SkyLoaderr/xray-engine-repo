@@ -3,8 +3,6 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "..\bodyinstance.h"
-#include "..\fmesh.h"
 #include "..\xr_hudfont.h"
 #include "ai_console.h"
 #include "CustomMonster.h"

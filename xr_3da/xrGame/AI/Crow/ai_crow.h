@@ -11,7 +11,6 @@
 
 #include "..\\..\\CustomMonster.h"
 #include "..\\..\\group.h"
-#include "..\\..\\..\\bodyinstance.h"
 
 class CAI_Crow : public CCustomMonster  
 {

@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "custommonster.h"
-#include "..\bodyinstance.h"
 #include "xr_weapon_list.h"
 
 IC void conv_angle(float& c)

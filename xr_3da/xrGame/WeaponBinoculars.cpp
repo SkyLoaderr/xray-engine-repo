@@ -1,9 +1,6 @@
 #include "stdafx.h"
 
 #include "WeaponBinoculars.h"
-#include "..\render.h"
-#include "..\bodyinstance.h"
-#include "..\3DSound.h"
 #include "..\portal.h"
 #include "WeaponHUD.h"
 #include "xr_weapon_list.h"

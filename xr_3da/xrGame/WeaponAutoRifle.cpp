@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "effectorshot.h"
-#include "..\bodyinstance.h"
 #include "..\xr_tokens.h"
-#include "..\3DSound.h"
 #include "..\PSObject.h"
 #include "..\xr_trims.h"
 #include "hudmanager.h"

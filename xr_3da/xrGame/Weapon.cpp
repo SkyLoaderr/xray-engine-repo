@@ -4,7 +4,6 @@
 
 #include "stdafx.h"
 #include "effectorshot.h"
-#include "..\bodyinstance.h"
 #include "..\portal.h"
 #include "..\PSObject.h"
 #include "Weapon.h"

@@ -4,8 +4,6 @@
 
 #include "stdafx.h"
 #include "Rain.h"
-#include "..\3dsound.h"
-#include "..\psvisual.h"
 
 const float snd_fade		= 0.2f;
 const int	desired_items	= 2500;

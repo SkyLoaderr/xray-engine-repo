@@ -1,8 +1,5 @@
 #include "stdafx.h"
 #include "CustomDoor.h"
-#include "..\bodyinstance.h"
-#include "..\fmesh.h"
-#include "..\3dsound.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

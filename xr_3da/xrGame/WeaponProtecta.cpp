@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "effectornoise.h"
-#include "..\bodyinstance.h"
 #include "..\xr_tokens.h"
-#include "..\3DSound.h"
 #include "..\PSObject.h"
 #include "..\PSVisual.h"
 #include "..\xr_trims.h"

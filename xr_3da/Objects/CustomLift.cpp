@@ -1,7 +1,5 @@
 #include "stdafx.h"
 #include "CustomLift.h"
-#include "..\bodyinstance.h"
-#include "..\fmesh.h"
 
 #define LIFT_ACCEL 10.f
 //////////////////////////////////////////////////////////////////////

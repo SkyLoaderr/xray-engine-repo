@@ -7,8 +7,6 @@
 #include "..\CameraLook.h"
 #include "..\CameraFirstEye.h"
 #include "..\xr_level_controller.h"
-#include "..\bodyinstance.h"
-#include "..\fmesh.h"
 #include "..\environment.h"
 
 #define	FLY_ACCEL		10.0f
