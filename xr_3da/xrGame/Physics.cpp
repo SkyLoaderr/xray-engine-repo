@@ -563,10 +563,9 @@ void CPHWorld::Step(dReal step)
 {
 			// compute contact joints and forces
 	///return;
-	disable_count++;	
-	if(disable_count==dis_frames+1) disable_count=0;
 
-	vector<CPHObject*>::iterator iter;
+
+	list<CPHObject*>::iterator iter;
 	//step+=astep;
 	const dReal max_step=0.02f;//0.0034f;
 	//const dReal min_step=0.005f;
@@ -577,7 +576,8 @@ void CPHWorld::Step(dReal step)
 
 	if(step<=max_step){
 			
-	
+	disable_count++;	
+	if(disable_count==dis_frames+1) disable_count=0;
 		//if((step+=rest)<min_step) return ;
 		//rest=0;
 		
@@ -618,7 +618,9 @@ void CPHWorld::Step(dReal step)
 		UINT n=(UINT)(step/max_step)+1;
 		for(UINT i=0; i<n;i++)
 		{
-	
+			disable_count++;	
+			if(disable_count==dis_frames+1) disable_count=0;
+
 			dWorldSetERP(phWorld,  step*k_p/n / (step*k_p/n + k_d));
 			dWorldSetCFM(phWorld,  1.f / (step*k_p/n + k_d));
 
@@ -961,7 +963,10 @@ void CPHShell::setMass(float M){
 void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2){
 	if(bActive)
 		return;
+	m_ident=ph_world->AddObject(this);
+
 		vector<CPHElement*>::iterator i;
+		
 		mXFORM.set(m0);
 		for(i=elements.begin();i!=elements.end();i++){
 														(*i)->Start();
@@ -1006,22 +1011,19 @@ if(!bActive)
 	vector<CPHElement*>::iterator i;
 	for(i=elements.begin();i!=elements.end();i++)
 	(*i)->Deactivate();
+ph_world->RemoveObject(m_ident);
 bActive=false;
 }
 
-void CPHShell::Update(){
-	vector<CPHElement*>::iterator i;
-	for(i=elements.begin();i!=elements.end();i++)
-	(*i)->Update();
-
-if( !dBodyIsEnabled(m_body)) {
-					if(previous_p[0]!=dInfinity) previous_p[0]=dInfinity;
-					return;
-				}
-				
+void CPHShell::PhDataUpdate(dReal step){
 		//////////////////////////////////////////////////////////////////////
 		/////limit velocity of the main body/////////////////////////////////
 		/////////////////////////////////////////////////////////////////////
+	if( !dBodyIsEnabled(m_body)) {
+					if(previous_p[0]!=dInfinity) previous_p[0]=dInfinity;
+					return;
+				}
+
 				static const dReal u = -0.1f;
 				static const dReal w_limit = M_PI/4.f/0.02f;
 				static const dReal l_limit = 3.f/0.02f;
@@ -1040,39 +1042,9 @@ if( !dBodyIsEnabled(m_body)) {
 					dBodySetAngularVel(m_body,rot[0]/f,rot[1]/f,rot[2]/f);
 				}
 
-				PHDynamicData::DMXPStoFMX(dBodyGetRotation(m_body),
-							  dBodyGetPosition(m_body),
-							  mXFORM);
-	
-				//////////////////////////////////////////////////////////////////////////////////////////
-				////////disabling main body///////////////////////////////////////////////////////////////
-				//////////////////////////////////////////////////////////////////////////////////////////
-				/*
-					 dReal* force=const_cast<dReal*>(dBodyGetForce(m_body));
-					 dReal* torq=const_cast<dReal*>(dBodyGetTorque (m_body));
-					force[1]+=(-2.f*9.81f);
-				if(previous_f[0]!=dInfinity){
-					if(dDOT(previous_f,force)<=0.f && dDOT(previous_t,torq)<=0.f)
-						dis_count_f++;
-					else dis_count_f=0;
-				}
-
-				if(dis_count_f==3){
-					dBodyDisable(m_body);
-					dis_count_f=0;
-					previous_f[0]=dInfinity;
-				}
-
-				
-					previous_f[0]=force[0];
-					previous_f[1]=force[1];
-					previous_f[2]=force[2];
-					
-					previous_t[0]=torq[0];
-					previous_t[1]=torq[1];
-					previous_t[2]=torq[2];
-				
-*/
+//////////////////////////////////////////////////////////////////////////////////////////
+////////disabling main body///////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
 				if(previous_p[0]==dInfinity&&ph_world->disable_count==0){
 					const dReal* position=dBodyGetPosition(m_body);
 					previous_p[0]=position[0];
@@ -1157,5 +1129,26 @@ if( !dBodyIsEnabled(m_body)) {
 				}
 
 			/////////////////////////////////////////////////////////////////
+	
+				
+
+}
+void CPHShell::PhTune(dReal step){
+}
+
+void CPHShell::Update(){
+	vector<CPHElement*>::iterator i;
+	for(i=elements.begin();i!=elements.end();i++)
+	(*i)->Update();
+
+if( !dBodyIsEnabled(m_body)) return;
+				
+
+
+				PHDynamicData::DMXPStoFMX(dBodyGetRotation(m_body),
+							  dBodyGetPosition(m_body),
+							  mXFORM);
+	
+
 
 }

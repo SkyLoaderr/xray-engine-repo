@@ -97,7 +97,7 @@ class CPHWorld {
 	dSpaceID Space;
 	
 	CPHMesh Mesh;
-	vector<CPHObject*> m_objects;
+	list<CPHObject*> m_objects;
 public:
 	
 	CPHGun Gun;
@@ -110,7 +110,14 @@ public:
 	dSpaceID GetSpace(){return Space;};
 //	dWorldID GetWorld(){return phWorld;};
 	void Create();
-	void AddObject(CPHObject*object){m_objects.push_back(object);};
+	list <CPHObject*> ::iterator AddObject(CPHObject* object){
+		m_objects.push_back(object);
+	//list <CPHObject*> ::iterator i= m_objects.end();
+	return --(m_objects.end());
+		};
+	void RemoveObject(list<CPHObject*> :: iterator i){
+		m_objects.erase((i));
+	};
 	//CPHElement* AddElement(){
 	//CPHElement* phelement=new CPHElement(Space);
 	//elements.push_back(phelement);
@@ -179,7 +186,7 @@ public:
 	virtual ~CPHElement	();
 };
 ///////////////////////////////////////////////////////////////////////
-class CPHShell: public CPhysicsShell {
+class CPHShell: public CPhysicsShell,public CPHObject {
 vector<CPHElement*> elements;
 Fmatrix m_m2;
 Fmatrix m_m0;
@@ -194,10 +201,12 @@ dVector3 previous_t;
 dReal previous_dev;
 dReal previous_v;
 UINT dis_count_f;
-
+list<CPHObject*>::iterator m_ident;
 public:
 	CPHShell				()							{bActive=false;
-														dis_count_f=0;};
+														dis_count_f=0;
+													//	ph_world->AddObject(this);
+																		};
 
 	virtual	void			add_Element				(CPhysicsElement* E)		  {
 		elements.push_back((CPHElement*)E);
@@ -214,6 +223,8 @@ public:
 
 	virtual void			applyForce				(const Fvector& dir, float val)				{};
 	virtual void			applyImpulse			(const Fvector& dir, float val)				{};
+virtual	void PhDataUpdate(dReal step);
+virtual	void PhTune(dReal step);
 
 };
 
