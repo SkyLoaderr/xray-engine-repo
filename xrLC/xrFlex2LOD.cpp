@@ -70,7 +70,6 @@ void	CBuild::Flex2LOD()
 				}
 
 				_C.mul_rgb		(1/(_N+EPS));
-				_C.a			= 1.f;
 				ptColor			= _C.get();
 			}
 		}

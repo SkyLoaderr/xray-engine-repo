@@ -6,11 +6,14 @@ class base_Vertex
 {
 public: 
 	Fvector					P;
+	Fvector					N;
+	Fcolor					C;		// all_lights(R,G,B),	???(A)
+	float					L_hemi;	// hemisphere
 public:
-	virtual ~base_Vertex() = 0; 
-};	
+	virtual ~base_Vertex()	= 0; 
+};
 class base_Face		
-{ 
+{
 public: 
 	Fvector					basis_tangent		[3];
 	Fvector					basis_binormal		[3];
@@ -55,9 +58,6 @@ extern const int edge2idx			[3][2];
 class Vertex	: public base_Vertex
 {
 public:
-	Fvector		N;
-	Fcolor		Color;				// only used for Per-Vertex lighting
-
 	vecAdj		adjacent;
 
 	Vertex*		CreateCopy_NOADJ	();

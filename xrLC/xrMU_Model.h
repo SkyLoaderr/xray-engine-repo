@@ -36,8 +36,6 @@ public:
 	//** 
 	struct	_vertex	: public ::base_Vertex
 	{
-		Fvector		N;
-		Fcolor		C;
 		v_faces		adjacent;
 
 	public:

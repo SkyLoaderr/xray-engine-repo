@@ -66,10 +66,9 @@ void CBuild::LightPatches()
 		LightPatch(C,g_pathes[i].P,.7f);
 
 		Lumel.lerp			(C,g_params.m_lm_amb_color,g_params.m_lm_amb_fogness);
-		Lumel.a				= 1.f;
-		g_pathes[i].color = Lumel.get();
+		g_pathes[i].color	= Lumel.get();
 
-		if (0 == i%32) Progress(float(i)/float(g_pathes.size()));
+		if (0 == i%32)		Progress(float(i)/float(g_pathes.size()));
 	}
 
 	Status("Subdividing...");
