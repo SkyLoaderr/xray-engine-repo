@@ -349,7 +349,11 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 	}
 
 	// tracer
-	Level().Tracers.Add	(Peff,end_point,tracerHeadSpeed,tracerTrailCoeff,tracerStartLength,tracerWidth);
+	if (tracerFrame != Device.dwFrame) 
+	{
+		tracerFrame = Device.dwFrame;
+		Level().Tracers.Add	(Peff,end_point,tracerHeadSpeed,tracerTrailCoeff,tracerStartLength,tracerWidth);
+	}
 
 	// light
 	Light_Start			();

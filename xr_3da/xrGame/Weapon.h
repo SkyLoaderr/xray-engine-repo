@@ -79,6 +79,7 @@ protected:
 	float			tracerTrailCoeff;
 	float			tracerStartLength;
 	float			tracerWidth;
+	DWORD			tracerFrame;
 	
 	CLightPPA		light_base;
 	CLightPPA		light_build;
