@@ -343,7 +343,7 @@ void CCar::ParseDefinitions()
 	CKinematics* pKinematics=PKinematics(Visual());
 	bone_map.insert(mk_pair(pKinematics->LL_GetBoneRoot(),physicsBone()));
 	CInifile* ini = pKinematics->LL_UserData();
-	if(! ini) return;
+	R_ASSERT2(ini,"Car has no description !!! See ActorEditor Object - UserData");
 
 	m_camera_position			= ini->r_fvector3("car_definition","camera_pos");
 	///////////////////////////car definition///////////////////////////////////////////////////
