@@ -16,8 +16,8 @@ void CSE_ALifeSimulator::vfProcessAllTheSwitches()
 {
 	// processing online/offline switches
 	D_OBJECT_PAIR_IT					I = m_tpCurrentLevel->find(m_tNextFirstSwitchObjectID);;
-	u64									qwStartTime	= CPU::GetCycleCount();
-	u64									l_qwMaxProcessTime = m_qwMaxProcessTime/SWITCH_TIME_FACTOR;
+//	u64									qwStartTime	= CPU::GetCycleCount();
+//	u64									l_qwMaxProcessTime = m_qwMaxProcessTime/SWITCH_TIME_FACTOR;
 	R_ASSERT2							(m_tpCurrentLevel,"There is no actor in the game!");
 	for (int i=1; ; i++) {
 		m_bSwitchChanged				= false;
