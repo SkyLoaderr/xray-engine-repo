@@ -45,6 +45,7 @@ void CSE_ALifeObject::script_register(lua_State *L)
 			"cse_alife_object",
 			CSE_Abstract
 		)
+		.def_readonly("online",	&CSE_ALifeObject::m_bOnline)
 	];
 }
 
