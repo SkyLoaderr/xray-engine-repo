@@ -263,7 +263,7 @@ void CActor::ActorUse()
 					smart_cast<CGameObject*>(m_pPersonWeLookingAt));
 			}
 		}
-		else if(m_pVehicleWeLookingAt && Level().IR_GetKeyState(DIK_LSHIFT))
+		else if(m_pVehicleWeLookingAt && smart_cast<CCar*>(m_pVehicleWeLookingAt) && Level().IR_GetKeyState(DIK_LSHIFT))
 		{
 			//только если находимся в режиме single
 			CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
