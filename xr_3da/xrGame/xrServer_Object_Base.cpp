@@ -323,7 +323,7 @@ void CSE_Abstract::FillProps				(LPCSTR pref, PropItemVec& items)
 	PHelper().CreateFlag32		(items,PrepareKey(pref,*s_name,"Spawn parameters\\Spawn on surge only"),		&m_spawn_flags,			flSpawnOnSurgeOnly);
 	PHelper().CreateFlag32		(items,PrepareKey(pref,*s_name,"Spawn parameters\\Spawn if destroyed only"),	&m_spawn_flags,			flSpawnIfDestroyedOnly);
 	PHelper().CreateFlag32		(items,PrepareKey(pref,*s_name,"Spawn parameters\\Spawn infinite count"),		&m_spawn_flags,			flSpawnInfiniteCount);
-	PHelper().CreateFlag32		(items,PrepareKey(pref,*s_name,"Spawn parameters\\Destroy on spawn"),			&m_spawn_flags,			flSpawnDestroyOnSpawn);
+	PHelper().CreateFlag32		(items,PrepareKey(pref,*s_name,"Spawn parameters\\Auto destroy on spawn"),		&m_spawn_flags,			flSpawnDestroyOnSpawn);
 
 	LPCSTR						gcs = pSettings->r_string(s_name,"GroupControlSection");
 	PHelper().CreateChoose		(items,PrepareKey(pref,*s_name,"Spawn parameters\\Group control"),				&m_spawn_control,		smSpawnItem,	0,	(void*)gcs,	16);
