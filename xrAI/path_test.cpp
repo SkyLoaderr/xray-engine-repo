@@ -11,7 +11,7 @@
 #include "ai_map.h"
 #include "ai_alife_graph.h"
 #include "a_star.h"
-//#include "data_storage_heap.h"
+#include "data_storage_heap.h"
 #include "data_storage_list.h"
 #include "path_manager.h"
 #include "path_test_old.h"
@@ -19,9 +19,9 @@
 //typedef CDataStorageBinaryHeap<float,u32,u32,true,24,8>				CDataStorage;
 typedef CDataStorageDLUL<float,u32,u32,true,24,8>						CDataStorage;
 typedef CPathManager<CAI_Map,CDataStorage,float,u32,u32>				CDistancePathManager;
-typedef CPathManager<CSE_ALifeGraph,CDataStorage,float,u32,u32>			CGraphPathManager;
+//typedef CPathManager<CSE_ALifeGraph,CDataStorage,float,u32,u32>			CGraphPathManager;
 typedef CAStar<CDataStorage,CDistancePathManager,CAI_Map,u32,float>		CAStarSearch;
-typedef CAStar<CDataStorage,CGraphPathManager,CSE_ALifeGraph,u32,float>	CAStarSearchGraph;
+//typedef CAStar<CDataStorage,CGraphPathManager,CSE_ALifeGraph,u32,float>	CAStarSearchGraph;
 
 #define TIME_TEST
 
@@ -29,14 +29,13 @@ void path_test(LPCSTR caLevelName)
 {
 	xr_vector<u32>			path, path1;
 	CAI_Map					*graph			= xr_new<CAI_Map>				(caLevelName);
-	CSE_ALifeGraph			*graph1			= xr_new<CSE_ALifeGraph>		();
 	CDataStorage			*data_storage	= xr_new<CDataStorage>			(graph->get_node_count());
 	CDistancePathManager	*path_manager	= xr_new<CDistancePathManager>	();
-	CGraphPathManager		*path_manager1	= xr_new<CGraphPathManager>		();
 	CAStarSearch			*a_star			= xr_new<CAStarSearch>			();
-	CAStarSearchGraph		*a_star_graph	= xr_new<CAStarSearchGraph>		();
-
-	a_star_graph->find		(*data_storage,*path_manager1,*graph1);
+//	CGraphPathManager		*path_manager1	= xr_new<CGraphPathManager>		();
+//	CSE_ALifeGraph			*graph1			= xr_new<CSE_ALifeGraph>		();
+//	CAStarSearchGraph		*a_star_graph	= xr_new<CAStarSearchGraph>		();
+//	a_star_graph->find		(*data_storage,*path_manager1,*graph1);
 	
 	Msg						("Total %d nodes",graph->get_node_count() - 1);
 
@@ -106,11 +105,12 @@ void path_test(LPCSTR caLevelName)
 #endif
 
 	xr_delete	(graph);
-	xr_delete	(graph1);
 	xr_delete	(data_storage);
 	xr_delete	(path_manager);
 	xr_delete	(a_star);
-	xr_delete	(a_star_graph);
+//	xr_delete	(graph1);
+//	xr_delete	(path_manager1);
+//	xr_delete	(a_star_graph);
 #ifdef TIME_TEST	
 	path_test_old			(caLevelName);
 #endif
