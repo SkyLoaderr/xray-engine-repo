@@ -89,14 +89,6 @@ void CUIInventoryWnd::Init()
 
 	UIBagWnd.AttachChild(&UIMoneyWnd);
 	xml_init.InitStatic(uiXml, "money_static", 0, &UIMoneyWnd);
-	
-	// get money
-	CInventoryOwner* pOurInvOwner = smart_cast<CInventoryOwner*>(Level().CurrentEntity());
-	char sMoney[50];
-	int  iMoney(pOurInvOwner->m_dwMoney);
-	itoa(iMoney, sMoney, 10);
-	strcat(sMoney,"$");	
-	UIMoneyWnd.SetText(sMoney);
 
 	////////////////////////////////////////
 	//окно с описанием активной вещи
@@ -142,8 +134,9 @@ void CUIInventoryWnd::Init()
 	UIStaticPersonal.Init("ui\\ui_inv_personal_over_b", -1, UIPersonalWnd.GetHeight() - 175, 260, 260);
 
 	//информация о персонаже
-	UIStaticPersonal.AttachChild(&UICharacterInfo);
-	UICharacterInfo.Init(0, 0, UIStaticPersonal.GetWidth(), UIStaticPersonal.GetHeight(), INVENTORY_CHARACTER_XML);
+	// attributs suit of character (actor)
+	//UIStaticPersonal.AttachChild(&UICharacterInfo);
+	//UICharacterInfo.Init(0, 0, UIStaticPersonal.GetWidth(), UIStaticPersonal.GetHeight(), INVENTORY_CHARACTER_XML);
 	
 
 
@@ -274,6 +267,14 @@ void CUIInventoryWnd::Update()
 		}
 
 		UpdateWeight(UIBagWnd, true);
+
+			// get money
+		CInventoryOwner* pOurInvOwner = smart_cast<CInventoryOwner*>(pEntityAlive);
+		char sMoney[50];
+		int  iMoney(pOurInvOwner->m_dwMoney);
+		itoa(iMoney, sMoney, 10);
+		strcat(sMoney,"$");	
+		UIMoneyWnd.SetText(sMoney);
 	}
 
 	// Update time indicator

@@ -120,7 +120,7 @@ protected:
 	CUIArtefactMerger	UIArtefactMergerWnd;
 	
 	//информация о персонаже
-	CUICharacterInfo UICharacterInfo;
+	//CUICharacterInfo UICharacterInfo;
 	//информация о предмете
 	CUIItemInfo UIItemInfo;
 

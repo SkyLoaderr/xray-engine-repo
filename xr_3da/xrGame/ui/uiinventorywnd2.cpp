@@ -376,7 +376,7 @@ void CUIInventoryWnd::InitInventory()
 	m_pInv = pInv;
 
 	//инициализировать информацию о персонаже
-	UICharacterInfo.InitCharacter(pInvOwner);
+	//UICharacterInfo.InitCharacter(pInvOwner);
 
 	if (GAME_SINGLE != GameID())
 	{
