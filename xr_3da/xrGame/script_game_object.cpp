@@ -1316,7 +1316,7 @@ float CScriptGameObject::heli_last_point_time ()
 		NODEFAULT;
 		return true;
 	}
-	return !!helicopter->getLastPointTime();
+	return helicopter->getLastPointTime();
 }
 
 /*
