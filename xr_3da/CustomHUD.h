@@ -23,7 +23,9 @@ public:
 	virtual			~CCustomHUD				();
 	virtual	void	Load					(){;}
 	
-	virtual	void	Render					(){;}
+	virtual void	Render_Affected			() {;}
+	virtual	void	Render_Direct			() {;}
+	
 	virtual	void	OnMove					(){;}
 	virtual	void	OnEvent					(EVENT E, DWORD P1, DWORD P2){;}
 	
