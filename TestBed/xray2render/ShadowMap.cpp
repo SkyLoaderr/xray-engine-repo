@@ -1044,9 +1044,10 @@ HRESULT CMyD3DApplication::UpdateTransform()
 	// Projection for directional light
     D3DXMatrixOrthoLH			(&matProj, 5.0f, 5.0f, 0.0f, DEPTH_RANGE);
 
-	D3DXMATRIX matShadowModelMVP;
+	D3DXMATRIX matShadowModelMVP,matInvView;
 	D3DXMatrixMultiply			(&mat, &matView, &matProj);
-	D3DXMatrixMultiply			(&matShadowModelMVP,	&matWorldModel, &mat);
+	D3DXMatrixInverse			(&matInvView,0,&dm_2view);
+	D3DXMatrixMultiply			(&matShadowModelMVP,	&matInvView, &mat);
 	
 	dm_model2world2view2projection_smap	= matShadowModelMVP;
 
