@@ -746,7 +746,8 @@ function novice3_attack:initialize ()
 	if actor ~= nil then
 		actor:give_info_portion("escape_novice_has_weapon")
 	end
-
+	--Отключаем реакции
+    xr_reactions.add_rule(self.object, "ignore")
 end
 ---------------------------------------------------------------------------------------------------------------------
 function novice3_attack:execute ()
@@ -789,6 +790,8 @@ function novice3_attack:finalize ()
 	if(level.actor():has_info("escape_factory_bandits_dead")) then
     	xr_meet.enable_meet(self.object)
     end
+	--Включаем реакции
+    xr_reactions.remove_rule(self.object, "ignore")
 end
 
 ----------------------------------------------------------------------------------------------------------------------
