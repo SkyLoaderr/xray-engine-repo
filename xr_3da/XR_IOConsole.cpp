@@ -69,15 +69,16 @@ void CConsole::OnRender	()
 	if (0==pFont)
 		pFont		= xr_new<CGameFont>	("console_font",CGameFont::fsDeviceIndependent);
 
-	bGame=false; if (g_pGameLevel && g_pGameLevel->bReady) bGame=true;
+	bGame	=false;	if (g_pGameLevel && g_pGameLevel->bReady)	bGame = true;
+	if		(g_pGamePersistent->bDedicatedServer)				bGame = false;
 
-	VERIFY(HW.pDevice);
+	VERIFY	(HW.pDevice);
 
 	//*** Shadow
 	D3DRECT R = { 0,0,Device.dwWidth,Device.dwHeight};
-	if (bGame) R.y2 /= 2;
+	if		(bGame) R.y2 /= 2;
 
-	CHK_DX(HW.pDevice->Clear(1,&R,D3DCLEAR_TARGET,D3DCOLOR_XRGB(32,32,32),1,0));
+	CHK_DX	(HW.pDevice->Clear(1,&R,D3DCLEAR_TARGET,D3DCOLOR_XRGB(32,32,32),1,0));
 
 	float dwMaxY=float(Device.dwHeight);
 	// float dwMaxX=float(Device.dwWidth/2);
