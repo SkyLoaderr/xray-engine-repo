@@ -50,8 +50,6 @@ public:
 protected:
 	EAligment				uAligment;
 protected:
-	IC	float				ConvertX		(float x)	{return (uFlags&fsDeviceIndependent)?Device._x2real(x):x;}
-	IC	float				ConvertY		(float y)	{return (uFlags&fsDeviceIndependent)?Device._y2real(y):y;}
 	IC	float				ConvertSize		(float sz)	{return (uFlags&fsDeviceIndependent)?sz*Device.dwWidth:sz;}
 
 	void					Initialize		(LPCSTR shader, LPCSTR texture, u32 flags);

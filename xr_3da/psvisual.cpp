@@ -101,7 +101,7 @@ void CPSVisual::Update(u32 dt)
 }
 
 //----------------------------------------------------
-IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float radius, u32 clr, float angle, float scale)
+IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float radius, u32 clr, float angle, float scale, float w_2, float h_2)
 {
 	FVF::TL			PT;
 
@@ -119,8 +119,8 @@ IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fv
 	
 	// Convert to screen coords
 	Fvector2	c;
-	c.x			= Device._x2real(PT.p.x);
-	c.y			= Device._y2real(PT.p.y);
+	c.x				= (PT.p.x+1)*w_2;
+	c.y				= (PT.p.y+1)*h_2;
 	// Rotation
 	float	_sin1,_cos1,_sin2,_cos2,da;
 	da = angle;		 _sincos	(da,_sin1,_cos1);
@@ -132,7 +132,7 @@ IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fv
 	pv->set	(c.x-sz*_sin1,	c.y-sz*_cos1,	PT.p.z, PT.p.w, clr, rb.x,lt.y);	pv++;
 }
 
-IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float radius, u32 clr, const Fvector& D, float scale)
+IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float radius, u32 clr, const Fvector& D, float scale, float w_2, float h_2)
 {
 	Fvector			P1,P2;
     P1.mad			(pos,D,-radius);
@@ -152,10 +152,10 @@ IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fv
 	dir.norm		();
 	R.cross			(dir);
 
-	pv->set			(Device._x2real(s1.p.x+l1*R.x),	Device._y2real(s1.p.y+l1*R.y),	s2.p.z, s2.p.w, clr, lt.x,rb.y);	pv++;
-	pv->set			(Device._x2real(s2.p.x+l2*R.x),	Device._y2real(s2.p.y+l2*R.y),	s2.p.z, s2.p.w, clr, lt.x,lt.y);	pv++;
-	pv->set			(Device._x2real(s1.p.x-l1*R.x),	Device._y2real(s1.p.y-l1*R.y),	s2.p.z, s2.p.w, clr, rb.x,rb.y);	pv++;
-	pv->set			(Device._x2real(s2.p.x-l2*R.x),	Device._y2real(s2.p.y-l2*R.y),	s2.p.z, s2.p.w, clr, rb.x,lt.y);	pv++;
+	pv->set			((s1.p.x+l1*R.x+1)*w_2,	(s1.p.y+l1*R.y+1)*h_2,	s2.p.z, s2.p.w, clr, lt.x,rb.y);	pv++;
+	pv->set			((s2.p.x+l2*R.x+1)*w_2,	(s2.p.y+l2*R.y+1)*h_2,	s2.p.z, s2.p.w, clr, lt.x,lt.y);	pv++;
+	pv->set			((s1.p.x-l1*R.x+1)*w_2,	(s1.p.y-l1*R.y+1)*h_2,	s2.p.z, s2.p.w, clr, rb.x,rb.y);	pv++;
+	pv->set			((s2.p.x-l2*R.x+1)*w_2,	(s2.p.y-l2*R.y+1)*h_2,	s2.p.z, s2.p.w, clr, rb.x,lt.y);	pv++;
 }
 
 void CPSVisual::Render		(float LOD)
@@ -177,6 +177,8 @@ u32 CPSVisual::RenderTO	(FVF::TL* dest)
 	
 	// build transform matrix
 	Fmatrix mSpriteTransform	= Device.mFullTransform;
+	float	w_2					= float(::Render->getTarget()->get_width()) / 2;
+	float	h_2					= float(::Render->getTarget()->get_width()) / 2;
 	float	fov_scale			= float(::Render->getTarget()->get_width()) / (Device.fFOV/90.f);
 	
     int 	mb_samples 			= 1;
@@ -239,7 +241,7 @@ u32 CPSVisual::RenderTO	(FVF::TL* dest)
 					else										frame = P->m_iAnimStartFrame;
 					m_Definition->m_Animation.CalculateTC	(frame,lt,rb);
 				}
-				FillSprite	(pv,mSpriteTransform,Pos,lt,rb,sz*.5f,C,D,fov_scale);
+				FillSprite	(pv,mSpriteTransform,Pos,lt,rb,sz*.5f,C,D,fov_scale,w_2,h_2);
 			}else{
 				PS::SimulateAngle	(angle,&*P,T,k,k_inv);
 				
@@ -249,7 +251,7 @@ u32 CPSVisual::RenderTO	(FVF::TL* dest)
 					else										frame = P->m_iAnimStartFrame;
 					m_Definition->m_Animation.CalculateTC(frame,lt,rb);
 				}
-				FillSprite(pv,mSpriteTransform,Pos,lt,rb,sz*.5f,C,angle,fov_scale);
+				FillSprite(pv,mSpriteTransform,Pos,lt,rb,sz*.5f,C,angle,fov_scale,w_2,h_2);
             }
         }
     }

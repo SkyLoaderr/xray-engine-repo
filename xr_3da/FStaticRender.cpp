@@ -84,7 +84,7 @@ float				g_fSCREEN;
 float				g_fLOD,g_fLOD_scale=1.f;
 static	Fmaterial	gm_Data;
 static	int			gm_Level	= 0;
-static	u32		gm_Ambient	= 0;
+static	u32			gm_Ambient	= 0;
 static	BOOL		gm_Nearer	= 0;
 static	CObject*	gm_Object	= 0;
 static	int			gm_Lcount	= 0;
@@ -332,11 +332,13 @@ void CRender::flush_Models	()
 void CRender::flush_Patches	()
 {
 	// *** Fill VB
-	u32						vOffset;
+	u32							vOffset;
 	FVF::TL*					V		= (FVF::TL*)Device.Streams.Vertex.Lock	(vecPatches.size()*4,vsPatches->dwStride, vOffset);
 	svector<int,max_patches>	groups;
 	ShaderElement*				cur_S=vecPatches[0].S;
 	int							cur_count=0;
+	float						w_2		= float	(getTarget()->get_width())	/ 2;
+	float						h_2		= float	(getTarget()->get_height()) / 2;
 	float						scale	= float	(getTarget()->get_width());
 	for (u32 i=0; i<vecPatches.size(); i++)
 	{
@@ -356,8 +358,8 @@ void CRender::flush_Patches	()
 		float size		= scale * P.size / TL.p.w;
 		
 		// Convert to screen coords
-		float cx        = Device._x2real(TL.p.x);
-		float cy        = Device._y2real(TL.p.y);
+		float cx        = (TL.p.x+1)*w_2;
+		float cy        = (TL.p.y+1)*h_2;
 
 		// Rotation
 		float			_sin1,_cos1,_sin2,_cos2;

@@ -22,11 +22,11 @@ class ENGINE_API CRenderDevice
 {
 private:
     // Main objects used for creating and rendering the 3D scene
-    u32									m_dwWindowStyle;
+    u32										m_dwWindowStyle;
     RECT									m_rcWindowBounds;
     RECT									m_rcWindowClient;
 
-	u32									Timer_MM_Delta;
+	u32										Timer_MM_Delta;
 	CTimer									Timer;
 	CTimer									TimerGlobal;
 	
@@ -36,11 +36,11 @@ public:
     HWND									m_hWnd;
 	LRESULT									MsgProc		(HWND,UINT,WPARAM,LPARAM);
 
-	u32									dwFrame;
-	u32									dwPrecacheFrame;
-	u32									dwPrecacheTotal;
+	u32										dwFrame;
+	u32										dwPrecacheFrame;
+	u32										dwPrecacheTotal;
 
-	u32									dwWidth, dwHeight;
+	u32										dwWidth, dwHeight;
 	float									fWidth_2, fHeight_2;
 	BOOL									bReady;
 	BOOL									bActive;
@@ -69,8 +69,8 @@ public:
 	// Engine flow-control
 	float									fTimeDelta;
 	float									fTimeGlobal;
-	u32									dwTimeDelta;
-	u32									dwTimeGlobal;
+	u32										dwTimeDelta;
+	u32										dwTimeGlobal;
 
 	// Cameras & projection
 	Fvector									vCameraPosition;
@@ -125,10 +125,6 @@ public:
 
 	void Initialize							(void);
 	void ShutDown							(void);
-
-	// Sprite rendering
-	IC float _x2real	(float x)			{ return (x+1)*fWidth_2;	}
-	IC float _y2real	(float y)			{ return (y+1)*fHeight_2;	}
 
 	// Multi-threading
 	CRITICAL_SECTION	mt_csEnter;

@@ -121,6 +121,9 @@ void CGameFont::OnRender()
 		uFlags			|= fsValid;
 	}
 
+	float				w_2		= float	(Device.dwWidth)	/ 2;
+	float				h_2		= float	(Device.dwHeight)	/ 2;
+
 	for (u32 i=0; i<strings.size(); ) 
 	{
 		// calculate first-fit
@@ -147,8 +150,8 @@ void CGameFont::OnRender()
 			String		&PS	= strings[i];
 			int			len	= strlen(PS.string);
 			if (len) {
-				float	X	= float(iFloor(ConvertX(PS.x)));
-				float	Y	= float(iFloor(ConvertY(PS.y)));
+				float	X	= float(iFloor((uFlags&fsDeviceIndependent)?(PS.x+1)*w_2:PS.x));
+				float	Y	= float(iFloor((uFlags&fsDeviceIndependent)?(PS.y+1)*h_2:PS.y));
 				float	S	= ConvertSize(PS.size);
 				float	Y2	= Y+S;
 				S			= (S*vTS.x)/fHeight;
