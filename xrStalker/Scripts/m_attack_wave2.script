@@ -33,6 +33,11 @@
 --			stand		-	флаг, который указывает на то, стоит сталкер или сидит
 
 
+local max_attackers = 	2	--максимальное количество мутантов, которые могут атаковать сталкера
+local too_many		=	0	--сталкера атакуют многие
+local already		=	1	--мутант уже атакует данного сталкера	
+local added			=	2	--мутант добавлен в список атакующих
+
 -------------------------------------------------------------------------------------------------------------------------------------
 -- Класс защитника
 -------------------------------------------------------------------------------------------------------------------------------------
@@ -48,7 +53,7 @@ function Defender:__init (npc, patrol_way, script_name, monsters, available, sta
 	self.enemy = nil
 	self.waiting = 1
 	self.available = available
-	self.attacker = nil					-- монстр, который атакует сталкера. Если не nil, то сталкер свободен :)
+	self.attackers = {}					-- монстры, которые атакуют сталкера.
 	self.weapon = nil
 	if stand == true then 
 	   self.stand = move.standing 
@@ -83,6 +88,26 @@ function Defender:find_enemy ()
 	end
 
 	return enemy		
+end
+
+function Defender:get_num_attackers ()
+	return table.getn (self.attackers)
+end
+
+function Defender:add_attacker (mutant)
+
+	local num = table.getn (self.attackers)
+	if num > max_attackers then 
+	   return too_many
+	end
+	for a = 1, num, 1 do
+		if self.attackers[a] == mutant then 
+		   return already 
+        end
+	end
+
+	table.insert (self.attackers, mutant)
+	return added
 end
 
 function Defender:is_alive ()
