@@ -235,6 +235,8 @@ BOOL CCF_Skeleton::_RayTest( RayQuery& Q)
 
 	if (dwFrame!=Device.dwFrame)			BuildState();
 
+	CKinematics* K							= PKinematics(owner->Visual());
+
 	BOOL bHIT = FALSE;
 	for (xr_vector<CCF_OBB>::iterator I=model.begin(); I!=model.end(); I++) 
 	{
@@ -263,6 +265,8 @@ BOOL CCF_Skeleton::_RayPick( RayPickResult& result, const Fvector& _start, const
 	if (!bv_sphere.intersect(dS,dD))	return FALSE;
 
 	if (dwFrame!=Device.dwFrame)			BuildState();
+
+	CKinematics* K							= PKinematics(owner->Visual());
 
 	BOOL bHIT = FALSE;
 	for (xr_vector<CCF_OBB>::iterator I=model.begin(); I!=model.end(); I++) 
