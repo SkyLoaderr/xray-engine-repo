@@ -444,8 +444,8 @@ void
 CHelicopter::Die()
 {
 //	PPhysicsShell()=P_build_Shell	(this,false);
-//	setState(CHelicopter::eInitiateWaitBetweenPatrol);
-	setState(CHelicopter::eDead);
+	setState(CHelicopter::eInitiateWaitBetweenPatrol);
+//	setState(CHelicopter::eDead);
 //	SetfHealth(100.0f);
 //	StartParticles();
 }
