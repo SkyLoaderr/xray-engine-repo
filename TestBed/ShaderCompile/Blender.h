@@ -6,13 +6,20 @@
 #define AFX_BLENDER_H__A023332E_C09B_4D93_AA53_57C052CCC075__INCLUDED_
 #pragma once
 
-class CBlender  
+#include "tss.h"
+
+class ENGINE_API CBlenderParam
 {
+};
+
+class ENGINE_API CBlender  
+{
+	DWORD		BC			(BOOL v)		{ return v?0xff:0; }
 public:
 	virtual		LPCSTR		getName()		= 0;
 	virtual		LPCSTR		getComment()	= 0;
 
-	virtual		void		Compile()		= 0;
+	virtual		void		Compile(CSimulatorRS& rs)		= 0;
 
 	CBlender();
 	virtual ~CBlender();
