@@ -4,6 +4,7 @@
 #include "Blender_Screen_SET.h"
 
 #define		VER_2_oBlendCount	7
+#define		VER_4_oBlendCount	9
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -12,8 +13,8 @@
 CBlender_Screen_SET::CBlender_Screen_SET()
 {
 	description.CLS		= B_SCREEN_SET;
-	description.version	= 3;
-	oBlend.Count		= VER_2_oBlendCount;
+	description.version	= 4;
+	oBlend.Count		= VER_4_oBlendCount;
 	oBlend.IDselected	= 0;
 	oAREF.value			= 32;
 	oAREF.min			= 0;
@@ -37,13 +38,15 @@ void	CBlender_Screen_SET::Save	( CFS_Base& FS	)
 	// Blend mode
 	xrP_TOKEN::Item	I;
 	xrPWRITE_PROP		(FS,"Blending",	xrPID_TOKEN,     oBlend);
-	I.ID = 0; strcpy(I.str,"SET");		FS.write	(&I,sizeof(I));
-	I.ID = 1; strcpy(I.str,"BLEND");	FS.write	(&I,sizeof(I));
-	I.ID = 2; strcpy(I.str,"ADD");		FS.write	(&I,sizeof(I));
-	I.ID = 3; strcpy(I.str,"MUL");		FS.write	(&I,sizeof(I));
-	I.ID = 4; strcpy(I.str,"MUL_2X");	FS.write	(&I,sizeof(I));
-	I.ID = 5; strcpy(I.str,"ALPHA-ADD");FS.write	(&I,sizeof(I));
-	I.ID = 6; strcpy(I.str,"MUL_2X (B^D)");FS.write	(&I,sizeof(I));
+	I.ID = 0; strcpy(I.str,"SET");			FS.write	(&I,sizeof(I));
+	I.ID = 1; strcpy(I.str,"BLEND");		FS.write	(&I,sizeof(I));
+	I.ID = 2; strcpy(I.str,"ADD");			FS.write	(&I,sizeof(I));
+	I.ID = 3; strcpy(I.str,"MUL");			FS.write	(&I,sizeof(I));
+	I.ID = 4; strcpy(I.str,"MUL_2X");		FS.write	(&I,sizeof(I));
+	I.ID = 5; strcpy(I.str,"ALPHA-ADD");	FS.write	(&I,sizeof(I));
+	I.ID = 6; strcpy(I.str,"MUL_2X (B^D)");	FS.write	(&I,sizeof(I));
+	I.ID = 7; strcpy(I.str,"SET (2r)");		FS.write	(&I,sizeof(I));
+	I.ID = 8; strcpy(I.str,"BLEND (2r)");	FS.write	(&I,sizeof(I));
 	
 	// Params
 	xrPWRITE_PROP		(FS,"Texture clamp",xrPID_BOOL,		oClamp);
@@ -67,7 +70,7 @@ void	CBlender_Screen_SET::Load	( CStream& FS, WORD version)
 		xrPREAD_PROP		(FS,xrPID_BOOL,			oLighting);
 		xrPREAD_PROP		(FS,xrPID_BOOL,			oFog);
 		break;
-	default:
+	case 3:
 		xrPREAD_PROP		(FS,xrPID_TOKEN,		oBlend);	oBlend.Count =   VER_2_oBlendCount;
 		xrPREAD_PROP		(FS,xrPID_BOOL,			oClamp);
 		xrPREAD_PROP		(FS,xrPID_INTEGER,		oAREF);
@@ -75,6 +78,16 @@ void	CBlender_Screen_SET::Load	( CStream& FS, WORD version)
 		xrPREAD_PROP		(FS,xrPID_BOOL,			oZWrite);
 		xrPREAD_PROP		(FS,xrPID_BOOL,			oLighting);
 		xrPREAD_PROP		(FS,xrPID_BOOL,			oFog);
+		break;
+	default:
+		xrPREAD_PROP		(FS,xrPID_TOKEN,		oBlend);	oBlend.Count =   VER_4_oBlendCount;
+		xrPREAD_PROP		(FS,xrPID_BOOL,			oClamp);
+		xrPREAD_PROP		(FS,xrPID_INTEGER,		oAREF);
+		xrPREAD_PROP		(FS,xrPID_BOOL,			oZTest);
+		xrPREAD_PROP		(FS,xrPID_BOOL,			oZWrite);
+		xrPREAD_PROP		(FS,xrPID_BOOL,			oLighting);
+		xrPREAD_PROP		(FS,xrPID_BOOL,			oFog);
+		break;
 	}
 }
 
@@ -107,6 +120,12 @@ void	CBlender_Screen_SET::Compile	(CBlender_Compile& C)
 		case 6:	// MUL_2X + A-test
 			C.PassSET_Blend	(TRUE,	D3DBLEND_DESTCOLOR,D3DBLEND_SRCCOLOR,	TRUE,oAREF.value);
 			break;
+		case 7:	// SET (2r)
+			C.PassSET_Blend	(FALSE,	D3DBLEND_ONE,D3DBLEND_ZERO,				FALSE,0);
+			break;
+		case 8: // BLEND (2r)
+			C.PassSET_Blend	(TRUE,	D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA,	TRUE,oAREF.value);
+			break;
 		}
 		C.PassSET_LightFog	(oLighting.value,oFog.value);
 
@@ -133,8 +152,16 @@ void	CBlender_Screen_SET::Compile	(CBlender_Compile& C)
 		} else {
 			C.StageBegin		();
 			C.StageSET_Address	(oClamp.value?D3DTADDRESS_CLAMP:D3DTADDRESS_WRAP);
-			C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
-			C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
+			if ((7==oBlend.IDselected) || (8==oBlend.IDselected))
+			{
+				// 2x R
+				C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,	D3DTA_DIFFUSE);
+				C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
+			} else {
+				// 1x R
+				C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
+				C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
+			}
 			C.Stage_Texture		(oT_Name);
 			C.Stage_Matrix		(oT_xform,	0);
 			C.Stage_Constant	("$null");
