@@ -322,8 +322,7 @@ void CWeaponM134::Update	(float dt, BOOL bHUDView)
 				
 				if (bHUDView)	{
 					CEffectorShot*	S = (CEffectorShot*)Level().Cameras.GetEffector(cefShot); 
-					R_ASSERT(S);
-					S->Shot			(camDispersion); 
+					if (S) S->Shot	(camDispersion); 
 				}
 
 				UpdateFP		(bHUDView);
