@@ -29,7 +29,7 @@ class Vertex
 public:
 	Fvector		P;
 	Fvector		N;
-	DWORD		Color;		// only used for Per-Vertex lighting
+	Fcolor		Color;		// only used for Per-Vertex lighting
 
 	vecAdj		adjacent;
 

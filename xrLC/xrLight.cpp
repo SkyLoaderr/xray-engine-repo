@@ -85,6 +85,35 @@ void CBuild::Light()
 //-----------------------------------------------------------------------
 extern BOOL	hasImplicitLighting(Face* F);
 
+vector<vecVertex>			g_trans;
+CCriticalSection			g_trans_CS;
+
+void	g_trans_reg			(Vertex* V)
+{
+	// Search
+	for (int it=0; it<g_trans.size(); it++)
+	{
+		vecVertex&	VL		= g_trans[it];
+		if (VL.front()->P.similar(V->P,EPS_L))
+		{
+			VL.push_back	(V);
+			return;
+		}
+	}
+
+	// Register
+	g_trans.push_back		(vecVertex());
+	g_trans.back().reserve	(32);
+	g_trans.back().push_back(V);
+}
+
+void	g_trans_register	(Vertex* V)
+{
+	g_trans_CS.Lock		();
+	g_trans_reg			(V);
+	g_trans_CS.Unlock	();
+}
+
 class CVertexLightThread : public CThread
 {
 public:
@@ -114,31 +143,28 @@ public:
 			float v_inv = 1.f-v_amb;
 			for (int v=0; v<3; v++)
 			{
-				Vertex* V = F->v[v];
-				if (V->Color) continue;
+				Vertex* V		= F->v[v];
 				
 				Fcolor			C,R,Lumel;
 				C.set			(0,0,0,0);
 				LightPoint		(&DB, C, V->P, V->N, Lights.begin(), Lights.end(), F);
 				
-				R.r				= C.r*v_inv+v_amb;
-				R.g				= C.g*v_inv+v_amb;
-				R.b				= C.b*v_inv+v_amb;
-				Lumel.lerp		(R,g_params.m_lm_amb_color,g_params.m_lm_amb_fogness);
-				Lumel.mul_rgb	(.5f);
-				Lumel.a			= 1.f;
-				
-				V->Color		= Lumel.get();
+				V->Color.r		= C.r*v_inv+v_amb;
+				V->Color.g		= C.g*v_inv+v_amb;
+				V->Color.b		= C.b*v_inv+v_amb;
+				V->Color.a		= 1.f;
+				g_trans_register(V);
 			}
 		}
 		thProgress	= float(I - faceStart) / float(faceEnd-faceStart);
 	}
 };
 
-#define NUM_THREADS	8
+#define NUM_THREADS	12
 void CBuild::LightVertex()
 {
 	// Start threads, wait, continue --- perform all the work
+	Status					("Calculating...");
 	DWORD	start_time		= timeGetTime();
 	CThreadManager			Threads;
 	DWORD	stride			= g_faces.size()/NUM_THREADS;
@@ -147,4 +173,31 @@ void CBuild::LightVertex()
 		Threads.start(new CVertexLightThread(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride)));
 	Threads.wait			();
 	Msg("%d seconds elapsed.",(timeGetTime()-start_time)/1000);
+
+	// Process all groups
+	Status					("Transluenting...");
+	for (int it=0; it<g_trans.size(); it++)
+	{
+		// Unique
+		vecVertex&	VL		= g_trans[it];
+		std::sort	(VL.begin(),VL.end());
+		VL.erase	(unique(VL.begin(),VL.end()),VL.end());
+
+		// Calc summary color
+		Fcolor		C;
+		C.set		(0,0,0,0);
+		for (int v=0; v<VL.size(); v++)
+			C.add_rgb(VL[v]->Color);
+		C.mul_rgb	(1.f/float(VL.size()));
+
+		// Calculate final vertex color
+		for (v=0; v<VL.size(); v++)
+		{
+			Fcolor				R;
+			R.lerp				(VL[v]->Color,C,.5f);
+			VL[v]->Color.lerp	(R,g_params.m_lm_amb_color,g_params.m_lm_amb_fogness);
+			VL[v]->Color.mul_rgb(.5f);
+			VL[v]->Color.a		= 1.f;
+		}
+	}
 }
