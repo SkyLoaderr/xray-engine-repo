@@ -23,8 +23,10 @@ enum	EGroupTriggers
 
 DEFINE_VECTOR(CEntity*,EntityVec,EntityIt);
 
-typedef svector<Fvector,16>		MemberPlacement;
-typedef svector<DWORD,16>		MemberNodes;
+#define MAX_GROUP_SIZE 64
+
+typedef svector<Fvector,MAX_GROUP_SIZE>		MemberPlacement;
+typedef svector<DWORD,MAX_GROUP_SIZE>		MemberNodes;
 class CGroup
 {
 public:
@@ -38,10 +40,13 @@ public:
 	Fvector						vCentroid;
 
 public:
+	
+	bool						m_bLeaderViewsEnemy;
+	DWORD						m_dwLeaderChangeCount;
 	// Constructor
 								CGroup				();
-
-	void						SetState			(EGroupState S)				{ State=S; }
+	
+								void						SetState			(EGroupState S)				{ State=S; }
 	void						SetFlag				(EGroupTriggers T, BOOL f)	{ if (f) Flags|=DWORD(T); else Flags &= ~DWORD(T);}
 	void						InvertFlag			(EGroupTriggers T)			{ if (Flags&DWORD(T)) Flags&=~DWORD(T); else Flags|=DWORD(T);}
 

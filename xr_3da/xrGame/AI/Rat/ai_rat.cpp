@@ -24,6 +24,7 @@ CAI_Rat::CAI_Rat()
 	tSavedEnemyPosition.set(0,0,0);
 	dwLostEnemyTime = 0;
 	eCurrentState = aiRatFollowMe;
+	m_bMobility = true;
 }
 
 CAI_Rat::~CAI_Rat()
@@ -401,9 +402,9 @@ void CAI_Rat::FollowLeader(CSquad &Squad, CEntity* Leader)
 			Members.push_back(Squad.Leader);
 		for (int i=0; i<Members.size(); i++)
 			Members[i]->tpfGetCCFModel()->Enable(TRUE);
-		//Level().ObjectSpace.GetNearest(tCurrentPosition,3*(Level().AI.GetHeader().size));
+		Level().ObjectSpace.GetNearest(tCurrentPosition,2*(Level().AI.GetHeader().size));
 		//Level().ObjectSpace.GetNearest(tpSubNodes[iMySubNode].tLeftDown,3*(Level().AI.GetHeader().size));
-		Level().ObjectSpace.GetNearest(this->cfModel,3*(Level().AI.GetHeader().size));
+		//Level().ObjectSpace.GetNearest(this->cfModel,3*(Level().AI.GetHeader().size));
 		CObjectSpace::NL_TYPE tpNearestList = Level().ObjectSpace.nearest_list;
 		Fvector tCenter;
 		if (!(tpNearestList.empty())) {
@@ -414,9 +415,9 @@ void CAI_Rat::FollowLeader(CSquad &Squad, CEntity* Leader)
 					continue;
 				float fRadius = tpCurrentObject->Radius();
 				tpCurrentObject->clCenter(tCenter);
-				for (int i=0; i<tpSubNodes.size(); i++)
-					if (bfInsideSubNode(tCenter,fRadius,tpSubNodes[i]))
-						tpSubNodes[i].bEmpty = false;
+				for (int j=0; j<tpSubNodes.size(); j++)
+					if (bfInsideSubNode(tCenter,fRadius,tpSubNodes[j]))
+						tpSubNodes[j].bEmpty = false;
 				i++;
 			}
 			Msg("%d",i);
@@ -434,9 +435,20 @@ void CAI_Rat::FollowLeader(CSquad &Squad, CEntity* Leader)
 				float fRadius = Members[i]->Radius();
 				Fvector tCenter;
 				Members[i]->clCenter(tCenter);
-				for (int i=0; i<tpSubNodes.size(); i++)
-					if (bfInsideSubNode(tCenter,fRadius,tpSubNodes[i]))
-						tpSubNodes[i].bEmpty = false;
+				for (int j=0; j<tpSubNodes.size(); j++)
+					if (bfInsideSubNode(tCenter,fRadius,tpSubNodes[j]))
+						tpSubNodes[j].bEmpty = false;
+				/**
+				CAI_Rat *tMember = dynamic_cast<CAI_Rat*>(Members[i]);
+				if (tMember)
+					if (tMember->AI_Path.TravelPath.size() > 1) {
+						CAI_Space &AI = Level().AI;
+						tCenter = tMember->AI_Path.TravelPath[1].P;
+						for (int j=0; j<tpSubNodes.size(); j++)
+							if (bfInsideSubNode(tCenter,fRadius,tpSubNodes[j]))
+								tpSubNodes[j].bEmpty = false;
+					}
+				/**/
 			}
 		/**/
 		// checking the nearest nodes
@@ -449,6 +461,7 @@ void CAI_Rat::FollowLeader(CSquad &Squad, CEntity* Leader)
 		AI_Path.TravelPath.clear();
 		AI_Path.TravelStart = 0;
 		if (!tpFreeNeighbourNodes.empty()) {
+			m_bMobility = true;
 			Fvector tLeaderPosition = Leader->Position();
 			float fBestCost = SQR(tLeaderPosition.x - tCurrentPosition.x) + 0*SQR(tLeaderPosition.y - tCurrentPosition.y) + SQR(tLeaderPosition.z - tCurrentPosition.z);
 			for (int i=0, iBestI=-1; i<tpFreeNeighbourNodes.size(); i++) {
@@ -473,6 +486,9 @@ void CAI_Rat::FollowLeader(CSquad &Squad, CEntity* Leader)
 			}
 			tpFreeNeighbourNodes.clear();
 		}
+		else {
+			m_bMobility = false;
+		}
 	}
 	else {
 		vector<SSubNode> tpSubNodes;
@@ -482,9 +498,9 @@ void CAI_Rat::FollowLeader(CSquad &Squad, CEntity* Leader)
 		int iMySubNode = ifDivideNearestNode(tpCurrentNode,tCurrentPosition,tpSubNodes);
 
 		/**
-		//Level().ObjectSpace.GetNearest(tpSubNodes[iMySubNode].tLeftDown,3*(Level().AI.GetHeader().size));
+		Level().ObjectSpace.GetNearest(tpSubNodes[iMySubNode].tLeftDown,2*(Level().AI.GetHeader().size));
 		//Level().ObjectSpace.GetNearest(tCurrentPosition,3*(Level().AI.GetHeader().size));
-		Level().ObjectSpace.GetNearest(this->cfModel,3*(Level().AI.GetHeader().size));
+		//Level().ObjectSpace.GetNearest(this->cfModel,3*(Level().AI.GetHeader().size));
 		CObjectSpace::NL_TYPE &tpNearestList = Level().ObjectSpace.nearest_list;
 		if (!tpNearestList.empty()) {
 			for (CObjectSpace::NL_IT tppObjectIterator=tpNearestList.begin(); tppObjectIterator!=tpNearestList.end(); tppObjectIterator++) {
@@ -514,6 +530,18 @@ void CAI_Rat::FollowLeader(CSquad &Squad, CEntity* Leader)
 					tpSubNodes[iMySubNode].bEmpty = false;
 					break;
 				}
+				/**
+				CAI_Rat *tMember = dynamic_cast<CAI_Rat*>(Members[i]);
+				if (tMember)
+					if (tMember->AI_Path.TravelPath.size() > 1) {
+						CAI_Space &AI = Level().AI;
+						tCenter = tMember->AI_Path.TravelPath[1].P;
+						if (bfInsideSubNode(tCenter,fRadius,tpSubNodes[iMySubNode])) {
+							tpSubNodes[iMySubNode].bEmpty = false;
+							break;
+						}
+					}
+				/**/
 			}
 		/**/
 		AI_Path.TravelPath.clear();
@@ -530,6 +558,10 @@ void CAI_Rat::FollowLeader(CSquad &Squad, CEntity* Leader)
 			tFinishPoint.P.set(tFinishPosition);
 			tFinishPoint.floating = FALSE;
 			AI_Path.TravelPath.push_back(tFinishPoint);
+			m_bMobility = true;
+		}
+		else {
+			m_bMobility = false;
 		}
 		tpSubNodes.clear();
 	}
@@ -562,10 +594,15 @@ void CAI_Rat::Attack()
 				tStateStack.pop();
 			}
 			//  no, we lost him
-			else {
-				dwLostEnemyTime = Level().timeServer();
-				eCurrentState = aiRatPursuit;
-			}
+			else 
+				if (tSavedEnemy) {
+					dwLostEnemyTime = Level().timeServer();
+					eCurrentState = aiRatPursuit;
+				}
+				else {
+					eCurrentState = tStateStack.top();
+					tStateStack.pop();
+				}
 			return;
 		}
 		else {
@@ -575,11 +612,24 @@ void CAI_Rat::Attack()
 			// checking if the leader exists
 			R_ASSERT (Leader);
 			// checking if leader is dead then make myself a leader
-			if (Leader->g_Health() <= 0)
-				Leader = this;
+			if (Leader != this)
+				if ((Leader->g_Health() <= 0) 
+					|| (!(Leader->m_bMobility)) 
+					/**/
+					|| (
+					 (!(Squad.Groups[g_Group()].m_bLeaderViewsEnemy)) && 
+					 (Enemy.bVisible)
+					 )
+					 /**/
+					 ) {
+						Leader = this;
+						Squad.Groups[g_Group()].m_dwLeaderChangeCount++;
+						Msg("%d",Squad.Groups[g_Group()].m_dwLeaderChangeCount);
+					}
 			
 			if (Leader == this) {
 				if (Enemy.bVisible) {
+					Squad.Groups[g_Group()].m_bLeaderViewsEnemy = true;
 					bBuildPathToLostEnemy = false;
 					// saving an enemy
 					tSavedEnemy = Enemy.Enemy;
@@ -632,11 +682,13 @@ void CAI_Rat::Attack()
 						if (AI_Path.Nodes.size() > 2) {
 						// if path is long enough then build travel line
 							AI_Path.BuildTravelLine(Position());
+							//m_bMobility = true;
 						}
 						else {
 						// if path is too short then clear it (patch for ExecMove)
 							AI_Path.TravelPath.clear();
 							AI_Path.bNeedRebuild = FALSE;
+							//m_bMobility = false;
 						}
 					} 
 					else {
@@ -646,13 +698,18 @@ void CAI_Rat::Attack()
 						float fOldCost;
 						Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
 						// if search has found new best node then 
-						if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
+						if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path)) || (!(Leader->m_bMobility))) && (S.BestCost < (fOldCost - S.fLaziness))){
 							AI_Path.DestNode		= S.BestNode;
 							AI_Path.bNeedRebuild	= TRUE;
+							if (AI_Path.DestNode != S.BestNode)
+								m_bMobility = true;
 						} 
-						else
+						else {
 							// search hasn't found a better node we have to look around
 							bWatch = true;
+							//if (AI_Path.Nodes.size() <= 2)
+							m_bMobility = false;
+						}
 						if (AI_Path.Nodes.size() <= 2)
 							AI_Path.bNeedRebuild = TRUE;
 					}
@@ -674,6 +731,7 @@ void CAI_Rat::Attack()
 					return;
 				}
 				else {
+					Squad.Groups[g_Group()].m_bLeaderViewsEnemy = false;
 					tSavedEnemy = Enemy.Enemy;
 					tSavedEnemyPosition = Enemy.Enemy->Position();
 					tpSavedEnemyNode = Enemy.Enemy->AI_Node;
@@ -686,9 +744,6 @@ void CAI_Rat::Attack()
 						CEntity* Leader = Squad.Leader;
 						// checking if the leader exists
 						R_ASSERT (Leader);
-						// checking if leader is dead then make myself a leader
-						if (Leader->g_Health() <= 0)
-							Leader = this;
 						// setting watch mode to false
 						bool bWatch = false;
 						// get pointer to the class of node estimator 
@@ -732,10 +787,17 @@ void CAI_Rat::Attack()
 						if (AI_Path.Nodes.size() > 2) {
 						// if path is long enough then build travel line
 							AI_Path.BuildTravelLine(Position());
+							m_bMobility = true;
 						}
-						else
+						else {
 						// if path is too short then clear it (patch for ExecMove)
 							AI_Path.TravelPath.clear();
+							m_bMobility = false;
+						}
+					}
+					else {
+						if (AI_Path.Nodes.size() < 2)
+							m_bMobility = false;
 					}
 					q_look.setup(
 						AI::AIC_Look::Look, 
@@ -753,7 +815,10 @@ void CAI_Rat::Attack()
 				}
 			}
 			else {
-				FollowLeader(Squad,Leader);				
+				if ((Enemy.Enemy) && (ffGetDistance(Position(),Enemy.Enemy->Position()) < SelectorAttack.fMaxEnemyDistance)) 
+					FollowLeader(Squad,Enemy.Enemy);				
+				else
+					FollowLeader(Squad,Leader);				
 				q_look.setup(
 					AI::AIC_Look::Look, 
 					AI::t_Object, 
@@ -842,10 +907,13 @@ void CAI_Rat::FollowMe()
 					// checking if the leader exists
 					R_ASSERT (Leader);
 					// checking if leader is dead then make myself a leader
-					if (Leader->g_Health() <= 0)
+					if ((Leader != this) && ((Leader->g_Health() <= 0) || (!(Leader->m_bMobility)))) {
 						Leader = this;
+						Squad.Groups[g_Group()].m_dwLeaderChangeCount++;
+						Msg("%d",Squad.Groups[g_Group()].m_dwLeaderChangeCount);
+					}
 					// I am leader then go to state "Free Hunting"
-					if ((Leader == this) && (Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()].Members.size() < 2)) {
+					if ((Leader == this) || (Leader->g_Health() <= 0) || (!(Leader->m_bMobility))) {
 						eCurrentState = aiRatFreeHunting;
 						return;
 					}
@@ -923,8 +991,11 @@ void CAI_Rat::FreeHunting()
 					// checking if the leader exists
 					R_ASSERT (Leader);
 					// checking if leader is dead then make myself a leader
-					if (Leader->g_Health() <= 0)
+					if ((Leader != this) && ((Leader->g_Health() <= 0) || (!(Leader->m_bMobility)))) {
 						Leader = this;
+						Squad.Groups[g_Group()].m_dwLeaderChangeCount++;
+						Msg("%d",Squad.Groups[g_Group()].m_dwLeaderChangeCount);
+					}
 					
 					if (Leader == this) {
 						// setting up watch mode to false
@@ -967,12 +1038,15 @@ void CAI_Rat::FreeHunting()
 							if (AI_Path.Nodes.size() > 2) {
 							// if path is long enough then build travel line
 								AI_Path.BuildTravelLine(Position());
+								//m_bMobility = true;
 							}
 							else {
 							// if path is too short then clear it (patch for ExecMove)
 								AI_Path.TravelPath.clear();
 								AI_Path.bNeedRebuild = FALSE;
 							}
+							//if (AI_Path.Nodes.size() < 2)
+							//	m_bMobility = false;
 						} 
 						else {
 							// fill arrays of members and exclude myself
@@ -985,11 +1059,15 @@ void CAI_Rat::FreeHunting()
 							if (((AI_Path.DestNode != S.BestNode)) && (S.BestCost < (fOldCost - S.fLaziness))){
 								AI_Path.DestNode		= S.BestNode;
 								AI_Path.bNeedRebuild	= TRUE;
+								//m_bMobility = true;
 							} 
-							else 
+							else {
 								// search hasn't found a better node we have to look around
 								bWatch = true;
-							if (AI_Path.TravelPath.size() < 2)
+								//if (AI_Path.TravelPath.size() < 2)
+								//	m_bMobility = false;
+							}
+							if (AI_Path.TravelPath.size() <= 2)
 								AI_Path.bNeedRebuild	= TRUE;
 						}
 			/**/
@@ -1075,8 +1153,11 @@ void CAI_Rat::Pursuit()
 						// checking if the leader exists
 						R_ASSERT (Leader);
 						// checking if leader is dead then make myself a leader
-						if (Leader->g_Health() <= 0)
+						if ((Leader != this) && ((Leader->g_Health() <= 0) || (!(Leader->m_bMobility)))) {
 							Leader = this;
+							Squad.Groups[g_Group()].m_dwLeaderChangeCount++;
+							Msg("%d",Squad.Groups[g_Group()].m_dwLeaderChangeCount);
+						}
 						// get pointer to the class of node estimator 
 						// for finding the best node in the area
 						CRatSelectorPursuit S = SelectorPursuit;
@@ -1116,11 +1197,13 @@ void CAI_Rat::Pursuit()
 							if (AI_Path.Nodes.size() > 2) {
 							// if path is long enough then build travel line
 								AI_Path.BuildTravelLine(Position());
+								m_bMobility = true;
 							}
 							else {
 							// if path is too short then clear it (patch for ExecMove)
 								AI_Path.TravelPath.clear();
 								AI_Path.bNeedRebuild = FALSE;
+								m_bMobility = false;
 							}
 						} 
 						else {
@@ -1135,9 +1218,11 @@ void CAI_Rat::Pursuit()
 								AI_Path.DestNode		= S.BestNode;
 								AI_Path.bNeedRebuild	= TRUE;
 							} 
-							else
+							else {
 								// search hasn't found a better node we have to look around
 								bWatch = true;
+								m_bMobility = false;
+							}
 							if (AI_Path.TravelPath.size() < 2)
 								AI_Path.bNeedRebuild	= TRUE;
 						}
@@ -1237,8 +1322,11 @@ void CAI_Rat::UnderFire()
 					// checking if the leader exists
 					R_ASSERT (Leader);
 					// checking if leader is dead then make myself a leader
-					if (Leader->g_Health() <= 0)
+					if ((Leader != this) && ((Leader->g_Health() <= 0) || (!(Leader->m_bMobility)))) {
 						Leader = this;
+						Squad.Groups[g_Group()].m_dwLeaderChangeCount++;
+						Msg("%d",Squad.Groups[g_Group()].m_dwLeaderChangeCount);
+					}
 					// I am leader then go to state "Free Hunting"
 					bool bWatch = false;
 					// get pointer to the class of node estimator 

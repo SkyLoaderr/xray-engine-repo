@@ -9,6 +9,7 @@
 class CGameObject : public CObject  
 {
 public:
+	bool								m_bMobility;
 	// AI connection
 	DWORD								AI_NodeID;
 	NodeCompressed*						AI_Node;

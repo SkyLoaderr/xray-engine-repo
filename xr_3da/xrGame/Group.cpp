@@ -12,6 +12,8 @@ CGroup::CGroup()
 	vTargetDirection.set(0,0,1);
 	vTargetPosition.set	(0,0,0);
 	vCentroid.set		(0,0,0);
+	m_bLeaderViewsEnemy = false;
+	m_dwLeaderChangeCount = 0;
 }
 
 const Fvector& CGroup::GetCentroid()
@@ -34,7 +36,7 @@ void CGroup::Member_Remove(CEntity* E){
 
 void CGroup::GetMemberPlacement(MemberPlacement& MP, CEntity* Me)
 {
-	R_ASSERT		(Members.size()<16);
+	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
 	vCentroid.set	(0,0,0);
 	for (DWORD I=0; I<Members.size(); I++) 
@@ -49,7 +51,7 @@ void CGroup::GetMemberPlacement(MemberPlacement& MP, CEntity* Me)
 
 void CGroup::GetMemberPlacementN(MemberNodes& MP, CEntity* Me)
 {
-	R_ASSERT		(Members.size()<16);
+	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
 	for (DWORD I=0; I<Members.size(); I++) 
 	{
@@ -60,7 +62,7 @@ void CGroup::GetMemberPlacementN(MemberNodes& MP, CEntity* Me)
 
 void CGroup::GetMemberDedication(MemberPlacement& MP, CEntity* Me)
 {
-	R_ASSERT		(Members.size()<16);
+	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
 	vCentroid.set	(0,0,0);
 	for (DWORD I=0; I<Members.size(); I++) {
@@ -91,7 +93,7 @@ void CGroup::GetMemberDedication(MemberPlacement& MP, CEntity* Me)
 
 void CGroup::GetMemberDedicationN(MemberNodes& MP, CEntity* Me)
 {
-	R_ASSERT		(Members.size()<16);
+	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
 	for (DWORD I=0; I<Members.size(); I++) {
 		if (Members[I]->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
@@ -108,7 +110,7 @@ void CGroup::GetMemberDedicationN(MemberNodes& MP, CEntity* Me)
 
 void CGroup::GetMemberInfo(MemberPlacement& P0, MemberNodes& P1, MemberPlacement& P2, MemberNodes& P3, CEntity* Me)
 {
-	R_ASSERT(Members.size()<16);
+	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	P0.clear();
 	P1.clear();
 	P2.clear();
@@ -143,7 +145,7 @@ void CGroup::GetMemberInfo(MemberPlacement& P0, MemberNodes& P1, MemberPlacement
 
 void CGroup::GetAliveMemberPlacement(MemberPlacement& MP, CEntity* Me)
 {
-	R_ASSERT		(Members.size()<16);
+	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
 	vCentroid.set	(0,0,0);
 	for (DWORD I=0; I<Members.size(); I++) 
@@ -158,7 +160,7 @@ void CGroup::GetAliveMemberPlacement(MemberPlacement& MP, CEntity* Me)
 
 void CGroup::GetAliveMemberPlacementN(MemberNodes& MP, CEntity* Me)
 {
-	R_ASSERT		(Members.size()<16);
+	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
 	for (DWORD I=0; I<Members.size(); I++) 
 		if (Members[I]->g_Health() > 0) {
@@ -169,7 +171,7 @@ void CGroup::GetAliveMemberPlacementN(MemberNodes& MP, CEntity* Me)
 
 void CGroup::GetAliveMemberDedication(MemberPlacement& MP, CEntity* Me)
 {
-	R_ASSERT		(Members.size()<16);
+	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
 	vCentroid.set	(0,0,0);
 	for (DWORD I=0; I<Members.size(); I++) 
@@ -201,7 +203,7 @@ void CGroup::GetAliveMemberDedication(MemberPlacement& MP, CEntity* Me)
 
 void CGroup::GetAliveMemberDedicationN(MemberNodes& MP, CEntity* Me)
 {
-	R_ASSERT		(Members.size()<16);
+	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
 	for (DWORD I=0; I<Members.size(); I++) 
 		if (Members[I]->g_Health() > 0) {
@@ -219,7 +221,7 @@ void CGroup::GetAliveMemberDedicationN(MemberNodes& MP, CEntity* Me)
 
 void CGroup::GetAliveMemberInfo(MemberPlacement& P0, MemberNodes& P1, MemberPlacement& P2, MemberNodes& P3, CEntity* Me)
 {
-	R_ASSERT(Members.size()<16);
+	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	P0.clear();
 	P1.clear();
 	P2.clear();
@@ -255,7 +257,7 @@ void CGroup::GetAliveMemberInfo(MemberPlacement& P0, MemberNodes& P1, MemberPlac
 
 void CGroup::GetAliveMemberPlacementWithLeader(MemberPlacement& MP, CEntity* Me, CEntity* Leader)
 {
-	R_ASSERT		(Members.size()<16);
+	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
 	vCentroid.set	(0,0,0);
 	for (DWORD I=0; I<Members.size(); I++) 
@@ -276,7 +278,7 @@ void CGroup::GetAliveMemberPlacementWithLeader(MemberPlacement& MP, CEntity* Me,
 
 void CGroup::GetAliveMemberPlacementNWithLeader(MemberNodes& MP, CEntity* Me, CEntity* Leader)
 {
-	R_ASSERT		(Members.size()<16);
+	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
 	for (DWORD I=0; I<Members.size(); I++) 
 		if (Members[I]->g_Health() > 0)
@@ -290,7 +292,7 @@ void CGroup::GetAliveMemberPlacementNWithLeader(MemberNodes& MP, CEntity* Me, CE
 
 void CGroup::GetAliveMemberDedicationWithLeader(MemberPlacement& MP, CEntity* Me, CEntity* Leader)
 {
-	R_ASSERT		(Members.size()<16);
+	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
 	vCentroid.set	(0,0,0);
 	for (DWORD I=0; I<Members.size(); I++) 
@@ -345,7 +347,7 @@ void CGroup::GetAliveMemberDedicationWithLeader(MemberPlacement& MP, CEntity* Me
 
 void CGroup::GetAliveMemberDedicationNWithLeader(MemberNodes& MP, CEntity* Me, CEntity* Leader)
 {
-	R_ASSERT		(Members.size()<16);
+	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
 	for (DWORD I=0; I<Members.size(); I++) 
 		if (Members[I]->g_Health() > 0) {
@@ -374,7 +376,7 @@ void CGroup::GetAliveMemberDedicationNWithLeader(MemberNodes& MP, CEntity* Me, C
 
 void CGroup::GetAliveMemberInfoWithLeader(MemberPlacement& P0, MemberNodes& P1, MemberPlacement& P2, MemberNodes& P3, CEntity* Me, CEntity* Leader)
 {
-	R_ASSERT(Members.size()<16);
+	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	P0.clear();
 	P1.clear();
 	P2.clear();

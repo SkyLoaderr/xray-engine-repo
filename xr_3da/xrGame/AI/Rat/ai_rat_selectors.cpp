@@ -40,18 +40,14 @@ float CRatSelectorAttack::Estimate(NodeCompressed* tNode, float fDistance, BOOL&
 		if (m_iAliveMemberCount) {
 			for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) {
 				vfAssignMemberPositionAndNode();
-				vfComputeMemberDirection();
 				vfAddDistanceToMemberCost();
-				vfComputeSurroundEnemy();
 				vfAddCoverFromMemberCost();
-				vfAddDeviationFromMemberViewCost();
 			}
-			vfAddSurroundEnemyCost();
 		}
 	}
-	/**/
 	// checking for epsilon
 	vfCheckForEpsilon(bStop);
+	/**/
 	// returning a value
 	return(m_fResult);
 }
@@ -74,22 +70,17 @@ float CRatSelectorFreeHunting::Estimate(NodeCompressed* tNode, float fDistance, 
 	CHECK_RESULT;
 	vfAddTotalCoverCost();
 	CHECK_RESULT;
-	if (m_tLeader) {
-		vfAddDistanceToLeaderCost();
-		CHECK_RESULT;
-		vfAddCoverFromLeaderCost();
-		CHECK_RESULT;
-		if (taMemberPositions.size()) {
-			if (m_iAliveMemberCount) {
-				for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) {
-					vfAssignMemberPositionAndNode();
-					vfComputeMemberDirection();
-					vfAddDistanceToMemberCost();
-					vfAddCoverFromMemberCost();
-				}
+	/**
+	if (taMemberPositions.size()) {
+		if (m_iAliveMemberCount) {
+			for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) {
+				vfAssignMemberPositionAndNode();
+				vfAddDistanceToMemberCost();
+				vfAddCoverFromMemberCost();
 			}
 		}
 	}
+	/**/
 	// checking for epsilon
 	vfCheckForEpsilon(bStop);
 	// returning a value
@@ -114,24 +105,19 @@ float CRatSelectorFollow::Estimate(NodeCompressed* tNode, float fDistance, BOOL&
 	CHECK_RESULT;
 	vfAddTotalCoverCost();
 	CHECK_RESULT;
-	if (m_tLeader) {
-		vfAddDistanceToLeaderCost();
-		CHECK_RESULT;
-		vfAddCoverFromLeaderCost();
-		CHECK_RESULT;
-		if (taMemberPositions.size()) {
-			if (m_iAliveMemberCount) {
-				for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) {
-					vfAssignMemberPositionAndNode();
-					vfComputeMemberDirection();
-					vfAddDistanceToMemberCost();
-					vfAddCoverFromMemberCost();
-				}
+	/**
+	if (taMemberPositions.size()) {
+		if (m_iAliveMemberCount) {
+			for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) {
+				vfAssignMemberPositionAndNode();
+				vfAddDistanceToMemberCost();
+				vfAddCoverFromMemberCost();
 			}
 		}
 	}
 	// checking for epsilon
 	vfCheckForEpsilon(bStop);
+	/**/
 	// returning a value
 	return(m_fResult);
 }
@@ -158,20 +144,19 @@ float CRatSelectorPursuit::Estimate(NodeCompressed* tNode, float fDistance, BOOL
 	CHECK_RESULT;
 	vfAddCoverFromEnemyCost();
 	CHECK_RESULT;
+	/**
 	if (taMemberPositions.size()) {
 		if (m_iAliveMemberCount) {
 			for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) {
 				vfAssignMemberPositionAndNode();
-				vfComputeMemberDirection();
 				vfAddDistanceToMemberCost();
-				vfComputeSurroundEnemy();
 				vfAddCoverFromMemberCost();
 			}
-			vfAddSurroundEnemyCost();
 		}
 	}
 	// checking for epsilon
 	vfCheckForEpsilon(bStop);
+	/**/
 	// returning a value
 	return(m_fResult);
 }
