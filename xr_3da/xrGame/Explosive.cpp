@@ -77,8 +77,8 @@ void CExplosive::Load(LPCSTR section)
 	}
 
 	sscanf(pSettings->r_string(section,"light_color"), "%f,%f,%f", &m_lightColor.r, &m_lightColor.g, &m_lightColor.b);
-	m_lightRange = pSettings->r_float(section,"light_range");
-	m_lightTime = pSettings->r_u32(section,"light_time");
+	m_lightRange	= pSettings->r_float(section,"light_range");
+	m_lightTime		= iFloor(pSettings->r_float(section,"light_time")*1000.f);
 
 	SoundCreate(sndExplode, "explode", m_eSoundExplode);
 	SoundCreate(sndCheckout, "checkout", m_eSoundCheckout);
