@@ -159,6 +159,8 @@ void CAI_ALife::Load()
 #ifdef DEBUG
 		vfGenerateSpawnPoints(10);
 		vfSaveSpawnPoints();
+#else
+		return;
 #endif
 	}
 	else {
@@ -191,10 +193,8 @@ void CAI_ALife::Load()
 
 	// loading NPCs
 	if (!Engine.FS.Exist(caFileName,Path.GameData,"game.alife")) {
-#ifdef DEBUG
 		Generate();
 		Save();
-#endif
 	}
 	
 	if (!Engine.FS.Exist(caFileName,Path.GameData,"game.alife"))
