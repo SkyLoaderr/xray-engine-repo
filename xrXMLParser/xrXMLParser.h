@@ -111,13 +111,6 @@ public:
 	XML_ATTRIBUTE * QueryForAttrib(XML_NODE *node, int attribIdx);
 	AttribPair		QueryAttribData(XML_ATTRIBUTE *attrib);
 
-	// Iterate through attributte
-	typedef std::pair<ref_str, ref_str> AttribPair;
-	// Params:
-	// 1. prevAttrib - pointer to prev attrib. Place NULL to get first
-	XML_ATTRIBUTE * QueryForAttrib(XML_NODE *node, int attribIdx);
-	AttribPair		QueryAttribData(XML_ATTRIBUTE *attrib);
-
 protected:
 	XML_NODE* m_root;
 	XML_NODE* m_pLocalRoot;
