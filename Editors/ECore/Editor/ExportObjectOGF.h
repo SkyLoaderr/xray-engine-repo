@@ -16,10 +16,14 @@ struct SOGFVert{
 	Fvector		P;
 	Fvector		N;
     Fvector2	UV;
+    Fvector		T;
+    Fvector		B;
 	SOGFVert(){
 		P.set	(0,0,0);
 		N.set	(0,1,0);
         UV.set	(0.f,0.f);
+		T.set	(0,0,0);
+		B.set	(0,0,0);
 	}
 	void set(Fvector& p, Fvector& n, Fvector2& uv){
 		P.set	(p);
@@ -64,6 +68,7 @@ public:
 	void			ComputeBounding	();
 public:
     CObjectOGFCollectorPacked		(const Fbox &bb, int apx_vertices, int apx_faces);
+    void			CalculateTB		();
     void 			MakeProgressive	();
     IC bool 		check      		(SOGFFace& F){
 		if ((F.v[0]==F.v[1]) || (F.v[0]==F.v[2]) || (F.v[1]==F.v[2])) return false;
@@ -106,7 +111,6 @@ public:
 //----------------------------------------------------
 DEFINE_VECTOR(CObjectOGFCollectorPacked*,COGFCPVec,COGFCPIt)
 
-
 class CExportObjectOGF
 {
     struct SSplit
@@ -123,6 +127,12 @@ class CExportObjectOGF
 		void			AppendPart		(int apx_vertices, int apx_faces);
         void 			Save			(IWriter& F, int& chunk_id);
 
+        void			CalculateTB		()
+        {
+            for (COGFCPIt it=m_Parts.begin(); it!=m_Parts.end(); it++)
+                (*it)->CalculateTB		();
+        }
+        
 		void 			MakeProgressive	();
         				SSplit			(CSurface* surf, const Fbox& bb);
         				~SSplit			();
@@ -151,10 +161,12 @@ class CExportObjectOGF
             m_Box.merge				((*it)->m_Box);
         }
     }
+    bool    Prepare				();
 public:
 			CExportObjectOGF	(CEditableObject* object);
 			~CExportObjectOGF	();
     bool    Export				(IWriter& F);
+    bool	ExportAsWavefrontOBJ(IWriter& F, LPCSTR fn);
 };
 
 #endif

@@ -306,6 +306,12 @@ void __fastcall TfraLeftBar::ExportDM1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::ExportWaveFrontOBJ1Click(TObject *Sender)
+{
+	ExecCommand( COMMAND_EXPORT_OBJ );
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfraLeftBar::ExtBtn1Click(TObject *Sender)
 {
 	ExecCommand( COMMAND_SHOW_CLIPMAKER );
@@ -344,4 +350,5 @@ void __fastcall TfraLeftBar::OptimizeMotions1Click(TObject *Sender)
 	ExecCommand( COMMAND_OPTIMIZE_MOTIONS );
 }
 //---------------------------------------------------------------------------
+
 

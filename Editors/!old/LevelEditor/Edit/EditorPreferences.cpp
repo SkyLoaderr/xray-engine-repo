@@ -41,7 +41,6 @@ CEditorPreferences::CEditorPreferences()
     // scene
     scene_undo_level	= 125;
     scene_recent_count	= 10;
-    scene_leave_eo_copy = TRUE;
     scene_clear_color	= DEFAULT_CLEARCOLOR;
     // sounds
     sound_rolloff		= 1.f;
@@ -81,7 +80,18 @@ void __stdcall CEditorPreferences::OnClose	()
 
 void CheckValidate(ShortcutValue* val, const xr_shortcut& new_val, bool& result)
 {
-	result = false;
+	result 					= true; 
+    ECommandVec& cmds		= GetEditorCommands();
+    for (u32 cmd_idx=0; cmd_idx<cmds.size(); cmd_idx++){
+    	SECommand*& CMD		= cmds[cmd_idx];
+        if (CMD&&CMD->editable){
+        	VERIFY(!CMD->sub_commands.empty());
+		    for (u32 sub_cmd_idx=0; sub_cmd_idx<CMD->sub_commands.size(); sub_cmd_idx++){
+            	SECommand::SESubCommand*& SUB_CMD = CMD->sub_commands[sub_cmd_idx];
+                if (SUB_CMD->shortcut.similar(new_val)){ result = false; return;}
+            }
+        }
+    }
 }
 
 void CEditorPreferences::Edit()
@@ -119,12 +129,12 @@ void CEditorPreferences::Edit()
     PHelper().CreateColor	(props,"Scene\\Clear Color",			&scene_clear_color	);
     PHelper().CreateU32		(props,"Scene\\Undo Level", 			&scene_undo_level,	0, 		125);
     PHelper().CreateU32		(props,"Scene\\Recent Count", 			&scene_recent_count,0, 		25);
-    PHelper().CreateBOOL	(props,"Scene\\Always Keep Object Copy",&scene_leave_eo_copy);
 
     PHelper().CreateFloat	(props,"Sounds\\Rolloff Factor",		&sound_rolloff, 	0.f,	10.f);
     PHelper().CreateFlag32	(props,"Sounds\\Use Hardware",					&psSoundFlags, 	ssHardware);
-    PHelper().CreateFlag32	(props,"Sounds\\Use EAX",						&psSoundFlags, 	ssEAX);
+    PHelper().CreateFlag32	(props,"Sounds\\Use EAX",						&psSoundFlags, 	ssEAX);        
 
+    PHelper().CreateFlag32	(props,"Objects\\Discard Instance",				&object_flags, 	epoDiscardInstance);
     PHelper().CreateFlag32	(props,"Objects\\Show Hint",					&object_flags, 	epoShowHint);
     PHelper().CreateFlag32	(props,"Objects\\Draw Pivot",					&object_flags, 	epoDrawPivot);
     PHelper().CreateFlag32	(props,"Objects\\Draw Animation Path",			&object_flags, 	epoDrawAnimPath);
@@ -136,13 +146,16 @@ void CEditorPreferences::Edit()
     
     PHelper().CreateButton	(props,"Keyboard\\File",	 					"Load,Save", 0);
     ECommandVec& cmds		= GetEditorCommands();
-    u32 idx					= 0;
     for (u32 cmd_idx=0; cmd_idx<cmds.size(); cmd_idx++){
     	SECommand*& CMD		= cmds[cmd_idx];
         if (CMD&&CMD->editable){
-            string128 nm; 		sprintf(nm,"%d.%s",idx++,CMD->Caption());
-            ShortcutValue* V 	= PHelper().CreateShortcut(props,PrepareKey("Keyboard\\Commands",nm), &CMD->shortcut);
-            V->OnValidateResultEvent.bind(&CheckValidate);
+        	VERIFY(!CMD->sub_commands.empty());
+		    for (u32 sub_cmd_idx=0; sub_cmd_idx<CMD->sub_commands.size(); sub_cmd_idx++){
+            	SECommand::SESubCommand*& SUB_CMD = CMD->sub_commands[sub_cmd_idx];
+                string128 nm; 		sprintf(nm,"%s%s%s",CMD->Caption(),xr_strlen(SUB_CMD->Caption())?".":"",SUB_CMD->Caption());
+                ShortcutValue* V 	= PHelper().CreateShortcut(props,PrepareKey("Keyboard\\Commands",nm), &SUB_CMD->shortcut);
+                V->OnValidateResultEvent.bind(&CheckValidate);
+            }
         }
     }
 
@@ -196,7 +209,6 @@ void CEditorPreferences::OnCreate()
 
     scene_undo_level	= R_U32_SAFE	("editor_prefs","scene_undo_level"	,scene_undo_level	);
     scene_recent_count	= R_U32_SAFE	("editor_prefs","scene_recent_count",scene_recent_count	);
-    scene_leave_eo_copy = R_BOOL_SAFE	("editor_prefs","scene_leave_eo_copy",scene_leave_eo_copy);
     scene_clear_color	= R_U32_SAFE	("editor_prefs","scene_clear_color"	,scene_clear_color	);
 
     sound_rolloff		= R_FLOAT_SAFE	("editor_prefs","sound_rolloff"		,sound_rolloff   	);
@@ -213,7 +225,7 @@ void CEditorPreferences::OnCreate()
 
     ApplyValues			();
 
-	m_ItemProps 		= TProperties::CreateModalForm("Editor Preferences",false,0,0,TOnCloseEvent(this,&CEditorPreferences::OnClose),TProperties::plItemFolders|TProperties::plFullExpand|TProperties::plFullSort);
+	m_ItemProps 		= TProperties::CreateModalForm("Editor Preferences",false,0,0,TOnCloseEvent(this,&CEditorPreferences::OnClose),TProperties::plNoClearStore|TProperties::plFolderStore|TProperties::plItemFolders|TProperties::plFullSort);
 }
 //---------------------------------------------------------------------------
 
@@ -259,7 +271,6 @@ void CEditorPreferences::OnDestroy()
 
     I->w_u32	("editor_prefs","scene_undo_level",		scene_undo_level	);
     I->w_u32	("editor_prefs","scene_recent_count",	scene_recent_count	);
-    I->w_bool	("editor_prefs","scene_leave_eo_copy",	scene_leave_eo_copy	);
     I->w_u32	("editor_prefs","scene_clear_color",	scene_clear_color 	);
 
     I->w_float	("editor_prefs","sound_rolloff",	sound_rolloff 	);

@@ -16,6 +16,7 @@ enum{
     epoDrawBoneShapes	= (1<<5),
     epoShowHint			= (1<<6),
     epoDrawLOD			= (1<<7),
+    epoDiscardInstance	= (1<<8),
 };
 class ECORE_API CEditorPreferences
 {
@@ -52,7 +53,6 @@ public:
     // scene
     u32		scene_undo_level;
     u32		scene_recent_count;
-    BOOL	scene_leave_eo_copy;
     u32		scene_clear_color;
     AStringVec scene_recent_list;
     // sound

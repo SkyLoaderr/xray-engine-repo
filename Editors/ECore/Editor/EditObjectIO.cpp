@@ -12,6 +12,7 @@
 
 #ifdef _EDITOR
  #include "exportskeleton.h"
+ #include "exportobjectOGF.h"
  #include "Shader.h"
 
 bool CEditableObject::Load(const char* fname)
@@ -394,6 +395,17 @@ bool CEditableObject::ExportOMF(LPCSTR fn)
 {
 	CMemoryWriter F;
     if (PrepareOMF(F)){
+    	F.save_to(fn);
+        return true;
+    }
+    return false;
+}
+//------------------------------------------------------------------------------
+bool CEditableObject::ExportOBJ(LPCSTR fn)
+{
+    CExportObjectOGF E(this);
+	CMemoryWriter F;
+    if (E.ExportAsWavefrontOBJ(F,fn)){
     	F.save_to(fn);
         return true;
     }

@@ -145,7 +145,8 @@ public:
         plItemFolders	= (1<<1),
         plFullExpand	= (1<<2),
         plFullSort		= (1<<3), 
-        plIFTop			= (1<<4)
+        plIFTop			= (1<<4),
+        plNoClearStore	= (1<<5),
     };
 protected:
     Flags32				m_Flags;

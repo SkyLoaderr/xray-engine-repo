@@ -283,41 +283,41 @@ void 	CommandMuteSound(u32 p1, u32 p2, u32& res)
 
 void TUI::RegisterCommands()
 {
-	RegisterCommand(COMMAND_INITIALIZE,				xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandInitialize)));
-	RegisterCommand(COMMAND_DESTROY,        		xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandDestroy)));
-	RegisterCommand(COMMAND_EXIT,               	xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandExit)));
-	RegisterCommand(COMMAND_QUIT,           		xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandQuit)));
-	RegisterCommand(COMMAND_EDITOR_PREF,    		xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandEditorPrefs)));
-	RegisterCommand(COMMAND_CHANGE_ACTION,  		xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandChangeAction)));
-	RegisterCommand(COMMAND_CHANGE_AXIS,    		xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandChangeAxis)));
-	RegisterCommand(COMMAND_CHANGE_SETTINGS,		xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandChangeSettings)));
-	RegisterCommand(COMMAND_SOUND_EDITOR,   		xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandSoundEditor)));
-	RegisterCommand(COMMAND_SYNC_SOUNDS,    		xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandSyncSounds)));
-    RegisterCommand(COMMAND_IMAGE_EDITOR,   		xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandImageEditor)));
-	RegisterCommand(COMMAND_CHECK_TEXTURES,     	xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandCheckTextures)));
-	RegisterCommand(COMMAND_REFRESH_TEXTURES,   	xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandRefreshTextures)));	
-	RegisterCommand(COMMAND_RELOAD_TEXTURES,    	xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandReloadTextures)));
-	RegisterCommand(COMMAND_CHANGE_SNAP,        	xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandChangeSnap)));
-    RegisterCommand(COMMAND_UNLOAD_TEXTURES,    	xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandUnloadTextures)));
-    RegisterCommand(COMMAND_EVICT_OBJECTS,      	xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandEvictObjects)));
-    RegisterCommand(COMMAND_EVICT_TEXTURES,     	xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandEvictTextures)));
-    RegisterCommand(COMMAND_CHECK_MODIFIED,     	xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandCheckModified)));
-	RegisterCommand(COMMAND_SHOW_PROPERTIES,    	xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandShowProperties)));
-	RegisterCommand(COMMAND_UPDATE_PROPERTIES,  	xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandUpdateProperties)));
-	RegisterCommand(COMMAND_REFRESH_PROPERTIES, 	xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandRefreshProperties)));
-	RegisterCommand(COMMAND_ZOOM_EXTENTS,       	xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandZoomExtents)));
-    RegisterCommand(COMMAND_RENDER_WIRE,        	xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandRenderWire)));
-    RegisterCommand(COMMAND_RENDER_FOCUS,       	xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(this,TUI::CommandRenderFocus)));
-	RegisterCommand(COMMAND_BREAK_LAST_OPERATION,	xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(this,TUI::CommandBreakLastOperation)));
-    RegisterCommand(COMMAND_TOGGLE_SAFE_RECT,   	xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandToggleSafeRect)));
-	RegisterCommand(COMMAND_RENDER_RESIZE,      	xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(this,TUI::CommandRenderResize)));
-    RegisterCommand(COMMAND_TOGGLE_GRID,        	xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandToggleGrid)));
-	RegisterCommand(COMMAND_UPDATE_GRID,        	xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandUpdateGrid)));
-    RegisterCommand(COMMAND_GRID_NUMBER_OF_SLOTS,	xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandGridNumberOfSlots)));
-    RegisterCommand(COMMAND_GRID_SLOT_SIZE,     	xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandGridSlotSize)));
-    RegisterCommand(COMMAND_CREATE_SOUND_LIB,   	xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandCreateSoundLib)));
-    RegisterCommand(COMMAND_MUTE_SOUND,         	xr_new<SECommand>("",false,MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandMuteSound)));
-}
+	RegisterCommand(COMMAND_INITIALIZE,				xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandInitialize)));
+	RegisterCommand(COMMAND_DESTROY,        		xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandDestroy)));
+	RegisterCommand(COMMAND_EXIT,               	xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandExit)));
+	RegisterCommand(COMMAND_QUIT,           		xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandQuit)));
+	RegisterCommand(COMMAND_EDITOR_PREF,    		xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandEditorPrefs)));
+	RegisterCommand(COMMAND_CHANGE_ACTION,  		xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandChangeAction)));
+	RegisterCommand(COMMAND_CHANGE_AXIS,    		xr_new<SECommand>("ChangeAxis","X,Y,Z,XZ",true,BIND_CMD_EVENT_S(CommandChangeAxis)));
+	RegisterCommand(COMMAND_CHANGE_SETTINGS,		xr_new<SECommand>("ChangePreference","",true,BIND_CMD_EVENT_S(CommandChangeSettings)));
+	RegisterCommand(COMMAND_SOUND_EDITOR,   		xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandSoundEditor)));
+	RegisterCommand(COMMAND_SYNC_SOUNDS,    		xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandSyncSounds)));
+    RegisterCommand(COMMAND_IMAGE_EDITOR,   		xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandImageEditor)));
+	RegisterCommand(COMMAND_CHECK_TEXTURES,     	xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandCheckTextures)));
+	RegisterCommand(COMMAND_REFRESH_TEXTURES,   	xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandRefreshTextures)));	
+	RegisterCommand(COMMAND_RELOAD_TEXTURES,    	xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandReloadTextures)));
+	RegisterCommand(COMMAND_CHANGE_SNAP,        	xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandChangeSnap)));
+    RegisterCommand(COMMAND_UNLOAD_TEXTURES,    	xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandUnloadTextures)));
+    RegisterCommand(COMMAND_EVICT_OBJECTS,      	xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandEvictObjects)));
+    RegisterCommand(COMMAND_EVICT_TEXTURES,     	xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandEvictTextures)));
+    RegisterCommand(COMMAND_CHECK_MODIFIED,     	xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandCheckModified)));
+	RegisterCommand(COMMAND_SHOW_PROPERTIES,    	xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandShowProperties)));
+	RegisterCommand(COMMAND_UPDATE_PROPERTIES,  	xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandUpdateProperties)));
+	RegisterCommand(COMMAND_REFRESH_PROPERTIES, 	xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandRefreshProperties)));
+	RegisterCommand(COMMAND_ZOOM_EXTENTS,       	xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandZoomExtents)));
+    RegisterCommand(COMMAND_RENDER_WIRE,        	xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandRenderWire)));
+    RegisterCommand(COMMAND_RENDER_FOCUS,       	xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(this,TUI::CommandRenderFocus)));
+	RegisterCommand(COMMAND_BREAK_LAST_OPERATION,	xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(this,TUI::CommandBreakLastOperation)));
+    RegisterCommand(COMMAND_TOGGLE_SAFE_RECT,   	xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandToggleSafeRect)));
+	RegisterCommand(COMMAND_RENDER_RESIZE,      	xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(this,TUI::CommandRenderResize)));
+    RegisterCommand(COMMAND_TOGGLE_GRID,        	xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandToggleGrid)));
+	RegisterCommand(COMMAND_UPDATE_GRID,        	xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandUpdateGrid)));
+    RegisterCommand(COMMAND_GRID_NUMBER_OF_SLOTS,	xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandGridNumberOfSlots)));
+    RegisterCommand(COMMAND_GRID_SLOT_SIZE,     	xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandGridSlotSize)));
+    RegisterCommand(COMMAND_CREATE_SOUND_LIB,   	xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandCreateSoundLib)));
+    RegisterCommand(COMMAND_MUTE_SOUND,         	xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandMuteSound)));
+}                                                                        
 
 /*
 bool TUI::Command( int _Command, int p1, int p2 )

@@ -456,7 +456,7 @@ int CExportSkeletonCustom::FindSplit(LPCSTR shader, LPCSTR texture)
 }
 //----------------------------------------------------
 
-bool CExportSkeleton::ExportGeometry(IWriter& F)
+bool CExportSkeleton::PrepareGeometry()
 {
     if( m_Source->MeshCount() == 0 ) return false;
 
@@ -475,12 +475,8 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
 
     R_ASSERT(m_Source->IsDynamic()&&m_Source->IsSkeleton());
 
-    SPBItem* pb = UI->ProgressStart(5+m_Source->MeshCount()*2+m_Source->SurfaceCount(),"Export skeleton geometry...");
+    SPBItem* pb = UI->ProgressStart(5+m_Source->MeshCount()*2+m_Source->SurfaceCount(),"Prepare skeleton geometry...");
     pb->Inc		();
-
-    BoneVec& bones 			= m_Source->Bones();
-    xr_vector<FvectorVec>	bone_points;
-	bone_points.resize	(m_Source->BoneCount());
 
     u32 mtl_cnt=0;
 	UI->SetStatus("Split meshes...");
@@ -534,10 +530,37 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
         MESH->UnloadFNormals();
         pb->Inc		();
     }
-    UI->SetStatus("Make progressive...");
-    // fill per bone vertices
+    UI->SetStatus("Calculate TB...");
+
+    // calculate TB
     for (SplitIt split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++){
 		split_it->CalculateTB();
+        pb->Inc		();
+    }
+    pb->Inc			();
+    UI->ProgressEnd(pb);
+
+    // coumpute bounding
+    ComputeBounding	();
+
+    // restore active motion
+    m_Source->SetActiveSMotion(active_motion);
+
+    return true;
+}
+
+bool CExportSkeleton::ExportGeometry(IWriter& F)
+{
+	if (!PrepareGeometry()) return false;
+
+    SPBItem* pb = UI->ProgressStart(3+m_Splits.size(),"Export skeleton geometry...");
+    pb->Inc		("Make Progressive...");
+    // fill per bone vertices
+    BoneVec& bones 			= m_Source->Bones();
+    xr_vector<FvectorVec>	bone_points;
+	bone_points.resize		(m_Source->BoneCount());
+
+    for (SplitIt split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++){
 		if (m_Source->m_Flags.is(CEditableObject::eoProgressive)) split_it->MakeProgressive();
 		SkelVertVec& lst = split_it->getV_Verts();
 	    for (SkelVertIt sv_it=lst.begin(); sv_it!=lst.end(); sv_it++){
@@ -546,10 +569,6 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
         }
         pb->Inc		();
     }
-    pb->Inc		();
-
-    // coumpute bounding
-    ComputeBounding	();
 
 	// create OGF
     // Header
@@ -578,11 +597,8 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
 	    F.close_chunk();
     }
     F.close_chunk();
-    pb->Inc		();
 
-
-    UI->SetStatus("Compute bounding volume...");
-    pb->Inc		();
+    pb->Inc		("Compute bone bounding volume...");
 
     // BoneNames
     F.open_chunk(OGF_S_BONE_NAMES);
@@ -612,9 +628,6 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
 
     pb->Inc		();
     UI->ProgressEnd(pb);
-
-    // restore active motion
-    m_Source->SetActiveSMotion(active_motion);
 
     return bRes;
 }
@@ -860,6 +873,4 @@ bool CExportSkeleton::Export(IWriter& F)
     return true;
 };
 //----------------------------------------------------
-
-
 

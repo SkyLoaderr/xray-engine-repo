@@ -229,6 +229,7 @@ public:
 
 	void 				ShowClipMaker		();
     bool				Import				(LPCSTR path, LPCSTR name);
+    bool				ExportOBJ			(LPCSTR name);
     bool				ExportOGF			(LPCSTR name);
     bool				ExportOMF			(LPCSTR name);
     bool				ExportDM			(LPCSTR name);
@@ -269,6 +270,7 @@ public:
     void                CommandSave			(u32 p1, u32 p2, u32& res);
     void                CommandImport		(u32 p1, u32 p2, u32& res);
     void                CommandExportDM		(u32 p1, u32 p2, u32& res);
+    void                CommandExportOBJ	(u32 p1, u32 p2, u32& res);
     void                CommandExportOGF	(u32 p1, u32 p2, u32& res);
     void               	CommandExportOMF	(u32 p1, u32 p2, u32& res);
 	void 				CommandUndo			(u32 p1, u32 p2, u32& res);

@@ -312,8 +312,24 @@ public:
 IC bool operator == (const xr_shortcut& A, const xr_shortcut& B){return !!A.similar(B);}
 class ShortcutValue: public CustomValue<xr_shortcut>{
 public:
+	typedef fastdelegate::FastDelegate3<ShortcutValue*,const xr_shortcut&,bool&>	TOnValidateResult;
+    TOnValidateResult	OnValidateResultEvent;
+public:
 						ShortcutValue	(TYPE* val):CustomValue<xr_shortcut>(val){}
     virtual std::string	GetDrawText		(TOnDrawTextEvent OnDrawText);
+    bool				ApplyValue		(const xr_shortcut& val)
+    {
+		if (!(*value==val)){
+        	bool allow	= true;
+            if (!OnValidateResultEvent.empty())
+            	OnValidateResultEvent(this,val,allow);
+            if (allow){
+	            set_value	(*value,val);
+    	        return		true;
+            }
+        }
+        return 			false;
+    }
 };
 class RTextValue: public CustomValue<shared_str>{
 public:

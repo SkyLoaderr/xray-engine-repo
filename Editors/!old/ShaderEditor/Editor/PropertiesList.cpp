@@ -62,7 +62,7 @@ void TProperties::ClearParams(TElTreeItem* node)
     }else{
 	    if (tvProperties->Selected) FHelper.MakeFullName(tvProperties->Selected,0,last_selected_item);
         // store
-        FolderStorage.clear	();
+        if (!m_Flags.is(plNoClearStore)) FolderStorage.clear();
         FolderStore			();
         // clear
 	    for (PropItemIt it=m_Items.begin(); it!=m_Items.end(); it++)
@@ -187,6 +187,7 @@ TProperties* TProperties::CreateModalForm(const AnsiString& title, bool bShowBut
 void TProperties::DestroyForm(TProperties*& props)
 {
 	VERIFY(props);
+	props->FolderStorage.clear();
 	// apply edit controls
 	props->ApplyEditControl();
     // destroy forms
@@ -331,9 +332,10 @@ void __fastcall TProperties::AssignItems(PropItemVec& items)
     // end fill mode
     bModified			= false;
 
-	UnlockUpdating	();
+	UnlockUpdating		();
 
-    SelectItem		(last_selected_item);
+    FolderRestore		();
+    SelectItem			(last_selected_item);
 }
 //---------------------------------------------------------------------------
 

@@ -12,6 +12,7 @@
 #include "bone.h"
 #include "motion.h"
 #include "ui_main.h"
+#include "nvMeshMender.h"
 
 CObjectOGFCollectorPacked::CObjectOGFCollectorPacked(const Fbox &bb, int apx_vertices, int apx_faces)
 {
@@ -278,6 +279,141 @@ void CObjectOGFCollectorPacked::MakeProgressive()
 }
 //----------------------------------------------------
 
+void CObjectOGFCollectorPacked::CalculateTB()
+{
+	u32 v_count_reserve			= 3*iFloor(float(m_Verts.size())*1.33f);
+	u32 i_count_reserve			= 3*m_Faces.size();
+
+	// Declare inputs
+	xr_vector<NVMeshMender::VertexAttribute> 			input;
+	input.push_back	(NVMeshMender::VertexAttribute());	// pos
+	input.push_back	(NVMeshMender::VertexAttribute());	// norm
+	input.push_back	(NVMeshMender::VertexAttribute());	// tex0
+	input.push_back	(NVMeshMender::VertexAttribute());	// w_b0_b1                
+	input.push_back	(NVMeshMender::VertexAttribute());	// *** faces
+
+	input[0].Name_= "position";	xr_vector<float>&	i_position	= input[0].floatVector_;	i_position.reserve	(v_count_reserve);
+	input[1].Name_= "normal";	xr_vector<float>&	i_normal	= input[1].floatVector_;	i_normal.reserve	(v_count_reserve);
+	input[2].Name_= "tex0";		xr_vector<float>&	i_tc		= input[2].floatVector_;	i_tc.reserve		(v_count_reserve);
+	input[3].Name_= "indices";	xr_vector<int>&		i_indices	= input[3].intVector_;		i_indices.reserve	(i_count_reserve);
+
+	// Declare outputs
+	xr_vector<NVMeshMender::VertexAttribute> 			output;
+	output.push_back(NVMeshMender::VertexAttribute());	// position, needed for mender
+	output.push_back(NVMeshMender::VertexAttribute());	// normal
+	output.push_back(NVMeshMender::VertexAttribute());	// tangent
+	output.push_back(NVMeshMender::VertexAttribute());	// binormal
+	output.push_back(NVMeshMender::VertexAttribute());	// tex0
+	output.push_back(NVMeshMender::VertexAttribute());	// w_b0_b1
+	output.push_back(NVMeshMender::VertexAttribute());	// *** faces
+
+	output[0].Name_= "position";
+	output[1].Name_= "normal";
+	output[2].Name_= "tangent";	
+	output[3].Name_= "binormal";
+	output[4].Name_= "tex0";	
+	output[5].Name_= "indices";	
+
+    // fill inputs (verts&indices)
+    for (OGFVertIt vert_it=m_Verts.begin(); vert_it!=m_Verts.end(); vert_it++){
+        SOGFVert	&iV = *vert_it;
+        i_position.push_back(iV.P.x);	i_position.push_back(iV.P.y);	i_position.push_back(iV.P.z);
+        i_normal.push_back	(iV.N.x);  	i_normal.push_back	(iV.N.y);	i_normal.push_back	(iV.N.z);
+        i_tc.push_back		(iV.UV.x);	i_tc.push_back		(iV.UV.y);	i_tc.push_back		(0);
+    }
+    for (OGFFaceIt face_it=m_Faces.begin(); face_it!=m_Faces.end(); face_it++){
+        SOGFFace	&iF = *face_it;
+		i_indices.push_back	(iF.v[0]);
+		i_indices.push_back	(iF.v[1]);
+		i_indices.push_back	(iF.v[2]);
+    }
+    
+	// Perform munge
+	NVMeshMender mender;
+	if (!mender.Munge(
+		input,										// input attributes
+		output,										// outputs attributes
+		deg2rad(75.f),								// tangent space smooth angle
+		0,											// no texture matrix applied to my texture coordinates
+		NVMeshMender::FixTangents,					// fix degenerate bases & texture mirroring
+		NVMeshMender::DontFixCylindricalTexGen,		// handle cylindrically mapped textures via vertex duplication
+		NVMeshMender::DontWeightNormalsByFaceSize	// weigh vertex normals by the triangle's size
+		))
+	{
+		Debug.fatal	("NVMeshMender failed (%s)",mender.GetLastError().c_str());
+	}
+
+	// Bind declarators
+	// bind
+	output[0].Name_= "position";
+	output[1].Name_= "normal";
+	output[2].Name_= "tangent";	
+	output[3].Name_= "binormal";
+	output[4].Name_= "tex0";	
+	output[5].Name_= "indices";	
+
+	xr_vector<float>&	o_position	= output[0].floatVector_;	R_ASSERT(output[0].Name_=="position");
+	xr_vector<float>&	o_normal	= output[1].floatVector_;	R_ASSERT(output[1].Name_=="normal");
+	xr_vector<float>&	o_tangent	= output[2].floatVector_;	R_ASSERT(output[2].Name_=="tangent");
+	xr_vector<float>&	o_binormal	= output[3].floatVector_;	R_ASSERT(output[3].Name_=="binormal");
+	xr_vector<float>&	o_tc		= output[4].floatVector_;	R_ASSERT(output[4].Name_=="tex0");
+	xr_vector<int>&		o_indices	= output[5].intVector_;		R_ASSERT(output[5].Name_=="indices");
+
+	// verify
+	R_ASSERT		(3*m_Faces.size()	== o_indices.size());
+    u32 v_cnt		= o_position.size();
+    R_ASSERT		(0==v_cnt%3);
+    R_ASSERT		(v_cnt == o_normal.size());
+    R_ASSERT		(v_cnt == o_tangent.size());
+    R_ASSERT		(v_cnt == o_binormal.size());
+    R_ASSERT		(v_cnt == o_tc.size());
+    v_cnt			/= 3;
+
+    // retriving data
+    u32 o_idx		= 0;
+    for (face_it=m_Faces.begin(); face_it!=m_Faces.end(); face_it++){
+        SOGFFace	&iF = *face_it;
+        iF.v[0]		= o_indices[o_idx++];
+        iF.v[1]		= o_indices[o_idx++];
+        iF.v[2]		= o_indices[o_idx++];
+    }
+    m_Verts.clear	(); m_Verts.resize(v_cnt);
+    for (u32 v_idx=0; v_idx!=v_cnt; v_idx++){
+        SOGFVert	&iV = m_Verts[v_idx];
+        iV.P.set	(o_position[v_idx*3+0],	o_position[v_idx*3+1],	o_position[v_idx*3+2]);
+        iV.N.set	(o_normal[v_idx*3+0],	o_normal[v_idx*3+1],	o_normal[v_idx*3+2]);
+        iV.T.set	(o_tangent[v_idx*3+0],	o_tangent[v_idx*3+1],	o_tangent[v_idx*3+2]);
+        iV.B.set	(o_binormal[v_idx*3+0],	o_binormal[v_idx*3+1],	o_binormal[v_idx*3+2]);
+        iV.UV.set	(o_tc[v_idx*3+0],		o_tc[v_idx*3+1]);
+    }
+
+    // Optimize texture coordinates
+    // 1. Calc bounds
+    Fvector2 	Tdelta;
+    Fvector2 	Tmin,Tmax;
+    Tmin.set	(flt_max,flt_max);
+    Tmax.set	(flt_min,flt_min);
+    for (v_idx=0; v_idx!=v_cnt; v_idx++){
+        SOGFVert	&iV = m_Verts[v_idx];
+        Tmin.min	(iV.UV);
+        Tmax.max	(iV.UV);
+    }
+    Tdelta.x 	= floorf((Tmax.x-Tmin.x)/2+Tmin.x);
+    Tdelta.y 	= floorf((Tmax.y-Tmin.y)/2+Tmin.y);
+
+    Fvector2	Tsize;
+    Tsize.sub	(Tmax,Tmin);
+//	if ((Tsize.x>32)||(Tsize.y>32))
+//    	Msg		("#!Surface [T:'%s', S:'%s'] has UV tiled more than 32 times.",m_Texture.c_str(),m_Shader.c_str());
+    
+    // 2. Recalc UV mapping
+    for (v_idx=0; v_idx!=v_cnt; v_idx++){
+        SOGFVert	&iV = m_Verts[v_idx];
+        iV.UV.sub	(Tdelta);
+    }
+}
+//----------------------------------------------------
+
 void CExportObjectOGF::SSplit::MakeProgressive()
 {
 	for (COGFCPIt it=m_Parts.begin(); it!=m_Parts.end(); it++)
@@ -305,7 +441,7 @@ CExportObjectOGF::SSplit* CExportObjectOGF::FindSplit(CSurface* surf)
 }
 //----------------------------------------------------
 
-bool CExportObjectOGF::Export(IWriter& F)
+bool CExportObjectOGF::Prepare()
 {
     if( m_Source->MeshCount() == 0 ) return false;
 
@@ -313,8 +449,6 @@ bool CExportObjectOGF::Export(IWriter& F)
     SPBItem* pb		= UI->ProgressStart	(m_Source->MeshCount()+m_Source->SurfaceCount(),capt.c_str());
 	pb->Inc			();    
 
-    CTimer tm;
-    tm.Start();
     BOOL bResult = TRUE;
     for(EditMeshIt mesh_it=m_Source->FirstMesh();mesh_it!=m_Source->LastMesh();mesh_it++){
         CEditableMesh* MESH = *mesh_it;
@@ -405,12 +539,22 @@ bool CExportObjectOGF::Export(IWriter& F)
     }
     pb->Inc				();
 
+    // calculate TB
+    for (SplitIt split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++){
+		(*split_it)->CalculateTB();
+        pb->Inc		();
+    }
+
 	// Compute bounding...
     ComputeBounding		();
+    UI->ProgressEnd		(pb);
+    return true;
+}
+bool CExportObjectOGF::Export(IWriter& F)
+{
+    if( !Prepare() ) return false;
 
-	// create OGF
 	// Saving geometry...
-
     // Header
     ogf_header 		H;
     H.format_version= xrOGF_FormatVersion;
@@ -434,14 +578,66 @@ bool CExportObjectOGF::Export(IWriter& F)
     for (SplitIt split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++)
         (*split_it)->Save(F,chunk);
     F.close_chunk	();
-    pb->Inc			();
 
-    UI->ProgressEnd	(pb);
-
-    tm.Stop			();
-    ELog.Msg		(mtInformation,"Build time: %3.2f sec",float(tm.GetElapsed_ms())/1000.f);
-    
-    return bResult;
+    return true;
 }
 //------------------------------------------------------------------------------
+
+
+bool CExportObjectOGF::ExportAsWavefrontOBJ(IWriter& F, LPCSTR fn)
+{
+	if (!Prepare())							return false;
+
+    string256 	name,ext; 
+    _splitpath	(fn, 0, 0, name, ext );
+    strcat		(name,ext);
+    // write mtl
+    string512 	tmp,tex_path,tex_name;
+    for (SplitIt split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++){
+	    _splitpath			((*split_it)->m_Surf->_Texture(), 0, 0, tex_name, 0 );
+    	sprintf				(tmp,"newmtl %s",tex_name); 	F.w_string	(tmp);
+	    _splitpath			((*split_it)->m_Surf->_Texture(), 0, tex_path, tex_name, 0 );
+        strconcat			(tex_path,tex_path,"\\",tex_name,".tga");
+    	sprintf				(tmp,"map_Kd %s",tex_path);		F.w_string	(tmp);
+    }
+    sprintf					(tmp,"mtllib %s",name);				 				F.w_string	(tmp);
+    // write mtl
+    for (split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++){
+	    _splitpath			((*split_it)->m_Surf->_Texture(), 0, 0, tex_name, 0 );
+        sprintf				(tmp,"g %d",split_it-m_Splits.begin());				F.w_string	(tmp);
+        sprintf				(tmp,"usemtl %s",tex_name);							F.w_string	(tmp);
+        for (COGFCPIt it=(*split_it)->m_Parts.begin(); it!=(*split_it)->m_Parts.end(); it++){
+            CObjectOGFCollectorPacked* part = *it;
+            // vertices
+            OGFVertVec& VERTS	= part->getV_Verts();
+            OGFVertIt 			v_it;
+            for (v_it=VERTS.begin(); v_it!=VERTS.end(); v_it++){
+                sprintf			(tmp,"v %f %f %f",v_it->P.x,v_it->P.y,v_it->P.z); 	F.w_string	(tmp);
+            }
+            for (v_it=VERTS.begin(); v_it!=VERTS.end(); v_it++){
+                sprintf			(tmp,"vt %f %f",v_it->UV.x,_abs(1.f-v_it->UV.y));		F.w_string	(tmp);
+            }
+            for (v_it=VERTS.begin(); v_it!=VERTS.end(); v_it++){
+                sprintf			(tmp,"vn %f %f %f",v_it->N.x,v_it->N.y,v_it->N.z);	F.w_string	(tmp);
+            }
+            for (v_it=VERTS.begin(); v_it!=VERTS.end(); v_it++){
+                sprintf			(tmp,"vg %f %f %f",v_it->T.x,v_it->T.y,v_it->T.z);	F.w_string	(tmp);
+            }
+            for (v_it=VERTS.begin(); v_it!=VERTS.end(); v_it++){
+                sprintf			(tmp,"vb %f %f %f",v_it->B.x,v_it->B.y,v_it->B.z);	F.w_string	(tmp);
+            }
+            // faces
+            OGFFaceVec& FACES	= part->getV_Faces();
+            OGFFaceIt 			f_it;
+            for (f_it=FACES.begin(); f_it!=FACES.end(); f_it++){
+                sprintf			(tmp,"f %d/%d/%d %d/%d/%d %d/%d/%d",f_it->v[0]+1,f_it->v[0]+1,f_it->v[0]+1,
+                                                                    f_it->v[1]+1,f_it->v[1]+1,f_it->v[1]+1,
+                                                                    f_it->v[2]+1,f_it->v[2]+1,f_it->v[2]+1); 	F.w_string	(tmp);
+            }
+        }
+    }
+	return true;
+}
+//----------------------------------------------------
+
 

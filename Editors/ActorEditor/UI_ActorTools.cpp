@@ -453,6 +453,14 @@ bool CActorTools::ExportOMF(LPCSTR name)
     return false;
 }
 
+bool CActorTools::ExportOBJ(LPCSTR name)
+{
+	VERIFY(m_bReady);
+    if (m_pEditObject&&m_pEditObject->ExportOBJ(name)) return true;
+    return false;
+}
+
+
 #include "EDetailModel.h"
 bool CActorTools::ExportDM(LPCSTR name)
 {

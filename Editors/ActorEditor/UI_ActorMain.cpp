@@ -161,6 +161,15 @@ void CActorTools::CommandExportDM(u32 p1, u32 p2, u32& res)
         else		        		    	ELog.DlgMsg(mtError,"Export failed.");
     }
 }
+void CActorTools::CommandExportOBJ(u32 p1, u32 p2, u32& res)
+{
+    std::string fn;
+    if (EFS.GetSaveName("$import$",fn,0,5)){
+    	
+        if (ATools->ExportOBJ(fn.c_str()))	ELog.DlgMsg(mtInformation,"Export complete.");
+        else		        		    	ELog.DlgMsg(mtError,"Export failed.");
+    }
+}
 void CActorTools::CommandExportOGF(u32 p1, u32 p2, u32& res)
 {
     std::string fn;
@@ -267,32 +276,32 @@ void CActorMain::RegisterCommands()
 {
 	inherited::RegisterCommands();
     // tools
-	RegisterCommand(COMMAND_CLEAR,              SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(ATools,CActorTools::CommandClear)));
-    RegisterCommand(COMMAND_LOAD,               SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(ATools,CActorTools::CommandLoad)));
-    RegisterCommand(COMMAND_SAVE_BACKUP,        SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(ATools,CActorTools::CommandSaveBackup)));
-    RegisterCommand(COMMAND_SAVEAS,             SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(ATools,CActorTools::CommandSaveAs)));
-	RegisterCommand(COMMAND_SAVE,               SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(ATools,CActorTools::CommandSave)));
-    RegisterCommand(COMMAND_IMPORT,             SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(ATools,CActorTools::CommandImport)));
-    RegisterCommand(COMMAND_EXPORT_DM,          SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(ATools,CActorTools::CommandExportDM)));
-    RegisterCommand(COMMAND_EXPORT_OGF,         SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(ATools,CActorTools::CommandExportOGF)));
-    RegisterCommand(COMMAND_EXPORT_OMF,         SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(ATools,CActorTools::CommandExportOMF)));
-	RegisterCommand(COMMAND_UNDO,               SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(ATools,CActorTools::CommandUndo)));
-	RegisterCommand(COMMAND_REDO,               SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(ATools,CActorTools::CommandRedo)));
-    RegisterCommand(COMMAND_OPTIMIZE_MOTIONS,   SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(ATools,CActorTools::CommandOptimizeMotions)));
+	RegisterCommand(COMMAND_CLEAR,              xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(ATools,CActorTools::CommandClear)));
+    RegisterCommand(COMMAND_LOAD,               xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(ATools,CActorTools::CommandLoad)));
+    RegisterCommand(COMMAND_SAVE_BACKUP,        xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(ATools,CActorTools::CommandSaveBackup)));
+    RegisterCommand(COMMAND_SAVEAS,             xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(ATools,CActorTools::CommandSaveAs)));
+	RegisterCommand(COMMAND_SAVE,               xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(ATools,CActorTools::CommandSave)));
+    RegisterCommand(COMMAND_IMPORT,             xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(ATools,CActorTools::CommandImport)));
+    RegisterCommand(COMMAND_EXPORT_DM,          xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(ATools,CActorTools::CommandExportDM)));
+    RegisterCommand(COMMAND_EXPORT_OBJ,			xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(ATools,CActorTools::CommandExportOBJ)));
+    RegisterCommand(COMMAND_EXPORT_OGF,         xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(ATools,CActorTools::CommandExportOGF)));
+    RegisterCommand(COMMAND_EXPORT_OMF,         xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(ATools,CActorTools::CommandExportOMF)));
+	RegisterCommand(COMMAND_UNDO,               xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(ATools,CActorTools::CommandUndo)));
+	RegisterCommand(COMMAND_REDO,               xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(ATools,CActorTools::CommandRedo)));
+    RegisterCommand(COMMAND_OPTIMIZE_MOTIONS,   xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(ATools,CActorTools::CommandOptimizeMotions)));
     // ui
-    RegisterCommand(COMMAND_SHOW_CLIPMAKER,  	SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandShowClipMaker)));
-    RegisterCommand(COMMAND_MAKE_PREVIEW,       SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandMakePreview)));
-    RegisterCommand(COMMAND_PREVIEW_OBJ_PREF,   SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandPreviewObjPref)));
-    RegisterCommand(COMMAND_SELECT_PREVIEW_OBJ, SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandSelectPreviewObj)));
-    RegisterCommand(COMMAND_LOAD_FIRSTRECENT,   SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandLoadFirstRecent)));
-    RegisterCommand(COMMAND_FILE_MENU,          SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandFileMenu)));
-    RegisterCommand(COMMAND_REFRESH_UI_BAR,     SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandRefreshUIBar)));
-    RegisterCommand(COMMAND_RESTORE_UI_BAR,     SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandRestoreUIBar)));
-    RegisterCommand(COMMAND_SAVE_UI_BAR,        SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandSaveUIBar)));
-	RegisterCommand(COMMAND_UPDATE_TOOLBAR,     SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandUpdateToolBar)));
-    RegisterCommand(COMMAND_UPDATE_CAPTION,     SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandUpdateCaption)));
-}
-
+    RegisterCommand(COMMAND_SHOW_CLIPMAKER,  	xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandShowClipMaker)));
+    RegisterCommand(COMMAND_MAKE_PREVIEW,       xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandMakePreview)));
+    RegisterCommand(COMMAND_PREVIEW_OBJ_PREF,   xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandPreviewObjPref)));
+    RegisterCommand(COMMAND_SELECT_PREVIEW_OBJ, xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandSelectPreviewObj)));
+    RegisterCommand(COMMAND_LOAD_FIRSTRECENT,   xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandLoadFirstRecent)));
+    RegisterCommand(COMMAND_FILE_MENU,          xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandFileMenu)));
+    RegisterCommand(COMMAND_REFRESH_UI_BAR,     xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandRefreshUIBar)));
+    RegisterCommand(COMMAND_RESTORE_UI_BAR,     xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandRestoreUIBar)));
+    RegisterCommand(COMMAND_SAVE_UI_BAR,        xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandSaveUIBar)));
+	RegisterCommand(COMMAND_UPDATE_TOOLBAR,     xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandUpdateToolBar)));
+    RegisterCommand(COMMAND_UPDATE_CAPTION,     xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandUpdateCaption)));
+}                                                                    
 
 
 

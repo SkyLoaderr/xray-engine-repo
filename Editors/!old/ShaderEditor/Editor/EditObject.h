@@ -409,6 +409,8 @@ public:
     // omf
     bool			PrepareOMF				(IWriter& F);
 	bool			ExportOMF				(LPCSTR fname);
+    // obj
+    bool			ExportOBJ				(LPCSTR name);
     // HOM
     bool			ExportHOMPart			(const Fmatrix& parent, IWriter& F);
     bool			ExportHOM				(LPCSTR fname);

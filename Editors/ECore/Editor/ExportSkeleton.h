@@ -174,6 +174,7 @@ public:
 
 class ECORE_API CExportSkeleton: public CExportSkeletonCustom{
 	CEditableObject*	m_Source;
+    bool				PrepareGeometry		();
 public:
 						CExportSkeleton		(CEditableObject* object);
     virtual bool    	Export				(IWriter& F);

@@ -67,11 +67,31 @@ typedef fastdelegate::FastDelegate3<u32,u32,u32&> TECommandEvent;
 struct ECORE_API SECommand{
 	bool			editable;
     LPSTR			caption;
-	xr_shortcut		shortcut;
+    struct SESubCommand{
+    	LPSTR		caption;
+		xr_shortcut	shortcut;
+        SESubCommand(LPCSTR capt){caption=xr_strdup(capt);}
+        ~SESubCommand(){xr_free(caption);}
+	    IC LPCSTR	Caption			(){return caption&&caption[0]?caption:"";}
+    };
+	DEFINE_VECTOR	(SESubCommand*,ESubCommandVec,ESubCommandVecIt);
+    ESubCommandVec	sub_commands;
     TECommandEvent	command;
-    				SECommand		(LPCSTR capt, bool edit, const xr_shortcut& shrt, TECommandEvent cmd):editable(edit),shortcut(shrt),command(cmd){caption=xr_strdup(capt);}
+    				SECommand		(LPCSTR capt, LPCSTR sub_capt, bool edit, TECommandEvent cmd):editable(edit),command(cmd)
+                    {
+                    	caption		= xr_strdup(capt);
+                        u32 i_cnt 	= _GetItemCount(sub_capt);
+                        if (0==i_cnt){
+                            sub_commands.push_back(xr_new<SESubCommand>(""));
+                    	}else{
+                            string256 	tmp;
+                            for (u32 i_idx=0; i_idx<i_cnt; i_idx++)
+                                sub_commands.push_back(xr_new<SESubCommand>(_GetItem(sub_capt,i_idx,tmp,',')));
+                        }
+                    }
 					~SECommand		(){xr_free(caption);}
-    IC LPCSTR		Caption			(){return caption&&caption[0]?caption:"Unknown";}
+    IC LPCSTR		Caption			(){return caption&&caption[0]?caption:"";}
+    
 };
 DEFINE_VECTOR(SECommand*,ECommandVec,ECommandVecIt);
 
@@ -80,8 +100,6 @@ ECORE_API void					RegisterCommand 		(u32 cmd_type, SECommand* cmd_impl);
 ECORE_API void					EnableReceiveCommands	();
 ECORE_API ECommandVec&  		GetEditorCommands		();
 
-#define MAKE_SHORTCUT(k,a,c,s)  xr_shortcut(k,a,c,s)
-#define MAKE_EMPTY_SHORTCUT  	MAKE_SHORTCUT(0,0,0,0)
 #define BIND_CMD_EVENT_S(a) 	TECommandEvent().bind(a)
 #define BIND_CMD_EVENT_C(a,b)	TECommandEvent().bind(a,&b)
 
