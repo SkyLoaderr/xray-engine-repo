@@ -39,6 +39,7 @@ private:
 	POOL					Pool;				// Unused / Inactive
 	BOOL					bLogging;
     BOOL					bForceDiscard;
+    BOOL					bAllowChildrenDuplicate;
 
 	void					Destroy	();
 public:
@@ -46,8 +47,8 @@ public:
 	virtual 				~CModelPool			();
 	IRender_Visual*			Instance_Create		(u32 Type);
 	IRender_Visual*			Instance_Duplicate	(IRender_Visual* V);
-	IRender_Visual*			Instance_Load		(LPCSTR N);
-	IRender_Visual*			Instance_Load		(LPCSTR N, IReader* data);
+	IRender_Visual*			Instance_Load		(LPCSTR N, BOOL allow_register);
+	IRender_Visual*			Instance_Load		(LPCSTR N, IReader* data, BOOL allow_register);
 	void					Instance_Register	(LPCSTR N, IRender_Visual* V);
 	IRender_Visual*			Instance_Find		(LPCSTR N);
 

@@ -95,7 +95,7 @@ IRender_Visual*	CModelPool::Instance_Duplicate	(IRender_Visual* V)
 	return N;
 }
 
-IRender_Visual*	CModelPool::Instance_Load		(const char* N)
+IRender_Visual*	CModelPool::Instance_Load		(const char* N, BOOL allow_register)
 {
 	IRender_Visual	*V;
 	string512		fn;
@@ -131,12 +131,12 @@ IRender_Visual*	CModelPool::Instance_Load		(const char* N)
 	g_pGamePersistent->RegisterModel(V);
 
 	// Registration
-	Instance_Register	(N,V);
+	if (allow_register) Instance_Register(N,V);
 
 	return V;
 }
 
-IRender_Visual*	CModelPool::Instance_Load(LPCSTR name, IReader* data)
+IRender_Visual*	CModelPool::Instance_Load(LPCSTR name, IReader* data, BOOL allow_register)
 {
 	IRender_Visual	*V;
 	
@@ -148,7 +148,7 @@ IRender_Visual*	CModelPool::Instance_Load(LPCSTR name, IReader* data)
 	V->Load				(name,data,0);
 
 	// Registration
-	Instance_Register	(name,V);
+	if (allow_register) Instance_Register(name,V);
 	return V;
 }
 
@@ -190,8 +190,9 @@ void CModelPool::Destroy()
 
 CModelPool::CModelPool()
 {
-	bLogging		= TRUE;
-    bForceDiscard 	= FALSE;
+	bLogging				= TRUE;
+    bForceDiscard 			= FALSE;
+    bAllowChildrenDuplicate	= TRUE; 
 }
 
 CModelPool::~CModelPool()
@@ -228,10 +229,12 @@ IRender_Visual* CModelPool::Create(const char* name, IReader* data)
 	POOL_IT	it			=	Pool.find	(low_name);
 	if (it!=Pool.end())
 	{
+ 
 		// 1. Instance found
 		Model				=	it->second;
 		Model->Spawn		();
 		Pool.erase			(it);
+ 
 	} else {
 		// 1. Search for already loaded model (reference, base model)
 		IRender_Visual* Base		= Instance_Find		(low_name);
@@ -242,9 +245,11 @@ IRender_Visual* CModelPool::Create(const char* name, IReader* data)
 			Model			= Instance_Duplicate(Base);
 			Registry.insert	(mk_pair(Model,xr_strdup(low_name)));
 		} else {
+			bAllowChildrenDuplicate	= FALSE;
 			// 3. If not found
-			if (data)		Model = Instance_Load(low_name,data);
-            else			Model = Instance_Load(low_name);
+			if (data)		Model = Instance_Load(low_name,data,TRUE);
+            else			Model = Instance_Load(low_name,TRUE);
+			bAllowChildrenDuplicate	= TRUE;
 #ifdef _EDITOR
 			if (!Model)		return 0;
 #endif
@@ -254,6 +259,27 @@ IRender_Visual* CModelPool::Create(const char* name, IReader* data)
 	}
 
 	return	Model;
+/*    
+		// 1. Search for already loaded model (reference, base model)
+		IRender_Visual* Base		= Instance_Find		(low_name);
+
+		if (0==Base){
+			// 2. If not found
+			bAllowChildrenDiplicate	= FALSE;
+			if (data)		Base = Instance_Load(low_name,data);
+            else			Base = Instance_Load(low_name);
+			bAllowChildrenDiplicate	= TRUE;
+#ifdef _EDITOR
+			if (!Base)		return 0;
+#endif
+		}
+        // 3. If found - return (cloned) reference
+        IRender_Visual*		Model	= Instance_Duplicate(Base);
+        Registry.insert		(mk_pair(Model,xr_strdup(low_name)));
+        return				Model;
+	}
+*/
+    
 }
 
 IRender_Visual* CModelPool::CreateChild(LPCSTR name, IReader* data)
@@ -264,8 +290,10 @@ IRender_Visual* CModelPool::CreateChild(LPCSTR name, IReader* data)
 
 	// 1. Search for already loaded model
 	IRender_Visual* Base	= Instance_Find(low_name);
-	if (0==Base) Base	 	= Instance_Load(name,data);
-    return					Instance_Duplicate(Base);
+	if (0==Base) Base	 	= Instance_Load(name,data,FALSE);
+
+    IRender_Visual* Model	= bAllowChildrenDuplicate?Instance_Duplicate(Base):Base;
+    return					Model;
 }
 
 void	CModelPool::Delete	(IRender_Visual* &V, BOOL bDiscard)
