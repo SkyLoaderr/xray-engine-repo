@@ -104,6 +104,7 @@ public:
 
 	// Animations
 	void				animPlay		(CMotionDef* M, BOOL bMixIn=TRUE, CInventoryItem*  W=0);
+	void				animDisplay		(CMotionDef* M,	BOOL bMixIn);
 	CMotionDef*			animGet			(LPCSTR name);
 	
 	void				UpdatePosition	(const Fmatrix& transform);

@@ -890,3 +890,13 @@ void CWeaponMagazined::SwitchMode			()
 	
 	PlaySound	(sndEmptyClick, vLastFP);
 }
+ 
+void CWeaponMagazined::StartIdleAnim			()
+{
+	if(IsZoomed())
+	{
+		m_pHUD->animDisplay(mhud_idle_aim[Random.randI(mhud_idle_aim.size())], TRUE);
+	}
+	else
+		m_pHUD->animDisplay(mhud_idle[Random.randI(mhud_idle.size())], TRUE);
+}

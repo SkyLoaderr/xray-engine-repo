@@ -146,6 +146,8 @@ protected:
 	virtual void	PlayAnimReload();
 	virtual void	PlayAnimIdle();
 	virtual void	PlayAnimShoot();
+
+	virtual void	StartIdleAnim		();
 };
 
 #endif //__XR_WEAPON_MAG_H__

@@ -210,6 +210,11 @@ void CMissile::UpdateCL()
 	} 
 }
 
+void CMissile::StartIdleAnim()
+{
+	m_pHUD->animDisplay(m_pHUD->animGet(*m_sAnimIdle), TRUE);
+}
+
 u32 CMissile::State(u32 state) 
 {
 	m_state = state;

@@ -128,10 +128,8 @@ CMotionDef* CWeaponHUD::animGet		(LPCSTR name)
 	return PSkeletonAnimated(Visual())->ID_Cycle_Safe(name);
 }
 
-void CWeaponHUD::animPlay			(CMotionDef* M,	BOOL bMixIn, CInventoryItem* W)
+void CWeaponHUD::animDisplay		(CMotionDef* M,	BOOL bMixIn)
 {
-	Show	();
-
 	if(m_bCurrentEntityIsParent)
 	{
 		CSkeletonAnimated* pSkeletonAnimated			= PSkeletonAnimated(Visual());
@@ -140,6 +138,12 @@ void CWeaponHUD::animPlay			(CMotionDef* M,	BOOL bMixIn, CInventoryItem* W)
 		pSkeletonAnimated->PlayCycle					(M,bMixIn);
 		pSkeletonAnimated->CalculateBones_Invalidate	();
 	}
+}
+void CWeaponHUD::animPlay			(CMotionDef* M,	BOOL bMixIn, CInventoryItem* W)
+{
+	Show	();
+
+	animDisplay (M, bMixIn);
 
 	if(M->flags&esmStopAtEnd)
 	{

@@ -60,6 +60,9 @@ protected:
 	//инициализация если вещь в активном слоте или спрятана на OnH_B_Chield
 	virtual void	OnActiveItem		();
 	virtual void	OnHiddenItem		();
+
+	//для сети
+	virtual void	StartIdleAnim		();
 protected:
 
 	u32 m_state;

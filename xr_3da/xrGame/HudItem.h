@@ -58,6 +58,9 @@ public:
 	virtual	BOOL	net_Spawn			(LPVOID DC);
 	virtual void	net_Destroy			();
 
+	//запуск анимации, для переключения между актерами в игре
+	virtual void	StartIdleAnim		() {};
+
 	
 	//активация и деактивации вещи как активной в интерфейсе
 	virtual bool	Activate			();
