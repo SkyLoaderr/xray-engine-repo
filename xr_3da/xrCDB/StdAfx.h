@@ -32,7 +32,7 @@
 #define Msg printf
 struct D3DVECTOR;
 struct D3DMATRIX;
-#define NODEFAULT
+#define NODEFAULT __assume(0)
 #include "vector.h"
 
 #include "opcode.h"
