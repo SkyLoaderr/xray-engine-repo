@@ -84,7 +84,10 @@ function main ()
 	reset_action (stalker, s_test2.script_name ())
 	action (stalker, move (move.standing, move.run, move.line, patrol ("defend_way")), anim (anim.danger), cond (cond.move_end))
 	
-	while stalker:action () do wait () end
+	while stalker:action () do 
+		  if stalker:see (monster.npc) == true then printf ("Stalker see monster") end	
+		  wait () 
+    end
 	
 	stalker:script (false, s_test2.script_name())
 			  
