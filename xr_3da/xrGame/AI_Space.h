@@ -21,7 +21,7 @@ namespace AI {
 		MemberNodes		taMemberNodes;
 		MemberPlacement taDestMemberPositions;
 		MemberNodes		taDestMemberNodes;
-		EntityVec		taMembers;
+		EntityVec		*taMembers;
 		#define MAX_NODE_ESTIMATION_COST 10000000.f
 		// Estimator itself: 
 		// Node, SqrDistance2node, stop/continue

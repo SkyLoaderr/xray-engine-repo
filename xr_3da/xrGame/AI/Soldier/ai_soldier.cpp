@@ -311,10 +311,10 @@ void CAI_Soldier::Attack()
 				S.m_tEnemyPosition	= Enemy.Enemy->Position();
 				S.m_tpEnemyNode		= Enemy.Enemy->AI_Node;
 				
-				S.taMembers = Squad.Groups[g_Group()].Members;
+				S.taMembers = &(Squad.Groups[g_Group()].Members);
 				
-				if (S.m_tLeader)
-					S.taMembers.push_back(S.m_tLeader);
+				//if (S.m_tLeader)
+				//	S.taMembers.push_back(S.m_tLeader);
 
 				// checking if I need to rebuild the path i.e. previous search
 				// has found better destination node
@@ -366,7 +366,7 @@ void CAI_Soldier::Attack()
 
 				bool bCanKillMember = false;
 				for (int i=0; i<S.taMemberPositions.size(); i++)
-					if ((S.taMembers[i]->g_Health() > 0) && (bfCheckForMember(tFireVector,tMyPosition,S.taMemberPositions[i]))) {
+					if (((*S.taMembers)[i]->g_Health() > 0) && (bfCheckForMember(tFireVector,tMyPosition,S.taMemberPositions[i]))) {
 						bCanKillMember = true;
 						break;
 					}

@@ -303,9 +303,7 @@ void CAI_Hen::Attack()
 				S.m_tEnemyPosition	= Enemy.Enemy->Position();
 				S.m_tpEnemyNode		= Enemy.Enemy->AI_Node;
 				
-				S.taMembers = Squad.Groups[g_Group()].Members;
-				if (S.m_tLeader)
-					S.taMembers.push_back(S.m_tLeader);
+				S.taMembers = &(Squad.Groups[g_Group()].Members);
 
 				// checking if I need to rebuild the path i.e. previous search
 				// has found better destination node
@@ -356,11 +354,15 @@ void CAI_Hen::Attack()
 				vfNormalizeSafe(tFireVector);
 
 				bool bCanKillMember = false;
-				for (int i=0; i<S.taMemberPositions.size(); i++)
-					if ((S.taMembers[i]->g_Health() > 0) && (bfCheckForMember(tFireVector,tMyPosition,S.taMemberPositions[i]))) {
+				if (Leader != this)
+					if ((Leader->g_Health() > 0) && (bfCheckForMember(tFireVector,tMyPosition,Leader->Position())))
 						bCanKillMember = true;
-						break;
-					}
+				if (!bCanKillMember)
+					for (int i=0; i<S.taMemberPositions.size(); i++)
+						if ((S.taMembers[i]->g_Health() > 0) && (bfCheckForMember(tFireVector,tMyPosition,S.taMemberPositions[i]))) {
+							bCanKillMember = true;
+							break;
+						}
 					
 				if (!bCanKillMember) {
 					q_action.setup(AI::AIC_Action::FireBegin);
@@ -426,9 +428,7 @@ void CAI_Hen::Attack()
 					S.m_tEnemyPosition	= Enemy.Enemy->Position();
 					S.m_tpEnemyNode		= Enemy.Enemy->AI_Node;
 					
-					S.taMembers = Squad.Groups[g_Group()].Members;
-					if (S.m_tLeader)
-						S.taMembers.push_back(S.m_tLeader);
+					S.taMembers = &(Squad.Groups[g_Group()].Members);
 					// building a path from and to
 					AI_Path.DestNode = dwSavedEnemyNodeID;
 					Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
@@ -562,7 +562,7 @@ void CAI_Hen::FollowMe()
 						S.m_tEnemyPosition.set(0,0,0);
 						S.m_tpEnemyNode		= NULL;
 						
-						S.taMembers = Squad.Groups[g_Group()].Members;
+						//S.taMembers = &(Squad.Groups[g_Group()].Members);
 						// checking if I need to rebuild the path i.e. previous search
 						// has found better destination node
 						if (AI_Path.bNeedRebuild) {
@@ -692,7 +692,7 @@ void CAI_Hen::FreeHunting()
 					S.m_tEnemyPosition.set(0,0,0);
 					S.m_tpEnemyNode		= NULL;
 					
-					S.taMembers = Squad.Groups[g_Group()].Members;
+					//S.taMembers = Squad.Groups[g_Group()].Members;
 					// checking if I need to rebuild the path i.e. previous search
 					// has found better destination node
 					if (AI_Path.bNeedRebuild) {
@@ -831,7 +831,7 @@ void CAI_Hen::Pursuit()
 						S.m_tEnemyPosition	= tSavedEnemyPosition;
 						S.m_tpEnemyNode		= tpSavedEnemyNode;
 						
-						S.taMembers = Squad.Groups[g_Group()].Members;
+						//S.taMembers = Squad.Groups[g_Group()].Members;
 						bool bWatch = false;
 						// checking if I need to rebuild the path i.e. previous search
 						// has found better destination node
@@ -1001,7 +1001,7 @@ void CAI_Hen::UnderFire()
 					S.m_tEnemyPosition.set(0,0,0);
 					S.m_tpEnemyNode		= NULL;
 					
-					S.taMembers = Squad.Groups[g_Group()].Members;
+					S.taMembers = &(Squad.Groups[g_Group()].Members);
 					// checking if I need to rebuild the path i.e. previous search
 					// has found better destination node
 					if (AI_Path.bNeedRebuild) {
@@ -1043,11 +1043,15 @@ void CAI_Hen::UnderFire()
 						q_look.setup(AI::AIC_Look::Look,AI::t_Direction,&tHitDir,1000);
 						
 						bool bCanKillMember = false;
-						for (int i=0; i<S.taMemberPositions.size(); i++)
-							if ((S.taMembers[i]->g_Health() > 0) && (bfCheckForMember(tHitDir,S.m_tMyPosition,S.taMemberPositions[i]))) {
+						if (Leader != this)
+							if ((Leader->g_Health() > 0) && (bfCheckForMember(tFireVector,tMyPosition,Leader->Position())))
 								bCanKillMember = true;
-								break;
-							}
+						if (!bCanKillMember)
+							for (int i=0; i<S.taMemberPositions.size(); i++)
+								if ((S.taMembers[i]->g_Health() > 0) && (bfCheckForMember(tFireVector,tMyPosition,S.taMemberPositions[i]))) {
+									bCanKillMember = true;
+									break;
+								}
 							
 						if (!bCanKillMember)
 							q_action.setup(AI::AIC_Action::FireBegin);

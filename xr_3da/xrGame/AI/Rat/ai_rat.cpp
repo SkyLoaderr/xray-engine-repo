@@ -904,7 +904,7 @@ void CAI_Rat::FreeHunting()
 						S.m_tEnemyPosition.set(0,0,0);
 						S.m_tpEnemyNode		= NULL;
 						
-						S.taMembers = Squad.Groups[g_Group()].Members;
+						//S.taMembers = Squad.Groups[g_Group()].Members;
 						// checking if I need to rebuild the path i.e. previous search
 						// has found better destination node
 						if (AI_Path.bNeedRebuild) {
@@ -1069,7 +1069,7 @@ void CAI_Rat::Pursuit()
 						S.m_tEnemyPosition	= tSavedEnemyPosition;
 						S.m_tpEnemyNode		= tpSavedEnemyNode;
 						
-						S.taMembers = Squad.Groups[g_Group()].Members;
+						//S.taMembers = Squad.Groups[g_Group()].Members;
 						bool bWatch = false;
 						// checking if I need to rebuild the path i.e. previous search
 						// has found better destination node
@@ -1238,7 +1238,7 @@ void CAI_Rat::UnderFire()
 					S.m_tEnemyPosition.set(0,0,0);
 					S.m_tpEnemyNode		= NULL;
 					
-					S.taMembers = Squad.Groups[g_Group()].Members;
+					//S.taMembers = Squad.Groups[g_Group()].Members;
 					// checking if I need to rebuild the path i.e. previous search
 					// has found better destination node
 					if (AI_Path.bNeedRebuild) {
