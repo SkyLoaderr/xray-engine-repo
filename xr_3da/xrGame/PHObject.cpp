@@ -88,7 +88,7 @@ void CPHObject::Freeze()
 
 void CPHObject::UnFreeze()
 {
-	if(!b_activated) return;
+	if(!b_activated||!b_freezed) return;
 	UnFreezeContent();
 	ph_world->RemoveFreezedObject(this);
 	Activate();
