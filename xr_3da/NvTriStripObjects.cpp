@@ -697,7 +697,7 @@ void NvStripifier::RemoveSmallStrips(NvStripInfoVec& allStrips, NvStripInfoVec& 
 	}
 	
 	bool *bVisitedList = new bool[tempFaceList.size()];
-	memset(bVisitedList, 0, tempFaceList.size()*sizeof(bool));
+	ZeroMemory			(bVisitedList, tempFaceList.size()*sizeof(bool));
 	
 	VertexCache* vcache = new VertexCache(cacheSize);
 	

@@ -253,7 +253,7 @@ BOOL ADPCMCreateSoundBuffer(LPDIRECTSOUND lpDS, LPDIRECTSOUNDBUFFER *pDSB, WAVEF
     DSBUFFERDESC    dsBD;
 
     // Set up DSBUFFERDESC structure.
-    memset(&dsBD, 0, sizeof(DSBUFFERDESC)); // Zero it out.
+    ZeroMemory		(&dsBD, sizeof(DSBUFFERDESC)); // Zero it out.
     dsBD.dwSize		= sizeof(DSBUFFERDESC);
     dsBD.dwFlags	= DSBCAPS_CTRLVOLUME | DSBCAPS_GETCURRENTPOSITION2 | DSBCAPS_LOCSOFTWARE;
 
