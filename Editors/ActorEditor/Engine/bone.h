@@ -38,7 +38,7 @@ struct SBoneShape
         stBox,
         stSphere,
         stCylinder,
-        stForceU32 = u8(-1)
+        stForceU32 = u32(-1)
     };
 
 	EShapeType		type;
