@@ -1026,19 +1026,19 @@
 							RelativePath=".\object_property_evaluators_inline.h">
 						</File>
 					</Filter>
-					<Filter
-						Name="PrefetchManager"
-						Filter="">
-						<File
-							RelativePath=".\prefetch_manager.cpp">
-						</File>
-						<File
-							RelativePath=".\prefetch_manager.h">
-						</File>
-						<File
-							RelativePath=".\prefetch_manager_inline.h">
-						</File>
-					</Filter>
+				</Filter>
+				<Filter
+					Name="PrefetchManager"
+					Filter="">
+					<File
+						RelativePath=".\prefetch_manager.cpp">
+					</File>
+					<File
+						RelativePath=".\prefetch_manager.h">
+					</File>
+					<File
+						RelativePath=".\prefetch_manager_inline.h">
+					</File>
 				</Filter>
 				<Filter
 					Name="ProblemSolver"
