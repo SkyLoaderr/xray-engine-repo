@@ -378,20 +378,25 @@ BOOL	IPureClient::net_HasBandwidth	()
 	DWORD	dwInterval			= 1000/psNET_ClientUpdate;
 	if		(net_Disconnected)	return FALSE;
 
+	HRESULT hr;
 	if ((dwTime-net_Time_LastUpdate)>dwInterval)	
 	{
 		R_ASSERT			(NET);
 		
 		// check queue for "empty" state
 		DWORD				dwPending=0;
-		R_CHK				(NET->GetSendQueueInfo(&dwPending,0,0));
+		hr					= NET->GetSendQueueInfo(&dwPending,0,0);
+		if (FAILED(hr))		return FALSE;
+
 		if (dwPending > DWORD(psNET_ClientPending))	return FALSE;
 
 		// Query network statistic for this client
 		DPN_CONNECTION_INFO	CI;
 		ZeroMemory			(&CI,sizeof(CI));
 		CI.dwSize			= sizeof(CI);
-		CHK_DX				(NET->GetConnectionInfo(&CI,0));
+		hr					= NET->GetConnectionInfo(&CI,0);
+		if (FAILED(hr))		return FALSE;
+
 		net_Statistic.Update(CI);
 
 		// ok
