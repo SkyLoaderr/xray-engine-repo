@@ -81,6 +81,7 @@
 
 	<!-- BAR DRUNK DOLG QUEST -->
 	<info_portion id="bar_bar_drunk_dolg_quest_start"></info_portion>
+	<info_portion id="bar_bar_drunk_dolg_quest_gain"></info_portion>
 	<info_portion id="bar_bar_drunk_dolg_quest_finish"></info_portion>
 
 
