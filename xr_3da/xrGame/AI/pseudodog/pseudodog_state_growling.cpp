@@ -14,7 +14,7 @@ CPseudodogGrowling::CPseudodogGrowling(CAI_PseudoDog *p)
 
 void CPseudodogGrowling::Init()
 {
-	LOG_EX("PANIC:: Init");
+	LOG_EX("GROWLING:: Init");
 	inherited::Init();
 
 	enemy = pMonster->EnemyMan.get_enemy();

@@ -17,6 +17,7 @@ class CAI_PseudoDog : public CAI_Biting, public CJumping {
 
 
 	IState			*stateGrowling;
+	TTime			time_growling;			// время нахождения в состоянии пугания
 
 public:
 					CAI_PseudoDog		();

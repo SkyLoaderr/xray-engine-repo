@@ -51,6 +51,7 @@ void CAI_PseudoDog::Init()
 
 	strike_in_jump					= false;
 	m_time_became_angry				= 0;
+	time_growling					= 0;
 }
 
 void CAI_PseudoDog::Load(LPCSTR section)
@@ -160,7 +161,8 @@ void CAI_PseudoDog::Load(LPCSTR section)
 	CSoundPlayer::add(pSettings->r_string(section,"sound_psy_attack"),	16,	SOUND_TYPE_MONSTER_ATTACKING,	1,	u32(1 << 31) | 15,	MonsterSpace::eMonsterSoundPsyAttack, "bip01_head");
 }
 
-#define MIN_ANGRY_TIME 10000
+#define MIN_ANGRY_TIME		10000
+#define MAX_GROWLING_TIME	20000
 
 void CAI_PseudoDog::StateSelector()
 {	
@@ -171,17 +173,18 @@ void CAI_PseudoDog::StateSelector()
 	if (SoundMemory.is_loud_sound(m_anger_loud_threshold) || hear_dangerous_sound)		m_bAngry = true;
 	if (CEntityCondition::GetSatiety() < m_anger_hunger_threshold)						m_bAngry = true;
 	
+	// если слишком долго рычит - включать универсальную схему
+	if ((time_growling !=0) && (time_growling + MAX_GROWLING_TIME < m_current_update))	m_bAngry = true;
+
 	// если на этом кадре стал злым, сохранить время когда стал злым
 	if ((prev_angry == false) && m_bAngry) m_time_became_angry = m_current_update;
 	if (!m_bAngry && (m_time_became_angry + MIN_ANGRY_TIME > m_current_update))			m_bAngry = true;
-	
-	//m_bGrowling = false;
 	
 	const CEntityAlive	*enemy		= EnemyMan.get_enemy();
 	const CAI_Stalker	*pStalker	= dynamic_cast<const CAI_Stalker *>(enemy);
 	const CActor		*pActor		= dynamic_cast<const CActor *>(enemy);
 
-	
+
 	if (!m_bAngry && (pActor || pStalker)) {
 		if (EnemyMan.get_danger_type() == eVeryStrong) SetState(statePanic);
 		else SetState(stateGrowling);
@@ -201,7 +204,10 @@ void CAI_PseudoDog::StateSelector()
 			SetState(stateEat);	
 		else									SetState(stateRest);
 	}
-	
+
+	if ((time_growling == 0) && (CurrentState == stateGrowling)) time_growling = m_current_update;
+	if ((CurrentState != stateGrowling)) time_growling = 0;
+
 }
 
 void CAI_PseudoDog::UpdateCL()
