@@ -65,9 +65,12 @@ IC BOOL shared(occTri* T1, occTri* T2)
 	if (T1->adjacent[1]==T2)	return TRUE;
 	return FALSE;
 }
+IC float maxp(float a, float b)
+{	return a>b ? a:b;		}
+IC float minp(float a, float b)
+{	return a<b ? a:b;		}
 
-/* Rasterize a scan line between given X point values, corresponding Z values and current color
-*/
+// Rasterize a scan line between given X point values, corresponding Z values and current color
 void i_scan		(int curY, float leftX, float lhx, float rightX, float rhx, float startZ, float endZ)
 {
 	occTri**	pFrame	= Raster.get_frame();
@@ -208,11 +211,6 @@ Rasterises 1 section of the triangle a 'section' of a triangle is the portion of
 p2.y >= p1.y, p1, p2 are start/end vertices
 E1 E2 are the triangle edge differences of the 2 bounding edges for this section
 */
-
-IC float maxp(float a, float b)
-{	return a>b ? a:b;		}
-IC float minp(float a, float b)
-{	return a<b ? a:b;		}
 
 IC void i_section	(int Sect, BOOL bMiddle)
 {
