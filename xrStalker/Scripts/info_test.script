@@ -8,9 +8,9 @@ function main()
 
 	--GiveInfo(actor, 1)
 	GiveInfoViaPda(actor, stalker1, 1)
-	wait(3000)
+	wait(5000)
 	GiveInfoViaPda(actor, stalker2, 6)
-	wait(3000)
+	wait(4000)
 	GiveInfoViaPda(actor, stalker3, 7)
 
 	while true do
