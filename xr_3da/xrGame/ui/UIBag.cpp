@@ -184,8 +184,8 @@ void CUIBag::UpdateBuyPossibility(){
 	bool flag;
 
 	// disable items player can't buy
-
-	if (!(currentDDList = GetCurrentGroup()))
+	currentDDList = GetCurrentGroup();
+	if (!currentDDList)
 		return;
 
 
