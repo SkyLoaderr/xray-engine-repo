@@ -47,8 +47,6 @@ CEvent::CEvent(const char* S)
 	Name=xr_strdup(S); 
 	_strupr(Name);
 	dwRefCount=1; 
-
-	msCreate	("game");
 }
 CEvent::~CEvent()
 {	_FREE(Name); }

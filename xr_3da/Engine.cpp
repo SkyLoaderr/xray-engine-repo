@@ -22,6 +22,8 @@ CEngine::~CEngine()
 	
 }
 
+extern	void msCreate		(LPCSTR name);
+
 void CEngine::Initialize	(void)
 {
 	strcpy								(Params,GetCommandLine());
@@ -40,6 +42,9 @@ void CEngine::Initialize	(void)
 	// Other stuff
 	Engine.FS.Initialize				( );
 	Engine.Sheduler.Initialize			( );
+
+	// 
+	msCreate							("game");
 }
 
 void CEngine::Destroy	()
