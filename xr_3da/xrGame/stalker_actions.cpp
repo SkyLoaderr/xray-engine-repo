@@ -21,7 +21,7 @@
 using namespace StalkerDecisionSpace;
 
 #ifdef _DEBUG
-#	define STALKER_DEBUG_MODE
+//#	define STALKER_DEBUG_MODE
 #endif
 
 #ifdef DEBUG
