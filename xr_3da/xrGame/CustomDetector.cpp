@@ -99,7 +99,7 @@ void CCustomDetector::Update(u32 dt) {
 				}
 			} else l_time += dt;
 		}
-		if(l_buzzer)  {
+		if(l_buzzer && l_maxPow > 0)  {
 			if(!m_buzzer.feedback) Sound->PlayAtPos(m_buzzer, this, P, true);
 			if(m_buzzer.feedback) m_buzzer.feedback->SetPosition(P);
 		} else if(m_buzzer.feedback) m_buzzer.feedback->Stop();
