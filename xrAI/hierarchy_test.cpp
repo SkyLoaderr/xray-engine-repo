@@ -1,65 +1,18 @@
 #include "stdafx.h"
 #include "level_graph.h"
+#include "level_navigation_graph.h"
+#include "level_navigation_graph_space.h"
 #include "profile.h"
 #include "graph_abstract.h"
 
-struct CCellVertex {
-	u32		m_vertex_id;
-	union {
-		typedef u16 _use_type;
-
-		struct {
-			u32	m_mark : 16;
-			u32	m_use  : 16;
-		};
-		u32		m_data;
-	};
-
-			CCellVertex		()
-	{
-	}
-
-			CCellVertex		(u32 vertex_id, u32 mark, u32 use) :
-				m_vertex_id(vertex_id),
-				m_mark(mark),
-				m_use(use)
-	{
-	}
-};
-
-typedef CCellVertex::_use_type _use_type;
+typedef LevelNavigationGraph::CSector		CSector;
+typedef LevelNavigationGraph::CCellVertex	CCellVertex;
+typedef CCellVertex::_use_type				_use_type;
 
 const _use_type left	= 1 << 0;
 const _use_type up		= 1 << 3;
 const _use_type right	= 1 << 2;
 const _use_type down	= 1 << 1;
-
-struct CSector : public IPureSerializeObject<IReader,IWriter> {
-	u32				min_vertex_id;
-	u32				max_vertex_id;
-
-	IC				CSector		() {}
-	
-	virtual void	save		(IWriter &stream)
-	{
-		stream.w	(&min_vertex_id,sizeof(min_vertex_id));
-		stream.w	(&max_vertex_id,sizeof(max_vertex_id));
-	}
-	
-	virtual void	load		(IReader &stream)
-	{
-		stream.r	(&min_vertex_id,sizeof(min_vertex_id));
-		stream.r	(&max_vertex_id,sizeof(max_vertex_id));
-	}
-
-	IC		bool	operator==	(const CSector &obj) const
-	{
-		return		(
-			(min_vertex_id == obj.min_vertex_id) &&
-			(max_vertex_id == obj.max_vertex_id)
-		);
-	}
-};
 
 typedef CGraphAbstract<CSector,float,u32>	CSectorGraph;
 typedef xr_vector<CCellVertex>				VERTEX_VECTOR;
@@ -377,8 +330,12 @@ IC	void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sec
 void test_hierarchy		(LPCSTR name)
 {
 	CLevelGraph					*level_graph = xr_new<CLevelGraph>(name);
+	CLevelNavigationGraph		*level_navigation_graph = xr_new<CLevelNavigationGraph>(name);
 	CSectorGraph				*sector_graph = xr_new<CSectorGraph>();
-#if 1
+
+	Msg							("ai map : %d nodes",level_graph->header().vertex_count());
+
+#if 0
 	SetPriorityClass			(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
 	SetThreadPriority			(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
 	Sleep						(1);
@@ -394,6 +351,8 @@ void test_hierarchy		(LPCSTR name)
 	f							= CPU::GetCycleCount();
 
 	Msg							("Total time %f (%d test(s) : %f)",CPU::cycles2seconds*float(f - s),TEST_COUNT,CPU::cycles2microsec*float(f - s)/float(TEST_COUNT));
+
+	Msg							("Graphs are %s",equal(*sector_graph,((const CLevelNavigationGraph*)level_navigation_graph)->sectors()) ? "EQUAL" : "NOT EQUAL");
 
 #if 1
 	CMemoryWriter				stream;
@@ -473,6 +432,8 @@ void test_hierarchy		(LPCSTR name)
 	xr_delete					(sector_graph);
 	f							= CPU::GetCycleCount();
 	Msg							("Destroy sector graph time %f",CPU::cycles2seconds*float(f - s));
+
+	xr_delete					(level_navigation_graph);
 
 	SetThreadPriority			(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
 	SetPriorityClass			(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
