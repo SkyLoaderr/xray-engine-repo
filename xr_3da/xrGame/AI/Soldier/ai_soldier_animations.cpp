@@ -404,8 +404,8 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 //				Msg("BODY_STATE %d",m_cBodyState);
 				if (speed < .1f) {
 					// turning around || standing idle
-					if (fabsf(r_torso_target.yaw - r_torso_current.yaw) <= PI)
-						if (fabsf(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
+					if (_abs(r_torso_target.yaw - r_torso_current.yaw) <= PI)
+						if (_abs(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
 							if (r_torso_target.yaw - r_torso_current.yaw >= 0)
 								switch (m_cBodyState) {
 									case BODY_STATE_STAND : {
@@ -511,7 +511,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 							}
 						}
 					else
-						if (PI_MUL_2 - fabsf(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
+						if (PI_MUL_2 - _abs(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
 							if (r_torso_target.yaw > r_torso_current.yaw)
 								switch (m_cBodyState) {
 									case BODY_STATE_STAND : {

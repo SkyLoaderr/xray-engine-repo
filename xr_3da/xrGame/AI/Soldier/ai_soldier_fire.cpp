@@ -1221,12 +1221,12 @@ float CAI_Soldier::ffGetDistanceToNearestMember()
 	INIT_SQUAD_AND_LEADER;
 	CGroup &Group = Squad.Groups[g_Group()];
 	if (Leader != this)
-		fDistance = min(fDistance,vPosition.distance_to(Leader->Position()));
+		fDistance = _min(fDistance,vPosition.distance_to(Leader->Position()));
 	for (int i=0; i<(int)Group.Members.size(); i++)
 		if (Group.Members[i] != this) {
 			CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(Group.Members[i]);
 			if (!tpCustomMonster || (tpCustomMonster->AI_Path.fSpeed < EPS_L))
-				fDistance = min(fDistance,vPosition.distance_to(Group.Members[i]->Position()));
+				fDistance = _min(fDistance,vPosition.distance_to(Group.Members[i]->Position()));
 		}
 	return(fDistance);
 }

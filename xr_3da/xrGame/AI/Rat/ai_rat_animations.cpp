@@ -77,8 +77,8 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 		}
 		else
 			/**
-			if (fabsf(r_torso_target.yaw - r_torso_current.yaw) <= PI)
-				if (fabsf(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
+			if (_abs(r_torso_target.yaw - r_torso_current.yaw) <= PI)
+				if (_abs(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
 					if (r_torso_target.yaw - r_torso_current.yaw >= 0)
 						tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpTurnRight;
 					else
@@ -91,12 +91,12 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[0];
 					}
 					else
-						//if (fabsf(m_fCurSpeed - m_fMaxSpeed) < EPS_L) 
+						//if (_abs(m_fCurSpeed - m_fMaxSpeed) < EPS_L) 
 							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tRun.fwd;
 						//else
 						//	tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tWalk.fwd;
 			else
-				if (PI_MUL_2 - fabsf(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
+				if (PI_MUL_2 - _abs(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
 					if (r_torso_target.yaw > r_torso_current.yaw)
 						tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpTurnLeft;
 					else
@@ -109,13 +109,13 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[0];
 					}
 					else
-						//if (fabsf(m_fCurSpeed - m_fMaxSpeed) < EPS_L) 
+						//if (_abs(m_fCurSpeed - m_fMaxSpeed) < EPS_L) 
 							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tRun.fwd;
 						//else
 						//	tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tWalk.fwd;
 			/**/
-			if (fabsf(r_torso_target.yaw - r_torso_current.yaw) <= PI)
-				if (fabsf(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
+			if (_abs(r_torso_target.yaw - r_torso_current.yaw) <= PI)
+				if (_abs(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
 					if (r_torso_target.yaw - r_torso_current.yaw >= 0)
 						tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpTurnRight;
 					else
@@ -128,12 +128,12 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[0];
 					}
 					else
-						if (fabsf(m_fSpeed - m_fMaxSpeed) < EPS_L) 
+						if (_abs(m_fSpeed - m_fMaxSpeed) < EPS_L) 
 							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tRun.fwd;
 						else
 							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tWalk.fwd;
 			else
-				if (PI_MUL_2 - fabsf(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
+				if (PI_MUL_2 - _abs(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
 					if (r_torso_target.yaw > r_torso_current.yaw)
 						tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpTurnLeft;
 					else
@@ -146,7 +146,7 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[0];
 					}
 					else
-						if (fabsf(m_fSpeed - m_fMaxSpeed) < EPS_L) 
+						if (_abs(m_fSpeed - m_fMaxSpeed) < EPS_L) 
 							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tRun.fwd;
 						else
 							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tWalk.fwd;

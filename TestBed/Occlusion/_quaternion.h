@@ -371,16 +371,16 @@ public:
 	IC	BOOL	cmp(_quaternion &Q, float Tolerance=0.0001f)
 	{
 		if (	// they are the same but with opposite signs
-			(	(fabsf(x + Q.x) <= Tolerance )
-			&&  (fabsf(y + Q.y) <= Tolerance )
-			&&  (fabsf(z + Q.z) <= Tolerance )
-			&&  (fabsf(w + Q.w) <= Tolerance )
+			(	(_abs(x + Q.x) <= Tolerance )
+			&&  (_abs(y + Q.y) <= Tolerance )
+			&&  (_abs(z + Q.z) <= Tolerance )
+			&&  (_abs(w + Q.w) <= Tolerance )
 			)
 			||  // they are the same with same signs
-			(	(fabsf(x - Q.x) <= Tolerance )
-			&&  (fabsf(y - Q.y) <= Tolerance )
-			&&  (fabsf(z - Q.z) <= Tolerance )
-			&&  (fabsf(w - Q.w) <= Tolerance )
+			(	(_abs(x - Q.x) <= Tolerance )
+			&&  (_abs(y - Q.y) <= Tolerance )
+			&&  (_abs(z - Q.z) <= Tolerance )
+			&&  (_abs(w - Q.w) <= Tolerance )
 			)
 			)
 			return true;

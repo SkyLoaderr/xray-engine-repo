@@ -163,7 +163,7 @@ public:
 
 	IC	bool bfTooSmallAngle(float fAngle0, float fAngle1, float fDelta)
 	{
-		return(fabsf(fAngle0 - fAngle1) < fDelta) || ((fabsf(fabsf(fAngle0 - fAngle1) - PI_MUL_2) < fDelta));
+		return(_abs(fAngle0 - fAngle1) < fDelta) || ((_abs(_abs(fAngle0 - fAngle1) - PI_MUL_2) < fDelta));
 	}
 
 	Fvector	tfGetNodeCenter(DWORD dwNodeID);

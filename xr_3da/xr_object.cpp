@@ -21,7 +21,7 @@ void CObject::StatusBegin	()
 	T.set	(vPosition); T.y+=(Radius()*2);
 	Device.mFullTransform.transform	(S,T);
 	
-	pApp->pFont->Size	(0.07f/sqrtf(fabsf(S.w)));
+	pApp->pFont->Size	(0.07f/sqrtf(_abs(S.w)));
 	pApp->pFont->Color	(D3DCOLOR_RGBA(0,255,0,(S.z<=0)?0:255));
 	pApp->pFont->OutSet	(S.x,-S.y);
 }

@@ -15,7 +15,7 @@ struct WaveForm
 		fINVSAWTOOTH,
 		fFORCE32		= DWORD(-1)
 	};
-	IC float signf		(float t) { return t/fabsf(t); }
+	IC float signf		(float t) { return t/_abs(t); }
 	IC float Func		(float t)
 	{
 		switch (F)

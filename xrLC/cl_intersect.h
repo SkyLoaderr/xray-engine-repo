@@ -116,7 +116,7 @@ namespace CDB
 		// if determinant is near zero, ray lies in plane of triangle
 		det = edge1.dotproduct(pvec);
 		
-		if (fabsf(det) < EPS_S)		{ range=-1; return false; }
+		if (_abs(det) < EPS_S)		{ range=-1; return false; }
 		inv_det = 1.0f / det;
 		tvec.sub(C, p[0]);					// calculate distance from vert0 to ray origin
 		u = tvec.dotproduct(pvec)*inv_det;	// calculate U parameter and test bounds
@@ -199,7 +199,7 @@ namespace CDB
 		float A0dN = A.i.dotproduct(N);
 		float A1dN = A.j.dotproduct(N);
 		float A2dN = A.k.dotproduct(N);
-		float R = fabsf(extA.x*A0dN)+fabsf(extA.y*A1dN)+fabsf(extA.z*A2dN);
+		float R = _abs(extA.x*A0dN)+_abs(extA.y*A1dN)+_abs(extA.z*A2dN);
 		float NdD = N.dotproduct(D);
 		TESTV0(NdD,R); //AXIS_N
 		
@@ -225,60 +225,60 @@ namespace CDB
 		Fvector A0xE0;
 		A0xE0.crossproduct(A.i,E[0]);
 		float A0xE0dD = A0xE0.dotproduct(D);
-		R = fabsf(extA.y*A2dE0)+fabsf(extA.z*A1dE0);
+		R = _abs(extA.y*A2dE0)+_abs(extA.z*A1dE0);
 		TESTV2(A0xE0dD,A0dN,R); //AXIS_A0xE0
 		
 		// axis C+t*A0xE1
 		Fvector A0xE1;
 		A0xE1.crossproduct(A.i,E[1]);
 		float A0xE1dD = A0xE1.dotproduct(D);
-		R = fabsf(extA.y*A2dE1)+fabsf(extA.z*A1dE1);
+		R = _abs(extA.y*A2dE1)+_abs(extA.z*A1dE1);
 		TESTV2(A0xE1dD,-A0dN,R); //AXIS_A0xE1
 		
 		// axis C+t*A0xE2
 		float A1dE2 = A1dE1-A1dE0;
 		float A2dE2 = A2dE1-A2dE0;
 		float A0xE2dD = A0xE1dD-A0xE0dD;
-		R = fabsf(extA.y*A2dE2)+fabsf(extA.z*A1dE2);
+		R = _abs(extA.y*A2dE2)+_abs(extA.z*A1dE2);
 		TESTV2(A0xE2dD,-A0dN,R); //AXIS_A0xE2
 		
 		// axis C+t*A1xE0
 		Fvector A1xE0;
 		A1xE0.crossproduct(A.j,E[0]);
 		float A1xE0dD = A1xE0.dotproduct(D);
-		R = fabsf(extA.x*A2dE0)+fabsf(extA.z*A0dE0);
+		R = _abs(extA.x*A2dE0)+_abs(extA.z*A0dE0);
 		TESTV2(A1xE0dD,A1dN,R); //AXIS_A1xE0
 		
 		// axis C+t*A1xE1
 		Fvector A1xE1;
 		A1xE1.crossproduct(A.j,E[1]);
 		float A1xE1dD = A1xE1.dotproduct(D);
-		R = fabsf(extA.x*A2dE1)+fabsf(extA.z*A0dE1);
+		R = _abs(extA.x*A2dE1)+_abs(extA.z*A0dE1);
 		TESTV2(A1xE1dD,-A1dN,R); //AXIS_A1xE1
 		
 		// axis C+t*A1xE2
 		float A0dE2 = A0dE1-A0dE0;
 		float A1xE2dD = A1xE1dD-A1xE0dD;
-		R = fabsf(extA.x*A2dE2)+fabsf(extA.z*A0dE2);
+		R = _abs(extA.x*A2dE2)+_abs(extA.z*A0dE2);
 		TESTV2(A1xE2dD,-A1dN,R); //AXIS_A1xE2
 		
 		// axis C+t*A2xE0
 		Fvector A2xE0;
 		A2xE0.crossproduct(A.k,E[0]);
 		float A2xE0dD = A2xE0.dotproduct(D);
-		R = fabsf(extA.x*A1dE0)+fabsf(extA.y*A0dE0);
+		R = _abs(extA.x*A1dE0)+_abs(extA.y*A0dE0);
 		TESTV2(A2xE0dD,A2dN,R); //AXIS_A2xE0
 		
 		// axis C+t*A2xE1
 		Fvector A2xE1;
 		A2xE1.crossproduct(A.k,E[1]);
 		float A2xE1dD = A2xE1.dotproduct(D);
-		R = fabsf(extA.x*A1dE1)+fabsf(extA.y*A0dE1);
+		R = _abs(extA.x*A1dE1)+_abs(extA.y*A0dE1);
 		TESTV2(A2xE1dD,-A2dN,R); //AXIS_A2xE1
 		
 		// axis C+t*A2xE2
 		float A2xE2dD = A2xE1dD-A2xE0dD;
-		R = fabsf(extA.x*A1dE2)+fabsf(extA.y*A0dE2);
+		R = _abs(extA.x*A1dE2)+_abs(extA.y*A0dE2);
 		TESTV2(A2xE2dD,-A2dN,R); //AXIS_A2xE2
 		
 		// intersection occurs
@@ -299,7 +299,7 @@ namespace CDB
 		float A0dN = A.i.dotproduct(N);
 		float A1dN = A.j.dotproduct(N);
 		float A2dN = A.k.dotproduct(N);
-		float R = fabsf(extA.x*A0dN)+fabsf(extA.y*A1dN)+fabsf(extA.z*A2dN);
+		float R = _abs(extA.x*A0dN)+_abs(extA.y*A1dN)+_abs(extA.z*A2dN);
 		float NdD = N.dotproduct(D);
 		TESTV0(NdD,R); //AXIS_N
 		
@@ -325,60 +325,60 @@ namespace CDB
 		Fvector A0xE0;
 		A0xE0.crossproduct(A.i,E[0]);
 		float A0xE0dD = A0xE0.dotproduct(D);
-		R = fabsf(extA.y*A2dE0)+fabsf(extA.z*A1dE0);
+		R = _abs(extA.y*A2dE0)+_abs(extA.z*A1dE0);
 		TESTV2(A0xE0dD,A0dN,R); //AXIS_A0xE0
 		
 		// axis C+t*A0xE1
 		Fvector A0xE1;
 		A0xE1.crossproduct(A.i,E[1]);
 		float A0xE1dD = A0xE1.dotproduct(D);
-		R = fabsf(extA.y*A2dE1)+fabsf(extA.z*A1dE1);
+		R = _abs(extA.y*A2dE1)+_abs(extA.z*A1dE1);
 		TESTV2(A0xE1dD,-A0dN,R); //AXIS_A0xE1
 		
 		// axis C+t*A0xE2
 		float A1dE2 = A1dE1-A1dE0;
 		float A2dE2 = A2dE1-A2dE0;
 		float A0xE2dD = A0xE1dD-A0xE0dD;
-		R = fabsf(extA.y*A2dE2)+fabsf(extA.z*A1dE2);
+		R = _abs(extA.y*A2dE2)+_abs(extA.z*A1dE2);
 		TESTV2(A0xE2dD,-A0dN,R); //AXIS_A0xE2
 		
 		// axis C+t*A1xE0
 		Fvector A1xE0;
 		A1xE0.crossproduct(A.j,E[0]);
 		float A1xE0dD = A1xE0.dotproduct(D);
-		R = fabsf(extA.x*A2dE0)+fabsf(extA.z*A0dE0);
+		R = _abs(extA.x*A2dE0)+_abs(extA.z*A0dE0);
 		TESTV2(A1xE0dD,A1dN,R); //AXIS_A1xE0
 		
 		// axis C+t*A1xE1
 		Fvector A1xE1;
 		A1xE1.crossproduct(A.j,E[1]);
 		float A1xE1dD = A1xE1.dotproduct(D);
-		R = fabsf(extA.x*A2dE1)+fabsf(extA.z*A0dE1);
+		R = _abs(extA.x*A2dE1)+_abs(extA.z*A0dE1);
 		TESTV2(A1xE1dD,-A1dN,R); //AXIS_A1xE1
 		
 		// axis C+t*A1xE2
 		float A0dE2 = A0dE1-A0dE0;
 		float A1xE2dD = A1xE1dD-A1xE0dD;
-		R = fabsf(extA.x*A2dE2)+fabsf(extA.z*A0dE2);
+		R = _abs(extA.x*A2dE2)+_abs(extA.z*A0dE2);
 		TESTV2(A1xE2dD,-A1dN,R); //AXIS_A1xE2
 		
 		// axis C+t*A2xE0
 		Fvector A2xE0;
 		A2xE0.crossproduct(A.k,E[0]);
 		float A2xE0dD = A2xE0.dotproduct(D);
-		R = fabsf(extA.x*A1dE0)+fabsf(extA.y*A0dE0);
+		R = _abs(extA.x*A1dE0)+_abs(extA.y*A0dE0);
 		TESTV2(A2xE0dD,A2dN,R); //AXIS_A2xE0
 		
 		// axis C+t*A2xE1
 		Fvector A2xE1;
 		A2xE1.crossproduct(A.k,E[1]);
 		float A2xE1dD = A2xE1.dotproduct(D);
-		R = fabsf(extA.x*A1dE1)+fabsf(extA.y*A0dE1);
+		R = _abs(extA.x*A1dE1)+_abs(extA.y*A0dE1);
 		TESTV2(A2xE1dD,-A2dN,R); //AXIS_A2xE1
 		
 		// axis C+t*A2xE2
 		float A2xE2dD = A2xE1dD-A2xE0dD;
-		R = fabsf(extA.x*A1dE2)+fabsf(extA.y*A0dE2);
+		R = _abs(extA.x*A1dE2)+_abs(extA.y*A0dE2);
 		TESTV2(A2xE2dD,-A2dN,R); //AXIS_A2xE2
 		
 		// intersection occurs
@@ -398,7 +398,7 @@ namespace CDB
 		float fB0 = kDiff.dotproduct(e0);
 		float fB1 = kDiff.dotproduct(e1);
 		float fC = kDiff.square_magnitude();
-		float fDet = fabsf(fA00*fA11-fA01*fA01);
+		float fDet = _abs(fA00*fA11-fA01*fA01);
 		float fS = fA01*fB1-fA11*fB0;
 		float fT = fA01*fB0-fA00*fB1;
 		float fSqrDist;
@@ -544,7 +544,7 @@ namespace CDB
 			}
 		}
 		
-		return fabsf(fSqrDist);
+		return _abs(fSqrDist);
 }
 
 IC bool TestSphereTri(const Fvector& sphereOrigin, float sphereRadius, 

@@ -145,7 +145,7 @@ public:
 			a._12 * ( a._21 * a._33 - a._23 * a._31 ) +
 			a._13 * ( a._21 * a._32 - a._22 * a._31 ) );
 
-		VERIFY(fabsf(fDetInv)>flt_zero);
+		VERIFY(_abs(fDetInv)>flt_zero);
 		fDetInv=1.0f/fDetInv;
 
 		_11 =  fDetInv * ( a._22 * a._33 - a._23 * a._32 );
@@ -309,11 +309,11 @@ public:
 		m[3][0] *= v;		m[3][1] *= v;		m[3][2] *= v;		m[3][3] *= v;
 	}
 	IC	void	div( const Self &A, T v ) {
-		VERIFY(fabsf(v)>0.000001f);
+		VERIFY(_abs(v)>0.000001f);
 		mul(A,1.0f/v);
 	}
 	IC	void	div( T v ) {
-		VERIFY(fabsf(v)>0.000001f);
+		VERIFY(_abs(v)>0.000001f);
 		mul(1.0f/v);
 	}
 	// fov
@@ -322,8 +322,8 @@ public:
 	}
 	// half_fov-angle-tangent
 	IC	void	build_projection_HAT	(T HAT, T fAspect, T fNearPlane, T fFarPlane) {
-		VERIFY( fabsf(fFarPlane-fNearPlane) > EPS_S );
-		VERIFY( fabsf(HAT) > EPS_S );
+		VERIFY( _abs(fFarPlane-fNearPlane) > EPS_S );
+		VERIFY( _abs(HAT) > EPS_S );
 		
 		T cot	= 1/HAT;
 		T w		= fAspect * cot;

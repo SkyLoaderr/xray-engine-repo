@@ -119,8 +119,8 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 					break;
 				}
 				case aiZombieTurnOver : {
-					if (fabsf(r_torso_target.yaw - r_torso_current.yaw) <= PI)
-						if (fabsf(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
+					if (_abs(r_torso_target.yaw - r_torso_current.yaw) <= PI)
+						if (_abs(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
 							if (r_torso_target.yaw - r_torso_current.yaw >= 0)
 								tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpTurnRight;
 							else
@@ -129,8 +129,8 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 							tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpaIdle[0];
 				}
 				default : {
-					if (fabsf(r_torso_target.yaw - r_torso_current.yaw) <= PI)
-						if (fabsf(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
+					if (_abs(r_torso_target.yaw - r_torso_current.yaw) <= PI)
+						if (_abs(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
 							if (r_torso_target.yaw - r_torso_current.yaw >= 0)
 								tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpTurnRight;
 							else
@@ -138,7 +138,7 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 						else
 							tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpaIdle[1];
 					else
-						if (PI_MUL_2 - fabsf(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
+						if (PI_MUL_2 - _abs(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
 							if (r_torso_target.yaw > r_torso_current.yaw)
 								tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpTurnLeft;
 							else

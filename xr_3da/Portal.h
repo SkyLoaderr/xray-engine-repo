@@ -44,7 +44,7 @@ public:
 	}
 	float					distance(Fvector &V)
 	{
-		return fabsf(P.classify(V));
+		return _abs(P.classify(V));
 	}
 };
 

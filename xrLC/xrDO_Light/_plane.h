@@ -12,7 +12,7 @@ public:
 		d = P.d;
 	}
     IC BOOL 	similar (Fplane &P, float eps_n=EPS, float eps_d=EPS){
-    	return (n.similar(P.n,eps_n)&&(fabsf(d-P.d)<eps_d));
+    	return (n.similar(P.n,eps_n)&&(_abs(d-P.d)<eps_d));
     }
 	IC	void	build	(const Fvector &v1, const Fvector &v2, const Fvector &v3) {
 		Fvector t1,t2;
@@ -51,7 +51,7 @@ public:
 	}
 
 	IC	float	distance(const Fvector &v)	{
-		return fabsf(classify(v));
+		return _abs(classify(v));
 	}
 
 	IC BOOL intersectRayDist(const Fvector& P, const Fvector& D, float& dist)
@@ -59,7 +59,7 @@ public:
 		float numer = classify(P);
 		float denom = n.dotproduct(D);
 	
-		if (fabsf(denom)<EPS_S)  // normal is orthogonal to vector, cant intersect
+		if (_abs(denom)<EPS_S)  // normal is orthogonal to vector, cant intersect
 			return false;
 	
 		dist = -(numer / denom);
@@ -69,7 +69,7 @@ public:
 		float numer = classify(P);
 		float denom = n.dotproduct(D);
 	
-		if (fabsf(denom)<EPS_S) return false; // normal is orthogonal to vector, cant intersect
+		if (_abs(denom)<EPS_S) return false; // normal is orthogonal to vector, cant intersect
 		else {
 			dest.mad(P,D,-(numer / denom));
 			return true;
@@ -85,7 +85,7 @@ public:
 
 		t.sub(v,u);
 		denom = n.dotproduct(t);
-		if (fabsf(denom) < EPS) return false; // they are parallel
+		if (_abs(denom) < EPS) return false; // they are parallel
 
 		dist = -(n.dotproduct(u) + d) / denom;
 		if (dist < -EPS || dist > 1+EPS) return false;
@@ -107,7 +107,7 @@ public:
 			return false;
 
 		t.sub		(v,u);
-		isect.mad	(u,t,dist1/fabsf(dist1-dist2));
+		isect.mad	(u,t,dist1/_abs(dist1-dist2));
 
 		return true;
 	}

@@ -105,7 +105,7 @@ BOOL CObjectSpace::BBoxCollide( const Fvector &start, const Fvector &dir, float 
 	Fmatrix M_bbox;
 	D.normalize			(dir);
 // select normal
-	if(1-fabsf(D.y)<EPS)N.set(1,0,0);
+	if(1-_abs(D.y)<EPS)N.set(1,0,0);
 	else            	N.set(0,1,0);
     R.crossproduct		(N,D);	R.normalize();
     N.crossproduct		(D,R);	N.normalize();

@@ -178,7 +178,7 @@ void CAI_Soldier::OnHurtAlone()
 		r_torso_speed = TORSO_START_SPEED;
 		r_torso_target.yaw = r_torso_current.yaw;
 
-		if (fabsf(r_torso_target.yaw - r_torso_current.yaw) >= PI/30)
+		if (_abs(r_torso_target.yaw - r_torso_current.yaw) >= PI/30)
 			return;
 
 		vfSetMovementType(WALK_NO);
@@ -284,7 +284,7 @@ void CAI_Soldier::OnFindAloneFire()
  		if (!m_bActionStarted) {
 			if (m_bStateChanged) {
 				if (!Group.m_tpaSuspiciousNodes.size()) {
-					vfFindAllSuspiciousNodes(dwSavedEnemyNodeID,tSavedEnemyPosition,tSavedEnemyPosition,max(20.f,min(1*8.f*vPosition.distance_to(tSavedEnemyPosition)/4.5f,60.f)),Group);
+					vfFindAllSuspiciousNodes(dwSavedEnemyNodeID,tSavedEnemyPosition,tSavedEnemyPosition,_min(20.f,_min(1*8.f*vPosition.distance_to(tSavedEnemyPosition)/4.5f,60.f)),Group);
 					vfClasterizeSuspiciousNodes(Group);
 				}
 			}

@@ -102,7 +102,7 @@ void CAISelectorBase::vfAddDistanceToEnemyCost()
 		if (fDistanceToEnemy > fMaxEnemyDistance)
 			m_fResult += fMaxEnemyDistanceWeight*(fDistanceToEnemy + 0.1f)/(fMaxEnemyDistance + 0.1f);
 		else
-			m_fResult += fOptEnemyDistanceWeight*fabsf(fDistanceToEnemy - fOptEnemyDistance + 1.f)/(fOptEnemyDistance + 1.f);
+			m_fResult += fOptEnemyDistanceWeight*_abs(fDistanceToEnemy - fOptEnemyDistance + 1.f)/(fOptEnemyDistance + 1.f);
 }
 
 void CAISelectorBase::vfAddDistanceToLeaderCost()
@@ -114,7 +114,7 @@ void CAISelectorBase::vfAddDistanceToLeaderCost()
 		if (fDistanceToLeader > fMaxLeaderDistance)
 			m_fResult += fMaxLeaderDistanceWeight*(fDistanceToLeader + 0.1f)/(fMaxLeaderDistance + 0.1f);
 		else
-			m_fResult += fOptLeaderDistanceWeight*fabsf(fDistanceToLeader - fOptLeaderDistance + 1.f)/(fOptLeaderDistance + 1.f);
+			m_fResult += fOptLeaderDistanceWeight*_abs(fDistanceToLeader - fOptLeaderDistance + 1.f)/(fOptLeaderDistance + 1.f);
 }
 
 void CAISelectorBase::vfAddDistanceToMemberCost()
@@ -130,7 +130,7 @@ void CAISelectorBase::vfAddDistanceToMemberCost()
 		if (fDistanceToMember > fMaxMemberDistance)
 			m_fResult += fMaxMemberDistanceWeight*(fDistanceToMember + 0.1f)/(fMaxMemberDistance + 0.1f)/m_iAliveMemberCount;
 		else
-			m_fResult += fOptMemberDistanceWeight*fabsf(fDistanceToMember - fOptMemberDistance + 1.f)/(fOptMemberDistance + 1.f)/m_iAliveMemberCount;
+			m_fResult += fOptMemberDistanceWeight*_abs(fDistanceToMember - fOptMemberDistance + 1.f)/(fOptMemberDistance + 1.f)/m_iAliveMemberCount;
 }
 
 void CAISelectorBase::vfAddCoverFromEnemyCost()
@@ -215,13 +215,13 @@ void CAISelectorBase::vfAddCoverFromLeaderCost()
 		m_fResult += fCoverFromLeaderWeight*(1.f - float(m_tpLeaderNode->cover[3])/255.f);
 	}
 	if (fabs(m_tLeaderDirection.y) > 2.f)
-		m_fResult += fabsf(m_tLeaderDirection.y)*fMaxLeaderHeightDistanceWeight;
+		m_fResult += _abs(m_tLeaderDirection.y)*fMaxLeaderHeightDistanceWeight;
 #else
 	m_tLeaderDirection.x = m_tLeaderPosition.x - m_tCurrentPosition.x;
 	m_tLeaderDirection.y = m_tLeaderPosition.y - m_tCurrentPosition.y;
 	m_tLeaderDirection.z = m_tLeaderPosition.z - m_tCurrentPosition.z;
 	if (fabs(m_tLeaderDirection.y) > 2.f)
-		m_fResult += fabsf(m_tLeaderDirection.y)*fMaxLeaderHeightDistanceWeight;
+		m_fResult += _abs(m_tLeaderDirection.y)*fMaxLeaderHeightDistanceWeight;
 	vfNormalizeSafe(m_tLeaderDirection);
 	float fAlpha;
 	if (m_tLeaderDirection.x < 0.f)
@@ -335,7 +335,7 @@ void CAISelectorBase::vfAddEnemyLookCost(float fAngle)
 		vfNormalizeSafe(tTempDirection0);
 		vfNormalizeSafe(tTempDirection1);
 		float fAlpha = acosf(tTempDirection0.dotproduct(tTempDirection1));
-		m_fResult += fEnemyViewDeviationWeight*fabsf(fAngle - fAlpha);
+		m_fResult += fEnemyViewDeviationWeight*_abs(fAngle - fAlpha);
 	}
 }
 

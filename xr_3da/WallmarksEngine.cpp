@@ -161,7 +161,7 @@ void CWallmarksEngine::BuildMatrix	(Fmatrix &mView, float invsz, const Fvector& 
     Fvector		at,up,right,y;
 	at.sub		(from,sml_normal);
 	y.set		(0,1,0);
-	if (fabsf(sml_normal.y)>.99f) y.set(1,0,0);
+	if (_abs(sml_normal.y)>.99f) y.set(1,0,0);
 	right.crossproduct	(y,sml_normal);
 	up.crossproduct		(sml_normal,right);
 	mView.build_camera	(from,at,up);

@@ -95,7 +95,7 @@ public:
 			if (test_mask&bit) {
 				float cls = planes[i].classify(c);
 				if (cls>r) { test_mask=0; return fcvNone;}	// none  - return
-				if (fabsf(cls)>=r) test_mask&=~bit;			// fully - no need to test this plane
+				if (_abs(cls)>=r) test_mask&=~bit;			// fully - no need to test this plane
 			}
 		}
 		return test_mask ? fcvPartial:fcvFully;
@@ -141,7 +141,7 @@ public:
 			if (test_mask&bit) {
 				float cls = planes[i].classify(c);
 				if (cls>r) { test_mask=0; return fcvNone;}	// none  - return
-				if (fabsf(cls)>=r) test_mask&=~bit;			// fully - no need to test this plane
+				if (_abs(cls)>=r) test_mask&=~bit;			// fully - no need to test this plane
 				else {
 					switch (AABB_OverlapPlane(planes[i],m,M))
 					{

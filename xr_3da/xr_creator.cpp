@@ -162,7 +162,7 @@ Shader* CCreator::LL_CreateShader(int S, int T, int M, int C)
 
 void CCreator::OnRender() 
 {
-	if (fabsf(Device.fTimeDelta)<EPS_S) return;
+	if (_abs(Device.fTimeDelta)<EPS_S) return;
 
 	// Level render
 	Render->Calculate			();
@@ -174,7 +174,7 @@ void CCreator::OnRender()
 
 void CCreator::OnFrame	( void ) 
 {
-	if (fabsf(Device.fTimeDelta)<EPS_S) return;
+	if (_abs(Device.fTimeDelta)<EPS_S) return;
 
 	// Update all objects
 	VERIFY						(bReady);

@@ -180,7 +180,7 @@ void CAI_Rat::net_Import(NET_Packet& P)
 
 void CAI_Rat::Exec_Movement	( float dt )
 {
-	if (fabsf(vPosition.x) > 10000.f) {
+	if (_abs(vPosition.x) > 10000.f) {
 		if (ps_Size() > 1)
 			vPosition = ps_Element(ps_Size() - 2).vPosition;
 		Msg("%s",cName());

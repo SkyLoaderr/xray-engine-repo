@@ -191,11 +191,11 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 	vAccel.add			(vExternalImpulse,_Accel);
 
 	// Analyze jump
-	bool bJump = (fabsf(jump)>EPS) && (eEnvironment==peOnGround);
+	bool bJump = (_abs(jump)>EPS) && (eEnvironment==peOnGround);
 
 	// Check for Sleep-State
 	bSleep = FALSE;
-	float a_speed = fabsf(ang_speed);
+	float a_speed = _abs(ang_speed);
 	switch (eEnvironment)
 	{
 	case peOnGround:
@@ -298,7 +298,7 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 	gcontact_Was		= FALSE;
 	if (
 		((eOldEnvironment==peInAir || eOldEnvironment==peAtWall) && (eEnvironment==peOnGround)) // ||
-//		((fabsf(jump)>EPS) && (eOldEnvironment==peOnGround) && (eEnvironment==peOnGround))
+//		((_abs(jump)>EPS) && (eOldEnvironment==peOnGround) && (eEnvironment==peOnGround))
 		)
 	{
 		gcontact_Was		= TRUE;

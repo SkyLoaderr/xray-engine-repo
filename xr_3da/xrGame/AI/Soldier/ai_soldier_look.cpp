@@ -491,7 +491,7 @@ void CAI_Soldier::vfAimAtEnemy(bool bInaccuracy)
 				if (m_fAddWeaponAngle > PI - EPS_L)
 					m_fAddWeaponAngle -= PI_MUL_2;
 				
-				m_fAddWeaponAngle = WEAPON_DISTANCE/fDistance;//(WEAPON_DISTANCE + .15f*fabsf(PI - m_fAddWeaponAngle)/PI)/fDistance;
+				m_fAddWeaponAngle = WEAPON_DISTANCE/fDistance;//(WEAPON_DISTANCE + .15f*_abs(PI - m_fAddWeaponAngle)/PI)/fDistance;
 				clamp(m_fAddWeaponAngle,-.99999f,+.99999f);
 				m_fAddWeaponAngle = asinf(m_fAddWeaponAngle);
 			}
@@ -630,14 +630,14 @@ bool CAI_Soldier::bfCheckForVisibility(int iTestNode, SRotation tMyRotation, boo
 		if (tMyRotation.yaw >= tRotation.yaw)
 			if (fResult > .3f)
 				return(true);
-		//return((fDistance < 15.f) && (min(fResult1,fResult) > 3.f));
+		//return((fDistance < 15.f) && (_min(fResult1,fResult) > 3.f));
 		return(false);
 	}
 	else {
 		if (tMyRotation.yaw <= tRotation.yaw)
 			if (fResult > .3f)
 				return(true);
-		//return((fDistance < 15.f) && (min(fResult1,fResult) > 3.f));
+		//return((fDistance < 15.f) && (_min(fResult1,fResult) > 3.f));
 		return(false);
 	}
 }
@@ -674,7 +674,7 @@ bool CAI_Soldier::bfCheckForVisibility(int iTestNode, SRotation tMyRotation, boo
 //	{
 //		tDirection.sub(tPosition,vPosition);
 //		float fDistance = tDirection.magnitude();
-//		if ((fDistance >= 15.f) || (fabsf(tDirection.y) > 1.5f))
+//		if ((fDistance >= 15.f) || (_abs(tDirection.y) > 1.5f))
 //			return(false);
 //		tDirection.normalize_safe();
 //		mk_rotation(tDirection,tRotation);
@@ -697,7 +697,7 @@ bool CAI_Soldier::bfCheckForVisibility(int iTestNode, SRotation tMyRotation, boo
 //			mk_rotation(tDirection,tRotation);
 //			
 //			fResult0 = ffGetCoverInDirection(tRotation.yaw,Level().AI.Node(dwNodeID));
-//			if (min(fResult0,fResult1) > .8f) {
+//			if (_min(fResult0,fResult1) > .8f) {
 //				//return(true);
 //				return(Level().ObjectSpace.RayTest(eye_matrix.c,tPosition,fDistance,FALSE) == TRUE);
 //// 				fDistance = eye_matrix.c.distance_to(tPosition);

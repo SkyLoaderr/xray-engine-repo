@@ -28,7 +28,7 @@ void CEffectorNoise::Process(Fvector &p, Fvector &d, Fvector &n)
 		// select new step
 		vStep.set(rnd_noise(),rnd_noise(),rnd_noise());
 		vStep.mul(rnd_noise()*fForce);
-		fStepTime=fabsf(rnd_noise())*.03f;
+		fStepTime=_abs(rnd_noise())*.03f;
 	}
 	p.add(vStep);
 	fLifeTime-=Device.fTimeDelta;

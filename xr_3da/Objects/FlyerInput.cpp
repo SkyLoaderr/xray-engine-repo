@@ -63,11 +63,11 @@ void CFlyer::OnMouseMove(int dx, int dy)
 	if (cam_active!=efcLookAt)
 		if (dx){
 			float d = float(dx)*scale;
-			cameras[cam_active]->Move((d<0)?kLEFT:kRIGHT, fabsf(d));
+			cameras[cam_active]->Move((d<0)?kLEFT:kRIGHT, _abs(d));
 //			fMouseYawMoving = 1.f;
 		}
 	if (dy){
 		float d = ((psMouseInvert)?-1:1)*float(dy)*scale*MouseHWScale;
-		cameras[cam_active]->Move((d>0)?kUP:kDOWN, fabsf(d));
+		cameras[cam_active]->Move((d>0)?kUP:kDOWN, _abs(d));
 	}
 }

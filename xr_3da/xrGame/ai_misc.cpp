@@ -114,13 +114,13 @@ IC int lines_intersect(
 	if ( r1*r2 > 0 )		return ( LI_NONE );
 	
 	// Check for equality
-	if ( fabsf(r1*r2)<EPS_S && fabsf(r3*r4)<EPS_S ) return LI_EQUAL;
+	if ( _abs(r1*r2)<EPS_S && _abs(r3*r4)<EPS_S ) return LI_EQUAL;
 
 	/* Line segments intersect: compute intersection point. 
 	*/
 	
 	denom = a1 * b2 - a2 * b1;
-	if ( fabsf(denom) < EPS ) return ( LI_COLLINEAR );
+	if ( _abs(denom) < EPS ) return ( LI_COLLINEAR );
 	
 	num = b1 * c2 - b2 * c1;
 	*x = num / denom;
@@ -133,7 +133,7 @@ IC int lines_intersect(
 
 IC bool bfSimilar(Fvector &tPoint0, Fvector &tPoint1)
 {
-	return((fabsf(tPoint0.x - tPoint1.x) < EPS_L) && (fabsf(tPoint0.z - tPoint1.z) < EPS_L));
+	return((_abs(tPoint0.x - tPoint1.x) < EPS_L) && (_abs(tPoint0.z - tPoint1.z) < EPS_L));
 }
 
 IC bool bfInsideContour(Fvector &tPoint, PContour &tContour)
@@ -621,7 +621,7 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 						((!bLooped) && (iCurrentPatrolPoint == 1))) {
 						if ((!tpaPath.size()) || tTravelNode.distance_to_xz(tpaPath[tpaPath.size() - 1]) > fSegmentSizeMin)
 							/**
-							if (fabsf(tTravelNode.y - tPrevPoint.y) > 1.f/256.f)
+							if (_abs(tTravelNode.y - tPrevPoint.y) > 1.f/256.f)
 								tpaPath.push_back(tTravelNode);
 							else
 								tpaPath[tpaPath.size() - 1] = tTravelNode;
@@ -725,7 +725,7 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 						if (iSavedIndex > -1) {
 							tTravelNode = tTempPoint;
 							if ((!tpaPath.size()) || tTravelNode.distance_to_xz(tpaPath[tpaPath.size() - 1]) > fSegmentSizeMin)
-								if (fabsf(tTravelNode.y - tPrevPoint.y) > 1.f/256.f)
+								if (_abs(tTravelNode.y - tPrevPoint.y) > 1.f/256.f)
 									tpaPath.push_back(tTravelNode);
 								else
 									tpaPath[tpaPath.size() - 1] = tTravelNode;

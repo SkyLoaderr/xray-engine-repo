@@ -83,7 +83,7 @@ void	CPortal::Setup	(Fvector* V, int vcnt, CSector* face, CSector* back)
 	P.build	(poly[0],N);
 	FPU::m24r();
 
-	VERIFY(fabsf(1-P.n.magnitude())<EPS_S);
+	VERIFY(_abs(1-P.n.magnitude())<EPS_S);
 }
 
 
@@ -183,7 +183,7 @@ void CSector::Render(CFrustum &F)
 			float distSQ		=	dir2portal.square_magnitude();
 			float ssa			=	R*R/distSQ;
 			dir2portal.div		(_sqrt(distSQ));
-			ssa					*=	fabsf(PORTAL->P.n.dotproduct(dir2portal));
+			ssa					*=	_abs(PORTAL->P.n.dotproduct(dir2portal));
 			if (ssa<r_ssaDISCARD)	continue;
 
 			// Clip by frustum

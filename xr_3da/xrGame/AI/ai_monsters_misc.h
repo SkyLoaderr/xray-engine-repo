@@ -150,7 +150,7 @@
 
 	// Bones
 	#define ASSIGN_SPINE_BONE {\
-		if (fabsf(r_torso_target.yaw - r_target.yaw) < MIN_SPINE_TURN_ANGLE) {\
+		if (_abs(r_torso_target.yaw - r_target.yaw) < MIN_SPINE_TURN_ANGLE) {\
 			r_spine_target.yaw = r_target.yaw;\
 		}\
 		else\

@@ -66,7 +66,7 @@ void CAI_Rat::Turn()
 
 	vfSetFire(false,Group);
 
-	float fTurnAngle = min(fabsf(r_torso_target.yaw - r_torso_current.yaw), PI_MUL_2 - fabsf(r_torso_target.yaw - r_torso_current.yaw));
+	float fTurnAngle = _min(_abs(r_torso_target.yaw - r_torso_current.yaw), PI_MUL_2 - _abs(r_torso_target.yaw - r_torso_current.yaw));
 	r_torso_speed = 3*fTurnAngle;
 
 	vfSetMovementType(BODY_STATE_STAND,0);

@@ -159,7 +159,7 @@ void CAI_Zombie::AttackFire()
 	SRotation sTemp;
 	mk_rotation(tTemp,sTemp);
 	
-	CHECK_IF_GO_TO_NEW_STATE(fabsf(r_torso_current.yaw - sTemp.yaw) > 2*PI_DIV_6,aiZombieAttackRun)
+	CHECK_IF_GO_TO_NEW_STATE(_abs(r_torso_current.yaw - sTemp.yaw) > 2*PI_DIV_6,aiZombieAttackRun)
 		
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 
@@ -172,7 +172,7 @@ void CAI_Zombie::AttackFire()
 
 	vfAimAtEnemy();
 
-	CHECK_IF_SWITCH_TO_NEW_STATE(!((fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI_DIV_6) || ((fabsf(fabsf(r_torso_target.yaw - r_torso_current.yaw) - PI_MUL_2) < PI_DIV_6))),aiZombieTurnOver);
+	CHECK_IF_SWITCH_TO_NEW_STATE(!((_abs(r_torso_target.yaw - r_torso_current.yaw) < PI_DIV_6) || ((_abs(_abs(r_torso_target.yaw - r_torso_current.yaw) - PI_MUL_2) < PI_DIV_6))),aiZombieTurnOver);
 
 	vfSetFire(true,Group);
 
@@ -207,7 +207,7 @@ void CAI_Zombie::AttackRun()
 	SRotation sTemp;
 	mk_rotation(tTemp,sTemp);
 
-	CHECK_IF_GO_TO_NEW_STATE((fabsf(r_torso_current.yaw - sTemp.yaw) < 2*PI_DIV_6) && (tDistance.magnitude() <= ATTACK_DISTANCE),aiZombieAttackFire);
+	CHECK_IF_GO_TO_NEW_STATE((_abs(r_torso_current.yaw - sTemp.yaw) < 2*PI_DIV_6) && (tDistance.magnitude() <= ATTACK_DISTANCE),aiZombieAttackFire);
 
 	INIT_SQUAD_AND_LEADER;
 	
@@ -217,7 +217,7 @@ void CAI_Zombie::AttackRun()
 	
 	vfAimAtEnemy();
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE(!((fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI_DIV_6) || ((fabsf(fabsf(r_torso_target.yaw - r_torso_current.yaw) - PI_MUL_2) < PI_DIV_6))),aiZombieTurnOver);
+	CHECK_IF_SWITCH_TO_NEW_STATE(!((_abs(r_torso_target.yaw - r_torso_current.yaw) < PI_DIV_6) || ((_abs(_abs(r_torso_target.yaw - r_torso_current.yaw) - PI_MUL_2) < PI_DIV_6))),aiZombieTurnOver);
 	
 	vfSetFire(false,Group);
 
@@ -239,7 +239,7 @@ void CAI_Zombie::TurnOver()
 
 	CGroup &Group = Squad.Groups[g_Group()];
 	
-	if ((fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI_DIV_6) || ((fabsf(fabsf(r_torso_target.yaw - r_torso_current.yaw) - PI_MUL_2) < PI_DIV_6))) {
+	if ((_abs(r_torso_target.yaw - r_torso_current.yaw) < PI_DIV_6) || ((_abs(_abs(r_torso_target.yaw - r_torso_current.yaw) - PI_MUL_2) < PI_DIV_6))) {
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		m_ePreviousState = tStateStack.top();
 		GO_TO_PREV_STATE
@@ -282,7 +282,7 @@ void CAI_Zombie::UnderFire()
 	
 	mk_rotation(tHitDir,r_torso_target);
 
-	CHECK_IF_SWITCH_TO_NEW_STATE(!((fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI_DIV_6) || ((fabsf(fabsf(r_torso_target.yaw - r_torso_current.yaw) - PI_MUL_2) < PI_DIV_6))),aiZombieTurnOver);
+	CHECK_IF_SWITCH_TO_NEW_STATE(!((_abs(r_torso_target.yaw - r_torso_current.yaw) < PI_DIV_6) || ((_abs(_abs(r_torso_target.yaw - r_torso_current.yaw) - PI_MUL_2) < PI_DIV_6))),aiZombieTurnOver);
 	
 	dwHitTime = 0;
 	GO_TO_NEW_STATE(aiZombiePursuit)
@@ -331,7 +331,7 @@ void CAI_Zombie::Pursuit()
 	if (!m_bStateChanged)
 		SetDirectionLook();
 
-	CHECK_IF_SWITCH_TO_NEW_STATE(!((fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI_DIV_6) || ((fabsf(fabsf(r_torso_target.yaw - r_torso_current.yaw) - PI_MUL_2) < PI_DIV_6))),aiZombieTurnOver);
+	CHECK_IF_SWITCH_TO_NEW_STATE(!((_abs(r_torso_target.yaw - r_torso_current.yaw) < PI_DIV_6) || ((_abs(_abs(r_torso_target.yaw - r_torso_current.yaw) - PI_MUL_2) < PI_DIV_6))),aiZombieTurnOver);
 
 	vfSetFire(false,Group);
 

@@ -113,7 +113,7 @@ void CObjectSpace::CaptureSlots(const Fvector& start, const Fvector& dir, float 
 // Occluded/No
 BOOL CObjectSpace::RayTest	( const Fvector &start, const Fvector &dir, float range, BOOL bDynamic, Collide::ray_cache* cache)
 {
-	VERIFY(fabsf(dir.magnitude()-1)<EPS);
+	VERIFY(_abs(dir.magnitude()-1)<EPS);
 
 	XRC.ray_options			(CDB::OPT_ONLYFIRST);
 	CCFModel::RayQuery		Q;
@@ -366,7 +366,7 @@ BOOL  CObjectSpace::RayPickW( const Fvector &start, const Fvector &dir, float ra
 															Fvector D,N,R;
 															Fmatrix T;
 															D.normalize			(dir);
-															if(1-fabsf(D.y)<EPS)N.set(1,0,0);
+															if(1-_abs(D.y)<EPS)N.set(1,0,0);
 															else            	N.set(0,1,0);
 															R.crossproduct		(N,D);	R.normalize();
 															N.crossproduct		(D,R);	N.normalize();

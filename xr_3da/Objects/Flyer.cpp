@@ -124,7 +124,7 @@ void CFlyer::CheckControls(Fvector &vControlAccel, float& fYawAccel)
 	}
 
 	vControlAccel.y *= 0.75f;
-	if (fabsf(vControlAccel.y)>EPS_L) vControlAccel.y -= psGravity*.25f;
+	if (_abs(vControlAccel.y)>EPS_L) vControlAccel.y -= psGravity*.25f;
 }
 
 void CFlyer::SetAnimation( )
@@ -196,7 +196,7 @@ void CFlyer::Update(DWORD DT)
 
 	// рассчитаем крен по повороту
 	float bank = mYawVelocity/(mMaxYawVelocity*BANK_FACTOR);
-	bank*=fabsf		(V.z*4.f);
+	bank*=_abs		(V.z*4.f);
 	bank+=V.x;
 
 	// повернем модель

@@ -22,7 +22,7 @@ void CActor::cam_Update(float dt, float fFOV)
 
 	// soft crouch
 	float dS = point.y-fPrevCamPos;
-	if (fabsf(dS)>EPS_L){
+	if (_abs(dS)>EPS_L){
 		point.y = 0.7f*fPrevCamPos+0.3f*point.y;
 	}
 

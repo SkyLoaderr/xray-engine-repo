@@ -64,7 +64,7 @@ void CAI_Space::OnDeviceDestroy()
 //
 //IC bool bfSimilar(Fvector &tPoint0, Fvector &tPoint1)
 //{
-//	return((fabsf(tPoint0.x - tPoint1.x) < EPS_L) && (fabsf(tPoint0.z - tPoint1.z) < EPS_L));
+//	return((_abs(tPoint0.x - tPoint1.x) < EPS_L) && (_abs(tPoint0.z - tPoint1.z) < EPS_L));
 //}
 //
 //bool bfIntersectContours(PSegment &tSegment, PContour &tContour0, PContour &tContour1, bool bLog = true)
@@ -236,7 +236,7 @@ void CAI_Space::Load(LPCSTR name)
 //					continue;
 //				q_mark[j] = true;
 //				UnpackContour(tNextContour,j);
-//				if (bfIntersectContours(tSegment,tCurContour,tNextContour,false) && (fabsf(tCurContour.v1.y - tNextContour.v1.y) < 1.5f)) {
+//				if (bfIntersectContours(tSegment,tCurContour,tNextContour,false) && (_abs(tCurContour.v1.y - tNextContour.v1.y) < 1.5f)) {
 //					NodeCompressed *tpDummy0 = Node(j);
 //					NodeCompressed *tpDummy1 = Node(I);
 //					UnpackContour(tContour0,j);
@@ -382,7 +382,7 @@ void CAI_Space::Render()
 				Fvector4	S;
 				T.set		(PC); T.y+=0.3f;
 				Device.mFullTransform.transform	(S,T);
-				pApp->pFont->Size	(0.05f/sqrtf(fabsf(S.w)));
+				pApp->pFont->Size	(0.05f/sqrtf(_abs(S.w)));
 				pApp->pFont->Out	(S.x,-S.y,"~%d",Nid);
 			}
 		}
@@ -410,7 +410,7 @@ int	CAI_Space::q_LoadSearch(const Fvector& pos)
 		if (u_InsideNode(N,P)) 
 		{
 			/**
-			int dist = fabsf(iFloor(P.y)-iFloor((N.p0.y + N.p1.y)/2.f));
+			int dist = _abs(iFloor(P.y)-iFloor((N.p0.y + N.p1.y)/2.f));
 			//if (dist>=0) {
 				if (dist<min_dist) {
 					min_dist = dist;
@@ -443,7 +443,7 @@ int	CAI_Space::q_LoadSearch(const Fvector& pos)
 
 void CAI_Space::vfCreate2DMap(char *caFile0, char *caFile1, char *caFile2)
 {
-	// finding min and max values
+	// finding _min and max values
 	s16 sMinX = 30000, sMaxX = -30000, sMinZ = 30000, sMaxZ = -30000;
 	for (int i=1; i<(int)m_header.count; i++) {
 		NodeCompressed *tpNode = m_nodes_ptr[i];
@@ -481,7 +481,7 @@ void CAI_Space::vfCreate2DMap(char *caFile0, char *caFile1, char *caFile2)
 		NodeCompressed *tpNode = m_nodes_ptr[i];
 		Fvector tVector;
 		UnpackPosition(tVector,tpNode->p0);
-		if ((tVector.y < 1.5f) || (min(tpNode->cover[0],min(tpNode->cover[1],min(tpNode->cover[2],tpNode->cover[3]))) > 200))
+		if ((tVector.y < 1.5f) || (_min(tpNode->cover[0],_min(tpNode->cover[1],_min(tpNode->cover[2],tpNode->cover[3]))) > 200))
 			for (s16 j = tpNode->p0.z - sMinZ; j<tpNode->p1.z - sMinZ + 1; j++)
 				memset(tppMap[j] + sMaxX - tpNode->p1.x, MAP_AVAILABLE_CELL, tpNode->p1.x - tpNode->p0.x + 1);
 	}

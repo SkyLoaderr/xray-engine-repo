@@ -156,8 +156,8 @@ void CAI_Soldier::Load	(LPCSTR section)
 	m_fMaxRadioIinterval = pSettings->ReadFLOAT(section,"MaxRadioIinterval");
 	m_fRadioRefreshRate	 = pSettings->ReadFLOAT(section,"RadioRefreshRate");
 	
-	m_dwMaxDynamicObjectsCount = min(pSettings->ReadINT(section,"DynamicObjectsCount"),MAX_DYNAMIC_OBJECTS);
-	m_dwMaxDynamicSoundsCount = min(pSettings->ReadINT(section,"DynamicSoundsCount"),MAX_DYNAMIC_SOUNDS);
+	m_dwMaxDynamicObjectsCount = _min(pSettings->ReadINT(section,"DynamicObjectsCount"),MAX_DYNAMIC_OBJECTS);
+	m_dwMaxDynamicSoundsCount = _min(pSettings->ReadINT(section,"DynamicSoundsCount"),MAX_DYNAMIC_SOUNDS);
 
 	Weapons = GetItemList();
 	//tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[0] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[1] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[2] = PKinematics(pVisual)->ID_Cycle(pSettings->ReadSTRING(section,"TestAnimation"));
@@ -183,7 +183,7 @@ void CAI_Soldier::Update(DWORD DT)
 
 void CAI_Soldier::Exec_Movement	( float dt )
 {
-	if (fabsf(vPosition.x) > 10000.f) {
+	if (_abs(vPosition.x) > 10000.f) {
 		if (ps_Size() > 1)
 			vPosition = ps_Element(ps_Size() - 2).vPosition;
 		Msg("%s",cName());

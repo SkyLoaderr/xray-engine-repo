@@ -78,10 +78,10 @@ const	float		PI_DIV_8	= 0.3926990816987241548078304229099f;
 #endif
 
 // comparisions
-IC BOOL  fsimilar		( float		a, float	b, float	cmp=EPS )		{ return fabsf(a-b)<cmp;	}
+IC BOOL  fsimilar		( float		a, float	b, float	cmp=EPS )		{ return _abs(a-b)<cmp;	}
 IC BOOL  dsimilar		( double	a, double	b, double	cmp=EPS )		{ return fabs(a-b)<cmp;		}
 
-IC BOOL  fis_zero		( float		val, float	cmp=EPS_S )					{ return fabsf(val)<cmp;	}
+IC BOOL  fis_zero		( float		val, float	cmp=EPS_S )					{ return _abs(val)<cmp;	}
 IC BOOL  dis_zero		( double	val, double	cmp=EPS_S )					{ return fabs(val)<cmp;		}
 
 // degree 2 radians and vice-versa

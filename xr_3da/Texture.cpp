@@ -569,7 +569,7 @@ _DDS_2D:
 _TGA:
 	Image.LoadTGA(fn);
 
-	if (fabsf(fContrast-.5f)>.06f)	Image.Contrast(fContrast);
+	if (_abs(fContrast-.5f)>.06f)	Image.Contrast(fContrast);
 	if (bGrayscale)					Image.Grayscale();
 
 	// find optimal format
