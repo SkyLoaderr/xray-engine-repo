@@ -74,7 +74,7 @@ extern "C" int dSortTriBoxCollide (
 	const dVector3 hside={box->side[0]/2.f,box->side[1]/2.f,box->side[2]/2.f,-1};
 	const dReal *R = o1->R;
 
-	if(last_pos[0]==dInfinity) memcpy(last_pos,p,sizeof(dVector3));
+	//if(last_pos[0]==dInfinity) memcpy(last_pos,p,sizeof(dVector3));
 
 	if(*pushing_neg){
 		dReal sidePr=
@@ -157,7 +157,7 @@ extern "C" int dSortTriBoxCollide (
 		tri.depth=sidePr-tri.dist;
 		Point vertices[3]={Point(tri.v0),Point(tri.v1),Point(tri.v2)};
 		if(tri.dist<0.f){
-		 if(!(dDOT(last_pos,tri.norm)-tri.pos<0.f))
+		 if((!(dDOT(last_pos,tri.norm)-tri.pos<0.f))||*pushing_neg||*pushing_b_neg)
 			 if(__aabb_tri(Point(p),Point((float*)&AABB),vertices))
 		 {
 			if(TriContainPoint(tri.v0,tri.v1,tri.v2,
@@ -291,9 +291,9 @@ int dcTriListCollider::CollideBox(dxGeom* Box, int Flags, dContactGeom* Contacts
 	AABB.z=(dFabs(BoxSides[0]*R[8])+dFabs(BoxSides[1]*R[9])+dFabs(BoxSides[2]*R[10]))/2.f+1.f*EPS_L;
 
 	const dReal*velocity=dBodyGetLinearVel(dGeomGetBody(Box));
-	AABB.x+=dFabs(velocity[0])*0.01f;
-	AABB.y+=dFabs(velocity[1])*0.01f;
-	AABB.z+=dFabs(velocity[2])*0.01f;
+	AABB.x+=dFabs(velocity[0])*0.02f;
+	AABB.y+=dFabs(velocity[1])*0.02f;
+	AABB.z+=dFabs(velocity[2])*0.02f;
 	//
 	XRC.box_options                (0);
 	XRC.box_query                  (Level().ObjectSpace.GetStaticModel(),*BoxCenter,AABB);

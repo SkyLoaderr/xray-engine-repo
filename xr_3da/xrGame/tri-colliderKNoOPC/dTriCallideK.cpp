@@ -32,7 +32,7 @@ extern "C" int dSortedTriBox (
   const dReal *R = o1->R;
   const dReal* p=o1->pos;
   const dVector3 hside={box->side[0]/2.f,box->side[1]/2.f,box->side[2]/2.f,-1};
-  dVector3 triSideAx2={v0[0]-v2[0],v0[1]-v2[1],v0[2]-v2[2]};
+ // dVector3 triSideAx2={v0[0]-v2[0],v0[1]-v2[1],v0[2]-v2[2]};
     // find number of contacts requested
   int maxc = flags & NUMC_MASK;
   if (maxc < 1) maxc = 1;
@@ -40,7 +40,7 @@ extern "C" int dSortedTriBox (
 
   int code=0;
   dReal outDepth;
-  char signum,sn;
+  char signum;//,sn;
   //sepparation along tri plane normal;
 //dNormalize3(triAx);
 
@@ -60,7 +60,8 @@ if(depth<0.f) return 0;
 
 unsigned int i;
 
-dVector3 axis,outAx;
+//dVector3 axis,outAx;
+/*
 if(dist<0.f) goto toch;
 //if(dist>0.f){
 bool isPdist0,isPdist1,isPdist2;
@@ -204,6 +205,7 @@ TEST(2,1,16)
 //////////////////////////////////////////////////////////////////////
 ///if we get to this poit tri touches box
 toch:;
+*/
 dVector3 norm,pos;
 unsigned int ret=1;
 
@@ -301,6 +303,7 @@ if (maxc == 1) goto done;
 ////////////////////////////////////////////////////////////// end (from geom.cpp dCollideBP)
   
 	}
+/*
 else if(code<=9)
 {
 	switch((code-1)%3){
@@ -408,7 +411,7 @@ case 2:
 }
 
 
-
+*/
 
 contact->pos[0] = pos[0];
 contact->pos[1] = pos[1];
@@ -1025,6 +1028,7 @@ sin1=sqrtf(REAL(1.)-cos1*cos1);
 dReal sidePr=cos1*hlz+sin1*radius;
 
 dReal dist=dDOT(triAx,v0)-dDOT(triAx,p);
+if(dist>0.f) return 0;
 dReal depth=sidePr-dFabs(dist);
 outDepth=depth;
 signum=dist>0.f ? 1.f : -1.f;

@@ -56,6 +56,9 @@ geom->data=new dxGeomUserData();
 ((dxGeomUserData*)geom->data)->pushing_neg=false;
 ((dxGeomUserData*)geom->data)->pushing_b_neg=false;
 ((dxGeomUserData*)geom->data)->last_pos[0]=dInfinity;
+((dxGeomUserData*)geom->data)->last_pos[1]=dInfinity;
+((dxGeomUserData*)geom->data)->last_pos[2]=dInfinity;
+
 }
 
 inline void dGeomDestroyUserData(dxGeom* geom){
