@@ -9,8 +9,19 @@
 #include "xr_creator.h"
 #include "CustomHUD.h"
 
+ENGINE_API	CRender				Render_Implementation;
+ENGINE_API	CRender_interface*	Render = &Render_Implementation;
+
 // Implementation
-void	CRender::add_Patch				(Shader* S, Fvector& P1, float s, float a, BOOL bNearer)
+int			CRender::getVisualsCount	()					{ return Visuals.size();							}
+CPortal*	CRender::getPortal			(int id)			{ VERIFY(id<Portals.size()); return &Portals[id];	}
+CSector*	CRender::getSector			(int id)			{ VERIFY(id<Sectors.size()); return Sectors[id];	}
+CVisual*	CRender::getVisual			(int id)			{ VERIFY(id<Visuals.size()); return Visuals[id];	}
+void		CRender::set_Object			(CObject*		O )	{ L_Shadows.set_object(O);							}
+void		CRender::add_Visual			(CVisual*		V )	{ add_leafs_Dynamic(V);								}
+void		CRender::add_Lights			(vector<WORD> &	V )	{ L_DB.add_sector_lights(V);						}
+void		CRender::add_Glows			(vector<WORD> &	V )	{ Glows.add(V);										}
+void		CRender::add_Patch			(Shader* S, Fvector& P1, float s, float a, BOOL bNearer)
 {
 	vecPatches.push_back(SceneGraph::_PatchItem());
 	SceneGraph::_PatchItem& P = vecPatches.back();
@@ -22,22 +33,8 @@ void	CRender::add_Patch				(Shader* S, Fvector& P1, float s, float a, BOOL bNear
 }
 
 
-
-
-
-
-
-
-
-
-// Font out
-#include "x_ray.h"
-#include "xr_smallfont.h"
-
-ENGINE_API CRender	Render;
-
+// Misc
 Shader*				shDEBUG = 0;
- 
 _FpsController		QualityControl;
 static	float		g_fGLOD, g_fFarSq, g_fPOWER;
 float				g_fSCREEN;

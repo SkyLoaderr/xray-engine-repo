@@ -2729,6 +2729,10 @@ SOURCE=.\FStaticRender_SceneGraph.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\FStaticRender_Screenshot.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\FStaticRender_Types.h
 # End Source File
 # Begin Source File
@@ -2738,10 +2742,6 @@ SOURCE=.\Render.h
 # Begin Source File
 
 SOURCE=.\SceneGraph.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\screenshot.cpp
 # End Source File
 # Begin Source File
 
