@@ -70,10 +70,9 @@ void CPhysicsShellHolder::activate_physic_shell()
 	l_p2.c.add					(l_fw);
 
 	m_pPhysicsShell->Activate	(l_p1, 0, l_p2);
-	smart_cast<CKinematics*>			(Visual())->CalculateBones_Invalidate	();
-	smart_cast<CKinematics*>			(Visual())->CalculateBones();
-	///XFORM().set					(l_p1);
-
+	smart_cast<CKinematics*>(Visual())->CalculateBones_Invalidate	();
+	smart_cast<CKinematics*>(Visual())->CalculateBones();
+//	XFORM().set					(l_p1);
 }
 
 void CPhysicsShellHolder::setup_physic_shell	()
