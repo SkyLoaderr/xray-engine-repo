@@ -21,6 +21,7 @@ end
 function stalker_script:net_import(packet)
 end
 
-function init()
+function init(obj)
+	printf	("stalker.init is called!")
 	return	stalker.stalker_script()
 end
