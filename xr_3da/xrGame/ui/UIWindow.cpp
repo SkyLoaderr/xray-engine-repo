@@ -98,43 +98,24 @@ void CUIWindow::AttachChild(CUIWindow* pChild)
 //отсоединить дочернее окно
 void CUIWindow::DetachChild(CUIWindow* pChild)
 {
-	if(NULL==pChild) return;
+	if(NULL==pChild)
+		return;
 	
-//	VERIFY( !pChild->IsAutoDelete() );
-	
-	if(m_pMouseCapturer == pChild) SetCapture(pChild, false);
+	if(m_pMouseCapturer == pChild)
+		SetCapture(pChild, false);
 
 	m_ChildWndList.remove(pChild);
-
 	pChild->SetParent(NULL);
 
 	if(pChild->IsAutoDelete())
 		xr_delete(pChild);
-
 }
 
 void CUIWindow::DetachAll()
 {
-	if(m_ChildWndList.empty()) return;
-
-	while( !m_ChildWndList.empty() ){
+	while( !m_ChildWndList.empty() )
 		DetachChild( m_ChildWndList.back() );	
-	}
-/*
-	for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end() != it; ++it)
-	{
-		CUIWindow* pChild = *it;
-		pChild->m_pParentWnd = NULL;
-		if(pChild->IsAutoDelete()) {
-			xr_delete(pChild);
-		}
-	}
-
-	m_ChildWndList.clear();
-*/
 }
-
-
 
 //абсолютные координаты, от начала экрана
 Irect CUIWindow::GetAbsoluteRect()
@@ -167,7 +148,7 @@ Irect CUIWindow::GetAbsoluteRect()
 #define DOUBLE_CLICK_TIME 250
 void CUIWindow::OnMouseWheel(int direction)
 {
-	if(NULL!=m_pMouseCapturer)
+	if(m_pMouseCapturer)
 		m_pMouseCapturer->OnMouseWheel(direction);
 }
 
@@ -175,30 +156,19 @@ void CUIWindow::OnMouse(int x, int y, EUIMessages mouse_action)
 {	
 	//определить DoubleClick
 
-	// ¬ статческой переменной запоминаем адрес себ€, дл€ того чтобы другие контолы 
-	// не инициализировали врем€ реакции на даблклик. “.е. реализовываем что-то типа
-	// семафорчика
-
-//	static CUIWindow *pWnd = NULL;
-
 	if(mouse_action == WINDOW_LBUTTON_DOWN && IsDBClickEnabled())
 	{
 		u32 dwCurTime = Device.TimerAsync();
 		if(dwCurTime - m_dwLastClickTime < DOUBLE_CLICK_TIME)
-		{
-			 mouse_action = WINDOW_LBUTTON_DB_CLICK;
-		}
-//		else
-//			pWnd = this;
+            mouse_action = WINDOW_LBUTTON_DB_CLICK;
 
 		m_dwLastClickTime = dwCurTime;
-	}
+	}	
 
 	cursor_pos.x = x;
 	cursor_pos.y = y;
 
-	//вызов из главного окна у которого нет предков
-	if(GetParent()== NULL)
+	if(GetParent()== NULL) //вызов из главного окна у которого нет предков
 	{
 		Irect	l_tRect = GetWndRect();
 		if(!l_tRect.in(cursor_pos) /*PtInRect(&l_tRect, cursor_pos)*/ )
@@ -213,7 +183,7 @@ void CUIWindow::OnMouse(int x, int y, EUIMessages mouse_action)
 
 	//если есть дочернее окно,захватившее мышь, то
 	//сообщение направл€ем ему сразу
-	if(NULL!=m_pMouseCapturer)
+	if(m_pMouseCapturer)
 	{
 		m_pMouseCapturer->OnMouse(cursor_pos.x - 
 								m_pMouseCapturer->GetWndRect().left, 
@@ -221,6 +191,17 @@ void CUIWindow::OnMouse(int x, int y, EUIMessages mouse_action)
 								m_pMouseCapturer->GetWndRect().top, 
 								  mouse_action);
 		return;
+	}
+
+	// handle any action
+	switch (mouse_action){
+		case WINDOW_LBUTTON_DOWN:
+			break;
+		case WINDOW_LBUTTON_DB_CLICK:
+			OnDbClick();
+			break;
+		default:
+            break;
 	}
 
 	//ѕроверка на попадание мыши в окно,
@@ -246,6 +227,10 @@ void CUIWindow::OnMouse(int x, int y, EUIMessages mouse_action)
 						   cursor_pos.y -(*it)->GetWndRect().top, mouse_action);
 		}
 	}
+}
+
+void CUIWindow::OnDbClick(){
+    // overload this function to hand DbClick event
 }
 
 
@@ -380,7 +365,6 @@ void CUIWindow::ResetAll()
 		(*it)->Reset();
 	}
 }
-
 
 CUIWindow* CUIWindow::GetMessageTarget()
 {
