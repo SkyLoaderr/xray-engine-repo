@@ -117,9 +117,10 @@ void	test_rtc	()
 	tM.FrameStart	();
 	tC.FrameStart	();
 	tD.FrameStart	();
+	::Random.seed	(0x12071980);
 	for		(u32 test=0; test<10000; test++)
 	{
-		u32			in_size			= ::Random.randI(1024,96*1024);
+		u32			in_size			= ::Random.randI(1024,256*1024);
 		u32			out_size_max	= rtc_csize		(in_size);
 		u8*			p_in			= xr_alloc<u8>	(in_size);
 		u8*			p_in_tst		= xr_alloc<u8>	(in_size);
@@ -151,14 +152,14 @@ void	test_rtc	()
 		xr_free		(p_in_tst);
 		xr_free		(p_in);
 	}
-	tMc.FrameEnd	();
-	tM.FrameEnd		();
-	tC.FrameEnd		();
-	tD.FrameEnd		();
-	Msg				("* memcpy:	       %5.2f M/s",1000.f*(float(bytes)/tMc.result)/(1024.f*1024.f));
-	Msg				("* mm-memcpy:	   %5.2f M/s",1000.f*(float(bytes)/tM.result)/(1024.f*1024.f));
-	Msg				("* compression:   %5.2f M/s",1000.f*(float(bytes)/tC.result)/(1024.f*1024.f));
-	Msg				("* decompression: %5.2f M/s",1000.f*(float(bytes)/tD.result)/(1024.f*1024.f));
+	tMc.FrameEnd	();	float rMc		= 1000.f*(float(bytes)/tMc.result)/(1024.f*1024.f);
+	tM.FrameEnd		(); float rM		= 1000.f*(float(bytes)/tM.result)/(1024.f*1024.f);
+	tC.FrameEnd		(); float rC		= 1000.f*(float(bytes)/tC.result)/(1024.f*1024.f);
+	tD.FrameEnd		(); float rD		= 1000.f*(float(bytes)/tD.result)/(1024.f*1024.f);
+	Msg				("* memcpy:        %5.2f M/s (%3.1f%%)",rMc,100.f*rMc/rMc);
+	Msg				("* mm-memcpy:     %5.2f M/s (%3.1f%%)",rM,100.f*rM/rMc);
+	Msg				("* compression:   %5.2f M/s (%3.1f%%)",rC,100.f*rC/rMc);
+	Msg				("* decompression: %5.2f M/s (%3.1f%%)",rD,100.f*rD/rMc);
 }
 
 int APIENTRY WinMain(HINSTANCE hInstance,
@@ -175,7 +176,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	Core._initialize		("xray",NULL);
 	FPU::m24r				();
 
-	test_rtc				();
+	// test_rtc				();
 
 	Startup					();
 	
