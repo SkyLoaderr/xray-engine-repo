@@ -65,17 +65,11 @@
             <text>Предполагаемое место артефакта.</text>
         </location>
         <location>
-            <level></level>
+            <level>l01_escape</level>
             <object>002</object>            
 			<icon name="Артефакт" x="1" y="5" width="0" height="0" r="238" g="155" b="23" marker="1"></icon>
 			<text>Возьмите артефакт.</text>
         </location>
-        <location>
-            <level></level>
-            <object>000</object>            
-			<icon name="11Артефакт" x="1" y="5" width="0" height="0" r="0" g="155" b="23" marker="1"></icon>
-			<text>11Возьмите артефакт.</text>
-        </location>        
         <task>escape_trader_need_artefact</task>
     </info_portion>
     <info_portion id="escape_trader_find_artefact">
