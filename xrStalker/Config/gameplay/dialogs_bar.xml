@@ -3312,9 +3312,6 @@
     </dialog>
     <dialog id="bar_bar_barmen_start">
         <phrase_list>
-            <phrase id="1121">
-                <text>bar_bar_barmen_start_1121</text>
-            </phrase>
             <phrase id="112">
                 <text></text>
                 <precondition>bar_dialogs.give_extra_task</precondition>
@@ -3326,60 +3323,6 @@
                 <precondition>bar_dialogs.dont_give_extra_task</precondition>
                 <has_info>bar_barman_stay_room</has_info>
                 <next>1111</next>
-            </phrase>
-            <phrase id="1111">
-                <text>bar_bar_barmen_start_1111</text>
-            </phrase>
-            <phrase id="221">
-                <text>bar_bar_barmen_start_221</text>
-            </phrase>
-            <phrase id="22">
-                <text>bar_bar_barmen_start_22</text>
-                <action>bar_dialogs.give_agroprom_documents</action>
-                <give_info>agroprom_military_case_done</give_info>
-                <has_info>agroprom_military_case_have</has_info>
-                <next>221</next>
-            </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
-                <next>11</next>
-                <next>111</next>
-                <next>112</next>
-                <next>113</next>
-            </phrase>
-            <phrase id="211">
-                <text>bar_bar_barmen_start_211</text>
-                <next>2111</next>
-            </phrase>
-            <phrase id="2111">
-                <text>bar_bar_barmen_start_2111</text>
-            </phrase>
-            <phrase id="21">
-                <text>bar_bar_barmen_start_21</text>
-                <next>211</next>
-            </phrase>
-            <phrase id="2">
-                <text>bar_bar_barmen_start_2</text>
-                <next>21</next>
-                <next>22</next>
-            </phrase>
-            <phrase id="113">
-                <text></text>
-                <next>1131</next>
-            </phrase>
-            <phrase id="1131">
-                <text>bar_bar_barmen_start_1131</text>
-                <dont_has_info>agroprom_military_case</dont_has_info>
-                <dont_has_info>agroprom_military_case_have</dont_has_info>
-                <dont_has_info>agroprom_military_case_done</dont_has_info>
-            </phrase>
-            <phrase id="1">
-                <text></text>
-                <dont_has_info>bar_barman_stay_room</dont_has_info>
-                <dont_has_info>agroprom_military_case_done</dont_has_info>
-                <has_info>agroprom_military_case_have</has_info>
-                <next>2</next>
             </phrase>
             <phrase id="3">
                 <text>bar_bar_barmen_start_3</text>
@@ -3393,6 +3336,61 @@
                 <has_info>agroprom_military_case_done</has_info>
                 <next>3</next>
                 <next>4</next>
+            </phrase>
+            <phrase id="22">
+                <text>bar_bar_barmen_start_22</text>
+                <action>bar_dialogs.give_agroprom_documents</action>
+                <give_info>agroprom_military_case_done</give_info>
+                <has_info>agroprom_military_case_have</has_info>
+                <next>221</next>
+            </phrase>
+            <phrase id="221">
+                <text>bar_bar_barmen_start_221</text>
+            </phrase>
+            <phrase id="2111">
+                <text>bar_bar_barmen_start_2111</text>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+                <next>11</next>
+                <next>111</next>
+                <next>112</next>
+                <next>113</next>
+            </phrase>
+            <phrase id="1121">
+                <text>bar_bar_barmen_start_1121</text>
+            </phrase>
+            <phrase id="1111">
+                <text>bar_bar_barmen_start_1111</text>
+            </phrase>
+            <phrase id="21">
+                <text>bar_bar_barmen_start_21</text>
+                <next>211</next>
+            </phrase>
+            <phrase id="211">
+                <text>bar_bar_barmen_start_211</text>
+                <next>2111</next>
+            </phrase>
+            <phrase id="2">
+                <text>bar_bar_barmen_start_2</text>
+                <next>21</next>
+                <next>22</next>
+            </phrase>
+            <phrase id="1">
+                <text></text>
+                <dont_has_info>bar_barman_stay_room</dont_has_info>
+                <dont_has_info>agroprom_military_case_done</dont_has_info>
+                <has_info>agroprom_military_case_have</has_info>
+                <next>2</next>
+            </phrase>
+            <phrase id="1131">
+                <text>bar_bar_barmen_start_1131</text>
+            </phrase>
+            <phrase id="113">
+                <text></text>
+                <dont_has_info>agroprom_military_case</dont_has_info>
+                <next>1131</next>
             </phrase>
         </phrase_list>
     </dialog>
