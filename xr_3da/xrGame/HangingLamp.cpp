@@ -205,11 +205,17 @@ void CHangingLamp::UpdateCL	()
 	if (Alive() && light_render->get_active())
 	{
 		Fmatrix xf;
-		if (guid_bone!=BI_NONE)
+		if(guid_physic_bone)
 		{
 			Fmatrix& M = smart_cast<CKinematics*>(Visual())->LL_GetTransform(u16(guid_physic_bone->m_SelfID));
 			xf.mul		(XFORM(),M);
 			xf.mulB(m_guid_bone_offset);
+			VERIFY(!fis_zero(DET(xf)));
+		}
+		else if (guid_bone!=BI_NONE)
+		{
+			Fmatrix& M = smart_cast<CKinematics*>(Visual())->LL_GetTransform(u16(guid_bone));
+			xf.mul		(XFORM(),M);
 			VERIFY(!fis_zero(DET(xf)));
 		}
 		else 
