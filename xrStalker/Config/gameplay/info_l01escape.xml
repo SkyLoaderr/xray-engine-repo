@@ -47,7 +47,8 @@
 	<info_portion id="tutorial_end">
 		<disable>tutorial_wounded_start</disable>
 	</info_portion>
-
+	<info_portion id="tutorial_wounded_volk_greet">
+	</info_portion>
 
 	<info_portion id="escape_artefact_start">
 		<location>
