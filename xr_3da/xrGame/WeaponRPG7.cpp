@@ -57,7 +57,7 @@ BOOL CWeaponRPG7::net_Spawn(LPVOID DC)
 	UpdateGrenadeVisibility(!!iAmmoElapsed);
 	if(iAmmoElapsed && !/*m_pRocket*/getCurrentRocket())
 	{
-		CRocketLauncher::SpawnRocket(*m_sRocketSection, dynamic_cast<CGameObject*>(H_Parent()));
+		CRocketLauncher::SpawnRocket(*m_sRocketSection, this);
 	}
 
 	return l_res;
