@@ -215,6 +215,7 @@ void COLLIDER::box_query(const MODEL *m_def, const Fvector& b_center, const Fvec
 	// Get nodes
 	const AABBNoLeafTree* T = (const AABBNoLeafTree*)m_def->tree->GetTree();
 	const AABBNoLeafNode* N = T->GetNodes();
+	r_clear	();
 	
 	// Binary dispatcher
 	if (box_mode&OPT_FULL_TEST) 

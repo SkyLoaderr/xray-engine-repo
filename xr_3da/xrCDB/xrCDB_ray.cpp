@@ -198,7 +198,8 @@ void	COLLIDER::ray_query	(const MODEL *m_def, const Fvector& r_start,  const Fve
 	// Get nodes
 	const AABBNoLeafTree* T = (const AABBNoLeafTree*)m_def->tree->GetTree();
 	const AABBNoLeafNode* N = T->GetNodes();
-
+	r_clear	();
+	
 	// Binary dispatcher
 	if (ray_mode&OPT_CULL)
 	{
