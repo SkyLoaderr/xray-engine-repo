@@ -4,6 +4,8 @@
 #include "stdafx.h"
 #include "process.h"
 #include "xrGraph.h"
+#include "xr_graph_merge.h"
+#include "xr_ini.h"
 
 #pragma comment(linker,"/STACK:0x800000,0x400000")
 
@@ -15,16 +17,20 @@
 #pragma comment(lib,"x:\\MagicFM.LIB")
 #pragma comment(lib,"x:\\xrCore.LIB")
 
+#define INI_FILE	"xrAI.ini"
+
 extern void	xrCompiler			(LPCSTR name);
 extern void __cdecl logThread	(void *dummy);
 extern volatile BOOL bClose;
 
 static const char* h_str = 
 	"The following keys are supported / required:\n"
-	"-? or -h	== this help\n"
-	"-f<NAME>	== compile level in gamedata\\levels\\<NAME>\\\n"
-	"-o			== modify build options\n"
-	"-g<NAME>	== build off-line AI graph in gamedata\\levels\\<NAME>\\\n"
+	"-? or -h   == this help\n"
+	"-f<NAME>   == compile level in gamedata\\levels\\<NAME>\\\n"
+	"-o         == modify build options\n"
+	"-g<NAME>   == build off-line AI graph in gamedata\\levels\\<NAME>\\\n"
+	"-m         == merge level graphs\n"
+	"-s         == build game spawn data\n"
 	"\n"
 	"NOTE: The last key is required for any functionality\n";
 
@@ -39,7 +45,7 @@ void Startup(LPSTR     lpCmdLine)
 	strcpy(cmd,lpCmdLine);
 	strlwr(cmd);
 	if (strstr(cmd,"-?") || strstr(cmd,"-h"))			{ Help(); return; }
-	if ((strstr(cmd,"-f")==0) && (strstr(cmd,"-g")==0))	{ Help(); return; }
+	if ((strstr(cmd,"-f")==0) && (strstr(cmd,"-g")==0) && (strstr(cmd,"-m")==0) && (strstr(cmd,"-s")==0))	{ Help(); return; }
 	if (strstr(cmd,"-o"))								bModifyOptions = TRUE;
 
 	// Give a LOG-thread a chance to startup
@@ -52,7 +58,8 @@ void Startup(LPSTR     lpCmdLine)
 	if (strstr(cmd,"-f"))
 		sscanf	(strstr(cmd,"-f")+2,"%s",name);
 	else
-		sscanf	(strstr(cmd,"-g")+2,"%s",name);
+		if (strstr(cmd,"-g"))
+			sscanf	(strstr(cmd,"-g")+2,"%s",name);
 
 	string prjName		= "gamedata\\levels\\"+string(name)+"\\";
 
@@ -61,7 +68,16 @@ void Startup(LPSTR     lpCmdLine)
 	if (strstr(cmd,"-f"))
 		xrCompiler			(prjName.c_str());
 	else
-		xrBuildGraph		(prjName.c_str());
+		if (strstr(cmd,"-g"))
+			xrBuildGraph		(prjName.c_str());
+		else {
+			pSettings = xr_new<CInifile>(INI_FILE);
+			if (strstr(cmd,"-m"))
+				xrMergeGraphs		();
+			else
+				if (strstr(cmd,"-s"))
+					xrMergeSpawns		();
+		}
 
 	// Show statistic
 	char	stats[256];

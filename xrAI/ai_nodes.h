@@ -64,9 +64,9 @@ IC Fvector tfGetNodeCenter(NodeCompressed *tpNode)
 	return(tP0);
 }
 
-IC Fvector tfGetNodeCenter(u32 dwNodeID)
+IC Fvector tfGetNodeCenter(u32 tNodeID)
 {
-	return(tfGetNodeCenter(Node(dwNodeID)));
+	return(tfGetNodeCenter(Node(tNodeID)));
 }
 
 IC float ffGetDistanceBetweenNodeCenters(NodeCompressed *tpNode0, NodeCompressed *tpNode1)
@@ -96,10 +96,10 @@ class CNodeThread : public CThread
 	u32	m_dwStart;
 	u32 m_dwEnd;
 
-	u32 dwfFindCorrespondingNode(Fvector &tPoint)
+	u32 dwfFindCorrespondingNode(Fvector &tLocalPoint)
 	{
 		NodePosition	P;
-		PackPosition	(P,tPoint);
+		PackPosition	(P,tLocalPoint);
 		short min_dist	= 32767;
 		int selected	= -1;
 		for (int i=0; i<(int)m_header.count; i++) {
@@ -111,9 +111,9 @@ class CNodeThread : public CThread
 				Fplane PL; 
 				UnpackPosition(P0,N.p0);
 				PL.build(P0,vNorm);
-				v.set(tPoint.x,P0.y,tPoint.z);	
+				v.set(tLocalPoint.x,P0.y,tLocalPoint.z);	
 				PL.intersectRayPoint(v,DUP,v1);
-				int dist = iFloor((v1.y - tPoint.y)*(v1.y - tPoint.y));
+				int dist = iFloor((v1.y - tLocalPoint.y)*(v1.y - tLocalPoint.y));
 				if (dist < min_dist) {
 					min_dist = (short)dist;
 					selected = i;
@@ -135,7 +135,7 @@ public:
 		u32 dwSize = m_dwEnd - m_dwStart + 1;
 		thProgress = 0.0f;
 		for (int i = (int)m_dwStart; i<(int)m_dwEnd; thProgress = float(++i - (int)m_dwStart)/dwSize)
-			tpaGraph[i].dwNodeID = dwfFindCorrespondingNode(tpaGraph[i].tPoint);
+			tpaGraph[i].tNodeID = dwfFindCorrespondingNode(tpaGraph[i].tLocalPoint);
 		thProgress = 1.0f;
 	}
 };
@@ -275,33 +275,33 @@ public:
 			SGraphVertex &tCurrentGraphVertex = tpaGraph[i];
 			for (int j = (i + 1); j<(int)M; thProgress = (float(M)*i - i*(i + 1)/2 + ++j - i - 1 - a)/c) {
 				SGraphVertex &tNeighbourGraphVertex = tpaGraph[j];
-				if (tCurrentGraphVertex.tPoint.distance_to(tNeighbourGraphVertex.tPoint) < m_fMaxDistance) {
+				if (tCurrentGraphVertex.tLocalPoint.distance_to(tNeighbourGraphVertex.tLocalPoint) < m_fMaxDistance) {
 					try {
-						fDistance = ffCheckPositionInDirection(tCurrentGraphVertex.dwNodeID,tCurrentGraphVertex.tPoint,tNeighbourGraphVertex.tPoint,m_fMaxDistance);
+						fDistance = ffCheckPositionInDirection(tCurrentGraphVertex.tNodeID,tCurrentGraphVertex.tLocalPoint,tNeighbourGraphVertex.tLocalPoint,m_fMaxDistance);
 						if (fDistance == MAX_VALUE) {
 							SAIMapData			tData;
-							tData.dwFinishNode	= tNeighbourGraphVertex.dwNodeID;
+							tData.dwFinishNode	= tNeighbourGraphVertex.tNodeID;
 							m_tpMapPath.vfFindOptimalPath(
 								m_tppHeap,
 								m_tpHeap,
 								m_tpIndexes,
 								m_dwAStarStaticCounter,
 								tData,
-								tCurrentGraphVertex.dwNodeID,
-								tNeighbourGraphVertex.dwNodeID,
+								tCurrentGraphVertex.tNodeID,
+								tNeighbourGraphVertex.tNodeID,
 								fDistance,
 								m_fMaxDistance,
-								tCurrentGraphVertex.tPoint,
-								tNeighbourGraphVertex.tPoint,
+								tCurrentGraphVertex.tLocalPoint,
+								tNeighbourGraphVertex.tLocalPoint,
 								tpaNodes,
 								dwMaxNodeCount);
 						}
 						if (fDistance < m_fMaxDistance) {
 							m_tpCriticalSection->Enter();
-							int ii = tCurrentGraphVertex.dwNeighbourCount;
-							int jj = tNeighbourGraphVertex.dwNeighbourCount;
-							tCurrentGraphVertex.dwNeighbourCount++;
-							tNeighbourGraphVertex.dwNeighbourCount++;
+							int ii = tCurrentGraphVertex.tNeighbourCount;
+							int jj = tNeighbourGraphVertex.tNeighbourCount;
+							tCurrentGraphVertex.tNeighbourCount++;
+							tNeighbourGraphVertex.tNeighbourCount++;
 							m_tpCriticalSection->Leave();
 
 							tCurrentGraphVertex.tpaEdges[ii].dwVertexNumber = j;

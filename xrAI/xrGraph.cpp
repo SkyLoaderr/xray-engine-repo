@@ -12,8 +12,8 @@
 #include "xrLevel.h"
 #include "xrThread.h"
 
-#include "xrGraph.h"
 #include "ai_nodes.h"
+#include "xrGraph.h"
 #include "xrSort.h"
 
 #define MAX_DISTANCE_TO_CONNECT		512.f
@@ -33,18 +33,23 @@ typedef struct tagRPoint {
 	Fvector A;
 } RPoint;
 
+#pragma pack(push,4)
 typedef struct tagSCompressedGraphVertex {
-	Fvector				tPoint;
-	u32					dwNodeID:24;
-	u32					ucVertexType:8;
-	u32					dwNeighbourCount;
+	Fvector				tLocalPoint;
+	Fvector				tGlobalPoint;
+	u32					tNodeID:24;
+	u32					tLevelID:8;
+	u32					tVertexType:24;
+	u32					tNeighbourCount:8;
 	u32					dwEdgeOffset;
 } SCompressedGraphVertex;
 
 typedef struct tagSGraphHeader {
 	u32					dwVersion;
 	u32					dwVertexCount;
+	u32					dwLevelCount;
 } SGraphHeader;
+#pragma pack(pop)
 
 SGraphHeader			tGraphHeader;
 
@@ -106,10 +111,12 @@ void vfLoadAIPoints(LPCSTR name)
 		for (int id=0; O->FindChunk(id); id++)
 		{
 			SGraphVertex					tGraphVertex;
-			O->Rvector						(tGraphVertex.tPoint);
-			tGraphVertex.dwNodeID			= 0;
-			tGraphVertex.dwNeighbourCount	= 0;
-			tGraphVertex.ucVertexType		= 0;
+			O->Rvector						(tGraphVertex.tLocalPoint);
+			tGraphVertex.tGlobalPoint		= tGraphVertex.tLocalPoint;
+			tGraphVertex.tNodeID			= 0;
+			tGraphVertex.tNeighbourCount	= 0;
+			tGraphVertex.tVertexType		= 0;
+			tGraphVertex.tLevelID			= 0;
 			tGraphVertex.tpaEdges			= 0;
 			tpaGraph.push_back				(tGraphVertex);
 			if (id % 100 == 0)
@@ -130,8 +137,8 @@ void vfRemoveDuplicateAIPoints()
 	do {
 		bOk = true;
 		for ( i=1; i<(int)N; i++) {
-			Fvector &p1 = tpaGraph[dwpSortOrder[i - 1]].tPoint;
-			Fvector &p2 = tpaGraph[dwpSortOrder[i]].tPoint;
+			Fvector &p1 = tpaGraph[dwpSortOrder[i - 1]].tLocalPoint;
+			Fvector &p2 = tpaGraph[dwpSortOrder[i]].tLocalPoint;
 			if ((p1.x > p2.x) || ((_abs(p1.x - p2.x) < EPS_L) && ((p1.y > p2.y) || ((_abs(p1.y - p2.y) < EPS_L) && (p1.z > p2.z))))) {
 				int k = dwpSortOrder[i - 1];
 				dwpSortOrder[i - 1] = dwpSortOrder[i];
@@ -144,8 +151,8 @@ void vfRemoveDuplicateAIPoints()
 
 	int j = 0;
 	for ( i=1; i<(int)N; i++) {
-		Fvector &p1 = tpaGraph[dwpSortOrder[i - 1]].tPoint;
-		Fvector &p2 = tpaGraph[dwpSortOrder[i]].tPoint;
+		Fvector &p1 = tpaGraph[dwpSortOrder[i - 1]].tLocalPoint;
+		Fvector &p2 = tpaGraph[dwpSortOrder[i]].tLocalPoint;
 		if ((_abs(p1.x - p2.x) < EPS_L) && (_abs(p1.y - p2.y) < EPS_L) && (_abs(p1.z - p2.z) < EPS_L))
 			dwpGraphOrder[j++] = dwpSortOrder[i];
 	}
@@ -184,7 +191,7 @@ bool bfCheckForGraphConnectivity()
 		u32 dwCurrentVertex = dwaStack.top();
 		dwaStack.pop();
 		SGraphVertex &tGraphVertex = tpaGraph[dwCurrentVertex];
-		for (int i=0; i<(int)tGraphVertex.dwNeighbourCount; i++)
+		for (int i=0; i<(int)tGraphVertex.tNeighbourCount; i++)
 			if (!q_mark_bit[tGraphVertex.tpaEdges[i].dwVertexNumber]) {
 				dwaStack.push(tGraphVertex.tpaEdges[i].dwVertexNumber);
 				q_mark_bit[tGraphVertex.tpaEdges[i].dwVertexNumber] = true;
@@ -205,8 +212,8 @@ u32 dwfErasePoints()
 	u32 dwPointsWONodes = 0, dwTemp = 0;
 	Progress(0.0f);
 	for (int i=0; i<(int)tpaGraph.size(); 	Progress(float(++i)/tpaGraph.size()))
-		if (tpaGraph[i].dwNodeID == u32(-1)) {
-			Msg("Point %3d [%7.2f,%7.2f,%7.2f] has no corresponding node",i + dwPointsWONodes++,tpaGraph[i].tPoint.x,tpaGraph[i].tPoint.y,tpaGraph[i].tPoint.z);
+		if (tpaGraph[i].tNodeID == u32(-1)) {
+			Msg("Point %3d [%7.2f,%7.2f,%7.2f] has no corresponding node",i + dwPointsWONodes++,tpaGraph[i].tLocalPoint.x,tpaGraph[i].tLocalPoint.y,tpaGraph[i].tLocalPoint.z);
 			tpaGraph.erase(tpaGraph.begin() + i--);
 		}
 	Progress(1.0f);
@@ -233,12 +240,12 @@ void vfPreprocessEdges(u32 dwEdgeCount)
 	dwaEdgeOwner = (u32 *)xr_malloc(dwEdgeCount*sizeof(u32));
 	for (int i=0, j=0; i<(int)tpaGraph.size(); i++) {
 		SGraphVertex &tGraphVertex = tpaGraph[i]; 
-		Memory.mem_copy(tpPointer,tGraphVertex.tpaEdges,tGraphVertex.dwNeighbourCount*sizeof(SGraphEdge));
-		//PSGP.memCopy(tpPointer,tGraphVertex.tpaEdges,tGraphVertex.dwNeighbourCount*sizeof(SGraphEdge));
+		Memory.mem_copy(tpPointer,tGraphVertex.tpaEdges,tGraphVertex.tNeighbourCount*sizeof(SGraphEdge));
+		//PSGP.memCopy(tpPointer,tGraphVertex.tpaEdges,tGraphVertex.tNeighbourCount*sizeof(SGraphEdge));
 		//xr_free(tGraphVertex.tpaEdges);
 		tGraphVertex.tpaEdges = tpPointer;
-		tpPointer += tGraphVertex.dwNeighbourCount;
-		for (int k=0; k<(int)tGraphVertex.dwNeighbourCount; k++, j++) {
+		tpPointer += tGraphVertex.tNeighbourCount;
+		for (int k=0; k<(int)tGraphVertex.tNeighbourCount; k++, j++) {
 			dwaSortOrder[j] = j;
 			dwaEdgeOwner[j] = i;
 		}
@@ -261,14 +268,14 @@ void vfOptimizeGraph(u32 dwEdgeCount)
 		SGraphVertex &tVertex0 = tpaGraph[dwVertex0];
 		SGraphVertex &tVertex1 = tpaGraph[dwVertex1];
 		bool bOk = true;
-		for (int i0=0; (i0<(int)tVertex0.dwNeighbourCount) && bOk; i0++) {
+		for (int i0=0; (i0<(int)tVertex0.tNeighbourCount) && bOk; i0++) {
 			if (q_mark_bit[tVertex0.tpaEdges + i0 - tpaEdges])
 				continue;
 			SGraphEdge &tEdge0 = tVertex0.tpaEdges[i0];
-			for (int i1=0; i1<(int)tVertex1.dwNeighbourCount; i1++)
+			for (int i1=0; i1<(int)tVertex1.tNeighbourCount; i1++)
 				if ((tEdge0.dwVertexNumber == tVertex1.tpaEdges[i1].dwVertexNumber) && !q_mark_bit[tVertex1.tpaEdges + i1 - tpaEdges]) {
 					q_mark_bit[dwaSortOrder[i]] = true;
-					for (int j=0; j<(int)tVertex1.dwNeighbourCount; j++)
+					for (int j=0; j<(int)tVertex1.tNeighbourCount; j++)
 						if (tVertex1.tpaEdges[j].dwVertexNumber == dwVertex0) {
 							q_mark_bit[tVertex1.tpaEdges + j - tpaEdges] = true;
 							break;
@@ -287,7 +294,7 @@ void vfNormalizeGraph()
 		bool bOk;
 		do {
 			bOk = true;
-			for (int j=1; j<(int)tpaGraph[i].dwNeighbourCount; j++)
+			for (int j=1; j<(int)tpaGraph[i].tNeighbourCount; j++)
 				if (tpaGraph[i].tpaEdges[j - 1].dwVertexNumber > tpaGraph[i].tpaEdges[j].dwVertexNumber) {
 					SGraphEdge tTemp = tpaGraph[i].tpaEdges[j - 1];
 					tpaGraph[i].tpaEdges[j - 1] = tpaGraph[i].tpaEdges[j];
@@ -306,8 +313,9 @@ void vfSaveGraph(LPCSTR name)
 	strconcat	(fName,name,"level.graph");
 	
 	CFS_Memory	tGraph;
-	tGraphHeader.dwVersion = m_header.version;
-	tGraphHeader.dwVertexCount = tpaGraph.size();
+	tGraphHeader.dwVersion		= m_header.version;
+	tGraphHeader.dwVertexCount	= tpaGraph.size();
+	tGraphHeader.dwLevelCount	= 1;
 	tGraph.write(&tGraphHeader,sizeof(SGraphHeader));	
 	Progress(0.0f);
 	SCompressedGraphVertex tCompressedGraphVertex;
@@ -317,24 +325,26 @@ void vfSaveGraph(LPCSTR name)
 	Progress(0.25f);
 	for (int i=0; i<(int)tpaGraph.size(); Progress(.25f + float(++i)/tpaGraph.size()/2)) {
 		SGraphVertex &tGraphVertex = tpaGraph[i];
-		for (int j=0, k=0; j<(int)tGraphVertex.dwNeighbourCount; j++)
+		for (int j=0, k=0; j<(int)tGraphVertex.tNeighbourCount; j++)
 			if (!q_mark_bit[tGraphVertex.tpaEdges + j - tpaEdges]) {
 				k++;
 				tGraph.Wdword(tGraphVertex.tpaEdges[j].dwVertexNumber);	
 				tGraph.Wfloat(tGraphVertex.tpaEdges[j].fPathDistance);	
 			}
-		tGraphVertex.dwNeighbourCount = k;
+		tGraphVertex.tNeighbourCount = k;
 	}
 	Progress(.75f);
 	tGraph.seek(sizeof(SGraphHeader));
-	for (int i=0, j=0, k=tpaGraph.size()*sizeof(SCompressedGraphVertex); i<(int)tpaGraph.size(); j += tpaGraph[i].dwNeighbourCount, Progress(.75f + float(++i)/tpaGraph.size()/4)) {
-		SGraphVertex &tGraphVertex = tpaGraph[i];
-		tCompressedGraphVertex.tPoint = tGraphVertex.tPoint;
-		tCompressedGraphVertex.dwNodeID = tGraphVertex.dwNodeID;
-		tCompressedGraphVertex.ucVertexType = tGraphVertex.ucVertexType;
-		tCompressedGraphVertex.dwNeighbourCount = tGraphVertex.dwNeighbourCount;
-		tCompressedGraphVertex.dwEdgeOffset = k + j*sizeof(SGraphEdge);
-		tGraph.write(&tCompressedGraphVertex,sizeof(SCompressedGraphVertex));
+	for (int i=0, j=0, k=tpaGraph.size()*sizeof(SCompressedGraphVertex); i<(int)tpaGraph.size(); j += tpaGraph[i].tNeighbourCount, Progress(.75f + float(++i)/tpaGraph.size()/4)) {
+		SGraphVertex &tGraphVertex				= tpaGraph[i];
+		tCompressedGraphVertex.tLocalPoint		= tGraphVertex.tLocalPoint;
+		tCompressedGraphVertex.tGlobalPoint		= tGraphVertex.tGlobalPoint;
+		tCompressedGraphVertex.tNodeID			= tGraphVertex.tNodeID;
+		tCompressedGraphVertex.tVertexType		= tGraphVertex.tVertexType;
+		tCompressedGraphVertex.tLevelID			= tGraphVertex.tLevelID;
+		tCompressedGraphVertex.tNeighbourCount = tGraphVertex.tNeighbourCount;
+		tCompressedGraphVertex.dwEdgeOffset		= k + j*sizeof(SGraphEdge);
+		tGraph.write(&tCompressedGraphVertex,	sizeof(SCompressedGraphVertex));
 	}
 	tGraph.SaveTo(fName,0);
 	Progress(1.0f);
@@ -377,7 +387,7 @@ void xrBuildGraph(LPCSTR name)
 	tThreadManager.wait();
 	
 	for (int i=0, dwEdgeCount=0; i<(int)tpaGraph.size(); i++)
-		dwEdgeCount += tpaGraph[i].dwNeighbourCount;
+		dwEdgeCount += tpaGraph[i].tNeighbourCount;
 	Msg("%d edges built",dwEdgeCount);
 	Progress(1.0f);
 
@@ -408,7 +418,7 @@ void xrBuildGraph(LPCSTR name)
 	Phase("Saving graph");
 	vfSaveGraph(name);
 	for (int i=0, dwNewEdgeCount=0; i<(int)tpaGraph.size(); i++)
-		dwNewEdgeCount += tpaGraph[i].dwNeighbourCount;
+		dwNewEdgeCount += tpaGraph[i].tNeighbourCount;
 	Msg("%d edges are removed",dwEdgeCount - dwNewEdgeCount);
 
 	Phase("Freeing graph being built");
@@ -419,4 +429,8 @@ void xrBuildGraph(LPCSTR name)
 	Progress(1.0f);
 	
 	Msg("\nBuilding level %s successfully completed",name);
+}
+
+void xrMergeSpawns()
+{
 }
