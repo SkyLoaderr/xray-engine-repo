@@ -16,12 +16,15 @@ CObjectActionUnstrapping::CObjectActionUnstrapping	(CInventoryItem *item, CAI_St
 
 void CObjectActionUnstrapping::initialize		()
 {
+	inherited::initialize();
 }
 
 void CObjectActionUnstrapping::execute			()
 {
+	inherited::execute();
 }
 
 void CObjectActionUnstrapping::finalize		()
 {
+	inherited::finalize();
 }

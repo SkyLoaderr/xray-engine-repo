@@ -83,7 +83,7 @@ void CObjectHandlerGOAP::reinit			(CAI_Stalker *object)
 	add_operator		(u32(eWorldOperatorNoItemsIdle),action);
 
 	set_goal			(eObjectActionIdle);
-	set_current_action	(u32(eWorldOperatorNoItemsIdle));
+//	set_current_action	(u32(eWorldOperatorNoItemsIdle));
 }
 
 void CObjectHandlerGOAP::reload			(LPCSTR section)

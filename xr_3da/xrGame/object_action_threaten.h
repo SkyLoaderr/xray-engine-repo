@@ -16,10 +16,8 @@ protected:
 
 protected:
 	bool				*m_value;
-	u32					m_start_time;
 
 public:
 						CObjectActionThreaten	(CAI_Stalker *item, CAI_Stalker *owner, bool *value, LPCSTR action_name = "");
-	virtual void		initialize				();
 	virtual void		execute					();
 };

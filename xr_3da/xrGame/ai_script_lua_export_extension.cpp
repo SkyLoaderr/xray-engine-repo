@@ -296,7 +296,6 @@ void Script::vfExportMemoryObjects(CLuaVirtualMachine *tpLuaVirtualMachine)
 	];
 }
 
-
 void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 {
 	module(tpLuaVirtualMachine)
@@ -407,4 +406,3 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("explode",						&CLuaGameObject::explode)
 	];
 }
-

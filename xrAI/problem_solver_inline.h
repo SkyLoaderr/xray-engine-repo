@@ -149,9 +149,9 @@ IC	void CProblemSolverAbstract::remove_evaluator			(const _condition_type &condi
 TEMPLATE_SPECIALIZATION
 IC	const typename CProblemSolverAbstract::CConditionEvaluator *CProblemSolverAbstract::evaluator	(const _condition_type &condition_id) const
 {
-	EVALUATOR_MAP::iterator		I = m_evaluators.find(condition_id);
-	VERIFY						(I != m_evaluators.end());
-	return						((*I).second);
+	EVALUATOR_MAP::const_iterator	I = evaluators().find(condition_id);
+	VERIFY							(evaluators().end() != I);
+	return							((*I).second);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -172,9 +172,9 @@ IC	void CProblemSolverAbstract::evaluate_condition			(typename xr_vector<COperat
 }
 
 TEMPLATE_SPECIALIZATION
-IC	u8	CProblemSolverAbstract::get_edge_weight	(const _index_type &vertex_index0, const _index_type &vertex_index1, const const_iterator &i) const
+IC	typename CProblemSolverAbstract::_edge_value_type CProblemSolverAbstract::get_edge_weight	(const _index_type &vertex_index0, const _index_type &vertex_index1, const const_iterator &i) const
 {
-	return					(vertex_index0.weight(vertex_index1));
+	return					((*i).m_operator->weight(vertex_index1,vertex_index0));
 }
 
 TEMPLATE_SPECIALIZATION

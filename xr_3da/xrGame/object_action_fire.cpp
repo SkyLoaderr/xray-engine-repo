@@ -31,5 +31,6 @@ void CObjectActionFire::execute			()
 
 void CObjectActionFire::finalize		()
 {
+	inherited::finalize();
 	m_object->inventory().Action(kWPN_FIRE,	CMD_STOP);
 }

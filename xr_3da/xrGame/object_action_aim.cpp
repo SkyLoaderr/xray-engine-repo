@@ -22,14 +22,13 @@ void CObjectActionAim::initialize		()
 #ifndef OLD_OBJECT_HANDLER
 	m_object->set_aimed		(m_type ? 0 : 1,false);
 #endif
-	m_start_time			= Level().timeServer();
 }
 
 void CObjectActionAim::execute			()
 {
 	inherited::execute		();
 #ifndef OLD_OBJECT_HANDLER
-	if (Level().timeServer() - m_start_time > m_inertia_time)
+	if (completed())
 		m_object->set_aimed	(m_type,true);
 #endif
 }

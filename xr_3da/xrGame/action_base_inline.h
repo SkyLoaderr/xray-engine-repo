@@ -129,13 +129,6 @@ IC	void CBaseAction::set_inertia_time			(u32 inertia_time)
 	m_inertia_time		= inertia_time;
 }
 
-
-TEMPLATE_SPECIALIZATION
-IC	u32	CBaseAction::priority			() const
-{
-	return				(m_priority);
-}
-
 #ifdef LOG_ACTION
 TEMPLATE_SPECIALIZATION
 IC	void CBaseAction::debug_log			(const EActionStates state_state) const

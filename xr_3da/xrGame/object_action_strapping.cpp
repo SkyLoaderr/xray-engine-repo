@@ -16,12 +16,15 @@ CObjectActionStrapping::CObjectActionStrapping	(CInventoryItem *item, CAI_Stalke
 
 void CObjectActionStrapping::initialize		()
 {
+	inherited::initialize();
 }
 
 void CObjectActionStrapping::execute			()
 {
+	inherited::execute();
 }
 
 void CObjectActionStrapping::finalize		()
 {
+	inherited::finalize();
 }

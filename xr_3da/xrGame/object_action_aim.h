@@ -18,7 +18,6 @@ protected:
 
 protected:
 	u32					m_type;
-	u32					m_start_time;
 
 public:
 						CObjectActionAim	(CInventoryItem *item, CAI_Stalker *owner, u32 type, LPCSTR action_name = "");

@@ -35,13 +35,15 @@ public:
 	virtual void					reinit				(bool clear_all);
 	virtual void					reload				(LPCSTR section);
 	IC		const CSConditionState	&conditions			() const;
-	IC		void					add_condition		(const COperatorCondition &condition);
 	IC		const CSConditionState	&effects			() const;
+	IC		void					add_condition		(const COperatorCondition &condition);
 	IC		void					add_effect			(const COperatorCondition &effect);
+	IC		void					remove_condition	(const typename COperatorCondition::_condition_type &condition);
+	IC		void					remove_effect		(const typename COperatorCondition::_condition_type &effect);
 	virtual bool					applicable			(const CSConditionState &condition, const CSConditionState &start, const CSConditionState &self_condition) const;
 	virtual const CSConditionState	&apply				(const CSConditionState &condition, const CSConditionState &self_condition, CSConditionState &result) const;
 	virtual bool					apply_reverse		(const CSConditionState &condition, const CSConditionState &start, CSConditionState &result, const CSConditionState &self_condition) const;
-	virtual _edge_value_type		weight				() const;
+	virtual _edge_value_type		weight				(const CSConditionState &condition0, const CSConditionState &condition1) const;
 };
 
 #include "operator_abstract_inline.h"

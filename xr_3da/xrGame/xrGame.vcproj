@@ -2475,6 +2475,9 @@
 							RelativePath=".\ai_script_lua_export.cpp">
 						</File>
 						<File
+							RelativePath=".\ai_script_lua_export_actions.cpp">
+						</File>
+						<File
 							RelativePath=".\ai_script_lua_export_extension.cpp">
 						</File>
 					</Filter>
@@ -2506,6 +2509,57 @@
 						<File
 							RelativePath=".\ai_script_processor.h">
 						</File>
+					</Filter>
+					<Filter
+						Name="ScriptActionManagement"
+						Filter="">
+						<Filter
+							Name="ScriptActionPlanner"
+							Filter="">
+							<File
+								RelativePath=".\script_action_planner.h">
+							</File>
+							<File
+								RelativePath=".\script_action_planner_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="ScriptWorldProperty"
+							Filter="">
+							<File
+								RelativePath=".\script_world_property.h">
+							</File>
+							<File
+								RelativePath=".\script_world_property_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="ScriptWorldState"
+							Filter="">
+							<File
+								RelativePath=".\script_world_state.h">
+							</File>
+							<File
+								RelativePath=".\script_world_state_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="ScriptPropertyEvaluator"
+							Filter="">
+							<File
+								RelativePath=".\script_property_evaluator.h">
+							</File>
+							<File
+								RelativePath=".\script_property_evaluator_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="ScriptAction"
+							Filter="">
+							<File
+								RelativePath=".\script_action.h">
+							</File>
+						</Filter>
 					</Filter>
 				</Filter>
 				<Filter

@@ -71,7 +71,7 @@ TEMPLATE_SPECIALIZATION
 IC	_dist_type CSolverPathManager::evaluate			(const _index_type &node_index1, const _index_type &node_index2, const const_iterator &i) const
 {
 	VERIFY					(graph);
-	return					((_dist_type)(*i).m_operator->weight());
+	return					(graph->get_edge_weight(node_index1,node_index2,i));
 }
 
 TEMPLATE_SPECIALIZATION

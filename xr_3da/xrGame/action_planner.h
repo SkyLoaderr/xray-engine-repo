@@ -44,9 +44,6 @@ protected:
 	_action_id_type			m_current_action_id;
 	_object_type			*m_object;
 
-protected:
-	IC		void			set_current_action		(const _action_id_type action_id);
-
 public:
 							CActionPlanner			();
 	virtual					~CActionPlanner			();

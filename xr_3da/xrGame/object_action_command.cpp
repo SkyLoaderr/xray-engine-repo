@@ -19,9 +19,11 @@ CObjectActionCommand::CObjectActionCommand(CInventoryItem *item, CAI_Stalker *ow
 
 void CObjectActionCommand::initialize	()
 {
+	inherited::initialize();
 	m_object->inventory().Action(m_command,CMD_START);
 }
 
 void CObjectActionCommand::execute		()
 {
+	inherited::execute();
 }

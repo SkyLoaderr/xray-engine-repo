@@ -25,6 +25,7 @@ public:
 	IC	const xr_vector<COperatorCondition>		&conditions			() const;
 	IC	u8										weight				(const CConditionState &condition) const;
 	IC	void									add_condition		(const COperatorCondition &condition);
+	IC	void									remove_condition	(const typename COperatorCondition::_condition_type condition);
 	IC	void									add_condition		(typename xr_vector<COperatorCondition>::const_iterator &J, const COperatorCondition &condition);
 	IC	void									add_condition_back	(const COperatorCondition &condition);
 	IC	bool									includes			(const CConditionState &condition) const;

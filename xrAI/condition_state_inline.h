@@ -47,6 +47,15 @@ IC	void CConditionStateAbstract::add_condition	(const COperatorCondition &condit
 }
 
 TEMPLATE_SPECIALIZATION
+IC	void CConditionStateAbstract::remove_condition	(const typename COperatorCondition::_condition_type condition)
+{
+	xr_vector<COperatorCondition>::iterator	I = std::lower_bound(m_conditions.begin(),m_conditions.end(),COperatorCondition(condition,COperatorCondition::_value_type(0)));
+	VERIFY					((I != m_conditions.end()) && ((*I).condition() == condition));
+	m_hash					^= (*I).hash_value();
+	m_conditions.erase		(I);
+}
+
+TEMPLATE_SPECIALIZATION
 IC	void CConditionStateAbstract::add_condition	(typename xr_vector<COperatorCondition>::const_iterator &J, const COperatorCondition &condition)
 {
 	m_conditions.insert		(m_conditions.begin() + (J - m_conditions.begin()),condition);

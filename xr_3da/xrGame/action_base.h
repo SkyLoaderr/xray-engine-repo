@@ -53,12 +53,11 @@ public:
 	virtual void			initialize			();
 	virtual void			execute				();
 	virtual void			finalize			();
-	virtual bool			completed			() const;
 	IC		void			set_inertia_time	(u32 inertia_time);
-	IC		u32				priority			() const;
 	IC		u32				start_level_time	() const;
 	IC		ALife::_TIME_ID	start_game_time		() const;
 	IC		u32				inertia_time		() const;
+	IC		bool			completed			() const;
 };
 
 #include "action_base_inline.h"

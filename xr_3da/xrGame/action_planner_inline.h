@@ -30,6 +30,7 @@ IC	CPlanner::~CActionPlanner			()
 TEMPLATE_SPECIALIZATION
 void CPlanner::init				()
 {
+	m_initialized			= false;
 }
 
 TEMPLATE_SPECIALIZATION
@@ -105,8 +106,15 @@ void CPlanner::update				(u32 time_delta)
 
 	VERIFY						(!solution().empty());
 
-	if (initialized() && (current_action_id() != solution().front())) {
-		current_action().finalize	();
+	if (initialized()) {
+		if (current_action_id() != solution().front()) {
+			current_action().finalize	();
+			m_current_action_id			= solution().front();
+			current_action().initialize	();
+		}
+	}
+	else {
+		m_initialized				= true;
 		m_current_action_id			= solution().front();
 		current_action().initialize	();
 	}
@@ -116,8 +124,6 @@ void CPlanner::update				(u32 time_delta)
 	CPlanner					*action_planner = dynamic_cast<CPlanner*>(&current_action());
 	if (action_planner)
 		action_planner->update	(time_delta);
-
-	m_initialized				= true;
 }
 
 TEMPLATE_SPECIALIZATION
@@ -127,16 +133,9 @@ IC	typename CPlanner::COperator &CPlanner::action	(const _action_id_type action_
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CPlanner::set_current_action	(const _action_id_type action_id)
-{
-	VERIFY				(!initialized());
-	m_current_action_id	= action_id;
-	m_actuality			= false;
-}
-
-TEMPLATE_SPECIALIZATION
 IC	typename CPlanner::_action_id_type CPlanner::current_action_id	() const
 {
+	VERIFY				(initialized());
 	return				(m_current_action_id);
 }
 

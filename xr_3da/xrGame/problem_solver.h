@@ -75,7 +75,7 @@ public:
 	IC		bool						actual					() const;
 
 	// graph interface
-	IC		u8							get_edge_weight			(const _index_type	&vertex_index0,	const _index_type &vertex_index1,	const const_iterator	&i) const;
+	IC		_edge_value_type			get_edge_weight			(const _index_type	&vertex_index0,	const _index_type &vertex_index1,	const const_iterator	&i) const;
 	IC		bool						is_accessible			(const _index_type	&vertex_index) const;
 	IC		const _index_type			&value					(const _index_type	&vertex_index,	const_iterator		&i) const;
 	IC		void						begin					(const _index_type	&vertex_index,	const_iterator		&b,				const_iterator			&e) const;

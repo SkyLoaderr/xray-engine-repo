@@ -17,17 +17,11 @@ CObjectActionThreaten::CObjectActionThreaten	(CAI_Stalker *item, CAI_Stalker *ow
 {
 }
 
-void CObjectActionThreaten::initialize		()
-{
-	inherited::inherited::initialize	();
-	m_start_time			= Level().timeServer();
-}
-
 void CObjectActionThreaten::execute			()
 {
 	inherited::execute		();
 #ifndef OLD_OBJECT_HANDLER
-	if (Level().timeServer() - m_start_time > m_inertia_time) {
+	if (completed()) {
 		*m_value			= false;
 		m_object->inventory().Action(kWPN_FIRE,	CMD_STOP);
 	}

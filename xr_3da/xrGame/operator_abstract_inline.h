@@ -66,9 +66,21 @@ IC	void CAbstractOperator::add_condition	(const COperatorCondition &condition)
 }
 
 TEMPLATE_SPECIALIZATION
+IC	void CAbstractOperator::remove_condition(const typename COperatorCondition::_condition_type &condition)
+{
+	m_conditions.remove_condition(condition);
+}
+
+TEMPLATE_SPECIALIZATION
 IC	void CAbstractOperator::add_effect		(const COperatorCondition &effect)
 {
 	m_effects.add_condition		(effect);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CAbstractOperator::remove_effect	(const typename COperatorCondition::_condition_type &effect)
+{
+	m_effects.remove_condition	(effect);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -227,7 +239,7 @@ IC	bool CAbstractOperator::apply_reverse	(const CSConditionState &condition, con
 }
 
 TEMPLATE_SPECIALIZATION
-IC	_edge_value_type CAbstractOperator::weight		() const
+IC	_edge_value_type CAbstractOperator::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
 {
 	return					(_edge_value_type(1));
 }

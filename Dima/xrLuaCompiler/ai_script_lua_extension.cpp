@@ -119,6 +119,7 @@ void LuaError(lua_State* L)
 {
 	Debug.fatal("LUA error: %s",lua_tostring(L,-1));
 }
+
 void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVM)
 {
 	luabind::open					(tpLuaVM);
@@ -126,25 +127,27 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVM)
 
 	lua_atpanic		(tpLuaVM,Script::LuaPanic);
 
-	vfExportGlobals	(tpLuaVM);
-	vfExportFvector	(tpLuaVM);
-	vfExportFmatrix	(tpLuaVM);
-	vfExportGame	(tpLuaVM);
-	vfExportLevel	(tpLuaVM);
-	vfExportDevice	(tpLuaVM);
-	vfExportParticles(tpLuaVM);
-	vfExportSound	(tpLuaVM);
-	vfExportHit		(tpLuaVM);
-	vfExportActions	(tpLuaVM);
-	vfExportObject	(tpLuaVM);
-	vfExportEffector(tpLuaVM);
-	vfExportArtifactMerger(tpLuaVM);
-	vfExportMemoryObjects(tpLuaVM);
+	vfExportGlobals				(tpLuaVM);
+	vfExportFvector				(tpLuaVM);
+	vfExportFmatrix				(tpLuaVM);
+	vfExportGame				(tpLuaVM);
+	vfExportLevel				(tpLuaVM);
+	vfExportDevice				(tpLuaVM);
+	vfExportParticles			(tpLuaVM);
+	vfExportSound				(tpLuaVM);
+	vfExportHit					(tpLuaVM);
+	vfExportActions				(tpLuaVM);
+	vfExportObject				(tpLuaVM);
+	vfExportEffector			(tpLuaVM);
+	vfExportArtifactMerger		(tpLuaVM);
+	vfExportMemoryObjects		(tpLuaVM);
+	vfExportActionManagement	(tpLuaVM);
+
 #ifdef DEBUG
-	lua_sethook		(tpLuaVM, LuaHookCall,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
+	lua_sethook					(tpLuaVM, LuaHookCall,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
 #endif
 
-	vfLoadStandardScripts(tpLuaVM);
+	vfLoadStandardScripts		(tpLuaVM);
 }
 
 bool Script::bfLoadFile(CLuaVirtualMachine *tpLuaVM, LPCSTR caScriptName, bool bCall)
