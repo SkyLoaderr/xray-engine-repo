@@ -181,7 +181,7 @@ void	CCar::Update				( u32 T )
 {
 	inherited::Update				(T);
 
-	vPosition.set	(m_jeep.DynamicData.BoneTransform.c);
+	//vPosition.set	(m_jeep.DynamicData.BoneTransform.c);
 	
 	Fmatrix mY;
 	mY.rotateY		(deg2rad(90.f));
@@ -194,7 +194,7 @@ void	CCar::Update				( u32 T )
 	mRotate.c.set	(0,0,0);
 	//svTransform.mul	(m_jeep.DynamicData.BoneTransform,mY);
 	svTransform.mul	(b_t,mY);
-	
+	vPosition.set	(b_t.c);
 	UpdateTransform					();
 }
 
