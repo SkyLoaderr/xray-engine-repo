@@ -92,7 +92,7 @@ void	CBuild::xrPhase_UVmap()
 				Deflector->OA_Export	();
 				
 				// Detach affected faces
-				static vecFace faces_affected;
+				vecFace		faces_affected;
 				faces_affected.reserve	(_MAX(256,affected));
 				for (int i=0; i<int(g_XSplit[SP]->size()); i++) {
 					Face *F = (*g_XSplit[SP])[i];
