@@ -1,11 +1,11 @@
 if (editor() == false) then
-	module	("ce_new_attachable_item")
+//	module	("ce_new_attachable_item")
 end
-module	("se_new_attachable_item")
+//module	("se_new_attachable_item")
 
 function register(object_factory)
-	if true then
-		return
-	end
-	object_factory:register	("CCE_NewAttachableItem","CSE_NewAttachableItem","II_ATTCH","new_attachable_item")
+//	if true then
+//		return
+//	end
+//	object_factory:register	("CCE_NewAttachableItem","CSE_NewAttachableItem","II_ATTCH","new_attachable_item")
 end
