@@ -28,7 +28,7 @@ public:
 	typedef SpawnConstructorSpace::LEVEL_CHANGER_STORAGE		LEVEL_CHANGER_STORAGE;
 	typedef xr_vector<CSE_ALifeObject*>							SPAWN_STORAGE;
 	typedef xr_vector<CSE_ALifeGraphPoint*>						GRAPH_POINT_STORAGE;
-	typedef xr_vector<CSE_ALifeObject*>							GROUP_OBJECTS;
+	typedef xr_vector<CSE_Abstract*>							GROUP_OBJECTS;
 	typedef xr_map<shared_str,GROUP_OBJECTS*>					SPAWN_GRPOUP_OBJECTS;
 	typedef xr_map<shared_str,CSE_SpawnGroup*>					SPAWN_GROUPS;
 
@@ -57,10 +57,10 @@ protected:
 			void						add_spawn_group						(CSE_Abstract			*abstract);
 			void						add_story_object					(CSE_ALifeDynamicObject *dynamic_object);
 			void						add_free_object						(CSE_Abstract			*abstract);
-			void						add_group_object					(CSE_ALifeObject		*alife_object);
+			void						add_group_object					(CSE_Abstract			*abstract, shared_str group_section, bool);
+			void						add_group_object					(CSE_Abstract			*abstract, shared_str group_section);
 			void						add_level_changer					(CSE_Abstract			*abstract);
 			void						update_artefact_spawn_positions		();
-	IC		float						normalize_probability				(const GROUP_OBJECTS	&group);
 	IC		void						normalize_probability				(CSE_ALifeAnomalousZone *zone);
 	IC		void						free_group_objects					();
 	IC		const CGameGraph			&game_graph							() const;

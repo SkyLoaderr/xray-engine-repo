@@ -106,6 +106,8 @@ void CLevelSpawnConstructor::add_spawn_group					(CSE_Abstract			*abstract)
 	CSE_SpawnGroup			*spawn_group = smart_cast<CSE_SpawnGroup*>(abstract);
 	R_ASSERT				(spawn_group);
 	m_spawn_groups.insert	(std::make_pair(spawn_group->s_name_replace,spawn_group));
+	if (xr_strlen(spawn_group->m_group_control))
+		add_group_object	(spawn_group,spawn_group->m_group_control);
 	add_free_object			(abstract);
 }
 
@@ -126,17 +128,24 @@ void CLevelSpawnConstructor::add_free_object					(CSE_Abstract			*abstract)
 	m_game_spawn_constructor->add_object		(abstract);
 }
 
-void CLevelSpawnConstructor::add_group_object					(CSE_ALifeObject		*alife_object)
+void CLevelSpawnConstructor::add_group_object					(CSE_Abstract			*abstract, shared_str group_section, bool)
 {
-	SPAWN_GRPOUP_OBJECTS::iterator	I = m_spawn_objects.find(*alife_object->m_caGroupControl);
+	SPAWN_GRPOUP_OBJECTS::iterator	I = m_spawn_objects.find(group_section);
 	if (I == m_spawn_objects.end()) {
-		xr_vector<CSE_ALifeObject*> *temp = xr_new<GROUP_OBJECTS>();
+		xr_vector<CSE_Abstract*>	*temp = xr_new<GROUP_OBJECTS>();
 		temp->clear					();
-		temp->push_back				(alife_object);
-		m_spawn_objects.insert		(std::make_pair(*alife_object->m_caGroupControl,temp));
+		temp->push_back				(abstract);
+		m_spawn_objects.insert		(std::make_pair(group_section,temp));
 	}
 	else
-		(*I).second->push_back		(alife_object);
+		(*I).second->push_back		(abstract);
+}
+
+void CLevelSpawnConstructor::add_group_object					(CSE_Abstract			*abstract, shared_str group_section)
+{
+	string256					temp;
+	for (u32 i=0, n=_GetItemCount(*group_section); i<n; ++i)
+		add_group_object		(abstract,_GetItem(*group_section,i,temp),true);
 }
 
 void CLevelSpawnConstructor::load_objects						()
@@ -156,7 +165,6 @@ void CLevelSpawnConstructor::load_objects						()
 
 		if (abstract->m_tClassID == CLSID_AI_SPAWN_GROUP) {
 			add_spawn_group		(abstract);
-			add_free_object		(abstract);
 			continue;
 		}
 
@@ -187,7 +195,7 @@ void CLevelSpawnConstructor::load_objects						()
 			add_level_changer	(abstract);
 
 		if (xr_strlen(alife_object->m_caGroupControl))
-			add_group_object	(alife_object);
+			add_group_object	(alife_object,alife_object->m_caGroupControl);
 
 		add_free_object			(alife_object);
 	}
@@ -197,23 +205,13 @@ void CLevelSpawnConstructor::load_objects						()
 	R_ASSERT2					(!m_spawns.empty(),"There are no spawn-points!");
 }
 
-IC	float CLevelSpawnConstructor::normalize_probability			(const GROUP_OBJECTS &group)
-{
-	GROUP_OBJECTS::const_iterator	I = group.begin();
-	GROUP_OBJECTS::const_iterator	E = group.end();
-	float							result = 0.f;
-	for ( ; I != E; I++)
-		result						+= (*I)->m_fProbability;
-	return							(result);
-}
-
 IC	void CLevelSpawnConstructor::normalize_probability			(CSE_ALifeAnomalousZone *zone)
 {
 	float						accumulator = 0.f;
 	for (int ii=0; ii<zone->m_wItemCount; ii++)
 		accumulator				+= zone->m_faWeights[ii];
 
-	accumulator					/= zone->m_fBirthProbability;
+	accumulator					*= zone->m_fBirthProbability;
 
 	for (int ii=0; ii<zone->m_wItemCount; ii++)
 		zone->m_faWeights[ii]	/= accumulator;
@@ -240,11 +238,9 @@ void CLevelSpawnConstructor::fill_spawn_groups					()
 			clMsg								("! ERROR (spawn group not found!) : %s",*(*I).first);
 		R_ASSERT3								(J != m_spawn_groups.end(),"Specified group control not found!",(*(*I).second)[0]->s_name_replace);
 		
-		float									accumulator = normalize_probability(*(*I).second) / (*J).second->m_spawn_probability;
 		GROUP_OBJECTS::iterator					i = (*I).second->begin();
 		GROUP_OBJECTS::iterator					e = (*I).second->end();
 		for ( ; i != e; i++) {
-			(*i)->m_fProbability				/= accumulator;
 			m_game_spawn_constructor->add_edge	((*J).second->m_tSpawnID,(*i)->m_tSpawnID,(*i)->m_fProbability);
 			CSE_ALifeAnomalousZone				*zone = smart_cast<CSE_ALifeAnomalousZone*>(*i);
 			if (zone)
@@ -310,7 +306,7 @@ void CLevelSpawnConstructor::correct_objects					()
 			S += sprintf(S,"Spawn point : [%7.2f][%7.2f][%7.2f]\n",m_spawns[i]->o_Position.x,m_spawns[i]->o_Position.y,m_spawns[i]->o_Position.z);
 			R_ASSERT2(dwBest != -1,S1);
 		}
-		m_spawns[i]->m_tGraphID	= (ALife::_GRAPH_ID)dwBest;
+		m_spawns[i]->m_tGraphID		= (ALife::_GRAPH_ID)dwBest;
 		m_spawns[i]->m_fDistance	= fCurrentBestDistance;
 	}
 }

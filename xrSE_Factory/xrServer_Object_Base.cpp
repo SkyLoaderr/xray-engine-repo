@@ -89,6 +89,7 @@ CSE_Abstract::CSE_Abstract					(LPCSTR caSection)
 #ifndef AI_COMPILER
 	m_script_clsid				= object_factory().script_clsid(m_tClassID);
 #endif
+	m_fProbability				= 1.f;
 
 	client_data.clear			();
 }
@@ -145,6 +146,7 @@ void CSE_Abstract::Spawn_Write				(NET_Packet	&tNetPacket, BOOL bLocal)
 		tNetPacket.w			(&*client_data.begin(),client_data_size);
 
 	tNetPacket.w				(&m_tSpawnID,	sizeof(m_tSpawnID));
+	tNetPacket.w_float			(m_fProbability);
 
 #ifdef XRSE_FACTORY_EXPORTS
 	CScriptValueContainer::assign();
@@ -287,6 +289,7 @@ void CSE_Abstract::FillProps				(LPCSTR pref, PropItemVec& items)
 {
 	PHelper().CreateToken8		(items,	PrepareKey(pref,"Game Type"),			&s_gameid,		game_types);
     PHelper().CreateU16			(items,	PrepareKey(pref, "Respawn Time (s)"),	&RespawnTime,	0,43200);
+	PHelper().CreateFloat		(items,	PrepareKey(pref,*s_name,"ALife\\Probability"),			&m_fProbability,	0.f,1.f);
 }
 
 void CSE_Abstract::FillProp					(LPCSTR pref, PropItemVec &items)

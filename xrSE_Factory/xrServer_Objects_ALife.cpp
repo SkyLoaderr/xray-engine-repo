@@ -186,8 +186,6 @@ CSE_ALifeObject::CSE_ALifeObject			(LPCSTR caSection) : CSE_Abstract(caSection)
 	ID							= ALife::_OBJECT_ID(-1);
 	m_tGraphID					= ALife::_GRAPH_ID(-1);
 	m_tSpawnID					= ALife::_SPAWN_ID(-1);
-	m_fProbability				= 1.f;
-	m_dwSpawnGroup				= 0;
 	m_bDirectControl			= true;
 	m_bALifeControl				= true;
 	m_tNodeID					= u32(-1);
@@ -230,8 +228,6 @@ void CSE_ALifeObject::move_offline			(bool value)
 
 void CSE_ALifeObject::STATE_Write			(NET_Packet &tNetPacket)
 {
-	tNetPacket.w_float			(m_fProbability);
-	tNetPacket.w_u32			(m_dwSpawnGroup);
 	tNetPacket.w				(&m_tGraphID,	sizeof(m_tGraphID));
 	tNetPacket.w_float			(m_fDistance);
 	tNetPacket.w_u32			(m_bDirectControl);
@@ -245,14 +241,19 @@ void CSE_ALifeObject::STATE_Write			(NET_Packet &tNetPacket)
 void CSE_ALifeObject::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 {
 	if (m_wVersion >= 1) {
-		if (m_wVersion > 24)
-			tNetPacket.r_float		(m_fProbability);
-		else {
-			u8						l_ucTemp;
-			tNetPacket.r_u8			(l_ucTemp);
-			m_fProbability			= (float)l_ucTemp;
+		if (m_wVersion > 24) {
+			if (m_wVersion < 82) {
+				tNetPacket.r_float	(m_fProbability);
+			}
 		}
-		tNetPacket.r_u32		(m_dwSpawnGroup);
+		else {
+			u8					l_ucTemp;
+			tNetPacket.r_u8		(l_ucTemp);
+			m_fProbability		= (float)l_ucTemp;
+		}
+		if (m_wVersion < 82) {
+			tNetPacket.r_u32	();
+		}
 		if (m_wVersion < 4) {
 			u16					wDummy;
 			tNetPacket.r_u16	(wDummy);
@@ -312,7 +313,6 @@ void CSE_ALifeObject::FillProps				(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProps		(pref, 	items);
 	PHelper().CreateRText		(items,	PrepareKey(pref,*s_name,"Custom data"),&m_ini_string);
-	PHelper().CreateFloat		(items,	PrepareKey(pref,*s_name,"ALife\\Probability"),			&m_fProbability,	0.f,1.f);
 	LPCSTR gcs					= pSettings->r_string(s_name,"GroupControlSection");
     PHelper().CreateChoose		(items, PrepareKey(pref,*s_name,"ALife\\Group control"),		&m_caGroupControl,	smSpawnItem,	0, (void*)gcs, 16);
 	if (m_flags.is(flUseSwitches)) {

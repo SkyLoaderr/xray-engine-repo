@@ -77,8 +77,6 @@ public:
 	ALife::_GRAPH_ID				m_tGraphID;
 	float							m_fDistance;
 	bool							m_bOnline;
-	float							m_fProbability;
-	u32								m_dwSpawnGroup;
 	bool							m_bDirectControl;
 	u32								m_tNodeID;
 	shared_str						m_caGroupControl;

@@ -54,6 +54,7 @@ public:
 	Fvector							o_Angle;
 	CLASS_ID						m_tClassID;
 	ALife::_SPAWN_ID				m_tSpawnID;
+	float							m_fProbability;
 	int								m_script_clsid;
 
 	// for ALife control
