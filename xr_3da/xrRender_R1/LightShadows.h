@@ -24,6 +24,7 @@ private:
 	};
 	struct	shadow 
 	{
+		IRenderable*		O;
 		int					slot;
 		Fvector				C;
 		Fmatrix				M;

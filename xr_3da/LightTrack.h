@@ -15,6 +15,7 @@ class	CLightTrack			: public IRender_ObjectSpecific
 public:
 	struct Item 
 	{
+		u32					frame_touched;
 		light*				source;
 		Collide::ray_cache	cache;
 		float				test;			// note range: (-1[no]..1[yes])
@@ -35,7 +36,6 @@ public:
 	int						Shadowed_Slot;
 
 	void					add				(light*			L);
-	void					remove			(light*			L);
 	void					ltrack			(IRenderable*	O);
 
 	CLightTrack				();

@@ -56,12 +56,14 @@ void light::set_active		(bool a)
 		if (flags.bActive)					return;
 		flags.bActive						= true;
 		spatial_register					();
+		//Msg									("!!! L-register: %X",u32(this));
 	}
 	else
 	{
 		if (!flags.bActive)					return;
 		flags.bActive						= false;
 		spatial_unregister					();
+		//Msg									("!!! L-unregister: %X",u32(this));
 	}
 }
 

@@ -20,30 +20,22 @@ CLightTrack::CLightTrack()
 void CLightTrack::add	(light* source)
 {
 	// Search
-	for (xr_vector<Item>::iterator I=track.begin(); I!=track.end(); I++)	if (source == I->source)	return;
+	for (xr_vector<Item>::iterator I=track.begin(); I!=track.end(); I++)	
+		if (source == I->source)	{
+			I->frame_touched		= Device.dwFrame;
+			return;
+		}
 
 	// Register _new_
 	track.push_back		(Item());
 	Item&	L			= track.back();
+	L.frame_touched		= Device.dwFrame;
 	L.source			= source;
 	L.cache.verts[0].set(0,0,0);
 	L.cache.verts[1].set(0,0,0);
 	L.cache.verts[2].set(0,0,0);
 	L.test				= 0.f;
 	L.energy			= 0.f;
-}
-
-void CLightTrack::remove(light* source)
-{
-	// Search
-	for (xr_vector<Item>::iterator I=track.begin(); I!=track.end(); I++)
-	{
-		if (source == I->source)
-		{
-			track.erase(I);
-			return;
-		}
-	}
 }
 
 IC bool	pred_energy		(const CLightTrack::Light& L1, const CLightTrack::Light& L2)
@@ -66,7 +58,16 @@ void	CLightTrack::ltrack	(IRenderable* O)
 	dwFrame					= Device.dwFrame;
 	O->renderable.xform.transform_tiny	(pos,O->renderable.visual->vis.sphere.P);
 	fRadius					= O->renderable.visual->vis.sphere.R;
-	
+
+	// *******DEBUG
+	/*
+	CObject*	O1			= dynamic_cast<CObject*>(g_pGameLevel->CurrentEntity());
+	CObject*	O2			= dynamic_cast<CObject*>(O);
+	BOOL		bActor		= (O1==O2);
+	if			(bActor)	Msg	("* [%X]LTRACK-sizes(%s): %d / %d",Device.dwFrame,O2->cName(),lights.size(),track.size());
+	*/
+	// *******DEBUG
+
 	// Process ambient lighting
 	float	dt				= Device.fTimeDelta;
 	float	l_f				= dt*lt_smooth;
@@ -87,15 +88,22 @@ void	CLightTrack::ltrack	(IRenderable* O)
 		if (0==source)			continue;
 		float	R				= fRadius+source->range;
 		if (pos.distance_to(source->position) < R)	add		(source);
-		else										remove	(source);
 	}
 	
 	// Trace visibility
 	lights.clear	();
-	xr_vector<CLightTrack::Item>::iterator I	= track.begin(), E=track.end();
 	float traceR								= fRadius*.5f;
-	for (; I!=E; I++)
+	for (s32 id=0; id<s32(track.size()); id++)
 	{
+		// remove untouched lights
+		xr_vector<CLightTrack::Item>::iterator I	= track.begin()+id;
+		if (I->frame_touched!=Device.dwFrame)		{
+			track.erase	(I)	;
+			id			--	;
+			continue		;
+		}
+
+		// Trace visibility
 		float		amount	= 0;
 		light*		xrL		= I->source;
 		Fvector&	LP		= xrL->position;
@@ -111,13 +119,13 @@ void	CLightTrack::ltrack	(IRenderable* O)
 			// direct
 			D.invert			(xrL->direction);
 			if (g_pGameLevel->ObjectSpace.RayTest(P,D,500.f,Collide::rqtStatic,&I->cache))	amount -=	lt_dec;
-			else																amount +=	lt_inc;
+			else																			amount +=	lt_inc;
 		} else {
 			// point/spot
 			float	f			= D.sub(P,LP).magnitude();
 			D.div				(f);
 			if (g_pGameLevel->ObjectSpace.RayTest(LP,D,f,Collide::rqtStatic,&I->cache))		amount -=	lt_dec;
-			else																amount +=	lt_inc;
+			else																			amount +=	lt_inc;
 		}
 	
 		// 

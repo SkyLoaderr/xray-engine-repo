@@ -268,6 +268,7 @@ void CLightShadows::calculate	()
 			
 			// register shadow and increment slot
 			shadows.push_back	(shadow());
+			shadows.back().O	=	C.O;
 			shadows.back().slot	=	slot_id;
 			shadows.back().C	=	C.C;
 			shadows.back().M	=	mCombineR;
@@ -353,8 +354,18 @@ void CLightShadows::render	()
 		if (0==xrc.r_count())	continue;
 		
 		/*
-		Msg							("----- %d",xrc.r_count());
-		if (xrc.r_count() > 1000)	Log("matrix:",S.M);
+		Log							("-----: ",		xrc.r_count());
+		Msg							("light: %x,A(%s),R(%f)",	u32(S.L),S.L->get_active()?"true":"false",S.L->range);
+		if (xrc.r_count() > 1000)	{
+			CObject*	O	= dynamic_cast<CObject*>(S.O);
+			if (O)	{
+				Log		("object:",O->cName());
+				Log		("radius:",O->Radius());
+			};
+			Log("matrix:",	S.M		);
+			Log("center:",	S.C		);
+			Log("slot:  ",	S.slot	);
+		}
 		*/
 
 		// Clip polys by frustum
@@ -390,6 +401,7 @@ void CLightShadows::render	()
 				T.N				= P.n;
 			}
 		}
+		// if (xrc.r_count() > 1000)	Log("--res:",tess.size());
 
 		// Tesselate
 		
