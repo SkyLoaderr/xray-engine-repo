@@ -251,6 +251,11 @@ function fract:changeCasualities(delta)
 	self.casualities = self.casualities + delta
 end
 
+function fract:set_relation (relation, object)
+	for k,v in self.Object do
+		v:set_relation (relation, object)
+	end
+end
 
 ----------------------------------------------------------------------------------------------------------------------
 -- Function
@@ -273,6 +278,12 @@ function isUnderFraction(npc)
 	end
 	return nil
 end
+
+function setGulagRelation (gulag_name, relation, object)
+    if xr_gulag.fraction[gulag_name] == nil then return end
+    xr_gulag.fraction[gulag_name]:set_relation (relation, object)
+end
+
 function resetJob(name, npc)
 	if xr_gulag.fraction[name] ~= nil then
 		xr_gulag.fraction[name]:clearAllJob(npc:id())
