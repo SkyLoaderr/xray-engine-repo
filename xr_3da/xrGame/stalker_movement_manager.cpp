@@ -394,5 +394,5 @@ void CStalkerMovementManager::update(u32 time_delta)
 
 	parse_velocity_mask		();
 
-	set_desirable_speed		(0.f);
+//	set_desirable_speed		(0.f);
 }
