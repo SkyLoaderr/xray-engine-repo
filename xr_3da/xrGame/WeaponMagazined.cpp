@@ -438,10 +438,6 @@ void CWeaponMagazined::Show		()
 	SwitchState(eShowing);
 }
 
-void CWeaponMagazined::FireShotmark(const Fvector &vDir, const Fvector &vEnd, Collide::rq_result& R, u16 target_material) 
-{
-	inherited::FireShotmark		(vDir, vEnd, R, target_material);
-}
 
 void CWeaponMagazined::OnShot		()
 {

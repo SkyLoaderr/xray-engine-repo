@@ -45,7 +45,6 @@ protected:
 	//кадр момента пересчета UpdateSounds
 	u32				dwUpdateSounds_Frame;
 protected:
-	virtual void	FireShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::rq_result& R, u16 target_material);
 	virtual void	OnMagazineEmpty	();
 
 	virtual void	switch2_Idle	();

@@ -5,12 +5,7 @@ class CWeaponSVU :
 	public CWeaponCustomPistol
 {
 	typedef CWeaponCustomPistol inherited;
-	float			fMaxZoomFactor;
 public:
 	CWeaponSVU(void);
 	virtual ~CWeaponSVU(void);
-	virtual void	Load			(LPCSTR section);
-	virtual void			Fire2Start			();
-	virtual void			Fire2End			();
-	virtual bool Action(s32 cmd, u32 flags);
 };

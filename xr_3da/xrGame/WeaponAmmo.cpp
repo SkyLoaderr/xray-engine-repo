@@ -160,7 +160,8 @@ bool CWeaponAmmo::Get(CCartridge &cartridge)
 
 void CWeaponAmmo::renderable_Render() 
 {
-	inherited::renderable_Render();
+	if(!m_ready_to_destroy)
+		inherited::renderable_Render();
 }
 
 void CWeaponAmmo::UpdateCL() 
