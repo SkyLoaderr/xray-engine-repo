@@ -385,9 +385,9 @@ function main()
 
 			rainbow_mochi_ego:play_at_pos		(stalker2,stalker2:position(),0);
 			stalker2:script	(false, this.script_name())
-			break
 		end
-		wait()			
+		wait()	
+		break		
 	end
 
 	stalker1:script	(false, this.script_name())
