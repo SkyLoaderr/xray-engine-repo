@@ -511,9 +511,7 @@ namespace PAPI
 		}
 						~ParticleActions()
 		{
-			for (PAVecIt it=actions.begin(); it!=actions.end(); it++)
-				xr_delete(*it);
-			actions.clear();
+			clear		();
 		}
 		IC void			clear(){
 			for (PAVecIt it=actions.begin(); it!=actions.end(); it++) 
