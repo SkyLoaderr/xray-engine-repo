@@ -31,4 +31,8 @@
        <actor_dialog>vodka</actor_dialog>
   </info_portion>
 
+  <!-- Драм-момент -->
+  <info_portion id="gar_novice_asked_for_help"></info_portion>
+  <info_portion id="gar_bandit_warned_plr"></info_portion>
+
 </game_information_portions>
