@@ -299,7 +299,7 @@ void CSE_ALifeObject::FillProp				(LPCSTR pref, PropItemVec& items)
 	PHelper().CreateFloat		(items,	PHelper().PrepareKey(pref,s_name,"ALife\\Probability"),		&m_fProbability,	0,100);
     ChooseValue* V;
     V=PHelper().CreateChoose	(items, PHelper().PrepareKey(pref,s_name,"ALife\\Group control"),		&m_caGroupControl, smCustom);
-    V->OnChooseFillEvent		= OnChooseGroupControl;
+    V->OnChooseFillEvent.bind	(this,&CSE_ALifeObject::OnChooseGroupControl);
 	if (m_flags.is(flUseSwitches)) {
 		PHelper().CreateFlag32	(items,	PHelper().PrepareKey(pref,s_name,"ALife\\Can switch online"),	&m_flags,			flSwitchOnline);
 		PHelper().CreateFlag32	(items,	PHelper().PrepareKey(pref,s_name,"ALife\\Can switch offline"),&m_flags,			flSwitchOffline);
@@ -814,15 +814,15 @@ void CSE_ALifeObjectPhysic::FillProp		(LPCSTR pref, PropItemVec& values) {
     if (visual && PSkeletonAnimated(visual))
     {
         ChooseValue* V			= PHelper().CreateChoose	(values,	PHelper().PrepareKey(pref,s_name,"Startup animation"), &startup_animation, smCustom);
-        V->OnChangeEvent		= OnChangeAnim;
-        V->OnChooseFillEvent	= OnChooseAnim;
+        V->OnChangeEvent.bind		(this,&CSE_ALifeObjectPhysic::OnChangeAnim);
+        V->OnChooseFillEvent.bind	(this,&CSE_ALifeObjectPhysic::OnChooseAnim);
     }
 
     // bones
     if (visual && PKinematics(visual))
     {
 	    ChooseValue* V 			= PHelper().CreateChoose	(values, 	PHelper().PrepareKey(pref,s_name,"Fixed bones"),		&fixed_bones, smCustom);
-        V->OnChooseFillEvent	= OnChooseBone;
+        V->OnChooseFillEvent.bind(this,&CSE_ALifeObjectPhysic::OnChooseBone);
         V->Owner()->subitem		= 8;
     }
 }
@@ -1019,35 +1019,35 @@ void CSE_ALifeObjectHangingLamp::OnChangeFlag(PropValue* sender)
 
 void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
 {
-	inherited1::FillProp			(pref,values);
-	inherited2::FillProp			(pref,values);
+	inherited1::FillProp		(pref,values);
+	inherited2::FillProp		(pref,values);
 
     PropValue* P				= 0;
 	PHelper().CreateFlag16		(values, PHelper().PrepareKey(pref,s_name,"Flags\\Physic"),		&flags,			flPhysic);
 	PHelper().CreateFlag16		(values, PHelper().PrepareKey(pref,s_name,"Flags\\Cast Shadow"),	&flags,			flCastShadow);
 	PHelper().CreateFlag16		(values, PHelper().PrepareKey(pref,s_name,"Flags\\Allow R1"),		&flags,			flR1);
 	PHelper().CreateFlag16		(values, PHelper().PrepareKey(pref,s_name,"Flags\\Allow R2"),		&flags,			flR2);
-	P=PHelper().CreateFlag16		(values,PHelper().PrepareKey(pref,s_name,"Flags\\Allow Ambient"),&flags,			flPointAmbient);
-    P->OnChangeEvent			= OnChangeFlag;
+	P=PHelper().CreateFlag16	(values,PHelper().PrepareKey(pref,s_name,"Flags\\Allow Ambient"),&flags,			flPointAmbient);
+    P->OnChangeEvent.bind		(this,&CSE_ALifeObjectHangingLamp::OnChangeFlag);
 	// 
-	P=PHelper().CreateFlag16		(values, PHelper().PrepareKey(pref,s_name,"Light\\Type"), 		&flags,				flTypeSpot, "Point", "Spot");
-    P->OnChangeEvent			= OnChangeFlag;
-	PHelper().CreateColor			(values, PHelper().PrepareKey(pref,s_name,"Light\\Color"),		&color);
-    PHelper().CreateFloat			(values, PHelper().PrepareKey(pref,s_name,"Light\\Brightness"),	&brightness,		0.1f, 5.f);
+	P=PHelper().CreateFlag16	(values, PHelper().PrepareKey(pref,s_name,"Light\\Type"), 		&flags,				flTypeSpot, "Point", "Spot");
+    P->OnChangeEvent.bind		(this,&CSE_ALifeObjectHangingLamp::OnChangeFlag);
+	PHelper().CreateColor		(values, PHelper().PrepareKey(pref,s_name,"Light\\Color"),		&color);
+    PHelper().CreateFloat		(values, PHelper().PrepareKey(pref,s_name,"Light\\Brightness"),	&brightness,		0.1f, 5.f);
 	PHelper().CreateChoose		(values, PHelper().PrepareKey(pref,s_name,"Light\\Color Animator"),&color_animator, 	smLAnim);
-	PHelper().CreateFloat			(values, PHelper().PrepareKey(pref,s_name,"Light\\Range"),		&range,				0.1f, 1000.f);
-	PHelper().CreateFloat			(values, PHelper().PrepareKey(pref,s_name,"Light\\Virtual Size"),	&m_virtual_size,	0.f, 100.f);
+	PHelper().CreateFloat		(values, PHelper().PrepareKey(pref,s_name,"Light\\Range"),		&range,				0.1f, 1000.f);
+	PHelper().CreateFloat		(values, PHelper().PrepareKey(pref,s_name,"Light\\Virtual Size"),	&m_virtual_size,	0.f, 100.f);
 	PHelper().CreateChoose		(values, PHelper().PrepareKey(pref,s_name,"Light\\Texture"),	    &light_texture, 	smTexture, "lights");
 
     if (flags.is(flTypeSpot))
-		PHelper().CreateAngle		(values, PHelper().PrepareKey(pref,s_name,"Light\\Cone Angle"),	&spot_cone_angle,	deg2rad(1.f), deg2rad(120.f));
+		PHelper().CreateAngle	(values, PHelper().PrepareKey(pref,s_name,"Light\\Cone Angle"),	&spot_cone_angle,	deg2rad(1.f), deg2rad(120.f));
 
 	// motions
     if (visual && PSkeletonAnimated(visual))
     {
         ChooseValue* V			= PHelper().CreateChoose	(values,	PHelper().PrepareKey(pref,s_name,"Visual\\Startup animation"), &startup_animation, smCustom);
-        V->OnChangeEvent		= OnChangeAnim;
-        V->OnChooseFillEvent	= OnChooseAnim;
+        V->OnChangeEvent.bind	(this,&CSE_ALifeObjectHangingLamp::OnChangeAnim);
+        V->OnChooseFillEvent.bind(this,&CSE_ALifeObjectHangingLamp::OnChooseAnim);
     }
 
     // bones
@@ -1055,21 +1055,21 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
     {
 	    ChooseValue* V;
         V        				= PHelper().CreateChoose	(values, 	PHelper().PrepareKey(pref,s_name,"Visual\\Fixed bones"),		&fixed_bones, smCustom);
-        V->OnChooseFillEvent	= OnChooseBone;
+        V->OnChooseFillEvent.bind(this,&CSE_ALifeObjectHangingLamp::OnChooseBone);
         V->Owner()->subitem		= 8;
         V        				= PHelper().CreateChoose	(values, 	PHelper().PrepareKey(pref,s_name,"Visual\\Guid bone"),		&guid_bone, smCustom);
-        V->OnChooseFillEvent	= OnChooseBone;
+        V->OnChooseFillEvent.bind(this,&CSE_ALifeObjectHangingLamp::OnChooseBone);
     }
     if (flags.is(flPointAmbient)){
-        PHelper().CreateFloat		(values, PHelper().PrepareKey(pref,s_name,"Ambient\\Radius"),		&m_ambient_radius,	0.f, 1000.f);
-        PHelper().CreateFloat		(values, PHelper().PrepareKey(pref,s_name,"Ambient\\Power"),		&m_ambient_power);
+        PHelper().CreateFloat	(values, PHelper().PrepareKey(pref,s_name,"Ambient\\Radius"),		&m_ambient_radius,	0.f, 1000.f);
+        PHelper().CreateFloat	(values, PHelper().PrepareKey(pref,s_name,"Ambient\\Power"),		&m_ambient_power);
 		PHelper().CreateChoose	(values, PHelper().PrepareKey(pref,s_name,"Ambient\\Texture"),	&m_ambient_texture,	smTexture, 	"lights");
     }
     // glow
-	PHelper().CreateFloat			(values, PHelper().PrepareKey(pref,s_name,"Glow\\Radius"),	    &glow_radius,		0.01f, 100.f);
+	PHelper().CreateFloat		(values, PHelper().PrepareKey(pref,s_name,"Glow\\Radius"),	    &glow_radius,		0.01f, 100.f);
 	PHelper().CreateChoose		(values, PHelper().PrepareKey(pref,s_name,"Glow\\Texture"),	    &glow_texture, 		smTexture,	"glow");
 	// game
-	PHelper().CreateFloat			(values, PHelper().PrepareKey(pref,s_name,"Game\\Health"),		&m_health,			0.f, 100.f);
+	PHelper().CreateFloat		(values, PHelper().PrepareKey(pref,s_name,"Game\\Health"),		&m_health,			0.f, 100.f);
 }
 #endif
 
@@ -1229,8 +1229,8 @@ void CSE_ALifeHelicopter::FillProp(LPCSTR pref, PropItemVec& values)
     if (visual && PSkeletonAnimated(visual))
     {
         ChooseValue* V			= PHelper().CreateChoose	(values,	PHelper().PrepareKey(pref,s_name,"Startup Animation"), &startup_animation, smCustom);
-        V->OnChangeEvent		= OnChangeAnim;
-        V->OnChooseFillEvent	= OnChooseAnim;
+        V->OnChangeEvent.bind	(this,&CSE_ALifeHelicopter::OnChangeAnim);
+        V->OnChooseFillEvent.bind(this,&CSE_ALifeHelicopter::OnChooseAnim);
     }
 
 	CSE_Motion::FillProp		(PHelper().PrepareKey(pref,s_name).c_str(),	 values);

@@ -226,7 +226,7 @@ void CSE_ALifeTrader::FillProp				(LPCSTR _pref, PropItemVec& items)
 
     supplies_count				= m_tpSupplies.size();
 	PropValue					*V = PHelper().CreateS32(items, PHelper().PrepareKey(pref.c_str(),"Count"), 	&supplies_count,	0, 64);
-    V->OnChangeEvent			= OnSuppliesCountChange;
+    V->OnChangeEvent.bind(this,&CSE_ALifeTrader::OnSuppliesCountChange);
     
 	TRADER_SUPPLY_IT			B = m_tpSupplies.begin(), I = B;
 	TRADER_SUPPLY_IT			E = m_tpSupplies.end();

@@ -295,7 +295,7 @@ void CSE_Visual::OnChangeVisual	(PropValue* sender)
 void CSE_Visual::FillProp		(LPCSTR pref, PropItemVec& values)
 {
 	ChooseValue *V 				= PHelper().CreateChoose(values, PHelper().PrepareKey(pref,"Model"),&visual_name, smGameObject);
-	V->OnChangeEvent			= OnChangeVisual;
+	V->OnChangeEvent.bind		(this,&CSE_Visual::OnChangeVisual);
 }
 #endif
 
@@ -358,7 +358,7 @@ void CSE_Motion::OnChangeMotion	(PropValue* sender)
 void CSE_Motion::FillProp		(LPCSTR pref, PropItemVec& values)
 {
     PropValue					*V = PHelper().CreateChoose(values, PHelper().PrepareKey(pref,"Motion"),&motion_name, smGameAnim);
-    V->OnChangeEvent			= OnChangeMotion;
+    V->OnChangeEvent.bind		(this,&CSE_Motion::OnChangeMotion);
 }
 #endif
 
