@@ -1,13 +1,259 @@
 -- Movement manager
--- Andrey Fidrya (Zmey), af@svitonline.com
+-- Created by: Andrey Fidrya (Zmey), af@svitonline.com
+
+local default_animation_play_time = 5000
+
+local state_none = 0
+local state_moving = 1
+local state_standing_before_anim = 2
+local state_before_anim_playing = 3
+local state_anim_playing = 4
 
 class "move_mgr"
 
-function move_mgr:__init(npc)
-	self.npc = npc
+function move_mgr:__init()
 end
 
-function move_mgr:read_path(path_walk, path_look)
-
+function move_mgr:initialize(npc)
+	self.object = npc
+	self.object:set_callback(self, "waypoint_callback", game_object.movement)
 end
 
+function move_mgr:read_patrol_info()
+	local result = {}
+	for look_idx = 0, self.patrol_look:count() - 1 do
+		local pt_info = result[look_idx]
+		pt_info["retval"] = nil
+		pt_info["anim_set"] = "idle"
+		pt_info["anim_prob"] = 100
+		pt_info["anim_time_min"] = 5000
+		pt_info["anim_time_max"] = 5000
+		pt_info["run"] = false
+		pt_info["state"] = anim.danger
+		pt_info["sync_id"] = nil
+	end
+end
+
+function move_mgr:reset(path_walk, path_look, path_look_info, team)
+	xr_reactions.add_rule(self.object, "ignore") -- DELME
+
+	printf("move_mgr:reset(path_walk=%s, path_look=%s, team=%s)",
+		utils.to_str(path_walk), utils.to_str(path_look), utils.to_str(team))
+
+	self.patrol_walk = patrol(path_walk)
+	if not self.patrol_walk then
+		utils.abort("object '%s': unable to find customdata's path_walk '%s' on the map",
+			self.object:name(), path_walk)
+	end
+
+	if path_look then
+		if not path_look_info then
+			utils.abort("object '%s': path_look ('%s') field was supplied, but path_look_info field is nil",
+				self.object:name(), path_look)
+		end
+		self.patrol_look = patrol(path_look)
+		if not self.patrol_look then
+			utils.abort("object '%s': unable to find customdata's path_look '%s' on the map",
+				self.object:name(), path_look)
+		end
+	else
+		self.patrol_look = nil
+	end
+
+	self.path_walk = path_walk
+	self.path_look = path_look
+	self.patrol_look_info = path_look_info
+	self.team = team
+
+	self.cur_anim_set = "idle"
+	self.shall_shoot = nil
+	self.is_shooting = false
+
+	self.pt_wait_time = 0 -- сколько ждать в точке, где играем анимацию (инициализируетс€ реальным числом по прибытию)
+
+	-- “очка, в которую смотрели в прошлый раз. ≈е запоминаем дл€ того, чтобы не делать паузу между анимаци€ми,
+	-- если собираемс€ смотреть в ту же самую точку, не поворачива€сь никуда...
+	self.last_look_index = nil
+	
+	self.object:clear_animations()
+
+	self.object:set_detail_path_type(move.line)
+	self.object:set_body_state(move.standing)
+	self.object:set_mental_state(anim.danger)
+	self.object:set_movement_type(move.run)
+	self.object:set_path_type(game_object.patrol_path)
+	self.object:set_patrol_path(self.path_walk, patrol.start, patrol.continue, true)
+	self.object:set_sight(look.danger, nil, 0)
+	self.state = state_moving
+
+	self:simulate_callback_if_neccessary()
+end
+
+function move_mgr:simulate_callback_if_neccessary()
+	-- FIXME - переделать на вертексы
+	local pos = self.object:position()
+	local ptr = patrol(self.path_walk)
+	local num_points = ptr:count()
+	for i = 0, num_points - 1 do
+		local distance = pos:distance_to(ptr:point(i))
+		if distance <= 1 then
+			printf("simulating callback")
+			self:waypoint_callback(self.object, nil, i)
+			break
+		end
+	end
+end
+
+function move_mgr:look_at_waypoint(pt)
+	local look_pt = utils.vector_copy_by_val(self.patrol_look:point(pt)):sub(self.object:position())
+	self.object:set_sight(look.direction, look_pt, 0)
+	self.last_look_index = pt
+end
+
+function move_mgr:update()
+	printf("move_mgr:update(self.state == %s)", utils.to_str(self.state))
+
+	if not self.is_shooting then 
+		self.object:set_item(object.idle, self.object:best_weapon())
+	else
+		local best_weap = self.object:best_weapon()
+		if best_weap then
+			if self.shall_shoot == 1 then
+				self.object:set_item(object.fire1, best_weap)
+			else
+				self.object:set_item(object.fire2, best_weap)
+			end
+		end
+	end
+
+	if self.state == state_standing_before_anim and
+	   self.expiration_time and device():time_global() >= self.expiration_time and
+	   not self.object:is_body_turning() then
+		--printf("_debug_guard [%s]: adding animations", self.object:name())
+		if self.object:animation_count() <= 0 then
+			if not self.shall_shoot then
+				xr_state.anim_update(self.cur_anim_set, self.object)
+			else
+				--xr_state.anim_update(self.cur_anim_set, self.object)
+				self.is_shooting = true
+			end
+
+			if self.is_shooting then
+				-- ѕри стрельбе не ждать синхронизации (так весь магазин можно выстрел€ть :))
+				self.expiration_time = device():time_global() + self.pt_wait_time
+				self.state = state_anim_playing
+			else
+				self.state = state_before_anim_playing
+			end
+		end
+	end
+
+	-- ∆дать синхронизации, а только затем включить счетчик анимации
+	if self.state == state_before_anim_playing then
+		--if self:sync_ok() then
+		--	printf("_bp [%s]: anim counter activated", self.object:name())
+			self.expiration_time = device():time_global() + self.pt_wait_time
+			self.state = state_anim_playing
+		--end
+	end
+
+	if (self.state == state_anim_playing and device():time_global() >= self.expiration_time and
+	    (self.is_shooting or true --[[xr_state.anim_safe_to_break(self.object)]]
+	    )
+	   ) then
+		local patrol_walk_count = self.patrol_walk:count()
+		if self.is_shooting then
+			self.is_shooting = false
+		-- ќчищать анимации, только если собираемс€ идти дальше по пути...
+		-- Ќе очищать, если дальше будем сто€ть, т.к. иначе будут рывки
+		elseif patrol_walk_count ~= 1 then
+			xr_state.anim_update(nil, self.object)
+		end
+
+		self.state = state_moving
+
+		if patrol_walk_count == 1 then
+			self:waypoint_callback(self.object, nil, 0)
+		else
+			self.last_look_index = nil
+			-- FIXME
+			--self.object:set_mental_state(if_then_else(self.st.running, anim.danger, anim.free))
+			--self.object:set_movement_type(if_then_else(self.st.running, move.run, move.walk))
+			self.object:set_mental_state(if_then_else(true, anim.danger, anim.free))
+			self.object:set_movement_type(if_then_else(true, move.run, move.walk))
+			--
+			--self.object:set_sight(look.search, nil, 0)
+			self.object:set_sight(look.danger, nil, 0)
+		end
+	end
+	
+	return nil
+end
+
+function move_mgr:finalize(npc)
+	self.object:clear_callback(game_object.movement)
+end
+
+-------------------------------------------------------------------------------
+-- IMPLEMENTATION
+-------------------------------------------------------------------------------
+
+function move_mgr:waypoint_callback(obj, action_type, index)
+	printf("move_mgr:waypoint_callback()")
+	if index == -1 then
+		printf("ERROR: move_mgr: waypoint_callback: index is -1")
+		return
+	end
+
+	-- FIXME: читать из кастомдаты
+	self.pt_wait_time = default_animation_play_time
+
+	if not self.patrol_look then
+		return
+	end
+
+	local search_for = 0 -- значение флагов точки, которую будем искать
+	for f = 0, 31 do
+		if self.patrol_walk:flag(index, f) then
+			search_for = search_for + (2 ^ f)
+		end
+	end
+
+	if search_for == 0 then
+		return
+	end
+
+	local this_val -- значение флагов текущей точки
+	local num_pts_found = 0 -- количество найденных точек (с нужными флагами)
+	local pt_chosen_idx = nil -- индекс выбранной точки
+	local r
+	for look_idx = 0, self.patrol_look:count() - 1 do
+		this_val = 0
+		for f = 0, 31 do
+			if self.patrol_look:flag(look_idx, f) then
+				this_val = this_val + (2 ^ f)
+			end
+		end
+		if this_val == search_for then
+			-- Ќашли точку с нужными флагами, но поскольку в пути могут быть еще такие-же
+			-- точки, возьмем текущую только с некоторой веро€тностью:
+			num_pts_found = num_pts_found + 1
+			r = math.random(1, num_pts_found)
+			if r == 1 then
+				pt_chosen_idx = look_idx
+			end
+		end
+	end
+	if pt_chosen_idx then
+		if pt_chosen_idx ~= self.last_look_index then
+			xr_state.anim_update(nil, self.object) -- не играть анимацию во врем€ поворота!
+			self.expiration_time = device():time_global() + 1500;--700; -- дать 700 мс на начало поворота
+			printf("move_mgr:waypoint_callback(): look_at_waypoint")
+			self:look_at_waypoint(pt_chosen_idx) -- поворачиваемс€
+		else
+			self.expiration_time = 0 -- сразу же стартовать анимацию, уже смотрим в нужную сторону
+		end
+		self.state = state_standing_before_anim
+		self.object:set_movement_type(move.stand)
+	end
+end

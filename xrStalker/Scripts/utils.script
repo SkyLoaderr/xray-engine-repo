@@ -213,19 +213,67 @@ end
 
 --ѕри попытке поюзать незапертую дверь она просто силой открываетс€ до максимально допустимого состо€ни€.
 
-function init_path(pathname)
-	local path_info = {}
-	local ptr = patrol(self.path_active)
-	local num_points = ptr:count()
+function parse_waypoint_data(str)
+	local len = string.len(str)
+	local at = 1
 
-	local flag_id = 0
-	for pt = 0, num_points - 1 do
-		for flg = 0, 31 do
-			if ptr:flag(pt, flg) then
-				flag_id = flag_id + 2 ^ flg
-			end
+	local to
+
+	local rslt = {}
+
+	at = string.find(str, "|", at, true)
+	if at == nil then
+		return {}
+	end
+
+	while true do
+		at = at + 1
+
+		-- Ќайдено поле, считать значение вида field=val
+
+		-- «ахватить name:
+		local nam
+		if at > len then
+			return nil
 		end
-		path_info[pt] = {}
-		path_info[pt].flag_id = flag_id
+		to = string.find(str, "=", at, true)
+		if to == nil or to - 1 < at then
+			return nil
+		end
+		nam = string.sub(str, at, to - 1) -- -1 потому что не нужно захватывать сам сивол '='
+
+		-- «ахватить value:
+		local val
+		at = to + 1
+		if at > len then
+			return nil
+		end
+		to = string.find(str, "|", at, true)
+		if to ~= nil and to - 1 <= at then
+			return nil
+		end
+		if to == nil then
+			to = len + 1 -- это последнее поле в строке, захватить до конца
+		end
+		val = string.sub(str, at, to - 1)
+		at = to
+
+		rslt[nam] = val
+		print(nam .. " = " .. val)
+
+		if at == len + 1 then
+			break
+		end
+	end
+	return rslt
+end
+
+function path_parse_waypoints(pathname)
+	local ptr = patrol(pathname)
+	local cnt = ptr:count()
+	local rslt = {}
+
+	for pt = 0, cnt - 1 do
+		rslt[pt] = parse_waypoint_data(ptr:name(pt))
 	end
 end

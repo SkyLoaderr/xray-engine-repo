@@ -441,7 +441,7 @@ function action_guard_activity:execute()
 
 	if self.state == self.state_standing_before_anim and
 	   self.expiration_time and device():time_global() >= self.expiration_time and
-	   self.object:is_body_turning() then
+	   not self.object:is_body_turning() then
 		--printf("_debug_guard [%s]: adding animations", self.object:name())
 		if self.object:animation_count() <= 0 then
 			if not self.shall_shoot then

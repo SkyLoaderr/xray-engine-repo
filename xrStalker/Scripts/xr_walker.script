@@ -31,6 +31,7 @@ class "action_walker_activity" (action_base)
 
 function action_walker_activity:__init (npc_name, action_name, storage) super(nil, action_name)
 	self.st = storage
+	self.move_mgr = move_mgr.move_mgr()
 end
 
 function action_walker_activity:initialize()
@@ -41,22 +42,24 @@ function action_walker_activity:initialize()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()
 
-	self.object:set_callback(self, "waypoint_callback", game_object.movement)
+	self.move_mgr:initialize(self.object)
 
-	self.move_mgr = new_move_mgr(self.object)
+	self.path_look_info = utils.path_parse_waypoints(self.st.path_look)
 	self:reset_scheme()
 end
 
 
 function action_walker_activity:reset_scheme()
-	self.move_mgr:reset(self.st.path_walk, self.st.path_look, self.st.team)
+	self.move_mgr:reset(self.st.path_walk, self.st.path_look, self.path_look_info, self.st.team)
 end	
 
 function action_walker_activity:execute()
-	self.move_mgr:go()
+	self.move_mgr:update()
 end
 
 function action_walker_activity:finalize()
+	self.move_mgr:finalize()
+
 	action_base.finalize(self)
 end
 
