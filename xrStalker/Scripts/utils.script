@@ -130,7 +130,7 @@ function cfg_get_number(char_ini, section, field, object, mandatory)
 	utils.abort("%s", err)
 end
 
-function mob_get_string(char_ini, section, field, object, override, mandatory)
+function mob_get_string(char_ini, section, field, override, object, mandatory)
 	if override ~= nil then
 		return override
 	end
@@ -138,7 +138,7 @@ function mob_get_string(char_ini, section, field, object, override, mandatory)
 	return cfg_get_string(char_ini, section, field, object, mandatory, "")
 end
 
-function mob_get_number(char_ini, section, field, object, override, mandatory)
+function mob_get_number(char_ini, section, field, override, object, mandatory)
 	if override ~= nil then
 		return override
 	end
@@ -146,7 +146,7 @@ function mob_get_number(char_ini, section, field, object, override, mandatory)
 	return cfg_get_number(char_ini, section, field, object, mandatory)
 end
 
-function mob_get_bool(char_ini, section, field, object, override, mandatory)
+function mob_get_bool(char_ini, section, field, override, object, mandatory)
 	if override ~= nil then
 		return override ~= false
 	end
