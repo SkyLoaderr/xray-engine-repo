@@ -7,6 +7,14 @@ function eva_state_mgr_animation:__init(name, st) super (nil, name)
 	self.st = st
 end
 function eva_state_mgr_animation:evaluate()
+	if self.st.callback ~= nil and
+		self.st.callback.func ~= nil and
+		state_lib.states[self.st.target_state].animation == nil and
+		self.st.callback.begin == nil
+	then
+		return false
+	end
+
 	return state_lib.states[self.st.target_state].animation == self.st.animation:state()
 end
 --' нужно ли нам отыгрывать извращенную анимацию
@@ -39,7 +47,7 @@ function eva_state_mgr_animation_none_now:__init(name, st) super (nil, name)
 	self.st = st
 end
 function eva_state_mgr_animation_none_now:evaluate()
-	return self.st.animation:state() ~= "wait" and self.st.animation:state() == nil
+	return self.st.animation:state() == nil
 end
 --' нужен ли схеме экстренный ресет
 class "eva_state_mgr_animation_reset" (property_evaluator)
@@ -51,6 +59,14 @@ function eva_state_mgr_animation_reset:evaluate()
 --	printf("state [%s]", utils.to_str(state_lib.states[target_state]))
 	if state_lib.states[target_state] ~= nil then
 --		printf("state reset [%s]", utils.to_str(state_lib.states[target_state].reset))
+	end
+
+	if self.st.callback ~= nil and
+		self.st.callback.func ~= nil and
+		state_lib.states[self.st.target_state].animation == nil and
+		self.st.callback.begin == nil
+	then
+		return true
 	end
 	
 	return self.st.reset_state == true and
