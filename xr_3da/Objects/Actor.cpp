@@ -262,9 +262,6 @@ BOOL CActor::Spawn		( BOOL bLocal, int sid, int team, int squad, int group, Fvec
 	mstate_real			= 0;
 	m_bJumping			= false;
 	
-	// *** set weapon
-	if (Local())		g_wpn_Set(0);
-	
 	NET_SavedAccel.set	(0,0,0);
 	NET_WasInterpolating= TRUE;
 	return				TRUE;
