@@ -220,6 +220,9 @@ void CAI_Stalker::Camp()
 			m_tpaDynamicObjects[iIndex].dwMyNodeID			= AI_Path.DestNode;
 			AI_Path.TravelPath.clear();
 			AI_Path.Nodes.clear();
+			CWeapon	*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
+			if (tpWeapon && (tpWeapon->GetAmmoElapsed() < tpWeapon->GetAmmoMagSize()/2))
+				m_inventory.Action(kWPN_RELOAD,CMD_START);
 		}
 	}
 }
@@ -338,28 +341,36 @@ void CAI_Stalker::Think()
 	if (K) {
 		if (m_tEnemy.Enemy) {
 			if (C) {
+				m_bStateChanged = C != _C;
 				Msg("Back dodge");
 				BackDodge();
 			} else
 			if (D) {
+				m_bStateChanged = D != _D;
 				Msg("Back cover");
 				BackCover();
 			} else
 			if (E) {
+				m_bStateChanged = E != _E;
 				Msg("Forward cover");
-				if ((m_tActionState != eActionStateStand) && (m_tActionState != eActionStateRun))
-					m_bStateChanged = true;
 				ForwardCover();
 			} else
 			if (F) {
+				m_bStateChanged = F != _F;
 				Msg("Forward dodge");
 				ForwardDodge();
 			} else
 			if (G) {
+				m_bStateChanged = G != _G;
 				Msg("Forward straight");
 				ForwardStraight();
 			}
 		} else {
+			C = _C;
+			E = _E;
+			D = _D;
+			F = _F;
+			G = _G;
 			Msg("Camping");
 			Camp();
 		}
@@ -394,6 +405,12 @@ void CAI_Stalker::Think()
 //			default : NODEFAULT;
 //		}
 
+	} else
+	if (A | B) {
+		Fvector					tPoint = m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
+		AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
+		tPoint.y				= getAI().ffGetY(*m_tpItemToTake->AI_Node,tPoint.x,tPoint.z);
+		vfSetParameters(0,&tPoint,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eLookTypePoint,tPoint);
 	} else
 	if (M) {
 		Fvector					tPoint;
