@@ -16,9 +16,6 @@ enum {
 	M_MIGRATE_DEACTIVATE,		// TO:   Changing server, just deactivate
 	M_MIGRATE_ACTIVATE,			// TO:   Changing server, full state
 
-	M_PLIST_ADD,
-	M_PLIST_REMOVE,
-
 	M_CHAT,						// DUAL:
 
 	M_EVENT,					// Game Event
@@ -59,9 +56,6 @@ enum
 /*
 M_SV_CONFIG_GAME
 {
-	u8			gametype;
-	u16			fraglimit;
-	u16			timelimit;
 }
 
 M_EVENT
@@ -69,21 +63,6 @@ M_EVENT
 	u32			dwTimestamp;
 	u16			type;
 	u16			destination;
-}
-
-M_PLIST_ADD
-{
-	u32			ID;			// client ID, not the standart net-id !!!
-	stringZ		name;
-}
-
-M_PLIST_REMOVE
-{
-	u32			ID;			// client ID, not the standart net_id !!!
-}
-
-M_PLIST_UPDATE
-{
 }
 
 M_SPAWN

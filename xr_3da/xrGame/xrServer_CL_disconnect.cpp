@@ -7,11 +7,7 @@ void xrServer::OnCL_Disconnected	(IClient* CL)
 	Level().HUD()->outMessage(0xffffffff,"SERVER","Player '%s' disconnected",CL->Name);
 
 	NET_Packet			P;
-
-	// Signal to everybody about disconnect
-	P.w_begin			(M_PLIST_REMOVE);
-	P.w_u32				(CL->ID);
-	SendBroadcast		(CL->ID,P,net_flags(TRUE,TRUE));
+	DWORD				mode			= net_flags(TRUE,TRUE);
 
 	// Collect entities
 	xrS_entities::iterator	I=entities.begin(),E=entities.end();
@@ -24,9 +20,14 @@ void xrServer::OnCL_Disconnected	(IClient* CL)
 			P.w_u16				(GE_DESTROY);
 			P.w_u16				(E->ID);
 
-			SendBroadcast		(CL->ID,P,net_flags(TRUE,TRUE));
+			SendBroadcast		(CL->ID,P,mode);
 			entities.erase		(E->ID);
 			entity_Destroy		(E);
 		}
 	}
+
+	// Game config (all, info includes new player)
+	P.w_begin				(M_SV_CONFIG_GAME);
+	game->net_Export_State	(P);
+	SendBroadcast			(0xffffffff,P,mode);
 }
