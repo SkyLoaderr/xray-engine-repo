@@ -36,9 +36,9 @@ struct SCharacterProfile : CSharedResource
 	SPECIFIC_CHARACTER_INDEX m_iCharacterIndex;	
 
 	//требуемые параметры персонажа
-	CHARACTER_CLASS			m_Class;
-	CHARACTER_RANK			m_Rank;
-	CHARACTER_REPUTATION	m_Reputation;
+	CHARACTER_CLASS					m_Class;
+	CHARACTER_RANK_VALUE			m_Rank;
+	CHARACTER_REPUTATION_VALUE		m_Reputation;
 };
 
 

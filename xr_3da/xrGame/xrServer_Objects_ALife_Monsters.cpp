@@ -200,9 +200,9 @@ SPECIFIC_CHARACTER_INDEX CSE_ALifeTraderAbstract::specific_character()
 				if(spec_char.data()->m_bDefaultForCommunity)
 					m_DefaultCharacters.push_back(i);
 
-				if(char_info.data()->m_Rank.value() == NO_RANK || _abs(spec_char.Rank() - char_info.data()->m_Rank.value())<RANK_DELTA)
+				if(char_info.data()->m_Rank == NO_RANK || _abs(spec_char.Rank() - char_info.data()->m_Rank)<RANK_DELTA)
 				{
-					if(char_info.data()->m_Reputation.value() == NO_REPUTATION || _abs(spec_char.Reputation() - char_info.data()->m_Reputation.value())<REPUTATION_DELTA)
+					if(char_info.data()->m_Reputation == NO_REPUTATION || _abs(spec_char.Reputation() - char_info.data()->m_Reputation)<REPUTATION_DELTA)
 					{
 #ifdef XRGAME_EXPORTS
 						int* count = NULL;
