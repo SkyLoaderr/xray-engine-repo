@@ -692,7 +692,7 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
             pPositions	= (vec3*)	( &( positions[ 0 ] ) );
             tex			= (vec3*)	( &( output[ (*texIter).second ].floatVector_[ 0 ] ) );
 
-			nv_scalar	_eps	= type_epsilon	(nv_scalar)*10;
+			nv_scalar	_eps	= type_epsilon	(nv_scalar);
 			nv_scalar	a,b,c;
 			vec3		sxt;
 
