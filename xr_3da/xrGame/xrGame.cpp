@@ -632,6 +632,57 @@ public:
 	}
 };
 
+class CCC_ALifeReload : public CConsoleCommand {
+public:
+	CCC_ALifeReload(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR args) {
+		if (Level().game.type == GAME_SINGLE)
+			Level().IR_OnKeyboardPress(DIK_F7);
+		else
+			Log("!Not a single player game!");
+	}
+};
+
+class CCC_ALifeLoadFrom : public CConsoleCommand {
+public:
+	CCC_ALifeLoadFrom(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR args) {
+		if (Level().game.type == GAME_SINGLE) {
+			string256	S;
+			S[0]		= 0;
+			sscanf		(args ,"%s",S);
+			if (!strlen(S))
+				Log("* Specify file name!");
+			else {
+				strconcat(Level().m_caServerOptions,S,"/single");
+				Level().IR_OnKeyboardPress(DIK_F7);
+			}
+		}
+		else
+			Log("!Not a single player game!");
+	}
+};
+
+class CCC_ALifeLoadALifeFrom : public CConsoleCommand {
+public:
+	CCC_ALifeLoadALifeFrom(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR args) {
+		if (Level().game.type == GAME_SINGLE) {
+			string256	S;
+			S[0]		= 0;
+			sscanf		(args ,"%s",S);
+			if (!strlen(S))
+				Log("* Specify file name!");
+			else {
+				strconcat(Level().m_caServerOptions,S,"/single/alife");
+				Level().IR_OnKeyboardPress(DIK_F7);
+			}
+		}
+		else
+			Log("!Not a single player game!");
+	}
+};
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -656,6 +707,9 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		CMD1(CCC_ALifePath,			"al_path"				);		// build path
 		CMD1(CCC_ALifeSave,			"save"					);		// save game
 		CMD1(CCC_ALifeSaveTo,		"save_to"				);		// save game to ...
+		CMD1(CCC_ALifeReload,		"reload"				);		// reload game
+		CMD1(CCC_ALifeLoadFrom,		"load_from"				);		// load game from ...
+		CMD1(CCC_ALifeLoadALifeFrom,"aload_from"			);		// load alife game from ...
 #ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
 		CMD1(CCC_ALifeListAll,		"al_la"					);		// list all (objects, events and tasks)
 		CMD1(CCC_ALifeListObjects,	"al_lo"					);		// list objects

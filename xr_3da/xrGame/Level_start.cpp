@@ -34,6 +34,8 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 		pApp->Level_Set			(id);
 		
 		Server->SLS_Default		();
+		
+		strcpy					(m_caServerOptions,op_server);
 	}
 
 	// Start client
