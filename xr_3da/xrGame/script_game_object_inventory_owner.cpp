@@ -333,7 +333,7 @@ void CScriptGameObject::RestoreDefaultStartDialog()
 
 void  CScriptGameObject::SwitchToTrade		()
 {
-	CActor* pActor = dynamic_cast<CActor*>(m_tpGameObject);	if(pActor) return;
+	CActor* pActor = dynamic_cast<CActor*>(m_tpGameObject);	if(!pActor) return;
 
 	//только если находимся в режиме single
 	CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
@@ -346,7 +346,7 @@ void  CScriptGameObject::SwitchToTrade		()
 }
 void  CScriptGameObject::SwitchToTalk		()
 {
-	CActor* pActor = dynamic_cast<CActor*>(m_tpGameObject);	if(pActor) return;
+	CActor* pActor = dynamic_cast<CActor*>(m_tpGameObject);	if(!pActor) return;
 
 	//только если находимся в режиме single
 	CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
@@ -368,6 +368,6 @@ void  CScriptGameObject::RunTalkDialog			(CScriptGameObject* pToWho)
 
 void  CScriptGameObject::ActorSleep			(int hours, int minutes)
 {
-	CActor* pActor = dynamic_cast<CActor*>(m_tpGameObject);	if(pActor) return;
+	CActor* pActor = dynamic_cast<CActor*>(m_tpGameObject);	if(!pActor) return;
 	pActor->GoSleep(generate_time(0,0,0,hours, minutes, 0, 0), true);
 }

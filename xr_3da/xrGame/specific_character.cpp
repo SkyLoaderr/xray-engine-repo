@@ -107,11 +107,11 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 	else
 		data()->m_iStartDialog	= NO_PHRASE_DIALOG;
 
-	int dialogs_num = uiXml.GetNodesNum(uiXml.GetRoot(), "actor_dialog");
+	int dialogs_num = uiXml.GetNodesNum(uiXml.GetLocalRoot(), "actor_dialog");
 	data()->m_ActorDialogs.clear();
 	for(int i=0; i<dialogs_num; ++i)
 	{
-		ref_str dialog_name = uiXml.Read(uiXml.GetRoot(), "actor_dialog", i);
+		ref_str dialog_name = uiXml.Read(uiXml.GetLocalRoot(), "actor_dialog", i);
 		data()->m_ActorDialogs.push_back(CPhraseDialog::IdToIndex(dialog_name));
 	}
 
