@@ -20,6 +20,7 @@ function main ()
     --fill the id's
     for a = 1, table.getn (stalkers), 1 do
         local npc = get_level_object (stalkers[a].name)
+        printf ("GETTING STALKER %s", stalkers[a].name)
         stalkers[a].id = npc:id ()
         this.switch_offline (a)
     end    
