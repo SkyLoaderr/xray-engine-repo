@@ -34,6 +34,23 @@ XRXMLPARSER_API CUIXml::~CUIXml()
 	m_Doc.Clear();
 }
 
+
+
+bool CUIXml::Init(LPCSTR path_alias, LPCSTR path, LPCSTR xml_filename)
+{
+	string_path str;
+	sprintf(str,"%s\\%s\\", path, xml_filename);
+	return Init(path_alias, str);
+}
+
+bool CUIXml::Init(LPCSTR path_alias, LPCSTR path1, LPCSTR path2, LPCSTR xml_filename)
+{
+	string_path str;
+	sprintf(str,"%s\\%s\\%s\\", path1, path2, xml_filename);
+	return Init(path_alias, str);
+}
+
+
 //инициализация и загрузка XML файла
 bool CUIXml::Init(LPCSTR path, LPCSTR  xml_filename)
 {

@@ -2,12 +2,25 @@
 #define xrXMLParserH
 #pragma once
 
+
+
 #ifdef XRXMLPARSER_EXPORTS
 #define XRXMLPARSER_API __declspec(dllexport)
 #else
 #define XRXMLPARSER_API __declspec(dllimport)
 #pragma comment(lib,"x:\\xrXMLParser.lib")
 #endif
+
+
+//список путей к файлам *.XML
+const LPCSTR GAMEDATA_PATH			= "$game_data$";
+const LPCSTR CONFIG_PATH			= "$game_config$";
+const LPCSTR UI_PATH				= "\\ui";
+const LPCSTR GAME_PATH				= "\\game";
+const LPCSTR STRING_TABLE_PATH		= "\\text";
+
+
+
 
 XRXMLPARSER_API void XML_DisableStringCaching();
 XRXMLPARSER_API void XML_CleanUpMemory();
@@ -40,7 +53,9 @@ public:
 	CUIXml();
 	virtual ~CUIXml();
 
-	bool Init(LPCSTR path, LPCSTR  xml_filename);
+	bool Init(LPCSTR path_alias, LPCSTR path, LPCSTR  xml_filename);
+	bool Init(LPCSTR path_alias, LPCSTR path1, LPCSTR path2, LPCSTR xml_filename);
+	bool Init(LPCSTR path_alias, LPCSTR xml_filename);
 
 
 	//чтение элементов
