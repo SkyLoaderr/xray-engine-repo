@@ -15,7 +15,7 @@
 #include "net_queue.h"
 
 class CHUDManager;
-class ENGINE_API CPGObject;
+class CPGObject;
 
 #define DEFAULT_FOV 90.f
 
