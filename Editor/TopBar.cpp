@@ -115,7 +115,6 @@ void __fastcall TfraTopBar::ebCameraStyleClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-
 void __fastcall TfraTopBar::fsStorageRestorePlacement(TObject *Sender)
 {
 	if (ebCameraPlane->Down) 			Device.m_Camera.SetStyle(csPlaneMove);

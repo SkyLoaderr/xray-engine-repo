@@ -237,7 +237,7 @@ bool EScene::Load(char *_FileName){
 	        F->Rvector	(hpb);
     	    F->Rvector	(pos);
             Device.m_Camera.Set(hpb,pos);
-//			Device.m_Camera.SetStyle(Device.m_Camera.GetStyle());
+			Device.m_Camera.SetStyle(Device.m_Camera.GetStyle());
         }
 
         // Objects
