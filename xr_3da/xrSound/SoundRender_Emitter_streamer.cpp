@@ -4,16 +4,44 @@
 #include "SoundRender_Source.h"
 #include "SoundRender_Emitter.h"
 
-void	CSoundRender_Emitter::fill_data		(void* ptr, u32 offset, u32 size)
+void	CSoundRender_Emitter::fill_data		(u8* dest, u32 offset, u32 size)
 {
-	Memory.mem_copy							(ptr,wave+offset,size);
+	u32		line_size						= SoundRender.cache.get_linesize();
+	u32		line							= offset / line_size;
+
+	// prepare for first line (it can be unaligned)
+	u32		line_offs						= offset - line*line_size;
+	u32		line_amount						= line_size - line_offs;
+	while	(size)
+	{
+		// cache acess
+		if (SoundRender.cache.request(source->CAT,line))		{
+			// fake decompression
+			void*	ptr			= SoundRender.cache.get_dataptr	(line);
+			Memory.mem_copy		(ptr,LPBYTE(source->wave)+offset,_min(size,line_size));
+		}
+
+		// fill block
+		u32		blk_size	= _min(size,line_amount);
+		u8*		ptr			= (u8*)SoundRender.cache.get_dataptr(line);
+		Memory.mem_copy		(dest,ptr+line_offs,blk_size);
+		
+		// advance
+		line		++	;
+		size		-=	blk_size;
+		dest		+=	blk_size;
+		line_offs	=	0;
+		line_amount	=	line_size;
+	}
+
+	//  --- previously it was something like this
+	//	Memory.mem_copy		(ptr,wave+offset,size);
 }
 
 void	CSoundRender_Emitter::fill_block	(void* ptr, u32 size)
 {
 	//Msg			("stream: %10s - [%X]:%d, p=%d, t=%d",source->fname,ptr,size,position,source->dwBytesTotal);
 	LPBYTE		dest = LPBYTE(ptr);
-	LPBYTE		wave = LPBYTE(source->wave);
 	if ((position+size) > source->dwBytesTotal)
 	{
 		// We are reaching the end of data, what to do?

@@ -50,8 +50,8 @@ public:
 	BOOL					request		(cache_cat& cat, u32 id);			// TRUE=need to fill, FALSE=cached info avail
 	void					purge		();									// discard all contents of cache
 
-	void*					getdata_ptr	(u16 line)	{ return c_storage[line].data;	}
-	u32 					getdata_size(u16 line)	{ return _line;					}
+	void*					get_dataptr	(u32 line)							{ VERIFY(line<_count); return c_storage[line].data;	}
+	u32						get_linesize()									{ return _line;					}
 
 	void					cat_create	(cache_cat& cat, u32 bytes);
 	void					cat_destroy	(cache_cat& cat);

@@ -3,12 +3,14 @@
 #pragma once
 
 #include "soundrender.h"
+#include "soundrender_cache"
 
 class XRSOUND_EDITOR_API 	CSoundRender_Source	: public CSound_source
 {
 public:
 	ref_str					fname;
-	void*					wave;
+	cache_cat				CAT;
+	void*					wave;					// real source
 	BOOL					_3D;
 	u32						dwTimeTotal;			// всего
 	u32						dwBytesTotal;
