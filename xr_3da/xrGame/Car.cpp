@@ -145,9 +145,10 @@ void	CCar::UpdateCL				( )
 	clTransform.mulB	(Tr);
 
 	// Sound
-	Fvector		C;
+	Fvector		C,V;
 	clCenter	(C);
-	float		velocity						= 20;
+	V.set		(10,10,10);
+	float		velocity						= V.magnitude();
 	snd_engine.feedback->SetPosition			(C);
 	snd_engine.feedback->SetFrequencyScale		(velocity/10.f);
 
