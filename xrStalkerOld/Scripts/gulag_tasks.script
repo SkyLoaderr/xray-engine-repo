@@ -279,6 +279,31 @@ function loadJob(sj, gname, type, squad, groups)
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
+		-- спящие ночью и днёи
+		t = { section = "sleeper4@esc_lager",
+			idle = 0,
+			prior = 0, state = {0,1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "sleeper5@esc_lager",
+			idle = 0,
+			prior = 0, state = {0,1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "sleeper6@esc_lager",
+			idle = 0,
+			prior = 0, state = {0,1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "sleeper7@esc_lager",
+			idle = 0,
+			prior = 0, state = {0,1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
 	end
 
 	--' Бандиты на фабрике
