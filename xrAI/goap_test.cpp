@@ -23496,6 +23496,18 @@ public:
 	virtual bool			evaluate				() const {
 		return				(m_value);
 	}
+
+	virtual void			Load					(LPCSTR section)
+	{
+	}
+
+	virtual void			reload					(LPCSTR section)
+	{
+	}
+
+	virtual void			reinit					()
+	{
+	}
 };
 
 void test_goap	()

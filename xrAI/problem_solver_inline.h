@@ -165,12 +165,12 @@ IC	const typename CProblemSolverAbstract::EVALUATOR_MAP &CProblemSolverAbstract:
 	return						(m_evaluators);
 }
 
-TEMPLATE_SPECIALIZATION
-IC	typename CProblemSolverAbstract::EVALUATOR_MAP &CProblemSolverAbstract::evaluators()
-{
-	return						(m_evaluators);
-}
-
+//TEMPLATE_SPECIALIZATION
+//IC	typename CProblemSolverAbstract::EVALUATOR_MAP &CProblemSolverAbstract::evaluators()
+//{
+//	return						(m_evaluators);
+//}
+//
 TEMPLATE_SPECIALIZATION
 IC	void CProblemSolverAbstract::evaluate_condition			(typename xr_vector<COperatorCondition>::const_iterator &I, typename xr_vector<COperatorCondition>::const_iterator &E, const _condition_type &condition_id) const
 {

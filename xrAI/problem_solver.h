@@ -72,10 +72,6 @@ protected:
 	mutable bool				m_applied;
 	bool						m_actuality;
 
-protected:
-	IC		OPERATOR_VECTOR				&operators				();
-	IC		EVALUATOR_MAP				&evaluators				();
-	
 public:
 	// common interface
 	IC									CProblemSolver			();
