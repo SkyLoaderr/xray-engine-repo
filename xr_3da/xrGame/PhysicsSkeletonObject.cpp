@@ -154,35 +154,10 @@ BOOL CPhysicsSkeletonObject::net_Spawn(LPVOID DC)
 		R_ASSERT2(source,"no source");
 		source->UnsplitSingle(this);
 	}
-	else
-		CreatePhysicsShell(e);
-
-    if(Visual()&&PKinematics(Visual()))
-	{
 	
-		CSkeletonAnimated* pSkeletonAnimated=NULL;
-		R_ASSERT(Visual()&&PKinematics(Visual()));
-		pSkeletonAnimated=PSkeletonAnimated(Visual());
-		if(pSkeletonAnimated)
-		{
-			R_ASSERT2(*po->startup_animation,"no startup animation");
-			pSkeletonAnimated->PlayCycle(*po->startup_animation);
-		}
-		PKinematics(Visual())->Calculate();
-	}
 
-	if(m_flags.test(CSE_ALifePHSkeletonObject::flSavedData))
-	{
-		RestoreNetState(po->saved_bones.bones);
-		m_flags.set(CSE_ALifePHSkeletonObject::flSavedData,FALSE);
-		po->flags.set(CSE_ALifePHSkeletonObject::flSavedData,FALSE);
-	}
+ 
 
-	if(!po->flags.test(CSE_ALifePHSkeletonObject::flSpawnCopy))
-	{
-		setVisible(true);
-		setEnabled(true);
-	}
 	m_flags.set				(CSE_ALifePHSkeletonObject::flSpawnCopy,FALSE);
 
 	return TRUE;

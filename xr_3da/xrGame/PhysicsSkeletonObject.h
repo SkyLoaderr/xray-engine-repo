@@ -31,7 +31,7 @@ private:
 	void	SetAutoRemove		()																				;
 	void	SaveNetState		(NET_Packet& P)																	;
 	void	LoadNetState		(NET_Packet& P)																	;
-	void	RestoreNetState		(PHNETSTATE_VECTOR& saved_bones);
+
 public:
 	CPhysicsSkeletonObject(void);
 	virtual ~CPhysicsSkeletonObject(void);
@@ -48,6 +48,7 @@ public:
 	//virtual	BOOL	net_SaveRelevant	()																				;
 	//virtual BOOL	UsedAI_Locations	()																				;
 protected:
+			void	RestoreNetState		(PHNETSTATE_VECTOR& saved_bones);
 			void	UnsplitSingle		(CPhysicsSkeletonObject* O)														;
 	virtual	void	InitServerObject	(CSE_Abstract	*D)															;
 
