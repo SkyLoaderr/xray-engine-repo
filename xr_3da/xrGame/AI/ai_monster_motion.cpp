@@ -362,7 +362,7 @@ float CMotionManager::GetAnimSpeed(EMotionAnim anim)
 
 void CMotionManager::ForceAngularSpeed(float vel)
 {
-	pMonster->m_velocity_angular.target = vel;
+	pMonster->m_velocity_angular.current = pMonster->m_velocity_angular.target = vel;
 	b_forced_velocity = true;
 }
 
@@ -382,13 +382,17 @@ bool CMotionManager::IsStandCurAnim()
 
 void CMotionManager::Update()
 {
+	if (seq_playing) return;
+	
 	// Установка Yaw
 	if (pMonster->IsMovingOnPath()) pMonster->SetDirectionLook( ((spec_params & ASP_MOVE_BKWD) == ASP_MOVE_BKWD) );
 	
-	if (seq_playing) return;
-	
+	b_forced_velocity	= false;
+
 	SelectAnimation		();
 	SelectVelocities	();
+
+	spec_params		= 0;
 }
 
 
@@ -477,11 +481,15 @@ void CMotionManager::SelectVelocities()
 	} else pMonster->SetAnimSpeed(-1.f);
 
 	// установка угловой скорости
-	item_it = _sd->m_tAnims.find(cur_anim);
-	R_ASSERT(_sd->m_tAnims.end() != item_it);
+	if (!b_forced_velocity) {
+		item_it = _sd->m_tAnims.find(cur_anim);
+		R_ASSERT(_sd->m_tAnims.end() != item_it);
 
-	pMonster->m_velocity_angular.target	= pMonster->m_velocity_angular.current = item_it->second.velocity->velocity.angular;
+		pMonster->m_velocity_angular.target	= pMonster->m_velocity_angular.current = item_it->second.velocity->velocity.angular;
+	}
 	
+	Msg("angular_current = [%f]", pMonster->m_velocity_angular.target);
+
 	// применить 
 	// если установленная анимация отличается от предыдущей - установить новую анимацию
 	if (cur_anim != prev_anim) ForceAnimSelect();		
