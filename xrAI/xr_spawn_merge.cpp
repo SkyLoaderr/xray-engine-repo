@@ -96,15 +96,19 @@ public:
 				CSE_ALifeObject	*tpALifeObject = dynamic_cast<CSE_ALifeObject*>(E);
 				if (tpALifeObject) {
 					m_tpSpawnPoints.push_back(tpALifeObject);
-					xr_map<LPCSTR,xr_vector<CSE_ALifeObject*>*>::iterator I = l_tpSpawnGroupObjectsMap.find(tpALifeObject->m_caGroupControl);
-					if (I == l_tpSpawnGroupObjectsMap.end()) {
-						xr_vector<CSE_ALifeObject*> *tpTemp = xr_new<xr_vector<CSE_ALifeObject*> >();
-						tpTemp->clear();
-						tpTemp->push_back(tpALifeObject);
-						l_tpSpawnGroupObjectsMap.insert(mk_pair(tpALifeObject->m_caGroupControl,tpTemp));
+					if (!strlen(tpALifeObject->m_caGroupControl))
+						tpALifeObject->m_dwSpawnGroup = (*dwGroupOffset)++;
+					else {
+						xr_map<LPCSTR,xr_vector<CSE_ALifeObject*>*>::iterator I = l_tpSpawnGroupObjectsMap.find(tpALifeObject->m_caGroupControl);
+						if (I == l_tpSpawnGroupObjectsMap.end()) {
+							xr_vector<CSE_ALifeObject*> *tpTemp = xr_new<xr_vector<CSE_ALifeObject*> >();
+							tpTemp->clear();
+							tpTemp->push_back(tpALifeObject);
+							l_tpSpawnGroupObjectsMap.insert(mk_pair(tpALifeObject->m_caGroupControl,tpTemp));
+						}
+						else
+							(*I).second->push_back(tpALifeObject);
 					}
-					else
-						(*I).second->push_back(tpALifeObject);
 				}
 				else {
 					CSE_SpawnGroup *l_tpSpawnGroup = dynamic_cast<CSE_SpawnGroup*>(tpALifeObject);
@@ -390,7 +394,9 @@ void xrMergeSpawns(LPCSTR name)
 	save_base_vector			(l_tpLevelPoints,tMemoryStream);
 	tMemoryStream.close_chunk	();
 
-	tMemoryStream.save_to		("game.spawn");
+	string256					l_caFileName;
+	FS.update_path				(l_caFileName,"$game_data$","game.spawn");
+	tMemoryStream.save_to		(l_caFileName);
 
 	Phase						("Freeing resources being allocated");
 	xr_delete					(tpGraph);

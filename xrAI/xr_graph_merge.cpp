@@ -396,7 +396,10 @@ void xrMergeGraphs(LPCSTR name)
 		}
 	}
 	save_base_vector				(l_tpLevelPoints,F,false);
-	F.save_to("game.graph");
+	
+	string256						l_caFileName;
+	FS.update_path					(l_caFileName,"$game_data$","game.graph");
+	F.save_to						(l_caFileName);
 
 	// free all the graphs
 	Phase("Freeing resources being allocated");
