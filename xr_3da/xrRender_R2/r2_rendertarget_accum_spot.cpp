@@ -4,6 +4,9 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 {
 	// *** assume accumulator setted up ***
 	// *****************************	Mask by stencil		*************************************
+	Shader*		shader			= L->s_spot_s;
+	if (0==shader)				shader = s_accum_spot_s;
+
 	if (1)
 	{
 		// scale to account range and angle
@@ -36,7 +39,7 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 		// *** in practice, 'cause we "clear" it back to 0x1 it usually allows us to > 200 lights :)
 		CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE,	0	));
 
-		RCache.set_Element				(s_accum_spot_s->E[0]);			// masker
+		RCache.set_Element				(shader->E[0]);			// masker
 		RCache.set_Geometry				(g_accum_spot);
 
 		// backfaces: if (stencil>=1 && zfail)	stencil = light_id
@@ -96,7 +99,7 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 		pv->set						(float(_w+EPS),	EPS,			d_Z,	d_W, C, p1.x, p0.y);	pv++;
 		RCache.Vertex.Unlock		(4,g_combine->vb_stride);
 		RCache.set_Geometry			(g_combine);
-		RCache.set_Element			(s_accum_spot_s->E	[1]);
+		RCache.set_Element			(shader->E	[1]);
 
 		// Constants
 		Fvector		L_dir,L_clr,L_pos;	float L_spec;
@@ -118,12 +121,13 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 		R_constant* _C				= RCache.get_c			("jitter");
 		if (_C)
 		{
-			J.set(11, 0,  0);			J.sub(11); J.mul(scale);	RCache.set_ca	(_C,0,J.x,J.y,-J.y,-J.x);
-			J.set(19, 3,  0);			J.sub(11); J.mul(scale);	RCache.set_ca	(_C,1,J.x,J.y,-J.y,-J.x);
-			J.set(22, 11, 0);			J.sub(11); J.mul(scale);	RCache.set_ca	(_C,2,J.x,J.y,-J.y,-J.x);
-			J.set(19, 19, 0);			J.sub(11); J.mul(scale);	RCache.set_ca	(_C,3,J.x,J.y,-J.y,-J.x);
-			J.set(9,  7,  15, 9);		J.sub(11); J.mul(scale);	RCache.set_ca	(_C,4,J.x,J.y,J.w,J.z);
-			J.set(13, 15, 7,  13);		J.sub(11); J.mul(scale);	RCache.set_ca	(_C,5,J.x,J.y,J.w,J.z);
+			// Radial jitter (12 samples)
+			J.set(11, 0,  0);		J.sub(11); J.mul(scale);	RCache.set_ca	(_C,0,J.x,J.y,-J.y,-J.x);
+			J.set(19, 3,  0);		J.sub(11); J.mul(scale);	RCache.set_ca	(_C,1,J.x,J.y,-J.y,-J.x);
+			J.set(22, 11, 0);		J.sub(11); J.mul(scale);	RCache.set_ca	(_C,2,J.x,J.y,-J.y,-J.x);
+			J.set(19, 19, 0);		J.sub(11); J.mul(scale);	RCache.set_ca	(_C,3,J.x,J.y,-J.y,-J.x);
+			J.set(9,  7,  15, 9);	J.sub(11); J.mul(scale);	RCache.set_ca	(_C,4,J.x,J.y, J.w, J.z);
+			J.set(13, 15, 7,  13);	J.sub(11); J.mul(scale);	RCache.set_ca	(_C,5,J.x,J.y, J.w, J.z);
 		}
 
 		RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0xff,0x00,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP);
@@ -135,4 +139,5 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 
 void CRenderTarget::accum_spot_unshadow	(light* L)
 {
+#pragma todo("Have to implement unshadowed spot-light")
 }
