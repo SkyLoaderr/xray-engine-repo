@@ -75,14 +75,14 @@ void CBlender_default_aref::Compile(CBlender_Compile& C)
 		if (2==C.iElement)	
 		{
 			// Lighting only, not use alpha-channel
-			C.r_Pass	("r1_default_l","r1_default_l",FALSE);
+			C.r_Pass	("r1\\r1_default_l","r1\\r1_default_l",FALSE);
 			C.r_Sampler	("s_base",C.L_textures[0]);
 			C.r_Sampler	("s_lmap",C.L_textures[1]);
 			C.r_End		();
 		} else {
 			// Level view
-			LPCSTR			sname	= "r1_default";
-			if (C.bDetail)	sname	= "r1_default_dt";
+			LPCSTR			sname	= "r1\\r1_default";
+			if (C.bDetail)	sname	= "r1\\r1_default_dt";
 			if (oBlend.value)	C.r_Pass	(sname,sname,TRUE,TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,oAREF.value);
 			else				C.r_Pass	(sname,sname,TRUE,TRUE,TRUE,TRUE,D3DBLEND_ONE,		D3DBLEND_ZERO,			TRUE,oAREF.value);
 			C.r_Sampler	("s_base",	C.L_textures[0]);
