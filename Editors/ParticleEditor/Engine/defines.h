@@ -23,27 +23,6 @@ extern FS_Defs				Path_ExternalBuild;
 #define THROW				throw 123456789
 #define _SHOW_REF(msg, x)   { if(x) { x->AddRef(); Log(msg,u32(x->Release()));}}
 
-// Sound
-enum {
-	ssWaveTrace			= (1ul<<0ul),
-	ssEAX				= (1ul<<1ul),
-	ssSoftware			= (1ul<<2ul),
-	ss_forcedword		= u32(-1)
-};
-enum {
-	sf_11K,
-	sf_22K,
-	sf_44K,
-	sf_forcedword = u32(-1)
-};
-enum {
-	sq_DEFAULT,
-	sq_NOVIRT,
-	sq_LIGHT,
-	sq_HIGH,
-	sq_forcedword = u32(-1)
-};
-
 // textures
 enum {
 	TF_ShowMipmaps		= 1<<0,

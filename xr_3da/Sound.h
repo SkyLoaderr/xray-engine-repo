@@ -19,6 +19,27 @@ ENGINE_API extern float				psSoundCull				;
 ENGINE_API extern Flags32			psSoundFlags			;
 ENGINE_API extern int				psSoundRelaxTime		;
 
+// Flags
+enum {
+	ssWaveTrace			= (1ul<<0ul),
+	ssEAX				= (1ul<<1ul),
+	ssSoftware			= (1ul<<2ul),
+	ss_forcedword		= u32(-1)
+};
+enum {
+	sf_11K,
+	sf_22K,
+	sf_44K,
+	sf_forcedword = u32(-1)
+};
+enum {
+	sq_DEFAULT,
+	sq_NOVIRT,
+	sq_LIGHT,
+	sq_HIGH,
+	sq_forcedword = u32(-1)
+};
+
 // definition (Sound Structure + control)
 struct	ENGINE_API	sound
 {
@@ -43,7 +64,7 @@ struct	ENGINE_API	sound
 };
 
 // definition (Sound Source)
-class ENGINE_API	CSound_stream_source
+class ENGINE_API	CSound_source
 {
 public:
 };
