@@ -11,7 +11,7 @@ class XRSOUND_EDITOR_API 	CSoundRender_Source	: public CSound_source
 {
 public:
 	OggVorbis_File*			ovf;
-	shared_str					fname;
+	shared_str				fname;
 	IReader*				wave;					// real source
 	cache_cat				CAT;
 	BOOL					_3D;
@@ -20,9 +20,10 @@ public:
 //	u32						dwBytesPerSec;
 	u32						dwBytesPerMS;
 
+	float					m_fVolume;
 	float					m_fMinDist;
 	float					m_fMaxDist;
-    float					m_fVolume;
+	float					m_fAIMaxDist;
 	u32						m_uGameType;
 private:
 	void 					i_decompress_fr			(char* dest, u32 size);    

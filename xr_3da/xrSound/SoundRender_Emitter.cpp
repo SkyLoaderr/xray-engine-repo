@@ -48,10 +48,8 @@ void CSoundRender_Emitter::Event_ReleaseOwner()
 {
 	if	(0==owner)		return;
 
-	for (u32 it=0; it<SoundRender->s_events.size(); it++)
-	{
-		if (owner == SoundRender->s_events[it].first)	
-		{
+	for (u32 it=0; it<SoundRender->s_events.size(); it++){
+		if (owner == SoundRender->s_events[it].first){
 			SoundRender->s_events.erase(SoundRender->s_events.begin()+it);
 			it	--;
 		}
@@ -65,11 +63,15 @@ void CSoundRender_Emitter::Event_Propagade	()
 	if (0==SoundRender->Handler)return;
 
 	// Calculate range
+	float	clip				= p_source.max_ai_distance*p_source.volume;
+	float	range				= _min(p_source.max_ai_distance,clip);
+	if (range<0.1f)				return;
+/*
 	float	limitV				= .01f;
 	float	clip				= (p_source.min_distance*p_source.volume) / (psSoundRolloff*limitV); // (Dmin*V)/(R*V')
 	float	range				= _min(p_source.max_distance,clip);
 	if	(clip<0)				return;
-
+*/
 	// Inform objects
 	SoundRender->s_events.push_back	(mk_pair(owner,range));
 }

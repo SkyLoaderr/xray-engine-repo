@@ -18,7 +18,7 @@
 #endif
 
 #define SNDENV_FILENAME				"sEnvironment.xr"
-#define OGG_COMMENT_VERSION 		0x0002 
+#define OGG_COMMENT_VERSION 		0x0003 
 
 // refs
 class	CObject;
@@ -177,6 +177,7 @@ public:
 	float			freq;
 	float			min_distance;
 	float			max_distance;
+	float			max_ai_distance;
 };
 
 /// definition (Sound Interface)
