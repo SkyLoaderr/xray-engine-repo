@@ -7,6 +7,8 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "game_spawn_constructor.h"
+/**/
 #include "xr_ini.h"
 #include "xrAI.h"
 #include "xrLevel.h"
@@ -20,6 +22,7 @@
 #include "net_utils.h"
 #include "object_broker.h"
 #include "graph_engine.h"
+#include "xr_graph_merge.h"
 
 DEFINE_VECTOR	(CSE_ALifeObject *,	ALIFE_OBJECT_P_VECTOR,	ALIFE_OBJECT_P_IT);
 
@@ -71,7 +74,15 @@ public:
 	xr_vector<CSE_ALifeGraphPoint*>		m_graph_points;
 	CInifile					*m_ini;
 
-								CSpawn(LPCSTR name, const CGameGraph::SLevel &tLevel, u32 dwLevelID, u32 *dwGroupOffset, xr_vector<CSE_ALifeLevelChanger*> *level_changers, CInifile *ini) : CThread(dwLevelID)
+								CSpawn	(
+											LPCSTR name, 
+											const CGameGraph::SLevel &tLevel,
+											u32 dwLevelID,
+											u32 *dwGroupOffset,
+											xr_vector<CSE_ALifeLevelChanger*> *level_changers,
+											CInifile *ini
+										) : 
+											CThread(dwLevelID)
 	{
 		thDestroyOnComplete		= FALSE;
 		// loading AI map
@@ -437,8 +448,6 @@ LPCSTR cafGetActorLevelName(xr_vector<CSpawn *> &tpLevels, string256 &S)
 	return					("game.spawn");
 }
 
-#include "xr_graph_merge.h"
-
 extern void read_levels(CInifile *Ini, xr_set<CLevelInfo> &levels);
 
 class CSpawnMerger {
@@ -463,14 +472,14 @@ public:
 		xr_set<CLevelInfo>			levels;
 		read_levels					(Ini,levels);
 
-		SSpawnHeader				tSpawnHeader;
-		tSpawnHeader.dwVersion		= XRAI_CURRENT_VERSION;
-		tSpawnHeader.dwLevelCount	= 0;
-		tSpawnHeader.dwSpawnCount	= 0;
+		CGameSpawnConstructor::CSpawnHeader	tSpawnHeader;
+		tSpawnHeader.m_version		= XRAI_CURRENT_VERSION;
+		tSpawnHeader.m_level_count	= 0;
+		tSpawnHeader.m_spawn_count	= 0;
 		u32							dwGroupOffset = 0;
 		xr_vector<CSpawn *>			tpLevels;
 		xr_vector<CSE_ALifeLevelChanger*>	level_changers;
-
+		
 		CGameGraph::SLevel			tLevel;
 		xr_set<CLevelInfo>::const_iterator	I = levels.begin();
 		xr_set<CLevelInfo>::const_iterator	E = levels.end();
@@ -500,9 +509,8 @@ public:
 
 		Phase						("Searching for corresponding graph vertices");
 		for (u32 i=0, N = tpLevels.size(); i<N; i++)
-//			tThreadManager.start	(tpLevels[i]);
-//			tThreadManager.start	(tpLevels[i]);
 			tpLevels[i]->Execute	();
+//			tThreadManager.start	(tpLevels[i]);
 //		tThreadManager.wait			();
 		for (u32 i=0, N = tpLevels.size(); i<N; i++)
 			tpLevels[i]->fill_level_changers();
@@ -520,7 +528,7 @@ public:
 
 		Phase						("Merging spawn files");
 		for (u32 i=0, N = tpLevels.size(); i<N; i++)
-			tSpawnHeader.dwSpawnCount += tpLevels[i]->m_tpSpawnPoints.size();
+			tSpawnHeader.m_spawn_count += tpLevels[i]->m_tpSpawnPoints.size();
 
 		CMemoryWriter				tMemoryStream;
 		tMemoryStream.open_chunk	(SPAWN_POINT_CHUNK_VERSION);
@@ -552,8 +560,16 @@ public:
 	}
 };
 
+
 void xrMergeSpawns(LPCSTR name, LPCSTR output)
 {
 	g_story_objects.clear();
 	CSpawnMerger	A(name,output);
 }
+
+/**
+void xrMergeSpawns(LPCSTR name, LPCSTR output)
+{
+	CGameSpawnConstructor			spawn(name,output);
+}
+/**/

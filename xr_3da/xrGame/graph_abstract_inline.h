@@ -33,22 +33,14 @@ TEMPLATE_SPECIALIZATION
 template <typename _Stream>
 IC	void CAbstractGraph::save			(_Stream &stream) const
 {
-	stream.w_u32		(m_vertices.size());
-	xr_vector<CVertex*>::const_iterator	I = m_vertices.begin();
-	xr_vector<CVertex*>::const_iterator	E = m_vertices.end();
-	for ( ; I != E; ++I)
-		(*I)->save		(stream);
+	save_data			(m_vertices,stream);
 }
 
 TEMPLATE_SPECIALIZATION
 template <typename _Stream>
 IC	void CAbstractGraph::load			(_Stream &stream)
 {
-	m_vertices.resize	(stream.r_u32());
-	xr_vector<CVertex*>::iterator	I = m_vertices.begin();
-	xr_vector<CVertex*>::iterator	E = m_vertices.end();
-	for ( ; I != E; ++I)
-		(*I)->load		(stream);
+	load_data			(m_vertices,stream);
 }
 
 TEMPLATE_SPECIALIZATION

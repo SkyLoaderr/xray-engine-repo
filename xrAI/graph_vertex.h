@@ -17,7 +17,7 @@ template <
 	typename _vertex_id_type,
 	typename _vertex_index_type
 >
-class CGraphVertex {
+class CGraphVertex : public IPureSerializeObject {
 public:
 	typedef _Data						_Data;
 	typedef _edge_weight_type			_edge_weight_type;
@@ -60,6 +60,8 @@ public:
 	IC	_Data							&data			();
 	IC	const _vertex_id_type			vertex_id		() const;
 	IC	const xr_vector<CSGraphEdge>	&edges			() const;
+	virtual void						load			(IReader &tFileStream);
+	virtual void						save			(IWriter &tMemoryStream);
 };
 
 #include "graph_vertex_inline.h"

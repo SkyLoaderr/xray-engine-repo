@@ -55,26 +55,18 @@ TEMPLATE_SPECIALIZATION
 template <typename _Stream>
 IC	void CSGraphVertex::save													(_Stream &stream) const
 {
-	stream.w				(&m_data,sizeof(m_data));
-	stream.w				(&m_vertex_index,sizeof(m_vertex_index));
-	stream.w_u32			(m_edges.size());
-	xr_vector<CSGraphEdge>::const_iterator I = m_edges.begin();
-	xr_vector<CSGraphEdge>::const_iterator E = m_edges.end();
-	for ( ; I != E; ++I)
-		(*I).save			(stream);
+	save_data				(m_data,stream);
+	save_data				(m_vertex_index,stream);
+	save_data				(m_edges,stream);
 }
 
 TEMPLATE_SPECIALIZATION
 template <typename _Stream>
 IC	void CSGraphVertex::load													(_Stream &stream)
 {
-	stream.r				(&m_data,sizeof(m_data));
-	stream.r				(&m_vertex_index,sizeof(m_vertex_index));
-	m_edges.resize			(stream.r_u32());
-	xr_vector<CSGraphEdge>::iterator I = m_edges.begin();
-	xr_vector<CSGraphEdge>::iterator E = m_edges.end();
-	for ( ; I != E; ++I)
-		(*I).load			(stream);
+	load_data				(m_data,stream);
+	load_data				(m_vertex_index,stream);
+	load_data				(m_edges,stream);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -137,6 +129,18 @@ TEMPLATE_SPECIALIZATION
 IC	const xr_vector<typename CSGraphVertex::CSGraphEdge> &CSGraphVertex::edges	() const
 {
 	return					(m_edges);
+}
+
+TEMPLATE_SPECIALIZATION
+void CSGraphVertex::load														(IReader &tFileStream)
+{
+	load			(tFileStream);
+}
+
+TEMPLATE_SPECIALIZATION
+void CSGraphVertex::save														(IWriter &tMemoryStream)
+{
+	save			(tMemoryStream);
 }
 
 #undef TEMPLATE_SPECIALIZATION

@@ -52,6 +52,8 @@ public:
 		friend class CSpawn;
 		friend class CSpawnMerger;
 		friend class CRenumbererConverter;
+		friend class CLevelSpawnConstructor;
+		friend class CGameSpawnConstructor;
 #endif
 	};
 
@@ -149,6 +151,7 @@ public:
 #ifdef AI_COMPILER
 		friend class CLevelGameGraph;
 		friend class CSpawn;
+		friend class CLevelSpawnConstructor;
 		friend class CRenumbererConverter;
 #endif
 	};

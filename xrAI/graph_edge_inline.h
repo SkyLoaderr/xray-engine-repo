@@ -57,16 +57,28 @@ TEMPLATE_SPECIALIZATION
 template <typename _Stream>
 IC	void CSGraphEdge::save												(_Stream &stream) const
 {
-	stream.w		(&m_weight,sizeof(m_weight));
-	stream.w		(&m_vertex_index,sizeof(m_vertex_index));
+	save_data		(m_weight,stream);
+	save_data		(m_vertex_index,stream);
 }
 
 TEMPLATE_SPECIALIZATION
 template <typename _Stream>
 IC	void CSGraphEdge::load												(_Stream &stream)
 {
-	stream.r		(&m_weight,sizeof(m_weight));
-	stream.r		(&m_vertex_index,sizeof(m_vertex_index));
+	load_data		(m_weight,stream);
+	load_data		(m_vertex_index,stream);
+}
+
+TEMPLATE_SPECIALIZATION
+void CSGraphEdge::load													(IReader &tFileStream)
+{
+	load			(tFileStream);
+}
+
+TEMPLATE_SPECIALIZATION
+void CSGraphEdge::save													(IWriter &tMemoryStream)
+{
+	save			(tMemoryStream);
 }
 
 #undef TEMPLATE_SPECIALIZATION

@@ -1495,11 +1495,53 @@
 				Name="Spawn"
 				Filter="">
 				<File
+					RelativePath=".\spawn_constructor_space.h">
+				</File>
+				<File
 					RelativePath="xr_spawn_merge.cpp">
 				</File>
 				<File
 					RelativePath="xr_spawn_merge.h">
 				</File>
+				<Filter
+					Name="game_spawn_constructor"
+					Filter="">
+					<File
+						RelativePath=".\game_spawn_constructor.cpp">
+					</File>
+					<File
+						RelativePath=".\game_spawn_constructor.h">
+					</File>
+					<File
+						RelativePath=".\game_spawn_constructor_inline.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="level_spawn_constructor"
+					Filter="">
+					<File
+						RelativePath=".\level_spawn_constructor.cpp">
+					</File>
+					<File
+						RelativePath=".\level_spawn_constructor.h">
+					</File>
+					<File
+						RelativePath=".\level_spawn_constructor_inline.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="server_entity_wrapper"
+					Filter="">
+					<File
+						RelativePath=".\server_entity_wrapper.cpp">
+					</File>
+					<File
+						RelativePath=".\server_entity_wrapper.h">
+					</File>
+					<File
+						RelativePath=".\server_entity_wrapper_inline.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Verify"

@@ -11,6 +11,7 @@
 #include "xrServer_Objects_Abstract.h"
 #include "object_interfaces.h"
 #include "script_value_container.h"
+#include "alife_space.h"
 
 #pragma warning(push)
 #pragma warning(disable:4005)
@@ -29,6 +30,9 @@ class xrClientData;
 
 SERVER_ENTITY_DECLARE_BEGIN3(CSE_Abstract,ISE_Abstract,CPureServerObject,CScriptValueContainer)
 public:
+#ifdef AI_COMPILER
+	ALife::_SPAWN_ID				m_spawn_id;
+#endif
 	BOOL							net_Ready;
 	BOOL							net_Processed;	// Internal flag for connectivity-graph
 	
@@ -56,7 +60,7 @@ public:
 
 	// for ALife control
 	bool							m_bALifeControl;
-	shared_str							m_ini_string;
+	shared_str						m_ini_string;
 	xr_vector<u16>					children;
 
 	//client object custom data serialization

@@ -8,10 +8,4 @@
 
 #pragma once
 
-typedef struct tagSSPawnHeader {
-	u32		dwVersion;
-	u32		dwSpawnCount;
-	u32		dwLevelCount;
-} SSpawnHeader;
-
 extern void xrMergeSpawns(LPCSTR name, LPCSTR output);
