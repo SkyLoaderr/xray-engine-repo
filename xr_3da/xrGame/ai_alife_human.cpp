@@ -603,6 +603,7 @@ int  CSE_ALifeHumanAbstract::ifChooseWeapon(EWeaponPriorityType tWeaponPriorityT
 	ITEM_P_IT				E = m_tpALife->m_tpItemVector.end();
 	for ( ; I != E; I++) {
 		// checking if it is a hand weapon
+		m_dwTotalMoney			= l_dwSafeMoney;
 		getAI().m_tpCurrentALifeObject = dynamic_cast<CSE_ALifeObject*>(*I);
 		if (m_dwTotalMoney < (*I)->m_dwCost)
 			continue;
@@ -636,13 +637,13 @@ int  CSE_ALifeHumanAbstract::ifChooseWeapon(EWeaponPriorityType tWeaponPriorityT
 			}
 			default : NODEFAULT;
 		}
-		m_dwTotalMoney			= l_dwSafeMoney;
 		// choosing the best item
 		if ((l_fCurrentValue > l_fItemBestValue) && bfCanGetItem(*I) && (!tpObjectVector || (std::find(tpObjectVector->begin(),tpObjectVector->end(),(*I)->ID) == tpObjectVector->end()))) {
 			l_fItemBestValue = l_fCurrentValue;
 			l_tpALifeItemBest = *I;
 		}
 	}
+	m_dwTotalMoney				= l_dwSafeMoney;
 	if (l_tpALifeItemBest) {
 		u32						l_dwCount = children.size();
 		

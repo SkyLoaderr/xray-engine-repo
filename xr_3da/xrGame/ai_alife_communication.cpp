@@ -557,10 +557,14 @@ void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAb
 		}
 
 		if (!(m_tpBlockedItems1.size() + m_tpBlockedItems2.size())) {
-			vfAssignItemParents	(tpALifeHumanAbstract1,l_iItemCount1);
-			vfAssignItemParents	(tpALifeHumanAbstract2,l_iItemCount2);
-			ITEM_P_IT			I = remove_if(m_tpItemVector.begin(),m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
-			m_tpItemVector.erase(m_tpItemVector.end() - l_iItemCount1 - l_iItemCount2,m_tpItemVector.end());
+			if (l_iItemCount1)
+				vfAssignItemParents	(tpALifeHumanAbstract1,l_iItemCount1);
+			if (l_iItemCount2)
+				vfAssignItemParents	(tpALifeHumanAbstract2,l_iItemCount2);
+			if (l_iItemCount1 + l_iItemCount2) {
+				ITEM_P_IT			I = remove_if(m_tpItemVector.begin(),m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
+				m_tpItemVector.erase(m_tpItemVector.end() - l_iItemCount1 - l_iItemCount2,m_tpItemVector.end());
+			}
 			k					= 0;
 		}
 		else {
