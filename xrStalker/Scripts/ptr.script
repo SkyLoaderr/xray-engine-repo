@@ -40,6 +40,7 @@ function SPatrol:process ()
     --sounds
     if table.getn (self.sounds) ~= 0 then
        if self.snd_len ~= 0 and ctime >= self.snd_len then 
+          printf ("Sound end at time %d, snd_end %d", ctime, self.snd_len)
           self.snd_len = 0
           self.snd_time = ctime
        else
