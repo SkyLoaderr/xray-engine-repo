@@ -300,7 +300,7 @@ void CSE_ALifeCreatureAbstract::FillProp	(LPCSTR pref, PropItemVec& items)
     PHelper.CreateU8			(items,FHelper.PrepareKey(pref,s_name, "Team"),		&s_team, 	0,64,1);
     PHelper.CreateU8			(items,FHelper.PrepareKey(pref,s_name, "Squad"),	&s_squad, 	0,64,1);
     PHelper.CreateU8			(items,FHelper.PrepareKey(pref,s_name, "Group"),	&s_group, 	0,64,1);
-   	PHelper.CreateFloat			(items,FHelper.PrepareKey(pref,s_name,"Personal",	"Health" 				),&fEntityHealth,							0,200,5);
+   	PHelper.CreateFloat			(items,FHelper.PrepareKey(pref,s_name,"Personal",	"Health" 				),&fHealth,							0,200,5);
 }
 #endif
 
