@@ -43,7 +43,7 @@ function main()
 				cond	(cond.time_end, 100000000)
 			)
 
-	if siviy:see(chert) and == 1 then
+	if siviy:see(chert) and i_see_chert == 1 then
 		wait(2000)			
 		siviy_privet:play_at_pos						(siviy,siviy:position(),0);
 		wait(2000)			
