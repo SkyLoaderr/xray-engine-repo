@@ -78,6 +78,7 @@ function zone_binder:reinit()
 end
 
 function zone_binder:net_spawn( server_object )
+object_binder.net_spawn( self, server_object )
 end
 
 function test()
