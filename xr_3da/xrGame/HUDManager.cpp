@@ -143,18 +143,6 @@ void CHUDManager::OnEvent(EVENT E, DWORD P1, DWORD P2)
 }
 //--------------------------------------------------------------------
 
-void CHUDManager::UIActivate		()
-{
-	if (pUI) pUI->Activate		();
-}
-//--------------------------------------------------------------------
-
-void CHUDManager::UIDeactivate	()
-{
-	if (pUI) pUI->Deactivate	();
-}
-//--------------------------------------------------------------------
-
 void CHUDManager::SetScale(float s){
 	fScale			= s;
 	pHUDFont->SetScale(fScale);

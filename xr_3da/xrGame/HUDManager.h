@@ -46,9 +46,6 @@ public:
 	virtual		void		OnFrame				();
 
 	virtual		IC CUI*		GetUI				(){return pUI;}
-	virtual		void		UIActivate			();
-	virtual		void		UIDeactivate		();
-	virtual		BOOL		IsUIActive			(){return pUI->IsActive();}
 
 	virtual		void		Hit					(int idx){HitMarker.Hit(idx);}
 

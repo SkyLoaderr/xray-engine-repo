@@ -9,7 +9,6 @@
 #include "xr_weapon_list.h"
 
 #define MSGS_OFFS 510
-#define MENU_OFFS 200
 
 //--------------------------------------------------------------------
 CUI::CUI(CHUDManager* p)
@@ -22,13 +21,11 @@ CUI::CUI(CHUDManager* p)
 	UIFragList.Init	();
 
 	m_Parent		= p;
-	bActive			= false;
 	bShift			= false;
 	bShowFragList	= FALSE;
-	ResetSelected	();
+	bShowBuyMenu	= FALSE;
 
 	msgs_offs		= m_Parent->ClientToScreenScaledY(MSGS_OFFS,alLeft|alBottom)/Level().HUD()->pHUDFont->GetScale();
-	menu_offs		= m_Parent->ClientToScreenScaledY(MENU_OFFS,alLeft|alTop)/Level().HUD()->pHUDFont->GetScale();
 }
 //--------------------------------------------------------------------
 
@@ -39,9 +36,9 @@ CUI::~CUI()
 }
 //--------------------------------------------------------------------
 
-void CUI::ResetSelected()
+void CUI::Load()
 {
-	ZeroMemory		(bSelGroups,sizeof(bool)*10);
+	UIBuyMenu.Load	();
 }
 //--------------------------------------------------------------------
 
@@ -88,16 +85,8 @@ void CUI::OnFrame()
 		}
 	}
 
-	if (bActive){
-		m_Parent->pHUDFont->OutSet			(0,menu_offs);
-		m_Parent->pHUDFont->Color			(0xffffffff);
-		m_Parent->pHUDFont->OutNext			("0: xyz");
-		m_Parent->pHUDFont->OutNext			("1: xyz");
-		m_Parent->pHUDFont->OutNext			("2: xyz");
-		m_Parent->pHUDFont->OutNext			("3: xyz");
-		m_Parent->pHUDFont->OutNext			("4: xyz");
-		m_Parent->pHUDFont->OutNext			("5: xyz");
-		m_Parent->pHUDFont->OutNext			("6: xyz");
+	if (bShowBuyMenu){
+		UIBuyMenu.OnFrame();
 	}
 
 	if (!messages.empty()){
@@ -142,87 +131,36 @@ bool CUI::Render()
 	default: THROW;
 	}
 
-	CEntity* m_Actor = dynamic_cast<CEntity*>(Level().CurrentEntity());
-	if (m_Actor)
-		UISquad.Render(Level().Teams[m_Actor->id_Team].Squads[m_Actor->id_Squad],bSelGroups,bActive);
-
 	return false;
 	//	if (bActive) UICursor.Render();
 }
 //--------------------------------------------------------------------
-
-bool CUI::FindGroup(int idx)
-{
-	CEntity* m_Actor = dynamic_cast<CEntity*>(Level().CurrentEntity());
-	if ((idx<0)||(idx>9)) return false;
-	if (m_Actor)
-	{
-		CSquad& S = Level().Teams[m_Actor->id_Team].Squads[m_Actor->id_Squad];
-		if (idx>=int(S.Groups.size())) return false;
-		return !S.Groups[idx].Empty();
-	}
-	return false;
-}
-//--------------------------------------------------------------------
-
-void CUI::SelectGroup(int idx)
-{
-	if (FindGroup(idx)){ 
-		if (!bShift) ResetSelected();
-		bSelGroups[idx]=true;
-	}
-}
 //--------------------------------------------------------------------
 bool CUI::OnKeyboardPress(int dik)
 {
-	if (!bActive){
-		// global
-		switch (dik){
-		case DIK_TAB: ShowFragList	(TRUE);			break;
-		default: return false;
-		}
+	if (bShowBuyMenu){
+		if (UIBuyMenu.OnKeyboardPress(dik)) return true;
 	}else{
-		// only if active
-		// mode event
 		switch (dik){
-		case DIK_LSHIFT: bShift = true;				break;
-		// select group
-		case DIK_1: SelectGroup(0);					break;
-		case DIK_2: SelectGroup(1);					break;
-		case DIK_3: SelectGroup(2);					break;
-		case DIK_4: SelectGroup(3);					break;
-		case DIK_5: SelectGroup(4);					break;
-		case DIK_6: SelectGroup(5);					break;
-		case DIK_7: SelectGroup(6);					break;
-		case DIK_8: SelectGroup(7);					break;
-		case DIK_9: SelectGroup(8);					break;
-		case DIK_0: SelectGroup(9);					break;
-		// set command
-		case DIK_R: SetState(gsHoldPosition);		break;
-		case DIK_T: SetState(gsFollowMe);			break;
-		case DIK_Y: SetState(gsGoInThisDirection);	break;
-		case DIK_U: SetState(gsGoToThisPosition);	break;
-		case DIK_I: SetState(gsFreeHunting);		break;
-		// set trigger
-		case DIK_F: InvertFlag(gtAgressive);		break;
-		case DIK_G: InvertFlag(gtQuiet);			break;
-		default: return false;
+		case DIK_TAB:	ShowFragList(TRUE);	return true;
 		}
 	}
-	return true;
+	// global
+	switch (dik){
+	case DIK_B:			ShowBuyMenu	(!bShowBuyMenu);return true;
+	case DIK_ESCAPE:	ShowBuyMenu	(FALSE);		return true;
+	}
+	return false;
 }
 //--------------------------------------------------------------------
 
 bool CUI::OnKeyboardRelease(int dik)
 {
-	if (!bActive){
-		switch (dik){
-		case DIK_TAB: ShowFragList	(FALSE);		break;
-		}
+	if (bShowBuyMenu){
+		return UIBuyMenu.OnKeyboardRelease(dik);
 	}else{
 		switch (dik){
-		case DIK_LALT: Deactivate();				break;
-		case DIK_LSHIFT: bShift = false;			break;
+		case DIK_TAB: ShowFragList	(FALSE);		break;
 		}
 	}
 	return false;
@@ -239,51 +177,6 @@ bool CUI::OnMouseMove	(int dx, int dy)
 //	clamp(UICursor.vPos.y,-1.f,1.f);
 }
 //--------------------------------------------------------------------
-
-void CUI::SetState(EGroupState st)
-{
-	CEntity* m_Actor = dynamic_cast<CEntity*>(Level().CurrentEntity());
-	if (!m_Actor) return;
-	for (int i=0; i<MAX_GROUPS; i++)
-		if (bSelGroups[i]) Level().Teams[m_Actor->id_Team].Squads[m_Actor->id_Squad].Groups[i].SetState(st);
-}
-//--------------------------------------------------------------------
-
-void CUI::SetFlag(EGroupTriggers tr, BOOL f)
-{
-	CEntity* m_Actor = dynamic_cast<CEntity*>(Level().CurrentEntity());
-	if (!m_Actor) return;
-	for (int i=0; i<MAX_GROUPS; i++)
-		if (bSelGroups[i]) Level().Teams[m_Actor->id_Team].Squads[m_Actor->id_Squad].Groups[i].SetFlag(tr,f);
-}
-//--------------------------------------------------------------------
-
-void CUI::InvertFlag(EGroupTriggers tr)
-{
-	CEntity* m_Actor = dynamic_cast<CEntity*>(Level().CurrentEntity());
-	if (!m_Actor) return;
-	for (int i=0; i<MAX_GROUPS; i++)
-		if (bSelGroups[i]) Level().Teams[m_Actor->id_Team].Squads[m_Actor->id_Squad].Groups[i].InvertFlag(tr);
-}
-//--------------------------------------------------------------------
-
-void CUI::Activate()
-{
-	bShift				= false;
-	bActive				= true;
-	for (int i=0; i<MAX_GROUPS; i++){
-		if (bSelGroups[i]&&FindGroup(i)) bSelGroups[i]=true;
-		else							 bSelGroups[i]=false;
-	}
-}
-//--------------------------------------------------------------------
-
-void CUI::Deactivate()
-{
-	bActive = false;
-}
-//--------------------------------------------------------------------
-
 
 void CUI::AddMessage(LPCSTR S, LPCSTR M, DWORD C, float life_time)
 {

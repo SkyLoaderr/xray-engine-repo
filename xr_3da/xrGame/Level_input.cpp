@@ -21,9 +21,6 @@ void CLevel::OnKeyboardPress(int key)
 	case DIK_F12:
 		Render->Screenshot			();
 		return;
-	case DIK_LALT:
-		pHUD->UIActivate			();
-		return;
 	case DIK_RALT:
 		ShowLM	= TRUE;
 		return;
@@ -79,8 +76,7 @@ void CLevel::OnMouseHold(int btn)
 
 void CLevel::OnMouseMove( int dx, int dy )
 {
-	if (pHUD->IsUIActive()) if (pHUD->GetUI()->OnMouseMove(dx,dy)) return;
-
+	if (pHUD->GetUI()->OnMouseMove(dx,dy)) return;
 	if (CurrentEntity())	CurrentEntity()->OnMouseMove(dx,dy);
 }
 

@@ -1032,6 +1032,12 @@
 					RelativePath=".\UI.h">
 				</File>
 				<File
+					RelativePath="UIBuyMenu.cpp">
+				</File>
+				<File
+					RelativePath="UIBuyMenu.h">
+				</File>
+				<File
 					RelativePath=".\UICursor.cpp">
 				</File>
 				<File

@@ -8,6 +8,7 @@
 #include "UIHealth.h"
 #include "UIGroup.h"
 #include "UIFragList.h"
+#include "UIBuyMenu.h"
 
 #define UI_BASE_WIDTH	800
 #define UI_BASE_HEIGHT	600
@@ -50,8 +51,7 @@ class CUI{
 	CUISquad			UISquad;
 
 	CUIFragList			UIFragList;
-
-	bool				bActive;
+	CUIBuyMenu			UIBuyMenu;
 
 	CHUDManager*		m_Parent;
 
@@ -63,22 +63,15 @@ class CUI{
 	// 
 	bool				bShift;
 	bool				bShowFragList;
-
-	// group management
-	bool				bSelGroups			[MAX_GROUPS];
-
-	void				ResetSelected		();
-	bool				FindGroup			(int idx);
-	void				SelectGroup			(int idx);
-	void				SetState			(EGroupState st);
-	void				SetFlag				(EGroupTriggers tr, BOOL f);
-	void				InvertFlag			(EGroupTriggers tr);
+	bool				bShowBuyMenu;
 public:
 						CUI					(CHUDManager* p);
 	virtual				~CUI				();
 
 	bool				Render				();
 	void				OnFrame				();
+
+	void				Load				();
 
 	bool				OnKeyboardPress		(int dik);
 	bool				OnKeyboardRelease	(int dik);
@@ -93,10 +86,7 @@ public:
 
 	// misc
 	void				ShowFragList		(BOOL bShow){bShowFragList=bShow;}
-
-	void				Activate			();
-	void				Deactivate			();
-	bool				IsActive			(){return bActive;}
+	void				ShowBuyMenu			(BOOL bShow){bShowBuyMenu=bShow;}
 };
 
 #endif // __XR_UI_H__
