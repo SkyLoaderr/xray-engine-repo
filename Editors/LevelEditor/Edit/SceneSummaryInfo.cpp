@@ -178,6 +178,8 @@ void SSceneSummary::ExportSummaryInfo(LPCSTR fn)
     sprintf					(tmp,"Total mem usage - %d Kb",total_mem_usage);
     F->w_string				(tmp);
     // objects
+    F->w_string				("");
+    sprintf					(tmp,"[OBJECTS]");	F->w_string(tmp);
     for (OISetIt o_it=objects.begin(); o_it!=objects.end(); o_it++){
     	SObjectInfo* info= (SObjectInfo*)(&(*o_it));
         info->Export		(F);
