@@ -644,7 +644,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 	if (hit_slowmo<0)			hit_slowmo = 0.f;
 
 	accel.mul					(1.f-hit_slowmo);
-
+	
 	// Calculate physics
 
 	//m_PhysicMovementControl->SetPosition		(Position());
@@ -656,6 +656,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 	//m_PhysicMovementControl->SetPosition		(Position());
 	if(g_Alive())
 	{
+	if(mstate_real&mcClimb&&!cameras[eacFirstEye]->bClampYaw)accel.set(0.f,0.f,0.f);
 	m_PhysicMovementControl->Calculate			(accel,cameras[cam_active]->vDirection,0,jump,dt,false);
 	m_PhysicMovementControl->GetPosition		(Position());
 	m_PhysicMovementControl->bSleep				=false;
