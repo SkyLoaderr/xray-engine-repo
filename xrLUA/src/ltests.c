@@ -818,7 +818,7 @@ static void fim (void) {
 
 static int l_panic (lua_State *L) {
   UNUSED(L);
-  xr_printf(stderr, "unable to recover; exiting\n");
+  fprintf(stderr, "unable to recover; exiting\n");
   return 0;
 }
 

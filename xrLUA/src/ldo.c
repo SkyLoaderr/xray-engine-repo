@@ -355,7 +355,7 @@ static void callalert (lua_State *L, int status) {
 			lua_call(L, 1, 0);
 		}
 		else {  /* no _ALERT function; print it on stderr */
-			xr_printf(stderr, "%s\n", lua_tostring(L, -2));
+			fprintf(stderr, "%s\n", lua_tostring(L, -2));
 			lua_pop(L, 2);  /* remove error message and _ALERT */
 		}
 	}
