@@ -40,6 +40,7 @@ ENGINE_API	CApplication*	pApp			= NULL;
 static		HWND			logoWindow		= NULL;
 
 int				doLauncher					();
+void			doBenchmark					();
 ENGINE_API	bool			g_bBenchmark	= false;
 
 // -------------------------------------------
@@ -295,6 +296,11 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	InitSettings();
 	InitConsole();
 	
+	if(strstr(lpCmdLine, "-batch_benchmark")){
+		doBenchmark();
+		return 0;
+	}
+
 	if (strstr(lpCmdLine,"-launcher")) 
 	{
 		int l_res = doLauncher();
@@ -548,11 +554,6 @@ void FreeLauncher(){
 
 int doLauncher()
 {
-/*
-		InitLauncher();
-		int _res = pLauncher(2);//show results
-		FreeLauncher();
-return 0;*/
 	execUserScript();
 	InitLauncher();
 	int res = pLauncher(0);
@@ -561,27 +562,8 @@ return 0;*/
 		g_bBenchmark = true;
 
 	if(g_bBenchmark){ //perform benchmark cycle
-			string_path in_file;
-			FS.update_path(in_file,"$server_root$","tmp_benchmark.ini");
-			CInifile ini(in_file);
-			int test_count = ini.line_count("benchmark");
-			LPCSTR test_name,t;
-			shared_str test_command;
-			for(int i=0;i<test_count;++i){
-			ini.r_line( "benchmark", i, &test_name, &t);
-			
-			test_command = ini.r_string_wb("benchmark",test_name);
-			strlwr				(strcpy(Core.Params,*test_command));
-			
-			if(i){
-				ZeroMemory(&HW,sizeof(CHW));
-				InitEngine();
-			}
-
-			Engine.External.Initialize	( );
-			execUserScript();
-			Startup	 				();
-		}
+		doBenchmark();
+	
 		InitLauncher();
 		pLauncher	(2);//show results
 		FreeLauncher();
@@ -596,4 +578,30 @@ return 0;*/
 	}
 	return 0;
 
+}
+
+void doBenchmark()
+{
+	g_bBenchmark = true;
+	string_path in_file;
+	FS.update_path(in_file,"$server_root$","tmp_benchmark.ini");
+	CInifile ini(in_file);
+	int test_count = ini.line_count("benchmark");
+	LPCSTR test_name,t;
+	shared_str test_command;
+	for(int i=0;i<test_count;++i){
+		ini.r_line( "benchmark", i, &test_name, &t);
+		
+		test_command = ini.r_string_wb("benchmark",test_name);
+		strlwr				(strcpy(Core.Params,*test_command));
+		
+		if(i){
+			ZeroMemory(&HW,sizeof(CHW));
+			InitEngine();
+		}
+
+		Engine.External.Initialize	( );
+		execUserScript();
+		Startup	 				();
+	}
 }
