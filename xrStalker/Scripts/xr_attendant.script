@@ -145,8 +145,8 @@ function action_follow:execute ()
     --local pos = self.object:position ()
     --printf ("FOLLWER %s POSITION x = %f, y = %f, z = %f", self.object:name (), pos.x, pos.y, pos.z)
     -- проверим, а жив ли еще старшќй.
-    if level.object_by_id(self.st.leader_id) == nil or 
-       level.object_by_id(self.st.leader_id):alive () == false then
+    local leader = level.object_by_id(self.st.leader_id)
+    if leader == nil or leader:alive () == false then
        self:free ()
        self.st.signals["leader_dead"] = true
        return 
@@ -199,6 +199,13 @@ function action_follow:execute ()
        if vdist > 3 then 
           self.state = 0
        else
+          if leader ~= nil and leader:is_talking () == true then
+             printf ("LEADER IS TALKING !!!")
+             state_mgr.set_state (self.object, self.st.state_if_leader_in_dialog, nil, nil, db.actor)
+          else   
+             printf ("LEADER IS NOT TALKING !!!")
+             state_mgr.set_state (self.object, "idle")
+          end  
        end   
     end    
         
@@ -393,5 +400,5 @@ function set_scheme (npc, ini, scheme, section, gulag_name)
 	   end
 	end   
 	st.sound_theme = utils.cfg_get_string (ini, section, "snd",  npc, false, "", "state")
-    
+    st.state_if_leader_in_dialog = utils.cfg_get_string (ini, section, "state_if_leader_in_dialog", npc, false, "", "idle")
 end
