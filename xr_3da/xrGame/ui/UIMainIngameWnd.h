@@ -21,6 +21,7 @@
 #include "../actor.h"
 #include "../weapon.h"
 #include "../alife_space.h"
+#include "../game_news.h"
 
 #include "xrXMLParser.h"
 
@@ -183,6 +184,9 @@ public:
 
 	//
 	void AnimateContacts();
+
+	// Обработчик события получения новости
+	void OnNewsReceived	(const GAME_NEWS_DATA &news);
 	
 protected:
 
@@ -235,12 +239,6 @@ protected:
 	// Array of news templates
 	typedef std::map<u32, SNewsTemplate>	NewsTemplates;
 	NewsTemplates							m_NewsTemplates;
-
-	// Обработчик события получения новости
-	void				OnNewsReceived(const CALifeNews &newsItem);
-	// Проверяем не появились ли новые ньюсы
-	// Return:	true - новые новости есть
-	bool				CheckForNewNews();
 
 	// Период проверки ньюсов в моллисекундах
 	static const int	NEWS_CHECK_INTERVAL = 1000;

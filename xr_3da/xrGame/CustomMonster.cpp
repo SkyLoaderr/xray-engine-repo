@@ -669,7 +669,7 @@ void CCustomMonster::HitSignal(float /**perc/**/, Fvector& /**vLocalDir/**/, COb
 void CCustomMonster::Die	()
 {
 	inherited::Die			();
-	Level().RemoveMapLocationByID(this->ID());
+	//Level().RemoveMapLocationByID(this->ID());
 }
 
 BOOL CCustomMonster::net_Spawn	(LPVOID DC)

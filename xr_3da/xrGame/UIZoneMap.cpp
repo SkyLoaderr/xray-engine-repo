@@ -20,7 +20,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-#define				MAX_VIEW_DISTANCE			50.f
+static float		MAX_VIEW_DISTANCE	=		50.f;
 #define				VIEW_DISTANCE				(MAX_VIEW_DISTANCE/m_fScale)
 
 #define				VIEW_DISTANCE2				VIEW_DISTANCE*VIEW_DISTANCE
@@ -59,6 +59,8 @@ CUIZoneMap::CUIZoneMap()
 {    
 	heading = 0;
 	m_fScale  = 1.0f;
+
+	MAX_VIEW_DISTANCE = pSettings->r_float("game_map", "max_view_minimap");
 }
 //--------------------------------------------------------------------
 
@@ -211,6 +213,12 @@ int x_m_x = 0;
 int x_m_z = 0;
 void CUIZoneMap::UpdateRadar(CActor* pActor)
 {
+	//.hack
+	//нужно обновлять раз в некоторое время
+	Level().UpdateMapLocation			();
+
+
+
 	entity.Clear		();
 	entity_up.Clear		();
 	entity_down.Clear	();
@@ -258,7 +266,7 @@ void CUIZoneMap::UpdateRadar(CActor* pActor)
 	{
 		SMapLocation& map_location = *(*it);
 
-		if (!(Level().name() == map_location.level_name)) continue;
+		if (!(Level().name() == map_location.LevelName())) continue;
 
 		entity_color = map_location.icon_color;
 		if(map_location.attached_to_object)

@@ -9,10 +9,20 @@
 #include "entity.h"
 #include "level.h"
 
-void CLevel::AddMapLocation(const SMapLocation& map_location)
+void CLevel::AddMapLocation(const SMapLocation& map_location, EMapLocationFlags location_type)
 {
-	SMapLocation* pMapLocation = xr_new<SMapLocation>();
-	*pMapLocation = map_location;
+	SMapLocation* pMapLocation = NULL;
+	
+	if(map_location.attached_to_object)
+		pMapLocation = GetMapLocationByID(map_location.object_id);
+
+	if(!pMapLocation)
+	{
+		pMapLocation = xr_new<SMapLocation>();
+		*pMapLocation = map_location;
+	}
+
+	pMapLocation->type_flags.set(location_type, TRUE);
 	m_MapLocationVector.push_back(pMapLocation);
 }
 
@@ -25,12 +35,12 @@ void CLevel::RemoveMapLocations			()
 class RemoveLocationByObjectPred
 {
 public:
-	RemoveLocationByObjectPred(u16 id){object_id = id;}
+	RemoveLocationByObjectPred(u16 id, EMapLocationFlags loctype){object_id = id; location_type = loctype;}
 	bool operator() (SMapLocation* map_location)
 	{
 		if(map_location->object_id == object_id)
 		{
-			xr_delete(map_location);
+			map_location->type_flags.set(location_type, FALSE);
 			return true;
 		}
 		else
@@ -38,19 +48,13 @@ public:
 	}
 private:
 	u16 object_id;
+	EMapLocationFlags location_type;
 };
 
-bool CLevel::RemoveMapLocationByID(u16 object_id)
+void CLevel::RemoveMapLocationByID(u16 object_id, EMapLocationFlags location_type)
 {
-	RemoveLocationByObjectPred pred(object_id);
-	LOCATIONS_PTR_VECTOR_IT last_it =  std::remove_if(m_MapLocationVector.begin(), m_MapLocationVector.end(), pred);
-
-	if(m_MapLocationVector.end()!=last_it)
-	{
-		m_MapLocationVector.erase(last_it, m_MapLocationVector.end());
-		return true;
-	}
-	return false;
+	RemoveLocationByObjectPred pred(object_id, location_type);
+	std::for_each(m_MapLocationVector.begin(), m_MapLocationVector.end(), pred);
 }
 
 
@@ -62,7 +66,7 @@ public:
 	{
 		if(map_location->info_portion_id == info_portion_id)
 		{
-			xr_delete(map_location);
+			map_location->type_flags.set(eMapLocationInfoPortion, FALSE);
 			return true;
 		}
 		else
@@ -73,19 +77,19 @@ private:
 };
 
 
-bool CLevel::RemoveMapLocationByInfo(INFO_INDEX info_portion_id)
+void CLevel::RemoveMapLocationByInfo(INFO_INDEX info_portion_id)
 {
 	RemoveLocationByInfoPred pred(info_portion_id);
-	LOCATIONS_PTR_VECTOR_IT last_it =  std::remove_if(m_MapLocationVector.begin(), m_MapLocationVector.end(), pred);
-
-	if(m_MapLocationVector.end()!=last_it)
-	{
-		m_MapLocationVector.erase(last_it, m_MapLocationVector.end());
-		return true;
-	}
-	return false;
+	std::for_each(m_MapLocationVector.begin(), m_MapLocationVector.end(), pred);
 }
-void  CLevel::AddObjectMapLocation		(const CGameObject* object)
+
+SMapLocation*  CLevel::GetMapLocationByID(u16 object_id)
+{
+	return NULL;
+}
+
+
+void  CLevel::AddObjectMapLocation		(const CGameObject* object, EMapLocationFlags location_type)
 {
 	const CEntity* entity = smart_cast<const CEntity*>(object);
 	if(!entity) return;
@@ -109,5 +113,32 @@ void  CLevel::AddObjectMapLocation		(const CGameObject* object)
 		map_location.name = entity->cName();
 	}
 	map_location.text = "";
-	AddMapLocation(map_location);
+	AddMapLocation(map_location, location_type);
+}
+
+
+
+class RemoveLocationByFlags
+{
+public:
+	bool operator() (SMapLocation* map_location)
+	{
+		if(0 == map_location->type_flags.get())
+		{
+			xr_delete(map_location);
+			return true;
+		}
+		else
+			return false;
+	}
+};
+
+
+void   CLevel::UpdateMapLocation			()
+{
+	RemoveLocationByFlags pred;
+	LOCATIONS_PTR_VECTOR_IT last_it =  std::remove_if(m_MapLocationVector.begin(), m_MapLocationVector.end(), pred);
+
+	if(m_MapLocationVector.end()!=last_it)
+		m_MapLocationVector.erase(last_it, m_MapLocationVector.end());
 }

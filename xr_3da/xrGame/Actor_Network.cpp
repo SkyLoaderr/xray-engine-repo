@@ -595,6 +595,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	contacts_registry.init(ID());
 	encyclopedia_registry.init(ID());
 	game_task_registry.init(ID());
+	game_news_registry.init(ID());
 
 	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
 	if (!inherited::net_Spawn(DC))	return FALSE;

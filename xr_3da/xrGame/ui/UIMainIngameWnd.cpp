@@ -20,10 +20,17 @@
 #include "../level.h"
 #include "../seniority_hierarchy_holder.h"
 
+#include "../string_table.h"
+#include "../date_time.h"
+#include "../xrServer_Objects_ALife_Monsters.h"
+#include "../specific_character.h"
+
 #include "UIInventoryUtilities.h"
 #include "UIMainIngameWnd.h"
 #include "UIXmlInit.h"
 #include "UIPdaMsgListItem.h"
+
+
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -61,8 +68,10 @@ const u32	g_clWhite					= 0xffffffff;
 
 const char * const PDA_INGAME_SINGLEPLAYER_CFG	= "ingame_msglog_sp.xml";
 const char * const PDA_INGAME_MULTIPLAYER_CFG	= "ingame_msglog_mp.xml";
-const char * const NEWS_TEMPLATES_CFG			= "news_templates.xml";
 const char * const MAININGAME_XML				= "maingame.xml";
+
+//ссылка на string table
+const char * const NEWS_TYPE_KILL				= "alife_news_kill";
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction//////////////////////////////////////////////////////////////////////
@@ -546,7 +555,7 @@ void CUIMainIngameWnd::Update()
 	FadeUpdate(&UIMPChatLog, m_iChatMessagesFade_mSec);
 
 	// Check for new news
-	CheckForNewNews();
+	//CheckForNewNews();
 
 	UpdateFlashingIcons();
 	UpdateContactsAnimation();
@@ -865,6 +874,15 @@ CUIPdaMsgListItem * CUIMainIngameWnd::AddGameMessage(LPCSTR message)
 
 //////////////////////////////////////////////////////////////////////////
 
+/*void CUIMainIngameWnd::AddGameNews(message)
+{
+	AddIconedGameMessage(textureName, originalRect, message);
+}
+*/
+
+
+//////////////////////////////////////////////////////////////////////////
+
 void CUIMainIngameWnd::AddPersonalizedGameMessage(CInventoryOwner* pSender, LPCSTR TextMessage)
 {
 	CUIPdaMsgListItem *pItem = AddGameMessage(TextMessage);
@@ -945,84 +963,100 @@ void CUIMainIngameWnd::RenderQuickInfos()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIMainIngameWnd::OnNewsReceived(const CALifeNews &newsItem)
+void CUIMainIngameWnd::OnNewsReceived(const GAME_NEWS_DATA &news)
 {
-	string256	newsPhrase;
-	string128	time;
+	if (g_bNewsDisable) return;
+
+	string256	newsPhrase = "";
+	string128	time = "";
 	string128	locationName = "";
-	string512	result;
+	string512	result = "";
 
-	// If ignore flag is set, than ignore whole news item
-	if (m_NewsTemplates[static_cast<u32>(newsItem.m_news_type)].ignore) return;
-
-	// Get Level name
-	const CGameGraph::CVertex	*game_vertex = ai().game_graph().vertex(newsItem.m_game_vertex_id);
-	if (ai().game_graph().header().levels().find(game_vertex->level_id()) != ai().game_graph().header().levels().end())
+	if(news.news_id == NOT_SIMULATION_NEWS)
 	{
-		sprintf(locationName, "%s ", ai().game_graph().header().levels().find(game_vertex->level_id())->second.name());
-	}
-
-	// Substitute placeholders with real names
-	CSE_ALifeDynamicObject	*newsActorOne = ai().alife().objects().object(newsItem.m_object_id[0]);
-	if (newsItem.m_object_id[1] != static_cast<u16>(-1))
-	{
-		CSE_ALifeDynamicObject	*newsActorTwo = ai().alife().objects().object(newsItem.m_object_id[1]);
-		sprintf(newsPhrase, *m_NewsTemplates[static_cast<u32>(newsItem.m_news_type)].str, newsActorTwo->s_name_replace, newsActorOne->s_name_replace);
+		strcpy(newsPhrase, *CStringTable()((STRING_INDEX)news.news_text)) ;
 	}
 	else
-		sprintf(newsPhrase, *m_NewsTemplates[static_cast<u32>(newsItem.m_news_type)].str, newsActorOne->s_name_replace, "");
-
-
-	// Calc curent time
-	u8 m_CurrMins		= static_cast<u8>(newsItem.m_game_time / (1000 * 60) % 60 & 0xFF);
-	u8 m_CurrHours		= static_cast<u8>(newsItem.m_game_time / (1000 * 3600) % 24 & 0xFF);
-	sprintf(time, "%02i:%02i\\n", m_CurrHours, m_CurrMins);
-	strconcat(result, locationName, time, newsPhrase);
-
-	if (!g_bNewsDisable)
 	{
-//		CUIPdaMsgListItem* pItem = NULL;
-//		pItem = xr_new<CUIPdaMsgListItem>();
-//		UIPdaMsgListWnd.AddItem<CUIListItem>(pItem); 
-//		UIPdaMsgListWnd.ScrollToBegin();
-//
-//		pItem->InitCharacter(smart_cast<CInventoryOwner*>(Level().CurrentEntity()));
-//		pItem->SetValue(m_dwMaxShowTime);
-//
-//		UIPdaMsgListWnd.Show(true);	
-//
-//		pItem->UIMsgText.SetText(result);
-		AddPersonalizedGameMessage(smart_cast<CInventoryOwner*>(Level().CurrentEntity()), result);
+		const CALifeNews* pNewsItem  = ai().alife().news().news(news.news_id); VERIFY(pNewsItem);
+		const CALifeNews& newsItem =  *pNewsItem;
+
+		// Get Level name
+		const CGameGraph::CVertex	*game_vertex = ai().game_graph().vertex(newsItem.m_game_vertex_id);
+		if (ai().game_graph().header().levels().find(game_vertex->level_id()) != ai().game_graph().header().levels().end())
+		{
+			sprintf(locationName, "%s ", CStringTable()(ai().game_graph().header().levels().find(game_vertex->level_id())->second.name()));
+		}
+
+		// Substitute placeholders with real names
+		ref_str name1 = "";
+		ref_str name2 = "";
+
+		CSE_ALifeDynamicObject	*newsActorOne = ai().alife().objects().object(newsItem.m_object_id[0]); VERIFY(newsActorOne);
+		name1 = newsActorOne->s_name_replace;
+		CSE_ALifeTraderAbstract* pTrader = NULL;
+		pTrader = smart_cast<CSE_ALifeTraderAbstract*>(newsActorOne);
+		if(pTrader)
+		{
+			if(pTrader->specific_character()!= NO_SPECIFIC_CHARACTER)
+			{
+				CSpecificCharacter spec_char;
+				spec_char.Load(pTrader->specific_character());
+				name1 = spec_char.Name();
+			}
+		}
+
+		if (newsItem.m_object_id[1] != static_cast<u16>(-1))
+		{
+			CSE_ALifeDynamicObject	*newsActorTwo = ai().alife().objects().object(newsItem.m_object_id[1]);
+			pTrader = smart_cast<CSE_ALifeTraderAbstract*>(newsActorTwo);
+			if(pTrader)
+			{
+				if(pTrader->specific_character()!= NO_SPECIFIC_CHARACTER)
+				{
+					CSpecificCharacter spec_char;
+					spec_char.Load(pTrader->specific_character());
+					name2 = spec_char.Name();
+				}
+			}
+		}
+		sprintf(newsPhrase, *m_NewsTemplates[static_cast<u32>(newsItem.m_news_type)].str, *name1, *name2);
 	}
 
-	CUIGameSP* pGameSP		= smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-	pGameSP->PdaMenu.AddNewsItem(result);
+	//AddPersonalizedGameMessage(smart_cast<CInventoryOwner*>(Level().CurrentEntity()), result);
+	// Calc current time
+	u32 years, months, days, hours, minutes, seconds, milliseconds;
+	split_time		(news.receive_time, years, months, days, hours, minutes, seconds, milliseconds);
+	sprintf(time, "%02i:%02i\\n", hours, minutes);
+	strconcat(result, locationName, time, newsPhrase);
+	
+	if(news.texture_name)
+	{
+		RECT rect;
+		rect.left = news.x1;
+		rect.right = news.x2;
+		rect.top = news.y1;
+		rect.bottom = news.y2;
+		AddIconedGameMessage(news.texture_name, rect, result);
+	}
+	else
+		AddGameMessage(result);
+
+//	CUIGameSP* pGameSP		= smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+//	pGameSP->PdaMenu.AddNewsItem(result);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void CUIMainIngameWnd::LoadNewsTemplates()
 {
-	const char * const NODE_NAME = "news_template";
-	CUIXml uiXml;
-	uiXml.Init("$game_data$", NEWS_TEMPLATES_CFG);
-
-	string256	buf;
-
-	int templatesCount = uiXml.GetNodesNum("", 0, NODE_NAME);
-	strconcat(buf, NODE_NAME,":text");
-	
-	for (int i = 0; i < templatesCount; ++i)
-	{
-		int idx						= uiXml.ReadAttribInt(NODE_NAME, i, "index");
-		ref_str news_template		= uiXml.Read(buf, i, NULL);
-		m_NewsTemplates[idx].str	= news_template;
-		m_NewsTemplates[idx].ignore	= !!uiXml.ReadAttribInt(NODE_NAME, i, "ignore");
-	}
+	m_NewsTemplates[ALife::eNewsTypeKill].str = CStringTable()(NEWS_TYPE_KILL);
+	//string256	buf;
+	//m_NewsTemplates[idx].ignore	= !!uiXml.ReadAttribInt(NODE_NAME, i, "ignore");
 }
 
 //////////////////////////////////////////////////////////////////////////
-
+/*
 bool CUIMainIngameWnd::CheckForNewNews()
 {
 	// Нет симуляции или время проверки еще не пришло
@@ -1052,14 +1086,20 @@ bool CUIMainIngameWnd::CheckForNewNews()
 	// Iterate through all new news and report to OnNewsReceived function
 	for (cit_i = cit; cit_i != ai().alife().news().news().end(); ++cit_i)
 	{
-		OnNewsReceived(*cit_i->second);
+		GAME_NEWS_DATA news_data;
+		news_data.news_id = cit_i->first;
+		
+		if(m_pActor)
+			m_pActor->AddGameNews(news_data);
+		
+		//OnNewsReceived(*cit_i->second);
 		// Remember last known news id. Last remembering would last known news id
 		lastKnownNewsID	= cit_i->first;
 	}
 
 	return true;
 }
-
+*/
 //////////////////////////////////////////////////////////////////////////
 
 void CUIMainIngameWnd::SetWarningIconColor(EWarningIcons icon, const u32 cl)

@@ -22,7 +22,7 @@ public:
 	virtual	void						save				(IWriter &memory_stream);
 	virtual	void						load				(IReader &file_stream);
 			void						clear				();
-	IC		void						add					(const CALifeNews &news);
+	IC		ALife::_NEWS_ID				add					(const CALifeNews &news);
 	IC		void						remove				(const ALife::_NEWS_ID &news_id);
 	IC		const ALife::NEWS_REGISTRY	&news				() const;
 	IC		const CALifeNews			*news				(const ALife::_NEWS_ID &news_id) const;

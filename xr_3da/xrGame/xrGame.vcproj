@@ -6635,6 +6635,9 @@
 							RelativePath=".\InfoPortionDefs.h">
 						</File>
 						<File
+							RelativePath=".\map_location.cpp">
+						</File>
+						<File
 							RelativePath=".\map_location.h">
 						</File>
 						<File
@@ -6701,6 +6704,16 @@
 							</File>
 							<File
 								RelativePath=".\PhraseScript.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="news"
+							Filter="">
+							<File
+								RelativePath=".\game_news.cpp">
+							</File>
+							<File
+								RelativePath=".\game_news.h">
 							</File>
 						</Filter>
 					</Filter>

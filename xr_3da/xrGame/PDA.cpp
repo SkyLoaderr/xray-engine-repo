@@ -101,7 +101,6 @@ void CPda::feel_touch_new(CObject* O)
 	{
 		if(bDebug) HUD().outMessage(0xffffffff,cName(),"_new_ PDA detected");
 		m_PDAList.push_back(pInvOwner->GetPDA());
-
 		m_NewPDAList.push_back(pInvOwner->GetPDA());
 		GetOriginalOwner()->NewPdaContact(pInvOwner);
 	}
@@ -113,17 +112,17 @@ void CPda::feel_touch_delete(CObject* O)
 
 	if(pInvOwner /*&& /*pInvOwner->IsActivePDA()*/) 
 	{
-
 		if(pInvOwner->GetPDA())
 		{
 			if(bDebug) HUD().outMessage(0xffffffff,cName(),"a PDA left radius of sight");
 			m_PDAList.erase(std::find(m_PDAList.begin(), 
 										m_PDAList.end(), 
 										pInvOwner->GetPDA()));
-			if (!O->getDestroy()) {
+			if (!pInvOwner->GetPDA()->getDestroy()) 
+			{
 				m_DeletedPDAList.push_back(pInvOwner->GetPDA());
-				GetOriginalOwner()->LostPdaContact(pInvOwner);
 			}
+			GetOriginalOwner()->LostPdaContact(pInvOwner);
 		}
 		//для случая перехода PDA в offline
 		else
@@ -142,9 +141,7 @@ void CPda::feel_touch_delete(CObject* O)
 		}
 
 */
-			for(PDA_LIST_it it = m_PDAList.begin();
-					m_PDAList.end() != it; 
-					++it)
+			for(PDA_LIST_it it = m_PDAList.begin();	m_PDAList.end() != it; 	++it)
 			{
 				CPda* pPda = (*it);
 				//if(O == pPda->H_Parent())
@@ -155,12 +152,11 @@ void CPda::feel_touch_delete(CObject* O)
 					if (!O->getDestroy()) {
 						m_DeletedPDAList.push_back(pPda);
 					}
+					GetOriginalOwner()->LostPdaContact(pPda->GetOriginalOwner());
 					break;
 				}
 			}
 		}
-		
-
 	}
 }
 

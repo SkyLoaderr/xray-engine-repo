@@ -14,6 +14,7 @@
 #include "encyclopedia_article_defs.h"
 #include "character_info_defs.h"
 #include "gametaskdefs.h"
+#include "game_news.h"
 
 
 #pragma warning(push)
@@ -51,6 +52,14 @@ typedef CALifeAbstractRegistry<u16, GAME_TASK_VECTOR > CGameTaskRegistry;
 add_to_registry_type_list(CGameTaskRegistry);
 #define game_tasks define_constant(CGameTaskRegistry) 
 #define registry_type_list save_registry_type_list(CGameTaskRegistry)
+
+
+//список новостей полученных актером, состоит из новостей симуляции и сюжетных (скриптованых) новостей 
+typedef CALifeAbstractRegistry<u16, GAME_NEWS_VECTOR > CGameNewsRegistry;
+add_to_registry_type_list(CGameNewsRegistry);
+#define game_news define_constant(CGameNewsRegistry) 
+#define registry_type_list save_registry_type_list(CGameNewsRegistry)
+
 
 //список описаний персонажей, которые уже задействованы в игре
 typedef CALifeAbstractRegistry<SPECIFIC_CHARACTER_INDEX, int > CSpecificCharacterRegistry;

@@ -16,10 +16,13 @@
 #include "ai_space.h"
 #include "alife_simulator.h"
 #include "alife_registry_container.h"
+#include "alife_news_registry.h"
 #include "script_game_object.h"
 
 #include "game_cl_base.h"
 
+#include "xrServer.h"
+#include "xrServer_Objects_ALife_Monsters.h"
 
 
 void CActor::AddMapLocationsFromInfo(const CInfoPortion* info_portion)
@@ -29,7 +32,7 @@ void CActor::AddMapLocationsFromInfo(const CInfoPortion* info_portion)
 	for(u32 i=0; i<info_portion->MapLocations().size(); i++)
 	{
 		const SMapLocation& map_location = info_portion->MapLocations()[i];
-		Level().AddMapLocation(map_location);
+		Level().AddMapLocation(map_location, eMapLocationInfoPortion);
 	}
 }
 
@@ -100,21 +103,33 @@ void CActor::AddGameTask			 (const CInfoPortion* info_portion)
 			task_vector.push_back(TASK_DATA(*it, Level().GetGameTime()));
 	}
 
-
-	//добавить иконку с изображением PDA
-
-/*	RECT rect;
-	rect.left = INV_GRID_WIDTH;
-	rect.top = INV_GRID_HEIGHT;
-	rect.right = 2*INV_GRID_WIDTH;
-	rect.bottom = 2*INV_GRID_HEIGHT;
-	HUD().GetUI()->UIMainIngameWnd.AddIconedGameMessage("ui\\ui_icon_equipment",
-		rect, "Task Update Press P");*/
-
 	//установить флажок необходимости прочтени€ тасков в PDA
-
 	if(old_size != task_vector.size())
 		HUD().GetUI()->UIMainIngameWnd.SetFlashIconState(CUIMainIngameWnd::efiPdaTask, true);
+}
+
+
+void  CActor::AddGameNews			 (GAME_NEWS_DATA& news_data)
+{
+	if(news_data.news_id != NOT_SIMULATION_NEWS)
+	{
+		const CALifeNews* pNewsItem  = ai().alife().news().news(news_data.news_id); VERIFY(pNewsItem);
+		//добавл€ем в архив только новости
+		if(ALife::eNewsTypeKill == pNewsItem->m_news_type)
+		{
+			CSE_Abstract* E = Level().Server->game->get_entity_from_eid(pNewsItem->m_object_id[1]);
+			CSE_ALifeTraderAbstract	 *pTA	= smart_cast<CSE_ALifeTraderAbstract*>(E); 
+			if(!pTA) return;
+		}
+		else return;
+	}
+		
+
+	GAME_NEWS_VECTOR& news_vector = game_news_registry.objects();
+	news_data.receive_time = Level().GetGameTime();
+	news_vector.push_back(news_data);
+	
+	HUD().GetUI()->UIMainIngameWnd.OnNewsReceived(news_data);
 }
 
 
@@ -123,7 +138,7 @@ bool CActor::OnReceiveInfo(INFO_INDEX info_index)
 	//только если находимс€ в режиме single
 	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 	if(!pGameSP) return false;
-	
+
 	if(!CInventoryOwner::OnReceiveInfo(info_index))
 		return false;
 
@@ -174,17 +189,6 @@ void CActor::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_INDEX info_index)
 
 	//обновить информацию о контакте
 	UpdateContact(pPda->GetOriginalOwnerID());
-
-
-/*	CStringTable string_table;
-	ref_str text1 = string_table("test1");
-	ref_str text2 = string_table("test2");
-	ref_str text3 = string_table("item test2");
-	ref_str text4 = string_table("item test1");
-	LPCSTR str = *text4;
-	text3 = string_table("item test2");
-	str = *text3;
-*/	
 	CInventoryOwner::ReceivePdaMessage(who, msg, info_index);
 }
 
@@ -292,8 +296,17 @@ void CActor::UpdateContact		(u16 contact_id)
 
 void CActor::NewPdaContact		(CInventoryOwner* pInvOwner)
 {	
+	CGameObject* GO = smart_cast<CGameObject*>(pInvOwner);
+
 	HUD().GetUI()->UIMainIngameWnd.AnimateContacts();
+	
+	SMapLocation map_location;
+	map_location.attached_to_object = true;
+	map_location.object_id = GO->ID(); 
+	Level().AddMapLocation(map_location, eMapLocationPDAContact);
 }
 void CActor::LostPdaContact		(CInventoryOwner* pInvOwner)
 {
+	CGameObject* GO = smart_cast<CGameObject*>(pInvOwner);
+	Level().RemoveMapLocationByID(GO->ID(), eMapLocationPDAContact);
 }

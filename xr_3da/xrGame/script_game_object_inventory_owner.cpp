@@ -26,6 +26,7 @@
 #include "sound_memory_manager.h"
 #include "attachable_item.h"
 #include "ai/script/ai_script_monster.h"
+#include "string_table.h"
 
 bool CScriptGameObject::GiveInfoPortion(LPCSTR info_id)
 {
@@ -43,6 +44,21 @@ bool CScriptGameObject::DisableInfoPortion(LPCSTR info_id)
 	return true;
 }
 
+
+bool  CScriptGameObject::GiveGameNews		(LPCSTR news, LPCSTR texture_name, int x1, int y1, int x2, int y2)
+{
+	CActor* pActor = smart_cast<CActor*>(m_tpGameObject);
+	if(!pActor) return false;
+
+	GAME_NEWS_DATA news_data;
+	news_data.news_text = CStringTable().IndexById(news);
+	if(news_data.news_text == NO_STRING)
+		Msg("[warrning] no entrance found for %s news in string table", news);
+	
+	pActor->AddGameNews(news_data);
+
+	return true;
+}
 bool CScriptGameObject::GiveInfoPortionViaPda(LPCSTR info_id, CScriptGameObject* pFromWho)
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject);

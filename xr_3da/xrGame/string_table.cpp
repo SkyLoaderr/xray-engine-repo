@@ -118,7 +118,11 @@ STRING_VALUE CStringTable::operator() (const STRING_ID& str_id) const
 STRING_VALUE CStringTable::operator() (const STRING_INDEX str_index) const
 {
 	VERIFY(pData);
-	return pData->m_Strings[str_index];
+	if(NO_STRING == str_index)
+		return NULL;
+	else
+		return pData->m_Strings[str_index];
+
 }
 
 

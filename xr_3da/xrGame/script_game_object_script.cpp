@@ -287,6 +287,7 @@ void CScriptGameObject::script_register(lua_State *L)
 			.def("give_info_portion",			&CScriptGameObject::GiveInfoPortion)
 			.def("give_info_portion_via_pda",	&CScriptGameObject::GiveInfoPortionViaPda)
 			.def("disable_info_portion",		&CScriptGameObject::DisableInfoPortion)
+			.def("give_game_news",				&CScriptGameObject::GiveGameNews)
 			.def("has_info",					&CScriptGameObject::HasInfo)
 			.def("dont_has_info",				&CScriptGameObject::DontHasInfo)
 

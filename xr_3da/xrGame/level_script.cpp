@@ -104,11 +104,11 @@ Fvector vertex_position(u32 level_vertex_id)
 
 void map_add_object_icon(CScriptGameObject* lua_object, u16 text_id)
 {
-	Level().AddObjectMapLocation(lua_object->object());
+	Level().AddObjectMapLocation(lua_object->object(), eMapLocationScript);
 }
 void map_remove_object_icon(CScriptGameObject* lua_object)
 {
-	Level().RemoveMapLocationByID(lua_object->object()->ID());
+	Level().RemoveMapLocationByID(lua_object->object()->ID(), eMapLocationScript);
 }
 
 bool patrol_path_exists(LPCSTR patrol_path)

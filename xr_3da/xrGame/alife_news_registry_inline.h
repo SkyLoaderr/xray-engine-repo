@@ -8,11 +8,12 @@
 
 #pragma once
 
-IC	void CALifeNewsRegistry::add		(const CALifeNews &news)
+IC	ALife::_NEWS_ID CALifeNewsRegistry::add		(const CALifeNews &news)
 {
 	CALifeNews						*_news = xr_new<CALifeNews>(news);
 	_news->m_news_id				= m_last_id++;
-	m_news.insert					(std::make_pair(m_last_id,_news));
+	m_news.insert					(std::make_pair(_news->m_news_id,_news));
+	return							(_news->m_news_id);
 }
 
 IC	void CALifeNewsRegistry::remove		(const ALife::_NEWS_ID &news_id)

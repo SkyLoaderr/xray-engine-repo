@@ -9,11 +9,11 @@
 #include "infoportiondefs.h"
 #include "script_export_space.h"
 #include "StatGraph.h"
+#include "map_location.h"
 
 class	CHUDManager;
 class	CParticlesObject;
 class	xrServer;
-struct	SMapLocation;
 class	game_cl_GameState;
 class	NET_Queue_Event;
 class	CSE_Abstract;
@@ -195,11 +195,13 @@ protected:
 	LOCATIONS_PTR_VECTOR	m_MapLocationVector;
 public:
 	LOCATIONS_PTR_VECTOR&   MapLocations				() {return m_MapLocationVector;}
-	void					AddObjectMapLocation		(const CGameObject* object);
-	void					AddMapLocation				(const SMapLocation& map_location);
-	bool					RemoveMapLocationByID		(u16 object_id);
-	bool					RemoveMapLocationByInfo		(INFO_INDEX info_index);
+	void					AddObjectMapLocation		(const CGameObject* object, EMapLocationFlags location_type);
+	void					AddMapLocation				(const SMapLocation& map_location, EMapLocationFlags location_type);
+	void					RemoveMapLocationByID		(u16 object_id, EMapLocationFlags location_type);
+	void					RemoveMapLocationByInfo		(INFO_INDEX info_index);
 	void					RemoveMapLocations			();
+	SMapLocation*			GetMapLocationByID			(u16 object_id);
+	void					UpdateMapLocation			();
 
 	//работа с пулями
 protected:	

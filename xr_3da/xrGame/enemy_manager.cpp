@@ -96,7 +96,7 @@ void CEnemyManager::update					()
 {
 	inherited::update			();
 
-	if(selected())
+/*	if(selected())
 	{
 		if(m_actor_enemy && selected()->ID() != m_actor_enemy->ID())
 		{
@@ -122,5 +122,5 @@ void CEnemyManager::update					()
 	else if(!m_actor_enemy)
 	{
 		Level().RemoveMapLocationByID(m_self_entity_alive->ID());
-	}
+	}*/
 }

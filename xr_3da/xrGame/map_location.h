@@ -9,22 +9,23 @@
 #include "infoportiondefs.h"
 
 
+enum EMapLocationFlags
+{
+	eMapLocationPDAContact		= 0x01,
+	eMapLocationInfoPortion		= 0x02,
+	eMapLocationScript			= 0x04
+};
+
+
+
 struct SMapLocation
 {
-	SMapLocation() 
-	{
-		info_portion_id = NO_INFO_INDEX;
-		level_name = NULL;
-		x = y = 0;
-		name = NULL;
-		text = NULL;
+	SMapLocation();
 
-		attached_to_object = false;
-		object_id = 0xffff;
-		
-		marker_show = false;
-		icon_color = 0xffffffff;
-	}
+	ref_str LevelName();
+
+	//типы локаций
+	flags32 type_flags;
 
 	//имя уровня
 	ref_str level_name;
