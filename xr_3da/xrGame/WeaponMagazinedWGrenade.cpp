@@ -114,11 +114,11 @@ void CWeaponFakeGrenade::Load(LPCSTR section)
 	{
 		if(*l_effectsSTR == ',') 
 		{
-			*l_effectsSTR = 0; l_effectsSTR++;
-			while(*l_effectsSTR == ' ' || *l_effectsSTR == '\t') l_effectsSTR++;
+			*l_effectsSTR = 0; ++l_effectsSTR;
+			while(*l_effectsSTR == ' ' || *l_effectsSTR == '\t') ++l_effectsSTR;
 			m_effects.push_back(l_effectsSTR);
 		}
-		l_effectsSTR++;
+		++l_effectsSTR;
 	}
 
 	sscanf(pSettings->r_string(section,"light_color"), "%f,%f,%f", &m_lightColor.r, &m_lightColor.g, &m_lightColor.b); m_lightColor.a=1.f;
@@ -139,7 +139,7 @@ static const u32 EXPLODE_TIME	= 5000;
 static const u32 FLASH_TIME		= 300;
 static const u32 ENGINE_TIME	= 3000;
 
-void CWeaponFakeGrenade::Explode(const Fvector &pos, const Fvector &normal) 
+void CWeaponFakeGrenade::Explode(const Fvector &pos, const Fvector &/**normal/**/) 
 {
 	m_state			= stExplode;
 	m_explodeTime	= EXPLODE_TIME;
@@ -147,7 +147,7 @@ void CWeaponFakeGrenade::Explode(const Fvector &pos, const Fvector &normal)
 	Position().set(pos);
 	setVisible(false);
 	//list<CParticlesObject*>::iterator l_it;
-	//for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->Stop();
+	//for(l_it = m_trailEffectsPSs.begin(); m_trailEffectsPSs.end() != l_it; ++l_it) (*l_it)->Stop();
 	Sound->play_at_pos(sndExplode, 0, Position(), false);
 	Fvector l_dir; f32 l_dst;
 	m_blasted.clear();
@@ -176,7 +176,7 @@ void CWeaponFakeGrenade::Explode(const Fvector &pos, const Fvector &normal)
 			l_m.identity(); 
 			l_m.k.set(l_dir); 
 			GetBasis(l_m.k, l_m.i, l_m.j);
-			for(int i = 0; i < 8; i++) 
+			for(int i = 0; i < 8; ++i) 
 			{ 
 				Fvector l_v; 
 				l_b1.getpoint(i, l_v); 
@@ -218,7 +218,7 @@ void CWeaponFakeGrenade::Explode(const Fvector &pos, const Fvector &normal)
 	
 	Collide::ray_query RQ;
 	setEnabled(false);
-	for(s32 i = 0; i < m_frags; i++) 
+	for(s32 i = 0; i < m_frags; ++i) 
 	{
 		l_dir.set(::Random.randF(-.5f,.5f), ::Random.randF(-.5f,.5f), ::Random.randF(-.5f,.5f)); 
 		l_dir.normalize();
@@ -252,7 +252,7 @@ void CWeaponFakeGrenade::Explode(const Fvector &pos, const Fvector &normal)
 	//запустить партикловую анимацию взрыва
 	CParticlesObject* pStaticPG; 
 	s32 l_c = (s32)m_effects.size();
-	for(s32 i = 0; i < l_c; i++) 
+	for(s32 i = 0; i < l_c; ++i) 
 	{
 		pStaticPG = xr_new<CParticlesObject>(*m_effects[i],Sector()); 
 		pStaticPG->play_at_pos(pos);
@@ -402,7 +402,7 @@ void CWeaponFakeGrenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd,
 void CWeaponFakeGrenade::feel_touch_new(CObject* O) 
 {
 	CGameObject *pGameObject = dynamic_cast<CGameObject*>(O);
-	if(pGameObject && pGameObject != this) m_blasted.push_back(pGameObject);
+	if(pGameObject && this != pGameObject) m_blasted.push_back(pGameObject);
 }
 
 void CWeaponFakeGrenade::net_Destroy() 
@@ -447,7 +447,7 @@ void CWeaponFakeGrenade::OnH_B_Independent()
 
 		//CParticlesObject* pStaticPG; s32 l_c = m_trailEffects.size();
 		//Fmatrix l_m; l_m.set(XFORM());// GetBasis(normal, l_m.k, l_m.i);
-		//for(s32 i = 0; i < l_c; i++) {
+		//for(s32 i = 0; i < l_c; ++i) {
 		//	pStaticPG = xr_new<CParticlesObject>(m_trailEffects[i],Sector(),false);
 		//	pStaticPG->SetTransform(l_m);
 		//	pStaticPG->Play();
@@ -504,7 +504,7 @@ void CWeaponFakeGrenade::UpdateCL()
 				m_state		= stFlying;
 				// остановить двигатель
 				xr_list<CParticlesObject*>::iterator l_it;
-				//for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->Stop();
+				//for(l_it = m_trailEffectsPSs.begin(); m_trailEffectsPSs.end() != l_it; ++l_it) (*l_it)->Stop();
 			}
 			else
 			{
@@ -520,7 +520,7 @@ void CWeaponFakeGrenade::UpdateCL()
 				Fvector vel;
 				m_pPhysicsShell->get_LinearVel(vel);
 				// обновить эффекты
-				//for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->UpdateParent(XFORM(),vel);
+				//for(l_it = m_trailEffectsPSs.begin(); m_trailEffectsPSs.end() != l_it; ++l_it) (*l_it)->UpdateParent(XFORM(),vel);
 			}
 		}
 		break;
@@ -535,7 +535,7 @@ void CWeaponFakeGrenade::UpdateCL()
 	}
 }
 
-void CWeaponFakeGrenade::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq) 
+void CWeaponFakeGrenade::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL /**bCtrlFreq/**/) 
 {
 	string256	name,temp;
 	strconcat	(name,"weapons\\","rpg7","_",s_name,".ogg");
@@ -614,7 +614,7 @@ void CWeaponMagazinedWGrenade::Load	(LPCSTR section)
 	{
 		string128		_ammoItem;
 		int				count		= _GetItemCount	(S);
-		for (int it=0; it<count; it++)	
+		for (int it=0; it<count; ++it)	
 		{
 			_GetItem				(S,it,_ammoItem);
 			m_ammoTypes2.push_back	(_ammoItem);
@@ -725,7 +725,7 @@ void CWeaponMagazinedWGrenade::OnShot		()
 //переход в режим подствольника или выход из него
 void CWeaponMagazinedWGrenade::SwitchMode() 
 {
-	if(!IsGrenadeLauncherAttached() || STATE != eIdle || bPending)
+	if(!IsGrenadeLauncherAttached() || eIdle != STATE || bPending)
 	{
 		return;
 	}
@@ -789,7 +789,7 @@ void CWeaponMagazinedWGrenade::state_Fire(float dt)
 			bFlame			=	TRUE;
 			fTime			+=	fTimeToFire;
 
-			m_shotNum++;
+			++m_shotNum;
 			OnShot			();
 			
 			// Ammo
@@ -915,8 +915,8 @@ bool CWeaponMagazinedWGrenade::CanAttach(PIItem pIItem)
 	CGrenadeLauncher* pGrenadeLauncher = dynamic_cast<CGrenadeLauncher*>(pIItem);
 	
 	if(pGrenadeLauncher &&
-	   m_eGrenadeLauncherStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
-	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher) == 0 &&
+	   CSE_ALifeItemWeapon::eAddondAttachable == m_eGrenadeLauncherStatus &&
+	   0 == (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher) &&
 	   !strcmp(*m_sGrenadeLauncherName, pIItem->cNameSect()))
        return true;
 	else
@@ -925,8 +925,8 @@ bool CWeaponMagazinedWGrenade::CanAttach(PIItem pIItem)
 
 bool CWeaponMagazinedWGrenade::CanDetach(const char* item_section_name)
 {
-	if(m_eGrenadeLauncherStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
-	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher) != 0 &&
+	if(CSE_ALifeItemWeapon::eAddondAttachable == m_eGrenadeLauncherStatus &&
+	   0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher) &&
 	   !strcmp(*m_sGrenadeLauncherName, item_section_name))
 	   return true;
 	else
@@ -938,8 +938,8 @@ bool CWeaponMagazinedWGrenade::Attach(PIItem pIItem)
 	CGrenadeLauncher* pGrenadeLauncher = dynamic_cast<CGrenadeLauncher*>(pIItem);
 	
 	if(pGrenadeLauncher &&
-	   m_eGrenadeLauncherStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
-	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher) == 0 &&
+	   CSE_ALifeItemWeapon::eAddondAttachable == m_eGrenadeLauncherStatus &&
+	   0 == (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher) &&
 	   !strcmp(*m_sGrenadeLauncherName, pIItem->cNameSect()))
 	{
 		m_flagsAddOnState |= CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher;
@@ -959,8 +959,8 @@ bool CWeaponMagazinedWGrenade::Attach(PIItem pIItem)
 }
 bool CWeaponMagazinedWGrenade::Detach(const char* item_section_name)
 {
-	if( m_eGrenadeLauncherStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
-	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher) != 0 &&
+	if (CSE_ALifeItemWeapon::eAddondAttachable == m_eGrenadeLauncherStatus &&
+	   0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher) &&
 	   !strcmp(*m_sGrenadeLauncherName, item_section_name))
 	{
 		m_flagsAddOnState &= ~CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher;
