@@ -406,7 +406,7 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 				value("nearest",				int(CPatrolPathParams::ePatrolPathNearest)),
 				value("dummy",					int(CPatrolPathParams::ePatrolPathDummy))
 			]
-			.enum_("start")
+			.enum_("stop")
 			[
 				value("stop",					int(CPatrolPathParams::ePatrolPathStop)),
 				value("continue",				int(CPatrolPathParams::ePatrolPathContinue)),
@@ -510,8 +510,8 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def(								constructor<LPCSTR,const Fvector &>())
 			.def(								constructor<LPCSTR,const Fvector &,const Fvector &>())
 			.def(								constructor<LPCSTR,const Fvector &,const Fvector &,bool>())
-			.def("set",							&CSoundAction::SetSound)
-			.def("set",							&CSoundAction::SetBone)
+			.def("set_sound",					&CSoundAction::SetSound)
+			.def("set_bone",					&CSoundAction::SetBone)
 			.def("set_position",				&CSoundAction::SetPosition)
 			.def("set_angles",					&CSoundAction::SetAngles),
 
@@ -528,8 +528,8 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def(								constructor<LPCSTR,LPCSTR,const CParticleParams &, bool>())
 			.def(								constructor<LPCSTR,const CParticleParams &>())
 			.def(								constructor<LPCSTR,const CParticleParams &, bool>())
-			.def("set",							&CParticleAction::SetParticle)
-			.def("set",							&CParticleAction::SetBone)
+			.def("set_particle",				&CParticleAction::SetParticle)
+			.def("set_bone",					&CParticleAction::SetBone)
 			.def("set_position",				&CParticleAction::SetPosition)
 			.def("set_angles",					&CParticleAction::SetAngles)
 			.def("set_velocity",				&CParticleAction::SetVelocity),
@@ -585,7 +585,7 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("particle",					&CEntityAction::CheckIfParticleCompleted)
 			.def("object",						&CEntityAction::CheckIfObjectCompleted)
 			.def("time",						&CEntityAction::CheckIfTimeOver)
-			.def("wait",						(bool (CEntityAction::*)())(CEntityAction::CheckIfActionCompleted))
+			.def("all",							(bool (CEntityAction::*)())(CEntityAction::CheckIfActionCompleted))
 	];
 }
 
@@ -622,7 +622,7 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def(								constructor<LPCSTR>())
 			.def(								constructor<const CLuaGameObject *>())
 			.def("position",					&CLuaGameObject::Position)
-			.def("classid",						&CLuaGameObject::ClassID)
+			.def("class_id",					&CLuaGameObject::ClassID)
 			.def("id",							&CLuaGameObject::ID)
 			.def("section",						&CLuaGameObject::Section)
 			.def("name",						&CLuaGameObject::Name)
