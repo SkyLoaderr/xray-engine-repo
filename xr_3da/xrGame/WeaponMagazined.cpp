@@ -143,8 +143,10 @@ void CWeaponMagazined::ReloadMagazine	()
 	else
 	{ 
 		iAmmoElapsed = iAmmoCurrent+iAmmoElapsed;
-		if (iAmmoElapsed>iMagazineSize)	iAmmoCurrent =	iAmmoElapsed-iMagazineSize;
-		else							iAmmoCurrent =  0;
+		if (iAmmoElapsed>iMagazineSize)	{
+			iAmmoCurrent =	iAmmoElapsed-iMagazineSize;
+			iAmmoElapsed = iMagazineSize;
+		} else iAmmoCurrent =  0;
 	}
 }
 
