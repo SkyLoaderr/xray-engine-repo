@@ -121,6 +121,11 @@ shared_str CMapLocation::LevelName()
 
 bool CMapLocation::Update() //returns actual
 {
+	if (GameID() != GAME_SINGLE)
+	{
+		CObject* pObject =  Level().Objects.net_Find(m_objectID);
+		if (!pObject) return false;
+	};
 	return true;
 }
 

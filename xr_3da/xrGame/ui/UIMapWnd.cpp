@@ -426,7 +426,8 @@ void CUILevelMap::UpdateSpots		()
 	DetachAll();
 	Locations& ls =Level().MapManager().Locations();
 	for(Locations_it it=ls.begin(); it!=ls.end(); ++it){
-		(*it).location->UpdateLevelMap(this);
+		if ((*it).location->Update())
+			(*it).location->UpdateLevelMap(this);
 	}
 }
 
@@ -451,7 +452,8 @@ void CUIMiniMap::UpdateSpots()
 	DetachAll();
 	Locations& ls =Level().MapManager().Locations();
 	for(Locations_it it=ls.begin(); it!=ls.end(); ++it){
-		(*it).location->UpdateMiniMap(this);
+		if ((*it).location->Update())
+			(*it).location->UpdateMiniMap(this);
 	}
 
 }

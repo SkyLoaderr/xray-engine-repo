@@ -508,16 +508,41 @@ void	game_cl_ArtefactHunt::UpdateMapLocations		()
 
 	if (local_player)
 	{
-		if (!artefactID && old_artefactID)
+		if (!artefactID)
 		{
-			Level().MapManager().RemoveMapLocationByObjectID(old_artefactID);
-			if (artefactID)
-				Level().MapManager().AddMapLocation(ARTEFACT_NEUTRAL, artefactID);
-
-			old_artefactID = artefactID;
+			if (old_artefactID)
+				Level().MapManager().RemoveMapLocationByObjectID(old_artefactID);
 		}
 		else
 		{
+			if (!artefactBearerID)
+			{
+				if (!Level().MapManager().HasMapLocation(ARTEFACT_NEUTRAL, artefactID))
+				{
+					Level().MapManager().RemoveMapLocationByObjectID(artefactID);
+					Level().MapManager().AddMapLocation(ARTEFACT_NEUTRAL, artefactID);
+				};
+			}
+			else
+			{
+				if (teamInPossession == local_player->team)
+				{
+					if (!Level().MapManager().HasMapLocation(ARTEFACT_FRIEND, artefactID))
+					{
+						Level().MapManager().RemoveMapLocationByObjectID(artefactID);
+						Level().MapManager().AddMapLocation(ARTEFACT_FRIEND, artefactID);
+					}
+				}
+				else
+				{
+					if (!Level().MapManager().HasMapLocation(ARTEFACT_ENEMY, artefactID))
+					{
+						Level().MapManager().RemoveMapLocationByObjectID(artefactID);
+						Level().MapManager().AddMapLocation(ARTEFACT_ENEMY, artefactID);
+					}
+				}
+			};
+/*
 			if (old_artefactBearerID != artefactBearerID || old_teamInPossession != teamInPossession)
 			{
 				Level().MapManager().RemoveMapLocationByObjectID(old_artefactID);
@@ -533,6 +558,7 @@ void	game_cl_ArtefactHunt::UpdateMapLocations		()
 						Level().MapManager().AddMapLocation(ARTEFACT_ENEMY, artefactID);
 				};
 			};
+			*/
 		};
 		old_artefactBearerID = artefactBearerID;
 		old_artefactID = artefactID;
