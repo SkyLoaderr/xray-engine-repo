@@ -358,6 +358,7 @@ HRESULT	IPureClient::net_Handler(DWORD dwMessageType, PVOID pMessage)
 		break;
 	default:
 		{
+#ifdef DEBUG
 			LPSTR	msg;	
 			switch (dwMessageType)
 			{
@@ -383,6 +384,7 @@ HRESULT	IPureClient::net_Handler(DWORD dwMessageType, PVOID pMessage)
 			default:									msg = "???"; break;
 			}
 			Msg("! ************************************ : %s",msg);
+#endif
 		}
 		break;
 	}
