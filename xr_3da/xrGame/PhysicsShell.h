@@ -208,6 +208,7 @@ virtual CPHJointDestroyInfo* JointDestroyInfo()																  =0;
 };
 
 // ABSTRACT: 
+class CPHIsland;
 class CPhysicsShell			: public CPhysicsBase
 {
 protected:
@@ -220,7 +221,7 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	virtual void				set_JointResistance		(float force)										= 0;
 	virtual	void				add_Element				(CPhysicsElement* E)								= 0;
 	virtual	void				add_Joint				(CPhysicsJoint* E)									= 0;
-
+	virtual CPHIsland*			PIsland					()													= 0;
 
 	virtual bool				isFractured				()													= 0;
 	virtual void				SplitProcess			(PHSHELL_PAIR_VECTOR &out_shels)					= 0;

@@ -68,10 +68,10 @@ extern class CBlockAllocator<dJointFeedback,128> ContactFeedBacks;
 extern CBlockAllocator<CPHContactBodyEffector,128> ContactEffectors;
 //void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2);
 void NearCallback(CPHObject* obj1,CPHObject* obj2, dGeomID o1, dGeomID o2);
-void CollideStatic(dGeomID o2);
+void CollideStatic(dGeomID o2,CPHObject* obj2);
 
-void SaveContactsStatic(dGeomID o2,dJointGroupID jointGroup);
-void SaveContacts(CPHObject* obj1,CPHObject* obj2,dGeomID o1, dGeomID o2,dJointGroupID jointGroup);
+
+
 class CPHElement;
 class CPHShell;
 extern dJointGroupID ContactGroup;

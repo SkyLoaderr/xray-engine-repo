@@ -96,6 +96,9 @@ void CPHWorld::Create()
 #ifdef ODE_SLOW_SOLVER
 #else
 	dWorldSetAutoEnableDepthSF1(phWorld, 100000000);
+	dWorldSetContactSurfaceLayer(phWorld,0.f);
+	//phWorld->contactp.min_depth =0.f;
+
 #endif
 	ContactGroup			= dJointGroupCreate(0);		
 	dWorldSetGravity		(phWorld, 0,-world_gravity, 0);//-2.f*9.81f
@@ -185,21 +188,40 @@ void CPHWorld::Step()
 
 	Device.Statistic.ph_core.Begin		();
 #ifdef ODE_SLOW_SOLVER
-	dWorldStep		(phWorld,	fixed_step);
+	for(i_object=m_objects.begin();m_objects.end() != i_object;)
+	{	
+		CPHObject* obj=(*i_object);
+		++i_object;
+		obj->IslandStep(fixed_step);
+	}
+
+	//dWorldStep		(phWorld,	fixed_step);
 #else
 	//IterationCycleI=(++IterationCycleI)%phIterationCycle;
+	for(i_object=m_objects.begin();m_objects.end() != i_object;)
+	{	
+		CPHObject* obj=(*i_object);
+		++i_object;
+		obj->IslandStep(fixed_step);
+	}
 
-	dWorldStepFast1	(phWorld,	fixed_step,	phIterations/*+Random.randI(0,phIterationCycle)*/);
-	//	dWorldQuickStep(phWorld,fixed_step);
+	//dWorldStepFast1	(phWorld,	fixed_step,	phIterations/*+Random.randI(0,phIterationCycle)*/);
+
 #endif
 	Device.Statistic.ph_core.End		();
 
-
+	//for(i_object=m_objects.begin();m_objects.end() != i_object;)
+	//{
+	//	CPHObject* obj=(*i_object);
+	//	++i_object;
+	//	obj->IslandReinit();
+	//}
 
 	for(i_object=m_objects.begin();m_objects.end() != i_object;)
 	{
 		CPHObject* obj=(*i_object);
 		++i_object;
+		obj->IslandReinit();
 		obj->PhDataUpdate(fixed_step);
 		obj->spatial_move();
 	}
@@ -213,6 +235,8 @@ void CPHWorld::Step()
 	dJointGroupEmpty(ContactGroup);//this is to be called after PhDataUpdate!!!-the order is critical!!!
 	ContactFeedBacks.empty();
 	ContactEffectors.empty();
+
+
 
 	if(physics_step_time_callback) 
 	{

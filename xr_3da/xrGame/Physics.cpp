@@ -99,7 +99,7 @@ IC void add_contact_body_effector(dBodyID body,dContact& c,float flotation)
 
 
 
-IC static bool CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup)
+IC static bool CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,CPHIsland* world)
 {
 	const int RS= 800;
 	const int N = RS;
@@ -240,7 +240,8 @@ IC static bool CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup)
 			#ifdef DRAW_CONTACTS
 			Contacts.push_back(c);
 			#endif
-			dJointID contact_joint	= dJointCreateContact(phWorld, jointGroup, &c);
+			dJointID contact_joint	= dJointCreateContact(0, jointGroup, &c);
+			world->ConnectJoint(contact_joint);
 			dJointAttach			(contact_joint, dGeomGetBody(g1), dGeomGetBody(g2));
 		}
 	}
@@ -248,23 +249,24 @@ IC static bool CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup)
 }
 void NearCallback(CPHObject* obj1,CPHObject* obj2, dGeomID o1, dGeomID o2)
 {	
-	if(CollideIntoGroup(o1,o2,ContactGroup) && obj2 &&!obj2->is_active())obj2->EnableObject();
+	if(CollideIntoGroup(o1,o2,ContactGroup,obj1->DActiveIsland()))
+	{	
+		if(obj2)
+		{
+			obj1->MergeIsland(obj2);
+			if(!obj2->is_active())obj2->EnableObject();
+		}
+	}
 }
-void CollideStatic(dGeomID o2)
+void CollideStatic(dGeomID o2,CPHObject* obj2)
 {
-	CollideIntoGroup(ph_world->GetMeshGeom(),o2,ContactGroup);
+	CollideIntoGroup(ph_world->GetMeshGeom(),o2,ContactGroup,obj2->DActiveIsland());
 }
 
-void SaveContactsStatic(dGeomID o2,dJointGroupID jointGroup)
-{
-	CollideIntoGroup(ph_world->GetMeshGeom(),o2,jointGroup);
-}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
-void SaveContacts(CPHObject* obj1,CPHObject* obj2,dGeomID o1, dGeomID o2,dJointGroupID jointGroup)
-{
-	CollideIntoGroup(o1,o2,jointGroup);
-}
+
 
 void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 {
