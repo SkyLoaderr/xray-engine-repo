@@ -3007,6 +3007,22 @@
 							RelativePath=".\ai\Monsters\Fracture\fracture_state_manager.h">
 						</File>
 					</Filter>
+					<Filter
+						Name="Snork"
+						Filter="">
+						<File
+							RelativePath=".\ai\Monsters\Snork\snork.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Snork\snork.h">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Snork\snork_state_manager.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Snork\snork_state_manager.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="humans"
@@ -9224,6 +9240,9 @@
 				</File>
 				<File
 					RelativePath=".\M_Pseudodog.ltx">
+				</File>
+				<File
+					RelativePath=".\M_Snork.ltx">
 				</File>
 				<File
 					RelativePath=".\m_stalker.ltx">
