@@ -8,6 +8,7 @@
 #include "stdafx.h"
 #include "..\skeletonX.h"
 #include "..\bodyinstance.h"
+#pragma warning(disable:4537)
 // -- offsets -------------------------------------------------------
 #define M11 0
 #define M12 4
