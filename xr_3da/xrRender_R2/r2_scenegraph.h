@@ -36,13 +36,13 @@ namespace SceneGraph
 		FixedMAP<float,_MatrixItem>			sorted;
 		std::vector<_MatrixItem>			unsorted;
 	};
-	struct	mapMatrixItems		: public	mapNormalDirect										{	float	ssa;	};
-	struct	mapMatrixVB			: public	FixedMAP<IDirect3DVertexBuffer9*,mapNormalItems>	{	float	ssa;	};
-	struct	mapMatrixTextures	: public	FixedMAP<STextureList*,mapNormalVB>					{	float	ssa;	};
-	struct	mapMatrixStates		: public	FixedMAP<IDirect3DStateBlock9*,mapNormalTextures>	{	float	ssa;	};
-	struct	mapMatrixCS			: public	FixedMAP<R_constant_table*,mapNormalStates>			{	float	ssa;	};
-	struct	mapMatrixPS			: public	FixedMAP<IDirect3DPixelShader9*, mapNormalCS>		{	float	ssa;	};
-	struct	mapMatrixVS			: public	FixedMAP<IDirect3DVertexShader9*, mapNormalPS>		{	};
+	struct	mapMatrixItems		: public	mapMatrixDirect										{	float	ssa;	};
+	struct	mapMatrixVB			: public	FixedMAP<IDirect3DVertexBuffer9*,mapMatrixItems>	{	float	ssa;	};
+	struct	mapMatrixTextures	: public	FixedMAP<STextureList*,mapMatrixVB>					{	float	ssa;	};
+	struct	mapMatrixStates		: public	FixedMAP<IDirect3DStateBlock9*,mapMatrixTextures>	{	float	ssa;	};
+	struct	mapMatrixCS			: public	FixedMAP<R_constant_table*,mapMatrixStates>			{	float	ssa;	};
+	struct	mapMatrixPS			: public	FixedMAP<IDirect3DPixelShader9*, mapMatrixCS>		{	float	ssa;	};
+	struct	mapMatrixVS			: public	FixedMAP<IDirect3DVertexShader9*, mapMatrixPS>		{	};
 	typedef mapMatrixVS			mapMatrix_T;
 
 	// Top level
