@@ -41,6 +41,8 @@ chugai_act_tutor       = chugai_actions + 10
 
 commander_commander    = chugai_actions + 20
 
+chugai_scout_base      = chugai_actions + 30
+
 -- «мей
 zmey_actions = stalker_ids.action_script + 10000
 zmey_action_guard_activity = zmey_actions + 1
