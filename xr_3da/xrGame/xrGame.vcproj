@@ -1454,12 +1454,6 @@
 					<Filter
 						Name="Devices"
 						Filter="">
-						<File
-							RelativePath="Torch.cpp">
-						</File>
-						<File
-							RelativePath="Torch.h">
-						</File>
 						<Filter
 							Name="Detectors"
 							Filter="">
@@ -1479,6 +1473,26 @@
 									RelativePath="SimpleDetector.h">
 								</File>
 							</Filter>
+						</Filter>
+						<Filter
+							Name="Torch"
+							Filter="">
+							<File
+								RelativePath="Torch.cpp">
+							</File>
+							<File
+								RelativePath="Torch.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="ArtifactMerger"
+							Filter="">
+							<File
+								RelativePath=".\ArtifactMerger.cpp">
+							</File>
+							<File
+								RelativePath=".\ArtifactMerger.h">
+							</File>
 						</Filter>
 					</Filter>
 					<Filter

@@ -128,9 +128,9 @@
 // PDA
 #define CLSID_DEVICE_PDA			MK_CLSID('D','_','P','D','A',' ',' ',' ')
 
-
 // Devices
 #define CLSID_DEVICE_TORCH			MK_CLSID('D','_','T','O','R','C','H',' ')
+#define CLSID_DEVICE_AF_MERGER		MK_CLSID('D','_','A','F','M','E','R','G')
 
 // Inventory items
 #define CLSID_IITEM_BOLT			MK_CLSID('I','I','_','B','O','L','T',' ')

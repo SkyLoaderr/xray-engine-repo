@@ -846,6 +846,8 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 
 #include "simpledetector.h"
 #include "pda.h"
+#include "artifactmerger.h"
+
 
 #include "physicobject.h"
 #include "script_zone.h"
@@ -951,6 +953,7 @@ extern "C" {
 			// Devices
 			case CLSID_DEVICE_TORCH:		P = xr_new<CTorch>();				break;
 			case CLSID_DEVICE_PDA:			P = xr_new<CPda>();					break;
+			case CLSID_DEVICE_AF_MERGER:	P = xr_new<CArtifactMerger>();		break;
 
 			// entity
 			case CLSID_OBJECT_HLAMP:		P = xr_new<CHangingLamp>();			break;
