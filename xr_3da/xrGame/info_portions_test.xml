@@ -104,16 +104,6 @@
 		</task>
 		<task>
 			<objective>
-				<text>test task primary1</text>
-				<script_condition>info_test1.test_task2</script_condition>
-			</objective>
-			<objective>
-				<text>test task secondary 01</text>
-				<script_condition>info_test1.test_task2</script_condition>
-			</objective>
-		</task>
-		<task>
-			<objective>
 				<text>test task primary2</text>
 				<script_condition>info_test1.test_task3</script_condition>
 			</objective>
@@ -122,6 +112,7 @@
 				<script_condition>info_test1.test_task2</script_condition>
 			</objective>
 		</task>
+		
 
 		<article>three</article>
 		<article>four</article>
