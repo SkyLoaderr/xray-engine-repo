@@ -16,6 +16,7 @@ public:
 	void				OnDeviceCreate		();
 	void				OnDeviceDestroy		();
 
+	BOOL				Available			()	{ return bAvailable; }
 	void				Begin				();
 	void				End					(float blur);
 };
