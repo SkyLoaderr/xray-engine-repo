@@ -85,21 +85,21 @@ protected:
 			std::strcpy(m_strAddonTypeNames[2], "Scope");
 		}
 		// Для слота
-		void SetSlot(u32 slot)					{ R_ASSERT(slot < 6 || slot == static_cast<u32>(-1)); slotNum = slot; }
-		u32	 GetSlot()							{ return slotNum; }
-		// Для секций
-		void SetSection(u32 section)			{ sectionNum = section; }
-		u32	 GetSection()						{ return sectionNum; }
+		void SetSlot(u32 slot)						{ R_ASSERT(slot < 6 || slot == static_cast<u32>(-1)); slotNum = slot; }
+		u32	 GetSlot()								{ return slotNum; }
+		// Получаем номер группы секций (нож - 0, пистолы - 1, et cetera)
+		void SetSectionGroupID(u32 section)			{ sectionNum = section; }
+		u32	 GetSectionGroupID()					{ return sectionNum; }
 		// Функции для запоминания/возвращения имени секции в .ltx файле, этой вещи
-		void SetSectionName(const char *pData)	{ std::strcpy(strName, pData); }
-		const char *GetSectionName() const		{ return strName; }
+		void SetSectionName(const char *pData)		{ std::strcpy(strName, pData); }
+		const char * GetSectionName() const			{ return strName; }
 		// Запоминаем/возвращеаем указатель на CUIDragDropList которому изначально пренадлежит
 		// вещь
-		void SetOwner(CUIDragDropList *pOwner)	{ R_ASSERT(pOwner); m_pOwner = pOwner; }
-		CUIDragDropList * GetOwner()			{ return m_pOwner; }
-		// Номер элемента в секции
-		void SetPosInSection(const u32 pos)		{ posInSection = pos; }
-		u32 GetPosInSection() const 			{ return posInSection; }
+		void SetOwner(CUIDragDropList *pOwner)		{ R_ASSERT(pOwner); m_pOwner = pOwner; }
+		CUIDragDropList * GetOwner()				{ return m_pOwner; }
+		// Номер элемента в группе секций
+		void SetPosInSectionsGroup(const u32 pos)	{ posInSection = pos; }
+		u32 GetPosInSectionsGroup() const 			{ return posInSection; }
 
 		//-----------------------------------------------------------------------------/
 		//  Работа с аддонами. Средствами переопределения CWeapon нужную функциональность
@@ -317,8 +317,15 @@ protected:
 	int GetFirstFreeIndex();
 
 	// Дополнительные функции для получения информации о вещах в слотах
+	// Params:	slotNum	- номер слота (раздела) в котором ищем 
+	//			idx		- порядковый индекс оружия в слоте (для всех слотов кроме пояса должно быть == 0)
+	// Return:	Указатель на затребованную вещь, либо NULL, если не найдено
 	CUIDragDropItemMP * GetWeapon(u32 slotNum, u32 idx = 0);
-	const u8 GetItemIndex(u32 slotNum, u32 idxInArr, u8 &sectionNum);
+	// Params:	slotNum		- см. предыдущую функцию
+	//			idx			- см. предыдущую функцию
+	//			sectionNum	- возвращаем порядковый номер секции в списке секций
+	// Return:	Индекс затребованной вещи, либо 0xff(-1), если не найдено
+	const u8 GetItemIndex(u32 slotNum, u32 idx, u8 &sectionNum);
 
 	// Поддержка клавиатурного режима покупки оружия
 
@@ -338,8 +345,6 @@ protected:
 	bool MenuLevelDown()	{ return MenuLevelJump(static_cast<MENU_LEVELS>(m_mlCurrLevel - 1)); }
 	// callback функция для отрисовки цифровых подписей к оружию
 	friend void WpnDrawIndex(CUIDragDropItem *pDDItem);
-	// Удалить элемент из листа по его позиции в списке секций.
-	void RemoveItemByPos(const u32 sectionNum, CUIDragDropList *pDDList);
 public:
 	// А не является ли данная вещь чьим-то аддоном?
 	// Возвращаем адрес хозяина аддона, если нашли и тип аддона
@@ -347,19 +352,23 @@ public:
 	// Обработчик нажатий на кнопки клавы
 	virtual bool OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action);
 	// Получить имя секции в weapon.ltx соответствующий оружию в слоте или на поясе
-	const char *GetWeaponName(u32 slotNum);
-	const char *GetWeaponNameInBelt(u32 indexInBelt);
+	const char	*GetWeaponName(u32 slotNum);
+	const char	*GetWeaponNameInBelt(u32 indexInBelt);
 	// Получить индекс оружия в массиве доступных, из заданного слота.
 	// Первое оружие имеет индекс 0. Если в слоте нет ничего, то возвращаем -1
-	const u8 GetWeaponIndex(u32 slotNum);
-	const u8 GetWeaponIndexInBelt(u32 indexInBelt, u8 &sectionId, u8 &itemId);
+	const u8	GetWeaponIndex(u32 slotNum);
+	const u8	GetWeaponIndexInBelt(u32 indexInBelt, u8 &sectionId, u8 &itemId);
 	// Получить имя оружия по индексу, и номеру слота
-	const char *GetWeaponNameByIndex(u32 slotNum, u8 idx);
+	const char	*GetWeaponNameByIndex(u32 slotNum, u8 idx);
 	// Получить данные о аддонах к оружию. Младшие 3 бита, если установлены в 1 означают:
 	// 2 - Silencer, 1 - Grenade Launcher, 0 - Scope
-	const u8 GetWeaponAddonInfoByIndex(u8 idx);
+	const u8	GetWeaponAddonInfoByIndex(u8 idx);
 	// Получить размер пояса в элементах
-	const u8 GetBeltSize();
+	const u8	GetBeltSize();
 	// Перезагрузка предметов
 	void		ReInitItems	(char *strSectionName);
+	// Процедура принудительного перемещения оружия (эмуляция даблклика).
+	// Params:	uSlotNum		- номер слота
+	//			uIndexInSlot	- порядковый уровень оружия в списке группы секций
+	void		MoveWeapon(const u8 uSlotNum, const u8 uIndexInSlot);
 };
