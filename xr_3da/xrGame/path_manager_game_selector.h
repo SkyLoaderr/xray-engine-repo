@@ -43,5 +43,10 @@ namespace PathManagers {
 			m_vertex_types(vertex_types)
 		{
 		}
+
+		IC	_index_type	selected_vertex_id() const
+		{
+			return		(m_vertex_id);
+		}
 	};
 };

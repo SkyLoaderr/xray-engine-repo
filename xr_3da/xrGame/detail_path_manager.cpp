@@ -52,20 +52,20 @@ const Fvector &CDetailPathManager::direction()
 		return		(direction.normalize());
 }
 
-void CDetailPathManager::build_path(const xr_vector<u32> &level_path)
+void CDetailPathManager::build_path(const xr_vector<u32> &level_path, u32 intermediate_index, const Fvector &dest_position)
 {
 	if (!m_detail_path_actual && valid(m_detail_start_position) && valid(m_detail_dest_position)) {
 		switch (m_detail_path_type) {
 			case eDetailPathTypeSmooth : {
-				build_smooth_path(level_path);
+				build_smooth_path(level_path,intermediate_index,dest_position);
 				break;
 			}
 			case eDetailPathTypeSmoothDodge : {
-				build_dodge_path(level_path);
+				build_dodge_path(level_path,intermediate_index,dest_position);
 				break;
 			}
 			case eDetailPathTypeSmoothCriteria : {
-				build_criteria_path(level_path);
+				build_criteria_path(level_path,intermediate_index,dest_position);
 				break;
 			}
 		}
@@ -76,17 +76,17 @@ void CDetailPathManager::build_path(const xr_vector<u32> &level_path)
 	}
 }
 
-void CDetailPathManager::build_smooth_path		(const xr_vector<u32> &level_path)
+void CDetailPathManager::build_smooth_path		(const xr_vector<u32> &level_path, u32 intermediate_index, const Fvector &dest_position)
 {
-	build_criteria_path		(level_path);
+	build_criteria_path		(level_path,intermediate_index,dest_position);
 }
 
-void CDetailPathManager::build_dodge_path		(const xr_vector<u32> &level_path)
+void CDetailPathManager::build_dodge_path		(const xr_vector<u32> &level_path, u32 intermediate_index, const Fvector &dest_position)
 {
-	build_criteria_path		(level_path);
+	build_criteria_path		(level_path,intermediate_index,dest_position);
 }
 
-void CDetailPathManager::build_criteria_path	(const xr_vector<u32> &level_path)
+void CDetailPathManager::build_criteria_path	(const xr_vector<u32> &level_path, u32 intermediate_index, const Fvector &dest_position)
 {
 	R_ASSERT				(!level_path.empty());
 	STravelPoint			current,next;

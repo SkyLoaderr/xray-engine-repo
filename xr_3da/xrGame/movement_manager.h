@@ -74,8 +74,9 @@ private:
 	bool			path_actual				() const;
 
 protected:
-	ALife::_GRAPH_ID						m_game_dest_vertex_id;
+	u32										m_game_dest_vertex_id;
 	u32										m_level_dest_vertex_id;
+	Fvector									m_detail_dest_position;
 	float									m_speed;
 
 	friend class CScriptMonster;
@@ -90,6 +91,7 @@ public:
 	IC		void	set_path_type			(EPathType path_type);
 	IC		void	set_game_dest_node		(const ALife::_GRAPH_ID game_vertex_id);
 	IC		void	set_level_dest_node		(const u32 level_vertex_id);
+			bool	time_over				() const;
 };
 
 #include "movement_manager_inline.h"

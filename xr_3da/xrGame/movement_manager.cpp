@@ -163,47 +163,76 @@ void CMovementManager::build_path()
 	}
 }
 
+bool CMovementManager::time_over() const
+{
+	return					(true);
+}
+
 void CMovementManager::process_game_path()
 {
 	switch (m_path_state) {
 		case ePathStateSelectGameVertex : {
-			CGameLocationSelector::select_location(m_tGameVertexID);
-			m_path_state		= ePathStateBuildGamePath;
-			break;
+			CGameLocationSelector::select_location(m_tGameVertexID,m_game_dest_vertex_id);
+			if (!CGameLocationSelector::selector_failed())
+				break;
+			m_path_state	= ePathStateBuildGamePath;
+			if (time_over())
+				break;
 		}
 		case ePathStateBuildGamePath : {
 			CGamePathManager::build_path(m_tGameVertexID,m_game_dest_vertex_id);
-			m_path_state		= ePathStateContinueGamePath;
-			break;
+			if (CGamePathManager::path_failed())
+				break;
+			m_path_state	= ePathStateContinueGamePath;
+			if (time_over())
+				break;
 		}
 		case ePathStateContinueGamePath : {
 			CGamePathManager::select_intermediate_vertex();
-			m_path_state		= ePathStateBuildLevelPath;
-			break;
+			m_path_state	= ePathStateBuildLevelPath;
+			if (time_over())
+				break;
 		}
 		case ePathStateBuildLevelPath : {
-			CLevelPathManager::build_path(m_dwLevelVertexID,m_level_dest_vertex_id);
+			CLevelPathManager::build_path(
+				m_dwLevelVertexID,
+				CGamePathManager::get_intermediate_vertex_id()
+			);
+			if (CLevelPathManager::path_failed())
+				break;
 			m_path_state		= ePathStateContinueLevelPath;
-			break;
+			if (time_over())
+				break;
 		}
 		case ePathStateContinueLevelPath : {
 			CLevelPathManager::select_intermediate_vertex();
 			m_path_state		= ePathStateBuildDetailPath;
-			break;
+			if (time_over())
+				break;
 		}
 		case ePathStateBuildDetailPath : {
-			CDetailPathManager::build_path(CLevelPathManager::m_path);
+			CDetailPathManager::build_path(
+				CLevelPathManager::m_path,
+				CLevelPathManager::get_intermediate_index(),
+				ai().level_graph().vertex_position(
+					CLevelPathManager::get_intermediate_vertex_id()
+				)
+			);
 			m_path_state		= ePathStatePathVerification;
-			break;
+			if (time_over())
+				break;
 		}
 		case ePathStatePathVerification : {
-			if (!CGameLocationSelector::location_selection_actual())
+			if (!CGameLocationSelector::location_selection_actual(m_tGameVertexID))
 				m_path_state	= ePathStateSelectGameVertex;
 			else
-			if (!CGamePathManager::path_actual())
+			if (!CGamePathManager::path_actual(m_tGameVertexID,m_game_dest_vertex_id))
 				m_path_state	= ePathStateBuildGamePath;
 			else
-			if (!CLevelPathManager::path_actual())
+				if (!CLevelPathManager::path_actual(
+						m_dwLevelVertexID,
+						CGamePathManager::get_intermediate_vertex_id()
+					))
 				m_path_state	= ePathStateBuildLevelPath;
 			else
 			if (!CDetailPathManager::path_actual())
@@ -220,7 +249,7 @@ void CMovementManager::process_game_path()
 			break;
 		}
 		case ePathStatePathCompleted : {
-			if (!CGameLocationSelector::location_selection_actual())
+			if (!CGameLocationSelector::location_selection_actual(m_tGameVertexID))
 				m_path_state	= ePathStateSelectGameVertex;
 			break;
 		}
@@ -232,30 +261,52 @@ void CMovementManager::process_level_path()
 {
 	switch (m_path_state) {
 		case ePathStateSelectLevelVertex : {
-			CLevelLocationSelector::select_location(m_dwLevelVertexID);
+			CLevelLocationSelector::select_location(m_dwLevelVertexID,m_level_dest_vertex_id);
+			if (CLevelLocationSelector::selector_failed())
+				break;
 			m_path_state		= ePathStateBuildLevelPath;
-			break;
+			if (time_over())
+				break;
 		}
 		case ePathStateBuildLevelPath : {
 			CLevelPathManager::build_path(m_dwLevelVertexID,m_level_dest_vertex_id);
+			if (CLevelPathManager::path_failed())
+				break;
 			m_path_state		= ePathStateContinueLevelPath;
-			break;
+			if (time_over())
+				break;
 		}
 		case ePathStateContinueLevelPath : {
 			CLevelPathManager::select_intermediate_vertex();
 			m_path_state		= ePathStateBuildDetailPath;
-			break;
+			if (time_over())
+				break;
 		}
 		case ePathStateBuildDetailPath : {
-			CDetailPathManager::build_path(CLevelPathManager::m_path);
+			if (CLevelLocationSelector::selector_used())
+                CDetailPathManager::build_path(
+					CLevelPathManager::m_path,
+					CLevelPathManager::get_intermediate_index(),
+					ai().level_graph().vertex_position(
+						CLevelPathManager::get_intermediate_vertex_id()
+					)
+				);
+			else
+                CDetailPathManager::build_path(
+					CLevelPathManager::m_path,
+					CLevelPathManager::get_intermediate_index(),
+					m_detail_dest_position
+				);
+
 			m_path_state		= ePathStatePathVerification;
-			break;
+			if (time_over())
+				break;
 		}
 		case ePathStatePathVerification : {
-			if (!CLevelLocationSelector::location_selection_actual())
+			if (!CLevelLocationSelector::location_selection_actual(m_dwLevelVertexID))
 				m_path_state	= ePathStateSelectLevelVertex;
 			else
-			if (!CLevelPathManager::path_actual())
+			if (!CLevelPathManager::path_actual(m_dwLevelVertexID,m_level_dest_vertex_id))
 				m_path_state	= ePathStateBuildLevelPath;
 			else
 			if (!CDetailPathManager::path_actual())
@@ -269,7 +320,7 @@ void CMovementManager::process_level_path()
 			break;
 		}
 		case ePathStatePathCompleted : {
-			if (!CLevelLocationSelector::location_selection_actual())
+			if (!CLevelLocationSelector::location_selection_actual(m_dwLevelVertexID))
 				m_path_state	= ePathStateSelectLevelVertex;
 			break;
 		}
@@ -282,34 +333,49 @@ void CMovementManager::process_enemy_search()
 	switch (m_path_state) {
 		case ePathStatePredictEnemyVertices : {
 			CEnemyLocationPredictor::predict_enemy_locations();
+			if (CEnemyLocationPredictor::prediction_failed())
+				break;
 			m_path_state		= ePathStateSelectEnemyVertex;
-			break;
+			if (time_over())
+				break;
 		}
 		case ePathStateSelectEnemyVertex : {
 			CEnemyLocationPredictor::select_enemy_location();
 			m_path_state		= ePathStateBuildLevelPath;
-			break;
+			if (time_over())
+				break;
 		}
 		case ePathStateBuildLevelPath : {
 			CLevelPathManager::build_path(m_dwLevelVertexID,m_level_dest_vertex_id);
+			if (CLevelPathManager::path_failed())
+				break;
 			m_path_state		= ePathStateContinueLevelPath;
-			break;
+			if (time_over())
+				break;
 		}
 		case ePathStateContinueLevelPath : {
 			CLevelPathManager::select_intermediate_vertex();
 			m_path_state		= ePathStateBuildDetailPath;
-			break;
+			if (time_over())
+				break;
 		}
 		case ePathStateBuildDetailPath : {
-			CDetailPathManager::build_path	(CLevelPathManager::m_path);
+			CDetailPathManager::build_path	(
+				CLevelPathManager::m_path,
+				CLevelPathManager::get_intermediate_index(),
+				ai().level_graph().vertex_position(
+					CLevelPathManager::get_intermediate_vertex_id()
+				)
+			);
 			m_path_state		= ePathStatePathVerification;
-			break;
+			if (time_over())
+				break;
 		}
 		case ePathStatePathVerification : {
 			if (!CEnemyLocationPredictor::enemy_prediction_actual())
 				m_path_state	= ePathStatePredictEnemyVertices;
 			else
-			if (!CLevelPathManager::path_actual())
+			if (!CLevelPathManager::path_actual(m_dwLevelVertexID,m_level_dest_vertex_id))
 				m_path_state	= ePathStateBuildLevelPath;
 			else
 			if (!CDetailPathManager::path_actual())

@@ -29,3 +29,8 @@ bool CEnemyLocationPredictor::enemy_prediction_actual	() const
 void CEnemyLocationPredictor::select_enemy_location		()
 {
 }
+
+bool CEnemyLocationPredictor::prediction_failed			() const
+{
+	return				(false);
+}

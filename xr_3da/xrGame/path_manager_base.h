@@ -29,11 +29,6 @@ protected:
 	_index_type				best_node_index;
 public:
 	typedef	typename _Graph::const_iterator const_iterator;
-//	typedef _Parameters<
-//		_dist_type,
-//		_index_type,
-//		_iteration_type
-//	> Parameters;
 
 						CPathManagerBase()
 	{

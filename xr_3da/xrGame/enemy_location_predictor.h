@@ -15,4 +15,5 @@ public:
 			void	predict_enemy_locations			();
 			bool	enemy_prediction_actual			() const;
 			void	select_enemy_location			();
+			bool	prediction_failed				() const;
 };

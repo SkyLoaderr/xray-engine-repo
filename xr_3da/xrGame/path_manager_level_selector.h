@@ -135,9 +135,13 @@ namespace PathManagers {
 		float			m_fFireDispersionAngle;
 
 		virtual			~CAbstractVertexEvaluator				() {}
-		virtual	float	ffEvaluateNode						() = 0;
+		virtual	float	ffEvaluate							() = 0;
 		virtual	void	vfShallowGraphSearch				(xr_vector<u32> &tpaStack, xr_vector<u8> &tpaMask) = 0;
 		virtual	void	vfShallowGraphSearch				(xr_vector<u32> &tpaStack, xr_vector<bool> &tpaMask) = 0;
+		IC		u32		selected_vertex_id					() const
+		{
+			return		(m_dwBestNode);
+		}
 	};
 
 	template <const u64 qwFlags> class CVertexEvaluator : public CAbstractVertexEvaluator {

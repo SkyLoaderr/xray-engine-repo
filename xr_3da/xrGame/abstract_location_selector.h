@@ -30,9 +30,10 @@ public:
 	IC			_vertex_id_type selected_vertex_id			() const;
 	IC			bool			selector_failed				() const;
 	IC			void			set_query_interval			(const u32 query_interval);
-	IC			bool			location_selection_actual	();
+	IC			bool			location_selection_actual	(const _vertex_id_type start_vertex_id);
 	IC			void			set_selector_evaluator		(_VertexEvaluator *vertex_evaluator);
-	IC			void			select_location				(const ALife::_GRAPH_ID game_vertex_id);
+	IC			void			select_location				(const _vertex_id_type start_vertex_id, _vertex_id_type &dest_vertex_id);
+	IC			bool			selector_used				() const;
 };
 
 #include "abstract_location_selector_inline.h"

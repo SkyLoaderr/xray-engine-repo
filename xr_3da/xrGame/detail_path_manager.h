@@ -13,9 +13,9 @@
 class CDetailPathManager {
 			bool	valid					() const;
 			bool	valid					(const Fvector &position) const;
-			void	build_smooth_path		(const xr_vector<u32> &level_path);
-			void	build_dodge_path		(const xr_vector<u32> &level_path);
-			void	build_criteria_path		(const xr_vector<u32> &level_path);
+			void	build_smooth_path		(const xr_vector<u32> &level_path, u32 intermediate_index, const Fvector &dest_position);
+			void	build_dodge_path		(const xr_vector<u32> &level_path, u32 intermediate_index, const Fvector &dest_position);
+			void	build_criteria_path		(const xr_vector<u32> &level_path, u32 intermediate_index, const Fvector &dest_position);
 protected:
 	u32										m_detail_cur_point_index;
 	bool									m_detail_path_actual;
@@ -59,7 +59,7 @@ public:
 					CDetailPathManager		();
 	virtual			~CDetailPathManager		();
 	virtual void	init					();
-			void	build_path				(const xr_vector<u32> &level_path);
+			void	build_path				(const xr_vector<u32> &level_path, u32 intermediate_index, const Fvector &dest_position);
 			const	Fvector &direction		();
 			float	speed					();
 			bool	path_actual				() const;

@@ -877,8 +877,8 @@ public:
 			_goal_node_index,
 			parameters
 		);
-		m_evaluator		= &parameters;
-		m_evaluator->m_max_range = parameters->m_fSearchRange;
+		m_evaluator				= &parameters;
+		m_evaluator->max_range	= parameters.m_fSearchRange;
 	}
 
 	IC	_dist_type	estimate		(const _index_type node_index) const
@@ -889,9 +889,9 @@ public:
 
 	IC	bool		is_goal_reached	(const _index_type node_index)
 	{
-		VERIFY					(parameters);
+		VERIFY					(m_evaluator);
 		m_evaluator->m_tpCurrentNode = graph->vertex(node_index);
-		m_evaluator->m_fDistance	 = data_storage.get_best().g();
+		m_evaluator->m_fDistance	 = data_storage->get_best().g();
 		float					value = m_evaluator->ffEvaluate();
 		if (value > m_evaluator->m_fResult) {
 			m_evaluator->m_fResult		= value;
@@ -988,9 +988,9 @@ public:
 
 	IC	bool		is_goal_reached	(const _index_type node_index)
 	{
-		VERIFY					(parameters);
-		if (graph->mask(m_evaluator->m_vertex_types,graph->vertex(data_storage.get_best().index()).vertex_types())) {
-			m_evaluator->m_vertex_id	= data_storage.get_best().index();
+		VERIFY					(m_evaluator);
+		if (graph->mask(m_evaluator->m_vertex_types,graph->vertex(data_storage->get_best().index()).vertex_type())) {
+			m_evaluator->m_vertex_id	= data_storage->get_best().index();
 			return				(true);
 		}
 		return					(false);

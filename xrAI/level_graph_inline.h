@@ -283,7 +283,8 @@ IC	void CLevelGraph::set_level_id(u32 level_id)
 	m_level_id			= level_id;
 }
 
-IC	void CLevelGraph::begin(const CVertex &vertex, const_iterator &begin, const_iterator &end) const
+//IC	void CLevelGraph::begin(const CVertex &vertex, const_iterator &begin, const_iterator &end) const
+IC	void CLevelGraph::begin(const CVertex &, const_iterator &begin, const_iterator &end) const
 {
 	begin				= 0;
 	end					= 4;

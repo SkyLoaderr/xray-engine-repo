@@ -19,8 +19,8 @@ protected:
 	bool										m_path_actuality;
 public:
 	xr_vector<_vertex_id_type>					m_path;
-	u32											m_cur_node_index;
 	_VertexEvaluator							*m_path_evaluator;
+	u32											m_intermediate_index;
 
 
 	IC					CAbstractPathManager		();
@@ -28,8 +28,11 @@ public:
 	IC	virtual void	init						();
 	IC			void	build_path					(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id);
 	IC			void	select_intermediate_vertex	();
+	IC	_vertex_id_type	get_intermediate_vertex_id	() const;
+	IC			u32		get_intermediate_index		() const;
 	IC			bool	path_actual					(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id) const;
 	IC			bool	path_completed				() const;
+	IC			bool	path_failed					() const;
 };
 
 #include "abstract_path_manager_inline.h"

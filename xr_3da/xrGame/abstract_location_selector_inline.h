@@ -40,10 +40,12 @@ template <
 IC	void CAbstractLocationSelector<_Graph,_VertexEvaluator,_vertex_id_type>::perform_search		(const _vertex_id_type vertex_id)
 {
 	VERIFY				(m_selector_evaluator && m_graph);
-	ai().graph_search_engine().build_path(m_graph,vertex_id,vertex_id,0,m_selector_evaluator);
+	ai().graph_search_engine().build_path(*m_graph,vertex_id,vertex_id,0,*m_selector_evaluator);
 	m_selector_failed	= 
-		!graph->valid_vertex_id(m_selector_evaluator->m_vertex_id) || 
-		(m_selector_evaluator->m_vertex_id == m_selected_vertex_id);
+		!m_graph->valid_vertex_id(m_selector_evaluator->selected_vertex_id()) || 
+		(m_selector_evaluator->selected_vertex_id() == m_selected_vertex_id);
+	if (!m_selector_failed)
+		m_selected_vertex_id	= m_selector_evaluator->selected_vertex_id();
 }
 
 template <
@@ -51,10 +53,14 @@ template <
 	typename _VertexEvaluator,
 	typename _vertex_id_type
 >
-IC	void CAbstractLocationSelector<_Graph,_VertexEvaluator,_vertex_id_type>::select_location	(const ALife::_GRAPH_ID vertex_id)
+IC	void CAbstractLocationSelector<_Graph,_VertexEvaluator,_vertex_id_type>::select_location	(const _vertex_id_type start_vertex_id, _vertex_id_type &dest_vertex_id)
 {
 	if (!m_selector_failed) {
-		perform_search	(vertex_id);
+		perform_search		(start_vertex_id);
+		if (selector_failed())
+			dest_vertex_id	= start_vertex_id;
+		else
+			dest_vertex_id	= m_selected_vertex_id;
 		return;
 	}
 }
@@ -64,9 +70,9 @@ template <
 	typename _VertexEvaluator,
 	typename _vertex_id_type
 >
-IC	bool CAbstractLocationSelector<_Graph,_VertexEvaluator,_vertex_id_type>::location_selection_actual()
+IC	bool CAbstractLocationSelector<_Graph,_VertexEvaluator,_vertex_id_type>::location_selection_actual(const _vertex_id_type start_vertex_id)
 {
-	perform_search		(m_start_vertex_id);
+	perform_search		(start_vertex_id);
 	return				(m_selector_failed);
 }
 
@@ -77,7 +83,7 @@ template <
 >
 IC	_vertex_id_type CAbstractLocationSelector<_Graph,_VertexEvaluator,_vertex_id_type>::selected_vertex_id() const
 {
-	VERIFY					(graph->valid_vertex_id(m_selected_vertex_id));
+	VERIFY					(m_graph->valid_vertex_id(m_selected_vertex_id));
 	return					(m_selected_vertex_id);
 }
 
@@ -109,4 +115,14 @@ template <
 IC	void CAbstractLocationSelector<_Graph,_VertexEvaluator,_vertex_id_type>::set_query_interval(const u32 query_interval)
 {
 	m_query_interval		= query_interval;
+}
+
+template <
+	typename _Graph,
+	typename _VertexEvaluator,
+	typename _vertex_id_type
+>
+IC	bool CAbstractLocationSelector<_Graph,_VertexEvaluator,_vertex_id_type>::selector_used() const
+{
+	return					(!!m_selector_evaluator);
 }
