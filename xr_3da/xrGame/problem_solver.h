@@ -14,7 +14,7 @@ template <
 	typename _operator,
 	typename _condition_evaluator,
 	typename _operator_id_type,
-	bool	 _reverse_search = true,
+	bool	 _reverse_search = false,
 	typename _operator_ptr = _operator*,
 	typename _condition_evaluator_ptr = _condition_evaluator*
 >
@@ -135,6 +135,7 @@ public:
 	// solver interface
 	IC		void						solve					();
 	IC		const xr_vector<_edge_type>	&solution				() const;
+	virtual	void						clear					();
 };
 
 #ifndef AI_COMPILER

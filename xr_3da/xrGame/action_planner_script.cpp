@@ -14,6 +14,16 @@
 
 using namespace luabind;
 
+void add_operator_impl(CScriptActionPlanner *action_planner, const CScriptActionPlanner::_edge_type &operator_id, CScriptActionPlanner::COperator *action)
+{
+	action_planner->add_operator	(operator_id,action);
+}
+
+void add_evaluator_impl(CScriptActionPlanner *action_planner, const CScriptActionPlanner::_condition_type &evaluator_id, CScriptActionPlanner::CConditionEvaluator *evaluator)
+{
+	action_planner->add_evaluator	(evaluator_id,evaluator);
+}
+
 void CActionPlanner<CScriptGameObject>::script_register(lua_State *L)
 {
 	module(L)
@@ -24,11 +34,11 @@ void CActionPlanner<CScriptGameObject>::script_register(lua_State *L)
 			.def(								constructor<>())
 			.def("reinit",						&CScriptActionPlanner::reinit,	&CScriptActionPlannerWrapper::reinit_static)
 			.def("update",						&CScriptActionPlanner::update,	&CScriptActionPlannerWrapper::update_static)
-			.def("add_action",					(void (CScriptActionPlanner::*)(const CScriptActionPlanner::_edge_type &, CScriptActionPlanner::COperator *))(CScriptActionPlanner::add_operator),adopt(_3))
+			.def("add_action",					&add_operator_impl,adopt(_3))
 			.def("remove_action",				(void (CScriptActionPlanner::*)(const CScriptActionPlanner::_edge_type &))(CScriptActionPlanner::remove_operator))
 			.def("action",						&CScriptActionPlanner::action)
 			.def("get_action",					&CScriptActionPlanner::get_operator)
-			.def("add_evaluator",				(void (CScriptActionPlanner::*)(const CScriptActionPlanner::_condition_type &, CScriptActionPlanner::CConditionEvaluator *))(CScriptActionPlanner::add_evaluator),adopt(_3))
+			.def("add_evaluator",				&add_evaluator_impl,adopt(_3))
 			.def("remove_evaluator",			(void (CScriptActionPlanner::*)(const CScriptActionPlanner::_condition_type &))(CScriptActionPlanner::remove_evaluator))
 			.def("evaluator",					(CScriptActionPlanner::CConditionEvaluator * (CScriptActionPlanner::*)(const CScriptActionPlanner::_condition_type &) const)(CScriptActionPlanner::evaluator))
 			.def("get_evaluator",				&CScriptActionPlanner::get_operator)

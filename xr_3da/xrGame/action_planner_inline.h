@@ -37,18 +37,6 @@ IC	CPlanner::CActionPlanner			()
 TEMPLATE_SPECIALIZATION
 IC	CPlanner::~CActionPlanner			()
 {
-	{
-		OPERATOR_VECTOR::iterator	I = m_operators.begin();
-		OPERATOR_VECTOR::iterator	E = m_operators.end();
-		for ( ; I != E; ++I)
-			xr_delete				((*I).m_operator);
-	}
-	{
-		EVALUATOR_MAP::iterator		I = m_evaluators.begin();
-		EVALUATOR_MAP::iterator		E = m_evaluators.end();
-		for ( ; I != E; ++I)
-			xr_delete				((*I).second);
-	}
 	m_object						= 0;
 }
 
@@ -88,28 +76,18 @@ void CPlanner::reinit				(_object_type *object, bool clear_all)
 	{
 		OPERATOR_VECTOR::iterator	I = m_operators.begin();
 		OPERATOR_VECTOR::iterator	E = m_operators.end();
-		for ( ; I != E; ++I)
-			if (!clear_all) {
+		for ( ; I != E; ++I) {
 #ifdef LOG_ACTION
-				(*I).get_operator()->m_use_log = m_use_log;
+			(*I).get_operator()->m_use_log = m_use_log;
 #endif
-				(*I).get_operator()->reinit(object,&m_storage,clear_all);
-			}
-			else
-				xr_delete	((*I).m_operator);
-		if (clear_all)
-			m_operators.clear	();
+			(*I).get_operator()->reinit(object,&m_storage,clear_all);
+		}
 	}
 	{
 		EVALUATOR_MAP::iterator		I = m_evaluators.begin();
 		EVALUATOR_MAP::iterator		E = m_evaluators.end();
 		for ( ; I != E; ++I)
-			if (!clear_all)
-				(*I).second->reinit	(object,&m_storage);
-			else
-				xr_delete	((*I).second);
-		if (clear_all)
-			m_evaluators.clear	();
+			(*I).second->reinit		(object,&m_storage);
 	}
 	m_initialized			= false;
 }
@@ -239,25 +217,6 @@ TEMPLATE_SPECIALIZATION
 IC	void CPlanner::add_effect		(_world_operator *action, _condition_type condition_id, _value_type condition_value)
 {
 	action->add_effect		(CWorldProperty(condition_id,condition_value));
-}
-
-TEMPLATE_SPECIALIZATION
-void CPlanner::clear				()
-{
-	{
-		OPERATOR_VECTOR::iterator	I = m_operators.begin();
-		OPERATOR_VECTOR::iterator	E = m_operators.end();
-		for ( ; I != E; ++I)
-			xr_delete				((*I).m_operator);
-	}
-	{
-		EVALUATOR_MAP::iterator		I = m_evaluators.begin();
-		EVALUATOR_MAP::iterator		E = m_evaluators.end();
-		for ( ; I != E; ++I)
-			xr_delete				((*I).second);
-	}
-	m_operators.clear				();
-	m_evaluators.clear				();
 }
 
 #ifdef LOG_ACTION

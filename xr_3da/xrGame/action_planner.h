@@ -13,6 +13,7 @@
 #include "property_evaluator.h"
 #include "property_storage.h"
 #include "script_export_space.h"
+#include "intrusive_ptr.h"
 
 class CScriptGameObject;
 
@@ -21,8 +22,8 @@ template <
 	bool	 _reverse_search = false,
 	typename _world_operator = CActionBase<_object_type>,
 	typename _condition_evaluator = CPropertyEvaluator<_object_type>,
-	typename _world_operator_ptr = _world_operator*,
-	typename _condition_evaluator_ptr = _condition_evaluator*
+	typename _world_operator_ptr = intrusive_ptr<_world_operator>,
+	typename _condition_evaluator_ptr = intrusive_ptr<_condition_evaluator>
 >
 class CActionPlanner : 
 	public CProblemSolver<
@@ -80,7 +81,6 @@ public:
 	IC		bool			initialized				() const;
 	IC		void			add_condition			(_world_operator *action, _condition_type condition_id, _value_type condition_value);
 	IC		void			add_effect				(_world_operator *action, _condition_type condition_id, _value_type condition_value);
-	virtual void			clear					();
 #ifdef LOG_ACTION
 	virtual LPCSTR			action2string			(const _action_id_type &action_id);
 	virtual LPCSTR			property2string			(const _condition_type &action_id);

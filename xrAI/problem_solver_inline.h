@@ -40,6 +40,12 @@ IC	CProblemSolverAbstract::CProblemSolver				()
 TEMPLATE_SPECIALIZATION
 CProblemSolverAbstract::~CProblemSolver					()
 {
+	clear					();
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CProblemSolverAbstract::clear					()
+{
 	while (!m_operators.empty())
 		remove_operator		(m_operators.back().m_operator_id);
 
@@ -69,14 +75,8 @@ void CProblemSolverAbstract::reinit						(bool clear_all)
 	m_actuality				= true;
 	m_failed				= false;
 
-	if (!clear_all)
-		return;
-
-	while (!m_operators.empty())
-		remove_operator		(m_operators.back().m_operator_id);
-
-	while (!m_evaluators.empty())
-		remove_evaluator	((*m_evaluators.begin()).first);
+	if (clear_all)
+		clear				();
 }
 
 TEMPLATE_SPECIALIZATION
