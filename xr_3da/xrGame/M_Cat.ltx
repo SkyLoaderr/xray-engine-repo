@@ -101,7 +101,7 @@ max_hear_dist		 = 30
 
 ; speed factors			linear | angular_real | angular_path | min |  max
 Velocity_Stand			= 0,		2.5,			2.5,		1,		1		;0,	1.79,	1,		1
-Velocity_WalkFwdNormal	= 1.8,		2.0,			2.0,		0.2,	2.0
+Velocity_WalkFwdNormal	= 1.5,		2.0,			2.0,		0.2,	2.0
 Velocity_WalkFwdDamaged	= 1.2,		2.14,			2.14,		0.2,	2.0	
 Velocity_RunFwdNormal	= 6.0,		2.5,			2.5,		0.5,	1	
 Velocity_RunFwdDamaged	= 4.5,  	3.0,			3.0,		0.2,	1
@@ -148,7 +148,7 @@ hit_type = strike
 
 ;entity condition
 
-satiety_v 		= 0.0001				;0.01			;¸úş¨ş¸ª¹ ºüõı¹°õıø  ¸vªş¸ªø ¸ş ò¨õüõıõü
+satiety_v 		= 0.01				;0.01			;¸úş¨ş¸ª¹ ºüõı¹°õıø  ¸vªş¸ªø ¸ş ò¨õüõıõü
 radiation_v 		= 0.00001		;0.004			;¸úş¨ş¸ª¹ ºüõı¹°õıø  ¨ğôøğ¡øø
 satiety_power_v 	= 0.005		;0.01			;ºòõûø¢õıøõ ¸øûv ÿ¨ø ºüõı¹°õıøø ¸vªş¸ªø 
 satiety_health_v 	= 0.001	;0.03			;ºòõûø¢õıøõ ÷ôş¨şò¹  ÿ¨ø ºüõı¹°õıøø ¸vªş¸ªø 
@@ -191,26 +191,26 @@ MoraleRestoreQuant			= 0.001
 MoraleBroadcastDistance		= 10.0
 
 ; Sounds
-sound_idle				= monsters\flesh\flesh_idle_
-sound_eat				= monsters\flesh\flesh_eat_
-sound_attack			= monsters\flesh\flesh_attack_
-sound_attack_hit		= monsters\flesh\flesh_attack_hit_
-sound_take_damage		= monsters\flesh\flesh_pain_
-sound_die				= monsters\flesh\flesh_death_
+sound_idle				= monsters\biting\def_
+sound_eat				= monsters\biting\def_
+sound_attack			= monsters\biting\def_
+sound_attack_hit		= monsters\biting\def_
+sound_take_damage		= monsters\biting\def_
+sound_die				= monsters\biting\def_
 sound_threaten			= monsters\biting\def_
 sound_landing			= monsters\biting\def_
 sound_steal				= monsters\biting\def_
-sound_panic				= monsters\flesh\flesh_panic_
+sound_panic				= monsters\biting\def_
 sound_growling			= monsters\biting\def_
 
 ; jump parameters
 jump_delay					= 3000
-jump_factor					= 1.5
-jump_ground_trace_range		= 1.0
+jump_factor					= 1.2
+jump_ground_trace_range		= 0.5
 jump_hit_trace_range		= 1.0
 jump_build_line_distance	= 0.0
 jump_min_distance			= 3.5
-jump_max_distance			= 12.0
+jump_max_distance			= 15.0
 jump_max_angle				= 0.6
 
 idle_sound_delay		= 25000
