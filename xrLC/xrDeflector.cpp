@@ -157,7 +157,7 @@ VOID CDeflector::GetRect	(UVpoint &min, UVpoint &max)
 	}
 }
 
-void CDeflector::RemapUV(vector<UVtri>& dest, DWORD base_u, DWORD base_v, DWORD size_u, DWORD size_v, DWORD lm_u, DWORD lm_v, BOOL bRotate)
+void CDeflector::RemapUV	(vector<UVtri>& dest, DWORD base_u, DWORD base_v, DWORD size_u, DWORD size_v, DWORD lm_u, DWORD lm_v, BOOL bRotate)
 {
 	dest.clear	();
 	dest.reserve(tris.size());
