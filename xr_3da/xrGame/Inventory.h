@@ -219,6 +219,7 @@ public:
 	PIItem SameSlot(u32 slot);								// »щет на по€се IItem дл€ указанного слота
 	PIItem Get(const char *name, bool bSearchRuck);			// »щет на по€се или в рюкзаке IItem с указанным именем (cName())
 	PIItem Get(const u32  id,	 bool bSearchRuck);			// »щет на по€се или в рюкзаке IItem с указанным именем (id)
+	PIItem Get(CLASS_ID cls_id,  bool bSearchRuck);			// »щет на по€се или в рюкзаке IItem с указанным CLS_ID
 	void   Clear();											// clearing Inventory
 	virtual u32		dwfGetSameItemCount(LPCSTR caSection);	// get all the items with the same section name
 	virtual bool	bfCheckForObject(_OBJECT_ID tObjectID);	// get all the items with the same object id

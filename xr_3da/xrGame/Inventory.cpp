@@ -961,6 +961,24 @@ PIItem CInventory::Get(const char *name, bool bSearchRuck)
 	return NULL;
 }
 
+
+PIItem CInventory::Get(CLASS_ID cls_id, bool bSearchRuck) 
+{
+	TIItemList &list = bSearchRuck ? m_ruck : m_belt;
+	
+	for(PPIItem it = list.begin(); list.end() != it; ++it) 
+	{
+		PIItem pIItem = *it;
+		if(pIItem->CLS_ID == cls_id && 
+								pIItem->Useful()) 
+				return pIItem;
+	}
+	return NULL;
+}
+
+
+
+
 PIItem CInventory::Get(const u32 id, bool bSearchRuck) 
 {
 	TIItemList &list = bSearchRuck ? m_ruck : m_belt;
