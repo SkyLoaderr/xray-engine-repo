@@ -136,6 +136,8 @@ bool	game_sv_ArtefactHunt::IsBuyableItem				(CSE_Abstract* pItem)
 	if (pGrenade) return true;
 	CSE_ALifeItemCustomOutfit* pOutfit = dynamic_cast<CSE_ALifeItemCustomOutfit*> (pItem);
 	if (pOutfit) return true;
+	CSE_ALifeItemTorch* pTorch = dynamic_cast<CSE_ALifeItemTorch*> (pItem);
+	if (pTorch) return true;
 	//-----------------------------------------------------------------------------
 	CSE_ALifeObject*	pAlifeObject = dynamic_cast<CSE_ALifeObject*> (pItem);
 	if (!pAlifeObject) return false;
