@@ -9,6 +9,8 @@
 #include "stdafx.h"
 #include "script_space.h"
 #include "script_properties_list_helper.h"
+#include "ai_space.h"
+#include "script_engine.h"
 
 using namespace luabind;
 
