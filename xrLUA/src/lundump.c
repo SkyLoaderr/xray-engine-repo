@@ -41,7 +41,7 @@ static int ezgetc (LoadState* S)
 
 static void ezread (LoadState* S, void* b, int n)
 {
- int r=luaZ_read(S->Z,b,(int)n);
+ int r=(int)luaZ_read(S->Z,b,n);
  if (r!=0) unexpectedEOZ(S);
 }
 
