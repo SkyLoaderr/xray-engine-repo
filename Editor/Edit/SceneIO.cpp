@@ -148,7 +148,7 @@ void EScene::Save(char *_FileName, bool bUndo){
 		F.open_chunk	(CHUNK_CAMERA);
         F.Wvector		(Device.m_Camera.GetHPB());
         F.Wvector		(Device.m_Camera.GetPosition());
-		F.close_chunk	();
+        F.close_chunk	();
     }
 
 	// snap list
@@ -244,7 +244,8 @@ bool EScene::Load(char *_FileName){
 	        F->Rvector	(hpb);
     	    F->Rvector	(pos);
             Device.m_Camera.Set(hpb,pos);
-		}
+			Device.m_Camera.SetStyle(Device.m_Camera.GetStyle());
+        }
 
         // Objects
         DWORD obj_cnt 	= 0;

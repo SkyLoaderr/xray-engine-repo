@@ -173,7 +173,7 @@ public:
 
 	// direct input
 	void OnMousePress					(TShiftState State);
-	void OnMouseRelease					(TShiftState State);
+	virtual void OnMouseRelease			(int btn);
 	virtual void OnMouseMove			(int x, int y);
 
     void OnAppActivate					(){;}

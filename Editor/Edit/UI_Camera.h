@@ -42,6 +42,7 @@ public:
 	void			Reset		();
     void 			Update		(float dt);
     void			SetStyle	(ECameraStyle style);
+	ECameraStyle	GetStyle	(){return m_Style;}
 
     bool			MoveStart	(TShiftState Shift);
     bool			MoveEnd		(TShiftState Shift);

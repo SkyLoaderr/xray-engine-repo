@@ -522,11 +522,11 @@ void TUI::OnMousePress(TShiftState state){
     }
     RedrawScene();
 }
-void TUI::OnMouseRelease(TShiftState state){
+void TUI::OnMouseRelease(int btn){
 	if(!g_bEditorValid) return;
 
-    if (state.Contains(ssLeft)) 	m_ShiftState << ssLeft;
-    if (state.Contains(ssRight)) 	m_ShiftState << ssRight;
+    if (iGetBtnState(0)) m_ShiftState << ssLeft;
+    if (iGetBtnState(1)) m_ShiftState << ssRight;
 
     if( Device.m_Camera.IsMoving() ){
         if (Device.m_Camera.MoveEnd(m_ShiftState)) bMouseInUse = false;
