@@ -109,9 +109,9 @@ class CMyD3DApplication : public CD3DApplication
 	LPDIRECT3DTEXTURE9				d_Accumulator;	// 32bit		(r,g,b,specular)
 	LPDIRECT3DSURFACE9				d_Accumulator_S;
 
-	LPDIRECT3DTEXTURE9				d_Bloom_1;
+	LPDIRECT3DTEXTURE9				d_Bloom_1;		// 32bit		(r,g,b)
 	LPDIRECT3DSURFACE9				d_Bloom_1_S;
-	LPDIRECT3DTEXTURE9				d_Bloom_2;
+	LPDIRECT3DTEXTURE9				d_Bloom_2;		// 32bit		(r,g,b)
 	LPDIRECT3DSURFACE9				d_Bloom_2_S;
 
 	// Shadow map
@@ -158,33 +158,34 @@ class CMyD3DApplication : public CD3DApplication
 public:
 	CMyD3DApplication();
 
-	HRESULT OneTimeSceneInit();
-	HRESULT InitDeviceObjects();
-	HRESULT RestoreDeviceObjects();
-	HRESULT InvalidateDeviceObjects();
-	HRESULT DeleteDeviceObjects();
-	HRESULT Render			();
-	HRESULT FrameMove		();
-	HRESULT FinalCleanup	();
-	HRESULT ConfirmDevice	(D3DCAPS9* pCaps, DWORD dwBehavior, D3DFORMAT Format);
+	HRESULT OneTimeSceneInit			();
+	HRESULT InitDeviceObjects			();
+	HRESULT RestoreDeviceObjects		();
+	HRESULT InvalidateDeviceObjects		();
+	HRESULT DeleteDeviceObjects			();
+	HRESULT Render						();
+	HRESULT FrameMove					();
+	HRESULT FinalCleanup				();
+	HRESULT ConfirmDevice				(D3DCAPS9* pCaps, DWORD dwBehavior, D3DFORMAT Format);
 
 	// Shadow mapping-base
-	HRESULT RenderShadowMap	();
-	HRESULT RenderScene		();
-	HRESULT RenderOverlay	();
+	HRESULT RenderShadowMap				();
+	HRESULT RenderScene					();
+	HRESULT RenderOverlay				();
 
 	HRESULT RenderFAT					();
 	HRESULT RenderLight_Direct			();
 	HRESULT RenderLight_Direct_smap		();
 	HRESULT RenderCombine				(COMBINE_MODE M);
 	HRESULT RenderCombine_Normal		();
+	HRESULT RenderCombine_Bloom			();
 	HRESULT RenderCombineDBG_Normals	();
 	HRESULT RenderCombineDBG_Accumulator();
 	HRESULT RenderCombineDBG_Base		();
 
-	HRESULT UpdateTransform	();
+	HRESULT UpdateTransform				();
 
-	LRESULT MsgProc			(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+	LRESULT MsgProc						(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 };
 
 CMyD3DApplication g_d3dApp;
