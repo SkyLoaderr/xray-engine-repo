@@ -2,7 +2,7 @@
 #include "script_debugger.h"
 #include "script_lua_helper.h"
 #include "mslotutils.h"
-
+#include "../XR_IOConsole.h"
 
 CScriptDebugger* CScriptDebugger::m_pDebugger = NULL;
 
@@ -202,8 +202,10 @@ void CScriptDebugger::Write(const char* szMsg)
 void CScriptDebugger::LineHook(const char *szFile, int nLine)
 {
 	CheckNewMessages();
-	if ( m_nMode == DMOD_STOP )
+	if ( m_nMode == DMOD_STOP ){
+		Console->Execute("quit");
 		return;
+	}
 
 	if (
 		HasBreakPoint(szFile, nLine)				||
@@ -410,6 +412,7 @@ bool CScriptDebugger::TranslateIdeMessage (CMailSlotMsg* msg)
 
 	case DMSG_STOP_DEBUGGING:{
 			m_nMode = DMOD_STOP;
+//			Console->Execute("quit");
 			return true;
 		}break;
 	

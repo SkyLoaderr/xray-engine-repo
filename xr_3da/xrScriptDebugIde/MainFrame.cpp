@@ -934,6 +934,8 @@ void CMainFrame::OnSaveAllModified()
 void ActivateXRAY()
 {
 	HWND h = FindWindow("_XRAY_","XRAY Engine");
-	if(h)
-		PostMessage(h,WM_ACTIVATE,WA_ACTIVE,NULL);
+	if(h){
+//		PostMessage(h,WM_MOUSEACTIVATE,WA_ACTIVE,NULL);
+//		PostMessage(h,WM_ACTIVATE,WA_ACTIVE,NULL);
+	}
 }
