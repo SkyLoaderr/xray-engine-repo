@@ -34,5 +34,9 @@ void	CBlender_decompress::Compile(CBlender_Compile& C)
 	}
 	else
 	{
+		C.r_Pass			("null",			"decompress",	FALSE,	FALSE,	FALSE);
+		C.r_Sampler_rtf		("s_position0",		r2_RT_DEFFER,	false,		r2_RT_DEFFER_P0		);
+		C.r_Sampler_rtf		("s_position1",		r2_RT_DEFFER,	false,		r2_RT_DEFFER_P1		);
+		C.r_End				();
 	}
 }

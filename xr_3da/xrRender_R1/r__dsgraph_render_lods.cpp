@@ -89,7 +89,8 @@ groups.push_back				(cur_count);
 	RCache.Ver	RCache.Vertex.Unlock			(lstLODs.size()*4,firstV->hGeom->vb_stride);
 ender
 	int curren	int current=0;
-	for (u32 g=0; g<lstLODgroups.size(); g++)
+_xform_world		(Fidentity);
+	for (u32 g	for (u32 g=0; g<lstLODgroups.size(); g++)
 	{
 nt				= lstLODgroups[g];
 		RCache.set_Shader		(lstLODs[current].pVisual->hShader);
