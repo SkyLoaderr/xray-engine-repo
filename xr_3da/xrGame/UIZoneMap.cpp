@@ -44,6 +44,16 @@
 
 
 
+#define MAP_AROW		8.f
+#define MIN_SCALE		1.f
+
+
+#define MAP_ARROW_TEXTURE "ui\\ui_map_arrow_02"
+#define MAP_ARROW_ROTATION -PI
+#define MAP_ARROW_WIDTH  16
+#define MAP_ARROW_HEIGHT 16
+
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -67,7 +77,7 @@ void CUIZoneMap::Init()
 	compass.Init("ui\\hud_map_arrow",	"hud\\default",125,118,align);
 	
 	entity.Init			("ui\\hud_map_point",	"hud\\default");
-	entity_arrow.Init	("ui\\hud_map_arrow",	"hud\\default");
+	entity_arrow.Init	(MAP_ARROW_TEXTURE,	"hud\\default");
 	entity_up.Init		("ui\\ui_hud_map_point_up",		"hud\\default");
 	entity_down.Init	("ui\\ui_hud_map_point_down",	"hud\\default");
 	entity.SetRect(0,0,3,3);
@@ -115,7 +125,7 @@ void CUIZoneMap::Init()
 }
 //--------------------------------------------------------------------
 
-void CUIZoneMap::ConvertToLocal	(const Fmatrix& LM, const Fvector& src, Ivector2& dest, bool& on_border)
+void CUIZoneMap::ConvertToLocal	(const Fmatrix& LM, const Fvector& src, Ivector2& dest, int border_radius,  bool& on_border)
 {
 	float k = map_radius/VIEW_DISTANCE;
 	
@@ -129,25 +139,25 @@ void CUIZoneMap::ConvertToLocal	(const Fmatrix& LM, const Fvector& src, Ivector2
 	
 	on_border = false;
 	
-	if(Pt.x>(float)map_radius) 
+	if(Pt.x>(float)border_radius) 
 	{
-		Pt.x = (float)map_radius;
+		Pt.x = (float)border_radius;
 		on_border = true;
 	}
-	else if(Pt.x<(float)-map_radius) 
+	else if(Pt.x<(float)-border_radius) 
 	{
-		Pt.x = (float)-map_radius;
+		Pt.x = (float)-border_radius;
 		on_border = true;
 	}
 	
-	if(Pt.y>(float)map_radius) 
+	if(Pt.y>(float)border_radius) 
 	{
-		Pt.y = (float)map_radius;
+		Pt.y = (float)border_radius;
 		on_border = true;
 	}
-	else if(Pt.y<(float)-map_radius) 
+	else if(Pt.y<(float)-border_radius) 
 	{
-		Pt.y = (float)-map_radius;
+		Pt.y = (float)-border_radius;
 		on_border = true;
 	}
 
@@ -173,6 +183,7 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor)
 	entity.Clear		();
 	entity_up.Clear		();
 	entity_down.Clear	();
+	entity_arrow.Clear	();
 	Ivector2 P;
 
 	Fmatrix LM,T;
@@ -188,7 +199,7 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor)
 		float diff = 0.0f;
 		Ivector2 pt;
 		bool b;
-		ConvertToLocal(LM, (*it).pos, pt, b);
+		ConvertToLocal(LM, (*it).pos, pt, map_radius, b);
 		diff = (*it).pos.y - Actor->Position().y;
 		EntityOut(diff, (*it).color, pt);
 	};
@@ -247,19 +258,49 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor)
 		}
 
 		bool on_border;
-		ConvertToLocal(LM, src, P, on_border);
-		if(on_border)
+		ConvertToLocal(LM, src, P, map_radius - MAP_ARROW_WIDTH/2, on_border);
+		if(!on_border)
 			entity.Out(P.x,P.y,entity_color);
 		else
 		{
-			float angle = atanf(static_cast<float>(P.y) / P.x);
-			entity_arrow.Out(P.x,P.y,entity_color, angle);
+			float arrowHeading = 0;
+			int x_shift = 0;
+			int y_shift = 0;
+
+			if (P.y == map_center.y)
+			{
+				if (P.x > map_center.x)
+					arrowHeading = PI_DIV_2;
+				else
+					arrowHeading = PI + PI_DIV_2;
+			}
+			else if (P.x == map_center.x)
+			{
+				if(P.y > map_center.y)
+					arrowHeading = 0;
+				else
+					arrowHeading = -PI;
+			}
+			else
+			{
+				arrowHeading = std::atan(static_cast<float>(P.x - map_center.x) / (P.y - map_center.y));
+				if (P.y < map_center.y) arrowHeading += PI;
+			}
+
+//			if(P.x > map_center.x) x_shift = -MAP_ARROW_WIDTH;
+//			if(P.y > map_center.y) y_shift = -MAP_ARROW_HEIGHT;
+						
+			arrowHeading += MAP_ARROW_ROTATION;
+			entity_arrow.Out(P.x + x_shift - MAP_ARROW_WIDTH, 
+				P.y + y_shift - MAP_ARROW_HEIGHT, entity_color, arrowHeading);
 		}
-	}
+
+	}		
+
 
 	// draw self
 	bool b;
-	ConvertToLocal	(LM,Actor->Position(),P,b);
+	ConvertToLocal	(LM,Actor->Position(),P, map_radius, b);
 	entity.Out		(map_center.x,P.y,COLOR_SELF);
 
 	/////////////////////
@@ -343,6 +384,7 @@ void CUIZoneMap::Render()
 	entity.Render		();
 	entity_up.Render	();
 	entity_down.Render	();
+	entity_arrow.Render	();
 }
 //--------------------------------------------------------------------
 
