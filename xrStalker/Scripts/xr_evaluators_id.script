@@ -52,6 +52,7 @@ zmey_sleeper_base    = zmey_evaluators + 400
 
 --  эвалуоторы Жени
 jon_evaluators       = stalker_ids.property_script + 5000
-jon_stalker_zombe    = jon_evaluators + 1
-jon_stalker_novice	 = jon_evaluators + 2
-jon_stalker_novice2  = jon_evaluators + 3
+jon_stalker_zombe    = jon_evaluators + 0
+jon_stalker_novice	 = jon_evaluators + 1
+jon_stalker_novice2  = jon_evaluators + 2
+jon_stalker_novice3  = jon_evaluators + 3
