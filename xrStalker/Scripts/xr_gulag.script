@@ -44,21 +44,6 @@ function fract:checkNpc(npc)
 		return true
 	end
 
-	if self.type == "dolg_kamp"	
-	then
-		return true
-	end
-
-	if self.type == "stalker_kamp"
-	then
-		return true
-	end
-
-	if self.type == "bandits_camp"
-	then
-		return true
-	end
-
 	if self.type == "test"
 	then
 		return true
@@ -193,49 +178,7 @@ function fract:setJob(npc, job)
 	job.begin  = game.time()
 
 	xr_logic.gulag_activate(npc, gulag_tasks_ltx, job.section, self.name)
---[[	if job.name == "guard" then
-		job.object = npc
-		job.begin = game.time()
-	    xr_guard.set_guard(npc, true, job.path_main, job.path_hideout, job.running, job.search_light)
-	end
-	if job.name == "walker" then
-		job.object = npc
-		job.begin = game.time()
-	    xr_walker.set_walker(npc, true, job.path_walk, job.path_look)
-	end
-	if job.name == "bodyguard" then
-		job.object = npc
-		job.begin = game.time()
-		xr_bodyguard.set_bodyguard(npc, true, job.path_main, job.path_side, job.path_guard, job.path_guard_radius, job.path_center)
-	end
-	if job.name == "sleeper" then
-		job.object = npc
-		job.begin = game.time()
-		xr_sleeper.set_sleeper(npc, true, job.path_main)			
-	end
-	if job.name == "patrol" then
-		job.object = npc
-		job.begin = game.time()
-		xr_comm_ptr.set_patrol(npc, true, job.patrol_path, job.path_look, job.escape_path)			
-	end
-	if job.name == "follower" then
-		local nn = self:nameStalkerOnJob("patrol")
-		if nn ~= nil then
-			job.object = npc
-			job.begin = game.time()
-		    xr_follower.set_follower(npc, true, nn, job.escape_path)			
-		end
-	end
-	if job.name == "kamp" then
-		job.object = npc
-		job.begin = game.time()
-			xr_kamp.set_kamp(npc, true, job.center_point, job.patrol_path)
-	end
-	if job.name == "sniper" then
-		job.object = npc
-		job.begin = game.time()
-			xr_sniper.set_sniper(npc, true, job.rest_path, job.camper_path, job.point_path)
-	end]]
+
 	--' Смена тим, сквад, груп
 	job.object:change_team(job.object:team(), job.squad or job.object:squad(), job.group or job.object:group())
 	--' Спейс рестрикторы
@@ -257,21 +200,6 @@ function fract:clearAllJob(npc)
 			v.object = nil
 		end
 	end
---[[	for k,v in xr_motivator.storage[npc:id()] do
-		if k == "sleeper" or
-		   k == "camper" or
-		   k == "scout" or
-		   k == "follower" or
-		   k == "patrol" or
-		   k == "guard" or
-		   k == "walker" or
-		   k == "bodyguard" or
-		   k == "sniper" or
-		   k == "kamp"
-		then
-			v.enabled = false
-		end
-	end]]
 end
 function fract:stalkerExist(npc)
 	if self.Object[npc:id()] ~= nil then
