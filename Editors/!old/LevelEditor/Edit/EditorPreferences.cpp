@@ -101,6 +101,7 @@ void CEditorPreferences::OnKeyboardCommonFileClick(PropValue* value, bool& bModi
             CInifile* 	I 	= xr_new<CInifile>(fn.c_str(), TRUE, TRUE, TRUE);
 		    LoadShortcuts	(I);
             xr_delete		(I);
+            m_ItemProps->RefreshForm();
         }
     break;
     case 1:
