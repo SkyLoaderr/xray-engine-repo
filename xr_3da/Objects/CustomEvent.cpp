@@ -27,9 +27,10 @@ void CCustomEvent::Load			(CInifile* ini, const char * section)
 {
 	// Name
 	R_ASSERT					(section);
-	cNameSET					(section);
+	cNameSET					("event");
 	
 	// Geometry and transform
+	/*
 	Fvector dir,norm;
 	vPosition					= ini->ReadVECTOR(section,"position");
 	vScale						= ini->ReadVECTOR(section,"scale");
@@ -37,6 +38,7 @@ void CCustomEvent::Load			(CInifile* ini, const char * section)
 	norm						= ini->ReadVECTOR(section,"normal");
 	mRotate.rotation			(dir,norm);
 	UpdateTransform				();
+	*/
 	
 	// General stuff
 	pVisualName					= NULL;
