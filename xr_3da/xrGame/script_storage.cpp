@@ -233,7 +233,7 @@ bool CScriptStorage::do_file	(LPCSTR caScriptName, LPCSTR caNameSpaceName, bool 
 	if (bCall) {
 //		int			l_iErrorCode = lua_pcall(lua(),0,0,0); //backup___Dima
 		int errFuncId = CScriptDebugger::GetDebugger()->PrepareLua(lua());
-		int	l_iErrorCode = lua_pcall(lua(),0,0,errFuncId); //new_Andy
+		int	l_iErrorCode = lua_pcall(lua(),0,0,(-1==errFuncId)?0:errFuncId); //new_Andy
 		CScriptDebugger::GetDebugger()->UnPrepareLua(lua(),errFuncId);
 		if (l_iErrorCode) {
 
