@@ -147,8 +147,8 @@ void CSoundRender_Core::env_load	()
 void CSoundRender_Core::env_unload	()
 {
 	// Unload 
-	R_ASSERT					(s_environment);
-	s_environment->Unload		();
+	if (s_environment)
+		s_environment->Unload	();
 	xr_delete					(s_environment);
 
 	// Unload geometry
