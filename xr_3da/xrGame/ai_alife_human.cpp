@@ -553,7 +553,7 @@ bool CSE_ALifeHumanAbstract::bfChooseFast()
 	return							(false);
 }
 
-int CSE_ALifeHumanAbstract::ifChooseEquipment(OBJECT_VECTOR *tpObjectVector)
+int CSE_ALifeHumanAbstract::ifChooseEquipment(OBJECT_VECTOR *tpObjectVector, u32 dwTotalMoney)
 {
 	// choosing equipment
 	CSE_ALifeInventoryItem			*l_tpALifeItemBest	= 0;
@@ -588,7 +588,7 @@ int CSE_ALifeHumanAbstract::ifChooseEquipment(OBJECT_VECTOR *tpObjectVector)
 	return						(0);
 }
 
-int  CSE_ALifeHumanAbstract::ifChooseWeapon(EWeaponPriorityType tWeaponPriorityType, OBJECT_VECTOR *tpObjectVector)
+int  CSE_ALifeHumanAbstract::ifChooseWeapon(EWeaponPriorityType tWeaponPriorityType, OBJECT_VECTOR *tpObjectVector, u32 dwTotalMoney)
 {
 	CSE_ALifeInventoryItem			*l_tpALifeItemBest	= 0;
 	float							l_fItemBestValue	= -1.f;
@@ -656,7 +656,7 @@ int  CSE_ALifeHumanAbstract::ifChooseWeapon(EWeaponPriorityType tWeaponPriorityT
 	return						(0);
 }
 
-int  CSE_ALifeHumanAbstract::ifChooseFood(OBJECT_VECTOR *tpObjectVector)
+int  CSE_ALifeHumanAbstract::ifChooseFood(OBJECT_VECTOR *tpObjectVector, u32 dwTotalMoney)
 {
 #pragma todo("Dima to Dima : Add food and medikit items need count computations")
 	// choosing food
@@ -688,7 +688,7 @@ int  CSE_ALifeHumanAbstract::ifChooseFood(OBJECT_VECTOR *tpObjectVector)
 	return					(l_dwCount);
 }
 
-int  CSE_ALifeHumanAbstract::ifChooseMedikit(OBJECT_VECTOR *tpObjectVector)
+int  CSE_ALifeHumanAbstract::ifChooseMedikit(OBJECT_VECTOR *tpObjectVector, u32 dwTotalMoney)
 {
 	// choosing medikits
 	u32						l_dwCount = 0;
@@ -719,7 +719,7 @@ int  CSE_ALifeHumanAbstract::ifChooseMedikit(OBJECT_VECTOR *tpObjectVector)
 	return					(l_dwCount);
 }
 
-int  CSE_ALifeHumanAbstract::ifChooseDetector(OBJECT_VECTOR *tpObjectVector)
+int  CSE_ALifeHumanAbstract::ifChooseDetector(OBJECT_VECTOR *tpObjectVector, u32 dwTotalMoney)
 {
 	// choosing detector
 	CSE_ALifeInventoryItem		*l_tpALifeItemBest	= 0;
@@ -754,7 +754,7 @@ int  CSE_ALifeHumanAbstract::ifChooseDetector(OBJECT_VECTOR *tpObjectVector)
 	return						(0);
 }
 
-int  CSE_ALifeHumanAbstract::ifChooseValuables(OBJECT_VECTOR *tpObjectVector)
+int  CSE_ALifeHumanAbstract::ifChooseValuables(OBJECT_VECTOR *tpObjectVector, u32 dwTotalMoney)
 {
 	// choosing the rest objects
 	ITEM_P_IT				I = m_tpALife->m_tpItemVector.begin();

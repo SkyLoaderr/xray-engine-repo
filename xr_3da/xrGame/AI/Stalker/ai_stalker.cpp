@@ -429,7 +429,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 // в Exec_Movement	(dt) взяв ее из сетевого пакета пакета который отправляется после (	uNext.p_pos			= Position();) 
 // если такое однажды получается Engine.Sheduler.Slice			() может все время устанавливать неправильную позицию
 // поетому сохраним позицию
-Fvector vNewPosition=Position();
+	Fvector				vNewPosition = Position();
 
 	VERIFY				(_valid(Position()));
 	// *** general stuff
@@ -493,18 +493,18 @@ Fvector vNewPosition=Position();
 			xr_vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin();
 			xr_vector<CInventorySlot>::iterator E = m_inventory.m_slots.end();
 			for ( ; I != E; I++)
-				m_inventory.Ruck((*I).m_pIItem);
+				if ((*I).m_pIItem->Useful())
+					m_inventory.Ruck((*I).m_pIItem);
 			TIItemList &l_list = m_inventory.m_ruck;
 			for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++)
-//				if (*l_it == tpWeapon)
-					(**l_it).Drop();
+				(**l_it).Drop();
 		}
 		else {
 			m_inventory.Action(kWPN_FIRE,	CMD_START);
 			xr_vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin(), B = I;
 			xr_vector<CInventorySlot>::iterator E = m_inventory.m_slots.end();
 			for ( ; I != E; I++)
-				if ((I - B) != (int)m_inventory.m_activeSlot)
+				if (((I - B) != (int)m_inventory.m_activeSlot) && (*I).m_pIItem->Useful())
 					m_inventory.Ruck((*I).m_pIItem);
 			TIItemList &l_list = m_inventory.m_ruck;
 			for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++)

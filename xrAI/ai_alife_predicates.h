@@ -145,16 +145,19 @@ public:
 
 	IC bool							operator()							(const CSE_ALifeInventoryItem *tpALifeInventoryItem1, const CSE_ALifeInventoryItem *tpALifeInventoryItem2) const
 	{
-		if (tpALifeInventoryItem1->m_tPreviousParentID == m_tParentID)
-			if (tpALifeInventoryItem2->m_tPreviousParentID == m_tParentID)
-				return				(tpALifeInventoryItem1 < tpALifeInventoryItem2);
+		if (tpALifeInventoryItem1->m_dwCost == tpALifeInventoryItem2->m_dwCost)
+			if (tpALifeInventoryItem1->m_tPreviousParentID == m_tParentID)
+				if (tpALifeInventoryItem2->m_tPreviousParentID == m_tParentID)
+					return				(tpALifeInventoryItem1->ID < tpALifeInventoryItem2->ID);
+				else
+					return				(true);
 			else
-				return				(true);
+				if (tpALifeInventoryItem2->m_tPreviousParentID == m_tParentID)
+					return				(false);
+				else
+					return				(tpALifeInventoryItem1->ID < tpALifeInventoryItem2->ID);
 		else
-			if (tpALifeInventoryItem2->m_tPreviousParentID == m_tParentID)
-				return				(false);
-			else
-				return				(tpALifeInventoryItem1 < tpALifeInventoryItem2);
+			return						(tpALifeInventoryItem1->m_dwCost < tpALifeInventoryItem2->m_dwCost);
 	}
 };
 

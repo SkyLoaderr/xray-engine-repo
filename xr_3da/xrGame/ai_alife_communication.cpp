@@ -28,40 +28,40 @@ void CSE_ALifeSimulator::vfFillTraderVector(CSE_ALifeHumanAbstract *tpALifeHuman
 		tpItemVector.push_back(dynamic_cast<CSE_ALifeInventoryItem*>(tpfGetObjectByID(*I)));
 }
 
-void CSE_ALifeSimulator::vfRunFunctionByIndex(CSE_ALifeHumanAbstract *tpALifeHumanAbstract, OBJECT_VECTOR &tpBlockedItems, ITEM_P_VECTOR &tpItems, int i, int &j)
+void CSE_ALifeSimulator::vfRunFunctionByIndex(CSE_ALifeHumanAbstract *tpALifeHumanAbstract, OBJECT_VECTOR &tpBlockedItems, ITEM_P_VECTOR &tpItems, int i, int &j, u32 dwTotalMoney)
 {
 	sort				(m_tpItemVector.begin(),m_tpItemVector.end(),CSortByOwnerPredicate(this,tpALifeHumanAbstract->ID));
 	switch (i) {
 		case 0 : {
-			j	= tpALifeHumanAbstract->ifChooseEquipment	(&tpBlockedItems);
+			j	= tpALifeHumanAbstract->ifChooseEquipment	(&tpBlockedItems,dwTotalMoney);
 			break;
 		}
 		case 1 : {
-			j	= tpALifeHumanAbstract->ifChooseWeapon		(eWeaponPriorityTypeKnife,&tpBlockedItems);
+			j	= tpALifeHumanAbstract->ifChooseWeapon		(eWeaponPriorityTypeKnife,&tpBlockedItems,dwTotalMoney);
 			break;
 		}
 		case 2 : {
-			j	= tpALifeHumanAbstract->ifChooseWeapon		(eWeaponPriorityTypeSecondary,&tpBlockedItems);
+			j	= tpALifeHumanAbstract->ifChooseWeapon		(eWeaponPriorityTypeSecondary,&tpBlockedItems,dwTotalMoney);
 			break;
 		}
 		case 3 : {
-			j	= tpALifeHumanAbstract->ifChooseWeapon		(eWeaponPriorityTypePrimary,&tpBlockedItems);
+			j	= tpALifeHumanAbstract->ifChooseWeapon		(eWeaponPriorityTypePrimary,&tpBlockedItems,dwTotalMoney);
 			break;
 		}
 		case 4 : {
-			j	= tpALifeHumanAbstract->ifChooseWeapon		(eWeaponPriorityTypeGrenade,&tpBlockedItems);
+			j	= tpALifeHumanAbstract->ifChooseWeapon		(eWeaponPriorityTypeGrenade,&tpBlockedItems,dwTotalMoney);
 			break;
 		}
 		case 5 : {
-			j	= tpALifeHumanAbstract->ifChooseFood		(&tpBlockedItems);
+			j	= tpALifeHumanAbstract->ifChooseFood		(&tpBlockedItems,dwTotalMoney);
 			break;
 		}
 		case 6 : {
-			j	= tpALifeHumanAbstract->ifChooseMedikit		(&tpBlockedItems);
+			j	= tpALifeHumanAbstract->ifChooseMedikit		(&tpBlockedItems,dwTotalMoney);
 			break;
 		}
 		case 7 : {
-			j	= tpALifeHumanAbstract->ifChooseDetector	(&tpBlockedItems);
+			j	= tpALifeHumanAbstract->ifChooseDetector	(&tpBlockedItems,dwTotalMoney);
 			break;
 		}
 		default :			NODEFAULT;
@@ -435,6 +435,16 @@ bool CSE_ALifeSimulator::bfCheckIfCanNullTradersBallance(CSE_ALifeHumanAbstract 
 			return			(bfCheckForTrade(tpALifeHumanAbstract2, m_tpTrader2, m_tpSums2, tpALifeHumanAbstract2->m_dwMoney, tpALifeHumanAbstract1, m_tpTrader1, m_tpSums1, tpALifeHumanAbstract1->m_dwMoney, iBallance));
 }
 
+u32	 CSE_ALifeSimulator::dwfComputeItemCost(ITEM_P_VECTOR &tpItemVector)
+{
+	u32					l_dwItemCost = 0;
+	ITEM_P_IT			I = tpItemVector.begin();
+	ITEM_P_IT			E = tpItemVector.begin();
+	for ( ; I != E; I++)
+		l_dwItemCost	+= (*I)->m_dwCost;
+	return				(l_dwItemCost);
+}
+
 void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAbstract1, CSE_ALifeHumanAbstract *tpALifeHumanAbstract2)
 {
 	m_tpItems1.clear	();
@@ -443,13 +453,13 @@ void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAb
 	vfAppendItemVector	(tpALifeHumanAbstract1->children,m_tpItems1);
 	vfAppendItemVector	(tpALifeHumanAbstract2->children,m_tpItems2);
 
+	u32					l_dwTotalMoney1 = dwfComputeItemCost(m_tpItems1) + tpALifeHumanAbstract1->m_dwMoney, l_dwTotalMoney2 = dwfComputeItemCost(m_tpItems2) + tpALifeHumanAbstract2->m_dwMoney;
+	
 	m_tpItemVector		= m_tpItems1;
 	m_tpItemVector.insert(m_tpItemVector.end(),m_tpItems2.begin(),m_tpItems2.end());
 	
 	sort				(m_tpItems1.begin(),m_tpItems1.end());
 	sort				(m_tpItems2.begin(),m_tpItems2.end());
-
-	sort				(m_tpItemVector.begin(),m_tpItemVector.end(),CSortItemPredicate());
 
 	tpALifeHumanAbstract1->vfDetachAll();
 	tpALifeHumanAbstract2->vfDetachAll();
@@ -458,25 +468,25 @@ void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAb
 		int				l_iItemCount1 = 0, l_iItemCount2 = 0;
 		switch (k) {
 			case 0 : {
-				vfRunFunctionByIndex(tpALifeHumanAbstract1,m_tpBlockedItems1,m_tpItems1,j,l_iItemCount1);
-				vfRunFunctionByIndex(tpALifeHumanAbstract2,m_tpBlockedItems2,m_tpItems2,j,l_iItemCount2);
+				vfRunFunctionByIndex(tpALifeHumanAbstract1,m_tpBlockedItems1,m_tpItems1,j,l_iItemCount1,l_dwTotalMoney1);
+				vfRunFunctionByIndex(tpALifeHumanAbstract2,m_tpBlockedItems2,m_tpItems2,j,l_iItemCount2,l_dwTotalMoney2);
 				break;
 			}
 			case 1 : {
-				vfRunFunctionByIndex(tpALifeHumanAbstract1,m_tpBlockedItems1,m_tpItems1,j,l_iItemCount1);
+				vfRunFunctionByIndex(tpALifeHumanAbstract1,m_tpBlockedItems1,m_tpItems1,j,l_iItemCount1,l_dwTotalMoney1);
 				break;
 			}
 			case 2 : {
-				vfRunFunctionByIndex(tpALifeHumanAbstract2,m_tpBlockedItems2,m_tpItems2,j,l_iItemCount2);
+				vfRunFunctionByIndex(tpALifeHumanAbstract2,m_tpBlockedItems2,m_tpItems2,j,l_iItemCount2,l_dwTotalMoney2);
 				break;
 			}
 			case 3 : {
-				vfRunFunctionByIndex(tpALifeHumanAbstract1,m_tpBlockedItems1,m_tpItems1,j,l_iItemCount1);
+				vfRunFunctionByIndex(tpALifeHumanAbstract1,m_tpBlockedItems1,m_tpItems1,j,l_iItemCount1,l_dwTotalMoney1);
 				
 				m_tpBlockedItems2.clear();
 				m_tpBlockedItems2.insert(m_tpBlockedItems2.end(),tpALifeHumanAbstract1->children.end() - l_iItemCount1,tpALifeHumanAbstract1->children.end());
 				
-				vfRunFunctionByIndex(tpALifeHumanAbstract2,m_tpBlockedItems2,m_tpItems2,j,l_iItemCount2);
+				vfRunFunctionByIndex(tpALifeHumanAbstract2,m_tpBlockedItems2,m_tpItems2,j,l_iItemCount2,l_dwTotalMoney2);
 				break;
 			}
 		}

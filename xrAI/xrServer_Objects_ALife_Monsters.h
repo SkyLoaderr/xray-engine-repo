@@ -258,12 +258,12 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 			void					vfCollectAmmoBoxes		();
 	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		();
 	virtual	void					vfDetachAll				();
-			int						ifChooseEquipment		(OBJECT_VECTOR			*tpObjectVector = 0);
-			int						ifChooseWeapon			(EWeaponPriorityType	tWeaponPriorityType,		OBJECT_VECTOR	*tpObjectVector = 0);
-			int						ifChooseFood			(OBJECT_VECTOR			*tpObjectVector = 0);
-			int						ifChooseMedikit			(OBJECT_VECTOR			*tpObjectVector = 0);
-			int						ifChooseDetector		(OBJECT_VECTOR			*tpObjectVector = 0);
-			int						ifChooseValuables		(OBJECT_VECTOR			*tpObjectVector = 0);
+			int						ifChooseEquipment		(OBJECT_VECTOR			*tpObjectVector = 0,		u32				dwTotalMoney = 0);
+			int						ifChooseWeapon			(EWeaponPriorityType	tWeaponPriorityType,		OBJECT_VECTOR	*tpObjectVector = 0,u32				dwTotalMoney = 0);
+			int						ifChooseFood			(OBJECT_VECTOR			*tpObjectVector = 0,		u32				dwTotalMoney = 0);
+			int						ifChooseMedikit			(OBJECT_VECTOR			*tpObjectVector = 0,		u32				dwTotalMoney = 0);
+			int						ifChooseDetector		(OBJECT_VECTOR			*tpObjectVector = 0,		u32				dwTotalMoney = 0);
+			int						ifChooseValuables		(OBJECT_VECTOR			*tpObjectVector = 0,		u32				dwTotalMoney = 0);
 			bool					bfChooseFast			();
 			void					vfChooseGroup			(CSE_ALifeGroupAbstract *tpALifeGroupAbstract);
 #endif
