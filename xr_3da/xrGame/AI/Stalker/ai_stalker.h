@@ -305,12 +305,12 @@ private:
 			// physics
 			void			CreateSkeleton					();
 
-	IC		void			GetDirectionAngles				(float &yaw, float &pitch)
+	IC		void			GetDirectionAnglesByPrevPositions(float &yaw, float &pitch)
 	{
 		yaw						= pitch = 0;
 		Fvector					tDirection;
-		
 		int						i = ps_Size	();
+		
 		if (i < 2) 
 			return;
 		
@@ -318,10 +318,30 @@ private:
 		tDirection.sub			(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
 		if (tDirection.magnitude() < EPS_L)
 			return;
-//		if (AI_Path.TravelPath.empty())
-//			return;
-//		tDirection.sub(vPosition,AI_Path.TravelPath[AI_Path.TravelStart].P);
 		tDirection.getHP		(yaw,pitch);
+	}
+
+	IC		void			GetDirectionAngles				(float &yaw, float &pitch)
+	{
+		yaw						= pitch = 0;
+		Fvector					tDirection;
+		
+		if (!AI_Path.TravelPath.empty() && (AI_Path.TravelStart <= (AI_Path.TravelPath.size() - 1)) && (AI_Path.TravelStart >= 0))
+			if (vPosition.distance_to(AI_Path.TravelPath[AI_Path.TravelStart].P) > EPS_L) {
+				tDirection.sub(vPosition,AI_Path.TravelPath[AI_Path.TravelStart].P);
+				if (tDirection.magnitude() < EPS_L)
+					GetDirectionAnglesByPrevPositions(yaw,pitch);
+			}
+			else
+				if ((AI_Path.TravelStart < (AI_Path.TravelPath.size() - 1)) && (vPosition.distance_to(AI_Path.TravelPath[AI_Path.TravelStart + 1].P) > EPS_L)) {
+					tDirection.sub(vPosition,AI_Path.TravelPath[AI_Path.TravelStart + 1].P);
+					if (tDirection.magnitude() < EPS_L)
+						GetDirectionAnglesByPrevPositions(yaw,pitch);
+				}
+				else
+					GetDirectionAnglesByPrevPositions(yaw,pitch);
+		else
+			GetDirectionAnglesByPrevPositions(yaw,pitch);
 	};
 	
 	IC		bool		angle_lerp_bounds(float &a, float b, float c, float d, bool bCheck = false)
