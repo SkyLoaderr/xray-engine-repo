@@ -55,7 +55,6 @@ void Startup(LPSTR     lpCmdLine)
 	Sleep				(150);
 	
 	// Faster FPU 
-	InitMath				();
 	DWORD					dwStartupTime	= timeGetTime();
 	SetPriorityClass		(GetCurrentProcess(),IDLE_PRIORITY_CLASS);
 
@@ -139,7 +138,7 @@ int APIENTRY WinMain(HINSTANCE hInst,
 	// Initialize debugging
 	Core._initialize	("xrLC");
 	Startup				(lpCmdLine);
-	Core._destroy		();
+	// Core._destroy	();
 	
 	return 0;
 }
