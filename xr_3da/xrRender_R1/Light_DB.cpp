@@ -18,6 +18,7 @@ void CLight_DB::Load			(IReader *fs)
 	IReader* F	= 0;
 
 	// Lights itself
+	sun			= NULL;
 	{
 		F				= fs->open_chunk		(fsL_LIGHT_DYNAMIC);
 
@@ -39,6 +40,7 @@ void CLight_DB::Load			(IReader *fs)
 			if (Ldata.type==D3DLIGHT_DIRECTIONAL)
 			{
 				// directional
+				sun					= L;
 				L->set_type			(IRender_Light::DIRECT);
 				L->set_shadow		(true);
 			}
@@ -56,6 +58,7 @@ void CLight_DB::Load			(IReader *fs)
 
 		F->close			();
 	}
+	R_ASSERT2(sun,"Where is sun?");
 }
 
 void			CLight_DB::Unload	()
