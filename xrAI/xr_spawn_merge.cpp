@@ -201,7 +201,6 @@ public:
 			m_tpResultNodes[i] = dwBest;
 		}
 	}
-	
 };
 
 class CSpawnThread : public CThread {
@@ -268,6 +267,13 @@ void xrMergeSpawns()
 		tThreadManager.start(xr_new<CSpawnThread>(thID,tpLevels[thID]));
 	tThreadManager.wait();
 	
-	Phase						("Merging span files");
+	CFS_Memory					tMemoryStream;
+	Phase						("Merging spawn files");
+	for (u32 i=0, N = tpLevels.size(); i<N; i++)
+		tpLevels[thID]->Save(tMemoryStream);
+	tMemoryStream.SaveTo("game.spawn");
+
 	Phase						("Freeing resources being allocated");
+	for (u32 i=0, N = tpLevels.size(); i<N; i++)
+		xr_delete(tpLevels[thID]);
 }
