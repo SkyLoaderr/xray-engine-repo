@@ -164,7 +164,7 @@ function action_zoneguard_activity:execute()
 				snd.maxidle = 1
 				snd.sumidle = -1
 				snd.themes = parse_names(self.st.snd_greet)
-				xr_sound.sound_update(self.object, snd)
+				xr_sound.sound_update(self.object, snd, true)
 			end
 		else
 			self.move_mgr:update()
