@@ -123,33 +123,11 @@ public:
 	SRotation			r_current,r_target, r_torso_current, r_torso_target;
 	float				r_spine_speed, r_torso_speed;
 
-	// Motions
-	u32					dwMoveState;
-
-	CMotionDef*			m_current;
-	
-	CMotionDef*			m_death;
-	CMotionDef*			m_idle;
-	SAnimState			m_walk;
-	SAnimState			m_run;
-	CMotionDef*			m_turn;
-	
-	CMotionDef* 		m_crouch_death;
-	CMotionDef* 		m_crouch_idle;
-	CMotionDef* 		m_crouch_turn;
-	SAnimState 			m_crouch_walk;
-	SAnimState 			m_crouch_run;
-
-	char				m_cBodyState;
-	
 	float				m_fTimeUpdateDelta;
 	u32					m_dwLoopCount;
 	int					m_iCurrentPatrolIndex;
 	bool				m_bPatrolPathInverted;
 	u32					m_dwLastUpdateTime;
-
-	// movement
-	float				m_fJumpSpeed;
 
 	// Monster motion & state management		__START	(JIM)
 	u32					m_dwCurrentUpdate;
@@ -245,9 +223,6 @@ public:
 	// HUD
 	virtual void		OnHUDDraw				(CCustomHUD* hud);
 	virtual bool		bfExecMovement			(){return(false);};
-	IC		void		StandUp()				{ m_cBodyState = BODY_STATE_STAND;  };
-	IC		void		Squat()					{ m_cBodyState = BODY_STATE_CROUCH; };
-	IC		void		Lie()					{ m_cBodyState = BODY_STATE_LIE;    };
 
 	// miscellaneous
 	IC		int			ifGetMemberIndex() 

@@ -377,7 +377,7 @@ void CAI_Rat::AttackFire()
 
 	vfSetFire(true,Level().get_group(g_Team(),g_Squad(),g_Group()));
 	
-	vfSetMovementType(m_cBodyState,0);
+	vfSetMovementType(0);
 }
 
 void CAI_Rat::AttackRun()

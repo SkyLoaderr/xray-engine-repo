@@ -44,7 +44,7 @@ CCustomMonster::CCustomMonster()
 {
 //	Weapons				= 0;
 	tWatchDirection		= Direction();
-	m_cBodyState		= BODY_STATE_STAND;
+//	m_cBodyState		= BODY_STATE_STAND;
 	r_torso_speed		= PI;
 	r_spine_speed		= PI;
 	q_look.o_look_speed = PI;
@@ -120,7 +120,7 @@ void CCustomMonster::Load		(LPCSTR section)
 
 	Position().y			+= EPS_L;
 	
-	m_current			= 0;
+//	m_current			= 0;
 
 	// Health & Armor
 	fArmor				= 0;
@@ -149,53 +149,53 @@ void CCustomMonster::mk_orientation(Fvector &dir, Fmatrix& mR)
 
 void CCustomMonster::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
 {
-	R_ASSERT(fsimilar(_view.magnitude(),1));
-	R_ASSERT(fsimilar(_move.magnitude(),1));
-
-	CMotionDef*	S=0;
-
-	if (fEntityHealth<=0) {
-		// Die
-		S = m_death;
-	} else {
-		if (speed<0.2f) {
-			// idle
-			S = m_idle;
-		} else {
-			Fvector view = _view; view.y=0; view.normalize_safe();
-			Fvector move = _move; move.y=0; move.normalize_safe();
-			float	dot  = view.dotproduct(move);
-			
-			SAnimState* AState = &m_walk;
-//			if (bCrouched)	AState = &m_crouch_walk;
-//			else			
-			AState = &m_walk;
-			
-			if (speed>2.f){
-//				if (bCrouched)	AState = &m_crouch_run;
-//				else			
-				AState = &m_run;
-			}
-			
-			if (dot>0.7f){
-				S = AState->fwd;
-			}else if ((dot<=0.7f)&&(dot>=-0.7f)){
-				Fvector cross; cross.crossproduct(view,move);
-				if (cross.y>0){
-					S = AState->rs;
-				}else{
-					S = AState->ls;
-				}
-			}else //if (dot<-0.7f)
-			{
-				S = AState->back;
-			}
-		}
-	}
-	if (S!=m_current){ 
-		m_current = S;
-		if (S) PKinematics(Visual())->PlayCycle(S);
-	}
+//	R_ASSERT(fsimilar(_view.magnitude(),1));
+//	R_ASSERT(fsimilar(_move.magnitude(),1));
+//
+//	CMotionDef*	S=0;
+//
+//	if (fEntityHealth<=0) {
+//		// Die
+//		S = m_death;
+//	} else {
+//		if (speed<0.2f) {
+//			// idle
+//			S = m_idle;
+//		} else {
+//			Fvector view = _view; view.y=0; view.normalize_safe();
+//			Fvector move = _move; move.y=0; move.normalize_safe();
+//			float	dot  = view.dotproduct(move);
+//			
+//			SAnimState* AState = &m_walk;
+////			if (bCrouched)	AState = &m_crouch_walk;
+////			else			
+//			AState = &m_walk;
+//			
+//			if (speed>2.f){
+////				if (bCrouched)	AState = &m_crouch_run;
+////				else			
+//				AState = &m_run;
+//			}
+//			
+//			if (dot>0.7f){
+//				S = AState->fwd;
+//			}else if ((dot<=0.7f)&&(dot>=-0.7f)){
+//				Fvector cross; cross.crossproduct(view,move);
+//				if (cross.y>0){
+//					S = AState->rs;
+//				}else{
+//					S = AState->ls;
+//				}
+//			}else //if (dot<-0.7f)
+//			{
+//				S = AState->back;
+//			}
+//		}
+//	}
+//	if (S!=m_current){ 
+//		m_current = S;
+//		if (S) PKinematics(Visual())->PlayCycle(S);
+//	}
 }
 
 void CCustomMonster::net_Export(NET_Packet& P)					// export to server

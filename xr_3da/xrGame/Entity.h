@@ -155,7 +155,7 @@ public:
 	virtual void			GetVisible				(objVisible& R)	{};
 	virtual	float			ffGetFov				()				= 0;	
 	virtual	float			ffGetRange				()				= 0;	
-	virtual	ALife::ERelationType	tfGetRelationType		(CEntityAlive *tpEntityAlive)
+	virtual	ERelationType	tfGetRelationType		(CEntityAlive *tpEntityAlive)
 	{
 		if (tpEntityAlive->g_Team() != g_Team())
 			return(eRelationTypeEnemy);

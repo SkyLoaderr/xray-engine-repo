@@ -202,421 +202,423 @@ void CAI_Soldier::vfLoadAnimations()
 	m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tGlobal.tpaIdle[1]);
 }
 
-static void __stdcall vfPlayCallBack(CBlend* B)
-{
-	CAI_Soldier* tpSoldier = (CAI_Soldier*)B->CallbackParam;
-	tpSoldier->m_bActionStarted = false;
-}
-
+//static void __stdcall vfPlayCallBack(CBlend* B)
+//{
+//	CAI_Soldier* tpSoldier = (CAI_Soldier*)B->CallbackParam;
+//	tpSoldier->m_bActionStarted = false;
+//}
+//
 void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
 {
-	//R_ASSERT(fsimilar(_view.magnitude(),1));
-	//R_ASSERT(fsimilar(_move.magnitude(),1));
-
-	CKinematics* tpVisualObject = PKinematics(Visual());
-	
-	CMotionDef*	tpLegsAnimation=0;
-	CMotionDef*	tpTorsoAnimation=0;
-	CMotionDef*	tpGlobalAnimation=0;
-
-	if (g_Health() <= 0) {
-		switch (m_cBodyState) {
-			case BODY_STATE_STAND : {
-				for (int i=0 ;i<5; i++)
-					if (tSoldierAnimations.tNormal.tGlobal.tpaDeath[i] == m_tpCurrentGlobalAnimation) {
-						tpGlobalAnimation = m_tpCurrentGlobalAnimation;
-						break;
-					}
-				if (!tpGlobalAnimation)
-					tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,5)];
-				break;
-			}
-			case BODY_STATE_CROUCH : {
-				//tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpDeath;
-				for (int i=0 ;i<5; i++)
-					if (tSoldierAnimations.tNormal.tGlobal.tpaDeath[i] == m_tpCurrentGlobalAnimation) {
-						tpGlobalAnimation = m_tpCurrentGlobalAnimation;
-						break;
-					}
-				if (!tpGlobalAnimation)
-					tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,5)];
-				break;
-			}
-			case BODY_STATE_LIE : {
-				tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpDeath;
-				break;
-			}
-		}
-	}
-	else
-		/**
-		tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[0];
-
-	if (tpGlobalAnimation != m_tpCurrentGlobalAnimation) { 
-		//Msg("restarting animation..."); 
-		m_tpCurrentGlobalAnimation = tpGlobalAnimation;
-		if (tpGlobalAnimation) {
-			m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tpGlobalAnimation);
-		}
-	}
-		/**/
-		switch (m_eCurrentState) {
-			case aiSoldierWaitForAnimation : {
-				tpGlobalAnimation = m_tpAnimationBeingWaited;
-				tpTorsoAnimation = tpLegsAnimation = 0;
-				break;
-			}
-//			case aiSoldierJumping : {
+//	//R_ASSERT(fsimilar(_view.magnitude(),1));
+//	//R_ASSERT(fsimilar(_move.magnitude(),1));
+//
+//	CKinematics* tpVisualObject = PKinematics(Visual());
+//	
+//	CMotionDef*	tpLegsAnimation=0;
+//	CMotionDef*	tpTorsoAnimation=0;
+//	CMotionDef*	tpGlobalAnimation=0;
+//
+//	if (g_Health() <= 0) {
+////		switch (m_cBodyState) {
+////			case BODY_STATE_STAND : {
+////				for (int i=0 ;i<5; i++)
+////					if (tSoldierAnimations.tNormal.tGlobal.tpaDeath[i] == m_tpCurrentGlobalAnimation) {
+////						tpGlobalAnimation = m_tpCurrentGlobalAnimation;
+////						break;
+////					}
+////				if (!tpGlobalAnimation)
+////					tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,5)];
+////				break;
+////			}
+////			case BODY_STATE_CROUCH : {
+////				//tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpDeath;
+////				for (int i=0 ;i<5; i++)
+////					if (tSoldierAnimations.tNormal.tGlobal.tpaDeath[i] == m_tpCurrentGlobalAnimation) {
+////						tpGlobalAnimation = m_tpCurrentGlobalAnimation;
+////						break;
+////					}
+////				if (!tpGlobalAnimation)
+////					tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,5)];
+////				break;
+////			}
+////			case BODY_STATE_LIE : {
+////				tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpDeath;
+////				break;
+////			}
+////		}
+//	}
+//	else
+//		/**
+//		tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[0];
+//
+//	if (tpGlobalAnimation != m_tpCurrentGlobalAnimation) { 
+//		//Msg("restarting animation..."); 
+//		m_tpCurrentGlobalAnimation = tpGlobalAnimation;
+//		if (tpGlobalAnimation) {
+//			m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tpGlobalAnimation);
+//		}
+//	}
+//		/**/
+//		switch (m_eCurrentState) {
+//			case aiSoldierWaitForAnimation : {
+//				tpGlobalAnimation = m_tpAnimationBeingWaited;
+//				tpTorsoAnimation = tpLegsAnimation = 0;
+//				break;
+//			}
+////			case aiSoldierJumping : {
+////				switch (m_cBodyState) {
+////					case BODY_STATE_STAND : {
+////						if ((m_tpCurrentLegsAnimation != tSoldierAnimations.tNormal.tLegs.tpJumpBegin) && (m_tpCurrentLegsAnimation != tSoldierAnimations.tNormal.tLegs.tpJumpIdle)) {
+////							tpLegsAnimation = tSoldierAnimations.tNormal.tLegs.tpJumpBegin;
+////							//Msg("Jump begin");
+////						}
+////						else
+////							//if ((ps_Size() < 2) || (ps_Element(ps_Size() - 1).Position().y - ps_Element(ps_Size() - 2).Position().y > -EPS_L)) {
+////							if (m_tpCurrentLegsBlend->playing) {
+////								tpLegsAnimation = m_tpCurrentLegsAnimation;
+////								//Msg("Jump continueing");
+////							}
+////							else {
+////								tpLegsAnimation = tSoldierAnimations.tNormal.tLegs.tpJumpIdle;
+////								//Msg("Jump idle");
+////							}
+////						break;
+////					}
+////					case BODY_STATE_CROUCH : {
+////						if ((m_tpCurrentLegsAnimation != tSoldierAnimations.tCrouch.tLegs.tpJumpBegin) && (m_tpCurrentLegsAnimation != tSoldierAnimations.tCrouch.tLegs.tpJumpIdle))
+////							tpLegsAnimation = tSoldierAnimations.tCrouch.tLegs.tpJumpBegin;
+////						else
+////							if (m_tpCurrentLegsBlend->playing)
+////								tpLegsAnimation = m_tpCurrentLegsAnimation;
+////							else
+////								tpLegsAnimation = tSoldierAnimations.tCrouch.tLegs.tpJumpIdle;
+////						break;
+////												}
+////					case BODY_STATE_LIE : {
+////						tpLegsAnimation = tSoldierAnimations.tLie.tGlobal.tpWalkForward;
+////						break;
+////					}
+////				}
+////				break;
+////			}
+///**/
+//			case aiSoldierAttackAloneFireFire : 
+//			case aiSoldierAttackGroupFireFire : {
+//				if (m_bFiring)
+//					;
+////					switch (m_cBodyState) {
+////						case BODY_STATE_STAND : {
+////							tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpAttack;
+////							break;
+////						}
+////						case BODY_STATE_CROUCH : {
+////							tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpAttack;
+////							break;
+////						}
+////						case BODY_STATE_LIE : {
+////							tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpAttack;
+////							break;
+////						}
+////					}
+//				else
+//					;
+////					if (speed < EPS_L)
+////						switch (m_cBodyState) {
+////							case BODY_STATE_STAND : {
+////								tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpAim;
+////								break;
+////							}
+////							case BODY_STATE_CROUCH : {
+////								tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpAim;
+////								break;
+////							}
+////							case BODY_STATE_LIE : {
+////								tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpIdle;
+////								break;
+////							}
+////						}
+////					else
+////						tpGlobalAnimation = m_tpaMovementAnimations[m_cBodyState][m_cMovementType];
+//				tpTorsoAnimation = tpLegsAnimation = 0;
+//				break;
+//			}
+//			case aiSoldierRecharge : {
+////				switch (m_cBodyState) {
+////					case BODY_STATE_STAND : {
+////						tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpReload;
+////						break;
+////					}
+////					case BODY_STATE_CROUCH : {
+////						tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpReload;
+////						break;
+////					}
+////					case BODY_STATE_LIE : {
+////						tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpReload;
+////						break;
+////					}
+////				}
+//				break;
+//			}
+///**
+//			case aiSoldierAttackAim : {
 //				switch (m_cBodyState) {
 //					case BODY_STATE_STAND : {
-//						if ((m_tpCurrentLegsAnimation != tSoldierAnimations.tNormal.tLegs.tpJumpBegin) && (m_tpCurrentLegsAnimation != tSoldierAnimations.tNormal.tLegs.tpJumpIdle)) {
-//							tpLegsAnimation = tSoldierAnimations.tNormal.tLegs.tpJumpBegin;
-//							//Msg("Jump begin");
-//						}
-//						else
-//							//if ((ps_Size() < 2) || (ps_Element(ps_Size() - 1).Position().y - ps_Element(ps_Size() - 2).Position().y > -EPS_L)) {
-//							if (m_tpCurrentLegsBlend->playing) {
-//								tpLegsAnimation = m_tpCurrentLegsAnimation;
-//								//Msg("Jump continueing");
-//							}
-//							else {
-//								tpLegsAnimation = tSoldierAnimations.tNormal.tLegs.tpJumpIdle;
-//								//Msg("Jump idle");
-//							}
+//						tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpAim;
 //						break;
 //					}
 //					case BODY_STATE_CROUCH : {
-//						if ((m_tpCurrentLegsAnimation != tSoldierAnimations.tCrouch.tLegs.tpJumpBegin) && (m_tpCurrentLegsAnimation != tSoldierAnimations.tCrouch.tLegs.tpJumpIdle))
-//							tpLegsAnimation = tSoldierAnimations.tCrouch.tLegs.tpJumpBegin;
-//						else
-//							if (m_tpCurrentLegsBlend->playing)
-//								tpLegsAnimation = m_tpCurrentLegsAnimation;
-//							else
-//								tpLegsAnimation = tSoldierAnimations.tCrouch.tLegs.tpJumpIdle;
+//						tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpAim;
 //						break;
-//												}
+//					}
 //					case BODY_STATE_LIE : {
-//						tpLegsAnimation = tSoldierAnimations.tLie.tGlobal.tpWalkForward;
+//						tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpIdle;
 //						break;
 //					}
 //				}
+//				tpTorsoAnimation = tpLegsAnimation = 0;
 //				break;
 //			}
-/**/
-			case aiSoldierAttackAloneFireFire : 
-			case aiSoldierAttackGroupFireFire : {
-				if (m_bFiring)
-					switch (m_cBodyState) {
-						case BODY_STATE_STAND : {
-							tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpAttack;
-							break;
-						}
-						case BODY_STATE_CROUCH : {
-							tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpAttack;
-							break;
-						}
-						case BODY_STATE_LIE : {
-							tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpAttack;
-							break;
-						}
-					}
-				else
-					if (speed < EPS_L)
-						switch (m_cBodyState) {
-							case BODY_STATE_STAND : {
-								tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpAim;
-								break;
-							}
-							case BODY_STATE_CROUCH : {
-								tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpAim;
-								break;
-							}
-							case BODY_STATE_LIE : {
-								tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpIdle;
-								break;
-							}
-						}
-					else
-						tpGlobalAnimation = m_tpaMovementAnimations[m_cBodyState][m_cMovementType];
-				tpTorsoAnimation = tpLegsAnimation = 0;
-				break;
-			}
-			case aiSoldierRecharge : {
-				switch (m_cBodyState) {
-					case BODY_STATE_STAND : {
-						tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpReload;
-						break;
-					}
-					case BODY_STATE_CROUCH : {
-						tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpReload;
-						break;
-					}
-					case BODY_STATE_LIE : {
-						tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpReload;
-						break;
-					}
-				}
-				break;
-			}
-/**
-			case aiSoldierAttackAim : {
-				switch (m_cBodyState) {
-					case BODY_STATE_STAND : {
-						tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpAim;
-						break;
-					}
-					case BODY_STATE_CROUCH : {
-						tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpAim;
-						break;
-					}
-					case BODY_STATE_LIE : {
-						tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpIdle;
-						break;
-					}
-				}
-				tpTorsoAnimation = tpLegsAnimation = 0;
-				break;
-			}
-			case aiSoldierPointAtSmth : {
-				switch (m_cBodyState) {
-					case BODY_STATE_STAND : {
-						tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpPointSign;
-						break;
-					}
-					case BODY_STATE_CROUCH : {
-						tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpPointSign;
-						break;
-					}
-					case BODY_STATE_LIE : {
-						//tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpPointSign;
-						break;
-					}
-				}
-				tpTorsoAnimation = tpLegsAnimation = 0;
-				break;
-			}
-/**/
-			default : {
-				// not moving
-				//if (speed < .1f) {
-//				Msg("speed %.2f",speed);
-//				Msg("m_fCurSpeed %.2f",m_fCurSpeed);
-//				Msg("BODY_STATE %d",m_cBodyState);
-				if (speed < .1f) {
-					// turning around || standing idle
-					if (_abs(r_torso_target.yaw - r_torso_current.yaw) <= PI)
-						if (_abs(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
-							if (r_torso_target.yaw - r_torso_current.yaw >= 0)
-								switch (m_cBodyState) {
-									case BODY_STATE_STAND : {
-										tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpTurnRight;
-										break;
-									}
-									case BODY_STATE_CROUCH : {
-										tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpTurnRight;
-										break;
-									}
-									case BODY_STATE_LIE : {
-										tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpTurnRight;
-										break;
-									}
-								}
-							else
-								switch (m_cBodyState) {
-									case BODY_STATE_STAND : {
-										tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpTurnLeft;
-										break;
-									}
-									case BODY_STATE_CROUCH : {
-										tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpTurnLeft;
-										break;
-									}
-									case BODY_STATE_LIE : {
-										tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpTurnLeft;
-										break;
-									}
-								}
-						else
-//							switch (m_eCurrentState) {
-//								/**
-//								case aiSoldierHurtAloneDefend : {
-//									switch (m_cBodyState) {
-//										case BODY_STATE_STAND : {
-//											tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpAim;
-//											break;
-//										}
-//										case BODY_STATE_CROUCH : {
-//											tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpAim;
-//											break;
-//										}
-//										case BODY_STATE_LIE : {
-//											tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpIdle;
-//											break;
-//										}
+//			case aiSoldierPointAtSmth : {
+//				switch (m_cBodyState) {
+//					case BODY_STATE_STAND : {
+//						tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpPointSign;
+//						break;
+//					}
+//					case BODY_STATE_CROUCH : {
+//						tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpPointSign;
+//						break;
+//					}
+//					case BODY_STATE_LIE : {
+//						//tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpPointSign;
+//						break;
+//					}
+//				}
+//				tpTorsoAnimation = tpLegsAnimation = 0;
+//				break;
+//			}
+///**/
+//			default : {
+//				// not moving
+//				//if (speed < .1f) {
+////				Msg("speed %.2f",speed);
+////				Msg("m_fCurSpeed %.2f",m_fCurSpeed);
+////				Msg("BODY_STATE %d",m_cBodyState);
+//				if (speed < .1f) {
+//					// turning around || standing idle
+//					if (_abs(r_torso_target.yaw - r_torso_current.yaw) <= PI)
+//						if (_abs(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
+//							if (r_torso_target.yaw - r_torso_current.yaw >= 0)
+//								switch (m_cBodyState) {
+//									case BODY_STATE_STAND : {
+//										tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpTurnRight;
+//										break;
 //									}
-//									tpTorsoAnimation = tpLegsAnimation = 0;
-//									break;
-//								}
-//								/**/
-//								default : {
-//									/**
-//									if ((m_eCurrentState == aiSoldierHurtAloneDefend) && (!AI_Path.TravelPath.size() || (AI_Path.TravelPath.size() - 1 > AI_Path.TravelStart))) {
-//										switch (m_cBodyState) {
-//											case BODY_STATE_STAND : {
-//												tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpAim;
-//												break;
-//											}
-//											case BODY_STATE_CROUCH : {
-//												tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpAim;
-//												break;
-//											}
-//											case BODY_STATE_LIE : {
-//												tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpIdle;
-//												break;
-//											}
-//										}
-//										tpTorsoAnimation = tpLegsAnimation = 0;
+//									case BODY_STATE_CROUCH : {
+//										tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpTurnRight;
+//										break;
 //									}
-//									else /**/{
-//										switch (m_cBodyState) {
-//											case BODY_STATE_STAND : {
-//												tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaIdle[1];
-//												break;
-//											}
-//											case BODY_STATE_CROUCH : {
-//												tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpIdle;
-//												break;
-//											}
-//											case BODY_STATE_LIE : {
-//												tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpIdle;
-//												break;
-//											}
-//										}
+//									case BODY_STATE_LIE : {
+//										tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpTurnRight;
 //										break;
 //									}
 //								}
+//							else
+//								switch (m_cBodyState) {
+//									case BODY_STATE_STAND : {
+//										tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpTurnLeft;
+//										break;
+//									}
+//									case BODY_STATE_CROUCH : {
+//										tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpTurnLeft;
+//										break;
+//									}
+//									case BODY_STATE_LIE : {
+//										tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpTurnLeft;
+//										break;
+//									}
+//								}
+//						else
+////							switch (m_eCurrentState) {
+////								/**
+////								case aiSoldierHurtAloneDefend : {
+////									switch (m_cBodyState) {
+////										case BODY_STATE_STAND : {
+////											tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpAim;
+////											break;
+////										}
+////										case BODY_STATE_CROUCH : {
+////											tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpAim;
+////											break;
+////										}
+////										case BODY_STATE_LIE : {
+////											tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpIdle;
+////											break;
+////										}
+////									}
+////									tpTorsoAnimation = tpLegsAnimation = 0;
+////									break;
+////								}
+////								/**/
+////								default : {
+////									/**
+////									if ((m_eCurrentState == aiSoldierHurtAloneDefend) && (!AI_Path.TravelPath.size() || (AI_Path.TravelPath.size() - 1 > AI_Path.TravelStart))) {
+////										switch (m_cBodyState) {
+////											case BODY_STATE_STAND : {
+////												tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpAim;
+////												break;
+////											}
+////											case BODY_STATE_CROUCH : {
+////												tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpAim;
+////												break;
+////											}
+////											case BODY_STATE_LIE : {
+////												tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpIdle;
+////												break;
+////											}
+////										}
+////										tpTorsoAnimation = tpLegsAnimation = 0;
+////									}
+////									else /**/{
+////										switch (m_cBodyState) {
+////											case BODY_STATE_STAND : {
+////												tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaIdle[1];
+////												break;
+////											}
+////											case BODY_STATE_CROUCH : {
+////												tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpIdle;
+////												break;
+////											}
+////											case BODY_STATE_LIE : {
+////												tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpIdle;
+////												break;
+////											}
+////										}
+////										break;
+////									}
+////								}
+////							}
+//						switch (m_cBodyState) {
+//							case BODY_STATE_STAND : {
+//								tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaIdle[1];
+//								break;
 //							}
-						switch (m_cBodyState) {
-							case BODY_STATE_STAND : {
-								tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaIdle[1];
-								break;
-							}
-							case BODY_STATE_CROUCH : {
-								tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpIdle;
-								break;
-							}
-							case BODY_STATE_LIE : {
-								tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpIdle;
-								break;
-							}
-						}
-					else
-						if (PI_MUL_2 - _abs(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
-							if (r_torso_target.yaw > r_torso_current.yaw)
-								switch (m_cBodyState) {
-									case BODY_STATE_STAND : {
-										tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpTurnLeft;
-										break;
-									}
-									case BODY_STATE_CROUCH : {
-										tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpTurnLeft;
-										break;
-									}
-									case BODY_STATE_LIE : {
-										tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpTurnLeft;
-										break;
-									}
-								}
-							else
-								switch (m_cBodyState) {
-									case BODY_STATE_STAND : {
-										tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpTurnRight;
-										break;
-									}
-									case BODY_STATE_CROUCH : {
-										tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpTurnRight;
-										break;
-									}
-									case BODY_STATE_LIE : {
-										tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpTurnRight;
-										break;
-									}
-								}
-						else
-							/**
-							if ((m_eCurrentState == aiSoldierHurtAloneDefend) && (!AI_Path.TravelPath.size() || (AI_Path.TravelPath.size() - 1 > AI_Path.TravelStart))) {
-								switch (m_cBodyState) {
-									case BODY_STATE_STAND : {
-										tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpAim;
-										break;
-									}
-									case BODY_STATE_CROUCH : {
-										tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpAim;
-										break;
-									}
-									case BODY_STATE_LIE : {
-										tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpIdle;
-										break;
-									}
-								}
-								tpTorsoAnimation = tpLegsAnimation = 0;
-							}
-							else /**/{
-								switch (m_cBodyState) {
-									case BODY_STATE_STAND : {
-										tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaIdle[1];
-										break;
-									}
-									case BODY_STATE_CROUCH : {
-										tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpIdle;
-										break;
-									}
-									case BODY_STATE_LIE : {
-										tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpIdle;
-										break;
-									}
-								}
-								break;
-							}
-					// torso
-				}
-				else {
-					//Msg("moving...");
-					tpGlobalAnimation = m_tpaMovementAnimations[m_cBodyState][m_cMovementType];
-					if (!tpGlobalAnimation) {
-						tpGlobalAnimation = tpGlobalAnimation;
-					}
-					//torso
-				}
-			}
-		}
-	
-	if (tpGlobalAnimation != m_tpCurrentGlobalAnimation) { 
-		//Msg("restarting animation..."); 
-		m_tpCurrentGlobalAnimation = tpGlobalAnimation;
-		if (tpGlobalAnimation) {
-			if (m_eCurrentState == aiSoldierWaitForAnimation)
-				m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tpGlobalAnimation,TRUE,vfPlayCallBack,this);
-			else
-				m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tpGlobalAnimation);
-		}
-	}
-
-	/**
-	if (tpTorsoAnimation != m_tpCurrentTorsoAnimation) { 
-		//Msg("restarting animation..."); 
-		m_tpCurrentTorsoAnimation = tpTorsoAnimation;
-		if (tpTorsoAnimation) {
-			m_tpCurrentTorsoBlend = tpVisualObject->PlayCycle(tpTorsoAnimation);
-		}
-	}
-
-	if (tpLegsAnimation != m_tpCurrentLegsAnimation) { 
-		//Msg("restarting animation..."); 
-		m_tpCurrentLegsAnimation = tpLegsAnimation;
-		if (tpLegsAnimation) {
-			m_tpCurrentLegsBlend = tpVisualObject->PlayCycle(tpLegsAnimation);
-		}
-	}
-	/**/
+//							case BODY_STATE_CROUCH : {
+//								tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpIdle;
+//								break;
+//							}
+//							case BODY_STATE_LIE : {
+//								tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpIdle;
+//								break;
+//							}
+//						}
+//					else
+//						if (PI_MUL_2 - _abs(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
+//							if (r_torso_target.yaw > r_torso_current.yaw)
+//								switch (m_cBodyState) {
+//									case BODY_STATE_STAND : {
+//										tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpTurnLeft;
+//										break;
+//									}
+//									case BODY_STATE_CROUCH : {
+//										tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpTurnLeft;
+//										break;
+//									}
+//									case BODY_STATE_LIE : {
+//										tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpTurnLeft;
+//										break;
+//									}
+//								}
+//							else
+//								switch (m_cBodyState) {
+//									case BODY_STATE_STAND : {
+//										tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpTurnRight;
+//										break;
+//									}
+//									case BODY_STATE_CROUCH : {
+//										tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpTurnRight;
+//										break;
+//									}
+//									case BODY_STATE_LIE : {
+//										tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpTurnRight;
+//										break;
+//									}
+//								}
+//						else
+//							/**
+//							if ((m_eCurrentState == aiSoldierHurtAloneDefend) && (!AI_Path.TravelPath.size() || (AI_Path.TravelPath.size() - 1 > AI_Path.TravelStart))) {
+//								switch (m_cBodyState) {
+//									case BODY_STATE_STAND : {
+//										tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpAim;
+//										break;
+//									}
+//									case BODY_STATE_CROUCH : {
+//										tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpAim;
+//										break;
+//									}
+//									case BODY_STATE_LIE : {
+//										tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpIdle;
+//										break;
+//									}
+//								}
+//								tpTorsoAnimation = tpLegsAnimation = 0;
+//							}
+//							else /**/{
+////								switch (m_cBodyState) {
+////									case BODY_STATE_STAND : {
+////										tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaIdle[1];
+////										break;
+////									}
+////									case BODY_STATE_CROUCH : {
+////										tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpIdle;
+////										break;
+////									}
+////									case BODY_STATE_LIE : {
+////										tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpIdle;
+////										break;
+////									}
+////								}
+//								break;
+//							}
+//					// torso
+//				}
+//				else {
+//					//Msg("moving...");
+//					tpGlobalAnimation = m_tpaMovementAnimations[m_cBodyState][m_cMovementType];
+//					if (!tpGlobalAnimation) {
+//						tpGlobalAnimation = tpGlobalAnimation;
+//					}
+//					//torso
+//				}
+//			}
+//		}
+//	
+//	if (tpGlobalAnimation != m_tpCurrentGlobalAnimation) { 
+//		//Msg("restarting animation..."); 
+//		m_tpCurrentGlobalAnimation = tpGlobalAnimation;
+//		if (tpGlobalAnimation) {
+//			if (m_eCurrentState == aiSoldierWaitForAnimation)
+//				m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tpGlobalAnimation,TRUE,vfPlayCallBack,this);
+//			else
+//				m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tpGlobalAnimation);
+//		}
+//	}
+//
+//	/**
+//	if (tpTorsoAnimation != m_tpCurrentTorsoAnimation) { 
+//		//Msg("restarting animation..."); 
+//		m_tpCurrentTorsoAnimation = tpTorsoAnimation;
+//		if (tpTorsoAnimation) {
+//			m_tpCurrentTorsoBlend = tpVisualObject->PlayCycle(tpTorsoAnimation);
+//		}
+//	}
+//
+//	if (tpLegsAnimation != m_tpCurrentLegsAnimation) { 
+//		//Msg("restarting animation..."); 
+//		m_tpCurrentLegsAnimation = tpLegsAnimation;
+//		if (tpLegsAnimation) {
+//			m_tpCurrentLegsBlend = tpVisualObject->PlayCycle(tpLegsAnimation);
+//		}
+//	}
+//	/**/
 }

@@ -475,30 +475,30 @@ void CAI_Soldier::vfAimAtEnemy(bool bInaccuracy)
 	
 	m_fAddWeaponAngle = 0;
 	// turning model a bit more for precise weapon shooting
-	switch (m_cBodyState) {
-		case BODY_STATE_STAND : {
-			break;
-		}
-		case BODY_STATE_CROUCH : {
-			if (fDistance > EPS_L) {
-				m_fAddWeaponAngle = r_torso_target.yaw;
-				if (m_fAddWeaponAngle > PI - EPS_L)
-					m_fAddWeaponAngle -= PI_MUL_2;
-				
-				m_fAddWeaponAngle = WEAPON_DISTANCE/fDistance;//(WEAPON_DISTANCE + .15f*_abs(PI - m_fAddWeaponAngle)/PI)/fDistance;
-				clamp(m_fAddWeaponAngle,-.99999f,+.99999f);
-				m_fAddWeaponAngle = asinf(m_fAddWeaponAngle);
-			}
-			else
-				m_fAddWeaponAngle = 0;
-			
-			//m_fAddWeaponAngle = 0;
-			break;
-		}
-		case BODY_STATE_LIE : {
-			break;
-		}
-	}
+//	switch (m_cBodyState) {
+//		case BODY_STATE_STAND : {
+//			break;
+//		}
+//		case BODY_STATE_CROUCH : {
+//			if (fDistance > EPS_L) {
+//				m_fAddWeaponAngle = r_torso_target.yaw;
+//				if (m_fAddWeaponAngle > PI - EPS_L)
+//					m_fAddWeaponAngle -= PI_MUL_2;
+//				
+//				m_fAddWeaponAngle = WEAPON_DISTANCE/fDistance;//(WEAPON_DISTANCE + .15f*_abs(PI - m_fAddWeaponAngle)/PI)/fDistance;
+//				clamp(m_fAddWeaponAngle,-.99999f,+.99999f);
+//				m_fAddWeaponAngle = asinf(m_fAddWeaponAngle);
+//			}
+//			else
+//				m_fAddWeaponAngle = 0;
+//			
+//			//m_fAddWeaponAngle = 0;
+//			break;
+//		}
+//		case BODY_STATE_LIE : {
+//			break;
+//		}
+//	}
 	
 	r_torso_target.yaw -= m_fAddWeaponAngle;
 	r_target.yaw = r_torso_target.yaw;

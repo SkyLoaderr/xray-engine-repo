@@ -139,28 +139,28 @@ public:
 			
 			void			Hit					(CLuaHit &tLuaHit);
 
-	BIND_MEMBER		(ClassID,	CGameObject,	CLS_ID,			CLASS_ID,			CLASS_ID(-1));
-	BIND_FUNCTION10	(Position,	CGameObject,	Position,		Fvector,			Fvector());
-	BIND_FUNCTION10	(Name,		CGameObject,	cName,			LPCSTR,				"");
-	BIND_FUNCTION10	(Section,	CGameObject,	cNameSect,		LPCSTR,				"");
-	BIND_FUNCTION10	(Mass,		CGameObject,	GetMass,		float,				float(-1));
-	BIND_FUNCTION10	(ID,		CGameObject,	ID,				u32,				u32(-1));
-	BIND_FUNCTION10	(getVisible,CGameObject,	getVisible,		BOOL,				FALSE);
-	BIND_FUNCTION01	(setVisible,CGameObject,	setVisible,		BOOL);
-	BIND_FUNCTION10	(getEnabled,CGameObject,	getEnabled,		BOOL,				FALSE);
-	BIND_FUNCTION01	(setEnabled,CGameObject,	setEnabled,		BOOL);
+	BIND_MEMBER		(ClassID,			CGameObject,	CLS_ID,				CLASS_ID,				CLASS_ID(-1));
+	BIND_FUNCTION10	(Position,			CGameObject,	Position,			Fvector,				Fvector());
+	BIND_FUNCTION10	(Name,				CGameObject,	cName,				LPCSTR,					"");
+	BIND_FUNCTION10	(Section,			CGameObject,	cNameSect,			LPCSTR,					"");
+	BIND_FUNCTION10	(Mass,				CGameObject,	GetMass,			float,					float(-1));
+	BIND_FUNCTION10	(ID,				CGameObject,	ID,					u32,					u32(-1));
+	BIND_FUNCTION10	(getVisible,		CGameObject,	getVisible,			BOOL,					FALSE);
+	BIND_FUNCTION01	(setVisible,		CGameObject,	setVisible,			BOOL);
+	BIND_FUNCTION10	(getEnabled,		CGameObject,	getEnabled,			BOOL,					FALSE);
+	BIND_FUNCTION01	(setEnabled,		CGameObject,	setEnabled,			BOOL);
 
-	BIND_FUNCTION10	(Cost,		CInventoryItem,	Cost,			u32,				u32(-1));
+	BIND_FUNCTION10	(Cost,				CInventoryItem,	Cost,				u32,					u32(-1));
 
-	BIND_MEMBER		(DeathTime,	CEntity,		m_dwDeathTime,	_TIME_ID,			_TIME_ID(-1));
-	BIND_FUNCTION10	(Armor,		CEntity,		g_Armor,		float,				-1);
-	BIND_FUNCTION10	(Health,	CEntity,		g_Health,		float,				-1);
-	BIND_FUNCTION10	(MaxHealth,	CEntity,		g_MaxHealth,	float,				-1);
-	BIND_FUNCTION10	(Accuracy,	CEntity,		g_Accuracy,		float,				-1);
-	BIND_FUNCTION10	(Alive,		CEntity,		g_Alive,		BOOL,				FALSE);
-	BIND_FUNCTION10	(Team,		CEntity,		g_Team,			int,				-1);
-	BIND_FUNCTION10	(Squad,		CEntity,		g_Squad,		int,				-1);
-	BIND_FUNCTION10	(Group,		CEntity,		g_Group,		int,				-1);
+	BIND_MEMBER		(DeathTime,			CEntity,		m_dwDeathTime,		_TIME_ID,				_TIME_ID(-1));
+	BIND_FUNCTION10	(Armor,				CEntity,		g_Armor,			float,					-1);
+	BIND_FUNCTION10	(Health,			CEntity,		g_Health,			float,					-1);
+	BIND_FUNCTION10	(MaxHealth,			CEntity,		g_MaxHealth,		float,					-1);
+	BIND_FUNCTION10	(Accuracy,			CEntity,		g_Accuracy,			float,					-1);
+	BIND_FUNCTION10	(Alive,				CEntity,		g_Alive,			BOOL,					FALSE);
+	BIND_FUNCTION10	(Team,				CEntity,		g_Team,				int,					-1);
+	BIND_FUNCTION10	(Squad,				CEntity,		g_Squad,			int,					-1);
+	BIND_FUNCTION10	(Group,				CEntity,		g_Group,			int,					-1);
 	
 	IC		void			Kill				(CLuaGameObject* who)
 	{
@@ -171,7 +171,27 @@ public:
 		}
 		l_tpEntity->KillEntity(who->m_tpGameObject);
 	}
-	
+
+	BIND_FUNCTION10	(GetFOV,			CEntityAlive,	ffGetFov,			float,					-1);
+	BIND_FUNCTION10	(GetRange,			CEntityAlive,	ffGetRange,			float,					-1);
+
+	IC		void			GetRelationType		(CLuaGameObject* who)
+	{
+		CEntityAlive		*l_tpEntityAlive1 = dynamic_cast<CEntityAlive*>(m_tpGameObject);
+		if (!l_tpEntityAlive1) {
+			Log				("* [LUA] %s cannot access class member!",m_tpGameObject->cName());
+			return;
+		}
+		
+		CEntityAlive		*l_tpEntityAlive2 = dynamic_cast<CEntityAlive*>(who->m_tpGameObject);
+		if (!l_tpEntityAlive2) {
+			Log				("* [LUA] %s cannot access class member!",who->m_tpGameObject->cName());
+			return;
+		}
+		
+		l_tpEntityAlive1->tfGetRelationType(l_tpEntityAlive2);
+	}
+
 //			.def("HealthValue",					&CLuaGameItem::HealthValue)
 //			.def("FoodValue",					&CLuaGameItem::FoodValue)
 //class CItemObject {

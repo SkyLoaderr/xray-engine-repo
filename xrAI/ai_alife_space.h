@@ -231,9 +231,10 @@ namespace ALife {
 	};
 
 	enum ERelationType {
-		eRelationTypeFriend = 0,
+		eRelationTypeFriend = u32(0),
 		eRelationTypeNeutral,
 		eRelationTypeEnemy,
+		eRelationTypeDummy = u32(-1),
 	};
 
 	enum EHitType {

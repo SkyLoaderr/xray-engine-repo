@@ -342,7 +342,7 @@ class CAI_Rat : public CCustomMonster, CEatableItem
 		void	vfAimAtEnemy();
 		void	vfSaveEnemy();
 		void	vfSetFire(bool bFire, CGroup &Group);
-		void	vfSetMovementType(char cBodyState, float fSpeed);
+		void	vfSetMovementType(float fSpeed);
 		void	vfUpdateDynamicObjects() {};
 		void	CreateSkeleton();
 		void	vfUpdateSpawnPosition();

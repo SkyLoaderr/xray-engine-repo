@@ -243,8 +243,6 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("Stop",						&CParticlesObject::Stop),
 
 		class_<CLuaHit>("CHit")
-			.def(								constructor<>())
-			.def(								constructor<const CLuaHit *>())
 			.enum_("EHitType")
 			[
 				value("eHitTypeBurn",			int(ALife::eHitTypeBurn)),
@@ -257,7 +255,8 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 				value("eHitTypeExplosion",		int(ALife::eHitTypeExplosion)),
 				value("eHitTypeFireWound",		int(ALife::eHitTypeFireWound))
 			]
-
+			.def(								constructor<>())
+			.def(								constructor<const CLuaHit *>())
 			.def_readwrite("Power",				&CLuaHit::m_fPower)
 			.def_readwrite("Direction",			&CLuaHit::m_tDirection)
 			.def_readwrite("Draftsman",			&CLuaHit::m_tpDraftsman)
@@ -266,6 +265,13 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def_readwrite("HitType",			&CLuaHit::m_tHitType),
 
 		class_<CLuaGameObject>("CGameObject")
+			.enum_("ERelationType")
+			[
+				value("eRelationTypeFriend",	int(ALife::eRelationTypeFriend)),
+				value("eRelationTypeNeutral",	int(ALife::eRelationTypeNeutral)),
+				value("eRelationTypeEnemy",		int(ALife::eRelationTypeEnemy)),
+				value("eRelationTypeDummy",		int(ALife::eRelationTypeDummy))
+			]
 			.def(								constructor<LPCSTR>())
 			.def(								constructor<const CLuaGameObject *>())
 			.property("Visible",				(BOOL (CLuaGameObject::*)() const)(CLuaGameObject::getVisible), (void (CLuaGameObject::*)(BOOL))(CLuaGameObject::setVisible))
@@ -291,6 +297,9 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("Hit",							&CLuaGameObject::Hit)
 //			.def("HealthValue",					&CLuaGameObject::HealthValue)
 //			.def("FoodValue",					&CLuaGameObject::FoodValue)
+			.def("GetFOV",						&CLuaGameObject::GetFOV)
+			.def("GetRange",					&CLuaGameObject::GetRange)
+			.def("GetRelationType",				&CLuaGameObject::GetRelationType)
 	];
 
 	vfLoadStandardScripts(tpLuaVirtualMachine);

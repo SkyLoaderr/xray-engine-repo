@@ -31,9 +31,9 @@ void CAI_Rat::vfSetFire(bool bFire, CGroup &Group)
 	}
 }
 
-void CAI_Rat::vfSetMovementType(char cBodyState, float fSpeed)
+void CAI_Rat::vfSetMovementType(float fSpeed)
 {
-	StandUp();
+//	StandUp();
 	m_fSpeed = m_fCurSpeed = fSpeed;
 }
 
