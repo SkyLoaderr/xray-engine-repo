@@ -49,6 +49,9 @@ void	CGlow::set_position		(const Fvector& P)	{
 	position.set				(P);
 	spatial_move				();
 };
+void	CGlow::set_direction	(const Fvector& D)	{
+	direction.normalize_safe	(D);
+};
 void	CGlow::set_radius		(float R)			{
 	if (fsimilar(radius,R))		return;
 	radius						= R;
@@ -94,8 +97,11 @@ void CGlowManager::Load		(IReader* fs)
 	for (;count;count--)
 	{
 		CGlow* G			= xr_new<CGlow>();
-		fs->r				(&G->spatial.center,3*sizeof(float));
-		fs->r				(&G->spatial.radius,1*sizeof(float));
+		fs->r				(&G->position,	3*sizeof(float));
+		fs->r				(&G->radius,	1*sizeof(float));
+		G->spatial.center	= G->position;
+		G->spatial.radius	= G->radius;
+		G->direction.set	( 0,0,0 );
 
 		u16 S				= fs->r_u16();
 		G->shader			= ::RImplementation.getShader(S);
@@ -201,7 +207,7 @@ void CGlowManager::Render()
 		if (o_main)				o_main->setEnabled	(o_enable);
 
 		// 2. Sort by shader
-		std::sort	(Selected.begin(),Selected.end(),glow_compare);
+		std::sort		(Selected.begin(),Selected.end(),glow_compare);
 		
 		FVF::TL		*	pv;
 		FVF::TL			TL;
@@ -221,17 +227,31 @@ void CGlowManager::Render()
 			FVF::TL	*	pvs		= pv = (FVF::TL*) RCache.Vertex.Lock(count*4,hGeom->vb_stride,vOffset);
 			for (; pos<end; pos++)
 			{
-				CGlow&	G			= *Selected[pos];
-				if (G.fade<=1.f)	continue;
-				
+				// Cull invisible 
+				CGlow&	G				= *Selected[pos];
+				if (G.fade<=1.f)		continue;
+
+				// Now perform dotproduct if need it
+				float	scale	= 1.f, dist_sq;
+				Fvector	dir;
+				dir.sub			(Device.vCameraPosition,G->position);
+				dist_sq			= dir.sqr_magnitude();
+				if (G->direction.sqr_magnitude()>EPS)	{
+					dir.div			(_sqrt(dist_sq));
+					scale			= dir.dotproduct(G->direction);
+				}
+				if (G.fade*scale<=1.f)	continue;
+
+				// Now fade glows directly in front of us
 				TL.transform	(G.spatial.center,Device.mFullTransform);
-				float size		= fov_scale * G.spatial.radius /TL.p.w;
+				float size		=	fov_scale * G.spatial.radius /TL.p.w;
+				scale			*=	clamp	(TL.p.z,0,.5f)*2;
+				if (G.fade*scale<=1.f)	continue;
 				
 				// Convert to screen coords
 				float cx        = (1+TL.p.x)*_width_2;
 				float cy        = (1+TL.p.y)*_height_2;
-				float dist		= Device.vCameraPosition.distance_to_sqr(G.spatial.center);
-				u32 C			= iFloor(G.fade*(1-(dist/dlim2)));
+				u32 C			= iFloor(G.fade*scale*(1-(dist_sq/dlim2)));
 				u32 clr			= color_rgba(C,C,C,C);
 				
 				pv->set(cx - size, cy + size, TL.p.z, TL.p.w, clr, 0, 1); pv++;
