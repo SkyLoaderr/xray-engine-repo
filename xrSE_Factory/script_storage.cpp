@@ -202,6 +202,7 @@ bool CScriptStorage::load_buffer	(CLuaVirtualMachine *L, LPCSTR caBuffer, size_t
 		sprintf			(insert,"local this = %s; function %s.script_name() return \"%s\" end local function script_name() return \"%s\" end ",caNameSpaceName,caNameSpaceName,caNameSpaceName,caNameSpaceName);
 		size_t			str_len = xr_strlen(insert);
 		LPSTR			script = (LPSTR)xr_malloc((str_len + tSize)*sizeof(char));
+#pragma todo("Dima to Dima : remove memory leak from here!")
 		strcpy			(script,insert);
 		Memory.mem_copy	(script + str_len,caBuffer,u32(tSize));
 		l_iErrorCode	= luaL_loadbuffer(L,script,tSize + str_len,caScriptName);
