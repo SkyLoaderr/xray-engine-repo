@@ -483,9 +483,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		CMD2(CCC_Float,				"hud_fov",				&psHUD_FOV);
 
 		// Demo
-#ifdef DEBUG
 		CMD1(CCC_DemoRecord,		"demo_record"			);
-#endif
 		CMD1(CCC_DemoPlay,			"demo_play"				);
 
 		// ai
