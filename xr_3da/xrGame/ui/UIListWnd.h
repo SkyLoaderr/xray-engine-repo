@@ -39,7 +39,7 @@ public:
 	virtual void Update();
 	
 	bool AddItem(const char*  str, void* pData = NULL, int value = 0, bool push_front = false);
-	bool AddParsedItem(const CUIString &str, const char StartShift, const u32 &MsgColor, CGameFont* pHeaderFont = NULL, void* pData = NULL, int value = 0, bool push_front = false);
+	bool AddParsedItem(const CUIString &str, const char StartShift, const u32 &MsgColor, CGameFont* pFont = NULL, void* pData = NULL, int value = 0, bool push_front = false);
 	bool AddItem(CUIListItem* pItem, bool push_front = false);
 	
 	void RemoveItem(int index);
@@ -84,6 +84,11 @@ public:
 	void SetVertFlip(bool vert_flip) {m_bVertFlip = vert_flip;}
 	bool GetVertFlip() {return m_bVertFlip;}
 
+	// ѕринудительна€ установка фокуса
+	void SetFocusedItem(int iNewFocusedItem);
+	int GetFocusedItem() { return m_iFocusedItem; }
+	void ResetFocusCapture() { m_bForceFocusedItem = false; }
+
 protected:
 
 	//полоса прокрутки
@@ -111,6 +116,8 @@ protected:
 	//элемент над которым курсор в данный момент или -1, если такого нет
 	int m_iFocusedItem;
 	int m_iFocusedItemGroupID;
+	// ≈сли хотим принудительно выставл€ть фокус, то подн€ть этот флаг
+	bool m_bForceFocusedItem;
 
 	//подсветка активного элемента
 	CUIStaticItem m_StaticActiveBackground;

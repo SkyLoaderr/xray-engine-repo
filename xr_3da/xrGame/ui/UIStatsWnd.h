@@ -25,6 +25,7 @@ public:
 	virtual ~CUIStatsListItem() {};
 	void XmlInit(const char *path, CUIXml &uiXml);
 	void Highlight(bool bHighlight);
+	void SetSubItemColor(u32 uItemIndex, u32 uColor);
 
 	// поля записи
 	FIELDS_VECTOR FieldsVector;
@@ -54,10 +55,12 @@ public:
 	void HighlightItem(const u32 uItem);
 	// Получить номер подсвеченого эл-та
 	u32	GetHighlightedItem() { return m_uHighlightedItem; }
+	// Выделить нужный элемент
+	void SelectItem(const u32 uItem);
 	
 	RECT GetFrameRect () { return UIFrameWnd.GetWndRect();};
 protected:
-	CUIButton			UIBtn;
+//	CUIButton			UIBtn;
 	// Фрейм - оболочка
 	CUIFrameWindow		UIFrameWnd;
 	// Лист для отображения списка статичтики игроков

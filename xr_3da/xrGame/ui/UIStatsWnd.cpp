@@ -3,16 +3,16 @@
 #include "UIStatsWnd.h"
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
-//-----------------------------------------------------------------------------/
-//  Ctor and Dtor
-//-----------------------------------------------------------------------------/
 
 const char * const STATS_XML = "stats.xml";
 
+//-----------------------------------------------------------------------------/
+//  Ctor and Dtor
+//-----------------------------------------------------------------------------/
 CUIStatsWnd::CUIStatsWnd()
 	: m_uHighlightedItem(0xffffffff)
 {
-	///Init();
+	Init();
 }
 
 CUIStatsWnd::~CUIStatsWnd()
@@ -38,13 +38,12 @@ void CUIStatsWnd::Init()
 	xml_init.InitListWnd(uiXml, "list", 0, &UIStatsList);
 	UIStatsList.SetMessageTarget(this);
 	UIStatsList.EnableScrollBar(true);
-	UIStatsList.EnableActiveBackground(true);
+//	UIStatsList.EnableActiveBackground(true);
 
 //	UIFrameWnd.AttachChild(&UIBtn);
-	xml_init.InitButton(uiXml, "button", 0, &UIBtn);
+//	xml_init.InitButton(uiXml, "button", 0, &UIBtn);
 
 	// TEST!!! Пробуем добавлять элементы
-	/*
 	CUIStatsListItem *pSLItem;
 
 	pSLItem = AddItem();
@@ -62,8 +61,8 @@ void CUIStatsWnd::Init()
 	pSLItem->FieldsVector[1]->SetText("Hubba-Bubba");
 	pSLItem->FieldsVector[2]->SetText("Frags: 6");
 
-	HighlightItem(1);
-	*/
+	SelectItem(0);
+	pSLItem->SetSubItemColor(0, 0xff0000ff);
 
 }
 
@@ -137,8 +136,14 @@ void CUIStatsWnd::HighlightItem(const u32 uItem)
 	}
 }
 
+void CUIStatsWnd::SelectItem(const u32 uItem)
+{
+	R_ASSERT(static_cast<int>(uItem) < UIStatsList.GetSize());
+	UIStatsList.SetFocusedItem(static_cast<signed int>(uItem));
+}
+
 //-----------------------------------------------------------------------------/
-//  CUIStatsListItem - локальный класс элемента списка в листе
+//  CUIStatsListItem - класс элемента списка в листе
 //-----------------------------------------------------------------------------/
 void CUIStatsListItem::XmlInit(const char *path, CUIXml &uiXml)
 {
@@ -169,4 +174,10 @@ void CUIStatsListItem::Highlight(bool bHighlight)
 	{
 		(*it)->HighlightItem(bHighlight);
 	}
+}
+
+void CUIStatsListItem::SetSubItemColor(u32 uItemIndex, u32 uColor)
+{
+	R_ASSERT(uItemIndex < FieldsVector.size());
+	FieldsVector[uItemIndex]->SetTextColor(uColor);
 }
