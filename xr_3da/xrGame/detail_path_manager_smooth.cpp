@@ -620,6 +620,7 @@ void CDetailPathManager::build_path_via_key_points(
 					m_path[m_path.size() - 2 - add].position
 				)
 			);
+			
 			VERIFY						(s.direction.square_magnitude() > EPS_L);
 			s.direction.normalize		();
 			m_path.pop_back				();

@@ -44,6 +44,7 @@ enum {
 	GE_HIT,						//
 	GE_DIE,						//
 	GE_DESTROY,					// authorative client request for entity-destroy
+	GE_DESTROY_REJECT,			// GE_DESTROY + GE_OWNERSHIP_REJECT
 
 	GE_BUY,
 

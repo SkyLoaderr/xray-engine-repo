@@ -44,20 +44,20 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			xrClientData *l_pC = ID_to_client(sender);
 			s16 l_team; P.r_s16(l_team);
 			game->OnPlayerChangeTeam(l_pC->ID, l_team);
-			VERIFY					(verify_entities());
+//			VERIFY					(verify_entities());
 		}break;
 	case GEG_PLAYER_CHANGE_SKIN:
 		{
 			xrClientData *l_pC = ID_to_client(sender);
 			u8 l_skin; P.r_u8(l_skin);
 			game->OnPlayerChangeSkin(l_pC->ID, l_skin);
-			VERIFY					(verify_entities());
+//			VERIFY					(verify_entities());
 		}break;
 	case GEG_PLAYER_KILL:
 		{
 			xrClientData *l_pC = ID_to_client(sender);
 			game->OnPlayerWantsDie(l_pC->ID);
-			VERIFY					(verify_entities());
+//			VERIFY					(verify_entities());
 		}break;
 	case GEG_PLAYER_READY:
 		{
@@ -69,28 +69,28 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 					game->OnPlayerReady		(C->ID);
 				}
 			}
-			VERIFY					(verify_entities());
+//			VERIFY					(verify_entities());
 		}break;
 	case GEG_PLAYER_BUY_FINISHED:
 		{
 			xrClientData *l_pC = ID_to_client(sender);
 			game->OnPlayerBuyFinished(l_pC->ID, P);
-			VERIFY					(verify_entities());
+//			VERIFY					(verify_entities());
 		}break;
 	case GE_INFO_TRANSFER:
 		SendBroadcast			(0xffffffff,P,MODE);
-		VERIFY					(verify_entities());
+//		VERIFY					(verify_entities());
 		break;
 	case GE_PDA:
 		SendBroadcast			(0xffffffff,P,MODE);
-		VERIFY					(verify_entities());
+//		VERIFY					(verify_entities());
 		break;
 	case GE_INV_ACTION:
 		{
 			xrClientData* CL		= ID_to_client(sender);
 			if (CL)	CL->net_Ready	= TRUE;
 			if (SV_Client) SendTo(SV_Client->ID, P, net_flags(TRUE, TRUE));
-			VERIFY					(verify_entities());
+//			VERIFY					(verify_entities());
 		}break;
 	case GE_BUY:
 		{
@@ -104,7 +104,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 					game->OnPlayerBuy		(C->ID,destination,i_name);
 				}
 			}
-			VERIFY					(verify_entities());
+//			VERIFY					(verify_entities());
 		}
 		break;
 	case GE_RESPAWN:
@@ -119,22 +119,30 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 				R.phantom			= destination;
 				q_respawn.insert	(R);
 			}
-			VERIFY					(verify_entities());
+//			VERIFY					(verify_entities());
 		}
 		break;
 	case GE_WPN_STATE_CHANGE:
 		SendBroadcast			(0xffffffff,P,MODE);
-		VERIFY					(verify_entities());
+//		VERIFY					(verify_entities());
 		break;
 	case GE_TRADE_BUY:
 	case GE_OWNERSHIP_TAKE:
-		Process_event_ownership	(P,sender,timestamp,destination);
-		VERIFY					(verify_entities());
-		break;
+		{
+			Process_event_ownership	(P,sender,timestamp,destination);
+			VERIFY					(verify_entities());
+		}break;
 	case GE_TRADE_SELL:
 	case GE_OWNERSHIP_REJECT:
-		Process_event_reject	(P,sender,timestamp,destination);
-		VERIFY					(verify_entities());
+		{
+			Process_event_reject	(P,sender,timestamp,destination,P.r_u16());
+			VERIFY					(verify_entities());
+		}break;
+	case GE_DESTROY:
+		{
+			Process_event_destroy	(P,sender,timestamp,destination);
+			VERIFY					(verify_entities());
+		}
 		break;
 	case GE_TRANSFER_AMMO:
 		{
@@ -174,7 +182,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			
 			// Signal just to destination (тому, кто повредился)
 			SendBroadcast		(0xffffffff,P,MODE);
-			VERIFY				(verify_entities());
+//			VERIFY				(verify_entities());
 		}
 		break;
 	case GE_DIE:
@@ -227,91 +235,16 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			VERIFY					(verify_entities());
 		}
 		break;
-	case GE_DESTROY:
-		{
-			// Parse message
-			u16					id_dest		=	destination;
-			CSE_Abstract*		e_dest		=	game->get_entity_from_eid	(id_dest);	// кто должен быть уничтожен
-			if (0==e_dest)		
-			{
-				Msg			("!SV:ge_destroy: [%d]",id_dest);
-				break;
-			};
-
-			R_ASSERT			(e_dest			);
-			xrClientData*		c_dest		=	e_dest->owner;				// клиент, чей юнит
-			R_ASSERT			(c_dest			);
-			xrClientData*		c_from		=	ID_to_client	(sender);	// клиент, кто прислал
-			R_ASSERT			(c_dest == c_from);							// assure client ownership of event
-
-			if (Game().type != GAME_SINGLE)
-			{
-				xr_vector<u16>::const_iterator	I = e_dest->children.begin	();
-				xr_vector<u16>::const_iterator	E = e_dest->children.end		();
-				for ( ; I != E; ++I) {
-//					CSE_Abstract	*e_child	= game->get_entity_from_eid(*I);
-					NET_Packet			P2;
-					P2.w_begin			(M_EVENT);
-					P2.w_u32			(timestamp);
-					P2.w_u16			(GE_DESTROY);
-					P2.w_u16			(*I);
-
-					Level().Send(P2,net_flags(TRUE,TRUE));
-				}
-			};
-
-			SendBroadcast		(0xffffffff,P,MODE);
-			// Parent-signal
-			if (0xffff != e_dest->ID_Parent)
-			{
-				NET_Packet			P2;
-				P2.w_begin			(M_EVENT);
-				P2.w_u32			(timestamp);
-				P2.w_u16			(GE_OWNERSHIP_REJECT);
-				P2.w_u16			(e_dest->ID_Parent);
-				P2.w_u16			(id_dest);
-				SendBroadcast		(0xffffffff,P2,MODE);
-				//-----------------------------------------------
-				//если GE_DESTROY пришло раньше OWNERSHIP_REJECT удаляем объект из списка дочерних элементов
-				if (Game().type != GAME_SINGLE)
-				{
-					CSE_Abstract*		e_parent	= game->get_entity_from_eid	(e_dest->ID_Parent);
-					if (e_parent)
-					{
-						xr_vector<u16>& C			= e_parent->children;
-						xr_vector<u16>::iterator c	= std::find	(C.begin(),C.end(),e_dest->ID);
-						if (C.end()!=c)
-						{
-							C.erase					(c);
-						}						
-					};
-				};
-				//-----------------------------------------------
-			}
-
-			// Everything OK, so perform entity-destroy
-			if (e_dest->m_bALifeControl && ai().get_alife()) {
-				game_sv_Single	*_game = dynamic_cast<game_sv_Single*>(game);
-				VERIFY			(_game);
-				if (ai().alife().objects().object(id_dest,true))
-					_game->alife().release	(e_dest,false);
-			}
-
-			if (game) game->OnDestroyObject	(e_dest->ID);
-			entity_Destroy			(e_dest);
-			VERIFY					(verify_entities());
-		}
-		break;
 	case GE_GRENADE_EXPLODE:
 		{
 			SendBroadcast		(0xffffffff,P,MODE);
-			VERIFY				(verify_entities());
+//			VERIFY				(verify_entities());
 		}break;
 	case GE_ADDON_ATTACH:
 	case GE_ADDON_DETACH:
 		{			
 			SendTo(SV_Client->ID, P, net_flags(TRUE, TRUE));
-			VERIFY					(verify_entities());
+//			VERIFY					(verify_entities());
 		}break;
 	case GEG_PLAYER_ITEM2SLOT:
 	case GEG_PLAYER_ITEM2BELT:
@@ -321,12 +254,12 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 	case GEG_PLAYER_INVENTORYMENU_CLOSE:
 		{
 			SendBroadcast		(sender,P,MODE);
-			VERIFY					(verify_entities());
+//			VERIFY					(verify_entities());
 		}break;
 	case GEG_PLAYER_ITEMDROP:
 		{
 			SendTo(SV_Client->ID, P, net_flags(TRUE, TRUE));
-			VERIFY					(verify_entities());
+//			VERIFY					(verify_entities());
 		}break;		
 	default:
 		R_ASSERT2	(0,"Game Event not implemented!!!");

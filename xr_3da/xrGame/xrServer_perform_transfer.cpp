@@ -61,5 +61,5 @@ void xrServer::Perform_reject(CSE_Abstract* what, CSE_Abstract* from)
 	P.r_u32					(time);
 	P.r_u16					(dummy);
 	P.r_u16					(dummy);
-	Process_event_reject	(P,0xffffffff,time,from->ID);
+	Process_event_reject	(P,0xffffffff,time,from->ID,what->ID);
 }

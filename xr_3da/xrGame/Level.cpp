@@ -203,7 +203,31 @@ void CLevel::OnFrame	()
 				Msg("! ERROR: c_EVENT[%d] : non-game-object",dest);
 				continue;
 			}
-			GO->OnEvent		(P,type);
+			if (type != GE_DESTROY_REJECT)
+				GO->OnEvent		(P,type);
+			else {
+				u32				pos = P.r_tell();
+				u16				id = P.r_u16();
+				P.r_seek		(pos);
+
+				bool			ok = true;
+				
+				CObject			*D	= Objects.net_Find	(id);
+				if (0==D)		{
+					Msg			("! ERROR: c_EVENT[%d] : unknown dest",id);
+					ok			= false;
+				}
+
+				CGameObject		*GD = dynamic_cast<CGameObject*>(D);
+				if (!GD)		{
+					Msg			("! ERROR: c_EVENT[%d] : non-game-object",id);
+					ok			= false;
+				}
+
+				GO->OnEvent		(P,GE_OWNERSHIP_REJECT);
+				if (ok)
+					GD->OnEvent	(P,GE_DESTROY);
+			}
 		}
 	}
 	//Net sync

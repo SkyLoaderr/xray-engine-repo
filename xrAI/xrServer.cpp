@@ -400,8 +400,8 @@ void xrServer::verify_entity				(const CSE_Abstract *entity) const
 {
 	if (entity->ID_Parent != 0xffff) {
 		xrS_entities::const_iterator	J = entities.find(entity->ID_Parent);
-		VERIFY2							(J != entities.end(),"SERVER : Cannot find parent in the map");
-		VERIFY2							((*J).second,"SERVER : Null entity object in the map");
+		VERIFY3							(J != entities.end(),"SERVER : Cannot find parent in the map",entity->s_name_replace);
+		VERIFY3							((*J).second,"SERVER : Null entity object in the map",entity->s_name_replace);
 		VERIFY3							((*J).first == (*J).second->ID,"SERVER : ID mismatch - map key doesn't correspond to the real entity ID",(*J).second->s_name_replace);
 		VERIFY3							(std::find((*J).second->children.begin(),(*J).second->children.end(),entity->ID) != (*J).second->children.end(),"SERVER : Parent/Children relationship mismatch - Object has parent, but corresponding parent doesn't have children",(*J).second->s_name_replace);
 	}
@@ -409,10 +409,10 @@ void xrServer::verify_entity				(const CSE_Abstract *entity) const
 	xr_vector<u16>::const_iterator		I = entity->children.begin();
 	xr_vector<u16>::const_iterator		E = entity->children.end();
 	for ( ; I != E; ++I) {
-		VERIFY2							(*I != 0xffff,"SERVER : Invalid entity children id - 0xffff");
+		VERIFY3							(*I != 0xffff,"SERVER : Invalid entity children id - 0xffff",entity->s_name_replace);
 		xrS_entities::const_iterator	J = entities.find(*I);
-		VERIFY2							(J != entities.end(),"SERVER : Cannot find children in the map");
-		VERIFY2							((*J).second,"SERVER : Null entity object in the map");
+		VERIFY3							(J != entities.end(),"SERVER : Cannot find children in the map",entity->s_name_replace);
+		VERIFY3							((*J).second,"SERVER : Null entity object in the map",entity->s_name_replace);
 		VERIFY3							((*J).first == (*J).second->ID,"SERVER : ID mismatch - map key doesn't correspond to the real entity ID",(*J).second->s_name_replace);
 		VERIFY3							((*J).second->ID_Parent == entity->ID,"SERVER : Parent/Children relationship mismatch - Object has children, but children doesn't have parent",(*J).second->s_name_replace);
 	}
