@@ -12,7 +12,7 @@ CStats::CStats()
 	fRFPS		= 30.f;
 	fTPS		= 0;
 	pFont		= 0;
-	fMemRequests= 0;
+	fMem_calls	= 0;
 }
 
 CStats::~CStats()
