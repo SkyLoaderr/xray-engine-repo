@@ -102,12 +102,12 @@ ph_mass						= 5
 ;cost						= 2100
 
 ;addons
-scope_status				= 2
+_status						= 2
 silencer_status				= 2
 grenade_launcher_status		= 2
 
 zoom_enabled				= true
-scope_zoom_factor	    	= 50	;30
+scope_zoom_factor	    	= 15
 
 scope_name 						= wpn_addon_scope
 scope_x 					= 60
@@ -120,14 +120,14 @@ grenade_launcher_x 			= 112
 grenade_launcher_y 			= 17
 
 ;звуки
-snd_draw			= weapons\ak74_draw
-snd_holster			= weapons\generic_holster
-snd_shoot			= weapons\test_shoot ;was ak74_shoot
-snd_empty			= weapons\gen_empty, 0.5
-snd_reload			= weapons\ak74_reload, 0.7, 0.35
-snd_shoot_grenade		= weapons\gen_grenshoot
-snd_reload_grenade		= weapons\gen_grenload, 1.0, 0.8
-snd_switch			= weapons\groza_switch, 1.0, 0.5
+snd_draw					= weapons\ak74_draw
+snd_holster					= weapons\generic_holster
+snd_shoot					= weapons\test_shoot ;was ak74_shoot
+snd_empty					= weapons\gen_empty, 0.5
+snd_reload					= weapons\ak74_reload, 0.7, 0.35
+snd_shoot_grenade			= weapons\gen_grenshoot
+snd_reload_grenade			= weapons\gen_grenload, 1.0, 0.8
+snd_switch					= weapons\groza_switch, 1.0, 0.5
 
 
 ;настройки для глушителя
@@ -139,7 +139,7 @@ silencer_bullet_speed	 	= 600
 ;silencer_flame_particles 	= weapons\generic_weapon01
 silencer_smoke_particles 	= weapons\generic_shoot_00
 
-snd_silncer_shot		= weapons\w_ak74_shot1 
+snd_silncer_shot			= weapons\w_ak74_shot1 
 
 silencer_light_color		= 0.6,0.5,0.3
 silencer_light_range		= 0.01
@@ -171,26 +171,26 @@ anim_shoot					= shoot
 			
 ;анимации с подключенным подствольником
 ;(режим обычной стрельбы)			  
-anim_idle_g			= idle_grenade
-anim_idle_g_aim			= idle_w_gl_aim
-anim_reload_g			= reload_grenade
-anim_shoot_g			= shoot_grenade
-anim_switch_grenade_on	= switch_grenade
-anim_switch_grenade_off	= switch_grenade_off
-anim_draw_g				= draw_grenade_mode
-anim_holster_g			= holster_grenade_mode
+anim_idle_g					= idle_grenade
+anim_idle_g_aim				= idle_w_gl_aim
+anim_reload_g				= reload_grenade
+anim_shoot_g				= shoot_grenade
+anim_switch_grenade_on		= switch_grenade
+anim_switch_grenade_off		= switch_grenade_off
+anim_draw_g					= draw_grenade_mode
+anim_holster_g				= holster_grenade_mode
 ;(режим стрельбы из подствольника)
-anim_idle_gl			= idle_w_gl
-anim_idle_gl_aim		= idle_w_gl_aim
-anim_reload_gl			= reload_w_gl
-anim_draw_gl			= draw_w_gl
-anim_holster_gl			= holster_w_gl
-anim_shoot_gl			= shoot_w_gl
+anim_idle_gl				= idle_w_gl
+anim_idle_gl_aim			= idle_w_gl_aim
+anim_reload_gl				= reload_w_gl
+anim_draw_gl				= draw_w_gl
+anim_holster_gl				= holster_w_gl
+anim_shoot_gl				= shoot_w_gl
 
 ;смещения HUD для режима приближения
-zoom_offset			= -0.112500,0.015800,0.000000
-zoom_rotate_x		= 0.000400
-zoom_rotate_y		= 0.017200
+zoom_offset					= -0.112500,0.015800,0.000000
+zoom_rotate_x				= 0.000400
+zoom_rotate_y				= 0.017200
 ;прячем перекрестие прицела в зуме
 zoom_hide_crosshair	= true
 
