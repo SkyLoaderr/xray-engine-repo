@@ -114,8 +114,6 @@ void CStalkerActionFreeNoALife::execute		()
 		return;
 	}
 	dest_vertex						= m_object->accessible_nearest(Fvector(dest_position),dest_position);
-	if (!m_object->accessible(dest_position))
-		dest_vertex					= m_object->accessible_nearest(Fvector(dest_position),dest_position);
 	m_object->set_desired_position	(&dest_position);
 	m_object->set_level_dest_vertex (dest_vertex);
 //	Fvector							look_pos = actor->Position();

@@ -39,6 +39,7 @@
 
 #include "space_restriction_manager.h"
 #include "seniority_hierarchy_holder.h"
+#include "space_restrictor.h"
 
 CPHWorld*	ph_world = 0;
 float		g_cl_lvInterp = 0;
@@ -326,7 +327,6 @@ void CLevel::OnFrame	()
 	Device.Statistic.TEST0.End			();
 }
 
-#include "space_restrictor.h"
 void CLevel::OnRender()
 {
 	inherited::OnRender	();

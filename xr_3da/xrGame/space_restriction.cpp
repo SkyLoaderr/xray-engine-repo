@@ -148,12 +148,24 @@ void CSpaceRestriction::merge_in_out_restrictions	()
 
 CSpaceRestriction::CBaseRestrictionPtr CSpaceRestriction::merge	(CBaseRestrictionPtr bridge, const RESTRICTIONS &temp_restrictions) const
 {
-	string256						S;
+	u32								acc_length = xr_strlen(*bridge->name()) + 1;
+	{
+		RESTRICTIONS::const_iterator	I = temp_restrictions.begin();
+		RESTRICTIONS::const_iterator	E = temp_restrictions.end();
+		for ( ; I != E; ++I)
+			acc_length					+= xr_strlen(*(*I)->name()) + 1;
+	}
+	
+	LPSTR							S = (LPSTR)xr_malloc(acc_length*sizeof(char));
+	S[0]							= 0;
 	ref_str							temp = bridge->name();
 	RESTRICTIONS::const_iterator	I = temp_restrictions.begin();
 	RESTRICTIONS::const_iterator	E = temp_restrictions.end();
 	for ( ; I != E; ++I)
 		temp						= strconcat(S,*temp,",",*(*I)->name());
+
+	xr_free							(S);
+
 	return							(m_space_restriction_manager->restriction(temp));
 }
 
