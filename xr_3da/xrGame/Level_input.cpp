@@ -101,6 +101,12 @@ void CLevel::IR_OnKeyboardPress(int key)
 						pHudItem->GetHUD()->SetCurrentEntityHud(true);
 						pHudItem->StartIdleAnim();
 					}
+					CWeapon* pWeapon = smart_cast<CWeapon*>(pActor->inventory().ActiveItem());
+					if (pWeapon)
+					{
+						pWeapon->InitAddons();
+						pWeapon->UpdateAddonsVisibility();
+					}
 				}
 			}
 		}

@@ -50,6 +50,7 @@ void CWeapon::AddShotEffector		()
 		CEffectorShot* S		= smart_cast<CEffectorShot*>	(pActor->EffectorManager().GetEffector(eCEShot)); 
 		if (!S)	S				= (CEffectorShot*)pActor->EffectorManager().AddEffector(xr_new<CEffectorShot> (camMaxAngle,camRelaxSpeed, camMaxAngleHorz, camStepAngleHorz));
 		R_ASSERT				(S);
+		S->SetRndSeed(pActor->GetShotRndSeed());
 		S->Shot					(camDispersion);
 	}
 }
