@@ -146,7 +146,7 @@ namespace CDB
 		RESULT&			r_add			();
 		void			r_free			();
 		IC int			r_count			()	{	return rd.size();			};
-		IC void			r_clear			()	{	rd.clear();					};
+		IC void			r_clear			()	{	rd.clear_not_free();		};
 	};
 
 	//
