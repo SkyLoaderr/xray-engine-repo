@@ -237,16 +237,6 @@ function action_meet_wait:initialize()
 	xr_state.change_state(self.object,xr_state.stand)
    	self.object:set_item(object.deactivate, self.object:best_weapon())	
    	self.a.Buyer = nil
-
-	--' Смена стартового диалога
-	local overrides = xr_logic.generic_scheme_overrides(self.object)
-	if overrides ~= nil and
-		overrides.meet_dialog ~= nil
-	then
-		self.object:set_start_dialog(overrides.meet_dialog)
-	else
-		self.object:restore_default_start_dialog()	
-	end	
 end
 function action_meet_wait:execute ()
 	if xr_state.finish_state(self.object) == true then
@@ -470,4 +460,17 @@ end
 
 function override_meet(npc, flag)
 	xr_motivator.storage[npc:id()].meet.over = flag
+end
+
+
+function dialog_manager_reset(npc)
+	--' Смена стартового диалога
+	local overrides = xr_logic.generic_scheme_overrides(npc)
+	if overrides ~= nil and
+		overrides.meet_dialog ~= nil
+	then
+		npc:set_start_dialog(overrides.meet_dialog)
+	else
+		npc:restore_default_start_dialog()	
+	end	
 end
