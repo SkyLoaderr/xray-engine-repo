@@ -7,7 +7,7 @@ const	u32								c_vCacheSize		= 24;			// entries
 const	u32								c_SS_LowVertLimit	= 64;			// polys
 const	u32								c_SS_HighVertLimit	= 3*1024;		// polys
 const	u32								c_SS_maxsize		= 40;			// meters
-const	u32								c_PM_LowVertLimit	= 128;			// vertices
+const	u32								c_PM_FaceLimit		= 128;			// face-limit
 
 BOOL	exact_normalize					(Fvector3&	a);
 BOOL	exact_normalize					(float*		a);
