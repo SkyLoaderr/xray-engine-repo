@@ -43,7 +43,6 @@ private:
 	CDB::MODEL*							geom_ENV;
 
 	// Containers
-	CSoundRender_Cache					cache;
 	xr_vector<CSoundRender_Source*>		s_sources;
 	xr_vector<CSoundRender_Emitter*>	s_emitters;
 	u32									s_emitters_u;			// emitter update marker
@@ -52,6 +51,9 @@ private:
 	u32									s_targets_pu;			// parameters update
 	SoundEnvironment_LIB*				s_environment;
 	CSoundRender_Environment			s_user_environment;
+public:
+	// Cache
+	CSoundRender_Cache					cache;
 public:
 	CSoundRender_Core					();
 	~CSoundRender_Core					();

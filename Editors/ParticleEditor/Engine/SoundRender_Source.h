@@ -3,7 +3,7 @@
 #pragma once
 
 #include "soundrender.h"
-#include "soundrender_cache"
+#include "soundrender_cache.h"
 
 class XRSOUND_EDITOR_API 	CSoundRender_Source	: public CSound_source
 {
