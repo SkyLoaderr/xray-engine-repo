@@ -35,14 +35,39 @@ void CSE_ALifeObject::spawn_supplies		(LPCSTR ini_string)
 		LPCSTR					N,V;
 		for (u32 k = 0, j; ini.r_line("spawn",k,&N,&V); k++) {
 			VERIFY				(xr_strlen(N));
+	
+			BOOL A[3]			= {0,0,0};
 			j					= 1;
-			if (V && xr_strlen(V)) {
-				j				= atoi(V);
+			if (V && xr_strlen(V)) 
+			{	
+				string64 buf;
+				int items_count = _GetItemCount(V);
+				j				= atoi(_GetItem(V, 0, buf));
 				if (!j)
 					j			= 1;
+
+				int addons_flags_num = (items_count-1)>3?3:items_count-1;
+				for(int item_i = 0; item_i<addons_flags_num; item_i++)
+				{
+					A[item_i] = !!atoi(_GetItem(V, item_i+1, buf));
+				}
 			}
+
 			for (u32 i=0; i<j; ++i)
-				alife().spawn_item	(N,o_Position,m_tNodeID,m_tGraphID,ID);
+			{
+				CSE_Abstract* E = alife().spawn_item	(N,o_Position,m_tNodeID,m_tGraphID,ID);
+				//подсоединить аддоны к оружию, если включены соответствующие флажки
+				CSE_ALifeItemWeapon* W =  smart_cast<CSE_ALifeItemWeapon*>(E);
+				if(W)
+				{
+					if (W->m_scope_status == CSE_ALifeItemWeapon::eAddonAttachable)
+						W->m_addon_flags.set(CSE_ALifeItemWeapon::eWeaponAddonScope, A[0]);
+					if (W->m_silincer_status == CSE_ALifeItemWeapon::eAddonAttachable)
+						W->m_addon_flags.set(CSE_ALifeItemWeapon::eWeaponAddonSilencer, A[1]);
+					if (W->m_grenade_launcher_status == CSE_ALifeItemWeapon::eAddonAttachable)
+						W->m_addon_flags.set(CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher, A[2]);
+				}
+			}
 		}
 	}
 }
