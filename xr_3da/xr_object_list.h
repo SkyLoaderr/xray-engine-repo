@@ -1,8 +1,6 @@
 #ifndef __XR_OBJECT_LIST_H__
 #define __XR_OBJECT_LIST_H__
 
-#include "xrSheduler.h"
-
 // refs
 class	ENGINE_API	CObject;
 class	ENGINE_API	CInifile;

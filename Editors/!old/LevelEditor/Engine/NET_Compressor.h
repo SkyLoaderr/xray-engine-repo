@@ -86,7 +86,7 @@ private:
 
 	/* Finish encoding                                           */
 	/* returns number of bytes written                           */
-	u32				done_encoding		( );
+	u32					done_encoding		( );
 
 	/* Start the decoder                                         */
 	/* returns the char from start_encoding or EOF               */
@@ -109,7 +109,7 @@ private:
 
 	/* Decode a byte/short without modelling                     */
 	BYTE				decode_byte			( );
-	u16				decode_short		( );
+	u16					decode_short		( );
 
 	/* Finish decoding                                           */
 	void				done_decoding		( );

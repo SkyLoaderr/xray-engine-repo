@@ -54,7 +54,7 @@ protected:
 	NET_Compressor_FREQ		traffic_in;
 
 	xrCriticalSection		csPlayers;
-	svector<IClient*,64>	net_Players;
+	xr_vector<IClient*>		net_Players;
 	IClient*				SV_Client;
 
 	// Compressor configuration

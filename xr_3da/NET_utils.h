@@ -1,9 +1,7 @@
 #ifndef _INCDEF_NETUTILS_H_
 #define _INCDEF_NETUTILS_H_
-
 #pragma once
 
-#include "net_compressor.h"
 #pragma pack(push,1)
 
 const	u32			NET_PacketSizeLimit	= 16384;//8192;

@@ -2,6 +2,7 @@
 
 #include "net_utils.h"
 #include "net_messages.h"
+#include "net_compressor.h"
 
 #ifdef XR_NETSERVER_EXPORTS
 	#define XRNETSERVER_API __declspec(dllexport)

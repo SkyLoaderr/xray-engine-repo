@@ -1,5 +1,6 @@
 #ifndef PHYSICS_COMMON_H
 #define PHYSICS_COMMON_H
+#include "ode_include.h"
 #include "DisablingParams.h"
 extern const dReal	default_l_limit;
 extern const dReal	default_w_limit;

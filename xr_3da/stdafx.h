@@ -41,7 +41,7 @@
 #endif
 #include "device.h"
 #include "fs.h"
-#include "properties.h"
+// ..
 #include "xrXRC.h"
 
 #include "sound.h"

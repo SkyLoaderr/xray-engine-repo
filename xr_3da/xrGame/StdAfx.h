@@ -15,7 +15,7 @@
 #include "../igame_level.h"
 #include "../xr_object.h"
 #include "../sound.h"
-#include "../xr_input.h"
+// #include "../xr_input.h"
 #include "../x_ray.h"
 #include "../std_classes.h"
 #include "../GameFont.h"
@@ -23,11 +23,11 @@
 #include "NET_Server.h"
 #include "NET_Client.h"
 
-#include "../render.h"
-#include "../fmesh.h"
+//#include "../render.h"
+//#include "../fmesh.h"
 #include "../SkeletonAnimated.h"
 #include "../SkeletonRigid.h"
 
-#include "ode_include.h"
+//#include "ode_include.h"
 
 #define BOOST_THROW_EXCEPTION_HPP_INCLUDED

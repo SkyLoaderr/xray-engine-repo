@@ -2,6 +2,7 @@
 #include "igame_level.h"
 #include "igame_persistent.h"
 
+#include "xrSheduler.h"
 #include "xr_object_list.h"
 #include "std_classes.h"
 
