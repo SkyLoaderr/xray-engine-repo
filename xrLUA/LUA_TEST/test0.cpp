@@ -847,6 +847,9 @@ void register_smth1	(module_ &module_ref)
 		];
 }
 
+struct A1 {};
+struct A2 : virtual public A1 {};
+
 void test1()
 {
 	string4096		SSS;
@@ -869,6 +872,12 @@ void test1()
 	module_			game_engine = module(L,"game_engine");
 	register_smth0	(game_engine);
 	register_smth1	(game_engine);
+
+	module(L)
+	[
+		class_<A1>("A1"),
+		class_<A2,bases<A1> >("A2")
+	];
 
 	lua_dofile		(L,"x:\\split_test.script");
 	if (xr_strlen(SSS)) {
