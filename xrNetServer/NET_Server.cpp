@@ -130,8 +130,11 @@ BOOL IPureServer::Connect(LPCSTR options)
 {
 	// Parse options
 	string4096				session_name;
+	string4096				session_options = "";
+
 	strcpy					(session_name,options);
 	if (strchr(session_name,'/'))	*strchr(session_name,'/')=0;
+	if (strchr(options,'/'))	strcpy(session_options, strchr(options,'/')+1);
 
     // Create the IDirectPlay8Client object.
     CHK_DX(CoCreateInstance	(CLSID_DirectPlay8Server, NULL, CLSCTX_INPROC_SERVER, IID_IDirectPlay8Server, (LPVOID*) &NET));
@@ -172,6 +175,7 @@ BOOL IPureServer::Connect(LPCSTR options)
     // Set server/session description
 	WCHAR	SessionNameUNICODE[4096];
 	CHK_DX(MultiByteToWideChar(CP_ACP, 0, session_name, -1, SessionNameUNICODE, 4096 ));
+    // Set server/session description
 	
     // Now set up the Application Description
     ZeroMemory					(&dpAppDesc, sizeof(DPN_APPLICATION_DESC));
@@ -179,6 +183,8 @@ BOOL IPureServer::Connect(LPCSTR options)
     dpAppDesc.dwFlags			= DPNSESSION_CLIENT_SERVER | DPNSESSION_NODPNSVR;
     dpAppDesc.guidApplication	= NET_GUID;
     dpAppDesc.pwszSessionName	= SessionNameUNICODE;
+	dpAppDesc.pvApplicationReservedData	= session_options;
+	dpAppDesc.dwApplicationReservedDataSize = xr_strlen(session_options)+1;
 	
     // We are now ready to host the app
 	CHK_DX(NET->Host			
