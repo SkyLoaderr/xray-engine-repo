@@ -5,13 +5,12 @@
 #include "process.h"
 
 #pragma comment(linker,"/STACK:0x800000,0x400000")
-// #pragma comment(linker,"/HEAP:0x40000000,0x8000000")
 
 #pragma comment(lib,"comctl32.lib")
 #pragma comment(lib,"d3dx8.lib")
 #pragma comment(lib,"IMAGEHLP.LIB")
 #pragma comment(lib,"winmm.LIB")
-#pragma comment(lib,"magicfm.LIB")
+#pragma comment(lib,"x:\\magicfm.LIB")
 #pragma comment(lib,"x:\\xrcdb.LIB")
 
 extern void	xrCompiler			(LPCSTR name);
