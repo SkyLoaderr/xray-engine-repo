@@ -45,7 +45,6 @@ public:
 	void					RenderShadow		(LPDIRECT3DVERTEXBUFFER7 pv);
 	void					MakeShadowVolume	(_vector &L, _matrix &mWorld );
 
-	virtual CVisual*	CreateInstance(void);
 	virtual	void			Load(CStream *data, DWORD dwFlags);
 	virtual void			Render(float LOD);
 

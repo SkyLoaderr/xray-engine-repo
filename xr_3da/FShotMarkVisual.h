@@ -14,7 +14,6 @@ class FShotMarkVisual : public Fvisual
 public:
 	Fmatrix		mSelfTransform;
 
-	virtual CVisual*		CreateInstance		(void);
 	virtual void			Render				(float LOD);
 	BOOL					isReadyForDestroy	(void)	{ return fTime<0; }
 
