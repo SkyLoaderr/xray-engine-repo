@@ -232,13 +232,14 @@ function fract:nameStalkerOnJob(job_name)
 	end
 	return nil
 end
-
 function fract:getCasualities()
 	return self.casualities
 end
 function fract:changeCasualities(delta)
 	self.casualities = self.casualities + delta
 end
+
+
 ----------------------------------------------------------------------------------------------------------------------
 -- Function
 ----------------------------------------------------------------------------------------------------------------------
@@ -267,21 +268,6 @@ function resetJob(name, npc)
 		if xr_gulag.fraction[name]:all_spawned() then
 			xr_gulag.fraction[name]:updateJob()
 		end
-	end
-end
-
-function needRaid(fraction)
-	if xr_gulag.fraction[fraction] ~= nil then
-		local cc = xr_gulag.fraction[fraction]:getCasualities()
-		printf("seekraid %d of 3", cc)
-		if cc >= 3 then return true end
-	end
-	return false			
-end
-function startRaid(fraction)
-	if xr_gulag.fraction[fraction] ~= nil then
-		local cc = xr_gulag.fraction[fraction]:getCasualities()
-		xr_gulag.fraction[fraction]:changeCasualities(-cc)
 	end
 end
 

@@ -586,6 +586,12 @@ function loadStates(gname, type)
 
 	if type == "blockpost" then
 		return function(gulag)
+			if gulag:getCasualities() >= 3 then
+				printf("Start Raid")
+				gulag:changeCasualities(gulag:getCasualities())
+				escape_raid.start_raid()
+			end
+		
 			for k,v in gulag.Object do
 				enemy = v:best_enemy()
 				if enemy ~= nil then
