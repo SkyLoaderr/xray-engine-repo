@@ -200,6 +200,15 @@ void CPoltergeist::UpdateHeight()
 
 bool CPoltergeist::UpdateStateManager()
 {
+	// Squad calculations
+	CMonsterSquad	*pSquad = monster_squad().get_squad(this);
+	if (pSquad && pSquad->SquadActive()) {
+		pSquad->UpdateMonsterData(this,const_cast<CEntityAlive *>(EnemyMan.get_enemy()));
+		if ((pSquad->GetLeader() == this)) {
+			pSquad->UpdateDecentralized();
+		} 
+	}
+	
 	StateMan->execute	();
 	return true;
 }
@@ -207,6 +216,8 @@ bool CPoltergeist::UpdateStateManager()
 void CPoltergeist::on_activate()
 {
 	if (m_disable_hide) return;
+	if (!m_disable_hide) return;
+	
 
 	Hide();
 	
