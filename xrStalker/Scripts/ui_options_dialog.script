@@ -161,22 +161,22 @@ function options_dialog:HideAllTabs()
 end
 
 function options_dialog:OnButton_video()
-	HideAllTabs()
+	self:HideAllTabs()
 	self.tab_video:Show(true)
 end
 
 function options_dialog:OnButton_sound()
-	HideAllTabs()
+	self:HideAllTabs()
 	self.tab_video:Show(true)
 end
 
 function options_dialog:OnButton_game()
-	HideAllTabs()
+	self:HideAllTabs()
 	self.tab_video:Show(true)
 end
 
 function options_dialog:OnButton_controls()
-	HideAllTabs()
+	self:HideAllTabs()
 	self.tab_video:Show(true)
 end
 
