@@ -209,27 +209,12 @@ function proceed(actor)
 		set_task_state(task.completed, "bar_dolg_rg6_quest", 2)
 	end 
 
-	if	actor:has_info("bar_svoboda_rg6_done") and
- 		actor:dont_has_info("bar_dolg_community_leader_done")
-	then		
-		actor:give_info_portion("bar_dolg_community_leader_done")
-		set_task_state(task.completed, "bar_dolg_rg6_quest", 0)
-	end 
-
 	if	actor:has_info("bar_kill_borov_start") and
  		actor:dont_has_info("val_borov_info_gain") and
 		actor:object("borov_flash") ~= nil
 	then		
 		actor:give_info_portion("val_borov_info_gain")
 		set_task_state(task.completed, "bar_dolg_borov_quest", 1)
-	end 
-
-	if	actor:has_info("bar_kill_borov_start") and
- 		actor:has_info("bar_kill_borov_voronin") and
- 		actor:dont_has_info("bar_kill_borov_done")
-	then		
-		actor:give_info_portion("bar_kill_borov_done")
-		set_task_state(task.completed, "bar_dolg_borov_quest", 0)
 	end 
 
 	if	actor:has_info("bar_kill_svoboda_ambush_start") and
@@ -240,15 +225,6 @@ function proceed(actor)
 		set_task_state(task.completed, "bar_dolg_svoboda_ambush_quest", 1)
 	end 
 
-	if	actor:has_info("bar_kill_svoboda_ambush_start") and
- 		actor:has_info("bar_kill_svoboda_ambush_killed") and
- 		actor:has_info("bar_kill_svoboda_ambush_voronin") and
- 		actor:dont_has_info("bar_kill_svoboda_ambush_done") 
-	then		
-		actor:give_info_portion("bar_kill_svoboda_ambush_done")
-		set_task_state(task.completed, "bar_dolg_svoboda_ambush_quest", 0)
-	end 
-
 	if	actor:has_info("bar_kill_svoboda_leader_start") and
  		actor:dont_has_info("mil_kill_svoboda_leader_killed") and
 		actor:object("mil_svoboda_leader_pda") ~= nil
@@ -256,16 +232,6 @@ function proceed(actor)
 		actor:give_info_portion("mil_kill_svoboda_leader_killed")
 		set_task_state(task.completed, "bar_dolg_svoboda_leader_kill_quest", 1)
 	end 
-
-	if	actor:has_info("bar_kill_svoboda_leader_start") and
- 		actor:has_info("mil_kill_svoboda_leader_killed") and
- 		actor:has_info("bar_kill_svoboda_leader_voronin") and
- 		actor:dont_has_info("bar_kill_svoboda_leader_done") 
-	then		
-		actor:give_info_portion("bar_kill_svoboda_leader_done")
-		set_task_state(task.completed, "bar_dolg_svoboda_leader_kill_quest", 0)
-	end 
-
 
 
 	if	actor:has_info("bar_decoding_start") and 
@@ -544,9 +510,23 @@ function process_map_spot(info_id)
 	elseif info_id == "agroprom_military_case_have" then
 		remove_location(300, "agr_military_case_location")
 
-	-- bar_rostok
+
+	-- BAR ROSTOK
+
 	elseif info_id == "agroprom_military_case_done" then
 		set_task_state(task.completed, "agroprom_get_military_documents", 0)
+
+	elseif info_id == "bar_svoboda_rg6_done" then
+		set_task_state(task.completed, "bar_dolg_rg6_quest", 0)
+
+	elseif info_id == "bar_kill_borov_voronin" then
+		set_task_state(task.completed, "bar_dolg_borov_quest", 0)
+
+	elseif info_id == "bar_kill_svoboda_ambush_voronin" then
+		set_task_state(task.completed, "bar_dolg_svoboda_ambush_quest", 0)
+
+	elseif info_id == "bar_kill_svoboda_leader_voronin" then
+		set_task_state(task.completed, "bar_dolg_svoboda_leader_kill_quest", 0)
 
 	elseif info_id == "bar_bar_hunter_quest_start" then
 		add_location(502, "bar_hunter_toz_location")
