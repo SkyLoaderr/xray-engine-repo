@@ -17,6 +17,8 @@
 
 #define GRAPH_NAME							"game.graph"
 
+using namespace ALife;
+
 class CALifeGraph {
 public:
 	#pragma pack(push,4)
