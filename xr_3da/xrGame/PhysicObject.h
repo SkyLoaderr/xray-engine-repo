@@ -38,6 +38,7 @@ public:
 	virtual BOOL	UsedAI_Locations	()																				;
 protected:
 	virtual void	SpawnInitPhysics	(CSE_Abstract	*D)																;
+	virtual void	RunStartupAnim		(CSE_Abstract	*D)																;
 	virtual CPhysicsShellHolder*	PPhysicsShellHolder	()	{return PhysicsShellHolder();}								;
 	virtual	void	InitServerObject	(CSE_Abstract	*po)															;
 	virtual void	PHObjectPositionUpdate()																			;

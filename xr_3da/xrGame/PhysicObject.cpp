@@ -6,6 +6,7 @@
 #include "../skeletonanimated.h"
 #include "../xr_collide_form.h"
 
+
 CPhysicObject::CPhysicObject(void) 
 {
 	m_type = epotBox;
@@ -44,10 +45,13 @@ BOOL CPhysicObject::net_Spawn(CSE_Abstract* DC)
 void	CPhysicObject::SpawnInitPhysics	(CSE_Abstract* D)
 {
 	CreatePhysicsShell(D);
-
+	RunStartupAnim(D);
+}
+void CPhysicObject::RunStartupAnim(CSE_Abstract *D)
+{
 	if(Visual()&&smart_cast<CKinematics*>(Visual()))
 	{
-//		CSE_PHSkeleton	*po	= smart_cast<CSE_PHSkeleton*>(D);
+		//		CSE_PHSkeleton	*po	= smart_cast<CSE_PHSkeleton*>(D);
 		CSkeletonAnimated*	pSkeletonAnimated=NULL;
 		R_ASSERT			(Visual()&&smart_cast<CKinematics*>(Visual()));
 		pSkeletonAnimated	=smart_cast<CSkeletonAnimated*>(Visual());
@@ -97,6 +101,7 @@ void CPhysicObject::shedule_Update		(u32 dt)
 {
 	inherited::shedule_Update(dt);
 	CPHSkeleton::Update(dt);
+
 }
 void CPhysicObject::UpdateCL()
 {
