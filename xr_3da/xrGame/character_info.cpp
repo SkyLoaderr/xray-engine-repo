@@ -121,9 +121,7 @@ void CCharacterInfo::load_shared	(LPCSTR)
 			data()->m_Class				= NO_CHARACTER_CLASS;
 			
 		data()->m_Rank				= uiXml.ReadInt	("rank",		0,	NO_RANK);
-		R_ASSERT(NO_RANK != data()->m_Rank);
 		data()->m_Reputation		= uiXml.ReadInt	("reputation",	0,	NO_REPUTATION);
-		R_ASSERT(NO_REPUTATION != data()->m_Reputation);
 	}
 	else
 		data()->m_iCharacterIndex = CSpecificCharacter::IdToIndex(spec_char);
