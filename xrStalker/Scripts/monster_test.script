@@ -5,36 +5,43 @@
 --------------------------------------------------------------------------------
 
 function action_one( npc )
-	action( npc, anim("spinka"), cond(cond.anim_end));
+	//action( npc, anim("spinka"), cond(cond.anim_end));
 end
 
 function action_two( npc )
-	action( npc, anim("spinka_idle"), cond(cond.time_end,2000));
+	//action( npc, anim("spinka_idle"), cond(cond.time_end,2000));
 end
 
+function death1(self, who)
+	if (who ~= nil) then
+		printf("[%s] killed by [%s]", self:name(), who:name() )
+	else 
+		printf("[%s] killed by [Unknown]", self:name())
+	end
+end
 
 function main()
-	printf	("Taking Script");
+	//printf	("Taking Script");
 
-	local	 monster = get_level_object("trader");
-	local	 monster2 = get_level_object("monster");
-	wait	(5000);
-	
-	printf	("Taking Script");
-	
-	local	stage = 0;
-	
-	//monster:script( true, script_name() )
-	
-	monster2:script( true, script_name() )
-	
-	while ( true ) do
-		action( monster2, anim(anim.stand_idle, 0), cond(cond.anim_end))
-		while monster2:action() do
-			wait()
-		end
-	end
-	
+	//local	 monster = get_level_object("trader");
+	//local	 monster2 = get_level_object("monster");
+	//wait	(5000);
+	//
+	//printf	("Taking Script");
+	//
+	//local	stage = 0;
+	//
+	////monster:script( true, script_name() )
+	//
+	//monster2:script( true, script_name() )
+	//
+	//while ( true ) do
+	//	action( monster2, anim(anim.stand_idle, 0), cond(cond.anim_end))
+	//	while monster2:action() do
+	//		wait()
+	//	end
+	//end
+	//
 
 
 	//while ( true ) do
@@ -58,5 +65,17 @@ function main()
 	// end
 	//
 	//monster:script( false, script_name() )
+
+	local	 monster	= level.object	("monster")
+	local	 monster2	= level.object	("monster2")
+	local	 actor		= level.actor	()
 	
+	monster:set_death_callback	(this.death1)
+	monster2:set_death_callback	(this.death1)
+	actor:set_death_callback	(this.death1)
+
+	while (true) do 
+		wait()
+	end
+
 end
