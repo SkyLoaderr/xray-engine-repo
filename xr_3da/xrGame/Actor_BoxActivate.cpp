@@ -224,7 +224,6 @@ bool CActor:: ActivateBox(DWORD id)
 	for(int m=0;num_steps>m;++m)
 	{
 		float param =fnum_steps_r*(1+m);
-		float fun_param_2=_sqrt(param);
 		float fun_param=param*param;
 		float fun_param1=fun_param*fun_param;
 		float fun_param2=fun_param1*fun_param1;
