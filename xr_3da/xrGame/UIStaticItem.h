@@ -47,6 +47,7 @@ public:
 
 	IC void			SetColor		(u32 clr)					{dwColor= clr;}
 	IC void			SetColor		(Fcolor clr)				{dwColor= clr.get();}
+	IC u32			GetColor		() const					{return dwColor;}
 	IC ref_shader&	GetShader		()							{return hShader;}
 };
 

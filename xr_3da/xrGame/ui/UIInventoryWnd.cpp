@@ -850,11 +850,14 @@ void CUIInventoryWnd::DropItem()
 	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
 	if(!pActor) return;
 
+	if (dynamic_cast<CCustomOutfit*>(m_pCurrentItem))
+		SendMessage(NULL, CUIOutfitSlot::UNDRESS_OUTFIT, NULL);
+
 	m_pCurrentItem->Drop();
 	
 	(dynamic_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent()))->
 										DetachChild(m_pCurrentDragDropItem);
-
+	
 	//-----------------------------------------------------------------------
 	SendEvent_ItemDrop(m_pCurrentItem);
 	//-----------------------------------------------------------------------

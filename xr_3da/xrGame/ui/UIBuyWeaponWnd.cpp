@@ -30,7 +30,6 @@ using namespace InventoryUtilities;
 const u32			cDetached				= 0xffffffff;
 const u32			cAttached				= 0xff00ff00;
 const u32			cUnableToBuy			= 0xffff0000;
-const u32			cUnableToBuyOwned		= 0x80ff0000;
 const u32			cAbleToBuy				= cDetached;
 const u32			cAbleToBuyOwned			= 0xff8080ff;
 const u8			uIndicatorWidth			= 17;
@@ -495,6 +494,10 @@ bool CUIBuyWeaponWnd::OutfitSlotProc(CUIDragDropItem* pItem, CUIDragDropList* pL
 			static_cast<int>(*(it+1)),
 			SKIN_TEX_WIDTH, SKIN_TEX_HEIGHT - 15);
 		this_inventory->UIOutfitIcon.Show(true);
+		this_inventory->UIOutfitIcon.SetColor(pDDItemMP->GetColor());
+
+//		if (this_inventory->UITopList[OUTFIT_SLOT].GetDragDropItemsList().empty())
+//			this_inventory->UIOutfitIcon.SetColor(cAbleToBuy);
 
 		// И отнимаем от денег стоимость вещи.
 		if (!pDDItemMP->m_bAlreadyPaid)
@@ -540,6 +543,10 @@ bool CUIBuyWeaponWnd::BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	// Применяем скейл
 	pDDItemMP->Rescale(pDDItemMP->GetOwner()->GetItemsScale());
 
+	// Если сняли костюм, то изменить цвет на белый иконки с изображением персонажа
+	if (OUTFIT_SLOT == pDDItemMP->GetSlot())
+		this_inventory->UIOutfitIcon.SetColor(cAbleToBuy);
+
 	// И прибавляем к деньгам стоимость вещи.
 	if (pDDItemMP->m_bAlreadyPaid)
 	{
@@ -550,7 +557,7 @@ bool CUIBuyWeaponWnd::BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 		pDDItemMP->m_bAlreadyPaid = false;
 	}
 
-	if (pDDItemMP->GetCost() > this_inventory->GetMoneyAmount())
+	if (pDDItemMP->GetCost() > this_inventory->GetMoneyAmount() && !pDDItemMP->m_bHasRealRepresentation)
 		pDDItemMP->EnableDragDrop(false);
 
 	// Если это армор, то убедимся, что он стал видимым
@@ -1127,6 +1134,14 @@ void CUIBuyWeaponWnd::FillWpnSubBag(const u32 slotNum)
 			sprintf(buf, "Cannot find price for an item %s in sections: %s, %s",
 					wpnSectStorage[slotNum][j].c_str(), *m_StrSectionName, *m_StrPricesSection);
 			R_ASSERT2(false, buf);
+		}
+
+		// Если на оружие не хватает денег, то запрещаем его перемещение и помечаем цветом, 
+		// что оно недоступно
+		if (UIDragDropItem.GetCost() > GetMoneyAmount())
+		{
+			UIDragDropItem.SetColor(cUnableToBuy);
+			UIDragDropItem.EnableDragDrop(false);
 		}
 
 		// Для арморов читаем дополнительно координаты на текстуре с иконками персонажей для арморов
@@ -1753,11 +1768,11 @@ void CUIBuyWeaponWnd::CheckBuyAvailabilityInShop()
 			{
 				if (m_pCurrentDragDropItem != pDDItemMP)
 				{
-					if (pDDItemMP->m_bHasRealRepresentation)
-						pDDItemMP->SetColor(cUnableToBuyOwned);
-					else
+					if (!pDDItemMP->m_bHasRealRepresentation)
+					{
 						pDDItemMP->SetColor(cUnableToBuy);
-					pDDItemMP->EnableDragDrop(false);
+						pDDItemMP->EnableDragDrop(false);
+					}
 				}
 			}
 		}
@@ -1799,13 +1814,21 @@ void CUIBuyWeaponWnd::CheckBuyAvailabilityInSlots()
 				else
 				{
 					pDDItemMP->SetColor(cUnableToBuy);
-					if (pDDItemMP->m_bAlreadyPaid)
-						SetMoneyAmount(GetMoneyAmount() + pDDItemMP->GetCost());
+
+					// Для армора закрациваем дополнительно и иконку с изображением персонажа
+					if (OUTFIT_SLOT == pDDItemMP->GetSlot())
+						UIOutfitIcon.SetColor(cUnableToBuy);
 					pDDItemMP->m_bAlreadyPaid = false;
 				}
 			}
 			else
+			{
 				pDDItemMP->SetColor(cAbleToBuyOwned);
+
+				// Для армора закрациваем дополнительно и иконку с изображением персонажа
+				if (OUTFIT_SLOT == pDDItemMP->GetSlot())
+					UIOutfitIcon.SetColor(cAbleToBuyOwned);
+			}
 		}
 	}
 
@@ -1915,6 +1938,13 @@ void CUIBuyWeaponWnd::SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bReal
 				// Если слот не пуст то не перемещаем
 				if (UITopList[DDItemMP.GetSlot()].GetDragDropItemsList().empty() || GRENADE_SLOT == DDItemMP.GetSlot())
 				{
+					// Устанавливаем режим работы с денежками
+//					bool bPrevMoneyMode = m_bIgnoreMoney;
+//					if (DDItemMP.GetCost() > GetMoneyAmount())
+//						IgnoreMoney(true);
+//					else
+//						IgnoreMoney(false);
+
 					DDItemMP.m_bHasRealRepresentation = bRealRepresentationSet;
 					SendMessage(&DDItemMP, CUIDragDropItem::ITEM_DB_CLICK, NULL);
 					// Проверяем индекс на наличие флагов аддонов, и если они есть, то 
@@ -1928,6 +1958,8 @@ void CUIBuyWeaponWnd::SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bReal
 						if ((uAddonFlags & 4) != 0)
 							DDItemMP.AttachDetachAddon(CUIDragDropItemMP::ID_SCOPE, true);
 					}
+
+//					IgnoreMoney(bPrevMoneyMode);
 				}
 				break;
 			}

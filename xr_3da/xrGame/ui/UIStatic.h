@@ -42,6 +42,7 @@ public:
 	CGameFont::EAligment GetTextAlign() {return m_eTextAlign;}
 
 	void SetColor(u32 color) {m_UIStaticItem.SetColor(color);}
+	u32 GetColor() const { return m_UIStaticItem.GetColor();}
 	
 	void InitTexture(LPCSTR tex_name);
 	CUIStaticItem* GetStaticItem() {return &m_UIStaticItem;}
