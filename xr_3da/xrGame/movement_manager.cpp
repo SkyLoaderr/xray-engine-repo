@@ -36,7 +36,7 @@ CMovementManager::CMovementManager	(CCustomMonster *object)
 	m_level_location_selector	= xr_new<CLevelLocationSelector	>();
 	m_level_path_manager		= xr_new<CLevelPathManager		>();
 	m_detail_path_manager		= xr_new<CDetailPathManager		>();
-	m_patrol_path_manager		= xr_new<CPatrolPathManager		>();
+	m_patrol_path_manager		= xr_new<CPatrolPathManager		>(m_object);
 	m_enemy_location_predictor	= xr_new<CEnemyLocationPredictor>();
 	m_restricted_object			= xr_new<CRestrictedObject>		 (m_object);
 	m_selector_manager			= xr_new<CSelectorManager>		 (m_object);
