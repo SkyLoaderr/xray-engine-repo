@@ -60,7 +60,7 @@ void CAI_Zombie::vfLoadAnimations()
 	// loading normal animations
 	m_tZombieAnimations.tNormal.tGlobal.tpaDeath[0]  = tpVisualObject->ID_Cycle("norm_death_0");
 	m_tZombieAnimations.tNormal.tGlobal.tpaDeath[1]  = tpVisualObject->ID_Cycle("norm_death_1");
-	m_tZombieAnimations.tNormal.tGlobal.tpaDeath[2]  = tpVisualObject->ID_Cycle("norm_death_2");
+	m_tZombieAnimations.tNormal.tGlobal.tpaDeath[2]  = tpVisualObject->ID_Cycle("norm_death_2")ds;
 	
 	m_tZombieAnimations.tNormal.tGlobal.tpaDeathIdle[0] = tpVisualObject->ID_Cycle("norm_death_idle_0");
 	m_tZombieAnimations.tNormal.tGlobal.tpaDeathIdle[1] = tpVisualObject->ID_Cycle("norm_death_idle_1");
@@ -105,7 +105,6 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 	if (!g_Alive()) {
 		for (int i=0 ;i<3; i++)
 			if (m_tZombieAnimations.tNormal.tGlobal.tpaDeathIdle[i] == m_tpCurrentGlobalAnimation) {
-				Msg("Death idle");
 				tpGlobalAnimation = m_tpCurrentGlobalAnimation;
 				break;
 			}
@@ -114,18 +113,12 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 			for (int i=0 ;i<3; i++)
 				if (m_tZombieAnimations.tNormal.tGlobal.tpaDeath[i] == m_tpCurrentGlobalAnimation) {
 					tpGlobalAnimation = m_tpCurrentGlobalAnimation;
-					if (!m_tpCurrentGlobalBlend->playing) {
+					if (!m_tpCurrentGlobalBlend->playing)
 						tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaDeathIdle[i];
-						Msg("Started to play Death idle");
-					}
-					else
-						Msg("Death");
 					break;
 				}
-			if (!tpGlobalAnimation) {
+			if (!tpGlobalAnimation)
 				tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,3)];
-				Msg("Started to play Death");
-			}
 		}
 	}
 	else

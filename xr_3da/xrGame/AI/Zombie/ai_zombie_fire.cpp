@@ -75,11 +75,6 @@ void CAI_Zombie::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 e
 			return;
 		::Sound->PlayAtPos		(S,this,vPosition);
 	}
-	if (g_Health() - amount <= 0) {
-		if ((m_tpCurrentGlobalAnimation) && (!m_tpCurrentGlobalBlend->playing))
-			if (m_tpCurrentGlobalAnimation != m_tZombieAnimations.tNormal.tGlobal.tpaDeath[0])
-				m_tpCurrentGlobalBlend = PKinematics(pVisual)->PlayCycle(m_tpCurrentGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,2)]);
-	}
 }
 
 float CAI_Zombie::EnemyHeuristics(CEntity* E)
