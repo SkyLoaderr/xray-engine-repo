@@ -22,6 +22,6 @@ ENGINE_API void		mmgrMessage		(const char *logMSG, const char *dop = NULL);
 #define	new					new(_NORMAL_BLOCK, __FILE__, __LINE__)
 #define	delete(a)			delete(a, _NORMAL_BLOCK, __FILE__, __LINE__)
 #endif
+*/
 
 #endif
-*/

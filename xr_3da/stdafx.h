@@ -65,7 +65,7 @@
 #include <dsound.h>
 #include <dplay8.h>
 
-#include <xr_malloc.h>
+#include <malloc.h>
 #ifdef DEBUG
 #include <crtdbg.h>
 #endif
