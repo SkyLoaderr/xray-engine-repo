@@ -6,14 +6,20 @@
 void xrServer::Process_spawn(NET_Packet& P, DPNID sender)
 {
 	// read spawn information
-	string64	s_name;
-	P.r_string	(s_name);
+	string64			s_name;
+	P.r_string			(s_name);
 
 	// create server entity
 	xrClientData* CL	= ID_to_client	(sender);
 	xrServerEntity*	E	= entity_Create	(s_name);
 	R_ASSERT			(E);
 	E->Spawn_Read		(P);
+	if (!((GAME==E->s_gameid)||(GAME_ANY==E->s_gameid)))
+	{
+		Msg				("- SERVER: Entity [%s] incompatible with current game type.",E->s_name);
+		entity_Destroy	(E);
+		return;
+	}
  
 	// generate/find new ID for entity
 	u16 ID		=		E->ID;

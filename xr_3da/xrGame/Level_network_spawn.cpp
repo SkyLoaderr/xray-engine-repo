@@ -8,6 +8,7 @@ void CLevel::g_cl_Spawn		(LPCSTR name, int rp, int team, int squad, int group)
 	P.w_begin	(M_SPAWN);
 	P.w_string	(name);
 	P.w_string	("");
+	P.w_u8		(u8(GAME));
 	P.w_u8		((rp>=0)?u8(rp):u8(0xff));
 	P.w_vec3	(dummyPos);
 	P.w_vec3	(dummyAngle);
@@ -31,11 +32,12 @@ void CLevel::g_sv_Spawn		(NET_Packet* Packet)
 
 	// Read definition
 	char		s_name[128],s_replace[128];
-	u8			s_rp;
+	u8			s_rp,s_game;
 	u16			s_server_id,s_server_parent_id,s_data_size,s_flags;
 	Fvector		o_pos,o_angle;
 	P.r_string	(s_name);
 	P.r_string	(s_replace);
+	P.r_u8		(s_game);
 	P.r_u8		(s_rp);
 	P.r_vec3	(o_pos);
 	P.r_vec3	(o_angle);
