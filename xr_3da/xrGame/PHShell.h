@@ -139,7 +139,7 @@ virtual ~CPHShell				()
 
 	void SetTransform(Fmatrix m);
 private:
-	void AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneData& parent_data);
+	void AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneData& parent_data,Fmatrix parent_transform);
 	void ZeroCallbacksRecursive(int id);
 
 };

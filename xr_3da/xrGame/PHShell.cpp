@@ -364,25 +364,27 @@ void CPHShell::build_FromKinematics(CKinematics* K,BONE_P_MAP* p_geting_map)
 	m_pKinematics=K;
 	spGetingMap=p_geting_map;
 	CBoneData& bone_data= m_pKinematics->LL_GetData(0);
-
-	AddElementRecursive(0,m_pKinematics->LL_BoneRoot(),bone_data);
+	Fmatrix parent_transform;
+	parent_transform.identity();
+	AddElementRecursive(0,m_pKinematics->LL_BoneRoot(),bone_data,parent_transform);
 	
 	//Activate(true);
 
 }
-void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneData& parent_data)
+void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneData& parent_data,Fmatrix parent_transform)
 {
 
 	CBoneInstance& B	= m_pKinematics->LL_GetInstance(id);
 	CBoneData& bone_data= m_pKinematics->LL_GetData(id);
-	
+	Fmatrix fm_position;
+	fm_position.setXYZi(bone_data.bind_xyz);
+	fm_position.c.set(bone_data.bind_translate);
+	fm_position.mulA(parent_transform);
+	parent_transform.set(fm_position);
 	CPhysicsElement* E  = 0;
 	CPhysicsJoint* J	= 0;
 	if(bone_data.shape.type!=SBoneShape::stNone || !root_e)	//для BD.shape==stNone нет ни елемента ни колижена
 	{														
-		Fmatrix fm_position;
-		fm_position.setXYZi(bone_data.bind_xyz);
-		fm_position.c.set(bone_data.bind_translate);
 
 		if(bone_data.IK_data.type==jtRigid && root_e ) //нет элемента-колижен добавляется к root
 		{
@@ -685,7 +687,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneDa
 	}
 
 	for (vecBonesIt it=bone_data.children.begin(); it!=bone_data.children.end(); it++)
-		AddElementRecursive		(E,(*it)->SelfID,bone_data);
+		AddElementRecursive		(E,(*it)->SelfID,bone_data,parent_transform);
 
 }
   
