@@ -26,7 +26,7 @@
 
 
 
-#include <lzoconf.h>
+#include "lzoconf.h"
 #if !defined(LZO_999_UNSUPPORTED)
 
 #if !defined(LZO1X) && !defined(LZO1Y) && !defined(LZO1Z)

@@ -26,7 +26,7 @@
 
 
 #include "lzo_conf.h"
-#include <lzoutil.h>
+#include "lzoutil.h"
 
 
 #if !defined(NO_STDIO_H)

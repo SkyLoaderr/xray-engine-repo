@@ -36,7 +36,7 @@
 #define __LZO2A_H
 
 #ifndef __LZOCONF_H
-#include <lzoconf.h>
+#include "lzoconf.h"
 #endif
 
 #ifdef __cplusplus

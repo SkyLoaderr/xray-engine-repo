@@ -26,7 +26,7 @@
 
 
 
-#include <lzoconf.h>
+#include "lzoconf.h"
 #if !defined(LZO_999_UNSUPPORTED)
 
 #include <stdio.h>

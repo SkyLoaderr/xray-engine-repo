@@ -34,7 +34,7 @@
 #ifndef __LZO_CONFIG1C_H
 #define __LZO_CONFIG1C_H
 
-#include <lzo1c.h>
+#include "lzo1c.h"
 #include "lzo_conf.h"
 
 

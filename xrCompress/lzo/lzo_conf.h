@@ -36,7 +36,7 @@
 
 #if !defined(__LZO_IN_MINILZO)
 #  ifndef __LZOCONF_H
-#    include <lzoconf.h>
+#    include "lzoconf.h"
 #  endif
 #endif
 

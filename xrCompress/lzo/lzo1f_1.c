@@ -25,7 +25,7 @@
  */
 
 
-#include <lzo1f.h>
+#include "lzo1f.h"
 #include "lzo_conf.h"
 
 

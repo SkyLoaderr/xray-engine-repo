@@ -1,4 +1,4 @@
-#include <lzoconf.h>
+#include "lzoconf.h"
 #if !defined(LZO_99_UNSUPPORTED)
 
 #define COMPRESS_ID		99
