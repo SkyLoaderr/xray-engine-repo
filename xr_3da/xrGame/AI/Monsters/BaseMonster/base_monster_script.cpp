@@ -8,6 +8,7 @@
 #include "../ai_monster_movement.h"
 #include "../../../sound_player.h"
 #include "../../../ai_monster_space.h"
+#include "../state_manager.h"
 
 using namespace MonsterSpace;
 
@@ -39,7 +40,7 @@ bool CBaseMonster::bfAssignMovement (CScriptEntityAction *tpEntityAction)
 
 	movement().set_path_targeted();
 	
-	force_real_speed = (l_tMovementAction.m_tSpeedParam == eSP_ForceSpeed);
+	m_force_real_speed = (l_tMovementAction.m_tSpeedParam == eSP_ForceSpeed);
 
 	switch (l_tMovementAction.m_tGoalType) {
 		
@@ -199,7 +200,7 @@ bool CBaseMonster::bfAssignMonsterAction(CScriptEntityAction *tpEntityAction)
 			break;
 	}
 
-	b_script_state_must_execute = true;
+	m_script_state_must_execute = true;
 	return (!l_tAction.m_bCompleted);
 }
 
@@ -208,9 +209,9 @@ bool CBaseMonster::bfAssignMonsterAction(CScriptEntityAction *tpEntityAction)
 void CBaseMonster::ProcessScripts()
 {
 	if (!g_Alive()) return;
-	if (script_processing_active) return;
+	if (m_script_processing_active) return;
 	
-	script_processing_active = true;
+	m_script_processing_active = true;
 
 	// Инициализировать action
 	MotionMan.m_tAction = ACT_STAND_IDLE;
@@ -218,18 +219,18 @@ void CBaseMonster::ProcessScripts()
 	movement().Update_Initialize			();
 	
 	// Выполнить скриптовые actions
-	b_script_state_must_execute					= false;
+	m_script_state_must_execute					= false;
 	inherited::ProcessScripts					();
 	
 	m_current_update							= Device.dwTimeGlobal;
 
 	// обновить мир (память, враги, объекты)
-	vfUpdateParameters							();
+	UpdateMemory								();
 	
 	MotionMan.accel_deactivate					();
 
 	// если из скрипта выбрано действие по универсальной схеме, выполнить его
-	if (b_script_state_must_execute) 	
+	if (m_script_state_must_execute) 	
 		StateMan->execute_script_state			();		
 	
 	TranslateActionToPathParams					();
@@ -244,14 +245,13 @@ void CBaseMonster::ProcessScripts()
 
 	// Удалить все враги и объекты, которые были принудительно установлены
 	// во время выполнения скриптового действия
-	if (b_script_state_must_execute) {
+	if (m_script_state_must_execute) {
 		EnemyMan.unforce_enemy();
 		CorpseMan.unforce_corpse();
 	}
 
-	force_real_speed	= false;
-
-	script_processing_active = false;
+	m_force_real_speed			= false;
+	m_script_processing_active	= false;
 }
 
 CEntity *CBaseMonster::GetCurrentEnemy()
@@ -280,11 +280,10 @@ CEntity *CBaseMonster::GetCurrentCorpse()
 
 void CBaseMonster::SetScriptControl(const bool bScriptControl, shared_str caScriptName)
 {
-	//if (CurrentState) CurrentState->Done();
+	if (StateMan) StateMan->critical_finalize();
 
 	CScriptEntity::SetScriptControl(bScriptControl, caScriptName);
 }
-
 
 int	CBaseMonster::get_enemy_strength()
 {

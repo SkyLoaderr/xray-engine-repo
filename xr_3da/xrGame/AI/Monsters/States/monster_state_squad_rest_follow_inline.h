@@ -104,4 +104,10 @@ void CStateMonsterSquadRestFollowAbstract::setup_substates()
 	}
 }
 
+#undef  STOP_DISTANCE
+#undef  STAY_DISTANCE
+#undef  MIN_TIME_OUT
+#undef  MAX_TIME_OUT
+#undef TEMPLATE_SPECIALIZATION
+#undef CStateMonsterSquadRestFollowAbstract
 

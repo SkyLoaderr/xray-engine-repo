@@ -3,6 +3,7 @@
 #include "BaseMonster/base_monster.h"
 #include "../../detail_path_manager.h"
 #include "ai_monster_movement.h"
+#include "ai_monster_movement_space.h"
 
 void CMotionManager::accel_init()
 {
@@ -132,7 +133,7 @@ bool CMotionManager::accel_check_braking(float before_interval)
 	for (u32 i=pMonster->movement().detail().curr_travel_point_index()+1; i < pMonster->movement().detail().path().size(); i++) {
 		dist += pMonster->movement().detail().path()[i].position.distance_to(pMonster->movement().detail().path()[i-1].position);
 
-		if ((pMonster->movement().detail().path()[i].velocity == pMonster->eVelocityParameterStand) && (dist < braking_dist)) {
+		if ((pMonster->movement().detail().path()[i].velocity == MonsterMovement::eVelocityParameterStand) && (dist < braking_dist)) {
 			return true;
 		}
 	}

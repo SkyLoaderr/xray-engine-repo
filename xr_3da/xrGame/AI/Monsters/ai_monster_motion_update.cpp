@@ -7,6 +7,7 @@
 #include "custom_events.h"
 #include "../../detail_path_manager.h"
 #include "ai_monster_movement.h"
+#include "ai_monster_movement_space.h"
 
 //////////////////////////////////////////////////////////////////////////
 // m_tAction processing
@@ -93,7 +94,7 @@ void CMotionManager::SelectVelocities()
 
 		// если сейчас стоит на месте и есть след точка (т.е. должен быть в движении),
 		// то реализовать поворот на месте, а дальше форсировать скорость со следующей точки
-		if ((cur_point_velocity_index == pMonster->eVelocityParameterStand) && (next_point_velocity_index != u32(-1))) {
+		if ((cur_point_velocity_index == MonsterMovement::eVelocityParameterStand) && (next_point_velocity_index != u32(-1))) {
 			if (angle_difference(pMonster->movement().m_body.current.yaw, pMonster->movement().m_body.target.yaw) < deg(1)) 
 				cur_point_velocity_index = next_point_velocity_index;
 		} 

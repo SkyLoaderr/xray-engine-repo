@@ -5,6 +5,7 @@
 #include "../../../profiler.h"
 #include "../critical_action_info.h"
 #include "../ai_monster_movement.h"
+#include "../state_manager.h"
 
 void CBaseMonster::Think()
 {
@@ -18,11 +19,11 @@ void CBaseMonster::Think()
 	// Инициализировать
 	InitThink								();
 	MotionMan.ScheduledInit					();
-	movement().Update_Initialize		();
+	movement().Update_Initialize			();
 
 	// Обновить память
 	START_PROFILE("AI/Base Monster/Think/Update Memory");
-	vfUpdateParameters						();
+	UpdateMemory							();
 	STOP_PROFILE;
 
 	// Обновить сквад

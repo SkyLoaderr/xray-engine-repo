@@ -15,6 +15,7 @@
 #include "../../../cover_point.h"
 #include "../../../detail_path_manager.h"
 #include "../ai_monster_movement.h"
+#include "../ai_monster_movement_space.h"
 #include "../../../ai_space.h"
 
 // каждый монстр может по-разному реализвать эту функ (e.g. кровосос с поворотом головы и т.п.)
@@ -31,18 +32,6 @@ void CBaseMonster::LookPosition(Fvector to_point, float angular_speed)
 
 	// установить текущий угол
 	movement().m_body.target.yaw = angle_normalize(-yaw);
-}
-
-void CBaseMonster::on_travel_point_change()
-{
-	if (movement().IsMovingOnPath()) {
-		u32 cur_point_velocity_index = movement().detail().path()[movement().detail().curr_travel_point_index()].velocity;		
-		if ((cur_point_velocity_index == eVelocityParameterStand) && !fis_zero(movement().m_velocity_linear.current) && !b_velocity_reset) {
-			movement().stop_linear		();
-			b_velocity_reset = true;
-		}
-		if (cur_point_velocity_index != eVelocityParameterStand) b_velocity_reset = false;
-	}
 }
 
 //////////////////////////////////////////////////////////////////////////

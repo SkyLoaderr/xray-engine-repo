@@ -7,16 +7,9 @@ class CStateManagerZombie : public CStateManagerSecond<CZombie> {
 	typedef CStateManagerSecond<CZombie> inherited;
 
 	enum {
-		eStateRest					 = u32(0),
-		eStateEat,
-		eStateAttack,
-		eStateThreaten,
-		eStateInterestingSound,
-		eStateHitted,
-		eStateFindEnemy,
-		eStateFakeDeath,
+		eStateFakeDeath			= eStateCustom + 1,
 		eStateSquadRest,
-		eStateSquadRestFollow
+		eStateSquadRestFollow,
 	};
 
 public:

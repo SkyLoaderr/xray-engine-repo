@@ -16,16 +16,6 @@ class CChimera : public CBaseMonster, public CJumpingAbility {
 	SVelocityParam	m_fsVelocityJumpTwo;
 	SVelocityParam	m_fsVelocityRunAttack;
 
-public:
-	
-	enum EMovementParametersChimera {
-		eVelocityParameterUpperWalkFwd		= eVelocityParameterCustom << 1,
-		eVelocityParameterJumpOne			= eVelocityParameterCustom << 2,
-		eVelocityParameterJumpTwo			= eVelocityParameterCustom << 3,
-
-		eVelocityParamsJump					= eVelocityParameterJumpOne | eVelocityParameterJumpTwo,
-		eVelocityParamsUpperWalkFwd			= eVelocityParameterStand | eVelocityParameterUpperWalkFwd,
-	};
 
 
 public:

@@ -17,6 +17,8 @@ protected:
 		eStateDangerousSound,
 		eStateHitted,
 		eStateThreaten,
+		eStateControlled,
+		eStateFindEnemy,
 
 		eStateCustom
 	};

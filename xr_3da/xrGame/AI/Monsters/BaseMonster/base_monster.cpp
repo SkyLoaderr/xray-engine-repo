@@ -23,10 +23,12 @@
 #include "../../../memory_manager.h"
 #include "../../../visual_memory_manager.h"
 #include "../ai_monster_movement.h"
+#include "../ai_monster_movement_space.h"
 #include "../../../entitycondition.h"
 #include "../../../sound_player.h"
 #include "../../../level.h"
 #include "../../../ui/UIMainIngameWnd.h"
+#include "../state_manager.h"
 
 CBaseMonster::CBaseMonster()
 {
@@ -145,25 +147,10 @@ void CBaseMonster::PHHit(float P,Fvector &dir, CObject *who,s16 element,Fvector 
 {
 	m_pPhysics_support->in_Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
 }
-CBoneInstance *CBaseMonster::GetBoneInstance(LPCTSTR bone_name)
-{
-	int bone = smart_cast<CKinematics*>(Visual())->LL_BoneID(bone_name);
-	return (&smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(u16(bone)));
-}
 
 CPHDestroyable*	CBaseMonster::	ph_destroyable	()
 {
 	return smart_cast<CPHDestroyable*>(character_physics_support());
-}
-CBoneInstance *CBaseMonster::GetBoneInstance(int bone_id)
-{
-	return (&smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(u16(bone_id)));
-}
-
-CBoneInstance *CBaseMonster::GetEatBone()
-{
-	int bone = smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_ponytail2");
-	return (&smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(u16(bone)));
 }
 
 bool CBaseMonster::useful(const CItemManager *manager, const CGameObject *object) const
@@ -272,11 +259,6 @@ BOOL CBaseMonster::feel_touch_on_contact	(CObject *O)
 	return		(inherited::feel_touch_on_contact(O));
 }
 
-bool CBaseMonster::can_eat_now()
-{
-	return (CorpseMan.get_corpse() && ((conditions().GetSatiety() < get_sd()->m_fMinSatiety) || flagEatNow));
-}
-
 void CBaseMonster::TranslateActionToPathParams()
 {
 	if (!movement().b_enable_movement) return;
@@ -299,43 +281,43 @@ void CBaseMonster::TranslateActionToPathParams()
 
 	case ACT_WALK_FWD:
 		if (m_bDamaged) {
-			vel_mask = eVelocityParamsWalkDamaged;
-			des_mask = eVelocityParameterWalkDamaged;
+			vel_mask = MonsterMovement::eVelocityParamsWalkDamaged;
+			des_mask = MonsterMovement::eVelocityParameterWalkDamaged;
 		} else {
-			vel_mask = eVelocityParamsWalk;
-			des_mask = eVelocityParameterWalkNormal;
+			vel_mask = MonsterMovement::eVelocityParamsWalk;
+			des_mask = MonsterMovement::eVelocityParameterWalkNormal;
 		}
 		break;
 	case ACT_WALK_BKWD:
 		break;
 	case ACT_RUN:
 		if (m_bDamaged) {
-			vel_mask = eVelocityParamsRunDamaged;
-			des_mask = eVelocityParameterRunDamaged;
+			vel_mask = MonsterMovement::eVelocityParamsRunDamaged;
+			des_mask = MonsterMovement::eVelocityParameterRunDamaged;
 		} else {
-			vel_mask = eVelocityParamsRun;
-			des_mask = eVelocityParameterRunNormal;
+			vel_mask = MonsterMovement::eVelocityParamsRun;
+			des_mask = MonsterMovement::eVelocityParameterRunNormal;
 		}
 		break;
 	case ACT_DRAG:
-		vel_mask = eVelocityParameterDrag; //. eVelocityParamsDrag
-		des_mask = eVelocityParameterDrag;
+		vel_mask = MonsterMovement::eVelocityParamsDrag;
+		des_mask = MonsterMovement::eVelocityParameterDrag;
 
 		MotionMan.SetSpecParams(ASP_MOVE_BKWD);
 
 		break;
 	case ACT_STEAL:
-		vel_mask = eVelocityParamsSteal;
-		des_mask = eVelocityParameterSteal;
+		vel_mask = MonsterMovement::eVelocityParamsSteal;
+		des_mask = MonsterMovement::eVelocityParameterSteal;
 		break;
 	}
 
 	if (state_invisible) {
-		vel_mask = eVelocityParamsInvisible;
-		des_mask = eVelocityParameterInvisible;
+		vel_mask = MonsterMovement::eVelocityParamsInvisible;
+		des_mask = MonsterMovement::eVelocityParameterInvisible;
 	}
 
-	if (force_real_speed) vel_mask = des_mask;
+	if (m_force_real_speed) vel_mask = des_mask;
 
 	if (bEnablePath) {
 		movement().detail().set_velocity_mask	(vel_mask);	

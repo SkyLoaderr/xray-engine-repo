@@ -10,6 +10,9 @@
 #include "../../detail_path_manager.h"
 #include "../../ai_object_location.h"
 #include "../../ai_space.h"
+#include "ai_monster_movement_space.h"
+
+using namespace MonsterMovement;
 
 //////////////////////////////////////////////////////////////////////////
 // Construction / Destruction
@@ -44,6 +47,15 @@ void CMonsterMovement::Load(LPCSTR section)
 	inherited::Load(section);
 
 	m_selector_approach->Load(section,"selector_approach");
+	
+	load_velocity(section, "Velocity_Stand",			eVelocityParameterStand);
+	load_velocity(section, "Velocity_WalkFwdNormal",	eVelocityParameterWalkNormal);
+	load_velocity(section, "Velocity_RunFwdNormal",		eVelocityParameterRunNormal);
+	load_velocity(section, "Velocity_WalkFwdDamaged",	eVelocityParameterWalkDamaged);
+	load_velocity(section, "Velocity_RunFwdDamaged",	eVelocityParameterRunDamaged);
+	load_velocity(section, "Velocity_Steal",			eVelocityParameterSteal);
+	load_velocity(section, "Velocity_Drag",				eVelocityParameterDrag);
+	load_velocity(section, "Velocity_RunAttack",		eVelocityParameterRunAttack);
 }
 
 void CMonsterMovement::reinit()
@@ -54,6 +66,8 @@ void CMonsterMovement::reinit()
 	time_last_approach				= 0;
 	b_use_dest_orient				= false;
 
+	m_velocity_reset				= false;
+
 	m_velocity_linear.set			(0.f,0.f);
 	m_velocity_angular				= 0.f;
 
@@ -61,6 +75,24 @@ void CMonsterMovement::reinit()
 	
 	initialize_movement				();
 }
+
+void CMonsterMovement::load_velocity(LPCSTR section, LPCSTR line, u32 velocity_id)
+{
+	SVelocityParam velocity_param;
+	if(pSettings->line_exist(section,line)) velocity_param.Load(section,line);
+	m_velocities.insert(mk_pair(velocity_id, velocity_param));
+
+	detail().add_velocity(velocity_id, CDetailPathManager::STravelParams(velocity_param.velocity.linear,velocity_param.velocity.angular_path,velocity_param.velocity.angular_real));	
+}
+
+SVelocityParam &CMonsterMovement::get_velocity(u32 velocity_id)
+{
+	VELOCITY_MAP_IT it = m_velocities.find(velocity_id);
+	VERIFY(it != m_velocities.end());
+
+	return it->second;
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 // Services
@@ -278,6 +310,18 @@ bool CMonsterMovement::GetNodeInRadius(u32 src_node, float min_radius, float max
 		if (dest_node != u32(-1) && accessible(dest_node)) return (true);
 	}
 	return false;
+}
+
+void CMonsterMovement::on_travel_point_change()
+{
+	if (IsMovingOnPath()) {
+		u32 cur_point_velocity_index = detail().path()[detail().curr_travel_point_index()].velocity;		
+		if ((cur_point_velocity_index == eVelocityParameterStand) && !fis_zero(m_velocity_linear.current) && !m_velocity_reset) {
+			stop_linear			();
+			m_velocity_reset	= true;
+		}
+		if (cur_point_velocity_index != eVelocityParameterStand) m_velocity_reset = false;
+	}
 }
 
 

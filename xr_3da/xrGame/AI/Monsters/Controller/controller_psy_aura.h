@@ -40,5 +40,10 @@ public:
 	virtual void	feel_touch_delete		(CObject* O);
 
 			bool	effector_active			() {return m_effector.IsActive();}
+
+#ifdef DEBUG
+public:
+			float	get_current_radius		(){return m_current_radius;}
+#endif
 };
 

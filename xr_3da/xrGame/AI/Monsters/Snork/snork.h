@@ -7,13 +7,6 @@ class CSnorkJump;
 class CSnork :	public CBaseMonster {
 	typedef		CBaseMonster		inherited;
 
-	enum EMovementParametersSnork {
-		eVelocityParameterJumpOne		= eVelocityParameterCustom << 1,
-		eVelocityParameterJumpTwo		= eVelocityParameterCustom << 2,
-
-		eVelocityParamsJump				= eVelocityParameterJumpOne | eVelocityParameterJumpTwo,
-	};
-
 	SVelocityParam	m_fsVelocityJumpOne;
 	SVelocityParam	m_fsVelocityJumpTwo;
 

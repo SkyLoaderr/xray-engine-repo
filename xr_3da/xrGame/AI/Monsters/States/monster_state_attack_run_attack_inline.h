@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../critical_action_info.h"
+#include "../ai_monster_movement_space.h"
 
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
@@ -63,7 +64,7 @@ bool CStateMonsterAttackRunAttackAbstract::check_start_conditions()
 	Fvector target_position;
 	target_position.mad(object->Position(), object->Direction(), object->get_sd()->m_run_attack_path_dist);
 	
-	if (!object->movement().build_special(target_position, u32(-1), object->eVelocityParamsRunAttack)) return false;
+	if (!object->movement().build_special(target_position, u32(-1), MonsterMovement::eVelocityParamsRunAttack)) return false;
 	else object->movement().enable_path();
 
 	return true;

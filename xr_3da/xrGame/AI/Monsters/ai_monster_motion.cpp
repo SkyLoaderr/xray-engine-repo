@@ -8,6 +8,7 @@
 #include "../../../skeletonanimated.h"
 #include "../../detail_path_manager.h"
 #include "ai_monster_movement.h"
+#include "ai_monster_movement_space.h"
 
 // DEBUG purpose only
 char *dbg_action_name_table[] = {
@@ -399,14 +400,14 @@ bool CMotionManager::IsStandCurAnim()
 EAction CMotionManager::VelocityIndex2Action(u32 velocity_index)
 {
 	switch (velocity_index) {
-		case pMonster->eVelocityParameterStand:			return ACT_STAND_IDLE;
-		case pMonster->eVelocityParameterWalkNormal:	return ACT_WALK_FWD;
-		case pMonster->eVelocityParameterRunNormal:		return ACT_RUN;
-		case pMonster->eVelocityParameterWalkDamaged:	return ACT_WALK_FWD;
-		case pMonster->eVelocityParameterRunDamaged:	return ACT_RUN;
-		case pMonster->eVelocityParameterSteal:			return ACT_STEAL;
-		case pMonster->eVelocityParameterDrag:			return ACT_DRAG;
-		case pMonster->eVelocityParameterInvisible:		return ACT_RUN;
+		case MonsterMovement::eVelocityParameterStand:			return ACT_STAND_IDLE;
+		case MonsterMovement::eVelocityParameterWalkNormal:		return ACT_WALK_FWD;
+		case MonsterMovement::eVelocityParameterRunNormal:		return ACT_RUN;
+		case MonsterMovement::eVelocityParameterWalkDamaged:	return ACT_WALK_FWD;
+		case MonsterMovement::eVelocityParameterRunDamaged:		return ACT_RUN;
+		case MonsterMovement::eVelocityParameterSteal:			return ACT_STEAL;
+		case MonsterMovement::eVelocityParameterDrag:			return ACT_DRAG;
+		case MonsterMovement::eVelocityParameterInvisible:		return ACT_RUN;
 	}
 
 	return pMonster->CustomVelocityIndex2Action(velocity_index);
@@ -423,7 +424,7 @@ EAction CMotionManager::GetActionFromPath()
 	if (pMonster->movement().detail().path().size() > pMonster->movement().detail().curr_travel_point_index() + 1) 
 		next_point_velocity_index = pMonster->movement().detail().path()[pMonster->movement().detail().curr_travel_point_index() + 1].velocity;
 
-	if ((cur_point_velocity_index == pMonster->eVelocityParameterStand) && (next_point_velocity_index != u32(-1))) {
+	if ((cur_point_velocity_index == MonsterMovement::eVelocityParameterStand) && (next_point_velocity_index != u32(-1))) {
 		if (angle_difference(pMonster->movement().m_body.current.yaw, pMonster->movement().m_body.target.yaw) < deg(1)) 
 			action = VelocityIndex2Action(next_point_velocity_index);
 	}

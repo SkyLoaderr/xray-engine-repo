@@ -73,6 +73,10 @@ public:
 
 	CAnimTriple		anim_triple_control;
 
+#ifdef DEBUG
+	virtual CBaseMonster::SDebugInfo show_debug_info();
+#endif
+
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 

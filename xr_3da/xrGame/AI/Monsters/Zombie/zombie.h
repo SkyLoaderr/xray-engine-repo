@@ -1,15 +1,17 @@
 #pragma once
 #include "../BaseMonster/base_monster.h"
+#include "../controlled_entity.h"
 #include "../ai_monster_bones.h"
 #include "../anim_triple.h"
 #include "../../../script_export_space.h"
 
 #define FAKE_DEATH_TYPES_COUNT	3
 
-
-class CZombie :	public CBaseMonster {
+class CZombie :	public CBaseMonster,
+				public CControlledEntity<CZombie> {
 	
-	typedef		CBaseMonster		inherited;
+	typedef		CBaseMonster				inherited;
+	typedef		CControlledEntity<CZombie>	controlled;
 
 	bonesManipulation	Bones;
 

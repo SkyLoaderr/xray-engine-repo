@@ -118,11 +118,13 @@ void CMonsterEnemyManager::force_enemy (const CEntityAlive *enemy)
 	time_last_seen	= monster->m_current_update;
 
 	forced			= true;
+
+	update			();
 }
 
 void CMonsterEnemyManager::unforce_enemy()
 {
-	enemy = monster->EnemyMemory.get_enemy();
+	enemy	= monster->EnemyMemory.get_enemy();
 
 	if (enemy) {
 		SMonsterEnemy enemy_info	= monster->EnemyMemory.get_enemy_info();
@@ -131,7 +133,9 @@ void CMonsterEnemyManager::unforce_enemy()
 		time_last_seen				= enemy_info.time;
 	}
 
-	forced = false;
+	forced	= false;
+	
+	update	();
 }
 
 

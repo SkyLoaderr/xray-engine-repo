@@ -13,6 +13,7 @@
 #include "../../../cover_evaluators.h"
 #include "../../../sound_player.h"
 #include "../../../ai_space.h"
+#include "../state_manager.h"
 
 void CBaseMonster::reload	(LPCSTR section)
 {
@@ -56,8 +57,6 @@ void CBaseMonster::reinit()
 	
 	Morale.reinit						();
 
-
-	flagEatNow						= false;
 	m_bDamaged						= false;
 	m_bAngry						= false;
 	m_bAggressive					= false;
@@ -66,10 +65,8 @@ void CBaseMonster::reinit()
 	state_invisible					= false;
 	m_default_bone_part				= smart_cast<CSkeletonAnimated*>(Visual())->LL_PartID("default");
 
-	b_velocity_reset				= false;
-
-	force_real_speed				= false;
-	script_processing_active		= false;
+	m_force_real_speed				= false;
+	m_script_processing_active		= false;
 
 	m_first_update_initialized		= false;
 
@@ -95,8 +92,7 @@ void CBaseMonster::Load(LPCSTR section)
 
 	m_pPhysics_support				->in_Load(section);
 
-	m_dwHealth						= pSettings->r_u32		(section,"Health");
-	fEntityHealth					= (float)m_dwHealth;
+	fEntityHealth					= (float)pSettings->r_u32		(section,"Health");
 
 	inherited_shared::load_shared	(CLS_ID, section);
 
@@ -109,19 +105,9 @@ void CBaseMonster::load_shared(LPCSTR section)
 	// Загрузка параметров из LTX
 	get_sd()->m_fSoundThreshold				= pSettings->r_float (section,"SoundThreshold");
 
-	get_sd()->m_fsVelocityStandTurn.Load		(section,"Velocity_Stand");
-	get_sd()->m_fsVelocityWalkFwdNormal.Load	(section,"Velocity_WalkFwdNormal");
-	get_sd()->m_fsVelocityWalkFwdDamaged.Load	(section,"Velocity_WalkFwdDamaged");
-	get_sd()->m_fsVelocityRunFwdNormal.Load		(section,"Velocity_RunFwdNormal");
-	get_sd()->m_fsVelocityRunFwdDamaged.Load	(section,"Velocity_RunFwdDamaged");
-	get_sd()->m_fsVelocityDrag.Load				(section,"Velocity_Drag");
-	get_sd()->m_fsVelocitySteal.Load			(section,"Velocity_Steal");
-
 	if (ability_run_attack()) {
-		get_sd()->m_fsVelocityRunAttack.Load	(section,"Velocity_RunAttack");
-		
-		get_sd()->m_run_attack_path_dist		= pSettings->r_float(section, "RunAttack_PathDistance");
-		get_sd()->m_run_attack_start_dist		= pSettings->r_float(section, "RunAttack_StartDistance");
+		get_sd()->m_run_attack_path_dist	= pSettings->r_float(section, "RunAttack_PathDistance");
+		get_sd()->m_run_attack_start_dist	= pSettings->r_float(section, "RunAttack_StartDistance");
 	}
 
 	get_sd()->m_dwDayTimeBegin				= pSettings->r_u32	(section,"DayTime_Begin");
@@ -186,15 +172,6 @@ BOOL CBaseMonster::net_Spawn (CSE_Abstract* DC)
 	m_PhysicMovementControl->SetPosition	(Position());
 	m_PhysicMovementControl->SetVelocity	(0,0,0);
 
-	movement().detail().add_velocity(eVelocityParameterStand,		CDetailPathManager::STravelParams(get_sd()->m_fsVelocityStandTurn.velocity.linear,		get_sd()->m_fsVelocityStandTurn.velocity.angular_path,		get_sd()->m_fsVelocityStandTurn.velocity.angular_real));
-	movement().detail().add_velocity(eVelocityParameterWalkNormal,	CDetailPathManager::STravelParams(get_sd()->m_fsVelocityWalkFwdNormal.velocity.linear,	get_sd()->m_fsVelocityWalkFwdNormal.velocity.angular_path,	get_sd()->m_fsVelocityWalkFwdNormal.velocity.angular_real));
-	movement().detail().add_velocity(eVelocityParameterRunNormal,	CDetailPathManager::STravelParams(get_sd()->m_fsVelocityRunFwdNormal.velocity.linear,	get_sd()->m_fsVelocityRunFwdNormal.velocity.angular_path,	get_sd()->m_fsVelocityRunFwdNormal.velocity.angular_real));
-	movement().detail().add_velocity(eVelocityParameterWalkDamaged,	CDetailPathManager::STravelParams(get_sd()->m_fsVelocityWalkFwdDamaged.velocity.linear,	get_sd()->m_fsVelocityWalkFwdDamaged.velocity.angular_path,	get_sd()->m_fsVelocityWalkFwdDamaged.velocity.angular_real));
-	movement().detail().add_velocity(eVelocityParameterRunDamaged,	CDetailPathManager::STravelParams(get_sd()->m_fsVelocityRunFwdDamaged.velocity.linear,	get_sd()->m_fsVelocityRunFwdDamaged.velocity.angular_path,	get_sd()->m_fsVelocityRunFwdDamaged.velocity.angular_real));
-	movement().detail().add_velocity(eVelocityParameterSteal,		CDetailPathManager::STravelParams(get_sd()->m_fsVelocitySteal.velocity.linear,			get_sd()->m_fsVelocitySteal.velocity.angular_path,			get_sd()->m_fsVelocitySteal.velocity.angular_real));
-	movement().detail().add_velocity(eVelocityParameterDrag,		CDetailPathManager::STravelParams(-get_sd()->m_fsVelocityDrag.velocity.linear,			get_sd()->m_fsVelocityDrag.velocity.angular_path,			get_sd()->m_fsVelocityDrag.velocity.angular_real));
-	movement().detail().add_velocity(eVelocityParameterRunAttack,	CDetailPathManager::STravelParams(get_sd()->m_fsVelocityRunAttack.velocity.linear,		get_sd()->m_fsVelocityRunAttack.velocity.angular_path,		get_sd()->m_fsVelocityRunAttack.velocity.angular_real));
-	
 	monster_squad().register_member((u8)g_Team(),(u8)g_Squad(), this);
 
 	return(TRUE);

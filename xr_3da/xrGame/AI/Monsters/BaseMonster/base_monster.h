@@ -3,7 +3,7 @@
 //	Created 	: 21.05.2003
 //  Modified 	: 21.05.2003
 //	Author		: Serge Zhem
-//	Description : AI Behaviour for all the monsters of class "Biting"
+//	Description : AI Behaviour for all the monsters of class "Base Monster"
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once
@@ -11,7 +11,6 @@
 #include "../../../CustomMonster.h"
 #include "../ai_monster_motion.h"
 #include "../ai_monster_shared_data.h"
-#include "../state_manager.h"
 
 #include "../monster_enemy_memory.h"
 #include "../monster_corpse_memory.h"
@@ -37,6 +36,7 @@ class CCriticalActionInfo;
 class CJumping;
 class CMovementManager;
 class CMonsterMovement;
+class IStateManagerBase;
 
 class CBaseMonster : 
 	public CCustomMonster, 
@@ -49,33 +49,6 @@ class CBaseMonster :
 	typedef CMovementManager							MoveMan;
 	
 public:
-	enum EMovementParameters {
-		eVelocityParameterStand			= u32(1) <<  4,
-		eVelocityParameterWalkNormal	= u32(1) <<  3,
-		eVelocityParameterRunNormal		= u32(1) <<  2,
-
-		eVelocityParameterWalkDamaged	= u32(1) <<  5,
-		eVelocityParameterRunDamaged	= u32(1) <<  6,
-		eVelocityParameterSteal			= u32(1) <<  7,
-		eVelocityParameterDrag			= u32(1) <<  8,
-		eVelocityParameterInvisible		= u32(1) <<	 9,
-		eVelocityParameterRunAttack		= u32(1) <<	 10,
-
-		eVelocityParamsWalk				= eVelocityParameterStand		| eVelocityParameterWalkNormal,
-		eVelocityParamsWalkDamaged		= eVelocityParameterStand		| eVelocityParameterWalkDamaged,
-		eVelocityParamsRun				= eVelocityParameterStand		| eVelocityParameterWalkNormal	| eVelocityParameterRunNormal,
-		eVelocityParamsRunDamaged		= eVelocityParameterStand		| eVelocityParameterWalkDamaged | eVelocityParameterRunDamaged,
-		eVelocityParamsAttackNorm		= eVelocityParameterStand		| eVelocityParameterWalkNormal	| eVelocityParameterRunNormal,
-		eVelocityParamsAttackDamaged	= eVelocityParameterStand		| eVelocityParameterWalkDamaged | eVelocityParameterRunDamaged,
-		eVelocityParamsSteal			= eVelocityParameterStand		| eVelocityParameterSteal,
-		eVelocityParamsDrag				= eVelocityParameterStand		| eVelocityParameterDrag,
-		eVelocityParamsInvisible		= eVelocityParameterInvisible	| eVelocityParameterStand,
-		eVelocityParamsRunAttack		= eVelocityParameterRunAttack	| eVelocityParameterStand, 
-
-
-		eVelocityParameterCustom		= u32(1) <<	 12,
-	};
-
 	// friend definitions
 	friend	class			CMotionManager;
 	friend	class			CBaseMonsterAttack;
@@ -120,6 +93,7 @@ public:
 
 	virtual void			UpdateCL						();
 	virtual void			shedule_Update					(u32 dt);
+	virtual void			on_first_update					();
 
 	virtual void			InitThink						() {}
 	virtual void			Think							();
@@ -154,6 +128,7 @@ public:
 
 	// ---------------------------------------------------------------------------------
 	// Process scripts
+	// ---------------------------------------------------------------------------------
 	virtual	bool			bfAssignMovement				(CScriptEntityAction	*tpEntityAction);
 	virtual	bool			bfAssignObject					(CScriptEntityAction	*tpEntityAction);
 	virtual	bool			bfAssignWatch					(CScriptEntityAction	*tpEntityAction);
@@ -171,6 +146,11 @@ public:
 	
 	virtual void			SetScriptControl				(const bool bScriptControl, shared_str caSciptName);
 
+
+	bool					m_force_real_speed;
+	bool					m_script_processing_active;
+	bool					m_script_state_must_execute;
+
 	//----------------------------------------------------------------------------------
 
 
@@ -178,6 +158,7 @@ public:
 
 	virtual void			SetTurnAnimation				(bool turn_left);
 	virtual void			AA_CheckHit						();
+	
 	// установка специфических анимаций 
 	virtual	void			CheckSpecParams					(u32 /**spec_params/**/) {}
 	virtual void			ForceFinalAnimation				() {}
@@ -186,13 +167,14 @@ public:
 
 	virtual bool			CanExecRotationJump				() {return false;}
 
-	virtual void			on_travel_point_change			();
-
 	virtual	void			PitchCorrection					();
+
+	// Team	
+	virtual void			ChangeTeam						(int team, int squad, int group);
 		
 	// ---------------------------------------------------------------------------------
 	// Abilities
-
+	// ---------------------------------------------------------------------------------
 	virtual bool			ability_invisibility			() {return false;}
 	virtual bool			ability_can_drag				() {return false;}
 	virtual bool			ability_psi_attack				() {return false;}
@@ -200,42 +182,43 @@ public:
 	virtual bool			ability_can_jump				() {return false;}
 	virtual bool			ability_distant_feel			() {return false;}
 	virtual bool			ability_run_attack				() {return false;}
-
-	// ---------------------------------------------------------------------------------
-	virtual void			event_on_step					() {}
 	// ---------------------------------------------------------------------------------
 	
-	// Other
-			void			vfUpdateParameters				();
-			void			HitEntity						(const CEntity *pEntity, float fDamage, float impulse, Fvector &dir);
-	virtual	void			HitEntityInJump					(const CEntity *pEntity) {}
-			void			PsyHit							(const CGameObject *object, float value);
+	virtual void			event_on_step					() {}
+	
+	// ---------------------------------------------------------------------------------
+	// Memory
+			void			UpdateMemory					();
 			
-			CBoneInstance *GetBoneInstance					(LPCTSTR bone_name);
-			CBoneInstance *GetBoneInstance					(int bone_id);
-		
-			CBoneInstance *GetEatBone						();
-
-			void			LoadShared						(LPCSTR section);
-
 	// Cover
 			bool			GetCorpseCover					(Fvector &position, u32 &vertex_id);
 			bool			GetCoverFromEnemy				(const Fvector &enemy_pos, Fvector &position, u32 &vertex_id);
 			bool			GetCoverFromPoint				(const Fvector &pos, Fvector &position, u32 &vertex_id, float min_dist, float max_dist, float radius);
 			bool			GetCoverCloseToPoint			(const Fvector &dest_pos, float min_dist, float max_dist, float deviation, float radius ,Fvector &position, u32 &vertex_id);
 
-	// Team	
-	virtual void			ChangeTeam						(int team, int squad, int group);
+			
 			bool			IsVisibleObject					(const CGameObject *object);
-			bool			can_eat_now						();
+			void			on_kill_enemy					(const CEntity *obj);
+			void			HitEntity						(const CEntity *pEntity, float fDamage, float impulse, Fvector &dir);
+	virtual	void			HitEntityInJump					(const CEntity *pEntity) {}
+			void			PsyHit							(const CGameObject *object, float value);
+
+
+	// Movement Manager
+protected:
+	CMonsterMovement			*m_movement_manager;
+protected:
+	virtual CMovementManager	*create_movement_manager();
+public:
+	IC		CMonsterMovement	&movement				() const;
+
+
 
 // members
 public:
 
 	CCharacterPhysicsSupport	*m_pPhysics_support;
 	
-	u32							m_dwHealth;				
-
 	// --------------------------------------------------------------------------------------
 	// State flags
 	bool						m_bDamaged;
@@ -243,9 +226,6 @@ public:
 	bool						m_bGrowling;
 	bool						m_bAggressive;
 	bool						m_bSleep;
-
-	bool						flagEatNow;				// true - сейчас монстр ест (todo: remove it)
-
 	
 	void						set_aggressive				(bool val = true) {m_bAggressive = val;}
 
@@ -282,44 +262,42 @@ public:
 
 	// -----------------------------------------------------------------------------
 
+	CCriticalActionInfo		*CriticalActionInfo;
+
+	// -----------------------------------------------------------------------------
+	
+	CJumping				*m_jumping;
+	
+
+	// -----------------------------------------------------------------------------
+	// Special Services (refactoring needed)
+		
 	u32						get_attack_rebuild_time	();
 
 	IC	virtual	EAction		CustomVelocityIndex2Action	(u32 velocity_index) {return ACT_STAND_IDLE;}
 		virtual	void		TranslateActionToPathParams ();
 	
-	
 	bool					state_invisible;
 
-	// проиграть звук у актера
-	virtual void			play_effect_sound		() {}
-	
-
 	u16						m_default_bone_part;
-	
-	bool					b_velocity_reset;
-	bool					force_real_speed;
-
-	bool					script_processing_active;
-	bool					b_script_state_must_execute;
 
 IC	void					set_action			(EAction action);
 	void					set_state_sound		(u32 type, bool once = false);
 IC	void					fall_asleep			(){m_bSleep = true;}
 IC	void					wake_up				(){m_bSleep = false;}
 
-
-	CCriticalActionInfo		*CriticalActionInfo;
-	
 	// Temp
 	u32						m_time_last_attack_success;
 
-	void					on_kill_enemy		(const CEntity *obj);
+private:
+	bool					m_first_update_initialized;
 
-	CJumping				*m_jumping;
+	// -----------------------------------------------------------------------------
 
-	virtual void			on_first_update		();
 
+// DEBUG stuff
 #ifdef DEBUG
+public:
 	struct SDebugInfo {
 		bool	active;
 		float	x;
@@ -332,21 +310,10 @@ IC	void					wake_up				(){m_bSleep = false;}
 		SDebugInfo(float px, float py, float dy, u32 c, u32 dc) : active(true), x(px), y(py), delta_y(dy), color (c), delimiter_color(dc) {}
 	};
 	
-	
 	u8						m_show_debug_info;	// 0 - none, 1 - first column, 2 - second column
 	void					set_show_debug_info	(u8 show = 1){m_show_debug_info = show;}
 	virtual	SDebugInfo		show_debug_info		();
 #endif
-
-private:
-	bool					m_first_update_initialized;
-
-protected:
-	CMonsterMovement			*m_movement_manager;
-protected:
-	virtual CMovementManager	*create_movement_manager();
-public:
-	IC		CMonsterMovement	&movement				() const;
 };
 
 #include "base_monster_inline.h"

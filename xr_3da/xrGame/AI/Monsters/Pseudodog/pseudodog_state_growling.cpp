@@ -55,7 +55,7 @@ void CPseudodogGrowling::Run()
 		pMonster->MotionMan.m_tAction	= ACT_STAND_IDLE;	
 		pMonster->MotionMan.SetSpecParams(ASP_PSI_ATTACK);
 		pMonster->sound().play(MonsterSpace::eMonsterSoundPsyAttack);
-		pMonster->play_effect_sound();
+		//pMonster->play_effect_sound();
 
 		time_next_psi_attack			= m_dwCurrentTime + Random.randI(2000,4000);
 		break;

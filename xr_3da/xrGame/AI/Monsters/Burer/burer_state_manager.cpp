@@ -3,7 +3,7 @@
 #include "burer_state_manager.h"
 #include "../BaseMonster/base_monster_state.h"
 #include "burer_states.h"
-
+#include "../../../EntityCondition.h"
 
 CStateManagerBurer::CStateManagerBurer(CBurer *monster) : m_object(monster), inherited(monster)
 {
@@ -21,7 +21,8 @@ CStateManagerBurer::CStateManagerBurer(CBurer *monster) : m_object(monster), inh
 
 void CStateManagerBurer::update()
 {
-	EGlobalStates state = eStateUnknown;
+	EGlobalStates state			= eStateUnknown;
+	EGlobalStates prev_state	= m_current_state;
 
 	TTime last_hit_time = 0;
 	if (m_object->HitMemory.is_hit()) last_hit_time = m_object->HitMemory.get_last_hit_time();
@@ -39,11 +40,12 @@ void CStateManagerBurer::update()
 		state = eStateHearInterestingSound;
 	} else if (m_object->time_last_scan + SCAN_STATE_TIME > m_object->m_current_update){
 		state = eStateCustom;
-	} else if (m_object->can_eat_now())	state = eStateEat;	
-	else								state = eStateRest;
+	} else if (	m_object->CorpseMan.get_corpse() && 
+			    (((m_object->conditions().GetSatiety() < m_object->get_sd()->m_fMinSatiety) && (prev_state != eStateEat)) ||
+				((m_object->conditions().GetSatiety() < m_object->get_sd()->m_fMaxSatiety) && (prev_state == eStateEat))))
+			state = eStateEat;	
+	else	state = eStateRest;
 
-	(!m_object->EnemyMan.get_enemy()) ? m_object->TScanner::enable() : m_object->TScanner::disable();
-	
 	set_state	(state);
 	execute		();
 }

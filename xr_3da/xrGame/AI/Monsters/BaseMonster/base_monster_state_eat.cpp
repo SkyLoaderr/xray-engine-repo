@@ -67,7 +67,6 @@ void CBaseMonsterEat::Init()
 	
 	m_dwTimeStartRest	= 0;
 
-	pMonster->flagEatNow = true;
 	flag_once_1			= false;
 
 	rebuild_path		= 0;
@@ -193,7 +192,6 @@ void CBaseMonsterEat::Run()
 		pMonster->MotionMan.m_tAction = ACT_REST; 
 		
 		if (m_dwTimeStartRest + REST_AFTER_LUNCH_TIME < m_dwCurrentTime) {
-			pMonster->flagEatNow	= false;
 			bRestAfterLunch			= false; 
 			//pMonster->AddIgnoreObject(pCorpse);
 		}
@@ -283,8 +281,6 @@ void CBaseMonsterEat::Run()
 void CBaseMonsterEat::Done()
 {
 	inherited::Done();
-
-	pMonster->flagEatNow	= false;
 
 	// если тащит труп - бросить
 	if (bDragging) {

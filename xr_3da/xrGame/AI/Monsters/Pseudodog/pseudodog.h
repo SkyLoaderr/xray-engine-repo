@@ -42,7 +42,7 @@ public:
 
 
 	virtual void	CheckSpecParams		(u32 spec_params);
-	virtual void	play_effect_sound	();
+	//virtual void	play_effect_sound	();
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

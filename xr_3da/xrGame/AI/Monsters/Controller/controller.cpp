@@ -13,6 +13,10 @@
 #include "../../../sound_player.h"
 #include "../../../ai_monster_space.h"
 #include "../../../ui/UIMainIngameWnd.h"
+#include "../ai_monster_movement.h"
+#include "../ai_monster_movement_space.h"
+#include "../../../level_debug.h"
+
 
 CController::CController()
 {
@@ -77,23 +81,33 @@ void CController::Load(LPCSTR section)
 
 	if (MotionMan.start_load_shared(CLS_ID)) {
 
-		MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND);
-		MotionMan.AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, &inherited::get_sd()->m_fsVelocityStandTurn,		PS_STAND);
-		MotionMan.AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, &inherited::get_sd()->m_fsVelocityStandTurn,		PS_STAND);
-		MotionMan.AddAnim(eAnimStandDamaged,	"stand_idle_dmg_",		-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND);
-		MotionMan.AddAnim(eAnimSitIdle,			"sit_idle_",			-1, &inherited::get_sd()->m_fsVelocityNone,				PS_SIT);
-		MotionMan.AddAnim(eAnimEat,				"sit_eat_",				-1, &inherited::get_sd()->m_fsVelocityNone,				PS_SIT);
-		MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, &inherited::get_sd()->m_fsVelocityWalkFwdNormal,	PS_STAND);
-		MotionMan.AddAnim(eAnimWalkDamaged,		"stand_walk_dmg_",		-1, &inherited::get_sd()->m_fsVelocityWalkFwdDamaged,	PS_STAND);
-		MotionMan.AddAnim(eAnimRun,				"stand_run_fwd_",		-1,	&inherited::get_sd()->m_fsVelocityRunFwdNormal,		PS_STAND);
-		MotionMan.AddAnim(eAnimRunDamaged,		"stand_run_dmg_",		-1, &inherited::get_sd()->m_fsVelocityRunFwdDamaged,	PS_STAND);
-		MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, &inherited::get_sd()->m_fsVelocityStandTurn,		PS_STAND);
-		MotionMan.AddAnim(eAnimSteal,			"stand_steal_",			-1, &inherited::get_sd()->m_fsVelocitySteal,			PS_STAND);
-		MotionMan.AddAnim(eAnimCheckCorpse,		"stand_check_corpse_",	-1,	&inherited::get_sd()->m_fsVelocityNone,				PS_STAND);
-		MotionMan.AddAnim(eAnimDie,				"stand_die_",			-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND);
-		MotionMan.AddAnim(eAnimStandSitDown,	"stand_sit_down_",		-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND);	
-		MotionMan.AddAnim(eAnimSitStandUp,		"sit_stand_up_",		-1, &inherited::get_sd()->m_fsVelocityNone,				PS_SIT);
-		MotionMan.AddAnim(eAnimSleep,			"sit_sleep_",			-1, &inherited::get_sd()->m_fsVelocityNone,				PS_SIT);
+		SVelocityParam velocity_none;
+		SVelocityParam &velocity_turn		= movement().get_velocity(MonsterMovement::eVelocityParameterStand);
+		SVelocityParam &velocity_walk		= movement().get_velocity(MonsterMovement::eVelocityParameterWalkNormal);
+		SVelocityParam &velocity_run		= movement().get_velocity(MonsterMovement::eVelocityParameterRunNormal);
+		SVelocityParam &velocity_walk_dmg	= movement().get_velocity(MonsterMovement::eVelocityParameterWalkDamaged);
+		SVelocityParam &velocity_run_dmg	= movement().get_velocity(MonsterMovement::eVelocityParameterRunDamaged);
+		SVelocityParam &velocity_steal		= movement().get_velocity(MonsterMovement::eVelocityParameterSteal);
+		//SVelocityParam &velocity_drag		= movement().get_velocity(MonsterMovement::eVelocityParameterDrag);
+
+
+		MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &velocity_none,				PS_STAND);
+		MotionMan.AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, &velocity_turn,		PS_STAND);
+		MotionMan.AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, &velocity_turn,		PS_STAND);
+		MotionMan.AddAnim(eAnimStandDamaged,	"stand_idle_dmg_",		-1, &velocity_none,				PS_STAND);
+		MotionMan.AddAnim(eAnimSitIdle,			"sit_idle_",			-1, &velocity_none,				PS_SIT);
+		MotionMan.AddAnim(eAnimEat,				"sit_eat_",				-1, &velocity_none,				PS_SIT);
+		MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, &velocity_walk,	PS_STAND);
+		MotionMan.AddAnim(eAnimWalkDamaged,		"stand_walk_dmg_",		-1, &velocity_walk_dmg,	PS_STAND);
+		MotionMan.AddAnim(eAnimRun,				"stand_run_fwd_",		-1,	&velocity_run,		PS_STAND);
+		MotionMan.AddAnim(eAnimRunDamaged,		"stand_run_dmg_",		-1, &velocity_run_dmg,	PS_STAND);
+		MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, &velocity_turn,		PS_STAND);
+		MotionMan.AddAnim(eAnimSteal,			"stand_steal_",			-1, &velocity_steal,			PS_STAND);
+		MotionMan.AddAnim(eAnimCheckCorpse,		"stand_check_corpse_",	-1,	&velocity_none,				PS_STAND);
+		MotionMan.AddAnim(eAnimDie,				"stand_die_",			-1, &velocity_none,				PS_STAND);
+		MotionMan.AddAnim(eAnimStandSitDown,	"stand_sit_down_",		-1, &velocity_none,				PS_STAND);	
+		MotionMan.AddAnim(eAnimSitStandUp,		"sit_stand_up_",		-1, &velocity_none,				PS_SIT);
+		MotionMan.AddAnim(eAnimSleep,			"sit_sleep_",			-1, &velocity_none,				PS_SIT);
 
 		MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
 		MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimSitIdle);
@@ -113,7 +127,6 @@ void CController::Load(LPCSTR section)
 		MotionMan.AddTransition(PS_SIT,		PS_STAND,	eAnimSitStandUp,	false);
 
 		MotionMan.AA_Load(pSettings->r_string(section, "attack_params"));
-		//MotionMan.STEPS_Load(pSettings->r_string(section, "step_params"), get_legs_number());
 
 		MotionMan.finish_load_shared();
 	}
@@ -157,30 +170,6 @@ void CController::UpdateControlled()
 	//pA->SetControlled();
 //////////////////////////////////////////////////////////////////////////
 
-
-//#ifdef DEBUG
-//	// Draw Controlled Lines
-//	HDebug->L_Clear();
-//	Fvector my_pos = Position();
-//	my_pos.y += 1.5f;
-//	
-//
-//	for (u32 i=0; i < m_controlled_objects.size(); i++) {
-//		Fvector enemy_pos	= m_controlled_objects[i]->Position();
-//		
-//		Fvector dir;
-//		dir.sub(enemy_pos, Position());
-//		dir.div(2.f);
-//		Fvector new_pos;
-//		new_pos.add(Position(),dir);
-//		new_pos.y += 10.f;
-//
-//		enemy_pos.y += 1.0f;
-//		HDebug->L_AddLine(my_pos,		new_pos, D3DCOLOR_XRGB(0,255,255));
-//		HDebug->L_AddLine(enemy_pos,	new_pos, D3DCOLOR_XRGB(0,255,255));
-//	}
-//
-//#endif
 }
 
 void CController::set_controlled_task(u32 task)
@@ -261,7 +250,8 @@ void CController::reload(LPCSTR section)
 
 	anim_triple_control.reinit_external	(&EventMan, def1, def2, def3);
 
-	CJumping::AddState			(smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("jump_glide_0"), JT_GLIDE, false,	0.f, inherited::get_sd()->m_fsVelocityRunFwdNormal.velocity.angular_real);
+	SVelocityParam &velocity_run = movement().get_velocity(MonsterMovement::eVelocityParameterRunNormal);
+	CJumping::AddState			(smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("jump_glide_0"), JT_GLIDE, false,	0.f, velocity_run.velocity.angular_real);
 }
 
 void CController::reinit()
@@ -364,3 +354,43 @@ void CController::FreeFromControl()
 {
 	for	(u32 i=0; i<m_controlled_objects.size(); i++) smart_cast<CControlledEntityBase *>(m_controlled_objects[i])->free_from_control(this);
 }
+
+#ifdef DEBUG
+CBaseMonster::SDebugInfo CController::show_debug_info()
+{
+	CBaseMonster::SDebugInfo info = inherited::show_debug_info();
+	if (!info.active) return CBaseMonster::SDebugInfo();
+
+	string128 text;
+	sprintf(text, "Psy Aura: Radius = [%f]  Energy = [%f]", CPsyAuraController::get_current_radius(), CPsyAuraController::get_value());
+	DBG().text(this).add_item(text, info.x, info.y+=info.delta_y, info.color);
+	DBG().text(this).add_item("---------------------------------------", info.x, info.y+=info.delta_y, info.delimiter_color);
+
+	
+	// Draw Controlled Lines
+	DBG().level_info(this).clear();
+	
+	Fvector my_pos = Position();
+	my_pos.y += 1.5f;
+		
+	
+	for (u32 i=0; i < m_controlled_objects.size(); i++) {
+		Fvector enemy_pos	= m_controlled_objects[i]->Position();
+		
+		Fvector dir;
+		dir.sub(enemy_pos, Position());
+		dir.div(2.f);
+		Fvector new_pos;
+		new_pos.add(Position(),dir);
+		new_pos.y += 10.f;
+
+		enemy_pos.y += 1.0f;
+	
+		DBG().level_info(this).add_item(my_pos,	new_pos, D3DCOLOR_XRGB(0,255,255));
+		DBG().level_info(this).add_item(enemy_pos, new_pos, D3DCOLOR_XRGB(0,255,255));
+	}
+
+	return CBaseMonster::SDebugInfo();
+}
+#endif
+

@@ -71,6 +71,11 @@ public:
 
 
 			void		update_velocity		();
+
+			
+	virtual void		on_travel_point_change();		
+
+			
 //private:
 	
 		// проверка на завершение пути
@@ -168,6 +173,20 @@ public:
 		float		get_path_angle			();
 		bool		is_path_built			();
 		void		set_velocity_from_path	();
+
+
+	//////////////////////////////////////////////////////////////////////////
+
+	DEFINE_MAP		(u32, SVelocityParam, VELOCITY_MAP, VELOCITY_MAP_IT);
+	VELOCITY_MAP	m_velocities;
+
+		void			load_velocity	(LPCSTR section, LPCSTR line, u32 param);
+		SVelocityParam	&get_velocity	(u32 velocity_id);
+
+
+private:	
+	bool				m_velocity_reset;
+
 };
 
 #include "ai_monster_movement_inline.h"

@@ -15,6 +15,7 @@
 #include "../../../level_debug.h"
 #include "../../../entitycondition.h"
 #include "../../../detail_path_manager.h"
+#include "../states/monster_state_controlled.h"
 
 CStateManagerZombie::CStateManagerZombie(CZombie *obj) : inherited(obj)
 {
@@ -30,6 +31,7 @@ CStateManagerZombie::CStateManagerZombie(CZombie *obj) : inherited(obj)
 	add_state(eStateInterestingSound,	xr_new<CStateMonsterHearInterestingSound<CZombie> >(obj));
 	add_state(eStateSquadRest,			xr_new<CStateMonsterSquadRest<CZombie> >(obj));
 	add_state(eStateSquadRestFollow,	xr_new<CStateMonsterSquadRestFollow<CZombie> >(obj));
+	add_state(eStateControlled,			xr_new<CStateMonsterControlled<CZombie> >	(obj));
 }
 
 CStateManagerZombie::~CStateManagerZombie()
@@ -46,38 +48,42 @@ void CStateManagerZombie::execute()
 	if (object->MotionMan.TA_IsActive()) return;
 	
 	u32 state_id = u32(-1);
-	const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
-	const CEntityAlive* corpse	= object->CorpseMan.get_corpse();
+	
+	if (!object->is_under_control()) {
+	
+		const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
+		const CEntityAlive* corpse	= object->CorpseMan.get_corpse();
 
-	if (enemy) {
-		state_id = eStateAttack;
-	} else if (object->hear_interesting_sound || object->hear_dangerous_sound) {
-		state_id = eStateInterestingSound;
-	} else {
-		bool can_eat = false;
-		if (corpse) {
+		if (enemy) {
+			state_id = eStateAttack;
+		} else if (object->hear_interesting_sound || object->hear_dangerous_sound) {
+			state_id = eStateInterestingSound;
+		} else {
+			bool can_eat = false;
+			if (corpse) {
 
-			if (prev_substate == eStateEat) {
-				if (!get_state_current()->check_completion()) can_eat = true;
+				if (prev_substate == eStateEat) {
+					if (!get_state_current()->check_completion()) can_eat = true;
+				}
+
+				if ((prev_substate != eStateEat) && (object->conditions().GetSatiety() < object->get_sd()->m_fMinSatiety)) 
+					can_eat = true;		
 			}
 
-			if ((prev_substate != eStateEat) && (object->conditions().GetSatiety() < object->get_sd()->m_fMinSatiety)) 
-				can_eat = true;		
+			if (can_eat) state_id = eStateEat;
+			else {
+				
+				// Rest & Idle states here 
+				if (monster_squad().get_squad(object)->GetCommand(object).type == SC_REST) {
+					state_id = eStateSquadRest;
+				} else if (monster_squad().get_squad(object)->GetCommand(object).type == SC_FOLLOW) {
+					state_id = eStateSquadRestFollow;
+				} else 
+					state_id = eStateRest;
+			}
 		}
+	} else state_id = eStateControlled;
 
-		if (can_eat) state_id = eStateEat;
-		else {
-			
-			// Rest & Idle states here 
-			if (monster_squad().get_squad(object)->GetCommand(object).type == SC_REST) {
-				state_id = eStateSquadRest;
-			} else if (monster_squad().get_squad(object)->GetCommand(object).type == SC_FOLLOW) {
-				state_id = eStateSquadRestFollow;
-			} else 
-				state_id = eStateRest;
-		}
-	}
-	
 	// установить текущее состояние
 	select_state(state_id); 
 
