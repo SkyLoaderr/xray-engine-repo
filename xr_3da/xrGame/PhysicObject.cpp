@@ -230,10 +230,12 @@ void CPhysicObject::CreateSkeleton(CSE_ALifeObjectPhysic* po)
 void CPhysicObject::net_Export(NET_Packet& P)
 {
 	R_ASSERT						(Local());
+	//m_pPhysicsShell->net_Export(P);
 }
 
 void CPhysicObject::net_Import(NET_Packet& P)
 {
+	//m_pPhysicsShell->net_Import(P);
 	R_ASSERT						(Remote());
 }
 
