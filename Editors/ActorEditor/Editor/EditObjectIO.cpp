@@ -80,7 +80,7 @@ bool CEditableObject::Load(IReader& F){
         R_ASSERT(F.r_chunk(EOBJ_CHUNK_FLAGS, &m_Flags.flags));
 
         if (F.find_chunk	(EOBJ_CHUNK_CLASSSCRIPT)){
-            F.r_stringZ	(buf); m_ClassScript=buf;
+            F.r_stringZ		(m_ClassScript);
         }
 
         // file version

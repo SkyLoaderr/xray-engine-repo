@@ -88,6 +88,7 @@ private:	// User declarations
     void 				ApplyLWNumber	();
     void 				CancelLWNumber	();
 	// text inplace editor
+    void 				ExecTextEditor	(PropItem* prop);
     void 				HideLWText		();
     void 				PrepareLWText	(TElTreeItem* node);
     void 				ShowLWText		(TRect& R);

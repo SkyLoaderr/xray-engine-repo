@@ -147,6 +147,7 @@ public:
     TOnDrawCanvasEvent	OnDrawCanvasEvent;
     TOnPropItemFocused	OnItemFocused;
 public:
+    TRect				draw_rect;
     int 				tag;
     int					subitem;		// multiple selection for each item (SelectTexture for example)
 public:
@@ -265,7 +266,6 @@ class ButtonValue: public PropValue{
 public:
 	AStringVec			value;
     int					btn_num;
-    TRect				draw_rect;
     TOnBtnClick			OnBtnClickEvent;
 public:
 						ButtonValue		(AnsiString val)

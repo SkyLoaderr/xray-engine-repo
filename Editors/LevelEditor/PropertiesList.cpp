@@ -312,7 +312,7 @@ void TProperties::OutBOOL(BOOL val, TCanvas* Surface, const TRect& R, bool bEnab
 void TProperties::OutText(LPCSTR text, TCanvas* Surface, TRect R, bool bEnable, TGraphic* g, bool bArrow)
 {
 	if (bEnable&&(g||bArrow)){
-	    R.Right	-=	12;
+	    R.Right	-=	g->Width+2;
     	R.Left 	+= 	1;
     }else{
         R.Right-= 1;
@@ -403,12 +403,12 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             R.Left += 1;
             DrawText	(Surface->Handle, prop->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
         }else{
-            TRect src_rect = R;
+            TRect src_rect 	= R;
+			prop->draw_rect	= R;
             switch(type){
             case PROP_BUTTON:{
                 ButtonValue* V			= dynamic_cast<ButtonValue*>(prop->GetFrontValue()); R_ASSERT(V);
                 DrawButtons				(R,Surface,V->value,V->btn_num,Item->Selected);
-				V->draw_rect			= R;
             }break;
             case PROP_CAPTION:
                 Surface->Font->Color 	= clSilver;
@@ -499,7 +499,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             case PROP_A_TEXT:
             case PROP_TEXT:
                 if (edText->Tag!=(int)Item)
-	                OutText(prop->GetText(),Surface,R,prop->Enabled());
+	                OutText(prop->GetText(),Surface,R,prop->Enabled(),m_BMEllipsis);
             break;
             case PROP_VECTOR:
                 OutText(prop->GetText(),Surface,R,prop->Enabled());
@@ -551,6 +551,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
 	TElTreeItem* item = tvProperties->GetItemAt(X,Y,IP,HC);
   	if (item){
     	if ((HC==1)&&(Button==mbLeft)){
+        	Log("Shift",(int)Shift.Contains(ssDouble));
             PropItem* prop = (PropItem*)item->Tag;
             // ѕроверить чтобы не нажимать 2 раза дл€ кнопок
             if (prop&&(PROP_BUTTON==prop->type)) m_FirstClickItem=item;
@@ -561,7 +562,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                 case PROP_CAPTION: break;
                 case PROP_BUTTON:{
                     ButtonValue* FV				= dynamic_cast<ButtonValue*>(prop->GetFrontValue()); R_ASSERT(FV);
-                    int btn_num					= iFloor((X-FV->draw_rect.left)*(float(FV->value.size())/float(FV->draw_rect.Width())));
+                    int btn_num					= iFloor((X-prop->draw_rect.left)*(float(FV->value.size())/float(prop->draw_rect.Width())));
                     for (PropItem::PropValueIt it=prop->values.begin(); it!=prop->values.end(); it++){
                         ButtonValue* V			= dynamic_cast<ButtonValue*>(*it); R_ASSERT(V);
                         V->btn_num				= btn_num;
@@ -714,7 +715,8 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                 break;
                 case PROP_A_TEXT:
                 case PROP_TEXT:
-                    PrepareLWText(item);
+                	if ((X-prop->draw_rect.left)<(prop->draw_rect.Width()-(m_BMEllipsis->Width+2)))	PrepareLWText(item);
+                    else								                   							ExecTextEditor(prop);
                 break;
                 case PROP_TEXTURE2:{
                     pmEnum->Items->Clear();
@@ -769,8 +771,8 @@ void __fastcall TProperties::tvPropertiesMouseMove(TObject *Sender,
                 ButtonValue* V				= dynamic_cast<ButtonValue*>(prop->GetFrontValue()); R_ASSERT(V);
                 Y							-= tvProperties->HeaderHeight;
                 int btn_num					= -1;
-                if (((Y>V->draw_rect.top)&&(Y<V->draw_rect.bottom))&&((X>V->draw_rect.left)&&(Y<V->draw_rect.right)))
-                	btn_num					= iFloor((X-V->draw_rect.left)*(float(V->value.size())/float(V->draw_rect.Width())));
+                if (((Y>prop->draw_rect.top)&&(Y<prop->draw_rect.bottom))&&((X>prop->draw_rect.left)&&(Y<prop->draw_rect.right)))
+                	btn_num					= iFloor((X-prop->draw_rect.left)*(float(V->value.size())/float(prop->draw_rect.Width())));
                 for (PropItem::PropValueIt it=prop->values.begin(); it!=prop->values.end(); it++){
                     ButtonValue* V			= dynamic_cast<ButtonValue*>(*it); R_ASSERT(V);
                     V->btn_num				= btn_num;
@@ -1281,13 +1283,15 @@ void TProperties::PrepareLWText(TElTreeItem* item)
 		ATextValue* V	= dynamic_cast<ATextValue*>(prop->GetFrontValue()); R_ASSERT(V);
         AnsiString edit_val	= V->GetValue();
         prop->OnBeforeEdit	(&edit_val);
-	    edText->Text 		= edit_val;
+		edText->Text 		= edit_val;
+		edText->MaxLength	= 0;
     }break;
     case PROP_TEXT:{
 		TextValue* V		= dynamic_cast<TextValue*>(prop->GetFrontValue()); R_ASSERT(V);
 		AnsiString edit_val	= V->GetValue();
         prop->OnBeforeEdit	(&edit_val);
-	    edText->Text 		= edit_val;
+		edText->Text 		= edit_val;
+		edText->MaxLength	= V->lim;
     }break;
     }
     edText->Tag 	= (int)item;
@@ -1313,7 +1317,6 @@ void TProperties::ApplyLWText()
         case PROP_A_TEXT:{
 			ATextValue* V		= dynamic_cast<ATextValue*>(prop->GetFrontValue()); R_ASSERT(V);
 			AnsiString new_val	= edText->Text;
-            edText->MaxLength	= 0;
 			prop->OnAfterEdit	(&new_val);
             if (prop->ApplyValue(&new_val)){
             	Modified();
@@ -1322,7 +1325,6 @@ void TProperties::ApplyLWText()
         }break;
     	case PROP_TEXT:{
 			TextValue* V		= dynamic_cast<TextValue*>(prop->GetFrontValue()); R_ASSERT(V);
-            edText->MaxLength	= V->lim;
 			AnsiString new_val	= edText->Text;
 			prop->OnAfterEdit	(&new_val);
             if (prop->ApplyValue(new_val.c_str())){
@@ -1363,11 +1365,48 @@ void __fastcall TProperties::edTextDblClick(TObject *Sender)
     	case PROP_TEXT:{
 			TextValue* V	= dynamic_cast<TextValue*>(prop->GetFrontValue()); R_ASSERT(V);
 			AnsiString new_val	= edText->Text;
-			if (TfrmText::ShowModalEditor(new_val,AnsiString(item->Text).c_str(),false,V->lim)) edText->Text = new_val;
+			if (TfrmText::ShowModalEditor(new_val,AnsiString(item->Text).c_str(),false,V->lim))
+             	edText->Text = new_val;
+            ApplyLWText();
+            HideLWText();
         }break;
     	case PROP_A_TEXT:{
 			AnsiString new_val	= edText->Text;
-			if (TfrmText::ShowModalEditor(new_val,AnsiString(item->Text).c_str())) edText->Text = new_val;
+			if (TfrmText::ShowModalEditor(new_val,AnsiString(item->Text).c_str()))
+            	edText->Text = new_val;
+            ApplyLWText();
+            HideLWText();
+        }break;
+    	}
+    }
+}
+//---------------------------------------------------------------------------
+
+void TProperties::ExecTextEditor(PropItem* prop)
+{
+    if (prop){
+	    switch (prop->type){
+    	case PROP_TEXT:{
+            TextValue* V	= dynamic_cast<TextValue*>(prop->GetFrontValue()); R_ASSERT(V);
+            AnsiString edit_val	= V->GetValue();
+            prop->OnBeforeEdit	(&edit_val);
+            if (TfrmText::ShowModalEditor(edit_val,prop->GetText(),false,V->lim)){
+                prop->OnAfterEdit	(&edit_val);
+                if (prop->ApplyValue(edit_val.c_str()))
+                    Modified		();
+                prop->Item()->ColumnText->Strings[0] = prop->GetText();
+            }
+        }break;
+    	case PROP_A_TEXT:{
+            ATextValue* V	= dynamic_cast<ATextValue*>(prop->GetFrontValue()); R_ASSERT(V);
+            AnsiString edit_val	= V->GetValue();
+            prop->OnBeforeEdit	(&edit_val);
+            if (TfrmText::ShowModalEditor(edit_val,prop->GetText(),false)){
+                prop->OnAfterEdit	(&edit_val);
+                if (prop->ApplyValue(&edit_val))
+                    Modified();
+                prop->Item()->ColumnText->Strings[0] = prop->GetText();
+            }
         }break;
     	}
     }
