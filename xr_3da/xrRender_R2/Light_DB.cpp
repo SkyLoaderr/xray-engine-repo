@@ -76,3 +76,36 @@ void CLight_DB::Unload		()
 	for	(u32 it=0; it<v_static.size(); it++)	xr_delete(v_static[it]);
 	v_static.clear			();
 }
+
+light*			CLight_DB::Create	()
+{
+	light*	L					= xr_new<CLightPPA>	();
+	v_dynamic_inactive.insert	(L);
+	return						L;
+}
+void			CLight_DB::Destroy	(light* L)
+{
+	set<light*>::iterator	it;
+
+	//
+	it = v_dynamic_active.find	(L);
+	if (it!=v_dynamic_active.end())	
+	{
+		v_dynamic_active.erase	(it);
+		xr_delete		(L);
+		return;
+	}
+
+	// 
+	it = v_dynamic_active.find	(L);
+	if (it!=v_dynamic_active.end())	
+	{
+		v_dynamic_active.erase(it);
+		xr_delete	(L);
+		return;
+	}
+
+	// ???
+	xr_delete	(L);
+	Msg			("! xrRENDER: unregistered light destroyed");
+}
