@@ -2,6 +2,7 @@
 #include "ai_bloodsucker.h"
 #include "ai_bloodsucker_effector.h"
 
+#include "..\\..\\hudmanager.h"
 
 CAI_Bloodsucker::CAI_Bloodsucker()
 {
@@ -76,7 +77,6 @@ BOOL CAI_Bloodsucker::net_Spawn (LPVOID DC)
 
 	// define transitions
 	// order : 1. [anim -> anim]	2. [anim->state]	3. [state -> anim]		4. [state -> state]
-	
 	MotionMan.AddTransition_A2A(eAnimStandSitDown,	eAnimSleep,	eAnimSitToSleep,	false);
 	MotionMan.AddTransition_S2A(PS_STAND,			eAnimSleep,	eAnimStandSitDown,	true);
 	MotionMan.AddTransition_S2S(PS_STAND,			PS_SIT,		eAnimStandSitDown,		false);
@@ -88,14 +88,14 @@ BOOL CAI_Bloodsucker::net_Spawn (LPVOID DC)
 	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle,	eAnimStandTurnLeft, eAnimStandTurnRight, PI_DIV_6);
 	MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimSitIdle);
 	MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimSitIdle);
-	MotionMan.LinkAction(ACT_WALK_FWD,		eAnimWalkFwd,	eAnimWalkFwd,		eAnimWalkFwd,		PI_DIV_6);
+	MotionMan.LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
 	MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimWalkBkwd);
-	MotionMan.LinkAction(ACT_RUN,			eAnimRun,		eAnimRun,			eAnimRun,			PI_DIV_6);
+	MotionMan.LinkAction(ACT_RUN,			eAnimRun);
 	MotionMan.LinkAction(ACT_EAT,			eAnimEat);
 	MotionMan.LinkAction(ACT_SLEEP,			eAnimSleep);
 	MotionMan.LinkAction(ACT_REST,			eAnimSitIdle);
 	MotionMan.LinkAction(ACT_DRAG,			eAnimWalkBkwd);
-	MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack,	eAnimAttack,		eAnimAttack,		PI_DIV_6/6);
+	MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack,	eAnimRun,			eAnimRun,			PI_DIV_6);
 	MotionMan.LinkAction(ACT_STEAL,			eAnimWalkFwd);
 	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimLookAround); 
 
@@ -124,6 +124,17 @@ void CAI_Bloodsucker::UpdateCL()
 	bool PrevVis	=	IsCurrentVisible();
 	bool NewVis		=	CMonsterInvisibility::Update();
 	if (NewVis != PrevVis) setVisible(NewVis);
+
+	//----------------------------------------------------------------
+	float ty,cy;
+
+	cy = r_torso_current.yaw;
+	ty = r_torso_target.yaw;
+
+	HUD().pFontSmall->OutSet (300,420);	
+	HUD().pFontSmall->OutNext("CY = [%f]   TY = [%f]", rad2deg(cy),rad2deg(ty));
+	//----------------------------------------------------------------
+
 }
 
 void CAI_Bloodsucker::StateSelector()

@@ -87,18 +87,18 @@ void CBitingAttack::Run()
 
 	u32 delay;
 
-#pragma todo("Jim to Jim: fix nesting: Bloodsucker in Biting state")
-	if (m_bInvisibility) {
-		CAI_Bloodsucker *pBS =	dynamic_cast<CAI_Bloodsucker *>(pMonster);
-		if (pBS) {
-			if ((dist < pBS->m_fInvisibilityDist) && (pBS->GetPower() > pBS->m_fPowerThreshold)) {
-				if (pBS->CMonsterInvisibility::Switch(false)) {
-					pBS->ChangePower(pBS->m_ftrPowerDown);
-					pBS->ActivateEffector(pBS->CMonsterInvisibility::GetInvisibleInterval() / 1000.f);
-				}
-			}
-		}
-	}
+//#pragma todo("Jim to Jim: fix nesting: Bloodsucker in Biting state")
+//	if (m_bInvisibility) {
+//		CAI_Bloodsucker *pBS =	dynamic_cast<CAI_Bloodsucker *>(pMonster);
+//		if (pBS) {
+//			if ((dist < pBS->m_fInvisibilityDist) && (pBS->GetPower() > pBS->m_fPowerThreshold)) {
+//				if (pBS->CMonsterInvisibility::Switch(false)) {
+//					pBS->ChangePower(pBS->m_ftrPowerDown);
+//					pBS->ActivateEffector(pBS->CMonsterInvisibility::GetInvisibleInterval() / 1000.f);
+//				}
+//			}
+//		}
+//	}
 
 	// Выполнение состояния
 	switch (m_tAction) {	
@@ -125,17 +125,16 @@ void CBitingAttack::Run()
 			}
 
 			// Смотреть на врага 
-			float yaw, pitch;
-			Fvector dir;
-
-			yaw = pMonster->r_torso_target.yaw;
-
 			DO_IN_TIME_INTERVAL_BEGIN(m_dwFaceEnemyLastTime, m_dwFaceEnemyLastTimeInterval);
+				float yaw, pitch;
+				Fvector dir;
+				yaw = pMonster->r_torso_target.yaw;
 				pMonster->AI_Path.TravelPath.clear();
 				dir.sub(m_tEnemy.obj->Position(), pMonster->Position());
 				dir.getHP(yaw,pitch);
 				yaw *= -1;
 				yaw = angle_normalize(yaw);
+				pMonster->r_torso_target.yaw = yaw;
 			DO_IN_TIME_INTERVAL_END();
 
 			if (m_bAttackRat) pMonster->MotionMan.SetSpecParams(ASP_ATTACK_RAT);

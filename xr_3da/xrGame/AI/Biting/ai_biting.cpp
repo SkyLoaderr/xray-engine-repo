@@ -257,6 +257,7 @@ void CAI_Biting::UpdateCL()
 	CheckAttackHit();
 
 	m_pPhysics_support->in_UpdateCL();
+
 }
 
 void CAI_Biting::shedule_Update(u32 dt)

@@ -125,6 +125,9 @@ public:
 			void			SetDirectionLook				(bool bReversed = false);
 	virtual void			LookPosition					(Fvector to_point);		// каждый монстр может по-разному реализвать эту функ (e.g. кровосос с поворотом головы и т.п.)
 
+
+	virtual	bool			bfAssignMovement				(CEntityAction	*tpEntityAction);
+
 // members
 public:
 
