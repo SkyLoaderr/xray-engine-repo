@@ -3,7 +3,7 @@ GroupControlSection	= spawn_group_zone
 $spawn 			= "zones\mosquito bald"
 $prefetch 		= 16
 class			= Z_MBALD
-hit_impulse_scale	= .1
+hit_impulse_scale	= 0.5 ;0.1
 sound			= zone_mosquito_bald
 
 postprocess		= mosquito_bald
@@ -33,8 +33,8 @@ blowout_time		= 300
 accamulate_time		= 200
 
 
-disable_time		= 5000		;время игнорирования неживого объекта в зоне (-1 если не нужно)
-disable_time_small	= 500		;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
+disable_time		= -1 ; 5000		;время игнорирования неживого объекта в зоне (-1 если не нужно)
+disable_time_small	= -1 ;500		;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
 disable_idle_time	= 1000		;время отключения idle партиклов
 
 ignore_nonalive		= false
