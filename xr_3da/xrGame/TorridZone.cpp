@@ -40,7 +40,7 @@ void CTorridZone::UpdateCL()
 	inherited::UpdateCL();
 	m_animator->OnFrame	();
 	XFORM().set	(m_animator->XFORM());
-
+	OnMove	();
 }
 
 
