@@ -99,21 +99,34 @@
 #include <map>
 using namespace std;
 
-#define ALIGN(a)		__declspec(align(a))
+#define ALIGN(a) __declspec(align(a))
 
 // Our headers
-#define VERIFY assert
-#include "vector.h"
-#undef  VERIFY
-
 #ifdef XRCORE_EXPORTS
 #define XRCORE_API __declspec(dllexport)
 #else
 #define XRCORE_API __declspec(dllimport)
 #endif
 
-/*
-#include "engine.h"
-*/
+
+#define VERIFY assert
+#include "vector.h"
+#undef  VERIFY
+#include "xrSyncronize.h"
+#include "xrMemory.h"
+#include "xrDebug.h"
+
+// ********************************************** The Core definition
+
+class XRCORE_API xrCore 
+{
+public:
+	string64	ApplicationName;
+	string512	Params;
+public:
+	void		_initialize	(const char* ApplicationName);
+	void		_destroy	();
+};
+extern XRCORE_API xrCore Core;
 
 #endif

@@ -535,7 +535,7 @@ public:
 typedef		_matrix<float>	Fmatrix;
 typedef		_matrix<double>	Dmatrix;
 
-extern ENGINE_API Fmatrix	Fidentity;
-extern ENGINE_API Dmatrix	Didentity;
+extern XRCORE_API Fmatrix	Fidentity;
+extern XRCORE_API Dmatrix	Didentity;
 
 #endif

@@ -62,20 +62,30 @@
 			OutputDirectory="Release"
 			IntermediateDirectory="Release"
 			ConfigurationType="2"
-			CharacterSet="2">
+			CharacterSet="2"
+			WholeProgramOptimization="TRUE">
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
-				InlineFunctionExpansion="1"
+				Optimization="3"
+				GlobalOptimizations="TRUE"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="TRUE"
+				ImproveFloatingPointConsistency="FALSE"
+				FavorSizeOrSpeed="1"
 				OmitFramePointers="TRUE"
+				OptimizeForProcessor="2"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;XRCORE_EXPORTS"
 				StringPooling="TRUE"
-				RuntimeLibrary="0"
-				EnableFunctionLevelLinking="TRUE"
+				ExceptionHandling="FALSE"
+				RuntimeLibrary="2"
+				BufferSecurityCheck="FALSE"
+				EnableFunctionLevelLinking="FALSE"
+				TreatWChar_tAsBuiltInType="FALSE"
 				UsePrecompiledHeader="3"
-				WarningLevel="3"
+				WarningLevel="4"
 				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="3"/>
+				DebugInformationFormat="0"
+				CallingConvention="2"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
@@ -109,6 +119,9 @@
 			Name="Kernel"
 			Filter="">
 			<File
+				RelativePath="resource.h">
+			</File>
+			<File
 				RelativePath="stdafx.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -131,6 +144,9 @@
 			</File>
 			<File
 				RelativePath="xrCore.h">
+			</File>
+			<File
+				RelativePath="xrCore.rc">
 			</File>
 		</Filter>
 		<Filter
@@ -227,8 +243,68 @@
 			<Filter
 				Name="STLext"
 				Filter="">
+				<File
+					RelativePath="FixedMap.h">
+				</File>
+				<File
+					RelativePath="FixedSet.h">
+				</File>
+				<File
+					RelativePath="FixedVector.h">
+				</File>
+				<File
+					RelativePath="xrPool.h">
+				</File>
 			</Filter>
 		</Filter>
+		<File
+			RelativePath="xrDebug.cpp">
+		</File>
+		<File
+			RelativePath="xrDebug.h">
+		</File>
+		<File
+			RelativePath="xrDebug_macros.h">
+		</File>
+		<File
+			RelativePath="xrMemory.cpp">
+		</File>
+		<File
+			RelativePath="xrMemory.h">
+		</File>
+		<File
+			RelativePath="xrMemory_pso.h">
+		</File>
+		<File
+			RelativePath="xrMemory_pso_Copy.cpp">
+			<FileConfiguration
+				Name="Release|Win32">
+				<Tool
+					Name="VCCLCompilerTool"
+					AssemblerOutput="4"/>
+			</FileConfiguration>
+		</File>
+		<File
+			RelativePath="xrMemory_pso_Fill.cpp">
+			<FileConfiguration
+				Name="Release|Win32">
+				<Tool
+					Name="VCCLCompilerTool"
+					AssemblerOutput="4"/>
+			</FileConfiguration>
+		</File>
+		<File
+			RelativePath="xrMemory_pso_Fill32.cpp">
+			<FileConfiguration
+				Name="Release|Win32">
+				<Tool
+					Name="VCCLCompilerTool"
+					AssemblerOutput="4"/>
+			</FileConfiguration>
+		</File>
+		<File
+			RelativePath="xrSyncronize.h">
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

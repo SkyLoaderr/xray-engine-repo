@@ -14,7 +14,7 @@
 #define pvBOTTOM_MASK	0x007f
 
 // static lookup table for unit vector decompression
-ENGINE_API float pvUVAdjustment	[0x2000];
+float pvUVAdjustment	[0x2000];
 
 void pvInitializeStatics	(void)
 {
@@ -40,13 +40,13 @@ void pvInitializeStatics	(void)
 	}
 }
 
-WORD pvCompress				( const Fvector& vec )
+u16 pvCompress				( const Fvector& vec )
 {
 	// save copy
-	Fvector tmp = vec;
+	Fvector tmp		= vec;
 
 	// input vector does not have to be unit length
-	WORD mVec = 0;
+	u16 mVec		= 0;
 
 	if ( negative(tmp.x) ) { mVec |= pvXSIGN_MASK; set_positive(tmp.x); }
 	if ( negative(tmp.y) ) { mVec |= pvYSIGN_MASK; set_positive(tmp.y); }
@@ -64,10 +64,12 @@ WORD pvCompress				( const Fvector& vec )
 	int		xbits = iFloor( tmp.x * w );
 	int		ybits = iFloor( tmp.y * w );
 
+	/*
 	VERIFY( xbits <  127 );
 	VERIFY( xbits >= 0   );
 	VERIFY( ybits <  127 );
 	VERIFY( ybits >= 0   );
+	*/
 
 	// Now we can be sure that 0<=xp<=126, 0<=yp<=126, 0<=xp+yp<=126
 
@@ -87,7 +89,7 @@ WORD pvCompress				( const Fvector& vec )
 	return mVec;
 }
 
-void pvDecompress		( Fvector& vec, WORD mVec )
+void pvDecompress		( Fvector& vec, u16 mVec )
 {
 	// if we do a straightforward backward transform
 	// we will get points on the plane X0,Y0,Z0

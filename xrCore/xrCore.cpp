@@ -4,10 +4,14 @@
 #include "stdafx.h"
 #include "xrCore.h"
 
-BOOL APIENTRY DllMain( HANDLE hModule, 
-                       DWORD  ul_reason_for_call, 
-                       LPVOID lpReserved
-					 )
+#pragma comment(lib,"winmm.lib")
+
+XRCORE_API		xrCore Core;
+
+BOOL APIENTRY	DllMain(	HANDLE hModule, 
+							DWORD  ul_reason_for_call, 
+							LPVOID lpReserved
+						)
 {
 	switch (ul_reason_for_call)
 	{
@@ -20,7 +24,15 @@ BOOL APIENTRY DllMain( HANDLE hModule,
     return TRUE;
 }
 
-Core::Core()
-{ 
-	return; 
+void xrCore::_initialize	(const char* _ApplicationName)
+{
+	strcpy					(Params,GetCommandLine());
+	strlwr					(Params);
+	strcpy					(ApplicationName,_ApplicationName);
+
+	// Mathematics & PSI detection
+	InitMath				();
+
+	Debug._initialize		();
+	Memory._initialize		();
 }

@@ -9,12 +9,12 @@
 #endif
 
 namespace FPU {
-	ENGINE_API extern	u16		_24;
-	ENGINE_API extern	u16		_24r;
-	ENGINE_API extern	u16		_53;
-	ENGINE_API extern 	u16		_53r;
-	ENGINE_API extern 	u16		_64;
-	ENGINE_API extern 	u16		_64r;
+	XRCORE_API extern	u16		_24;
+	XRCORE_API extern	u16		_24r;
+	XRCORE_API extern	u16		_53;
+	XRCORE_API extern 	u16		_53r;
+	XRCORE_API extern 	u16		_64;
+	XRCORE_API extern 	u16		_64r;
 	
 #ifdef M_VISUAL
 	IC void m24	(void)	{	__asm fldcw _24  };
@@ -34,14 +34,14 @@ namespace FPU {
 #endif
 };
 namespace CPU {
-	ENGINE_API extern u64				cycles_per_second;
-	ENGINE_API extern u64				cycles_per_milisec;
-	ENGINE_API extern u64				cycles_per_microsec;
-	ENGINE_API extern u64				cycles_overhead;
-	ENGINE_API extern float				cycles2seconds;
-	ENGINE_API extern float				cycles2milisec;
-	ENGINE_API extern float				cycles2microsec;
-	ENGINE_API extern _processor_info	ID;
+	XRCORE_API extern u64				cycles_per_second;
+	XRCORE_API extern u64				cycles_per_milisec;
+	XRCORE_API extern u64				cycles_per_microsec;
+	XRCORE_API extern u64				cycles_overhead;
+	XRCORE_API extern float				cycles2seconds;
+	XRCORE_API extern float				cycles2milisec;
+	XRCORE_API extern float				cycles2microsec;
+	XRCORE_API extern _processor_info	ID;
 
 #ifdef M_VISUAL
 	#pragma warning(disable:4035)

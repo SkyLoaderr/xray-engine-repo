@@ -2,9 +2,9 @@
 #pragma hdrstop
 
 // Initialized on startup
-ENGINE_API Fmatrix			Fidentity;
-ENGINE_API Dmatrix			Didentity;
-ENGINE_API CRandom			Random;
+XRCORE_API Fmatrix			Fidentity;
+XRCORE_API Dmatrix			Didentity;
+XRCORE_API CRandom			Random;
 
 WORD getFPUsw() 
 {
@@ -15,12 +15,12 @@ WORD getFPUsw()
 
 namespace FPU 
 {
-	ENGINE_API u16		_24	=0;
-	ENGINE_API u16		_24r=0;
-	ENGINE_API u16		_53	=0;
-	ENGINE_API u16		_53r=0;
-	ENGINE_API u16		_64	=0;
-	ENGINE_API u16		_64r=0;
+	XRCORE_API u16		_24	=0;
+	XRCORE_API u16		_24r=0;
+	XRCORE_API u16		_53	=0;
+	XRCORE_API u16		_53r=0;
+	XRCORE_API u16		_64	=0;
+	XRCORE_API u16		_64r=0;
 
 #ifdef M_BORLAND
 	void BCALL	m24		(u16 p)	{	__asm fldcw p;	}
@@ -34,14 +34,14 @@ namespace FPU
 
 namespace CPU 
 {
-	ENGINE_API u64				cycles_per_second;
-	ENGINE_API u64				cycles_per_milisec;
-	ENGINE_API u64				cycles_per_microsec;
-	ENGINE_API u64				cycles_overhead;
-	ENGINE_API float			cycles2seconds;
-	ENGINE_API float			cycles2milisec;
-	ENGINE_API float			cycles2microsec;
-	ENGINE_API _processor_info	ID;
+	XRCORE_API u64				cycles_per_second;
+	XRCORE_API u64				cycles_per_milisec;
+	XRCORE_API u64				cycles_per_microsec;
+	XRCORE_API u64				cycles_overhead;
+	XRCORE_API float			cycles2seconds;
+	XRCORE_API float			cycles2milisec;
+	XRCORE_API float			cycles2microsec;
+	XRCORE_API _processor_info	ID;
 
 #ifdef M_BORLAND
 	u64	BCALL GetCycleCount(void)
@@ -56,7 +56,7 @@ namespace CPU
 		// General CPU identification
 		if (!_cpuid	(&ID))	
 		{
-			Msg					("Fatal error: can't detect CPU/FPU.");
+			// Core.Fatal		("Fatal error: can't detect CPU/FPU.");
 			abort				();
 		}
 
@@ -104,10 +104,10 @@ namespace CPU
 //------------------------------------------------------------------------------------
 void InitMath(void) 
 {
-	char features[128]="RDTSC";
 
 	// Msg("Initializing geometry pipeline and mathematic routines...");
 	CPU::Detect();
+	/*
 	Msg("* Detected CPU: %s %s, F%d/M%d/S%d, %d mhz, %d-clk 'rdtsc'",
 		CPU::ID.v_name,CPU::ID.model_name,
 		CPU::ID.family,CPU::ID.model,CPU::ID.stepping,
@@ -119,33 +119,33 @@ void InitMath(void)
     if (CPU::ID.feature&_CPU_FEATURE_SSE)	strcat(features,", SSE");
     if (CPU::ID.feature&_CPU_FEATURE_SSE2)	strcat(features,", SSE2");
 	Msg("* CPU Features: %s\n",features);
-
+	*/
 
 	Fidentity.identity		();	// Identity matrix
 	Didentity.identity		();	// Identity matrix
 	pvInitializeStatics		();	// Lookup table for compressed normals
 
-	_clear87();
+	_clear87	();
 
-	_control87( _PC_24,   MCW_PC );
-	_control87( _RC_CHOP, MCW_RC );
-	FPU::_24  = getFPUsw();	// 24, chop
-	_control87( _RC_NEAR, MCW_RC );
-	FPU::_24r = getFPUsw();	// 24, rounding
+	_control87	( _PC_24,   MCW_PC );
+	_control87	( _RC_CHOP, MCW_RC );
+	FPU::_24	= getFPUsw();	// 24, chop
+	_control87	( _RC_NEAR, MCW_RC );
+	FPU::_24r	= getFPUsw();	// 24, rounding
 
-	_control87( _PC_53,   MCW_PC );
-	_control87( _RC_CHOP, MCW_RC );
-	FPU::_53  = getFPUsw();	// 53, chop
-	_control87( _RC_NEAR, MCW_RC );
-	FPU::_53r = getFPUsw();	// 53, rounding
+	_control87	( _PC_53,   MCW_PC );
+	_control87	( _RC_CHOP, MCW_RC );
+	FPU::_53	= getFPUsw();	// 53, chop
+	_control87	( _RC_NEAR, MCW_RC );
+	FPU::_53r	= getFPUsw();	// 53, rounding
 
-	_control87( _PC_64,   MCW_PC );
-	_control87( _RC_CHOP, MCW_RC );
-	FPU::_64  = getFPUsw();	// 64, chop
-	_control87( _RC_NEAR, MCW_RC );
-	FPU::_64r = getFPUsw();	// 64, rounding
+	_control87	( _PC_64,   MCW_PC );
+	_control87	( _RC_CHOP, MCW_RC );
+	FPU::_64	= getFPUsw();	// 64, chop
+	_control87	( _RC_NEAR, MCW_RC );
+	FPU::_64r	= getFPUsw();	// 64, rounding
 
-	FPU::m24r();
+	FPU::m24r	();
 }
 
 

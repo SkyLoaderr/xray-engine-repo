@@ -1,35 +1,32 @@
 #pragma once
 
-//-----------------------------------------------------------------------------
-// Name: 
 // Desc: Simple wrapper for critical section
-//-----------------------------------------------------------------------------
-class CCriticalSection
+class xrCriticalSection
 {
+private:
+	CRITICAL_SECTION    m_CritSec;
 public:
-    CCriticalSection ()
+    xrCriticalSection	()
     {
         InitializeCriticalSection	( &m_CritSec );
     };
 
-    ~CCriticalSection()
+    ~xrCriticalSection	()
     {
         DeleteCriticalSection		( &m_CritSec );
     };
 
-    IC void		Enter()
+    IC void		Enter	()
     {
         EnterCriticalSection		( &m_CritSec );
     };
 
-    IC void		Leave()
+    IC void		Leave	()
     {
         LeaveCriticalSection		( &m_CritSec );
     };
-	IC BOOL		TryEnter ()
+	IC BOOL		TryEnter()
 	{
 		return TryEnterCriticalSection( &m_CritSec );
 	};
-private:
-    CRITICAL_SECTION    m_CritSec;
 };

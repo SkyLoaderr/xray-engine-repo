@@ -132,8 +132,6 @@ struct _color;		// floating point based color definition
 #include "_matrix.h"
 #include "_matrix33.h"
 #include "_quaternion.h"
-#include "_ipoint.h"
-#include "_fpoint.h"
 #include "_rect.h"
 #include "_fbox.h"
 #include "_fbox2.h"
@@ -145,7 +143,6 @@ struct _color;		// floating point based color definition
 #include "_flags.h"
 
 #include "_stl_extensions.h"
-#include "_d3d_extensions.h"
 
 #pragma pack(pop)
 

@@ -124,9 +124,7 @@ void Fquaternion::set(const Fmatrix& M){
 				break;
 			}
 			break;
-		default:
-			VERIFY(0);
 		}
-		}
+	}
 }
 

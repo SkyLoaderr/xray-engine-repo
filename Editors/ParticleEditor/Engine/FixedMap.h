@@ -19,8 +19,8 @@ public:
 	typedef bool __fastcall callback_cmp(TNode& N1, TNode& N2);
 private:
 	TNode*		nodes;
-	u32		pool;
-	u32		limit;
+	u32			pool;
+	u32			limit;
 
 	IC u32	Size(u32 Count)
 	{	return Count*sizeof(TNode);	}

@@ -1,13 +1,13 @@
 #ifndef _LOCAL_RAND
 #define _LOCAL_RAND
 
-class ENGINE_API CRandom
+class CRandom
 {
 private:
 	s32			holdrand;
 public:
-	CRandom()			: holdrand(1)		{};
-	CRandom(s32 _seed)	: holdrand(_seed)	{};
+	CRandom()			: holdrand(1)			{};
+	CRandom(s32 _seed)	: holdrand(_seed)		{};
 
 	IC void		seed(s32 val)					{ holdrand=val;	}
 	IC s32		maxI()							{ return 32767;	}
@@ -24,6 +24,6 @@ public:
 	IC float	randFs(float range, float offs)	{ return offs+randFs(range); }
 };
 
-ENGINE_API extern CRandom	Random;
+XRCORE_API extern CRandom	Random;
 
 #endif

@@ -17,10 +17,10 @@ public:
 	typedef void __fastcall callback(TNode*);
 private:
 	TNode*		nodes;
-	u32		pool;
-	u32		limit;
+	u32			pool;
+	u32			limit;
 
-	IC u32	Size(u32 Count)
+	IC u32		Size(u32 Count)
 	{	return Count*sizeof(TNode);	}
 
 	void		Realloc()
