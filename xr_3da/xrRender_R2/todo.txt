@@ -41,6 +41,7 @@ OPT:	precompute invisible list (visuals) for static lights at load time
 +BUG	:	jumping transform for projected texture
 +BUG	:	biasing for spot-lighting
 +BUG	:	fucking light-flickering!!!
++BUG	:	DX-WARN: RT used while bound
 
 self-ilum
 volume-fog

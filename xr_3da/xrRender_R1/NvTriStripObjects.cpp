@@ -127,7 +127,7 @@ void NvStripifier::BuildStripifyInfo(NvFaceInfoVec &faceInfos, NvEdgeInfoVec &ed
 			}
 			else {
 				if (edgeInfo01->m_face1 != NULL)
-					Msg("! WARNING: BuildStripifyInfo: > 2 triangles on an edge... uncertain consequences");
+					//Msg("! WARNING: BuildStripifyInfo: > 2 triangles on an edge... uncertain consequences");
 				else
 					edgeInfo01->m_face1 = faceInfo;
 			}
@@ -150,7 +150,7 @@ void NvStripifier::BuildStripifyInfo(NvFaceInfoVec &faceInfos, NvEdgeInfoVec &ed
 			}
 			else {
 				if (edgeInfo12->m_face1 != NULL)
-					Msg("! WARNING: BuildStripifyInfo: > 2 triangles on an edge... uncertain consequences");
+					//Msg("! WARNING: BuildStripifyInfo: > 2 triangles on an edge... uncertain consequences");
 				else
 					edgeInfo12->m_face1 = faceInfo;
 			}
@@ -173,7 +173,7 @@ void NvStripifier::BuildStripifyInfo(NvFaceInfoVec &faceInfos, NvEdgeInfoVec &ed
 			}
 			else {
 				if (edgeInfo20->m_face1 != NULL)
-					Msg("! WARNING: BuildStripifyInfo: > 2 triangles on an edge... uncertain consequences");
+					//Msg("! WARNING: BuildStripifyInfo: > 2 triangles on an edge... uncertain consequences");
 				else
 					edgeInfo20->m_face1 = faceInfo;
 			}
