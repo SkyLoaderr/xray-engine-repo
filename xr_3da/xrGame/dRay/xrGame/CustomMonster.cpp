@@ -664,8 +664,8 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 	if (Local()) {
 		net_update				N;
 		N.dwTimeStamp			= Level().timeServer()-NET_Latency;
-		N.o_model				= E->o_Angle.y;
-		N.o_torso.yaw			= E->o_Angle.y;
+		N.o_model				= -E->o_Angle.y;
+		N.o_torso.yaw			= -E->o_Angle.y;
 		N.o_torso.pitch			= 0;
 		N.p_pos.set				(Position());
 		NET.push_back			(N);
