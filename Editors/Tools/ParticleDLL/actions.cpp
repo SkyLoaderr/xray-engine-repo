@@ -1391,7 +1391,7 @@ void PATargetRotate::Execute(ParticleGroup *group)
 	for(int i = 0; i < group->p_count; i++)
 	{
 		Particle &m = group->list[i];
-		m.vel += (rot - m.rot) * scaleFac;
+		m.rot = (rot - m.rot) * scaleFac;
 	}
 }
 
