@@ -341,9 +341,7 @@ VOID CDeflector::Light()
 			lm.dwWidth			= 0;
 		} else {
 			// *** Try to bilinearly filter lightmap down and up
-//			DWORD	filtered	[512*512];
-			
-			
+			// DWORD	filtered	[512*512];
 		}
 	}
 }

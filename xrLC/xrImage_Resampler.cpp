@@ -10,22 +10,18 @@
 #include <math.h>
 #include "GGems.h"
 
-static char	_Program[] = "fzoom";
-static char	_Version[] = "0.20";
-static char	_Copyright[] = "Public Domain 1991 by Dale Schumacher";
-
 #ifndef EXIT_SUCCESS
 #define	EXIT_SUCCESS	(0)
 #define	EXIT_FAILURE	(1)
 #endif
 
-typedef	unsigned char	Pixel;
+typedef	DWORD	Pixel;
 
 typedef struct {
-	int	xsize;		/* horizontal size of the image in Pixels */
-	int	ysize;		/* vertical size of the image in Pixels */
+	int		xsize;		/* horizontal size of the image in Pixels */
+	int		ysize;		/* vertical size of the image in Pixels */
 	Pixel *	data;		/* pointer to first scanline of image */
-	int	span;		/* byte offset between two scanlines */
+	int		span;		/* byte offset between two scanlines */
 } Image;
 
 #define	WHITE_PIXEL	(255)
