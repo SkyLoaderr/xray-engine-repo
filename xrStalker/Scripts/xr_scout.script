@@ -194,7 +194,7 @@ function action_look_around:initialize()
     self.object:set_movement_type       ( move.stand )
     self.object:set_mental_state        ( anim.danger )
 
-    self.a.timer = device():time_global() + time_infinite --10000
+    self.a.timer = device():time_global() + 15000
 
     this.set_command( self.aa, leader_stop )
     this.set_soldier_positions( self.object, self.aa, true )
