@@ -138,9 +138,10 @@ void CBulletManager::AddBullet(const Fvector& position,
 
 void CBulletManager::Update()
 {
-	u32 delta_time = Device.dwTimeDelta + m_dwTimeRemainder;
-	u32 step_num = delta_time/m_dwStepTime;
-	m_dwTimeRemainder = delta_time%m_dwStepTime;
+	m_Lock.Enter		();
+	u32 delta_time		= Device.dwTimeDelta + m_dwTimeRemainder;
+	u32 step_num		= delta_time/m_dwStepTime;
+	m_dwTimeRemainder	= delta_time%m_dwStepTime;
 	
 
 	for(int k=m_Bullets.size()-1; k>=0; k--){
@@ -165,6 +166,7 @@ void CBulletManager::Update()
 			}
 		}
 	}
+	m_Lock.Leave		();
 }
 
 
@@ -172,7 +174,7 @@ void CBulletManager::Update()
 
 bool CBulletManager::CalcBullet (SBullet* bullet, u32 delta_time)
 {
-	VERIFY(bullet);
+	VERIFY				(bullet);
 
 	float delta_time_sec = float(delta_time)/1000.f;
 	float range = bullet->speed*delta_time_sec;
@@ -245,6 +247,8 @@ bool CBulletManager::CalcBullet (SBullet* bullet, u32 delta_time)
 void CBulletManager::Render	()
 {
 	if(m_Bullets.empty()) return;
+
+	m_Lock.Enter		();
 
 	u32	vOffset = 0;
 	u32 bullet_num = m_Bullets.size();
@@ -320,4 +324,5 @@ void CBulletManager::Render	()
 		RCache.Render				(D3DPT_TRIANGLELIST,vOffset,0,vCount,0,vCount/2);
 		RCache.set_CullMode			(CULL_CCW);
 	}
+	m_Lock.Leave		();
 }

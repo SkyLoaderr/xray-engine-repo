@@ -138,8 +138,15 @@ void CPHWorld::Destroy(){
 void CPHWorld::OnFrame()
 {
 	// Msg									("------------- physics: %d / %d",u32(Device.dwFrame),u32(m_steps_num));
+	//просчитать полет пуль
+	/*
+	Device.Statistic.TEST0.Begin		();
+	Level().BulletManager().Update		();
+	Device.Statistic.TEST0.End			();
+	*/
+
 	Device.Statistic.Physics.Begin		();
-	FrameStep								(Device.fTimeDelta);
+	FrameStep							(Device.fTimeDelta);
 	Device.Statistic.Physics.End		();
 }
 

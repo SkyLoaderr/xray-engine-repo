@@ -147,8 +147,10 @@ protected:
 
 
 	DEFINE_VECTOR(SBullet,BulletVec,BulletVecIt);
+
 	//список пуль находящихся в данный момент на уровне
-	BulletVec m_Bullets;
+	xrCriticalSection	m_Lock		;
+	BulletVec			m_Bullets	;
 
 	//остаток времени, который не был учтен на предыдущем кадре
 	u32	m_dwTimeRemainder;
