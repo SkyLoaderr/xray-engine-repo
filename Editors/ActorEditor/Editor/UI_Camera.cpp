@@ -80,7 +80,13 @@ void CUI_Camera::BuildCamera(){
     UI.OutCameraPos();
 }
 
-void CUI_Camera::SetViewport(float _near, float _far, float _fov){
+void CUI_Camera::SetDepth(float _far, bool bForcedUpdate)
+{
+    if (m_Zfar!=_far)	{m_Zfar=_far; UI.Resize(bForcedUpdate);}
+}
+
+void CUI_Camera::SetViewport(float _near, float _far, float _fov)
+{
     float fov=deg2rad(_fov);
     if (m_Znear!=_near)	{m_Znear=_near; UI.Resize();}
     if (m_Zfar!=_far)	{m_Zfar=_far; UI.Resize();}

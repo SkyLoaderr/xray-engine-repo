@@ -28,7 +28,7 @@ void CEditableMesh::Construct(){
 
 void CEditableMesh::Clear(){
 #ifdef _EDITOR
-	OnDeviceDestroy		();
+	ClearRenderBuffers	();
 #endif
 	m_Points.clear 		();
     m_Adjs.clear		();

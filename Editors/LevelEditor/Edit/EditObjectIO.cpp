@@ -113,12 +113,8 @@ bool CEditableObject::Load(CStream& F){
             R_ASSERT(1<=cnt);
 			F.RstringZ			(buf); (*s_it)->SetTexture(buf);
 			F.RstringZ			(buf); (*s_it)->SetVMap(buf);
-#ifdef _EDITOR
-            (*s_it)->SetShader	(sh_name,Device.Shader.Create(sh_name,(*s_it)->_Texture()));
-#else
-            (*s_it)->ED_SetShader(sh_name);
-#endif
-            (*s_it)->SetShaderXRLC("default");
+            (*s_it)->ED_SetShader	(sh_name);
+            (*s_it)->SetShaderXRLC	("default");
         }
 
         // surfaces xrlc part
@@ -187,10 +183,6 @@ bool CEditableObject::Load(CStream& F){
 		}
 
         ResetAnimation();
-
-#ifdef _EDITOR
-        UpdateLODShader();
-#endif
 
         if (!bRes) break;
         UpdateBox();

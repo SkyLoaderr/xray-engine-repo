@@ -491,30 +491,35 @@ void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR tex_name, int tgt_w, int 
     Fvector C;
     Fvector S;
     bbox.getradius(S);
-    float R = max(S.x,S.z);// sqrtf(S.x*S.x+S.z*S.z);
+    float R = max(S.x,S.z);
     bbox.getcenter(C);
 
     Fmatrix save_projection	= Device.mProjection;
     Fvector save_pos 		= Device.m_Camera.GetPosition();
     Fvector save_hpb 		= Device.m_Camera.GetHPB();
+    float save_far		 	= Device.m_Camera._Zfar();
 	ECameraStyle save_style = Device.m_Camera.GetStyle();
 
     float D		= 500.f;
     DWORDVec new_pixels;
     new_pixels.resize(src_w*src_h*samples);
 	Device.m_Camera.SetStyle(csPlaneMove);
+    Device.m_Camera.SetDepth(D*2,true);
 
     int pitch 		= src_w*samples;
 
     // save render params
     DWORD old_flag 	= 	psDeviceFlags;
     // set render params
+
     dwClearColor 	= 	0x0000000;
 	psDeviceFlags 	&=~	rsStatistic;
     psDeviceFlags 	&=~	rsDrawGrid;
     psDeviceFlags 	|= 	rsFilterLinear;
     psDeviceFlags 	&=~	rsLighting;
     psDeviceFlags 	&=~	rsFog;
+
+    SetCamera(0,C,S.y,R,D);
 
     for (int frame=0; frame<samples; frame++){
     	float angle = frame*(PI_MUL_2/samples);
@@ -524,10 +529,6 @@ void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR tex_name, int tgt_w, int 
 		for (DWORD y=0; y<src_h; y++)
     		CopyMemory(new_pixels.begin()+y*pitch+frame*src_w,pixels.begin()+y*src_w,src_w*sizeof(DWORD));
     }
-    // restore render params
-    psDeviceFlags 	= old_flag;
-    dwClearColor	= DEFAULT_CLEARCOLOR;
-
     DWORDVec border_pixels = new_pixels;
     for (DWORDIt it=new_pixels.begin(); it!=new_pixels.end(); it++)
         *it=(RGBA_GETALPHA(*it)>200)?subst_alpha(*it,0xFF):subst_alpha(*it,0x00);
@@ -546,13 +547,18 @@ void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR tex_name, int tgt_w, int 
     I->SaveTGA	(out_name.c_str());
     _DELETE		(I);
     Engine.FS.SetFileAge(out_name.c_str(), age);
-    ELog.Msg(mtInformation,"LOD texture created.");
 
     SynchronizeTexture(tex_name,age);
+
+    // restore render params
+    psDeviceFlags 	= old_flag;
+    dwClearColor	= DEFAULT_CLEARCOLOR;
 
 	Device.m_Camera.SetStyle(save_style);
     Device.SetTransform	(D3DTS_PROJECTION,save_projection);
     Device.m_Camera.Set(save_hpb,save_pos);
+    Device.m_Camera.Set(save_hpb,save_pos);
+    Device.m_Camera.SetDepth(save_far,false);
 }
 
 BOOL CImageManager::CreateOBJThumbnail(LPCSTR tex_name, int age)
@@ -570,7 +576,6 @@ BOOL CImageManager::CreateOBJThumbnail(LPCSTR tex_name, int age)
         EImageThumbnail tex(tex_name,EImageThumbnail::EITObject,false);
         tex.CreateFromData(pixels.begin(),w,h);
         tex.Save(age);
-        ELog.Msg(mtInformation,"Thumbnail created.");
     }else{
     	bResult = FALSE;
         ELog.DlgMsg(mtError,"Can't make screenshot.");

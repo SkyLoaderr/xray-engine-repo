@@ -160,9 +160,6 @@ void __fastcall TfrmSceneProperties::SetSceneParams(){
     // Strippify
     m_BuildParams->m_bStripify 				= cbStrippify->Checked;
     m_BuildParams->m_vCacheSize			 	= seStripCacheSize->Value;
-#ifdef _LEVEL_EDITOR
-	Device.UpdateFog();
-#endif
 }
 
 static int JS2[10]={-1,0,-1,-1,1,-1,-1,-1,-1,2};

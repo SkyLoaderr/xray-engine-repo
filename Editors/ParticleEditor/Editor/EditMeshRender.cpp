@@ -16,7 +16,7 @@
 #define F_LIM (10000)
 #define V_LIM (F_LIM*3)
 //----------------------------------------------------
-void CEditableMesh::OnDeviceCreate()
+void CEditableMesh::CreateRenderBuffers()
 {
     if (!(m_LoadState&EMESH_LS_PNORMALS)) GeneratePNormals();
     R_ASSERT2(m_RenderBuffers.empty(),"Render buffer already exist.");
@@ -58,7 +58,7 @@ void CEditableMesh::OnDeviceCreate()
 }
 //----------------------------------------------------
 
-void CEditableMesh::OnDeviceDestroy(){
+void CEditableMesh::ClearRenderBuffers(){
     for (RBMapPairIt rbmp_it=m_RenderBuffers.begin(); rbmp_it!=m_RenderBuffers.end(); rbmp_it++){
         for(RBVecIt rb_it=rbmp_it->second.begin(); rb_it!=rbmp_it->second.end(); rb_it++){
 			Device.Shader._DeleteVS(rb_it->pVS);

@@ -63,6 +63,7 @@ __published:	// IDE-managed Components
 	void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
 	void __fastcall ExtBtn1Click(TObject *Sender);
 	void __fastcall ebMakeLODClick(TObject *Sender);
+	void __fastcall FormActivate(TObject *Sender);
 private:	// User declarations
     void InitObjects();
     EImageThumbnail* 		m_Thm;

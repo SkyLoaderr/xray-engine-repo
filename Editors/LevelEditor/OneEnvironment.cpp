@@ -24,12 +24,12 @@ void __fastcall TfrmOneEnvironment::ShowEnv(st_Environment* env){
 
     seViewDistance->Value	= env->m_ViewDist;
     seFogness->Value		= env->m_Fogness;
-    mcFogColor->ObjFirstInit	( env->m_FogColor.get_windows() );
-    mcAmbColor->ObjFirstInit	( env->m_AmbColor.get_windows() );
+    mcFogColor->ObjFirstInit( env->m_FogColor.get_windows() );
+    mcAmbColor->ObjFirstInit( env->m_AmbColor.get_windows() );
 	// sky
     seSkyFogness->Value		= m_CurEnv->m_SkyColor.a;
     Fcolor C;    			C.set(m_CurEnv->m_SkyColor); C.a=0;
-    mcSkyColor->ObjFirstInit	( C.get_windows() );
+    mcSkyColor->ObjFirstInit( C.get_windows() );
 
     bLoadMode = false;
     Visible=true;

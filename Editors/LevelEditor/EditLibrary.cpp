@@ -291,16 +291,17 @@ void __fastcall TfrmEditLibrary::tvObjectsDblClick(TObject *Sender)
 void __fastcall TfrmEditLibrary::ebMakeThmClick(TObject *Sender)
 {
 	DWORDVec pixels;
-    int src_age = 0;
 	if (tvObjects->Selected&&FOLDER::IsObject(tvObjects->Selected)){
     	AnsiString name; FOLDER::MakeName(tvObjects->Selected,0,name,false);
-        int age;
-   	    CEditableObject* obj = Lib.CreateEditObject(name.c_str(),&age);
+        int src_age;
+   	    CEditableObject* obj = Lib.CreateEditObject(name.c_str(),&src_age);
     	if (obj&&cbPreview->Checked){
             AnsiString tex_name;
             tex_name = ChangeFileExt(obj->GetName(),".thm");
-            if (ImageManager.CreateOBJThumbnail(tex_name.c_str(),age))
+            if (ImageManager.CreateOBJThumbnail(tex_name.c_str(),src_age)){
+	            ELog.Msg(mtInformation,"Thumbnail successfully created.");
                 tvObjectsItemFocused(Sender);
+            }
 	    }else{
             ELog.DlgMsg(mtError,"Can't create thumbnail. Set preview mode.");
         }
@@ -317,15 +318,17 @@ void __fastcall TfrmEditLibrary::ebMakeLODClick(TObject *Sender)
         CEditableObject* O = m_pEditObject->GetReference();
     	if (O&&cbPreview->Checked){
         	bool bLod = O->IsFlag(CEditableObject::eoUsingLOD);
+        	O->SetFlag(CEditableObject::eoUsingLOD,false);
             AnsiString tex_name;
             tex_name = ChangeFileExt(name,".tga");
             string256 nm; strcpy(nm,tex_name.c_str()); _ChangeSymbol(nm,'\\','_');
             tex_name = "lod_"+AnsiString(nm);
             tex_name = Engine.FS.UpdateTextureNameWithFolder(tex_name);
-            ImageManager.CreateLODTexture(m_pEditObject->GetReference()->GetBox(), tex_name.c_str(),64,64,LOD_SAMPLE_COUNT,age);
-            m_pEditObject->GetReference()->UpdateLODShader();
+            ImageManager.CreateLODTexture(m_pEditObject->GetReference()->GetBox(), tex_name.c_str(),LOD_IMAGE_SIZE,LOD_IMAGE_SIZE,LOD_SAMPLE_COUNT,age);
+            m_pEditObject->GetReference()->OnDeviceDestroy();
         	tvObjectsItemFocused(Sender);
-        	O->SetFlag(bLod?CEditableObject::eoUsingLOD:0);
+        	O->SetFlag(CEditableObject::eoUsingLOD,bLod);
+		    ELog.DlgMsg(mtInformation,"LOD successfully created."); 
 	    }else{
             ELog.DlgMsg(mtError,"Can't create LOD texture. Set preview mode.");
         }
@@ -563,4 +566,10 @@ void __fastcall TfrmEditLibrary::ExtBtn1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+
+void __fastcall TfrmEditLibrary::FormActivate(TObject *Sender)
+{
+	tvObjects->SetFocus();
+}
+//---------------------------------------------------------------------------
 

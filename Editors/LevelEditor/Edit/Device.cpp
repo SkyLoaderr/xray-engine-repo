@@ -205,12 +205,6 @@ void CRenderDevice::_Create(CStream* F){
 	Primitive.OnDeviceCreate	();
     Streams.OnDeviceCreate		();
     UI.OnDeviceCreate			();
-
-#ifdef _LEVEL_EDITOR
-    UpdateFog();
-#else
-    UpdateFog(dwClearColor,0.f,m_Camera.m_Zfar);
-#endif
 }
 
 void CRenderDevice::_Destroy(BOOL	bKeepTextures){
@@ -230,33 +224,6 @@ void CRenderDevice::_Destroy(BOOL	bKeepTextures){
 
 	Primitive.OnDeviceDestroy	();
 	Streams.OnDeviceDestroy		();
-}
-
-#ifdef _LEVEL_EDITOR
-#include "scene.h"
-void CRenderDevice::UpdateFog(){
-	st_Environment& E	= Scene.m_LevelOp.m_Envs[Scene.m_LevelOp.m_CurEnv];
-    UpdateFog (E.m_FogColor.get(),(psDeviceFlags&rsFog)?E.m_Fogness:0,(psDeviceFlags&rsFog)?E.m_ViewDist:UI.ZFar());
-}
-#endif
-
-void CRenderDevice::UpdateFog(DWORD color, float fogness, float view_dist){
-	//Fog parameters
-	float start	= (1.0f - fogness)* 0.85f * view_dist;
-	float end	= 0.91f * view_dist;
-	SetRS( D3DRS_FOGCOLOR,	color);
-	SetRS( D3DRS_RANGEFOGENABLE,	FALSE				);
-	if (HW.Caps.bTableFog)	{
-		ELog.Msg(mtInformation,"* Using hardware fog...");
-		SetRS( D3DRS_FOGTABLEMODE,	D3DFOG_LINEAR		);
-		SetRS( D3DRS_FOGVERTEXMODE,	D3DFOG_NONE			);
-	} else {
-		ELog.Msg(mtInformation,"* Fog is emulated...");
-		SetRS( D3DRS_FOGTABLEMODE,	D3DFOG_NONE			);
-		SetRS( D3DRS_FOGVERTEXMODE,	D3DFOG_LINEAR		);
-	}
-	SetRS( D3DRS_FOGSTART,	*(DWORD *)(&start)	);
-	SetRS( D3DRS_FOGEND,	*(DWORD *)(&end)	);
 }
 
 extern float 	ssaLIMIT;

@@ -40,7 +40,7 @@ void __fastcall TfraBottomBar::ClickOptionsMenuItem(TObject *Sender)
         else if (mi==miLightScene)  		SET_FLAG(rsLighting,mi->Checked)
         else if (mi==miRenderLinearFilter)	SET_FLAG(rsFilterLinear,mi->Checked)
         else if (mi==miRenderEdgedFaces)	SET_FLAG(rsEdgedFaces,mi->Checked)
-        else if (mi==miFog){				SET_FLAG(rsFog,mi->Checked); Device.UpdateFog();}
+        else if (mi==miFog)					SET_FLAG(rsFog,mi->Checked)
         else if (mi==miRenderHWTransform){	SET_FLAG(rsForceHWTransform,mi->Checked); UI.Resize(); }
         else if (mi==miRealTime)			SET_FLAG(rsRenderRealTime,mi->Checked)
     }

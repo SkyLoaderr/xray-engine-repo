@@ -29,7 +29,8 @@ struct	st_ObjectDB;
 #endif
 
 #define LOD_SHADER_NAME 	"def_shaders\\lod"
-#define LOD_SAMPLE_COUNT 	8
+#define LOD_SAMPLE_COUNT 	8.f
+#define LOD_IMAGE_SIZE 		64.f
 
 // refs
 class XRayMaterial;
@@ -102,7 +103,7 @@ DEFINE_VECTOR	(CEditableMesh*,EditMeshVec,EditMeshIt);
 DEFINE_VECTOR	(COMotion*,OMotionVec,OMotionIt);
 DEFINE_VECTOR	(CSMotion*,SMotionVec,SMotionIt);
 
-#define EOBJECT_LS_RENDERBUFFER		0x0001
+#define EOBJECT_LS_DEFFEREDRP		0x0001
 
 struct st_AnimParam{
     float			t;
@@ -183,13 +184,9 @@ protected:
 
     void 			ClearGeometry			();
 
-    void			ClearRenderBuffers		();
-
-    void			UpdateRenderBuffers		();
-
 	void 			UpdateBoneParenting		();
-
-    void			UpdateLODShader			();
+    void			DefferedLoadRP			();
+    void			DefferedUnloadRP		();
 public:
     DWORD			m_LoadState;
 
@@ -241,8 +238,7 @@ public:
     // get object properties methods
 	IC DWORD& 		GetFlags	   			(){return m_dwFlags; }
 	IC bool 		IsFlag	     			(DWORD flag){return !!(m_dwFlags&flag); }
-    IC void			SetFlag					(DWORD flag){m_dwFlags|=flag;}
-    IC void			ResetFlag				(DWORD flag){m_dwFlags&=~flag;}
+    IC void			SetFlag					(DWORD flag, bool value){if (value) m_dwFlags|=flag; else m_dwFlags&=~flag;}
     IC bool			IsDynamic				(){return IsFlag(eoDynamic);}
 
 	IC AnsiString&	GetClassScript			()	{return m_ClassScript;}
@@ -329,7 +325,6 @@ public:
     // device dependent routine
 	void 			OnDeviceCreate 			();
 	void 			OnDeviceDestroy			();
-    void			RefreshShaders			();
 
     // export routine
     // skeleton

@@ -238,8 +238,8 @@ public:
 	void			RebuildVMaps			();
 
     // device dependent routine
-	void 			OnDeviceCreate 			();
-	void 			OnDeviceDestroy			();
+	void 			ClearRenderBuffers		();
+	void 			CreateRenderBuffers		();
 };
 //----------------------------------------------------
 #endif /*_INCDEF_EditableMesh_H_*/

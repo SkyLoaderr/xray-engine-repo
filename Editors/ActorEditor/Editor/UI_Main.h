@@ -121,7 +121,7 @@ public:
     bool 			IsModified		();
 
     void __fastcall Idle			();
-    void 			Resize				()	{   bResize = true; bRedraw = true; }
+    void 			Resize				(bool bForced=false){   bResize = true; bRedraw = true; if (bForced) Idle(); }
     // add, remove, changing objects/scene
     void 			UpdateScene			(bool bForced=false){	bUpdateScene = true; if (bForced) Idle();}
     // only redraw scene

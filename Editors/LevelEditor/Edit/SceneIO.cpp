@@ -321,13 +321,9 @@ bool EScene::Load(char *_FileName){
             DO->Close();
         }
 
-        // update scene groups list
-//S        UpdateGroups();
-
         ELog.Msg( mtInformation, "EScene: %d objects loaded", ObjCount() );
 
         UI.UpdateScene();
-        Device.UpdateFog();
 
 		_DELETE(F);
 

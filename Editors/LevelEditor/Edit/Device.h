@@ -149,10 +149,6 @@ public:
 	// update
     void					UpdateView		();
 	void					UpdateTimer		();
-    void					UpdateFog		(DWORD color, float fogness, float view_dist);
-#ifdef _LEVEL_EDITOR
-	void 					UpdateFog		();
-#endif
 
     bool					MakeScreenshot	(DWORDVec& pixels, DWORD& width, DWORD& height);
 

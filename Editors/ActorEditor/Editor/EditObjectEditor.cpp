@@ -13,11 +13,18 @@
 #include "ui_main.h"
 #include "render.h"
 
+const float tex_w	= LOD_SAMPLE_COUNT*LOD_IMAGE_SIZE;
+const float tex_h	= 1*LOD_IMAGE_SIZE;
+const float half_p_x= 0.5f*(1.f/tex_w);
+const float half_p_y= 0.5f*(1.f/tex_h);
+const float offs_x 	= 1.f/tex_w; 
+const float offs_y 	= 1.f/tex_h;
+
 static Fvector LOD_pos[4]={
-	-1.0f, 1.0f, 0.0f,
-	 1.0f, 1.0f, 0.0f,
-	 1.0f,-1.0f, 0.0f,
-	-1.0f,-1.0f, 0.0f
+	-1.0f+offs_x, 1.0f-offs_y, 0.0f,
+	 1.0f-offs_x, 1.0f-offs_y, 0.0f,
+	 1.0f-offs_x,-1.0f+offs_y, 0.0f,
+	-1.0f+offs_x,-1.0f+offs_y, 0.0f
 };
 static FVF::LIT LOD[4]={
 	-1.0f, 1.0f, 0.0f,  0xFFFFFFFF, 0.0f,0.0f, // F 0
@@ -58,34 +65,11 @@ bool CEditableObject::BoxPick(CSceneObject* obj, const Fbox& box, Fmatrix& paren
 }
 #endif
 
-void CEditableObject::ClearRenderBuffers(){
-	if (!(m_LoadState&EOBJECT_LS_RENDERBUFFER)) return;
-	for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
-    	if (*_M) (*_M)->OnDeviceDestroy();
-    m_LoadState &=~ EOBJECT_LS_RENDERBUFFER;
-}
-
-void CEditableObject::UpdateRenderBuffers()
-{
-	if (m_LoadState&EOBJECT_LS_RENDERBUFFER) ClearRenderBuffers();
-    EditMeshIt _M=m_Meshes.begin();
-    EditMeshIt _E=m_Meshes.end();
-    AnsiString tmp;
-    tmp.sprintf("Update RB: '%s'",GetName());
-    UI.ProgressStart((float)m_Meshes.size(),tmp.c_str());
-	for (; _M!=_E; _M++){
-	    UI.ProgressInc();
-    	(*_M)->OnDeviceCreate();
-    }
-    UI.ProgressEnd();
-    m_LoadState |= EOBJECT_LS_RENDERBUFFER;
-}
-
 extern float 	ssaLIMIT;
 extern float	g_fSCREEN;
 static const float ssaLim = 64.f*64.f/(640*480);
 void CEditableObject::Render(const Fmatrix& parent, int priority, bool strictB2F){
-    if (!(m_LoadState&EOBJECT_LS_RENDERBUFFER)) UpdateRenderBuffers();
+    if (!(m_LoadState&EOBJECT_LS_DEFFEREDRP)) DefferedLoadRP();
 
 	Fvector v; float r; 
     Fbox bb; bb.xform(m_Box,parent); bb.getsphere(v,r);
@@ -160,7 +144,7 @@ void CEditableObject::RenderBones(const Fmatrix& parent){
 }
 
 void CEditableObject::RenderEdge(const Fmatrix& parent, CEditableMesh* mesh, DWORD color){
-    if (!(m_LoadState&EOBJECT_LS_RENDERBUFFER)) UpdateRenderBuffers();
+    if (!(m_LoadState&EOBJECT_LS_DEFFEREDRP)) DefferedLoadRP();
 
     Device.SetShader(Device.m_WireShader);
     if(mesh) mesh->RenderEdge(parent, color);
@@ -170,7 +154,7 @@ void CEditableObject::RenderEdge(const Fmatrix& parent, CEditableMesh* mesh, DWO
 
 void CEditableObject::RenderSelection(const Fmatrix& parent, CEditableMesh* mesh, DWORD color)
 {
-    if (!(m_LoadState&EOBJECT_LS_RENDERBUFFER)) UpdateRenderBuffers();
+    if (!(m_LoadState&EOBJECT_LS_DEFFEREDRP)) DefferedLoadRP();
 
     Device.SetTransform(D3DTS_WORLD,parent);
     Device.SetShader(Device.m_SelectionShader);
@@ -181,13 +165,14 @@ void CEditableObject::RenderSelection(const Fmatrix& parent, CEditableMesh* mesh
     Device.ResetNearer();
 }
 
-IC static void CalculateLODTC(int frame, int w_cnt, int h_cnt, Fvector2& lt, Fvector2& rb){
+IC static void CalculateLODTC(int frame, int w_cnt, int h_cnt, Fvector2& lt, Fvector2& rb)
+{
 	Fvector2	ts;
     ts.set		(1.f/(float)w_cnt,1.f/(float)h_cnt);
-    lt.x        = (frame%w_cnt)*ts.x;
-    lt.y        = (frame/w_cnt)*ts.y+0.5f*(1.f/64.f);
-    rb.x        = lt.x+ts.x;
-    rb.y        = lt.y+ts.y;
+    lt.x        = (frame%w_cnt+0)*ts.x+half_p_x;
+    lt.y        = (frame/w_cnt+0)*ts.y+half_p_y;
+    rb.x        = (frame%w_cnt+1)*ts.x-half_p_x;
+    rb.y        = (frame/w_cnt+1)*ts.y-half_p_y;
 }
 
 void CEditableObject::GetLODFrame(int frame, Fvector p[4], Fvector2 t[4], const Fmatrix* parent)
@@ -257,59 +242,58 @@ LPCSTR CEditableObject::GetLODTextureName(AnsiString& l_name)
     return l_name.c_str();
 }
 
-void CEditableObject::UpdateLODShader()
+void CEditableObject::OnDeviceCreate()
 {
+}
+
+void CEditableObject::OnDeviceDestroy()
+{
+	DefferedUnloadRP();
+}
+
+void CEditableObject::DefferedLoadRP()
+{
+	if (m_LoadState&EOBJECT_LS_DEFFEREDRP) return;
+    EditMeshIt _M=m_Meshes.begin();
+    EditMeshIt _E=m_Meshes.end();
+    AnsiString tmp;
+    tmp.sprintf("Load RB: '%s'",GetName());
+    UI.ProgressStart((float)m_Meshes.size(),tmp.c_str());
+	for (; _M!=_E; _M++){
+	    UI.ProgressInc();
+    	(*_M)->CreateRenderBuffers();
+    }
+	// создать заново shaders
+    for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
+       (*s_it)->CreateShader();
+	// создать LOD shader
 	AnsiString l_name;
     GetLODTextureName(l_name);
     AnsiString fname = l_name+AnsiString(".tga");
     Device.Shader.Delete(m_LODShader);
     if (Engine.FS.Exist(&Engine.FS.m_Textures,fname.c_str()))
     	m_LODShader = Device.Shader.Create(GetLODShaderName(),l_name.c_str());
+    m_LoadState |= EOBJECT_LS_DEFFEREDRP;
 }
-
-void CEditableObject::OnDeviceCreate()
+void CEditableObject::DefferedUnloadRP()
 {
-	// создать буфера
-    for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
-    	(*m)->OnDeviceCreate();
-	// создать заново shaders
-    for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
-       (*s_it)->CreateShader();
-    UpdateLODShader();
-}
-
-void CEditableObject::OnDeviceDestroy()
-{
-	// удалить буфера
-    for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
-    	(*m)->OnDeviceDestroy();
+	if (!(m_LoadState&EOBJECT_LS_DEFFEREDRP)) return;
+	for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
+    	if (*_M) (*_M)->ClearRenderBuffers();
 	// удалить shaders
     for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
         (*s_it)->DeleteShader();
     // LOD
     Device.Shader.Delete(m_LODShader);
+    m_LoadState &=~ EOBJECT_LS_DEFFEREDRP;
 }
-
-void CEditableObject::RefreshShaders()
-{
-	SurfaceIt s_it;
-	// удалить shaders
-    for(s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
-        (*s_it)->DeleteShader();
-    Device.Shader.Delete(m_LODShader);
-	// создать заново shaders
-    for(s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
-       (*s_it)->CreateShader();
-    UpdateLODShader();
-}
-
 void CEditableObject::EvictObject(){
 	EditMeshIt m = m_Meshes.begin();
 	for(;m!=m_Meshes.end();m++){
     	(*m)->UnloadCForm();
     	(*m)->UnloadPNormals();
     }
-    ClearRenderBuffers();
+    DefferedUnloadRP	();
 }
 
 bool CEditableObject::PrepareOGF(CFS_Base& F)

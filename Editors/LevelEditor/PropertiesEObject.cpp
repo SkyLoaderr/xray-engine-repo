@@ -240,7 +240,7 @@ void __fastcall TfrmPropertiesEObject::OnChangeTransform(PropValue* sender)
 void __fastcall TfrmPropertiesEObject::tmIdleTimer(TObject *Sender)
 {
 	if (m_bNeedRereshShaders){
-	    m_pEditObject->GetReference()->RefreshShaders();
+	    m_pEditObject->GetReference()->OnDeviceDestroy();
         m_bNeedRereshShaders = false;
         UI.RedrawScene();
     }

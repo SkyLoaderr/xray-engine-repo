@@ -129,6 +129,21 @@ void TUI::Redraw(){
 	if (bResize){ Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height); bResize=false; }
 // set render state
     Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
+    // fog
+	st_Environment& E	= Scene.m_LevelOp.m_Envs[Scene.m_LevelOp.m_CurEnv];
+	float fog_start	= (psDeviceFlags&rsFog)?(1.0f - E.m_Fogness)* 0.85f * E.m_ViewDist:ZFar();
+	float fog_end	= (psDeviceFlags&rsFog)?0.91f * E.m_ViewDist:ZFar();
+	Device.SetRS( D3DRS_FOGCOLOR,	E.m_FogColor.get());
+	Device.SetRS( D3DRS_RANGEFOGENABLE,	FALSE				);
+	if (HW.Caps.bTableFog)	{
+		Device.SetRS( D3DRS_FOGTABLEMODE,	D3DFOG_LINEAR 	);
+		Device.SetRS( D3DRS_FOGVERTEXMODE,	D3DFOG_NONE	 	);
+	} else {
+		Device.SetRS( D3DRS_FOGTABLEMODE,	D3DFOG_NONE	 	);
+		Device.SetRS( D3DRS_FOGVERTEXMODE,	D3DFOG_LINEAR	);
+	}
+	Device.SetRS( D3DRS_FOGSTART,	*(DWORD *)(&fog_start)	);
+	Device.SetRS( D3DRS_FOGEND,		*(DWORD *)(&fog_end)	);
     // filter
     for (DWORD k=0; k<HW.Caps.pixel.dwStages; k++){
         if( psDeviceFlags&rsFilterLinear){
@@ -205,7 +220,7 @@ void TUI::Idle()
 	// input
     pInput->OnFrame();
     if (g_ErrorMode) return;
-    Sleep(5);
+    Sleep(1);
 	Device.UpdateTimer();
     EEditorState est = GetEState();
     if ((est==esEditScene)||(est==esEditLibrary)||(est==esEditLightAnim)){

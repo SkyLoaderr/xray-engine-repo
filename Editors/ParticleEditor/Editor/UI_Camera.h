@@ -75,6 +75,7 @@ public:
     void			Set			(const Fvector& hpb, const Fvector& pos);
     void			SetSensitivity(float sm, float sr);
     void			SetViewport	(float _near, float _far, float _fov);
+    void			SetDepth	(float _far, bool bForcedUpdate);
     void			SetFlyParams(float speed, float fAltitude){ m_FlySpeed=speed; m_FlyAltitude=fAltitude; }
 
     void			ZoomExtents	(const Fbox& bb);

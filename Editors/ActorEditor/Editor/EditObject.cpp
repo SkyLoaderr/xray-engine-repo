@@ -78,9 +78,7 @@ CEditableMesh* CEditableObject::FindMeshByName	(const char* name, CEditableMesh*
 }
 
 void CEditableObject::ClearGeometry (){
-#ifdef _EDITOR
-    ClearRenderBuffers();
-#endif
+    OnDeviceDestroy();
     if (!m_Meshes.empty())
         for(EditMeshIt 	m=m_Meshes.begin(); m!=m_Meshes.end();m++)_DELETE(*m);
     if (!m_Surfaces.empty())
@@ -95,7 +93,6 @@ void CEditableObject::ClearGeometry (){
     // skeletal motions
     for(SMotionIt s_it=m_SMotions.begin(); s_it!=m_SMotions.end();s_it++) _DELETE(*s_it);
     m_SMotions.clear();
-    Device.Shader.Delete(m_LODShader);
 #endif
     m_ActiveSMotion = 0;
 }
@@ -144,12 +141,11 @@ void CEditableObject::RemoveMesh(CEditableMesh* mesh){
     _DELETE(mesh);
 }
 
-void CEditableObject::TranslateToWorld(const Fmatrix& parent) {
+void CEditableObject::TranslateToWorld(const Fmatrix& parent) 
+{
 	EditMeshIt m = m_Meshes.begin();
 	for(;m!=m_Meshes.end();m++) (*m)->Transform( parent );
-#ifdef _EDITOR
-    ClearRenderBuffers();
-#endif
+    OnDeviceDestroy();
 	UpdateBox();
 }
 
