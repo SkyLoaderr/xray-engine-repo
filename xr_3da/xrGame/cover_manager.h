@@ -17,8 +17,10 @@ public:
 	typedef CQuadTree<CCoverPoint> CPointQuadTree;
 
 protected:
-	CPointQuadTree		*m_covers;
-	xr_vector<bool>		m_temp;
+	CPointQuadTree					*m_covers;
+	xr_vector<bool>					m_temp;
+	mutable xr_vector<CCoverPoint*>	m_nearest;
+
 
 protected:
 	IC		bool					edge_vertex			(u32 index);
@@ -33,6 +35,8 @@ public:
 	IC		CPointQuadTree			&covers				() const;
 	IC		CPointQuadTree			*get_covers			();
 			void					clear				();
+	template <typename _evaluator_type>
+			CCoverPoint				*best_cover			(const Fvector &position, float radius, _evaluator_type &evaluator) const;
 };
 
 #include "cover_manager_inline.h"

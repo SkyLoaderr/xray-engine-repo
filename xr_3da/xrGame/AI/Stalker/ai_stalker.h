@@ -218,8 +218,6 @@ public:
 			bool				kill_distance					();
 			void				update_best_item_info			();
 	virtual float				GetWeaponAccuracy				() const;
-			template <typename _evaluator_type>
-			CCoverPoint			*best_cover						(const Fvector &position, float radius, _evaluator_type &evaluator);
 
 public:
 	u32							m_last_best_item_frame;
@@ -228,7 +226,6 @@ public:
 	CInventoryItem				*m_best_ammo;
 	const CInventoryItem		*m_best_found_item_to_kill;
 	const CInventoryItem		*m_best_found_ammo;
-	xr_vector<CCoverPoint*>		m_nearest;
 
 	CCoverEvaluatorCloseToEnemy	*m_ce_close;
 	CCoverEvaluatorFarFromEnemy	*m_ce_far;

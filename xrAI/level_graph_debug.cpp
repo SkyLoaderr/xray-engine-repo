@@ -400,7 +400,7 @@ void CLevelGraph::render()
 				continue;
 			Fvector						position = mem_object.m_object_params.m_position;
 			stalker->m_ce_angle->setup	(position,10.f,170.f,mem_object.m_object_params.m_level_vertex_id);
-			CCoverPoint					*point = stalker->best_cover(stalker->Position(),10.f,*stalker->m_ce_angle);
+			CCoverPoint					*point = ai().cover_manager().best_cover(stalker->Position(),10.f,*stalker->m_ce_angle);
 			if (!point)
 				continue;
 			position					= point->position();
