@@ -18,7 +18,7 @@
 #define a_43 14*4
 #define a_44 15*4
 
-void	__stdcall	xrM44_Mul_3DNow	(_matrix* D, _matrix* M1, _matrix* M2)
+void	__stdcall	xrM44_Mul_3DNow	(_matrix<float>* D, _matrix<float>* M1, _matrix<float>* M2)
 {
     __asm
     {
