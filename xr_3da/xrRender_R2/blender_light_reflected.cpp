@@ -15,5 +15,4 @@ void	CBlender_accum_reflected::Compile(CBlender_Compile& C)
 	C.r_Sampler_rtf		("s_normal",		r2_RT_N);
 	C.r_Sampler_clf		("s_material",		r2_material);
 	C.r_End				();
-	break;
 }
