@@ -82,12 +82,26 @@ LINK32=link.exe
 # Name "itself - Win32 Debug"
 # Begin Source File
 
+SOURCE=.\itself.c
+
+!IF  "$(CFG)" == "itself - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "itself - Win32 Debug"
+
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
 SOURCE=.\itself.cpp
 
 !IF  "$(CFG)" == "itself - Win32 Release"
 
 !ELSEIF  "$(CFG)" == "itself - Win32 Debug"
 
+# PROP Exclude_From_Build 1
 # SUBTRACT CPP /YX /Yc /Yu
 
 !ENDIF 
