@@ -30,6 +30,7 @@ function main()
 	end
 	
 	while stalker:action() do
+		printf			("%s",stalker:best_weapon():name())
 		wait			()
     end
     
