@@ -50,14 +50,14 @@ void Disabling											();
 
 public:
 
-	void	Enable										()										{if(m_body)dBodyEnable(m_body);}
-	bool	IsEnabled									()										{ if(!b_exist)return false; return !!dBodyIsEnabled(m_body);}
-	dBodyID GetBody										()										{return m_body;}
-	float	ContactVelocity								()										{ dReal ret= m_contact_velocity; m_contact_velocity=0; return ret;}
+	void	Enable											()										{if(m_body)dBodyEnable(m_body);}
+	bool	IsEnabled										()										{ if(!b_exist)return false; return !!dBodyIsEnabled(m_body);}
+	dBodyID GetBody											()										{return m_body;}
+	float	ContactVelocity									()										{ dReal ret= m_contact_velocity; m_contact_velocity=0; return ret;}
 	bool b_exist;
 
 public:
-void		SetPLastMaterial								(u32* p)								{p_lastMaterial=p;}
+void					SetPLastMaterial					(u32* p)								{p_lastMaterial=p;}
 
 virtual void			SetMaximumVelocity					(dReal /**vel/**/)						{}
 virtual	void			SetJupmUpVelocity					(dReal /**velocity/**/)					{}
