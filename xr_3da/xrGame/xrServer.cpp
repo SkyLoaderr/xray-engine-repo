@@ -59,8 +59,10 @@ void xrServer::Update	()
 		{
 			xrServerEntity&	Test = *(I->second);
 
-			if (!Test.net_Ready)		continue;
-			if (Test.owner == Client)	continue;	// Can't be relevant
+			if (0==Test.owner)							continue;	// Phantom(?)
+			if (!Test.net_Ready)						continue;
+			if (Test.owner == Client)					continue;	// Can't be relevant
+			if (Test.s_flags&M_SPAWN_OBJECT_PHANTOM)	continue;	// Surely: phantom
 
 //			if (Test.RelevantTo(Base))	{
 				Packet.w_u16		(Test.ID);
@@ -105,6 +107,8 @@ BOOL xrServer::PerformRP	(xrServerEntity* EEE)
 				{
 					// Get entity & it's position
 					xrServerEntity*	E	= o_it->second;
+					if	(E->s_flags & M_SPAWN_OBJECT_PHANTOM)			continue;
+
 					float	dist		= POS.distance_to(E->o_Position);
 					float	e_cost		= 0;
 					
@@ -167,7 +171,9 @@ void xrServer::OnCL_Connected		(IClient* CL)
 	xrS_entities::iterator	I=entities.begin(),E=entities.end();
 	for (; I!=E; I++)
 	{
-		xrServerEntity*	Test = I->second;
+		xrServerEntity*		Test	= I->second;
+		if (Test->s_flags & M_SPAWN_OBJECT_PHANTOM)	continue;
+
 		if (0==Test->owner)	
 		{
 			// Associate
@@ -196,7 +202,7 @@ void xrServer::OnCL_Disconnected	(IClient* CL)
 	xrS_entities::iterator	I=entities.begin(),E=entities.end();
 	for (; I!=E; I++)
 	{
-		xrServerEntity*	E = I->second;
+		xrServerEntity*	E	= I->second;
 		if (E->owner == CL)	{
 			IDs.push_back	(E->ID);
 			entity_Destroy	(E);
