@@ -232,7 +232,7 @@ void CPHJoint::CreateHinge2()
 	}
 
 
-
+	
 	axis_angleA(rotate,axes[0].direction,shift_angle);
 
 	shift_angle-=axes[0].zero;
@@ -742,32 +742,10 @@ void CPHJoint::SetLimits(const float low, const float high, const int axis_num)
 	if(!(pFirst_element&&pSecond_element))return;
 
 	int ax=axis_num;
+	LimitAxisNum(ax);
+	if(-1==ax)return;
 
-	switch(eType){
-	case ball:					
-	case welding:
-		return;						break;
-	case hinge:					ax=0;
-		break;
-	case hinge2:
-
-
-	case universal_hinge:		
-
-	case shoulder1:	
-
-	case shoulder2:	
-
-	case car_wheel:	
-		if(ax>1) ax=1;
-		break;
-	case full_control:
-		if(ax>2) ax=2;
-		break;
-	}
-
-
-	Fvector axis;
+		Fvector axis;
 	switch(axes[ax].vs){
 			case vs_first :pFirst_element->mXFORM.transform_dir(axis,axes[ax].direction);	break;
 			case vs_second:pSecond_element->mXFORM.transform_dir(axis,axes[ax].direction); break;

@@ -450,7 +450,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id)
 			}
 		case jtWheel:
 			{
-				J= P_create_Joint(CPhysicsJoint::hinge2,root_e,E);//доделать
+				J= P_create_Joint(CPhysicsJoint::hinge2,root_e,E);
 				J->SetAnchorVsSecondElement	(0,0,0);
 				J->SetJointSDfactors(joint_data.spring_factor,joint_data.damping_factor);
 				J->SetAxisDir(fm_position.i,0);
