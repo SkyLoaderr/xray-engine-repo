@@ -30,12 +30,15 @@ public:
 	xrTime(ALife::_TIME_ID t):m_time(t){}
 
 	bool	operator <		(const xrTime& other)	const			{ return m_time < other.m_time;			}
+	bool	operator >		(const xrTime& other)	const			{ return m_time > other.m_time;			}
+	bool	operator >=		(const xrTime& other)	const			{ return m_time >= other.m_time;		}
+	bool	operator <=		(const xrTime& other)	const			{ return m_time <= other.m_time;		}
 	bool	operator ==		(const xrTime& other)	const			{ return m_time == other.m_time;		}
 	xrTime	operator +		(const xrTime& other)					{ return xrTime(m_time+other.m_time);	}
 	xrTime	operator -		(const xrTime& other)					{ return xrTime(m_time-other.m_time);	}
-	float	diffSec			(const xrTime& other)					{ return (m_time-other.m_time)/sec2ms;	}
+	float	diffSec			(const xrTime& other)					{ if(*this>other) return (m_time-other.m_time)/sec2ms; return -(other.m_time-m_time)/sec2ms;	}
 	void	add				(const xrTime& other)					{  m_time += other.m_time;				}
-	void	sub				(const xrTime& other)					{  m_time -= other.m_time;				}
+	void	sub				(const xrTime& other)					{  if(*this>other)m_time -= other.m_time; else m_time=0;	}
 
 	void	setHMS			(int h, int m, int s)					{ m_time=0; m_time+=(h*hour2ms+m*min2ms+s*sec2ms);}
 	void	setHMSms		(int h, int m, int s, int ms)			{ m_time=0; m_time+=(h*hour2ms+m*min2ms+s*sec2ms+ms);}
@@ -75,6 +78,9 @@ void game_sv_GameState::script_register(lua_State *L)
 		.def(						constructor<>()				)
 		.def(						constructor<const xrTime&>())
 		.def(const_self <			xrTime()					)
+		.def(const_self <=			xrTime()					)
+		.def(const_self >			xrTime()					)
+		.def(const_self >=			xrTime()					)
 		.def(const_self ==			xrTime()					)
 		.def(self +					xrTime()					)
 		.def(self -					xrTime()					)

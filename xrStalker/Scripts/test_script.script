@@ -1,6 +1,7 @@
 
 
 function dump_time(t)
+	printf(t:dateToString(game.CTime.DateToDay))
 	printf(t:timeToString(game.CTime.TimeToMilisecs))
 	printf("")
 end
