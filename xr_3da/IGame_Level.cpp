@@ -19,8 +19,6 @@ IGame_Level::IGame_Level	()
 	pCurrentEntity				= NULL;
 	pCurrentViewEntity			= NULL;
 	LL_Stream					= NULL;
-	pHUD						= (CCustomHUD*)NEW_INSTANCE	(CLSID_HUDMANAGER);
-	Environment					= xr_new<CEnvironment>		();
 }
 
 IGame_Level::~IGame_Level	()
@@ -70,7 +68,7 @@ extern CStatTimer				tscreate;
 
 BOOL IGame_Level::Load				(u32 dwNum) 
 {
-	//	Device.Reset				();
+	// Device.Reset				();
 
 	// Initialize level data
 	pApp->Level_Set				( dwNum );
@@ -79,14 +77,17 @@ BOOL IGame_Level::Load				(u32 dwNum)
 		Debug.fatal	("Can't find level configuration file '%s'.",temp);
 	pLevel						= xr_new<CInifile>	( temp );
 
-	// Read Environment
-	pApp->LoadTitle				("Opening virtual stream...");
+	// Open
+	pApp->LoadTitle				("Opening stream...");
 	LL_Stream					= FS.r_open	("$level$","level");
 	IReader	&fs					= *LL_Stream;
 
-	IReader *chunk				= 0;
-	u32	count, i;
+	IReader *	chunk			= 0;
+	u32			count, i;
 
+	// HUD + Environment
+	pHUD						= (CCustomHUD*)NEW_INSTANCE	(CLSID_HUDMANAGER);
+	Environment					= xr_new<CEnvironment>		();
 	Environment->Load			(pLevel, "environment");
 
 	// Header

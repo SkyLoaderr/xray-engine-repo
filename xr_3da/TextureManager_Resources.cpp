@@ -391,6 +391,9 @@ CTexture* CShaderManager::_CreateTexture	(LPCSTR Name)
 
 	R_ASSERT(Name && Name[0]);
 
+	//.
+	if (0!=strstr(Name,"hud_group_back"))	__asm int 3;
+
 	// ***** first pass - search already loaded texture
 	LPSTR N			= LPSTR(Name);
 	map_TextureIt I = m_textures.find	(N);
