@@ -74,7 +74,7 @@ function base_dialog:InitControls(caption)
 	self.list_date_font = GetFontMedium()
 	
 	-- Message Box
-	local message_rect = {x = 0, y = 0, width = 400, height = 300}
+	self.message_rect = {x = 0, y = 0, width = 400, height = 300}
 	
 	
 	-- INIT DATA >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

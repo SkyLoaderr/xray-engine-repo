@@ -43,17 +43,17 @@ function options_dialog:InitControls()
 							 width = self.btn_rect.width,
 							 height = self.btn_rect.height}
 							 
-	local btn_sound_rect  = {x = self.left_aling_x,
+	local btn_sound_rect  = {x = self.left_align_x,
 							 y = btn_video_rect.y + btn_video_rect.height + self.indent,
 							 width = self.btn_rect.width,
 							 height = self.btn_rect.height}
 							 
-	local btn_game_rect   = {x = self.left_aling_x,
+	local btn_game_rect   = {x = self.left_align_x,
 							 y = btn_sound_rect.y + btn_sound_rect.height + self.indent,
 							 width = self.btn_rect.width,
 							 height = self.btn_rect.height}
 	
-	local btn_control_rect= {x = self.left_aling_x,
+	local btn_control_rect= {x = self.left_align_x,
 							 y = btn_game_rect.y + btn_game_rect.height + self.indent,
 							 width = self.btn_rect.width,
 							 height = self.btn_rect.height}
