@@ -72,6 +72,7 @@ public:
 
 	// Debug
 	void							DBG_VerifyGeoms		();
+	void							DBG_VerifyTextures	();
 
 	// Editor cooperation
 	void							ED_UpdateBlender	(LPCSTR Name, IBlender*		data);

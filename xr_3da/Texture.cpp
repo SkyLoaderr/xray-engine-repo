@@ -129,7 +129,7 @@ ENGINE_API IDirect3DBaseTexture9*	TWLoader2D
 	const char *		fRName,
 	ETexturePF			Algorithm,
 	ETextureMipgen		Mipgen,
-	u32				Quality,
+	u32					Quality,
 	float				fContrast,
 	BOOL				bGrayscale,
 	BOOL				bSharpen,

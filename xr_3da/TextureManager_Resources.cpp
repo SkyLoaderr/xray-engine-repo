@@ -414,6 +414,14 @@ void	CShaderManager::_DeleteTexture		(const CTexture* T)
 	Msg	("! ERROR: Failed to find texture surface '%s'",T->cName);
 }
 
+void	CShaderManager::DBG_VerifyTextures	()
+{
+	map_Texture::iterator I		= m_textures.begin	();
+	map_Texture::iterator E		= m_textures.end	();
+	for (; I!=E; I++)
+		R_ASSERT(0==strcmp(I->first,I->second->cName));
+}
+
 //--------------------------------------------------------------------------------------------------------------
 CMatrix*	CShaderManager::_CreateMatrix	(LPCSTR Name)
 {
