@@ -36,33 +36,34 @@ void CActor::cam_Update(float dt, BOOL bZoom)
 
 	switch (cam_active)
 	{
-	case eacFirstEye:{
-		// apply footstep bobbing effect
-		Fvector offset;
-		offset.set		(0,0,0);
-		dangle.set		(0,0,0);
-/*		{
-		cam_BobCycle	+= dt;
-		
-		if (mstate_real&mcAnyMove){
-			if (isAccelerated(mstate_real)){
-				offset.y	= 0.1f*fabsf(sinf(11*cam_BobCycle)); 
-				dangle.x	= 0.01f*fabsf(cosf(cam_BobCycle*11));
-				dangle.z	= 0.01f*cosf(cam_BobCycle*11);
-				if (mstate_real&mcCrouch)
-					dangle.y= 0.02f*sinf(cam_BobCycle*11);
-			}else{
-				offset.y	= 0.05f*fabsf(sinf(7*cam_BobCycle)); 
-				dangle.x	= 0.01f*fabsf(cosf(cam_BobCycle*7));
-				dangle.z	= 0.01f*cosf(cam_BobCycle*7);
-				if (mstate_real&mcCrouch)
-					dangle.y= 0.02f*sinf(cam_BobCycle*7);
-			}
-		}else{
-			cam_BobCycle = 0;
-		}
-*/
-		point.add(offset);
+	case eacFirstEye:
+		{
+			// apply footstep bobbing effect
+			Fvector offset;
+			offset.set		(0,0,0);
+			dangle.set		(0,0,0);
+			/*		{
+			cam_BobCycle	+= dt;
+			
+			  if (mstate_real&mcAnyMove){
+			  if (isAccelerated(mstate_real)){
+			  offset.y	= 0.1f*fabsf(sinf(11*cam_BobCycle)); 
+			  dangle.x	= 0.01f*fabsf(cosf(cam_BobCycle*11));
+			  dangle.z	= 0.01f*cosf(cam_BobCycle*11);
+			  if (mstate_real&mcCrouch)
+			  dangle.y= 0.02f*sinf(cam_BobCycle*11);
+			  }else{
+			  offset.y	= 0.05f*fabsf(sinf(7*cam_BobCycle)); 
+			  dangle.x	= 0.01f*fabsf(cosf(cam_BobCycle*7));
+			  dangle.z	= 0.01f*cosf(cam_BobCycle*7);
+			  if (mstate_real&mcCrouch)
+			  dangle.y= 0.02f*sinf(cam_BobCycle*7);
+			  }
+			  }else{
+			  cam_BobCycle = 0;
+			  }
+			*/
+			point.add(offset);
 		}
 		break;
 	case eacLookAt: 
