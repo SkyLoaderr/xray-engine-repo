@@ -1,8 +1,13 @@
+--sidya_boltaet_ 0
+--stalker_2_2
+--stalker_2_3
+--stalker_3_1
+--stalker_3_3
+
 local actor_entered = false
 
 function on_enter (zone, object)
     if object:id () == get_actor ():id () then actor_entered = true end
-	printf ("PLAYER ENTERED")
 end
 
 function check (stalker)
@@ -45,14 +50,12 @@ function main ()
 
     while actor_entered == false do wait () end
 
-	printf ("PLAYER ENTERED")
-
     --phrase 1
     reset_action (stalker1, military2_1.script_name ())
     reset_action (stalker2, military2_1.script_name ())
     reset_action (stalker3, military2_1.script_name ())
     action (stalker1, anim ("stalker_2_1"), cond (cond.time_end, 100000000))
-    action (stalker2, anim ("stalker_1_1"), cond (cond.time_end, 100000000))
+    action (stalker2, anim ("sidya_boltaet_ 0"), cond (cond.time_end, 100000000))
     action (stalker3, object (torch, object.deactivate), cond (cond.time_end, 100))
     action (stalker3, object (weapon, object.deactivate), cond (cond.time_end, 1000))
     action (stalker3, anim ("stalker_3_2"), cond (cond.time_end, 100000000))
@@ -66,8 +69,13 @@ function main ()
     --phrase 2
     reset_action (stalker2, military2_1.script_name ())
     action (stalker2, anim ("stalker_1_2"), cond (cond.time_end, 100000000))
+	reset_action (stalker3, military2_1.script_name ())
+    action (stalker3, anim ("stalker_3_1"), cond (cond.time_end, 100000000))
     sound3_1:play_at_pos (stalker3, stalker3:position (), 0)
     while sound3_1:playing () do wait () end
+	reset_action (stalker3, military2_1.script_name ())
+    action (stalker3, anim ("stalker_3_2"), cond (cond.time_end, 100000000))
+
     wait (1500)
 
     --phrase 3
