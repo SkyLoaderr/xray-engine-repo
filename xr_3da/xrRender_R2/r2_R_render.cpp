@@ -17,6 +17,8 @@ void CRender::Render		()
 
 	//******* Main calc
 	Device.Statistic.RenderCALC.Begin		();
+	lstRecorded.clear						();
+	if (b_emap)	set_RecordMP				(true);
 	{
 		marker									++;
 		phase									= PHASE_NORMAL;
@@ -120,6 +122,7 @@ void CRender::Render		()
 			g_pGameLevel->pHUD->Render_Last						();	
 		}
 	}
+	set_RecordMP								(false);	
 	Device.Statistic.RenderCALC.End				();
 
 	//******* Main render
