@@ -48,63 +48,63 @@ void CAI_Rat::vfAdjustSpeed()
 	clamp(fAngle,0.f,.99999f);
 	fAngle = acosf(fAngle);
 	
-	float fMinASpeed = PI_MUL_2, fNullASpeed = PI_MUL_2, fMaxASpeed = .2f, fAttackASpeed = .15f;
+//	float fMinASpeed = PI_MUL_2, fNullASpeed = PI_MUL_2, fMaxASpeed = .2f, fAttackASpeed = .15f;
 	
 	if (_abs(m_fSpeed - m_fMinSpeed) <= EPS_L)	{
 		if (fAngle >= 3*PI_DIV_2) {
 			m_fSpeed = 0;
-			m_fASpeed = fNullASpeed;
+			m_fASpeed = m_fNullASpeed;
 			r_torso_target.yaw = fAngle;
 		}
 		else 
 		{
 			m_fSpeed = m_fMinSpeed;
-			m_fASpeed = fMinASpeed;
+			m_fASpeed = m_fMinASpeed;
 		}
 	}
 	else
 		if (_abs(m_fSpeed - m_fMaxSpeed) <= EPS_L)	{
 			if (fAngle >= 3*PI_DIV_2) {
 				m_fSpeed = 0;
-				m_fASpeed = fNullASpeed;
+				m_fASpeed = m_fNullASpeed;
 				r_torso_target.yaw = fAngle;
 			}
 			else
 				if (fAngle >= PI_DIV_2) {
 					m_fSpeed = m_fMinSpeed;
-					m_fASpeed = fMinASpeed;
+					m_fASpeed = m_fMinASpeed;
 				}
 				else {
 					m_fSpeed = m_fMaxSpeed;
-					m_fASpeed = fMaxASpeed;
+					m_fASpeed = m_fMaxASpeed;
 				}
 		}
 		else
 			if (_abs(m_fSpeed - m_fAttackSpeed) <= EPS_L)	{
 				if (fAngle >= 3*PI_DIV_2) {
 					m_fSpeed = 0;
-					m_fASpeed = fNullASpeed;
+					m_fASpeed = m_fNullASpeed;
 					r_torso_target.yaw = fAngle;
 				}
 				else
 					if (fAngle >= PI_DIV_2) {
 						m_fSpeed = m_fMinSpeed;
-						m_fASpeed = fMinASpeed;
+						m_fASpeed = m_fMinASpeed;
 					}
 					else
 						if (fAngle >= PI_DIV_4) {
 							m_fSpeed = m_fMaxSpeed;
-							m_fASpeed = fMaxASpeed;
+							m_fASpeed = m_fMaxASpeed;
 						}
 						else {
 							m_fSpeed = m_fAttackSpeed;
-							m_fASpeed = fAttackASpeed;
+							m_fASpeed = m_fAttackASpeed;
 						}
 			}
 			else {
 				r_torso_target.yaw = fAngle;
 				m_fSpeed = 0;
-				m_fASpeed = fNullASpeed;
+				m_fASpeed = m_fNullASpeed;
 			}
 	
 	tTemp2 = mRotate.k;
@@ -118,17 +118,17 @@ void CAI_Rat::vfAdjustSpeed()
 			tTemp1.mad(tTemp2,1*m_fMaxSpeed*m_fTimeUpdateDelta);
 			if (bfCheckIfOutsideAIMap(tTemp1)) {
 				m_fSpeed = m_fMinSpeed;
-				m_fASpeed = fMinASpeed;
+				m_fASpeed = m_fMinASpeed;
 			}
 			else {
 				m_fSpeed = m_fMaxSpeed;
-				m_fASpeed = fMaxASpeed;
+				m_fASpeed = m_fMaxASpeed;
 			}
 		}
 		else 
 		{
 			m_fSpeed = m_fMinSpeed;
-			m_fASpeed = fMinASpeed;
+			m_fASpeed = m_fMinASpeed;
 		}
 	}
 }
