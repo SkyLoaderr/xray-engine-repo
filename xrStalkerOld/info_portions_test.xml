@@ -122,8 +122,41 @@
 			<icon name="Quest44" x="2" y="8" width="1" height="1"></icon>
 			<text>Quest44 at escape</text>
 		</location>
-		
 	</info_portion>
 	
+	<!-- infoportions for factory on escape -->
+	<!-- agree for move to factory -->
+	<info_portion id="move_to_factory">
+		<location >
+			<level>escape</level>
+			<text>Go to factory</text>
+		</location>
+	</info_portion>
+	<!-- kill all without sniper -->
+	<info_portion id="kill_em_all">
+		<location >
+			<level>escape</level>
+			<text>Agree for kill sniper</text>
+		</location>
+	</info_portion>
+	<!-- sniper is dead -->
+	<info_portion id="sniper_dead">
+		<location >
+			<level>escape</level>
+			<text>Sniper is dead</text>
+		</location>
+	</info_portion>
+	<info_portion id="kill_sniper">
+		<location >
+			<level>escape</level>
+			<text>Sniper is dead</text>
+		</location>
+	</info_portion>
+	<info_portion id="go_to_vodka">
+		<location >
+			<level>escape</level>
+			<text>Go to vodka</text>
+		</location>
+	</info_portion>
 
 </game_information_portions>
