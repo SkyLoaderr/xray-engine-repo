@@ -1,3 +1,4 @@
+// exxZERO Time Stamp AddIn. Document modified at : Thursday, March 07, 2002 14:12:36 , by user : Oles , from computer : OLES
 #include "stdafx.h"
 #include "uistaticitem.h"
 #include "hudmanager.h"
@@ -39,7 +40,7 @@ void CUIStaticItem::Render(Shader* sh)
 
 	// unlock VB and Render it as triangle list
 	Stream->Unlock			(4);
-	Device.Shader.Set		(sh?sh:hShader);
+	Device.Shader.set_Shader(sh?sh:hShader);
 	Device.Primitive.Draw	(Stream,4,2,vOffset,Device.Streams_QuadIB);
 }
 //--------------------------------------------------------------------
@@ -53,7 +54,7 @@ void CUIStaticItem::Render(float angle, Shader* sh){
 
 	// unlock VB and Render it as triangle list
 	Stream->Unlock			(4);
-	Device.Shader.Set		(sh?sh:hShader);
+	Device.Shader.set_Shader(sh?sh:hShader);
 	Device.Primitive.Draw	(Stream,4,2,vOffset,Device.Streams_QuadIB);
 }
 //--------------------------------------------------------------------

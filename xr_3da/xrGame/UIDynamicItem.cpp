@@ -1,3 +1,4 @@
+// exxZERO Time Stamp AddIn. Document modified at : Thursday, March 07, 2002 14:12:27 , by user : Oles , from computer : OLES
 #include "stdafx.h"
 #include "uidynamicitem.h"
 #include "hudmanager.h"
@@ -50,7 +51,7 @@ void CUIDynamicItem::Render()
 
 	// unlock VB and Render it as triangle list
 	Stream->Unlock			(item_cnt*4);
-	Device.Shader.Set		(hShader);
+	Device.Shader.set_Shader(hShader);
 	Device.Primitive.Draw	(Stream,item_cnt*4,item_cnt*2,vOffset,Device.Streams_QuadIB);
 }
 //--------------------------------------------------------------------
@@ -67,7 +68,7 @@ void CUIDynamicItem::Render(float angle){
 
 	// unlock VB and Render it as triangle list
 	Stream->Unlock			(item_cnt*4);
-	Device.Shader.Set		(hShader);
+	Device.Shader.set_Shader(hShader);
 	Device.Primitive.Draw	(Stream,item_cnt*4,item_cnt*2,vOffset,Device.Streams_QuadIB);
 }
 //--------------------------------------------------------------------

@@ -1,3 +1,4 @@
+// exxZERO Time Stamp AddIn. Document modified at : Thursday, March 07, 2002 14:11:58 , by user : Oles , from computer : OLES
 #include "stdafx.h"
 #include "uicursor.h"
 
@@ -41,8 +42,8 @@ void CUICursor::Render()
 	pv->set(cx+size, cy,		.0001f,.9999f, C, 1, 0); pv++;
 	
 	// unlock VB and Render it as triangle list
-	Stream->Unlock	(4);
-	Device.Shader.Set		(hShader);
+	Stream->Unlock			(4);
+	Device.Shader.set_Shader(hShader);
 	Device.Primitive.Draw	(Stream,4,2,vOffset,Device.Streams_QuadIB);
 }
 //--------------------------------------------------------------------

@@ -1,3 +1,4 @@
+// exxZERO Time Stamp AddIn. Document modified at : Thursday, March 07, 2002 14:12:50 , by user : Oles , from computer : OLES
 #include "stdafx.h"
 #include "HitMarker.h"
 
@@ -50,8 +51,8 @@ void CHitMarker::Render()
 			}
 		}
 		DWORD Count = D-Start;
-		VS->Unlock(Count);
-		Device.Shader.Set		(hShader);
+		VS->Unlock				(Count);
+		Device.Shader.set_Shader(hShader);
 		Device.Primitive.Draw	(VS,Count/3,dwOffset);
 	}
 }

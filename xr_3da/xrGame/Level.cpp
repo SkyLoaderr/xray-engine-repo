@@ -1,3 +1,4 @@
+// exxZERO Time Stamp AddIn. Document modified at : Thursday, March 07, 2002 14:11:40 , by user : Oles , from computer : OLES
 // Level.cpp: implementation of the CLevel class.
 //
 //////////////////////////////////////////////////////////////////////
@@ -214,7 +215,7 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 		// Textures
 		pApp->LoadTitle						("Loading textures...");
 		Device.Shader.DeferredLoad			(FALSE);
-		Device.Shader.TexturesLoad			();
+		Device.Shader.DeferredUpload		();
 		Msg	("* %d K used for textures",	Device.Shader._GetMemoryUsage()/1024);
 
 		// Sync
@@ -225,7 +226,7 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 		return TRUE;
 	}
 	Device.Shader.DeferredLoad	(FALSE);
-	Device.Shader.TexturesLoad	();
+	Device.Shader.DeferredUpload();
 
 	pApp->LoadEnd	(); 
 	return FALSE;

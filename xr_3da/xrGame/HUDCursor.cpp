@@ -1,3 +1,4 @@
+// exxZERO Time Stamp AddIn. Document modified at : Thursday, March 07, 2002 14:13:00 , by user : Oles , from computer : OLES
 // HUDCursor.cpp: implementation of the CHUDCursor class.
 //
 //////////////////////////////////////////////////////////////////////
@@ -87,8 +88,8 @@ void CHUDCursor::Render()
 	pv->set(cx + size, cy - size, PT.p.z, PT.p.w, C, 1, 0); pv++;
 	
 	// unlock VB and Render it as triangle list
-	Stream->Unlock	(4);
-	Device.Shader.Set		(hShader);
+	Stream->Unlock			(4);
+	Device.Shader.set_Shader(hShader);
 	Device.Primitive.Draw	(Stream,4,2,vOffset,Device.Streams_QuadIB);
 	// Device.Primitive.dbg_DrawLINE(precalc_identity,p1,p2,C);
 }

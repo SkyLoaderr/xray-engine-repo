@@ -1,3 +1,4 @@
+// exxZERO Time Stamp AddIn. Document modified at : Thursday, March 07, 2002 14:11:06 , by user : Oles , from computer : OLES
 // Tracer.cpp: implementation of the CTracer class.
 //
 //////////////////////////////////////////////////////////////////////
@@ -100,7 +101,7 @@ void	CTracer::Render	()
 	if (vCount)	{
 		HW.pDevice->SetTransform	(D3DTS_WORLD, precalc_identity.d3d());
 		HW.pDevice->SetRenderState	(D3DRS_CULLMODE,D3DCULL_NONE);
-		Device.Shader.Set			(sh_Tracer);
+		Device.Shader.set_Shader	(sh_Tracer);
 		Device.Primitive.Draw		(VS,vCount,vCount/2,vOffset,Device.Streams_QuadIB);
 		HW.pDevice->SetRenderState	(D3DRS_CULLMODE,D3DCULL_CCW);
 	}
