@@ -108,3 +108,12 @@ void path_test_old(CAI_Map *graph, xr_vector<u32> &path, u32 start, u32 end, flo
 
 	xr_delete				(search);
 }
+
+#include "tga.h"
+#include "path_test.h"
+
+void path_test(LPCSTR caLevelName)
+{
+	TGAdesc	tga;
+	tga.format = IMG_32B;
+}

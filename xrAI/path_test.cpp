@@ -243,11 +243,11 @@ void test_all				(LPCSTR caLevelName, u32 test_count, _dist_type min_value, _dis
 
 #define TEST_COUNT 1000
 
-void path_test				(LPCSTR caLevelName)
-{
-	test_all<CAI_Map>					(caLevelName,TEST_COUNT,float(0),float(2000));
-	test_all<CSE_ALifeGraph>			(caLevelName,TEST_COUNT,float(0),float(2000));
-	test_all<CTestTable<u32,30,30> >	(caLevelName,TEST_COUNT,u32(0),u32(60));
-	test_all<CTestTable<u32,300,300> >	(caLevelName,TEST_COUNT,u32(0),u32(600));
-	test_all<CTestTable<u32,900,900> >	(caLevelName,TEST_COUNT,u32(0),u32(1800));
-}
+//void path_test				(LPCSTR caLevelName)
+//{
+//	test_all<CAI_Map>					(caLevelName,TEST_COUNT,float(0),float(2000));
+//	test_all<CSE_ALifeGraph>			(caLevelName,TEST_COUNT,float(0),float(2000));
+//	test_all<CTestTable<u32,30,30> >	(caLevelName,TEST_COUNT,u32(0),u32(60));
+//	test_all<CTestTable<u32,300,300> >	(caLevelName,TEST_COUNT,u32(0),u32(600));
+//	test_all<CTestTable<u32,900,900> >	(caLevelName,TEST_COUNT,u32(0),u32(1800));
+//}

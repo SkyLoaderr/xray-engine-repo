@@ -78,6 +78,10 @@ void xrSaveNodes(LPCSTR N)
 	H.size			= g_params.fPatchSize;
 	H.size_y		= CalculateHeight(H.aabb);
 	fs->w			(&H,sizeof(H));
+	
+	fs->w_u32		(g_covers_palette.size());
+	for (u32 j=0; j<g_covers_palette.size(); ++j)
+		fs->w		(&g_covers_palette[j],sizeof(g_covers_palette[j]));
 
 	// Dummy node
 	NodeCompressed	NC;
@@ -90,11 +94,6 @@ void xrSaveNodes(LPCSTR N)
 	{
 		Node&		N	= g_nodes[i];
 
-		// Calculate non-zero members
-//		int		cnt		= 0;
-//		for		(u32 L=0; L<N.neighbours.size(); L++)	if (N.neighbours[L]) cnt++;
-
-		// write node itself
 		Compress		(NC,N,H);
 		for (u32 j=0; j<NODE_NEIGHBOUR_COUNT; j++)
 			Memory.mem_fill(NC.links[j],0xff,sizeof(NodeLink));
@@ -106,16 +105,6 @@ void xrSaveNodes(LPCSTR N)
 		
 		fs->w			(&NC,sizeof(NC));
 
-		fs->w_u32		(g_covers_palette.size());
-		for (u32 j=0; j<256; ++j)
-			fs->w		(&g_covers_palette[j],sizeof(g_covers_palette[j]));
-
-//		// write links
-//		for (L=0; L<N.neighbours.size(); L++)
-//		{
-//			u32		L_id		= N.neighbours[L];
-//			if (L_id)	{ L_id++; fs->w		(&L_id,3); }
-//		}
 		Progress(float(i)/float(g_nodes.size()));
 	}
 

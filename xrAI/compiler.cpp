@@ -87,18 +87,10 @@ void xrCompiler(LPCSTR name)
 	
 	/////////////////////////////////////
 
-//	Phase("Merging nodes...");
-//	xrMerge		();
-//	mem_Optimize();
-
 	Phase("Palettizing cover values...");
 	xrPalettizeCovers();
 	mem_Optimize();
 
-//	Phase("Converting and linking...");
-//	xrConvertAndLink();
-//	mem_Optimize();
-	
 	Phase("Visualizing nodes...");
 	xrDisplay	();
 
