@@ -7,57 +7,57 @@ class					= C_HLCPTR
 visual                  = physics\vehicles\mi24\veh_mi24_u_01.ogf
 
 //пфраметры построения пути
-path_linear_acc_fw				= 5;3.0 ;m/s  макс линейное ускорение при разгоне
-path_linear_acc_bk				= 3;8.0 ;m/s макс линейное ускорение торможения
+path_linear_acc_fw				= 5; 3.0 ;m/s  ; линейное ускорение при разгоне
+path_linear_acc_bk				= 3 ;8.0 ;m/s	; линейное ускорение торможения
 
-path_angular_sp_pitch			= 0.85; 0.45 ; скорость изменения высоты
-path_angular_sp_heading			= 0.2;0.4 ; макс угловая скорость
+path_angular_sp_pitch			= 0.85 ;0.45		; скорость изменения высоты пути
+path_angular_sp_heading			= 0.2  ;0.4		    ; угловая скорость пути
 
 //пфраметры наклона модели 
-model_angular_sp_bank			= 0.4;0.35 ; коэф наклона модели по оси Х в зависимости от текущей угловой скорости
-model_angular_sp_pitch			= 0.3 ;
-model_pitch_koef				= 0.011;0.007 ;коэф наклона модели по оси Z в зависимости от текущей линейной скорости
-model_bank_koef					= 0.02 ;
-on_point_range_dist				= 10.0
-smoke_particle						= damage_fx\heli_burn
-explode_particle					= explosions\expl_mushroom_01
-explode_sound						= weapons\heli_explosion
-snd_shoot_rocket					= weapons\heli_rocket_shoot
+model_angular_sp_bank			= 0.4 ;0.35    ; скорость поворота модели по оси Z (как быстро модель повернется по курсу движения с учетом угловой скорости)
+model_angular_sp_pitch			= 0.3     ; скорость поворота модели по оси X в зависимости от текущей линейной скорости
+model_pitch_koef				= 0.011 ;0.007   ; коэф наклона модели по оси X в зависимости от текущей линейной скорости
+model_bank_koef					= 0.02    ; коэф наклона модели по оси Z в зависимости от текущих линейной и угловой скоростей
+on_point_range_dist				= 10.0    ; служебная информация
+smoke_particle						= damage_fx\heli_burn			;партиклы при ранении
+explode_particle					= explosions\expl_mushroom_01	;партиклы при взрыве
+explode_sound						= weapons\heli_explosion		;звук собственного взрыва
+snd_shoot_rocket					= weapons\heli_rocket_shoot		;звук выстрела ракетой   
 
 light_range							= 10.0
 light_brightness					= 5.0
 light_color							= 0.9,0.9,0.5
 light_color_animmator				= koster_00
-//to del
-pitch_koef				= 0.007
 //
-time_delay_before_start		= 60	;sec
-time_patrol_period			= 12000	;sec
-time_delay_between_patrol	= 60	;sec
-velocity					= 25.0	;m/sec
-attack_velocity				= 15.0;10
-altitude					= 50	;20.0	;m
-attack_altitude				= 15; 20	;20.0
-max_key_dist				= 15.0
+time_delay_before_start		= 60					;sec ----не исп
+time_patrol_period			= 12000					;sec ----не исп
+time_delay_between_patrol	= 60					;sec ----не исп
+velocity					= 25.0					;m/sec   скорость, с которой атаковать врага
+attack_velocity				= 10.0					;m/sec   скорость, с которой патрулировать
+altitude					= 50	;20.0			;m		 высота, на которой патрулировать
+attack_altitude				= 15; 20	;20.0		;m		 высота, на которой атаковать врага
+max_key_dist				= 10.0 ;15.0                  ;      -----не исп
 
-altitude_korridor			= 0.1 ;0.0		;не ниже 1/10 высоты уровня
-x_level_bound				= 50;0;230.0	; граница (не долетать) до края уровня при патрулировании
-z_level_bound				= 50;0;400.0	;
+altitude_korridor			= 0.1 ;0.0		;не ниже 1/10 высоты уровня         ------не исп
+x_level_bound				= 50;0;230.0	; граница (не долетать) до края уровня при патрулировании ------не исп
+z_level_bound				= 50;0;400.0	; ------не исп
 
-use_rocket					= true;
-use_mgun					= true;
-min_mgun_attack_dist		= 50;15.0  ;m
-max_mgun_attack_dist		= 250;300.0 ;m
-min_rocket_attack_dist		= 100; 100 15.0	;m
-max_rocket_attack_dist		= 300;150.0 ;m
-time_between_rocket_attack	= 500 ; 1500 ; msec
-syncronize_rocket			= false; true
+use_rocket					= true			;              использовать ракеты при атаке
+use_mgun					= true			;              использовать пулемет при атаке
+min_mgun_attack_dist		= 50;15.0	;m   мин расстояние при котором можно исп пулемет
+max_mgun_attack_dist		= 250;300.0 ;m   макс расстояние при котором можно исп пулемет
+min_rocket_attack_dist		= 100;15.0	;m   мин расстояние при котором можно исп ракеты
+max_rocket_attack_dist		= 300;150.0 ;m   макс расстояние при котором можно исп ракеты
+time_between_rocket_attack	= 500 ; 1500 ; msec  задержка между ракетами
+syncronize_rocket			= false; true        пускать ракеты парами или по очереди (лев-прав-лев-прав)
 
-death_angular_vel			= 3.0,3.0,0.0
-death_lin_vel_koeff			= 1.2
+death_angular_vel			= 3.0,3.0,0.0  ; при гибели в воздухе дать угловую скорость модели      
+death_lin_vel_koeff			= 1.2          ; при гибели в воздухе умножить собственную лин скорость на коэфф
 
-fire_dispersion_base	= 4;2
-tracer_head_speed		= 150;200
+
+;------------------------------все для пулемета
+fire_dispersion_base	= 4   ; 2
+tracer_head_speed		= 150 ; 200
 tracer_trail_scale		= 1.25;0.75
 tracer_start_length		= 5;1
 tracer_width			= 0.25;0.1
@@ -78,10 +78,13 @@ shell_point				= 0.05, 0.22, 0.06
 shell_particles			= weapons\generic_shells
 snd_shoot				= weapons\pkm_shot
 
+
+;------------------------------все для ракетницы
 rocket_class			= helicopter_missile ;wpn_rpg7_missile 
 launch_speed			= 50;60;76 500
 
-burn_immunity			= 0.8	;коэффициенты иммунитета 
+;------------------------------коэффициенты иммунитета 
+burn_immunity			= 0.8	
 strike_immunity			= 0.0 ;0.7
 shock_immunity			= 0.0 ;1.0
 wound_immunity			= 0.0 ;0.15
@@ -90,10 +93,6 @@ telepatic_immunity		= 0.0 ;1.0
 chemical_burn_immunity	= 0.0 ;0.9
 fire_wound_immunity		= 0.45 ;0,35;0.1;0.05
 explosion_immunity		= 1
-
-//feel-vision
-;DynamicObjectsCount		= 32
-;transparency_threshold	 	= 0.25
 
 
 [helicopter_missile]
