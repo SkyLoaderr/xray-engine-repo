@@ -16,6 +16,8 @@
 #include "xrserver_objects_alife_monsters.h"
 using namespace ALife;
 
+#define USE_SWITCH_OPTION
+
 void CSE_ALifeSimulator::vfReleaseObject(CSE_Abstract *tpSE_Abstract, bool bALifeRequest)
 {
 #ifdef DEBUG
@@ -304,15 +306,21 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 
 	// checking if the object is online
 	if (I->m_bOnline) {
+#ifdef USE_SWITCH_OPTION
 		if (!I->can_switch_offline())
 			return;
+#endif
 		// checking if the object is not attached
 		if (0xffff == I->ID_Parent) {
 			// checking if the object is not a group of objects
 			CSE_ALifeGroupAbstract *tpALifeGroupAbstract = dynamic_cast<CSE_ALifeGroupAbstract*>(I);
 			if (!tpALifeGroupAbstract) {
 				// checking if the object is ready to switch offline
+#ifndef USE_SWITCH_OPTION
+				if (m_tpActor->o_Position.distance_to(I->o_Position) > m_fOfflineDistance)
+#else
 				if (!I->can_switch_online() || (m_tpActor->o_Position.distance_to(I->o_Position) > m_fOfflineDistance))
+#endif
 					vfSwitchObjectOffline(I);
 			}
 			else {
@@ -354,7 +362,11 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 				}
 				// checking if group is not empty
 				if (tpALifeGroupAbstract->m_tpMembers.size()) {
+#ifndef USE_SWITCH_OPTION
+					if (i == N)
+#else
 					if (!I->can_switch_online() || (i == N))
+#endif
 						vfSwitchObjectOffline(I);
 				}
 				else
@@ -377,8 +389,10 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 		}
 	}
 	else {
+#ifdef USE_SWITCH_OPTION
 		if (!I->can_switch_online())
 			return;
+#endif
 		// so, the object is offline
 		// checking if the object is not attached
 		if (0xffff == I->ID_Parent) {
@@ -397,7 +411,11 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 			}
 			
 			// checking if the object is ready to switch online
+#ifndef USE_SWITCH_OPTION
+			if (m_tpActor->o_Position.distance_to(I->o_Position) <= m_fOnlineDistance)
+#else
 			if (!I->can_switch_offline() || (m_tpActor->o_Position.distance_to(I->o_Position) <= m_fOnlineDistance))
+#endif
 				vfSwitchObjectOnline(I);
 		}
 		else {
