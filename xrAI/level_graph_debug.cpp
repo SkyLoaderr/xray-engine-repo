@@ -611,7 +611,8 @@ IC	bool compute_tangent(
 			if  (fsimilar(start_circle.radius,dest_circle.radius)) {
 				// so, our circles are equal
 				tangents[0]			= tangents[1] = start_circle;
-				tangents[0].point	= tangents[1].point = start.point;
+				adjust_point		(start_circle.center,yaw1 + PI_DIV_2,	start_circle.radius,tangents[0].point);
+//				tangents[0].point	= tangents[1].point = start.point;
 				tangents[0].angle	= 0.f;
 				assign_angle		(tangents[1].angle,start_yaw,dest_yaw,start_cp > 0);
 				return				(true);
@@ -667,7 +668,7 @@ IC	bool compute_tangent(
 	return				(true);
 }
 
-bool choose_tangent(
+IC	bool choose_tangent(
 	STrajectoryPoint	&start, 
 	STrajectoryPoint	&dest, 
 	const SCirclePoint	tangents[4][2], 
@@ -697,7 +698,7 @@ bool choose_tangent(
 	return				(true);
 }
 
-bool build_circle_trajectory(
+IC	bool build_circle_trajectory(
 	const STrajectoryPoint	&position, 
 	xr_vector<Fvector>		&path,
 	bool					start_point
@@ -720,20 +721,24 @@ bool build_circle_trajectory(
 	return				(true);
 }
 
-bool build_line_trajectory(
+IC	bool build_line_trajectory(
 	const STrajectoryPoint	&start, 
 	const STrajectoryPoint	&dest, 
 	xr_vector<Fvector>		&path
 )
 {
 	xr_vector<u32>		node_path;
+	if (ai().level_graph().inside(start.vertex_id,dest.point)) {
+		path.push_back	(dest.point);
+		return			(true);
+	}
 	u32					vertex_id = ai().level_graph().check_position_in_direction(start.vertex_id,start.position,start.point);
 	if (!ai().level_graph().valid_vertex_id(vertex_id))
 		return			(false);
 	return				(ai().level_graph().create_straight_PTN_path(vertex_id,start.point,dest.point,path,node_path,false,false));
 }
 
-bool build_trajectory(
+IC	bool build_trajectory(
 	const STrajectoryPoint	&start, 
 	const STrajectoryPoint	&dest, 
 	xr_vector<Fvector>		&path
@@ -755,7 +760,7 @@ bool build_trajectory(
 	return				(true);
 }
 
-bool compute_trajectory(
+IC	bool compute_trajectory(
 	STrajectoryPoint &start, 
 	STrajectoryPoint &dest, 
 	xr_vector<Fvector> &path

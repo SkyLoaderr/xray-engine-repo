@@ -84,7 +84,7 @@ public:
 		return				(u32(best_index));
 	}
 
-	IC	BOOL				flag				(u32 index, u8 flag_index) const
+	IC	bool				flag				(u32 index, u8 flag_index) const
 	{
 		VERIFY				((m_path->tpaWayPoints.size() > index) && (flag_index < 32));
 		return				(!!(m_path->tpaWayPoints[index].dwFlags & (u32(1) << flag_index)));
