@@ -13,7 +13,7 @@ function main()
 	end
 end
 
-class "create_map_tab" (ui_multiplayer_base_tab.multiplayer_create_base_tab)													   
+class "create_map_tab" (ui_multiplayer_base_tab.multiplayer_base_tab)													   
 
 function create_map_tab:__init() super()
 	self:InitControls()
