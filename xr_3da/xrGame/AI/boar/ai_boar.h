@@ -32,5 +32,4 @@ public:
 	virtual u8		get_legs_number		() {return QUADRUPEDAL;}
 	virtual bool	ability_can_drag	() {return true;}
 
-	virtual void	load_shared			(LPCSTR section);
 };

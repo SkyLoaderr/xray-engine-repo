@@ -56,12 +56,6 @@ void CAI_Dog::Load(LPCSTR section)
 	MotionMan.accel_chain_add		(eAnimWalkFwd,		eAnimRun);
 	MotionMan.accel_chain_add		(eAnimWalkDamaged,	eAnimRunDamaged);
 
-}
-
-void CAI_Dog::load_shared(LPCSTR section)
-{
-	inherited::load_shared(section);
-
 	if (!MotionMan.start_load_shared(SUB_CLS_ID)) return;
 
 	// define animation set
@@ -127,6 +121,7 @@ void CAI_Dog::load_shared(LPCSTR section)
 	MotionMan.STEPS_Load(pSettings->r_string(section, "step_params"), get_legs_number());
 
 	MotionMan.finish_load_shared();
+
 }
 
 

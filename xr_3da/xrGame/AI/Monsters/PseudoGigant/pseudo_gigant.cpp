@@ -48,11 +48,6 @@ void CPseudoGigant::Load(LPCSTR section)
 	step_effector.time			= pSettings->r_float(section,	"step_effector_time");
 	step_effector.amplitude		= pSettings->r_float(section,	"step_effector_amplitude");
 	step_effector.period_number	= pSettings->r_float(section,	"step_effector_period_number");
-}
-
-void CPseudoGigant::load_shared(LPCSTR section)
-{
-	inherited::load_shared(section);
 
 	if (!MotionMan.start_load_shared(SUB_CLS_ID)) return;
 
@@ -93,13 +88,13 @@ void CPseudoGigant::load_shared(LPCSTR section)
 	MotionMan.AddTransition(eAnimStandLieDown,	eAnimSleep,		eAnimLieToSleep,		false);										
 	MotionMan.AddTransition(PS_STAND,			eAnimSleep,		eAnimStandLieDown,		true);
 	MotionMan.AddTransition(PS_STAND,			PS_LIE,			eAnimStandLieDown,		false);
-	
+
 	MotionMan.AA_Load(pSettings->r_string(section, "attack_params"));
 	MotionMan.STEPS_Load(pSettings->r_string(section, "step_params"), get_legs_number());
 
 	MotionMan.finish_load_shared();
-}
 
+}
 
 
 void CPseudoGigant::StateSelector()

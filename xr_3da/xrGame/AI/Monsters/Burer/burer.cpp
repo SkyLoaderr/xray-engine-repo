@@ -108,12 +108,6 @@ void CBurer::Load(LPCSTR section)
 	m_tele_object_max_mass			= pSettings->r_float(section,"Tele_Object_Max_Mass");
 	m_tele_find_radius				= pSettings->r_float(section,"Tele_Find_Radius");
 
-}
-
-void CBurer::load_shared(LPCSTR section)
-{
-	inherited::load_shared(section);
-
 	if (!MotionMan.start_load_shared(SUB_CLS_ID)) return;
 
 	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND, 	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
@@ -133,15 +127,15 @@ void CBurer::load_shared(LPCSTR section)
 	MotionMan.AddAnim(eAnimScared,			"stand_scared_",		-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND, 	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
 	MotionMan.AddAnim(eAnimSteal,			"stand_steal_",			-1, &inherited::get_sd()->m_fsVelocitySteal,				PS_STAND, 	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
 	MotionMan.AddAnim(eAnimEat,				"sit_eat_",				-1, &inherited::get_sd()->m_fsVelocityNone,				PS_SIT, 	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");	
-	
+
 	MotionMan.AddAnim(eAnimSitIdle,			"sit_idle_",			-1, &inherited::get_sd()->m_fsVelocityNone,				PS_SIT, 	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
 	MotionMan.AddAnim(eAnimCheckCorpse,		"sit_check_corpse_",	-1, &inherited::get_sd()->m_fsVelocityNone,				PS_SIT, 	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
 	MotionMan.AddAnim(eAnimSitStandUp,		"sit_stand_up_",		-1, &inherited::get_sd()->m_fsVelocityNone,				PS_SIT, 	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");	
 	MotionMan.AddAnim(eAnimStandSitDown,	"stand_sit_down_",		-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND, 	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-	
+
 	MotionMan.AddTransition(PS_SIT,				PS_STAND,		eAnimSitStandUp,	false);
 	MotionMan.AddTransition(PS_STAND,			PS_SIT,			eAnimStandSitDown,	false);
-	
+
 	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
 	MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimSitIdle);
 	MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimSitIdle);
@@ -159,11 +153,10 @@ void CBurer::load_shared(LPCSTR section)
 
 	MotionMan.AA_Load(pSettings->r_string(section, "attack_params"));
 	MotionMan.STEPS_Load(pSettings->r_string(section, "step_params"), get_legs_number());
-	
+
 	MotionMan.finish_load_shared();
+
 }
-
-
 
 
 void CBurer::StateSelector()

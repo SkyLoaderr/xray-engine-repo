@@ -68,12 +68,6 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	
 	invisible_particle_name = pSettings->r_string(section,"Particle_Invisible");
 
-}
-
-void CAI_Bloodsucker::load_shared(LPCSTR section)
-{
-	inherited::load_shared(section);
-
 	if (!MotionMan.start_load_shared(SUB_CLS_ID)) return;
 
 	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND, 	"fx_run_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
@@ -127,7 +121,6 @@ void CAI_Bloodsucker::load_shared(LPCSTR section)
 
 	MotionMan.finish_load_shared();
 }
-
 
 void CAI_Bloodsucker::LoadEffector(LPCSTR section)
 {

@@ -97,8 +97,6 @@ public:
 			void	StartTeleObjectParticle(CGameObject *pO);
 			void	StopTeleObjectParticle(CGameObject *pO);
 
-	virtual void	load_shared			(LPCSTR section);
-
 private:
 
 	IState			*stateBurerAttack;

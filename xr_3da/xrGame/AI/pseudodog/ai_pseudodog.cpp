@@ -94,11 +94,7 @@ void CAI_PseudoDog::Load(LPCSTR section)
 	CSoundPlayer::add(pSettings->r_string(section,"sound_psy_attack"),	16,	SOUND_TYPE_MONSTER_ATTACKING,	1,	u32(1 << 31) | 15,	MonsterSpace::eMonsterSoundPsyAttack, "bip01_head");
 	
 	::Sound->create(psy_effect_sound,TRUE, pSettings->r_string(section,"sound_psy_effect"), SOUND_TYPE_WORLD);
-}
 
-void CAI_PseudoDog::load_shared(LPCSTR section)
-{
-	inherited::load_shared(section);
 	if (!MotionMan.start_load_shared(SUB_CLS_ID)) return;
 
 	// define animation set
@@ -160,9 +156,6 @@ void CAI_PseudoDog::load_shared(LPCSTR section)
 
 	MotionMan.finish_load_shared();
 }
-
-
-
 
 void CAI_PseudoDog::reload(LPCSTR section)
 {

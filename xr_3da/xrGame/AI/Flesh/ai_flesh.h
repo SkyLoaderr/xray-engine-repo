@@ -21,8 +21,6 @@ public:
 
 	virtual bool	ability_can_drag		() {return true;}
 	
-	virtual void	load_shared				(LPCSTR section);
-
 
 	// debug
 #ifdef DEBUG

@@ -47,12 +47,6 @@ void CController::Load(LPCSTR section)
 	MotionMan.accel_load			(section);
 	MotionMan.accel_chain_add		(eAnimWalkFwd,		eAnimRun);
 
-}
-
-void CController::load_shared(LPCSTR section)
-{
-	inherited::load_shared(section);
-
 	if (!MotionMan.start_load_shared(SUB_CLS_ID)) return;
 
 	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND);
