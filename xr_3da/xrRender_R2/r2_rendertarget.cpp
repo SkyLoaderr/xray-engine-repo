@@ -265,7 +265,7 @@ void	CRenderTarget::OnDeviceCreate	()
 							float	s0	=	_abs	(1-_abs	(0.05f*_sin(33.f*ld)+ld-ls));
 							float	s1	=	_abs	(1-_abs	(0.05f*_cos(33.f*ld*ls)+ld-ls));
 							float	s2	=	_abs	(1-_abs	(ld-ls));
-							fd		= ld;
+							fd		=	ld;
 							fs		=	powf	(_max(_max(s0,s1),s2), 24.f);
 							fs		*=	powf	(ld,1/8.f);
 								}	break;
@@ -285,6 +285,7 @@ void	CRenderTarget::OnDeviceCreate	()
 		}
 
 		// Build encode table - RG
+		/*
 		if (0)
 		{
 			// Surface
@@ -324,6 +325,7 @@ void	CRenderTarget::OnDeviceCreate	()
 			}
 			R_CHK						(t_encodeB_surf->UnlockRect	(0));
 		}
+		*/
 	}
 
 	// 
@@ -335,12 +337,6 @@ void	CRenderTarget::OnDeviceDestroy	()
 {
 	// Textures
 	t_material->surface_set		(NULL);
-	_RELEASE					(t_material_surf);
-	t_encodeRG->surface_set		(NULL);
-	_RELEASE					(t_encodeRG_surf);
-	t_encodeB->surface_set		(NULL);
-	_RELEASE					(t_encodeB_surf);
-
 	_RELEASE					(rt_smap_ZB				);
 
 	accum_spot_geom_destroy		();
