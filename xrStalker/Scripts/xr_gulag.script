@@ -14,15 +14,15 @@ function fract:__init(name, type, squad, groups)
 
 	self.Object = {}        
 	self.Job = {}           
-	self.States = {}	
+--	self.States = {}	
 	--' Функция для просчета состояний
-	self.calculateStates = nil
+--	self.calculateStates = nil
 
 	self.music = gulag_tasks.get_megafone(type, name) --' матюгальник
 	
 	gulag_tasks.loadJob(self.Job, name, type, squad, self.groups)
 	table.sort(self.Job, function(a,b) return a.prior > b.prior end)
-	self.calculateStates = gulag_tasks.loadStates(self.States, name, type)
+	self.calculateStates = gulag_tasks.loadStates(name, type)
 end
 function fract:addObject(npc)
 	if self:checkNpc(npc) == true then
