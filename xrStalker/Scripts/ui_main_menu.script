@@ -304,7 +304,7 @@ end
 
 
 function main_menu:OnKeyboard(dik, keyboard_action)  --virtual function
-	ui_base_dialog.base_dialog.OnKeyboard(self,dik,keyboard_action)
+	CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
 	
 	DIK_RETURN = 28
 	WINDOW_KEY_PRESSED = 6
