@@ -263,6 +263,9 @@
 			<File
 				RelativePath=".\xrSE_Factory.h">
 			</File>
+			<File
+				RelativePath=".\xrSE_Factory_import_export.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="Common"

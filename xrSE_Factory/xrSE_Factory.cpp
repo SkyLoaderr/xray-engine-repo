@@ -12,6 +12,7 @@
 #include "script_engine.h"
 #include "object_factory.h"
 #include "xrEProps.h"
+#include "xrSE_Factory_import_export.h"
 
 extern CSE_Abstract *F_entity_Create	(LPCSTR section);
 
@@ -27,12 +28,12 @@ IPropHelper &PHelper()
 	return						(_PHelper());
 }
 
-DLL_API CSE_Abstract *create_object	(LPCSTR section)
+DLL_API CSE_Abstract *create_entity	(LPCSTR section)
 {
 	return				(F_entity_Create(section));
 }
 
-DLL_API void destroy_object			(CSE_Abstract *&abstract)
+DLL_API void destroy_entity			(CSE_Abstract *&abstract)
 {
 	return				(F_entity_Destroy(abstract));
 }
