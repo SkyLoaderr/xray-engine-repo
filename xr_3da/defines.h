@@ -78,6 +78,7 @@ enum {
 	rsCompressLMAPs		= (1ul<<9ul),
 	rsOcclusion			= (1ul<<10ul),
 	rsStatistic			= (1ul<<11ul),
+	rsDetails			= (1ul<<12ul),
 	mtSound				= (1ul<<24ul),
 	mtInput				= (1ul<<25ul)
 };

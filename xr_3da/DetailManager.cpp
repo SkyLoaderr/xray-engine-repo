@@ -154,7 +154,8 @@ extern float r_ssaDISCARD;
 void CDetailManager::Render		(Fvector& vecEYE)
 {
 #ifndef _EDITOR
-	if (0==dtFS)	return;
+	if (0==dtFS)						return;
+	if (0==(psDeviceFlags&rsDetails))	return;
 #endif
 
 	float	r_ssaCHEAP			= 16*r_ssaDISCARD;

@@ -339,6 +339,7 @@ void CCC_Register()
 	CMD4(CCC_Float,		"rs_ssa_discard",		&ssaDISCARD,		1,  16		);
 	CMD4(CCC_Float,		"rs_ssa_dontsort",		&ssaDONTSORT,		16, 128		);
 	CMD4(CCC_Float,		"rs_ssa_hzb_vs_tex",	&ssaHZBvsTEX,		16,	512		);
+	CMD3(CCC_Mask,		"rs_detail",			&psDeviceFlags,		rsDetails	);
 	CMD4(CCC_Float,		"rs_detail_density",	&psDetailDensity,	.05f,0.3f	);
 	CMD4(CCC_Float,		"rs_detail_w_rot1",		&psDetail_w_rot1,	1.f,180.f	);
 	CMD4(CCC_Float,		"rs_detail_w_rot2",		&psDetail_w_rot2,	1.f,180.f	);
