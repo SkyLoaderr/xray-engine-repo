@@ -41,12 +41,6 @@ extern ENGINE_API IDirect3DBaseTexture9* TWLoader2D
 (
 		u32&				mem,
 		const char *		fname,
-		ETexturePF			Algorithm,
-		ETextureMipgen		Mipgen,
-		u32					Quality,
-		float				fContrast,
-		BOOL				bGrayscale,
-		BOOL				bSharpen,
 
 		// return values
 		D3DFORMAT&			fmt,

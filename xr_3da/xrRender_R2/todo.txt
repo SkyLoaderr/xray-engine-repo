@@ -41,26 +41,28 @@ now for each fragment:
 I think that's it? Any corrections/clarifications?
 ---
 Nice demo, Humus. The shadows do a nice job of hiding some of the ugly artifacts from the offset mapping 
-I noticed a couple posts complaining about things looking wrong at a distance, which is a good observation. Keep in mind that the offset I calculate in the fragment program is a small-angle approximation. This code
+I noticed a couple posts complaining about things looking wrong at a distance, which is a good observation. 
+Keep in mind that the offset I calculate in the fragment program is a small-angle approximation. This code
 
 # calculate offset
 TEX height, fragment.texcoord[0], texture[2], 2D;
-MAD height, height, 0.04, -0.02; # scale and bias
+MAD height, height, 0.04, -0.02;	# scale and bias
 MAD newtexcoord, height, eyevects, fragment.texcoord[0];
 
 should really look like this:
 
 # calculate offset
 TEX height, fragment.texcoord[0], texture[2], 2D;
-MAD height, height, 0.04, -0.02; # scale and bias
+MAD height, height, 0.04, -0.02;	# scale and bias
 RCP temp, eyevects.z;
 MUL height, height, temp;
 MAD newtexcoord, height, eyevects, fragment.texcoord[0];
 
 All I did there was add a couple instructions to divide the offset by the eye vector's z component. This is more mathematically correct in one sense because it increases the steep angle offsets to their proper lengths.
 
-However, all these offsets assume that the texcoord their pointing to is the same height as the texcoord they're starting at, which is almost never true. So making the offsets the correct length causes extra swimming in the textures and actually makes things look worse in my opinion. In a nutshell, I'm using a small angle approximation to tone down artifacts that result from another completely different approximation.
+However, all these offsets assume that the texcoord their pointing to is the same height as the texcoord they're 
+starting at, which is almost never true. So making the offsets the correct length causes extra swimming in the 
+textures and actually makes things look worse in my opinion. In a nutshell, I'm using a small angle approximation 
+to tone down artifacts that result from another completely different approximation.
 
 Anyway, I hope that explanation makes some sense. It's really hard to describe this stuff without drawing pictures :P
-
-[This message 
