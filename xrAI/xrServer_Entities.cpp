@@ -5,10 +5,12 @@
 #include "game_base.h"
 #include "clsid_game.h"
 #include "xrServer_Entities.h"
-#include "..\\xr_trims.h"
 
 #ifdef _EDITOR
 	#include "xr_tokens.h"
+	#include "xr_trims.h"
+#else
+	#include "..\\xr_trims.h"
 #endif
 
 xrSE_Weapon::xrSE_Weapon()

@@ -10,8 +10,12 @@
 #pragma hdrstop
 
 #include "xr_ini.h"
-#include "ai_alife_server_objects.h"
-#include "..\\xr_trims.h"
+#include "xrServer_Entities.h"
+#ifdef _EDITOR
+	#include "xr_trims.h"
+#else
+	#include "..\\xr_trims.h"
+#endif
 
 // CALifeObject
 void CALifeObject::STATE_Write(NET_Packet &tNetPacket)
