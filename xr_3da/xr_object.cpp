@@ -25,13 +25,14 @@ void CObject::cNameVisual_set	(ref_str N)
 		if (N==NameVisual)	return;
 
 	// replace model
-	::Render->model_Delete	(renderable.visual);
 	if (*N && N[0]) 
 	{
 		NameVisual			= N;
 		renderable.visual	= Render->model_Create	(*N);
+		::Render->model_Delete	(renderable.visual);
 	} else {
 		NameVisual			= 0;
+		::Render->model_Delete	(renderable.visual,TRUE);
 	}
 }
 
