@@ -156,8 +156,8 @@ public:
 	CCC_VID_Restart(LPCSTR N) : CConsoleCommand(N) { bEmptyArgsHandled = TRUE; };
 	virtual void Execute(LPCSTR args) {
 		if (Device.bReady) {
-			Device.Destroy();
-			Device.Create();
+			Device.Destroy	();
+			Device.Create	();
 		}
 	}
 };
