@@ -87,8 +87,9 @@ class ENGINE_API CCameraManager
 	Fvector					affected_vNormal;
 	Fvector					affected_vRight;
 
-	SPPInfo					unaffected_PP;
-	SPPInfo					affected_PP;
+	SPPInfo					pp_identity;
+	SPPInfo					pp_zero;
+	SPPInfo					pp_affected;
 public:
 	void					Dump				(void);
 	CEffector*				AddEffector			(CEffector* ef);

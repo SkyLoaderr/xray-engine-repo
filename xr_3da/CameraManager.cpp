@@ -48,11 +48,22 @@ CCameraManager::CCameraManager()
 	fFar			= 100;
 	fAspect			= 1.f;
 
-	unaffected_PP.blur = unaffected_PP.gray = unaffected_PP.duality.h = unaffected_PP.duality.v = 0;
-	unaffected_PP.noise.intensity=0; unaffected_PP.noise.grain = 0.2f;	unaffected_PP.noise.fps = 0;
-	unaffected_PP.color_base.set	(0,0,0);
-	unaffected_PP.color_gray.set	(0,0,0);
-	unaffected_PP.color_add.set		(0,0,0);
+	pp_identity.blur				= 0;
+	pp_identity.gray				= 0;
+	pp_identity.duality.h			= 0; 
+	pp_identity.duality.v			= 0;
+	pp_identity.noise.intensity		= 0;	
+	pp_identity.noise.grain			= 1.0f;	
+	pp_identity.noise.fps			= 30;
+	pp_identity.color_base.set		(.5f,	.5f,	.5f);
+	pp_identity.color_gray.set		(.333f,	.333f,	.333f);
+	pp_identity.color_add.set		(0,		0,		0);
+
+	pp_zero.blur = pp_zero.gray = pp_zero.duality.h = pp_zero.duality.v = 0;
+	pp_zero.noise.intensity=0;	pp_zero.noise.grain = 0.0f;	pp_zero.noise.fps = 0;
+	pp_zero.color_base.set		(0,0,0);
+	pp_zero.color_gray.set		(0,0,0);
+	pp_zero.color_add.set		(0,0,0);
 }
 
 CCameraManager::~CCameraManager()
@@ -189,12 +200,12 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 	}
 
 	// EffectorPP
-	affected_PP = unaffected_PP;
 	if(m_EffectorsPP.size()) {
+		affected_PP = pp_zero;
 		//Log("e-count:",m_EffectorsPP.size());
 		for(int i = m_EffectorsPP.size()-1; i >= 0; i--) {
 			CEffectorPP* eff	= m_EffectorsPP[i];
-			SPPInfo l_PPInf		= unaffected_PP;
+			SPPInfo l_PPInf		= pp_zero;
 			//Log					("camMMGR_gray_unf:",l_PPInf.gray);
 			if((eff->fLifeTime>0)&&eff->Process(l_PPInf)) {
 				affected_PP += l_PPInf;
@@ -202,6 +213,8 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 			//Log					("camMMGR_gray_aff:",affected_PP.gray);
 		}
 		affected_PP.normalize();
+	} else {
+		affected_PP		=	pp_identity;
 	}
 	
 	// Device params
