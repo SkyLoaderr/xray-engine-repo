@@ -111,6 +111,8 @@ using namespace std;
 #include "communicate.h"
 extern b_params	g_params;
 
+#include "build.h"
+
 // TODO: reference additional headers your program requires here
 
 //{{AFX_INSERT_LOCATION}}

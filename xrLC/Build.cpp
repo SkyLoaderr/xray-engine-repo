@@ -92,6 +92,7 @@ CBuild::CBuild(b_transfer * L)
 	Status	("Other transfer...");
 	transfer("materials",	materials,	L->material,	L->mtl_count);
 	transfer("shaders",		shader_names,L->shaders,	L->shader_count);
+	transfer("shaders_xrlc",shader_xrlc_names,L->shaders_xrlc,	L->shader_xrlc_count);
 	transfer("glows",		glows,		L->glows,		L->glow_count);
 	transfer("occluders",	occluders,	L->occluders,	L->occluder_count);
 	transfer("portals",		portals,	L->portals,		L->portal_count);
@@ -148,12 +149,17 @@ CBuild::CBuild(b_transfer * L)
 	for (DWORD m=0; m<materials.size(); m++)
 	{
 		b_material &M = materials[m];
-		int id = shaders.GetID(shader_names[M.shader_xrlc].name);
-		if (id<0) {
-			Msg("ERROR: Shader '%s' not found in library",shader_names[M.shader].name);
-			R_ASSERT(id>=0);
+		if (65535==M.shader_xrlc)	{
+			// No compiler shader
+			M.reserved	= DWORD(-1);
+		} else {
+			int id = shaders.GetID(shader_xrlc_names[M.shader_xrlc].name);
+			if (id<0) {
+				Msg("ERROR: Shader '%s' not found in library",shader_names[M.shader].name);
+				R_ASSERT(id>=0);
+			}
+			M.reserved = DWORD(id);
 		}
-		M.reserved = DWORD(id);
 	}
 
 	Progress(p_total+=p_cost);

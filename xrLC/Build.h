@@ -55,6 +55,7 @@ public:
 	
 	vector<b_material>		materials;
 	vector<b_shader>		shader_names;
+	vector<b_shader>		shader_xrlc_names;
 	vector<b_BuildTexture>	textures;
 
 	vector<b_glow>			glows;
