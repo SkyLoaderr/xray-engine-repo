@@ -4,6 +4,7 @@
 -- Copyright:   2004 GSC Game World
 -- Author:      Serhiy Vynnychenko (narrator@gsc-game.kiev.ua)
 -- Version:     0.1
+module("ui_new_game_dialog")
 
 
 function main()
