@@ -6,6 +6,9 @@
 #define AFX_LIGHTTRACK_H__89914D61_AC0B_4C7C_BA8C_D7D810738CE7__INCLUDED_
 #pragma once
 
+const float					lt_inc			= 1.f;
+const float					lt_dec			= 1.f;
+
 class ENGINE_API CLightTrack  
 {
 public:
@@ -13,14 +16,14 @@ public:
 	{
 		int					id;
 		Collide::ray_cache	Cache;
-		float				fuzzy;			// note range: (-1[no]..1[yes])
-		float				fuzzy_smooth;
+		float				test;			// note range: (-1[no]..1[yes])
+		float				energy;
 		DWORD				mark;
 	};
 	vector<Item>			track;
 public:
-	CLightTrack();
-	~CLightTrack();
+	void					add				(int id);
+	void					remove			(int id);
 };
 
 #endif // !defined(AFX_LIGHTTRACK_H__89914D61_AC0B_4C7C_BA8C_D7D810738CE7__INCLUDED_)
