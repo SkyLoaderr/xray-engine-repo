@@ -124,10 +124,10 @@ void CAI_Space::vfLoadSearch()
 	fSize2		= _sqr(fSize = this->m_header.size)/4;
 	fYSize2		= _sqr(fYSize = (float)(this->m_header.size_y/32767.0))/4;
 
-	//DWORD S1	= (this->m_header.count + 1) *	sizeof(TNode);	taHeap		= (TNode *) xr_malloc(S1); ZeroMemory(taHeap,S1);
-	//DWORD S2	= (this->m_header.count)	 *	sizeof(TNode*);	tpaIndexes	= (TNode **)xr_malloc(S2); ZeroMemory(tpaIndexes,S2);
-	taHeap		= (TNode *)calloc((this->m_header.count + 1), sizeof(TNode));
-	tpaIndexes	= (TIndexNode *)calloc(this->m_header.count, sizeof(TIndexNode));
+	DWORD S1	= (this->m_header.count + 1) *	sizeof(TNode);		taHeap		= (TNode *)		xr_malloc(S1); ZeroMemory(taHeap,S1);
+	DWORD S2	= (this->m_header.count)	 *	sizeof(TIndexNode);	tpaIndexes	= (TIndexNode *)xr_malloc(S2); ZeroMemory(tpaIndexes,S2);
+	// taHeap		= (TNode *)calloc((this->m_header.count + 1), sizeof(TNode));
+	// tpaIndexes	= (TIndexNode *)calloc(this->m_header.count, sizeof(TIndexNode));
 }
 
 void CAI_Space::vfUnloadSearch()
