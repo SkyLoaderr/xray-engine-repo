@@ -75,7 +75,7 @@ void COccluderSystem::Select(CFrustum& F)
 		sPoly					poly_dest,poly_src;
 		for (DWORD I=0; I<occluders.size(); I++)
 		{
-			vector<Fvector>	&verts	= occluders[I];
+			svector<Fvector,8>	&verts	= occluders[I];
 			
 			poly_src.assign(verts.begin(),verts.size());
 			
