@@ -68,22 +68,18 @@ void CCustomZone::Load(LPCSTR section) {
 	inherited::Load(section);
 
 	LPCSTR l_PSnd = pSettings->r_string(section,"sound");
-	if (l_PSnd)
-		SoundCreate(m_ambient, l_PSnd);
+	SoundCreate(m_ambient, l_PSnd);
 
-
-	if (pSettings->r_string(section,"effects")) {
-		strcpy(m_effectsSTR, pSettings->r_string(section,"effects"));
-		char* l_effectsSTR = m_effectsSTR; R_ASSERT(l_effectsSTR);
-		m_effects.clear(); m_effects.push_back(l_effectsSTR);
-		while(*l_effectsSTR) {
-			if(*l_effectsSTR == ',') {
-				*l_effectsSTR = 0; l_effectsSTR++;
-				while(*l_effectsSTR == ' ' || *l_effectsSTR == '\t') l_effectsSTR++;
-				m_effects.push_back(l_effectsSTR);
-			}
-			l_effectsSTR++;
+	strcpy(m_effectsSTR, pSettings->r_string(section,"effects"));
+	char* l_effectsSTR = m_effectsSTR; R_ASSERT(l_effectsSTR);
+	m_effects.clear(); m_effects.push_back(l_effectsSTR);
+	while(*l_effectsSTR) {
+		if(*l_effectsSTR == ',') {
+			*l_effectsSTR = 0; l_effectsSTR++;
+			while(*l_effectsSTR == ' ' || *l_effectsSTR == '\t') l_effectsSTR++;
+			m_effects.push_back(l_effectsSTR);
 		}
+		l_effectsSTR++;
 	}
 
 // @@@ WT: !!!!!бпелеммн!!!!!
