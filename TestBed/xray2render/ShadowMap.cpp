@@ -1539,10 +1539,12 @@ HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 {
 	LPDIRECT3DSURFACE9						pBaseTarget;
 	LPDIRECT3DSURFACE9						pBaseZB;
+	D3DVIEWPORT9							oldViewport;
 
-	// Set new render targets
+	// Get targets and viewport
 	m_pd3dDevice->GetRenderTarget			(0, &pBaseTarget	);
 	m_pd3dDevice->GetDepthStencilSurface	(&pBaseZB			);
+	m_pd3dDevice->GetViewport				(&oldViewport);
 
 	// Set Bloom 1
 	m_pd3dDevice->SetRenderTarget			(0, d_Bloom_1_S		);
@@ -1565,6 +1567,16 @@ HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MINFILTER,	D3DTEXF_POINT);
 	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MIPFILTER,	D3DTEXF_POINT);
 	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MAGFILTER,	D3DTEXF_POINT);
+
+	// Setup viewport
+	D3DVIEWPORT9	VP;
+	VP.X									= 0;
+	VP.Y									= 0;
+	VP.Width								= m_d3dsdBackBuffer.Width;
+	VP.Height								= m_d3dsdBackBuffer.Height;
+	VP.MinZ									= 0.0f;
+	VP.MaxZ									= 1.0f;
+	m_pd3dDevice->SetViewport				(&VP);
 
 	// Shader and params
 	m_pd3dDevice->SetPixelShader			(s_Combine_Bloom.ps);
