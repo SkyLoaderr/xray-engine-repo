@@ -127,3 +127,23 @@ void game_sv_GameState::net_Export_Update						(NET_Packet& P, u32 id_to, u32 id
 	}
 	Unlock		();
 }
+
+void game_sv_GameState::OnRoundStart			()
+{
+	phase		= GAME_PHASE_INPROGRESS;
+
+	// clear "ready" flag
+	Lock	();
+	u32		cnt		= get_count	();
+	for		(u32 it=0; it<cnt; it++)	
+	{
+		game_PlayerState*	ps	=	get_it	(it);
+		ps->flags				&=	~GAME_PLAYER_FLAG_READY;
+	}
+	Unlock	();
+}
+
+void game_sv_GameState::OnRoundEnd				(LPCSTR reason)
+{
+	phase		= GAME_PHASE_INPROGRESS;
+}

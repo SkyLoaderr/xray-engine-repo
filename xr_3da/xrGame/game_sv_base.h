@@ -30,8 +30,8 @@ public:
 	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)	= 0;
 	virtual		BOOL				OnTargetTouched			(u32 id_who, u32 eid_target)	= 0;	// TRUE=allow ownership, FALSE=denie
 
-	virtual		void				OnRoundStart			()								{};		// старт раунда
-	virtual		void				OnRoundEnd				(LPCSTR reason)					{};		// конец раунда
+	virtual		void				OnRoundStart			();										// старт раунда
+	virtual		void				OnRoundEnd				(LPCSTR reason);						// конец раунда
 
 	virtual		void				OnTeamScore				(u32 team)						{};		// команда выиграла
 	virtual		void				OnTeamsInDraw			()								{};		// ничья
