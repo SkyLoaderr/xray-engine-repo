@@ -11,9 +11,6 @@ local mnstr = {
 function main()
 
 	local waiters = m_manager.Easy()
-    if( mnstr == nil ) then printf(  "nil1" ) end
-    if( this.monstr == nil ) then printf(  "nil2" ) end
-    printf( "amount ==== %d", table.getn( mnstr ) )
     for i = 1, table.getn( mnstr ) do
     	waiters:insert( m_waiter.waiter( mnstr[i], this.script_name() ) )
     end
