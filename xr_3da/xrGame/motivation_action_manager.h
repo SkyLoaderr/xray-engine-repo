@@ -10,6 +10,7 @@
 
 #include "motivation_manager.h"
 #include "action_planner.h"
+#include "action_planner_action.h"
 #include "motivation.h"
 #include "motivation_action.h"
 #include "script_export_space.h"
@@ -43,6 +44,7 @@ public:
 	virtual void	reload						(LPCSTR section);
 	virtual void	update						(u32 time_delta);
 	virtual void	clear						();
+	IC		void	add_action					(const _edge_type &, CScriptActionPlannerAction *);
 	IC		void	clear_motivations			();
 	IC		void	clear_actions				();
 	DECLARE_SCRIPT_REGISTER_FUNCTION

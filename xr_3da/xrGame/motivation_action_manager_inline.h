@@ -82,5 +82,12 @@ IC	void CSMotivationActionManager::add_condition	(CWorldState &goal, _condition_
 	goal.add_condition					(CWorldProperty(condition_id,value));
 }
 
+TEMPLATE_SPECIALIZATION
+IC	void CSMotivationActionManager::add_action		(const _edge_type &a, CScriptActionPlannerAction *b)
+{
+	add_operator(a,b);
+}
+
+
 #undef TEMPLATE_SPECIALIZATION
 #undef CSMotivationActionManager

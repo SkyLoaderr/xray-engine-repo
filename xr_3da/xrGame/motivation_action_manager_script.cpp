@@ -10,6 +10,7 @@
 #include "script_motivation_action_manager_wrapper.h"
 #include "script_space.h"
 #include "script_game_object.h"
+#include <luabind/adopt_policy.hpp>
 
 using namespace luabind;
 
@@ -26,5 +27,7 @@ void CMotivationActionManager<CScriptGameObject>::script_register(lua_State *L)
 			.def("clear",						&CScriptMotivationActionManager::clear)
 			.def("clear_motivations",			&CScriptMotivationActionManager::clear_motivations)
 			.def("clear_actions",				&CScriptMotivationActionManager::clear_actions)
+			.def("add_action",					&CScriptMotivationActionManager::add_operator,adopt(_3))
+			.def("add_action",					(void (CScriptMotivationActionManager::*)(const CScriptActionPlanner::_edge_type &, CScriptActionPlanner::COperator *))(CScriptMotivationActionManager::add_operator),adopt(_3))
 	];
 }
