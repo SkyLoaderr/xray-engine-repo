@@ -75,6 +75,7 @@ public:
 	CMotionDef*			m_idle;
 	SAnimState			m_walk;
 	SAnimState			m_run;
+	int					m_iHealth;
 
 	// movement
 	float				m_fWalkAccel;

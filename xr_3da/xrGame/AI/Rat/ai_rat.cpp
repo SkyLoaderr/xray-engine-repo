@@ -78,8 +78,8 @@ void CAI_Rat::Load(CInifile* ini, const char* section)
 	m_tpaAttackAnimations[1] = PKinematics(pVisual)->ID_Cycle_Safe("attack_2");
 	m_tpaAttackAnimations[2] = PKinematics(pVisual)->ID_Cycle_Safe("attack_3");
 
-	int spine_bone			= PKinematics(pVisual)->LL_BoneID("bip01_spine2");
-	PKinematics(pVisual)->LL_GetInstance(spine_bone).set_callback(SpinCallback,this);
+	//int spine_bone			= PKinematics(pVisual)->LL_BoneID("bip01_spine2");
+	//PKinematics(pVisual)->LL_GetInstance(spine_bone).set_callback(SpinCallback,this);
 }
 
 // when someone hit rat

@@ -125,7 +125,7 @@ void CCustomMonster::Load(CInifile* ini, const char* section)
 	PKinematics(pVisual)->LL_GetInstance(spine_bone).set_callback(SpinCallback,this);
 
 	//
-	iHealth = ini->ReadINT(section,"health");
+	m_iHealth = ini->ReadINT(section,"health");
 
 	// Sheduler
 	dwMinUpdate	= 25;
@@ -512,6 +512,7 @@ void CCustomMonster::Death	()
 BOOL CCustomMonster::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
 {
 	if (!inherited::Spawn(bLocal,server_id,o_pos,o_angle,P,flags))	return FALSE;
+	iHealth = m_iHealth;
 	AI_Path.DestNode		= AI_NodeID;
 
 	eye_matrix.identity	();
