@@ -95,9 +95,11 @@ void	game_cl_GameState::OnGameMessage	(NET_Packet& P)
 	u32 Message;
 	P.r_u32(Message);
 
+	string512 Text;
 	char	Color_Weapon[]	= "%c0,255,0";
 	char	Color_Main[]	= "%c192,192,192";
 	LPSTR	Color_Teams[3]	= {"%c255,255,255", "%c255,0,0", "%c0,0,255"};
+	LPSTR	TeamsNames[3]	= {"Zero Team", "Team Red", "Team Blue"};
 
 	switch (Message)
 	{
@@ -106,7 +108,6 @@ void	game_cl_GameState::OnGameMessage	(NET_Packet& P)
 			string64 PlayerName;
 			P.r_string(PlayerName);
 			
-			string512 Text;
 			sprintf(Text, "%sPlayer %s%s %sconnected",Color_Main,Color_Teams[0],PlayerName,Color_Main);
 			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
 		}break;
@@ -115,7 +116,6 @@ void	game_cl_GameState::OnGameMessage	(NET_Packet& P)
 			string64 PlayerName;
 			P.r_string(PlayerName);
 
-			string512 Text;
 			sprintf(Text, "%sPlayer %s%s %sdisconnected",Color_Main,Color_Teams[0],PlayerName,Color_Main);
 			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
 		}break;
@@ -132,7 +132,6 @@ void	game_cl_GameState::OnGameMessage	(NET_Packet& P)
 
 			if (!pPlayer || !pKiller) break;
 
-			string512 Text;
 			if (pWeapon && WeaponID != 0)
 				sprintf(Text, "%s%s %skilled from %s%s %sby %s%s", 
 								Color_Teams[pPlayer->team], 
@@ -144,16 +143,46 @@ void	game_cl_GameState::OnGameMessage	(NET_Packet& P)
 								Color_Teams[pKiller->team], 
 								pKiller->name);
 			else
-//*
 				sprintf(Text, "%s%s %skilled by %s%s",
 								Color_Teams[pPlayer->team],
 								pPlayer->name, 
 								Color_Main,
 								Color_Teams[pKiller->team],
 								pKiller->name);
-//*/
-//								sprintf(Text, "%%c128,128,128 dead %s", pPlayer->name);
 
+			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
+		}break;
+	case GMSG_PLAYER_JOIN_TEAM:
+		{
+			string64 PlayerName;
+			P.r_string	(PlayerName);
+			u16 Team;
+			P.r_u16		(Team);
+
+			sprintf(Text, "%s%s %sjoined %s%s",
+							Color_Teams[0],
+							PlayerName,
+							Color_Main,
+							Color_Teams[Team],
+							TeamsNames[Team]);
+			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
+		}break;
+	case GMSG_PLAYER_SWITCH_TEAM:
+		{
+			u16 PlayerID, OldTeam, NewTeam;
+			P.r_u16 (PlayerID);
+			P.r_u16 (OldTeam);
+			P.r_u16 (NewTeam);
+
+			game_cl_GameState::Player* pPlayer = GetPlayerByGameID(PlayerID);
+			if (!pPlayer) break;
+
+			sprintf(Text, "%s%s %shas switched to %s%s", 
+							Color_Teams[0], 
+							pPlayer->name, 
+							Color_Main, 
+							Color_Teams[NewTeam], 
+							TeamsNames[NewTeam]);
 			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
 		}break;
 	default:

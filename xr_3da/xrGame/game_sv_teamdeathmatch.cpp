@@ -43,6 +43,18 @@ void game_sv_TeamDeathmatch::OnPlayerConnect	(u32 id_who)
 	LPCSTR	options			=	get_name_id	(id_who);
 
 	ps_who->team				=	u8(get_option_i(options,"team",AutoTeam()));
+
+	xrClientData* xrCData	=	Level().Server->ID_to_client(id_who);
+	// Send Message About Client join Team
+	if (xrCData)
+	{
+		NET_Packet			P;
+		P.w_begin			(M_GAMEMESSAGE);
+		P.w_u32				(GMSG_PLAYER_JOIN_TEAM);
+		P.w_string			(get_option_s(xrCData->Name,"name",xrCData->Name));
+		P.w_u16				(ps_who->team);
+		u_EventSend(P);
+	};
 }
 
 void game_sv_TeamDeathmatch::OnPlayerChangeTeam(u32 id_who, s16 team) 
@@ -51,22 +63,30 @@ void game_sv_TeamDeathmatch::OnPlayerChangeTeam(u32 id_who, s16 team)
 	if (!team) team = AutoTeam();
 	if (!ps_who || ps_who->team == team) return;
 	
-	ps_who->team = team;
-	Memory.mem_fill(ps_who->Slots, 0xff, sizeof(ps_who->Slots));
-//	ps_who->kills--;
-//	ps_who->deaths++;
-
 	if (OnServer())
 	{
 		KillPlayer(id_who);
 	};	
+/////////////////////////////////////////////////////////
+	//Send Switch team message
+	NET_Packet			P;
+	P.w_begin			(M_GAMEMESSAGE);
+	P.w_u32				(GMSG_PLAYER_SWITCH_TEAM);
+	P.w_u16				(ps_who->GameID);
+	P.w_u16				(ps_who->team);
+	P.w_u16				(team);
+	u_EventSend(P);
+/////////////////////////////////////////////////////////
+	ps_who->team = team;
+	Memory.mem_fill(ps_who->Slots, 0xff, sizeof(ps_who->Slots));
 
+/*
 	xrClientData* xrCData	=	Level().Server->ID_to_client(id_who);
 	char	pTeamName[2][1024] = {"Red Team", "Blue Team"};
 	DWORD	pTeamColor[2] = {0xffff0000, 0xff0000ff};
 	
 	HUD().outMessage		(pTeamColor[team-1],"","%s has switched to %s",get_option_s(xrCData->Name,"name",xrCData->Name), pTeamName[team-1]);
-		
+*/		
 	signal_Syncronize();
 }
 
