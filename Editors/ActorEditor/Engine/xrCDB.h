@@ -26,16 +26,15 @@ namespace Opcode {
 	class AABBNoLeafNode;
 };
 
-#pragma pack(push,4)
+#pragma pack(push,8)
 namespace CDB
 {
 	// Triangle
 	class XRCDB_API TRI					//*** 16 bytes total (was 32 :)
 	{
 	public:
-		Fvector*		verts	[3];	// 3*4 = 12b
-		union
-		{
+		u32				verts	[3];	// 3*4 = 12b
+		union	{
 			u32			dummy;			// 4b
 			struct {
 				u16		material;		// 2b
@@ -43,11 +42,7 @@ namespace CDB
 			};
 		};
 	public:
-		IC Fvector&		V(u32 id)	{return *(verts[id]);	}
-
-		IC u32*			IDverts()	{return (u32*)	verts;	}
-		void			convert_I2P	(Fvector* pBaseV);
-		void			convert_P2I	(Fvector* pBaseV);
+		IC u32*			IDverts()		{ return verts;	}
 	};
 
 	// Build callback
