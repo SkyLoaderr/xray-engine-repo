@@ -711,35 +711,27 @@ void CCustomMonster::Exec_Action(float dt)
 {
 }
 
-void CCustomMonster::SetScriptControl(const bool bScriptControl, LPCSTR caSciptName)
+
+void CCustomMonster::renderable_Render()
 {
-	m_bScriptControl	= bScriptControl;
-	strcpy				(m_caScriptName,caSciptName);
-#ifdef DEBUG
-	if (bScriptControl)
-		Msg				("* Script %s set object %s under its control",caSciptName,cName());
-	else
-		Msg				("* Script %s freed object %s from its control",caSciptName,cName());
-#endif
+	inherited::renderable_Render		();
 }
 
-bool CCustomMonster::GetScriptControl() const
+void CCustomMonster::Hit(float P, Fvector &dir,CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type)
 {
-	return				(m_bScriptControl);
+	inherited::Hit			(P,dir,who,element,position_in_object_space,impulse, hit_type);
 }
 
-LPCSTR CCustomMonster::GetScriptControlName() const
+void CCustomMonster::OnEvent(NET_Packet& P, u16 type)
 {
-	return				(m_caScriptName);
+	inherited::OnEvent		(P,type);
 }
 
-bool CCustomMonster::CheckObjectVisibility(const CObject *tpObject)
+void CCustomMonster::net_Destroy()
 {
-	feel_vision_get		(m_tpaVisibleObjects);
-	xr_vector<CObject*>::const_iterator	I = m_tpaVisibleObjects.begin();
-	xr_vector<CObject*>::const_iterator	E = m_tpaVisibleObjects.end();
-	for ( ; I != E; I++)
-		if (tpObject == dynamic_cast<CObject*>(*I))
-			return		(true);
-	return				(false);
+	inherited::net_Destroy	();
+}
+
+void CCustomMonster::ResetScriptData(void *P)
+{
 }

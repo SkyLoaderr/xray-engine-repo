@@ -504,6 +504,9 @@
 						Name="ai_custom"
 						Filter="">
 						<File
+							RelativePath=".\ai_monster_space.h">
+						</File>
+						<File
 							RelativePath=".\CustomMonster.cpp">
 						</File>
 						<File
@@ -803,6 +806,16 @@
 						</File>
 						<File
 							RelativePath=".\ai\boar\ai_boar.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="ai_script"
+						Filter="">
+						<File
+							RelativePath=".\Ai\script\ai_script_monster.cpp">
+						</File>
+						<File
+							RelativePath=".\Ai\script\ai_script_monster.h">
 						</File>
 					</Filter>
 				</Filter>
@@ -2938,12 +2951,6 @@
 			RelativePath=".\blockpost.cpp">
 			<FileConfiguration
 				Name="Debug|Win32"
-				ExcludedFromBuild="TRUE">
-				<Tool
-					Name="VCCLCompilerTool"/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Mixed|Win32"
 				ExcludedFromBuild="TRUE">
 				<Tool
 					Name="VCCLCompilerTool"/>

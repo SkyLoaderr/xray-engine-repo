@@ -34,9 +34,9 @@ public:
 		eGoalTypeDummy = u32(-1),
 	};
 
-	StalkerSpace::EBodyState		m_tBodyState;
-	StalkerSpace::EMovementType		m_tMovementType;
-	StalkerSpace::EPathType			m_tPathType;
+	MonsterSpace::EBodyState		m_tBodyState;
+	MonsterSpace::EMovementType		m_tMovementType;
+	MonsterSpace::EPathType			m_tPathType;
 	CObject							*m_tpObjectToGo;
 	string32						m_caPatrolPathToGo;
 	Fvector							m_tDestinationPosition;
@@ -55,7 +55,7 @@ public:
 		SetObjectToGo		(0);
 	}
 
-							CMovementAction		(StalkerSpace::EBodyState tBodyState, StalkerSpace::EMovementType tMovementType, StalkerSpace::EPathType tPathType, CLuaGameObject *tpObjectToGo, float fSpeed = 0.f)
+							CMovementAction		(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, MonsterSpace::EPathType tPathType, CLuaGameObject *tpObjectToGo, float fSpeed = 0.f)
 	{
 		SetBodyState		(tBodyState);
 		SetMovementType		(tMovementType);
@@ -64,7 +64,7 @@ public:
 		SetSpeed			(fSpeed);
 	}
 
-							CMovementAction		(StalkerSpace::EBodyState tBodyState, StalkerSpace::EMovementType tMovementType, StalkerSpace::EPathType tPathType, LPCSTR caPatrolPathToGo, float fSpeed = 0.f)
+							CMovementAction		(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, MonsterSpace::EPathType tPathType, LPCSTR caPatrolPathToGo, float fSpeed = 0.f)
 	{
 		SetBodyState		(tBodyState);
 		SetMovementType		(tMovementType);
@@ -73,7 +73,7 @@ public:
 		SetSpeed			(fSpeed);
 	}
 
-							CMovementAction		(StalkerSpace::EBodyState tBodyState, StalkerSpace::EMovementType tMovementType, StalkerSpace::EPathType tPathType, const Fvector &tPosition, float fSpeed = 0.f)
+							CMovementAction		(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, MonsterSpace::EPathType tPathType, const Fvector &tPosition, float fSpeed = 0.f)
 	{
 		SetBodyState		(tBodyState);
 		SetMovementType		(tMovementType);
@@ -92,19 +92,19 @@ public:
 		m_tGoalType			= eGoalTypeNoPathPosition;
 	}
 
-			void			SetBodyState		(const StalkerSpace::EBodyState tBodyState)
+			void			SetBodyState		(const MonsterSpace::EBodyState tBodyState)
 	{
 		m_tBodyState		= tBodyState;
 		m_bCompleted		= false;
 	}
 
-			void			SetMovementType		(const StalkerSpace::EMovementType tMovementType)
+			void			SetMovementType		(const MonsterSpace::EMovementType tMovementType)
 	{
 		m_tMovementType		= tMovementType;
 		m_bCompleted		= false;
 	}
 
-			void			SetPathType			(const StalkerSpace::EPathType tPathType)
+			void			SetPathType			(const MonsterSpace::EPathType tPathType)
 	{
 		m_tPathType			= tPathType;
 		m_bCompleted		= false;
@@ -141,7 +141,7 @@ public:
 		eGoalTypeDummy = u32(-1),
 	};
 	CObject							*m_tpObjectToWatch;
-	StalkerSpace::ELookType			m_tWatchType;
+	MonsterSpace::ELookType			m_tWatchType;
 	EGoalType						m_tGoalType;
 	Fvector							m_tWatchVector;
 
@@ -153,19 +153,19 @@ public:
 		m_tGoalType			= eGoalTypeWatchType;
 	}
 
-							CWatchAction		(StalkerSpace::ELookType tWatchType)
+							CWatchAction		(MonsterSpace::ELookType tWatchType)
 	{
 		SetWatchType		(tWatchType);
 		m_tGoalType			= eGoalTypeWatchType;
 	}
 
-							CWatchAction		(StalkerSpace::ELookType tWatchType, const Fvector &tDirection)
+							CWatchAction		(MonsterSpace::ELookType tWatchType, const Fvector &tDirection)
 	{
 		SetWatchDirection	(tDirection);
 		SetWatchType		(tWatchType);
 	}
 
-							CWatchAction		(StalkerSpace::ELookType tWatchType, CLuaGameObject *tpObjectToWatch)
+							CWatchAction		(MonsterSpace::ELookType tWatchType, CLuaGameObject *tpObjectToWatch)
 	{
 		SetWatchType		(tWatchType);
 		SetWatchObject		(tpObjectToWatch);
@@ -173,7 +173,7 @@ public:
 
 			void			SetWatchObject		(CLuaGameObject *tpObjectToWatch);
 
-			void			SetWatchType		(StalkerSpace::ELookType tWatchType)
+			void			SetWatchType		(MonsterSpace::ELookType tWatchType)
 	{
 		m_tWatchType		= tWatchType;
 		m_bCompleted		= false;
@@ -195,7 +195,7 @@ public:
 		eGoalTypeDummy = u32(-1),
 	};
 	string32						m_caAnimationToPlay;
-	StalkerSpace::EMentalState		m_tMentalState;
+	MonsterSpace::EMentalState		m_tMentalState;
 	EGoalType						m_tGoalType;
 
 							CAnimationAction	()
@@ -211,7 +211,7 @@ public:
 		SetAnimation		(caAnimationToPlay);
 	}
 
-							CAnimationAction	(StalkerSpace::EMentalState tMentalState)
+							CAnimationAction	(MonsterSpace::EMentalState tMentalState)
 	{
 		SetMentalState		(tMentalState);
 	}
@@ -224,7 +224,7 @@ public:
 		m_bCompleted		= false;
 	}
 
-			void			SetMentalState		(StalkerSpace::EMentalState tMentalState)
+			void			SetMentalState		(MonsterSpace::EMentalState tMentalState)
 	{
 		m_tMentalState		= tMentalState;
 		m_tGoalType			= eGoalTypeMental;
@@ -363,7 +363,7 @@ public:
 		eObjectActionTypeDummy = u32(-1),
 	};
 	CObject							*m_tpObject;
-	StalkerSpace::EObjectAction		m_tGoalType;
+	MonsterSpace::EObjectAction		m_tGoalType;
 
 							CObjectAction		()
 	{
@@ -372,7 +372,7 @@ public:
 		m_bCompleted		= false;
 	}
 
-							CObjectAction		(CLuaGameObject *tpLuaGameObject, StalkerSpace::EObjectAction tObjectActionType)
+							CObjectAction		(CLuaGameObject *tpLuaGameObject, MonsterSpace::EObjectAction tObjectActionType)
 	{
 		SetObject			(tpLuaGameObject);
 		SetObjectAction		(tObjectActionType);
@@ -380,7 +380,7 @@ public:
 
 			void			SetObject			(CLuaGameObject *tpLuaGameObject);
 
-			void			SetObjectAction		(StalkerSpace::EObjectAction tObjectActionType)
+			void			SetObjectAction		(MonsterSpace::EObjectAction tObjectActionType)
 	{
 		m_tGoalType			= tObjectActionType;
 		m_bCompleted		= false;

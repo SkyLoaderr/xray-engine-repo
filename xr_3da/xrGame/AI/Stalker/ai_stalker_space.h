@@ -34,71 +34,6 @@ DEFINE_VECTOR							(ref_sound,SOUND_VECTOR,SOUND_IT);
 #endif
 
 namespace StalkerSpace {
-	enum EBodyState {
-		eBodyStateCrouch = 0,
-		eBodyStateStand,
-		eBodyStateStandDamaged,
-	};
-
-	enum EMovementType {
-		eMovementTypeWalk = 0,
-		eMovementTypeRun,
-		eMovementTypeStand,
-	};
-
-	enum EMovementDirection {
-		eMovementDirectionForward = 0,
-		eMovementDirectionBack,
-		eMovementDirectionLeft,
-		eMovementDirectionRight,
-	};
-
-	enum ELookType {
-		eLookTypePathDirection = 0,
-		eLookTypeSearch,
-		eLookTypeDanger,
-		eLookTypePoint,
-		eLookTypeFirePoint,
-		eLookTypeLookOver,
-		eLookTypeLookFireOver,
-		eLookTypeDirection,
-	};
-
-	enum EDirectionType {
-		eDirectionTypeForward = 0,
-		eDirectionTypeForwardDodge,
-		eDirectionTypeForwardCover,
-		eDirectionTypeBack,
-		eDirectionTypeBackDodge,
-		eDirectionTypeBackCover,
-	};
-
-	enum EPathState {
-		ePathStateSearchNode = 0,
-		ePathStateBuildNodePath,
-		ePathStateBuildTravelLine,
-		ePathStateDodgeTravelLine,
-	};
-
-	enum EPathType {
-		ePathTypeStraight = 0,
-		ePathTypeDodge,
-		ePathTypeCriteria,
-		ePathTypeStraightDodge,
-		ePathTypeDodgeCriteria,
-	};
-
-	enum EObjectAction {
-		eObjectActionIdle = u32(0),
-		eObjectActionPrimaryFire,
-		eObjectActionSecondaryFire,
-		eObjectActionReload,
-		eObjectActionActivate,
-		eObjectActionHide,
-		eObjectActionUse,
-		eObjectActionDummy = u32(-1)
-	};
-
 	enum EActionState {
 		eActionStateRun = 0,
 		eActionStateStand,
@@ -111,14 +46,5 @@ namespace StalkerSpace {
 	enum ESearchState {
 		eSearchStateMarkVisibleNodes = 0,
 		eSearchStateFindSuspiciousNodes,
-	};
-
-	enum EMentalState {
-		eMentalStateFree = u32(0),
-		eMentalStateDanger,
-		eMentalStatePanic,
-		eMentalStateAsleep,
-		eMentalStateZombied,
-		eMentalStateDummy = u32(-1),
 	};
 };

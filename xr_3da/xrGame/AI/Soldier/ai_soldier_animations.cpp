@@ -167,37 +167,37 @@ void CAI_Soldier::vfLoadAnimations()
 
 	ZeroMemory				(m_tpaMovementAnimations,sizeof(m_tpaMovementAnimations));
 	
-	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_FORWARD_0] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[0];
-	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_FORWARD_1] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[1];
-	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_FORWARD_2] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[2];
-	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_FORWARD_3] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[3];
-	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_FORWARD_4] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[4];
-	
-	m_tpaMovementAnimations[BODY_STATE_STAND][RUN_FORWARD_0] = tSoldierAnimations.tNormal.tGlobal.tpaRunForward[0];
-	m_tpaMovementAnimations[BODY_STATE_STAND][RUN_FORWARD_1] = tSoldierAnimations.tNormal.tGlobal.tpaRunForward[1];
-	m_tpaMovementAnimations[BODY_STATE_STAND][RUN_FORWARD_2] = tSoldierAnimations.tNormal.tGlobal.tpaRunForward[2];
-	m_tpaMovementAnimations[BODY_STATE_STAND][RUN_FORWARD_3] = tSoldierAnimations.tNormal.tGlobal.tpaRunForward[3];
-	
-	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_BACK_0] = tSoldierAnimations.tNormal.tGlobal.tpaWalkBack[0];
-	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_BACK_1] = tSoldierAnimations.tNormal.tGlobal.tpaWalkBack[1];
-	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_BACK_2] = tSoldierAnimations.tNormal.tGlobal.tpaWalkBack[2];
-
-	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_LEFT] = tSoldierAnimations.tNormal.tGlobal.tpWalkLeft;
-	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_RIGHT] = tSoldierAnimations.tNormal.tGlobal.tpWalkRight;
-
-	m_tpaMovementAnimations[BODY_STATE_CROUCH][WALK_FORWARD_0] = tSoldierAnimations.tCrouch.tGlobal.tpaWalkForward[0];
-	m_tpaMovementAnimations[BODY_STATE_CROUCH][WALK_FORWARD_1] = tSoldierAnimations.tCrouch.tGlobal.tpaWalkForward[1];
-	
-	m_tpaMovementAnimations[BODY_STATE_CROUCH][WALK_BACK_0] = tSoldierAnimations.tCrouch.tGlobal.tpaWalkBack[0];
-	m_tpaMovementAnimations[BODY_STATE_CROUCH][WALK_BACK_1] = tSoldierAnimations.tCrouch.tGlobal.tpaWalkBack[1];
-
-	m_tpaMovementAnimations[BODY_STATE_CROUCH][WALK_LEFT] = tSoldierAnimations.tCrouch.tGlobal.tpWalkLeft;
-	m_tpaMovementAnimations[BODY_STATE_CROUCH][WALK_RIGHT] = tSoldierAnimations.tCrouch.tGlobal.tpWalkRight;
-
-	m_tpaMovementAnimations[BODY_STATE_LIE][WALK_FORWARD_0] = tSoldierAnimations.tLie.tGlobal.tpWalkForward;
-	m_tpaMovementAnimations[BODY_STATE_LIE][WALK_BACK_0] = tSoldierAnimations.tLie.tGlobal.tpWalkBack;
-	m_tpaMovementAnimations[BODY_STATE_LIE][WALK_LEFT] = tSoldierAnimations.tLie.tGlobal.tpWalkLeft;
-	m_tpaMovementAnimations[BODY_STATE_LIE][WALK_RIGHT] = tSoldierAnimations.tLie.tGlobal.tpWalkRight;
+//	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_FORWARD_0] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[0];
+//	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_FORWARD_1] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[1];
+//	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_FORWARD_2] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[2];
+//	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_FORWARD_3] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[3];
+//	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_FORWARD_4] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[4];
+//	
+//	m_tpaMovementAnimations[BODY_STATE_STAND][RUN_FORWARD_0] = tSoldierAnimations.tNormal.tGlobal.tpaRunForward[0];
+//	m_tpaMovementAnimations[BODY_STATE_STAND][RUN_FORWARD_1] = tSoldierAnimations.tNormal.tGlobal.tpaRunForward[1];
+//	m_tpaMovementAnimations[BODY_STATE_STAND][RUN_FORWARD_2] = tSoldierAnimations.tNormal.tGlobal.tpaRunForward[2];
+//	m_tpaMovementAnimations[BODY_STATE_STAND][RUN_FORWARD_3] = tSoldierAnimations.tNormal.tGlobal.tpaRunForward[3];
+//	
+//	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_BACK_0] = tSoldierAnimations.tNormal.tGlobal.tpaWalkBack[0];
+//	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_BACK_1] = tSoldierAnimations.tNormal.tGlobal.tpaWalkBack[1];
+//	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_BACK_2] = tSoldierAnimations.tNormal.tGlobal.tpaWalkBack[2];
+//
+//	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_LEFT] = tSoldierAnimations.tNormal.tGlobal.tpWalkLeft;
+//	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_RIGHT] = tSoldierAnimations.tNormal.tGlobal.tpWalkRight;
+//
+//	m_tpaMovementAnimations[BODY_STATE_CROUCH][WALK_FORWARD_0] = tSoldierAnimations.tCrouch.tGlobal.tpaWalkForward[0];
+//	m_tpaMovementAnimations[BODY_STATE_CROUCH][WALK_FORWARD_1] = tSoldierAnimations.tCrouch.tGlobal.tpaWalkForward[1];
+//	
+//	m_tpaMovementAnimations[BODY_STATE_CROUCH][WALK_BACK_0] = tSoldierAnimations.tCrouch.tGlobal.tpaWalkBack[0];
+//	m_tpaMovementAnimations[BODY_STATE_CROUCH][WALK_BACK_1] = tSoldierAnimations.tCrouch.tGlobal.tpaWalkBack[1];
+//
+//	m_tpaMovementAnimations[BODY_STATE_CROUCH][WALK_LEFT] = tSoldierAnimations.tCrouch.tGlobal.tpWalkLeft;
+//	m_tpaMovementAnimations[BODY_STATE_CROUCH][WALK_RIGHT] = tSoldierAnimations.tCrouch.tGlobal.tpWalkRight;
+//
+//	m_tpaMovementAnimations[BODY_STATE_LIE][WALK_FORWARD_0] = tSoldierAnimations.tLie.tGlobal.tpWalkForward;
+//	m_tpaMovementAnimations[BODY_STATE_LIE][WALK_BACK_0] = tSoldierAnimations.tLie.tGlobal.tpWalkBack;
+//	m_tpaMovementAnimations[BODY_STATE_LIE][WALK_LEFT] = tSoldierAnimations.tLie.tGlobal.tpWalkLeft;
+//	m_tpaMovementAnimations[BODY_STATE_LIE][WALK_RIGHT] = tSoldierAnimations.tLie.tGlobal.tpWalkRight;
 
 	m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tGlobal.tpaIdle[1]);
 }

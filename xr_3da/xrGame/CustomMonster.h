@@ -17,32 +17,33 @@
 #include "ai_commands.h"
 #include "ai_pathnodes.h"
 #include "AI\\ai_monster_state.h"
+#include "AI\\script\\ai_script_monster.h"
+#include "ai_monster_space.h"
 
 //#define IGNORE_ACTOR
+
+using namespace MonsterSpace;
 
 class CCustomMonster : 
 	public CEntityAlive, 
 	public Feel::Vision, 
 	public Feel::Sound, 
-	public Feel::Touch
-
+	public Feel::Touch,
+	public CScriptMonster
 {
-private:
-	typedef	CEntityAlive	inherited;
 protected:
-	// weapons
+	typedef	CEntityAlive	inherited;
+	
 	struct				SAnimState
 	{
 		CMotionDef		*fwd;
 		CMotionDef		*back;
 		CMotionDef		*ls;
 		CMotionDef		*rs;
-		
+
 		void			Create(CKinematics* K, LPCSTR base);
 	};
-	
-//	static void	__stdcall TorsoSpinCallback(CBoneInstance*);
-	
+
 	typedef struct tagSDynamicObject {
 		u32				dwTime;
 		u32				dwUpdateCount;
@@ -78,14 +79,6 @@ protected:
 	} SSimpleSound;
 
 public:
-	enum EBodyStates {
-		BODY_STATE_STAND=0,
-		BODY_STATE_CROUCH,
-		BODY_STATE_LIE,
-	};
-	
-
-
 	// Pathfinding cache
 	AI::CPathNodes		AI_Path;
 	DWORD_VECTOR		m_tpaGraphPath;
@@ -129,9 +122,8 @@ public:
 	bool				m_bPatrolPathInverted;
 	u32					m_dwLastUpdateTime;
 	u32					m_dwCurrentUpdate;
+	xr_vector<CObject*>	m_tpaVisibleObjects;
 
-// network
-//------------------------------
 	struct net_update	{
 		u32				dwTimeStamp;			// server(game) timestamp
 		float			o_model;				// model yaw
@@ -150,23 +142,6 @@ public:
 			fHealth			= 0.f;
 		}
 		void	lerp	(net_update& A,net_update& B, float f);
-		
-//		IC bool angle_lerp_bounds(float &a, float b, float c)
-//		{
-//			float fDifference;
-//			if ((fDifference = _abs(a - b)) > PI - EPS_L)
-//				fDifference = PI_MUL_2 - fDifference;
-//
-//			if (c >= fDifference) {
-//				a = b;
-//				return(true);
-//			}
-//			
-//			angle_lerp(a,b,c);
-//
-//			return(false);
-//		}
-//
 	};
 	xr_deque<net_update>	NET;
 	net_update				NET_Last;
@@ -261,26 +236,10 @@ public:
 	virtual	float				ffGetRange				()										{return eye_range;}
 //	virtual	void				feel_touch_new			(CObject	*O);
 	virtual BOOL				feel_visible_isRelevant	(CObject		*O);
-
-protected:
-	bool						m_bScriptControl;
-	string64					m_caScriptName;
-	xr_vector<CObject*>			m_tpaVisibleObjects;
-public:
-//	Scripts
-	virtual	void				SetScriptControl		(const bool			bScriptControl, LPCSTR caSciptName);
-	virtual	bool				GetScriptControl		() const;
-	virtual	LPCSTR				GetScriptControlName	() const;
-	virtual bool				CheckObjectVisibility	(const CObject		*tpObject);
-	virtual bool				CheckIfCompleted		() const										{return false;};
+	virtual	void				ResetScriptData			(void *P = 0);
+	virtual void				renderable_Render		();
+	virtual	void				Hit						(float P, Fvector &dir,			CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type = eHitTypeWound);
+	virtual void				OnEvent					( NET_Packet& P, u16 type		);
+	virtual void				net_Destroy				();
 };
-
-namespace AI{
-	const int LOST_ENEMY_REACTION_TIME	= 30000;
-	const int HIT_REACTION_TIME			= 30000;
-	const int SENSE_REACTION_TIME		= 30000;
-	const int HIT_JUMP_TIME				= 300;
-	const int SENSE_JUMP_TIME			= 00000;
-}
-
 #endif // !defined(AFX_CUSTOMMONSTER_H__D44439C3_D752_41AE_AD49_C68E5DE3045F__INCLUDED_)

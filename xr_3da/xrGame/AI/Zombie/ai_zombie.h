@@ -14,7 +14,7 @@
 
 class CAI_Zombie : public CCustomMonster  
 {
-	protected:
+protected:
 		//////////////////////////
 		// STRUCTURES
 		//////////////////////////
@@ -290,7 +290,7 @@ class CAI_Zombie : public CCustomMonster
 		void	vfAimAtEnemy();
 		void	vfSaveEnemy();
 		void	vfSetFire(bool bFire, CGroup &Group);
-		void	vfSetMovementType(char cBodyState, float fSpeed);
+		void	vfSetMovementType(float fSpeed);
 		void	vfUpdateDynamicObjects() {};
 		//////////////////////////
 		// FSM STATES

@@ -30,7 +30,7 @@ void CAI_Zombie::vfSetFire(bool bFire, CGroup &Group)
 	}
 }
 
-void CAI_Zombie::vfSetMovementType(char cBodyState, float fSpeed)
+void CAI_Zombie::vfSetMovementType(float fSpeed)
 {
 //	StandUp();
 	m_fSpeed = m_fCurSpeed = fSpeed;

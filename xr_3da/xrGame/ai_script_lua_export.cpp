@@ -300,30 +300,30 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 		class_<CMovementAction>("move")
 			.enum_("body")
 			[
-				value("crouch",					int(StalkerSpace::eBodyStateCrouch)),
-				value("standing",				int(StalkerSpace::eBodyStateStand))
+				value("crouch",					int(MonsterSpace::eBodyStateCrouch)),
+				value("standing",				int(MonsterSpace::eBodyStateStand))
 			]
 			.enum_("move")
 			[
-				value("walk",					int(StalkerSpace::eMovementTypeWalk)),
-				value("run",					int(StalkerSpace::eMovementTypeRun)),
-				value("stand",					int(StalkerSpace::eMovementTypeStand))
+				value("walk",					int(MonsterSpace::eMovementTypeWalk)),
+				value("run",					int(MonsterSpace::eMovementTypeRun)),
+				value("stand",					int(MonsterSpace::eMovementTypeStand))
 			]
 			.enum_("path")
 			[
-				value("line",					int(StalkerSpace::ePathTypeStraight)),
-				value("dodge",					int(StalkerSpace::ePathTypeDodge)),
-				value("criteria",				int(StalkerSpace::ePathTypeCriteria)),
-				value("curve",					int(StalkerSpace::ePathTypeStraightDodge)),
-				value("curve_criteria",			int(StalkerSpace::ePathTypeDodgeCriteria))
+				value("line",					int(MonsterSpace::ePathTypeStraight)),
+				value("dodge",					int(MonsterSpace::ePathTypeDodge)),
+				value("criteria",				int(MonsterSpace::ePathTypeCriteria)),
+				value("curve",					int(MonsterSpace::ePathTypeStraightDodge)),
+				value("curve_criteria",			int(MonsterSpace::ePathTypeDodgeCriteria))
 			]
 			.def(								constructor<>())
-			.def(								constructor<StalkerSpace::EBodyState,StalkerSpace::EMovementType,StalkerSpace::EPathType,CLuaGameObject*,float>())
-			.def(								constructor<StalkerSpace::EBodyState,StalkerSpace::EMovementType,StalkerSpace::EPathType,LPCSTR,float>())
-			.def(								constructor<StalkerSpace::EBodyState,StalkerSpace::EMovementType,StalkerSpace::EPathType,const Fvector &,float>())
-			.def(								constructor<StalkerSpace::EBodyState,StalkerSpace::EMovementType,StalkerSpace::EPathType,CLuaGameObject*>())
-			.def(								constructor<StalkerSpace::EBodyState,StalkerSpace::EMovementType,StalkerSpace::EPathType,LPCSTR>())
-			.def(								constructor<StalkerSpace::EBodyState,StalkerSpace::EMovementType,StalkerSpace::EPathType,const Fvector &>())
+			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,CLuaGameObject*,float>())
+			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,LPCSTR,float>())
+			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,const Fvector &,float>())
+			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,CLuaGameObject*>())
+			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,LPCSTR>())
+			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,const Fvector &>())
 			.def(								constructor<const Fvector &,float>())
 			.def("body",						&CMovementAction::SetBodyState)
 			.def("move",						&CMovementAction::SetMovementType)
@@ -335,17 +335,17 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 		class_<CWatchAction>("look")
 			.enum_("look")
 			[
-				value("path_dir",				int(StalkerSpace::eLookTypePathDirection)),
-				value("search",					int(StalkerSpace::eLookTypeSearch)),
-				value("danger",					int(StalkerSpace::eLookTypeDanger)),
-				value("point",					int(StalkerSpace::eLookTypePoint)),
-				value("fire_point",				int(StalkerSpace::eLookTypeFirePoint)),
-				value("direction",				int(StalkerSpace::eLookTypeDirection))
+				value("path_dir",				int(MonsterSpace::eLookTypePathDirection)),
+				value("search",					int(MonsterSpace::eLookTypeSearch)),
+				value("danger",					int(MonsterSpace::eLookTypeDanger)),
+				value("point",					int(MonsterSpace::eLookTypePoint)),
+				value("fire_point",				int(MonsterSpace::eLookTypeFirePoint)),
+				value("direction",				int(MonsterSpace::eLookTypeDirection))
 			]
 			.def(								constructor<>())
-			.def(								constructor<StalkerSpace::ELookType>())
-			.def(								constructor<StalkerSpace::ELookType, const Fvector &>())
-			.def(								constructor<StalkerSpace::ELookType, CLuaGameObject*>())
+			.def(								constructor<MonsterSpace::ELookType>())
+			.def(								constructor<MonsterSpace::ELookType, const Fvector &>())
+			.def(								constructor<MonsterSpace::ELookType, CLuaGameObject*>())
 			.def("object",						&CWatchAction::SetWatchObject)		// time
 			.def("direct",						&CWatchAction::SetWatchDirection)		// time
 			.def("type",						&CWatchAction::SetWatchType),
@@ -353,15 +353,15 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 		class_<CAnimationAction>("anim")
 			.enum_("type")
 			[
-				value("free",					int(StalkerSpace::eMentalStateFree)),
-				value("danger",					int(StalkerSpace::eMentalStateDanger)),
-				value("asleep",					int(StalkerSpace::eMentalStateAsleep)),
-				value("zombied",				int(StalkerSpace::eMentalStateZombied)),
-				value("dummy",					int(StalkerSpace::eMentalStateDummy))
+				value("free",					int(MonsterSpace::eMentalStateFree)),
+				value("danger",					int(MonsterSpace::eMentalStateDanger)),
+				value("asleep",					int(MonsterSpace::eMentalStateAsleep)),
+				value("zombied",				int(MonsterSpace::eMentalStateZombied)),
+				value("dummy",					int(MonsterSpace::eMentalStateDummy))
 			]
 			.def(								constructor<>())
 			.def(								constructor<LPCSTR>())
-			.def(								constructor<StalkerSpace::EMentalState>())
+			.def(								constructor<MonsterSpace::EMentalState>())
 			.def("anim",						&CAnimationAction::SetAnimation)
 			.def("type",						&CAnimationAction::SetMentalState),
 
@@ -379,12 +379,12 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 		class_<CObjectAction>("object")
 			.enum_("state")
 			[
-				value("idle",					int(StalkerSpace::eObjectActionIdle)),
-				value("primary_fire",			int(StalkerSpace::eObjectActionPrimaryFire)),
-				value("secondary_fire",			int(StalkerSpace::eObjectActionSecondaryFire))
+				value("idle",					int(MonsterSpace::eObjectActionIdle)),
+				value("primary_fire",			int(MonsterSpace::eObjectActionPrimaryFire)),
+				value("secondary_fire",			int(MonsterSpace::eObjectActionSecondaryFire))
 			]
 			.def(								constructor<>())
-			.def(								constructor<CLuaGameObject*,StalkerSpace::EObjectAction>())
+			.def(								constructor<CLuaGameObject*,MonsterSpace::EObjectAction>())
 			.def("action",						&CObjectAction::SetObjectAction)
 			.def("object",						&CObjectAction::SetObject),
 			

@@ -19,7 +19,6 @@ using namespace StalkerSpace;
 class CSE_ALifeSimulator;
 class CCharacterPhysicsSupport;
 class CWeapon;
-class CEntityAction;
 
 //#define LOG_PARAMETERS
 
@@ -450,10 +449,6 @@ public:
 	/////////////////////////
 	void ReceivePdaMessage(u16 who, EPdaMsg msg, EPdaMsgAnger anger);
 
-	/////////////////////////
-	// Script 
-	/////////////////////////
-
 protected:
 	xr_deque<CEntityAction*>	m_tpActionQueue;
 public:
@@ -464,14 +459,7 @@ public:
 	virtual CInventoryItem		*GetCurrentEquipment	() const;
 	virtual CInventoryItem		*GetMedikit				() const;
 	virtual CInventoryItem		*GetFood				() const;
-	virtual	void				AddAction				(const CEntityAction	*tpEntityAction);
-	virtual void				ProcessScripts			();
-			CEntityAction		*GetCurrentAction		();
-			void				ResetScriptData			(bool			bResetPath = true);
-			void				vfAssignMovement		(CEntityAction *tpEntityAction);
-			void				vfAssignWatch			(CEntityAction *tpEntityAction);
-			void				vfAssignAnimation		(CEntityAction *tpEntityAction);
-			void				vfAssignSound			(CEntityAction *tpEntityAction);
-			void				vfAssignParticles		(CEntityAction *tpEntityAction);
-			void				vfAssignObject			(CEntityAction *tpEntityAction);
+	virtual	bool				bfAssignMovement		(CEntityAction *tpEntityAction);
+	virtual	bool				bfAssignWatch			(CEntityAction *tpEntityAction);
+	virtual	void				ResetScriptData			(void *P = 0);
 };
