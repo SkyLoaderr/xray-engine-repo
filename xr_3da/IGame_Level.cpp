@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "igame_level.h"
+#include "igame_persistent.h"
+
 #include "x_ray.h"
 #include "std_classes.h"
 #include "customHUD.h"
