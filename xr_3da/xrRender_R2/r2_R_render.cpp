@@ -82,7 +82,7 @@ void CRender::Render	()
 	// Target.accum_direct					();
 
 	// Point/spot lighting (unshadowed)
-	if (0)
+	if (1)
 	{
 		Target.phase_accumulator		();
 		HOM.Disable						();
