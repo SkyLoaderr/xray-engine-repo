@@ -238,7 +238,7 @@ BOOL CWeaponRPG7Grenade::net_Spawn(LPVOID DC) {
 		m_pPhysicsShell->Activate			();
 		m_pPhysicsShell->mDesired.identity	();
 		m_pPhysicsShell->fDesiredStrength	= 0.f;
-		//m_pPhysicsShell->SetAirResistance(.000f, 0.f);
+		m_pPhysicsShell->SetAirResistance(.000f, 0.f);
 		m_pPhysicsShell->Deactivate();
 	}
 	return l_res;
@@ -343,10 +343,10 @@ void CWeaponRPG7Grenade::UpdateCL() {
 		if(m_engineTime <= Device.dwTimeDelta) m_engineTime = 0xffffffff;
 		if(m_engineTime < 0xffffffff) {
 			m_engineTime -= Device.dwTimeDelta;
-			Fvector l_pos; l_pos.set(0, 0, 3.f);
+			Fvector l_pos, l_dir;; l_pos.set(0, 0, 3.f); l_dir.set(svTransform.k); l_dir.normalize();
 			float l_force = 5300.f * Device.dwTimeDelta / 1000.f;
-			m_pPhysicsShell->applyImpulseTrace(l_pos, clTransform.k, l_force);
-			Fvector l_dir; l_dir.set(0, 1.f, 0);
+			m_pPhysicsShell->applyImpulseTrace(l_pos, l_dir, l_force);
+			l_dir.set(0, 1.f, 0);
 			l_force = 1360.f * Device.dwTimeDelta / 1000.f;
 			//m_pPhysicsShell->applyForce(l_dir, 430.f);
 			m_pPhysicsShell->applyImpulse(l_dir, l_force);
@@ -403,7 +403,7 @@ BOOL CWeaponRPG7::net_Spawn(LPVOID DC) {
 
 void __stdcall CWeaponRPG7::GrenadeCallback(CBoneInstance* B) {
 	CWeaponRPG7* l_pW = dynamic_cast<CWeaponRPG7*>(static_cast<CObject*>(B->Callback_Param)); R_ASSERT(l_pW);
-	if(l_pW->m_hideGrenade) B->mTransform.scale(0, 0, 0);
+	if(l_pW->m_hideGrenade) B->mTransform.scale(EPS, EPS, EPS);
 }
 
 void CWeaponRPG7::OnStateSwitch(u32 S) {
