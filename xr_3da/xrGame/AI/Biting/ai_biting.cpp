@@ -131,8 +131,8 @@ void CAI_Biting::Load(LPCSTR section)
 	m_dwHealth						= pSettings->r_u32		(section,"Health");
 
 	fEntityHealth					= (float)m_dwHealth;
+	fire_bone_id					= PKinematics(Visual())->LL_BoneID(pSettings->r_string(section,"bone_fire"));
 
-	
 	// Load shared data
 	SHARE_ON_LOAD(_sd_biting);
 
@@ -384,3 +384,29 @@ bool CAI_Biting::is_angle_between(float yaw, float yaw_from, float yaw_to)
 	else return false;
 }
 
+// Получить расстояние от fire_bone до врага
+// Выполнить RayQuery от fire_bone в enemy.center
+float CAI_Biting::GetRealDistToEnemy()
+{
+	Fvector enemy_center;
+	m_tEnemy.obj->Center(enemy_center);
+	
+	Fmatrix global_transform;
+	global_transform.set(XFORM());
+	global_transform.mulB(PKinematics(Visual())->LL_GetBoneInstance(fire_bone_id).mTransform);
+
+	
+	Fvector dir; 
+	dir.sub(enemy_center, global_transform.c);
+	Collide::ray_defs	r_query(global_transform.c, dir, 10.f, CDB::OPT_CULL | CDB::OPT_ONLYNEAREST, Collide::rqtDynamic);
+	Collide::rq_results	r_res;
+
+	float ret_val = -1.f;
+
+	setEnabled(false);
+	if (m_tEnemy.obj->CFORM()->_RayQuery(r_query, r_res)) 
+		if (r_res.r_begin()->O) ret_val = r_res.r_begin()->range;
+	setEnabled(true);		
+			
+	return ret_val;
+}

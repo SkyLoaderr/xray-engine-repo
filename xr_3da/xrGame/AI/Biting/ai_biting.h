@@ -403,7 +403,8 @@ public:
 
 	bool	is_angle_between(float yaw, float yaw_from, float yaw_to);
 
-
+	u16		fire_bone_id;
+	float	GetRealDistToEnemy();
 };
 
 

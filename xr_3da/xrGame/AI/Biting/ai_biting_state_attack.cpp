@@ -110,7 +110,14 @@ void CBitingAttack::Run()
 	// Выбор состояния
 	bool bAttackMelee = (ACTION_ATTACK_MELEE == m_tAction);
 
+	
+	//dist = pMonster->GetDistToEnemy();
 	dist = m_tEnemy.obj->Position().distance_to(pMonster->Position());
+	float real_dist;
+
+	real_dist = pMonster->GetRealDistToEnemy();
+	
+	LOG_EX2("dist = [%f] real_dist = [%f]", *"*/ dist, real_dist /*"*);
 
 	if (bAttackMelee && (dist < m_fDistMax)) m_tAction = ACTION_ATTACK_MELEE;
 	else m_tAction = ((dist > m_fDistMin) ? ACTION_RUN : ACTION_ATTACK_MELEE);
