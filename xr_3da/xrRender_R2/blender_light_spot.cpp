@@ -8,7 +8,7 @@ CBlender_accum_spot::~CBlender_accum_spot	()	{	}
 
 void	CBlender_accum_spot::Compile(CBlender_Compile& C)
 {
-	CBlender::Compile		(C);
+	IBlender::Compile		(C);
 
 	if (RImplementation.b_nv3x)
 	{

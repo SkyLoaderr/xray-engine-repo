@@ -8,7 +8,7 @@ CBlender_accum_direct::~CBlender_accum_direct	()	{	}
 
 void	CBlender_accum_direct::Compile(CBlender_Compile& C)
 {
-	CBlender::Compile		(C);
+	IBlender::Compile		(C);
 
 	if (RImplementation.b_nv3x)
 	{

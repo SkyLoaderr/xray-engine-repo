@@ -8,7 +8,7 @@ CBlender_accum_direct_mask::~CBlender_accum_direct_mask	()	{	}
 
 void	CBlender_accum_direct_mask::Compile(CBlender_Compile& C)
 {
-	CBlender::Compile		(C);
+	IBlender::Compile		(C);
 
 	switch (C.iElement) 
 	{

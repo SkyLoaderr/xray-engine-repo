@@ -28,7 +28,7 @@ void CAI_Biting::vfInitSelector(IBaseAI_NodeEvaluator &S, CSquad &Squad)
 	S.m_dwCurTime		= m_dwCurrentUpdate;
 	S.m_tMe				= this;
 	S.m_tpMyNode		= AI_Node;
-	S.m_tMyPosition		= vPosition;
+	S.m_tMyPosition		= Position();
 
 //	if (m_tEnemy.Enemy)
 //		vfSaveEnemy();
@@ -40,7 +40,7 @@ void CAI_Biting::vfInitSelector(IBaseAI_NodeEvaluator &S, CSquad &Squad)
 
 	S.m_taMembers		= &(Squad.Groups[g_Group()].Members);
 	S.m_dwStartNode		= AI_NodeID;		// текущий узел
-	S.m_tStartPosition	= vPosition;
+	S.m_tStartPosition	= Position();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -58,7 +58,7 @@ void CAI_Biting::vfSearchForBetterPosition(IBaseAI_NodeEvaluator &tNodeEvaluator
 
 		if (AI_Path.DestNode != u32(-1)) {
 			tNodeEvaluator.m_tpCurrentNode	= getAI().Node(AI_Path.DestNode);
-			tNodeEvaluator.m_fDistance		= vPosition.distance_to(getAI().tfGetNodeCenter(AI_Path.DestNode));
+			tNodeEvaluator.m_fDistance		= Position().distance_to(getAI().tfGetNodeCenter(AI_Path.DestNode));
 			fOldCost						= tNodeEvaluator.ffEvaluateNode();
 		}
 
@@ -130,7 +130,7 @@ void CAI_Biting::vfBuildTravelLine(Fvector *tpDestinationPosition)
 	Device.Statistic.TEST1.Begin();
 
 	if (m_tPathType == ePathTypeCriteria) {
-		AI_Path.BuildTravelLine	(vPosition);
+		AI_Path.BuildTravelLine	(Position());
 		m_tPathState			= ePathStateSearchNode;
 		AI_Path.TravelStart		= 0;
 	}
@@ -148,9 +148,9 @@ void CAI_Biting::vfBuildTravelLine(Fvector *tpDestinationPosition)
 			Device.Statistic.TEST1.End();
 			return;
 		}
-		Fvector						tStartPosition = vPosition;
+		Fvector						tStartPosition = Position();
 		u32							dwCurNode = AI_NodeID;
-		m_tpaPoints.push_back		(vPosition);
+		m_tpaPoints.push_back		(Position());
 		m_tpaPointNodes.push_back	(dwCurNode);
 
 		for (u32 i=1; i<=N; i++)

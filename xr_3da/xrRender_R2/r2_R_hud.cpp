@@ -4,7 +4,7 @@ using namespace SceneGraph;
 
 void __fastcall hud_L1		(mapSorted_Node *N)
 {
-	IVisual *V = N->val.pVisual;
+	IRender_Visual *V = N->val.pVisual;
 	RCache.set_Shader		(V->hShader);
 	RCache.set_xform_world	(N->val.Matrix);
 	V->Render				(1);

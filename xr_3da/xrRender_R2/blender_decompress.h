@@ -1,6 +1,6 @@
 #pragma once
 
-class CBlender_decompress : public CBlender  
+class CBlender_decompress : public IBlender  
 {
 public:
 	virtual		LPCSTR		getComment()	{ return "INTERNAL: MET decompress";	}

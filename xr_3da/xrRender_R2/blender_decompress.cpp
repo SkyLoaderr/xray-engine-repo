@@ -8,7 +8,7 @@ CBlender_decompress::~CBlender_decompress	()	{	}
  
 void	CBlender_decompress::Compile(CBlender_Compile& C)
 {
-	CBlender::Compile		(C);
+	IBlender::Compile		(C);
 
 	if (RImplementation.b_nv3x)
 	{

@@ -1,6 +1,6 @@
 #pragma once
 
-class CBlender_deffer_aref : public CBlender  
+class CBlender_deffer_aref : public IBlender  
 {
 public:
 	virtual		LPCSTR		getComment()	{ return "LEVEL: defer-base-aref";	}

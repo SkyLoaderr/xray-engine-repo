@@ -8,7 +8,7 @@ CBlender_accum_point::~CBlender_accum_point	()	{	}
 
 void	CBlender_accum_point::Compile(CBlender_Compile& C)
 {
-	CBlender::Compile		(C);
+	IBlender::Compile		(C);
 
 	switch (C.iElement)
 	{

@@ -1,6 +1,6 @@
 #pragma once
 
-class CBlender_bloom_build : public CBlender  
+class CBlender_bloom_build : public IBlender  
 {
 public:
 	virtual		LPCSTR		getComment()	{ return "INTERNAL: combine to bloom target";	}

@@ -8,7 +8,7 @@ CBlender_bloom_build::~CBlender_bloom_build	()	{	}
  
 void	CBlender_bloom_build::Compile			(CBlender_Compile& C)
 {
-	CBlender::Compile		(C);
+	IBlender::Compile		(C);
 
 	// r3xx
 	switch (C.iElement)

@@ -16,15 +16,15 @@ private:
 	u32							dwLightMarkerID;
 public:
 	// 
-	CBlender*					b_accum_mask;
-	CBlender*					b_accum_direct;
-	CBlender*					b_accum_point_s;
-	CBlender*					b_accum_point_uns;
-	CBlender*					b_accum_spot_s;
-	CBlender*					b_accum_spot_uns;
-	CBlender*					b_bloom;
-	CBlender*					b_combine;
-	CBlender*					b_decompress;
+	IBlender*					b_accum_mask;
+	IBlender*					b_accum_direct;
+	IBlender*					b_accum_point_s;
+	IBlender*					b_accum_point_uns;
+	IBlender*					b_accum_spot_s;
+	IBlender*					b_accum_spot_uns;
+	IBlender*					b_bloom;
+	IBlender*					b_combine;
+	IBlender*					b_decompress;
 
 	// MRT-path (or decompressed MET)
 	CRT*						rt_Position;	// 64bit,	fat	(x,y,z,?)				(eye-space)

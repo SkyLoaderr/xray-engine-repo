@@ -25,10 +25,10 @@ LPCSTR					r2v(LPCSTR name)
 // Implementation
 IRender_ObjectSpecific*	CRender::ros_create				(CObject* parent)				{ return 0;								}
 void					CRender::ros_destroy			(IRender_ObjectSpecific* &p)	{ xr_delete(p);							}
-IVisual*				CRender::model_Create			(LPCSTR name)					{ return Models.Create(name);			}
-IVisual*				CRender::model_Create			(LPCSTR name, IReader* data)	{ return Models.Create(name,data);		}
-IVisual*				CRender::model_Duplicate		(IVisual* V)					{ return Models.Instance_Duplicate(V);	}
-void					CRender::model_Delete			(IVisual* &V)					{ Models.Delete(V);						}
+IRender_Visual*				CRender::model_Create			(LPCSTR name)					{ return Models.Create(name);			}
+IRender_Visual*				CRender::model_Create			(LPCSTR name, IReader* data)	{ return Models.Create(name,data);		}
+IRender_Visual*				CRender::model_Duplicate		(IRender_Visual* V)					{ return Models.Instance_Duplicate(V);	}
+void					CRender::model_Delete			(IRender_Visual* &V)					{ Models.Delete(V);						}
 IRender_DetailModel*	CRender::model_CreateDM			(IReader*	F)
 {
 	CDetail*	D		= xr_new<CDetail> ();
@@ -45,13 +45,13 @@ void					CRender::model_Delete			(IRender_DetailModel* & F)
 		F				= NULL;
 	}
 }
-IVisual*				CRender::model_CreatePS			(LPCSTR name, PS::SEmitter* E)	
+IRender_Visual*				CRender::model_CreatePS			(LPCSTR name, PS::SEmitter* E)	
 { 
 	PS::SDef*	source		= PSystems.FindPS	(name);
 	VERIFY					(source);
 	return Models.CreatePS	(source,E);
 }
-IVisual*				CRender::model_CreatePG			(LPCSTR name)	
+IRender_Visual*				CRender::model_CreatePG			(LPCSTR name)	
 { 
 	PS::CPGDef*	source		= PSystems.FindPG	(name);
 	VERIFY					(source);
@@ -61,7 +61,7 @@ int						CRender::getVisualsCount		()					{ return Visuals.size();								}
 IRender_Portal*			CRender::getPortal				(int id)			{ VERIFY(id<int(Portals.size()));	return Portals[id];	}
 IRender_Sector*			CRender::getSector				(int id)			{ VERIFY(id<int(Sectors.size()));	return Sectors[id];	}
 IRender_Sector*			CRender::getSectorActive		()					{ return pLastSector;									}
-IVisual*				CRender::getVisual				(int id)			{ VERIFY(id<int(Visuals.size()));	return Visuals[id];	}
+IRender_Visual*				CRender::getVisual				(int id)			{ VERIFY(id<int(Visuals.size()));	return Visuals[id];	}
 D3DVERTEXELEMENT9*		CRender::getVB_Format			(int id)			{ VERIFY(id<int(DCL.size()));		return DCL[id].begin();	}
 IDirect3DVertexBuffer9*	CRender::getVB					(int id)			{ VERIFY(id<int(VB.size()));		return VB[id];		}
 IDirect3DIndexBuffer9*	CRender::getIB					(int id)			{ VERIFY(id<int(IB.size()));		return IB[id];		}
@@ -69,10 +69,6 @@ IRender_Target*			CRender::getTarget				()					{ return &Target;										}
 
 IRender_Light*			CRender::light_create			()					{ return Lights.Create();								}
 void					CRender::light_destroy			(IRender_Light* &L)	{ if (L) { Lights.Destroy((light*)L); L=0; }			}
-void					CRender::L_select				(Fvector &pos, float fRadius, xr_vector<xrLIGHT*>& dest)
-{	
-	//Msg		("! NotImplemented: CRender::L_select");
-}
 
 void					CRender::flush					()					{ flush_Models();									}
 
@@ -80,8 +76,8 @@ BOOL					CRender::occ_visible			(vis_data& P)		{ return HOM.visible(P);							}
 BOOL					CRender::occ_visible			(sPoly& P)			{ return HOM.visible(P);							}
 BOOL					CRender::occ_visible			(Fbox& P)			{ return HOM.visible(P);							}
 
-void					CRender::add_Visual				(IVisual*		V )	{ add_leafs_Dynamic(V);								}
-void					CRender::add_Geometry			(IVisual*		V )	{ add_Static(V,View->getMask());					}
+void					CRender::add_Visual				(IRender_Visual*		V )	{ add_leafs_Dynamic(V);								}
+void					CRender::add_Geometry			(IRender_Visual*		V )	{ add_Static(V,View->getMask());					}
 void					CRender::add_Lights				(xr_vector<u16> &	V )	
 { 
 	Lights.add_sector_lights(V);						
@@ -181,10 +177,10 @@ void CRender::RenderBox			(IRender_Sector* _S, Fbox& BB, int sh)
 	
 	for (u32 test=0; test<lstVisuals.size(); test++)
 	{
-		IVisual*	V		= 	lstVisuals[test];
+		IRender_Visual*	V		= 	lstVisuals[test];
 		
 		// Visual is 100% visible - simply add it
-		xr_vector<IVisual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
+		xr_vector<IRender_Visual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
 		
 		switch (V->Type) {
 		case MT_HIERRARHY:
@@ -194,7 +190,7 @@ void CRender::RenderBox			(IRender_Sector* _S, Fbox& BB, int sh)
 				I = pV->children.begin	();
 				E = pV->children.end		();
 				for (; I!=E; I++)		{
-					IVisual* T			= *I;
+					IRender_Visual* T			= *I;
 					if (BB.intersect(T->vis.box))	lstVisuals.push_back(T);
 				}
 			}
@@ -207,7 +203,7 @@ void CRender::RenderBox			(IRender_Sector* _S, Fbox& BB, int sh)
 				I = pV->children.begin	();
 				E = pV->children.end		();
 				for (; I!=E; I++)		{
-					IVisual* T			= *I;
+					IRender_Visual* T			= *I;
 					if (BB.intersect(T->vis.box))	lstVisuals.push_back(T);
 				}
 			}

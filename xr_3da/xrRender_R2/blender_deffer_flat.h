@@ -1,6 +1,6 @@
 #pragma once
 
-class CBlender_deffer_flat : public CBlender  
+class CBlender_deffer_flat : public IBlender  
 {
 public:
 	virtual		LPCSTR		getComment()	{ return "LEVEL: defer-base-flat";	}

@@ -7,7 +7,7 @@
 #include "blender_tree.h"
 #include "blender_detail_still.h"
 
-CBlender*	CRender::blender_create	(CLASS_ID cls)
+IBlender*	CRender::blender_create	(CLASS_ID cls)
 {	
 	switch (cls)
 	{
@@ -36,7 +36,7 @@ CBlender*	CRender::blender_create	(CLASS_ID cls)
 	return 0;
 }
 
-void		CRender::blender_destroy(CBlender* &B)
+void		CRender::blender_destroy(IBlender* &B)
 {
 	xr_delete(B);
 }

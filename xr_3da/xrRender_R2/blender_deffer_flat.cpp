@@ -8,16 +8,16 @@ CBlender_deffer_flat::~CBlender_deffer_flat	()	{	}
 
 void	CBlender_deffer_flat::Save	(	IWriter& fs )
 {
-	CBlender::Save	(fs);
+	IBlender::Save	(fs);
 }
 void	CBlender_deffer_flat::Load	(	IReader& fs, WORD version )
 {
-	CBlender::Load	(fs,version);
+	IBlender::Load	(fs,version);
 }
 
 void	CBlender_deffer_flat::Compile(CBlender_Compile& C)
 {
-	CBlender::Compile		(C);
+	IBlender::Compile		(C);
 
 	// codepath is the same, only the shaders differ
 	switch(C.iElement) 

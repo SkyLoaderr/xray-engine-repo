@@ -8,7 +8,7 @@ CBlender_combine::~CBlender_combine	()	{	}
  
 void	CBlender_combine::Compile(CBlender_Compile& C)
 {
-	CBlender::Compile		(C);
+	IBlender::Compile		(C);
 
 	switch (C.iElement)
 	{

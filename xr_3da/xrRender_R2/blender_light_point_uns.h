@@ -1,6 +1,6 @@
 #pragma once
 
-class CBlender_accum_point_uns : public CBlender  
+class CBlender_accum_point_uns : public IBlender  
 {
 public:
 	virtual		LPCSTR		getComment()	{ return "INTERNAL: accumulate point light (unshadowed)";	}

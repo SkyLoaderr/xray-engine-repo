@@ -18,9 +18,9 @@ IC float calcLOD	(float fDistSq, float R)
 }
 
 // NORMAL
-void __fastcall normal_L2			(FixedMAP<float,IVisual*>::TNode *N)
+void __fastcall normal_L2			(FixedMAP<float,IRender_Visual*>::TNode *N)
 {
-	IVisual *V = N->val;
+	IRender_Visual *V = N->val;
 	V->Render(calcLOD(N->key,V->vis.sphere.R));
 }
 
@@ -31,11 +31,11 @@ void __fastcall mapNormal_Render	(mapNormalItems& N)
 	N.sorted.clear			();
 
 	// DIRECT:UNSORTED
-	xr_vector<IVisual*>&	L			= N.unsorted;
-	IVisual **I=&*L.begin(), **E = &*L.end();
+	xr_vector<IRender_Visual*>&	L			= N.unsorted;
+	IRender_Visual **I=&*L.begin(), **E = &*L.end();
 	for (; I!=E; I++)
 	{
-		IVisual *V = *I;
+		IRender_Visual *V = *I;
 		V->Render	(0);	// zero lod 'cause it is too small onscreen
 	}
 	L.clear	();
@@ -45,7 +45,7 @@ void __fastcall mapNormal_Render	(mapNormalItems& N)
 void __fastcall matrix_L2			(FixedMAP<float,_MatrixItem>::TNode *N)
 {
 	_MatrixItem&	I		= N->val;
-	IVisual			*V		= I.pVisual;
+	IRender_Visual			*V		= I.pVisual;
 	RCache.set_xform_world	(I.Matrix);
 	V->Render				(calcLOD(N->key,V->vis.sphere.R));
 }
@@ -62,7 +62,7 @@ void __fastcall mapMatrix_Render	(mapMatrixItems& N)
 	for (; it!=end; it++)
 	{
 		_MatrixItem&	I		= *it;
-		IVisual			*V		= I.pVisual;
+		IRender_Visual			*V		= I.pVisual;
 		RCache.set_xform_world	(I.Matrix);
 		V->Render				(0);	// zero lod 'cause it is too small onscreen
 	}
@@ -72,7 +72,7 @@ void __fastcall mapMatrix_Render	(mapMatrixItems& N)
 // ALPHA
 void __fastcall sorted_L1	(mapSorted_Node *N)
 {
-	IVisual *V = N->val.pVisual;
+	IRender_Visual *V = N->val.pVisual;
 	RCache.set_Shader		(V->hShader);
 	RCache.set_xform_world	(N->val.Matrix);
 	V->Render				(calcLOD(N->key,V->vis.sphere.R));

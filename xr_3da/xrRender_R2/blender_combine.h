@@ -1,6 +1,6 @@
 #pragma once
 
-class CBlender_combine : public CBlender  
+class CBlender_combine : public IBlender  
 {
 public:
 	virtual		LPCSTR		getComment()	{ return "INTERNAL: combiner";	}

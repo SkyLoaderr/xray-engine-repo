@@ -442,7 +442,7 @@ bool CAI_Biting::IsLeftSide(const Fvector &Position)
 	Fvector temp;
 
 	iV = mRotate.i;
-	temp = vPosition;
+	temp = Position();
 	temp.sub(Position);
 	float f = temp.dotproduct(iV);
 

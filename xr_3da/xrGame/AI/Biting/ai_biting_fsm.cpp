@@ -61,11 +61,10 @@ void CAI_Biting::Panic()
 		}
 		return;
 	}
-/*	Temp comment: Saved enemy...
- 
+
 	m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_tSavedEnemyPosition.distance_to(vPosition) + m_tSelectorFreeHunting.m_fSearchRange;
 	m_tSelectorFreeHunting.m_fOptEnemyDistance = m_tSelectorFreeHunting.m_fMaxEnemyDistance;
-	m_tSelectorFreeHunting.m_fMinEnemyDistance = m_tSavedEnemyPosition.distance_to(vPosition) + 3.f;
+	m_tSelectorFreeHunting.m_fMinEnemyDistance = m_tSavedEnemyPosition.distance_to(Position()) + 3.f;
 
 	vfSetMotionActionParams		(eBodyStateStand,eMovementTypeRun,eMovementDirectionForward,eStateTypeDanger,eActionTypeRun);
 	vfSetParameters				(ePathTypeStraight,&m_tSelectorFreeHunting,0,true,0);
@@ -86,7 +85,7 @@ void CAI_Biting::Scared()
 		*/
 		ptr.normalize();
 		ptr.mul(20.f);
-		ptr.add(vPosition);
+		ptr.add(Position());
 		m_EnemyPos = ptr;
 	}
 
@@ -108,7 +107,7 @@ void CAI_Biting::Scared()
 	/*	Temp comment: Saved enemy...		
 			m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_tSavedEnemyPosition.distance_to(vPosition) + m_tSelectorFreeHunting.m_fSearchRange;
 			m_tSelectorFreeHunting.m_fOptEnemyDistance = m_tSelectorFreeHunting.m_fMaxEnemyDistance;
-			m_tSelectorFreeHunting.m_fMinEnemyDistance = m_tSavedEnemyPosition.distance_to(vPosition) + 3.f;
+			m_tSelectorFreeHunting.m_fMinEnemyDistance = m_tSavedEnemyPosition.distance_to(Position()) + 3.f;
 
 			vfSetMotionActionParams		(eBodyStateStand,eMovementTypeRun,eMovementDirectionForward,eStateTypeDanger,eActionTypeRun);
 			vfSetParameters				(ePathTypeStraight,&m_tSelectorFreeHunting,0,true,0);
@@ -129,7 +128,7 @@ void CAI_Biting::BackCover(bool bFire)
 	m_dwInertion				= 60000;
 	
 	Fvector						EnemyPosition = m_tSavedEnemyPosition;
-	m_tSelectorCover.m_fMinEnemyDistance = EnemyPosition.distance_to(vPosition) + 3.f;
+	m_tSelectorCover.m_fMinEnemyDistance = EnemyPosition.distance_to(Position()) + 3.f;
 
 	switch (m_tActionState) {
 		case eActionStateWatchGo : 
@@ -147,7 +146,7 @@ void CAI_Biting::BackCover(bool bFire)
 
 
 			if ((m_dwCurrentUpdate - m_dwActionStartTime > 10000) && 
-				((getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,EnemyPosition) != u32(-1)) || 
+				((getAI().dwfCheckPositionInDirection(AI_NodeID,Position(),EnemyPosition) != u32(-1)) || 
 				 (m_dwCurrentUpdate - m_dwActionStartTime > 8000))) {
 				
 				m_tActionState		= eActionStateWatchLook;
@@ -271,7 +270,7 @@ void CAI_Biting::Hide()
 	Fvector		EnemyPosition;
 	EnemyPosition = ((m_tEnemy.Enemy) ? m_tEnemy.Enemy->Position() : m_tSavedEnemyPosition);
 	
-	m_tSelectorCover.m_fMaxEnemyDistance = EnemyPosition.distance_to(vPosition) + m_tSelectorCover.m_fSearchRange;
+	m_tSelectorCover.m_fMaxEnemyDistance = EnemyPosition.distance_to(Position()) + m_tSelectorCover.m_fSearchRange;
 	m_tSelectorCover.m_fOptEnemyDistance = m_tSelectorCover.m_fMaxEnemyDistance;
 	m_tSelectorCover.m_fMinEnemyDistance = EnemyPosition.distance_to(vPosition) + 3.f;
 */
@@ -296,7 +295,7 @@ void CAI_Biting::Detour()
 	Fvector		EnemyPosition;
 	EnemyPosition = ((m_tEnemy.Enemy) ? m_tEnemy.Enemy->Position() : m_tSavedEnemyPosition);
 
-	m_tSelectorFreeHunting.m_fMaxEnemyDistance = EnemyPosition.distance_to(vPosition) + m_tSelectorFreeHunting.m_fSearchRange;
+	m_tSelectorFreeHunting.m_fMaxEnemyDistance = EnemyPosition.distance_to(Position()) + m_tSelectorFreeHunting.m_fSearchRange;
 	m_tSelectorFreeHunting.m_fOptEnemyDistance = 15;
 	m_tSelectorFreeHunting.m_fMinEnemyDistance = EnemyPosition.distance_to(vPosition) + 3.f;
 */
@@ -384,14 +383,14 @@ void CAI_Biting::ExploreDNE()
 		_CAction.Switch();
 		if (m_tLastSound.tpEntity)
 			m_AttackLastPosition = m_tLastSound.tpEntity->Position();
-		else m_AttackLastPosition = vPosition;
+		else m_AttackLastPosition = Position();
 	}
 
 	vfSetMotionActionParams		(eBodyStateStand,eMovementTypeRun,eMovementDirectionForward,eStateTypeDanger,eActionTypeRun);
 
-	m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_AttackLastPosition.distance_to(vPosition) + m_tSelectorFreeHunting.m_fSearchRange;
+	m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_AttackLastPosition.distance_to(Position()) + m_tSelectorFreeHunting.m_fSearchRange;
 	m_tSelectorFreeHunting.m_fOptEnemyDistance = m_tSelectorFreeHunting.m_fMaxEnemyDistance;
-	m_tSelectorFreeHunting.m_fMinEnemyDistance = m_AttackLastPosition.distance_to(vPosition) + 10.f;
+	m_tSelectorFreeHunting.m_fMinEnemyDistance = m_AttackLastPosition.distance_to(Position()) + 10.f;
 	vfSetParameters				(ePathTypeStraight,&m_tSelectorFreeHunting,0,true,0);
 }
 
