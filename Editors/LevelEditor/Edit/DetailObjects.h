@@ -41,9 +41,9 @@ class CDetail{
         void			set(const Fvector& _P, float _u, float _v){P.set(_P); u=_u; v=_v;};
         BOOL			similar(fvfVertexIn& V)
         {
-            if (!fsimilar	(u,V.u))	return FALSE;
-            if (!fsimilar	(v,V.v))	return FALSE;
-            if (!P.similar	(V.P))		return FALSE;
+            if (!fsimilar	(u,V.u,EPS_L))	return FALSE;
+            if (!fsimilar	(v,V.v,EPS_L))	return FALSE;
+            if (!P.similar	(V.P,EPS_L))	return FALSE;
             return TRUE;
         }
 	};
