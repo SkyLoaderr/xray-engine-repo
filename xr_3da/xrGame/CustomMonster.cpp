@@ -129,7 +129,7 @@ void CCustomMonster::Load(CInifile* ini, const char* section)
 
 	// Sheduler
 	dwMinUpdate	= 25;
-	dwMaxUpdate	= 80;
+	dwMaxUpdate	= 3 * NET_Latency / 4;
 
 	//
 }
