@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 #include "..\render.h"
+#include "..\irenderable.h"
 #include "..\igame_persistent.h"
 #include "..\environment.h"
 

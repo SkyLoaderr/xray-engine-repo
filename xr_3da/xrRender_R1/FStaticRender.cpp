@@ -141,7 +141,7 @@ void					CRender::ApplyObject			(IRenderable*		O )
 }
 
 // Misc
-static	float			g_fGLOD, g_fFarSq, g_fPOWER;
+float					g_fGLOD, g_fFarSq, g_fPOWER;
 float					g_fSCREEN;
 float					g_fLOD,g_fLOD_scale=1.f;
 static	BOOL			gm_Nearer	= 0;
