@@ -21,23 +21,23 @@ CAI_Biting::~CAI_Biting()
 
 void CAI_Biting::Init()
 {
+	// initializing class members
+
 }
 
 void CAI_Biting::Die()
 {
 	inherited::Die( );
-
-	// ...
-
 }
 
 void CAI_Biting::Load(LPCSTR section)
 {
-	// load parameters from ".ini" file
-	inherited::Load(section);
+	// load parameters from ".ltx" file
+	inherited::Load		(section);
 	
-
-//	g_vfLoadSounds (m_tpSoundTest,pSettings->r_string(section,"sound_test"),100);
+	// loading sounds
+	g_vfLoadSounds		(m_tpSoundDie,pSettings->r_string(section,"sound_death"),100);
+	g_vfLoadSounds		(m_tpSoundHit,pSettings->r_string(section,"sound_hit"),100);
 
 	// Load params from section
 
@@ -76,43 +76,43 @@ void CAI_Biting::Load(LPCSTR section)
 	// ...
 }
 
-/*BOOL CAI_Biting::net_Spawn (LPVOID DC) 
+BOOL CAI_Biting::net_Spawn (LPVOID DC) 
 {
+	if (!inherited::net_Spawn(DC))
+		return(FALSE);
+
 	//////////////////////////////////////////////////////////////////////////
-	
-	xrSE_Rat						*tpSE_Rat = (xrSE_Rat *)DC;
-	// model
-	cNameVisual_set					(tpSE_Rat->caModel);
-	if (!inherited::net_Spawn(DC))
-		return(FALSE);
-	// personal characteristics
-
-
-
-	if (!inherited::net_Spawn(DC))
-		return(FALSE);
-	return true;
+	xrSE_Biting						*l_tpSE_Biting = (xrSE_Biting*)DC;
+	cNameVisual_set					(l_tpSE_Biting->caModel);
+	// loading animations
+	CBitingAnimations::
+	return(TRUE);
 }
 
-void CAI_Biting::net_Export(NET_Packet& P) 
-{
-}
-
-void CAI_Biting::net_Import(NET_Packet& P)
-{
-}
-
-void CAI_Biting::Update(u32 dt)
-{
-}
-
-void CAI_Biting::UpdateCL()
-{
-}
+//void CAI_Biting::net_Export(NET_Packet& P) 
+//{
+//}
+//
+//void CAI_Biting::net_Import(NET_Packet& P)
+//{
+//}
+//
+//void CAI_Biting::Update(u32 dt)
+//{
+//}
+//
+//void CAI_Biting::UpdateCL()
+//{
+//}
 
 //////////////////////////////////////////////////////////////////////
 // Other functions
 //////////////////////////////////////////////////////////////////////
 
-*/
+void CAI_Biting::HitSignal(float amount, Fvector &vLocalDir, CObject *who, s16 element)
+{
+}
 
+void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, float speed )
+{
+}

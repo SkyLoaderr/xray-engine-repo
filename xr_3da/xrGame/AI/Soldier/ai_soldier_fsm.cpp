@@ -1071,7 +1071,7 @@
 //	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfActionOrFightTypeChanged())
 //}
 //
-void CAI_Soldier::Die()
+void CAI_Soldier::OnDeath()
 {
 	WRITE_TO_LOG("die");
 

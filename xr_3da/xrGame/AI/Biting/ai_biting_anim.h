@@ -8,8 +8,28 @@
 
 #pragma once
 
+#include "..\\ai_monsters_anims.h"
 
+extern LPCSTR caStateNames			[];
+extern LPCSTR caGlobalNames			[];
 
-
-
-
+class CBitingAnimations {
+public:
+	typedef CAniCollection<CAniVector,caGlobalNames> CStateAnimations;
+	CAniCollection<CStateAnimations,caStateNames>	m_tAnims;
+	CMotionDef		*m_tpCurrentGlobalAnimation;
+	CBlend			*m_tpCurrentGlobalBlend;
+	u8				m_bAnimationIndex;
+	
+					CBitingAnimations()
+	{
+		m_tpCurrentGlobalAnimation = 
+		m_tpCurrentTorsoAnimation = 
+		m_tpCurrentLegsAnimation = 0;
+	};
+	
+	virtual	void	Load(CKinematics *tpKinematics)
+	{
+		m_tAnims.Load	(tpKinematics,"");
+	};
+};

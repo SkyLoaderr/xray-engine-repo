@@ -672,5 +672,3 @@ void g_vfLoadSounds(SOUND_VECTOR &tpSounds, LPCSTR	prefix, u32 dwMaxCount)
 		}
 	}
 }
-
-

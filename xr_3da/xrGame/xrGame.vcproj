@@ -414,6 +414,9 @@
 						Name="ai_misc"
 						Filter="">
 						<File
+							RelativePath="AI\ai_monsters_anims.h">
+						</File>
+						<File
 							RelativePath=".\AI\ai_monsters_misc.cpp">
 						</File>
 						<File
@@ -444,11 +447,6 @@
 						Filter="">
 						<File
 							RelativePath="AI\Biting\ai_biting.cpp">
-							<FileConfiguration
-								Name="Debug|Win32">
-								<Tool
-									Name="VCCLCompilerTool"/>
-							</FileConfiguration>
 						</File>
 						<File
 							RelativePath="AI\Biting\ai_biting.h">

@@ -10,6 +10,26 @@
 
 #include "ai_biting.h"
 
+LPCSTR caStateNames			[] = {
+	"stand_",
+	"sit_",
+	"lie_",
+	0
+};
+
+LPCSTR caGlobalNames		[] = {
+	"idle_",
+	"walk_fwd_",
+	"walk_ls_",
+	"walk_rs_",
+	"walk_back_",
+	"run_",
+	"run_attack_",
+	"attack_",
+	"eat_",
+	"damage_",
+	0
+};
 
 void CAI_Biting::ParseParam(LPCSTR param, u32 i1, u32 i2) 
 {

@@ -465,7 +465,7 @@ class CAI_Soldier : public CCustomMonster
 		CAI_NodeEvaluatorFull				SelectorUnderFireCover;
 		CAI_NodeEvaluatorFull				SelectorUnderFireLine;
 
-		void Die();
+		void OnDeath();
 		void OnTurnOver();
 		void OnWaitForAnimation();
 		void OnWaitForTime();
@@ -731,6 +731,7 @@ class CAI_Soldier : public CCustomMonster
 		virtual void  HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 element);
 		virtual void  Load( LPCSTR section );
 		virtual void  Think();
+		virtual void  Die();
 		virtual float EnemyHeuristics(CEntity* E);
 		virtual void  SelectEnemy(SEnemySelected& S);
 		virtual void  SelectAnimation( const Fvector& _view, const Fvector& _move, float speed );
