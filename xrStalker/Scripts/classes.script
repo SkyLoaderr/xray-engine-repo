@@ -127,6 +127,10 @@ function SinglePatrol:__init (npc, script_name, path_name, ...)
 	self.phrase_interval_max = 0
 	self.next_phrase_time = 0
 
+	-- Для сброса action-ов в начале reload-а или стрельбы:
+	self.was_reloading = false
+	self.had_ammo = false
+	
 	self.last_action = nil
 end
 
@@ -298,16 +302,46 @@ function NPC:shoot(whom)
 
 	self.npc:set_queue_size(1)
 
-	action(self.npc,
-	       look(look.fire_point, whom),
-	       anim(anim.danger),
-	       object(self.wpn, object.fire1),
-	       move(move.standing, move.run, move.line, patrol("way_attack_point")),
-	       --move(move.standing, move.stand, move.line, actor), -- бага, с этой строкой крутится нормально!
-	       --cond(cond.move_end, time_infinite)
-	       cond(cond.time_end, time_infinite) -- не крутится!!!
-	       --cond(cond.time_end, 300)
-	)
+	if self.wpn:get_ammo_in_magazine() ~= 0 then
+		printf("Has ammo!")
+		if self.was_reloading then
+			interrupt_action(self.npc, self.script_name)
+			self.was_reloading = false
+		end
+		--interrupt_action(self.npc, self.script_name)
+		--self.npc:script(false, self.script_name)
+		--self.npc:script(true, self.script_name)
+		action(self.npc,
+		       look(look.fire_point, whom),
+		       anim(anim.danger),
+		       object(self.wpn, object.fire1),
+		       move(move.standing, move.run, move.line, patrol("way_attack_point")),
+		       --move(move.standing, move.stand, move.line, actor), -- бага, с этой строкой крутится нормально!
+		       --cond(cond.move_end, time_infinite)
+		       --cond(cond.time_end, time_infinite) -- не крутится!!!
+		       cond(cond.time_end, 300)
+		)
+		self.had_ammo = true
+	else
+		printf("Has no ammo!")
+		if self.had_ammo then
+			interrupt_action(self.npc, self.script_name)
+			self.had_ammo = false
+		end
+		--self.npc:script(false, self.script_name)
+		--self.npc:script(true, self.script_name)
+		action(self.npc,
+		       look(look.fire_point, whom),
+		       anim(anim.danger),
+		       --object(self.wpn, object.fire1),
+		       move(move.standing, move.run, move.line, patrol("way_reload_point")),
+		       --move(move.standing, move.stand, move.line, actor), -- бага, с этой строкой крутится нормально!
+		       --cond(cond.move_end, time_infinite)
+		       --cond(cond.time_end, time_infinite) -- не крутится!!!
+		       cond(cond.time_end, 300)
+		)
+		self.was_reloading = true
+	end
 
 	self.last_action = self.action_shooting
 end
