@@ -268,7 +268,7 @@ HRESULT CMyD3DApplication::Render		()
 		RenderFAT					();
 		RenderShadowMap				();
 		RenderLight_Direct			();
-		RenderCombine				(CM_NORMAL);
+		RenderCombine				(CM_DBG_ACCUMULATOR);
 		// RenderOverlay				();
 
 		// Output statistics
@@ -389,7 +389,7 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 
 		// Mender!!!!
 		NVMeshMender mender;
-		if (!mender.MungeD3DX(
+		if (!mender.Munge(
 			inputAtts,									// input attributes
 			outputAtts,									// outputs attributes
 			3.141592654f / 3.0f,						// tangent space smooth angle
@@ -442,10 +442,17 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 			D3DXVec3Normalize				(&B,&B);
 
 			// ortho-normalize
+			/*
 			D3DXVec3Cross					(&B,&T,&N);
 			D3DXVec3Normalize				(&B,&B);
 			D3DXVec3Cross					(&T,&N,&B);
 			D3DXVec3Normalize				(&T,&T);
+			*/
+			B = -B;
+			D3DXVec3Cross					(&T,&B,&N);
+			D3DXVec3Normalize				(&T,&T);
+			D3DXVec3Cross					(&B,&N,&T);
+			D3DXVec3Normalize				(&B,&B);
 
 			vertexBufferNew[i].n.x			= N.x;
 			vertexBufferNew[i].n.y			= N.y;
@@ -680,8 +687,8 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 	hr = D3DXCreateTextureFromFile		(m_pd3dDevice,"media\\shadowmap.tga",&t_Base);
 	hr = D3DXCreateTextureFromFileEx	(m_pd3dDevice,"media\\shadowmap_height.tga",
 		D3DX_DEFAULT,D3DX_DEFAULT,D3DX_DEFAULT,0,D3DFMT_UNKNOWN,D3DPOOL_SCRATCH,D3DX_DEFAULT,D3DX_DEFAULT,0,NULL,NULL,&height);
-	hr = D3DXCreateTexture				(m_pd3dDevice,512,512,D3DX_DEFAULT,0,D3DFMT_A8R8G8B8,D3DPOOL_MANAGED, &t_Normals);
-	hr = D3DXComputeNormalMap			(t_Normals,height,0,0,D3DX_CHANNEL_RED,8.f);
+	hr = D3DXCreateTexture				(m_pd3dDevice,256,256,D3DX_DEFAULT,0,D3DFMT_A8R8G8B8,D3DPOOL_MANAGED, &t_Normals);
+	hr = D3DXComputeNormalMap			(t_Normals,height,0,0,D3DX_CHANNEL_RED,2.f);
 
 	// Transfer gloss-map
 	{
@@ -1025,7 +1032,7 @@ HRESULT CMyD3DApplication::RenderLight_Direct	()
 	D3DXVec3TransformNormal					(&vLightDir, &vLightDir,&mInvView);
 	D3DXVec3Normalize						(&vLightDir, &vLightDir);
 	cc.set									(s_Light_Direct.constants.get("light_direction"),	vLightDir.x,vLightDir.y,vLightDir.z,0	);
-	cc.set									(s_Light_Direct.constants.get("light_color"),		.6f,		.6f,		1.,			1.0	);
+	cc.set									(s_Light_Direct.constants.get("light_color"),		.9f,		.9f,		1.,			1.0	);
 	cc.flush								(m_pd3dDevice);
 
 	// Blend mode - directional light comes first - means no blending
@@ -1036,7 +1043,6 @@ HRESULT CMyD3DApplication::RenderLight_Direct	()
 	m_pd3dDevice->SetStreamSource			(0, m_pQuadVB, 0, sizeof(TVERTEX));
 	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
 
-	/*
 	// Second light
 	m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, TRUE);
 	m_pd3dDevice->SetRenderState			(D3DRS_SRCBLEND,	D3DBLEND_ONE);
@@ -1047,6 +1053,7 @@ HRESULT CMyD3DApplication::RenderLight_Direct	()
 	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
 	m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, FALSE);
 
+	/*
 	// Third light
 	m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, TRUE);
 	m_pd3dDevice->SetRenderState			(D3DRS_SRCBLEND,	D3DBLEND_ONE);
@@ -1364,7 +1371,7 @@ HRESULT CMyD3DApplication::UpdateTransform()
 	D3DXVECTOR3 vModelOffs		= D3DXVECTOR3(0.0f, 2.0f, 0.0f);
 
 	// Set the transform matrices
-	D3DXVECTOR3 vEyePt			= D3DXVECTOR3(0.0f, 3.0f, -3.5f);
+	D3DXVECTOR3 vEyePt			= D3DXVECTOR3(0.0f, 2.0f, -4.0f);
 	D3DXVECTOR3 vLookatPt		= D3DXVECTOR3(0.0f, 2.0f,  0.0f);
 	D3DXVECTOR3 vUpVec			= D3DXVECTOR3(0.0f, 1.0f,  0.0f);
 	FLOAT       fAspect			= (FLOAT)m_d3dsdBackBuffer.Width / (FLOAT)m_d3dsdBackBuffer.Height;
@@ -1389,7 +1396,7 @@ HRESULT CMyD3DApplication::UpdateTransform()
 	D3DXMatrixMultiply			(&dm_model2world2view2projection,	&dm_model2world, &dm_world2view2projection);
 
 	// Light direction
-	dv_LightDir					= D3DXVECTOR3(-1.0f, -1.0f, 1.0f);
+	dv_LightDir					= D3DXVECTOR3(-1.0f, -1.0f, 0);
 	D3DXVec3Normalize			(&dv_LightDir, &dv_LightDir);
 
 	// Setup shadow map transform
