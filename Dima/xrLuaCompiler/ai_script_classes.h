@@ -273,6 +273,11 @@ public:
 	virtual					~CLuaHit			()
 	{
 	}
+
+			void			set_bone_name		(LPCSTR bone_name)
+	{
+		m_caBoneName	= bone_name;
+	}
 };
 
 class CLuaGameObject {

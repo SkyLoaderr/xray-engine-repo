@@ -340,11 +340,11 @@ void Script::vfExportHit(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def_readwrite("power",				&CLuaHit::m_fPower)
 			.def_readwrite("direction",			&CLuaHit::m_tDirection)
 			.def_readwrite("draftsman",			&CLuaHit::m_tpDraftsman)
-			.def_readwrite("bone",				&CLuaHit::m_caBoneName)
 			.def_readwrite("impulse",			&CLuaHit::m_fImpulse)
 			.def_readwrite("type",				&CLuaHit::m_tHitType)
 			.def(								constructor<>())
 			.def(								constructor<const CLuaHit *>())
+			.def("bone",						&CLuaHit::set_bone_name)
 	];
 }
 
