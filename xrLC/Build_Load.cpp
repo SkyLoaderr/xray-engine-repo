@@ -68,7 +68,6 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 			v[it].vert_ambient			= 0;
 			v[it].vert_translucency		= 0;
 		}
-		g_params.m_vCacheSize	= 24;
 	} 
 	else 
 	{
@@ -363,7 +362,6 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 
 	// Parameter block
 	CopyMemory(&g_params,&Params,sizeof(b_params));
-	g_params.m_SS_DedicateCached	= 8;
 	g_params.m_bConvertProgressive	= FALSE;
 
 	// 

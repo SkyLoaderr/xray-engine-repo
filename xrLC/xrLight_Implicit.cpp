@@ -99,7 +99,7 @@ public:
 		
 		// Jitter data
 		Fvector2	JS;
-		JS.set		(g_params.m_lm_jitter/dim.x, g_params.m_lm_jitter/dim.y);
+		JS.set		(.499f/dim.x, .499f/dim.y);
 		u32			Jcount;
 		Fvector2*	Jitter;
 		Jitter_Select(Jitter, Jcount);
