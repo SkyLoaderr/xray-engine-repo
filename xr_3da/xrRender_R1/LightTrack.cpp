@@ -77,7 +77,7 @@ void	CLightTrack::ltrack	(IRenderable* O)
 	// Select nearest lights
 	Fvector					bb_size	=	{fRadius,fRadius,fRadius};
 	g_SpatialSpace->q_box				(0,STYPE_LIGHTSOURCE,pos,bb_size);
-	add									(RImplementation.L_DB->sun_base);
+	add									(RImplementation.L_DB->sun);
 
 	// Process selected lights
 	for (u32 o_it=0; o_it<g_SpatialSpace->q_result.size(); o_it++)
