@@ -28,26 +28,6 @@
 		<actor_dialog>escape_trader_done_blockpost_box</actor_dialog>		
 	</specific_character>
 
-	<specific_character id="rostok_barman" no_random = "1">
-		<name>Панас Федорович</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="1" y="4"></map_icon>
-		<bio>Просто хороший алкаголик. Сидел, выдвигался в президенты Украины.</bio>
-
-		<class>Rostok_barman</class>
-		<community>trader</community>
-		
-		<rank>70</rank>
-		<reputation>50</reputation>
-		<visual>actors\barman\barman</visual>
-		<!-- <visual>actors\hero\stalker_novice</visual> -->
-					
-		<start_dialog>bar_bar_barmen_start</start_dialog>
-		<actor_dialog>bar_bar_barmen_talk_info</actor_dialog>
-		<actor_dialog>bar_bar_barmen_jobs</actor_dialog>
-		<actor_dialog>bar_bar_barmen_jobs_room</actor_dialog>
-	</specific_character>
-
 	<specific_character id="doctor_izgoy" no_random = "1">
 		<name>Изгой</name>
 		<icon x="0" y="0"></icon>

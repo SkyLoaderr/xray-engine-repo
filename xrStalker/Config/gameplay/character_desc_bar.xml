@@ -1,6 +1,29 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <xml>
+
+	<specific_character id="rostok_barman" no_random = "1">
+		<name>Панас Федорович</name>
+		<icon x="0" y="0"></icon>
+		<map_icon x="1" y="4"></map_icon>
+		<bio>Просто хороший алкаголик. Сидел, выдвигался в президенты Украины.</bio>
+
+		<class>Rostok_barman</class>
+		<community>trader</community>
+		
+		<rank>70</rank>
+		<reputation>50</reputation>
+		<visual>actors\barman\barman</visual>
+		<!-- <visual>actors\hero\stalker_novice</visual> -->
+					
+		<start_dialog>bar_bar_barmen_start</start_dialog>
+		<actor_dialog>bar_bar_barmen_talk_info</actor_dialog>
+		<actor_dialog>bar_bar_barmen_jobs</actor_dialog>
+		<actor_dialog>bar_bar_barmen_jobs_room</actor_dialog>
+		<actor_dialog>bar_bar_barman_ecolog_flash_done</actor_dialog>
+	</specific_character>
+
+
 	<specific_character id="stalker_bar_guard" team_default = "1">
 		<name>Гарри</name>
 		<icon x="8" y="0"></icon>
@@ -346,7 +369,7 @@
 				
 		<start_dialog>bar_ecolog_crush_professor_start</start_dialog>
 		<actor_dialog>bar_ecolog_crush_professor_give_quest_dp</actor_dialog>
-		<actor_dialog>bar_ecolog_crush_professor_give_info_dp</actor_dialog>
+		<actor_dialog>bar_ecolog_crush_professor_give_info_dp</actor_dialog>		
 	</specific_character>
 
 	<specific_character id="bar_svoboda_attack_commander" team_default = "1">
