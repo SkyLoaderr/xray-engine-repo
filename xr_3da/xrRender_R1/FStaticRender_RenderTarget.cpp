@@ -177,8 +177,7 @@ void CRenderTarget::End		()
 	curWidth				= Device.dwWidth;
 	curHeight				= Device.dwHeight;
 	
-	if (!Perform())							return;
-	if (!psDeviceFlags.test(rsPostprocess))	return;
+	if (!Perform())		return;
 	RCache.set_Shader	(s_postprocess);
 
 	int		gblend		= clamp			(iFloor((1-param_gray)*255.f),0,255);

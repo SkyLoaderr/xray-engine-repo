@@ -27,7 +27,6 @@ enum {
 	rsOcclusion			= (1ul<<10ul),
 	rsStatistic			= (1ul<<11ul),
 	rsDetails			= (1ul<<12ul),
-	rsPostprocess		= (1ul<<13ul),
 	rsRefresh60hz		= (1ul<<14ul),
 	mtSound				= (1ul<<15ul),
 	mtInput				= (1ul<<16ul),
