@@ -141,16 +141,16 @@ void CWeaponM134::Load(CInifile* ini, const char* section)
 void CWeaponM134::FireStart()
 {
 	if (!IsWorking() && IsValid()){ 
-		CWeapon::FireStart();
-		m_pHUD->FireSpinup();
+		inherited::FireStart();
+		m_pHUD->FireSpinup	();
 		st_target = eM134Spinup;
 	}
 }
 
 void CWeaponM134::FireEnd(){
 	if (IsWorking()){
-		CWeapon::FireEnd();
-		m_pHUD->FireEnd();
+		inherited::FireEnd	();
+		m_pHUD->FireEnd		();
 		st_target = eM134Brake;
 	}
 }
@@ -186,7 +186,7 @@ void CWeaponM134::UpdateXForm(BOOL bHUDView)
 	}
 }
 
-void CWeaponM134::UpdateFP(BOOL bHUDView)
+void CWeaponM134::UpdateFP	(BOOL bHUDView)
 {
 	if (Device.dwFrame!=dwFP_Frame) 
 	{
@@ -208,9 +208,11 @@ void CWeaponM134::UpdateFP(BOOL bHUDView)
 	}
 }
 
-void CWeaponM134::Update(float dt, BOOL bHUDView)
+void CWeaponM134::Update	(float dt, BOOL bHUDView)
 {
 	BOOL bShot = false;
+
+	inherited::Update(dt,bHUDView);
 
 	// on state change
 	if (st_target!=st_current)
@@ -322,7 +324,7 @@ void CWeaponM134::Update(float dt, BOOL bHUDView)
 #endif
 }
 
-void CWeaponM134::Render(BOOL bHUDView)
+void CWeaponM134::Render	(BOOL bHUDView)
 {
 	UpdateXForm	(bHUDView);
 	if (bHUDView)

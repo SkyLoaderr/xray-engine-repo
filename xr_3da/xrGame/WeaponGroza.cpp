@@ -151,6 +151,8 @@ void CWeaponGroza::Update(float dt, BOOL bHUDView)
 {
 	BOOL bShot = false;
 
+	inherited::Update(dt,bHUDView);
+	
 	// on state change
 	if (st_target!=st_current)
 	{
