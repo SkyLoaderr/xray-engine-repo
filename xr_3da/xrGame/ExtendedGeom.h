@@ -79,7 +79,7 @@ IC void dGeomCreateUserData(dxGeom* geom)
 IC void dGeomDestroyUserData(dxGeom* geom)
 {
 	if(!geom) return;
-	if(dGeomGetData(geom)) xr_delete(dGeomGetData(geom));
+	if(dGeomGetData(geom)) xr_delete( dGeomGetUserData(geom));
 	dGeomSetData(geom,0);
 }
 
