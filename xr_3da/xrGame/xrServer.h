@@ -133,6 +133,7 @@ public:
 	void					SLS_Clear			();
 	void					SLS_Save			(IWriter&	fs);
 	void					SLS_Load			(IReader&	fs);	
+			shared_str		level_name			(const shared_str &server_options) const;
 
 public:
 #ifdef DEBUG

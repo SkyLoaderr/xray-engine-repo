@@ -506,3 +506,8 @@ void xrServer::verify_entity				(const CSE_Abstract *entity) const
 }
 
 #endif // DEBUG
+
+shared_str xrServer::level_name				(const shared_str &server_options) const
+{
+	return								(game->level_name(server_options));
+}

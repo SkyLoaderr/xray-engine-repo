@@ -402,6 +402,8 @@ void CStalkerMovementManager::parse_velocity_mask	()
 		default : NODEFAULT;
 	}
 
+	VERIFY2	((m_current.m_mental_state != eMentalStateFree) || m_current.m_body_state != eBodyStateCrouch,*object().cName());
+
 	switch (point.velocity & eVelocityMovementType) {
 		case eVelocityStanding : {
 			m_current.m_movement_type	= eMovementTypeStand;

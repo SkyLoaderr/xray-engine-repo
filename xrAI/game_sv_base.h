@@ -146,6 +146,7 @@ public:
 	virtual		void				remove_all_restrictions	(NET_Packet &packet, u16 id);
 	virtual		bool				custom_sls_default		() {return false;};
 	virtual		void				sls_default				() {};
+	virtual		shared_str			level_name				(const shared_str &server_options) const;
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(game_sv_GameState)

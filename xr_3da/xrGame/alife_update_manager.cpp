@@ -143,7 +143,14 @@ bool CALifeUpdateManager::change_level	(NET_Packet &net_packet)
 		holder->o_Angle				= graph().actor()->o_Angle;
 	}
 
-	save							();
+	string256						autoave_name;
+	strconcat						(autoave_name,Core.UserName,"_","autosave");
+	LPSTR							temp0 = strstr(**m_server_command_line,"/");
+	VERIFY							(temp0);
+	string256						temp;
+	*m_server_command_line			= strconcat(temp,autoave_name,temp0);
+	
+	save							(autoave_name);
 
 	graph().actor()->m_tGraphID		= safe_graph_vertex_id;
 	graph().actor()->m_tNodeID		= safe_level_vertex_id;
@@ -364,12 +371,6 @@ void CALifeUpdateManager::jump_to_level			(LPCSTR level_name) const
 	net_packet.w						(&level_point,sizeof(level_point));
 	net_packet.w_vec3					(Fvector().set(0.f,0.f,0.f));
 	Level().Send						(net_packet,net_flags(TRUE));
-
-	string256							temp, save_name;
-	LPSTR								temp0 = strstr(**m_server_command_line,"/");
-	VERIFY								(temp0);
-	_GetItem							(m_save_name,0,save_name,'.');
-	*m_server_command_line				= strconcat(temp,save_name,temp0);
 }
 
 void CALifeUpdateManager::teleport_object	(ALife::_OBJECT_ID id, GameGraph::_GRAPH_ID game_vertex_id, u32 level_vertex_id, const Fvector &position)
