@@ -610,9 +610,6 @@
 						Name="operator_condition"
 						Filter="">
 						<File
-							RelativePath=".\operator_condition.cpp">
-						</File>
-						<File
 							RelativePath=".\operator_condition.h">
 						</File>
 						<File
@@ -3903,6 +3900,16 @@
 				<File
 					RelativePath=".\xrGame.cpp">
 				</File>
+				<Filter
+					Name="Random32"
+					Filter="">
+					<File
+						RelativePath=".\random32.cpp">
+					</File>
+					<File
+						RelativePath=".\random32.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Server"

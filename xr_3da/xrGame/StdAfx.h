@@ -34,6 +34,7 @@
 #include "xr_level_controller.h"
 #include "Level.h"
 #include "GameMtlLib.h"
+#include "random32.h"
 
 #define BOOST_THROW_EXCEPTION_HPP_INCLUDED
 //temporaraly by Kostya & Dima
