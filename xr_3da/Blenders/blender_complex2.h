@@ -11,8 +11,10 @@
 class ENGINE_API CBlender_complex2 : public CBlender  
 {
 public:
-	string64		oT_Name;
-	string64		oT_xform;
+	BP_TOKEN	oBlend;
+	string64	oT2_Name;		// name of secondary texture
+	string64	oT2_xform;		// xform for secondary texture
+	string64	oT2_Constant;	// constant for 2nd texture
 public:
 	virtual		LPCSTR		getComment()	{ return "complex blender for 2 textures";	}
 
