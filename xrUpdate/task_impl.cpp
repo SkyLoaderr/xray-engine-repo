@@ -235,7 +235,7 @@ BOOL rename_file(LPCSTR src, LPCSTR dst)
 		Msg("Done.");
 		return TRUE;
 	}else{
-		Msg("----------------------------------------------------" );
+		Msg("-----------------WARNING----------------------------" );
 		Msg("Cann't rename  file %s to %s.",src,dst);
 		Msg("the error is: %s", fo.m_sError.GetBuffer() );
 		Msg("----------------------------------------------------" );
