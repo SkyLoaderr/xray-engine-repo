@@ -11,12 +11,6 @@
 #include "ai_alife_space.h"
 #include "ai_alife_graph.h"
 
-typedef struct tagSLevelPoint {
-	Fvector		tPoint;
-	u32			tNodeID;
-	float		fDistance;	
-} SLevelPoint;
-
 typedef struct tagSDynamicGraphVertex {
 	Fvector						tLocalPoint;
 	Fvector						tGlobalPoint;

@@ -410,8 +410,7 @@ public:
 	typedef CSE_ALifeSpawnHeader inherited;
 	
 	ALIFE_ENTITY_P_VECTOR			m_tpSpawnPoints;
-	FVECTOR_VECTOR					m_tpArtefactSpawnPositions;
-	FVECTOR_VECTOR					m_tpMonsterDeathPositions;
+	LEVEL_POINT_VECTOR				m_tpArtefactSpawnPositions;
 
 									CSE_ALifeSpawnRegistry()
 	{

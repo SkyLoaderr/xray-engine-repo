@@ -87,6 +87,14 @@ namespace ALife {
 	
 	DEFINE_VECTOR	(SGraphPoint,				GRAPH_POINT_VECTOR,				GRAPH_POINT_IT);
 
+	typedef struct tagSLevelPoint {
+		Fvector		tPoint;
+		u32			tNodeID;
+		float		fDistance;	
+	} SLevelPoint;
+
+	DEFINE_VECTOR	(SLevelPoint				LEVEL_POINT_VECTOR,				LEVEL_POINT_IT);
+
 	enum EInjureType {
 		eInjureTypeNone = u32(0),
 		eInjureTypeEat,
