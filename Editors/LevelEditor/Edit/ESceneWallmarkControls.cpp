@@ -19,6 +19,7 @@ TUI_ControlWallmarkAdd::TUI_ControlWallmarkAdd(int st, int act, ESceneCustomMToo
 bool __fastcall TUI_ControlWallmarkAdd::Start(TShiftState Shift)
 {
     ESceneWallmarkTools* S 	= (ESceneWallmarkTools*)parent_tool;
+    
     S->SelectObjects		(false);
     wm_cnt					= 0;
     if (S->AddWallmark(UI->m_CurrentRStart,UI->m_CurrentRNorm)){
@@ -41,4 +42,28 @@ bool TUI_ControlWallmarkAdd::End(TShiftState _Shift)
 	return true;
 }
 
+//------------------------------------------------------------------------------------
+// WM Move
+//------------------------------------------------------------------------------------
+TUI_ControlWallmarkMove::TUI_ControlWallmarkMove(int st, int act, ESceneCustomMTools* parent):TUI_CustomControl(st,act,parent)
+{
+}
+bool TUI_ControlWallmarkMove::Start(TShiftState Shift)
+{
+    if (Shift.Contains(ssCtrl)){
+	    ESceneWallmarkTools* S 	= (ESceneWallmarkTools*)parent_tool;
+    	if (S->MoveSelectedWallmarkTo(UI->m_CurrentRStart,UI->m_CurrentRNorm))
+            Scene->UndoSave();
+    }
+    return false;
+}
+
+void __fastcall TUI_ControlWallmarkMove::Move(TShiftState _Shift)
+{
+}
+
+bool __fastcall TUI_ControlWallmarkMove::End(TShiftState _Shift)
+{
+	return false;
+}
 

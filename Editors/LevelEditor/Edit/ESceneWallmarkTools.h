@@ -10,15 +10,19 @@ class ESceneWallmarkTools: public ESceneCustomMTools
 	typedef ESceneCustomMTools inherited;
 public:    
 	DEFINE_VECTOR		(FVF::LIT,LITVertVec,LITVertVecIt);
+    struct wm_slot;
 	struct wallmark 
 	{
     	enum{
         	flSelected	= (1<<0)
         };
+        wm_slot*		parent;
+        float			w,h,r;
         Flags8			flags;
         Fbox			bbox;
 		Fsphere			bounds;
 		LITVertVec		verts;
+        wallmark		(){flags.zero();parent=0;w=0;h=0;r=0;}
 	};
 	DEFINE_VECTOR		(wallmark*,WMVec,WMVecIt);
 	struct wm_slot
@@ -49,7 +53,7 @@ private:
 
     void 				RecurseTri				(u32 t, Fmatrix &mView, wallmark &W);
 	void 				BuildMatrix				(Fmatrix &mView, float inv_w, float inv_h, float angle, const Fvector& from);
-//	void 				AddWallmark_internal	(ref_shader hShader, const Fvector& pt, const Fvector& n, float sz);
+	BOOL 				AddWallmark_internal	(const Fvector& S, const Fvector& D, shared_str s, shared_str t, float w, float h, float r);
 
 	void				RefiningSlots			();
 private:
@@ -128,5 +132,6 @@ public:
 
     // utils
 	BOOL 				AddWallmark				(const Fvector& start, const Fvector& dir);
+	BOOL 				MoveSelectedWallmarkTo	(const Fvector& start, const Fvector& dir);
 };
 #endif
