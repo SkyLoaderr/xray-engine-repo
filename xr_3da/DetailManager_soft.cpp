@@ -123,7 +123,10 @@ void CDetailManager::soft_Render	()
 						Fvector temp;		temp.lerp	(ctrl1, ctrl2, frac);
 						Fvector temp2;		temp2.lerp	(ctrl2, ctrl3, frac);
 						Fvector result;		result.lerp	(temp,	temp2, frac);
-						dstIt->P.add		(pos,result);
+						pos.x				= pos.x			+ result.x;
+						pos.y				= mXform.c.y	+ result.y;
+						pos.z				= pos.z			+ result.z;
+						dstIt->P			= pos;
 
 						// 
 						/*
