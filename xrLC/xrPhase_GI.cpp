@@ -4,10 +4,10 @@
 #include "xrSyncronize.h"
 
 #define	GI_THREADS		4
-const	u32				gi_num_photons		= 128;
-const	float			gi_optimal_range	= 10.f;
+const	u32				gi_num_photons		= 256;
+const	float			gi_optimal_range	= 15.f;
 const	float			gi_reflect			= .75f;
-const	float			gi_clip				= 0.1f;
+const	float			gi_clip				= 0.25f;
 //////////////////////////////////////////////////////////////////////////
 xr_vector<R_Light>*		task;
 xrCriticalSection		task_cs;
@@ -83,7 +83,7 @@ public:
 			} else {
 				src				= (*task)[task_it];
 				dst				= src;
-				if (LT_POINT==src.type)	(*task)[task_it].energy		= 0.f;
+				//if (LT_POINT==src.type)	(*task)[task_it].energy		= 0.f;
 				dst.type		= LT_SECONDARY;
 				dst.level		++;
 				task_it			++;
@@ -134,7 +134,8 @@ public:
 				}
 				if (dst.energy < gi_clip)	continue;
 
-				dst.range			=	src.range * _sqrt(dst.energy / src.energy); // scale range in proportion with energy
+				// scale range in proportion with energy
+				dst.range			=	src.range * (1+_sqrt(dst.energy / src.energy))/2; 
 				// clMsg			("submit: level[%d],type[%d], energy[%f]",dst.level,dst.type,dst.energy);
 
 				// submit answer
@@ -175,7 +176,7 @@ void	CBuild::xrPhase_Radiosity	()
 		//clMsg		("type[%d], energy[%f]",L.type,L.energy);
 		if (LT_SECONDARY == L.type)	_energy_after	+= L.energy;
 	}
-	float	_scale			= _energy_before / _energy_after;
+	float	_scale			= 2.f*_energy_before / _energy_after;
 	for (int l=0; l<task->size(); l++)
 	{
 		R_Light&	L = (*task)[l];
