@@ -92,6 +92,11 @@ void CSoundRender_CoreA::_initialize	(u64 window)
     eaxGet 				        = (EAXGet*)alGetProcAddress	((ALubyte*)"EAXGet");
     if (eaxGet==NULL) bEAX 		= false;
 
+    if (bEAX){
+        bEAX 					= EAXTestSupport(FALSE);
+        bDeferredEAX			= EAXTestSupport(TRUE);
+    }
+
 	ZeroMemory					( &wfm, sizeof( WAVEFORMATEX ) );
 //.            
 //	psSoundFreq = sf_22K;
