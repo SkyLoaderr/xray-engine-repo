@@ -12,6 +12,26 @@
 ; -K - from Koan
 
 To OLES : 
+-S	assertion failed  в stl_extensions.cpp 
+	stack: 	
+	xrCore.dll!xrDebug::backend(const char * reason=0x0012f400, const char * file=0x0160a880, int line=57)  Line 93	C++
+ 	xrCore.dll!xrDebug::fail(const char * e1=0x0160a874, const char * file=0x0160a880, int line=57)  Line 121 + 0x1f	C++
+ 	xrRender_R1.dll!xr_vector<CLightShadows::shadow>::operator[](unsigned int _Pos=3131961357)  Line 57 + 0x41	C++
+ 	xrRender_R1.dll!CLightProjector::setup(int id=-1163005939)  Line 104 + 0x6	C++
+ 	xrRender_R1.dll!sorted_L1(FixedMAP<float,SceneGraph::_MatrixItem>::TNode * N=0xffffffff)  Line 423 + 0xa8	C++
+ 	xrRender_R1.dll!FixedMAP<float,SceneGraph::_MatrixItem>::recurseRL(FixedMAP<float,SceneGraph::_MatrixItem>::TNode * N=0x2ac1f530, void (FixedMAP<float,SceneGraph::_MatrixItem>::TNode *)* CB=0x015a4100)  Line 84	C++
+ 	xrRender_R1.dll!FixedMAP<float,SceneGraph::_MatrixItem>::recurseRL(FixedMAP<float,SceneGraph::_MatrixItem>::TNode * N=0x2ac1f4cc, void (FixedMAP<float,SceneGraph::_MatrixItem>::TNode *)* CB=0x015a4100)  Line 84	C++
+ 	xrRender_R1.dll!FixedMAP<float,SceneGraph::_MatrixItem>::recurseRL(FixedMAP<float,SceneGraph::_MatrixItem>::TNode * N=0x2ac1f468, void (FixedMAP<float,SceneGraph::_MatrixItem>::TNode *)* CB=0x015a4100)  Line 84	C++
+ 	xrRender_R1.dll!FixedMAP<float,SceneGraph::_MatrixItem>::recurseRL(FixedMAP<float,SceneGraph::_MatrixItem>::TNode * N=0x2ac1f404, void (FixedMAP<float,SceneGraph::_MatrixItem>::TNode *)* CB=0x015a4100)  Line 84	C++
+ 	xrRender_R1.dll!CRender::Render()  Line 765	C++
+ 	XR_3DA.exe!IGame_Level::OnRender()  Line 193	C++
+>	xrGame.dll!CLevel::OnRender()  Line 227 + 0xb	C++
+	
+	параметры строки: -external -ltx user_w.ltx -start server(labaratory_1/single/alife) client(localhost)
+	Cлучаетс€ только в дебуговом билде не об€зательно в alife. ѕосле того как на уровне 
+	добавишь какую нибудь spawn point (может даже уберешь) исправл€етс€ добавлением или убиранием 
+	spawn point с последующим make game
+	
 -D	memory leak during reload (press f7 for reload) ~ 346kb on occ_part
 +J	монстры исчезают в определЄнных позици€х (level - occ_part_jim)
 +ќ	ќбьекты у которых парент - рендер€тс€
