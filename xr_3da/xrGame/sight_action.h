@@ -36,7 +36,7 @@ public:
 	IC					CSightAction		(const CGameObject *object_to_look, bool torso_look = false);
 	IC					CSightAction		(const CMemoryInfo *memory_object, bool	torso_look = false);
 			void		execute				();
-			bool		operator==			(const CSightAction &sight_action) const;
+	IC		bool		operator==			(const CSightAction &sight_action) const;
 };
 
 #include "sight_action_inline.h"

@@ -64,7 +64,7 @@ IC	CSightAction::CSightAction		(const ESightType &sight_type, const Fvector *vec
 		m_vector3d		= *vector3d;
 }
 
-bool CSightAction::operator==		(const CSightAction &sight_action) const
+IC	bool CSightAction::operator==		(const CSightAction &sight_action) const
 {
 	if (m_sight_type != sight_action.m_sight_type)
 		return			(false);
