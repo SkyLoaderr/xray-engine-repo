@@ -11,7 +11,7 @@ function init    (obj)
 --       xr_patrol2.AddToPatrol (obj, command, group, member)
        xr_motivator.AddToMotivator(obj)
        return
-    elseif name == "tradeseller" or name == "kamp" or name == "commander" then
+    elseif name == "tradeseller" or name == "kamp" or name == "commander" or name == "scout" then
        xr_motivator.AddToMotivator(obj)
        return
     elseif name == "bandit" then
