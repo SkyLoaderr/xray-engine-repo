@@ -10,6 +10,7 @@
 
 #include "path_manager_base.h"
 #include "path_manager_params.h"
+#include "path_manager_selector.h"
 #include "game_graph.h"
 #include "level_graph.h"
 #ifdef AI_COMPILER
@@ -800,6 +801,95 @@ public:
 			m_params->m_vertex_id	= node_index;
 			return					(true);
 		}
+	}
+};
+
+template <
+	typename _DataStorage,
+	u64		 flags,
+	typename _dist_type,
+	typename _index_type,
+	typename _iteration_type
+>	class CPathManager <
+		CLevelGraph,
+		_DataStorage,
+		PathManagers::CNodeEvaluator<flags>,
+		_dist_type,
+		_index_type,
+		_iteration_type
+	> : public CPathManager <
+			CLevelGraph,
+			_DataStorage,
+			PathManagers::SBaseParameters<
+				_dist_type,
+				_index_type,
+				_iteration_type
+			>,
+			_dist_type,
+			_index_type,
+			_iteration_type
+		>
+{
+	typedef CLevelGraph _Graph;
+	typedef PathManagers::CNodeEvaluator<flags> _Parameters;
+	typedef typename CPathManager <
+				_Graph,
+				_DataStorage,
+				PathManagers::SBaseParameters<
+					_dist_type,
+					_index_type,
+					_iteration_type
+				>,
+				_dist_type,
+				_index_type,
+				_iteration_type
+			> inherited;
+protected:
+	_Parameters		*m_evaluator;
+
+public:
+	virtual				~CPathManager	()
+	{
+	}
+
+	IC		void		setup			(
+				const _Graph			*_graph,
+				_DataStorage			*_data_storage,
+				xr_vector<_index_type>	*_path,
+				const _index_type		_start_node_index,
+				const _index_type		_goal_node_index,
+				_Parameters				&parameters
+			)
+	{
+		inherited::setup(
+			_graph,
+			_data_storage,
+			_path,
+			_start_node_index,
+			_goal_node_index,
+			parameters
+		);
+		m_evaluator		= &parameters;
+	}
+
+	IC	_dist_type	evaluate		(const _index_type node_index1, const _index_type node_index2, const _Graph::const_iterator &i)
+	{
+		return					(m_evaluator->ffEvaluate(node_index2));
+	}
+
+	IC	_dist_type	estimate		(const _index_type node_index) const
+	{
+		return					(_dist_type(0));
+	}
+
+
+	IC	bool		is_goal_reached	(const _index_type node_index)
+	{
+		VERIFY					(m_flood);
+		m_flood->push_back		(node_index);
+		_Graph::CVertex			&tNode0 = *graph->vertex(node_index);
+		y1						= (float)(tNode0.position().y);
+		return					(false);
 	}
 };
 
