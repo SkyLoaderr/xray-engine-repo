@@ -60,10 +60,10 @@ function evaluator_close_combat:evaluate()
 	end
 
 	if self.close_combat == true then
-		local a = self.object:memory(self.object:best_enemy())
+		local a = self.object:memory_time(self.object:best_enemy())
 		if a then
---			printf("%s - %s ? %s", device():time_global(), a.level_time, 20000)
-			if device():time_global() - a.level_time > 20000 then
+--			printf("%s - %s ? %s", device():time_global(), a, 20000)
+			if device():time_global() - a > 20000 then
 				self.close_combat = false
 			end
 		else			
@@ -144,11 +144,11 @@ function action_kill:execute ()
 	end
 	
 	if self.enemy ~= nil then		
-		if self.object:memory(self.enemy) == nil then
+		if self.object:memory_time(self.enemy) == nil then
 			self.a.enemy_id = nil
 			self.enemy = nil
 		else
-			self.a.mem_enemy = self.object:memory(self.enemy)
+			self.a.mem_enemy = self.object:memory_time(self.enemy)
 		end
 	else
 		self.a.enemy_id = nil
@@ -157,8 +157,8 @@ function action_kill:execute ()
 	
 		
 	if self.a.mem_enemy ~= nil then
---		printf("%s - %s > %s", utils.to_str(device():time_global()), utils.to_str(self.a.mem_enemy.level_time), utils.to_str(self.a.idle))
-		if device():time_global()- self.a.mem_enemy.level_time > self.a.idle then
+--		printf("%s - %s > %s", utils.to_str(device():time_global()), utils.to_str(self.a.mem_enemy), utils.to_str(self.a.idle))
+		if device():time_global()- self.a.mem_enemy > self.a.idle then
 			self.object:enable_memory_object(self.enemy, false)
 			self.a.enemy_id = nil
 			self.enemy = nil
@@ -222,11 +222,11 @@ function action_retreat:execute()
 	end
 	
 	if self.enemy ~= nil then		
-		if self.object:memory(self.enemy) == nil then
+		if self.object:memory_time(self.enemy) == nil then
 			self.a.enemy_id = nil
 			self.enemy = nil
 		else
-			self.a.mem_enemy = self.object:memory(self.enemy)
+			self.a.mem_enemy = self.object:memory_time(self.enemy)
 		end
 	else
 		self.a.enemy_id = nil
@@ -234,8 +234,8 @@ function action_retreat:execute()
 	end
 		
 	if self.a.mem_enemy ~= nil then
---		printf("%s - %s > %s", utils.to_str(device():time_global()), utils.to_str(self.a.mem_enemy.level_time), utils.to_str(self.a.idle))
-		if device():time_global()- self.a.mem_enemy.level_time > self.a.idle then
+--		printf("%s - %s > %s", utils.to_str(device():time_global()), utils.to_str(self.a.mem_enemy), utils.to_str(self.a.idle))
+		if device():time_global()- self.a.mem_enemy > self.a.idle then
 			self.object:enable_memory_object(self.enemy, false)
 			self.a.enemy_id = nil
 			self.enemy = nil
