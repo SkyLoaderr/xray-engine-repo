@@ -85,7 +85,7 @@ CUISquad::~CUISquad(){
 
 void CUISquad::Render(CSquad& S, bool* bSel, bool bActive){
 	int idx=0;
-	for (int i=0; i<S.Groups.size(); i++,idx){
+	for (u32 i=0; i<S.Groups.size(); i++,idx){
 		CGroup& G		= S.Groups[i];
 		if (!G.Empty())	group.Render(G,idx++,i,bSel[i]);
 /*		if (!G.Empty()){

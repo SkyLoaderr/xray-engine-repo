@@ -23,7 +23,7 @@ CSpawn_Event::~CSpawn_Event()
 
 void CSpawn_Event::Save	(CFS_Base& FS)
 {
-	for (int cmd=0; cmd<Commands.size(); cmd++)
+	for (u32 cmd=0; cmd<Commands.size(); cmd++)
 	{
 		xrP_Template	tmpl;
 		xrP_TOKEN::Item	item;
@@ -125,7 +125,7 @@ void CSpawn_Event::Execute(CStream& FS_CFORM)
 	
 	// Commands
 	P.w_u8		(Commands.size());
-	for (int cmd=0; cmd<Commands.size(); cmd++)
+	for (u32 cmd=0; cmd<Commands.size(); cmd++)
 	{
 		Pair&			A = Commands[cmd];
 		P.w_u8			(A.bOnce.value);

@@ -99,7 +99,7 @@ void CAISelectorBase::vfAddDistanceToEnemyCost()
 		if (fDistanceToEnemy > fMaxEnemyDistance)
 			m_fResult += fMaxEnemyDistanceWeight*(fDistanceToEnemy + 0.1f)/(fMaxEnemyDistance + 0.1f);
 		else
-			m_fResult += fOptEnemyDistanceWeight*fabs(fDistanceToEnemy - fOptEnemyDistance + 1.f)/(fOptEnemyDistance + 1.f);
+			m_fResult += fOptEnemyDistanceWeight*fabsf(fDistanceToEnemy - fOptEnemyDistance + 1.f)/(fOptEnemyDistance + 1.f);
 }
 
 void CAISelectorBase::vfAddDistanceToLeaderCost()
@@ -111,7 +111,7 @@ void CAISelectorBase::vfAddDistanceToLeaderCost()
 		if (fDistanceToLeader > fMaxLeaderDistance)
 			m_fResult += fMaxLeaderDistanceWeight*(fDistanceToLeader + 0.1f)/(fMaxLeaderDistance + 0.1f);
 		else
-			m_fResult += fOptLeaderDistanceWeight*fabs(fDistanceToLeader - fOptLeaderDistance + 1.f)/(fOptLeaderDistance + 1.f);
+			m_fResult += fOptLeaderDistanceWeight*fabsf(fDistanceToLeader - fOptLeaderDistance + 1.f)/(fOptLeaderDistance + 1.f);
 }
 
 void CAISelectorBase::vfAddDistanceToMemberCost()
@@ -127,7 +127,7 @@ void CAISelectorBase::vfAddDistanceToMemberCost()
 		if (fDistanceToMember > fMaxMemberDistance)
 			m_fResult += fMaxMemberDistanceWeight*(fDistanceToMember + 0.1f)/(fMaxMemberDistance + 0.1f)/m_iAliveMemberCount;
 		else
-			m_fResult += fOptMemberDistanceWeight*fabs(fDistanceToMember - fOptMemberDistance + 1.f)/(fOptMemberDistance + 1.f)/m_iAliveMemberCount;
+			m_fResult += fOptMemberDistanceWeight*fabsf(fDistanceToMember - fOptMemberDistance + 1.f)/(fOptMemberDistance + 1.f)/m_iAliveMemberCount;
 }
 
 void CAISelectorBase::vfAddCoverFromEnemyCost()
