@@ -272,7 +272,7 @@ void xrLoad(LPCSTR name)
 					// analyze thumbnail information
 					R_ASSERT(THM->find_chunk(THM_CHUNK_TEXTUREPARAM));
 					THM->r                  (&BT.THM.fmt,sizeof(STextureParams::ETFormat));
-					BT.THM.flags.set		(THM->r_u32());
+					BT.THM.flags.assign		(THM->r_u32());
 					BT.THM.border_color		= THM->r_u32();
 					BT.THM.fade_color		= THM->r_u32();
 					BT.THM.fade_amount		= THM->r_u32();
@@ -670,7 +670,7 @@ void	xrLight			()
 
 	// Start threads, wait, continue --- perform all the work
 	CThreadManager		Threads;
-	u32	start_time		= timeGetTime	();
+	CTimer				start_time;
 	u32	stride			= range/NUM_THREADS;
 	u32	last			= range-stride*	(NUM_THREADS-1);
 	for (u32 thID=0; thID<NUM_THREADS; thID++)	{
@@ -680,7 +680,7 @@ void	xrLight			()
 		Threads.start		(T);
 	}
 	Threads.wait			();
-	Msg						("%d seconds elapsed.",(timeGetTime()-start_time)/1000);
+	Msg						("%d seconds elapsed.",(start_time.GetElapsed_ms())/1000);
 }
 
 void xrCompiler(LPCSTR name)

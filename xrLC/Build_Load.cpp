@@ -306,7 +306,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 				// analyze thumbnail information
 				R_ASSERT(THM->find_chunk(THM_CHUNK_TEXTUREPARAM));
 				THM->r                  (&BT.THM.fmt,sizeof(STextureParams::ETFormat));
-				BT.THM.flags.set		(THM->r_u32());
+				BT.THM.flags.assign		(THM->r_u32());
 				BT.THM.border_color		= THM->r_u32();
 				BT.THM.fade_color		= THM->r_u32();
 				BT.THM.fade_amount		= THM->r_u32();
