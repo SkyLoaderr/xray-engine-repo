@@ -13,10 +13,10 @@ function main()
 	escape_dogs.init		()
 	escape1.init				()
 
-   	table.insert(work, "escape_bobik"  )
+--   	table.insert(work, "escape_bobik"  )
 	table.insert(work, "scr_trader"    )
-   	table.insert(work, "escape_dogs"   )
-    table.insert(work, "escape1"	   )
+--   	table.insert(work, "escape_dogs"   )
+--	table.insert(work, "escape1"	   )
 
     	while(table.getn(work) > 0) do
 		local deleted = {}
