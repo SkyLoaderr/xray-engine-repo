@@ -330,7 +330,7 @@ void CAI_Soldier::LyingDown()
 	//if ((m_tpCurrentGlobalAnimation == tSoldierAnimations.tLie.tGlobal.tpLieDown) && (m_tpCurrentGlobalBlend) && (!(m_tpCurrentGlobalBlend->playing))) {
 	AI_Path.TravelPath.clear();
 	
-	CHECK_IF_GO_TO_PREV_STATE(((m_tpCurrentGlobalAnimation == tSoldierAnimations.tNormal.tGlobal.tpLieDown) || (m_tpCurrentGlobalAnimation == tSoldierAnimations.tCrouch.tGlobal.tpLieDown)) && (Level().timeServer() - dwHitTime > 500))
+	CHECK_IF_GO_TO_PREV_STATE(((m_tpCurrentGlobalAnimation == tSoldierAnimations.tNormal.tGlobal.tpaLieDown[0]) || (m_tpCurrentGlobalAnimation == tSoldierAnimations.tCrouch.tGlobal.tpaLieDown[0])) && (Level().timeServer() - dwHitTime > 500))
 }
 
 void CAI_Soldier::MoreDeadThanAlive()

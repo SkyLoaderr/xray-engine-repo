@@ -92,9 +92,9 @@ class CAI_Soldier : public CCustomMonster, public soundListener
 			CMotionDef* tpaRunForward[4];
 			CMotionDef* tpaWalkForward[3];
 			CMotionDef* tpaWalkBack[3];
+			CMotionDef* tpaLieDown[2];
 			CMotionDef* tpWalkLeft;
 			CMotionDef* tpWalkRight;
-			CMotionDef* tpLieDown;
 			CMotionDef* tpPointSign; // !
 			CMotionDef* tpIdle;
 			CMotionDef* tpTurnLeft;
@@ -135,7 +135,7 @@ class CAI_Soldier : public CCustomMonster, public soundListener
 			CMotionDef* tpTurnLeft;
 			CMotionDef* tpTurnRight;
 			CMotionDef* tpIdle;
-			CMotionDef* tpLieDown;
+			CMotionDef* tpaLieDown[2];
 			CMotionDef* tpaWalkForward[2];
 			CMotionDef* tpaWalkBack[2];
 			CMotionDef* tpWalkLeft;

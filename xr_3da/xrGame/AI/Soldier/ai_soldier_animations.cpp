@@ -77,13 +77,15 @@ void CAI_Soldier::vfLoadAnimations()
 	tSoldierAnimations.tNormal.tGlobal.tpaWalkBack[1] = tpVisualObject->ID_Cycle("norm_walk_back_1");
 	tSoldierAnimations.tNormal.tGlobal.tpaWalkBack[2] = tpVisualObject->ID_Cycle("norm_walk_back_2");
 	
+	tSoldierAnimations.tNormal.tGlobal.tpaLieDown[0] = tpVisualObject->ID_Cycle("norm_lie_down_0");
+	tSoldierAnimations.tNormal.tGlobal.tpaLieDown[1] = tpVisualObject->ID_Cycle("norm_lie_down_1");
+
 	tSoldierAnimations.tNormal.tGlobal.tpWalkLeft = tpVisualObject->ID_Cycle("norm_walk_ls");
 	tSoldierAnimations.tNormal.tGlobal.tpWalkRight = tpVisualObject->ID_Cycle("norm_walk_rs");
 	
 	tSoldierAnimations.tNormal.tGlobal.tpTurnLeft = tpVisualObject->ID_Cycle("norm_turn_ls");
 	tSoldierAnimations.tNormal.tGlobal.tpTurnRight = tpVisualObject->ID_Cycle("norm_turn_rs");
 	
-	tSoldierAnimations.tNormal.tGlobal.tpLieDown = tpVisualObject->ID_Cycle("norm_lie_down");
 	tSoldierAnimations.tNormal.tGlobal.tpPointSign = tpVisualObject->ID_Cycle("norm_sign_2");
 	tSoldierAnimations.tNormal.tGlobal.tpIdle = tpVisualObject->ID_Cycle("norm_idle");
 
@@ -105,13 +107,15 @@ void CAI_Soldier::vfLoadAnimations()
 	tSoldierAnimations.tCrouch.tGlobal.tpaWalkBack[0] = tpVisualObject->ID_Cycle("cr_walk_back_0");
 	tSoldierAnimations.tCrouch.tGlobal.tpaWalkBack[1] = tpVisualObject->ID_Cycle("cr_walk_back_1");
 	
+	tSoldierAnimations.tCrouch.tGlobal.tpaLieDown[0] = tpVisualObject->ID_Cycle("cr_lie_down_0");
+	tSoldierAnimations.tCrouch.tGlobal.tpaLieDown[1] = tpVisualObject->ID_Cycle("cr_lie_down_1");
+
 	tSoldierAnimations.tCrouch.tGlobal.tpDeath = tpVisualObject->ID_Cycle("cr_death_0");
 	tSoldierAnimations.tCrouch.tGlobal.tpTurnLeft = tpVisualObject->ID_Cycle("cr_turn_ls");
 	tSoldierAnimations.tCrouch.tGlobal.tpTurnRight = tpVisualObject->ID_Cycle("cr_turn_rs");
 	tSoldierAnimations.tCrouch.tGlobal.tpIdle = tpVisualObject->ID_Cycle("cr_idle");
 	tSoldierAnimations.tCrouch.tGlobal.tpWalkLeft = tpVisualObject->ID_Cycle("cr_walk_ls");
 	tSoldierAnimations.tCrouch.tGlobal.tpWalkRight = tpVisualObject->ID_Cycle("cr_walk_rs");
-	tSoldierAnimations.tCrouch.tGlobal.tpLieDown = tpVisualObject->ID_Cycle("cr_lie_down");
 	tSoldierAnimations.tCrouch.tGlobal.tpPointSign = tpVisualObject->ID_Cycle("cr_sign_2");
 
 	tSoldierAnimations.tCrouch.tTorso.tpAim = tpVisualObject->ID_Cycle("cr_aim");
