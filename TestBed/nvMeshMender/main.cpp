@@ -83,6 +83,20 @@ a: tangent basis\
 // Main function
 int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)
 {
+	// Gauss filtering coeffs
+	const int	n	= 7;		// kernel size
+	const float r	= 3.3f;		// gaussian radius
+	const float t	= 1;		// grid dimension
+	const float bs	= 1.2f;		// bilinear interpolation (1=point sampling, 2=twice the kernel size - interpolated)
+
+	float		w [2*n+1];	float* _w = w;
+	float		u [2*n+1];	float* _u = u;
+	for (int i=-n; i<=n; i++)
+	{
+		*_w++	= expf(-float(i*i)/(2*r*r));
+		*_u++	= bs*float(i)/t;
+	}
+
 	// Create window
 	HWND hWnd = InitInstance(hInstance, nCmdShow);
 	assert(hWnd);
