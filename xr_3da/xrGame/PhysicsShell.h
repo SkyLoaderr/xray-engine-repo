@@ -77,6 +77,7 @@ public:
 	virtual void			SetMaterial				(u16 m)													= 0;
 	virtual void			SetMaterial				(LPCSTR m)												= 0;
 	virtual void			set_DisableParams		(const SAllDDOParams& params)							= 0;
+	virtual void			SetTransform			(const Fmatrix& m0)										= 0;
 	virtual					~CPhysicsBase	()																{};
 };
 
@@ -99,7 +100,7 @@ public:
 	virtual bool			has_geoms				()												= 0;
 	virtual void			add_Mass				(const SBoneShape& shape,const Fmatrix& offset,const Fvector& mass_center,float mass,CPHFracture* fracture=NULL)=0;
 	virtual	void			set_ParentElement		(CPhysicsElement* p)							= 0;
-	virtual void			SetTransform			(const Fmatrix& m0)								= 0;															//
+
 	virtual	void			set_BoxMass				(const Fobb& box, float mass)					= 0;	
 	virtual void			setInertia				(const dMass& M)								= 0;																
 	virtual void			addInertia				(const dMass& M)								= 0;

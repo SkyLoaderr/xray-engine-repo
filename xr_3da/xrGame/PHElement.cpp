@@ -569,7 +569,8 @@ void	CPHElement::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, fl
 void CPHElement::InterpolateGlobalTransform(Fmatrix* m){
 	m_body_interpolation.InterpolateRotation(*m);
 	m_body_interpolation.InterpolatePosition(m->c);
-	m->mulB(m_inverse_local_transform);
+	m->mulB_43(m_inverse_local_transform);
+	
 	bUpdate=false;
 }
 void CPHElement::GetGlobalTransformDynamic(Fmatrix* m)
@@ -1129,19 +1130,23 @@ void CPHElement::CreateSimulBase()
 }
 void CPHElement::ReAdjustMassPositions(const Fmatrix &shift_pivot,float density)
 {
+
 	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
 	for(;i!=e;++i)
 	{
 		(*i)->move_local_basis(shift_pivot);
 	}
-	
 	if(m_shell->PKinematics())
 	{
 		float mass;
 		get_mc_kinematics(m_shell->PKinematics(),m_mass_center,mass);
 		calculate_it_data(m_mass_center,mass);
 	}
-	else setDensity(density);
+	else
+	{
+	
+		setDensity(density);
+	}
 
 	dBodySetMass(m_body,&m_mass);
 	m_inverse_local_transform.identity();

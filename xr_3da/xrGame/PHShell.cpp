@@ -252,24 +252,13 @@ void __stdcall CPHShell::StataticRootBonesCallBack			(CBoneInstance* B){
 }
 
 
-void CPHShell::SetTransform(Fmatrix m){
-	Fmatrix init;
+void CPHShell::SetTransform	(const Fmatrix& m0){
+
 	ELEMENT_I i=elements.begin();
-	(*i)->InterpolateGlobalTransform(&init);
-	init.invert();
-	Fmatrix add;
-	add.mul(init,m);
-	(*i)->SetTransform(m);
-	++i;
-	Fmatrix element_transform;
 	for( ;elements.end() != i; ++i)
 	{
-		(*i)->InterpolateGlobalTransform(&element_transform);
-		element_transform.mulA(add);
-		(*i)->SetTransform(element_transform);
+		(*i)->SetTransform(m0);
 	}
-
-
 }
 
 
@@ -938,7 +927,8 @@ void CPHShell::UpdateRoot()
 void CPHShell::InterpolateGlobalTransform(Fmatrix* m)
 {
 	(*elements.begin())->InterpolateGlobalTransform(m);
-	m->mulB	(m_object_in_root);
+	m->mulB_43	(m_object_in_root);
+	
 	//m->c.add(m_object_in_root);
 }
 

@@ -163,7 +163,7 @@ public:
 	virtual Fmatrix&			ObjectInRoot				(){return m_object_in_root;}
 	virtual	void				ObjectToRootForm			(const Fmatrix& form);
 	virtual	dSpaceID			dSpace						(){return m_space;}
-
+	virtual void				SetTransform				(const Fmatrix& m0);
 	
 	void CreateSpace()
 	{
@@ -178,7 +178,7 @@ public:
 				void DeleteElement						(u16 element)																	;
 				void DeleteJoint						(u16 joint)																		;
 				u16  BoneIdToRootGeom					(u16 id)																		;
-				void SetTransform						(Fmatrix m)																		;
+
 protected:
 	virtual		void		get_spatial_params			()																				;
 	virtual		dGeomID		dSpacedGeom					()																	{return (dGeomID)m_space;}

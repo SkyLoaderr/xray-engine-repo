@@ -132,6 +132,7 @@ void CHangingLamp::UpdateCL	()
 	{
 		m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
 		guid_physic_bone->BonesCallBack(&PKinematics(Visual())->LL_GetBoneInstance(u16(guid_physic_bone->m_SelfID)));
+
 	}
 		
 
