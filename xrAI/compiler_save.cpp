@@ -4,9 +4,7 @@
 
 IC void	CompressPos	(NodePosition& Dest, Fvector& Src, hdrNODES& H)
 {
-	float sy = 32767.f/H.size_y;
 	float sp = 1/g_params.fPatchSize;
-
 	int px,py,pz;
 	px = iFloor(Src.x*sp+EPS_L);
 	py = iFloor(65535.f*(Src.y-H.aabb.min.y)/(H.size_y)+EPS_L);
