@@ -66,7 +66,10 @@ void LuaLog(LPCSTR caMessage)
 {
 	Lua::LuaOut	(Lua::eLuaMessageTypeMessage,"%s",caMessage);
 }
-
+void LuaError(lua_State* L)
+{
+	Debug.fatal("LUA error: %s",lua_tostring(L,0));
+}
 
 // export
 void	CResourceManager::LS_Load			()
@@ -83,7 +86,8 @@ void	CResourceManager::LS_Load			()
 	luaopen_string	(LSVM);
 	luaopen_math	(LSVM);
 
-	luabind::open	(LSVM);
+	luabind::open					(LSVM);
+	luabind::set_error_callback		(LuaError);
 
 	function		(LSVM, "log",	LuaLog);
 
