@@ -92,6 +92,12 @@ void				game_sv_GameState::signal_Syncronize		()
 {
 	sv_force_sync	= TRUE;
 }
+void				game_sv_GameState::switch_Phase				(u32 new_phase)
+{
+	phase				= new_phase;
+	start_time			= Device.TimerAsync();
+	signal_Syncronize	();
+}
 
 // Network
 void game_sv_GameState::net_Export_State						(NET_Packet& P, u32 to)
@@ -153,8 +159,7 @@ void game_sv_GameState::net_Export_Update						(NET_Packet& P, u32 id_to, u32 id
 
 void game_sv_GameState::OnRoundStart			()
 {
-	phase		= GAME_PHASE_INPROGRESS;
-	start_time	= Device.TimerAsync	();
+	switch_Phase	(GAME_PHASE_INPROGRESS);
 
 	// clear "ready" flag
 	Lock	();
@@ -165,15 +170,11 @@ void game_sv_GameState::OnRoundStart			()
 		ps->flags				&=	~GAME_PLAYER_FLAG_READY;
 	}
 	Unlock	();
-
-	signal_Syncronize	();
 }
 
 void game_sv_GameState::OnRoundEnd				(LPCSTR reason)
 {
-	phase				= GAME_PHASE_PENDING;
-
-	signal_Syncronize	();
+	switch_Phase		(GAME_PHASE_PENDING);
 }
 
 void game_sv_GameState::OnPlayerConnect			(u32 id_who)

@@ -5,7 +5,7 @@ void	game_sv_Deathmatch::Create					(LPCSTR options)
 {
 	fraglimit	= get_option_i		(options,"fraglimit",0);
 	timelimit	= get_option_i		(options,"timelimit",0)*60000;	// in (ms)
-	phase		= GAME_PHASE_PENDING;
+	switch_Phase(GAME_PHASE_PENDING);
 }
 
 void	game_sv_Deathmatch::OnRoundStart			()
@@ -26,7 +26,7 @@ void	game_sv_Deathmatch::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
 	} else {
 		// Opponent killed - frag 
 		ps_killer->kills			+=	1;
-		if (fraglimit && (ps_killer->kills > fraglimit) )OnFraglimitExceed();
+		if (fraglimit && (ps_killer->kills >= fraglimit) )OnFraglimitExceed();
 	}
 	Unlock	();
 }
@@ -41,10 +41,22 @@ void	game_sv_Deathmatch::OnFraglimitExceed		()
 }
 void	game_sv_Deathmatch::Update					()
 {
-	if (timelimit)
+	switch (phase)
 	{
-		if ((Device.TimerAsync()-start_time)>u32(timelimit))
-			OnTimelimitExceed	();
+	case GAME_PHASE_INPROGRESS:
+		{
+			if (timelimit)
+			{
+				if ((Device.TimerAsync()-start_time)>u32(timelimit))
+					OnTimelimitExceed	();
+			}
+		}
+		break;
+	case GAME_PHASE_PENDING:
+		{
+
+		}
+		break;
 	}
 }
 BOOL	game_sv_Deathmatch::OnTargetTouched			(u32 id_who, u32 eid_target)
@@ -56,7 +68,6 @@ void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 	if	(GAME_PHASE_INPROGRESS == phase) return;
 
 	Lock	();
-	Msg		("--- Player '%s' ready-switch",get_name_id(id));
 	game_PlayerState*	ps	=	get_id	(id);
 	if (ps)
 	{

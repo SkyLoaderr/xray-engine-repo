@@ -24,6 +24,7 @@ public:
 	
 	// Signals
 	virtual		void				signal_Syncronize		();
+	virtual		void				switch_Phase			(u32 new_phase);
 
 	// Utilities
 	virtual		u32					get_alive_count			(u32 team);
