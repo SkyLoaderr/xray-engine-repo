@@ -431,8 +431,8 @@ void CMainFrame::OnUpdateDebugMenu(CCmdUI* pCmdUI)
 	if(pCmdUI->m_nID==ID_DEBUG_DEBUGBREAK)
 		pCmdUI->Enable(!m_needAnswer);
 
-	if(pCmdUI->m_nID==ID_DEBUG_RUNTOCURSOR)
-		pCmdUI->Enable(TRUE);//fake
+//	if(pCmdUI->m_nID==ID_DEBUG_RUNTOCURSOR)
+//		pCmdUI->Enable(TRUE);//fake
 
 }	
 
@@ -488,12 +488,12 @@ void CMainFrame::OnDebugStepout()
 
 void CMainFrame::OnDebugRuntocursor() 
 {
-	SScriptThread st;
+/*	SScriptThread st;
 	st.active = true;
 	st.scriptID = 558;
 	m_wndThreads.AddThread(&st);
 
-	return;
+	return;*/
 	GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write("Not implemented yet...\n");
 	SendBreakPoints();
 	return;
