@@ -8,9 +8,8 @@
 
 #include "fstaticrender_scenegraph.h"
 
-class ENGINE_API	CObject;
-class ENGINE_API	xrLIGHT;
-struct Flight;
+class	ENGINE_API	CObject;
+struct	ENGINE_API	Flight;
 
 class CLightShadows			: public pureDeviceCreate, public pureDeviceDestroy
 {
