@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#include <d3dx9.h>
+
 #include "ResourceManager.h"
 #include "blenders\Blender_Recorder.h"
 #include "blenders\Blender.h"
@@ -52,7 +54,7 @@ class cl_fog_plane	: public R_constant_setup {
 static cl_fog_plane		binder_fog_plane;
 
 // fog-plane-E
-class cl_fog_plane_e	: public R_constant_setup {
+class cl_fog_plane_E	: public R_constant_setup {
 	u32			marker;
 	Fvector4	result;
 	virtual void setup(R_constant* C)
@@ -81,8 +83,20 @@ class cl_fog_plane_e	: public R_constant_setup {
 		}
 		RCache.set_c	(C,result);
 	}
-};
-static cl_fog_plane_E	binder_fog_plane_E;
+};	static cl_fog_plane_E	binder_fog_plane_E;
+
+// fog-color
+class cl_fog_color	: public R_constant_setup {
+	u32			marker;
+	Fvector4	result;
+	virtual void setup	(R_constant* C)	{
+		if (marker!=Device.dwFrame)	{
+			CEnvDescriptor&	desc	= g_pGamePersistent->Environment.CurrentEnv;
+			result.set				(desc.fog_color.x,	desc.fog_color.y, desc.fog_color.z,	0);
+		}
+		RCache.set_c	(C,result);
+	}
+};	static cl_fog_color		binder_fog_color;
 
 // eye-params
 class cl_eye_P		: public R_constant_setup {
@@ -202,6 +216,7 @@ void	CBlender_Compile::SetMapping	()
 	// fog-params
 	r_Constant				("fog_plane",		&binder_fog_plane);
 	r_Constant				("fog_plane_e",		&binder_fog_plane_E);
+	r_Constant				("fog_color",		&binder_fog_color);
 
 	// eye-params
 	r_Constant				("eye_position",	&binder_eye_P);
