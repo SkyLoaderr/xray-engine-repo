@@ -198,7 +198,13 @@ void CPHJoint::CreateHinge2()
 		dJointSetHinge2Param(m_joint,dParamVel2 ,axes[1].velocity);
 	}
 	//////////////////////////////////////////////////////////////////
-
+	
+	dJointSetHinge2Param(m_joint, dParamSuspensionERP, m_erp);
+	dJointSetHinge2Param(m_joint, dParamSuspensionCFM, m_cfm);
+	//dJointSetHinge2Param(m_joint, dParamStopERP, 1.f);
+	//dJointSetHinge2Param(m_joint, dParamStopCFM,0.f);
+	dJointSetHinge2Param(m_joint, dParamStopERP,axes[0].erp);
+	dJointSetHinge2Param(m_joint, dParamStopCFM,axes[0].cfm);
 }
 
 void CPHJoint::CreateShoulder1()
@@ -771,54 +777,60 @@ if(ax==-1)
 			break;
 	}
 else
-	axes[axis_num]=axis;
+	axes[ax]=axis;
 }
 
 void CPHJoint::SetAxisSDfactors(float spring_factor,float damping_factor,int axis_num)
 {
 	int ax=axis_num;
 	LimitAxisNum(ax);
-	float erp=ERP(world_spring*spring_factor,world_damping*damping_factor);
-	float cfm=CFM(world_spring*spring_factor,world_damping*damping_factor);
 	if(ax==-1) 
 		switch(eType){
 		case welding:				; 
 		case ball:					return;
 		case hinge:					
-			axes[0].erp=erp;
-			axes[0].cfm=cfm;
+			axes[0].set_sd_factors(spring_factor,damping_factor,eType);
 			break;
 		case hinge2:				;
 		case universal_hinge:		;
 		case shoulder1:				;
 		case shoulder2:				;
 		case car_wheel:	
-			axes[0].erp=erp;
-			axes[0].cfm=cfm;
-			axes[1].erp=erp;
-			axes[1].cfm=cfm;
+			axes[0].set_sd_factors(spring_factor,damping_factor,eType);
+			axes[1].set_sd_factors(spring_factor,damping_factor,eType);
 			break;
 
 		case full_control:			
-			axes[0].erp=erp;
-			axes[0].cfm=cfm;
-			axes[1].erp=erp;
-			axes[1].cfm=cfm;
-			axes[2].erp=erp;
-			axes[2].cfm=cfm;
+			axes[0].set_sd_factors(spring_factor,damping_factor,eType);
+			axes[1].set_sd_factors(spring_factor,damping_factor,eType);
+			axes[2].set_sd_factors(spring_factor,damping_factor,eType);
 			break;
 		}
 	else
 	{
-		axes[ax].erp=erp;
-		axes[ax].cfm=cfm;
+		axes[ax].set_sd_factors(spring_factor,damping_factor,eType);
 	}
 }
 
 void CPHJoint::SetJointSDfactors(float spring_factor,float damping_factor)
 {
-	m_erp=ERP(world_spring*spring_factor,world_damping*damping_factor);
-	m_cfm=CFM(world_spring*spring_factor,world_damping*damping_factor);
+	switch(eType){
+		case hinge2:		
+			m_cfm=CFM(20000.f*spring_factor,1000.f*damping_factor);
+			m_erp=ERP(20000.f*spring_factor,1000.f*damping_factor);
+			break;
+		case welding:				; 
+		case ball:					;
+		case hinge:					;								
+		case universal_hinge:		;
+		case shoulder1:				;
+		case shoulder2:				;
+		case car_wheel:				;
+		case full_control:			;			
+			m_erp=ERP(world_spring*spring_factor,world_damping*damping_factor);
+			m_cfm=CFM(world_spring*spring_factor,world_damping*damping_factor);
+			break;
+	}
 }
 
 void CPHJoint::CalcAxis(int ax_num,Fvector& axis, float& lo,float& hi,const Fmatrix& first_matrix,const Fmatrix& second_matrix,const Fmatrix& rotate)
@@ -929,4 +941,28 @@ CPHJoint::SPHAxis::SPHAxis(){
 	vs=vs_first;
 	force=0.f;
 	velocity=0.f;
+}
+
+void CPHJoint::SPHAxis::set_sd_factors(float sf,float df,enumType jt)
+{
+	switch(jt)
+	{
+		case hinge2:
+#ifndef   ODE_SLOW_SOLVER
+			cfm=0.f;
+			erp=1.f;
+			break;
+#endif
+		case welding:				; 
+		case ball:					;
+		case hinge:					;								
+		case universal_hinge:		;
+		case shoulder1:				;
+		case shoulder2:				;
+		case car_wheel:				;
+		case full_control:			;			
+			erp=ERP(world_spring*sf,world_damping*df);
+			cfm=CFM(world_spring*sf,world_damping*df);
+			break;
+	}
 }

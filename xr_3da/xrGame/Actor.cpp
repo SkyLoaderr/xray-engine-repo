@@ -328,7 +328,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	cNameVisual_set			(E->get_visual());
 
 	//
-	r_model_yaw				= E->o_model;
+	r_model_yaw				= -E->o_Angle.y;
 	r_torso.yaw				= E->o_torso.yaw;
 	r_torso.pitch			= E->o_torso.pitch;
 	cam_Active()->Set		(-E->o_torso.yaw,E->o_torso.pitch,0);		// set's camera orientation

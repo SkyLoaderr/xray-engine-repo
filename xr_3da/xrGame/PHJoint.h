@@ -27,10 +27,11 @@ class CPHJoint: public CPhysicsJoint{
 		float force;		//max force
 		float velocity;		//velocity to achieve
 		Fvector direction;	//axis direction
-		IC void set_limits(float h, float l) {high=h; low=l;}
-		IC void set_direction(const Fvector& v){direction.set(v);}
-		IC void set_direction(const float x,const float y,const float z){direction.set(x,y,z);}
-		IC void set_param(const float e,const float c){erp=e;cfm=c;}	
+		IC void set_limits		(float h, float l) {high=h; low=l;}
+		IC void set_direction	(const Fvector& v){direction.set(v);}
+		IC void set_direction	(const float x,const float y,const float z){direction.set(x,y,z);}
+		IC void set_param		(const float e,const float c){erp=e;cfm=c;}	
+		   void	set_sd_factors	(float sf,float df,enumType jt);
 		SPHAxis();
 	};
 
@@ -52,7 +53,6 @@ class CPHJoint: public CPhysicsJoint{
 	void SetVelocityActive					(const int axis_num);
 	void CalcAxis							(int ax_num,Fvector& axis,float& lo,float& hi,const Fmatrix& first_matrix,const Fmatrix& second_matrix);
 	void CalcAxis							(int ax_num,Fvector& axis,float& lo,float& hi,const Fmatrix& first_matrix,const Fmatrix& second_matrix,const Fmatrix& rotate);
-
 	virtual void SetAxisSDfactors			(float spring_factor,float damping_factor,int axis_num);
 	virtual void SetJointSDfactors			(float spring_factor,float damping_factor);
 	virtual void SetAxis					(const SPHAxis& axis,const int axis_num);
