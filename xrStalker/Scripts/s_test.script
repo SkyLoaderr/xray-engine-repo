@@ -24,7 +24,7 @@ function Test2:set_value (v)
     
     self.value = v
     printf ("Test2 value = %d", v)
-    super.set_value (v)
+    s_test.Test1:set_value (v)
 end    
 
     
