@@ -35,8 +35,8 @@ end
 function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, team, mode, move_cb_info)
 	--xr_reactions.add_rule(self.object, "ignore") -- DELME
 
-	--printf("move_mgr:reset(path_walk=%s, path_look=%s, team=%s)",
-	--	utils.to_str(path_walk), utils.to_str(path_look), utils.to_str(team))
+	printf("move_mgr:reset(path_walk=%s, path_look=%s, team=%s)",
+		utils.to_str(path_walk), utils.to_str(path_look), utils.to_str(team))
 	self.object:set_node_evaluator   ()
 	self.object:set_path_evaluator   ()
 	self.object:set_desired_direction()
