@@ -125,7 +125,6 @@ void CObject::Load				(LPCSTR section )
 		cNameVisual_set	(pSettings->ReadSTRING(section,"visual"));
 	pLights						= xr_new<CLightTrack> ();
 	setVisible					(false);
-	Msg							("! object size: %d",sizeof(*this));
 }
 
 BOOL CObject::net_Spawn			(LPVOID data)

@@ -35,10 +35,11 @@ void CObjectList::Load()
 	u32		p_mem		= Memory.mem_usage() - mem_0;
 	if (p_count)
 	{
+		float 	a_time		= float(p_time)/float(p_count);
 		Msg					("* [Object-prefetch] objects: %d",		p_count);
 		Msg					("* [Object-prefetch] time:    %d ms",	iFloor(p_time));
 		Msg					("* [Object-prefetch] memory:  %dKb",	p_mem/1024);
-		Msg					("* [Object-prefetch] average: %f ms, %d bytes", p_time/p_count, p_mem/p_count);
+		Msg					("* [Object-prefetch] average: %2.2f ms, %d bytes", a_time, p_mem/p_count);
 	}
 }
 
