@@ -19,7 +19,7 @@ game_cl_ArtefactHunt::game_cl_ArtefactHunt()
 	pMessageSounds[5].create(TRUE, "messages\\multiplayer\\mp_new_artifact");
 
 	pMessageSounds[6].create(TRUE, "messages\\multiplayer\\mp_artifact_delivered_by_enemy");
-	pMessageSounds[7].create(TRUE, "messages\\multiplayer\\mp_artifact_stolen.ogg ");
+	pMessageSounds[7].create(TRUE, "messages\\multiplayer\\mp_artifact_stolen");
 	
 	m_bBuyEnabled	= FALSE;
 }

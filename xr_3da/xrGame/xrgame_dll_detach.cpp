@@ -37,7 +37,7 @@ void clean_game_globals()
 	CCharacterInfo::DeleteIdToIndexData			();
 	CSpecificCharacter::DeleteIdToIndexData		();
 	CPhraseDialog::DeleteIdToIndexData			();
-
+	CGameTask::DeleteIdToIndexData				();
 
 	//static shader for blood
 	CEntityAlive::UnloadBloodyWallmarks	();

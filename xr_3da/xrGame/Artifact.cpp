@@ -30,31 +30,27 @@ CArtefact::CArtefact(void)
 
 CArtefact::~CArtefact(void) 
 {
-	SoundDestroy(m_detectorSound);
+	m_detectorSound.destroy();
 }
 
 void CArtefact::Load(LPCSTR section) 
 {
 	// verify class
-	LPCSTR Class = pSettings->r_string(section,"class");
-	CLASS_ID load_cls = TEXT2CLSID(Class);
-	R_ASSERT(load_cls==SUB_CLS_ID);
+	LPCSTR Class			= pSettings->r_string(section,"class");
+	CLASS_ID load_cls		= TEXT2CLSID(Class);
+	R_ASSERT				(load_cls==SUB_CLS_ID);
 
-	inherited::Load(section);
+	inherited::Load			(section);
 
-	LPCSTR m_detectorSoundName = pSettings->r_string(section,"detector_sound");
-	SoundCreate(m_detectorSound, m_detectorSoundName);
+	m_detectorSound.create	(TRUE,pSettings->r_string(section,"detector_sound"));
 
-	m_fDetectionDist = pSettings->r_float(section,"detector_dist");
+	m_fDetectionDist		= pSettings->r_float(section,"detector_dist");
 
 	if (pSettings->line_exist(section, "particles"))
-	{
-		m_sParticlesName = pSettings->r_string(section, "particles");
-	}
+		m_sParticlesName	= pSettings->r_string(section, "particles");
 
-	m_bLightsEnabled = !!pSettings->r_bool(section, "lights_enabled");
-	if(m_bLightsEnabled)
-	{
+	m_bLightsEnabled		= !!pSettings->r_bool(section, "lights_enabled");
+	if(m_bLightsEnabled){
 		sscanf(pSettings->r_string(section,"trail_light_color"), "%f,%f,%f", 
 			&m_TrailLightColor.r, &m_TrailLightColor.g, &m_TrailLightColor.b);
 		m_fTrailLightRange	= pSettings->r_float(section,"trail_light_range");
@@ -157,22 +153,6 @@ void CArtefact::shedule_Update	(u32 dt)
 void CArtefact::renderable_Render() 
 {
 	inherited::renderable_Render();
-}
-
-void CArtefact::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq) 
-{
-	string256 temp;
-	if (FS.exist(temp,"$game_sounds$",s_name,".ogg")) 
-	{
-		Sound->create(dest,TRUE,s_name,iType);
-		return;
-	}
-	Debug.fatal	("Can't find ref_sound '%s'",s_name,*cName());
-}
-
-void CArtefact::SoundDestroy(ref_sound& dest) 
-{
-	::Sound->destroy			(dest);
 }
 
 void CArtefact::create_physic_shell	()

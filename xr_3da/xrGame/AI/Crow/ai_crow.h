@@ -33,8 +33,8 @@ class CAI_Crow : public CEntityAlive
 
 	struct SSound
 	{
-		typedef			svector<ref_sound,MAX_SND_COUNT>		MotionSVec;
-		MotionSVec		m_Sounds;
+		typedef			svector<ref_sound,MAX_SND_COUNT>		SoundSVec;
+		SoundSVec		m_Sounds;
 		ref_sound&		GetRandom	(){return m_Sounds[Random.randI(0,m_Sounds.size())];}
 		void			Load		(LPCSTR prefix);
 		void			SetPosition	(const Fvector& pos);

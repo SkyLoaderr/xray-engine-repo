@@ -26,7 +26,7 @@ SHARED_HUD_INFO::SHARED_HUD_INFO(LPCSTR section, CHudItem* pHudItem)
 	// Visual
 	LPCSTR visual_name			= pSettings->r_string(section, "visual");
 	pVisual						= ::Render->model_Create(visual_name);
-//	R_ASSERT					(pVisual->Type==MT_SKELETON_ANIM);
+	//	R_ASSERT					(pVisual->Type==MT_SKELETON_ANIM);
 
 	// fire bone	
 	if(dynamic_cast<CWeapon*>(pHudItem))
@@ -98,7 +98,7 @@ void CWeaponHUD::Load			(LPCSTR section)
 {
 	//запомнить имя секции HUD
 	m_sHudSectionName = section;
-	
+
 	//получить указатель на информации о HUD
 	m_pSharedHudInfo = GetHudInfo(m_sHudSectionName, m_pParentWeapon);
 }
@@ -194,8 +194,8 @@ void CWeaponHUD::StopCurrentAnimWithoutCallback		()
 ///////////////////////////////////////////////////////////
 // Синглтоны для загрузки и освобождения общей информации 
 // в HUD
- SHARED_HUD_INFO*  CWeaponHUD::GetHudInfo (ref_str section, CHudItem* pHudItem)
- {
+SHARED_HUD_INFO*  CWeaponHUD::GetHudInfo (ref_str section, CHudItem* pHudItem)
+{
 	SHARED_HUD_INFO* hud_info = NULL;
 
 	SHARED_HUD_INFO_MAP_IT it = m_SharedHudInfoMap.find(section);
@@ -216,9 +216,9 @@ void CWeaponHUD::StopCurrentAnimWithoutCallback		()
 	}
 
 	return hud_info;
- }
+}
 
- void CWeaponHUD::ReleaseHudInfo		(ref_str section)
+void CWeaponHUD::ReleaseHudInfo		(ref_str section)
 {
 	SHARED_HUD_INFO_MAP_IT it = m_SharedHudInfoMap.find(section);
 

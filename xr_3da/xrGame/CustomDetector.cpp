@@ -13,15 +13,12 @@ CCustomDetector::CCustomDetector(void)
 
 CCustomDetector::~CCustomDetector(void) 
 {
-	SoundDestroy(m_noise);
-	SoundDestroy(m_buzzer);
+	m_noise.destroy	();
+	m_buzzer.destroy();
 
 	ZONE_TYPE_MAP_IT it;
 	for(it = m_ZoneTypeMap.begin(); m_ZoneTypeMap.end() != it; ++it)
-	{
-		SoundDestroy(*it->second.detect_snd);
-		xr_delete(it->second.detect_snd);
-	}
+		it->second.detect_snd.destroy();
 }
 
 BOOL CCustomDetector::net_Spawn(LPVOID DC) 
@@ -41,13 +38,11 @@ void CCustomDetector::Load(LPCSTR section)
 
 	inherited::Load(section);
 
-	m_fRadius = pSettings->r_float(section,"radius");
-	m_fBuzzerRadius = pSettings->r_float(section,"buzzer_radius");
+	m_fRadius			= pSettings->r_float(section,"radius");
+	m_fBuzzerRadius		= pSettings->r_float(section,"buzzer_radius");
 
-	LPCSTR sound_name = pSettings->r_string(section,"noise");
-	SoundCreate(m_noise, sound_name);
-	sound_name = pSettings->r_string(section,"buzzer");
-	SoundCreate(m_buzzer, sound_name);
+	m_noise.create		(TRUE,pSettings->r_string(section,"noise"));
+	m_buzzer.create		(TRUE,pSettings->r_string(section,"buzzer"));
 
 	u32 i = 1;
 	string256 temp;
@@ -55,26 +50,21 @@ void CCustomDetector::Load(LPCSTR section)
 	//загрузить звуки для обозначения различных типов зон
 	do 
 	{
-		sprintf(temp, "zone_class_%d", i);
+		sprintf			(temp, "zone_class_%d", i);
 		if(pSettings->line_exist(section,temp))
 		{
-			LPCSTR z_Class = pSettings->r_string(section,temp);
-			CLASS_ID zone_cls = TEXT2CLSID(pSettings->r_string(z_Class,"class"));
-			
+			LPCSTR z_Class			= pSettings->r_string(section,temp);
+			CLASS_ID zone_cls		= TEXT2CLSID(pSettings->r_string(z_Class,"class"));
 
-			ZONE_TYPE zone_type;
-			sprintf(temp, "zone_min_freq_%d", i);
-			zone_type.min_freq = pSettings->r_float(section,temp);
-			sprintf(temp, "zone_max_freq_%d", i);
-			zone_type.max_freq = pSettings->r_float(section,temp);
-			R_ASSERT(zone_type.min_freq<zone_type.max_freq);
-
-			sprintf(temp, "zone_sound_%d", i);
-			sound_name = pSettings->r_string(section,temp);
-			ref_sound *pSound = xr_new<ref_sound>();
-			SoundCreate(*pSound, sound_name);
-			zone_type.detect_snd = pSound;
-			m_ZoneTypeMap[zone_cls] = zone_type;
+			m_ZoneTypeMap.insert	(std::make_pair(zone_cls,ZONE_TYPE()));
+			ZONE_TYPE& zone_type	= m_ZoneTypeMap[zone_cls];
+			sprintf					(temp, "zone_min_freq_%d", i);
+			zone_type.min_freq		= pSettings->r_float(section,temp);
+			sprintf					(temp, "zone_max_freq_%d", i);
+			zone_type.max_freq		= pSettings->r_float(section,temp);
+			R_ASSERT				(zone_type.min_freq<zone_type.max_freq);
+			sprintf					(temp, "zone_sound_%d", i);
+			zone_type.detect_snd.create(TRUE,pSettings->r_string(section,temp));
 
 			++i;
 		}
@@ -154,7 +144,7 @@ void CCustomDetector::StopAllSounds()
 	for(it = m_ZoneTypeMap.begin(); m_ZoneTypeMap.end() != it; ++it) 
 	{
 		ZONE_TYPE& zone_type = (*it).second;
-		zone_type.detect_snd->stop();
+		zone_type.detect_snd.stop();
 	}
 
 	//выключить
@@ -209,7 +199,7 @@ void CCustomDetector::UpdateCL()
 			Fvector				C;
 			H_Parent()->Center	(C);
 			zone_info.snd_time	= 0;
-			zone_type.detect_snd->play_at_pos(this,C,sound_2d?sm_2D:0);
+			zone_type.detect_snd.play_at_pos(this,C,sound_2d?sm_2D:0);
 		} 
 		else 
 			zone_info.snd_time += Device.dwTimeDelta;
@@ -241,22 +231,6 @@ void CCustomDetector::feel_touch_delete(CObject* O)
 BOOL CCustomDetector::feel_touch_contact(CObject* O) 
 {
 	return (NULL != dynamic_cast<CCustomZone*>(O));
-}
-
-void CCustomDetector::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL /**bCtrlFreq/**/) 
-{
-	string256 temp;
-	if (FS.exist(temp,"$game_sounds$",s_name,".ogg")) 
-	{
-		Sound->create(dest,TRUE,s_name,iType);
-		return;
-	}
-	Debug.fatal	("Can't find ref_sound '%s'",s_name,*cName());
-}
-
-void CCustomDetector::SoundDestroy(ref_sound& dest) 
-{
-	::Sound->destroy			(dest);
 }
 
 void CCustomDetector::OnH_A_Chield() 

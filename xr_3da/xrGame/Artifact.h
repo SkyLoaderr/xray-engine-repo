@@ -24,9 +24,6 @@ public:
 	virtual BOOL			renderable_ShadowGenerate		()		{ return FALSE;	}
 	virtual BOOL			renderable_ShadowReceive		()		{ return TRUE;	}
 
-	void SoundCreate(ref_sound& dest, LPCSTR name, int iType=st_SourceType, BOOL bCtrlFreq=FALSE);
-	void SoundDestroy(ref_sound& dest);
-
 	float GetDetectionDist() {return m_fDetectionDist;}
 
 	virtual void create_physic_shell();

@@ -10,7 +10,7 @@ struct ZONE_TYPE
 	float		min_freq;
 	float		max_freq;
 	//звук реакции детектора на конкретную зону
-	ref_sound*	detect_snd;
+	ref_sound	detect_snd;
 };
 
 //описание зоны, обнаруженной детектором
@@ -52,9 +52,6 @@ public:
 	bool IsWorking() {return m_bWorking;}
 
 protected:
-	void SoundCreate				(ref_sound& dest, LPCSTR name, int iType=st_SourceType, BOOL bCtrlFreq=FALSE);
-	void SoundDestroy				(ref_sound& dest);
-
 	void StopAllSounds				();
 
 	bool m_bWorking;
