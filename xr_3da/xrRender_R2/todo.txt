@@ -13,37 +13,41 @@ done, works OK			:	2*DXT5	bumpmaps + heightmaps	- lower quality, 8 bit, faster(?
 						:	A8L8	encoding of material
 ----------------------------
 Engine/Game:
-	refactor/rebuild collision detection infrastructure (along with Slipch)	- should speed up physics considerably
+	* refactor/rebuild collision detection infrastructure (along with Slipch)	
+		- should speed up physics considerably						~1 week for me, ??? for Slipch
 
 Sound:
-	I3DL2_reverb				(?)
+	* I3DL2_reverb				(?)									-	3 days
 	
 Compiler:
-	xrLC geometry selection for point/spot lights
-	better hemisphere / qSlim	(???)
-	CDB - qSlim					(???)
-	SlidingWindow VIPM			(???)
+	* R2: xrLC geometry selection for point/spot lights	(???)		-
+	* CDB - qSlim						(???) / discrete attrs		-	~1week
+	* better hemisphere / qSlim			(???)						-	~2weeks
+	* SlidingWindow VIPM				(???)						-	~1week
 
 R1:
-	per-pixel displacement	+ secondary channel
-	wallmarks on dynamic objects(?)
+	* per-pixel displacement + secondary channel					-	~1week / ps2.0 / ps1.3 (1 day + 1 day) 
+	* wallmarks on dynamic objects		(?)							-	~1week
+	* SlidingWindow VIPM / screen-error	(???)						-	3 day (max)
 
 R2:
-	work out tonemapping		(?)
-	work out blooming			(again)
-	work out skybox				(again)
-	work out hemisphere			(again)
-	sRGB convert diffuse		(???)
-	transluency					(?)
-	reverse culling	for spot/point with initial clears - should avoid most biasing (?)
-	4*32bit	RT(s) / emissive
-	perspective shadow maps and all that stuff Gary talks about
-	wallmarks :)				(?)
-	surface material:
-		emmisive	map
-		detail-bump	map
-		anisotropic	materials
-		material	definition
+	* work out tonemapping				(?)							-	
+	* work out blooming					(again)						-\  3 days	
+	* work out skybox					(again)						-/
+	* work out hemisphere				(again)						-	
+	* work out ordinary rendering + transparency					- 
+	* sRGB convert diffuse				(???)						- 
+	* transluency						(again + experiment)		- 
+	* reverse culling for spot/point with initial clears - should avoid most biasing (?)
+	* 4*32bit	RT(s) / emissive									- 
+	* perspective shadow maps and all that stuff Gary talks about	-
+	* wallmarks :)	(?)												- 
+	* surface material:								
+		- emmisive map
+		- detail-bump map
+		- anisotropic materials
+		- material	definition
+	* SlidingWindow VIPM / screen-error	(???)						-	
 
 ----------------------------
 I think I understand it. Maybe I can help myself (and others) understand it better if I try to explain it.
