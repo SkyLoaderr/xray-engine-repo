@@ -261,8 +261,7 @@ function load_common (obj, sounds_base)
 			obj:add_sound ("script_replics\\military\\replics\\petrovich_mission_2", 1, snd_type.talk, 2, 1, id ()),
 			obj:add_sound ("script_replics\\military\\replics\\petrovich_mission_3", 1, snd_type.talk, 2, 1, id ()),
 			obj:add_sound ("script_replics\\military\\replics\\petrovich_mission_4", 1, snd_type.talk, 2, 1, id ()),
-			obj:add_sound ("script_replics\\military\\replics\\petrovich_mission_5", 1, snd_type.talk, 2, 1, id ()),
-			obj:add_sound ("script_replics\\military\\replics\\petrovich_mission_6", 1, snd_type.talk, 2, 1, id ())
+			obj:add_sound ("script_replics\\military\\replics\\petrovich_mission_5", 1, snd_type.talk, 2, 1, id ())
 			}
 			}
 
