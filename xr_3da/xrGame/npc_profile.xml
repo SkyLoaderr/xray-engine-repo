@@ -308,6 +308,9 @@
 	<character id="bar_svoboda_attack_commander">
 		<class>bar_svoboda_attack_commander</class>
 	</character>
+	<character id="bar_svoboda_ambush_tiran">
+		<class>bar_svoboda_ambush_tiran</class>
+	</character>
 	<character id="bar_crazy_veterans_lucky">
 		<class>bar_crazy_veterans_lucky</class>
 	</character>
