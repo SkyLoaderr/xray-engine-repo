@@ -21,8 +21,7 @@ function actor_binder:net_spawn(data)
 			self.object:give_info_portion("encyclopedy")
 			self.object:give_info_portion("storyline_actor_start")
 			self.object:give_info_portion("level_changer_icons")		
-		end
-		level_tips.fill_tips()
+		end		
 		return true
 	end
 end
