@@ -142,6 +142,7 @@ void CCar::SDoor::Init()
 	Fvector shoulder;
 	shoulder.sub(door_transform.c,joint->PSecond_element()->mass_Center());
 	torque=shoulder.magnitude()*joint->PSecond_element()->getMass()*2.f*10.f;
+	state=opened;
 	Close();
 }
 void CCar::SDoor::Open()
