@@ -33,6 +33,7 @@ enum {
 	GE_TRANSFER_AMMO,			// DUAL: Take ammo out of weapon for our weapon
 	GE_HIT,						// 
 	GE_DIE,						// 
+	GE_DESTROY					// authorative client request for entity-destroy
 };
 
 enum

@@ -126,6 +126,16 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			SendBroadcast		(0xffffffff,P,net_flags(TRUE,TRUE));
 		}
 		break;
+	case GE_DESTROY:
+		{
+			// Parse message
+			u16					id_dest		=	destination;
+			xrServerEntity*		e_dest		=	ID_to_entity	(id_dest);	// кто должен быть уничтожен
+			xrClientData*		c_dest		=	e_dest->owner;				// клиент, чей юнит
+			xrClientData*		c_from		=	ID_to_client	(sender);	// клиент, кто прислал
+			R_ASSERT			(c_dest == c_from);		// assure client ownership of event
+		}
+		break;
 	default:
 		R_ASSERT2	(0,"Game Event not implemented!!!");
 		break;

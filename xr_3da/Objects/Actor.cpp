@@ -292,6 +292,7 @@ void CActor::Die	( )
 	g_fireEnd				();
 	mstate_wishful	&=		~mcAnyMove;
 	mstate_real		&=		~mcAnyMove;
+	die_hide				= 1.f;
 
 	// Drop active weapon
 	if (Local()) 
@@ -461,6 +462,23 @@ void CActor::Update	(DWORD DT)
 	// 
 	clamp					(DT,0ul,100ul);
 	float	dt				= float(DT)/1000.f;
+
+	// Analyze Die-State
+	if (!g_Alive())			
+	{
+		if (die_hide>0)		
+		{
+			die_hide			-= .1f*dt;
+			if (die_hide>0)		vScale.set			(die_hide,die_hide,die_hide);
+			else if (Local()) 
+			{
+				// Request destroy
+				NET_Packet			P;
+				u_EventGen			(P,GE_DESTROY,ID());
+				u_EventSend			(P);
+			}
+		}
+	}
 	
 	// Check controls, create accel, prelimitary setup "mstate_real"
 	float	Jump	= 0;

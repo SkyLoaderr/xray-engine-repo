@@ -103,6 +103,8 @@ protected:
 	DWORD					patch_frame;
 	Fvector					patch_position;
 
+	float					die_hide;
+
 	static void	__stdcall SpinCallback(CBoneInstance*);
 	static void	__stdcall ShoulderCallback(CBoneInstance*);
 	static void	__stdcall HeadCallback(CBoneInstance*);
