@@ -12,7 +12,6 @@
 
 float		psDetailDensity		= 0.15f;
 
-const DWORD	vs_size				= 3000;
 const float slot_size			= DETAIL_SLOT_SIZE;
 const float slot_radius			= DETAIL_SLOT_SIZE*0.70710678118654752440084436210485f; // (slot_size/2)*sqrtf(2)
 
@@ -59,7 +58,6 @@ void bwdithermap	(int levels, int magic[16][16] )
 
 CDetailManager::CDetailManager	()
 {
-	VS	= Device.Streams.Create	(D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1, vs_size);
 }
 
 CDetailManager::~CDetailManager	()

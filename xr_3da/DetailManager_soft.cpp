@@ -1,8 +1,12 @@
 #include "stdafx.h"
 #include "detailmanager.h"
 
+const DWORD	vs_size				= 3000;
+
 void CDetailManager::soft_Load		()
 {
+	soft_VS	= Device.Streams.Create	(D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1, vs_size);
+	
 	// Header
 	dtFS->ReadChunkSafe	(0,&dtH,sizeof(dtH));
 	R_ASSERT			(dtH.version == DETAIL_VERSION);
