@@ -8,6 +8,7 @@
             <icon name="unknown" x="2" y="3" width="1" height="1"></icon>
             <text>Помочь ограбленному новичку</text>
         </location>
+        <task>escape_novice_need_weapon</task>        
     </info_portion>
     <info_portion id="escape_novice_has_weapon">
         <disable>escape_novice_need_weapon</disable>
@@ -23,7 +24,7 @@
 			<icon name="Case" x="2" y="8" width="1" height="1"></icon>
             <text>Украсть ящик с блокпоста</text>
         </location>
-        <task>blockpost_case</task>
+        <task>escape_blockpost_case</task>
 		<dialog>escape_trader_done_blockpost_box</dialog>
     </info_portion>
     <info_portion id="escape_have_blockpost_case">

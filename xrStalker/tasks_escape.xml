@@ -1,10 +1,15 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <game_tasks_data>
-	<game_task id="blockpost_case">
+	<game_task id="escape_blockpost_case">
 		<objective>
 			<text>escape_steal_blockpost_case</text>
 		</objective>
 	</game_task>
 
+	<game_task id="escape_novice_need_weapon">
+		<objective>
+			<text>Help novice find weapon</text>
+		</objective>
+	</game_task>
 </game_tasks_data>
