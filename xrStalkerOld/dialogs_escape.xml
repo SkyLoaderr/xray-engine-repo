@@ -848,6 +848,7 @@
     </dialog>
     <dialog id="escape_factory_assault_talk">
         <precondition>dialogs.dialog_allowed</precondition>
+        <has_info>escape_assault_finished</has_info>
         <phrase_list>
             <phrase id="22">
                 <text>escape_factory_assault_talk_22</text>
