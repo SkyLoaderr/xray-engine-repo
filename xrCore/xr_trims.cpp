@@ -315,15 +315,16 @@ void _SequenceToList(LPSTRVec& lst, LPCSTR in, char separator)
 	}
 }
 
-ref_str	_ListToSequence(const RStrVec& lst)
+std::string	_ListToSequence(const SStringVec& lst)
 {
-	string4096 		out;
+	static std::string	out;
+	out = "";
 	if (lst.size()){
-    	strcpy		(out,*lst.front());
-		for (RStrVec::const_iterator s_it=lst.begin()+1; s_it!=lst.end(); s_it++)
-        	strconcat(out,",",**s_it);
+    	out			= lst.front();
+		for (SStringVec::const_iterator s_it=lst.begin()+1; s_it!=lst.end(); s_it++)
+        	out		+= std::string(",")+(*s_it);
 	}
-	return ref_str	(out);
+	return out;
 }
 
 
