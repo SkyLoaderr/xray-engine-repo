@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="xrNetServer"
-	ProjectGUID="{94A1C366-3D19-48E6-8170-4ADC2E70DF97}"
+	ProjectGUID="{435BAC9A-B225-457D-AB40-C9BD0CC8838C}"
 	SccProjectName="SAK"
 	SccAuxPath="SAK"
 	SccLocalPath="SAK"
@@ -260,6 +260,45 @@
 	<References>
 	</References>
 	<Files>
+		<File
+			RelativePath=".\NET_Client.cpp">
+		</File>
+		<File
+			RelativePath=".\NET_Client.h">
+		</File>
+		<File
+			RelativePath=".\NET_Compressor.cpp">
+		</File>
+		<File
+			RelativePath=".\NET_Compressor.h">
+		</File>
+		<File
+			RelativePath=".\NET_Messages.h">
+		</File>
+		<File
+			RelativePath=".\NET_Server.cpp">
+		</File>
+		<File
+			RelativePath=".\NET_Server.h">
+		</File>
+		<File
+			RelativePath=".\NET_Shared.h">
+		</File>
+		<File
+			RelativePath=".\NET_utils.h">
+		</File>
+		<File
+			RelativePath=".\stdafx.cpp">
+			<FileConfiguration
+				Name="Debug|Win32">
+				<Tool
+					Name="VCCLCompilerTool"
+					UsePrecompiledHeader="1"/>
+			</FileConfiguration>
+		</File>
+		<File
+			RelativePath=".\stdafx.h">
+		</File>
 	</Files>
 	<Globals>
 		<Global

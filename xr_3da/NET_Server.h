@@ -2,7 +2,7 @@
 
 #include "net_shared.h"
 
-class ENGINE_API IClient
+class XRNETSERVER_API IClient
 {
 	struct Flags
 	{
@@ -17,12 +17,12 @@ public:
 	Flags				flags;	// local/host/normal
 	u32					dwTime_LastUpdate;
 
-	IClient()	{
+	IClient(CTimer* timer):stats(timer)	{
 		dwTime_LastUpdate	= 0;
 	}
 };
 
-class ENGINE_API IServerStatistic
+class XRNETSERVER_API IServerStatistic
 {
 public:
 	u32					bytes_out,bytes_out_real;
@@ -35,7 +35,7 @@ public:
 	}
 };
 
-class ENGINE_API IPureServer
+class XRNETSERVER_API IPureServer
 {
 protected:
 	IDirectPlay8Server*		NET;
@@ -64,8 +64,9 @@ protected:
 	
 	// Statistic
 	IServerStatistic		stats;
+	CTimer*					device_timer;
 public:
-	IPureServer				();
+	IPureServer				(CTimer* timer);
 	virtual ~IPureServer	();
 	HRESULT					net_Handler			(u32 dwMessageType, PVOID pMessage);
 	

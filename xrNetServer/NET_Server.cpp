@@ -5,15 +5,16 @@ void	dump_URL	(LPCSTR p, IDirectPlay8Address* A);
 
 LPCSTR nameTraffic	= "traffic.net";
 
-ENGINE_API int		psNET_ServerUpdate	= 30;		// FPS
-ENGINE_API int		psNET_ServerPending	= 2;
-ENGINE_API int		psNET_Port			= 5445;
+XRNETSERVER_API int		psNET_ServerUpdate	= 30;		// FPS
+XRNETSERVER_API int		psNET_ServerPending	= 2;
+XRNETSERVER_API int		psNET_Port			= 5445;
 
 void IClientStatistic::Update(DPN_CONNECTION_INFO& CI)
 {
-	if (Device.dwTimeGlobal-dwBaseTime >= 999)
+	u32 time_global		= TimeGlobal(device_timer);
+	if (time_global-dwBaseTime >= 999)
 	{
-		dwBaseTime		= Device.dwTimeGlobal;
+		dwBaseTime		= time_global;
 		
 		mps_recive		= CI.dwMessagesReceived - mps_receive_base;
 		mps_receive_base= CI.dwMessagesReceived;
@@ -34,13 +35,14 @@ static const GUID CLSID_NETWORKSIMULATOR_DP8SP_TCPIP =
 
 static HRESULT WINAPI Handler (PVOID pvUserContext, DWORD dwMessageType, PVOID pMessage)
 {
-	IPureServer* C = (IPureServer*)pvUserContext;
+	IPureServer* C			= (IPureServer*)pvUserContext;
 	return C->net_Handler	(dwMessageType,pMessage);
 }
 
-IPureServer::IPureServer	()
+IPureServer::IPureServer	(CTimer* timer)
 {
-	stats.clear	();
+	device_timer			= timer;
+	stats.clear				();
 }
 
 IPureServer::~IPureServer	()
@@ -273,7 +275,7 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 				if (m_size==sizeof(MSYS_PING))
 				{
 					// ping - save server time and reply
-					m_ping->dwTime_Server	= Device.TimerAsync();
+					m_ping->dwTime_Server	= TimerAsync(device_timer);
 					SendTo_LL	(m_sender,m_data,m_size,net_flags(FALSE,FALSE,TRUE));
 				}
 			} else {
@@ -385,7 +387,7 @@ void IPureServer::client_link_aborted	(DPNID ID)
 
 BOOL IPureServer::HasBandwidth			(IClient* C)
 {
-	u32	dwTime			= Device.dwTimeGlobal;
+	u32	dwTime			= TimeGlobal(device_timer);
 	u32	dwInterval		= 1000/psNET_ServerUpdate;
 
 	HRESULT hr;

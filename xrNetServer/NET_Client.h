@@ -2,7 +2,7 @@
 
 #include "net_shared.h"
 
-class ENGINE_API INetQueue
+class XRNETSERVER_API INetQueue
 {
 	xrCriticalSection		cs;
 	xr_deque<NET_Packet*>	ready;
@@ -16,7 +16,7 @@ public:
 	void				Release();
 };
 
-class ENGINE_API IPureClient
+class XRNETSERVER_API IPureClient
 {
 	friend void __cdecl		sync_thread(void*);
 protected:
@@ -26,6 +26,7 @@ protected:
 		IDirectPlay8Address*	pHostAddress;
 		char					dpSessionName[128];
 	};
+	CTimer*					device_timer;
 protected:
 	IDirectPlay8Client*		NET;
 	IDirectPlay8Address*	net_Address_device;
@@ -50,7 +51,7 @@ protected:
 	void					Sync_Thread		();
 	void					Sync_Average	();
 public:
-	IPureClient				();
+	IPureClient				(CTimer* tm);
 	virtual ~IPureClient	();
 	HRESULT					net_Handler				(u32 dwMessageType, PVOID pMessage);
 	
@@ -72,8 +73,8 @@ public:
 	BOOL					net_HasBandwidth		();
 	
 	// time management
-	IC u32					timeServer				()	{ return Device.dwTimeGlobal + net_TimeDelta; }
-	IC u32					timeServer_Async		()	{ return Device.TimerAsync() + net_TimeDelta; }
+//.	IC u32					timeServer				()	{ return Device.dwTimeGlobal + net_TimeDelta; }
+	IC u32					timeServer_Async		()	{ return TimerAsync(device_timer) + net_TimeDelta; }
 	IC u32					timeServer_Delta		()	{ return net_TimeDelta; }
 	IC void					timeServer_Correct		(u32 sv_time, u32 cl_time);
 };

@@ -3,16 +3,17 @@
 #include "net_utils.h"
 #include "net_messages.h"
 
-class ENGINE_API IClientStatistic
+class XRNETSERVER_API IClientStatistic
 {
 	DPN_CONNECTION_INFO	ci_last;
 	u32					mps_recive, mps_receive_base;
 	u32					mps_send,	mps_send_base;
 	u32					dwBaseTime;
+	CTimer*				device_timer;
 public:
-	IClientStatistic()	{	ZeroMemory(this,sizeof(*this));	dwBaseTime=Device.dwTimeGlobal; }
+			IClientStatistic	(CTimer* timer):device_timer(timer)	{ ZeroMemory(this,sizeof(*this));	dwBaseTime=TimeGlobal(device_timer); }
 
-	void		Update				(DPN_CONNECTION_INFO& CI);
+	void	Update				(DPN_CONNECTION_INFO& CI);
 
 	IC u32	getPing				()	{ return ci_last.dwRoundTripLatencyMS;	}
 	IC u32	getBPS				()	{ return ci_last.dwThroughputBPS;		}

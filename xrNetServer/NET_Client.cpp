@@ -62,7 +62,7 @@ void			INetQueue::Release	()
 //
 const u32 syncQueueSize		= 512;
 const int syncSamples		= 256;
-class ENGINE_API syncQueue
+class XRNETSERVER_API syncQueue
 {
 	u32				table	[syncQueueSize];
 	u32				write;
@@ -84,11 +84,11 @@ public:
 } net_DeltaArray;
 
 //-------
-ENGINE_API Flags32	psNET_Flags			= {0};
-ENGINE_API int		psNET_ClientUpdate	= 30;		// FPS
-ENGINE_API int		psNET_ClientPending	= 2;
-ENGINE_API char		psNET_Name[32]		= "Player";
-extern int			psNET_Port;
+XRNETSERVER_API Flags32	psNET_Flags			= {0};
+XRNETSERVER_API int		psNET_ClientUpdate	= 30;		// FPS
+XRNETSERVER_API int		psNET_ClientPending	= 2;
+XRNETSERVER_API char	psNET_Name[32]		= "Player";
+extern int				psNET_Port;
 
 // {0218FA8B-515B-4bf2-9A5F-2F079D1759F3}
 static const GUID NET_GUID = 
@@ -104,8 +104,9 @@ static HRESULT WINAPI Handler (PVOID pvUserContext, DWORD dwMessageType, PVOID p
 	return C->net_Handler(dwMessageType,pMessage);
 }
 
-IPureClient::IPureClient	()
+IPureClient::IPureClient	(CTimer* timer): net_Statistic(timer)
 {
+	device_timer			= timer;
 }
 
 IPureClient::~IPureClient	()
@@ -347,7 +348,7 @@ HRESULT	IPureClient::net_Handler(u32 dwMessageType, PVOID pMessage)
 
 	case DPN_MSGID_RECEIVE:
 		{
-			u32			time	= Device.TimerAsync();
+			u32			time	= TimerAsync(device_timer);
 			PDPNMSG_RECEIVE	pMsg	= (PDPNMSG_RECEIVE) pMessage;
 			void*			m_data	= pMsg->pReceiveData;
 			u32			m_size	= pMsg->dwReceiveDataSize;
@@ -359,7 +360,7 @@ HRESULT	IPureClient::net_Handler(u32 dwMessageType, PVOID pMessage)
 				if ((m_size == sizeof(MSYS_PING)))
 				{
 					// It is reverted(server) ping
-					u32		time	= Device.TimerAsync();
+					u32		time	= TimerAsync(device_timer);
 					MSYS_PING*	msg	= (MSYS_PING*)m_data;
 					u32		ping	= time - (msg->dwTime_ClientSend);
 					u32		delta	= msg->dwTime_Server + ping/2 - time;
@@ -461,7 +462,7 @@ void	IPureClient::Send(NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 
 BOOL	IPureClient::net_HasBandwidth	()
 {
-	u32		dwTime				= Device.dwTimeGlobal;
+	u32		dwTime				= TimeGlobal(device_timer);
 	u32		dwInterval			= 1000/psNET_ClientUpdate;
 	if		(net_Disconnected)	return FALSE;
 
@@ -515,7 +516,7 @@ void	IPureClient::Sync_Thread	()
 		// Construct message
 		clPing.sign1				= 0x12071980;
 		clPing.sign2				= 0x26111975;
-		clPing.dwTime_ClientSend	= Device.TimerAsync();
+		clPing.dwTime_ClientSend	= TimerAsync(device_timer);
 
 		// Send it
 		__try {
@@ -539,8 +540,8 @@ void	IPureClient::Sync_Thread	()
 		// Waiting for reply-packet to arrive
 		if (!net_Syncronised)	{
 			u32	old_size	= net_DeltaArray.size();
-			u32	timeBegin	= Device.TimerAsync();
-			while ((net_DeltaArray.size()==old_size)&&(Device.TimerAsync()-timeBegin<5000))		Sleep(1);
+			u32	timeBegin	= TimerAsync(device_timer);
+			while ((net_DeltaArray.size()==old_size)&&(TimerAsync(device_timer)-timeBegin<5000))		Sleep(1);
 			
 			if (net_DeltaArray.size()>=syncSamples)	{
 				net_Syncronised	= TRUE;
