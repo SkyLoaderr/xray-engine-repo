@@ -1,6 +1,6 @@
 is_creature_entered = false
 is_actor_entered = false
-trader_already_saw_actor = false
+stalkers_already_saw_actor = false
 
 -- функция вызывается из игры после того как объект object вошел в зону zone
 function on_enter(zone,object)
@@ -84,23 +84,44 @@ function main()
 
 			wait(1000)			
 
+	while true do
+		if stalkers_already_saw_actor == false then
 			wait(2000)			
 			prof_kgm4:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(2000)			
 			prof_nashel_taynik_a:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(2000)			
+			break
+		end
+		wait()			
+	end
+
+	while true do
+		if stalkers_already_saw_actor == false then
 			prof_kgm3:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(2000)			
 			prof_nashel_taynik_b:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(2000)			
+			break
+		end
+		wait()			
+	end
 
+	while true do
+		if stalkers_already_saw_actor == false then
 			printf("entered")
 			flush()
 			rainbow_ya_bi_pomalkival:play_at_pos				(stalker2,stalker2:position(),0);
 			wait(2000)			
 			rainbow_v_vagone_mojet_bit_stalker:play_at_pos	(stalker2,stalker2:position(),0);
 			wait(2000)			
+			break
+		end
+		wait()			
+	end
 
+	while true do
+		if stalkers_already_saw_actor == false then
 			printf("entered")
 			flush()
 			prof_kgm2:play_at_pos				(stalker1,stalker1:position(),0);
@@ -109,24 +130,48 @@ function main()
 			wait(2000)			
 			prof_proveru_ya_vagonchik:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(2000)			
+			break
+		end
+		wait()			
+	end
 
+	while true do
+		if stalkers_already_saw_actor == false then
 			printf("entered")
 			flush()
 			rainbow_poshutil_ya:play_at_pos				(stalker2,stalker2:position(),0);
 			wait(2000)			
+			break
+		end
+		wait()			
+	end
 
+	while true do
+		if stalkers_already_saw_actor == false then
 			printf("entered")
 			flush()
 			prof_teper_ne_uspokous:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(2000)			
 			prof_prikroy:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(2000)			
+			break
+		end
+		wait()			
+	end
 
+	while true do
+		if stalkers_already_saw_actor == false then
 			printf("entered")
 			flush()
 			rainbow_nda:play_at_pos				(stalker2,stalker2:position(),0);
 			wait(2000)			
+			break
+		end
+		wait()			
+	end
 
+	while true do
+		if stalkers_already_saw_actor == false then
 			printf("entered")
 			flush()
 			prof_vrode_nikogo:play_at_pos				(stalker1,stalker1:position(),0);
@@ -135,12 +180,24 @@ function main()
 			wait(2000)			
 			prof_valim_otsuda:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(2000)			
+			break
+		end
+		wait()			
+	end
 
+	while true do
+		if stalkers_already_saw_actor == false then
 			printf("entered")
 			flush()
 			rainbow_za_namy_sledyat:play_at_pos				(stalker2,stalker2:position(),0);
 			wait(2000)			
+			break
+		end
+		wait()			
+	end
 
+	while true do
+		if stalkers_already_saw_actor == false then
 			printf("entered")
 			flush()
 			prof_u_menya_toje:play_at_pos				(stalker1,stalker1:position(),0);
@@ -148,21 +205,44 @@ function main()
 			prof_blin:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(2000)			
 			prof_kgm2:play_at_pos				(stalker1,stalker1:position(),0);
+			break
+		end
+		wait()			
+	end
+
+	while true do
+		if stalkers_already_saw_actor == false then
 			wait(2000)			
 			prof_blin:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(2000)			
 			prof_do_basi_bi_dobratsya:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(2000)			
+			break
+		end
+		wait()			
+	end
 
+	while true do
+		if stalkers_already_saw_actor == false then
 			printf("entered")
 			flush()
 			rainbow_za_namy_sledyat:play_at_pos				(stalker2,stalker2:position(),0);
 			wait(2000)			
+			break
+		end
+		wait()			
+	end
 
+	while true do
+		if stalkers_already_saw_actor == false then
 			printf("entered")
 			flush()
 			prof_u_menya_toje:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(2000)			
+			break
+		end
+		wait()			
+	end
 
 	while true do
 		if stalker1:see(actor) or stalker2:see(actor) then
@@ -172,6 +252,9 @@ function main()
 			stalker1:script	(true,  this.script_name())
 			stalker2:script	(false, this.script_name())
 			stalker2:script	(true,  this.script_name())
+
+			stalkers_already_saw_actor = true
+
 			action(
 				stalker1,
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
