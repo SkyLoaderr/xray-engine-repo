@@ -342,35 +342,6 @@ accamulate_time		= 1000
 
 visible_by_detector = off
 
-[zone_mosquito_bald_weapon]
-GroupControlSection	= spawn_group_zone
-$spawn 			= "zones\mosquito bald weapon"
-$prefetch 		= 16
-class			= Z_MBALD
-hit_impulse_scale	= .1
-sound			= zone_mosquito_bald
-postprocess		= postprocess_new
-
-artefacts		= wpn_ak7,0.2, wpn_pm,0.4, wpn_knife,0.5 
-BirthProbability = 0.9
-
-hit_type		= shock
-
-disable_time		= -1	;время игнорирования неживого объекта в зоне (-1 если не нужно)
-disable_idle_time	= -1	;время отключения idle партиклов
-
-ignore_nonalive		= false
-ignore_small		= false
-
-idle_light			= off
-blowout_light		= off
-
-awaking_time		= 1000
-blowout_time		= 300	
-accamulate_time		= 1000
-
-visible_by_detector = on
-
 [zone_mincer]
 GroupControlSection	= spawn_group_zone
 $spawn 			= "zones\mincer zone"
@@ -690,8 +661,9 @@ class					= Z_TORRID
 hit_impulse_scale	=   0
 postprocess		= postprocess_flame
 
-artefacts		= af_medusa,0.7
-BirthProbability = 0.01
+artefacts		= af_medusa,30
+BirthProbability = 0.9
+idle_light		= off
 
 idle_particles		= anomaly2\heat_00
 blowout_particles	= anomaly2\heat_01
