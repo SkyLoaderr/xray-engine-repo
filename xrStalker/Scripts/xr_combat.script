@@ -72,7 +72,7 @@ function add_to_binder(npc, ini, scheme, section, storage)
 
 	----------
 
-	local planner = planner_action( nil, "script_combat_planner" )
+--[[	local planner = planner_action( nil, "script_combat_planner" )
 	planner:setup( npc )
 
 	planner:add_evaluator( stalker_ids.property_enemy,     evaluator_enemy( "is_there_enemy" ) )
@@ -84,12 +84,14 @@ function add_to_binder(npc, ini, scheme, section, storage)
 
     manager:add_action( xr_actions_id.script_combat_planner, planner )
 
-	xr_combat_zombied.add_to_binder( npc, ini, storage, planner )
+	xr_combat_zombied.add_to_binder( npc, ini, storage, planner )]]
+
+	xr_combat_zombied.add_to_binder( npc, ini, storage, manager )
 end
 
 function set_combat_checker(npc, ini, scheme, section)
-	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
-	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)		
+	local st   = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
+	st.logic   = xr_logic.cfg_get_switch_conditions(ini, section, npc)		
 	st.enabled = true
 end
 
@@ -99,4 +101,3 @@ function disable_scheme(npc, scheme)
 		st.enabled = false
 	end
 end
-

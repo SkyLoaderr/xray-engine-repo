@@ -56,10 +56,24 @@ end
 --------------------------------------------------------------------------------------------------------------
 
 function add_to_binder( npc, ini, st, planner )
-	planner:add_evaluator( xr_evaluators_id.combat_zombied_base, evaluator_combat_zombied( "combat_zombied", st ) )
+--[[	planner:add_evaluator( xr_evaluators_id.combat_zombied_base, evaluator_combat_zombied( "combat_zombied", st ) )
 
 	local action = action_zombie_shoot( "action_zombie_shoot", st )
 	action:add_precondition( world_property( xr_evaluators_id.combat_zombied_base, true  ) )
 	action:add_effect      ( world_property( stalker_ids.property_enemy,           false ) )
+	planner:add_action( xr_actions_id.combat_zombied_base, action )]]
+
+	planner:add_evaluator( xr_evaluators_id.combat_zombied_base, evaluator_combat_zombied( "combat_zombied", st ) )
+
+	local action = action_zombie_shoot( "action_zombie_shoot", st )
+	action:add_precondition( world_property( stalker_ids.property_alive,           true  ) )
+	action:add_precondition( world_property( xr_evaluators_id.combat_zombied_base, true  ) )
+	action:add_precondition( world_property( xr_evaluators_id.script_combat,       true  ) )
+	action:add_effect      ( world_property( stalker_ids.property_enemy,           false ) )
 	planner:add_action( xr_actions_id.combat_zombied_base, action )
+
+--[[	action = action_zombie_go( "action_zombie_go", st )
+	action:add_precondition( world_property( xr_evaluators_id.script_combat,       true  ) )
+	action:add_effect      ( world_property( xr_evaluators_id.combat_zombied_see,  true  ) )
+	planner:add_action( xr_actions_id.combat_zombied_base, action )]]
 end
