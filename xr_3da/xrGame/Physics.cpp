@@ -190,7 +190,7 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	cabinBox[0]=scaleBox[0]*1.9f;cabinBox[1]=scaleBox[1]*0.6;cabinBox[2]=scaleBox[2]*2.08;
 
 	static const dReal wheelRadius = REAL(0.79/2.)* scaleParam;
-	
+	VelocityRate=1;
 
 	startPosition[0]=10.0f;startPosition[1]=1.f;startPosition[2]=0.f;
 	static const dReal weelSepX=scaleBox[0]*2.74f/2.f,weelSepZ=scaleBox[2]*1.7f/2.f,weelSepY=scaleBox[1]*0.6f;
@@ -200,7 +200,7 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	// car body
 	//dMass m;
 	dMassSetBox(&m, 1, jeepBox[0], jeepBox[1], jeepBox[2]); // density,lx,ly,lz
-	dMassAdjust(&m, 50); // mass
+	dMassAdjust(&m, 1500); // mass
 
 	Bodies[0] = dBodyCreate(world);
 	dBodySetMass(Bodies[0], &m);
@@ -262,13 +262,14 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 
 		dJointSetHinge2Param(Joints[i], dParamLoStop, 0);
 		dJointSetHinge2Param(Joints[i], dParamHiStop, 0);
-		dJointSetHinge2Param(Joints[i], dParamFMax, 50);
+		dJointSetHinge2Param(Joints[i], dParamFMax, 500);
+		dJointSetHinge2Param(Joints[i], dParamFudgeFactor, 0.05);
 
 		dJointSetHinge2Param(Joints[i], dParamVel2, 0);
-		dJointSetHinge2Param(Joints[i], dParamFMax2, 80);
+		dJointSetHinge2Param(Joints[i], dParamFMax2, 800);
 
 		dJointSetHinge2Param(Joints[i], dParamSuspensionERP, 0.4f);
-		dJointSetHinge2Param(Joints[i], dParamSuspensionCFM, 0.005f);
+		dJointSetHinge2Param(Joints[i], dParamSuspensionCFM, 0.0005f);
 	}
 
 	GeomsGroup = dCreateGeomGroup(space);  
@@ -361,8 +362,8 @@ DynamicData.SetAsZeroRecursive();
 
 void CPHJeep::Steer(const char& steering)
 {
-	static const dReal steeringRate = M_PI * 4 / 3;
-	static const dReal steeringLimit = M_PI / 6;
+	static const dReal steeringRate = M_PI * 1 / 6;
+	static const dReal steeringLimit = M_PI / 4;
 	
 	ULONG i;
 	switch(steering)
@@ -400,7 +401,7 @@ void CPHJeep::Steer(const char& steering)
 void CPHJeep::Drive(const char& velocity)
 {
 
-	static const dReal wheelVelocity = 6.f * M_PI;//3*18.f * M_PI;
+	static const dReal wheelVelocity = 12.f * M_PI;//3*18.f * M_PI;
 	ULONG i;
 
 
@@ -408,12 +409,12 @@ void CPHJeep::Drive(const char& velocity)
 	{
 	case 1:
         for(i = 0; i < 4; ++i)
-			dJointSetHinge2Param(Joints[i], dParamVel2, ((i % 2) == 0) ? -wheelVelocity : wheelVelocity);
+			dJointSetHinge2Param(Joints[i], dParamVel2, ((i % 2) == 0) ? -wheelVelocity*VelocityRate : wheelVelocity*VelocityRate);
 		break;
 
 	case -1:
         for(i = 0; i < 4; ++i)
-			dJointSetHinge2Param(Joints[i], dParamVel2, ((i % 2) == 0) ? wheelVelocity : -wheelVelocity);
+			dJointSetHinge2Param(Joints[i], dParamVel2, ((i % 2) == 0) ? wheelVelocity*VelocityRate : -wheelVelocity*VelocityRate);
 		break;
 
 	default: // case 0
@@ -533,7 +534,7 @@ if(dGeomGetClass(o1)==2/*dGeomTransformClass*/){
 	{
 
         contacts[i].surface.mode = dContactBounce;
-		contacts[i].surface.mu = 250;
+		contacts[i].surface.mu = 2000;
 		contacts[i].surface.bounce = 0.3f;
 		contacts[i].surface.bounce_vel = 0.005f;
 		dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
@@ -546,7 +547,7 @@ else if(dGeomGetClass(o2)==2/*dGeomTransformClass*/){
 		{
 
         contacts[i].surface.mode = dContactBounce;
-		contacts[i].surface.mu = 250.f;
+		contacts[i].surface.mu = 2000.f;
 		contacts[i].surface.bounce = 0.3f;
 		contacts[i].surface.bounce_vel = 0.005f;
 		dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
@@ -559,7 +560,7 @@ else
 	{
 
         contacts[i].surface.mode = dContactBounce;
-		contacts[i].surface.mu = 250.f;
+		contacts[i].surface.mu = 2000.f;
 		contacts[i].surface.bounce = 0.01f;
 		contacts[i].surface.bounce_vel =0.005f;
 		dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);

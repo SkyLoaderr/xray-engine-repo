@@ -166,7 +166,8 @@ void	CCar::OnKeyboardPress		(int cmd)
 
 	switch (cmd)	
 	{
-	case kACCEL:	break;
+	case kACCEL:	ph_world->Jeep.VelocityRate=2;
+					break;
 	case kR_STRAFE:	ph_world->Jeep.Steer(1);//vPosition.x+=1; 
 					break;
 	case kL_STRAFE:	ph_world->Jeep.Steer(-1);//vPosition.x-=1;
@@ -185,7 +186,8 @@ void	CCar::OnKeyboardRelease		(int cmd)
 	if (Remote())					return;
 		switch (cmd)	
 	{
-	case kACCEL:	break;
+	case kACCEL:	ph_world->Jeep.VelocityRate=1;
+					break;
 	case kR_STRAFE:	ph_world->Jeep.Steer(0);//vPosition.x+=1; 
 					break;
 	case kL_STRAFE:	ph_world->Jeep.Steer(0);//vPosition.x-=1;

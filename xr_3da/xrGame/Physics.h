@@ -20,7 +20,7 @@ class CPHJeep {
 	dGeomID Geoms[NofGeoms];
 	dJointID Joints[NofJoints];
 	dVector3 startPosition;
-
+	
 	void CreateDynamicData();
 public:
 	//CPHJeep(){}
@@ -45,6 +45,7 @@ public:
 	PHDynamicData DynamicData;
 	dVector3 jeepBox;
 	dVector3 cabinBox;
+	UINT VelocityRate;
 };
 
 //////////////////////////////////////////////////////////////////////////////////
