@@ -465,7 +465,7 @@ CSE_ALifeAnomalousZone::CSE_ALifeAnomalousZone(LPCSTR caSection) : CSE_ALifeDyna
 	m_dwaWeights				= (u32*)xr_malloc(m_wItemCount*sizeof(u32));
 	m_cppArtefactSections		= (string64*)xr_malloc(m_wItemCount*sizeof(string64));
 	string512					l_caBuffer;
-	for (u32 i=0; i<m_wItemCount; i++) {
+	for (u16 i=0; i<m_wItemCount; i++) {
 		m_dwaWeights[i]			= atoi(_GetItem(l_caParameters,i << 1,l_caBuffer));
 		strcpy					(m_cppArtefactSections[i],_GetItem(l_caParameters,(i << 1) | 1,l_caBuffer));
 	}
@@ -549,7 +549,7 @@ void CSE_ALifeAnomalousZone::FillProp		(LPCSTR pref, PropItemVec& items)
     PHelper.CreateU32			(items,PHelper.PrepareKey(pref,s_name,"Period"),			&m_period,20,10000);
     PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Radius"),			&m_fRadius,0.f,100.f);
 	string512					S;
-	for (u32 i=0; i<m_wItemCount; i++) {
+	for (u16 i=0; i<m_wItemCount; i++) {
 		strcpy					(S,s_name);
 		strconcat				(S,"\\",m_cppArtefactSections[i]);
 		PHelper.CreateU32		(items,PHelper.PrepareKey(pref,S,"Weight"),					m_dwaWeights + i,20,10000);
