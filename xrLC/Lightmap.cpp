@@ -17,7 +17,7 @@ extern BOOL ApplyBorders(b_texture &lm, DWORD ref);
 
 CLightmap::CLightmap()
 {
-
+	ZeroMemory(&lm,sizeof(lm));
 }
 
 CLightmap::~CLightmap()
@@ -95,7 +95,7 @@ void CLightmap::Save()
 	}
 	for (DWORD ref=254; ref>0; ref--) ApplyBorders(lm,ref);
 
-	// Saving			(16b.dds)
+	// Saving			(DXT5.dds)
 	{
 		char	FN[_MAX_PATH];
 		sprintf	(lm.name,"L#%d",lmapNameID				);
