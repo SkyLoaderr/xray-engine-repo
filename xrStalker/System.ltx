@@ -2429,3 +2429,13 @@ class			= LVLPOINT
     max_combat_iteration_count = 5	;10											; maximum combat iteration count
     switch_distance			= 75.0											; metres
     switch_factor			= 0.9											; 
+
+[script_object]
+GroupControlSection			= spawn_group
+$spawn						= "script\script object"						; option for Level Editor
+$npc						= on											; option for Level Editor
+; $prefetch 					= 32										;
+Scheduled					= on											; option for ALife Simulator
+Human		     			= off											; option for ALife Simulator
+cform                       = skeleton										; collision class
+class                       = SCRPTOBJ										; AI class
