@@ -88,7 +88,7 @@ extern BOOL	hasImplicitLighting(Face* F);
 
 typedef	multimap<float,vecVertex>	mapVert;
 typedef	mapVert::iterator			mapVertIt;
-volatile mapVert					g_trans;
+mapVert								g_trans;
 CCriticalSection					g_trans_CS;
 
 void	g_trans_register			(Vertex* V)
@@ -97,7 +97,7 @@ void	g_trans_register			(Vertex* V)
 	const float eps2	= 2.f*eps;
 	
 	// Search
-	float		key		= V->P.x;
+	const float key		= V->P.x;
 	mapVertIt	it		= g_trans.lower_bound	(key);
 
 	// Decrement to the start
@@ -200,10 +200,10 @@ void CBuild::LightVertex()
 
 	// Process all groups
 	Status					("Transluenting...");
-	for (int it=0; it<g_trans.size(); it++)
+	for (mapVertIt it=g_trans.begin(); it!=g_trans.end(); it++)
 	{
 		// Unique
-		vecVertex&	VL		= g_trans[it];
+		vecVertex&	VL		= it->second;
 		std::sort	(VL.begin(),VL.end());
 		VL.erase	(unique(VL.begin(),VL.end()),VL.end());
 
