@@ -102,6 +102,7 @@ function action_patrol_hi:execute()
 	action_base.execute		(self)
 	if self.object:action() == nil then
 		self.func			(false)
+	end
 	printf					("action %s is executed!",self.name)
 end
 
