@@ -224,7 +224,7 @@ public:
 	void				SetEnvironment			( int enviroment,int old_enviroment);
 	void				ApplyImpulse			(const Fvector& dir,const dReal P)										{m_character->ApplyImpulse(dir,P);};
 	void				SetJumpUpVelocity		(float velocity)														{m_character->SetJupmUpVelocity(velocity);}
-	void				EnableCharacter			()																		{m_character->Enable();}
+	void				EnableCharacter			()																		{if(m_character)m_character->Enable();}
 	u16					ContactBone				(){return m_character->ContactBone();}
 	void				GetDesiredPos			(Fvector& dpos)
 	{	

@@ -50,7 +50,7 @@ void Disabling											();
 
 public:
 
-	void	Enable										()										{dBodyEnable(m_body);}
+	void	Enable										()										{if(m_body)dBodyEnable(m_body);}
 	bool	IsEnabled									()										{ if(!b_exist)return false; return !!dBodyIsEnabled(m_body);}
 	dBodyID GetBody										()										{return m_body;}
 	float	ContactVelocity								()										{ dReal ret= m_contact_velocity; m_contact_velocity=0; return ret;}
