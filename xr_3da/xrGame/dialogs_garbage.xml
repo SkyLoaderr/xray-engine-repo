@@ -276,51 +276,8 @@
     </dialog>
     <dialog id="gar_dolg_acces">
         <phrase_list>
-            <phrase id="1">
-                <text>gar_dolg_acces_1</text>
-                <next>11</next>
-            </phrase>
-            <phrase id="2">
-                <text>gar_dolg_acces_2</text>
-                <next>21</next>
-            </phrase>
-            <phrase id="3">
-                <text>gar_dolg_acces_3</text>
-                <next>31</next>
-            </phrase>
-            <phrase id="111">
-                <text></text>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-            </phrase>
-            <phrase id="21">
-                <text>gar_dolg_acces_21</text>
-                <next>11</next>
-            </phrase>
-            <phrase id="3121">
-                <text>gar_dolg_acces_3121</text>
-                <next>11</next>
-            </phrase>
-            <phrase id="11">
-                <text></text>
-                <next>111</next>
-            </phrase>
             <phrase id="4">
                 <text>gar_dolg_acces_4</text>
-            </phrase>
-            <phrase id="0">
-                <text>gar_dolg_acces_0</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="312">
-                <text>gar_dolg_acces_312</text>
-                <next>3121</next>
-            </phrase>
-            <phrase id="31">
-                <text>gar_dolg_acces_31</text>
-                <next>311</next>
-                <next>312</next>
             </phrase>
             <phrase id="3111">
                 <text>gar_dolg_acces_3111</text>
@@ -330,7 +287,52 @@
                 <text>gar_dolg_acces_311</text>
                 <precondition>garbage_dialogs.has_dolg_bribe</precondition>
                 <action>garbage_dialogs.give_dolg_bribe</action>
+                <give_info>gar_dolg_access_rostok</give_info>
                 <next>3111</next>
+            </phrase>
+            <phrase id="21">
+                <text>gar_dolg_acces_21</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="111">
+                <text></text>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+            </phrase>
+            <phrase id="11">
+                <text></text>
+                <next>111</next>
+            </phrase>
+            <phrase id="1">
+                <text>gar_dolg_acces_1</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="0">
+                <text>gar_dolg_acces_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="312">
+                <text>gar_dolg_acces_312</text>
+                <next>3121</next>
+            </phrase>
+            <phrase id="3121">
+                <text>gar_dolg_acces_3121</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="31">
+                <text>gar_dolg_acces_31</text>
+                <next>311</next>
+                <next>312</next>
+            </phrase>
+            <phrase id="2">
+                <text>gar_dolg_acces_2</text>
+                <next>21</next>
+            </phrase>
+            <phrase id="3">
+                <text>gar_dolg_acces_3</text>
+                <dont_has_info>gar_dolg_access_rostok</dont_has_info>
+                <next>31</next>
             </phrase>
         </phrase_list>
     </dialog>
