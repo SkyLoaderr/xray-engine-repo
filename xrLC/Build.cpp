@@ -123,8 +123,9 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 
 		while (count && !F->Eof())
 		{
-			mu_models.push_back		(xr_new<xrMU_Model>());
-			mu_models.back()->Load	(*F);
+			mu_models.push_back				(xr_new<xrMU_Model>());
+			mu_models.back()->Load			(*F);
+			mu_models.back()->calc_normals	();
 			count--;
 		}
 
