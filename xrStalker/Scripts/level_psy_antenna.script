@@ -16,8 +16,17 @@ pa_phase={
 	phStopping							= 3
 }
 function PsyAntenna:__init				()
+// settings
+	// phantom gen
+	self.phantom_max 					= 5;	// max phantoms
+	self.phantom_spawn_probability		= 0.1;	// spawn probability (0..1)
+	self.phantom_spawn_radius			= 30.0;	// average radius 30.0m +-15m
+	self.phantom_spawn_height			= 3.0;	// average height from actor pos +-1.5m
+	// pause time [from]=to
+	self.idle_time						= {};
+	self.idle_time[20]					= 21;
+// class variables initialize
 	self.phase 							= pa_phase.phIdle;
-	self.phantom_max 					= 5;
 	self.power_factor					= fcolor();
 	self.eff_time						= 0;
 	self.starting_anim					= color_animator			("levels\\psy_antenna\\starting");
@@ -25,8 +34,6 @@ function PsyAntenna:__init				()
 	self.working_anim					= color_animator			("levels\\psy_antenna\\working");
 	self.stopping_anim					= color_animator			("levels\\psy_antenna\\stopping");
 	self.stopping_time					= self.stopping_anim:length();
-	self.idle_time						= {};
-	self.idle_time[20]					= 21;
 	self.pp 							= PsyAntennaPP();
 	self.pp:start						();
 end
@@ -87,7 +94,7 @@ function PsyAntenna:phase_idle			()
 	end;
 end
 function PsyAntenna:update_postprocess	()
-//.	self.pp.params.color_add 			= color():set(self.power_factor.r,self.power_factor.g,self.power_factor.b);
+	self.pp.params.color_add 			= color():set(self.power_factor.r,self.power_factor.g,self.power_factor.b);
 end
 function PsyAntenna:update_psy_hit		(dt)
 	if self.power_factor.a>0.001 then
@@ -102,14 +109,14 @@ function PsyAntenna:update_psy_hit		(dt)
 end
 function PsyAntenna:update_phantoms 	()
 	if self.power_factor.a>0.1 then
-		if math.random()<0.1 then
+		if math.random()<self.phantom_spawn_probability then
 			if phantom_manager:phantom_count()<self.phantom_max then
 				local yaw	 			= math.pi*2.0*math.random();
-				local radius 			= 20.0*(math.random()/2.0+0.5);
-				local height 			= 2.0*math.random();
+				local radius 			= self.phantom_spawn_radius*(math.random()/2.0+0.5);
+				local height 			= self.phantom_spawn_height*math.random();
 				local a_pos 			= db.actor:position();
-//				local pos 				= vector():set(math.sin(yaw)*radius+a_pos.x,a_pos.y+height,math.cos(yaw)*radius+a_pos.z);
-				local pos 				= vector():set(10,0,7);
+				local pos 				= vector():set(math.sin(yaw)*radius+a_pos.x,a_pos.y+height,math.cos(yaw)*radius+a_pos.z);
+//				local pos 				= vector():set(10,0,7);
 				phantom_manager.spawn_phantom(pos);
 			end;
 		end;
