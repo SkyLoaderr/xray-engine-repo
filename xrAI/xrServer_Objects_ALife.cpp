@@ -1047,9 +1047,15 @@ void CSE_ALifeObjectHangingLamp::on_render(CDUInterface* du, ISE_AbstractLEOwner
 		u32 clr					= bSelected?0x00FFFFFF:0x00FFFF00;
 		Fmatrix xform;
 		owner->get_bone_xform	(*guid_bone,xform);
-		if (bSelected)
-			du->DrawLineSphere	(parent.c, range, clr, true);
-		du->DrawPointLight		(parent.c,VIS_RADIUS, 0x00FFFFFF);
+		xform.mulA				(parent);
+		if (bSelected){
+			if (flags.is(flTypeSpot)){
+				du->DrawSpotLight	(xform.c, xform.k, range, spot_cone_angle, clr);
+			}else{
+				du->DrawLineSphere	(xform.c, range, clr, true);
+			}
+		}
+		du->DrawPointLight		(xform.c,VIS_RADIUS, clr);
 	}
 }
 
