@@ -48,10 +48,10 @@ void CWeapon::FireTrace		(const Fvector& P, const Fvector& D)
 	// Ammo
 	m_magazine.pop	();
 	--iAmmoElapsed;
-
+/*
 	if(iAmmoElapsed==0) 
 		OnMagazineEmpty();
-
+*/
 	//проверить не произошла ли осечка
 	CheckForMisfire();
 

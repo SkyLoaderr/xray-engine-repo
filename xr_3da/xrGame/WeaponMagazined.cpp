@@ -382,7 +382,7 @@ void CWeaponMagazined::UpdateCL			()
 				fTime = 0;
 			break;
 		case eFire:			
-			if(OnClient() && !iAmmoElapsed)
+/*			if(OnClient() && !iAmmoElapsed)
 			{
 				fTime			-=	dt;
 				if (fTime<0)	
@@ -390,12 +390,23 @@ void CWeaponMagazined::UpdateCL			()
 				break;
 			}
 			VERIFY(iAmmoElapsed);
-			state_Fire		(dt);	
+
+*/
+			if(iAmmoElapsed>0)
+				state_Fire		(dt);
 			
-			if(fTime<=0 || iAmmoElapsed == 0	/*|| 
-				//SingleShotMode() || 
-				StopedAfterQueueFired()*/)
+			if(fTime<=0)
+			{
+				if(iAmmoElapsed == 0)
+					OnMagazineEmpty();
 				StopShooting();
+			}
+			else
+			{
+				fTime			-=	dt;
+				if (fTime<0)	fTime = 0;
+			}
+
 			break;
 		case eMisfire:		state_Misfire	(dt);	break;
 		case eMagEmpty:		state_MagEmpty	(dt);	break;
@@ -436,7 +447,7 @@ void CWeaponMagazined::state_Fire	(float dt)
 {
 	VERIFY(fTimeToFire>0.f);
 
-	fTime					-=dt;
+//	fTime					-=dt;
 
 	UpdateFP				();
 
