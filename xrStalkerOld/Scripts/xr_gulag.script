@@ -206,7 +206,13 @@ function fract:setJob(npc, job)
 	job.object:change_team(job.object:team(), job.squad or job.object:squad(), job.group or job.object:group())
 	--' Спейс рестрикторы
 	job.object:remove_all_restrictions()
-	job.object:add_restrictions(job.out_rest, job.in_rest)
+	self:add_restrictor(job.object, job.out_rest, job.in_rest)
+end
+function fract:add_restrictor(npc, r_out, r_in)
+	if string.find(npc:in_restrictions(), r_in) then r_in = "" end
+	if string.find(npc:out_restrictions(), r_out) then r_out = "" end
+	
+	npc:add_restrictions(r_out, r_in)
 end
 function fract:getJob(npc)
 	if npc == nil then return nil end
