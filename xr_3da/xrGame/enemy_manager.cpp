@@ -21,13 +21,13 @@ bool CEnemyManager::useful					(const CEntityAlive *entity_alive) const
 	if ((entity_alive->spatial.type & STYPE_VISIBLEFORAI) != STYPE_VISIBLEFORAI)
 		return				(false);
 
-	if (m_self_entity_alive && (m_self_entity_alive->tfGetRelationType(entity_alive) != ALife::eRelationTypeEnemy))
+	if (m_self_entity_alive && (m_self_entity_alive->ID() == entity_alive->ID()) && (m_self_entity_alive->tfGetRelationType(entity_alive) != ALife::eRelationTypeEnemy))
 		return				(false);
 
 	if	(
-			m_self_entity_alive->human_being() && 
-			!entity_alive->human_being() && 
-			!expedient(entity_alive) && 
+			m_self_entity_alive->human_being() &&
+			!entity_alive->human_being() &&
+			!expedient(entity_alive) &&
 			(evaluate(entity_alive) >= m_ignore_monster_threshold) &&
 			(m_self_entity_alive->Position().distance_to(entity_alive->Position()) >= m_max_ignore_distance)
 		)
