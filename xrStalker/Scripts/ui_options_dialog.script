@@ -141,7 +141,7 @@ function options_dialog:InitControls()
 	
 	btn = CUIButton()
 	btn:SetAutoDelete(true)
-	btn:SetWindowName("Accept")
+	btn:SetWindowName("btn_accept")
 	btn:Init("ui\\ui_button_03", btn_accept_rect.x, btn_accept_rect.y, btn_accept_rect.width, btn_accept_rect.height)
 	btn:SetText("Accept")
 	btn:SetFont(GetFontLetterica25())
@@ -167,39 +167,17 @@ function options_dialog:InitControls()
 end
 
 function options_dialog:InitCallBacks()
-	self:AddCallback("btn_new_game",  ui_events.BUTTON_CLICKED,             self,"OnButton_new_game_clicked")
-	self:AddCallback("button_cancel", ui_events.BUTTON_CLICKED,             self,"OnButton_cancel_clicked")
-	self:AddCallback("message_box",   ui_events.MESSAGE_BOX_OK_CLICKED,     self,"OnMsgOk")
-	self:AddCallback("message_box",   ui_events.MESSAGE_BOX_CANCEL_CLICKED, self,"OnMsgCancel")
-	self:AddCallback("message_box",   ui_events.MESSAGE_BOX_YES_CLICKED,    self,"OnMsgYes")
-	self:AddCallback("message_box",   ui_events.MESSAGE_BOX_NO_CLICKED,     self,"OnMsgNo")
+	self:AddCallback("btn_accept",  ui_events.BUTTON_CLICKED,        self,"OnButton_accept")
+	self:AddCallback("btn_cancel", ui_events.BUTTON_CLICKED,         self,"OnButton_cancel")
 end
 
-function options_dialog:OnButton_new_game_clicked()
-	local dlg = ui_new_game_dialog.new_game_dlg()
-	level.start_stop_menu(dlg, true)
+function options_dialog:OnButton_accept()
+	level.start_stop_menu(self,true)
 end
 
-function options_dialog:OnMsgOk()
-	local msg_box = self:GetMessageBox("message_box")
-	msg_box:Hide()
+function options_dialog:OnButton_cancel()
+	level.start_stop_menu(self,true)
 end
-
-function options_dialog:OnMsgCancel()
-	local msg_box = self:GetMessageBox("message_box")
-	msg_box:Hide()
-end
-
-function options_dialog:OnMsgYes()
-	local msg_box = self:GetMessageBox("message_box")
-	msg_box:Hide()
-end
-
-function options_dialog:OnMsgNo()
-	local msg_box = self:GetMessageBox("message_box")
-	msg_box:Hide()
-end
-
 
 function options_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
    CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
