@@ -7,38 +7,35 @@ uses
   SysUtils, Forms, Menus, Graphics, Dialogs;
 
 type
-TD3DWindow = class(TCustomControl)
-private
-	FOnPaint: TNotifyEvent;
-	procedure WMPaint(var Message: TWMPaint); message WM_PAINT;
-protected
-	procedure Paint; virtual;
+TCustomRenderWindow = class(TWinControl)
 protected
 	FOnChangeFocus: TNotifyEvent;
 	FBorderStyle: TBorderStyle;
-	FFocusedColor: TColor;
-    FUnfocusedColor: TColor;
-    FDrawFocusRect: Boolean;
     procedure SetBorderStyle(Value: TBorderStyle);
 	procedure CreateParams(var Params: TCreateParams); override;
 	procedure CreateWindowHandle(const Params: TCreateParams); override;
     procedure ChangeFocus(p: boolean);
 	property ParentColor default False;
-	procedure SetDrawFocusRect(Value: Boolean);
-	procedure SetFocusedColor(Value: TColor);
-	procedure SetUnfocusedColor(Value: TColor);
+    property BorderStyle: TBorderStyle read FBorderStyle write SetBorderStyle default bsSingle;
 public
 	constructor Create(AOwner: TComponent); override;
 	procedure DefaultHandler(var Message); override;
 published
-    property FocusedColor: TColor read FFocusedColor write SetFocusedColor default clYellow;
-    property UnfocusedColor: TColor read FUnfocusedColor write SetUnfocusedColor default clGray;
-    property DrawFocusRect: Boolean read FDrawFocusRect write SetDrawFocusRect default True;
 	property TabStop default True;
 	property OnChangeFocus: TNotifyEvent read FOnChangeFocus write FOnChangeFocus;
+end;
+
+TD3DWindow = class(TCustomRenderWindow)
+private
+	FOnPaint: TNotifyEvent;
+	procedure WMPaint(var Message: TWMPaint); message WM_PAINT;
+protected
+	procedure Paint; virtual;
+public
+	constructor Create(AOwner: TComponent); override;
 published
 	property Align;
-    property BorderStyle: TBorderStyle read FBorderStyle write SetBorderStyle default bsSingle;
+    property BorderStyle;
 	property Color;
 	property Enabled;
 	property Font;
@@ -55,12 +52,13 @@ published
 	property OnResize;
 	property OnPaint: TNotifyEvent read FOnPaint write FOnPaint;
 end;
+
 const
 	RWStyle = [csAcceptsControls, csCaptureMouse, csClickEvents, csOpaque, csReplicatable];
     
 implementation
 
-constructor TD3DWindow.Create(AOwner: TComponent);
+constructor TCustomRenderWindow.Create(AOwner: TComponent);
 begin
   	inherited Create(AOwner);
 	ControlStyle := RWStyle;
@@ -70,17 +68,14 @@ begin
     TabStop := True;
     ParentColor := False;
     FBorderStyle := bsSingle;
-    FDrawFocusRect := true;
-    FFocusRectColor := clYellow;
 end;
 
-procedure TD3DWindow.ChangeFocus(p: boolean);
+procedure TCustomRenderWindow.ChangeFocus(p: boolean);
 begin
   	if Assigned(FOnChangeFocus) then FOnChangeFocus(Self);
-    Paint;
 end;
 
-procedure TD3DWindow.SetBorderStyle(Value: TBorderStyle);
+procedure TCustomRenderWindow.SetBorderStyle(Value: TBorderStyle);
 begin
   if FBorderStyle <> Value then
   begin
@@ -89,7 +84,7 @@ begin
   end;
 end;
 
-procedure TD3DWindow.CreateParams(var Params: TCreateParams);
+procedure TCustomRenderWindow.CreateParams(var Params: TCreateParams);
 const
   BorderStyles: array[TBorderStyle] of DWORD = (0, WS_BORDER);
   CSHREDRAW: array[Boolean] of DWORD = (CS_HREDRAW, 0);
@@ -109,7 +104,7 @@ begin
   end;
 end;
 
-procedure TD3DWindow.CreateWindowHandle(const Params: TCreateParams);
+procedure TCustomRenderWindow.CreateWindowHandle(const Params: TCreateParams);
 var
   P: TCreateParams;
 begin
@@ -127,7 +122,7 @@ begin
     inherited CreateWindowHandle(Params);
 end;
 
-procedure TD3DWindow.DefaultHandler(var Message);
+procedure TCustomRenderWindow.DefaultHandler(var Message);
 begin
   case TMessage(Message).Msg of
     WM_SETFOCUS:begin
@@ -143,6 +138,10 @@ begin
   inherited;
 end;
 //------------------------------------------------------------------------------
+constructor TD3DWindow.Create(AOwner: TComponent);
+begin
+	inherited Create(AOwner);
+end;
 
 procedure TD3DWindow.WMPaint(var Message: TWMPaint);
 begin
@@ -152,38 +151,7 @@ end;
 
 procedure TD3DWindow.Paint;
 begin
-	inherited;
-    if (FDrawFocusRect) then
-    begin
-    	if (Focused) then 	Canvas.Pen.Color := FFocusedColor
-        else				Canvas.Pen.Color := FUnfocusColor;
-        Canvas.Pen.Style := psSolid;
-        Canvas.Pen.Width := 1;
-        Canvas.MoveTo	(0, 0);
-        Canvas.LineTo	(Width-1,0);
-        Canvas.LineTo	(Width-1,Height-1);
-        Canvas.LineTo	(0,Height-1);
-        Canvas.LineTo	(0,0);
-    end;
-	if Assigned(FOnPaint) then FOnPaint(Self);
-end;
-
-procedure TD3DWindow.SetDrawFocusRect(Value: Boolean);
-begin
-  	if Value <> FDrawFocusRect then
-  	begin
-    	FDrawFocusRect := Value;
-        Repaint();
-  	end;
-end;
-
-procedure TD3DWindow.SetFocusRectColor(Value: TColor);
-begin
-  	if Value <> FFocusRectColor then
-  	begin
-    	FFocusRectColor := Value;
-        Repaint();
-  	end;
+  if Assigned(FOnPaint) then FOnPaint(Self);
 end;
 
 end.
