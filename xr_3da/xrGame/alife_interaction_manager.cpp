@@ -43,6 +43,10 @@ void CALifeInteractionManager::check_for_interaction(CSE_ALifeSchedulable *tpALi
 	R_ASSERT2					(l_tpALifeDynamicObject,"Unknown schedulable object class");
 	_GRAPH_ID					l_tGraphID = l_tpALifeDynamicObject->m_tGraphID;
 	check_for_interaction		(tpALifeSchedulable,l_tGraphID);
+	
+	if (!l_tpALifeDynamicObject->interactive())
+		return;
+
 	CGameGraph::const_iterator	I, E;
 	ai().game_graph().begin		(l_tGraphID,I,E);
 	for ( ; I != E; ++I)
@@ -57,6 +61,7 @@ public:
 	mutable int						l_iGroupIndex;
 	mutable bool					l_bMutualDetection;
 	mutable CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract;
+	mutable CSE_ALifeMonsterAbstract*l_tpALifeMonsterAbstract;
 
 	IC	CCheckForInteractionPredicate(CALifeInteractionManager *manager, CSE_ALifeSchedulable *tpALifeSchedulable, _GRAPH_ID tGraphID) :
 		manager(manager),
@@ -64,6 +69,7 @@ public:
 		tGraphID(tGraphID)
 	{
 		l_tpALifeHumanAbstract	= smart_cast<CSE_ALifeHumanAbstract*>(tpALifeSchedulable);
+		l_tpALifeMonsterAbstract= smart_cast<CSE_ALifeMonsterAbstract*>(tpALifeSchedulable);
 		manager->vfFillCombatGroup	(tpALifeSchedulable,0);
 	}
 
@@ -232,6 +238,13 @@ public:
 					Msg					("[LSS] %s refused from combat",manager->m_tpaCombatObjects[l_iGroupIndex]->base()->s_name_replace);
 				}
 #endif
+				return;
+			}
+			case eMeetActionSmartTerrain : {
+				CSE_ALifeSmartZone		*smart_zone = smart_cast<CSE_ALifeSmartZone*>(l_tpALifeSchedulable);
+				VERIFY					(smart_zone);
+				VERIFY					(l_tpALifeMonsterAbstract);
+				smart_zone->smart_touch	(l_tpALifeMonsterAbstract);
 				return;
 			}
 			default : NODEFAULT;

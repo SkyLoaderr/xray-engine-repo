@@ -58,7 +58,9 @@ CSE_ALifeItemWeapon	*CSE_ALifeSmartZone::tpfGetBestWeapon	(ALife::EHitType		&tHi
 
 ALife::EMeetActionType CSE_ALifeSmartZone::tfGetActionType	(CSE_ALifeSchedulable	*tpALifeSchedulable,int			iGroupIndex, bool bMutualDetection)
 {
-	return						(eMeetActionSmartTerrain);
+	CSE_ALifeObject				*object = smart_cast<CSE_ALifeObject*>(tpALifeSchedulable->base());
+	VERIFY						(object);
+	return						((object->m_tGraphID == m_tGraphID) ? ALife::eMeetActionSmartTerrain : ALife::eMeetActionTypeIgnore);
 }
 
 bool CSE_ALifeSmartZone::bfActive							()
@@ -70,4 +72,8 @@ CSE_ALifeDynamicObject *CSE_ALifeSmartZone::tpfGetBestDetector	()
 {
 	VERIFY2						(false,"This function shouldn't be called");
 	return						(0);
+}
+
+void CSE_ALifeSmartZone::smart_touch						(CSE_ALifeMonsterAbstract *monster)
+{
 }

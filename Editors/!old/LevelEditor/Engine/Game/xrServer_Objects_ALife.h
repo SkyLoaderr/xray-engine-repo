@@ -252,6 +252,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeSmartZone,CSE_ALifeSpaceRestrictor,CSE_ALi
 	virtual	ALife::EMeetActionType	tfGetActionType				(CSE_ALifeSchedulable	*tpALifeSchedulable,int			iGroupIndex, bool bMutualDetection);
 	virtual bool					bfActive					();
 	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector			();
+	virtual void					smart_touch					(CSE_ALifeMonsterAbstract *monster);
 #endif
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeSmartZone)
