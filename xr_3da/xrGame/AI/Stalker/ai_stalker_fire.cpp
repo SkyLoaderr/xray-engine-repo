@@ -269,7 +269,10 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 			}
 		}
 		if (dwMaxQueueSize)
-			tpWeaponMagazined->SetQueueSize(::Random.randI(iFloor(float(dwMinQueueSize)/30*float(tpWeaponMagazined->GetAmmoMagSize())),iFloor(float(dwMaxQueueSize)/30*float(tpWeaponMagazined->GetAmmoMagSize()))));
+			if (tpWeaponMagazined->GetAmmoMagSize() > 1)
+				tpWeaponMagazined->SetQueueSize(::Random.randI(iFloor(float(dwMinQueueSize)/30*float(tpWeaponMagazined->GetAmmoMagSize())),iFloor(float(dwMaxQueueSize)/30*float(tpWeaponMagazined->GetAmmoMagSize()))));
+			else
+				tpWeaponMagazined->SetQueueSize(1);
 	}
 
 	if (tWeaponState == eWeaponStateIdle) {

@@ -46,10 +46,11 @@ void CAI_Stalker::BackCover(bool bFire)
 	
 	if (m_bStateChanged) {
 		m_dwActionStartTime = Level().timeServer() + ::Random.randI(4000,7000);
-		m_tActionState = eActionStateRun;
+		m_tActionState = eActionStateStand;
 	}
 
 	if (m_tActionState == eActionStateRun) {
+		bool bTurn = (m_dwActionStartTime - Level().timeServer()) < 1000;
 		vfSetParameters				(
 			&m_tSelectorCover,
 			0,
@@ -59,7 +60,8 @@ void CAI_Stalker::BackCover(bool bFire)
 			eBodyStateStand,
 			m_tSavedEnemyPosition.distance_to(vPosition) > 0.f ? eMovementTypeRun : eMovementTypeWalk,
 			eStateTypeDanger,
-			eLookTypeDirection);
+			bTurn ? eLookTypeFirePoint : eLookTypeDirection,
+			m_tSavedEnemyPosition);
 		if (Level().timeServer() >= m_dwActionStartTime) {
 			m_tActionState = eActionStateStand;
 			m_dwActionStartTime = Level().timeServer() + ::Random.randI(4000,7000);
@@ -79,7 +81,7 @@ void CAI_Stalker::BackCover(bool bFire)
 			bFire ? eWeaponStatePrimaryFire : eWeaponStateIdle,
 			ePathTypeDodgeCriteria,
 			eBodyStateCrouch,
-			eMovementTypeWalk,
+			eMovementTypeStand,
 			eStateTypeDanger,
 			eLookTypeFirePoint,
 			tPoint);

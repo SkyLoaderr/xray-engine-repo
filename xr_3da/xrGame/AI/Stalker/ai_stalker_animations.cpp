@@ -43,6 +43,7 @@ LPCSTR caWeaponNames		[] = {
 	"1_",
 	"2_",
 	"3_",
+	"4_",
 	0
 };
 
@@ -212,7 +213,9 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 			case CLSID_OBJECT_W_M134		:
 			case CLSID_OBJECT_W_FN2000		:
 			case CLSID_OBJECT_W_AK74		:
-			case CLSID_OBJECT_W_LR300		: {
+			case CLSID_OBJECT_W_LR300		: 
+			case CLSID_OBJECT_W_SVU			:
+			case CLSID_OBJECT_W_SVD			: {
 				dwCurrentAniSlot = 2;
 				break;
 			}
@@ -226,14 +229,12 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 				dwCurrentAniSlot = 5;
 				break;
 			}
-			case CLSID_OBJECT_W_SHOTGUN		:
-			case CLSID_OBJECT_W_SVD			:
-			case CLSID_OBJECT_W_SVU			: {
+			case CLSID_OBJECT_W_SHOTGUN		: {
 				dwCurrentAniSlot = 3;
 				break;
 			}
 			case CLSID_OBJECT_W_RPG7		: {
-				dwCurrentAniSlot = 3;//4;
+				dwCurrentAniSlot = 4;
 				break;
 			}
 		}
