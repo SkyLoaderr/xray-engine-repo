@@ -35,8 +35,10 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 		pApp->LoadTitle				("CLIENT: Spawning...");
 		while (!net_isCompleted_Connect()) Sleep(5);
 
-		//
-		//
+		// Spawn actor if non-local server
+		if (0==stricmp(name_of_server,"localhost"))
+			g_cl_Spawn("actor",0,0,0,0);
+
 		// And receiving spawn information (game-state)
 		BOOL bFinished		= FALSE;
 		while (!bFinished) 
