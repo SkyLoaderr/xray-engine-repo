@@ -51,6 +51,10 @@ public:
 	virtual void	Init(CUIXml& pXml, const char* path, LPCSTR strSectionName, LPCSTR strPricesSection);
 	virtual void	Init(int x, int y, int width, int height);
 	virtual bool	OnKeyboard(int dik, EUIMessages keyboard_action);
+			void	OnBtnShotgunsClicked();
+			void	OnBtnMachinegunsClicked();
+			void	OnBtnSniperClicked();
+			void	OnBtnHeavyClicked();
 			void	UpdateMoney(int iMoney);
 			void	UpdateBuyPossibility();
 	virtual void	Draw();

@@ -293,13 +293,13 @@ void CUIBag::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
 		// those buttons uses TAB_CHANGED message for Click event
 	case TAB_CHANGED:
 		if		(pWnd == m_boxesDefs[0].pButton)
-			ShowSectionEx(GROUP_31);
+			OnBtnShotgunsClicked();
 		else if (pWnd == m_boxesDefs[1].pButton)
-			ShowSectionEx(GROUP_32);
+			OnBtnMachinegunsClicked();
 		else if (pWnd == m_boxesDefs[2].pButton)
-			ShowSectionEx(GROUP_33);
+			OnBtnSniperClicked();
 		else if (pWnd == m_boxesDefs[3].pButton)
-			ShowSectionEx(GROUP_34);
+			OnBtnHeavyClicked();
 		break;
 	case DRAG_DROP_ITEM_DROP:
 		OnItemDrop(pDDItem);
@@ -309,18 +309,29 @@ void CUIBag::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
 		if (&m_btnBack == pWnd)
 			OnBackClick();
 		break;
-
-	//case DRAG_DROP_ITEM_DB_CLICK:
-	//		OnItemClick(pDDItem);
-	//	break;
-
-	//case DRAG_DROP_ITEM_RBUTTON_CLICK:
-	//	OnItemClick(pDDItem); break;
-
-	//case DRAG_DROP_ITEM_DRAG:
-	//	OnItemClick(pDDItem); break;
 	}
 	CUIWindow::SendMessage(pWnd, msg, pData);
+}
+
+void CUIBag::OnBtnShotgunsClicked(){
+	m_boxesDefs[0].pButton->OnClick();
+	m_boxesDefs[0].pButton->OnMouse(-1, -1, WINDOW_MOUSE_MOVE);
+	ShowSectionEx(GROUP_31);
+}
+void CUIBag::OnBtnMachinegunsClicked(){
+	m_boxesDefs[1].pButton->OnClick();
+	m_boxesDefs[1].pButton->OnMouse(-1, -1, WINDOW_MOUSE_MOVE);
+	ShowSectionEx(GROUP_32);
+}
+void CUIBag::OnBtnSniperClicked(){
+	m_boxesDefs[2].pButton->OnClick();
+	m_boxesDefs[2].pButton->OnMouse(-1, -1, WINDOW_MOUSE_MOVE);
+	ShowSectionEx(GROUP_33);
+}
+void CUIBag::OnBtnHeavyClicked(){
+	m_boxesDefs[3].pButton->OnClick();
+	m_boxesDefs[3].pButton->OnMouse(-1, -1, WINDOW_MOUSE_MOVE);
+	ShowSectionEx(GROUP_34);
 }
 
 void CUIBag::OnBackClick(){
@@ -394,13 +405,13 @@ bool CUIBag::OnKeyboard(int dik, EUIMessages keyboard_action){
 		switch (dik)
 		{
 		case DIK_1:
-			ShowSectionEx(GROUP_31);	return true;
+			OnBtnShotgunsClicked();					return true;
 		case DIK_2:
-			ShowSectionEx(GROUP_32);	return true;
+			OnBtnMachinegunsClicked();				return true;
 		case DIK_3:
-			ShowSectionEx(GROUP_33);	return true;
+			OnBtnSniperClicked();					return true;
 		case DIK_4:
-			ShowSectionEx(GROUP_34);	return true;
+			OnBtnHeavyClicked();					return true;
 		}
 		break;
 
