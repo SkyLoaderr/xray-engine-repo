@@ -366,6 +366,18 @@ public:
 		R.z = (m[2][0] * V1.x + m[2][1] * V1.y + m[2][2] * V1.z);
 		return *this;
 	}
+	IC	void transform_dir		(_vector2<T> &dest, const _vector2<T> &v)	const 	// preferred to use
+	{
+		dest.x = v.x*_11 + v.y*_21;
+		dest.y = v.x*_12 + v.y*_22;
+		dest.z = v.x*_13 + v.y*_23;
+	}
+	IC	void transform_dir		(_vector2<T> &v) const
+	{
+		_vector2<T>		res;
+		transform_dir	(res,v);
+		v.set			(res);
+	}
 	IC SelfRef MxVpV(Tvector& R, const Tvector& V1, const Tvector& V2) const
 	{
 		R.x = (m[0][0] * V1.x + m[0][1] * V1.y + m[0][2] * V1.z + V2.x);

@@ -121,6 +121,7 @@ template <class T> struct _quaternion;
 #include "_random.h"
 #include "_compressed_normal.h"
 #include "_plane.h"
+#include "_plane2.h"
 #include "_flags.h"
 
 #pragma pack(pop)

@@ -88,9 +88,12 @@ public:
         return (T&) *(&x + i);
     }
 
-	IC SelfRef 	normalize		(void)						{ return norm();	 	}
-	IC SelfRef 	normalize_safe	(void)						{ return norm_safe();	}
-	IC float 	cross_product	(const Self &p) const		{ return y*p.x - x*p.y; }
+	IC SelfRef 	normalize		(void)					{ return norm();	 	}
+	IC SelfRef 	normalize_safe	(void)					{ return norm_safe();	}
+	IC SelfRef 	normalize		(const Self &v)			{ float m=_sqrt(v.x*v.x+v.y*v.y); x=v.x/m; y=v.y/m;			return *this; }
+	IC SelfRef 	normalize_safe	(const Self &v)			{ float m=_sqrt(v.x*v.x+v.y*v.y); if(m) {x=v.x/m; y=v.y/m;}	return *this; }
+	IC float 	dotproduct		(const Self &p) const	{ return dot(p);		}
+	IC float 	crossproduct	(const Self &p) const	{ return y*p.x - x*p.y; }
 	IC float 	getH			(void) const
 	{
         if (fis_zero(y))
