@@ -48,28 +48,25 @@ u32						*dwaEdgeOwner;  // edge owners
 
 void vfLoadAIPoints(LPCSTR name)
 {
-	string256			fName;
-	strconcat			(fName,name,"level.spawn");
-	CVirtualFileStream	F(fName);
-
-	CStream *O = 0;
-
+	string256								fName;
+	strconcat								(fName,name,"level.spawn");
+	CVirtualFileStream						F(fName);
+	CStream									*O = 0;
 	for (int id=0, i=0; 0!=(O = F.OpenChunk(id)); id++)	{
-		NET_Packet			P;
-		P.B.count			= O->Length();
-		O->Read				(P.B.data,P.B.count);
-		O->Close			();
-		u16					ID;
-		P.r_begin			(ID);
-		R_ASSERT			(M_SPAWN==ID);
-		string64			s_name;
-		P.r_string			(s_name);
-		xrServerEntity*	E	= F_entity_Create	(s_name);
-		R_ASSERT2(E,"Can't create entity.");
-		E->Spawn_Read		(P);
-		xrGraphPoint	*tpGraphPoint = dynamic_cast<xrGraphPoint*>(E);
+		NET_Packet							P;
+		P.B.count							= O->Length();
+		O->Read								(P.B.data,P.B.count);
+		O->Close							();
+		u16									ID;
+		P.r_begin							(ID);
+		R_ASSERT							(M_SPAWN==ID);
+		P.r_string							(fName);
+		xrServerEntity						*E = F_entity_Create	(fName);
+		R_ASSERT2							(E,"Can't create entity.");
+		E->Spawn_Read						(P);
+		xrGraphPoint						*tpGraphPoint = dynamic_cast<xrGraphPoint*>(E);
 		if (tpGraphPoint) {
-			SGraphVertex	tGraphVertex;
+			SGraphVertex					tGraphVertex;
 			tGraphVertex.tLocalPoint		= tpGraphPoint->o_Position;
 			tGraphVertex.tGlobalPoint		= tGraphVertex.tLocalPoint;
 			tGraphVertex.tNodeID			= 0;
@@ -77,16 +74,16 @@ void vfLoadAIPoints(LPCSTR name)
 			tGraphVertex.tVertexType		= tpGraphPoint->m_tLocBaseID || (tpGraphPoint->m_tLocAuxID << 16);
 			tGraphVertex.tLevelID			= 0;
 			tGraphVertex.tpaEdges			= 0;
-			tpaGraph.push_back(tGraphVertex);
+			tpaGraph.push_back				(tGraphVertex);
 			i++;
 		}
-		xr_delete(E);
+		xr_delete							(E);
 		if (i % 100 == 0)
-			Status("Vertexes being read : %d",i);
+			Status							("Vertexes being read : %d",i);
 	}
-	O->Close();
-	xr_delete(pSettings);
-	Status("Vertexes being read : %d",i);
+	O->Close								();
+	xr_delete								(pSettings);
+	Status									("Vertexes being read : %d",i);
 }
 
 void vfRemoveDuplicateAIPoints()
