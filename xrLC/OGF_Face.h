@@ -111,13 +111,20 @@ struct OGF_Base
 		}
 
 		// select best one
-		if (S1.R<S2.R)			
+		if (fis_gremlin(S1.R) || fis_denormal(S1.R) || fis_gremlin(S1.P.x) || fis_denormal(S1.P.x))
 		{
-			C.set	(S1.P);
-			R	=	S1.R;
-		} else {
+			// sphere 2 selected
 			C.set	(S2.P);
 			R	=	S2.R;
+		} else {
+			if (S1.R<S2.R)			
+			{
+				C.set	(S1.P);
+				R	=	S1.R;
+			} else {
+				C.set	(S2.P);
+				R	=	S2.R;
+			}
 		}
 	}
 };
