@@ -132,13 +132,13 @@ void CShaderTools::SelectPreviewObject(int p){
     if (!m_LibObject||!m_EditObject)
         ELog.DlgMsg(mtError,"System object '%s.object' can't find in object library. Preview disabled.",fn);
 	ZoomObject();
-    UI->RedrawScene();
+    UI.RedrawScene();
 }
 
 void CShaderTools::ResetPreviewObject(){
     m_LibObject 	= 0;
     m_EditObject 	= 0;
-    UI->RedrawScene();
+    UI.RedrawScene();
 }
 
 

@@ -94,18 +94,18 @@ void __fastcall TfraBottomBar::ClickOptionsMenuItem(TObject *Sender)
         else if (mi==miLightScene)  		SET_FLAG(rsLighting,mi->Checked)
         else if (mi==miRenderLinearFilter)	SET_FLAG(rsFilterLinear,mi->Checked)
         else if (mi==miRenderEdgedFaces)	SET_FLAG(rsEdgedFaces,mi->Checked)
-        else if (mi==miRenderHWTransform){	SET_FLAG(rsForceHWTransform,mi->Checked); UI->Resize(); }
+        else if (mi==miRenderHWTransform){	SET_FLAG(rsForceHWTransform,mi->Checked); UI.Resize(); }
         else if (mi==miRealTime)			SET_FLAG(rsRenderRealTime,mi->Checked)
     }
-    UI->RedrawScene();
-    UI->Command(COMMAND_UPDATE_TOOLBAR);
+    UI.RedrawScene();
+    UI.Command(COMMAND_UPDATE_TOOLBAR);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfraBottomBar::QualityClick(TObject *Sender)
 {
-    UI->SetRenderQuality((float)(((TMenuItem*)Sender)->Tag)/100);
+    UI.SetRenderQuality((float)(((TMenuItem*)Sender)->Tag)/100);
     ((TMenuItem*)Sender)->Checked = true;
-    UI->Resize();
+    UI.Resize();
 }
 //---------------------------------------------------------------------------
 void __fastcall TfraBottomBar::fsStorageRestorePlacement(TObject *Sender)
@@ -151,7 +151,7 @@ void __fastcall TfraBottomBar::ebStatClick(TObject *Sender)
 {
 	if (ebStat->Down) 	psDeviceFlags |= rsStatistic;
     else				psDeviceFlags &=~rsStatistic;
-    UI->RedrawScene();
+    UI.RedrawScene();
 }
 //---------------------------------------------------------------------------
 

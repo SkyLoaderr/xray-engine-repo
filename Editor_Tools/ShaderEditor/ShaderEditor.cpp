@@ -63,7 +63,6 @@ USELIB("lib\d3dx8d.lib");
 USEUNIT("editor\EditObject.cpp");
 USEUNIT("engine\Xr_input.cpp");
 USEUNIT("engine\fcontroller.cpp");
-USEUNIT("engine\EStats.cpp");
 USEUNIT("engine\XR_CustomFont.cpp");
 USEUNIT("engine\XR_HUDFont.cpp");
 USELIB("lib\dinput.lib");
@@ -104,6 +103,9 @@ USEUNIT("SHEngineTools.cpp");
 USEUNIT("SHCompilerTools.cpp");
 USEUNIT("Engine\BLENDERS\blender_light.cpp");
 USEUNIT("Editor\FolderLib.cpp");
+USEUNIT("Editor\EStats.cpp");
+USEUNIT("Engine\xrLoadSurface.cpp");
+USELIB("Lib\FreeImage.lib");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

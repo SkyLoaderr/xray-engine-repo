@@ -16,12 +16,11 @@
 #include "ShaderTools.h"
 #include "Library.h"
 
-TUI* UI=0;
+TUI UI;
 
 bool g_bEditorValid = false;
 TUI::TUI()
 {
-    UI = this;
     m_D3DWindow = 0;
 
 	m_StartRStart.set(0,0,0);
@@ -46,9 +45,6 @@ TUI::TUI()
 
 // create base class
     ELog.Create		("ed.log");
-    FS.Init			();
-
-    Lib             = new ELibrary();
 }
 //---------------------------------------------------------------------------
 TUI::~TUI()
@@ -57,6 +53,9 @@ TUI::~TUI()
 }
 
 bool TUI::OnCreate(TD3DWindow* wnd){
+    FS.Init			();
+    Lib             = new ELibrary();
+
 	DU::UpdateGrid(25,1,5);
 
     m_D3DWindow = wnd;
@@ -245,4 +244,7 @@ void TUI::OnMouseMove(int x, int y){
     OutUICursorPos();
 }
 
+bool TUI::IsModified(){
+	SHTools.IsModified();
+}
 

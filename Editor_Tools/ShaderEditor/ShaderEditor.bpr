@@ -27,11 +27,10 @@
       Intermediate\HWCaps.obj Intermediate\PrimitivesR.obj 
       Intermediate\Primitive.obj Intermediate\SharedPrimitive.obj 
       Intermediate\EditObject.obj Intermediate\Xr_input.obj 
-      Intermediate\fcontroller.obj Intermediate\EStats.obj 
-      Intermediate\XR_CustomFont.obj Intermediate\XR_HUDFont.obj 
-      Intermediate\c_dinput.obj Intermediate\pure.obj 
-      Intermediate\xrImage_Resampler.obj Intermediate\cpuid.obj 
-      Intermediate\_math.obj Intermediate\LeftBar.obj 
+      Intermediate\fcontroller.obj Intermediate\XR_CustomFont.obj 
+      Intermediate\XR_HUDFont.obj Intermediate\c_dinput.obj 
+      Intermediate\pure.obj Intermediate\xrImage_Resampler.obj 
+      Intermediate\cpuid.obj Intermediate\_math.obj Intermediate\LeftBar.obj 
       Intermediate\ShaderTools.obj Intermediate\PropertiesShader.obj 
       Intermediate\LogForm.obj Intermediate\Library.obj 
       Intermediate\ChoseForm.obj Intermediate\xr_avi.obj 
@@ -48,7 +47,8 @@
       Intermediate\Blender_Vertex.obj Intermediate\Blender_Vertex_aref.obj 
       Intermediate\Blender.obj Intermediate\SHEngineTools.obj 
       Intermediate\SHCompilerTools.obj Intermediate\blender_light.obj 
-      Intermediate\FolderLib.obj"/>
+      Intermediate\FolderLib.obj Intermediate\EStats.obj 
+      Intermediate\xrLoadSurface.obj"/>
     <RESFILES value="ShaderEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -57,7 +57,8 @@
       LeftBar.dfm PropertiesShader.dfm LogForm.dfm Editor\ChoseForm.dfm 
       Editor\ShaderFunction.dfm"/>
     <LIBFILES value="lib\LWO.lib lib\cg32.lib lib\xrProgressive.lib lib\MagicFMd.lib 
-      lib\DXT.lib lib\CreateDX.lib lib\d3d8.lib lib\d3dx8d.lib lib\dinput.lib"/>
+      lib\DXT.lib lib\CreateDX.lib lib\d3d8.lib lib\d3dx8d.lib lib\dinput.lib 
+      Lib\FreeImage.lib"/>
     <LIBRARIES value="elpackB5.lib dclusr50.lib VCLX50.lib bcbsmp50.lib Vcl50.lib"/>
     <SPARELIBS value="Vcl50.lib bcbsmp50.lib VCLX50.lib dclusr50.lib elpackB5.lib"/>
     <PACKAGES value="Vcl50.bpi Vclx50.bpi bcbsmp50.bpi TeeUI50.bpi Tee50.bpi Vclbde50.bpi 

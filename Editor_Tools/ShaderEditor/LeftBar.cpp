@@ -33,7 +33,7 @@ void __fastcall PanelMinimizeClick(TObject *Sender)
         pa->Tag    = pa->Height;
         pa->Height = MIN_PANEL_HEIGHT;
     }
-    UI->Command(COMMAND_UPDATE_TOOLBAR);
+    UI.Command(COMMAND_UPDATE_TOOLBAR);
 }
 void __fastcall PanelMaximizeOnlyClick(TObject *Sender)
 {
@@ -42,7 +42,7 @@ void __fastcall PanelMaximizeOnlyClick(TObject *Sender)
         pa->Height = pa->Tag;
         pa->Tag    = 0;
     }
-    UI->Command(COMMAND_UPDATE_TOOLBAR);
+    UI.Command(COMMAND_UPDATE_TOOLBAR);
 }
 
 //---------------------------------------------------------------------------
@@ -81,19 +81,19 @@ void TfraLeftBar::UpdateBar(){
 
 void __fastcall TfraLeftBar::ebSaveClick(TObject *Sender)
 {
-	UI->Command( COMMAND_SAVE );
+	UI.Command( COMMAND_SAVE );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebReloadClick(TObject *Sender)
 {
-	UI->Command( COMMAND_RELOAD );
+	UI.Command( COMMAND_RELOAD );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebRefreshTexturesClick(TObject *Sender)
 {
-	UI->Command( COMMAND_REFRESH_TEXTURES );
+	UI.Command( COMMAND_REFRESH_TEXTURES );
 }
 //---------------------------------------------------------------------------
 
@@ -113,13 +113,13 @@ void __fastcall TfraLeftBar::PanelMaximizeClick(TObject *Sender)
 
 void __fastcall TfraLeftBar::ebEditorPreferencesClick(TObject *Sender)
 {
-	UI->Command(COMMAND_EDITOR_PREF);
+	UI.Command(COMMAND_EDITOR_PREF);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebResetAnimationClick(TObject *Sender)
 {
-	UI->Command( COMMAND_RESET_ANIMATION );
+	UI.Command( COMMAND_RESET_ANIMATION );
 }
 //---------------------------------------------------------------------------
 
@@ -154,19 +154,19 @@ void __fastcall TfraLeftBar::tvEngineMouseDown(TObject *Sender,
 
 void __fastcall TfraLeftBar::ebEngineShaderPropertiesClick(TObject *Sender)
 {
-	UI->Command( COMMAND_SHADER_PROPERTIES );
+	UI.Command( COMMAND_SHADER_PROPERTIES );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::PreviewClick(TObject *Sender)
 {
-	UI->Command( COMMAND_SELECT_PREVIEW_OBJ, dynamic_cast<TMenuItem*>(Sender)->Tag );
+	UI.Command( COMMAND_SELECT_PREVIEW_OBJ, dynamic_cast<TMenuItem*>(Sender)->Tag );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebEngineApplyChangesClick(TObject *Sender)
 {
-	UI->Command( COMMAND_APPLY_CHANGES );
+	UI.Command( COMMAND_APPLY_CHANGES );
 }
 //---------------------------------------------------------------------------
 
@@ -196,7 +196,7 @@ void __fastcall TfraLeftBar::TemplateClick(TObject *Sender)
     CBlender* B = SHTools.Engine.AppendBlender(((CBlender*)mi->Tag)->getDescription().CLS,folder.c_str(),0);
 	SHTools.Engine.SetCurrentBlender(B);
 	SHTools.Engine.Modified();
-	UI->Command(COMMAND_SHADER_PROPERTIES);
+	UI.Command(COMMAND_SHADER_PROPERTIES);
 }
 //---------------------------------------------------------------------------
 
@@ -314,7 +314,7 @@ void __fastcall TfraLeftBar::ebEngineShaderCloneClick(TObject *Sender)
 		FOLDER::MakeName(pNode,0,full_name,false);
         CBlender* B = SHTools.Engine.CloneBlender(full_name.c_str());
 		SHTools.Engine.SetCurrentBlender(B);
-		UI->Command(COMMAND_SHADER_PROPERTIES);
+		UI.Command(COMMAND_SHADER_PROPERTIES);
 		SHTools.Engine.Modified();
     }else{
 		ELog.DlgMsg(mtInformation, "At first selected blender.");
@@ -390,7 +390,7 @@ void __fastcall TfraLeftBar::ebCShaderCreateClick(TObject *Sender)
     Shader_xrLC* S = SHTools.Compiler.AppendShader(folder.c_str(),0);
 	SHTools.Compiler.SetCurrentShader(S);
 	SHTools.Compiler.Modified();
-	UI->Command(COMMAND_SHADER_PROPERTIES);
+	UI.Command(COMMAND_SHADER_PROPERTIES);
 }
 //---------------------------------------------------------------------------
 
@@ -438,7 +438,7 @@ void __fastcall TfraLeftBar::ebCompilerShaderCloneClick(TObject *Sender)
 		AnsiString full_name;
 		FOLDER::MakeName(pNode,0,full_name,false);
 		SHTools.Compiler.SetCurrentShader(SHTools.Compiler.CloneShader(full_name.c_str()));
-		UI->Command(COMMAND_SHADER_PROPERTIES);
+		UI.Command(COMMAND_SHADER_PROPERTIES);
 		SHTools.Compiler.Modified();
     }else{
 		ELog.DlgMsg(mtInformation, "At first selected blender.");

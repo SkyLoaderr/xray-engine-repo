@@ -90,5 +90,25 @@ bool TUI::Command( int _Command, int p1 ){
     return bRes;
 }
 
+void __fastcall TUI::ApplyShortCut(WORD Key, TShiftState Shift)
+{
+    if (Shift.Contains(ssCtrl)){
+		if (Key=='S') 				UI.Command(COMMAND_SAVE);
+    }else{
+        if (Shift.Contains(ssAlt)){
+        }else{
+        	if (Key=='P')			UI.Command(COMMAND_EDITOR_PREF);
+        }
+    }
+}
+//---------------------------------------------------------------------------
 
+void __fastcall TUI::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
+{
+    if (Shift.Contains(ssCtrl)){
+        if (Key=='S')				UI.Command(COMMAND_SAVE);
+    }
+    if (Key==VK_OEM_3)		  		UI.Command(COMMAND_RENDER_FOCUS);
+}
+//---------------------------------------------------------------------------
 

@@ -60,7 +60,7 @@ CSHEngineTools::~CSHEngineTools(){
 
 void CSHEngineTools::Modified(){
 	m_bModified=TRUE;
-	UI->Command(COMMAND_UPDATE_CAPTION);
+	UI.Command(COMMAND_UPDATE_CAPTION);
 }
 //---------------------------------------------------------------------------
 
@@ -112,7 +112,7 @@ bool CSHEngineTools::IfModified(){
     if (m_bModified){
         int mr = ELog.DlgMsg(mtConfirmation, "The shaders has been modified.\nDo you want to save your changes?");
         switch(mr){
-        case mrYes: if (!UI->Command(COMMAND_SAVE)) return false; else m_bModified = FALSE; break;
+        case mrYes: if (!UI.Command(COMMAND_SAVE)) return false; else m_bModified = FALSE; break;
         case mrNo: m_bModified = FALSE; break;
         case mrCancel: return false;
         }

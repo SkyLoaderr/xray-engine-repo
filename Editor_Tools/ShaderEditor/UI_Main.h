@@ -119,6 +119,14 @@ public:
 
     void OnAppActivate					(){;}
     void OnAppDeactivate                (){;}
+
+    void ApplyShortCut					(WORD Key, TShiftState Shift);
+    void ApplyGlobalShortCut			(WORD Key, TShiftState Shift);
+
+    char* GetTitle()					{ return "Shader Editor"; }
+    char* GetCaption()					{ return "shaders"; }
+
+    bool IsModified						();
 };
-extern TUI* UI;
+extern TUI UI;
 #endif

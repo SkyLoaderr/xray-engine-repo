@@ -38,13 +38,13 @@ void __fastcall TfraTopBar::ebViewClick(TObject *Sender)
         if (btn==ebViewTop)     Device.m_Camera.ViewTop();
         if (btn==ebViewBottom)  Device.m_Camera.ViewBottom();
     }
-    UI->RedrawScene();
+    UI.RedrawScene();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraTopBar::ebZoomExtentsClick(TObject *Sender)
 {
- 	UI->Command( COMMAND_ZOOM_EXTENTS );
+ 	UI.Command( COMMAND_ZOOM_EXTENTS );
 }
 //---------------------------------------------------------------------------
 void __fastcall TfraTopBar::ebCameraClick(TObject *Sender)
@@ -58,7 +58,7 @@ void __fastcall TfraTopBar::fsStorageRestorePlacement(TObject *Sender)
 	if (ebCameraPlane->Down) 			Device.m_Camera.SetStyle(csPlaneMove);
 	else if (ebCameraArcBall->Down) 	Device.m_Camera.SetStyle(cs3DArcBall);
 	else if (ebCameraFly->Down) 		Device.m_Camera.SetStyle(csFreeFly);
-    UI->RedrawScene();
+    UI.RedrawScene();
 }
 //---------------------------------------------------------------------------
 

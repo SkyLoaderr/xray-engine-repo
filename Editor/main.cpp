@@ -139,7 +139,7 @@ void __fastcall TfrmMain::FormKeyDown(TObject *Sender, WORD &Key, TShiftState Sh
 void __fastcall TfrmMain::UpdateCaption()
 {
     AnsiString name;
-    name.sprintf("Level Editor - [%s%s]",UI.GetCaption()[0]?UI.GetCaption():"noname",UI.IsModified()?"*":"");
+    name.sprintf("%s - [%s%s]",UI.GetTitle(),UI.GetCaption(),UI.IsModified()?"*":"");
     Caption = name;
 }
 //---------------------------------------------------------------------------

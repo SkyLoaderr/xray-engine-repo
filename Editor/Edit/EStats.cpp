@@ -58,8 +58,7 @@ void CStats::Show(CFontBase* font)
 		F.OutNext	("VERT:        %d/%d",dwVert,dwCalls?dwVert/dwCalls:0);
 		F.OutNext	("POLY:        %d/%d",dwPoly,dwCalls?dwPoly/dwCalls:0);
 		F.OutNext	("DIP/DP:      %d",dwCalls);
-		F.OutNext	("SH Changes:  %d",dwShader_Changes);
-		F.OutNext	("TEX Changes: %d",dwTexture_Changes);
+		F.OutNext	("SH/T/M/C:    %d/%d/%d/%d",dwShader_Codes,dwShader_Textures,dwShader_Matrices,dwShader_Constants);
 		F.OutNext	("LIGHT S/T:   %d/%d",dwLightInScene,dwTotalLight);
 		F.OutSkip	();
 		F.OutNext	("Input:       %2.2fms",Input.result);
@@ -75,7 +74,8 @@ void CStats::Show(CFontBase* font)
 		clRAY.FrameStart			();
 		clBOX.FrameStart			();
 	}
-	dwVert = dwPoly = dwCalls = dwShader_Changes = dwTexture_Changes = 0;
+	dwShader_Codes = dwShader_Textures = dwShader_Matrices = dwShader_Constants = 0;
+	dwVert = dwPoly = dwCalls = 0;
 	dwSND_Played = dwSND_Allocated = 0;
     dwTotalLight = dwLightInScene = 0;
 }
