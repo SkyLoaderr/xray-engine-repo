@@ -42,31 +42,33 @@ struct vertRender
 class ENGINE_API CSkeletonX
 {
 protected:
-	enum					{ vertRenderFVF = D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1 };
-	enum					{ RM_SINGLE, RM_SCINNING};
+	enum					{ vertRenderFVF = D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1		};
+	enum					{ RM_SKINNING_SOFT, RM_SINGLE, RM_SKINNING_1B, RM_SKINNING_2B	};
 
 	CKinematics*			Parent;			// setted up by parent
-	vertBoned1W*			Vertices1W;		// shared
-	vertBoned2W*			Vertices2W;		// shared
+	ref_smem<vertBoned1W>	Vertices1W;		// shared
+	ref_smem<vertBoned2W>	Vertices2W;		// shared
+
+	// soft-skinning only
 	u32						cache_DiscardID;
 	u32						cache_vCount;
 	u32						cache_vOffset;
 
+	// render-mode specifics
 	u16						RenderMode;		
-	u16						RMS_boneid;
+	u16						RMS_boneid;		// single-bone-rendering
 	
 	void					_Copy			(CSkeletonX *V);
+	void					_Render_soft	(ref_geom& hGeom,	u32 vCount,		u32 pCount);
 	void					_Render			(ref_geom& hGeom,	u32 vCount,		u32 pCount);
-	void					_Release		();
 	void					_Load			(const char* N,		IReader *data,	u32& dwVertCount);
+	void					_Load_hw		();
 public:
 	virtual void			SetParent		(CKinematics* K) { Parent = K; }
 
 	CSkeletonX()
 	{
 		Parent		= 0;
-		Vertices1W	= 0;
-		Vertices2W	= 0;
 	}
 };
 
