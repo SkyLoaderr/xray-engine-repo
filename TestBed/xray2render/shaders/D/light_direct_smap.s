@@ -91,15 +91,12 @@ p2f 	p_main	( v2p_in IN )
   float3 L 		= -float3	(light_direction.x,light_direction.y,light_direction.z);
 
   // Diffuse = (L • N)
-  float	l_D 	= saturate	(dot	(L, N));
+  float	l_D 	= shadow*saturate	(dot	(L, N));
 
   // Specular = (H • N)^m
-  float S 		= tex1D		(s_power,	saturate(dot(normalize(L + V), N)));
+  float l_S 	= shadow*tex1D		(s_power,	saturate(dot(normalize(L + V), N)));
   
   // Final color
-  float4 C		= shadow*light_color*D;
-  C.w			= shadow*light_color.w*S;
-
-  OUT.C 		= C;
+  OUT.C 		= light_color *		float4(l_D,l_D,l_D,l_S);
   return OUT;
 }
