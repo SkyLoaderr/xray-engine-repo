@@ -42,7 +42,7 @@ void CRenderDevice::Reset		()
 	u32 tm_start			= TimerAsync();
 	Resources->reset_begin	();
 	Memory.mem_compact		();
-	HW.Reset				();
+	HW.Reset				(m_hWnd);
 	dwWidth					= HW.DevPP.BackBufferWidth;
 	dwHeight				= HW.DevPP.BackBufferHeight;
 	fWidth_2				= float(dwWidth/2);

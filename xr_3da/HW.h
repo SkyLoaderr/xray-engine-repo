@@ -35,17 +35,17 @@ public:
 
 	void					CreateD3D				();
 	void					DestroyD3D				();
-	u32						CreateDevice			(HWND hw,u32 &dwWidth,u32 &dwHeight);
+	void					CreateDevice			(HWND hw,u32 &dwWidth,u32 &dwHeight);
 	void					DestroyDevice			();
 
-	void					Reset					();
+	void					Reset					(HWND hw);
 
 	void					selectResolution		(u32 &dwWidth, u32 &dwHeight);
 	D3DFORMAT				selectDepthStencil		(D3DFORMAT);
 	u32						selectPresentInterval	();
 	u32						selectGPU				();
 	u32						selectRefresh			(u32 dwWidth, u32 dwHeight, D3DFORMAT fmt);
-
+	void					updateWindowProps		(HWND hw);
 	BOOL					support					(D3DFORMAT fmt, DWORD type, DWORD usage);
 
 #ifdef DEBUG

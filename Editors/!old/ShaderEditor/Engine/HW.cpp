@@ -16,16 +16,23 @@ ENGINE_API CHW		HW;
 IDirect3DStateBlock9*	dwDebugSB = 0;
 #endif
 
-void CHW::Reset		()
+void CHW::Reset		(HWND hwnd)
 {
 #ifdef DEBUG
-	_RELEASE		(dwDebugSB);
+	_RELEASE			(dwDebugSB);
 #endif
-	_RELEASE		(pBaseZB);
-	_RELEASE		(pBaseRT);
+	_RELEASE			(pBaseZB);
+	_RELEASE			(pBaseRT);
 
 #ifndef _EDITOR
-	selectResolution(DevPP.BackBufferWidth,DevPP.BackBufferHeight);
+	BOOL	bWindowed		= !psDeviceFlags.is	(rsFullscreen);
+	selectResolution		(DevPP.BackBufferWidth,DevPP.BackBufferHeight);
+	// Windoze
+	DevPP.SwapEffect			= bWindowed?D3DSWAPEFFECT_COPY:D3DSWAPEFFECT_DISCARD;
+	DevPP.Windowed				= bWindowed;
+	DevPP.PresentationInterval	= D3DPRESENT_INTERVAL_IMMEDIATE;
+	if( !bWindowed )		DevPP.FullScreen_RefreshRateInHz	= selectRefresh	(DevPP.BackBufferWidth,DevPP.BackBufferHeight,Caps.fTarget);
+	else					DevPP.FullScreen_RefreshRateInHz	= D3DPRESENT_RATE_DEFAULT;
 #endif
 
 	while	(TRUE)	{
@@ -35,11 +42,12 @@ void CHW::Reset		()
 		Sleep	(100);
 	}
 
-	R_CHK			(pDevice->GetRenderTarget			(0,&pBaseRT));
-	R_CHK			(pDevice->GetDepthStencilSurface	(&pBaseZB));
+	R_CHK				(pDevice->GetRenderTarget			(0,&pBaseRT));
+	R_CHK				(pDevice->GetDepthStencilSurface	(&pBaseZB));
 #ifdef DEBUG
-	R_CHK			(pDevice->CreateStateBlock			(D3DSBT_ALL,&dwDebugSB));
+	R_CHK				(pDevice->CreateStateBlock			(D3DSBT_ALL,&dwDebugSB));
 #endif
+	updateWindowProps	(hwnd);
 }
 
 void CHW::CreateD3D	()
@@ -118,7 +126,7 @@ void	CHW::selectResolution	(u32 &dwWidth, u32 &dwHeight)
 	}
 }
 
-u32		CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
+void		CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 {
 	CreateD3D				();
 
@@ -142,12 +150,7 @@ u32		CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 	}
 #endif
 
-	u32 dwWindowStyle=0;
 #ifndef _EDITOR
-	// Set window properties depending on what mode were in.
-	if (bWindowed)	SetWindowLong( m_hWnd, GWL_STYLE, dwWindowStyle=(WS_BORDER|WS_DLGFRAME|WS_VISIBLE) );
-	else			SetWindowLong( m_hWnd, GWL_STYLE, dwWindowStyle=(WS_POPUP|WS_VISIBLE) );
-
 	// Select width/height
 	selectResolution	(dwWidth,dwHeight);
 #endif
@@ -264,7 +267,7 @@ u32		CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 	u32	memory									= pDevice->GetAvailableTextureMem	();
 	Msg		("*     Texture memory: %d M",		memory/(1024*1024));
 	Msg		("*          DDI-level: %2.1f",		float(D3DXGetDriverLevel(pDevice))/100.f);
-	return dwWindowStyle;
+	updateWindowProps	(m_hWnd);
 }
 
 u32	CHW::selectPresentInterval	()
@@ -324,4 +327,34 @@ BOOL	CHW::support	(D3DFORMAT fmt, DWORD type, DWORD usage)
 	HRESULT hr		= pD3D->CheckDeviceFormat(DevAdapter,DevT,Caps.fTarget,usage,(D3DRESOURCETYPE)type,fmt);
 	if (FAILED(hr))	return FALSE;
 	else			return TRUE;
+}
+
+void	CHW::updateWindowProps	(HWND m_hWnd)
+{
+	BOOL	bWindowed				= !psDeviceFlags.is	(rsFullscreen);
+	u32		dwWindowStyle			= 0;
+	// Set window properties depending on what mode were in.
+	if (bWindowed)		{
+		SetWindowLong	( m_hWnd, GWL_STYLE, dwWindowStyle=(WS_BORDER|WS_DLGFRAME|WS_VISIBLE) );
+		// When moving from fullscreen to windowed mode, it is important to
+		// adjust the window size after recreating the device rather than
+		// beforehand to ensure that you get the window size you want.  For
+		// example, when switching from 640x480 fullscreen to windowed with
+		// a 1000x600 window on a 1024x768 desktop, it is impossible to set
+		// the window size to 1000x600 until after the display mode has
+		// changed to 1024x768, because windows cannot be larger than the
+		// desktop.
+		RECT			m_rcWindowBounds = {0, 0, DevPP.BackBufferWidth, DevPP.BackBufferHeight };
+		AdjustWindowRect( &m_rcWindowBounds, dwWindowStyle, FALSE );
+		SetWindowPos	( m_hWnd, HWND_TOP,	m_rcWindowBounds.left, m_rcWindowBounds.top,
+									( m_rcWindowBounds.right - m_rcWindowBounds.left ),
+									( m_rcWindowBounds.bottom - m_rcWindowBounds.top ),
+									SWP_SHOWWINDOW|SWP_NOCOPYBITS|SWP_DRAWFRAME );
+	}
+	else			{
+		SetWindowLong	( m_hWnd, GWL_STYLE, dwWindowStyle=(WS_POPUP|WS_VISIBLE) );
+	}
+
+	// Hide the cursor if necessary
+	ShowCursor		(FALSE);
 }

@@ -28,7 +28,7 @@ void CRenderDevice::Initialize()
 
         // Set the window's initial width
         RECT rc;
-        SetRect( &rc, 0, 0, 640, 480 );
+        SetRect			( &rc, 0, 0, 640, 480 );
         AdjustWindowRect( &rc, m_dwWindowStyle, FALSE );
 
         // Create the render window
@@ -40,8 +40,8 @@ void CRenderDevice::Initialize()
 
     // Save window properties
     m_dwWindowStyle = GetWindowLong( m_hWnd, GWL_STYLE );
-    GetWindowRect( m_hWnd, &m_rcWindowBounds );
-    GetClientRect( m_hWnd, &m_rcWindowClient );
+    GetWindowRect	( m_hWnd, &m_rcWindowBounds );
+    GetClientRect	( m_hWnd, &m_rcWindowClient );
 
 	// Command line
 	char *lpCmdLine		= Core.Params;
