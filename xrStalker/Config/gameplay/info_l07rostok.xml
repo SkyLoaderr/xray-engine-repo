@@ -106,6 +106,7 @@
 	<!-- ECOLOG FLASH QUEST -->
 	<info_portion id="bar_resque_research_start">
 		<task>bar_resque_information</task>
+		<action>level_tasks.notify_new_task</action>
 	</info_portion> 
 	<info_portion id="bar_resque_research_gain"></info_portion>
 	<info_portion id="bar_resque_research_done"></info_portion>
