@@ -12,11 +12,45 @@
 // sounds
 void CAI_Zombie::vfLoadSounds()
 {
-	pSounds->Create(m_tpaSoundHit[0],TRUE,"monsters\\rat\\rat_1",0,SOUND_TYPE_MONSTER_INJURING_ANIMAL);
-	pSounds->Create(m_tpaSoundDie[0],TRUE,"monsters\\rat\\rat_2",0,SOUND_TYPE_MONSTER_DYING_ANIMAL);
-	pSounds->Create(m_tpaSoundAttack[0],TRUE,"monsters\\rat\\rat_2",0,SOUND_TYPE_MONSTER_ATTACKING_ANIMAL);
-	pSounds->Create(m_tpaSoundVoice[0],TRUE,"monsters\\rat\\rat_1",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	pSounds->Create(m_tpaSoundVoice[1],TRUE,"monsters\\rat\\rat_2",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	// attack
+	pSounds->Create(m_tpaSoundAttack[0],TRUE,"monsters\\zombie\\attack\\zm1att_1",0,SOUND_TYPE_MONSTER_ATTACKING_ANIMAL);
+	pSounds->Create(m_tpaSoundAttack[1],TRUE,"monsters\\zombie\\attack\\zm1att_2",0,SOUND_TYPE_MONSTER_ATTACKING_ANIMAL);
+	pSounds->Create(m_tpaSoundAttack[2],TRUE,"monsters\\zombie\\attack\\zm1att_3",0,SOUND_TYPE_MONSTER_ATTACKING_ANIMAL);
+	pSounds->Create(m_tpaSoundAttack[3],TRUE,"monsters\\zombie\\attack\\zm1att_4",0,SOUND_TYPE_MONSTER_ATTACKING_ANIMAL);
+
+	// death
+	pSounds->Create(m_tpaSoundDeath[0],TRUE,"monsters\\zombie\\death\\zm1die_1",0,SOUND_TYPE_MONSTER_DYING_ANIMAL);
+	pSounds->Create(m_tpaSoundDeath[1],TRUE,"monsters\\zombie\\death\\zm1die_2",0,SOUND_TYPE_MONSTER_DYING_ANIMAL);
+	pSounds->Create(m_tpaSoundDeath[2],TRUE,"monsters\\zombie\\death\\zm1die_3",0,SOUND_TYPE_MONSTER_DYING_ANIMAL);
+
+	// hit
+	pSounds->Create(m_tpaSoundHit[0],TRUE,"monsters\\zombie\\hit\\zm2a1__1",0,SOUND_TYPE_MONSTER_INJURING_ANIMAL);
+	pSounds->Create(m_tpaSoundHit[1],TRUE,"monsters\\zombie\\hit\\zm2a1__2",0,SOUND_TYPE_MONSTER_INJURING_ANIMAL);
+	pSounds->Create(m_tpaSoundHit[2],TRUE,"monsters\\zombie\\hit\\zm2a1__3",0,SOUND_TYPE_MONSTER_INJURING_ANIMAL);
+
+	// idle
+	pSounds->Create(m_tpaSoundIdle[0],TRUE,"monsters\\zombie\\idle\\hh1a0mo1",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	pSounds->Create(m_tpaSoundIdle[1],TRUE,"monsters\\zombie\\idle\\hh1a0mo2",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	pSounds->Create(m_tpaSoundIdle[2],TRUE,"monsters\\zombie\\idle\\hh1a0mo3",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+
+	// notice
+	pSounds->Create(m_tpaSoundIdle[0],TRUE,"monsters\\zombie\\notice\\hh1to1_1",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+
+	// pursuit
+	pSounds->Create(m_tpaSoundIdle[0],TRUE,"monsters\\zombie\\pursuit\\hh1a1__1",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	pSounds->Create(m_tpaSoundIdle[1],TRUE,"monsters\\zombie\\pursuit\\hh1a1__2",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	pSounds->Create(m_tpaSoundIdle[2],TRUE,"monsters\\zombie\\pursuit\\hh1a1__3",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	pSounds->Create(m_tpaSoundIdle[3],TRUE,"monsters\\zombie\\pursuit\\hh1a1__4",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	pSounds->Create(m_tpaSoundIdle[4],TRUE,"monsters\\zombie\\pursuit\\hh1a1__5",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	pSounds->Create(m_tpaSoundIdle[5],TRUE,"monsters\\zombie\\pursuit\\hh1a1__6",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+
+	// resurrect
+	pSounds->Create(m_tpaSoundIdle[0],TRUE,"monsters\\zombie\\resurrect\\hh1a3__1",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	pSounds->Create(m_tpaSoundIdle[1],TRUE,"monsters\\zombie\\resurrect\\hh1a3__2",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	pSounds->Create(m_tpaSoundIdle[2],TRUE,"monsters\\zombie\\resurrect\\hh1a3__3",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	pSounds->Create(m_tpaSoundIdle[3],TRUE,"monsters\\zombie\\resurrect\\hh1a3__4",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	pSounds->Create(m_tpaSoundIdle[4],TRUE,"monsters\\zombie\\resurrect\\hh1a3__5",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	pSounds->Create(m_tpaSoundIdle[5],TRUE,"monsters\\zombie\\resurrect\\hh1a3__6",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
 }
 
 // animations
@@ -45,9 +79,13 @@ void CAI_Zombie::vfLoadAnimations()
 
 	m_tZombieAnimations.tNormal.tGlobal.tRunForward	 = tpVisualObject->ID_Cycle("norm_run_fwd");
 	
-	m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[0] = tpVisualObject->ID_Cycle("norm_stand_up_0");
-	m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[1] = tpVisualObject->ID_Cycle("norm_stand_up_1");
-	m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[2] = tpVisualObject->ID_Cycle("norm_stand_up_2");
+//	m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[0] = tpVisualObject->ID_Cycle("norm_stand_up_0");
+//	m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[1] = tpVisualObject->ID_Cycle("norm_stand_up_1");
+//	m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[2] = tpVisualObject->ID_Cycle("norm_stand_up_2");
+//
+	m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[0] = tpVisualObject->ID_Cycle("norm_stand_up");
+	m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[1] = tpVisualObject->ID_Cycle("norm_stand_up");
+	m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[2] = tpVisualObject->ID_Cycle("norm_stand_up");
 
 	m_tZombieAnimations.tNormal.tGlobal.tpTurnLeft	 = tpVisualObject->ID_Cycle("norm_turn_ls");
 	m_tZombieAnimations.tNormal.tGlobal.tpTurnRight  = tpVisualObject->ID_Cycle("norm_turn_rs");

@@ -41,16 +41,20 @@ CAI_Zombie::CAI_Zombie()
 	m_dwTimeToLie			= 20000;
 }
 
+#define DELETE_SOUNDS(a,b) {\
+	for (int i=0; i<(a); i++)\
+		pSounds->Delete((b)[i]);\
+}
+
 CAI_Zombie::~CAI_Zombie()
 {
-	for (int i=0; i<SND_HIT_COUNT; i++) 
-		pSounds->Delete(m_tpaSoundHit[i]);
-
-	for (i=0; i<SND_DIE_COUNT; i++) 
-		pSounds->Delete(m_tpaSoundDie[i]);
-
-	for (i=0; i<SND_VOICE_COUNT; i++) 
-		pSounds->Delete(m_tpaSoundVoice[i]);
+	DELETE_SOUNDS(SND_ATTACK_COUNT,		m_tpaSoundAttack	);
+	DELETE_SOUNDS(SND_DEATH_COUNT,		m_tpaSoundDeath		);
+	DELETE_SOUNDS(SND_HIT_COUNT,		m_tpaSoundHit		);
+	DELETE_SOUNDS(SND_IDLE_COUNT,		m_tpaSoundIdle		);
+	DELETE_SOUNDS(SND_NOTICE_COUNT,		m_tpaSoundNotice	);
+	DELETE_SOUNDS(SND_PURSUIT_COUNT,	m_tpaSoundPursuit	);
+	DELETE_SOUNDS(SND_RESURRECT_COUNT,	m_tpaSoundResurrect	);
 }
 
 void CAI_Zombie::Die()
@@ -62,12 +66,13 @@ void CAI_Zombie::Die()
 	AI_Path.Direction(dir);
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
 	
-	pSounds->PlayAtPos(m_tpaSoundDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
+	pSounds->PlayAtPos(m_tpaSoundDeath[Random.randI(SND_DEATH_COUNT)],this,vPosition);
 
 	CGroup &Group = Level().get_group(g_Team(),g_Squad(),g_Group());
 	vfRemoveActiveMember();
 	Group.m_dwAliveCount--;
 	eCurrentState = aiZombieDie;
+	m_dwDeathTime = Level().timeServer();
 }
 
 void CAI_Zombie::OnDeviceCreate()

@@ -19,10 +19,13 @@ class CAI_Zombie : public CCustomMonster
 		// STRUCTURES
 		//////////////////////////
 		enum ESoundCcount {
-			SND_HIT_COUNT=1,
-			SND_DIE_COUNT=1,
-			SND_ATTACK_COUNT=1,
-			SND_VOICE_COUNT=2,
+			SND_ATTACK_COUNT=4,
+			SND_DEATH_COUNT=3,
+			SND_HIT_COUNT=4,
+			SND_IDLE_COUNT=3,
+			SND_NOTICE_COUNT=1,
+			SND_PURSUIT_COUNT=6,
+			SND_RESURRECT_COUNT=6,
 		};
 
 		enum EZombieStates 	{
@@ -87,10 +90,13 @@ class CAI_Zombie : public CCustomMonster
 		CBlend*				m_tpCurrentGlobalBlend;
 		
 		// SOUNDS
-		sound				m_tpaSoundHit[SND_HIT_COUNT];
-		sound				m_tpaSoundDie[SND_DIE_COUNT];
-		sound				m_tpaSoundAttack[SND_ATTACK_COUNT];
-		sound				m_tpaSoundVoice[SND_VOICE_COUNT];
+		sound				m_tpaSoundAttack	[SND_ATTACK_COUNT];
+		sound				m_tpaSoundDeath		[SND_DEATH_COUNT];
+		sound				m_tpaSoundHit		[SND_HIT_COUNT];
+		sound				m_tpaSoundIdle		[SND_IDLE_COUNT];
+		sound				m_tpaSoundNotice	[SND_NOTICE_COUNT];
+		sound				m_tpaSoundPursuit	[SND_PURSUIT_COUNT];
+		sound				m_tpaSoundResurrect	[SND_RESURRECT_COUNT];
 		sound*				m_tpSoundBeingPlayed;
 		u32					m_dwLastSoundRefresh;
 		float				m_fMinVoiceIinterval;
