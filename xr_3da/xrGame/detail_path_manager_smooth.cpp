@@ -344,36 +344,53 @@ bool CDetailPathManager::compute_path(
 	xr_vector<STravelPathPoint>	*m_tpTravelLine,
 	const xr_vector<STravelParamsIndex> &start_params,
 	const xr_vector<STravelParamsIndex> &dest_params,
-	const u32					straight_line_index
+	const u32					straight_line_index,
+	const u32					straight_line_index_negative
 )
 {
+	STrajectoryPoint		start_save = start;
+	STrajectoryPoint		dest_save = dest;
 	float					min_time = flt_max, time;
 	u32						size = m_tpTravelLine ? m_tpTravelLine->size() : 0;
 	xr_vector<STravelParamsIndex>::const_iterator I = start_params.begin(), B = I;
 	xr_vector<STravelParamsIndex>::const_iterator E = start_params.end();
 	for ( ; I != E; ++I) {
+		start					= start_save;
 		(STravelParams&)start	= (*I);
+		if (!fis_zero(start.linear_velocity) && (start.linear_velocity < 0.f))
+			start.direction.mul	(-1.f);
 		xr_vector<STravelParamsIndex>::const_iterator i = dest_params.begin(), b = i;
 		xr_vector<STravelParamsIndex>::const_iterator e = dest_params.end();
 		for ( ; i != e; ++i) {
+			dest					= dest_save;
 			(STravelParams&)dest	= (*i);
+			if (!fis_zero(dest.linear_velocity) && (dest.linear_velocity < 0.f))
+				dest.direction.mul	(-1.f);
 			m_temp_path.clear		();
 			if (compute_trajectory(start,dest,m_tpTravelLine ? &m_temp_path : 0,time,(*I).index,straight_line_index,(*i).index)) {
 				if (!m_try_min_time || (time < min_time)) {
-					min_time = time;
+					min_time		= time;
 					if (m_tpTravelLine) {
 						m_tpTravelLine->resize(size);
 						m_tpTravelLine->insert(m_tpTravelLine->end(),m_temp_path.begin(),m_temp_path.end());
-						if (!m_try_min_time)
+						if (!m_try_min_time) {
+							start	= start_save;
+							dest	= dest_save;
 							return	(true);
+						}
 					}
-					else
-						return(true);
+					else {
+						start		= start_save;
+						dest		= dest_save;
+						return		(true);
+					}
 				}
 			}
 		}
 	}
 	
+	start					= start_save;
+	dest					= dest_save;
 	if (fsimilar(min_time,flt_max))
 		return				(false);
 	
@@ -385,7 +402,8 @@ bool CDetailPathManager::init_build(
 	u32						intermediate_index,
 	STrajectoryPoint		&start,
 	STrajectoryPoint		&dest,
-	u32						&straight_line_index
+	u32						&straight_line_index,
+	u32						&straight_line_index_negative
 )
 {
 	VERIFY								(!level_path.empty());
@@ -417,7 +435,9 @@ bool CDetailPathManager::init_build(
 
 	// filling velocity parameters
 	float								max_linear_velocity = -flt_max;
+	float								min_linear_velocity = flt_max;
 	straight_line_index					= u32(-1);
+	straight_line_index_negative		= u32(-1);
 	m_start_params.clear				();
 	xr_map<u32,STravelParams>::const_iterator I = m_movement_params.begin(), B = I;
 	xr_map<u32,STravelParams>::const_iterator E = m_movement_params.end();
@@ -432,6 +452,10 @@ bool CDetailPathManager::init_build(
 			if (max_linear_velocity < temp.linear_velocity) {
 				straight_line_index		= temp.index;
 				max_linear_velocity		= temp.linear_velocity;
+			}
+			if (min_linear_velocity > temp.linear_velocity) {
+				straight_line_index_negative = temp.index;
+				min_linear_velocity		= temp.linear_velocity;
 			}
 		}
 		else
@@ -493,7 +517,8 @@ void CDetailPathManager::build_path_via_key_points(
 	STrajectoryPoint		&start,
 	STrajectoryPoint		&dest,
 	xr_vector<STravelParamsIndex> &finish_params,
-	const u32				straight_line_index
+	const u32				straight_line_index,
+	const u32				straight_line_index_negative
 )
 {
 	STrajectoryPoint					s,d,t,p;
@@ -507,11 +532,17 @@ void CDetailPathManager::build_path_via_key_points(
 			d.direction.sub				((I + 1)->position,d.position);
 			VERIFY						(!fis_zero(d.direction.magnitude()));
 			d.direction.normalize		();
+			if (!m_path.empty()) {
+				xr_map<u32,STravelParams>::const_iterator	I = m_movement_params.find(m_path.back().velocity);
+				VERIFY					(m_movement_params.end() != I);
+				if (!fis_zero((*I).second.linear_velocity) && ((*I).second.linear_velocity < 0.f))
+					d.direction.mul		(-1.f);
+			}
 		}
 		else
 			d							= dest;
 
-		if (!compute_path(s,d,0,m_start_params,m_dest_params,straight_line_index)) {
+		if (!compute_path(s,d,0,m_start_params,m_dest_params,straight_line_index,straight_line_index_negative)) {
 			if (I == P) {
 				m_path.clear			();
 				return;
@@ -521,26 +552,32 @@ void CDetailPathManager::build_path_via_key_points(
 			(STravelPoint&)d			= *(I - 1);
 			d.direction.sub				((*I).position,d.position);
 			VERIFY						(!fis_zero(d.direction.magnitude()));
+			if (!m_path.empty()) {
+				xr_map<u32,STravelParams>::const_iterator	I = m_movement_params.find(m_path.back().velocity);
+				VERIFY					(m_movement_params.end() != I);
+				if (!fis_zero((*I).second.linear_velocity) && ((*I).second.linear_velocity < 0.f))
+					d.direction.mul		(-1.f);
+			}
 			d.direction.normalize		();
-			if (!compute_path(s,d,&m_path,m_start_params,m_dest_params,straight_line_index)) {
-				compute_path			(s,d,0,m_start_params,m_dest_params,straight_line_index);
-				compute_path			(s,d,&m_path,m_start_params,m_dest_params,straight_line_index);
+			if (!compute_path(s,d,&m_path,m_start_params,m_dest_params,straight_line_index,straight_line_index_negative)) {
+				compute_path			(s,d,0,m_start_params,m_dest_params,straight_line_index,straight_line_index_negative);
+				compute_path			(s,d,&m_path,m_start_params,m_dest_params,straight_line_index,straight_line_index_negative);
 				VERIFY					(false);
 			}
 			P							= I - 1;
 			d							= p;
 			s							= t;
 			VERIFY						(!fis_zero(s.direction.magnitude()));
-			if (!compute_path(s,d,0,m_start_params,m_dest_params,straight_line_index)) {
+			if (!compute_path(s,d,0,m_start_params,m_dest_params,straight_line_index,straight_line_index_negative)) {
 				m_path.clear			();
 				return;
 			}
 		}
 		t								= d;
 	}
-	if (!compute_path(s,d,&m_path,m_start_params,finish_params,straight_line_index)) {
-		compute_path(s,d,0,m_start_params,finish_params,straight_line_index);
-		compute_path(s,d,&m_path,m_start_params,finish_params,straight_line_index);
+	if (!compute_path(s,d,&m_path,m_start_params,finish_params,straight_line_index,straight_line_index_negative)) {
+		compute_path(s,d,0,m_start_params,finish_params,straight_line_index,straight_line_index_negative);
+		compute_path(s,d,&m_path,m_start_params,finish_params,straight_line_index,straight_line_index_negative);
 		VERIFY							(false);
 	}
 
@@ -592,18 +629,18 @@ void CDetailPathManager::build_smooth_path		(
 	m_current_travel_point				= 0;
 #else
 	m_failed							= true;
-	u32									straight_line_index;
+	u32									straight_line_index, straight_line_index_negative;
 
 	STrajectoryPoint					start,dest;
 
-	if (!init_build(level_path,intermediate_index,start,dest,straight_line_index)) {
+	if (!init_build(level_path,intermediate_index,start,dest,straight_line_index,straight_line_index_negative)) {
 		Device.Statistic.AI_Range.End	();
 		return;
 	}
 
 	xr_vector<STravelParamsIndex>		&finish_params = m_use_dest_orientation ? m_start_params : m_dest_params;
 
-	if (compute_path(start,dest,&m_path,m_start_params,finish_params,straight_line_index)) {
+	if (compute_path(start,dest,&m_path,m_start_params,finish_params,straight_line_index,straight_line_index_negative)) {
 		add_patrol_point();
 		ai().level_graph().assign_y_values(m_path);
 		m_failed						= false;
@@ -620,7 +657,7 @@ void CDetailPathManager::build_smooth_path		(
 	if (!fill_key_points(level_path,intermediate_index,start,dest))
 		return;
 	
-	build_path_via_key_points			(start,dest,finish_params,straight_line_index);
+	build_path_via_key_points			(start,dest,finish_params,straight_line_index,straight_line_index_negative);
 #endif
 	Device.Statistic.AI_Range.End		();
 }
