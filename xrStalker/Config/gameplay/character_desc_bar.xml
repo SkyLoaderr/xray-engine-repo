@@ -22,6 +22,8 @@
 		<actor_dialog>bar_bar_barmen_jobs_room</actor_dialog>
 		<actor_dialog>bar_bar_barman_ecolog_flash_done</actor_dialog>
 		<actor_dialog>bar_bar_barman_veterans_finish</actor_dialog>
+		<actor_dialog>bar_bar_barmen_jobs_room_darklabdoc_done</actor_dialog>
+		<actor_dialog>bar_bar_barmen_jobs_room_decoding_done</actor_dialog>
 	</specific_character>
 
 
