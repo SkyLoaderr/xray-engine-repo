@@ -46,11 +46,11 @@ public:
 	IC	SelfRef	offset		(const Tvector &p)				{ min.add(p); max.add(p);	return *this;	};
 	IC	SelfRef	add			(SelfCRef b, const Tvector &p)	{ min.add(b.min, p); max.add(b.max, p);				return *this;	};
 	
-	IC	BOOL	contains	(T x, T y, T z)					{ return (x>=x1) && (x<=x2) && (y>=y1) && (y<=y2) && (z>=z1) && (z<=z2); };
-	IC	BOOL	contains	(const Tvector &p)				{ return contains(p.x,p.y,p.z);	};
-	IC	BOOL	contains	(SelfCRef b)					{ return contains(b.min) && contains(b.max); };
+	IC	BOOL	contains	(T x, T y, T z)		const		{ return (x>=x1) && (x<=x2) && (y>=y1) && (y<=y2) && (z>=z1) && (z<=z2); };
+	IC	BOOL	contains	(const Tvector &p)	const		{ return contains(p.x,p.y,p.z);	};
+	IC	BOOL	contains	(SelfCRef b)		const		{ return contains(b.min) && contains(b.max); };
 	
-	IC	BOOL	similar		(SelfCRef b)					{ return min.similar(b.min) && max.similar(b.max); };
+	IC	BOOL	similar		(SelfCRef b)		const		{ return min.similar(b.min) && max.similar(b.max); };
 	
 	IC	SelfRef	modify		(const Tvector &p)				{ min.min(p); max.max(p);				return *this;	}
 	IC	SelfRef	merge		(SelfCRef b)					{ modify(b.min); modify(b.max);			return *this;	};
