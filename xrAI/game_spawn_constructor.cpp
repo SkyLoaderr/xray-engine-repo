@@ -263,7 +263,7 @@ void CGameSpawnConstructor::process_actor			(LPCSTR start_level_name)
 		if (!(*I)->actor())
 			continue;
 
-		Msg							("Actor is on the level %s",game_graph().header().level(game_graph().vertex((*I)->actor()->m_tGraphID)->level_id()).name());
+		Msg							("Actor is on the level %s",*game_graph().header().level(game_graph().vertex((*I)->actor()->m_tGraphID)->level_id()).name());
 		VERIFY2						(!m_actor,"There must be the SINGLE level with ACTOR!");
 		m_actor						= (*I)->actor();
 	}
