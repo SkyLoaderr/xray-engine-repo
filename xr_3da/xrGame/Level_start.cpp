@@ -36,8 +36,10 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 		Server					= xr_new<xrGameSpyServer>();
 
 		if (!strstr(*m_caServerOptions,"/alife")) {
-			string64			l_name;
-			strcpy				(l_name,*m_caServerOptions);
+			string64			l_name = "";
+			const char* SOpts = *m_caServerOptions;
+			strncpy(l_name, *m_caServerOptions, strchr(SOpts, '/') - SOpts);
+//			strcpy				(l_name,*m_caServerOptions);
 			// Activate level
 			if (strchr(l_name,'/'))
 				*strchr(l_name,'/')	= 0;
@@ -58,8 +60,10 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 		Server->SLS_Default		();
 		
 		{
-			string64			l_name;
-			strcpy				(l_name,*m_caServerOptions);
+			string64			l_name = "";
+			const char* SOpts = *m_caServerOptions;
+			strncpy(l_name, *m_caServerOptions, strchr(SOpts, '/') - SOpts);
+//			strcpy				(l_name,*m_caServerOptions);
 			// Activate level
 			if (strchr(l_name,'/'))
 				*strchr(l_name,'/')	= 0;
