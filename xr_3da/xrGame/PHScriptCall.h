@@ -122,7 +122,7 @@ public:
 	}
 	virtual bool 			is_true							()											{b_obsolete=CPHScriptObjectConditionN::is_true();return b_obsolete;}
 	virtual bool			compare							(const	CObject* v)			const			{return m_obj->ID()==v->ID();}
-	virtual bool			obsolete						()											{return b_obsolete;}
+	virtual bool			obsolete						()							const			{return b_obsolete;}
 };
 
 class CPHScriptGameObjectAction :
