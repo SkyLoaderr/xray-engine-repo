@@ -64,6 +64,7 @@ enum
 	R2FLAG_AA			= (1<<3),
 	R2FLAG_PARALLAX		= (1<<4),
 	R2FLAG_GI			= (1<<5),
+	R2FLAG_FASTBLOOM	= (1<<6),
 };
 
 extern void			xrRender_initconsole	();
