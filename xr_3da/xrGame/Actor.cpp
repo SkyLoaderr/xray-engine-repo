@@ -723,6 +723,10 @@ void CActor::g_Orientate	(DWORD mstate_rl, float dt)
 	case mcFwd+mcRStrafe:
 	case mcBack+mcLStrafe:
 		calc_yaw = -PI_DIV_4; break;
+	case mcLStrafe:
+		calc_yaw = +PI_DIV_2-EPS_L; break;
+	case mcRStrafe:
+		calc_yaw = -PI_DIV_2+EPS_L; break;
 	}
 	
 	// lerp angle for "effect" and capture torso data from camera
