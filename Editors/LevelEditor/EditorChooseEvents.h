@@ -201,6 +201,10 @@ void FillChooseEvents()
 	TfrmChoseItem::AppendEvents	(smGameAnim,		"Select Animation",			FillGameAnim,		0,false);
 	TfrmChoseItem::AppendEvents	(smGameSMotions,	"Select Game Object Motions",FillGameObjectMots,SelectGameObjectMots,false);
 }
+void ClearChooseEvents()
+{
+	TfrmChoseItem::ClearEvents	();
+}
 //---------------------------------------------------------------------------
 #endif
  

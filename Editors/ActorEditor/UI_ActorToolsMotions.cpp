@@ -14,6 +14,7 @@
 #include "fmesh.h"
 #include "folderlib.h"
 #include "leftbar.h"
+#include "ItemList.h"
 //---------------------------------------------------------------------------
 CMotionDef*	CActorTools::EngineModel::FindMotionDef(LPCSTR name)
 {

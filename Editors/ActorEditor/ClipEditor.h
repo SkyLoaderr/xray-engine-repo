@@ -171,7 +171,7 @@ protected:
     CUIClip*			sel_clip; 
     u32					play_clip;
     TProperties*		m_ClipProps;
-    IItemList*			m_ClipList;
+    TItemList*			m_ClipList;
 
     void				PlayAnimation	(CUIClip* clip);
     

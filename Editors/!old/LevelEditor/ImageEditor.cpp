@@ -8,6 +8,7 @@
 #include "PropertiesList.h"
 #include "FolderLib.h"
 #include "ui_main.h"
+#include "ItemList.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ElTree"
@@ -33,7 +34,7 @@ __fastcall TfrmImageLib::TfrmImageLib(TComponent* Owner)
 void __fastcall TfrmImageLib::FormCreate(TObject *Sender)
 {
 	m_ItemProps 				= TProperties::CreateForm	("",paProperties,alClient);
-    m_ItemList					= IItemList::CreateForm		("Items",paItems,alClient);
+    m_ItemList					= TItemList::CreateForm		("Items",paItems,alClient);
     m_ItemList->SetOnItemsFocusedEvent	(TOnILItemsFocused().bind(this,&TfrmImageLib::OnItemsFocused));
     m_ItemList->SetOnItemRemoveEvent	(TOnItemRemove().bind(&ImageLib,&CImageManager::RemoveTexture));
     m_ItemList->SetImages		(ImageList);
@@ -43,7 +44,7 @@ void __fastcall TfrmImageLib::FormCreate(TObject *Sender)
 void __fastcall TfrmImageLib::FormDestroy(TObject *Sender)
 {
     TProperties::DestroyForm(m_ItemProps);
-    IItemList::DestroyForm	(m_ItemList);
+    TItemList::DestroyForm	(m_ItemList);
 }
 //---------------------------------------------------------------------------
 
@@ -101,11 +102,11 @@ void __fastcall TfrmImageLib::UpdateLib()
 		// rename with folder
 		FS_QueryMap	files=texture_map;
         texture_map.clear();
-        AnsiString fn;
+        std::string fn;
         FS_QueryPairIt it=files.begin();
         FS_QueryPairIt _E=files.end();
         for (;it!=_E; it++){
-        	fn = ChangeFileExt(it->first.c_str(),"");
+        	fn = EFS.ChangeFileExt(it->first.c_str(),"");
         	ImageLib.UpdateFileName(fn);
             texture_map.insert(mk_pair(fn.c_str(),FS_QueryItem(it->second.size,it->second.modif,it->second.flags.get())));
         }
@@ -205,7 +206,7 @@ void __fastcall TfrmImageLib::RegisterModifiedTHM()
 {
 	if (m_ItemProps->IsModified()||bImportMode){
 	    for (THMIt t_it=m_THM_Current.begin(); t_it!=m_THM_Current.end(); t_it++){
-            ref_str fn = (*t_it)->SrcName();
+            std::string fn = (*t_it)->SrcName();
             FS_QueryPairIt it=texture_map.find(fn); R_ASSERT(it!=texture_map.end());
             modif_map.insert(*it);
         }
@@ -239,7 +240,7 @@ void __fastcall TfrmImageLib::ebRebuildAssociationClick(TObject *Sender)
         }
     }
 
-	ref_str nm;
+	std::string nm;
     FS.update_path			(nm,_game_textures_,"textures.ltx");
 	CInifile* ini 			= xr_new<CInifile>(nm.c_str(), FALSE, FALSE, TRUE);
 
@@ -295,7 +296,7 @@ void TfrmImageLib::OnItemsFocused(ListItemsVec& items)
                 if (bImportMode){
                     thm = FindUsedTHM(prop->Key());
                     if (!thm) m_THM_Used.push_back(thm=xr_new<ETextureThumbnail>(prop->Key(),false));
-                    AnsiString fn = prop->Key();
+                    std::string fn = prop->Key();
                     ImageLib.UpdateFileName(fn);
                     if (!thm->Load(prop->Key(),_import_)){
                         bool bLoad = thm->Load(fn.c_str(),_textures_);

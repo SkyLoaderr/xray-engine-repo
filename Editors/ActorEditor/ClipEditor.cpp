@@ -12,6 +12,7 @@
 #include "UI_ActorTools.h"
 #include "UI_Main.h"
 #include "SkeletonAnimated.h"
+#include "ItemList.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -134,7 +135,7 @@ __fastcall TClipMaker::TClipMaker(TComponent* Owner) : TForm(Owner)
 void __fastcall TClipMaker::FormCreate(TObject *Sender)
 {
 	m_ClipProps		= TProperties::CreateForm("Clip Properties",paClipProps,alClient);
-	m_ClipList		= IItemList::CreateForm("Clips",paClipList,alClient,0);
+	m_ClipList		= TItemList::CreateForm("Clips",paClipList,alClient,0);
 	m_ClipList->SetOnItemsFocusedEvent(TOnILItemsFocused(this,&TClipMaker::OnClipItemFocused));
 
 	Device.seqFrame.Add	(this);
@@ -146,7 +147,7 @@ void __fastcall TClipMaker::FormDestroy(TObject *Sender)
 	Device.seqFrame.Remove(this);
 	Clear			();
 	TProperties::DestroyForm(m_ClipProps);
-	IItemList::DestroyForm(m_ClipList);
+	TItemList::DestroyForm	(m_ClipList);
 }
 //---------------------------------------------------------------------------
 
@@ -550,7 +551,7 @@ void TClipMaker::AppendClip()
 
 void TClipMaker::LoadClips()
 {
-	AnsiString fn;
+	std::string fn;
     bool bRes=true;
 	if (EFS.GetOpenName("$clips$",fn)){
     	Clear		();
@@ -584,7 +585,7 @@ void TClipMaker::LoadClips()
 void TClipMaker::SaveClips()
 {
     if (!clips.empty()){
-		AnsiString fn;
+		std::string fn;
         if (EFS.GetSaveName("$clips$",fn)){
             IWriter* F	= FS.w_open(fn.c_str()); VERIFY(F);
 

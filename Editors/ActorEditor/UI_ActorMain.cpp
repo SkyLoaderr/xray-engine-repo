@@ -58,7 +58,7 @@ bool CActorMain::Command(int _Command, int p1, int p2)
             }
             Command( COMMAND_CLEAR );
             CTimer T;
-            T.Start();                
+            T.Start();     
             if (!Tools->Load(_objects_,temp_fn.c_str())){
                 bRes=false;
                 break;
@@ -75,20 +75,23 @@ bool CActorMain::Command(int _Command, int p1, int p2)
         }
     	}break;
     case COMMAND_SAVE_BACKUP:{
-    	AnsiString fn = AnsiString(Core.UserName)+"_backup.object";
-        FS.update_path("$objects$",fn);
+    	std::string fn = std::string(Core.UserName)+"_backup.object";
+        FS.update_path(fn,"$objects$",fn.c_str());
     	Command(COMMAND_SAVEAS,(int)fn.c_str());
     }break;
     case COMMAND_SAVEAS:{
-        AnsiString temp_fn	= AnsiString((char*)p1).LowerCase();
+        std::string temp_fn	= AnsiString((char*)p1).LowerCase().c_str();
         bRes 				= false;
         if(p1||EFS.GetSaveName(_objects_,temp_fn)){
-            if (p1||(1==temp_fn.Pos(FS.get_path(_objects_)->m_Path))){
-                if (!p1) temp_fn = AnsiString(temp_fn.c_str()+strlen(FS.get_path(_objects_)->m_Path)).LowerCase();
+            if (p1||(0==temp_fn.find(FS.get_path(_objects_)->m_Path))){
+                if (!p1){ 
+                	temp_fn = std::string(temp_fn.c_str()+strlen(FS.get_path(_objects_)->m_Path));
+                    xr_strlwr(temp_fn);
+                }
                 bRes=Command(COMMAND_SAVE, (u32)temp_fn.c_str());
                 // unlock
                 EFS.UnlockFile(_objects_,m_LastFileName.c_str());
-                m_LastFileName=temp_fn;
+                m_LastFileName=temp_fn.c_str();
                 Command(COMMAND_UPDATE_CAPTION);
                 EFS.LockFile(_objects_,m_LastFileName.c_str());
                 EPrefs.AppendRecentFile(m_LastFileName.c_str());
@@ -108,7 +111,7 @@ bool CActorMain::Command(int _Command, int p1, int p2)
             ELog.Msg(mtInformation,"Object '%s' successfully saved. Saving time - %3.2f(s).",m_LastFileName,T.GetElapsed_sec());
         	Command(COMMAND_UPDATE_CAPTION);
 			EPrefs.AppendRecentFile(temp_fn.c_str());
-            AnsiString mfn;
+            std::string mfn;
             FS.update_path(mfn,_objects_,temp_fn.c_str());
 //.            EFS.MarkFile(mfn.c_str(),false);
             EFS.BackupFile(_objects_,temp_fn.c_str());
@@ -118,10 +121,11 @@ bool CActorMain::Command(int _Command, int p1, int p2)
         EFS.LockFile(_objects_,temp_fn.c_str());
     	}break;
     case COMMAND_IMPORT:{
-        AnsiString temp_fn;
+        std::string temp_fn;
         if(EFS.GetOpenName(_import_,temp_fn)){
-            if (1==temp_fn.Pos(FS.get_path(_import_)->m_Path)){
-                temp_fn = AnsiString(temp_fn.c_str()+strlen(FS.get_path(_import_)->m_Path)).LowerCase();
+            if (0==temp_fn.find(FS.get_path(_import_)->m_Path)){
+                temp_fn = std::string(temp_fn.c_str()+strlen(FS.get_path(_import_)->m_Path));
+                xr_strlwr(temp_fn);
                 if (!Tools->IfModified()){
                     bRes=false;
                     break;
@@ -133,10 +137,10 @@ bool CActorMain::Command(int _Command, int p1, int p2)
                     bRes=false;
                     break;
                 }
-                m_LastFileName = temp_fn;
+                m_LastFileName = temp_fn.c_str();
                 ELog.Msg(mtInformation,"Object '%s' successfully imported. Loading time - %3.2f(s).",m_LastFileName,T.GetElapsed_sec());
                 if (Command( COMMAND_SAVEAS )){
-                	AnsiString mfn;
+                	std::string mfn;
                     FS.update_path(mfn,_import_,temp_fn.c_str());
                     EFS.MarkFile(mfn.c_str(),true);
                     EFS.BackupFile(_objects_,temp_fn.c_str());
@@ -149,19 +153,19 @@ bool CActorMain::Command(int _Command, int p1, int p2)
         }
     	}break;
     case COMMAND_EXPORT_DM:{
-    	AnsiString fn;
+    	std::string fn;
     	if (EFS.GetSaveName("$game_dm$",fn))
             if (ATools->ExportDM(fn.c_str()))	ELog.DlgMsg(mtInformation,"Export complete.");
             else		        		    	ELog.DlgMsg(mtError,"Export failed.");
     	}break;
     case COMMAND_EXPORT_OGF:{
-    	AnsiString fn;
+    	std::string fn;
     	if (EFS.GetSaveName("$game_meshes$",fn,0,0))
             if (ATools->ExportOGF(fn.c_str()))	ELog.DlgMsg(mtInformation,"Export complete.");
             else		        		    	ELog.DlgMsg(mtError,"Export failed.");
     	}break;
     case COMMAND_EXPORT_OMF:{
-    	AnsiString fn;
+    	std::string fn;
     	if (EFS.GetSaveName("$game_meshes$",fn,0,1))
             if (ATools->ExportOMF(fn.c_str()))	ELog.DlgMsg(mtInformation,"Export complete.");
             else		        		    	ELog.DlgMsg(mtError,"Export failed.");

@@ -204,7 +204,7 @@ void 	CCustomObject::OnMotionFilesClick(PropValue* value, bool& bModif, bool& bS
 {
 	ButtonValue* B = dynamic_cast<ButtonValue*>(value); R_ASSERT(B);
     bModif = false;
-	AnsiString fn;
+	std::string fn;
 	switch(B->btn_num){
     case 0:
         if(EFS.GetOpenName("$game_anims$", fn)){

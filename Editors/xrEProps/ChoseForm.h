@@ -112,6 +112,7 @@ public:		// User declarations
 	static int	 	__fastcall 	SelectItem		(u32 choose_ID, LPCSTR& dest, int sel_cnt=1, LPCSTR init_name=0, TOnChooseFillItems item_fill=0, void* fill_param=0, TOnChooseSelectItem item_select=0, ChooseItemVec* items=0);
 
     static void					AppendEvents	(u32 choose_ID, LPCSTR caption, TOnChooseFillItems on_fill, TOnChooseSelectItem on_sel, bool bTHM);
+    static void					ClearEvents		();
 };
 //---------------------------------------------------------------------------
 #endif

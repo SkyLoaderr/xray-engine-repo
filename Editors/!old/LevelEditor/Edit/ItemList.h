@@ -20,8 +20,8 @@
 #include "ItemListHelper.h"
 #include "FolderLib.h"
 #include "PropertiesListTypes.h"
-
-class TItemList: public TForm, public IItemList
+          
+class XR_EPROPS_API TItemList: public TForm
 {
 __published:	// IDE-managed Components
 	TElTree *tvItems;
@@ -101,6 +101,21 @@ protected:
 protected:     
     void __stdcall 		RenameItem				(LPCSTR fn0, LPCSTR fn1, EItemType type);
 public:		// User declarations
+	enum{
+    	// set
+    	ilEditMenu		= (1<<0),              
+        ilMultiSelect	= (1<<1),
+        ilDragAllowed	= (1<<2),
+        ilDragCustom	= (1<<3),
+        ilFolderStore	= (1<<4),
+        ilSuppressIcon 	= (1<<5),
+        ilSuppressStatus= (1<<6),
+
+        // internal
+        ilRT_FullExpand	= (1<<30),
+//        ilRT_UpdateLocked=(1<<31),
+    };
+public:		// User declarations
 	__fastcall 	    	TItemList	       		(TComponent* Owner);
 
     void 			 	ShowListModal			();
@@ -165,6 +180,12 @@ public:		// User declarations
 
     virtual u32			GetFlags				()			{return m_Flags.flags;}	
     virtual void		SetFlags				(u32 mask)	{m_Flags.assign(mask);}	
+    
+#ifdef __BORLANDC__
+	static TItemList* 	CreateForm				(LPCSTR title, TWinControl* parent=0, TAlign align=alNone, u32 flags=ilMultiSelect|ilFolderStore);
+#endif
+	static TItemList* 	CreateModalForm			(LPCSTR title, u32 flags=ilMultiSelect|ilFolderStore);
+	static void 		DestroyForm				(TItemList*& props);
 };
 //---------------------------------------------------------------------------
 #endif

@@ -29,9 +29,9 @@ ESoundThumbnail::~ESoundThumbnail()
 
 bool ESoundThumbnail::Load(LPCSTR src_name, LPCSTR path)
 {
-	AnsiString fn = ChangeFileExt(src_name?AnsiString(src_name):m_Name,".thm");
-    if (path) 		FS.update_path(path,fn);
-    else			FS.update_path(_sounds_,fn);
+	std::string fn 	= EFS.ChangeFileExt(src_name?src_name:m_Name.c_str(),".thm");
+    if (path) 		FS.update_path(fn,path,fn.c_str());
+    else			FS.update_path(fn,_sounds_,fn.c_str());
     if (!FS.exist(fn.c_str())) return false;
     
     IReader* F 		= FS.r_open(fn.c_str());
@@ -88,9 +88,9 @@ void ESoundThumbnail::Save(int age, LPCSTR path)
     F.w_float		(m_fVolume);
     F.close_chunk	();
     
-	AnsiString fn 	= m_Name;
-    if (path) 		FS.update_path(path,fn);
-    else			FS.update_path(_sounds_,fn);
+	std::string fn;
+    if (path) 		FS.update_path(fn,path,m_Name.c_str());
+    else			FS.update_path(fn,_sounds_,m_Name.c_str());
     F.save_to		(fn.c_str());
 
 //	int gf 			= FS.get_file_age(fn.c_str());

@@ -18,6 +18,7 @@
 #include "main.h"
 #include "folderlib.h"
 #include "SkeletonAnimated.h"
+#include "ItemList.h"
 
 CActorTools*&	ATools=(CActorTools*)Tools;
 //------------------------------------------------------------------------------
@@ -160,7 +161,7 @@ bool CActorTools::OnCreate()
 	inherited::OnCreate();
     // props
 	m_ClipMaker		= TClipMaker::CreateForm();
-    m_ObjectItems 	= IItemList::CreateForm("",fraLeftBar->paObjectProps,alClient,IItemList::ilDragCustom|IItemList::ilMultiSelect|IItemList::ilSuppressStatus);
+    m_ObjectItems 	= TItemList::CreateForm("",fraLeftBar->paObjectProps,alClient,TItemList::ilDragCustom|TItemList::ilMultiSelect|TItemList::ilSuppressStatus);
 	m_ObjectItems->SetOnItemsFocusedEvent(TOnILItemsFocused(this,&CActorTools::OnObjectItemFocused));
     m_Props 		= TProperties::CreateForm("",fraLeftBar->paItemProps,alClient,TOnModifiedEvent().bind(this,&CActorTools::OnItemModified));
     m_PreviewObject.OnCreate();
@@ -176,7 +177,7 @@ void CActorTools::OnDestroy()
 	inherited::OnDestroy();
 
     TClipMaker::DestroyForm	(m_ClipMaker);
-	IItemList::DestroyForm	(m_ObjectItems);
+	TItemList::DestroyForm	(m_ObjectItems);
 	TProperties::DestroyForm(m_Props);
     m_PreviewObject.OnDestroy();
 
@@ -366,7 +367,10 @@ void CActorTools::Clear()
 
 bool CActorTools::Import(LPCSTR initial, LPCSTR obj_name)
 {
-    AnsiString full_name = (initial)?FS.update_path(full_name,initial,obj_name):AnsiString(obj_name);
+    std::string 	full_name;
+    if (initial)	FS.update_path	(full_name,initial,obj_name);
+    else			full_name 		= obj_name;
+    
 	VERIFY(m_bReady);
 	CEditableObject* O = xr_new<CEditableObject>(obj_name);
 	if (O->Load(full_name.c_str())){
@@ -389,7 +393,10 @@ bool CActorTools::Import(LPCSTR initial, LPCSTR obj_name)
 
 bool CActorTools::Load(LPCSTR initial, LPCSTR obj_name)
 {
-    AnsiString full_name = (initial)?FS.update_path(full_name,initial,obj_name):AnsiString(obj_name);
+    std::string 	full_name;
+    if (initial)	FS.update_path	(full_name,initial,obj_name);
+    else			full_name		= obj_name;
+
 	VERIFY(m_bReady);
 	CEditableObject* O = xr_new<CEditableObject>(obj_name);
 	if (FS.exist(full_name.c_str())&&O->Load(full_name.c_str())){
@@ -411,7 +418,9 @@ bool CActorTools::Load(LPCSTR initial, LPCSTR obj_name)
 
 bool CActorTools::Save(LPCSTR initial, LPCSTR obj_name, bool bInternal)
 {
-    AnsiString full_name = (initial)?FS.update_path(full_name,initial,obj_name):AnsiString(obj_name);
+    std::string full_name;
+    if (initial)	FS.update_path	(full_name,initial,obj_name);
+    else			full_name 		= obj_name;
 	VERIFY(m_bReady);
     if (m_pEditObject){
     	m_pEditObject->SaveObject(full_name.c_str());

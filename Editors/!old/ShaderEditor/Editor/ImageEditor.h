@@ -70,7 +70,7 @@ private:	// User declarations
     DEFINE_VECTOR		(ETextureThumbnail*,THMVec,THMIt);
     THMVec				m_THM_Used;
     THMVec				m_THM_Current;
-    IItemList*			m_ItemList;
+    TItemList*			m_ItemList;
     TProperties* 		m_ItemProps;
 
     ETextureThumbnail*	FindUsedTHM			(LPCSTR name);

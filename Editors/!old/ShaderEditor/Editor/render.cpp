@@ -21,6 +21,7 @@ CRender::CRender	()
 
 CRender::~CRender	()
 {
+	xr_delete		(Target);
 }
 
 void					CRender::Initialize				()

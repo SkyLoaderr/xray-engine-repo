@@ -42,8 +42,8 @@ int ETextureThumbnail::MemoryUsage()
     case STextureParams::tf565: 	mem_usage/=2; break;
     case STextureParams::tfRGBA:	break;
     }
-    AnsiString fn 	= ChangeFileExt(m_Name,".seq");
-    FS.update_path(_game_textures_,fn);
+    std::string fn;
+    FS.update_path	(fn,_game_textures_,EFS.ChangeFileExt(m_Name.c_str(),".seq").c_str());
     if (FS.exist(fn.c_str())){
         string128		buffer;
         IReader* F		= FS.r_open(0,fn.c_str());
@@ -71,9 +71,9 @@ void ETextureThumbnail::CreateFromData(u32* p, u32 w, u32 h)
 
 bool ETextureThumbnail::Load(LPCSTR src_name, LPCSTR path)
 {
-	AnsiString fn = ChangeFileExt(src_name?AnsiString(src_name):m_Name,".thm");
-    if (path) 		FS.update_path(path,fn);
-    else			FS.update_path(_textures_,fn);
+	std::string fn 	= EFS.ChangeFileExt(src_name?src_name:m_Name.c_str(),".thm");
+    if (path) 		FS.update_path(fn,path,fn.c_str());
+    else			FS.update_path(fn,_textures_,fn.c_str());
     if (!FS.exist(fn.c_str())) return false;
     
     IReader* F 		= FS.r_open(fn.c_str());
@@ -120,9 +120,9 @@ void ETextureThumbnail::Save(int age, LPCSTR path)
 
 	m_TexParams.Save(F);
 
-	AnsiString fn 	= m_Name;
-    if (path) 		FS.update_path(path,fn);
-    else			FS.update_path(_textures_,fn);
+	std::string fn;
+    if (path) 		FS.update_path(fn,path,			m_Name.c_str());
+    else			FS.update_path(fn,_textures_,	m_Name.c_str());
     F.save_to		(fn.c_str());
 
     FS.set_file_age	(fn.c_str(),age?age:m_Age);

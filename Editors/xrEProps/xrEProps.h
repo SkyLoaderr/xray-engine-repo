@@ -38,22 +38,24 @@ typedef fastdelegate::FastDelegate0 		  					TOnModifiedEvent;
 //------------------------------------------------------------------------------
 IC std::string FolderAppend	(LPCSTR val)
 {
-    return 	(val&&val[0])?std::string(val)+std::string("\\"):std::string("");
+	std::string	tmp 	= val;
+    if (val&&val[0])tmp	+= "\\";
+    return 	tmp;
 }
 IC ref_str PrepareKey	(LPCSTR pref, 	LPCSTR key)
 {
     R_ASSERT	(key);
-	return 		ref_str(std::string(FolderAppend(pref)+std::string(key)).c_str());
+	return 		ref_str(std::string(FolderAppend(pref)+key).c_str());
 }
 IC ref_str PrepareKey (LPCSTR pref0, 	LPCSTR pref1,	LPCSTR key)
 {
     R_ASSERT	(key);
-    return 		ref_str(std::string(FolderAppend(pref0)+FolderAppend(pref1)+std::string(key)).c_str());
+    return 		ref_str(std::string(FolderAppend(pref0)+FolderAppend(pref1)+key).c_str());
 }
 IC ref_str PrepareKey (LPCSTR pref0,	LPCSTR pref1, 	LPCSTR pref2,	LPCSTR key)
 {
     R_ASSERT	(key);
-    return 		ref_str(std::string(FolderAppend(pref0)+FolderAppend(pref1)+FolderAppend(pref2)+std::string(key)).c_str());
+    return 		ref_str(std::string(FolderAppend(pref0)+FolderAppend(pref1)+FolderAppend(pref2)+key).c_str());
 }
 //------------------------------------------------------------------------------
 // Properties
@@ -122,80 +124,6 @@ public:
 //------------------------------------------------------------------------------
 // List
 //------------------------------------------------------------------------------
-class XR_EPROPS_API IItemList
-{
-protected:                
-#ifdef __BORLANDC__
-	virtual void 		OnCreate				(LPCSTR title, TWinControl* parent, TAlign align, u32 flags)=0;
-#endif
-    virtual void 		OnDestroy				()=0;
-public:
-	enum{
-    	// set
-    	ilEditMenu		= (1<<0),              
-        ilMultiSelect	= (1<<1),
-        ilDragAllowed	= (1<<2),
-        ilDragCustom	= (1<<3),
-        ilFolderStore	= (1<<4),
-        ilSuppressIcon 	= (1<<5),
-        ilSuppressStatus= (1<<6),
-
-        // internal
-        ilRT_FullExpand	= (1<<30),
-//        ilRT_UpdateLocked=(1<<31),
-    };
-public:
-#ifdef __BORLANDC__
-	static IItemList* 	CreateForm				(LPCSTR title, TWinControl* parent=0, TAlign align=alNone, u32 flags=ilMultiSelect|ilFolderStore);
-#endif
-	static IItemList* 	CreateModalForm			(LPCSTR title, u32 flags=ilMultiSelect|ilFolderStore);
-	static void 		DestroyForm				(IItemList*& props);
-
-    virtual void 		RemoveSelItems			(TOnItemRemove on_remove=0)=0;
-    virtual void 		RenameSelItem			()=0;
-    virtual void		FireOnItemFocused		()=0;
-
-    virtual void		GetFolders				(RStringVec& folders)=0;
-
-    virtual void 		ClearList				()=0;
-
-    virtual void 		SelectItem				(LPCSTR full_name, bool bVal, bool bLeaveSel, bool bExpand)=0;
-    virtual void 		AssignItems				(ListItemsVec& values, bool full_expand, bool full_sort=false)=0;
-
-    virtual int  		GetSelected				(LPCSTR pref, ListItemsVec& items, bool bOnlyObject)=0;
-    virtual ListItem*	FindItem				(LPCSTR full_name)=0;
-
-    virtual void 		LockUpdating			()=0;
-    virtual void 		UnlockUpdating			()=0;
-    virtual bool		IsLocked				()=0;
-
-#ifdef __BORLANDC__
-    virtual void		SetImages				(TImageList* image_list)=0;
-    virtual int  		GetSelected				(ElItemsVec& items)=0;
-    virtual TElTreeItem*GetSelected				()=0;
-
-    virtual void		LoadSelection			(TFormStorage* storage)=0;
-    virtual void		SaveSelection			(TFormStorage* storage)=0;
-
-    virtual void  		SaveParams				(TFormStorage* fs)=0;
-    virtual void  		LoadParams				(TFormStorage* fs)=0;
-	virtual void		SetOnItemFocusedEvent	(TOnILItemFocused)=0;
-#endif
-
-	virtual void 		GenerateObjectName		(ref_str name, LPCSTR start_node, LPCSTR pref="object", bool num_first=false)=0;
-
-    virtual void		SetOnItemsFocusedEvent	(TOnILItemsFocused)=0;
-    virtual void		SetOnCloseEvent			(TOnILCloseEvent)=0;
-    virtual void		SetOnItemRenameEvent	(TOnItemRename e)=0;
-    virtual void		SetOnItemRemoveEvent	(TOnItemRemove e)=0;
-    virtual void		SetOnModifiedEvent		(TOnModifiedEvent e)=0;
-
-    virtual void 		SetILFocus				()=0;
-    
-    virtual u32			GetFlags				()=0;	
-    virtual void		SetFlags				(u32 mask)=0;
-};
-
 class XR_EPROPS_API IListHelper{
 public:
     virtual ListItem* 			__stdcall	FindItem			(ListItemsVec& items,	LPCSTR key)=0;

@@ -36,7 +36,7 @@ public:
 
     void 		RefreshSounds		(bool bSync);
 
-    AnsiString	UpdateFileName		(AnsiString& fn);
+    std::string	UpdateFileName		(std::string& fn);
 };
 
 extern ECORE_API CSoundManager* SndLib;

@@ -157,7 +157,7 @@ public:
     PreviewModel		m_PreviewObject;
 
     TProperties*		m_Props;
-    IItemList*			m_ObjectItems;
+    TItemList*			m_ObjectItems;
     TClipMaker*			m_ClipMaker;
 
     TfrmKeyBar* 		m_KeyBar;

@@ -110,8 +110,8 @@ CEditableObject* ELibrary::LoadEditObject(LPCSTR name)
 {
 	VERIFY(m_bReady);
     CEditableObject* m_EditObject = xr_new<CEditableObject>(name);
-    ref_str fn;
-    FS.update_path(fn,_objects_,ChangeFileExt(name,".object").c_str());
+    std::string fn;
+    FS.update_path(fn,_objects_,EFS.ChangeFileExt(name,".object").c_str());
     const CLocatorAPI::file* F = FS.exist(fn.c_str());
     if (F){
         if (m_EditObject->Load(fn.c_str())){
@@ -165,8 +165,10 @@ void ELibrary::Save()
 	EditObjPairIt E = m_EditObjects.end();
     for(; O!=E; O++)
     	if (O->second->IsModified()){
-        	ref_str nm = ChangeFileExt(FS.update_path(nm,_objects_,O->second->GetName()).c_str(),".object").c_str();
-        	O->second->SaveObject(nm.c_str());
+        	std::string 			nm;
+            FS.update_path			(nm,_objects_,O->second->GetName());
+            nm						= EFS.ChangeFileExt(nm,".object");
+        	O->second->SaveObject	(nm.c_str());
         }
 }
 //---------------------------------------------------------------------------
@@ -184,11 +186,11 @@ void ELibrary::RemoveObject(LPCSTR _fname, EItemType type, bool& res)
         res = true;
 		return;
     }else if (TYPE_OBJECT==type){
-        ref_str src_name;
-        ref_str fname			= ChangeFileExt(_fname,".object").c_str();
+        std::string src_name;
+        std::string fname		= EFS.ChangeFileExt(_fname,".object");
         FS.update_path			(src_name,_objects_,fname.c_str());
         if (FS.exist(src_name.c_str())){
-            AnsiString thm_name = ChangeFileExt(fname.c_str(),".thm");
+            std::string thm_name= EFS.ChangeFileExt(fname,".thm");
             // source
             EFS.BackupFile		(_objects_,fname.c_str());
             FS.file_delete		(src_name.c_str());
@@ -212,16 +214,16 @@ void ELibrary::RenameObject(LPCSTR nm0, LPCSTR nm1, EItemType type)
 	if (TYPE_FOLDER==type){
     	FS.dir_delete			(_objects_,nm0,FALSE);
     }else if (TYPE_OBJECT==type){
-        ref_str fn0,fn1,temp;
+        std::string fn0,fn1,temp;
         // rename base file
-        FS.update_path(fn0,_objects_,nm0);	fn0.sprintf("%s%s",fn0.c_str(),".object");
-        FS.update_path(fn1,_objects_,nm1);	fn1.sprintf("%s%s",fn1.c_str(),".object");
+        FS.update_path(fn0,_objects_,nm0);	fn0+=".object";
+        FS.update_path(fn1,_objects_,nm1);	fn1+=".object";
         FS.file_rename(fn0.c_str(),fn1.c_str(),false);
         EFS.WriteAccessLog	(AnsiString().sprintf("%s -> %s",fn0.c_str(),fn1.c_str()).c_str(),"Rename");
 
         // rename thm
-        FS.update_path(fn0,_objects_,nm0);	fn0.sprintf("%s%s",fn0.c_str(),".thm");
-        FS.update_path(fn1,_objects_,nm1);	fn1.sprintf("%s%s",fn1.c_str(),".thm");
+        FS.update_path(fn0,_objects_,nm0);	fn0+=".thm";
+        FS.update_path(fn1,_objects_,nm1);	fn1+=".thm";
         FS.file_rename(fn0.c_str(),fn1.c_str(),false);
 
         // rename in cache

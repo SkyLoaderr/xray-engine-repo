@@ -39,7 +39,6 @@ TfrmMain *frmMain;
 __fastcall TfrmMain::TfrmMain(TComponent* Owner)
         : TForm(Owner)
 {
-    FillChooseEvents						();
 // forms
     fraBottomBar	= xr_new<TfraBottomBar>	((TComponent*)0);
     fraTopBar   	= xr_new<TfraTopBar>	((TComponent*)0);
@@ -61,16 +60,19 @@ __fastcall TfrmMain::TfrmMain(TComponent* Owner)
 //---------------------------------------------------------------------------
 void __fastcall TfrmMain::FormShow(TObject *Sender)
 {
-    tmRefresh->Enabled = true; tmRefreshTimer(Sender);
-    UI->Command		(COMMAND_UPDATE_GRID);
-    UI->Command		(COMMAND_RENDER_FOCUS);
+    tmRefresh->Enabled 		= true; tmRefreshTimer(Sender);
+    UI->Command				(COMMAND_UPDATE_GRID);
+    UI->Command				(COMMAND_RENDER_FOCUS);
+    FillChooseEvents		();
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmMain::FormClose(TObject *Sender, TCloseAction &Action)
 {
     Application->OnIdle     = 0;
 
-    UI->Command(COMMAND_DESTROY);
+    ClearChooseEvents		();
+
+    UI->Command				(COMMAND_DESTROY);
 
 	fraTopBar->Parent       = 0;
 	fraLeftBar->Parent      = 0;
@@ -95,6 +97,7 @@ void __fastcall TfrmMain::FormCreate(TObject *Sender)
 }
 
 //---------------------------------------------------------------------------
+
 
 #define MIN_PANEL_HEIGHT 17
 void __fastcall TfrmMain::sbToolsMinClick(TObject *Sender)

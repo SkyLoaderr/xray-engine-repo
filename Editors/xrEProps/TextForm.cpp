@@ -130,13 +130,13 @@ void __fastcall TfrmText::FormClose(TObject *Sender, TCloseAction &Action)
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmText::ebLoadClick(TObject *Sender)
-{
-	AnsiString fn;                   
+{               
+	std::string fn;                   
 	if (EFS.GetOpenName(_import_,fn,false,NULL,2)){
-    	string4096 buf;
+    	ref_str 		buf;
     	IReader* F 		= FS.r_open(fn.c_str());
         F->r_stringZ	(buf);
-        mmText->Text	= buf;
+        mmText->Text	= buf.c_str();
         FS.r_close		(F);
 	    ebOk->Enabled 	= true;
     }
@@ -145,7 +145,7 @@ void __fastcall TfrmText::ebLoadClick(TObject *Sender)
 
 void __fastcall TfrmText::ebSaveClick(TObject *Sender)
 {
-	AnsiString fn;        
+	std::string fn;        
 	if (EFS.GetSaveName(_import_,fn,NULL,2)){
     	CMemoryWriter F;
         F.w_stringZ	(mmText->Text.c_str());

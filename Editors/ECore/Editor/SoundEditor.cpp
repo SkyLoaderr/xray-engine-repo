@@ -9,6 +9,7 @@
 #include "FolderLib.h"
 #include "ui_main.h"
 #include "soundrender_source.h"
+#include "ItemList.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ElTree"
@@ -33,7 +34,7 @@ __fastcall TfrmSoundLib::TfrmSoundLib(TComponent* Owner)
 void __fastcall TfrmSoundLib::FormCreate(TObject *Sender)
 {
 	m_ItemProps = TProperties::CreateForm	("SoundED",paProperties,alClient);
-    m_ItemList	= IItemList::CreateForm		("Items",paItems,alClient,IItemList::ilEditMenu|IItemList::ilMultiSelect|IItemList::ilDragAllowed);
+    m_ItemList	= TItemList::CreateForm		("Items",paItems,alClient,TItemList::ilEditMenu|TItemList::ilMultiSelect|TItemList::ilDragAllowed);
     m_ItemList->SetOnItemsFocusedEvent		(TOnILItemsFocused(this,&TfrmSoundLib::OnItemsFocused));
     TOnItemRemove on_remove; on_remove.bind	(this,&TfrmSoundLib::RemoveSound);
     TOnItemRename on_rename; on_rename.bind	(this,&TfrmSoundLib::RenameSound);
@@ -47,7 +48,7 @@ void __fastcall TfrmSoundLib::FormCreate(TObject *Sender)
 void __fastcall TfrmSoundLib::FormDestroy(TObject *Sender)
 {
     TProperties::DestroyForm(m_ItemProps);
-    IItemList::DestroyForm	(m_ItemList);
+    TItemList::DestroyForm	(m_ItemList);
 	m_Snd.destroy			();
 }
 //---------------------------------------------------------------------------
@@ -248,7 +249,7 @@ void __fastcall TfrmSoundLib::ebRenameCurrentClick(TObject *Sender)
 
 void __fastcall TfrmSoundLib::ebImportSoundClick(TObject *Sender)
 {
-    AnsiString open_nm;
+    std::string open_nm;
     if (EFS.GetOpenName(_import_,open_nm,true,0,4)){
 		// load
     	AStringVec lst;
@@ -269,7 +270,7 @@ void __fastcall TfrmSoundLib::ebImportSoundClick(TObject *Sender)
 		AnsiString m_LastSelection;
         for (AStringIt it=lst.begin(); it!=lst.end(); it++){
             AnsiString 			dest_name = AnsiString(folder+ExtractFileName(*it));
-            ref_str				dest_full_name;
+            std::string			dest_full_name;
             FS.update_path		(dest_full_name,_sounds_,dest_name.c_str());
             if (FS.exist(dest_full_name.c_str())){
             	int res = ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"File '%s' already exist. Owerwrite it?",ExtractFileName(*it).c_str());
@@ -280,8 +281,8 @@ void __fastcall TfrmSoundLib::ebImportSoundClick(TObject *Sender)
             FS_QueryMap 		QM; 
             FS.file_list		(QM,_sounds_,FS_ListFiles|FS_ClampExt,dest_name.c_str());
             SndLib->SynchronizeSounds(true, true, true, &QM, 0);
-            EFS.MarkFile		(*it,true);
-            EFS.BackupFile		(_sounds_,dest_name);
+            EFS.MarkFile		(it->c_str(),true);
+            EFS.BackupFile		(_sounds_,dest_name.c_str());
             EFS.WriteAccessLog	(dest_full_name.c_str(),"Import");
             bNeedUpdate			= true;
             m_LastSelection 	= ChangeFileExt(dest_name,"");

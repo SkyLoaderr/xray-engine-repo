@@ -252,7 +252,7 @@ public:
     IC int			SurfaceCount			()	{return m_Surfaces.size();}
 
     // LOD
-	AnsiString		GetLODTextureName		();
+	std::string		GetLODTextureName		();
     LPCSTR			GetLODShaderName		(){return LOD_SHADER_NAME;}
     void			GetLODFrame				(int frame, Fvector p[4], Fvector2 t[4], const Fmatrix* parent=0);
 

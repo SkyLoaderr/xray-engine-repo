@@ -29,11 +29,11 @@
 //---------------------------------------------------------------------------
 // IItemList vector
 //---------------------------------------------------------------------------
-DEFINE_VECTOR					(IItemList*,ILVec,ILIt);
+DEFINE_VECTOR					(TItemList*,ILVec,ILVecIt);
 static  ILVec					ILForms;
 
 //---------------------------------------------------------------------------
-IItemList* IItemList::CreateForm(LPCSTR title, TWinControl* parent, TAlign align, u32 flags)
+TItemList* TItemList::CreateForm(LPCSTR title, TWinControl* parent, TAlign align, u32 flags)
 {
 	TItemList* props 			= xr_new<TItemList>(parent);
     // on create
@@ -42,19 +42,20 @@ IItemList* IItemList::CreateForm(LPCSTR title, TWinControl* parent, TAlign align
 	return props;
 }
 
-IItemList* IItemList::CreateModalForm(LPCSTR title, u32 flags)
+TItemList* TItemList::CreateModalForm(LPCSTR title, u32 flags)
 {
 	return CreateForm			(title,0,alNone,flags);
 }
 
-void IItemList::DestroyForm(IItemList*& props)
+void TItemList::DestroyForm(TItemList*& props)
 {
 	VERIFY(props);
-    ILIt it						= std::find(ILForms.begin(),ILForms.end(),props); VERIFY(it!=ILForms.end());
-	ILForms.erase				(it);
+    
+    ILVecIt it					= std::find(ILForms.begin(),ILForms.end(),props); VERIFY(it!=ILForms.end());
     // destroy forms
 	props->OnDestroy			();
     xr_delete					(props);
+	ILForms.erase				(it);
 }
 
 //---------------------------------------------------------------------------

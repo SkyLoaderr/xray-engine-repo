@@ -28,8 +28,8 @@ public:
     void		CreateTextureThumbnail(ETextureThumbnail* THM, const AnsiString& src_name, LPCSTR path=0, bool bSetDefParam=true);
     BOOL		CreateOBJThumbnail	(LPCSTR tex_name, CEditableObject* obj, int age);
     void		CreateLODTexture	(Fbox bbox, LPCSTR tex_name, u32 tgt_w, u32 tgt_h, int samples, int age);
-    void		CreateGameTexture	(const ref_str& src_name, ETextureThumbnail* thumb=0);
-    bool		LoadTextureData		(const ref_str& src_name, U32Vec& data, u32& w, u32& h);
+    void		CreateGameTexture	(LPCSTR src_name, ETextureThumbnail* thumb=0);
+    bool		LoadTextureData		(LPCSTR src_name, U32Vec& data, u32& w, u32& h);
 
     // result 0-can't fit images, 1-ok, -1 can't load image 
     void		MergedTextureRemapUV(float& dest_u, float& dest_v, float src_u, float src_v, const Fvector2& offs, const Fvector2& scale, bool bRotate);
@@ -40,7 +40,7 @@ public:
 
     void 		RefreshTextures		(AStringVec* modif);
 
-    AnsiString	UpdateFileName		(AnsiString& fn);
+    std::string	UpdateFileName		(std::string& fn);
 
     void		WriteAssociation	(CInifile* ltx_ini, LPCSTR base_name, const STextureParams& fmt);
 };

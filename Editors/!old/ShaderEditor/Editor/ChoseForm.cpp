@@ -34,6 +34,10 @@ void TfrmChoseItem::AppendEvents(u32 choose_ID, LPCSTR caption, TOnChooseFillIte
 	EventsMapIt it 	= m_Events.find(choose_ID); VERIFY(it==m_Events.end());
     m_Events.insert	(std::make_pair(choose_ID,SChooseEvents(caption,on_fill,on_sel,bTHM)));
 }
+void TfrmChoseItem::ClearEvents()
+{
+	m_Events.clear	();
+}
 //---------------------------------------------------------------------------
 void __fastcall TfrmChoseItem::FormCreate(TObject *Sender)
 {

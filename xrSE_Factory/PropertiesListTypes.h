@@ -58,6 +58,7 @@ public:
     TOnChange			OnChangeEvent;
 public:
 						PropValue		():tag(0),m_Owner(0),OnChangeEvent(0){;}
+	virtual				~PropValue		(){}
     virtual ref_str		GetText			(TOnDrawTextEvent OnDrawText)=0;
     virtual void		ResetValue		()=0;
     virtual bool		Equal			(PropValue* prop)=0;
