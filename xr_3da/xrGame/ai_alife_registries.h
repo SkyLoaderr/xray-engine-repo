@@ -246,11 +246,6 @@ public:
 	
 	SPAWN_P_VECTOR					m_tpSpawnPoints;
 	
-	CALifeSpawnRegistry()
-	{
-		m_tpSpawnPoints.clear		();
-	};
-
 	virtual							~CALifeSpawnRegistry()
 	{
 		free_vector					(m_tpSpawnPoints);
