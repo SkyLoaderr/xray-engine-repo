@@ -215,7 +215,7 @@ void CRender::Render		()
 					LR.compute_xfp_2						(pls_phase, L);
 
 					// rendering
-					if (mapNormal[0].size())
+					if (mapNormal[0].size() || mapMatrix[0].size())
 					{
 						Target.phase_smap_point				(pls_phase);
 						RCache.set_xform_world				(Fidentity);			// ???
@@ -240,7 +240,7 @@ void CRender::Render		()
 				LR.compute_xfs_2						(0, L);
 
 				// rendering
-				if (mapNormal[0].size() || mapMatrix.size())
+				if (mapNormal[0].size() || mapMatrix[0].size())
 				{
 					Target.phase_smap_spot				();
 					RCache.set_xform_world				(Fidentity);			// ???
