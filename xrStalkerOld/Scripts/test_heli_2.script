@@ -16,6 +16,7 @@ function HeliManager:Init()
    
 end
 
+
 function HeliManager:HeliOnHit(p)
    if self.m_heliObject:GetState() == CHelicopter.eMovingByAttackTraj then
       return --already on attack trajectory
@@ -33,10 +34,14 @@ function HeliManager:HeliOnHit(p)
    if enemy == nil then 
       return
    end
---   self.m_heliObject:SetEnemy(enemy)
+	 self.m_heliObject:SetEnemy(enemy)
 --   self.m_heliObject:SetDestPosition(enemy:position())
---   self.m_heliObject:SetState(CHelicopter.eMovingByAttackTraj)
+   self.m_heliObject:SetState(CHelicopter.eMovingByAttackTraj)
 --   self.m_heliObject:SetCurrVelocity(30.0) -- m/sec (max)
+
+--	self.m_heliObject:GoByRoundPath(enemy:position(),100,true)
+--	self.m_heliObject:LookAtPoint(enemy:position(),true)
+--	self.m_heliObject:SetCurrVelocity(30.0) -- m/sec (max)
    
  
 end
@@ -56,8 +61,8 @@ function HeliManager:HeliOnPoint(p)
    end
 
    if self.m_heliObject:GetState() == CHelicopter.eMovingByAttackTraj then
-      self.m_heliObject:GoPatrolByPatrolPath("heli_way_1",0)  --0==from_idx
-      self.m_heliObject:SetCurrVelocity(25.0)  -- m/sec (max)
+--      self.m_heliObject:GoPatrolByPatrolPath("heli_way_1",0)  --0==from_idx
+--      self.m_heliObject:SetCurrVelocity(25.0)  -- m/sec (max)
    end
 
 end
@@ -70,9 +75,9 @@ function HeliManager:Start()
 	while true do
    local state = self.m_heliObject:GetState()
    if state == CHelicopter.eIdleState then
-      self.m_heliObject:GoPatrolByPatrolPath("heli_way_1",0) --0==from_idx
-      self.m_heliObject:SetCurrVelocity(25.0) -- m/sec (max)
-      printf("------------HELI GO----------------------")
+--      self.m_heliObject:GoPatrolByPatrolPath("heli_way_1",0) --0==from_idx
+--      self.m_heliObject:SetCurrVelocity(25.0) -- m/sec (max)
+--      printf("------------HELI GO----------------------")
 	  
    end
 
