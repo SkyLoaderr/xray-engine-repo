@@ -213,7 +213,7 @@ void CStats::Show()
 
 void CStats::OnDeviceCreate			()
 {
-	font	= new CGameFont			("font","fonts\\font_hud",128,16,0);
+	font	= new CGameFont			("font","ui\\ui_font_hud_01",128,16,0);
 }
 void CStats::OnDeviceDestroy		()
 {

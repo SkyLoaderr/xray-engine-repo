@@ -38,7 +38,7 @@ void CConsole::Initialize()
 	bVisible		= false;
 	rep_time		= 0;
 
-	pFont			= new CGameFont	("font","fonts\\small",256,16,CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
+	pFont			= new CGameFont	("font","ui\\ui_font_console_01",256,16,CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
 	Device.seqDevDestroy.Add(this);
 
 	// Commands
