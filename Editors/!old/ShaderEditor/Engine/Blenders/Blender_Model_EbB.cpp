@@ -88,7 +88,7 @@ void	CBlender_Model_EbB::Compile(CBlender_Compile& C)
 		{
 		case SE_R1_NORMAL_HQ:	
 			sname				= "model_env_hq"; 
-			if (oBlend.value)	C.r_Pass	(sname,sname,TRUE,TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,0);
+			if (oBlend.value)	C.r_Pass	(sname,sname,TRUE,TRUE,FALSE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,0);
 			else				C.r_Pass	(sname,sname,TRUE);
 			C.r_Sampler			("s_base",	C.L_textures[0]);
 			C.r_Sampler			("s_env",	oT2_Name,false,D3DTADDRESS_CLAMP);
@@ -97,7 +97,7 @@ void	CBlender_Model_EbB::Compile(CBlender_Compile& C)
 			break;
 		case SE_R1_NORMAL_LQ:
 			sname				= "model_env_lq"; 
-			if (oBlend.value)	C.r_Pass	(sname,sname,TRUE,TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,0);
+			if (oBlend.value)	C.r_Pass	(sname,sname,TRUE,TRUE,FALSE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,0);
 			else				C.r_Pass	(sname,sname,TRUE);
 			C.r_Sampler			("s_base",	C.L_textures[0]);
 			C.r_Sampler			("s_env",	oT2_Name,false,D3DTADDRESS_CLAMP);
