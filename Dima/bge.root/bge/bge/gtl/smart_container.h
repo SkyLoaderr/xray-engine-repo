@@ -444,18 +444,9 @@ struct hierarchy_generator {
 	typedef typename helper<list>::result result;
 };
 
-template <typename type_list>
-struct _container : 
-	public hierarchy_generator<
-		type_list,
-		object_hierarchy_helper
-	>::result
+template <typename type_list, typename inherited>
+struct _container : public inherited
 {
-	typedef typename hierarchy_generator<
-		type_list,
-		object_hierarchy_helper
-	>::result inherited;
-
 	template <typename Type>
 	struct derived {
 		template <typename T>
@@ -858,4 +849,15 @@ struct _container :
 };
 
 template <typename type_list>
-struct _smart_container : public _container<typename Loki::TL::NoDuplicates<type_list>::Result> {};
+struct smart_container_helper : public 
+	_container<
+		type_list,
+		typename hierarchy_generator<
+			type_list,
+			object_hierarchy_helper
+		>::result
+	>
+{};
+
+template <typename type_list>
+struct smart_container : public smart_container_helper<typename Loki::TL::NoDuplicates<type_list>::Result> {};

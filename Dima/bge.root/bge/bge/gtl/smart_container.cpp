@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: smart_container->cpp
+//	Module 		: smart_container.cpp
 //	Created 	: 22->10->2004
 //  Modified 	: 22->10->2004
 //	Author		: Dmitriy Iassenev
@@ -15,11 +15,11 @@
 
 #include "smart_container_types.h"
 
-typedef _smart_container<final_object_type_list> smart_container;
+typedef smart_container<final_object_type_list> vertex_container;
 
-int __cdecl main()
+void test_smart_container()
 {
-	smart_container		container0, container1;
+	vertex_container	container0, container1;
 
 	VertexA				*a = new VertexA();
 	a->x				= 0;
@@ -42,8 +42,8 @@ int __cdecl main()
 
 	{
 		ui().log		("\n");
-		smart_container::iterator<VertexB>	I = container0.begin<VertexB>();
-		smart_container::iterator<VertexB>	E = container0.end<VertexB>();
+		vertex_container::iterator<VertexB>	I = container0.begin<VertexB>();
+		vertex_container::iterator<VertexB>	E = container0.end<VertexB>();
 		for ( ; I != E; ++I) {
 			(*I)->x	+= 1;
 			ui().log	("[%f][%f][%f]\n",(*I)->x,(*I)->y,(*I)->z);
@@ -55,8 +55,8 @@ int __cdecl main()
 	
 	{
 		ui().log		("\n");
-		smart_container::iterator<CPositionComponent>	I = container0.begin<CPositionComponent>();
-		smart_container::iterator<CPositionComponent>	E = container0.end<CPositionComponent>();
+		vertex_container::iterator<CPositionComponent>	I = container0.begin<CPositionComponent>();
+		vertex_container::iterator<CPositionComponent>	E = container0.end<CPositionComponent>();
 		for ( ; I != E; ++I) {
 			ui().log	("[%f][%f][%f]\n",(*I)->x,(*I)->y,(*I)->z);
 			
@@ -86,11 +86,11 @@ int __cdecl main()
 		}
 	}
 	{
-		IWriter			stream("smart_container.dat");
+		IWriter			stream("vertex_container.dat");
 		save_data		(container0,stream);
 	}
 	{
-		IReader			stream("smart_container.dat");
+		IReader			stream("vertex_container.dat");
 		load_data		(container1,stream);
 	}
 
@@ -116,8 +116,8 @@ int __cdecl main()
 		start_time		= timeGetTime();
 
 		{
-			smart_container::iterator<CPositionComponent>	I = container0.begin<CPositionComponent>();
-			smart_container::iterator<CPositionComponent>	E = container0.end<CPositionComponent>();
+			vertex_container::iterator<CPositionComponent>	I = container0.begin<CPositionComponent>();
+			vertex_container::iterator<CPositionComponent>	E = container0.end<CPositionComponent>();
 			for ( ; I != E; ++I) {
 				(*I)->x += rand();
 				(*I)->y += rand();
