@@ -1058,12 +1058,50 @@ void CAI_Soldier::FollowLeaderPatrol()
 		return;
 	}
 
-	if (AI_Path.bNeedRebuild)
-		vfBuildPathToDestinationPoint(0);
-	else
-		vfSearchForBetterPosition(SelectorFollowLeader,Squad,Leader);
-		
 	SetLessCoverLook(AI_Node);
+	
+	if (AI_Path.bNeedRebuild) {
+		Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
+		if (AI_Path.Nodes.size() > 1)
+			AI_Path.BuildTravelLine(Position());
+		else {
+			AI_Path.TravelPath.clear();
+			AI_Path.bNeedRebuild = FALSE;
+		}
+	}
+	else {
+		if (AI_NodeID == tpaPatrolPoints[m_iCurrentPoint]) {
+			int iSavePoint = m_iCurrentPoint;
+			m_iCurrentPoint = m_iCurrentPoint == tpaPatrolPoints.size() - 1 ? 0 : m_iCurrentPoint + 1;
+			
+			Fvector tTemp0, tTemp1;
+			Level().AI.UnpackPosition(tTemp0,Level().AI.Node(tpaPatrolPoints[m_iCurrentPoint])->p0);
+			Level().AI.UnpackPosition(tTemp1,Level().AI.Node(tpaPatrolPoints[m_iCurrentPoint])->p1);
+			tTemp1.average(tTemp0);
+			tTemp1.sub(vPosition);
+			
+			mk_rotation(tTemp1,r_torso_target);
+
+			if (fabsf(r_torso_current.yaw - r_torso_target.yaw) < TORSO_ANGLE_DELTA) {
+				AI_Path.bNeedRebuild = TRUE;
+				AI_Path.DestNode = tpaPatrolPoints[m_iCurrentPoint];
+			}
+			else {
+				m_iCurrentPoint = iSavePoint;
+				//r_torso_speed = PI/10;
+			}
+		}
+		else {
+			if (AI_Path.DestNode != tpaPatrolPoints[m_iCurrentPoint])
+				AI_Path.bNeedRebuild = TRUE;
+
+			AI_Path.DestNode = tpaPatrolPoints[m_iCurrentPoint];
+
+			if (!bfCheckPath(AI_Path))
+				AI_Path.bNeedRebuild = TRUE;
+
+		}
+	}
 
 	vfSetFire(false,Group);
 
@@ -1245,7 +1283,6 @@ void CAI_Soldier::Patrol()
 		return;
 	}
 
-	/////////////////////////
 	if (AI_Path.bNeedRebuild) {
 		Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
 		if (AI_Path.Nodes.size() > 1)
