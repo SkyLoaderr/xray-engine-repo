@@ -32,7 +32,7 @@ void _pSendAction(ParticleAction *S, PActionEnum type, int size)
 	}
 }
 
-PARTICLEDLL_API void __cdecl pAvoid(float magnitude, float epsilon, float look_ahead, 
+PARTICLEDLL_API void __stdcall pAvoid(float magnitude, float epsilon, float look_ahead, 
 			 PDomainEnum dtype,
 			 float a0, float a1, float a2,
 			 float a3, float a4, float a5,
@@ -48,7 +48,7 @@ PARTICLEDLL_API void __cdecl pAvoid(float magnitude, float epsilon, float look_a
 	_pSendAction(&S, PAAvoidID, sizeof(PAAvoid));
 }
 
-PARTICLEDLL_API void __cdecl pBounce(float friction, float resilience, float cutoff,
+PARTICLEDLL_API void __stdcall pBounce(float friction, float resilience, float cutoff,
 			 PDomainEnum dtype,
 			 float a0, float a1, float a2,
 			 float a3, float a4, float a5,
@@ -64,7 +64,7 @@ PARTICLEDLL_API void __cdecl pBounce(float friction, float resilience, float cut
 	_pSendAction(&S, PABounceID, sizeof(PABounce));
 }
 
-PARTICLEDLL_API void __cdecl pCopyVertexB(bool copy_pos, bool copy_vel)
+PARTICLEDLL_API void __stdcall pCopyVertexB(bool copy_pos, bool copy_vel)
 {
 	PACopyVertexB S;
 
@@ -74,7 +74,7 @@ PARTICLEDLL_API void __cdecl pCopyVertexB(bool copy_pos, bool copy_vel)
 	_pSendAction(&S, PACopyVertexBID, sizeof(PACopyVertexB));
 }
 
-PARTICLEDLL_API void __cdecl pDamping(float damping_x, float damping_y, float damping_z,
+PARTICLEDLL_API void __stdcall pDamping(float damping_x, float damping_y, float damping_z,
 			 float vlow, float vhigh)
 {
 	PADamping S;
@@ -86,7 +86,7 @@ PARTICLEDLL_API void __cdecl pDamping(float damping_x, float damping_y, float da
 	_pSendAction(&S, PADampingID, sizeof(PADamping));
 }
 
-PARTICLEDLL_API void __cdecl pExplosion(float center_x, float center_y, float center_z, float velocity,
+PARTICLEDLL_API void __stdcall pExplosion(float center_x, float center_y, float center_z, float velocity,
 				float magnitude, float stdev, float epsilon, float age)
 {
 	PAExplosion S;
@@ -104,7 +104,7 @@ PARTICLEDLL_API void __cdecl pExplosion(float center_x, float center_y, float ce
 	_pSendAction(&S, PAExplosionID, sizeof(PAExplosion));
 }
 
-PARTICLEDLL_API void __cdecl pFollow(float magnitude, float epsilon, float max_radius)
+PARTICLEDLL_API void __stdcall pFollow(float magnitude, float epsilon, float max_radius)
 {
 	PAFollow S;
 	
@@ -115,7 +115,7 @@ PARTICLEDLL_API void __cdecl pFollow(float magnitude, float epsilon, float max_r
 	_pSendAction(&S, PAFollowID, sizeof(PAFollow));
 }
 
-PARTICLEDLL_API void __cdecl pGravitate(float magnitude, float epsilon, float max_radius)
+PARTICLEDLL_API void __stdcall pGravitate(float magnitude, float epsilon, float max_radius)
 {
 	PAGravitate S;
 	
@@ -126,7 +126,7 @@ PARTICLEDLL_API void __cdecl pGravitate(float magnitude, float epsilon, float ma
 	_pSendAction(&S, PAGravitateID, sizeof(PAGravitate));
 }
 
-PARTICLEDLL_API void __cdecl pGravity(float dir_x, float dir_y, float dir_z)
+PARTICLEDLL_API void __stdcall pGravity(float dir_x, float dir_y, float dir_z)
 {
 	PAGravity S;
 	
@@ -135,7 +135,7 @@ PARTICLEDLL_API void __cdecl pGravity(float dir_x, float dir_y, float dir_z)
 	_pSendAction(&S, PAGravityID, sizeof(PAGravity));
 }
 
-PARTICLEDLL_API void __cdecl pJet(float center_x, float center_y, float center_z,
+PARTICLEDLL_API void __stdcall pJet(float center_x, float center_y, float center_z,
 		 float magnitude, float epsilon, float max_radius)
 {
 	_ParticleState &_ps = _GetPState();
@@ -151,7 +151,7 @@ PARTICLEDLL_API void __cdecl pJet(float center_x, float center_y, float center_z
 	_pSendAction(&S, PAJetID, sizeof(PAJet));
 }
 
-PARTICLEDLL_API void __cdecl pKillOld(float age_limit, bool kill_less_than)
+PARTICLEDLL_API void __stdcall pKillOld(float age_limit, bool kill_less_than)
 {
 	PAKillOld S;
 	
@@ -161,7 +161,7 @@ PARTICLEDLL_API void __cdecl pKillOld(float age_limit, bool kill_less_than)
 	_pSendAction(&S, PAKillOldID, sizeof(PAKillOld));
 }
 
-PARTICLEDLL_API void __cdecl pMatchVelocity(float magnitude, float epsilon, float max_radius)
+PARTICLEDLL_API void __stdcall pMatchVelocity(float magnitude, float epsilon, float max_radius)
 {
 	PAMatchVelocity S;
 	
@@ -172,14 +172,14 @@ PARTICLEDLL_API void __cdecl pMatchVelocity(float magnitude, float epsilon, floa
 	_pSendAction(&S, PAMatchVelocityID, sizeof(PAMatchVelocity));
 }
 
-PARTICLEDLL_API void __cdecl pMove()
+PARTICLEDLL_API void __stdcall pMove()
 {
 	PAMove S;
 	
 	_pSendAction(&S, PAMoveID, sizeof(PAMove));
 }
 
-PARTICLEDLL_API void __cdecl pOrbitLine(float p_x, float p_y, float p_z,
+PARTICLEDLL_API void __stdcall pOrbitLine(float p_x, float p_y, float p_z,
 				float axis_x, float axis_y, float axis_z,
 				float magnitude, float epsilon, float max_radius)
 {
@@ -195,7 +195,7 @@ PARTICLEDLL_API void __cdecl pOrbitLine(float p_x, float p_y, float p_z,
 	_pSendAction(&S, PAOrbitLineID, sizeof(PAOrbitLine));
 }
 
-PARTICLEDLL_API void __cdecl pOrbitPoint(float center_x, float center_y, float center_z,
+PARTICLEDLL_API void __stdcall pOrbitPoint(float center_x, float center_y, float center_z,
 				 float magnitude, float epsilon, float max_radius)
 {
 	PAOrbitPoint S;
@@ -208,7 +208,7 @@ PARTICLEDLL_API void __cdecl pOrbitPoint(float center_x, float center_y, float c
 	_pSendAction(&S, PAOrbitPointID, sizeof(PAOrbitPoint));
 }
 
-PARTICLEDLL_API void __cdecl pRandomAccel(PDomainEnum dtype,
+PARTICLEDLL_API void __stdcall pRandomAccel(PDomainEnum dtype,
 				 float a0, float a1, float a2,
 				 float a3, float a4, float a5,
 				 float a6, float a7, float a8)
@@ -220,7 +220,7 @@ PARTICLEDLL_API void __cdecl pRandomAccel(PDomainEnum dtype,
 	_pSendAction(&S, PARandomAccelID, sizeof(PARandomAccel));
 }
 
-PARTICLEDLL_API void __cdecl pRandomDisplace(PDomainEnum dtype,
+PARTICLEDLL_API void __stdcall pRandomDisplace(PDomainEnum dtype,
 					 float a0, float a1, float a2,
 					 float a3, float a4, float a5,
 					 float a6, float a7, float a8)
@@ -232,7 +232,7 @@ PARTICLEDLL_API void __cdecl pRandomDisplace(PDomainEnum dtype,
 	_pSendAction(&S, PARandomDisplaceID, sizeof(PARandomDisplace));
 }
 
-PARTICLEDLL_API void __cdecl pRandomVelocity(PDomainEnum dtype,
+PARTICLEDLL_API void __stdcall pRandomVelocity(PDomainEnum dtype,
 					 float a0, float a1, float a2,
 					 float a3, float a4, float a5,
 					 float a6, float a7, float a8)
@@ -244,7 +244,7 @@ PARTICLEDLL_API void __cdecl pRandomVelocity(PDomainEnum dtype,
 	_pSendAction(&S, PARandomVelocityID, sizeof(PARandomVelocity));
 }
 
-PARTICLEDLL_API void __cdecl pRestore(float time_left)
+PARTICLEDLL_API void __stdcall pRestore(float time_left)
 {
 	PARestore S;
 	
@@ -253,7 +253,7 @@ PARTICLEDLL_API void __cdecl pRestore(float time_left)
 	_pSendAction(&S, PARestoreID, sizeof(PARestore));
 }
 
-PARTICLEDLL_API void __cdecl pSink(bool kill_inside, PDomainEnum dtype,
+PARTICLEDLL_API void __stdcall pSink(bool kill_inside, PDomainEnum dtype,
 		  float a0, float a1, float a2,
 		  float a3, float a4, float a5,
 		  float a6, float a7, float a8)
@@ -266,7 +266,7 @@ PARTICLEDLL_API void __cdecl pSink(bool kill_inside, PDomainEnum dtype,
 	_pSendAction(&S, PASinkID, sizeof(PASink));
 }
 
-PARTICLEDLL_API void __cdecl pSinkVelocity(bool kill_inside, PDomainEnum dtype,
+PARTICLEDLL_API void __stdcall pSinkVelocity(bool kill_inside, PDomainEnum dtype,
 				  float a0, float a1, float a2,
 				  float a3, float a4, float a5,
 				  float a6, float a7, float a8)
@@ -279,7 +279,7 @@ PARTICLEDLL_API void __cdecl pSinkVelocity(bool kill_inside, PDomainEnum dtype,
 	_pSendAction(&S, PASinkVelocityID, sizeof(PASinkVelocity));
 }
 
-PARTICLEDLL_API void __cdecl pSource(float particle_rate, PDomainEnum dtype,
+PARTICLEDLL_API void __stdcall pSource(float particle_rate, PDomainEnum dtype,
 			 float a0, float a1, float a2,
 			 float a3, float a4, float a5,
 			 float a6, float a7, float a8)
@@ -292,6 +292,7 @@ PARTICLEDLL_API void __cdecl pSource(float particle_rate, PDomainEnum dtype,
 	S.position = pDomain(dtype, a0, a1, a2, a3, a4, a5, a6, a7, a8);
 	S.positionB = _ps.VertexB;
 	S.size = _ps.Size;
+	S.rot = _ps.Rot;
 	S.velocity = _ps.Vel;
 	S.color = _ps.Color;
 	S.alpha = _ps.Alpha;
@@ -302,7 +303,7 @@ PARTICLEDLL_API void __cdecl pSource(float particle_rate, PDomainEnum dtype,
 	_pSendAction(&S, PASourceID, sizeof(PASource));
 }
 
-PARTICLEDLL_API void __cdecl pSpeedLimit(float min_speed, float max_speed)
+PARTICLEDLL_API void __stdcall pSpeedLimit(float min_speed, float max_speed)
 {
 	PASpeedLimit S;
 
@@ -312,7 +313,7 @@ PARTICLEDLL_API void __cdecl pSpeedLimit(float min_speed, float max_speed)
 	_pSendAction(&S, PASpeedLimitID, sizeof(PASpeedLimit));
 }
 
-PARTICLEDLL_API void __cdecl pTargetColor(float color_x, float color_y, float color_z,
+PARTICLEDLL_API void __stdcall pTargetColor(float color_x, float color_y, float color_z,
 				 float alpha, float scale)
 {
 	PATargetColor S;
@@ -324,7 +325,7 @@ PARTICLEDLL_API void __cdecl pTargetColor(float color_x, float color_y, float co
 	_pSendAction(&S, PATargetColorID, sizeof(PATargetColor));
 }
 
-PARTICLEDLL_API void __cdecl pTargetSize(float size_x, float size_y, float size_z,
+PARTICLEDLL_API void __stdcall pTargetSize(float size_x, float size_y, float size_z,
 						 float scale_x, float scale_y, float scale_z)
 {
 	PATargetSize S;
@@ -335,7 +336,18 @@ PARTICLEDLL_API void __cdecl pTargetSize(float size_x, float size_y, float size_
 	_pSendAction(&S, PATargetSizeID, sizeof(PATargetSize));
 }
 
-PARTICLEDLL_API void __cdecl pTargetVelocity(float vel_x, float vel_y, float vel_z, float scale)
+PARTICLEDLL_API void __stdcall pTargetRotate(float rot_x, float rot_y, float rot_z,
+										 float scale_x, float scale_y, float scale_z)
+{
+	PATargetRotate S;
+
+	S.rot = pVector(rot_x, rot_y, rot_z);
+	S.scale = pVector(scale_x, scale_y, scale_z);
+
+	_pSendAction(&S, PATargetRotateID, sizeof(PATargetRotate));
+}
+
+PARTICLEDLL_API void __stdcall pTargetVelocity(float vel_x, float vel_y, float vel_z, float scale)
 {
 	PATargetVelocity S;
 	
@@ -347,7 +359,7 @@ PARTICLEDLL_API void __cdecl pTargetVelocity(float vel_x, float vel_y, float vel
 
 // If in immediate mode, quickly add a vertex.
 // If building an action list, call pSource.
-PARTICLEDLL_API void __cdecl pVertex(float x, float y, float z)
+PARTICLEDLL_API void __stdcall pVertex(float x, float y, float z)
 {
 	_ParticleState &_ps = _GetPState();
 
@@ -362,18 +374,19 @@ PARTICLEDLL_API void __cdecl pVertex(float x, float y, float z)
 		return;
 	
 	pVector pos(x, y, z);
-	pVector siz, vel, col, posB;
+	pVector siz, rot, vel, col, posB;
 	if(_ps.vertexB_tracks)
 		posB = pos;
 	else
 		_ps.VertexB.Generate(posB);
 	_ps.Size.Generate(siz);
+	_ps.Rot.Generate(rot);
 	_ps.Vel.Generate(vel);
 	_ps.Color.Generate(col);
-	_ps.pgrp->Add(pos, posB, siz, vel, col, _ps.Alpha, _ps.Age);
+	_ps.pgrp->Add(pos, posB, siz, rot, vel, col, _ps.Alpha, _ps.Age);
 }
 
-PARTICLEDLL_API void __cdecl pVortex(float center_x, float center_y, float center_z,
+PARTICLEDLL_API void __stdcall pVortex(float center_x, float center_y, float center_z,
 			 float axis_x, float axis_y, float axis_z,
 			 float magnitude, float epsilon, float max_radius)
 {

@@ -21,6 +21,7 @@ struct Particle
 	pVector pos;
 	pVector posB;
 	pVector size;
+	pVector rot;
 	pVector vel;
 	pVector velB;	// Used to compute binormal, normal, etc.
 	pVector color;	// Color must be next to alpha so glColor4fv works.
@@ -42,7 +43,7 @@ struct ParticleGroup
 	}
 	
 	inline bool Add(const pVector &pos, const pVector &posB,
-		const pVector &size, const pVector &vel, const pVector &color,
+		const pVector &size, const pVector &rot, const pVector &vel, const pVector &color,
 		const float alpha = 1.0f,
 		const float age = 0.0f)
 	{
@@ -53,6 +54,7 @@ struct ParticleGroup
 			list[p_count].pos = pos;
 			list[p_count].posB = posB;
 			list[p_count].size = size;
+			list[p_count].rot = rot;
 			list[p_count].vel = vel;
 			list[p_count].velB = vel;	// XXX This should be fixed.
 			list[p_count].color = color;
@@ -120,6 +122,7 @@ enum PActionEnum
 	PASpeedLimitID,		// 
 	PATargetColorID,	// 
 	PATargetSizeID,		// 
+	PATargetRotateID,	// 
 	PATargetVelocityID,	// 
 	PAVortexID,			// 
 	action_enum_force_dword = DWORD(-1)
@@ -339,6 +342,7 @@ struct PASource : public ParticleAction
 	pDomain position;	// Choose a position in this domain.
 	pDomain positionB;	// Choose a positionB in this domain.
 	pDomain size;		// Choose a size in this domain.
+	pDomain rot;		// Choose a rotation in this domain.
 	pDomain velocity;	// Choose a velocity in this domain.
 	pDomain color;		// Choose a color in this domain.
 	float alpha;		// Alpha of all generated particles
@@ -364,6 +368,14 @@ struct PATargetSize : public ParticleAction
 	pVector size;		// Size to shift towards
 	pVector scale;		// Amount to shift by per frame (1 == all the way)
 	
+	ExecMethod
+};
+
+struct PATargetRotate : public ParticleAction
+{
+	pVector rot;		// Rotation to shift towards
+	pVector scale;		// Amount to shift by per frame (1 == all the way)
+
 	ExecMethod
 };
 
@@ -411,6 +423,7 @@ struct _ParticleState
 	pDomain Vel;
 	pDomain VertexB;
 	pDomain Color;
+	pDomain Rot;
 	float Alpha;
 	float Age;
 	float AgeSigma;
@@ -439,9 +452,9 @@ inline _ParticleState &_GetPState()
 
 // All entry points call this to get their particle state.
 // For the non-MP case this is practically a no-op.
-extern "C" PARTICLEDLL_API _ParticleState& __cdecl _GetPState();
-extern "C" PARTICLEDLL_API ParticleGroup* __cdecl _GetGroupPtr(int p_group_num);
-extern "C" PARTICLEDLL_API PAHeader* __cdecl _GetListPtr(int action_list_num);
+extern "C" PARTICLEDLL_API _ParticleState& __stdcall _GetPState();
+extern "C" PARTICLEDLL_API ParticleGroup* __stdcall _GetGroupPtr(int p_group_num);
+extern "C" PARTICLEDLL_API PAHeader* __stdcall _GetListPtr(int action_list_num);
 #endif
 
 #pragma pack( pop ) // push 4
