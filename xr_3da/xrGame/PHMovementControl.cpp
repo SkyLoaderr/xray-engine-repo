@@ -40,20 +40,21 @@ CPHMovementControl::CPHMovementControl(void)
 	gcontact_HealthLost = 0;
 	fContactSpeed		= 0.f;
 
-	m_character=xr_new<CPHSimpleCharacter>();
+	m_character=NULL;
 }
 
 CPHMovementControl::~CPHMovementControl(void)
 {
+	if(m_character)
 	m_character->Destroy();
-	xr_delete(m_character);
+	DeleteCharacterObject();
 }
 
 //static Fvector old_pos={0,0,0};
 //static bool bFirst=true;
 
 void CPHMovementControl::Calculate(Fvector& vAccel,float ang_speed,float jump,float dt,bool bLight){
-
+	
     vPosition=m_character->IPosition();
 
 	vAccel.y=jump;
@@ -84,6 +85,40 @@ void CPHMovementControl::Calculate(Fvector& vAccel,float ang_speed,float jump,fl
 	bSleep=false;
 	
 	
+}
+
+void CPHMovementControl::Calculate(const Fvector& desired,float dt){
+
+	vPosition=m_character->IPosition();
+	CPHStalkerCharacter* pStalkerCharacter=dynamic_cast<CPHStalkerCharacter*>(m_character);
+	
+	pStalkerCharacter->SetDesiredPosition(desired);
+	pStalkerCharacter->BringToDesired(dt);
+
+
+	vVelocity =m_character->GetVelocity(); 
+	fActualVelocity=vVelocity.magnitude();
+	gcontact_Was=m_character->ContactWas();
+	fContactSpeed=0.f;
+	//if(gcontact_Was)
+	{
+		fContactSpeed=m_character->ContactVelocity();
+		//m_character->ContactVelocity()=0.f;
+		gcontact_Power				= fContactSpeed/fMaxCrashSpeed;
+
+		gcontact_HealthLost			= 0;
+		if (fContactSpeed>fMinCrashSpeed) 
+		{
+			//float k=10000.f/(B-A);
+			//float dh=_sqrt((dv-A)*k);
+			gcontact_HealthLost = 
+				(100*(fContactSpeed-fMinCrashSpeed))/(fMaxCrashSpeed-fMinCrashSpeed);
+		}
+	}
+	CheckEnvironment(vPosition);
+	bSleep=false;
+
+
 }
 
 void CPHMovementControl::Load					(LPCSTR section){
@@ -152,4 +187,20 @@ void	CPHMovementControl::SetEnvironment( int enviroment,int old_enviroment){
 	break;
 	case 2: eOldEnvironment=peInAir;
 	}
+}
+
+void	CPHMovementControl::AllocateCharacterObject(CharacterType type)
+{
+	switch(type)
+	{
+	case actor:			m_character = xr_new<CPHSimpleCharacter>	();
+	case ai_stalker:	m_character = xr_new<CPHStalkerCharacter>	();
+	}
+m_character->SetMas(fMass);
+m_character->SetPosition(vPosition);
+}
+
+void	CPHMovementControl::DeleteCharacterObject()
+{
+	xr_delete(m_character);
 }

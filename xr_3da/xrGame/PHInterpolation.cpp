@@ -130,3 +130,13 @@ q.slerp(qRotations[0],qRotations[1],ph_world->frame_time/fixed_step);
 
 rot.rotation(q);
 }
+
+void CPHInterpolation::ResetPositions()
+{
+qRotations.assign(qRotations.begin(),qRotations.end());
+}
+
+void CPHInterpolation::ResetRotations()
+{
+qPositions.assign(qPositions.begin(),qPositions.end());
+}

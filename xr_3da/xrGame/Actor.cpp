@@ -100,6 +100,7 @@ CActor::CActor() : CEntityAlive()
 	m_saved_dir.set(0,0,0);
 	m_saved_impulse=0.f;
 	m_vehicle				=	NULL;
+	ph_Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::actor);
 #ifdef DEBUG
 	Device.seqRender.Add(this,REG_PRIORITY_LOW);
 #endif
@@ -305,6 +306,7 @@ void CActor::net_Import		(NET_Packet& P)					// import from server
 BOOL CActor::net_Spawn		(LPVOID DC)
 {
 	if (!inherited::net_Spawn(DC))	return FALSE;
+
 	ph_Movement.CreateCharacter();
 	ph_Movement.SetPhysicsRefObject(this);
 	ph_Movement.SetPLastMaterial(&last_gmtl_id);
@@ -1082,6 +1084,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 		if ((0==(mstate_real&mcCrouch))&&(mstate_wf&mcCrouch))
 		{
 			mstate_real			|=	mcCrouch;
+			ph_Movement.EnableCharacter();
 			ph_Movement.ActivateBox(1);
 			//ph_Movement.ActivateBox(1);
 		}

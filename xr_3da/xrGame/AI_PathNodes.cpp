@@ -400,12 +400,19 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 	if ((TravelPath.empty()) || (TravelPath.size() - 1 <= TravelStart))	{
 		fSpeed = 0;
 #ifndef NO_PHYSICS_IN_AI_MOVE
-		if(Me->Movement.IsCharacterEnabled())
+		//if(Me->Movement.IsCharacterEnabled())
 		{
 		motion.set(0,0,0);
-		Me->Movement.Calculate(motion,0,0,0,0);
+		Me->Movement.GetDesiredPos(p_dest);
+		Me->Movement.Calculate(p_dest,dt);
 		Me->Movement.GetPosition(p_dest);
 		Me->UpdateTransform	();
+		if (Me->Movement.gcontact_HealthLost)	
+		{
+			Fvector d;
+			d.set(0,1,0);
+			Me->Hit	(Me->Movement.gcontact_HealthLost,d,Me,0,p_dest,0);
+		}
 		}
 #endif
 		return;
@@ -414,8 +421,8 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 	if (dt<EPS)			return;
 	float	dist		=	speed*dt;
 	float	dist_save	=	dist;
-	p_dest				=	p_src;
-
+	//p_dest				=	p_src;
+	Me->Movement.GetDesiredPos(p_dest);
 	// move full steps
 	Fvector	mdir,target;
 	target.set		(TravelPath[TravelStart+1].P);
@@ -464,24 +471,27 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 	{
 		if(!Me->Movement.TryPosition(p_dest))//!Me->Movement.TryPosition(p_dest)
 		{
-			motion.mul			(mdir,speed*10.f/mdir.magnitude());
-			Me->Movement.Calculate(motion,0,0,0,0);
+			//motion.mul			(mdir,speed*10.f/mdir.magnitude());
+			//Me->Movement.Calculate(motion,0,0,0,0);
+			Me->Movement.Calculate(p_dest,dt);
 			Me->Movement.GetPosition(p_dest);
 			if (Me->Movement.gcontact_HealthLost)	
 			{
-				Me->Hit	(Me->Movement.gcontact_HealthLost,mdir,Me,-1,p_dest,0);
+				Me->Hit	(Me->Movement.gcontact_HealthLost,mdir,Me,0,p_dest,0);
 			}
 		}
 
 	}
 	else
 	{
-		motion.mul			(mdir,speed*10.f/mdir.magnitude());
-		Me->Movement.Calculate(motion,0,0,0,0);
+		//motion.mul			(mdir,speed*10.f/mdir.magnitude());
+		//Me->Movement.Calculate(motion,0,0,0,0);
+
+		Me->Movement.Calculate(p_dest,dt);
 		Me->Movement.GetPosition(p_dest);
 		if (Me->Movement.gcontact_HealthLost)	
 		{
-			Me->Hit	(Me->Movement.gcontact_HealthLost,mdir,Me,-1,p_dest,0);
+			Me->Hit	(Me->Movement.gcontact_HealthLost,mdir,Me,0,p_dest,0);
 		}
 	}
 #endif

@@ -11,6 +11,8 @@ static const PH_INTERPOLATION_POINTS=2;
 void	InterpolatePosition	(Fvector& pos);
 void	UpdatePositions		();
 void	UpdateRotations		();
+void	ResetPositions		();
+void	ResetRotations		();
 void	InterpolateRotation	(Fmatrix& rot);
 private:
 	dBodyID m_body;

@@ -13,6 +13,7 @@
 CAI_Stalker::CAI_Stalker			()
 {
 	Init();
+	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai_stalker);
 }
 
 CAI_Stalker::~CAI_Stalker			()
@@ -256,6 +257,8 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	#ifndef NO_PHYSICS_IN_AI_MOVE
 	Movement.CreateCharacter();
 	Movement.SetPhysicsRefObject(this);
+	Movement.SetPosition	(vPosition);
+	Movement.SetVelocity	(0,0,0);
 	#endif
 	
 	Movement.SetPosition	(vPosition);

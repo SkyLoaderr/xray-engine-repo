@@ -171,7 +171,7 @@ virtual		void		InitContact							(dContact* c)		;
 virtual		void		StepFrameUpdate						(dReal step)		;
 /////////////////CPHCharacter////////////////////////////////////////////
 public:
-virtual ~CPHSimpleCharacter(){};
+virtual ~CPHSimpleCharacter(){Destroy();};
 virtual		bool		ContactWas							(){if(b_meet_control) 
 																{b_meet_control=false;return true;}
 																else return false	;}
@@ -223,7 +223,13 @@ typedef CPHSimpleCharacter	inherited;
 
 Fvector m_vDesiredPosition;
 public:
-
+virtual		void		SetPosition							(Fvector pos);
+virtual		void		SetDesiredPosition					(const Fvector& pos){m_vDesiredPosition.set(pos);}
+virtual		void		GetDesiredPosition					(Fvector& dpos)
+{
+	dpos.set(m_vDesiredPosition);
+}
+virtual		void		BringToDesired						(float time,float force=1.f);
 //virtual void Calculate();
 
 

@@ -16,7 +16,11 @@ public:
 		peAtWall,
 		peInAir
 	};
-	
+		enum CharacterType
+	{
+		actor,
+		ai_stalker
+	};
 private:
 	void				CheckEnvironment	(const Fvector& V);
 
@@ -59,6 +63,10 @@ public:
 	BOOL				gcontact_Was;			// Приземление
 	float				gcontact_Power;			// Насколько сильно ударились
 	float				gcontact_HealthLost;	// Скоко здоровья потеряли
+
+	void				AllocateCharacterObject(CharacterType type);
+	void				DeleteCharacterObject();
+
 	void				CreateCharacter()		{	
 													dVector3 size={aabb.x2-aabb.x1,aabb.y2-aabb.y1,aabb.z2-aabb.z1};
 													m_character->Create(size);
@@ -108,6 +116,7 @@ public:
 	void				SetParent		(CObject* P){ pObject = P; }
 
 	void				SetMass			(float M)	{ fMass = M;
+													if(m_character)
 													  m_character->SetMas(fMass);
 													}
 	float				GetMass			()			{ return fMass;	}
@@ -135,16 +144,22 @@ public:
 		P.set			(vPosition);
 		R =				aabb.getradius();
 	}
-	bool				TryPosition		(Fvector& pos){return m_character->TryPosition(pos);}
-	bool				IsCharacterEnabled(){return m_character->IsEnabled();}
-	void				Calculate		(Fvector& vAccel, float ang_speed, float jump, float dt, bool bLight);
-//	void				Move			(Fvector& Dest, Fvector& Motion, BOOL bDynamic=FALSE){};
-	void				SetApplyGravity	(BOOL flag){ bIsAffectedByGravity=flag; }
-	void				GetDeathPosition(Fvector& pos){pos.set( m_character->DeathPosition());}
-	void		SetEnvironment( int enviroment,int old_enviroment);
-	void		ApplyImpulse(const Fvector& dir,const dReal P){m_character->ApplyImpulse(dir,P);};
-	void		SetJumpUpVelocity(float velocity){m_character->SetJupmUpVelocity(velocity);}
-	void		EnableCharacter(){m_character->Enable();}
+	bool				TryPosition				(Fvector& pos)															{return m_character->TryPosition(pos);}
+	bool				IsCharacterEnabled		()																		{return m_character->IsEnabled();}
+	void				Calculate				(Fvector& vAccel, float ang_speed, float jump, float dt, bool bLight);
+	void				Calculate				(const Fvector& desired,float dt);
+//	void				Move					(Fvector& Dest, Fvector& Motion, BOOL bDynamic=FALSE){};
+	void				SetApplyGravity			(BOOL flag)																{ bIsAffectedByGravity=flag; }
+	void				GetDeathPosition		(Fvector& pos)															{pos.set( m_character->DeathPosition());}
+	void				SetEnvironment			( int enviroment,int old_enviroment);
+	void				ApplyImpulse			(const Fvector& dir,const dReal P)										{m_character->ApplyImpulse(dir,P);};
+	void				SetJumpUpVelocity		(float velocity)														{m_character->SetJupmUpVelocity(velocity);}
+	void				EnableCharacter			()																		{m_character->Enable();}
+	void				GetDesiredPos			(Fvector& dpos)
+	{
+		CPHStalkerCharacter* pStalker_Character=dynamic_cast<CPHStalkerCharacter*>(m_character);
+		pStalker_Character->GetDesiredPosition(dpos);
+	}
 	CPHMovementControl(void);
 	~CPHMovementControl(void);
 };

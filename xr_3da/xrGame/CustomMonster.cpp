@@ -633,8 +633,7 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 
 
 
-	Movement.SetPosition	(vPosition);
-	Movement.SetVelocity	(0,0,0);
+
 	xrSE_Enemy* E			= (xrSE_Enemy*)DC;
 
 	AI_Path.DestNode		= AI_NodeID;

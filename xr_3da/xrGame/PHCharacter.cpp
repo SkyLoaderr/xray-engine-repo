@@ -15,7 +15,7 @@ const float CLAMB_DISTANCE=0.5f;
 const float JUMP_UP_VELOCITY=6.0f;//5.6f;
 const float JUMP_INCREASE_VELOCITY_RATE=1.2f;
 static u32 lastMaterial;
-static float object_demage_factor=12.f;
+static float object_demage_factor=4.f;
 void dBodyAngAccelFromTorqu(const dBodyID body, dReal* ang_accel, const dReal* torque){
       dMass m;
       dMatrix3 invI;
@@ -27,6 +27,7 @@ void dBodyAngAccelFromTorqu(const dBodyID body, dReal* ang_accel, const dReal* t
 
 CPHCharacter::CPHCharacter(void)
 {
+m_acceleration.set(0,0,0);
 b_external_impulse=false;
 m_phys_ref_object=NULL;
 p_lastMaterial=&lastMaterial;
@@ -82,6 +83,7 @@ dis_count_f=0;
 
 CPHCharacter::~CPHCharacter(void)
 {
+
 }
 
 void		CPHCharacter::ApplyImpulse(const Fvector& dir,const dReal P){
@@ -559,9 +561,13 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 		if(object){
 		const dReal* vel=dBodyGetLinearVel(m_body);
 		dReal c_vel;
-	//	if(bo1)
-	///	{
-			dBodyID b=dGeomGetBody(c->geom.g2);
+		dBodyID b;
+
+		if(bo1)
+			b=dGeomGetBody(c->geom.g2);
+		else
+			b=dGeomGetBody(c->geom.g1);
+
 			dMass m;
 			dBodyGetMass(b,&m);
 			const dReal* obj_vel=dBodyGetLinearVel(b);
@@ -962,7 +968,9 @@ if(!b_exist) return;
 	m_safe_position[0]=pos.x;
 	m_safe_position[1]=pos.y+m_radius;
 	m_safe_position[2]=pos.z;
+	
 	dBodySetPosition(m_body,pos.x,pos.y+m_radius,pos.z);
+	m_body_interpolation.ResetPositions();
 }
 
 bool CPHSimpleCharacter::TryPosition(Fvector pos){
@@ -1323,6 +1331,7 @@ void	CPHCharacter::Disable(){
 
 void __stdcall CarHitCallback(bool& do_colide,dContact& c)
 {
+	/*
 	dxGeomUserData* usr_data_1=NULL;
 	dxGeomUserData* usr_data_2=NULL;
 	if(dGeomGetClass(c.geom.g1)==dGeomTransformClass){
@@ -1386,5 +1395,41 @@ void __stdcall CarHitCallback(bool& do_colide,dContact& c)
 		}
 	}
 
+*/
+}
+void CPHStalkerCharacter::		SetPosition							(Fvector pos)	
+{
+	m_vDesiredPosition.set(pos);
+	inherited::SetPosition(pos);
 
+}
+
+void CPHStalkerCharacter::BringToDesired(float time,float force)
+{
+	Fvector pos,move;
+	pos=GetPosition();
+
+	move.sub(m_vDesiredPosition,pos);
+	move.y=0.f;
+	float dist=move.magnitude();
+
+
+	if(dist>EPS_L*100.f)
+	{
+		SetMaximumVelocity(dist/time);
+		move.mul(1.f/dist);
+		SetAcceleration(move);
+	}
+	else if(dist>EPS_L*10.f)
+	{
+		SetMaximumVelocity(dist*dist*dist);
+		move.mul(1.f/dist);
+		SetAcceleration(move);
+	}
+	else
+	{
+		move.set(0,0,0);
+		SetMaximumVelocity(0);
+		SetAcceleration(move);
+	}
 }
