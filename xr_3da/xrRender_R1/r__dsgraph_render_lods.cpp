@@ -27,7 +27,7 @@ IC u32	color					(Fvector& N, u32 rgbh, u8 sun, u32 Alpha)
 	rgb.set						(float(color_get_R(rgbh)),float(color_get_G(rgbh)),float(color_get_B(rgbh)));
 	rgb.div						(127.f);
 	float h						= float(color_get_A(rgbh))/127.f;
-	float s						= float(sun)/127.f;
+	float s						= 0.9f * float(sun)/127.f;
 	C.set						(c_ambient);
 	C.mad						(c_lmap,rgb);
 	C.mad						(c_hemi,h);
