@@ -58,6 +58,7 @@ void CTexture::Load(LPCSTR cName)
 
 	dwMemoryUsage					= 0;
 	if (0==stricmp(cName,"$null"))	return;
+	if (0!=strstr(cName,"$user$"))	return;
 
 	// Check for AVI
 	FILE_NAME fn;
