@@ -108,7 +108,6 @@ BOOL CDemoPlay::Process(Fvector &P, Fvector &D, Fvector &N, float& fFov, float& 
 	}
 	else
 	{
-		log				("--------------- aaaaaaaaaaa");
 		fStartTime		+=	Device.fTimeDelta;
 		
 		float	ip;
