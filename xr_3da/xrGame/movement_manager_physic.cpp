@@ -105,7 +105,12 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 				Hit	(movement_control->gcontact_HealthLost,mdir,this,movement_control->ContactBone(),dest_position,0);
 		}
 		else
+		{
 			movement_control->b_exect_position=true;
+			Fvector velocity=mdir;
+			velocity.mul(speed);
+			movement_control->SetVelocity(velocity);
+		}
 	}
 	else {
 //		movement_control->Calculate(CDetailPathManager::path(),CDetailPathManager::path()[CDetailPathManager::curr_travel_point_index()].m_linear_speed,CDetailPathManager::curr_travel_point_index(),precision);
