@@ -154,13 +154,73 @@ public:
 	u32			m_dwLastBestNode;
 	typedef		NodeLink* iterator;
 	SAIMapData	tData;
-				CAIMapShortestPathNode	(SAIMapData &tAIMapData);
-	void		begin					(u32 dwNode, iterator &tStart, iterator &tEnd);
-	u32			get_value				(iterator &tIterator);
-	bool		bfCheckIfAccessible		(u32 dwNode);
-	float		ffEvaluate				(u32 dwStartNode, u32 dwFinishNode, iterator &tIterator);
-	float		ffAnticipate			(u32 dwStartNode);
-	float		ffAnticipate			();
+	IC CAIMapShortestPathNode(SAIMapData &tAIMapData)
+	{
+		tData					= tAIMapData;
+		m_dwLastBestNode		= u32(-1);
+		NodeCompressed &tNode1	= *Node(tData.dwFinishNode);
+		x3						= (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
+		y3						= (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
+		z3						= (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
+	}
+
+	IC void begin(u32 dwNode, CAIMapShortestPathNode::iterator &tIterator, CAIMapShortestPathNode::iterator &tEnd)
+	{
+		tEnd = (tIterator = (NodeLink *)((BYTE *)Node(dwNode) + sizeof(NodeCompressed))) + Node(dwNode)->links;
+	}
+
+	IC u32 get_value(CAIMapShortestPathNode::iterator &tIterator)
+	{
+		return(UnpackLink(*tIterator));
+	}
+
+	IC bool bfCheckIfAccessible(u32 dwNode)
+	{
+		return(q_mark_bit[dwNode]);
+	}
+
+	IC float ffEvaluate(u32 dwStartNode, u32 dwFinishNode, iterator &tIterator)
+	{
+		if (m_dwLastBestNode != dwStartNode) {
+			m_dwLastBestNode = dwStartNode;
+			NodeCompressed &tNode0 = *Node(dwStartNode), &tNode1 = *Node(dwFinishNode);
+			
+			x1 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
+			y1 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
+			z1 = (float)(tNode0.p1.z) + (float)(tNode0.p0.z);
+			
+			x2 = (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
+			y2 = (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
+			z2 = (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
+
+			return(_sqrt((float)(m_fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + m_fYSize2*_sqr(y2 - y1))));
+		}
+		else {
+			NodeCompressed &tNode1 = *Node(dwFinishNode);
+
+			x2 = (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
+			y2 = (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
+			z2 = (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
+
+			return(_sqrt((float)(m_fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + m_fYSize2*_sqr(y2 - y1))));
+		}
+	}
+
+	IC float ffAnticipate(u32 dwStartNode)
+	{
+		NodeCompressed &tNode0 = *Node(dwStartNode);
+		
+		x2 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
+		y2 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
+		z2 = (float)(tNode0.p1.z) + (float)(tNode0.p0.z);
+		
+		return(_sqrt((float)(m_fSize2*(_sqr(x3 - x2) + _sqr(z3 - z2)) + m_fYSize2*_sqr(y3 - y2))));
+	}
+
+	IC float ffAnticipate()
+	{
+		return(_sqrt((float)(m_fSize2*(_sqr(x3 - x2) + _sqr(z3 - z2)) + m_fYSize2*_sqr(y3 - y2))));
+	}
 };
 
 class CGraphThread : public CThread
@@ -169,6 +229,7 @@ class CGraphThread : public CThread
 	u32					m_dwEnd;
 	u32					m_dwAStarStaticCounter;
 	SNode				*m_tpHeap;
+	SNode				**m_tppHeap;
 	SIndexNode			*m_tpIndexes;
 	float				m_fMaxDistance;
 	CCriticalSection	*m_tpCriticalSection;
@@ -179,12 +240,15 @@ public:
 	CGraphThread(u32 ID, u32 dwStart, u32 dwEnd, float fMaxDistance, CCriticalSection &tCriticalSection) : CThread(ID)
 	{
 		m_dwAStarStaticCounter	= 0;
-		u32 S1					= (m_header.count)*sizeof(SNode);
+		u32 S1					= (m_header.count + 2)*sizeof(SNode);
 		m_tpHeap				= (SNode *)xr_malloc(S1);
 		ZeroMemory				(m_tpHeap,S1);
 		u32 S2					= (m_header.count)*sizeof(SIndexNode);
 		m_tpIndexes				= (SIndexNode *)xr_malloc(S2);
 		ZeroMemory				(m_tpIndexes,S2);
+		u32 S3					= (m_header.count)*sizeof(SNode *);
+		m_tppHeap				= (SNode **)xr_malloc(S1);
+		ZeroMemory				(m_tpHeap,S1);
 		
 		m_dwStart				= dwStart;
 		m_dwEnd					= dwEnd;
@@ -213,13 +277,11 @@ public:
 				if (tCurrentGraphVertex.tPoint.distance_to(tNeighbourGraphVertex.tPoint) < m_fMaxDistance) {
 					try {
 						fDistance = ffCheckPositionInDirection(tCurrentGraphVertex.dwNodeID,tCurrentGraphVertex.tPoint,tNeighbourGraphVertex.tPoint,m_fMaxDistance);
-//						m_tpCriticalSection->Enter();
-//						Msg("%d : %d",i,j);
-//						m_tpCriticalSection->Leave();
 						if (fDistance == MAX_VALUE) {
 							SAIMapData			tData;
 							tData.dwFinishNode	= tNeighbourGraphVertex.dwNodeID;
 							m_tpMapPath.vfFindOptimalPath(
+								m_tppHeap,
 								m_tpHeap,
 								m_tpIndexes,
 								m_dwAStarStaticCounter,

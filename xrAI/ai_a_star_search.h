@@ -270,7 +270,7 @@ public:
 		fDistance = MAX_VALUE;
 	}
 };
-/**/
+/**
 #pragma pack(push,4)
 typedef struct tagSNode {
 	int			ucOpenCloseMask:8;
@@ -308,6 +308,7 @@ public:
 	{
 		// initialization
 		dwAStarStaticCounter++;
+		u32 dwMaxCount		= m_header.count + 2;
 
 		u32					dwHeap = 0;
 		CTemplateNode		tTemplateNode(tData);
@@ -336,7 +337,7 @@ public:
 
 		tpOpenedEnd->tpOpenedPrev = tpTemp;
 		
-		while (tpOpenedList->tpOpenedNext != tpOpenedEnd) {
+		while (true) {
 			
 			// finding the node being estimated as the cheapest among the opened ones
 			tpBestNode = tpOpenedList->tpOpenedNext;
@@ -486,13 +487,13 @@ public:
 					tpBestNode->tpForward = tpTemp2;
 				}
 			}
-			if (dwHeap > m_header.count)
+			if (dwHeap > dwMaxCount)
 				break;
 		}
 		fValue = MAX_VALUE;
 	}
 };
-/**
+/**/
 #pragma pack(push,4)
 typedef struct tagSNode {
 	int			ucOpenCloseMask:8;
@@ -520,37 +521,25 @@ public:
 
 template<class CTemplateNode, class SData> class CAStarSearch {
 private:
-	u32						m_dwMaxNodeCount;
-	u32						m_dwHeapSize;
-	SNode					**m_tppHeap;
+	u32					m_dwHeapSize;
 public:
-	CAStarSearch(u32 dwMaxNodeCount)
-	{
-		m_dwMaxNodeCount	= dwMaxNodeCount;
-		m_tppHeap			= (SNode **)xr_malloc((dwMaxNodeCount + 1)*sizeof(SNode *));
-	}
-	
-	~CAStarSearch()
-	{
-		_FREE(m_tppHeap);
-	}
-
 	void vfFindOptimalPath(
-			SNode			*tpHeap,
-			SIndexNode		*tpIndexes,
-			u32				&dwAStarStaticCounter,
-			SData			&tData,
-			u32				dwStartNode, 
-			u32				dwGoalNode, 
-			float			fMaxValue, 
-			float			&fValue, 
-			vector<u32>		&tpaNodes,
-			bool			bUseMarks)
+			SNode		**m_tppHeap,
+			SNode		*tpHeap,
+			SIndexNode	*tpIndexes,
+			u32			&dwAStarStaticCounter,
+			SData		&tData,
+			u32			dwStartNode, 
+			u32			dwGoalNode, 
+			float		&fValue, 
+			float		fMaxValue, 
+			Fvector		tStartPosition, 
+			Fvector		tFinishPosition, 
+			vector<u32> &tpaNodes)
 	{
-		Device.Statistic.AI_Path.Begin();
-		
 		// initialization
 		dwAStarStaticCounter++;
+		u32 dwMaxCount		= m_header.count + 2;
 
 		u32					dwHeap = 0;
 		CTemplateNode		tTemplateNode(tData);
@@ -580,20 +569,19 @@ public:
 			
 			// checking if the distance is not too large
 			if (tpBestNode->f >= fMaxValue) {
-				fValue = fMaxValue;
-				tpaNodes.clear();
+				fValue = MAX_VALUE;
 				return;
 			}
 
 			// check if that node is our goal
 			int iBestIndex = tpBestNode->iIndex;
 			if (iBestIndex == (int)dwGoalNode) {
+				fValue = tpBestNode->g;
 
-				fValue = tpBestNode->f;
 				tpTemp1 = tpBestNode;
 				tpTemp = tpTemp1->tpBack;
-				for (u32 i=1; tpTemp; tpTemp = tpTemp->tpBack, i++) 
-					tpTemp1 = tpTemp;
+
+				for (u32 i=1; tpTemp; tpTemp1 = tpTemp, tpTemp = tpTemp->tpBack, i++) ;
 
 				tpaNodes.resize(i);
 
@@ -602,8 +590,36 @@ public:
 				tpTemp = tpTemp1->tpBack;
 				for (u32 j=1; tpTemp; tpTemp = tpTemp->tpBack, j++)
 					tpaNodes[i - j] = tpTemp->iIndex;
-					
-				Device.Statistic.AI_Path.End();
+
+				float fCumulativeDistance = 0, fLastDirectDistance = 0, fDirectDistance;
+				Fvector tPosition = tStartPosition;
+				u32 dwNode = tpaNodes[0];
+				for (i=1; i<(int)tpaNodes.size(); i++) {
+					fDirectDistance = ffCheckPositionInDirection(dwNode,tPosition,tfGetNodeCenter(tpaNodes[i]),fMaxValue);
+					if (fDirectDistance == MAX_VALUE) {
+						if (fLastDirectDistance == 0) {
+							fCumulativeDistance += ffGetDistanceBetweenNodeCenters(dwNode,tpaNodes[i]);
+							dwNode = tpaNodes[i];
+						}
+						else {
+							fCumulativeDistance += fLastDirectDistance;
+							fLastDirectDistance = 0;
+							dwNode = tpaNodes[i-- - 1];
+						}
+						tPosition = tfGetNodeCenter(dwNode);
+					}
+					else 
+						fLastDirectDistance = fDirectDistance;
+					if (fCumulativeDistance + fLastDirectDistance >= fMaxValue) {
+						fValue = MAX_VALUE;
+						return;
+					}
+				}
+				fDirectDistance = ffCheckPositionInDirection(dwNode,tPosition,tFinishPosition,fMaxValue);
+				if (fDirectDistance == MAX_VALUE)
+					fValue = fCumulativeDistance + fLastDirectDistance + tFinishPosition.distance_to(tfGetNodeCenter(tpaNodes[tpaNodes.size() - 1]));
+				else
+					fValue = fCumulativeDistance + fDirectDistance;
 				return;
 			}
 			
@@ -619,8 +635,6 @@ public:
 				// checking if that node is in the path of the BESTNODE ones
 				int iNodeIndex = tTemplateNode.get_value(tIterator);
 				// checking if that node the node of the moving object 
-				if ((bUseMarks) && (!tTemplateNode.bfCheckIfAccessible(iNodeIndex)))
-					continue;
 				// checking if that node is in the path of the BESTNODE ones
 				if (tpIndexes[iNodeIndex].dwTime == dwAStarStaticCounter) {
 					// check if this node is already in the opened list
@@ -660,13 +674,10 @@ public:
 					push_heap(m_tppHeap + 1,m_tppHeap + m_dwHeapSize + 1,CComparePredicate());
 				}
 			}
-			if (dwHeap > m_dwMaxNodeCount)
+			if (dwHeap > dwMaxCount)
 				break;
 		}
-		
-		tpaNodes.clear();
-		fValue = fMaxValue;
-		Device.Statistic.AI_Path.End();
+		fValue = MAX_VALUE;
 	}
 };
 /**/
