@@ -258,7 +258,7 @@ function update()
 			fly_away_time:setHMS( 0, 10, 0)
 			fly_away_time:add( game.get_game_time() )
 
-			wounded_spawn_time = device():time_global() + 5000
+			wounded_spawn_time = device():time_global() + 2000
 
 			state_init = false
 		end
