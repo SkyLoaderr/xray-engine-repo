@@ -119,11 +119,11 @@ int __cdecl CConsoleUI::log	(LPCSTR format, ...)
 
 void CConsoleUI::execute	(char argc, char *argv[])
 {
-	char s[128];
+	char s[128],c0,c1;
 	for (;;) {
 		log					("bge> ");
 		scanf				("%[^\n]s",s);
 		script().run_string	(s);
-		scanf				("%[^\r]s",s);
+		scanf				("%c",s);
 	}
 }
