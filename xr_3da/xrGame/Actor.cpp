@@ -37,7 +37,7 @@ DWORD psActorFlags=0;
 //--------------------------------------------------------------------
 void __stdcall CActor::SpinCallback(CBoneInstance* B)
 {
-	CActor*	A			= dynamic_cast<CActor*>(B->Callback_Param);
+	CActor*	A			= dynamic_cast<CActor*>(static_cast<CObject*>(B->Callback_Param));
 
 	Fmatrix				spin;
 	float				bone_yaw	= A->r_torso.yaw - A->r_model_yaw - A->r_model_yaw_delta;
