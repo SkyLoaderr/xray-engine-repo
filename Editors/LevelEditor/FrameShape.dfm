@@ -1,7 +1,7 @@
 object fraShape: TfraShape
   Left = 0
   Top = 0
-  Width = 123
+  Width = 443
   Height = 277
   VertScrollBar.Visible = False
   Align = alClient
@@ -19,7 +19,7 @@ object fraShape: TfraShape
   object paAppend: TPanel
     Left = 0
     Top = 0
-    Width = 123
+    Width = 443
     Height = 48
     Align = alTop
     Constraints.MaxWidth = 123
@@ -29,7 +29,7 @@ object fraShape: TfraShape
     object APHeadLabel1: TLabel
       Left = 1
       Top = 1
-      Width = 121
+      Width = 441
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -105,7 +105,7 @@ object fraShape: TfraShape
   object paEdit: TPanel
     Left = 0
     Top = 48
-    Width = 123
+    Width = 443
     Height = 47
     Align = alTop
     Constraints.MaxWidth = 123
@@ -115,7 +115,7 @@ object fraShape: TfraShape
     object Label1: TLabel
       Left = 1
       Top = 1
-      Width = 121
+      Width = 441
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -192,7 +192,7 @@ object fraShape: TfraShape
   object fsStorage: TFormStorage
     IniSection = 'FrameShape'
     Options = []
-    Version = 3
+    Version = 4
     StoredProps.Strings = (
       'paAppend.Tag'
       'paAppend.Height'

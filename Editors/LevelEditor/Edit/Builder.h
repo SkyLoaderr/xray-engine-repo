@@ -110,7 +110,7 @@ protected:
 
     bool 	BuildSkyModel			();
     bool 	BuildHOMModel			();
-    bool	BuildAIMapMask			();
+    bool	BuildAIMap				();
     BOOL	ParseStaticObjects		(ObjectList& lst, LPCSTR prefix=0);
     BOOL 	CompileStatic		   	();
 
@@ -126,6 +126,7 @@ public:
     BOOL 	MakeDetails				();
     BOOL 	MakeHOM					();
     BOOL 	MakeSkydome				();
+    BOOL	MakeAIMap				();
 };
 
 extern SceneBuilder Builder;

@@ -3,6 +3,8 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "HW.h"
 
 ENGINE_API CHW HW;
@@ -155,7 +157,7 @@ u32 CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 	P.MultiSampleQuality	= 0;
 
 	// Windoze
-    P.SwapEffect			= D3DSWAPEFFECT_DISCARD;
+    P.SwapEffect			= bWindowed?D3DSWAPEFFECT_COPY:D3DSWAPEFFECT_DISCARD;
 	P.hDeviceWindow			= m_hWnd;
     P.Windowed				= bWindowed;
 

@@ -10,8 +10,7 @@
 #include "EditObject.h"
 #include "EditMesh.h"
 #include "SceneObject.h"
-#include "fmesh.h"
-#include "std_classes.h"
+#include "ESceneAIMapTools.h"
 //----------------------------------------------------
 // some types
 bool SceneBuilder::BuildSkyModel(){
@@ -46,5 +45,14 @@ bool SceneBuilder::BuildHOMModel()
 	    F.save_to(hom_name.c_str());
     }
 	return bValid;
+}
+
+bool SceneBuilder::BuildAIMap(){
+	// build sky ogf
+    if (Scene.m_AIMap->Valid()){
+	    AnsiString fname = m_LevelPath+"build.aimap";
+        return Scene.m_AIMap->Export(fname.c_str());
+    }
+	return false;
 }
 

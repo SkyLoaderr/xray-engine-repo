@@ -1,8 +1,8 @@
 object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
-  Width = 151
-  Height = 799
+  Width = 443
+  Height = 713
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -33,7 +33,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 1
       Width = 123
-      Height = 164
+      Height = 153
       Hint = 'Scene commands'
       Align = alTop
       Color = 10528425
@@ -109,7 +109,7 @@ object fraLeftBar: TfraLeftBar
         Spacing = 3
         OnMouseDown = ebSceneFileMouseDown
       end
-      object ebSceneCompile: TExtBtn
+      object ebScene: TExtBtn
         Left = 2
         Top = 31
         Width = 120
@@ -138,11 +138,11 @@ object fraLeftBar: TfraLeftBar
         Margin = 3
         ParentFont = False
         Spacing = 3
-        OnMouseDown = ebSceneCompileMouseDown
+        OnMouseDown = ebSceneMouseDown
       end
       object ebObjectList: TExtBtn
         Left = 2
-        Top = 114
+        Top = 121
         Width = 120
         Height = 15
         Align = alNone
@@ -163,7 +163,7 @@ object fraLeftBar: TfraLeftBar
       end
       object ebPreferences: TExtBtn
         Left = 2
-        Top = 148
+        Top = 136
         Width = 120
         Height = 15
         Align = alNone
@@ -184,7 +184,7 @@ object fraLeftBar: TfraLeftBar
       end
       object ebLightAnimationEditor: TExtBtn
         Left = 2
-        Top = 97
+        Top = 106
         Width = 120
         Height = 15
         Align = alNone
@@ -205,7 +205,7 @@ object fraLeftBar: TfraLeftBar
       end
       object ebImages: TExtBtn
         Left = 2
-        Top = 63
+        Top = 76
         Width = 120
         Height = 15
         Align = alNone
@@ -236,7 +236,7 @@ object fraLeftBar: TfraLeftBar
       end
       object ebSounds: TExtBtn
         Left = 2
-        Top = 80
+        Top = 91
         Width = 120
         Height = 15
         Align = alNone
@@ -267,7 +267,7 @@ object fraLeftBar: TfraLeftBar
       end
       object ExtBtn2: TExtBtn
         Left = 2
-        Top = 47
+        Top = 61
         Width = 120
         Height = 15
         Align = alNone
@@ -296,9 +296,9 @@ object fraLeftBar: TfraLeftBar
         Spacing = 3
         OnMouseDown = ExtBtn2MouseDown
       end
-      object ebGame: TExtBtn
+      object ebCompile: TExtBtn
         Left = 2
-        Top = 131
+        Top = 46
         Width = 120
         Height = 15
         Align = alNone
@@ -307,7 +307,7 @@ object fraLeftBar: TfraLeftBar
         HotColor = 15790320
         BtnColor = 10528425
         CloseButton = False
-        Caption = 'Game'
+        Caption = 'Compile'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -325,12 +325,12 @@ object fraLeftBar: TfraLeftBar
         Margin = 3
         ParentFont = False
         Spacing = 3
-        OnMouseDown = ebGameMouseDown
+        OnMouseDown = ebCompileMouseDown
       end
     end
     object paEdit: TPanel
       Left = 1
-      Top = 165
+      Top = 154
       Width = 123
       Height = 128
       Align = alTop
@@ -570,9 +570,9 @@ object fraLeftBar: TfraLeftBar
     end
     object paTarget: TPanel
       Left = 1
-      Top = 293
+      Top = 282
       Width = 123
-      Height = 228
+      Height = 231
       Align = alTop
       Color = 10528425
       TabOrder = 2
@@ -1284,7 +1284,7 @@ object fraLeftBar: TfraLeftBar
         Spacing = 3
         OnClick = TargetClick
       end
-      object ebTargetDO: TExtBtn
+      object ebTargetShape: TExtBtn
         Left = 2
         Top = 91
         Width = 120
@@ -1296,7 +1296,7 @@ object fraLeftBar: TfraLeftBar
         BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
-        Caption = '6. Detail Objects'
+        Caption = '6. Shape'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -1345,9 +1345,9 @@ object fraLeftBar: TfraLeftBar
         Spacing = 3
         OnClick = TargetClick
       end
-      object ebTargetShape: TExtBtn
+      object ebTargetDO: TExtBtn
         Left = 2
-        Top = 196
+        Top = 199
         Width = 120
         Height = 15
         Align = alNone
@@ -1357,7 +1357,7 @@ object fraLeftBar: TfraLeftBar
         BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
-        Caption = '^3. Shape'
+        Caption = '^3. Detail Objects'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -1408,7 +1408,7 @@ object fraLeftBar: TfraLeftBar
       end
       object ebTargetAIMap: TExtBtn
         Left = 2
-        Top = 211
+        Top = 214
         Width = 120
         Height = 15
         Align = alNone
@@ -1470,7 +1470,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paSnapList: TPanel
       Left = 1
-      Top = 521
+      Top = 513
       Width = 123
       Height = 106
       Align = alTop
@@ -1608,7 +1608,7 @@ object fraLeftBar: TfraLeftBar
     IniSection = 'Left Bar'
     Options = []
     RegistryRoot = prLocalMachine
-    Version = 9
+    Version = 11
     OnSavePlacement = fsStorageSavePlacement
     StoredProps.Strings = (
       'paEdit.Tag'
@@ -1675,7 +1675,7 @@ object fraLeftBar: TfraLeftBar
       OnClick = Quit1Click
     end
   end
-  object pmSceneCompile: TMxPopupMenu
+  object pmScene: TMxPopupMenu
     Alignment = paCenter
     AutoPopup = False
     TrackButton = tbLeftButton
@@ -1700,49 +1700,9 @@ object fraLeftBar: TfraLeftBar
     object N8: TMenuItem
       Caption = '-'
     end
-    object Make1: TMenuItem
-      Caption = 'Compile'
-      object Build: TMenuItem
-        Caption = 'Build'
-        OnClick = ebBuildClick
-      end
-      object N23: TMenuItem
-        Caption = '-'
-      end
-      object MakeDetails: TMenuItem
-        Caption = 'Make Details'
-        OnClick = MakeDetailsClick
-      end
-      object MakeGame: TMenuItem
-        Caption = 'Make Game'
-        OnClick = ebMakeGameClick
-      end
-      object MakeHOM1: TMenuItem
-        Caption = 'Make HOM'
-        OnClick = MakeHOM1Click
-      end
-      object miMakeSkyDome: TMenuItem
-        Caption = 'Make Skydome'
-        OnClick = miMakeSkyDomeClick
-      end
-    end
-    object N9: TMenuItem
-      Caption = '-'
-    end
     object Validate1: TMenuItem
       Caption = 'Validate'
       OnClick = ebValidateSceneClick
-    end
-    object N21: TMenuItem
-      Caption = '-'
-    end
-    object ImportCompilerErrors: TMenuItem
-      Caption = 'Import Error List'
-      OnClick = ImportCompilerErrorsClick
-    end
-    object miClearErrorList: TMenuItem
-      Caption = 'Clear Error List'
-      OnClick = miClearErrorListClick
     end
     object N22: TMenuItem
       Caption = '-'
@@ -2060,7 +2020,7 @@ object fraLeftBar: TfraLeftBar
       OnClick = miPropertiesClick
     end
   end
-  object pmObjects: TMxPopupMenu
+  object pmCompile: TMxPopupMenu
     Alignment = paCenter
     AutoPopup = False
     TrackButton = tbLeftButton
@@ -2075,6 +2035,63 @@ object fraLeftBar: TfraLeftBar
     Style = msOwnerDraw
     Left = 85
     Top = 48
+    object MenuItem19: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem23: TMenuItem
+      Caption = 'Build'
+      OnClick = ebBuildClick
+    end
+    object MenuItem24: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem26: TMenuItem
+      Caption = 'Make Game'
+      OnClick = ebMakeGameClick
+    end
+    object MenuItem25: TMenuItem
+      Caption = 'Make Details'
+      OnClick = MakeDetailsClick
+    end
+    object MenuItem28: TMenuItem
+      Caption = 'Make Skydome'
+      OnClick = miMakeSkyDomeClick
+    end
+    object MenuItem27: TMenuItem
+      Caption = 'Make HOM'
+      OnClick = MakeHOM1Click
+    end
+    object MenuItem29: TMenuItem
+      Caption = 'Make AI-Map'
+      OnClick = MakeAIMap1Click
+    end
+    object MenuItem32: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem33: TMenuItem
+      Caption = 'Import Error List'
+      OnClick = ImportCompilerErrorsClick
+    end
+    object MenuItem34: TMenuItem
+      Caption = 'Clear Error List'
+      OnClick = miClearErrorListClick
+    end
+  end
+  object pmObjects: TMxPopupMenu
+    Alignment = paCenter
+    AutoPopup = False
+    TrackButton = tbLeftButton
+    MarginStartColor = 10921638
+    MarginEndColor = 2763306
+    BKColor = 10528425
+    SelColor = clBlack
+    SelFontColor = 10526880
+    SepHColor = 1644825
+    SepLColor = 13158600
+    LeftMargin = 10
+    Style = msOwnerDraw
+    Left = 85
+    Top = 62
     object MenuItem13: TMenuItem
       Caption = '-'
     end
@@ -2112,7 +2129,7 @@ object fraLeftBar: TfraLeftBar
     LeftMargin = 10
     Style = msOwnerDraw
     Left = 85
-    Top = 64
+    Top = 78
     object N11: TMenuItem
       Caption = '-'
     end
@@ -2153,7 +2170,7 @@ object fraLeftBar: TfraLeftBar
     LeftMargin = 10
     Style = msOwnerDraw
     Left = 85
-    Top = 82
+    Top = 96
     object MenuItem11: TMenuItem
       Caption = '-'
     end
@@ -2171,25 +2188,6 @@ object fraLeftBar: TfraLeftBar
     object UpdateEnvironmentGeometry1: TMenuItem
       Caption = 'Refresh Environment Geometry'
       OnClick = UpdateEnvironmentGeometry1Click
-    end
-  end
-  object pmGame: TMxPopupMenu
-    Alignment = paCenter
-    AutoPopup = False
-    TrackButton = tbLeftButton
-    MarginStartColor = 10921638
-    MarginEndColor = 2763306
-    BKColor = 10528425
-    SelColor = clBlack
-    SelFontColor = 10526880
-    SepHColor = 1644825
-    SepLColor = 13158600
-    LeftMargin = 10
-    Style = msOwnerDraw
-    Left = 85
-    Top = 137
-    object MenuItem18: TMenuItem
-      Caption = '-'
     end
   end
 end

@@ -68,6 +68,8 @@ public:
 
 	virtual void 	OnFrame			();
 
+	virtual void 	Select			(int  flag);
+
   	virtual bool 	Load			(IReader&);
 	virtual void 	Save			(IWriter&);
     virtual bool	ExportGame		(SExportStreams& data);

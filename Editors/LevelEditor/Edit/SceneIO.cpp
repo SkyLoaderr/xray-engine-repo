@@ -26,7 +26,7 @@
 #define CHUNK_LEVELOP       0x7711
 #define CHUNK_OBJECT_COUNT  0x7712
 #define CHUNK_DETAILOBJECTS 0x7713
-#define CHUNK_AIMAP			0x7714
+#define CHUNK_AIMAP			0x7715
 
 // level options
 #define CHUNK_LO_VERSION		0x7801
@@ -167,9 +167,11 @@ void EScene::Save(char *_FileName, bool bUndo){
 		F.close_chunk	();
     }
 
-    F.open_chunk	(CHUNK_AIMAP);
-    m_AIMap->Save	(F);
-    F.close_chunk	();
+    if (m_AIMap->IsNeedSave()){
+        F.open_chunk	(CHUNK_AIMAP);
+        m_AIMap->Save	(F);
+        F.close_chunk	();
+    }
 
 //	Msg("4: %d",F.tell());
     if (!bUndo){

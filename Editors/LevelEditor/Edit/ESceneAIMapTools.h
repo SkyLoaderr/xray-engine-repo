@@ -6,26 +6,12 @@
 
 #include "SceneCustomMTools.H"
 #include "xrLevel.H"
+#include "AIMapExport.H"
 
 // refs
 class ESceneAIMapTools;
 
 const DWORD InvalidNode		= (1<<24)-1;
-struct SAIParams
-{
-	float		fPatchSize;			// patch size
-	float		fTestHeight;		// test height (center of the "tester")
-	float		fCanUP;				// can reach point in up (dist)
-	float		fCanDOWN;			// can reach point down  (dist)
-	
-	SAIParams	()
-    {
-		fPatchSize		= 0.7f;
-		fTestHeight		= 1.0f;
-		fCanUP			= 1.5f;
-		fCanDOWN		= 4.0f;
-	}
-};
 
 #pragma pack(push,1)
 struct SAINode					// definition of "patch" or "node"
@@ -152,6 +138,7 @@ public:
 
     // validation
     virtual bool   		Valid					();
+    virtual bool   		IsNeedSave				();
 
     // events
 	virtual void   		OnFrame					();

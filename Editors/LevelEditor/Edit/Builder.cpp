@@ -61,6 +61,7 @@ BOOL SceneBuilder::Compile()
             VERIFY_COMPILE(BuildSkyModel(),				"Failed to build sky model.");
             VERIFY_COMPILE(WriteTextures(),				"Failed to write textures."); 				// only implicit lighted
             BuildHOMModel();
+			BuildAIMap();
         } while(0);
 
         if (!error_text.IsEmpty()) 	ELog.DlgMsg(mtError,error_text.c_str());
@@ -118,6 +119,21 @@ BOOL SceneBuilder::MakeSkydome()
     if (!error_text.IsEmpty()) 	ELog.DlgMsg(mtError,error_text.c_str());
     else if (UI.NeedAbort())	ELog.DlgMsg(mtInformation,"Building terminated.");
     else						ELog.DlgMsg(mtInformation,"Details succesfully exported.");
+
+	return error_text.IsEmpty();
+}
+//------------------------------------------------------------------------------
+
+BOOL SceneBuilder::MakeAIMap()
+{
+	AnsiString error_text;
+    do{
+		VERIFY_COMPILE(PreparePath(),				"Failed to prepare level path.");
+		VERIFY_COMPILE(BuildAIMap(),				"Failed to build AI-Map.");
+    }while(0);
+    if (!error_text.IsEmpty()) 	ELog.DlgMsg(mtError,error_text.c_str());
+    else if (UI.NeedAbort())	ELog.DlgMsg(mtInformation,"Building terminated.");
+    else						ELog.DlgMsg(mtInformation,"AI-Map succesfully exported.");
 
 	return error_text.IsEmpty();
 }

@@ -634,6 +634,7 @@ void EScene::OnFrame( float dT ){
     	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
     		(*_F)->OnFrame();
     }
+    m_AIMap->OnFrame();
 }
 
 void EScene::ClearObjects(bool bDestroy){

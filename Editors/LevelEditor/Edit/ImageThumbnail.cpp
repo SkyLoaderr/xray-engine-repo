@@ -170,30 +170,10 @@ bool EImageThumbnail::Load(LPCSTR src_name, LPCSTR path)
     R_ASSERT(F->find_chunk(THM_CHUNK_TYPE));
     m_Type	= THMType(F->r_u32());
 
-    if (IsTexture()){
-        R_ASSERT(F->find_chunk(THM_CHUNK_TEXTUREPARAM));
-        F->r					(&m_TexParams.fmt,sizeof(STextureParams::ETFormat));
-        m_TexParams.flags.set	(F->r_u32());
-        m_TexParams.border_color= F->r_u32();
-        m_TexParams.fade_color	= F->r_u32();
-        m_TexParams.fade_amount	= F->r_u32();
-        m_TexParams.mip_filter	= F->r_u32();
-        m_TexParams.width		= F->r_u32();
-        m_TexParams.height		= F->r_u32();
-
-        if (F->find_chunk(THM_CHUNK_TEXTURE_TYPE)){
-            m_TexParams.type	= (STextureParams::ETType)F->r_u32();
-        }
-
-        if (F->find_chunk(THM_CHUNK_DETAIL_EXT)){
-            F->r_stringZ			(m_TexParams.detail_name);
-            m_TexParams.detail_scale = F->r_float();
-        }
-    }else{
-        if (F->find_chunk(THM_CHUNK_OBJECTPARAM)){
-            m_TexParams.face_count 		= F->r_u32();
-            m_TexParams.vertex_count 	= F->r_u32();
-        }
+    switch (m_Type){
+    case EITObject: 	m_TexParams.LoadObj(*F); break;
+    case EITTexture:	m_TexParams.LoadTex(*F); break;
+    default: THROW;
     }
 
     m_Age = FS.get_file_age(fn.c_str());
@@ -216,32 +196,10 @@ void EImageThumbnail::Save(int age, LPCSTR path)
     F.w_u32			(m_Type);
 	F.close_chunk	();
 
-	if (IsTexture()){
-        F.open_chunk(THM_CHUNK_TEXTUREPARAM);
-        F.w			(&m_TexParams.fmt,sizeof(STextureParams::ETFormat));
-        F.w_u32		(m_TexParams.flags.get());
-        F.w_u32		(m_TexParams.border_color);
-        F.w_u32		(m_TexParams.fade_color);
-        F.w_u32		(m_TexParams.fade_amount);
-        F.w_u32		(m_TexParams.mip_filter);
-        F.w_u32		(m_TexParams.width);
-        F.w_u32		(m_TexParams.height);
-        F.close_chunk	();
-
-        F.open_chunk	(THM_CHUNK_TEXTURE_TYPE);
-        F.w_u32		(m_TexParams.type);
-        F.close_chunk	();
-
-
-        F.open_chunk	(THM_CHUNK_DETAIL_EXT);
-        F.w_stringZ		(m_TexParams.detail_name);
-        F.w_float		(m_TexParams.detail_scale);
-        F.close_chunk	();
-    }else{
-        F.open_chunk	(THM_CHUNK_OBJECTPARAM);
-        F.w_u32		(m_TexParams.face_count);
-        F.w_u32		(m_TexParams.vertex_count);
-        F.close_chunk	();
+    switch (m_Type){
+    case EITObject: 	m_TexParams.SaveObj(F); break;
+    case EITTexture:	m_TexParams.SaveTex(F); break;
+    default: THROW;
     }
 
 	AnsiString fn 	= m_Name;

@@ -14,7 +14,7 @@
 #define SOUND_LOCK_COLOR 	0x00FF0000
 //----------------------------------------------------
 
-#define SOUND_SOURCE_VERSION   			0x0012
+#define SOUND_SOURCE_VERSION   			0x0014
 //----------------------------------------------------
 #define SOUND_CHUNK_VERSION				0x1001
 #define SOUND_CHUNK_TYPE				0x1002
@@ -105,11 +105,12 @@ bool ESoundSource::Load(IReader& F)
 {
 	u32 version 	= 0;
 
-    R_ASSERT(F.r_chunk(SOUND_CHUNK_VERSION,&version));
-    if(version!=SOUND_SOURCE_VERSION){
-        ELog.DlgMsg( mtError, "ESoundSource: Unsupported version.");
-        return false;
-    }
+    if(F.r_chunk(SOUND_CHUNK_VERSION,&version)){
+        if(version!=SOUND_SOURCE_VERSION){
+            ELog.DlgMsg( mtError, "ESoundSource: Unsupported version.");
+            return false;
+        }
+    }else return false;
 
 	inherited::Load			(F);
 

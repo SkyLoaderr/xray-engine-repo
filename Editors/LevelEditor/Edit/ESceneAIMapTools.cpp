@@ -25,12 +25,12 @@ void SAINode::Load(IReader& F, ESceneAIMapTools* tools)
 	u32 			id;
     u16 			pl;
 	NodePosition 	np;
-    F.r				(&id,3); 			n1 = (SAINode*)UnpackLink(id);
-    F.r				(&id,3); 			n2 = (SAINode*)UnpackLink(id);
-    F.r				(&id,3); 			n3 = (SAINode*)UnpackLink(id);
-    F.r				(&id,3); 			n4 = (SAINode*)UnpackLink(id);
+    F.r				(&id,3); 			n1 = (SAINode*)tools->UnpackLink(id);
+    F.r				(&id,3); 			n2 = (SAINode*)tools->UnpackLink(id);
+    F.r				(&id,3); 			n3 = (SAINode*)tools->UnpackLink(id);
+    F.r				(&id,3); 			n4 = (SAINode*)tools->UnpackLink(id);
 	pl				= F.r_u16(); 		pvDecompress(Plane.n,pl);
-    F.r				(&np,sizeof(np)); 	UnpackPosition(Pos,np,tools->m_BBox,tools->m_Params);
+    F.r				(&np,sizeof(np)); 	tools->UnpackPosition(Pos,np,tools->m_BBox,tools->m_Params);
 	Plane.build		(Pos,Plane.n);
     flags.set		(F.r_u8());
 }
@@ -46,7 +46,7 @@ void SAINode::Save(IWriter& F, ESceneAIMapTools* tools)
     id = n3?(u32)n3->idx:InvalidNode; F.w(&id,3);
     id = n4?(u32)n4->idx:InvalidNode; F.w(&id,3);
     pl = pvCompress (Plane.n);	 F.w_u16(pl);
-	PackPosition	(np,Pos,tools->m_BBox,tools->m_Params); F.w(&np,sizeof(np));
+	tools->PackPosition	(np,Pos,tools->m_BBox,tools->m_Params); F.w(&np,sizeof(np));
     F.w_u8			(flags.get());
 }
 
@@ -216,6 +216,11 @@ void ESceneAIMapTools::Save(IWriter& F)
 bool ESceneAIMapTools::Valid()
 {
 	return !m_Nodes.empty();
+}
+
+bool ESceneAIMapTools::IsNeedSave()
+{
+	return (!m_Nodes.empty())||(!m_SnapObjects.empty())||(!m_Emitters.empty());
 }
 
 void ESceneAIMapTools::RemoveFromSnapList(CCustomObject* O)

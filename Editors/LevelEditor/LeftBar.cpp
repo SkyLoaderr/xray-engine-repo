@@ -410,6 +410,12 @@ void __fastcall TfraLeftBar::miMakeSkyDomeClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::MakeAIMap1Click(TObject *Sender)
+{
+	UI.Command( COMMAND_MAKE_AIMAP );
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfraLeftBar::ebSceneFileMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
@@ -417,10 +423,17 @@ void __fastcall TfraLeftBar::ebSceneFileMouseDown(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ebSceneCompileMouseDown(TObject *Sender,
+void __fastcall TfraLeftBar::ebSceneMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	FHelper.ShowPPMenu(pmSceneCompile,dynamic_cast<TExtBtn*>(Sender));
+	FHelper.ShowPPMenu(pmScene,dynamic_cast<TExtBtn*>(Sender));
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::ebCompileMouseDown(TObject *Sender,
+      TMouseButton Button, TShiftState Shift, int X, int Y)
+{
+	FHelper.ShowPPMenu(pmCompile,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
@@ -442,13 +455,6 @@ void __fastcall TfraLeftBar::ebSoundsMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
 	FHelper.ShowPPMenu(pmSounds,dynamic_cast<TExtBtn*>(Sender));
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::ebGameMouseDown(TObject *Sender,
-      TMouseButton Button, TShiftState Shift, int X, int Y)
-{
-	FHelper.ShowPPMenu(pmGame,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
@@ -627,8 +633,6 @@ void __fastcall TfraLeftBar::miClearErrorListClick(TObject *Sender)
 	UI.Command(COMMAND_CLEAR_COMPILER_ERROR);
 }
 //---------------------------------------------------------------------------
-
-
 
 
 

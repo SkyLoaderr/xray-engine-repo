@@ -1,3 +1,5 @@
+#ifndef xrLevelH
+#define xrLevelH
 #pragma once
 
 enum fsL_Chunks {
@@ -80,3 +82,4 @@ const u32 XRCL_CURRENT_VERSION		=	14;
 const u32 XRCL_PRODUCTION_VERSION	=	9;
 const u32 CFORM_CURRENT_VERSION		=	3;
 const u32 XRAI_CURRENT_VERSION		=	3;
+#endif // xrLevelH

@@ -73,11 +73,7 @@ void CEditShape::SetScale(const Fvector& val)
 	if (shapes.size()==1){
 		switch (shapes[0].type){
 		case cfSphere:{
-        	Fvector a;  a.sub(val,FScale);
-            float v;
-        	if (_abs(a.x)>_abs(a.y)){ 	if (_abs(a.x)>_abs(a.z)) v = a.x; else v = a.z;
-            }else{		            	if (_abs(a.y)>_abs(a.z)) v = a.y; else v = a.z;}
-        	FScale.add(v);
+        	FScale.set(val.x,val.x,val.x);
         }break;
 		case cfBox:		FScale.set(val.x,val.y,val.z);	break;
         default: THROW;
@@ -318,6 +314,7 @@ void CEditShape::Render(int priority, bool strictB2F)
             if (strictB2F){
 				Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
                 u32 clr = Selected()?subst_alpha(m_DrawTranspColor, color_get_A(m_DrawTranspColor)*2):m_DrawTranspColor;
+                Fvector zero={0.f,0.f,0.f};
                 for (ShapeIt it=shapes.begin(); it!=shapes.end(); it++){
 					switch(it->type){
                     case cfSphere:{
@@ -328,7 +325,7 @@ void CEditShape::Render(int priority, bool strictB2F)
                         B.mulA				(_Transform());
 		                RCache.set_xform_world(B);
 		                Device.SetShader	(Device.m_WireShader);
-                        DU.DrawLineSphere	(S.P,S.R,m_DrawEdgeColor,true);
+                        DU.DrawLineSphere	(zero,1.f,m_DrawEdgeColor,true);
 		                Device.SetShader	(Device.m_SelectionShader);
                         DU.DrawIdentSphere	(clr);
                     }break;

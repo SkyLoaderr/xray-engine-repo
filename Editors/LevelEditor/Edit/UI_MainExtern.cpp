@@ -294,16 +294,25 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 		break;
     case COMMAND_MAKE_SKYDOME:
 		if( !Scene.locked() ){
-			if (mrYes==ELog.DlgMsg(mtConfirmation, TMsgDlgButtons()<<mbYes<<mbNo, "Are you sure to make skydome?"))
+			if (mrYes==ELog.DlgMsg(mtConfirmation, TMsgDlgButtons()<<mbYes<<mbNo, "Are you sure to export skydome?"))
                 Builder.MakeSkydome( );
         }else{
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
 		break;
+    case COMMAND_MAKE_AIMAP:
+		if( !Scene.locked() ){
+			if (mrYes==ELog.DlgMsg(mtConfirmation, TMsgDlgButtons()<<mbYes<<mbNo, "Are you sure to export ai-map?"))
+                Builder.MakeAIMap( );
+        }else{
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+    	break;
 	case COMMAND_MAKE_GAME:
 		if( !Scene.locked() ){
-			if (mrYes==ELog.DlgMsg(mtConfirmation, TMsgDlgButtons()<<mbYes<<mbNo, "Are you sure to make game?"))
+			if (mrYes==ELog.DlgMsg(mtConfirmation, TMsgDlgButtons()<<mbYes<<mbNo, "Are you sure to export game?"))
                 Builder.MakeGame( );
         }else{
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
@@ -312,7 +321,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 		break;
     case COMMAND_MAKE_DETAILS:
 		if( !Scene.locked() ){
-			if (mrYes==ELog.DlgMsg(mtConfirmation, TMsgDlgButtons()<<mbYes<<mbNo, "Are you sure to make details?"))
+			if (mrYes==ELog.DlgMsg(mtConfirmation, TMsgDlgButtons()<<mbYes<<mbNo, "Are you sure to export details?"))
 	            Builder.MakeDetails();
         }else{
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
@@ -321,7 +330,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
     	break;
 	case COMMAND_MAKE_HOM:
 		if( !Scene.locked() ){
-			if (mrYes==ELog.DlgMsg(mtConfirmation, TMsgDlgButtons()<<mbYes<<mbNo, "Are you sure to make HOM?"))
+			if (mrYes==ELog.DlgMsg(mtConfirmation, TMsgDlgButtons()<<mbYes<<mbNo, "Are you sure to export HOM?"))
 	            Builder.MakeHOM();
         }else{
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
@@ -501,7 +510,7 @@ bool __fastcall TUI::ApplyShortCutExt(WORD Key, TShiftState Shift)
             else if (Key=='I')    		COMMAND0(COMMAND_INVERT_SELECTION_ALL)         
             else if (Key=='1') 	 		COMMAND1(COMMAND_CHANGE_TARGET, etGroup)
             else if (Key=='2')			COMMAND1(COMMAND_CHANGE_TARGET, etPS)          
-            else if (Key=='3')			COMMAND1(COMMAND_CHANGE_TARGET, etShape)       
+            else if (Key=='3')  		COMMAND1(COMMAND_CHANGE_TARGET, etDO)          
             else if (Key=='4')			COMMAND1(COMMAND_CHANGE_TARGET,	etAIMap)		
         }
     }else{
@@ -510,10 +519,9 @@ bool __fastcall TUI::ApplyShortCutExt(WORD Key, TShiftState Shift)
         }else{
             if (Key=='1')     			COMMAND1(COMMAND_CHANGE_TARGET, etObject)      
             else if (Key=='2')  		COMMAND1(COMMAND_CHANGE_TARGET, etLight)       
-            else if (Key=='3')  		COMMAND1(COMMAND_CHANGE_TARGET, etSoundSrc)    
             else if (Key=='4')  		COMMAND1(COMMAND_CHANGE_TARGET, etSoundEnv)    
             else if (Key=='5')  		COMMAND1(COMMAND_CHANGE_TARGET, etGlow)        
-            else if (Key=='6')  		COMMAND1(COMMAND_CHANGE_TARGET, etDO)          
+            else if (Key=='6')			COMMAND1(COMMAND_CHANGE_TARGET, etShape)       
             else if (Key=='7')  		COMMAND1(COMMAND_CHANGE_TARGET, etSpawnPoint)  
             else if (Key=='8')  		COMMAND1(COMMAND_CHANGE_TARGET, etWay)         
             else if (Key=='9')  		COMMAND1(COMMAND_CHANGE_TARGET, etSector)      

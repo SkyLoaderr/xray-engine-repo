@@ -162,6 +162,12 @@ CSpawnPoint::~CSpawnPoint()
     OnDeviceDestroy();
 }
 
+void CSpawnPoint::Select(int  flag)
+{
+	inherited::Select(flag);
+    if (m_AttachedObject) m_AttachedObject->Select(flag);
+}
+
 void CSpawnPoint::SetPosition(const Fvector& pos)
 {
 	inherited::SetPosition	(pos);
