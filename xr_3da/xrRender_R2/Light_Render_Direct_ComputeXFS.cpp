@@ -29,7 +29,7 @@ void CLight_Render_Direct::compute_xfs	(u32 m_phase, light* L)
 	L->X.S.size					= SMAP_adapt_max;
 	L->X.S.transluent			= FALSE;
 	float	dist				= Device.vCameraPosition.distance_to(L->spatial.center)-L->spatial.radius;
-	float	ssa					= 0.333f * L->range*L->range / ((dist<=EPS)?EPS:dist*dist);
+	float	ssa					= 0.333f * L->range*L->range / (1.f+(dist<=EPS)?EPS:dist*dist);
 
 	// Compute intensity
 	float	intensity			= (L->color.r + L->color.g + L->color.b)/3.f;
