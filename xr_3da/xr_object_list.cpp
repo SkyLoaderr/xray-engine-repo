@@ -218,7 +218,13 @@ void		CObjectList::Destroy			( CObject*	O		)
 {
 	if (0==O)								return;
 	net_Unregister							(O);
-	o_remove								(objects_active,O);
-	o_remove								(objects_sleeping,O);
+
+	xr_vector<CObject*>::iterator _i		= std::find(objects_active.begin(),objects_active.end(),O);
+	if	(_i!=objects_active.end())			objects_active.erase	(_i);
+	else {
+		xr_vector<CObject*>::iterator _ii	= std::find(objects_sleeping.begin(),objects_sleeping.end(),O);
+		if	(_ii!=objects_sleeping.end())	objects_sleeping.erase	(_ii);
+		else	Device.fatal	("! Unregistered object being destroyed");
+	}
 	g_pGamePersistent->ObjectPool.destroy	(O);
 }
