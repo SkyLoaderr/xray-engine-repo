@@ -35,12 +35,14 @@ CxrD3D9Null::CxrD3D9Null()
 	return; 
 }
 */
-XRD3D9NULL_API IDirect3D9 *  Direct3DCreate9(UINT SDKVersion)
+
+ IDirect3D9 * WINAPI Direct3DCreate9(UINT SDKVersion)
 {
 	if (SDKVersion != D3D_SDK_VERSION)
 	{
 		return NULL;
 	}
-	return new IDirect3D9();
+	xrIDirect3D9* I = new xrIDirect3D9();
+	return I;
 }
 

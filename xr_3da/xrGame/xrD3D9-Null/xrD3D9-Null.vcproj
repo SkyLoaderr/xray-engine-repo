@@ -26,7 +26,7 @@
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;XRD3D9NULL_EXPORTS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
+				RuntimeLibrary="3"
 				UsePrecompiledHeader="3"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
@@ -36,8 +36,9 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="x:\D3D9-Null.dll"
+				OutputFile="x:\xrD3D9-Null.dll"
 				LinkIncremental="2"
+				ModuleDefinitionFile="xrD3D9-Null.def"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/xrD3D9-Null.pdb"
 				SubSystem="2"
@@ -84,6 +85,7 @@
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)/xrD3D9-Null.dll"
 				LinkIncremental="1"
+				ModuleDefinitionFile="D3D9-Null.def"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -136,6 +138,9 @@
 			</File>
 			<File
 				RelativePath=".\xrD3D9-Null.cpp">
+			</File>
+			<File
+				RelativePath=".\xrD3D9-Null.def">
 			</File>
 		</Filter>
 		<Filter

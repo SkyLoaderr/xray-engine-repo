@@ -17,6 +17,7 @@
 #include "d3d9types.h"
 #include "d3d9caps.h"
 //---------------------------------
+/*
 #ifndef DIRECT3D_VERSION
 #define DIRECT3D_VERSION         0x0900
 #endif  //DIRECT3D_VERSION
@@ -24,7 +25,7 @@
 #define D3D_SDK_VERSION   (32 | 0x80000000)
 
 
-/*
+
 // This class is exported from the xrD3D9-Null.dll
 class XRD3D9NULL_API CxrD3D9Null {
 public:
@@ -41,7 +42,9 @@ XRD3D9NULL_API int fnxrD3D9Null(void);
 
 
 
-extern "C" XRD3D9NULL_API IDirect3D9* FAR PASCAL  Direct3DCreate9(UINT SDKVersion);
+extern "C" {
+	 IDirect3D9* WINAPI  Direct3DCreate9(UINT SDKVersion);
+};
 
 
 
