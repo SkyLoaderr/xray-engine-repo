@@ -322,6 +322,25 @@
 				RelativePath="xrPool.h">
 			</File>
 		</Filter>
+		<Filter
+			Name="Shaders (HLSL)"
+			Filter="">
+			<File
+				RelativePath="shaders\D\cm_dbg_accumulator.s">
+			</File>
+			<File
+				RelativePath="shaders\D\cm_dbg_normals.s">
+			</File>
+			<File
+				RelativePath="shaders\D\fat_base.s">
+			</File>
+			<File
+				RelativePath="shaders\D\light_direct.s">
+			</File>
+			<File
+				RelativePath="shaders\D\smap_direct.s">
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\ShadowMap.cpp">
 		</File>
@@ -336,18 +355,6 @@
 		</File>
 		<File
 			RelativePath="VS_Constants.h">
-		</File>
-		<File
-			RelativePath="shaders\D\cm_dbg_accumulator.s">
-		</File>
-		<File
-			RelativePath="shaders\D\cm_dbg_normals.s">
-		</File>
-		<File
-			RelativePath="shaders\D\fat_base.s">
-		</File>
-		<File
-			RelativePath="shaders\D\light_direct.s">
 		</File>
 		<File
 			RelativePath="r_constants.cpp">
