@@ -26,7 +26,7 @@ void xrMU_Model::Load(CStream& F)
 	}
 }
 
-void xrMU_Model::load_create_face(Fvector& P1, Fvector& P2, Fvector& P3, b_face& B)
+xrMU_Model::_face* xrMU_Model::load_create_face(Fvector& P1, Fvector& P2, Fvector& P3, b_face& B)
 {
 	_face*	_F			= mu_faces.create();
 	_F->dwMaterial		= WORD(B.dwMaterial);
@@ -40,4 +40,12 @@ void xrMU_Model::load_create_face(Fvector& P1, Fvector& P2, Fvector& P3, b_face&
 	// tc
 	_F->tc				= B.t;
 	_F->CalcNormal		();
+
+	// register
+	m_faces.push_back	(_F);
+}
+
+xrMU_Model::_vertex* xrMU_Model::load_create_vertex(Fvector& P)
+{
+	
 }
