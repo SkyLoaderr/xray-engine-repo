@@ -46,7 +46,6 @@ void CLevel::g_sv_Spawn		(NET_Packet* Packet)
 	CObject*	O		= Objects.LoadOne	(s_name);
 	if (0==O || (!O->net_Spawn	(E))) 
 	{
-		F_entity_Destroy		(E);
 		O->net_Destroy			( );
 		Objects.DestroyObject	(O);
 		Msg						("! Failed to spawn entity '%s'",s_name);
@@ -75,4 +74,7 @@ void CLevel::g_sv_Spawn		(NET_Packet* Packet)
 			}
 		}
 	}
+
+	//
+	F_entity_Destroy		(E);
 }
