@@ -229,5 +229,81 @@ void CAI_Chimera::Exec_Movement		(float dt)
 void CAI_Chimera::UpdateCL()
 {
 	inherited::UpdateCL();
+	if(m_pPhysicsShell&&m_pPhysicsShell->bActive)
+	{
+		XFORM().set(m_pPhysicsShell->mXFORM);
 
+	}
+}
+void CAI_Chimera::shedule_Update(u32 dt)
+{
+	inherited::shedule_Update(dt);
+	////physics/////////////////////////////////////////////////////////////////////////////////////
+	if(m_pPhysicsShell)
+	{	
+		if(m_pPhysicsShell->bActive)
+		{
+
+			//	if(m_saved_impulse!=0.f)
+			//	{
+			//	m_pPhysicsShell->applyImpulseTrace(m_saved_hit_position,m_saved_hit_dir,m_saved_impulse*1.f,m_saved_element);
+			//	m_saved_impulse=0.f;
+			//	}
+
+
+			//	if(skel_ddelay==0)
+			//	{
+			//		m_pPhysicsShell->set_JointResistance(5.f*hinge_force_factor1);//5.f*hinge_force_factor1
+			//m_pPhysicsShell->SetAirResistance()
+
+			//	}
+			//if(skel_ddelay==-10)
+			//{
+			//m_pPhysicsShell->set_JointResistance(5.f*hinge_force_factor1);//5.f*hinge_force_factor1
+			//m_pPhysicsShell->SetAirResistance()
+
+			//}
+
+			//	skel_ddelay--;
+
+
+
+		}
+
+	}
+	else if (!g_Alive())
+	{
+
+		CreateSkeleton();
+#ifndef NO_PHYSICS_IN_AI_MOVE
+
+		Movement.DestroyCharacter();
+		PHSetPushOut();
+#endif
+	}
+
+}
+
+
+void CAI_Chimera::CreateSkeleton()
+{
+	if(m_pPhysicsShell) return;
+#ifndef NO_PHYSICS_IN_AI_MOVE
+	Movement.GetDeathPosition	(Position());
+	//Position().y+=.1f;
+	//#else
+	//Position().y+=0.1f;
+#endif
+
+	if (!Visual())
+		return;
+	m_pPhysicsShell		= P_create_Shell();
+	m_pPhysicsShell->build_FromKinematics(PKinematics(Visual()));
+	m_pPhysicsShell->mXFORM.set(XFORM());
+	//m_pPhysicsShell->SetAirResistance(0.002f*skel_airr_lin_factor,
+	//	0.3f*skel_airr_ang_factor);
+	m_pPhysicsShell->SmoothElementsInertia(0.3f);
+
+	m_pPhysicsShell->set_PhysicsRefObject(this);
+	m_pPhysicsShell->Activate(true);
 }

@@ -166,9 +166,9 @@ private:
 	BOOL					m_bCannibalism;
 	BOOL					m_bEatMemberCorpses;
 	u32						m_dwEatCorpseInterval;
-	
+	void					CreateSkeleton();
 	virtual void			UpdateCL();
-
+	virtual void			shedule_Update(u32 dt);
 	bool					bShowDeath;
 
 	u32						m_dwLieIndex;
