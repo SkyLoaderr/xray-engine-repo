@@ -344,7 +344,7 @@ xr_motivator.storage[self.object:id()].reactions = {
 --    xr_meet.add_to_binder(self.object)
 --    xr_tradeseller.add_to_binder(self.object)
     xr_kamp.add_to_binder(self.object)
-    xr_commander.add_to_binder(self.object)
+--    xr_commander.add_to_binder(self.object)
     xr_guard.add_to_binder(self.object)
     xr_scout.add_to_binder(self.object)
     xr_follower.add_to_binder (self.object)
