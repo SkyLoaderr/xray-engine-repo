@@ -18,6 +18,7 @@ CObject*	CObjectList::Create				( LPCSTR	name	)
 		return				O;
 	} else {
 		// Create and load new instance
+		Msg					("! Uncached loading '%s'...",name);
 		CObject* O			=	(CObject*) NEW_INSTANCE(CLS);
 		O->Load				(name);
 		objects.push_back	(O);
