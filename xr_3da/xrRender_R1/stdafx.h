@@ -17,4 +17,5 @@
 #include "..\vis_common.h"
 #include "..\render.h"
 #include "..\xr_creator.h"
+#include "..\blenders\blender.h"
 #include "FStaticRender.h"

@@ -130,7 +130,7 @@ public:
 	virtual void					add_Wallmark			(Shader* S, const Fvector& P, float s, CDB::TRI* T);
 	
 	//
-	virtual CBlender*				blender_create			(CLSID cls);
+	virtual CBlender*				blender_create			(CLASS_ID cls);
 	virtual void					blender_destroy			(CBlender* &);
 
 	// Lighting

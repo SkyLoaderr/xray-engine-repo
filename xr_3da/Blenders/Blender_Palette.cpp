@@ -57,6 +57,7 @@ void		CBlender::CreatePalette(vector<CBlender*> &palette)
 
 #ifndef _EDITOR
 // Engine
+#include "..\render.h"
 CBlender*	CBlender::Create	(CLASS_ID cls)
 {
 	return ::Render->blender_create	(cls);
