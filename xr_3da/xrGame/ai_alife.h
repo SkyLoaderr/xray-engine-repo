@@ -75,8 +75,8 @@ public:
 	virtual BOOL					Ready						();
 	virtual LPCSTR					cName						();
 	virtual void					Update						(u32 dt);	
-	virtual void					Load						();
-			void					Save						();
+	virtual void					Load						(LPCSTR caSaveName = SAVE_NAME);
+			void					Save						(LPCSTR caSaveName = SAVE_NAME);
 			void					Generate					();
 			void					vfCreateObject				(CALifeDynamicObject *tpALifeObject);
 			void					vfSwitchObjectOnline		(CALifeDynamicObject *tpALifeObject);

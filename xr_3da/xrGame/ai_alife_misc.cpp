@@ -26,13 +26,13 @@ void CAI_ALife::vfAssignGraphPosition(CALifeMonsterAbstract	*tpALifeMonsterAbstr
 void CAI_ALife::vfChooseNextRoutePoint(CALifeMonsterAbstract	*tpALifeMonsterAbstract)
 {
 	if (tpALifeMonsterAbstract->m_tNextGraphID != tpALifeMonsterAbstract->m_tGraphID) {
-		_TIME_ID tCurTime = tfGetGameTime();
+		_TIME_ID								tCurTime = tfGetGameTime();
 		tpALifeMonsterAbstract->m_fDistanceFromPoint += float(tCurTime - tpALifeMonsterAbstract->m_tTimeID)/1000.f * tpALifeMonsterAbstract->m_fCurSpeed;
 		if (tpALifeMonsterAbstract->m_fDistanceToPoint - tpALifeMonsterAbstract->m_fDistanceFromPoint < EPS_L) {
 			tpALifeMonsterAbstract->m_fDistanceToPoint	= tpALifeMonsterAbstract->m_fDistanceFromPoint	= 0.0f;
 			tpALifeMonsterAbstract->m_tPrevGraphID		= tpALifeMonsterAbstract->m_tGraphID;
 			vfChangeObjectGraphPoint(tpALifeMonsterAbstract,tpALifeMonsterAbstract->m_tGraphID,tpALifeMonsterAbstract->m_tNextGraphID);
-			CALifeAbstractGroup							*tpALifeAbstractGroup = dynamic_cast<CALifeAbstractGroup*>(tpALifeMonsterAbstract);
+			CALifeAbstractGroup					*tpALifeAbstractGroup = dynamic_cast<CALifeAbstractGroup*>(tpALifeMonsterAbstract);
 			if (tpALifeAbstractGroup)
 				tpALifeAbstractGroup->m_bCreateSpawnPositions = true;
 		}

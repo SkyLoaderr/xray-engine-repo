@@ -239,6 +239,8 @@ void CAI_ALife::ProcessOnlineOfflineSwitches(CALifeDynamicObject *I)
 		_OBJECT_ID			tObjectID = tpALifeMonsterAbstract->m_tObjectID;
 		for ( ; i != e; i++)
 			if ((*i)->m_tObjectID == tObjectID) {
+				if ((m_tpScheduledObjects.begin() + m_dwObjectsBeingProcessed) == m_tpScheduledObjects.end())
+					m_dwObjectsBeingProcessed--;
 				m_tpScheduledObjects.erase(i);
 				break;
 			}

@@ -81,22 +81,22 @@ public:
 
 	IC void Load							(LPCSTR fName)
 	{ 
-		m_tpGraphVFS					= FS.r_open(fName);
-		m_tGraphHeader.dwVersion		= m_tpGraphVFS->r_u32();
-		m_tGraphHeader.dwVertexCount	= m_tpGraphVFS->r_u32();
-		m_tGraphHeader.dwLevelCount		= m_tpGraphVFS->r_u32();
-		m_tGraphHeader.tpLevels.resize	(m_tGraphHeader.dwLevelCount);
+		m_tpGraphVFS						= FS.r_open(fName);
+		m_tGraphHeader.dwVersion			= m_tpGraphVFS->r_u32();
+		m_tGraphHeader.dwVertexCount		= m_tpGraphVFS->r_u32();
+		m_tGraphHeader.dwLevelCount			= m_tpGraphVFS->r_u32();
+		m_tGraphHeader.tpLevels.resize		(m_tGraphHeader.dwLevelCount);
 		{
-			xr_vector<SLevel>::iterator	I = m_tGraphHeader.tpLevels.begin();
-			xr_vector<SLevel>::iterator	E = m_tGraphHeader.tpLevels.end();
+			xr_vector<SLevel>::iterator		I = m_tGraphHeader.tpLevels.begin();
+			xr_vector<SLevel>::iterator		E = m_tGraphHeader.tpLevels.end();
 			for ( ; I != E; I++) {
 				m_tpGraphVFS->r_stringZ		((*I).caLevelName);
 				m_tpGraphVFS->r_fvector3	((*I).tOffset);
 				(*I).dwLevelID				= m_tpGraphVFS->r_u32();
 			}
 		}
-		R_ASSERT						(m_tGraphHeader.dwVersion == XRAI_CURRENT_VERSION);
-		m_tpaGraph						= (SGraphVertex*)m_tpGraphVFS->pointer();
+		R_ASSERT2							(m_tGraphHeader.dwVersion == XRAI_CURRENT_VERSION,"Graph version mismatch!");
+		m_tpaGraph							= (SGraphVertex*)m_tpGraphVFS->pointer();
 	};
 
 	IC	bool bfCheckMask(svector<_LOCATION_ID,LOCATION_TYPE_COUNT> &M, _LOCATION_ID E[LOCATION_TYPE_COUNT])

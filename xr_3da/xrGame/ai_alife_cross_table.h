@@ -53,14 +53,14 @@ public:
 	IC void Load							(LPCSTR fName)
 	{
 		m_tpCrossTableVFS					= FS.r_open(fName);
-		R_ASSERT							(m_tpCrossTableVFS);
-		R_ASSERT							(m_tpCrossTableVFS->find_chunk(CROSS_TABLE_CHUNK_VERSION));
+		R_ASSERT2							(m_tpCrossTableVFS,"Can't open cross table!");
+		R_ASSERT2							(m_tpCrossTableVFS->find_chunk(CROSS_TABLE_CHUNK_VERSION),"Can't find chunk CROSS_TABLE_CHUNK_VERSION!");
 		m_tpCrossTableVFS->open_chunk		(CROSS_TABLE_CHUNK_VERSION);
 		m_tCrossTableHeader.dwVersion		= m_tpCrossTableVFS->r_u32();
 		m_tCrossTableHeader.dwNodeCount		= m_tpCrossTableVFS->r_u32();
 		m_tCrossTableHeader.dwGraphPointCount	= m_tpCrossTableVFS->r_u32();
-		R_ASSERT							(m_tCrossTableHeader.dwVersion == XRAI_CURRENT_VERSION);
-		R_ASSERT							(m_tpCrossTableVFS->find_chunk(CROSS_TABLE_CHUNK_DATA));
+		R_ASSERT2							(m_tCrossTableHeader.dwVersion == XRAI_CURRENT_VERSION,"Cross table version mismatch!");
+		R_ASSERT2							(m_tpCrossTableVFS->find_chunk(CROSS_TABLE_CHUNK_DATA),"Can't find chunk CROSS_TABLE_CHUNK_DATA!");
 		m_tpCrossTableVFS->open_chunk		(CROSS_TABLE_CHUNK_DATA);
 		m_tpaCrossTable						= (SCrossTableCell*)m_tpCrossTableVFS->pointer();
 	};

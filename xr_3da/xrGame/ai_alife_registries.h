@@ -53,7 +53,7 @@ public:
 	
 	void CALifeObjectRegistry::Load(IReader	&tFileStream)
 	{ 
-		R_ASSERT(tFileStream.find_chunk(OBJECT_CHUNK_DATA));
+		R_ASSERT2					(tFileStream.find_chunk(OBJECT_CHUNK_DATA),"Can't find chunk OBJECT_CHUNK_DATA!");
 		m_tObjectRegistry.clear();
 		u32 dwCount = tFileStream.r_u32();
 		for (u32 i=0; i<dwCount; i++) {
@@ -63,7 +63,7 @@ public:
 			tNetPacket.B.count		= tFileStream.r_u16();
 			tFileStream.r			(tNetPacket.B.data,tNetPacket.B.count);
 			tNetPacket.r_begin		(u_id);
-			R_ASSERT				(M_SPAWN==u_id);
+			R_ASSERT2				(M_SPAWN==u_id,"Invalid packet ID (!= M_SPAWN)");
 
 			string64				s_name;
 			tNetPacket.r_string		(s_name);
@@ -71,14 +71,14 @@ public:
 			xrServerEntity			*tpServerEntity = F_entity_Create	(s_name);
 			R_ASSERT2				(tpServerEntity,"Can't create entity.");
 			CALifeDynamicObject		*tpALifeDynamicObject = dynamic_cast<CALifeDynamicObject*>(tpServerEntity);
-			R_ASSERT				(tpALifeDynamicObject);
+			R_ASSERT2				(tpALifeDynamicObject,"Non-ALife object in the saved game!");
 			tpALifeDynamicObject->Spawn_Read(tNetPacket);
 
 			// Update
 			tNetPacket.B.count		= tFileStream.r_u16();
 			tFileStream.r			(tNetPacket.B.data,tNetPacket.B.count);
 			tNetPacket.r_begin		(u_id);
-			R_ASSERT				(M_UPDATE==u_id);
+			R_ASSERT2				(M_UPDATE==u_id,"Invalid packet ID (!= M_UPDATE)");
 			tpALifeDynamicObject->UPDATE_Read(tNetPacket);
 			tpALifeDynamicObject->Init(tpALifeDynamicObject->s_name);
 
@@ -150,8 +150,8 @@ public:
 
 	virtual	void					Load(IReader	&tFileStream)
 	{
-		R_ASSERT(tFileStream.find_chunk(EVENT_CHUNK_DATA));
-		tFileStream.r	(&m_tEventID,sizeof(m_tEventID));
+		R_ASSERT2					(tFileStream.find_chunk(EVENT_CHUNK_DATA),"Can't find chunk EVENT_CHUNK_DATA!");
+		tFileStream.r				(&m_tEventID,sizeof(m_tEventID));
 		//load_map					(m_tEventRegistry,tFileStream,tfChooseEventKeyPredicate);
 	};
 	
@@ -187,7 +187,7 @@ public:
 	
 	virtual	void					Load(IReader	&tFileStream)
 	{
-		R_ASSERT(tFileStream.find_chunk(TASK_CHUNK_DATA));
+		R_ASSERT2					(tFileStream.find_chunk(TASK_CHUNK_DATA),"Can't find chunk TASK_CHUNK_DATA");
 		tFileStream.r				(&m_tTaskID,sizeof(m_tTaskID));
 //		load_map					(m_tTaskRegistry,tFileStream,tfChooseTaskKeyPredicate);
 	};
@@ -208,12 +208,8 @@ public:
 	GRAPH_VECTOR_SVECTOR			m_tpTerrain[LOCATION_TYPE_COUNT];			// массив списков: по идетнификатору 
     														//	местности получить список точек 
 															//  графа
-	game_sv_GameState				*m_tpGame;
-
-									CALifeGraphRegistry(game_sv_GameState *tpGame) : CALifeAStar()
+									CALifeGraphRegistry() : CALifeAStar()
 	{
-		VERIFY(tpGame);
-		m_tpGame = tpGame;
 	}
 	
 	void							Init()
@@ -265,7 +261,7 @@ public:
 		
 		if (m_tpActor && !m_tpCurrentLevel) {
 			I = m_tLevelMap.find(getAI().m_tpaGraph[m_tpActor->m_tGraphID].tLevelID);
-			R_ASSERT(I != m_tLevelMap.end());
+			R_ASSERT2(I != m_tLevelMap.end(),"Can't find corresponding to actor level!");
 			m_tpCurrentLevel = (*I).second;
 		}
 		
@@ -401,7 +397,9 @@ public:
 	{
 		if (!tpALifeDynamicObject->m_bDirectControl)
 			return;
-		CALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract *>(tpALifeDynamicObject);
+		
+		CALifeMonsterAbstract		*tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract *>(tpALifeDynamicObject);
+		
 		if (tpALifeMonsterAbstract && (tpALifeMonsterAbstract->fHealth > 0))
 			m_tpScheduledObjects.push_back	(tpALifeMonsterAbstract);
 	};	
@@ -421,19 +419,19 @@ public:
 	virtual void					Load(IReader	&tFileStream)
 	{
 		inherited::Load				(tFileStream);
-		m_tpSpawnPoints.resize	(m_dwSpawnCount);
+		m_tpSpawnPoints.resize		(m_dwSpawnCount);
 		ALIFE_ENTITY_P_IT			I = m_tpSpawnPoints.begin();
 		ALIFE_ENTITY_P_IT			E = m_tpSpawnPoints.end();
 		NET_Packet					tNetPacket;
 		IReader						*S = 0;
 		u16							ID;
 		for (int id=0; I != E; I++, id++) {
-			R_ASSERT				(0!=(S = tFileStream.open_chunk(id)));
+			R_ASSERT2				(0!=(S = tFileStream.open_chunk(id)),"Can't find entity chunk in the 'game.spawn'");
 			// Spawn
 			tNetPacket.B.count		= S->r_u16();
 			S->r					(tNetPacket.B.data,tNetPacket.B.count);
 			tNetPacket.r_begin		(ID);
-			R_ASSERT				(M_SPAWN == ID);
+			R_ASSERT2				(M_SPAWN == ID,"Invalid packet ID (!= M_SPAWN)!");
 			
 			string64				s_name;
 			tNetPacket.r_string		(s_name);
@@ -445,15 +443,15 @@ public:
 			tNetPacket.B.count		= S->r_u16();
 			S->r					(tNetPacket.B.data,tNetPacket.B.count);
 			tNetPacket.r_begin		(ID);
-			R_ASSERT				(M_UPDATE == ID);
+			R_ASSERT2				(M_UPDATE == ID,"Invalid packet ID (!= M_UPDATE)!");
 			E->UPDATE_Read			(tNetPacket);
 			
 			E->Init					(E->s_name);
 			CALifeObject			*tpALifeObject = dynamic_cast<CALifeObject*>(E);
-			VERIFY(tpALifeObject);
+			VERIFY					(tpALifeObject);
 
-			R_ASSERT				((E->s_gameid == GAME_SINGLE) || (E->s_gameid == GAME_ANY));
-			R_ASSERT				((*I = dynamic_cast<CALifeDynamicObject*>(E)) != 0);
+			R_ASSERT2				((E->s_gameid == GAME_SINGLE) || (E->s_gameid == GAME_ANY),"Invalid game type!");
+			R_ASSERT2				((*I = dynamic_cast<CALifeDynamicObject*>(E)) != 0,"Non-ALife object in the 'game.spawn'");
 		}
 	};
 };

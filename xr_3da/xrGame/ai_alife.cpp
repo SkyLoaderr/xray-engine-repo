@@ -10,7 +10,7 @@
 #include "ai_alife.h"
 #include "ai_space.h"
 
-CAI_ALife::CAI_ALife(xrServer *tpServer) : CALifeGraphRegistry(tpServer->game)
+CAI_ALife::CAI_ALife(xrServer *tpServer)
 {
 	m_tpServer			= tpServer;
 	m_bLoaded			= false;
@@ -45,17 +45,21 @@ void CAI_ALife::vfNewGame()
 	CALifeTraderRegistry::Init	();
 	CALifeScheduleRegistry::Init();
 
+	u16							l_wGenID = 0x8000;
 	ALIFE_ENTITY_P_IT			B = m_tpSpawnPoints.begin();
 	ALIFE_ENTITY_P_IT			E = m_tpSpawnPoints.end();
-	u16							l_wGenID = 0x8000;
 	for (ALIFE_ENTITY_P_IT I = B ; I != E; ) {
-		u32	wGroupID = (*I)->m_dwSpawnGroup;
-		float fSum = (*I)->m_ucProbability;
+		u32						wGroupID	= (*I)->m_dwSpawnGroup;
+		float					fSum		= (*I)->m_ucProbability;
+		
 		for (ALIFE_ENTITY_P_IT j= I + 1; (j != E) && ((*j)->m_dwSpawnGroup == wGroupID); j++)
 			fSum += (*j)->m_ucProbability;
-		float fProbability = ::Random.randF(0,fSum);
-		fSum = (*I)->m_ucProbability;
-		ALIFE_ENTITY_P_IT m = j, k = I;
+
+		float					fProbability = ::Random.randF(0,fSum);
+		fSum					= (*I)->m_ucProbability;
+		ALIFE_ENTITY_P_IT		m = j;
+		ALIFE_ENTITY_P_IT		k = I;
+
 		for ( j= I + 1; (j != E) && ((*j)->m_dwSpawnGroup == wGroupID); j++) {
 			fSum += (*j)->m_ucProbability;
 			if (fSum > fProbability) {
@@ -63,10 +67,12 @@ void CAI_ALife::vfNewGame()
 				break;
 			}
 		}
+		
 		xrServerEntity			*tpServerEntity = F_entity_Create	((*I)->s_name);
 		R_ASSERT2				(tpServerEntity,"Can't create entity.");
 		CALifeDynamicObject		*i = dynamic_cast<CALifeDynamicObject*>(tpServerEntity);
-		R_ASSERT				(i);
+		R_ASSERT2				(i,"Non-ALife object in the 'game.spawn'");
+		
 		NET_Packet				tNetPacket;
 		(*I)->Spawn_Write		(tNetPacket,TRUE);
 		i->Spawn_Read			(tNetPacket);
@@ -83,6 +89,7 @@ void CAI_ALife::vfNewGame()
 			m_tObjectRegistry.insert(mk_pair(i->m_tObjectID,i));
 			
 			tpALifeAbstractGroup->m_tpMembers.resize(tpALifeAbstractGroup->m_wCount);
+			
 			OBJECT_IT			II = tpALifeAbstractGroup->m_tpMembers.begin();
 			OBJECT_IT			EE = tpALifeAbstractGroup->m_tpMembers.end();
 			for ( ; II != EE; II++) {
@@ -91,7 +98,8 @@ void CAI_ALife::vfNewGame()
 				xrServerEntity		*tp1 = F_entity_Create	(S);
 				R_ASSERT2			(tp1,"Can't create entity.");
 				CALifeDynamicObject	*tp2 = dynamic_cast<CALifeDynamicObject*>(tp1);
-				R_ASSERT			(tp2);
+				R_ASSERT2			(tp2,"Non-ALife object in the 'game.spawn'");
+				
 				(*I)->Spawn_Write	(tNetPacket,TRUE);
 				tp2->Spawn_Read		(tNetPacket);
 				tNetPacket.w_begin	(M_UPDATE);
@@ -109,25 +117,27 @@ void CAI_ALife::vfNewGame()
 				if (tp3) 
 					vfAssignGraphPosition(tp3);
 			}
-			CALifeMonsterAbstract *tp3 = dynamic_cast<CALifeMonsterAbstract*>(i);
+			
+			CALifeMonsterAbstract	*tp3 = dynamic_cast<CALifeMonsterAbstract*>(i);
+			
 			if (tp3)
 				vfAssignGraphPosition(tp3);
 		}
 		else {
-            vfCreateObject		(i);
-			i->m_tObjectID		= i->ID;
+            vfCreateObject			(i);
+			i->m_tObjectID			= i->ID;
 			m_tObjectRegistry.insert(mk_pair(i->m_tObjectID,i));
-			CALifeMonsterAbstract *tp3 = dynamic_cast<CALifeMonsterAbstract*>(i);
+			CALifeMonsterAbstract	*tp3 = dynamic_cast<CALifeMonsterAbstract*>(i);
 			if (tp3)
 				vfAssignGraphPosition(tp3);
 		}
-		I						= m;
+		I							= m;
 	}
-	m_tALifeVersion				= ALIFE_VERSION;
-	m_tGameTime					= u64(m_dwStartTime = Device.dwTimeGlobal);
+	m_tALifeVersion					= ALIFE_VERSION;
+	m_tGameTime						= u64(m_dwStartTime = Device.dwTimeGlobal);
 }
 
-void CAI_ALife::Save()
+void CAI_ALife::Save(LPCSTR caSaveName)
 {
 	CMemoryWriter				tStream;
 	CALifeHeader::Save			(tStream);
@@ -136,11 +146,11 @@ void CAI_ALife::Save()
 	CALifeEventRegistry::Save	(tStream);
 	CALifeTaskRegistry::Save	(tStream);
 	string256					S;
-	strconcat					(S,SAVE_PATH,SAVE_NAME);
+	strconcat					(S,SAVE_PATH,caSaveName);
 	tStream.save_to				(S);
 }
 
-void CAI_ALife::Load()
+void CAI_ALife::Load(LPCSTR caSaveName)
 {
 	Memory.mem_compact			();
 	u32							dwMemUsage = Memory.mem_usage();
@@ -162,17 +172,21 @@ void CAI_ALife::Load()
 	string256					caFileName;
 	IReader						*tpStream;
 	if (!FS.exist(SAVE_NAME)) {
-		R_ASSERT				(FS.exist(caFileName, "$game_data$", SPAWN_NAME));
+		R_ASSERT2				(FS.exist(caFileName, "$game_data$", SPAWN_NAME),"Can't find file 'game.spawn'");
 		tpStream				= FS.r_open(caFileName);
 		Log						("* Loading spawn registry");
 		CALifeSpawnRegistry::Load(*tpStream);
-		FS.r_close			(tpStream);
+		FS.r_close				(tpStream);
 		vfNewGame				();
 		Save					();
 		R_ASSERT2				(false,"New game has been generated successfully.\nYou have to restart game");
 	}
-	tpStream					= FS.r_open(SAVE_NAME);
-	R_ASSERT					(tpStream);
+	tpStream					= FS.r_open(caSaveName);
+	if (!tpStream) {
+		string4096				S;
+		sprintf					(S,"Can't open saved game file '%s'",caSaveName);
+		R_ASSERT2				(false,S);
+	}
 	Log							("* Loading simulator...");
 	CALifeHeader::Load			(*tpStream);
 	CALifeGameTime::Load		(*tpStream);
@@ -184,7 +198,7 @@ void CAI_ALife::Load()
 	CALifeTaskRegistry::Load	(*tpStream);
 	Log							("* Building dynamic objects...");
 	vfUpdateDynamicData			();
-	m_tpChildren.reserve(128);
+	m_tpChildren.reserve		(128);
 	m_bLoaded					= true;
 	Msg							("* Loading ALife Simulator is successfully completed (%7.3f Mb)",float(Memory.mem_usage() - dwMemUsage)/1048576.0);
 }
@@ -220,8 +234,8 @@ void CAI_ALife::vfUpdateDynamicData()
 
 void CAI_ALife::vfCreateNewTask(CALifeTrader *tpTrader)
 {
-	OBJECT_PAIR_IT	I = m_tObjectRegistry.begin();
-	OBJECT_PAIR_IT	E = m_tObjectRegistry.end();
+	OBJECT_PAIR_IT						I = m_tObjectRegistry.begin();
+	OBJECT_PAIR_IT						E = m_tObjectRegistry.end();
 	for ( ; I != E; I++) {
 		CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>((*I).second);
 		if (tpALifeItem && !tpALifeItem->bfAttached()) {
@@ -248,27 +262,27 @@ CALifeTrader* CAI_ALife::tpfGetNearestSuitableTrader(CALifeHuman *tpALifeHuman)
 	for ( ; I != E; I++) {
 		if ((*I)->m_tRank != tpALifeHuman->m_tRank)
 			break;
-		float fCurDistance = getAI().m_tpaGraph[(*I)->m_tGraphID].tGlobalPoint.distance_to(tGlobalPoint);
+		float		fCurDistance = getAI().m_tpaGraph[(*I)->m_tGraphID].tGlobalPoint.distance_to(tGlobalPoint);
 		if (fCurDistance < fBestDistance) {
 			fBestDistance = fCurDistance;
 			tpBestTrader = *I;
 		}
 	}
-	return(tpBestTrader);
+	return			(tpBestTrader);
 }
 
 void CAI_ALife::vfRemoveObject(xrServerEntity *tpServerEntity)
 {
-	CALifeDynamicObject *tpALifeDynamicObject = m_tObjectRegistry[tpServerEntity->ID];
-	VERIFY(tpALifeDynamicObject);
-	m_tObjectRegistry.erase(tpServerEntity->ID);
+	CALifeDynamicObject			*tpALifeDynamicObject = m_tObjectRegistry[tpServerEntity->ID];
+	VERIFY						(tpALifeDynamicObject);
+	m_tObjectRegistry.erase		(tpServerEntity->ID);
 	
 	vfRemoveObjectFromGraphPoint(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
 
 	{
-		bool bOk = false;
-		ALIFE_ENTITY_P_IT	B = m_tpCurrentLevel->begin(), I = B;
-		ALIFE_ENTITY_P_IT	E = m_tpCurrentLevel->end();
+		bool					bOk = false;
+		ALIFE_ENTITY_P_IT		B = m_tpCurrentLevel->begin(), I = B;
+		ALIFE_ENTITY_P_IT		E = m_tpCurrentLevel->end();
 		for ( ; I != E; I++)
 			if (*I == tpALifeDynamicObject) {
 				if (I - B >= m_dwObjectsBeingSwitched) {
@@ -276,20 +290,20 @@ void CAI_ALife::vfRemoveObject(xrServerEntity *tpServerEntity)
 						m_dwObjectsBeingSwitched--;
 				}
 				m_tpCurrentLevel->erase(I);
-				bOk			= true;
+				bOk				= true;
 				break;
 			}
-		VERIFY(bOk);
+		VERIFY					(bOk);
 	}
 
 	{
-		bool bOk = false;
-		ALIFE_MONSTER_P_IT	I = m_tpScheduledObjects.begin();
-		ALIFE_MONSTER_P_IT	E = m_tpScheduledObjects.end();
+		bool					bOk = false;
+		ALIFE_MONSTER_P_IT		I = m_tpScheduledObjects.begin();
+		ALIFE_MONSTER_P_IT		E = m_tpScheduledObjects.end();
 		for ( ; I != E; I++)
 			if (*I == tpALifeDynamicObject) {
 				m_tpScheduledObjects.erase(I);
-				bOk = true;
+				bOk				= true;
 				break;
 			}
 	}

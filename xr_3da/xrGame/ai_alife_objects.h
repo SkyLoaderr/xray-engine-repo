@@ -34,7 +34,7 @@ public:
 	
 	virtual void					Load(IReader	&tFileStream)
 	{
-		R_ASSERT					(tFileStream.find_chunk(GAME_TIME_CHUNK_DATA));
+		R_ASSERT2					(tFileStream.find_chunk(GAME_TIME_CHUNK_DATA),"Can't find chunk GAME_TIME_CHUNK_DATA!");
 		tFileStream.r				(&m_tGameTime,		sizeof(m_tGameTime));
 		tFileStream.r				(&m_tTimeAfterSurge,sizeof(m_tTimeAfterSurge));
 		m_fTimeFactor				= tFileStream.r_float();
@@ -52,7 +52,7 @@ public:
 
 	IC _TIME_ID						tfGetGameTime()
 	{
-		return(m_tGameTime + iFloor(m_fTimeFactor*float(Device.dwTimeGlobal - m_dwStartTime)));
+		return						(m_tGameTime + iFloor(m_fTimeFactor*float(Device.dwTimeGlobal - m_dwStartTime)));
 	};
 };
 
@@ -77,9 +77,9 @@ public:
 	
 	virtual void					Load(IReader	&tFileStream)
 	{
-		R_ASSERT					(tFileStream.find_chunk(ALIFE_CHUNK_DATA));
+		R_ASSERT2					(tFileStream.find_chunk(ALIFE_CHUNK_DATA),"Can't find chunk ALIFE_CHUNK_DATA");
 		tFileStream.r				(&m_tALifeVersion,	sizeof(m_tALifeVersion));
-		R_ASSERT					(m_tALifeVersion == ALIFE_VERSION);
+		R_ASSERT2					(m_tALifeVersion == ALIFE_VERSION,"ALife version mismatch!");
 		tFileStream.r				(&m_tZoneState,		sizeof(m_tZoneState));
 	};
 };
@@ -92,9 +92,9 @@ public:
 	
 	virtual void					Load(IReader	&tFileStream)
 	{
-		R_ASSERT(tFileStream.find_chunk(SPAWN_POINT_CHUNK_VERSION));
+		R_ASSERT2					(tFileStream.find_chunk(SPAWN_POINT_CHUNK_VERSION),"Can't find chunk SPAWN_POINT_CHUNK_VERSION!");
 		m_tSpawnVersion				= tFileStream.r_u32();
-		R_ASSERT(m_tSpawnVersion == XRAI_CURRENT_VERSION);
+		R_ASSERT2					(m_tSpawnVersion == XRAI_CURRENT_VERSION,"'game.spawn' version mismatch!");
 		m_dwSpawnCount				= tFileStream.r_u32();
 		m_dwLevelCount				= tFileStream.r_u32();
 	};
