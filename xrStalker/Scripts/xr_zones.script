@@ -26,10 +26,13 @@
 local h2ms = 60 * 60 * 1000
 local check_period = 300000
 
-local zones = {}
+local zones        = {} -- объекты управления для каждой зоны
+local zones_inside = {} -- списки сталкеров, находящихся в каждой зоне
 
--- находится ли сталкер под управлением гулага в данной зоне
---function is_
+-- находится ли объект в скриптовой зоне
+function is_in_zone( obj, zone )
+	return zones_inside[zone:id()][obj:id()] == true
+end
 
 -------------- помощники для чтения spawn_ini -------------------
 function r_str( spawn_ini, section, line, default )
@@ -68,7 +71,7 @@ function r_nums( spawn_ini, section, line, ... )
 	end
 end
 
--- включить в dest все элементы из src. таблицы индексированы
+-- включить в dest все элементы из src. Таблицы индексированы
 function table_include( dest, src )
 	if dest and src then
 		for i, v in src do
@@ -92,11 +95,14 @@ end
 function zone_binder:net_spawn( server_object )
 	local r = object_binder.net_spawn( self, server_object )
 	self.object:set_callback( self, "on_enter", true )
+	self.object:set_callback( self, "on_leave", false )
 	return r
 end
 
 function zone_binder:net_destroy()
 	self.object:clear_callback( true )
+	self.object:clear_callback( false )
+
 	object_binder.net_destroy( self )
 end
 
@@ -112,7 +118,8 @@ function zone_binder:reload( section )
 	local id = self.object:id()
 
 	if not zones[id] then
-		zones[id] = {}
+		zones[id]        = {}
+		zones_inside[id] = {}
 	end
 
 	local z = zones[id]
@@ -151,10 +158,19 @@ end
 -- callback на вход в зону
 function zone_binder:on_enter( zone, obj )
 	printf( "[zone %s] on_enter obj=%s", zone:name(), obj:name() )
-	-- вызвать callback-и всех подключённых классов
+
+	zones_inside[zone:id()][obj:id()] == true
+
+	-- вызвать callback-и всех подключённых классов управления
 	table.foreach( zones[zone:id()], function( k, v ) v:on_enter( obj ) end )
 end
 
+-- callback на выход из зоны
+function zone_binder:on_leave( zone, obj )
+	printf( "[zone %s] on_leave obj=%s", zone:name(), obj:name() )
+
+	zones_inside[zone:id()][obj:id()] == nil
+end
 
 ----------------------------------------------------------------------------------------------------------------------
 -- класс фракции типа "несколько спящих на базе xr_sleeper"
@@ -235,10 +251,10 @@ fraction_types.searcher = fraction_searcher()
 
 
 
+----------------------------------------------------------------------------------------------------------------------
+--Класс zone_fractions. Он управляет фракциями (гулагами), которые могут образоваться в этой схеме.
+----------------------------------------------------------------------------------------------------------------------
 
-----------------------------------------------------------------------------------------------------------------------
--- Класс zone_fractions. Он управляет фракциями, которые могут образоваться в этой схеме.
-----------------------------------------------------------------------------------------------------------------------
 class "zone_fractions"
 
 function zone_fractions:__init( zone, ini )
@@ -391,7 +407,6 @@ function zone_fractions:update()
 				for id, obj in self.fraction.Object do
 					if self.stalkers[id].stay_end < game.time() then
 						self:free_stalker( obj )
-						printf( "del1" )
 					else
 						n = n + 1
 					end
@@ -400,7 +415,6 @@ function zone_fractions:update()
 				-- если мужиков в фракции больше не осталось, убрать фракцию
 				if n == 0 then
 					self:remove_fraction()
-					printf( "del2" )
 				else
 					self.fraction:calculate()
 				end
