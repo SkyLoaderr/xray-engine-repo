@@ -57,7 +57,7 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
 	}
 
 	// nv-stencil recompression
-	if (RImplementation.o.nvstencil)	u_stencil_optimize();
+	if (RImplementation.o.nvstencil)	u_stencil_optimize((SE_SUN_NEAR==sub_phase)?TRUE:FALSE);
 	RCache.set_ColorWriteEnable			();
 
 	// Perform lighting
@@ -107,7 +107,7 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
 		RCache.set_c				("Ldynamic_color",		L_clr.x,L_clr.y,L_clr.z,L_spec	);
 		RCache.set_c				("m_shadow",			m_shadow						);
 
-		// setup z-stencil
+		// setup stencil
 		RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0xff,0x00);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
