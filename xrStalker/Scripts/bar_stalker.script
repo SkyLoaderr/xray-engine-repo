@@ -60,7 +60,7 @@ function action_bar:initialize ()
        self.theme = "bar_talk_double"
     end       
     
-    self.delay = device ():time_global () + math.random (10000, 30000)
+    self.delay = device ():time_global () + math.random (1000, 60000)
 end    
 -------------------
 function action_bar:execute ()
@@ -96,25 +96,21 @@ end
 function action_bar:single_talk ()
     if self.a.passive == true then return end
     if self.sub_theme == 0 then
+       if self.delay - device ():time_global ()  > 0 then return end 
        self.sub_theme = xr_sounds.get_random_subtheme (self.theme) 
        self.phrase = 1
+       self.delay = 0
        return
     end
     
---    printf ("SINGLE PLAY")
     if self.object:active_sound_count () ~= 0 then 
        return
     else
-       if self.wait_time ~= 0 then 
-          if device ():time_global () - self.wait_time < 0 then 
-             return 
-          end    
-       self.wait_time = 0   
-       end
+       if self.delay ~= 0 and self.delay - device ():time_global () > 0 then return end
     end   
     
     xr_sounds.play_sound (self.object, 0, self.theme, self.sub_theme, self.phrase)
-    self.wait_time = device ():time_global () + math.random (5000, 10000)
+    self.delay = device ():time_global () + math.random (20000, 50000)
     self.phrase = self.phrase + 1
     if self.phrase > xr_sounds.get_num_phrases (self.theme, self.sub_theme) then
        self.sub_theme = 0
@@ -129,33 +125,30 @@ function action_bar:double_talk ()
        if self.delay - device ():time_global () > 0 then return end
        self.sub_theme = xr_sounds.get_random_subtheme (self.theme) 
        self.phrase = 1
+       self.delay = 0
        return
     end
     
+    if self.interlocutor:active_sound_count () ~= 0 or self.object:active_sound_count () ~= 0 then
+       return
+    else
+       if self.delay ~= 0 and self.delay - device ():time_global () > 0 then return end
+    end   
+                
     local talker = nil
     if bit_and (self.phrase, 1) == 1 then
-       talker = self.object 
+       talker = self.object
     else    
        talker = self.interlocutor
     end    
     
-    if talker:active_sound_count () ~= 0 then 
-       return
-    else
-       if self.wait_time ~= 0 then 
-          if device ():time_global () - self.wait_time < 0 then 
-             return 
-          end    
-       self.wait_time = 0   
-       end
-    end   
     
     xr_sounds.play_sound (talker, 0, self.theme, self.sub_theme, self.phrase)
-    self.wait_time = device ():time_global () + math.random (5000, 10000)
+    self.delay = device ():time_global () + math.random (1500, 3000)
     self.phrase = self.phrase + 1
     if self.phrase > xr_sounds.get_num_phrases (self.theme, self.sub_theme) then
        self.sub_theme = 0
-       self.delay = device ():time_global () + math.random (10000, 30000)
+       self.delay = device ():time_global () + math.random (30000, 50000)
     end   
     
 end
@@ -168,7 +161,6 @@ function action_bar:set_animation ()
     end
 
     self.object:add_animation (animations[self.current_animation], false)
---    printf ("Add animation %s", animations[self.current_animation])
 end
 
 
@@ -176,7 +168,6 @@ end
 ----------------------------------------------------------------------------
 function add_to_binder (npc)
     local manager = npc:motivation_action_manager ()
---    printf ("SET BINDER BAR FOR OBJECT %s", npc:name ())
     local property = {}
     local operators = {}
     
