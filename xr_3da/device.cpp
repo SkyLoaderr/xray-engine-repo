@@ -75,7 +75,7 @@ void CRenderDevice::overdrawEnd		()
     CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILMASK,		0xff				));
 
     // Set the background to black
-	CHK_DX(HW.pDevice->Clear(0,0,D3DCLEAR_TARGET,0,0,0));
+	CHK_DX(HW.pDevice->Clear(0,0,D3DCLEAR_TARGET,D3DCOLOR_XRGB(255,0,0),0,0));
 
 	// Draw a rectangle wherever the count equal I
 	Primitive.Reset	();
@@ -85,7 +85,7 @@ void CRenderDevice::overdrawEnd		()
 	CHK_DX(HW.pDevice->SetVertexShader	( FVF::F_TL ));
 
 	// Render gradients
-	for (int I=1; I<8; I++ ) 
+	for (int I=0; I<8; I++ ) 
 	{
 		DWORD	_c	= I*256/9;
 		DWORD	c	= D3DCOLOR_XRGB(_c,_c,_c);
@@ -99,20 +99,6 @@ void CRenderDevice::overdrawEnd		()
 		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,		I	));
 		CHK_DX(HW.pDevice->DrawPrimitiveUP	( D3DPT_TRIANGLESTRIP,	2,	pv, sizeof(FVF::TL) ));
 	}
-
-	// Render FATAL overdraw
-	DWORD	c	= D3DCOLOR_XRGB(255,0,0);
-	FVF::TL	pv	[4];
-	
-	pv[0].set(float(0),			float(dwHeight),	c,0,0);			
-	pv[1].set(float(0),			float(0),			c,0,0);					
-	pv[2].set(float(dwWidth),	float(dwHeight),	c,0,0);	
-	pv[3].set(float(dwWidth),	float(0),			c,0,0);
-	
-    CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFUNC,	D3DCMP_GREATER	));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,		8	));
-	CHK_DX(HW.pDevice->DrawPrimitiveUP	( D3DPT_TRIANGLESTRIP,	2,	pv, sizeof(FVF::TL) ));
-	
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILENABLE,		FALSE ));
 }
 
