@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 #define TRACE_QZERO_TOLERANCE	0.1f
-
+/*
 void Fquaternion::set(const Fmatrix& M){
 	float trace,s;
 	
@@ -130,3 +130,4 @@ void Fquaternion::set(const Fmatrix& M){
 		}
 		}
 }
+*/
