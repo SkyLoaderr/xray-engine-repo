@@ -25,6 +25,11 @@ enum COMBINE_MODE
 #define OVERLAY_HEIGHT		300
 #define DEPTH_RANGE			4.0f
 
+// Light direction
+static	DWORD			tm_base=0, tm_next=1;
+static	Fvector			vLightDir0;
+static	Fvector			vLightDir1;
+
 // 2D
 struct TVERTEX
 {
@@ -836,6 +841,9 @@ void	CalcGauss	(
 
 HRESULT CMyD3DApplication::RestoreDeviceObjects()
 {
+	vLightDir0.set					( 2.0f, .5f, -1.0f );
+	vLightDir1.set					( 2.0f, .5f, -1.0f );
+
 	m_pFont->RestoreDeviceObjects();
 
 	UpdateTransform		();
@@ -1729,26 +1737,22 @@ float rnd()
 HRESULT CMyD3DApplication::UpdateTransform()
 {
 	// Light direction
-	static	DWORD			tm_base, tm_next;
-	static	D3DXVECTOR3		vLightDir0	= D3DXVECTOR3( 2.0f, .5f, -1.0f );
-	static	D3DXVECTOR3		vLightDir1	= D3DXVECTOR3( 2.0f, .5f, -1.0f );
-
 	DWORD t					= timeGetTime();
 	if (t>tm_next) 
 	{
 		tm_base					= t;
 		tm_next					= t+2000;
 
-		vLightDir0				= vLightDir1;
-		vLightDir1				= D3DXVECTOR3(rnd(),rnd(),rnd());
-		D3DXVec3Normalize		( &vLightDir1, &vLightDir1 );
+		vLightDir0.set			(vLightDir1);
+		vLightDir1.random_dir	();
 	}
-
-	float l_f				= float(t-tm_base)/float(tm_next-tm_base);
-	float l_i				= 1.f - l_f;
-
-	D3DXVECTOR3 vLightDir	= (l_i*vLightDir0 + l_f*vLightDir1) +	D3DXVECTOR3(-1.0f, -1.0f, 1.0);
-	D3DXVec3Normalize		( &dv_LightDir, &vLightDir );
+	
+	Fvector vLightDir;
+	Fvector	vLightBase;		vLightBase.set	(-1.0f, -1.0f, 1.0);
+	vLightDir.lerp			(vLightDir0,vLightDir1,float(t-tm_base)/float(tm_next-tm_base));
+	vLightDir.add			(vLightBase);
+	vLightDir.normalize		();
+	dv_LightDir				= D3DXVECTOR3	(vLightDir.x,vLightDir.y,vLightDir.z);
 
 	// Model offset
 	D3DXVECTOR3 vModelOffs		= D3DXVECTOR3(0.0f, 2.0f, 0.0f);
