@@ -24,16 +24,13 @@ extern BOOL					StartGame			(u32 num);
 // startup point
 void Startup				()
 {
-	//
-	if (strstr(Core.Params,"-external"))	Path	= Path_ExternalBuild;
-	else									Path	= Path_InternalBuild;
-
 	// initialization
 	Engine.Initialize			( );
 	Device.Initialize			( );
 
 	// Creation
-	string256 fname; strconcat	(fname,Path.GameData,"system.ltx");
+	string256					fname; 
+	FS.update_path				(fname,"$game_data$","system.ltx");
 	pSettings					= xr_new<CInifile>	(fname,TRUE);
 
 	Console.Initialize			( );
@@ -252,21 +249,22 @@ void CApplication::OnFrame( )
 void CApplication::Level_Scan()
 {
 	vector<char*>	folder;
-	FS.file_list	(folder,Path.Levels,FS_ListFolders);
+	FS.file_list	(folder,"$game_levels$",FS_ListFolders);
 	R_ASSERT		(!folder.empty());
 	for (u32 i=0; i<folder.size(); i++)
 	{
-		string256	N,F;
-		strconcat	(N,Path.Levels,folder[i]);
+		string256	N1,N2,N3,N4;
+		strconcat	(N1,folder[i],"level");
+		strconcat	(N2,folder[i],"level.ltx");
+		strconcat	(N3,folder[i],"level.game");
+		strconcat	(N4,folder[i],"level.spawm");
 		if	(
-			FS.exist(F,N,"level")		&&
-			FS.exist(F,N,"level.ltx")
+			FS.exist("$game_levels$",N1)		&&
+			FS.exist("$game_levels$",N2)		&&
+			FS.exist("$game_levels$",N3)		&&
+			FS.exist("$game_levels$",N4)	
 			)
 		{
-			/*
-			if (!FS.exist(F,N,"level.ai"))
-				Msg("! Warning: partially compiled level: %s",folder[i]);
-			*/
 			sLevelInfo			LI;
 			LI.folder			= folder[i];
 			LI.name				= 0;
@@ -282,9 +280,9 @@ void CApplication::Level_Set(u32 L)
 {
 	if (L>=Levels.size()) return;
 	Level_Current = L;
-	strconcat	(Path.Current,Path.Levels,Levels[L].folder);
-	strlwr		(Path.Current);
+	FS.get_path	("$level$")->_set	(Levels[L].folder);
 }
+
 int CApplication::Level_ID(LPCSTR name)
 {
 	char buffer	[256];
