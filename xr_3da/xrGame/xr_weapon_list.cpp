@@ -189,12 +189,14 @@ void CWeaponList::LeaveWeapon(CLASS_ID cls)
 }
 */
 
+#include <typeinfo.h>
+
 CWeapon*	CWeaponList::getWeaponByWeapon(CWeapon* W)
 {
 	for (u32 it=0; it<m_Weapons.size(); it++)
 	{
-		CWeapon* T							= m_Weapons[it];
-		if (typeid(*W)==typeid(*T))	return	T;
+		CWeapon* T											= m_Weapons[it];
+		if (typeid(*W).raw_name() == typeid(*T).raw_name())	return	T;
 	}
 	return 0;
 }
