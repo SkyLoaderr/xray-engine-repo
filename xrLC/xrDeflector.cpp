@@ -131,7 +131,8 @@ VOID CDeflector::OA_Export()
 		Face	*F  = T->owner;
 		UVtri	R;
 
-		for (int i=0; i<3; i++) {
+		for (int i=0; i<3; i++) 
+		{
 			R.uv[i].u = scale.u*(T->uv[i].u-min.u)/size.u + guard.u + half.u; 
 			R.uv[i].v = scale.v*(T->uv[i].v-min.v)/size.v + guard.v + half.v; 
 			bb.modify(F->v[i]->P);
