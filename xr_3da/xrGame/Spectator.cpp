@@ -8,6 +8,7 @@
 #include "..\CameraLook.h"
 #include "..\CameraFirstEye.h"
 #include "..\xr_level_controller.h"
+#include "actor.h"
 
 //--------------------------------------------------------------------
 //////////////////////////////////////////////////////////////////////
@@ -21,6 +22,7 @@ CSpectator::CSpectator() : CGameObject()
 	cameras[eacFreeLook]	= new CCameraLook		(this, pSettings, "actor_free_cam",	false);
 
 	cam_active				= eacFirstEye;
+	look_idx				= 0;
 }
 
 CSpectator::~CSpectator()
@@ -32,10 +34,32 @@ void CSpectator::UpdateCL()
 {
 	inherited::UpdateCL();
 	if (pCreator->CurrentViewEntity()==this){
-		cam_Update								();
+		if (eacFreeFly==cam_active){
+			cam_Update		(0);
+		}else{
+			game_cl_GameState::Player* P = Game().local_player;
+			CTeam& T		= Level().Teams[P->team];
+			int idx			= 0;
+			for (u32 i=0; i<T.Squads.size(); i++){
+				CSquad& S = T.Squads[i];
+				for (u32 j=0; j<S.Groups.size(); j++){
+					CGroup& G = S.Groups[j];
+					for (u32 k=0; k<G.Members.size(); k++){
+						CActor* A = dynamic_cast<CActor*>(G.Members[k]);
+						if (A){
+							if(idx==look_idx){
+								cam_Update(A->cam_Active());
+								return;
+							}
+							idx++;
+						}
+					}
+				}
+			}
+			// не найден объект с таким индексом - сбросим в ноль
+			look_idx = 0;
+		}
 	}
-
-//	setVisible				(!HUDview	());
 }
 
 void CSpectator::Update	(u32 DT)
@@ -57,6 +81,12 @@ void CSpectator::OnKeyboardPress(int cmd)
 		}
 		return;
 	}
+	switch(cmd) {
+	case kCAM_1:	cam_Set			(eacFirstEye);				break;
+	case kCAM_2:	cam_Set			(eacLookAt);				break;
+	case kCAM_3:	cam_Set			(eacFreeLook);				break;
+	case kCAM_4:	cam_Set			(eacFreeFly);				break;
+	}
 }
 
 void CSpectator::OnKeyboardRelease(int cmd)
@@ -69,19 +99,20 @@ void CSpectator::OnKeyboardHold(int cmd)
 
 	switch(cmd)
 	{
-	case kUP:
-	case kDOWN: 
-	case kCAM_ZOOM_IN: 
-	case kCAM_ZOOM_OUT: 
-		cameras[cam_active]->Move(cmd); break;
-	case kLEFT:
-	case kRIGHT:
-		if (cam_active!=eacFreeLook) cameras[cam_active]->Move(cmd); break;
+	case kWPN_NEXT:		look_idx++; break;
 	}
 	if (cam_active==eacFirstEye){
 		CCameraBase* C	= cameras	[cam_active];
 		Fvector vmove={0,0,0};
 		switch(cmd){
+		case kUP:
+		case kDOWN: 
+		case kCAM_ZOOM_IN: 
+		case kCAM_ZOOM_OUT: 
+			cameras[cam_active]->Move(cmd); break;
+		case kLEFT:
+		case kRIGHT:
+			if (cam_active!=eacFreeLook) cameras[cam_active]->Move(cmd); break;
 		case kFWD:			
 			vmove.mad( C->vDirection, 4.f*Device.fTimeDelta );
 			break;
@@ -127,15 +158,19 @@ void CSpectator::cam_Set	(EActorCameras style)
 	cameras[cam_active]->OnActivate(old_cam);
 }
 
-void CSpectator::cam_Update()
+void CSpectator::cam_Update	(CCameraBase* C)
 {
-	Fvector point, dangle;
-	point.set					(0.f,1.f,0.f);
-	svTransform.transform_tiny	(point);
+	if (C){
+		pCreator->Cameras.Update	(C);
+	}else{
+		Fvector point, dangle;
+		point.set					(0.f,1.f,0.f);
+		svTransform.transform_tiny	(point);
 
-	// apply shift
-	dangle.set					(0,0,0);
-	CCameraBase* C				= cameras	[cam_active];
-	C->Update					(point,dangle);
-	pCreator->Cameras.Update	(C);
+		// apply shift
+		dangle.set					(0,0,0);
+		CCameraBase* cam			= cameras	[cam_active];
+		cam->Update					(point,dangle);
+		pCreator->Cameras.Update	(cam);
+	}
 }

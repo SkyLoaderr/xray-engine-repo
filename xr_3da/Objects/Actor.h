@@ -222,6 +222,8 @@ public:
 		return IsFocused()&&(cam_active==eacFirstEye); 
 	}
 
+	IC CCameraBase*						cam_Active			() {return cameras[cam_active];}
+
 	// Network
 	virtual void						Load				( LPCSTR section );
 	virtual BOOL						net_Spawn			( LPVOID DC);

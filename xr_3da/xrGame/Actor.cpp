@@ -217,7 +217,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 
 	//
 	r_model_yaw				= E->o_Angle.y;
-	cameras[cam_active]->Set(E->o_Angle.y,0,0);		// set's camera orientation
+	cam_Active()->Set		(E->o_Angle.y,0,0);		// set's camera orientation
 	
 	// *** movement state - respawn
 	mstate_wishful			= 0;
@@ -763,8 +763,8 @@ void CActor::g_cl_Orientate	(u32 mstate_rl, float dt)
 {
 	// capture camera into torso (only for FirstEye & LookAt cameras)
 	if (cam_active!=eacFreeLook){
-		r_torso.yaw		=	cameras[cam_active]->GetWorldYaw	();
-		r_torso.pitch	=	cameras[cam_active]->GetWorldPitch	();
+		r_torso.yaw		=	cam_Active()->GetWorldYaw	();
+		r_torso.pitch	=	cam_Active()->GetWorldPitch	();
 	}
 
 	// если есть движение - выровнять модель по камере

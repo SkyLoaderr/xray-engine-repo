@@ -23,7 +23,8 @@ private:
 	typedef CGameObject		inherited;
 protected:
 	enum EActorCameras {
-		eacFirstEye		= 0,
+		eacFreeFly		= 0,
+		eacFirstEye,
 		eacLookAt,
 		eacFreeLook,
 		eacMaxCam
@@ -33,9 +34,10 @@ private:
 	CCameraBase*			cameras[eacMaxCam];
 	EActorCameras			cam_active;
 
+	int						look_idx;
 	//------------------------------
 	void					cam_Set					(EActorCameras style);
-	void					cam_Update				();
+	void					cam_Update				(CCameraBase* C=0);
 public:
 							CSpectator				( );
 	virtual					~CSpectator				( );

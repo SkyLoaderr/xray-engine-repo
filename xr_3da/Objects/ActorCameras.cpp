@@ -4,10 +4,10 @@
 
 void CActor::cam_Set	(EActorCameras style)
 {
-	CCameraBase* old_cam = cameras[cam_active];
+	CCameraBase* old_cam = cam_Active();
 	cam_active = style;
 	old_cam->OnDeactivate();
-	cameras[cam_active]->OnActivate(old_cam);
+	cam_Active()->OnActivate(old_cam);
 }
 
 void CActor::cam_Update(float dt, float fFOV)

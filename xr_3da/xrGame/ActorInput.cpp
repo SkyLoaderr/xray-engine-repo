@@ -98,10 +98,10 @@ void CActor::OnKeyboardHold(int cmd)
 	case kDOWN: 
 	case kCAM_ZOOM_IN: 
 	case kCAM_ZOOM_OUT: 
-		cameras[cam_active]->Move(cmd); break;
+		cam_Active()->Move(cmd); break;
 	case kLEFT:
 	case kRIGHT:
-		if (cam_active!=eacFreeLook) cameras[cam_active]->Move(cmd); break;
+		if (cam_active!=eacFreeLook) cam_Active()->Move(cmd); break;
 	}
 }
 
@@ -113,10 +113,10 @@ void CActor::OnMouseMove(int dx, int dy)
 	float scale		= (C->f_fov/DEFAULT_FOV)*psMouseSens * psMouseSensScale/50.f;
 	if (dx){
 		float d = float(dx)*scale;
-		cameras[cam_active]->Move((d<0)?kLEFT:kRIGHT, _abs(d));
+		cam_Active()->Move((d<0)?kLEFT:kRIGHT, _abs(d));
 	}
 	if (dy){
 		float d = ((psMouseInvert)?-1:1)*float(dy)*scale*3.f/4.f;
-		cameras[cam_active]->Move((d>0)?kUP:kDOWN, _abs(d));
+		cam_Active()->Move((d>0)?kUP:kDOWN, _abs(d));
 	}
 }
