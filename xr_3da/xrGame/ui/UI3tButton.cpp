@@ -109,10 +109,6 @@ void CUI3tButton::SetTextureOffset(int x, int y){
 	this->m_background.SetTextureOffset(x, y);
 }
 
-void CUI3tButton::Draw(){
-	CUIButton::Draw();
-}
-
 void CUI3tButton::DrawTexture(){
 	m_background.Draw();
 }

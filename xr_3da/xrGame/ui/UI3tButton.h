@@ -32,8 +32,7 @@ public:
 	virtual void SetTextureOffset(int x, int y);	
 	
 	// behavior
-	virtual void Draw();
-IC	virtual void DrawTexture();
+	virtual void DrawTexture();
 	virtual void Update();
 	
 	//virtual void Enable(bool bEnable);	
