@@ -60,6 +60,31 @@ public:
 	void AddItemToBag(PIItem pItem);
 protected:
 
+	//-----------------------------------------------------------------------------/
+	//  новые данные относящиеся к покупке оружия 
+	//-----------------------------------------------------------------------------/
+	class CUIDragDropItemMP: public CUIWpnDragDropItem
+	{
+		// возможность хранения номера слота
+		// в который можно переместить данную вещь
+		u32 slotNum;
+		// хранение номера секции оружия
+		u32 sectionNum;
+		// Имя секции оружия
+		string128 strName;
+	public:
+		CUIDragDropItemMP(): slotNum(0), sectionNum(0) {}
+		// Для слота
+		void SetSlot(u32 slot) { R_ASSERT(slot < 6); slotNum = slot; }
+		u32	 GetSlot() { return slotNum; }
+		// Для секций
+		void SetSection(u32 section) { sectionNum = section; }
+		u32	 GetSection() { return sectionNum; }
+		// изменяем поведение функций SetData, GetData;
+		virtual void SetSectionName(const char *pData) { std::strcpy(strName, pData); }
+		virtual const char *GetSectionName() const { return strName; }
+	};
+
 	CUIFrameWindow		UIBagWnd;
 	CUIFrameWindow		UIDescWnd;
 	CUIFrameWindow		UIPersonalWnd;
@@ -119,7 +144,7 @@ protected:
 
 
 	static const int MAX_ITEMS = 70;
-	CUIWpnDragDropItem m_vDragDropItems[MAX_ITEMS];
+	CUIDragDropItemMP m_vDragDropItems[MAX_ITEMS];
 	int m_iUsedItems;
 
 	//указатель на инвентарь, передается перед запуском меню
@@ -127,7 +152,7 @@ protected:
 
 	//элемент с которым работают в текущий момент
 	PIItem m_pCurrentItem;
-	CUIDragDropItem* m_pCurrentDragDropItem;
+	CUIDragDropItemMP* m_pCurrentDragDropItem;
 
 	//функции, выполняющие согласование отображаемых окошек
 	//с реальным инвентарем
@@ -165,7 +190,6 @@ protected:
 	bool ToBag();
 	bool ToBelt();
 
-
 	//запуск и остановка меню работы с артефактами
 	void StartArtifactMerger();
 	void StopArtifactMerger();
@@ -190,4 +214,27 @@ protected:
 
 	//слот который был активным перед вызовом менюшки
 	u32	m_iCurrentActiveSlot;
+
+	//-----------------------------------------------------------------------------/
+	//  новые данные относящиеся к покупке оружия 
+	//-----------------------------------------------------------------------------/
+
+	// массив в котором хратнятся названия секций для оружия 
+	DEF_VECTOR(WPN_SECT_NAMES, std::string);
+	// Вектор массивов с именами секций для оружия
+	DEF_VECTOR(WPN_LISTS, WPN_SECT_NAMES);
+	WPN_LISTS	wpnSectStorage;
+	// Функция инициализации массива строк - имен секций для оружия, разгруппированных по типам
+	void InitWpnSectStorage();
+	// заполнить секции оружием которое мы определили предыдущей процедурой
+	void FillWpnSubBags();
+	// удаляем все из секций
+	void ClearWpnSubBags();
+	// переместить вещь из слота обратно в сответствующую секцию.
+	bool SlotToSection(const u32 SlotNum);
+	// Проверка возможности помещения вещи в слот
+	bool CanPutInSlot(CUIDragDropItemMP *pDDItemMP, const u32 slotNum);
+	// Получить имя секции в weapon.ltx соответствующий оружию в слоте
+	const char *GetWeaponName(u32 slotNum);
+
 };
