@@ -11,15 +11,9 @@
                 <next>012</next>
                 <next>013</next>
             </phrase>
-            <phrase id="013">
-                <text>mil_dolg_job_013</text>
-            </phrase>
             <phrase id="012">
                 <text>mil_dolg_job_012</text>
                 <next>0121</next>
-            </phrase>
-            <phrase id="0123">
-                <text>mil_dolg_job_0123</text>
             </phrase>
             <phrase id="0121">
                 <text>mil_dolg_job_0121</text>
@@ -38,8 +32,17 @@
                 <text>mil_dolg_job_0</text>
                 <next>01</next>
             </phrase>
+            <phrase id="0123">
+                <text>mil_dolg_job_0123</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="013">
+                <text>mil_dolg_job_013</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
             <phrase id="0125">
                 <text>mil_dolg_job_0125</text>
+                <action>dialogs.break_dialog</action>
             </phrase>
         </phrase_list>
     </dialog>
