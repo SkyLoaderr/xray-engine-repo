@@ -110,7 +110,7 @@ CVS*	CShaderManager::_CreateVS		(LPCSTR cName, LPDWORD decl, DWORD stride)
 		
 		// Load vertex shader
 		string256		fname;
-		strconcat		(fname,"data\\shaders\\",Name,".vs");
+		strconcat		(fname,"gamedata\\shaders\\",Name,".vs");
 		LPD3DXBUFFER	code	= 0;
 		LPD3DXBUFFER	errors	= 0;
 		CStream*		fs		= Engine.FS.Open(fname);
