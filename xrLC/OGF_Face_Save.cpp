@@ -8,6 +8,17 @@
 extern int	RegisterString		(string &T);
 extern void	geom_batch_average	(u32 verts, u32 faces);
 
+D3DVERTEXELEMENT9		r2_decl[] =	// 36
+{
+	{0, 0,  D3DDECLTYPE_FLOAT3,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,	0 },
+	{0, 12, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_NORMAL,	0 },
+	{0, 16, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TANGENT,	0 },
+	{0, 20, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_BINORMAL,	0 },
+	{0, 24, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_COLOR,		0 },
+	{0, 28, D3DDECLTYPE_FLOAT2,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,	0 },
+	D3DDECL_END()
+};
+
 void OGF::Save			(IWriter &fs)
 {
 	OGF_Base::Save		(fs);
@@ -78,7 +89,7 @@ void OGF_Reference::Save	(IWriter &fs)
 
 	// Texture & shader
 	fs.open_chunk		(OGF_TEXTURE_L);
-	string Tname;
+	string				Tname;
 	for (DWORD i=0; i<textures.size(); i++)
 	{
 		if (!Tname.empty()) Tname += ',';
@@ -106,14 +117,14 @@ void OGF_Reference::Save	(IWriter &fs)
 
 	// Special
 	fs.open_chunk		(OGF_TREEDEF);
-	fs.w			(&xform,sizeof(xform));
-	fs.w			(&c_scale,sizeof(c_scale));
-	fs.w			(&c_bias,sizeof(c_bias));
+	fs.w				(&xform,sizeof(xform));
+	fs.w				(&c_scale,sizeof(c_scale));
+	fs.w				(&c_bias,sizeof(c_bias));
 	fs.close_chunk		();
 
 	// Header
 	fs.open_chunk		(OGF_HEADER);
-	fs.w			(&H,sizeof(H));
+	fs.w				(&H,sizeof(H));
 	fs.close_chunk		();
 }
 
