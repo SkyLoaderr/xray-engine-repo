@@ -853,6 +853,13 @@ sound_humming		 = monsters\stalker\humming\em1_humming,monsters\stalker\humming\
 sound_alarm			 = monsters\stalker\alarm\alarm
 sound_surrender		 = monsters\stalker\surrender\em1_surrender
 
+burn_immunity = 1.0				;коэффициенты иммунитета 
+strike_immunity = 1.0
+shock_immunity = 1.0
+wound_immunity = 1.0		;0.3
+radiation_immunity = 1.0
+telepatic_immunity = 1.0
+
 [m_stalker_demo]
 GroupControlSection	= spawn_group
 $spawn                   = "monsters\stalker-demo"		; option for Level Editor
@@ -1071,6 +1078,15 @@ eat_satiety = 0.2
 eat_power = -0.05
 eat_radiation = 0.01	;0.03;
 
+hit_type = wound
+
+burn_immunity = 1.0				;коэффициенты иммунитета 
+strike_immunity = 1.0
+shock_immunity = 1.0
+wound_immunity = 1.0		;0.3
+radiation_immunity = 1.0
+telepatic_immunity = 1.0
+
 
 [m_zombie_e]
 GroupControlSection	= spawn_group
@@ -1131,6 +1147,16 @@ MaxHealthValue		     = 200			; range [0..200]
 SoundThreshold		     = 0.06                     ; range [0..1]
 
 terrain		             = 255,255,255,255,30,40
+
+hit_type = wound
+
+burn_immunity = 1.0				;коэффициенты иммунитета 
+strike_immunity = 1.0
+shock_immunity = 1.0
+wound_immunity = 1.0		;0.3
+radiation_immunity = 1.0
+telepatic_immunity = 1.0
+
 
 [actor_firsteye_cam]
 lim_pitch                = -1.57, 1.57
@@ -3908,6 +3934,15 @@ selector_free_hunting    =      20.0,            20.0,                 1000.0,  
 selector_cover           =      20.0,            -1000.0,                30.0,                 0.0,                  0.0,              100000.0,             100000.0,               1000.0,
 terrain				 = 255,255,255,255,30,40
 
+hit_type = wound
+
+burn_immunity = 1.0				;коэффициенты иммунитета 
+strike_immunity = 1.0
+shock_immunity = 1.0
+wound_immunity = 1.0		;0.3
+radiation_immunity = 1.0
+telepatic_immunity = 1.0
+
 ;-----------------------------------------------------------------------------------
 ; Chimera
 ;-----------------------------------------------------------------------------------
@@ -4002,6 +4037,16 @@ selector_cover           =      20.0,            -1000.0,                30.0,  
 
 terrain				 = 255,255,255,255,30,40
 
+hit_type = wound
+
+burn_immunity = 1.0				;коэффициенты иммунитета 
+strike_immunity = 1.0
+shock_immunity = 1.0
+wound_immunity = 1.0		;0.3
+radiation_immunity = 1.0
+telepatic_immunity = 1.0
+
+
 ;-----------------------------------------------------------------------------------
 ; Red Dog
 ;-----------------------------------------------------------------------------------
@@ -4090,6 +4135,15 @@ selector_free_hunting    =      20.0,            20.0,                 1000.0,  
 selector_cover           =      20.0,            -1000.0,                30.0,                 0.0,                  0.0,              100000.0,             100000.0,               1000.0,
 
 terrain				 = 255,255,255,255,30,40
+
+hit_type = wound
+
+burn_immunity = 1.0				;коэффициенты иммунитета 
+strike_immunity = 1.0
+shock_immunity = 1.0
+wound_immunity = 1.0		;0.3
+radiation_immunity = 1.0
+telepatic_immunity = 1.0
 
 ;-----------------------------------------------------------------------------------
 ; Trader
