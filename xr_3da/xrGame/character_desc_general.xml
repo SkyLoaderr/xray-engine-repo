@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding="windows-1251"?>
+
+<!-- INFORMATION  ABOUT A SPECIFIC CHARACTERS IN GAME-->
+
+<xml>
+	<specific_character id="default">
+		<name>Undefined Character</name>
+		<bio></bio>
+
+		<rank>none</rank>
+		<team>none</team>
+
+		<reputation>50</reputation>
+
+		<start_dialog></start_dialog>
+		<actor_dialog></actor_dialog>
+
+		<icon x="0" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+
+	</specific_character>
+</xml>
