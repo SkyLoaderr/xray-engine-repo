@@ -9,7 +9,7 @@ C++ class entity_memory_object : memory_object {
     property object_info;
     property self_info;
     property update_count;
-    
+    trhytr
     function object(const entity_memory_object&);
 };
 
