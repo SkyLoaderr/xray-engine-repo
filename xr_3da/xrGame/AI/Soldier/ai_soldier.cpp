@@ -200,7 +200,7 @@ void CAI_Soldier::Load	(LPCSTR section)
 		fpaBaseFunctions[3] = &pfStrength;
 		fpaBaseFunctions[4] = &pfAccuracy;
 		fpaBaseFunctions[5] = &pfReaction;
-		pfRelation.vfLoadEF(pSettings->ReadSTRING(section,"Relation"),fpaBaseFunctions);
+		//pfRelation.vfLoadEF(pSettings->ReadSTRING(section,"Relation"),fpaBaseFunctions);
 	}
 
 	//Msg("Evaluation Function Relation : %8.2f",pfRelation.dfGetValue(this,fpaBaseFunctions));

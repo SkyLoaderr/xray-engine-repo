@@ -31,7 +31,6 @@ CPatternFunction::CPatternFunction(const char *caFileName, CBaseFunction **fpaBa
 	m_daParameters = 0;
 	m_dwaVariableValues = 0;
 	vfLoadEF(caFileName,fpaBaseFunctions);
-    fpaBaseFunctions[m_dwFunctionType - 1] = this;
 }
 
 CPatternFunction::~CPatternFunction()
@@ -97,6 +96,8 @@ void CPatternFunction::vfLoadEF(const char *caFileName, CBaseFunction **fpaBaseF
 	m_dwaVariableValues = (DWORD *)xr_malloc(m_dwVariableCount*sizeof(DWORD));
 	
 	_FREE(m_dwaAtomicIndexes);
+    
+	fpaBaseFunctions[m_dwFunctionType - 1] = this;
 }
 
 double CPatternFunction::dfEvaluate()
