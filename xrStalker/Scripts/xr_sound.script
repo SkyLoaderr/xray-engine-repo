@@ -130,7 +130,7 @@ function load_sound(obj)
 	theme["talk_reject"] = { exec = npc_class, types = {}}
 	theme["talk_reject"].types["soldier"] = load_theme("talk_reject_soldier")
 	theme["talk_abuse"] = { exec = npc_class, types = {}}
-	theme["talk_abuse"].types["soldier"] = load_theme("talk_abus_soldier")
+	theme["talk_abuse"].types["soldier"] = load_theme("talk_abuse_soldier")
 
 	-- торговля
 	theme["trade_yes"] = { exec = npc_class, types = {}}
