@@ -58,7 +58,7 @@
 	</static>
 
 	<dragdrop_list x="30" y="35" width="280" height="160"
-			cell_width = "40" cell_height="40"
+			cell_width = "40" cell_height="42"
 			rows_num="18" cols_num="7" rows_num_view="4" unlimited="1"></dragdrop_list>
 
 
