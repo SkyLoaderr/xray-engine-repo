@@ -1,44 +1,36 @@
 function set_storyline(object, char_ini)
-        -- Реакция на бобика
-        if char_ini:section_exist ("bobik") == true then
-            escape_bobik.add_to_binder(object)
-        end
+	--' ┴юсшъ
+	if char_ini:section_exist ("bobik") == true then
+		escape_bobik.add_to_binder(object)
+    end
 
-
-    -- Настройка бандитов на заводе (escape)
+    --' ┴рэфшЄ√ эр ЇрсЁшъх
     xr_motivator.storage[object:id()].escape_factory_bandit = {
             enabled  = false
     }
-        if( char_ini:section_exist ("escape_factory_bandit") ) then
-            xr_motivator.storage[object:id()].escape_factory_bandit.enabled = true
-        end
-    if xr_motivator.storage[object:id()].escape_factory_bandit.enabled == true and
-       actor ~= nil and
-       actor:dont_has_info("escape_factory_bandits_dead")
-    then
+    if( char_ini:section_exist ("escape_factory_bandit") ) then
+        xr_motivator.storage[object:id()].escape_factory_bandit.enabled = true
+    end
+    if xr_motivator.storage[object:id()].escape_factory_bandit.enabled == true then
         escape_factory_bandits.add_to_binder(object)
     end
-    --Настройка схемы реакции новичка3 - новичок которого ограбили
+    --' ═ютшўюъ, ъюЄюЁюую уЁрсрэєыш
     xr_motivator.storage[object:id()].novice3 = {
-                path     = nil,         --Путь, по которому ходить
-                enemy_path = nil,       --Нулевая точка пути, туда, куда надо бежать
-                say_kill = false,       --Ни разу не говорил, что убьет бандитов
+                path     = nil,    
+                enemy_path = nil,  
                 enabled  = false
         }
-        if char_ini:section_exist ("novice3") == true and
-       actor ~= nil and
-       actor:dont_has_info("escape_factory_bandits_dead")
-    then
-            if( char_ini:line_exist("novice3", "path") == true ) then
-                    xr_motivator.storage[object:id()].novice3.path   = char_ini:r_string("novice3", "path")
-            end
-            if( char_ini:line_exist("novice3", "enemy_path") == true ) then
-                xr_motivator.storage[object:id()].novice3.enemy_path  = patrol(char_ini:r_string("novice3", "enemy_path") )
-            end
-                xr_motivator.storage[object:id()].novice3.enabled = true            --Если есть секция новичка, то включаем эту схему
-            object:set_start_dialog("loser_hello_dialog")
-            xr_trivial.add_novice3    (object)
-        end
+    if char_ini:section_exist ("novice3") == true then
+		if( char_ini:line_exist("novice3", "path") == true ) then
+			xr_motivator.storage[object:id()].novice3.path   = char_ini:r_string("novice3", "path")
+		end
+		if( char_ini:line_exist("novice3", "enemy_path") == true ) then
+			xr_motivator.storage[object:id()].novice3.enemy_path  = patrol(char_ini:r_string("novice3", "enemy_path") )
+		end
+		xr_motivator.storage[object:id()].novice3.enabled = true
+		object:set_start_dialog("loser_hello_dialog")
+		xr_trivial.add_novice3    (object)
+    end
 
     --Настройка сталкера зомби
     xr_motivator.storage[object:id()].zombie = {
