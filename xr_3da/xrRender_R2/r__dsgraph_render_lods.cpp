@@ -101,7 +101,8 @@ ange						= r_ssaLOD_A - r_ssaLOD_B;
 		dot	= Ldir.dotproduct			(facets[7].N); if (dot>dot_best) { id_next=id_best; dot_next = dot_best; id_best=7; dot_best=dot; }
 
 		// Now we have two "best" planes, calculate factor, and approx normal
-		float	f0			float	f0	=	dot_best,	f1 = dot_next;
+		float	f0			float	dt	=	0.5f;
+		float	f0	=	dot_best-dt,f1 = dot_next-dt;
 =	f0+f1;		f0 /= ft; f1 /= ft;
 		Fvector	N	=	{0,0,0};	N.mad(facets[id_best].N,f0).mad(facets[id_next].N,f1).normalize();
 				N.y	+=	1;			N.normalize	();
