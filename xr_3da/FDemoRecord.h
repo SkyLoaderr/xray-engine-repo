@@ -30,6 +30,7 @@ private:
 	Fvector		m_vAngularVelocity;
 
 	void		RecordKey				();
+	void		MakeCubemap				();
 public:
 				CDemoRecord				(const char *name, float life_time=60*60*1000);
 	virtual		~CDemoRecord();

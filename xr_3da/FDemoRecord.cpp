@@ -64,10 +64,12 @@ void CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N)
 	if (hFile<=0)	return;
 
 	if ((Device.dwTimeGlobal/500)%2==0) {
-		pApp->pFont->Size(0.02f);
-		pApp->pFont->Color(D3DCOLOR_RGBA(255,0,0,255));
-		pApp->pFont->Out(0,-.05f,"~%s","RECORDING");
-		pApp->pFont->Out(0,+.05f,"~Key frames count: %d",iCount);
+		pApp->pFont->Size	(0.015f);
+		pApp->pFont->Color	(D3DCOLOR_RGBA(255,0,0,255));
+		pApp->pFont->OutSet	(0,+.05f);
+		pApp->pFont->OutNext("~%s","RECORDING");
+		pApp->pFont->OutNext("~Key frames count: %d",iCount);
+		pApp->pFont->OutNext("~(SPACE=key-frame, BACK=CubeMap, ENTER=quit)");
 	}
 
 
@@ -122,6 +124,7 @@ void CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N)
 void CDemoRecord::OnKeyboardPress	(int dik)
 {
 	if (dik == DIK_SPACE)	RecordKey();
+	if (dik == DIK_BACK)	MakeCubemap();
 	if (dik == DIK_RETURN)	pCreator->Cameras.RemoveEffector(cefDemo);
 }
 
@@ -178,4 +181,8 @@ void CDemoRecord::RecordKey			()
 		sizeof(Fmatrix)
 	);
 	iCount++;
+}
+
+void CDemoRecord::MakeCubemap		()
+{
 }
