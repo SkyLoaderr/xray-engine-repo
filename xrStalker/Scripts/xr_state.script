@@ -9,10 +9,10 @@
 ----------------------------------------------------------------------------------------------------------------------
 -- Условие завершения скрипта
 class "evaluator_state_end" (property_evaluator)
-function evaluator_kamp_end:__init(storage) super()
+function evaluator_state_end:__init(storage) super()
 	self.a = storage
 end
-function evaluator_kamp_end:evaluate()
+function evaluator_state_end:evaluate()
 	return self.a.body_state == self.a.target_state
 end
 
