@@ -75,7 +75,7 @@ end
 -- mandatory - поле об€зательно должно быть задано
 --
 -- ¬озвращает true или false
-function cfg_get_bool(char_ini, section, field, object, mandatory)
+function cfg_get_bool(char_ini, section, field, object, mandatory, default_val)
 	if mandatory == nil then
 		utils.abort("section '%s': wrong arguments order in call to cfg_get_bool", section)
 	end
@@ -86,13 +86,20 @@ function cfg_get_bool(char_ini, section, field, object, mandatory)
 		return ret
 	end
 	if not mandatory then
+		if default_val then
+			if default_val ~= false and default_val ~= true then
+				utils.abort("object '%s': section '%s': field '%s': default value is " ..
+					"not boolean", object:name(), section, field)
+			end
+			return default_val
+		end
 		return false
 	end
 	utils.abort("object '%s': attempt to read a non-existant boolean field '%s' in " ..
 		"section '%s'", object:name(), field, section)
 end
 
-function cfg_get_string(char_ini, section, field, object, mandatory, gulag_name)
+function cfg_get_string(char_ini, section, field, object, mandatory, gulag_name, default_val)
 	if mandatory == nil or gulag_name == nil then
 		utils.abort("section '%s': wrong arguments order in call to cfg_get_string", section)
 	end
@@ -106,14 +113,14 @@ function cfg_get_string(char_ini, section, field, object, mandatory, gulag_name)
 		end
 	end
 	if not mandatory then
-		return nil
+		return default_val
 	end
 	local err = "object name '" .. object:name() .. "': attempt to read a non-existant string field '" ..
 		field .. "' in section '" .. section .. "'";
 	utils.abort("%s", err)
 end
 
-function cfg_get_number(char_ini, section, field, object, mandatory)
+function cfg_get_number(char_ini, section, field, object, mandatory, default_val)
 	if mandatory == nil then
 		utils.abort("section '%s': wrong arguments order in call to cfg_get_number", section)
 	end
@@ -123,35 +130,35 @@ function cfg_get_number(char_ini, section, field, object, mandatory)
 		return char_ini:r_s32(section, field)
 	end
 	if not mandatory then
-		return nil
+		return default_val
 	end
 	local err = "object name '" .. object:name() .. "': attempt to read a non-existant numeric field '" ..
 		field .. "' in section '" .. section .. "'";
 	utils.abort("%s", err)
 end
 
-function mob_get_string(char_ini, section, field, override, object, mandatory)
+function mob_get_string(char_ini, section, field, override, object, mandatory, default_val)
 	if override ~= nil then
 		return override
 	end
 
-	return cfg_get_string(char_ini, section, field, object, mandatory, "")
+	return cfg_get_string(char_ini, section, field, object, mandatory, "", default_val)
 end
 
-function mob_get_number(char_ini, section, field, override, object, mandatory)
+function mob_get_number(char_ini, section, field, override, object, mandatory, default_val)
 	if override ~= nil then
 		return override
 	end
 
-	return cfg_get_number(char_ini, section, field, object, mandatory)
+	return cfg_get_number(char_ini, section, field, object, mandatory, default_val)
 end
 
-function mob_get_bool(char_ini, section, field, override, object, mandatory)
+function mob_get_bool(char_ini, section, field, override, object, mandatory, default_val)
 	if override ~= nil then
 		return override ~= false
 	end
 
-	return cfg_get_bool(char_ini, section, field, object, mandatory)
+	return cfg_get_bool(char_ini, section, field, object, mandatory, default_val)
 end
 
 -- ѕровер€ет, находитс€ ли stalker р€дом с точкой path_point пути patrol_path
@@ -372,17 +379,11 @@ end
 
 -- a | b | c  ==>  { 1 = "a", 2 = "b", 3 = "c" }
 function parse_params(params)
-	local par_num
-	local fld_num
-	local fld
-	local val
-
 	local rslt = {}
-
-	par_num = 1
-	for param in string.gfind(params, "([%w_\\%=%-%,]+)|*") do
-		rslt[par_num] = param
-		par_num = par_num + 1
+	local n = 1
+	for fld in string.gfind(params, "%s*([^|]+)%s*") do
+		rslt[n] = fld
+		n = n + 1
 	end
 	return rslt
 end
