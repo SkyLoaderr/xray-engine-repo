@@ -1,3 +1,12 @@
+[m_zombie_attack_params]
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, bottom, top ) |	Test Dist
+;---------------------------------------------------------------------------------------------------------------------------------------------
+stand_attack_0 =	  	0.45,		30,		    200,        0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6, 1.6,							  3.5
+stand_attack_1 =	  	0.45,		30,		    200,        0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6, 1.6,							  3.5
+stand_attack_2 =	  	0.45,		30,		    200,        0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6, 1.6,							  3.5
+
+
 [m_zombie_e]
 GroupControlSection	= spawn_group
 $spawn               = "monsters\zombie"				; option for Level Editor
@@ -178,3 +187,5 @@ squad_attack_algorithm	= 1
 attack_effector			= monster_attack_effector
 
 LegsCount				= 2
+
+attack_params			= m_zombie_attack_params
