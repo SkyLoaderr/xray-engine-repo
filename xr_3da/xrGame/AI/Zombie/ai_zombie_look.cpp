@@ -169,7 +169,9 @@ void CAI_Zombie::soundEvent(CObject* who, int eType, Fvector& Position, float po
 		return;
 
 	power *= ffGetStartVolume(ESoundTypes(eType));
+	power = expf(.1f*log(power));
 
+	/**
 	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_WEAPON_RECHARGING		,0.15f);
 	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_WEAPON_SHOOTING		,1.00f); 
 	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_WEAPON_TAKING			,0.05f); 
@@ -189,6 +191,7 @@ void CAI_Zombie::soundEvent(CObject* who, int eType, Fvector& Position, float po
 	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_JUMPING_CROUCH	,0.15f); 
 	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_FALLING		,0.20f); 
 	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_TALKING		,0.25f); 
+	/**/
 
 	DWORD dwTime = Level().timeServer();
 	
