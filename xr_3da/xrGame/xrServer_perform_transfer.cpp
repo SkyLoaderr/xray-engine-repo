@@ -53,6 +53,10 @@ void xrServer::Perform_reject(xrServerEntity* what, xrServerEntity* from)
 	P.w_u16					(GE_OWNERSHIP_REJECT);
 	P.w_u16					(from->ID);
 	P.w_u16					(what->ID);
+
 	P.r_begin				(dummy);
+	P.r_u32					(time);
+	P.r_u16					(dummy);
+	P.r_u16					(dummy);
 	Process_event_reject	(P,0xffffffff,time,from->ID);
 }
