@@ -13,7 +13,7 @@ local end_talk 	 = 5
 
 class "actor_near_evaluator" (property_evaluator)
 
-function actor_near_evaluator:__init (name, storage) super ()
+function actor_near_evaluator:__init (name, storage) super (nil, name)
     self.a 		= storage
 	self.result	= false
 end

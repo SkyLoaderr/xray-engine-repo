@@ -9,7 +9,7 @@
 ----------------------------------------------------------------------------------------------------------------------
 -- ѕровер€ет находимс€ ли мы на позиции торговли
 class "evaluator_on_position" (property_evaluator)
-function evaluator_on_position:__init(storage) super()
+function evaluator_on_position:__init(storage, name) super(nil, name)
 	self.a = storage
 end
 function evaluator_on_position:evaluate()
@@ -87,7 +87,7 @@ function add_to_binder(object)
 	operators["go_position"] = xr_actions_id.stohe_position + 1
 
 	-- Evaluators
-	manager:add_evaluator (properties["position"], 	this.evaluator_on_position		(xr_motivator.storage[object:id()].state))
+	manager:add_evaluator (properties["position"], 	this.evaluator_on_position		(xr_motivator.storage[object:id()].state, "position_position"))
 
 	-- Actions
 	local action = this.action_go_position (object:name(),"action_go_position", xr_motivator.storage[object:id()].state)
