@@ -69,10 +69,10 @@ protected:
 
 protected:
 	template <int increment, cell_type _color_to_move, cell_type opponent_color>
-	IC		void			compute_direction		(cell_type *start_cell, int &difference);
+	IC		void			compute_direction		(cell_type const *start_cell, int &difference) const;
 	
 	template <cell_type color_to_move>
-	IC		void			compute_difference		(const cell_index &index, int &result);
+	IC		int				compute_difference		(const cell_index &index) const;
 
 public:
 	IC						CBoardClassicOthello	();

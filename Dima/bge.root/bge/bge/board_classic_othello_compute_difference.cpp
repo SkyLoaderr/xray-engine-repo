@@ -16,8 +16,6 @@ template <
 >
 IC	void CBoardClassicOthello::compute_direction(cell_type const *start_cell, int &result) const
 {
-    CBoardClassicOthello::cell_type *current_cell = start_cell + increment;
-
 	if (start_cell[1*increment] != opponent_color)
 		return;
 
@@ -56,7 +54,7 @@ IC	void CBoardClassicOthello::compute_direction(cell_type const *start_cell, int
 }
 	
 template <CBoardClassicOthello::cell_type _color_to_move>
-IC	int CBoardClassicOthello::compute_result	(const cell_index &index) const
+IC	int CBoardClassicOthello::compute_difference	(const cell_index &index) const
 {
 	const cell_type color_to_move	= _color_to_move;
 	const cell_type	opponent_color	= (color_to_move == BLACK ? WHITE : BLACK);
@@ -140,11 +138,11 @@ IC	int CBoardClassicOthello::compute_result	(const cell_index &index) const
 	return	(result);
 }
 
-int	 CBoardClassicOthello::compute_result	(const cell_index &index) const
+int	 CBoardClassicOthello::compute_difference	(const cell_index &index) const
 {
 	VERIFY		(can_move(index) == EMPTY);
 	if (color_to_move() == BLACK)
-		return	(compute_result<BLACK>(index));
+		return	(compute_difference<BLACK>(index));
 	else
-		return	(compute_result<WHITE>(index));
+		return	(compute_difference<WHITE>(index));
 }
