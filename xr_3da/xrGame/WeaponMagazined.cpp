@@ -468,7 +468,7 @@ void CWeaponMagazined::OnShot		()
 {
 	// Sound
 	UpdateFP();
-	sndShot.play_at_pos			(H_Root(),vLastFP);
+	sndShot.play_at_pos			(H_Root(),vLastFP,hud_mode?sm_2D:0);
 
 	// Camera
 	if (hud_mode)	
