@@ -139,29 +139,28 @@ function motivator_binder:update(delta)
 	if false then
 		if lasttime == nil or
 		   game.get_game_time():diffSec(lasttime) > 1 
-	then
-		printf("%f * %f", self.object.health, self.object.health - lasthealth)
-		lasthealth = self.object.health
-		lasttime = game.get_game_time()
+		then
+			printf("%f * %f", self.object.health, self.object.health - lasthealth)
+			lasthealth = self.object.health
+			lasttime = game.get_game_time()
+		end
 	end
-end
 
---' Проверка врагов
-if false then 
-	local be = self.object:best_enemy()
-	if be ~= nil then
-		printf("ENEMYCHECK: %s[%s, %s, %s] -> %s[%s, %s, %s]",
-			self.object:name(),
-			self.object:team(),
-			self.object:squad(),
-			self.object:group(),
-			be:name(), 
-			be:team(), 
-			be:squad(), 
-			be:group())
+	--' Проверка врагов
+	if false then 
+		local be = self.object:best_enemy()
+		if be ~= nil then
+			printf("ENEMYCHECK: %s[%s, %s, %s] -> %s[%s, %s, %s]",
+				self.object:name(),
+				self.object:team(),
+				self.object:squad(),
+				self.object:group(),
+				be:name(), 
+				be:team(), 
+				be:squad(), 
+				be:group())
+		end
 	end
-end
-
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:reload(section)
