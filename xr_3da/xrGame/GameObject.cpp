@@ -177,7 +177,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	XFORM().setXYZ					(E->o_Angle);
 	Position().set					(E->o_Position);
 	VERIFY							(_valid(renderable.xform));
-	VERIFY							(fis_zero(DET(renderable.xform)));
+	VERIFY							(!fis_zero(DET(renderable.xform)));
 	CSE_ALifeObject					*O = dynamic_cast<CSE_ALifeObject*>(E);
 	if (O && xr_strlen(O->m_ini_string)) {
 #pragma warning(push)
