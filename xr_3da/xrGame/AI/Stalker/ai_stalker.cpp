@@ -25,6 +25,7 @@ CAI_Stalker::CAI_Stalker			()
 	m_saved_impulse					= 0.f;
 	m_dwTimeToChange				= 0;
 	m_tBodyState					= eBodyStateStand;
+	m_dwHitTime						= 0;
 }
 
 CAI_Stalker::~CAI_Stalker			()
@@ -57,6 +58,7 @@ void CAI_Stalker::OnDeviceCreate	()
 
 void CAI_Stalker::Load				(LPCSTR section)
 { 
+	setEnabled						(false);
 	inherited::Load					(section);
 	m_tSelectorFreeHunting.Load		(section);
 	// visibility
@@ -120,6 +122,7 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 
 	m_tStateStack.push				(m_eCurrentState = eStalkerStateLookingOver);
 	vfAddStateToList				(m_eCurrentState);
+	setEnabled						(true);
 	return							(TRUE);
 }
 

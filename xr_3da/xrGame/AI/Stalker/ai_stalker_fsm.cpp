@@ -94,6 +94,14 @@ void CAI_Stalker::Think()
 				Firing();
 				break;
 			}
+			case eStalkerStateUnderFire: {
+				UnderFire();
+				break;
+			}
+			case eStalkerStatePursuit: {
+				Pursuit();
+				break;
+			}
 		}
 		m_bStateChanged		= m_ePreviousState != m_eCurrentState;
 	}
@@ -139,14 +147,6 @@ void CAI_Stalker::WaitForTime()
 	WRITE_TO_LOG("Wait for time");
 }
 
-void CAI_Stalker::Recharge()
-{
-	WRITE_TO_LOG("Recharge");
-	VERIFY(Weapons->ActiveWeapon());
-	Weapons->ActiveWeapon()->Reload();
-	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(Weapons->ActiveWeapon()->GetAmmoElapsed());
-}
-
 void CAI_Stalker::Drop()
 {
 	WRITE_TO_LOG("Drop");
@@ -175,6 +175,24 @@ void CAI_Stalker::Searching()
 	vfSetMovementType(eBodyStateStand,eMovementTypeWalk,eLookTypeSearch);
 	if (m_fCurSpeed < EPS_L)
 		r_torso_target.yaw = r_target.yaw;
+}
+
+void CAI_Stalker::Recharge()
+{
+	WRITE_TO_LOG("Recharge");
+	VERIFY(Weapons->ActiveWeapon());
+	Weapons->ActiveWeapon()->Reload();
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(Weapons->ActiveWeapon()->GetAmmoElapsed());
+}
+
+void CAI_Stalker::UnderFire()
+{
+	WRITE_TO_LOG("Under fire");
+}
+
+void CAI_Stalker::Pursuit()
+{
+	WRITE_TO_LOG("Pursuit");
 }
 
 void CAI_Stalker::Firing()

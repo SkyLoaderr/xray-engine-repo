@@ -40,10 +40,10 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 	// Save event
 	Fvector D;
 	svTransform.transform_dir(D,vLocalDir);
-//	m_dwHitTime = Level().timeServer();
-//	m_tHitDir.set(D);
-//	m_tHitDir.normalize();
-//	m_tHitPosition = who->Position();
+	m_dwHitTime = Level().timeServer();
+	m_tHitDir.set(D);
+	m_tHitDir.normalize();
+	m_tHitPosition = who->Position();
 	
 	// Play hit-sound
 //	sound& S				= m_tpaSoundHit[Random.randI(SND_HIT_COUNT)];

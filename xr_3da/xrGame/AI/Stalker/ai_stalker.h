@@ -31,6 +31,8 @@ private:
 		eStalkerStateLookingOver,
 		eStalkerStateSearching,
 		eStalkerStateFiring,
+		eStalkerStateUnderFire,
+		eStalkerStatePursuit,
 	};
 
 	enum EBodyState {
@@ -64,6 +66,11 @@ private:
 		u32					dwTime;
 	} SStalkerStates;
 
+	// hit data
+	u32						m_dwHitTime;
+	Fvector					m_tHitDir;
+	Fvector					m_tHitPosition;
+	
 	// VISIBILITY
 	objSET					m_tpaVisibleObjects;
 	SEnemySelected			m_Enemy;
@@ -140,6 +147,9 @@ private:
 			void			LookingOver						();
 			void			Searching						();
 			void			Firing							();
+			void			UnderFire						();
+			void			Pursuit							();
+
 			// selectors
 			void			vfBuildPathToDestinationPoint	(CAISelectorBase *S);
 			void			vfSearchForBetterPosition		(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
