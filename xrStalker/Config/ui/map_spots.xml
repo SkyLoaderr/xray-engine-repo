@@ -295,16 +295,16 @@
 	</mp_af_friend_mini_pointer>	
 <!-- bar locations -->
 	<bar_hunter_toz_location hint="hunter's_rifle">
-		<level_map spot="hunter's_rifle_spot" pointer="quest_pointer"></level_map>
-		<mini_map spot="hunter's_rifle_spot" pointer="quest_pointer"></mini_map>
+		<level_map spot="hunter_rifle_spot" pointer="quest_pointer"></level_map>
+		<mini_map spot="hunter_rifle_spot" pointer="quest_pointer"></mini_map>
         </bar_hunter_toz_location>
 
 
 
 <!-- bar spots -->
-	<hunter's_rifle_spot x="0" y="0" width="32" height="32" alignment="c">
+	<hunter_rifle_spot x="0" y="0" width="32" height="32" alignment="c">
                 <texture x="96" y="128" width="32" height="32">ui\ui_icons_map</texture>
-        </hunter's_rifle_spot>
+        </hunter_rifle_spot>
 
 
 </map_spots>
