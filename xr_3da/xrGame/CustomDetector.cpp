@@ -105,7 +105,7 @@ void CCustomDetector::Update(u32 dt) {
 		if(l_maxPow > 0) {
 			if(!m_noise.feedback) Sound->PlayAtPos(m_noise, this, P, true);
 			if(m_noise.feedback) {
-				l_maxPow = __max(logf(l_maxPow) / 10.f + 1.f, .0f);
+				l_maxPow = _max(logf(l_maxPow) / 10.f + 1.f, .0f);
 				m_noise.feedback->SetVolume(l_maxPow);
 
 				m_noise.feedback->SetPosition(P);
@@ -120,9 +120,11 @@ void CCustomDetector::UpdateCL() {
 	f32 l_zonePow = 0;
 	list<CCustomZone*>::iterator l_it;
 	for(l_it = m_zones.begin(); l_it != m_zones.end(); l_it++) l_zonePow = max(l_zonePow, (*l_it)->Power((*l_it)->Position().distance_to(vPosition)));
+	/*
 	CGameFont* H		= Level().HUD()->pFontMedium;
 	H->SetColor			(0xf0ffffff); 
 	H->Out				(550,500,"Anomaly force: %.0f", l_zonePow);
+	*/
 }
 
 void CCustomDetector::feel_touch_new(CObject* O) {
