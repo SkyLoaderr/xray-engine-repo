@@ -125,7 +125,7 @@ void CAI_Soldier::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 	Group.m_tHitPosition = tHitPosition;
 	
 	if (iHealth > 0) {
-		if (::Random.randIs(0,2))
+		if (::Random.randI(0,2))
 			PKinematics(pVisual)->PlayFX(tSoldierAnimations.tNormal.tTorso.tpDamageLeft);
 		else
 			PKinematics(pVisual)->PlayFX(tSoldierAnimations.tNormal.tTorso.tpDamageRight);
