@@ -45,8 +45,8 @@ stand_steal_0		=	  1,	0.2,    1,	     0.25,    0.7,    0.7,    1.0,     0.7,   1
 stand_drag_0		=	  1,	0.2,    1,	     0.25,    0.7,    0.7,    1.0,     0.7,   1.0
 
 [m_boar_e]
-SpaceRestrictionSection	= space_restrictor,zone_mosquito_bald
 GroupControlSection		= spawn_group
+SpaceRestrictionSection = space_restrictor,zone_mosquito_bald
 $spawn					= "monsters\boar"					 ; option for Level Editor
 $npc					= on								 ; option for Level Editor
 $prefetch 				= 16
@@ -63,6 +63,8 @@ DynamicObjectsCount		= 32
 
 cform					 = skeleton					; collision class
 class					 = AI_BOAR					; AI class
+
+script_binding  		= monster.bind
 
 bone_torso				= bip01_spine1 			; bone name
 bone_head				= bip01_head				; bone name
@@ -225,8 +227,8 @@ LegsCount				= 4
 
 default				= 1.00,	-1,	1.00
 
-bip01_pelvis 		= 0.01, -1, 0.5
-bip01_spine 		= 0.01, -1, 0.5
-bip01_spine1 		= 0.2, -1, 0.5
+bip01_pelvis 		= 0.4, -1, 0.5
+bip01_spine 		= 0.4, -1, 0.5
+bip01_spine1 		= 0.6, -1, 0.5
 bip01_neck 			= 0.5, -1, 0.5
 bip01_head 			= 10.0, -1, 10.00
