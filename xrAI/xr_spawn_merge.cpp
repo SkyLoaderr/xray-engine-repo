@@ -205,10 +205,14 @@ public:
 	void						Execute()
 	{
 		thProgress				= 0.0f;
+		u32						m_level_graph_vertex_id = u32(-1);
 		u32						dwStart = tpGraph->header().vertex_count(), dwFinish = tpGraph->header().vertex_count(), dwCount = 0;
-		for (int i=0; i<(int)tpGraph->header().vertex_count(); i++)
-			if (tpGraph->vertex(i)->level_id() == m_dwLevelID)
+		for (u32 i=0; i<(int)tpGraph->header().vertex_count(); i++)
+			if (tpGraph->vertex(i)->level_id() == m_dwLevelID) {
+				if (m_level_graph_vertex_id == u32(-1))
+					m_level_graph_vertex_id = i;
 				dwCount++;
+			}
 		float fRelation = float(dwCount)/(float(dwCount) + 2*m_tpSpawnPoints.size());
 		for (int i=0; i<(int)tpGraph->header().vertex_count(); i++)
 			if (tpGraph->vertex(i)->level_id() == m_dwLevelID) {
@@ -227,7 +231,14 @@ public:
 			sprintf				(S,"There are no graph vertices in the game graph for the level '%s' !\n",m_tLevel.caLevelName);
 			R_ASSERT2			(dwStart < dwFinish,S);
 		}
+
 		for (int i=0; i<(int)m_tpSpawnPoints.size(); i++, thProgress = .5f*(fRelation + float(i)/float(m_tpSpawnPoints.size())*(1.f - fRelation))) {
+			if (!m_tpSpawnPoints[i]->used_ai_locations()) {
+				m_tpSpawnPoints[i]->m_tGraphID = m_level_graph_vertex_id;
+				m_tpSpawnPoints[i]->m_fDistance = 0.f;
+				m_tpSpawnPoints[i]->m_tNodeID = tpGraph->vertex(m_level_graph_vertex_id)->level_vertex_id();
+				continue;
+			}
 			m_tpSpawnPoints[i]->m_tNodeID = m_tpAI_Map->vertex(u32(-1),m_tpSpawnPoints[i]->o_Position);
 			VERIFY				(m_tpAI_Map->valid_vertex_id(m_tpSpawnPoints[i]->m_tNodeID));
 			if (m_tpSpawnPoints[i]->used_ai_locations() && !m_tpAI_Map->inside(m_tpAI_Map->vertex(m_tpSpawnPoints[i]->m_tNodeID),m_tpSpawnPoints[i]->o_Position)) {
@@ -390,9 +401,14 @@ LPCSTR cafGetActorLevelName(xr_vector<CSpawn *> &tpLevels, string256 &S)
 	for (u32 i=0; i<tpLevels.size(); i++) {
 		ALIFE_OBJECT_P_IT	I = tpLevels[i]->m_tpSpawnPoints.begin();
 		ALIFE_OBJECT_P_IT	E = tpLevels[i]->m_tpSpawnPoints.end();
-		for ( ; I != E; I++)
-			if (!!(l_tpActor = dynamic_cast<CSE_ALifeCreatureActor*>(*I)))
-				break;
+		for ( ; I != E; I++) {
+			CSE_ALifeCreatureActor	*actor = dynamic_cast<CSE_ALifeCreatureActor*>(*I);
+			if (!actor)
+				continue;
+			Msg				("Actor is on the level %s",tpGraph->header().levels().find(tpGraph->vertex(actor->m_tGraphID)->level_id())->second.name());
+			VERIFY2			(!l_tpActor,"There must the SINGLE level with ACTOR!");
+			l_tpActor		= actor;
+		}
 		if (l_tpActor)
 			return			(strconcat(S,tpLevels[i]->m_tLevel.name(),".spawn"));
 	}
