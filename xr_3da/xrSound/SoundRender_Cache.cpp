@@ -49,7 +49,8 @@ void	CSoundRender_Cache::move2top	(cache_line* line)
 BOOL	CSoundRender_Cache::request		(cache_cat& cat, u32 id)
 {
 	// 1. check if cached version available
-	R_ASSERT		(id<cat.size);
+	id				%= cat.size;
+//.	R_ASSERT		(id<cat.size);
 	u16&	cptr	= cat.table[id];
 	if (CAT_FREE != cptr)	{
 		// cache line exists - change it's priority and return
