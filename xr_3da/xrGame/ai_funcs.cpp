@@ -23,8 +23,10 @@ CPatternFunction::CPatternFunction(char *caFileName)
 	FILE *fTestParameters = fopen(caFileName,"rb");
 	
 	fread(&dwVariableCount,1,sizeof(dwVariableCount),fTestParameters);
-	dwaAtomicFeatureRange = (DWORD *)calloc(dwVariableCount,sizeof(DWORD));
-	DWORD *dwaAtomicIndexes = (DWORD *)calloc(dwVariableCount,sizeof(DWORD));
+	dwaAtomicFeatureRange = (DWORD *)xr_malloc(dwVariableCount*sizeof(DWORD));
+	ZeroMemory(dwaAtomicFeatureRange,dwVariableCount*sizeof(DWORD));
+	DWORD *dwaAtomicIndexes = (DWORD *)xr_malloc(dwVariableCount*sizeof(DWORD));
+	ZeroMemory(dwaAtomicIndexes,dwVariableCount*sizeof(DWORD));
 
 	for (DWORD i=0; i<dwVariableCount; i++) {
 		fread(dwaAtomicFeatureRange + i,1,sizeof(DWORD),fTestParameters);
@@ -37,7 +39,8 @@ CPatternFunction::CPatternFunction(char *caFileName)
 
 	fread(&dwPatternCount,1,sizeof(dwPatternCount),fTestParameters);
 	tpPatterns = (SPattern *)xr_malloc(dwPatternCount*sizeof(SPattern));
-	dwaPatternIndexes = (DWORD *)calloc(dwPatternCount,sizeof(DWORD));
+	dwaPatternIndexes = (DWORD *)xr_malloc(dwPatternCount*sizeof(DWORD));
+	ZeroMemory(dwaPatternIndexes,dwPatternCount*sizeof(DWORD));
 	dwParameterCount = 0;
 	for ( i=0; i<dwPatternCount; i++) {
 		if (i)
@@ -51,7 +54,7 @@ CPatternFunction::CPatternFunction(char *caFileName)
 		dwParameterCount += dwComplexity;
 	}
 	
-	daParameters = (double *)calloc(dwParameterCount,sizeof(double));
+	daParameters = (double *)xr_malloc(dwParameterCount*sizeof(double));
 	fread(daParameters,dwParameterCount,sizeof(double),fTestParameters);
 	fclose(fTestParameters);
 
