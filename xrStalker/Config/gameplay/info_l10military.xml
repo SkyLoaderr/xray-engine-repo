@@ -52,6 +52,11 @@
 	<info_portion id="mil_lukash_arrive"></info_portion>
 	<info_portion id="mil_lukash_dead"></info_portion>
 	
+	<!--  вест с курьером-->
+	<info_portion id="mil_courier_quest"></info_portion>
+	<info_portion id="mil_courier_quest_failed"></info_portion>
+	<info_portion id="mil_courier_quest_complete"></info_portion>
+	
 	<!-- јтака —вободы -->
 	<info_portion id="mil_freedom_attack"></info_portion>
 	<info_portion id="mil_freedom_attack_complete"></info_portion>
