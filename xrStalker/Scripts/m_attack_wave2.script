@@ -259,7 +259,6 @@ function main ()
 
 	for a = 1, table.getn (monsters), 1 do
 		monsters[a]:initialize ()
-		end
 	end
 	
 
