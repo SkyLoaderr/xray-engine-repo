@@ -15,6 +15,8 @@ protected:
 	s32			m_dwArtefactRespawnDelta;
 	s32			m_dwArtefactSpawnTime;
 
+	u16			m_ArtefactsSpawnedTotal;
+
 	xr_vector<RPoint>				Artefact_rpoints;
     	
 public:
@@ -52,4 +54,5 @@ public:
 				void				Assign_Artefact_RPoint	(CSE_Abstract* E);
 
 	virtual		void				net_Export_State		(NET_Packet& P, u32 id_to);				// full state
+				bool				ArtefactSpawn_Allowed	();
 };

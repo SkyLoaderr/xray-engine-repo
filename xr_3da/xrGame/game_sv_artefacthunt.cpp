@@ -56,6 +56,8 @@ void	game_sv_ArtefactHunt::Create					(LPSTR &options)
 	m_dwArtefactSpawnTime = 0;
 	m_ArtefactBearerID = 0;
 	m_TeamInPosession = 0;
+
+	m_ArtefactsSpawnedTotal = 0;
 }
 
 void	game_sv_ArtefactHunt::OnRoundStart			()
@@ -64,6 +66,7 @@ void	game_sv_ArtefactHunt::OnRoundStart			()
 	
 	m_delayedRoundEnd = false;
 	m_dwArtefactSpawnTime = 0;
+	m_ArtefactsSpawnedTotal = 0;
 
 /*
 	// Respawn all players and some info
@@ -420,6 +423,8 @@ void	game_sv_ArtefactHunt::SpawnArtefact			()
 	P.w_begin			(M_GAMEMESSAGE);
 	P.w_u32				(GMSG_ARTEFACT_SPAWNED);
 	u_EventSend(P);
+	//-----------------------------------------------
+	m_ArtefactsSpawnedTotal++;
 };
 
 void	game_sv_ArtefactHunt::Update			()
@@ -448,15 +453,37 @@ void	game_sv_ArtefactHunt::Update			()
 				{
 					if (m_dwArtefactSpawnTime != -1 && u32(m_dwArtefactSpawnTime) < Device.dwTimeGlobal)
 					{
-						m_dwArtefactSpawnTime = -1;
-						//time to spawn Artefact;
-						SpawnArtefact();
+						if (ArtefactSpawn_Allowed() || 0 != m_ArtefactsSpawnedTotal  )
+						{
+							m_dwArtefactSpawnTime = -1;
+							//time to spawn Artefact;
+							SpawnArtefact();
+						};
 					};
 				};
 			}break;
 	}
 
 }
+bool	game_sv_ArtefactHunt::ArtefactSpawn_Allowed		()	
+{
+	// Check if all players ready
+	u32		cnt		= get_count	();
+	
+	u32		TeamAlived[2] = {0, 0};
+	for		(u32 it=0; it<cnt; ++it)	
+	{
+		game_PlayerState* ps		=	get_it	(it);
+		if (ps->flags & GAME_PLAYER_FLAG_VERY_VERY_DEAD || ps->Skip)	continue;
+		else
+			TeamAlived[ps->team-1]++;
+	}
+
+	if (TeamAlived[0] == 0 || TeamAlived[1] == 0) return FALSE;
+	
+	return TRUE;
+};
+
 void	game_sv_ArtefactHunt::OnDelayedRoundEnd		(LPCSTR /**reason/**/)
 {
 	m_delayedRoundEnd = true;
