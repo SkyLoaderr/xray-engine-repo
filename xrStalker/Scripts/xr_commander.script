@@ -168,8 +168,10 @@ function action_commander:finalize()
         self.zone:clear_callback( true )
     end
 
-    self.object:set_sound_mask( -1 )
-    self.object:set_sound_mask( 0 )
+    if self.object:alive() then
+        self.object:set_sound_mask( -1 )
+        self.object:set_sound_mask( 0 )
+    end
 
     local enemy = self.object:best_enemy()
 
