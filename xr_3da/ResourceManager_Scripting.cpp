@@ -267,6 +267,7 @@ ShaderElement*		CBlender_Compile::_lua_Compile	(LPCSTR namesp, LPCSTR name)
 	RS.Invalidate		();
 
 	// Compile
+	Memory.dbg_check	();
 	LPCSTR				t_0		= L_textures[0]				? L_textures[0] : "null";
 	LPCSTR				t_1		= (L_textures.size() > 1)	? L_textures[1] : "null";
 	LPCSTR				t_d		= detail_texture			? detail_texture: "null" ;
@@ -277,6 +278,7 @@ ShaderElement*		CBlender_Compile::_lua_Compile	(LPCSTR namesp, LPCSTR name)
 	element						(ac,t_0,t_1,t_d);
 	r_End				();
 	lua_setgcthreshold	(LSVM,0);
+	Memory.dbg_check	();
 
 	return				Device.Resources->_CreateElement(E);
 }
