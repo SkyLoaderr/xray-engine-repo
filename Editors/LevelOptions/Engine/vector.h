@@ -158,12 +158,25 @@ struct _color;		// floating point based color definition
 
 
 // normalize angle
-IC float		normalize_angle	(float a){
+IC float		angle_normalize	(float a)
+{
 	float		div	 =	a/PI_MUL_2;
 	int			rnd  =	(div>0)?iFloor(div):iCeil(div);
 	float		frac =	div-rnd;
 	if (frac<0)	frac +=	1.f;
 	return		frac *	PI_MUL_2;
+}
+IC float		angle_difference(float a, float b)
+{
+	float diff	= angle_normalize(a) - angle_normalize(b);
+	if (diff>0) {
+		if (diff>PI)
+			diff	-= PI_MUL_2;
+	} else {
+		if (diff<-PI)	
+			diff	+= PI_MUL_2;
+	}
+	return _abs	(diff);
 }
 
 template <class T>
