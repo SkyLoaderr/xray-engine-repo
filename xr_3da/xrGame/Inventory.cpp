@@ -914,6 +914,8 @@ bool CInventory::CanPutInSlot(PIItem pIItem) const
 {
 	if(!m_bSlotsUseful) return false;
 
+	if( !GetOwner()->CanPutInSlot(pIItem, pIItem->GetSlot() ) ) return false;
+
 	if(pIItem->GetSlot() < m_slots.size() && 
 		m_slots[pIItem->GetSlot()].m_pIItem == NULL)
 		return true;

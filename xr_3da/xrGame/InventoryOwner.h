@@ -54,7 +54,7 @@ public:
 	
 	//обновление
 	virtual void	UpdateInventoryOwner		(u32 deltaT);
-
+	virtual bool	CanPutInSlot				(PIItem item, u32 slot){return true;};
 	// свойства
 	u32					m_dwMoney;
 
