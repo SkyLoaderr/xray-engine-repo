@@ -11,6 +11,14 @@ function load_scheme(filename, scheme, stype)
 	module(filename)
 end
 
+function prefetch(filename)
+//	if 
+		_G[filename] 
+//		~= nil 
+//	then
+//	end
+end
+
 ----------------------------------------------------------------------
 -- Загрузка модулей:
 ----------------------------------------------------------------------
