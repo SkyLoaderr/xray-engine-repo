@@ -2,121 +2,171 @@
 
 <game_dialogs>
 
-	<dialog id="trader_talk_about">
-	<precondition>trader_job.is_trader</precondition>
-	    <has_info>actor_start</has_info>
-		<phrase_list>
-			<phrase id="0">
-				<text>Расскажи мне о...</text>
-				<next>1</next>
-			</phrase>
-			<phrase id="1">
-				<text>Что тебя интересует?</text>
-				<next>2</next>
-				<next>3</next>
-				<next>4</next>
-				<next>5</next>
-			</phrase>
-			<phrase id="2">
-				<goodwill>70</goodwill>
-				<text>Что ты знаешь о Стрелке?</text>
-				<next>6</next>
-			</phrase>
-			<phrase id="3">
-				<text>Расскажи мне о Зоне.</text>
-				<next>7</next>
-			</phrase>
-			<phrase id="4">
-				<text>Мне нужно оружие и экипировка, где я могу их достать?</text>
-				<next>8</next>
-			</phrase>
-			<phrase id="5">
-				<text>Мне нужны деньги, как я могу их заработать в Зоне?</text>
-				<next>9</next>
-			</phrase>
-			<phrase id="6">
-				<text>Слышал, что о нем знает сталкер в гаражах. \nСпрашивай сталкеров, они больше знают…</text>
-			</phrase>
-			<phrase id="7">
-				<text>В Зоне без оружия опасно... А его завсегда сможешь \nприкупить у меня. Для тебя почти \nпо самым низким ценам… \n\nпрактически по самым… \nну почти…</text>
-			</phrase>
-			<phrase id="8">
-				<text>Ты можешь купить их у меня… ты мне нравишься,\nя чувствую в тебе большой потенциал… \nпоэтому, только для тебя, как для друга, \nя сделаю скидку… </text>
-			</phrase>
-			<phrase id="9">
-				<text>Выполняй мои задания и приноси артефакты,\nя за них хорошо тебе заплачу… \nсовсем не так как некоторые... \nэээ… другие барыги…</text>
-			</phrase>
-		</phrase_list>
-	</dialog>
+    <dialog id="trader_talk_about">
+    <precondition>trader_job.is_trader</precondition>
+        <has_info>actor_start</has_info>
+        <phrase_list>
+            <phrase id="0">
+                <text>Расскажи мне о...</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>Что тебя интересует?</text>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+            </phrase>
+            <phrase id="2">
+                <goodwill>70</goodwill>
+                <text>Что ты знаешь о Стрелке?</text>
+                <next>6</next>
+            </phrase>
+            <phrase id="3">
+                <text>Расскажи мне о Зоне.</text>
+                <next>7</next>
+            </phrase>
+            <phrase id="4">
+                <text>Мне нужно оружие и экипировка, где я могу их достать?</text>
+                <next>8</next>
+            </phrase>
+            <phrase id="5">
+                <text>Мне нужны деньги, как я могу их заработать в Зоне?</text>
+                <next>9</next>
+            </phrase>
+            <phrase id="6">
+                <text>Слышал, что о нем знает сталкер в гаражах. \nСпрашивай сталкеров, они больше знают…</text>
+            </phrase>
+            <phrase id="7">
+                <text>В Зоне без оружия опасно... А его завсегда сможешь \nприкупить у меня. Для тебя почти \nпо самым низким ценам… \n\nпрактически по самым… \nну почти…</text>
+            </phrase>
+            <phrase id="8">
+                <text>Ты можешь купить их у меня… ты мне нравишься,\nя чувствую в тебе большой потенциал… \nпоэтому, только для тебя, как для друга, \nя сделаю скидку… </text>
+            </phrase>
+            <phrase id="9">
+                <text>Выполняй мои задания и приноси артефакты,\nя за них хорошо тебе заплачу… \nсовсем не так как некоторые... \nэээ… другие барыги…</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
 
-	<dialog id="hello_dialog">
-		<phrase_list>
-			<phrase id="0">
-				<text>Привет</text>
-			</phrase>
-		</phrase_list>
-	</dialog>
+    <dialog id="hello_dialog">
+        <phrase_list>
+            <phrase id="0">
+                <text>Привет</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
 
-	<dialog id="stalker_talk_about">
-	<precondition>trader_job.if_not_a_trader</precondition>
-	    <has_info>actor_start</has_info>
-		<phrase_list>
-			<phrase id="0">
-				<text>Расскажи мне о...</text>
-				<next>1</next>
-			</phrase>
-			<phrase id="1">
-				<text>Что тебя интересует?</text>
-				<next>2</next>
-				<next>3</next>
-				<next>4</next>
-				<next>5</next>
-			</phrase>
-			<phrase id="2">
-				<goodwill>70</goodwill>
-				<text>Что ты знаешь о сталкере по кличке Стрелок?</text>
-				<next>8</next>
-			</phrase>
-			<phrase id="3">
-				<text>Мне нужны оружие и экипировка, где я могу их достать?</text>
-				<next>9</next>
-			</phrase>
-			<phrase id="4">
-				<text>Мне нужны деньги на экипировку и вооружение, \n где я могу их достать?</text>
-				<next>10</next>
-			</phrase>
-			<phrase id="5">
-				<text>Расскажи мне о Зоне...</text>
-				<next>11</next>
-			</phrase>
-			<phrase id="6">
-				<text>Можешь дать несколько советов новичку?</text>
-				<next>12</next>
-			</phrase>
-			<phrase id="7">
-				<text>С тобой можно поторговать?</text>
-				<next>13</next>
-			</phrase>
-			<phrase id="8">
-				<text>Слышал какие-то мрачные истории... Вроде пропал он \n несколько месяцев назад, а его группировка распалась или была кем-то уничтожена... \n \n Это все что я знаю...</text>
-			</phrase>
-			<phrase id="9">
-				<text>Спроси у торговца в деревеньке возле блокпоста...</text>
-			</phrase>
-			<phrase id="10">
-				<text>Заработать можно у торговца в деревеньке возле блокпоста,\n у него часто есть работенка для нас... кроме того, у него заказы есть на артефакты,\n  ему заказывают разные научные организации...\n подпольно конечно...</text>
-			</phrase>
-			<phrase id="11">
-				<text>Эээ... ну че рассказывать, то? Поброди, осмотрись...\n сам все поймешь... Главное остерегайся аномалий, мутантов и бандитов... \n  ну и еще к группировкам не суйся, пристрелят не спрашивая...</text>
-			</phrase>
-			<phrase id="12">
-				<text>Первое - дуй к торговцу в деревеньке возле блокпоста \n и заработай на неплохую экипировку и оружие, \n без этого в Зоне никуда... \n Второе - остерегайся аномалий, мутантов и бандитов \n Третье - будь внимателен и осторожен, не отдыхай на открытых местах \n и прячься от Выброса под крышей какого-нибудь сарая или завода, \n иначе мгновенно копыта отбросишь</text>
-			</phrase>
-			<phrase id="13">
-				<text>Да, конечно... [нажми торговать под окном диалогов]</text>
-			</phrase>
+    <dialog id="stalker_talk_about">
+    <precondition>trader_job.if_not_a_trader</precondition>
+        <has_info>actor_start</has_info>
+        <phrase_list>
+            <phrase id="0">
+                <text>Расскажи мне о...</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>Что тебя интересует?</text>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+            </phrase>
+            <phrase id="2">
+                <goodwill>70</goodwill>
+                <text>Что ты знаешь о сталкере по кличке Стрелок?</text>
+                <next>8</next>
+            </phrase>
+            <phrase id="3">
+                <text>Мне нужны оружие и экипировка, где я могу их достать?</text>
+                <next>9</next>
+            </phrase>
+            <phrase id="4">
+                <text>Мне нужны деньги на экипировку и вооружение, \n где я могу их достать?</text>
+                <next>10</next>
+            </phrase>
+            <phrase id="5">
+                <text>Расскажи мне о Зоне...</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="6">
+                <text>Можешь дать несколько советов новичку?</text>
+                <next>12</next>
+            </phrase>
+            <phrase id="7">
+                <text>С тобой можно поторговать?</text>
+                <next>13</next>
+            </phrase>
+            <phrase id="8">
+                <text>Слышал какие-то мрачные истории... Вроде пропал он \n несколько месяцев назад, а его группировка распалась или была кем-то уничтожена... \n \n Это все что я знаю...</text>
+            </phrase>
+            <phrase id="9">
+                <text>Спроси у торговца в деревеньке возле блокпоста...</text>
+            </phrase>
+            <phrase id="10">
+                <text>Заработать можно у торговца в деревеньке возле блокпоста,\n у него часто есть работенка для нас... кроме того, у него заказы есть на артефакты,\n  ему заказывают разные научные организации...\n подпольно конечно...</text>
+            </phrase>
+            <phrase id="11">
+                <text>Эээ... ну че рассказывать, то? Поброди, осмотрись...\n сам все поймешь... Главное остерегайся аномалий, мутантов и бандитов... \n  ну и еще к группировкам не суйся, пристрелят не спрашивая...</text>
+            </phrase>
+            <phrase id="12">
+                <text>Первое - дуй к торговцу в деревеньке возле блокпоста \n и заработай на неплохую экипировку и оружие, \n без этого в Зоне никуда... \n Второе - остерегайся аномалий, мутантов и бандитов \n Третье - будь внимателен и осторожен, не отдыхай на открытых местах \n и прячься от Выброса под крышей какого-нибудь сарая или завода, \n иначе мгновенно копыта отбросишь</text>
+            </phrase>
+            <phrase id="13">
+                <text>Да, конечно... [нажми торговать под окном диалогов]</text>
+            </phrase>
 
-		</phrase_list>
-	</dialog>
+        </phrase_list>
+    </dialog>
+
+    <dialog id="barman_bar">
+        <phrase_list>
+            <phrase id="0">
+                <text>Да...</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>Дело есть...</text>
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text>Ну пошли.</text>
+                <next>3</next>
+            </phrase>
+            <phrase id="3">
+                <text>Пошли.</text>
+                <next>4</next>
+            </phrase>
+            <phrase id="4">
+                <action>barman.to_small_room</action>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+        </phrase_list>
+    </dialog>
+
+    <dialog id="barman_room">
+        <phrase_list>
+            <phrase id="0">
+                <text>Ну, чего тебе?</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>Я насчёт Бобика...</text>
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text>Славный пёс.</text>
+                <next>3</next>
+            </phrase>
+            <phrase id="3">
+                <text>Был...</text>
+                <next>4</next>
+            </phrase>
+            <phrase id="4">
+                <action>barman.from_small_room</action>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+        </phrase_list>
+    </dialog>
 
 </game_dialogs>
