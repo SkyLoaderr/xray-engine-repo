@@ -50,10 +50,10 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 
 	if (m_callback)
 		if (m_callback->m_lua_object)
-			luabind::call_member<void>(*(m_callback->m_lua_object),*m_callback->m_method_name,CLuaGameObject(dynamic_cast<CGameObject*>(this)),u32(CScriptMonster::eActionTypeMovement),m_curr_point_index);
+			luabind::call_member<void>(*(m_callback->m_lua_object),*m_callback->m_method_name,dynamic_cast<CGameObject*>(this)->lua_game_object(),u32(CScriptMonster::eActionTypeMovement),m_curr_point_index);
 		else
 			if (m_callback->m_lua_function)
-				(*m_callback->m_lua_function)(CLuaGameObject(dynamic_cast<CGameObject*>(this)),u32(CScriptMonster::eActionTypeMovement),m_curr_point_index);
+				(*m_callback->m_lua_function)(dynamic_cast<CGameObject*>(this)->lua_game_object(),u32(CScriptMonster::eActionTypeMovement),m_curr_point_index);
 
 	u32						count = 0;
 	float					sum = 0.f;

@@ -163,7 +163,7 @@ void CScriptObjectAction::SetObject(CLuaGameObject *tpLuaGameObject)
 
 CLuaGameObject::operator CObject*()
 {
-	return			(dynamic_cast<CObject*>(m_tpGameObject));
+	return			(m_tpGameObject);
 }
 
 u32	CLuaGameObject::Cost			() const

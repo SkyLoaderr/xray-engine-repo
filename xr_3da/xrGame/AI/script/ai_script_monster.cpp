@@ -322,10 +322,10 @@ void CScriptMonster::ProcessScripts()
 	bfAssignMovement(l_tpEntityAction);
 	if (l_tpEntityAction->m_tMovementAction.m_bCompleted && !l_bCompleted)
 		if (m_tpCallbacks[eActionTypeMovement].m_lua_object)
-			luabind::call_member<void>(*(m_tpCallbacks[eActionTypeMovement].m_lua_object),*(m_tpCallbacks[eActionTypeMovement].m_method_name),CLuaGameObject(this),u32(eActionTypeMovement),-1);
+			luabind::call_member<void>(*(m_tpCallbacks[eActionTypeMovement].m_lua_object),*(m_tpCallbacks[eActionTypeMovement].m_method_name),lua_game_object(),u32(eActionTypeMovement),-1);
 		else
 			if (m_tpCallbacks[eActionTypeMovement].m_lua_function)
-				(*m_tpCallbacks[eActionTypeMovement].m_lua_function)(CLuaGameObject(this),u32(eActionTypeMovement),-1);
+				(*m_tpCallbacks[eActionTypeMovement].m_lua_function)(lua_game_object(),u32(eActionTypeMovement),-1);
 
 	if (!l_tpEntityAction->m_tAnimationAction.m_bCompleted)
 		bfScriptAnimation	();
@@ -603,10 +603,10 @@ void CScriptMonster::clear_hit_callback	(bool member_callback)
 void CScriptMonster::callback		(const CScriptMonster::EActionType tActionType)
 {
 	if (m_tpCallbacks[tActionType].m_lua_object)
-		luabind::call_member<void>(*(m_tpCallbacks[tActionType].m_lua_object),*(m_tpCallbacks[tActionType].m_method_name),CLuaGameObject(this),u32(tActionType));
+		luabind::call_member<void>(*(m_tpCallbacks[tActionType].m_lua_object),*(m_tpCallbacks[tActionType].m_method_name),lua_game_object(),u32(tActionType));
 	else
 		if (m_tpCallbacks[tActionType].m_lua_function)
-			(*m_tpCallbacks[tActionType].m_lua_function)(CLuaGameObject(this),u32(tActionType));
+			(*m_tpCallbacks[tActionType].m_lua_function)(lua_game_object(),u32(tActionType));
 
 }
 
@@ -707,8 +707,8 @@ void CScriptMonster::sound_callback	(const CObject *object, int sound_type, cons
 		luabind::call_member<void>(
 			*m_tSoundCallback.m_lua_object,
 			*m_tSoundCallback.m_method_name,
-			CLuaGameObject(this),
-			CLuaGameObject(const_cast<CGameObject*>(dynamic_cast<const CGameObject*>(object))),
+			lua_game_object(),
+			const_cast<CGameObject*>(dynamic_cast<const CGameObject*>(object))->lua_game_object(),
 			sound_type,
 			position,
 			sound_power
@@ -716,8 +716,8 @@ void CScriptMonster::sound_callback	(const CObject *object, int sound_type, cons
 
 	if (m_tSoundCallback.m_lua_function)
 		(*m_tSoundCallback.m_lua_function)(
-			CLuaGameObject(this),
-			CLuaGameObject(const_cast<CGameObject*>(dynamic_cast<const CGameObject*>(object))),
+			lua_game_object(),
+			const_cast<CGameObject*>(dynamic_cast<const CGameObject*>(object))->lua_game_object(),
 			sound_type,
 			position,
 			sound_power
@@ -732,19 +732,19 @@ void CScriptMonster::hit_callback	(float amount, const Fvector &vLocalDir, const
 		luabind::call_member<void>(
 			*m_tHitCallback.m_lua_object,
 			*m_tHitCallback.m_method_name,
-			CLuaGameObject(this),
+			lua_game_object(),
 			amount,
 			vLocalDir,
-			CLuaGameObject(const_cast<CGameObject*>(dynamic_cast<const CGameObject*>(who))),
+			const_cast<CGameObject*>(dynamic_cast<const CGameObject*>(who))->lua_game_object(),
 			element
 		);
 
 	if (m_tHitCallback.m_lua_function)
 		(*m_tHitCallback.m_lua_function)(
-			CLuaGameObject(this),
+			lua_game_object(),
 			amount,
 			vLocalDir,
-			CLuaGameObject(const_cast<CGameObject*>(dynamic_cast<const CGameObject*>(who))),
+			const_cast<CGameObject*>(dynamic_cast<const CGameObject*>(who))->lua_game_object(),
 			element
 		);
 }
