@@ -123,6 +123,7 @@ public:
 	u32					m_dwLastUpdateTime;
 	u32					m_dwCurrentUpdate;
 	xr_vector<CObject*>	m_tpaVisibleObjects;
+	Fmatrix				m_tServerTransform;
 
 	struct net_update	{
 		u32				dwTimeStamp;			// server(game) timestamp
