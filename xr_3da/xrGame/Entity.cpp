@@ -136,6 +136,9 @@ void CEntity::Load(CInifile* ini, const char* section)
 	gf					= ini->ReadFLOAT	(section,"ph_friction_ground");
 	wf					= ini->ReadFLOAT	(section,"ph_friction_wall"	);
 	Movement.SetFriction	(af,wf,gf);
+
+	// BOX activate
+	Movement.ActivateBox	(0);
 }
 
 BOOL CEntity::Spawn		(BOOL bLocal, int server_id, int team, int squad, int group, Fvector4& o_pos)
