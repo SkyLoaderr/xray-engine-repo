@@ -41,7 +41,6 @@
       Intermediate\xrLoadSurface.obj Intermediate\UI_Main.obj 
       Intermediate\UI_Tools.obj Intermediate\UI_MainExtern.obj 
       Intermediate\ImageThumbnail.obj Intermediate\ImageManager.obj 
-      Intermediate\ShaderFunction.obj Intermediate\FrameEmitter.obj 
       Intermediate\TLSPRITE.obj Intermediate\CustomObject.obj 
       Intermediate\TopBar.obj Intermediate\EditMeshPick.obj 
       Intermediate\EditObjectEditor.obj Intermediate\PropertiesList.obj 
@@ -61,23 +60,23 @@
       Intermediate\Blender_Blur.obj Intermediate\Blender_Model.obj 
       Intermediate\cpuid.obj Intermediate\_math.obj Intermediate\xrSkin1W.obj 
       Intermediate\TextForm.obj Intermediate\ExportObjectOGF.obj 
-      Intermediate\ImageEditor.obj Intermediate\ETextureParams.obj"/>
+      Intermediate\ImageEditor.obj Intermediate\ETextureParams.obj 
+      Intermediate\ShaderFunction.obj"/>
     <RESFILES value="ActorEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) BottomBar.dfm EditorPref.dfm Splash.dfm main.dfm LeftBar.dfm 
-      LogForm.dfm Editor\ChoseForm.dfm Editor\ShaderFunction.dfm 
-      Editor\FrameEmitter.dfm Editor\TopBar.dfm Editor\PropertiesList.dfm 
-      BonePart.dfm KeyBar.dfm Editor\NumericVector.dfm Editor\TextForm.dfm 
-      Editor\ImageEditor.dfm"/>
+      LogForm.dfm Editor\ChoseForm.dfm Editor\TopBar.dfm 
+      Editor\PropertiesList.dfm BonePart.dfm KeyBar.dfm Editor\NumericVector.dfm 
+      Editor\TextForm.dfm Editor\ImageEditor.dfm Editor\ShaderFunction.dfm"/>
     <LIBFILES value="lib\LWO.lib lib\MagicFMd.lib lib\DXT.lib lib\d3d8.lib lib\d3dx8d.lib 
       lib\dinput.lib Lib\FreeImage.lib Lib\ETools.lib Lib\xrProgressive.lib 
       Lib\xrCDB.lib"/>
     <LIBRARIES value="editor.lib elpackB6.lib vclx.lib bcbsmp.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib elpackB6.lib editor.lib"/>
     <PACKAGES value="rtl.bpi vcl.bpi"/>
-    <PATHCPP value=".;editor;editor;editor;editor;editor;editor;editor;editor;editor;editor;editor;editor;engine;engine;editor;engine;engine;engine;engine;engine;engine;editor;engine;editor;engine;editor;engine;engine;engine;editor;engine;engine;engine;engine;lib;engine;engine;Editor;Editor;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Editor;Editor;Engine;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Editor;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine;Editor;Editor;Engine;Engine;Engine\Blenders;Engine\Blenders;Engine;Engine;Editor;Engine\Blenders;Engine\Blenders;Engine;Engine;Engine\Animations;Editor;Editor;Editor;Editor"/>
+    <PATHCPP value=".;editor;editor;editor;editor;editor;editor;editor;editor;editor;editor;editor;editor;engine;engine;editor;engine;engine;engine;engine;engine;engine;editor;engine;editor;engine;editor;engine;engine;engine;editor;engine;engine;engine;engine;lib;engine;engine;Editor;Editor;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Editor;Editor;Engine;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Editor;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine;Editor;Editor;Engine;Engine;Engine\Blenders;Engine\Blenders;Engine;Engine;Editor;Engine\Blenders;Engine\Blenders;Engine;Engine;Engine\Animations;Editor;Editor;Editor;Editor;Editor"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -204,8 +203,6 @@
       <FILE FILENAME="UI_MainExtern.cpp" FORMNAME="" UNITNAME="UI_MainExtern" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ImageThumbnail.cpp" FORMNAME="" UNITNAME="ImageThumbnail" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ImageManager.cpp" FORMNAME="" UNITNAME="ImageManager" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\ShaderFunction.cpp" FORMNAME="frmShaderFunction" UNITNAME="ShaderFunction" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\FrameEmitter.cpp" FORMNAME="fraEmitter" UNITNAME="FrameEmitter" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\TLSPRITE.CPP" FORMNAME="" UNITNAME="TLSPRITE" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\CustomObject.cpp" FORMNAME="" UNITNAME="CustomObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Lib\ETools.lib" FORMNAME="" UNITNAME="ETools" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -249,6 +246,7 @@
       <FILE FILENAME="Editor\ExportObjectOGF.cpp" FORMNAME="" UNITNAME="ExportObjectOGF" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ImageEditor.cpp" FORMNAME="frmImageLib" UNITNAME="ImageEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ETextureParams.cpp" FORMNAME="" UNITNAME="ETextureParams" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ShaderFunction.cpp" FORMNAME="frmShaderFunction" UNITNAME="ShaderFunction" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

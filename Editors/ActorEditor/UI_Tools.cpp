@@ -75,6 +75,8 @@ void CActorTools::PreviewModel::SelectObject()
 xr_token		sa_token					[ ]={
 	{ "+Z",		CActorTools::PreviewModel::saZp	},
 	{ "-Z",		CActorTools::PreviewModel::saZn	},
+	{ "+X",		CActorTools::PreviewModel::saXp	},
+	{ "-X",		CActorTools::PreviewModel::saXn	},
 	{ 0,		0								}
 };
 
@@ -91,25 +93,26 @@ void CActorTools::PreviewModel::SetPreferences()
 void CActorTools::PreviewModel::Render()
 {
 	if (m_pObject){
-		Fmatrix T;
+        float angle;
+    	switch (m_ScrollAxis){
+        case saZp: angle = 0;		break;
+        case saZn: angle = PI;		break;
+        case saXp: angle = PI_DIV_2;break;
+        case saXn: angle =-PI_DIV_2;break;
+        default: THROW;
+        }
+		Fmatrix R,T;
+       	R.rotateY(angle);
     	T.translate(m_vPosition);
+        T.mulA(R);
     	m_pObject->RenderSingle(T);
     }
 }
 void CActorTools::PreviewModel::Update()
 {
     if (m_dwFlags&pmScroll){
-    	switch (m_ScrollAxis){
-        case saZp:
-		    m_vPosition.z -= m_fSpeed*Device.fTimeDelta;
-    	    if (m_vPosition.z<-m_fSegment) m_vPosition.z+=m_fSegment;
-        break;
-        case saZn:
-		    m_vPosition.z += m_fSpeed*Device.fTimeDelta;
-    	    if (m_vPosition.z>m_fSegment) m_vPosition.z-=m_fSegment;
-        break;
-        default: THROW;
-        }
+        m_vPosition.z += m_fSpeed*Device.fTimeDelta;
+        if (m_vPosition.z>m_fSegment) m_vPosition.z-=m_fSegment;
     }
 }
 

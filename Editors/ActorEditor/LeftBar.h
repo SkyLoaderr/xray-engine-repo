@@ -100,7 +100,6 @@ __published:	// IDE-managed Components
 	TExtBtn *ebBonePart;
 	TPanel *paObjectProperties;
 	TLabel *Label6;
-	TExtBtn *ExtBtn5;
 	TBevel *Bevel6;
 	TPanel *paObjectProps;
 	TPanel *paScene;

@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 700
+  Height = 634
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 212
-    Height = 700
+    Height = 634
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -32,7 +32,7 @@ object fraLeftBar: TfraLeftBar
     TabOrder = 0
     object spProps: TSplitter
       Left = 1
-      Top = 215
+      Top = 149
       Width = 210
       Height = 2
       Cursor = crVSplit
@@ -43,7 +43,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paSkeletonPart: TPanel
       Left = 1
-      Top = 217
+      Top = 151
       Width = 210
       Height = 482
       Align = alBottom
@@ -632,7 +632,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 1
       Width = 210
-      Height = 214
+      Height = 148
       Align = alClient
       BevelOuter = bvNone
       ParentColor = True
@@ -860,7 +860,7 @@ object fraLeftBar: TfraLeftBar
         Left = 0
         Top = 149
         Width = 210
-        Height = 65
+        Height = 184
         Align = alClient
         ParentShowHint = False
         ShowHint = False
@@ -877,30 +877,6 @@ object fraLeftBar: TfraLeftBar
           ParentColor = False
           OnClick = PanelMaximizeClick
         end
-        object ExtBtn5: TExtBtn
-          Left = 197
-          Top = 2
-          Width = 11
-          Height = 11
-          Align = alNone
-          CloseButton = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          Glyph.Data = {
-            DE000000424DDE00000000000000360000002800000007000000070000000100
-            180000000000A8000000120B0000120B00000000000000000000FFFFFFFFFFFF
-            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFF
-            FFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF00
-            0000FFFFFFFFFFFF000000000000000000FFFFFFFFFFFF000000FFFFFF000000
-            000000000000000000000000FFFFFF0000000000000000000000000000000000
-            00000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00
-            0000}
-          ParentFont = False
-          OnClick = PanelMimimizeClick
-        end
         object Bevel6: TBevel
           Left = 1
           Top = 14
@@ -913,7 +889,7 @@ object fraLeftBar: TfraLeftBar
           Left = 1
           Top = 15
           Width = 208
-          Height = 49
+          Height = 168
           Align = alClient
           BevelOuter = bvNone
           Color = 10528425

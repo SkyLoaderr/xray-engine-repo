@@ -165,12 +165,6 @@ void CActorTools::MakePreview()
     }
 }
 
-xr_token					tfx_token		[ ]={
-	{ "Cycle",				0				},
-	{ "FX",					1				},
-	{ 0,					0				}
-};
-
 void CActorTools::MotionOnAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
 {
 	R_ASSERT(edit_val);

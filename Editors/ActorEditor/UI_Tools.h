@@ -48,6 +48,8 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
         enum EScrollAxis{
         	saZp,
             saZn,
+            saXp,
+            saXn,
             saforceDWORD=(-1)
         };
         EScrollAxis		m_ScrollAxis;

@@ -7,8 +7,6 @@ USEFORM("main.cpp", frmMain);
 USEFORM("LeftBar.cpp", fraLeftBar); /* TFrame: File Type */
 USEFORM("LogForm.cpp", frmLog);
 USEFORM("Editor\ChoseForm.cpp", frmChoseItem);
-USEFORM("Editor\ShaderFunction.cpp", frmShaderFunction);
-USEFORM("Editor\FrameEmitter.cpp", fraEmitter); /* TFrame: File Type */
 USEFORM("Editor\TopBar.cpp", fraTopBar); /* TFrame: File Type */
 USEFORM("Editor\PropertiesList.cpp", frmProperties);
 USEFORM("BonePart.cpp", frmBonePart);
@@ -16,6 +14,7 @@ USEFORM("KeyBar.cpp", frmKeyBar);
 USEFORM("Editor\NumericVector.cpp", frmNumericVector);
 USEFORM("Editor\TextForm.cpp", frmText);
 USEFORM("Editor\ImageEditor.cpp", frmImageLib);
+USEFORM("Editor\ShaderFunction.cpp", frmShaderFunction);
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"
