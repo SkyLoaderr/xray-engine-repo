@@ -25,7 +25,7 @@ CLightPPA::~CLightPPA()
 
 }
 
-IC void mk_vertex	(PPA_Vertex& D, Fvector& P, Fvector& C, float r2)
+IC void mk_vertex		(CLightPPA_Vertex& D, Fvector& P, Fvector& C, float r2)
 {
 	D.P.set	(P);
 	D.u0	= (P.x-C.x)/r2+.5f; 
@@ -34,10 +34,9 @@ IC void mk_vertex	(PPA_Vertex& D, Fvector& P, Fvector& C, float r2)
 	D.v1	=.5f;
 }
 
-void CLightPPA::Render(CList<PPA_Vertex>&	vlist)
+void CLightPPA::Render	(CVertexStream* VS)
 {
 	VERIFY	(pCreator);
-	vlist.clear();
 
 	// Build bbox
 	Fbox	BB;
@@ -51,12 +50,17 @@ void CLightPPA::Render(CList<PPA_Vertex>&	vlist)
 	if (0==triCount)	return;
 	RAPID::tri* tris	= pCreator->ObjectSpace.GetStaticTris();
 
-	// Clip and triangulate polygons
-	Fvector	cam = Device.vCameraPosition;
-	float	r2	= sphere.R*2;
+	// Lock
+	DWORD	vOffset;
+	CLightPPA_Vertex* VB	= VS->Lock(triCount*3,vOffset);
+
+	// Cull and triangulate polygons
+	Fvector	cam		= Device.vCameraPosition;
+	float	r2		= sphere.R*2;
+	DWORD	actual	= 0;
 	for (DWORD t=0; t<triCount; t++)
 	{
-		RAPID::tri&	T	= tris[XRC.BBoxContact[t].id];
+		RAPID::tri&	T	= tris	[XRC.BBoxContact[t].id];
 
 		Fvector	V1		= *T.verts[0];
 		Fvector V2		= *T.verts[1];
@@ -68,11 +72,16 @@ void CLightPPA::Render(CList<PPA_Vertex>&	vlist)
 		if (Poly.classify(cam)<0)		continue;
 
 		// Triangulation
-		PPA_Vertex		vert1,vert2,vert3;
+		CLightPPA_Vertex vert1,vert2,vert3;
 		vert1.N.set		(Poly.n);	mk_vertex(vert1,V1,sphere.P,r2);	vlist.push_back	(vert1);
 		vert2.N.set		(Poly.n);	mk_vertex(vert2,V2,sphere.P,r2);	vlist.push_back	(vert2);
 		vert3.N.set		(Poly.n);	mk_vertex(vert3,V3,sphere.P,r2);	vlist.push_back	(vert3);
+		actual++;
 	}
+
+	// Unlock and render
+	VS->Unlock	(actual*3);
+	if (actual) Device.Primitive.Draw	(VS,actual,vOffset);
 }
 
 void CLightPPA_Manager::Initialize	()
