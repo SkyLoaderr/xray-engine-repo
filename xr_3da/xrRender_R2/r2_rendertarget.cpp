@@ -14,10 +14,14 @@ void	CRenderTarget::OnDeviceCreate	()
 	s_combine_dbg_Color			= Device.Shader.Create		("effects\\screen_set",		r2_RT_D_G);
 	s_combine_dbg_Normal		= Device.Shader.Create		("effects\\screen_set",		r2_RT_D_G);
 	s_combine_dbg_Accumulator	= Device.Shader.Create		("effects\\screen_set",		r2_RT_D_G);
+
+	g_combine					= Device.Shader.CreateGeom	(FVF::F_TL,		RCache.Vertex.Buffer(), RCache.QuadIB);
 }
 
 void	CRenderTarget::OnDeviceDestroy	()
 {
+	Device.Shader.DeleteGeom	(g_combine);
+
 	Device.Shader.Delete		(s_combine_dbg_Color);
 	Device.Shader.Delete		(s_combine_dbg_Normal);
 	Device.Shader.Delete		(s_combine_dbg_Accumulator);

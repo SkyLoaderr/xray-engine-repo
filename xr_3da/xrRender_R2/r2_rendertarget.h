@@ -10,6 +10,7 @@ private:
 	CRT*				rt_Bloom_1;		// 32bit, dim/4	(r,g,b,?)
 	CRT*				rt_Bloom_2;		// 32bit, dim/4	(r,g,b,?)
 private:
+	SGeometry*			g_combine;
 	Shader*				s_combine_dbg_Color;
 	Shader*				s_combine_dbg_Normal;
 	Shader*				s_combine_dbg_Accumulator;
