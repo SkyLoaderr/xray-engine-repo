@@ -65,14 +65,14 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 	}
 	else
 		if (m_bFiring) {
-			for (int i=0 ;i<3; i++)
-				if (m_tRatAnimations.tNormal.tGlobal.tpaAttack[i] == m_tpCurrentGlobalAnimation) {
-					tpGlobalAnimation = m_tpCurrentGlobalAnimation;
-					break;
-				}
-			
-			if (!tpGlobalAnimation || !m_tpCurrentGlobalBlend || !m_tpCurrentGlobalBlend->playing)
-				tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaAttack[::Random.randI(0,3)];
+//			for (int i=0 ;i<3; i++)
+//				if (m_tRatAnimations.tNormal.tGlobal.tpaAttack[i] == m_tpCurrentGlobalAnimation) {
+//					tpGlobalAnimation = m_tpCurrentGlobalAnimation;
+//					break;
+//				}
+//			
+//			if (!tpGlobalAnimation || !m_tpCurrentGlobalBlend || !m_tpCurrentGlobalBlend->playing)
+//				tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaAttack[::Random.randI(0,3)];
 			tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaAttack[2];
 		}
 		else

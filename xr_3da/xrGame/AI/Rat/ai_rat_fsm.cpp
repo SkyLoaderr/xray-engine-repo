@@ -779,7 +779,10 @@ void CAI_Rat::EatCorpse()
 	}
 	else {
 		vfComputeNextDirectionPosition();
-		m_fSpeed = m_fMaxSpeed;
+		if (!feel_touch.size())
+			m_fSpeed = m_fMaxSpeed;
+		else
+			m_fSpeed = 0;
 		SetDirectionLook();
 	}
 
