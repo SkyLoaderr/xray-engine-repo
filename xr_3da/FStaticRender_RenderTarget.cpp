@@ -16,6 +16,9 @@ CRenderTarget::CRenderTarget()
 	pShaderSet	= 0;
 	pShaderGray	= 0;
 	pStream		= 0;
+
+	param_blur	= 0;
+	param_gray	= 0;
 }
 
 BOOL CRenderTarget::Create	()
@@ -66,7 +69,7 @@ BOOL CRenderTarget::Create	()
 void CRenderTarget::OnDeviceCreate	()
 {
 	bAvailable	= FALSE;
-	if (psDeviceFlags&rsAntialiasBlurred)	bAvailable	= Create	();
+	bAvailable	= Create	();
 }
 
 void CRenderTarget::OnDeviceDestroy	()
@@ -83,14 +86,18 @@ void CRenderTarget::OnDeviceDestroy	()
 
 void CRenderTarget::Begin	()
 {
+	if (!Available() || !NeedPostProcess())	return;
+
 	Device.Statistic.TEST.Begin		();
 	R_CHK		(HW.pDevice->SetRenderTarget	(pRT,		pBaseZB));
 	if (psDeviceFlags&rsClearBB) CHK_DX(HW.pDevice->Clear(0,0,D3DCLEAR_TARGET,D3DCOLOR_XRGB(0,255,0),1,0));
 	Device.Statistic.TEST.End		();
 }
 
-void CRenderTarget::End		(float blur)
+void CRenderTarget::End		()
 {
+	if (!Available() || !NeedPostProcess())	return;
+	
 	Device.Statistic.TEST.Begin		();
 	R_CHK			(HW.pDevice->SetRenderTarget	(pBaseRT,	pBaseZB));
 	Device.Statistic.TEST.End		();
