@@ -40,7 +40,7 @@ class CAI_Zomby : public CCustomMonster
 		aiZombyFollowMe,
 		aiZombyAttack,
 		aiZombyDefend,
-		aiZombyPursuit,
+		//aiZombyPursuit,
 		aiZombyRetreat,
 		aiZombyCover,
 	};
@@ -78,6 +78,8 @@ class CAI_Zomby : public CCustomMonster
 		float			m_fHitPower;
 		DWORD			m_dwHitInterval;
 		DWORD			m_dwAttackStartTime;
+		
+		float			m_fBlindness;
 
 		// finite state machine
 		stack<EZombyStates>	tStateStack;
@@ -93,7 +95,7 @@ class CAI_Zomby : public CCustomMonster
 		void FollowMe();
 		void Attack();
 		void Defend();
-		void Pursuit();
+		//void Pursuit();
 		void Retreat();
 		void Cover();
 		IC bool bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
@@ -114,7 +116,7 @@ class CAI_Zomby : public CCustomMonster
 		CZombySelectorPursuit		SelectorPursuit;
 		CZombySelectorUnderFire	SelectorUnderFire;
 
-		void SetLessCoverLook(NodeCompressed *tNode);
+		void SetDirectionLook(NodeCompressed *tNode);
 	public:
 					   CAI_Zomby();
 		virtual		  ~CAI_Zomby();
@@ -131,6 +133,8 @@ class CAI_Zomby : public CCustomMonster
 		virtual void  net_Import				(NET_Packet* P);				// import from server
 		virtual void  SelectAnimation			( const Fvector& _view, const Fvector& _move, float speed );
 		virtual void  Exec_Action				( float dt );
+		virtual BOOL  Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);
+
 };
 		
 #endif

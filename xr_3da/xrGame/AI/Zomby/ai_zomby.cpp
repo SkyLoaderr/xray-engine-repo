@@ -29,6 +29,15 @@ CAI_Zomby::CAI_Zomby()
 	m_tpCurrentBlend = 0;
 	eCurrentState = aiZombyFollowMe;
 	m_bMobility = false;
+	/**
+	Fvector tWatchDirection;
+	tWatchDirection.set(-1,0,0);
+	q_look.setup(
+		AI::AIC_Look::Look, 
+		AI::t_Direction, 
+		&tWatchDirection,
+		1000);
+	/**/
 }
 
 CAI_Zomby::~CAI_Zomby()
@@ -70,6 +79,8 @@ void CAI_Zomby::Load(CInifile* ini, const char* section)
 
 	m_fHitPower = ini->ReadFLOAT(section,"hit_power");
 	m_dwHitInterval = ini->ReadINT(section,"hit_interval");
+
+	m_fBlindness = ini->ReadFLOAT(section,"blindness");
 
 	m_tpaDeathAnimations[0] = m_death;
 	m_tpaDeathAnimations[1] = PKinematics(pVisual)->ID_Cycle_Safe("norm_death_1");
@@ -142,6 +153,10 @@ float CAI_Zomby::EnemyHeuristics(CEntity* E)
 		return flt_max;		// don't attack dead enemiyes
 	
 	float	f1	= Position().distance_to_sqr(E->Position());
+	
+	if (sqrt(f1) >  m_fBlindness)
+		return flt_max;		// don't attack far enemies
+
 	float	f2	= float(g_strench);
 	return  f1*f2;
 }
@@ -176,7 +191,7 @@ void CAI_Zomby::SelectEnemy(SEnemySelected& S)
 				S.fCost		= cost;
 			}
 		}
-	}
+	}	
 }
 
 IC bool CAI_Zomby::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint) {
@@ -196,6 +211,7 @@ bool CAI_Zomby::bfCheckPath(AI::Path &Path) {
 	return(true);
 }
 
+/**
 #define LEFT_NODE(Index)  ((Index + 3) & 3)
 #define RIGHT_NODE(Index) ((Index + 5) & 3)
 
@@ -240,6 +256,18 @@ void CAI_Zomby::SetLessCoverLook(NodeCompressed *tNode)
 }
 
 /**/
+
+IC void CAI_Zomby::SetDirectionLook(NodeCompressed *tNode)
+{
+	int i = ps_Size();
+	if (i > 1) {
+		CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
+		Fvector tWatchDirection;
+		tWatchDirection.sub(tPreviousPosition.vPosition,tCurrentPosition.vPosition);
+		q_look.setup(AI::AIC_Look::Look, AI::t_Direction, &(tWatchDirection), 1000);
+		q_look.o_look_speed=_FB_look_speed;
+	}
+}
 
 IC bool CAI_Zomby::bfInsideSubNode(const Fvector &tCenter, const SSubNode &tpSubNode)
 {
@@ -603,6 +631,7 @@ void CAI_Zomby::Attack()
 		// do I see the enemies?
 		if (!(Enemy.Enemy)) {
 			// did we kill the enemy ?
+			/**
 			if ((tSavedEnemy) && (tSavedEnemy->g_Health() <= 0)) {
 				eCurrentState = tStateStack.top();
 				tStateStack.pop();
@@ -612,6 +641,10 @@ void CAI_Zomby::Attack()
 				dwLostEnemyTime = Level().timeServer();
 				eCurrentState = aiZombyPursuit;
 			}
+			/**/
+			eCurrentState = tStateStack.top();
+			tStateStack.pop();
+			bStopThinking = true;
 			return;
 		}
 		else {
@@ -711,10 +744,19 @@ void CAI_Zomby::Attack()
 				
 				FollowLeader(Level().Teams[g_Team()].Squads[g_Squad()],Enemy.Enemy);
 				// setting up a look
+				/**
+				Fvector tWatchDirection;
+				tWatchDirection.sub(Enemy.Enemy->Position(),Position());
+				q_look.setup(
+					AI::AIC_Look::Look, 
+					AI::t_Direction, 
+					&tWatchDirection,
+					1000);
+				/**/
 				q_look.setup(
 					AI::AIC_Look::Look, 
 					AI::t_Object, 
-					&Enemy,
+					&Enemy.Enemy,
 					1000);
 				q_look.o_look_speed=_FB_look_speed;
 				
@@ -731,6 +773,7 @@ void CAI_Zomby::Attack()
 			}
 			/**/
 			else {
+				/**
 				tSavedEnemy = Enemy.Enemy;
 				tSavedEnemyPosition = Enemy.Enemy->Position();
 				tpSavedEnemyNode = Enemy.Enemy->AI_Node;
@@ -752,7 +795,6 @@ void CAI_Zomby::Attack()
 					// for finding the best node in the area
 					CZombySelectorAttack S = SelectorAttack;
 					// if i am not a leader then assign leader
-					/**/
 					if (Leader != this) {
 						S.m_tLeader = Leader;
 						S.m_tLeaderPosition = Leader->Position();
@@ -766,7 +808,6 @@ void CAI_Zomby::Attack()
 						S.m_tpLeaderNode = NULL;
 						S.m_tLeaderNode = -1;
 					}
-					/**/
 					S.m_tHitDir			= tHitDir;
 					S.m_dwHitTime		= dwHitTime;
 					
@@ -807,6 +848,11 @@ void CAI_Zomby::Attack()
 				q_action.setup(AI::AIC_Action::AttackEnd);
 				// checking flag to stop processing more states
 				m_fCurSpeed = m_fMaxSpeed;
+				bStopThinking = true;
+				return;
+				/**/
+				eCurrentState = tStateStack.top();
+				tStateStack.pop();
 				bStopThinking = true;
 				return;
 			}
@@ -961,7 +1007,7 @@ void CAI_Zomby::FollowMe()
 						// getting my current node
 						NodeCompressed* tNode = Level().AI.Node(AI_NodeID);
 						// if we are going somewhere
-						SetLessCoverLook(tNode);
+						SetDirectionLook(tNode);
 						// setting up an action
 						q_action.setup(AI::AIC_Action::AttackEnd);
 						// checking flag to stop processing more states
@@ -1087,9 +1133,9 @@ void CAI_Zomby::FreeHunting()
 					// getting my current node
 					NodeCompressed* tNode		= Level().AI.Node(AI_NodeID);
 					
-					SetLessCoverLook(tNode);
+					SetDirectionLook(tNode);
 					
-					q_action.setup(AI::AIC_Action::FireEnd);
+					q_action.setup(AI::AIC_Action::AttackEnd);
 					// checking flag to stop processing more states
 					m_fCurSpeed = m_fMinSpeed;
 					bStopThinking = true;
@@ -1118,6 +1164,7 @@ void CAI_Zomby::HoldThisPosition()
 	bStopThinking = true;
 }
 
+/**
 void CAI_Zomby::Pursuit()
 {
 	// if no more health then zomby is dead
@@ -1251,6 +1298,7 @@ void CAI_Zomby::Pursuit()
 		}
 	}
 }
+/**/
 
 void CAI_Zomby::Retreat()
 {
@@ -1404,7 +1452,7 @@ void CAI_Zomby::UnderFire()
 						m_fCurSpeed = m_fMinSpeed;
 					}
 					else {
-						SetLessCoverLook(tNode);
+						SetDirectionLook(tNode);
 						q_action.setup(AI::AIC_Action::AttackEnd);
 						m_fCurSpeed = m_fMaxSpeed;
 					}
@@ -1477,10 +1525,12 @@ void CAI_Zomby::Think()
 				Defend();
 				break;
 			}
+			/**
 			case aiZombyPursuit : {
 				Pursuit();
 				break;
 			}
+			/**/
 			case aiZombyRetreat : {
 				Retreat();
 				break;
@@ -1646,3 +1696,26 @@ void CAI_Zomby::Exec_Action	( float dt )
 	if (Device.dwTimeGlobal>=L->o_timeout)	
 		L->setTimeout();
 }
+
+BOOL CAI_Zomby::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
+{
+	if (!inherited::Spawn(bLocal,server_id,o_pos,o_angle,P,flags))	return FALSE;
+	if (Local()) {
+		/**
+		Fvector tWatchDirection;
+		tWatchDirection.set(cosf(o_angle.y),0,sinf(o_angle.y));
+		tWatchDirection.set(o_angle);
+		q_look.setup(
+			AI::AIC_Look::Look, 
+			AI::t_Direction, 
+			&tWatchDirection,
+			1000);
+		/**/
+	} 
+	else {
+
+	}
+
+	return TRUE;
+}
+
