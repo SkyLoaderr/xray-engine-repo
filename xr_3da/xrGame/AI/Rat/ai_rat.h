@@ -176,6 +176,7 @@ class CAI_Rat : public CCustomMonster
 		DWORD				m_dwPassiveScheduleMax;
 		DWORD				m_dwStandingCountPercent;
 		bool				m_bStanding;
+		bool				m_bActive;
 
 		//////////////////////////
 		// INLINE FUNCTIONS
@@ -223,23 +224,29 @@ class CAI_Rat : public CCustomMonster
 		IC void vfAddActiveMember(bool bForceActive = false)
 		{
 			CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-			if (bForceActive || (Group.m_dwAliveCount*m_dwActiveCountPercent/100 >= Group.m_dwActiveCount)) {
+			if (!m_bActive && (bForceActive || (Group.m_dwAliveCount*m_dwActiveCountPercent/100 >= Group.m_dwActiveCount))) {
+				m_bActive = true;
 				eCurrentState = aiRatFreeHuntingActive;
 				Group.m_dwActiveCount++;
 				shedule_Min	= m_dwActiveScheduleMin;
 				shedule_Max	= m_dwActiveScheduleMax;
 				vfRemoveStandingMember();
 			}
+			//Msg("* Group : alive[%2d], active[%2d]",Group.m_dwAliveCount,Group.m_dwActiveCount);
 		};
 		
 		IC void vfRemoveActiveMember()
 		{
 			CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-			R_ASSERT(Group.m_dwActiveCount > 0);
-			Group.m_dwActiveCount--;
-			eCurrentState = aiRatFreeHuntingPassive;
-			shedule_Min	= m_dwPassiveScheduleMin;
-			shedule_Max	= m_dwPassiveScheduleMax;
+			if (m_bActive) {
+				R_ASSERT(Group.m_dwActiveCount > 0);
+				Group.m_dwActiveCount--;
+				m_bActive = false;
+				eCurrentState = aiRatFreeHuntingPassive;
+				shedule_Min	= m_dwPassiveScheduleMin;
+				shedule_Max	= m_dwPassiveScheduleMax;
+			}
+			//Msg("* Group : alive[%2d], active[%2d]",Group.m_dwAliveCount,Group.m_dwActiveCount);
 		};
 		
 		IC void vfAddStandingMember()
@@ -279,7 +286,7 @@ class CAI_Rat : public CCustomMonster
 		//////////////////////////
 		// FSM STATES
 		//////////////////////////
-		void	Die();
+		void	Death();
 		void	FreeHuntingActive();
 		void	FreeHuntingPassive();
 		void	AttackFire();
@@ -295,7 +302,7 @@ class CAI_Rat : public CCustomMonster
 		virtual void  net_Export(NET_Packet& P);
 		virtual void  net_Import(NET_Packet& P);
 		virtual void  HitSignal(float amount, Fvector& vLocalDir, CObject* who);
-		virtual void  Death();
+		virtual void  Die();
 		virtual void  Load( LPCSTR section );
 		virtual void  Think();
 		virtual float EnemyHeuristics(CEntity* E);

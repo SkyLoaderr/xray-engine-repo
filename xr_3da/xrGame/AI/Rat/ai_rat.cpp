@@ -42,6 +42,7 @@ CAI_Rat::CAI_Rat()
 	m_bNoWay				= false;
 	m_dwMoraleLastUpdateTime = 0;
 	m_bStanding				= false;
+	m_bActive				= false;
 	q_look.o_look_speed		= PI;
 }
 
@@ -57,7 +58,7 @@ CAI_Rat::~CAI_Rat()
 		pSounds->Delete(m_tpaSoundVoice[i]);
 }
 
-void CAI_Rat::Death()
+void CAI_Rat::Die()
 {
 	inherited::Death( );
 	eCurrentState = aiRatDie;
@@ -67,6 +68,13 @@ void CAI_Rat::Death()
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
 	
 	pSounds->PlayAtPos(m_tpaSoundDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
+	
+	//r_torso_target.pitch = 0;
+	CGroup &Group = Level().get_group(g_Team(),g_Squad(),g_Group());
+	vfRemoveActiveMember();
+	vfRemoveStandingMember();
+	Group.m_dwAliveCount--;
+	eCurrentState = aiRatDie;
 }
 
 void CAI_Rat::OnDeviceCreate()

@@ -65,9 +65,8 @@ void CAI_Rat::HitSignal(float amount, Fvector& vLocalDir, CObject* who)
 		if (Random.randI(2))
 			return;
 		pSounds->PlayAtPos		(S,this,vPosition);
-		r_torso_target.pitch = 0;
 	}
-	if (g_Health() - amount < 0) {
+	if (g_Health() - amount <= 0) {
 		if (g_Health() > 0)
 			vfAddMorale(m_fMoraleDecreaseQuant, m_fMoraleDecreaseRadius);
 		if ((m_tpCurrentGlobalAnimation) && (!m_tpCurrentGlobalBlend->playing))

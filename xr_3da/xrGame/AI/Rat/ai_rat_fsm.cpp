@@ -20,7 +20,7 @@ void CAI_Rat::Think()
 		m_ePreviousState = eCurrentState;
 		switch(eCurrentState) {
 			case aiRatDie : {
-				Die();
+				Death();
 				break;
 			}
 			case aiRatFreeHuntingActive : {
@@ -67,7 +67,7 @@ void CAI_Rat::Think()
 //		AI_Path.TravelStart = 0;
 //	}
 }
-void CAI_Rat::Die()
+void CAI_Rat::Death()
 {
 	//WRITE_TO_LOG("Dying...");
 	bStopThinking = true;
@@ -150,7 +150,7 @@ void CAI_Rat::FreeHuntingActive()
 	m_fASpeed				= .2f;
 	
 	if (bfCheckIfGoalChanged()) {
-		if (m_bStateChanged || (((vPosition.distance_to(m_tSpawnPosition) > MAX_STABLE_DISTANCE) && (::Random.randF(0,1) > m_fChangeActiveStateProbability))))
+		if (m_bStateChanged || (vPosition.distance_to(m_tSpawnPosition) > MAX_STABLE_DISTANCE) || (::Random.randF(0,1) > m_fChangeActiveStateProbability))
 			vfChooseNewSpeed();
 		else {
 			vfRemoveActiveMember();
