@@ -6,21 +6,38 @@
 
 local	last_index		= 0
 local	callback_var	= 0
-
+local	cur_action_id	= 1
 
 function action_one(npc) 
 	action	( npc,
 			move	(move.run_fwd, patrol("way", patrol.next, patrol.continue)), 
 			cond	(cond.move_end)
 	)
-
-	printf		("fun")
 end
+
+
+function action_two(npc) 
+	action	( npc,
+			anim	(anim.stand_idle, cond	(cond.time_end, 2000)
+	)
+end
+
+
+function execute_action(npc)
+	if (cur_action_id == 1) then
+		action_one(npc)
+		cur_action_id = 2
+	elseif (cur_action_id == 2) then
+		action_one(npc)
+		cur_action_id = 1
+	end
+end
+
+
 
 function callback1(obj, action_type, index)
 	last_index		= index
 	callback_var	= 1
-	printf		("fun1")
 end
 
 
@@ -44,7 +61,7 @@ function main()
 				monster:script	( false,	script_name() )
 				monster:script	( true,		script_name() )
 				
-				action_one		(monster)
+				execute_action	(monster)
 			end
 
 			wait() 
