@@ -21,8 +21,6 @@ class ENGINE_API	IGame_Level		:
 public:
 	// Loader
 	IReader*					LL_Stream;
-	xr_vector<char *>			LL_strings;
-	LPCSTR						getString	(int id);
 protected:
 	// Network interface
 	CObject*					pCurrentEntity;

@@ -9,9 +9,30 @@ void CRender::level_Load()
 	R_ASSERT			(0!=g_pGameLevel);
 
 	// Begin
-	pApp->LoadBegin		();
-	IReader*	fs		= g_pGameLevel->LL_Stream;
+	pApp->LoadBegin				();
+	IReader*	fs				= g_pGameLevel->LL_Stream;
 	IReader*	chunk;
+
+	// Shaders
+	pApp->LoadTitle				("Loading shaders...");
+	{
+		chunk = fs.open_chunk		(fsL_SHADERS);
+		R_ASSERT2					(chunk,"Level doesn't builded correctly.");
+		count = chunk->r_u32		();
+		Shaders.resize				(count);
+		for(i=1; i<count; i++)		// skip first shader as "reserved" one
+		{
+			string512				n_sh,n_tlist;
+			LPCSTR			n		= LPCSTR(chunk->pointer());
+			strcpy					(n_sh,n);
+			LPCSTR			delim	= strchr(n_sh,'/');
+			*delim					= 0;
+			strcpy					(n_tlist,delim+1);
+			chunk->skip_stringZ		();
+			Shaders[i]				= Device.Resources->Create(n_sh,n_tlist);
+		}
+		chunk->close();
+	}
 
 	// Components
 	Target						= xr_new<CRenderTarget>		();

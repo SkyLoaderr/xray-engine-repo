@@ -37,8 +37,8 @@ CStatTimer						tscreate;
 void IRender_Visual::Load		(const char* N, IReader *data, u32 dwFlags)
 {
 	// header
-	VERIFY(data);
-	ogf_header hdr;
+	VERIFY		(data);
+	ogf_header	hdr;
 	if (data->r_chunk_safe(OGF_HEADER,&hdr,sizeof(hdr)))
 	{
 		R_ASSERT(hdr.format_version==xrOGF_FormatVersion);
@@ -69,23 +69,13 @@ void IRender_Visual::Load		(const char* N, IReader *data, u32 dwFlags)
 	}
 
 	// Shader
-	if (data->find_chunk(OGF_TEXTURE_L)) {
-#ifndef _EDITOR
-		tscreate.Begin	();
-		u32 T = data->r_u32();
-		u32 S = data->r_u32();
-		hShader = g_pGameLevel->LL_CreateShader(S,T,-1,-1);
-		tscreate.End	();
-#endif
+	if (data->find_chunk(OGF_TEXTURE)) {
+		string256 fnT,fnS;
+		data->r_stringZ	(fnT);
+		data->r_stringZ	(fnS);
+		hShader.create	(fnS,fnT);
 	} else {
-		if (data->find_chunk(OGF_TEXTURE)) {
-			string256 fnT,fnS;
-			data->r_stringZ	(fnT);
-			data->r_stringZ	(fnS);
-			hShader.create	(fnS,fnT);
-		} else {
-			hShader			= 0;
-		}
+		hShader			= 0;
 	}
 }
 

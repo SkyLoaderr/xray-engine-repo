@@ -42,7 +42,6 @@ public:
 	xr_vector<SceneGraph::mapNormalVB::TNode*>				lstVB;
 	xr_vector<SceneGraph::mapNormalMatrices::TNode*>		lstMatrices;
 	xr_vector<SceneGraph::_LodItem>							lstLODs;
-	xr_vector<IRender_Visual*>								lstVisuals;
 	xr_vector<ISpatial*>									lstRenderables;
 
 	ref_geom												hGeomPatches;
@@ -55,7 +54,8 @@ public:
 	CDB::MODEL*												rmPortals;
 	CHOM													HOM;
 	
-	// Global vertex-buffer container
+	// Global containers
+	xr_vector<ref_shader>									Shaders;
 	typedef svector<D3DVERTEXELEMENT9,MAXD3DDECLLENGTH+1>	VertexDeclarator;
 	xr_vector<VertexDeclarator>								DCL;
 	xr_vector<IDirect3DVertexBuffer9*>						VB;
@@ -101,8 +101,8 @@ private:
 public:
 	IRender_Portal*					getPortal				(int id);
 	IRender_Sector*					getSectorActive			();
-	IRender_Visual*					model_CreatePE			(LPCSTR name);
-	void							ApplyObject				(IRenderable* O);
+	IRender_Visual*					model_CreatePE			(LPCSTR			name);
+	void							ApplyObject				(IRenderable*	O);
 public:
 	// Loading / Unloading
 	virtual	void					create					();
@@ -112,6 +112,7 @@ public:
 	virtual void					level_Unload			();
 	
 	// Information
+	virtual ref_shader				getShader				(int id);
 	virtual IRender_Sector*			getSector				(int id);
 	virtual IRender_Visual*			getVisual				(int id);
 	virtual D3DVERTEXELEMENT9*		getVB_Format			(int id);

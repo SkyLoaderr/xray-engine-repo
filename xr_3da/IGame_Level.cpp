@@ -85,17 +85,6 @@ BOOL IGame_Level::Load				(u32 dwNum)
 	fs.r_chunk_safe				(fsL_HEADER2,&H,sizeof(H));
 	R_ASSERT2					(XRCL_PRODUCTION_VERSION==H.XRLC_version,"Incompatible level version.");
 
-	// Textures
-	chunk = fs.open_chunk		(fsL_STRINGS);
-	R_ASSERT2					(chunk,"Level doesn't builded correctly.");
-	count = chunk->r_u32		();
-	LL_strings.resize			(count);
-	for(i=0; i<count; i++) {
-		LL_strings[i] = LPSTR(chunk->pointer());
-		chunk->skip_stringZ();
-	}
-	chunk->close();
-
 	// CForms
 	pApp->LoadTitle				("Loading CFORM...");
 	ObjectSpace.Load			();
