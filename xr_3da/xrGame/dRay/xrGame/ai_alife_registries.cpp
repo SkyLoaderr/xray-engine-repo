@@ -764,7 +764,7 @@ void CSE_ALifeOrganizationRegistry::Load(IReader &tFileStream)
 
 CSE_ALifeNewsRegistry::CSE_ALifeNewsRegistry	()
 {
-	m_last_id					= 0;
+	clear						();
 }
 
 CSE_ALifeNewsRegistry::~CSE_ALifeNewsRegistry	()
