@@ -37,6 +37,8 @@ void CWeaponPistol::switch2_Hiding()
 {
 	if(m_opened) {
 		Sound->play_at_pos		(sndClose,H_Root(),vLastFP);
+		if (sndClose.feedback)
+			sndClose.feedback->set_volume(.2f);
 		m_pHUD->animPlay		(mhud_close[Random.randI(mhud_close.size())],FALSE,this);
 	} else inherited::switch2_Hiding	();
 }

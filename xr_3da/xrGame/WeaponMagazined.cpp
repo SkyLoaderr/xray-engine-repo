@@ -445,6 +445,8 @@ void CWeaponMagazined::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Col
 void CWeaponMagazined::OnEmptyClick	()
 {
 	Sound->play_at_pos	(sndEmptyClick,H_Root(),vLastFP);
+	if (sndEmptyClick.feedback)
+		sndEmptyClick.feedback->set_volume(.2f);
 }
 void CWeaponMagazined::OnAnimationEnd() {
 	switch(STATE) {
@@ -466,6 +468,8 @@ void CWeaponMagazined::switch2_Empty()
 void CWeaponMagazined::switch2_Reload()
 {
 	Sound->play_at_pos		(sndReload,H_Root(),vLastFP);
+	if (sndReload.feedback)
+		sndReload.feedback->set_volume(.4f);
 	m_pHUD->animPlay		(mhud_reload[Random.randI(mhud_reload.size())],FALSE,this);
 }
 void CWeaponMagazined::switch2_Hiding()
@@ -473,6 +477,8 @@ void CWeaponMagazined::switch2_Hiding()
 	CWeapon::FireEnd					();
 	bPending				= TRUE;
 	Sound->play_at_pos		(sndHide,H_Root(),vLastFP);
+	if (sndHide.feedback)
+		sndHide.feedback->set_volume(.2f);
 	m_pHUD->animPlay		(mhud_hide[Random.randI(mhud_hide.size())],FALSE,this);
 	if (Local())			Level().Cameras.RemoveEffector	(cefShot);
 }
@@ -484,6 +490,8 @@ void CWeaponMagazined::switch2_Showing()
 {
 	setVisible				(TRUE);
 	Sound->play_at_pos		(sndShow,H_Root(),vLastFP);
+	if (sndShow.feedback)
+		sndShow.feedback->set_volume(.3f);
 	m_pHUD->animPlay		(mhud_show[Random.randI(mhud_show.size())],FALSE,this);
 }
 
