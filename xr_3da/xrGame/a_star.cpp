@@ -27,6 +27,11 @@ CAStar::CAStar(u32 dwMaxNodes)
 	m_tpEnemyPath				= new CAStarSearch<CAIMapEnemyPathNode,SAIMapDataE>			(min(dwMaxNodes,Level().AI.Header().count));
 	m_tpEnemyPositionPath		= new CAStarSearch<CAIMapEnemyPositionPathNode,SAIMapDataF> (min(dwMaxNodes,Level().AI.Header().count));
 	m_tpGraphPath				= new CAStarSearch<CAIGraphShortestPathNode,SAIMapData>     (min(dwMaxNodes,Level().AI.GraphHeader().dwVertexCount));
+	m_tAIGraphData.tpAI_Space	= 
+	m_tAIMapData.tpAI_Space		= 
+	m_tAIMapDataL.tpAI_Space	= 
+	m_tAIMapDataE.tpAI_Space	= 
+	m_tAIMapDataF.tpAI_Space	= &(Level().AI);
 }
 
 CAStar::~CAStar()
@@ -51,64 +56,54 @@ float CAStar::ffFindMinimalPath(u32 dwStartNode, u32 dwGoalNode)
 
 float CAStar::ffFindMinimalPath(u32 dwStartNode, u32 dwGoalNode, vector<u32> &tpaNodes)
 {
-	SAIMapData			tData;
-	float				fDistance;
-	tData.dwFinishNode	= dwGoalNode;
-	tData.tpAI_Space	= &Level().AI;
-	m_tpGraphPath->vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,tData,dwStartNode,dwGoalNode,40000.f,fDistance,tpaNodes,false);
-	return(fDistance);
+	float									fDistance;
+	m_tAIMapData.dwFinishNode				= dwGoalNode;
+	m_tpGraphPath->vfFindOptimalPath		(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,m_tAIMapData,dwStartNode,dwGoalNode,40000.f,fDistance,tpaNodes,false);
+	return									(fDistance);
 }
 
 float CAStar::ffFindMinimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, bool bUseMarks)
 {
-	SAIMapData			tData;
-	float				fDistance;
-	tData.dwFinishNode	= dwGoalNode;
-	tData.tpAI_Space	= &Level().AI;
-	m_tpMapPath->vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,tData,dwStartNode,dwGoalNode,1000.f,fDistance,Result.Nodes,bUseMarks);
-	return(fDistance);
+	float									fDistance;
+	m_tAIMapData.dwFinishNode				= dwGoalNode;
+	m_tpMapPath->vfFindOptimalPath			(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,m_tAIMapData,dwStartNode,dwGoalNode,1000.f,fDistance,Result.Nodes,bUseMarks);
+	return									(fDistance);
 }
 
 float CAStar::ffFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, float fLightWeight, float fCoverWeight, float fDistanceWeight, bool bUseMarks)
 {
-	SAIMapDataL			tData;
-	float				fDistance;
-	tData.dwFinishNode	= dwGoalNode;
-	tData.tpAI_Space	= &Level().AI;
-	tData.fLight		= fLightWeight;
-	tData.fCover		= fCoverWeight;
-	tData.fDistance		= fDistanceWeight;
-	m_tpLCDPath->vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,tData,dwStartNode,dwGoalNode,1000.f,fDistance,Result.Nodes,bUseMarks);
-	return(fDistance);
+	float									fDistance;
+	m_tAIMapDataL.dwFinishNode				= dwGoalNode;
+	m_tAIMapDataL.fLight					= fLightWeight;
+	m_tAIMapDataL.fCover					= fCoverWeight;
+	m_tAIMapDataL.fDistance					= fDistanceWeight;
+	m_tpLCDPath->vfFindOptimalPath			(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,m_tAIMapDataL,dwStartNode,dwGoalNode,1000.f,fDistance,Result.Nodes,bUseMarks);
+	return									(fDistance);
 }
 
 float CAStar::ffFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, u32 dwEnemyNode, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight, bool bUseMarks)
 {
-	SAIMapDataE			tData;
-	float				fDistance;
-	tData.dwFinishNode	= dwGoalNode;
-	tData.tpAI_Space	= &Level().AI;
-	tData.fLight		= fLightWeight;
-	tData.fCover		= fCoverWeight;
-	tData.fDistance		= fDistanceWeight;
-	tData.dwEnemyNode	= dwEnemyNode;
-	tData.fEnemyDistance = fOptimalEnemyDistance;
-	tData.fEnemyView	= fEnemyViewWeight;
-	m_tpEnemyPath->vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,tData,dwStartNode,dwGoalNode,1000.f,fDistance,Result.Nodes,bUseMarks);
-	return(fDistance);
+	float									fDistance;
+	m_tAIMapDataE.dwFinishNode				= dwGoalNode;
+	m_tAIMapDataE.fLight					= fLightWeight;
+	m_tAIMapDataE.fCover					= fCoverWeight;
+	m_tAIMapDataE.fDistance					= fDistanceWeight;
+	m_tAIMapDataE.dwEnemyNode				= dwEnemyNode;
+	m_tAIMapDataE.fEnemyDistance			= fOptimalEnemyDistance;
+	m_tAIMapDataE.fEnemyView				= fEnemyViewWeight;
+	m_tpEnemyPath->vfFindOptimalPath		(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,m_tAIMapDataE,dwStartNode,dwGoalNode,1000.f,fDistance,Result.Nodes,bUseMarks);
+	return									(fDistance);
 }
 
 float CAStar::ffFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, Fvector tEnemyPosition, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight, bool bUseMarks)
 {
-	SAIMapDataF			tData;
-	float				fDistance;
-	tData.tpAI_Space	= &Level().AI;
-	tData.fLight		= fLightWeight;
-	tData.fCover		= fCoverWeight;
-	tData.fDistance		= fDistanceWeight;
-	tData.tEnemyPosition = tEnemyPosition;
-	tData.fEnemyDistance = fOptimalEnemyDistance;
-	tData.fEnemyView	= fEnemyViewWeight;
-	m_tpEnemyPositionPath->vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,tData,dwStartNode,dwGoalNode,1000.f,fDistance,Result.Nodes,bUseMarks);
-	return(fDistance);
+	float									fDistance;
+	m_tAIMapDataF.fLight					= fLightWeight;
+	m_tAIMapDataF.fCover					= fCoverWeight;
+	m_tAIMapDataF.fDistance					= fDistanceWeight;
+	m_tAIMapDataF.tEnemyPosition			= tEnemyPosition;
+	m_tAIMapDataF.fEnemyDistance			= fOptimalEnemyDistance;
+	m_tAIMapDataF.fEnemyView				= fEnemyViewWeight;
+	m_tpEnemyPositionPath->vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,m_tAIMapDataF,dwStartNode,dwGoalNode,1000.f,fDistance,Result.Nodes,bUseMarks);
+	return									(fDistance);
 }

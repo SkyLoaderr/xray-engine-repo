@@ -12,6 +12,12 @@
 #include "a_star_interfaces.h"
 
 class CAStar {
+private:
+	SAIMapData												m_tAIGraphData;
+	SAIMapData												m_tAIMapData;
+	SAIMapDataL												m_tAIMapDataL;
+	SAIMapDataE												m_tAIMapDataE;
+	SAIMapDataF												m_tAIMapDataF;
 public:
 	
 	SNode													*m_tpHeap;
