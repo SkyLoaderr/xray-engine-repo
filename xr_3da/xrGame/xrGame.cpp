@@ -25,7 +25,7 @@ public:
 		int		team=0,squad=0,group=0;
 
 		sscanf	(args,"%[^,],%d,%d,%d", Name, &team, &squad, &group);
-		Level().g_cl_Spawn	(Name,team,squad,group);
+		Level().g_cl_Spawn	(Name,-1,team,squad,group);
 	}
 	virtual void	Info	(TInfo& I)		
 	{

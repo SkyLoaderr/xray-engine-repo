@@ -118,7 +118,7 @@ public:
 	void						ClientReceive			();
 	void						ClientSend				();
 	
-	void						g_cl_Spawn				(LPCSTR name, int team, int squad, int group);	// only signal 2 server
+	void						g_cl_Spawn				(LPCSTR name, int rp, int team, int squad, int group);	// only signal 2 server
 	void						g_sv_Spawn				(NET_Packet* P);								// server reply parsing and spawning
 	
 	CHUDManager*				HUD						(){return (CHUDManager*)pHUD;}
