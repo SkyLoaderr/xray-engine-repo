@@ -60,9 +60,9 @@ void CSector::Render(CFrustum &F)
 //	num_portals++;
 
 	// Occluders
-	Occluders.Select(F);
+	Occluders.Select	(F);
 	CVisiCache vcc; 
-	Occluders.InitCache(vcc);
+	Occluders.InitCache	(vcc);
 
 	// Render everything
 //	float l_f = Device.fTimeDelta*fLightSmoothFactor;
@@ -97,8 +97,9 @@ void CSector::Render(CFrustum &F)
 			for (DWORD i=0; i<tempObjects.size(); i++) 
 			{
 				CTempObject* pV = tempObjects[i];
-				if (pV->Alive()){
-					if (Occluders.visibleVisual(vcc,pV->Visual())!=fcvNone)
+				if (pV->Alive())
+				{
+					if (Occluders.visibleVisual	(vcc,pV->Visual())!=fcvNone)
 						::Render.add_Static		(pV->Visual(),vcc);
 				}else{
 					if (pV->IsAutomatic()){
