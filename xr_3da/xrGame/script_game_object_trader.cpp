@@ -4,12 +4,15 @@
 
 #include "stdafx.h"
 #include "script_game_object.h"
-#include "ai_space.h"
-#include "alife_simulator.h"
-#include "alife_task_registry.h"
+
 #include "script_task.h"
 #include "script_zone.h"
 #include "ai/trader/ai_trader.h"
+
+#include "ai_space.h"
+#include "alife_simulator.h"
+#include "alife_task_registry.h"
+#include "alife_trader_registry.h"
 
 
 void CScriptGameObject::SetCallback(const luabind::functor<void> &tpZoneCallback, bool bOnEnter)
@@ -86,7 +89,7 @@ const ALIFE_TASK_VECTOR& CScriptGameObject::TraderArtefactTask ()
 	}
 
 	pTrader->alife_tasks.clear();
-	
+/*	
 	//пройтись по всем заданиям, выбрать те, которые выдал этот торговец
 	ALife::OBJECT_TASK_MAP task_id_map = ai().alife().tasks().cross();
 	ALife::TASK_MAP task_prt_map = ai().alife().tasks().tasks();
@@ -102,6 +105,27 @@ const ALIFE_TASK_VECTOR& CScriptGameObject::TraderArtefactTask ()
 			R_ASSERT(task_prt_map.find(*set_it)!=task_prt_map.end());
 			CScriptTask script_task(task_prt_map[*set_it]);
 			pTrader->alife_tasks.push_back(script_task);
+		}
+	}
+*/
+
+	ALife::ARTEFACT_TRADER_ORDER_MAP::const_iterator        i = pTrader->m_tpOrderedArtefacts.begin();
+	ALife::ARTEFACT_TRADER_ORDER_MAP::const_iterator        e = pTrader->m_tpOrderedArtefacts.end();
+	for ( ; i != e; ++i) {
+		//			Msg     ("Artefact : section[%s] total_count[%d]",(*i).second->m_caSection,(*i).second->m_dwTotalCount);
+		//			Msg     ("Orders : ");
+		CScriptTask script_task;
+		script_task.m_sName = pSettings->r_string((*i).second->m_caSection, "inv_name");
+
+		ALife::ARTEFACT_ORDER_VECTOR::const_iterator    II = (*i).second->m_tpOrders.begin();
+		ALife::ARTEFACT_ORDER_VECTOR::const_iterator    EE = (*i).second->m_tpOrders.end();
+		for ( ; II != EE; ++II)
+		{
+			script_task.m_iPrice = (*II).m_price; 
+			script_task.m_iQuantity = (*II).m_count;
+			script_task.m_sOrganization = pSettings->r_string((*II).m_section, "name");
+			pTrader->alife_tasks.push_back(script_task);
+			//Msg("order : section[%s], count[%d], price[%d]",(*II).m_section,(*II).m_count,(*II).m_price);
 		}
 	}
 

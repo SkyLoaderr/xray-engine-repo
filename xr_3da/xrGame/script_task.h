@@ -15,17 +15,16 @@ DEFINE_VECTOR(CScriptTask, ALIFE_TASK_VECTOR, ALIFE_TASK_VECTOR_IT);
 
 class CScriptTask 
 {
-protected:
+public:
 	LPCSTR				m_sName;
+	LPCSTR				m_sOrganization;
 	int 				m_iQuantity;
+	int 				m_iPrice;
 
 public:
 				CScriptTask		();
-				CScriptTask		(const CALifeTask *pALifeTask);
 	virtual		~CScriptTask	();
 
-	LPCSTR		Name			() const;
-	int 		Quantity		() const;
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

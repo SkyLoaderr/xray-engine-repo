@@ -24,8 +24,10 @@ void CScriptTask::script_register(lua_State *L)
 					value("task_dummy",				int(eTaskStateMax))
 				]
 
-				.def(						constructor<>())
-				.def("name",				&CScriptTask::Name)
-				.def("quantity",			&CScriptTask::Quantity)
+				.def		 (						constructor<>())
+				.def_readonly("name",				&CScriptTask::m_sName)
+				.def_readonly("organization",		&CScriptTask::m_sOrganization)
+				.def_readonly("quantity",			&CScriptTask::m_iQuantity)
+				.def_readonly("price",				&CScriptTask::m_iPrice)
 		];
 }
