@@ -124,15 +124,34 @@ void PS::CPGDef::FillProp(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner)
         V=PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,nm.c_str(),"Deferred Stop"),&it->m_Flags,	SEffect::flDefferedStop);
         V->OnChangeEvent		= OnParamsChange;
         V->Owner()->prop_color	= clr;
-        V=PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,nm.c_str(),"Enabled"),		&it->m_Flags, 	SEffect::flEnabled);
+        V=PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,nm.c_str(),"Enabled"),									&it->m_Flags, 	SEffect::flEnabled);
         V->OnChangeEvent		= OnParamsChange;
         V->Owner()->prop_color	= clr;
-        V=PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,nm.c_str(),"Child"),		&it->m_Flags,	SEffect::flHaveChild);
+        V=PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,nm.c_str(),"Children\\On Birth"),						&it->m_Flags,	SEffect::flOnBirthChild);
         V->OnChangeEvent		= OnParamsChange;
         V->Owner()->prop_color	= clr;
-        if (it->m_Flags.is(SEffect::flHaveChild)){
-	        V=PHelper.CreateChoose	(items,FHelper.PrepareKey(pref,nm.c_str(),"Child\\Name"),	&it->m_ChildEffectName,smPE);
+        if (it->m_Flags.is(SEffect::flOnBirthChild)){
+	        V=PHelper.CreateChoose	(items,FHelper.PrepareKey(pref,nm.c_str(),"Children\\On Birth\\Effect Name"),			&it->m_OnBirthChildName,smPE);
     	    V->OnChangeEvent	= OnParamsChange;
+	        V->Owner()->prop_color	= clr;
+        }
+        V=PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,nm.c_str(),"Children\\On Play"),						&it->m_Flags,	SEffect::flOnPlayChild);
+        V->OnChangeEvent		= OnParamsChange;
+        V->Owner()->prop_color	= clr;
+        if (it->m_Flags.is(SEffect::flOnPlayChild)){
+	        V=PHelper.CreateChoose	(items,FHelper.PrepareKey(pref,nm.c_str(),"Children\\On Play\\Effect Name"),			&it->m_OnPlayChildName,smPE);
+    	    V->OnChangeEvent	= OnParamsChange;
+	        V->Owner()->prop_color	= clr;
+            V=PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,nm.c_str(),"Children\\On Play\\Play After Stop"),		&it->m_Flags,	SEffect::flOnPlayChildRewind);
+            V->OnChangeEvent		= OnParamsChange;
+            V->Owner()->prop_color	= clr;
+        }
+        V=PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,nm.c_str(),"Children\\On Dead"),						&it->m_Flags,	SEffect::flOnDeadChild);
+        V->OnChangeEvent		= OnParamsChange;
+        V->Owner()->prop_color	= clr;
+        if (it->m_Flags.is(SEffect::flOnDeadChild)){
+	        V=PHelper.CreateChoose	(items,FHelper.PrepareKey(pref,nm.c_str(),"Children\\On Dead\\Effect Name"),			&it->m_OnDeadChildName,smPE);
+    	    V->OnChangeEvent	= OnParamsChange;    
 	        V->Owner()->prop_color	= clr;
         }
     }

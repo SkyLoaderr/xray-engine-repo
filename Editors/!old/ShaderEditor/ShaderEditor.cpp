@@ -12,6 +12,16 @@ USEFORM("main.cpp", frmMain);
 USEFORM("Splash.cpp", frmSplash);
 USEFORM("TopBar.cpp", fraTopBar); /* TFrame: File Type */
 //---------------------------------------------------------------------------
+
+struct SInit{
+	SInit()
+    {
+    	int y = 0;
+//    	LoadLibrary();
+    }
+};
+SInit init;
+
 WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 {
 //    try{

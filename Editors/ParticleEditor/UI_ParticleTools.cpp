@@ -673,14 +673,16 @@ void CParticleTools::RealApplyParent()
 
 void CParticleTools::RealCompileEffect()
 {
-    m_LibPED->Compile();
+	if (m_LibPED)    m_LibPED->Compile();
 	m_Flags.set		(flCompileEffect,FALSE);
 }
 
 void CParticleTools::RealRemoveAction()
 {
-	xr_delete		(m_LibPED->m_EActionList[remove_action_num]);
-	m_LibPED->m_EActionList.erase	(m_LibPED->m_EActionList.begin()+remove_action_num);
+	if (m_LibPED){
+        xr_delete	(m_LibPED->m_EActionList[remove_action_num]);
+        m_LibPED->m_EActionList.erase	(m_LibPED->m_EActionList.begin()+remove_action_num);
+    }
 	m_Flags.set		(flRemoveAction,FALSE);
 }
 
