@@ -40,7 +40,23 @@ public:
 	float					m_fPowerThreshold;				// порог силы, после которого нельзя стать невидимым
 	float					m_fEffectDist;
 
+	// ---------------------------------------------------------------------------------
 
-			void			ProcessSquadGI			();
-			u8				TransformPriority		(ESquadCommand com);
+	
+	
+	GTask					*task;
+	TTime					last_time_finished;
+		
+	bool					IsActiveTaskFinished		();
+	void					StopTask					();
+	bool					CheckValidity				();
+	bool					CheckCanSetWithTime			();
+	bool					CheckCanSetWithConditions	();	
+	bool					CanExecuteSquadTask			();
+	bool					SquadTaskIsHigherPriority	(); 
+	void					UpdateTaskStatus			();
+	bool					IsTaskActive				();
+	
+	// ---------------------------------------------------------------------------------
+
 };

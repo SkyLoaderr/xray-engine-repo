@@ -54,6 +54,21 @@ void CSquadManager::Dump()
 	}
 }
 
+u8 CSquadManager::TransformPriority(ESquadCommand com)
+{	
+	u8 ret_val = 0;
+
+	switch (com) {
+	case SC_EXPLORE:		ret_val = 15;		break;
+	case SC_ATTACK:			ret_val = 30;		break;
+	case SC_THREATEN:		ret_val = 30;		break;
+	case SC_COVER:			ret_val = 20;		break;
+	case SC_FOLLOW:			ret_val = 15;		break;
+	case SC_FEEL_DANGER:	ret_val = 20;		break;
+	}
+
+	return ret_val;
+}
 
 //////////////////////////////////////////////////////////////////////////
 // MONSTER SQUAD Implementation
@@ -99,6 +114,12 @@ void CMonsterSquad::ProcessGroupIntel()
 {
 	ENTITY_VEC	enemies, members;
 
+	// получить тактические данные о группе
+	for (SQUAD_MAP_IT it = squad.begin(); it != squad.end(); it++) 
+		if (it->first->g_Alive()) members.push_back(it->first);
+
+	//if (members.size() < 2) return;
+
 	// получить тактические данные о противнике
 	//objVisible &temp_enemies = GetKnownEnemies();
 	objVisible &temp_enemies = Level().Teams[leader->g_Team()].Squads[leader->g_Squad()].KnownEnemys;
@@ -108,30 +129,46 @@ void CMonsterSquad::ProcessGroupIntel()
 		if (pE->g_Alive()) enemies.push_back(pE);
 	}
 
-	// получить тактические данные о группе
-	for (SQUAD_MAP_IT it = squad.begin(); it != squad.end(); it++) 
-		if (it->first->g_Alive()) members.push_back(it->first);
-
 	// распределить задачи
 	CommonAttack(enemies,members);
 
-	Dump();
 }
 
 
 void CMonsterSquad::CommonAttack(ENTITY_VEC &enemies, ENTITY_VEC &members)
 {
+//	for (ENTITY_VEC_IT it = members.begin();it != members.end(); it++) {
+//		GTask &pTask= GetTask(*it);
+//
+//		if ((pTask.state.type == TS_REQUEST) || (pTask.state.ttl < Level().timeServer())) {
+//			pTask.state.command		= SC_ATTACK;
+//			pTask.state.type		= TS_REQUEST;
+//			pTask.state.ttl			= Level().timeServer() + 3000;
+//			pTask.target.entity		= GetNearestEnemy(*it,&enemies);
+//			if (pTask.target.entity) pTask.target.pos = pTask.target.entity->Position();  
+//		}
+//	}
+
 	for (ENTITY_VEC_IT it = members.begin();it != members.end(); it++) {
 		GTask &pTask= GetTask(*it);
 
 		if ((pTask.state.type == TS_REQUEST) || (pTask.state.ttl < Level().timeServer())) {
-			pTask.state.command		= SC_ATTACK;
+			
+			if (pTask.state.type == TS_REQUEST) 
+				LOG_EX2("_______________ TS_REQUEST, TTL = [%u], LTS = [%u] ", *"*/ pTask.state.ttl, Level().timeServer() /*"*);
+			else if (pTask.state.type == TS_PROGRESS)
+				LOG_EX2("_______________ TS_REQUEST, TTL = [%u], LTS = [%u] ", *"*/ pTask.state.ttl, Level().timeServer() /*"*);
+			
+			pTask.state.command		= SC_FOLLOW;
+			
 			pTask.state.type		= TS_REQUEST;
 			pTask.state.ttl			= Level().timeServer() + 3000;
-			pTask.target.entity		= GetNearestEnemy(*it,&enemies);
-			if (pTask.target.entity) pTask.target.pos = pTask.target.entity->Position();  
+			//pTask.target.entity		= GetNearestEnemy(*it,&enemies);
+			//if (pTask.target.entity) pTask.target.pos = pTask.target.entity->Position();  
+			pTask.target.pos = Level().CurrentEntity()->Position();
 		}
 	}
+
 }
 
 CEntity	*CMonsterSquad::GetNearestEnemy(CEntity *t, ENTITY_VEC *ev)

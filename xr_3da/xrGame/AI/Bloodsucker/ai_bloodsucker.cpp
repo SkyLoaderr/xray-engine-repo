@@ -38,6 +38,8 @@ void CAI_Bloodsucker::Init()
 	CurrentState->Reset				();
 
 	Bones.Reset();
+
+	last_time_finished				= 0;
 }
 
 void CAI_Bloodsucker::Load(LPCSTR section) 
@@ -113,100 +115,6 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	MotionMan.FX_LoadMap(section); 
 
 	END_LOAD_SHARED_MOTION_DATA();
-}
-
-
-BOOL CAI_Bloodsucker::net_Spawn (LPVOID DC) 
-{
-	if (!inherited::net_Spawn(DC))
-		return(FALSE);
-
-	vfAssignBones	();
-
-	return(TRUE);
-}
-
-void CAI_Bloodsucker::UpdateCL()
-{
-	
-	inherited::UpdateCL();
-
-	// Blink processing
-	bool PrevVis	=	IsCurrentVisible();
-	bool NewVis		=	CMonsterInvisibility::Update();
-	if (NewVis != PrevVis) setVisible(NewVis);
-
-}
-
-void CAI_Bloodsucker::StateSelector()
-{
-	VisionElem ve;
-
-	if (C && H && I)			SetState(statePanic);
-	else if (C && H && !I)		SetState(statePanic);
-	else if (C && !H && I)		SetState(statePanic);
-	else if (C && !H && !I) 	SetState(statePanic);
-	else if (D && H && I)		SetState(stateAttack);
-	else if (D && !H && I)		SetState(statePanic);
-	else if (D && !H && !I) 	SetState(stateAttack);			// :: Hide
-	else if (D && H && !I)		SetState(stateAttack); 
-	else if (E && H && I)		SetState(stateAttack); 
-	else if (E && H && !I)  	SetState(stateAttack);  
-	else if (E && !H && I) 		SetState(stateAttack);			// :: Detour
-	else if (E && !H && !I)		SetState(stateAttack);			// :: Detour 
-	else if (F && H && I) 		SetState(stateAttack); 		
-	else if (F && H && !I)  	SetState(stateAttack); 
-	else if (F && !H && I)  	SetState(stateAttack); 
-	else if (F && !H && !I) 	SetState(stateAttack);		
-	else if (A && !K)			SetState(stateExploreNDE); 
-	else if (B && !K)			SetState(stateExploreNDE); 
-	else if ((GetCorpse(ve) && (ve.obj->m_fFood > 1)) && ((GetSatiety() < 0.85f) || flagEatNow))
-		SetState(stateEat);	
-	else						SetState(stateRest);
-
-	ProcessSquadGI();
-
-	
-}
-
-u8 CAI_Bloodsucker::TransformPriority(ESquadCommand com)
-{	
-	u8 ret_val = 0;
-	
-	switch (com) {
-	case SC_EXPLORE:		ret_val = 5;		break;
-	case SC_ATTACK:			ret_val = 15;		break;
-	case SC_THREATEN:		ret_val = 15;		break;
-	case SC_COVER:			ret_val = 10;		break;
-	case SC_FOLLOW:			ret_val = 5;		break;
-	case SC_FEEL_DANGER:	ret_val = 10;		break;
-	}
-
-	return ret_val;
-}
-
-void CAI_Bloodsucker::ProcessSquadGI() 
-{
-	CMonsterSquad	*pSquad = Level().SquadMan.GetSquad((u8)g_Squad());
-	if (pSquad->GetLeader() == this) pSquad->ProcessGroupIntel();
-	GTask &pTask = pSquad->GetTask(this);
-
-	LOG_EX2("SQUAD:: ---- PROCESS SI : Monster name = [%s] Time = [%u]----- ", *"*/ cName(), m_dwCurrentTime /*"*);
-	bool gi_master_priority = (TransformPriority(pTask.state.command) >= CurrentState->GetPriority());
-
-	LOG_EX2("SQUAD:: 1. Request prior = [%u] 2. State prior = [%u]", *"*/ TransformPriority(pTask.state.command), CurrentState->GetPriority() /*"*);
-
-	if ((pTask.state.type == TS_REQUEST) && (pTask.state.ttl > m_dwCurrentTime)) {
-		if (gi_master_priority) {
-			SetState(stateSquadTask);
-			pTask.state.type	= TS_PROGRESS;
-			pTask.state.ttl		= m_dwCurrentTime + 3000;
-		}
-	} else {
-		if ((pTask.state.type == TS_PROGRESS) && (pTask.state.ttl > m_dwCurrentTime)) {
-			if (gi_master_priority) SetState(stateSquadTask);
-		} 
-	}
 }
 
 
@@ -295,3 +203,196 @@ void CAI_Bloodsucker::CheckSpecParams(u32 spec_params)
 		return;
 	}
 }
+
+
+
+BOOL CAI_Bloodsucker::net_Spawn (LPVOID DC) 
+{
+	if (!inherited::net_Spawn(DC))
+		return(FALSE);
+
+	vfAssignBones	();
+
+	return(TRUE);
+}
+
+void CAI_Bloodsucker::UpdateCL()
+{
+	
+	inherited::UpdateCL();
+
+	// Blink processing
+	bool PrevVis	=	IsCurrentVisible();
+	bool NewVis		=	CMonsterInvisibility::Update();
+	if (NewVis != PrevVis) setVisible(NewVis);
+
+}
+
+void CAI_Bloodsucker::StateSelector()
+{
+	VisionElem ve;
+
+	if (C && H && I)			SetState(statePanic);
+	else if (C && H && !I)		SetState(statePanic);
+	else if (C && !H && I)		SetState(statePanic);
+	else if (C && !H && !I) 	SetState(statePanic);
+	else if (D && H && I)		SetState(stateAttack);
+	else if (D && !H && I)		SetState(statePanic);
+	else if (D && !H && !I) 	SetState(stateAttack);			// :: Hide
+	else if (D && H && !I)		SetState(stateAttack); 
+	else if (E && H && I)		SetState(stateAttack); 
+	else if (E && H && !I)  	SetState(stateAttack);  
+	else if (E && !H && I) 		SetState(stateAttack);			// :: Detour
+	else if (E && !H && !I)		SetState(stateAttack);			// :: Detour 
+	else if (F && H && I) 		SetState(stateAttack); 		
+	else if (F && H && !I)  	SetState(stateAttack); 
+	else if (F && !H && I)  	SetState(stateAttack); 
+	else if (F && !H && !I) 	SetState(stateAttack);		
+	else if (A && !K)			SetState(stateExploreNDE); 
+	else if (B && !K)			SetState(stateExploreNDE); 
+	else if ((GetCorpse(ve) && (ve.obj->m_fFood > 1)) && ((GetSatiety() < 0.85f) || flagEatNow))
+		SetState(stateEat);	
+	else						SetState(stateRest);
+
+//	///////////////////////////////////////////////////////////////////////////////////////////
+//	// Process Squad AI
+//
+//	CMonsterSquad	*pSquad = Level().SquadMan.GetSquad((u8)g_Squad());
+//	
+//	LOG_EX("_________PRED_________:");
+//	pSquad->Dump();
+//
+//	if (pSquad->GetLeader() == this) pSquad->ProcessGroupIntel();
+//	task = &pSquad->GetTask(this);
+//
+//	LOG_EX("_________PRED AFTER_________:");
+//	pSquad->Dump();
+//
+//	if (IsTaskActive()) 
+//		if (IsActiveTaskFinished()) StopTask();
+//	
+//	bool bInit = !IsTaskActive();
+//
+//	if (CanExecuteSquadTask()) {
+//		UpdateTaskStatus();
+//		ProcessTask(bInit);
+//	}
+//
+//	LOG_EX("_________AFTER_________:");
+//	pSquad->Dump();
+//
+//	///////////////////////////////////////////////////////////////////////////////////////////
+}
+
+bool CAI_Bloodsucker::IsTaskActive()
+{
+	if (task->state.type == TS_PROGRESS) {
+		if (task->state.ttl > m_dwCurrentTime) return true;
+		else task->state.ttl = 0;
+	}
+		
+	return false;
+}
+
+// ----------------------------------------------------------------------------------------------
+bool CAI_Bloodsucker::IsActiveTaskFinished()
+{ 
+	if (task->state.command == SC_FOLLOW) {
+		if (task->target.pos.distance_to(Position()) < 1.0f) return true;
+	}
+
+	return false;
+}
+
+void CAI_Bloodsucker::StopTask()
+{
+	task->state.ttl				= 0;
+	last_time_finished			= m_dwCurrentTime;
+	stateSquadTask->Done();
+}
+
+
+bool CAI_Bloodsucker::CheckValidity()
+{
+	if (task->state.ttl == 0) return false;
+
+	if (task->state.ttl < m_dwCurrentTime) {
+		StopTask();
+		return false;
+	}
+
+	if (task->state.type == TS_REQUEST) {
+		return true;
+	}
+
+	if (task->state.type == TS_PROGRESS) {
+		if (SquadTaskIsHigherPriority()) return true;
+		else {		
+			StopTask();
+			return false;
+		}
+	}
+
+	if (task->state.type == TS_REFUSED) return false; 
+	return false;
+}
+// -----------------------------------------------------------------------------------------
+
+#define TASK_MIN_INTERVAL		3000
+
+bool CAI_Bloodsucker::CheckCanSetWithTime()
+{
+	if (IsTaskActive()) return true;
+
+	if (last_time_finished + TASK_MIN_INTERVAL < m_dwCurrentTime) return true;
+	return false;
+}
+
+
+bool CAI_Bloodsucker::CheckCanSetWithConditions()
+{
+	return true;
+}
+
+bool CAI_Bloodsucker::CanExecuteSquadTask()
+{
+	return	(
+				CheckValidity() && 
+				CheckCanSetWithTime() &&
+				SquadTaskIsHigherPriority() &&
+				CheckCanSetWithConditions()
+			);
+}
+
+bool CAI_Bloodsucker::SquadTaskIsHigherPriority() 
+{
+	return (Level().SquadMan.TransformPriority(task->state.command) > CurrentState->GetPriority());
+}
+
+
+
+void CAI_Bloodsucker::UpdateTaskStatus()
+{
+	TTime ttl = 0;
+
+	if (!IsTaskActive()) {// first time
+		switch (task->state.command) {
+		case SC_EXPLORE:		ttl = 2000;		break;
+		case SC_ATTACK:			ttl = 5000;		break;
+		case SC_THREATEN:		ttl = 3000;		break;
+		case SC_COVER:			ttl = 10000;	break;
+		case SC_FOLLOW:			ttl = 10000;	break;
+		case SC_FEEL_DANGER:	ttl = 10000;	break;
+		}
+
+		if (task->state.type == TS_REQUEST)	{
+			task->state.type	= TS_PROGRESS;
+			task->state.ttl		= m_dwCurrentTime + ttl;
+		}
+	}
+}
+
+//void CAI_Bloodsucker::ProcessTask(bool bInit)
+//{
+//	
+//}

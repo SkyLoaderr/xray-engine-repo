@@ -25,9 +25,8 @@ struct GTask {
 	} state;
 
 	struct {
-		Fvector			pos;
-		CObject			*entity;
-		float			radius;
+		Fvector				pos;
+		CObject				*entity;
 	} target;
 };
 
@@ -78,7 +77,16 @@ public:
 	void			RegisterMember	(u8 squad_id, CEntity *e);
 	void			RemoveMember	(u8 squad_id, CEntity *e);
 
+	//-------------------------------------------------------------------
+
 	CMonsterSquad	*GetSquad		(u8 squad_id);
+	
+	//-------------------------------------------------------------------
+	// Utilities
+	
+	u8				TransformPriority(ESquadCommand com);
+	
+	//-------------------------------------------------------------------
 
 	void			Dump			();
 };

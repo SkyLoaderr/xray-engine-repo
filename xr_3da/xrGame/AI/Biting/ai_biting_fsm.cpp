@@ -32,8 +32,8 @@ void CAI_Biting::Think()
 	MotionMan.ProcessAction();
 
 	// Update path
-
 	update_path				();
+	set_desirable_speed		(m_fCurSpeed);
 
 	// process sound
 	ControlSound(m_current_update);

@@ -10,6 +10,8 @@ CBitingSquadTask::CBitingSquadTask(CAI_Biting *p)
 void CBitingSquadTask::Init()
 {
 	inherited::Init();
+	// Test
+	LOG_EX("_ Squad Task Init _");
 
 	// Get task
 	CMonsterSquad *pSquad = Level().SquadMan.GetSquad((u8)pMonster->g_Squad());
@@ -23,15 +25,12 @@ void CBitingSquadTask::Init()
 	case SC_FOLLOW:			
 		// 1. set target
 		// 2. Prepare selector	
-
-
+		
+		LOG_EX("FOLLOWING...");
+		
 		break;
 	case SC_FEEL_DANGER:	break;
 	}
-
-
-	// Test
-	LOG_EX("_ Squad Task Init _");
 }
 
 void CBitingSquadTask::Run()
@@ -55,8 +54,6 @@ void CBitingSquadTask::Run()
 		break;
 	case SC_FEEL_DANGER:	break;
 	}
-
-
 
 	pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 
