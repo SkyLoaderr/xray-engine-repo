@@ -82,6 +82,7 @@ void CSector::Render(CFrustum &F)
 				{
 					::Render->set_Object	(O);
 					O->OnVisible			();
+					::Render->set_Object	(0);
 				}
 			}
 		}

@@ -170,6 +170,7 @@ void CRender::Calculate()
 		CPortal*	pPortal	= (CPortal*) rmPortals->get_tris()[XRC.r_begin()[K].id].dummy;
 		pPortal->bDualRender = TRUE;
 	}
+	L_Shadows.set_object			(0);
 
 	// Render sector
 	if (0!=pLastSector) pLastSector->Render(ViewBase);
