@@ -86,15 +86,19 @@
 		<title>bar_dolg_rg6_quest</title>
 		<objective>
 			<text>bar_dolg_bring_rg6</text>
-			<icon x="400" y="100" width="50" height="50">ui\ui_icons_task</icon>
+			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>bar_dolg_find_max</text>
+			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 		<objective>
 			<text>bar_dolg_find_rg6</text>
-			<icon x="350" y="100" width="50" height="50">ui\ui_icons_task</icon>
+			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 		<objective>
 			<text>bar_dolg_return_rg6</text>
-			<icon x="400" y="100" width="50" height="50">ui\ui_icons_task</icon>
+			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
 	
