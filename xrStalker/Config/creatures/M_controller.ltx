@@ -148,8 +148,8 @@ satiety_health_v = 0.001	;0.03			;увеличение здоровья при уменьшении сытости
 satiety_critical = -1.0		;0.25						;критическое значения сытости (в процентах от 0..1) когда здоровье начианает уменьшаться
 radiation_health_v = 0.01	;0.006			;уменьшение здоровья при воздействии радиации
 morale_v			= 0.01					;скорость восстановления морали
-health_hit_part = 0.5		;0.8			;процент хита, уходящий на отнимание здоровья
-power_hit_part = 0.3		;0.9			;процент хита, уходящий на отнимание силы
+health_hit_part = 1		;0.8			;процент хита, уходящий на отнимание здоровья
+power_hit_part = 1		;0.9			;процент хита, уходящий на отнимание силы
 
 burn_immunity = 0.8				;коэффициенты иммунитета 
 strike_immunity = 0.9
@@ -159,7 +159,7 @@ radiation_immunity = 0.2
 telepatic_immunity = 0.1
 chemical_burn_immunity = 0.9
 explosion_immunity = 0.7
-fire_wound_immunity  = 0.7
+fire_wound_immunity  = 0.5
 
 ;открытые раны
 bleeding_v					= 0						;потеря крови при номинальной ране в секунду
@@ -219,6 +219,7 @@ jump_max_angle			= 0.3
 jump_trace_dist			= 1.0
 
 LegsCount				= 2
+
 damage					= m_controller_damage
 
 control_fx_texture		= act\act_controller_hit
@@ -303,12 +304,12 @@ radius_max		= 0.8
 ;<hit_scale>	- коэфф. изменения хита (уменьшения здоровья) 
 ;<wound_scale>	- коэфф. изменения величины открытой раны
 
-default				= 1.00,	-1,	1.00
+default				= 1.00,	-1,	0.10
 
-bip01_pelvis 		= 0.2, -1, 0.01
-bip01_spine 		= 0.4, -1, 0.04
-bip01_spine1 		= 0.4, -1, 0.1
-bip01_neck 			= 0.5, -1, 0.1
-bip01_head 			= 10.0, -1, 0.50
+bip01_pelvis 		= 1, -1, 0.01
+bip01_spine 		= 1, -1, 0.04
+bip01_spine1 		= 1, -1, 0.1
+bip01_neck 			= 1, -1, 0.1
+bip01_head 			= 5.0, -1, 0.50
 
 
