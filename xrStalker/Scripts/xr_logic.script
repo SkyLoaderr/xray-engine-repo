@@ -314,7 +314,7 @@ function try_switch_to_another_section(npc, st)
 				switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 				return true
 			end
-		elseif c.name == "on_info" then
+		elseif c.name == "on_info" or c.name == "on_info2" then
 			switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 		elseif c.name == "on_timer" then
 			--printf("_bp: on_timer: %d >= %d", device():time_global(),
@@ -522,6 +522,7 @@ function cfg_get_switch_conditions(ini, section, npc)
 	n = add_condition(l, n, cfg_get_number_and_condlist(ini, section, "on_actor_dist_ge_nvis",  npc))
 	n = add_condition(l, n, cfg_get_string_and_condlist(ini, section, "on_signal",              npc))
 	n = add_condition(l, n, cfg_get_condlist           (ini, section, "on_info",                npc))
+	n = add_condition(l, n, cfg_get_condlist           (ini, section, "on_info2",               npc))
 	n = add_condition(l, n, cfg_get_number_and_condlist(ini, section, "on_timer",               npc))
 
 	return l
