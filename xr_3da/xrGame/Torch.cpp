@@ -90,6 +90,7 @@ void CTorch::OnH_A_Chield()
 	setEnabled				(false);
 	svTransform.c.set		(m_pos);
 	vPosition.set			(svTransform.c);
+	m_focus.set				(H_Root()->Position());
 	if(m_pPhysicsShell)		m_pPhysicsShell->Deactivate();
 }
 
@@ -141,11 +142,12 @@ void CTorch::UpdateCL()
 			svTransform.i.crossproduct(l_up, svTransform.k); svTransform.i.normalize();
 			svTransform.j.crossproduct(svTransform.k, svTransform.i);
 		}
+		m_focus.inertion(l_end,1-Device.fTimeDelta);
 
 		Fvector _P,_D;
 		_P.mad		(l_p,Device.vCameraRight,	m_pos.x);
 		_P.mad		(Device.vCameraTop,			m_pos.y);
-		_D.sub		(l_end,_P);
+		_D.sub		(m_focus,_P);
 		_D.normalize();
 		H_Parent()->setEnabled		(true);
 		light_render->set_direction	(_D);	//clXFORM().k); // l_d
