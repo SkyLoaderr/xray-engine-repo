@@ -8,14 +8,14 @@
 extern int	RegisterString		(LPCSTR T);
 extern void	geom_batch_average	(u32 verts, u32 faces);
 
-u32						u8_vec4			(Fvector N)
+u32						u8_vec4			(Fvector N, u8 A=0)
 {
 	N.add				(1.f);
 	N.mul				(.5f*255.f);
 	s32 nx				= iFloor(N.x);	clamp(nx,0,255);
 	s32 ny				= iFloor(N.y);	clamp(ny,0,255);
 	s32 nz				= iFloor(N.z);	clamp(nz,0,255);
-	return				color_rgba(nx,ny,nz,0);
+	return				color_rgba(nx,ny,nz,A);
 }
 s16						s16_tc_base		(float uv)		// [-32 .. +32]
 {
@@ -68,12 +68,12 @@ struct  r1v_lmap	{
 	u16			tc0x,tc0y;
 	u16			tc1x,tc1y;
 
-	r1v_lmap	(Fvector3 _P, Fvector _N, u32 _C, Fvector2 tc_base, Fvector2 tc_lmap )
+	r1v_lmap	(Fvector3 _P, Fvector _N, base_color _C, Fvector2 tc_base, Fvector2 tc_lmap )
 	{
 		_N.normalize	();
 		P				= _P;
 		N				= u8_vec4		(_N);
-		C				= _C;
+		C				= color_rgba	(0,0,0,u8_clr(_C.hemi));
 		tc0x			= s16_tc_base	(tc_base.x);
 		tc0y			= s16_tc_base	(tc_base.y);
 		tc1x			= s16_tc_lmap	(tc_lmap.x);
@@ -86,12 +86,12 @@ struct  r1v_vert	{
 	u32			C;
 	u16			tc0x,tc0y;
 
-	r1v_vert	(Fvector3 _P, Fvector _N, u32 _C, Fvector2 tc_base)
+	r1v_vert	(Fvector3 _P, Fvector _N, base_color _C, Fvector2 tc_base)
 	{
 		_N.normalize	();
 		P				= _P;
-		N				= u8_vec4		(_N);
-		C				= _C;
+		N				= u8_vec4		(_N,u8_clr(_C.sun));
+		C				= color_rgba	(u8_clr(_C.rgb.x),u8_clr(_C.rgb.y),u8_clr(_C.rgb.z),u8_clr(_C.hemi));
 		tc0x			= s16_tc_base	(tc_base.x);
 		tc0y			= s16_tc_base	(tc_base.y);
 	}
@@ -245,7 +245,7 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 			t=u8_vec4(V->N);	g_VB.Add(&t,4);					// Normal
 			t=u8_vec4(V->T);	g_VB.Add(&t,4);					// Tangent
 			t=u8_vec4(V->B);	g_VB.Add(&t,4);					// Binormal
-			t=V->Color;			g_VB.Add(&t,4);					// Color
+			// t=V->Color;		g_VB.Add(&t,4);					// Color
 			g_VB.Add			(V->UV.begin(),2*sizeof(float));// TC
 		}
 		g_VB.End		(&ID,&Start);
