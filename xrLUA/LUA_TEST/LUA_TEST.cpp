@@ -1497,6 +1497,33 @@ luabind::object lua_this()
 extern void test0();
 extern void test1();
 
+luabind::object name_space(lua_State *L, LPCSTR namespace_name)
+{
+	string256			S1;
+	strcpy				(S1,namespace_name);
+	LPSTR				S = S1;
+	luabind::object		lua_namespace = luabind::get_globals(L);
+	for (;;) {
+		if (!xr_strlen(S))
+			return		(lua_namespace);
+		LPSTR			I = strchr(S,'.');
+		if (!I)
+			return		(lua_namespace[S]);
+		*I				= 0;
+		lua_namespace	= lua_namespace[S];
+		S				= I + 1;
+	}
+}
+
+void setup_table(LPCSTR namespace_name, luabind::object table)
+{
+//	create_namespace_table(table.lua_state(),namespace_name);
+//	luabind::object space = name_space(table.lua_state(),namespace_name);
+//	luabind::object::iterator	I = table.begin();
+//	luabind::object::iterator	E = table.end();
+//	for ( ; I != E; ++I)
+}
+
 int __cdecl main(int argc, char* argv[])
 {
 //	test1();
@@ -1536,6 +1563,8 @@ int __cdecl main(int argc, char* argv[])
 	
 	printf			("Stack level %d",lua_gettop(L));
 
+	function		(L,"setup_table",&setup_table);
+
 //	vfPrintTable	(L,"_G",true);
 //	function		(L,"this",lua_this);
 //	for (int i=1; i<argc; i++) 
@@ -1565,7 +1594,12 @@ int __cdecl main(int argc, char* argv[])
 		printf		("\n%s\n",SSS);
 		strcpy		(SSS,"");
 	}
-	lua_dostring		(L,"test_test.main()");
+	lua_dostring		(L,"a.main()");
+	if (xr_strlen(SSS)) {
+		printf		("\n%s\n",SSS);
+		strcpy		(SSS,"");
+	}
+	lua_dostring		(L,"a.b.main()");
 	if (xr_strlen(SSS)) {
 		printf		("\n%s\n",SSS);
 		strcpy		(SSS,"");
