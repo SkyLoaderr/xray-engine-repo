@@ -15,11 +15,10 @@ public:
 	sh_list				L_textures;
 	sh_list				L_constants;
 	sh_list				L_matrices;
+
 	BOOL				bEditor;
-	BOOL				bLighting;
 	BOOL				bDetail;
-	int					iLayers;
-	int					iLOD;
+	int					iElement;
 
 public:
 	CSimulator			RS;
