@@ -134,3 +134,21 @@ bool CAI_Biting::GetCoverCloseToPoint(const Fvector &dest_pos, float min_dist, f
 	return true;
 }
 
+// Get Point From Node in Radius
+bool CAI_Biting::GetNodeInRadius(u32 src_node, float min_radius, float max_radius, u32 attempts, u32 &dest_node)
+{
+	for (u32 i=0; i<attempts; i++) {
+		Fvector dir;
+		dir.random_dir	();
+		dir.normalize	();
+
+		Fvector vertex_position = ai().level_graph().vertex_position(src_node);
+		Fvector new_pos;
+		new_pos.mad(vertex_position, dir, Random.randF(min_radius, max_radius));
+
+		dest_node = ai().level_graph().check_position_in_direction(src_node, vertex_position, new_pos);
+		if (dest_node != u32(-1)) return (true);
+	}
+
+	return false;
+}

@@ -32,6 +32,7 @@ enum ESquadCommandType {
 	SC_FOLLOW,
 	SC_FEEL_DANGER,
 	SC_EXPLICIT_ACTION,
+	SC_REST,
 	SC_NONE,
 };
 
@@ -41,7 +42,6 @@ struct SSquadCommand {
 	CEntity		*entity;
 	Fvector		position;
 	u32			node;
-
 	Fvector		direction;
 
 };
@@ -92,15 +92,19 @@ public:
 	
 	void		UpdateSquadCommands	();	
 	
+	///////////////////////////////////////////////////////////////////////////////////////
+	//  Общие данные
+	//////////////////////////////////////////////////////////////////////////////////////
+	
+	DEFINE_VECTOR	(CEntity*, ENTITY_VEC,	ENTITY_VEC_IT);	
+	ENTITY_VEC		m_temp_entities;
 	
 	///////////////////////////////////////////////////////////////////////////////////////
 	//  Атака группой монстров
 	//////////////////////////////////////////////////////////////////////////////////////
 	
-	DEFINE_VECTOR	(CEntity*, ENTITY_VEC,	ENTITY_VEC_IT);
 	DEFINE_MAP		(CEntity*, ENTITY_VEC,	ENEMY_MAP, ENEMY_MAP_IT);
 	
-	ENTITY_VEC		m_temp_entities;
 	ENEMY_MAP		m_enemy_map;
 
 	void			ProcessAttack					();
@@ -123,8 +127,6 @@ public:
 	///////////////////////////////////////////////////////////////////////////////////////
 	//  групповой idle
 	//////////////////////////////////////////////////////////////////////////////////////
-	ENTITY_VEC		m_idle_entities;
-	
 	void			ProcessIdle				();
 	void			Idle_AssignAction		(ENTITY_VEC &members);
 

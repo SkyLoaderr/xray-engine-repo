@@ -15,6 +15,7 @@ class CStateManagerZombie : public CState<CZombie> {
 		eStateHitted,
 		eStateFindEnemy,
 		eStateFakeDeath,
+		eStateSquadRest,
 	};
 
 public:
@@ -24,6 +25,6 @@ public:
 	virtual void		initialize				();
 	virtual	void		execute					();
 	
-			void		squad_notify			(u32 cur_state);
+			void		squad_notify			();
 	
 };

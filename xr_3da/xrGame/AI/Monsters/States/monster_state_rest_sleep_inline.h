@@ -7,7 +7,7 @@
 #define CStateMonsterRestSleepAbstract CStateMonsterRestSleep<_Object>
 
 TEMPLATE_SPECIALIZATION
-CStateMonsterRestSleepAbstract::CStateMonsterRestSleep(_Object *obj) : inherited(obj)
+CStateMonsterRestSleepAbstract::CStateMonsterRestSleep(_Object *obj) : inherited(obj, ST_Rest)
 {
 }
 

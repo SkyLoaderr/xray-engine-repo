@@ -56,7 +56,7 @@ void CStateZombieAttackRunAbstract::execute()
 	
 	// Получить команду
 	SSquadCommand command;
-	if (squad_active) squad->GetCommand(object, command);
+	squad->GetCommand(object, command);
 	if (!squad_active || (command.type != SC_ATTACK)) squad_active = false;
 	//////////////////////////////////////////////////////////////////////////
 

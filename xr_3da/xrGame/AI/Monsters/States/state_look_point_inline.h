@@ -7,7 +7,7 @@
 #define CStateMonsterLookToPointAbstract CStateMonsterLookToPoint<_Object>
 
 TEMPLATE_SPECIALIZATION
-CStateMonsterLookToPointAbstract::CStateMonsterLookToPoint(_Object *obj) : inherited(obj, &data)
+CStateMonsterLookToPointAbstract::CStateMonsterLookToPoint(_Object *obj) : inherited(obj, ST_LookPoint,&data)
 {
 }
 

@@ -2014,18 +2014,11 @@
 									RelativePath=".\ai\state.h">
 								</File>
 								<File
+									RelativePath=".\ai\state_defs.h">
+								</File>
+								<File
 									RelativePath=".\ai\state_inline.h">
 								</File>
-								<Filter
-									Name="Debug"
-									Filter="">
-									<File
-										RelativePath=".\ai\ai_monster_debug.cpp">
-									</File>
-									<File
-										RelativePath=".\ai\ai_monster_debug.h">
-									</File>
-								</Filter>
 							</Filter>
 							<Filter
 								Name="Movement"
@@ -2223,6 +2216,16 @@
 										RelativePath=".\ai\custom_events.h">
 									</File>
 								</Filter>
+							</Filter>
+							<Filter
+								Name="Debug"
+								Filter="">
+								<File
+									RelativePath=".\ai\ai_monster_debug.cpp">
+								</File>
+								<File
+									RelativePath=".\ai\ai_monster_debug.h">
+								</File>
 							</Filter>
 						</Filter>
 					</Filter>
@@ -2455,6 +2458,16 @@
 						<Filter
 							Name="Squad"
 							Filter="">
+							<Filter
+								Name="Rest"
+								Filter="">
+								<File
+									RelativePath=".\ai\Monsters\States\monster_state_squad_rest.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\States\monster_state_squad_rest_inline.h">
+								</File>
+							</Filter>
 						</Filter>
 						<Filter
 							Name="Threaten"

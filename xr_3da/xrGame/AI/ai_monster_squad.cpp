@@ -87,12 +87,11 @@ void CMonsterSquad::GetCommand(CEntity *pE, SSquadCommand &com)
 
 void CMonsterSquad::UpdateSquadCommands()
 {
-	// Set Command To None
+	// Отменить все команды в группе
 	for (MEMBER_COMMAND_MAP_IT it = m_commands.begin(); it != m_commands.end(); it++) {
 		it->second.type = SC_NONE;
 	}
 
 	ProcessAttack	();
 	ProcessIdle		();
-
 }

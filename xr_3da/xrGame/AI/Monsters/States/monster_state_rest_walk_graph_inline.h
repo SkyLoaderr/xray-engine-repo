@@ -7,7 +7,7 @@
 #define CStateMonsterRestWalkGraphAbstract CStateMonsterRestWalkGraph<_Object>
 
 TEMPLATE_SPECIALIZATION
-CStateMonsterRestWalkGraphAbstract::CStateMonsterRestWalkGraph(_Object *obj) : inherited(obj)
+CStateMonsterRestWalkGraphAbstract::CStateMonsterRestWalkGraph(_Object *obj) : inherited(obj, ST_WalkGraphPoint)
 {
 }
 

@@ -336,6 +336,8 @@ public:
 
 	bool					force_real_speed;
 
+			bool			GetNodeInRadius		(u32 src_node, float min_radius, float max_radius, u32 attempts, u32 &dest_node);
+
 #ifdef DEBUG
 	CMonsterDebug	*HDebug;
 	virtual void	OnRender();
