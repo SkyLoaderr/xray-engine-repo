@@ -341,7 +341,6 @@ void CCC_Register()
 
 	// Texture manager	
 	CMD4(CCC_Integer,	"texture_lod",			&psTextureLOD,		0,			4	);
-	CMD3(CCC_Mask,		"texture_show_mips",	&psTextureFlags,	TF_ShowMipmaps	);
 
 	// General video control
 	CMD3(CCC_Token,		"vid_mode",				&psCurrentMode, vid_mode_token);

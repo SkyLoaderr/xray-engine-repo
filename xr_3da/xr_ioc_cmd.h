@@ -52,7 +52,7 @@ class ENGINE_API CCC_Mask : public CConsoleCommand
 	Flags32*	value;
 	u32			mask;
 public:
-	CCC_Mask(LPCSTR N, u32* V, u32 M) :
+	CCC_Mask(LPCSTR N, Flags32* V, u32 M) :
 	  CConsoleCommand(N),
 	  value(V),
 	  mask(M)
@@ -67,7 +67,7 @@ public:
 		else InvalidSyntax();
 	}
 	virtual void	Status	(TStatus& S)
-	{	strcpy(S,(*value & mask)?"on":"off"); 	}
+	{	strcpy(S,value->test(mask)?"on (1)":"off (0)"); }
 	virtual void	Info	(TInfo& I)
 	{	strcpy(I,"'on/off' or '1/0'"); }
 };

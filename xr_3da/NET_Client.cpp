@@ -54,7 +54,7 @@ void			INetQueue::Release	()
 {
 	cs.Enter		();
 	R_ASSERT		(!ready.empty());
-	free.push_back	(ready.front());
+	unused.push_back(ready.front());
 	ready.pop_front	();
 	cs.Leave		();
 }

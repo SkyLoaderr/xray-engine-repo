@@ -41,7 +41,6 @@ char	psName[12]			= "";
 
 // textures
 int		psTextureLOD		= 0;
-u32		psTextureFlags		= 0;
 
 // users
 string64 psSystemUserName	= "";
