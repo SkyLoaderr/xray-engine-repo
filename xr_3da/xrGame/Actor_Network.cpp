@@ -28,6 +28,7 @@
 #include "actor_anim_defs.h"
 
 #include "map_manager.h"
+#include "HUDManager.h"
 
 int			g_cl_InterpolationType = 0;
 u32			g_cl_InterpolationMaxPoints = 0;
@@ -619,6 +620,9 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 
 	//убрать все артефакты с пояса
 	m_ArtefactsOnBelt.clear();
+	if (Level().CurrentViewEntity() == this)
+		HUD().GetUI()->UIMainIngameWnd.m_artefactPanel.InitIcons(m_ArtefactsOnBelt);
+		
 
 	ROS()->force_mode	(IRender_ObjectSpecific::TRACE_ALL);
 
@@ -799,8 +803,10 @@ void CActor::net_Destroy	()
 	processing_deactivate();
 	m_holder=NULL;
 	m_holderID=u16(-1);
-
+	
 	m_ArtefactsOnBelt.clear();
+	if (Level().CurrentViewEntity() == this)
+		HUD().GetUI()->UIMainIngameWnd.m_artefactPanel.InitIcons(m_ArtefactsOnBelt);	
 
 	SetDefaultVisualOutfit(NULL);
 }

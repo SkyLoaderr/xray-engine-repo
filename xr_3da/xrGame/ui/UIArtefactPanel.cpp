@@ -23,7 +23,7 @@ CUIArtefactPanel::~CUIArtefactPanel(){
 }
 
 void CUIArtefactPanel::SetScaleXY(float x, float y){	
-	m_si.SetScaleXY(x, y);
+//.	m_si.SetScaleXY(x, y);
 }
 
 void CUIArtefactPanel::InitIcons(const xr_vector<const CArtefact*>& artefacts)
@@ -62,7 +62,7 @@ void CUIArtefactPanel::Draw(){
 		iHeight = (int)(m_si.GetScaleY()*(r.bottom - r.top));
 		iWidth  = (int)(m_si.GetScaleX()*(r.right - r.left));
 
-		m_si.SetOriginalRect(r.left, r.top, 0, 0);
+		m_si.SetOriginalRect(r.left, r.top, r.width(), r.height());
 		m_si.SetRect(0, 0, iWidth, iHeight);
 
 		m_si.SetPos(x, y);
