@@ -69,6 +69,8 @@ protected:
 
 	virtual		void				CheckItem				(game_PlayerState*	ps, PIItem pItem, xr_vector<s16> *pItemsDesired, xr_vector<u16> *pItemsToDelete);
 	virtual		bool				HasChampion				();
+
+	virtual		void				check_Player_for_Invincibility	(game_PlayerState* ps);
 public:
 									game_sv_Deathmatch		(){type = GAME_DEATHMATCH;};
 	virtual		void				Create					(shared_str &options);
@@ -136,7 +138,7 @@ public:
 				game_PlayerState*	GetWinningPlayer		();
 	virtual		BOOL				CanHaveFriendlyFire		()	{return FALSE;}
 	virtual		void				RespawnPlayer			(ClientID id_who, bool NoSpectator);
-	virtual		void				check_InvinciblePlayers	();
+	virtual		void				check_InvinciblePlayers	();	
 	virtual		void				check_ForceRespawn		();
 				
 

@@ -983,7 +983,7 @@ void	game_sv_Deathmatch::OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_P
 	P.r_pos = RPos;
 	
 	//---------------------------------------
-	if (ps_hitted->testFlag(GAME_PLAYER_FLAG_INVINCIBLE))//Device.dwTimeGlobal<ps_hitted->RespawnTime + damageblocklimit)
+	if (ps_hitted->testFlag(GAME_PLAYER_FLAG_INVINCIBLE))
 	{
 		power = 0;
 		impulse = 0;
@@ -1455,6 +1455,16 @@ void	game_sv_Deathmatch::Player_AddMoney			(game_PlayerState* ps, s32 MoneyAmoun
 	ps->money_for_round = s16(TotalMoney);
 };
 
+void	game_sv_Deathmatch::check_Player_for_Invincibility	(game_PlayerState* ps)
+{
+	if (!ps) return;
+	u32 CurTime = Device.dwTimeGlobal;
+	if ((ps->RespawnTime + damageblocklimit < CurTime) && ps->testFlag(GAME_PLAYER_FLAG_INVINCIBLE))
+	{
+		ps->resetFlag(GAME_PLAYER_FLAG_INVINCIBLE);
+	}
+};
+
 void	game_sv_Deathmatch::check_InvinciblePlayers()
 {
 	u32		cnt		= get_players_count	();
@@ -1463,12 +1473,9 @@ void	game_sv_Deathmatch::check_InvinciblePlayers()
 		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
 		game_PlayerState* ps	= l_pC->ps;
 		if (ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) continue;
-		u32 CurTime = Device.dwTimeGlobal;
-		if ((ps->RespawnTime + damageblocklimit < CurTime) && ps->testFlag(GAME_PLAYER_FLAG_INVINCIBLE))
-		{
-			ps->resetFlag(GAME_PLAYER_FLAG_INVINCIBLE);
-			signal_Syncronize();
-		}
+		u16 OldFlags = ps->flags;
+		check_Player_for_Invincibility(ps);
+		if (ps->flags != OldFlags) signal_Syncronize();
 	};
 };
 

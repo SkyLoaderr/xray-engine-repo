@@ -395,14 +395,14 @@ BOOL	game_sv_ArtefactHunt::OnDetach				(u16 eid_who, u16 eid_what)
 void		game_sv_ArtefactHunt::OnObjectEnterTeamBase	(u16 id, u16 zone_team)
 {
 	CSE_Abstract*		e_who	= m_server->ID_to_entity(id);		VERIFY(e_who	);
-//	CSE_Abstract*		e_zone	= m_server->ID_to_entity(id_zone);	VERIFY(e_zone	);
-
 	CSE_ALifeCreatureActor* eActor = smart_cast<CSE_ALifeCreatureActor*> (e_who);
-//	CSE_ALifeTeamBaseZone*	eZoneBase = smart_cast<CSE_ALifeTeamBaseZone*> (e_zone);
-	if (eActor/* && eZoneBase*/)
+	if (eActor)
 	{
 		if (eActor->g_team() == zone_team)
 		{
+			game_PlayerState* ps = eActor->owner->ps;
+			if (ps) ps->setFlag(GAME_PLAYER_FLAG_ONBASE);
+
 			xr_vector<u16>& C			= eActor->children;
 			xr_vector<u16>::iterator c	= std::find	(C.begin(),C.end(),m_dwArtefactID);
 			if (C.end()!=c)
@@ -429,6 +429,8 @@ void		game_sv_ArtefactHunt::OnObjectLeaveTeamBase	(u16 id, u16 zone_team)
 	{
 		if (eActor->g_team() == zone_team)
 		{
+			game_PlayerState* ps = eActor->owner->ps;
+			if (ps) ps->resetFlag(GAME_PLAYER_FLAG_ONBASE);
 		}
 		else
 		{
@@ -916,20 +918,12 @@ void	game_sv_ArtefactHunt::CheckForTeamWin()
 	switch_Phase		(phase);
 	OnDelayedRoundEnd("Team Final Score");
 }
-/*
 
-void	game_sv_ArtefactHunt::RespawnPlayer			(ClientID id_who, bool NoSpectator)
+BOOL	g_bShildedBases = TRUE;
+void	game_sv_ArtefactHunt::check_Player_for_Invincibility	(game_PlayerState* ps)
 {
-	inherited::RespawnPlayer(id_who, NoSpectator);
-
-	xrClientData*	xrCData	= (xrClientData*)m_server->ID_to_client	(id_who);
-	game_PlayerState*	ps	=	xrCData->ps;
-	CSE_Abstract*	pOwner = xrCData->owner;
-	CSE_ALifeCreatureActor	*pA	=	smart_cast<CSE_ALifeCreatureActor*>(pOwner);
-	if(!pA) return;
-	
-	TeamStruct*	pTeamData = GetTeamData(u8(ps->team));
-	if (pTeamData)
-		Player_AddMoney(ps, pTeamData->m_iM_OnRespawn);
-}
-*/
+	if (!ps) return;
+	inherited::check_Player_for_Invincibility(ps);
+	if (g_bShildedBases && ps->testFlag(GAME_PLAYER_FLAG_ONBASE))
+		ps->setFlag(GAME_PLAYER_FLAG_INVINCIBLE);
+};

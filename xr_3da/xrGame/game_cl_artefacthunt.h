@@ -17,8 +17,8 @@ protected:
 	virtual			BOOL				CanCallBuyMenu			();
 	virtual			bool				CanBeReady				();
 
-	virtual			void				OnObjectEnterTeamBase	(u16 player_id, u8 zone_team_id);
-	virtual			void				OnObjectLeaveTeamBase	(u16 player_id, u8 zone_team_id);
+//	virtual			void				OnObjectEnterTeamBase	(u16 player_id, u8 zone_team_id);
+//	virtual			void				OnObjectLeaveTeamBase	(u16 player_id, u8 zone_team_id);
 
 public:
 	u8									artefactsNum;//ah

@@ -171,6 +171,7 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 		}break;
 
 //-----GAME MESSAGES
+		/*
 	case GAME_EVENT_PLAYER_ENTER_TEAM_BASE:
 		{
 			u16 player_id;
@@ -206,6 +207,7 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 				sv_EventSend		(P_);
 			};
 		}break;
+		*/
 
 	default:
 		inherited::TranslateGameMessage(msg,P);
@@ -293,6 +295,17 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 	case GAME_PHASE_INPROGRESS:
 		{
 //			HUD().GetUI()->ShowIndicators();
+			if (local_player)
+			{
+				if (local_player->testFlag(GAME_PLAYER_FLAG_ONBASE))
+				{
+					m_bBuyEnabled = TRUE;
+				}
+				else
+				{
+					m_bBuyEnabled = FALSE;
+				};
+			};
 
 			if (m_bBuyEnabled)
 			{
@@ -429,6 +442,7 @@ bool game_cl_ArtefactHunt::CanBeReady				()
 };
 
 ///-------------------------------------------------------------------
+/*
 void game_cl_ArtefactHunt::OnObjectEnterTeamBase	(u16 player_id, u8 zone_team_id)
 {
 	game_PlayerState*	pl = GetPlayerByGameID (player_id);
@@ -437,7 +451,7 @@ void game_cl_ArtefactHunt::OnObjectEnterTeamBase	(u16 player_id, u8 zone_team_id
 
 	if (pl->GameID == Level().CurrentEntity()->ID() && pl->team == zone_team_id)
 	{
-		m_bBuyEnabled = TRUE;
+//		m_bBuyEnabled = TRUE;
 	};
 
 };
@@ -450,10 +464,10 @@ void game_cl_ArtefactHunt::OnObjectLeaveTeamBase	(u16 player_id, u8 zone_team_id
 
 	if (pl->GameID == Level().CurrentEntity()->ID() && pl->team == zone_team_id)
 	{
-		m_bBuyEnabled = FALSE;
+//		m_bBuyEnabled = FALSE;
 	};
 };
-
+*/
 char*	game_cl_ArtefactHunt::getTeamSection(int Team)
 {
 	switch (Team)

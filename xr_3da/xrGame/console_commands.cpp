@@ -57,6 +57,7 @@ extern	BOOL	g_ShowAnimationInfo		;
 extern	BOOL	g_bDynamicCrosshair		;
 extern	BOOL	g_bCalculatePing		;
 extern	BOOL	g_bBearerCantSprint		;
+extern	BOOL	g_bShildedBases			;
 		BOOL	g_bCheckTime			= FALSE;
 		int		g_dwEventDelay			= 0	;
 		int		net_cl_inputupdaterate	= 50;
@@ -1862,4 +1863,6 @@ void CCC_RegisterCommands()
 	CMD1(CCC_SetWeather,	"sv_setweather"			);
 
 	CMD4(CCC_Integer,		"sv_bearercantsprint",	&g_bBearerCantSprint,	0, 1)	;
+	CMD4(CCC_Integer,		"sv_shieldedbases",		&g_bShildedBases,		0, 1)	;
+
 }
