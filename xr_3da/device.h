@@ -13,7 +13,7 @@ class	ENGINE_API	CGammaControl;
 #include "hw.h"
 #include "ftimer.h"
 #include "stats.h"
-
+#include "xr_effgamma.h"
 #include "shader.h"
 #include "R_Backend.h"
 
@@ -61,7 +61,7 @@ public:
 	// Dependent classes
 	CResourceManager*						Resources;	  
 	CStats									Statistic;
-	CGammaControl*							Gamma;
+	CGammaControl							Gamma;
 
 	// Engine flow-control
 	float									fTimeDelta;
