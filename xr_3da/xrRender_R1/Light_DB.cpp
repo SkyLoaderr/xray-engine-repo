@@ -61,6 +61,7 @@ void CLight_DB::Load			(IReader *fs)
 	R_ASSERT2(sun,"Where is sun?");
 
 	// fake spot
+	if (0)
 	{
 		Fvector	P;			P.set(-5.58f,	-0.00f + 2, -3.63f);
 		Fvector	D;			D.set(0,-1,0);
