@@ -141,7 +141,7 @@ void CSceneObject::RenderAnimation(){
         DWORD clr=0xffffffff;
         for (float t=min_t; t<max_t; t+=0.1f){
             m_ActiveOMotion->Evaluate(t,T,r);
-            T.add(FPosition);
+//            T.add(FPosition);
             v.push_back(T);
         }
 
@@ -238,8 +238,8 @@ void CSceneObject::OnFrame(){
         Fvector R,P,r;
 		m_ActiveOMotion->Evaluate(m_OMParam.Frame(),P,r);
         R.set(-r.y,-r.x,-r.z);
-        P.add(FPosition);
-        R.add(FRotation);
+//        P.add(FPosition);
+//        R.add(FRotation);
         PPosition = P;
         PRotation = R;
         m_OMParam.Update(Device.fTimeDelta);

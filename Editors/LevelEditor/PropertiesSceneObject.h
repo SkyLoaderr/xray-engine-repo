@@ -70,8 +70,9 @@ __published:	// IDE-managed Components
 	TMenuItem *N1;
 	TMenuItem *ExpandAll1;
 	TMenuItem *CollapseAll1;
-	TGroupBox *gbFlags;
+	TGroupBox *gbDynamicFlags;
 	TMultiObjCheck *cbDummy;
+	TGroupBox *GroupBox1;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall ebCancelClick(TObject *Sender);
@@ -105,6 +106,7 @@ __published:	// IDE-managed Components
 	void __fastcall tvOMotionsMouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
 	void __fastcall fsStorageRestorePlacement(TObject *Sender);
+	void __fastcall cbDummyClick(TObject *Sender);
 private:	// User declarations
 	static TfrmPropertiesSceneObject* form;
     bool 					bLoadMode;

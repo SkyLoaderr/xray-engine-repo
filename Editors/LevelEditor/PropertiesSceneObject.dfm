@@ -1,6 +1,6 @@
 object frmPropertiesSceneObject: TfrmPropertiesSceneObject
-  Left = 965
-  Top = 745
+  Left = 742
+  Top = 625
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Scene Object properties'
@@ -42,7 +42,7 @@ object frmPropertiesSceneObject: TfrmPropertiesSceneObject
     ScrollOpposite = False
     Style = etsAngledTabs
     TabHeight = 16
-    TabIndex = 0
+    TabIndex = 1
     TabPosition = etpBottom
     HotTrackFont.Charset = DEFAULT_CHARSET
     HotTrackFont.Color = clBlue
@@ -50,7 +50,7 @@ object frmPropertiesSceneObject: TfrmPropertiesSceneObject
     HotTrackFont.Name = 'MS Sans Serif'
     HotTrackFont.Style = []
     TabBkColor = 10528425
-    ActivePage = tsBasic
+    ActivePage = tsMotions
     FlatTabBorderColor = clBtnShadow
     Align = alClient
     ParentColor = False
@@ -62,6 +62,7 @@ object frmPropertiesSceneObject: TfrmPropertiesSceneObject
       TabVisible = True
       Caption = 'Main'
       Color = 10528425
+      Visible = False
       object paBasic: TPanel
         Left = 0
         Top = 0
@@ -122,12 +123,12 @@ object frmPropertiesSceneObject: TfrmPropertiesSceneObject
           TabOrder = 0
           OnChange = OnModified
         end
-        object gbFlags: TGroupBox
+        object gbDynamicFlags: TGroupBox
           Left = 3
           Top = 43
-          Width = 296
-          Height = 42
-          Caption = ' Flags '
+          Width = 148
+          Height = 62
+          Caption = ' Dynamic Flags '
           TabOrder = 1
           object cbDummy: TMultiObjCheck
             Left = 8
@@ -137,7 +138,16 @@ object frmPropertiesSceneObject: TfrmPropertiesSceneObject
             Alignment = taLeftJustify
             Caption = 'Dummy'
             TabOrder = 0
+            OnClick = cbDummyClick
           end
+        end
+        object GroupBox1: TGroupBox
+          Left = 152
+          Top = 43
+          Width = 148
+          Height = 62
+          Caption = ' Static Flags '
+          TabOrder = 2
         end
       end
     end
@@ -148,7 +158,6 @@ object frmPropertiesSceneObject: TfrmPropertiesSceneObject
       TabVisible = True
       Caption = 'Motions'
       Color = 10528425
-      Visible = False
       object Label1: TLabel
         Left = 104
         Top = 82

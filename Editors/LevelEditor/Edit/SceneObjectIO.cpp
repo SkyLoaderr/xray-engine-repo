@@ -145,7 +145,7 @@ bool CSceneObject::ExportSpawn(CFS_Base& F, int chunk_id)
         Packet.w_string		(Name);
         Packet.w_u8 		(0xFE);
         Packet.w_vec3		(PPosition);
-        Fvector a; a.set	(0,PRotation.y,0);
+        Fvector a; a.set	(0,0,0);
         Packet.w_vec3		(a);
         Packet.w_u16		(0);
         WORD fl 			= M_SPAWN_OBJECT_ACTIVE;//(m_Flags.bActive)?M_SPAWN_OBJECT_ACTIVE:0;
@@ -155,17 +155,22 @@ bool CSceneObject::ExportSpawn(CFS_Base& F, int chunk_id)
         Packet.w_u16		(0);
         // spawn info
         Packet.w_u8 		((1<<0)|(1<<1)|(1<<3));
+		// verify path
 		// esAnimated
-        string256 anm_name;
-        Packet.w_string		(Engine.FS.GenerateName(Builder.m_LevelPath.m_Path,Name,".anms",anm_name));
+        string256 anm_name;	strconcat(anm_name,Name,".anms");
+        Packet.w_string		(anm_name);
+        strconcat			(anm_name,Builder.m_LevelPath.m_Path,Name,".anms");
+        Engine.FS.VerifyPath(anm_name);
         SaveOMotions		(anm_name);
 		// esModel
-        string256 mdl_name;
-        Packet.w_string		(Engine.FS.GenerateName(Builder.m_LevelPath.m_Path,Name,".ogf",mdl_name));
+        string256 mdl_name;	strconcat(mdl_name,Name,".ogf");
+        Packet.w_string		(mdl_name);
+        strconcat			(mdl_name,Builder.m_LevelPath.m_Path,Name,".ogf");
         if (m_pRefs->IsSkeleton()) m_pRefs->ExportSkeletonOGF(mdl_name); else m_pRefs->ExportObjectOGF(mdl_name);
 		// esSound
-        string256 snd_name;
-        Packet.w_string		(Engine.FS.GenerateName(Builder.m_LevelPath.m_Path,Name,".wav",snd_name));
+        string256 snd_name;	strconcat(snd_name,Name,".wav");
+        Packet.w_string		(snd_name);
+        strconcat			(snd_name,Builder.m_LevelPath.m_Path,Name,".wav");
 		Engine.FS.CreateNullFile(snd_name);
         // data size
         u16 size			= u16(Packet.w_tell()-position);

@@ -444,3 +444,9 @@ void __fastcall TfrmPropertiesSceneObject::fsStorageRestorePlacement(
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmPropertiesSceneObject::cbDummyClick(TObject *Sender)
+{
+	OnModified(Sender);
+}
+//---------------------------------------------------------------------------
+
