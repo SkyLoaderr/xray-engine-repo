@@ -419,17 +419,14 @@ void CAI_Zombie::Pursuit()
 
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(m_Enemy.Enemy,aiZombieAttackRun);
 
-	//CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE((m_fMorale < m_fMoraleNormalValue),aiZombieUnderFire);
-
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(Level().timeServer() - m_dwLostEnemyTime >= m_dwLostMemoryTime);
 	
-//	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && ((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_BULLET_RICOCHET) == SOUND_TYPE_WEAPON_BULLET_RICOCHET)) {
-//		if (m_tLastSound.tpEntity)
-//			m_tSavedEnemy = m_tLastSound.tpEntity;
-//		m_tSavedEnemyPosition = m_tLastSound.tSavedPosition;
-//		m_dwLostEnemyTime = Level().timeServer();
-//		GO_TO_NEW_STATE_THIS_UPDATE(aiZombieFreeRecoil);
-//	}
+	if (m_tLastSound.dwTime >= m_dwLastUpdateTime) {
+		if (m_tLastSound.tpEntity)
+			m_tSavedEnemy = m_tLastSound.tpEntity;
+		m_tSavedEnemyPosition = m_tLastSound.tSavedPosition;
+		m_dwLostEnemyTime = Level().timeServer();
+	}
 
 	m_tGoalDir.set(m_tSavedEnemyPosition);
 	
