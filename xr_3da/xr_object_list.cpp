@@ -73,7 +73,7 @@ void CObjectList::SingleUpdate	(CObject* O)
 	}
 }
 
-void CObjectList::OnMove		()
+void CObjectList::Update		()
 {
 	// Clients
 	Device.Statistic.UpdateClient.Begin		();
@@ -96,7 +96,7 @@ void CObjectList::OnMove		()
 		{
 			CObject*		O	= destroy_queue[it];
 			O->net_Destroy	();
-			DestroyObject	(O);
+			Destroy			(O);
 		}
 		destroy_queue.clear	();
 	}

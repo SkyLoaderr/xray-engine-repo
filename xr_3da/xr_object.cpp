@@ -25,17 +25,22 @@ void CObject::StatusBegin	()
 void CObject::cName_set			(LPCSTR N)
 { 
 	xr_free					(NameObject);
-	NameObject=xr_strdup	(N); 
+	if (N)	NameObject=xr_strdup	(N); 
 }
 void CObject::cNameSect_set		(LPCSTR N)
 { 
 	xr_free					(NameSection);
-	NameSection=xr_strdup	(N); 
+	if (N) NameSection=xr_strdup	(N); 
 }
 void CObject::cNameVisual_set	(LPCSTR N)
 { 
 	xr_free					(NameVisual);
-	NameVisual=xr_strdup	(N); 
+	::Render->model_Delete	(pVisual);
+	if (N) 
+	{
+		NameVisual=xr_strdup	(N); 
+		if (NameVisual[0]) pVisual	= Render->model_Create	(NameVisual);
+	}
 }
 void CObject::setEnabled		(BOOL _enabled)
 {
@@ -69,18 +74,20 @@ CObject::CObject		( )
 
 	Parent						= 0;
 
-	NameObject					= 0;
-	NameSection					= 0;
+	NameObject					= NULL;
+	NameSection					= NULL;
 	NameVisual					= NULL;
 }
 
 CObject::~CObject( )
 {
-	OnDeviceDestroy				();
+	Sector_Move					( 0 );
+	xr_delete					( pLights		);
 	xr_delete					( cfModel		);
-	xr_free						( NameObject	);
-	xr_free						( NameSection	);
-	xr_free						( NameVisual	);
+
+	cNameVisual_set				( 0 );
+	cName_set					( 0 );
+	cNameSect_set				( 0 );
 }
 
 void CObject::UpdateTransform( )
@@ -108,51 +115,18 @@ void CObject::Load				(LPCSTR section )
 	// Actual loading
 	R_ASSERT					( pCreator );
 
-	// Visual
-	if (pSettings->LineExists(section,"visual")) cNameVisual_set	(pSettings->ReadSTRING(section,"visual"));
-	
-	setVisible					(true);
-
+	// Visual and light-track
+	if (pSettings->LineExists(section,"visual")) 
+		cNameVisual_set	(pSettings->ReadSTRING(section,"visual"));
+	pLights						= xr_new<CLightTrack> ();
+	setVisible					(false);
 	Msg							("! object size: %d",sizeof(*this));
 }
 
 BOOL CObject::net_Spawn			(LPVOID data)
 {
-	return FALSE;
-}
-void CObject::net_Destroy		()
-{
-	FLAGS.bDestroy				= 1;
-}
-
-void CObject::OnDeviceDestroy	()
-{
-	if (pVisual)								Render->model_Delete	(pVisual);
-	xr_delete										(pLights);
-	Sector_Move									(0);
-}
-
-void CObject::OnDeviceCreate	()
-{
-	// CTimer		T;
-
-	// visual and shadow
-	// T.Start		();
-	REQ_CREATE					();
-	LPCSTR visual_name			= cNameVisual();
- 	if (visual_name&&visual_name[0]) pVisual	= Render->model_Create	(visual_name);
-	// Msg			("--spawn--dc-visual: %f ms",1000.f*T.GetAsync());
-
-	// T.Start		();
-	pLights						= xr_new<CLightTrack> ();
-	// Msg			("--spawn--dc-ltrack: %f ms",1000.f*T.GetAsync());
-
-	// T.Start		();
 	Sector_Detect				();
-	// Msg			("--spawn--dc-sector: %f ms",1000.f*T.GetAsync());
 
-	// Collision model
-	// T.Start		();
 	if (0==cfModel) 
 	{
 		if (pSettings->LineExists(cNameSect(),"cform")) {
@@ -167,7 +141,13 @@ void CObject::OnDeviceCreate	()
 			cfModel->OnMove();
 		}
 	}
-	// Msg			("--spawn--dc-cform: %f ms",1000.f*T.GetAsync());
+
+	return TRUE;
+}
+
+void CObject::net_Destroy		()
+{
+	FLAGS.bDestroy				= 1;
 }
 
 // Updates

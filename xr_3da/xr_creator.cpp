@@ -182,7 +182,7 @@ void CCreator::OnFrame	( void )
 	VERIFY						(bReady);
 	Engine.Sheduler.Update		( );
 	Environment.OnMove			( );
-	Objects.OnMove				( );
+	Objects.Update				( );
 	pHUD->OnFrame				( );
 
 	// Ambience
