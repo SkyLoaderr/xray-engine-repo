@@ -1,572 +1,339 @@
-<?xml version='1.0' encoding="windows-1251"?>
-<!-- таблица строк-подсказок -->
+<?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
-	<string id="Weapons1">
-		<text>Оружие</text>
-	</string>
-
-
-
-	<string id="Ammo">
-		<text>Боеприпасы</text>
-	</string>
-
- 
-
-	<string id="ammo-9x18-fmj">
-		<text>9х18 FMJ</text>
-	</string>
-
-
-	<string id="enc_weapons1_ammo_ammo-9x18-fmj">
-		<text>Простой сердечник, оболочечная пуля.</text>
-	</string>
-
-
-	<string id="ammo-9x18-pmm">
-		<text>9х18 PMM</text>
-	</string>
-
-
-	<string id="enc_weapons1_ammo_ammo-9x18-pmm">
-		<text>За счет более высокой начальной скорости и легкой пули, намного эффективнее обычного 9х18 FMJ.</text>
-	</string>
-
-  
-
-	<string id="ammo-9x18-pbp">
-		<text>9x18 PBP</text>
-	</string>
-
-
-	<string id="enc_weapons1_ammo_ammo-9x18-pbp">
-		<text>Хорошее сочетание бронебойности и останавливающего действия пули. Дорогая.</text>
-	</string>
-
-	<string id="ammo-9x19-fmj">
-		<text>9х19 FMJ</text>
-	</string>
-
-
-	<string id="enc_weapons1_ammo_ammo-9x19-fmj">
-		<text>Обычный патрон, со стальным сердечником, и цельной оболочкой.</text>
-	</string>
-
- 
-	<string id="ammo-9x19-pbp">
-		<text>9x19 PBP</text>
-	</string>
-
-
-	<string id="enc_weapons1_ammo_ammo-9x19-pbp">
-		<text>Это солидный по действию патрон. Пуля является экспансивной, но с бронебойным сердечником. Дорогой боеприпас.</text>
-	</string>
-
-
-	<string id="ammo-11.43x23-fmj">
-		<text>11.43x23 FMJ</text>
-	</string>
-
-
-	<string id="enc_weapons1_ammo_ammo-11.43x23-fmj">
-		<text>Обычный патрон, со стальным сердечником, и цельной оболочкой.</text>
-	</string>
-
- 	<string id="ammo-11.43x23-hydro">
-		<text>11.43x23 Hydro</text>
-	</string>
-
-
-	<string id="enc_weapons1_ammo_ammo-11.43x23-hydro">
-		<text>Экспансивная. Сильный останавливающий эффект, так называемый «ГидроШок». Дорогая.</text>
-	</string>
-
- 
-	<string id="ammo-5.45x39-fmj">
-		<text>5.45x39 FMJ</text>
-	</string>
-
-
-	<string id="enc_weapons1_ammo_ammo-5.45x39-fmj">
-		<text>Простой сердечник, оболочечная пуля.</text>
-	</string>
-
-
-
-	<string id="ammo-5.45x39-ap">
-		<text>5.45x39 AP</text>
-	</string>
-
-
-	<string id="enc_weapons1_ammo_ammo-5.45x39-ap">
-		<text>Бронебойная пуля.</text>
-	</string>
-
-  
-	<string id="ammo-9x39-pab9">
-		<text>9х39 PAB-9</text>
-	</string>
-
-
-	<string id="enc_weapons1_ammo_ammo-9x39-pab9">
-		<text>Более поздняя и дешевая в изготовлении  модификация бронебойного патрона.</text>
-	</string>
-
- 
-
-	<string id="ammo-9x39-ap">
-		<text>9x39 AP</text>
-	</string>
-
-
-	<string id="enc_weapons1_ammo_ammo-9x39-ap">
-		<text>Бронебойный патрон.</text>
-	</string>
-
-
-	<string id="ammo-9x39-sp5">
-		<text>9х39 SP5</text>
-	</string>
-
-
-	<string id="enc_weapons1_ammo_ammo-9x39-sp5">
-		<text>Снайперский. (Свинцовый сердечник).</text>
-	</string>
-
- 
-	<string id="ammo-5.56x45-ss190">
-		<text>5.56х45 SS109</text>
-	</string>
-
-
-	<string id="enc_weapons1_ammo_ammo-5.56x45-ss190">
-		<text>Стандартный НАТО’вский патрон, широко известный под бельгийским индексом SS109.</text>
-	</string>
-
-
-	<string id="ammo-5.56x45-ap">
-		<text>5.56x45 AP</text>
-	</string>
-
-
-	<string id="enc_weapons1_ammo_ammo-5.56x45-ap">
-		<text>Бронебойная пуля.</text>
-	</string>
-
-
-	<string id="ammo-7.62x54-7h1">
-		<text> 7.62x54 7h1</text>
-	</string>
-
-
-	<string id="enc_weapons1_ammo_ammo-7.62x54-7h1">
-		<text>Дешевая в изготовлении  модификация снайперского патрона.</text>
-	</string>
-
-	<string id="ammo-7.62x54-ap">
-		<text>7.62x54 AP</text>
-	</string>
-
-
-	<string id="enc_weapons1_ammo_ammo-7.62x54-ap">
-		<text>Бронебойная пуля.</text>
-	</string>
-
-	<string id="ammo-7.62x54-7h14">
-		<text>7.62х54R 7Н14</text>
-	</string>
-
-
-	<string id="enc_weapons1_ammo_ammo-7.62x54-7h14">
-		<text>Снайперский вариант. Дорогая.</text>
-	</string>
-
- 
-	<string id="ammo-12x70-buck">
-		<text>12х70 Buck</text>
-	</string>
-
-
-	<string id="enc_weapons1_ammo_ammo-12x70-buck">
-		<text>Дробовой патрон.</text>
-	</string>
-
-
-	<string id="ammo-12x76-zhekan">
-		<text>12x76 Zhekan</text>
-	</string>
-
-
-	<string id="enc_weapons1_ammo_ammo-12x76-zhekan">
-		<text>Тяжелая пуля.</text>
-	</string>
-
-
-	<string id="ammo-12x76-dart">
-		<text>12x76 Dart</text>
-	</string>
-
-
-	<string id="enc_weapons1_ammo_ammo-12x76-dart">
-		<text>Оперенная пуля. Увеличенная дальность.</text>
-	</string>
-
-
-	<string id="ammo-m209">
-		<text>M209</text>
-	</string>
-
-
-	<string id="enc_weapons1_ammo_ammo-m209">
-		<text>Граната для  подствольного гранатомета М203 (LR-300, G36, Sig550, L85) и для интегрированного гранатомета у FN2000.</text>
-	</string>
-
-
-	<string id="ammo-vog-25">
-		<text>VOG-25</text>
-	</string>
-
-
-	<string id="enc_weapons1_ammo_ammo-vog-25">
-		<text>Граната для подствольного гранатомета GP30 (Ak74) , для интегрированного подствольника у Groza, и для револьверного гранатомета RG-6.</text>
-	</string>
-
-
-	<string id="ammo-vog-25p">
-		<text>VOG-25P</text>
-	</string>
-
-
-	<string id="enc_weapons1_ammo_ammo-vog-25p">
-		<text>Перед взрывом граната VOG-25P подпрыгивает на выстоту метра, чем увеличивает свое поражающее действие.</text>
-	</string>
-
-
-	<string id="ammo-og-7b">
-		<text>OG-7B</text>
-	</string>
-
-
-	<string id="enc_weapons1_ammo_ammo-og-7b">
-		<text>Граната для РПГ-7В.</text>
-	</string>
-
-	<string id="ammo-gauss">
-		<text>Gauss</text>
-	</string>
-
-
-	<string id="enc_weapons1_ammo_ammo-gauss">
-		<text>Энергетические емкости для винтовки Гаусса.</text>
-	</string>
-
-
-
-
-
-	<string id="wpn-pm">
-		<text>ПМ (Макаров)</text>
-	</string>
-
-
-	<string id="enc_weapons1_wpn-pm">
-		<text>Самый распространенный в зоне пистолет советской эпохи. Надежный, удобный, дешевый, но с емкостью магазина всего в 7 патронов при недостаточной мощности и неудовлетворительной точности. Оружие сталкера новичка. Базовый боеприпас 9х18 FMJ, боеприпасы с улучшенными характеристиками  9х18 PMM и 9х18 PBP.</text>
-	</string>
-
-
-
-	<string id="wpn-pb">
-		<text>ПБ</text>
-	</string>
-
-
-	<string id="enc_weapons1_wpn-pb">
-		<text>Пистолет с интегрированным глушителем. Оружие спецназа СССР. Морально устаревший. Емкость магазина 7 патронов. Единственное достоинство – тихий выстрел. Базовый боеприпас 9х18 FMJ, боеприпасы с улучшенными характеристиками 9х18 PMM и 9х18 PBP.</text>
-	</string>
-
-
-
-	<string id="wpn-fort">
-		<text>Форт-12</text>
-	</string>
-
-
-	<string id="enc_weapons1_wpn-fort">
-		<text>Пистолет полицейского назначения украинского производства взамен устаревающих морально и физически пистолетов ПМ (Макарова) советской эпохи. Средняя надежность. Имеет лучшую по сравнению с ПМ точность, большую ескость магазина (12 патронов) и более удобную рукоятку. Базовый боеприпас 9х18 FMJ, боеприпасы с улучшенными характеристиками  9х18 PMM и 9х18 PBP.</text>
-	</string>
-
-  
-
-	<string id="wpn-hpsa">
-		<text>FN HPSA</text>
-	</string>
-
-
-	<string id="enc_weapons1_wpn-hpsa">
-		<text>Относится к оружию опытного сталкера. Браунинг Хай Пауэр заслуженно считается одним из лучших пистолетов ХХ века. Надежный мощный, с хорошей точночтью. Емкость магазина 13 патронов..Базовый боеприпас 9х19 FMJ, боеприпас с улучшенными характеристиками 9х19 PBP.</text>
-	</string>
-
-	<string id="wpn-walther">
-		<text>Walther P-99</text>
-	</string>
-
-
-	<string id="enc_weapons1_wpn-walther">
-		<text>Новый напарник Джеймса Бонда. Р99 - отличный пистолет, отличающийся высокой надежностью и хорошей точностью, особенно – в представленом варианте под патрон 9мм. Емкость магазина 16 патронов. Базовый боеприпас 9х19 FMJ, боеприпас с улучшенными характеристиками 9х19 PBP.</text>
-	</string>
-
- 
-	<string id="wpn-beretta">
-		<text>Beretta 92FS</text>
-	</string>
-
-
-	<string id="enc_weapons1_wpn-beretta">
-		<text>Красавица Беретта состоит на вооружении ВС США, многих других военизированных и правоохранительных формирований, полиции, как в США, так и вдругих странах. Калибр 9 мм.  Емкость магазина 15 патронов.  Базовый боеприпас 9х19 FMJ, боеприпас с улучшенными характеристиками  9х19 PBP.</text>
-	</string>
-
-
-
-	<string id="wpn-colt1911">
-		<text>Colt1911</text>
-	</string>
-
-
-	<string id="enc_weapons1_wpn-colt1911">
-		<text>Старый добрый Кольт. С честью прошел весь 20-ый век и отметил в Зоне свое столетие. Самый долгоживущий армейский пистолет. Калибр 0.45ACP. Емкость магазина 7 патронов. Базовый боеприпас 11.43x23 FMJ, боеприпас с улучшенными характеристиками 11.43x23 Hydro</text>
-	</string>
-
- 
-
-	<string id="wpn-usp">
-		<text>USP Compact</text>
-	</string>
-
-
-	<string id="enc_weapons1_wpn-usp">
-		<text>Солидный ствол сталкера-ветерана. Немецкое качество. Мощный, качественный и дорогой. Вариант под калибр 0.45ACP. Емкость магазина 8 патронов. Базовый боеприпас 11.43x23 FMJ , боеприпас с улучшенными характеристиками 11.43x23 Hydro</text>
-	</string>
-
-
-
-	<string id="wpn-desert-eagle">
-		<text>Desert Eagle</text>
-	</string>
-
-
-	<string id="enc_weapons1_wpn-desert-eagle">
-		<text>В Зону этого героя боевиков притащили любители иметь все большое. Почему-то не в его слонобойной версии калибра 0.50, а в варианте 0.44Magnum, чем перевели этого супер-тяжа из его категории в разряд простых армейских пистолетов. А он проигрывает им из-за чрезмерного веса и недостаточной надежности. Но выглядит эта волына солидно – факт. Оружие сталкера –любителя. Но богатого. Емкость магазина 8 патронов. Базовый боеприпас 11.43x23 FMJ , боеприпас с улучшенными характеристиками 11.43x23 Hydro.</text>
-	</string>
-
- 
-	<string id="wpn-toz34">
-		<text>ТОЗ-34</text>
-	</string>
-
-
-	<string id="enc_weapons1_wpn-toz34">
-		<text>Обычое охотничье ружье-вертикалка. Ничем не примечательна. Одно из самых распространенных видов оружия у новичков. Боеприпасы: 12х70 Buck – картечь, 12x76 Zhekan – тяжелая пуля, 12x76 Dart – оперенная пуля для стрельбы на большую дальность.</text>
-	</string>
-
-
-
-	<string id="wpn-bm16">
-		<text>БМ-16</text>
-	</string>
-
-
-	<string id="enc_weapons1_wpn-bm16">
-		<text>Обычое охотничье ружье-горизонталка. Ничем не примечательна. Одно из самых распространенных видов оружия у новичков. Боеприпасы: 12х70 Buck – картечь, 12x76 Zhekan – тяжелая пуля, 12x76 Dart – оперенная пуля для стрельбы на большую дальность.</text>
-	</string>
-
-
-
-	<string id="wpn-spas12">
-		<text>SPAS-12</text>
-	</string>
-
-
-	<string id="enc_weapons1_wpn-spas12">
-		<text>Гладкоствольное ружье SPAS-12 было разработано в конце 1970х годов как универсальное боевое оружие для полиции и военных. SPAS-12 отличает высокая надежность и гибкость в применении, но, с другой стороны, это оружие имеет довольно большой вес и сложное устройство, и, как следствие - высокую цену. В Зоне, лучший ствол для ближнего боя. Емкость магазина 8 патронов. Боеприпасы: 12х70 Buck – картечь, 12x76 Zhekan – тяжелая пуля, 12x76 Dart – оперенная пуля для стрельбы на большую дальность.</text>
-	</string>
-
-	<string id="wpn-mp5">
-		<text>HK MP5А3</text>
-	</string>
-
-
-	<string id="enc_weapons1_wpn-mp5">
-		<text>Один из лучших в своем классе пистолет-пулемет. В последних десятилетиях 20-го века был принят на вооружение спецподразделений армии и полиции во многих странах мира. После постепенной замены его на более современные модели во множестве появлся на черном рынке. В Зоне – оружие удобное для ближнего боя. Емкость магазина 30 патронов. Базовый боеприпас 9х19 FMJ, боеприпас с улучшенными характеристиками 9х19 PBP.</text>
-	</string>
-
-
-	<string id="wpn-ak74">
-		<text>АК74</text>
-	</string>
-
-
-	<string id="enc_weapons1_wpn-ak74">
-		<text>Автомат Калашникова под патрон 5.45 мм. Автоматы Калашникова разрабатывались под существовавшую на тот момент военную доктрину - максимально дешевые, надежные и простые, причем при этом несколько пострадали удобство использования и точность стрельбы. В Зоне оружие военных и сталкеров среднего уровня. Емкость магазина 30 патронов. Базовый боеприпас - 5.45x39 FMJ, бронебойный пуля 5.45x39 AP.</text>
-	</string>
-
- 
-
-	<string id="wpn-ak74u">
-		<text>АКС-74У</text>
-	</string>
-
-
-	<string id="enc_weapons1_wpn-ak74u">
-		<text>По своим габаритам и массе, АКС-74У близок к пистолетам-пулеметам, однако в силу применяемого патрона и механизмам считается все-таки укороченным автоматом. К достоинствам АКС-74У относятся высокая мобильность в стесненных условиях, возможность скрытого ношения, довольно высокая пробивная способность патрона. Недостатки - малая прицельная дальность стрельбы, невысокое останавливающее действие пули, склонность к быстрому перегреву при стрельбе. Емкость магазина 30 патронов. Базовый боеприпас - 5.45x39 FMJ, бронебойный патрон 5.45x39 AP.</text>
-	</string>
-
-
-	<string id="wpn-vintorez">
-		<text>Винторез ВСС</text>
-	</string>
-
-
-	<string id="enc_weapons1_wpn-vintorez">
-		<text>Винтовка снайперская-специальная. Предназначен для бесшумной и беспламенной снайперской стрельбы. Винтовка имеет интегрированный глушитель. Очень «уважаемый» ствол в Зоне. С 400 метров пробивает любой бронежилет, который реальный человек может носить без посторонней помощи. При этом сделать это можно практически бесшумно. Оружие опытного сталкера и ветерана. Емкость магазина 10 патронов. Базовый боеприпас - 9x39 PAB-9, бронебойный патрон 9x39 AP, 9х39 SP5 - снайперский патрон.</text>
-	</string>
-
-
-	<string id="wpn-val">
-		<text>ВАЛ</text>
-	</string>
-
-
-	<string id="enc_weapons1_wpn-val">
-		<text>Создан на базе бесшумной снайперской винтовки «Винторез», отличается главным образом складным прикладом. Предназначен для применения спец. подразделениями в условиях, требующих бесшумной и безпламенной стрельбы. Оба братца – достойные стволы. Емкость магазина 20 патронов. Базовый боеприпас - 9x39 PAB-9, бронебойный патрон 9x39 AP, 9х39 SP5-  снайперский патрон.</text>
-	</string>
-
-
-	<string id="wpn-groza">
-		<text>Гроза</text>
-	</string>
-
-
-	<string id="enc_weapons1_wpn-groza">
-		<text>Автоматно-гранатометный комплекс "Гроза" ОЦ-14. Очень удобный для Зоны вариант штурмовой винтовки. Компактный, мощный, универсальный, надежный. Оружие опытного сталкера – у новичка на такое врядли денег хватит. Этот ствол любят использовать военные сталкеры. Емкость магазина 20 патронов. Базовый боеприпас - 9x39 PAB-9, бронебойный патрон 9x39 AP, 9х39 SP5-  снайперский патрон.. Для подствольника подходят гранаты vog-25 и vog-25р.</text>
-	</string>
-
-
-	<string id="wpn-lr300">
-		<text>LR300</text>
-	</string>
-
-
-	<string id="enc_weapons1_wpn-lr300">
-		<text>LR-300 не что иное, как новая ступень в развитии AR-15. LR-300 означает - Легкая Винтовка эффективного огня до 300 метров. Одной из причин высокой точности стрельбы этой винтовки является исключительно ровный спуск, сама винтовка высоко маневренна и прикладиста, обеспечивает быструю наводку на цель. Не любит загрязнений. Оружие опытного сталкера. Емкость магазина 30 патронов. Базовый боеприпас - 5,56Х45  SS109 , бронебойный патрон  5,56Х45 АР</text>
-	</string>
-
-
-	<string id="wpn-fn2000">
-		<text>FN2000</text>
-	</string>
-
-
-	<string id="enc_weapons1_wpn-fn2000">
-		<text>Автоматно-гранатометный комплекс с компьютеризованным прицелом-модулем управления огнем и 40мм гранатометом. Емкость магазина 30 патронов. Базовый боеприпас - 5,56Х45  SS109 , бронебойный патрон  5,56Х45 АР. Боеприпас для  подствольника – гранаты M209. Оружие ветерана или мастера.</text>
-	</string>
-
- 
-	<string id="wpn-l85">
-		<text>L85A2</text>
-	</string>
-
-
-	<string id="enc_weapons1_wpn-l85">
-		<text>После замены этой винтовки Великобританией в 2008 году на немецкую G36 на черном рынке появилось много этих стволов. Так что в Зоне они не редкость. Единственным достоинством винтовки является хорошая точность первого выстрела и штатный прицел 4-х кратного увеличения. Ненадежна. Сильно уводит ствол при стреьбе очередями. Емкость магазина 30 патронов. Базовый боеприпас - 5,56Х45 SS109 , бронебойный патрон  5,56Х45 АР.</text>
-	</string>
-
- 
-	<string id="wpn-svd">
-		<text>СВД</text>
-	</string>
-
-
-	<string id="enc_weapons1_wpn-svd">
-		<text>СВД широко использовалась практически во всех боевых операциях, проводимых Советской и Российской армиями с момента ее принятия на вооружение, и показала себя исключительно надежным и удобным в обращении образцом стрелкового оружия. В Зоне ее предпочитают опытные сталкеры группировки «ДОЛГ» - группировки охотников на мутантов. У торговца стоит весьма не дешево. Кроме того «достать» ее можно у постовых на контрольных вышках периметра. Но мало, кто на это отваживается. Емкость магазина 10 патронов. Базовый боеприпас - 7,62Х54 7h1 , бронебойный патрон  - 7,62Х54 ар, снайперский  боеприпас с улучшенными характеристиками  7,62Х54 7h14.</text>
-	</string>
-
-
-	<string id="wpn-svu">
-		<text>СВУ-АС</text>
-	</string>
-
-
-	<string id="enc_weapons1_wpn-svu">
-		<text>Более современный вариант винтовки Драгунова выполненный по схеме булл-пап.Очень удобный для путешествий по Зоне, компактный вариант, мощной автоматической снайперской виновки. Достать сложно. Разве, что в бою у военного сталкера отобрать. Емкость магазина 10 патронов. Базовый боеприпас - 7,62Х54 7h1 , бронебойный патрон  - 7,62Х54 ар, снайперский  боеприпас с улучшенными характеристиками  7,62Х54 7h14.</text>
-	</string>
-
-	<string id="wpn-gauss">
-		<text>Винтовка Гаусса</text>
-	</string>
-
-
-	<string id="enc_weapons1_wpn-gauss">
-		<text>Снайперская винтовка, которую собрали ученые в Зоне. Практически бесшумна, использует для стрельбы энергию артефактов. Очень редкая и полезная пушка.</text>
-	</string>
-
-	<string id="wpn-addon-grenade-launcher">
-		<text>ГП-30</text>
-	</string>
-
-
-	<string id="enc_weapons1_wpn-addon-grenade-launcher">
-		<text>Подствольный гранатомет для для  Ак-74. Боеприпас для  подствольника – VOG-25 и VOG-25P.</text>
-	</string>
-
-	<string id="wpn-addon-grenade-launcher-m203">
-		<text>M203</text>
-	</string>
-
-
-	<string id="enc_weapons1_wpn-addon-grenade-launcher-m203">
-		<text>Подствольный гранатомет для для  Sig550, LR300, G36, L85A2. Боеприпас для  подствольника – гранаты M209.</text>
-	</string>
-
-	<string id="wpn-rg-6">
-		<text>РГ-6</text>
-	</string>
-
-
-	<string id="enc_weapons1_wpn-rg-6">
-		<text>Специфическое оружие. Револьверный гранатомет. Для некоторых заданий, как то – очистка больших площадей от мутантов, поражение особо живучих тварей, нападение на базы противоборствующей группировки, это оружие может быть весьма кстати. Боеприпасы: гранаты VOG-25 и VOG-25P.</text>
-	</string>
-
-
-
-	<string id="wpn-rpg7">
-		<text>РПГ-7В</text>
-	</string>
-
-
-	<string id="enc_weapons1_wpn-rpg7">
-		<text>Старый гранатомет советских времен, в огромном количестве оставщийся на военных складах, откуда и попадает в Зону. Не совсем обычное оружие для сталкеров. Большой вес и размеры, а также весьма «специфическое» применение делают его не очень популярным. Хотя для некоторых заданий, как то – очистка больших площадей от мутантов, поражение особо живучих тварей, нападение на базы противоборствующей группировки, это оружие может быть весьма кстати. Боеприпас – ОГ-7B.</text>
-	</string>
-
-
-	<string id="grenade-f1">
-		<text>Ф1</text>
-	</string>
-
-
-	<string id="enc_weapons1_grenade-f1">
-		<text>Ручная оборонительная граната. Радиус поражения осколками до 100 метров. Бросать из укрытия.</text>
-	</string>
-
-
-	<string id="grenade-rgd5">
-		<text>РГД-5</text>
-	</string>
-
-
-	<string id="enc_weapons1_grenade-rgd5">
-		<text>Наступательная ручная граната. Радиус поражения осколками – 25 метров.</text>
-	</string>
-
-
+    <string id="Weapons1">
+        <text>Weapons</text>
+    </string>
+    <string id="Ammo">
+        <text>Ammunition</text>
+    </string>
+    <string id="ammo-9x18-fmj">
+        <text>9х18 FMJ</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-9x18-fmj">
+        <text>Basic PM, PB, Fort-12 shell. Simple core, full metal jacketed. Weak armor-piercing action.</text>
+    </string>
+    <string id="ammo-9x18-pmm">
+        <text>9х18 PMM</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-9x18-pmm">
+        <text>Shell for PM, PB, Fort-12 with improved characteristics. Due to the high initial velocity and light bullet, its far more effective than usual 9х18 FMJ. Slightly improved armor-piercing effect.</text>
+    </string>
+    <string id="ammo-9x18-pbp">
+        <text>9x18 PBP</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-9x18-pbp">
+        <text>Shell for PM, PB, Fort-12 with improved characteristics. Perfect combination of armor-piercing and restraining bullet effects.</text>
+    </string>
+    <string id="ammo-9x19-fmj">
+        <text>9х19 FMJ</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-9x19-fmj">
+        <text>Basic HPSA, Walther P-99, Beretta92FS and HK MP5 submachine-gun. Ordinary jacketed bullet. Weak armor-piercing effect.</text>
+    </string>
+    <string id="ammo-9x19-pbp">
+        <text>9x19 PBP</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-9x19-pbp">
+        <text>Shell for empty text HPSA, Walther P-99, Beretta92FS pistols and HK MP5 submachine-guns with improved characteristics. Solid shell. Expansive bullet, but with the armor-piercing core. Expensive ammunition.</text>
+    </string>
+    <string id="ammo-11.43x23-fmj">
+        <text>11.43x23 FMJ</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-11.43x23-fmj">
+        <text>Basic Colt1911, Sig220, USP Compact, Desert Eagle pistols shell. Simple core, jacketed bullet.</text>
+    </string>
+    <string id="ammo-11.43x23-hydro">
+        <text>11.43x23 Hydro</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-11.43x23-hydro">
+        <text>So called “Hydra Shock”. Patron for Colt1911, Sig220, USP Compact, Desert Eagle pistols with improved characteristics. Expansive bullet with strong restraining effect.</text>
+    </string>
+    <string id="ammo-5.45x39-fmj">
+        <text>5.45x39 FMJ</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-5.45x39-fmj">
+        <text>Basic AK-74, AK-74U machine carbines shell. Simple core, jacketed bullet.</text>
+    </string>
+    <string id="ammo-5.45x39-ap">
+        <text>5.45x39 AP</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-5.45x39-ap">
+        <text>Armor-piercing bullet for AK-74, AK-74U submachine guns. Improved armor-piercing effect and weaken restraining effect.</text>
+    </string>
+    <string id="ammo-9x39-pab9">
+        <text>9х39 PAB-9</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-9x39-pab9">
+        <text>Shell for “Groza”, “Val” submachine guns and special sniper rifle “Wintorez”. Latter and cheaper in manufacture modification of armor-piercing bullet. Has undersonic flight speed, but owing to the special construction, penetrates the majority of armors on distances up to 300 meters.</text>
+    </string>
+    <string id="ammo-9x39-ap">
+        <text>9x39 AP</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-9x39-ap">
+        <text>Armor-piercing shell for “Groza”, “Val” and special sniper rifle “Wintorez”. Has undersonic flight speed, but owing to the special construction, penetrates the majority of armors on distances up to 300 meters.</text>
+    </string>
+    <string id="ammo-9x39-sp5">
+        <text>9х39 SP5</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-9x39-sp5">
+        <text>Sniper shell for “Groza”, “Val” submachine guns and for special sniper rifle “Vintorez”. Has udnersonic flight speed but owing to the heavy bullet (lead core) of special construction, penetrates the majority of armors on distances up to 400 meters.</text>
+    </string>
+    <string id="ammo-5.56x45-ss190">
+        <text>5.56х45 SS109</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-5.56x45-ss190">
+        <text>Standard NATO shell, established under the Belgium index SS109. For assault rifles L85, LR300, Sig550, G36, FN2000.</text>
+    </string>
+    <string id="ammo-5.56x45-ap">
+        <text>5.56x45 AP</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-5.56x45-ap">
+        <text>Armor-piercing bullet. For assault rifles L85, LR300, Sig550, G36, FN2000.</text>
+    </string>
+    <string id="ammo-7.62x54-7h1">
+        <text>7.62x54 7h1</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-7.62x54-7h1">
+        <text>Cheap in manufacture modification of sniper shell. For sniper rifles SVD, SVU-AS and machine-gun PKM.</text>
+    </string>
+    <string id="ammo-7.62x54-ap">
+        <text>7.62x54 AP</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-7.62x54-ap">
+        <text>Armor-piercing bullet. For sniper rifles SVD, SVU-AS and machine-gun PKM.</text>
+    </string>
+    <string id="ammo-7.62x54-7h14">
+        <text>7.62х54R 7Н14</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-7.62x54-7h14">
+        <text>Sniper shell. For sniper rifles SVD, SVU-AS and machine-gun PKM. Improved accuracy and range. Expensive.</text>
+    </string>
+    <string id="ammo-12x70-buck">
+        <text>12х70 Buck</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-12x70-buck">
+        <text>Scatter shell. For shotguns ТОЗ-34, BM-12, Winchester-1300,SPAS-12. Effective on distances up to 30 meters.</text>
+    </string>
+    <string id="ammo-12x76-zhekan">
+        <text>12x76 Zhekan</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-12x76-zhekan">
+        <text>Shell with heavy bullet. For shotguns ТОЗ-34, BM-12, Winchester-1300,SPAS-12. Effective on distances up to 100 meters.</text>
+    </string>
+    <string id="ammo-12x76-dart">
+        <text>12x76 Dart</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-12x76-dart">
+        <text>Plumate bullet. For shotguns ТОЗ-34, BM-12, Winchester-1300,SPAS-12. Effective on distances up to 150 meters. Increased range and armor-piercing effect. Expensive shell.</text>
+    </string>
+    <string id="ammo-m209">
+        <text>M209</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-m209">
+        <text>Grenade for barrel attached grenade launcher М203 (LR-300, G36, Sig550, L85) and for integrated grenade launcher at FN2000.</text>
+    </string>
+    <string id="ammo-vog-25">
+        <text>VOG-25</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-vog-25">
+        <text>Grenade for barrel attached grenade launcher GP30 (Ak74), for integrated grenade launcher of “Groza” and revolver grenade launcher RG-6.</text>
+    </string>
+    <string id="ammo-vog-25p">
+        <text>VOG-25P</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-vog-25p">
+        <text>Grenade for barrel attached grenade launcher of GP30 (Ak74) , for integrated barrel attached grenade launcher of Groza, and for the revolver grenade launcher RG-6. Before the blow grenade bounces increasing the injurious action.  </text>
+    </string>
+    <string id="ammo-og-7b">
+        <text>OG-7B</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-og-7b">
+        <text>Grenade for RPG-7V</text>
+    </string>
+    <string id="ammo-gauss">
+        <text>Gauss</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-gauss">
+        <text>Power capacities with prepared destructive elements in clip for Gauss rifle.</text>
+    </string>
+    <string id="wpn-pm">
+        <text>PM (Makarov)</text>
+    </string>
+    <string id="enc_weapons1_wpn-pm">
+        <text>Most widespread pistol of the Soviet era. Reliable, handy, cheap, but only with 7 shells clip with insufficient output and scanty accuracy. Newbie stalker’s weapon. Basic ammunition 9х18 FMJ, 9х18 PMM and 9х18 PBP ammunition with improved characteristics.</text>
+    </string>
+    <string id="wpn-pb">
+        <text>PB</text>
+    </string>
+    <string id="enc_weapons1_wpn-pb">
+        <text>Pistol with integrated silencer. USSR task force weapon. Morally outmoded. Clip capacity – 7 shells. The only advantage – silent shot. Basic ammunition 9х18 FMJ, 9х18 PMM и 9х18 PBP ammunition with improved characteristics.</text>
+    </string>
+    <string id="wpn-fort">
+        <text>Fort-12</text>
+    </string>
+    <string id="enc_weapons1_wpn-fort">
+        <text>Ukraine manufactured police pistol set in return for morally and physically outmoded PM (Makarov) Soviet era pistols. Average reliability. Has improved accuracy comparing to PM, increased clip capacity (12 shells) and handy hilt. Basic ammunition 9х18 FMJ, 9х18 PMM and 9х18 PBP ammunition with improved characteristics.</text>
+    </string>
+    <string id="wpn-hpsa">
+        <text>FN HPSA</text>
+    </string>
+    <string id="enc_weapons1_wpn-hpsa">
+        <text>Supposed to be the weapon of experienced stalker. Browning HP is worthy considering being one of the best ХХ-th century’s pistols. Reliable, powerful, good accuracy. Clip capacity 13 shells. Basic ammunition 9х19 FMJ, 9х19 PBP ammunition with improved characteristics.</text>
+    </string>
+    <string id="wpn-walther">
+        <text>Walther P-99</text>
+    </string>
+    <string id="enc_weapons1_wpn-walther">
+        <text>New James Bond’s workmate. Р99 – perfect pistol, excelling with high reliability and good accuracy, especially – in presented variant by 9mm shell. Clip capacity 16 shells. Basic ammunition 9х19 FMJ, 9х19 PBP ammunition with improved characteristics.</text>
+    </string>
+    <string id="wpn-beretta">
+        <text>Beretta 92FS</text>
+    </string>
+    <string id="enc_weapons1_wpn-beretta">
+        <text>Attractive Beretta is adopted in US Military forces, and many other militarized and law-enforcement units, police, both in the USA and in other countries. 9mm caliber. Clip capacity 15 shells. Basic ammunition 9х19 FMJ, 9х19 PBP ammunition with improved characteristics.</text>
+    </string>
+    <string id="wpn-colt1911">
+        <text>Colt1911</text>
+    </string>
+    <string id="enc_weapons1_wpn-colt1911">
+        <text>Good old fashioned Colt. Went through the 20-th century and commemorated its centennial in Zone. The most long-living army pistol. 0.45ACP caliber. Clip capacity 7 shells. Basic ammunition 11.43x23 FMJ, 11.43x23 Hydro ammunition with improved characteristics.</text>
+    </string>
+    <string id="wpn-usp">
+        <text>USP Compact</text>
+    </string>
+    <string id="enc_weapons1_wpn-usp">
+        <text>Considerable stalker-veteran’s gun. German quality. Powerful, high-quality and expensive. 0.45ACP caliber variant. Clip capacity 8 shells. Basic ammunition 11.43x23 FMJ, 11.43x23 Hydro ammunition with improved characteristics.</text>
+    </string>
+    <string id="wpn-desert-eagle">
+        <text>Desert Eagle</text>
+    </string>
+    <string id="enc_weapons1_wpn-desert-eagle">
+        <text>It was brought to the Zone by physics. But for some reason not in its 0.50 caliber variant, but in 0.44Magnum one, moving that way this heavyweight from his category into simple army pistols. It loses in its excessive weight and insufficient reliability. But this gun is worth considering with. Stalker-amateur’s weapon. But for the wealthy one. Clip capacity 8 shells. Basic ammunition 11.43x23 FMJ, 11.43x23 Hydro ammunition with improved characteristics.</text>
+    </string>
+    <string id="wpn-toz34">
+        <text>ТОЗ-34</text>
+    </string>
+    <string id="enc_weapons1_wpn-toz34">
+        <text>Usual hunting rifle. Ordinary weapon. One of the most widespread weapon types among the newbies. Ammunition: 12х70 Buck – buck-stop, 12x76 Zhekan – heavy bullet, 12x76 Dart – plumate bullet for long-distance shooting.</text>
+    </string>
+    <string id="wpn-bm16">
+        <text>BM-16</text>
+    </string>
+    <string id="enc_weapons1_wpn-bm16">
+        <text>Usual hunting rifle. Ordinary weapon. One of the most widespread weapon types among the newbies. Ammunition: 12х70 Buck – buck-stop, 12x76 Zhekan – heavy bullet, 12x76 Dart – plumate bullet for long-distance shooting.</text>
+    </string>
+    <string id="wpn-spas12">
+        <text>SPAS-12</text>
+    </string>
+    <string id="enc_weapons1_wpn-spas12">
+        <text>Smooth-bore gun SPAS-12 invented in the end of 70th of the XX century as the multi-purpose warfare gun for police and militaries. SPAS-12 is distinguished by high reliability and flexibility in usage, but on the other hand this weapon is heavy and complex, and therefore – expensive. Best gun for the close combat in Zone. Clip capacity 8 shells. Ammunition: 12х70 Buck –buck-shot, 12x76 Zhekan – heavy bullet, 12x76 Dart – plumate bullet for long-distance shooting. </text>
+    </string>
+    <string id="wpn-mp5">
+        <text>HK MP5А3</text>
+    </string>
+    <string id="enc_weapons1_wpn-mp5">
+        <text>One of the best submachine-gun in its line. Added to special army and police divisions arsenal in last few decades of the 20th century in many countries. After its gradual substitution on more common models appeared on the black market. Handy weapon for the close combat in the Zone. Clip capacity 30 shells. Basic ammunition 9х19 FMJ, 9х19 PBP ammunition with improved characteristics.</text>
+    </string>
+    <string id="wpn-ak74">
+        <text>АК74</text>
+    </string>
+    <string id="enc_weapons1_wpn-ak74">
+        <text>Kalashnikov machine carbine for 5.45mm shell. Kalashnikov machine were developed for existed martial doctrine – most economy, reliable and simple, handiness and shooting accuracy suffered from that. Weapon of military stalkers and middle-class stalkers in the Zone. Clip capacity 30 shells. Basic ammunition - 5.45x39 FMJ, Armor-piercing bullet 5.45x39 AP.</text>
+    </string>
+    <string id="wpn-ak74u">
+        <text>AKS-74U</text>
+    </string>
+    <string id="enc_weapons1_wpn-ak74u">
+        <text>As to its dimensions and mass, AKS-74U is close to submachine-guns, however due to the used cartridge and mechanisms is considered to be short-cut carbine. Among the advantages of AKS-74U are high mobility straitened conditions, possibility of concealed bearing, rather high bullet piercing ability. Disadvantages – small aimed fire range, low bullet restraining effect, turned for overheating during fire. Clip capacity 30 shells. Basic ammunition - 5.45x39 FMJ, armor piercing 5.45x39 AP.</text>
+    </string>
+    <string id="wpn-vintorez">
+        <text>Screw-gun BCC</text>
+    </string>
+    <string id="enc_weapons1_wpn-vintorez">
+        <text>Special sniper rifle. For silent and flash less firing. Rifle has an integrated silencer. Greatly “respected” gun in Zone. Pierces any self-wearing body armor from the distance of 400 meters. At that it can be done almost silently. Weapon of experienced stalker and veteran. Clip capacity 10 shells. Basic ammunition - 9x39 PAB-9, armor-piercing bullets 9x39 AP, 9х39 SP5- sniper shell.</text>
+    </string>
+    <string id="wpn-val">
+        <text>VAL</text>
+    </string>
+    <string id="enc_weapons1_wpn-val">
+        <text>Created on the basis of silent sniper rifle “Screw-gun”, has folding rifle butt. Used by spec divisions in conditions requiring silent and flash less firing. Both guns – worth using. Clip capacity 20 shells. Basic ammunition - 9x39 PAB-9, armor-piercing bullet 9x39 AP, 9х39 SP5- sniper shell.</text>
+    </string>
+    <string id="wpn-groza">
+        <text>Groza</text>
+    </string>
+    <string id="enc_weapons1_wpn-groza">
+        <text>Submachine-grenade cup discharge complex "Groza" ОЦ-14. Very handy for in-Zone activities assault rifle variant. Compact, powerful, universal, reliable. Experienced stalker’s weapon – novice won’t probably have enough money for that kind. Military stalkers’ favorite weapon. Clip capacity 20 shells. Basic ammunition - 9x39 PAB-9, armor piercing bullet 9x39 AP, 9х39 SP5-  sniper bullet. vog-25 and vog-25р grenades are suitable for the barrel attached launcher. </text>
+    </string>
+    <string id="wpn-lr300">
+        <text>LR300</text>
+    </string>
+    <string id="enc_weapons1_wpn-lr300">
+        <text>LR-300 nothing else but the new level of AR-15 development. LR-300 means – Light Rifle of effective fire up to 300 meters. Its quite high accuracy is ridden by the exceptionally smooth sear; rifle is highly maneuverable and handy, renders fast aiming. Highly pollution able type. Experienced stalker’s weapon. Clip capacity 30 shells. Basic ammunition - 5,56Х45  SS109 , armor-piercing bullet  5,56Х45 АР </text>
+    </string>
+    <string id="wpn-fn2000">
+        <text>FN2000</text>
+    </string>
+    <string id="enc_weapons1_wpn-fn2000">
+        <text>Submachine-gun with grenade cup discharge fixed with computerized sight-module of fire management and with 40mm grenade launcher. Clip capacity 30 shells. Basic ammunition - 5,56Х45  SS109 , armor piercing bullet 5,56Х45 АР. Ammunition for barrel attached launcher - M209 grenades. Veteran/master’s gun.</text>
+    </string>
+    <string id="wpn-l85">
+        <text>L85A2</text>
+    </string>
+    <string id="enc_weapons1_wpn-l85">
+        <text>After changing this rifle by Great Britain in 2008 to German G36 black market acquired a lot of these ones. So it’s not unique inside the Zone. The only advantage of this weapon is good accuracy of the first shot and regular scope with 4x zoom. Unreliable. Too high dispersal when firing with burst. Clip capacity 30 shells. Basic ammunition - 5,56Х45 SS109 , armor-piercing bullet 5,56Х45 АР.</text>
+    </string>
+    <string id="wpn-svd">
+        <text>SVD</text>
+    </string>
+    <string id="enc_weapons1_wpn-svd">
+        <text>SVD widely used in almost all operations, held by Soviet and Russian armies from the moment when it was added to arsenal, and considered to be exceptionally reliable and handy sample of shooting weapons. Preferred by experienced stalkers from “DUTY” grouping – grouping of mutant hunters. Costs a fair bit at Trader’s. Besides can be obtained from sentry towers of the perimeter. But there are few who venture on that. Clip capacity 10 shells. Basic ammunition - 7,62Х54 7h1, armor-piercing bullet - 7,62Х54 ар, sniper ammunition with improved characteristics 7,62Х54 7h14. </text>
+    </string>
+    <string id="wpn-svu">
+        <text>SVU-AS</text>
+    </string>
+    <string id="enc_weapons1_wpn-svu">
+        <text>Modern Dragunov rifle variant made according to the bull-pup scheme. Very suitable for long trips into the Zone, compact variant of powerful automatic sniper rifle. Very exclusive. Military stalkers are fond of these ones. Clip capacity 10 shells. Basic ammunition - 7,62Х54 7h1, armor piercing bullet - 7,62Х54 ар, sniper ammunition with improved characteristics 7,62Х54 7h14. </text>
+    </string>
+    <string id="wpn-gauss">
+        <text>Gauss rifle</text>
+    </string>
+    <string id="enc_weapons1_wpn-gauss">
+        <text>Sniper rifle, invented by scientists in the Zone. Almost silent, uses artifacts’ energy for shooting. Very rare and useful thing.</text>
+    </string>
+    <string id="wpn-addon-grenade-launcher">
+        <text>GP-30</text>
+    </string>
+    <string id="enc_weapons1_wpn-addon-grenade-launcher">
+        <text>Grenade cup discharge fixed under the barrel for AK-74. Launcher ammunition– VOG-25 and VOG-25P.</text>
+    </string>
+    <string id="wpn-addon-grenade-launcher-m203">
+        <text>M203</text>
+    </string>
+    <string id="enc_weapons1_wpn-addon-grenade-launcher-m203">
+        <text>Barrel attached grenade launcher for Sig550, LR300, G36, L85A2. Launcher ammunition –M209 grenades. </text>
+    </string>
+    <string id="wpn-rg-6">
+        <text>RG-6</text>
+    </string>
+    <string id="enc_weapons1_wpn-rg-6">
+        <text>Specific weapon. Revolver grenade launcher. For several tasks as clearing of the vast areas from mutants, harming the toughest beasts, attacking the base of the opposite grouping, this weapon can be apropos. Ammunition: grenades VOG-25 and VOG-25P.</text>
+    </string>
+    <string id="wpn-rpg7">
+        <text>RPG-7V</text>
+    </string>
+    <string id="enc_weapons1_wpn-rpg7">
+        <text>Old grenade launcher of the soviet times, remaining in abundance on the military facilities, wherefrom is transported into the Zone. Not quite an ordinary stalkers’ weapon. High weight and the size, and really “specific” usage make it really popular. However for several tasks, as clearing large areas from the mutants, harming tough beasts, attacking the opposing grouping base, can be nifty indeed. Ammunition – ОГ-7B</text>
+    </string>
+    <string id="grenade-f1">
+        <text>F1</text>
+    </string>
+    <string id="enc_weapons1_grenade-f1">
+        <text>Hand defensive grenade. Splinter damage radius – up to 100 meters. Throw from the cover. </text>
+    </string>
+    <string id="grenade-rgd5">
+        <text>RGD-5</text>
+    </string>
+    <string id="enc_weapons1_grenade-rgd5">
+        <text>Offensive hand grenade. Splinter damage radius – 25 meters.</text>
+    </string>
 </string_table>
-

@@ -1,29 +1,579 @@
-<?xml version='1.0' encoding="windows-1251"?>
+<?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
-
-	<string id="escape_talk_about_agroprom__0">
-		<text>Tell me about this place.</text>
-	</string>
-
-	<string id="escape_talk_about_agroprom__10">
-		<text>Thank's.</text>
-	</string>
-
-	<string id="escape_talk_about_agroprom__1">
-		<text>Stalkers call this territory dead, radiation is too strong here... If you go deep into the area, you`ll reach the radioactive plains 
-        and find shallow rusty lake. All lake is filled with remains of vehicles - a heap of rusty trash, covered with water. You can also find
-        old scientific research institute and a factory, but I is all covered with some mutated muck. Don`t go there without gas-mask, too  
-        dangerous.</text>
-	</string>
-
-	<string id="escape_talk_about_agroprom__2">
-		<text>And what is nearby?</text>
-	</string>
-
-	<string id="escape_talk_about_agroprom__21">
-		<text>If you go East, you`ll reach the Garbage. 
-        Go North - you`ll reach the Yantar lake, rumors tell there is a scientists camp there.</text>
-	</string>
-
-
+    <string id="Weapons1">
+        <text>Weapons</text>
+    </string>
+    <string id="Ammo">
+        <text>Ammunition</text>
+    </string>
+    <string id="ammo-9x18-fmj">
+        <text>9х18 FMJ</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-9x18-fmj">
+        <text>Basic PM, PB, Fort-12 shell. Simple core, full metal jacketed. Weak armor-piercing action.</text>
+    </string>
+    <string id="ammo-9x18-pmm">
+        <text>9х18 PMM</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-9x18-pmm">
+        <text>Shell for PM, PB, Fort-12 with improved characteristics. Due to the high initial velocity and light bullet, its far more effective than usual 9х18 FMJ. Slightly improved armor-piercing effect.</text>
+    </string>
+    <string id="ammo-9x18-pbp">
+        <text>9x18 PBP</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-9x18-pbp">
+        <text>Shell for PM, PB, Fort-12 with improved characteristics. Perfect combination of armor-piercing and restraining bullet effects.</text>
+    </string>
+    <string id="ammo-9x19-fmj">
+        <text>9х19 FMJ</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-9x19-fmj">
+        <text>Basic HPSA, Walther P-99, Beretta92FS and HK MP5 submachine-gun. Ordinary jacketed bullet. Weak armor-piercing effect.</text>
+    </string>
+    <string id="ammo-9x19-pbp">
+        <text>9x19 PBP</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-9x19-pbp">
+        <text>Shell for empty text HPSA, Walther P-99, Beretta92FS pistols and HK MP5 submachine-guns with improved characteristics. Solid shell. Expansive bullet, but with the armor-piercing core. Expensive ammunition.</text>
+    </string>
+    <string id="ammo-11.43x23-fmj">
+        <text>11.43x23 FMJ</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-11.43x23-fmj">
+        <text>Basic Colt1911, Sig220, USP Compact, Desert Eagle pistols shell. Simple core, jacketed bullet.</text>
+    </string>
+    <string id="ammo-11.43x23-hydro">
+        <text>11.43x23 Hydro</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-11.43x23-hydro">
+        <text>So called “Hydra Shock”. Patron for Colt1911, Sig220, USP Compact, Desert Eagle pistols with improved characteristics. Expansive bullet with strong restraining effect.</text>
+    </string>
+    <string id="ammo-5.45x39-fmj">
+        <text>5.45x39 FMJ</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-5.45x39-fmj">
+        <text>Basic AK-74, AK-74U machine carbines shell. Simple core, jacketed bullet.</text>
+    </string>
+    <string id="ammo-5.45x39-ap">
+        <text>5.45x39 AP</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-5.45x39-ap">
+        <text>Armor-piercing bullet for AK-74, AK-74U submachine guns. Improved armor-piercing effect and weaken restraining effect.</text>
+    </string>
+    <string id="ammo-9x39-pab9">
+        <text>9х39 PAB-9</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-9x39-pab9">
+        <text>Shell for “Groza”, “Val” submachine guns and special sniper rifle “Wintorez”. Latter and cheaper in manufacture modification of armor-piercing bullet. Has undersonic flight speed, but owing to the special construction, penetrates the majority of armors on distances up to 300 meters.</text>
+    </string>
+    <string id="ammo-9x39-ap">
+        <text>9x39 AP</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-9x39-ap">
+        <text>Armor-piercing shell for “Groza”, “Val” and special sniper rifle “Wintorez”. Has undersonic flight speed, but owing to the special construction, penetrates the majority of armors on distances up to 300 meters.</text>
+    </string>
+    <string id="ammo-9x39-sp5">
+        <text>9х39 SP5</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-9x39-sp5">
+        <text>Sniper shell for “Groza”, “Val” submachine guns and for special sniper rifle “Vintorez”. Has udnersonic flight speed but owing to the heavy bullet (lead core) of special construction, penetrates the majority of armors on distances up to 400 meters.</text>
+    </string>
+    <string id="ammo-5.56x45-ss190">
+        <text>5.56х45 SS109</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-5.56x45-ss190">
+        <text>Standard NATO shell, established under the Belgium index SS109. For assault rifles L85, LR300, Sig550, G36, FN2000.</text>
+    </string>
+    <string id="ammo-5.56x45-ap">
+        <text>5.56x45 AP</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-5.56x45-ap">
+        <text>Armor-piercing bullet. For assault rifles L85, LR300, Sig550, G36, FN2000.</text>
+    </string>
+    <string id="ammo-7.62x54-7h1">
+        <text>7.62x54 7h1</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-7.62x54-7h1">
+        <text>Cheap in manufacture modification of sniper shell. For sniper rifles SVD, SVU-AS and machine-gun PKM.</text>
+    </string>
+    <string id="ammo-7.62x54-ap">
+        <text>7.62x54 AP</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-7.62x54-ap">
+        <text>Armor-piercing bullet. For sniper rifles SVD, SVU-AS and machine-gun PKM.</text>
+    </string>
+    <string id="ammo-7.62x54-7h14">
+        <text>7.62х54R 7Н14</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-7.62x54-7h14">
+        <text>Sniper shell. For sniper rifles SVD, SVU-AS and machine-gun PKM. Improved accuracy and range. Expensive.</text>
+    </string>
+    <string id="ammo-12x70-buck">
+        <text>12х70 Buck</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-12x70-buck">
+        <text>Scatter shell. For shotguns ТОЗ-34, BM-12, Winchester-1300,SPAS-12. Effective on distances up to 30 meters.</text>
+    </string>
+    <string id="ammo-12x76-zhekan">
+        <text>12x76 Zhekan</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-12x76-zhekan">
+        <text>Shell with heavy bullet. For shotguns ТОЗ-34, BM-12, Winchester-1300,SPAS-12. Effective on distances up to 100 meters.</text>
+    </string>
+    <string id="ammo-12x76-dart">
+        <text>12x76 Dart</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-12x76-dart">
+        <text>Plumate bullet. For shotguns ТОЗ-34, BM-12, Winchester-1300,SPAS-12. Effective on distances up to 150 meters. Increased range and armor-piercing effect. Expensive shell.</text>
+    </string>
+    <string id="ammo-m209">
+        <text>M209</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-m209">
+        <text>Grenade for barrel attached grenade launcher М203 (LR-300, G36, Sig550, L85) and for integrated grenade launcher at FN2000.</text>
+    </string>
+    <string id="ammo-vog-25">
+        <text>VOG-25</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-vog-25">
+        <text>Grenade for barrel attached grenade launcher GP30 (Ak74), for integrated grenade launcher of “Groza” and revolver grenade launcher RG-6.</text>
+    </string>
+    <string id="ammo-vog-25p">
+        <text>VOG-25P</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-vog-25p">
+        <text>Grenade for barrel attached grenade launcher of GP30 (Ak74) , for integrated barrel attached grenade launcher of Groza, and for the revolver grenade launcher RG-6. Before the blow grenade bounces increasing the injurious action.  </text>
+    </string>
+    <string id="ammo-og-7b">
+        <text>OG-7B</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-og-7b">
+        <text>Grenade for RPG-7V</text>
+    </string>
+    <string id="ammo-gauss">
+        <text>Gauss</text>
+    </string>
+    <string id="enc_weapons1_ammo_ammo-gauss">
+        <text>Power capacities with prepared destructive elements in clip for Gauss rifle.</text>
+    </string>
+    <string id="wpn-pm">
+        <text>PM (Makarov)</text>
+    </string>
+    <string id="enc_weapons1_wpn-pm">
+        <text>Most widespread pistol of the Soviet era. Reliable, handy, cheap, but only with 7 shells clip with insufficient output and scanty accuracy. Newbie stalker’s weapon. Basic ammunition 9х18 FMJ, 9х18 PMM and 9х18 PBP ammunition with improved characteristics.</text>
+    </string>
+    <string id="wpn-pb">
+        <text>PB</text>
+    </string>
+    <string id="enc_weapons1_wpn-pb">
+        <text>Pistol with integrated silencer. USSR task force weapon. Morally outmoded. Clip capacity – 7 shells. The only advantage – silent shot. Basic ammunition 9х18 FMJ, 9х18 PMM и 9х18 PBP ammunition with improved characteristics.</text>
+    </string>
+    <string id="wpn-fort">
+        <text>Fort-12</text>
+    </string>
+    <string id="enc_weapons1_wpn-fort">
+        <text>Ukraine manufactured police pistol set in return for morally and physically outmoded PM (Makarov) Soviet era pistols. Average reliability. Has improved accuracy comparing to PM, increased clip capacity (12 shells) and handy hilt. Basic ammunition 9х18 FMJ, 9х18 PMM and 9х18 PBP ammunition with improved characteristics.</text>
+    </string>
+    <string id="wpn-hpsa">
+        <text>FN HPSA</text>
+    </string>
+    <string id="enc_weapons1_wpn-hpsa">
+        <text>Supposed to be the weapon of experienced stalker. Browning HP is worthy considering being one of the best ХХ-th century’s pistols. Reliable, powerful, good accuracy. Clip capacity 13 shells. Basic ammunition 9х19 FMJ, 9х19 PBP ammunition with improved characteristics.</text>
+    </string>
+    <string id="wpn-walther">
+        <text>Walther P-99</text>
+    </string>
+    <string id="enc_weapons1_wpn-walther">
+        <text>New James Bond’s workmate. Р99 – perfect pistol, excelling with high reliability and good accuracy, especially – in presented variant by 9mm shell. Clip capacity 16 shells. Basic ammunition 9х19 FMJ, 9х19 PBP ammunition with improved characteristics.</text>
+    </string>
+    <string id="wpn-beretta">
+        <text>Beretta 92FS</text>
+    </string>
+    <string id="enc_weapons1_wpn-beretta">
+        <text>Attractive Beretta is adopted in US Military forces, and many other militarized and law-enforcement units, police, both in the USA and in other countries. 9mm caliber. Clip capacity 15 shells. Basic ammunition 9х19 FMJ, 9х19 PBP ammunition with improved characteristics.</text>
+    </string>
+    <string id="wpn-colt1911">
+        <text>Colt1911</text>
+    </string>
+    <string id="enc_weapons1_wpn-colt1911">
+        <text>Good old fashioned Colt. Went through the 20-th century and commemorated its centennial in Zone. The most long-living army pistol. 0.45ACP caliber. Clip capacity 7 shells. Basic ammunition 11.43x23 FMJ, 11.43x23 Hydro ammunition with improved characteristics.</text>
+    </string>
+    <string id="wpn-usp">
+        <text>USP Compact</text>
+    </string>
+    <string id="enc_weapons1_wpn-usp">
+        <text>Considerable stalker-veteran’s gun. German quality. Powerful, high-quality and expensive. 0.45ACP caliber variant. Clip capacity 8 shells. Basic ammunition 11.43x23 FMJ, 11.43x23 Hydro ammunition with improved characteristics.</text>
+    </string>
+    <string id="wpn-desert-eagle">
+        <text>Desert Eagle</text>
+    </string>
+    <string id="enc_weapons1_wpn-desert-eagle">
+        <text>It was brought to the Zone by physics. But for some reason not in its 0.50 caliber variant, but in 0.44Magnum one, moving that way this heavyweight from his category into simple army pistols. It loses in its excessive weight and insufficient reliability. But this gun is worth considering with. Stalker-amateur’s weapon. But for the wealthy one. Clip capacity 8 shells. Basic ammunition 11.43x23 FMJ, 11.43x23 Hydro ammunition with improved characteristics.</text>
+    </string>
+    <string id="wpn-toz34">
+        <text>ТОЗ-34</text>
+    </string>
+    <string id="enc_weapons1_wpn-toz34">
+        <text>Usual hunting rifle. Ordinary weapon. One of the most widespread weapon types among the newbies. Ammunition: 12х70 Buck – buck-stop, 12x76 Zhekan – heavy bullet, 12x76 Dart – plumate bullet for long-distance shooting.</text>
+    </string>
+    <string id="wpn-bm16">
+        <text>BM-16</text>
+    </string>
+    <string id="enc_weapons1_wpn-bm16">
+        <text>Usual hunting rifle. Ordinary weapon. One of the most widespread weapon types among the newbies. Ammunition: 12х70 Buck – buck-stop, 12x76 Zhekan – heavy bullet, 12x76 Dart – plumate bullet for long-distance shooting.</text>
+    </string>
+    <string id="wpn-spas12">
+        <text>SPAS-12</text>
+    </string>
+    <string id="enc_weapons1_wpn-spas12">
+        <text>Smooth-bore gun SPAS-12 invented in the end of 70th of the XX century as the multi-purpose warfare gun for police and militaries. SPAS-12 is distinguished by high reliability and flexibility in usage, but on the other hand this weapon is heavy and complex, and therefore – expensive. Best gun for the close combat in Zone. Clip capacity 8 shells. Ammunition: 12х70 Buck –buck-shot, 12x76 Zhekan – heavy bullet, 12x76 Dart – plumate bullet for long-distance shooting. </text>
+    </string>
+    <string id="wpn-mp5">
+        <text>HK MP5А3</text>
+    </string>
+    <string id="enc_weapons1_wpn-mp5">
+        <text>One of the best submachine-gun in its line. Added to special army and police divisions arsenal in last few decades of the 20th century in many countries. After its gradual substitution on more common models appeared on the black market. Handy weapon for the close combat in the Zone. Clip capacity 30 shells. Basic ammunition 9х19 FMJ, 9х19 PBP ammunition with improved characteristics.</text>
+    </string>
+    <string id="wpn-ak74">
+        <text>АК74</text>
+    </string>
+    <string id="enc_weapons1_wpn-ak74">
+        <text>Kalashnikov machine carbine for 5.45mm shell. Kalashnikov machine were developed for existed martial doctrine – most economy, reliable and simple, handiness and shooting accuracy suffered from that. Weapon of military stalkers and middle-class stalkers in the Zone. Clip capacity 30 shells. Basic ammunition - 5.45x39 FMJ, Armor-piercing bullet 5.45x39 AP.</text>
+    </string>
+    <string id="wpn-ak74u">
+        <text>AKS-74U</text>
+    </string>
+    <string id="enc_weapons1_wpn-ak74u">
+        <text>As to its dimensions and mass, AKS-74U is close to submachine-guns, however due to the used cartridge and mechanisms is considered to be short-cut carbine. Among the advantages of AKS-74U are high mobility straitened conditions, possibility of concealed bearing, rather high bullet piercing ability. Disadvantages – small aimed fire range, low bullet restraining effect, turned for overheating during fire. Clip capacity 30 shells. Basic ammunition - 5.45x39 FMJ, armor piercing 5.45x39 AP.</text>
+    </string>
+    <string id="wpn-vintorez">
+        <text>Screw-gun BCC</text>
+    </string>
+    <string id="enc_weapons1_wpn-vintorez">
+        <text>Special sniper rifle. For silent and flash less firing. Rifle has an integrated silencer. Greatly “respected” gun in Zone. Pierces any self-wearing body armor from the distance of 400 meters. At that it can be done almost silently. Weapon of experienced stalker and veteran. Clip capacity 10 shells. Basic ammunition - 9x39 PAB-9, armor-piercing bullets 9x39 AP, 9х39 SP5- sniper shell.</text>
+    </string>
+    <string id="wpn-val">
+        <text>VAL</text>
+    </string>
+    <string id="enc_weapons1_wpn-val">
+        <text>Created on the basis of silent sniper rifle “Screw-gun”, has folding rifle butt. Used by spec divisions in conditions requiring silent and flash less firing. Both guns – worth using. Clip capacity 20 shells. Basic ammunition - 9x39 PAB-9, armor-piercing bullet 9x39 AP, 9х39 SP5- sniper shell.</text>
+    </string>
+    <string id="wpn-groza">
+        <text>Groza</text>
+    </string>
+    <string id="enc_weapons1_wpn-groza">
+        <text>Submachine-grenade cup discharge complex "Groza" ОЦ-14. Very handy for in-Zone activities assault rifle variant. Compact, powerful, universal, reliable. Experienced stalker’s weapon – novice won’t probably have enough money for that kind. Military stalkers’ favorite weapon. Clip capacity 20 shells. Basic ammunition - 9x39 PAB-9, armor piercing bullet 9x39 AP, 9х39 SP5-  sniper bullet. vog-25 and vog-25р grenades are suitable for the barrel attached launcher. </text>
+    </string>
+    <string id="wpn-lr300">
+        <text>LR300</text>
+    </string>
+    <string id="enc_weapons1_wpn-lr300">
+        <text>LR-300 nothing else but the new level of AR-15 development. LR-300 means – Light Rifle of effective fire up to 300 meters. Its quite high accuracy is ridden by the exceptionally smooth sear; rifle is highly maneuverable and handy, renders fast aiming. Highly pollution able type. Experienced stalker’s weapon. Clip capacity 30 shells. Basic ammunition - 5,56Х45  SS109 , armor-piercing bullet  5,56Х45 АР </text>
+    </string>
+    <string id="wpn-fn2000">
+        <text>FN2000</text>
+    </string>
+    <string id="enc_weapons1_wpn-fn2000">
+        <text>Submachine-gun with grenade cup discharge fixed with computerized sight-module of fire management and with 40mm grenade launcher. Clip capacity 30 shells. Basic ammunition - 5,56Х45  SS109 , armor piercing bullet 5,56Х45 АР. Ammunition for barrel attached launcher - M209 grenades. Veteran/master’s gun.</text>
+    </string>
+    <string id="wpn-l85">
+        <text>L85A2</text>
+    </string>
+    <string id="enc_weapons1_wpn-l85">
+        <text>After changing this rifle by Great Britain in 2008 to German G36 black market acquired a lot of these ones. So it’s not unique inside the Zone. The only advantage of this weapon is good accuracy of the first shot and regular scope with 4x zoom. Unreliable. Too high dispersal when firing with burst. Clip capacity 30 shells. Basic ammunition - 5,56Х45 SS109 , armor-piercing bullet 5,56Х45 АР.</text>
+    </string>
+    <string id="wpn-svd">
+        <text>SVD</text>
+    </string>
+    <string id="enc_weapons1_wpn-svd">
+        <text>SVD widely used in almost all operations, held by Soviet and Russian armies from the moment when it was added to arsenal, and considered to be exceptionally reliable and handy sample of shooting weapons. Preferred by experienced stalkers from “DUTY” grouping – grouping of mutant hunters. Costs a fair bit at Trader’s. Besides can be obtained from sentry towers of the perimeter. But there are few who venture on that. Clip capacity 10 shells. Basic ammunition - 7,62Х54 7h1, armor-piercing bullet - 7,62Х54 ар, sniper ammunition with improved characteristics 7,62Х54 7h14. </text>
+    </string>
+    <string id="wpn-svu">
+        <text>SVU-AS</text>
+    </string>
+    <string id="enc_weapons1_wpn-svu">
+        <text>Modern Dragunov rifle variant made according to the bull-pup scheme. Very suitable for long trips into the Zone, compact variant of powerful automatic sniper rifle. Very exclusive. Military stalkers are fond of these ones. Clip capacity 10 shells. Basic ammunition - 7,62Х54 7h1, armor piercing bullet - 7,62Х54 ар, sniper ammunition with improved characteristics 7,62Х54 7h14. </text>
+    </string>
+    <string id="wpn-gauss">
+        <text>Gauss rifle</text>
+    </string>
+    <string id="enc_weapons1_wpn-gauss">
+        <text>Sniper rifle, invented by scientists in the Zone. Almost silent, uses artifacts’ energy for shooting. Very rare and useful thing.</text>
+    </string>
+    <string id="wpn-addon-grenade-launcher">
+        <text>GP-30</text>
+    </string>
+    <string id="enc_weapons1_wpn-addon-grenade-launcher">
+        <text>Grenade cup discharge fixed under the barrel for AK-74. Launcher ammunition– VOG-25 and VOG-25P.</text>
+    </string>
+    <string id="wpn-addon-grenade-launcher-m203">
+        <text>M203</text>
+    </string>
+    <string id="enc_weapons1_wpn-addon-grenade-launcher-m203">
+        <text>Barrel attached grenade launcher for Sig550, LR300, G36, L85A2. Launcher ammunition –M209 grenades. </text>
+    </string>
+    <string id="wpn-rg-6">
+        <text>RG-6</text>
+    </string>
+    <string id="enc_weapons1_wpn-rg-6">
+        <text>Specific weapon. Revolver grenade launcher. For several tasks as clearing of the vast areas from mutants, harming the toughest beasts, attacking the base of the opposite grouping, this weapon can be apropos. Ammunition: grenades VOG-25 and VOG-25P.</text>
+    </string>
+    <string id="wpn-rpg7">
+        <text>RPG-7V</text>
+    </string>
+    <string id="enc_weapons1_wpn-rpg7">
+        <text>Old grenade launcher of the soviet times, remaining in abundance on the military facilities, wherefrom is transported into the Zone. Not quite an ordinary stalkers’ weapon. High weight and the size, and really “specific” usage make it really popular. However for several tasks, as clearing large areas from the mutants, harming tough beasts, attacking the opposing grouping base, can be nifty indeed. Ammunition – ОГ-7B</text>
+    </string>
+    <string id="grenade-f1">
+        <text>F1</text>
+    </string>
+    <string id="enc_weapons1_grenade-f1">
+        <text>Hand defensive grenade. Splinter damage radius – up to 100 meters. Throw from the cover. </text>
+    </string>
+    <string id="grenade-rgd5">
+        <text>RGD-5</text>
+    </string>
+    <string id="enc_weapons1_grenade-rgd5">
+        <text>Offensive hand grenade. Splinter damage radius – 25 meters.</text>
+    </string>
+    <string id="gar_dolg_about_0">
+        <text>Can you tell something interesting?</text>
+    </string>
+    <string id="gar_dolg_about_1">
+        <text>I have a lot to tell. But possibly you’ve heard of that kinda vermin like mutants a lot. I can acquaint you with us, “Duty” grouping. But don’t you dare to ask me about those morons from “Freedom”.</text>
+    </string>
+    <string id="gar_dolg_about_2">
+        <text>Tell me about your grouping.</text>
+    </string>
+    <string id="gar_dolg_about_21">
+        <text>We’ve been here from the very beginning. The grouping itself has been found by the toughies from one of special task forces, sent in the Zone to investigate the full picture of its appearance. We got into a serious scrape there. After the half of our troops has perished under the terrible circumstances, the ones survived swore that wouldn’t leave until they coped with the task.</text>
+    </string>
+    <string id="gar_dolg_about_3">
+        <text>You’ve mentioned about the “Freedom” morons?</text>
+    </string>
+    <string id="gar_dolg_about_31">
+        <text>Total imbeciles and bloody scums. They can’t get it clear that the Zone is the world’s pest place. Besides they want to stretch the Zone all over the world, to the every single distant place. They may use all the possible and impossible means for their goal. I can’t wait when we finish them.</text>
+    </string>
+    <string id="gar_dolg_about_4">
+        <text>Thanks.</text>
+    </string>
+    <string id="gar_dolg_acces_0">
+        <text>Why don’t you let anyone pass to the North?</text>
+    </string>
+    <string id="gar_dolg_acces_1">
+        <text>Cos we don’t need that rabble at “Rostok”.</text>
+    </string>
+    <string id="gar_dolg_acces_2">
+        <text>What’s there on the “Rostok”?</text>
+    </string>
+    <string id="gar_dolg_acces_21">
+        <text>It concerns you not! You’ll learn when you come there.</text>
+    </string>
+    <string id="gar_dolg_acces_3">
+        <text>Listen, mate. I urgently need to go further. You understand?</text>
+    </string>
+    <string id="gar_dolg_acces_31">
+        <text>Too insolent for the newbie. Or is it kinda gentle hint?! Well it may cost you about 500 rubles to get through.</text>
+    </string>
+    <string id="gar_dolg_acces_311">
+        <text>Now we are talking. Take these money.</text>
+    </string>
+    <string id="gar_dolg_acces_3111">
+        <text>Deal, you can pass.</text>
+    </string>
+    <string id="gar_dolg_acces_312">
+        <text>No thanks, I’ll make it myself.</text>
+    </string>
+    <string id="gar_dolg_acces_3121">
+        <text>Hehe, what a greedy one you are. Well, try.</text>
+    </string>
+    <string id="gar_dolg_acces_4">
+        <text>Thanks.</text>
+    </string>
+    <string id="gar_dolg_guard_start_2">
+        <text>Stop! You can’t go further! Newbies have nothing to deal with “Rostok”.</text>
+    </string>
+    <string id="gar_dolg_guard_start_3">
+        <text>You’re not a bad guy, go ahead.</text>
+    </string>
+    <string id="gar_dolg_start_2">
+        <text>Hmm… What do you want?</text>
+    </string>
+    <string id="gar_dolg_start_3">
+        <text>Hi, I’m glad that you also don’t like mutants. It was fun. You’re decent guy. We’ll admit you to the North.</text>
+    </string>
+    <string id="gar_dram_novice_level_0">
+        <text>Can you tell something about the Dump?</text>
+    </string>
+    <string id="gar_dram_novice_level_1">
+        <text>Well there is nothing really essential in there. Dump as it is. Unless some maniacal bastard on the bridge that shoots everything that moves. It’s said that his head is wanted for reward. Moreover the northern road to “Rostok” is guarded by the “Duty” soldiers. You’d better don’t deal with those, guys in “Duty” a really gloomy ones. That’s it, I guess.</text>
+    </string>
+    <string id="gar_dram_novice_level_2">
+        <text>Noteworthy information, thanks.</text>
+    </string>
+    <string id="gar_dramm_novice_start_2">
+        <text>Thanks for saving. Now I’m in debt. How can I thank you… O! Information costs money, so listen. I’ve seen monolithians while moving from the Dark Valley. Morose guys in brown uniform. I’ve never noticed them coming to the border so closely. And the bandits who arranged big base in there, I’ve hardly made it to escape. So be careful, if you wander there.</text>
+    </string>
+    <string id="gar_dramm_novice_start_3">
+        <text>Ho ho! Hi, mate! Thousand thanks for saving my ass. I promise I’ll requite like for like.</text>
+    </string>
+    <string id="gar_kran_stalkers_about_0">
+        <text>Are you gathering here for no particular reason or what?</text>
+    </string>
+    <string id="gar_kran_stalkers_about_1">
+        <text>Bandits have plagued nearly everyone. Now I’m prepared, so lets move and give those bandits a rape session.</text>
+    </string>
+    <string id="gar_kran_stalkers_about_2">
+        <text>Can I go with you?</text>
+    </string>
+    <string id="gar_kran_stalkers_about_21">
+        <text>No its personal. No strangers, sorry.</text>
+    </string>
+    <string id="gar_kran_stalkers_about_3">
+        <text>Heard anything on the Gunslinger?</text>
+    </string>
+    <string id="gar_kran_stalkers_about_31">
+        <text>Yeah, but not too much. It’s said that he made it to the center of the Zone.</text>
+    </string>
+    <string id="gar_kran_stalkers_about_4">
+        <text>Haven’t you been acquainted with stalker Seriy.</text>
+    </string>
+    <string id="gar_kran_stalkers_about_41">
+        <text>I think that I’ve heard that he was waiting for someone on garage. But be careful – bridge near the crushed truck with corpses is occupied my that maniac bastard.</text>
+    </string>
+    <string id="gar_kran_stalkers_about_411">
+        <text>What is that maniac?</text>
+    </string>
+    <string id="gar_kran_stalkers_about_4112">
+        <text>Ordinary Zone’s loony. Shoots everyone on sight. No chance to approach, cos of the immediate fire.</text>
+    </string>
+    <string id="gar_kran_stalkers_about_412">
+        <text>What kind of a corpse truck?</text>
+    </string>
+    <string id="gar_kran_stalkers_about_4121">
+        <text>Recently in stormy night the truck has crushed here. Overloaded with stalkers’ corpses. Where they were taken to and from stays unclear.</text>
+    </string>
+    <string id="gar_kran_stalkers_about_413">
+        <text>Fine. I’ll be cautious.</text>
+    </string>
+    <string id="gar_kran_stalkers_about_4131">
+        <text>Please do. Caution hasn’t yet harmed anyone.</text>
+    </string>
+    <string id="gar_kran_stalkers_about_5">
+        <text>Thanks.</text>
+    </string>
+    <string id="gar_seriy_help_0">
+        <text>Wait, Seriy, stand firm!</text>
+    </string>
+    <string id="gar_seriy_help_1">
+        <text>I am, I am. Got a med kit?</text>
+    </string>
+    <string id="gar_seriy_help_2">
+        <text>Sure. Take it.</text>
+    </string>
+    <string id="gar_seriy_help_21">
+        <text>Oh, thanks. I want to share secret with you. Take this flash drive, information on it will help you to get to the center of Zone.</text>
+    </string>
+    <string id="gar_seriy_help_3">
+        <text>Well.. Seriy.. I think it’s just not your day…</text>
+    </string>
+    <string id="gar_seriy_help_31">
+        <text>Dammit…</text>
+    </string>
+    <string id="gar_seriy_start_2">
+        <text>I’ve been shot… Shit! I’m unwell…</text>
+    </string>
+    <string id="gar_seriy_start_3">
+        <text>Hello, mate. Thanks for you help then.</text>
+    </string>
+    <string id="gar_stalker_about_level_0">
+        <text>Can you tell about the local?</text>
+    </string>
+    <string id="gar_stalker_about_level_1">
+        <text>Well, listen. We’re now standing at big fetid dump. All the bloody radioactive refuse and debris has been taken here after the accident in 1986. So it’s totally filled with that rubbish, above and beyond the anomalies here and there among the trash. That’s why the only one you can meet here is an ordinary newbies. Why the newbies gather bandits around them. Thus it’s better for you not to stay for long here. Further to the North – radioactive hot beds, trespassing without protection is fatal. If you go to the North, you’ll find the abandoned “Rostok” factory, stalkers’ bar in there you’ll find it with ease. Dark Valley to the East, gloomy, foggy place. “Agroprom” territory to the West. I’ll mark places on your map where you can get safely to.</text>
+    </string>
+    <string id="agr_factory_krot_about_0">
+        <text>What are you doing here?</text>
+    </string>
+    <string id="agr_factory_krot_about_1">
+        <text>And how do you think?</text>
+    </string>
+    <string id="agr_factory_krot_about_2">
+        <text>Searching for the artifacts?</text>
+    </string>
+    <string id="agr_factory_krot_about_21">
+        <text>You can put it that way. Everyone seeks for the artifacts, but not every knows where they truly can be found.</text>
+    </string>
+    <string id="agr_factory_krot_about_211">
+        <text>What do you know about that?</text>
+    </string>
+    <string id="agr_factory_krot_about_2111">
+        <text>Of course, I know, otherwise what will I be doing in the place that lacks artifacts? I got the info on where you can learn about how to break through to the Zone’s center. I can sell if you’re interested. Two grands will do. You understand, that there are far enough artifacts in the center so you could reimburse it.</text>
+    </string>
+    <string id="agr_factory_krot_about_21111">
+        <text>Okay, I’ll take it.</text>
+    </string>
+    <string id="agr_factory_krot_about_211111">
+        <text>Deal. </text>
+    </string>
+    <string id="agr_factory_krot_about_211112">
+        <text>Deal. But be careful, don’t put your ass under the fire. Hehe. I appreciate people with the sense of humor. Take a grand back. And buy water proof pants, ha ha.</text>
+    </string>
+    <string id="agr_factory_krot_about_21112">
+        <text>No thanks.</text>
+    </string>
+    <string id="agr_factory_krot_about_211121">
+        <text>Well, you choose.</text>
+    </string>
+    <string id="agr_factory_krot_about_3">
+        <text>Wandering?</text>
+    </string>
+    <string id="agr_factory_krot_about_31">
+        <text>You’re really funny indeed. We’re working here and they – having sweet time on vacations. Recently “worked” with the militaries. If you set too many questions – we’ll “work” with you.</text>
+    </string>
+    <string id="agr_factory_krot_about_4">
+        <text>Put your asses under the fire?</text>
+    </string>
+    <string id="agr_factory_krot_about_41">
+        <text>Ha ha. Yeah, I see that you’re kind of a guy with the sense of humor. I welcome that. I meet such guys too seldom. The other ones are too morose I say, afraid of the death.</text>
+    </string>
+    <string id="agr_factory_krot_about_5">
+        <text>I don’t have a clue.</text>
+    </string>
+    <string id="agr_factory_krot_about_51">
+        <text>You don’t say so, you don’t know. If you were to the Zone for the same time I did you’ll understand what are people doing here.</text>
+    </string>
+    <string id="agr_factory_krot_start_0">
+        <text>Well, whatcha want?</text>
+    </string>
+    <string id="agr_factory_stalker_about_0">
+        <text>Whatcha doing here?</text>
+    </string>
+    <string id="agr_factory_stalker_about_1">
+        <text>Putting our asses under the fire. Talk to Mole for details. He’s in chief here.</text>
+    </string>
+    <string id="agr_factory_stalker_start_0">
+        <text>Gosh, what a stir, I won’t wish it to my worst enemy. Those militaries are too impudent indeed.</text>
+    </string>
+    <string id="agr_stalker_talk_level_0">
+        <text>Put a picture of this place for me.</text>
+    </string>
+    <string id="agr_stalker_talk_level_1">
+        <text>This is the “Agroprom” institute. The structure itself is situated in the south-west. And the large factory on the North – this is the institute’s production and technical base. Building have been abandoned long ago, and people have stopped thinking about it, cos there is nothing left to steal. But recently militaries started to search something there. </text>
+    </string>
+    <string id="agr_stalker_talk_level_2">
+        <text>Give me more specific information on the institute.</text>
+    </string>
+    <string id="agr_stalker_talk_level_21">
+        <text>Rumors say that until the accident in 1986 it was the single Gramineae selection and genetics institute building. Also there were experimental fields at the factory place. After the accident institute has been closed and the fields were burned. And then remembered, whitewashed the building, fenced in and built barracks. Constructed factory on the fields place. I don’t know what were they doing in that institute, but it’s obvious that they spent money left and right.</text>
+    </string>
+    <string id="agr_stalker_talk_level_3">
+        <text>Give me more detailed info on the factory.</text>
+    </string>
+    <string id="agr_stalker_talk_level_31">
+        <text>Factory has been built at the end of 80th. Supposed to construct and mend the machines, which can treat the radioactively infected soil. But as far as I know, no one has seen such a machine. Now it’s totally tenantless. Only stalkers like to stay at there. It’s said that it’s rather safe place, if not to peep into the dark corners.</text>
+    </string>
+    <string id="agr_stalker_talk_level_4">
+        <text>Thanks.</text>
+    </string>
 </string_table>
