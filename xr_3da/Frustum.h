@@ -26,13 +26,6 @@ private:
 	Fplane			planes[FRUSTUM_MAXPLANES];
 	int				p_count;
 
-	IC void			_clear	()			{ p_count=0; }
-	IC void			_add	(Fplane &P) { VERIFY(p_count<FRUSTUM_MAXPLANES); planes[p_count++].set(P);	}
-	IC void			_add	(Fvector& P1, Fvector& P2, Fvector&P3) 
-	{ 
-		VERIFY(p_count<FRUSTUM_MAXPLANES); 
-		planes[p_count++].build(P1,P2,P3);	
-	}
 	IC EFC_Visible	AABB_OverlapPlane(Fplane& P,Fvector &m, Fvector &M)
 	{
 		// calc extreme pts (neg,pos) along normal axis (pos in dir of norm, etc.)
@@ -63,6 +56,14 @@ private:
 	}
 
 public:
+	IC void			_clear	()			{ p_count=0; }
+	IC void			_add	(Fplane &P) { VERIFY(p_count<FRUSTUM_MAXPLANES); planes[p_count++].set(P);	}
+	IC void			_add	(Fvector& P1, Fvector& P2, Fvector&P3) 
+	{ 
+		VERIFY(p_count<FRUSTUM_MAXPLANES); 
+		planes[p_count++].build(P1,P2,P3);	
+	}
+
 	void			SimplifyPoly_AABB	(sPoly* P, Fplane& plane);
 
 	void			CreateFromPoints	(Fvector& COP, Fvector* p, int count);

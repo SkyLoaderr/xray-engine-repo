@@ -1750,6 +1750,14 @@ SOURCE=.\FLightsController.h
 
 SOURCE=.\light.h
 # End Source File
+# Begin Source File
+
+SOURCE=.\LightPPA.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\LightPPA.h
+# End Source File
 # End Group
 # Begin Group "Visuals"
 
