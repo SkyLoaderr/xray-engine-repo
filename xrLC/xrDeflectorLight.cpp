@@ -131,6 +131,12 @@ float getLastRP_Scale(CDB::COLLIDER* DB, CDB::MODEL* MDL, R_Light& L, Face* skip
 			b_material& M	= pBuild->materials			[F->dwMaterial];
 			b_texture&	T	= pBuild->textures			[M.surfidx];
 
+			if (0==T.pSurface)	{
+				F->flags.bOpaque	= true;
+				clMsg			("* ERROR: RAY-TRACE: Strange face detected... Has alpha without texture...");
+				return 0;
+			}
+
 			// barycentric coords
 			// note: W,U,V order
 			B.set	(1.0f - rpinf.u - rpinf.v,rpinf.u,rpinf.v);

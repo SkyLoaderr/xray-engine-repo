@@ -140,6 +140,7 @@ void CBuild::Run	(LPCSTR P)
 	FPU::m64r					();
 	Phase						("Building global-RayCast model...");
 	mem_Compact					();
+	Light_prepare				();
 	BuildRapid					(TRUE);
 
 	//****************************************** Starting MU
