@@ -40,10 +40,13 @@ struct sxr_key
 	DIDEVICEOBJECTINSTANCE		objectInfo;
 };
 
-class ENGINE_API CInput :
+class ENGINE_API CInput 
+#ifdef ENGINE_BUILD 
+	:
 	public pureFrame,
 	public pureAppActivate,
 	public pureAppDeactivate
+#endif
 {
 private:
 	LPDIRECTINPUT7				pDI;			// The DInput object
