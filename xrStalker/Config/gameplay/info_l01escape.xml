@@ -239,6 +239,8 @@
 	</info_portion>
 	<info_portion id="esc_trader_newbie">
 	</info_portion>
+	<info_portion id="esc_trader_newbie_course_done">
+	</info_portion>
 	<info_portion id="esc_trader_tutorial_chosen">
 	</info_portion>
 	<info_portion id="esc_trader_can_leave">
