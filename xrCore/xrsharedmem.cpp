@@ -54,7 +54,7 @@ void				smem_container::clean			()
 	cs.Enter		();
 	cdb::iterator	it	= container.begin	();
 	cdb::iterator	end	= container.end		();
-	for (; it!=end; )	if (0==(*it)->dwReference)	xr_free	(*it);
+	for (; it!=end; it++)	if (0==(*it)->dwReference)	xr_free	(*it);
 	container.erase	(std::remove(container.begin(),container.end(),(smem_value*)0),container.end());
 
 	cs.Leave		();
