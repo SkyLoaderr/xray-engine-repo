@@ -21,6 +21,7 @@ class  CHealthFunction;
 class  CMoraleFunction;
 class  CCreatureTypeFunction;
 class  CWeaponTypeFunction;
+class  CDistanceFunction;
 
 class ENGINE_API CMotionDef;
 class ENGINE_API CKinematics;
@@ -267,8 +268,13 @@ public:
 	static  CMoraleFunction			pfMorale;
 	static  CCreatureTypeFunction	pfCreatureType;
 	static  CWeaponTypeFunction		pfWeaponType;
+	static  CDistanceFunction		pfDistance;
 	// complex functions
-	static  CPatternFunction	pfRelation;
+	static  CPatternFunction		pfEnemyStatus;
+	static  CPatternFunction		pfPersonalStatus;
+	static  CPatternFunction		pfWeaponEffectiveness;
+	static  CPatternFunction		pfAttackSuccessProbability;
+	static  CPatternFunction		pfDefendSuccessProbability;
 };
 
 namespace AI{

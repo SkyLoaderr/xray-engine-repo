@@ -397,10 +397,10 @@ public:
 	
 };
  
-class CDistancehFunction : public CBaseFunction {
+class CDistanceFunction : public CBaseFunction {
 
 public:
-	CDistancehFunction() {
+	CDistanceFunction() {
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 150.0;
 	}

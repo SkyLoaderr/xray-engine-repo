@@ -11,12 +11,19 @@
 #include "ai_funcs.h"
 
 bool					CCustomMonster::bPatternFunctionLoaded = false;
-CPatternFunction		CCustomMonster::pfRelation;
 CBaseFunction			*CCustomMonster::fpaBaseFunctions[MAX_FUNCTION_COUNT];
+// primary functions
 CHealthFunction			CCustomMonster::pfHealth;
 CMoraleFunction			CCustomMonster::pfMorale;
 CCreatureTypeFunction	CCustomMonster::pfCreatureType;
 CWeaponTypeFunction		CCustomMonster::pfWeaponType;
+CDistanceFunction		CCustomMonster::pfDistance;
+// complex functions
+CPatternFunction		CCustomMonster::pfEnemyStatus;
+CPatternFunction		CCustomMonster::pfPersonalStatus;
+CPatternFunction		CCustomMonster::pfWeaponEffectiveness;
+CPatternFunction		CCustomMonster::pfAttackSuccessProbability;
+CPatternFunction		CCustomMonster::pfDefendSuccessProbability;
 
 DWORD psAI_Flags	= 0;
 ENGINE_API extern float psGravity;
