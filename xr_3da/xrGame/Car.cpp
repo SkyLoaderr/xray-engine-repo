@@ -134,6 +134,7 @@ void	CCar::net_Destroy()
 	m_exhausts.clear();
 	m_breaking_wheels.clear();
 	m_doors.clear();
+	m_gear_ratious.clear();
 	CPHUpdateObject::Deactivate();
 	CKinematics* pKinematics=PKinematics(Visual());
 
