@@ -73,6 +73,50 @@ void CEnvelope::DeleteKey(float t)
     }
 }
 
+BOOL CEnvelope::ScaleKeys(float from_time, float to_time, float scale_factor, float eps)
+{
+	KeyIt min_k	= FindKey(from_time,eps);
+    if (min_k==keys.end()){
+	    KeyIt k0;
+		FindNearestKey(from_time, k0, min_k, eps);
+    }
+    KeyIt max_k	= FindKey(to_time,eps);
+    if (max_k==keys.end()){
+	    KeyIt k1;
+		FindNearestKey(to_time, max_k, k1, eps);
+    }
+    if (min_k!=keys.end()&&min_k!=max_k){
+    	if (max_k!=keys.end()) max_k++;
+        float t0		= (*min_k)->time;
+		float offset	= 0;
+    	for (KeyIt it=min_k+1; it!=max_k; it++){
+        	float new_time = offset+t0+((*it)->time-t0)*scale_factor;
+            offset		+= ((new_time-(*(it-1))->time)-((*it)->time-t0));
+            t0			= (*it)->time;
+        	(*it)->time = new_time;
+        }
+    	for (; it!=keys.end(); it++){
+        	float new_time = offset+(*it)->time;
+            offset		+= ((new_time-(*(it-1))->time)-((*it)->time-t0));
+        	(*it)->time = new_time;
+        }
+	    return TRUE;
+    }
+    return FALSE;
+}
+
+float CEnvelope::GetLength(float* mn, float* mx)
+{
+	if (!keys.empty()){
+    	if (mn) *mn = keys.front()->time;
+    	if (mx) *mx = keys.back()->time;
+    	return keys.back()->time-keys.front()->time;
+    }
+    if (mn) *mn = 0.f;
+    if (mx) *mx = 0.f;
+    return 0.f;
+}
+
 void CEnvelope::RotateKeys(float angle)
 {
 	for (u32 i=0; i<keys.size(); i++)

@@ -69,12 +69,13 @@ protected:
     	flVisible	= (1<<1),
     	flLocked	= (1<<2),
     	flMotion	= (1<<3),
+
+    	flAutoKey	= (1<<30),
+    	flCameraView= (1<<31),
     };
     Flags32			m_CO_Flags;
 	enum{
         flRT_Valid		= (1<<0),
-    	flRT_AutoKey	= (1<<1),
-    	flRT_CameraView	= (1<<2),
     };
     Flags32			m_RT_Flags;
 public:
@@ -94,6 +95,7 @@ public:
 
     CCustomObject*	m_pOwnerObject;
 	void __fastcall OnObjectNameAfterEdit	(PropItem* sender, LPVOID edit_val);
+    void __fastcall	OnTransformChange		(PropValue* value); 
 	void __fastcall OnMotionableChange		(PropValue* sender);
     void __fastcall	OnMotionCommandsClick	(PropValue* value, bool& bModif);
     void __fastcall	OnMotionFilesClick		(PropValue* value, bool& bModif);

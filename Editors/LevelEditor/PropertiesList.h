@@ -20,6 +20,7 @@
 #include "PropertiesListHelper.h"
 #include "ElBtnCtl.hpp"
 #include "ElPopBtn.hpp"
+#include "ExtBtn.hpp"
 
 class TProperties : public TForm
 {
@@ -41,6 +42,10 @@ __published:	// IDE-managed Components
 	TMenuItem *ExpandSelected1;
 	TMenuItem *CollapseSelected1;
 	TMenuItem *N3;
+	TPanel *paButtons;
+	TBevel *Bevel2;
+	TExtBtn *ebLightAnimationEditor;
+	TExtBtn *ExtBtn1;
 	void __fastcall 	FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall 	tvPropertiesClick(TObject *Sender);
 	void __fastcall 	tvPropertiesItemDraw(TObject *Sender, TElTreeItem *Item, TCanvas *Surface, TRect &R, int SectionIndex);
@@ -66,6 +71,8 @@ __published:	// IDE-managed Components
 	void __fastcall 	tvPropertiesMouseMove(TObject *Sender, TShiftState Shift, int X, int Y);
 	void __fastcall ExpandSelected1Click(TObject *Sender);
 	void __fastcall CollapseSelected1Click(TObject *Sender);
+	void __fastcall ebLightAnimationEditorClick(TObject *Sender);
+	void __fastcall ExtBtn1Click(TObject *Sender);
 private:	// User declarations
     void __fastcall 	PMItemClick		(TObject *Sender);
 	void __fastcall 	WaveFormClick	(TElTreeItem* item);
@@ -112,9 +119,9 @@ private:	// User declarations
 public:		// User declarations
 	__fastcall TProperties		        		(TComponent* Owner);
 	static TProperties* CreateForm				(TWinControl* parent=0, TAlign align=alNone, TOnModifiedEvent modif=0, TOnItemFocused focused=0, TOnCloseEvent close=0);
-	static TProperties* CreateModalForm			(const AnsiString& title, PropItemVec& items, bool bFullExpand=true, TOnModifiedEvent modif=0, TOnItemFocused focused=0, TOnCloseEvent close=0);
+	static TProperties* CreateModalForm			(bool bShowButtonsBar=true, TOnModifiedEvent modif=0, TOnItemFocused focused=0, TOnCloseEvent close=0);
 	static void 		DestroyForm				(TProperties*& props);
-    void __fastcall 	ShowPropertiesModal		();
+    int __fastcall 		ShowPropertiesModal		();
     void __fastcall 	ShowProperties			();
     void __fastcall 	HideProperties			();
     void __fastcall 	ClearProperties			();

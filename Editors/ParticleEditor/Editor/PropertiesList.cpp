@@ -41,6 +41,7 @@
 #pragma link "ElTreeAdvEdit"
 #pragma link "ElBtnCtl"
 #pragma link "ElPopBtn"
+#pragma link "ExtBtn"
 #pragma resource "*.dfm"
 
 #define TSTRING_COUNT 	4
@@ -169,14 +170,13 @@ TProperties* TProperties::CreateForm(TWinControl* parent, TAlign align, TOnModif
 	return props;
 }
 
-TProperties* TProperties::CreateModalForm(const AnsiString& title, PropItemVec& items, bool bFullExpand, TOnModifiedEvent modif, TOnItemFocused focused, TOnCloseEvent on_close)
+TProperties* TProperties::CreateModalForm(bool bShowButtonsBar, TOnModifiedEvent modif, TOnItemFocused focused, TOnCloseEvent on_close)
 {
 	TProperties* props 			= xr_new<TProperties>((TComponent*)0);
     props->OnModifiedEvent 		= modif;
     props->OnItemFocused    	= focused;
     props->OnCloseEvent			= on_close;
-    props->AssignItems			(items,bFullExpand,title);
-	props->ShowPropertiesModal	();
+    props->paButtons->Visible	= bShowButtonsBar;
 	return props;
 }
 
@@ -190,15 +190,18 @@ void TProperties::DestroyForm(TProperties*& props)
 	props->Close();
     xr_delete(props);
 }
-void __fastcall TProperties::ShowProperties(){
+void __fastcall TProperties::ShowProperties()
+{
 	Show();
 }
 
-void __fastcall TProperties::ShowPropertiesModal(){
-	ShowModal();
+int __fastcall TProperties::ShowPropertiesModal()
+{
+	return ShowModal();
 }
 
-void __fastcall TProperties::HideProperties(){
+void __fastcall TProperties::HideProperties()
+{
 	Hide();
 }
 
@@ -206,7 +209,7 @@ void __fastcall TProperties::FormClose(TObject *Sender,
       TCloseAction &Action)
 {
 	HideExtBtn			();
-	CancelEditControl	();
+	ApplyEditControl	();
     if (OnCloseEvent) 	OnCloseEvent();
 	ClearParams			();
 }
@@ -1567,7 +1570,17 @@ void __fastcall TProperties::RefreshForm()
 	UnlockUpdating		();
 	tvProperties->Repaint();
 }
+//---------------------------------------------------------------------------
 
+void __fastcall TProperties::ebLightAnimationEditorClick(TObject *Sender)
+{
+	ModalResult = mrOk;	
+}
+//---------------------------------------------------------------------------
 
-
+void __fastcall TProperties::ExtBtn1Click(TObject *Sender)
+{
+	ModalResult = mrCancel;	
+}
+//---------------------------------------------------------------------------
 

@@ -152,13 +152,67 @@ int COMotion::KeyCount()
 {
 	return envs[ctPositionX]->keys.size();
 }
-void  COMotion::FindNearestKey(float t, float& mn, float& mx, float eps)
+void COMotion::FindNearestKey(float t, float& mn, float& mx, float eps)
 {
 	KeyIt min_k;
     KeyIt max_k;
 	envs[ctPositionX]->FindNearestKey(t, min_k, max_k, eps);
     mn = (min_k!=envs[ctPositionX]->keys.end())?(*min_k)->time:t; 
     mx = (max_k!=envs[ctPositionX]->keys.end())?(*max_k)->time:t; 
+}
+float COMotion::GetLength(float* mn, float* mx)
+{
+	float ln,len=0.f; 
+    for (int ch=0; ch<ctMaxChannel; ch++)
+        if ((ln=envs[ch]->GetLength(mn,mx))>len) len=ln;
+    return len;
+}
+BOOL COMotion::ScaleKeys(float from_time, float to_time, float scale_factor)
+{
+	BOOL bRes=TRUE;
+    for (int ch=0; ch<ctMaxChannel; ch++)
+        if (FALSE==(bRes=envs[ch]->ScaleKeys(from_time, to_time, scale_factor, 1.f/fFPS))) break;
+    return bRes;
+}
+BOOL COMotion::NormalizeKeys(float from_time, float to_time, float speed)
+{
+	CEnvelope* E = Envelope(ctPositionX);
+    float new_tm	= 0;
+    float t0		= E->keys.front()->time;
+    FloatVec tms;
+    tms.push_back	(t0);
+    for (KeyIt it=E->keys.begin()+1; it!=E->keys.end(); it++){
+    	if (((*it)->time>from_time)&&((*it)->time<to_time)){
+            float dist	= 0;
+            Fvector PT,T,R;
+            _Evaluate	(t0, PT, R);
+            for (float tm=t0+1.f/fFPS; tm<=(*it)->time; tm+=EPS_L){
+                _Evaluate	(tm, T, R);
+                dist		+= PT.distance_to(T);
+                PT.set		(T);
+            }
+            new_tm			+= dist / speed;
+            t0				= (*it)->time;
+            tms.push_back	(new_tm);
+        }
+    }
+    for (int ch=0; ch<ctMaxChannel; ch++){
+    	E				= Envelope(EChannelType(ch));
+        FloatIt	f_it	= tms.begin();
+	    for (KeyIt k_it=E->keys.begin(); k_it!=E->keys.end(); k_it++,f_it++)
+	    	if (((*k_it)->time>from_time)&&((*k_it)->time<to_time))
+	        	(*k_it)->time = *f_it;
+    }
+/*
+	CEnvelope* E = Envelope();
+    for (KeyIt it=E->keys.begin(); it!=E->keys.end(); it++){
+    	if (((*it)->time>from_time)&&((*it)->time<to_time)){
+		    for (float tm=from_time; tm<=to_time; tm+=1.f/fFPS){
+        	
+        }
+    }
+*/
+	return FALSE;
 }
 #endif
 

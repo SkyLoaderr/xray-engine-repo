@@ -106,6 +106,9 @@ public:
     void			NormalizeKeys	();
     int				KeyCount		();
 	CEnvelope*		Envelope		(EChannelType et=ctPositionX){return envs[et];}
+    BOOL			ScaleKeys		(float from_time, float to_time, float scale_factor);
+    BOOL			NormalizeKeys	(float from_time, float to_time, float speed);
+    float			GetLength		(float* mn=0, float* mx=0);
 #endif
 };
 

@@ -184,6 +184,7 @@ bool EScene::RemoveObject( CCustomObject* object, bool bUndo )
     lst.remove		(object);
     UI.UpdateScene	();
 	if (bUndo) 		UndoSave();
+    return true;
 }
 
 bool EScene::ContainsObject( CCustomObject* object, EObjClass classfilter ){

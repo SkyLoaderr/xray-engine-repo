@@ -35,7 +35,7 @@ object Properties: TProperties
     Left = 0
     Top = 1
     Width = 251
-    Height = 301
+    Height = 282
     Cursor = crDefault
     LeftPosition = 0
     HeaderPopupMenu = pmSystem
@@ -117,16 +117,16 @@ object Properties: TProperties
     HeaderHeight = 17
     HeaderHotTrack = False
     HeaderSections.Data = {
-      F4FFFFFF0200000020FE3E0500000000FFFFFFFF000001000100643A7D000000
-      32000000102700000000006F14B295040000000000006F2E0000000000000164
-      00000000000000000001000000000000302E2050726F63657373204163746F72
-      456469746F722E657865202830784635382900003082D7041C54D30420000000
-      5061727469636C65456469746F725F4190000000040000004B65790001000000
-      00000000000000000020FE3E0500000000FFFFFFFF000001010100643A590000
-      0032000000102700000000006FECB695040100000000006F2E00000000000001
-      6400000000000000000001000000000000302E2050726F63657373204163746F
-      72456469746F722E657865202830784635382900003082D7041C54D304200000
-      005061727469636C65456469746F725F41900000000600000056616C75650001
+      F4FFFFFF0200000050CDD40600000000FFFFFFFF00000100010000007D000000
+      32000000102700000000000014B2950400000000000000000000000000000100
+      0000000000000000000100000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000090000000040000004B65790001000000
+      00000000000000000050CDD40600000000FFFFFFFF0000010101000000590000
+      00320000001027000000000000ECB69504010000000000000000000000000001
+      0000000000000000000001000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000900000000600000056616C75650001
       000000000000000000000000}
     HeaderFlat = True
     HeaderFont.Charset = DEFAULT_CHARSET
@@ -268,6 +268,68 @@ object Properties: TProperties
     OnClick = pbExtBtnClick
     DockOrientation = doNoOrient
     DoubleBuffered = False
+  end
+  object paButtons: TPanel
+    Left = 0
+    Top = 283
+    Width = 251
+    Height = 19
+    Align = alBottom
+    BevelOuter = bvNone
+    ParentColor = True
+    TabOrder = 4
+    Visible = False
+    object Bevel2: TBevel
+      Left = 0
+      Top = 0
+      Width = 251
+      Height = 1
+      Align = alTop
+    end
+    object ebLightAnimationEditor: TExtBtn
+      Left = 2
+      Top = 2
+      Width = 63
+      Height = 17
+      Align = alNone
+      BevelShow = False
+      HotTrack = True
+      HotColor = 15790320
+      BtnColor = 10528425
+      CloseButton = False
+      Caption = 'Ok'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      FlatAlwaysEdge = True
+      OnClick = ebLightAnimationEditorClick
+    end
+    object ExtBtn1: TExtBtn
+      Left = 65
+      Top = 2
+      Width = 63
+      Height = 17
+      Align = alNone
+      BevelShow = False
+      HotTrack = True
+      HotColor = 15790320
+      BtnColor = 10528425
+      CloseButton = False
+      Caption = 'Cancel'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      FlatAlwaysEdge = True
+      OnClick = ExtBtn1Click
+    end
   end
   object pmEnum: TMxPopupMenu
     Alignment = paCenter

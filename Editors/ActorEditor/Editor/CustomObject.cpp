@@ -20,6 +20,7 @@
 #define CUSTOMOBJECT_CHUNK_MOTION		0xF905
 #define CUSTOMOBJECT_CHUNK_FLAGS		0xF906
 #define CUSTOMOBJECT_CHUNK_NAME			0xF907
+#define CUSTOMOBJECT_CHUNK_MOTION_PARAM	0xF908
 //----------------------------------------------------
 
 CCustomObject::~CCustomObject()
@@ -45,7 +46,7 @@ void CCustomObject::OnUpdateTransform()
     FITransformRP.invert	(FTransformRP);
     FITransform.invert		(FTransform);
 
-    if (Motionable()&&Visible()&&Selected()&&m_RT_Flags.is(flRT_AutoKey)) AnimationCreateKey(m_MotionParams.Frame());
+    if (Motionable()&&Visible()&&Selected()&&m_CO_Flags.is(flAutoKey)) AnimationCreateKey(m_MotionParams.Frame());
 }
 
 void CCustomObject::Select( int flag )
@@ -104,6 +105,11 @@ bool CCustomObject::Load(IReader& F)
         AnimationUpdate(m_MotionParams.Frame());
     }
 
+    if (F.find_chunk(CUSTOMOBJECT_CHUNK_MOTION_PARAM)){
+    	m_MotionParams.t = F.r_float();
+        AnimationUpdate(m_MotionParams.Frame());
+    }
+
 //	UpdateTransform	(true); // нужно для секторов, иначе неправильный бокс
 	UpdateTransform	();
 //	m_bUpdateTransform = TRUE;
@@ -133,6 +139,10 @@ void CCustomObject::Save(IWriter& F)
 		F.open_chunk	(CUSTOMOBJECT_CHUNK_MOTION);
 		m_Motion->Save	(F);
 		F.close_chunk	();
+
+        F.open_chunk	(CUSTOMOBJECT_CHUNK_MOTION_PARAM);
+        F.w_float		(m_MotionParams.t);
+        F.close_chunk	();
     }
 }
 //----------------------------------------------------
