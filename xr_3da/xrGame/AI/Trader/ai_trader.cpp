@@ -277,23 +277,6 @@ void TraderScriptCallBack(CBlend* B)
 		l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_bCompleted = true;
 }
 
-bool CAI_Trader::bfScriptAnimation()
-{
-	if (GetScriptControl() && GetCurrentAction() && !GetCurrentAction()->m_tAnimationAction.m_bCompleted && xr_strlen(GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay)) {
-		CSkeletonAnimated	&tVisualObject = *(PSkeletonAnimated(Visual()));
-		CMotionDef			*l_tpMotionDef = tVisualObject.ID_Cycle_Safe(*GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
-		if (m_tpScriptAnimation != l_tpMotionDef)
-			tVisualObject.PlayCycle(m_tpScriptAnimation = l_tpMotionDef,TRUE,TraderScriptCallBack,this);
-
-		return		(true);
-	}
-	else {
-		m_tpScriptAnimation	= 0;
-		return		(false);
-	}
-}
-
-
 void CAI_Trader::UpdateCL()
 { 
 	inherited::UpdateCL();

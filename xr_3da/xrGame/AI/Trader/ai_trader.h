@@ -62,7 +62,6 @@ public:
 	virtual void		shedule_Update			(u32 dt);
 	virtual void		renderable_Render		();
 
-	virtual	bool		bfScriptAnimation		();
 	virtual BOOL		UsedAI_Locations		();
 	///////////////////////////////////////////////////////////////////////
 	virtual u16					PHGetSyncItemsNumber	()			{return inherited ::PHGetSyncItemsNumber();}

@@ -590,7 +590,7 @@ void ScriptCallBack(CBlend* B)
 
 bool CScriptMonster::bfScriptAnimation()
 {
-	if (GetScriptControl() && !GetCurrentAction())
+	if (GetScriptControl() && !GetCurrentAction() && !m_tpActionQueue.empty())
 		ProcessScripts();
 
 	if (
