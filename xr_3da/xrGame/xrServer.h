@@ -9,7 +9,7 @@
 #include "xrServer_Entities.h"
 #include "game_sv_base.h"
 
-const u32	NET_Latency		= 100;		// time in (ms)
+const u32	NET_Latency		= 10;		// time in (ms)
 
 // t-defs
 typedef std::map<u16,xrServerEntity*>	xrS_entities;
