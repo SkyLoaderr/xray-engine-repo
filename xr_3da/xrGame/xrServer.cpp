@@ -116,45 +116,9 @@ BOOL xrServer::PerformRP	(xrServerEntity* EEE)
 		selected = DWORD(EEE->s_RP);
 		break;
 	case 0xFF:	// Search for best RP for this entity
+	case 0xFD:	// Search for best RP for this entity
 		{
 			selected	= ::Random.randI	(0,RP.size());
-
-			/*
-			float	best		= -1;
-			for (DWORD id=0; id<RP.size(); id++)
-			{
-				Fvector4&	P = RP[id]; 
-				Fvector		POS;
-				POS.set		(P.x,P.y,P.z);
-				float		cost	=0;
-				DWORD		count	=0;
-				
-				for (xrS_entities::iterator o_it=entities.begin(); o_it!=entities.end(); o_it++) 
-				{
-					// Get entity & it's position
-					xrServerEntity*	E	= o_it->second;
-					if	(E->s_flags & M_SPAWN_OBJECT_PHANTOM)			continue;
-
-					float	dist		= POS.distance_to(E->o_Position);
-					float	e_cost		= 0;
-					
-					if (EEE->g_team() == E->g_team())	{
-						// same teams, try to spawn near them, but not so near
-						if (dist<5)		e_cost += 3*(5-dist);
-					} else {
-						// different teams, try to avoid them
-						if (dist<30)	e_cost += 3*(30-dist);
-					}
-					
-					cost	+= dist;
-					count	+= 1;
-				}
-				
-				if (0==count)	{ selected = id; break; }
-				cost /= float(count);
-				if (cost>best)	{ selected = id; best = cost; }
-			}
-			*/
 		}
 		break;
 	}
