@@ -44,28 +44,52 @@ void	CRenderTarget::phase_combine	()
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
 
-	// Draw half-screen quad textured with our direct-shadow-map-image
+	// ********************* Debug
 	{
 		u32		Offset;
 		u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
-		float	_w					= float(Device.dwWidth)/2;
-		float	_h					= float(Device.dwHeight)/2;
+		float	_w					= float(Device.dwWidth)/4;
+		float	_h					= float(Device.dwHeight)/4;
 
-		Fvector2					p0,p1;
-		p0.set						(.5f/_w, .5f/_h);
-		p1.set						((_w+.5f)/_w, (_h+.5f)/_h );
+		// Draw quater-screen quad textured with our direct-shadow-map-image
+		{
+			u32							IX=0,IY=0;
+			Fvector2					p0,p1;
+			p0.set						(.5f/_w, .5f/_h);
+			p1.set						((_w+.5f)/_w, (_h+.5f)/_h );
 
-		// Fill vertex buffer
-		FVF::TL* pv					= (FVF::TL*) RCache.Vertex.Lock	(4,g_smap_d_debug->vb_stride,Offset);
-		pv->set						(EPS,			float(_h+EPS),	EPS,	1.f, C, p0.x, p1.y);	pv++;
-		pv->set						(EPS,			EPS,			EPS,	1.f, C, p0.x, p0.y);	pv++;
-		pv->set						(float(_w+EPS),	float(_h+EPS),	EPS,	1.f, C, p1.x, p1.y);	pv++;
-		pv->set						(float(_w+EPS),	EPS,			EPS,	1.f, C, p1.x, p0.y);	pv++;
-		RCache.Vertex.Unlock		(4,g_smap_d_debug->vb_stride);
+			// Fill vertex buffer
+			FVF::TL* pv					= (FVF::TL*) RCache.Vertex.Lock	(4,g_combine->vb_stride,Offset);
+			pv->set						((IX+0)*_w+EPS,	(IY+1)*_h+EPS,	EPS,	1.f, C, p0.x, p1.y);	pv++;
+			pv->set						((IX+0)*_w+EPS,	(IY+0)*_h+EPS,	EPS,	1.f, C, p0.x, p0.y);	pv++;
+			pv->set						((IX+1)*_w+EPS,	(IY+1)*_h+EPS,	EPS,	1.f, C, p1.x, p1.y);	pv++;
+			pv->set						((IX+1)*_w+EPS,	(IY+0)*_h+EPS,	EPS,	1.f, C, p1.x, p0.y);	pv++;
+			RCache.Vertex.Unlock		(4,g_combine->vb_stride);
 
-		// Draw COLOR
-		RCache.set_Shader			(s_smap_d_debug);
-		RCache.set_Geometry			(g_smap_d_debug);
-		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+			// Draw COLOR
+			RCache.set_Shader			(s_smap_d_debug);
+			RCache.set_Geometry			(g_combine);
+			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+		}
+		// Draw quater-screen quad textured with our accumulator
+		{
+			u32							IX=1,IY=0;
+			Fvector2					p0,p1;
+			p0.set						(.5f/_w, .5f/_h);
+			p1.set						((_w+.5f)/_w, (_h+.5f)/_h );
+
+			// Fill vertex buffer
+			FVF::TL* pv					= (FVF::TL*) RCache.Vertex.Lock	(4,g_combine->vb_stride,Offset);
+			pv->set						((IX+0)*_w+EPS,	(IY+1)*_h+EPS,	EPS,	1.f, C, p0.x, p1.y);	pv++;
+			pv->set						((IX+0)*_w+EPS,	(IY+0)*_h+EPS,	EPS,	1.f, C, p0.x, p0.y);	pv++;
+			pv->set						((IX+1)*_w+EPS,	(IY+1)*_h+EPS,	EPS,	1.f, C, p1.x, p1.y);	pv++;
+			pv->set						((IX+1)*_w+EPS,	(IY+0)*_h+EPS,	EPS,	1.f, C, p1.x, p0.y);	pv++;
+			RCache.Vertex.Unlock		(4,g_combine->vb_stride);
+
+			// Draw COLOR
+			RCache.set_Shader			(s_combine_dbg_Accumulator);
+			RCache.set_Geometry			(g_combine);
+			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+		}
 	}
 }
