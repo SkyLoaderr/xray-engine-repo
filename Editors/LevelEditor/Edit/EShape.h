@@ -54,7 +54,7 @@ public:
     // file system function
   	virtual bool 	Load		(CStream&);
 	virtual void 	Save		(CFS_Base&);
-	virtual void	FillProp	(LPCSTR pref, PropValueVec& values);
+	virtual void	FillProp	(LPCSTR pref, PropItemVec& values);
 
     // render utility function
 	virtual void 	Render		(int priority, bool strictB2F);

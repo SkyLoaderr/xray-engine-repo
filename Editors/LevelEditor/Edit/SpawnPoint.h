@@ -47,7 +47,7 @@ public:
 	virtual void 	Save			(CFS_Base&);
     virtual bool	ExportGame		(SExportStreams& data);
 
-	virtual void	FillProp		(LPCSTR pref, PropValueVec& values);
+	virtual void	FillProp		(LPCSTR pref, PropItemVec& values);
 
     virtual void	OnDeviceCreate	();
     virtual void	OnDeviceDestroy	();

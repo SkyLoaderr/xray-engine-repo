@@ -60,8 +60,8 @@ void TfrmPropertiesEObject::FillBasicProps()
 	m_BasicProp->BeginFillMode();
     if (S->GetReference()){
     	CEditableObject* 	O = S->GetReference();
-        PropValueVec values;
-
+        PropItemVec values;
+/*
 	    FILL_PROP(values, "Reference Name",			(LPVOID)S->GetRefName(),PHelper.CreateMarker());
 	    FILL_PROP(values, "Flags\\Dynamic",			&O->m_Flags.flags,		PHelper.CreateFlag(CEditableObject::eoDynamic));
 	    FILL_PROP(values, "Flags\\HOM",	   			&O->m_Flags.flags,		PHelper.CreateFlag(CEditableObject::eoHOM));
@@ -73,10 +73,10 @@ void TfrmPropertiesEObject::FillBasicProps()
 //	    FILL_PROP(values, "Transform\\Position",	&O->t_vPosition, 		PHelper.CreateVector(-10000,	10000,0.01,2,0,0,0,OnChangeTransform));
 //    	FILL_PROP(values, "Transform\\Rotation",	&O->t_vRotate, 			PHelper.CreateVector(-10000,	10000,0.1,1,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw,OnChangeTransform));
 //		FILL_PROP(values, "Transform\\Scale",		&O->t_vScale, 			PHelper.CreateVector(0.01,	10000,0.01,2,0,0,0,OnChangeTransform));
-
+*/
 		O->FillPropSummary(0,values);
 
-        m_BasicProp->AssignValues(values,true);
+        m_BasicProp->AssignItems(values,true);
     }else{
     	m_BasicProp->ClearProperties();
     }
@@ -88,12 +88,12 @@ void TfrmPropertiesEObject::FillSurfProps()
 {
 	// surfaces
 	CSceneObject* 		S = m_pEditObject;
-    PropValueVec values;
+    PropItemVec values;
     if (S->GetReference()){
     	CEditableObject* 	O = S->GetReference();
         O->FillPropSurf		(0,values,OnChangeShader);
     }
-    m_SurfProp->AssignValues(values,true);
+    m_SurfProp->AssignItems(values,true);
 }
 //---------------------------------------------------------------------------
 

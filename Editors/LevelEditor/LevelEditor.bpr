@@ -24,8 +24,7 @@
       intermediate\TopBar.obj intermediate\LeftBar.obj 
       intermediate\BottomBar.obj intermediate\FrameObject.obj 
       intermediate\FrameSector.obj intermediate\FramePortal.obj 
-      intermediate\PropertiesLight.obj intermediate\PropertiesSound.obj 
-      intermediate\PropertiesGlow.obj intermediate\PropertiesSector.obj 
+      intermediate\PropertiesLight.obj intermediate\PropertiesSector.obj 
       intermediate\PropertiesPortal.obj intermediate\SceneProperties.obj 
       intermediate\ObjectList.obj intermediate\EditorPref.obj 
       intermediate\Splash.obj intermediate\main.obj 
@@ -38,9 +37,9 @@
       intermediate\_compressed_normal.obj intermediate\ImageEditor.obj 
       intermediate\FramePS.obj intermediate\previewimage.obj 
       intermediate\FrameEmitter.obj intermediate\xr_trims.obj 
-      intermediate\PropertiesRPoint.obj intermediate\FrameRPoint.obj 
-      intermediate\interp.obj intermediate\Envelope.obj intermediate\motion.obj 
-      intermediate\bone.obj intermediate\clsid.obj intermediate\WayPoint.obj 
+      intermediate\FrameRPoint.obj intermediate\interp.obj 
+      intermediate\Envelope.obj intermediate\motion.obj intermediate\bone.obj 
+      intermediate\clsid.obj intermediate\WayPoint.obj 
       intermediate\FrameWayPoint.obj intermediate\DetailObjects.obj 
       intermediate\FrameDetObj.obj intermediate\Xr_ini.obj 
       intermediate\ColorPicker.obj intermediate\LzHuf.obj 
@@ -76,26 +75,24 @@
       intermediate\PropertiesList.obj intermediate\ETextureParams.obj 
       intermediate\blender_light.obj intermediate\FolderLib.obj 
       intermediate\EStats.obj intermediate\UI_MainExtern.obj 
-      intermediate\xr_efflensflare.obj intermediate\PropertiesSceneObject.obj 
-      intermediate\EditObjectEditor.obj intermediate\Blender_LaEmB.obj 
-      intermediate\Blender_Lm(EbB).obj intermediate\Blender_LmBmmD.obj 
-      intermediate\fmesh.obj intermediate\Blender_BmmD.obj 
-      intermediate\BuilderGame.obj intermediate\EventOneAction.obj 
-      intermediate\xrXRC.obj intermediate\FBasicVisual.obj 
-      intermediate\FHierrarhyVisual.obj intermediate\FProgressiveFixedVisual.obj 
-      intermediate\FVisual.obj intermediate\SkeletonCalculate.obj 
-      intermediate\SkeletonX.obj intermediate\BodyInstance.obj 
-      intermediate\ExportSkeleton.obj intermediate\Engine.obj 
-      intermediate\ModelPool.obj intermediate\SH_RT.obj 
+      intermediate\xr_efflensflare.obj intermediate\EditObjectEditor.obj 
+      intermediate\Blender_LaEmB.obj intermediate\Blender_Lm(EbB).obj 
+      intermediate\Blender_LmBmmD.obj intermediate\fmesh.obj 
+      intermediate\Blender_BmmD.obj intermediate\BuilderGame.obj 
+      intermediate\EventOneAction.obj intermediate\xrXRC.obj 
+      intermediate\FBasicVisual.obj intermediate\FHierrarhyVisual.obj 
+      intermediate\FProgressiveFixedVisual.obj intermediate\FVisual.obj 
+      intermediate\SkeletonCalculate.obj intermediate\SkeletonX.obj 
+      intermediate\BodyInstance.obj intermediate\ExportSkeleton.obj 
+      intermediate\Engine.obj intermediate\ModelPool.obj intermediate\SH_RT.obj 
       intermediate\EditLightAnim.obj intermediate\LightAnimLibrary.obj 
       intermediate\PropertiesEObject.obj intermediate\GroupObject.obj 
       intermediate\UI_GroupTools.obj intermediate\FrameGroup.obj 
-      intermediate\Blender_Shadow_Texture.obj intermediate\PropertiesGroup.obj 
-      intermediate\FrameEvent.obj intermediate\Blender_Shadow_World.obj 
-      intermediate\TextForm.obj intermediate\PropertiesWayPoint.obj 
-      intermediate\CustomObjectLE.obj intermediate\Blender_Blur.obj 
-      intermediate\Blender_Model.obj intermediate\cpuid.obj 
-      intermediate\_math.obj intermediate\xrSkin1W.obj 
+      intermediate\Blender_Shadow_Texture.obj intermediate\FrameEvent.obj 
+      intermediate\Blender_Shadow_World.obj intermediate\TextForm.obj 
+      intermediate\PropertiesWayPoint.obj intermediate\CustomObjectLE.obj 
+      intermediate\Blender_Blur.obj intermediate\Blender_Model.obj 
+      intermediate\cpuid.obj intermediate\_math.obj intermediate\xrSkin1W.obj 
       intermediate\ExportObjectOGF.obj intermediate\SoundManager.obj 
       intermediate\tga.obj intermediate\xrServer_Entities.obj 
       intermediate\SpawnPoint.obj intermediate\PropertiesListTypes.obj 
@@ -117,16 +114,15 @@
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) EditLibrary.dfm NumericVector.dfm ShaderFunction.dfm 
       TopBar.dfm LeftBar.dfm BottomBar.dfm FrameObject.dfm FrameSector.dfm 
-      FramePortal.dfm PropertiesLight.dfm PropertiesSound.dfm PropertiesGlow.dfm 
-      PropertiesSector.dfm PropertiesPortal.dfm SceneProperties.dfm 
-      ObjectList.dfm EditorPref.dfm Splash.dfm main.dfm PropertiesEvent.dfm 
-      LogForm.dfm FrameLight.dfm OneEnvironment.dfm PropertiesPS.dfm 
-      ChoseForm.dfm ImageEditor.dfm FramePS.dfm previewimage.dfm 
-      FrameEmitter.dfm PropertiesRPoint.dfm FrameRPoint.dfm FrameWayPoint.dfm 
-      FrameDetObj.dfm DOShuffle.dfm DOOneColor.dfm PropertiesDetailObject.dfm 
-      PropertiesList.dfm PropertiesSceneObject.dfm EventOneAction.dfm 
-      EditLightAnim.dfm PropertiesEObject.dfm FrameGroup.dfm PropertiesGroup.dfm 
-      FrameEvent.dfm TextForm.dfm PropertiesWayPoint.dfm FrameShape.dfm"/>
+      FramePortal.dfm PropertiesLight.dfm PropertiesSector.dfm 
+      PropertiesPortal.dfm SceneProperties.dfm ObjectList.dfm EditorPref.dfm 
+      Splash.dfm main.dfm PropertiesEvent.dfm LogForm.dfm FrameLight.dfm 
+      OneEnvironment.dfm PropertiesPS.dfm ChoseForm.dfm ImageEditor.dfm 
+      FramePS.dfm previewimage.dfm FrameEmitter.dfm FrameRPoint.dfm 
+      FrameWayPoint.dfm FrameDetObj.dfm DOShuffle.dfm DOOneColor.dfm 
+      PropertiesDetailObject.dfm PropertiesList.dfm EventOneAction.dfm 
+      EditLightAnim.dfm PropertiesEObject.dfm FrameGroup.dfm FrameEvent.dfm 
+      TextForm.dfm PropertiesWayPoint.dfm FrameShape.dfm"/>
     <LIBFILES value="lib\LWO.lib lib\cg32.lib lib\xrProgressive.lib lib\MagicFMd.lib 
       lib\DXT.lib lib\gauss.lib lib\DX\d3d8.lib lib\DX\d3dx8d.lib 
       lib\DX\dinput.lib lib\ETools.lib lib\FreeImage.lib lib\xrCDB.lib 
@@ -218,8 +214,6 @@
       <FILE FILENAME="FrameSector.cpp" FORMNAME="fraSector" UNITNAME="FrameSector" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="FramePortal.cpp" FORMNAME="fraPortal" UNITNAME="FramePortal" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="PropertiesLight.cpp" FORMNAME="frmPropertiesLight" UNITNAME="PropertiesLight" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="PropertiesSound.cpp" FORMNAME="frmPropertiesSound" UNITNAME="PropertiesSound" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="PropertiesGlow.cpp" FORMNAME="frmPropertiesGlow" UNITNAME="PropertiesGlow" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="PropertiesSector.cpp" FORMNAME="frmPropertiesSector" UNITNAME="PropertiesSector" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="PropertiesPortal.cpp" FORMNAME="frmPropertiesPortal" UNITNAME="PropertiesPortal" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SceneProperties.cpp" FORMNAME="frmSceneProperties" UNITNAME="SceneProperties" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -251,7 +245,6 @@
       <FILE FILENAME="lib\DXT.lib" FORMNAME="" UNITNAME="DXT" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="FrameEmitter.cpp" FORMNAME="fraEmitter" UNITNAME="FrameEmitter" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\xr_trims.cpp" FORMNAME="" UNITNAME="xr_trims" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="PropertiesRPoint.cpp" FORMNAME="frmPropertiesSpawnPoint" UNITNAME="PropertiesRPoint" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="FrameRPoint.cpp" FORMNAME="fraSpawnPoint" UNITNAME="FrameRPoint" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\interp.cpp" FORMNAME="" UNITNAME="interp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\Envelope.cpp" FORMNAME="" UNITNAME="Envelope" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -338,7 +331,6 @@
       <FILE FILENAME="edit\UI_MainExtern.cpp" FORMNAME="" UNITNAME="UI_MainExtern" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\xr_efflensflare.cpp" FORMNAME="" UNITNAME="xr_efflensflare" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\ETools.lib" FORMNAME="" UNITNAME="ETools" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="PropertiesSceneObject.cpp" FORMNAME="frmPropertiesSceneObject" UNITNAME="PropertiesSceneObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\EditObjectEditor.cpp" FORMNAME="" UNITNAME="EditObjectEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\Blender_LaEmB.cpp" FORMNAME="" UNITNAME="Blender_LaEmB" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\Blender_Lm(EbB).cpp" FORMNAME="" UNITNAME="Blender_Lm(EbB)" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -366,7 +358,6 @@
       <FILE FILENAME="edit\UI_GroupTools.cpp" FORMNAME="" UNITNAME="UI_GroupTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="FrameGroup.cpp" FORMNAME="fraGroup" UNITNAME="FrameGroup" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\Blender_Shadow_Texture.cpp" FORMNAME="" UNITNAME="Blender_Shadow_Texture" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="PropertiesGroup.cpp" FORMNAME="frmPropertiesGroup" UNITNAME="PropertiesGroup" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="FrameEvent.cpp" FORMNAME="fraEvent" UNITNAME="FrameEvent" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\Blender_Shadow_World.cpp" FORMNAME="" UNITNAME="Blender_Shadow_World" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="TextForm.cpp" FORMNAME="frmText" UNITNAME="TextForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>

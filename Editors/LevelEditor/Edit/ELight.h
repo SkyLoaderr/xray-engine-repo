@@ -72,10 +72,10 @@ public:
     // file system function
   	virtual bool 	Load		(CStream&);
 	virtual void 	Save		(CFS_Base&);
-	virtual void	FillProp	(LPCSTR pref, PropValueVec& values);
-	void			FillSunProp	(LPCSTR pref, PropValueVec& values);
-	void			FillPointProp(LPCSTR pref, PropValueVec& values);
-	void			FillSpotProp(LPCSTR pref, PropValueVec& values);
+	virtual void	FillProp	(LPCSTR pref, PropItemVec& values);
+	void			FillSunProp	(LPCSTR pref, PropItemVec& values);
+	void			FillPointProp(LPCSTR pref, PropItemVec& values);
+	void			FillSpotProp(LPCSTR pref, PropItemVec& values);
 
     // render utility function
 	void 			Set			(int d3dindex);

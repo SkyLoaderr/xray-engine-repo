@@ -252,9 +252,9 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
             }
             lbInfo->Caption			= temp;
 
-		    PropValueVec values;
+		    PropItemVec values;
             m_Thm->FillProp(values);
-            ImageProps->AssignValues(values,true);
+            ImageProps->AssignItems(values,true);
 
             m_LastSelection = m_SelectedName;
         }
@@ -359,7 +359,7 @@ void __fastcall TfrmImageLib::ebExportAssociationClick(TObject *Sender)
     for (;it!=_E; it++){
         EImageThumbnail* m_Thm = new EImageThumbnail(it->first.c_str(),EImageThumbnail::EITTexture);
 	    UI.ProgressInc(it->first.c_str());
-        if (m_Thm->Valid()&&(m_Thm->_Format().flag&STextureParams::flHasDetailTexture)){
+        if (m_Thm->Valid()&&(m_Thm->_Format().flags.is(STextureParams::flHasDetailTexture))){
         	AnsiString det;
             string128 src;
             det.sprintf("%s, %f",m_Thm->_Format().detail_name,m_Thm->_Format().detail_scale);

@@ -131,10 +131,10 @@ void TfrmPropertiesLight::GetObjectsInfo(){
     default: THROW;
     }
 
-    PropValueVec values;
-    PropValueVec sun_values;
-    PropValueVec point_values;
-    PropValueVec spot_values;
+    PropItemVec values;
+    PropItemVec sun_values;
+    PropItemVec point_values;
+    PropItemVec spot_values;
 	for(;_F!=m_Objects->end();_F++){
 		VERIFY( (*_F)->ClassID==OBJCLASS_LIGHT );
 		_L 							= (CLight *)(*_F);
@@ -143,7 +143,7 @@ void TfrmPropertiesLight::GetObjectsInfo(){
         _L->FillPointProp			(GetClassNameByClassID(_L->ClassID),point_values);
         _L->FillSpotProp			(GetClassNameByClassID(_L->ClassID),spot_values);
 	}
-	flBrightness 					= (FloatValue*)PHelper.FindProp(values,pref,"Brightness"); R_ASSERT(flBrightness);
+/*	flBrightness 					= (FloatValue*)PHelper.FindProp(values,pref,"Brightness"); R_ASSERT(flBrightness);
     flBrightness->OnChange			= OnBrightnessChange;
     flPointRange					= (FloatValue*)PHelper.FindProp(point_values,pref,"Range");						R_ASSERT(flPointRange);
     flPointA0						= (FloatValue*)PHelper.FindProp(point_values,pref,"Attenuation\\Constant"); 	R_ASSERT(flPointA0);
@@ -153,7 +153,7 @@ void TfrmPropertiesLight::GetObjectsInfo(){
     m_SunProps->AssignValues		(sun_values,true);
     m_PointProps->AssignValues		(point_values,true);
     m_SpotProps->AssignValues		(spot_values,true);
-}
+*/}
 
 bool TfrmPropertiesLight::ApplyObjectsInfo(){
 	VERIFY( !m_Objects->empty() );
@@ -176,7 +176,7 @@ bool TfrmPropertiesLight::ApplyObjectsInfo(){
 
 void TfrmPropertiesLight::CancelObjectsInfo()
 {
-	m_Props->ResetValues();
+	m_Props->ResetItems();
 
     UI.UpdateScene();
 }
@@ -232,8 +232,8 @@ void __fastcall TfrmPropertiesLight::FormKeyDown(TObject *Sender,
 void __fastcall TfrmPropertiesLight::ebALautoClick(TObject *Sender){
 	if (!flBrightness) return;
     float P = seAutoBMax->Value/100.f;
-    flPointA0->ApplyValue(1.f);
-    flPointA1->ApplyValue((flBrightness->GetValue()-P-P*flPointRange->GetValue()*flPointRange->GetValue()*flPointA2->GetValue())/(P*flPointRange->GetValue()));
+//    flPointA0->ApplyValue(1.f);
+//    flPointA1->ApplyValue((flBrightness->GetValue()-P-P*flPointRange->GetValue()*flPointRange->GetValue()*flPointA2->GetValue())/(P*flPointRange->GetValue()));
     m_PointProps->RefreshForm();
     DrawGraph();
 }
@@ -242,8 +242,8 @@ void __fastcall TfrmPropertiesLight::ebALautoClick(TObject *Sender){
 void __fastcall TfrmPropertiesLight::ebQLautoClick(TObject *Sender){
 	if (!flBrightness) return;
     float P = seAutoBMax->Value/100.f;
-    flPointA0->ApplyValue(1.f);
-    flPointA2->ApplyValue((flBrightness->GetValue()-P-P*flPointRange->GetValue()*flPointA1->GetValue())/(P*flPointRange->GetValue()*flPointRange->GetValue()));
+//    flPointA0->ApplyValue(1.f);
+//    flPointA2->ApplyValue((flBrightness->GetValue()-P-P*flPointRange->GetValue()*flPointA1->GetValue())/(P*flPointRange->GetValue()*flPointRange->GetValue()));
     m_PointProps->RefreshForm();
     DrawGraph();
 }

@@ -576,3 +576,9 @@ void __fastcall TfraLeftBar::ImportCompilerErrorsClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::ebIgnoreModeClick(TObject *Sender)
+{
+	Tools.UpdateProperties();	
+}
+//---------------------------------------------------------------------------
+

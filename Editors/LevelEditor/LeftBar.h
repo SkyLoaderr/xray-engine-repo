@@ -236,6 +236,7 @@ __published:	// IDE-managed Components
 	void __fastcall MenuItem9Click(TObject *Sender);
 	void __fastcall UpdateSceneTextures1Click(TObject *Sender);
 	void __fastcall ImportCompilerErrorsClick(TObject *Sender);
+	void __fastcall ebIgnoreModeClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         __fastcall TfraLeftBar(TComponent* Owner);

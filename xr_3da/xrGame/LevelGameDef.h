@@ -93,7 +93,7 @@ public:
 	virtual void Save		(CStream&)							= 0;
 	virtual void Load		(CFS_Base&)							= 0;
 #ifdef _EDITOR
-	virtual void FillProp	(LPCSTR pref, PropValueVec& values)	= 0;
+	virtual void FillProp	(LPCSTR pref, PropItemVec& values)	= 0;
 #endif
 };
 
@@ -155,7 +155,7 @@ public:
 		fs.Rstring					(caRouteGraphPoints);
 	}
 #ifdef _EDITOR
-	virtual void FillProp	(LPCSTR pref, PropValueVec& values);
+	virtual void FillProp	(LPCSTR pref, PropItemVec& values);
 #endif
 };
 

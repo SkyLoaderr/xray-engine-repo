@@ -21,14 +21,10 @@ public:
     AnsiString		m_ShaderName;
     AnsiString		m_TexName;
     float           m_fRadius;
-    DWORD			m_dwFlags;
-
-    IC bool			IsFlag			(EFlags flag)const 	{return !!(m_dwFlags&flag);}
-    IC DWORD		GetFlags		()const 			{return m_dwFlags;}
-    IC void			SetFlag			(EFlags flag, bool val)	{if (val) m_dwFlags|=val; else m_dwFlags&=~flag;}
-    IC void			SetFlags		(DWORD flags)			{m_dwFlags=flags;}
+    Flags32			m_Flags;
 
     bool			m_bDefLoad;
+    void __fastcall	ShaderChange	(PropValue* value);
 protected:
     virtual Fvector& GetScale		()	{ FScale.set(m_fRadius,m_fRadius,m_fRadius); return FScale; 	}
 	virtual void 	SetScale		(Fvector& sc){float v=m_fRadius; if (!fsimilar(FScale.x,sc.x)) v=sc.x; if (!fsimilar(FScale.y,sc.y)) v=sc.y; if (!fsimilar(FScale.z,sc.z)) v=sc.z; FScale.set(v,v,v); m_fRadius=v; UpdateTransform();}
@@ -46,7 +42,7 @@ public:
   	virtual bool 	Load		(CStream&);
 	virtual void 	Save		(CFS_Base&);
 	virtual bool    GetBox      ( Fbox& box );
-    virtual void	FillProp	( LPCSTR pref, PropValueVec& values );
+    virtual void	FillProp	( LPCSTR pref, PropItemVec& values );
 
     // device dependent routine
 	virtual void 	OnDeviceCreate 	();

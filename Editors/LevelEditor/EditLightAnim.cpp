@@ -171,14 +171,15 @@ void TfrmEditLightAnim::UpdateView()
 void TfrmEditLightAnim::GetItemData()
 {
 	if (m_CurrentItem){
-    	PropValueVec values;
-        FILL_PROP(values,	"Name",			m_CurrentItem->cName,		PHelper.CreateText	(sizeof(m_CurrentItem->cName),0,FHelper.NameAfterEdit,FHelper.NameBeforeEdit,FHelper.NameDraw));
+    	PropItemVec values;
+/*        FILL_PROP(values,	"Name",			m_CurrentItem->cName,		PHelper.CreateText	(sizeof(m_CurrentItem->cName),0,FHelper.NameAfterEdit,FHelper.NameBeforeEdit,FHelper.NameDraw));
         FILL_PROP(values,	"FPS",			&m_CurrentItem->fFPS,		PHelper.CreateFloat	(0.1f,1000,1.f,1));
         FILL_PROP(values,	"Frame Count",	&m_CurrentItem->iFrameCount,PHelper.CreateS32	(1,100000,1));
     	m_Props->AssignValues(values,true);
 		// set name
         PropValue* P	= PHelper.FindProp(values,"Name"); VERIFY(P);
         P->tag			= (int)tvItems->Items->LookForItem(0,m_CurrentItem->cName,0,0,false,true,false,true,true); VERIFY(P->tag);
+*/
     }else{
     	m_Props->ClearProperties();
     }

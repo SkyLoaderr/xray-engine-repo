@@ -49,6 +49,7 @@ __published:	// IDE-managed Components
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall tvPropertiesItemChange(TObject *Sender, TElTreeItem *Item,
           TItemChangeMode ItemChangeMode);
+	void __fastcall FormDestroy(TObject *Sender);
 private:	// User declarations
     void __fastcall PMItemClick		(TObject *Sender);
 	void __fastcall WaveFormClick	(TElTreeItem* item);
@@ -75,7 +76,7 @@ private:	// User declarations
     void ApplyLWText();
     void CancelLWText();
 
-    PropValueVec 		m_Values;
+    PropItemVec 		m_Items;
     TOnModifiedEvent 	OnModifiedEvent;
     TOnItemFocused      OnItemFocused;
     TOnCloseEvent		OnCloseEvent;
@@ -96,8 +97,8 @@ public:		// User declarations
     void __fastcall ResetModified			(){bModified = false;}
     void __fastcall RefreshForm				(){tvProperties->Repaint();}
 
-    void __fastcall AssignValues			(PropValueVec& values, bool full_expand, const AnsiString& title="Properties"); 
-    void __fastcall ResetValues				();
+    void __fastcall AssignItems				(PropItemVec& values, bool full_expand, const AnsiString& title="Properties"); 
+    void __fastcall ResetItems				();
     bool __fastcall IsFocused				(){return tvProperties->Focused()||seNumber->Focused()||edText->Focused();}
     void __fastcall SetModifiedEvent		(TOnModifiedEvent modif=0){OnModifiedEvent=modif;}
     void __fastcall BeginFillMode			(const AnsiString& title="Properties", LPCSTR section=0);
@@ -132,8 +133,8 @@ public:		// User declarations
     }
     // auxiliary routines
 	static IC LPVOID		GetItemData		(TElTreeItem* item){return (void*)item->Tag;}
-	static IC bool 			IsItemType		(TElTreeItem* item, EPropType type){return item->Tag&&(((PropValue*)item->Tag)->type==type);}
-	static IC EPropType 	GetItemType		(TElTreeItem* item){return item->Tag?((PropValue*)item->Tag)->type:(EPropType)0;}
+	static IC bool 			IsItemType		(TElTreeItem* item, EPropType type){return item->Tag&&(((PropItem*)item->Tag)->Type()==type);}
+	static IC EPropType 	GetItemType		(TElTreeItem* item){return item->Tag?((PropItem*)item->Tag)->Type():(EPropType)0;}
 	static IC LPCSTR	 	GetItemColumn	(TElTreeItem* item, int col){
     	static AnsiString t;
         if (col<item->ColumnText->Count) t=item->ColumnText->Strings[col];

@@ -18,14 +18,14 @@ struct STextureParams{
         tfRGBA,
 		tfNVHS,
 		tfNVHU,
-		tfForceDWORD	= DWORD(-1)
+		tfForceU32	= u32(-1)
 	};
 	enum ETType{
     	ttImage	= 0,
         ttCubeMap,
         ttNormalMap,
         ttDuDvMap,
-		ttForceDWORD	= DWORD(-1)
+		ttForceU32	= u32(-1)
 	};
 	enum{
         dMIPFilterBox				= 0,
@@ -48,17 +48,18 @@ struct STextureParams{
 
 		flHasDetailTexture	= (1<<23),
 		flImplicitLighted	= (1<<24),
-		flHasAlpha			= (1<<25)
+		flHasAlpha			= (1<<25),
+		flForceU32			= u32(-1)
 	};
 
     // texture part
     struct{
         ETFormat	fmt;
-        DWORD		flag;
-        DWORD		border_color;
-        DWORD		fade_color;
-        DWORD		fade_amount;
-        DWORD		mip_filter;
+        Flags32		flags;
+        u32			border_color;
+        u32			fade_color;
+        u32			fade_amount;
+        u32			mip_filter;
         int			width;
         int			height;
         // detail ext
@@ -75,8 +76,7 @@ struct STextureParams{
     STextureParams		()
 	{
 		ZeroMemory		(this,sizeof(STextureParams));
-		flag			|=	flGenerateMipMaps;
-		flag			|=	flDitherColor;
+		flags.set		(flGenerateMipMaps|flDitherColor,TRUE);
 		mip_filter		= dMIPFilterBox;
         width			= 0;
         height			= 0;
@@ -85,7 +85,7 @@ struct STextureParams{
         vertex_count	= 0;                       
 	}
     IC BOOL HasAlpha(){ // исходная текстура содержит альфа канал
-    	return flag&flHasAlpha;
+    	return flags.is(flHasAlpha);
     }
 	IC BOOL HasAlphaChannel() // игровая текстура содержит альфа канал
 	{

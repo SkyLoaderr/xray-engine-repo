@@ -33,7 +33,7 @@ void CGlow::Construct(LPVOID data){
     m_GShader   = 0;
     m_fRadius	= 0.5f;
     m_bDefLoad	= false;
-    m_dwFlags	= 0;
+    m_Flags.zero();
 }
 
 CGlow::~CGlow()
@@ -56,13 +56,18 @@ void CGlow::OnDeviceDestroy()
 	Device.Shader.Delete(m_GShader);
 }
 
-void CGlow::FillProp(LPCSTR pref, PropValueVec& values)
+void __fastcall	CGlow::ShaderChange(PropValue* value)
 {
-	inherited::FillProp(pref, values);
-	FILL_PROP_EX(values, pref, "Texture", 		&m_TexName, 	PHelper.CreateATexture());
-	FILL_PROP_EX(values, pref, "Shader", 		&m_ShaderName, 	PHelper.CreateAEShader());
-    FILL_PROP_EX(values, pref, "Radius", 		&m_fRadius,		PHelper.CreateFloat	(0.01f,10000.f));
-    FILL_PROP_EX(values, pref, "Fixed size", 	&m_dwFlags, 	PHelper.CreateFlag	(gfFixedSize));
+	OnDeviceDestroy();
+}
+
+void CGlow::FillProp(LPCSTR pref, PropItemVec& items)
+{
+	inherited::FillProp(pref, items);
+    PHelper.CreateATexture	(items,PHelper.PrepareKey(pref,"Texture"), 		&m_TexName, 	0,0,0,ShaderChange);
+    PHelper.CreateAEShader	(items,PHelper.PrepareKey(pref,"Shader"),		&m_ShaderName, 	0,0,0,ShaderChange);
+    PHelper.CreateFloat		(items,PHelper.PrepareKey(pref,"Radius"),		&m_fRadius,		0.01f,10000.f);
+    PHelper.CreateFlag		(items,PHelper.PrepareKey(pref,"Fixed size"),	&m_Flags, 		gfFixedSize);
 }
 //----------------------------------------------------
 bool CGlow::GetBox( Fbox& box )
@@ -90,7 +95,7 @@ void CGlow::Render(int priority, bool strictB2F){
             	!fraBottomBar->miGlowTestVisibility->Checked){
                 if (m_GShader){	Device.SetShader(m_GShader);
                 }else{			Device.SetShader(Device.m_WireShader);}
-                m_RenderSprite.Render(PPosition,m_fRadius,IsFlag(gfFixedSize));
+                m_RenderSprite.Render(PPosition,m_fRadius,m_Flags.is(gfFixedSize));
 			}else{
                 // рендерим bounding sphere
         		Device.SetShader(Device.m_WireShader);

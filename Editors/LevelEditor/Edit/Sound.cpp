@@ -10,6 +10,7 @@
 #include "Sound.h"
 #include "Frustum.h"
 #include "d3dutils.h"
+#include "PropertiesListTypes.h"
 
 #define VIS_RADIUS 0.25f
 #define SOUND_SEL_COLOR 	0x00FFFFFF
@@ -29,10 +30,10 @@ CSound::CSound(LPVOID data, LPCSTR name)
 }
 
 void CSound::Construct(LPVOID data){
-	ClassID=OBJCLASS_SOUND;
+	ClassID		= OBJCLASS_SOUND;
 
-	m_Range = 8.f;
-	m_fName[0] = 0;
+	m_Range 	= 8.f;
+	m_WAVName	= "";
 }
 
 CSound::~CSound(){
@@ -82,41 +83,43 @@ bool CSound::Load(CStream& F){
 	DWORD version = 0;
 
     R_ASSERT(F.ReadChunk(SOUND_CHUNK_VERSION,&version));
-    if((version!=0x0010)&&(version!=SOUND_VERSION)){
+    if(version!=SOUND_VERSION){
         ELog.DlgMsg( mtError, "CSound: Unsupported version.");
         return false;
     }
 
-	CCustomObject::Load(F);
+	inherited::Load(F);
 
-    if (version==0x0010){
-	    R_ASSERT(F.FindChunk(SOUND_CHUNK_PARAMS));
-		F.RstringZ	(m_fName);
-		F.Rvector	(FPosition);
-		m_Range 	= F.Rfloat();
-    }else{
-	    R_ASSERT(F.FindChunk(SOUND_CHUNK_PARAMS2));
-		F.RstringZ	(m_fName);
-		m_Range 	= F.Rfloat();
-    }
+    string1024		buf;
+    R_ASSERT(F.FindChunk(SOUND_CHUNK_PARAMS2));
+    F.RstringZ		(buf); m_WAVName=buf;
+    m_Range 		= F.Rfloat();
 
-    UpdateTransform();
+    UpdateTransform	();
 
     return true;
 }
 
 void CSound::Save(CFS_Base& F){
-	CCustomObject::Save(F);
+	inherited::Save(F);
 
 	F.open_chunk	(SOUND_CHUNK_VERSION);
 	F.Wword			(SOUND_VERSION);
 	F.close_chunk	();
 
 	F.open_chunk	(SOUND_CHUNK_PARAMS2);
-	F.WstringZ		(m_fName);
+	F.WstringZ		(m_WAVName.c_str());
 	F.Wfloat		(m_Range);
 	F.close_chunk	();
 }
 
+//----------------------------------------------------
+
+void CSound::FillProp(LPCSTR pref, PropItemVec& values)
+{
+	inherited::FillProp(pref,values);
+    PHelper.CreateALibSound	(values,PHelper.PrepareKey(pref,"WAVE name"),	&m_WAVName);
+    PHelper.CreateFloat		(values,PHelper.PrepareKey(pref,"Range"),		&m_Range,0.1f,1000.f,0.1f,1);
+}
 //----------------------------------------------------
 

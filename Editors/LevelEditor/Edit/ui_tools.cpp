@@ -242,22 +242,32 @@ bool TUI_Tools::Pick()
 }
 //---------------------------------------------------------------------------
 
-#include "PropertiesSceneObject.h"
-#include "PropertiesGroup.h"
 #include "PropertiesLight.h"
-#include "PropertiesSound.h"
-#include "PropertiesGlow.h"
 #include "PropertiesSector.h"
 #include "PropertiesPortal.h"
 #include "PropertiesEvent.h"
 #include "PropertiesPS.h"
-#include "PropertiesRPoint.h"
 #include "PropertiesWayPoint.h"
 
 void TUI_Tools::ShowProperties()
 {
-	UpdateProperties();
-	m_Props->ShowProperties			();
+    ObjectList lst;
+    EObjClass cls_id				= CurrentClassID();
+    if (Scene.GetQueryObjects		(lst,cls_id)){
+        bool bChange				= false;
+        switch(cls_id){
+        case OBJCLASS_LIGHT:    	frmPropertiesLightRun(&lst,bChange);	   	break;
+        case OBJCLASS_SECTOR:   	frmPropertiesSectorRun(&lst,bChange); 		break;
+        case OBJCLASS_EVENT:   		frmPropertiesEventRun(&lst,bChange);		break;
+        case OBJCLASS_WAY:   		TfrmPropertiesWayPoint::Run(&lst,bChange);	break;
+        case OBJCLASS_PS:			TfrmPropertiesPS::Run(&lst,bChange);		break;
+        default:
+            m_Props->ShowProperties	();
+            UpdateProperties		();
+        }
+        if (bChange) Scene.UndoSave();
+        UI.RedrawScene();
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -269,47 +279,25 @@ void TUI_Tools::HideProperties()
 
 void TUI_Tools::UpdateProperties()
 {
-    ObjectList lst;
-    EObjClass cls_id				= CurrentClassID();
-    if (Scene.GetQueryObjects(lst,cls_id)){
-		PropValueVec values;
-        for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
-        	LPCSTR pref				= GetClassNameByClassID((*it)->ClassID);
-        	(*it)->FillProp	 		(pref,values);
+	if (m_Props->Visible){
+		if (m_Props->IsModified()) Scene.UndoSave();
+        ObjectList lst;
+        EObjClass cls_id				= CurrentClassID();
+        PropItemVec values;
+        if (Scene.GetQueryObjects(lst,cls_id)){
+            for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
+                LPCSTR pref				= GetClassNameByClassID((*it)->ClassID);
+                (*it)->FillProp	 		(pref,values);
+            }
         }
-		m_Props->AssignValues		(values,true,"Object Inspector");
-		Scene.UndoSave();
-//        	switch((*it)->ClassID){
-//            case OBJCLASS_SHAPE:		 break;
-//	        case OBJCLASS_SPAWNPOINT:   TfrmPropertiesSpawnPoint::Run(&lst,bChange);break;
-/*    	
-        
-        bool bChange				= false;
-        switch(cls_id){
-        case OBJCLASS_GROUP:		TfrmPropertiesGroup::Run(&lst,bChange);    	break;
-        case OBJCLASS_SCENEOBJECT:	TfrmPropertiesSceneObject::Run(&lst,bChange);break;
-        case OBJCLASS_LIGHT:    	frmPropertiesLightRun(&lst,bChange);	   	break;
-        case :{
-        }break;
-        case OBJCLASS_SOUND:    	frmPropertiesSoundRun(&lst,bChange); 		break;
-        case OBJCLASS_GLOW:     	frmPropertiesGlowRun(&lst,bChange);			break;
-        case OBJCLASS_SECTOR:   	frmPropertiesSectorRun(&lst,bChange); 		break;
-        case OBJCLASS_EVENT:   		frmPropertiesEventRun(&lst,bChange);		break;
-        case OBJCLASS_SPAWNPOINT:   TfrmPropertiesSpawnPoint::Run(&lst,bChange);break;
-        case OBJCLASS_WAY:   		TfrmPropertiesWayPoint::Run(&lst,bChange);	break;
-        case OBJCLASS_PS:			TfrmPropertiesPS::Run(&lst,bChange);		break;
-        default:{ ELog.Msg(mtInformation, "Can't find properties form.");}
-        }
-        if (bChange) Scene.UndoSave();
-        UI.RedrawScene();
-*/
+		m_Props->AssignItems		(values,true,"Object Inspector");
     }
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TUI_Tools::OnPropsClose()
 {
-	Scene.UndoSave();
+	if (m_Props->IsModified()) Scene.UndoSave();
 }
 //---------------------------------------------------------------------------
 

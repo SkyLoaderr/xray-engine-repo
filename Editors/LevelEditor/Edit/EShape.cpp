@@ -279,7 +279,7 @@ void CEditShape::Save(CFS_Base& F)
 	F.close_chunk	();
 }
 
-void CEditShape::FillProp(LPCSTR pref, PropValueVec& values)
+void CEditShape::FillProp(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp(pref,values);
 }

@@ -50,6 +50,7 @@ public:
 	Fmatrix 		FITransform;
 
     CGroupObject*	m_pGroupObject;
+	void __fastcall OnObjectNameAfterEdit(PropValue* sender, LPVOID edit_val);
 protected:
 	LPSTR			GetName			(){return FName; }
 	void			SetName			(LPCSTR N){strcpy(FName,N); strlwr(FName); }
@@ -68,7 +69,7 @@ public:
     IC BOOL			Valid			(){return m_bValid;}
 
 	// editor integration
-	virtual void	FillProp		(LPCSTR pref, PropValueVec& values);
+	virtual void	FillProp		(LPCSTR pref, PropItemVec& items);
 
 	virtual void 	Select			(int  flag);
 	virtual void 	Show			(BOOL flag);

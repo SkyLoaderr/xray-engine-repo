@@ -283,8 +283,9 @@ void CLight::Save(CFS_Base& F){
 }
 //----------------------------------------------------
 
-void CLight::FillProp(LPCSTR pref, PropValueVec& values)
+void CLight::FillProp(LPCSTR pref, PropItemVec& values)
 {
+/*
 	inherited::FillProp(pref,values);
 	FILL_PROP_EX(values,	pref,	"Color",			&m_D3D.diffuse,	PHelper.CreateFColor());
 	FILL_PROP_EX(values,	pref,	"Brightness",		&m_Brightness,	PHelper.CreateFloat	(-3.f,3.f,0.1f,2));
@@ -293,11 +294,13 @@ void CLight::FillProp(LPCSTR pref, PropValueVec& values)
 	FILL_PROP_EX(values,	pref,	"Usage\\Dynamic",	&m_dwFlags,		PHelper.CreateFlag	(CLight::flAffectDynamic));
 	FILL_PROP_EX(values,	pref,	"Usage\\Animated",	&m_dwFlags,		PHelper.CreateFlag	(CLight::flProcedural));
 	FILL_PROP_EX(values,	pref,	"Flags\\Breakable",	&m_dwFlags,		PHelper.CreateFlag	(CLight::flBreaking));
+*/
 }
 //----------------------------------------------------
 
-void CLight::FillSunProp(LPCSTR pref, PropValueVec& values)
+void CLight::FillSunProp(LPCSTR pref, PropItemVec& values)
 {
+/*
 	CEditFlare& F 			= m_LensFlare;
 	FILL_PROP_EX(values,	pref, "Source\\Enabled",	&F.m_dwFlags,			PHelper.CreateFlag	(CEditFlare::flSource));
 	FILL_PROP_EX(values,	pref, "Source\\Radius",		&F.m_Source.fRadius,	PHelper.CreateFloat	(0.f,10.f));
@@ -316,23 +319,28 @@ void CLight::FillSunProp(LPCSTR pref, PropValueVec& values)
 		FILL_PROP_EX(values,pref, AnsiString(nm+"\\Position").c_str(),	&it->fPosition,	PHelper.CreateFloat	(-10.f,10.f));
 		FILL_PROP_EX(values,pref, AnsiString(nm+"\\Texture").c_str(),	it->texture,	PHelper.CreateTexture	(sizeof(it->texture)));
 	}
+*/
 }
 //----------------------------------------------------
 
-void CLight::FillPointProp(LPCSTR pref, PropValueVec& values)
+void CLight::FillPointProp(LPCSTR pref, PropItemVec& values)
 {
+/*
 	FILL_PROP_EX(values,	pref, "Range",					&m_D3D.range,			PHelper.CreateFloat	(0.1f,1000.f));
 	FILL_PROP_EX(values,	pref, "Attenuation\\Constant",	&m_D3D.attenuation0,	PHelper.CreateFloat	(0.f,1.f,0.0001f,6));
 	FILL_PROP_EX(values,	pref, "Attenuation\\Linear",	&m_D3D.attenuation1,	PHelper.CreateFloat	(0.f,1.f,0.0001f,6));
 	FILL_PROP_EX(values,	pref, "Attenuation\\Quadratic",	&m_D3D.attenuation2,	PHelper.CreateFloat	(0.f,1.f,0.0001f,6));
+*/
 }
 //----------------------------------------------------
 
-void CLight::FillSpotProp(LPCSTR pref, PropValueVec& values)
+void CLight::FillSpotProp(LPCSTR pref, PropItemVec& values)
 {
+/*
 	FILL_PROP_EX(values,	pref, "Range",					&m_D3D.range,			PHelper.CreateFloat	(0.1f,1000.f));
 	FILL_PROP_EX(values,	pref, "Cone Angle",				&m_D3D.phi,				PHelper.CreateFloat	(0.1f,120.f,0.01f,2,0,PHelper.floatRDOnAfterEdit,PHelper.floatRDOnBeforeEdit,PHelper.floatRDOnDraw));
 	FILL_PROP_EX(values,	pref, "Attenuation\\Texture",	&m_SpotAttTex,			PHelper.CreateATexture());
+*/
 }
 //----------------------------------------------------
 

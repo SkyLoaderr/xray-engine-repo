@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 582
+  Height = 277
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -524,6 +524,7 @@ object fraLeftBar: TfraLeftBar
         Font.Style = []
         Margin = 13
         ParentFont = False
+        OnClick = ebIgnoreModeClick
       end
     end
     object paTarget: TPanel

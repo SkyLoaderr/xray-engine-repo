@@ -11,8 +11,8 @@ AnsiString prop_draw_text;
 // AnsiTextValue
 //------------------------------------------------------------------------------
 LPCSTR ATextValue::GetText(){
-    prop_draw_text=*values.front();
-    if (OnDrawValue)OnDrawValue(this, &prop_draw_text);
+    prop_draw_text=*value;
+    if (DrawValueEvent)DrawValueEvent(this, &prop_draw_text);
     return prop_draw_text.c_str();
 }
 //------------------------------------------------------------------------------
@@ -22,8 +22,8 @@ LPCSTR ATextValue::GetText(){
 //------------------------------------------------------------------------------
 LPCSTR TextValue::GetText()
 {
-    prop_draw_text=values.front();
-    if (OnDrawValue)OnDrawValue(this, &prop_draw_text);
+    prop_draw_text=value;
+    if (DrawValueEvent)DrawValueEvent(this, &prop_draw_text);
     return prop_draw_text.c_str();
 }
 //------------------------------------------------------------------------------
@@ -59,7 +59,7 @@ LPCSTR TextValue::GetText()
 LPCSTR 	TokenValue::GetText()
 {
 	int draw_val 	= GetValue();
-    if (OnDrawValue)OnDrawValue(this, &draw_val);
+    if (DrawValueEvent)DrawValueEvent(this, &draw_val);
 	for(int i=0; token[i].name; i++) if (0==memcmp(&token[i].id,&draw_val,p_size)) return token[i].name;
     return 0;
 }
@@ -71,7 +71,7 @@ LPCSTR 	TokenValue::GetText()
 LPCSTR 	TokenValue2::GetText()
 {
 	DWORD draw_val 	= GetValue();
-    if (OnDrawValue)OnDrawValue(this, &draw_val);
+    if (DrawValueEvent)DrawValueEvent(this, &draw_val);
     if (draw_val>=items.size()) return 0;
 	return items[draw_val].c_str();
 }
@@ -84,7 +84,7 @@ LPCSTR TokenValue3::GetText()
 {
 	VERIFY(GetValue()<cnt);
 	DWORD draw_val 	= GetValue();
-    if (OnDrawValue)OnDrawValue(this, &draw_val);
+    if (DrawValueEvent)DrawValueEvent(this, &draw_val);
     return items[draw_val].str;
 }
 //------------------------------------------------------------------------------
@@ -95,7 +95,7 @@ LPCSTR TokenValue3::GetText()
 LPCSTR	ListValue::GetText()
 {
     prop_draw_text=GetValue();
-    if (OnDrawValue)OnDrawValue(this, &prop_draw_text);
+    if (DrawValueEvent)DrawValueEvent(this, &prop_draw_text);
     return prop_draw_text.c_str();
 }
 //------------------------------------------------------------------------------

@@ -496,7 +496,7 @@ void SceneBuilder::BuildGlow(CGlow* e)
 	b.P.set        	(e->PPosition);
     b.size        	= e->m_fRadius;
 	b.dwMaterial   	= mtl_idx;
-    b.flags			= e->IsFlag(CGlow::gfFixedSize)?0x01:0x00;	// 0x01 - non scalable
+    b.flags			= e->m_Flags.is(CGlow::gfFixedSize)?0x01:0x00;	// 0x01 - non scalable
 }
 //------------------------------------------------------------------------------
 

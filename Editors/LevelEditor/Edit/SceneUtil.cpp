@@ -15,15 +15,6 @@
 #include "Render.h"
 
 //----------------------------------------------------
-void __fastcall EScene::OnObjectNameAfterEdit(PropValue* sender, LPVOID edit_val)
-{
-	TextValue* V = (TextValue*)sender;
-	AnsiString* new_name = (AnsiString*)edit_val;
-	if (FindObjectByName(new_name->c_str(),0)) *new_name = V->GetValue();
-    else *new_name = new_name->LowerCase();
-}
-//---------------------------------------------------------------------------
-
 CCustomObject* EScene::FindObjectByName( LPCSTR name, EObjClass classfilter ){
 	ObjectIt _F = FirstObj(classfilter);
     ObjectIt _E = LastObj(classfilter);

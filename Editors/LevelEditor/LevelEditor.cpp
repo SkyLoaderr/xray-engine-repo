@@ -10,8 +10,6 @@ USEFORM("FrameObject.cpp", fraObject);
 USEFORM("FrameSector.cpp", fraSector);
 USEFORM("FramePortal.cpp", fraPortal);
 USEFORM("PropertiesLight.cpp", frmPropertiesLight);
-USEFORM("PropertiesSound.cpp", frmPropertiesSound);
-USEFORM("PropertiesGlow.cpp", frmPropertiesGlow);
 USEFORM("PropertiesSector.cpp", frmPropertiesSector);
 USEFORM("PropertiesPortal.cpp", frmPropertiesPortal);
 USEFORM("SceneProperties.cpp", frmSceneProperties);
@@ -29,7 +27,6 @@ USEFORM("ImageEditor.cpp", frmTextureLib);
 USEFORM("FramePS.cpp", fraPS); /* TFrame: File Type */
 USEFORM("previewimage.cpp", frmPreviewImage);
 USEFORM("FrameEmitter.cpp", fraEmitter); /* TFrame: File Type */
-USEFORM("PropertiesRPoint.cpp", frmPropertiesSpawnPoint);
 USEFORM("FrameRPoint.cpp", fraSpawnPoint); /* TFrame: File Type */
 USEFORM("FrameWayPoint.cpp", fraWayPoint); /* TFrame: File Type */
 USEFORM("FrameDetObj.cpp", fraDetailObject); /* TFrame: File Type */
@@ -37,12 +34,10 @@ USEFORM("DOShuffle.cpp", frmDOShuffle);
 USEFORM("DOOneColor.cpp", frmOneColor);
 USEFORM("PropertiesDetailObject.cpp", frmPropertiesDO);
 USEFORM("PropertiesList.cpp", Properties);
-USEFORM("PropertiesSceneObject.cpp", frmPropertiesSceneObject);
 USEFORM("EventOneAction.cpp", frmOneEventAction);
 USEFORM("EditLightAnim.cpp", frmEditLightAnim);
 USEFORM("PropertiesEObject.cpp", frmPropertiesEObject);
 USEFORM("FrameGroup.cpp", fraGroup); /* TFrame: File Type */
-USEFORM("PropertiesGroup.cpp", frmPropertiesGroup);
 USEFORM("FrameEvent.cpp", fraEvent); /* TFrame: File Type */
 USEFORM("TextForm.cpp", frmText);
 USEFORM("PropertiesWayPoint.cpp", frmPropertiesWayPoint);

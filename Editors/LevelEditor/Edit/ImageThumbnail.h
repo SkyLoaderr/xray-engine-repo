@@ -42,7 +42,7 @@ public:
 	bool 			Load			(LPCSTR src_name=0, FSPath* path=0);
 	void 			Save			(int age=0,FSPath* path=0);
     IC bool			Valid			(){return !m_Pixels.empty();}
-	void			FillProp		(PropValueVec& values);
+	void			FillProp		(PropItemVec& values);
 };
 //----------------------------------------------------
 #endif /*_INCDEF_Texture_H_*/

@@ -323,8 +323,9 @@ bool CEditableObject::PrepareSV(CFS_Base& F)
     return E.Export(F);
 }
 
-void CEditableObject::FillPropSummary(LPCSTR pref, PropValueVec& values)
+void CEditableObject::FillPropSummary(LPCSTR pref, PropItemVec& values)
 {
+/*
     AnsiString t; t.sprintf("V: %d, F: %d",		GetVertexCount(),GetFaceCount());
     FILL_PROP_EX(values, pref, "Summary\\Object",		t.c_str(), 		PHelper.CreateMarker());
     for (EditMeshIt m_it=FirstMesh(); m_it!=LastMesh(); m_it++){
@@ -333,10 +334,12 @@ void CEditableObject::FillPropSummary(LPCSTR pref, PropValueVec& values)
         FILL_PROP_EX(values, pref, AnsiString(AnsiString("Summary\\Meshes\\")+MESH->GetName()).c_str(),	t.c_str(), PHelper.CreateMarker());
     }
     FILL_PROP_EX(values, pref, "Game options\\Script",	&m_ClassScript,		PHelper.CreateAText());
+*/
 }
 
-void CEditableObject::FillPropSurf(LPCSTR pref, PropValueVec& values, TOnChange onchange)
+void CEditableObject::FillPropSurf(LPCSTR pref, PropItemVec& values, TOnChange onchange)
 {
+/*
     for (SurfaceIt s_it=FirstSurface(); s_it!=LastSurface(); s_it++){
         CSurface* SURF	= *s_it;
         AnsiString nm 	= AnsiString("Surfaces\\")+SURF->_Name();
@@ -348,6 +351,7 @@ void CEditableObject::FillPropSurf(LPCSTR pref, PropValueVec& values, TOnChange 
         FILL_PROP_EX(values, pref, AnsiString(nm+"\\2 Sided").c_str(), 		&SURF->m_Flags.flags,			PHelper.CreateFlag(CSurface::sf2Sided,0,0,0,0,onchange));
         FILL_PROP_EX(values, pref, AnsiString(nm+"\\Face count").c_str(), 	AnsiString(face_cnt).c_str(), 	PHelper.CreateMarker());
     }
+*/
 }
 //---------------------------------------------------------------------------
 

@@ -326,8 +326,8 @@ public:
   	bool 			Load					(CStream&);
 	void 			Save					(CFS_Base&);
 #ifdef _EDITOR
-    void			FillPropSummary			(LPCSTR pref, PropValueVec& values);
-    void			FillPropSurf			(LPCSTR pref, PropValueVec& values, TOnChange change=0);
+    void			FillPropSummary			(LPCSTR pref, PropItemVec& values);
+    void			FillPropSurf			(LPCSTR pref, PropItemVec& values, TOnChange change=0);
 #endif
 	bool			Import_LWO				(LPCSTR fname, bool bNeedOptimize);
 

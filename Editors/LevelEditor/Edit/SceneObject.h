@@ -9,23 +9,19 @@
 //----------------------------------------------------
 
 class CSceneObject : public CCustomObject {
-	CEditableObject*m_pRefs;
+	AnsiString		m_ReferenceName;
+	CEditableObject*m_pReference;
     st_Version		m_ObjVer;
+	void __fastcall ReferenceChange			(PropValue* sender);
 public:
 	enum{
-		eDummy 	 	= (1<<0),
-		eFORCE32	= DWORD(-1)
+		flDummy 	= (1<<0),
+		flFORCE32	= u32(-1)
     };
 private:
 	Fbox			m_TBBox;
 	// options
-	DWORD			m_dwFlags;
-public:
-    // get object properties methods
-	IC DWORD& 		GetFlags	   			(){return m_dwFlags; }
-	IC bool 		IsFlag	     			(DWORD flag){return !!(m_dwFlags&flag); }
-    IC void			SetFlag					(DWORD flag){m_dwFlags|=flag;}
-    IC void			ResetFlag				(DWORD flag){m_dwFlags&=~flag;}
+    Flags32			m_Flags;
 public:
 	// sounds
     AStringVec		m_Sounds;
@@ -72,7 +68,7 @@ public:
 	virtual void 	SetRotation				(Fvector& rot)	{ if (m_ActiveOMotion) m_vMotionRotation.set(rot); else FRotation.set(rot);	UpdateTransform();}
     virtual void 	SetScale				(Fvector& scale)
     { 
-    	if (m_pRefs&&m_pRefs->IsDynamic()){
+    	if (m_pReference&&m_pReference->IsDynamic()){
         	ELog.Msg(mtError,"Dynamic object %s - can't scale.", Name);
         }else{
 			FScale.set(scale); 
@@ -90,18 +86,19 @@ public:
 	virtual void 	Select					(BOOL flag);
 	void 			Construct				(LPVOID data);
 
-    IC bool			CheckVersion			()  {return m_pRefs?(m_ObjVer==m_pRefs->m_ObjVer):false;}
+    IC bool			CheckVersion			()  {return m_pReference?(m_ObjVer==m_pReference->m_ObjVer):false;}
     // get object properties methods
-	IC bool 		RefCompare				(CEditableObject *to){return m_pRefs?!!(m_pRefs==to):false; }
-	IC bool 		RefCompare				(LPCSTR ref){return m_pRefs?(strcmp(ref,m_pRefs->GetName())==0):false; }
-	IC CEditableObject*	GetReference		()	{return m_pRefs; }
+	IC bool 		RefCompare				(CEditableObject *to){return m_pReference?!!(m_pReference==to):false; }
+	IC bool 		RefCompare				(LPCSTR ref){return m_pReference?(strcmp(ref,m_pReference->GetName())==0):false; }
+	IC CEditableObject*	GetReference		()	{return m_pReference; }
 	CEditableObject*SetReference			(LPCSTR ref_name);
-	IC EditMeshVec* Meshes					() {return m_pRefs?&m_pRefs->Meshes():0;}
-    IC LPCSTR		GetRefName				() {return m_pRefs?m_pRefs->GetName():0;}
+	CEditableObject*UpdateReference			();
+	IC EditMeshVec* Meshes					() {return m_pReference?&m_pReference->Meshes():0;}
+    IC LPCSTR		GetRefName				() {return m_pReference?m_pReference->GetName():0;}
 
     // statistics methods
-	IC bool 		IsDynamic     			()	{return (m_pRefs?m_pRefs->IsDynamic():false); }
-	IC bool 		IsStatic     			()	{return (m_pRefs?m_pRefs->IsStatic():false); }
+	IC bool 		IsDynamic     			()	{return (m_pReference?m_pReference->IsDynamic():false); }
+	IC bool 		IsStatic     			()	{return (m_pReference?m_pReference->IsStatic():false); }
     int 			GetFaceCount			();
     void			GetFaceWorld			(CEditableMesh* M, int idx, Fvector* verts);
 	int 			GetVertexCount			();
@@ -135,6 +132,9 @@ public:
 	virtual bool 	GetUTBox				(Fbox& box);
     void 			GetFullTransformToWorld	(Fmatrix& m);
     void 			GetFullTransformToLocal	(Fmatrix& m);
+
+	// editor integration
+	virtual void	FillProp				(LPCSTR pref, PropItemVec& values);
 
     // load/save methods
   	virtual bool 	Load					(CStream&);

@@ -252,8 +252,6 @@ public:
 	void 			OnShowHint		(AStringVec& dest);
 
     void			SynchronizeObjects();
-// utils
-	void __fastcall OnObjectNameAfterEdit(PropValue* sender, LPVOID edit_val);
 };
 
 //----------------------------------------------------

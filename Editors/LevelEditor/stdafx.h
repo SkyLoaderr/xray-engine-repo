@@ -207,7 +207,8 @@ struct astr_pred : public binary_function<AnsiString&, AnsiString&, bool>
 	#include "xrXRC.h"
 
 	class PropValue;
-	DEFINE_VECTOR(PropValue*,PropValueVec,PropValueIt);
+	class PropItem;
+	DEFINE_VECTOR(PropItem*,PropItemVec,PropItemIt);
 
 	#include "CustomObject.h"
 #endif

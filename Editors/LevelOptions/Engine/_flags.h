@@ -15,17 +15,17 @@ public:
     IC	void	zero	()											{flags=(T)0x00000000;}
     IC	void	one		()											{flags=(T)0xffffffff;}
     IC	void	invert	()											{flags=!flags;}
-    IC	void	invert	(const Self& flags)							{flags=!flags.flags;}
+    IC	void	invert	(const Self& f)								{flags=!f.flags;}
     IC	void	invert	(const T mask)								{set(mask,!is(mask));}
 	IC	void	set		(const T mask)								{flags=mask;}
 	IC	void	set		(const T mask, BOOL value)					{if (value) flags|=mask; else flags&=~mask; }
 	IC 	BOOL	is		(const T mask)						const	{return !!(flags&mask);}
 	IC 	void	or		(const T mask)								{flags|=mask;}
-	IC 	void	or		(const Self& flags, const T mask) 			{flags=flags.flags|mask;}
+	IC 	void	or		(const Self& f, const T mask) 				{flags=f.flags|mask;}
 	IC 	void	and		(const T mask)								{flags&=mask;}
-	IC 	void	and		(const Self& flags, const T mask) 			{flags=flags.flags&mask;}
-	IC 	BOOL	equal	(const Self& flags) 			  	const	{return flags==flags;}
-	IC 	BOOL	equal	(const Self& flags, const T mask) 	const	{return (flags&mask)&&(flags.flags&mask);}
+	IC 	void	and		(const Self& f, const T mask) 				{flags=f.flags&mask;}
+	IC 	BOOL	equal	(const Self& f) 			  		const	{return flags==f.flags;}
+	IC 	BOOL	equal	(const Self& f, const T mask) 		const	{return (flags&mask)==(f.flags&mask);}
 };
 
 typedef _flags<u8>	Flags8;

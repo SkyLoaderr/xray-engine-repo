@@ -221,56 +221,6 @@ bool CPortalUtils::Validate(bool bMsg){
 	UI.EndEState();
     return bResult;
 }
-/*
-void CPortalUtils::CreateDebugCollection(){
-	VERIFY((Scene.ObjCount(OBJCLASS_SECTOR)==0)&&(Scene.ObjCount(OBJCLASS_PORTAL)==0));
-
-    UI.ProgressStart(6,"Create debug sectors and portal...");
-	UI.ProgressInc();
-
-    // create default sector
-    CreateDefaultSector();
-    CSector* DEF=(CSector*)Scene.FindObjectByName(DEFAULT_SECTOR_NAME,OBJCLASS_SECTOR);
-    if (!DEF) return;
-	UI.ProgressInc();
-
-	// create debug object
-    CSceneObject* O = new CSceneObject(0,"$debug_object_0x247d05e9");
-    if (!O->SetReference("editor\\debug_sector")){ ELog.DlgMsg(mtError,"Creating failed."); _DELETE(O); UI.ProgressEnd(); return; }
-
-	UI.ProgressInc();
-
-    Fbox lev_box, obj_box;
-    Fvector offs; offs.set(0,0,0);
-	if (Scene.GetBox(lev_box,OBJCLASS_SCENEOBJECT)){
-    	offs.set(lev_box.min);
-        O->GetBox(obj_box);
-        offs.sub(obj_box.getradius());
-    }
-    O->Move(offs); O->UpdateTransform(true);
-    Scene.AddObject(O,false);
-	UI.ProgressInc();
-    // create debug sector
-    CSector* S = new CSector("$debug_sector_0x247d05e9");
-    S->CaptureAllUnusedMeshes();
-    Scene.AddObject(S,false);
-	UI.ProgressInc();
-    // create debug portal
-    CPortal* P = new CPortal("$debug_portal_0x247d05e9");
-    P->m_SectorFront = DEF;
-    P->m_SectorBack  = S;
-    P->m_Center.set(0,0,0);
-    P->m_SimplifyVertices.resize(3);
-    P->m_SimplifyVertices[0].set(0,0,0);
-    P->m_SimplifyVertices[1].set(1,0,0);
-    P->m_SimplifyVertices[2].set(0,1,0);
-    P->Move(offs);
-    Scene.AddObject(P,false);
-	UI.ProgressInc();
-
-	UI.ProgressEnd();
-}
-*/
 //--------------------------------------------------------------------------------------------------
 // calculate portals
 //--------------------------------------------------------------------------------------------------

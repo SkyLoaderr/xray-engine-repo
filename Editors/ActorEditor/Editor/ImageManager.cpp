@@ -66,8 +66,7 @@ void CImageManager::MakeThumbnailImage(EImageThumbnail* THM, u32* data, u32 w, u
     if (THM->m_Pixels.empty()) THM->m_Pixels.resize(THUMB_SIZE);
 	THM->m_TexParams.width = w;
 	THM->m_TexParams.height= h;
-    if (a) 	THM->m_TexParams.flag |= STextureParams::flHasAlpha;
-    else	THM->m_TexParams.flag &=~STextureParams::flHasAlpha;
+    THM->m_TexParams.flags.set(STextureParams::flHasAlpha,a);
 	imf_Process(THM->m_Pixels.begin(),THUMB_WIDTH,THUMB_HEIGHT,data,THM->_Width(),THM->_Height(),imf_box);
     THM->VFlip();
 }
@@ -413,7 +412,7 @@ IC void SetCamera(float angle, const Fvector& C, float height, float radius, flo
 
 IC void CopyLODImage(U32Vec& src, U32Vec& dest, u32 src_w, u32 src_h, int id, int pitch)
 {
-	for (int y=0; y<src_h; y++)
+	for (u32 y=0; y<src_h; y++)
     	CopyMemory(dest.begin()+y*pitch+id*src_w,src.begin()+y*src_w,src_w*sizeof(u32));
 }
 
@@ -442,8 +441,8 @@ BOOL ApplyBorders(U32Vec& pixels, u32 w, u32 h, u32 ref)
         result.resize(w*h);
 
         CopyMemory(result.begin(),pixels.begin(),w*h*4);
-        for (int y=0; y<h; y++){
-            for (int x=0; x<w; x++){
+        for (u32 y=0; y<h; y++){
+            for (u32 x=0; x<w; x++){
                 if (RGBA_GETALPHA(pixels[y*w+x])==0) {
                     u32 C=0,r=0,g=0,b=0;
                     GET(pixels,w,h,x-1,y-1,ref,C,r,g,b);

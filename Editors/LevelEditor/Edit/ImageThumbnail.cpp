@@ -66,7 +66,7 @@ void EImageThumbnail::CreateFromData(u32* p, u32 w, u32 h)
 	imf_Process(m_Pixels.begin(),THUMB_WIDTH,THUMB_HEIGHT,p,w,h,imf_box);
     m_TexParams.width = w;
     m_TexParams.height= h;
-    m_TexParams.flag&=~STextureParams::flHasAlpha;
+    m_TexParams.flags.set(STextureParams::flHasAlpha,FALSE);
 }
 
 void EImageThumbnail::CreateFromData(u32* p, u32 w, u32 h, int fc, int vc)
@@ -116,7 +116,7 @@ bool EImageThumbnail::Load(LPCSTR src_name, FSPath* path)
     if (IsTexture()){
         R_ASSERT(F.FindChunk(THM_CHUNK_TEXTUREPARAM));
         F.Read			(&m_TexParams.fmt,sizeof(STextureParams::ETFormat));
-        m_TexParams.flag		= F.Rdword();
+        m_TexParams.flags.set	(F.Rdword());
         m_TexParams.border_color= F.Rdword();
         m_TexParams.fade_color	= F.Rdword();
         m_TexParams.fade_amount	= F.Rdword();
@@ -163,7 +163,7 @@ void EImageThumbnail::Save(int age, FSPath* path){
 	if (IsTexture()){
         F.open_chunk	(THM_CHUNK_TEXTUREPARAM);
         F.write			(&m_TexParams.fmt,sizeof(STextureParams::ETFormat));
-        F.Wdword		(m_TexParams.flag);
+        F.Wdword		(m_TexParams.flags.get());
         F.Wdword		(m_TexParams.border_color);
         F.Wdword		(m_TexParams.fade_color);
         F.Wdword		(m_TexParams.fade_amount);
@@ -203,37 +203,37 @@ void EImageThumbnail::Save(int age, FSPath* path){
     Engine.FS.SetFileAge	(fn,age?age:m_Age);
 }
 
-void EImageThumbnail::FillProp(PropValueVec& values)
+void EImageThumbnail::FillProp(PropItemVec& items)
 {
 	STextureParams& F	= m_TexParams;
 	if (IsTexture()){
-        FILL_PROP(values,	"Format",				(LPVOID)&F.fmt,			PHelper.CreateToken	(tfmt_token,4));
-        FILL_PROP(values,	"Type",					(LPVOID)&F.type,		PHelper.CreateToken	(ttype_token,4));
-            
-        FILL_PROP(values,	"MipMaps\\Enabled",		&F.flag,				PHelper.CreateFlag	(STextureParams::flGenerateMipMaps));
-        FILL_PROP(values,	"MipMaps\\Filter",		(LPVOID)&F.mip_filter,	PHelper.CreateToken	(tparam_token,4));
+        PHelper.CreateToken		(items, "Format",					(u32*)&F.fmt, 			tfmt_token,4);
+        PHelper.CreateToken		(items, "Type",						(u32*)&F.type,			ttype_token,4);
 
-        FILL_PROP(values,	"Details\\Enabled",		&F.flag,				PHelper.CreateFlag	(STextureParams::flHasDetailTexture));
-        FILL_PROP(values,	"Details\\Texture",		F.detail_name,			PHelper.CreateTexture	(sizeof(F.detail_name)));
-        FILL_PROP(values,	"Details\\Scale",		&F.detail_scale,		PHelper.CreateFloat	(0.1f,10000.f,0.1f,2));
+        PHelper.CreateFlag		(items, "MipMaps\\Enabled",			&F.flags,				STextureParams::flGenerateMipMaps);
+        PHelper.CreateToken		(items, "MipMaps\\Filter",			&F.mip_filter,			tparam_token,4);
 
-        FILL_PROP(values,	"Flags\\Grayscale",		&F.flag,				PHelper.CreateFlag	(STextureParams::flGreyScale));
-        FILL_PROP(values,	"Flags\\Binary Alpha",	&F.flag,				PHelper.CreateFlag	(STextureParams::flBinaryAlpha));
-        FILL_PROP(values,	"Flags\\Dither",		&F.flag,				PHelper.CreateFlag	(STextureParams::flDitherColor));
-        FILL_PROP(values,	"Flags\\Dither Each MIP",&F.flag,				PHelper.CreateFlag	(STextureParams::flDitherEachMIPLevel));
-        FILL_PROP(values,	"Flags\\Implicit Lighted",&F.flag,				PHelper.CreateFlag	(STextureParams::flImplicitLighted));
+        PHelper.CreateFlag		(items, "Details\\Enabled",			&F.flags,				STextureParams::flHasDetailTexture);
+        PHelper.CreateTexture	(items, "Details\\Texture",			F.detail_name,			sizeof(F.detail_name));    
+        PHelper.CreateFloat		(items, "Details\\Scale",			&F.detail_scale,		0.1f,10000.f,0.1f,2);
 
-        FILL_PROP(values,	"Fade\\Enabled Color",	&F.flag,				PHelper.CreateFlag	(STextureParams::flFadeToColor));
-        FILL_PROP(values,	"Fade\\Enabled Alpha",	&F.flag,				PHelper.CreateFlag	(STextureParams::flFadeToAlpha));
-        FILL_PROP(values,	"Fade\\Amount",			&F.fade_amount,			PHelper.CreateU32		(0,1000,0));
-        FILL_PROP(values,	"Fade\\Color",			&F.fade_color,			PHelper.CreateColor	());
-            
-        FILL_PROP(values,	"Border\\Enabled Color",&F.flag,				PHelper.CreateFlag	(STextureParams::flColorBorder));
-        FILL_PROP(values,	"Border\\Enabled Alpha",&F.flag,				PHelper.CreateFlag	(STextureParams::flAlphaBorder));
-        FILL_PROP(values,	"Border\\Color",		&F.border_color,		PHelper.CreateColor	());
+        PHelper.CreateFlag		(items, "Flags\\Grayscale",			&F.flags,				STextureParams::flGreyScale);
+        PHelper.CreateFlag		(items, "Flags\\Binary Alpha",		&F.flags,				STextureParams::flBinaryAlpha);
+        PHelper.CreateFlag		(items, "Flags\\Dither",			&F.flags,				STextureParams::flDitherColor);
+        PHelper.CreateFlag		(items, "Flags\\Dither Each MIP",	&F.flags,				STextureParams::flDitherEachMIPLevel);
+        PHelper.CreateFlag		(items, "Flags\\Implicit Lighted",	&F.flags,				STextureParams::flImplicitLighted);
+
+        PHelper.CreateFlag		(items, "Fade\\Enabled Color",		&F.flags,				STextureParams::flFadeToColor);
+        PHelper.CreateFlag		(items, "Fade\\Enabled Alpha",		&F.flags,				STextureParams::flFadeToAlpha);
+        PHelper.CreateU32		(items, "Fade\\Amount",				&F.fade_amount,			0,1000,0);
+        PHelper.CreateColor		(items, "Fade\\Color",				&F.fade_color			);
+
+        PHelper.CreateFlag		(items, "Border\\Enabled Color",	&F.flags,				STextureParams::flColorBorder);
+        PHelper.CreateFlag		(items, "Border\\Enabled Alpha",	&F.flags,				STextureParams::flAlphaBorder);
+        PHelper.CreateColor		(items, "Border\\Color",			&F.border_color			);
     }else{
-        FILL_PROP(values,	"Face Count",			AnsiString(F.face_count).c_str(),	PHelper.CreateMarker());
-        FILL_PROP(values,	"Vertex Count",			AnsiString(F.vertex_count).c_str(),	PHelper.CreateMarker());
+        PHelper.CreateCaption	(items, "Face Count",				AnsiString(F.face_count).c_str());
+        PHelper.CreateCaption	(items, "Vertex Count",				AnsiString(F.vertex_count).c_str());
     }
 }
 

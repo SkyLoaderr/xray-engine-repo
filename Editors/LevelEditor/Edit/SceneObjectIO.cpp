@@ -75,7 +75,7 @@ bool CSceneObject::Load(CStream& F){
 
         // flags
         if (F.FindChunk(SCENEOBJ_CHUNK_FLAGS)){
-        	m_dwFlags	= F.Rdword();
+        	m_Flags.set(F.Rdword());
         }
 
         // object motions
@@ -121,13 +121,13 @@ void CSceneObject::Save(CFS_Base& F){
 	F.close_chunk	();
 
     // reference object version
-    F.open_chunk	(SCENEOBJ_CHUNK_REFERENCE); R_ASSERT2(m_pRefs,"Empty SceneObject REFS");
-    F.write			(&m_pRefs->m_ObjVer,sizeof(m_pRefs->m_ObjVer));
-    F.WstringZ		(m_pRefs->GetName());
+    F.open_chunk	(SCENEOBJ_CHUNK_REFERENCE); R_ASSERT2(m_pReference,"Empty SceneObject REFS");
+    F.write			(&m_pReference->m_ObjVer,sizeof(m_pReference->m_ObjVer));
+    F.WstringZ		(m_ReferenceName.c_str());
     F.close_chunk	();
 
     F.open_chunk	(SCENEOBJ_CHUNK_FLAGS);
-	F.Wdword		(m_dwFlags);
+	F.Wdword		(m_Flags.flags);
     F.close_chunk	();
 
     // object motions
@@ -162,8 +162,8 @@ void CSceneObject::Save(CFS_Base& F){
 
 bool CSceneObject::ExportGame(SExportStreams& F)
 {
-    if (IsDynamic()&&IsFlag(eDummy)){
-    	R_ASSERT(m_pRefs);
+    if (IsDynamic()&&m_Flags.is(flDummy)){
+    	R_ASSERT(m_pReference);
     	// export spawn packet
         xrSE_Dummy			dummy; 
         strcpy(dummy.s_name, "m_dummy");
@@ -189,7 +189,7 @@ bool CSceneObject::ExportGame(SExportStreams& F)
         dummy.s_Model 		= xr_strdup(mdl_name);
         strconcat			(mdl_name,Builder.m_LevelPath.m_Path,Name,".ogf");
 		Engine.FS.VerifyPath(mdl_name);
-        if (m_pRefs->IsSkeleton()) m_pRefs->ExportSkeletonOGF(mdl_name); else m_pRefs->ExportObjectOGF(mdl_name);
+        if (m_pReference->IsSkeleton()) m_pReference->ExportSkeletonOGF(mdl_name); else m_pReference->ExportObjectOGF(mdl_name);
 		// esSound
         if (IsSoundable()){
 	        string256 snd_name;	strconcat(snd_name,Name,".wav");
