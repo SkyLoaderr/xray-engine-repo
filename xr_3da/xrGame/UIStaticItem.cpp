@@ -14,7 +14,7 @@ CUIStaticItem::CUIStaticItem()
 
 CUIStaticItem::~CUIStaticItem()
 {
-	Device.Shader.Delete(hShader);
+	if (hShader) Device.Shader.Delete(hShader);
 }
 //--------------------------------------------------------------------
 
