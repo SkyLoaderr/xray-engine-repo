@@ -106,7 +106,7 @@ class CBone
 	Fvector			    mot_rotate;		// XYZ format (Game format)
 	float			    mot_length;
 
-    Fmatrix			    rest_transform;
+    Fmatrix			    rest_transform; 
     Fmatrix			    mot_transform;
 
     Fmatrix			    last_transform;
