@@ -406,6 +406,8 @@ void CAI_Stalker::Think()
 
 	Msg("%s : [A=%d][B=%d][C=%d][D=%d][E=%d][F=%d][G=%d][H=%d][I=%d][J=%d][K=%d][L=%d][M=%d]",cName(),A,B,C,D,E,F,G,H,I,J,K,L,M);
 	
+	Fvector					tPoint;
+
 	m_bStateChanged = K != _K;
 	if (!g_Alive()) {
 		WRITE_TO_LOG		("Death");
@@ -535,7 +537,7 @@ void CAI_Stalker::Think()
 	if (A && !K && !H && !L) {
 		WRITE_TO_LOG			("Exploring danger non-expedient sound");
 		m_dwInertion			= 20000;
-		Fvector					tPoint = m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
+		tPoint					= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 		AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
 		tPoint.y				= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
 		vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
@@ -543,7 +545,7 @@ void CAI_Stalker::Think()
 	if (A && !K && H && !L) {
 		WRITE_TO_LOG			("Exploring danger expedient sound");
 		m_dwInertion			= 20000;
-		Fvector					tPoint = m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
+		tPoint					= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 		AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
 		if (getAI().bfInsideNode(getAI().Node(m_tpaDynamicSounds[m_iSoundIndex].dwNodeID),tPoint))
 			tPoint.y			= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
@@ -554,7 +556,7 @@ void CAI_Stalker::Think()
 	if (A && !K && !H && L) {
 		WRITE_TO_LOG			("Exploring danger non-expedient sound");
 		m_dwInertion			= 20000;
-		Fvector					tPoint = m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
+		tPoint					= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 		AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
 		tPoint.y				= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
 		vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
@@ -562,7 +564,7 @@ void CAI_Stalker::Think()
 	if (A && !K && H && L) {
 		WRITE_TO_LOG			("Exploring danger expedient sound");
 		m_dwInertion			= 20000;
-		Fvector					tPoint = m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
+		tPoint					= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 		AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
 		tPoint.y				= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
 		vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
@@ -571,7 +573,7 @@ void CAI_Stalker::Think()
 	if (B && !K && !H && !L) {
 		WRITE_TO_LOG			("Exploring non-danger non-expedient sound");
 		m_dwInertion			= 10000;
-		Fvector					tPoint = m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
+		tPoint					= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 		AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
 		tPoint.y				= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
 		vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
@@ -579,7 +581,7 @@ void CAI_Stalker::Think()
 	if (B && !K && H && !L) {
 		WRITE_TO_LOG			("Exploring non-danger expedient sound");
 		m_dwInertion			= 10000;
-		Fvector					tPoint = m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
+		tPoint					= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 		AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
 		tPoint.y				= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
 		vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
@@ -587,7 +589,7 @@ void CAI_Stalker::Think()
 	if (B && !K && !H && L) {
 		WRITE_TO_LOG			("Exploring non-danger non-expedient sound");
 		m_dwInertion			= 10000;
-		Fvector					tPoint = m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
+		tPoint					= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 		AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
 		tPoint.y				= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
 		vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
@@ -595,7 +597,7 @@ void CAI_Stalker::Think()
 	if (B && !K && H && L) {
 		WRITE_TO_LOG			("Exploring non-danger expedient sound");
 		m_dwInertion			= 10000;
-		Fvector					tPoint = m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
+		tPoint					= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 		AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
 		tPoint.y				= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
 		vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
@@ -603,7 +605,6 @@ void CAI_Stalker::Think()
 	if (M) {
 		WRITE_TO_LOG			("Searching for items");
 		// taking items
-		Fvector					tPoint;
 		m_tpItemToTake->svCenter(tPoint);
 		AI_Path.DestNode		= m_tpItemToTake->AI_NodeID;
 		tPoint.y				= getAI().ffGetY(*m_tpItemToTake->AI_Node,tPoint.x,tPoint.z);
@@ -611,7 +612,7 @@ void CAI_Stalker::Think()
 	} else
 	{
 		// going via graph nodes
-		WRITE_TO_LOG			("Accomnplishing task");
+		WRITE_TO_LOG			("Accomplishing task");
 		vfUpdateSearchPosition	();
 		AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
 		float					yaw,pitch;
@@ -623,6 +624,9 @@ void CAI_Stalker::Think()
 			vfSetParameters(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeNormal,eLookTypeDirection);
 	}
 	
+	if (J && (vPosition.distance_to(tPoint) < 5.f))
+		J = A = B = false;
+
 	m_bStateChanged			= m_ePreviousState != m_eCurrentState;
 
 	_A	= A;
