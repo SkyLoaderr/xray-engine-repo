@@ -28,5 +28,5 @@ end
 function CSE_NewAttachableItem:FillProps	(pref,items)
 	log							("CSE_NewAttachableItem::FillProps called!")
 	cse_alife_item.FillProps	(self,pref,items)
-	properties_helper():create_s32(items,"script\\s32\\0",self._s32)
+//	properties_helper():create_s32(items,"script\\s32\\0",self._s32)
 end
