@@ -8,6 +8,8 @@
 
 #pragma once
 
+#define MAX_NODES				65535
+
 #pragma pack(push,4)
 typedef struct tagSNode {
 	int			ucOpenCloseMask:8;
@@ -70,7 +72,7 @@ private:
 public:
 	CAStarSearch()
 	{
-		m_dwMaxNodeCount = 65535;
+		m_dwMaxNodeCount = MAX_NODES;
 	}
 
 	CAStarSearch(u32 dwMaxNodeCount)
