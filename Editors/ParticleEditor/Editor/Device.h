@@ -179,6 +179,7 @@ enum {
     rsDrawGrid			= (1ul<<6ul),
 	rsStatistic			= (1ul<<7ul),
     rsForceHWTransform	= (1ul<<8ul),
+    rsCompressLMAPs		= (1ul<<9ul),
 
 	mtSound				= (1ul<<24ul),
 	mtInput				= (1ul<<25ul)

@@ -189,7 +189,7 @@ void CShaderTools::OnShowHint(AStringVec& ss){
             ss.push_back(AnsiString("Texture: ")+AnsiString(surf->_Texture()));
             ss.push_back(AnsiString("Shader: ")+AnsiString(surf->_ShaderName()));
             ss.push_back(AnsiString("LC Shader: ")+AnsiString(surf->_ShaderXRLCName()));
-            ss.push_back(AnsiString("2 Sided: ")+AnsiString(surf->_2Sided()?"on":"off"));
+            ss.push_back(AnsiString("2 Sided: ")+AnsiString(surf->GetFlag(CSurface::sf2Sided)?"on":"off"));
         }
     }
 }
@@ -200,8 +200,8 @@ void CShaderTools::UpdateObjectShader(){
     	CSurface* surf = *m_EditObject->FirstSurface(); R_ASSERT(surf);
         string512 tex; strcpy(tex,surf->_Texture());
         for (int i=0; i<7; i++){ strcat(tex,","); strcat(tex,surf->_Texture());}
-        if (SEngine.m_CurrentBlender)	surf->ED_SetShader(SEngine.m_CurrentBlender->getName());
-        else							surf->ED_SetShader("editor\\wire");
+        if (SEngine.m_CurrentBlender)	surf->SetShader(SEngine.m_CurrentBlender->getName());
+        else							surf->SetShader("editor\\wire");
         UI.RedrawScene();
 		m_EditObject->OnDeviceDestroy();
     }
