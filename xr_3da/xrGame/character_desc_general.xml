@@ -18,4 +18,17 @@
 		<map_icon x="0" y="0"></map_icon>
 
 	</specific_character>
+		<specific_character id="actor">
+		<name>Actor Character</name>
+		<team>none</team>
+		<reputation>30</reputation>
+		<rank>50</rank>
+		
+		<start_dialog></start_dialog>
+		<actor_dialog></actor_dialog>
+
+		<icon x="0" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+
+	</specific_character>
 </xml>
