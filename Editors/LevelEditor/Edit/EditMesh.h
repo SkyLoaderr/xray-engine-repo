@@ -21,6 +21,14 @@ enum EVMType{
     vmt_force_byte = 0xff
 };
 
+struct st_WB{
+	int 	bone;
+	float 	weight;
+	st_WB	(int b, float w):bone(b),weight(w){;}
+};
+bool operator < (const st_WB& x, const st_WB& y){ return x.weight < y.weight; }
+DEFINE_VECTOR(st_WB,WBVec,WBIt);
+
 struct st_VMapPt{
 	int				vmap_index;	// ссылка на мапу
 	int				index;		// индекс в мапе на uv

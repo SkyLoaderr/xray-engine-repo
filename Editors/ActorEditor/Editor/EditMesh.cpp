@@ -149,14 +149,6 @@ void CEditableMesh::GeneratePNormals()
 #ifdef _EDITOR
 #include "Bone.h"
 
-struct st_WB{
-	int 	bone;
-    float 	weight;
-    		st_WB	(int b, float w):bone(b),weight(w){;}
-};
-bool operator < (const st_WB& x, const st_WB& y){ return x.weight < y.weight; }
-DEFINE_VECTOR(st_WB,WBVec,WBIt);
-
 void CEditableMesh::GenerateSVertices()
 {
 	if (!m_Parent->IsSkeleton()) return;
