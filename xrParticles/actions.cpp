@@ -954,8 +954,8 @@ void PAJet::Execute(ParticleGroup *group)
 }
 void PAJet::Transform(const Fmatrix& m)
 {
-	m.transform_tiny(center.xr(),center.xr());
-	acc.transform_dir(accL,m);
+	m.transform_tiny	(center,center);
+	acc.transform_dir	(accL,m);
 }
 //-------------------------------------------------------------------------------------------------
 
@@ -1096,8 +1096,8 @@ void PAOrbitLine::Execute(ParticleGroup *group)
 }
 void PAOrbitLine::Transform(const Fmatrix& m)
 {
-	m.transform_tiny(p.xr(),pL.xr());
-	m.transform_dir(axis.xr(),axis.xr());
+	m.transform_tiny(p,pL);
+	m.transform_dir(axis,axis);
 }
 //-------------------------------------------------------------------------------------------------
 
@@ -1146,7 +1146,7 @@ void PAOrbitPoint::Execute(ParticleGroup *group)
 }
 void PAOrbitPoint::Transform(const Fmatrix& m)
 {
-	m.transform_tiny(center.xr(),centerL.xr());
+	m.transform_tiny(center,centerL);
 }
 //-------------------------------------------------------------------------------------------------
 
@@ -1486,7 +1486,7 @@ void PATargetVelocity::Execute(ParticleGroup *group)
 }
 void PATargetVelocity::Transform(const Fmatrix& m)
 {
-	m.transform_dir(velocity.xr(),velocityL.xr());
+	m.transform_dir(velocity,velocityL);
 }
 //-------------------------------------------------------------------------------------------------
 
@@ -1585,8 +1585,8 @@ void PAVortex::Execute(ParticleGroup *group)
 }
 void PAVortex::Transform(const Fmatrix& m)
 {
-	m.transform_tiny(center.xr(),centerL.xr());
-	m.transform_dir(axis.xr(),axisL.xr());
+	m.transform_tiny(center,centerL);
+	m.transform_dir(axis,axisL);
 }
 //-------------------------------------------------------------------------------------------------
 
@@ -1952,48 +1952,48 @@ void pDomain::transform(const pDomain& domain, const Fmatrix& m)
 		bb_dest->xform(*bb_from,m);
 		}break;
 	case PDPlane:
-		m.transform_tiny(p1.xr(),domain.p1.xr());
-		m.transform_dir(p2.xr(),domain.p2.xr());
+		m.transform_tiny(p1,domain.p1);
+		m.transform_dir(p2,domain.p2);
 		// radius1 stores the d of the plane eqn.
 		radius1 = -(p1 * p2);
 		break;
 	case PDSphere:
-		m.transform_tiny(p1.xr(),domain.p1.xr());
+		m.transform_tiny(p1,domain.p1);
 		break;
 	case PDCylinder:
 	case PDCone:
-		m.transform_tiny(p1.xr(),domain.p1.xr());
-		m.transform_dir(p2.xr(),domain.p2.xr());
-		m.transform_dir(u.xr(),domain.u.xr());
-		m.transform_dir(v.xr(),domain.v.xr());
+		m.transform_tiny(p1,domain.p1);
+		m.transform_dir(p2,domain.p2);
+		m.transform_dir(u,domain.u);
+		m.transform_dir(v,domain.v);
 		break;
 	case PDBlob:
-		m.transform_tiny(p1.xr(),domain.p1.xr());
+		m.transform_tiny(p1,domain.p1);
 		break;
 	case PDPoint:
-		m.transform_tiny(p1.xr(),domain.p1.xr());
+		m.transform_tiny(p1,domain.p1);
 		break;
 	case PDLine:
-		m.transform_tiny(p1.xr(),domain.p1.xr());
-		m.transform_dir(p2.xr(),domain.p2.xr());
+		m.transform_tiny(p1,domain.p1);
+		m.transform_dir(p2,domain.p2);
 		break;
 	case PDRectangle:
-		m.transform_tiny(p1.xr(),domain.p1.xr());
-		m.transform_dir(p2.xr(),domain.p2.xr());
-		m.transform_dir(u.xr(),domain.u.xr());
-		m.transform_dir(v.xr(),domain.v.xr());
+		m.transform_tiny(p1,domain.p1);
+		m.transform_dir(p2,domain.p2);
+		m.transform_dir(u,domain.u);
+		m.transform_dir(v,domain.v);
 		break;
 	case PDTriangle:
-		m.transform_tiny(p1.xr(),domain.p1.xr());
-		m.transform_dir(p2.xr(),domain.p2.xr());
-		m.transform_dir(u.xr(),domain.u.xr());
-		m.transform_dir(v.xr(),domain.v.xr());
+		m.transform_tiny(p1,domain.p1);
+		m.transform_dir(p2,domain.p2);
+		m.transform_dir(u,domain.u);
+		m.transform_dir(v,domain.v);
 		break;
 	case PDDisc:
-		m.transform_tiny(p1.xr(),domain.p1.xr());
-		m.transform_dir(p2.xr(),domain.p2.xr());
-		m.transform_dir(u.xr(),domain.u.xr());
-		m.transform_dir(v.xr(),domain.v.xr());
+		m.transform_tiny(p1,domain.p1);
+		m.transform_dir(p2,domain.p2);
+		m.transform_dir(u,domain.u);
+		m.transform_dir(v,domain.v);
 		break;
 	default:
 		R_ASSERT2(0,"Unknown domain type.");

@@ -185,7 +185,7 @@ void CLensFlare::OnFrame()
 #ifdef _LEVEL_EDITOR
 	if ( Scene.RayPick(Device.m_Camera.GetPosition(), vSunDir, OBJCLASS_SCENEOBJECT, 0, false, 0))
 #else
-	if ( g_pGameLevel->ObjectSpace.RayTest( Device.vCameraPosition, vSunDir) )
+	if ( g_pGameLevel->ObjectSpace.RayTest( Device.vCameraPosition, vSunDir, 1000.f) )
 #endif
 	{
 		fBlend = fBlend - BLEND_DEC_SPEED * Device.fTimeDelta;

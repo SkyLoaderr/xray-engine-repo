@@ -25,16 +25,6 @@ ICollisionForm::ICollisionForm( CObject* _owner )
 
 ICollisionForm::~ICollisionForm( )
 {
-	if	(g_pGameLevel)	g_pGameLevel->ObjectSpace.Object_Unregister(owner);
-}
-
-void ICollisionForm::OnMove( )
-{
-	if	(g_pGameLevel)	
-	{
-		R_ASSERT	( owner );
-		g_pGameLevel->ObjectSpace.Object_Move	(owner);
-	}
 }
 
 //----------------------------------------------------------------------------------

@@ -62,67 +62,6 @@ CObjectSpace::~CObjectSpace( )
 
 	Device.Shader.Delete		(sh_debug);
 }
-
-//----------------------------------------------------------------------
-IC void CObjectSpace::Object_Register		( CObject *O )
-{
-	R_ASSERT			(O);
-	
-	Irect				rect;
-	ICollisionForm*			M = O->CFORM();
-	R_ASSERT			(M);
-
-	GetRect				(M, rect);
-	M->rect_last		= rect;
-	
-	// add to slots
-	for (int ix=rect.x1; ix<=rect.x2; ix++)	
-		for (int iz=rect.y1; iz<=rect.y2; iz++)
-			Dynamic(ix,iz).lst.push_back(O);
-}
-//----------------------------------------------------------------------
-IC void CObjectSpace::Object_Move			( CObject *O ) 
-{
-	VERIFY		(O);
-	ICollisionForm*	M = O->CFORM();
-
-	Irect&		r0	= M->rect_last;
-	Irect		r1;
-	GetRect		(M, r1);
-	if (r0.cmp(r1))	return;
-
-	int 		ix, iz;
-	for (ix=r0.x1; ix<=r0.x2; ix++)		// remove from slots
-		for (iz=r0.y1; iz<=r0.y2; iz++)
-			if (!r1.in(ix,iz))	{
-				xr_vector<CObject*>&	lst = Dynamic(ix,iz).lst;
-				lst.erase(std::remove(lst.begin(),lst.end(),O),lst.end());
-			}
-			
-			for (ix=r1.x1;ix<=r1.x2;ix++)		// add to slots
-				for (iz=r1.y1;iz<=r1.y2;iz++)
-					if (!r0.in(ix,iz))	Dynamic(ix,iz).lst.push_back(O);
-					
-					M->rect_last.set( r1 );				// set model last rect
-}
-//----------------------------------------------------------------------
-IC void CObjectSpace::Object_Unregister		( CObject *O )
-{
-	R_ASSERT	(O);
-	ICollisionForm*	M = O->CFORM();
-	if (M){
-		Irect&	r0 = M->rect_last;
-
-		int 	ix, iz;
-		for (ix=r0.x1; ix<=r0.x2; ix++){
-			for (iz=r0.y1; iz<=r0.y2; iz++){
-				xr_vector<CObject*>&	lst = Dynamic(ix,iz).lst;
-				lst.erase(std::remove(lst.begin(),lst.end(),O),lst.end());
-			}
-		}
-		M->rect_last.null();
-	}
-}
 //----------------------------------------------------------------------
 IC int	CObjectSpace::GetNearest ( const Fvector &point, float range )
 {

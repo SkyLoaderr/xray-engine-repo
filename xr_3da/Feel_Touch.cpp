@@ -32,12 +32,12 @@ void Touch::feel_touch_update	(Fvector& C, float R)
 
 	// Find nearest objects
 	g_pGameLevel->ObjectSpace.GetNearest	(C,R);
-	CObjectSpace::NL_IT		n_begin		= g_pGameLevel->ObjectSpace.q_nearest.begin	();
-	CObjectSpace::NL_IT		n_end		= g_pGameLevel->ObjectSpace.q_nearest.end	();
-	if (n_end==n_begin)		return;
+	xr_vector<CObject*>::iterator	n_begin	= g_pGameLevel->ObjectSpace.q_nearest.begin	();
+	xr_vector<CObject*>::iterator	n_end	= g_pGameLevel->ObjectSpace.q_nearest.end	();
+	if (n_end==n_begin)				return;
 
 	// Process results (NEW)
-	for (CObjectSpace::NL_IT it = n_begin; it!=n_end; it++)
+	for (xr_vector<CObject*>::iterator it = n_begin; it!=n_end; it++)
 	{
 		CObject* O = *it;
 		if (O->getDestroy())		continue;							// Don't touch candidates for destroy

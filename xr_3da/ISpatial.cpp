@@ -26,8 +26,10 @@ ISpatial::ISpatial(void)
 	spatial.sector			= NULL;
 }
 
-ISpatial::~ISpatial(void)
+ISpatial::~ISpatial		()
 {
+	// Just in case someone forgot to unregister
+	spatial_unregister	();
 }
 
 BOOL	ISpatial::spatial_inside()
@@ -42,14 +44,42 @@ BOOL	ISpatial::spatial_inside()
 	return TRUE;
 }
 
+void	ISpatial::spatial_register	()
+{
+	if (spatial.node_ptr)
+	{
+		// already registered - nothing to do
+	} else {
+		// register
+		g_SpatialSpace.insert	(this);
+	}
+}
+
+void	ISpatial::spatial_unregister()
+{
+	if (spatial.node_ptr)
+	{
+		// remove
+		g_SpatialSpace.remove	(this);
+		spatial.node_ptr		= NULL;
+	} else {
+		// already unregistered
+	}
+}
+
 void	ISpatial::spatial_move	()
 {
-	//*** somehow it was determined that object has been moved
-	//*** check if we are supposed to correct it's spatial location
-	VERIFY		(spatial.node_ptr);
-	if			(spatial_inside())	return;		// ???
-	g_SpatialSpace.remove	(this);
-	g_SpatialSpace.insert	(this);
+	if (spatial.node_ptr)
+	{
+		//*** somehow it was determined that object has been moved
+		//*** check if we are supposed to correct it's spatial location
+		if			(spatial_inside())	return;		// ???
+		g_SpatialSpace.remove	(this);
+		g_SpatialSpace.insert	(this);
+	} else {
+		//*** we are not registered yet, or already unregistered
+		//*** ignore request
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////

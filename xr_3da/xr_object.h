@@ -83,6 +83,8 @@ public:
 	void								Center				(Fvector& C) const;
 	IC const Fmatrix&					XFORM				()			 const	{ return renderable.xform;			}
 	IC Fmatrix&							XFORM				()					{ return renderable.xform;			}
+	virtual void						spatial_register	();
+	virtual void						spatial_unregister	();
 	virtual void						spatial_move		();
 
 	IC Fvector&							Direction			() 					{ return renderable.xform.k;		}

@@ -116,9 +116,9 @@ BOOL CDummyObject::net_Spawn(LPVOID DC)
 	return TRUE;
 }
 
-void CDummyObject::Update		(u32 dt)
+void CDummyObject::shedule_Update		(u32 dt)
 {
-	inherited::Update	(dt);
+	inherited::shedule_Update	(dt);
 
 	if (s_particles)	dynamic_cast<CPSVisual*>(s_particles)->Update(dt);
 }
@@ -128,9 +128,8 @@ void CDummyObject::UpdateCL		()
 	if (s_animator)
 	{
 		s_animator->OnMove		();
-		mRotate.set				(s_animator->GetRotate());
+		XFORM().set				(s_animator->GetRotate());
 		Position().set			(s_animator->GetPosition());
-		UpdateTransform			();
 		if (style&esRelativePosition){
 			R_ASSERT2(0,"CDummyObject: Relative position error.");
 			XFORM().mulB_43	(relation);

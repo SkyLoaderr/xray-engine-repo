@@ -8,38 +8,8 @@
 #include "x_ray.h"
 #include "GameFont.h"
 
-
 using namespace	Collide;
 
-//----------------------------------------------------------------------
-BOOL CObjectSpace::nl_append(int x, int z, const Fvector2& O, const Fvector2& D)
-{
-	if ((x<0)||(z<0)||(x>=Dynamic.x_count)||(z>=Dynamic.z_count)) return false;
-
-	SLOT& S = Dynamic(x,z); 
-	if(dwQueryID!=S.dwQueryID){
-		S.dwQueryID = dwQueryID;
-		if(TestRaySlot(x,z,O,D))
-		{
-			if(bDebug){
-				dbg_Slot.push_back(Fvector2());
-				dbg_Slot.back().set(float(x),float(z));
-			}
-	
-			for(u32 I=0; I<S.lst.size(); I++) 
-			{
-				CObject*	O	= S.lst[I];
-				ICollisionForm*	M	= O->CFORM();
-				if(M->GetEnable() && M->dwQueryID!=dwQueryID){
-					M->dwQueryID=dwQueryID;
-					q_nearest.push_back(O);
-				}
-			}
-		}
-	}
-
-	return true;
-}
 //----------------------------------------------------------------------
 BOOL CObjectSpace::TestRaySlot(int x, int z, const Fvector2& start, const Fvector2& dir){
 	Fvector2 center; InvTrans(center,x,z);

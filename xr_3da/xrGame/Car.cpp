@@ -501,7 +501,10 @@ void CCar::ActivateJeep()
 	Fmatrix							ry,mr;
 	ry.rotateY						(deg2rad(90.f));
 	ry.invert						();
-	Fmatrix33 m33;
+	Fmatrix		mRotate;
+	mRotate.set						(XFORM());
+	mRotate.c.set					(0,0,0);
+	Fmatrix33	m33;
 	mr.mul							(ry,mRotate);
 	m33.set							(mr);
 

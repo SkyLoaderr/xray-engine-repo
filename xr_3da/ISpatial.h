@@ -61,9 +61,11 @@ public:
 		IRender_Sector*			sector;
 	}							spatial;
 public:
-	BOOL						spatial_inside	();
+	BOOL						spatial_inside		();
 public:
-	virtual		void			spatial_move	();
+	virtual		void			spatial_register	();
+	virtual		void			spatial_unregister	();
+	virtual		void			spatial_move		();
 
 	ISpatial					();
 	virtual ~ISpatial			();

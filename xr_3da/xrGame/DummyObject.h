@@ -29,25 +29,24 @@ private:
 	u8									style;
 private:
 	CObjectAnimator*					s_animator;
-	IRender_Visual*							s_particles;
+	IRender_Visual*						s_particles;
 	sound								s_sound;
 	PS::SEmitter						s_emitter;
-	//CPhysicsShell*						m_pPhysicsShell;
 
 	Fmatrix								relation;
 public:
-	virtual void						Load			( LPCSTR section);
-	virtual BOOL						net_Spawn		( LPVOID DC);
-	virtual void						UpdateCL		( );									// Called each frame, so no need for dt
-	virtual void						shedule_Update	( u32 dt);							// Called by sheduler
-	virtual void						renderable_Render( );
+	virtual void						Load				( LPCSTR section);
+	virtual BOOL						net_Spawn			( LPVOID DC);
+	virtual void						UpdateCL			( );									// Called each frame, so no need for dt
+	virtual void						shedule_Update		( u32 dt);							// Called by sheduler
+	virtual void						renderable_Render	( );
 
-	virtual BOOL						ShadowGenerate	( ) { return TRUE;	}
-	virtual BOOL						ShadowReceive	( ) { return TRUE;	}
+	virtual BOOL						ShadowGenerate		( ) { return TRUE;	}
+	virtual BOOL						ShadowReceive		( ) { return TRUE;	}
 	//virtual	void		Hit				(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space){
 	//																												m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,P/5.f);
 	//																												};
-	void				PlayDemo		( LPCSTR N );
+	void								PlayDemo			( LPCSTR N );
 
 	CDummyObject		();
 	virtual ~CDummyObject();

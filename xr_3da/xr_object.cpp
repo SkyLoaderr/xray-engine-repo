@@ -106,13 +106,14 @@ BOOL CObject::net_Spawn			(LPVOID data)
 			}
 		}
 	}
-	spatial_move	();
+	spatial_register			();
 
 	return TRUE;
 }
 
 void CObject::net_Destroy		()
 {
+	spatial_unregister			();
 	FLAGS.bDestroy				= 1;
 }
 
@@ -157,11 +158,23 @@ void CObject::shedule_Update	( u32 T )
 	}
 }
 
+void	CObject::spatial_register()
+{
+	Center						(spatial.center);
+	spatial.radius				= Radius();
+	ISpatial::spatial_register	();
+}
+
+void	CObject::spatial_unregister()
+{
+	ISpatial::spatial_unregister();
+}
+
 void	CObject::spatial_move()
 {
-	Center					(spatial.center);
-	spatial.radius			= Radius();
-	ISpatial::spatial_move	();
+	Center						(spatial.center);
+	spatial.radius				= Radius();
+	ISpatial::spatial_move		();
 }
 
 CObject::SavedPosition CObject::ps_Element(u32 ID)

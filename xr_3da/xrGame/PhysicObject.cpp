@@ -22,9 +22,9 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 
 	xr_delete(CFORM());
 	switch(m_type) {
-		case epotBox:			CFORM() = xr_new<CCF_Rigid>(this);		break;
+		case epotBox:			collidable.model = xr_new<CCF_Rigid>(this);		break;
 		case epotFixedChain:	
-		case epotSkeleton:		CFORM() = xr_new<CCF_Skeleton>(this);	break;
+		case epotSkeleton:		collidable.model = xr_new<CCF_Skeleton>(this);	break;
 		default: NODEFAULT; 
 	}
 	g_pGameLevel->ObjectSpace.Object_Register(this);
