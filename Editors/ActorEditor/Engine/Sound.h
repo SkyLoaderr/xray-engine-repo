@@ -173,6 +173,7 @@ public:
 class XRSOUND_API	CSound_interface
 {
 public:
+	virtual void					switch_to_2D			()															= 0;
 	virtual void					set_position			(const Fvector &pos)										= 0;
 	virtual void					set_frequency			(float freq)												= 0;
 	virtual void					set_range				(float min, float max)										= 0;

@@ -46,6 +46,7 @@ public:
 	CSoundRender_Environment	e_target;
 
 	BOOL						bMoved;
+	BOOL						b2D;
 	u32							dwTimeStarted;			// time of "Start"
 	u32							dwTimeToStop;			// time to "Stop"
 	u32							dwTimeToPropagade;
@@ -55,6 +56,7 @@ public:
 	void						PropagadeEvent			();
 	BOOL						isPlaying				(void)					{ return state!=stStopped; }
 
+	virtual void				switch_to_2D			()						{ b2D = TRUE;											}
 	virtual void				set_position			(const Fvector &pos)	{ p_source.position	= pos; bMoved=TRUE;					}
 	virtual void				set_frequency			(float scale)			{ p_source.freq=scale;									}
 	virtual void				set_range				(float min, float max)	{ p_source.min_distance=min; p_source.max_distance=max;	}

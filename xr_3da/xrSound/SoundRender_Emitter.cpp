@@ -25,6 +25,7 @@ CSoundRender_Emitter::CSoundRender_Emitter(void)
 	state				= stStopped;
 	position			= 0;
 	bMoved				= TRUE;
+	b2D					= FALSE;
 	dwTimeStarted		= 0;
 	dwTimeToStop		= 0;
 	dwTimeToPropagade	= 0;

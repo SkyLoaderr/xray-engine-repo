@@ -210,7 +210,7 @@ void	CSoundRender_Target::fill_parameters()
 		buf.lConeOutsideVolume		= DS3D_DEFAULTCONEOUTSIDEVOLUME;
 		buf.flMinDistance			= pEmitter->p_source.min_distance;
 		buf.flMaxDistance			= pEmitter->p_source.max_distance;
-		buf.dwMode					= DS3DMODE_NORMAL;
+		buf.dwMode					= pEmitter->b2D ? DS3DMODE_DISABLE : DS3DMODE_NORMAL;
 		R_CHK(pControl->SetAllParameters(&buf,DS3D_DEFERRED));
 	}
 	
