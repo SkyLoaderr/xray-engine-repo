@@ -393,3 +393,99 @@ IC  Fvector2 CLevelGraph::v2d(const Fvector &vector3d) const
 	return			(Fvector2().set(vector3d.x,vector3d.z));
 }
 
+template <typename T>
+IC	bool	CLevelGraph::create_straight_PTN_path	(u32 start_vertex_id, const Fvector2 &start_point, const Fvector2 &finish_point, xr_vector<T> &tpaOutputPoints, const T &example, bool bAddFirstPoint, bool bClearPath) const
+{
+	u32						cur_vertex_id = start_vertex_id, prev_vertex_id = start_vertex_id;
+	Fbox2					box;
+	Fvector2				identity, start, dest, dir;
+	T						path_node = example;
+
+	identity.x = identity.y	= header().cell_size()/2.f;
+	start					= start_point;
+	dest					= finish_point;
+	dir.sub					(dest,start);
+	Fvector2				temp;
+	Fvector					pos3d;
+	unpack_xz				(vertex(start_vertex_id),temp.x,temp.y);
+
+	if (bClearPath)
+		tpaOutputPoints.clear	();
+	if (bAddFirstPoint) {
+		pos3d				= v3d(start_point);
+		pos3d.y				= vertex_plane_y(start_vertex_id,start_point.x,start_point.y);
+		path_node.set_position(pos3d);
+		tpaOutputPoints.push_back(path_node);
+	}
+
+	float					cur_sqr = _sqr(temp.x - dest.x) + _sqr(temp.y - dest.y);
+	for (;;) {
+		const_iterator		I,E;
+		begin				(cur_vertex_id,I,E);
+		bool				found = false;
+		for ( ; I != E; ++I) {
+			u32				next_vertex_id = value(cur_vertex_id,I);
+			if ((next_vertex_id == prev_vertex_id) || !valid_vertex_id(next_vertex_id))
+				continue;
+			unpack_xz		(vertex(next_vertex_id),temp.x,temp.y);
+			box.min			= box.max = temp;
+			box.grow		(identity);
+			if (box.pick_exact(start,dir)) {
+				Fvector2		temp;
+				temp.add		(box.min,box.max);
+				temp.mul		(.5f);
+				float			dist = _sqr(temp.x - dest.x) + _sqr(temp.y - dest.y);
+				if (dist > cur_sqr)
+					continue;
+				cur_sqr			= dist;
+
+				Fvector2		next1, next2;
+#ifdef DEBUG
+				next1			= next2 = Fvector2().set(0.f,0.f);
+#endif
+				Fvector			tIntersectPoint;
+
+				switch (I) {
+					case 0 : {
+						next1		= box.max;
+						next2.set	(box.max.x,box.min.y);
+						break;
+					}
+					case 1 : {
+						next1		= box.min;
+						next2.set	(box.max.x,box.min.y);
+						break;
+					}
+					case 2 : {
+						next1		= box.min;
+						next2.set	(box.min.x,box.max.y);
+						break;
+					}
+					case 3 : {
+						next1		= box.max;
+						next2.set	(box.min.x,box.max.y);
+						break;
+					}
+					default : NODEFAULT;
+				}
+				VERIFY			(_valid(next1));
+				VERIFY			(_valid(next2));
+				u32				dwIntersect = intersect(start_point.x,start_point.y,finish_point.x,finish_point.y,next1.x,next1.y,next2.x,next2.y,&tIntersectPoint.x,&tIntersectPoint.z);
+				VERIFY			(dwIntersect);
+				tIntersectPoint.y = vertex_plane_y(vertex(cur_vertex_id),tIntersectPoint.x,tIntersectPoint.z);
+
+				path_node.set_position(tIntersectPoint);
+				tpaOutputPoints.push_back(path_node);
+
+				if (box.contains(dest))
+					return		(true);
+				found			= true;
+				prev_vertex_id	= cur_vertex_id;
+				cur_vertex_id	= next_vertex_id;
+				break;
+			}
+		}
+		if (!found)
+			return			(false);
+	}
+}

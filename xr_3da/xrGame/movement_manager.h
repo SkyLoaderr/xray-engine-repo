@@ -97,6 +97,14 @@ private:
 	friend class CGroup;
 
 public:
+	struct SBoneRotation {
+		SRotation		current;
+		SRotation		target;
+		float			speed;
+	};
+
+	SBoneRotation							m_body;
+
 					CMovementManager		();
 	virtual			~CMovementManager		();
 	virtual void	Init					();

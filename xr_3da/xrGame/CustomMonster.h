@@ -85,12 +85,6 @@ protected:
 		CEntity			*tpEntity;
 	} SSimpleSound;
 
-	struct SBoneRotation {
-		SRotation		current;
-		SRotation		target;
-		float			speed;
-	};
-
 public:
 	// Eyes
 	Fmatrix				eye_matrix;
@@ -119,8 +113,7 @@ public:
 	virtual void		Think() = 0;
 
 	// Rotation
-	SBoneRotation		m_body;
-	SBoneRotation		m_head;
+	CMovementManager::SBoneRotation	m_head;
 
 	float				m_fTimeUpdateDelta;
 	u32					m_dwLoopCount;

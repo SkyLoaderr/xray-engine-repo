@@ -7,6 +7,7 @@
 #include "PHAICharacter.h"
 #include "PHActorCharacter.h"
 #include "PHCapture.h"
+#include "ai_space.h"
 
 
 #define GROUND_FRICTION	10.0f
@@ -140,7 +141,7 @@ void CPHMovementControl::Calculate(const Fvector& desired_pos,float velocity,flo
 
 }
 
-void CPHMovementControl::Calculate(const xr_vector<CDetailPathManager::STravelPoint>& path,float speed,  u32& travel_point,  float& /**precision/**/  )
+void CPHMovementControl::Calculate(const xr_vector<CDetailPathManager::STravelPathPoint>& path,float speed,  u32& travel_point,  float& /**precision/**/  )
 {
 	
 	if(m_capture) 
@@ -171,9 +172,9 @@ void CPHMovementControl::Calculate(const xr_vector<CDetailPathManager::STravelPo
 		//////////////////////////////////////////////////////////////////////////
 		//////////////////////////////////////////////////////////////////////////
 		if((m_path_size-1)>(int)travel_point)
-			dir.sub(path[travel_point+1].m_position,path[travel_point].m_position);
+			dir.sub(path[travel_point+1].position,path[travel_point].position);
 		else
-			dir.sub(path[travel_point].m_position,new_position);
+			dir.sub(path[travel_point].position,new_position);
 		m_start_index=travel_point;
 		dir.y=0.f;
 		dir.normalize_safe();
@@ -195,8 +196,8 @@ void CPHMovementControl::Calculate(const xr_vector<CDetailPathManager::STravelPo
 			m_character->SetMaximumVelocity(0.f);
 			vPosition.set(new_position);	//todo - insert it in PathNearestPoint
 			index=0;
-			vPathPoint.set(path[0].m_position);
-			vPathDir.sub(path[0].m_position,new_position);
+			vPathPoint.set(path[0].position);
+			vPathDir.sub(path[0].position,new_position);
 			m_path_distance=vPathDir.magnitude();
 			if(m_path_distance>EPS)
 			{
@@ -262,7 +263,7 @@ void CPHMovementControl::Calculate(const xr_vector<CDetailPathManager::STravelPo
 }
 
 
-void CPHMovementControl::PathNearestPoint(const xr_vector<CDetailPathManager::STravelPoint>  &path,			//in path
+void CPHMovementControl::PathNearestPoint(const xr_vector<CDetailPathManager::STravelPathPoint>  &path,			//in path
 										  const Fvector					&new_position,  //in position
 										  int							&index,			//in start from; out nearest
 										  bool							&near_line       //out type
@@ -277,7 +278,7 @@ void CPHMovementControl::PathNearestPoint(const xr_vector<CDetailPathManager::ST
 
 	for(int i=0;i<m_path_size-1;++i)
 	{
-		const Fvector &first=path[i].m_position, &second=path[i+1].m_position;
+		const Fvector &first=path[i].position, &second=path[i+1].position;
 		from_first.sub(new_position,first);
 		from_second.sub(new_position,second);
 		dir.sub(second,first);
@@ -333,10 +334,10 @@ void CPHMovementControl::PathNearestPoint(const xr_vector<CDetailPathManager::ST
 	{
 
 		R_ASSERT2(after_line,"Must be after line");
-		vtemp.sub(new_position,path[i].m_position);
+		vtemp.sub(new_position,path[i].position);
 		m_path_distance=vtemp.magnitude();
 		vPathDir.set(dir);
-		vPathPoint.set(path[i].m_position);
+		vPathPoint.set(path[i].position);
 		index=i;
 		near_line=false;
 	}
@@ -346,7 +347,7 @@ void CPHMovementControl::PathNearestPoint(const xr_vector<CDetailPathManager::ST
 
 
 
-void CPHMovementControl::PathNearestPointFindUp(const xr_vector<CDetailPathManager::STravelPoint>	&path,			//in path
+void CPHMovementControl::PathNearestPointFindUp(const xr_vector<CDetailPathManager::STravelPathPoint>	&path,			//in path
 												const Fvector					&new_position,  //in position
 												int								&index,			//in start from; out nearest
 												float							radius,	//out m_path_distance in exit radius
@@ -362,7 +363,7 @@ void CPHMovementControl::PathNearestPointFindUp(const xr_vector<CDetailPathManag
 
 	for(int i=m_start_index;i<m_path_size-1;++i)
 	{
-		const Fvector &first=path[i].m_position, &second=path[i+1].m_position;
+		const Fvector &first=path[i].position, &second=path[i+1].position;
 		from_first.sub(new_position,first);
 		from_second.sub(new_position,second);
 		dir.sub(second,first);
@@ -420,10 +421,10 @@ void CPHMovementControl::PathNearestPointFindUp(const xr_vector<CDetailPathManag
 	{
 
 		R_ASSERT2(after_line,"Must be after line");
-		vtemp.sub(new_position,path[i].m_position);
+		vtemp.sub(new_position,path[i].position);
 		m_path_distance=vtemp.magnitude();
 		vPathDir.set(dir);
-		vPathPoint.set(path[i].m_position);
+		vPathPoint.set(path[i].position);
 		index=i;
 		near_line=false;
 	}
@@ -433,7 +434,7 @@ void CPHMovementControl::PathNearestPointFindUp(const xr_vector<CDetailPathManag
 }
 
 
-void CPHMovementControl::PathNearestPointFindDown(const xr_vector<CDetailPathManager::STravelPoint>	&path,			//in path
+void CPHMovementControl::PathNearestPointFindDown(const xr_vector<CDetailPathManager::STravelPathPoint>	&path,			//in path
 												const Fvector					&new_position,  //in position
 												int								&index,			//in start from; out nearest
 												float							radius,	//out m_path_distance in exit radius
@@ -450,7 +451,7 @@ void CPHMovementControl::PathNearestPointFindDown(const xr_vector<CDetailPathMan
 	
 	for(int i=m_start_index;i>1;--i)
 	{
-		const Fvector &first=path[i-1].m_position, &second=path[i].m_position;
+		const Fvector &first=path[i-1].position, &second=path[i].position;
 		from_first.sub(new_position,first);
 		from_second.sub(new_position,second);
 		dir.sub(second,first);
@@ -509,10 +510,10 @@ void CPHMovementControl::PathNearestPointFindDown(const xr_vector<CDetailPathMan
 	{
 
 		R_ASSERT2(after_line,"Must be after line");
-		vtemp.sub(new_position,path[i].m_position);
+		vtemp.sub(new_position,path[i].position);
 		m_path_distance=vtemp.magnitude();
 		vPathDir.set(dir);
-		vPathPoint.set(path[i].m_position);
+		vPathPoint.set(path[i].position);
 		index=i;
 		near_line=false;
 	}
@@ -521,7 +522,7 @@ void CPHMovementControl::PathNearestPointFindDown(const xr_vector<CDetailPathMan
 	return;
 }
 
-void CPHMovementControl::PathDIrLine(const xr_vector<CDetailPathManager::STravelPoint> &/**path/**/,  int /**index/**/,  float distance,  float precesition, Fvector &dir  )
+void CPHMovementControl::PathDIrLine(const xr_vector<CDetailPathManager::STravelPathPoint> &/**path/**/,  int /**index/**/,  float distance,  float precesition, Fvector &dir  )
 {
 
 	Fvector to_path_point;
@@ -538,7 +539,7 @@ void CPHMovementControl::PathDIrLine(const xr_vector<CDetailPathManager::STravel
 	dir.normalize_safe();
 }
 
-void CPHMovementControl::PathDIrPoint(const xr_vector<CDetailPathManager::STravelPoint> &path,  int index,  float distance,  float precesition, Fvector &dir  )
+void CPHMovementControl::PathDIrPoint(const xr_vector<CDetailPathManager::STravelPathPoint> &path,  int index,  float distance,  float precesition, Fvector &dir  )
 {
 	Fvector to_path_point,tangent;
 	to_path_point.sub(vPathPoint,vPosition);	//_new position
@@ -551,7 +552,7 @@ void CPHMovementControl::PathDIrPoint(const xr_vector<CDetailPathManager::STrave
 			dir.set(vPathDir);//??
 			return;
 		}
-		dir.sub(path[index].m_position,path[index-1].m_position);
+		dir.sub(path[index].position,path[index-1].position);
 		dir.normalize_safe();
 		dir.add(vPathDir);
 		dir.normalize_safe();
@@ -578,7 +579,7 @@ void CPHMovementControl::PathDIrPoint(const xr_vector<CDetailPathManager::STrave
 
 	//build mean dir
 	if(0 != index) {
-		dir.sub(path[index].m_position,path[index-1].m_position);
+		dir.sub(path[index].position,path[index-1].position);
 		dir.normalize_safe();
 		dir.add(vPathDir);
 		dir.normalize_safe();

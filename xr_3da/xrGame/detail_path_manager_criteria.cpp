@@ -13,13 +13,12 @@
 void CDetailPathManager::build_criteria_path	(const xr_vector<u32> &level_path, u32 intermediate_index)
 {
 	R_ASSERT				(!level_path.empty());
-	STravelPoint			current,next;
+	STravelPathPoint		current,next;
 
 	// start point
 	m_path.clear			();
-	current.m_linear_speed	= 0.f;//(*m_movement_params.begin()).second.m_linear_speed;
-	current.m_angular_speed	= 0.f;//(*m_movement_params.begin()).second.m_angular_speed;
-	current.m_position		= m_start_position;
+	current.velocity		= eMovementParameterStand;
+	current.position		= m_start_position;
 	m_path.push_back		(current);
 
 	// end point
@@ -42,33 +41,33 @@ void CDetailPathManager::build_criteria_path	(const xr_vector<u32> &level_path, 
 	{
 		// build probe point
 		CLevelGraph::SSegment		&S = m_segments[I];
-		ai().level_graph().nearest(next.m_position,current.m_position,S.v1,S.v2);
+		ai().level_graph().nearest(next.position,current.position,S.v1,S.v2);
 
 		// select far point
 		Fvector				fp	= Last;
 		if ((I+1)<m_segments.size())	{
 			CLevelGraph::SSegment	&F = m_segments[I+1];
-			ai().level_graph().nearest(fp,current.m_position,F.v1,F.v2);
+			ai().level_graph().nearest(fp,current.position,F.v1,F.v2);
 		}
 
-		// try to cast a line from 'current.m_position' to 'fp'
+		// try to cast a line from 'current.position' to 'fp'
 		Fvector	ip;
-		if (ai().level_graph().intersect(ip,S.v1,S.v2,current.m_position,fp)) {
-			next.m_position.set(ip);
+		if (ai().level_graph().intersect(ip,S.v1,S.v2,current.position,fp)) {
+			next.position.set(ip);
 		} else {
-			// find nearest point to segment 'current.m_position' to 'fp'
-			float			d1 = S.v1.distance_to(fp)+S.v1.distance_to(current.m_position);
-			float			d2 = S.v2.distance_to(fp)+S.v2.distance_to(current.m_position);
-			if (d1<d2)		next.m_position.set(S.v1);
-			else			next.m_position.set(S.v2);
+			// find nearest point to segment 'current.position' to 'fp'
+			float			d1 = S.v1.distance_to(fp)+S.v1.distance_to(current.position);
+			float			d2 = S.v2.distance_to(fp)+S.v2.distance_to(current.position);
+			if (d1<d2)		next.position.set(S.v1);
+			else			next.position.set(S.v2);
 		}
 
 		// record _new point
-		if (!next.m_position.similar(m_path.back().m_position))	m_path.push_back(next);
+		if (!next.position.similar(m_path.back().position))	m_path.push_back(next);
 		current				= next;
 	}
-	next.m_position.set		(Last);
-	if (!next.m_position.similar(m_path.back().m_position))	m_path.push_back(next);
+	next.position.set		(Last);
+	if (!next.position.similar(m_path.back().position))	m_path.push_back(next);
 
 	// setup variables
 	m_current_travel_point	= 0;

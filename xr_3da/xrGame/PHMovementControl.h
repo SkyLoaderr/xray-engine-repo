@@ -187,36 +187,36 @@ public:
 	void				Calculate				(Fvector& vAccel, float ang_speed, float jump, float dt, bool bLight);
 	void				Calculate				(const Fvector& desired_pos,float velocity,float dt);
 
-	void				Calculate				(const xr_vector<CDetailPathManager::STravelPoint>& path, //in path
+	void				Calculate				(const xr_vector<CDetailPathManager::STravelPathPoint>& path, //in path
 												float speed,						 //in speed
 												u32& travel_point,					 //in- travel start, out - current trev point
 												float& precesition					 //in- tolerance, out - precesition
 												);
-	void				PathNearestPoint		(const xr_vector<CDetailPathManager::STravelPoint>	&path,		//in path
+	void				PathNearestPoint		(const xr_vector<CDetailPathManager::STravelPathPoint>	&path,		//in path
 												 const Fvector					&new_position,  //in position
 												 int							&index,			//out nearest
 												 bool							&type          //out type
 												);	//return nearest point
-	void				PathNearestPointFindUp(const xr_vector<CDetailPathManager::STravelPoint>		&path,			//in path
+	void				PathNearestPointFindUp(const xr_vector<CDetailPathManager::STravelPathPoint>		&path,			//in path
 											   const Fvector					&new_position,  //in position
 											   int								&index,			//out nearest
 											   float							radius,			//in exit radius
 											   bool								&near_line      //out type
 											   );
-	void				PathNearestPointFindDown(const xr_vector<CDetailPathManager::STravelPoint>	&path,			//in path
+	void				PathNearestPointFindDown(const xr_vector<CDetailPathManager::STravelPathPoint>	&path,			//in path
 												 const Fvector					&new_position,  //in position
 												 int							&index,			//out nearest
 												 float							radius,			//in exit radius
 												 bool							&near_line      //out type
 												 );
 
-	void				PathDIrPoint			(const xr_vector<CDetailPathManager::STravelPoint>				&path,		//in path
+	void				PathDIrPoint			(const xr_vector<CDetailPathManager::STravelPathPoint>				&path,		//in path
 															 int							index,			//in index
 															 float							distance,	//in distance
 															 float							precesition,//in precesition
 															 Fvector						&dir        //out dir
 															 );
-	void				PathDIrLine				(const xr_vector<CDetailPathManager::STravelPoint>	&path,		//in path
+	void				PathDIrLine				(const xr_vector<CDetailPathManager::STravelPathPoint>	&path,		//in path
 												int								index,		//in point
 												float							distance,	//in distance
 												float							precesition,//in precesition

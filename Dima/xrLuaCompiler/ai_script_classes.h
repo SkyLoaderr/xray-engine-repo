@@ -193,16 +193,19 @@ public:
 
 			 void				SetMinDistance	(const float fMinDistance)
 	{
+		VERIFY				(m_tpSound);
 		m_tpSound->set_range(fMinDistance,GetMaxDistance());
 	}
 
 			 void				SetMaxDistance	(const float fMaxDistance)
 	{
+		VERIFY				(m_tpSound);
 		m_tpSound->set_range(GetMinDistance(),fMaxDistance);
 	}
 
 			 const Fvector		&GetPosition	() const
 	{
+		VERIFY				(m_tpSound);
 		const CSound_params	*l_tpSoundParams = m_tpSound->get_params();
 		if (l_tpSoundParams)
 			return			(l_tpSoundParams->position);
@@ -214,22 +217,32 @@ public:
 
 			 const float		GetFrequency	() const
 	{
+		VERIFY				(m_tpSound);
 		return				(m_tpSound->get_params()->freq);
 	}
 
 			 const float		GetMinDistance	() const
 	{
+		VERIFY				(m_tpSound);
 		return				(m_tpSound->get_params()->min_distance);
 	}
 
 			 const float		GetMaxDistance	() const
 	{
+		VERIFY				(m_tpSound);
 		return				(m_tpSound->get_params()->max_distance);
 	}
 
 			 const float		GetVolume		() const
 	{
+		VERIFY				(m_tpSound);
 		return				(m_tpSound->get_params()->volume);
+	}
+
+			bool				IsPlaying		() const
+	{
+		VERIFY				(m_tpSound);
+		return				(!!m_tpSound->feedback);
 	}
 };
 

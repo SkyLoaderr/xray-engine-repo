@@ -151,7 +151,7 @@ void CAI_Stalker::SetLessCoverLook(const CLevelGraph::CVertex *tpNode, float fMa
 			if (!ai().level_graph().valid_vertex_id(node_id))
 				continue;
 			tpNextNode = ai().level_graph().vertex(node_id);
- 			if (ai().level_graph().inside(tpNextNode,CDetailPathManager::path()[CDetailPathManager::curr_travel_point_index() + 1].m_position)) {
+ 			if (ai().level_graph().inside(tpNextNode,CDetailPathManager::path()[CDetailPathManager::curr_travel_point_index() + 1].position)) {
 				bOk = true;
 				break;
 			}

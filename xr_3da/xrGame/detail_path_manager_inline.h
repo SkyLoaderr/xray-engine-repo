@@ -15,15 +15,15 @@ IC	bool CDetailPathManager::failed() const
 
 IC	bool CDetailPathManager::completed(const Fvector &position) const
 {
-	return					(m_path.empty() || (m_dest_position.similar(m_path.back().m_position) && position.similar(m_dest_position,.15f)));
+	return					(m_path.empty() || (m_dest_position.similar(m_path.back().position) && position.similar(m_dest_position,.15f)));
 }
 
-IC	const xr_vector<CDetailPathManager::STravelPoint> &CDetailPathManager::path() const
+IC	const xr_vector<CDetailPathManager::STravelPathPoint> &CDetailPathManager::path() const
 {
 	return					(m_path);
 }
 
-IC	const CDetailPathManager::STravelPoint &CDetailPathManager::curr_travel_point() const
+IC	const CDetailPathManager::STravelPathPoint &CDetailPathManager::curr_travel_point() const
 {
 	return					(m_path[curr_travel_point_index()]);
 }
@@ -60,3 +60,59 @@ IC	void CDetailPathManager::set_path_type				(const EDetailPathType path_type)
 	m_actuality				= m_actuality && (path_type == m_path_type);
 	m_path_type				= path_type;
 }
+
+IC	void CDetailPathManager::adjust_point(
+	const Fvector2		&source, 
+	float				yaw, 
+	float				magnitude, 
+	Fvector2			&dest
+) const
+{
+	dest.x				= -_sin(yaw);
+	dest.y				= _cos(yaw);
+	dest.mad			(source,dest,magnitude);
+}
+
+IC	void CDetailPathManager::assign_angle(
+	float				&angle, 
+	const float			start_yaw, 
+	const float			dest_yaw, 
+	const bool			positive,
+	const bool			start
+) const
+{
+	if (positive)
+		if (dest_yaw >= start_yaw)
+			angle		= dest_yaw - start_yaw;
+		else
+			angle		= PI_MUL_2 - start_yaw + dest_yaw;
+	else
+		if (dest_yaw <= start_yaw)
+			angle		= dest_yaw - start_yaw;
+		else
+			angle		= dest_yaw - start_yaw - PI_MUL_2;
+
+	if (!start)
+		if (angle < 0.f)
+			angle = angle + PI_MUL_2;
+		else
+			angle = angle - PI_MUL_2;
+
+	VERIFY				(_valid(angle));
+}
+
+IC	void CDetailPathManager::compute_circles(
+	STrajectoryPoint	&point, 
+	SCirclePoint		*circles
+)
+{
+	VERIFY				(!fis_zero(point.angular_velocity));
+	point.radius		= point.linear_velocity/point.angular_velocity;
+	circles[0].radius	= circles[1].radius = point.radius;
+	VERIFY				(fsimilar(point.direction.square_magnitude(),1.f));
+	circles[0].center.x =  point.direction.y*point.radius + point.position.x;
+	circles[0].center.y = -point.direction.x*point.radius + point.position.y;
+	circles[1].center.x = -point.direction.y*point.radius + point.position.x;
+	circles[1].center.y =  point.direction.x*point.radius + point.position.y;
+}
+

@@ -420,7 +420,7 @@ void CAI_Stalker::ForwardCover()
 	if (!path_completed() && (curr_travel_point_index() < CDetailPathManager::path().size() - 1)) {
 		Fvector tTemp0, tTemp1;
 		tTemp0.sub(m_tSavedEnemyPosition,Position());
-		tTemp1.sub(CDetailPathManager::path()[CDetailPathManager::curr_travel_point_index() + 1].m_position,Position());
+		tTemp1.sub(CDetailPathManager::path()[CDetailPathManager::curr_travel_point_index() + 1].position,Position());
 		float yaw1,yaw2,pitch1,pitch2;
 		tTemp0.getHP(yaw1,pitch1);
 		tTemp1.getHP(yaw2,pitch2);

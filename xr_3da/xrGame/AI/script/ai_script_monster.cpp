@@ -333,10 +333,10 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 		case CMovementAction::eGoalTypeNoPathPosition : {
 			if (l_tpMovementManager) {
 				l_tpMovementManager->set_path_type(CMovementManager::ePathTypeLevelPath);
-				if (l_tpMovementManager->CDetailPathManager::path().empty() || (l_tpMovementManager->CDetailPathManager::path()[l_tpMovementManager->CDetailPathManager::path().size() - 1].m_position.distance_to(l_tMovementAction.m_tDestinationPosition) > .1f)) {
+				if (l_tpMovementManager->CDetailPathManager::path().empty() || (l_tpMovementManager->CDetailPathManager::path()[l_tpMovementManager->CDetailPathManager::path().size() - 1].position.distance_to(l_tMovementAction.m_tDestinationPosition) > .1f)) {
 					l_tpMovementManager->CDetailPathManager::m_path.resize(2);
-					l_tpMovementManager->CDetailPathManager::m_path[0].m_position = Position();
-					l_tpMovementManager->CDetailPathManager::m_path[1].m_position = l_tMovementAction.m_tDestinationPosition;
+					l_tpMovementManager->CDetailPathManager::m_path[0].position = Position();
+					l_tpMovementManager->CDetailPathManager::m_path[1].position = l_tMovementAction.m_tDestinationPosition;
 					l_tpMovementManager->CDetailPathManager::m_current_travel_point	= 0;
 				}
 			}

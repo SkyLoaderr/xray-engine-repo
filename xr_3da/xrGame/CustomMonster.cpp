@@ -526,8 +526,8 @@ void CCustomMonster::OnRender()
 	RCache.OnFrameEnd				();
 	{
 	for (u32 I=1; I<CDetailPathManager::path().size(); ++I) {
-		const CDetailPathManager::STravelPoint&	N1 = CDetailPathManager::path()[I-1];	Fvector	P1; P1.set(N1.m_position); P1.y+=0.1f;
-		const CDetailPathManager::STravelPoint&	N2 = CDetailPathManager::path()[I];		Fvector	P2; P2.set(N2.m_position); P2.y+=0.1f;
+		const CDetailPathManager::STravelPathPoint&	N1 = CDetailPathManager::path()[I-1];	Fvector	P1; P1.set(N1.position); P1.y+=0.1f;
+		const CDetailPathManager::STravelPathPoint&	N2 = CDetailPathManager::path()[I];		Fvector	P2; P2.set(N2.position); P2.y+=0.1f;
 		RCache.dbg_DrawLINE			(Fidentity,P1,P2,D3DCOLOR_XRGB(0,255,0));
 		if ((CDetailPathManager::path().size() - 1) == I) // песледний box?
 			RCache.dbg_DrawAABB			(P1,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,0));
@@ -538,7 +538,7 @@ void CCustomMonster::OnRender()
 		Fvector         T;
         Fvector4        S;
         
-        T.set			(CDetailPathManager::path()[I].m_position); T.y+=(Radius()*2);
+        T.set			(CDetailPathManager::path()[I].position); T.y+=(Radius()*2);
         Device.mFullTransform.transform (S,T);
         
 //		pApp->pFont->Size       (0.07f/sqrtf(_abs(S.w)));
@@ -562,8 +562,8 @@ void CCustomMonster::OnRender()
 	
 	for (int I=0; I<(int)CDetailPathManager::path().size() - 1; ++I)
 	{
-		Fvector P1 = CDetailPathManager::path()[I].m_position;		P1.y+=0.1f;
-		Fvector P2 = CDetailPathManager::path()[I + 1].m_position;	P2.y+=0.1f;
+		Fvector P1 = CDetailPathManager::path()[I].position;		P1.y+=0.1f;
+		Fvector P2 = CDetailPathManager::path()[I + 1].position;	P2.y+=0.1f;
 		RCache.dbg_DrawAABB(P1,.01f,.01f,.01f,D3DCOLOR_XRGB(255,255,255));
 		RCache.dbg_DrawAABB(P2,.01f,.01f,.01f,D3DCOLOR_XRGB(255,255,255));
 		RCache.dbg_DrawLINE(Fidentity,P1,P2,D3DCOLOR_XRGB(255,255,255));

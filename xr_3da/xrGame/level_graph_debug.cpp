@@ -288,7 +288,7 @@ void CLevelGraph::render()
 			if (tpCustomMonster) {
 				tpCustomMonster->OnRender();
 				if (!tpCustomMonster->CDetailPathManager::path().empty()) {
-					Fvector temp = tpCustomMonster->CDetailPathManager::path()[tpCustomMonster->CDetailPathManager::path().size() - 1].m_position;
+					Fvector temp = tpCustomMonster->CDetailPathManager::path()[tpCustomMonster->CDetailPathManager::path().size() - 1].position;
 					RCache.dbg_DrawAABB(temp,1.f,1.f,1.f,D3DCOLOR_XRGB(0,0,255));
 				}
 			}
@@ -302,7 +302,7 @@ void CLevelGraph::render()
 		if (tpCustomMonster) {
 			tpCustomMonster->OnRender();
 			if (!tpCustomMonster->CDetailPathManager::path().empty()) {
-				Fvector temp = tpCustomMonster->CDetailPathManager::path()[tpCustomMonster->CDetailPathManager::path().size() - 1].m_position;
+				Fvector temp = tpCustomMonster->CDetailPathManager::path()[tpCustomMonster->CDetailPathManager::path().size() - 1].position;
 				RCache.dbg_DrawAABB(temp,1.f,1.f,1.f,D3DCOLOR_XRGB(0,0,255));
 			}
 		}

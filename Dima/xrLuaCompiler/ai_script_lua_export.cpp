@@ -315,6 +315,7 @@ void Script::vfExportSound(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("play_unlimited",				&CLuaSound::PlayUnlimited)
 			.def("play_at_pos_unlimited",		&CLuaSound::PlayAtPosUnlimited)
 			.def("stop",						&CLuaSound::Stop)
+			.def("playing",						&CLuaSound::IsPlaying)
 	];
 }
 

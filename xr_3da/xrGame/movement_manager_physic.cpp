@@ -55,7 +55,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 
 	// move full steps
 	Fvector				mdir,target;
-	target.set			(CDetailPathManager::path()[CDetailPathManager::curr_travel_point_index() + 1].m_position);
+	target.set			(CDetailPathManager::path()[CDetailPathManager::curr_travel_point_index() + 1].position);
 	mdir.sub			(target, dest_position);
 	float				mdist =	mdir.magnitude();
 	
@@ -69,7 +69,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 			++CDetailPathManager::m_current_travel_point;
 			if ((CDetailPathManager::curr_travel_point_index()+1) >= CDetailPathManager::path().size())
 				break;
-			target.set	(CDetailPathManager::path()[CDetailPathManager::curr_travel_point_index() + 1].m_position);
+			target.set	(CDetailPathManager::path()[CDetailPathManager::curr_travel_point_index() + 1].position);
 			mdir.sub	(target, dest_position);
 			mdist		= mdir.magnitude();
 		}
