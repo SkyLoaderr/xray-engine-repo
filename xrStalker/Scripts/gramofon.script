@@ -234,7 +234,10 @@ function m_gramofon:commander_speak(ind)
     self:clear_music()
 	if(self.sounds[24 + ind]) then
 		self:play_sound (self.sounds[24 + ind], 1000)
+        return self.sounds[24 + ind]:length() + 1000
     end
+
+    return 0
 end
 
 function local_time()
