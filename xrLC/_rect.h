@@ -14,6 +14,10 @@ public:
 			T 	x1, y1, x2, y2;
 		};
 		struct{
+			T 	left, top, right, bottom;
+		};
+
+		struct{
 			_vector2<TYPE> lt;
 			_vector2<TYPE> rb;
 		};
