@@ -6,7 +6,7 @@ function bandit:__init(name, char_ini)
 
 	self.state = 0 		-- состояние схемы. 0 - в лагере. 1 - идем к засаде, 2 - засада, 3 - идем в лагерь, 4 - отступаем в лагерь
 	self.begin = 0
-	self.idle  = 300000
+	self.idle  = 0
 
 	self.leader 	= nil   -- главарь
 	self.bandits 	= {}	-- бандиты
@@ -57,26 +57,27 @@ function bandit:update()
 		if game.time() - self.begin >= self.idle then
 			self.state = 2
 			self.begin = game.time()
+			self.idle = math_random(24*60*60*1000) + 24*60*60*1000
 		end
 	end
 	if self.state == 2 then
 		if self.leader ~= nil and xr_patrol.is_patrol_end(self.leader) == true then
 			self.state = 3
-			self.begin = game.time()
 		end
 	end
 	if self.state == 4 then
 		if self.leader ~= nil and xr_patrol.is_patrol_end(self.leader) == true then
 			self.state = 1
-			self.begin = game.time()
 		end
 	end	
 	if self.state == 3 then
 		if game.time() - self.begin >= self.idle then
 			self.state = 4
 			self.begin = game.time()
+			self.idle = math_random(24*60*60*1000) + 24*60*60*1000
 		end
 	end
+	self:updateJob()
 end
 function bandit:print()
 	printf("***** %s -- State: %d -- Time: %d of %d", self.name, self.state, game.time()-self.begin, self.idle)
@@ -153,7 +154,7 @@ function bandit:updateJob()
 			end
         	end
 	end
-	self:print()
+--	self:print()
 end
 function bandit:setJob(npc, job) 
 	-- удаляем у этого npc все работы (в сторадже)
