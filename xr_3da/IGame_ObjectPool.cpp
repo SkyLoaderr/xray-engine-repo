@@ -18,7 +18,7 @@ void IGame_ObjectPool::load	()
 	if (strstr(Core.Params,"-noprefetch"))	return;
 
 	u32	mem_0			= Memory.mem_usage();
-	CTimer T;			T.Start		();
+	float	p_time		= 1000.f*Device.GetTimerGlobal()->GetElapsed_sec();
 
 	CInifile::Root&	R	= pSettings->sections();
 	int	p_count			= 0;
@@ -45,7 +45,8 @@ void IGame_ObjectPool::load	()
 	}
 	::Render->model_Logging	(TRUE);
 
-	float	p_time		= 1000.f*T.GetElapsed_sec();
+	p_time = 1000.f*Device.GetTimerGlobal()->GetElapsed_sec() - p_time;
+
 	u32		p_mem		= Memory.mem_usage() - mem_0;
 	if (p_count)
 	{
