@@ -48,6 +48,7 @@ _ParticleState::_ParticleState()
 
 void _ParticleState::ResetState()
 {
+	flags.zero		();
 	flags.set		(u32(PASource::flVertexB_tracks),TRUE);
 	Size			= pDomain(PDPoint, 1.0f, 1.0f, 1.0f);
 	Vel				= pDomain(PDPoint, 0.0f, 0.0f, 0.0f);
