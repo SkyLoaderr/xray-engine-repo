@@ -126,7 +126,7 @@
 
     <time_static x="15" y="730" width="200" height="30">
         <texture> ui\ui_dg_time</texture>
-        <text x="25" y="8" font="normal" r="240" g="217" b="182" a="255"></text>
+        <text x="25" y="8" font="medium" r="240" g="217" b="182" a="255"></text>
 	</time_static>
 
 </window>
