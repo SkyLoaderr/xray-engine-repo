@@ -124,6 +124,7 @@ void CSE_ALifeTraderAbstract::detach(CSE_ALifeInventoryItem *tpALifeInventoryIte
 	}
 #endif
 	l_tpALifeDynamicObject1->o_Position		= l_tpALifeDynamicObject2->o_Position;
+	l_tpALifeDynamicObject1->m_tNodeID		= l_tpALifeDynamicObject2->m_tNodeID;
 	l_tpALifeDynamicObject1->m_tGraphID		= l_tpALifeDynamicObject2->m_tGraphID;
 	l_tpALifeDynamicObject1->m_fDistance	= l_tpALifeDynamicObject2->m_fDistance;
 	tpALifeInventoryItem->m_tPreviousParentID = l_tpALifeDynamicObject2->ID;
