@@ -262,7 +262,7 @@ void CLevel::OnRender()
 	Tracers.Render		();
 //	ph_world->Render	();
 #ifdef DEBUG
-	if (ai().get_level_graph && (bDebug || psAI_Flags.test(aiMotion)))
+	if (ai().get_level_graph() && (bDebug || psAI_Flags.test(aiMotion)))
 		ai().level_graph().render();
 #endif
 	if (bDebug)	{
