@@ -79,6 +79,7 @@ void light::set_active		(bool a)
 void	light::set_position		(const Fvector& P)
 { 
 	if (position.similar(P))	return;
+	frame_sleep					=	Device.dwFrame + ps_r__LightSleepFrames;
 	position.set				(P);
 	spatial_move				();
 }
@@ -104,7 +105,6 @@ void	light::set_rotation		(const Fvector& D, const Fvector& R)	{
 
 void	light::spatial_move			()
 {
-	frame_sleep						=	Device.dwFrame + ps_r__LightSleepFrames;
 	//spatial.center				=	position;
 	//spatial.radius				=	range;
 	switch(flags.type)	{
