@@ -54,6 +54,8 @@ enum ELookType {
 	eLookTypeDanger,
 	eLookTypePoint,
 	eLookTypeFirePoint,
+	eLookTypeLookOver,
+	eLookTypeLookFireOver,
 };
 
 enum EDirectionType {
@@ -89,6 +91,10 @@ enum EWeaponState {
 enum EActionState {
 	eActionStateRun = 0,
 	eActionStateStand,
+	eActionStateDontWatch,
+	eActionStateWatch,
+	eActionStateWatchGo,
+	eActionStateWatchLook,
 };
 
 enum ESearchState {

@@ -56,6 +56,7 @@ private:
 	bool					m_bIfSearchFailed;
 	bool					_A,_B,_C,_D,_E,_F,_G,_H,_I,_J,_K,_L,_M;
 	bool					A,B,C,D,E,F,G,H,I,J,K,L,M;
+	u32						m_dwLookChangedTime;
 
 	vector<Fvector>			m_tpaPoints;
 	vector<Fvector>			m_tpaDeviations;
@@ -269,7 +270,7 @@ private:
 			void			vfValidateAngleDependency		(float x1, float &x2, float x3);
 			// movement and look
 			void			vfSetParameters					(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, EWeaponState tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, EStateType tStateType, ELookType tLookType);
-			void			vfSetParameters					(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, EWeaponState tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, EStateType tStateType, ELookType tLookType, Fvector &tPointToLook);
+			void			vfSetParameters					(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, EWeaponState tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, EStateType tStateType, ELookType tLookType, Fvector &tPointToLook, u32 dwLookOverDelay = 2000);
 			// fire
 			bool			bfCheckForMember				(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
 			bool			bfCheckIfCanKillEnemy			();

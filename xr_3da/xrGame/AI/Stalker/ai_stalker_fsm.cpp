@@ -432,7 +432,7 @@ void CAI_Stalker::ExploreDE()
 void CAI_Stalker::ExploreNDE()
 {
 	WRITE_TO_LOG			("Exploring non-danger expedient sound");
-	m_dwInertion			= 10000;
+	m_dwInertion			= 20000;
 	Fvector					tPoint = m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 	AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
 	if (getAI().bfInsideNode(getAI().Node(AI_Path.DestNode),tPoint))
@@ -447,21 +447,62 @@ void CAI_Stalker::ExploreNDE()
 void CAI_Stalker::ExploreNDNE()
 {
 	WRITE_TO_LOG			("Exploring non-danger non-expedient sound");
-	m_dwInertion			= 10000;
+	m_dwInertion			= 20000;
 	Fvector					tPoint = m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
-	AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
-	if (getAI().bfInsideNode(getAI().Node(AI_Path.DestNode),tPoint))
-		tPoint.y			= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
-	else
-		tPoint				= getAI().tfGetNodeCenter(AI_Path.DestNode);
-	vfSetParameters(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
-	if (vPosition.distance_to(tPoint) < 5.f)
-		J = A = B = false;
+	if (m_bStateChanged) {
+		m_tActionState = eActionStateDontWatch;
+		m_dwActionStartTime = Level().timeServer();
+	}
+	switch (m_tActionState) {
+		case eActionStateDontWatch : {
+			if (getAI().dwfCheckPositionInDirection(m_tpaDynamicSounds[m_iSoundIndex].dwNodeID,vPosition,tPoint) != u32(-1)) {
+				m_tActionState = eActionStateWatch;
+				m_dwActionStartTime = Level().timeServer();
+			}
+			AccomplishTask();
+			break;
+		}
+		case eActionStateWatch : {
+			if (getAI().bfInsideNode(getAI().Node(m_tpaDynamicSounds[m_iSoundIndex].dwNodeID),tPoint))
+				tPoint.y			= getAI().ffGetY(*getAI().Node(m_tpaDynamicSounds[m_iSoundIndex].dwNodeID),tPoint.x,tPoint.z);
+			else
+				tPoint				= getAI().tfGetNodeCenter(m_tpaDynamicSounds[m_iSoundIndex].dwNodeID);
+			vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeStand,eStateTypeDanger,eLookTypeLookOver,tPoint);
+			if (Level().timeServer() - m_dwActionStartTime > 7000) {
+				m_tActionState = eActionStateWatchGo;
+				m_dwActionStartTime = Level().timeServer();
+			}
+			break;
+		}
+		case eActionStateWatchGo : {
+			AccomplishTask();
+			if (Level().timeServer() - m_dwActionStartTime > 10000) {
+				m_tActionState = eActionStateWatchLook;
+				m_dwActionStartTime = Level().timeServer();
+			}
+			break;
+		}
+		case eActionStateWatchLook : {
+			if (getAI().bfInsideNode(getAI().Node(m_tpaDynamicSounds[m_iSoundIndex].dwNodeID),tPoint))
+				tPoint.y			= getAI().ffGetY(*getAI().Node(m_tpaDynamicSounds[m_iSoundIndex].dwNodeID),tPoint.x,tPoint.z);
+			else
+				tPoint				= getAI().tfGetNodeCenter(m_tpaDynamicSounds[m_iSoundIndex].dwNodeID);
+			vfSetParameters(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeStand,eStateTypeDanger,eLookTypePoint,tPoint);
+			if (Level().timeServer() - m_dwActionStartTime > 3000) {
+				m_tActionState = eActionStateWatchGo;
+				m_dwActionStartTime = Level().timeServer();
+			}
+			break;
+		}
+		default : {
+			Msg("Ooooops!");
+		}
+	}
 }
 
 void CAI_Stalker::TakeItems()
 {
-	WRITE_TO_LOG			("Searching for items");
+	WRITE_TO_LOG			("Taking items");
 	// taking items
 	Fvector					tPoint;
 	m_tpItemToTake->svCenter(tPoint);
@@ -520,7 +561,7 @@ void CAI_Stalker::Think()
 	if (g_Alive())
 		Msg("%s : [A=%d][B=%d][C=%d][D=%d][E=%d][F=%d][G=%d][H=%d][I=%d][J=%d][K=%d][L=%d][M=%d]",cName(),A,B,C,D,E,F,G,H,I,J,K,L,M);
 	
-	m_bStateChanged = K != _K;
+	m_bStateChanged = ((_A	!= A) || (_B	!= B) || (_C	!= C) || (_D	!= D) || (_E	!= E) || (_F	!= F) || (_G	!= G) || (_H	!= H) || (_I	!= I) || (_J	!= J) || (_K	!= K) || (_L	!= L) || (_M	!= M));
 	if (!g_Alive()) {
 		Death				();
 	}

@@ -82,6 +82,8 @@ CAI_Stalker::CAI_Stalker			()
 	m_dwMyMaterialID				= GAMEMTL_NONE;
 	m_dwLastMaterialID				= GAMEMTL_NONE;
 
+	m_dwLookChangedTime				= 0;
+
 	m_pPhysicsShell					= NULL;
 	m_saved_impulse					= 0.f;
 

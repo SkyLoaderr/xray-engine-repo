@@ -19,12 +19,13 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 	vfSetParameters(tpNodeEvaluator,tpDesiredPosition,bSearchNode,tWeaponState,tPathType,tBodyState,tMovementType,tStateType, tLookType,tDummy);
 }
 
-void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, EWeaponState tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, EStateType tStateType, ELookType tLookType, Fvector &tPointToLook)
+void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, EWeaponState tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, EStateType tStateType, ELookType tLookType, Fvector &tPointToLook, u32 dwLookOverDelay)
 {
 	m_tPathType		= tPathType;
 	m_tBodyState	= tBodyState;
 	m_tMovementType = tMovementType;
 	m_tStateType	= tStateType;
+	bool			bLookChanged = (m_tLookType == tLookType);
 	m_tLookType		= tLookType;
 
 	vfChoosePointAndBuildPath(tpNodeEvaluator,tpDesiredPosition, bSearchNode);
@@ -146,6 +147,37 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 			clCenter(tTemp);
 			tTemp.sub	(tPointToLook,tTemp);
 			tTemp.getHP	(r_target.yaw,r_target.pitch);
+			r_target.yaw *= -1;
+			r_target.pitch *= -1;
+			break;
+		}
+		case eLookTypeLookOver : {
+			if (bLookChanged)
+				m_dwLookChangedTime = Level().timeServer();
+			Fvector tTemp;
+			tTemp.sub	(tPointToLook,eye_matrix.c);
+			tTemp.getHP	(r_target.yaw,r_target.pitch);
+			if (Level().timeServer() - m_dwLookChangedTime > dwLookOverDelay)
+				if (Level().timeServer() - m_dwLookChangedTime < 2*dwLookOverDelay)
+					r_target.yaw += PI_DIV_6*2;
+				else
+					r_target.yaw -= PI_DIV_6*2;
+			r_target.yaw *= -1;
+			r_target.pitch *= -1;
+			break;
+		}
+		case eLookTypeLookFireOver : {
+			if (bLookChanged)
+				m_dwLookChangedTime = Level().timeServer();
+			Fvector tTemp;
+			clCenter(tTemp);
+			tTemp.sub	(tPointToLook,tTemp);
+			tTemp.getHP	(r_target.yaw,r_target.pitch);
+			if (Level().timeServer() - m_dwLookChangedTime > dwLookOverDelay)
+				if (Level().timeServer() - m_dwLookChangedTime < 2*dwLookOverDelay)
+					r_target.yaw += PI_DIV_6*2;
+				else
+					r_target.yaw -= PI_DIV_6*2;
 			r_target.yaw *= -1;
 			r_target.pitch *= -1;
 			break;

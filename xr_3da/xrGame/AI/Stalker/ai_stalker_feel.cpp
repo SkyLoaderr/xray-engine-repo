@@ -375,8 +375,8 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 	#endif
 
 #ifdef IGNORE_ACTOR
-	if ((who == Level().CurrentEntity()) || (who && (who->H_Parent() == Level().CurrentEntity())))
-		return;
+//	if ((who == Level().CurrentEntity()) || (who && (who->H_Parent() == Level().CurrentEntity())))
+//		return;
 #endif
 	if (m_dwParticularState == 7)
 		return;

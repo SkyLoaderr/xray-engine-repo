@@ -112,11 +112,13 @@ void __stdcall CAI_Stalker::HeadCallback(CBoneInstance *B)
 	Fmatrix					spin;
 	float					yaw_factor = 0, pitch_factor = 0;
 	switch(A->m_tLookType) {
+		case eLookTypeLookFireOver :
 		case eLookTypeFirePoint : {
 			yaw_factor		= y_head_fire_factor;
 			pitch_factor	= p_head_fire_factor;
 			break;
 		}
+		case eLookTypeLookOver :
 		case eLookTypeDirection :
 		case eLookTypeSearch :
 		case eLookTypeDanger :
@@ -141,11 +143,13 @@ void __stdcall CAI_Stalker::ShoulderCallback(CBoneInstance *B)
 	Fmatrix					spin;
 	float					yaw_factor = 0, pitch_factor = 0;
 	switch(A->m_tLookType) {
+		case eLookTypeLookFireOver :
 		case eLookTypeFirePoint : {
 			yaw_factor		= y_shoulder_fire_factor;
 			pitch_factor	= p_shoulder_fire_factor;
 			break;
 		}
+		case eLookTypeLookOver :
 		case eLookTypeDirection :
 		case eLookTypeSearch :
 		case eLookTypeDanger :
@@ -170,11 +174,13 @@ void __stdcall CAI_Stalker::SpinCallback(CBoneInstance *B)
 	Fmatrix					spin;
 	float					yaw_factor = 0, pitch_factor = 0;
 	switch(A->m_tLookType) {
+		case eLookTypeLookFireOver :
 		case eLookTypeFirePoint : {
 			yaw_factor		= y_spin_fire_factor;
 			pitch_factor	= p_spin_fire_factor;
 			break;
 		}
+		case eLookTypeLookOver :
 		case eLookTypeDirection :
 		case eLookTypeSearch :
 		case eLookTypeDanger :
