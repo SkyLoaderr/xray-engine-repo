@@ -7,9 +7,23 @@
 
 u32 CPhysicObject::remove_time=5000;
 
-CPhysicObject::CPhysicObject(void) {
+CPhysicObject::CPhysicObject(void) 
+{
 	m_type = epotBox;
 	m_mass = 10.f;
+	Init();
+}
+
+void CPhysicObject::RespawnInit()
+{
+	CKinematics*	K	=	PKinematics(Visual());
+	K->LL_SetBoneRoot(0);
+	K->LL_SetBonesVisible(0xffffffffffffffffL);
+	Init();
+	ClearUnsplited();
+}
+void CPhysicObject::Init()
+{
 	b_recalculate=false;
 	m_unsplit_time = u32(-1);
 	b_removing=false;
@@ -17,7 +31,7 @@ CPhysicObject::CPhysicObject(void) {
 	//m_source=NULL;
 }
 
-CPhysicObject::~CPhysicObject(void)
+void CPhysicObject::ClearUnsplited()
 {
 	SHELL_PAIR_I i=m_unsplited_shels.begin(),e=m_unsplited_shels.end();
 	for(;i!=e;++i)
@@ -25,6 +39,10 @@ CPhysicObject::~CPhysicObject(void)
 		i->first->Deactivate();
 		xr_delete(i->first);
 	}
+}
+CPhysicObject::~CPhysicObject(void)
+{
+	ClearUnsplited();
 }
 
 BOOL CPhysicObject::net_Spawn(LPVOID DC)
@@ -85,6 +103,12 @@ if(!po->flags.test(CSE_ALifeObjectPhysic::flSpawnCopy))
 	return TRUE;
 }
 
+void CPhysicObject::net_Destroy()
+{
+	RespawnInit();
+	inherited::net_Destroy();
+	PKinematics(Visual())->Calculate();
+}
 void CPhysicObject::Load(LPCSTR section)
 {
 	inherited::Load(section);
@@ -195,7 +219,7 @@ void CPhysicObject::CreateBody(CSE_ALifeObjectPhysic* po) {
 
 		case   epotSkeleton: 
 			{
-			pKinematics->LL_SetBoneRoot(0);
+			//pKinematics->LL_SetBoneRoot(0);
 			CreateSkeleton(po);
 		}break;
 
