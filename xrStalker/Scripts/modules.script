@@ -59,6 +59,7 @@ module ("xr_chaser")
 module ("xr_formation")
 module ("xr_sos")
 module ("xr_assistance")
+module ("xr_death")
 
 module ("bar_stalker")
 module ("barman")

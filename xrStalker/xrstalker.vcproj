@@ -264,9 +264,6 @@
 					RelativePath=".\Config\gameplay\info_level_tips.xml">
 				</File>
 				<File
-					RelativePath=".\Config\gameplay\info_news.xml">
-				</File>
-				<File
 					RelativePath=".\Config\gameplay\info_portions.xml">
 				</File>
 				<File
@@ -501,10 +498,10 @@
 					RelativePath=".\Config\ui\map_character.xml">
 				</File>
 				<File
-					RelativePath=".\motion_icon.xml">
+					RelativePath=".\Config\ui\motion_icon.xml">
 				</File>
 				<File
-					RelativePath=".\Config\ui\motion_icon.xml">
+					RelativePath=".\motion_icon.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\news.xml">
@@ -1037,6 +1034,9 @@
 			</File>
 			<File
 				RelativePath=".\scripts\mizlom_part2.script">
+			</File>
+			<File
+				RelativePath=".\scripts\modules.script">
 			</File>
 			<File
 				RelativePath=".\scripts\monster.script">
