@@ -6,7 +6,7 @@ void mmgrInitialize			(int dbgLevel);
 void mmgrDone				(void);
 void mmgrMessage			(const char *logMSG, const char *dop = NULL);
 
-LPSTR	_STRDUP				(LPCSTR string);
+ENGINE_API LPSTR	_STRDUP	(LPCSTR string);
 #define strdup(a)			_STRDUP(a)
 
 
