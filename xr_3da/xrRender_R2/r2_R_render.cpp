@@ -12,6 +12,8 @@ IC	bool	pred_sp_sort	(ISpatial* _1, ISpatial* _2)
 
 void CRender::Render		()
 {
+	VERIFY					(g_pGameLevel && g_pGameLevel->pHUD);
+
 	//******* Main calc
 	Device.Statistic.RenderCALC.Begin		();
 	{

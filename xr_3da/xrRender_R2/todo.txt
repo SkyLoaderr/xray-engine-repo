@@ -61,6 +61,31 @@ R2:
 		material-id				/ 1 scalar
 		transluency				/ ???
 
+----------------------------
+blin-bump-low-spec  , blin-bump-high-spec
+blin-bump-high-spec	, anisotroptic-low, 
+anisotroptic-low	, anisotroptic-high
+----------------------------
+	bump:
+		format					: 
+	  + virtual_height			: float (5cm default)
+		mipmaps					: none
+		details					: inaplicable
+		flags					: inaplicable
+		fade					: inaplicable
+		border					: inaplicable
+			-> 2 textures (DXT5)
+
+	texture:
+		format					: 
+	  +	material_id				: float
+	  +	bump_mode				: flat, autogen, use
+			bump_autogen		: height (5 cm, default)
+			bump_use			: bump-texture
+		detail_mode				:
+			bump_or_diffuse/diffuse/none
+		
+----------------------------
 I think I understand it. Maybe I can help myself (and others) understand it better if I try to explain it.
 I assume you know how the normal mapping works. The question is: how is the offset computed?
 
