@@ -48,7 +48,7 @@ DEFINE_VECTOR(st_Environment,EnvList,EnvIt);
 
 struct st_LevelOptions{
 	AnsiString	m_FNLevelPath;
-	AnsiString	m_LevelName;
+	AnsiString	m_LevelName;   // obsolette
 	AnsiString 	m_BOPText;
 	AnsiString 	m_SkydomeObjName;
     EnvList		m_Envs;

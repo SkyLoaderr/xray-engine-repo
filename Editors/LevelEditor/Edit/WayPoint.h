@@ -79,7 +79,7 @@ public:
     virtual bool 	FrustumPick		(const CFrustum& frustum);
   	virtual bool 	Load			(CStream&);
 	virtual void 	Save			(CFS_Base&);
-    virtual bool	ExportGame		(CFS_Base&, int chunk_id, LPVOID data);
+    virtual bool	ExportGame		(CFS_Base&, int& chunk_id);
 
     static bool		IsPointMode		();
 };

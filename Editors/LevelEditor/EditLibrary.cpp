@@ -326,7 +326,7 @@ void __fastcall TfrmEditLibrary::ebMakeLODClick(TObject *Sender)
             string256 nm; strcpy(nm,tex_name.c_str()); _ChangeSymbol(nm,'\\','_');
             tex_name = "lod_"+AnsiString(nm);
             tex_name = Engine.FS.UpdateTextureNameWithFolder(tex_name);
-            ImageManager.CreateLODTexture(m_pEditObject->GetReference()->GetBox(), tex_name.c_str(),64,64,8,age);
+            ImageManager.CreateLODTexture(m_pEditObject->GetReference()->GetBox(), tex_name.c_str(),64,64,LOD_SAMPLE_COUNT,age);
             m_pEditObject->GetReference()->UpdateLODShader();
         	tvObjectsItemFocused(Sender);
 	    }else{

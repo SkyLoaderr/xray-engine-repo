@@ -221,13 +221,13 @@ void CSpawnPoint::Save(CFS_Base& F){
 }
 //----------------------------------------------------
 
-bool CSpawnPoint::ExportSpawn( CFS_Base& F, int chunk_id )
+bool CSpawnPoint::ExportSpawn( CFS_Base& F, int& chunk_id )
 {
 	if (m_SpawnData){
         strcpy	  		(m_SpawnData->s_name_replace,Name);
         NET_Packet		Packet;
         m_SpawnData->Spawn_Write(Packet,FALSE);
-        F.open_chunk	(chunk_id);
+        F.open_chunk	(chunk_id++);
         F.write			(Packet.B.data,Packet.B.count);
         F.close_chunk	();
 	    return true;
@@ -236,14 +236,14 @@ bool CSpawnPoint::ExportSpawn( CFS_Base& F, int chunk_id )
 }
 //----------------------------------------------------
 
-bool CSpawnPoint::ExportGame(CFS_Base& F, int chunk_id, LPVOID data)
+bool CSpawnPoint::ExportGame(CFS_Base& F, int& chunk_id)
 {
 	EPointType type = EPointType(data);
 	if (!m_SpawnData){
         if (m_Type==type){
             switch (type){
             case ptRPoint: 
-                F.open_chunk	(chunk_id);
+                F.open_chunk	(chunk_id++);
                 F.Wvector		(PPosition);
                 F.Wvector		(PRotation);
                 F.Wdword		(m_dwTeamID);

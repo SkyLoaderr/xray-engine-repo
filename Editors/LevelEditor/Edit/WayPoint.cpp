@@ -476,11 +476,15 @@ void CWayObject::Save(CFS_Base& F)
     F.close_chunk	();
 }
 
-bool CWayObject::ExportGame(CFS_Base& F, int chunk_id, LPVOID data){
-	F.open_chunk	(chunk_id);
+bool CWayObject::ExportGame(CFS_Base& F, int& chunk_id){
+	F.open_chunk	(WAY_BASE+chunk_id++);
 	{
         F.open_chunk	(WAYOBJECT_CHUNK_VERSION);
         F.Wword			(WAYOBJECT_VERSION);
+        F.close_chunk	();
+
+        F.open_chunk	(WAYOBJECT_CHUNK_TYPE);
+        F.Wdword		(m_Type);
         F.close_chunk	();
 
         F.open_chunk	(WAYOBJECT_CHUNK_NAME);

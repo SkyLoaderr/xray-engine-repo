@@ -79,7 +79,7 @@ void __fastcall TfrmSceneProperties::FormShow(TObject *Sender)
     tvOptions->Items->AddChild(root,"Level options");
     tvOptions->Items->AddChild(root,"Level environment");
     tvOptions->Items->AddChild(root,"Level script");
-	edLevelName->Text		= Scene.m_LevelOp.m_LevelName;
+//	edLevelName->Text		= Scene.m_LevelOp.m_BuildParams.L_name;// m_LevelName;
 	edLevelPath->Text		= Scene.m_LevelOp.m_FNLevelPath;
 	seCurEnv->Value			= Scene.m_LevelOp.m_CurEnv;
 	mmText->Text			= Scene.m_LevelOp.m_BOPText;
@@ -95,7 +95,6 @@ void __fastcall TfrmSceneProperties::FormShow(TObject *Sender)
     SetEditParams();
 #endif
     tvOptions->Items->AddChild(root,"Optimizing");
-    tvOptions->Items->AddChild(root,"Tesselation");
     tvOptions->Items->AddChild(root,"Lightmaps");
     tvOptions->Items->AddChild(root,"Progressive");
     tvOptions->Items->AddChild(root,"Strippifier");
@@ -124,10 +123,6 @@ void __fastcall TfrmSceneProperties::SetSceneParams(){
     // Normals & optimization
     m_BuildParams->m_sm_angle            	= seSMAngle->Value;
     m_BuildParams->m_weld_distance       	= seWeldDistance->Value;
-
-    // Tesselation
-    m_BuildParams->m_bTesselate          	= cbTesselation->Checked;
-    m_BuildParams->m_maxedge             	= seMaxEdge->Value;
 
     // Vertex buffers
     m_BuildParams->m_VB_maxSize          	= seVBMaxSize->Value*1024;
@@ -184,10 +179,6 @@ void __fastcall TfrmSceneProperties::SetEditParams(){
     seSMAngle->Value               	= m_BuildParams->m_sm_angle;
     seWeldDistance->Value          	= m_BuildParams->m_weld_distance;
 
-    // Tesselation
-    cbTesselation->Checked         	= m_BuildParams->m_bTesselate;
-    seMaxEdge->Value               	= m_BuildParams->m_maxedge;
-
     // Vertex buffers
     seVBMaxSize->Value             	= m_BuildParams->m_VB_maxSize/1024;
     seVBMaxVertices->Value         	= m_BuildParams->m_VB_maxVertices;
@@ -229,7 +220,7 @@ void __fastcall TfrmSceneProperties::SetEditParams(){
 void __fastcall TfrmSceneProperties::btContinueClick(TObject *Sender)
 {
 #ifdef _LEVEL_EDITOR
-	Scene.m_LevelOp.m_LevelName 	= edLevelName->Text;  	// Level Name
+//	Scene.m_LevelOp.m_LevelName 	= edLevelName->Text;  	// Level Name
 	Scene.m_LevelOp.m_FNLevelPath 	= edLevelPath->Text;	// Path
 	Scene.m_LevelOp.m_BOPText		= mmText->Text;			// Text
 	Scene.m_LevelOp.m_CurEnv		= seCurEnv->Value;
@@ -282,7 +273,7 @@ void __fastcall TfrmSceneProperties::ShowPage(AnsiString& s){
 void __fastcall TfrmSceneProperties::tvOptionsItemSelectedChange(
       TObject *Sender, TElTreeItem *Item)
 {
-    if (Item) ShowPage(Item->Text);
+    if (Item) ShowPage(AnsiString(Item->Text));
 }
 //---------------------------------------------------------------------------
 
@@ -322,27 +313,6 @@ void __fastcall TfrmSceneProperties::ebChooseSkydomeClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmSceneProperties::ebChooseHOMClick(TObject *Sender)
-{
-#ifdef _LEVEL_EDITOR
-	LPCSTR N = TfrmChoseItem::SelectObject(false,0,edHOMObjectName->Text.c_str());
-	if (!N) return;
-
-	CEditableObject* O = Lib.CreateEditObject(N);
-	if (!O){
-    	ELog.DlgMsg(mtError,"Object %s can't find in library.",N);
-        return;
-	}
-    if (!O->IsFlag(CEditableObject::eoHOM)){
-    	ELog.DlgMsg(mtError,"Non-HOM models can't be used as HOM.");
-        Lib.RemoveEditObject(O);
-        return ;
-	}
-	Lib.RemoveEditObject(O);
-	edHOMObjectName->Text = N;
-#endif
-}
-//---------------------------------------------------------------------------
 
 void __fastcall TfrmSceneProperties::ebClearSkydomeClick(TObject *Sender)
 {
@@ -350,11 +320,6 @@ void __fastcall TfrmSceneProperties::ebClearSkydomeClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmSceneProperties::ebClearHOMClick(TObject *Sender)
-{
-	edHOMObjectName->Text = "";
-}
-//---------------------------------------------------------------------------
 static bool bUpdateMode = false;
 void __fastcall TfrmSceneProperties::EnvsUpdate(){
 #ifdef _LEVEL_EDITOR

@@ -10,9 +10,10 @@
 #include "ui_main.h"
 
 // file: SceneChunks.h
-#define CURRENT_FILE_VERSION    0x00000005
-#define CURRENT_LEVELOP_VERSION 0x00000008
-#define CURRENT_ENV_VERSION	 	0x00000007
+#define CURRENT_FILE_VERSION    	0x00000005
+#define CURRENT_LEVELOP_VERSION 	0x00000008
+#define CURRENT_LEVELOP_BP_VERSION 	0x00000008
+#define CURRENT_ENV_VERSION	 		0x00000007
 
 #define CHUNK_VERSION       0x9df3
 #define CHUNK_OBJECT        0x7702
@@ -32,6 +33,7 @@
 #define CHUNK_LO_SKYDOME	 	0x7804
 #define CHUNK_LO_ENVS		 	0x7805
 #define CHUNK_LO_DOCLUSTERSIZE	0x7806
+#define CHUNK_LO_BP_VERSION		0x7849
 #define CHUNK_BUILD_PARAMS		0x7850
 
 //------------------------------------------------------------------------------------------------
@@ -84,16 +86,21 @@ void st_LevelOptions::Save( CFS_Base& F ){
 	F.Wfloat	( m_DOClusterSize );
     F.close_chunk();
 
+    F.open_chunk( CHUNK_LO_BP_VERSION );
+	F.Wdword	( CURRENT_LEVELOP_BP_VERSION );
+    F.close_chunk();
+
     F.open_chunk( CHUNK_BUILD_PARAMS );
 	F.write		( &m_BuildParams, sizeof(m_BuildParams) );
     F.close_chunk();
 }
 
-void st_LevelOptions::Read(CStream& F){
+void st_LevelOptions::Read(CStream& F)
+{
 	R_ASSERT(F.FindChunk(CHUNK_LO_VERSION));
     DWORD vers = F.Rdword( );
     if( vers != CURRENT_LEVELOP_VERSION ){
-        ELog.Msg( mtError, "Skipping bad version of level options..." );
+        ELog.DlgMsg( mtError, "Skipping bad version of level options." );
         return;
     }
 
@@ -117,8 +124,17 @@ void st_LevelOptions::Read(CStream& F){
     R_ASSERT(F.FindChunk(CHUNK_LO_DOCLUSTERSIZE));
     m_DOClusterSize = F.Rfloat();
 
-    if (F.FindChunk(CHUNK_BUILD_PARAMS))
-		F.Read	( &m_BuildParams, sizeof(m_BuildParams) );
+    vers = 0;
+    if (F.FindChunk(CHUNK_LO_BP_VERSION))
+	    vers = F.Rdword( );
+
+    if (CURRENT_LEVELOP_BP_VERSION==vers){
+	    if (F.FindChunk(CHUNK_BUILD_PARAMS)){
+			F.Read	( &m_BuildParams, sizeof(m_BuildParams) );
+        }
+    }else{
+        ELog.DlgMsg( mtError, "Skipping bad version of build params." );
+    }
 }
 //------------------------------------------------------------------------------------------------
 // Scene

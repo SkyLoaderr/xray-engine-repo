@@ -25,6 +25,9 @@ struct	st_ObjectDB;
 #include <lwsurf.h>
 #endif
 
+#define LOD_SHADER_NAME 	"def_shaders\\lod"
+#define LOD_SAMPLE_COUNT 	8
+
 // refs
 class XRayMaterial;
 
@@ -202,6 +205,11 @@ public:
     IC SurfaceIt	FirstSurface			()	{return m_Surfaces.begin();}
     IC SurfaceIt	LastSurface				()	{return m_Surfaces.end();}
     IC int			SurfaceCount			()	{return m_Surfaces.size();}
+
+    // LOD
+	LPCSTR			GetLODTextureName		(AnsiString& name);
+    LPCSTR			GetLODShaderName		(){return LOD_SHADER_NAME;}
+    void			GetLODFrame				(int frame, Fvector p[4], Fvector2 t[4], const Fmatrix* parent=0);
 
     // skeleton
     IC BPIt			FirstBonePart			()	{return m_BoneParts.begin();}

@@ -22,8 +22,8 @@ enum EWayType{
 };
 
 // BASE offset
-#define WAY_BASE					0x1000
-#define POINT_BASE					0x2000
+#define WAY_TYPE					0x10000000
+#define POINT_TYPE					0x20000000
 
 // POINT chunks
 #define RPOINT_CHUNK				POINT_BASE+ptRPoint
@@ -43,6 +43,7 @@ enum EWayType{
 #define WAYOBJECT_CHUNK_LINKS		0x0003
 #define WAYOBJECT_CHUNK_TYPE		0x0004
 #define WAYOBJECT_CHUNK_NAME		0x0005
+#define WAYOBJECT_CHUNK_TYPE		0x0006
 
 //----------------------------------------------------
 /*
@@ -64,6 +65,8 @@ enum EWayType{
 	- chunk #0
     	chunk WAYOBJECT_CHUNK_VERSION
         	word (version)
+        chunk WAYOBJECT_CHUNK_TYPE
+        	dword (type)
 		chunk WAYOBJECT_CHUNK_NAME
         	stringZ (Name)
         chunk WAY_CHUNK_TYPE

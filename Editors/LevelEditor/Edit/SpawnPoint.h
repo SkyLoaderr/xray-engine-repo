@@ -38,8 +38,8 @@ public:
     virtual bool 	FrustumPick		( const CFrustum& frustum );
   	virtual bool 	Load			(CStream&);
 	virtual void 	Save			(CFS_Base&);
-    virtual bool	ExportSpawn		(CFS_Base&, int chunk_id);
-    virtual bool	ExportGame		(CFS_Base&, int chunk_id, LPVOID data);
+    virtual bool	ExportSpawn		(CFS_Base&, int& chunk_id);
+    virtual bool	ExportGame		(CFS_Base&, int& chunk_id);
 	virtual bool    GetBox      	(Fbox& box);
 
 	virtual void	PropWrite		(CFS_Base& F);

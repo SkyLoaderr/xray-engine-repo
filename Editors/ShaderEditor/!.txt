@@ -590,6 +590,17 @@ General:
 --------------------------------------------------------------------------------
 Level:
 --------------------------------------------------------------------------------
+- builder LTX 	- группы!!!
+- builder Game  - тоже!!!
+- DO - engine render 
+- Scene load per object progress
+- удаление WayPoint
+- PropList: AddItem через Type
+- PropList: PropRead, PropWrite
+- Library access witout clear
+- FindObjectByName не использовать с классом
+- Cancel ImageEditor вернуть текстуры
+
 - осветить DO
 - sound library
 - для каждого лайта fuzzy(mesh)

@@ -265,6 +265,7 @@ int CEditableObject::GetRootBoneID(){
     for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++)
     	if (-1==(*b_it)->ParentIndex()) return b_it-m_Bones.begin();
     THROW;
+    return -1;
 }
 
 int CEditableObject::PartIDByName(LPCSTR name){

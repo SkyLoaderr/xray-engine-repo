@@ -13,15 +13,15 @@
 #include "net_utils.h"
 #include "xrMessages.h"
 
-bool SceneBuilder::BuildGame()
+BOOL SceneBuilder::BuildGame()
 {
-    CFS_Memory SPAWN;
-	int chunk = 0;
+	CFS_Memory SPAWN;
+    int chunk = 0;
     // add event
     for(ObjectPairIt it=Scene.FirstClass(); it!=Scene.LastClass(); it++){
         ObjectList& lst = (*it).second;
     	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-            if ((*_F)->ExportSpawn(SPAWN,chunk)) chunk++;
+            (*_F)->ExportSpawn(SPAWN,chunk);
     }
     if (chunk){
 	    AnsiString lev_spawn = "level.spawn";
@@ -32,18 +32,21 @@ bool SceneBuilder::BuildGame()
 
 // game
 	CFS_Memory GAME;
+   	chunk	= 0;
+    for(it=Scene.FirstClass(); it!=Scene.LastClass(); it++){
+        ObjectList& lst = (*it).second;
+    	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
+            (*_F)->ExportGame(SPAWN,chunk);
+    }
 	// way points
 	if (Scene.ObjCount(OBJCLASS_WAY)) {
 		ObjectIt _F  = Scene.FirstObj(OBJCLASS_WAY);
         ObjectIt _E  = Scene.LastObj(OBJCLASS_WAY);
         for (EWayType t=EWayType(0); t<wtMaxType; t++){
-        	GAME.open_chunk(t+WAY_BASE);
         	chunk=0;
 	        for(ObjectIt it=_F; it!=_E; it++){
     	    	CWayObject* P = (CWayObject*)(*it);
-                if (P->GetType()==t){
-                    if (P->ExportGame(GAME,chunk,0)) chunk++;
-                }
+                if (P->GetType()==t) P->ExportGame(GAME,chunk,0);
 			}
         	GAME.close_chunk();
         }
@@ -57,7 +60,7 @@ bool SceneBuilder::BuildGame()
         	chunk=0;
 	        for(ObjectIt it=_F; it!=_E; it++){
     	    	CSpawnPoint* P = (CSpawnPoint*)(*it);
-				if (P->ExportGame(GAME,chunk,(LPVOID)t)) chunk++;
+				P->ExportGame(GAME,chunk,(LPVOID)t);
 			}
         	GAME.close_chunk();
         }

@@ -50,7 +50,7 @@ public:
 
   	virtual bool 		Load		(CStream&);
 	virtual void 		Save		(CFS_Base&);
-    virtual bool		ExportSpawn	(CFS_Base&, int chunk_id);
+    virtual bool		ExportSpawn	(CFS_Base&, int& chunk_id);
 	virtual bool    	GetBox      (Fbox& box);
 	virtual void 		OnFrame		();
     IC bool				RefCompare	(PS::SParams* to){VERIFY(to); return stricmp(to->m_Name,m_Definition->m_Name);}

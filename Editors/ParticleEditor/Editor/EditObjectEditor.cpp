@@ -11,6 +11,12 @@
 #include "xr_trims.h"
 #include "d3dutils.h"
 
+static Fvector LOD_pos[4]={
+	-1.0f, 1.0f, 0.0f,
+	 1.0f, 1.0f, 0.0f,
+	 1.0f,-1.0f, 0.0f,
+	-1.0f,-1.0f, 0.0f
+};
 static FVF::LIT LOD[4]={
 	-1.0f, 1.0f, 0.0f,  0xFFFFFFFF, 0.0f,0.0f, // F 0
 	 1.0f, 1.0f, 0.0f,  0xFFFFFFFF, 0.0f,0.0f, // F 1
@@ -175,26 +181,43 @@ IC static void CalculateLODTC(int frame, int w_cnt, int h_cnt, Fvector2& lt, Fve
     rb.y        = lt.y+ts.y;
 }
 
-void CEditableObject::RenderLOD(const Fmatrix& parent)
+void CEditableObject::GetLODFrame(int frame, Fvector p[4], Fvector2 t[4], const Fmatrix* parent)
 {
+	R_ASSERT(IsFlag(eoUsingLOD));
     Fvector P,S;
     m_Box.get_CD(P,S);
     float r = max(S.x,S.z);//sqrtf(S.x*S.x+S.z*S.z);
     Fmatrix T,matrix,rot;
     T.scale(r,S.y,r);
     T.translate_over(P);
-    T.mulA(parent);
+    if (parent) T.mulA(*parent);
 
-    int samples = 8;
-    Fvector C=Device.m_Camera.GetDirection();
+    float angle = frame*(PI_MUL_2/LOD_SAMPLE_COUNT);
+    rot.rotateY(-angle);
+    matrix.mul(T,rot);
+    Fvector2 lt, rb;
+    CalculateLODTC(frame,LOD_SAMPLE_COUNT,1,lt,rb);
+    t[0].set(lt);
+    t[1].set(rb.x,lt.y);
+    t[2].set(rb);
+    t[3].set(lt.x,rb.y);
+    matrix.transform_tiny(p[0],LOD_pos[0]);
+    matrix.transform_tiny(p[1],LOD_pos[1]);
+    matrix.transform_tiny(p[2],LOD_pos[2]);
+    matrix.transform_tiny(p[3],LOD_pos[3]);
+}
+
+void CEditableObject::RenderLOD(const Fmatrix& parent)
+{
+    Fvector C		= Device.m_Camera.GetDirection();
     C.y=0;
-    float m = C.magnitude();
+    float m 		= C.magnitude();
     if (m<EPS) return;
-    C.div(m);
+    C.div			(m);
 	int max_frame;
-    float max_dot=0;
-    for (int frame=0; frame<samples; frame++){
-    	float angle = frame*(PI_MUL_2/samples);
+    float max_dot	= 0;
+    for (int frame=0; frame<LOD_SAMPLE_COUNT; frame++){
+    	float angle = frame*(PI_MUL_2/LOD_SAMPLE_COUNT);
 
         Fvector D;
         D.setHP(angle,0);
@@ -207,31 +230,32 @@ void CEditableObject::RenderLOD(const Fmatrix& parent)
         }
     }
 	{
-    	float angle = max_frame*(PI_MUL_2/samples);
-	    rot.rotateY(-angle);
-        matrix.mul(T,rot);
-    	Fvector2 lt, rb;
-	    CalculateLODTC(max_frame,samples,1,lt,rb);
-        LOD[0].t.set(lt);
-        LOD[1].t.set(rb.x,lt.y);
-        LOD[2].t.set(rb);
-        LOD[3].t.set(lt.x,rb.y);
-    	Device.SetTransform(D3DTS_WORLD,matrix);
-        Device.SetShader(m_LODShader?m_LODShader:Device.m_WireShader);
-    	DU::DrawPrimitiveLIT(D3DPT_TRIANGLEFAN, 2, LOD, 4, true, false);
+    	Fvector    	p[4];
+        Fvector2 	t[4];
+    	GetLODFrame(max_frame,p,t);
+        for (int i=0; i<4; i++){ LOD[i].p.set(p[i]); LOD[i].t.set(t[i]); }
+    	Device.SetTransform		(D3DTS_WORLD,parent);
+        Device.SetShader		(m_LODShader?m_LODShader:Device.m_WireShader);
+    	DU::DrawPrimitiveLIT	(D3DPT_TRIANGLEFAN, 2, LOD, 4, true, false);
     }
+}
+
+LPCSTR CEditableObject::GetLODTextureName(AnsiString& l_name)
+{
+    string256 nm; strcpy(nm,m_LibName.c_str()); _ChangeSymbol(nm,'\\','_');
+    l_name = "lod_"+AnsiString(nm);
+    l_name = Engine.FS.UpdateTextureNameWithFolder(l_name);
+    return l_name.c_str();
 }
 
 void CEditableObject::UpdateLODShader()
 {
 	AnsiString l_name;
-    string256 nm; strcpy(nm,m_LibName.c_str()); _ChangeSymbol(nm,'\\','_');
-    l_name = "lod_"+AnsiString(nm);
-    l_name = Engine.FS.UpdateTextureNameWithFolder(l_name);
+    GetLODTextureName(l_name);
     AnsiString fname = l_name+AnsiString(".tga");
     Device.Shader.Delete(m_LODShader);
     if (Engine.FS.Exist(&Engine.FS.m_Textures,fname.c_str()))
-    	m_LODShader = Device.Shader.Create("flora\\lod",l_name.c_str());
+    	m_LODShader = Device.Shader.Create(GetLODShaderName(),l_name.c_str());
 }
 
 void CEditableObject::OnDeviceCreate()

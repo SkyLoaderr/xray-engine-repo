@@ -29,14 +29,11 @@ __published:	// IDE-managed Components
     TPageControl *pcBuildOptions;
     TTabSheet *tsLevelOptions;
     TTabSheet *tsOptimizing;
-    TTabSheet *tsTesselation;
     TTabSheet *tsLightmaps;
     TTabSheet *tsProgressive;
     TTabSheet *tsVertexBuffers;
     TTabSheet *tsSubdivision;
 	TTabSheet *tsStrippifier;
-    TMultiObjSpinEdit *seMaxEdge;
-	TLabel *RxLabel4;
 	TMultiObjSpinEdit *seLMPixelsPerMeter;
 	TLabel *RxLabel5;
     TMultiObjSpinEdit *seVBMaxSize;
@@ -59,7 +56,6 @@ __published:	// IDE-managed Components
 	TCheckBox *cbStrippify;
 	TLabel *RxLabel18;
 	TMultiObjSpinEdit *seStripCacheSize;
-    TCheckBox *cbTesselation;
 	TCheckBox *cbLMLightmaps;
     TCheckBox *cbProgressive;
     TElTree *tvOptions;
@@ -79,9 +75,7 @@ __published:	// IDE-managed Components
 	TExtBtn *ebOk;
 	TExtBtn *ebCancel;
 	TPanel *Panel2;
-	TLabel *RxLabel1;
 	TLabel *RxLabel2;
-	TEdit *edLevelName;
 	TMultiObjSpinEdit *seSSMergeCoef;
 	TLabel *RxLabel19;
 	TLabel *RxLabel21;
@@ -138,10 +132,6 @@ __published:	// IDE-managed Components
 	TEdit *edLevelPath;
 	TLabel *MxLabel1;
 	TMultiObjSpinEdit *seLMRMSZero;
-	TLabel *Label1;
-	TExtBtn *ebChooseHOM;
-	TExtBtn *ebClearHOM;
-	TEdit *edHOMObjectName;
     void __fastcall FormShow(TObject *Sender);
     void __fastcall btContinueClick(TObject *Sender);
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
@@ -163,8 +153,6 @@ __published:	// IDE-managed Components
 	void __fastcall seLMFuzzyMinKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
 	void __fastcall seLMFuzzyMinExit(TObject *Sender);
-	void __fastcall ebChooseHOMClick(TObject *Sender);
-	void __fastcall ebClearHOMClick(TObject *Sender);
 private:	// User declarations
     void __fastcall SetSceneParams();
     void __fastcall SetEditParams();
