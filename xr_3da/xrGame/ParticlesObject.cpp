@@ -63,11 +63,13 @@ void CParticlesObject::Init(LPCSTR p_name, IRender_Sector* S, BOOL bAutoRemove)
 	shedule_register		();
 
 	dwLastTime				= Device.dwTimeGlobal;
+	mt_dt					= 0;
 }
 
 //----------------------------------------------------
 CParticlesObject::~CParticlesObject()
 {
+	VERIFY					(0==mt_dt);
 	shedule_unregister		();
 }
 
@@ -110,6 +112,7 @@ void CParticlesObject::Play		()
 	IParticleCustom* V			= smart_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
 	V->Play						();
 	dwLastTime					= Device.dwTimeGlobal-33ul;
+	mt_dt						= 0;
 	PerformAllTheWork			(0);
 	m_bStoppig					= false;
 }
@@ -121,6 +124,7 @@ void CParticlesObject::play_at_pos(const Fvector& pos, BOOL xform)
 	V->UpdateParent				(m,zero_vel,xform);
 	V->Play						();
 	dwLastTime					= Device.dwTimeGlobal-33ul;
+	mt_dt						= 0;
 	PerformAllTheWork			(0);
 	m_bStoppig					= false;
 }
@@ -144,6 +148,7 @@ void CParticlesObject::shedule_Update	(u32 _dt)
 			fastdelegate::FastDelegate0			delegate	(this,&CParticlesObject::PerformAllTheWork_mt);
 			Device.seqParallel.push_back		(delegate);
 		} else {
+			mt_dt					= 0;
 			IParticleCustom* V		= smart_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
 			V->OnFrame				(dt);
 		}
@@ -166,11 +171,12 @@ void CParticlesObject::PerformAllTheWork(u32 _dt)
 
 void CParticlesObject::PerformAllTheWork_mt()
 {
+	VERIFY					(mt_dt);
 	IParticleCustom* V		= smart_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
 	V->OnFrame				(mt_dt);
 }
 
-void CParticlesObject::SetXFORM		(const Fmatrix& m)
+void CParticlesObject::SetXFORM			(const Fmatrix& m)
 {
 	IParticleCustom* V	= smart_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
 	V->UpdateParent		(m,zero_vel,TRUE);
