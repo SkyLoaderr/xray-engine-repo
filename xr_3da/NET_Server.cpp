@@ -54,6 +54,7 @@ IPureServer::IPureServer	(CTimer* timer)
 
 IPureServer::~IPureServer	()
 {
+	BannedAdresses.clear();
 }
 
 void IPureServer::pCompress	(NET_Packet& D, NET_Packet& S)
@@ -258,8 +259,8 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 			if (0 == msg->dwReceivedDataSize) return S_FALSE;
 			if (!stricmp((const char*)msg->pvReceivedData, "ToConnect")) return S_OK;
 			if (*((const GUID*) msg->pvReceivedData) != NET_GUID) return S_FALSE;
-			if (OnCL_QueryHost()) return S_OK;
-			else return S_FALSE;
+			if (!OnCL_QueryHost()) return S_FALSE;
+			return S_OK;
 		}break;
 	case DPN_MSGID_CREATE_PLAYER :
         {
@@ -283,6 +284,14 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 			bool bLocal = (Pinfo->dwPlayerFlags&DPNPLAYER_LOCAL) != 0;
 			ClientID clientID; clientID.set(msg->dpnidPlayer);
 			new_client(clientID, cname, bLocal);
+
+			IDirectPlay8Address* pClAddr;
+			CHK_DX(NET->GetClientAddress(msg->dpnidPlayer, &pClAddr, 0));
+			char cURLA[1024];
+			DWORD Len = 1024;
+			CHK_DX(pClAddr->GetURLA(cURLA, &Len));
+			int x=0;
+			x=x;
 
 /*			
 			// register player
@@ -359,6 +368,30 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 			}
         }
         break;
+	case DPN_MSGID_INDICATE_CONNECT :
+		{
+			PDPNMSG_INDICATE_CONNECT msg = (PDPNMSG_INDICATE_CONNECT)pMessage;
+
+			WCHAR wstrHostname[ 256 ] = {0};
+			DWORD dwSize = sizeof(wstrHostname);
+			DWORD dwDataType = 0;
+			msg->pAddressPlayer->GetComponentByName( DPNA_KEY_HOSTNAME, wstrHostname, &dwSize, &dwDataType );
+
+
+			string256				HostName;
+			CHK_DX(WideCharToMultiByte(CP_ACP,0,wstrHostname,-1,HostName,sizeof(HostName),0,0));
+			char HAddr[4] = {0, 0, 0, 0};
+			char a[4][4] = {0, 0, 0, 0};
+			sscanf(HostName, "%[^'.'].%[^'.'].%[^'.'].%s", a[0], a[1], a[2], a[3]);
+
+			for (int i=0; i<4; i++)
+			{
+				HAddr[i] = char(atol(a[i]));
+			};		
+
+//			int x=0;
+//			x=x;
+		}break;
     }
 	
     return S_OK;
@@ -519,4 +552,8 @@ bool			IPureServer::DisconnectClient	(IClient* C)
 	HRESULT res = NET->DestroyClient(C->ID.value(), Reason, xr_strlen(Reason)+1, 0);
 	CHK_DX(res);
 	return true;
+};
+
+void			IPureServer::BanClient			(IClient* C, u32 BanTime)
+{
 };

@@ -44,6 +44,33 @@ public:
 	u32					dwBytesPerSec;
 };
 
+class XRNETSERVER_API IBannedClient
+{
+public:
+	char				HAddr[4];
+	u32					BanTime;
+	
+	IBannedClient ()
+	{
+		HAddr[0] = 0;
+		HAddr[1] = 0;
+		HAddr[2] = 0;
+		HAddr[3] = 0;
+
+		BanTime = 0;
+	};
+
+	bool	operator==		(const char* Addr)
+	{
+		for (int i=0; i<4; i++)
+		{
+			if (HAddr[i] == 0) return true;
+			if (HAddr[i] != Addr[0]) return false;
+		};
+		return true;
+	};
+};
+
 class XRNETSERVER_API IPureServer
 {
 protected:
@@ -59,6 +86,8 @@ protected:
 	IClient*				SV_Client;
 
 	int						psNET_Port;	
+
+	xr_vector<IBannedClient*>		BannedAdresses;
 
 	// Compressor configuration
 	MSYS_CONFIG				msgConfig;
@@ -116,4 +145,5 @@ public:
 
 	IC int					GetPort				()			{ return psNET_Port; };
 	virtual bool			DisconnectClient	(IClient* C);
+	virtual void			BanClient			(IClient* C, u32 BanTime);
 };
