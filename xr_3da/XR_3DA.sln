@@ -125,9 +125,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrDO_Light", "..\xrLC\xrDO_
 		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E} = {A0F7D1FB-59A7-4717-A7E4-96F37E91998E}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrAI", "..\xrAI\xrAI.vcproj", "{EA5932F3-02FE-4AD3-89E8-7072DC465D25}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 21
+		SccNumberOfProjects = 22
 		SccLocalPath0 = .
 		CanCheckoutShared = true
 		SolutionUniqueID = {6F8E4AE3-CB8E-4760-8086-796FE333A467}
@@ -211,6 +215,10 @@ Global
 		SccProjectUniqueName20 = ..\\xrLC\\xrDO_Light\\xrDO_Light.vcproj
 		SccProjectName20 = \u0022$/xrLC/xrDO_Light\u0022,\u0020CHEAAAAA
 		SccLocalPath20 = ..\\xrLC\\xrDO_Light
+		CanCheckoutShared = true
+		SccProjectUniqueName21 = ..\\xrAI\\xrAI.vcproj
+		SccProjectName21 = \u0022$/xrAI\u0022,\u0020KVDAAAAA
+		SccLocalPath21 = ..\\xrAI
 		CanCheckoutShared = true
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
@@ -366,6 +374,14 @@ Global
 		{B730F54D-1199-481A-AAD0-5DB684E067C0}.Mixed.Build.0 = Mixed|Win32
 		{B730F54D-1199-481A-AAD0-5DB684E067C0}.Release.ActiveCfg = Release|Win32
 		{B730F54D-1199-481A-AAD0-5DB684E067C0}.Release.Build.0 = Release|Win32
+		{EA5932F3-02FE-4AD3-89E8-7072DC465D25}.Debug.ActiveCfg = Debug|Win32
+		{EA5932F3-02FE-4AD3-89E8-7072DC465D25}.Debug.Build.0 = Debug|Win32
+		{EA5932F3-02FE-4AD3-89E8-7072DC465D25}.DebugNoExceptions.ActiveCfg = Debug|Win32
+		{EA5932F3-02FE-4AD3-89E8-7072DC465D25}.DebugNoExceptions.Build.0 = Debug|Win32
+		{EA5932F3-02FE-4AD3-89E8-7072DC465D25}.Mixed.ActiveCfg = Mixed|Win32
+		{EA5932F3-02FE-4AD3-89E8-7072DC465D25}.Mixed.Build.0 = Mixed|Win32
+		{EA5932F3-02FE-4AD3-89E8-7072DC465D25}.Release.ActiveCfg = Release|Win32
+		{EA5932F3-02FE-4AD3-89E8-7072DC465D25}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 	EndGlobalSection
