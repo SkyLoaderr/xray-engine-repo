@@ -81,7 +81,7 @@ function main()
 			action(
 				stalker_zomby,
 				  	move	(move.crouch, move.walk,move.line,patrol("way0006")),
-					anim	(anim.free),
+					anim	(anim.danger),
 					cond	(cond.time_end,10000000)
 			)
 
