@@ -198,6 +198,7 @@ function proceed(actor)
 	if	actor:has_info("bar_svoboda_rg6_done") and
  		actor:dont_has_info("bar_dolg_community_leader_done")
 	then		
+		actor:give_info_portion("bar_dolg_community_leader_done")
 		set_task_state(task.completed, "bar_dolg_rg6_quest", 0)
 	end 
 
