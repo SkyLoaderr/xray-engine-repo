@@ -191,7 +191,7 @@ BOOL CCustomZone::net_Spawn(LPVOID DC)
 	CCF_Shape *l_pShape			= xr_new<CCF_Shape>(this);
 	collidable.model			= l_pShape;
 	CSE_Abstract				*e = (CSE_Abstract*)(DC);
-	CCustomZone		*Z = dynamic_cast<CCustomZone*>(e);
+	CSE_ALifeCustomZone			*Z = dynamic_cast<CSE_ALifeCustomZone*>(e);
 	
 	for (u32 i=0; i < Z->shapes.size(); ++i) 
 	{
