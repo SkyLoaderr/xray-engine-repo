@@ -22,7 +22,7 @@ void CAI_Biting::Think()
 
 	// pre-update path parameters
 	enable_movement							(true);
-	//set_use_dest_orientation				(false);
+	b_try_min_time							= true;
 	CLevelLocationSelector::set_evaluator	(0);
 
 	// fix off-line displacement
@@ -37,27 +37,13 @@ void CAI_Biting::Think()
 	if ((pSquad->GetLeader() == this)) {
 		pSquad->UpdateDecentralized();
 	} 
-	
-//	if (m_tEnemy.obj)  {
-//		CMonsterSquad	*pSquad = Level().SquadMan.GetSquad((u8)g_Squad());
-//		TTime			squad_ai_last_updated;
-//		Fvector			target = pSquad->GetTargetPoint(this, squad_ai_last_updated);
-//
-//		// проверить выбрана ли новая позиция
-//		MoveToTarget(m_tEnemy.obj);
-//
-//		target.normalize			();
-//		set_dest_direction			(target);
-//		set_use_dest_orientation	(true);
-//		MotionMan.m_tAction = ACT_RUN;
-//	}
 
 	StateSelector							();
 	CurrentState->Execute					(m_current_update);
 
 	// update path
 	CDetailPathManager::set_path_type		(eDetailPathTypeSmooth);
-	CDetailPathManager::set_try_min_time	(false); 
+	CDetailPathManager::set_try_min_time	(b_try_min_time); 
 	update_path								();
 
 	PreprocessAction						();

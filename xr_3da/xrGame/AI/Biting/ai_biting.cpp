@@ -191,6 +191,8 @@ void CAI_Biting::LoadShared(LPCSTR section)
 	_sd->m_fEatSlice					= pSettings->r_float(section,"eat_slice");
 	_sd->m_fEatSliceWeight				= pSettings->r_float(section,"eat_slice_weight");
 
+	_sd->m_bUsedSquadAttackAlg			= pSettings->r_u8	(section,"squad_attack_algorithm");
+
 	AddStepSound(section, eAnimWalkFwd,			"step_snd_walk");
 	AddStepSound(section, eAnimWalkDamaged,		"step_snd_walk_dmg");
 	AddStepSound(section, eAnimRun,				"step_snd_run");
@@ -236,6 +238,11 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	m_movement_params.insert(std::make_pair(eVelocityParameterRunDamaged,	STravelParams(_sd->m_fsRunFwdDamaged,	_sd->m_fsRunAngular			)));
 	m_movement_params.insert(std::make_pair(eVelocityParameterSteal,		STravelParams(_sd->m_fsSteal,			_sd->m_fsWalkAngular		)));
 	m_movement_params.insert(std::make_pair(eVelocityParameterDrag,			STravelParams(-_sd->m_fsDrag,			_sd->m_fsWalkAngular		)));
+
+	CMonsterSquad	*pSquad = Level().SquadMan.GetSquad((u8)g_Squad());
+	if ((pSquad->GetLeader() == this)) { 
+		pSquad->SetupAlgType(ESquadAttackAlg(_sd->m_bUsedSquadAttackAlg));
+	}
 
 	return(TRUE);
 }

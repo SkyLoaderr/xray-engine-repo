@@ -153,41 +153,6 @@ void CBitingAttack::Run()
 
 	if (m_tAction != ACTION_ATTACK_MELEE) bEnableBackAttack = true;
 
-//	// -------------------------------------------------------------------------------------------
-//	// если враг потерян из вида
-//	if (m_tEnemy.time != m_dwCurrentTime) {
-//		if (!bSearchEnemy) {	// инициализация состояния только если потерял на расстоянии
-//			if (m_tEnemy.position.distance_to(pMonster->Position()) > 5.0f) {
-//				m_tAction = ACTION_SEARCH_ENEMY_INIT;
-//
-//				Fvector v;
-//				v.sub(ai().level_graph().vertex_position(m_tEnemy.node_id),pMonster->Position());
-//				v.normalize();
-//				Fvector next_pos;
-//				next_pos.mad(ai().level_graph().vertex_position(m_tEnemy.node_id),v,5.f);
-//				pMonster->HDebug->L_Add(next_pos,D3DCOLOR_XRGB(0,0,255));
-//
-//				search_vertex_id = ai().level_graph().check_position_in_direction(m_tEnemy.node_id, m_tEnemy.position, next_pos);
-//				if (search_vertex_id == u32(-1)) search_vertex_id = m_tEnemy.node_id;
-//
-//				pMonster->HDebug->M_Add(0,"INIT !!! SEARCH ENEMY ",D3DCOLOR_XRGB(255,0,0));
-//				pMonster->HDebug->L_Add(ai().level_graph().vertex_position(search_vertex_id),D3DCOLOR_XRGB(255,0,0));
-//			} 
-//		} else {				// continue
-//			m_tAction = ACTION_SEARCH_ENEMY;
-//			pMonster->HDebug->M_Add(0,"SEARCH ENEMY",D3DCOLOR_XRGB(255,0,128));
-//		}
-//	} else { 
-//		bSearchEnemy = false;
-//		pMonster->HDebug->M_Clear();
-//		pMonster->HDebug->L_Clear();
-//	}
-//	
-//	if ((m_tAction == ACTION_SEARCH_ENEMY) || (m_tAction == ACTION_SEARCH_ENEMY_INIT)) {
-//		SearchEnemy();
-//	}
-//	// -------------------------------------------------------------------------------------------
-
 	bool bNeedRebuild = false;
 
 	// Выполнение состояния
@@ -198,9 +163,10 @@ void CBitingAttack::Run()
 		// ************	
 				
 			LOG_EX("ATTACK: RUN");
-			pMonster->MotionMan.m_tAction = ACT_RUN;
+			pMonster->MotionMan.m_tAction	= ACT_RUN;
+			pMonster->b_try_min_time		= false;
 
-			DO_IN_TIME_INTERVAL_BEGIN(RebuildPathInterval,500 + 50.f * dist);
+			DO_IN_TIME_INTERVAL_BEGIN(RebuildPathInterval,200 + 50.f * dist);
 				bNeedRebuild = true; 
 			DO_IN_TIME_INTERVAL_END();
 			if (IS_NEED_REBUILD()) bNeedRebuild = true;
@@ -211,19 +177,32 @@ void CBitingAttack::Run()
 				CMonsterSquad	*pSquad = Level().SquadMan.GetSquad((u8)pMonster->g_Squad());
 				TTime			squad_ai_last_updated;
 				Fvector			target = pSquad->GetTargetPoint(pMonster, squad_ai_last_updated);
+				ESquadAttackAlg alg_type = pSquad->GetAlgType();
+				
+				bool squad_target_selected = false;
+				
+				if (alg_type == SAA_DEVIATION) {
+					if (squad_ai_last_updated !=0 ) {		// новая позиция
+						pMonster->Path_ApproachPoint(target);
+						pMonster->SetPathParams(pMonster->level_vertex_id(), pMonster->Position()); 
+						squad_target_selected = true;
+						pMonster->set_use_dest_orientation	(false);
+					}
+				} else {
+					if (dist < BUILD_FULL_PATH_MAX_DIST) {
+						pMonster->set_dest_direction		(target);
+						pMonster->set_use_dest_orientation	(true);
+						
 
-//				pMonster->set_dest_direction			(target);
-//				pMonster->set_use_dest_orientation	(true);
-//				
-//				pMonster->MoveToTarget(m_tEnemy.obj);
+						pMonster->MoveToTarget(m_tEnemy.obj);
+						squad_target_selected = true;
+					}
+				}
+				
+				if (!squad_target_selected) {
 					
+					pMonster->set_use_dest_orientation	(false);
 
-				// проверить выбрана ли новая позиция
-				if (squad_ai_last_updated !=0 ) {		// новая позиция
-					pMonster->Path_ApproachPoint(target);
-					pMonster->SetPathParams(pMonster->level_vertex_id(), pMonster->Position()); 
-				} else { 
-					
 					// Враг далеко? Строить полный путь?
 					if (dist < BUILD_FULL_PATH_MAX_DIST) {
 						// squad_ai выбрал оптимальную позицию, соответствующую позиции врага	
@@ -240,7 +219,7 @@ void CBitingAttack::Run()
 						} else {
 							pMonster->MoveToTarget(m_tEnemy.obj);
 						}
-					} else { // построить не полный путь на расстояние BUILD_HALF_PATH_DIST
+					} else { // построить неполный путь на расстояние BUILD_HALF_PATH_DIST
 						Fvector pos;
 						Fvector dir;
 						dir.sub(m_tEnemy.obj->Position(), pMonster->Position()); 
@@ -301,6 +280,7 @@ void CBitingAttack::Run()
 			pMonster->MotionMan.m_tAction = ACT_STEAL;
 			if (dist < (m_fDistMax + 2.f)) bEnemyDoesntSeeMe = false;
 			pMonster->MoveToTarget(m_tEnemy.obj);
+			pMonster->set_use_dest_orientation	(false);
 			break;
 		
 		
@@ -366,6 +346,7 @@ void CBitingAttack::Run()
 			if (bNeedRebuild) {
 				pMonster->Path_ApproachPoint(m_tEnemy.obj->Position());
 				pMonster->SetPathParams(pMonster->level_vertex_id(), pMonster->Position()); 
+				pMonster->set_use_dest_orientation	(false);
 			}
 
 			break;
@@ -389,6 +370,7 @@ void CBitingAttack::Run()
 			}
 		}
 	}
+	
 }
 
 
@@ -397,6 +379,8 @@ void CBitingAttack::Done()
 	inherited::Done();
 
 	pMonster->AS_Stop();
+
+	pMonster->set_use_dest_orientation	(false);
 }
 
 #define THREATEN_TIME  2300

@@ -127,8 +127,9 @@ public:
 	float					m_fEatSlice;
 	float					m_fEatSliceWeight;
 
-
 	STEP_SOUND_MAP			step_sounds;
+
+	u8						m_bUsedSquadAttackAlg;
 
 };
 
@@ -420,8 +421,9 @@ public:
 
 	u16		fire_bone_id;
 	float	GetRealDistToEnemy();
-
 	void	WalkNextGraphPoint();
+
+	bool			b_try_min_time;
 };
 
 

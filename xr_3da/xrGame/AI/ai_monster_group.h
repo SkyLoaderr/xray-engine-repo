@@ -31,9 +31,9 @@ enum ELeaderState {
 
 struct SEntityState {
 	CEntity *pEnemy;		// текущий враг. обновляется со стороны NPC
-	Fvector target_pos;		// результирующая позиция обновляется со стороны Squad
+	Fvector target;			// результирующая позиция обновляется со стороны Squad (или вектор целевого направления)
 	u32		last_updated;	// время последнего обновления pEnemy со стороны NPC
-	u32		last_repos;		// время последнего обновления target_pos со стороны Squad (если 0 - то не брать target_pos)
+	u32		last_repos;		// время последнего обновления target со стороны Squad (если 0 - то не брать target)
 };
 
 // Задача
@@ -50,6 +50,11 @@ struct GTask {
 		CObject				*entity;
 		u32					node;
 	} target;
+};
+
+enum ESquadAttackAlg {
+	SAA_DEVIATION = 0,
+	SAA_DESTINATION_DIRECTION
 };
 
 
@@ -69,8 +74,10 @@ class CMonsterSquad {
 
 	ENTITY_STATE_MAP	states;
 
+	ESquadAttackAlg		squad_attack_algorithm;
+
 public:
-				CMonsterSquad(u8 i) : id(i), leader(0) {}
+				CMonsterSquad(u8 i) : id(i), leader(0), squad_attack_algorithm(SAA_DESTINATION_DIRECTION) {}
 				~CMonsterSquad() {}
 	
 	// -----------------------------------------------------------------
@@ -96,7 +103,9 @@ public:
 	void		UpdateMonsterData	(CEntity *pE, CEntity *pEnemy);
 	void		UpdateDecentralized	();
 	Fvector		GetTargetPoint		(CEntity *pE, u32 &time);
-	
+	void		SetupAlgType		(ESquadAttackAlg new_alg) {squad_attack_algorithm = new_alg;}
+	ESquadAttackAlg	GetAlgType		() {return squad_attack_algorithm;}
+
 	// -----------------------------------------------------------------
 
 	// Получить задачу для NPC
@@ -127,7 +136,8 @@ private:
 	CEntity		*GetNearestEnemy	(CEntity *t, ENTITY_VEC *ev);
 	
 	// decentralized
-	void		SetupMemeberPositions(ENTITY_STATE_MAP &cur_map, CEntity *enemy);
+	void		SetupMemeberPositions_Deviation (ENTITY_STATE_MAP &cur_map, CEntity *enemy);
+	void		SetupMemeberPositions_TargetDir (ENTITY_STATE_MAP &cur_map, CEntity *enemy);
 
 };
 
