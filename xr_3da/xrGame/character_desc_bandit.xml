@@ -9,6 +9,10 @@
 		<bio>Ничем себя проявить еще не успел.</bio>
 
 		<team>Bandit_novice</team>
+		
+		<class>Bandit_novice</class>
+		<community>bandit</community>
+		
 		<rank>30</rank>
 		<reputation>50</reputation>
 
@@ -23,6 +27,11 @@
 		<bio>Об этом сталкере ничего не известно.</bio>
 
 		<team>Bandit_general</team>
+		
+		<class>Bandit_general</class>
+		<community>bandit</community>
+
+		
 		<rank>50</rank>
 		<reputation>50</reputation>
 
@@ -37,6 +46,10 @@
 		<bio>Этот сталкер явно не первый день в Зоне.</bio>
 
 		<team>Bandit_veteran</team>
+
+		<class>Bandit_veteran</class>
+		<community>bandit</community>
+		
 		<rank>70</rank>
 		<reputation>50</reputation>
 
@@ -51,6 +64,10 @@
 		<bio>Этот сталкер знает Зону как своих пять пальцев.</bio>
 
 		<team>Bandit_master</team>
+		
+		<class>Bandit_master</class>
+		<community>bandit</community>
+		
 		<rank>90</rank>
 		<reputation>50</reputation>
 
