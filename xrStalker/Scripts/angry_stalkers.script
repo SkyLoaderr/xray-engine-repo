@@ -45,6 +45,10 @@ function main()
 				cond	(cond.time_end, 100000000)
 			)
 
+	while siviy:action() and chert:action() do
+	    wait	()
+	end
+
 			siviy:script	(false,  angry_stalkers.script_name())
 			chert:script	(false,  angry_stalkers.script_name())
 			stalker:script	(false,  angry_stalkers.script_name())

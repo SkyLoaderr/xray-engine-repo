@@ -4,69 +4,10 @@ stalkers_already_saw_actor = false
 
 function main()
 
-
 	stalker1	= get_level_object("m_stalker_e0000")
 	stalker2	= get_level_object("m_stalker_e0001")
 
 	actor   	= get_actor()
-
-	local prof_kgm4 = sound_object("scripts\\stalker_prof\\prof_kgm4")
-	local prof_nashel_taynik_a = sound_object("scripts\\stalker_prof\\prof_nashel_taynik_a") 
-	local prof_kgm3 = sound_object("scripts\\stalker_prof\\prof_kgm3")
-	local prof_nashel_taynik_b = sound_object("scripts\\stalker_prof\\prof_nashel_taynik_b")
-
-	local rainbow_ya_bi_pomalkival = sound_object("scripts\\stalker_rainbow\\rainbow_ya_bi_pomalkival")
-	local rainbow_mojet_sidet_stalker = sound_object("scripts\\stalker_rainbow\\rainbow_mojet_sidet_stalker")
-
-	local prof_kgm2 = sound_object("scripts\\stalker_prof\\prof_kgm2")
-	local prof_blin_tochno = sound_object("scripts\\stalker_prof\\prof_blin_tochno")
-	local prof_proveru_ya_vagonchik = sound_object("scripts\\stalker_prof\\prof_proveru_ya_vagonchik")
-	local rainbow_poshutil_ya = sound_object("scripts\\stalker_rainbow\\rainbow_poshutil_ya")
-
-	local prof_teper_ne_uspokous = sound_object("scripts\\stalker_prof\\prof_teper_ne_uspokous")
-	local prof_prikroy = sound_object("scripts\\stalker_prof\\prof_prikroy")
-	local rainbow_nda = sound_object("scripts\\stalker_rainbow_replics\\rainbow_nda")
-	local prof_vrode_nikogo = sound_object("scripts\\stalker_prof\\prof_vrode_nikogo")
-	local prof_vzdoh = sound_object("scripts\\stalker_prof\\prof_vzdoh")
-	local prof_valim_otsuda = sound_object("scripts\\stalker_prof\\prof_valim_otsuda")
-	local prof_zaslujil_eto_zasranec = sound_object("scripts\\stalker_prof_replics\\prof_zaslujil_eto_zasranec")
-	local rainbow_za_namy_sledyat = sound_object("scripts\\stalker_rainbow\\rainbow_za_namy_sledyat")
-
-	local prof_u_menya_toje = sound_object("scripts\\stalker_prof\\prof_u_menya_toje")
-	local prof_blin = sound_object("scripts\\stalker_prof\\prof_blin")
-	local prof_do_basi_bi_dobratsya = sound_object("scripts\\stalker_prof\\prof_do_basi_bi_dobratsya")
-	local prof_luche_ne_privlekat_vnimanie = sound_object("scripts\\stalker_prof\\prof_luche_ne_privlekat_vnimanie")
-	local prof_mi_tebya_otpuskaem = sound_object("scripts\\stalker_prof\\prof_mi_tebya_otpuskaem")
-	local prof_nado_je = sound_object("scripts\\stalker_prof\\prof_nado_je")
-	local prof_padla_podslushivala = sound_object("scripts\\stalker_prof\\prof_padla_podslushivala")
-	local prof_siviy_che_delat_budem = sound_object("scripts\\stalker_prof\\prof_siviy_che_delat_budem")
-	local prof_stoyat_pristrelu = sound_object("scripts\\stalker_prof\\prof_stoyat_pristrelu")
-	local prof_tupie_novichki = sound_object("scripts\\stalker_prof\\prof_tupie_novichki")
-	local prof_uviju_pristrelu = sound_object("scripts\\stalker_prof\\prof_uviju_pristrelu")
-	local prof_sam_naprosilsya = sound_object("scripts\\stalker_prof\\prof_sam_naprosilsya")
-	local prof_1_2_3 = sound_object("scripts\\stalker_prof\\prof_1_2_3")
-
-	local rainbow_mochi_ego = sound_object("scripts\\stalker_rainbow\\rainbow_mochi_ego")
-	local rainbow_otpusti_ego = sound_object("scripts\\stalker_rainbow\\rainbow_otpusti_ego")
-	local rainbow_suchenok_s_pistoletikom = sound_object("scripts\\stalker_rainbow\\rainbow_suchenok_s_pistoletikom")
-	local rainbow_tak_i_znal_ktoto_pryatalsya2 = sound_object("scripts\\stalker_rainbow\\rainbow_tak_i_znal_ktoto_pryatalsya2")
-	local rainbow_ti_chto_gluhoy = sound_object("scripts\\stalker_rainbow\\rainbow_ti_chto_gluhoy")
-	local rainbow_tupih_hvataet = sound_object("scripts\\stalker_rainbow\\rainbow_tupih_hvataet")
-
-	local prof_chert = sound_object("scripts\\stalker_prof_replics\\prof_chert")
-	local prof_chebi_pojrat = sound_object("scripts\\stalker_prof_replics\\prof_chebi_pojrat")
-	local prof_chto_za_chert = sound_object("scripts\\stalker_prof_replics\\prof_chto_za_chert")
-	local prof_dermo = sound_object("scripts\\stalker_prof_replics\\prof_dermo")
-	local prof_gde_j_ti_pryacheshsya = sound_object("scripts\\stalker_prof_replics\\prof_gde_j_ti_pryacheshsya")
-	local prof_dermo = sound_object("scripts\\stalker_prof_replics\\prof_dermo")
-	local prof_habara_naberu = sound_object("scripts\\stalker_prof_replics\\prof_habara_naberu")
-	local prof_hmm2 = sound_object("scripts\\stalker_prof_replics\\prof_hmm2")
-	local prof_ne_hami = sound_object("scripts\\stalker_prof_replics\\prof_ne_hami")
-	local prof_opyat_ti = sound_object("scripts\\stalker_prof_replics\\prof_opyat_ti")
-	local prof_suchiya_zona = sound_object("scripts\\stalker_prof_replics\\prof_suchiya_zona")
-	local prof_ti_dostal = sound_object("scripts\\stalker_prof_replics\\prof_ti_dostal")
-
-	local rainbow_chto_za_chert = sound_object("scripts\\stalker_rainbow_replics\\rainbow_chto_za_chert")
 
 			wait(1000)			
 
