@@ -12,6 +12,7 @@
 #include "visual_memory_manager.h"
 #include "memory_manager.h"
 #include "ai/script/ai_script_monster.h"
+//#include "actor.h"
 
 CSoundMemoryManager::CSoundMemoryManager		()
 {
@@ -61,7 +62,7 @@ void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, const 
 	CObject					*self = dynamic_cast<CObject*>(this);
 	VERIFY					(self);
 #ifndef SILENCE
-	Msg						("%s (%d) - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",*self->cName(),Level().timeServer(),sound_type,object ? object->cName() : "world",Level().timeServer(),position.x,position.y,position.z,sound_power);
+	Msg						("%s (%d) - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",*self->cName(),Level().timeServer(),sound_type,object ? *object->cName() : "world",Level().timeServer(),position.x,position.y,position.z,sound_power);
 #endif
 
 	CScriptMonster			*script_monster = dynamic_cast<CScriptMonster*>(self);
@@ -78,6 +79,8 @@ void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, const 
 	
 	sound_power				*= 1;//ffGetStartVolume(ESoundTypes(eType));
 	
+//	if (dynamic_cast<CActor*>(object))
+//		Msg					("%s (%d) - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",*self->cName(),Level().timeServer(),sound_type,object ? *object->cName() : "world",Level().timeServer(),position.x,position.y,position.z,sound_power);
 	if ((sound_type & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING) {
 		// this is fake!
 		sound_power			= 1.f;
