@@ -507,9 +507,6 @@
 			RelativePath=".\globals.script">
 		</File>
 		<File
-			RelativePath=".\object.script">
-		</File>
-		<File
 			RelativePath=".\stalker.script">
 		</File>
 		<File
