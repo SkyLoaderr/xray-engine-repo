@@ -82,7 +82,6 @@ function action_trade_init:initialize()
 		
 		--Отсылка на ПДА: мы согласны торговать.
 		self.a.Seller:send_pda_message(3, bt)
---		level.map_add_object_icon(self.a.Seller, 0)
 	else
 		self.a.Seller:send_pda_message(5, bt)
 	end
@@ -107,8 +106,11 @@ function action_wait_for_buyer:initialize()
 	self.object:set_path_evaluator()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()    
-	
+
+	level.map_add_object_icon(self.object, 0)	
 	self.object:set_item(object.idle, self.object:best_weapon())
+	self.object:set_movement_type(move.stand)
+	self.object:set_mental_state(anim.free)
 
 	self.act = {type = 1,
 		     begin = nil,
@@ -149,7 +151,7 @@ function action_wait_for_buyer:execute ()
 	action_base.execute (self)
 
 	-- Проверка, видим ли мы актора или нет
-	if self.object:see(self.a.Buyer) then
+	if self.object:see(self.a.Buyer) == true then
 		-- смотрим на клиента
 		local pos = self.a.Buyer:position()
       		pos.y = pos.y + 1
@@ -182,13 +184,12 @@ function action_wait_for_buyer:execute ()
 				local dir = vector():set(math.random(10)-5, 0, math.random(10)-5)
 				self.object:set_sight(look.direction, dir, 0)
 				self.object:set_body_state(move.standing)
-				self.object:set_movement_type(move.stand)
-				self.object:set_mental_state(anim.free)
 			end
 		else
 			if (device():time_global()/1000 - self.act.begin) > self.act.time then
 				self.act.type = 1
 			end
+
 			if self.object:animation_count() == 0 then
 				if (self.anim.begin == nil or
 				   (device():time_global()/1000 - self.anim.begin) > self.anim.idle) then
@@ -236,6 +237,7 @@ function action_wait_for_buyer:execute ()
 	end
 end
 function action_wait_for_buyer:finalize ()
+	level.map_remove_object_icon(self.object)
 	action_base.finalize (self)
 end
 
