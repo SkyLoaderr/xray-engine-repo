@@ -37,7 +37,7 @@ BOOL CRenderTarget::Create	()
 	RT				= Device.Shader._CreateRT		(RTname,rtWidth,rtHeight);
 	if ((rtHeight!=Device.dwHeight) || (rtWidth!=Device.dwWidth))
 	{
-		R_CHK		(pDevice->CreateDepthStencilSurface	(rtWidth,rtHeight,HW.Caps.fDepth,D3DMULTISAMPLE_NONE,&ZB));
+		R_CHK		(HW.pDevice->CreateDepthStencilSurface	(rtWidth,rtHeight,HW.Caps.fDepth,D3DMULTISAMPLE_NONE,&ZB));
 	} else {
 		ZB			= HW.pBaseZB;
 		ZB->AddRef	();
@@ -54,7 +54,7 @@ BOOL CRenderTarget::Create	()
 void CRenderTarget::OnDeviceCreate	()
 {
 	bAvailable					= Create	();
-	set_blur					(1.f);
+	// set_blur					(1.f);
 }
 
 void CRenderTarget::OnDeviceDestroy	()
@@ -68,7 +68,7 @@ void CRenderTarget::OnDeviceDestroy	()
 }
 
 
-void CRenderTarget::Perform	()
+BOOL CRenderTarget::Perform	()
 {
 	return Available() && ( NeedPostProcess() || (psSupersample>1));
 }
@@ -77,8 +77,10 @@ void CRenderTarget::Begin	()
 {
 	if (!Perform())	
 	{
+		// Base RT
 		Device.Shader.set_RT	(HW.pBaseRT,HW.pBaseZB);
 	} else {
+		// Our 
 		Device.Shader.set_RT	(RT->pRT,ZB);
 		if (psDeviceFlags&rsClearBB) CHK_DX(HW.pDevice->Clear(0,0,D3DCLEAR_TARGET,D3DCOLOR_XRGB(0,255,0),1,0));
 	}
@@ -88,28 +90,28 @@ void CRenderTarget::End		()
 {
 	Device.Shader.set_RT		(HW.pBaseRT,HW.pBaseZB);
 	
-	if (!Available() || !NeedPostProcess())	return;
+	if (!Perform())	return;
 	
 	// Draw full-screen quad textured with our scene image
 	DWORD	Offset;
-	DWORD	Cgray	= D3DCOLOR_RGBA	(90,90,90,0);
-	int		A		= iFloor		((1-param_gray)*255.f); clamp(A,0,255);
-	DWORD	Calpha	= D3DCOLOR_RGBA	(255,255,255,A);
-	float	tw		= float(Device.dwWidth);
-	float	th		= float(Device.dwHeight);
-	DWORD	_w		= Device.dwWidth;
-	DWORD	_h		= Device.dwHeight;
-	DWORD	xW		= 64;
-	DWORD	xH		= 64;
+	DWORD	Cgray		= D3DCOLOR_RGBA	(90,90,90,0);
+	int		A			= iFloor		((1-param_gray)*255.f); clamp(A,0,255);
+	DWORD	Calpha		= D3DCOLOR_RGBA	(255,255,255,A);
+	float	tw			= float(rtWidth);
+	float	th			= float(rtHeight);
+	float	_w			= float(Device.dwWidth);
+	float	_h			= float(Device.dwHeight);
+	DWORD	xW			= 64;
+	DWORD	xH			= 64;
 	
 	// UV
-	Fvector2		shift,p0,p1;
-	shift.set		(.5f/tw, .5f/th);
-	shift.mul		(param_blur);
-	p0.set			(.5f/tw, .5f/th);
-	p1.set			((tw+.5f)/tw, (th+.5f)/th );
-	p0.add			(shift);
-	p1.add			(shift);
+	Fvector2			shift,p0,p1;
+	shift.set			(.5f/tw, .5f/th);
+	shift.mul			(param_blur);
+	p0.set				(.5f/tw, .5f/th);
+	p1.set				((tw+.5f)/tw, (th+.5f)/th );
+	p0.add				(shift);
+	p1.add				(shift);
 	
 	// Fill vertex buffer
 	FVF::TL* pv			= (FVF::TL*) Device.Streams.Vertex.Lock	(12,pVS->dwStride,Offset);
@@ -117,6 +119,7 @@ void CRenderTarget::End		()
 	pv->set(0,			0,			.0001f,.9999f, Cgray, p0.x, p0.y);	pv++;
 	pv->set(float(_w),	float(_h),	.0001f,.9999f, Cgray, p1.x, p1.y);	pv++;
 	pv->set(float(_w),	0,			.0001f,.9999f, Cgray, p1.x, p0.y);	pv++;
+
 	pv->set(0,			float(_h),	.0001f,.9999f, Calpha,p0.x, p1.y);	pv++;
 	pv->set(0,			0,			.0001f,.9999f, Calpha,p0.x, p0.y);	pv++;
 	pv->set(float(_w),	float(_h),	.0001f,.9999f, Calpha,p1.x, p1.y);	pv++;
@@ -130,7 +133,7 @@ void CRenderTarget::End		()
 	Device.Streams.Vertex.Unlock	(12,pVS->dwStride);
 
 	// Actual rendering
-	if (FALSE)	
+	if (FALSE)
 	{
 		/*
 		// Render to temporary buffer (PS)
@@ -150,7 +153,8 @@ void CRenderTarget::End		()
 		Device.Primitive.Draw				(pStream,4,2,Offset+4,Device.Streams_QuadIB);
 		*/
 	} else {
-		if (param_gray>0.001f) {
+		if (param_gray>0.001f) 
+		{
 			// Draw GRAY
 			Device.Shader.set_Shader		(pShaderGray);
 			Device.Primitive.setVertices	(pVS->dwHandle,pVS->dwStride,Device.Streams.Vertex.Buffer());
