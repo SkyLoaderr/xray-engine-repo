@@ -1,0 +1,16 @@
+--скрипт для глобальных данных
+PathsAndSoldiers =
+{
+    {soldier = "patrol_soldier_0_1", path = "path_soldier_0_1"}
+}
+
+function GetPatrolPath (name)
+    local size = table.getn (PathsAndSoldiers)
+    if size == 0 then return nil end
+    for a = 1, size, 1 do
+        if name == PathsAndSoldiers[a].soldier then
+           return PathsAndSoldiers[a].path
+        end
+    end
+    return nil        
+end
