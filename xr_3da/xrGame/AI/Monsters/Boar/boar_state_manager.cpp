@@ -55,9 +55,9 @@ void CStateManagerBoar::execute()
 		bool can_eat = false;
 		if (corpse) {
 			if (prev_substate == eStateEat) {
-				if (!get_state_current()->check_completion())				can_eat = true;
+				if (!get_state_current()->check_completion())		can_eat = true;
 			} else {
-				if (object->GetSatiety() < object->get_sd()->m_fMinSatiety) can_eat = true;
+				if (get_state_current()->check_start_conditions())	can_eat = true;
 			}
 		}
 

@@ -48,4 +48,5 @@ public:
 	u32					get_enemies_count		();
 
 	void				add_enemy				(const CEntityAlive *);
+	bool				is_faced				(const CEntityAlive *object0, const CEntityAlive *object1);
 };

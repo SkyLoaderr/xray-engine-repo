@@ -47,8 +47,7 @@ void CMonsterEnemyManager::update()
 	}
 	
 	// проверить видимость
-	enemy_see_me = false;
-	if (monster->CVisualMemoryManager::visible_now(enemy)) enemy_see_me = true;
+	enemy_see_me = is_faced(enemy, monster);
 	
 	// обновить опасность врага
 	danger_type = eNone;
@@ -145,6 +144,38 @@ void CMonsterEnemyManager::add_enemy(const CEntityAlive *enemy)
 
 bool CMonsterEnemyManager::see_enemy_now()
 {
+	//return (monster->CVisualMemoryManager::visible_now(enemy));
+
 	if (time_last_seen == monster->m_current_update) return true;
 	return false;
 }
+
+bool CMonsterEnemyManager::is_faced(const CEntityAlive *object0, const CEntityAlive *object1)
+{
+	if (object0->Position().distance_to(object1->Position()) > object0->ffGetRange())
+		return		(false);
+
+	float			yaw1, pitch1, yaw2, pitch2, fYawFov, fPitchFov, fRange;
+	Fvector			tPosition = object0->Position();
+
+	yaw1			= object0->Orientation().yaw;
+	pitch1			= object0->Orientation().pitch;
+	fYawFov			= angle_normalize_signed(object0->ffGetFov()*PI/180.f);
+	fRange			= object0->ffGetRange();
+
+	fYawFov			= angle_normalize_signed((_abs(fYawFov) + _abs(atanf(1.f/tPosition.distance_to(object1->Position()))))/2.f);
+	fPitchFov		= angle_normalize_signed(fYawFov*1.f);
+	tPosition.sub	(object1->Position());
+	tPosition.mul	(-1);
+	tPosition.getHP	(yaw2,pitch2);
+	yaw1			= angle_normalize_signed(yaw1);
+	pitch1			= angle_normalize_signed(pitch1);
+	yaw2			= angle_normalize_signed(yaw2);
+	pitch2			= angle_normalize_signed(pitch2);
+	if ((angle_difference(yaw1,yaw2) <= fYawFov) && (angle_difference(pitch1,pitch2) <= fPitchFov))
+		return		(true);
+	return			(false);
+}
+
+
+
