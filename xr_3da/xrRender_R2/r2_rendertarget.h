@@ -5,6 +5,7 @@ class CRenderTarget		: public IRender_Target
 private:
 	u32					dwWidth;
 	u32					dwHeight;
+	u32					dwAccumulatorClearMark;
 
 	//
 	CRT*				rt_Position;	// 64bit, fat	(x,y,z,?)				(eye-space)

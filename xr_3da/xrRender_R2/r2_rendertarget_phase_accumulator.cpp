@@ -1,6 +1,5 @@
 #include "stdafx.h"
 
-// ONLY ONCE PER FRAME
 void	CRenderTarget::phase_accumulator()
 {
 	// Targets
@@ -12,8 +11,12 @@ void	CRenderTarget::phase_accumulator()
 	RCache.set_ZB						(HW.pBaseZB);
 	RImplementation.rmNormal			();
 
-	// Clear
-	CHK_DX(HW.pDevice->Clear			( 0L, NULL, D3DCLEAR_TARGET, 0x00, 1.0f, 0L));
+	// Clear	- only once per frame
+	if (dwAccumulatorClearMark!=Device.dwFrame)
+	{
+		dwAccumulatorClearMark				= Device.dwFrame;
+		CHK_DX(HW.pDevice->Clear			( 0L, NULL, D3DCLEAR_TARGET, 0x00, 1.0f, 0L));
+	}
 
 	// Stencil	- draw only where stencil >= 0x1
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		TRUE				));

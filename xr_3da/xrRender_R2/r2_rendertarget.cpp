@@ -2,6 +2,8 @@
 
 void	CRenderTarget::OnDeviceCreate	()
 {
+	dwAccumulatorClearMark			= 0;
+
 	//	NORMAL
 	{
 		u32	w=Device.dwWidth, h=Device.dwHeight;
