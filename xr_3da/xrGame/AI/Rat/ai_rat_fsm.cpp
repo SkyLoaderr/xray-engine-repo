@@ -118,8 +118,8 @@ void CAI_Rat::FreeHunting()
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun)
 	}
 
-	if (m_tLastSound.dwTime >= m_dwLastUpdateTime) {
-		if ((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) != SOUND_TYPE_WEAPON_SHOOTING) {
+	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && (m_tLastSound.tpEntity->g_Team() != g_Team())){
+		if (((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) != SOUND_TYPE_WEAPON_SHOOTING)) {
 			m_tSavedEnemy = m_tLastSound.tpEntity;
 			m_dwLostEnemyTime = Level().timeServer();
 			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun);
@@ -133,6 +133,17 @@ void CAI_Rat::FreeHunting()
 		m_fGoalChangeTime = 0;
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatUnderFire);
 	}
+//	else 
+//		if (((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING)) {
+//			m_dwLastRangeSearch = Level().timeServer();
+//			Fvector tTemp;
+//			tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
+//			tTemp.normalize_safe();
+//			tTemp.mul(UNDER_FIRE_DISTANCE);
+//			m_tSpawnPosition.add(vPosition,tTemp);
+//			m_fGoalChangeTime = 0;
+//			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatUnderFire);
+//		}
     m_tSpawnPosition.set(m_tSafeSpawnPosition);
 	m_fGoalChangeDelta		= 10.f;
 	m_tVarGoal.set			(10.0,0.0,20.0);
@@ -169,6 +180,28 @@ void CAI_Rat::FreeHunting()
 			}
 			m_fSafeSpeed = m_fSpeed;
 		}
+	
+	if	(!m_tpSoundBeingPlayed || !m_tpSoundBeingPlayed->feedback) {
+		DWORD dwCurTime = Level().timeServer();
+		if (m_tpSoundBeingPlayed && !m_tpSoundBeingPlayed->feedback) {
+			m_tpSoundBeingPlayed = 0;
+			m_dwLastVoiceTalk = dwCurTime;
+		}
+		if ((dwCurTime - m_dwLastSoundRefresh > m_fVoiceRefreshRate) && ((dwCurTime - m_dwLastVoiceTalk > m_fMaxVoiceIinterval) || ((dwCurTime - m_dwLastVoiceTalk > m_fMinVoiceIinterval) && (::Random.randF(0,1) > (dwCurTime - m_dwLastVoiceTalk - m_fMinVoiceIinterval)/(m_fMaxVoiceIinterval - m_fMinVoiceIinterval))))) {
+			m_dwLastSoundRefresh = dwCurTime;
+			// Play voice-sound
+			m_tpSoundBeingPlayed = &(m_tpaSoundVoice[Random.randI(SND_VOICE_COUNT)]);
+			
+			if (m_tpSoundBeingPlayed->feedback)			
+				return;
+
+			pSounds->PlayAtPos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
+		}
+	}
+	else
+		if (m_tpSoundBeingPlayed && m_tpSoundBeingPlayed->feedback)
+			m_tpSoundBeingPlayed->feedback->SetPosition(eye_matrix.c);
+		
 	AI_Path.TravelPath.clear();
 }
 

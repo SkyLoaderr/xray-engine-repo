@@ -79,8 +79,8 @@ void CAI_Rat::Load(LPCSTR section)
 	vfLoadSounds();
 	
 	// sounds
-	m_fMinVoiceIinterval = pSettings->ReadFLOAT(section,"MinVoiceIinterval");
-	m_fMaxVoiceIinterval = pSettings->ReadFLOAT(section,"MaxVoiceIinterval");
+	m_fMinVoiceIinterval = pSettings->ReadFLOAT(section,"MinVoiceInterval");
+	m_fMaxVoiceIinterval = pSettings->ReadFLOAT(section,"MaxVoiceInterval");
 	m_fVoiceRefreshRate	 = pSettings->ReadFLOAT(section,"VoiceRefreshRate");
 	
 	//fire

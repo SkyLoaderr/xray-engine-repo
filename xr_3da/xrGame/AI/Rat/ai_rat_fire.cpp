@@ -46,6 +46,34 @@ void CAI_Rat::Exec_Action(float dt)
 		L->setTimeout();
 }
 
+void CAI_Rat::HitSignal(float amount, Fvector& vLocalDir, CObject* who)
+{
+	// Save event
+	Fvector D;
+	svTransform.transform_dir(D,vLocalDir);
+	m_dwHitTime = Level().timeServer();
+	m_tHitDir.set(D);
+	m_tHitDir.normalize();
+	m_tHitPosition = who->Position();
+	
+	// Play hit-sound
+	sound& S				= m_tpaSoundHit[Random.randI(SND_HIT_COUNT)];
+	
+	if (g_Health() > 0) {
+		if (S.feedback)
+			return;
+		if (Random.randI(2))
+			return;
+		pSounds->PlayAtPos		(S,this,vPosition);
+	}
+	if (g_Health() - amount < 0) {
+		r_torso_target.pitch = 0;
+		if ((m_tpCurrentGlobalAnimation) && (!m_tpCurrentGlobalBlend->playing))
+			if (m_tpCurrentGlobalAnimation != m_tRatAnimations.tNormal.tGlobal.tpaDeath[0])
+				m_tpCurrentGlobalBlend = PKinematics(pVisual)->PlayCycle(m_tpCurrentGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,2)]);
+	}
+}
+
 float CAI_Rat::EnemyHeuristics(CEntity* E)
 {
 	if (E->g_Team()  == g_Team())	
@@ -61,28 +89,6 @@ float CAI_Rat::EnemyHeuristics(CEntity* E)
 	//float   f3  = 1;
 	//if (E==Level().CurrentEntity())  f3 = .5f;
 	return  f1*f2;//*f3;
-}
-
-void CAI_Rat::HitSignal(float amount, Fvector& vLocalDir, CObject* who)
-{
-	// Save event
-	Fvector D;
-	svTransform.transform_dir(D,vLocalDir);
-	m_dwHitTime = Level().timeServer();
-	m_tHitDir.set(D);
-	m_tHitDir.normalize();
-	m_tHitPosition = who->Position();
-	
-	// Play hit-sound
-	sound& S				= m_tpaSoundHit[Random.randI(SND_HIT_COUNT)];
-	if (S.feedback)			return;
-	if (Random.randI(2))	return;
-	pSounds->PlayAtPos		(S,this,vPosition);
-	if (g_Health() + amount < 0) {
-		Fvector	dir;
-		dir.setHP(r_torso_current.yaw,r_torso_current.pitch);
-		SelectAnimation(clTransform.k,dir,m_fCurSpeed);
-	}
 }
 
 void CAI_Rat::SelectEnemy(SEnemySelected& S)
