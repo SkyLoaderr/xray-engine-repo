@@ -59,6 +59,7 @@ vector<SGraphVertex>	tpaGraph;		// graph
 SGraphEdge				*tpaEdges;		// graph edges
 stack<u32>				dwaStack;		// stack
 u32						*dwaSortOrder;  // edge sort order
+u32						*dwaEdgeOwner;  // edge owners
 
 void vfLoafAIMap(LPCSTR name)
 {
@@ -164,15 +165,18 @@ void vfPreprocessEdges(u32 dwEdgeCount)
 	Progress(0.0f);
 	SGraphEdge *tpPointer = tpaEdges = (SGraphEdge *)xr_malloc(dwEdgeCount*sizeof(SGraphEdge));
 	dwaSortOrder = (u32 *)xr_malloc(dwEdgeCount*sizeof(u32));
-	for (int i=0, iCount = (int)tpaGraph.size(); i<iCount; i++) {
+	dwaEdgeOwner = (u32 *)xr_malloc(dwEdgeCount*sizeof(u32));
+	for (int i=0, j=0; i<(int)tpaGraph.size(); i++) {
 		SGraphVertex &tGraphVertex = tpaGraph[i]; 
 		memcpy(tpPointer,tGraphVertex.tpaEdges,tGraphVertex.dwNeighbourCount*sizeof(SGraphEdge));
 		_FREE(tGraphVertex.tpaEdges);
 		tGraphVertex.tpaEdges = tpPointer;
 		tpPointer += tGraphVertex.dwNeighbourCount;
+		for (int k=0; k<(int)tGraphVertex.dwNeighbourCount; k++, j++) {
+			dwaSortOrder[j] = j;
+			dwaEdgeOwner[j] = i;
+		}
 	}
-	for (i=0; i<(int)dwEdgeCount; i++)
-		dwaSortOrder[i] = i;
 	Progress(1.0f);
 }
 
@@ -181,9 +185,12 @@ void vfOptimizeGraph(u32 dwEdgeCount)
 	q_mark_bit.resize(dwEdgeCount);
 	q_mark_bit.assign(dwEdgeCount,false);
 	Progress(0.0f);
-	for (int i=dwEdgeCount - 1; i>=0; Progress((float(dwEdgeCount) - (i-=2))/dwEdgeCount)) {
-		u32 dwVertex0 = tpaEdges[dwaSortOrder[i]].dwVertexNumber;
-		u32 dwVertex1 = tpaEdges[dwaSortOrder[i - 1]].dwVertexNumber;
+	for (int i=dwEdgeCount - 1; i>=1; Progress((float(dwEdgeCount) - (i--))/dwEdgeCount)) {
+		if (q_mark_bit[dwaSortOrder[i]])
+			continue;
+		float fDistance = tpaEdges[dwaSortOrder[i]].fPathDistance;
+		u32 dwVertex0 = dwaEdgeOwner[dwaSortOrder[i]];
+		u32 dwVertex1 = tpaEdges[dwaSortOrder[i]].dwVertexNumber;
 		SGraphVertex &tVertex0 = tpaGraph[dwVertex0];
 		SGraphVertex &tVertex1 = tpaGraph[dwVertex1];
 		bool bOk = true;
@@ -193,7 +200,12 @@ void vfOptimizeGraph(u32 dwEdgeCount)
 			SGraphEdge &tEdge0 = tVertex0.tpaEdges[i0];
 			for (int i1=0; i1<(int)tVertex1.dwNeighbourCount; i1++)
 				if ((tEdge0.dwVertexNumber == tVertex1.tpaEdges[i1].dwVertexNumber) && !q_mark_bit[tpaEdges + i1 - tpaEdges]) {
-					q_mark_bit[i] = q_mark_bit[i - 1] = true;
+					q_mark_bit[dwaSortOrder[i]] = true;
+					for (int j=0; j<(int)tVertex1.dwNeighbourCount; j++)
+						if (tVertex1.tpaEdges[j].dwVertexNumber == dwVertex0) {
+							q_mark_bit[tVertex1.tpaEdges + j - tpaEdges] = true;
+							break;
+						}
 					bOk = false;
 					break;
 				}

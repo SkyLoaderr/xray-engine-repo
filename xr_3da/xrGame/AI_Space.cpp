@@ -113,6 +113,15 @@ void CAI_Space::Render()
 				t2.y += .6f;
 				Device.Primitive.dbg_DrawLINE(Fidentity,t1,t2,D3DCOLOR_XRGB(0,255,0));
 			}
+			CGameFont* F		= ((CHUDManager*)Level().HUD())->pFontDI;
+			Fvector         T;
+			Fvector4        S;
+			T.set			(t1);
+			T.y+= 1.5f;
+			Device.mFullTransform.transform (S,T);
+			F->SetSize	(0.05f/sqrtf(_abs(S.w)));
+			F->SetColor(0xffffffff);
+			F->Out(S.x,-S.y,"%d",i);
 		}
 	}
 
