@@ -34,7 +34,7 @@ public:
 	virtual bool		IR_OnKeyboardPress		(int dik);
 	virtual bool		IR_OnKeyboardRelease	(int dik);
 
-	static ButtonClickCallback	OnSelectTeamCallback			(int ButtonID);
+	static void			OnSelectTeamCallback	(int ButtonID);
 
 	/////////
 	CUIInventoryWnd		InventoryMenu;

@@ -148,12 +148,12 @@ bool CUIGameTDM::IR_OnKeyboardRelease(int dik)
 	return false;
 }
 //--------------------------------------------------------------------
-ButtonClickCallback CUIGameTDM::OnSelectTeamCallback(int Team)
+void CUIGameTDM::OnSelectTeamCallback(int Team)
 {
 	CObject *l_pObj = Level().CurrentEntity();
 
 	CGameObject *l_pPlayer = dynamic_cast<CGameObject*>(l_pObj);
-	if(!l_pPlayer) return 0;
+	if(!l_pPlayer) return;
 	
 	NET_Packet		P;
 	l_pPlayer->u_EventGen		(P,GEG_PLAYER_CHANGE_TEAM,l_pPlayer->ID()	);
@@ -161,5 +161,5 @@ ButtonClickCallback CUIGameTDM::OnSelectTeamCallback(int Team)
 	P.w_s16			(s16(Team));
 	P.w_s16			((s16)0);
 	//P.w_u32			(0);
-	l_pPlayer->u_EventSend		(P);	
+	l_pPlayer->u_EventSend		(P);
 };
