@@ -493,6 +493,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 
 	m_PhysicMovementControl->SetPosition	(Position());
 	m_PhysicMovementControl->SetVelocity	(0,0,0);
+	m_PhysicMovementControl->ActivateBox	(0);
 
 	E->o_model = E->o_Angle.y;
 	E->o_torso.yaw = E->o_Angle.y;
@@ -569,6 +570,9 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	};
 	//*/
 	//----------------------------------
+
+	if (m_DefaultVisualOutfit == NULL)
+		m_DefaultVisualOutfit = cNameVisual();
 
 	VERIFY(m_pActorEffector == NULL);
 	m_pActorEffector = xr_new<CActorEffector>();
