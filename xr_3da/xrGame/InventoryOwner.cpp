@@ -27,8 +27,6 @@ CInventoryOwner::~CInventoryOwner			()
 	xr_delete					(m_inventory);
 	xr_delete					(m_trade_storage);
 	xr_delete					(m_pTrade);
-
-	reset_callbacks				();
 }
 
 void CInventoryOwner::Init					()
@@ -36,8 +34,6 @@ void CInventoryOwner::Init					()
 	m_pTrade = NULL;
 	m_inventory					= xr_new<CInventory>();
 	m_trade_storage				= xr_new<CInventory>();
-
-	zero_callbacks		();
 }
 
 void CInventoryOwner::Load					(LPCSTR section)
@@ -63,7 +59,8 @@ void CInventoryOwner::reinit				()
 	m_bTalking					= false;
 	m_pTalkPartner				= NULL;
 
-	reset_callbacks();
+	m_pPdaCallback.clear		();
+	m_pInfoCallback.clear		();
 }
 
 BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
@@ -208,16 +205,7 @@ void CInventoryOwner::ReceivePdaMessage(u16 who, EPdaMsg msg, int info_index)
 	CGameObject* pWhoGameObject = dynamic_cast<CGameObject*>(Level().Objects.net_Find(who));
 	VERIFY(pWhoGameObject);
 
-	if (m_pPdaCallback.m_lua_function)
-		(*m_pPdaCallback.m_lua_function)(pThisGameObject->lua_game_object(),
-										  pWhoGameObject->lua_game_object(),
-										 (int)msg, info_index);
-	if (m_pPdaCallback.m_lua_object)
-		luabind::call_member<void>(*m_pPdaCallback.m_lua_object,
-									*m_pPdaCallback.m_method_name,
-									pThisGameObject->lua_game_object(),
-									pWhoGameObject->lua_game_object(),
-									(int)msg, info_index);
+	SCRIPT_CALLBACK_EXECUTE_3(m_pPdaCallback, pThisGameObject->lua_game_object(), pWhoGameObject->lua_game_object(), (int)msg, info_index);
 }
 
 
@@ -227,12 +215,7 @@ void CInventoryOwner::OnReceiveInfo(int info_index)
 	CGameObject* pThisGameObject = dynamic_cast<CGameObject*>(this);
 	VERIFY(pThisGameObject);
 
-	if (m_pInfoCallback.m_lua_function)
-		(*m_pInfoCallback.m_lua_function)(pThisGameObject->lua_game_object(), info_index);
-	if (m_pInfoCallback.m_lua_object)
-		luabind::call_member<void>(*m_pInfoCallback.m_lua_object,
-		*m_pInfoCallback.m_method_name,
-		pThisGameObject->lua_game_object(), info_index);
+	SCRIPT_CALLBACK_EXECUTE_2(m_pInfoCallback, pThisGameObject->lua_game_object(), info_index);
 }
 
 

@@ -28,8 +28,3 @@ __declspec(dllimport) LPSTR g_ca_stdout;
 
 typedef lua_State CLuaVirtualMachine;
 
-struct SMemberCallback {
-	luabind::functor<void>	*m_lua_function;
-	luabind::object			*m_lua_object;
-	ref_str					m_method_name;
-};

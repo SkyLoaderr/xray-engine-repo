@@ -13,27 +13,18 @@
 
 CScriptZone::CScriptZone		()
 {
-	m_tpOnEnter.m_lua_function	= 0;
-	m_tpOnEnter.m_lua_object	= 0;
-	m_tpOnExit.m_lua_function	= 0;
-	m_tpOnExit.m_lua_object		= 0;
 }
 
 CScriptZone::~CScriptZone		()
 {
-	xr_delete					(m_tpOnEnter.m_lua_function);
-	xr_delete					(m_tpOnEnter.m_lua_object);
-	xr_delete					(m_tpOnExit.m_lua_function);
-	xr_delete					(m_tpOnExit.m_lua_object);
 }
 
 void CScriptZone::reinit		()
 {
 	inherited::reinit		();
-	xr_delete					(m_tpOnEnter.m_lua_function);
-	xr_delete					(m_tpOnEnter.m_lua_object);
-	xr_delete					(m_tpOnExit.m_lua_function);
-	xr_delete					(m_tpOnExit.m_lua_object);
+	
+	m_tpOnEnter.clear		();
+	m_tpOnExit.clear		();
 }
 
 void CScriptZone::Center(Fvector& C) const
@@ -97,10 +88,8 @@ void CScriptZone::feel_touch_new	(CObject *tpObject)
 	CGameObject					*l_tpGameObject = dynamic_cast<CGameObject*>(tpObject);
 	if (!l_tpGameObject)
 		return;
-	if (m_tpOnEnter.m_lua_function)
-		(*m_tpOnEnter.m_lua_function)(lua_game_object(),l_tpGameObject->lua_game_object());
-	if (m_tpOnEnter.m_lua_object)
-		luabind::call_member<void>(*m_tpOnEnter.m_lua_object,*m_tpOnEnter.m_method_name,lua_game_object(),l_tpGameObject->lua_game_object());
+	
+	SCRIPT_CALLBACK_EXECUTE_2(m_tpOnEnter, lua_game_object(),l_tpGameObject->lua_game_object());
 }
 
 void CScriptZone::feel_touch_delete	(CObject *tpObject)
@@ -108,10 +97,8 @@ void CScriptZone::feel_touch_delete	(CObject *tpObject)
 	CGameObject					*l_tpGameObject = dynamic_cast<CGameObject*>(tpObject);
 	if (!l_tpGameObject)
 		return;
-	if (m_tpOnExit.m_lua_function)
-		(*m_tpOnExit.m_lua_function)(lua_game_object(),l_tpGameObject->lua_game_object());
-	if (m_tpOnExit.m_lua_object)
-		luabind::call_member<void>(*m_tpOnExit.m_lua_object,*m_tpOnExit.m_method_name,lua_game_object(),l_tpGameObject->lua_game_object());
+	
+	SCRIPT_CALLBACK_EXECUTE_2(m_tpOnExit, lua_game_object(),l_tpGameObject->lua_game_object());
 }
 
 BOOL CScriptZone::feel_touch_contact	(CObject* O)
@@ -121,24 +108,20 @@ BOOL CScriptZone::feel_touch_contact	(CObject* O)
 
 void CScriptZone::set_callback	(const luabind::object &lua_object, LPCSTR method, bool bOnEnter)
 {
-	SMemberCallback				&callback = bOnEnter ? m_tpOnEnter : m_tpOnExit;
-	xr_delete					(callback.m_lua_object);
-	callback.m_lua_object		= xr_new<luabind::object>(lua_object);
-	callback.m_method_name		= method;
+	CScriptCallback				&callback = bOnEnter ? m_tpOnEnter : m_tpOnExit;
+	callback.set				(lua_object, method);
 }
 
 void CScriptZone::set_callback	(const luabind::functor<void> &lua_function, bool bOnEnter)
 {
-	SMemberCallback				&callback = bOnEnter ? m_tpOnEnter : m_tpOnExit;
-	xr_delete					(callback.m_lua_function);
-	callback.m_lua_function		= xr_new<luabind::functor<void> >(lua_function);
+	CScriptCallback				&callback = bOnEnter ? m_tpOnEnter : m_tpOnExit;
+	callback.set				(lua_function);
 }
 
 void CScriptZone::clear_callback(bool bOnEnter)
 {
-	SMemberCallback				&callback = bOnEnter ? m_tpOnEnter : m_tpOnExit;
-	xr_delete					(callback.m_lua_function);
-	xr_delete					(callback.m_lua_object);
+	CScriptCallback				&callback = bOnEnter ? m_tpOnEnter : m_tpOnExit;
+	callback.clear				();
 }
 
 #ifdef DEBUG

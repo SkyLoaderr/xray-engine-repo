@@ -90,7 +90,7 @@ IC	void CPatrolPathManager::set_random	(bool random)
 	m_random				= random;
 }
 
-IC	void CPatrolPathManager::set_callback(const SMemberCallback &callback)
+IC	void CPatrolPathManager::set_callback(CScriptCallback &callback)
 {
 	m_callback				= &callback;
 }

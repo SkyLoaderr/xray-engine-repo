@@ -38,7 +38,7 @@ private:
 	u32						m_curr_point_index;
 	u32						m_prev_point_index;
 	Fvector					m_dest_position;
-	const SMemberCallback	*m_callback;
+	CScriptCallback			*m_callback;
 protected:
 	IC			bool	actual						() const;
 	IC			bool	completed					() const;
@@ -52,7 +52,7 @@ public:
 	IC	virtual			~CPatrolPathManager			();
 	IC			void	Init						();
 	IC	virtual	void	reinit						();
-	IC	virtual	void	set_callback				(const SMemberCallback &callback);
+	IC	virtual	void	set_callback				(CScriptCallback &callback);
 	IC			void	make_inactual				();
 	const CLevel::SPath	*get_path					() {return m_path;}
 	IC			void	set_path					(ref_str path_name);
