@@ -197,7 +197,7 @@ void CAI_Space::Render()
 								continue;
 							Fvector t1 = m_tpaGraph[i].tLocalPoint;
 							t1.y += .6f;
-							RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,255,255));
+							RCache.dbg_DrawAABB(t1,.5f,.5f,.5f,D3DCOLOR_XRGB(255,255,255));
 						}
 					}
 
