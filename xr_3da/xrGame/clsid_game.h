@@ -19,7 +19,6 @@
 
 // Weapons
 #define CLSID_OBJECT_W_M134			MK_CLSID('W','_','M','1','3','4',' ',' ')
-#define CLSID_OBJECT_W_M134_en		MK_CLSID('W','_','M','1','3','4','e','n')
 #define CLSID_OBJECT_W_FN2000		MK_CLSID('W','_','F','N','2','0','0','0')
 #define CLSID_OBJECT_W_AK74			MK_CLSID('W','_','A','K','7','4',' ',' ')
 #define CLSID_OBJECT_W_LR300		MK_CLSID('W','_','L','R','3','0','0',' ')

@@ -480,15 +480,23 @@ xrServerEntity*	F_entity_Create		(LPCSTR name)
 	CLASS_ID cls = pSettings->ReadCLSID(name,"class");
 
 	switch (cls){
-	case CLSID_OBJECT_ACTOR:	return new	xrSE_Actor;
-	case CLSID_OBJECT_DUMMY:	return new  xrSE_Dummy;
-	case CLSID_AI_HEN:			return new	xrSE_Enemy;
-	case CLSID_AI_RAT:			return new	xrSE_Enemy;
-	case CLSID_AI_SOLDIER:		return new	xrSE_Enemy;
-	case CLSID_AI_ZOMBIE:		return new	xrSE_Enemy;
-	case CLSID_AI_CROW:			return new	xrSE_Crow;
-	case CLSID_EVENT:			return new  xrSE_Event;
-	case CLSID_CAR_NIVA:		return new  xrSE_Car;
+	case CLSID_OBJECT_ACTOR:		return new	xrSE_Actor;
+	case CLSID_OBJECT_DUMMY:		return new  xrSE_Dummy;
+	case CLSID_AI_HEN:				return new	xrSE_Enemy;
+	case CLSID_AI_RAT:				return new	xrSE_Enemy;
+	case CLSID_AI_SOLDIER:			return new	xrSE_Enemy;
+	case CLSID_AI_ZOMBIE:			return new	xrSE_Enemy;
+	case CLSID_AI_CROW:				return new	xrSE_Crow;
+	case CLSID_EVENT:				return new  xrSE_Event;
+	case CLSID_CAR_NIVA:			return new  xrSE_Car;
+	case CLSID_OBJECT_W_M134:		return new	xrSE_Weapon;
+	case CLSID_OBJECT_W_FN2000:		return new	xrSE_Weapon;
+	case CLSID_OBJECT_W_AK74:		return new	xrSE_Weapon;
+	case CLSID_OBJECT_W_LR300:		return new	xrSE_Weapon;
+	case CLSID_OBJECT_W_HPSA:		return new	xrSE_Weapon;
+	case CLSID_OBJECT_W_PM:			return new	xrSE_Weapon;
+	case CLSID_OBJECT_W_FORT:		return new	xrSE_Weapon;
+	case CLSID_OBJECT_W_BINOCULAR:	return new	xrSE_Weapon;
 	}
 	return 0;
 }
