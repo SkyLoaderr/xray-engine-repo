@@ -16,6 +16,9 @@
 		typedef cls inherited;                                                          \
 		MAKE_WRAPPER_NAME(cls) ():inherited() {}
 
+#define DEFINE_LUA_WRAPPER_FOOTER(cls)													\
+	};
+
 #define DEFINE_LUA_WRAPPER_METHOD_0	(v_func_name,ret_type)								\
 		virtual ret_type v_func_name()													\	
 		{																				\	
@@ -65,6 +68,3 @@
 		{																				\	
 			return ptr->inherited::v_func_name(p1,p2,p3,p4);                          	\	
 		}
-
-#define DEFINE_LUA_WRAPPER_FOOTER(cls)													\
-	};
