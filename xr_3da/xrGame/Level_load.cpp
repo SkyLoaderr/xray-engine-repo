@@ -91,7 +91,7 @@ BOOL CLevel::Load_GameSpecific_After()
 			Sounds_Random.push_back	(ref_sound());
 			Sound->create			(Sounds_Random.back(),TRUE,*I->first);
 		}
-		Sounds_dwNextTime		= Device.TimerAsync	()	+ 5000;
+		Sounds_dwNextTime		= Device.TimerAsync	()	+ 50000;
 	}
 	
 	// loading scripts
