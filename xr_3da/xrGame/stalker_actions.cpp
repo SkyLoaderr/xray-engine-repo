@@ -698,7 +698,7 @@ void CStalkerActionKillEnemyAggressive::initialize	()
 
 	float					distance = m_object->Position().distance_to(m_object->enemy()->Position());
 	if (distance >= 30.f) {
-        set_inertia_time	(250);
+        set_inertia_time	(500);
 		m_fire_crouch		= true;
 	}
 	else
@@ -707,7 +707,7 @@ void CStalkerActionKillEnemyAggressive::initialize	()
 			m_fire_crouch	= false;
 		}
 		else {
-			set_inertia_time(iFloor(float(1500 - 250)*(distance - 5.f)/(30.f - 5.f)) + 250);
+			set_inertia_time(iFloor(float(1500 - 500)*(distance - 5.f)/(30.f - 5.f)) + 500);
 			m_fire_crouch	= ::Random.randF(40.f) < (distance - 5.f);
 		}
 }
@@ -783,11 +783,11 @@ void CStalkerActionAimEnemy::initialize	()
 	}
 	else
 		if (distance <= 10.f) {
-			set_inertia_time(250);
+			set_inertia_time(500);
 			m_run			= false;
 		}
 		else {
-			set_inertia_time(iFloor(float(1500 - 250)*(50.f - distance)/(50.f - 10.f)) + 250);
+			set_inertia_time(iFloor(float(1500 - 500)*(50.f - distance)/(50.f - 10.f)) + 500);
 			m_run			= ::Random.randF(40.f) > (distance - 10.f);
 		}
 }
