@@ -1,10 +1,10 @@
 object frmEditLightAnim: TfrmEditLightAnim
-  Left = 447
-  Top = 480
+  Left = 359
+  Top = 448
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsToolWindow
   Caption = 'Light Animation Library'
-  ClientHeight = 154
+  ClientHeight = 210
   ClientWidth = 525
   Color = 10528425
   Font.Charset = DEFAULT_CHARSET
@@ -24,11 +24,11 @@ object frmEditLightAnim: TfrmEditLightAnim
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object paItemProps: TPanel
+  object paItemMain: TPanel
     Left = 164
     Top = 0
     Width = 361
-    Height = 154
+    Height = 210
     Align = alClient
     BevelOuter = bvNone
     Color = 10528425
@@ -44,11 +44,11 @@ object frmEditLightAnim: TfrmEditLightAnim
       Left = 230
       Top = 1
       Width = 128
-      Height = 73
+      Height = 134
     end
     object pbG: TPaintBox
       Left = 3
-      Top = 102
+      Top = 158
       Width = 357
       Height = 30
       Color = clBlack
@@ -60,7 +60,7 @@ object frmEditLightAnim: TfrmEditLightAnim
     end
     object ebDeleteKey: TExtBtn
       Left = 75
-      Top = 135
+      Top = 191
       Width = 67
       Height = 17
       Align = alNone
@@ -80,7 +80,7 @@ object frmEditLightAnim: TfrmEditLightAnim
     end
     object ebCreateKey: TExtBtn
       Left = 3
-      Top = 135
+      Top = 191
       Width = 67
       Height = 17
       Align = alNone
@@ -100,7 +100,7 @@ object frmEditLightAnim: TfrmEditLightAnim
     end
     object ebPrevKey: TExtBtn
       Left = 121
-      Top = 82
+      Top = 138
       Width = 21
       Height = 15
       Align = alNone
@@ -122,7 +122,7 @@ object frmEditLightAnim: TfrmEditLightAnim
     end
     object ebFirstKey: TExtBtn
       Left = 100
-      Top = 82
+      Top = 138
       Width = 21
       Height = 15
       Hint = 'First Key'
@@ -145,7 +145,7 @@ object frmEditLightAnim: TfrmEditLightAnim
     end
     object ebNextKey: TExtBtn
       Left = 222
-      Top = 82
+      Top = 138
       Width = 21
       Height = 15
       Hint = 'Next Key'
@@ -168,7 +168,7 @@ object frmEditLightAnim: TfrmEditLightAnim
     end
     object ebLastKey: TExtBtn
       Left = 243
-      Top = 82
+      Top = 138
       Width = 21
       Height = 15
       Hint = 'Last Key'
@@ -191,7 +191,7 @@ object frmEditLightAnim: TfrmEditLightAnim
     end
     object ebMoveKeyLeft: TExtBtn
       Left = 76
-      Top = 82
+      Top = 138
       Width = 21
       Height = 15
       Hint = 'Move Key Left'
@@ -214,7 +214,7 @@ object frmEditLightAnim: TfrmEditLightAnim
     end
     object ebMoveKeyRight: TExtBtn
       Left = 267
-      Top = 82
+      Top = 138
       Width = 21
       Height = 15
       Hint = 'Move Key Right'
@@ -237,7 +237,7 @@ object frmEditLightAnim: TfrmEditLightAnim
     end
     object ebFirstFrame: TExtBtn
       Left = 3
-      Top = 82
+      Top = 138
       Width = 21
       Height = 15
       Hint = 'First Frame'
@@ -260,7 +260,7 @@ object frmEditLightAnim: TfrmEditLightAnim
     end
     object ebLastFrame: TExtBtn
       Left = 338
-      Top = 82
+      Top = 138
       Width = 21
       Height = 15
       Hint = 'Last Frame'
@@ -285,7 +285,7 @@ object frmEditLightAnim: TfrmEditLightAnim
       Left = 232
       Top = 2
       Width = 125
-      Height = 70
+      Height = 131
       BevelOuter = bvNone
       Color = 10526880
       TabOrder = 1
@@ -311,7 +311,7 @@ object frmEditLightAnim: TfrmEditLightAnim
     end
     object sePointer: TMultiObjSpinEdit
       Left = 142
-      Top = 80
+      Top = 136
       Width = 79
       Height = 17
       Hint = 'Current Frame'
@@ -334,7 +334,7 @@ object frmEditLightAnim: TfrmEditLightAnim
     end
     object stStartFrame: TStaticText
       Left = 25
-      Top = 82
+      Top = 138
       Width = 38
       Height = 15
       AutoSize = False
@@ -346,7 +346,7 @@ object frmEditLightAnim: TfrmEditLightAnim
     end
     object stEndFrame: TStaticText
       Left = 300
-      Top = 82
+      Top = 138
       Width = 38
       Height = 15
       AutoSize = False
@@ -356,7 +356,7 @@ object frmEditLightAnim: TfrmEditLightAnim
       ParentColor = False
       TabOrder = 3
     end
-    object paProps: TPanel
+    object paItemProps: TPanel
       Left = 0
       Top = 1
       Width = 229
@@ -365,19 +365,28 @@ object frmEditLightAnim: TfrmEditLightAnim
       ParentColor = True
       TabOrder = 4
     end
+    object paKeyProps: TPanel
+      Left = 0
+      Top = 75
+      Width = 229
+      Height = 60
+      BevelOuter = bvLowered
+      ParentColor = True
+      TabOrder = 5
+    end
   end
   object Panel3: TPanel
     Left = 0
     Top = 0
     Width = 164
-    Height = 154
+    Height = 210
     Align = alLeft
     BevelOuter = bvNone
     ParentColor = True
     TabOrder = 1
     object Panel2: TPanel
       Left = 0
-      Top = 116
+      Top = 172
       Width = 164
       Height = 38
       Align = alBottom
@@ -445,7 +454,7 @@ object frmEditLightAnim: TfrmEditLightAnim
       Left = 0
       Top = 0
       Width = 164
-      Height = 116
+      Height = 170
       Align = alTop
       BevelOuter = bvLowered
       ParentColor = True
