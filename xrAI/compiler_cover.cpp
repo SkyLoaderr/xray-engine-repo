@@ -176,7 +176,6 @@ public:
 	{
 		Nstart	= _start;
 		Nend	= _end;
-		Start	();
 	}
 	virtual void		Execute()
 	{
@@ -255,38 +254,18 @@ public:
 void	xrCover	()
 {
 	Status("Calculating...");
+
+	// Start threads, wait, continue --- perform all the work
 	DWORD	start_time		= timeGetTime();
-	
-	// Start threads
-	CoverThread*			THP	[NUM_THREADS];
+	CThreadManager			Threads;
 	DWORD	stride			= g_nodes.size()/NUM_THREADS;
 	DWORD	last			= g_nodes.size()-stride*(NUM_THREADS-1);
 	for (DWORD thID=0; thID<NUM_THREADS; thID++)
-		THP[thID]	= new CoverThread(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride));
-	
-	// Wait for completition
-	for (;;)
-	{
-		Sleep	(1000);
-		
-		float	sumProgress=0;
-		DWORD	sumComplete=0;
-		for (DWORD ID=0; ID<NUM_THREADS; ID++)
-		{
-			sumProgress += THP[ID]->thProgress;
-			sumComplete	+= THP[ID]->thCompleted?1:0;
-		}
-		
-		Progress(sumProgress/float(NUM_THREADS));
-		if (sumComplete == NUM_THREADS)	break;
-	}
-	
-	// Delete threads
-	for (thID=0; thID<NUM_THREADS; thID++)
-		_DELETE(THP[thID]);
-	
+		Threads.start(new CoverThread(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride)));
+	Threads.wait			();
 	Msg("%d seconds elapsed.",(timeGetTime()-start_time)/1000);
 
+	// Smooth
 	Status	("Smoothing coverage mask...");
 	Nodes	Old = g_nodes;
 	for (DWORD N=0; N<g_nodes.size(); N++)

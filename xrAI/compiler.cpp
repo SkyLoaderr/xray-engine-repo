@@ -65,7 +65,7 @@ void xrCompiler(LPCSTR name)
 
 	Phase("Lighting nodes...");
 	xrLight		();
-	xrDisplay	();
+//	xrDisplay	();
 
 	Phase("Calculating coverage...");
 	xrCover		();
@@ -77,7 +77,7 @@ void xrCompiler(LPCSTR name)
 	xrConvertAndLink();
 
 	Phase("Visualizing nodes...");
-	xrDisplay	();
+//	xrDisplay	();
 
 	Phase("Saving nodes...");
 	xrSaveNodes	(name);
