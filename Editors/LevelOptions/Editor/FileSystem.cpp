@@ -116,6 +116,7 @@ bool EFS_Utils::GetOpenName( LPCSTR initial, char *buffer, int sz_buf, bool bMul
             strcpy		(buffer,fns);
         }
     }
+    strlwr(buffer);
     return bRes;
 }
 
@@ -146,6 +147,7 @@ bool EFS_Utils::GetSaveName( LPCSTR initial, char *buffer, int sz_buf, LPCSTR of
         case FNERR_BUFFERTOOSMALL: 	Log("Too many file selected."); break;
         }
 	}
+    strlwr(buffer);
 	return bRes;
 }
 //----------------------------------------------------
