@@ -150,7 +150,7 @@ enum PActionEnum
 struct ParticleAction
 {
 	enum{
-		ALLOW_TRANSFORM = (1<<0),
+		ALLOW_PARENT = (1<<0),
 	};
 	static float	dt;	// This is copied to here from global state.
 	Flags32			flags;

@@ -672,7 +672,7 @@ PARTICLEDLL_API void __stdcall pCallActionList(int action_list_num)
 	}
 }
 
-PARTICLEDLL_API void __stdcall pSetActionListTransform(int action_list_num, const Fmatrix& m)
+PARTICLEDLL_API void __stdcall pSetActionListTransform(int action_list_num, const Fmatrix& m, const Fvector& vel)
 {
 	_ParticleState &_ps = _GetPState();
 
@@ -691,7 +691,7 @@ PARTICLEDLL_API void __stdcall pSetActionListTransform(int action_list_num, cons
 	// Step through all the actions in the action list.
 	for(int action = 0; action < num_actions; action++, pa++)
 	{
-		if (!pa->flags.is(ParticleAction::ALLOW_TRANSFORM)) continue;
+		if (!pa->flags.is(ParticleAction::ALLOW_PARENT)) continue;
 		switch(pa->type)
 		{
 		case PAAvoidID:
@@ -739,6 +739,7 @@ PARTICLEDLL_API void __stdcall pSetActionListTransform(int action_list_num, cons
 			break;
 		case PASourceID:
 			((PASource *)pa)->Transform(m);
+			((PASource *)pa)->parent_vel = pVector(vel.x,vel.y,vel.z);
 			break;
 		case PASpeedLimitID:			break;
 		case PATargetColorID:			break;
