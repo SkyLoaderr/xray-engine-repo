@@ -9,6 +9,7 @@
 #pragma once
 
 #include "script_export_space.h"
+#include "ui.h"
 
 class CBoardClassicOthello {
 public:
@@ -38,16 +39,22 @@ private:
 	cell_type		m_color_to_move;
 	u8				m_empties;
 	int				m_difference;
-	cell_index		*m_flip_stack[4096];
-	cell_index		**m_current_flip;
+	cell_type		*m_flip_stack[4096];
+	cell_type		**m_current_flip;
 
 
 protected:
 	IC		void			show_cell				(const cell_type &value) const;
 
 protected:
+	template <int increment, cell_type _color_to_move, cell_type opponent_color>
+	IC		void			try_flip_direction		(cell_type *start_cell, int &difference);
+
 	template <cell_type color_to_move>
 	IC		bool			do_move					(const cell_index &index);
+
+	template <cell_type opponent_color>
+	IC		void			undo_move				();
 
 public:
 	IC						CBoardClassicOthello	();
@@ -55,6 +62,7 @@ public:
 			void			show					() const;
 			bool			do_move					(const cell_index &index);
 	IC		bool			do_move					(const cell_index &index0, const cell_index &index1);
+	IC		void			undo_move				();
 
 public:
 	IC		cell_index		index					(const cell_index &index0, const cell_index &index1) const;

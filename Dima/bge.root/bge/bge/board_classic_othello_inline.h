@@ -57,3 +57,29 @@ IC	int	 CBoardClassicOthello::difference		() const
 {
 	return							(m_difference);
 }
+
+template <CBoardClassicOthello::cell_type opponent_color>
+IC	void CBoardClassicOthello::undo_move		()
+{
+	VERIFY							(m_current_flip > m_flip_stack);
+	
+	--m_current_flip;
+	int								flip_count = (int)reinterpret_cast<size_t>(*m_current_flip);
+
+	VERIFY							(m_current_flip > m_flip_stack);
+	**(--m_current_flip)			= EMPTY;
+
+	for ( ; flip_count; ) {
+		--flip_count;
+        **(--m_current_flip)		= opponent_color;
+		VERIFY						(m_current_flip > m_flip_stack);
+    }
+}
+
+IC	void CBoardClassicOthello::undo_move		()
+{
+	if (color_to_move() == BLACK)
+		undo_move<BLACK>();
+	else
+		undo_move<WHITE>();
+}
