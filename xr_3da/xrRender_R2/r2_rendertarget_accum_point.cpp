@@ -30,8 +30,14 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	// Select shader (front or back-faces), *** back, if intersect near plane
 	Fplane	P;	P.n.set(plane.x,plane.y,plane.z); P.d = plane.w;
 	float	p_dist					= P.classify	(L->sphere.P) - L->sphere.R;
-	if (p_dist<0)					RCache.set_Element(s_accum_point->E[2]);	// back
-	else							RCache.set_Element(s_accum_point->E[1]);	// front
+	if (p_dist<0)					{
+		RCache.set_Element(s_accum_point->E[2]);	// back
+		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,	D3DCULL_CW		)); 	
+	}
+	else							{
+		RCache.set_Element(s_accum_point->E[1]);	// front
+		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,	D3DCULL_CCW		)); 	
+	}
 
 	// Mask area by stencil
 	Fvector2						p0,p1;
@@ -61,7 +67,6 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	}
 
 	// Render if stencil >= 0x1
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,	D3DCULL_CCW		)); 	
 	RCache.set_Geometry				(g_accum_point);
 	RCache.Render					(D3DPT_TRIANGLELIST,0,0,DU_SPHERE_NUMVERTEX,0,DU_SPHERE_NUMFACES);
 
