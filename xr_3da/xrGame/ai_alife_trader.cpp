@@ -20,18 +20,19 @@ void CSE_ALifeTraderAbstract::vfAttachItem(CSE_ALifeInventoryItem *tpALifeInvent
 	if (bALifeRequest) {
 		if (bAddChildren) {
 #ifdef ALIFE_LOG
-			Msg							("[LSS] : Adding item [%s][%d] to the children list",tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID);
+			Msg							("[LSS] : Adding item [%s][%d] to the [%s] children list",tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID,s_name_replace);
 #endif
+
 			R_ASSERT2					(std::find(children.begin(),children.end(),tpALifeInventoryItem->ID) == children.end(),"Item is already inside the inventory");
 			children.push_back			(tpALifeInventoryItem->ID);
 		}
 #ifdef ALIFE_LOG
-		Msg							("[LSS] : Assigning parent to item [%s][%d]",tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID);
+		Msg							("[LSS] : Assigning parent [%s] to item [%s][%d]",s_name_replace,tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID);
 #endif
 		tpALifeInventoryItem->ID_Parent	= ID;
 	}
 #ifdef ALIFE_LOG
-	Msg							("[LSS] : Updating inventory with attached item [%s][%d]",tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID);
+	Msg							("[LSS] : Updating [%s] inventory with attached item [%s][%d]",s_name_replace,tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID);
 #endif
 	m_fCumulativeItemMass				+= tpALifeInventoryItem->m_fMass;
 	m_iCumulativeItemVolume				+= tpALifeInventoryItem->m_iVolume;
@@ -45,14 +46,14 @@ void CSE_ALifeTraderAbstract::vfDetachItem(CSE_ALifeInventoryItem *tpALifeInvent
 				OBJECT_IT						I = std::find	(children.begin(),children.end(),tpALifeInventoryItem->ID);
 				R_ASSERT2						(I != children.end(),"Can't detach an item which is not on my own");
 #ifdef ALIFE_LOG
-				Msg								("[LSS] : Removinng item [%s][%d] from children list",tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID);
+				Msg								("[LSS] : Removinng item [%s][%d] from [%s] children list",tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID,s_name_replace);
 #endif
 				children.erase					(I);
 			}
 		}
 		else {
 #ifdef ALIFE_LOG
-			Msg									("[LSS] : Removinng item [%s][%d] from children list",tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID);
+			Msg									("[LSS] : Removinng item [%s][%d] from [%s] children list",tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID,s_name_replace);
 #endif
 			children.erase						(*I);
 		}
@@ -61,7 +62,7 @@ void CSE_ALifeTraderAbstract::vfDetachItem(CSE_ALifeInventoryItem *tpALifeInvent
 		CSE_ALifeDynamicObject					*l_tpALifeDynamicObject2 = dynamic_cast<CSE_ALifeDynamicObject*>(this);
 		R_ASSERT2								(l_tpALifeDynamicObject1 && l_tpALifeDynamicObject2,"Invalid parent or children objects");
 #ifdef ALIFE_LOG
-		Msg										("[LSS] : Removing parent from the item [%s][%d] and updating its position and graph point [%f][%f][%f] : [%d]",tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID,VPUSH(l_tpALifeDynamicObject2->o_Position),l_tpALifeDynamicObject2->m_tGraphID);
+		Msg										("[LSS] : Removing parent [%s] from the item [%s][%d] and updating its position and graph point [%f][%f][%f] : [%d]",s_name_replace,tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID,VPUSH(l_tpALifeDynamicObject2->o_Position),l_tpALifeDynamicObject2->m_tGraphID);
 #endif
 		l_tpALifeDynamicObject1->o_Position		= l_tpALifeDynamicObject2->o_Position;
 		l_tpALifeDynamicObject1->m_tGraphID		= l_tpALifeDynamicObject2->m_tGraphID;
@@ -69,7 +70,7 @@ void CSE_ALifeTraderAbstract::vfDetachItem(CSE_ALifeInventoryItem *tpALifeInvent
 		tpALifeInventoryItem->m_tPreviousParentID = l_tpALifeDynamicObject2->ID;
 	}
 #ifdef ALIFE_LOG
-	Msg							("[LSS] : Updating inventory with detached item [%s][%d]",tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID);
+	Msg							("[LSS] : Updating [%s] inventory with detached item [%s][%d]",s_name_replace,tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID);
 #endif
 	m_fCumulativeItemMass		-= tpALifeInventoryItem->m_fMass;
 	m_iCumulativeItemVolume		-= tpALifeInventoryItem->m_iVolume;
@@ -82,7 +83,7 @@ u32	CSE_ALifeTrader::dwfGetItemCost(CSE_ALifeInventoryItem *tpALifeInventoryItem
 	if (!l_tpALifeItemArtefact)
 		return					(tpALifeInventoryItem->m_dwCost);
 
-	u32						l_dwPurchasedCount = 0;
+	u32							l_dwPurchasedCount = 0;
 #pragma todo("Dima to Dima : optimize this cycle by keeping additional data structure with bought items")
 	{
 		OBJECT_IT				i = children.begin();
@@ -92,14 +93,17 @@ u32	CSE_ALifeTrader::dwfGetItemCost(CSE_ALifeInventoryItem *tpALifeInventoryItem
 				l_dwPurchasedCount++;
 	}
 
-	{
-		ARTEFACT_TRADER_ORDER_IT	I = m_tpOrderedArtefacts.begin();
-		ARTEFACT_TRADER_ORDER_IT	E = m_tpOrderedArtefacts.end();
-		for ( ; I != E; I++)
-			if (!strcmp((*I).m_caSection,l_tpALifeItemArtefact->s_name)) {
-				R_ASSERT		(l_dwPurchasedCount <= (*I).m_dwTotalCount);
-				return			((*I).m_tpOrders[l_dwPurchasedCount].m_dwPrice);
-			}
+	ARTEFACT_TRADER_ORDER_PAIR_IT	J = m_tpOrderedArtefacts.find(tpALifeInventoryItem->s_name);
+	if ((J != m_tpOrderedArtefacts.end()) && (l_dwPurchasedCount < (*J).second->m_dwTotalCount)) {
+		ARTEFACT_ORDER_IT		I = (*J).second->m_tpOrders.begin();
+		ARTEFACT_ORDER_IT		E = (*J).second->m_tpOrders.end();
+		for ( ; I != E; I++) {
+			if (l_dwPurchasedCount <= (*I).m_dwCount)
+				return			((*I).m_dwPrice);
+			else
+				l_dwPurchasedCount -= (*I).m_dwCount;
+		}
+		Debug.fatal				("Data synchronization mismatch");
 	}
 	return						(tpALifeInventoryItem->m_dwCost);
 }

@@ -707,26 +707,47 @@ void CSE_ALifeSimulator::vfCommunicateWithCustomer(CSE_ALifeHumanAbstract *tpALi
 	}
 	
 	// trade items
+#ifdef ALIFE_LOG
+	Msg					("Selling all the items to %s",tpALifeTrader->s_name_replace);
+#endif
 	tpALifeHumanAbstract->m_dwTotalMoney = tpALifeHumanAbstract->m_dwMoney;
-	while (!tpALifeHumanAbstract->children.empty()) {
-		CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(tpfGetObjectByID(*tpALifeHumanAbstract->children.begin()));
-		OBJECT_IT				I = tpALifeHumanAbstract->children.begin();
-		tpALifeHumanAbstract->vfDetachItem(l_tpALifeInventoryItem,&I);
-		tpALifeTrader->vfAttachItem(l_tpALifeInventoryItem,true);
-		u32						l_dwItemCost = tpALifeTrader->dwfGetItemCost(l_tpALifeInventoryItem,this);
-		tpALifeHumanAbstract->m_dwTotalMoney += l_dwItemCost;
-		tpALifeTrader->m_dwMoney-= l_dwItemCost;
+	{
+		OBJECT_IT		I = tpALifeHumanAbstract->children.begin();
+		OBJECT_IT		E = tpALifeHumanAbstract->children.end();
+		for ( ; I != E; I++) {
+			CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(tpfGetObjectByID(*I));
+			tpALifeHumanAbstract->vfDetachItem(l_tpALifeInventoryItem,0,true,false);
+			tpALifeTrader->vfAttachItem(l_tpALifeInventoryItem,true);
+			u32						l_dwItemCost = tpALifeTrader->dwfGetItemCost(l_tpALifeInventoryItem,this);
+			tpALifeHumanAbstract->m_dwTotalMoney += l_dwItemCost;
+			tpALifeTrader->m_dwMoney-= l_dwItemCost;
+		}
+		tpALifeHumanAbstract->children.clear();
 	}
 	
+	sort				(tpALifeTrader->children.begin(),tpALifeTrader->children.end());
+
 	tpALifeHumanAbstract->m_dwMoney			= tpALifeHumanAbstract->m_dwTotalMoney;
 	
+	m_tpItemVector.clear					();
 	vfAppendItemVector						(tpALifeTrader->children,m_tpItemVector);
 
 	m_tpBlockedItems1.clear					();
 	for (int i=0; i<8; i++) {
 		int									l_iItemCount = 0;
 		vfRunFunctionByIndex				(tpALifeHumanAbstract,m_tpBlockedItems1,m_tpItemVector,i,l_iItemCount);
-		vfAssignItemParents					(tpALifeHumanAbstract,l_iItemCount);
+		if (l_iItemCount) {
+			vfAssignItemParents				(tpALifeHumanAbstract,l_iItemCount);
+			ITEM_P_IT						I = remove_if(m_tpItemVector.begin(),m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
+			ITEM_P_IT						E = m_tpItemVector.end();
+			for ( ; I != E; I++) {
+				OBJECT_IT					J = std::lower_bound(tpALifeTrader->children.begin(),tpALifeTrader->children.end(),(*I)->ID);
+				R_ASSERT					(J != tpALifeTrader->children.end());
+				R_ASSERT					(((J+1) == tpALifeTrader->children.end()) || (*(J + 1) != (*I)->ID));
+				tpALifeTrader->children.erase(J);
+			}
+			m_tpItemVector.erase			(m_tpItemVector.end() - l_iItemCount,m_tpItemVector.end());
+		}
 	}
 	tpALifeTrader->m_dwMoney				+= tpALifeHumanAbstract->m_dwMoney - tpALifeHumanAbstract->m_dwTotalMoney;
 	tpALifeHumanAbstract->m_dwMoney			= tpALifeHumanAbstract->m_dwTotalMoney;
@@ -735,6 +756,9 @@ void CSE_ALifeSimulator::vfCommunicateWithCustomer(CSE_ALifeHumanAbstract *tpALi
 #pragma todo("Dima to Dima : Process situation if trader has not enough money")
 	R_ASSERT2								(int(tpALifeTrader->m_dwMoney) >= 0,"Trader must have enough money to pay for the artefacts!");
 
+#ifdef ALIFE_LOG
+	Msg					("Assigning correct parents");
+#endif
 	vfAttachGatheredItems					(tpALifeHumanAbstract,tpALifeTrader,m_tpBlockedItems1);
 	vfAttachGatheredItems					(tpALifeTrader,tpALifeHumanAbstract,m_tpBlockedItems2);
 

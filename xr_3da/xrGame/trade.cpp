@@ -270,14 +270,14 @@ void CTrade::ShowArtifactPrices()
 		CAI_Trader					*l_pTrader = dynamic_cast<CAI_Trader *>(pThis.inv_owner);
 		R_ASSERT					(l_pTrader);
 		Msg							("--TRADE:: [%s]: I need the following artefacts :",pThis.base->cName());
-		ARTEFACT_TRADER_ORDER_IT	ii = l_pTrader->m_tpOrderedArtefacts.begin();
-		ARTEFACT_TRADER_ORDER_IT	ee = l_pTrader->m_tpOrderedArtefacts.end();
+		ARTEFACT_TRADER_ORDER_PAIR_IT	ii = l_pTrader->m_tpOrderedArtefacts.begin();
+		ARTEFACT_TRADER_ORDER_PAIR_IT	ee = l_pTrader->m_tpOrderedArtefacts.end();
 		for ( ; ii != ee; ii++) {
-			u32						l_dwAlreadyPurchased = GetTradeInv(pThis).dwfGetSameItemCount((*ii).m_caSection);
-			R_ASSERT				(l_dwAlreadyPurchased <= (*ii).m_dwTotalCount);
-			Msg						("-   Artefact %s (total %d items) :",pSettings->r_string((*ii).m_caSection,"inv_name"),(*ii).m_dwTotalCount - l_dwAlreadyPurchased);
-			ARTEFACT_ORDER_IT		iii = (*ii).m_tpOrders.begin();
-			ARTEFACT_ORDER_IT		eee = (*ii).m_tpOrders.end();
+			u32						l_dwAlreadyPurchased = GetTradeInv(pThis).dwfGetSameItemCount((*ii).second->m_caSection);
+			R_ASSERT				(l_dwAlreadyPurchased <= (*ii).second->m_dwTotalCount);
+			Msg						("-   Artefact %s (total %d items) :",pSettings->r_string((*ii).second->m_caSection,"inv_name"),(*ii).second->m_dwTotalCount - l_dwAlreadyPurchased);
+			ARTEFACT_ORDER_IT		iii = (*ii).second->m_tpOrders.begin();
+			ARTEFACT_ORDER_IT		eee = (*ii).second->m_tpOrders.end();
 			for ( ; iii != eee; iii++)
 				if (l_dwAlreadyPurchased < (*iii).m_dwCount) {
 					Msg				("-       %d items for $%d for organization %s",(*iii).m_dwCount - l_dwAlreadyPurchased,(*iii).m_dwPrice,(*iii).m_caSection);

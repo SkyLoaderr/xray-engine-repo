@@ -18,7 +18,7 @@ public:
 	typedef CEntityAlive inherited;
 	CMotionDef*			m_tAnimation;
 	bool				m_bPlaying;
-	ARTEFACT_TRADER_ORDER_VECTOR	m_tpOrderedArtefacts;
+	ARTEFACT_TRADER_ORDER_MAP	m_tpOrderedArtefacts;
 
 
 						CAI_Trader		();

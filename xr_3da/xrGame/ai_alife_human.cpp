@@ -96,16 +96,27 @@ void CSE_ALifeHumanAbstract::vfChooseHumanTask()
 	OBJECT_IT					E = m_tpKnownCustomers.end();
 	for ( ; I != E; I++) {
 		OBJECT_TASK_PAIR_IT		J = m_tpALife->m_tTaskCrossMap.find(*I);
-		R_ASSERT2				(J != m_tpALife->m_tTaskCrossMap.end(),"Can't find a specified customer in the Task registry!");
+		R_ASSERT2				(J != m_tpALife->m_tTaskCrossMap.end(),"Can't find a specified customer in the Task registry!\nPossibly, there is no traders at all or there is no anomalous zones.");
 		
+		u32						l_dwMinTryCount = u32(-1);
+		_TASK_ID				l_tBestTaskID = _TASK_ID(-1);
 		TASK_SET_IT				i = (*J).second.begin();
 		TASK_SET_IT				e = (*J).second.end();
-		for ( ; i != e; i++)
-			if (!m_tpALife->tpfGetTaskByID(*i)->m_dwTryCount)
+		for ( ; i != e; i++) {
+			CSE_ALifeTask		*l_tpTask = m_tpALife->tpfGetTaskByID(*i);
+			if (!l_tpTask->m_dwTryCount) {
+				l_tBestTaskID = l_tpTask->m_tTaskID;
 				break;
+			}
+			else
+				if (l_tpTask->m_dwTryCount < l_dwMinTryCount) {
+					l_dwMinTryCount = l_tpTask->m_dwTryCount;
+					l_tBestTaskID = l_tpTask->m_tTaskID;
+				}
+		}
 		
-		if (i != e) {
-			vfSetCurrentTask	(*i);
+		if (l_tBestTaskID != _TASK_ID(-1)) {
+			vfSetCurrentTask	(l_tBestTaskID);
 			break;
 		}
 	}
@@ -457,8 +468,7 @@ bool CSE_ALifeHumanAbstract::bfCanGetItem(CSE_ALifeInventoryItem *tpALifeInvento
 	if (tpALifeInventoryItem && ((m_fCumulativeItemMass + tpALifeInventoryItem->m_fMass > m_fMaxItemMass) || (m_iCumulativeItemVolume + tpALifeInventoryItem->m_iVolume > MAX_ITEM_VOLUME)))
 		return		(false);
 	
-	if (tpALifeInventoryItem)
-		m_tpALife->m_tpTempItemBuffer.resize(children.size() + 1);
+	m_tpALife->m_tpTempItemBuffer.resize(children.size() + (tpALifeInventoryItem ? 1 : 0));
 	
 	{
 		OBJECT_IT	i = children.begin();
@@ -670,9 +680,6 @@ int  CSE_ALifeHumanAbstract::ifChooseWeapon(EWeaponPriorityType tWeaponPriorityT
 			ITEM_P_IT				I = remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
 			m_tpALife->m_tpItemVector.erase(I,m_tpALife->m_tpItemVector.end());
 		}
-		else
-			remove_if			(children.begin(),children.end(),CRemoveNonAttachedItemsPredicate(m_tpALife));
-
 		return					(children.size() - l_dwCount);
 	}
 	return						(0);
@@ -695,8 +702,9 @@ int  CSE_ALifeHumanAbstract::ifChooseFood(OBJECT_VECTOR *tpObjectVector)
 			m_dwTotalMoney		-= (*I)->m_dwCost;
 			if (!tpObjectVector)
 				m_tpALife->vfAttachItem	(*this,*I,dynamic_cast<CSE_ALifeDynamicObject*>(*I)->m_tGraphID);
-			else
+			else {
 				children.push_back((*I)->ID);
+			}
 			l_dwCount++;
 			if (l_dwCount >= MAX_ITEM_FOOD_COUNT)
 				break;
@@ -708,8 +716,6 @@ int  CSE_ALifeHumanAbstract::ifChooseFood(OBJECT_VECTOR *tpObjectVector)
 			ITEM_P_IT			I = remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
 			m_tpALife->m_tpItemVector.erase(I,m_tpALife->m_tpItemVector.end());
 		}
-		else
-			remove_if(children.begin(),children.end(),CRemoveNonAttachedItemsPredicate(m_tpALife));
 	}
 	return					(l_dwCount);
 }
@@ -742,9 +748,6 @@ int  CSE_ALifeHumanAbstract::ifChooseMedikit(OBJECT_VECTOR *tpObjectVector)
 			ITEM_P_IT		I = remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
 			m_tpALife->m_tpItemVector.erase(I,m_tpALife->m_tpItemVector.end());
 		}
-		else
-			remove_if		(children.begin(),children.end(),CRemoveNonAttachedItemsPredicate(m_tpALife));
-
 	}
 	return					(l_dwCount);
 }

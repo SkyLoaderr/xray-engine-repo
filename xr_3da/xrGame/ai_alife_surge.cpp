@@ -566,30 +566,26 @@ void CSE_ALifeSimulator::vfUpdateArtefactOrders(CSE_ALifeTrader &tTrader)
 			ARTEFACT_ORDER_IT		i = (*I).second->m_tpOrderedArtefacts.begin();
 			ARTEFACT_ORDER_IT		e = (*I).second->m_tpOrderedArtefacts.end();
 			for ( ; i != e; i++) {
-				bool				bOk = false;
-				ARTEFACT_TRADER_ORDER_IT	ii = tTrader.m_tpOrderedArtefacts.begin();
-				ARTEFACT_TRADER_ORDER_IT	ee = tTrader.m_tpOrderedArtefacts.end();
-				for ( ; ii != ee; ii++)
-					if (!strcmp((*i).m_caSection,(*ii).m_caSection)) {
-						(*ii).m_dwTotalCount += (*i).m_dwCount;
-						SArtefactOrder	l_tArtefactOrder;
-						l_tArtefactOrder.m_dwCount	= (*i).m_dwCount;
-						l_tArtefactOrder.m_dwPrice	= (*i).m_dwPrice;
-						strcpy						(l_tArtefactOrder.m_caSection,(*I).first);
-						(*ii).m_tpOrders.push_back(l_tArtefactOrder);
-						bOk			= true;
-						break;
-					}
-				if (!bOk) {
-					SArtefactTraderOrder	l_tTraderArtefactOrder;
-					strcpy					(l_tTraderArtefactOrder.m_caSection,(*i).m_caSection);
-					l_tTraderArtefactOrder.m_dwTotalCount = (*i).m_dwCount;
+				ARTEFACT_TRADER_ORDER_PAIR_IT	ii = tTrader.m_tpOrderedArtefacts.find((*i).m_caSection);
+				if (ii != tTrader.m_tpOrderedArtefacts.end()) {
+					(*ii).second->m_dwTotalCount += (*i).m_dwCount;
+					SArtefactOrder	l_tArtefactOrder;
+					l_tArtefactOrder.m_dwCount	= (*i).m_dwCount;
+					l_tArtefactOrder.m_dwPrice	= (*i).m_dwPrice;
+					strcpy						(l_tArtefactOrder.m_caSection,(*I).first);
+					(*ii).second->m_tpOrders.push_back(l_tArtefactOrder);
+				}
+				else {
+					SArtefactTraderOrder	*l_tpTraderArtefactOrder = xr_new<SArtefactTraderOrder>();
+					strcpy					(l_tpTraderArtefactOrder->m_caSection,(*i).m_caSection);
+					l_tpTraderArtefactOrder->m_dwTotalCount = (*i).m_dwCount;
 					SArtefactOrder			l_tArtefactOrder;
 					l_tArtefactOrder.m_dwCount	= (*i).m_dwCount;
 					l_tArtefactOrder.m_dwPrice	= (*i).m_dwPrice;
 					strcpy						(l_tArtefactOrder.m_caSection,(*I).first);
-					l_tTraderArtefactOrder.m_tpOrders.push_back(l_tArtefactOrder);
-					tTrader.m_tpOrderedArtefacts.push_back(l_tTraderArtefactOrder);
+					l_tpTraderArtefactOrder->m_tpOrders.push_back(l_tArtefactOrder);
+					tTrader.m_tpOrderedArtefacts.insert(std::make_pair(l_tpTraderArtefactOrder->m_caSection,l_tpTraderArtefactOrder));
+					R_ASSERT				(tTrader.m_tpOrderedArtefacts.find(l_tpTraderArtefactOrder->m_caSection) != tTrader.m_tpOrderedArtefacts.end());
 					// updating cross traders table
 					TRADER_SET_PAIR_IT	J = m_tpCrossTraders.find((*i).m_caSection);
 					if (J == m_tpCrossTraders.end()) {
@@ -605,11 +601,10 @@ void CSE_ALifeSimulator::vfUpdateArtefactOrders(CSE_ALifeTrader &tTrader)
 		}
 	}
 	{
-		ARTEFACT_TRADER_ORDER_IT	I = tTrader.m_tpOrderedArtefacts.begin();
-		ARTEFACT_TRADER_ORDER_IT	E = tTrader.m_tpOrderedArtefacts.end();
+		ARTEFACT_TRADER_ORDER_PAIR_IT	I = tTrader.m_tpOrderedArtefacts.begin();
+		ARTEFACT_TRADER_ORDER_PAIR_IT	E = tTrader.m_tpOrderedArtefacts.end();
 		for ( ; I != E; I++)
-			std::sort				((*I).m_tpOrders.begin(),(*I).m_tpOrders.end(),CArtefactOrderPredicate());
-		std::sort					(tTrader.m_tpOrderedArtefacts.begin(),tTrader.m_tpOrderedArtefacts.end(),CArtefactPredicate());
+			std::sort				((*I).second->m_tpOrders.begin(),(*I).second->m_tpOrders.end(),CArtefactOrderPredicate());
 	}
 }
 

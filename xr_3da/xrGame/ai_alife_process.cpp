@@ -76,6 +76,8 @@ void CSE_ALifeSimulator::vfProcessUpdates()
 			(*I).second->Update				();
 
 			if (m_bUpdateChanged) {
+				if (m_tpScheduledObjects.empty())
+					break;
 				I							= m_tpScheduledObjects.find(m_tNextFirstProcessObjectID);
 				R_ASSERT2					(I != m_tpScheduledObjects.end(),"Cannot find specified object on the current level map");
 			}

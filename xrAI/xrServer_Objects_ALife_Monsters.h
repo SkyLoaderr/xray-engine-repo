@@ -43,7 +43,7 @@ SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeTrader,CSE_ALifeDynamicObjectVisual,CSE_ALifeTraderAbstract)
 	_ORGANIZATION_ID				m_tOrgID;
-	ARTEFACT_TRADER_ORDER_VECTOR	m_tpOrderedArtefacts;
+	ARTEFACT_TRADER_ORDER_MAP		m_tpOrderedArtefacts;
 	TRADER_SUPPLY_VECTOR			m_tpSupplies;
 
 
