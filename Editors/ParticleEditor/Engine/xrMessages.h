@@ -31,9 +31,8 @@ enum {
 	GE_DIE,						// 
 	GE_DESTROY,					// authorative client request for entity-destroy
 
+	GEG_SIGNAL,
 	GEG_PLAYER_READY,
-	GEG_ROUND_START,
-	GEG_ROUND_END
 };
 
 enum

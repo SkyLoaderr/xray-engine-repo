@@ -59,3 +59,7 @@ void	game_cl_GameState::net_import_update(NET_Packet& P)
 		CopyMemory	(&IP,&PS,sizeof(PS));
 	}
 }
+
+void	game_cl_GameState::net_signal		(NET_Packet& P)
+{
+}
