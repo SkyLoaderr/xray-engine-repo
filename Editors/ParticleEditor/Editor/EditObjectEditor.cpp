@@ -390,6 +390,7 @@ void CEditableObject::FillSummaryProps(LPCSTR pref, PropItemVec& items)
 }
 //---------------------------------------------------------------------------
 
+#ifdef _LEVEL_EDITOR
 #include "Scene.h"
 bool CEditableObject::GetSummaryInfo(SSceneSummary* inf)
 {
@@ -416,5 +417,5 @@ bool CEditableObject::GetSummaryInfo(SSceneSummary* inf)
         
 	return true;
 }
-
+#endif
 

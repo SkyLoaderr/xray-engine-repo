@@ -68,7 +68,8 @@
       Intermediate\ParticleGroup.obj Intermediate\R_Backend.obj 
       Intermediate\R_Backend_Runtime.obj Intermediate\R_DStreams.obj 
       Intermediate\r_constants_cache.obj Intermediate\R_Backend_DBG.obj 
-      Intermediate\r_shader.obj Intermediate\r_constants.obj"/>
+      Intermediate\r_shader.obj Intermediate\r_constants.obj 
+      Intermediate\Blender_detail_still.obj"/>
     <RESFILES value="ShaderEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -254,6 +255,7 @@
       <FILE FILENAME="Engine\R_Backend_DBG.cpp" FORMNAME="" UNITNAME="R_Backend_DBG" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\r_shader.cpp" FORMNAME="" UNITNAME="r_shader" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\r_constants.cpp" FORMNAME="" UNITNAME="r_constants" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_detail_still.cpp" FORMNAME="" UNITNAME="Blender_detail_still" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -264,8 +266,8 @@ IncludeVerInfo=1
 AutoIncBuild=1
 MajorVer=1
 MinorVer=0
-Release=1
-Build=303
+Release=2
+Build=56
 Debug=1
 PreRelease=0
 Special=0
@@ -277,7 +279,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.1.303
+FileVersion=1.0.2.56
 InternalName=
 LegalCopyright=
 LegalTrademarks=
