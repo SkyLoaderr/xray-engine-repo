@@ -25,14 +25,16 @@ public:
 
 	IC	void		Load(CKinematics *tpKinematics, LPCSTR caBaseName)
 	{
-		string256 S1, S2;
-		for (int i=0; ; i++) {
-			CMotionDef *tpMotionDef = tpKinematics->ID_Cycle_Safe(strconcat(S1,caBaseName,itoa(i,S2,10)));
-			if (tpMotionDef)
+		string256	S1, S2;
+		CMotionDef	*tpMotionDef;
+		for (int i=0; ; i++)
+			if (tpMotionDef = tpKinematics->ID_Cycle_Safe(strconcat(S1,caBaseName,itoa(i,S2,10))))
 				A.push_back(tpMotionDef);
 			else
-				break;
-		}
+				if (tpMotionDef = tpKinematics->ID_FX_Safe(strconcat(S1,caBaseName,itoa(i,S2,10))))
+					A.push_back(tpMotionDef);
+				else
+					break;
 	}
 };
 

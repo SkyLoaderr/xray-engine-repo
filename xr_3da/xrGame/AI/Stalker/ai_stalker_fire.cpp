@@ -94,10 +94,14 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 			m_tpaHurts[iIndex].dwTime = tHurt.dwTime;
 	}
 	
-	
-	bool bForward = true;
-	
-	PKinematics(pVisual)->PlayFX(m_tAnims.A[m_tBodyState].m_tGlobal.A[PKinematics(pVisual)->LL_GetInstance(element).get_param(1) + (bForward ? 0 : 1)],1.f);
+	float	yaw, pitch;
+	D.getHP(yaw,pitch);
+	CKinematics *tpKinematics = PKinematics(pVisual);
+#pragma todo("Forward - Back bone impulse direction has being determined incorrect!")
+	CMotionDef *tpMotionDef = m_tAnims.A[m_tBodyState].m_tGlobal.A[0].A[tpKinematics->LL_GetInstance(element).get_param(1) + (getAI().bfTooSmallAngle(r_torso_current.yaw,-yaw,PI_DIV_2) ? 0 : 1)];
+#pragma todo("LL_PlayFX change to PlayFX!")
+	tpKinematics->LL_PlayFX(element,tpMotionDef->motion,tpMotionDef->accrue,tpMotionDef->falloff,tpMotionDef->speed,amount/100.f);
+
 	// Play hit-sound
 	sound& S = m_tpSoundHit[::Random.randI(STALKER_SND_HIT_COUNT)];
 	if (!S.feedback && g_Alive())
