@@ -191,7 +191,12 @@ function action_follow:free ()
     if st ~= nil then
        xr_gulag.resetJob (st, self.object)
     else
-       xr_logic.try_switch_to_another_section (self.object, self.a)   
+       local actor = level.actor()
+       if actor then
+          if xr_logic.try_switch_to_another_section (self.object, self.a, actor) then
+              return
+          end
+       end
     end
 end
 --------------
@@ -261,7 +266,12 @@ function action_follow:move_callback (obj, action_type, index)
        if st ~= nil then
           xr_gulag.resetJob (st, self.object)
        else   
-          xr_logic.try_switch_to_another_section(self.object, self.a)
+          local actor = level.actor()
+          if actor then
+             if xr_logic.try_switch_to_another_section (self.object, self.a, actor) then
+                 return
+             end
+          end
        end
     end   
 end

@@ -61,7 +61,12 @@ function action_patrol:execute()
 	if xr_state.finish_state(self.object) == true then
 		self.move_mgr:update()
   	    if self.move_mgr:arrived_to_first_waypoint() then
-		   xr_logic.try_switch_to_another_section (self.object, self.a)
+                   local actor = level.actor()
+                   if actor then
+		         if xr_logic.try_switch_to_another_section (self.object, self.a, actor) then
+                                    return
+                         end
+                   end
 	    end
 	end
 end

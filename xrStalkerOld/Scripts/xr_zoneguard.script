@@ -183,13 +183,17 @@ function action_zoneguard_activity:execute()
 		else
 			self.move_mgr:update()
 			if self.move_mgr:arrived_to_first_waypoint() then
-				xr_logic.try_switch_to_another_section(self.object, self.st)
+				if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
+					return
+				end
 			end
 		end
 		return
 	end
 
-	xr_logic.try_switch_to_another_section(self.object, self.st)
+	if xr_logic.try_switch_to_another_section(self.object, self.st) then
+		return
+	end
 
 	if self.state ~= state_walking and
 			(not actor:alive() or not self.st.zone_warn_obj:active_zone_contact(actor:id())) then

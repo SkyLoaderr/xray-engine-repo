@@ -49,7 +49,7 @@ function pick_section_from_condlist(actor, npc, condlist)
 	Проверяет условия condlist, и если они успешны - ставит указанные infoportions и возвращает текст.
 	Если условия не выполняются - возвращает nil.
 
-function try_switch_to_another_section(npc, st)
+function try_switch_to_another_section(npc, st, actor)
 Предназчанение:
 	Используя настройки xr_logic из storage персонажа, пытается переключить его на другую схему, если
 	хоть одно из условий переключения сработало. Обычно вызывается из метода update класса персонажа.
@@ -474,13 +474,13 @@ function switch_to_section(npc, st, section)
 	return true
 end
 
-function try_switch_to_another_section(npc, st)
+function try_switch_to_another_section(npc, st, actor)
 	local l = st.logic
 	local npc_id = npc:id()
 
-	local actor = level.actor()
 	if not actor then
-		return false
+		utils.abort("try_switch_to_another_section(): error in implementation of scheme '%s': actor is nil", st.scheme)
+		return
 	end
 
 	if not l then

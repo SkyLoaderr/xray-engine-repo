@@ -137,7 +137,12 @@ function action_sleeper_activity:execute()
 	if self.state == state_walking then
 		self.move_mgr:update()
 		if self.move_mgr:arrived_to_first_waypoint() then
-			xr_logic.try_switch_to_another_section(self.object, self.st)
+			local actor = level.actor()
+			if actor then
+				if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
+					return
+				end
+			end
 		end
 		return
 	end
@@ -165,7 +170,12 @@ function action_sleeper_activity:execute()
 			end
 			xr_sound.sound_update(self.object, self.sound_s)
 		end
-		xr_logic.try_switch_to_another_section(self.object, self.st)
+		local actor = level.actor()
+		if actor then
+			if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
+				return
+			end
+		end
 	end
 end
 

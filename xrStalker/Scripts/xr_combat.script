@@ -8,7 +8,12 @@ function evaluator_check_combat:__init(name, storage) super (nil, name)
 end
 function evaluator_check_combat:evaluate ()
 	if self.a.enabled and self.object:best_enemy() then
-		xr_logic.try_switch_to_another_section(self.object, self.a)	
+		local actor = level.actor()
+		if actor then
+			if xr_logic.try_switch_to_another_section(self.object, self.a, actor) then
+				return
+			end
+		end
 	end
 
 	return true

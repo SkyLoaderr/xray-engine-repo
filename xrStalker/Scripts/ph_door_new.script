@@ -85,7 +85,14 @@ function action_door:update(delta)
 		end
 	end
 
-	xr_logic.try_switch_to_another_section(self.object, self.st)
+	local actor = level.actor()
+	if not actor then
+		return
+	end
+
+	if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
+		return
+	end
 	
 	--[[
 	if self.block then

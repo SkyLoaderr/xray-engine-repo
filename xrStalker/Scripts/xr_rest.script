@@ -248,8 +248,13 @@ function action_rest:execute ()
        self.st.signals["rest_end"] = true
        self.rest_end_signalled = true
     end   
-        
-    xr_logic.try_switch_to_another_section (self.object, self.st)
+
+    local actor = level.actor()
+    if actor then
+       if xr_logic.try_switch_to_another_section (self.object, self.st, actor) then
+          return
+       end
+    end
     self.object:set_item (object.activate, self.object:best_weapon ())
 end
 ----------------------
@@ -283,7 +288,12 @@ function action_no_food:execute ()
        self.st.signals["rest_end"] = true
        self.rest_end_signalled = true
     end   
-    xr_logic.try_switch_to_another_section (self.object, self.st)
+    local actor = level.actor()
+    if actor then
+       if xr_logic.try_switch_to_another_section (self.object, self.st, actor) then
+          return
+       end
+    end
 end
 ----------------------
 function action_no_food:finalize ()

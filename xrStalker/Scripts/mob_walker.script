@@ -98,7 +98,9 @@ function mob_walker:update(delta)
 		self:reset_scheme()
 	end
 	
-	xr_logic.try_switch_to_another_section(self.object, self.st)
+	if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
+		return
+	end
 
 	if self.state == state_standing then
 		if not self.object:action() then

@@ -152,7 +152,12 @@ function action_patrol:callback (mode, number)
               xr_gulag.resetJob (st, self.object)
               self:set_command (leader_free)
            else
-              xr_logic.try_switch_to_another_section (self.object, self.a)   
+              local actor = level.actor()
+              if actor then
+                 if xr_logic.try_switch_to_another_section (self.object, self.a, actor) then
+                    return
+                 end
+              end
            end
     elseif number == 2 then
            self.a.raid_process = true

@@ -320,7 +320,11 @@ function action_commander:execute()
         self.decision = true
     end
 
-    xr_logic.try_switch_to_another_section( self.object, self.a )
+    if the_actor then
+        if xr_logic.try_switch_to_another_section( self.object, self.a, the_actor ) then
+            return
+        end
+    end
 end
 
 -- анимации для стояния в домике

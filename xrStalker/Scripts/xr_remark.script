@@ -109,11 +109,17 @@ function action_remark_activity:step()
 	end
 
 	-- Try to switch to another scheme:
-	xr_logic.try_switch_to_another_section(self.object, self.st)
+	local actor = level.actor()
+	if not actor then
+		return
+	end
+	if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
+		return
+	end
 
 	if not self.target then
 		if self.st.target == "actor" then
-			self.target = level.actor()
+			self.target = actor
 		else
 			self.target = level.object(self.st.target)
 		end

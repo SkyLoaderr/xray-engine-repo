@@ -97,7 +97,7 @@ function mob_remark:update(delta)
 		return
 	end
 
-	if xr_logic.try_switch_to_another_section(self.object, self.st) then
+	if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
 		return
 	end
 

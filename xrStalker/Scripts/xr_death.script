@@ -13,7 +13,12 @@ function action_process_death:death_callback(victim, who)
     else
         printf("[%s] killed by [Unknown]", victim:name())
     end
-	xr_logic.try_switch_to_another_section(victim, self.a)
+	local actor = level.actor()
+	if actor then
+		if xr_logic.try_switch_to_another_section(victim, self.a, actor) then
+			return
+		end
+	end
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -26,5 +31,5 @@ end
 
 function set_death_checker(npc, ini, scheme, section)
 	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
-	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)
+	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 end

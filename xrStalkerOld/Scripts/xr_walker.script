@@ -60,7 +60,12 @@ function action_walker_activity:execute()
 	action_base.execute(self)
 	self.move_mgr:update()
 	if self.move_mgr:arrived_to_first_waypoint() then
-		xr_logic.try_switch_to_another_section(self.object, self.st)
+		local actor = level.actor()
+		if actor then
+			if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
+				return
+			end
+		end
 	end
 end
 
