@@ -507,7 +507,7 @@ function str_split (str)
 
     local strlen = string.len (str)
 
-    local parts = {{}, {}, {}}
+    local parts = {{}, {}, {}, {}}
     local cpart = 1
 
     for a = 1, strlen, 1 do
@@ -516,13 +516,15 @@ function str_split (str)
            table.insert (parts[cpart], char)
         else
            cpart = cpart + 1
-           if cpart > 3 then break end
+           if cpart > 4 then break end
         end
     end
 
     local str1 = string.char ()
     local str2 = string.char ()
     local str3 = string.char ()
+    local str4 = string.char ()
+    
     local ref = parts[1]
     for a = 1, table.getn (ref), 1 do
         str1 = string.format ("%s%c", str1, ref[a])
@@ -538,8 +540,13 @@ function str_split (str)
         str3 = string.format ("%s%c", str3, ref[a])
     end
 
-    print (str1.." : "..str2.." : "..str3)
-    return str1, (str2 + 1) - 1, (str3 + 1) - 1
+    ref = parts[4]
+    for a = 1, table.getn (ref), 1 do
+        str4 = string.format ("%s%c", str4, ref[a])
+    end
+
+    printf ("%s %s %d %d", str1, str2, str3, str4)
+    return str1, str2, (str2 + 1) - 1, (str3 + 1) - 1
 end
 
 
