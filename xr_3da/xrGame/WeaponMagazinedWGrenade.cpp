@@ -60,6 +60,7 @@ void __stdcall CWeaponFakeGrenade::ObjectContactCallback(bool& do_colide,dContac
 	CWeaponFakeGrenade *l_this = l_pUD1 ? dynamic_cast<CWeaponFakeGrenade*>(l_pUD1->ph_ref_object) : NULL;
 	if(!l_this) l_this = l_pUD2 ? dynamic_cast<CWeaponFakeGrenade*>(l_pUD2->ph_ref_object) : NULL;
 	if(!l_this) return;
+
 	CGameObject *l_pOwner = l_pUD1 ? dynamic_cast<CGameObject*>(l_pUD1->ph_ref_object) : NULL;
 	if(!l_pOwner || l_pOwner == (CGameObject*)l_this) l_pOwner = l_pUD2 ? dynamic_cast<CGameObject*>(l_pUD2->ph_ref_object) : NULL;
 	if(!l_pOwner || l_pOwner != l_this->m_pOwner) 
@@ -102,14 +103,13 @@ void CWeaponFakeGrenade::Load(LPCSTR section)
 	fWallmarkSize = pSettings->r_float(section,"wm_size");
 
 	m_mass = pSettings->r_float(section,"ph_mass");
-	//m_engine_f = pSettings->r_float(section,"engine_f");
-	//m_engine_u = pSettings->r_float(section,"engine_u");
 
 	string512 m_effectsSTR;
 	strcpy(m_effectsSTR, pSettings->r_string(section,"effects"));
 	char* l_effectsSTR = m_effectsSTR; R_ASSERT(l_effectsSTR);
 	m_effects.clear(); 
 	m_effects.push_back(l_effectsSTR);
+	
 	while(*l_effectsSTR) 
 	{
 		if(*l_effectsSTR == ',') 
@@ -120,18 +120,6 @@ void CWeaponFakeGrenade::Load(LPCSTR section)
 		}
 		l_effectsSTR++;
 	}
-
-	//strcpy(m_trailEffectsSTR, pSettings->r_string(section,"trail"));
-	//char* l_trailEffectsSTR = m_trailEffectsSTR; R_ASSERT(l_trailEffectsSTR);
-	//m_trailEffects.clear(); m_trailEffects.push_back(l_trailEffectsSTR);
-	//while(*l_trailEffectsSTR) {
-	//	if(*l_trailEffectsSTR == ',') {
-	//		*l_trailEffectsSTR = 0; l_trailEffectsSTR++;
-	//		while(*l_trailEffectsSTR == ' ' || *l_trailEffectsSTR == '\t') l_trailEffectsSTR++;
-	//		m_trailEffects.push_back(l_trailEffectsSTR);
-	//	}
-	//	l_trailEffectsSTR++;
-	//}
 
 	sscanf(pSettings->r_string(section,"light_color"), "%f,%f,%f", &m_lightColor.r, &m_lightColor.g, &m_lightColor.b); m_lightColor.a=1.f;
 	m_lightColor.normalize_rgb(); m_lightColor.mul_rgb(3.f);
@@ -274,26 +262,6 @@ void CWeaponFakeGrenade::Explode(const Fvector &pos, const Fvector &normal)
 
 
 	
-	/*CParticlesObject* pStaticPG; 
-	s32 l_c = (s32)m_effects.size();
-	Fmatrix l_m; 
-	l_m.identity(); 
-	l_m.c.set(pos);
-	l_m.j.set(normal); 
-	GetBasis(normal, l_m.k, l_m.i);
-	for(s32 i = 0; i < l_c; i++) 
-	{
-		pStaticPG = xr_new<CParticlesObject>(*m_effects[i],Sector());
-		pStaticPG->SetTransform(l_m);
-		pStaticPG->Play();
-	}
-	
-	m_curColor.set(m_lightColor);
-	m_pLight->set_color(m_curColor);
-	m_pLight->set_position(Position()); 
-	m_pLight->set_active(true);*/
-
-
 	setEnabled(true);
 	m_pOwner = NULL;
 }
@@ -433,8 +401,8 @@ void CWeaponFakeGrenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd,
 
 void CWeaponFakeGrenade::feel_touch_new(CObject* O) 
 {
-	CGameObject *l_pGO = dynamic_cast<CGameObject*>(O);
-	if(l_pGO && l_pGO != this) m_blasted.push_back(l_pGO);
+	CGameObject *pGameObject = dynamic_cast<CGameObject*>(O);
+	if(pGameObject && pGameObject != this) m_blasted.push_back(pGameObject);
 }
 
 void CWeaponFakeGrenade::net_Destroy() 
@@ -654,7 +622,7 @@ BOOL CWeaponMagazinedWGrenade::net_Spawn(LPVOID DC)
 	CKinematics* V = PKinematics(m_pHUD->Visual()); R_ASSERT(V);
 	V->LL_GetBoneInstance(V->LL_BoneID("grenade_0")).set_callback(GrenadeCallback, this);
 
-	CSE_ALifeObject *l_tpALifeObject = (CSE_ALifeObject*)(DC);
+/*	CSE_ALifeObject *l_tpALifeObject = (CSE_ALifeObject*)(DC);
 	m_bHideGrenade = !iAmmoElapsed;
 	
 	if(iAmmoElapsed && !m_pGrenade) 
@@ -681,6 +649,7 @@ BOOL CWeaponMagazinedWGrenade::net_Spawn(LPVOID DC)
 		// Destroy
 		F_entity_Destroy	(D);
 	}
+*/
 
 	bPending = false;
 
@@ -913,31 +882,10 @@ void CWeaponMagazinedWGrenade::ReloadMagazine()
 	inherited::ReloadMagazine();
 	
 	//перезарядка подствольного гранатомета
-	if(iAmmoElapsed && !m_pGrenade) 
+	if(iAmmoElapsed && !m_pGrenade && m_bGrenadeMode) 
 	{
-		CSE_Abstract*		D	= F_entity_Create("wpn_fake_missile");
-		R_ASSERT			(D);
-		
-//		CSE_ALifeDynamicObject				*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
-//		R_ASSERT							(l_tpALifeDynamicObject);
-//		l_tpALifeDynamicObject->m_tNodeID	= AI_NodeID;
-		
-		// Fill
-		strcpy				(D->s_name,"wpn_fake_missile");
-		strcpy				(D->s_name_replace,"");
-		D->s_gameid			=	u8(GameID());
-		D->s_RP				=	0xff;
-		D->ID				=	0xffff;
-		D->ID_Parent		=	(u16)ID();
-		D->ID_Phantom		=	0xffff;
-		D->s_flags.set		(M_SPAWN_OBJECT_LOCAL);
-		D->RespawnTime		=	0;
-		// Send
-		NET_Packet			P;
-		D->Spawn_Write		(P,TRUE);
-		Level().Send		(P,net_flags(TRUE));
-		// Destroy
-		F_entity_Destroy	(D);
+		ref_str fake_grenade_name = pSettings->r_string(m_pAmmo->cNameSect(), "fake_grenade_name");
+		SpawFakeGrenade(*fake_grenade_name);
 	}
 }
 
@@ -1019,6 +967,7 @@ bool CWeaponMagazinedWGrenade::Attach(PIItem pIItem)
 		P.w_u16(u16(pIItem->ID()));
 		u_EventSend(P);
 
+		UpdateAddonsVisibility();
 		return true;
 	}
 	else
@@ -1027,12 +976,41 @@ bool CWeaponMagazinedWGrenade::Attach(PIItem pIItem)
 bool CWeaponMagazinedWGrenade::Detach(const char* item_section_name)
 {
 	if( m_eGrenadeLauncherStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
-	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher) != 0)
+	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher) != 0 &&
+	   !strcmp(*m_sGrenadeLauncherName, item_section_name))
 	{
 		m_flagsAddOnState &= ~CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher;
+		UpdateAddonsVisibility();
 		return CInventoryItem::Detach(item_section_name);
 	}
 	else
 		return inherited::Detach(item_section_name);;
 }
 
+
+void CWeaponMagazinedWGrenade::SpawFakeGrenade(const char* grenade_section_name)
+{
+		CSE_Abstract*		D	= F_entity_Create(grenade_section_name);
+		R_ASSERT			(D);
+	
+		/*CSE_ALifeDynamicObject		*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
+		R_ASSERT					(l_tpALifeDynamicObject);
+		l_tpALifeDynamicObject->m_tNodeID	= l_tpALifeObject->m_tNodeID;*/
+		
+		// Fill
+		strcpy				(D->s_name, grenade_section_name);
+		strcpy				(D->s_name_replace,"");
+		D->s_gameid			=	u8(GameID());
+		D->s_RP				=	0xff;
+		D->ID				=	0xffff;
+		D->ID_Parent		=	(u16)ID();
+		D->ID_Phantom		=	0xffff;
+		D->s_flags.set		(M_SPAWN_OBJECT_LOCAL);
+		D->RespawnTime		=	0;
+		// Send
+		NET_Packet			P;
+		D->Spawn_Write		(P,TRUE);
+		Level().Send		(P,net_flags(TRUE));
+		// Destroy
+		F_entity_Destroy	(D);
+}

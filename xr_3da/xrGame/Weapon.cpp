@@ -416,17 +416,31 @@ void CWeapon::Load		(LPCSTR section)
 	m_fMaxRadius		= pSettings->r_float		(section,"max_radius");
 
 
+	// информация о возможных апгрейдах и их визуализации в инвентаре
 	m_eScopeStatus			 = (CSE_ALifeItemWeapon::EAddonStatus)pSettings->r_s32(section,"scope_status");
 	m_eSilencerStatus		 = (CSE_ALifeItemWeapon::EAddonStatus)pSettings->r_s32(section,"silencer_status");
 	m_eGrenadeLauncherStatus = (CSE_ALifeItemWeapon::EAddonStatus)pSettings->r_s32(section,"grenade_launcher_status");
 
 	
 	if(m_eScopeStatus == CSE_ALifeItemWeapon::eAddondAttachable)
-						m_sScopeName = pSettings->r_string(section,"scope_name");
+	{
+		m_sScopeName = pSettings->r_string(section,"scope_name");
+		m_iScopeX = pSettings->r_s32(section,"scope_x");
+		m_iScopeY = pSettings->r_s32(section,"scope_y");
+	}
 	if(m_eSilencerStatus == CSE_ALifeItemWeapon::eAddondAttachable)
-						m_sSilencerName = pSettings->r_string(section,"silencer_name");
+	{
+		m_sSilencerName = pSettings->r_string(section,"silencer_name");
+		m_iSilencerX = pSettings->r_s32(section,"silencer_x");
+		m_iSilencerY = pSettings->r_s32(section,"silencer_y");
+
+	}
 	if(m_eGrenadeLauncherStatus == CSE_ALifeItemWeapon::eAddondAttachable)
-						m_sGrenadeLauncherName = pSettings->r_string(section,"grenade_launcher_name");
+	{
+		m_sGrenadeLauncherName = pSettings->r_string(section,"grenade_launcher_name");
+		m_iGrenadeLauncherX = pSettings->r_s32(section,"grenade_launcher_x");
+		m_iGrenadeLauncherY = pSettings->r_s32(section,"grenade_launcher_y");
+	}
 }
 
 BOOL CWeapon::net_Spawn		(LPVOID DC)
@@ -480,6 +494,8 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 		m_pPhysicsShell->mDesired.identity	();
 		m_pPhysicsShell->fDesiredStrength	= 0.f;
 	}
+
+	UpdateAddonsVisibility();
 
 	return bResult;
 }
@@ -1168,7 +1184,7 @@ bool CWeapon::Detach(const char* item_section_name)
 	return inherited::Detach(item_section_name);
 }
 
-bool CWeapon::IsGreandeLauncherAttached()
+bool CWeapon::IsGrenadeLauncherAttached()
 {
 	return (m_eGrenadeLauncherStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
 			(m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher) != 0);
@@ -1183,4 +1199,63 @@ bool CWeapon::IsSilencerAttached()
 {
 	return (m_eSilencerStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
 			(m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) != 0);
+}
+
+bool CWeapon::GrenadeLauncherAttachable()
+{
+	return (m_eGrenadeLauncherStatus == CSE_ALifeItemWeapon::eAddondAttachable);
+}
+bool CWeapon::ScopeAttachable()
+{
+	return (m_eScopeStatus == CSE_ALifeItemWeapon::eAddondAttachable);
+}
+bool CWeapon::SilencerAttachable()
+{
+	return (m_eSilencerStatus == CSE_ALifeItemWeapon::eAddondAttachable);
+}
+
+void CWeapon::UpdateAddonsVisibility()
+{
+	CKinematics* pHudVisual = PKinematics(m_pHUD->Visual()); R_ASSERT(pHudVisual);
+	CKinematics* pWeaponVisual = PKinematics(Visual()); R_ASSERT(pWeaponVisual);
+	
+	if(ScopeAttachable())
+	{
+		if(IsScopeAttached())
+		{
+			pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_scope"),TRUE,TRUE);
+			pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID("wpn_scope"),TRUE,TRUE);
+		}
+		else
+		{
+			pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_scope"),FALSE,TRUE);
+			pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID("wpn_scope"),FALSE,TRUE);
+		}
+	}
+	if(SilencerAttachable())
+	{
+		if(IsSilencerAttached())
+		{
+			pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_silencer"),TRUE,TRUE);
+			pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID("wpn_silencer"),TRUE,TRUE);
+		}
+		else
+		{
+			pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_silencer"),FALSE,TRUE);
+			pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID("wpn_silencer"),FALSE,TRUE);
+		}
+	}
+	if(GrenadeLauncherAttachable())
+	{
+		if(IsGrenadeLauncherAttached())
+		{
+			//pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_launcher"),TRUE,TRUE);
+			pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID("wpn_launcher"),TRUE,TRUE);
+		}
+		else
+		{
+			//pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_launcher"),FALSE,TRUE);
+			pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID("wpn_launcher"),FALSE,TRUE);
+		}
+	}
 }

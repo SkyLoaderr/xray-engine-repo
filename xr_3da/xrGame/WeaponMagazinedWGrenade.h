@@ -127,4 +127,7 @@ public:
 
 	Fvector* m_pGrenadePoint;
 	CWeaponFakeGrenade* m_pGrenade;
+
+protected:
+	void SpawFakeGrenade(const char*  grenade_section_name);
 };

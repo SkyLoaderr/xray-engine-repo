@@ -742,6 +742,9 @@ bool CWeaponMagazined::Attach(PIItem pIItem)
 		u_EventGen(P,GE_DESTROY,pIItem->ID());
 		P.w_u16(u16(pIItem->ID()));
 		u_EventSend(P);
+
+		UpdateAddonsVisibility();
+
 		return true;
 	}
 	else
@@ -752,15 +755,21 @@ bool CWeaponMagazined::Attach(PIItem pIItem)
 bool CWeaponMagazined::Detach(const char* item_section_name)
 {
 	if(m_eScopeStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
-	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope) != 0)
+	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope) != 0 &&
+	   !strcmp(*m_sScopeName, item_section_name))
 	{
 		m_flagsAddOnState &= ~CSE_ALifeItemWeapon::eWeaponAddonScope;
+		UpdateAddonsVisibility();
+
 		return CInventoryItem::Detach(item_section_name);
 	}
 	else if(m_eSilencerStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
-	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) != 0)
+	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) != 0 &&
+	   !strcmp(*m_sSilencerName, item_section_name))
 	{
 		m_flagsAddOnState &= ~CSE_ALifeItemWeapon::eWeaponAddonSilencer;
+
+		UpdateAddonsVisibility();
 		return CInventoryItem::Detach(item_section_name);
 	}
 	else

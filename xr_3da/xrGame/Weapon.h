@@ -130,9 +130,15 @@ protected:
 	CSE_ALifeItemWeapon::EAddonStatus			m_eSilencerStatus;
 	CSE_ALifeItemWeapon::EAddonStatus			m_eGrenadeLauncherStatus;
 
+	//назваания секций подключаемых аддонов
 	ref_str		m_sScopeName;
 	ref_str		m_sSilencerName;
 	ref_str		m_sGrenadeLauncherName;
+
+	//смещение иконов апгрейдов в инвентаре
+	int	m_iScopeX, m_iScopeY;
+	int	m_iSilencerX, m_iSilencerY;
+	int	m_iGrenadeLauncherX, m_iGrenadeLauncherY;
 
 	//состояние подключенных аддонов
 	u8			m_flagsAddOnState;
@@ -274,9 +280,26 @@ public:
 	virtual bool Attach(PIItem pIItem);
 	virtual bool Detach(const char* item_section_name);
 	
-	virtual bool IsGreandeLauncherAttached();
+	virtual bool IsGrenadeLauncherAttached();
 	virtual bool IsScopeAttached();
 	virtual bool IsSilencerAttached();
+
+	virtual bool GrenadeLauncherAttachable();
+	virtual bool ScopeAttachable();
+	virtual bool SilencerAttachable();
+
+	//обновление видимости для косточек аддонов
+	virtual void UpdateAddonsVisibility();
+
+
+	//для отоброажения иконок апгрейдов в интерфейсе
+	int	GetScopeX() {return m_iScopeX;}
+	int	GetScopeY() {return m_iScopeY;}
+	int	GetSilencerX() {return m_iSilencerX;}
+	int	GetSilencerY() {return m_iSilencerY;}
+	int	GetGrenadeLauncherX() {return m_iGrenadeLauncherX;}
+	int	GetGrenadeLauncherY() {return m_iGrenadeLauncherY;}
+
 	virtual ref_str GetGrenadeLauncherName() {return m_sGrenadeLauncherName;}
 	virtual ref_str GetScopeName() {return  m_sScopeName;}
 	virtual ref_str GetSilencerName() {return m_sSilencerName;}
