@@ -319,10 +319,10 @@ void CBuild::MergeLM()
 					pDEFL->Capture		(SEL[iRealIndex],Offset.x,Offset.y,Place.SizeX(),Place.SizeY(),bRotated);
 
 					// Destroy old deflector
-					vecDeflIt	OLD = find(g_deflectors.begin(),g_deflectors.end(),SEL[iRealIndex]);
-					VERIFY		(OLD!=g_deflectors.end());
+					vecDeflIt		OLD = find(g_deflectors.begin(),g_deflectors.end(),SEL[iRealIndex]);
+					VERIFY			(OLD!=g_deflectors.end());
 					g_deflectors.erase(OLD);
-					delete SEL[iRealIndex];
+					delete			SEL[iRealIndex];
 				}
 				pDEFL->Save			();
 				deflNew.push_back	(pDEFL);
