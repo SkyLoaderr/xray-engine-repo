@@ -375,18 +375,14 @@ public:
 	}
 };
 
-typedef void (__stdcall *EFFECTOR_CALLBACK)(SPPInfo&);
-
 class CLuaEffector : public CEffectorPP {
 public:
 	typedef CEffectorPP inherited;
 	EEffectorPPType		m_tEffectorType;
-	EFFECTOR_CALLBACK	m_fpCallBack;
 
 					CLuaEffector				(int		iType, float time) : CEffectorPP(EEffectorPPType(iType),time)
 	{
 		m_tEffectorType		= EEffectorPPType(iType);
-		m_fpCallBack		= 0;
 	}
 
 	virtual			~CLuaEffector				()
@@ -395,9 +391,7 @@ public:
 
 	virtual	BOOL	Process						(SPPInfo	&pp)
 	{
-		inherited::Process(pp);
-		if (m_fpCallBack)
-			m_fpCallBack(pp);
+		return		(inherited::Process(pp));
 	}
 
 	virtual	void	Add							()
