@@ -88,7 +88,7 @@
 				EnableFiberSafeOptimizations="TRUE"
 				OptimizeForProcessor="3"
 				AdditionalIncludeDirectories="include\"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;XRLUA_EXPORTS;LUABIND_BUILDING;LUABIND_NO_ERROR_CHECKING"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;XRLUA_EXPORTS;LUABIND_BUILDING"
 				StringPooling="TRUE"
 				ExceptionHandling="FALSE"
 				RuntimeLibrary="2"
