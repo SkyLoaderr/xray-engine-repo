@@ -237,3 +237,25 @@ void game_sv_GameState::assign_RP				(xrServerEntity* E)
 	E->o_Position.set	(r.P);
 	E->o_Angle.set		(r.A);
 }
+
+xrServerEntity*		game_sv_GameState::spawn_begin				(LPCSTR N)
+{
+	xrServerEntity*	A	= F_entity_Create(N);	R_ASSERT(A);										// create SE
+	strcpy				(A->s_name,N);																// ltx-def
+	A->s_gameid			=	u8(type);																// game-type
+	A->s_RP				=	0xFE;																	// use supplied
+	A->ID				=	0xffff;																	// server must generate ID
+	A->ID_Parent		=	0xffff;																	// no-parent
+	A->ID_Phantom		=	0xffff;																	// no-phantom
+	A->RespawnTime		=	0;																		// no-respawn
+	return A;
+}
+void				game_sv_GameState::spawn_end				(xrServerEntity* E, u32 id)
+{
+	NET_Packet						P;
+	u16								skip_header;
+	E->Spawn_Write					(P,TRUE);
+	P.r_begin						(skip_header);
+	Level().Server->Process_spawn	(P,id);
+	F_entity_Destroy	(E);
+}

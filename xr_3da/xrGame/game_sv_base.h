@@ -33,9 +33,9 @@ public:
 	// Signals
 	virtual		void				switch_Phase			(u32 new_phase);
 	virtual		void				signal_Syncronize		();
-	virtual		void				signal_Destroy			()	{};
-	virtual		void				signal_Create			();
 	virtual		void				assign_RP				(xrServerEntity* E);
+	virtual		xrServerEntity*		spawn_begin				(LPCSTR N);
+	virtual		void				spawn_end				(xrServerEntity* E, u32 id);
 
 	// Utilities
 	virtual		u32					get_alive_count			(u32 team);
