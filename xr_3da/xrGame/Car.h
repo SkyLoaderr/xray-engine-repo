@@ -6,7 +6,7 @@ class CCar :				public CEntity
 private:
 	CCameraBase*			camera;
 
-	void					cam_Update			(float dt, BOOL bZoom);
+	void					cam_Update			(float dt);
 
 	bool					HUDview				( ) { return IsFocused(); }
 public:

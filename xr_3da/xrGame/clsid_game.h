@@ -11,6 +11,8 @@
 #define CLSID_AI_ZOMBIE			MK_CLSID('A','I','_','Z','O','M','B','Y')
 #define CLSID_AI_CROW			MK_CLSID('A','I','_','C','R','O','W',' ')
 
+#define CLSID_CAR_NIVA			MK_CLSID('C','_','N','I','V','A',' ',' ')
+
 #define CLSID_EVENT				MK_CLSID('E','V','E','N','T',' ',' ',' ')
 #define CLSID_OBJECT_FLYER		MK_CLSID('O','_','F','L','Y','E','R',' ')
 #define CLSID_OBJECT_DOOR		MK_CLSID('O','_','D','O','O','R',' ',' ')
