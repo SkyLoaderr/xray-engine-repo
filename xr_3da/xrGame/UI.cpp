@@ -110,16 +110,6 @@ void CUI::OnFrame()
 
 bool CUI::Render()
 {
-	CEntity* m_Actor = smart_cast<CEntity*>(Level().CurrentEntity());
-	if (m_Actor)
-	{
-		//Draw main window and its children
-		if(m_bShowIndicators)
-			UIMainIngameWnd.Draw();
-		//render cursor only when it visible
-		if(UICursor.IsVisible())
-            UICursor.Render();
-	}
 	// out GAME-style depend information
 	xr_vector<CUIWindow*>::iterator it = m_dialogsToRender.begin();
 	for(; it!=m_dialogsToRender.end();++it)
@@ -127,6 +117,20 @@ bool CUI::Render()
 			(*it)->Draw();
 
 	if (pUIGame) pUIGame->Render	();
+
+	//----------
+	CEntity* m_Actor = smart_cast<CEntity*>(Level().CurrentEntity());
+	if (m_Actor)
+	{
+		//Draw main window and its children
+		if(m_bShowIndicators)
+			UIMainIngameWnd.Draw();
+		else
+			UIMainIngameWnd.DrawPdaMessages();
+		//render cursor only when it visible
+		if(UICursor.IsVisible())
+            UICursor.Render();
+	}	
 
 	return false;
 }

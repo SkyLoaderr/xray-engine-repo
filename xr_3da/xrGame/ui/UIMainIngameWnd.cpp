@@ -355,7 +355,10 @@ void CUIMainIngameWnd::Draw()
 	}
 	else
 	{
-		UIPdaMsgListWnd.Draw();
+		// there was
+//		UIPdaMsgListWnd.Draw();
+		// but we decided to draw it always and always on top!
+		// so you can find it on the bottom of function
 	}
 
 	// Render claws
@@ -368,6 +371,13 @@ void CUIMainIngameWnd::Draw()
 		m_ClawsTexture.Render	(PI_DIV_3);
 		m_ClawsTexture.SetScale	(0.5f);
 	}
+
+	UIPdaMsgListWnd.Draw();
+}
+
+void CUIMainIngameWnd::DrawPdaMessages(){
+	FadeUpdate(&UIPdaMsgListWnd);
+	UIPdaMsgListWnd.Draw();
 }
 
 //////////////////////////////////////////////////////////////////////////
