@@ -351,12 +351,14 @@ bool CInventory::Action(s32 cmd, u32 flags) {
 
 void CInventory::Update(u32 deltaT) {
 	if((m_nextActiveSlot < m_slots.size()) && (m_activeSlot == 0xffffffff || !m_slots[m_activeSlot].m_pIItem->getVisible())) {
-		if(m_slots[m_nextActiveSlot].m_pIItem->Activate()) {
-			m_activeSlot = m_nextActiveSlot;
-			m_nextActiveSlot = 0xffffffff;
-		} else if(!m_slots[m_activeSlot].m_pIItem->Activate()) {
-			m_activeSlot = m_nextActiveSlot = 0xffffffff;
-		}
+		if(m_slots[m_nextActiveSlot].m_pIItem) {
+			if(m_slots[m_nextActiveSlot].m_pIItem->Activate()) {
+				m_activeSlot = m_nextActiveSlot;
+				m_nextActiveSlot = 0xffffffff;
+			} else if(!m_slots[m_activeSlot].m_pIItem->Activate()) {
+				m_activeSlot = m_nextActiveSlot = 0xffffffff;
+			}
+		} else m_activeSlot = m_nextActiveSlot = 0xffffffff;
 	}
 	// Смотрим, что тут можно подобрать
 	CActor *l_pA = dynamic_cast<CActor*>(m_pOwner);
