@@ -36,11 +36,8 @@ void __stdcall CProjector::BoneCallbackX(CBoneInstance *B)
 {
 	CProjector	*P = static_cast<CProjector*>(B->Callback_Param);
 
-	float delta_yaw = angle_difference(P->_start.yaw,P->_current.yaw);
-	if (angle_normalize_signed(P->_start.yaw - P->_current.yaw) > 0) delta_yaw = -delta_yaw;
-
 	Fmatrix M;
-	M.setXYZi (delta_yaw,0.0f, 0.0f);
+	M.setXYZi (-P->_current.pitch,0.0f, 0.0f);
 	B->mTransform.mulB(M);
 }
 
@@ -48,8 +45,11 @@ void __stdcall CProjector::BoneCallbackY(CBoneInstance *B)
 {
 	CProjector	*P = static_cast<CProjector*>(B->Callback_Param);
 
+	float delta_yaw = angle_difference(P->_start.yaw,P->_current.yaw);
+	if (angle_normalize_signed(P->_start.yaw - P->_current.yaw) > 0) delta_yaw = -delta_yaw;
+
 	Fmatrix M;
-	M.setXYZi (0.0f,P->_current.pitch, 0.0f);
+	M.setXYZi (0.0, delta_yaw, 0.0f);
 	B->mTransform.mulB(M);
 }
 
@@ -94,8 +94,7 @@ BOOL CProjector::net_Spawn(CSE_Abstract* DC)
 	CBoneInstance& b_y = smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(bone_y.id);	
 	b_y.set_callback(BoneCallbackY,this);
 	
-	Fvector dir = Direction();
-	dir.invert().getHP(_current.yaw,_current.pitch);
+	Direction().getHP(_current.yaw,_current.pitch);
 	_start = _target = _current;
 
 	//////////////////////////////////////////////////////////////////////////

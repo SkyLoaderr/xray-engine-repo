@@ -324,7 +324,7 @@ void CScriptEntity::ProcessScripts()
 
 bool CScriptEntity::bfAssignWatch(CScriptEntityAction *tpEntityAction)
 {
-	return			(true);
+	return (GetCurrentAction() && !GetCurrentAction()->m_tWatchAction.m_bCompleted);
 }
 
 bool CScriptEntity::bfAssignMonsterAction(CScriptEntityAction *tpEntityAction)
