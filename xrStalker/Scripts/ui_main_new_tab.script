@@ -16,5 +16,6 @@ function ui_main_new_tab:__finalize()
 end
 
 function UI_main_new_tab:InitControls()
+	ui_main_base_tab.main_base_tab.InitControls(self, x, y)
 end
 

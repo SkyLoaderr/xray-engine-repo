@@ -17,7 +17,7 @@ function main_main_tab:__finalize()
 	
 end
 
-function main_main_tab:InitControls(x, y)
+function main_main_tab:InitControls(x, y, handler)
 	ui_main_base_tab.main_base_tab.InitControls(self, x, y)
 	
 	local btn_new_rect    = {x = self.btn.x,
@@ -62,7 +62,7 @@ function main_main_tab:InitControls(x, y)
 	btn:SetFont(self.btn.font)
 	btn:SetTextAlign(CGameFont.alCenter)
 	btn:SetTextY(self.btn.indent)
-	self:Register(btn)
+	handler:Register(btn)
 	self:AttachChild(btn)
 --	tab:AddItem(btn)
 		
@@ -76,7 +76,7 @@ function main_main_tab:InitControls(x, y)
 	btn:SetFont(self.btn.font)
 	btn:SetTextAlign(CGameFont.alCenter)
 	btn:SetTextY(self.btn.indent)
-	self:Register(btn)
+	handler:Register(btn)
 	self:AttachChild(btn)	
 --	tab:AddItem(btn)
 	
@@ -91,7 +91,7 @@ function main_main_tab:InitControls(x, y)
 	btn:SetFont(self.btn.font)
 	btn:SetTextAlign(CGameFont.alCenter)
 	btn:SetTextY(self.btn.indent)
-	self:Register(btn)
+	handler:Register(btn)
 	self:AttachChild(btn)
 --	tab:AddItem(btn)
 	
