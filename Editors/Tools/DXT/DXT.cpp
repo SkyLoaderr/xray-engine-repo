@@ -150,7 +150,7 @@ bool DXTCompress(LPCSTR out_name, BYTE* raw_data, DWORD w, DWORD h, DWORD pitch,
     nvOpt.bAlphaBorder		= !!(fmt->flag&STextureParams::flAlphaBorder);
     nvOpt.bBorder			= !!(fmt->flag&STextureParams::flColorBorder);
     nvOpt.BorderColor.u		= fmt->border_color;
-    nvOpt.bFade				= !!(fmt->flag&STextureParams::flFadeToColor);
+    nvOpt.bFadeColor		= !!(fmt->flag&STextureParams::flFadeToColor);
     nvOpt.bFadeAlpha		= FALSE;//fmt->flag.bFadeToAlpha;
     nvOpt.FadeToColor.u		= 0;//fmt->fade_color;
     nvOpt.FadeAmount		= 0;//fmt->fade_amount;

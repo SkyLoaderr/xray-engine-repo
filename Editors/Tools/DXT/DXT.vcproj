@@ -207,9 +207,6 @@
 		<File
 			RelativePath=".\lzhuf.h">
 		</File>
-		<File
-			RelativePath=".\nvDXTlib.lib">
-		</File>
 	</Files>
 	<Globals>
 	</Globals>
