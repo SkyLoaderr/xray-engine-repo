@@ -90,9 +90,14 @@ struct ENGINE_API		Shader
 {
 public:
 	DWORD					dwReference;
-	ShaderElement*			lod0;
-	ShaderElement*			lod1;
-	ShaderElement*			lighting;
+	union {
+		struct {
+			ShaderElement*		lod0;
+			ShaderElement*		lod1;
+			ShaderElement*		lighting;
+		};
+		ShaderElement*		E	[3];
+	};
 	
 	IC BOOL					equal	(Shader& S)
 	{
