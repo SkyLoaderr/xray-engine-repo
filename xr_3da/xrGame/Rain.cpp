@@ -71,8 +71,9 @@ void	CEffect_Rain::OnDeviceCreate	()
 
 	char name[256];
 	strconcat			(name,Path.Meshes,"dm\\rain.dm");
-	CFileStream	 fs		(name);
-	DM_Drop.Load		(&fs);
+	CStream*	 fs		= Engine.FS.Open(name);
+	DM_Drop.Load		(fs);
+	Engine.FS.Close		(fs);
 
 	SH_Rain				= Device.Shader.Create	("effects\\rain","fx\\rain");
 	VS_Rain				= Device.Streams.Create	(FVF::F_LIT,desired_items*4);
