@@ -28,10 +28,7 @@ function is_opp_wounded(first_speaker, second_speaker, dialog_id)
 		return false
 	end
 
-	return	xr_wounded.is_wounded(second_speaker, 0.2) and
-			((second_speaker:profile_name() ~= "stalker_escape_tutorial_wounded" or
-			 first_speaker:has_info("tutorial_end") == true) or
-			 dialog_id == "tutorial_wounded_give_medkit")
+	return	xr_wounded.is_wounded(second_speaker, 0.2)
 end
 function is_not_wounded(first_speaker, second_speaker)
 	return not this.is_wounded(first_speaker, second_speaker)
@@ -70,6 +67,19 @@ function dialog_allowed(object, victim, id)
 		end
 	end
 	return false
+end
+function dialog_not_disable(object, victim, id)
+	if id ~= nil then
+		printf("*DIALOGS*: dialog_disable:%s", id)
+	else
+		printf("*DIALOGS*: dialog_disable:nil")
+	end
+	if xr_motivator.storage[victim:id()].actor_disable ~= nil then
+		for k,v in xr_motivator.storage[victim:id()].actor_disable do
+			if v == id then return false end
+		end
+	end
+	return true
 end
 
 

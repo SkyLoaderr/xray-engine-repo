@@ -508,4 +508,13 @@ function set_actor_dialogs(npc, ini, name, dialog_section)
 	else
 		printf("*ACTOR_DIALOGS*: actor_dialogs=nil")
 	end
+	
+	local actor_disable = utils.cfg_get_string(ini, dialog_section, "disable", npc, false, "")
+	if actor_disable ~= nil then
+		printf("*ACTOR_DIALOGS*: actor_disable=%s", actor_disable)
+		--' Создаем в массиве запись где будут храниться считанные диалоги.
+		xr_motivator.storage[npc:id()].actor_disable = parse_names(actor_disable)
+	else
+		printf("*ACTOR_DIALOGS*: actor_disable=nil")
+	end
 end

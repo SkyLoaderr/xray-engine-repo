@@ -666,6 +666,7 @@
     </dialog>
     <dialog id="tutorial_wounded_give_medkit">
         <precondition>dialogs.is_opp_wounded</precondition>
+        <precondition>dialogs.dialog_allowed</precondition>
         <dont_has_info>tutorial_end</dont_has_info>
         <phrase_list>
             <phrase id="41">
