@@ -57,6 +57,10 @@ class "eva_state_mgr_weapon_strapped_now" (property_evaluator)
 function eva_state_mgr_weapon_strapped_now:__init(name) super (nil, name)
 end
 function eva_state_mgr_weapon_strapped_now:evaluate()
+	if not isWeapon(self.object:best_weapon()) then
+		return true
+	end
+
 	return self.object:weapon_strapped()
 end
 
