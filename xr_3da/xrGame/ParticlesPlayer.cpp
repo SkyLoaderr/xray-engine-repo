@@ -64,8 +64,6 @@ void CParticlesPlayer::LoadParticles(CKinematics* K)
 	CInifile* ini		= K->LL_UserData();
 	if(ini&&ini->section_exist("particle_bones")){
 		bone_mask		= 0;
-		
-		m_Bones.clear	();
 		CInifile::Sect& data		= ini->r_section("particle_bones");
 		for (CInifile::SectIt I=data.begin(); I!=data.end(); I++){
 			CInifile::Item& item	= *I;
