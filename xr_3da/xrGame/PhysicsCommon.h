@@ -15,6 +15,7 @@ extern const dReal  world_cfm;
 extern const dReal  world_erp;
 extern const dReal  world_spring;
 extern const dReal  world_damping;
+extern		 float	phTimefactor;
 #define ERP(k_p,k_d)		((fixed_step*(k_p)) / (((fixed_step)*(k_p)) + (k_d)))
 #define CFM(k_p,k_d)		(1.f / (((fixed_step)*(k_p)) + (k_d)))
 #define SPRING(cfm,erp)		((erp)/(cfm)/fixed_step)
