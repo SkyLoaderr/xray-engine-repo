@@ -12,7 +12,7 @@
 #include "..\\..\\inventory.h"
 #include "..\\..\\ai_space.h"
 
-class CAI_Trader : public CEntityAlive, public CInventoryOwner 
+class CAI_Trader : public CEntityAlive, public CInventoryOwner, public CScriptMonster 
 {
 public:
 	typedef CEntityAlive inherited;
@@ -27,12 +27,16 @@ public:
 	virtual BOOL		net_Spawn		( LPVOID DC );
 	virtual void		net_Export		(NET_Packet& P);
 	virtual void		net_Import		(NET_Packet& P);
+	virtual	void		net_Destroy		();
+
 	virtual void		Die				();
 	virtual void		Think			();
 	virtual void		HitSignal		(float P, Fvector &local_dir,	CObject* who, s16 element){};
 	virtual void		HitImpulse		(float P, Fvector &vWorldDir, 	Fvector& vLocalDir){};
 	virtual void		SelectAnimation	(const Fvector& _view, const Fvector& _move, float speed);
 	
+	virtual	void		UpdateCL		();
+
 	static void			AnimCallback	(CBlend* B)
 	{
 		CAI_Trader		*tpTrader = (CAI_Trader*)B->CallbackParam;
@@ -48,5 +52,7 @@ public:
 	virtual	void		DropItemSendMessage		(CObject *O);
 	virtual void		shedule_Update			(u32 dt);
 	virtual void		renderable_Render		();
+
+	virtual	bool		bfScriptAnimation		();
 
 };

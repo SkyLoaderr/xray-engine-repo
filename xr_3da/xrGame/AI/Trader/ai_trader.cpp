@@ -182,7 +182,8 @@ void CAI_Trader::shedule_Update	(u32 dt)
 	//GetTrade()->UpdateTrade		();
 	UpdateInventoryOwner(dt);
 
-	Think();
+	if (GetScriptControl()) ProcessScripts();
+	else Think();
 }
 
 void CAI_Trader::g_WeaponBones	(int &L, int &R1, int &R2)
@@ -217,3 +218,42 @@ void CAI_Trader::Die ( )
 	m_inventory.DropAll();
 }
 
+void CAI_Trader::net_Destroy()
+{
+	inherited::net_Destroy		();
+	CScriptMonster::net_Destroy ();
+}
+
+
+void ScriptCallBack(CBlend* B)
+{
+	CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*> (static_cast<CObject*>(B->CallbackParam));
+	R_ASSERT		(l_tpScriptMonster);
+	if (l_tpScriptMonster->GetCurrentAction())
+		l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_bCompleted = true;
+}
+
+bool CAI_Trader::bfScriptAnimation()
+{
+	if (GetScriptControl() && GetCurrentAction() && !GetCurrentAction()->m_tAnimationAction.m_bCompleted && strlen(GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay)) {
+		CKinematics			&tVisualObject = *(PKinematics(Visual()));
+		CMotionDef			*l_tpMotionDef = tVisualObject.ID_Cycle_Safe(GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
+		if (m_tpScriptAnimation != l_tpMotionDef)
+			tVisualObject.PlayCycle(m_tpScriptAnimation = l_tpMotionDef,TRUE,ScriptCallBack,this);
+		return		(true);
+	}
+	else {
+		m_tpScriptAnimation	= 0;
+		return		(false);
+	}
+}
+
+
+void CAI_Trader::UpdateCL()
+{ 
+	inherited::UpdateCL();
+
+	if (!bfScriptAnimation()) {
+		SelectAnimation		(XFORM().k,XFORM().k,0.f);
+	}
+}
