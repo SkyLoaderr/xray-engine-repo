@@ -138,18 +138,18 @@ health_hit_part 	= 1.0		;0.8			;процент хита, уходящий на отнимание здоровья
 power_hit_part 		= 1.0		;0.9			;процент хита, уходящий на отнимание силы
 psy_health_v = 0.1						;скорость восстановления psy-здоровья
 
-burn_immunity = 0.8				;коэффициенты иммунитета 
-strike_immunity = 0.8
-shock_immunity = 0.8
+burn_immunity = 1				;коэффициенты иммунитета 
+strike_immunity = 1
+shock_immunity = 1
 wound_immunity = 0.50	;0.75	;1.0		
-radiation_immunity = 0.5
+radiation_immunity = 0.1
 telepatic_immunity = 1.0
-chemical_burn_immunity = 0.8
+chemical_burn_immunity = 1
 explosion_immunity = 0.8
-fire_wound_immunity  = 0.105
+fire_wound_immunity  = 0.5
 
 ;открытые раны
-bleeding_v					= 0						;потеря крови при номинальной ране в секунду
+bleeding_v					= 0.01					;потеря крови при номинальной ране в секунду
 wound_incarnation_v			= 0.01				;крутизна кривой заживления (какой процент раны останется после заживления в игровую секунду)
 min_wound_size				= 0.01
 
@@ -173,18 +173,18 @@ Morale_Stable_Speed				= 0.01
 Morale_Despondent_Threashold	= 0.5
 
 
-sound_idle				= monsters\biting\def_
-sound_eat				= monsters\biting\def_ 
-sound_attack			= monsters\pseudodog\pdog_aggression_1
-sound_attack_hit		= monsters\pseudodog\attack_hit_
-sound_take_damage		= monsters\pseudodog\pdog_hurt_
-sound_die				= monsters\biting\def_
-sound_threaten			= monsters\biting\def_		
-sound_landing			= monsters\biting\def_
-sound_steal				= monsters\biting\def_
-sound_panic				= monsters\biting\def_
-sound_growling			= monsters\biting\def_
-sound_die_in_anomaly	= monsters\biting\def_
+sound_idle				= monsters\tushkano\tush_idle_
+sound_eat				= monsters\tushkano\tush_chew_
+sound_attack			= monsters\tushkano\tush_agression_
+sound_attack_hit		= monsters\tushkano\tush_attack_
+sound_take_damage		= monsters\tushkano\tush_hurt_
+sound_die				= monsters\tushkano\tush_die_
+sound_threaten			= monsters\tushkano\tush_idle_		
+sound_landing			= monsters\tushkano\tush_idle_
+sound_steal				= monsters\tushkano\tush_agression_
+sound_panic				= monsters\tushkano\tush_howl_
+sound_growling			= monsters\tushkano\tush_idle_
+sound_die_in_anomaly	= monsters\tushkano\tush_death_
 
 killer_clsids			= Z_MINCER,Z_GALANT
 
