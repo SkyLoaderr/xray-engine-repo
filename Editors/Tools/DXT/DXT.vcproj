@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding = "windows-1251"?>
+<?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.00"
+	Version="7.10"
 	Name="DXT"
 	ProjectGUID="{EBF9B543-0830-4866-9B48-DC0740E87E8A}"
 	SccProjectName="&quot;$/Editors/Tools/DXT&quot;, DDFAAAAA"
@@ -72,7 +72,13 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
 				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
@@ -132,9 +138,17 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
 				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 	</Configurations>
+	<References>
+	</References>
 	<Files>
 		<Filter
 			Name="Convert"
@@ -178,6 +192,9 @@
 			</File>
 		</Filter>
 		<File
+			RelativePath=".\dds.h">
+		</File>
+		<File
 			RelativePath=".\FS.cpp">
 		</File>
 		<File
@@ -185,6 +202,9 @@
 		</File>
 		<File
 			RelativePath=".\LzHuf.cpp">
+		</File>
+		<File
+			RelativePath=".\lzhuf.h">
 		</File>
 		<File
 			RelativePath=".\ReadMe.txt">
@@ -206,12 +226,6 @@
 		</File>
 		<File
 			RelativePath=".\StdAfx.h">
-		</File>
-		<File
-			RelativePath=".\dds.h">
-		</File>
-		<File
-			RelativePath=".\lzhuf.h">
 		</File>
 	</Files>
 	<Globals>
