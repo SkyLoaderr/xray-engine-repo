@@ -1290,6 +1290,7 @@ public:
 
 	IC		void		add_opened		(CGraphNode &vertex)
 	{
+//		ai().m_visited_nodes.push_back	(vertex.index());
 		vertex.open_close_mask	= 1;
 		add_to_bucket			(vertex,compute_bucket_id(vertex));
 		verify_buckets			();

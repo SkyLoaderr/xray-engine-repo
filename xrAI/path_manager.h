@@ -264,15 +264,19 @@ template <
 				_iteration_type
 			> inherited;
 protected:
-	float				y1;
+	int					x1;
+//	float				y1;
+	int					z1;
 	int					x2;
-	float				y2;
+//	float				y2;
 	int					z2;
 	int					x3;
-	float				y3;
+//	float				y3;
 	int					z3;
-	float				square_size_y;
+//	float				square_size_y;
+//	float				size_y;
 	float				m_sqr_distance_xz;
+	float				m_distance_xz;
 	_Graph::CVertex		*best_node;
 
 public:
@@ -297,36 +301,46 @@ public:
 			_goal_node_index,
 			parameters
 		);
+		m_distance_xz			= graph->header().cell_size();
 		m_sqr_distance_xz		= _sqr(graph->header().cell_size());
-		square_size_y			= _sqr((float)(graph->header().factor_y()/32767.0));;
+//		square_size_y			= _sqr((float)(graph->header().factor_y()/32767.0));
+//		size_y					= (float)(graph->header().factor_y()/32767.0);
 	}
 
 	IC	void		init			()
 	{
 		const _Graph::CVertex	&tNode1	= *graph->vertex(start_node_index);
 		graph->unpack_xz		(tNode1,x2,z2);
-		y2						= (float)(tNode1.position().y());
+//		y2						= (float)(tNode1.position().y());
 		
 		const _Graph::CVertex	&tNode2	= *graph->vertex(goal_node_index);
 		graph->unpack_xz		(tNode2,x3,z3);
-		y3						= (float)(tNode2.position().y());
+//		y3						= (float)(tNode2.position().y());
+		x1						= x2;
+//		y1						= y2;
+		z1						= z2;
 	}
 
 	IC	_dist_type	evaluate		(const _index_type /**node_index1/**/, const _index_type node_index2, const _Graph::const_iterator &/**i/**/)
 	{
 		VERIFY					(graph);
 		
-		const _Graph::CVertex	&tNode1 = *graph->vertex(node_index2);
+//		const _Graph::CVertex	&tNode1 = *graph->vertex(node_index2);
 
-		y2						= (float)(tNode1.position().y());
+//		y2						= (float)(tNode1.position().y());
 
-		return					(_sqrt(square_size_y*(float)_sqr(y2 - y1) + m_sqr_distance_xz));
+//		return					(_sqrt(square_size_y*(float)_sqr(y2 - y1) + m_sqr_distance_xz));
+		return					(m_distance_xz);// + (y2 - y1)*size_y);
 	}
 
 	IC	_dist_type	estimate		(const _index_type /**node_index/**/) const
 	{
 		VERIFY					(graph);
-		return					(_sqrt((float)(m_sqr_distance_xz*float(_sqr(x3 - x2) + _sqr(z3 - z2)) + square_size_y*(float)_sqr(y3 - y2))));
+//		return					(_sqrt((float)(m_sqr_distance_xz*float(_sqr(x3 - x1) + _sqr(z3 - z1)) + square_size_y*(float)_sqr(y3 - y1))));
+		return					(2*m_distance_xz*_dist_type(_abs(x3 - x1) + _abs(z3 - z1)));// + _abs(y3 - y1)*size_y);
+//		int						x = _abs(x3 - x1);
+//		int						z = _abs(z3 - z1);
+//		return					(m_distance_xz*_dist_type(_min(x,z)*3 + 2*_abs(x - z)));
 	}
 
 	IC	bool		is_goal_reached	(const _index_type node_index)
@@ -335,7 +349,8 @@ public:
 			return				(true);
 		
 		best_node				= graph->vertex(node_index);
-		y1						= (float)(best_node->position().y());
+		graph->unpack_xz		(best_node,x1,z1);
+//		y1						= (float)(best_node->position().y());
 
 		return					(false);
 	}
@@ -726,7 +741,7 @@ public:
 		VERIFY					(path);
 		path->push_back			(node_index);
 		best_node				= graph->vertex(node_index);
-		y1						= (float)(best_node->position().y());
+//		y1						= (float)(best_node->position().y());
 		return					(false);
 	}
 
@@ -851,7 +866,7 @@ public:
 //				m_params->m_vertex_id	= node_index;
 //			}
 			best_node					= graph->vertex(node_index);
-			y1							= (float)(best_node->position().y());
+//			y1							= (float)(best_node->position().y());
 			return						(false);
 		}
 
@@ -971,7 +986,7 @@ public:
 		}
 
 		best_node				= graph->vertex(node_index);
-		y1						= (float)(best_node->position().y());
+//		y1						= (float)(best_node->position().y());
 
 		return					(false);
 	}

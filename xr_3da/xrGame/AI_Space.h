@@ -44,6 +44,7 @@ public:
 	IC		IWriter						&lua_output		() const;
 #ifdef DEBUG
 			void						validate		(const u32			level_id) const;
+//	xr_vector<u32>						m_visited_nodes;
 #endif
 };
 

@@ -61,19 +61,20 @@ void CStateFreeNoAlife::execute			()
 //		eMentalStateDanger
 //	);
 //	m_object->CSightManager::update				(eLookTypeCurrentDirection);
-	m_object->CObjectHandler::set_dest_state	(eObjectActionFire1,m_object->best_weapon());
 
-	m_object->CStalkerMovementManager::update	(0,0,0,
-		CMovementManager::ePathTypeGamePath,
-		CMovementManager::eDetailPathTypeSmooth,
-		eBodyStateStand,
-		eMovementTypeWalk,
-		eMentalStateDanger
-	);
-//	m_object->CSightManager::update				(eLookTypeCurrentDirection);
-	m_object->CSightManager::update				(eLookTypePathDirection);
-//	m_object->CObjectHandler::set_dest_state	(eObjectActionIdle);
-	m_object->play								(eStalkerSoundHumming,60000,10000);
+//	m_object->CObjectHandler::set_dest_state	(eObjectActionFire1,m_object->best_weapon());
+
+//	m_object->CStalkerMovementManager::update	(0,0,0,
+//		CMovementManager::ePathTypeGamePath,
+//		CMovementManager::eDetailPathTypeSmooth,
+//		eBodyStateStand,
+//		eMovementTypeStand,
+//		eMentalStateDanger
+//	);
+	m_object->CSightManager::update				(eLookTypeCurrentDirection);
+//	m_object->CSightManager::update				(eLookTypePathDirection);
+	m_object->CObjectHandler::set_dest_state	(eObjectActionIdle);
+//	m_object->play								(eStalkerSoundHumming,60000,10000);
 }
 
 void CStateFreeNoAlife::finalize		()

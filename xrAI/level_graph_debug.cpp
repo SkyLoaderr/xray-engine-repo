@@ -482,67 +482,73 @@ void CLevelGraph::draw_dynamic_obstacles() const
 //			draw_oriented_bounding_box		(M,d,color_rgba(0,0,255,255),color_rgba(0,255,0,255));
 //		}
 //	}
+//	for (u32 i=0, n = ai().m_visited_nodes.size(); i<n; ++i) {
+//		Fvector				position = vertex_position(ai().m_visited_nodes[i]);
+//		position.y			+= 0.005f;
+//		RCache.dbg_DrawAABB	(position,.105f,.105f,.105f,D3DCOLOR_XRGB(255,0,0));
+//	}
 }
 
 void CLevelGraph::set_start_point	()
 {
-//	CObject					*obj = Level().Objects.FindObjectByName("m_stalker_e0000");
-//	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(obj);
-//	obj						= Level().Objects.FindObjectByName("localhost/dima");
-//	CActor					*actor = dynamic_cast<CActor*>(obj);
-//	if (!stalker || !actor)
-//		return;
-//
-//	start.position			= v2d(stalker->Position());
-//	start.direction.x		= -_sin(-stalker->m_body.current.yaw);
-//	start.direction.y		= _cos(-stalker->m_body.current.yaw);
-//	start.vertex_id			= vertex(v3d(start.position));
-//
-//	dest.position			= v2d(actor->Position());
-//	dest.direction.x		= -_sin(actor->r_model_yaw);
-//	dest.direction.y		= _cos(actor->r_model_yaw);
-//	dest.vertex_id			= vertex(v3d(dest.position));
+	CObject					*obj = Level().Objects.FindObjectByName("m_stalker_e0000");
+	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(obj);
+	obj						= Level().Objects.FindObjectByName("localhost/dima/name=DIMA-AI");
+	CActor					*actor = dynamic_cast<CActor*>(obj);
+	if (!stalker || !actor)
+		return;
+
+	start.position			= v2d(stalker->Position());
+	start.direction.x		= -_sin(-stalker->m_body.current.yaw);
+	start.direction.y		= _cos(-stalker->m_body.current.yaw);
+	start.vertex_id			= vertex(v3d(start.position));
+
+	dest.position			= v2d(actor->Position());
+	dest.direction.x		= -_sin(actor->r_model_yaw);
+	dest.direction.y		= _cos(actor->r_model_yaw);
+	dest.vertex_id			= vertex(v3d(dest.position));
 	
 //	start.angular_velocity	= 1.f;
 //	start.linear_velocity	= 2.f;
-	start.position			= Fvector2().set(-50.f,-40.f);
-	start.direction.set		(0.f,1.f);
-	start.vertex_id			= vertex(v3d(start.position));
-	
-	dest.position			= Fvector2().set(-40.f,-40.f);
-	dest.direction.set		(0.f,1.f);
-	dest.vertex_id			= vertex(v3d(dest.position));
 
-	static int start_static = 0;
-	switch ((start_static >> 2) & 3) {
-		case 0 :
-			start.direction.set(0.f,1.f);
-			break;
-		case 1 :
-			start.direction.set(1.f,0.f);
-			break;
-		case 2 :
-			start.direction.set(0.f,-1.f);
-			break;
-		case 3 :
-			start.direction.set(-1.f,0.f);
-			break;
-	}
-	switch (start_static & 3) {
-		case 0 :
-			dest.direction.set(0.f,1.f);
-			break;
-		case 1 :
-			dest.direction.set(1.f,0.f);
-			break;
-		case 2 :
-			dest.direction.set(0.f,-1.f);
-			break;
-		case 3 :
-			dest.direction.set(-1.f,0.f);
-			break;
-	}
-	++start_static;
+//	start.position			= Fvector2().set(-50.f,-40.f);
+//	start.direction.set		(0.f,1.f);
+//	start.vertex_id			= vertex(v3d(start.position));
+//	
+//	dest.position			= Fvector2().set(-40.f,-40.f);
+//	dest.direction.set		(0.f,1.f);
+//	dest.vertex_id			= vertex(v3d(dest.position));
+//
+//	static int start_static = 0;
+//	switch ((start_static >> 2) & 3) {
+//		case 0 :
+//			start.direction.set(0.f,1.f);
+//			break;
+//		case 1 :
+//			start.direction.set(1.f,0.f);
+//			break;
+//		case 2 :
+//			start.direction.set(0.f,-1.f);
+//			break;
+//		case 3 :
+//			start.direction.set(-1.f,0.f);
+//			break;
+//	}
+//	switch (start_static & 3) {
+//		case 0 :
+//			dest.direction.set(0.f,1.f);
+//			break;
+//		case 1 :
+//			dest.direction.set(1.f,0.f);
+//			break;
+//		case 2 :
+//			dest.direction.set(0.f,-1.f);
+//			break;
+//		case 3 :
+//			dest.direction.set(-1.f,0.f);
+//			break;
+//	}
+//	++start_static;
 //	dest.angular_velocity	= 1.f;
 //	dest.linear_velocity	= 2.f;
 
@@ -1115,16 +1121,15 @@ void fill_params(
 //	dest_set.push_back		(dest);
 
 	start.angular_velocity	= 1.f;
-	start.linear_velocity	= -2.f;
+	start.linear_velocity	= 2.f;
 	start_set.push_back		(start);
 
 	dest.angular_velocity	= 1.f;
-	dest.linear_velocity	= -2.f;
+	dest.linear_velocity	= 2.f;
 	dest_set.push_back		(dest);
 }
 
-void CLevelGraph::build_detail_path(
-)
+void CLevelGraph::build_detail_path()
 {
 	xr_vector<STravelParams>				start_set, dest_set;
 //	xr_vector<Fvector>						m_tpTravelLine;
@@ -1146,7 +1151,7 @@ void CLevelGraph::build_detail_path(
 		dest.direction.normalize			();
 
 	m_tpTravelLine.clear					();
-
+//	ai().m_visited_nodes.clear				();
 	if (!ai().graph_engine().search(level_graph,start.vertex_id,dest.vertex_id,&m_tpaNodes,CGraphEngine::CBaseParameters()))
 		return;
 
