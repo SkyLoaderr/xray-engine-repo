@@ -449,7 +449,8 @@ void CFolderHelper::CreateNewFolder(TElTree* tv, bool bEditAfterCreate)
 	AnsiString folder;
     AnsiString start_folder;
     MakeName(tv->Selected,0,start_folder,true);
-    GenerateFolderName(tv,tv->Selected,folder);
+    TElTreeItem* parent = tv->Selected?(IsFolder(tv->Selected)?tv->Selected:tv->Selected->Parent):0;
+    GenerateFolderName(tv,parent,folder);
     folder = start_folder+folder;
 	TElTreeItem* node = AppendFolder(tv,folder.c_str(),true);
     if (tv->Selected) tv->Selected->Expand(false);

@@ -25,7 +25,7 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value="_EDITOR;XR_PARTICLES_EXPORTS;_DEBUG"/>
+    <USERDEFINES value="_EDITOR;XR_PARTICLES_EXPORTS"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="xrParticlesB.bpf"/>
     <INCLUDEPATH value="C:\Rad\Borland\CBuilder6\Projects;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore"/>
@@ -38,13 +38,13 @@
       -I$(BCB)\include -I$(BCB)\include\vcl -IP:\MagicFM_Borland\Sdk\Include 
       -IR:\Borland\Components6\AlexMX 
       -IR:\Borland\Components6\ElPack\Code\Source -IP:\xrCore -src_suffix cpp 
-      -D_EDITOR -DXR_PARTICLES_EXPORTS -D_DEBUG -boa"/>
-    <CFLAG1 value="-WD -Od -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps 
-      -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
-    <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
+      -D_EDITOR -DXR_PARTICLES_EXPORTS -boa"/>
+    <CFLAG1 value="-WD -O2 -H=intermediate\pch.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -ps -a4 
+      -6 -b- -k -vi -tWD -tWM -c"/>
+    <PFLAGS value="-N2Intermediate -N0Intermediate -$Y- -$L- -$D- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
-    <AFLAGS value="/mu /w2 /zi"/>
-    <LFLAGS value="-l&quot;x:\&quot; -IIntermediate -D&quot;&quot; -aa -Tpd -x -Gi -v"/>
+    <AFLAGS value="/mu /w2 /zn"/>
+    <LFLAGS value="-l&quot;x:\&quot; -IIntermediate -D&quot;&quot; -aa -Tpd -x -Gi"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
@@ -142,10 +142,11 @@ Count=1
 Item0=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
-Count=3
-Item0=_EDITOR;XR_PARTICLES_EXPORTS;_DEBUG
-Item1=_EDITOR;PARTICLEDLL_EXPORTS;_DEBUG
-Item2=_EDITOR;_PARTICLEDLLB;PARTICLEDLL_EXPORTS;_DEBUG
+Count=4
+Item0=_EDITOR;XR_PARTICLES_EXPORTS
+Item1=_EDITOR;XR_PARTICLES_EXPORTS;_DEBUG
+Item2=_EDITOR;PARTICLEDLL_EXPORTS;_DEBUG
+Item3=_EDITOR;_PARTICLEDLLB;PARTICLEDLL_EXPORTS;_DEBUG
 
 [HistoryLists\hlIntOutputDir]
 Count=1

@@ -81,6 +81,8 @@ void CSoundManager::RenameSound(LPCSTR nm0, LPCSTR nm1, EItemType type)
         FS.update_path(fn0,_game_sounds_,nm0);	fn0+=".ogg";
         FS.update_path(fn1,_game_sounds_,nm1);	fn1+=".ogg";
         FS.file_rename(fn0.c_str(),fn1.c_str(),false);
+
+	    Sound->refresh_sources();
 	}
 }
 
@@ -106,6 +108,7 @@ BOOL CSoundManager::RemoveSound(LPCSTR fname, EItemType type)
             FS.file_delete		(_sounds_,thm_name.c_str());
             // game
             FS.file_delete		(_game_sounds_,game_name.c_str());
+		    Sound->refresh_sources();
             return TRUE;
         }
     }

@@ -129,8 +129,8 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
             eax_props.flEnvironmentSize		= e_current.EnvironmentSize		;  	// environment size in meters
             eax_props.flEnvironmentDiffusion= e_current.EnvironmentDiffusion; 	// environment diffusion
             eax_props.flAirAbsorptionHF		= e_current.AirAbsorptionHF		;	// change in level per meter at 5 kHz
-            eax_props.dwFlags				= 0								;	// modifies the behavior of properties
-            R_CHK(pExtensions->Set			(DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ALLPARAMETERS, NULL, 0, &eax_props, sizeof(EAXLISTENERPROPERTIES)))
+            eax_props.dwFlags				= EAXLISTENER_DEFAULTFLAGS		;	// modifies the behavior of properties
+            R_CHK(pExtensions->Set	   		(DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ALLPARAMETERS, NULL, 0, &eax_props, sizeof(EAXLISTENERPROPERTIES)))
         }
 
         // commit deffered settings

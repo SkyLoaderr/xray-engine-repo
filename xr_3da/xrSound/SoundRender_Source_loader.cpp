@@ -98,9 +98,13 @@ void CSoundRender_Source::load(LPCSTR name,	BOOL b3D)
 	strconcat			(fn,N,".ogg");
 	if (!FS.exist("$level$",fn))	FS.update_path	(fn,"$game_sounds$",fn);
 
-	LoadWave			(fn,_3D);
-	R_ASSERT			(wave);
-	SoundRender.cache.cat_create			( CAT, dwBytesTotal );
+#ifdef _EDITOR
+	if (!FS.exist(fn)){ 
+		FS.update_path	(fn,"$game_sounds$","$no_sound.ogg");
+    }
+#endif
+	LoadWave			(fn,_3D);	R_ASSERT(wave);
+	SoundRender.cache.cat_create	(CAT, dwBytesTotal);
 
 	if (dwTimeTotal<100)					{
 		Msg	("! WARNING: Invalid wave length (must be at least 100ms), file: %s",fn);
@@ -109,8 +113,11 @@ void CSoundRender_Source::load(LPCSTR name,	BOOL b3D)
 
 void CSoundRender_Source::unload()
 {
-	ov_clear			(ovf);
-	FS.r_close			(wave);
-	SoundRender.cache.cat_destroy			(CAT);
+	ov_clear						(ovf);
+	FS.r_close						(wave);
+	SoundRender.cache.cat_destroy	(CAT);
+    dwTimeTotal						= 0;
+    dwBytesTotal					= 0;
+    dwBytesPerMS					= 0;
 }
 

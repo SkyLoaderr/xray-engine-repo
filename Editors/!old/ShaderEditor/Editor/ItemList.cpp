@@ -544,10 +544,10 @@ void __fastcall TItemList::tvItemsKeyDown(TObject *Sender, WORD &Key,
 void TItemList::LoadSelection(TFormStorage* storage)
 {
 	last_selected_items.clear();
-    for (int k=0; ;k++){
+    int cnt 			= storage->ReadInteger("sel_cnt",0);
+    for (int k=0; k<cnt;k++){
     	AnsiString tmp = storage->ReadString(AnsiString().sprintf("sel%d",k),"");
-        if (tmp.IsEmpty()) break;
-        last_selected_items.push_back(tmp);
+        if (!tmp.IsEmpty())last_selected_items.push_back(tmp);
     }
 }
 //---------------------------------------------------------------------------
@@ -556,6 +556,7 @@ void TItemList::SaveSelection(TFormStorage* storage)
 {
     ElItemsVec items;
     if (GetSelected(items)){
+	    storage->WriteInteger("sel_cnt",items.size());
         for (ElItemsIt l_it=items.begin(); l_it!=items.end(); l_it++){
             AnsiString s;
             FHelper.MakeFullName(*l_it,0,s);

@@ -33,7 +33,7 @@ __fastcall TfrmSoundLib::TfrmSoundLib(TComponent* Owner)
 void __fastcall TfrmSoundLib::FormCreate(TObject *Sender)
 {
 	m_ItemProps = TProperties::CreateForm("SoundED",paProperties,alClient);
-    m_ItemList	= TItemList::CreateForm("Items",paItems,alClient,TItemList::ilEditMenu|TItemList::ilMultiSelect);
+    m_ItemList	= TItemList::CreateForm("Items",paItems,alClient,TItemList::ilEditMenu|TItemList::ilMultiSelect|TItemList::ilDragAllowed);
     m_ItemList->OnItemRemove	= RemoveSound;
     m_ItemList->OnItemRename	= RenameSound;
     m_ItemList->OnItemsFocused 	= OnItemsFocused;

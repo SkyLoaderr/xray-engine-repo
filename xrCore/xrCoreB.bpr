@@ -49,7 +49,7 @@
       -IR:\Borland\Components6\ElPack\Code\Source 
       -IR:\VS7.NET\Vc7\atlmfc\include -IR:\Borland\CBuilder6\Include\Mfc 
       -src_suffix cpp -D_EDITOR -D_XRCOREB -DXRCORE_EXPORTS -boa"/>
-    <CFLAG1 value="-WD -O2 -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -ps -a4 
+    <CFLAG1 value="-WD -O2 -H=intermediate\pch.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -ps -a4 
       -6 -b- -k -vi -tWD -tWM -c"/>
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y- -$L- -$D- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>

@@ -444,11 +444,52 @@ void						CSoundRender_Core::refresh_env_library()
 }
 void						CSoundRender_Core::refresh_sources()
 {
+	for (u32 eit=0; eit<s_emitters.size(); eit++)
+    	s_emitters[eit]->stop();
 	for (u32 sit=0; sit<s_sources.size(); sit++){
     	CSoundRender_Source* s = s_sources[sit];
-        s->unload		();
-//.		if (FS.exist(*s->fname)) s->load(*s->fname,s->_3D); // не правильно так искать
-        s->load(*s->fname,s->_3D);
+    	s->unload		();
+		s->load			(*s->fname,s->_3D);
+    }
+}
+void						CSoundRender_Core::test_env_size(CSound_environment*& _E)
+{
+	if (pExtensions){
+    	CSoundRender_Environment* 		E = static_cast<CSoundRender_Environment*>(_E);
+    	// set all params
+        unsigned long 		total_bytes;
+        EAXLISTENERPROPERTIES eax_props;
+        eax_props.lRoom					= iFloor(E->Room)				;
+        eax_props.lRoomHF				= iFloor(E->RoomHF)				;
+        eax_props.flRoomRolloffFactor	= E->RoomRolloffFactor			;
+        eax_props.flDecayTime			= E->DecayTime					;
+        eax_props.flDecayHFRatio		= E->DecayHFRatio				;
+        eax_props.lReflections			= iFloor(E->Reflections)		;
+        eax_props.flReflectionsDelay	= E->ReflectionsDelay		   	;
+        eax_props.lReverb				= iFloor(E->Reverb)			 	;
+        eax_props.flReverbDelay			= E->ReverbDelay				;
+        eax_props.dwEnvironment			= EAXLISTENER_DEFAULTENVIRONMENT;
+        eax_props.flEnvironmentSize		= (E->EnvironmentSize!=EAXLISTENER_DEFAULTENVIRONMENTSIZE)?EAXLISTENER_DEFAULTENVIRONMENTSIZE:EAXLISTENER_MINENVIRONMENTSIZE;
+        eax_props.flEnvironmentDiffusion= E->EnvironmentDiffusion		;
+        eax_props.flAirAbsorptionHF		= E->AirAbsorptionHF			;
+        eax_props.dwFlags				= EAXLISTENER_DEFAULTFLAGS		;
+        R_CHK(pExtensions->Set	   		(DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ALLPARAMETERS, NULL, 0, &eax_props, sizeof(EAXLISTENERPROPERTIES)))
+		// apply env size
+        R_CHK(pExtensions->Set			(DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ENVIRONMENTSIZE, NULL, 0, &E->EnvironmentSize, sizeof(float)));
+        // get all params
+        R_CHK(pExtensions->Get			(DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ALLPARAMETERS, NULL, 0, &eax_props, sizeof(EAXLISTENERPROPERTIES), &total_bytes));
+        E->Room							= eax_props.lRoom				;
+        E->RoomHF						= eax_props.lRoomHF				;
+        E->RoomRolloffFactor			= eax_props.flRoomRolloffFactor	;
+        E->DecayTime			   		= eax_props.flDecayTime			;
+        E->DecayHFRatio					= eax_props.flDecayHFRatio		;
+        E->Reflections					= eax_props.lReflections		;
+        E->ReflectionsDelay				= eax_props.flReflectionsDelay	;
+        E->Reverb					 	= eax_props.lReverb				;
+        E->ReverbDelay					= eax_props.flReverbDelay		;
+        E->EnvironmentSize				= eax_props.flEnvironmentSize	;
+        E->EnvironmentDiffusion			= eax_props.flEnvironmentDiffusion;
+        E->AirAbsorptionHF				= eax_props.flAirAbsorptionHF	;
     }
 }
 #endif
