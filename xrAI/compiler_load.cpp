@@ -42,21 +42,17 @@ void xrLoad(LPCSTR name)
 	// Load CFORM
 	FILE_NAME			N;
 	{
-		strconcat			(N,name,"level.");
+		strconcat			(N,name,"build.cform");
 		CVirtualFileStream	FS(N);
 		
-		CStream* fs			= FS.OpenChunk(fsL_CFORM);
-		R_ASSERT			(fs);
-		
 		hdrCFORM			H;
-		fs->Read			(&H,sizeof(hdrCFORM));
+		FS.Read				(&H,sizeof(hdrCFORM));
 		R_ASSERT			(CFORM_CURRENT_VERSION==H.version);
 		
-		Fvector*	verts	= (Fvector*)fs->Pointer();
+		Fvector*	verts	= (Fvector*)FS.Pointer();
 		RAPID::tri*	tris	= (RAPID::tri*)(verts+H.vertcount);
 		Level.BuildModel	( verts, H.vertcount, tris, H.facecount );
 		Msg("* Level CFORM: %dK",Level.MemoryUsage()/1024);
-		fs->Close			();
 		
 		LevelBB.set			(H.aabb);
 	}

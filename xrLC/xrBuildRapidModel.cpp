@@ -27,7 +27,7 @@ void CBuild::BuildRapid()
 	
 	// Saving for AI/DO usage
 	Status			("Saving...");
-	CFS_File		MFS((string(g_params.L_path)+"build.light").c_str());
+	CFS_File		MFS((string(g_params.L_path)+"build.cform").c_str());
 
 	// Header
 	hdrCFORM hdr;
