@@ -241,7 +241,7 @@ BOOL CHOM::visible		(vis_data& vis)
 	Device.Statistic.RenderCALC_HOM.Begin	();
 	BOOL result			= _visible			(vis.box,m_xform_01);
 	u32  delay			= 1;
-	if (vis.frame<frame_prev)
+	if (vis.hom_accept_frame<frame_prev)
 	{
 		// either [0] or [2]
 		if (vis.hom_tested<frame_prev)
