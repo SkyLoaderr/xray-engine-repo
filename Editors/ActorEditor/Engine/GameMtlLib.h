@@ -155,7 +155,6 @@ public:
         m_Owner			= owner;
         OwnProps.one	();
 	}
-#pragma todo("Dima to AlexMX : check if you need here a non-virtual destructor!")
 	~SGameMtlPair		();
     IC int				GetMtl0			(){return mtl0;}
     IC int				GetMtl1			(){return mtl1;}
@@ -192,7 +191,6 @@ public:
 	    material_pair_index = 0;
         material_count	    = 0;
     }
-#pragma todo("Dima to AlexMX : check if you need here a non-virtual destructor!")
 	~CGameMtlLibrary	()
 	{
 		/*

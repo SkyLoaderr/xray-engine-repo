@@ -9,7 +9,6 @@ class CHUDCursor
 	float					fuzzyShowInfo;
 public:
 							CHUDCursor	();
-#pragma todo("Dima to Jim : check if you need here a non-virtual destructor!")
 							~CHUDCursor	();
 	void					Render		();
 };
