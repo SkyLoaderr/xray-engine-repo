@@ -76,7 +76,7 @@ void CCustomMonster::Load		(LPCSTR section)
 	Movement.SetPosition		(vPosition);
 	
 	// Health & Armor
-	iArmor					= 0;
+	fArmor					= 0;
 	
 	// Eyes
 	eye_bone				= PKinematics(pVisual)->LL_BoneID(pSettings->ReadSTRING(section,"bone_head"));
@@ -162,7 +162,7 @@ void CCustomMonster::SelectAnimation(const Fvector& _view, const Fvector& _move,
 
 	CMotionDef*	S=0;
 
-	if (iHealth<=0) {
+	if (fHealth<=0) {
 		// Die
 		S = m_death;
 	} else {
@@ -277,7 +277,7 @@ void CCustomMonster::Update	( DWORD DT )
 		Engine.Sheduler.Slice			();
 
 		// Look and action streams
-		if (iHealth>0) {
+		if (fHealth>0) {
 			Exec_Look				(dt);
 			Exec_Movement			(dt);
 			Exec_Visibility			();
@@ -579,7 +579,7 @@ void CCustomMonster::Death	()
 BOOL CCustomMonster::net_Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
 {
 	if (!inherited::net_Spawn(bLocal,server_id,o_pos,o_angle,P,flags))	return FALSE;
-	iHealth = m_iHealth;
+	fHealth = m_iHealth;
 	AI_Path.DestNode		= AI_NodeID;
 
 	eye_matrix.identity	();

@@ -232,8 +232,8 @@ class CAI_Rat : public CCustomMonster
 		virtual void  Update(DWORD DT);
 		virtual void  net_Export(NET_Packet& P);
 		virtual void  net_Import(NET_Packet& P);
-		virtual void  HitSignal(int amount, Fvector& vLocalDir, CEntity* who);
-		virtual void  SenseSignal(int amount, Fvector& vLocalDir, CEntity* who);
+		virtual void  HitSignal(float amount, Fvector& vLocalDir, CObject* who);
+		virtual void  SenseSignal(float amount, Fvector& vLocalDir, CObject* who);
 		virtual void  Death();
 		virtual void  Load( LPCSTR section );
 		virtual void  Think();

@@ -187,10 +187,10 @@ public:
 	virtual void		Exec_Action				( float dt );
 	virtual BOOL		net_Spawn				( BOOL bLocal, int sid, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags );
 	virtual void		Death					( );
-	virtual void		HitSignal				( int iHitAmount, Fvector& vLocalDir, CEntity* who);
-	virtual void		g_WeaponBones			( int& L, int& R);
-	virtual void		Load					( LPCSTR section );				
-	virtual void		Update					( DWORD DT );
+	virtual void		HitSignal				( float P,	Fvector& vLocalDir, CObject* who);
+	virtual void		g_WeaponBones			( int& L,	int& R	);
+	virtual void		Load					( LPCSTR	section );				
+	virtual void		Update					( DWORD		DT		);
 	virtual void		UpdateCL				( );
 
 	// Team visibility

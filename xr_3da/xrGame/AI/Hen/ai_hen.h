@@ -91,8 +91,8 @@ class CAI_Hen : public CCustomMonster
 					   CAI_Hen();
 		virtual		  ~CAI_Hen();
 		virtual void  Update(DWORD DT);
-		virtual void  HitSignal(int amount, Fvector& vLocalDir, CEntity* who);
-		virtual void  SenseSignal(int amount, Fvector& vLocalDir, CEntity* who);
+		virtual void  HitSignal		(float amount, Fvector& vLocalDir, CObject* who);
+		virtual void  SenseSignal	(float amount, Fvector& vLocalDir, CObject* who);
 		virtual void  Death();
 		virtual void  Load( LPCSTR section );
 		virtual void  Think();

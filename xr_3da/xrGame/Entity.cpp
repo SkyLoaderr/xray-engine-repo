@@ -17,8 +17,8 @@
 CEntity::CEntity()
 {
 	fAccuracy			= 1.f;
-	iMAX_Health			= MAX_HEALTH;
-	iMAX_Armor			= MAX_ARMOR;
+	fMAX_Health			= MAX_HEALTH;
+	fMAX_Armor			= MAX_ARMOR;
 	eHealthLost_Enabled = FALSE;
 	
 	eHealthLost_Begin	= Engine.Event.Handler_Attach	("level.entity.healthlost.begin",	this);
@@ -72,7 +72,7 @@ void CEntity::OnEvent		(NET_Packet& P, u16 type)
 	}
 }
 
-BOOL CEntity::Hit			(float perc, Fvector &dir, CEntity* who) 
+BOOL CEntity::Hit			(float perc, Fvector &dir, CObject* who) 
 {
 	// *** process hit calculations
 	// Calc impulse
@@ -87,12 +87,12 @@ BOOL CEntity::Hit			(float perc, Fvector &dir, CEntity* who)
 	vLocalDir.invert		();
 
 	// hit impulse
-	HitImpulse				(dir,vLocalDir,perc);
+	HitImpulse				(perc,dir,vLocalDir);
 	
 	// Calc HitAmount
+	float fHitAmount, fOldHealth=fHealth;
 	if (Local()) 
 	{
-		float fHitAmount, fOldHealth=fHealth;
 		if (fArmor)
 		{
 			fHealth		-=	(fMAX_Armor-fArmor)/fMAX_Armor*perc;

@@ -198,12 +198,9 @@ public:
 	virtual void						net_Import			(NET_Packet& P);				// import from server
 	virtual BOOL						net_Relevant		()	{ return net_Local; };		// relevant for export to server
 
-	void								ge_OwnershipTake	(NET_Packet& P);
-	void								ge_OwnershipReject	(NET_Packet& P);
-	
 	virtual void			Die					( );
-	virtual	BOOL			Hit					(int iLost, Fvector &dir, CEntity* who);
-	virtual void			HitSignal			(int HitAmount, Fvector& vLocalDir, CEntity* who);
+	virtual	BOOL			Hit					(float P, Fvector &dir,			CObject* who);
+	virtual void			HitSignal			(float P, Fvector &vLocalDir,	CObject* who);
 
 	virtual	float			ffGetFov			()			{ return 90.f;		}	
 	virtual	float			ffGetRange			()			{ return 500.f;		}

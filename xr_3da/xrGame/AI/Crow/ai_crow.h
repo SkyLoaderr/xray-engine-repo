@@ -101,8 +101,8 @@ public:
 	virtual void	g_fireParams	(Fvector& P, Fvector& D)	{};
 	virtual void	g_WeaponBones	(int& L, int& R)			{};
 
-	virtual void	HitSignal		(int HitAmount, Fvector& local_dir, CEntity* who);
-	virtual void	HitImpulse		(Fvector& vWorldDir, Fvector& vLocalDir, float amount){};
+	virtual void	HitSignal		(float		HitAmount, Fvector& local_dir, CObject* who);
+	virtual void	HitImpulse		(Fvector&	vWorldDir, Fvector& vLocalDir, float amount)	{};
 	virtual void	Die				(){};
 	virtual	float	ffGetFov		(){return 150.f;}
 	virtual	float	ffGetRange		(){return 30.f;}

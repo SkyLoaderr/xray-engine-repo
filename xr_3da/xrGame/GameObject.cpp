@@ -83,7 +83,7 @@ float CGameObject::Ambient	()
 	return AI_Node?float(AI_Node->light):255;
 }
 
-inherited::SavedPosition CGameObject::ps_Element(DWORD ID)
+CObject::SavedPosition CGameObject::ps_Element(DWORD ID)
 {
 	VERIFY(ID<ps_Size());
 	inherited::SavedPosition	SP	=	PositionStack[ID];
