@@ -23,6 +23,8 @@
 #include <luabind/detail/object_rep.hpp>
 #include <luabind/detail/class_rep.hpp>
 
+#include "windows.h"
+
 namespace luabind { namespace detail
 {
 
@@ -93,9 +95,13 @@ namespace luabind { namespace detail
 
 	int object_rep::garbage_collector(lua_State* L)
 	{
-		object_rep* obj = static_cast<object_rep*>(lua_touserdata(L, -1));
-
-		finalize(L, obj->crep());
+		object_rep*		obj = static_cast<object_rep*>(lua_touserdata(L, -1));
+//#ifdef DEBUG	
+		//const char*			N	= obj->crep()->name();
+		//OutputDebugString	(N);
+		//OutputDebugString	("\n");
+//#endif
+		finalize		(L, obj->crep());
 
 		obj->~object_rep();
 		return 0;
