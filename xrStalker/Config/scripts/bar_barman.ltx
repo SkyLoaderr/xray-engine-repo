@@ -1,0 +1,325 @@
+[logic]
+;active = nil
+active = mob_remark@start_wait
+on_trade = mob_trade
+
+; ------------------------------------------------------------------------------------------------------
+; СТАРТ
+; ------------------------------------------------------------------------------------------------------
+
+; Ждем вначале немного
+[mob_remark@start_wait]
+dialog_cond = always
+; {-tutorial_artefact_start}, {-esc_trader_can_leave}
+;meet_dialog = escape_trader_tutorial
+anim = idle_2_def_0
+on_info = {=talking_or_tutor} mob_remark@before_first_phrase
+on_signal = action_end | mob_remark@start_wait2
+;on_timer = 7000 | mob_remark@before_first_phrase
+
+[mob_remark@start_wait2]
+dialog_cond = always
+; {-tutorial_artefact_start}, {-esc_trader_can_leave}
+;meet_dialog = escape_trader_tutorial
+anim = idle_2_def_0
+on_info = {=talking_or_tutor} mob_remark@before_first_phrase
+on_signal = action_end | mob_remark@start_wait3
+
+[mob_remark@start_wait3]
+dialog_cond = always
+; {-tutorial_artefact_start}, {-esc_trader_can_leave}
+;meet_dialog = escape_trader_tutorial
+anim = idle_2_def_0
+on_info = {=talking_or_tutor} mob_remark@before_first_phrase
+on_signal = action_end | mob_remark@start_wait4
+
+[mob_remark@start_wait4]
+dialog_cond = always
+; {-tutorial_artefact_start}, {-esc_trader_can_leave}
+;meet_dialog = escape_trader_tutorial
+anim = idle_2_def_0
+on_info = {=talking_or_tutor} mob_remark@before_first_phrase
+on_signal = action_end | mob_remark@before_first_phrase
+
+; Пододвигаемся к игроку
+[mob_remark@before_first_phrase]
+dialog_cond = always
+; {-tutorial_artefact_start}, {-esc_trader_can_leave}
+;meet_dialog = escape_trader_tutorial
+anim = idle_2_to_idle_0
+on_signal = action_end | {=talking_or_tutor} mob_remark@idle_0_def_0, mob_remark@first_phrase
+
+; Говорим первую фразу (подойди-ка - надо бы ситуацию прояснить)
+[mob_remark@first_phrase]
+dialog_cond = always
+; {-tutorial_artefact_start}, {-esc_trader_can_leave}
+;meet_dialog = escape_trader_tutorial
+anim = idle_0_talk_2
+anim_head = head_anim_normal
+snd = trader_come_here
+on_signal = action_end | {=talking_or_tutor} mob_remark@idle_0_def_0, mob_remark@before_second_phrase
+on_info = {=talking_or_tutor} mob_remark@idle_0_def_0 ; обрывать фразу
+
+; Ждем немного
+[mob_remark@before_second_phrase]
+dialog_cond = always
+; {-tutorial_artefact_start}, {-esc_trader_can_leave}
+;meet_dialog = escape_trader_tutorial
+anim = idle_0_def_0
+tip = tips_esc_trader_how_to_talk
+on_info = {=talking_or_tutor} mob_remark@idle_0_def_0
+on_signal = action_end | mob_remark@second_phrase
+
+; Говорим вторую фразу (что стоишь? подходи)
+[mob_remark@second_phrase]
+dialog_cond = always
+; {-tutorial_artefact_start}, {-esc_trader_can_leave}
+;meet_dialog = escape_trader_tutorial
+anim = idle_0_talk_2
+anim_head = head_anim_normal
+snd = trader_come_here2
+;on_signal = action_end | {=talking_or_tutor} mob_remark@idle_0_def_0, mob_remark@before_third_phrase
+on_signal = action_end | mob_remark@idle_0_def_0
+on_info = {=talking_or_tutor} mob_remark@idle_0_def_0 ; обрывать фразу
+
+; Ждем немного и начинаем читать книгу
+;[mob_remark@before_third_phrase]
+;dialog_cond = {-tutorial_artefact_start}, {-esc_trader_can_leave}
+;;meet_dialog = escape_trader_tutorial
+;anim = idle_0_def_0
+;on_info = {=talking_or_tutor} mob_remark@idle_0_def_0
+;on_signal = action_end | mob_remark@to_reading
+
+; ------------------------------------------------------------------------------------------------------
+; ЗАНИМАЕМСЯ СВОИМИ ДЕЛАМИ
+; ------------------------------------------------------------------------------------------------------
+
+[mob_remark@idle_0_spec_scratch_0]
+dialog_cond = always
+;{-tutorial_artefact_start}, {-esc_trader_can_leave}
+;meet_dialog = escape_trader_tutorial
+anim = idle_0_spec_scratch_0
+on_signal = action_end | mob_remark@idle_0_def_0
+
+; ------------------------------------------------------------------------------------------------------
+
+; ------------------------------------------------------------------------------------------------------
+; РАЗГОВОР
+; ------------------------------------------------------------------------------------------------------
+
+[mob_remark@idle_0_def_0]
+dialog_cond = always
+;{-tutorial_artefact_start}, {-esc_trader_can_leave}
+;meet_dialog = escape_trader_tutorial
+anim = idle_0_def_0
+on_signal = action_end | {=talking_or_tutor} mob_remark@idle_0_def_0, {~50} mob_remark@idle_0_spec_scratch_0, mob_remark@idle_0_def_0
+on_info = {-esc_trader_monolog_1_played +esc_trader_monolog_1} mob_remark@monolog_1 %+esc_trader_monolog_1_played%,   {-esc_trader_tutorial_choice_played +esc_trader_tutorial_choice} mob_remark@tut_choice %+esc_trader_tutorial_choice_played%
+on_info2 = {-esc_trader_map_quest_1_played +esc_trader_experienced} mob_remark@map_quest_1_experienced %+esc_trader_map_quest_1_played%,   {-esc_trader_newbie_course_done +esc_trader_newbie} mob_remark@newbie_pda %+esc_trader_newbie_course_done -ui_pda_jobs_current -ui_pda_contacts -ui_pda_map_local%
+on_info3 = {-tutorial_alarm_played +tutorial_alarm_start} mob_remark@tutorial_alarm %+tutorial_alarm_played%
+on_actor_dist_le_nvis = 4 | {+tutorial_end -esc_trader_hello_played} mob_remark@hello_what_have_you_got %+esc_trader_hello_played%
+on_actor_dist_ge_nvis = 4 | {-esc_trader_bye_played +esc_trader_hello_played} mob_remark@bye %+esc_trader_bye_played%
+; ^^^ было 4 и 5
+on_actor_dist_ge_nvis2 = 10 | %-esc_trader_hello_played -esc_trader_bye_played%
+; сняли ui_pda_jobs_current, ui_pda_contacts и ui_pda_map_local, чтобы не реагировать, если игрок его включал до этого
+
+; ------------------------------------------------------------------------------------------------------
+; ТОРГОВЛЯ (общие для всех секций настройки)
+; ------------------------------------------------------------------------------------------------------
+
+[mob_trade]
+;on_info = {+tutorial_end =trading =trade_exchanged} mob_remark@trade_exchanged
+on_info2 = {+tutorial_end !trading =trade_exchanged} mob_remark@trade_good
+on_info3 = {+tutorial_end !trading !trade_exchanged} mob_remark@trade_bad
+
+; ------------------------------------------------------------------------------------------------------
+; ОЗВУЧКА: ПРИВЕТСТВИЯ И ТОРГОВЛЯ
+; ------------------------------------------------------------------------------------------------------
+
+[mob_remark@hello_what_have_you_got]
+dialog_cond = always
+anim = idle_0_talk_2
+anim_head = head_anim_normal
+snd = trader_hello_what_have_you_got
+on_signal = action_end | mob_remark@idle_0_def_0
+
+[mob_remark@bye]
+dialog_cond = always
+anim = idle_0_talk_2
+anim_head = head_anim_normal
+snd = trader_bye
+on_signal = action_end | mob_remark@idle_0_def_0
+
+; ------------------------------------------------------------------------------------------------------
+; ОЗВУЧКА ФРАЗ
+; ------------------------------------------------------------------------------------------------------
+
+[mob_remark@monolog_1]
+dialog_cond = always
+; {-tutorial_artefact_start}, {-esc_trader_can_leave}
+;meet_dialog = escape_trader_tutorial
+anim = idle_0_talk_2
+anim_head = head_anim_normal
+snd = trader_monolog1
+on_signal = action_end | mob_remark@idle_0_def_0
+on_info = {+esc_trader_tutorial_choice} mob_remark@idle_0_def_0 ; обрывать фразу FIXME
+
+[mob_remark@tut_choice]
+dialog_cond = always
+;{-tutorial_artefact_start}, {-esc_trader_can_leave}
+;meet_dialog = escape_trader_tutorial
+anim = idle_0_talk_2
+anim_head = head_anim_normal
+snd = trader_tut_choice
+on_signal = action_end | mob_remark@idle_0_def_0
+on_info = {+esc_trader_experienced} mob_remark@idle_0_def_0, {+esc_trader_newbie} mob_remark@idle_0_def_0 ; обрывать фразу FIXME
+
+[mob_remark@tutorial_alarm]
+dialog_cond = always
+anim = idle_0_talk_2
+anim_head = head_anim_normal
+snd = trader_tutorial_alarm
+on_signal = action_end | mob_remark@idle_0_def_0
+
+[mob_remark@trade_good]
+dialog_cond = always
+anim = idle_0_talk_2
+anim_head = head_anim_normal
+snd = trader_good_trade
+on_signal = action_end | mob_remark@idle_0_def_0
+
+[mob_remark@trade_bad]
+dialog_cond = always
+anim = idle_0_talk_2
+anim_head = head_anim_normal
+snd = trader_bad_trade
+on_signal = action_end | mob_remark@idle_0_def_0
+
+[mob_remark@trade_exchanged]
+dialog_cond = always
+anim = idle_0_talk_2
+anim_head = head_anim_normal
+snd = trader_exchanged
+on_signal = action_end | mob_remark@idle_0_def_0
+
+; ------------------------------------------------------------------------------------------------------
+; ЗАДАНИЕ
+; ------------------------------------------------------------------------------------------------------
+
+[mob_remark@map_quest_1_experienced]
+dialog_cond = always
+; {-tutorial_artefact_start}, {-esc_trader_can_leave}
+anim = idle_0_talk_2
+anim_head = head_anim_normal
+snd = trader_map_quest_1
+on_signal = action_end | mob_remark@idle_0_def_0
+on_info = {+esc_trader_can_leave} mob_remark@idle_0_def_0 ; обрывать фразу FIXME
+
+[mob_remark@map_quest_1_newbie]
+dialog_cond = always
+;{-tutorial_artefact_start}, {-esc_trader_can_leave}
+anim = idle_0_talk_2
+anim_head = head_anim_normal
+snd = trader_map_quest_1
+on_signal = action_end | mob_remark@idle_0_def_0 %+esc_trader_can_leave%
+on_info = {+esc_trader_can_leave} mob_remark@idle_0_def_0 ; обрывать фразу FIXME
+
+; ------------------------------------------------------------------------------------------------------
+; ОБРАБОТА НОВИЧКА
+; ------------------------------------------------------------------------------------------------------
+
+; ------------------------------------------------------------------------------------------------------
+; ПДА:
+
+[mob_remark@newbie_pda]
+anim = idle_0_talk_2
+anim_head = head_anim_normal
+snd = trader_pda_on_1
+on_info = {+ui_pda_jobs_current} mob_remark@describe_pda, {+ui_pda_contacts} mob_remark@describe_pda, {+ui_pda_map_local} mob_remark@describe_pda
+on_signal = action_end | mob_remark@before_pda2
+
+[mob_remark@before_pda2]
+anim = idle_0_def_0
+tip = tips_esc_trader_activate_pda
+on_info = {+ui_pda_jobs_current} mob_remark@describe_pda, {+ui_pda_contacts} mob_remark@describe_pda, {+ui_pda_map_local} mob_remark@describe_pda
+on_signal = action_end | mob_remark@pda2
+
+[mob_remark@pda2]
+anim = idle_0_talk_2
+anim_head = head_anim_normal
+snd = trader_pda_on_2
+on_info = {+ui_pda_jobs_current} mob_remark@describe_pda, {+ui_pda_contacts} mob_remark@describe_pda, {+ui_pda_map_local} mob_remark@describe_pda
+on_signal = action_end | mob_remark@before_pda3
+
+[mob_remark@before_pda3]
+anim = idle_0_def_0
+tip = tips_esc_trader_activate_pda
+on_info = {+ui_pda_jobs_current} mob_remark@describe_pda, {+ui_pda_contacts} mob_remark@describe_pda, {+ui_pda_map_local} mob_remark@describe_pda
+on_signal = action_end | mob_remark@pda3
+
+[mob_remark@pda3]
+anim = idle_0_talk_2
+anim_head = head_anim_normal
+on_info = {+ui_pda_jobs_current} mob_remark@describe_pda, {+ui_pda_contacts} mob_remark@describe_pda, {+ui_pda_map_local} mob_remark@describe_pda
+snd = trader_pda_on_3
+on_signal = action_end | mob_remark@pda_wait
+
+[mob_remark@pda_wait]
+anim = idle_0_def_0
+tip = tips_esc_trader_activate_pda
+on_info = {+ui_pda_jobs_current} mob_remark@describe_pda, {+ui_pda_contacts} mob_remark@describe_pda, {+ui_pda_map_local} mob_remark@describe_pda
+on_signal = action_end | mob_remark@pda_wait
+
+[mob_remark@describe_pda]
+anim = idle_0_talk_2
+anim_head = head_anim_normal
+snd = trader_pda_1
+on_signal = action_end | mob_remark@after_describe_pda_wait
+
+[mob_remark@after_describe_pda_wait]
+anim = idle_0_def_0
+;tip = tips_esc_trader_quest_1
+on_signal = action_end | mob_remark@newbie_map %-ui_pda_map_local%
+; сняли ui_pda_map_local, чтобы не реагировать, если игрок его включал до этого
+
+; ------------------------------------------------------------------------------------------------------
+; КАРТЫ:
+
+[mob_remark@newbie_map]
+anim = idle_0_talk_2
+anim_head = head_anim_normal
+snd = trader_map_on_1
+on_info = {+ui_pda_map_local} mob_remark@map_quest_1_newbie %+tutorial_artefact_start%
+on_signal = action_end | mob_remark@before_map2
+
+[mob_remark@before_map2]
+anim = idle_0_def_0
+tip = tips_esc_trader_activate_map
+on_info = {+ui_pda_map_local} mob_remark@map_quest_1_newbie %+tutorial_artefact_start%
+on_signal = action_end | mob_remark@map2
+
+[mob_remark@map2]
+anim = idle_0_talk_2
+anim_head = head_anim_normal
+snd = trader_map_on_2
+on_info = {+ui_pda_map_local} mob_remark@map_quest_1_newbie %+tutorial_artefact_start%
+on_signal = action_end | mob_remark@before_map3
+
+[mob_remark@before_map3]
+anim = idle_0_def_0
+tip = tips_esc_trader_activate_map
+on_info = {+ui_pda_map_local} mob_remark@map_quest_1_newbie %+tutorial_artefact_start%
+on_signal = action_end | mob_remark@map3
+
+[mob_remark@map3]
+anim = idle_0_talk_2
+anim_head = head_anim_normal
+on_info = {+ui_pda_map_local} mob_remark@map_quest_1_newbie %+tutorial_artefact_start%
+snd = trader_map_on_3
+on_signal = action_end | mob_remark@map_wait
+
+[mob_remark@map_wait]
+anim = idle_0_def_0
+tip = tips_esc_trader_activate_map
+on_info = {+ui_pda_map_local} mob_remark@map_quest_1_newbie %+tutorial_artefact_start%
+on_signal = action_end | mob_remark@map_wait
+
