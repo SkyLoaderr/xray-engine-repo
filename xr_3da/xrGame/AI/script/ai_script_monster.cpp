@@ -480,6 +480,7 @@ void ScriptCallBack(CBlend* B)
 		if (!l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_bCompleted)
 			l_tpScriptMonster->callback(CScriptMonster::eActionTypeAnimation);
 		l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_bCompleted = true;
+		l_tpScriptMonster->ProcessScripts();
 	}
 }
 

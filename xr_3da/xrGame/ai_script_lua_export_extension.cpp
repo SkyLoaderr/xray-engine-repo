@@ -50,6 +50,17 @@ CLuaGameObject *get_object_by_name(LPCSTR caObjectName)
 		return		(0);
 }
 
+LPCSTR get_weather	()
+{
+	return			(g_pGamePersistent->Environment.GetWeather());
+}
+
+void set_weather	(LPCSTR weather_name)
+{
+	VERIFY3			(g_pGamePersistent->Environment.Weathers.find(weather_name) != g_pGamePersistent->Environment.Weathers.end(),"There is no weather with the specified name ",weather_name);
+	return			(g_pGamePersistent->Environment.SetWeather(weather_name));
+}
+
 void Script::vfExportArtifactMerger(CLuaVirtualMachine *tpLuaVirtualMachine)
 {
 	module(tpLuaVirtualMachine)
@@ -118,8 +129,9 @@ void Script::vfExportLevel(CLuaVirtualMachine *tpLuaVirtualMachine)
 		def("cameras",							get_camera_manager),
 		def("object",							get_object_by_name),
 		def("actor",							tpfGetActor),
-		def("set_artifact_merge",				&CArtifactMerger::SetArtifactMergeFunctor)
-//		def("get_weather",						Level::get_weather)
+		def("set_artifact_merge",				&CArtifactMerger::SetArtifactMergeFunctor),
+		def("get_weather",						get_weather),
+		def("set_weather",						set_weather)
 	];
 
 	module(tpLuaVirtualMachine)
