@@ -1348,7 +1348,7 @@ HRESULT CMyD3DApplication::RenderLight_Direct_smap	()
 
 	if (1)
 	{
-		cc.set									(s_Light_Direct_smap.constants.get("light_color"),		.8f,		.8f,		1.,			.7);
+		cc.set									(s_Light_Direct_smap.constants.get("light_color"),		1.0f,		1.0f,		.8,			.7);
 	
 		Fvector4 J; float scale					= (3.f / SHADOW_MAP_SIZE)/11.f;
 		J.set(11, 0,  0);		J.sub(11); J.mul(scale);	cc.seta	(C,0,J.x,J.y,-J.y,-J.x);
@@ -1737,7 +1737,7 @@ HRESULT CMyD3DApplication::UpdateTransform()
 	if (t>tm_next) 
 	{
 		tm_base					= t;
-		tm_next					= t+1000;
+		tm_next					= t+2000;
 
 		vLightDir0				= vLightDir1;
 		vLightDir1				= D3DXVECTOR3(rnd(),rnd(),rnd());
