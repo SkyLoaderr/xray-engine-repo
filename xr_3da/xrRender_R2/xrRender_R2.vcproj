@@ -389,6 +389,12 @@
 				RelativePath="blender_deffer_flat.h">
 			</File>
 			<File
+				RelativePath="blender_deffer_model.cpp">
+			</File>
+			<File
+				RelativePath="blender_deffer_model.h">
+			</File>
+			<File
 				RelativePath="blender_light_direct.cpp">
 			</File>
 			<File

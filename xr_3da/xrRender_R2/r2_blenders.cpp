@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 #include "blender_deffer_flat.h"
+#include "blender_deffer_model.h"
 #include "blender_screen_set.h"
 #include "blender_tree.h"
 #include "blender_detail_still.h"
@@ -26,8 +27,8 @@ CBlender*	CRender::blender_create	(CLASS_ID cls)
 	case B_SHADOW_TEX:		return 0;
 	case B_SHADOW_WORLD:	return 0;
 	case B_BLUR:			return 0;
-	case B_MODEL:			return xr_new<CBlender_deffer_flat>		();		
-	case B_MODEL_EbB:		return xr_new<CBlender_deffer_flat>		();	
+	case B_MODEL:			return xr_new<CBlender_deffer_model>	();		
+	case B_MODEL_EbB:		return xr_new<CBlender_deffer_model>	();	
 	case B_DETAIL:			return xr_new<CBlender_Detail_Still>	();	
 	case B_TREE:			return xr_new<CBlender_Tree>			();	
 	}
