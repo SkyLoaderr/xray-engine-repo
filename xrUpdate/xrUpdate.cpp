@@ -26,13 +26,6 @@ BEGIN_MESSAGE_MAP(CxrUpdateApp, CWinApp)
 
 END_MESSAGE_MAP()
 
-/*
-#define ON_MESSAGE(message, memberFxn) \
-	{ message, 0, 0, 0, AfxSig_lwl, \
-		(AFX_PMSG)(AFX_PMSGW) \
-		(static_cast< LRESULT (AFX_MSG_CALL CWnd::*)(WPARAM, LPARAM) > \
-		(memberFxn)) },
-*/
 	
 
 // CxrUpdateApp construction
@@ -45,6 +38,7 @@ void	__stdcall log_cb_fn (LPCSTR string)
 //	g_log_dlg->m_list_box.InsertString(0,string);
 	g_log_dlg->m_list_box.AddString(string);
 	g_log_dlg->ShowWindow(SW_SHOW);
+	g_log_dlg->UpdateWindow();
 }
 
 
