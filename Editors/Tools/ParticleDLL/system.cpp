@@ -329,6 +329,9 @@ void _pCallActionList(ParticleAction *apa, int num_actions,
 		case PAFollowID:
 			((PAFollow *)pa)->Execute(pg);
 			break;
+		case PAFrameID:
+			((PAFrame *)pa)->Execute(pg);
+			break;
 		case PAGravitateID:
 			((PAGravitate *)pa)->Execute(pg);
 			break;
