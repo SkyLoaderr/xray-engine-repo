@@ -75,15 +75,17 @@ void CWeaponAutoRifle::Load	(CInifile* ini, const char* section)
 
 void CWeaponAutoRifle::MediaLOAD		()
 {
+	if (hFlames.size())		return;
+
 	// flame textures
 	LPCSTR S		= pSettings->ReadSTRING	(cName(),"flame");
 	DWORD scnt		= _GetItemCount(S);
 	string256 name;
 	for (DWORD i=0; i<scnt; i++)
 	{
-		Shader* SH = 0;
-		ShaderCreate(SH,"particles\\add",_GetItem(S,i,name));
-		hFlames.push_back(SH);
+		Shader* SH			= 0;
+		ShaderCreate		(SH,"particles\\add",_GetItem(S,i,name));
+		hFlames.push_back	(SH);
 	}
 }
 
