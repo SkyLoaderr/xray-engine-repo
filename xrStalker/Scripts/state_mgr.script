@@ -453,11 +453,11 @@ function state_manager:set_state(state_name, callback, timeout, target)
 	
 	self.callback = callback
 	if timeout ~= nil and
-	   timeout > 0 
+	   timeout >= 0 
 	then
 		self.timeout = timeout
 	else
-		self.timeout = 0
+		self.timeout = nil
 	end
 end
 function state_manager:update()
