@@ -248,7 +248,7 @@ void CApplication::OnFrame( )
 
 void CApplication::Level_Scan()
 {
-	vector<char*>	folder	= FS.file_list_open	("$game_levels$",FS_ListFolders|FS_RootOnly);
+	vector<char*>*	folder	= FS.file_list_open	("$game_levels$",FS_ListFolders|FS_RootOnly);
 	R_ASSERT		(!folder->empty());
 	for (u32 i=0; i<folder->size(); i++)
 	{
@@ -265,12 +265,11 @@ void CApplication::Level_Scan()
 			)
 		{
 			sLevelInfo			LI;
-			LI.folder			= folder[i];
+			LI.folder			= xr_strdup((*folder)[i]);
 			LI.name				= 0;
 			Levels.push_back	(LI);
 		} else {
-			Msg		("! Level not compiled: %s",folder[i]);
-			xr_free	(folder[i]);
+			Msg		("! Level not compiled: %s",(*folder)[i]);
 		}
 	}
 	FS.file_list_close	(folder);
