@@ -207,6 +207,9 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 	
     switch (dwMessageType)
     {
+	case DPN_MSGID_ENUM_HOSTS_QUERY :
+		{
+		}break;
 	case DPN_MSGID_CREATE_PLAYER :
         {
 			PDPNMSG_CREATE_PLAYER	msg = PDPNMSG_CREATE_PLAYER(pMessage);
