@@ -69,7 +69,7 @@ void CRenderTarget::phase_accumulator_init()
 		pv->set						(float(_w+EPS),	EPS,			d_Z,	d_W, C, p1.x, p0.y);	pv++;
 		RCache.Vertex.Unlock		(4,g_combine->vb_stride);
 		RCache.set_Geometry			(g_combine);
-		RCache.set_Shader			(s_combine_dbg_Accumulator);
+		RCache.set_Element			(s_accum_mask->E[1]);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
 
@@ -109,7 +109,7 @@ void CRenderTarget::phase_accumulator_init()
 		pv->set						(float(_w+EPS),	EPS,			d_Z,	d_W, C, p1.x, p0.y);	pv++;
 		RCache.Vertex.Unlock		(4,g_combine->vb_stride);
 		RCache.set_Geometry			(g_combine);
-		RCache.set_Element			(s_accum_mask->E[1]);
+		RCache.set_Element			(s_accum_mask->E[2]);
 
 		// Calculate light-brightness
 		Fvector		L_clr;
