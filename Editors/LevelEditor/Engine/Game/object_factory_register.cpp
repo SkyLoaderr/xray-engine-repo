@@ -13,7 +13,7 @@
 #include "xrServer_Objects_ALife_All.h"
 
 // client entities includes
-#ifndef _EDITOR
+#ifndef NO_XR_GAME
 #	include "level.h"
 #	include "gamepersistent.h"
 #	include "hudmanager.h"
@@ -129,7 +129,7 @@
 #	include "clsid_game.h"
 #endif
 
-#ifndef _EDITOR
+#ifndef NO_XR_GAME
 #	define ADD(a,b,c,d) add<a,b>(c,d)
 #else
 #	define ADD(a,b,c,d) add<b>(c,d)
@@ -139,7 +139,7 @@ struct CUnknownClass {};
 
 void CObjectFactory::register_classes	()
 {
-#ifndef _EDITOR
+#ifndef NO_XR_GAME
 	// client entities
 	add<CLevel>												(CLSID_GAME_LEVEL			,"level");
 	add<CGamePersistent>									(CLSID_GAME_PERSISTANT		,"game");

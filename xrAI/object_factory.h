@@ -8,7 +8,15 @@
 
 #pragma once
 
-#ifndef _EDITOR
+#ifdef _EDITOR
+#	define	NO_XR_GAME
+#endif
+
+#ifdef AI_COMPILER
+#	define	NO_XR_GAME
+#endif
+
+#ifndef NO_XR_GAME
 #	include <boost/type_traits/is_base_and_derived.hpp>
 #endif
 
@@ -16,13 +24,13 @@
 
 class CObjectFactory {
 private:
-#ifndef _EDITOR
+#ifndef NO_XR_GAME
 	typedef DLL_Pure				CLIENT_BASE_CLASS;
 #endif
 	typedef CSE_Abstract			SERVER_BASE_CLASS;
 
 private:
-#ifndef _EDITOR
+#ifndef NO_XR_GAME
 	struct CInternal{};
 #endif
 
@@ -30,14 +38,14 @@ protected:
 	class CObjectItemAbstract {
 	protected:
 		CLASS_ID					m_clsid;
-#ifndef _EDITOR
+#ifndef NO_XR_GAME
 		ref_str						m_script_clsid;
 #endif
 
 	public:
 		IC							CObjectItemAbstract	(const CLASS_ID &clsid, LPCSTR script_clsid);
 		IC		const CLASS_ID		&clsid				() const;
-#ifndef _EDITOR
+#ifndef NO_XR_GAME
 		IC		ref_str				script_clsid		() const;
 		virtual CLIENT_BASE_CLASS	*client_object		() const = 0;
 #endif
@@ -53,7 +61,7 @@ protected:
 
 	public:
 		IC							CObjectItemCS		(const CLASS_ID &clsid, LPCSTR script_clsid);
-#ifndef _EDITOR
+#ifndef NO_XR_GAME
 		virtual CLIENT_BASE_CLASS	*client_object		() const;
 #endif
 		virtual SERVER_BASE_CLASS	*server_object		(LPCSTR section) const;
@@ -67,13 +75,13 @@ protected:
 
 	public:
 		IC							CObjectItem			(const CLASS_ID &clsid, LPCSTR script_clsid);
-#ifndef _EDITOR
+#ifndef NO_XR_GAME
 		virtual CLIENT_BASE_CLASS	*client_object		() const;
 #endif
 		virtual SERVER_BASE_CLASS	*server_object		(LPCSTR section) const;
 	};
 
-#ifndef _EDITOR
+#ifndef NO_XR_GAME
 	template <typename _unknown_type>
 	class CObjectItem<_unknown_type,true> : public CObjectItemAbstract {
 	protected:
@@ -124,7 +132,7 @@ protected:
 		IC	bool					operator()					(const CObjectItemAbstract *item) const;
 	};
 
-#ifndef _EDITOR
+#ifndef NO_XR_GAME
 	struct CObjectItemPredicateScript {
 		ref_str						m_script_clsid_name;
 
@@ -148,7 +156,7 @@ protected:
 	IC		const OBJECT_ITEM_STORAGE	&clsids			() const;
 	template <typename _unknown_type>
 	IC		void						add				(const CLASS_ID &clsid, LPCSTR script_clsid);
-#ifndef _EDITOR
+#ifndef NO_XR_GAME
 	template <typename _client_type, typename _server_type>
 	IC		void						add				(const CLASS_ID &clsid, LPCSTR script_clsid);
 	IC		const CObjectItemAbstract	&item			(const CLASS_ID &clsid) const;
@@ -159,7 +167,7 @@ protected:
 public:
 									CObjectFactory		();
 	virtual							~CObjectFactory		();
-#ifndef _EDITOR
+#ifndef NO_XR_GAME
 	IC		int						script_clsid		(const CLASS_ID &clsid) const;
 			void					register_script		() const;
 	IC		CLIENT_BASE_CLASS		*client_object		(const CLASS_ID &clsid) const;
@@ -175,7 +183,7 @@ IC	const CObjectFactory &object_factory()
 	return	(object_factory);
 }
 
-#ifndef _EDITOR
+#ifndef NO_XR_GAME
 
 #ifdef STATIC_CHECK
 #	undef STATIC_CHECK
@@ -190,6 +198,6 @@ IC	const CObjectFactory &object_factory()
 
 #include "object_factory_inline.h"
 
-#ifndef _EDITOR
+#ifndef NO_XR_GAME
 #	undef STATIC_CHECK
 #endif

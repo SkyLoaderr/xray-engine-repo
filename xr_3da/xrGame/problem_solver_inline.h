@@ -8,7 +8,10 @@
 
 #pragma once
 
-#include "ai_space.h"
+#ifndef AI_COMPILER
+#	include "ai_space.h"
+#endif
+
 #include "graph_engine.h"
 
 #define TEMPLATE_SPECIALIZATION template<\

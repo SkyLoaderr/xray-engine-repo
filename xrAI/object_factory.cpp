@@ -10,7 +10,7 @@
 #include "object_factory.h"
 #include "object_broker.h"
 
-#ifndef _EDITOR
+#ifndef NO_XR_GAME
 #	include "script_space.h"
 #	include "ai_space.h"
 #	include "script_engine.h"
@@ -29,7 +29,7 @@ CObjectFactory::~CObjectFactory			()
 	delete_data					(m_clsids);
 }
 
-#ifndef _EDITOR
+#ifndef NO_XR_GAME
 void CObjectFactory::register_script	() const
 {
 	luabind::class_<CInternal>	instance("clsid");
