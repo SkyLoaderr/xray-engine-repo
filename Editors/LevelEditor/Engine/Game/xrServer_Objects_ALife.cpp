@@ -975,6 +975,7 @@ CSE_ALifeObjectSearchlight::CSE_ALifeObjectSearchlight(LPCSTR caSection) : CSE_A
 	spot_brightness				= 1.f;
 	glow_texture[0]				= 0;
 	glow_radius					= 0.1f;
+	guid_bone					= u32(BI_NONE);
 }
 
 CSE_ALifeObjectSearchlight::~CSE_ALifeObjectSearchlight()
@@ -993,6 +994,9 @@ void CSE_ALifeObjectSearchlight::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
 	tNetPacket.r_float		(spot_brightness);
 	tNetPacket.r_string		(glow_texture);
 	tNetPacket.r_float		(glow_radius);
+	if (m_wVersion > 41){
+		tNetPacket.r_u16	(guid_bone);
+	}
 }
 
 void CSE_ALifeObjectSearchlight::STATE_Write(NET_Packet	&tNetPacket)
@@ -1006,6 +1010,7 @@ void CSE_ALifeObjectSearchlight::STATE_Write(NET_Packet	&tNetPacket)
 	tNetPacket.w_float			(spot_brightness);
 	tNetPacket.w_string			(glow_texture);
 	tNetPacket.w_float			(glow_radius);
+	tNetPacket.w_u16			(guid_bone);
 }
 
 void CSE_ALifeObjectSearchlight::UPDATE_Read(NET_Packet	&tNetPacket)
@@ -1030,6 +1035,14 @@ void CSE_ALifeObjectSearchlight::FillProp			(LPCSTR pref, PropItemVec& values)
 	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Brightness"),		&spot_brightness,	0.1f, 5.f);
 	PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,s_name,"Glow texture"),	glow_texture,		sizeof(glow_texture), 	smTexture);
 	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Glow radius"),		&glow_radius,		0.1f, 1000.f);
+	// bones
+	if (visual && PKinematics(visual))
+	{
+		AStringVec				vec;
+		u16 cnt					= PKinematics(visual)->LL_Bones()->size();
+		for (u16 k=0; k<cnt; k++) vec.push_back(PKinematics(visual)->LL_BoneName_dbg(k));
+		PHelper.CreateToken2<u16>(values, FHelper.PrepareKey(pref,s_name,"Guide bone"),		&guid_bone,	&vec);
+	}
 }
 #endif
 
