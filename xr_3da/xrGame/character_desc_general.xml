@@ -79,6 +79,7 @@
 			[spawn] \n
 			device_torch \n
 			wpn_knife \n
+			detector_simple \n
 		</supplies>
 		
 		<class>actor</class>
