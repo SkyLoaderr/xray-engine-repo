@@ -769,6 +769,10 @@ SOURCE=.\3DSound.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\3DSound_Loader.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\3DSoundRender.cpp
 # End Source File
 # Begin Source File
