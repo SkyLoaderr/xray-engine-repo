@@ -50,11 +50,11 @@ void CBuild::Light()
 				if (N>=g_deflectors.size())		continue;
 				if (0==threads[L])	{
 					// Start NEW thread
-					threads[L]			= new CLMThread(N,g_deflectors[N]);	N++;
+					threads[L]			= new CLMThread	(N,g_deflectors[N]);	N++;
 					threads[L]->Start	();
 				} else {
 					// Use existing one
-					threads[L]->defl	= g_deflectors[N];
+					threads[L]->defl	= g_deflectors[N]; N++;
 				}
 				
 				// Info
@@ -63,9 +63,12 @@ void CBuild::Light()
 				Status	("Calculating surface up to #%d...",N);
 			}
 		}
-		DWORD	thOK	= 0;
-		for (L=0; L<thNUM; L++)	thOK += (threads[L]?0:1);
-		if		(thOK==thNUM)	break;
+		if	(N>=g_deflectors.size())	
+		{
+			DWORD	thOK	= 0;
+			for		(L=0; L<thNUM; L++)	if ((0==threads[L]) || (0==threads[L]->defl))	thOK ++;
+			if		(thOK==thNUM)	break;
+		}
 		Sleep	(50);
 	}
 	for (int L=0; L<thNUM; L++)	{
