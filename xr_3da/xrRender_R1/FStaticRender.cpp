@@ -330,7 +330,7 @@ void CRender::Calculate				()
 		for (u32 o_it=0; o_it<lstRenderables.size(); o_it++)
 		{
 			ISpatial*	spatial		= lstRenderables[o_it];		spatial->spatial_updatesector	();
-			CSector*	sector		= (CSector*)spatial->spatial.sector;
+			CSector*	sector		= (CSector*)spatial->spatial.sector	;
 			if	(0==sector)										continue;	// disassociated from S/P structure
 			if	(PortalTraverser.i_marker != sector->r_marker)	continue;	// inactive (untouched) sector
 			for (u32 v_it=0; v_it<sector->r_frustums.size(); v_it++)
