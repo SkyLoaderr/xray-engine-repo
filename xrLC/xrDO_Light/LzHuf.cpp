@@ -4,9 +4,11 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#pragma warning(disable:4995)
 #include <io.h>
 #include <fcntl.h>
 #include <sys\stat.h>
+#pragma warning(default:4995)
 
 #define MODULE
 
@@ -413,9 +415,11 @@ void reconst(void)
         for (k = j - 1; f < freq[k]; k--);
         k++;
         l = (j - k) * sizeof(unsigned);
-        memmove	(&freq[k + 1], &freq[k], l);
+//        memmove	(&freq[k + 1], &freq[k], l);
+        Memory.mem_copy	(&freq[k + 1], &freq[k], l);
         freq[k] = f;
-        memmove	(&son[k + 1], &son[k], l);
+//        memmove	(&son[k + 1], &son[k], l);
+        Memory.mem_copy	(&son[k + 1], &son[k], l);
         son[k] = i;
     }
     /* connect prnt */

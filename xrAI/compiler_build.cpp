@@ -5,7 +5,9 @@
 
 #include "motion_simulator.h"
 
+#pragma warning(disable:4995)
 #include "MgcAppr3DPlaneFit.h"
+#pragma warning(default:4995)
 
 IC void SnapXZ	(Fvector&	V)
 {
