@@ -670,10 +670,10 @@ function stalker_novice3_action:state_actor()
 --      return
 --    end
 
-    local pos = level.actor():position()
-    pos.y  = pos.y + 1.6
+--    local pos = level.actor():position()
+--    pos.y  = pos.y + 1.6
 
-    self.object:set_sight           (look.point, pos, 0)
+    self.object:set_sight           (look.point, level.actor(), 0)
     self.object:set_mental_state    (anim.free)
 end
 ---------------------------------------------------------------------------------------------------------------------
