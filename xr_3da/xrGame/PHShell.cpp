@@ -693,7 +693,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 							J->SetLimits(joint_data.limits[1].limit.x,joint_data.limits[1].limit.y,2);
 							J->SetAxisSDfactors(joint_data.limits[1].spring_factor,joint_data.limits[1].damping_factor,2);
 						}
-						J->SetForceAndVelocity(joint_data.friction);
+
 						break;
 					}
 				case jtWheel:
@@ -717,6 +717,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 				}
 				if(J)
 				{
+					J->SetForceAndVelocity(joint_data.friction);
 					SetJointRootGeom(root_e,J);
 					add_Joint	(J);
 					if(breakable)
