@@ -341,16 +341,21 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 		// Fill in the input to the mesh mender
 		// Positions
 		NVMeshMender::VertexAttribute positionAtt;
-		positionAtt.Name_ = "position";
-		positionAtt.floatVector_ = position;
-		// Indices
-		NVMeshMender::VertexAttribute indexAtt;
-		indexAtt.Name_ = "indices";
-		indexAtt.intVector_ = index;
+		positionAtt.Name_			= "position";
+		positionAtt.floatVector_	= position;
+		// Normals
+		NVMeshMender::VertexAttribute positionAtt;
+		positionAtt.Name_			= "normal";
+		positionAtt.floatVector_	= normals;
 		// Texture coordinates
 		NVMeshMender::VertexAttribute texCoordAtt;
-		texCoordAtt.Name_ = "tex0";
-		texCoordAtt.floatVector_ = texCoord;
+		texCoordAtt.Name_			= "tex0";
+		texCoordAtt.floatVector_	= texCoord;
+		// Indices
+		NVMeshMender::VertexAttribute indexAtt;
+		indexAtt.Name_				= "indices";
+		indexAtt.intVector_			= index;
+
 		// Fill in input list
 		std::vector<NVMeshMender::VertexAttribute> inputAtts;
 		inputAtts.push_back(positionAtt);
