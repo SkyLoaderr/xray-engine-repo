@@ -141,16 +141,19 @@ void CMonsterMovement::find_target()
 	if (m_target_type == eMoveToTarget) {
 
 		dir.sub						(m_target_selected.position, object().Position());
-		VERIFY						(!fis_zero(dir.square_magnitude()));
-		dir.normalize				();
+		//VERIFY						(!fis_zero(dir.square_magnitude())); //todo
+		dir.normalize_safe			();
 		m_target_found.position	= m_target_selected.position;
 
 	} else if (m_target_type == eRetreatFromTarget){
-		VERIFY(m_target_found.node == u32(-1));
-
-		dir.sub							(object().Position(), m_target_selected.position);
-		dir.normalize_safe				();
-		m_target_found.position.mad	(object().Position(), dir, MAX_PATH_DISTANCE - 1.f);
+		
+		if (m_target_found.node == u32(-1)) {
+			dir.sub							(object().Position(), m_target_selected.position);
+			dir.normalize_safe				();
+			m_target_found.position.mad		(object().Position(), dir, MAX_PATH_DISTANCE - 1.f);
+		} else {
+			m_target_found.position	= m_target_selected.position;
+		}
 	}
 
 	// определить расстояние до выбранной точки
