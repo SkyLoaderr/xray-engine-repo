@@ -260,16 +260,6 @@ void CSoundManager::GetDeviceInfo( )
 
 	Log("\nDirectSound info...");
 	Log("* DirectSound:                 ", (dsCaps.dwFlags&DSCAPS_EMULDRIVER)?"not available":"available.");
-	/*
-	Log("* Primary support 8 bit:       ", (dsCaps.dwFlags&DSCAPS_PRIMARY8BIT)?"yes":"no");
-	Log("* Primary support 16 bit:      ", (dsCaps.dwFlags&DSCAPS_PRIMARY16BIT)?"yes":"no");
-	Log("* Primary support mono:        ", (dsCaps.dwFlags&DSCAPS_PRIMARYMONO)?"yes":"no");
-	Log("* Primary support stereo:	    ", (dsCaps.dwFlags&DSCAPS_PRIMARYSTEREO)?"yes":"no");
-	Log("* Secondary support 8 bit:	    ", (dsCaps.dwFlags&DSCAPS_SECONDARY8BIT)?"yes":"no");
-	Log("* Secondary support 16 bit:    ", (dsCaps.dwFlags&DSCAPS_SECONDARY16BIT)?"yes":"no");
-	Log("* Secondary support mono:      ", (dsCaps.dwFlags&DSCAPS_SECONDARYMONO)?"yes":"no");
-	Log("* Secondary support stereo:    ", (dsCaps.dwFlags&DSCAPS_SECONDARYSTEREO)?"yes":"no");
-	*/
 	Msg("* Max  HW mix buf               all: %d, stat: %d, strm: %d", dsCaps.dwMaxHwMixingAllBuffers, dsCaps.dwMaxHwMixingStaticBuffers, dsCaps.dwMaxHwMixingStreamingBuffers);
 	Msg("* Free HW mix buf               all: %d, stat: %d, strm: %d", dsCaps.dwFreeHwMixingAllBuffers, dsCaps.dwFreeHwMixingStaticBuffers, dsCaps.dwFreeHwMixingStreamingBuffers);
 	Msg("* Max  3D HW buf                all: %d, stat: %d, strm: %d", dsCaps.dwMaxHw3DAllBuffers, dsCaps.dwMaxHw3DStaticBuffers, dsCaps.dwMaxHw3DStreamingBuffers);

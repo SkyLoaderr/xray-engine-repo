@@ -7,6 +7,7 @@
 		+ TODO: Blurred output, gray output
 		. TODO: Rain with collisions
 		. TODO: Sound-wave-tracing
+		. TODO: Sound-manager-volume
 		. TODO: Ground Fog
 		. TODO: Lighting model
 			. TODO: Flash-lighting (ala Kreed :)
