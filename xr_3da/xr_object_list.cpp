@@ -53,10 +53,11 @@ void CObjectList::SingleUpdate	(CObject* O)
 		if (O->H_Parent())		SingleUpdate(O->H_Parent());
 		O->dwFrame_UpdateCL		= Device.dwFrame;
 		O->UpdateCL				();
-		if (O->getDestroy() && !O->shedule.b_locked)			destroy_queue.push_back(O);
-		if (O->H_Parent() && O->H_Parent()->getDestroy() && !O->shedule.b_locked)	
+		if (O->getDestroy() && !O->shedule.b_locked)	destroy_queue.push_back(O);
+		else if (O->H_Parent() && (O->H_Parent()->getDestroy() || O->H_Root()->getDestroy()) && !O->shedule.b_locked)	
 		{
 			// Push to destroy-queue if it isn't here already
+			Msg	("! ERROR: incorrect destroy sequence for object[%d:%s], section[%s]",O->ID(),*O->cName(),*O->cNameSect());
 			if (std::find(destroy_queue.begin(),destroy_queue.end(),O)==destroy_queue.end())
 				destroy_queue.push_back	(O);
 		}
