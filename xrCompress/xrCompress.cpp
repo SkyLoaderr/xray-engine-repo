@@ -93,14 +93,15 @@ void	Compress			(LPCSTR path)
 	}
 
 	CVirtualFileStream		src	(path);
-	u32			c_crc32		= crc32_calc	(src.Pointer(),src.Length());
-	u32			c_ptr		= 0;
-	u32			c_size		= 0;
-	u32			c_mode		= 0;
-	u32			a_tests		= 0;
+	bytesSRC				+=	src.Length();
+	u32			c_crc32		=	crc32_calc	(src.Pointer(),src.Length());
+	u32			c_ptr		=	0;
+	u32			c_size		=	0;
+	u32			c_mode		=	0;
+	u32			a_tests		=	0;
 
-	ALIAS*		A			= testALIAS	(src,c_crc32,a_tests);
-	printf				("%3da ",a_tests);
+	ALIAS*		A			=	testALIAS	(src,c_crc32,a_tests);
+	printf					("%3da ",a_tests);
 	if (A) 
 	{
 		filesALIAS			++;
@@ -110,8 +111,6 @@ void	Compress			(LPCSTR path)
 		c_ptr				= A->c_ptr;
 		c_size				= A->c_size;
 		c_mode				= A->c_mode;
-		bytesSRC			+= A->size;
-		bytesDST			+= 0;
 	} else {
 		if (testVFS(path))	{
 			filesVFS			++;
@@ -122,8 +121,6 @@ void	Compress			(LPCSTR path)
 			c_size				= src.Length();
 			c_mode				= 1;		// VFS file
 			fs->write			(src.Pointer(),c_size);
-			bytesSRC			+= c_size;
-			bytesDST			+= c_size;
 		} else {
 			// Compress into BaseFS
 			c_ptr				= fs->tell();
@@ -131,10 +128,19 @@ void	Compress			(LPCSTR path)
 			c_mode				= 0;		// Normal file
 			BYTE*		c_data	= 0;
 			_compressLZ			(&c_data,&c_size,src.Pointer(),src.Length());
-			fs->write			(c_data,c_size);
-			printf				("%3.1f%%",100.f*float(c_size)/float(src.Length()));
-			bytesSRC			+= src.Length();
-			bytesDST			+= c_size;
+			if (c_size>=src.Length())
+			{
+				// Failed to compress - revert to VFS
+				c_ptr				= fs->tell	();
+				c_size				= src.Length();
+				c_mode				= 1;		// VFS file
+				fs->write			(src.Pointer(),c_size);
+				printf				("VFS");
+			} else {
+				// Compressed OK
+				fs->write			(c_data,c_size);
+				printf				("%3.1f%%",100.f*float(c_size)/float(src.Length()));
+			}
 		}
 	}
 
@@ -215,6 +221,7 @@ int __cdecl main	(int argc, char* argv[])
 		fs->open_chunk	(0);
 		Recurse			("");
 		fs->close_chunk	();
+		bytesDST		= fs->tell	();
 		fs->write_chunk	(1|CFS_CompressMark, fs_desc.pointer(),fs_desc.size());
 		delete fs;
 		u32			dwTimeEnd	= timeGetTime();
