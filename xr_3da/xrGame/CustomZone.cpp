@@ -318,7 +318,6 @@ void CCustomZone::spatial_move()
 	spatial.radius			= CFORM()->getRadius();
 	ISpatial::spatial_move	();
 }
-*/
 void CCustomZone::Center(Fvector& C)
 {
 	XFORM().transform_tiny	(C,CFORM()->getSphere().P);
@@ -327,6 +326,7 @@ float CCustomZone::Radius()
 {
 	return CFORM()->getRadius();
 }
+*/
 
 #ifdef DEBUG
 void CCustomZone::OnRender() 
