@@ -14,18 +14,18 @@ void CObjectSpace::BoxQuery(const Fbox& B, const Fmatrix& M, u32 flags)
 	xf.get_CD	(bc,bd);
 
 	q_result.Clear	();
-	XRC.box_options	(
+	xrc.box_options	(
 		(flags&clCOARSE?0:CDB::OPT_FULL_TEST)|
 		(flags&clQUERY_ONLYFIRST?CDB::OPT_ONLYFIRST:0)
 		);
 
 	if ((flags&clStatic) == clStatic)
 	{
-		XRC.box_query	(&Static, bc, bd);
-		if (XRC.r_count())
+		xrc.box_query	(&Static, bc, bd);
+		if (xrc.r_count())
 		{
-			CDB::RESULT* it	=XRC.r_begin();
-			CDB::RESULT* end=XRC.r_end	();
+			CDB::RESULT* it	=xrc.r_begin();
+			CDB::RESULT* end=xrc.r_end	();
 			for (; it!=end; it++)
 				q_result.AddTri(&Static.get_tris() [it->id],Static.get_verts());
 		}

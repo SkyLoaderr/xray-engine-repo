@@ -16,7 +16,7 @@ BOOL CObjectSpace::RayTest	( const Fvector &start, const Fvector &dir, float ran
 {
 	VERIFY					(_abs(dir.magnitude()-1)<EPS);
 
-	XRC.ray_options			(CDB::OPT_ONLYFIRST);
+	xrc.ray_options			(CDB::OPT_ONLYFIRST);
 	ICollisionForm::RayQuery Q(start,dir,range);
 	if (bDynamic) 
 	{
@@ -43,12 +43,12 @@ BOOL CObjectSpace::RayTest	( const Fvector &start, const Fvector &dir, float ran
 		}
 		
 		// 2. Polygon doesn't pick - real database query
-		XRC.ray_query	(&Static,start,dir,range);
-		if (0==XRC.r_count()) {
+		xrc.ray_query	(&Static,start,dir,range);
+		if (0==xrc.r_count()) {
 			return FALSE;
 		} else {
 			// cache polygon
-			CDB::RESULT*	R	= XRC.r_begin();
+			CDB::RESULT*	R	= xrc.r_begin();
 			CDB::TRI&		T	= Static.get_tris() [ R->id ];
 			Fvector*		V	= Static.get_verts();
 			cache->verts[0].set	(V[T.verts[0]]);
@@ -57,8 +57,8 @@ BOOL CObjectSpace::RayTest	( const Fvector &start, const Fvector &dir, float ran
 			return TRUE;
 		}
 	} else {
-		XRC.ray_query	(&Static,start,dir,range);
-		return XRC.r_count();
+		xrc.ray_query	(&Static,start,dir,range);
+		return xrc.r_count();
 	}
 }
 
@@ -67,10 +67,10 @@ BOOL CObjectSpace::RayPick	( const Fvector &start, const Fvector &dir, float ran
 	R.O		= 0; R.range = range; R.element = -1;
 
 	// Test static model
-	XRC.ray_options		(CDB::OPT_ONLYNEAREST | CDB::OPT_CULL);
-	XRC.ray_query		(&Static,start,dir,range);
-	if (XRC.r_count()) {
-		CDB::RESULT* I	= XRC.r_begin	();
+	xrc.ray_options		(CDB::OPT_ONLYNEAREST | CDB::OPT_CULL);
+	xrc.ray_query		(&Static,start,dir,range);
+	if (xrc.r_count()) {
+		CDB::RESULT* I	= xrc.r_begin	();
 		if (I->range<range) {
 			R.O			= NULL;
 			R.range		= I->range;

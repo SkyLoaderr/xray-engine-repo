@@ -20,6 +20,7 @@ private:
 	CDB::MODEL							Static;
 	Fvector								Static_Shift;
 	Fbox								m_BoundingVolume;
+	xrXRC								xrc;
 public:
 	xr_vector<CObject*>					q_nearest;
 	clQueryCollision					q_result;
