@@ -44,7 +44,7 @@ public:
 
 
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
-	virtual void OnMouse(int x, int y, E_MOUSEACTION mouse_action);
+	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
 
 
 	CInventory* GetInventory() {return m_pInv;}
@@ -153,16 +153,6 @@ protected:
 	//---------------------------------------------------------------------
 	//для запуска меню по правой клавиши
 	void ActivatePropertiesBox();
-
-	//описание возоможных дейстивий над предметами инвентаря
-	enum {DROP_ACTION, EAT_ACTION, TO_BELT_ACTION, 
-		  TO_SLOT_ACTION, TO_BAG_ACTION,
-		  ARTIFACT_MERGER_ACTIVATE,
-		  ARTIFACT_MERGER_DEACTIVATE,
-  		  ATTACH_ADDON, 
-		  DETACH_SCOPE_ADDON,
-		  DETACH_SILENCER_ADDON,
-		  DETACH_GRENADE_LAUNCHER_ADDON};
 
 	//выбросить элемент
 	void DropItem();
