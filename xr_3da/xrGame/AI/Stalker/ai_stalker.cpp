@@ -56,6 +56,7 @@ CAI_Stalker::CAI_Stalker			()
 	shedule.t_min					= 1;
 	shedule.t_max					= 200;
 	m_demo_mode						= false;
+	m_group_behaviour				= true;
 }
 
 CAI_Stalker::~CAI_Stalker			()
@@ -195,6 +196,7 @@ BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 	CSE_ALifeHumanStalker			*tpHuman = smart_cast<CSE_ALifeHumanStalker*>(e);
 	R_ASSERT						(tpHuman);
 	m_demo_mode						= !!tpHuman->m_demo_mode;
+	m_group_behaviour				= !!tpHuman->m_flags.test(CSE_ALifeObject::flGroupBehaviour);
 
 	if (!inherited::net_Spawn(DC) || !CObjectHandler::net_Spawn(DC))
 		return						(FALSE);

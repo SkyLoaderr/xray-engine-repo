@@ -79,6 +79,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeObject,CSE_Abstract,CRandom)
 		flUsefulForAI		= u32(1) << 5,
 		flOfflineNoMove		= u32(1) << 6,
 		flUsedAI_Locations	= u32(1) << 7,
+		flGroupBehaviour	= u32(1) << 8,
 	};
 
 public:

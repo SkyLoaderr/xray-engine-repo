@@ -352,6 +352,12 @@ private:
 	IC		bool						frame_check						(u32 &frame);
 	virtual bool						natural_weapon					() const {return false;}
 	virtual bool						natural_detector				() const {return false;}
+
+private:
+	bool								m_group_behaviour;
+
+public:
+	IC		bool						group_behaviour					() const;
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CAI_Stalker)

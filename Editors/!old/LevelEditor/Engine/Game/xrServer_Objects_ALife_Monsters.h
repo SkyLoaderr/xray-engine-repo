@@ -119,8 +119,6 @@ SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeCustomZone)
 #define script_type_list save_type_list(CSE_ALifeCustomZone)
 
-
-
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeAnomalousZone,CSE_ALifeCustomZone,CSE_ALifeSchedulable)
 	float							m_fRadius;
 	float							m_fBirthProbability;
@@ -389,7 +387,7 @@ add_to_type_list(CSE_ALifeMonsterBase)
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_ALifeMonsterAbstract)
 	DWORD_VECTOR					m_tpPath;
 	u32								m_dwCurNode;
-	GameGraph::_GRAPH_ID				m_tDestGraphPointIndex;								
+	GameGraph::_GRAPH_ID			m_tDestGraphPointIndex;								
 	xr_vector<bool>					m_baVisitedVertices;
 	ALife::ETaskState				m_tTaskState;
 	u32								m_dwCurTaskLocation;

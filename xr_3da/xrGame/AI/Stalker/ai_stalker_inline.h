@@ -71,3 +71,8 @@ IC	bool CAI_Stalker::frame_check					(u32 &frame)
 	frame			= Device.dwFrame;
 	return			(true);
 }
+
+IC	bool CAI_Stalker::group_behaviour				() const
+{
+	return			(m_group_behaviour);
+}
