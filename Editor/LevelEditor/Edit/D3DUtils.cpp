@@ -5,6 +5,7 @@
 
 #include "D3DUtils.h"
 #include "UI_Main.h"
+#include "xr_hudfont.h"
 
 #define LINE_DIVISION  32  // не меньше 6!!!!!
 namespace DU{
@@ -473,7 +474,7 @@ void DrawPivot(const Fvector& pos, float sz){
     DrawCross(pos, sz, sz, sz, sz, sz, sz, 0xFF7FFF7F);
 }
 
-void DrawAxis(){
+void DrawAxis(const Fmatrix& T){
 	VERIFY( Device.bReady );
     Fvector p[6];
     DWORD 	c[6];
@@ -482,7 +483,7 @@ void DrawAxis(){
     c[0]=c[2]=c[4]=0x00222222; c[1]=0x00FF0000; c[3]=0x0000FF00; c[5]=0x000000FF;
 
     // position
-    p[0].direct(Device.m_Camera.GetPosition(),Device.m_Camera.GetDirection(),0.25f);
+  	p[0].direct(T.c,T.k,0.25f);
     p[1].set(p[0]); p[1].x+=.015f;
     p[2].set(p[0]);
     p[3].set(p[0]); p[3].y+=.015f;
@@ -497,7 +498,9 @@ void DrawAxis(){
 
     for (int i=0; i<6; i++,pv++){
 	    pv->color = c[i]; pv->transform(p[i],Device.mFullTransform);
-	    pv->p.x	= Device._x2real(pv->p.x)+dx;   pv->p.y	= Device._y2real(pv->p.y)+dy;
+	    pv->p.x	= Device._x2real(pv->p.x)+dx;
+        pv->p.y	= Device._y2real(pv->p.y)+dy;
+        p[i].set(pv->p.x,pv->p.y,0);
     }
 
 	// unlock VB and Render it as triangle list
@@ -506,6 +509,49 @@ void DrawAxis(){
 	Device.SetShader(Device.m_WireShader);
     Device.DP(D3DPT_LINELIST,TLStream,vBase,3);
 	Device.SetRS(D3DRS_SHADEMODE,Device.dwShadeMode);
+
+    Device.pHUDFont->Color(0xFF000000);
+    Device.pHUDFont->Out(p[1].x,p[1].y,"x");
+    Device.pHUDFont->Out(p[3].x,p[3].y,"y");
+    Device.pHUDFont->Out(p[5].x,p[5].y,"z");
+}
+
+void DrawObjectAxis(const Fmatrix& T){
+	VERIFY( Device.bReady );
+
+    Fvector c,d,n,r;
+
+	float w	= T.c.x*Device.mFullTransform._14 + T.c.y*Device.mFullTransform._24 + T.c.z*Device.mFullTransform._34 + Device.mFullTransform._44;
+	float s = w*0.1;
+								Device.mFullTransform.transform(c,T.c);
+    r.mul(T.i,s); r.add(T.c); 	Device.mFullTransform.transform(r);
+    n.mul(T.j,s); n.add(T.c); 	Device.mFullTransform.transform(n);
+    d.mul(T.k,s); d.add(T.c); 	Device.mFullTransform.transform(d);
+	c.x = Device._x2real(c.x); c.y = Device._y2real(-c.y);
+    r.x = Device._x2real(r.x); r.y = Device._y2real(-r.y);
+    n.x = Device._x2real(n.x); n.y = Device._y2real(-n.y);
+    d.x = Device._x2real(d.x); d.y = Device._y2real(-d.y);
+
+    DWORD vBase;
+	FVF::TL* pv = (FVF::TL*)TLStream->Lock(6,vBase);
+	pv->p.x	= c.x; pv->p.y = c.y; pv->color=0x00222222; pv++;
+	pv->p.x	= d.x; pv->p.y = d.y; pv->color=0x000000FF; pv++;
+	pv->p.x	= c.x; pv->p.y = c.y; pv->color=0x00222222; pv++;
+	pv->p.x	= r.x; pv->p.y = r.y; pv->color=0x00FF0000; pv++;
+	pv->p.x	= c.x; pv->p.y = c.y; pv->color=0x00222222; pv++;
+	pv->p.x	= n.x; pv->p.y = n.y; pv->color=0x0000FF00;
+
+	// unlock VB and Render it as triangle list
+	TLStream->Unlock(6);
+	Device.SetRS(D3DRS_SHADEMODE,D3DSHADE_GOURAUD);
+	Device.SetShader(Device.m_WireShader);
+    Device.DP(D3DPT_LINELIST,TLStream,vBase,3);
+	Device.SetRS(D3DRS_SHADEMODE,Device.dwShadeMode);
+
+    Device.pHUDFont->Color(0xFF000000);
+    Device.pHUDFont->Out(r.x,r.y,"x");
+    Device.pHUDFont->Out(n.x,n.y,"y");
+    Device.pHUDFont->Out(d.x,d.y,"z");
 }
 
 void DrawGrid(){

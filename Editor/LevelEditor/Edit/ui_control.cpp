@@ -249,8 +249,8 @@ void __fastcall TUI_CustomControl::RotateProcess(TShiftState _Shift)
                             Scene.GetGroupItem(idx).box.getcenter(C);
                             (*_F)->Rotate( C, m_RotateVector, amount );
                         }else{
-                            if( fraTopBar->ebCSWorld->Down ){
-                                (*_F)->WorldRotate( m_RotateVector, amount );
+                            if( fraTopBar->ebCSParent->Down ){
+                                (*_F)->ParentRotate( m_RotateVector, amount );
                             } else {
 //                                (*_F)->LocalRotate( m_RotateCenter, m_RotateVector, amount );
                                 (*_F)->LocalRotate( m_RotateVector, amount );
@@ -311,8 +311,8 @@ void __fastcall TUI_CustomControl::ScaleProcess(TShiftState _Shift)
                         Scene.GetGroupItem(idx).box.getcenter(C);
                         (*_F)->Scale( C, amount );
                     }else{
-                        if( fraTopBar->ebCSWorld->Down ){
-                            (*_F)->WorldScale( amount );
+                        if( fraTopBar->ebCSParent->Down ){
+                            (*_F)->ParentScale( amount );
                         } else {
                             (*_F)->Scale( UI.pivot(), amount );
                         }

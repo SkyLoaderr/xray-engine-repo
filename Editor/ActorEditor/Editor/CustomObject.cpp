@@ -12,6 +12,7 @@
 #include "editorpref.h"
 #include "scene.h"
 #include "sceneobject.h"
+#include "D3DUtils.h"
 
 #define SCENEOBJECT_CHUNK_PARAMS 		0xF900
 #define SCENEOBJECT_CHUNK_GROUPINDEX	0xF901
@@ -138,16 +139,45 @@ void CCustomObject::Move(Fvector& amount){
 
                     vD.set(mR.k);
 					vR.crossproduct	(vN,vD);
+                    vR.normalize();
 					vD.crossproduct	(vR,vN);
                     vD.normalize();
+
+    angle_y = D = -asin( mat[2]);
+    C           =  cos( angle_y );
+    angle_y    *= RADIANS;
+
+    if ( fabs( angle_y ) > 0.0005 )
+      {
+      trx      =  mat[10] / C;
+      try      = -mat[6]  / C;
+
+      angle_x  = atan2( try, trx ) * RADIANS;
+
+      trx      =  mat[0] / C;
+      try      = -mat[1] / C;
+
+      angle_z  = atan2( try, trx ) * RADIANS;
+      }
+    else
+      {
+      angle_x  = 0;
+
+      trx      = mat[5];
+      try      = mat[4];
+
+      angle_z  = atan2( try, trx ) * RADIANS;
+      }
+
 
 			   	   	r.x = asinf( vD.y );
                     if (vD.x<0)	r.y = acosf(vD.z);
                     else	 	r.y = 2*PI-acosf(vD.z);
+//					r.z = asinf(vR.x);
                     if (vR.y<0)	r.z = -acosf( vN.y / cos( r.x ));
                     else		r.z = acosf( vN.y / cos( r.x ));
 
-                    PRotate = r;
+                    PRotate = r1;
 				}
             }
         else v.add(amount);
@@ -178,7 +208,7 @@ void CCustomObject::Rotate(Fvector& center, Fvector& axis, float angle){
     PRotate		= r;
 }
 
-void CCustomObject::WorldRotate(Fvector& axis, float angle){
+void CCustomObject::ParentRotate(Fvector& axis, float angle){
 	R_ASSERT(!Locked());
     UI.UpdateScene();
     Fvector r	= PRotate;
@@ -187,13 +217,21 @@ void CCustomObject::WorldRotate(Fvector& axis, float angle){
 }
 
 void CCustomObject::LocalRotate(Fvector& axis, float angle){
-	Fvector a;
     Fmatrix m;
-    m.invert(FTransform);
-	m.transform_tiny(a,axis);
-    Fvector r	= PRotate;
-    r.mad		(a,angle);
-    PRotate		= r;
+    m.rotation(axis,angle);
+
+    FTransform.mul(m);
+
+    Fvector r;
+    r.x = asinf( FTransform.k.y );
+    if (FTransform.k.x<0)	r.y = acosf(FTransform.k.z);
+    else	 	r.y = 2*PI-acosf(FTransform.k.z);
+//	r.z = acosf(FTransform.i.x);
+    if (FTransform.i.y<0)	r.z = -acosf( FTransform.j.y / cos( r.x ));
+    else		r.z = acosf( FTransform.j.y / cos( r.x ));
+
+    FRotate		= r;
+
 }
 
 void CCustomObject::Scale( Fvector& center, Fvector& amount ){
@@ -218,7 +256,7 @@ void CCustomObject::Scale( Fvector& center, Fvector& amount ){
     PScale		= s;
 }
 
-void CCustomObject::WorldScale( Fvector& amount ){
+void CCustomObject::ParentScale( Fvector& amount ){
 	R_ASSERT(!Locked());
     UI.UpdateScene();
     Fvector s	= PScale;
@@ -229,4 +267,9 @@ void CCustomObject::WorldScale( Fvector& amount ){
     PScale		= s;
 }
 
+void CCustomObject::Render(int priority, bool strictB2F)
+{
+	if ((1==priority)&&(false==strictB2F)&&(Selected()))
+    	DU::DrawObjectAxis(FTransform);
+}
 

@@ -28,7 +28,7 @@ __published:	// IDE-managed Components
     TPanel *paSnap;
     TExtBtn *ebMSnap;
     TExtBtn *ebASnap;
-	TExtBtn *ebCSWorld;
+	TExtBtn *ebCSParent;
     TPanel *paAxis;
     TExtBtn *ebAxisX;
     TExtBtn *ebAxisY;

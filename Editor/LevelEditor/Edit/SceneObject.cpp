@@ -87,6 +87,7 @@ bool __inline CSceneObject::IsRender(){
 }
 
 void CSceneObject::Render(int priority, bool strictB2F){
+	inherited::Render(priority,strictB2F);
     Scene.TurnLightsForObject(this);
 	m_pRefs->Render(_Transform(), priority, strictB2F);
     if ((1==priority)&&(false==strictB2F)){
@@ -159,12 +160,12 @@ void CSceneObject::Scale( Fvector& center, Fvector& amount ){
 	inherited::Scale(center,amount);
 }
 
-void CSceneObject::WorldScale( Fvector& amount ){
+void CSceneObject::ParentScale( Fvector& amount ){
     if (IsDynamic()){
     	ELog.DlgMsg(mtInformation,"Dynamic object %s - can't scale.", Name);
         return;
     }
-	inherited::WorldScale(amount);
+	inherited::ParentScale(amount);
 }
 
 void CSceneObject::GetFullTransformToWorld( Fmatrix& m ){

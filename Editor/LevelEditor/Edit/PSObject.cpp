@@ -243,7 +243,7 @@ void CPSObject::Rotate( Fvector& center, Fvector& axis, float angle ){
 }
 //----------------------------------------------------
 
-void CPSObject::WorldRotate(Fvector& axis, float angle ){
+void CPSObject::ParentRotate(Fvector& axis, float angle ){
 	R_ASSERT(!Locked());
 	Fmatrix m;
 	m.rotation			(axis, (axis.y)?-angle:angle);
@@ -266,7 +266,7 @@ void CPSObject::Scale( Fvector& center, Fvector& amount ){
     UI.UpdateScene();
 }
 
-void CPSObject::WorldScale( Fvector& amount ){
+void CPSObject::ParentScale( Fvector& amount ){
 	R_ASSERT(!Locked());
     if (m_Emitter.m_EmitterType==PS::SEmitter::emBox){
 		m_Emitter.m_BoxSize.add(amount);

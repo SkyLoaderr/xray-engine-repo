@@ -244,9 +244,9 @@ void CEvent::Rotate(Fvector& center, Fvector& axis, float angle){
     UI.UpdateScene();
 }
 
-void CEvent::WorldRotate(Fvector& axis, float angle){
+void CEvent::ParentRotate(Fvector& axis, float angle){
 	R_ASSERT(!Locked());
-	inherited::WorldRotate(axis,angle);
+	inherited::ParentRotate(axis,angle);
 //	for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) if (it->m_Selected) it->LocalRotate(axis, angle);
     UI.UpdateScene();
 }
@@ -257,9 +257,9 @@ void CEvent::Scale( Fvector& center, Fvector& amount ){
     UI.UpdateScene();
 }
 
-void CEvent::WorldScale( Fvector& amount ){
+void CEvent::ParentScale( Fvector& amount ){
 	R_ASSERT(!Locked());
-	inherited::WorldScale(amount);
+	inherited::ParentScale(amount);
 //	for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) if (it->m_Selected) it->LocalScale(amount);
     UI.UpdateScene();
 }

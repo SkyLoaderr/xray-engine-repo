@@ -701,12 +701,12 @@ object fraTopBar: TfraTopBar
       ParentFont = False
       Spacing = 15
     end
-    object ebCSWorld: TExtBtn
+    object ebCSParent: TExtBtn
       Left = 0
       Top = 0
       Width = 25
       Height = 20
-      Hint = 'World CS Toggle'
+      Hint = 'Parent CS Toggle'
       Align = alNone
       AllowAllUp = True
       HotTrack = True
@@ -1921,7 +1921,7 @@ object fraTopBar: TfraTopBar
       'ebAxisY.Down'
       'ebAxisZ.Down'
       'ebAxisZX.Down'
-      'ebCSWorld.Down'
+      'ebCSParent.Down'
       'ebGSnap.Down'
       'ebMSnap.Down'
       'ebNonUniformScale.Down'
