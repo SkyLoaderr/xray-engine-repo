@@ -229,18 +229,11 @@ public:
 		}
 		for (int i=0; i<(int)m_tpSpawnPoints.size(); i++, thProgress = .5f*(fRelation + float(i)/float(m_tpSpawnPoints.size())*(1.f - fRelation))) {
 			m_tpSpawnPoints[i]->m_tNodeID = m_tpAI_Map->vertex(u32(-1),m_tpSpawnPoints[i]->o_Position);
-			if (m_tpSpawnPoints[i]->m_tNodeID == -1) {
-				string4096 S1;
-				char *S = S1;
-				S += sprintf(S,"SPAWN POINT %s IS REMOVED! (Reason : can't find a corresponding NODE)",m_tpSpawnPoints[i]->s_name_replace);
-//				S += sprintf(S,"Level ID    : %d\n",m_dwLevelID);
-//				S += sprintf(S,"Spawn index : %d\n",i);
-//				S += sprintf(S,"Spawn point : [%7.2f][%7.2f][%7.2f]\n",VPUSH(m_tpSpawnPoints[i]->o_Position));
-//				S += sprintf(S,"\n");
-				Msg(S1);
-				m_tpSpawnPoints.erase(m_tpSpawnPoints.begin() + i--);
-				continue;
-				//R_ASSERT2(false,S1);
+			VERIFY				(m_tpAI_Map->valid_vertex_id(m_tpSpawnPoints[i]->m_tNodeID));
+			if (m_tpSpawnPoints[i]->used_ai_locations() && !m_tpAI_Map->inside(m_tpAI_Map->vertex(m_tpSpawnPoints[i]->m_tNodeID),m_tpSpawnPoints[i]->o_Position)) {
+				Fvector			new_position = m_tpAI_Map->vertex_position(m_tpSpawnPoints[i]->m_tNodeID);
+				Msg				("[%s][%s] : position changed from [%f][%f][%f] -> [%f][%f][%f]",m_tpSpawnPoints[i]->s_name,m_tpSpawnPoints[i]->s_name_replace,m_tpSpawnPoints[i]->o_Position,new_position);
+				m_tpSpawnPoints[i]->o_Position	= new_position;
 			}
 			u32 dwBest = m_tpCrossTable->vertex(m_tpSpawnPoints[i]->m_tNodeID).game_vertex_id();
 			float fCurrentBestDistance = m_tpCrossTable->vertex(m_tpSpawnPoints[i]->m_tNodeID).distance();

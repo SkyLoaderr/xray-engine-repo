@@ -332,6 +332,8 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectBreakable,CSE_ALifeDynamicObjectVisua
     float							m_health;
 									CSE_ALifeObjectBreakable	(LPCSTR caSection);
 	virtual							~CSE_ALifeObjectBreakable	();
+	virtual bool					used_ai_locations	() const;
+	virtual bool					can_switch_offline	() const;
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeMountedWeapon,CSE_ALifeDynamicObjectVisual)

@@ -1339,6 +1339,16 @@ void CSE_ALifeObjectBreakable::FillProp		(LPCSTR pref, PropItemVec& values)
 }
 #endif
 
+bool CSE_ALifeObjectBreakable::used_ai_locations	() const
+{
+	return						(false);
+}
+
+bool CSE_ALifeObjectBreakable::can_switch_offline	() const
+{
+	return						(false);
+}
+
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeMountedWeapon
 ////////////////////////////////////////////////////////////////////////////
