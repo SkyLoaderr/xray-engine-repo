@@ -30,35 +30,31 @@ void SaveContacts	(dGeomID o1, dGeomID o2,dJointGroupID jointGroup);
 #define SPRING(cfm,erp)		((erp)/(cfm)/fixed_step)
 #define DAMPING(cfm,erp)	((1.f-(erp))/(cfm))
 
-IC BOOL    f_valid         (const float f)
-{
-	return _finite(f) && !_isnan(f);
-}
-
 IC BOOL dV_valid			(const dReal * v)
 {
-	return f_valid(v[0])&&f_valid(v[1])&&f_valid(v[2]);
+	return _valid(v[0])&&_valid(v[1])&&_valid(v[2]);
 }
 
 IC BOOL dM_valid			(const dReal* m)
 {
-	return  f_valid(m[0])&&f_valid(m[1])&&f_valid(m[2])&& 
-		f_valid(m[4])&&f_valid(m[5])&&f_valid(m[6])&&
-		f_valid(m[8])&&f_valid(m[9])&&f_valid(m[10]);
+	return  _valid(m[0])&&_valid(m[1])&&_valid(m[2])&& 
+		_valid(m[4])&&_valid(m[5])&&_valid(m[6])&&
+		_valid(m[8])&&_valid(m[9])&&_valid(m[10]);
 }
+
 //const dReal world_spring=24000000.f;//2400000.f;//550000.f;///1000000.f;;
 //const dReal world_damping=400000.f;//erp/cfm1.1363636e-006f,0.54545456f
+
 #ifndef  ODE_SLOW_SOLVER
-const dReal world_cfm=1.1363636e-008f;
-const dReal world_erp=0.74545456f;
+const dReal world_cfm		=1.1363636e-008f;
+const dReal world_erp		=0.74545456f;
 #else
-const dReal world_cfm=1.1363636e-006f;
-const dReal world_erp=0.54545456f;
+const dReal world_cfm		=1.1363636e-006f;
+const dReal world_erp		=0.54545456f;
 #endif
 
-const dReal world_spring=SPRING(world_cfm,world_erp);
-const dReal world_damping=DAMPING(world_cfm,world_erp);
-
+const dReal world_spring	=1.0f*SPRING	(world_cfm,world_erp);
+const dReal world_damping	=1.0f*DAMPING	(world_cfm,world_erp);
 
 
 class CPHMesh {
@@ -68,10 +64,6 @@ public:
 	void Create(dSpaceID space, dWorldID world);
 	void Destroy();
 };
-
-
-
-
 
 ////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
