@@ -50,15 +50,15 @@ namespace std
 	template<class _Tp1, class _Tp2>	inline	xr_allocator_t<_Tp2>	__stl_alloc_create(xr_allocator_t<_Tp1>&, const _Tp2*)		{	return xr_allocator_t<_Tp2>();			}
 };
 
-template	<typename T>									class	xr_vector		: public std::vector<T,xr_allocator_t<T> >								{};
-template	<>												class	xr_vector<bool>	: public std::vector<bool,xr_allocator_t<bool> >						{};
-template	<typename T>									class	xr_list 		: public std::list<T,xr_allocator_t<T> >								{};
-template	<typename T>									class	xr_deque 		: public std::deque<T,xr_allocator_t<T> >								{};
-template	<typename T>									class	xr_stack 		: public std::stack<T,xr_deque<T> >										{};
-template	<typename K, class P=std::less<K> >				class	xr_set			: public std::set<K,P,xr_allocator_t<K> >								{};
-template	<typename K, class P=std::less<K> >				class	xr_multiset		: public std::multiset<K,P,xr_allocator_t<K> >							{};
-template	<typename K, class V, class P=std::less<K> >	class	xr_map 			: public std::map<K,V,P,xr_allocator_t<std::pair<const K,V> > >			{};
-template	<typename K, class V, class P=std::less<K> >	class	xr_multimap		: public std::multimap<K,V,P,xr_allocator_t<std::pair<const K,V> > >	{};
+template	<typename T>									class	xr_vector		: public std::vector<T,xr_allocator_t<T> >								{ public: u32 size(void) {return (u32)__super::size(); } };
+template	<>												class	xr_vector<bool>	: public std::vector<bool,xr_allocator_t<bool> >						{ public: u32 size(void) {return (u32)__super::size(); } };
+template	<typename T>									class	xr_list 		: public std::list<T,xr_allocator_t<T> >								{ public: u32 size(void) {return (u32)__super::size(); } };
+template	<typename T>									class	xr_deque 		: public std::deque<T,xr_allocator_t<T> >								{ public: u32 size(void) {return (u32)__super::size(); } };
+template	<typename T>									class	xr_stack 		: public std::stack<T,xr_deque<T> >										{ public: u32 size(void) {return (u32)__super::size(); } };
+template	<typename K, class P=std::less<K> >				class	xr_set			: public std::set<K,P,xr_allocator_t<K> >								{ public: u32 size(void) {return (u32)__super::size(); } };
+template	<typename K, class P=std::less<K> >				class	xr_multiset		: public std::multiset<K,P,xr_allocator_t<K> >							{ public: u32 size(void) {return (u32)__super::size(); } };
+template	<typename K, class V, class P=std::less<K> >	class	xr_map 			: public std::map<K,V,P,xr_allocator_t<std::pair<const K,V> > >			{ public: u32 size(void) {return (u32)__super::size(); } };
+template	<typename K, class V, class P=std::less<K> >	class	xr_multimap		: public std::multimap<K,V,P,xr_allocator_t<std::pair<const K,V> > >	{ public: u32 size(void) {return (u32)__super::size(); } };
 
 #endif
 
