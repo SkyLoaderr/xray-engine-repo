@@ -120,7 +120,7 @@ BOOL CLocatorAPI::Exist			(const char* F)
 	strlwr			(N);
 	file			desc;
 	desc.name		= N;
-
+	
 	set_files_it	I = files.find(desc);
 	return			I != files.end();
 }
@@ -138,21 +138,23 @@ BOOL CLocatorAPI::Exist			(char* fn, const char* path, const char* name, const c
 void CLocatorAPI::List			(vector<char*>& dest, const char* path, DWORD flags)
 {
 	VERIFY			(flags);
-
+	
 	FILE_NAME		N;
 	strcpy			(N,path);
 	strlwr			(N);
 	if (N[strlen(N)-1]!='\\') strcat(N,"\\");
-
-	set_files_it	I = files.find(N);
+	
+	file			desc;
+	desc.name		= N;
+	set_files_it	I = files.find(desc);
 	if (I==files.end())	return;
 
 	int base_len	= strlen(N);
 	for (++I; I!=files.end(); I++)
 	{
-		char* entry = *I;
-		if (0!=strncmp(entry,N,base_len))	break;	// end of list
-		char* end_symbol = entry+strlen(entry)-1;
+		file& entry = *I;
+		if (0!=strncmp(entry.name,N,base_len))	break;	// end of list
+		const char* end_symbol = entry.name+strlen(entry.name)-1;
 		if ((*end_symbol) !='\\')	{
 			// file
 			if ((flags&FS_ListFiles) == 0)	continue;
@@ -160,7 +162,7 @@ void CLocatorAPI::List			(vector<char*>& dest, const char* path, DWORD flags)
 		} else {
 			// folder
 			if ((flags&FS_ListFolders) == 0)continue;
-			const char* entry_begin = entry+base_len;
+			const char* entry_begin = entry.name+base_len;
 
 			if (strstr(entry_begin,"\\")!=end_symbol)	continue;	// folder in folder
 
