@@ -158,7 +158,6 @@ void CAI_Soldier::vfCreateStraightForwardPath(Fvector &tStartPoint, Fvector tFin
 	}
 }
 
-
 void CAI_Soldier::vfComputeCircle(DWORD dwNode0, DWORD dwNode1, float &fRadius, Fvector &tCircleCentre)
 {
 	Fvector tPoint0, tPoint1, tP0, tP1;
@@ -397,24 +396,40 @@ void CAI_Soldier::Patrol()
 
 	SetLessCoverLook(AI_Node);
 
-	if (AI_NodeID == tpaPatrolNodes[m_iCurrentPoint]) {
-		m_iCurrentPoint = m_iCurrentPoint == tpaPatrolNodes.size() - 1 ? 0 : m_iCurrentPoint + 1;
-		AI_Path.TravelPath.clear();
-		for (int i=0; i<tpaPatrolPathes[m_iCurrentPoint].size(); i++)
-			AI_Path.TravelPath.push_back(tpaPatrolPathes[m_iCurrentPoint][i]);
-	}
-	else {
-		if (AI_Path.bNeedRebuild) {
-			AI_Path.DestNode = tpaPatrolNodes[m_iCurrentPoint];
-			Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path,0,0);
-			if (AI_Path.Nodes.size() > 1)
-				AI_Path.BuildTravelLine(Position());
-			else {
-				AI_Path.TravelPath.clear();
-				AI_Path.bNeedRebuild = FALSE;
-			}
+	if (AI_Path.bNeedRebuild) {
+		AI_Path.DestNode = tpaPatrolNodes[m_iCurrentPoint];
+		Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path,0,0);
+		if (AI_Path.Nodes.size() > 1) {
+			AI_Path.BuildTravelLine(Position());
+			CTravelNode tTemp;
+			tTemp.floating = FALSE;
+			tTemp.P = AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P;
+			//if (fabsf(tTemp.P.x + tTemp.P.z - tpaPatrolPoints[m_iCurrentPoint].x - tpaPatrolPoints[m_iCurrentPoint].z) > 0.1)
+			//	AI_Path.TravelPath.push_back(tTemp);
+		}
+		else {
+			AI_Path.TravelPath.clear();
+			AI_Path.bNeedRebuild = FALSE;
 		}
 	}
+	else
+		if (!(AI_Path.fSpeed)) {
+			
+			m_iCurrentPoint = m_iCurrentPoint == tpaPatrolNodes.size() - 1 ? 0 : m_iCurrentPoint + 1;
+			
+			for (int i=0, iCount = 0; i<tpaPatrolPathes.size(); i++)
+				iCount += tpaPatrolPathes[i].size();
+			
+			AI_Path.TravelPath.resize(iCount);
+
+			for ( i=0, iCount = 0; i<tpaPatrolPathes.size(); i++) {
+				for (int j=0; j<tpaPatrolPathes[i].size(); j++)
+					AI_Path.TravelPath[iCount + j] = tpaPatrolPathes[i][j];
+				iCount += tpaPatrolPathes[i].size();
+			}
+
+			AI_Path.TravelStart = 0;
+		}
 
 	vfSetFire(false,Group);
 
