@@ -100,13 +100,14 @@ public:
     IC LPCSTR		_Texture		(){return m_Texture.c_str();}
     IC LPCSTR		_VMap			(){return m_VMap.c_str();}
     IC void			SetName			(LPCSTR name){m_Name=name;}
-	IC void			SetShader		(LPCSTR name)
+	IC bool			SetShader		(LPCSTR name)
 	{
-		R_ASSERT(name&&name[0]); 
+		if (!name||!name[0]) return false;
 		m_ShaderName=name; 
 #ifdef _EDITOR 
 		OnDeviceDestroy(); 
 #endif
+		return true;
 	}
     IC void 		SetShaderXRLC	(LPCSTR name){m_ShaderXRLCName=name;}
     IC void			SetGameMtl		(LPCSTR name){m_GameMtlName=name;}
