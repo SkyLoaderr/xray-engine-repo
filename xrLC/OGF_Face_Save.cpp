@@ -288,6 +288,9 @@ void	OGF::PreSave			()
 	g_IB.Register		(LPWORD(&*faces.begin()),LPWORD(&*faces.end()),&ib_id,&ib_start);
 
 	// SWI, if need it
+	if (progressive_test())		{
+		g_SWI.Register			(&sw_id,&m_SWI);
+	}
 }
 
 void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
