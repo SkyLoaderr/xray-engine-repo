@@ -86,13 +86,13 @@ B
 		_P.add(F.v[2].v,shift);	V->set	(_P,color(F.v[2].c_rgb_hemi,F.v[2].c_sun,uA),F.v[2].t.x,F.v[2].t.y); V++;	// 2
 		_P.add(F.v[1].v,shift);	V->set	(_P,color(F.v[1].c_rgb_hemi,F.v[1].c_sun,uA),F.v[1].t.x,F.v[1].t.y); V++;	// 1
 groups.push_back				(cur_count);
-	RCache.Ver	RCache.Vertex.Unlock			(lstLODs.size()*4,firstV->hGeom->vb_stride);
-ender
+	RCache.Vertex.Unlock				(lstLODs.size()*4,firstV->hGeom->vb_stride);
+
+	// *** Render
 	int curren	int current=0;
 _xform_world		(Fidentity);
-	for (u32 g	for (u32 g=0; g<lstLODgroups.size(); g++)
-	{
-nt				= lstLODgroups[g];
+	for (u32 g=0; g<lstLODgroups.size(); g++)	{
+		int p_count				= lstLODgroups[g];
 		RCache.set_Shader		(lstLODs[current].pVisual->hShader);
 		RCache.set_Geometry		(firstV->hGeom);
 		RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,4*p_count,0,2*p_count);
