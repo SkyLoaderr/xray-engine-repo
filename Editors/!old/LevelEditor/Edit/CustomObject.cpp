@@ -30,7 +30,7 @@ CCustomObject::CCustomObject(LPVOID data, LPCSTR name)
     m_RT_Flags.set	(flRT_Valid);
     m_pOwnerObject	= 0;
     ResetTransform	();
-    m_RT_Flags.set(flRT_UpdateTransform,FALSE);
+    m_RT_Flags.set	(flRT_UpdateTransform,TRUE); //.???? было FALSE, нужно когда создается 
     m_Motion		= NULL;
     m_MotionParams 	= NULL;
 }
