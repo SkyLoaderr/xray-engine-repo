@@ -3,6 +3,8 @@
 #include "..\\entity.h"
 #include "..\\hudmanager.h"
 
+#define DISABLE_MONSTER_DEBUG
+
 CMonsterDebug::CMonsterDebug(CEntityAlive *pM, const Fvector &shift_vec, float height)
 {
 	pMonster		= pM;
@@ -35,6 +37,10 @@ void CMonsterDebug::M_Add(u32 index, LPCSTR str, u32 col)
 void CMonsterDebug::M_Update()
 { 
 	if (!active) return;
+
+#ifdef DISABLE_MONSTER_DEBUG
+	if (active) return;
+#endif
 
 	Fmatrix res;
 	res.mul(Device.mFullTransform,pMonster->XFORM());
@@ -80,6 +86,11 @@ void CMonsterDebug::L_Update()
 {
 	if (!active) return;
 
+#ifdef DISABLE_MONSTER_DEBUG
+	if (active) return;
+#endif
+
+
 	for (u32 i=0; i<_lines.size(); i++) {
 		RCache.dbg_DrawAABB(_lines[i].pos,0.35f,0.35f,0.35f,_lines[i].col);
 
@@ -116,6 +127,10 @@ void CMonsterDebug::HT_Clear()
 void CMonsterDebug::HT_Update()
 {
 	if (!active) return;
+#ifdef DISABLE_MONSTER_DEBUG
+	if (active) return;
+#endif
+
 
 	for (u32 i=0; i<_text.size(); i++) {
 		HUD().pFontSmall->OutSet(_text[i].x,_text[i].y);
