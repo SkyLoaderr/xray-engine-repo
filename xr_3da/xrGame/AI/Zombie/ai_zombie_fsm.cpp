@@ -209,36 +209,6 @@ void CAI_Zombie::FreeHuntingActive()
 
 	SetDirectionLook();
 
-	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
-		m_fSpeed = .1f;
-		if (m_bNoWay) {
-			float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
-			r_torso_target.yaw = r_torso_current.yaw + fAngle;
-			r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
-			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieTurn);
-		}
-	}
-	else 
-		if (m_fSafeSpeed != m_fSpeed) {
-			int iRandom = ::Random.randI(0,2);
-			switch (iRandom) {
-				case 0 : {
-					m_fSpeed = m_fMaxSpeed;
-					break;
-				}
-				case 1 : {
-					m_fSpeed = m_fMinSpeed;
-					break;
-				}
-				case 2 : {
-					if (::Random.randI(0,4) == 0)
-						m_fSpeed = EPS_S;
-					break;
-				}
-			}
-			m_fSafeSpeed = m_fSpeed;
-		}
-	
 //	if (Level().timeServer() - m_dwLastRangeSearch > 5000) {
 //		m_dwLastRangeSearch = Level().timeServer();
 //		PKinematics(pVisual)->PlayFX(m_tZombieAnimations.tNormal.tTorso.tpBlaBlaBla0);
@@ -411,37 +381,6 @@ void CAI_Zombie::AttackRun()
 
 	SetDirectionLook();
 
-
-//	if (m_Enemy.Enemy->Position().distance_to(vPosition) <= m_fAttackDistance) {
-//		vfAimAtEnemy();
-//		//m_fSpeed = 0;
-//		UpdateTransform();
-//	}
-//	else {
-//		vfComputeNextDirectionPosition();
-//		SetDirectionLook();
-//	}
-	
-//	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
-//		m_fSpeed = EPS_S;
-//		if (m_bNoWay) {
-//			if (!::Random.randI(4)) {
-//				float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
-//				r_torso_target.yaw = r_torso_current.yaw + fAngle;
-//			}
-//			else {
-//				Fvector tTemp;
-//				tTemp.sub(m_Enemy.Enemy->Position(),vPosition);
-//				tTemp.normalize_safe();
-//				mk_rotation(tTemp,r_torso_target);
-//			}
-//			r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
-//			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieTurn);
-//		}
-//	}
-//	else 
-//		m_fSafeSpeed = m_fSpeed = m_fAttackSpeed;
-
 	if	(!m_tpSoundBeingPlayed || !m_tpSoundBeingPlayed->feedback) {
 		u32 dwCurTime = Level().timeServer();
 		if (m_tpSoundBeingPlayed && !m_tpSoundBeingPlayed->feedback) {
@@ -473,6 +412,8 @@ void CAI_Zombie::Pursuit()
 		return;
 	}
 
+	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
+
 	if (m_Enemy.Enemy)
 		m_dwLostEnemyTime = Level().timeServer();
 
@@ -500,38 +441,6 @@ void CAI_Zombie::Pursuit()
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieTurn);
 
 	SetDirectionLook();
-
-	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
-		m_fSpeed = .1f;
-		if (m_bNoWay) {
-			float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
-			r_torso_target.yaw = r_torso_current.yaw + fAngle;
-			r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
-			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieTurn);
-		}
-	}
-	else 
-		if (m_fSafeSpeed != m_fSpeed) {
-			int iRandom = ::Random.randI(0,2);
-			switch (iRandom) {
-				case 0 : {
-					m_fSpeed = m_fMaxSpeed;
-					break;
-				}
-				case 1 : {
-					m_fSpeed = m_fMinSpeed;
-					break;
-				}
-				case 2 : {
-					if (::Random.randI(0,4) == 0)
-						m_fSpeed = EPS_S;
-					break;
-				}
-			}
-			m_fSafeSpeed = m_fSpeed;
-		}
-	
-	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
 }
 
 void CAI_Zombie::ReturnHome()
