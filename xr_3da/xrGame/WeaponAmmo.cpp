@@ -90,7 +90,7 @@ void CWeaponAmmo::OnH_B_Independent()
 	if(!Useful()) {
 		NET_Packet		P;
 		u_EventGen		(P,GE_DESTROY,ID());
-		Msg				("ge_destroy: [%d] - %s",ID(),*cName());
+//		Msg				("ge_destroy: [%d] - %s",ID(),*cName());
 		if (Local())
 			u_EventSend	(P);
 		m_ready_to_destroy	= true;

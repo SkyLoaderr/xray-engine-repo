@@ -1229,7 +1229,7 @@ void	CActor::RemoveAmmoForWeapon	(CInventoryItem *pIItem)
 			UsableAmmoExist = true;
 			
 			u_EventGen			(P,GE_DESTROY,pAmmo->ID());
-			Msg					("ge_destroy: [%d] - %s",pAmmo->ID(),*(pAmmo->cName()));
+//			Msg					("ge_destroy: [%d] - %s",pAmmo->ID(),*(pAmmo->cName()));
 		};
 		if (UsableAmmoExist) u_EventSend			(P);
 	};

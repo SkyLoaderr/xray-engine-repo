@@ -123,8 +123,6 @@ void CStalkerMovementManager::update(u32 time_delta)
 	CDetailPathManager::set_path_type					(m_detail_path_type);
 	CLevelLocationSelector::set_evaluator				(m_node_evaluator);
 	CMovementManager::CLevelPathManager::set_evaluator	(m_path_evaluator ? m_path_evaluator : base_level_selector());
-	m_movement_type										= m_movement_type;
-	m_mental_state										= m_mental_state;
 	
 	if (m_use_desired_position) {
 		VERIFY											(valid(m_desired_position));

@@ -82,11 +82,12 @@ void CStalkerActionFreeNoALife::execute		()
 	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateFree);
 
-	m_object->CSightManager::setup				(CSightAction(SightManager::eSightTypeCover,false,true));
+	m_object->CSightManager::setup				(CSightAction(SightManager::eSightTypeCover,true,false));
 #ifdef OLD_OBJECT_HANDLER
 	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
 #else
 	m_object->CObjectHandlerGOAP::set_goal		(eObjectActionIdle);
+//	m_object->CObjectHandlerGOAP::set_goal		(eObjectActionFire1,m_object->best_weapon());
 #endif
 }
 

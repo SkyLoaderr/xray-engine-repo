@@ -372,7 +372,7 @@ bool CWeaponMagazinedWGrenade::Attach(PIItem pIItem)
 		pIItem->Drop();
 		NET_Packet P;
 		u_EventGen(P,GE_DESTROY,pIItem->ID());
-		Msg					("ge_destroy: [%d] - %s",pIItem->ID(),*pIItem->cName());
+//		Msg					("ge_destroy: [%d] - %s",pIItem->ID(),*pIItem->cName());
 		P.w_u16(u16(pIItem->ID()));
 		u_EventSend(P);
 

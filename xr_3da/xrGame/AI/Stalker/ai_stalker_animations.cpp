@@ -52,6 +52,7 @@ LPCSTR caWeaponNames		[] = {
 	"4_",
 	"5_",
 	"6_",
+	"7_",
 	0
 };
 
@@ -268,8 +269,11 @@ void CStalkerAnimations::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 				break;
 			}
 			case CLSID_GRENADE_F1		:
-			case CLSID_IITEM_BOLT		:
 			case CLSID_GRENADE_RGD5		: {
+				dwCurrentAniSlot = 6;
+				break;
+			}
+			case CLSID_IITEM_BOLT		: {
 				dwCurrentAniSlot = 6;
 				break;
 			}
@@ -316,7 +320,6 @@ void CStalkerAnimations::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 			}
 		}
 		
-#pragma todo("Dima to Designers : make missile throw animations!")
 		if (missile && (stalker->body_state() == eBodyStateStand)) {
 			switch (missile->State()) {
 				case MS_SHOWING	 : {
@@ -339,9 +342,13 @@ void CStalkerAnimations::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 					tpTorsoAnimation = m_tAnims.A[stalker->body_state()].m_tTorso.A[dwCurrentAniSlot].A[1].A[1];
 					break;
 				}
-				case MS_THROW	 :
-				case MS_END		 : {
+				case MS_THROW	 : {
 //					Msg				("%6d : weapon state %s",Level().timeServer(),"Fire end");
+					tpTorsoAnimation = m_tAnims.A[stalker->body_state()].m_tTorso.A[dwCurrentAniSlot].A[1].A[2];
+					break;
+				}
+				case MS_END		 : {
+//					Msg				("%6d : weapon state %s",Level().timeServer(),"Fire smooth");
 					tpTorsoAnimation = m_tAnims.A[stalker->body_state()].m_tTorso.A[dwCurrentAniSlot].A[1].A[2];
 					break;
 				}

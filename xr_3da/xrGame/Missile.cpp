@@ -158,7 +158,7 @@ void CMissile::OnH_B_Independent()
 	{
 		NET_Packet			P;
 		u_EventGen			(P,GE_DESTROY,ID());
-		Msg					("ge_destroy: [%d] - %s",ID(),*cName());
+//		Msg					("ge_destroy: [%d] - %s",ID(),*cName());
 		u_EventSend			(P);
 		return;
 	}
@@ -465,7 +465,7 @@ void CMissile::Destroy()
 {
 	NET_Packet			P;
 	u_EventGen			(P,GE_DESTROY,ID());
-	Msg					("ge_destroy: [%d] - %s",ID(),*cName());
+//	Msg					("ge_destroy: [%d] - %s",ID(),*cName());
 	if (Local()) u_EventSend			(P);
 }
 

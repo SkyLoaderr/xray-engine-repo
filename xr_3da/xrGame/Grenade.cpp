@@ -123,7 +123,7 @@ void CGrenade::OnAnimationEnd()
 			{
 				NET_Packet			P;
 				u_EventGen			(P,GE_DESTROY,ID());
-				Msg					("ge_destroy: [%d] - %s",ID(),*cName());
+//				Msg					("ge_destroy: [%d] - %s",ID(),*cName());
 				u_EventSend			(P);
 			};
 
