@@ -11,7 +11,7 @@
 #include "ai_script_classes.h"
 #include "ai_script_actions.h"
 #include "ai_script_sound.h"
-#include "ai_script_hit.h"
+#include "script_hit.h"
 #include "ai_script_snd_info.h"
 #include "ai_script_monster_hit_info.h"
 #include "luabind/return_reference_to_policy.hpp"
@@ -292,35 +292,6 @@ void CScriptEngine::export_sound()
 			.def("stop",						&CLuaSound::Stop)
 			.def("playing",						&CLuaSound::IsPlaying)
 			.def("length",						&CLuaSound::Length)
-	];
-}
-
-void CScriptEngine::export_hit()
-{
-	module(lua())
-	[
-		class_<CLuaHit>("hit")
-			.enum_("hit_type")
-			[
-				value("burn",					int(ALife::eHitTypeBurn)),
-				value("shock",					int(ALife::eHitTypeShock)),
-				value("strike",					int(ALife::eHitTypeStrike)),
-				value("wound",					int(ALife::eHitTypeWound)),
-				value("radiation",				int(ALife::eHitTypeRadiation)),
-				value("telepatic",				int(ALife::eHitTypeTelepatic)),
-				value("chemical_burn",			int(ALife::eHitTypeChemicalBurn)),
-				value("explosion",				int(ALife::eHitTypeExplosion)),
-				value("fire_wound",				int(ALife::eHitTypeFireWound)),
-				value("dummy",					int(ALife::eHitTypeMax))
-			]
-			.def_readwrite("power",				&CLuaHit::m_fPower)
-			.def_readwrite("direction",			&CLuaHit::m_tDirection)
-			.def_readwrite("draftsman",			&CLuaHit::m_tpDraftsman)
-			.def_readwrite("impulse",			&CLuaHit::m_fImpulse)
-			.def_readwrite("type",				&CLuaHit::m_tHitType)
-			.def(								constructor<>())
-			.def(								constructor<const CLuaHit *>())
-			.def("bone",						&CLuaHit::set_bone_name)
 	];
 }
 

@@ -21,3 +21,5 @@ struct lua_State;
 #	define	add_to_type_list(type)	;
 #	define	save_type_list(type)		
 #endif
+
+#define DECLARE_SCRIPT_REGISTER_FUNCTION static void script_register(lua_State *);

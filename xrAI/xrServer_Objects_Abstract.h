@@ -11,7 +11,6 @@
 
 #include "alife_interfaces.h"
 #include "xrServer_Space.h"
-#include "script_export_space.h"
 
 #pragma warning(push)
 #pragma warning(disable:4005)

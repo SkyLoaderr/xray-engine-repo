@@ -7,4 +7,13 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once
+
 #include "xrServer_Objects_ALife_All.h"
+#include "script_engine.h"
+
+#ifdef XRGAME_EXPORTS
+#	include "script_token_list.h"
+#	include "script_ini_file.h"
+#	include "alife_simulator.h"
+#	include "script_hit.h"
+#endif

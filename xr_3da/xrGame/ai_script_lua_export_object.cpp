@@ -15,7 +15,7 @@
 #include "ai_script_classes.h"
 #include "script_binder_object.h"
 #include "pdamsg.h"
-#include "ai_script_hit.h"
+#include "script_hit.h"
 #include "cover_point.h"
 #include "script_ini_file.h"
 #include "attachable_item.h"

@@ -9,12 +9,14 @@
 #ifndef xrServer_SpaceH
 #define xrServer_SpaceH
 
+#include "script_export_space.h"
+
 #ifdef _EDITOR
 #	define SERVER_ENTITY_EDITOR_METHODS	virtual void FillProp(LPCSTR pref, PropItemVec& values);
 #	define SERVER_ENTITY_SCRIPT_METHODS
 #else
 #	define SERVER_ENTITY_EDITOR_METHODS 
-#	define SERVER_ENTITY_SCRIPT_METHODS static void script_register(lua_State *L);//{};
+#	define SERVER_ENTITY_SCRIPT_METHODS DECLARE_SCRIPT_REGISTER_FUNCTION
 #endif
 
 #define SERVER_ENTITY_DECLARE_BEGIN0(__A)	class __A	{ public: SERVER_ENTITY_SCRIPT_METHODS

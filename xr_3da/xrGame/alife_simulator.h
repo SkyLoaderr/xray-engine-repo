@@ -10,6 +10,10 @@
 
 #include "alife_interaction_manager.h"
 #include "alife_update_manager.h"
+#include "script_export_space.h"
+
+#pragma warning(push)
+#pragma warning(disable:4005)
 
 class CALifeSimulator : 
 	public CALifeUpdateManager,
@@ -22,6 +26,11 @@ protected:
 public:
 					CALifeSimulator		(xrServer *server, LPSTR *command_line);
 	virtual			~CALifeSimulator	();
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+add_to_type_list(CALifeSimulator)
+#define script_type_list save_type_list(CALifeSimulator)
+
+#pragma warning(pop)
 
 #include "alife_simulator_inline.h"

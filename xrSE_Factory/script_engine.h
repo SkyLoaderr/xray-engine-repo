@@ -9,6 +9,10 @@
 #pragma once
 
 #include "script_storage.h"
+#include "script_export_space.h"
+
+#pragma warning(push)
+#pragma warning(disable:4005)
 
 #ifdef XRGAME_EXPORTS
 	class CScriptProcessor;
@@ -34,7 +38,6 @@ protected:
 	ref_str						m_class_registrators;
 
 protected:
-			void				export_globals				();
 #ifdef XRGAME_EXPORTS
 			void				export_fvector				();
 			void				export_fmatrix				();
@@ -43,9 +46,7 @@ protected:
 			void				export_device				();
 			void				export_particles			();
 			void				export_sound				();
-			void				export_hit					();
 			void				export_actions				();
-			void				export_ini					();
 			void				export_object				();
 			void				export_effector				();
 			void				export_artifact_merger		();
@@ -53,7 +54,6 @@ protected:
 			void				export_action_management	();
 			void				export_motivation_management();
 			void				export_monster_info			();
-			void				export_alife				();
 			void				export_task					();
 #endif
 
@@ -93,6 +93,11 @@ public:
 #ifdef XRGAME_EXPORTS
 	CScriptDebugger	*			m_scriptDebugger;
 #endif
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+add_to_type_list(CScriptEngine)
+#define script_type_list save_type_list(CScriptEngine)
+
+#pragma warning(pop)
 
 #include "script_engine_inline.h"

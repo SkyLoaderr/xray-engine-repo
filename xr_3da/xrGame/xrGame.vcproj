@@ -1120,6 +1120,9 @@
 					RelativePath=".\alife_simulator_inline.h">
 				</File>
 				<File
+					RelativePath=".\alife_simulator_script.cpp">
+				</File>
+				<File
 					RelativePath=".\alife_space.h">
 				</File>
 				<Filter
@@ -3753,9 +3756,6 @@
 						RelativePath=".\ai_script_effector.h">
 					</File>
 					<File
-						RelativePath=".\ai_script_hit.h">
-					</File>
-					<File
 						RelativePath=".\ai_script_monster_hit_info.h">
 					</File>
 					<File
@@ -3953,6 +3953,9 @@
 						<File
 							RelativePath=".\script_ini_file_inline.h">
 						</File>
+						<File
+							RelativePath=".\script_ini_file_script.cpp">
+						</File>
 						<Filter
 							Name="ScriptTokenList"
 							Filter="">
@@ -3965,7 +3968,26 @@
 							<File
 								RelativePath=".\script_token_list_inline.h">
 							</File>
+							<File
+								RelativePath=".\script_token_list_script.cpp">
+							</File>
 						</Filter>
+					</Filter>
+					<Filter
+						Name="ScriptHit"
+						Filter="">
+						<File
+							RelativePath=".\script_hit.cpp">
+						</File>
+						<File
+							RelativePath=".\script_hit.h">
+						</File>
+						<File
+							RelativePath=".\script_hit_inline.h">
+						</File>
+						<File
+							RelativePath=".\script_hit_script.cpp">
+						</File>
 					</Filter>
 				</Filter>
 				<Filter
@@ -4050,6 +4072,9 @@
 					<File
 						RelativePath=".\script_engine_inline.h">
 					</File>
+					<File
+						RelativePath=".\script_engine_script.cpp">
+					</File>
 				</Filter>
 				<Filter
 					Name="ScriptExport"
@@ -4068,15 +4093,6 @@
 					</File>
 					<File
 						RelativePath=".\ai_script_lua_export_object.cpp">
-					</File>
-					<File
-						RelativePath=".\script_lua_export_alife.cpp">
-					</File>
-					<File
-						RelativePath=".\script_lua_export_globals.cpp">
-					</File>
-					<File
-						RelativePath=".\script_lua_export_ini.cpp">
 					</File>
 				</Filter>
 				<Filter

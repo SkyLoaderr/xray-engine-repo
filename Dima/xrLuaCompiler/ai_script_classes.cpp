@@ -9,7 +9,7 @@
 #include "stdafx.h"
 #include "ai_script_classes.h"
 #include "ai_script_actions.h"
-#include "ai_script_hit.h"
+#include "script_hit.h"
 #include "inventory_item.h"
 #include "weapon.h"
 #include "ParticlesObject.h"
@@ -27,7 +27,7 @@
 
 #include "helicopter.h"
 
-void CLuaGameObject::Hit(CLuaHit &tLuaHit)
+void CLuaGameObject::Hit(CScriptHit &tLuaHit)
 {
 	NET_Packet		P;
 	m_tpGameObject->u_EventGen(P,GE_HIT,m_tpGameObject->ID());

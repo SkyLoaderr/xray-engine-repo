@@ -9,6 +9,10 @@
 #pragma once
 
 #include "script_token_list.h"
+#include "script_export_space.h"
+
+#pragma warning(push)
+#pragma warning(disable:4005)
 
 class CScriptIniFile : public CInifile {
 protected:
@@ -24,6 +28,11 @@ public:
 			bool		r_bool				(LPCSTR S, LPCSTR L);
 			int			r_token				(LPCSTR S, LPCSTR L, const CScriptTokenList &token_list);
 			LPCSTR		update				(LPCSTR file_name);
+			DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+add_to_type_list(CScriptIniFile)
+#define script_type_list save_type_list(CScriptIniFile)
+
+#pragma warning(pop)
 
 #include "script_ini_file_inline.h"

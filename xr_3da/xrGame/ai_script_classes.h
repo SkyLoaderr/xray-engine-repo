@@ -29,7 +29,7 @@
 #include "physicsshellholder.h"
 
 class CInventoryItem;
-class CLuaHit;
+class CScriptHit;
 class CAI_Stalker;
 class CCoverPoint;
 class CScriptIniFile;
@@ -76,7 +76,7 @@ public:
 			return		(0);
 	}
 
-			void			Hit					(CLuaHit &tLuaHit);
+			void			Hit					(CScriptHit &tLuaHit);
 
 	// CGameObject
 	IC		int				clsid				() const
