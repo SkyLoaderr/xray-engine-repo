@@ -5,8 +5,9 @@
 —делать:
     - подставить насто€щие звуки
     - звуки во сне
-    - сон
-    - сажание+водка
+    - водка (ƒима)
+    - сон после водки и наоборот
+    - при сне и водке смотреть не на точку, а в направлении
 --------------------------------------------------------------------------------------------------------------------]]
 
 local prop_commander = xr_evaluators_id.commander_commander
@@ -72,8 +73,8 @@ function action_commander:initialize()
     --self.object:set_item( object.idle, self.object:best_weapon() )
 --    self.object:set_item( object.idle, nil )
 
-    self.object:set_callback (self, "move_callback", game_object.movement)
-    
+    self.object:set_callback( self, "move_callback", game_object.movement )
+
 --    printf( "action_commander initialized" )
 end
 
@@ -148,7 +149,7 @@ function action_commander:execute()
                                    [look_map]     = 10,
                                    [look_outside] = 10,
                                    [radio_talk]   = 20,
-                                   [drink_vodka]  = 10000 }
+                                   [drink_vodka]  = 10 }
                 else
                     self.act = random_choice_weighted{
                                    [walk_inside]  = 60,
@@ -161,12 +162,14 @@ function action_commander:execute()
             self.act = random_choice_weighted{
                            [look_outside] = 10,
                            [sleep]        = 90 }
+                           --[drink_vodka]  = 90 }
         end
 
         if self.act == walk_inside and self.last_act ~= walk_inside then
             self.looked_at_box = false
             self.last_inside_point = nil
         end
+--        printf( "decision: act=%d last_act=%d", self.act, self.last_act or -1 )
     end
 
     if self.act == walk_inside then
@@ -195,6 +198,9 @@ function action_commander:execute()
 
     elseif self.act == sleep then
         self:exec_sleep()
+
+    else
+        self.decision = true
     end
 end
 
@@ -246,24 +252,26 @@ function action_commander:exec_walk_inside()
             end
         end
     else
-        local i
+        if not xr_state.change_state( self.object, 0 ) then
+            local i
 
-        repeat
-            i = math.random( 0, self.a.way_inside:count() - 1 )
-        until i ~= self.last_inside_point
+            repeat
+                i = math.random( 0, self.a.way_inside:count() - 1 )
+            until i ~= self.last_inside_point
 
-        self.last_inside_point = i
-        self:walk_to_pos( self.a.way_inside, i )
+            self.last_inside_point = i
+            self:walk_to_pos( self.a.way_inside, i )
 
-        self.look_at_box = not self.looked_at_box and self.a.way_inside:flag( i, 0 )
+            self.look_at_box = not self.looked_at_box and self.a.way_inside:flag( i, 0 )
 
-        if math.random( 100 ) < 40 then
-            self.object:play_sound( snd_singing, 1, 0 )
+            if math.random( 100 ) < 40 then
+                self.object:play_sound( snd_singing, 1, 0 )
+            end
+
+            self.object:clear_animations()
+
+            printf( "[commander] : walk_inside" )
         end
-
-        self.object:clear_animations()
-
-        printf( "decision made: walk_inside" )
     end
 end
 
@@ -305,26 +313,28 @@ end
 
 function action_commander:exec_walk_outside()
     if not self.sub_act then
-        self.object:clear_animations()
+        if not xr_state.change_state( self.object, 0 ) then
+            self.object:clear_animations()
 
-        self.object:set_node_evaluator    ()
-        self.object:set_path_evaluator    ()
-        self.object:set_desired_position  ()
-        self.object:set_desired_direction ()
-        self.object:set_sight             ( look.danger, nil, 0 )
-        self.object:set_path_type         ( game_object.patrol_path )
-        self.object:set_patrol_path       ( self.a.way_outside, patrol.nearest, patrol.continue, true )
-        self.object:set_detail_path_type  ( move.line )
-        self.object:set_body_state        ( move.standing )
-        self.object:set_movement_type     ( move.walk )
-        self.object:set_mental_state      ( anim.free )
-        --self.object:set_item              ( object.idle, self.object:best_weapon() )
-        self.object:set_item              ( object.idle, nil )
+            self.object:set_node_evaluator    ()
+            self.object:set_path_evaluator    ()
+            self.object:set_desired_position  ()
+            self.object:set_desired_direction ()
+            self.object:set_sight             ( look.danger, nil, 0 )
+            self.object:set_path_type         ( game_object.patrol_path )
+            self.object:set_patrol_path       ( self.a.way_outside, patrol.nearest, patrol.continue, true )
+            self.object:set_detail_path_type  ( move.line )
+            self.object:set_body_state        ( move.standing )
+            self.object:set_movement_type     ( move.walk )
+            self.object:set_mental_state      ( anim.free )
+            --self.object:set_item              ( object.idle, self.object:best_weapon() )
+            self.object:set_item              ( object.idle, nil )
 
-        self.sub_act = true
-        self.a.near_door_visited = false
+            self.sub_act = true
+            self.a.near_door_visited = false
 
-        printf( "decision made: walk_outside" )
+            printf( "[commander] : walk_outside" )
+        end
     end
 end
 
@@ -360,9 +370,11 @@ function action_commander:exec_look_map()
             end
         end
     else
-        self.object:clear_animations()
-        self:walk_to_pos( self.a.way, "level_map" )
-        printf( "decision made: look_map" )
+        if not xr_state.change_state( self.object, 0 ) then
+            self.object:clear_animations()
+            self:walk_to_pos( self.a.way, "level_map" )
+            printf( "[commander] : look_map" )
+        end
     end
 end
 
@@ -393,9 +405,11 @@ function action_commander:exec_look_outside()
             end
         end
     else
-        self.object:clear_animations()
-        self:walk_to_pos( self.a.way, "near_door" )
-        printf( "decision made: look_outside" )
+        if not xr_state.change_state( self.object, 0 ) then
+            self.object:clear_animations()
+            self:walk_to_pos( self.a.way, "near_door" )
+            printf( "[commander] : look_outside" )
+        end
     end
 end
 
@@ -435,7 +449,7 @@ function action_commander:exec_radio_talk()
 
         self.sub_act = true
 
-        printf( "decision made: radio_talk" )
+        printf( "[commander] : radio_talk" )
     end
 end
 
@@ -507,7 +521,7 @@ function action_commander:process_radio()
     return true
 end
 
-function action_commander:exec_drink_vodka()
+--[[function action_commander:exec_drink_vodka()
     if self.pos then
         if self:in_pos() then
             if self.sub_act then
@@ -546,40 +560,42 @@ function action_commander:exec_drink_vodka()
     else
         self.object:clear_animations()
         self:walk_to_pos( self.a.way, "mattress" )
-        printf( "decision made: drink_vodka" )
+        printf( "[commander] : drink_vodka" )
     end
-end
+end]]
 
---[[function action_commander:exec_drink_vodka()
+function action_commander:exec_drink_vodka()
     if self.pos then
         if self:in_pos() then
             if self.sub_act then
                 local dt = self.time_end - device():time_global()
-                
+
                 if dt < 0 then 
-                    if not xr_state.change_state( self.object, 0 ) then
+--                    if not xr_state.change_state( self.object, 0 ) then
                         self.decision = true
+                        self.time_end = nil
+--                    end
+                elseif dt < 3000 then
+                    if self.vodka_active then
+                        self.object:set_item( object.deactivate, self.object:object( "vodka" ) )
+                        self.vodka_active = false
+                        printf( "”Ѕ»–јё ¬ќƒ ”" )
                     end
-                elseif dt < 3000 and self.vodka_active then
-                    self.object:set_item( object.deactivate, self.object:object( "vodka" ) )
-                    self.vodka_active = false
-                    printf( "”Ѕ»–јё ¬ќƒ ”" )
-                elseif dt < 20000 and not self.vodka_active then
-                    self.object:set_item( object.activate, self.object:object( "vodka" ) )
-                    self.vodka_active = true
-                    printf( "Ќј„»Ќјё ѕ»“№" )
+                elseif dt < 20000 then
+                    if not self.vodka_active then
+                        self.object:set_item( object.activate, self.object:object( "vodka" ) )
+                        self.vodka_active = true
+                        printf( "Ќј„»Ќјё ѕ»“№" )
+                    end
                 end
                 
             else
                 self:stop()
+                self.object:set_sight( look.point, self.a.way:point( self.a.way:index( "mattress_dir" ) ):add( vector():set( 0, 0.5, 0 ) ), 0 )
 
                 if xr_state.change_state( self.object, 2 ) then 
-                    self.object:set_sight( look.point, self.a.way:point( self.a.way:index( "mattress_dir" ) ):add( vector():set( 0, 0.5, 0 ) ), 0 )
                     printf( "Ќј„»Ќјё —јƒ»“№—я" )
                 else
-                    -- против глюка
-                    self.object:set_sight( look.point, self.a.way:point( self.a.way:index( "mattress_dir" ) ):add( vector():set( 0, 0.5, 0 ) ), 0 )
-
                     if day_time() > 14 * h2ms then
                         self.drunk = true
                     end
@@ -596,42 +612,45 @@ end
             if self.sub_act then
                 --self.object:clear_animations()
                 self.decision = true
+                self.time_end = nil
             end
         end
     else
-        self.object:clear_animations()
-        self:walk_to_pos( self.a.way, "mattress" )
-        printf( "decision made: drink_vodka" )
+        if self.last_act == sleep then
+            self.pos = self.a.way:point( self.a.way:index( "mattress" ) )
+            return
+        end
+
+        if not xr_state.change_state( self.object, 0 ) then
+            self.object:clear_animations()
+            self:walk_to_pos( self.a.way, "mattress" )
+            printf( "[commander] : drink_vodka" )
+        end
     end
-end]]
+end
 
 function action_commander:exec_sleep()
     if self.pos then
         if self:in_pos() then
             if self.time_end then
                 if self.time_end <= game.time() then
+                    -- к 4 утра он протрезвеет
                     if self.time_end >= 4 * h2ms then
                         self.drunk = false
                     end
 
                     self.decision = true
                     self.time_end = nil
-
-                    --self.object:clear_animations()
-                else
-                    if self.object:animation_count() < 3 then
-                        self.object:add_animation( "waunded_idle_0", true )
-                    end
                 end
             else
                 self:stop()
-
                 self.object:set_sight( look.point, self.a.way:point( self.a.way:index( "mattress_dir" ) ), 0 )
                 self.object:set_item ( object.idle, nil )
-
-                self.object:add_animation( "waunded_sitdawn_0", true )
-
-                self.time_end = game.time() + h2ms
+                
+                if not xr_state.change_state( self.object, 4 ) then 
+                    -- через час он проснЄтс€ и примет новое решение
+                    self.time_end = game.time() + h2ms
+                end
             end
         else
             -- если сдвинулс€ с позиции, то уйти
@@ -642,9 +661,16 @@ function action_commander:exec_sleep()
             end
         end
     else
-        self.object:clear_animations()
-        self:walk_to_pos( self.a.way, "mattress" )
-        printf( "decision made: sleep" )
+        if self.last_act == sleep or self.last_act == drink_vodka then
+            self.pos = self.a.way:point( self.a.way:index( "mattress" ) )
+            return
+        end
+
+        if not xr_state.change_state( self.object, 0 ) then
+            self.object:clear_animations()
+            self:walk_to_pos( self.a.way, "mattress" )
+            printf( "[commander] : sleep" )
+        end
     end
 end
 
@@ -665,7 +691,7 @@ function action_commander:move_callback( obj, action_type, index )
     if math.random( 100 ) <= 20 then
         local pos = self.object:position()
 
-        for i, name in ipairs( self.soldiers ) do
+        for i, name in ipairs( self.a.soldiers ) do
             local soldier = level.object( name )
 
             if soldier and soldier:alive() and pos:distance_to_sqr( soldier:position() ) <= 64 then
@@ -742,8 +768,6 @@ function init_commander( npc, a )
         if char_ini:line_exist("commander", "soldiers") then
             local soldiers = char_ini:r_string( "commander", "soldiers" )
             a.soldiers = parse_names( soldiers )
-        else
-            a.soldiers = {}
         end
     else
         --printf( "no section" )
