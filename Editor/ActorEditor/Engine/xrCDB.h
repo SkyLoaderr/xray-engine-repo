@@ -131,13 +131,13 @@ namespace CDB
 
 extern "C" 
 {
-	void*	XRCDB_API	__cdecl		cdb_model_create	();
-	void	XRCDB_API	__cdecl		cdb_model_destroy	(void*);
-	void*	XRCDB_API	__cdecl		cdb_collider_create	();
-	void	XRCDB_API	__cdecl		cdb_collider_destroy(void*);
-	void	XRCDB_API	__cdecl		cdb_query_ray		(const COLLIDER* C, const MODEL *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range = 10000.f);
-	void	XRCDB_API	__cdecl		cdb_query_box		(const COLLIDER* C, const MODEL *m_def, const Fvector& b_center, const Fvector& b_dim);
-	void	XRCDB_API	__cdecl		cdb_query_frustum	(const COLLIDER* C, const MODEL *m_def, const CFrustum& F);
+	XRCDB_API	void*	__cdecl		cdb_model_create	();
+	XRCDB_API	void	__cdecl		cdb_model_destroy	(void*);
+	XRCDB_API	void*	__cdecl		cdb_collider_create	();
+	XRCDB_API	void	__cdecl		cdb_collider_destroy(void*);
+	XRCDB_API	void	__cdecl		cdb_query_ray		(const CDB::COLLIDER* C, const CDB::MODEL *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range = 10000.f);
+	XRCDB_API	void	__cdecl		cdb_query_box		(const CDB::COLLIDER* C, const CDB::MODEL *m_def, const Fvector& b_center, const Fvector& b_dim);
+	XRCDB_API	void	__cdecl		cdb_query_frustum	(const CDB::COLLIDER* C, const CDB::MODEL *m_def, const CFrustum& F);
 };
 
 #pragma pack(pop)	
