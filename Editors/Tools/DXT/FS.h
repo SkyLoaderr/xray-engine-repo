@@ -178,14 +178,14 @@ public:
 	{
 		u16	val 	= r_u16();
 		float A		= (float(val)*(max-min))/65535.f + min;
-		VERIFY		((A >= min) && (A <= max));
+		VERIFY		((A >= min-EPS_S) && (A <= max+EPS_S));
         return A;
 	}
 	IC float		r_float_q8	(float min, float max)
 	{
 		u8 val		= r_u8();
 		float A		= (float(val)*(max-min))/255.f + min;
-		VERIFY		((A >= min) && (A <= max));
+		VERIFY		((A >= min-EPS_S) && (A <= max+EPS_S));
         return A;
 	}
 	IC float		r_angle16	()			{ return r_float_q16(0,PI_MUL_2);	}
