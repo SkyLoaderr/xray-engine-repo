@@ -386,6 +386,20 @@ CUIXmlInit::StaticsVec CUIXmlInit::InitAutoStatic(CUIXml& xml_doc, LPCSTR tag_na
 
 //////////////////////////////////////////////////////////////////////////
 
+bool CUIXmlInit::InitColor  (CUIXml &xml_doc, XML_NODE* pNode, u32 &color)
+{
+	VERIFY(pNode);
+
+	int r = xml_doc.ReadAttribInt(pNode, "r", 255);
+	int g = xml_doc.ReadAttribInt(pNode, "g", 255);
+	int b = xml_doc.ReadAttribInt(pNode, "b", 255);
+	int	a = xml_doc.ReadAttribInt(pNode, "a", 255);
+
+	color = RGB_ALPHA(a,r,g,b);
+
+	return true;
+}
+
 bool CUIXmlInit::InitFont(CUIXml &xml_doc, LPCSTR path, int index, u32 &color, CGameFont *&pFnt)
 {
 	ref_str font_name = xml_doc.ReadAttrib(path, index, "font", NULL);
@@ -395,16 +409,7 @@ bool CUIXmlInit::InitFont(CUIXml &xml_doc, LPCSTR path, int index, u32 &color, C
 		return false;
 	}
 
-	int r = xml_doc.ReadAttribInt(path, index, "r", 255);
-	int g = xml_doc.ReadAttribInt(path, index, "g", 255);
-	int b = xml_doc.ReadAttribInt(path, index, "b", 255);
-
-	//чтоб не было тупых ошибок когда забыли поставить альфу
-	ref_str alpha = xml_doc.ReadAttrib(path, index, "a", NULL);
-	int a = 0xFF;
-	if(*alpha) a = xml_doc.ReadAttribInt(path, index, "a");
-
-	color = RGB_ALPHA(a,r,g,b);
+	InitColor(xml_doc, xml_doc.NavigateToNode(path, index), color);
 
 	if(*font_name)
 	{

@@ -53,6 +53,8 @@ public:
 	bool m_bArrowEnabled;
 	// Признак видимости стрелочки
 	bool m_bArrowVisible;
+	//цвет стерлочки указателя для объекта
+	u32	arrow_color;
 	
 	//центрирование иконки 
 	enum EMapSpotAlign {eBottom, eCenter, eNone};

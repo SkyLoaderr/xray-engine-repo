@@ -801,10 +801,10 @@ bool CInventory::Eat(PIItem pIItem)
 	
 
 	//уменьшить количество порций
-	if(pItemToEat->m_iPortionsNum == -1) 
-		pItemToEat->m_iPortionsNum = 0;
-	else
+	if(pItemToEat->m_iPortionsNum > 0)
 		--(pItemToEat->m_iPortionsNum);
+	else
+		pItemToEat->m_iPortionsNum = 0;
 
 
 	if(pItemToEat->m_iPortionsNum == 0)
@@ -815,7 +815,6 @@ bool CInventory::Eat(PIItem pIItem)
 		CGameObject::u_EventGen(P,GE_OWNERSHIP_REJECT,pIItem->ID());
 		P.w_u16(u16(pIItem->ID()));
 		CGameObject::u_EventSend(P);
-
 		//		Msg		("ge_destroy: [%d] - %s",pIItem->ID(),*pIItem->cName());
 */
 		return false;

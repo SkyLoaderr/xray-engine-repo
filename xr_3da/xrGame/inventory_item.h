@@ -105,7 +105,7 @@ public:
 			float	GetCondition		()  const {return m_fCondition;}
 			void	ChangeCondition		(float fDeltaCondition);
 
-			u32		GetSlot				()  const {return m_slot;}
+	virtual u32		GetSlot				()  const {return m_slot;}
 			void	SetSlot				(u32 slot) {m_slot = slot;}
 
 			bool	Belt				() {return m_belt;}

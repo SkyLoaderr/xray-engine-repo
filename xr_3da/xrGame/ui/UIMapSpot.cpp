@@ -34,6 +34,8 @@ CUIMapSpot::CUIMapSpot()
 	ClipperOn();
 
 	m_Arrow.CreateShader(ARROW_TEX, "hud\\default");
+
+	arrow_color = 0xffffffff;
 }
 CUIMapSpot::~CUIMapSpot()
 {
@@ -99,6 +101,7 @@ void CUIMapSpot::Draw()
 			clamp(ourRect.top, parentRect.top, parentRect.bottom - ARROW_DIMENTIONS);
 
 			m_Arrow.SetPos(ourRect.left, ourRect.top);
+			m_Arrow.SetColor(arrow_color);
 			m_Arrow.Render(arrowHeading);
 		}
 	}
@@ -132,11 +135,16 @@ Fvector CUIMapSpot::MapPos()
 	}
 
 
-/*	CObject* pObject =  Level().Objects.net_Find(m_object_id);
-	//объект в онлайне
-	if(pObject)
-	{
-		float dx = src.x - pObject->Position().x;
+	CObject* pObject =  Level().Objects.net_Find(m_object_id);
+	//объект в онлайне и в инвентаре у актера, то ничего не показывать
+	if(pObject && pObject->H_Parent() == Level().CurrentEntity())
+		Show(false);
+	else
+		Show(true);
+	
+
+		
+	/*		float dx = src.x - pObject->Position().x;
 		float dz = src.z - pObject->Position().z;
 
 		dx = dx;

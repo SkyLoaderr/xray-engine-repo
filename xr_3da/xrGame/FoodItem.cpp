@@ -12,6 +12,8 @@
 #include "xr_level_controller.h"
 #include "entity_alive.h"
 
+#include "actor.h"
+
 #define PLAYING_ANIM_TIME 10000
 
 CFoodItem::CFoodItem(void) 
@@ -73,6 +75,16 @@ void CFoodItem::UpdateCL()
 		OnStateSwitch(FOOD_PLAYING);
 }
 
+u32 CFoodItem::GetSlot	() const
+{
+	if(H_Parent() && dynamic_cast<const CActor*>(H_Parent()))
+	{
+		return NO_ACTIVE_SLOT;
+	}
+
+	return CEatableItem::GetSlot();
+}
+
 void CFoodItem::OnH_A_Chield() 
 {
 	inherited::OnH_A_Chield		();
@@ -84,7 +96,21 @@ void CFoodItem::OnH_A_Chield()
 void CFoodItem::OnH_B_Independent() 
 {
 	inherited::OnH_B_Independent();
+	CEatableItem::OnH_B_Independent();
 }
+
+void  CFoodItem::OnH_A_Independent	()
+{
+	inherited::OnH_A_Independent();
+	CEatableItem::OnH_A_Independent();
+}
+
+void  CFoodItem::OnH_B_Chield		()
+{
+	inherited::OnH_B_Chield();
+	CEatableItem::OnH_B_Chield();
+}
+
 
 void CFoodItem::renderable_Render() 
 {

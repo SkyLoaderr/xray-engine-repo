@@ -21,6 +21,9 @@ struct SMapLocation
 
 		attached_to_object = false;
 		object_id = 0xffff;
+		
+		marker_show = false;
+		icon_color = 0xffffffff;
 	}
 
 	//имя уровня
@@ -42,6 +45,11 @@ struct SMapLocation
 
 	//размеры и положение иконки
 	int icon_x, icon_y, icon_width, icon_height;
+	
+	//нужно ли показывать маркер (стрелку на краю карты)
+	bool marker_show;
+	//цвет стрелки маркера и иконки на миникарте
+	u32 icon_color;
 };
 
 DEFINE_VECTOR (SMapLocation, LOCATIONS_VECTOR, LOCATIONS_VECTOR_IT);

@@ -279,6 +279,7 @@ public:
 	virtual void				OnHUDDraw				(CCustomHUD* hud) {inherited::OnHUDDraw(hud);}
 	virtual void				OnH_B_Chield			();
 	virtual void				OnH_B_Independent		();
+	virtual void				OnH_A_Independent		();
 	virtual void				OnEvent					(NET_Packet& P, u16 type) {inherited::OnEvent(P,type);}
 	virtual void				renderable_Render		() {inherited::renderable_Render();}
 	virtual bool				Useful					() const;

@@ -8905,10 +8905,16 @@
 					RelativePath=".\dialogs.xml">
 				</File>
 				<File
+					RelativePath=".\dialogs_agroprom.xml">
+				</File>
+				<File
 					RelativePath=".\dialogs_bar.xml">
 				</File>
 				<File
 					RelativePath=".\dialogs_escape.xml">
+				</File>
+				<File
+					RelativePath=".\dialogs_garbage.xml">
 				</File>
 				<File
 					RelativePath=".\dialogs_yantar.xml">
@@ -8923,6 +8929,9 @@
 					RelativePath=".\game_tasks.xml">
 				</File>
 				<File
+					RelativePath=".\info_escape.xml">
+				</File>
+				<File
 					RelativePath=".\info_portions.xml">
 				</File>
 				<File
@@ -8933,6 +8942,9 @@
 				</File>
 				<File
 					RelativePath=".\string_table_enc_mutants.xml">
+				</File>
+				<File
+					RelativePath=".\tasks_escape.xml">
 				</File>
 			</Filter>
 			<Filter
@@ -9024,10 +9036,28 @@
 				Name="string table"
 				Filter="">
 				<File
+					RelativePath=".\string_table_artefacts.xml">
+				</File>
+				<File
+					RelativePath=".\string_table_enc_equipment.xml">
+				</File>
+				<File
+					RelativePath=".\string_table_enc_social.xml">
+				</File>
+				<File
+					RelativePath=".\string_table_enc_vehicles.xml">
+				</File>
+				<File
+					RelativePath=".\string_table_enc_zone.xml">
+				</File>
+				<File
 					RelativePath=".\string_table_general.xml">
 				</File>
 				<File
 					RelativePath=".\string_table_items.xml">
+				</File>
+				<File
+					RelativePath=".\string_table_tasks_escape.xml">
 				</File>
 				<File
 					RelativePath=".\string_table_tips.xml">

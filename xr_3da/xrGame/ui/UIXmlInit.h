@@ -58,6 +58,8 @@ public:
 	bool InitFont				(CUIXml &xml_doc, const char *path, 
 								int index, u32 &color, CGameFont *&pFnt);
 
+	bool InitColor				(CUIXml &xml_doc, XML_NODE* node, u32 &color);
+
 	bool InitTabControl			(CUIXml &xml_doc, const char *path,
 								int index, CUITabControl *pWnd);
 

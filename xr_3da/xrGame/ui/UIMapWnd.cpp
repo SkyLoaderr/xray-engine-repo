@@ -209,6 +209,9 @@ void CUIMapWnd::InitLocalMap()
 			map_spot->m_vWorldPos.set(map_location.x,0.f,map_location.y);
 		}
 
+		map_spot->arrow_color = map_location.icon_color;
+		map_spot->m_bArrowEnabled = map_location.marker_show;
+
 		UILocalMapBackground.ConvertToLocal(src,P);
 
 		map_spot->SetShader(GetMapIconsShader());

@@ -12,6 +12,7 @@
 #include "inventory.h"
 #include "level.h"
 #include "xr_level_controller.h"
+#include "FoodItem.h"
 
 #include "CameraLook.h"
 #include "CameraFirstEye.h"
@@ -42,6 +43,10 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				Msg("! Error: No object to take/buy [%d]", id);
 				break;
 			}
+
+			CFoodItem* pFood = dynamic_cast<CFoodItem*>(O);
+			if(pFood)
+				pFood->m_eItemPlace = eItemPlaceRuck;
 
 			if(inventory().Take(dynamic_cast<CGameObject*>(O), false, true)) 
 			{

@@ -49,15 +49,24 @@ bool CEatableItem::Useful() const
 	return true;
 }
 
-void CEatableItem::OnH_B_Independent() 
+void CEatableItem::OnH_A_Independent() 
 {
 	if(!Useful()) {
 		NET_Packet		P;
 		u_EventGen		(P,GE_DESTROY,ID());
 		
 		//Msg				("ge_destroy: [%d] - %s",ID(),*cName());
-		if (Local())
-			u_EventSend	(P);
+		if (Local())	u_EventSend	(P);
+	}
+	inherited::OnH_A_Independent();
+}
+
+void CEatableItem::OnH_B_Independent()
+{
+	if(!Useful()) 
+	{
+		setVisible(false);
+		setEnabled(false);
 		m_ready_to_destroy	= true;
 	}
 	inherited::OnH_B_Independent();

@@ -26,6 +26,7 @@ public:
 	virtual bool Useful() const;
 
 	virtual void OnH_B_Independent();
+	virtual void OnH_A_Independent();
 
 	//влияние при поедании вещи на параметры игрока
 	float	m_fHealthInfluence;

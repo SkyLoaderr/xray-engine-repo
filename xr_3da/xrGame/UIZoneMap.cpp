@@ -219,33 +219,38 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor)
 
 	//цвет по умолчанию
 	u32 entity_color = COLOR_BASE;
+	bool draw_entity = true;
 
 	for(LOCATIONS_PTR_VECTOR_IT it = Level().MapLocations().begin();
 		Level().MapLocations().end() != it;
 		it++)
 	{
 		SMapLocation& map_location = *(*it);
+		entity_color = map_location.icon_color;
 		if(map_location.attached_to_object)
 		{
 			pObject = Level().Objects.net_Find	(map_location.object_id);
 
 			CEntityAlive* pEntityAlive = NULL;
-			if(pObject)
+			//если объект и мы его не взяли себе в инвентарь
+			if(pObject && pObject->H_Parent() != dynamic_cast<CObject*>(Actor))
 			{
 				pEntityAlive = dynamic_cast<CEntityAlive*>(pObject);
 
-				if(pEntityAlive)
+/*				if(pEntityAlive)
 				{
 					if(ALife::eRelationTypeEnemy == pActor->tfGetRelationType(pEntityAlive))
 						entity_color = COLOR_FRIEND;
 					else
 						entity_color = COLOR_ENEMY;
-				}
-
+				}*/
+	
 				src.x = pObject->Position().x;
 				src.y = 0;
 				src.z = pObject->Position().z;
 			}
+			else
+				draw_entity = false;
 		}
 		else
 		{
@@ -259,42 +264,41 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor)
 
 		bool on_border;
 		ConvertToLocal(LM, src, P, map_radius - MAP_ARROW_WIDTH/2, on_border);
-		if(!on_border)
-			entity.Out(P.x,P.y,entity_color);
-		else
+		if(draw_entity)
 		{
-			float arrowHeading = 0;
-			int x_shift = 0;
-			int y_shift = 0;
+			if(!on_border)
+				entity.Out(P.x,P.y,entity_color);
+			else if(map_location.marker_show)
+			{
+				float arrowHeading = 0;
+				int x_shift = 0;
+				int y_shift = 0;
 
-			if (P.y == map_center.y)
-			{
-				if (P.x > map_center.x)
-					arrowHeading = PI_DIV_2;
+				if (P.y == map_center.y)
+				{
+					if (P.x > map_center.x)
+						arrowHeading = PI_DIV_2;
+					else
+						arrowHeading = PI + PI_DIV_2;
+				}
+				else if (P.x == map_center.x)
+				{
+					if(P.y > map_center.y)
+						arrowHeading = 0;
+					else
+						arrowHeading = -PI;
+				}
 				else
-					arrowHeading = PI + PI_DIV_2;
-			}
-			else if (P.x == map_center.x)
-			{
-				if(P.y > map_center.y)
-					arrowHeading = 0;
-				else
-					arrowHeading = -PI;
-			}
-			else
-			{
-				arrowHeading = std::atan(static_cast<float>(P.x - map_center.x) / (P.y - map_center.y));
-				if (P.y < map_center.y) arrowHeading += PI;
-			}
+				{
+					arrowHeading = std::atan(static_cast<float>(P.x - map_center.x) / (P.y - map_center.y));
+					if (P.y < map_center.y) arrowHeading += PI;
+				}
 
-//			if(P.x > map_center.x) x_shift = -MAP_ARROW_WIDTH;
-//			if(P.y > map_center.y) y_shift = -MAP_ARROW_HEIGHT;
-						
-			arrowHeading += MAP_ARROW_ROTATION;
-			entity_arrow.Out(P.x + x_shift - MAP_ARROW_WIDTH, 
-				P.y + y_shift - MAP_ARROW_HEIGHT, entity_color, arrowHeading);
+				arrowHeading += MAP_ARROW_ROTATION;
+				entity_arrow.Out(P.x + x_shift - MAP_ARROW_WIDTH, 
+					P.y + y_shift - MAP_ARROW_HEIGHT, entity_color, arrowHeading);
+			}
 		}
-
 	}		
 
 

@@ -416,6 +416,12 @@ void CAI_Rat::OnH_B_Independent	()
 	CEatableItem::OnH_B_Independent	();
 }
 
+void CAI_Rat::OnH_A_Independent	()
+{
+	inherited::OnH_A_Independent	();
+	CEatableItem::OnH_A_Independent	();
+}
+
 bool CAI_Rat::Useful() const
 {
 	if (!g_Alive())

@@ -15,6 +15,8 @@
 #include "alife_story_registry.h"
 #include "xrServer_Objects_ALife.h"
 
+#include "ui\uixmlinit.h"
+
 //////////////////////////////////////////////////////////////////////////
 // SInfoPortionData: данные для InfoProtion
 
@@ -155,6 +157,15 @@ void CInfoPortion::load_shared	(LPCSTR)
 			map_location.icon_height = uiXml.ReadAttribInt(pMapNode, "icon", 0, "height");
 
 			map_location.text = uiXml.Read(pMapNode, "text", 0);
+
+			CUIXmlInit xml_init;
+			XML_NODE* icon_node = uiXml.NavigateToNode(pMapNode, "icon", 0);
+			if(icon_node)
+			{
+				xml_init.InitColor(uiXml, icon_node, map_location.icon_color);
+				map_location.marker_show = !!uiXml.ReadAttribInt(icon_node, "marker", 1);
+			}
+
 
 			//присоединить к объекту на уровне, если тот задан
 			if(uiXml.NavigateToNode(pMapNode,"object",0))
