@@ -1,153 +1,197 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_zombie.cpp
-//	Created 	: 07.05.2002
-//  Modified 	: 07.05.2002
+//	Module 		: ai_rat.cpp
+//	Created 	: 23.04.2002
+//  Modified 	: 07.11.2002
 //	Author		: Dmitriy Iassenev
-//	Description : AI Behaviour for monster "Zombie"
+//	Description : AI Behaviour for monster "Rat"
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "ai_zombie.h"
-#include "ai_zombie_selectors.h"
-#include "..\\ai_monsters_misc.h"
-#include "..\\..\\xr_weapon_list.h"
-#include "..\\..\\hudmanager.h"
-#include "..\\..\\..\\xr_trims.h"
+#include "ai_rat.h"
 
-CAI_Zombie::CAI_Zombie()
+CAI_Rat::CAI_Rat()
 {
-	dwHitTime = 0;
-	tHitDir.set(0,0,1);
-	dwSenseTime = 0;
-	tSenseDir.set(0,0,1);
-	tSavedEnemy = 0;
-	tSavedEnemyPosition.set(0,0,0);
-	tpSavedEnemyNode = 0;
-	dwSavedEnemyNodeID = u32(-1);
-	dwLostEnemyTime = 0;
-	bBuildPathToLostEnemy = false;
-	m_dwLastRangeSearch = 0;
-	m_dwLastSuccessfullSearch = 0;
-	m_bLessCoverLook = false;
-	//////////////////////////////////////////////////////////////////////////
-	// r_spine_speed = r_torso_speed = q_look.o_look_speed = _FB_look_speed;
-	// Actually I don't understand why?? it is a feature of the vc.net
-	//////////////////////////////////////////////////////////////////////////
-	r_spine_speed = r_torso_speed = q_look.o_look_speed = PI;//_FB_look_speed;
+	m_tHitDir.set			(0,0,1);
+	m_tSavedEnemyPosition.set(0,0,0);
+	m_dwHitTime				= 0;
+	m_tSavedEnemy			= 0;
+	m_tpSavedEnemyNode		= 0;
+	m_dwSavedEnemyNodeID	= u32(-1);
+	m_dwLostEnemyTime		= 0;
 	m_tpCurrentGlobalAnimation = 0;
-	m_tpCurrentGlobalBlend = 0;
-	m_bActionStarted = false;
-	m_bJumping = false;
-	m_tpEventSay = Engine.Event.Handler_Attach("level.entity.say",this);
-	m_tpEventAssignPath = Engine.Event.Handler_Attach("level.entity.path.assign",this);
-	AI_Path.fSpeed = 0.f;
-	m_fDistanceWent = 0.f;
-	m_cStep = 0;
-	m_fSensetivity = 0.f;
-	m_iSoundIndex = -1;
-	tpaDynamicSounds.clear();
-	m_dwLastUpdate = 0;
-	m_dwLastVoiceTalk = 0;
-	m_tpSoundBeingPlayed = 0;
-	m_dwLastSoundRefresh = 0;
+	m_tpCurrentGlobalBlend	= 0;
+	m_bActionStarted		= false;
+	m_bFiring				= false;
+	m_dwLastVoiceTalk		= 0;
+	m_tpSoundBeingPlayed	= 0;
+	m_dwLastSoundRefresh	= 0;
+	m_dwLastRangeSearch		= 0;
+	m_tGoalDir.set			(10.0f*(Random.randF()-Random.randF()),10.0f*(Random.randF()-Random.randF()),10.0f*(Random.randF()-Random.randF()));
+	m_tCurrentDir.set		(0,0,1);
+	m_tHPB.set				(0,0,0);
+	m_fDHeading				= 0;
+	m_fGoalChangeTime		= 0.f;
+	m_tLastSound.tpEntity	= 0;
+	m_tLastSound.dwTime		= 0;
+	m_tLastSound.eSoundType	= SOUND_TYPE_NO_SOUND;
+	m_bNoWay				= false;
+	m_dwMoraleLastUpdateTime = 0;
+	m_bStanding				= false;
+	m_bActive				= false;
+	m_dwStartAttackTime		= 0;
+	q_look.o_look_speed		= PI;
 }
 
-CAI_Zombie::~CAI_Zombie()
+CAI_Rat::~CAI_Rat()
 {
-	for (int i=0; i<SND_HIT_COUNT; i++) pSounds->Delete(sndHit[i]);
-	for (i=0; i<SND_DIE_COUNT; i++) pSounds->Delete(sndDie[i]);
-	
-	Engine.Event.Handler_Detach (m_tpEventSay,this);
-	Engine.Event.Handler_Detach (m_tpEventAssignPath,this);
+	for (int i=0; i<SND_HIT_COUNT; i++) 
+		pSounds->Delete(m_tpaSoundHit[i]);
+
+	for (i=0; i<SND_DIE_COUNT; i++) 
+		pSounds->Delete(m_tpaSoundDie[i]);
+
+	for (i=0; i<SND_VOICE_COUNT; i++) 
+		pSounds->Delete(m_tpaSoundVoice[i]);
 }
 
-// when zombie is dead
-void CAI_Zombie::Death()
+void CAI_Rat::Die()
 {
 	inherited::Death( );
-//	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-	eCurrentState = aiZombieDie;
+	eCurrentState = aiRatDie;
 	
 	Fvector	dir;
 	AI_Path.Direction(dir);
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
 	
-	pSounds->PlayAtPos(sndDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
+	pSounds->PlayAtPos(m_tpaSoundDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
+
+	vfUpdateMoraleBroadcast(m_fMoraleDeathQuant,m_fMoraleDeathDistance);
+	
+	CGroup &Group = Level().get_group(g_Team(),g_Squad(),g_Group());
+	vfRemoveActiveMember();
+	vfRemoveStandingMember();
+	Group.m_dwAliveCount--;
+	eCurrentState = aiRatDie;
 }
 
-void CAI_Zombie::vfLoadSelectors(LPCSTR section)
+void CAI_Rat::OnDeviceCreate()
 {
-	SelectorFreeHunting.Load(section);
-}
-
-void CAI_Zombie::OnDeviceCreate()
-{ 
 	inherited::OnDeviceCreate();
 	vfLoadAnimations();
 }
 
-void CAI_Zombie::Load(LPCSTR section)
+void CAI_Rat::Load(LPCSTR section)
 { 
 	// load parameters from ".ini" file
-	inherited::Load	(section);
+	inherited::Load(section);
 	
 	// initialize start position
-	Fvector			P = vPosition;
-	P.x				+= ::Random.randF();
-	P.z				+= ::Random.randF();
+	Fvector	P						= vPosition;
+	P.x								+= ::Random.randF();
+	P.z								+= ::Random.randF();
 	
 	vfLoadSounds();
-	vfLoadSelectors(section);
 	
-	// visibility
-	m_dwMovementIdleTime = pSettings->ReadINT(section,"MovementIdleTime");
-	m_fMaxInvisibleSpeed = pSettings->ReadFLOAT(section,"MaxInvisibleSpeed");
-	m_fMaxViewableSpeed = pSettings->ReadFLOAT(section,"MaxViewableSpeed");
-	m_fMovementSpeedWeight = pSettings->ReadFLOAT(section,"MovementSpeedWeight");
-	m_fDistanceWeight = pSettings->ReadFLOAT(section,"DistanceWeight");
-	m_fSpeedWeight = pSettings->ReadFLOAT(section,"SpeedWeight");
-	m_fCrouchVisibilityMultiplier = pSettings->ReadFLOAT(section,"CrouchVisibilityMultiplier");
-	m_fLieVisibilityMultiplier = pSettings->ReadFLOAT(section,"LieVisibilityMultiplier");
-	m_fVisibilityThreshold = pSettings->ReadFLOAT(section,"VisibilityThreshold");
-	m_fLateralMultiplier = pSettings->ReadFLOAT(section,"LateralMultiplier");
-	m_fShadowWeight = pSettings->ReadFLOAT(section,"ShadowWeight");
+	// sounds
+	m_fMinVoiceIinterval			= pSettings->ReadFLOAT (section,"MinVoiceInterval");
+	m_fMaxVoiceIinterval			= pSettings->ReadFLOAT (section,"MaxVoiceInterval");
+	m_fVoiceRefreshRate				= pSettings->ReadFLOAT (section,"VoiceRefreshRate");
 	
-	m_dwMaxDynamicSoundsCount = pSettings->ReadINT(section,"DynamicSoundsCount");
+	// active\passive
+	m_fChangeActiveStateProbability = pSettings->ReadFLOAT (section,"ChangeActiveStateProbability");
+	m_dwPassiveScheduleMin			= pSettings->ReadINT   (section,"PassiveScheduleMin");
+	m_dwPassiveScheduleMax			= pSettings->ReadINT   (section,"PassiveScheduleMax");
+	m_dwActiveCountPercent			= pSettings->ReadINT   (section,"ActiveCountPercent");
+	m_dwStandingCountPercent		= pSettings->ReadINT   (section,"StandingCountPercent");
 
-	m_fMinVoiceIinterval = pSettings->ReadFLOAT(section,"MinVoiceIinterval");
-	m_fMaxVoiceIinterval = pSettings->ReadFLOAT(section,"MaxVoiceIinterval");
-	m_fVoiceRefreshRate	 = pSettings->ReadFLOAT(section,"VoiceRefreshRate");
-	
-	//fire
-	m_fHitPower       = (float)(pSettings->ReadINT(section,"HitPower"));
-	m_dwHitInterval   = pSettings->ReadINT(section,"HitInterval");
-	//
-	eye_fov			  = pSettings->ReadFLOAT(section,"eye_fov");
-	eye_range		  = pSettings->ReadFLOAT(section,"eye_range");
-	
-	m_fJumpSpeed			= pSettings->ReadFLOAT(section,"jump_speed");
-	m_fMinSpeed				= pSettings->ReadFLOAT(section,"min_speed");
-	m_fMaxSpeed				= pSettings->ReadFLOAT(section,"max_speed");
-	m_fCurSpeed				= m_fMaxSpeed;
-	m_current				= 0;
+	// eye shift
+	m_tEyeShift.y					= pSettings->ReadFLOAT (section,"EyeYShift");
+
+	// former constants
+	m_dwLostMemoryTime				= pSettings->ReadINT   (section,"LostMemoryTime");
+	m_dwLostRecoilTime				= pSettings->ReadINT   (section,"LostRecoilTime");
+	m_fUnderFireDistance			= pSettings->ReadFLOAT (section,"UnderFireDistance");
+	m_dwRetreatTime					= pSettings->ReadINT   (section,"RetreatTime");
+	m_fRetreatDistance				= pSettings->ReadFLOAT (section,"RetreatDistance");
+	m_fAttackStraightDistance		= pSettings->ReadFLOAT (section,"AttackStraightDistance");
+	m_fStableDistance				= pSettings->ReadFLOAT (section,"StableDistance");
+	m_fWallMinTurnValue				= pSettings->ReadFLOAT (section,"WallMinTurnValue")/180.f*PI;
+	m_fWallMaxTurnValue				= pSettings->ReadFLOAT (section,"WallMaxTurnValue")/180.f*PI;
+
+	m_fAngleSpeed					= pSettings->ReadFLOAT (section,"AngleSpeed");
+	m_fSafeGoalChangeDelta	 		= pSettings->ReadFLOAT (section,"GoalChangeDelta");
+	m_tGoalVariation	  			= pSettings->ReadVECTOR(section,"GoalVariation");
+
+	m_fMoraleDeathDistance	 		= pSettings->ReadFLOAT (section,"DeathDistance");
+
+	m_dwActionRefreshRate	 		= pSettings->ReadINT   (section,"ActionRefreshRate");
+
+	m_fMaxHealthValue	 			= pSettings->ReadFLOAT (section,"MaxHealthValue");
+
+	m_fSoundThreshold				= pSettings->ReadFLOAT (section,"SoundThreshold");
+
+	m_dwActiveScheduleMin			= shedule_Min;
+	m_dwActiveScheduleMax			= shedule_Max;
 }
 
-BOOL CAI_Zombie::net_Spawn	(LPVOID DC)
+BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 {
 	if (!inherited::net_Spawn(DC))	return FALSE;
+	
+	//////////////////////////////////////////////////////////////////////////
+	xrSE_Rat *tpSE_Rat = (xrSE_Rat *)DC;
+	// model
+	cNameVisual_set					(tpSE_Rat->caModel);
+	// personal characteristics
+	eye_fov							= tpSE_Rat->fEyeFov;
+	eye_range						= tpSE_Rat->fEyeRange;
+	fHealth							= tpSE_Rat->fHealth;
+	m_fMinSpeed						= tpSE_Rat->fMinSpeed;
+	m_fMaxSpeed						= tpSE_Rat->fMaxSpeed;
+	m_fAttackSpeed					= tpSE_Rat->fAttackSpeed;
+	m_fMaxPursuitRadius				= tpSE_Rat->fMaxPursuitRadius;
+	m_fMaxHomeRadius				= tpSE_Rat->fMaxHomeRadius;
+	// morale
+	m_fMoraleSuccessAttackQuant		= tpSE_Rat->fMoraleSuccessAttackQuant;
+	m_fMoraleDeathQuant				= tpSE_Rat->fMoraleDeathQuant;
+	m_fMoraleFearQuant				= tpSE_Rat->fMoraleFearQuant;
+	m_fMoraleRestoreQuant			= tpSE_Rat->fMoraleRestoreQuant;
+	m_dwMoraleRestoreTimeInterval	= tpSE_Rat->u16MoraleRestoreTimeInterval;
+	m_fMoraleMinValue				= tpSE_Rat->fMoraleMinValue;
+	m_fMoraleMaxValue				= tpSE_Rat->fMoraleMaxValue;
+	m_fMoraleNormalValue			= tpSE_Rat->fMoraleNormalValue;
+	// attack
+	m_fHitPower						= tpSE_Rat->fHitPower;
+	m_dwHitInterval					= tpSE_Rat->u16HitInterval;
+	m_fAttackDistance				= tpSE_Rat->fAttackDistance;
+	m_fAttackAngle					= tpSE_Rat->fAttackAngle/180.f*PI;
+	m_fAttackSuccessProbability		= tpSE_Rat->fAttackSuccessProbability;
+	//////////////////////////////////////////////////////////////////////////
+
+	m_fCurSpeed						= m_fMaxSpeed;
+
+	m_tOldPosition.set(vPosition);
+	m_tSpawnPosition.set(Level().get_squad(g_Team(),g_Squad()).Leader->Position());
+	m_tSafeSpawnPosition.set(m_tSpawnPosition);
+	tStateStack.push(eCurrentState = aiRatFreeHuntingActive);
+	vfAddActiveMember(true);
+	m_bStateChanged = true;
+
 	r_torso_current = r_current;
 	r_torso_target = r_target;
-	tStateStack.push(eCurrentState = aiZombieFreeHunting);
+	m_tHPB.x = r_torso_current.yaw;
+	m_tHPB.y = r_torso_current.pitch;
+	m_tHPB.z = 0;
+	
 	return TRUE;
 }
 
-// zombie update
-void CAI_Zombie::Update(u32 DT)
+void CAI_Rat::Exec_Movement	( float dt )
 {
-	inherited::Update(DT);
+	AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
 }
 
-void CAI_Zombie::net_Export(NET_Packet& P)
+void CAI_Rat::net_Export(NET_Packet& P)
 {
 	R_ASSERT				(Local());
 
@@ -162,7 +206,7 @@ void CAI_Zombie::net_Export(NET_Packet& P)
 	P.w_angle8				(N.o_torso.pitch);
 }
 
-void CAI_Zombie::net_Import(NET_Packet& P)
+void CAI_Rat::net_Import(NET_Packet& P)
 {
 	R_ASSERT				(Remote());
 	net_update				N;
@@ -180,83 +224,6 @@ void CAI_Zombie::net_Import(NET_Packet& P)
 		NET_WasInterpolating	= TRUE;
 	}
 
-	setVisible				(true);
-	setEnabled				(true);
-}
-
-void CAI_Zombie::Exec_Movement	( float dt )
-{
-	if ((vPosition.x < -10000.f) || (vPosition.y < -10000.f) || (vPosition.z < -10000.f)) {
-		vPosition = Level().AI.tfGetNodeCenter(AI_Node);
-		Msg("%s",cName());
-	}
-	AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
-//	if (eCurrentState != aiZombieJumping)
-//		AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
-//	else {
-//		UpdateTransform();
-//		if (m_bActionStarted) {
-//			m_bActionStarted = false;
-//			Fvector tAcceleration, tVelocity;
-//			tVelocity.set(0,1,0);
-//			Movement.SetPosition(vPosition);
-//			Movement.SetVelocity(tVelocity);
-//			tAcceleration.set(0,0,0);
-//			Movement.SetPosition(vPosition);
-//			Movement.Calculate	(tAcceleration,0,m_cBodyState == BODY_STATE_STAND ? m_fJumpSpeed : m_fJumpSpeed*.8f,dt > .1f ? .1f : dt,false);
-//			Movement.GetPosition(vPosition);
-//		}
-//		else {
-//			Fvector tAcceleration;
-//			tAcceleration.set(0,-m_cBodyState == BODY_STATE_STAND ? m_fJumpSpeed : m_fJumpSpeed*.8f,0);
-//			Movement.SetPosition(vPosition);
-//			Movement.Calculate	(tAcceleration,0,0,dt > .1f ? .1f : dt,false);
-//			Movement.GetPosition(vPosition);
-//		}
-//		UpdateTransform	();
-//	}
-}
-
-void CAI_Zombie::OnEvent(EVENT E, u32 P1, u32 P2)
-{
-
-	if (E == m_tpEventSay) {
-		if (0==P2 || u32(this)==P2) {
-			char* caTextToShow;
-			caTextToShow = (char *)P1;
-			Level().HUD()->outMessage(0xffffffff,cName(),"%s",caTextToShow);
-		}
-	}
-	else
-		if (E == m_tpEventAssignPath) {
-			if (0==P2 || u32(this)==P2) {
-				char *buf2, *buf, monster_name[100];
-				buf2 = buf = (char *)P1;
-				int iArgCount = _GetItemCount(buf2);
-				if (iArgCount >= 4) {
-					u32 team,squad,group;
-					for ( ; ; buf2++)
-						if (*buf2 == ',') {
-							memcpy(monster_name,buf,(buf2 - buf)*sizeof(char));
-							monster_name[buf2++ - buf] = 0;
-							break;
-						}
-						
-					if ((strlen(monster_name)) && (strcmp(monster_name,cName())))
-						return;
-					
-					if (!(strlen(monster_name))) {
-						sscanf(buf2,"%d,%d,%d",&team,&squad,&group);
-						
-						if (((int)team != g_Team()) || ((int)squad != g_Squad()) || ((int)group != g_Group()))
-							return;
-						
-						for (int komas=0; komas<3; buf2++)
-							if (*buf2 == ',')
-								komas++;
-					}
-				}
-				m_tpPath = &(Level().m_PatrolPaths[buf2]);
-			}
-		}
+	setVisible				(TRUE);
+	setEnabled				(TRUE);
 }
