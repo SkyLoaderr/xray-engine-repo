@@ -10,7 +10,7 @@
 typedef double	f64;
 typedef __int64 s64;
 
-#define __PROFILE__
+//#define __PROFILE__
 
 #ifdef __PROFILE__
 	#define MAX_TIMER_COUNT		  64
