@@ -568,69 +568,180 @@ namespace CDB
 		}
 
 		return _abs(fSqrDist);
-}
+	}
 
-enum EST_Result{
-	stNone		= 0,
-	stIntersect	= 1,
-	stInside	= 2,
+	enum EST_Result{
+		stNone		= 0,
+		stIntersect	= 1,
+		stInside	= 2,
+	};
+
+	IC EST_Result TestSphereTri(const Fvector& sphereOrigin, float sphereRadius,
+						const Fvector& orig, const Fvector& e0,const Fvector& e1)
+	{
+
+		float fRSqr = sphereRadius*sphereRadius;
+		Fvector kV0mC;
+		kV0mC.sub(orig, sphereOrigin);
+
+		// count the number of triangle vertices inside the sphere
+		int iInside = 0;
+
+		// test if v0 is inside the sphere
+		if ( kV0mC.square_magnitude() <= fRSqr )
+			iInside++;
+
+		// test if v1 is inside the sphere
+		Fvector kDiff;
+		kDiff.add(kV0mC, e0);
+		if ( kDiff.square_magnitude() <= fRSqr )
+			iInside++;
+
+		// test if v2 is inside the sphere
+		kDiff.add(kV0mC, e1);
+		if ( kDiff.square_magnitude() <= fRSqr )
+			iInside++;
+
+		// triangle does not traversely intersect sphere
+		if ( iInside == 3 ) return stInside;
+
+		// triangle transversely intersects sphere
+		if ( iInside > 0 ) return stIntersect;
+
+		// All vertices are outside the sphere, but the triangle might still
+		// intersect the sphere.  This is the case when the distance from the
+		// sphere center to the triangle is smaller than the radius.
+		float fSqrDist = MgcSqrDistance(sphereOrigin,orig,e0,e1);
+		return (fSqrDist < fRSqr)?stIntersect:stNone;
+	}
+	//---------------------------------------------------------------------------
+	IC EST_Result TestSphereTri(const Fvector& sphereOrigin, float sphereRadius, Fvector* p)
+	{
+		Fvector e0, e1;
+		// find vectors for two edges sharing vert0
+		e0.sub(p[1], p[0]);
+		e1.sub(p[2], p[0]);
+		return TestSphereTri(sphereOrigin,sphereRadius,p[0],e0,e1);
+	}
+	IC EST_Result TestSphereTri(const Fvector& sphereOrigin, float sphereRadius, Fvector** p)
+	{
+		Fvector e0, e1;
+		// find vectors for two edges sharing vert0
+		e0.sub(*p[1], *p[0]);
+		e1.sub(*p[2], *p[0]);
+		return TestSphereTri(sphereOrigin,sphereRadius,*p[0],e0,e1);
+	}
+	IC bool TestSphereOBB(const Fsphere& rkSphere, const Fobb& rkBox)
+	{
+		// Test for intersection in the coordinate system of the box by
+		// transforming the sphere into that coordinate system.
+		Fvector3 kCDiff;
+		kCDiff.sub(rkSphere.P,rkBox.m_translate);
+
+		float fAx = _abs(kCDiff.dotproduct(rkBox.m_rotate.i));
+		float fAy = _abs(kCDiff.dotproduct(rkBox.m_rotate.j));
+		float fAz = _abs(kCDiff.dotproduct(rkBox.m_rotate.k));
+		float fDx = fAx - rkBox.m_halfsize[0];
+		float fDy = fAy - rkBox.m_halfsize[1];
+		float fDz = fAz - rkBox.m_halfsize[2];
+
+		if ( fAx <= rkBox.m_halfsize[0] ){
+			if ( fAy <= rkBox.m_halfsize[1] ){
+				if ( fAz <= rkBox.m_halfsize[2] ){
+					// sphere center inside box
+					return true;
+				}else{
+					// potential sphere-face intersection with face z
+					return fDz <= rkSphere.R;
+				}
+			}else{
+				if ( fAz <= rkBox.m_halfsize[2] ){
+					// potential sphere-face intersection with face y
+					return fDy <= rkSphere.R;
+				}else{
+					// potential sphere-edge intersection with edge formed
+					// by faces y and z
+					float fRSqr = rkSphere.R*rkSphere.R;
+					return fDy*fDy + fDz*fDz <= fRSqr;
+				}
+			}
+		}else{
+			if ( fAy <= rkBox.m_halfsize[1] ){
+				if ( fAz <= rkBox.m_halfsize[2] ){
+					// potential sphere-face intersection with face x
+					return fDx <= rkSphere.R;
+				}else{
+					// potential sphere-edge intersection with edge formed
+					// by faces x and z
+					float fRSqr = rkSphere.R*rkSphere.R;
+					return fDx*fDx + fDz*fDz <= fRSqr;
+				}
+			}else{
+				if ( fAz <= rkBox.m_halfsize[2] ){
+					// potential sphere-edge intersection with edge formed
+					// by faces x and y
+					float fRSqr = rkSphere.R*rkSphere.R;
+					return fDx*fDx + fDy*fDy <= fRSqr;
+				}else{
+					// potential sphere-vertex intersection at corner formed
+					// by faces x,y,z
+					float fRSqr = rkSphere.R*rkSphere.R;
+					return fDx*fDx + fDy*fDy + fDz*fDz <= fRSqr;
+				}
+			}
+		}
+	}
+	//----------------------------------------------------------------------------
+	IC bool TestRayOBB (const Fvector3& origin, const Fvector3& direction, const Fobb& rkBox)
+	{
+		float			fWdU[3], fAWdU[3], fDdU[3], fADdU[3], fAWxDdU[3], fRhs;
+
+		Fvector3		kDiff;
+		kDiff.sub		(origin,rkBox.m_translate);
+
+		fWdU[0]			= direction.dotproduct(rkBox.m_rotate.i);
+		fAWdU[0]		= _abs(fWdU[0]);
+		fDdU[0]			= kDiff.dotproduct(rkBox.m_rotate.i);
+		fADdU[0]		= _abs(fDdU[0]);
+		if ( fADdU[0] > rkBox.m_halfsize[0] && fDdU[0]*fWdU[0] >= (float)0.0 )
+			return false;
+
+		fWdU[1]			= direction.dotproduct(rkBox.m_rotate.j);
+		fAWdU[1]		= _abs(fWdU[1]);
+		fDdU[1]			= kDiff.dotproduct(rkBox.m_rotate.j);
+		fADdU[1]		= _abs(fDdU[1]);
+		if ( fADdU[1] > rkBox.m_halfsize[1] && fDdU[1]*fWdU[1] >= (float)0.0 )
+			return false;
+
+		fWdU[2]			= direction.dotproduct(rkBox.m_rotate.k);
+		fAWdU[2]		= _abs(fWdU[2]);
+		fDdU[2]			= kDiff.dotproduct(rkBox.m_rotate.k);
+		fADdU[2]		= _abs(fDdU[2]);
+		if ( fADdU[2] > rkBox.m_halfsize[2] && fDdU[2]*fWdU[2] >= (float)0.0 )
+			return false;
+
+		Fvector3		kWxD;
+		kWxD.crossproduct(direction,kDiff);
+
+		fAWxDdU[0]		= _abs(kWxD.dotproduct(rkBox.m_rotate.i));
+		fRhs = rkBox.m_halfsize[1]*fAWdU[2] + rkBox.m_halfsize[2]*fAWdU[1];
+		if ( fAWxDdU[0] > fRhs )
+			return false;
+
+		fAWxDdU[1]		= _abs(kWxD.dotproduct(rkBox.m_rotate.j));
+		fRhs = rkBox.m_halfsize[0]*fAWdU[2] + rkBox.m_halfsize[2]*fAWdU[0];
+		if ( fAWxDdU[1] > fRhs )
+			return false;
+
+		fAWxDdU[2]		= _abs(kWxD.dotproduct(rkBox.m_rotate.k));
+		fRhs = rkBox.m_halfsize[0]*fAWdU[1] + rkBox.m_halfsize[1]*fAWdU[0];
+		if ( fAWxDdU[2] > fRhs )
+			return false;
+
+		return true;
+	}
+//----------------------------------------------------------------------------
 };
 
-IC EST_Result TestSphereTri(const Fvector& sphereOrigin, float sphereRadius,
-					  const Fvector& orig, const Fvector& e0,const Fvector& e1)
-{
-
-    float fRSqr = sphereRadius*sphereRadius;
-    Fvector kV0mC;
-	kV0mC.sub(orig, sphereOrigin);
-
-    // count the number of triangle vertices inside the sphere
-    int iInside = 0;
-
-    // test if v0 is inside the sphere
-    if ( kV0mC.square_magnitude() <= fRSqr )
-        iInside++;
-
-    // test if v1 is inside the sphere
-    Fvector kDiff;
-	kDiff.add(kV0mC, e0);
-    if ( kDiff.square_magnitude() <= fRSqr )
-        iInside++;
-
-    // test if v2 is inside the sphere
-    kDiff.add(kV0mC, e1);
-    if ( kDiff.square_magnitude() <= fRSqr )
-        iInside++;
-
-    // triangle does not traversely intersect sphere
-	if ( iInside == 3 ) return stInside;
-
-	// triangle transversely intersects sphere
-    if ( iInside > 0 ) return stIntersect;
-
-    // All vertices are outside the sphere, but the triangle might still
-    // intersect the sphere.  This is the case when the distance from the
-    // sphere center to the triangle is smaller than the radius.
-    float fSqrDist = MgcSqrDistance(sphereOrigin,orig,e0,e1);
-	return (fSqrDist < fRSqr)?stIntersect:stNone;
-}
-//---------------------------------------------------------------------------
-IC EST_Result TestSphereTri(const Fvector& sphereOrigin, float sphereRadius, Fvector* p)
-{
-	Fvector e0, e1;
-	// find vectors for two edges sharing vert0
-	e0.sub(p[1], p[0]);
-	e1.sub(p[2], p[0]);
-	return TestSphereTri(sphereOrigin,sphereRadius,p[0],e0,e1);
-}
-IC EST_Result TestSphereTri(const Fvector& sphereOrigin, float sphereRadius, Fvector** p)
-{
-	Fvector e0, e1;
-	// find vectors for two edges sharing vert0
-	e0.sub(*p[1], *p[0]);
-	e1.sub(*p[2], *p[0]);
-	return TestSphereTri(sphereOrigin,sphereRadius,*p[0],e0,e1);
-}
-};
 
 #endif

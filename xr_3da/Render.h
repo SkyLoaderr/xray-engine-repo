@@ -10,6 +10,7 @@ class ENGINE_API	IRenderable;
 class ENGINE_API	IRender_Visual;
 class ENGINE_API	IBlender;
 class ENGINE_API	CSkeletonWallmark;
+class ENGINE_API	CKinematics;
 
 const	float		fLightSmoothFactor = 4.f;
 
@@ -157,6 +158,7 @@ public:
 	virtual void					add_Geometry			(IRender_Visual*	V	)					= 0;	// add visual(s)	(all culling performed)
 	virtual void					add_StaticWallmark		(ref_shader& S, const Fvector& P, float s, CDB::TRI* T, Fvector* V)=0;
 	virtual void					add_SkeletonWallmark	(CSkeletonWallmark* wm)						= 0;
+	virtual void					add_SkeletonWallmark	(const Fmatrix* xf, CKinematics* obj, ref_shader& sh, const Fvector& start, const Fvector& dir, float size)=0;
 
 	virtual IBlender*				blender_create			(CLASS_ID cls)								= 0;
 	virtual void					blender_destroy			(IBlender* &)								= 0;

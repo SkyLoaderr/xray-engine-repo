@@ -259,6 +259,15 @@ void CWallmarksEngine::AddStaticWallmark	(CDB::TRI* pTri, const Fvector* pVerts,
 	lock.Leave				();
 }
 
+void CWallmarksEngine::AddSkeletonWallmark	(const Fmatrix* xf, CKinematics* obj, ref_shader& sh, const Fvector& start, const Fvector& dir, float size)
+{
+	VERIFY					(obj&&xf&&(size>EPS_L));
+	lock.Enter				();
+	obj->AddWallmark		(xf,start,dir,sh,size);
+	lock.Leave				();
+}
+
+
 void CWallmarksEngine::AddSkeletonWallmark(CSkeletonWallmark* wm)
 {
 	lock.Enter				();

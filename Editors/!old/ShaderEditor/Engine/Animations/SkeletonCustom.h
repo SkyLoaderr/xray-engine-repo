@@ -156,6 +156,11 @@ public:
 	UpdateCallback				Update_Callback;
 	void*						Update_Callback_Param;
 public:
+	// wallmarks
+	void						AddWallmark			(const Fmatrix* parent, const Fvector3& start, const Fvector3& dir, ref_shader shader, float size);
+	void						CalculateWallmarks	();
+	void						RenderWallmark		(CSkeletonWallmark* wm, FVF::LIT* &verts);
+public:
 	virtual						~CKinematics		();
 
 	// Low level interface
@@ -191,11 +196,6 @@ public:
 #ifdef DEBUG
 	void						DebugRender			(Fmatrix& XFORM);
 #endif
-
-	// wallmarks
-	void						AddWallmark			(const Fmatrix* parent, const Fvector3& start, const Fvector3& dir, u16 bone_id, ref_shader shader, float size);
-	void						CalculateWallmarks	();
-	void						RenderWallmark		(CSkeletonWallmark* wm, FVF::LIT* &verts);
 
 	// General "Visual" stuff
     virtual void				Copy				(IRender_Visual *pFrom);

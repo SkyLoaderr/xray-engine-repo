@@ -197,14 +197,19 @@ void	CEffect_Rain::Render	()
 				wdir.div	(wlen);
 				one.P.mad	(one.P, wdir, -(wlen+b_radius));
                 inv_dir.invert(one.D);
-                src_plane.intersectRayPoint(one.P,inv_dir,src_p);
-                float dist	= one.P.distance_to(src_p);
 				float height= 2.f*b_height;
-				if (RayPick(src_p,one.D,height)){	
-					if (height<=dist)	one.invalidate();					// need born
-					else				UpdateItem(one,height-dist,TRUE);	// fly to point
+				if (src_plane.intersectRayPoint(one.P,inv_dir,src_p)){
+					if (RayPick(src_p,one.D,height)){	
+						float dist			= one.P.distance_to(src_p);
+						if (height<=dist)	one.invalidate();				// need born
+						else{	
+							UpdateItem		(one,height-dist,TRUE);			// fly to point
+						}
+					}else{
+						UpdateItem			(one,height,FALSE);				// fly ...
+					}
 				}else{
-					UpdateItem			(one,height,FALSE);					// fly ...
+					UpdateItem				(one,height,FALSE);				// fly ...
 				}
             }
 //			Device.Statistic.TEST0.End();

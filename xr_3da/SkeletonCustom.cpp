@@ -421,22 +421,50 @@ void BuildMatrix		(Fmatrix &mView, float invsz, const Fvector norm, const Fvecto
 	mView.mulA			(mScale);
 }
 
-void CKinematics::AddWallmark(const Fmatrix* parent_xf, const Fvector3& start, const Fvector3& dir, u16 bone_id, ref_shader shader, float size)
+#include "cl_intersect.h"
+
+DEFINE_VECTOR(Fobb,OBBVec,OBBVecIt);
+
+void CKinematics::AddWallmark(const Fmatrix* parent_xform, const Fvector3& start, const Fvector3& dir, ref_shader shader, float size)
 {
 	Fvector S,D,normal		= {0,0,0};
 	// transform ray from world to model
-	Fmatrix P;	P.invert	(*parent_xf);
+	Fmatrix P;	P.invert	(*parent_xform);
 	P.transform_tiny		(S,start);
 	P.transform_dir			(D,dir);
 	// find pick point
 	float dist				= flt_max;
 	BOOL picked				= FALSE;
-	for (u32 i=0; i<children.size(); i++)
-		if (LL_GetChild(i)->PickBone(normal,dist,S,D,bone_id)) picked=TRUE;
+
+	DEFINE_VECTOR			(Fobb,OBBVec,OBBVecIt);
+	OBBVec					cache_obb;
+	cache_obb.resize		(LL_BoneCount());
+
+	for (u16 k=0; k<LL_BoneCount(); k++){
+		if (LL_GetBoneVisible(k)){
+			Fobb& obb		= cache_obb[k];
+			obb.transform	(LL_GetData(k).obb,LL_GetBoneInstance(k).mTransform);
+			if (CDB::TestRayOBB(S,D, obb))
+				for (u32 i=0; i<children.size(); i++)
+					if (LL_GetChild(i)->PickBone(normal,dist,S,D,k)) picked=TRUE;
+		}
+	}
 	if (!picked) return;
 
-	// calc contact point
+	// calculate contact point
 	Fvector cp;	cp.mad		(S,D,dist);
+
+	// collect collide boxes
+	Fsphere test_sphere		= {cp,size}; 
+	U16Vec					test_bones;
+	test_bones.reserve		(LL_BoneCount());
+	for (u16 k=0; k<LL_BoneCount(); k++){
+		if (LL_GetBoneVisible(k)){
+			Fobb& obb		= cache_obb[k];
+			if (CDB::TestSphereOBB(test_sphere, obb))
+				test_bones.push_back(k);
+		}
+	}
 
 	// find similar wm
 	for (u32 wm_idx=0; wm_idx<wallmarks.size(); wm_idx++){
@@ -451,27 +479,24 @@ void CKinematics::AddWallmark(const Fmatrix* parent_xf, const Fvector3& start, c
 	}
 
 	// ok. allocate wallmark
-	CSkeletonWallmark* wm	= xr_new<CSkeletonWallmark>(this,parent_xf,shader,cp,Device.fTimeGlobal);
-	parent_xf->transform_tiny(wm->m_Bounds.P,cp);
+	CSkeletonWallmark* wm	= xr_new<CSkeletonWallmark>(this,parent_xform,shader,cp,Device.fTimeGlobal);
+	wm->XFORM()->transform_tiny(wm->m_Bounds.P,cp);
 	wm->m_Bounds.R			= size;
+
+	Fvector tmp; tmp.invert	(D);
+	normal.add(tmp).normalize();
 
 	// build UV projection matrix
 	Fmatrix					mView,mRot;
-	BuildMatrix				(mView,1/size,normal,cp);
+	BuildMatrix				(mView,1/(0.9f*size),normal,cp);
 	mRot.rotateZ			(::Random.randF(deg2rad(-20.f),deg2rad(20.f)));
 	mView.mulA_43			(mRot);
+
 	// fill vertices
 	for (u32 i=0; i<children.size(); i++){
 		CSkeletonX* S		= LL_GetChild(i);
-		CBoneData& BD		= LL_GetData(bone_id);
-		// this bone
-		S->FillVertices		(mView,*wm,normal,size,BD.SelfID);
-		// parent
-		if (BD.ParentID!=BI_NONE)	
-			S->FillVertices	(mView,*wm,normal,size,BD.ParentID);
-		// children
-		for (u32 i=0; i<BD.children.size(); i++)
-			S->FillVertices	(mView,*wm,normal,size,BD.children[i]->SelfID);
+		for (U16It b_it=test_bones.begin(); b_it!=test_bones.end(); b_it++)
+			S->FillVertices		(mView,*wm,normal,size,*b_it);
 	}
 
 	wallmarks.push_back		(wm);

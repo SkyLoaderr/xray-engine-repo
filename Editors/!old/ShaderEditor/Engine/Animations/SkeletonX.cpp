@@ -502,7 +502,7 @@ BOOL CSkeletonX::_PickBoneSoft1W	(Fvector& normal, float& dist, const Fvector& S
 		u32 idx			= (*it)*3;
 		for (u32 k=0; k<3; k++){
 			vertBoned1W& vert		= Vertices1W[indices[idx+k]];
-			const Fmatrix& xform	= Parent->LL_GetBoneInstance(vert.matrix).mRenderTransform; 
+			const Fmatrix& xform	= Parent->LL_GetBoneInstance((u16)vert.matrix).mRenderTransform; 
 			xform.transform_tiny	(p[k],vert.P);
 		}
 		float u,v,range	= flt_max;
@@ -633,7 +633,7 @@ void CSkeletonX::_FillVerticesSoft1W(const Fmatrix& view, CSkeletonWallmark& wm,
 		CSkeletonWallmark::WMFace F;
 		for (u32 k=0; k<3; k++){
 			vertBoned1W& vert		= Vertices1W[indices[idx+k]];
-			F.bone_id[k][0]			= vert.matrix;
+			F.bone_id[k][0]			= (u16)vert.matrix;
 			F.bone_id[k][1]			= F.bone_id[k][0];
 			F.weight[k]				= 0.f;
 			const Fmatrix& xform	= Parent->LL_GetBoneInstance(F.bone_id[k][0]).mRenderTransform; 

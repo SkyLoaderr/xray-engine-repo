@@ -57,6 +57,7 @@ public:
 	// edit wallmarks
 	void				AddStaticWallmark		(CDB::TRI* pTri, const Fvector* pVerts, const Fvector &contact_point, ref_shader hTexture, float sz);
 	void				AddSkeletonWallmark		(CSkeletonWallmark* wm);
+	void				AddSkeletonWallmark		(const Fmatrix* xf, CKinematics* obj, ref_shader& sh, const Fvector& start, const Fvector& dir, float size);
 
 	// render
 	void				Render					();
