@@ -1,3 +1,6 @@
+--
+-- DELME
+--
 
 local communities = {"dolg", "military", "freedom", "monolith"}
 
