@@ -66,8 +66,8 @@
 		<visual>actors\neytral\stalker_bar_security</visual>
 		<supplies>
 			[spawn] \n
-			wpn_vintorez \n
-			ammo_9x39_ap \n
+			wpn_ak74 \n
+			ammo_5.45x39_fmj \n
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>

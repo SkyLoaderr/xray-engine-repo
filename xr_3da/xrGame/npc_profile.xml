@@ -278,6 +278,9 @@
 	<character id="bar_barman_guard">
 		<class>stalker_bar_guard</class>
 	</character>
+	<character id="bar_barman_guard2">
+		<class>stalker_bar_guard2</class>
+	</character>
 	<character id="bar_dolg_petrenko">
 		<class>stalker_bar_petrenko</class>
 	</character>
