@@ -36,7 +36,7 @@ void CMonsterSound::ControlSound(TTime time)
 	play_bkgnd = false;
 	
 	if ((prev_type != cur_type) && (cur_priority >= new_priority)) {
-		// if sound is playing now - stop sound and start new one
+		// if sound is playing now - stop sound and start _new one
 		if (b_cur_playing) current->stop();			
 		PlaySound(cur_type);
 		return;

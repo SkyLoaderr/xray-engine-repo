@@ -150,7 +150,7 @@ void CPda::feel_touch_new(CObject* O)
 
 	if(pInvOwner && pInvOwner->IsActivePDA() && pInvOwner->GetPDA()!=this) 
 	{
-		if(bDebug) HUD().outMessage(0xffffffff,cName(),"new PDA detected");
+		if(bDebug) HUD().outMessage(0xffffffff,cName(),"_new_ PDA detected");
 		m_PDAList.push_back(pInvOwner->GetPDA());
 
 		m_NewPDAList.push_back(pInvOwner->GetPDA());

@@ -52,7 +52,7 @@ void CEnvelope::InsertKey(float t, float val)
         // insert before
     	if ((*k_it)->time>t) break;
     }
-    // create new key
+    // create _new key
     st_Key* K 	= xr_new<st_Key>();
     K->time 	= t;
     K->value 	= val;

@@ -179,7 +179,7 @@ void CSE_ALifeSimulator::Load	(LPCSTR caSaveName)
 	// loading game
 	Log							("* Loading simulator...");
 	if (!FS.exist(caFileName,"$game_saves$",m_caSaveName)) {
-		// creating new game
+		// creating _new_ game
 		Log						("* Creating new game...");
 		vfNewGame				(caSaveName);
 		strcpy					(m_caSaveName,caSaveName);

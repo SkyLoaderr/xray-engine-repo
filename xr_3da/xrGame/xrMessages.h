@@ -35,7 +35,7 @@ enum {
 
 	GE_PDA,						//a PDA message sent from one PDA to another
 
-	GE_INFO_TRANSFER,			//transfer new info on PDA
+	GE_INFO_TRANSFER,			//transfer _new_ info on PDA
 	
 	GE_TRADE_SELL,
 	GE_TRADE_BUY,
