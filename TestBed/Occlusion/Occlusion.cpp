@@ -73,7 +73,7 @@ float rad(float a) { return a*3.14159265358f / 180.f; }
 const float p_c		= 32.7f;
 const float p_r		= 25.4f;
 const float p_r2	= 30.4f;
-const float p_a		= 10.f;
+const float p_a		= 3.5f;
 
 void edges(occTri& T)
 {

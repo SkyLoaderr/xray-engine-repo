@@ -131,7 +131,6 @@ void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startT, float endT, 
 	}
 }
 
-
 /* 
 Rasterises 1 section of the triangle
 a 'section' of a triangle is the poriton of a triangle between 
