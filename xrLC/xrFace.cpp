@@ -196,6 +196,7 @@ void	Face::CalcNormal	()
 		CalcNormal2	();
 	} else {
 		N.div		(mag);
+		N.normalize	();
 	}
 };
 

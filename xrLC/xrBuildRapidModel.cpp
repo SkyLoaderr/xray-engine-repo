@@ -68,15 +68,17 @@ void CBuild::BuildRapid		(BOOL bSaveForOtherCompilers)
 		}
 	}
 
+	/*
 	clMsg					("Faces: original(%d), model(%d), ratio(%f)",
 		g_faces.size(),CL.getTS(),float(CL.getTS())/float(g_faces.size()));
+	*/
 
 	// Export references
 	Status					("Models..");
 	for (u32 ref=0; ref<mu_refs.size(); ref++)
 		mu_refs[ref]->export_cform_rcast	(CL);
 
-	Status					("Building OBB tree..");
+	// "Building tree..
 	RCAST_Model				= xr_new<CDB::MODEL> ();
 	RCAST_Model->build		(CL.getV(),(int)CL.getVS(),CL.getT(),(int)CL.getTS());
 

@@ -113,17 +113,10 @@ void CBuild::Run	(LPCSTR P)
 	BuildCForm					();
 	BuildPortals				(*fs);
 
-	//****************************************** HEMI-RayCast model
-	FPU::m64r					();
-	Phase						("Building hemisphere-RayCast model...");
-	mem_Compact					();
-	BuildRapid					(FALSE);
-
 	//****************************************** HEMI-Tesselate
 	FPU::m64r					();
 	Phase						("Adaptive HT...");
 	mem_Compact					();
-	Light_prepare				();
 	xrPhase_AdaptiveHT			();
 
 	//****************************************** Building normals
