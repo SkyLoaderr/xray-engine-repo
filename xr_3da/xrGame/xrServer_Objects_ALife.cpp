@@ -556,6 +556,12 @@ void CSE_ALifeDynamicObjectVisual::FillProp	(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeLevelChanger::CSE_ALifeLevelChanger(LPCSTR caSection) : CSE_ALifeDynamicObject(caSection), CSE_Abstract(caSection)
 {
+	m_tNextGraphID				= _GRAPH_ID(-1);
+	m_dwNextNodeID				= u32(-1);
+	m_tNextPosition.set			(0.f,0.f,0.f);
+	m_fAngle					= 0.f;
+	m_caLevelToChange[0]		= 0;
+	m_caLevelPointToChange[0]	= 0;
 }
 
 CSE_ALifeLevelChanger::~CSE_ALifeLevelChanger()
