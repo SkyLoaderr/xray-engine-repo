@@ -151,6 +151,10 @@ void CPhantom::SwitchToState(EState new_state)
 			K->PlayCycle		(sdata.motion, TRUE, animation_end_callback, this);
 		}break;
 		case stDeath:{
+			// stop fly effects
+			CParticlesObject::Destroy		(m_fly_particles);
+			m_state_data[stFly].sound.stop	();
+			//
 			SStateData& sdata	= m_state_data[new_state];
 			PlayParticles		(sdata.particles.c_str(),TRUE,xform);
 			sdata.sound.play_at_pos(0,xform.c);
