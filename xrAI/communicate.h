@@ -7,7 +7,7 @@ const u32 XR_MAX_PORTAL_VERTS	= 6;
 
 #define LCONTROL_HEMI	"$hemi"				// hemisphere
 #define LCONTROL_SUN	"$sun"				// sun
-#define LCONTROL_STATIC "$static"			// all other static lights
+#define LCONTROL_STATIC "all"				// all other static lights
 
 // internal use
 struct b_rc_face
