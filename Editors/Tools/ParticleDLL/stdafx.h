@@ -9,6 +9,9 @@
 
 #pragma once
 
+#define ENGINE_API
+#define Msg //
+
 #include <xrCore.h>
 
 #pragma comment( lib, "x:\\xrCore.lib"	)

@@ -174,7 +174,6 @@ _ParticleState::_ParticleState()
 {
 	in_call_list	= FALSE;
 	in_new_list		= FALSE;
-	vertexB_tracks	= TRUE;
 	
 	dt			= 1.0f;
 	
@@ -187,8 +186,9 @@ _ParticleState::_ParticleState()
 	ResetState	();
 }
 
-void _ParticleState::ResetState()
+void _ParticleState::StateData::ResetState()
 {
+	vertexB_tracks	= TRUE;
 	Size			= pDomain(PDPoint, 1.0f, 1.0f, 1.0f);
 	Vel				= pDomain(PDPoint, 0.0f, 0.0f, 0.0f);
 	VertexB			= pDomain(PDPoint, 0.0f, 0.0f, 0.0f);
@@ -450,7 +450,7 @@ PARTICLEDLL_API void __stdcall pResetState()
 
 PARTICLEDLL_API void __stdcall pColor(float red, float green, float blue, float alpha)
 {
-	_ParticleState &_ps = _GetPState();
+	_ParticleState::StateData &_ps = _GetPState().SP;
 
 	_ps.Alpha = alpha;
 	_ps.Color = pDomain(PDPoint, red, green, blue);
@@ -461,7 +461,7 @@ PARTICLEDLL_API void __stdcall pColorD(float alpha, PDomainEnum dtype,
 			 float a3, float a4, float a5,
 			 float a6, float a7, float a8)
 {
-	_ParticleState &_ps = _GetPState();
+	_ParticleState::StateData &_ps = _GetPState().SP;
 
 	_ps.Alpha = alpha;
 	_ps.Color = pDomain(dtype, a0, a1, a2, a3, a4, a5, a6, a7, a8);
@@ -469,14 +469,14 @@ PARTICLEDLL_API void __stdcall pColorD(float alpha, PDomainEnum dtype,
 
 PARTICLEDLL_API void __stdcall pVelocity(float x, float y, float z)
 {
-	_ParticleState &_ps = _GetPState();
+	_ParticleState::StateData &_ps = _GetPState().SP;
 
 	_ps.Vel = pDomain(PDPoint, x, y, z);
 }
 
 PARTICLEDLL_API void __stdcall pVertexB(float x, float y, float z)
 {
-	_ParticleState &_ps = _GetPState();
+	_ParticleState::StateData &_ps = _GetPState().SP;
 
 	_ps.VertexB = pDomain(PDPoint, x, y, z);
 }
@@ -486,7 +486,7 @@ PARTICLEDLL_API void __stdcall pVertexBD(PDomainEnum dtype,
 			   float a3, float a4, float a5,
 			   float a6, float a7, float a8)
 {
-	_ParticleState &_ps = _GetPState();
+	_ParticleState::StateData &_ps = _GetPState().SP;
 
 	_ps.VertexB = pDomain(dtype, a0, a1, a2, a3, a4, a5, a6, a7, a8);
 }
@@ -494,21 +494,21 @@ PARTICLEDLL_API void __stdcall pVertexBD(PDomainEnum dtype,
 
 PARTICLEDLL_API void __stdcall pVertexBTracks(BOOL trackVertex)
 {
-	_ParticleState &_ps = _GetPState();
+	_ParticleState::StateData &_ps = _GetPState().SP;
 
 	_ps.vertexB_tracks = trackVertex;
 }
 
 PARTICLEDLL_API void __stdcall pParentMotion(float scale)
 {
-	_ParticleState &_ps = _GetPState();
+	_ParticleState::StateData &_ps = _GetPState().SP;
 
 	_ps.parent_motion = scale;
 }
 
 PARTICLEDLL_API void __stdcall pSize(float size_x, float size_y, float size_z)
 {
-	_ParticleState &_ps = _GetPState();
+	_ParticleState::StateData &_ps = _GetPState().SP;
 
 	_ps.Size = pDomain(PDPoint, size_x, size_y, size_z);
 }
@@ -518,14 +518,14 @@ PARTICLEDLL_API void __stdcall pSizeD(PDomainEnum dtype,
 			   float a3, float a4, float a5,
 			   float a6, float a7, float a8)
 {
-	_ParticleState &_ps = _GetPState();
+	_ParticleState::StateData &_ps = _GetPState().SP;
 
 	_ps.Size = pDomain(dtype, a0, a1, a2, a3, a4, a5, a6, a7, a8);
 }
 
 PARTICLEDLL_API void __stdcall pRotate(float x, float y, float z)
 {
-	_ParticleState &_ps = _GetPState();
+	_ParticleState::StateData &_ps = _GetPState().SP;
 
 	_ps.Rot = pDomain(PDPoint, x, y, z);
 }
@@ -535,14 +535,14 @@ PARTICLEDLL_API void __stdcall pRotateD(PDomainEnum dtype,
 									  float a3, float a4, float a5,
 									  float a6, float a7, float a8)
 {
-	_ParticleState &_ps = _GetPState();
+	_ParticleState::StateData &_ps = _GetPState().SP;
 
 	_ps.Rot = pDomain(dtype, a0, a1, a2, a3, a4, a5, a6, a7, a8);
 }
 
 PARTICLEDLL_API void __stdcall pStartingAge(float age, float sigma)
 {
-	_ParticleState &_ps = _GetPState();
+	_ParticleState::StateData &_ps = _GetPState().SP;
 
 	_ps.Age = age;
 	_ps.AgeSigma = sigma;

@@ -444,7 +444,6 @@ namespace PAPI{
 		float	dt;
 		BOOL	in_call_list;
 		BOOL	in_new_list;
-		BOOL	vertexB_tracks;
 
 		int group_id;
 		int list_id;
@@ -460,19 +459,24 @@ namespace PAPI{
 		static int alist_count;
 
 		// state part
-		pDomain Size;
-		pDomain Vel;
-		pDomain VertexB;
-		pDomain Color;
-		pDomain Rot;
-		float Alpha;
-		float Age;
-		float AgeSigma;
-		float parent_motion;
+		struct StateData{
+			BOOL	vertexB_tracks;
+			pDomain Size;
+			pDomain Vel;
+			pDomain VertexB;
+			pDomain Color;
+			pDomain Rot;
+			float Alpha;
+			float Age;
+			float AgeSigma;
+			float parent_motion;
+			void ResetState();
+		};
+		StateData SP;
 
 		_ParticleState();
 
-		void ResetState();
+		void ResetState(){SP.ResetState();}
 		// Return an index into the list of particle groups where
 		// p_group_count groups can be added.
 		int GenerateGroups(int p_group_count);

@@ -155,7 +155,7 @@ PARTICLEDLL_API void __stdcall pJet(float center_x, float center_y, float center
 	
 	S.centerL		= pVector(center_x, center_y, center_z);
 	S.center		= S.centerL;
-	S.accL			= _ps.Vel;
+	S.accL			= _ps.SP.Vel;
 	S.acc			= S.accL;
 	S.magnitude		= magnitude;
 	S.epsilon		= epsilon;
@@ -320,17 +320,17 @@ PARTICLEDLL_API void __stdcall pSource(float particle_rate, PDomainEnum dtype,
 	S.particle_rate = particle_rate;
 	S.positionL		= pDomain(dtype, a0, a1, a2, a3, a4, a5, a6, a7, a8);
 	S.position		= S.positionL;
-	S.velocityL		= _ps.Vel;
+	S.velocityL		= _ps.SP.Vel;
 	S.velocity		= S.velocityL;
-	S.size			= _ps.Size;
-	S.rot			= _ps.Rot;
-	S.color			= _ps.Color;
-	S.alpha			= _ps.Alpha;
-	S.age			= _ps.Age;
-	S.age_sigma		= _ps.AgeSigma;
-	S.vertexB_tracks= _ps.vertexB_tracks;
+	S.size			= _ps.SP.Size;
+	S.rot			= _ps.SP.Rot;
+	S.color			= _ps.SP.Color;
+	S.alpha			= _ps.SP.Alpha;
+	S.age			= _ps.SP.Age;
+	S.age_sigma		= _ps.SP.AgeSigma;
+	S.vertexB_tracks= _ps.SP.vertexB_tracks;
 	S.parent_vel	= pVector(0,0,0);
-	S.parent_motion	= _ps.parent_motion;
+	S.parent_motion	= _ps.SP.parent_motion;
 	S.flags.zero	();
 	S.flags.set		(ParticleAction::ALLOW_PARENT,allow_parent);
 
@@ -448,15 +448,15 @@ PARTICLEDLL_API void __stdcall pVertex(float x, float y, float z)
 	
 	pVector pos(x, y, z);
 	pVector siz, rot, vel, col, posB;
-	if(_ps.vertexB_tracks)
+	if(_ps.SP.vertexB_tracks)
 		posB = pos;
 	else
-		_ps.VertexB.Generate(posB);
-	_ps.Size.Generate(siz);
-	_ps.Rot.Generate(rot);
-	_ps.Vel.Generate(vel);
-	_ps.Color.Generate(col);
-	_ps.pgrp->Add(pos, posB, siz, rot, vel, col, _ps.Alpha, _ps.Age);
+		_ps.SP.VertexB.Generate(posB);
+	_ps.SP.Size.Generate(siz);
+	_ps.SP.Rot.Generate(rot);
+	_ps.SP.Vel.Generate(vel);
+	_ps.SP.Color.Generate(col);
+	_ps.pgrp->Add(pos, posB, siz, rot, vel, col, _ps.SP.Alpha, _ps.SP.Age);
 }
 
 PARTICLEDLL_API void __stdcall pVortex(float center_x, float center_y, float center_z,
