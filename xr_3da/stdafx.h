@@ -115,9 +115,8 @@ using namespace std;
 // Our headers
 #define NO_XR_NETWORK
 #define	NO_XR_VERTEX
-#include "engineapi.h"
-#include "vector.h"
 #include "engine.h"
+#include "vector.h"
 #ifndef NO_MMGR
 #include "fmemorymanager.h"
 #endif
