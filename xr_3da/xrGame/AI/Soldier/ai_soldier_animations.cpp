@@ -118,8 +118,8 @@ void CAI_Soldier::vfLoadAnimations()
 	tSoldierAnimations.tCrouch.tGlobal.tpLieDown = tpVisualObject->ID_Cycle("cr_lie_down");
 	tSoldierAnimations.tCrouch.tGlobal.tpPointSign = tpVisualObject->ID_Cycle("cr_sign_2");
 
-	tSoldierAnimations.tCrouch.tTorso.tpAim = tpVisualObject->ID_Cycle("cr_walk_rs");
-	tSoldierAnimations.tCrouch.tTorso.tpAttack = tpVisualObject->ID_Cycle("cr_walk_rs");
+	tSoldierAnimations.tCrouch.tTorso.tpAim = tpVisualObject->ID_Cycle("cr_aim");
+	tSoldierAnimations.tCrouch.tTorso.tpAttack = tpVisualObject->ID_Cycle("cr_attack");
 	tSoldierAnimations.tCrouch.tTorso.tpReload = tpVisualObject->ID_Cycle("cr_reload");
 	tSoldierAnimations.tCrouch.tTorso.tpDamageLeft = tpVisualObject->ID_FX("cr_damage_ls");
 	tSoldierAnimations.tCrouch.tTorso.tpDamageRight = tpVisualObject->ID_FX("cr_damage_rs");
@@ -142,9 +142,9 @@ void CAI_Soldier::vfLoadAnimations()
 	tSoldierAnimations.tLie.tGlobal.tpWalkBack = tpVisualObject->ID_Cycle("lie_walk_back");
 	tSoldierAnimations.tLie.tGlobal.tpWalkLeft = tpVisualObject->ID_Cycle("lie_roll_ls");
 	tSoldierAnimations.tLie.tGlobal.tpWalkRight = tpVisualObject->ID_Cycle("lie_roll_rs");
-	tSoldierAnimations.tLie.tGlobal.tpRaiseHandSign = tpVisualObject->ID_Cycle("lie_sign_0");
-	tSoldierAnimations.tLie.tGlobal.tpGoAheadSign = tpVisualObject->ID_Cycle("lie_sign_1");
-	tSoldierAnimations.tLie.tGlobal.tpPointSign = tpVisualObject->ID_Cycle("lie_sign_2");
+	//tSoldierAnimations.tLie.tGlobal.tpRaiseHandSign = tpVisualObject->ID_Cycle("lie_sign_0");
+	//tSoldierAnimations.tLie.tGlobal.tpGoAheadSign = tpVisualObject->ID_Cycle("lie_sign_1");
+	//tSoldierAnimations.tLie.tGlobal.tpPointSign = tpVisualObject->ID_Cycle("lie_sign_2");
 	
 	m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tGlobal.tpIdle);
 }
