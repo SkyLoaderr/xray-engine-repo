@@ -42,8 +42,7 @@ void CRender::Render		()
 			{
 				CSector*	sector		= (CSector*)PortalTraverser.r_sectors[s_it];
 				IRender_Visual*	root	= sector->root();
-				for (u32 v_it=0; v_it<sector->r_frustums.size(); v_it++)
-				{
+				for (u32 v_it=0; v_it<sector->r_frustums.size(); v_it++)	{
 					set_Frustum			(&(sector->r_frustums[v_it]));
 					add_Geometry		(root);
 				}
@@ -202,7 +201,7 @@ void CRender::Render		()
 			light*	L	= L_point_s	= Lights.v_point_s.back();	Lights.v_point_s.pop_back();
 			for (u32 pls_phase=0; pls_phase<6; pls_phase++)		{
 				phase									= PHASE_SMAP_P;
-				LR.compute_xfp_1						(pls_phase, L);
+				if (!LR.compute_xfp_1(pls_phase, L))	continue;	// frustum doesn't touch primary frustum
 				r_dsgraph_render_subspace				(L->spatial.sector, LR.P_combine, L->position, TRUE);
 				LR.compute_xfp_2						(pls_phase, L);
 				if (mapNormal[0].size() || mapMatrix[0].size())	{
