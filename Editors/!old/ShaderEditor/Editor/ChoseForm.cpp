@@ -74,7 +74,7 @@ int __fastcall TfrmChoseItem::SelectItem(u32 choose_ID, LPCSTR& dest, int sel_cn
     }else{
     	SChooseEvents* E			= GetEvents(choose_ID); VERIFY(E);
         E->on_fill					(form->m_Items);
-	    form->Caption				= E->caption;
+	    form->Caption				= E->caption.c_str();
 	    form->item_select_event		= item_select.empty()?E->on_sel:item_select;
     }
     form->FillItems					();
@@ -97,9 +97,9 @@ int __fastcall TfrmChoseItem::SelectItem(u32 choose_ID, LPCSTR& dest, int sel_cn
 
 void __fastcall TfrmChoseItem::AppendItem(SChooseItem* item)
 {
-    TElTreeItem* node				= FHelper.AppendObject(form->tvItems,item->name,false,true);
+    TElTreeItem* node				= FHelper.AppendObject(form->tvItems,item->name.c_str(),false,true);
     node->Tag						= (int)item;
-    node->Hint						= item->hint.Length()?item->hint:AnsiString("-");
+    node->Hint						= item->hint.size()?item->hint.c_str():"-";
     node->CheckBoxEnabled 			= form->bMultiSel;
     node->ShowCheckBox 				= form->bMultiSel;
 }

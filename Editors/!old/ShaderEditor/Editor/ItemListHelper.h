@@ -6,7 +6,7 @@
 #include "FolderLib.h"
 
 //---------------------------------------------------------------------------
-class XR_EPROPS_API CListHelper: public IListHelper{
+class CListHelper: public IListHelper{
 //------------------------------------------------------------------------------
 public:
     virtual ListItem* 		__stdcall 	FindItem		(ListItemsVec& items,	LPCSTR key);
