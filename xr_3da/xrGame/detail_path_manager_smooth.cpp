@@ -12,25 +12,43 @@
 
 #define SMOOTH_PATH
 
-template<
-	typename T
->
+template <typename T>
 IC	T sin_apb(T sina, T cosa, T sinb, T cosb)
 {
 	return				(sina*cosb + cosa*sinb);
 }
 
-template<
-	typename T
->
+template <typename T>
 IC	T cos_apb(T sina, T cosa, T sinb, T cosb)
 {
 	return				(cosa*cosb - sina*sinb);
 }
 
-bool is_negative(float a)
+IC	bool is_negative(float a)
 {
 	return				(!fis_zero(a) && (a < 0.f));
+}
+
+IC	bool coincide_directions	(
+	const Fvector2	&start_circle_center,
+	const Fvector2	&start_tangent_point,
+	float			start_cross_product,
+	const Fvector2	&dest_circle_center,
+	const Fvector2	&dest_tangent_point,
+	float			dest_cross_product
+)
+{
+	if (fis_zero(start_cross_product)) {
+		Fvector2		circle_tangent_point_direction = Fvector2().sub(dest_tangent_point,dest_circle_center);
+		Fvector2		start_tangent_dest_tangent_direction = Fvector2().sub(dest_tangent_point,start_tangent_point);
+		float			cp1 = start_tangent_dest_tangent_direction.cross_product(circle_tangent_point_direction);
+		return			(dest_cross_product*cp1 >= 0.f);
+	}
+
+	Fvector2			circle_tangent_point_direction = Fvector2().sub(start_tangent_point,start_circle_center);
+	Fvector2			start_tangent_dest_tangent_direction = Fvector2().sub(dest_tangent_point,start_tangent_point);
+	float				cp1 = start_tangent_dest_tangent_direction.cross_product(circle_tangent_point_direction);
+	return				(start_cross_product*cp1 >= 0.f);
 }
 
 bool CDetailPathManager::compute_tangent(
@@ -43,7 +61,7 @@ bool CDetailPathManager::compute_tangent(
 )
 {
 	float				start_cp, dest_cp, distance, alpha, start_yaw, dest_yaw, yaw1, yaw2;
-	Fvector2			direction, temp;
+	Fvector2			direction;
 
 	// computing 2D cross product for start point
 	direction.sub		(start.position,start_circle.center);
@@ -68,20 +86,17 @@ bool CDetailPathManager::compute_tangent(
 	yaw1				= direction.getH();
 	yaw1 = yaw2			= yaw1 >= 0.f ? yaw1 : yaw1 + PI_MUL_2;
 
-	if ((start_cp*dest_cp > 0.f) || fis_zero(dest_cp)) {
+	if (start_cp*dest_cp >= 0.f) {
 		// so, our tangents are outside
 		if (start_circle.center.similar(dest_circle.center)) {
 			if  (fsimilar(start_circle.radius,dest_circle.radius)) {
 				// so, our circles are equal
 				tangents[0]			= tangents[1] = start_circle;
-				if (start_cp >= 0.f) {
-					adjust_point	(start_circle.center,yaw1 + PI_DIV_2,	start_circle.radius,tangents[0].point);
-					assign_angle	(tangents[0].angle,start_yaw,yaw1 + PI_DIV_2 < PI_MUL_2 ? yaw1 + PI_DIV_2 : yaw1 - PI - PI_DIV_2,true,direction_type);
-				}
-				else {
-					adjust_point	(start_circle.center,yaw1 - PI_DIV_2,	start_circle.radius,tangents[0].point);
-					assign_angle	(tangents[0].angle,start_yaw,yaw1 - PI_DIV_2 >= 0.f ? yaw1 - PI_DIV_2 : yaw1 + PI + PI_DIV_2,false,direction_type);
-				}
+				adjust_point		(start_circle.center,dest_yaw,start_circle.radius,tangents[0].point);
+				if (start_cp >= 0.f)
+					assign_angle	(tangents[0].angle,start_yaw,dest_yaw,true,direction_type);
+				else
+					assign_angle	(tangents[0].angle,start_yaw,dest_yaw,false,direction_type);
 
 				tangents[1].point	= tangents[0].point;
 				tangents[1].angle	= 0.f;
@@ -126,10 +141,7 @@ bool CDetailPathManager::compute_tangent(
 	adjust_point		(start_circle.center,yaw1 + alpha,	start_circle.radius,tangents[0].point);
 	adjust_point		(dest_circle.center, yaw2 + alpha,	dest_circle.radius, tangents[1].point);
 
-	direction.sub		(tangents[1].point,tangents[0].point);
-	temp.sub			(tangents[0].point,start_circle.center);
-	float				tangent_cp = direction.cross_product(temp);
-	if (start_cp*tangent_cp >= 0) {
+	if (coincide_directions(start_circle.center,tangents[0].point,start_cp,dest_circle.center,tangents[1].point,dest_cp)) {
 		assign_angle	(tangents[0].angle,start_yaw,yaw1 + alpha < PI_MUL_2 ? yaw1 + alpha : yaw1 + alpha - PI_MUL_2,start_cp >= 0,direction_type);
 		assign_angle	(tangents[1].angle,dest_yaw, yaw2 + alpha < PI_MUL_2 ? yaw2 + alpha : yaw2 + alpha - PI_MUL_2,dest_cp  >= 0,direction_type,false);
 		return			(true);
@@ -285,9 +297,7 @@ bool CDetailPathManager::build_trajectory(
 {
 	time			= flt_max;
 	SDist			dist[4];
-	xr_map<u32,STravelParams>::const_iterator I = m_movement_params.find(velocity2);
-	VERIFY			(m_movement_params.end() != I);
-	float			straight_velocity = _abs((*I).second.linear_velocity);
+	float			straight_velocity = _abs(velocity(velocity2).linear_velocity);
 	{
 		for (u32 i=0; i<tangent_count; ++i) {
 			dist[i].index = i;
@@ -299,7 +309,7 @@ bool CDetailPathManager::build_trajectory(
 		}
 	}
 	
-//	std::sort	(dist,dist + tangent_count);
+	std::sort	(dist,dist + tangent_count);
 
 	{
 		for (u32 i=0, j = path ? path->size() : 0; i<tangent_count; ++i) {
@@ -617,9 +627,7 @@ void CDetailPathManager::build_path_via_key_points(
 
 			d							= p;
 			if (!m_path.empty()) {
-				xr_map<u32,STravelParams>::const_iterator I = m_movement_params.find(m_path.back().velocity);
-				VERIFY					(m_movement_params.end() != I);
-				if (is_negative((*I).second.linear_velocity))
+				if (is_negative(velocity(m_path.back().velocity).linear_velocity))
 					s.direction.mul		(-1.f);
 			}
 

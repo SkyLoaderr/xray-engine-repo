@@ -311,10 +311,9 @@ void CStalkerMovementManager::parse_velocity_mask	()
 	}
 
 	CMovementManager::STravelPathPoint	point = path()[curr_travel_point_index()];
-	xr_map<u32,STravelParams>::const_iterator	I = m_movement_params.find(point.velocity);
-	VERIFY							(I != m_movement_params.end());
+	const CDetailPathManager::STravelParams &current_velocity = velocity(point.velocity);
 
-	if (fis_zero((*I).second.linear_velocity)) {
+	if (fis_zero(current_velocity.linear_velocity)) {
 		setup_body_orientation		();
 		m_stalker->CSightManager::enable	(false);
 		if ((mental_state() == eMentalStateDanger) || fis_zero(path_direction_angle(),EPS_L) || (m_last_turn_index == curr_travel_point_index())) {
@@ -322,14 +321,13 @@ void CStalkerMovementManager::parse_velocity_mask	()
 			m_stalker->CSightManager::enable(true);
 			if (curr_travel_point_index() + 1 < path().size()) {
 				point				= path()[curr_travel_point_index() + 1];
-				I					= m_movement_params.find(point.velocity);
-				VERIFY				(I != m_movement_params.end());
+				velocity			(point.velocity);
 			}
 		}
 	}
 	
-	m_stalker->m_fCurSpeed	= (*I).second.linear_velocity;
-	m_stalker->m_body.speed	= (*I).second.real_angular_velocity;
+	m_stalker->m_fCurSpeed	= current_velocity.linear_velocity;
+	m_stalker->m_body.speed	= current_velocity.real_angular_velocity;
 	set_desirable_speed		(m_stalker->m_fCurSpeed);
 
 	switch (point.velocity & eVelocityBodyState) {

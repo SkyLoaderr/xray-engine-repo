@@ -450,10 +450,8 @@ void CMotionManager::SelectVelocities()
 				cur_point_velocity_index = next_point_velocity_index;
 		} 
 		
-		xr_map<u32,CDetailPathManager::STravelParams>::const_iterator it = pMonster->m_movement_params.find(cur_point_velocity_index);
-		VERIFY(it != pMonster->m_movement_params.end());
-
-		path_vel.set(_abs((*it).second.linear_velocity), (*it).second.angular_velocity);
+		const CDetailPathManager::STravelParams &current_velocity = pMonster->CDetailPathManager::velocity(cur_point_velocity_index);
+		path_vel.set(_abs(current_velocity.linear_velocity), current_velocity.angular_velocity);
 	}
 
 	ANIM_ITEM_MAP_IT	item_it = get_sd()->m_tAnims.find(cur_anim);
@@ -722,10 +720,8 @@ void CMotionManager::CheckAnimWithPath()
 	//if (pMonster->IsMovingOnPath()) {
 	//	pMonster->HDebug->L_Clear();
 	//	for (u32 i=0; i<pMonster->CDetailPathManager::path().size();i++) {
-	//		xr_map<u32,CDetailPathManager::STravelParams>::const_iterator it = pMonster->m_movement_params.find(pMonster->CDetailPathManager::path()[i].velocity);
-	//		VERIFY(it != pMonster->m_movement_params.end());
-	//		
-	//		if (fis_zero((*it).second.linear_velocity))
+	//		const CDetailPathManager::STravelParams &current_velocity = velocity(pMonster->CDetailPathManager::path()[i].velocity);
+	//		if (fis_zero(current_velocity.linear_velocity))
 	//			pMonster->HDebug->L_AddPoint(pMonster->CDetailPathManager::path()[i].position,0.15f,D3DCOLOR_XRGB(255,0,100));
 	//		else 
 	//			pMonster->HDebug->L_AddPoint(pMonster->CDetailPathManager::path()[i].position,0.15f,D3DCOLOR_XRGB(0,255,100));

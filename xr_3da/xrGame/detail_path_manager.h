@@ -102,6 +102,7 @@ public:
 protected:
 	xr_map<u32,STravelParams>					m_movement_params;
 	u32											m_current_travel_point;
+
 private:
 	enum EDirectionType {
 		eDirectionTypeFP = u32(0),
@@ -170,6 +171,7 @@ private:
 			void	build_dodge_path		(const xr_vector<u32>	&level_path,	  u32							intermediate_index);
 
 protected:
+	IC		const STravelParams &velocity	(const u32 velocity_id) const;
 			void	build_path				(const xr_vector<u32> &level_path, u32 intermediate_index);
 	IC		void	set_start_position		(const Fvector &start_position);
 	IC		void	set_start_direction		(const Fvector &start_direction);

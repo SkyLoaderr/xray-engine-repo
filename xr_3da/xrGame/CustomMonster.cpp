@@ -556,9 +556,8 @@ void CCustomMonster::OnRender()
 //		Fvector P1 = CDetailPathManager::path()[I].position;		P1.y+=0.1f;
 //		Fvector P2 = CDetailPathManager::path()[I + 1].position;	P2.y+=0.1f;
 //		{
-//			xr_map<u32,STravelParams>::const_iterator	i = m_movement_params.find(CDetailPathManager::path()[I].velocity);
-//			VERIFY						(i != m_movement_params.end());
-//			float	r = (*i).second.linear_velocity/(*i).second.angular_velocity;
+//			const STravelParams&		i = velocity(CDetailPathManager::path()[I].velocity);
+//			float	r = i.linear_velocity/i.angular_velocity;
 //			Fmatrix						V = Fidentity;
 //			V.c							= P1;
 //			V.c.y						+= r + float(I)/100.f;
@@ -568,9 +567,8 @@ void CCustomMonster::OnRender()
 //			RCache.dbg_DrawEllipse		(V,D3DCOLOR_XRGB(255,0,0));
 //		}
 //		{
-//			xr_map<u32,STravelParams>::const_iterator	i = m_movement_params.find(CDetailPathManager::path()[I + 1].velocity);
-//			VERIFY										(i != m_movement_params.end());
-//			float	r = (*i).second.linear_velocity/(*i).second.angular_velocity;
+//			const STravelParams&		i = velocity(CDetailPathManager::path()[I + 1].velocity);
+//			float	r = i.linear_velocity/i.angular_velocity;
 //			Fmatrix						V = Fidentity;
 //			V.c							= P2;
 //			V.c.y						+= r + float(I + 1)/100.f;
