@@ -201,6 +201,7 @@ void CHOM::Render_DB	(CFrustum& base)
 		if (0==pixels)
 		{ T.skip=next; continue; }
 	}
+	Log	("polys",m_ZB.size());
 }
 
 void CHOM::Render		(CFrustum& base)
