@@ -250,7 +250,7 @@ IRender_Visual* CModelPool::Create(const char* name)
 	return	Model;
 }
 
-IRender_Visual* CModelPool::CreatePart(LPCSTR name, IReader* data)
+IRender_Visual* CModelPool::CreateChild(LPCSTR name, IReader* data)
 {
 	string128 low_name;		R_ASSERT(xr_strlen(name)<128);
 	strcpy(low_name,name);	strlwr(low_name);
