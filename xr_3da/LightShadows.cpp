@@ -53,8 +53,10 @@ void CLightShadows::OnDeviceDestroy	()
 	Device.Shader.Delete					(sh_Screen	);
 	
 	// 
+	Device.Shader.Delete					(sh_Blur	);
 	Device.Shader.Delete					(sh_World	);
 	Device.Shader.Delete					(sh_Texture	);
+	Device.Shader._DeleteRT					(RT_temp	);
 	Device.Shader._DeleteRT					(RT			);
 }
 
