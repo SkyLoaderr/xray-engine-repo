@@ -10,6 +10,7 @@ enum
 	GAME_CS								= 5,
 	GAME_TEAMDEATHMATCH					= 6,
 	GAME_ARTEFACTHUNT					= 7,
+	GAME_NEW_DM							= 8,
 	GAME_DUMMY							= 255	// temporary game type
 };
 

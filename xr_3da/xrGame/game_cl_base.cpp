@@ -315,7 +315,7 @@ void	game_cl_GameState::OnGameMessage	(NET_Packet& P)
 	};
 };
 
-game_cl_GameState::Player*				game_cl_GameState::GetPlayerByGameID		(u32 GameID)
+game_cl_GameState::Player* game_cl_GameState::GetPlayerByGameID(u32 GameID)
 {
 	xr_map<u32,game_cl_GameState::Player>::iterator I=Game().players.begin();
 	xr_map<u32,game_cl_GameState::Player>::iterator E=Game().players.end();
@@ -328,7 +328,7 @@ game_cl_GameState::Player*				game_cl_GameState::GetPlayerByGameID		(u32 GameID)
 	return NULL;
 };
 
-char*									game_cl_GameState::getTeamSection			(int Team)
+char*	game_cl_GameState::getTeamSection(int Team)
 {
 	switch (type)
 	{
