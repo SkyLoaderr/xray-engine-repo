@@ -35,7 +35,7 @@ function main ()
 
 	action(
 		stalker,
-		look		()
+		look		(),
 		cond		(cond.time_end,100000000)
 	)
 	
