@@ -12,7 +12,7 @@
 #include "tracer.h"
 #include "ai_sounds.h"
 #include "net_queue.h"
-#include "ai\\ai_monster_group.h"
+#include "ai/ai_monster_group.h"
 
 class CHUDManager;
 class CParticlesObject;
