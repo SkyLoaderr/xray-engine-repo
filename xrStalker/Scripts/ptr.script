@@ -25,7 +25,7 @@ function SPatrol:initialize ()
     reset_action (self.npc, self.script)
     action (self.npc, move (move.standing, move.walk, move.line, self.way), anim (anim.free), look (look.search), 
             object (self.npc:best_weapon (), object.activate), cond (cond.move_end))
-    self.snd_time = game.time ()            
+    self.snd_time = device():time_global()
     self.anim_time = self.snd_time
 end
 
@@ -35,7 +35,7 @@ function SPatrol:process ()
     --if patrol man is dead then exit
     if self.npc == nil or self.npc:alive () == false then return end
     
-    local ctime = game.time ()
+    local ctime = device():time_global()
     
     --sounds
     if table.getn (self.sounds) ~= 0 then
