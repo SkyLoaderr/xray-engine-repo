@@ -325,3 +325,27 @@ BOOL CLevel::Load_GameSpecific_After()
 
 	return TRUE;
 }
+
+void CLevel::Load_GameSpecific_CFORM	( CDB::TRI* tris, u32 count )
+{
+	// 1.
+	u16		default_id	= GMLib.GetMaterialIdx("default");
+
+	// 2. Build mapping
+	map<u32,u16>		translator;
+	translator.insert	(make_pair(u32(-1),default_id));
+	u16 idx				= 0;
+	for (GameMtlIt I=GMLib.FirstMaterial(); I!=GMLib.LastMaterial(); I++)
+	{
+		translator.insert(make_pair((*I)->GetID(),idx++));
+	}
+
+	// 3.
+	for (u32 it=0; it<count; it++)
+	{
+		CDB::TRI* T						= tris + it;
+		map<u32,u16>::iterator index	= translator.find(T->dummy);
+		if (index==translator.end())	Device.Fatal	("Game material '%d' not found",T->dummy);
+		T->material						= index->second;
+	}
+}

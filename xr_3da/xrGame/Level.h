@@ -59,11 +59,13 @@ public:
 	BOOL						game_configured;
 	NET_Queue_Event				game_events;
 
-	CAI_DDD*					m_tpAI_DDD;
 	xrServer*					Server;
+
+	CAI_DDD*					m_tpAI_DDD;
 
 	CAI_Space					AI;
 	vector<CTeam>				Teams;
+
 	CTracer						Tracers;
 	CEffect_Rain				eff_Rain;
 
@@ -107,6 +109,7 @@ public:
 	void						vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath);
 	virtual BOOL				Load_GameSpecific_Before( );
 	virtual BOOL				Load_GameSpecific_After ( );
+	virtual void				Load_GameSpecific_CFORM	( CDB::TRI* T, u32 count );
 
 	// Events
 	virtual void				OnEvent					( EVENT E, u32 P1, u32 P2 );
