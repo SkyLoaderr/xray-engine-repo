@@ -325,10 +325,12 @@ void CLocatorAPI::_initialize	(u32 flags)
 }
 void CLocatorAPI::_destroy		()
 {
+#ifdef _EDITOR
 	if (m_Flags.is(flEventNotificator)){
         // clear event handlers
         ClearEventNotification		();
     }
+#endif
 
 	for				(files_it I=files.begin(); I!=files.end(); I++)
 	{
