@@ -186,7 +186,7 @@ function add_to_binder(object)
 	local manager = object:motivation_action_manager()
 
 	properties["state_end"]		= xr_evaluators_id.state_change
-	properties["event"] 		= xr_evaluators_id.reactions
+	properties["event"] 		= xr_evaluators_id.stohe_reactions_base + 0
 
 	operators["wait"] 		= xr_actions_id.stohe_reactions_base + 0
 
@@ -262,7 +262,7 @@ function events:__init(npc)
 			snd_type.monster
 			}
 	self.time_reaction = 1500 	-- 1.5 секунд
-	self.time_memory = 600000 	-- 5 минут
+	self.time_memory = 6000000 	-- 10 минут
 	self.visio	= 0.25 		-- если объект виден
 end
 function events:calculate()  -- ѕроизводить перерасчет и обновление раздражителей дл€ текущего элемента
@@ -310,14 +310,10 @@ function events:calculate()  -- ѕроизводить перерасчет и обновление раздражителе
 		end
 
 		if continue then
-                        if alife() == nil then
+                        if is_object_online(so:id()) then
 				so_id = so:clsid()
 			else
-				if alife():object(so:id()).online then
-					so_id = so:clsid()
-				else
-					continue = false
-				end
+				continue = false
 			end
 		end
 
@@ -402,15 +398,11 @@ function events:calculate()  -- ѕроизводить перерасчет и обновление раздражителе
 			continue = false
 		end
 
-		if continue then 
-			if alife() == nil then
+		if continue then
+                        if is_object_online(vo:id()) then
 				vo_id = vo:clsid()
-			else    
-				if alife():object(vo:id()).online then
-					vo_id = vo:clsid()
-				else
-					continue = false
-				end
+			else
+				continue = false
 			end
 		end
 
@@ -419,6 +411,11 @@ function events:calculate()  -- ѕроизводить перерасчет и обновление раздражителе
 			then
 				continue = false
 			end
+		end                                                                                      
+
+		-- проверить что объект не находитс€ в списке левых предметов, которые нужно игнорировать
+		if continue and self:isTrash(vo) then
+			continue = false
 		end
 
 		if continue then
@@ -772,6 +769,22 @@ function events:item_power(obj)
 	then 
 		return true
 	else 	
+		return false
+	end
+end
+function events:isTrash(obj)
+	local otype = obj:clsid()
+
+	if	otype == clsid.obj_physic or
+		otype == clsid.obj_breakable or
+		otype == clsid.device_pda or
+		otype == clsid.obj_bolt or
+		otype == clsid.obj_food or
+		otype == clsid.obj_bottle or
+		otype == clsid.obj_document
+	then 
+		return true
+	else
 		return false
 	end
 end
