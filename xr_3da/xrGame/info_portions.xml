@@ -23,4 +23,8 @@
     <info_portion id="agroprom_factory_combat">
     </info_portion>
 
+	<info_portion index="dolg_territory">
+		<text>Вы находитесь на территории группировки "Долг".</text>
+	</info_portion>
+
 </game_information_portions>
