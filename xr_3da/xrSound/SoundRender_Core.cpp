@@ -119,6 +119,8 @@ void CSoundRender_Core::_initialize	(u32 window)
 		T->_initialize				();	
 		s_targets.push_back			(T);
 	}
+
+	cache.initialize			(psSoundCacheSizeMB*1024,sdef_target_block*wfx.nAvgBytesPerSec/1000)
 }
 
 void CSoundRender_Core::_destroy	()
