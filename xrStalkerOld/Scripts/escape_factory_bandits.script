@@ -32,7 +32,7 @@ local snd_on_actor     =  { themes = { "escape_factory_bandits_on_actor" } }
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_factory_bandit" (property_evaluator)
 
-function evaluator_factory_bandit:__init( name, storage ) super ()
+function evaluator_factory_bandit:__init( name, storage ) super (nil, name)
 	self.a = storage
 end
 
@@ -45,7 +45,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_dead_hook" ( property_evaluator )
 
-function evaluator_dead_hook:__init( name, storage ) super()
+function evaluator_dead_hook:__init( name, storage ) super(nil, name)
 	self.a = storage
 end
 
