@@ -224,12 +224,15 @@ void CRenderDevice::Run			()
 							L_view.transform_tiny	(T,_F[i]);
 							vmin.min(T); vmax.max	(T);
 						}
-						float				d = _max(vmax.x-vmin.x,vmax.y-vmin.y);
+						float				dx	= vmax.x-vmin.x;
+						float				dy	= vmax.y-vmin.y;
+						float				d	= _max(dx,dy);
 
 						// L_project
 						// D3DXMatrixPerspectiveOffCenterLH((D3DXMATRIX*)&L_project,vmin.x,vmax.x,vmin.y,vmax.y,vmin.z,vmax.z);
 						// L_project.identity			();
 						D3DXMatrixOrthoLH				((D3DXMATRIX*)&L_project,d,d,cs-50.f,cs+50.f);
+						// D3DXMatrixOrthoLH				((D3DXMATRIX*)&L_project,dx,dy,cs-50.f,cs+50.f);
 						// L_project.build_projection	(deg2rad(90.f),1.f,0.2f,100.f);
 					}
 
