@@ -2804,12 +2804,28 @@
 						<File
 							RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_state_manager.h">
 						</File>
-						<File
-							RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_vampire.h">
-						</File>
-						<File
-							RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_vampire_inline.h">
-						</File>
+						<Filter
+							Name="Vampire State"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_vampire.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_vampire_approach.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_vampire_approach_inline.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_vampire_execute.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_vampire_execute_inline.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_vampire_inline.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Boar"
