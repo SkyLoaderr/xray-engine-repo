@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#pragma comment(lib,"x:\\xrCore.lib")
 
 IWriter*				fs=0;
 CMemoryWriter			fs_desc;
@@ -125,9 +126,10 @@ void	Compress			(LPCSTR path)
 			// Compress into BaseFS
 			c_ptr				= fs->tell();
 			c_size				= 0;
-			BYTE*		c_data	= 0;
-			_compressLZ			(&c_data,&c_size,src->pointer(),src->length());
-			if ((c_size+64)>=u32(src->length()))
+			u32 c_size_max		= rtc_csize		(src->length());
+			u8*	c_data			= xr_alloc<u8>	(c_size_max);
+			c_size				= rtc_compress	(c_data,c_size_max,src->pointer(),src->length());
+			if ((c_size+64) >= u32(src->length()))
 			{
 				// Failed to compress - revert to VFS
 				filesVFS			++;
@@ -139,8 +141,11 @@ void	Compress			(LPCSTR path)
 				// Compressed OK
 				c_mode				= 0;		// Normal file
 				fs->w				(c_data,c_size);
-				printf				("%3.1f%%",100.f*float(c_size)/float(src->length()));
+				printf				("%3.1f%%",	100.f*float(c_size)/float(src->length()));
 			}
+
+			// cleanup
+			xr_free		(c_data);
 		}
 	}
 
