@@ -7,16 +7,16 @@
 
 void	CSoundRender_Emitter::fill_data		(u8* _dest, u32 offset, u32 size)
 {
-/*
+//*
 	Memory.mem_fill	(_dest,0,size);	// debug only
 	//	Msg			("stream: %10s - %d",*source->fname,size);
 	int				dummy;
-	ov_pcm_seek		(&source->ovf,(psSoundFreq==sf_22K)?offset:offset/2);
+	ov_pcm_seek		(source->ovf,(psSoundFreq==sf_22K)?offset:offset/2);
 	char* dest		= (char*)_dest;
 	u32	left		= size;
 	while (left)
 	{
-		int ret		= ov_read(&source->ovf,dest,left,0,2,1,&dummy);
+		int ret		= ov_read(source->ovf,dest,left,0,2,1,&dummy);
 //		Msg			("Part: %d - %d",left,ret);
 		if (ret==0)	break;
 		if (ret>0){
