@@ -311,6 +311,7 @@ void CCC_Register()
 	CMD3(CCC_Mask,		"mt_sound",				&psDeviceFlags,			mtSound);
 	CMD3(CCC_Mask,		"mt_input",				&psDeviceFlags,			mtInput);
 	CMD3(CCC_Mask,		"mt_physics",			&psDeviceFlags,			mtPhysics);
+	CMD3(CCC_Mask,		"mt_network",			&psDeviceFlags,			mtNetwork);
 	CMD4(CCC_Integer,	"mt_sheduler",			&psSheduler,			1000,	100000	);
 	CMD4(CCC_Float,		"mt_sheduler_load",		&psShedulerLoadBalance,	.1f,	10.f	);
 	

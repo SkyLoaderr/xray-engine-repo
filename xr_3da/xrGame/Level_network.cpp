@@ -24,6 +24,31 @@ void CLevel::ClientSend	()
 void CLevel::Send		(NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 {
 	// optimize the case when server located in our memory
-	if (Server)			Server->OnMessage	(P,Game().local_svdpnid	);
-	else				IPureClient::Send	(P,dwFlags,dwTimeout	);
+	if (Server && game_configured)	Server->OnMessage	(P,Game().local_svdpnid	);
+	else							IPureClient::Send	(P,dwFlags,dwTimeout	);
 }
+
+void CLevel::net_Update	()
+{
+	// If we have enought bandwidth - replicate client data on to server
+	Device.Statistic.netClient.Begin	();
+	ClientSend							();
+	Device.Statistic.netClient.End		();
+
+	// If server - perform server-update
+	if (Server)	{
+		Device.Statistic.netServer.Begin();
+		Server->Update					();
+		Device.Statistic.netServer.End	();
+	}
+}
+
+struct _NetworkProcessor	: public pureFrame
+{
+	virtual void OnFrame	( )
+	{
+		if (g_pGameLevel)	g_pGameLevel->net_Update();
+	}
+}	NET_processor;
+
+pureFrame*	g_pNetProcessor	= &NET_processor;

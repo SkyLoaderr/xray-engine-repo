@@ -149,6 +149,7 @@ public:
 	virtual void				net_Save				( LPCSTR name );
 	virtual void				net_Stop				( );
 	virtual BOOL				net_Start_client		( LPCSTR name );
+	virtual void				net_Update				( );
 
 	void						vfCreateAllPossiblePaths( LPCSTR sName, SPath &tpPatrolPath);
 	virtual BOOL				Load_GameSpecific_Before( );

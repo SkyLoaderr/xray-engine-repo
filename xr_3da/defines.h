@@ -30,6 +30,7 @@ enum {
 	mtSound				= (1ul<<15ul),
 	mtInput				= (1ul<<16ul),
 	mtPhysics			= (1ul<<17ul)
+	mtNetwork			= (1ul<<18ul)
 // 20-32 bit - defined in Editor
 };
 ENGINE_API extern	u32			psCurrentMode		;

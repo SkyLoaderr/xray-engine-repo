@@ -55,6 +55,7 @@ public:
 	virtual void				net_Load				( LPCSTR name )							= 0;
 	virtual void				net_Save				( LPCSTR name )							= 0;
 	virtual void				net_Stop				( );
+	virtual void				net_Update				( )										= 0;
 
 	virtual BOOL				Load					( u32 dwNum );
 	virtual BOOL				Load_GameSpecific_Before( )										{ return TRUE; };		// before object loading

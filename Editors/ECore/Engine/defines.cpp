@@ -7,7 +7,7 @@
 // Video
 u32			psCurrentMode		= 800;
 u32			psCurrentBPP		= 32;
-Flags32		psDeviceFlags		= {rsFullscreen|rsNoVSync|mtSound};
+Flags32		psDeviceFlags		= {rsFullscreen|rsNoVSync|rsDetails|mtPhysics|mtSound|mtNetwork};
 
 // textures
 int			psTextureLOD		= 0;

@@ -196,18 +196,10 @@ void CLevel::OnFrame	()
 	// Inherited update
 	inherited::OnFrame					();
 
-	// If we have enought bandwidth - replicate client data on to server
-	Device.Statistic.netClient.Begin();
-	ClientSend						();
-	Device.Statistic.netClient.End	();
-
+	// Draw client/server stats
 	CGameFont* F = HUD().pFontDI;
-	// If server - perform server-update
 	if (Server)
 	{
-		Device.Statistic.netServer.Begin();
-		Server->Update					();
-		Device.Statistic.netServer.End	();
 		if (psDeviceFlags.test(rsStatistic))
 		{
 			const IServerStatistic* S = Server->GetStatistic();
@@ -219,16 +211,15 @@ void CLevel::OnFrame	()
 			F->OutNext	("client_2_sever ping: %d",	net_Statistic.getPing());
 			
 			F->SetColor	(D3DCOLOR_XRGB(255,255,255));
-			for (u32 I=0; I<Server->client_Count(); ++I)
-			{
+			for (u32 I=0; I<Server->client_Count(); ++I)	{
 				IClient*	C = Server->client_Get(I);
 				F->OutNext("%10s: P(%d), BPS(%2.1fK), MRR(%2d), MSR(%2d)",
 					Server->game->get_option_s(C->Name,"name",C->Name),
 //					C->Name,
 					C->stats.getPing(),
 					float(C->stats.getBPS())/1024,
-					C->stats.getMPS_Receive(),
-					C->stats.getMPS_Send()
+					C->stats.getMPS_Receive	(),
+					C->stats.getMPS_Send	()
 					);
 			}
 		}
@@ -238,7 +229,7 @@ void CLevel::OnFrame	()
 			F->SetSize	(0.015f);
 			F->OutSet	(0.0f,0.5f);
 			F->SetColor	(D3DCOLOR_XRGB(0,255,0));
-			F->OutNext("client_2_sever ping: %d",	net_Statistic.getPing());
+			F->OutNext	("client_2_sever ping: %d",	net_Statistic.getPing());
 		}
 	}
 	
@@ -246,8 +237,8 @@ void CLevel::OnFrame	()
 
 	ai().script_engine().script_processor("level")->update();
 
-	//просчитать полет пуль 
-	BulletManager().Update();
+	//просчитать полет пуль
+	BulletManager().Update	();
 }
 
 void CLevel::OnRender()
@@ -365,19 +356,21 @@ void		CLevel::UpdateDeltaUpd	( u32 LastTime )
 
 void		CLevel::ReculcInterpolationSteps ()
 {
-	lvInterpSteps = iFloor(float(m_dwDeltaUpdate) / (fixed_step*1000));
+	lvInterpSteps			= iFloor(float(m_dwDeltaUpdate) / (fixed_step*1000));
 	if (lvInterpSteps > 50) lvInterpSteps = 50;
-	if (lvInterpSteps < 3) lvInterpSteps = 3;
+	if (lvInterpSteps < 3)	lvInterpSteps = 3;
 };
 
-bool		CLevel::InterpolationDisabled	()
+bool				CLevel::InterpolationDisabled	()
 {
 	return lvInterp < 0; 
 };
 
 void __stdcall		CLevel::PhisStepsCallback	( u32 Time0, u32 Time1 )
 {
-	if (Game().type == 1) return;
+	if (Game().type == 1)	return;
+
+#pragma todo("Oles to all: highly inefficient and slow!!!")
 
 	for (xr_vector<CObject*>::iterator O=Level().Objects.objects.begin(); O!=Level().Objects.objects.end(); O++) 
 	{
