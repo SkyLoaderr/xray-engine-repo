@@ -61,6 +61,10 @@ void CRender::level_Load()
 		chunk						= fs->open_chunk(fsL_VISUALS);
 		LoadVisuals					(chunk);
 		chunk->close				();
+
+		// Details
+		pApp->LoadTitle				("Loading details...");
+		Details->Load				();
 	}
 	
 	// Sectors
@@ -70,10 +74,6 @@ void CRender::level_Load()
 	// Lights
 	pApp->LoadTitle				("Loading lights...");
 	LoadLights					(fs);
-
-	// Details
-	pApp->LoadTitle				("Loading details...");
-	Details->Load				();
 
 	// HOM
 	HOM.Load					();

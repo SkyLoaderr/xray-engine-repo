@@ -416,8 +416,8 @@ void CConsole::Show			()
 
 void CConsole::Hide()
 {
-	if	(!bVisible)								return;
-	if	(g_pGamePersistent->bDedicatedServer)	return;
+	if	(!bVisible)													return;
+	if	(g_pGamePersistent && g_pGamePersistent->bDedicatedServer)	return;
 
 	bVisible				= false;
 	Device.seqFrame.Remove	(this);
