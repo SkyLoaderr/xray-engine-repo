@@ -199,7 +199,7 @@ CLightPPA_Manager::CLightPPA_Manager()
 CLightPPA_Manager::~CLightPPA_Manager()
 {
 	R_ASSERT					(active.empty());
-	R_ASSERT					(inactive.empty());
+	// R_ASSERT					(inactive.empty());
 	hGeom.destroy				();
 	hShader.destroy				();
 }

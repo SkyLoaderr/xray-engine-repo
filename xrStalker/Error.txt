@@ -15,6 +15,7 @@
 ; -K - from Koan
 
 To OLES : 
+-O		(?) LightPPA (line 202) - inactive.empty() = false
 ---K	(?) глюк с тенью от первого лица (-noprefetch -ltx user_w.ltx -start server(anomaly_test/single) client(localhost))
 ---D	(?)	memory leak during reload (press f7 for reload) ~ 346kb on occ_part
 +++S	assertion failed  в stl_extensions.cpp 

@@ -19,6 +19,7 @@ CAI_Stalker::CAI_Stalker			()
 	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai_stalker);
 	shedule.t_min					= 200;
 	shedule.t_max					= 1;
+	m_dwParticularState				= u32(-1);
 }
 
 CAI_Stalker::~CAI_Stalker			()
@@ -59,7 +60,6 @@ void CAI_Stalker::Init()
 	m_dwLastRangeSearch				= 0;
 	m_dwRandomFactor				= 100;
 	m_dwInertion					= 20000;
-	m_dwParticularState				= u32(-1);
 
 	m_tMovementType					= eMovementTypeStand;
 	m_tPathState					= ePathStateSearchNode;
