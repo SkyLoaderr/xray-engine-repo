@@ -427,6 +427,16 @@
 					</File>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="SmartCast"
+				Filter="">
+				<File
+					RelativePath=".\smart_cast.cpp">
+				</File>
+				<File
+					RelativePath=".\smart_cast.h">
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Scripts"

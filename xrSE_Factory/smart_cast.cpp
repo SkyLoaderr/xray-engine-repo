@@ -9,10 +9,10 @@
 #include "stdafx.h"
 #include "smart_cast.h"
 
-
 #ifndef PURE_DYNAMIC_CAST
-#	include "gameobject.h"
-#	include "actor.h"
+#	ifdef XRGAME_EXPORTS
+#		include	"gameobject.h"
+#		include "actor.h"
 
 template <> 
 CGameObject* SmartDynamicCast::smart_cast<CGameObject,CObject>(CObject *p)
@@ -57,4 +57,5 @@ CGameObject* SmartDynamicCast::smart_cast<CGameObject, CInventoryOwner>(CInvento
 	return p->cast_game_object();
 }
 
+#	endif
 #endif
