@@ -302,9 +302,19 @@ bool CAI_Stalker::can_kill_member		(const Fvector &position, const Fvector &dire
 bool CAI_Stalker::undetected_anomaly	()
 {
 	return					(false);
+//	return					(inside_anomaly());
 }
+
+#include "../../customzone.h"
 
 bool CAI_Stalker::inside_anomaly		()
 {
+//	xr_vector<CObject*>::const_iterator	I = feel_touch.begin();
+//	xr_vector<CObject*>::const_iterator	E = feel_touch.end();
+//	for ( ; I != E; ++I) {
+//		CCustomZone			*zone = dynamic_cast<CCustomZone*>(*I);
+//		if (zone)
+//			return			(true);
+//	}
 	return					(false);
 }

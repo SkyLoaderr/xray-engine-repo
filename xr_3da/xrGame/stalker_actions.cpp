@@ -102,6 +102,38 @@ void CStalkerActionFreeNoALife::initialize	()
 {
 	inherited::initialize			();
 	m_stop_weapon_handling_time		= Level().timeServer() + ::Random.randI(120000,180000);
+
+#ifdef STALKER_DEBUG_MODE
+	m_object->CObjectHandler::set_goal	(eObjectActionIdle);
+	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypeCover,false,true));
+	m_object->set_node_evaluator	(0);
+	m_object->set_path_evaluator	(0);
+	m_object->set_desired_direction	(0);
+
+//	m_object->CObjectHandler::set_goal	(eObjectActionIdle);
+
+//	Fvector							direction = Fvector().set(0.f,0.f,1.f);//Fvector().set(::Random.randF(1.f),0.f,::Random.randF(1.f));
+//	direction.normalize_safe		();
+//	m_object->set_desired_direction	(&direction);
+//	m_object->set_desired_position	(0);
+	m_object->set_path_type			(MovementManager::ePathTypePatrolPath);
+	m_object->set_path				("way",PatrolPathManager::ePatrolStartTypeFirst,PatrolPathManager::ePatrolRouteTypeContinue,false);
+
+//	CGameObject						*actor = dynamic_cast<CGameObject*>(Level().CurrentEntity());
+//	m_object->set_desired_position	(&actor->Position());
+//	m_object->set_level_dest_vertex	(actor->level_vertex_id());
+//	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
+//	Fvector							look_pos = Fvector().set(0.f,0.f,1.f);//actor->Position();
+//	look_pos.y						+= .8f;
+//	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypePosition,look_pos,true));
+
+	m_object->set_detail_path_type	(eDetailPathTypeSmooth);
+	m_object->set_body_state		(eBodyStateStand);
+	m_object->set_movement_type		(eMovementTypeWalk);
+	m_object->set_mental_state		(eMentalStateFree);
+//	m_object->CObjectHandler::set_goal	(eObjectActionUse,m_object->inventory().GetItemFromInventory("bread"));
+//	dynamic_cast<CAttachableItem*>(m_object->inventory().GetItemFromInventory("hand_radio"))->enable(false);
+#endif
 }
 
 void CStalkerActionFreeNoALife::finalize	()
@@ -109,9 +141,6 @@ void CStalkerActionFreeNoALife::finalize	()
 	inherited::finalize				();
 	m_object->set_sound_mask		(u32(eStalkerSoundMaskNoHumming));
 	m_object->set_sound_mask		(0);
-#ifdef STALKER_DEBUG_MODE
-	m_object->CObjectHandler::set_goal	(eObjectActionIdle);
-#endif
 }
 
 void CStalkerActionFreeNoALife::execute		()
@@ -135,35 +164,6 @@ void CStalkerActionFreeNoALife::execute		()
 		m_object->CObjectHandler::set_goal	(eObjectActionIdle);
 	else
 		m_object->CObjectHandler::set_goal	(eObjectActionIdle,m_object->best_weapon());
-#else
-	m_object->set_node_evaluator	(0);
-	m_object->set_path_evaluator	(0);
-	m_object->set_desired_direction	(0);
-
-//	m_object->CObjectHandler::set_goal	(eObjectActionIdle);
-
-//	m_object->CSightManager::setup		(CSightAction(SightManager::eSightTypeCover,false,true));
-//	Fvector							direction = Fvector().set(0.f,0.f,1.f);//Fvector().set(::Random.randF(1.f),0.f,::Random.randF(1.f));
-//	direction.normalize_safe		();
-//	m_object->set_desired_direction	(&direction);
-//	m_object->set_desired_position	(0);
-//	m_object->set_path_type			(MovementManager::ePathTypePatrolPath);
-//	m_object->set_path				("way",PatrolPathManager::ePatrolStartTypeFirst,PatrolPathManager::ePatrolRouteTypeContinue,false);
-
-//	CGameObject						*actor = dynamic_cast<CGameObject*>(Level().CurrentEntity());
-//	m_object->set_desired_position	(&actor->Position());
-//	m_object->set_level_dest_vertex	(actor->level_vertex_id());
-	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
-	Fvector							look_pos = Fvector().set(0.f,0.f,1.f);//actor->Position();
-	look_pos.y						+= .8f;
-	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypePosition,look_pos,true));
-
-	m_object->set_detail_path_type	(eDetailPathTypeSmooth);
-	m_object->set_body_state		(eBodyStateStand);
-	m_object->set_movement_type		(eMovementTypeStand);
-	m_object->set_mental_state		(eMentalStateDanger);
-//	m_object->CObjectHandler::set_goal	(eObjectActionUse,m_object->inventory().GetItemFromInventory("bread"));
-//	dynamic_cast<CAttachableItem*>(m_object->inventory().GetItemFromInventory("hand_radio"))->enable(false);
 #endif
 }
 

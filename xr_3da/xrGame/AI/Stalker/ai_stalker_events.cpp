@@ -80,6 +80,7 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 
 void CAI_Stalker::feel_touch_new				(CObject* O)
 {
+//	Msg					("FEEL_TOUCH::NEW : %s",*O->cName());
 	if (!g_Alive())		return;
 	if (Remote())		return;
 	if ((O->spatial.type | STYPE_VISIBLEFORAI) != O->spatial.type) return;
@@ -115,6 +116,8 @@ void CAI_Stalker::DropItemSendMessage(CObject *O)
 
 /////////////////////////
 //PDA functions
+/////////////////////////
+
 void CAI_Stalker::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_INDEX info_index)
 {
 	CInventoryOwner::ReceivePdaMessage(who, msg, info_index);
