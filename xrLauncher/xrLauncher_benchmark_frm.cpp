@@ -20,7 +20,7 @@ void xrLauncher_benchmark_frm::Init()
 	qualityComboBox->Items->Clear();
 	const CLocatorAPI::file* fn = NULL;
 	string_path s;
-	fn = FS.exist(s,"$game_data$","stalkerBenchmark.inf");
+	fn = FS.exist(s,"$server_root$","stalkerBenchmark.inf");
 	R_ASSERT(fn);
 
 	CInifile ini(fn->name);
@@ -80,7 +80,7 @@ System::Void xrLauncher_benchmark_frm::runBenchmarkBtn_Click(System::Object *  s
 void xrLauncher_benchmark_frm::prepareBenchmarkFile(LPCSTR file_name)
 {
 	string_path s;
-	FS.update_path(s,"$local_root$",file_name);
+	FS.update_path(s,"$server_root$",file_name);
 	if(FS.exist(s))
 		FS.file_delete(s);
 

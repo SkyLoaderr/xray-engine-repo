@@ -169,7 +169,7 @@ System::Void xrLauncher_main_frm::playBtn_Click(System::Object *  sender, System
 	FS.w_close			(W);
 	FS.r_close			(R2);
 	FS.r_close			(R);
-
+	
 	strcpy(Core.Params,*info.m_cmd_line);
 	_Close(0);
 }
