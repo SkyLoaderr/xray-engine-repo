@@ -183,4 +183,11 @@ char* __stdcall xr_strdup	(const char* string)
 	return	memory;
 }
 
-
+XRCORE_API		BOOL	__stdcall is_stack_ptr		( void* _ptr)
+{
+	int			local_value		= 0;
+	void*		ptr_refsound	= _ptr;
+	void*		ptr_local		= &local_value;
+	ptrdiff_t	difference		= (ptrdiff_t)_abs(s64(ptrdiff_t(ptr_local) - ptrdiff_t(ptr_refsound)));
+	return		(difference < (512*1024));
+}
