@@ -28,27 +28,30 @@ private:
 
 	typedef xr_multimap<LPCSTR,IRender_Visual*,str_pred>	POOL;
 	typedef POOL::iterator							POOL_IT;
-	typedef xr_map<IRender_Visual*,LPCSTR>					REGISTRY;
+	typedef xr_map<IRender_Visual*,LPCSTR>			REGISTRY;
 	typedef REGISTRY::iterator						REGISTRY_IT;
 private:
-	xr_vector<ModelDef>	Models;				// Reference / Base
-	REGISTRY			Registry;			// Just pairing of pointer / Name
-	POOL				Pool;				// Unused / Inactive
+	xr_vector<ModelDef>		Models;				// Reference / Base
+	REGISTRY				Registry;			// Just pairing of pointer / Name
+	POOL					Pool;				// Unused / Inactive
+	BOOL					bLogging;
 
-	void				Destroy	();
+	void					Destroy	();
 public:
 	IRender_Visual*			Instance_Create		(u32 Type);
 	IRender_Visual*			Instance_Duplicate	(IRender_Visual* V);
 	IRender_Visual*			Instance_Load		(LPCSTR N);
 	IRender_Visual*			Instance_Load		(LPCSTR N, IReader* data);
-	void				Instance_Register	(LPCSTR N, IRender_Visual* V);
+	void					Instance_Register	(LPCSTR N, IRender_Visual* V);
 	IRender_Visual*			Instance_Find		(LPCSTR N);
 
 	IRender_Visual*			CreatePS			(PS::SDef* source, PS::SEmitter* E);
 	IRender_Visual*			CreatePE			(PS::CPEDef* source);
 	IRender_Visual*			Create				(LPCSTR name);
 	IRender_Visual*			Create				(LPCSTR name, IReader* data);
-	void				Delete				(IRender_Visual* &V);
+	void					Delete				(IRender_Visual* &V);
+
+	void					Logging				(BOOL bEnable)	{ bLogging=bEnable; }
 
 	CModelPool			();
 	virtual ~CModelPool	();

@@ -94,6 +94,7 @@ IRender_Visual*	CModelPool::Instance_Load		(const char* N)
 	}
 	
 	// Actual loading
+	if (bLogging)		Msg		("! Uncached model loading: %s",fn);
 	IReader*			data	= FS.r_open(fn);
 	ogf_header			H;
 	data->r_chunk_safe	(OGF_HEADER,&H,sizeof(H));
@@ -112,6 +113,7 @@ IRender_Visual*	CModelPool::Instance_Load(LPCSTR name, IReader* data)
 	IRender_Visual	*V;
 	
 	// Actual loading
+	if (bLogging)		Msg		("! Uncached model loading: %s",fn);
 	ogf_header			H;
 	data->r_chunk_safe	(OGF_HEADER,&H,sizeof(H));
 	V = Instance_Create (H.type);
@@ -160,11 +162,12 @@ void CModelPool::Destroy()
 
 CModelPool::CModelPool()
 {
+	bLogging	= TRUE;
 }
 
 CModelPool::~CModelPool()
 {
-	Destroy	();
+	Destroy		();
 }
 
 IRender_Visual* CModelPool::Instance_Find(LPCSTR N)

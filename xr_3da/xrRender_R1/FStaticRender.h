@@ -143,6 +143,7 @@ public:
 	virtual IRender_Visual*			model_Duplicate			(IRender_Visual*	V);
 	virtual void					model_Delete			(IRender_Visual* &	V);
 	virtual void 					model_Delete			(IRender_DetailModel* & F);
+	virtual void					model_Logging			(BOOL bEnable)				{ Models.Logging(bEnable);	}
 	
 	// Occlusion culling
 	virtual BOOL					occ_visible				(vis_data&	V);

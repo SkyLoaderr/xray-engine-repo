@@ -22,6 +22,8 @@ void IGame_ObjectPool::load	()
 
 	CInifile::Root&	R	= pSettings->sections();
 	int	p_count			= 0;
+
+	::Render->model_Logging	(FALSE);
 	for (CInifile::RootIt	S	= R.begin(); S!=R.end(); S++)
 	{
 		if (pSettings->line_exist(S->Name,"$prefetch"))
@@ -39,6 +41,7 @@ void IGame_ObjectPool::load	()
 			}
 		}
 	}
+	::Render->model_Logging	(TRUE);
 
 	float	p_time		= 1000.f*T.GetElapsed_sec();
 	u32		p_mem		= Memory.mem_usage() - mem_0;
