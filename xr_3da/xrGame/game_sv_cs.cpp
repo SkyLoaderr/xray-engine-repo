@@ -20,7 +20,7 @@ void	game_sv_CS::OnRoundStart	()
 {
 	NET_Packet l_packet;
 	vector<CFS_Memory> l_memAr;
-	if(round>-1) {							// ≈сли раунд не первый сохран€ем игроков и их оружие
+	if(round!=-1) {							// ≈сли раунд не первый сохран€ем игроков и их оружие
 		xrServer *l_pServer = Level().Server;
 		u32 cnt = get_count();
 		l_memAr.resize(cnt);
@@ -37,6 +37,55 @@ void	game_sv_CS::OnRoundStart	()
 				l_pWeapon->ID = id_save;				// restore wpn entity ID 
 				l_mem.open_chunk(l_chunk++); l_mem.write(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
 			}
+		}
+	} else {
+		string256 fn;
+		if (Engine.FS.Exist(fn,Path.GameData,"game_cs.ltx")) {
+			CInifile* ini = CInifile::Create(fn);
+			LPCSTR prim = ini->ReadSTRING("cs_start_Arms","primary");
+			u32 prim_ammo = ini->ReadINT("cs_start_Arms","primary_ammo");
+			LPCSTR pistol = ini->ReadSTRING("cs_start_Arms","pistol");
+			u32 pistol_ammo = ini->ReadINT("cs_start_Arms","pistol_ammo");
+			xrSE_Weapon *W_prim = 0, *W_pistol = 0;
+			if(prim) {
+				W_prim = dynamic_cast<xrSE_Weapon*>(spawn_begin(prim));
+				if(W_prim) {
+					strcpy(W_prim->s_name_replace,prim);
+					W_prim->s_flags = M_SPAWN_OBJECT_ACTIVE|M_SPAWN_OBJECT_LOCAL;
+					W_prim->ID_Parent = 0;
+					W_prim->ID = 0xffff;
+					W_prim->a_elapsed = W_prim->get_ammo_magsize();
+					W_prim->a_current = u16(prim_ammo) * W_prim->a_elapsed;
+				}
+			}
+			if(pistol) {
+				W_pistol = dynamic_cast<xrSE_Weapon*>(spawn_begin(pistol));
+				if(W_pistol) {
+					strcpy(W_pistol->s_name_replace,pistol);
+					W_pistol->s_flags = M_SPAWN_OBJECT_ACTIVE|M_SPAWN_OBJECT_LOCAL;
+					W_pistol->ID_Parent = 0;
+					W_pistol->ID = 0xffff;
+					W_pistol->a_elapsed = W_pistol->get_ammo_magsize();
+					W_pistol->a_current = u16(pistol_ammo) * W_pistol->a_elapsed;
+				}
+			}
+			CInifile::Destroy	(ini);
+			u32 cnt = get_count();
+			l_memAr.resize(cnt);
+			for(u32 it = 0; it < cnt; it++) {
+				u32 l_chunk = 0;
+				CFS_Memory &l_mem = l_memAr[it];
+				if(W_prim) {
+					W_prim->Spawn_Write(l_packet, true);
+					l_mem.open_chunk(l_chunk++); l_mem.write(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
+				}
+				if(W_pistol) {
+					W_pistol->Spawn_Write(l_packet, true);
+					l_mem.open_chunk(l_chunk); l_mem.write(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
+				}
+			}
+			if(W_prim) F_entity_Destroy(W_prim);
+			if(W_pistol) F_entity_Destroy(W_pistol);
 		}
 	}
 
@@ -374,15 +423,59 @@ void game_sv_CS::OnPlayerConnect	(u32 id_who)
 	__super::OnPlayerConnect	(id_who);
 
 	LPCSTR	options			=	get_name_id	(id_who);
+	game_PlayerState*	ps_who	=	get_id	(id_who);
+	ps_who->money_total = 1000;
 
 	// Spawn "actor"
-	xrServerEntity*		E	=	spawn_begin	("actor");													// create SE
+	ps_who->team = u8(get_option_i(options,"team",AutoTeam()));
+	xrServerEntity*		E	=	spawn_begin	(ps_who->team?"actor_cs_1":"actor_cs_2");													// create SE
 	xrSE_Actor*	A			=	(xrSE_Actor*) E;					
 	strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
-	get_id(id_who)->team	=	A->s_team = u8(get_option_i(options,"team",AutoTeam()));				// team
 	A->s_flags				=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER;// flags
 	assign_RP				(A);
 	spawn_end				(A,id_who);
+
+	// ƒаем игроку децл оружи€ дл€ начала. ≈сли игрок изначально будет коннектитс€ как наблюдатель то все это не нужно.
+	string256 fn;
+	if (Engine.FS.Exist(fn,Path.GameData,"game_cs.ltx")) {
+		CInifile* ini = CInifile::Create(fn);
+		LPCSTR prim = ini->ReadSTRING("cs_start_Arms","primary");
+		u32 prim_ammo = ini->ReadINT("cs_start_Arms","primary_ammo");
+		LPCSTR pistol = ini->ReadSTRING("cs_start_Arms","pistol");
+		u32 pistol_ammo = ini->ReadINT("cs_start_Arms","pistol_ammo");
+		xrSE_Weapon *W_prim = 0, *W_pistol = 0;
+		if(prim) {
+			W_prim = dynamic_cast<xrSE_Weapon*>(spawn_begin(prim));
+			if(W_prim) {
+				strcpy(W_prim->s_name_replace,prim);
+				W_prim->s_flags = M_SPAWN_OBJECT_ACTIVE|M_SPAWN_OBJECT_LOCAL;
+				//W_prim->ID_Parent = A->owner->ID;
+				W_prim->a_elapsed = W_prim->get_ammo_magsize();
+				W_prim->a_current = u16(prim_ammo) * W_prim->a_elapsed;
+				NET_Packet						P;
+				u16								skip_header;
+				W_prim->Spawn_Write					(P,TRUE);
+				P.r_begin						(skip_header);
+				Level().Server->Process_spawn	(P,id_who,true);
+				F_entity_Destroy				(W_prim);
+			}
+		}
+		if(pistol) {
+			W_pistol = dynamic_cast<xrSE_Weapon*>(spawn_begin(pistol));
+			if(W_pistol) {
+				strcpy(W_pistol->s_name_replace,pistol);
+				W_pistol->s_flags = M_SPAWN_OBJECT_ACTIVE|M_SPAWN_OBJECT_LOCAL;
+				W_pistol->a_elapsed = W_pistol->get_ammo_magsize();
+				W_pistol->a_current = u16(pistol_ammo) * W_pistol->a_elapsed;
+				NET_Packet						P;
+				u16								skip_header;
+				W_pistol->Spawn_Write					(P,TRUE);
+				P.r_begin						(skip_header);
+				Level().Server->Process_spawn	(P,id_who,true);
+				F_entity_Destroy				(W_pistol);
+			}
+		}
+	}/**/
 }
 
 void game_sv_CS::OnPlayerBuy		(u32 id_who, u16 eid_who, LPCSTR what)

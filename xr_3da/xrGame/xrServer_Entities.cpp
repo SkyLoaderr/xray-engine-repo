@@ -139,7 +139,8 @@ u16		xrSE_Weapon::get_ammo_elapsed()
 }
 u16		xrSE_Weapon::get_ammo_magsize()
 {
-	return (u16) pSettings->ReadINT	(s_name,"ammo_mag_size");
+	if(pSettings->LineExists(s_name,"ammo_mag_size")) return (u16) pSettings->ReadINT	(s_name,"ammo_mag_size");
+	else return 0;
 }
 
 #ifdef _EDITOR
