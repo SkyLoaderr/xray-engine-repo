@@ -1072,7 +1072,7 @@ bool CInventory::isBeautifulForActiveSlot	(CInventoryItem *pIItem)
 {
 	TISlotArr::iterator it =  m_slots.begin();
 	for(;it!=m_slots.end();++it){
-		if( (*it).m_pIItem && (*it).m_pIItem->IsNecessaryItem(pIItem);
+		if( (*it).m_pIItem && (*it).m_pIItem->IsNecessaryItem(pIItem) );
 		return true;
 	}
 	return false;
