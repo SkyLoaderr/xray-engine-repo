@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
+<string_table>
+    <string id="storyline_escape_eliminate_gunslinger">
+        <text>Убить Стрелка.</text>
+    </string>
+    <string id="storyline_escape_find_gunslinger">
+        <text>Найти Стрелка.</text>
+    </string>
+    <string id="tutorial_find_artefact">
+        <text>Найти артефакт.</text>
+    </string>
+    <string id="tutorial_find_artefact_0">
+        <text>Найти свой первый артефакт.</text>
+    </string>
+    <string id="tutorial_find_artefact_1">
+        <text>Найти первый артефакт.</text>
+    </string>
+    <string id="tutorial_find_artefact_2">
+        <text>Отнести артефакт торговцу.</text>
+    </string>
+    <string id="tutorial_help_wounded">
+        <text>Помогите раненому.</text>
+    </string>
+    <string id="tutorial_help_wounded_0">
+        <text>Найди выжившего после обстрела и помогите ему.</text>
+    </string>
+    <string id="esc_trader_need_electra_artefact">
+        <text>Найти и принести артефакт из грави-аномалии.</text>
+    </string>
+    <string id="esc_trader_need_electra_artefact_0">
+        <text>Торговцу нужен любой артефакт из грави-аномалии.</text>
+    </string>
+    <string id="esc_trader_need_electra_artefact_1">
+        <text>Найти артефакт. Получить его можно, попытавшись загнать кого-то в аномалию.</text>
+    </string>
+    <string id="esc_trader_need_electra_artefact_2">
+        <text>Принести артефакт торговцу.</text>
+    </string>
+    <string id="esc_help_wounded_from_raid">
+        <text>Передать торговцу информацию.</text>
+    </string>
+    <string id="esc_help_wounded_from_raid_0">
+        <text>Помочь торговцу достать важную информацию о результатах военной разведки.</text>
+    </string>
+    <string id="esc_help_wounded_from_raid_1">
+        <text>Встретить сталкера по прозвищу "Лис".</text>
+    </string>
+    <string id="esc_help_wounded_from_raid_2">
+        <text>Доставить торговцу информацию от "Лиса".</text>
+    </string>
+    <string id="esc_blockpost_case_to_trader">
+        <text>Украсть ящик с блокпоста.</text>
+    </string>
+    <string id="esc_blockpost_case_to_trader_0">
+        <text>Украсть у командира блокпоста ящик с важными документами.</text>
+    </string>
+    <string id="esc_blockpost_case_to_trader_1">
+        <text>Украсть ящик с блокпоста.</text>
+    </string>
+    <string id="esc_blockpost_case_to_trader_2">
+        <text>Принести ящик торговцу.</text>
+    </string>
+    <string id="esc_dinamit_to_volk">
+        <text>Достать динамит для Волка.</text>
+    </string>
+    <string id="esc_dinamit_to_volk_0">
+        <text>Необходимо забрать динамит у бандитов на фабрике и доставить его Волку.</text>
+    </string>
+    <string id="esc_dinamit_to_volk_1">
+        <text>Встретиться с людьми Волка.</text>
+    </string>
+    <string id="esc_dinamit_to_volk_2">
+        <text>Найти динамит на фабрике.</text>
+    </string>
+    <string id="esc_dinamit_to_volk_3">
+        <text>Принести динамит Волку.</text>
+    </string>
+    <string id="garbage_meet_stalker">
+        <text>Встретиться на свалке со сталкером.</text>
+    </string>
+    <string id="garbage_meet_stalker_0">
+        <text>Встретиться со сталкером в гараже на свалке на счет информации о группировке Стрелка.</text>
+    </string>
+    <string id="agroprom_get_military_documents">
+        <text>Достать документы военных из НИИ "Агропром".</text>
+    </string>
+    <string id="agroprom_get_military_documents_0">
+        <text>Необходимо достать военные документы и доставить их бармену в баре сталкеров.</text>
+    </string>
+    <string id="agroprom_get_military_documents_1">
+        <text>Добудьте военные документы из НИИ "Агропром".</text>
+    </string>
+    <string id="agroprom_get_military_documents_2">
+        <text>Отнесите документы бармену в баре сталкеров.</text>
+    </string>
+    <string id="agr_meet_krot_band">
+        <text>Добыть информацию о пути к центру Зоны.</text>
+    </string>
+    <string id="agr_meet_krot_band_0">
+        <text>Найти группу Крота и получить от них информацию о пути к центру Зоны.</text>
+    </string>
+    <string id="agroprom_find_gunslinger_cache">
+        <text>Найти тайник группировки Стрелка.</text>
+    </string>
+    <string id="agroprom_find_gunslinger_cache_0">
+        <text>Найдите и обыщите тайник группировки Стрелка. Там может быть информация о том, где найти самого Стрелка.</text>
+    </string>
+    <string id="agroprom_find_stalker_phantom">
+        <text>Найти Призрака.</text>
+    </string>
+    <string id="agroprom_find_stalker_phantom_0">
+        <text>Призрак точно знает, где найти Стрелка.</text>
+    </string>
+    <string id="esc_wounded_to_trader_gift">
+        <text>Доставить пакет торговцу.</text>
+    </string>
+    <string id="esc_wounded_to_trader_gift_0">
+        <text>Доставить пакет торговцу. Он сможет тебе помочь.</text>
+    </string>
+</string_table>
