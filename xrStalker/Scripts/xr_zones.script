@@ -121,7 +121,7 @@ function zone_binder:reload( section )
 		return
 	end
 
-	if zone_ini:section_exist( "fractions1" ) then
+	if zone_ini:section_exist( "fraction1" ) then
 		-- если управление фракциями ещё не создано, то создать
 		if not z.zone_fractions then
 			z.zone_fractions = zone_fractions( self.object, zone_ini )
