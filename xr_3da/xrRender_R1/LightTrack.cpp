@@ -108,9 +108,11 @@ void	CROS_impl::update	(IRenderable* O)
 	BOOL		_enabled= true;
 	if (_object)		{ _enabled=_object->getEnabled(); _object->setEnabled(false); }
 
-	// select sample
+	// select sample, randomize position inside object
 	Fvector	position;	O->renderable.xform.transform_tiny	(position,O->renderable.visual->vis.sphere.P);
 	float	radius;		radius = O->renderable.visual->vis.sphere.R;
+	Fvector	direction;	direction.random_dir();
+			position.mad(direction,0.25f*radius);
 
 	// sun-tracing
 #if RENDER==R_R1
