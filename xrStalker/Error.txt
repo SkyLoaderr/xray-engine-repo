@@ -19,6 +19,7 @@ To OLES :
 -O	resolved	~160 memory operations per frame
 -O	resolved	no particles
 -WT				ни хера не работает (level - cs_test)
+-J				актер не видим для сталкеров и монстров
 
 To WT:
 -D				зоны глючат постоянно из-за партикловой-хрени! (game00/single/alife)
