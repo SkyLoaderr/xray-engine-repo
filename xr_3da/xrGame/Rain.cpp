@@ -221,13 +221,15 @@ void	CEffect_Rain::Render	()
 {
 	// Parse states
 	BOOL	bBornNewItems	= FALSE;
+	Fvector sndP;
 	switch (state)
 	{
 	case stIdle:		return;
 	case stStarting:	
 		snd_Ambient_volume	+= snd_fade*Device.fTimeDelta;
 		snd_Ambient.feedback->SetVolume		(snd_Ambient_volume);
-		snd_Ambient.feedback->SetPosition	(Device.vCameraPosition);
+		sndP.mad							(Device.vCameraPosition,Device.vCameraDirection,.1f);
+		snd_Ambient.feedback->SetPosition	(sndP);
 		if (snd_Ambient_volume > 1)	state=stWorking;
 		bBornNewItems	= TRUE;
 		break;
