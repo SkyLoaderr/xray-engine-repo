@@ -19,7 +19,7 @@ function main()
 for i in 1,100000	do
 		printf("spam log qwekfjqhwkjbvfqldjkvhqljkefvhqlkerjh")
 	end
-return	0
+/*
 //	get_console():execute("test")
 //	get_console():execute("pause")
 	
@@ -47,5 +47,5 @@ return	0
 		printf("not equal")
 	end
 
-
+*/
 end
