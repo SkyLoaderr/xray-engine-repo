@@ -29,7 +29,7 @@ public:
 	#pragma pack(pop)
 
 	SCrossTableHeader						m_tCrossTableHeader;
-	CVirtualFileReader						*m_tpCrossTableVFS;
+	IReader									*m_tpCrossTableVFS;
 	SCrossTableCell							*m_tpaCrossTable;
 
 	CALifeCrossTable						()
@@ -52,7 +52,7 @@ public:
 
 	IC void Load							(LPCSTR fName)
 	{
-		m_tpCrossTableVFS					= xr_new<CVirtualFileReader>(fName);
+		m_tpCrossTableVFS					= Engine.FS.Open(fName);
 		R_ASSERT							(m_tpCrossTableVFS);
 		R_ASSERT							(m_tpCrossTableVFS->find_chunk(CROSS_TABLE_CHUNK_VERSION));
 		m_tpCrossTableVFS->open_chunk		(CROSS_TABLE_CHUNK_VERSION);

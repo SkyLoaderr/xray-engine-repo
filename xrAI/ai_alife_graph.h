@@ -80,7 +80,7 @@ public:
 
 	IC void Load							(LPCSTR fName)
 	{ 
-		m_tpGraphVFS					= xr_new<CVirtualFileReader>(fName);
+		m_tpGraphVFS					= Engine.FS.Open(fName);
 		m_tGraphHeader.dwVersion		= m_tpGraphVFS->r_u32();
 		m_tGraphHeader.dwVertexCount	= m_tpGraphVFS->r_u32();
 		m_tGraphHeader.dwLevelCount		= m_tpGraphVFS->r_u32();
