@@ -323,7 +323,7 @@ inline vec3::vec3(const vec4& u)
 }
 
 // quaternion
-struct quat;  
+// struct quat;  
 
 /*
     for all the matrices...a<x><y> indicates the element at row x, col y
@@ -397,7 +397,7 @@ const vec3 __cdecl operator*(const vec3&, const mat3&);
 struct DECLSPEC_NV_MATH mat4
 {
     mat4();
-    mat4(const nv_scalar * array);
+    //mat4(const nv_scalar * array);
     mat4(const mat4 & M);
 
     mat4( const nv_scalar& f0,  const nv_scalar& f1,  const nv_scalar& f2,  const nv_scalar& f3,
@@ -446,8 +446,8 @@ struct DECLSPEC_NV_MATH mat4
     }
 
     mat3 & get_rot(mat3 & M) const;
-    quat & get_rot(quat & q) const;
-    void set_rot(const quat & q);
+    //quat & get_rot(quat & q) const;
+    //void set_rot(const quat & q);
     void set_rot(const mat3 & M);
     void set_rot(const nv_scalar & theta, const vec3 & v);
     void set_rot(const vec3 & u, const vec3 & v);
@@ -486,6 +486,7 @@ const vec4 __cdecl operator*(const mat4&, const vec4&);
 const vec4 __cdecl operator*(const vec4&, const mat4&);
 	
 // quaternion
+/*
 struct DECLSPEC_NV_MATH quat {
 public:
 	quat(nv_scalar x = 0, nv_scalar y = 0, nv_scalar z = 0, nv_scalar w = 1);
@@ -514,6 +515,7 @@ extern quat & add_quats(quat & p, const quat & q1, const quat & q2);
 extern quat & axis_to_quat(quat & q, const vec3 & a, const nv_scalar phi);
 extern mat3 & quat_2_mat(mat3 &M, const quat &q );
 extern quat & mat_2_quat(quat &q,const mat3 &M);
+*/
 
 // constant algebraic values
 const nv_scalar array16_id[] =        { nv_one, nv_zero, nv_zero, nv_zero,
@@ -555,11 +557,11 @@ const vec4      vec4_z(nv_zero,nv_zero,nv_one,nv_zero);
 const vec4      vec4_neg_z(nv_zero,nv_zero,-nv_one,nv_zero);
 const vec4      vec4_w(nv_zero,nv_zero,nv_zero,nv_one);
 const vec4      vec4_neg_w(nv_zero,nv_zero,nv_zero,-nv_one);
-const quat      quat_id(nv_zero,nv_zero,nv_zero,nv_one);
-const mat4      mat4_id(array16_id);
-const mat3      mat3_id(array9_id);
-const mat4      mat4_null(array16_null);
-const mat4      mat4_scale_bias(array16_scale_bias);
+//const quat      quat_id(nv_zero,nv_zero,nv_zero,nv_one);
+//const mat4      mat4_id(array16_id);
+//const mat3      mat3_id(array9_id);
+//const mat4      mat4_null(array16_null);
+//const mat4      mat4_scale_bias(array16_scale_bias);
 
 // normalizes a vector and return a reference of itself
 extern vec3 & normalize(vec3 & u);
@@ -679,6 +681,7 @@ extern mat4 & frustum(mat4 & M, const nv_scalar l, const nv_scalar r, const nv_s
 extern mat4 & perspective(mat4 & M, const nv_scalar fovy, const nv_scalar aspect, const nv_scalar n, const nv_scalar f);
 
 // quaternion
+/*
 extern quat & normalize(quat & p);
 extern quat & conj(quat & p);
 extern quat & conj(quat & p, const quat & q);
@@ -687,6 +690,7 @@ extern quat & axis_to_quat(quat & q, const vec3 & a, const nv_scalar phi);
 extern mat3 & quat_2_mat(mat3 &M, const quat &q );
 extern quat & mat_2_quat(quat &q,const mat3 &M);
 extern quat & mat_2_quat(quat &q,const mat4 &M);
+*/
 
 // surface properties
 extern mat3 & tangent_basis(mat3 & basis,const vec3 & v0,const vec3 & v1,const vec3 & v2,const vec2 & t0,const vec2 & t1,const vec2 & t2, const vec3 & n);
@@ -710,7 +714,7 @@ inline nv_scalar nv_clamp(nv_scalar u, const nv_scalar min, const nv_scalar max)
 
 extern nv_scalar nv_random();
 
-extern quat & trackball(quat & q, vec2 & pt1, vec2 & pt2, nv_scalar trackballsize);
+//extern quat & trackball(quat & q, vec2 & pt1, vec2 & pt2, nv_scalar trackballsize);
 
 extern vec3 & cube_map_normal(int i, int x, int y, int cubesize, vec3 & v);
 
