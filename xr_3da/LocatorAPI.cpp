@@ -21,12 +21,27 @@ CLocatorAPI::~CLocatorAPI()
 
 void CLocatorAPI::Register		(LPCSTR name, DWORD vfs, DWORD ptr, DWORD size, BOOL bCompressed)
 {
+	// Register file
 	file				desc;
 	desc.name			= strlwr(strdup(name));
 	desc.vfs			= vfs;
 	desc.ptr			= ptr;
+	desc.size			= size;
 	desc.bCompressed	= bCompressed;
 	files.insert		(desc); 
+	
+	// Try to register folder
+	string256			folder;
+	_splitpath			(desc.name, 0, folder, 0, 0 );
+	if (!Exist(folder))	
+	{
+		desc.name			= strdup(folder);
+		desc.vfs			= 0xffffffff;
+		desc.ptr			= 0;
+		desc.size			= 0;
+		desc.bCompressed	= FALSE;
+		files.insert		(desc); 
+	}
 }
 
 void CLocatorAPI::ProcessArchive(const char* path)
