@@ -3,6 +3,12 @@
 #include "SoundRender_Emitter.h"
 #include "SoundRender_Target.h"
 
+CSoundRender_Emitter*	CSoundRender_Core::i_play(sound* S, BOOL _loop )
+{
+	CSoundRender_Emitter*	E	= xr_new<CSoundRender_Emitter>();
+	E->start				(S,S->handle,_loop);
+}
+
 void CSoundRender_Core::OnFrame	()
 {
 	u32 it;

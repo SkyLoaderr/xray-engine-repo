@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "SoundRender_Core.h"
 #include "SoundRender_Emitter.h"
+#include "SoundRender_Source.h"
 
 void CSoundRender_Emitter::start(
 								 sound*							_owner, 
@@ -9,7 +10,7 @@ void CSoundRender_Emitter::start(
 								 BOOL							_loop
 								 )
 {
-	source		= _source;
+	source		= dynamic_cast<CSoundRender_Source*>_source;
 	owner		= _owner;
 	p_source	= *_params;
 

@@ -52,7 +52,7 @@ public:
 
 	void						fill_block				(void* ptr, u32 size);
 
-	void						start					(sound* _owner, CSoundRender_Source* _source, CSoundRender_EmitterParams* _params, BOOL _loop);
+	void						start					(sound* _owner, BOOL _loop);
 	void						update					();
 	BOOL						update_culling			();
 	void						update_environment		();

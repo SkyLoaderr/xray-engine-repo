@@ -58,6 +58,7 @@ public:
 public:
 	CSoundRender_Source*				i_create_source			(LPCSTR name, BOOL _3D	);
 	void								i_destroy_source		(CSoundRender_Source*  S);
+	CSoundRender_Emitter*				i_play					(sound* S, BOOL _loop	);
 	void								i_start					(CSoundRender_Emitter* E);
 	void								i_stop					(CSoundRender_Emitter* E);
 	void								i_rewind				(CSoundRender_Emitter* E);
