@@ -200,7 +200,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeEventGroup,CSE_ALifeObject)
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeDynamicObject,CSE_ALifeObject)
-	ALife::_TIME_ID						m_tTimeID;
+	ALife::_TIME_ID					m_tTimeID;
 	u64								m_qwSwitchCounter;
 	
 									CSE_ALifeDynamicObject(LPCSTR caSection);
@@ -298,6 +298,11 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCar,CSE_ALifeDynamicObjectVisual)
 									CSE_ALifeCar		(LPCSTR caSection);
 	virtual							~CSE_ALifeCar		();
 	virtual bool					used_ai_locations	() const;
+SERVER_ENTITY_DECLARE_END
+
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeBreakable,CSE_ALifeDynamicObjectVisual)
+									CSE_ALifeBreakable	(LPCSTR caSection);
+	virtual							~CSE_ALifeBreakable	();
 SERVER_ENTITY_DECLARE_END
 
 #endif

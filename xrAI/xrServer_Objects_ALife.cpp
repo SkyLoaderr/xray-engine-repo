@@ -1204,3 +1204,42 @@ void CSE_ALifeCar::FillProp				(LPCSTR pref, PropItemVec& values)
   	inherited::FillProp			(pref,values);
 }
 #endif
+
+////////////////////////////////////////////////////////////////////////////
+// CSE_ALifeBreakable
+////////////////////////////////////////////////////////////////////////////
+CSE_ALifeBreakable::CSE_ALifeBreakable	(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
+{
+}
+
+CSE_ALifeBreakable::~CSE_ALifeBreakable	()
+{
+}
+
+void CSE_ALifeBreakable::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+{
+	inherited::STATE_Read		(tNetPacket,size);
+}
+
+void CSE_ALifeBreakable::STATE_Write	(NET_Packet	&tNetPacket)
+{
+	inherited::STATE_Write		(tNetPacket);
+}
+
+void CSE_ALifeBreakable::UPDATE_Read	(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Read		(tNetPacket);
+}
+
+void CSE_ALifeBreakable::UPDATE_Write	(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Write		(tNetPacket);
+}
+
+#ifdef _EDITOR
+void CSE_ALifeBreakable::FillProp		(LPCSTR pref, PropItemVec& values)
+{
+  	inherited::FillProp			(pref,values);
+}
+#endif
+

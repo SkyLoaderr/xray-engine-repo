@@ -175,3 +175,6 @@
 #define CLSID_EQUIPMENT_STALKER		MK_CLSID('E','Q','U','_','S','T','L','K')
 #define CLSID_EQUIPMENT_MILITARY	MK_CLSID('E','Q','U','_','M','L','T','R')
 #define CLSID_EQUIPMENT_EXO			MK_CLSID('E','Q','U','_','E','X','O',' ')
+
+#define CLSID_BREAKABLE				MK_CLSID('B','R','E','A','K','B','L','E')
+
