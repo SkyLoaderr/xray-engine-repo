@@ -51,7 +51,7 @@ void MK_Frustum(CFrustum& F, float FOV, float _FAR, float A, Fvector &P, Fvector
 
 void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvector &D, Fvector &U)
 {
-	float YFov	= deg2rad(FOV*A);
+	float YFov	= deg2rad(FOV*(0.75f));
 	float XFov	= deg2rad(FOV);
 
 	// calc window extents in camera coords

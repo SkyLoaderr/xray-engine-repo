@@ -201,38 +201,46 @@ void CRenderDevice::Run			()
 						L_up.set			(0,1,0);						L_up.normalize	();
 						L_right.crossproduct(L_up,L_dir);
 						L_up.crossproduct	(L_dir,L_right);
-
-						// L-center in camera space
-						Fbox	bb;	bb.invalidate	();
-						bb.modify			(_F[0]);
-						bb.modify			(_F[1]);
-						bb.modify			(_F[2]);
-						bb.modify			(_F[3]);
-						bb.modify			(_F[4]);
-						bb.getcenter		(L_pos);
-						L_pos.mad			(L_dir, -cs);
-
-						// L-view matrix
+						L_pos.set			(0,0,0);
 						L_view.build_camera_dir	(L_pos,L_dir,L_up);
 
+						//
+						Fbox bb;
+						Fvector bbc,bbd;
+
 						// L-view corner points and box
-						Fvector				vmin,vmax;
-						vmin.set			(flt_max,flt_max,flt_max);
-						vmax.set			(flt_min,flt_min,flt_min);
+						bb.invalidate			();
 						for (int i=0; i<5; i++)
 						{
 							L_view.transform_tiny	(T,_F[i]);
-							vmin.min(T); vmax.max	(T);
+							bb.modify				(T);
 						}
-						float				dx	= vmax.x-vmin.x;
-						float				dy	= vmax.y-vmin.y;
-						float				d	= _max(dx,dy);
+						bb.get_CD				(bbc,bbd);
+
+						// Back project center
+						Fmatrix inv;
+						inv.invert				(L_view);
+						inv.transform_tiny		(L_pos,bbc);
+
+						// L-view matrix
+						L_pos.mad				(L_dir, -cs);
+						L_view.build_camera_dir	(L_pos,L_dir,L_up);
+
+						// L-view corner points and box
+						bb.invalidate			();
+						for (int i=0; i<5; i++)
+						{
+							L_view.transform_tiny	(T,_F[i]);
+							bb.modify				(T);
+						}
+						bb.get_CD				(bbc,bbd);
 
 						// L_project
-						// D3DXMatrixPerspectiveOffCenterLH((D3DXMATRIX*)&L_project,vmin.x,vmax.x,vmin.y,vmax.y,vmin.z,vmax.z);
+						// D3DXMatrixPerspectiveOffCenterLH	((D3DXMATRIX*)&L_project,bb.min.x,bb.max.x,bb.min.y,bb.max.y,cs-50.f,cs+50.f);
 						// L_project.identity			();
-						D3DXMatrixOrthoLH				((D3DXMATRIX*)&L_project,d,d,cs-50.f,cs+50.f);
-						// D3DXMatrixOrthoLH				((D3DXMATRIX*)&L_project,dx,dy,cs-50.f,cs+50.f);
+						// D3DXMatrixOrthoLH				((D3DXMATRIX*)&L_project,d,d,cs-1050.f,cs+50.f);
+						float				d			= 2*_max(bbd.x,bbd.y);
+						D3DXMatrixOrthoLH				((D3DXMATRIX*)&L_project,2*bbd.x,2*bbd.y,cs-50.f,cs+50.f);
 						// L_project.build_projection	(deg2rad(90.f),1.f,0.2f,100.f);
 					}
 
