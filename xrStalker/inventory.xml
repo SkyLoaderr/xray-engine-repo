@@ -34,7 +34,7 @@
     </frame_window>
     
     <!-- DESCRIPTION WINDOW -->
-    <descr_static x="370" y="260" width="267" height="500">
+    <descr_static x="370" y="260" width="335" height="455">
         <texture> ui\ui_dg_info</texture>
     </descr_static>
 
@@ -71,9 +71,9 @@
     </sleep_button>
 
 	<!-- Drop button -->
-    <drop_button x="230" y="405" width="100" height="50">
+    <drop_button x="240" y="415" width="100" height="50">
         <texture>ui\ui_cm_drop_over</texture>
-        <text x="30" y="" font="graffiti18" r="240" g="217" b="182" a="255">Drop</text>
+        <text x="30" y="5" font="graffiti18" r="240" g="217" b="182" a="255">Drop</text>
     </drop_button>
     
     <!-- BELT LIST -->
