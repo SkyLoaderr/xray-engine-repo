@@ -33,7 +33,7 @@ function save_dialog:InitControls()
 	
 
 	------------LIST EXAMPLE-----------------
-	     local txt_list   = CUIStatic()  --background for ListView
+--[[   local txt_list   = CUIStatic()  --background for ListView
        txt_list:SetAutoDelete(true)
        txt_list:Init("ui\\hud_map_back",10,10,154,148)
        txt_list:ClipperOn()
@@ -46,7 +46,7 @@ function save_dialog:InitControls()
     list_wnd:SetItemHeight(15)
     list_wnd:EnableScrollBar(true)
     main_static:AttachChild(list_wnd)
-
+]]
 --------------------------------------- 
     local btn   = CUIButton()
 	btn:SetAutoDelete(true) 
