@@ -447,7 +447,7 @@ void	CRender::ApplyBlur4		(FVF::TL4uv* pv, u32 w, u32 h, float k)
 
 #pragma comment(lib,"d3dx9.lib")
 
-HRESULT	CRender::CompileShader			(
+HRESULT	CRender::shader_compile			(
 		LPCSTR                          pSrcData,
 		UINT                            SrcDataLen,
 		void*							_pDefines,

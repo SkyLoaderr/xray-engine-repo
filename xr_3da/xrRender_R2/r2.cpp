@@ -246,7 +246,7 @@ extern "C"
 	LPCSTR WINAPI	D3DXGetVertexShaderProfile	(LPDIRECT3DDEVICE9	pDevice);
 };
 */
-HRESULT	CRender::CompileShader			(
+HRESULT	CRender::shader_compile			(
 		LPCSTR                          pSrcData,
 		UINT                            SrcDataLen,
 		void*							_pDefines,
