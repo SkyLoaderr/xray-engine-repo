@@ -99,7 +99,7 @@ void EScene::Save(LPCSTR initial, LPCSTR map_name, bool bUndo)
     else			full_name		= map_name;
     
 	if (!bUndo) EFS.UnlockFile		(0,full_name.c_str(),false);
-    if (!bUndo) EFS.MarkFile		(full_name.c_str(),false);
+    if (!bUndo) EFS.MarkFile		(full_name.c_str(),true);
 
     IWriter* F		= FS.w_open		(full_name.c_str());
 

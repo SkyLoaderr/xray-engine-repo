@@ -10,8 +10,70 @@
 #include "ui_main.h"
 #include "PropertiesList.h"
 
+void SSceneSummary::Prepare()
+{
+	for (TISetIt it=textures.begin(); it!=textures.end(); it++)
+    	it->Prepare();
+}
+
+void SSceneSummary::STextureInfo::Prepare	()
+{
+    ETextureThumbnail* T 	= (ETextureThumbnail*)ImageLib.CreateThumbnail(file_name.c_str(),ECustomThumbnail::ETTexture,true);
+    if (!T->Valid()){
+        Msg("!Can't get info from texture: '%s'",file_name.c_str());
+    }else{
+    	info			= T->_Format();
+    }
+    xr_delete			(T);
+}
+
+void SSceneSummary::STextureInfo::FillProp	(PropItemVec& items, LPCSTR main_pref, u32& mem_use, u32& area)
+{
+	area				+= effective_area;
+    int tex_mem			= info.MemoryUsage(*file_name);
+    mem_use				+= tex_mem;
+    AnsiString pref		= AnsiString(main_pref)+*file_name;
+    PropValue* V=0;
+    V=PHelper().CreateChoose(items,PrepareKey(pref.c_str(),"Texture"), 		&file_name, smTexture); V->Owner()->Enable(FALSE);
+    PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Format"),		info.FormatString());
+    PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Size"), 			shared_str().sprintf("%d x %d x %s",info.width,info.height,info.HasAlpha()?"32b":"24b"));
+    PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Memory Usage"),	shared_str().sprintf("%d Kb",iFloor(tex_mem/1024)));
+    PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Effective Area"),shared_str().sprintf("%d m^2",effective_area));
+    if (info.flags.is_any(STextureParams::flDiffuseDetail|STextureParams::flBumpDetail)){
+        if (0!=info.detail_name.size()){
+            V=PHelper().CreateChoose(items,PrepareKey(pref.c_str(),"Detail Texture"),	&info.detail_name,smTexture); 	V->Owner()->Enable(FALSE);
+            PHelper().CreateCaption(items,PrepareKey(pref.c_str(), "Detail Scale"),		shared_str().sprintf("%3.2f",info.detail_scale));
+        }else{
+            ELog.Msg(mtError,"Empty details on texture: '%s'",*file_name);
+        }
+    }
+}
+void SSceneSummary::STextureInfo::Export	(IWriter* F)
+{
+}
+
+void SSceneSummary::OnFileClick(PropValue* sender, bool& bModif, bool& bSafe)
+{
+	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
+    switch (V->btn_num){
+    case 0:{
+    	std::string fn;
+    	if (EFS.GetSaveName(_import_,fn,0,2))
+	    	ExportSummaryInfo(fn.c_str());
+    }break;
+	}
+    bModif = false;
+}
+void SSceneSummary::ExportSummaryInfo(LPCSTR fn)
+{
+	
+}
 void SSceneSummary::FillProp(PropItemVec& items)
 {
+    Prepare	();
+    // fill items
+    ButtonValue* B =PHelper().CreateButton (items,"File",		"Export...",0);
+    B->OnBtnClickEvent.bind(this,&SSceneSummary::OnFileClick);
     // fill items
     PHelper().CreateCaption(items,"Level Name",					Scene->m_LevelOp.m_FNLevelPath.c_str());
     PHelper().CreateCaption(items,"Geometry\\Bounding\\Min", 	shared_str().sprintf("{%3.2f, %3.2f, %3.2f}",VPUSH(bbox.min)));
@@ -36,6 +98,13 @@ void SSceneSummary::FillProp(PropItemVec& items)
     PHelper().CreateCaption(items,"Glows\\Count",				shared_str().sprintf("%d",glow_cnt));
     // textures
     int base_mem_usage		= 0; 
+    int base_area_usage		= 0; 
+	for (TISetIt it=textures.begin(); it!=textures.end(); it++){
+    	for (ESummaryTextureType stt=sttFirst; stt<sttLast; stt+=1){
+	    	if (it->type==stt) it->FillProp(items,"Textures\\Base\\",base_mem_usage,base_area_usage);
+        }
+    }
+/*
     int det_mem_usage		= 0;
     CaptionValue* total_count=PHelper().CreateCaption	(items,"Textures\\Count","");
     CaptionValue* total_mem	= PHelper().CreateCaption(items,"Textures\\Memory Usage","");
@@ -53,7 +122,7 @@ void SSceneSummary::FillProp(PropItemVec& items)
             AnsiString pref	= AnsiString("Textures\\Base\\")+**t_it;
             PropValue* V=0;
             V=PHelper().CreateChoose(items,PrepareKey(pref.c_str(),"Texture"), 		(shared_str*)&*t_it, smTexture); V->Owner()->Enable(FALSE);
-            PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Format"),			T->FormatString());
+            PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Format"),		T->FormatString());
             PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Size"), 			shared_str().sprintf("%d x %d x %s",T->_Width(),T->_Height(),T->_Format().HasAlpha()?"32b":"24b"));
             PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Memory Usage"),	shared_str().sprintf("%d Kb",iFloor(tex_mem/1024)));
             if (T->_Format().flags.is_any(STextureParams::flDiffuseDetail|STextureParams::flBumpDetail)){
@@ -133,6 +202,7 @@ void SSceneSummary::FillProp(PropItemVec& items)
     PHelper().CreateCaption(items,"Particle System\\Refs\\Count",	shared_str().sprintf("%d",pe_static.size()));
     for (RStringSetIt pe_it=pe_static.begin(); pe_it!=pe_static.end(); pe_it++)
         PHelper().CreateCaption(items,PrepareKey("Particle System\\Refs",pe_it->c_str()),"-");
+*/
 }
 
 static SSceneSummary s_summary;

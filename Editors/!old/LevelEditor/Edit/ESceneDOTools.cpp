@@ -508,7 +508,7 @@ bool EDetailManager::GetSummaryInfo(SSceneSummary* inf)
         CEditableObject* E 	= ((EDetail*)(*it))->m_pRefs;
 		if (!E)				continue;
 	    CSurface* surf		= *E->FirstSurface(); VERIFY(surf);
-        inf->do_textures.insert(surf->_Texture());
+//..	inf->do_textures.insert(surf->_Texture());
     }
     return true;
 }
