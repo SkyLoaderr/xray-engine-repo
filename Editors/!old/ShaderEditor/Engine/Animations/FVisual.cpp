@@ -81,6 +81,9 @@ void Fvisual::Load		(const char* N, IReader *data, u32 dwFlags)
 			m_fast->dwPrimitives		= iCount/3;
 			m_fast->pIndices			= RImplementation.getIB		(ID);
 			m_fast->pIndices->AddRef	();
+
+			// geom
+			m_fast->geom.create			(fmt,m_fast->pVertices,m_fast->pIndices);
 		}
 #endif
 	}
