@@ -135,10 +135,12 @@ public:
 	
 	// Models
 	virtual CVisual*				model_CreatePS			(LPCSTR name, PS::SEmitter* E);
+	virtual IRender_DetailModel*	model_CreateDM			(IReader*	F);
 	virtual CVisual*				model_Create			(LPCSTR name);
 	virtual CVisual*				model_Create			(LPCSTR name, IReader* data);
-	virtual CVisual*				model_Duplicate			(CVisual* V);
-	virtual void					model_Delete			(CVisual* &V);
+	virtual CVisual*				model_Duplicate			(CVisual*	V);
+	virtual void					model_Delete			(CVisual* &	V);
+	virtual void 					model_Delete			(IRender_DetailModel* F);
 	
 	// Occlusion culling
 	virtual BOOL					occ_visible				(vis_data&	V);
