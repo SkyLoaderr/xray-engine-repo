@@ -491,6 +491,12 @@
 							RelativePath=".\Ai\ai_monster_mem.h">
 						</File>
 						<File
+							RelativePath=".\ai\ai_monster_motion.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\ai_monster_motion.h">
+						</File>
+						<File
 							RelativePath=".\ai\ai_monster_sound.cpp">
 						</File>
 						<File
@@ -550,14 +556,6 @@
 						</File>
 						<File
 							RelativePath="AI\Biting\ai_biting_anim.cpp">
-						</File>
-						<File
-							RelativePath="AI\Biting\ai_biting_anim.h">
-							<FileConfiguration
-								Name="Debug|Win32">
-								<Tool
-									Name="VCCustomBuildTool"/>
-							</FileConfiguration>
 						</File>
 						<File
 							RelativePath="AI\Biting\ai_biting_feel.cpp">
