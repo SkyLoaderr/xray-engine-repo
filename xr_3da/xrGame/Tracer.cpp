@@ -67,8 +67,8 @@ void	CTracer::Render	()
 	FVF::V	*start		=	verts;
 	float	dt			=	Device.fTimeDelta;
 
-	Fvector&	vTop	=	Device.vCameraTop;
-	Fvector&	vDir	=	Device.vCameraDirection;
+//	Fvector&	vTop	=	Device.vCameraTop;
+//	Fvector&	vDir	=	Device.vCameraDirection;
 	Fvector&	vCenter =	Device.vCameraPosition;
 	for (int I=0; I<(int)bullets.size(); I++)
 	{
@@ -114,7 +114,7 @@ void	CTracer::Render	()
 		HW.pDevice->SetRenderState	(D3DRS_CULLMODE,D3DCULL_NONE);
 		Device.Shader.set_Shader	(sh_Tracer);
 		Device.Primitive.setVertices(VS->dwHandle,VS->dwStride,Device.Streams.Vertex.Buffer());
-		Device.Primitive.setIndices	(vOffset,Device.Streams_QuadIB);;
+		Device.Primitive.setIndices	(vOffset,Device.Streams.QuadIB);;
 		Device.Primitive.Render		(D3DPT_TRIANGLELIST,0,vCount,0,vCount/2);
 		UPDATEC						(vCount,vCount/2,1);
 		HW.pDevice->SetRenderState	(D3DRS_CULLMODE,D3DCULL_CCW);
