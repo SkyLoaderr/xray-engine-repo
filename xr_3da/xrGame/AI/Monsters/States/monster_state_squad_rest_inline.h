@@ -6,6 +6,7 @@
 #include "state_custom_action.h"
 #include "state_move_to_point.h"
 #include "../../../restricted_object.h"
+#include "../ai_monster_utils.h"
 
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
