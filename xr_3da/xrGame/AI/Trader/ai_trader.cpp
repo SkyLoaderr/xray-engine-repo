@@ -52,9 +52,9 @@ void CAI_Trader::init()
 
 void CAI_Trader::reinit	()
 {
+	CScriptMonster::reinit	();
 	CEntityAlive::reinit	();
 	CInventoryOwner::reinit	();
-	CScriptMonster::reinit	();
 	CSoundPlayer::reinit	();
 
 	m_OnStartCallback.clear ();
