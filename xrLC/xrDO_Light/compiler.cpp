@@ -336,11 +336,11 @@ public:
 						int pid = 0;
 						if (z>0)
 						{
-							if (x>0)	pid = 1;
-							else		pid = 0;
-						} else {
 							if (x>0)	pid = 3;
 							else		pid = 2;
+						} else {
+							if (x>0)	pid = 1;
+							else		pid = 0;
 						}
 
 						// light point
