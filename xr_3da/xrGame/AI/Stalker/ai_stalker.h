@@ -14,7 +14,6 @@
 #include "../../setup_manager.h"
 #include "../../setup_action.h"
 #include "../../object_handler.h"
-#include "ai_stalker_animations.h"
 #include "ai_stalker_space.h"
 #include "../../AI_PhraseDialogManager.h"
 #include "../../motivation_action_manager_stalker.h"
@@ -39,12 +38,12 @@ class CCoverEvaluatorAmbush;
 class CAgentManager;
 class CALifeTask;
 class CMotionDef;
+class CStalkerAnimationManager;
 
 class CAI_Stalker : 
 	public CCustomMonster, 
 	public CObjectHandler,
 	public CSightManager,
-	public CStalkerAnimations, 
 	public CStalkerMovementManager,
 	public CMotivationActionManagerStalker,
 	public CSetupManager<CSetupAction,CAI_Stalker,u32>,
@@ -56,6 +55,8 @@ private:
 public:
 	typedef CSetupManager<CSetupAction,CAI_Stalker,u32>	CSSetupManager;
 
+private:
+	CStalkerAnimationManager	*m_animation_manager;
 	// demo mode
 private:
 	bool						m_demo_mode;
@@ -185,6 +186,7 @@ public:
 	virtual	void						ResetScriptData			(void					*P = 0);
 	virtual	bool						bfAssignObject			(CScriptEntityAction			*tpEntityAction);
 	virtual	bool						bfAssignAnimation		(CScriptEntityAction			*tpEntityAction);
+			void						adjust_speed_to_animation(const EMovementDirection &movement_direction);
 	
 	// physics
 	virtual u16							PHGetSyncItemsNumber	()			{return inherited ::PHGetSyncItemsNumber();}
@@ -224,7 +226,6 @@ public:
 			void						update_best_item_info	();
 	virtual float						GetWeaponAccuracy		() const;
 	virtual	void						spawn_supplies			();
-			void						adjust_speed_to_animation	(const EMovementDirection movement_direction);
 	IC		const CAgentManager			&agent_manager			() const;
 	
 	virtual bool						human_being				() const
@@ -243,19 +244,11 @@ public:
 			bool						can_buy_weapon			();
 			bool						not_enough_ammo			();
 			bool						can_buy_ammo			();
-
-
-	//игровое имя 
-	virtual LPCSTR						Name					() const
-	{
-		return CInventoryOwner::Name();
-	}
-
 			bool						can_kill_member			();
 			bool						can_kill_member			(const Fvector &position, const Fvector &direction) const;
 			bool						can_kill_enemy			();
-			void						dbg_animation			(LPCSTR caption, CMotionDef *animation);
 			
+	virtual LPCSTR						Name					() const;
 	virtual BOOL						feel_touch_on_contact	(CObject* O);
 
 	//флаги, какие действия совершал актер по отношению к сталкеру
@@ -330,6 +323,7 @@ public:
 			void						failed_to_complete_alife_task	();
 			bool						alife_task_completed			();
 			void						communicate						(CInventoryOwner *trader);
+	IC	CStalkerAnimationManager		&animation_manager				() const;
 };
 
 #include "ai_stalker_inline.h"

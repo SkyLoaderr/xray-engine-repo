@@ -55,3 +55,24 @@ ALife::ERelationType  CAI_Stalker::tfGetRelationType	(const CEntityAlive *tpEnti
 	else
 		return inherited::tfGetRelationType(tpEntityAlive);
 }
+
+void CAI_Stalker::adjust_speed_to_animation	(const EMovementDirection &movement_direction)
+{
+	if (body_state() == eBodyStateStand) {
+		if (movement_direction != eMovementDirectionBack) {
+			if (movement_type() == eMovementTypeWalk)
+				set_desirable_speed(m_fCurSpeed = m_fWalkFactor);
+			else
+				if (movement_type() == eMovementTypeRun)
+					set_desirable_speed(m_fCurSpeed = m_fRunFactor);
+		}
+		else {
+			if (movement_type() == eMovementTypeWalk)
+				set_desirable_speed(m_fCurSpeed = m_fWalkBackFactor);
+			else
+				if (movement_type() == eMovementTypeRun)
+					set_desirable_speed(m_fCurSpeed = m_fRunBackFactor);
+		}
+	}
+}
+

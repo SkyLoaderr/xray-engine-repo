@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "ai_stalker.h"
+#include "../../stalker_animation_manager.h"
 #include "../../script_entity_action.h"
 #include "../../torch.h"
 #include "../../inventory.h"
@@ -306,7 +307,8 @@ bool CAI_Stalker::bfAssignAnimation(CScriptEntityAction *tpEntityAction)
 #ifdef _DEBUG
 //		Msg				("%6d Assigning animation : %s",Level().timeServer(),*tpEntityAction->m_tAnimationAction.m_caAnimationToPlay);
 #endif
-		m_tpCurrentTorsoAnimation = m_tpCurrentLegsAnimation = 0;
+		animation_manager().torso().reset();
+		animation_manager().legs().reset();
 	}
 
 	return				(true);

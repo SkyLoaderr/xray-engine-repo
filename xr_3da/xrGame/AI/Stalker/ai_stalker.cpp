@@ -27,6 +27,7 @@
 #include "../../character_info.h"
 #include "../../actor.h"
 #include "../../relation_registry.h"
+#include "../../stalker_animation_manager.h"
 
 extern int g_AI_inactive_time;
 
@@ -37,12 +38,15 @@ CAI_Stalker::CAI_Stalker			()
 	m_pPhysics_support				= xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etStalker,this);
 	m_PhysicMovementControl->AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
 
-	m_actor_relation_flags.zero();
+	m_actor_relation_flags.zero		();
+
+	m_animation_manager				= xr_new<CStalkerAnimationManager>();
 }
 
 CAI_Stalker::~CAI_Stalker			()
 {
 	xr_delete						(m_pPhysics_support);
+	xr_delete						(m_animation_manager);
 }
 
 void CAI_Stalker::init()
@@ -58,7 +62,7 @@ void CAI_Stalker::reinit			()
 	CCustomMonster::reinit			();
 	CObjectHandler::reinit			(this);
 	CSightManager::reinit			(this);
-	CStalkerAnimations::reinit		();
+	animation_manager().reinit		();
 	CStalkerMovementManager::reinit	();
 	CSSetupManager::reinit			(this);
 
@@ -121,7 +125,6 @@ void CAI_Stalker::reload			(LPCSTR section)
 	inventory().m_slots[OUTFIT_SLOT].m_bUsable = false;
 
 //	CSightManager::reload			(section);
-//	CStalkerAnimations::reload		(section);
 	CStalkerMovementManager::reload	(section);
 
 	m_disp_walk_stand				= pSettings->r_float(section,"disp_walk_stand");
@@ -202,7 +205,7 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	R_ASSERT						(tpHuman);
 	m_dwMoney						= tpHuman->m_dwMoney;
 
-	CStalkerAnimations::reload		(Visual(),pSettings,*cNameSect());
+	animation_manager().reload		(this);
 
 	m_head.current.yaw = m_head.target.yaw = m_body.current.yaw = m_body.target.yaw	= angle_normalize_signed(-tpHuman->o_Angle.y);
 	m_body.current.pitch			= m_body.target.pitch	= 0;
@@ -654,4 +657,9 @@ void CAI_Stalker::load (IReader &input_packet)
 {
 	inherited::load(input_packet);
 	CInventoryOwner::load(input_packet);
+}
+
+void CAI_Stalker::SelectAnimation(const Fvector &view, const Fvector &move, float speed)
+{
+	animation_manager().update();
 }

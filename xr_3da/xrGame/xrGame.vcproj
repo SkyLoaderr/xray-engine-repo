@@ -3222,11 +3222,78 @@
 							Name="AnimationManager"
 							Filter="">
 							<File
-								RelativePath=".\Ai\Stalker\ai_stalker_animations.cpp">
+								RelativePath=".\stalker_animation_callbacks.cpp">
 							</File>
 							<File
-								RelativePath=".\Ai\Stalker\ai_stalker_animations.h">
+								RelativePath=".\stalker_animation_global.cpp">
 							</File>
+							<File
+								RelativePath=".\stalker_animation_head.cpp">
+							</File>
+							<File
+								RelativePath=".\stalker_animation_legs.cpp">
+							</File>
+							<File
+								RelativePath=".\stalker_animation_manager.cpp">
+							</File>
+							<File
+								RelativePath=".\stalker_animation_manager.h">
+							</File>
+							<File
+								RelativePath=".\stalker_animation_manager_inline.h">
+							</File>
+							<File
+								RelativePath=".\stalker_animation_script.cpp">
+							</File>
+							<File
+								RelativePath=".\stalker_animation_torso.cpp">
+							</File>
+							<Filter
+								Name="names"
+								Filter="">
+								<File
+									RelativePath=".\stalker_animation_names.cpp">
+								</File>
+								<File
+									RelativePath=".\stalker_animation_names.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="pair"
+								Filter="">
+								<File
+									RelativePath=".\stalker_animation_pair.cpp">
+								</File>
+								<File
+									RelativePath=".\stalker_animation_pair.h">
+								</File>
+								<File
+									RelativePath=".\stalker_animation_pair_inline.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="script"
+								Filter="">
+								<File
+									RelativePath=".\stalker_animation_script.h">
+								</File>
+								<File
+									RelativePath=".\stalker_animation_script_inline.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="state"
+								Filter="">
+								<File
+									RelativePath=".\stalker_animation_state.cpp">
+								</File>
+								<File
+									RelativePath=".\stalker_animation_state.h">
+								</File>
+								<File
+									RelativePath=".\stalker_animation_state_inline.h">
+								</File>
+							</Filter>
 						</Filter>
 						<Filter
 							Name="CoverEvaluators"

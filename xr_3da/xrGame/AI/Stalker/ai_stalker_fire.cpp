@@ -16,6 +16,7 @@
 #include "../../customzone.h"
 #include "../../../skeletonanimated.h"
 #include "../../agent_manager.h"
+#include "../../stalker_animation_manager.h"
 
 float CAI_Stalker::GetWeaponAccuracy	() const
 {
@@ -59,7 +60,7 @@ void CAI_Stalker::g_WeaponBones	(int &L, int &R1, int &R2)
 	if	(
 			(IsLimping() && (mental_state() == eMentalStateFree)) || 
 			(GetCurrentAction() && !GetCurrentAction()->m_tAnimationAction.m_bHandUsage) ||
-			(!m_script_animations.empty() && m_script_animations.front().m_hand_usage)
+			(!animation_manager().script_animations().empty() && animation_manager().script_animations().front().hand_usage())
 		)
 	{
 			L		= R2;
@@ -85,11 +86,11 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 		Fvector				D;
 		float				yaw, pitch;
 		D.getHP				(yaw,pitch);
-		CSkeletonAnimated	*tpKinematics = smart_cast<CSkeletonAnimated*>(Visual());
 #pragma todo("Dima to Dima : forward-back bone impulse direction has been determined incorrectly!")
-		CMotionDef			*tpMotionDef = m_tAnims.A[body_state()].m_tGlobal.A[0].A[iFloor(tpKinematics->LL_GetBoneInstance(element).get_param(1) + (angle_difference(m_body.current.yaw,-yaw) <= PI_DIV_2 ? 0 : 1))];
-		float				power_factor = 3.f*amount/100.f; clamp(power_factor,0.f,1.f);
-		tpKinematics->PlayFX(tpMotionDef,power_factor);
+		float				power_factor = 3.f*amount/100.f;
+		clamp				(power_factor,0.f,1.f);
+		CSkeletonAnimated	*tpKinematics = smart_cast<CSkeletonAnimated*>(Visual());
+		animation_manager().play_fx(power_factor,iFloor(tpKinematics->LL_GetBoneInstance(element).get_param(1) + (angle_difference(m_body.current.yaw,-yaw) <= PI_DIV_2 ? 0 : 1)));
 	}
 	
 	if (g_Alive())

@@ -16,6 +16,7 @@
 #include "cover_point.h"
 #include "cover_manager.h"
 #include "ai/stalker/ai_stalker.h"
+#include "stalker_animation_manager.h"
 #include "weapon.h"
 #include "inventory.h"
 
@@ -193,7 +194,7 @@ void CScriptGameObject::add_animation			(LPCSTR animation, bool hand_usage)
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member add_animation!");
 		return;
 	}
-	stalker->add_animation(animation,hand_usage);
+	stalker->animation_manager().add_script_animation(animation,hand_usage);
 }
 
 void CScriptGameObject::clear_animations		()
@@ -203,7 +204,7 @@ void CScriptGameObject::clear_animations		()
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member clear_animations!");
 		return;
 	}
-	stalker->clear_animations();
+	stalker->animation_manager().clear_script_animations();
 }
 
 int	CScriptGameObject::animation_count		() const
@@ -213,7 +214,7 @@ int	CScriptGameObject::animation_count		() const
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member clear_animations!");
 		return			(-1);
 	}
-	return				((int)stalker->m_script_animations.size());
+	return				((int)stalker->animation_manager().script_animations().size());
 }
 
 Flags32 CScriptGameObject::get_actor_relation_flags () const

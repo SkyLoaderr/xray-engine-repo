@@ -129,6 +129,10 @@ void CEntityCondition::LoadCondition(LPCSTR entity_section)
 	m_fK_SleepRadiation = pSettings->r_float(section,"sleep_radiation");
 
 	m_use_limping_state = pSettings->line_exist(section,"use_limping_state") ? !!pSettings->r_bool(section,"use_limping_state") : false;
+
+	m_limping_threshold	= .5f;
+	if (pSettings->line_exist(section, "limping_threshold"))
+		m_limping_threshold	= pSettings->r_float(section, "limping_threshold");
 }
 
 void CEntityCondition::reinit	()
@@ -537,7 +541,9 @@ void CEntityCondition::Awoke()
 
 bool CEntityCondition::IsLimping() const
 {
-	return (m_fPower*m_fHealth <= .5f);
+	if (!m_use_limping_state)
+		return	(false);
+	return (m_fPower*m_fHealth <= m_limping_threshold);
 }
 
 void CEntityCondition::save	(NET_Packet &output_packet)

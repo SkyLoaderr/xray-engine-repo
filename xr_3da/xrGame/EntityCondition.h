@@ -187,6 +187,8 @@ protected:
 	float m_fHitBoneScale;
 	float m_fWoundBoneScale;
 
+	float m_limping_threshold;
+
 	virtual void reinit	();
 };
 
