@@ -27,7 +27,6 @@ BOOL CTargetCSBase::net_Spawn		(LPVOID DC)
 		Fsphere S;	S.P.set			(0,0,0); S.R = radius;
 		shape->add_sphere			(S);
 		shape->ComputeBounds		();
-		CFORM()->OnMove				();
 	}
 
 	return res;

@@ -20,14 +20,13 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 	m_type = EPOType(po->type);
 	m_mass = po->mass;
 
-	xr_delete(CFORM());
+	xr_delete(collidable.model);
 	switch(m_type) {
 		case epotBox:			collidable.model = xr_new<CCF_Rigid>(this);		break;
 		case epotFixedChain:	
 		case epotSkeleton:		collidable.model = xr_new<CCF_Skeleton>(this);	break;
 		default: NODEFAULT; 
 	}
-	CFORM()->OnMove();
 
 	switch(m_type) {
 		case epotBox:				break;

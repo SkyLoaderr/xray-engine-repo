@@ -12,8 +12,6 @@
 
 void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 {
-	ISheduled::shedule_Update	(dt);
-	
 	if (!m_bLoaded)
 		return;
 	
