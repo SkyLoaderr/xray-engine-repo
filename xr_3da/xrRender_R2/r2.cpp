@@ -35,20 +35,6 @@ ShaderElement*			CRender::rimp_select_sh_static	(IRender_Visual	*pVisual, float 
 {
 	return pVisual->hShader->E[RImplementation.phase]._get();
 }
-static class cl_encodeZ01		: public R_constant_setup		{	virtual void setup	(R_constant* C)
-{
-	float		f	= g_pGamePersistent->Environment.CurrentEnv.far_plane;
-	Fvector3	enc = {1,256,65536};
-	enc.div			(f);
-	RCache.set_c	(C,enc.x,enc.y,enc.z,0.f);
-}}	binder_encodeZ01;
-static class cl_decodeZ01		: public R_constant_setup		{	virtual void setup	(R_constant* C)
-{
-	float		f	= g_pGamePersistent->Environment.CurrentEnv.far_plane;
-	Fvector3	enc = {f/1.f,f/256.f,f/65536.f};
-	enc.mul			(0.995f);
-	RCache.set_c	(C,enc.x,enc.y,enc.z,0.f);
-}}	binder_decodeZ01;
 static class cl_parallax		: public R_constant_setup		{	virtual void setup	(R_constant* C)
 {
 	float			h			= ps_r2_df_parallaxh;
@@ -89,8 +75,6 @@ void					CRender::create					()
 	o.disasm			= (strstr(Core.Params,"-disasm"))?		TRUE	:FALSE	;
 
 	// constants
-	::Device.Resources->RegisterConstantSetup	("v_encodeZ01",	&binder_encodeZ01);
-	::Device.Resources->RegisterConstantSetup	("v_decodeZ01",	&binder_decodeZ01);
 	::Device.Resources->RegisterConstantSetup	("parallax",	&binder_parallax);
 
 	c_lmaterial					= "L_material";
