@@ -122,7 +122,7 @@ BOOL occRasterizer::test		(float _x0, float _y0, float _x1, float _y1, float _z)
 	
 	for (int y=y0; y<=y1; y++)
 	{
-		for (int x=x0; x<x1; x++)
+		for (int x=x0; x<=x1; x++)
 		{
 			if (z<bufDepth_0[y][x])	return TRUE;
 		}
