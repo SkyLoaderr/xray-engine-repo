@@ -149,7 +149,7 @@ void CAI_Crow::switch2_DeathFall()
 void CAI_Crow::Update(u32 DT)
 {
 	inherited::Update(DT);
-	
+	UpdatePhysicsShell();
 	if (st_target!=st_current){
 		switch(st_target){
 		case eFlyUp: 
@@ -260,9 +260,13 @@ void CAI_Crow::state_DeathFall()
 	//Movement.GetPosition(vPosition);
 
 	UpdateTransform();
-
-	//if (Movement.Environment() == CMovementControl::peOnGround)
-	//	st_target = eDeathDead;
+	
+	if (m_pPhysicsShell)
+	{
+		Fvector velocity;
+		m_pPhysicsShell->get_LinearVel(velocity);
+		if(velocity.y>-0.001f) st_target = eDeathDead;
+	}
 }
 
 void CAI_Crow::UpdateCL()
@@ -334,7 +338,11 @@ void CAI_Crow::HitSignal	(float HitAmount, Fvector& local_dir, CObject* who, s16
 {
 	fHealth		= 0;
 	m_dwDeathTime = Level().timeServer();
-	if (st_current!=eDeathDead) st_target = eDeathFall;
+	if (st_current!=eDeathDead) 
+	{	
+		Die();
+		st_target = eDeathFall;
+	}
 	else PKinematics(pVisual)->PlayCycle(m_Anims.m_death_dead.GetRandom());
 }
 //---------------------------------------------------------------------
@@ -357,7 +365,27 @@ void CAI_Crow::CreateSkeleton()
 	Fobb obb; Visual()->vis.box.get_CD(obb.m_translate,obb.m_halfsize); obb.m_rotate.identity();
 	CPhysicsElement* E = P_create_Element(); R_ASSERT(E); E->add_Box(obb);
 	m_pPhysicsShell->add_Element(E);
-	m_pPhysicsShell->setMass(10.);
-	if(!H_Parent())
-		m_pPhysicsShell->Activate(svXFORM(),0,svXFORM());
+	m_pPhysicsShell->setMass(0.3f);
+	m_pPhysicsShell->SetMaterial("creatures\\crow");
+	m_pPhysicsShell->Activate(svXFORM(),0,svXFORM());
+	
+}
+
+void CAI_Crow::UpdatePhysicsShell()
+{
+	if(!m_pPhysicsShell) return;
+
+		m_pPhysicsShell->Update();
+		mRotate.i.set(m_pPhysicsShell->mXFORM.i);
+		mRotate.j.set(m_pPhysicsShell->mXFORM.j);
+		mRotate.k.set(m_pPhysicsShell->mXFORM.k);
+		mRotate.c.set(0,0,0);
+		vPosition.set(m_pPhysicsShell->mXFORM.c);
+		UpdateTransform();
+
+}
+
+void CAI_Crow::Hit(float P, Fvector &dir, CObject* who, s16 element,Fvector p_in_object_space, float impulse)
+{
+	inherited::Hit(P,dir,who,element,p_in_object_space,impulse/100.f);
 }

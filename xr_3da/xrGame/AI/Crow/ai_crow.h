@@ -88,6 +88,7 @@ protected:
 	void			state_Flying	();
 
 	void			CreateSkeleton();
+	void	UpdatePhysicsShell();
 public:
 					CAI_Crow();
 	virtual			~CAI_Crow();
@@ -97,6 +98,7 @@ public:
 	virtual BOOL	ShadowReceive	()			{ return FALSE;	}
 	virtual void	Update			(u32 DT);
 	virtual void	UpdateCL		();
+
 	virtual void	net_Export		(NET_Packet& P);
 	virtual void	net_Import		(NET_Packet& P);
 
@@ -105,7 +107,8 @@ public:
 
 	virtual void	HitSignal		(float	HitAmount,	Fvector& local_dir, CObject* who, s16 element);
 	virtual void	HitImpulse		(float	amount,		Fvector& vWorldDir, Fvector& vLocalDir);
-	virtual void	Die				(){};
+	virtual void	Hit				(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse);
+	virtual void	Die				(){CreateSkeleton();};
 	virtual	float	ffGetFov		(){return 150.f;}
 	virtual	float	ffGetRange		(){return 30.f;}
 
