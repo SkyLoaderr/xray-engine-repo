@@ -1,0 +1,24 @@
+-- File:        UI_MULTIPLAYER_CREATE.SCRIPT
+-- Description: Create Server dialog for Multiplayer menu
+-- Created:     02.12.2004
+-- Author:      Serhiy 0. Vynnychenk0
+-- Mail:        narrator@gsc-game.com
+--
+
+class "mutliplayer_create_dialog" (ui_base_dialog.base_dialog)
+
+function multiplayer_create_dialog:__init() super()
+	self:InitControls()
+	self:InitCallbacks()
+end
+
+function multiplayer_create_dialog:__finalize()	
+end
+
+function multiplayer_create_dialog:InitControls()
+	ui_base_dialog.base_dialog.InitControls(self, "Create Server")
+end
+
+function multiplayer_create_dialog:InitCallbacks()
+--	self:AddCallback()
+end
