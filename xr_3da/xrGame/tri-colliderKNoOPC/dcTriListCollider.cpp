@@ -211,7 +211,7 @@ extern "C" int dSortTriBoxCollide (
 			o1,o2,flags,
 			CONTACT(contact, ret * skip),
 			skip);	
-			pushing_neg=(bool)ret;
+			pushing_neg=!!ret;
 		}
 
 	}
@@ -242,7 +242,7 @@ extern "C" int dSortTriBoxCollide (
 			o1,o2,flags,
 			CONTACT(contact, ret * skip),
 			skip);	
-			pushing_b_neg=(bool)ret;
+			pushing_b_neg=!!ret;
 		}
 
 	}
@@ -514,6 +514,6 @@ void dcTriListCollider::OnRender()
 {
 	Fvector C;
 	C.set(0,0,0);
-	Device.Primitive.dbg_DrawAABB(*BoxCenter,AABB.x,AABB.y,AABB.z,D3DCOLOR_XRGB(255,255,255));
+//	Device.Primitive.dbg_DrawAABB(*BoxCenter,AABB.x,AABB.y,AABB.z,D3DCOLOR_XRGB(255,255,255));
 }
 #endif
