@@ -92,7 +92,11 @@ function zone_binder:net_spawn( server_object )
 
 	if ini:section_exist( "gulag1" ) then
 		if self.object:clsid() == clsid.smart_terrain then
-			self.managers.cl_smart_terrain = smart_terrain.cl_smart_terrain( server_object, ini )
+			if alife() then
+				self.managers.cl_smart_terrain = smart_terrain.cl_smart_terrain( server_object, ini )
+			else
+				printf( "No simulation! SMART_TERRAIN %s disabled.", self.object:name() )
+			end
 		else
 			utils.abort( "You must use SMART_TERRAIN instead of SCRIPT_ZONE %s", self.object:name() )
 		end
