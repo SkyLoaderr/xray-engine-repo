@@ -36,7 +36,6 @@
 #include "..\NET_Client.h"
 
 #include "..\render.h"
-#include "..\3dsound.h"
 #include "..\fmesh.h"
 #include "..\BodyInstance.h"
 

@@ -9,7 +9,6 @@
 #include "xr_input.h"
 #include "xr_ioc_cmd.h"
 #include "GameFont.h"
-#include "xr_tokens.h"
 #include "xr_trims.h"
 
 #define  LDIST .05f

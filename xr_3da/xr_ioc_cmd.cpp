@@ -4,7 +4,6 @@
 #include "xr_creator.h"
 #include "xr_ioc_cmd.h"
 #include "fbasicvisual.h"
-#include "xr_tokens.h"
 #include "cameramanager.h"
 #include "environment.h"
 #include "xr_input.h"
@@ -13,6 +12,37 @@
 #include "CustomHUD.h"
 
 #include "xr_object.h"
+
+xr_token							snd_freq_token							[ ]={
+	{ "11khz",						0											},
+	{ "22khz",						1											},
+	{ "44khz",						2											},
+	{ 0,							0											}
+};
+xr_token							snd_model_token							[ ]={
+	{ "Default",					0											},
+	{ "Normal",						1											},
+	{ "Light",						2											},
+	{ "High",						3											},
+	{ 0,							0											}
+};
+xr_token							vid_mode_token							[ ]={
+	{ "160x120",					160											},
+	{ "320x240",					320											},
+	{ "512x384",					512											},
+	{ "640x480",					640											},
+	{ "800x600",					800											},
+	{ "1024x768",					1024										},
+	{ "1280x1024",					1280										},
+	{ "1600x1200",					1600										},
+	{ 0,							0											}
+};
+xr_token							vid_bpp_token							[ ]={
+	{ "16",							16											},
+	{ "24",							24											},
+	{ "32",							32											},
+	{ 0,							0											}
+};
 
 //-----------------------------------------------------------------------
 class CCC_Quit : public CConsoleCommand
