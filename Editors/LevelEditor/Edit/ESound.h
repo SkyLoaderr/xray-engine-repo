@@ -20,6 +20,7 @@ protected:
     CSound_params	m_Params;
     void __fastcall	OnChangeWAV		(PropValue* prop);
     void __fastcall	OnChangeSource	(PropValue* prop);
+	void __fastcall OnPreviewControlClick(PropValue* sender);
 
     void			ResetSource		();
 protected:

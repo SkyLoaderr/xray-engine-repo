@@ -141,9 +141,9 @@ void ESound::Save(IWriter& F)
 
 void __fastcall	ESound::OnChangeWAV	(PropValue* prop)
 {
-//.	BOOL bPlay 		= !!m_Source.feedback;
+	BOOL bPlay 		= !!m_Source.feedback;
 	ResetSource		();
-//.	if (bPlay) 		Play(TRUE);
+	if (bPlay) 		Play(TRUE);
 }
 
 void __fastcall	ESound::OnChangeSource	(PropValue* prop)
@@ -151,10 +151,21 @@ void __fastcall	ESound::OnChangeSource	(PropValue* prop)
 	m_Source.set_params			(&m_Params);
 }
 
+void __fastcall ESound::OnPreviewControlClick(PropValue* sender)
+{
+	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
+    switch (V->btn_num){
+    case 0: Play(TRUE);	break;
+    case 1: Stop();		break;
+	}
+}
+
 void ESound::FillProp(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp(pref,values);
     PropValue* V;
+    V=PHelper.CreateButton		(values, PHelper.PrepareKey(pref,"Controls"), 	"Play,Stop");
+    V->SetEvents				(0,0,0,0,OnPreviewControlClick);
     V=PHelper.CreateALibSound	(values,PHelper.PrepareKey(pref,"WAVE name"),	&m_WAVName);
     V->SetEvents				(0,0,OnChangeWAV);
 	V=PHelper.CreateFloat		(values,PHelper.PrepareKey(pref,"Min dist"),	&m_Params.min_distance,	0.1f,1000.f,0.1f,1);
