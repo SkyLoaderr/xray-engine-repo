@@ -1,5 +1,5 @@
 --[[------------------------------------------------------------------------------------------------------------------
-
+Переключение боя
 --------------------------------------------------------------------------------------------------------------------]]
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -13,45 +13,43 @@ function evaluator_check_combat:__init(name, storage) super (nil, name)
 end
 
 function evaluator_check_combat:evaluate ()
---	printf( "1" )
 	if self.st.enabled and self.object:best_enemy() then
---		printf( "2" )
+		local actor = db.actor
+		if not actor then
+			return false
+		end
+
 		if db.storage[self.object:id()].active_scheme then
---			printf( "3" )
-			local actor = db.actor
-			if actor then
-				local overrides = xr_logic.generic_scheme_overrides( self.object )
+			local overrides = xr_logic.generic_scheme_overrides( self.object )
 
-				-- условия из overrides
-				if overrides and overrides.on_combat then
-					xr_logic.pick_section_from_condlist( actor, self.object, overrides.on_combat.condlist )
-				end
+			if overrides and overrides.on_combat then
+				xr_logic.pick_section_from_condlist( actor, self.object, overrides.on_combat.condlist )
+			end
 
-				-- условия из секции on_combat
-				if not xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
---					printf( "4" )
-
-					-- тип боя
-					if overrides and overrides.combat_type then
---						printf( "5.1" )
-
-						local script_combat_type = xr_logic.pick_section_from_condlist( actor, self.object, overrides.combat_type.condlist )
-						db.storage[self.object:id()].script_combat_type = script_combat_type
-
---						printf( "script_combat_type=%s", script_combat_type or "<<<nil>>>" )
-
-						return script_combat_type ~= nil
-					else
---						db.storage[self.object:id()].script_combat_type = nil
---						printf( "5.2" )
-						return false
-					end
+			if not xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
+				-- взять из overrides, иначе из секции on_combat
+				if overrides and overrides.combat_type then
+					return self:set_combat_type( actor, overrides )
+				else
+--					db.storage[self.object:id()].script_combat_type = nil
+--					return false
+					return self.st.combat_type ~=nil and self:set_combat_type( actor, self.st )
 				end
 			end
+		else
+			-- если нет активной секции, то тип боя взять из секции on_combat
+			return self.st.combat_type ~=nil and self:set_combat_type( actor, self.st )
 		end
 	end
 
 	return false
+end
+
+function evaluator_check_combat:set_combat_type( actor, t )
+	local script_combat_type = xr_logic.pick_section_from_condlist( actor, self.object, t.combat_type.condlist )
+	db.storage[self.object:id()].script_combat_type = script_combat_type
+
+	return script_combat_type ~= nil
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -101,6 +99,8 @@ function set_combat_checker(npc, ini, scheme, section)
 	local st   = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
 	st.logic   = xr_logic.cfg_get_switch_conditions(ini, section, npc)		
 	st.enabled = true
+
+	st.combat_type = xr_logic.cfg_get_condlist(ini, section, "combat_type", npc)
 end
 
 function disable_scheme(npc, scheme)
