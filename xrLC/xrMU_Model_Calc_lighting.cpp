@@ -98,8 +98,10 @@ void xrMU_Model::calc_lighting	(xr_vector<base_color>& dest, Fmatrix& xform, CDB
 			LightPoint			(&DB, MDL, vC, P, N, lights, flags, 0);
 		}
 		vC.scale				(n_samples);
-		vC._tmp_				= v_trans;
-		V->C					= vC;
+		vC._tmp_				=	v_trans;
+		if (flags&LP_dont_hemi) ;
+		else					vC.hemi	+=	v_amb;
+		V->C					=	vC;
 
 		// Search
 		const float key			= V->P.x;
@@ -118,9 +120,7 @@ void xrMU_Model::calc_lighting	(xr_vector<base_color>& dest, Fmatrix& xform, CDB
 			_vertex* Front		= VL.front();
 			R_ASSERT			(Front);
 			if (Front->P.similar(V->P,eps))
-			{
 				VL.push_back		(V);
-			}
 		}
 
 		// Register
@@ -167,9 +167,7 @@ void xrMU_Model::calc_lighting	(xr_vector<base_color>& dest, Fmatrix& xform, CDB
 	{
 		Fvector		ptPos	= m_vertices[I]->P;
 		base_color	ptColor	= m_vertices[I]->C;
-
-		float 	_N		= 0;
-		dest[I]			= ptColor;
+		dest[I]				= ptColor;
 	}
 }
 
