@@ -265,6 +265,21 @@ function createGulag(name, type)
 	return xr_gulag.fraction[name]
 end
 
+function isUnderFraction (npc)
+	for k,v in fraction do
+		if v:stalkerExist(npc) == true then
+			return k
+		end		
+	end
+	return nil
+end
+function resetJob(name, npc)
+	if xr_gulag.fraction[name] ~= nil then
+		xr_gulag.fraction[name]:clearAllJob(npc)
+		xr_gulag.fraction[name]:updateJob()
+	end
+end
+
 function needRaid(fraction)
 	if xr_gulag.fraction[fraction] ~= nil then
 		local cc = xr_gulag.fraction[fraction]:getCasualities()
