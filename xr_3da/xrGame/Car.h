@@ -51,6 +51,9 @@ public:
 	bool b_engine_on;
 	bool b_clutch;
 	bool b_starting;
+	u32	 m_dwStartTime;
+	float m_fuel;
+	float m_fuel_expence_per_rotation;
 	struct SWheel 
 	{
 		int bone_id;
@@ -251,6 +254,7 @@ private:
 
 	void StartEngine();
 	void StopEngine();
+	void Stall();
 	void Clutch();
 	void Unclutch();
 	void SwitchEngine();

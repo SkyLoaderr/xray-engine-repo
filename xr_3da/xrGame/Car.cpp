@@ -87,7 +87,6 @@ BOOL	CCar::net_Spawn				(LPVOID DC)
 	setEnabled						(TRUE);
 	setVisible						(TRUE);
 
-	Sound->play_at_pos				(snd_engine,this,Position(),true);
 
 	ParseDefinitions				();//parse ini filling in m_driving_wheels,m_steering_wheels,m_breaking_wheels
 	CreateSkeleton					();//creates m_pPhysicsShell & fill in bone_map
@@ -126,8 +125,8 @@ void	CCar::shedule_Update		(u32 dt)
 {
 	inherited::shedule_Update(dt);
 
-
-
+	//if()
+	
 
 }
 #endif
@@ -170,8 +169,8 @@ void	CCar::UpdateCL				( )
 	Fvector		C,V;
 	Center	(C);
 	V.set		(lin_vel);
-	float		velocity						= V.magnitude();
-	float		scale							= 0.5f+velocity/20.f; clamp(scale,0.5f,1.f);
+	//float		velocity						= V.magnitude();
+	float		scale							= 0.5f+m_current_rpm/m_torque_rpm/2.f; clamp(scale,0.5f,1.f);
 
 	snd_engine.set_position			(C);
 	snd_engine.set_frequency		(scale);
@@ -505,17 +504,22 @@ void CCar::Drive()
 void CCar::StartEngine()
 {
 PlayExhausts();
+snd_engine.play_at_pos			(this,Position(),TRUE);
 b_engine_on=true;
 }
 void CCar::StopEngine()
 {
-
+snd_engine.stop();
 StopExhausts();
 NeutralDrive();//set zero speed
 UpdatePower();//set engine friction;
 b_engine_on=false;
 }
 
+void CCar::Stall()
+{
+	StopEngine();
+}
 void CCar::ReleasePedals()
 {
 	Clutch();
@@ -541,6 +545,7 @@ b_clutch=false;
 void CCar::Starter()
 {
 b_starting=true;
+m_dwStartTime=Device.dwTimeGlobal;
 }
 void CCar::UpdatePower()
 {
@@ -649,7 +654,7 @@ void CCar::PressForward()
 	{
 		Clutch();
 		if(m_current_transmission_num==0) Transmision(1);
-		b_starting=(m_current_transmission_num==1||m_current_transmission_num==0);
+		if(m_current_transmission_num==1||m_current_transmission_num==0)Starter();
 		Drive();
 	}
 	fwp=true;
@@ -665,7 +670,7 @@ void CCar::PressBack()
 	{
 		Clutch();
 		Transmision(0);
-		b_starting=(m_current_transmission_num==1||m_current_transmission_num==0);
+		if(m_current_transmission_num==1||m_current_transmission_num==0)Starter();
 		Drive();
 	}
 	bkp=true;
@@ -698,7 +703,7 @@ void CCar::ReleaseForward()
 	{
 		Clutch();
 		Transmision(0);
-		b_starting=(m_current_transmission_num==1||m_current_transmission_num==0);
+		if(m_current_transmission_num==1||m_current_transmission_num==0)Starter();
 		Drive();
 	}
 	else
@@ -715,7 +720,7 @@ void CCar::ReleaseBack()
 	{
 		Clutch();
 		if(m_current_transmission_num==0) Transmision(1);
-		b_starting=(m_current_transmission_num==1||m_current_transmission_num==0);
+		if(m_current_transmission_num==1||m_current_transmission_num==0) Starter();
 		Drive();
 	}
 	else
@@ -734,7 +739,7 @@ void CCar::ReleaseBreaks()
 void CCar::Transmision(size_t num)
 {
 
-	b_starting=(num==0||num==1);
+	if(num==0||num==1)Starter();
 	if(num<m_gear_ratious.size())
 	{
 		m_current_transmission_num=num;
@@ -798,7 +803,11 @@ void CCar::PhTune(dReal step)
 	if(m_repairing)Revert();
 	LimitWheels();
 
-	if(fwp||bkp)UpdatePower();
+	if(fwp||bkp)
+	{	
+		UpdatePower();
+		if(!b_starting && m_current_rpm<m_min_rpm)Stall();
+	}
 
 	for (int k=0; k<(int)m_doors_update.size(); k++){
 		SDoor* D = m_doors_update[k];
@@ -910,7 +919,7 @@ float CCar::EnginePower()
 	}
 	else
 	{
-		b_starting=false;
+		if(b_starting&&Device.dwTimeGlobal-m_dwStartTime>1000) b_starting=false;
 	}
 
 	return Parabola(m_current_rpm);
