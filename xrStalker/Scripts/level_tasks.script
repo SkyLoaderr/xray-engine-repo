@@ -154,6 +154,10 @@ function proceed(actor)
 	if actor:object ("max_flash") then 
 	   db.actor:give_info_portion("mil_max_owner_flash_get")  
 	end
+	
+	if actor:object ("wpn_rg-6") then 
+	   db.actor:give_info_portion("mil_rg6_gain")  
+	end
 	   
 	
 	-- Dark valley
@@ -254,7 +258,33 @@ function process_map_spot(info_id)
 	
 	elseif info_id == "escape_dynamite_done" then
 		remove_location(006, "esc_wolf_location")
-		
+	
+	-- military	
+	elseif info_id == "mil_max_job" then
+	       add_location (1003, "mil_crazy_location")
+	       
+	elseif info_id == "mil_max_flash_get" then       
+		   remove_location (1003, "mil_crazy_location")
+	elseif info_id == "mil_max_job_complete" then   
+	       add_location (1006, "mil_rg6_location") 	   
+	       
+	elseif info_id == "mil_rg6_gain" then       
+		   remove_location (1006, "mil_rg6_location")
+		   
+	elseif info_id == "mil_bandit_flash_get" then
+	       add_location (1005, "mil_secret_spot")
+	    
+	elseif info_id == "mil_lukash_go_to_max" then
+	       add_location (1002, "mil_max_location") 
+	elseif info_id == "mil_max_arrive" then
+		   remove_location (1002, "mil_max_location")
+		   
+    elseif info_id == "mil_max_job_complete" then
+	       add_location (1006, "mil_rg6_location") 
+	elseif info_id == "mil_rg6_gain" then
+		   remove_location (1006, "mil_rg6_location")
+        		   
+	-- end of military       
 	end
 end
 

@@ -24,6 +24,22 @@
     <string id="mil_return_lukash">
         <text>Вернуться к Лукашу за РГ6.</text>
     </string>
+
+    <string id="mil_crazy">
+        <text>Безумный сталкер.</text>
+    </string>
+
+    <string id="mil_max">
+        <text>Макс.</text>
+    </string>
+    
+    <string id="mil_secret">
+        <text>Схрон бандитов.</text>
+    </string>
+    
+    <string id="mil_rg6">
+        <text>РГ6 Угрюмого.</text>
+    </string>
     
 	
 </string_table>

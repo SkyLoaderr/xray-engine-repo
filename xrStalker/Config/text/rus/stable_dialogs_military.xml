@@ -162,6 +162,12 @@
     <string id="mil_lukash_dialog_rg6_211">
         <text>Тогда вали по хорошему. А еще раз заявишься - будешь кормить червей в могилке.</text>
     </string>
+    <string id="mil_lukash_dialog_rg6_31">
+        <text>Они уже готовы.</text>
+    </string>
+    <string id="mil_lukash_dialog_rg6_32">
+        <text>Неплохо, однако. Можешь быть свободен. А об РГ6 и не мечтай, поскольку он мне и самому нравится. Будешь настаивать, получишь пулю.</text>
+    </string>
     <string id="mil_lukash_dialog_start_10">
         <text>Что надо, сталкер ?</text>
     </string>
@@ -284,6 +290,12 @@
     </string>
     <string id="mil_max_dialog_third_56">
         <text>Удачи.</text>
+    </string>
+    <string id="mil_max_dialog_third_60">
+        <text>Вот твоя флешка.</text>
+    </string>
+    <string id="mil_max_dialog_third_61">
+        <text>Спасибо, генацвале. Итак, Угрюмого завалил Лукаш... Ладно, вернется моя команда - разберемся. А по поводу РГ6 - мы тут пошерстили здесь военных и поимели с них пару этих пушечек. Одну взял Лукаш, а одну взял Угрюмый и оставил ее в деревне, в подвале одного из домов. Я тебе дам маркер на PDA, найдешь.</text>
     </string>
     <string id="mil_zoneguard_dialog_0">
         <text>Чего тебе надобно, старче ?</text>

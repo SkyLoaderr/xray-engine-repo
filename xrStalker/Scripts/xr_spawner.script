@@ -143,7 +143,8 @@ function add_to_spawn_list (s_object)
 	                        {
 	                        id = s_object.id,
 	                        cond = xr_logic.cfg_get_condlist (s_object:spawn_ini (), "spawner", "cond", s_object),
-	                        npc = nil
+	                        npc = nil,
+	                        online = false
 	                        }
     printf ("Add object : %s", s_object:name ())
     if spawn_list[s_object.id].cond then print_table (spawn_list[s_object.id].cond) end
@@ -162,10 +163,11 @@ function check_spawn (s_object)
                   spawn_list[s_object.id].npc = db.obj_by_id[s_object.id]
                end
             end   
-			if xr_logic.pick_section_from_condlist (actor, spawn_list[s_object.id].npc, spawn_list[s_object.id].cond.condlist) ~= nil then
+			if spawn_list[s_object.id].online == true and xr_logic.pick_section_from_condlist (actor, spawn_list[s_object.id].npc, spawn_list[s_object.id].cond.condlist) ~= nil then
 				return true
 			else
 			    spawn_list[s_object.id].npc = nil
+			    spawn_list[s_object.id].online = false
 				return false 
 			end
 		else

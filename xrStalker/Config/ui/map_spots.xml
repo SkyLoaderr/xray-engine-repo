@@ -47,6 +47,45 @@
 		<mini_map  spot="esc_wolf_spot" pointer="quest_pointer"></mini_map>
 	</esc_wolf_location>
 	
+	
+<!-- military locations and spots-->
+	<mil_max_location hint="mil_max">
+		<level_map spot="mil_max_spot" pointer="quest_pointer"></level_map>
+		<mini_map  spot="mil_max_spot" pointer="quest_pointer"></mini_map>
+	</mil_max_location>
+
+    <mil_max_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="160" y="0" width="32" height="32">ui\ui_icons_map</texture>
+	</mil_max_spot>
+
+	<mil_crazy_location hint="mil_crazy">
+		<level_map spot="mil_crazy_spot" pointer="quest_pointer"></level_map>
+		<mini_map  spot="mil_crazy_spot" pointer="quest_pointer"></mini_map>
+	</mil_crazy_location>
+
+    <mil_crazy_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="224" y="0" width="32" height="32">ui\ui_icons_map</texture>
+	</mil_crazy_spot>
+
+	<mil_secret_location hint="mil_secret">
+		<level_map spot="mil_secret_spot" pointer="quest_pointer"></level_map>
+		<mini_map  spot="mil_secret_spot" pointer="quest_pointer"></mini_map>
+	</mil_secret_location>
+
+    <mil_secret_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="128" y="128" width="32" height="32">ui\ui_icons_map</texture>
+	</mil_secret_spot>
+
+	<mil_rg6_location hint="mil_rg6">
+		<level_map spot="mil_rg6_spot" pointer="quest_pointer"></level_map>
+		<mini_map  spot="mil_rg6_spot" pointer="quest_pointer"></mini_map>
+	</mil_rg6_location>
+
+    <mil_rg6_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="96" y="192" width="32" height="32">ui\ui_icons_map</texture>
+	</mil_rg6_spot>
+	
+	
 <!-- quest spots -->
 	<tutorial_artefact_spot x="0" y="0" width="32" height="32" alignment="c">
 		<texture x="64" y="128" width="32" height="32">ui\ui_icons_map</texture>

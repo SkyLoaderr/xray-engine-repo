@@ -38,7 +38,8 @@
 	<info_portion id="mil_max_flash_get"><article>mil_crazy_flash_info</article></info_portion>
 	<info_portion id="mil_max_job_complete"></info_portion>
 	<info_portion id="mil_max_job_failed"></info_portion>
-	
+	<info_portion id="mil_max_dolg_killed"></info_portion>
+	<info_portion id="mil_max_arrive"></info_portion>
 	
 	<!-- Диалог с Лукашем-->
 	<info_portion id="mil_lukash_first_talk"></info_portion>
@@ -48,8 +49,6 @@
 	<info_portion id="mil_lukash_job_complete"></info_portion>
 	<info_portion id="mil_lukash_final"></info_portion>
 	
-	
-	
 	<!-- Атака Свободы -->
 	<info_portion id="mil_freedom_attack"></info_portion>
 	<info_portion id="mil_freedom_attack_complete"></info_portion>
@@ -57,5 +56,7 @@
 	<info_portion id="mil_ugrum_flash_get"><article>mil_flash_ugrumy</article></info_portion>
 	<info_portion id="mil_bandit_flash_get"><article>mil_flash_bandit</article></info_portion>
 	<info_portion id="mil_max_owner_flash_get"><article>mil_flash_max</article></info_portion>
+	
+	<info_portion id="mil_rg6_gain"></info_portion>
 	
 </game_information_portions>
