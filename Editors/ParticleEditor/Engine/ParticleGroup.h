@@ -145,7 +145,7 @@ public:
 
 	void				Play				(){m_bPlaying=TRUE;}
     void				Pause				(){m_bPlaying=!m_bPlaying;}
-    void				Stop				(){m_bPlaying=FALSE;}
+    void				Stop				();
 };
 DEFINE_VECTOR			(PS::CPGDef*,PGVec,PGIt);
 }

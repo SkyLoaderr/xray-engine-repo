@@ -200,7 +200,11 @@ void CParticleGroup::OnDeviceDestroy()
 {
 	Device.Shader.DeleteGeom(hGeom);
 }
-
+void CParticleGroup::Stop()
+{
+	m_bPlaying=FALSE;
+	ResetParticles();   
+}
 void CParticleGroup::RefreshShader()
 {
 	OnDeviceDestroy();
@@ -227,6 +231,7 @@ void CParticleGroup::OnFrame(u32 dt)
 		    	// reset old particles
                 m_bPlaying		= FALSE;
                 ResetParticles	();
+                return;
             }
         }
         float fdt			= float(dt)/1000.f; 
