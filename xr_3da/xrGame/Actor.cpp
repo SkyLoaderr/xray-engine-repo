@@ -209,7 +209,7 @@ void CActor::Load		(LPCSTR section )
 	::Sound->create		(sndDie[3],			TRUE,	strconcat(buf,cName(),"\\die3"),SOUND_TYPE_MONSTER_DYING_HUMAN);
 
 	ph_Movement.ActivateBox	(0);
-	ph_Movement.ActivateBox	(0);
+	//ph_Movement.ActivateBox	(0);
 	cam_Set					(eacFirstEye);
 
 	// motions
@@ -936,7 +936,7 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 			{
 				mstate_real &= ~mcCrouch;
 				ph_Movement.ActivateBox(0);
-				ph_Movement.ActivateBox(0);
+				//ph_Movement.ActivateBox(0);
 			}
 		}
 	}
@@ -1027,7 +1027,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 		{
 			mstate_real			|=	mcCrouch;
 			ph_Movement.ActivateBox(1);
-			ph_Movement.ActivateBox(1);
+			//ph_Movement.ActivateBox(1);
 		}
 		
 		// mask input into "real" state
