@@ -431,6 +431,7 @@ void CPHJeep::Steer(const char& steering)
 	{
 	case 1:
 	case -1:
+		weels_limited=true;
 		for(i = 2; i < 4; ++i)
 		{
 			dJointSetHinge2Param(Joints[i], dParamHiStop, steeringLimit);
