@@ -1265,6 +1265,47 @@ light_color		    = 1.3,1.9,1.3
 light_range		    = 30.0
 light_time 		    = 0.8;0.35
 
+[zone_flame]
+GroupControlSection	= spawn_group_zone
+$spawn 			= "zone\flame"
+$prefetch 		= 16
+class			= Z_MBALD
+hit_impulse_scale	= .01
+sound			= zone_mosquito_bald
+postprocess		= postprocess_gravi
+hit_effect		= explosions\expl_02_sparks
+
+artefacts		= af_magnet,0.7
+BirthProbability = 0.01
+
+idle_particles		= explosion\campfire_03
+blowout_particles	= explosion\campfire_00
+
+hit_small_particles			= damage_fx\burn_creatures2
+hit_big_particles			= damage_fx\burn_creatures00
+idle_small_particles		= damage_fx\burn_creatures
+idle_big_particles			= damage_fx\burn_creatures00
+entrance_small_particles	= damage_fx\burn_creatures
+entrance_big_particles		= damage_fx\burn_creatures00 ;
+
+idle_sound			= ambient\fire2						;постоянный звук
+blowout_sound		= ambient\fire2		;во время выброса(удара) в центре аномалии	
+hit_sound			= ambient\fire2								;на персонаже, когда тот получает хит
+entrance_sound		= ambient\fire2									;при попадании объекта в аномалию
+
+hit_type		= burn
+
+disable_time		= -1	;время игнорирования неживого объекта в зоне (-1 если не нужно)
+disable_idle_time	= 2000	;время отключения idle партиклов
+
+ignore_nonalive		= true
+ignore_small		= false
+
+blowout_light		= on
+light_color		    = 1.9,1.9,1.3
+light_range		    = 10.0
+light_time 		    = 0.8;0.35
+
 
 [zone_x]
 GroupControlSection	= spawn_group_zone
@@ -2370,16 +2411,30 @@ color_add		= 0.28,0.32,0.2
 radius_min		= 0.5
 radius_max		= 1.1
 
-[postprocess_fuzz]
-duality_h		= 0.005
-duality_v		= 0.005
-blur			= 0.0
+[postprocess_flame]
+duality_h		= 0.025
+duality_v		= 0.025
+blur			= 0.2
 gray			= 0.5
 noise_intensity = 1.5
 noise_grain		= 5
 noise_fps		= 15
-color_base		= 0.8,0.9,0.8
-color_gray		= 0.333,0.333,0.333
+color_base		= 1.2,1.4,1
+color_gray		= 0.6,0.3,0.1
+color_add		= 0.4,0.4,0.2
+radius_min		= 0.5
+radius_max		= 1.0
+
+[postprocess_fuzz]
+duality_h		= 0.02
+duality_v		= 0.02
+blur			= 0.1
+gray			= 0.5
+noise_intensity = 0.5
+noise_grain		= 2
+noise_fps		= 25
+color_base		= 1.8,1.4,0.8
+color_gray		= 0.5,0.4,0.1
 color_add		= 0.08,0.13,0.06
 radius_min		= 0.5
 radius_max		= 0.8
