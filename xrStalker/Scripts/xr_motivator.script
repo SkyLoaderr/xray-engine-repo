@@ -380,7 +380,7 @@ xr_motivator.storage[self.object:id()].novice = {
 -- Настройка схемы реакции
 xr_motivator.storage[self.object:id()].reactions = {
         enabled = true,
-    time_wait = 60000, -- 60 секунд ждем повтора
+    time_wait = 15000, -- 15 секунд ждем повтора
         evn = xr_reactions.events(self.object),
     -- позицию раздражителя
     position = nil,
