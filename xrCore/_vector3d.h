@@ -17,34 +17,34 @@ public:
 	T	x,y,z;
 
 	// access operators
-	IC	T&			operator[] (int i)					{ return *((T*)this + i); }
-	IC	T&			operator[] (int i)	const			{ return *((T*)this + i); }
+	ICF	T&			operator[] (int i)					{ return *((T*)this + i); }
+	ICF	T&			operator[] (int i)	const			{ return *((T*)this + i); }
 
-	IC	SelfRef	set(T _x, T _y, T _z)					{ x = _x;		y = _y;		z = _z;		return *this;	};
-	IC  SelfRef	set(const _vector3<float> &v)			{ x = T(v.x);	y = T(v.y);	z = T(v.z);	return *this;	};
-	IC  SelfRef	set(const _vector3<double> &v)			{ x = T(v.x);	y = T(v.y);	z = T(v.z);	return *this;	};
-	IC	SelfRef	set(float* p)							{ x = p[0];	y = p[1];	z = p[2];		return *this;	};
-	IC	SelfRef	set(double* p)							{ x = p[0];	y = p[1];	z = p[2];		return *this;	};
+	ICF	SelfRef	set(T _x, T _y, T _z)					{ x = _x;		y = _y;		z = _z;		return *this;	};
+	ICF SelfRef	set(const _vector3<float> &v)			{ x = T(v.x);	y = T(v.y);	z = T(v.z);	return *this;	};
+	ICF SelfRef	set(const _vector3<double> &v)			{ x = T(v.x);	y = T(v.y);	z = T(v.z);	return *this;	};
+	ICF	SelfRef	set(float* p)							{ x = p[0];	y = p[1];	z = p[2];		return *this;	};
+	ICF	SelfRef	set(double* p)							{ x = p[0];	y = p[1];	z = p[2];		return *this;	};
 
-	IC	SelfRef	add(const Self &v)						{ x+=v.x;	y+=v.y;		z+=v.z;			return *this;	};
-	IC  SelfRef	add(T s)								{ x+=s;		y+=s;		z+=s;			return *this;	};
-	IC	SelfRef	add(const Self &a, const Self &v)		{ x=a.x+v.x;y=a.y+v.y;	z=a.z+v.z;		return *this;	};
-	IC  SelfRef	add(const Self &a, T s)					{ x=a.x+s;  y=a.y+s;	z=a.z+s;		return *this;	};
+	ICF	SelfRef	add(const Self &v)						{ x+=v.x;	y+=v.y;		z+=v.z;			return *this;	};
+	ICF SelfRef	add(T s)								{ x+=s;		y+=s;		z+=s;			return *this;	};
+	ICF SelfRef	add(const Self &a, const Self &v)		{ x=a.x+v.x;y=a.y+v.y;	z=a.z+v.z;		return *this;	};
+	ICF SelfRef	add(const Self &a, T s)					{ x=a.x+s;  y=a.y+s;	z=a.z+s;		return *this;	};
 
-	IC	SelfRef	sub(const Self &v)						{ x-=v.x;	y-=v.y;		z-=v.z;			return *this;	};
-	IC  SelfRef	sub(T s)								{ x-=s;		y-=s;		z-=s;			return *this;	};
-	IC	SelfRef	sub(const Self &a, const Self &v)		{ x=a.x-v.x;y=a.y-v.y;	z=a.z-v.z;		return *this;	};
-	IC  SelfRef	sub(const Self &a, T s)					{ x=a.x-s;  y=a.y-s;	z=a.z-s;		return *this;	};
+	ICF	SelfRef	sub(const Self &v)						{ x-=v.x;	y-=v.y;		z-=v.z;			return *this;	};
+	ICF SelfRef	sub(T s)								{ x-=s;		y-=s;		z-=s;			return *this;	};
+	ICF	SelfRef	sub(const Self &a, const Self &v)		{ x=a.x-v.x;y=a.y-v.y;	z=a.z-v.z;		return *this;	};
+	ICF SelfRef	sub(const Self &a, T s)					{ x=a.x-s;  y=a.y-s;	z=a.z-s;		return *this;	};
 
-	IC	SelfRef	mul(const Self &v)						{ x*=v.x;	y*=v.y;		z*=v.z;			return *this;	};
-	IC  SelfRef	mul(T s)								{ x*=s;		y*=s;		z*=s;			return *this;	};
-	IC	SelfRef	mul(const Self &a, const Self &v)		{ x=a.x*v.x;y=a.y*v.y;	z=a.z*v.z;		return *this;	};
-	IC  SelfRef	mul(const Self &a, T s)					{ x=a.x*s;  y=a.y*s;	z=a.z*s;		return *this;	};
+	ICF	SelfRef	mul(const Self &v)						{ x*=v.x;	y*=v.y;		z*=v.z;			return *this;	};
+	ICF SelfRef	mul(T s)								{ x*=s;		y*=s;		z*=s;			return *this;	};
+	ICF	SelfRef	mul(const Self &a, const Self &v)		{ x=a.x*v.x;y=a.y*v.y;	z=a.z*v.z;		return *this;	};
+	ICF SelfRef	mul(const Self &a, T s)					{ x=a.x*s;  y=a.y*s;	z=a.z*s;		return *this;	};
 
-	IC	SelfRef	div(const Self &v)						{ x/=v.x;	y/=v.y;  z/=v.z;			return *this;	};
-	IC  SelfRef	div(T s)								{ x/=s;		y/=s;    z/=s;				return *this;	};
-	IC	SelfRef	div(const Self &a, const Self &v)		{ x=a.x/v.x;y=a.y/v.y;	z=a.z/v.z;		return *this;	};
-	IC  SelfRef	div(const Self &a, T s)					{ x=a.x/s;  y=a.y/s;	z=a.z/s;		return *this;	};
+	ICF	SelfRef	div(const Self &v)						{ x/=v.x;	y/=v.y;  z/=v.z;			return *this;	};
+	ICF SelfRef	div(T s)								{ x/=s;		y/=s;    z/=s;				return *this;	};
+	ICF	SelfRef	div(const Self &a, const Self &v)		{ x=a.x/v.x;y=a.y/v.y;	z=a.z/v.z;		return *this;	};
+	ICF SelfRef	div(const Self &a, T s)					{ x=a.x/s;  y=a.y/s;	z=a.z/s;		return *this;	};
 
 	IC	SelfRef	invert()								{ x=-x; y=-y; z=-z;						return *this;	}
 	IC	SelfRef	invert(const Self &a)					{ x=-a.x; y=-a.y; z=-a.z;				return *this;	}
