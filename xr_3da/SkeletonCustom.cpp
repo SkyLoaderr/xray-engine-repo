@@ -5,6 +5,7 @@
 #include 	"SkeletonCustom.h"
 #include	"SkeletonX.h"
 #include	"fmesh.h"
+#include	"Render.h"
 
 int			psSkeletonUpdate	= 32;
 
@@ -117,6 +118,11 @@ void CKinematics::DebugRender(Fmatrix& XFORM)
 CKinematics::~CKinematics	()
 {
 	IBoneInstances_Destroy	();
+/*
+//.	for (SkeletonWMVecIt it=wallmarks.begin(); it!=wallmarks.end(); it++)
+		::Render->remove_SkeletonWallmark(*it);
+	wallmarks.clear			();
+*/
 }
 
 void	CKinematics::IBoneInstances_Create()
@@ -155,7 +161,25 @@ void CBoneData::CalculateM2B(const Fmatrix& parent)
 
     m2b_transform.invert	();            
 }
-                                 
+
+CSkeletonX* CKinematics::LL_GetChild(u32 idx)
+{
+	IRender_Visual*	V = children[idx];
+	CSkeletonX*		B = NULL;
+	switch (V->Type){
+		case MT_SKELETON_GEOMDEF_PM:{
+			CSkeletonX_PM*	X = (CSkeletonX_PM*)V;
+			B = (CSkeletonX*)X;
+									}break;
+		case MT_SKELETON_GEOMDEF_ST:{
+			CSkeletonX_ST*	X = (CSkeletonX_ST*)V;
+			B = (CSkeletonX*)X;
+									}break;
+		default: NODEFAULT;
+	}
+	return B;
+}
+
 void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 {
 	//Msg				("skeleton: %s",N);
@@ -189,8 +213,9 @@ void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 		u16			ID				= u16(bones->size());
 		data->r_stringZ(buf);		strlwr(buf);
 		CBoneData* pBone 			= CreateBoneData(ID);
+		pBone->child_faces.resize	(children.size());
 		bones->push_back			(pBone);
-		shared_str		bname			= shared_str(buf);
+		shared_str bname			= shared_str(buf);
 		bone_map_N->push_back		(mk_pair(bname,ID));
 		bone_map_P->push_back		(mk_pair(bname,ID));
 
@@ -248,7 +273,39 @@ void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
         (*bones)[LL_GetBoneRoot()]->CalculateM2B(Fidentity);
     	IKD->close();
     }
+	// after load process
+	{
+		for (u16 child_idx=0; child_idx<children.size(); child_idx++)
+			LL_GetChild(child_idx)->AfterLoad	(this,child_idx);
+	}
 
+	// unique bone faces
+	{
+		for (u32 bone_idx=0; bone_idx<bones->size(); bone_idx++) {
+			CBoneData*	B 	= (*bones)[bone_idx];
+			for (u32 child_idx=0; child_idx<children.size(); child_idx++){
+				CBoneData::FacesVec faces		= B->child_faces[child_idx];
+				std::sort						(faces.begin(),faces.end());
+				CBoneData::FacesVecIt new_end	= std::unique(faces.begin(),faces.end());
+				faces.erase						(new_end,faces.end());
+				B->child_faces[child_idx].clear_and_free();
+				B->child_faces[child_idx]		= faces;
+			}
+		}
+	}
+/*
+	for (u16 rr=0; rr<LL_BoneCount(); rr++){
+		CBoneData& BD	= LL_GetData(rr);
+		Log("bones:",rr);
+		for (u32 ch=0; ch<BD.child_faces.size(); ch++){
+			Log("child:",ch);
+			for (u32 fc=0; fc<BD.child_faces[ch].size(); fc++){
+				Log("F:",BD.child_faces[ch][fc]);
+			}
+		}
+	}
+*/
+	// reset update_callback
 	Update_Callback	= NULL;
 }
 
@@ -268,28 +325,7 @@ void CKinematics::Copy(IRender_Visual *P)
 	IBoneInstances_Create	();
 
 	for (u32 i=0; i<children.size(); i++) 
-	{
-		IRender_Visual*	V = children[i];
-		CSkeletonX*		B = NULL;
-		switch (V->Type)
-		{
-		case MT_SKELETON_GEOMDEF_PM:
-			{
-				CSkeletonX_PM*	X = (CSkeletonX_PM*)V;
-				B = (CSkeletonX*)X;
-			}
-			break;
-		case MT_SKELETON_GEOMDEF_ST:
-			{
-				CSkeletonX_ST*	X = (CSkeletonX_ST*)V;
-				B = (CSkeletonX*)X;
-			}
-			break;
-		default: NODEFAULT;
-		}
-		R_ASSERT(B);
-		B->SetParent(this);
-	}
+		LL_GetChild(i)->SetParent(this);
 
 	CalculateBones_Invalidate	();
 }
@@ -373,4 +409,144 @@ void CKinematics::LL_GetBindTransform(xr_vector<Fmatrix>& matrices)
 {
 	matrices.resize			(LL_BoneCount());
 	RecursiveBindTransform	(this,matrices,iRoot,Fidentity);
+}
+
+void BuildMatrix		(Fmatrix &mView, float invsz, const Fvector norm, const Fvector& from)
+{
+	// build projection
+	Fmatrix				mScale;
+	Fvector				at,up,right,y;
+	at.sub				(from,norm);
+	y.set				(0,1,0);
+	if (_abs(norm.y)>.99f) y.set(1,0,0);
+	right.crossproduct	(y,norm);
+	up.crossproduct		(norm,right);
+	mView.build_camera	(from,at,up);
+	mScale.scale		(invsz,invsz,invsz);
+	mView.mulA			(mScale);
+}
+
+void CKinematics::AddWallmark(const Fmatrix* parent, const Fvector3& start, const Fvector3& dir, u16 bone_id, ref_shader shader, float size)
+{
+	if (wallmarks.size()){
+//		CSkeletonWallmark* wm=wallmarks.back();
+//		for (u32 k=0; k<wm->r_verts.size()/3; k++){
+//			RCache.dbg_DrawTRI(Fidentity,wm->r_verts[k*3+0].p,wm->r_verts[k*3+1].p,wm->r_verts[k*3+2].p,0xff00ff00);
+//		}
+	}
+
+//	if (!wallmarks.empty()) return;
+	Fvector S,D,normal		= {0,0,0};
+	// transform ray from world to model
+	Fmatrix P;	P.invert	(*parent);
+	P.transform_tiny		(S,start);
+	P.transform_dir			(D,dir);
+	// find pick point
+	float dist				= flt_max;
+	BOOL picked				= FALSE;
+	for (u32 i=0; i<children.size(); i++)
+		if (LL_GetChild(i)->PickBone(normal,dist,S,D,bone_id)) picked=TRUE;
+	if (!picked) return;
+
+	// calc contact point
+	Fvector cp;	cp.mad		(S,D,dist);
+
+	// find similar wm
+	for (u32 wm_idx=0; wm_idx<wallmarks.size(); wm_idx++){
+		CSkeletonWallmark*& wm = wallmarks[wm_idx];
+		if (wm->contact_point.similar(cp,0.02f)&&(wm->shader==shader)){ 
+			xr_delete		(wm);
+//.			::Render->remove_SkeletonWallmark(wm);
+			if (wm_idx<wallmarks.size()-1) 
+				wm = wallmarks.back();
+			wallmarks.pop_back();
+			break;
+		}
+	}
+
+	// ok. allocate wallmark
+//.	CSkeletonWallmark* wm	= ::Render->alloc_SkeletonWallmark();
+	CSkeletonWallmark* wm	= xr_new<CSkeletonWallmark>();
+	wm->fTimeStart			= Device.fTimeGlobal;
+	wm->contact_point		= cp;
+	wm->shader				= shader;
+
+	// build UV projection matrix
+	Fmatrix					mView,mRot;
+	BuildMatrix				(mView,1/size,normal,cp);
+	mRot.rotateZ			(::Random.randF(deg2rad(-20.f),deg2rad(20.f)));
+	mView.mulA_43			(mRot);
+	// fill vertices
+	for (u32 i=0; i<children.size(); i++){
+		CSkeletonX* S		= LL_GetChild(i);
+		CBoneData& BD		= LL_GetData(bone_id);
+		// this bone
+		S->FillVertices		(mView,*wm,normal,size,BD.SelfID);
+		// parent
+		if (BD.ParentID!=BI_NONE)	
+			S->FillVertices	(mView,*wm,normal,size,BD.ParentID);
+		// children
+		for (u32 i=0; i<BD.children.size(); i++)
+			S->FillVertices	(mView,*wm,normal,size,BD.children[i]->SelfID);
+	}
+
+	wm->xform				= parent;
+	wallmarks.push_back		(wm);
+}
+
+static const float LIFE_TIME=10.f;
+
+void CKinematics::CalculateWallmarks()
+{
+	if (!wallmarks.empty()){
+		bool need_remove=false; 
+		for (SkeletonWMVecIt it=wallmarks.begin(); it!=wallmarks.end(); it++){
+			CSkeletonWallmark*& wm = *it;
+			float w	= (Device.fTimeGlobal-wm->fTimeStart)/LIFE_TIME;
+			if (w<=1.f){
+				// append wm to WallmarkEngine
+				Fbox bb;	bb.invalidate();
+				wm->r_verts.resize(wm->s_faces.size()*3);
+				// skin vertices
+				for (u32 f_idx=0; f_idx<wm->s_faces.size(); f_idx++){
+					CSkeletonWallmark::WMFace& F=wm->s_faces[f_idx];
+					for (u32 k=0; k<3; k++){
+						Fvector P;
+						if (F.bone_id[k][0]==F.bone_id[k][1]){
+							// 1-link
+							Fmatrix& xform0			= LL_GetBoneInstance(F.bone_id[k][0]).mRenderTransform; 
+							xform0.transform_tiny	(P,F.vert[k]);
+						}else{
+							// 2-link
+							Fvector P0,P1;
+							Fmatrix& xform0			= LL_GetBoneInstance(F.bone_id[k][0]).mRenderTransform; 
+							Fmatrix& xform1			= LL_GetBoneInstance(F.bone_id[k][1]).mRenderTransform; 
+							xform0.transform_tiny	(P0,F.vert[k]);
+							xform1.transform_tiny	(P1,F.vert[k]);
+							P.lerp					(P0,P1,F.weight[k]);
+						}
+						FVF::LIT& v_lit				= wm->r_verts[f_idx*3+k];
+						wm->xform->transform_tiny	(v_lit.p,P);
+						v_lit.t.set					(F.uv[k]);
+						int			aC				= iFloor	( w * 255.f);	clamp	(aC,0,255);
+						v_lit.color					= color_rgba(128,128,128,aC);
+						bb.modify					(v_lit.p);
+					}
+				}
+				bb.getsphere						(wm->bounds.P,wm->bounds.R);
+				// add wallmark
+				if (::Render->ViewBase.testSphere_dirty(wm->bounds.P,wm->bounds.R))
+					::Render->add_SkeletonWallmark	(wm);
+			}else{
+				// remove wallmark
+//.				::Render->remove_SkeletonWallmark	(wm);
+				xr_delete							(wm);
+				need_remove							= true;
+			}
+		}
+		if (need_remove){
+			SkeletonWMVecIt new_end= std::remove(wallmarks.begin(),wallmarks.end(),(CSkeletonWallmark*)0);
+			wallmarks.erase	(new_end,wallmarks.end());
+		}
+	}
 }

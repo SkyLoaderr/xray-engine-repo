@@ -61,6 +61,10 @@ public:
     SJointIKData		IK_data;
     float				mass;
     Fvector				center_of_mass;
+
+	DEFINE_VECTOR		(u16,FacesVec,FacesVecIt);
+	DEFINE_VECTOR		(FacesVec,ChildFacesVec,ChildFacesVecIt);
+	ChildFacesVec		child_faces;	// shared
 public:    
 						CBoneData		(u16 ID):SelfID(ID)	{}
 	virtual				~CBoneData		()					{}
@@ -68,11 +72,44 @@ public:
 	typedef svector<int,128>	BoneDebug;
 	void						DebugQuery		(BoneDebug& L);
 #endif
-
+	// assign face
+	void				AppendFace		(u16 child_idx, u16 idx)
+	{
+		child_faces[child_idx].push_back(idx);
+	}
 	// Calculation
 	void				CalculateM2B	(const Fmatrix& Parent);
 	virtual void		Calculate		(CKinematics* K, Fmatrix *Parent)=0;
 };
+
+class ENGINE_API CSkeletonWallmark
+{
+public:
+	const Fmatrix*		xform;
+	ref_shader			shader;
+	Fvector3			contact_point;	// on model space
+	Fsphere				bounds;
+public:
+	struct WMFace{
+		Fvector3		vert	[3];
+		Fvector2		uv		[3];
+		u16				bone_id	[3][2];
+		float			weight	[3];
+	};
+	float				fTimeStart;
+	DEFINE_VECTOR		(WMFace,WMFacesVec,WMFacesVecIt);
+	WMFacesVec			s_faces;
+	xr_vector<FVF::LIT>	r_verts;
+public:
+	CSkeletonWallmark():xform(0),fTimeStart(0.f){}
+	void				Clear	()
+	{
+		xform			= 0;
+		s_faces.clear	();
+		r_verts.clear	();
+	}
+};
+DEFINE_VECTOR(CSkeletonWallmark*,SkeletonWMVec,SkeletonWMVecIt);
 
 class ENGINE_API	CKinematics: public FHierrarhyVisual
 {
@@ -87,6 +124,8 @@ public:
 	typedef xr_vector<std::pair<shared_str,u32> >	accel;
 	typedef xr_map<shared_str,u16,str_pred>		accel_map;
 protected:
+	SkeletonWMVec				wallmarks;
+
 	// Globals
     CInifile*					pUserData;
 	CBoneInstance*				bone_instances;	// bone instances
@@ -104,6 +143,8 @@ protected:
 
     Flags64						visimask;
     
+	CSkeletonX*					LL_GetChild				(u32 idx);
+
 	// internal functions
     virtual CBoneData*			CreateBoneData			(u16 ID)=0;
 	virtual void				IBoneInstances_Create	();
@@ -148,13 +189,17 @@ public:
 	void						DebugRender			(Fmatrix& XFORM);
 #endif
 
-	// General "Visual" stuff
-    virtual void				Copy			(IRender_Visual *pFrom);
-	virtual void				Load			(const char* N, IReader *data, u32 dwFlags);
-	virtual void 				Spawn			();
-    virtual void 				Release			();
+	// wallmarks
+	void						AddWallmark			(const Fmatrix* parent, const Fvector3& start, const Fvector3& dir, u16 bone_id, ref_shader shader, float size);
+	void						CalculateWallmarks	();
 
-	virtual	CKinematics*		dcast_PKinematics		()				{ return this;	}
+	// General "Visual" stuff
+    virtual void				Copy				(IRender_Visual *pFrom);
+	virtual void				Load				(const char* N, IReader *data, u32 dwFlags);
+	virtual void 				Spawn				();
+    virtual void 				Release				();
+
+	virtual	CKinematics*		dcast_PKinematics	()				{ return this;	}
 };
 IC CKinematics* PKinematics		(IRender_Visual* V)		{ return V?V->dcast_PKinematics():0; }
 //---------------------------------------------------------------------------
