@@ -1,5 +1,5 @@
 #include "stdafx.h"
 
-void	CLevel::SLS_Load				(LPCSTR name)		// Game Load
+void	CLevel::net_Load				(LPCSTR name)		// Game Load
 {
 }
