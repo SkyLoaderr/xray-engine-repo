@@ -12,20 +12,21 @@ class ENGINE_API CLightTrack;
 
 class ENGINE_API CLightDB_Static 
 {
-	vector<xrLIGHT>	Lights;			// -- Lights itself
-	vector<BYTE>	Enabled;		// -- is Enabled
-	vecI			Distance;		// -- Only selected are valid!!!
+	vector<xrLIGHT_control>	Layers;
+	vector<xrLIGHT>			Lights;			// -- Lights itself
+	vector<BYTE>			Enabled;		// -- is Enabled
+	vecI					Distance;		// -- Only selected are valid!!!
 
-	vecI			Selected;		// Selected (static only) in one frame
+	vecI					Selected;		// Selected (static only) in one frame
 
-	IC	void	Disable(int num) {
+	IC	void	Disable		(int num) {
 		if (Enabled[num]) {
 			Enabled[num]=false;
 			CHK_DX(HW.pDevice->LightEnable(num,FALSE));
 		}
 	}
 
-	IC	void	Enable(int num) {
+	IC	void	Enable		(int num) {
 		if (!Enabled[num]) {
 			Enabled[num]=true;
 			CHK_DX(HW.pDevice->LightEnable(num,TRUE));

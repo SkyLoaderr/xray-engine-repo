@@ -3,17 +3,21 @@
 #pragma once
 
 #pragma pack(push,4)
-class xrLIGHT : public Flight
+class xrLIGHT 
 {
 public:
-	DWORD		dwFrame;
+	DWORD			dwFrame;
+	DWORD			dwController;
+	Flight			data;
+};
 
-	struct {
-		DWORD			bAffectStatic	: 1;
-		DWORD			bAffectDynamic	: 1;
-		DWORD			bProcedural		: 1;
-	}					flags;
-	string64			name;
+class xrLIGHT_control
+{
+public:
+	DWORD			dwFrame;
+	CConstant*		dest;
+	string64		name;
+	vector<DWORD>	data;
 };
 #pragma pack(pop)
 

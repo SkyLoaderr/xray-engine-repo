@@ -175,18 +175,11 @@ void CRender::LoadVisuals(CStream *fs)
 
 void CRender::LoadLights(CStream *fs)
 {
-	CStream* chunk;
-
-	// controllers
-
 	// lights
-	chunk = fs->OpenChunk(fsL_LIGHTS);
-	R_ASSERT	(chunk && "Can't find lights");
-	L_DB.Load	(chunk);
-	chunk->Close();
+	L_DB.Load	(fs);
 
 	// glows
-	chunk = fs->OpenChunk(fsL_GLOWS);
+	CStream*	chunk = fs->OpenChunk(fsL_GLOWS);
 	R_ASSERT	(chunk && "Can't find glows");
 	Glows.Load(chunk);
 	chunk->Close();

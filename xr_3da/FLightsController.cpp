@@ -19,7 +19,7 @@ void	CLightDB_Static::Select		(Fvector &pos, float fRadius)
 	{
 		int		num	= *it;
 		xrLIGHT &L	= Lights[num];
-		if (L.type == D3DLIGHT_DIRECTIONAL)				Enable(num);
+		if (L.data.type == D3DLIGHT_DIRECTIONAL)		Enable(num);
 		else {
 			float	R	= fRadius+L.range;
 			if (pos.distance_to_sqr(L.position) < R*R)	Enable(num);
@@ -43,45 +43,72 @@ void	CLightDB_Static::Select		(Fvector &pos, float fRadius, vector<xrLIGHT*>& de
 
 void CLightDB_Static::Load			(CStream *fs) 
 {
-	DWORD size		= fs->Length();
-	DWORD count		= size/sizeof(xrLIGHT);
-	R_ASSERT		(count*sizeof(xrLIGHT) == size);
-	Lights.resize	(count);
-	fs->Read		(&*Lights.begin(),size);
+	CStream* F	= 0;
 
-	Distance.resize	(count);
-	Enabled.resize	(count);
-
-	for (DWORD i=0; i<count; i++) 
+	// Controlles/Layers
 	{
-		Lights[i].specular.set		(Lights[i].diffuse);
-		Lights[i].specular.mul_rgb	(0.2f);
-		if (Lights[i].type==D3DLIGHT_DIRECTIONAL)
+		F				= fs->OpenChunk		(fsL_LIGHT_CONTROL);
+		xrLIGHT_control	temp;
+		string128		c_name;
+
+		while (!F->Eof())
 		{
-			Lights[i].position.invert	(Lights[i].direction);
-			Lights[i].position.mul		(1000.f);
-			Lights[i].range				= 1000.f;
+			F->Read				(temp.name,sizeof(temp.name));
+			DWORD cnt			= F->Rdword();
+			temp.data.resize	(cnt);
+			F->Read				(temp.data.begin(),cnt*sizeof(DWORD));
+			strconcat			(c_name,"$light$",temp.name);
+			temp.dest			= Device.Shader._CreateConstant(c_name);
+			Layers.push_back	(temp);
 		}
-		//  CHK_DX(HW.pDevice->SetLight	(i, Lights[i].d3d()) );
-		Enabled[i]=FALSE;
+
+		F->Close		();
 	}
-	Log("* Total number of light sources on level: ",count);
+
+	// Lights itself
+	{
+		F				= fs->OpenChunk		(fsL_LIGHT_DYNAMIC);
+
+		DWORD size		= F->Length();
+		DWORD count		= size/sizeof(xrLIGHT);
+		R_ASSERT		(count*sizeof(xrLIGHT) == size);
+		Lights.resize	(count);
+		Distance.resize	(count);
+		Enabled.resize	(count);
+
+		for (DWORD i=0; i<count; i++) 
+		{
+			
+			F->Read						(&Lights[i].dwController,4);
+			F->Read						(&Lights[i].data,sizeof(Flight));
+
+			Lights[i].specular.set		(Lights[i].diffuse);
+			Lights[i].specular.mul_rgb	(0.2f);
+			if (Lights[i].type==D3DLIGHT_DIRECTIONAL)
+			{
+				Lights[i].position.invert	(Lights[i].direction);
+				Lights[i].position.mul		(1000.f);
+				Lights[i].range				= 1000.f;
+			}
+			Enabled[i]	= FALSE;
+		}
+
+		F->Close		();
+	}
+	Msg	("* Layers/Lights : %d / %d",count,);
 }
 
 void CLightDB_Static::Unload		(void)
 {
 	for (DWORD i=0; i<Lights.size(); i++) Disable(i);
+	for (DWORD L=0; L<Layers.size(); L++) Device.Shader._DeleteConstant(Layers[L].dest);
 
+	Layers.clear			();
 	Lights.clear			();
 	Distance.clear			();
 	Enabled.clear			();
 }
-/*
-IC BOOL lights_compare(int a, int b) {
-	CLightDB_Static &L = Render->Lights;
-	return L.Distance[a]<L.Distance[b];
-}
-*/
+
 IC float spline(float *m, float p0, float p1, float p2, float p3)
 {	return p0 * m[0] + p1 * m[1] + p2 * m[2] + p3 * m[3]; }
 
