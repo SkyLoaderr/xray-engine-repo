@@ -55,8 +55,6 @@ public:
 	IDirect3DSurface9*			rt_smap_p_ZB;
 
 	// Textures
-	IDirect3DCubeTexture9*		t_ncm_surf;
-	ref_texture					t_ncm;
 	IDirect3DTexture9*			t_encodeRG_surf;
 	ref_texture					t_encodeRG;
 	IDirect3DTexture9*			t_encodeB_surf;

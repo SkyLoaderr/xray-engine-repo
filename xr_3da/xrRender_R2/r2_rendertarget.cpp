@@ -400,50 +400,6 @@ void	CRenderTarget::OnDeviceCreate	()
 		}
 
 		// Build NCM
-		{
-			R_CHK						(D3DXCreateCubeTexture(HW.pDevice,TEX_NCM,1,0,D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, &t_ncm_surf));
-			t_ncm						= Device.Resources->_CreateTexture(r2_ncm);
-			t_ncm->surface_set			(t_ncm_surf);
-			for (int i = 0; i < 6; i++)	{
-				D3DLOCKED_RECT	Locked;
-				Fvector			Normal;
-				float			w,h;
-				D3DSURFACE_DESC ddsdDesc;
-
-				R_CHK			(t_ncm_surf->GetLevelDesc(0, &ddsdDesc));
-				R_CHK			(t_ncm_surf->LockRect	((D3DCUBEMAP_FACES)i, 0, &Locked, 0, 0));
-
-				for (u32 y = 0; y < ddsdDesc.Height; y++)	{
-					h = (float)y / ((float)(ddsdDesc.Height - 1));
-					h *= 2.0f;
-					h -= 1.0f;
-
-					for (u32 x = 0; x < ddsdDesc.Width; x++)	{
-						w = (float)x / ((float)(ddsdDesc.Width - 1));
-						w *= 2.0f;
-						w -= 1.0f;
-
-						u32* pBits = (u32*)((u8*)Locked.pBits + (y * Locked.Pitch) + x*4);
-						switch((D3DCUBEMAP_FACES)i)
-						{
-						case D3DCUBEMAP_FACE_POSITIVE_X:	Normal.set(	1.0f,	-h,		-w	);	break;
-						case D3DCUBEMAP_FACE_NEGATIVE_X:	Normal.set(	-1.0f,	-h,		w	);	break;
-						case D3DCUBEMAP_FACE_POSITIVE_Y:	Normal.set(	w,		1.0f,	h	);	break;
-						case D3DCUBEMAP_FACE_NEGATIVE_Y:	Normal.set(	w,		-1.0f, -h	);	break;
-						case D3DCUBEMAP_FACE_POSITIVE_Z:	Normal.set(	w,		-h,		1.0f);	break;
-						case D3DCUBEMAP_FACE_NEGATIVE_Z:	Normal.set(	-w,		-h,		-1.0f);	break;
-						default:							break;
-						}
-
-						// Normalize and store
-						Normal.normalize	();
-						Ivector			rgb	= vpack		(Normal);
-						*pBits				= color_rgba(rgb.x,rgb.y,rgb.z,0);
-					}
-				}
-				R_CHK			(t_ncm_surf->UnlockRect((D3DCUBEMAP_FACES)i, 0));
-			}
-		}
 	}
 
 	// 
@@ -454,8 +410,6 @@ void	CRenderTarget::OnDeviceCreate	()
 void	CRenderTarget::OnDeviceDestroy	()
 {
 	// Textures
-	t_ncm->surface_set			(NULL);
-	_RELEASE					(t_ncm_surf);
 	t_ds2fade->surface_set		(NULL);
 	_RELEASE					(t_ds2fade_surf);
 	t_material->surface_set		(NULL);

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "uber_deffer.h"
 
-void	uber_deffer	(CBlender_Compile& C, LPCSTR _vspec, LPCSTR _pspec, BOOL _aref);
+void	uber_deffer	(CBlender_Compile& C, LPCSTR _vspec, LPCSTR _pspec, BOOL _aref)
 {
 	// Uber-parse
 	string256		fname,fnameA,fnameB;
