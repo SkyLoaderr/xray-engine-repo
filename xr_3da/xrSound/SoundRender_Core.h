@@ -54,7 +54,7 @@ public:
 
 	// General
 	virtual void  						_initialize				( u64 window )=0;
-	virtual void						_destroy				( )=0;
+	virtual void						_clear					( )=0;
 	virtual void						_restart				( );
 
 	// Sound interface

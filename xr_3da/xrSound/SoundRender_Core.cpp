@@ -18,6 +18,9 @@ float	psSoundVEffects			= 1.0f;
 float	psSoundVMusic			= 0.7f;
 int		psSoundCacheSizeMB		= 16;
 
+CSoundRender_Core*				SoundRender = 0;
+CSound_manager_interface*		Sound		= 0;
+
 CSoundRender_Core::CSoundRender_Core	()
 {
 	bPresent					= FALSE;
@@ -55,7 +58,7 @@ void CSoundRender_Core::_initialize	(u64 window)
     bReady						= TRUE;
 }
 
-void CSoundRender_Core::_destroy	()
+void CSoundRender_Core::_clear	()
 {
     bReady						= FALSE;
 	cache.destroy				();

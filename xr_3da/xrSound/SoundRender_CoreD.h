@@ -4,6 +4,9 @@
 
 #include "SoundRender_Core.h"
 
+#include <dsound.h>
+#define _RELEASE(x)		{ if(x) { (x)->Release();       (x)=NULL; } }
+
 class CSoundRender_CoreD: public CSoundRender_Core
 {
 	typedef CSoundRender_Core inherited;
@@ -35,9 +38,9 @@ public:
     virtual					~CSoundRender_CoreD		();
 
 	virtual void			_initialize				( u64 window );
-	virtual void			_destroy				( );
+	virtual void			_clear					( );
     
 	virtual const Fvector&	listener_position		( ){return Listener.vPosition;}
 };
-extern CSoundRender_CoreD	SoundRenderD;
+extern CSoundRender_CoreD* SoundRenderD;
 #endif

@@ -1,14 +1,10 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#ifdef _OPENAL
-
 #include "soundrender_coreA.h"
 #include "soundrender_targetA.h"
 
-CSoundRender_CoreA				SoundRenderA;                
-CSoundRender_Core*				SoundRender = &SoundRenderA;
-CSound_manager_interface*		Sound		= SoundRender;
+CSoundRender_CoreA*	SoundRenderA= 0; 
 
 CSoundRender_CoreA::CSoundRender_CoreA	():CSoundRender_Core()
 {
@@ -94,7 +90,7 @@ void CSoundRender_CoreA::_initialize	(u64 window)
 	}
 }
 
-void CSoundRender_CoreA::_destroy	()
+void CSoundRender_CoreA::_clear	()
 {
 	inherited::_destroy			();
     // remove targets
@@ -137,4 +133,3 @@ void CSoundRender_CoreA::update_listener		( const Fvector& P, const Fvector& D, 
     A_CHK						(alListenerfv	(AL_ORIENTATION,&Listener.orientation[0].x));
     A_CHK				        (alListenerf	(AL_GAIN,psSoundVMaster));
 }
-#endif

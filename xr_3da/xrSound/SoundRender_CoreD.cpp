@@ -1,14 +1,10 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#ifndef _OPENAL
-
 #include "soundrender_coreD.h"
 #include "soundrender_targetD.h"
 
-CSoundRender_CoreD				SoundRenderD;
-CSoundRender_Core*				SoundRender = &SoundRenderD;
-CSound_manager_interface*		Sound		= SoundRender;
+CSoundRender_CoreD*	SoundRenderD= 0;
 
 CSoundRender_CoreD::CSoundRender_CoreD	():CSoundRender_Core()
 {
@@ -135,7 +131,7 @@ void CSoundRender_CoreD::_initialize	(u64 window)
 	}
 }
 
-void CSoundRender_CoreD::_destroy	()
+void CSoundRender_CoreD::_clear	()
 {
 	inherited::_destroy			();
 
@@ -185,4 +181,3 @@ void CSoundRender_CoreD::update_listener( const Fvector& P, const Fvector& D, co
     // commit deffered settings
     pListener->CommitDeferredSettings	();
 }
-#endif

@@ -4,6 +4,12 @@
 
 #include "SoundRender_Core.h"            
 
+#include <AL/al.h>
+#include <AL/alc.h>
+#include <AL/alut.h>
+#define A_CHK(expr)		{ expr; ALCenum error=alGetError(); VERIFY2(error==AL_NO_ERROR,(LPCSTR)alGetString(error)); }
+#define AC_CHK(expr)	{ expr; ALCenum error=alcGetError(pDevice); VERIFY2(error==AL_NO_ERROR,(LPCSTR)alcGetString(pDevice,error)); }
+
 // temorary patch
 typedef ALenum    __cdecl EAXGet(const struct _GUID *propertySetID,ALuint property,ALuint source,ALvoid *value,ALuint size);
 typedef ALenum    __cdecl EAXSet(const struct _GUID *propertySetID,ALuint property,ALuint source,ALvoid *value,ALuint size);
@@ -30,8 +36,9 @@ public:
     virtual					~CSoundRender_CoreA		();
 
 	virtual void			_initialize				( u64 window );
-	virtual void			_destroy				( );
+	virtual void			_clear					( );
     
 	virtual const Fvector&	listener_position		( ){return Listener.position;}
 };
+extern CSoundRender_CoreA* SoundRenderA;
 #endif

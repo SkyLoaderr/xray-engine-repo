@@ -3,6 +3,7 @@
 #pragma once
 
 #include "soundrender_Target.h"
+#include "soundrender_CoreD.h"
 
 class CSoundRender_TargetD: public CSoundRender_Target
 {

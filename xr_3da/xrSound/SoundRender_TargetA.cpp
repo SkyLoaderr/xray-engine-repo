@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#ifdef _OPENAL
-
 #include "soundrender_TargetA.h"
 #include "soundrender_emitter.h"
 #include "soundrender_source.h"
@@ -146,5 +144,3 @@ void	CSoundRender_TargetA::fill_block	(ALuint BufferID)
 	ALuint format 		= (wfx.nChannels==1)?AL_FORMAT_MONO16:AL_FORMAT_STEREO16;
     A_CHK				(alBufferData(BufferID, format, &buf_temp_data.front(), buf_block, wfx.nSamplesPerSec));
 }
-
-#endif

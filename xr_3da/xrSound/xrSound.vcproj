@@ -254,6 +254,9 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\sound.cpp">
+			</File>
+			<File
 				RelativePath="Sound.h">
 			</File>
 			<File

@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#ifndef _OPENAL
-
 #include "soundrender_targetD.h"
 #include "soundrender.h"
 #include "soundrender_coreD.h"
@@ -58,7 +56,7 @@ void	CSoundRender_TargetD::_initialize	()
 
 	// Create
 	bDX7				= FALSE;
-	R_CHK	(SoundRenderD.pDevice->CreateSoundBuffer(&dsBD, &pBuffer_base, NULL));
+	R_CHK	(SoundRenderD->pDevice->CreateSoundBuffer(&dsBD, &pBuffer_base, NULL));
 	R_CHK	(pBuffer_base->QueryInterface(IID_IDirectSoundBuffer8,(void **)&pBuffer));
 	R_CHK	(pBuffer->QueryInterface(IID_IDirectSound3DBuffer8,	(void **)&pControl));
 	R_ASSERT(pBuffer_base && pBuffer && pControl);
@@ -174,7 +172,7 @@ void	CSoundRender_TargetD::fill_parameters()
 		if (_abs(hw_freq-cache_hw_freq)>50)	{
 			cache_hw_freq			= hw_freq;
 			s32		hw_freq_set		= hw_freq;
-			clamp	(hw_freq_set,s32(SoundRenderD.dsCaps.dwMinSecondarySampleRate),s32(SoundRenderD.dsCaps.dwMaxSecondarySampleRate));
+			clamp	(hw_freq_set,s32(SoundRenderD->dsCaps.dwMinSecondarySampleRate),s32(SoundRenderD->dsCaps.dwMaxSecondarySampleRate));
 			R_CHK	(pBuffer->SetFrequency	( hw_freq_set	));
 		}
 	}
@@ -201,5 +199,3 @@ void	CSoundRender_TargetD::fill_block		()
 
 	R_CHK			(pBuffer->Unlock(ptr1, bytes1, ptr2, bytes2));
 }
-
-#endif
