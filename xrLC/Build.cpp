@@ -126,6 +126,7 @@ CBuild::CBuild(b_transfer * L)
 		LPSTR N			= BT.name;
 		if (strchr(N,'.')) *(strchr(N,'.')) = 0;
 		char th_name[256]; strconcat(th_name,"x:\\textures\\thumbnail\\",N,".thm");
+		Msg("- THM: %s",th_name);
 		CCompressedStream THM(th_name,"THM");
 
 		// analyze thumbnail information
