@@ -405,6 +405,9 @@
 			Name="Compiler"
 			Filter="">
 			<File
+				RelativePath="LevelGameDef.h">
+			</File>
+			<File
 				RelativePath=".\_buildnodes_view.cpp">
 				<FileConfiguration
 					Name="Debug|Win32"
