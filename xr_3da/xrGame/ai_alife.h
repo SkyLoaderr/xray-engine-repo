@@ -14,9 +14,11 @@ private:
 	u32				m_dwSchedulerMax;
 	//CGameObject
 public:
-//	typedef struct tagSALifeNPC {
-//		
-//	} SALifeNPC;
+	typedef struct tagSALifeNPC {
+		u8		ucTeam;
+		u8		ucSquad;
+		u8		ucGroup;
+	} SALifeNPC;
 
 	CAI_ALife();
 	~CAI_ALife();
