@@ -173,5 +173,8 @@ void CSE_SpawnGroup::script_register(lua_State *L)
 
 void CSE_PHSkeleton::script_register(lua_State *L)
 {
-	
+	module(L)[
+		class_<CSE_PHSkeleton>
+			("cse_ph_skeleton")
+	];
 }

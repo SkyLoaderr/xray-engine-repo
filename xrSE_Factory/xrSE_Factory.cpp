@@ -22,12 +22,12 @@ extern CSE_Abstract *F_entity_Create	(LPCSTR section);
 
 class DLL_API CTestImpl:public CTestInterface{
 private:
-		void			test_0			(LPCSTR);
-		void			test_1			(int);
+			void __stdcall	test_0			(LPCSTR);
+			void __stdcall	test_1			(int);
 public:
-						CTestImpl		();
-	virtual void		test_test0		();
-	virtual void		test_test1		();
+							CTestImpl		();
+	virtual void __stdcall	test_test0		();
+	virtual void __stdcall	test_test1		();
 };
 
 DLL_API CTestInterface *create_test_object	()

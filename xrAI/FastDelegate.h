@@ -673,10 +673,10 @@ public:																			\
 				return !m_Closure.IsEqual(this, x.m_Closure, &x);};				\
 	/* Binding to non-const member functions */									\
 	template < class X, class Y >												\
-	FastDelegate##NUM(Y *pthis, void (X::* function_to_bind)FUNCLIST ) {		\
+	FastDelegate##NUM(Y *pthis, void (__stdcall X::* function_to_bind)FUNCLIST ) {		\
 	m_Closure.bindmemfunc(detail::implicit_cast<X*>(pthis), function_to_bind);}	\
 	template < class X, class Y >												\
-	inline void bind(Y *pthis, void (X::* function_to_bind)FUNCLIST ) {			\
+	inline void bind(Y *pthis, void (__stdcall X::* function_to_bind)FUNCLIST ) {			\
 		m_Closure.bindmemfunc(detail::implicit_cast<X*>(pthis), function_to_bind);	}	\
 	/* Binding to const member functions. */									\
 	template < class X, class Y >												\

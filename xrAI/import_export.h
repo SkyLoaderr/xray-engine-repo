@@ -23,8 +23,8 @@ private:
 //			void			test_1			(int);
 
 public:
-	virtual void			test_test0		()=0;
-	virtual void			test_test1		()=0;
+	virtual void __stdcall	test_test0		()=0;
+	virtual void __stdcall	test_test1		()=0;
 };
 
 #endif // IMPORT_EXPORT_H
