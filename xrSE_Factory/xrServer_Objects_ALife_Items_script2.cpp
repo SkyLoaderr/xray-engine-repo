@@ -13,6 +13,28 @@
 
 using namespace luabind;
 
+void CSE_ALifeItemGrenade::script_register(lua_State *L)
+{
+	module(L)[
+		luabind_class_item1(
+			CSE_ALifeItemGrenade,
+			"cse_alife_item_grenade",
+			CSE_ALifeItem
+		)
+	];
+}
+
+void CSE_ALifeItemExplosive::script_register(lua_State *L)
+{
+	module(L)[
+		luabind_class_item1(
+			CSE_ALifeItemExplosive,
+			"cse_alife_item_explosive",
+			CSE_ALifeItem
+		)
+	];
+}
+
 void CSE_ALifeItemBolt::script_register(lua_State *L)
 {
 	module(L)[

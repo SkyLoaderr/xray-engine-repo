@@ -13,6 +13,30 @@
 
 using namespace luabind;
 
+void CSE_ALifeObjectProjector::script_register(lua_State *L)
+{
+	module(L)[
+		luabind_class_alife1(
+			CSE_ALifeObjectProjector,
+			"cse_alife_object_projector",
+			CSE_ALifeDynamicObjectVisual
+		)
+	];
+}
+
+void CSE_ALifeHelicopter::script_register(lua_State *L)
+{
+	module(L)[
+		luabind_class_alife3(
+			CSE_ALifeHelicopter,
+			"cse_alife_helicopter",
+			CSE_ALifeDynamicObjectVisual,
+			CSE_Motion,
+			CSE_PHSkeleton
+		)
+	];
+}
+
 void CSE_ALifeCar::script_register(lua_State *L)
 {
 	module(L)[
