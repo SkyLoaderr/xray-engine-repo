@@ -159,6 +159,7 @@ public:
 		bool TestPass(const Fvector& pos,const Fvector& dir);
 		void GetExitPosition(Fvector& pos);
 		void ApplyOpenTorque();
+		void ApplyTorque(float atorque,float aa_vel);
 		void ApplyCloseTorque();
 		void NeutralTorque(float atorque);
 		void ClosingToClosed();

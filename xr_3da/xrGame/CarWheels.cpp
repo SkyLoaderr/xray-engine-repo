@@ -187,7 +187,7 @@ void CCar::SWheelBreak::Init()
 
 void CCar::SWheelBreak::Break()
 {
-	dJointSetHinge2Param(pwheel->joint, dParamFMax2, break_torque);
+	dJointSetHinge2Param(pwheel->joint, dParamFMax2, break_torque);//
 	dJointSetHinge2Param(pwheel->joint, dParamVel2, 0.f);
 }
 

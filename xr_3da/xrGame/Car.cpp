@@ -148,6 +148,8 @@ void	CCar::UpdateCL				( )
 		HUD().pFontSmall->OutNext(s);
 		HUD().pFontSmall->OutNext("Transmission num:      [%d]",m_current_transmission_num);
 		HUD().pFontSmall->OutNext("gear ratio:			  [%3.2f]",m_current_gear_ratio);
+		HUD().pFontSmall->OutNext		("Power:      [%3.2f]",m_current_engine_power/(0.8f*1000.f));
+		HUD().pFontSmall->OutNext		("rpm:      [%3.2f]",m_current_rpm/(1.f/60.f*2.f*M_PI));
 		//HUD().pFontSmall->OutNext("Vel Magnitude: [%3.2f]",ph_Movement.GetVelocityMagnitude());
 		//HUD().pFontSmall->OutNext("Vel Actual:    [%3.2f]",ph_Movement.GetVelocityActual());
 	}
@@ -205,6 +207,8 @@ void	CCar::OnHUDDraw				(CCustomHUD* hud)
 	HUD().pFontSmall->OutSet		(120,530);
 	HUD().pFontSmall->OutNext		("Position:      [%3.2f, %3.2f, %3.2f]",VPUSH(Position()));
 	HUD().pFontSmall->OutNext		("Velocity:      [%3.2f]",velocity.magnitude());
+
+	
 #endif
 }
 

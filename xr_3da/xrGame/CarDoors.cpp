@@ -218,7 +218,7 @@ void CCar::SDoor::Update()
 		{
 			if(Device.dwTimeGlobal-open_time>1000) 
 			{
-				NeutralTorque(0.f);
+				ApplyTorque(torque/5.f,a_vel);
 				RemoveFromUpdate();
 			}
 		}
@@ -240,6 +240,13 @@ default:	return;
 	}
 }
 
+void CCar::SDoor::ApplyTorque(float atorque,float aa_vel)
+{
+	if(!joint->bActive)return;
+	joint->PSecond_element()->Enable();
+	dJointSetHingeParam(joint->GetDJoint(),dParamFMax,atorque);
+	dJointSetHingeParam(joint->GetDJoint(),dParamVel,aa_vel*pos_open);
+}
 void CCar::SDoor::ApplyOpenTorque()
 {
 	if(!joint->bActive)return;
