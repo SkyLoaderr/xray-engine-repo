@@ -22,18 +22,14 @@ void CMonsterMovement::Update_Initialize()
 void CMonsterMovement::Update_Execute()
 {
 #ifdef _DEBUG	
-	START_PROFILE("AI/Base Monster/Think/New/Monster Path Ex");
 	update_target_point								();
-	STOP_PROFILE;
 #endif
 	
 	CDetailPathManager::set_try_min_time			(b_try_min_time); 
 	CDetailPathManager::set_use_dest_orientation	(b_use_dest_orient);
 	enable_movement									(b_enable_movement);
 
-	START_PROFILE("AI/Base Monster/Think/New/AI Path Ex");
 	update_path										();
-	STOP_PROFILE;
 }
 
 
@@ -49,6 +45,8 @@ void CMonsterMovement::Update_Finalize()
 // update path with new scheme method
 void CMonsterMovement::update_target_point() 
 {
+	if (path_type() != MovementManager::ePathTypeLevelPath) return;
+	
 	m_path_end	= false;
 	m_failed	= false;
 

@@ -56,16 +56,30 @@ bool CSpaceRestriction::accessible				(const Fvector &position, float radius)
 			return					(true);
 	}
 
+#pragma todo("Dima to Dima : optimize this place in case of slowdown by adding containment routines for sphere and OBB with sphere")
+//	float							shift_radius = ai().level_graph().header().cell_size()*_sqrt(2.f);
 	return							(
 		(
 			m_out_space_restriction ? 
-			(m_out_space_restriction->inside(position,radius) && !m_out_space_restriction->on_border(position)) :
+			(
+				m_out_space_restriction->inside(position,radius) && 
+				(
+//					m_out_space_restriction->inside(position,radius + shift_radius) || 
+					!m_out_space_restriction->on_border(position)
+				)
+			) :
 			true
 		)
 		&&
 		(
 			m_in_space_restriction ? 
-			(!m_in_space_restriction->inside(position,radius) && !m_in_space_restriction->on_border(position)) :
+			(
+				!m_in_space_restriction->inside(position,radius) && 
+				(
+//					!m_in_space_restriction->inside(position,radius + shift_radius) || 
+					!m_in_space_restriction->on_border(position)
+				)
+			) :
 			true
 		)
 	);

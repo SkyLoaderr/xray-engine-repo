@@ -360,6 +360,8 @@ public:
 	bool					GetNodeInRadius		(u32 src_node, float min_radius, float max_radius, u32 attempts, u32 &dest_node);
 
 IC	void					set_action			(EAction action);
+	void					set_state_sound		(u32 type, bool once = false);
+
 
 #ifdef DEBUG
 	CMonsterDebug	*HDebug;

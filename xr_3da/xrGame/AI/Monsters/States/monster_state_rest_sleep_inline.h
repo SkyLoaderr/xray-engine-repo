@@ -19,7 +19,8 @@ CStateMonsterRestSleepAbstract::~CStateMonsterRestSleep	()
 TEMPLATE_SPECIALIZATION
 void CStateMonsterRestSleepAbstract::execute()
 {
-	object->MotionMan.m_tAction = ACT_SLEEP;
+	object->set_action				(ACT_SLEEP);
+	object->set_state_sound			(MonsterSpace::eMonsterSoundIdle);	
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiMonsterDebug)) {
@@ -27,7 +28,5 @@ void CStateMonsterRestSleepAbstract::execute()
 
 	}
 #endif
-
-	object->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,object->get_sd()->m_dwIdleSndDelay);
 }
 

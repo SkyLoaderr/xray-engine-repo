@@ -50,7 +50,7 @@ CStateManagerChimera::CStateManagerChimera(CChimera *obj) : inherited(obj)
 	//);
 	
 
-	add_state(eStateRest, xr_new<CStateChimeraTest<CChimera> > (obj));
+	add_state(eStateRest, xr_new<CStateMonsterRest<CChimera> > (obj));
 
 
 //	add_state(

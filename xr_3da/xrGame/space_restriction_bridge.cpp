@@ -60,32 +60,73 @@ bool CSpaceRestrictionBridge::default_restrictor		() const
 
 bool CSpaceRestrictionBridge::inside					(u32 level_vertex_id, bool partially_inside)
 {
+	START_PROFILE("AI/Restricted Object/Bridge/Inside Vertex");
 	return		(object().inside(level_vertex_id,partially_inside));
+	STOP_PROFILE;
 }
 
 bool CSpaceRestrictionBridge::inside					(u32 level_vertex_id, bool partially_inside, float radius)
 {
+	START_PROFILE("AI/Restricted Object/Bridge/Inside Vertex");
 	return		(object().inside(level_vertex_id,partially_inside,radius));
+	STOP_PROFILE;
 }
 
 bool CSpaceRestrictionBridge::inside					(const Fvector &position)
 {
+	START_PROFILE("AI/Restricted Object/Bridge/Inside Position");
 	return		(object().inside(position));
+	STOP_PROFILE;
 }
 
 bool CSpaceRestrictionBridge::inside					(const Fvector &position, float radius)
 {
+	START_PROFILE("AI/Restricted Object/Bridge/Inside Position");	
 	return		(object().inside(position,radius));
+	STOP_PROFILE;
 }
+
+struct CFindByXZ_predicate {
+	IC	bool	operator()	(u32 vertex_id, u32 xz) const
+	{
+		return			(ai().level_graph().vertex(vertex_id)->position().xz() < xz);
+	}
+};
 
 bool CSpaceRestrictionBridge::on_border					(const Fvector &position) const
 {
-	xr_vector<u32>::const_iterator	I = object().border().begin();
-	xr_vector<u32>::const_iterator	E = object().border().end();
-	for ( ; I != E; ++I)
-		if (ai().level_graph().inside(*I,position)) {
-			if (_abs(ai().level_graph().vertex_plane_y(*I) - position.y) < 2.f)
-				return	(true);
-		}
+	START_PROFILE("AI/Restricted Object/Bridge/On Border");
+	
+//	CLevelGraph::CPosition	pos = ai().level_graph().vertex_position(position);
+//	xr_vector<u32>::const_iterator	I = object().border().begin();
+//	xr_vector<u32>::const_iterator	E = object().border().end();
+//	for ( ; I != E; ++I)
+//		if (ai().level_graph().inside(*I,pos)) {
+//			if (_abs(ai().level_graph().vertex_plane_y(*I) - position.y) < 2.f)
+//				return	(true);
+//		}
+
+	CLevelGraph::CPosition	pos = ai().level_graph().vertex_position(position);
+	xr_vector<u32>::const_iterator E = object().border().end();
+	xr_vector<u32>::const_iterator I = std::lower_bound	(
+		object().border().begin(),
+		object().border().end(),
+		pos.xz(),
+		CFindByXZ_predicate()
+	);
+
+	if ((I == E) || (ai().level_graph().vertex(*I)->position().xz() != pos.xz()))
+		return			(false);
+
+	for (I ; I != E; ++I) {
+		if (ai().level_graph().vertex(*I)->position().xz() != pos.xz())
+			break;
+
+		if (_abs(ai().level_graph().vertex_plane_y(*I) - position.y) < 2.f)
+			return	(true);
+	}	
+
 	return				(false);
+
+	STOP_PROFILE;
 }

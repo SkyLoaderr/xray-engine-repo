@@ -49,3 +49,19 @@ bool CSpaceRestrictionBase::inside			(const Fvector &position)
 {
 	return							(inside(position,DEFAULT_RADIUS));
 }
+
+struct SortByXZ_predicate {
+	IC	bool	operator()	(u32 v0, u32 v1) const
+	{
+		return						(ai().level_graph().vertex(v0)->position().xz() < ai().level_graph().vertex(v1)->position().xz());
+	}
+};
+
+void CSpaceRestrictionBase::process_borders			()
+{
+	std::sort					(m_border.begin(),m_border.end());
+	xr_vector<u32>::iterator	I = unique(m_border.begin(),m_border.end());
+	m_border.erase				(I,m_border.end());
+	std::sort					(m_border.begin(),m_border.end(),SortByXZ_predicate());
+}
+

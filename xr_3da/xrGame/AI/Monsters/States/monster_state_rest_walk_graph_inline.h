@@ -19,9 +19,9 @@ CStateMonsterRestWalkGraphAbstract::~CStateMonsterRestWalkGraph	()
 TEMPLATE_SPECIALIZATION
 void CStateMonsterRestWalkGraphAbstract::execute()
 {
-	object->set_action				(ACT_WALK_FWD);
 	object->detour_graph_points		();
-	object->CSoundPlayer::play		(MonsterSpace::eMonsterSoundIdle, 0,0,object->get_sd()->m_dwIdleSndDelay);
+	object->set_action				(ACT_WALK_FWD);
+	object->set_state_sound			(MonsterSpace::eMonsterSoundIdle);
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiMonsterDebug)) {

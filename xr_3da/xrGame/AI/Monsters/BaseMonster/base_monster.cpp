@@ -397,6 +397,35 @@ void CBaseMonster::State_PlaySound(u32 internal_type, u32 max_stop_time)
 		CSoundPlayer::play(internal_type, 0, 0, max_stop_time);
 }
 
+void CBaseMonster::set_state_sound(u32 type, bool once)
+{
+	if (once) {
+	
+		CSoundPlayer::play(type);
+	
+	} else {
+
+		u32 delay = 0;
+		switch (type) {
+		case MonsterSpace::eMonsterSoundIdle : 
+		
+			delay = get_sd()->m_dwIdleSndDelay;
+			break;
+		case MonsterSpace::eMonsterSoundEat:
+			delay = get_sd()->m_dwEatSndDelay;
+			break;
+		case MonsterSpace::eMonsterSoundAttack:
+		case MonsterSpace::eMonsterSoundPanic:
+			delay = get_sd()->m_dwAttackSndDelay;
+			break;
+		}
+
+		CSoundPlayer::play(type, 0, 0, delay);
+	}
+}
+
+
+
 void CBaseMonster::SetState(IState *pS, bool bSkipInertiaCheck)
 {
 	if (CurrentState != pS) {

@@ -14,7 +14,7 @@ protected:
 	bool							m_initialized;
 
 protected:
-	IC		void					process_borders			();
+			void					process_borders			();
 
 public:
 									CSpaceRestrictionBase	();
