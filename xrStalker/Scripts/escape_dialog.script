@@ -20,10 +20,6 @@ function bandits_dead(first_speaker, second_speaker)
     return(first_speaker:has_info("escape_factory_bandits_dead"))
 end
 
-function bandits_alive(first_speaker, second_speaker)
-    return(first_speaker:dont_has_info("escape_factory_bandits_dead"))
-end
-
 function set_dialog_thank(first_speaker, second_speaker)
 	first_speaker:set_start_dialog("escape_novice_thank_actor")
 end

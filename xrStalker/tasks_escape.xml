@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding="windows-1251"?>
+
+<game_tasks_data>
+	<game_task id="blockpost_case">
+		<objective>
+			<text>Steal the case from blockpost</text>
+		</objective>
+	</game_task>
+
+</game_tasks_data>

@@ -139,9 +139,6 @@
 				RelativePath=".\color_defs.xml">
 			</File>
 			<File
-				RelativePath=".\game_tasks.xml">
-			</File>
-			<File
 				RelativePath=".\ingame_msglog_mp.xml">
 			</File>
 			<File
@@ -293,6 +290,23 @@
 			<File
 				RelativePath=".\info_portions_test.xml">
 			</File>
+			<Filter
+				Name="tasks"
+				Filter="">
+				<File
+					RelativePath=".\game_tasks.xml">
+				</File>
+				<File
+					RelativePath=".\tasks_escape.xml">
+				</File>
+			</Filter>
+			<Filter
+				Name="storyline"
+				Filter="">
+				<File
+					RelativePath=".\info_escape.xml">
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Weapons"

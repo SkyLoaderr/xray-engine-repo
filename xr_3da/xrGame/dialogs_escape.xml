@@ -40,7 +40,7 @@
 			<next>13</next>
 		</phrase>
 		<phrase id="5">
-	        <precondition>escape.trader_need_blockpost_box</precondition>
+	        <precondition>escape_dialog.trader_need_blockpost_box</precondition>
 			<text>Ну чтож, ты мой должник, я попрошу тебя кое о чем. Сделаешь, и мы в рассчете.\n Нужно спереть ящик с блокпоста. Только осторожно.\n Они когда обижаются, то вокруг такой шмон наводят, что даже крысы разбегаются.</text>
 			<next>6</next>
 			<next>7</next>
@@ -48,7 +48,6 @@
 		<phrase id="6">
 			<text>Хорошо, я постараюсь сделать все незаметно.</text>
 	        <give_info>escape_need_blockpost_case</give_info>
-	        <action>escape.task_blockpost_case_begin</action>
 			<next>8</next>
 		</phrase>
 		<phrase id="7">
@@ -62,11 +61,11 @@
 			<text>Ну и хам же ты. Немудрено, что тебя даже на том свете не приняли.</text>
 		</phrase>
 		<phrase id="12">
-	                <precondition>escape.trader_dont_has_job</precondition>
+	                <precondition>escape_dialog.trader_dont_has_job</precondition>
 			<text>Не, пока ничего нету.</text>
 		</phrase>
 		<phrase id="13">
-	                <precondition>escape.trader_alredy_give_job</precondition>
+	                <precondition>escape_dialog.trader_alredy_give_job</precondition>
 			<text>Кажется ты уже что-то обещал мне сделать, и еще не сделал. Пока не сделаешь - никаких новых заданий.</text>
 		</phrase>
 		<phrase id="15">
@@ -76,11 +75,11 @@
     </dialog>
 
     <dialog id="escape_trader_done_blockpost_box">
-        <precondition>escape.have_blockpost_case</precondition>
+        <precondition>escape_dialog.have_blockpost_case</precondition>
 	<phrase_list>
 		<phrase id="0">
 			<text>Вот твой ящик.</text>
-	        <action>escape.give_blockpost_case</action>
+	        <action>escape_dialog.give_blockpost_case</action>
 	        <give_info>escape_have_blockpost_case</give_info>
 			<next>2</next>			
 		</phrase>			
@@ -285,22 +284,22 @@
                 <text>Как нибудь в другой раз.</text>
             </phrase>
             <phrase id="3">
-                <precondition>escape.haveAK</precondition>
+                <precondition>escape_dialog.haveAK</precondition>
                 <text>На, возьми калаш, может он тебе подойдет...</text>
                 <next>4</next>
-                <action>escape.give_kalash_to_loser</action>
+                <action>escape_dialog.give_kalash_to_loser</action>
                 <give_info>escape_novice_has_weapon</give_info>
             </phrase>
             <phrase id="6">
-                <precondition>escape.haveTOZ</precondition>
+                <precondition>escape_dialog.haveTOZ</precondition>
                 <text>На, возьми винтовку, может она тебе подойдет...</text>
                 <next>4</next>
-                <action>escape.give_toz_to_loser</action>
+                <action>escape_dialog.give_toz_to_loser</action>
                 <give_info>escape_novice_has_weapon</give_info>
             </phrase>
             <phrase id="4">
                 <text>Спасибо, брат... Я не забуду твою помощь. Теперь урки поплатятся.\n          [отношение изменены до "Друга"]</text>
-		<action>escape.set_dialog_thank</action>
+		<action>escape_dialog.set_dialog_thank</action>
             </phrase>
             <phrase id="5">
                 <text>Ну давай, я буду тут если что.</text>
@@ -311,7 +310,7 @@
     <dialog id="escape_novice_thank_actor">
         <phrase_list>
             <phrase id="0">
-		<precondition>escape.bandits_dead</precondition>
+			<precondition>escape_dialog.bandits_dead</precondition>
                 <text>Ну спасибо браток. Не забуду. Я твой должник навеки.</text>
             </phrase>
         </phrase_list>
