@@ -149,8 +149,6 @@ public:
 };
 
 
-#pragma comment(lib,"x:\\dxt.lib")
-extern "C" __declspec(dllimport) bool __cdecl DXTCompress(LPCSTR out_name, BYTE* raw_data, DWORD w, DWORD h, DWORD pitch, STextureParams* fmt, DWORD depth);
 extern void LightPoint(RAPID::XRCollide* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end);
 
 DEF_MAP(Implicit,DWORD,ImplicitDeflector);

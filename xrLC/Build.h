@@ -13,6 +13,9 @@
 #include "xrShaderDef.h"
 #include "textureparams.h"
 
+#pragma comment(lib,"x:\\dxt.lib")
+extern "C" __declspec(dllimport) bool __cdecl DXTCompress(LPCSTR out_name, BYTE* raw_data, DWORD w, DWORD h, DWORD pitch, STextureParams* fmt, DWORD depth);
+
 struct b_BuildTexture : public b_texture
 {
 	STextureParams	THM;
