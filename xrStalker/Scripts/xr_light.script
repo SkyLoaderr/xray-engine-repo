@@ -4,12 +4,20 @@ class "torch_light"
 function torch_light:__init (npc)
     self.npc = npc
     self.always_on = false
+    self.npc_id = npc:id ()
+    db.storage[self.npc_id].light_state = false
+    db.storage[self.npc_id].npc_control = false
 end
 ---------------------------------
 function torch_light:update ()
 
     local obj = self.npc:object ("device_torch")
     if obj == nil or self.npc:alive () == false then return end
+    
+    if db.storage[self.npc_id].npc_control == true then
+       obj:enable_attachable_item (db.storage[self.npc_id].light_state)
+       return
+    end    
     
     if utils.is_day () == false or self.always_on == true then
        obj:enable_attachable_item (true)

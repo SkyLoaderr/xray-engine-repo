@@ -12,8 +12,6 @@ class "motivator_binder" (object_binder)
 function motivator_binder:__init (obj) super(obj)
 	self.initialized = false
 	self.loaded = false
-
-	self.torch = xr_light.torch_light(obj)
 end
 
 function motivator_binder:extrapolate_callback(cur_pt)
@@ -55,6 +53,8 @@ function motivator_binder:reinit()
 ----------------------------------------------------------------------------------------------------------------------
     db.storage[self.object:id()] = {  followers = {} }
     self.st = db.storage[self.object:id()]
+    
+    self.torch = xr_light.torch_light(self.object)
 
     --' Положения тела
     self.st.state = xr_state.body_state(self.object)
