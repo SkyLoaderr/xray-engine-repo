@@ -18,10 +18,11 @@ CBlender_Compile::CBlender_Compile		()
 CBlender_Compile::~CBlender_Compile		()
 {
 }
-void	CBlender_Compile::Initialize		(Shader* _SH)
+void	CBlender_Compile::Compile		(ShaderElement* _SH)
 {
-	RS.Invalidate	();
 	SH =			_SH;
+	RS.Invalidate	();
+	BT->Compile		(*this);
 }
 void	CBlender_Compile::SetParams		(int iPriority, bool bStrictB2F, bool bLighting, bool bPixelShader)
 {

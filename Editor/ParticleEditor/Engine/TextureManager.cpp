@@ -372,6 +372,8 @@ void			CShaderManager::_DeleteConstantList(SConstantList* &L )
 //////////////////////////////////////////////////////////////////////
 void	CShaderManager::_ParseList(sh_list& dest, LPCSTR names)
 {
+    if (0==names) 		names 	= "$null";
+	
 	ZeroMemory(&dest, sizeof(dest));
 	char*	P = (char*) names;
 	svector<char,64>	N;
@@ -402,38 +404,64 @@ void	CShaderManager::_ParseList(sh_list& dest, LPCSTR names)
 	}
 }
 
+ShaderElement* CShaderManager::_CreateElement(	CBlender_Compile& C)
+{
+	// Options + Shader def
+	ShaderElement		S;
+	C.Compile			(&S);
+	
+	// Search equal in shaders array
+	for (DWORD it=0; it<elements.size(); it++) 
+	{
+		if (S.equal(*(elements[it])))	{
+			elements[it]->dwReference	++;
+			return elements[it];
+		}
+	}
+	
+	// Create new entry
+	ShaderElement*	N	= new ShaderElement(S);
+	N->dwReference		= 1;
+	elements.push_back	(N);
+	return N;
+}
+
 Shader*	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_constants, LPCSTR s_matrices)
 {
-	if (0==s_shader) 	s_shader	= "null";
-    if (0==s_textures) 	s_textures 	= "$null";
-    if (0==s_constants) s_constants = "$null";
-    if (0==s_matrices) 	s_matrices 	= "$null";
-
-	// Options + Shader def
-	Shader				S;
 	CBlender_Compile	C;
-	C.Initialize		(&S);
-	C.bEditor			= FALSE;
-	C.bLighting			= TRUE;
-	C.iLayers			= 1;
+	Shader				S;
 	
+	// Access to template
+	C.BT				= _GetBlender	(s_shader?s_shader:"null");
+	C.bEditor			= FALSE;
+	C.iLayers			= 1;
+#ifdef M_BORLAND
+    if (!C.BT)			{ ELog.Msg(mtError,"Can't find shader '%s'",s_shader); return 0; }
+	C.bEditor			= TRUE;
+#endif
+
 	// Parse names
 	_ParseList			(C.L_textures,	s_textures	);
 	_ParseList			(C.L_constants,	s_constants	);
 	_ParseList			(C.L_matrices,	s_matrices	);
 
-	// Compile shader
-	CBlender*	B		= _GetBlender	(s_shader);
-#ifdef M_BORLAND
-    if (!B)				{ ELog.Msg(mtError,"Can't find shader '%s'",s_shader); return 0; }
-	C.bEditor			= TRUE;
-#endif
-	B->Compile			(C);
+	// Compile element
+	C.iLOD				= 0;
+	C.bLighting			= FALSE;
+	S.lod0				= _CreateElement	(C);
+	// Compile element
+	C.iLOD				= 1;
+	C.bLighting			= FALSE;
+	S.lod1				= _CreateElement	(C);
+	// Compile element
+	C.iLOD				= 0;
+	C.bLighting			= TRUE;
+	S.lighting			= _CreateElement	(C);
 	
 	// Search equal in shaders array
 	for (DWORD it=0; it<shaders.size(); it++) 
 	{
-		if (S.equal(*(shaders[it])))	{
+		if (S.equal(shaders[it]))	{
 			shaders[it]->dwReference	++;
 			return shaders[it];
 		}
@@ -446,7 +474,7 @@ Shader*	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_cons
 	return N;
 }
 
-void CShaderManager::Delete(Shader* &S) 
+void CShaderManager::_DeleteElement(ShaderElement* &S) 
 {
 	if (0==S)	return;
 
@@ -458,6 +486,16 @@ void CShaderManager::Delete(Shader* &S)
 		_DeleteMatrixList	(P.M);
 		_DeleteConstantList	(P.C);
 	}
+	S->dwReference	--;
+}
+
+void CShaderManager::Delete(Shader* &S) 
+{
+	if (0==S)	return;
+
+	_DeleteElement	(S->lighting);
+	_DeleteElement	(S->lod1);
+	_DeleteElement	(S->lod0);
 	S->dwReference	--;
 	S				= 0;
 }

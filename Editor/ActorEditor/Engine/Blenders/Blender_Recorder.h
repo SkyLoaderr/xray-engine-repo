@@ -21,7 +21,8 @@ public:
 	int					iLOD;
 private:
 	CSimulator			RS;
-	Shader*				SH;
+	CBlender*			BT;
+	ShaderElement*		SH;
 
 	STextureList		passTextures;
 	SMatrixList			passMatrices;
@@ -62,7 +63,7 @@ public:
 	CBlender_Compile	();
 	~CBlender_Compile	();
 	
-	void				Initialize			(Shader* _SH);
+	void				Compile				(ShaderElement* _SH);
 };
 #pragma pack(pop)
 

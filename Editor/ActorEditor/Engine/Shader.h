@@ -6,6 +6,7 @@
 #define SHADER__INCLUDED_
 #pragma once
 
+class	ENGINE_API	CBlender_Compile;
 class	ENGINE_API	CBlender;
 class	ENGINE_API	CTexture;
 class	ENGINE_API	CMatrix;
@@ -59,7 +60,7 @@ public:
 		DWORD	bPixelShader:	1;
 	};
 public:
-	Shader()	{
+	ShaderElement	()	{
 		ZeroMemory			(this,sizeof(*this));
 		Flags.iPriority		= 1;
 		Flags.bStrictB2F	= FALSE;
@@ -71,7 +72,7 @@ public:
 	SFlags					Flags;
 	svector<CPass,8>		Passes;
 	
-	IC BOOL					equal	(Shader& S)
+	IC BOOL					equal	(ShaderElement& S)
 	{
 		if (Flags.iPriority != S.Flags.iPriority)	return FALSE;
 		if (Flags.bStrictB2F != S.Flags.bStrictB2F)	return FALSE;
@@ -79,16 +80,29 @@ public:
 		if (Passes.size() != S.Passes.size())		return FALSE;
 		for (DWORD p=0; p<Passes.size(); p++)
 			if (!Passes[p].equal(S.Passes[p]))		return FALSE;
-		return TRUE;
+			return TRUE;
 	}
+	IC BOOL					equal	(ShaderElement* S)
+	{	return	equal(*S);	}
 };
 
 struct ENGINE_API		Shader 
 {
 public:
-	ShaderElement*		lod0;
-	ShaderElement*		lod1;
-	ShaderElement*		lighting;
+	DWORD					dwReference;
+	ShaderElement*			lod0;
+	ShaderElement*			lod1;
+	ShaderElement*			lighting;
+	
+	IC BOOL					equal	(Shader& S)
+	{
+		return 
+			lod0->equal(S.lod0) && 
+			lod1->equal(S.lod1) && 
+			lighting->equal(S.lighting);
+	}
+	IC BOOL					equal	(Shader* S)
+	{	return	equal(*S);	}
 };
 
 #endif // !defined(AFX_SHADER_H__9CBD70DD_E147_446B_B4EE_5DA321EB726F__INCLUDED_)

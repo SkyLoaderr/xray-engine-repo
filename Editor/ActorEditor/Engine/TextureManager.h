@@ -50,6 +50,7 @@ private:
 	vector<SConstantList*>			lst_constants;
 	
 	// main shader-array
+	vector<ShaderElement*>			elements;
 	vector<Shader*>					shaders;
 
 	// cache
@@ -116,21 +117,23 @@ public:
 	void							_DeleteMatrixList	(SMatrixList* &L);
 	SConstantList*					_CreateConstantList	(SConstantList& L);
 	void							_DeleteConstantList	(SConstantList* &L);
-
+	ShaderElement*					_CreateElement		(CBlender_Compile& C);
+	void							_DeleteElement		(ShaderElement* &L);
+	
 	CShaderManager			()
 	{
 		bDeferredLoad		= FALSE;
 		cache.Invalidate	();
 	}
-
+	
 	void	xrStartUp		();
 	void	xrShutDown		();
-
+	
 	void	OnDeviceCreate	(CStream* F);
 	void	OnDeviceCreate	(LPCSTR name);
 	void	OnDeviceDestroy	(BOOL   bKeepTextures);
 	void	OnFrameEnd		();
-
+	
 	// Creation/Destroying
 	Shader*	Create			(LPCSTR s_shader=0, LPCSTR s_textures=0, LPCSTR s_constants=0, LPCSTR s_matrices=0);
 	void	Delete			(Shader*	&S);
@@ -144,14 +147,18 @@ public:
 	IC void	set_Code		(DWORD dwCode);
 	IC void set_Textures	(STextureList* T);
 	IC void set_Matrices	(SMatrixList* M);
-	IC void set_Constants	(SConstantList* C, BOOL bPS);
-	IC void set_Shader		(Shader* S, DWORD pass=0)
+	IC void set_Constants	(SConstantList* C, BOOL		bPS);
+	IC void set_Element		(ShaderElement* S, DWORD	pass=0)
 	{
 		CPass&	P		= S->Passes[pass];
 		set_Code		(P.dwStateBlock);
 		set_Textures	(P.T);
 		set_Matrices	(P.M);
 		set_Constants	(P.C,S->Flags.bPixelShader);
+	}
+	IC void set_Shader		(Shader* S, DWORD pass=0)
+	{
+		set_Element			(S->lod0,pass);
 	}
 };
 
