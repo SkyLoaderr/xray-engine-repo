@@ -29,12 +29,13 @@ CUIZoneMap::~CUIZoneMap()
 {    
 }
 
-void CUIZoneMap::Init(){
+void CUIZoneMap::Init()
+{
 	DWORD align = alLeft|alTop;
-	back.Init	("ui\\hud_map_back","font",BASE_LEFT,BASE_TOP,256,256,align);
+	back.Init	("ui\\hud_map_back",	"font",BASE_LEFT,BASE_TOP,256,256,align);
 	back.SetRect(0,0,153,148);
-	compass.Init("ui\\hud_map_arrow","font",124,117,32,32,align);
-	entity.Init	("ui\\hud_map_point","font",4,4);
+	compass.Init("ui\\hud_map_arrow",	"font",124,117,32,32,align);
+	entity.Init	("ui\\hud_map_point",	"font",4,4);
 	entity.SetRect(0,0,3,3);
 
 	Level().HUD()->ClientToScreen(MAP_LEFT+BASE_LEFT,MAP_TOP+BASE_TOP,map_center,align);
