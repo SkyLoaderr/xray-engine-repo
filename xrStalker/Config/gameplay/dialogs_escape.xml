@@ -498,4 +498,29 @@
             </phrase>
         </phrase_list>
     </dialog>
+    
+    
+	<dialog id="tutorial_wounded">
+		<phrase_list>
+			<phrase id="0">
+				<text>Брат, поделись аптечкой, помираю!</text>
+				<next>1</next>
+				<next>3</next>
+			</phrase>
+			<phrase id="1">
+				<precondition>dialogs.medikit_yes</precondition>
+				<text>Возьми, потом сочтемся</text>
+				<action>dialogs.transfer_medikit2</action>
+				<give_info>tutorial_wounded_help</give_info>
+				<next>11</next>
+			</phrase>
+			<phrase id="11">
+				<text>Спасибо, браток. Волк с тобой расчитается.</text>
+			</phrase>
+			<phrase id="3">
+				<precondition>dialogs.medikit_no</precondition>
+				<text>Увы, нет у меня аптечки.</text>
+			</phrase>
+		</phrase_list>
+	</dialog>         
 </game_dialogs>
