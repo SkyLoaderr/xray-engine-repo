@@ -46,6 +46,7 @@ public:
 		u32		l_point_s,	l_point;
 		u32		l_spot_s,	l_spot;
 		u32		o_queries,	o_culled;
+		u32		ic_total,	ic_culled;
 	}			stats;
 public:
 	// Sector detection and visibility
