@@ -204,7 +204,7 @@ class CPHElement:  public CPhysicsElement {
 	dBodyID					m_body;
 	dGeomID					m_group;
 ///////////////////////////////
-
+	vector<CPHElement*>		m_attached_elements;
 	CPHElement				*m_parent_element;
 	CPHShell				*m_shell;
 	CPHInterpolation		m_body_interpolation;
@@ -300,6 +300,7 @@ public:
 		k_w=0.05f;
 		k_l=0.0002f;//1.8f;
 		attached=false;
+		//m_attached_element=NULL;
 	};
 		//CPHElement(){ m_space=ph_world->GetSpace();};
 		virtual ~CPHElement	();

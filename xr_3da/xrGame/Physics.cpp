@@ -2,7 +2,7 @@
 #include "PHDynamicData.h"
 #include "Physics.h"
 #include "tri-colliderknoopc/dTriList.h"
-//#include "c:\sdk\odeLast\ode\ode\src\collision_kernel.h"
+#include "c:\sdk\odeLast\ode\ode\src\collision_kernel.h"
 #include <../ode/src/joint.h>
 //#include "dRay/include/dRay.h"
 #include "ExtendedGeom.h"
@@ -836,7 +836,107 @@ dContact contacts[N];
 	
 	
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+static void SaveContacts(dGeomID o1, dGeomID o2,dJointGroupID jointGroup){
+const ULONG N = 100;
+dContact contacts[N];
 
+		// get the contacts up to a maximum of N contacts
+		ULONG n;
+	
+		n = dCollide(o1, o2, N, &contacts[0].geom, sizeof(dContact));	
+		
+	if(n>N)
+		n=N;
+	ULONG i;
+
+
+	for(i = 0; i < n; ++i)
+	{
+		if(i!=0) {
+		  dReal dif=dFabs(contacts[i-1].geom.pos[0]-contacts[i].geom.pos[0])+
+				dFabs(contacts[i-1].geom.pos[1]-contacts[i].geom.pos[1])+
+				dFabs(contacts[i-1].geom.pos[2]-contacts[i].geom.pos[2]);
+		  if(dif==0.f) continue;
+		}
+
+       
+		if(dGeomGetClass(contacts[i].geom.g1)!=dTriListClass &&
+			dGeomGetClass(contacts[i].geom.g2)!=dTriListClass){
+											contacts[i].surface.mu =1.f;// 5000.f;
+											contacts[i].surface.soft_erp=1.f;//ERP(world_spring,world_damping);
+											contacts[i].surface.soft_cfm=1.f;//CFM(world_spring,world_damping);
+											contacts[i].surface.bounce = 0.01f;//0.1f;
+											}
+
+
+		bool pushing_neg=false;
+		dxGeomUserData* usr_data_1=NULL;
+		dxGeomUserData* usr_data_2=NULL;
+		if(dGeomGetClass(contacts[i].geom.g1)==dGeomTransformClass){
+				const dGeomID geom=dGeomTransformGetGeom(contacts[i].geom.g1);
+				usr_data_1 = dGeomGetUserData(geom);
+			}
+		else
+			usr_data_1 = dGeomGetUserData(contacts[i].geom.g1);
+
+		if(dGeomGetClass(contacts[i].geom.g2)==dGeomTransformClass){
+				const dGeomID geom=dGeomTransformGetGeom(contacts[i].geom.g2);
+				usr_data_2 = dGeomGetUserData(geom);
+			}
+		else
+			usr_data_2 = dGeomGetUserData(contacts[i].geom.g2);
+/////////////////////////////////////////////////////////////////////////////////////////////////
+		if(usr_data_2){ 
+				pushing_neg=usr_data_2->pushing_b_neg||usr_data_2->pushing_neg;
+				contacts[i].surface.mu*=GMLib.GetMaterial(usr_data_2->material)->fPHFriction;
+				contacts[i].surface.soft_cfm*=GMLib.GetMaterial(usr_data_2->material)->fPHSpring;
+				contacts[i].surface.soft_erp*=GMLib.GetMaterial(usr_data_2->material)->fPHDamping;
+			if(usr_data_2->ph_object){
+					usr_data_2->ph_object->InitContact(&contacts[i]);
+					//if(pushing_neg) contacts[i].surface.mu=dInfinity;
+					//dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
+					//dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
+					//continue;
+			}
+		}
+///////////////////////////////////////////////////////////////////////////////////////
+		if(usr_data_1){ 
+
+				pushing_neg=usr_data_1->pushing_b_neg||
+				usr_data_1->pushing_neg;
+				contacts[i].surface.mu*=GMLib.GetMaterial(usr_data_1->material)->fPHFriction;
+				contacts[i].surface.soft_cfm*=GMLib.GetMaterial(usr_data_1->material)->fPHSpring;
+				contacts[i].surface.soft_erp*=GMLib.GetMaterial(usr_data_1->material)->fPHDamping;
+			if(usr_data_1->ph_object){
+					usr_data_1->ph_object->InitContact(&contacts[i]);
+					//if(pushing_neg) contacts[i].surface.mu=dInfinity;
+					//dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
+					//dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
+					//continue;
+				}
+
+		}
+
+		contacts[i].surface.mode =dContactBounce|dContactApprox1|dContactSoftERP|dContactSoftCFM;
+
+		contacts[i].surface.soft_erp=ERP(world_spring*contacts[i].surface.soft_cfm,
+										 world_damping*contacts[i].surface.soft_erp);
+		contacts[i].surface.soft_cfm=CFM(world_spring*contacts[i].surface.soft_cfm,
+										 world_damping*contacts[i].surface.soft_erp);
+		contacts[i].surface.bounce_vel =1.5f;//0.005f;
+
+
+		if(pushing_neg) 
+			contacts[i].surface.mu=dInfinity;
+
+		dJointID c = dJointCreateContact(phWorld, jointGroup, &contacts[i]);
+		dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
+		}
+	
+	
+}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////Implementation for CPhysicsElement
 void CPHElement::			add_Box		(const Fobb&		V){
@@ -1004,6 +1104,7 @@ dBodyEnable(m_body);
 }
 
 void CPHElement::			destroy	(){
+	m_attached_elements.clear();
 	dJointGroupDestroy(m_saved_contacts);
 	vector<dGeomID>::iterator i;
 
@@ -1019,7 +1120,6 @@ void CPHElement::			destroy	(){
 	//if(!attached)
 	dGeomDestroy(*i);
 
-	}
 
 
 	if(m_body && !attached)
@@ -1031,8 +1131,11 @@ void CPHElement::			destroy	(){
 
 
 
-	if(m_spheras_data.size()+m_boxes_data.size()>1)
-	dGeomDestroy(m_group);
+	if(m_group){
+				dGeomDestroy(m_group);
+				m_group=NULL;
+				}
+	}
 
 	m_geoms.clear();
 	m_trans.clear();
@@ -1358,8 +1461,9 @@ void CPHElement::PhDataUpdate(dReal step){
 				}
 				//const dReal k_w=0.1f;
 				//dBodyAddTorque(m_body,-rot[0]*k_w,-rot[1]*k_w,-rot[2]*k_w);
-				Disabling();
 				ReEnable();
+				Disabling();
+			
 	
 				//const dReal k_w=0.05f;
 				//const dReal k_l=0.0002f;//1.8f;
@@ -1501,7 +1605,7 @@ void	CPHElement::Disabling(){
 }
 
 void CPHElement::Disable(){
-	
+	/*
 	if(!b_contacts_saved){
 		int num=dBodyGetNumJoints(m_body);
 		for(int i=0;i<num;i++){
@@ -1521,17 +1625,34 @@ void CPHElement::Disable(){
 		}
 	}
 	
+*/
+if(!dBodyIsEnabled(m_body)) return;
+if(m_group)
+	 SaveContacts(ph_world->GetMeshGeom(),m_group,m_saved_contacts);
+else 
+	SaveContacts(ph_world->GetMeshGeom(),m_trans[0],m_saved_contacts);
 
+vector<CPHElement*>::iterator i;
+for(i=m_attached_elements.begin();i!=m_attached_elements.end();i++){
+
+
+if((*i)->m_group)
+	 SaveContacts(ph_world->GetMeshGeom(),(*i)->m_group,m_saved_contacts);
+else 
+	SaveContacts(ph_world->GetMeshGeom(),(*i)->m_trans[0],m_saved_contacts);
+
+}
+			
 	dBodyDisable(m_body);
 }
 
 
 void CPHElement::ReEnable(){
-	if(b_contacts_saved && dBodyIsEnabled(m_body))
-	{
+	//if(b_contacts_saved && dBodyIsEnabled(m_body))
+	//{
 		dJointGroupEmpty(m_saved_contacts);
 		b_contacts_saved=false;
-	}
+	//}
 }
 
 void CPHShell::PhTune(dReal step){
@@ -1693,6 +1814,13 @@ void CPHElement::DynamicAttach(CPHElement* E)
 	E->m_inverse_local_transform.mulA(RfRf);
 	//E->fixed_position.set(RfRf);
 	for(i=E->m_trans.begin();i!=E->m_trans.end();i++){
+	//	if(!m_group) {
+	//		m_group=dCreateGeomGroup(0);
+	//		dSpaceRemove (ph_world->GetSpace(), m_trans[0]);
+	//		dGeomGroupAdd(m_group,m_trans[0]);
+	//	}
+	//	dSpaceRemove (ph_world->GetSpace(), *i);
+	//	dGeomGroupAdd(m_group,*i);
 		dGeomID geom=dGeomTransformGetGeom(*i);
 		const dReal* pos=dGeomGetPosition(geom);
 		const dReal* rot=dGeomGetRotation(geom);
@@ -1732,6 +1860,7 @@ void CPHElement::DynamicAttach(CPHElement* E)
 		E->m_body=m_body;
 		E->m_body_interpolation.SetBody(m_body);
 		E->attached=true;
+		m_attached_elements.push_back(E);
 	//E->m_body;
 
 }
