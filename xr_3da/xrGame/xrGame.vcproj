@@ -5509,6 +5509,16 @@
 							</File>
 						</Filter>
 						<Filter
+							Name="GraviZone"
+							Filter="">
+							<File
+								RelativePath=".\GraviZone.cpp">
+							</File>
+							<File
+								RelativePath=".\GraviZone.h">
+							</File>
+						</Filter>
+						<Filter
 							Name="LevelChanger"
 							Filter="">
 							<File
@@ -5559,26 +5569,6 @@
 							</File>
 						</Filter>
 						<Filter
-							Name="ZoneEffector"
-							Filter="">
-							<File
-								RelativePath=".\zone_effector.cpp">
-							</File>
-							<File
-								RelativePath=".\zone_effector.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="GraviZone"
-							Filter="">
-							<File
-								RelativePath=".\GraviZone.cpp">
-							</File>
-							<File
-								RelativePath=".\GraviZone.h">
-							</File>
-						</Filter>
-						<Filter
 							Name="TeamBaseZone"
 							Filter="">
 							<File
@@ -5586,6 +5576,16 @@
 							</File>
 							<File
 								RelativePath=".\team_base_zone.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="ZoneEffector"
+							Filter="">
+							<File
+								RelativePath=".\zone_effector.cpp">
+							</File>
+							<File
+								RelativePath=".\zone_effector.h">
 							</File>
 						</Filter>
 					</Filter>
