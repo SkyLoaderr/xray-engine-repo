@@ -373,8 +373,14 @@ public:
 
 	bool operator () (CWound* pWound)
 	{
-		float burn_size = pWound->TypeSize(ALife::eHitTypeBurn);
-		return (burn_size>0 && (burn_size<fStopBurnWoundSize || !bAlive));
+
+		if(pWound->GetDestroy())
+			return true;
+		else
+		{
+			float burn_size = pWound->TypeSize(ALife::eHitTypeBurn);
+			return (burn_size>0 && (burn_size<fStopBurnWoundSize || !bAlive));
+		}
 	};
 };
 
@@ -384,14 +390,25 @@ void CEntityAlive::UpdateFireParticles()
 	if(m_ParticlesWoundList.empty()) return;
 	
 	RemoveWoundPred remove_pred(!!g_Alive(), m_fStopBurnWoundSize);
-	WOUND_LIST_it last_it = remove_if(m_ParticlesWoundList.begin(),m_ParticlesWoundList.end(),remove_pred);
+	WOUND_LIST_it last_it = remove_if(m_ParticlesWoundList.begin(),
+										m_ParticlesWoundList.end(),
+										remove_pred);
 	
 	for(WOUND_LIST_it it = last_it;  it != m_ParticlesWoundList.end(); it++)
 	{
 		CWound* pWound = *it;
+
 		CParticlesPlayer::AutoStopParticles(pWound->GetParticleName(),
 											pWound->GetParticleBoneNum());
 	}
 
 	m_ParticlesWoundList.erase(last_it,m_ParticlesWoundList.end());
 }
+
+ALife::ERelationType CEntityAlive::tfGetRelationType	(const CEntityAlive *tpEntityAlive) const
+{
+	if (tpEntityAlive->g_Team() != g_Team())
+		return(ALife::eRelationTypeEnemy);
+	else
+		return(ALife::eRelationTypeFriend);
+};

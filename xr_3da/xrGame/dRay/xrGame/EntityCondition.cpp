@@ -151,6 +151,7 @@ void CEntityCondition::reinit	()
 
 void CEntityCondition::ChangeHealth(float value)
 {
+	VERIFY(_valid(value));
 	m_fDeltaHealth += value;
 }
 void CEntityCondition::ChangePower(float value)
@@ -187,7 +188,7 @@ void CEntityCondition::ChangeBleeding(float percent)
 }
 bool RemoveWoundPred(CWound* pWound)
 {
-	return (0 == pWound->TotalSize());
+	return pWound->GetDestroy();
 }
 
 void  CEntityCondition::UpdateWounds		()
@@ -406,6 +407,8 @@ void CEntityCondition::UpdateHealth()
 	for(WOUND_VECTOR_IT it = m_WoundVector.begin(); m_WoundVector.end() != it; ++it)
 	{
 		(*it)->Incarnation( m_fV_WoundIncarnation * m_iDeltaTime/1000);
+		if(0 == (*it)->TotalSize())
+			(*it)->SetDestroy(true);
 	}
 }
 void CEntityCondition::UpdatePower()

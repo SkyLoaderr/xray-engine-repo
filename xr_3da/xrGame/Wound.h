@@ -29,6 +29,9 @@ public:
 	const ref_str& GetParticleName	()						{return m_sParticleName;}
 	void	SetParticleName	(ref_str particle_name) {m_sParticleName = particle_name;}
 
+	void  SetDestroy(bool destroy) {m_bToBeDestroy = destroy;}
+	bool  GetDestroy()			   {return m_bToBeDestroy;}
+
 protected:
 	//косточка на которой появилась рана
 	u16 m_iBoneNum;
@@ -40,4 +43,7 @@ protected:
 
 	//список составляющих раны 
 	HitTypeSVec m_Wounds;
+
+
+	bool		m_bToBeDestroy;
 };

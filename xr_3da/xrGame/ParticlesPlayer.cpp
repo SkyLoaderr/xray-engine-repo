@@ -127,7 +127,8 @@ void CParticlesPlayer::StartParticles(const ref_str& particles_name, u16 bone_nu
 	Fmatrix xform;
 	MakeXFORM						(object,pBoneInfo->index,particles_info->dir,pBoneInfo->offset,xform);
 	particles_info->ps->UpdateParent(xform,zero_vel);
-	particles_info->ps->Play		();
+	if(!particles_info->ps->IsPlaying())
+		particles_info->ps->Play		();
 
 	m_bActiveBones = true;
 }

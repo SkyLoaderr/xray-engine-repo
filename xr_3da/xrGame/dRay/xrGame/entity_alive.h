@@ -53,14 +53,8 @@ public:
 	// Visibility related
 	virtual	float			ffGetFov				()	const			= 0;	
 	virtual	float			ffGetRange				()	const			= 0;	
-	virtual	ALife::ERelationType tfGetRelationType	(const CEntityAlive *tpEntityAlive) const
-	{
-		if (tpEntityAlive->g_Team() != g_Team())
-			return(ALife::eRelationTypeEnemy);
-		else
-			return(ALife::eRelationTypeFriend);
-	};
-
+	virtual	ALife::ERelationType tfGetRelationType	(const CEntityAlive *tpEntityAlive) const;
+	
 	virtual void			BuyItem					(LPCSTR buf);
 public:
 IC	CPHMovementControl* PMovement()
