@@ -84,7 +84,8 @@ CSE_Abstract *F_entity_Create			(LPCSTR caSection)
 		case CLSID_IITEM_ANTIRAD:
 		case CLSID_IITEM_FOOD:
 		case CLSID_IITEM_BOTTLE:
-		case CLSID_IITEM_MEDKIT:		return xr_new<CSE_ALifeItem>					(caSection);
+		case CLSID_IITEM_MEDKIT:		
+		case CLSID_IITEM_ATTACH:		return xr_new<CSE_ALifeItem>					(caSection);
 		//Info document
 		case CLSID_IITEM_DOCUMENT:		return xr_new<CSE_ALifeItemDocument> 			(caSection);
 		
