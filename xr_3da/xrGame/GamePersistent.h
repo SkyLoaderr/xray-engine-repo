@@ -19,6 +19,9 @@ public:
 						CGamePersistent			();
 	virtual				~CGamePersistent		();
 
+	virtual	void		OnAppActivate			();
+	virtual void		OnAppDeactivate			();
+
 	virtual void		OnAppStart				();
 	virtual void		OnAppEnd				();
 	virtual void		OnFrame					();

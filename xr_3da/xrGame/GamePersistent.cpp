@@ -152,3 +152,14 @@ float CGamePersistent::MtlTransparent(u32 mtl_idx)
 {
 	return GMLib.GetMaterialByIdx((u16)mtl_idx)->fVisTransparencyFactor;
 }
+
+void CGamePersistent::OnAppActivate		()
+{
+	Device.Pause(FALSE);
+}
+
+void CGamePersistent::OnAppDeactivate		()
+{
+	if(!bDedicatedServer)
+		Device.Pause(TRUE);
+}
