@@ -39,13 +39,13 @@ struct STestFootCallbackPars
 };
 
 
-float 	STestFootCallbackPars::calback_friction_factor					=	0.3f	;
+float 	STestFootCallbackPars::calback_friction_factor					=	0.7f	;
 float 	STestFootCallbackPars::depth_to_use_force						=	0.3f	;
 float 	STestFootCallbackPars::callback_force_factor					=	10.f	;
 float 	STestFootCallbackPars::depth_to_change_softness_pars			=	0.01f	;
 float 	STestFootCallbackPars::callback_cfm_factor						=	1.f		;
 float 	STestFootCallbackPars::callback_erp_factor						=	1.f		;
-float	STestFootCallbackPars::decrement_depth							=	0.3f	;
+float	STestFootCallbackPars::decrement_depth							=	0.00f	;
 
 template<class Pars>
 void __stdcall TTestDepthCallback (bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
@@ -86,8 +86,8 @@ void __stdcall TTestDepthCallback (bool& do_colide,dContact& c,SGameMtl* materia
 		}
 		else if(test_depth>Pars.depth_to_change_softness_pars)
 		{
-			c.surface.soft_cfm*=Pars.callback_cfm_factor;
-			c.surface.soft_erp*=Pars.callback_erp_factor;
+			c.surface.soft_cfm=Pars.callback_cfm_factor;
+			c.surface.soft_erp=Pars.callback_erp_factor;
 		}	
 	}
 
@@ -195,9 +195,9 @@ bool CActor:: ActivateBox(DWORD id)
 
 
 //////////////////////////////////pars///////////////////////////////////////////
-	int		num_it=1;
+	int		num_it=2;
 	int		num_steps=10;
-	float	resolve_depth=0.1f;
+	float	resolve_depth=0.01f;
 	STestCallbackPars::callback_cfm_factor=1.f;//300000000.f;
 	STestFootCallbackPars::callback_erp_factor=1.f;//0.00000001f;
 	if(!character_exist)
@@ -214,7 +214,9 @@ bool CActor:: ActivateBox(DWORD id)
 	float	fnum_steps_r=1.f/fnum_steps;
 
 	Fvector vel;
+	Fvector pos;
 	m_PhysicMovementControl->GetCharacterVelocity(vel);
+	m_PhysicMovementControl->GetCharacterPosition(pos);
 	const Fbox& box =m_PhysicMovementControl->Box();
 	float pass=box.x2-box.x1;
 	float max_vel=pass/fnum_it/fnum_steps/fixed_step; 
@@ -225,25 +227,27 @@ bool CActor:: ActivateBox(DWORD id)
 	for(int m=0;num_steps>m;++m)
 	{
 		float param =fnum_steps_r*(1+m);
-		float fun_param=param*param;
-		float fun_param1=fun_param*fun_param;
-		float fun_param2=fun_param1*fun_param1;
-		float fun_param3=fun_param2*fun_param2;
-		float fun_param4=fun_param3*fun_param3;
-		STestCallbackPars::callback_cfm_factor=(0.0000000000001f+fun_param4*3000000000.f);
-		STestCallbackPars::callback_erp_factor=1.f/(0.7f+fun_param4*3000000000.f);
+		//float fun_param=param*param;
+		//float fun_param1=fun_param*fun_param;
+		//float fun_param2=fun_param1*fun_param1;
+		//float fun_param3=fun_param2*fun_param2;
+		//float fun_param4=fun_param3*fun_param3;
+		STestCallbackPars::callback_cfm_factor=0.001f*world_cfm;//(0.0000000000001f+fun_param4*3000000000.f);
+		STestCallbackPars::callback_erp_factor=1.f;//1.f/(0.7f+fun_param4*3000000000.f);
+		STestFootCallbackPars::callback_cfm_factor=0.001f*world_cfm;//(0.0000000000001f+fun_param4*3000000000.f);
+		STestFootCallbackPars::callback_erp_factor=1.f;//1.f/(0.7f+fun_param4*3000000000.f);
 
-		m_PhysicMovementControl->InterpolateBox(id,fun_param1*fun_param);
+		m_PhysicMovementControl->InterpolateBox(id,param);
 		ret=false;
 		for(int i=0;num_it>i;++i){
 			max_depth=0.f;
 			m_PhysicMovementControl->EnableCharacter();
 			ph_world->Step();
-			if(max_depth<resolve_depth*fun_param) 
+			if(max_depth<resolve_depth) 
 			{
 				ret=true;
 				break;
-			}
+			}	
 		}
 		if(!ret) break;
 	}
@@ -253,6 +257,7 @@ bool CActor:: ActivateBox(DWORD id)
 	{	
 		if(!character_exist)m_PhysicMovementControl->DestroyCharacter();
 		m_PhysicMovementControl->ActivateBox(old_id);
+		m_PhysicMovementControl->SetPosition(pos);
 	}
 	else
 	{
