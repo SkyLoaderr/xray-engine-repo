@@ -21,7 +21,7 @@
 class CPHMovementControl;
 
 class CMovementManager : 
-	public CBaseLocationSelector<CGameGraph,PathManagers::SVertexType<float,u32,u32>,u32>,
+	public CBaseLocationSelector<CGameGraph,PathManagers::SVertexType<float,u32,u32>,ALife::_GRAPH_ID>,
 	public CBasePathManager		<CGameGraph,PathManagers::SBaseParameters<float,u32,u32>,u32,u32>,
 	public CBaseLocationSelector<CLevelGraph,PathManagers::CAbstractVertexEvaluator,u32>,
 	public CBasePathManager		<CLevelGraph,PathManagers::SBaseParameters<float,u32,u32>,u32,u32>,

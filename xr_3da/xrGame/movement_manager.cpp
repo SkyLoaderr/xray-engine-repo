@@ -99,7 +99,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	}
 
 	if (mdist < EPS_L) {
-		CDetailPathManager::curr_travel_point_index() = CDetailPathManager::path().size() - 1;
+		CDetailPathManager::m_current_travel_point = CDetailPathManager::path().size() - 1;
 		m_speed			= 0.f;
 		return;
 	}
@@ -131,7 +131,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	}
 	else {
 //		movement_control->Calculate(CDetailPathManager::path(),CDetailPathManager::path()[CDetailPathManager::curr_travel_point_index()].m_linear_speed,CDetailPathManager::curr_travel_point_index(),precision);
-		movement_control->Calculate(CDetailPathManager::path(),speed,CDetailPathManager::curr_travel_point_index(),precision);
+		movement_control->Calculate(CDetailPathManager::path(),speed,CDetailPathManager::m_current_travel_point,precision);
 		movement_control->GetPosition(dest_position);
 		if (!fsimilar(0.f,movement_control->gcontact_HealthLost))
 			Hit	(movement_control->gcontact_HealthLost,mdir,this,movement_control->ContactBone(),dest_position,0);
