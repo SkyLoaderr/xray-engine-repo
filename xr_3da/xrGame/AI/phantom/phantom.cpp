@@ -3,18 +3,13 @@
 #include "../../NET_utils.h"
 #include "../../level.h"
 #include "../../xrServer_Objects_ALife_Monsters.h"
+#include "../../../motion.h"
 
 CPhantom::CPhantom()
 {
-	fDHeading			= 0;
 	fSpeed				= 4.f;
 	fASpeed				= 1.7f;
-	vHPB.set			(0,0,0);
-	fGoalChangeTime		= 0.f;
-	fGoalChangeDelta	= 4.f;
-	vGoalDir.set		(0,0,0);
-	vVarGoal.set		(0,0,0);
-	vCurrentDir.set		(0,0,1);
+	vHP.set				(0,0);
 }
 
 CPhantom::~CPhantom()
@@ -42,6 +37,10 @@ void CPhantom::Load( LPCSTR section )
 	snd_name						= pSettings->r_string(section,"sound_fly");
 	if (snd_name&&snd_name[0])		m_state_data[stFly].sound.create(TRUE,snd_name);
 
+	m_state_data[stAttack].particles= pSettings->r_string(section,"particles_attack");
+	snd_name						= pSettings->r_string(section,"sound_attack");
+	if (snd_name&&snd_name[0])		m_state_data[stAttack].sound.create(TRUE,snd_name);
+
 	m_state_data[stDeath].particles	= pSettings->r_string(section,"particles_death");
 	snd_name						= pSettings->r_string(section,"sound_death");
 	if (snd_name&&snd_name[0])		m_state_data[stDeath].sound.create(TRUE,snd_name);
@@ -51,35 +50,55 @@ BOOL CPhantom::net_Spawn(CSE_Abstract* DC)
 	CSE_ALifeCreaturePhantom*	OBJ	= smart_cast<CSE_ALifeCreaturePhantom*>(DC); VERIFY(OBJ);
 	
 	// select visual at first
-	LPCSTR visuals	= pSettings->r_string(cNameSect(),"visuals");
-	u32 cnt			= _GetItemCount(visuals);
-	string256 tmp;
-	OBJ->set_visual	(_GetItem(visuals,Random.randI(cnt),tmp));
+	LPCSTR vis_name = OBJ->get_visual();
+	if (!(vis_name&&vis_name[0])){
+		LPCSTR visuals	= pSettings->r_string(cNameSect(),"visuals");
+		u32 cnt			= _GetItemCount(visuals);
+		string256 tmp;
+		OBJ->set_visual	(_GetItem(visuals,Random.randI(cnt),tmp));
+		// inform server
+		NET_Packet		P;
+		u_EventGen		(P, GE_CHANGE_VISUAL, OBJ->ID);
+		P.w_stringZ		(tmp);
+		u_EventSend		(P);
+	}
 
+	m_State			= stBirth; // initial state (changed on load method in inherited::)
+
+	// inherited
 	if (!inherited::net_Spawn(DC)) return FALSE;
 	
-	setVisible		(TRUE);
-	setEnabled		(TRUE);
-
 	m_enemy			= Level().CurrentEntity();
 	VERIFY			(m_enemy);
 
-	m_State			= stIdle;
+	// default init 
 	m_fly_particles	= 0;
 	fEntityHealth	= 0.001f;
 
+	// orientate to enemy
 	XFORM().k.sub	(m_enemy->Position(),Position()).normalize();
 	XFORM().j.set	(0,1,0);
 	XFORM().i.crossproduct	(XFORM().j,XFORM().k);
+	XFORM().k.getHP	(vHP.x,vHP.y);
 
-	XFORM().getHPB	(vHPB);
-
-	SwitchToState	(stBirth);
-
-//. temp
 	// set animation
-	CSkeletonAnimated *skeleton_animated = smart_cast<CSkeletonAnimated*>(Visual());
-	skeleton_animated->PlayCycle("fly_0");
+	CSkeletonAnimated *K			= smart_cast<CSkeletonAnimated*>(Visual());
+	m_state_data[stBirth].motion	= K->ID_Cycle("birth_0");	
+	m_state_data[stFly].motion		= K->ID_Cycle("fly_0");
+	m_state_data[stAttack].motion	= K->ID_Cycle("death_0");	
+	m_state_data[stDeath].motion	= K->ID_Cycle("death_0");	
+
+	VERIFY(K->LL_GetMotionDef(m_state_data[stBirth].motion)->flags&esmStopAtEnd);
+	VERIFY(K->LL_GetMotionDef(m_state_data[stAttack].motion)->flags&esmStopAtEnd);
+	VERIFY(K->LL_GetMotionDef(m_state_data[stDeath].motion)->flags&esmStopAtEnd);
+
+	// set state
+	EState new_state= m_State;
+	m_State			= stInvalid;
+	SwitchToState	(new_state);
+
+	setVisible		(m_State>stIdle?TRUE:FALSE);
+	setEnabled		(TRUE);
 
 	return	TRUE;
 }
@@ -88,31 +107,62 @@ void CPhantom::net_Destroy	()
 	inherited::net_Destroy	();
 
 }
+
+//---------------------------------------------------------------------
+// Animation Callbacks
+void __stdcall CPhantom::animation_end_callback(CBlend* B)
+{
+	CPhantom *phantom				= (CPhantom*)B->CallbackParam;
+	switch (phantom->m_State){
+	case stBirth: phantom->SwitchToState(stFly);	break;
+	case stAttack:phantom->SwitchToState(stDeath);	break;
+	case stDeath: phantom->SwitchToState(stIdle);	break;
+	}
+}
 //---------------------------------------------------------------------
 void CPhantom::SwitchToState(EState new_state)
 {
 	if (new_state!=m_State){
-		if (m_fly_particles)CParticlesObject::Destroy(m_fly_particles);
+		CSkeletonAnimated *K	= smart_cast<CSkeletonAnimated*>(Visual());
+		Fmatrix	xform			= XFORM_center	();
+		UpdateEvent				= 0;
 		switch (new_state){
-		case stBirth:	
-			UpdateEvent.bind(this,&CPhantom::OnBirthState);	
-			PlayParticles	(m_state_data[stBirth].particles.c_str(),TRUE);
-		break;
-		case stFly:		
-			UpdateEvent.bind(this,&CPhantom::OnFlyState);	
-			m_fly_particles	= PlayParticles(m_state_data[stFly].particles.c_str(),FALSE);
-		break;
-		case stDeath:	
-			UpdateEvent.bind(this,&CPhantom::OnDeathState);	
-			PlayParticles	(m_state_data[stDeath].particles.c_str(),TRUE);
-		break;
+		case stBirth:{
+			SStateData& sdata	= m_state_data[new_state];
+			PlayParticles		(sdata.particles.c_str(),TRUE,xform);
+			sdata.sound.play_at_pos(0,xform.c);
+			K->PlayCycle		(sdata.motion, TRUE, animation_end_callback, this);
+		}break;
+		case stFly:{
+			SStateData& sdata	= m_state_data[new_state];
+			UpdateEvent.bind	(this,&CPhantom::OnFlyState);	
+			m_fly_particles		= PlayParticles(sdata.particles.c_str(),FALSE,xform);
+			sdata.sound.play_at_pos(0,xform.c,sm_Looped);
+			K->PlayCycle		(sdata.motion);
+		}break;
+		case stAttack:{
+			// stop fly effects
+			CParticlesObject::Destroy		(m_fly_particles);
+			m_state_data[stFly].sound.stop	();
+			// 
+			SStateData& sdata	= m_state_data[new_state];
+			PlayParticles		(sdata.particles.c_str(),FALSE,xform);
+			sdata.sound.play_at_pos(0,xform.c);
+			K->PlayCycle		(sdata.motion, TRUE, animation_end_callback, this);
+		}break;
+		case stDeath:{
+			SStateData& sdata	= m_state_data[new_state];
+			PlayParticles		(sdata.particles.c_str(),TRUE,xform);
+			sdata.sound.play_at_pos(0,xform.c);
+			K->PlayCycle		(sdata.motion, TRUE, animation_end_callback, this);
+		}break;
+		case stIdle:{
+			VERIFY(0==m_fly_particles && 0==m_state_data[stFly].sound.feedback);
+			DestroyObject	();
+		}break;
 		}
 		m_State				= new_state;
 	}
-}
-void CPhantom::OnBirthState	()
-{
-	SwitchToState			(stFly);
 }
 void CPhantom::OnFlyState()
 {
@@ -123,24 +173,20 @@ void CPhantom::OnFlyState()
 		if (vP.distance_to_sqr(vE)<_sqr(Radius())){
 			// hit enemy
 			PsyHit			(m_enemy,1);
-			// destroy
-			Hit				(1000.f,Fvector().set(0,0,1),this,u16(-1),Fvector().set(0,0,0),0.f,ALife::eHitTypeFireWound);
+			SwitchToState	(stAttack);
 		}else{
 			UpdatePosition	(m_enemy->Position());
+			Fmatrix	xform	= XFORM_center();
 			// update particles
 			if (m_fly_particles){		
 				Fvector		vel;
 				vel.sub		(m_enemy->Position(),Position()).normalize_safe().mul(fSpeed);
-				Fmatrix	xform		= XFORM_center();
 				m_fly_particles->UpdateParent(xform,vel);
 			}
+			// update sound
+			if (m_state_data[stFly].sound.feedback) m_state_data[stFly].sound.set_position(xform.c);
 		}
 	}
-}
-void CPhantom::OnDeathState()
-{
-	DestroyObject	();
-	SwitchToState	(stIdle);
 }
 //---------------------------------------------------------------------
 
@@ -179,10 +225,9 @@ Fmatrix	CPhantom::XFORM_center()
 	return			xform.translate_over(center);
 }
 
-CParticlesObject* CPhantom::PlayParticles(const shared_str& name, BOOL bAutoRemove)
+CParticlesObject* CPhantom::PlayParticles(const shared_str& name, BOOL bAutoRemove, const Fmatrix& xform)
 {
 	CParticlesObject* ps = xr_new<CParticlesObject>(name.c_str(),bAutoRemove);
-	Fmatrix	xform		= XFORM_center();
 	ps->UpdateParent	(xform, zero_vel);
 	ps->Play			();
 	return bAutoRemove?0:ps;
@@ -191,19 +236,18 @@ CParticlesObject* CPhantom::PlayParticles(const shared_str& name, BOOL bAutoRemo
 //---------------------------------------------------------------------
 void CPhantom::UpdatePosition(const Fvector& tgt_pos) 
 {
-	Fvector& vDirection	= XFORM().k;
 	float			tgt_h,tgt_p;
 	Fvector			tgt_dir,cur_dir;
 	tgt_dir.sub		(tgt_pos,Position());
 	tgt_dir.getHP	(tgt_h,tgt_p);
 
-	angle_lerp		(vHPB.x,tgt_h,fASpeed,Device.fTimeDelta);
-	angle_lerp		(vHPB.y,tgt_p,fASpeed,Device.fTimeDelta);
+	angle_lerp		(vHP.x,tgt_h,fASpeed,Device.fTimeDelta);
+	angle_lerp		(vHP.y,tgt_p,fASpeed,Device.fTimeDelta);
 
-	cur_dir.setHP	(vHPB.x,vHPB.y);
+	cur_dir.setHP	(vHP.x,vHP.y);
 
 	Fvector prev_pos=Position();
-	XFORM().setHPB	(vHPB.x,0,0);
+	XFORM().rotateY (-vHP.x);
 	Position().mad	(prev_pos,cur_dir,fSpeed*Device.fTimeDelta);
 }
 
@@ -225,6 +269,14 @@ void CPhantom::PsyHit(const CObject *object, float value)
 
 //---------------------------------------------------------------------
 // Core events
+void CPhantom::save(NET_Packet &output_packet)
+{
+	output_packet.w_s32	(s32(m_State));
+}
+void CPhantom::load(IReader &input_packet)
+{
+	m_State				= EState(input_packet.r_s32());
+}
 void CPhantom::net_Export	(NET_Packet& P)					// export to server
 {
 	// export 

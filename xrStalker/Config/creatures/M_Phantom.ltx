@@ -1,35 +1,41 @@
 [m_phantom]
-GroupControlSection	= spawn_group
-$spawn                   = "monsters\phantom"		; option for Level Editor
-;$prefetch 				 = 50
-spawn 	                 = on	;
-cform                    = skeleton
-class                    = AI_PHANT
+GroupControlSection		= spawn_group
+$spawn                  = "monsters\phantom"		; option for Level Editor
+spawn 	                = on	;
+cform                   = skeleton
+class                   = AI_PHANT
 
-visual                   = monsters\phantom\zombi_0.ogf
+visuals                 = monsters\phantom\zombi_0, monsters\phantom\flesh_0, monsters\phantom\krovosos_0, monsters\phantom\mutant_boar_0
 
-speed                    = 6.0	
-angular_speed            = 0.1	
-goal_change_delta        = 5.0
-min_height	             = 40	;20
-goal_variability		 = 10.0, 15.0, 200.0
-idle_sound_delta		 = 60.f
+speed                   = 6.0	
+angular_speed           = 0.1	
+goal_change_delta       = 5.0
+min_height	            = 40	;20
+goal_variability		= 10.0, 15.0, 200.0
+idle_sound_delta		= 60.f
 
-ef_creature_type		 = -1
+ef_creature_type		= -1
 
 ; movement params
-ph_box0_center 	         = 0.0,  0.025, 0.0
-ph_box0_size             = 0.1,  0.05,  0.1
-ph_box1_center 	         = 0.0,  0.025, 0.0
-ph_box1_size 	         = 0.1,  0.05,  0.1
-ph_crash_speed_min       = 16
-ph_crash_speed_max       = 30
-ph_mass 		         = 1
+ph_box0_center 	        = 0.0,  0.025, 0.0
+ph_box0_size            = 0.1,  0.05,  0.1
+ph_box1_center 	        = 0.0,  0.025, 0.0
+ph_box1_size 	        = 0.1,  0.05,  0.1
+ph_crash_speed_min      = 16
+ph_crash_speed_max      = 30
+ph_mass 		        = 1
 
-script_binding  		 = phantom_manager.bind
+script_binding  		= phantom_manager.bind
 
-particles				 = anomaly2\burer_shield_01
-
-particles_birth 		 = monsters\phantom_birth
-particles_fly	 		 = monsters\phantom_fly
-particles_death 		 = monsters\phantom_death
+; state BIRTH
+particles_birth 		= monsters\phantom_birth
+sound_birth 			= weapons\f1_explode
+; state FLY
+particles_fly	 		= monsters\phantom_fly
+sound_fly	 			= weapons\silencer4
+; state ATTACK
+particles_attack 		= monsters\phantom_death
+sound_attack 			= weapons\ak74_shoot
+; state DEATH
+particles_death 		= monsters\phantom_death
+sound_death 			= weapons\generic_holster

@@ -11,18 +11,18 @@ class CPhantom : public CEntity {
 	typedef	CEntity inherited;
 private:
 	enum EState{
+		stInvalid		= -2,
 		stIdle			= -1,
 		stBirth			= 0,
 		stFly			= 1,
-		stDeath			= 2,
+		stAttack		= 2,
+		stDeath			= 3,
 		stCount
 	};
 	EState				m_State;
 
 	void				SwitchToState				(EState new_state);
-	void __stdcall		OnBirthState				();
 	void __stdcall		OnFlyState					();
-	void __stdcall		OnDeathState				();
 
 	fastdelegate::FastDelegate0						UpdateEvent;
 private:
@@ -34,25 +34,17 @@ private:
 	SStateData			m_state_data[stCount];
 private:
 	CParticlesObject*	m_fly_particles;
-	ref_sound			m_fly_sound;
+	static void	__stdcall animation_end_callback	(CBlend* B);
 private:
 	CObject*			m_enemy;
 
-	float				fDHeading;
 	float				fSpeed;	
 	float				fASpeed;
-	Fvector				vHPB;
+	Fvector2			vHP;
 	
-	Fvector				vCurrentDir;
-	Fvector				vGoalDir;
-	Fvector				vVarGoal;
-	float				fGoalChangeTime;
-	float				fGoalChangeDelta;
-
 	Fmatrix				XFORM_center				();
 
-	CParticlesObject*	PlayParticles				(const shared_str& name, BOOL bAutoRemove);
-//	ref_sound			PlaySound					(const shared_str& name);
+	CParticlesObject*	PlayParticles				(const shared_str& name, BOOL bAutoRemove, const Fmatrix& xform);
 //	void				PlayMotion					(MotionID);
 
 	void				UpdatePosition				(const Fvector& tgt_pos);
@@ -68,6 +60,8 @@ public:
 	
 	virtual void		net_Export					(NET_Packet& P);
 	virtual void		net_Import					(NET_Packet& P);
+	virtual void		save						(NET_Packet &output_packet);
+	virtual void		load						(IReader &input_packet);
 
 	virtual void		shedule_Update				(u32 DT); 
 	virtual void		UpdateCL					();
