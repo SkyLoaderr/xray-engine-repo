@@ -14,7 +14,7 @@ class CUIBuyMenu{
 		OnExecuteEvent	OnExecute;
 		CMenuItem*		m_Parent;
 	public:
-		CMenuItem		(CMenuItem* parent, LPCSTR text, DWORD t, OnExecuteEvent event=0)
+		CMenuItem		(CMenuItem* parent, LPCSTR text, int t, OnExecuteEvent event=0)
 		{
 			m_Parent	= parent;
 			caption		= xr_strdup(text);
@@ -34,12 +34,12 @@ class CUIBuyMenu{
 		void			OnItemDraw(CGameFont* F, int num, int col)
 		{
 			switch(col){
-			case 0: F->OutNext						("%d. %s",num,caption);	break;
-			case 1: if (items.empty()) F->OutNext	("%d",tag);			break;
+			case 0: F->OutNext		("%d. %s",num,caption);	break;
+			case 1: if (!IsMenu())	F->OutNext	("%d",tag);	break;
 			default: THROW;
 			}
 		}
-		IC BOOL			IsMenu				()			{return !items.empty();}
+		IC BOOL			IsMenu				()			{return (tag==-1);}
 		IC CMenuItem*	GetItem				(int id)	
 		{
 			id--;

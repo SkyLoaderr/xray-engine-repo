@@ -72,11 +72,11 @@ public:
 		}
 	}
 	IC float				GetScale		()			{return fScale;}
-	void					OutSet			(float x, float y) { fCurrentX=x; fCurrentY=y; }
+	void					OutSet			(float x, float y)	{fCurrentX=x; fCurrentY=y;}
 	void __cdecl            OutNext			(char *fmt, ...);
 	void __cdecl            OutPrev			(char *fmt, ...);
 	void __cdecl 			Out				(float _x, float _y, char *fmt, ...);
-	IC void					OutSkip			()			{fCurrentY += GetCurrentSize()*vInterval.y;}
+	IC void					OutSkip			(float val=1.f)		{fCurrentY += val*GetCurrentSize()*vInterval.y;}
 	
 	virtual void			OnRender		();
 	virtual void			OnDeviceCreate	();

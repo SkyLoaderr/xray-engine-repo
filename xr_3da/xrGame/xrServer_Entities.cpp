@@ -62,12 +62,13 @@ void	xrServerEntity::Spawn_Read		(NET_Packet& P)
 
 #ifdef _EDITOR
 xr_token game_types[]={
-	{ "Any game",	GAME_ANY		},
-	{ "Single",		GAME_SINGLE		},
-	{ "Deathmatch", GAME_DEATHMATCH },
-	{ "CTF",		GAME_CTF		},
-	{ "Assault",	GAME_ASSAULT	},
-	{ 0,			0				}
+	{ "Any game",		GAME_ANY		},
+	{ "Single",			GAME_SINGLE		},
+	{ "Deathmatch",		GAME_DEATHMATCH },
+	{ "CTF",			GAME_CTF		},
+	{ "Assault",		GAME_ASSAULT	},
+	{ "Counter Strike",	GAME_CS			},
+	{ 0,				0				}
 };
 void	xrServerEntity::FillProp	(LPCSTR pref, PropValueVec& values)
 {

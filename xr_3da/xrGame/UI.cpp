@@ -17,12 +17,13 @@ CUI::CUI(CHUDManager* p)
 	UIWeapon.Init	();
 	UIHealth.Init	();
 	UISquad.Init	();
-	UIFragList.Init	();
 
 	m_Parent		= p;
 	bShift			= FALSE;
 	bShowFragList	= FALSE;
 	bShowBuyMenu	= FALSE;
+	pUIBuyMenu		= 0;
+	pUIFragList		= 0;
 
 	msgs_offs		= m_Parent->ClientToScreenScaledY(MSGS_OFFS,alLeft|alBottom)/Level().HUD()->pHUDFont->GetScale();
 }
@@ -32,20 +33,33 @@ CUI::~CUI()
 {
 	for (UIMsgIt it=messages.begin(); it!=messages.end(); it++)
 		_DELETE(*it);
+	_DELETE(pUIBuyMenu);
+	_DELETE(pUIFragList);
 }
 //--------------------------------------------------------------------
 
 void CUI::Load()
 {
-	UIBuyMenu.Load	();
+	switch (GAME){
+	case GAME_CS:
+	case GAME_ASSAULT:
+		pUIBuyMenu	= new CUIBuyMenu	();
+		pUIBuyMenu->Load				();
+		break;
+	case GAME_DEATHMATCH:
+		pUIFragList	= new CUIFragList	();
+		pUIFragList->Init				();
+		break;
+	}
 }
 //--------------------------------------------------------------------
 
 void CUI::ShowBuyMenu(BOOL bShow)
 {
+	VERIFY		(pUIBuyMenu);
 	bShowBuyMenu=bShow;
-	if (bShow)	UIBuyMenu.OnActivate();
-	else		UIBuyMenu.OnDeactivate();
+	if (bShow)	pUIBuyMenu->OnActivate();
+	else		pUIBuyMenu->OnDeactivate();
 }
 
 DWORD ScaleAlpha(DWORD val, float factor)
@@ -80,7 +94,10 @@ void CUI::OnFrame()
 			case GAME_SINGLE:		
 				break;
 			case GAME_DEATHMATCH:
-				if (bShowFragList) UIFragList.OnFrame();
+				if (bShowFragList){ 
+					VERIFY				(pUIFragList);
+					pUIFragList->OnFrame();
+				}
 				break;
 			case GAME_CTF:			
 				// time
@@ -92,7 +109,8 @@ void CUI::OnFrame()
 	}
 
 	if (bShowBuyMenu){
-		UIBuyMenu.OnFrame();
+		VERIFY				(bShowBuyMenu);
+		pUIBuyMenu->OnFrame	();
 	}
 
 	if (!messages.empty()){
@@ -127,34 +145,43 @@ bool CUI::Render()
 	case GAME_SINGLE:		
 		break;
 	case GAME_DEATHMATCH:
-		if (bShowFragList) UIFragList.Render();
+		if (bShowFragList){ 
+			VERIFY				(pUIFragList);
+			pUIFragList->Render	();
+		}
 		break;
 	case GAME_CTF:			
 		// time
 		break;
 	case GAME_ASSAULT:
 		break;
+	case GAME_CS:
+		break;
 	default: THROW;
 	}
-
 	return false;
-	//	if (bActive) UICursor.Render();
 }
 //--------------------------------------------------------------------
 //--------------------------------------------------------------------
 bool CUI::OnKeyboardPress(int dik)
 {
-	if (bShowBuyMenu){
-		if (UIBuyMenu.OnKeyboardPress(dik)) return true;
-	}else{
-		switch (dik){
-		case DIK_TAB:	ShowFragList(TRUE);	return true;
-		}
-	}
 	// global
-	switch (dik){
-	case DIK_B:			ShowBuyMenu	(!bShowBuyMenu);return true;
-//	case DIK_ESCAPE:	ShowBuyMenu	(FALSE);		return true;
+	switch (GAME){
+	case GAME_ASSAULT:
+	case GAME_CS:		
+		if (bShowBuyMenu){
+			VERIFY(pUIBuyMenu);
+			if (pUIBuyMenu->OnKeyboardPress(dik)) return true;
+		}else{
+			switch (dik){
+			case DIK_B:			ShowBuyMenu	(!bShowBuyMenu);return true;
+			}
+		}
+	break;
+	case GAME_DEATHMATCH:
+		switch (dik){
+		case DIK_TAB:		ShowFragList(TRUE);	return true;
+		}
 	}
 	return false;
 }
@@ -163,7 +190,8 @@ bool CUI::OnKeyboardPress(int dik)
 bool CUI::OnKeyboardRelease(int dik)
 {
 	if (bShowBuyMenu){
-		return UIBuyMenu.OnKeyboardRelease(dik);
+		VERIFY(pUIBuyMenu);
+		return pUIBuyMenu->OnKeyboardRelease(dik);
 	}else{
 		switch (dik){
 		case DIK_TAB: ShowFragList	(FALSE);		break;

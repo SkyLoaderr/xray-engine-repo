@@ -29,14 +29,14 @@ void CUIBuyMenu::ParseMenu(CInifile* ini, CMenuItem* root, LPCSTR sect)
 	CMenuItem* I=0;
 	string256 buf,buf1;
 	int ln_cnt = ini->LineCount(sect);
-	for (int i=1; i<ln_cnt; i++){
+	for (int i=1; i<=ln_cnt; i++){
 		// append if exist menu item
 		sprintf(buf,"menu_%d",i);
 		if (ini->LineExists(sect,buf)){
 			LPCSTR line		= ini->ReadSTRING(sect,buf);	R_ASSERT(_GetItemCount(line)==2);
 			LPCSTR	name	= _GetItem(line,0,buf);
 			LPCSTR	new_sect= strlwr(_GetItem(line,1,buf1));
-			I				= new CMenuItem(root,name,0);
+			I				= new CMenuItem(root,name,-1);
 			ParseMenu(ini,I,new_sect);
 			root->AppendItem(I);
 		}
@@ -79,13 +79,12 @@ void CUIBuyMenu::OnFrame()
 		F->OutNext		("Buy %s",menu_active->caption);
 		for (int col=0; col<2; col++){
 			F->OutSet	(float(menu_offs_col[col]),float(menu_offs));
-			F->OutSkip	();
-			F->OutSkip	();
+			F->OutSkip	(1.5f);
 			int k=1;
 			for (MIIt it=menu_active->items.begin(); it!=menu_active->items.end(); it++,k++)
 				(*it)->OnItemDraw(F,k,col);
 			if (0==col){
-				F->OutSkip();
+				F->OutSkip(0.5f);
 				F->OutNext("%-2d. %-20s",0,"Exit");
 			}
 		}

@@ -50,8 +50,8 @@ class CUI{
 	CUIHealth			UIHealth;
 	CUISquad			UISquad;
 
-	CUIFragList			UIFragList;
-	CUIBuyMenu			UIBuyMenu;
+	CUIFragList*		pUIFragList;
+	CUIBuyMenu*			pUIBuyMenu;
 
 	CHUDManager*		m_Parent;
 

@@ -33,6 +33,7 @@ xr_token					game_type_token						[ ]={
 	{ "deathmatch",			GAME_DEATHMATCH							},
 	{ "ctf",				GAME_CTF								},
 	{ "assault",			GAME_ASSAULT							},
+	{ "cs",					GAME_CS									},
 	{ 0,							0								}
 };
 
