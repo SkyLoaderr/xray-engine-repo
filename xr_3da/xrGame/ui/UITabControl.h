@@ -14,8 +14,7 @@ DEF_VECTOR (TABS_VECTOR, CUIButton*)
 
 class CUITabControl: public CUIWindow
 {
-protected:
-
+	typedef CUIWindow inherited;
 public:
 	// Ctor and Dtor
 	CUITabControl();
@@ -25,6 +24,8 @@ public:
 	virtual void Init(int x, int y, int width, int height);
 	// обработка нажатий клавиш
 	virtual bool OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action);
+	// обновление 
+	virtual void Update();
 
 	// Сообщение отправляемое родительскому окну, когда произошла смена активной раскладки
 	typedef enum{TAB_CHANGED} E_MESSAGE;
@@ -43,7 +44,7 @@ public:
 	int GetActiveIndex() { return m_iPushedIndex; }
 
 	// Общее количество закладок
-	const int GetTabsCount() const			{ return m_TabsArr.size(); }
+	const int GetTabsCount() const				{ return m_TabsArr.size(); }
 
 	// Сделать новую такущую активную закладку
 	void SetNewActiveTab(const int iNewTab);
@@ -52,6 +53,17 @@ public:
 	bool GetAcceleratorsMode() const			{ return m_bAcceleratorsEnable; }
 	void SetAcceleratorsMode(bool bEnable)		{ m_bAcceleratorsEnable = bEnable; }
 
+	// Цвета
+	void SetActiveTextColor(u32 cl)				{ m_cActiveTextColor = cl; m_bChangeColors = true; }
+	u32 GetActiveTextColor() const 				{ return m_cActiveTextColor; }
+	void SetGlobalTextColor(u32 cl)				{ m_cGlobalTextColor = cl; m_bChangeColors = true; }
+	u32 GetGloablTextColor() const 				{ return m_cGlobalTextColor; }
+
+	void SetActiveButtonColor(u32 cl)			{ m_cActiveButtonColor = cl; m_bChangeColors = true; }
+	u32 GetActiveButtonColor() const 			{ return m_cActiveButtonColor; }
+	void SetGlobalButtonColor(u32 cl)			{ m_cGlobalButtonColor = cl; m_bChangeColors = true; }
+	u32 GetGlobalButtonColor() const 			{ return m_cGlobalButtonColor; }
+
 protected:
 	// Список кнопок - переключателей закладок
 	TABS_VECTOR		m_TabsArr;
@@ -59,14 +71,17 @@ protected:
 	// Текущая нажатая кнопка. -1 - ни одна, 0 - первая, 1 - вторая, и т.д.
 	int				m_iPushedIndex;
 
-	// Цвет надписи на неактивных элементах
-	u32				m_cGlobalColor;
+	// Цвет неактивных элементов
+	u32				m_cGlobalTextColor;
+	u32				m_cGlobalButtonColor;
 
 	// Цвет надписи на активном элементе
-	u32				m_cActiveColor;
+	u32				m_cActiveTextColor;
+	u32				m_cActiveButtonColor;
 
 	// Разрешаем/запрещаем клавиатурные акселераторы
 	bool			m_bAcceleratorsEnable;
+	bool			m_bChangeColors;
 };
 
 #endif

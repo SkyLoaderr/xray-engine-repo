@@ -5,9 +5,12 @@
 
 CUITabControl::CUITabControl()
 	: m_iPushedIndex		(0),
-	  m_cGlobalColor		(0xFFFFFFFF),
-	  m_cActiveColor		(0xFFFFFFFF),
-	  m_bAcceleratorsEnable	(true)
+	  m_cGlobalTextColor	(0xFFFFFFFF),
+	  m_cActiveTextColor	(0xFFFFFFFF),
+	  m_cActiveButtonColor	(0xFFFFFFFF),
+	  m_cGlobalButtonColor	(0xFFFFFFFF),
+	  m_bAcceleratorsEnable	(true),
+	  m_bChangeColors		(false)
 {
 
 }
@@ -25,7 +28,8 @@ bool CUITabControl::AddItem(const char *pItemName, const char *pTexName, int x, 
 
 	pNewButton->Init(pTexName, x, y, width, height);
 	pNewButton->SetText(pItemName);
-	pNewButton->SetTextColor(m_cGlobalColor);
+	pNewButton->SetTextColor(m_cGlobalTextColor);
+	pNewButton->GetUIStaticItem().SetColor(m_cGlobalButtonColor);
 
 	return AddItem(pNewButton);
 }
@@ -108,6 +112,7 @@ void CUITabControl::SetNewActiveTab(const int iNewTab)
 {
 	R_ASSERT(iNewTab > 0 || iNewTab < GetTabsCount());
 	m_TabsArr[iNewTab]->OnMouse(1, 1, LBUTTON_DOWN);
+
 	SendMessage(m_TabsArr[iNewTab], CUIButton::BUTTON_CLICKED, NULL);
 }
 
@@ -125,4 +130,26 @@ bool CUITabControl::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
 		}
 	}
 	return false;
+}
+
+void CUITabControl::Update()
+{
+	if (m_bChangeColors)
+	{
+		m_bChangeColors = false;
+
+		for (u32 i = 0; i < m_TabsArr.size(); ++i)
+			if (i == static_cast<u32>(m_iPushedIndex))
+			{
+				m_TabsArr[i]->SetTextColor(m_cActiveTextColor);
+				m_TabsArr[i]->GetUIStaticItem().SetColor(m_cActiveButtonColor);
+			}
+			else
+			{
+				m_TabsArr[i]->SetTextColor(m_cGlobalTextColor);
+				m_TabsArr[i]->GetUIStaticItem().SetColor(m_cGlobalButtonColor);
+			}
+	}
+
+	inherited::Update();
 }

@@ -73,14 +73,19 @@ protected:
 		// Запоминаем адрес "хозяина"
 		CUIDragDropList *m_pOwner;
 	public:
-		CUIDragDropItemMP(): slotNum(0), sectionNum(0), bAddonsAvailable(false)
+		CUIDragDropItemMP(): slotNum			(0),
+							 sectionNum			(0),
+							 bAddonsAvailable	(false),
+							 m_pGLAddon			(NULL),
+							 m_pScopeAddon		(NULL),
+							 m_pSilencerAddon	(NULL)
 		{
 			std::strcpy(m_strAddonTypeNames[0], "Silencer");
 			std::strcpy(m_strAddonTypeNames[1], "Grenade Launcher");
 			std::strcpy(m_strAddonTypeNames[2], "Scope");
 		}
 		// Для слота
-		void SetSlot(u32 slot)					{ R_ASSERT(slot < 6); slotNum = slot; }
+		void SetSlot(u32 slot)					{ R_ASSERT(slot < 6 || slot == static_cast<u32>(-1)); slotNum = slot; }
 		u32	 GetSlot()							{ return slotNum; }
 		// Для секций
 		void SetSection(u32 section)			{ sectionNum = section; }
@@ -116,24 +121,25 @@ protected:
 
 		// У каждого оружия максимум 3 аддона. Будем считать, что в массиве они идут в таком поряке:
 		// Scope, Silencer, Grenade Launcher.
-		enum  AddonIDs { ID_SILENCER = 0, ID_GRENADE_LAUNCHER, ID_SCOPE };
-		AddonInfo	m_AddonInfo[3];
+		enum  AddonIDs		{ ID_SILENCER = 0, ID_GRENADE_LAUNCHER, ID_SCOPE };
+		AddonInfo			m_AddonInfo[3];
 		// Если у вещи вообще нет аддонов, то поднимаем этот флажек, для ускорения проверок
-		bool		bAddonsAvailable;
+		bool				bAddonsAvailable;
 		// Список название типов аддонов
-		char		m_strAddonTypeNames[3][25];
+		char				m_strAddonTypeNames[3][25];
 
 		// Аттачим/детачим аддоны
-		void AttachDetachAddon(int iAddonIndex, bool bAttach);
-		void AttachDetchAllAddons(bool bAttach);
+		void				AttachDetachAddon(int iAddonIndex, bool bAttach);
+		void				AttachDetchAllAddons(bool bAttach);
+		bool				IsAddonAttached(int iAddonIndex) { return m_AddonInfo[iAddonIndex].iAttachStatus == 1; }
 		// Переопределяем некоторые функции, которые нам нужны для коректной отрисовки оружия с аддонами
-		virtual void ClipperOn();
-		virtual void ClipperOff();
-		virtual void Draw();
-		// Статики для отображения аддонов
-		CUIStaticItem m_UIStaticScope;
-		CUIStaticItem m_UIStaticSilencer;
-		CUIStaticItem m_UIStaticGrenadeLauncher;
+		virtual void		ClipperOn();
+		virtual void		ClipperOff();
+		virtual void		Draw();
+		// реальные драг-дроп вещи для тех аддонов, которые существуют для оружия
+		CUIDragDropItemMP	*m_pScopeAddon;
+		CUIDragDropItemMP	*m_pSilencerAddon;
+		CUIDragDropItemMP	*m_pGLAddon;
 	};
 
 	CUIFrameWindow		UIBagWnd;
@@ -320,9 +326,10 @@ protected:
 	// 0) root			- меню уровня табконтрола
 	// 1) wpnsubtype	- меню уровня выбора оружия
 	// 2) addons		- меню уровня выбора аддонов, если оружие позволяет
-	enum MENU_LEVELS { mlRoot = 0, mlWpnSubType, mlAddons };
+	enum MENU_LEVELS	{ mlRoot = 0, mlWpnSubType, mlAddons };
 	// Текущий уровень
-	MENU_LEVELS m_mlCurrLevel;
+	MENU_LEVELS			m_mlCurrLevel;
+
 	// Переход на любой уровень меню непосредственно
 	bool MenuLevelJump(MENU_LEVELS lvl);
 	// Переход на уровень выше/ниже. Возвращаем true, если переход удачен, и 
