@@ -24,7 +24,7 @@ namespace FVF {
 		DWORD		color;
 		float		tu,tv;
 		IC void	set	(const TL& src)
-		{	*this = src };
+		{	*this = src; };
 		IC void	set	(float x, float y, DWORD c, float u, float v)
 		{	set	(x,y,.0001f,.9999f,c,u,v); };
 		IC void	set	(int x, int y, DWORD c, float u, float v)
