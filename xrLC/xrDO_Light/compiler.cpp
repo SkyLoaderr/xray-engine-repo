@@ -32,7 +32,7 @@ __declspec(thread)		u64			t_count	= 0;
 
 struct R_Light
 {
-    u32           type;				// Type of light source		
+    u32				type;				// Type of light source		
     Fcolor          diffuse;			// Diffuse color of light	
     Fvector         position;			// Position in world space	
     Fvector         direction;			// Direction in world space	
@@ -530,9 +530,9 @@ public:
 					for (int z=-LIGHT_Count; z<=LIGHT_Count; z++) 
 					{
 						// compute position
-						Fvector t_n;  t_n.set(0,1,0);
-						P.z			= bbC.z + coeff*float(z);
-						P.y			= BB.min.y-5;
+						Fvector t_n;	t_n.set(0,1,0);
+						P.z				= bbC.z + coeff*float(z);
+						P.y				= BB.min.y-5;
 						Fvector	dir;	dir.set		(0,-1,0);
 						Fvector start;	start.set	(P.x,BB.max.y+EPS,P.z);
 						
