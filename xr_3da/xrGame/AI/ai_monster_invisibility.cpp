@@ -28,7 +28,7 @@ void CMonsterInvisibility::Load(LPCTSTR section)
 
 bool CMonsterInvisibility::Switch (bool bVis) 
 {
-	if ((bVis == false) && !IsInvisibilityReady()) return false;		// если ещё не восстановился
+	if ((false == bVis) && !IsInvisibilityReady()) return false;		// если ещё не восстановился
 	if (bBlinking) return false;										// если в переходном состоянии
 	if (bVis == flagVisibility) return false;							// если уже находимся в этом состоянии
 
