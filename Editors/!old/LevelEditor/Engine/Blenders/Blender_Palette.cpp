@@ -112,7 +112,6 @@ IBlender*	IBlender::Create	(CLASS_ID cls)
 	case B_LmEbB:			return xr_new<CBlender_LmEbB>();		
 	case B_B:				return xr_new<CBlender_B>();			
 	case B_BmmD:			return xr_new<CBlender_BmmD>();			
-	case B_SHADOW_TEX:		return xr_new<CBlender_ShTex>();		
 	case B_SHADOW_WORLD:	return xr_new<CBlender_ShWorld>();		
 	case B_BLUR:			return xr_new<CBlender_Blur>();			
 	case B_MODEL:			return xr_new<CBlender_Model>();		

@@ -44,7 +44,6 @@ CLightShadows::CLightShadows()
 	// 
 	RT.create				(RTname,S_rt_size,S_rt_size,S_rtf);
 	RT_temp.create			(RTtemp,S_rt_size,S_rt_size,S_rtf);
-	sh_Texture.create		("effects\\shadow_texture");
 	sh_World.create			("effects\\shadow_world",	RTname);
 	geom_World.create		(FVF::F_LIT,	RCache.Vertex.Buffer(), NULL);
 	sh_BlurTR.create		("blur4",		RTtemp2);
@@ -68,7 +67,6 @@ CLightShadows::~CLightShadows()
 	sh_BlurRT.destroy		();
 	sh_BlurTR.destroy		();
 	sh_World.destroy		();
-	sh_Texture.destroy		();
 	RT_temp.destroy			();
 	RT.destroy				();
 
@@ -124,9 +122,9 @@ void CLightShadows::set_object	(IRenderable* O)
 
 void CLightShadows::add_element	(NODE& N)
 {
-	if (0==current)						return;
+	if (0==current)										return;
 	VERIFY2	(casters.back()->nodes.size()<16,"Object exceeds limit of 16 renderable parts/materials");
-	if (0==N.pVisual->E[SE_R1_LMODELS])	return;
+	if (0==N.pVisual->hShader->E[SE_R1_LMODELS]._get())	return;
 	casters.back()->nodes.push_back		(N);
 }
 

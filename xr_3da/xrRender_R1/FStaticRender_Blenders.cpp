@@ -11,7 +11,6 @@
 #include "blender_LaEmB.h"
 #include "blender_Lm(EbB).h"
 #include "blender_BmmD.h"
-#include "blender_shadow_texture.h"
 #include "blender_shadow_world.h"
 #include "blender_blur.h"
 #include "blender_model.h"
@@ -34,7 +33,6 @@ IBlender*	CRender::blender_create	(CLASS_ID cls)
 	case B_LaEmB:			return xr_new<CBlender_LaEmB>			();		
 	case B_LmEbB:			return xr_new<CBlender_LmEbB>			();		
 	case B_BmmD:			return xr_new<CBlender_BmmD>			();			
-	case B_SHADOW_TEX:		return xr_new<CBlender_ShTex>			();		
 	case B_SHADOW_WORLD:	return xr_new<CBlender_ShWorld>			();		
 	case B_BLUR:			return xr_new<CBlender_Blur>			();			
 	case B_MODEL:			return xr_new<CBlender_Model>			();		
