@@ -400,6 +400,12 @@
 			<File
 				RelativePath="blender_light_point_uns.h">
 			</File>
+			<File
+				RelativePath="blender_light_spot.cpp">
+			</File>
+			<File
+				RelativePath="blender_light_spot.h">
+			</File>
 			<Filter
 				Name="R1"
 				Filter="">
