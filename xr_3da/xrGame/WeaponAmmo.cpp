@@ -84,13 +84,15 @@ void CWeaponAmmo::OnH_B_Chield()
 
 void CWeaponAmmo::OnH_B_Independent() 
 {
-	inherited::OnH_B_Independent();
 	if(!Useful()) {
-		NET_Packet P;
-		u_EventGen(P,GE_DESTROY,ID());
-		if(Local()) u_EventSend(P);
+		NET_Packet		P;
+		u_EventGen		(P,GE_DESTROY,ID());
+		if (Local())
+			u_EventSend	(P);
+		CGameObject::OnH_B_Independent();
 		return;
 	}
+	inherited::OnH_B_Independent();
 }
 
 const char* CWeaponAmmo::Name() 
