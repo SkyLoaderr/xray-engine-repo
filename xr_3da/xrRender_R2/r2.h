@@ -95,8 +95,8 @@ private:
 
 	IRender_Sector*					rimp_detectSector			(Fvector& P, Fvector& D);
 	void							render_smap_direct			(Fmatrix& mCombined);
-	void							render_indirect				(light* L);
-	void							render_lights				();
+	void							render_indirect				(light*			L	);
+	void							render_lights				(light_Package& LP	);
 public:
 	IRender_Portal*					getPortal					(int id);
 	IRender_Sector*					getSectorActive				();
