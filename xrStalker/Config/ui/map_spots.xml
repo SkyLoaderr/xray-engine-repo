@@ -85,6 +85,33 @@
 		<texture x="96" y="192" width="32" height="32">ui\ui_icons_map</texture>
 	</mil_rg6_spot>
 	
+	<mil_lukash_location hint="mil_lukash">
+		<level_map spot="mil_lukash_spot" pointer="quest_pointer"></level_map>
+		<mini_map  spot="mil_lukash_spot" pointer="quest_pointer"></mini_map>
+	</mil_lukash_location>
+
+    <mil_lukash_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="160" y="0" width="32" height="32">ui\ui_icons_map</texture>
+	</mil_lukash_spot>
+
+	<mil_sniper_location hint="mil_sniper">
+		<level_map spot="mil_sniper_spot" pointer="quest_pointer"></level_map>
+		<mini_map  spot="mil_sniper_spot" pointer="quest_pointer"></mini_map>
+	</mil_sniper_location>
+
+    <mil_sniper_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="160" y="0" width="32" height="32">ui\ui_icons_map</texture>
+	</mil_sniper_spot>
+	
+
+	<mil_dolg_location hint="mil_dolg">
+		<level_map spot="mil_dolg_spot" pointer="quest_pointer"></level_map>
+		<mini_map  spot="mil_dolg_spot" pointer="quest_pointer"></mini_map>
+	</mil_dolg_location>
+
+    <mil_dolg_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="160" y="0" width="32" height="32">ui\ui_icons_map</texture>
+	</mil_dolg_spot>
 	
 <!-- quest spots -->
 	<tutorial_artefact_spot x="0" y="0" width="32" height="32" alignment="c">

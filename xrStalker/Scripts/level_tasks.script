@@ -283,6 +283,23 @@ function process_map_spot(info_id)
 	       add_location (1006, "mil_rg6_location") 
 	elseif info_id == "mil_rg6_gain" then
 		   remove_location (1006, "mil_rg6_location")
+		   
+	elseif info_id == "mil_max_lukash_call" then
+	       add_location (1007, "mil_lukash_location")
+	elseif info_id == "mil_lukash_arrive" or info_id == "mil_lukash_job_failed" then
+	       remove_location (1007, "mil_lukash_location")
+
+	elseif info_id == "mil_lukash_job_complete" then
+	       add_location (1007, "mil_lukash_location")
+	       remove_location (1008, "mil_dolg_location")
+	elseif info_id == "mil_lukash_arrive" or info_id == "mil_lukash_job_failed" then
+	       remove_location (1007, "mil_lukash_location")
+
+	elseif info_id == "mil_freedom_attack" then
+	       add_location (1008, "mil_dolg_location")
+	elseif info_id == "mil_lukash_job_complete" then
+	       remove_location (1008, "mil_dolg_location")
+		   
         		   
 	-- end of military       
 	end

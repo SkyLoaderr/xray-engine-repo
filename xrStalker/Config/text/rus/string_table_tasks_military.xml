@@ -41,5 +41,16 @@
         <text>РГ6 Угрюмого.</text>
     </string>
     
+    <string id="mil_lukash">
+        <text>Лукаш.</text>
+    </string>
+
+    <string id="mil_sniper">
+        <text>Снайпер.</text>
+    </string>
+
+    <string id="mil_dolg">
+        <text>Группа "Долга".</text>
+    </string>
 	
 </string_table>
