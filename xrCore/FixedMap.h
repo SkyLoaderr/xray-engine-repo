@@ -41,11 +41,11 @@ private:
 			TNode*	Nnew	= newNodes + I;
 
 			if (Nold->left) {
-				u32	Lid		= Nold->left  - nodes;
+				size_t	Lid		= Nold->left  - nodes;
 				Nnew->left		= newNodes + Lid;
 			}
 			if (Nold->right) {
-				u32	Rid		= Nold->right - nodes;
+				size_t	Rid		= Nold->right - nodes;
 				Nnew->right		= newNodes + Rid;
 			}
 		}
