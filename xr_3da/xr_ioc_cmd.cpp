@@ -244,8 +244,8 @@ public:
 	virtual void Execute(LPCSTR args)
 	{
 		CCC_Float::Execute(args);
-		Device.Gamma->Gamma		(gamma);
-		Device.Gamma->Update	();
+		Device.Gamma.Gamma		(gamma);
+		Device.Gamma.Update	();
 	}
 };
 //-----------------------------------------------------------------------
@@ -257,8 +257,8 @@ public:
 	virtual void Execute(LPCSTR args)
 	{
 		CCC_Float::Execute		(args);
-		Device.Gamma->Brightness	(value);
-		Device.Gamma->Update		();
+		Device.Gamma.Brightness	(value);
+		Device.Gamma.Update		();
 	}
 };
 //-----------------------------------------------------------------------
@@ -270,8 +270,8 @@ public:
 	virtual void Execute(LPCSTR args)
 	{
 		CCC_Float::Execute		(args);
-		Device.Gamma->Contrast	(value);
-		Device.Gamma->Update		();
+		Device.Gamma.Contrast	(value);
+		Device.Gamma.Update		();
 	}
 };
 //-----------------------------------------------------------------------

@@ -76,7 +76,7 @@ void CRenderDevice::_Create	(LPCSTR shName)
 
 	// Signal everyone - device created
 	RCache.OnDeviceCreate		();
-	Gamma->Update				();
+	Gamma.Update				();
 	Resources->OnDeviceCreate	(shName);
 	seqDevCreate.Process		(rp_DeviceCreate);
 	Statistic.OnDeviceCreate	();
