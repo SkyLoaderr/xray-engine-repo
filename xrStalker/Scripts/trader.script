@@ -103,6 +103,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function Trader:process_wait ()
 
+    printf ("Process wait")
     if self.npc:action () then return end 
     
     if self.waiter ~= nil and self.waiter:evaluate () == true then
@@ -131,6 +132,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function Trader:process_end ()
 
+    printf ("Process end")
     if self.npc:action () then return end
     
     if self.waiter ~= nil and self.waiter:evaluate () == true then
@@ -154,8 +156,9 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function Trader:process_idle ()
 
-    if self.npc:action () then return end    
     printf ("Process idle")
+    
+    if self.npc:action () then return end    
     
     if self.need_interrupt == true then
        reset_action (self.npc, self.script)  
