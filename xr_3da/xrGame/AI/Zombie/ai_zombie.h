@@ -135,6 +135,20 @@ class CAI_Zombie : public CCustomMonster
 		} SSubNode;
 
 		////////////////////////////////////////////////////////////////////////////
+		// dynamic objects
+		////////////////////////////////////////////////////////////////////////////
+
+		typedef struct tagSDynamicObject {
+			DWORD		dwTime;
+			DWORD		dwUpdateCount;
+			Fvector		tSavedPosition;
+			SRotation	tRotation;
+			CEntity		*tpEntity;
+		} SDynamicObject;
+
+		vector<SDynamicObject>	tpaDynamicObjects;
+
+		////////////////////////////////////////////////////////////////////////////
 		// normal animations
 		////////////////////////////////////////////////////////////////////////////
 
@@ -399,6 +413,8 @@ class CAI_Zombie : public CCustomMonster
 		int  ifDivideNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition, vector<SSubNode> &tpSubNodes);
 		int  ifDivideNearestNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition, vector<SSubNode> &tpSubNodes);
 		void GoToPointViaSubnodes(Fvector &tLeaderPosition);
+		void vfUpdateDynamicObjects();
+
 	public:
 					   CAI_Zombie();
 		virtual		  ~CAI_Zombie();

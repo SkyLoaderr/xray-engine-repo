@@ -414,6 +414,7 @@ void CAI_Soldier::PatrolUnderFire()
 
 	Fvector tTemp = tHitDir;
 	tTemp.mul(40.f);
+	
 	SelectorUnderFire.m_tEnemyPosition.sub(Group.m_tHitPosition,tTemp);
 
 	if (dwCurTime - Group.m_dwLastHitTime >= m_dwUnderFireShock) {
@@ -437,7 +438,9 @@ void CAI_Soldier::PatrolUnderFire()
 	}
 	else {
 		SetLessCoverLook(AI_Node);
+
 		AI_Path.TravelPath.clear();
+
 		if (_min(AI_Node->cover[0],_min(AI_Node->cover[1],_min(AI_Node->cover[2],AI_Node->cover[3]))) > MIN_COVER_MOVE)
 			vfSetMovementType(BODY_STATE_STAND,m_fMaxSpeed);
 		else
@@ -657,10 +660,26 @@ void CAI_Soldier::FollowLeaderPatrol()
 				
 				AI_Path.TravelPath[j].P.add(tTemp);
 
+				/**/
 				if ((j > 1) && (COMPUTE_DISTANCE_2D(AI_Path.TravelPath[j].P,AI_Path.TravelPath[j-2].P) <= fHalfSubnodeSize + COMPUTE_DISTANCE_2D(AI_Path.TravelPath[j-1].P,AI_Path.TravelPath[j-2].P))) {
-					j--;
-					continue;
+					Fvector tPrevious = AI_Path.TravelPath[j-2].P;
+					Fvector tCurrent = AI_Path.TravelPath[j-1].P;
+					Fvector tNext = AI_Path.TravelPath[j].P;
+					Fvector tTemp1, tTemp2;
+					tTemp1.sub(tCurrent,tPrevious);
+					tTemp2.sub(tNext,tCurrent);
+					tTemp1.normalize_safe();
+					tTemp1.y = tTemp2.y = 0;
+					tTemp2.normalize_safe();
+					float fAlpha = tTemp1.dotproduct(tTemp2);
+					clamp(fAlpha, -.99999f, +.99999f);
+					if ((acosf(fAlpha) < PI_DIV_8*.375f) || (acosf(fAlpha) > 2*PI_DIV_8*.375f)) {
+					//if (acosf(fAlpha) < PI_DIV_8*.375f) {
+						j--;
+						continue;
+					}
 				}
+				/**/
 
 				int m=k;
 				for ( ; (k < dwaNodes.size()) && (!bfInsideNode(AI,AI.Node(dwaNodes[k]),SoldierLeader->AI_Path.TravelPath[i].P,fHalfSubnodeSize)); k++) ;
@@ -793,7 +812,7 @@ void CAI_Soldier::Patrol()
 			m_tpaPointDeviations.resize(m_tpaPatrolPoints.size());
 		}
 		
-		vfCreateFastRealisticPath(m_tpaPatrolPoints, m_dwStartPatrolNode, m_tpaPointDeviations, AI_Path.TravelPath, m_dwaNodes, m_bLooped,false);
+		vfCreateFastRealisticPath(m_tpaPatrolPoints, m_dwStartPatrolNode, m_tpaPointDeviations, AI_Path.TravelPath, m_dwaNodes, m_bLooped,true);
 		
 		m_dwCreatePathAttempts++;
 		Msg("paths : %d",m_dwCreatePathAttempts);

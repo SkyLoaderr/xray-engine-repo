@@ -51,6 +51,7 @@ CAI_Soldier::CAI_Soldier()
 	m_tpEventAssignPath = Engine.Event.Handler_Attach("level.entity.path.assign",this);
 	m_dwPatrolPathIndex = -1;
 	m_dwCreatePathAttempts = 0;
+	tpaDynamicObjects.clear();
 }
 
 CAI_Soldier::~CAI_Soldier()
@@ -135,6 +136,8 @@ void CAI_Soldier::Load(CInifile* ini, const char* section)
 	m_dwPatrolShock = ini->ReadINT(section,"PatrolShock");
 	m_dwUnderFireShock = ini->ReadINT(section,"UnderFireShock");
 	m_dwUnderFireReturn = ini->ReadINT(section,"UnderFireReturn");
+
+	m_dwMaxDynamicObjectsCount = ini->ReadINT(section,"DynamicObjectsCount");
 }
 
 BOOL CAI_Soldier::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)

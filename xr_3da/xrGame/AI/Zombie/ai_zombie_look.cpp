@@ -196,3 +196,8 @@ objQualifier* CAI_Zombie::GetQualifier	()
 {
 	return(&ZombieQualifier);
 }
+
+void CAI_Zombie::vfUpdateDynamicObjects()
+{
+
+}

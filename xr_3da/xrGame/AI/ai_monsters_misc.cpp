@@ -272,9 +272,6 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 		
 		do {
 			// if distance to corner is small enough - round the corner
-			if (tpaPath.size() > 240) {
-				i=i;
-			}
 			if (((COMPUTE_DISTANCE_2D(tPrevPoint,tFinishPoint) - fRoundedDistance < EPS_L))) {
 				if ((!bLooped) && (iCurrentPatrolPoint == tpaPoints.size() - 1)) {
 					bStop = true;
@@ -326,7 +323,7 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 						clamp(fAlpha = t1.dotproduct(t2),-0.9999999f,0.9999999f);
 						fAlpha = acosf(fAlpha);
 						if (fAlpha < PI/2) {
-							/**/
+							/**
 							tTravelNode.P = tFinalPosition;
 							if ((!tpaPath.size()) || COMPUTE_DISTANCE_2D(tCurrentPosition,tpaPath[tpaPath.size() - 1].P) > fSegmentSizeMin)
 								tpaPath.push_back(tTravelNode);
@@ -719,6 +716,28 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 		if (acosf(fAlpha) > PI_DIV_2) {
 			tpaPath.erase(tpaPath.begin() + i);
 			i--;
+		}
+	}
+	/**/
+	for ( i=2; i<tpaPath.size(); i++) {
+		if (COMPUTE_DISTANCE_2D(tpaPath[i].P,tpaPath[i-2].P) <= fHalfSubNodeSize + COMPUTE_DISTANCE_2D(tpaPath[i-1].P,tpaPath[i-2].P)) {
+			Fvector tPrevious = tpaPath[i-2].P;
+			Fvector tCurrent = tpaPath[i-1].P;
+			Fvector tNext = tpaPath[i].P;
+			Fvector tTemp1, tTemp2;
+			tTemp1.sub(tCurrent,tPrevious);
+			tTemp2.sub(tNext,tCurrent);
+			tTemp1.normalize_safe();
+			tTemp1.y = tTemp2.y = 0;
+			tTemp2.normalize_safe();
+			float fAlpha = tTemp1.dotproduct(tTemp2);
+			clamp(fAlpha, -.99999f, +.99999f);
+			if ((acosf(fAlpha) > PI_DIV_8*.375f) && (acosf(fAlpha) < 2*PI_DIV_8*.375f))
+				continue;
+			else {
+				tpaPath.erase(tpaPath.begin() + i);
+				i--;
+			}
 		}
 	}
 	/**/

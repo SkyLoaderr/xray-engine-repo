@@ -129,6 +129,23 @@ class CAI_Soldier : public CCustomMonster
 		#define MIN_COVER_MOVE					120
 
 		////////////////////////////////////////////////////////////////////////////
+		// dynamic objects
+		////////////////////////////////////////////////////////////////////////////
+
+		typedef struct tagSDynamicObject {
+			DWORD			dwTime;
+			DWORD			dwUpdateCount;
+			Fvector			tSavedPosition;
+			SRotation		tOrientation;
+			Fvector			tMySavedPosition;
+			SRotation		tMyOrientation;
+			CCustomMonster	*tpEntity;
+		} SDynamicObject;
+
+		vector<SDynamicObject>	tpaDynamicObjects;
+		DWORD					m_dwMaxDynamicObjectsCount;
+
+		////////////////////////////////////////////////////////////////////////////
 		// normal animations
 		////////////////////////////////////////////////////////////////////////////
 
@@ -475,6 +492,7 @@ class CAI_Soldier : public CCustomMonster
 		void vfSetFire(bool bFire, CGroup &Group);
 		void vfSetMovementType(char cBodyState, float fSpeed);
 		void vfCheckForSavedEnemy();
+		void vfUpdateDynamicObjects();
 
 	public:
 					   CAI_Soldier();

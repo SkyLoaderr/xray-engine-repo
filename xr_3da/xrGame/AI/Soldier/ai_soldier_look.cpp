@@ -45,17 +45,17 @@ bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 	
 	// computing enemy state
 	switch (m_cBodyState) {
-	case BODY_STATE_STAND : {
-		break;
-							}
-	case BODY_STATE_CROUCH : {
-		fResult *= m_fCrouchVisibilityMultiplier;
-		break;
-							 }
-	case BODY_STATE_LIE : {
-		fResult *= m_fLieVisibilityMultiplier;
-		break;
-						  }
+		case BODY_STATE_STAND : {
+			break;
+		}
+		case BODY_STATE_CROUCH : {
+			fResult *= m_fCrouchVisibilityMultiplier;
+			break;
+		}
+		case BODY_STATE_LIE : {
+			fResult *= m_fLieVisibilityMultiplier;
+			break;
+		}
 	}
 	
 	// computing my ability to view the enemy
@@ -203,4 +203,55 @@ void CAI_Soldier::OnVisible()
 	
 	Weapons->OnRender(FALSE);
 	//return(0);
+}
+
+void CAI_Soldier::vfUpdateDynamicObjects()
+{
+	ai_Track.o_get(tpaVisibleObjects);
+	DWORD dwTime = Level().timeServer();
+	for (int i=0; i<tpaVisibleObjects.size(); i++) {
+		CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(tpaVisibleObjects[i]);
+		if (tpCustomMonster) {
+			for (int j=0; j<tpaDynamicObjects.size(); j++)
+				if (tpCustomMonster == tpaDynamicObjects[j].tpEntity) {
+					tpaDynamicObjects[j].dwTime = dwTime;
+					tpaDynamicObjects[j].dwUpdateCount++;
+					tpaDynamicObjects[j].tSavedPosition = tpCustomMonster->Position();
+					tpaDynamicObjects[j].tOrientation = tpCustomMonster->r_torso_current;
+					tpaDynamicObjects[j].tMySavedPosition = Position();
+					tpaDynamicObjects[j].tMyOrientation = r_torso_current;
+					break;
+				}
+			if (j >= tpaDynamicObjects.size()) {
+				if (tpaDynamicObjects.size() >= m_dwMaxDynamicObjectsCount)	{
+					DWORD dwBest = dwTime + 1, dwIndex = DWORD(-1);
+					for (int j=0; j<tpaDynamicObjects.size(); j++)
+						if (tpaDynamicObjects[j].dwTime < dwBest) {
+							dwIndex = i;
+							dwBest = tpaDynamicObjects[j].dwTime;
+						}
+					if (dwIndex < tpaDynamicObjects.size()) {
+						tpaDynamicObjects[dwIndex].dwTime = dwTime;
+						tpaDynamicObjects[dwIndex].dwUpdateCount = 1;
+						tpaDynamicObjects[dwIndex].tSavedPosition = tpCustomMonster->Position();
+						tpaDynamicObjects[dwIndex].tOrientation = tpCustomMonster->r_torso_current;
+						tpaDynamicObjects[dwIndex].tMySavedPosition = Position();
+						tpaDynamicObjects[dwIndex].tMyOrientation = r_torso_current;
+						tpaDynamicObjects[dwIndex].tpEntity = tpCustomMonster;
+					}
+				}
+				else {
+					SDynamicObject tDynamicObject;
+					tDynamicObject.dwTime = dwTime;
+					tDynamicObject.dwUpdateCount = 1;
+					tDynamicObject.tSavedPosition = tpCustomMonster->Position();
+					tDynamicObject.tOrientation = tpCustomMonster->r_torso_current;
+					tDynamicObject.tMySavedPosition = Position();
+					tDynamicObject.tMyOrientation = r_torso_current;
+					tDynamicObject.tpEntity = tpCustomMonster;
+					tpaDynamicObjects.push_back(tDynamicObject);
+				}
+			}
+		}
+	}
 }
