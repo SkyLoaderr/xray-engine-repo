@@ -264,6 +264,9 @@
 					RelativePath=".\_random.h">
 				</File>
 				<File
+					RelativePath="_rect.h">
+				</File>
+				<File
 					RelativePath=".\_sphere.cpp">
 				</File>
 				<File

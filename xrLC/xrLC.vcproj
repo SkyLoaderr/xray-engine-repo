@@ -573,6 +573,9 @@
 				RelativePath=".\Sector.h">
 			</File>
 			<File
+				RelativePath="_rect.h">
+			</File>
+			<File
 				RelativePath=".\xrBuildCForm.cpp">
 			</File>
 			<File
