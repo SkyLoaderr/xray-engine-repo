@@ -24,7 +24,7 @@
 	</timer_frame_line>
                    
 	<!-- TAB CONTROL -->
-	<tab x="105" y="350" width="400" height="30">
+	<tab x="105" y="150" width="400" height="30">
 		<!-- BUTTONS -->
 		<button x="0" y="10" width="55" height="20">
 			<text x="0" y="0" font="letterica18" r="255" g="255" b="255">Events</text>
