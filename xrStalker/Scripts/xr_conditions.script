@@ -100,7 +100,7 @@ function dar_actor_has_a_key1(actor,npc)
 end
 
 function dar_actor_has_a_key2(actor,npc)
-	return xr_conditions_impl.actor_has_object(actor,"ugrum_flash")
+	return xr_conditions_impl.actor_has_object(actor,"krot_flash")
 end
 ------------------------------------------------------------------------------------
 
