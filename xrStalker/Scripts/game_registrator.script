@@ -11,3 +11,22 @@ function register(object_factory)
 		object_factory:register ("ce_new_game_dm.C_new_game_sv_Deathmatch","GM_NEWDM","new_game_sv_Deathmatch")
 	end
 end
+
+function get_game_clsid(game_type_option)
+	if(game_type_option == "deathmatch") then 
+		return "GM_DM" end
+
+	if(game_type_option == "teamdeathmatch") then 
+		return "GM_TDM" end
+
+	if(game_type_option == "artefacthunt") then 
+		return "GM_AHUNT" end
+
+	if(game_type_option == "cs") then 
+		return "GM_CS" end
+
+	if(game_type_option == "new_dm") then 
+		return "GM_NEWDM" end
+
+
+end
