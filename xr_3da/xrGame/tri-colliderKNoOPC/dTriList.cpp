@@ -14,6 +14,7 @@
 #include "dcTriListCollider.h"
 #include "dcTriListCollider.cpp"	// Allow inlining
 
+#include "../dCylinder/dCylinder.h"
 
 int dTriListClass = -1;
 
@@ -103,8 +104,11 @@ dColliderFn* FUNCCALL dTriListColliderFn(int num)
 	if (num ==dSphereClass) {
 		return (dColliderFn*)&dCollideSTL;
 	}
-
-
+	/*
+	if (num ==dCylinderClass) {
+		return (dColliderFn*)&dCollideSTL;
+	}
+*/
 	return 0;
 
 }

@@ -101,8 +101,9 @@ void CPHJeep::Create1(dSpaceID space, dWorldID world){
 	static const dVector3 scaleBox={scaleParam, scaleParam, scaleParam};
 	//jeepBox={scaleBox[0],scaleBox[0],scaleBox[0]};
 	jeepBox[0]=REAL(4.2)*scaleBox[0];jeepBox[1]=REAL(1.)*scaleBox[1];jeepBox[2]=REAL(2.08)*scaleBox[2];
+	//jeepBox[0]=REAL(1.0)*scaleBox[0];jeepBox[1]=REAL(1.)*scaleBox[1];jeepBox[2]=REAL(1.3)*scaleBox[2];
 	cabinBox[0]=scaleBox[0]*1.9f;cabinBox[1]=scaleBox[1]*0.6f;cabinBox[2]=scaleBox[2]*2.08f;
-
+	//cabinBox[0]=scaleBox[0]*1.9f;cabinBox[1]=scaleBox[1]*0.6f;cabinBox[2]=scaleBox[2]*1.3f;
 	static const dReal wheelRadius = 0.79f/2.f* scaleParam;
 	
 
@@ -202,8 +203,10 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	static const dReal scaleParam=1.f;
 	static const dVector3 scaleBox={scaleParam, scaleParam, scaleParam};
 	//jeepBox={scaleBox[0],scaleBox[0],scaleBox[0]};
-	jeepBox[0]=REAL(4.2)*scaleBox[0];jeepBox[1]=REAL(1.)*scaleBox[1];jeepBox[2]=REAL(2.08)*scaleBox[2];
-	cabinBox[0]=scaleBox[0]*1.9f;cabinBox[1]=scaleBox[1]*0.6f;cabinBox[2]=scaleBox[2]*2.08f;
+	//jeepBox[0]=REAL(4.2)*scaleBox[0];jeepBox[1]=REAL(1.)*scaleBox[1];jeepBox[2]=REAL(2.08)*scaleBox[2];
+	jeepBox[0]=REAL(3.8)*scaleBox[0];jeepBox[1]=REAL(0.7)*scaleBox[1];jeepBox[2]=REAL(1.38)*scaleBox[2];
+	//cabinBox[0]=scaleBox[0]*1.9f;cabinBox[1]=scaleBox[1]*0.6f;cabinBox[2]=scaleBox[2]*2.08f;
+	cabinBox[0]=scaleBox[0]*1.7f;cabinBox[1]=scaleBox[1]*0.42f;cabinBox[2]=scaleBox[2]*1.35f;
 
 	static const dReal wheelRadius = 0.79f/2.f* scaleParam;
 
@@ -213,6 +216,7 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	DriveDirection=0;
 	Breaks=false;
 	startPosition[0]=10.0f;startPosition[1]=1.f;startPosition[2]=0.f;
+	//static const dReal weelSepX=scaleBox[0]*2.74f/2.f,weelSepZ=scaleBox[2]*1.7f/2.f,weelSepY=scaleBox[1]*0.6f;
 	static const dReal weelSepX=scaleBox[0]*2.74f/2.f,weelSepZ=scaleBox[2]*1.7f/2.f,weelSepY=scaleBox[1]*0.6f;
 	MassShift=0.25f;
 	dMass m;
@@ -258,6 +262,7 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 		dBodySetMass(Bodies[i], &m);
 		dBodySetQuaternion(Bodies[i], q);
 		Geoms[i] = dCreateSphere(0, wheelRadius);
+		//Geoms[i] = dCreateCylinder(0, wheelRadius,wheelRadius);
 		dGeomSetBody(Geoms[i], Bodies[i]);
 	}
 
