@@ -21,7 +21,7 @@ void CRender::Render		()
 		phase									= PHASE_NORMAL;
 
 		// Frustum & HOM rendering
-		ViewBase.CreateFromMatrix				(Device.mFullTransform,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
+		ViewBase.CreateFromMatrix				(Device.mFullTransform,FRUSTUM_P_ALL);
 		View									= 0;
 		HOM.Enable								();
 		HOM.Render								(ViewBase);
