@@ -84,7 +84,12 @@ end
 function act_state_mgr_end:execute()
 	action_base.execute(self)
 
-	if state_lib.states[self.st.target_state].weapon ~= nil and
+	if not self.st.planner:evaluator(self.st.properties["movement_stand_now"]):evaluate() then
+		state_mgr_direction.update_movement_direction(self.object, self.st)
+	end
+	
+	if isWeapon(self.object:best_weapon()) and
+	   state_lib.states[self.st.target_state].weapon ~= nil and
 	   state_lib.states[self.st.target_state].weapon ~= "strapped" and
 	   state_lib.states[self.st.target_state].weapon ~= "none"
 	then
@@ -265,8 +270,8 @@ function state_manager:__init(npc)
 	
 	self.operators["direction_turn"]		= 51	
 	self.operators["direction_search"]		= 52
-	self.operators["direction_clear_anim"]	= 53
-	self.operators["direction_stand_up"]	= 54
+	self.operators["direction_clear_anim"]	= 55
+	self.operators["direction_stand_up"]	= 56
 
 	self.operators["animstate_wait"]		= 61
 	self.operators["animstate_2sit"]		= 62
@@ -305,6 +310,7 @@ function state_manager:__init(npc)
 
 
 	action = state_mgr_movement.act_state_mgr_movement_walk("state_mgr_movement_walk")
+	action:add_precondition		(world_property(self.properties["locked"],				false))
 	action:add_precondition		(world_property(self.properties["movement"],			false))
 	action:add_precondition		(world_property(self.properties["movement_walk"],		true))
 	action:add_precondition		(world_property(self.properties["animstate"],			true))
@@ -313,10 +319,11 @@ function state_manager:__init(npc)
 	self.planner:add_action(self.operators["movement_walk"], action)
 
 	action = state_mgr_movement.act_state_mgr_movement_run("state_mgr_movement_run")
+	action:add_precondition		(world_property(self.properties["locked"],				false))
 	action:add_precondition		(world_property(self.properties["movement"],			false))
 	action:add_precondition		(world_property(self.properties["movement_run"],		true))
 	action:add_precondition		(world_property(self.properties["animstate"],			true))
-	action:add_precondition		(world_property(self.properties["animation_none_now"],	true))	
+	action:add_precondition		(world_property(self.properties["animation_none_now"],	true))
 	action:add_effect 			(world_property(self.properties["movement"],			true))
 	self.planner:add_action(self.operators["movement_run"], action)
 
@@ -374,13 +381,14 @@ function state_manager:__init(npc)
 	self.planner:add_action(self.operators["bodystate_standing"], action)
 
 
+
 	action = state_mgr_direction.act_state_mgr_direction_turn("state_mgr_direction_turn", self)
 	action:add_precondition		(world_property(self.properties["locked"],				false))
 	action:add_precondition		(world_property(self.properties["direction"],			false))
 	action:add_precondition		(world_property(self.properties["direction_search"],	false))
-	action:add_precondition		(world_property(self.properties["movement"],			true))
 	action:add_precondition		(world_property(self.properties["animation_none_now"],	true))
 	action:add_precondition		(world_property(self.properties["animstate_idle_now"],	true))
+	action:add_precondition		(world_property(self.properties["movement_stand_now"],	true))	
 	action:add_effect 			(world_property(self.properties["direction"],			true))
 	self.planner:add_action(self.operators["direction_turn"], action)
 
@@ -388,11 +396,13 @@ function state_manager:__init(npc)
 	action:add_precondition		(world_property(self.properties["locked"],				false))
 	action:add_precondition		(world_property(self.properties["direction"],			false))
 	action:add_precondition		(world_property(self.properties["direction_search"],	true))
-	action:add_precondition		(world_property(self.properties["movement"],			true))
 	action:add_precondition		(world_property(self.properties["animation_none_now"],	true))
 	action:add_precondition		(world_property(self.properties["animstate_idle_now"],	true))
+	action:add_precondition		(world_property(self.properties["movement_stand_now"],	true))	
 	action:add_effect 			(world_property(self.properties["direction"],			true))
 	self.planner:add_action(self.operators["direction_search"], action)
+
+
 
 	action = state_mgr_animation.act_state_mgr_animation_stop("state_mgr_direction_clear_anim", self)
 	action:add_precondition		(world_property(self.properties["locked"],				false))

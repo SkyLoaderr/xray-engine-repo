@@ -19,6 +19,10 @@ function eva_state_mgr_direction:evaluate()
 		--printf("changed for object")
 	end
 		
+
+	if not self.st.planner:evaluator(self.st.properties["movement_stand"]):evaluate() then
+		return true
+	end
 	
 	if self.st.target_position == nil then
 		-- если текущая позиция нулевая
@@ -98,7 +102,7 @@ function act_state_mgr_direction_search:__init(name, st) super (nil, name)
 end
 function act_state_mgr_direction_search:initialize()
 	action_base.initialize(self)
-	self.object:set_sight(look.path_dir, nil, 0)
+	self.object:set_sight(look.danger, nil, 0)
 	self.st.current_direction = nil
 end
 function act_state_mgr_direction_search:execute()
@@ -106,4 +110,14 @@ function act_state_mgr_direction_search:execute()
 end
 function act_state_mgr_direction_search:finalize()
 	action_base.finalize(self)
+end
+
+
+
+function update_movement_direction(npc, st)
+	if st and st.target_position ~= nil then
+		npc:set_sight(look.direction, vector():sub(st.target_position, npc:position()), true)	
+	else
+		npc:set_sight(look.path_dir, nil, 0)
+	end	
 end

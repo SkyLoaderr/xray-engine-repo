@@ -52,11 +52,13 @@ end
 
 --' Включаем ходьбу
 class "act_state_mgr_movement_walk" (action_base)
-function act_state_mgr_movement_walk:__init(name) super (nil, name)
+function act_state_mgr_movement_walk:__init(name, st) super (nil, name)
+	self.st = st
 end
 function act_state_mgr_movement_walk:initialize()
 	action_base.initialize(self)
 	self.object:set_movement_type(move.walk)
+	state_mgr_direction.update_movement_direction(self.object, self.st)
 end
 function act_state_mgr_movement_walk:execute()
 	action_base.execute(self)
@@ -66,11 +68,13 @@ function act_state_mgr_movement_walk:finalize()
 end
 --' Включаем бег
 class "act_state_mgr_movement_run" (action_base)
-function act_state_mgr_movement_run:__init(name) super (nil, name)
+function act_state_mgr_movement_run:__init(name, st) super (nil, name)
+	self.st = st
 end
 function act_state_mgr_movement_run:initialize()
 	action_base.initialize(self)
 	self.object:set_movement_type(move.run)
+	state_mgr_direction.update_movement_direction(self.object, self.st)
 end
 function act_state_mgr_movement_run:execute()
 	action_base.execute(self)
@@ -80,7 +84,8 @@ function act_state_mgr_movement_run:finalize()
 end
 --' Включаем стояние на месте
 class "act_state_mgr_movement_stand" (action_base)
-function act_state_mgr_movement_stand:__init(name) super (nil, name)
+function act_state_mgr_movement_stand:__init(name, st) super (nil, name)
+	self.st = st
 end
 function act_state_mgr_movement_stand:initialize()
 	action_base.initialize(self)

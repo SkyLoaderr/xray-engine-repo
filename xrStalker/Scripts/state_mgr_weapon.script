@@ -14,6 +14,9 @@ function eva_state_mgr_weapon:evaluate()
 		return true
 	end
 ]]
+	if not isWeapon(self.object:best_weapon()) then
+		return true
+	end
 
 	if (state_lib.states[self.st.target_state].weapon == nil) or
 	   (state_lib.states[self.st.target_state].weapon == "strapped" and

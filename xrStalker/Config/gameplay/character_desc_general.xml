@@ -42,9 +42,8 @@
 		<visual>actors\barman\barman</visual>
 		<!-- <visual>actors\hero\stalker_novice</visual> -->
 					
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<start_dialog>bar_bar_barmen_start</start_dialog>
+		<actor_dialog>bar_bar_barmen_talk_info</actor_dialog>
 	</specific_character>
 
 	<specific_character id="doctor_izgoy" no_random = "1">
