@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "build.h"
 
-const	float	aht_min_edge	= 0.1f;			// 10cm
-const	float	aht_min_err		= 8.f/255.f;	// 8 
+const	float	aht_min_edge	= 0.15f;		// 15cm
+const	float	aht_min_err		= 12.f/255.f;	// 12
 
 void CBuild::xrPhase_AdaptiveHT	()
 {
@@ -20,7 +20,7 @@ void CBuild::xrPhase_AdaptiveHT	()
 	for (u32 fit=0; fit<cnt_faces; fit++)
 	{
 		g_faces[fit]->flags.bSplitted		= false;
-		g_faces[fit]->flags.bLocked			= !g_faces[fit]->flags.bOpaque;
+		g_faces[fit]->flags.bLocked			= true;
 	}
 
 	// main process
