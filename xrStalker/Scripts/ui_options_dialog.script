@@ -44,7 +44,7 @@ function options_dialog:InitControls()
 							 height = 500}	
 	main_rect.x = (screen.width - main_rect.width)/2
 	main_rect.y = (screen.height - main_rect.height)/2
-	local caption_rect    = {x = 0,      y = 0,      width = main_rect.width, height = indent*2}
+	local caption_rect    = {x = -20,      y = -50,      width = main_rect.width, height = indent*2}
 	local captiontxt_rect = {x = caption_rect.width/2,
 							 y = caption_rect.height/2,
 							 width = 0,
@@ -93,7 +93,7 @@ function options_dialog:InitControls()
 	main_frame:InitLeftBottom("ui\\ui_frame_over_lb", 0, 0)
 	self:AttachChild(main_frame)
 	
-	-- CAPTION frame --
+	-- CAPTION --
 --[[	local wnd_caption = CUIFrameWindow()
 	wnd_caption:SetAutoDelete(true)
 	wnd_caption:SetWindowName("wnd_caption")
@@ -106,7 +106,6 @@ function options_dialog:InitControls()
 	txt_caption:SetFont(GetFontLetterica25())
 	txt_caption:SetTextAlign(CGameFont.alLeft)
 	txt_caption:SetText("Options")
-
 	txt_caption:SetTextAlign(CGameFont.alCenter)
 	txt_caption:Init(captiontxt_rect.x, captiontxt_rect.y, caption_rect.width, caption_rect.height)
 	main_frame:AttachChild(txt_caption)	
