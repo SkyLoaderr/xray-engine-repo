@@ -71,6 +71,8 @@ public:
 			void					weapon_bones		(int &b0, int &b1, int &b2) const;
 			bool					weapon_strapped		() const;
 			bool					weapon_strapped		(CWeapon *weapon) const;
+			bool					weapon_unstrapped	() const;
+			bool					weapon_unstrapped	(CWeapon *weapon) const;
 };
 
 #include "object_handler_inline.h"

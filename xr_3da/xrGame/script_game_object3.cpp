@@ -604,23 +604,17 @@ bool CScriptGameObject::weapon_strapped	() const
 		ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject : cannot access class member weapon_strapped!");
 		return		(false);
 	}
-	if (!stalker->inventory().ActiveItem())
-		return		(false);
-	
-	CWeapon			*weapon = smart_cast<CWeapon*>(stalker->inventory().ActiveItem());
-	if (!weapon)
-		return		(false);
-	
-	if	(
-			(stalker->CObjectHandler::planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorStrapping2Idle) ||
-			(stalker->CObjectHandler::planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorStrapping) ||
-			(stalker->CObjectHandler::planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorUnstrapping2Idle) ||
-			(stalker->CObjectHandler::planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorUnstrapping)
-		)
-		return		(true);
+	return			(stalker->weapon_strapped());
+}
 
-	return			(weapon->strapped_mode());
-
+bool CScriptGameObject::weapon_unstrapped	() const
+{
+	CAI_Stalker		*stalker = smart_cast<CAI_Stalker*>(&object());
+	if (!stalker) {
+		ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject : cannot access class member weapon_unstrapped!");
+		return		(false);
+	}
+	return			(stalker->weapon_unstrapped());
 }
 
 bool CScriptGameObject::path_completed	() const

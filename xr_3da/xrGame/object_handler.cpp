@@ -191,6 +191,33 @@ bool CObjectHandler::weapon_strapped	(CWeapon *weapon) const
 	return						(weapon->strapped_mode());
 }
 
+bool CObjectHandler::weapon_unstrapped	() const
+{
+	CWeapon						*weapon = smart_cast<CWeapon*>(inventory().ActiveItem());
+	if (!weapon)
+		return					(true);
+
+	return						(weapon_unstrapped(weapon));
+}
+
+bool CObjectHandler::weapon_unstrapped	(CWeapon *weapon) const
+{
+	VERIFY						(weapon);
+
+	if (!weapon->can_be_strapped())
+		return					(true);
+
+	if (
+		(planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorStrapping2Idle) ||
+		(planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorStrapping) ||
+		(planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorUnstrapping2Idle) ||
+		(planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorUnstrapping)
+		)
+		return					(false);
+
+	return						(!weapon->strapped_mode());
+}
+
 IC	void CObjectHandler::switch_torch	(CInventoryItem *inventory_item, bool value)
 {
 	CTorch						*torch = smart_cast<CTorch*>(inventory_item);
