@@ -463,7 +463,7 @@ void CWeapon::UpdateCL		()
 				} else {
 					if (IsWorking())	{ FireEnd(); Log("! END"); }
 				}
-				SwitchState			(NET_Last.state);
+				if (DWORD(NET_Last.state)!=STATE)	OnStateSwitch(NET_Last.state);
 			}
 		}
 	}
