@@ -204,8 +204,6 @@ struct ENGINE_API SDef: public SParams
 			strcpy(m_Name,new_name);
 
 			// Computer
-			const u32 comp = MAX_COMPUTERNAME_LENGTH + 1;
-			char	buf	[comp];
 			strcpy(m_Computer,Core.CompName);
 			strlwr(m_Computer);
 
