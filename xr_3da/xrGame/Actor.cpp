@@ -360,9 +360,9 @@ void CActor::net_update::lerp(CActor::net_update& A, CActor::net_update& B, floa
 {
 	float invf		= 1.f-f;
 	// 
-	o_model			= CEntity::u_lerp_angle	(A.o_model,B.o_model,		f);
-	o_torso.yaw		= CEntity::u_lerp_angle	(A.o_torso.yaw,B.o_torso.yaw,f);
-	o_torso.pitch	= CEntity::u_lerp_angle	(A.o_torso.pitch,B.o_torso.pitch,f);
+	o_model			= angle_lerp	(A.o_model,B.o_model,		f);
+	o_torso.yaw		= angle_lerp	(A.o_torso.yaw,B.o_torso.yaw,f);
+	o_torso.pitch	= angle_lerp	(A.o_torso.pitch,B.o_torso.pitch,f);
 	p_pos.lerp		(A.p_pos,B.p_pos,f);
 	p_accel			= (f<0.5f)?A.p_accel:B.p_accel;
 	p_velocity.lerp	(A.p_velocity,B.p_velocity,f);
@@ -742,7 +742,7 @@ void CActor::g_Orientate	(DWORD mstate_rl, float dt)
 	}
 	
 	// lerp angle for "effect" and capture torso data from camera
-	u_lerp_angle		(r_model_yaw_delta,calc_yaw,PI_MUL_2,dt);
+	angle_lerp		(r_model_yaw_delta,calc_yaw,PI_MUL_2,dt);
 
 	// build matrix
 	mRotate.rotateY		(-(r_model_yaw + r_model_yaw_delta));
@@ -773,7 +773,7 @@ void CActor::g_cl_Orientate	(DWORD mstate_rl, float dt)
 			mstate_real	&=~mcTurn;
 
 		if (mstate_rl&mcTurn)
-			u_lerp_angle	(r_model_yaw,r_model_yaw_dest,PI_MUL_4,dt);
+			angle_lerp	(r_model_yaw,r_model_yaw_dest,PI_MUL_4,dt);
 	}
 }
 

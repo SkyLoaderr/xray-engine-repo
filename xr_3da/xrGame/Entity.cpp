@@ -48,8 +48,6 @@ CEntity::CEntity()
 
 CEntity::~CEntity()
 {
-	Engine.Event.Handler_Detach	(eHealthLost_Begin,	this);
-	Engine.Event.Handler_Detach	(eHealthLost_End,	this);
 }
 
 void CEntity::OnEvent		(NET_Packet& P, u16 type)
