@@ -12,6 +12,12 @@
 
 SHARED_HUD_INFO::SHARED_HUD_INFO(LPCSTR section, CHudItem* pHudItem)
 {	
+	m_Flags.zero				();
+
+	// flags
+	if(pSettings->line_exist(section, "allow_inertion")) 
+		m_Flags.set				(flAllowInertion,pSettings->r_bool(section, "allow_inertion"));
+
 	// Geometry and transform
 	Fvector						pos,ypr;
 	pos							= pSettings->r_fvector3(section,"position");
@@ -27,29 +33,24 @@ SHARED_HUD_INFO::SHARED_HUD_INFO(LPCSTR section, CHudItem* pHudItem)
 	//	R_ASSERT					(pVisual->Type==MT_SKELETON_ANIM);
 
 	// fire bone	
-	if(smart_cast<CWeapon*>(pHudItem))
-	{
-		LPCSTR fire_bone			= pSettings->r_string					(section,"fire_bone");
-		iFireBone					= smart_cast<CKinematics*>(pVisual)->LL_BoneID	(fire_bone);
+	if(smart_cast<CWeapon*>(pHudItem)){
+		LPCSTR fire_bone		= pSettings->r_string					(section,"fire_bone");
+		iFireBone				= smart_cast<CKinematics*>(pVisual)->LL_BoneID	(fire_bone);
 		if (iFireBone>=smart_cast<CKinematics*>(pVisual)->LL_BoneCount())	
 			Debug.fatal	("There is no '%s' bone for weapon '%s'.",fire_bone, section);
 
-		vFirePoint					= pSettings->r_fvector3					(section,"fire_point");
-	}
-	else
-	{
-		iFireBone = -1;
+		vFirePoint				= pSettings->r_fvector3					(section,"fire_point");
+	}else{
+		iFireBone				= -1;
 	}
 
 	if(pSettings->line_exist(section,"fire_point2")) 
-		vFirePoint2 = pSettings->r_fvector3(section,"fire_point2");
+		vFirePoint2				= pSettings->r_fvector3(section,"fire_point2");
 	else 
-		vFirePoint2 = vFirePoint;
+		vFirePoint2				= vFirePoint;
 
 	if(pHudItem && pSettings->line_exist(pHudItem->object().cNameSect(), "shell_particles")) 
-	{
-		vShellPoint = pSettings->r_fvector3	(section,"shell_point");
-	}
+		vShellPoint				= pSettings->r_fvector3	(section,"shell_point");
 }
 
 SHARED_HUD_INFO::~SHARED_HUD_INFO()

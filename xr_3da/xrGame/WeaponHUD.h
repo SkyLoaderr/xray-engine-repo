@@ -21,6 +21,15 @@ class CInventoryItem;
 
 struct SHARED_HUD_INFO
 {
+private:
+	//счетчик ссылок на объект
+	u16					ref_count;
+	Flags8				m_Flags;
+public:
+	enum{
+		flAllowInertion = (1<<0),
+	};
+public:
 	SHARED_HUD_INFO		(LPCSTR section, CHudItem* pHudItem);
 	~SHARED_HUD_INFO	();
 
@@ -35,14 +44,11 @@ struct SHARED_HUD_INFO
 	Fvector				vFirePoint2;
 
 	Fvector				vShellPoint;
-
+public:
 	u16					GetRefCount()   {return ref_count;}
 	void				AddRef()		{ref_count++;}
 	void				ReleaseRef()	{if(ref_count>0) ref_count--;}
-private:
-	//счетчик ссылок на объект
-	u16					ref_count;
-
+	BOOL				AllowInertion	(){return m_Flags.is(flAllowInertion);}
 };
 
 DEFINE_MAP (shared_str, SHARED_HUD_INFO*, SHARED_HUD_INFO_MAP, SHARED_HUD_INFO_MAP_IT);
@@ -53,7 +59,7 @@ DEFINE_MAP (shared_str, SHARED_HUD_INFO*, SHARED_HUD_INFO_MAP, SHARED_HUD_INFO_M
 class CWeaponHUD
 {
 	//имя секции HUD
-	shared_str				m_sHudSectionName;
+	shared_str			m_sHudSectionName;
 	//родительский объект HUD
 	CHudItem*			m_pParentWeapon;		
 	//флаг, если hud спрятан не показывается
@@ -86,6 +92,8 @@ public:
 	void				Load			(LPCSTR section);
 	void				net_DestroyHud	();
 	void				Init			();
+
+	BOOL				AllowInertion	()	{ return m_pSharedHudInfo->AllowInertion(); }
 
 	IC IRender_Visual*	Visual			()	{ return m_pSharedHudInfo->pVisual; }
 	IC Fmatrix&			Transform		()	{ return m_pSharedHudInfo->mTransform; }
