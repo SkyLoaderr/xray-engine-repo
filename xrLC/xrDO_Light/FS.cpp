@@ -85,8 +85,7 @@ ENGINE_API void *FileDownload(const char *fn, DWORD *pdwSize)
 	void*	buf;
 
 	hFile	= open(fn,O_RDONLY|O_BINARY|O_SEQUENTIAL);
-	Msg		("* FS [Download] %s",fn);
-	R_ASSERT(hFile>0);
+	R_ASSERT2(hFile>0,fn);
 	size	= filelength(hFile);
 
 	buf		= xr_malloc	(size);
@@ -105,8 +104,7 @@ ENGINE_API void		FileCompress	(const char *fn, const char* sign, void* data, DWO
 	MARK M; mk_mark(M,sign);
 
 	int H	= open(fn,O_BINARY|O_CREAT|O_WRONLY|O_TRUNC,S_IREAD|S_IWRITE);
-	Msg		("* FS [Compress] %s",fn);
-	R_ASSERT(H>0);
+	R_ASSERT2(H>0,fn);
 	_write	(H,&M,8);
 	_writeLZ(H,data,size);
 	_close	(H);
@@ -117,8 +115,7 @@ ENGINE_API void *	FileDecompress	(const char *fn, const char* sign, DWORD* size)
 	MARK M,F; mk_mark(M,sign);
 
 	int	H = open	(fn,O_BINARY|O_RDONLY);
-	Msg		("* FS: [Decompress] %s",fn);
-	R_ASSERT(H>0);
+	R_ASSERT2(H>0,fn);
 	_read	(H,&F,8);
 	if (strncmp(M,F,8)!=0)		{
 		F[8]=0;		Msg("FATAL: signatures doesn't match, file(%s) / requested(%s)",F,sign);

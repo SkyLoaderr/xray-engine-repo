@@ -40,6 +40,7 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 
 	// 
 	shaders.Load	("x:\\game\\shaders_xrlc.xr");
+	/*
 	{
 		Shader_xrLCVec&	S = shaders.Library();
 		for (Shader_xrLCIt I = S.begin(); I!=S.end(); I++)
@@ -47,6 +48,7 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 			Msg("|%s|",I->Name);
 		}
 	}
+	*/
 	
 	//*******
 	Status					("Vertices...");
