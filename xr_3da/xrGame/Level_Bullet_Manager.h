@@ -8,6 +8,11 @@
 #include "weaponammo.h"
 
 
+#define STEP_TIME 33
+#define SPEED_LOWER_BOUND 3.f
+
+
+
 //структура, описывающая пулю и ее свойства в полете
 struct SBullet
 {
@@ -26,36 +31,45 @@ struct SBullet
 
 	//номер кадра на котором была запущена пуля
 	u32				frame_num;
-
+	
+	enum EBulletFlags {
+		RICOCHET_FLAG				= u16(1 << 0),	//пуля срекошетила
+		PARTICLES_FLAG				= u16(1 << 1),
+		LIFE_TIME_FLAG				= u16(1 << 2),
+		TRACER_FLAG					= u16(1 << 3),
+		RICOCHET_ENABLED_FLAG		= u16(1 << 4)	//разрешить рекошет
+	};
+	
+	Flags16			flags;
 	//текущая позиция
 	Fvector			pos;
 	//текущая скорость
 	Fvector			dir;
 	float			speed;
-	
-	float			hit_power;
-	float			hit_impulse;
+	//ID персонажа который иницировал действие
+	u16				parent_id;
+	//для отладки
+	//предыдущая позиция
+	Fvector			prev_pos;
 
 	//дистанция которую пуля пролетела
 	float			fly_dist;
 
-	//ID персонажа который иницировал действие
-	u16				parent_id;		
-
 	//коэфициенты и параметры патрона
+	float			hit_power;
+	float			hit_impulse;
+	
+	float			max_speed;
+
 	float			max_dist;
 	float			dist_k;
 	float			hit_k;
 	float			impulse_k;
 	float			pierce_k;
-	bool			tracer;
 	float			wallmark_size;
 	//тип наносимого хита
 	ALife::EHitType hit_type;
 
-	//для отладки
-	//предыдущая позиция
-	Fvector			prev_pos;
 };
 
 
@@ -91,8 +105,8 @@ protected:
 	//отметка на пораженном объекте
 	void FireShotmark		(const SBullet* bullet, const Fvector& vDir, 
 							 const Fvector &vEnd, Collide::rq_result& R, 
-							 u16 target_material);
-
+							 u16 target_material,
+							 Fvector& vNormal);
 
 	//просчет полета пули за некоторый промежуток времени
 	//принимается что на этом участке пуля движется прямолинейно

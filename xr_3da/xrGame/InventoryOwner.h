@@ -75,11 +75,21 @@ public:
 	const CInventory &inventory() const {return(*m_inventory);}
 	CInventory &inventory() {return(*m_inventory);}
 
+	//возвращает текуший разброс стрельбы с учетом движения
+	float GetWeaponAccuracy			();
+
 protected:
 	// торговля
 	CTrade				*m_pTrade;
 	bool				m_bTalking; 
 	CInventoryOwner		*m_pTalkPartner;
+
+
+	//настройки аккуратности стрельбы, во время бега
+	float				m_fDispVelFactor;
+	float				m_fDispJumpFactor;
+	float				m_fDispCrouchFactor;
+
 
 public:
 	virtual void			renderable_Render		();

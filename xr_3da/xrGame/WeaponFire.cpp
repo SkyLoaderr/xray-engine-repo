@@ -31,7 +31,7 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 	//				  GetPrecision()*
 	//				  GetConditionDispersionFactor(),Random);
 	float fire_disp = fireDispersion*fireDispersion_Current*
-							GetPrecision()*GetConditionDispersionFactor();
+							GetPrecision();
 
 	// increase dispersion
 	fireDispersion_Current += fireDispersion_Inc;

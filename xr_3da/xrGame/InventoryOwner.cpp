@@ -38,6 +38,9 @@ void CInventoryOwner::Init					()
 
 void CInventoryOwner::Load					(LPCSTR section)
 {
+	m_fDispVelFactor		= pSettings->r_float		(section,"disp_vel_factor"	);
+	m_fDispJumpFactor		= pSettings->r_float		(section,"disp_jump_factor"	);
+	m_fDispCrouchFactor		= pSettings->r_float		(section,"disp_crouch_factor");
 }
 
 void CInventoryOwner::reload				(LPCSTR section)
@@ -326,4 +329,26 @@ void CInventoryOwner::OnItemTake			(CInventoryItem *inventory_item)
 void CInventoryOwner::OnItemDrop			(CInventoryItem *inventory_item)
 {
 	detach		(inventory_item);
+}
+
+
+//возвращает текуший разброс стрельбы с учетом движения
+float CInventoryOwner::GetWeaponAccuracy()
+{
+	float fAccuracy = 1.f;
+
+	CEntity* E = dynamic_cast<CEntity*>(this);
+	VERIFY(E);
+	
+	CEntity::SEntityState state;
+	if (E->g_State(state))
+	{
+		fAccuracy *= (1.f+state.fVelocity*m_fDispVelFactor);
+		if (state.bJump)		
+			fAccuracy*=m_fDispJumpFactor;
+		else if (state.bCrouch)	
+			fAccuracy*=m_fDispCrouchFactor;
+	}
+
+	return fAccuracy;
 }

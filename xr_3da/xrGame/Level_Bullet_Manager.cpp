@@ -7,8 +7,6 @@
 #include "Level_Bullet_Manager.h"
 
 
-#define STEP_TIME 33
-
 #define HIT_POWER_EPSILON 0.05f
 #define WALLMARK_SIZE 0.04f
 
@@ -25,7 +23,7 @@ SBullet::~SBullet()
 
 void SBullet::Init(const Fvector& position,
 				   const Fvector& direction,
-				   float start_speed,
+				   float starting_speed,
 				   float power,
 				   float impulse,
 				   u16	sender_id,
@@ -33,9 +31,11 @@ void SBullet::Init(const Fvector& position,
 				   float maximum_distance,
 				   const CCartridge& cartridge)
 {
+	flags.zero();
+
 	pos = position;
 
-	speed = start_speed;
+	speed = max_speed = starting_speed;
 	VERIFY(speed>0);
 
 	dir = direction;
@@ -54,8 +54,10 @@ void SBullet::Init(const Fvector& position,
 	hit_k			= cartridge.m_kHit;
 	impulse_k		= cartridge.m_kImpulse;
 	pierce_k		= cartridge.m_kPierce;
-	tracer			= cartridge.m_tracer;
 	wallmark_size	= cartridge.fWallmarkSize;
+
+	flags.set(TRACER_FLAG, cartridge.m_tracer);
+	flags.set(RICOCHET_ENABLED_FLAG);
 }
 
 
@@ -83,229 +85,6 @@ void CBulletManager::Clear		()
 	}
 	m_BulletList.clear();
 }
-
-//callback функция 
-//	result.O;		// 0-static else CObject*
-//	result.range;	// range from start to element 
-//	result.element;	// if (O) "num tri" else "num bone"
-//	params;			// user defined abstract data
-//	Device.Statistic.TEST0.End();
-//return TRUE-продолжить трассировку / FALSE-закончить трассировку
-BOOL __stdcall CBulletManager::firetrace_callback(Collide::rq_result& result, LPVOID params)
-{
-	SBullet* bullet = (SBullet*)params;
-	
-	//вычислить точку попадания
-	Fvector end_point;
-	end_point.mad(bullet->pos, bullet->dir, result.range);
-
-	u16 hit_material_idx = GAMEMTL_NONE_IDX;
-
-	//динамический объект
-	if(result.O)
-	{
-		//получить косточку и ее материал
-		CKinematics* V = 0;
-		if (0!=(V=PKinematics(result.O->Visual())))
-		{
-			CBoneData& B = V->LL_GetData((u16)result.element);
-			hit_material_idx = B.game_mtl_idx;
-			Level().BulletManager().DynamicObjectHit(bullet, end_point, result, hit_material_idx);
-		}
-		else
-		{
-			hit_material_idx = 0*GAMEMTL_NONE_IDX;
-			Level().BulletManager().DynamicObjectHit(bullet, end_point, result, hit_material_idx);
-		}
-	}
-	//статический объект
-	else
-	{
-		//получить треугольник и узнать его материал
-		CDB::TRI* T			= Level().ObjectSpace.GetStaticTris()+result.element;
-		hit_material_idx	= T->material;
-		Level().BulletManager().StaticObjectHit(bullet, end_point, result, hit_material_idx);
-	}
-
-	//проверить достаточно ли силы хита, чтобы двигаться дальше
-	if(bullet->hit_power>HIT_POWER_EPSILON)
-		return TRUE;
-	else
-		return FALSE;
-}
-
-
-
-void CBulletManager::FireShotmark (const SBullet* bullet, const Fvector& vDir, const Fvector &vEnd, Collide::rq_result& R, u16 target_material) 
-{
-	SGameMtlPair* mtl_pair	= GMLib.GetMaterialPair(bullet_material_idx, target_material);
-
-	Fvector particle_dir;
-
-	if (R.O) 
-	{
-		if (R.O->CLS_ID==CLSID_ENTITY)
-		{
-			//тут добавить отметки крови на живой сущности
-		}
-		particle_dir = vDir;
-		particle_dir.invert();
-	} 
-	else 
-	{
-		//вычислить нормаль к пораженной поверхности
-		Fvector N;
-		Fvector*	pVerts	= Level().ObjectSpace.GetStaticVerts();
-		CDB::TRI*	pTri	= Level().ObjectSpace.GetStaticTris()+R.element;
-		N.mknormal			(pVerts[pTri->verts[0]],pVerts[pTri->verts[1]],pVerts[pTri->verts[2]]);
-		particle_dir = N;
-
-		ref_shader* pWallmarkShader = (!mtl_pair || mtl_pair->CollideMarks.empty())?
-            NULL:&mtl_pair->CollideMarks[::Random.randI(0,mtl_pair->CollideMarks.size())];;
-
-		if (pWallmarkShader)
-		{
-			//добавить отметку на материале
-			::Render->add_Wallmark	(*pWallmarkShader, vEnd,
-				bullet->wallmark_size, pTri, pVerts);
-		}
-	}		
-
-	ref_sound* pSound = (!mtl_pair || mtl_pair->CollideSounds.empty())?
-        NULL:&mtl_pair->CollideSounds[::Random.randI(0,mtl_pair->CollideSounds.size())];
-
-	//проиграть звук
-	if(pSound)
-	{
-		CObject* O = Level().Objects.net_Find(bullet->parent_id );
-		pSound->play_at_pos_unlimited(O, vEnd, false);
-	}
-	
-	LPCSTR ps_name = (!mtl_pair || mtl_pair->CollideParticles.empty())?
-        NULL:*mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.size())];
-
-	if(ps_name)
-	{
-		//отыграть партиклы попадания в материал
-		CParticlesObject* ps = xr_new<CParticlesObject>(ps_name);
-
-		Fmatrix pos;
-		pos.k.normalize(particle_dir);
-		Fvector::generate_orthonormal_basis(pos.k, pos.i, pos.j);
-		pos.c.set(vEnd);
-
-		ps->UpdateParent(pos,zero_vel);
-		Level().ps_needtoplay.push_back(ps);
-	}
-}
-
-
-
-
-
-void CBulletManager::StaticObjectHit(SBullet* bullet, const Fvector& end_point, Collide::rq_result& R, u16 target_material)
-{
-	FireShotmark(bullet, bullet->dir, end_point, R, target_material);
-
-	SGameMtl* mtl = GMLib.GetMaterialByIdx(target_material);
-
-	float shoot_factor = mtl->fShootFactor;
-	float material_pierce = 1.f - shoot_factor * bullet->pierce_k;
-	clamp(material_pierce, 0.f, 1.f);
-
-	bullet->hit_power	*= mtl->fShootFactor;
-	bullet->hit_power	*= (shoot_factor*bullet->pierce_k);
-	bullet->hit_impulse *= material_pierce;
-}
-
-
-void CBulletManager::DynamicObjectHit (SBullet* bullet, const Fvector& end_point, Collide::rq_result& R, u16 target_material)
-{
-	//только для динамических объектов
-	VERIFY(R.O);
-
-	//если мы попали по родителю на первых же
-	//кадре, то игнорировать это, так как это он
-	//и стрелял
-	if(R.O->ID() == bullet->parent_id) 
-		return;
-
-	SGameMtl* mtl = GMLib.GetMaterialByIdx(target_material);
-	float shoot_factor = mtl->fShootFactor;
-	
-	//получить силу хита выстрела с учетом патрона
-	float power = bullet->hit_power * bullet->pierce_k * bullet->hit_k;
-
-	//коэффициент уменьшение силы с расстоянием
-	float scale = 1.f;
-	/*
-	float scale = 1-(R.range/(bullet->fire_dist*bullet->dist_k));
-	clamp(scale,0.f,1.f);
-	//!!! почему мы берем квадратный корень
-	scale = _sqrt(scale);
-	power *= scale;
-	*/
-
-	//сила хита физического импульса
-	//вычисляется с учетом пробиваемости материалов
-	float material_pierce = 1.f - shoot_factor * bullet->pierce_k;
-	clamp(material_pierce, 0.f, 1.f);
-	float impulse = bullet->hit_impulse*material_pierce*
-					bullet->impulse_k*scale;
-	VERIFY(impulse>=0);
-
-	CEntity* E = dynamic_cast<CEntity*>(R.O);
-	//учитываем попадание в разные части 
-	if(E) power *= E->HitScale(R.element);
-
-	// object-space
-	//вычислить координаты попадания
-	Fvector p_in_object_space,position_in_bone_space;
-	Fmatrix m_inv;
-	m_inv.invert(R.O->XFORM());
-	m_inv.transform_tiny(p_in_object_space, end_point);
-
-	// bone-space
-	CKinematics* V = PKinematics(R.O->Visual());
-
-	if(V)
-	{
-		Fmatrix& m_bone = (V->LL_GetBoneInstance(u16(R.element))).mTransform;
-		Fmatrix  m_inv_bone;
-		m_inv_bone.invert(m_bone);
-		m_inv_bone.transform_tiny(position_in_bone_space, p_in_object_space);
-	}
-	else
-	{
-		position_in_bone_space.set(p_in_object_space);
-	}
-
-	//отправить хит пораженному объекту
-	if(OnServer())
-	{
-		NET_Packet		P;
-		CGameObject::u_EventGen	(P,GE_HIT,R.O->ID());
-		P.w_u16			(bullet->parent_id);
-		P.w_dir			(bullet->dir);
-		P.w_float		(power);
-		P.w_s16			((s16)R.element);
-		P.w_vec3		(position_in_bone_space);
-		P.w_float		(impulse);
-		P.w_u16			(u16(bullet->hit_type));
-		CGameObject::u_EventSend (P);
-	}
-
-	//визуальное обозначение попадание на объекте
-	FireShotmark(bullet, bullet->dir, end_point, R, target_material);
-
-	//уменьшить хит и импульс перед тем как передать его дальше 
-	bullet->hit_power *= scale;
-	bullet->hit_impulse *= scale;
-
-	bullet->hit_power *= (shoot_factor*bullet->pierce_k);
-	bullet->hit_impulse *= material_pierce;
-}
-
 
 void CBulletManager::AddBullet(SBullet* bullet)
 {
@@ -356,6 +135,9 @@ void CBulletManager::Update()
 }
 
 #define GRAVITY_CONST 9.81f
+//сопротивление воздуха, процент, который отнимается от скорости
+//полета пули
+#define AIR_RESISTANCE_K 0.3f
 
 bool CBulletManager::CalcBullet (SBullet* bullet, u32 delta_time)
 {
@@ -365,35 +147,52 @@ bool CBulletManager::CalcBullet (SBullet* bullet, u32 delta_time)
 	float range = bullet->speed*delta_time_sec;
 	
 	float max_range = bullet->max_dist - bullet->fly_dist;
-	if(range>max_range) range = max_range;
+	if(range>max_range) 
+		range = max_range;
 
-
+	//запомнить текущую скорость пули, т.к. в
+	//RayQuery() она может поменяться из-за рикошетов
+	//и столкновений с объектами
+	Fvector cur_dir = bullet->dir;
+	
+	bullet->flags.set(SBullet::RICOCHET_FLAG,0);
 	Collide::ray_defs RD(bullet->pos, bullet->dir, range, 0 ,Collide::rqtBoth);
 	BOOL result = FALSE;
 	result = Level().ObjectSpace.RayQuery( RD, firetrace_callback, bullet);
 
-    //изменить положение пули
-	bullet->prev_pos = bullet->pos;
-	bullet->pos.mad(bullet->pos, bullet->dir, range);
-	bullet->fly_dist += range;
-	
-	if(bullet->fly_dist>=bullet->max_dist)
+	if(!bullet->flags.test(SBullet::RICOCHET_FLAG))
+	{
+		//изменить положение пули
+		bullet->prev_pos = bullet->pos;
+		bullet->pos.mad(bullet->pos, cur_dir, range);
+		bullet->fly_dist += range;
+
+		if(bullet->fly_dist>=bullet->max_dist)
+			return false;
+
+		Fbox level_box = Level().ObjectSpace.GetBoundingVolume();
+		if(!level_box.contains(bullet->pos))
+			return false;
+
+		//изменить скорость и направление ее полета
+		//с учетом гравитации
+		bullet->dir.mul(bullet->speed);
+
+		Fvector air_resistance = bullet->dir;
+		air_resistance.mul(-AIR_RESISTANCE_K*delta_time_sec);
+
+		bullet->dir.add(air_resistance);
+		bullet->dir.y -= GRAVITY_CONST*delta_time_sec;
+
+		bullet->speed = bullet->dir.magnitude();
+		//вместо normalize(), чтоб не считать 2 раза magnitude()
+		bullet->dir.x /= bullet->speed;
+		bullet->dir.y /= bullet->speed;
+		bullet->dir.z /= bullet->speed;
+	}
+
+	if(bullet->speed<SPEED_LOWER_BOUND)
 		return false;
-
-	Fbox level_box = Level().ObjectSpace.GetBoundingVolume();
-	if(!level_box.contains(bullet->pos))
-		return false;
-
-
-	//изменить скорость и направление ее полета
-	//с учетом гравитации
-	bullet->dir.y -= (GRAVITY_CONST*delta_time_sec)/bullet->speed;
-	bullet->dir.normalize();
-	
-
-	if(bullet->hit_power<HIT_POWER_EPSILON)
-		return false;
-
 
 	return true;
 }

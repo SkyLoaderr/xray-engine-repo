@@ -308,7 +308,7 @@ bool CInventory::Activate(u32 slot)
 			return false;
 	}
 	//активный слот задействован
-	else if(slot == NO_ACTIVE_SLOT || m_slots[slot].m_pIItem) 
+	else if(slot == NO_ACTIVE_SLOT || m_slots[slot].m_pIItem)
 	{
 		if(m_slots[m_iActiveSlot].m_pIItem)
 			m_slots[m_iActiveSlot].m_pIItem->Deactivate();

@@ -57,10 +57,6 @@ CWeapon::CWeapon(LPCSTR name)
 	vLastFD.set			(0,0,0);
 	vLastSP.set			(0,0,0);
 
-	dispVelFactor		= 0.2f;
-	dispJumpFactor		= 4.f;
-	dispCrouchFactor	= 0.75f;
-
 	iAmmoElapsed		= -1;
 	iMagazineSize		= -1;
 	iBuckShot			= 1;
@@ -143,23 +139,16 @@ void CWeapon::ShaderDestroy	(ref_shader &dest)
 
 float CWeapon::GetPrecision	()
 {
-	CEntity* E	=	dynamic_cast<CEntity*>(H_Parent());
-	VERIFY			(E);
-	float prec	=	E->g_Accuracy();
-	CEntity::SEntityState state;
-	if (E->g_State(state))
-	{
-		prec *= (1.f+state.fVelocity*dispVelFactor);
-		if (state.bJump)		prec*=dispJumpFactor;
-		else if (state.bCrouch)	prec*=dispCrouchFactor;
-	}
-
+	CInventoryOwner* pOwner	=	dynamic_cast<CInventoryOwner*>(H_Parent());
+	VERIFY			(pOwner);
+	float prec = pOwner->GetWeaponAccuracy()*GetConditionDispersionFactor();
 	return prec;
 }
 
 void CWeapon::UpdateXForm	()
 {
-	if (Device.dwFrame!=dwXF_Frame){
+	if (Device.dwFrame!=dwXF_Frame)
+	{
 		dwXF_Frame = Device.dwFrame;
 
 		if (0==H_Parent())	return;
@@ -326,10 +315,6 @@ void CWeapon::Load		(LPCSTR section)
 	camMaxAngle			= pSettings->r_float		(section,"cam_max_angle"	); camMaxAngle = deg2rad(camMaxAngle);
 	camRelaxSpeed		= pSettings->r_float		(section,"cam_relax_speed"	); camRelaxSpeed = deg2rad(camRelaxSpeed);
 	camDispersion		= pSettings->r_float		(section,"cam_dispersion"	); camDispersion = deg2rad(camDispersion);/**/
-
-	dispVelFactor		= pSettings->r_float		(section,"disp_vel_factor"	);
-	dispJumpFactor		= pSettings->r_float		(section,"disp_jump_factor"	);
-	dispCrouchFactor	= pSettings->r_float		(section,"disp_crouch_factor");
 
 	// tracer
 	tracerHeadSpeed		= pSettings->r_float		(section,"tracer_head_speed"	);

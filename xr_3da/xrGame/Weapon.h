@@ -90,10 +90,6 @@ protected:
 	float					camRelaxSpeed;
 	float					camDispersion;
 							
-	float					dispVelFactor;
-	float					dispJumpFactor;
-	float					dispCrouchFactor;
-							
 	float					tracerHeadSpeed;
 	float					tracerTrailCoeff;
 	float					tracerStartLength;
@@ -120,7 +116,7 @@ protected:
 	ALife::EWeaponAddonStatus	m_eSilencerStatus;
 	ALife::EWeaponAddonStatus	m_eGrenadeLauncherStatus;
 
-	//назваания секций подключаемых аддонов
+	//названия секций подключаемых аддонов
 	ref_str		m_sScopeName;
 	ref_str		m_sSilencerName;
 	ref_str		m_sGrenadeLauncherName;
@@ -135,7 +131,7 @@ protected:
 	//коэффициент увеличения прицела
 	float			m_fScopeZoomFactor;
 	//режим включенного приближения
-	bool m_bZoomMode;
+	bool			m_bZoomMode;
 
 	//состояние подключенных аддонов
 	u8			m_flagsAddOnState;
@@ -268,7 +264,9 @@ public:
 	IC EHandDependence		HandDependence		()				{	return eHandDependence;}
 	virtual float			GetZoomFactor		()				{	return fZoomFactor;							}
 
+	//фактор дисперсии при стрельбе из оружия
 	float					GetPrecision		();
+
 	IC LPCSTR				GetName				()	const		{	return *m_WpnName;							}
 	IC int					GetAmmoElapsed		()	const		{	return /*int(m_magazine.size())*/iAmmoElapsed;						}
 	IC int					GetAmmoMagSize		()	const		{	return iMagazineSize;						}
