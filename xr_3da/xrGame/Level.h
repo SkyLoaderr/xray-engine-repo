@@ -178,23 +178,20 @@ public:
 	virtual ~CLevel();
 
 
-	//by Dandy
 	//gets the time from the game simulation
-	//receive game time
-			ALife::_TIME_ID		GetGameTime				();
-			float				GetGameTimeFactor		();
-			void				SetGameTimeFactor		(const float fTimeFactor);
-			void				SetGameTime				(ALife::_TIME_ID GameTime);
+	
+	//возвращает время в милисекундах относительно начала игры
+	ALife::_TIME_ID		GetGameTime				();
+	//игровое время в отформатированном виде
+	void				GetGameDateTime			(u32& year, u32& month, u32& day, u32& hours, u32& mins, u32& secs, u32& milisecs);
 
-	IC		float	GetGameTimeSec()
-	{
-		return			(float(s64(GetGameTime()))/1000.f);
-	}
+	float				GetGameTimeFactor		();
+	void				SetGameTimeFactor		(const float fTimeFactor);
+	void				SetGameTime				(ALife::_TIME_ID GameTime);
 
-	IC	float	GetGameDayTimeSec()
-	{
-		return			(float(s64(GetGameTime() % (24*60*60*1000)))/1000.f);
-	}
+	// gets current daytime [0..23]
+	u8					GetDayTime();
+	float				GetGameDayTimeSec();
 
 protected:
 	CFogOfWar*			m_pFogOfWar;
@@ -216,12 +213,6 @@ protected:
 	CBulletManager*		m_pBulletManager;
 public:
 	IC CBulletManager&	BulletManager() {return	*m_pBulletManager;}
-
-	// by Jim
-	// gets current daytime [0..23]
-	IC u8 GetDayTime() { 
-		return ((u8) ((GetGameTime() / 3600000) % 24 )); 
-	}
 
 	IC		const CPatrolPathStorage &patrol_paths		() const
 	{

@@ -37,6 +37,7 @@
 #include "infoportion.h"
 
 #include "patrol_path_storage.h"
+#include "date_time.h"
 
 CPHWorld*	ph_world = 0;
 
@@ -524,6 +525,25 @@ ALife::_TIME_ID CLevel::GetGameTime()
 {
 	return			(Server->game->GetGameTime());
 }
+
+u8 CLevel::GetDayTime() 
+{ 
+	u32 dummy32;
+	u32 hours;
+	GetGameDateTime(dummy32, dummy32, dummy32, hours, dummy32, dummy32, dummy32);
+	return hours; 
+}
+float CLevel::GetGameDayTimeSec()
+{
+	return	(float(s64(GetGameTime() % (24*60*60*1000)))/1000.f);
+}
+
+
+void CLevel::GetGameDateTime	(u32& year, u32& month, u32& day, u32& hours, u32& mins, u32& secs, u32& milisecs)
+{
+	split_time(GetGameTime(), year, month, day, hours, mins, secs, milisecs);
+}
+
 
 float CLevel::GetGameTimeFactor()
 {
