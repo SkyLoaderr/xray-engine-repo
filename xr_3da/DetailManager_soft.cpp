@@ -5,24 +5,8 @@ const DWORD	vs_size				= 3000;
 
 void CDetailManager::soft_Load		()
 {
+	// Vertex Stream
 	soft_VS	= Device.Streams.Create	(D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1, vs_size);
-	
-	// Header
-	dtFS->ReadChunkSafe	(0,&dtH,sizeof(dtH));
-	R_ASSERT			(dtH.version == DETAIL_VERSION);
-	DWORD m_count		= dtH.object_count;
-	
-	// Models
-	CStream* m_fs	= dtFS->OpenChunk(1);
-	for (DWORD m_id = 0; m_id < m_count; m_id++)
-	{
-		CDetail				dt;
-		CStream* S			= m_fs->OpenChunk(m_id);
-		dt.Load				(S);
-		objects.push_back	(dt);
-		S->Close			();
-	}
-	m_fs->Close		();
 }
 
 void CDetailManager::soft_Unload	()

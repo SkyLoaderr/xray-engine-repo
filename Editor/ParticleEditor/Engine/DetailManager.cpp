@@ -76,22 +76,40 @@ void CDetailManager::Load		()
 		return;
 	}
 	dtFS		= new CVirtualFileStream(fn);
-
-	if (UseVS())	VS_Load		();
-	else			soft_Load	();
-
+	
+	// Header
+	dtFS->ReadChunkSafe	(0,&dtH,sizeof(dtH));
+	R_ASSERT			(dtH.version == DETAIL_VERSION);
+	DWORD m_count		= dtH.object_count;
+	
+	// Models
+	CStream* m_fs	= dtFS->OpenChunk(1);
+	for (DWORD m_id = 0; m_id < m_count; m_id++)
+	{
+		CDetail				dt;
+		CStream* S			= m_fs->OpenChunk(m_id);
+		dt.Load				(S);
+		objects.push_back	(dt);
+		S->Close			();
+	}
+	m_fs->Close		();
+	
 	// Get pointer to database (slots)
 	CStream* m_slots= dtFS->OpenChunk(2);
 	dtSlots			= (DetailSlot*)m_slots->Pointer();
 	m_slots->Close	();
-
+	
 	// Initialize 'vis' and 'cache'
 	ZeroMemory(&visible,sizeof(visible));	visible.resize	(dm_max_objects);
 	ZeroMemory(&cache,sizeof(cache));		cache.resize	(dm_cache_size);	
 	for (DWORD s=0; s<cache.size(); s++)	cache[s].type	= stInvalid;
-
+	
 	// Make dither matrix
 	bwdithermap		(2,dither);
+
+	// Hardware specific optimizations
+	if (UseVS())	VS_Load		();
+	else			soft_Load	();
 }
 
 void CDetailManager::Unload		()
