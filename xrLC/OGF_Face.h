@@ -81,7 +81,7 @@ struct OGF_Base
 
 	IC BOOL				IsNode()	{ return iLevel; }
 
-	virtual void		Save		(CFS_Base &fs);
+	virtual void		Save		(IWriter &fs);
 	virtual void		GetGeometry	(vector<Fvector> &RES) = 0;
 	void				CalcBounds	(); 
 };
@@ -120,11 +120,11 @@ struct OGF : public OGF_Base
 	void				BuildVSPLIT		();
 	void				DumpFaces		();
 
-	virtual void		Save			(CFS_Base &fs);
+	virtual void		Save			(IWriter &fs);
 
-	void				Save_Cached		(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bLighting);
-	void				Save_Normal_PM	(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bLighting);
-	void				Save_Progressive(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bLighting);
+	void				Save_Cached		(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bLighting);
+	void				Save_Normal_PM	(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bLighting);
+	void				Save_Progressive(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bLighting);
 
 	virtual void		GetGeometry		(vector<Fvector> &R)
 	{
@@ -154,7 +154,7 @@ struct OGF_Reference : public OGF_Base
 						model	= 0;
 					}
 
-	virtual void		Save		(CFS_Base &fs);
+	virtual void		Save		(IWriter &fs);
 	virtual void		GetGeometry	(vector<Fvector> &R)
 	{
 		Fvector			P;
@@ -180,7 +180,7 @@ struct OGF_Node : public OGF_Base
 		bbox.merge			(P->bbox);
 		P->bConnected		= TRUE;
 	}
-	virtual void		Save		(CFS_Base &fs);
+	virtual void		Save		(IWriter &fs);
 	virtual void		GetGeometry	(vector<Fvector> &R)
 	{
 		for (vector<DWORD>::iterator I=chields.begin(); I!=chields.end(); I++)
@@ -206,7 +206,7 @@ struct	OGF_LOD		: public OGF_Node
 	_face			lod_faces	[8];
 	DWORD			lod_Material;
 
-	virtual void		Save		(CFS_Base &fs);
+	virtual void		Save		(IWriter &fs);
 };
 
 void set_status(char* N, int id, int f, int v);

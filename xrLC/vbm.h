@@ -72,11 +72,11 @@ public:
 		vDcl.push_back			(R_DCL);	R_DCL.clear();
 		vContainers.push_back	(R_DATA);	R_DATA.clear();
 	}
-	void	Save	(CFS_Base &fs)
+	void	Save	(IWriter &fs)
 	{
 		R_ASSERT		(R_DCL.empty());
 		R_ASSERT		(R_DATA.empty());
-		fs.Wdword		(vDcl.size());
+		fs.w_u32		(vDcl.size());
 		for (DWORD i=0; i<vDcl.size(); i++)
 		{
 			DWORD dwOneSize		= vDcl[i].vertex();
@@ -86,7 +86,7 @@ public:
 			R_ASSERT	(dwVertCount*dwOneSize == dwTotalSize);
 			
 			fs.write	(vDcl[i].begin(), vDcl[i].size()*sizeof(D3DVERTEXELEMENT9));	// Vertex format
-			fs.Wdword	(dwVertCount);													// Number of vertices
+			fs.w_u32	(dwVertCount);													// Number of vertices
 			fs.write	(vContainers[i].begin(),dwTotalSize);
 		}
 		vDcl.clear			();
@@ -125,10 +125,10 @@ public:
 	}
 	void	Save	(CFS_Base &fs)
 	{
-		fs.Wdword	(data.size());
+		fs.w_u32	(data.size());
 		for (DWORD i=0; i<data.size(); i++)
 		{
-			fs.Wdword	(data[i].size());
+			fs.w_u32	(data[i].size());
 			fs.write	(data[i].begin(),data[i].size()*2);
 		}
 		data.clear	();

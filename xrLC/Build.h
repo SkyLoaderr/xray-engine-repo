@@ -55,9 +55,9 @@ struct R_Layer
 class CBuild  
 {
 public:
-	CFS_Memory				err_invalid;
-	CFS_Memory				err_tjunction;
-	CFS_Memory				err_multiedge;
+	CMemoryWriter			err_invalid;
+	CMemoryWriter			err_tjunction;
+	CMemoryWriter			err_multiedge;
 	void					err_save	();
 
 	Fbox					scene_bb;
@@ -95,8 +95,8 @@ public:
 	void	CalcNormals				();
 	void	Tesselate				();
 
-	void	BuildCForm				(CFS_Base &fs);
-	void	BuildPortals			(CFS_Base &fs);
+	void	BuildCForm				(IWriter &fs);
+	void	BuildPortals			(IWriter &fs);
 	void	BuildRapid				();
 		
 	void	IsolateVertices			();
@@ -112,9 +112,9 @@ public:
 	void	Flex2OGF				();
 	void	BuildSectors			();
 
-	void	SaveLights				(CFS_Base &fs);
-	void	SaveTREE				(CFS_Base &fs);
-	void	SaveSectors				(CFS_Base &fs);
+	void	SaveLights				(IWriter &fs);
+	void	SaveTREE				(IWriter &fs);
+	void	SaveSectors				(IWriter &fs);
 
 	CBuild	();
 	~CBuild	();
