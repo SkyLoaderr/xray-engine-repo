@@ -1014,13 +1014,15 @@ void CSE_ALifeObjectHangingLamp::FillProps	(LPCSTR pref, PropItemVec& values)
 	// 
 	P=PHelper().CreateFlag16	(values, PrepareKey(pref,*s_name,"Light\\Type"), 		&flags,				flTypeSpot, "Point", "Spot");
     P->OnChangeEvent.bind		(this,&CSE_ALifeObjectHangingLamp::OnChangeFlag);
-	PHelper().CreateColor		(values, PrepareKey(pref,*s_name,"Light\\Color"),		&color);
-    PHelper().CreateFloat		(values, PrepareKey(pref,*s_name,"Light\\Brightness"),	&brightness,		0.1f, 5.f);
-	PHelper().CreateChoose		(values, PrepareKey(pref,*s_name,"Light\\Color Animator"),&color_animator, 	smLAnim);
-	PHelper().CreateFloat		(values, PrepareKey(pref,*s_name,"Light\\Range"),		&range,				0.1f, 1000.f);
-	PHelper().CreateFloat		(values, PrepareKey(pref,*s_name,"Light\\Virtual Size"),&m_virtual_size,	0.f, 100.f);
-	PHelper().CreateChoose		(values, PrepareKey(pref,*s_name,"Light\\Texture"),	    &light_texture, 	smTexture, "lights");
-	PHelper().CreateChoose		(values, PrepareKey(pref,*s_name,"Light\\Bone"),		&light_main_bone,	smSkeletonBones,0,(void*)visual()->get_visual());
+	PHelper().CreateColor		(values, PrepareKey(pref,*s_name,"Light\\Main\\Color"),			&color);
+    PHelper().CreateFloat		(values, PrepareKey(pref,*s_name,"Light\\Main\\Brightness"),	&brightness,		0.1f, 5.f);
+	PHelper().CreateChoose		(values, PrepareKey(pref,*s_name,"Light\\Main\\Color Animator"),&color_animator, 	smLAnim);
+	PHelper().CreateFloat		(values, PrepareKey(pref,*s_name,"Light\\Main\\Range"),			&range,				0.1f, 1000.f);
+	PHelper().CreateFloat		(values, PrepareKey(pref,*s_name,"Light\\Main\\Virtual Size"),	&m_virtual_size,	0.f, 100.f);
+	PHelper().CreateChoose		(values, PrepareKey(pref,*s_name,"Light\\Main\\Texture"),	    &light_texture, 	smTexture, "lights");
+	PHelper().CreateChoose		(values, PrepareKey(pref,*s_name,"Light\\Main\\Bone"),			&light_main_bone,	smSkeletonBones,0,(void*)visual()->get_visual());
+	if (flags.is(flTypeSpot))
+		PHelper().CreateAngle	(values, PrepareKey(pref,*s_name,"Light\\Cone Angle"),	&spot_cone_angle,	deg2rad(1.f), deg2rad(120.f));
 
 	if (flags.is(flPointAmbient)){
 		PHelper().CreateFloat	(values, PrepareKey(pref,*s_name,"Light\\Ambient\\Radius"),		&m_ambient_radius,	0.f, 1000.f);
@@ -1029,8 +1031,6 @@ void CSE_ALifeObjectHangingLamp::FillProps	(LPCSTR pref, PropItemVec& values)
 		PHelper().CreateChoose	(values, PrepareKey(pref,*s_name,"Light\\Ambient\\Bone"),		&light_ambient_bone,smSkeletonBones,0,(void*)visual()->get_visual());
 	}
 
-    if (flags.is(flTypeSpot))
-		PHelper().CreateAngle	(values, PrepareKey(pref,*s_name,"Light\\Cone Angle"),	&spot_cone_angle,	deg2rad(1.f), deg2rad(120.f));
 	// fixed bones
     PHelper().CreateChoose		(values, PrepareKey(pref,*s_name,"Model\\Fixed bones"),	&fixed_bones,		smSkeletonBones,0,(void*)visual()->get_visual(),8);
     // glow
