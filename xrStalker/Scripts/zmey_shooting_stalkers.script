@@ -1,7 +1,13 @@
 
+-- stalker: название сталкера
+-- anim: анимация (или константа или строка с названием)
+-- distance: дистанция атаки
+-- wpn: оружие сталкера
+-- move_type: тип перемещения; один из move.stand, move.run, move.walk
+
 local stalkers = {
-	{ stalker="m_stalker_shooting_1", distance=15, wpn="wpn_ak74_1", run=false },
-	{ stalker="m_stalker_shooting_2", distance=15, wpn="wpn_ak74_2", run=true  }
+	{ stalker="m_stalker_shooting1", anim=anim.danger, distance=15, wpn="wpn_ak74_1", move_type=move.stand },
+	{ stalker="m_stalker_shooting2", anim=anim.danger, distance=15, wpn="wpn_ak74_2", move_type=move.run  }
 }
 
 function main()
@@ -9,34 +15,46 @@ function main()
 	local num_stalkers = table.getn(stalkers)
 
 	for i = 1, num_stalkers do
+		stalkers[i].wpn_obj = get_level_object(stalkers[i].wpn)
 		stalkers[i].level_obj = get_level_object(stalkers[i].stalker)
+		stalkers[i].level_obj:script(true, zmey_shooting_stalkers.script_name())
+		action(stalkers[i].level_obj,
+		       look(look.fire_point, actor),
+		       anim(stalkers[i].anim),
+		       cond(cond.time_end, time_infinite)
+		)
 	end
 
 	while true do
 		for i = 1, num_stalkers do
-			if stalkers[i].is_shooting and distance_between(stalkers[i].level_obj, actor) > stalkers[i].distance then
-				interrupt_action
-		end
-	end
-	
-	for i = 1, num_stalkers do
-		shooting_stalkers[i].level_object = get_level_object(shooting_stalkers[i].stalker)
-		zombies[i]:script(true, zmey_zombie_stalkers.script_name())
-		action( zombies[i], anim("norm_dmg_torso_1_idle_0"), cond(cond.anim_end, time_infinite) )
-	end
-
-	local anyone_there = false
-	repeat
-		for i = 1, num_stalkers do
-			if zombies[i] ~= nil then
-				anyone_there = true
-				if distance_between(zombies[i], actor) < release_distance then
-					zombies[i]:script(false, zmey_zombie_stalkers.script_name())
-					zombies[i] = nil
+			local vict_alive = actor:alive()
+			if stalkers[i].is_shooting then
+				if not vict_alive or distance_between(stalkers[i].level_obj, actor) > stalkers[i].distance then
+					printf("_bp: zmey_shooting_stalkers: STOP SHOOTING")
+					reset_action(stalkers[i].level_obj, zmey_shooting_stalkers.script_name())
+					action(stalkers[i].level_obj,
+					       look(look.fire_point, actor),
+					       anim(stalkers[i].anim),
+					       cond(cond.time_end, time_infinite)
+					)
+					stalkers[i].is_shooting = false
+				end
+			else
+				if vict_alive and distance_between(stalkers[i].level_obj, actor) <= stalkers[i].distance then
+					printf("_bp: zmey_shooting_stalkers: START SHOOTING")
+					reset_action(stalkers[i].level_obj, zmey_shooting_stalkers.script_name())
+					action(stalkers[i].level_obj,
+					       look(look.fire_point, actor),
+					       anim(stalkers[i].anim),
+					       object(stalkers[i].wpn_obj, object.fire1),
+					       move(move.standing, stalkers[i].move_type, move.line, actor),
+					       cond(cond.time_end, time_infinite)
+					)
+					stalkers[i].is_shooting = true
 				end
 			end
 		end
 		wait()
-	until not anyone_there
+	end
 end
 
