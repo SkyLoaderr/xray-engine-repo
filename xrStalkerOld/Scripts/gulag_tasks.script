@@ -231,51 +231,51 @@ function loadJob(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "walker3@esc_lager",
 			idle = 0,
-			prior = 9, state = {0, 1},
+			prior = 8, state = {0, 1},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "walker4@esc_lager",
 			idle = 0,
-			prior = 9, state = {0, 1},
+			prior = 8, state = {0, 1},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		-- у костра днём
 		t = { section = "kamp1@esc_lager",
 			idle = 0,
-			prior = 0, state = {0},
+			prior = 6, state = {0},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "kamp1@esc_lager",
 			idle = 0,
-			prior = 0, state = {0},
+			prior = 6, state = {0},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "kamp1@esc_lager",
 			idle = 0,
-			prior = 0, state = {0},
+			prior = 6, state = {0},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		-- спящие ночью
 		t = { section = "sleeper1@esc_lager",
 			idle = 0,
-			prior = 0, state = {1},
+			prior = 3, state = {1},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "sleeper2@esc_lager",
 			idle = 0,
-			prior = 0, state = {1},
+			prior = 3, state = {1},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "sleeper3@esc_lager",
 			idle = 0,
-			prior = 0, state = {1},
+			prior = 3, state = {1},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
