@@ -62,6 +62,7 @@ void Startup()
 	LPCSTR	pStartup			= strstr		(Engine.Params,"-start ");
 	if (pStartup)				Console.Execute	(pStartup+1);
 
+
 	// Main cycle
 	Device.Run					( );
 

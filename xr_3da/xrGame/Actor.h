@@ -64,6 +64,9 @@ protected:
 	float					hit_slowmo;
 	float					hit_factor;
 
+	u32						self_gmtl_id;
+	u32						last_gmtl_id;
+
 	// media
 	BOOL					bStep;
 	sound					sndStep[2];

@@ -44,6 +44,7 @@
 #include <ode/ode.h>
 
 #include "Level.h"
+#include "GameMtlLib.h"
 
 // TODO: reference additional headers your program requires here
 

@@ -112,7 +112,10 @@ void CRenderDevice::Run			()
 	// Message cycle
 	CloseLogWindow				();
     PeekMessage					( &msg, NULL, 0U, 0U, PM_NOREMOVE );
-    while( WM_QUIT != msg.message  )
+
+	seqAppCycleStart.Process	(rp_AppCycleStart);
+
+	while( WM_QUIT != msg.message  )
     {
         bGotMsg = PeekMessage( &msg, NULL, 0U, 0U, PM_REMOVE );
         if( bGotMsg )
@@ -281,14 +284,16 @@ void CRenderDevice::Run			()
         }
     }
 
+	seqAppCycleEnd.Process	(rp_AppCycleEnd);
+
 	// Stop Balance-Thread
 	mt_bMustExit = TRUE;
 	LeaveCriticalSection	(&mt_csEnter);
-	while (mt_bMustExit) Sleep(0);
+	while (mt_bMustExit)	Sleep(0);
 	DeleteCriticalSection	(&mt_csEnter);
 	DeleteCriticalSection	(&mt_csLeave);
 
-	Destroy		();
+	Destroy					();
 }
 
 void CRenderDevice::FrameMove()

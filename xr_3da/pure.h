@@ -17,12 +17,14 @@ DECLARE_MESSAGE(DeviceDestroy);
 DECLARE_MESSAGE(DeviceCreate);
 DECLARE_MESSAGE(AppActivate);
 DECLARE_MESSAGE(AppDeactivate);
+DECLARE_MESSAGE(AppCycleStart);	
+DECLARE_MESSAGE(AppCycleEnd);
 
 //-----------------------------------------------------------------------------
 struct _REG_INFO {
 	void*	Object;
 	int		Prio;
-	u32	Flags;
+	u32		Flags;
 };
 
 ENGINE_API extern int	__cdecl	_REG_Compare(const void *, const void *);

@@ -77,6 +77,9 @@ CActor::CActor() : CEntityAlive()
 
 	m_fFallTime				= s_fFallTime;
 	m_bAnimTorsoPlayed		= false;
+
+	self_gmtl_id			= GAMEMTL_NONE;
+	last_gmtl_id			= GAMEMTL_NONE;
 }
 
 CActor::~CActor()
@@ -85,9 +88,6 @@ CActor::~CActor()
 	for (int i=0; i<eacMaxCam; i++) _DELETE(cameras[i]);
 
 	// sounds 2D
-	::Sound->Delete(sndStep[0]);
-	::Sound->Delete(sndStep[1]);
-	::Sound->Delete(sndLanding);
 	::Sound->Delete(sndZoneHeart);
 	::Sound->Delete(sndZoneDetector);
 
@@ -113,9 +113,10 @@ void CActor::Load		(LPCSTR section )
 
 	// sounds
 	char buf[256];
-	::Sound->Create		(sndStep[0],		TRUE,	strconcat(buf,cName(),"\\stepL"),0,SOUND_TYPE_MONSTER_WALKING_HUMAN);
-	::Sound->Create		(sndStep[1],		TRUE,	strconcat(buf,cName(),"\\stepR"),0,SOUND_TYPE_MONSTER_WALKING_HUMAN);
-	::Sound->Create		(sndLanding,		TRUE,	strconcat(buf,cName(),"\\landing"),0,SOUND_TYPE_MONSTER_FALLING_HUMAN);
+
+	sndStep[0].g_type	= SOUND_TYPE_MONSTER_WALKING_HUMAN;
+	sndStep[1].g_type	= SOUND_TYPE_MONSTER_WALKING_HUMAN;
+	sndLanding.g_type	= SOUND_TYPE_MONSTER_FALLING_HUMAN;
 	::Sound->Create		(sndZoneHeart,		TRUE,	"heart\\4");
 	::Sound->Create		(sndZoneDetector,	TRUE,	"detectors\\geiger",	TRUE);
 	::Sound->Create		(sndHit[0],			TRUE,	strconcat(buf,cName(),"\\hurt1"),0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
@@ -152,6 +153,10 @@ void CActor::Load		(LPCSTR section )
 			zone_areas.push_back(a);
 		}
 	}
+
+	// get self game material id
+	self_gmtl_id		= GMLib.GetMaterialIdx("actor");
+	last_gmtl_id		= GMLib.GetMaterialIdx("default");
 }
 
 //--------------------------------------------------------------------
@@ -262,10 +267,6 @@ void CActor::net_Destroy	()
 {
 	inherited::net_Destroy	();
 
-	::Sound->Delete			(sndStep[0]);
-	::Sound->Delete			(sndStep[1]);
-
-	::Sound->Delete			(sndLanding);
 	::Sound->Delete			(sndZoneHeart);
 	::Sound->Delete			(sndZoneDetector);
 
@@ -402,7 +403,9 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 
 	if (ph_Movement.gcontact_Was) 
 	{
-		::Sound->PlayAtPos					(sndLanding,this,Position());
+//		SGameMtlPair* pair	= GMLib.GetMaterialPair(0,1); R_ASSERT(pair);
+//		::Sound->PlayAtPos	(pair->HitSounds[0],this,Position());
+//		::Sound->PlayAtPos						(sndLanding,this,Position());
 
 		if (Local()) {
 			pCreator->Cameras.AddEffector		(new CEffectorFall(ph_Movement.gcontact_Power));
@@ -613,13 +616,15 @@ void CActor::Update	(u32 DT)
 		pCamBobbing->SetState					(mstate_real);
 		cam_Update								(dt,Weapons->getZoomFactor());
 	} else {
-		if (pCamBobbing)						{ Level().Cameras.RemoveEffector(cefBobbing); pCamBobbing=0; }
+		if (pCamBobbing)						{Level().Cameras.RemoveEffector(cefBobbing); pCamBobbing=0;}
 	}
 
 	setVisible				(!HUDview	());
 
 	Weapons->Update			(dt,HUDview());
 
+	R_ASSERT(last_gmtl_id!=GAMEMTL_NONE);
+	SGameMtlPair* mtl_pair		= GMLib.GetMaterialPair(self_gmtl_id,last_gmtl_id);
 	// sound step
 	if ((mstate_real&mcAnyMove)&&(!(mstate_real&(mcJump|mcFall|mcLanding|mcLanding2)))){
 		if(m_fTimeToStep<0){
@@ -627,6 +632,7 @@ void CActor::Update	(u32 DT)
 			float k				= (mstate_real&mcCrouch)?0.75f:1.f;
 			float tm			= isAccelerated(mstate_real)?(PI/(k*10.f)):(PI/(k*7.f));
 			m_fTimeToStep		= tm;
+			sndStep[bStep].clone(mtl_pair->StepSounds[bStep]);
 			::Sound->PlayAtPos	(sndStep[bStep],this,Position());
 		}
 		m_fTimeToStep -= dt;
@@ -636,18 +642,21 @@ void CActor::Update	(u32 DT)
 	float	s_k			=	(mstate_real&mcCrouch)?0.85f:1.f;
 	float	s_vol		=	s_k * (isAccelerated(mstate_real)?1.f:.85f);
 	Fvector	s_pos		=	Position	();
-	s_pos.y				+=	.5f;
+	s_pos.y				+=	.15f;
 	if (sndStep[0].feedback)		{
-		sndStep[0].feedback->SetPosition(Position());
+		sndStep[0].feedback->SetPosition(s_pos);
 		sndStep[0].feedback->SetVolume	(s_vol);
 	}
 	if (sndStep[1].feedback)		{
-		sndStep[1].feedback->SetPosition(Position());
+		sndStep[1].feedback->SetPosition(s_pos);
 		sndStep[1].feedback->SetVolume	(s_vol);
 	}
+
 	// landing sounds
-	if (!sndLanding.feedback&&(mstate_real&(mcLanding|mcLanding2)))
-		::Sound->PlayAtPos	(sndLanding,this,Position());
+	if (!sndLanding.feedback&&(mstate_real&(mcLanding|mcLanding2))){
+		sndLanding.clone	(mtl_pair->HitSounds[0]);
+		::Sound->PlayAtPos	(sndLanding,this,s_pos);
+	}
 }
 
 void CActor::OnVisible	()

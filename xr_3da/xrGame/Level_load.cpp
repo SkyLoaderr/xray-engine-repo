@@ -217,7 +217,7 @@ BOOL CLevel::Load_GameSpecific_Before()
 	pApp->LoadTitle	("Loading AI space...");
 	AI.Load			(Path.Current);
 
-	FILE_NAME	fn_game;
+	FILE_NAME		fn_game;
 	if (Engine.FS.Exist(fn_game, Path.Current, "level.game")) 
 	{
 		CStream *F = Engine.FS.Open	(fn_game);

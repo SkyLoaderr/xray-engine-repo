@@ -2,6 +2,7 @@
 //
  
 #include "stdafx.h"
+#include "gamepersistent.h"
 
 #pragma comment(lib,"ode.lib" )
 
@@ -216,8 +217,10 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		CMD4(CCC_Integer,	"ph_fps",				&psPhysicsFPS,	10,1000);
 		CMD4(CCC_Float,		"ph_squeeze_velocity",	&psHUD_FOV,		0,500);
 		}
+		GamePersistent		= new CGamePersistent();
 		break;
 	case DLL_PROCESS_DETACH:
+		_DELETE(GamePersistent);
 		break;
 	}
     return TRUE;

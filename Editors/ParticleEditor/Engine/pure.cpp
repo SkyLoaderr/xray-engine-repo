@@ -18,3 +18,5 @@ DECLARE_RP(DeviceDestroy);
 DECLARE_RP(DeviceCreate);
 DECLARE_RP(AppActivate);
 DECLARE_RP(AppDeactivate);
+DECLARE_RP(AppCycleStart);	
+DECLARE_RP(AppCycleEnd);

@@ -341,6 +341,12 @@
 		<Filter
 			Name="Game"
 			Filter="">
+			<File
+				RelativePath="GamePersistent.cpp">
+			</File>
+			<File
+				RelativePath="GamePersistent.h">
+			</File>
 			<Filter
 				Name="Level"
 				Filter="">
@@ -1219,6 +1225,19 @@
 					</File>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="Game Materials"
+				Filter="">
+				<File
+					RelativePath="GameMtlLib.cpp">
+				</File>
+				<File
+					RelativePath="GameMtlLib.h">
+				</File>
+				<File
+					RelativePath="GameMtlLib_Engine.cpp">
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="HUD"
@@ -1712,6 +1731,9 @@
 		</File>
 		<File
 			RelativePath=".\todo.txt">
+		</File>
+		<File
+			RelativePath="todo2.txt">
 		</File>
 	</Files>
 	<Globals>

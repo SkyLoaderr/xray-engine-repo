@@ -56,6 +56,8 @@ public:
 	CRegistrator	<pureRender			 >	seqRender;
 	CRegistrator	<pureAppActivate	 >	seqAppActivate;
 	CRegistrator	<pureAppDeactivate	 >	seqAppDeactivate;
+	CRegistrator	<pureAppCycleStart	 >	seqAppCycleStart;
+	CRegistrator	<pureAppCycleEnd	 >	seqAppCycleEnd;
 
 	// Dependent classes
 	CShaderManager							Shader;
