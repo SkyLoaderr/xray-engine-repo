@@ -88,7 +88,7 @@ LPSTR _GetItems ( LPCSTR src, int idx_start, int idx_end, LPSTR dst, char separa
     	if (*p==separator) level++;
         if (level>=idx_end) break;
     }
-    *n++ = '\0';
+    *n = '\0';
 	return dst;
 }
 
@@ -123,7 +123,7 @@ LPSTR _ReplaceItems( LPCSTR src, int idx_start, int idx_end, LPCSTR new_items, L
         }
     	if (*p==separator) level++;
     }
-    *n++ = '\0';
+    *n = '\0';
 	return dst;
 }
 
@@ -143,7 +143,7 @@ LPSTR _ReplaceItem ( LPCSTR src, int index, LPCSTR new_item, LPSTR dst, char sep
         }
     	if (*p==separator) level++;
     }
-    *n++ = '\0';
+    *n = '\0';
 	return dst;
 }
 
@@ -276,7 +276,7 @@ void _SequenceToList(AStringVec& lst, LPCSTR in, char separator)
 AnsiString FloatTimeToStrTime(float v, bool _h, bool _m, bool _s, bool _ms)
 {
 	AnsiString buf="";
-    int h=0,m=0,s=0,ms=0;
+    int h=0,m=0,s=0,ms;
     AnsiString t;
     if (_h){ h=iFloor(v/3600); 					t.sprintf("%02d",h); buf += t;}
     if (_m){ m=iFloor((v-h*3600)/60);			t.sprintf("%02d",m); buf += buf.IsEmpty()?t:":"+t;}
@@ -293,7 +293,7 @@ float StrTimeToFloatTime(LPCSTR buf, bool _h, bool _m, bool _s, bool _ms)
     if (_h) rm[0]=idx++;
     if (_m) rm[1]=idx++;
     if (_s) rm[2]=idx++;
-    if (_ms)rm[3]=idx++;
+    if (_ms)rm[3]=idx;
     int cnt = _GetItemCount(buf,':');
     AnsiString tmp;
     for (int k=0; k<cnt; k++){
@@ -314,4 +314,16 @@ void _SequenceToList(LPSTRVec& lst, LPCSTR in, char separator)
         if (xr_strlen(T)) lst.push_back(xr_strdup(T));
 	}
 }
+
+ref_str	_ListToSequence(const RStrVec& lst)
+{
+	string4096 		out;
+	if (lst.size()){
+    	strcpy		(out,*lst.front());
+		for (RStrVec::const_iterator s_it=lst.begin()+1; s_it!=lst.end(); s_it++)
+        	strconcat(out,",",**s_it);
+	}
+	return ref_str	(out);
+}
+
 

@@ -175,6 +175,9 @@
 #include "xrstring.h"
 #include "rt_compressor.h"
 
+// stl ext
+DEFINE_VECTOR(ref_str,RStrVec,RStrVecIt);
+
 #include "FS.h"
 #include "log.h"
 #include "xr_trims.h"
@@ -182,9 +185,6 @@
 #include "LocatorAPI.h"
 #include "FileSystem.h"
 #include "FTimer.h"
-
-// stl ext
-DEFINE_VECTOR(ref_str,RStrVec,RStrIt);
 
 // destructor
 template <class T>
