@@ -54,27 +54,50 @@ class CAI_Soldier : public CCustomMonster
 		aiSoldierUnderFire,
 		
 		aiSoldierTestMicroActions,
-		aiSoldierTestA,
-		aiSoldierTestD,
-		aiSoldierTestQ,
-		aiSoldierTestE,
-		aiSoldierTestZ,
-		aiSoldierTestC,
-		aiSoldierTestW,
-		aiSoldierTestS,
-		aiSoldierTestX,
-		aiSoldierTestR,
-		aiSoldierTestF,
-		aiSoldierTestV,
-		aiSoldierTestT,
-		aiSoldierTestG,
-		aiSoldierTestB,
-		aiSoldierTestY,
-		aiSoldierTestH,
-		aiSoldierTestN,
-		aiSoldierTestU,
-		aiSoldierTestJ,
-		aiSoldierTestM,
+		aiSoldierTestMicroActionA,
+		aiSoldierTestMicroActionD,
+		aiSoldierTestMicroActionQ,
+		aiSoldierTestMicroActionE,
+		aiSoldierTestMicroActionZ,
+		aiSoldierTestMicroActionC,
+		aiSoldierTestMicroActionW,
+		aiSoldierTestMicroActionS,
+		aiSoldierTestMicroActionX,
+		aiSoldierTestMicroActionR,
+		aiSoldierTestMicroActionF,
+		aiSoldierTestMicroActionV,
+		aiSoldierTestMicroActionT,
+		aiSoldierTestMicroActionG,
+		aiSoldierTestMicroActionB,
+		aiSoldierTestMicroActionY,
+		aiSoldierTestMicroActionH,
+		aiSoldierTestMicroActionN,
+		aiSoldierTestMicroActionU,
+		aiSoldierTestMicroActionJ,
+		aiSoldierTestMicroActionM,
+
+		aiSoldierTestMacroActions,
+		aiSoldierTestMacroActionA,
+		aiSoldierTestMacroActionD,
+		aiSoldierTestMacroActionQ,
+		aiSoldierTestMacroActionE,
+		aiSoldierTestMacroActionZ,
+		aiSoldierTestMacroActionC,
+		aiSoldierTestMacroActionW,
+		aiSoldierTestMacroActionS,
+		aiSoldierTestMacroActionX,
+		aiSoldierTestMacroActionR,
+		aiSoldierTestMacroActionF,
+		aiSoldierTestMacroActionV,
+		aiSoldierTestMacroActionT,
+		aiSoldierTestMacroActionG,
+		aiSoldierTestMacroActionB,
+		aiSoldierTestMacroActionY,
+		aiSoldierTestMacroActionH,
+		aiSoldierTestMacroActionN,
+		aiSoldierTestMacroActionU,
+		aiSoldierTestMacroActionJ,
+		aiSoldierTestMacroActionM,
 	};
 	
 	typedef	CCustomMonster inherited;
@@ -101,6 +124,50 @@ class CAI_Soldier : public CCustomMonster
 		#define MIN_SPINE_TURN_ANGLE			PI_DIV_6
 		#define ASSIGN_SPINE_BONE				r_spine_target.yaw = fabsf(r_torso_target.yaw - r_target.yaw - PI_DIV_6) < MIN_SPINE_TURN_ANGLE ? r_target.yaw : (2*r_torso_target.yaw + r_target.yaw)/3;
 				
+		#define TEST_MICRO_ACTION(A) \
+			if (Level().iGetKeyState(DIK_##A)) {\
+				if (!m_bMicroAction##A) {\
+					m_bMicroAction##A = true;\
+					tStateStack.push(eCurrentState);\
+					eCurrentState = aiSoldierTestMicroAction##A;\
+					return;\
+				}\
+			}\
+			else\
+				m_bMicroAction##A = false;
+				
+		#define CASE_MICRO_ACTION(A) \
+			case aiSoldierTestMicroAction##A : {\
+				TestMicroAction##A();\
+				break;\
+			}
+				
+		#define DECLARE_MICRO_ACTION(A)\
+			void TestMicroAction##A();\
+			bool m_bMicroAction##A;
+		
+		#define TEST_MACRO_ACTION(A) \
+			if (Level().iGetKeyState(DIK_##A)) {\
+				if (!m_bMacroAction##A) {\
+					m_bMacroAction##A = true;\
+					tStateStack.push(eCurrentState);\
+					eCurrentState = aiSoldierTestMacroAction##A;\
+					return;\
+				}\
+			}\
+			else\
+				m_bMacroAction##A = false;
+				
+		#define CASE_MACRO_ACTION(A) \
+			case aiSoldierTestMacroAction##A : {\
+				TestMacroAction##A();\
+				break;\
+			}
+				
+		#define DECLARE_MACRO_ACTION(A)\
+			void TestMacroAction##A();\
+			bool m_bMacroAction##A;
+		
 		#define INIT_SQUAD_AND_LEADER \
 			CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];\
 			CEntity* Leader = Squad.Leader;\
@@ -108,7 +175,7 @@ class CAI_Soldier : public CCustomMonster
 				Leader = this;\
 			R_ASSERT (Leader);
 		
-		#define WRITE_LOG
+		//#define WRITE_LOG
 
 		#ifdef WRITE_LOG
 			#define WRITE_TO_LOG(S) {\
@@ -120,24 +187,6 @@ class CAI_Soldier : public CCustomMonster
 				bStopThinking = true;
 		#endif
 
-		#define TEST_MICRO_ACTION(A) \
-			if (Level().iGetKeyState(DIK_##A)) {\
-				if (!m_b##A) {\
-					m_b##A = true;\
-					tStateStack.push(eCurrentState);\
-					eCurrentState = aiSoldierTest##A;\
-					return;\
-				}\
-			}\
-			else\
-				m_b##A = false;
-				
-		#define CASE_MICRO_ACTION(A) \
-			case aiSoldierTest##A : {\
-				Test##A();\
-				break;\
-			}
-				
 		#define ADJUST_ANGLE(A) \
 			if (A >= PI_MUL_2 - EPS_L)\
 				A -= PI_MUL_2;\
@@ -166,10 +215,6 @@ class CAI_Soldier : public CCustomMonster
 			A += B;\
 			if (A >= PI_MUL_2 - EPS_L)\
 				A -= PI_MUL_2;
-		
-		#define DECLARE_MICRO_ACTION(A)\
-			void Test##A();\
-			bool m_b##A;
 		
 		#define CHECK_FOR_STATE_TRANSITIONS(S) \
 			WRITE_TO_LOG(S);\
@@ -509,7 +554,6 @@ class CAI_Soldier : public CCustomMonster
 		
 		// test
 		void TestMicroActions();
-		
 		DECLARE_MICRO_ACTION(A);
 		DECLARE_MICRO_ACTION(D);
 		DECLARE_MICRO_ACTION(Q);
@@ -531,6 +575,28 @@ class CAI_Soldier : public CCustomMonster
 		DECLARE_MICRO_ACTION(U);
 		DECLARE_MICRO_ACTION(J);
 		DECLARE_MICRO_ACTION(M);
+		void TestMacroActions();
+		DECLARE_MACRO_ACTION(A);
+		DECLARE_MACRO_ACTION(D);
+		DECLARE_MACRO_ACTION(Q);
+		DECLARE_MACRO_ACTION(E);
+		DECLARE_MACRO_ACTION(Z);
+		DECLARE_MACRO_ACTION(C);
+		DECLARE_MACRO_ACTION(W);
+		DECLARE_MACRO_ACTION(S);
+		DECLARE_MACRO_ACTION(X);
+		DECLARE_MACRO_ACTION(R);
+		DECLARE_MACRO_ACTION(F);
+		DECLARE_MACRO_ACTION(V);
+		DECLARE_MACRO_ACTION(T);
+		DECLARE_MACRO_ACTION(G);
+		DECLARE_MACRO_ACTION(B);
+		DECLARE_MACRO_ACTION(Y);
+		DECLARE_MACRO_ACTION(H);
+		DECLARE_MACRO_ACTION(N);
+		DECLARE_MACRO_ACTION(U);
+		DECLARE_MACRO_ACTION(J);
+		DECLARE_MACRO_ACTION(M);
 		
 		// miscellanious funtions	
 		bool bfCheckForVisibility(CEntity* tpEntity);

@@ -444,7 +444,7 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 						DWORD dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.P.x,&tTravelNode.P.z);
 						if (dwIntersect == LI_INTERSECT) {
 							if (
-								(COMPUTE_DISTANCE_2D(tFinishPoint,tTravelNode.P) < COMPUTE_DISTANCE_2D(tFinishPoint,tTempPoint) + EPS_L) &&
+								(COMPUTE_DISTANCE_2D(tFinishPoint,tTravelNode.P) < COMPUTE_DISTANCE_2D(tFinishPoint,tTempPoint) + EPS) &&
 								(iNodeIndex != dwPrevNode)
 								) {
 								tTravelNode.P.y = ffGetY(*(tpNode),tTravelNode.P.x,tTravelNode.P.z);
@@ -522,7 +522,7 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 					DWORD dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.P.x,&tTravelNode.P.z);
 					if (dwIntersect == LI_INTERSECT) {
 						if (
-							(COMPUTE_DISTANCE_2D(tFinishPoint,tTravelNode.P) < COMPUTE_DISTANCE_2D(tFinishPoint,tTempPoint) + EPS_L) &&
+							(COMPUTE_DISTANCE_2D(tFinishPoint,tTravelNode.P) < COMPUTE_DISTANCE_2D(tFinishPoint,tTempPoint) + EPS) &&
 							(iNodeIndex != dwPrevNode)
 							) {
 							tTravelNode.P.y = ffGetY(*(tpNode),tTravelNode.P.x,tTravelNode.P.z);
@@ -578,6 +578,8 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 						bOk = false;
 						for ( i=0; i < iCount; i++) {
 							iNodeIndex = AI.UnpackLink(taLinks[i]);
+							if (dwPrevNode == iNodeIndex)
+								continue;
 							UnpackContour(tNextContour,iNodeIndex);
 							for ( j=0; j<4; j++) {
 								switch(j) {
@@ -604,7 +606,7 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 								}
 								DWORD dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.P.x,&tTravelNode.P.z);
 								if (dwIntersect == LI_INTERSECT) {
-									if (COMPUTE_DISTANCE_2D(tFinishPoint,tTravelNode.P) < COMPUTE_DISTANCE_2D(tFinishPoint,tTempPoint) + EPS_L) {
+									if (COMPUTE_DISTANCE_2D(tFinishPoint,tTravelNode.P) < COMPUTE_DISTANCE_2D(tFinishPoint,tTempPoint) + EPS) {
 										if (bOk)
 											break;
 										tTravelNode.P.y = ffGetY(*(tpNode),tTravelNode.P.x,tTravelNode.P.z);
@@ -652,7 +654,7 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 							dwCurNode = iSavedIndex;
 						}
 						else {
-							VERIFY(false);
+							//VERIFY(false);
 							tpaPath.clear();
 							return;
 						}

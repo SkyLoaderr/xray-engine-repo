@@ -221,7 +221,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 						}
 					}
 					switch (eCurrentState) {
-						case aiSoldierTestR : ;
+						case aiSoldierTestMicroActionR : ;
 						case aiSoldierReload : {
 							switch (m_cBodyState) {
 								case BODY_STATE_STAND : {

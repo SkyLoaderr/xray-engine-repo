@@ -22,8 +22,8 @@ CAI_Soldier::CAI_Soldier()
 	dwSavedEnemyNodeID = -1;
 	dwLostEnemyTime = 0;
 	bBuildPathToLostEnemy = false;
-	//eCurrentState = aiSoldierFollowLeader;
-	eCurrentState = aiSoldierTestMicroActions;
+	eCurrentState = aiSoldierFollowLeader;
+	//eCurrentState = aiSoldierTestMicroActions;
 	m_dwLastRangeSearch = 0;
 	m_dwLastSuccessfullSearch = 0;
 	m_fAggressiveness = ::Random.randF(0,1);
