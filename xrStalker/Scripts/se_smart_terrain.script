@@ -9,7 +9,7 @@ function se_smart_terrain:update		()
 	cse_alife_smart_zone.update	(self)
 
 	if level.time() >= self.m_start_hold_time + 30000 then
-		self.monster->move_offline	(self.m_move_offline)
+		self.monster:move_offline	(self.m_move_offline)
 		self.m_monster				= nil
 	end
 end
@@ -20,8 +20,8 @@ function se_smart_terrain:smart_touch	(monster)
 	
 	self.m_monster				= monster
 	self.m_start_hold_time		= level.time()
-	self.m_move_offline			= self.monster->move_offline()
-	self.monster->move_offline	(false)
+	self.m_move_offline			= self.monster:move_offline()
+	self.monster:move_offline	(false)
 end
 
 function se_smart_terrain:detect_probability	()
