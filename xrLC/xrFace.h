@@ -2,8 +2,8 @@
 
 #include "shader_xrlc.h"
 
-class base_Vertex	{ public: virtual ~base_Vertex() = 0; };	base_Vertex::~base_Vertex() {};
-class base_Face		{ public: virtual ~base_Face() = 0; };		base_Face::~base_Face()		{};
+class base_Vertex	{ public: virtual ~base_Vertex() = 0; };	
+class base_Face		{ public: virtual ~base_Face() = 0; };		
 
 class Vertex;
 class Face;
