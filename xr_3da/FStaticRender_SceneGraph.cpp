@@ -6,7 +6,8 @@
 #include "fmesh.h"
 #include "fcached.h"
 
-extern Shader*	shDEBUG;
+extern	Shader*	shDEBUG;
+ENGINE_API BOOL	ShowLM	= FALSE;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Scene graph actual insertion and sorting ////////////////////////////////////////////////////////
@@ -27,7 +28,7 @@ void CRender::InsertSG_Dynamic	(CVisual *pVisual, Fvector& Center)
 	float distSQ;	if (CalcSSA(distSQ,Center,pVisual)<=ssaLIMIT)	return;
 
 	// Select List and add to it
-	ShaderElement*		sh	= pVisual->hShader->lod0;
+	ShaderElement*		sh		= ShowLM?pVisual->hShader->lighting:pVisual->hShader->lod0;
 	if (sh->Flags.bStrictB2F) {
 		SceneGraph::mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
 		N->val.pObject			= val_pObject;
@@ -66,7 +67,7 @@ void CRender::InsertSG_Static(CVisual *pVisual)
 		//*/
 
 		// Select List and add to it
-		ShaderElement*		sh	= pVisual->hShader->lod0;
+		ShaderElement*		sh		= ShowLM?pVisual->hShader->lighting:pVisual->hShader->lod0;
 		if (sh->Flags.bStrictB2F) {
 			SceneGraph::mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
 			N->val.pVisual			= pVisual;
@@ -118,7 +119,7 @@ void CRender::InsertSG_Cached(CVisual *V)
 		if (SSA<=ssaLIMIT)	return;
 		
 		// Select List and add to it
-		ShaderElement*		sh	= pVisual->hShader->lod0;
+		ShaderElement*		sh		= ShowLM?pVisual->hShader->lighting:pVisual->hShader->lod0;
 		for (DWORD pass_id=0; pass_id<sh->Passes.size(); pass_id++)
 		{
 			CPass&									pass	= sh->Passes[pass_id];

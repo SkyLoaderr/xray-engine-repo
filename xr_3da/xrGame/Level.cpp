@@ -544,6 +544,7 @@ void CLevel::OnEvent(EVENT E, DWORD P1, DWORD P2)
 }
 
 // Обработка нажатия клавиш
+extern BOOL	ShowLM;
 void CLevel::OnKeyboardPress(int key)
 {
 	if (pHUD->IsUIActive())			if (pHUD->GetUI()->OnKeyboardPress(key)) return;
@@ -560,6 +561,9 @@ void CLevel::OnKeyboardPress(int key)
 		return;
 	case DIK_LALT:
 		pHUD->UIActivate			();
+		return;
+	case DIK_RALT:
+		ShowLM	= TRUE;
 		return;
 		/*
 	case DIK_RALT:
@@ -584,12 +588,12 @@ void CLevel::OnKeyboardRelease(int key)
 {
 	if (pHUD->IsUIActive()) if (pHUD->GetUI()->OnKeyboardRelease(key)) return;
 
-	/*
 	switch (key)
 	{
-	case DIK_RALT:	pCreator->ChangeViewEntity(CLSID_OBJECT_ACTOR);		return;
+	case DIK_RALT:
+		ShowLM	= FALSE;
+		return;
 	}
-	*/
 	if (CurrentEntity())	CurrentEntity()->OnKeyboardRelease(key_binding[key]);
 }
 
