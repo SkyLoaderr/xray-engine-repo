@@ -16,7 +16,7 @@ function main()
 	dt2:setHMS(2,3,4)
 	
 	local dt3 = game.CTime()
-	dt2:setHMS(2,5,4)
+	dt3:setHMS(2,5,4)
 
 	local s  = dt2:diffSec(dt3)
 	printf("difference = %f",s)
