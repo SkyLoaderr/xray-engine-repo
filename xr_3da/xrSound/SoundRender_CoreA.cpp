@@ -128,7 +128,9 @@ void CSoundRender_CoreA::_initialize	(u64 window)
 
 void CSoundRender_CoreA::set_volume(float f )
 {
-    A_CHK				        (alListenerf	(AL_GAIN,f));
+	if (bPresent)				{
+		A_CHK				        (alListenerf	(AL_GAIN,f));
+	}
 }
 
 void CSoundRender_CoreA::_clear	()
