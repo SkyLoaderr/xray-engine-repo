@@ -212,7 +212,7 @@ void	CSoundRender_Target::fill_parameters()
 		if (_abs(hw_freq-cache_hw_freq)>50)	{
 			cache_hw_freq				= hw_freq;
 			s32		hw_freq_set			= hw_freq;
-			clamp	(hw_freq_set,s32(dwMinSecondarySampleRate),s32(dwMaxSecondarySampleRate));
+			clamp	(hw_freq_set,s32(SoundRender.dsCaps.dwMinSecondarySampleRate),s32(SoundRender.dsCaps.dwMaxSecondarySampleRate));
 			R_CHK	(pBuffer->SetFrequency	( hw_freq_set	));
 		}
 	}
