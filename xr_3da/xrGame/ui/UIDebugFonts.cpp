@@ -27,7 +27,7 @@ void CUIDebugFonts::Init(int x, int y, int width, int height){
 	CUIDialogWnd::Init(x, y, width, height);
 
 	m_list.Init(x, y, width, height);
-	m_list.SetItemHeight(30);
+	m_list.SetItemHeight(60);
 	FillUpList();
 
 	m_background.Init(x, y, width, height);
