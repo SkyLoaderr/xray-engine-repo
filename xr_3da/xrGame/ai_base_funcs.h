@@ -25,9 +25,13 @@ protected:
 
 public:
 
-	CBaseFunction()
+					CBaseFunction()
 	{
 		m_caName[0] = 0;
+	};
+
+	virtual			~CBaseFunction()
+	{
 	};
 
 	virtual bool	bfCheckForCachedResult();

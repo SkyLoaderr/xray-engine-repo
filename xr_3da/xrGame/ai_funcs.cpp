@@ -94,6 +94,7 @@ void CPatternFunction::vfLoadEF(LPCSTR caFileName, CAI_DDD *tpAI_DDD)
 	F->r			(&m_dwPatternCount,sizeof(m_dwPatternCount));
 	m_tpPatterns	= (SPattern *)xr_malloc(m_dwPatternCount*sizeof(SPattern));
 	m_dwaPatternIndexes = (u32 *)xr_malloc(m_dwPatternCount*sizeof(u32));
+	Msg				("CREATE %10s : %x",m_caName,m_dwaPatternIndexes);
 	ZeroMemory		(m_dwaPatternIndexes,m_dwPatternCount*sizeof(u32));
 	m_dwParameterCount = 0;
 	for ( i=0; i<m_dwPatternCount; i++) {
