@@ -26,7 +26,7 @@ class CUIActorDiaryWnd: public CUIWindow
 
 public:
 					CUIActorDiaryWnd	();
-					~CUIActorDiaryWnd	();
+	virtual			~CUIActorDiaryWnd	();
 	void			Init				(CUIListWnd *idxList);
 
 	void			AddArticle			(ARTICLE_INDEX idx, bool bReaded)	{ m_pCore->AddArticle(idx, bReaded); }

@@ -15,7 +15,7 @@ class CUITimeWnd : public CUIStatic {
 	using CUIStatic::Init;
 public:
 	CUITimeWnd();
-	~CUITimeWnd();
+	virtual ~CUITimeWnd();
 	virtual void Init(int x, int y, int widht, int height);
 	virtual void Init(int x, int y);	
 	virtual void InitTexture(LPCSTR tex_name) {/*only STUB!!: we can't change texture*/};

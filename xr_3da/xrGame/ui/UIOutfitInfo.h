@@ -15,7 +15,7 @@
 class CUIOutfitInfo : public CUIStatic {
 public:
 	CUIOutfitInfo();
-	~CUIOutfitInfo();
+	virtual ~CUIOutfitInfo();
 	virtual void Init(int x, int y, int widht, int height);
 
 	virtual void Update();

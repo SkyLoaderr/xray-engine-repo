@@ -15,7 +15,7 @@
 class CUIListItemMP : CUIListItem {
 public:
 	CUIListItemMP();
-	~CUIListItemMP();
+	virtual ~CUIListItemMP();
 
 	virtual void Init(int x, int y, int width, int height);
 	virtual void SetText(LPCSTR sServer, LPCSTR sMap, LPCSTR sMode, LPCSTR sPlayers, LPCSTR sPing);
