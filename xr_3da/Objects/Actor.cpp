@@ -1177,7 +1177,7 @@ float CActor::HitScale	(int element)
 
 void CActor::create_Skeleton(){
 	Fmatrix ident;
-	float density=400.f;
+	float density=200.f;
 	//u32 material=0;
 	LPCSTR material="actor";
 	ident.identity();
