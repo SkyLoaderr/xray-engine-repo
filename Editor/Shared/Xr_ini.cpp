@@ -30,7 +30,7 @@ void CInifile::Destroy(CInifile* ini)
 void _parse(LPSTR dest, LPCSTR src)
 {
 	if (src) {
-		bool bInsideSTR = false;
+		BOOL bInsideSTR = false;
 		while (*src) {
 			if (isspace(*src)) {
 				if (bInsideSTR) { *dest++ = *src++; continue; }
@@ -48,7 +48,7 @@ void _parse(LPSTR dest, LPCSTR src)
 void _decorate(LPSTR dest, LPCSTR src)
 {
 	if (src) {
-		bool bInsideSTR = false;
+		BOOL bInsideSTR = false;
 		while (*src) {
 			if (*src == ',') {
 				if (bInsideSTR) { *dest++ = *src++; }

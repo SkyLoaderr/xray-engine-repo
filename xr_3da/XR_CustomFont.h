@@ -22,7 +22,7 @@ protected:
 	vector<String>			strings;
 	Shader*					pShader;
 	
-	bool					bGradient;
+	BOOL					bGradient;
 protected:
 	IC virtual	float		GetRealX(float x)		{return Device._x2real(x);}
 	IC virtual	float		GetRealY(float y)		{return Device._y2real(y);}

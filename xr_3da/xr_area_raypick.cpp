@@ -16,7 +16,7 @@ static int test_cnt = 0;
 static int slot_cnt = 0;
 static int nl_cnt = 0;
 
-bool CObjectSpace::nl_append(int x, int z, const Fvector2& O, const Fvector2& D)
+BOOL CObjectSpace::nl_append(int x, int z, const Fvector2& O, const Fvector2& D)
 {
 	if(bDebug) nl_cnt++;
 	if ((x<0)||(z<0)||(x>=Dynamic.x_count)||(z>=Dynamic.z_count)) return false;
@@ -46,7 +46,7 @@ bool CObjectSpace::nl_append(int x, int z, const Fvector2& O, const Fvector2& D)
 	return true;
 }
 //----------------------------------------------------------------------
-bool CObjectSpace::TestRaySlot(int x, int z, const Fvector2& start, const Fvector2& dir){
+BOOL CObjectSpace::TestRaySlot(int x, int z, const Fvector2& start, const Fvector2& dir){
 	Fvector2 center; InvTrans(center,x,z);
 	Fbox2 B;
 	B.min.sub(center,CL_SLOT_SIZE/2);

@@ -120,7 +120,7 @@ void CFrustum::CreateOccluder(Fvector* p, int count, CFrustum& clip)
 	VERIFY(count<FRUSTUM_SAFE);
 	VERIFY(count>=3);
 
-	bool	edge[FRUSTUM_SAFE];
+	BOOL	edge[FRUSTUM_SAFE];
 	float	cls	[FRUSTUM_SAFE];
 	ZeroMemory(edge,sizeof(edge));
 	for (int i=0; i<clip.p_count; i++)
@@ -214,7 +214,7 @@ sPoly*	CFrustum::ClipPoly(sPoly& S, sPoly& D)
 	return dest;
 }
 
-bool CFrustum::CreateFromClipPoly(Fvector* p, int count, CFrustum& clip)
+BOOL CFrustum::CreateFromClipPoly(Fvector* p, int count, CFrustum& clip)
 {
 	VERIFY(count<FRUSTUM_MAXPLANES);
 	VERIFY(count>=3);

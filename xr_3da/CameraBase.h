@@ -15,12 +15,12 @@ class ENGINE_API CCameraBase
 {
 protected:
 	CObject*		parent;
-	bool			bClampYaw, bClampPitch, bClampRoll;
+	BOOL			bClampYaw, bClampPitch, bClampRoll;
 
 public:
 	float			yaw,pitch,roll;
 
-	bool			bRelativeLink;
+	BOOL			bRelativeLink;
 	ECameraStyle	style;
 	Fvector2		lim_yaw,lim_pitch,lim_roll;
 	Fvector			rot_speed;

@@ -128,7 +128,7 @@ public:
 	DWORD				Bsrc,Bdst;		// DX8 defines used
 
 	void				Init(){ZeroMemory(this,sizeof(SH_PassDef));}
-	bool				NeedLighting()
+	BOOL				NeedLighting()
 	{	return Flags.bLighting; }
 };
 
@@ -192,9 +192,9 @@ public:
 		_tzset(); time( (long*)&cTime );
 	};
 
-	IC bool					NeedLighting	()
+	IC BOOL					NeedLighting	()
 	{
-		bool v = false;
+		BOOL v = false;
 		for (DWORD i=0; i<Passes_Count; i++)
 			v |= Passes[i].NeedLighting	();
 		return v;

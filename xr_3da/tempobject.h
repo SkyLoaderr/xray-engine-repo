@@ -14,7 +14,7 @@ public:
 						CTempObject		();
 	virtual				~CTempObject	();
 
-	IC bool				Alive			(){return m_iLifeTime>0;}
+	IC BOOL				Alive			(){return m_iLifeTime>0;}
 	IC BOOL				IsAutomatic		(){return m_bAutoRemove;}
 	IC FBasicVisual*	Visual			(){return m_pVisual;}
 	IC void				SetLifeTime		(float life_time){m_iLifeTime=iFloor(life_time*1000);}

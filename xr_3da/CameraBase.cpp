@@ -10,7 +10,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CCameraBase::CCameraBase(CObject* p, bool rlink)
+CCameraBase::CCameraBase(CObject* p, BOOL rlink)
 {
 	bRelativeLink	= rlink;
 	vPosition.set	(0,0,0);

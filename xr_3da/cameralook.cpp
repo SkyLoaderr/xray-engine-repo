@@ -14,7 +14,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CCameraLook::CCameraLook(CObject* p, CInifile* ini, LPSTR section, bool rlink ) : CCameraBase(p, rlink)
+CCameraLook::CCameraLook(CObject* p, CInifile* ini, LPSTR section, BOOL rlink ) : CCameraBase(p, rlink)
 {
 	style				= csLookAt;
 

@@ -34,7 +34,7 @@ public:
 	virtual void			Copy			(FBasicVisual* pFrom);
 
 	// Functionality
-	bool					isReadyForDestroy()	{ return fTTL<=0; }
+	BOOL					isReadyForDestroy()	{ return fTTL<=0; }
 	virtual void			Update			();
 
 	CFastSprite				(char *tex_name);

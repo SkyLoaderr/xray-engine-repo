@@ -14,7 +14,7 @@ void psLibrary_Sort(vector<PS::SDef> &LIB)
 	std::sort(LIB.begin(),LIB.end(),sort_pred);
 }
 
-bool psLibrary_Load(const char *Name, vector<PS::SDef> &LIB)
+BOOL psLibrary_Load(const char *Name, vector<PS::SDef> &LIB)
 {
 	LIB.clear();
     CCompressedStream F(Name,PS_LIB_SIGN);

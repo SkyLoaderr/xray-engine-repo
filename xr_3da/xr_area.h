@@ -41,7 +41,7 @@ public:
 		BOOL				bStuck; 
 		
 		// data for collision response 
-		bool				bFoundCollision;
+		BOOL				bFoundCollision;
 		float				fNearestDistance;					// nearest distance to hit
 		Fvector				vNearestIntersectionPoint;			// on sphere
 		Fvector				vNearestPolygonIntersectionPoint;	// on polygon
@@ -50,7 +50,7 @@ public:
 	};
 private:
 	DWORD					dwQueryID;
-	bool					nl_append		( int x, int z, const Fvector2& O, const Fvector2& D );
+	BOOL					nl_append		( int x, int z, const Fvector2& O, const Fvector2& D );
 
 	struct SLOT
 	{
@@ -67,8 +67,8 @@ private:
 	IC int					GetNearest		( CCFModel *obj, float range );
 	IC int					GetNearest		( const Fvector &point, float range );
 
-	bool					TestRaySlot		(int x, int z, const Fvector2& start, const Fvector2& dir);
-	IC void					CaptureSlots	(const Fvector& start, const Fvector& dir, float range);
+	BOOL					TestRaySlot		(int x, int z, const Fvector2& start, const Fvector2& dir);
+	void					CaptureSlots	(const Fvector& start, const Fvector& dir, float range);
 
 	IC int 					TransA			( float d ) { return iFloor(d*CL_INV_SLOT_SIZE); }
 	IC int 					TransX			( float d ) { return TransA(d+Static_Shift.x); }

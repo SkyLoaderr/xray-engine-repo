@@ -220,7 +220,7 @@ void CLensFlare::OnMove(){
 	}
 }
 
-void CLensFlare::Render(bool bSun, bool bFlares){
+void CLensFlare::Render(BOOL bSun, BOOL bFlares){
 	VERIFY(bInit);
 	if (!bRender) return;
 

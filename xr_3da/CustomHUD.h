@@ -33,7 +33,7 @@ public:
 
 	virtual	void	UIActivate				()=0;
 	virtual	void	UIDeactivate			()=0;
-	virtual	bool	IsUIActive				()=0;
+	virtual	BOOL	IsUIActive				()=0;
 
 	virtual IC CUI*	GetUI					()=0;
 };

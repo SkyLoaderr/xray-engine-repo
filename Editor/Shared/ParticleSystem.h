@@ -172,7 +172,7 @@ struct ENGINE_API SDef: public SParams{
 
         m_DefaultEmitter.InitDefault();
     }
-	bool			SetName(const char* N)
+	BOOL			SetName(const char* N)
 	{
 		// Name
 		VERIFY(strlen(N)<64);
@@ -217,7 +217,7 @@ struct ENGINE_API SDef: public SParams{
 struct ENGINE_API SEmitter:public SEmitterDef
 {
 	float			m_fEmissionResidue;
-	bool            m_bPlaying;
+	BOOL            m_bPlaying;
     int 			m_iPlayResidue;
 public:
 	SEmitter(){
@@ -225,7 +225,7 @@ public:
         m_bPlaying          = false;
         m_iPlayResidue		= 0;
 	}
-    IC virtual bool IsPlaying(){
+    IC virtual BOOL IsPlaying(){
 		if (m_dwFlag&PS_EM_PLAY_ONCE)	return (m_iPlayResidue!=0);
 		else							return m_bPlaying;
     }

@@ -25,7 +25,7 @@ class CLensFlare:
 	Fvector			vSunDir;
 	Fvector			vecLight;
 	Fvector			vecX, vecY, vecDir, vecAxis, vecCenter;
-	bool			bRender;
+	BOOL			bRender;
 protected:
 
 	vector<CFlare>	Flares;		// 0-Source if exists
@@ -47,11 +47,8 @@ public:
 
 	void			OnMove		( );
 	void			Load		( CInifile* pIni, LPSTR section );
-    void __fastcall	Render		( bool bSun, bool bFlares );
+    void __fastcall	Render		( BOOL bSun, BOOL bFlares );
 	void			Update		( Fvector& sun_dir, float view_dist, Fcolor& color );
 };
-
-
-
 
 #endif // __CLENSFLARE_HPP

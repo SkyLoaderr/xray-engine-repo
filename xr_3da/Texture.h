@@ -29,7 +29,7 @@ public:
 	void					Unload		(void);
 	void					Apply		(DWORD dwStage);
 
-	CTexture				(const char* Name, bool bMipmaps);
+	CTexture				(const char* Name, BOOL bMipmaps);
 	~CTexture				();
 };
 

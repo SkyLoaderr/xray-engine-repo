@@ -173,7 +173,7 @@ public:
 	IC WORD		Quantize(float V)
 	{	clamp(V,0.f,50.f); return WORD(iFloor(V*6553.4f));	}
 
-	void		Load		(CKinematics* P, CInifile* INI, LPCSTR section, bool bCycle);
+	void		Load		(CKinematics* P, CInifile* INI, LPCSTR section, BOOL bCycle);
 	CBlend*		PlayCycle	(CKinematics* P);
 	CBlend*		PlayFX		(CKinematics* P);
 };

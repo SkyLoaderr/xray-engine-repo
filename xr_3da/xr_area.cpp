@@ -222,7 +222,7 @@ void CObjectSpace::dbgRender()
 	for (int x=0; x<Dynamic.x_count; x++){
 		for (int z=0; z<Dynamic.z_count; z++){
 			c.set(-Static_Shift.x+cl*x+cl_2,0.1f,-Static_Shift.z+cl*z+cl_2);
-			bool B=FALSE;
+			BOOL B=FALSE;
 			for (i=0; i<dbg_Slot.size(); i++){
 				B=fsimilar(dbg_Slot[i].x,float(x))&&(fsimilar(dbg_Slot[i].y,float(z)));
 				if (B) break;

@@ -434,7 +434,7 @@ IC float	Interpolate			(float* base,		DWORD x, DWORD y, DWORD size)
 	float	cy	= ifx*c02 + fx*c13;
 	return	(cx+cy)/2;
 }
-IC bool		InterpolateAndDither(float* alpha255,	DWORD x, DWORD y, DWORD size, int dither[16][16] )
+IC BOOL		InterpolateAndDither(float* alpha255,	DWORD x, DWORD y, DWORD size, int dither[16][16] )
 {
 	int		c	= iFloor(Interpolate(alpha255,x%size,y%size,size)+.5f);
 	

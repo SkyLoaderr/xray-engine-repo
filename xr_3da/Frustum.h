@@ -72,7 +72,7 @@ public:
 	void			CreateFromMatrix	(Fmatrix &M);
 	void			CreateFromPortal	(sPoly* P);
 	void			CreateFromPlanes	(Fplane* p, int count);
-	bool			CreateFromClipPoly	(Fvector* p, int count, CFrustum& clip);	// returns 'false' if creation failed
+	BOOL			CreateFromClipPoly	(Fvector* p, int count, CFrustum& clip);	// returns 'false' if creation failed
 
 	sPoly*			ClipPoly			(sPoly& src, sPoly& dest);
 
@@ -146,7 +146,7 @@ public:
 		}
 		return test_mask ? fcvPartial:fcvFully;
 	}
-	IC bool			testPolyInside		(Fvector* p, int count)
+	IC BOOL			testPolyInside		(Fvector* p, int count)
 	{
 		Fvector* e = p+count;
 		for (int i=0; i<p_count; i++)

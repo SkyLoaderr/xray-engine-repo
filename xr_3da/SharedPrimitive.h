@@ -38,7 +38,7 @@ public:
 	IC DWORD					getFVF()	{ return mFVF;		}
 	IC DWORD					getStride()	{ return mStride;	}
 
-	bool						RequestStorage(DWORD vCount)
+	BOOL						RequestStorage(DWORD vCount)
 	{
 		if (0==pVB) {
 			mCount = _MAX	(mCount,vCount);
@@ -114,7 +114,7 @@ private:
 public:
 	IC IDirect3DIndexBuffer8*	getBuffer() { return pIB; }
 
-	bool						RequestStorage(DWORD iCount)
+	BOOL						RequestStorage(DWORD iCount)
 	{
 		if (0==pIB) {
 			mCount = _MAX(mCount,iCount);

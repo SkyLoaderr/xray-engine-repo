@@ -27,7 +27,7 @@ public:
 	int						Music_Active;
 	int						Music_Fade;
 public:
-	bool				pm_bug;
+	BOOL				pm_bug;
 
 	// Total level of lighting on level
 	float				fDayLight;		// 0..1
@@ -63,7 +63,7 @@ public:
 //	FBasicVisual*		pWeather;
 //	SPSE_Params			m_WEmitter;
 
-	bool				bUpdateBrightness;
+	BOOL				bUpdateBrightness;
 	float				fBrightness;
 	float				fFlash;
 public:

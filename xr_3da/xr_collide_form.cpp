@@ -138,7 +138,7 @@ void CCF_Polygonal::_BoxQuery( const Fbox& B, const Fmatrix& M, DWORD flags)
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
-IC bool RAYvsOBB(CCF_Skeleton::xOBB &B, Fvector &S, Fvector &D, float &R)
+IC BOOL RAYvsOBB(CCF_Skeleton::xOBB &B, Fvector &S, Fvector &D, float &R)
 {
 	// XForm world-2-local
 	Fvector	SL,DL,PL;

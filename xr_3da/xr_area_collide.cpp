@@ -100,7 +100,7 @@ BOOL CObjectSpace::BBoxCollide( const Fbox& s_box, const Fmatrix& M_bbox ){
 	return q_tris.size();
 }
 
-BOOL CObjectSpace::BBoxCollide( const Fvector &start, const Fvector &dir, float radius, float range, bool bCulling, bool bTriTest){
+BOOL CObjectSpace::BBoxCollide( const Fvector &start, const Fvector &dir, float radius, float range, BOOL bCulling, BOOL bTriTest){
 	Fvector D,N,R;
 	Fmatrix M_bbox;
 	D.normalize			(dir);

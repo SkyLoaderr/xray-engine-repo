@@ -6,7 +6,7 @@
 class ENGINE_API CCameraFirstEye : public CCameraBase
 {
 public:
-					CCameraFirstEye	( CObject* p, CInifile* ini, LPSTR section, bool rlink );
+					CCameraFirstEye	( CObject* p, CInifile* ini, LPSTR section, BOOL rlink );
 	virtual			~CCameraFirstEye( );
 
 	virtual void	Move			( int cmd, float val=0 );

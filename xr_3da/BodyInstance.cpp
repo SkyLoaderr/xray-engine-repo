@@ -12,7 +12,7 @@ int			psSkeletonUpdate	= 32;
 const float	fAA					= 1.5f;	// anim-change acceleration
 
 // High level control
-void CMotionDef::Load(CKinematics* P, CInifile* INI, LPCSTR  section, bool bCycle)
+void CMotionDef::Load(CKinematics* P, CInifile* INI, LPCSTR  section, BOOL bCycle)
 {
 	int	b = -1;
 	if (bCycle)	{

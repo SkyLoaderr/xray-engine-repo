@@ -18,7 +18,7 @@ public:
 	DWORD	RefCount()
 	{	return dwRefCount; }
 
-	bool	Equal(CEvent& E)
+	BOOL	Equal(CEvent& E)
 	{ return stricmp(Name,E.Name)==0; }
 
 	void	Attach(CEventBase* H)

@@ -22,7 +22,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CTexture::CTexture(const char* Name, bool _bMipmaps)
+CTexture::CTexture(const char* Name, BOOL _bMipmaps)
 {
 	R_ASSERT			(Name);
 	R_ASSERT			(strlen(Name)<64);

@@ -176,11 +176,11 @@ IC float intersectRayIdentitySphere(const Fvector& rO, const Fvector& rV)
 // Notes : 
 // Return: TRUE if point is in sphere, FALSE if not.
 // -----------------------------------------------------------------------  
-IC bool CheckPointInSphere(const Fvector& point, const Fvector& sO, float sR) 
+IC BOOL CheckPointInSphere(const Fvector& point, const Fvector& sO, float sR) 
 {
 	return (sO.distance_to_sqr(point)< sR*sR);
 }
-IC bool CheckPointInIdentitySphere(const Fvector& point) 
+IC BOOL CheckPointInIdentitySphere(const Fvector& point) 
 { 
 	return (point.square_magnitude() <= 1);
 }
