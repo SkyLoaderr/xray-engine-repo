@@ -166,7 +166,7 @@ void CAI_Stalker::Load				(LPCSTR section)
 { 
 	setEnabled						(false);
 	inherited::Load					(section);
-	m_tSelectorAttack.Load			(section,"selector_attack");
+	//m_tSelectorAttack.Load			(section,"selector_attack");
 	m_tSelectorFreeHunting.Load		(section,"selector_free_hunting");
 	m_tSelectorReload.Load			(section,"selector_reload");
 	m_tSelectorRetreat.Load			(section,"selector_retreat");

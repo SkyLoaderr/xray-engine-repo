@@ -217,6 +217,9 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 	u32		dwCurrentAniSlot = 0;
 	if (tpWeapon)
 		switch (tpWeapon->SUB_CLS_ID) {
+			case CLSID_OBJECT_W_VINTOREZ	:
+			case CLSID_OBJECT_W_VAL			:
+			case CLSID_OBJECT_W_GROZA		:
 			case CLSID_OBJECT_W_M134		:
 			case CLSID_OBJECT_W_FN2000		:
 			case CLSID_OBJECT_W_AK74		:
@@ -226,6 +229,8 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 				dwCurrentAniSlot = 2;
 				break;
 			}
+			case CLSID_OBJECT_W_WALTHER		:
+			case CLSID_OBJECT_W_USP45		:
 			case CLSID_OBJECT_W_HPSA		:
 			case CLSID_OBJECT_W_PM			:
 			case CLSID_OBJECT_W_FORT		: {

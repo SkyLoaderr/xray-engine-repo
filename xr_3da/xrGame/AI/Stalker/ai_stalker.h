@@ -186,11 +186,11 @@ private:
 	EStalkerStates			m_eCurrentState;
 	EStalkerStates			m_ePreviousState;
 	bool					m_bStateChanged;
-	CAI_NodeEvaluatorTemplate<aiSearchRange | aiEnemyDistance>			m_tSelectorFreeHunting;
+	CAI_NodeEvaluatorTemplate<aiSearchRange | aiEnemyDistance | aiMemberDistance>			m_tSelectorFreeHunting;
 	CAI_NodeEvaluatorTemplate<aiSearchRange | aiCoverFromEnemyWeight>	m_tSelectorReload;
-	CAI_NodeEvaluatorTemplate<aiSearchRange | aiCoverFromEnemyWeight | aiEnemyDistance>	m_tSelectorCover;
+	CAI_NodeEvaluatorTemplate<aiSearchRange | aiCoverFromEnemyWeight | aiEnemyDistance | aiMemberDistance>	m_tSelectorCover;
 	CAI_NodeEvaluatorTemplate<aiSearchRange | aiCoverFromEnemyWeight | aiEnemyDistance | aiEnemyViewDeviationWeight >	m_tSelectorRetreat;
-	CAI_NodeEvaluatorFull												m_tSelectorAttack;
+	//CAI_NodeEvaluatorFull												m_tSelectorAttack;
 	CAI_NodeEvaluatorTemplate<aiSearchRange | aiInsideNode>				m_tSelectorNode;
 	u32						m_dwActionRefreshRate;
 	float					m_fAttackSuccessProbability;
