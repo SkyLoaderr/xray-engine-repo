@@ -123,8 +123,6 @@ void CBuild::xrPhase_AdaptiveHT	()
 
 			Vertex*		V		= VertexPool.create();
 			V->P.lerp			(V1->P, V2->P, .5f);
-			Fvector2			UV;
-			UV.averageA			(F->tc.front().uv[F->VIndex(V1)],F->tc.front().uv[F->VIndex(V2)]);
 
 			// iterate on faces which share this 'problematic' edge
 			for (u32 af_it=0; af_it<adjacent.size(); af_it++)
@@ -132,11 +130,14 @@ void CBuild::xrPhase_AdaptiveHT	()
 				Face*	AF			= adjacent[af_it];
 				VERIFY				(false==AF->flags.bSplitted);
 				AF->flags.bSplitted	= true;
+				_TCF&	atc			= AF->tc.front();
 
-				// indices
+				// indices & tc
 				int id1				= AF->VIndex(V1);
 				int id2				= AF->VIndex(V2);
 				int idB				= 3-(id1+id2);
+				Fvector2			UV;
+				UV.averageA			(atc.uv[id1],atc.uv[id2]);
 
 				// Create F1 & F2
 				Face* F1			= FacePool.create();
@@ -153,18 +154,18 @@ void CBuild::xrPhase_AdaptiveHT	()
 				if (is_CCW(id1,id2))	
 				{
 					// F1
-					F1->SetVertices		(AF->v[idB],AF->v[id1],V);
-					F1->AddChannel		(AF->tc.front().uv[idB],AF->tc.front().uv[id1],UV);
+					F1->SetVertices		(AF->v[idB],	AF->v[id1],		V);
+					F1->AddChannel		(atc.uv[idB],	atc.uv[id1],	UV);
 					// F2
-					F2->SetVertices		(AF->v[idB],V,AF->v[id2]);
-					F2->AddChannel		(AF->tc.front().uv[idB],UV,AF->tc.front().uv[id2]);
+					F2->SetVertices		(AF->v[idB],	V,				AF->v[id2]);
+					F2->AddChannel		(atc.uv[idB],	UV,				atc.uv[id2]);
 				} else {
 					// F1
-					F1->SetVertices		(AF->v[idB],V,AF->v[id1]);
-					F1->AddChannel		(AF->tc.front().uv[idB],UV,AF->tc.front().uv[id1]);
+					F1->SetVertices		(AF->v[idB],	V,				AF->v[id1]);
+					F1->AddChannel		(atc.uv[idB],	UV,				atc.uv[id1]);
 					// F2
-					F2->SetVertices		(AF->v[idB],AF->v[id2],V);
-					F2->AddChannel		(AF->tc.front().uv[idB],AF->tc.front().uv[id2],UV);
+					F2->SetVertices		(AF->v[idB],	AF->v[id2],		V);
+					F2->AddChannel		(atc.uv[idB],	atc.uv[id2],	UV);
 				}
 
 				// Normals and checkpoint
