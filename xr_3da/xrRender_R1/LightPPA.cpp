@@ -22,7 +22,7 @@ CLightPPA::~CLightPPA()
 
 }
 
-CLightPPA::set_mode	(mode _M)
+void CLightPPA::set_mode	(mode _M)
 {
 	if (M == _M)										return;
 	if (M==LIGHT_ENABLED && _M==LIGHT_ENABLED_SHADOWED)	return;
