@@ -25,7 +25,7 @@ end
 function notify_on_use(victim, who)
 	--printf("NOTIFY [%s] used by [%s]", victim:name(), who:name())
 
-	if victim:is_talk_enabled() == false then
+	if victim:alive() and victim:is_talk_enabled() == false then
 		if victim:active_sound_count() == 0 then
 			xr_sound.set_sound_play(victim, "threat_back")		
 		end
