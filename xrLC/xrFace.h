@@ -17,6 +17,8 @@ typedef vector<Vertex*>			vecVertex;
 typedef vecVertex::iterator		vecVertexIt;
 typedef vector<Face*>			vecFace;
 typedef vecFace::iterator		vecFaceIt;
+typedef svector<Face*,32>		vecAdj;
+typedef vecADJ::iterator		vecAdjIt;
 
 extern const int edge2idx[3][2];
 
