@@ -5,7 +5,8 @@
 // Borland doesn't support marked aligned allocs ???
 void*	xrMemory::mem_alloc		(size_t size)
 {
-	return	malloc	(size);
+	void* data = malloc	(size); 	R_ASSERT2(data,"Out of memory.");
+	return data;
 }
 void	xrMemory::mem_free		(void* P)
 {
@@ -13,6 +14,7 @@ void	xrMemory::mem_free		(void* P)
 }
 void*	xrMemory::mem_realloc	(void* P, size_t size)
 {	
-	return realloc 	(P,size); 
+	void* data	= realloc(P,size); 	R_ASSERT2(data,"Out of memory.");
+	return data;
 }
 #endif
