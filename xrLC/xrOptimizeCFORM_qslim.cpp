@@ -5,7 +5,7 @@
 
 //#pragma comment (lib,"x:/xrQSlim.lib")
 
-#define MAX_DECIMATE_ERROR 0.1f
+#define MAX_DECIMATE_ERROR 0.05f
 #define COMPACTNESS_RATIO  0.5f
 
 void SaveAsSMF			(LPCSTR fname, CDB::CollectorPacked& CL)
@@ -27,7 +27,7 @@ void SaveAsSMF			(LPCSTR fname, CDB::CollectorPacked& CL)
 	FS.w_close	(W);
 }
 
-struct face_props{
+struct face_props	{
 	u16		material;
 	u16		sector;
 	void	set		(u16 mtl, u16 sect){material=mtl;sector=sect;}
