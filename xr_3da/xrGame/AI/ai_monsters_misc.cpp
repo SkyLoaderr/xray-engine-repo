@@ -649,3 +649,28 @@ Fvector tfGetNextCollisionPosition(CCustomMonster *tpCustomMonster, Fvector &tFu
 	tResult.add(tpCustomMonster->Position(),tForcePosition);
 	return(tResult);
 }
+
+// Загрузка звуков из system.ltx
+void g_vfLoadSounds(SOUND_VECTOR &tpSounds, LPCSTR	prefix, u32 dwMaxCount)
+{
+	tpSounds.clear			();
+	for (int j=0, N = _GetItemCount(prefix); j<N; j++) {
+		string128				fn, s;
+		LPSTR					S = (LPSTR)&s;
+		_GetItem				(prefix,j,S);
+		if (FS.exist(fn,"$game_sounds$",S,".wav")){
+			tpSounds.push_back	(sound());
+			::Sound->create		(tpSounds.back(),TRUE,prefix,0);
+		}
+		for (u32 i=0; i<dwMaxCount; i++){
+			string64			name;
+			sprintf				(name,"%s%d",S,i);
+			if (FS.exist(fn,"$game_sounds$",name,".wav")){
+				tpSounds.push_back(sound());
+				::Sound->create(tpSounds.back(),TRUE,name,0);
+			}
+		}
+	}
+}
+
+
