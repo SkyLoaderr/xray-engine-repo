@@ -294,8 +294,8 @@ void CActor::feel_touch_new				(CObject* O)
 		{
 			// We have similar weapon - just get ammo out of it
 			u_EventGen	(P,GE_TRANSFER_AMMO,ID());
-			P.w_u16		(W->ID());
-			P.w_u16		(T->ID());
+			P.w_u16		(u16(W->ID()));
+			P.w_u16		(u16(T->ID()));
 			u_EventSend	(P);
 			return;
 		} else {

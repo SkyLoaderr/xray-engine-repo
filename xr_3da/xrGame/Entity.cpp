@@ -121,7 +121,7 @@ void CEntity::Hit			(float perc, Fvector &dir, CObject* who)
 			// die
 			NET_Packet		P;
 			u_EventGen		(P,GE_DIE,ID()	);
-			P.w_u16			(who->ID()		);
+			P.w_u16			(u16(who->ID())	);
 			u_EventSend		(P);
 		}
 		fHealth			-=	lost_health;
@@ -208,7 +208,7 @@ void CEntity::Update	(DWORD dt)
 		{
 			Fvector vdir; vdir.set	(0,1,0);
 			eHealthLost_cumulative	-= eHealthLost_granularity;
-			Hit						(iFloor(eHealthLost_granularity),vdir,this);
+			Hit						(eHealthLost_granularity,vdir,this);
 		}
 	}
 }

@@ -65,7 +65,7 @@ void CLevel::g_sv_Spawn		(NET_Packet* Packet)
 			GEN.w_u32	(Level().timeServer());
 			GEN.w_u16	(GE_OWNERSHIP_TAKE);
 			GEN.w_u16	(s_server_parent_id);
-			GEN.w_u16	(O->ID());
+			GEN.w_u16	(u16(O->ID()));
 			Send		(GEN,net_flags(TRUE,TRUE));
 		}
 	}
