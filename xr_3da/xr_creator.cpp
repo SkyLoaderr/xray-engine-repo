@@ -93,9 +93,7 @@ BOOL CCreator::Load				(u32 dwNum)
 	
 	// CForms
 	pApp->LoadTitle				("Loading CFORM...");
-	chunk = fs.open_chunk		(fsL_CFORM);
-	ObjectSpace.Load			(chunk);
-	chunk->close				();
+	ObjectSpace.Load			();
 	pApp->LoadSwitch			();
 
 	// Render-level Load
@@ -130,7 +128,7 @@ BOOL CCreator::Load				(u32 dwNum)
 			LPCSTR fname		= pLevel->r_string("static_sounds","ambient");
 			Sound->create		(Sounds_Ambience,FALSE,fname);
 			Sound->play			(Sounds_Ambience,0,true);
-		} 
+		}
 	}
 	{
 		if (pLevel->section_exist("random_sounds"))	

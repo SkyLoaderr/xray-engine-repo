@@ -182,10 +182,10 @@ IC void CObjectSpace::GetRect	( const CCFModel *obj, Irect &rect ){
 //----------------------------------------------------------------------
 void CObjectSpace::Load	()
 {
-	R_ASSERT			(F);
 	int					x_count, z_count;
 
 	IReader *F			= FS.r_open	("$level$", "level.cform");
+	R_ASSERT			(F);
 
 	hdrCFORM			H;
 	F->r				(&H,sizeof(hdrCFORM));
@@ -216,7 +216,7 @@ void CObjectSpace::Load	()
 	Sound->set_geometry_occ	( &Static );
 	Sound->set_handler		( _sound_event );
 
-	FS.w_close				(F);
+	FS.r_close				(F);
 }
 //----------------------------------------------------------------------
 void CObjectSpace::dbgRender()
