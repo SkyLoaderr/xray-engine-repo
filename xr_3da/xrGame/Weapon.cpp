@@ -410,7 +410,8 @@ void CWeapon::Load		(LPCSTR section)
 	fFlameLength		= pSettings->r_float		(section,"flame_length"		);
 	fFlameSize			= pSettings->r_float		(section,"flame_size"		);
 
-	m_sFlameParitcles	= pSettings->r_string		(section,"flame_particles" );
+	if(pSettings->line_exist(section,"flame_particles"))
+		m_sFlameParitcles	= pSettings->r_string		(section,"flame_particles" );
 
 	if(pSettings->line_exist(section,"smoke_particles"))
 			m_sSmokeParitcles = pSettings->r_string (section,"smoke_particles" );
