@@ -190,6 +190,7 @@ void CObject::Update	( DWORD T )
 	BOOL	bUpdate=FALSE;
 	if (PositionStack.empty())
 	{
+		// Empty
 		bUpdate							= TRUE;
 		PositionStack.push_back			(SavedPosition());
 		PositionStack.back().dwTime		= Device.dwTimeGlobal;
@@ -197,8 +198,10 @@ void CObject::Update	( DWORD T )
 	} else {
 		if (PositionStack.back().vPosition.similar(vPosition,0.005f))
 		{
+			// Just update time
 			PositionStack.back().dwTime	= Device.dwTimeGlobal;
 		} else {
+			// Register new record
 			bUpdate							= TRUE;
 			if (PositionStack.size()<4)		{
 				PositionStack.push_back			(SavedPosition());
@@ -215,10 +218,11 @@ void CObject::Update	( DWORD T )
 	if (bUpdate)
 	{
 		// sector
-		if (SectorMode!=EPM_AT_LOAD)	Sector_Detect	();
+		if (SectorMode!=EPM_AT_LOAD)		Sector_Detect	();
+
+		// cfmodel 
+		if (cfModel && (0==H_Parent()))		cfModel->OnMove	();
 	}
-	// cfmodel 
-	if (cfModel && (0==H_Parent()))		cfModel->OnMove	();
 }
 
 CObject::SavedPosition CObject::ps_Element(DWORD ID)
