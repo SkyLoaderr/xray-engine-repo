@@ -33,8 +33,14 @@ void CAI_ALife::vfSwitchObjectOnline(CALifeDynamicObject *tpALifeDynamicObject)
 		for ( ; I != E; I++) {
 			OBJECT_PAIR_IT			J = m_tObjectRegistry.find(*I);
 			VERIFY					(J != m_tObjectRegistry.end());
-			if (tpALifeAbstractGroup->m_bCreateSpawnPositions)
-				(*J).second->o_Position = tpALifeDynamicObject->o_Position;
+			if (tpALifeAbstractGroup->m_bCreateSpawnPositions) {
+				Fvector tTemp;
+				tTemp.set(::Random.randF(0,.35f),0,::Random.randF(0,.35f));
+				(*J).second->o_Position.add(tpALifeDynamicObject->o_Position,tTemp);
+				xrSE_Enemy				*tpEnemy = dynamic_cast<xrSE_Enemy*>((*J).second);
+				if (tpEnemy)
+					tpEnemy->o_torso.yaw = ::Random.randF(-PI,PI);
+			}
 			vfCreateObject		((*J).second);
 		}
 		tpALifeAbstractGroup->m_bCreateSpawnPositions = false;

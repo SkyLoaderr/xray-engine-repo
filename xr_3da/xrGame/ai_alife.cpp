@@ -78,6 +78,7 @@ void CAI_ALife::vfNewGame()
 		CALifeAbstractGroup		*tpALifeAbstractGroup = dynamic_cast<CALifeAbstractGroup*>(i);
 		if (tpALifeAbstractGroup) {
 			i->ID				= m_tpServer->PerformIDgen(0xffff);
+			i->m_tObjectID		= i->ID;
 			m_tObjectRegistry.insert(make_pair(i->m_tObjectID,i));
 			
 			tpALifeAbstractGroup->m_tpMembers.resize(tpALifeAbstractGroup->m_wCount);
@@ -88,7 +89,7 @@ void CAI_ALife::vfNewGame()
 				LPCSTR				S = pSettings->ReadSTRING((*I)->s_name,"monster_section");
 				xrServerEntity		*tp1 = F_entity_Create	(S);
 				R_ASSERT2			(tp1,"Can't create entity.");
-				CALifeDynamicObject	*tp2 = dynamic_cast<CALifeDynamicObject*>(tpServerEntity);
+				CALifeDynamicObject	*tp2 = dynamic_cast<CALifeDynamicObject*>(tp1);
 				R_ASSERT			(tp2);
 				(*I)->Spawn_Write	(tNetPacket,TRUE);
 				tp2->Spawn_Read		(tNetPacket);
@@ -101,7 +102,7 @@ void CAI_ALife::vfNewGame()
 				tp2->m_bDirectControl	= false;
 				tp2->ID				= 0xffff;
 				vfCreateObject		(tp2);
-				tp2->m_tObjectID	= tp2->ID;
+				*II					= tp2->m_tObjectID = tp2->ID;
 				m_tObjectRegistry.insert(make_pair(tp2->m_tObjectID,tp2));
 			}
 		}
