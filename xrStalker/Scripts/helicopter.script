@@ -18,6 +18,7 @@ function main()
 --	wait(10000)	
 --	while(true)do
 
+
 		if(helicopter:air_attack_active()==false) then
 --			helicopter:air_attack_wait(actor,100,15)    --þ¸ªðýþòøª¹¸  ÷ð 100 üõª¨þò ôþ ¡õûø, òø¸õª¹ 15 ¸õú
 --			helicopter:air_attack(actor)
@@ -25,12 +26,16 @@ function main()
 			local vecDst = vector():set(actor:position())
 			local vecVia = vector():set(car:position())
 			
-			helicopter:heli_go_to_point(vecDst,vecVia,20000)
+
+
+			helicopter:heli_goto_stay_point( vecVia, 600000 )
+
+--			helicopter:heli_go_to_point(vecDst,vecVia,20000)
 		end
 
-		wait(10000)
+--		wait(10000)
     	
-		helicopter:heli_goto_stay_point( vecVia, 60000000 )
+--		helicopter:heli_goto_stay_point( vecVia, 60000000 )
 
 --	end
 		
