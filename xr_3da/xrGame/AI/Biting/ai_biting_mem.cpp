@@ -91,16 +91,6 @@ void CSoundMemory::UpdateHearing(TTime dt)
 	std::sort(Sounds.begin(),Sounds.end());
 }
 
-void CSoundMemory::ShowDbgInfo()
-{
-	Msg("-- Sound Memory:  Show dbg Info ---- ");
-	Msg("Current time: [%i];  num of sounds: [%i];  remember sound? [%i]",CurrentTime,Sounds.size(),IsRememberSound());
-
-//	SoundElem s;
-//	GetMostDangerousSound(s);
-//	if (s.who) Msg("Most_Dangerous_Sound:  Name = [%s] ",s.who->cName());
-}
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CVisionMemory implementation
@@ -129,7 +119,7 @@ void CVisionMemory::UpdateVision(TTime dt)
 	xr_vector<CObject*>::iterator I, E;
 
 	CAI_Biting *pB = dynamic_cast<CAI_Biting *>(this);
-	Feel::Vision *pV;
+	Feel::Vision *pV = 0;
 	if (pB) {
 		pV = dynamic_cast<Feel::Vision *>(pB);
 		if (!pV) return; // ERROR
@@ -170,7 +160,7 @@ void CVisionMemory::UpdateVision(TTime dt)
 		}
 	}
 
-	if (EnemySelected.obj && !EnemySelected.obj->g_Alive()) EnemySelected.obj = 0;
+	if ((EnemySelected.obj->CLS_ID !=CLSID_ENTITY) || (EnemySelected.obj && !EnemySelected.obj->g_Alive())) EnemySelected.obj = 0;
 }
  
 
@@ -201,7 +191,7 @@ VisionElem &CVisionMemory::GetNearestObject(const Fvector &pos, EObjectType obj_
 {
 	float		optimal_val;
 	float		cur_val;
-	int			index = 0;	// Индекс ближайшего объекта в массиве объектов 
+	int			index = 0;		// Индекс ближайшего объекта в массиве объектов 
 
 	xr_vector<VisionElem> *ObjectsVector;
 	if (obj_type == ENEMY) ObjectsVector = &Enemies;
@@ -221,19 +211,12 @@ VisionElem &CVisionMemory::GetNearestObject(const Fvector &pos, EObjectType obj_
 }
 
 
-void CVisionMemory::ShowDbgInfo()
-{
-	Msg("-- Vision Memory:  Show dbg Info ---- ");
-	Msg("Current time: [%i];  num of objects: [%i];  num of enemies [%i]",CurrentTime,Objects.size(),Enemies.size());
-	for (u32 i=0; i<Objects.size(); i++) Msg("Visual object %i: Name = [%s], time = [%i]",i,Objects[i].obj->cName(), Objects[i].time);
-	for (i=0; i<Enemies.size(); i++) Msg("Visual enemy %i: Name = [%s], time = [%i]",i,Enemies[i].obj->cName(), Enemies[i].time);
-}
-
-
 bool CVisionMemory::SelectEnemy(VisionElem &ve)
 {
+	// Выбранный враг давно исчез из поля зрения?
 	if (EnemySelected.time + MemoryTime < CurrentTime) EnemySelected.obj = 0;
 
+	// Необходимо выбрать другого врага?
 	if ((!EnemySelected.obj || (EnemySelected.obj && (EnemySelected.time + TIME_TO_RESELECT_ENEMY < CurrentTime))) && IsEnemy()) {
 		
 		CAI_Biting *pB = dynamic_cast<CAI_Biting *>(this);
@@ -269,11 +252,5 @@ void CMonsterMemory::UpdateMemory()
 
 	UpdateVision(curtime);
 	UpdateHearing(curtime);
-}
-
-void CMonsterMemory::ShowDbgInfo()
-{
-	CSoundMemory::ShowDbgInfo();
-	CVisionMemory::ShowDbgInfo();
 }
 
