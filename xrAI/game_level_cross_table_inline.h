@@ -20,18 +20,23 @@ IC CGameLevelCrossTable::CGameLevelCrossTable()
 #endif
 	m_tpCrossTableVFS					= FS.r_open(fName);
 	R_ASSERT2							(m_tpCrossTableVFS,"Can't open cross table!");
-	R_ASSERT2							(m_tpCrossTableVFS->find_chunk(CROSS_TABLE_CHUNK_VERSION),"Can't find chunk CROSS_TABLE_CHUNK_VERSION!");
-	m_tpCrossTableVFS->open_chunk		(CROSS_TABLE_CHUNK_VERSION);
-	m_tpCrossTableVFS->r				(&m_tCrossTableHeader,sizeof(m_tCrossTableHeader));
+	
+	IReader								*chunk = m_tpCrossTableVFS->open_chunk(CROSS_TABLE_CHUNK_VERSION);
+	R_ASSERT2							(chunk,"Cross table is corrupted!");
+	chunk->r							(&m_tCrossTableHeader,sizeof(m_tCrossTableHeader));
+	chunk->close						();
+	
 	R_ASSERT2							(m_tCrossTableHeader.version() == XRAI_CURRENT_VERSION,"Cross table version mismatch!");
-	R_ASSERT2							(m_tpCrossTableVFS->find_chunk(CROSS_TABLE_CHUNK_DATA),"Can't find chunk CROSS_TABLE_CHUNK_DATA!");
-	m_tpCrossTableVFS->open_chunk		(CROSS_TABLE_CHUNK_DATA);
-	m_tpaCrossTable						= (CCell*)m_tpCrossTableVFS->pointer();
+
+	m_chunk								= m_tpCrossTableVFS->open_chunk(CROSS_TABLE_CHUNK_VERSION);
+	R_ASSERT2							(m_chunk,"Cross table is corrupted!");
+	m_tpaCrossTable						= (CCell*)m_chunk->pointer();
 };
 
 IC CGameLevelCrossTable::~CGameLevelCrossTable()
 {
-	xr_delete							(m_tpCrossTableVFS);
+	m_chunk->close						();
+	FS.r_close							(m_tpCrossTableVFS);
 };
 
 IC const CGameLevelCrossTable::CCell &CGameLevelCrossTable::vertex(u32 level_vertex_id) const

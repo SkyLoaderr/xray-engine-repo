@@ -409,6 +409,7 @@ void read_levels(CInifile *Ini, xr_set<CLevelInfo> &levels)
 			if (!ok)
 				continue;
 		}
+		IReader			*reader;
 		// ai
 		strconcat		(caFileName,S,"\\",LEVEL_GRAPH_NAME);
 		FS.update_path	(file_name,"$game_levels$",caFileName);
@@ -416,6 +417,18 @@ void read_levels(CInifile *Ini, xr_set<CLevelInfo> &levels)
 			Msg			("! There is no ai-map for the level %s! (level is not included into the game graph)",S);
 			continue;
 		}
+		
+		{
+			reader					= FS.r_open	(file_name);
+			CLevelGraph::CHeader	header;
+			reader->r				(&header,sizeof(header));
+			FS.r_close				(reader);
+			if (header.version() != XRAI_CURRENT_VERSION) {
+				Msg					("! AI-map for the level %s is incompatible (version mismatch)! (level is not included into the game graph)",S);
+				continue;
+			}
+		}
+
 		// graph
 		strconcat		(caFileName,S,"\\",GAME_LEVEL_GRAPH);
 		FS.update_path	(file_name,"$game_levels$",caFileName);
@@ -423,12 +436,42 @@ void read_levels(CInifile *Ini, xr_set<CLevelInfo> &levels)
 			Msg			("! There is no graph for the level %s! (level is not included into the game graph)",S);
 			continue;
 		}
+
+		{
+			reader				= FS.r_open	(file_name);
+			CGameGraph::CHeader	header;
+			header.load			(reader);
+			FS.r_close			(reader);
+			if (header.version() != XRAI_CURRENT_VERSION) {
+				Msg				("! Graph for the level %s is incompatible (version mismatch)! (level is not included into the game graph)",S);
+				continue;
+			}
+		}
+
 		// cross table
 		strconcat		(caFileName,S,"\\",CROSS_TABLE_NAME_RAW);
 		FS.update_path	(file_name,"$game_levels$",caFileName);
 		if (!FS.exist(file_name)) {
 			Msg			("! There is no cross table for the level %s! (level is not included into the game graph)",S);
 			continue;
+		}
+
+		{
+			reader				= FS.r_open	(file_name);
+			if (!reader->find_chunk(CROSS_TABLE_CHUNK_VERSION)) {
+				FS.r_close		(reader);
+				Msg				("! Cross table for the level %s is corrupted! (level is not included into the game graph)",S);
+				continue;
+			}
+			CGameLevelCrossTable::CHeader	header;
+			IReader				*chunk = reader->open_chunk(CROSS_TABLE_CHUNK_VERSION);
+			chunk->r			(&header,sizeof(header));
+			chunk->close		();
+			FS.r_close			(reader);
+			if (header.version() != XRAI_CURRENT_VERSION) {
+				Msg				("! Cross table for the level %s is incompatible (version mismatch)! (level is not included into the game graph)",S);
+				continue;
+			}
 		}
 		
 		levels.insert	(CLevelInfo(id,S,Ini->r_fvector3(N,"offset"),N));

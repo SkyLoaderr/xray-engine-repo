@@ -63,6 +63,7 @@ public:
 protected:
 	CHeader					m_tCrossTableHeader;
 	IReader					*m_tpCrossTableVFS;
+	IReader					*m_chunk;
 	CCell					*m_tpaCrossTable;
 
 public:

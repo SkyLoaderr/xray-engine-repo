@@ -28,7 +28,7 @@ IC CGameGraph::CGameGraph		(LPCSTR file_name, u32 current_version)
 
 IC CGameGraph::~CGameGraph			()
 {
-	xr_delete					(m_reader);
+	FS.r_close					(m_reader);
 }
 
 IC const CGameGraph::CHeader &CGameGraph::header() const
