@@ -368,7 +368,7 @@ u32	 CLevelGraph::check_position_in_direction	(u32 start_vertex_id, const Fvecto
 	dir.sub					(dest,start);
 	Fvector					temp = vertex_position(cur_vertex_id);//, t = temp;
 
-	float					cur_sqr = _sqr(start.x - dest.x) + _sqr(start.y - dest.y);
+	float					cur_sqr = _sqr(temp.x - dest.x) + _sqr(temp.z - dest.y);
 	for (;;) {
 		const_iterator		I,E;
 		begin				(cur_vertex_id,I,E);
@@ -424,7 +424,7 @@ bool CLevelGraph::check_vertex_in_direction		(u32 start_vertex_id, const Fvector
 	dir.sub					(dest,start);
 	Fvector					temp = vertex_position(cur_vertex_id);//, t = temp;
 
-	float					cur_sqr = _sqr(start.x - dest.x) + _sqr(start.y - dest.y);
+	float					cur_sqr = _sqr(temp.x - dest.x) + _sqr(temp.z - dest.y);
 	for (;;) {
 		const_iterator		I,E;
 		begin				(cur_vertex_id,I,E);

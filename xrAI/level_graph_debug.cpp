@@ -618,7 +618,7 @@ IC	bool compute_tangent(
 	VERIFY				(fsimilar(start_yaw,f1));
 	VERIFY				(fsimilar(angle_normalize(start_yaw),start_yaw >= 0.f ? start_yaw : start_yaw + PI_MUL_2));
 	start_yaw			= start_yaw >= 0.f ? start_yaw : start_yaw + PI_MUL_2;
-	start_cp			= direction.cross_product(start.direction);
+	start_cp			= start.direction.cross_product(direction);
 	
 	// computing 2D cross product for dest point
 	direction.sub		(dest.position,dest_circle.center);
@@ -629,7 +629,7 @@ IC	bool compute_tangent(
 	VERIFY				(fsimilar(dest_yaw,f1));
 	VERIFY				(fsimilar(angle_normalize(dest_yaw),dest_yaw >= 0.f ? dest_yaw : dest_yaw + PI_MUL_2));
 	dest_yaw			= dest_yaw >= 0.f ? dest_yaw : dest_yaw + PI_MUL_2;
-	dest_cp				= direction.cross_product(dest.direction);
+	dest_cp				= dest.direction.cross_product(direction);
 
 	// direction from the first circle to the second one
 	direction.sub		(dest_circle.center,start_circle.center);
@@ -710,7 +710,7 @@ IC	bool compute_tangent(
 
 	direction.sub		(tangents[1].point,tangents[0].point);
 	temp.sub			(tangents[0].point,start_circle.center);
-	float				tangent_cp = temp.cross_product(direction);
+	float				tangent_cp = direction.cross_product(temp);
 	if (start_cp*tangent_cp >= 0) {
 		VERIFY			(fsimilar(angle_normalize(yaw1 + alpha),yaw1 + alpha < PI_MUL_2 ? yaw1 + alpha : yaw1 + alpha - PI_MUL_2));
 		assign_angle	(tangents[0].angle,start_yaw,yaw1 + alpha < PI_MUL_2 ? yaw1 + alpha : yaw1 + alpha - PI_MUL_2,start_cp >= 0);
@@ -1031,8 +1031,8 @@ void fill_params(
 //	start.linear_velocity	= 2.15f;
 //	start_set.push_back		(start);
 
-	start.angular_velocity	= PI_DIV_2;
-	start.linear_velocity	= 4.5f;
+	start.angular_velocity	= 1.f;//PI_DIV_2;
+	start.linear_velocity	= 2.f;//4.5f;
 	start_set.push_back		(start);
 
 //	start.angular_velocity	= PI_DIV_4;
@@ -1047,8 +1047,8 @@ void fill_params(
 //	dest.linear_velocity	= 2.15f;
 //	dest_set.push_back		(dest);
 
-	dest.angular_velocity	= PI_DIV_2;
-	dest.linear_velocity	= 4.5f;
+	dest.angular_velocity	= 1.f;//PI_DIV_2;
+	dest.linear_velocity	= 2.f;//4.5f;
 	dest_set.push_back		(dest);
 
 //	dest.angular_velocity	= PI_DIV_4;
