@@ -1,0 +1,992 @@
+----------------------------------------------------------------------------------------------------------------------
+--	Общая схема торговли и общения
+--	автор: Диденко Руслан (Stohe)
+--	TODO:
+----------------------------------------------------------------------------------------------------------------------
+
+local sounds = {}
+
+---------------------------------------------------------------------------------------------------------------------
+--Evaluators
+----------------------------------------------------------------------------------------------------------------------
+-- Проверяет находимся ли мы на позиции торговли
+class "evaluator_on_position" (property_evaluator)
+function evaluator_on_position:__init(storage) super()
+	self.a = storage
+end
+function evaluator_on_position:evaluate()
+--	if self.a.position==true then
+--		printf("[EVA] On position? true")
+--	else
+--		printf("[EVA] On position? false")
+--	end               
+
+	local tt
+	local dd = self.a.trade_position.position:distance_to(self.a.Seller:position())
+
+	tt = dd < self.a.dist
+
+	if self.a.Seller:see(self.a.Buyer) then
+		tt = true
+	end
+
+	return tt
+end
+
+-- Можем ли мы завершить выполнение скрипта или нет
+class "evaluator_can_finish" (property_evaluator)
+function evaluator_can_finish:__init(storage) super()
+	self.a = storage
+end
+function evaluator_can_finish:evaluate()
+	local tt
+	tt = false 
+
+	-- Проверка на окончание времени ожидания появления
+	if self.a.begin_wait_to_see.time ~= nil then
+		if self.a.begin_wait_to_see.begin ~= nil then
+			local t = device():time_global()/1000-self.a.begin_wait_to_see.begin
+			tt = self.a.begin_wait_to_see.time < t
+		end
+	end
+
+	-- Проверка на окончание времени ожидания начала торговли
+	if self.a.begin_wait_to_trade.time ~= nil then
+		if self.a.begin_wait_to_trade.begin ~= nil then
+			local t = device():time_global()/1000-self.a.begin_wait_to_trade.begin
+			tt = self.a.begin_wait_to_trade.time < t
+		end
+	end 
+
+	-- Проверка на то, что мы уже отторговали
+	if self.a.Seller ~= nil then
+		if self.a.trade_begin == true and  
+		   self.a.Seller:is_talking() == false then
+			tt = true
+		end
+	end
+
+	-- Проверка что покупатель не стал врагом
+	if self.a.Seller ~= nil then
+		if self.a.Buyer ~= nil then
+			if self.a.Seller:relation(self.a.Buyer) == game_object.enemy then
+				tt = true
+			end
+		end
+	end
+
+	-- Проверка что покупатель не умер у нас на глазах
+	if self.a.Seller ~= nil then
+		if self.a.Buyer ~= nil then
+			if self.a.Buyer:alive() == false and
+			   self.a.Seller:see(self.a.Buyer) == true then
+				tt = true
+			end
+		end
+	end
+	   
+	return tt
+end
+
+-- Видимость покупателя
+class "evaluator_see_buyer" (property_evaluator)
+function evaluator_see_buyer:__init(storage) super()
+	self.a = storage
+end
+function evaluator_see_buyer:evaluate()
+--	if self.a.Seller:see(self.a.Buyer) then
+--		printf("[EVA] See buyer? true")
+--	else
+--		printf("[EVA] See buyer? false")
+--	end
+	if self.a.Buyer == nil or self.a.Seller == nil then return false end
+
+	return self.a.Seller:see(self.a.Buyer) == true
+end
+
+-- Находится ли покупатель за дальним пределом
+class "evaluator_is_distance_far" (property_evaluator)
+function evaluator_is_distance_far:__init(storage) super()
+	self.a = storage
+end
+function evaluator_is_distance_far:evaluate()
+	local d = distance_between(self.a.Seller, self.a.Buyer)
+	return d >= self.a.distance
+end
+
+-- Высвечен ли экран общения
+class "evaluator_is_talking" (property_evaluator)
+function evaluator_is_talking:__init(storage) super()
+	self.a = storage
+end
+function evaluator_is_talking:evaluate()
+	if self.a.Seller == nil then return false end
+
+--	if self.a.Seller:is_talking() then
+--		printf("[EVA] Talking")
+--	else
+--		printf("[EVA] NOT Talking")
+--	end
+	return self.a.Seller:is_talking()
+end
+
+-- Находится ли покупатель за дальним пределом
+class "evaluator_buyer_has_weapon" (property_evaluator)
+function evaluator_buyer_has_weapon:__init(storage) super()
+	self.a = storage
+end
+function evaluator_buyer_has_weapon:evaluate()
+	if self.a.Buyer == nil then return false end
+
+	local weap = self.a.Buyer:active_item()
+
+	local ww
+	ww = false
+	if weap ~= nil then
+		local weap_id = weap:clsid()
+		ww = self:isWeapon(weap_id)
+	end
+
+	return ww
+end
+function evaluator_buyer_has_weapon:isWeapon(id)
+	if id == clsid.wpn_vintorez then return true
+	elseif id == clsid.wpn_fn2000 then return true
+	elseif id == clsid.wpn_ak74 then return true
+	elseif id == clsid.wpn_lr300 then return true
+	elseif id == clsid.wpn_hpsa then return true
+	elseif id == clsid.wpn_pm then return true
+	elseif id == clsid.wpn_fort then return true
+	elseif id == clsid.wpn_binocular then return true
+	elseif id == clsid.wpn_shotgun then return true
+	elseif id == clsid.wpn_svd then return true
+	elseif id == clsid.wpn_svu then return true
+	elseif id == clsid.wpn_rpg7 then return true
+	elseif id == clsid.wpn_val then return true
+	elseif id == clsid.wpn_vintorez then return true
+	elseif id == clsid.wpn_walther then return true
+	elseif id == clsid.wpn_usp45 then return true
+	elseif id == clsid.wpn_groza then return true
+	elseif id == clsid.wpn_knife then return true
+	elseif id == clsid.wpn_grenade_launcher then return true
+	elseif id == clsid.obj_explosive then return true
+	elseif id == clsid.wpn_grenade_f1 then return true
+	elseif id == clsid.wpn_grenade_rpg7 then return true
+	elseif id == clsid.wpn_grenade_rgd5 then return true
+	elseif id == clsid.wpn_grenade_fake then return true
+        else return false end
+end
+
+----------------------------------------------------------------------------------------------------------------------
+--Actions
+----------------------------------------------------------------------------------------------------------------------
+-- Инициализация торговли
+class "action_trade_init" (action_base)
+function action_trade_init:__init (npc_name,action_name,storage) super (nil, action_name)
+	self.a = storage
+end
+function action_trade_init:initialize()
+	printf("[ACT] Start: Tradeseller Initialize")
+	action_base.initialize(self)
+	self.object:set_node_evaluator()
+	self.object:set_path_evaluator()
+	self.object:set_desired_position()
+	self.object:set_desired_direction()    
+
+        local bt = xr_motivator.trade_arhive[self.a.Seller:id()]:best_trader()
+
+	if self.a.Seller:relation(bt) ~= game_object.enemy and
+	   (self.a.last_trade_time.begin == nil or
+    	   (device():time_global()/1000 - self.a.last_trade_time.begin) > self.a.last_trade_time.idle) and
+	   self.a.enabled == true then
+
+		self.a.begin_wait_to_see.begin = device():time_global()/1000
+		self.a.begin_wait_to_trade.begin = nil
+		self.a.trade_position.vertex_id = self.a.Seller:level_vertex_id()
+		self.a.trade_position.position = self.a.Seller:position()	
+		self.a.Buyer = bt
+		
+		--Отсылка на ПДА: мы согласны торговать.
+		self.a.Seller:send_pda_message(3, bt)
+		level.map_add_object_icon(self.a.Seller, 0)
+	else
+		self.a.Seller:send_pda_message(5, bt)
+	end
+	xr_motivator.trade_arhive[self.a.Seller:id()]:remove(bt)
+end
+function action_trade_init:execute ()
+	action_base.execute (self)
+end
+function action_trade_init:finalize ()
+	printf("[ACT] Finish: Tradeseller Initialize")
+	xr_tradeseller.clear_marker(self.a)
+	printf("[ACT] Finish: Tradeseller Initialize")
+	action_base.finalize (self)
+end
+
+-- !!! ОБРАБОТКА ТОРГОВЛИ
+-- Если мы по какой либо причине не находимся на своем месте - возвращаемся на место
+class "action_go_position" (action_base)
+function action_go_position:__init (npc_name,action_name,storage) super (nil,action_name)
+	self.a = storage
+end
+function action_go_position:initialize()
+--	printf("[ACT] Start: Tradeseller Go position")
+	action_base.initialize(self)
+	self.object:set_node_evaluator()
+	self.object:set_path_evaluator()
+	self.object:set_desired_position()
+	self.object:set_desired_direction()    
+	
+	self.object:set_sight(look.path_dir, nil, 0)
+	self.object:set_item(object.idle, self.object:best_weapon())
+	self.object:set_body_state(move.standing)
+	self.object:set_movement_type(move.walk)
+	self.object:set_mental_state(anim.free)
+	self.object:set_path_type(game_object.level_path)
+
+        self.object:set_dest_level_vertex_id(self.a.trade_position.vertex_id)
+	self.object:set_desired_direction()
+end
+function action_go_position:execute ()
+	action_base.execute (self)
+end
+function action_go_position:finalize ()
+--	printf("[ACT] Finish: Tradeseller Go position")
+	xr_tradeseller.clear_marker(self.a)
+	action_base.finalize (self)
+end
+
+-- Завершение торговли
+class "action_finish_trade" (action_base)
+function action_finish_trade:__init (npc_name,action_name,storage) super (nil,action_name)
+	self.a = storage
+end
+function action_finish_trade:initialize()
+--	printf("[ACT] Start: Tradeseller Finish trade")
+	action_base.initialize(self)
+
+	self.object:set_node_evaluator()
+	self.object:set_path_evaluator()
+	self.object:set_desired_position()
+	self.object:set_desired_direction()
+
+	self.object:disable_talk()
+	self.object:set_sight(look.search, nil, 0)
+	self.object:set_item(object.idle, self.object:best_weapon())
+	self.object:set_body_state(move.standing)
+	self.object:set_movement_type(move.stand)
+	self.object:set_mental_state(anim.free)
+	
+	level.map_remove_object_icon(self.a.Seller)
+	-- Проверка на окончание времени ожидания появления
+	if self.a.begin_wait_to_see.time ~= nil then
+		if self.a.begin_wait_to_see.begin ~= nil then
+			local t = device():time_global()/1000-self.a.begin_wait_to_see.begin
+			if self.a.begin_wait_to_see.time < t then
+				self.a.Seller:send_pda_message(game_object.i_leave_pda_msg, self.a.Buyer)
+			end
+		end
+	end
+
+	-- Проверка на окончание времени ожидания начала торговли
+	if self.a.begin_wait_to_trade.time ~= nil then
+		if self.a.begin_wait_to_trade.begin ~= nil then
+			local t = device():time_global()/1000-self.a.begin_wait_to_trade.begin
+			if self.a.begin_wait_to_trade.time < t then
+				self.object:play_sound (sounds["trade"], 1, 0, 1, 0, 11)
+			end
+		end
+	end 
+
+	-- Проверка на то, что мы уже отторговали
+	if self.a.Seller ~= nil then
+		if self.a.trade_begin == true and  
+		   self.a.Seller:is_talking() == false then
+			self.a.last_trade_time.begin = device():time_global()/1000
+		end
+	end
+
+	self.a.Buyer = nil
+	self.a.trade_begin = false
+end
+function action_finish_trade:execute()
+	action_base.execute (self)
+end
+function action_finish_trade:finalize()
+--	printf("[ACT] Finish: Tradeseller Finish trade")
+	action_base.finalize (self)
+	xr_tradeseller.clear_marker(self.a)
+	self.object:clear_animations()
+end
+
+-- Ожидание появления покупателя
+class "action_wait_for_buyer" (action_base)
+function action_wait_for_buyer:__init (npc_name,action_name,storage) super (nil, action_name)
+	self.a = storage
+end
+function action_wait_for_buyer:initialize()
+--	printf("[ACT] Start: Tradeseller Waiting for a buyer arrive")
+	action_base.initialize(self)
+
+	self.object:set_node_evaluator()
+	self.object:set_path_evaluator()
+	self.object:set_desired_position()
+	self.object:set_desired_direction()    
+	
+	self.object:set_item(object.idle, self.object:best_weapon())
+
+	self.act = {type = 1,
+		     begin = nil,
+		     time = 6}
+
+	self.anim = {idle = 0,
+		     begin = nil,
+		     maxidle = 5, 
+		     sumidle = 5,
+   		     rnd = 100,
+		     lastanim = nil}
+			                                  
+	self.sound = {idle = 0,
+		     begin = nil,
+		     maxidle = 5, 
+		     sumidle = 5,
+   		     rnd = 100,
+		     lastsound = nil}
+end
+function action_wait_for_buyer:execute ()
+	self.object:set_item(object.idle, self.object:best_weapon())
+	action_base.execute (self)
+
+	-- секция анимации
+	-- 1: если не отыгрываем никаких анимаций - то поворачиваемся в случайную сторону
+	-- 2: выжидаем, иногда отыгрывая какую либо анимацию
+	if self.act.type == 1 then
+		if self.object:animation_count() == 0 then
+			self.act.begin = device():time_global()/1000
+			self.act.type = 2
+
+			local dir = vector():set(math.random(10)-5, 0, math.random(10)-5)
+			self.object:set_sight(look.direction, dir, 0)
+			self.object:set_body_state(move.standing)
+			self.object:set_movement_type(move.stand)
+			self.object:set_mental_state(anim.free)
+		end
+	else
+		if (device():time_global()/1000 - self.act.begin) > self.act.time then
+			self.act.type = 1
+		end
+		if self.object:animation_count() == 0 then
+			if (self.anim.begin == nil or
+			   (device():time_global()/1000 - self.anim.begin) > self.anim.idle) then
+				if math.random(100) < self.anim.rnd then
+					if self.anim.lastanim == nil then
+						r = math.random(2)
+					else
+						r = math.random(1)
+						if r >= self.anim.lastanim then
+							r = r + 1
+						end
+					end
+					self.anim.lastanim = r
+
+					if r == 1 then
+						self.object:add_animation("stoya_ruje_ 0", true)
+					else
+						self.object:add_animation("plechi", false)
+					end
+				end
+				self.anim.begin = device():time_global()/1000
+				self.anim.idle = math.random(self.anim.maxidle) + self.anim.sumidle
+			end
+		end
+	end
+
+	-- секция озвучки
+	if self.sound.begin == nil then
+		self.sound.begin = device():time_global()/1000
+		self.sound.idle = math.random(self.sound.maxidle) + self.sound.sumidle
+	else
+		if (device():time_global()/1000 - self.sound.begin) > self.sound.idle then
+			if math.random(100) < self.sound.rnd then
+				self.object:play_sound (sounds["trade"], 1, 0, 1, 0, 1)
+			end
+			self.sound.begin = device():time_global()/1000
+			self.sound.idle = math.random(self.sound.maxidle) + self.sound.sumidle
+		end
+	end
+
+end
+function action_wait_for_buyer:finalize ()
+--	printf("[ACT] Finish: Tradeseller Waiting for a buyer arrive")
+	self.object:clear_animations()
+	xr_tradeseller.clear_marker(self.a)
+	action_base.finalize (self)
+end
+
+-- Покупатель появился, ждем начала торговли (покупатель с оружием)
+class "action_wait_see_buyer_weap" (action_base)
+function action_wait_see_buyer_weap:__init (npc_name,action_name,storage) super (nil,action_name)
+	self.a = storage
+end
+function action_wait_see_buyer_weap:initialize()
+--	printf("[ACT] Start: Tradeseller Buyer arrive. Distance NOT FAR. Waiting for a trade. Weapon")
+	action_base.initialize(self)
+	self.object:set_node_evaluator()
+	self.object:set_path_evaluator()
+	self.object:set_desired_position()
+	self.object:set_desired_direction()    
+	
+	self.object:disable_talk()
+	self.firsttime = device():time_global()
+
+	self.sound = {idle = 0,
+		     begin = nil,
+		     maxidle = 5,
+		     sumidle = 1, 
+   		     rnd = 100}
+
+	self.object:set_item(object.idle, self.object:best_weapon())
+	self.object:clear_animations()
+	self.object:set_body_state(move.standing)	
+	self.object:set_mental_state(anim.danger)
+end
+function action_wait_see_buyer_weap:execute ()
+	local d = distance_between(self.a.Seller, self.a.Buyer)
+		
+	if d >= self.a.shoot_distance or
+	   (d < self.a.shoot_distance and self.a.begin_wait_to_trade.begin == nil) then
+		if self.a.begin_wait_to_trade.begin == nil then	
+      			self.a.begin_wait_to_trade.begin = device():time_global()/1000
+      		end
+      		local pos = self.a.Buyer:position()
+      		if (device():time_global() - self.firsttime) > 400 then
+      			pos.y = pos.y + 0.8
+      			self.object:set_item(object.idle, self.object:best_weapon())
+      			self.object:set_sight(look.fire_point, pos, 0)
+      			self.object:set_movement_type(move.stand)
+     		end
+      		-- секция озвучки
+      		if self.sound.begin == nil then
+      			local r = math.random(6)
+      			self.sound.lastsound = r
+      			if r == 1 then
+     	 			self.object:play_sound (sounds["trade"], 1, 0, 1, 0, 5)
+      			elseif r == 2 then
+		      		self.object:play_sound (sounds["trade"], 1, 0, 1, 0, 6)
+		      	elseif r == 3 then
+      				self.object:play_sound (sounds["trade"], 1, 0, 1, 0, 7)
+		      	elseif r == 4 then
+      				self.object:play_sound (sounds["trade"], 1, 0, 1, 0, 8)
+		      	elseif r == 5 then
+      				self.object:play_sound (sounds["trade"], 1, 0, 1, 0, 9)
+		      	else
+      				self.object:play_sound (sounds["trade"], 1, 0, 1, 0, 10)
+		      	end
+
+		      	self.sound.begin = device():time_global()/1000
+		      	self.sound.idle = math.random(self.sound.maxidle) + self.sound.sumidle
+	      	else
+		      	if (device():time_global()/1000 - self.sound.begin) > self.sound.idle then
+      				if math.random(100) < self.sound.rnd then
+		      			if self.sound.lastsound == nil then
+      						r = math.random(6)
+		      			else
+      						r = math.random(5)
+      						if r >= self.sound.lastsound then
+      							r = r + 1
+		      				end             
+      					end
+      					self.sound.lastsound = r
+      				
+	      				if r == 1 then
+      						self.object:play_sound (sounds["trade"], 1, 0, 1, 0, 5)
+	      				elseif r == 2 then
+      						self.object:play_sound (sounds["trade"], 1, 0, 1, 0, 6)
+	      				elseif r == 3 then
+      						self.object:play_sound (sounds["trade"], 1, 0, 1, 0, 7)
+      					elseif r == 4 then
+      						self.object:play_sound (sounds["trade"], 1, 0, 1, 0, 8)
+		      			elseif r == 5 then
+      						self.object:play_sound (sounds["trade"], 1, 0, 1, 0, 9)
+      					else
+      						self.object:play_sound (sounds["trade"], 1, 0, 1, 0, 10)
+	      				end
+ 	     			end
+	      			self.sound.begin = device():time_global()/1000
+		      		self.sound.idle = math.random(self.sound.maxidle) + self.sound.sumidle
+      			end
+		end
+	else
+		if device():time_global()/1000-self.a.begin_wait_to_trade.begin > 2 then --если видим его дольше 2 секунд
+			--!!! Отыграть саунд "нельзя так близко подходить к другим с оружием"
+			if self.object:active_sound_count() == 0 then
+			      	if (self.sound.begin == nil) or
+					((device():time_global()/1000 - self.sound.begin) > self.sound.idle) 
+				then
+					local rr = math.random(5)
+					self.object:play_sound (sounds["tradeseller_talk"], 1, 0, 1, 0, 13+rr)
+		      			self.sound.begin = device():time_global()/1000
+			      		self.sound.idle = math.random(self.sound.maxidle) + self.sound.sumidle
+				end
+			end
+
+      			local pos = self.a.Buyer:position()
+   			pos.y = pos.y + 0.8
+	      		self.object:set_sight(look.fire_point, pos, 0)
+      			self.object:set_item(object.fire1, self.object:best_weapon())
+      			self.object:set_movement_type(move.stand)
+		end
+	end
+	action_base.execute (self)
+end
+function action_wait_see_buyer_weap:finalize ()
+--	printf("[ACT] Finish: Tradeseller Buyer arrive. Distance NOT FAR. Waiting for a trade. Weapon")
+	action_base.finalize (self)
+	xr_tradeseller.clear_marker(self.a)
+end
+
+-- Покупатель появился, ждем начала торговли (покупатель без оружия)
+class "action_wait_see_buyer_noweap" (action_base)
+function action_wait_see_buyer_noweap:__init (npc_name,action_name,storage) super (nil, action_name)
+	self.a = storage
+end
+function action_wait_see_buyer_noweap:initialize()
+--	printf("[ACT] Start: Tradeseller Buyer arrive. Distance NOT FAR. Waiting for a trade. No weapon")
+	action_base.initialize(self)
+	self.object:set_node_evaluator()
+	self.object:set_path_evaluator()
+	self.object:set_desired_position()
+	self.object:set_desired_direction()    
+	
+	self.object:enable_talk()
+	self.firsttime = device():time_global()
+
+	self.object:set_body_state(move.standing)
+	self.object:set_mental_state(anim.free)
+
+	self.object:add_animation("torg_0", true)
+
+	self.anim = {idle = 0,
+		     begin = nil,
+		     maxidle = 1, 
+		     sumidle = 0,
+   		     rnd = 100,
+		     lastanim = nil}
+
+	self.sound = {idle = 0,
+		     begin = nil,
+		     maxidle = 3,
+		     sumidle = 3,
+   		     rnd = 100,
+		     lastsound = nil}
+end
+function action_wait_see_buyer_noweap:execute ()
+	if self.a.begin_wait_to_trade.begin == nil then	
+		self.a.begin_wait_to_trade.begin = device():time_global()/1000
+	end
+	if (device():time_global() - self.firsttime) > 400 then
+		local pos = self.a.Buyer:position()
+		pos.y = pos.y + 1.5
+		self.object:set_sight(look.point, pos, 0)
+		self.object:set_item(object.deactivate, self.object:best_weapon())
+		self.object:set_movement_type(move.stand)
+	end
+
+	-- секция анимации
+	if self.object:animation_count() <= 2  then
+--		if (self.anim.begin == nil or
+--		   (device():time_global()/1000 - self.anim.begin) > self.anim.idle) then
+--			if math.random(100) < self.anim.rnd then
+				if self.anim.lastanim == nil then
+					r = math.random(6)
+				else
+					r = math.random(5)
+					if r >= self.anim.lastanim then
+						r = r + 1
+					end
+				end
+				self.anim.lastanim = r
+
+				if r == 1 then
+					self.object:add_animation("torg_3", true)
+				elseif r == 2 then
+					self.object:add_animation("torg_2", true)
+				elseif r <= 4 then
+					self.object:add_animation("torg_4", true)
+				else
+					self.object:add_animation("torg_1", true)
+				end
+
+--			end
+--			self.anim.begin = device():time_global()/1000
+--			self.anim.idle = math.random(self.anim.maxidle) + self.anim.sumidle
+--		end
+	end
+
+	-- секция озвучки
+	if self.sound.begin == nil then
+		self.sound.begin = device():time_global()/1000
+		self.sound.idle = math.random(self.sound.maxidle) + 10
+	else
+		if (device():time_global()/1000 - self.sound.begin) > self.sound.idle then
+			if math.random(100) < self.sound.rnd then
+				if self.sound.lastsound == nil then
+					r = math.random(3)
+				else
+					r = math.random(2)
+					if r >= self.sound.lastsound then
+						r = r + 1
+					end
+				end
+				self.sound.lastsound = r
+
+				if r == 1 then
+					self.object:play_sound (sounds["trade"], 1, 0, 1, 0, 2)
+				elseif r == 2 then
+					self.object:play_sound (sounds["trade"], 1, 0, 1, 0, 3)
+				else 
+					self.object:play_sound (sounds["trade"], 1, 0, 1, 0, 4)
+				end
+			end
+			self.sound.begin = device():time_global()/1000
+			self.sound.idle = math.random(self.sound.maxidle) + self.sound.sumidle
+		end
+	end
+	action_base.execute (self)
+end
+function action_wait_see_buyer_noweap:finalize ()
+--	printf("[ACT] Finish: Tradeseller Buyer arrive. Distance NOT FAR. Waiting for a trade. No weapon")
+	self.object:disable_talk()
+	self.object:add_animation("torg_5", true)
+	xr_tradeseller.clear_marker(self.a)
+	action_base.finalize (self)
+end
+
+-- Покупатель появился, ждем начала торговли (покупатель без оружия)
+class "action_talking" (action_base)
+function action_talking:__init (npc_name,action_name,storage) super (nil, action_name)
+	self.a = storage
+end
+function action_talking:initialize()
+--	printf("[ACT] Start: Tradeseller Talking")
+	action_base.initialize(self)
+	self.object:set_node_evaluator()
+	self.object:set_path_evaluator()
+	self.object:set_desired_position()
+	self.object:set_desired_direction()
+	
+	self.object:clear_animations()
+	self.a.trade_begin = true
+	
+	trade_begin = device():time_global()/1000
+
+	self.anim = {idle = 0,
+		     begin = nil,
+		     maxidle = 1, 
+		     sumidle = 0,
+   		     rnd = 100,
+		     lastanim = nil}
+
+	self.sound = {idle = 0,
+		     begin = nil,
+		     maxidle = 3,
+		     sumidle = 3,
+   		     rnd = 100,
+		     lastsound = nil}
+
+end
+function action_talking:execute ()
+	if (device():time_global()/1000 - trade_begin) > self.a.trade_time then
+		self.object:stop_talk()
+		self.a.Buyer = nil
+		return
+	end
+
+	-- секция анимации
+	if self.object:animation_count() <= 2  then	
+--		if (self.anim.begin == nil or
+--		   (device():time_global()/1000 - self.anim.begin) > self.anim.idle) then
+--			if math.random(100) < self.anim.rnd then
+				if self.anim.lastanim == nil then
+					r = math.random(6)
+				else
+					r = math.random(5)
+					if r >= self.anim.lastanim then
+						r = r + 1
+					end
+				end
+				self.anim.lastanim = r
+
+				if r == 1 then
+					self.object:add_animation("torg_3", true)
+				elseif r == 2 then
+					self.object:add_animation("torg_2", true)
+				elseif r <= 4 then
+					self.object:add_animation("torg_4", true)
+				else
+					self.object:add_animation("torg_1", true)
+				end
+
+--			end
+--			self.anim.begin = device():time_global()/1000
+--			self.anim.idle = math.random(self.anim.maxidle) + self.anim.sumidle
+--		end
+	end
+
+	-- секция озвучки
+	if self.sound.begin == nil then
+		self.sound.begin = device():time_global()/1000
+		self.sound.idle = math.random(self.sound.maxidle) + 10
+	else
+		if (device():time_global()/1000 - self.sound.begin) > self.sound.idle then
+			if math.random(100) < self.sound.rnd then
+				if self.sound.lastsound == nil then
+					r = math.random(3)
+				else
+					r = math.random(2)
+					if r >= self.sound.lastsound then
+						r = r + 1
+					end
+				end
+				self.sound.lastsound = r
+
+				if r == 1 then
+					self.object:play_sound (sounds["trade"], 1, 0, 1, 0, 2)
+				elseif r == 2 then
+					self.object:play_sound (sounds["trade"], 1, 0, 1, 0, 3)
+				else 
+					self.object:play_sound (sounds["trade"], 1, 0, 1, 0, 4)
+				end
+			end
+			self.sound.begin = device():time_global()/1000
+			self.sound.idle = math.random(self.sound.maxidle) + self.sound.sumidle
+		end
+	end
+
+	action_base.execute (self)
+end
+function action_talking:finalize ()
+--	printf("[ACT] Finish: Tradeseller Talking")
+	self.object:add_animation("torg_5", true)
+	xr_tradeseller.clear_marker(self.a)
+	action_base.finalize (self)
+end
+
+-- Покупатель появился, ждем начала торговли. Покупатель за дальным кругом
+class "action_wait_see_buyer_far" (action_base)
+function action_wait_see_buyer_far:__init (npc_name,action_name,storage) super (nil, action_name)
+	self.a = storage
+end
+function action_wait_see_buyer_far:initialize()
+--	printf("[ACT] Start: Tradeseller Buyer arrive. Distance FAR. Waiting.")
+
+	action_base.initialize(self)
+	self.object:set_node_evaluator()
+	self.object:set_path_evaluator()
+	self.object:set_desired_position()
+	self.object:set_desired_direction()    
+	
+	self.anim = {idle = 0,
+		     begin = nil,
+		     maxidle = 5, 
+		     sumidle = 7,
+   		     rnd = 70,
+		     lastanim = nil}
+
+	self.sound = {idle = 0,
+		     begin = nil,
+		     maxidle = 5, 
+		     sumidle = 2,
+   		     rnd = 100,
+		     lastsound = nil}
+end
+function action_wait_see_buyer_far:execute ()
+	self.object:set_sight(look.point, self.a.Buyer:position(), 0)
+	self.object:set_item(object.idle, self.object:best_weapon())
+	self.object:set_movement_type(move.stand)
+	action_base.execute (self)
+
+	-- секция анимации
+	if self.object:animation_count() == 0 then
+		if (self.anim.begin == nil or
+		   (device():time_global()/1000 - self.anim.begin) > self.anim.idle) then
+			if math.random(100) < self.anim.rnd then
+				self.object:add_animation("torg_6", true)
+			end
+			self.anim.begin = device():time_global()/1000
+			self.anim.idle = math.random(self.anim.maxidle) + self.anim.sumidle
+		end
+	end
+
+
+	-- секция озвучки
+	if self.sound.begin == nil then
+		self.sound.begin = device():time_global()/1000
+		self.sound.idle = math.random(self.sound.maxidle) + self.sound.sumidle
+	else
+		if (device():time_global()/1000 - self.sound.begin) > self.sound.idle then
+			if math.random(100) < self.sound.rnd then
+				if self.sound.lastsound == nil then
+					r = math.random(3)
+				else
+					r = math.random(2)
+					if r >= self.sound.lastsound then
+						r = r + 1
+					end
+				end
+				self.sound.lastsound = r
+
+				if r == 1 then
+					self.object:play_sound (sounds["trade"], 1, 0, 1, 0, 2)
+				elseif r == 2 then
+					self.object:play_sound (sounds["trade"], 1, 0, 1, 0, 3)
+				else 
+					self.object:play_sound (sounds["trade"], 1, 0, 1, 0, 4)
+				end
+			end
+			self.sound.begin = device():time_global()/1000
+			self.sound.idle = math.random(self.sound.maxidle) + self.sound.sumidle
+		end
+	end
+end
+function action_wait_see_buyer_far:finalize ()
+--	printf("[ACT] Finish: Tradeseller Buyer arrive. Distance FAR. Waiting.")
+	xr_tradeseller.clear_marker(self.a)
+	action_base.finalize (self)
+end
+
+--Проверка, если покупатель стал врагом или если мы умерли - снимать маркер
+function clear_marker(st)
+	if st.Buyer == nil then return end
+
+	if st.Seller:relation(st.Buyer) == game_object.enemy or
+	   st.Seller:alive() == false then
+		level.map_remove_object_icon(st.Seller)
+	end
+end
+----------------------------------------------------------------------------------------------------------------------
+--tradeseller binder
+----------------------------------------------------------------------------------------------------------------------
+function add_to_binder(object)
+
+	local operators		= {}
+	local properties	= {}
+
+
+	sounds["trade"] 			= xr_sounds_id.stohe_tradeseller_base + 1
+	sounds["tradeseller_talk"] 		= xr_sounds_id.stohe_tradeseller_base + 2
+
+	object:add_sound("script_replics\\stalker_1\\trade\\stalker_trade_", 30, snd_type.talk, 2, 1, sounds["trade"])
+	object:add_sound("script_replics\\stalker_1\\talk\\stalker_talk_", 30, snd_type.talk, 2, 1, sounds["tradeseller_talk"])
+
+	local manager = object:motivation_action_manager()
+
+	properties["trade_init"]	= xr_evaluators_id.final_trade_init         
+	properties["trade_processed"]	= xr_evaluators_id.final_trade_processed
+	properties["on_position"]	= xr_evaluators_id.stohe_tradeseller_base + 1
+	properties["see_buyer"] 	= xr_evaluators_id.stohe_tradeseller_base + 2
+	properties["is_distance_far"]	= xr_evaluators_id.stohe_tradeseller_base + 3
+	properties["buyer_has_weapon"]	= xr_evaluators_id.stohe_tradeseller_base + 4
+	properties["is_talking"] 	= xr_evaluators_id.stohe_tradeseller_base + 5
+	properties["can_finish"]	= xr_evaluators_id.stohe_tradeseller_base + 6
+
+	operators["trade_init"]		= xr_actions_id.stohe_tradeseller_base + 1
+	operators["wait_for_buyer"] 	= xr_actions_id.stohe_tradeseller_base + 2
+	operators["wait_see_buyer_weap"]= xr_actions_id.stohe_tradeseller_base + 3
+	operators["wait_see_buyer_far"]	= xr_actions_id.stohe_tradeseller_base + 4
+	operators["go_position"]	= xr_actions_id.stohe_tradeseller_base + 5
+	operators["wait_see_buyer_noweap"]= xr_actions_id.stohe_tradeseller_base + 6
+	operators["talking"] 		= xr_actions_id.stohe_tradeseller_base + 7
+	operators["finish_trade"]	= xr_actions_id.stohe_tradeseller_base + 8
+
+	-- Evaluators
+	manager:add_evaluator (properties["see_buyer"], 	this.evaluator_see_buyer		(xr_motivator.storage[object:id()].tradeseller))
+	manager:add_evaluator (properties["is_distance_far"], 	this.evaluator_is_distance_far		(xr_motivator.storage[object:id()].tradeseller))
+	manager:add_evaluator (properties["on_position"], 	this.evaluator_on_position		(xr_motivator.storage[object:id()].tradeseller))
+	manager:add_evaluator (properties["buyer_has_weapon"], 	this.evaluator_buyer_has_weapon		(xr_motivator.storage[object:id()].tradeseller))
+	manager:add_evaluator (properties["is_talking"], 	this.evaluator_is_talking		(xr_motivator.storage[object:id()].tradeseller))
+	manager:add_evaluator (properties["can_finish"],	this.evaluator_can_finish		(xr_motivator.storage[object:id()].tradeseller))
+
+	-- Actions
+	local action = this.action_trade_init (object:name(),"action_trade_init", xr_motivator.storage[object:id()].tradeseller)
+	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
+	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
+	action:add_precondition		(world_property(properties["trade_init"], 	false))
+	action:add_effect 		(world_property(properties["trade_init"], 	true))
+	manager:add_action (operators["trade_init"], action)
+	
+	action = this.action_go_position (object:name(),"action_go_position", xr_motivator.storage[object:id()].tradeseller)
+	action:add_precondition		(world_property(stalker_ids.property_alive,	true))
+	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
+	action:add_precondition	(world_property(stalker_ids.property_items, false))
+	action:add_precondition		(world_property(properties["can_finish"], 	false))
+	action:add_precondition		(world_property(properties["on_position"], 	false))
+	action:add_effect (world_property(properties["on_position"], true))
+	manager:add_action (operators["go_position"], action)
+
+	action = this.action_wait_for_buyer (object:name(),"action_wait_for_buyer", xr_motivator.storage[object:id()].tradeseller)
+	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
+	action:add_precondition		(world_property(stalker_ids.property_enemy, 	false))
+	action:add_precondition	(world_property(stalker_ids.property_items, false))
+	action:add_precondition		(world_property(properties["can_finish"], 	false))
+	action:add_precondition		(world_property(properties["on_position"], 	true))
+	action:add_precondition		(world_property(properties["see_buyer"], 	false))
+	action:add_effect (world_property(properties["can_finish"], true))
+	manager:add_action (operators["wait_for_buyer"], action)
+
+	action = this.action_wait_see_buyer_far (object:name(),"action_wait_see_buyer_far", xr_motivator.storage[object:id()].tradeseller)
+	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
+	action:add_precondition		(world_property(stalker_ids.property_enemy, 	false))
+	action:add_precondition	(world_property(stalker_ids.property_items, false))
+	action:add_precondition		(world_property(properties["can_finish"], 	false))
+	action:add_precondition		(world_property(properties["on_position"], 	true))
+	action:add_precondition		(world_property(properties["see_buyer"], 	true))
+	action:add_precondition 	(world_property(properties["is_distance_far"], 	true))
+	action:add_effect (world_property(properties["can_finish"], true))
+	manager:add_action (operators["wait_see_buyer_far"], action)
+
+	action = this.action_wait_see_buyer_weap (object:name(),"action_wait_see_buyer_weap", xr_motivator.storage[object:id()].tradeseller)
+	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
+	action:add_precondition		(world_property(stalker_ids.property_enemy, 	false))
+	action:add_precondition	(world_property(stalker_ids.property_items, false))
+	action:add_precondition		(world_property(properties["can_finish"], 	false))
+	action:add_precondition		(world_property(properties["on_position"], 	true))
+	action:add_precondition		(world_property(properties["see_buyer"], 	true))
+	action:add_precondition 	(world_property(properties["is_distance_far"], 	false))
+	action:add_precondition 	(world_property(properties["buyer_has_weapon"], true))
+	action:add_effect (world_property(properties["can_finish"], true))
+	manager:add_action (operators["wait_see_buyer_weap"], action)
+
+	action = this.action_wait_see_buyer_noweap (object:name(),"action_wait_see_buyer_noweap", xr_motivator.storage[object:id()].tradeseller)
+	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
+	action:add_precondition		(world_property(stalker_ids.property_enemy, 	false))
+	action:add_precondition	(world_property(stalker_ids.property_items, false))
+	action:add_precondition		(world_property(properties["can_finish"], 	false))
+	action:add_precondition		(world_property(properties["on_position"], 	true))
+	action:add_precondition		(world_property(properties["see_buyer"], 	true))
+	action:add_precondition 	(world_property(properties["is_distance_far"], 	false))
+	action:add_precondition 	(world_property(properties["buyer_has_weapon"], false))
+	action:add_precondition 	(world_property(properties["is_talking"],	false))
+	action:add_effect (world_property(properties["can_finish"], true))
+	manager:add_action (operators["wait_see_buyer_noweap"], action)
+
+	action = this.action_talking (object:name(),"action_talking", xr_motivator.storage[object:id()].tradeseller)
+	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
+	action:add_precondition		(world_property(stalker_ids.property_enemy, 	false))
+	action:add_precondition		(world_property(properties["can_finish"], 	false))
+	action:add_precondition		(world_property(properties["on_position"], 	true))
+	action:add_precondition		(world_property(properties["see_buyer"], 	true))
+	action:add_precondition 	(world_property(properties["is_distance_far"], 	false))
+	action:add_precondition 	(world_property(properties["buyer_has_weapon"], false))
+	action:add_precondition 	(world_property(properties["is_talking"], 	true))
+	action:add_effect (world_property(properties["can_finish"], true))
+	manager:add_action (operators["talking"], action)
+
+	action = this.action_finish_trade (object:name(),"action_finish_trade", xr_motivator.storage[object:id()].tradeseller)
+	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
+	action:add_precondition		(world_property(stalker_ids.property_enemy, 	false))
+	action:add_precondition		(world_property(properties["can_finish"], 	true))
+	action:add_effect (world_property(properties["trade_processed"], true))
+	manager:add_action (operators["finish_trade"], action)
+end

@@ -1,0 +1,135 @@
+local property_path_end             = stalker_ids.property_script + 1
+local action_move                   = stalker_ids.action_script   + 1
+
+
+----------------------------------------------------------------------------------------------------------------------
+--Evaluator const
+----------------------------------------------------------------------------------------------------------------------
+class "evaluator_camper"    (property_evaluator)
+----------------------------------------------------------------------------------------------------------------------
+function evaluator_camper:__init() super()
+end
+----------------------------------------------------------------------------------------------------------------------
+function evaluator_camper:evaluate()
+    local act = level.actor ()
+    if act ~= nil then
+       local v = act:position ()
+       v.y = v.y + 0.8
+       self.object:set_sight (look.fire_point, v, 0)
+       --local wpn = self.object:best_weapon ()
+       --if wpn ~= nil and wpn:class_id () == clsid.wpn_ak74 and wpn:get_ammo_in_magazine () < 5 then
+         -- self.object:set_item  (object.reload, self.object:best_weapon ())
+       --else
+          if self.object:see (act) == true then
+             self.object:set_item  (object.fire1, self.object:best_weapon ())
+          end
+       --end
+    else
+       self.object:set_item  (object.activate, self.object:best_weapon ())
+    end
+    
+    return false
+end
+----------------------------------------------------------------------------------------------------------------------
+
+
+----------------------------------------------------------------------------------------------------------------------
+-- Action path
+----------------------------------------------------------------------------------------------------------------------
+-- Ёкшен дл€ перемещени€ по патрульному пути
+----------------------------------------------------------------------------------------------------------------------
+class "action_camper" (action_base)
+
+function action_camper:__init (name) super (nil, name)
+end
+----------------------------------------------------------------------------------------------------------------------
+function action_camper:initialize ()
+
+  action_base.initialize (self)
+  self.object:set_node_evaluator    ()
+  self.object:set_path_evaluator    ()
+  self.object:set_desired_position  ()
+  self.object:set_desired_direction  ()
+
+  self.object:set_sight        (look.path_dir, nil, 0)
+  self.object:set_item        (object.activate, self.object:best_weapon ())
+  self.object:set_path_type      (game_object.level_path)
+  self.object:set_detail_path_type  (move.line)
+  self.object:set_body_state      (move.standing)
+  self.object:set_movement_type       (move.stand)
+  self.object:set_mental_state    (anim.danger)
+
+end
+----------------------------------------------------------------------------------------------------------------------
+function action_camper:execute ()
+
+  action_base.execute (self)
+  self.object:set_body_state    (move.standing)
+  self.object:set_movement_type (move.stand)
+  self.object:set_mental_state  (anim.danger)
+  --self.object:set_item (object.activate, self.object:best_weapon ())
+
+end
+----------------------------------------------------------------------------------------------------------------------
+function action_camper:finalize ()
+  action_base.finalize (self)
+end
+----------------------------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------------------------
+-- Mover binder
+----------------------------------------------------------------------------------------------------------------------
+class "camper_binder" (object_binder)
+----------------------------------------------------------------------------------------------------------------------
+function camper_binder:__init (obj) super(obj)
+    self.npc = obj
+end
+----------------------------------------------------------------------------------------------------------------------
+function camper_binder:reinit ()
+  object_binder.reinit (self)
+end
+----------------------------------------------------------------------------------------------------------------------
+function camper_binder:reload (section)
+
+  object_binder.reload  (self, section)
+
+    local manager = self.object:motivation_action_manager ()
+
+    --добавл€ем свои эвалуаторы
+  manager:add_evaluator (property_path_end, this.evaluator_camper ())
+
+    --create patrol path
+  local action = this.action_camper ("action_mover")
+  action:add_precondition  (world_property (stalker_ids.property_alive, true))
+  action:add_effect       (world_property (property_path_end, true))
+  manager:add_action      (action_move, action)
+
+
+    action = manager:action (stalker_ids.action_free_no_alife)
+    action:add_precondition (world_property (property_path_end, true))
+    action = manager:action (stalker_ids.action_gather_items)
+    action:add_precondition (world_property (property_path_end,  true))
+    action = manager:action (stalker_ids.action_get_enemy_seen_moderate)
+    action:add_precondition (world_property (property_path_end,  true))
+    action = manager:action (stalker_ids.action_get_ready_to_kill_moderate)
+    action:add_precondition (world_property (property_path_end, true))
+
+
+end
+----------------------------------------------------------------------------------------------------------------------
+function camper_binder:net_spawn  (server_object)
+  if object_binder.net_spawn (self,server_object) == false then
+     return false
+  end
+  return true
+end
+----------------------------------------------------------------------------------------------------------------------
+function camper_binder:net_destroy  ()
+  object_binder.net_destroy  (self)
+end
+----------------------------------------------------------------------------------------------------------------------
+
+function AddCamper (npc)
+    npc:bind_object  (this.camper_binder (npc))
+end
+

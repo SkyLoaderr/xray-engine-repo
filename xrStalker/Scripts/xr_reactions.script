@@ -1,0 +1,510 @@
+----------------------------------------------------------------------------------------------------------------------
+--	Схема реакции на раздражители
+--	автор: Диденко Руслан (Stohe)
+--	TODO: после завершения схемы необходимо вывести глобальное свойство - нет новых раздражителей и всем скриптам поставить его в прекондишн
+----------------------------------------------------------------------------------------------------------------------
+
+local sounds = {}
+
+---------------------------------------------------------------------------------------------------------------------
+--Evaluators
+----------------------------------------------------------------------------------------------------------------------
+-- Эвалуатор указывает что есть новый раздражитель
+class "evaluator_new" (property_evaluator)
+function evaluator_new:__init(name, storage) super()
+	self.a = storage
+end
+function evaluator_new:evaluate()
+	self.a.evn:calculate()
+	self.a.evn:print()
+	return false
+end
+
+----------------------------------------------------------------------------------------------------------------------
+--Actions
+----------------------------------------------------------------------------------------------------------------------
+-- Обработка раздражителя
+class "action_wait" (action_base)
+function action_wait:__init (npc_name,action_name, storage) super (nil, action_name)
+	self.a = storage
+end
+function action_wait:initialize()
+	action_base.initialize(self)
+	self.object:set_node_evaluator()
+	self.object:set_path_evaluator()
+	self.object:set_desired_position()
+	self.object:set_desired_direction()    
+end
+function action_wait:execute ()
+	action_base.execute (self)
+end
+function action_wait:finalize ()
+	action_base.finalize (self)
+end
+
+----------------------------------------------------------------------------------------------------------------------
+-- binder
+----------------------------------------------------------------------------------------------------------------------
+function add_to_binder(object)
+
+	local operators		= {}
+	local properties	= {}
+
+	local manager = object:motivation_action_manager()
+
+	properties["new"] = xr_evaluators_id.stohe_reactions_base + 0
+
+	operators["wait"] = xr_actions_id.stohe_reactions_base + 0
+
+	-- Evaluators
+	manager:add_evaluator (properties["new"], 		this.evaluator_new		("evaluator_new", xr_motivator.storage[object:id()].reactions))
+
+	-- Actions
+	local action = this.action_wait (object:name(),"action_wait", xr_motivator.storage[object:id()].reactions)
+	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
+	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
+	action:add_precondition		(world_property(properties["new"],		true))
+	manager:add_action (operators["wait"], action)
+
+	action = manager:action (stalker_ids.action_free_no_alife)	
+	action:add_precondition		(world_property(properties["new"],		false))
+end
+
+
+----------------------------------------------------------------------------------------------------------------------
+-- Classs
+----------------------------------------------------------------------------------------------------------------------
+class "events"
+function events:__init(npc)
+	self.npc = npc
+	self.arhive = {} -- массив дескрипторов раздражителей
+	self.used = {} -- обработанные объекты, некоторое время раздражители по ним учитываться не будут
+
+	self.descr = {	visibility = nil,  -- дескриптор раздражителей
+			sound_kat = nil,
+			sound_power = nil,
+			object_type = nil,
+			point = nil,
+			time = nil,
+			stalker = { corpse = nil,
+				    relation = nil },
+			monstr	= { corpse = nil,
+				    power = nil },
+			item 	= { power = nil }
+			}
+
+	self.stype3 = { snd_type.weapon,
+			snd_type.shoot,
+			snd_type.bullet_hit,
+			snd_type.reload,
+			snd_type.die,
+			snd_type.injure,
+			snd_type.attack,
+			snd_type.object_explode,
+			snd_type.world_object_explode
+			}
+	self.stype2 = {	snd_type.item,
+			snd_type.talk,
+			snd_type.world,
+			snd_type.pick_up,
+			snd_type.drop,
+			snd_type.hide,
+			snd_type.take,
+			snd_type.use,
+			snd_type.step,
+			snd_type.eat,
+			snd_type.object_break,
+			snd_type.object_collide,
+			snd_type.world_object_break,
+			snd_type.world_object_collide
+			}
+	self.stype1 = {	snd_type.anomaly,
+			snd_type.monster
+			}
+	self.time_reaction = 5000
+end
+function events:calculate()  -- Производить перерасчет и обновление раздражителей для текущего элемента
+	self.arhive = {}	
+
+	-- определяем что нам известно о звуке объекта
+	local stable = self.npc:memory_sound_objects()
+	if stable == nil then return false end
+	for s in stable do
+		local so = s:object()
+		local so_id = so:clsid()
+		local continue = true
+
+		if (so_id == clsid.stalker or so_id == clsid.actor) then
+			if (so:squad() == self.npc:squad() and 
+			   so:group() == self.npc:group()) or
+                           (device():time_global() - s.level_time > self.time_reaction)
+			then
+				continue = false
+			end
+		end
+
+		if continue then
+		        local ll = "none"
+			for j,i in self.stype1 do
+				if bit_and (s:type(), i) == i then 
+					ll = "type1"
+					break
+				end
+			end
+			for j,i in self.stype2 do
+				if bit_and (s:type(), i) == i then 
+					ll = "type2" 
+					break
+				end
+			end
+			for j,i in self.stype3 do
+				if bit_and (s:type(), i) == i then 
+					ll = "type3"
+					break
+				end
+			end
+			                                
+			-- заносим раздражитель в память
+			if self.arhive[so:id()] == nil then
+				self.arhive[so:id()] = {visibility = self.descr.visibility,
+							sound_kat = self.descr.sound_kat,
+							sound_power = self.descr.sound_power,
+							object_type = self.descr.object_type,
+							point = self.descr.point,
+							time = self.descr.time,
+							stalker = { corpse = self.descr.stalker.corpse,
+								    relation = self.descr.stalker.relation},
+							monstr	= { corpse = self.descr.monstr.corpse,
+								    power = self.descr.monstr.power},
+							item 	= { power = self.descr.item.power}}
+			end
+			-- указываем, что нам о нем известно
+			self.arhive[so:id()].sound_kat 		= ll
+			self.arhive[so:id()].sound_power 	= s.power
+			self.arhive[so:id()].point 		= so:level_vertex_id()
+			self.arhive[so:id()].time		= s.level_time
+		end
+	end
+
+	-- определяем что нам известно о видимости объекта
+	local vtable = self.npc:not_yet_visible_objects()
+	if vtable == nil then return false end
+	for v in vtable do
+		local vo = v:object()
+		local vo_id = vo:clsid()
+		local continue = true
+
+		if (vo_id == clsid.stalker or vo_id == clsid.actor) then
+			if vo:squad() == self.npc:squad() and 
+			   vo:group() == self.npc:group()
+			then
+				continue = false
+			end
+		end
+
+		if continue then
+			-- заносим раздражитель в память
+			if self.arhive[vo:id()] == nil then
+				self.arhive[vo:id()] = {visibility = self.descr.visibility,
+							sound_kat = self.descr.sound_kat,
+							sound_power = self.descr.sound_power,
+							object_type = self.descr.object_type,
+							distance = self.descr.distance,
+							time = self.descr.time,
+							stalker = { corpse = self.descr.stalker.corpse,
+								    relation = self.descr.stalker.relation},
+							monstr	= { corpse = self.descr.monstr.corpse,
+								    power = self.descr.monstr.power},
+							item 	= { power = self.descr.item.power}}
+			end
+			-- указываем, что нам о нем известно
+			self.arhive[vo:id()].point 		= vo:level_vertex_id()
+			self.arhive[vo:id()].visibility		= v.value
+			self.arhive[vo:id()].time		= device():time_global()
+			if v.value >= self.npc:visibility_threshold() then
+				self.arhive[vo:id()].object_type = self:type(vo)
+
+				if self.arhive[vo:id()].object_type == "stalker" then
+					self.arhive[vo:id()].stalker.corpse = not vo:alive()
+					self.arhive[vo:id()].stalker.relation = self.npc:relation(vo)
+				elseif self.arhive[vo:id()].object_type == "monstr" then
+					self.arhive[vo:id()].monstr.corpse = not vo:alive()
+					self.arhive[vo:id()].monstr.power = self:monstr_power(vo)
+				elseif self.arhive[vo:id()].object_type == "item" then
+					self.arhive[vo:id()].item.power = self:item_power(vo)
+				end
+			end
+		end
+	end
+end
+function events:get_event()  -- Выдает наиболее приоритетный раздражитель
+	local prior == nil
+	-- должна выдавать:
+	-- позицию раздражителя
+	-- тип действия (стоять ждать, идти проверять, отметить)
+	-- описание раздражителя (для типа действия отметить)
+	for key,value in self.value do
+		local cc = false
+
+		-- Проверяем есть ли у нас лучший
+		if not cc and prior == nil then 
+			prior = key
+			cc = true
+		end
+
+		-- проверка по приоритету: нетруп(неитем) - труп - итем
+		local is_this_item = value.object_type == "item"
+		local is_this_corpse = (value.object_type == "stalker" and value.stalker.corpse == true) or
+				       (value.object_type == "monstr" and value.monstr.corpse == true)
+
+		local is_prior_item = self.arhive[prior].object_type == "item"
+		local is_prior_corpse = (self.arhive[prior].object_type == "stalker" and self.arhive[prior].stalker.corpse == true) or
+				      	(self.arhive[prior].object_type == "monstr" and self.arhive[prior].monstr.corpse == true)
+
+		if not cc and (is_this_corpse and is_prior_item) or
+		   (not is_this_item and not is_this_corpse and
+			(is_prior_item or is_prior_corpse)) then
+			prior = key
+			cc = true
+		end
+
+		-- проверка по приоритету: сталкер - монстр (только если не итем)
+		if not cc and not is_this_item and not is_prior_item then
+			if value.object_type == "stalker" and self.arhive[prior].object_type == "monstr" then
+				prior = key
+				cc = true
+			end
+		end
+
+		-- проверка по зрению - слуху
+		local is_this_vision = value.visibility ~= nil
+		local is_prior_vision = self.arhive[prior].visibility ~= nil
+
+		if not cc and is_this_vision and not is_prior_vision then
+			prior = key
+			cc = true
+		end
+
+		-- проверка по качеству зрения
+		if not cc and is_this_vision and is_prior_vision then
+			if value.visibility > self.arhive[prior].visibility then
+				prior = key
+				cc = true
+			end
+		end
+        
+		-- проверка по качеству слуха
+		if not cc and not is_this_vision and not is_prior_vision then
+			-- проверка по типу звука
+			if not cc and (value.sound_kat == "type3" and self.arhive[prior].sound_kat ~= "type3") or 
+			    value.sound_kat == "type2" and self.arhive[prior].sound_kat == "type1") then
+				prior = key
+				cc = true
+			end
+
+			if not cc and value.sound_power > self.arhive[prior].sound_power then
+				prior = key
+				cc = true
+			end
+		end
+	end
+end
+function events:markAsUsed(npc) do
+	table.insert(self.used, npc:id())
+end
+function events:isEvents() do
+	local tt = false
+
+	for key,value in self.arhive do 
+		for k,v in self.used do
+			if key ~= v then
+				tt = true
+				break
+			end
+		end		
+		if tt then
+			break
+		end
+	end
+	return tt
+end
+function events:print()
+	for key,value in self.arhive do 
+		printf("------------------------ Object: %d ------------------------", key)
+		if value.visibility then 	printf("Visibility: %.3f", value.visibility)
+					else 	printf("Visibility: nil") end
+		if value.sound_power then 	printf("Sound power: %.3f", value.sound_power)
+					else 	printf("Sound power: nil") end
+		if value.sound_kat then 	printf("Sound kat: %s", value.sound_kat)
+					else 	printf("Sound kat: nil") end
+		if value.time then 		printf("Time: %d", value.time)
+					else 	printf("Time: nil") end
+		if value.point then 		printf("Point: %d", value.point)
+					else 	printf("Point: nil") end
+		if value.object_type then 	printf("Object type: %s", value.object_type)
+					else 	printf("Object type: nil") end
+		-- stalker print
+		if value.stalker.corpse == true then	printf("Corpse") end
+		if value.stalker.relation == game_object.friend then		printf("Relation: Friend") 
+		elseif value.stalker.relation == game_object.neutral then	printf("Relation: Neutral") 
+		elseif value.stalker.relation == game_object.enemy then		printf("Relation: Enemy") end
+
+		-- monstr print
+		if value.monstr.corpse == true then	printf("Corpse") end
+		if value.monstr.power == true then	printf("Powerfull") end
+
+		-- item print
+		if value.item.power == true then	printf("Powerfull") end
+	end
+end
+function events:type(obj)
+	local otype = obj:clsid()
+
+	if 	otype == clsid.actor or
+  	   	otype == clsid.soldier or
+	   	otype == clsid.stalker or
+	   	otype == clsid.trader
+	then 
+		return "stalker"
+	elseif 	otype == clsid.crow or
+		otype == clsid.rat or
+		otype == clsid.rat_group or
+		otype == clsid.zombie or
+		otype == clsid.flesh or
+		otype == clsid.controller or
+		otype == clsid.bloodsucker or
+		otype == clsid.burer or
+		otype == clsid.chimera or
+		otype == clsid.boar or
+		otype == clsid.idol or
+		otype == clsid.flesh_group or
+		otype == clsid.dog_red or
+		otype == clsid.dog_black or
+		otype == clsid.pseudo_gigant
+	then 
+		return "monstr"
+	elseif	otype == clsid.wpn_fn2000 or
+		otype == clsid.wpn_ak74 or
+		otype == clsid.wpn_lr300 or
+		otype == clsid.wpn_hpsa or
+		otype == clsid.wpn_pm or
+		otype == clsid.wpn_fort or
+		otype == clsid.wpn_binocular or
+		otype == clsid.wpn_shotgun or
+		otype == clsid.wpn_svd or
+		otype == clsid.wpn_svu or
+		otype == clsid.wpn_rpg7 or
+		otype == clsid.wpn_val or
+		otype == clsid.wpn_vintorez or
+		otype == clsid.wpn_walther or
+		otype == clsid.wpn_usp45 or
+		otype == clsid.wpn_groza or
+		otype == clsid.wpn_knife or
+		otype == clsid.wpn_scope or
+		otype == clsid.wpn_silencer or
+		otype == clsid.wpn_grenade_launcher or
+		otype == clsid.obj_physic or
+		otype == clsid.obj_breakable or
+		otype == clsid.detector_simple or
+		otype == clsid.device_pda or
+		otype == clsid.device_torch or
+		otype == clsid.obj_bolt or
+		otype == clsid.obj_medikit or
+		otype == clsid.obj_food or
+		otype == clsid.obj_bottle or
+		otype == clsid.obj_antirad or
+		otype == clsid.obj_explosive or
+		otype == clsid.obj_document or
+		otype == clsid.obj_attachable or
+		otype == clsid.wpn_grenade_f1 or
+		otype == clsid.wpn_grenade_rpg7 or
+		otype == clsid.wpn_grenade_rgd5 or
+		otype == clsid.wpn_grenade_fake or
+		otype == clsid.equ_simple or
+		otype == clsid.equ_scientific or
+		otype == clsid.equ_stalker or
+		otype == clsid.equ_military or
+		otype == clsid.equ_exo or
+		otype == clsid.wpn_ammo or
+		otype == clsid.wpn_ammo_vog25 or
+		otype == clsid.wpn_ammo_og7b or
+		otype == clsid.wpn_ammo_m209
+	then 
+		return "item"
+	else
+		return "none"
+	end
+end
+function events:monstr_power(obj)
+	local otype = obj:clsid()
+
+	if	otype == clsid.zombie or
+		otype == clsid.flesh or
+		otype == clsid.controller or
+		otype == clsid.bloodsucker or
+		otype == clsid.burer or
+		otype == clsid.chimera or
+		otype == clsid.boar or
+		otype == clsid.idol or
+		otype == clsid.flesh_group or
+		otype == clsid.dog_red or
+		otype == clsid.dog_black or
+		otype == clsid.pseudo_gigant
+	then 
+		return true
+	else 	
+		return false
+	end
+end
+function events:item_power(obj)
+	local otype = obj:clsid()
+
+	if	otype == clsid.wpn_fn2000 or
+		otype == clsid.wpn_ak74 or
+		otype == clsid.wpn_lr300 or
+		otype == clsid.wpn_hpsa or
+		otype == clsid.wpn_pm or
+		otype == clsid.wpn_fort or
+		otype == clsid.wpn_binocular or
+		otype == clsid.wpn_shotgun or
+		otype == clsid.wpn_svd or
+		otype == clsid.wpn_svu or
+		otype == clsid.wpn_rpg7 or
+		otype == clsid.wpn_val or
+		otype == clsid.wpn_vintorez or
+		otype == clsid.wpn_walther or
+		otype == clsid.wpn_usp45 or
+		otype == clsid.wpn_groza or
+		otype == clsid.wpn_knife or
+		otype == clsid.wpn_scope or
+		otype == clsid.wpn_silencer or
+		otype == clsid.wpn_grenade_launcher or
+		otype == clsid.detector_simple or
+		otype == clsid.device_pda or
+		otype == clsid.device_torch or
+		otype == clsid.obj_medikit or
+		otype == clsid.obj_food or
+		otype == clsid.obj_bottle or
+		otype == clsid.obj_antirad or
+		otype == clsid.obj_explosive or
+		otype == clsid.obj_document or
+		otype == clsid.obj_attachable or
+		otype == clsid.wpn_grenade_f1 or
+		otype == clsid.wpn_grenade_rpg7 or
+		otype == clsid.wpn_grenade_rgd5 or
+		otype == clsid.wpn_grenade_fake or
+		otype == clsid.equ_simple or
+		otype == clsid.equ_scientific or
+		otype == clsid.equ_stalker or
+		otype == clsid.equ_military or
+		otype == clsid.equ_exo or
+		otype == clsid.wpn_ammo or
+		otype == clsid.wpn_ammo_vog25 or
+		otype == clsid.wpn_ammo_og7b or
+		otype == clsid.wpn_ammo_m209
+	then 
+		return true
+	else 	
+		return false
+	end
+end

@@ -1,0 +1,28 @@
+--			void				air_attack				(CLuaGameObject*);
+--			void				air_attack_wait			(CLuaGameObject*, float dist = 20.0f, float time = 5.0f);
+--			bool				air_attack_active		();
+--			void				heli_goto_stay_point	(float time=0.0f);
+--			void				heli_goto_stay_point	(Fvector& pos, float time=0.0f);
+--			void				heli_go_patrol			(float time=0.0f);
+
+
+
+
+
+function main()
+
+	local helicopter = get_level_object( "helicopter" )
+	local actor = get_actor()
+--	wait(10000)	
+	while(true)do
+
+		if(helicopter:air_attack_active()==false) then
+			wait(5000)	
+--			helicopter:air_attack_wait(actor,100,15)    --остановиться за 100 метров до цели, висеть 15 сек
+			helicopter:air_attack(actor)
+		end
+
+		wait()
+	end
+		
+end

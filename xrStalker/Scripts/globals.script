@@ -1,0 +1,94 @@
+--скрипт для глобальных данных
+--------------------------------------------------------------------------------------------------------------------------
+-- Пути и салаги
+--------------------------------------------------------------------------------------------------------------------------
+PathsAndSoldiers =
+{
+    {soldier = "patrol_soldier_0_1", path = "path_soldier_0_1"},
+    {soldier = "patrol_soldier_0_2", path = "path_soldier_0_2"},
+    {soldier = "patrol_soldier_0_3", path = "path_soldier_0_3"},
+    {soldier = "patrol_stalker_0_1", path = "path_stalker_0_1"},
+    {soldier = "mover_stalker_0_1",  path = "path_mover_0_1"}
+}
+--------------------------------------------------------------------------------------------------------------------------
+function GetPatrolPath (name)
+    local size = table.getn (this.PathsAndSoldiers)
+    if size == 0 then return nil end
+    for a = 1, size, 1 do
+        if name == this.PathsAndSoldiers[a].soldier then
+           return this.PathsAndSoldiers[a].path
+        end
+    end
+    printf ("Patrol path for %s is not found", name)
+    return nil
+end
+--------------------------------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------------------------------
+--  Пример конструктора, описывающего звуки
+--
+--	self.sound = {idle = 0,    	-- служебное поле
+--		     begin = nil,	-- служебное поле
+--		     maxidle = 10, 	-- максимальное время между звуками
+--		     sumidle = 10,	-- надбавочное время, добавляется к рандомно выбранному от 1 до максимального.
+--   		     rnd = 100,		-- вероятность, с которой будет проигран звук, если пришло время
+--		     lastsound = nil,	-- служебное поле
+--		 	sounds = {      {pack = sounds["idle"], id = 0},	-- пачка звуков, из которых будет выбираться
+--					{pack = sounds["idle"], id = 1}, 
+--					{pack = sounds["idle"], id = 3}, 
+--					{pack = sounds["idle"], id = 4}, 
+--					{pack = sounds["idle"], id = 7}, 
+--					{pack = sounds["idle"], id = 9}, 
+--					{pack = sounds["idle"], id = 11}, 
+--					{pack = sounds["idle"], id = 12}, 
+--					{pack = sounds["idle"], id = 14} 	}}
+--
+-- 
+-- Проигрыш саундов (By Stohe)
+-- npc - object который будет играть звук
+-- sound - конструктр звуков, см выше
+-- now - если звук отыграть надо прямо сейчас
+function set_sound(npc, sound, now)
+	local a = now
+
+	if sound.begin == nil or
+	   (device():time_global()/1000 - sound.begin) > sound.idle then
+		sound.begin = device():time_global()/1000
+		sound.idle = math.random(sound.maxidle) + sound.sumidle
+		a = true
+	end		
+
+	if a == true then
+		if math.random(100) < sound.rnd or now == true then
+			local r
+			if sound.lastsound == nil then
+				r = math.random(table.getn(sound.sounds))
+			else
+				r = math.random(table.getn(sound.sounds)-1)
+				if r >= sound.lastsound then
+					r = r + 1
+				end
+			end
+			sound.lastsound = r
+			npc:play_sound (sound.sounds[r].pack , 1, 0, 1, 0, sound.sounds[r].id)
+		end
+	end
+end
+
+
+--------------------------------------------------------------------------------------------------------------------------
+-- Засады
+--------------------------------------------------------------------------------------------------------------------------
+Ambushes = 
+{
+    -- группа  STLK
+    stlk = {
+        -- отряд 1
+        [1] = {
+            dist = 20,
+            ways = { "way_ambush_stlk_1_b", "way_ambush_stlk_1_a" },
+            time_leave_min = 50,
+            time_leave_max = 70
+        }
+    }
+}

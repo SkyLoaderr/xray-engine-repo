@@ -1,0 +1,591 @@
+--[[------------------------------------------------------------------------------------------------------------------
+Схема "Командир блокпоста"
+Чугай Саша
+
+Сделать:
+    - реалистичная анимация ходьбы
+    - направление на карту уровня сделать точкой пути, если понадобится
+    - сбалансировать вероятности действий и реплик
+    - подставить настоящие звуки
+    - звуки рации
+    - звуки во сне
+    - пьяный во второй половине дня (звуки, анимации)
+    - смотреть на солдата, а не на позицию солдата. ГЛЮЧИТ
+    - на матраце сперва повернуться, а потом сесть
+    - time_end=nil
+--------------------------------------------------------------------------------------------------------------------]]
+
+local prop_commander = xr_evaluators_id.commander_commander
+
+local act_commander  = xr_actions_id.commander_commander
+
+-- состояния (действия) автомата в "action_commander"
+local walk_inside  = 0
+local walk_outside = 1
+local look_map     = 2
+local look_outside = 3
+local outside_talk = 4
+local look_box     = 5
+local radio_talk   = 6
+local drink_vodka  = 7
+local sleep        = 8
+
+local snd_singing       = xr_sounds_id.commander_singing
+local snd_look_outside  = xr_sounds_id.commander_look_outside
+local snd_talk_outside  = xr_sounds_id.commander_talk_outside
+local snd_enemy_stalker = xr_sounds_id.commander_enemy_stalker
+local snd_enemy_monster = xr_sounds_id.commander_enemy_monster
+local snd_radio_talk    = xr_sounds_id.commander_radio_talk
+
+local h2ms = 60 * 60 * 1000
+
+----------------------------------------------------------------------------------------------------------------------
+-- Главное Действие. Представляет из себя автомат. И пусть мне кто-то докажет, что с GOAP это было бы проще.
+----------------------------------------------------------------------------------------------------------------------
+class "action_commander" ( action_base )
+
+function action_commander:__init( name )  super ( nil, name )
+    self.initialized = false
+end
+
+function action_commander:initialize()
+    action_base.initialize( self )
+
+    self.decision = true
+
+    --self.object:set_item( object.idle, self.object:best_weapon() )
+    self.object:set_item( object.idle, nil )
+
+    self.object:set_callback (self, "move_callback", game_object.movement)
+    
+--    printf( "action_commander initialized" )
+end
+
+function action_commander:init( npc )
+    local char_ini = npc:spawn_ini()
+
+    if char_ini:section_exist("commander") then
+        -- включен?
+        if char_ini:line_exist("commander", "enabled") then     
+            if not char_ini:r_bool("commander", "enabled") then
+                return false
+            end
+        else
+            return false
+        end
+        
+        -- пути
+        if char_ini:line_exist("commander", "way") and
+           char_ini:line_exist("commander", "way_inside") and
+           char_ini:line_exist("commander", "way_outside") then
+            self.way         = patrol( char_ini:r_string( "commander", "way" ) )
+            self.way_inside  = patrol( char_ini:r_string( "commander", "way_inside" ) )
+            self.way_outside = char_ini:r_string( "commander", "way_outside" )
+
+            self.near_door_index = patrol( self.way_outside ):index( "near_door" )
+        else
+            return false
+        end
+        
+        -- солдаты
+        if char_ini:line_exist("commander", "soldiers") then
+            local soldiers = char_ini:r_string( "commander", "soldiers" )
+            self.soldiers = parse_names( soldiers )
+        else
+            self.soldiers = {}
+        end
+    else
+        --printf( "no section" )
+        return false
+    end
+
+    -- звуки
+    npc:add_sound( "scripts\\ambush\\ambush1_bad_weather",   13, snd_type.talk, 2, 1, snd_singing )
+    npc:add_sound( "scripts\\ambush\\ambush1_good_weather",  13, snd_type.talk, 2, 1, snd_look_outside )
+    npc:add_sound( "scripts\\ambush\\ambush1_idle",          13, snd_type.talk, 2, 1, snd_talk_outside )
+    npc:add_sound( "scripts\\ambush\\ambush1_enemy",         13, snd_type.talk, 2, 1, snd_enemy_stalker )
+    npc:add_sound( "scripts\\ambush\\ambush1_enemy",         13, snd_type.talk, 2, 1, snd_enemy_monster )
+    npc:add_sound( "scripts\\ambush\\ambush1_enemy",         13, snd_type.talk, 2, 1, snd_radio_talk )
+
+    return true
+end
+
+function action_commander:finalize()
+    action_base.finalize( self )
+
+    self.object:clear_callback( game_object.movement )
+
+    local enemy = self.object:best_enemy()
+    if enemy then
+        if enemy:clsid() == clsid.stalker or enemy:clsid() == clsid.actor then
+            self.object:play_sound( snd_enemy_stalker, 1, 0 )
+        else
+            self.object:play_sound( snd_enemy_monster, 1, 0 )
+        end
+    end
+
+    self.object:clear_animations()
+end
+
+function action_commander:walk_to_pos( way, waypoint )
+    -- waypoint может быть как индексом, так и именем
+    if type( waypoint ) == "string" then
+        waypoint = way:index( waypoint )
+    end
+    
+--    printf( "%d", waypoint )
+
+    self.pos = way:point( waypoint )
+
+    self.object:set_node_evaluator      ()
+    self.object:set_path_evaluator      ()
+    self.object:set_desired_direction   ()
+    self.object:set_sight               ( look.danger, nil, 0 )
+    --self.object:set_item                ( object.idle, self.object:best_weapon() )
+    self.object:set_item                ( object.idle, nil )
+    self.object:set_body_state          ( move.standing )
+    self.object:set_movement_type       ( move.walk )
+    self.object:set_mental_state        ( anim.danger )
+    self.object:set_path_type           ( game_object.level_path )
+    self.object:set_detail_path_type    ( move.line )
+    self.object:set_dest_level_vertex_id( way:level_vertex_id( waypoint ) )
+    self.object:set_desired_position    ( self.pos )
+end
+
+function action_commander:stop()
+--    self.object:set_sight               ( look.path_dir, nil, 0 )
+    self.object:set_sight               ( look.danger, nil, 0 )
+    self.object:set_body_state          ( move.standing )
+    self.object:set_movement_type       ( move.stand )
+    self.object:set_mental_state        ( anim.free )
+end
+
+function action_commander:in_pos()
+    return self.pos:distance_to_sqr( self.object:position() ) < 0.25
+end
+
+function action_commander:execute()
+    action_base.execute( self )
+
+    if self.decision then
+        self.decision = false
+        self.sub_act  = false
+        self.pos      = nil
+
+        self.last_act = self.act
+
+        if day_time() > 7 * h2ms and day_time() < 23 * h2ms then
+            repeat
+                if self.drunk then
+                    self.act = random_choice_weighted{
+                                   [walk_inside]  = 40,
+                                   [walk_outside] = 20,
+                                   [look_map]     = 10,
+                                   [look_outside] = 10,
+                                   [radio_talk]   = 20,
+                                   [drink_vodka]  = 10}
+                else
+                    self.act = random_choice_weighted{
+                                   [walk_inside]  = 60,
+                                   [walk_outside] = 10,
+                                   [look_outside] = 10,
+                                   [drink_vodka]  = 20}
+                end
+            until self.act == walk_inside or self.act ~= self.last_act
+        else
+            self.act = random_choice_weighted{
+                           [look_outside] = 10,
+                           [sleep]        = 90 }
+        end
+
+        if self.act == walk_inside and self.last_act ~= walk_inside then
+            self.looked_at_box = false
+            self.last_inside_point = nil
+        end
+    end
+
+    if self.act == walk_inside then
+        self:exec_walk_inside()
+
+    elseif self.act == walk_outside then
+        self:exec_walk_outside()
+
+    elseif self.act == look_map then
+        self:exec_look_map()
+
+    elseif self.act == look_outside then
+        self:exec_look_outside()
+
+    elseif self.act == outside_talk then
+        self:exec_outside_talk()
+
+    elseif self.act == look_box then
+        self:exec_look_box()
+
+    elseif self.act == radio_talk then
+        self:exec_radio_talk()
+
+    elseif self.act == drink_vodka then
+        self:exec_drink_vodka()
+
+    elseif self.act == sleep then
+        self:exec_sleep()
+    end
+end
+
+-- анимации для стояния в домике
+function action_commander:add_inside_animations( n )
+    for i = 1, math.random( n ) do
+        self.object:add_animation(
+            random_choice_weighted{
+                ["komandir_4"] = 60,
+                ["komandir_2"] = 25,
+                ["komandir_3"] = 15 },
+            true )
+    end
+end
+
+function action_commander:exec_walk_inside()
+    if self.pos then
+        if self:in_pos() then
+            if self.sub_act then
+                if self.object:animation_count() == 0 then
+                    self.decision = true
+                end
+            else
+                self:stop()
+
+                self.sub_act = true
+
+                if self.look_at_box then
+                    self.act = look_box
+                    printf( "looking for a box" )
+                else
+                    self:add_inside_animations( 2 )
+                end
+            end
+        else
+            -- если сдвинулся с позиции, то уйти
+            if self.sub_act then
+                self.object:clear_animations()
+                self.decision = true
+            end
+        end
+    else
+        local i
+
+        repeat
+            i = math.random( 0, self.way_inside:count() - 1 )
+        until i ~= self.last_inside_point
+
+        self.last_inside_point = i
+        self:walk_to_pos( self.way_inside, i )
+
+        self.look_at_box = not self.looked_at_box and self.way_inside:flag( i, 0 )
+
+        if math.random( 100 ) < 40 then
+            self.object:play_sound( snd_singing, 1, 0 )
+        end
+
+        printf( "decision made: walk_inside" )
+    end
+end
+
+function action_commander:exec_look_box()
+    if not self.box then
+        self.box = level.object( "blockpost_box" )
+    end
+
+    if self.box then
+        if self.time_end then
+            if self.time_end <= device():time_global() then
+                if not self.object:see( self.box ) then
+                    printf( "Ящик украли! Тревога!!!" )
+                else
+                    printf( "Ящик на месте" )
+                end
+
+                self.look_at_box   = false
+                self.looked_at_box = true
+
+                self.time_end = nil
+
+                self.act = walk_inside
+                self:add_inside_animations( 1 )
+            end
+        else
+            self.object:set_sight( look.point, self.way:point( self.way:index( "box" ) ), 0 )
+            self.object:set_mental_state( anim.danger )
+
+            self.time_end = device():time_global() + 3000
+        end
+    else
+        self.look_at_box = false
+        self.act = walk_inside
+        self:add_inside_animations( 1 )
+    end
+end
+
+function action_commander:exec_walk_outside()
+    if not self.sub_act then
+        self.object:set_node_evaluator    ()
+        self.object:set_path_evaluator    ()
+        self.object:set_desired_position  ()
+        self.object:set_desired_direction ()
+        self.object:set_sight             ( look.danger, nil, 0 )
+        self.object:set_path_type         ( game_object.patrol_path )
+        self.object:set_patrol_path       ( self.way_outside, patrol.nearest, patrol.continue, true )
+        self.object:set_detail_path_type  ( move.line )
+        self.object:set_body_state        ( move.standing )
+        self.object:set_movement_type     ( move.walk )
+        --self.object:set_mental_state      ( anim.free )
+        --self.object:set_item              ( object.idle, self.object:best_weapon() )
+        self.object:set_item              ( object.idle, nil )
+
+        self.sub_act = true
+        self.near_door_visited = false
+
+        printf( "decision made: walk_outside" )
+    end
+end
+
+function action_commander:exec_look_map()
+    if self.pos then
+        if self:in_pos() then
+            if self.time_end then
+                if not self.sub_act then
+                    if self.time_end <= device():time_global() then
+                        self.object:add_animation( "komandir_"..random_choice( 0, 1 ), true )
+                        self.sub_act = true
+                    end
+                else
+                    if self.object:animation_count() == 0 then
+                        self.decision = true
+                        self.time_end = nil
+                    end
+                end
+            else
+                self:stop()
+
+                self.object:set_sight( look.direction, vector():set( 1, 0, 0 ), 0 )
+                self.object:set_item ( object.idle, nil )
+
+                self.time_end = device():time_global() + 2000
+            end
+        else
+            -- если сдвинулся с позиции, то уйти
+            if self.time_end then
+                self.object:clear_animations()
+                self.decision = true
+                self.time_end = nil
+            end
+        end
+    else
+        self:walk_to_pos( self.way, "level_map" )
+        printf( "decision made: look_map" )
+    end
+end
+
+function action_commander:exec_look_outside()
+    if self.pos then
+        if self:in_pos() then
+            if self.sub_act then
+                if self.object:animation_count() == 0 then
+                    self.decision = true
+                end
+            else
+                self:stop()
+
+                self.object:set_item( object.idle, nil )
+
+                self.object:add_animation( "komandir_3", true )
+                self.object:add_animation( "komandir_2", true )
+
+                self.object:play_sound( snd_look_outside, 1, 0 )
+
+                self.sub_act = true
+            end
+        else
+            -- если сдвинулся с позиции, то уйти
+            if self.time_end then
+                self.object:clear_animations()
+                self.decision = true
+            end
+        end
+    else
+        self:walk_to_pos( self.way, "near_door" )
+        printf( "decision made: look_outside" )
+    end
+end
+
+function action_commander:exec_outside_talk()
+    if self.time_end then
+        if self.time_end <= device():time_global() then
+            self.object:set_movement_type ( move.walk )
+            self.object:set_sight         ( look.danger, nil, 0 )
+
+            self.act = walk_outside
+            self.time_end = nil
+        end
+    else
+        self.object:set_movement_type ( move.stand )
+        self.object:set_sight         ( look.point, self.soldier_to_look_at:position():add( vector():set( 0, 1.5, 0 ) ), 0 )
+
+        self.object:play_sound( snd_talk_outside, 1, 0 )
+
+        self.time_end = device():time_global() + 2000
+    end
+end
+
+function action_commander:exec_radio_talk()
+    if self.time_end then
+        if self.time_end <= device():time_global() then
+            self.time_end = nil
+            self.decision = true
+
+            self.object:clear_animations()
+        end
+    else
+        self:stop()
+
+        self.object:play_sound( snd_radio_talk, 1, 0 )
+
+        self.object:add_animation( "raciya", true )
+        self.object:set_item( object.idle, nil )
+
+        self.time_end = device():time_global() + 5000
+
+        printf( "decision made: radio_talk" )
+    end
+end
+
+function action_commander:exec_drink_vodka()
+    if self.pos then
+        if self:in_pos() then
+            if self.sub_act then
+                if self.object:animation_count() == 0 then
+                    self.decision = true
+                end
+            else
+                self:stop()
+
+                self.object:set_sight( look.point, self.way:point( self.way:index( "mattress_dir" ) ), 0 )
+                self.object:set_item ( object.idle, nil )
+
+                self.object:add_animation( "stalker_2_down", true )
+                self.object:add_animation( "vodka_1", true )
+                self.object:add_animation( "vodka_2", true )
+                self.object:add_animation( "vodka_3", true )
+                self.object:add_animation( "vodka_4", true )
+                self.object:add_animation( "vodka_2", true )
+                self.object:add_animation( "stalker_2_up", true )
+                
+                if day_time() > 14 * h2ms then
+                    self.drunk = true
+                end
+
+                self.sub_act = true
+            end
+        else
+            -- если сдвинулся с позиции, то уйти
+            if self.sub_act then
+                self.object:clear_animations()
+                self.decision = true
+            end
+        end
+    else
+        self:walk_to_pos( self.way, "mattress" )
+        printf( "decision made: drink_vodka" )
+    end
+end
+
+function action_commander:exec_sleep()
+    if self.pos then
+        if self:in_pos() then
+            if self.time_end then
+                if self.time_end <= game.time() then
+                    if self.time_end >= 4 * h2ms then
+                        self.drunk = false
+                    end
+
+                    self.decision = true
+                    self.time_end = nil
+
+                    self.object:clear_animations()
+                else
+                    if self.object:animation_count() < 3 then
+                        self.object:add_animation( "waunded_idle_0", true )
+                    end
+                end
+            else
+                self:stop()
+
+                self.object:set_sight( look.point, self.way:point( self.way:index( "mattress_dir" ) ), 0 )
+                self.object:set_item ( object.idle, nil )
+
+                self.object:add_animation( "waunded_sitdawn_0", true )
+
+                self.time_end = game.time() + h2ms
+            end
+        else
+            -- если сдвинулся с позиции, то уйти
+            if self.time_end then
+                self.object:clear_animations()
+                self.decision = true
+                self.time_end = nil
+            end
+        end
+    else
+        self:walk_to_pos( self.way, "mattress" )
+        printf( "decision made: sleep" )
+    end
+end
+
+function action_commander:move_callback( obj, action_type, index )
+    --printf( "%d", index )
+
+    if index == -1 then return end
+
+    if index == self.near_door_index then
+        if self.near_door_visited then
+            self.decision = true
+            return
+        else
+            self.near_door_visited = true
+        end
+    end
+
+    if math.random( 100 ) <= 20 then
+        local pos = self.object:position()
+
+        for i, name in ipairs( self.soldiers ) do
+            local soldier = level.object( name )
+
+            if soldier and soldier:alive() and pos:distance_to_sqr( soldier:position() ) <= 64 then
+                --and self.object:see( soldier ) then
+                self.act = outside_talk
+                self.soldier_to_look_at = soldier
+                break
+            end
+        end
+    end
+end
+
+----------------------------------------------------------------------------------------------------------------------
+
+function add_to_binder( npc )
+    local action = this.action_commander( "action_commander" )
+    
+    if action:init( npc ) then
+        local manager = npc:motivation_action_manager()
+
+        manager:add_evaluator( prop_commander, const_evaluator( false ) )
+
+        action:add_precondition( world_property( stalker_ids.property_enemy, false ) )
+        action:add_effect( world_property( prop_commander, true ) )
+        manager:add_action( act_commander, action )
+
+        action = manager:action( stalker_ids.action_free_no_alife )
+        action:add_precondition( world_property( prop_commander, true ) )
+    end
+end

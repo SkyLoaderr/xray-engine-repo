@@ -1,0 +1,33 @@
+function init    (obj)
+    --if xr_guard2.Bind(obj) == true then return end
+    if string.find(obj:name(), "grd_") then
+       xr_motivator.AddToMotivator(obj)
+       return
+    end
+
+    local name, command, group, member = str_split (obj:name ())
+    if name == "patrol" then
+       --printf ("Bind command %s, group %d, member %d", command, group, member)
+       xr_patrol2.AddToPatrol (obj, command, group, member)
+       return
+    elseif name == "tradeseller" or name == "kamp" or name == "commander" then
+       xr_motivator.AddToMotivator(obj)
+       return
+    elseif name == "bandit" then
+       bandits.CreateBandit (obj)
+       return
+    elseif name == "mover" then
+       xr_mover.AddMover (obj)
+    elseif name == "ambush" then
+       xr_ambush.AddToAmbush (obj, command, group, member)
+    elseif name == "waiter" then
+       xr_waiter.AddWaiter( obj )
+    elseif name == "camper" then
+       xr_camper.AddCamper (obj)
+    elseif name == "wounded" then
+       xr_wounded.SetWounded (obj)
+    elseif name == "swat" then
+       xr_swat.AddSwat  (obj)
+    end
+end
+

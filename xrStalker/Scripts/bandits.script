@@ -1,0 +1,216 @@
+local attack_enabled = false
+
+function set_attack ()
+    printf ("Set bandits attack")
+    attack_enabled = true
+end
+
+
+local property_wait_attack             = xr_evaluators_id.sidor_bandits_base + 0
+local property_move_end                = property_wait_attack + 1
+
+local action_wait_attack               = xr_actions_id.sidor_act_bandits_base  + 0
+local action_move_end                  = action_wait_attack + 1
+
+----------------------------------------------------------------------------------------------------------------------
+--Evaluator const
+----------------------------------------------------------------------------------------------------------------------
+class "evaluator_attack"    (property_evaluator)
+----------------------------------------------------------------------------------------------------------------------
+function evaluator_attack:__init() super ()
+    self.first_call = true
+    self.zone = nil
+    self.entered = false
+end
+----------------------------------------------------------------------------------------------------------------------
+function evaluator_attack:evaluate()
+
+    if self.first_call == true then
+       local ini = self.object:spawn_ini ()
+       if ini ~= nil and ini:section_exist ("settings") == true and ini:line_exist ("settings", "zone") == true then
+          self.zone = level.object (ini:r_string ("settings", "zone"))
+          if self.zone == nil then return attack_enabled end
+          self.zone:set_callback (self, "zone_callback", true)
+          self.first_call = false
+       end
+    end
+
+    if attack_enabled == true then return true end
+
+
+    return self.entered
+end
+----------------------------------------------------------------------------------------------------------------------
+function evaluator_attack:zone_callback (zone, obj)
+    if zone:id () ~= self.zone:id () then return end
+    local actor = level.actor ()
+    if actor == nil then return end
+    if actor:id () == obj:id () then
+       self.entered = true
+       attack_enabled = true
+       self.zone:clear_callback (true)
+       printf ("Actor entered")
+    end
+end
+
+----------------------------------------------------------------------------------------------------------------------
+class "evaluator_move"      (property_evaluator)
+function evaluator_move:__init() super ()
+end
+----------------------------------------------------------------------------------------------------------------------
+function evaluator_move:evaluate ()
+    local ini = self.object:spawn_ini ()
+    if ini == nil or ini:section_exist ("settings") == false or ini:line_exist ("settings", "path") == false then
+       return true
+    end
+    return false
+end
+----------------------------------------------------------------------------------------------------------------------
+
+
+
+----------------------------------------------------------------------------------------------------------------------
+-- Action path
+----------------------------------------------------------------------------------------------------------------------
+-- Ёкшен дл€ перемещени€ по патрульному пути
+----------------------------------------------------------------------------------------------------------------------
+class "action_wait" (action_base)
+
+function action_wait:__init (name) super (nil,name)
+end
+
+function action_wait:initialize ()
+  action_base.initialize (self)
+  self.object:set_node_evaluator    ()
+  self.object:set_path_evaluator    ()
+  self.object:set_desired_position  ()
+  self.object:set_desired_direction  ()
+
+  self.object:set_body_state        (move.standing)
+  self.object:set_movement_type     (move.stand)
+end
+
+function action_wait:execute ()
+  action_base.execute (self)
+end
+
+
+function action_wait:finalize ()
+  local enemy = self.object:best_enemy ()
+  if enemy ~= nil then
+     self.object:enable_memory_object (enemy, false)
+  end
+  action_base.finalize (self)
+end
+----------------------------------------------------------------------------------------------------------------------
+
+
+----------------------------------------------------------------------------------------------------------------------
+-- Action path
+----------------------------------------------------------------------------------------------------------------------
+-- Ёкшен дл€ перемещени€ по патрульному пути
+----------------------------------------------------------------------------------------------------------------------
+class "action_move" (action_base)
+
+function action_move:__init (name) super (nil, name)
+end
+
+function action_move:initialize ()
+    action_base.initialize (self)
+    self.object:set_node_evaluator    ()
+    self.object:set_path_evaluator    ()
+    self.object:set_desired_position  ()
+    self.object:set_desired_direction  ()
+
+    self.object:set_item                  (object.idle, self.object:best_weapon ())
+    self.object:set_detail_path_type      (move.line)
+    self.object:set_body_state            (move.standing)
+    self.object:set_movement_type         (move.walk)
+    self.object:set_mental_state          (anim.free)
+
+    local ini = self.object:spawn_ini ()
+    if ini == nil or ini:section_exist ("settings") == false or ini:line_exist ("settings", "path") == false then
+       return
+    end
+
+    local path_name = ini:r_string ("settings", "path")
+    printf ("PATH NAME is %s", path_name)
+    local ptr = patrol (path_name)
+
+    self.object:set_path_type             (game_object.patrol_path)
+    self.object:set_patrol_path           (path_name, patrol.nearest, patrol.continue, true)
+    self.object:set_movement_type         (move.walk)
+    self.object:set_sight                 (look.path_dir, nil, 0)
+end
+
+function action_move:execute ()
+  action_base.execute (self)
+end
+
+
+function action_move:finalize ()
+  action_base.finalize (self)
+end
+----------------------------------------------------------------------------------------------------------------------
+
+
+----------------------------------------------------------------------------------------------------------------------
+-- Bandit binder
+----------------------------------------------------------------------------------------------------------------------
+class "bandit_binder" (object_binder)
+----------------------------------------------------------------------------------------------------------------------
+function bandit_binder:__init (obj) super(obj)
+    self.npc = obj
+end
+----------------------------------------------------------------------------------------------------------------------
+function bandit_binder:reinit ()
+    object_binder.reinit (self)
+end
+----------------------------------------------------------------------------------------------------------------------
+function bandit_binder:reload (section)
+
+    object_binder.reload  (self, section)
+    local manager = self.object:motivation_action_manager ()
+
+    --добавл€ем свои эвалуаторы
+    manager:add_evaluator (property_wait_attack, this.evaluator_attack ())
+    manager:add_evaluator (property_move_end, this.evaluator_move ())
+
+    --create patrol path
+    local action = this.action_wait ("action_path")
+    action:add_precondition  (world_property (stalker_ids.property_alive, true))
+    action:add_precondition  (world_property (stalker_ids.property_ready_to_kill, false))
+    action:add_effect        (world_property (property_wait_attack, true))
+    manager:add_action       (action_wait_attack, action)
+
+    action = this.action_move ("action_move")
+    action:add_precondition  (world_property (stalker_ids.property_alive, true))
+    action:add_precondition  (world_property (stalker_ids.property_enemy, false))
+    action:add_precondition  (world_property (property_move_end, false))
+    action:add_effect        (world_property (property_move_end, true))
+    manager:add_action       (action_move_end, action)
+
+    action = manager:action (stalker_ids.action_get_ready_to_kill_moderate)
+    action:add_precondition (world_property (property_wait_attack,  true))
+
+    action = manager:action (stalker_ids.action_free_no_alife)
+    action:add_precondition (world_property (property_move_end,  true))
+
+end
+----------------------------------------------------------------------------------------------------------------------
+function bandit_binder:net_spawn  (server_object)
+    if object_binder.net_spawn (self,server_object) == false then
+       return false
+    end
+    return true
+end
+----------------------------------------------------------------------------------------------------------------------
+function bandit_binder:net_destroy  ()
+    object_binder.net_destroy  (self)
+end
+----------------------------------------------------------------------------------------------------------------------
+
+function CreateBandit (npc)
+    npc:bind_object (this.bandit_binder (npc))
+end
+

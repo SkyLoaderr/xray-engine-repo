@@ -1,0 +1,822 @@
+----------------------------------------------------------------------------------------------------
+-- класс AnimationSet 
+
+--флаги для Animation Set
+-- 0 - последовательное проигрывание анимаций
+-- 1 - случайная анимация
+
+--флаги для добавленых анимаций
+-- 0 - проиграть один раз и забыть
+-- 1 - возможен повтор
+
+class "AnimationSet"
+
+function AnimationSet:__init (flags)
+	self.flags = flags
+	self.current_animation = 0
+	self.anims_list = {}                -- Список анимаций
+	self.move_types_list = {}           -- move.walk или move.stand
+	self.anim_snd_list = {}             -- Соответствующие им звуки
+	self.anim_snd_prob_list = {}        -- Вероятность старта звуков, играемых во время ходьбы
+end
+
+function AnimationSet:add_animation (name, flag, move_type, anim_snd, anim_snd_prob)
+	printf ("Add animation %s", name)
+	table.insert (self.anims_list, anim (name, flag))
+	
+	if move_type then
+		table.insert (self.move_types_list, move_type)
+	else
+		table.insert (self.move_types_list, move.stand)
+	end
+	
+	if anim_snd then
+		table.insert (self.anim_snd_list, sound (anim_snd, "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false))
+	else
+		table.insert (self.anim_snd_list, nil)
+	end
+
+	if anim_snd_prob then
+		table.insert (self.anim_snd_prob_list, anim_snd_prob)
+	else
+		table.insert (self.anim_snd_prob_list, 100)
+	end
+end
+
+-- Возвращает следующую в очереди анимацию, движение, звук, вероятность проигрывания звука
+function AnimationSet:next_anim()
+	local size = table.getn (self.anims_list)
+	if size == 0 then
+		return nil, 0, nil, 0
+	end
+	if self.flags == 0 then
+		self.current_animation = self.current_animation + 1
+		if self.current_animation > size then
+			self.current_animation = 1
+		end
+		printf("AnimationSet:next_anim(): current_animation == %d", self.current_animation)
+	else
+		self.current_animation = math.random (1, size)
+		printf("AnimationSet:next_anim(): current_animation = math.random (1, %d) == %d", size, self.current_animation)
+	end
+	return self.anims_list[self.current_animation], self.move_types_list[self.current_animation],
+	       self.anim_snd_list[self.current_animation], self.anim_snd_prob_list[self.current_animation]
+end
+
+-- // УСТАРЕЛА, ИСПОЛЬЗУЙТЕ next_anim()
+-- Возвращает следующую в очереди анимацию
+function AnimationSet:get_animation ()
+	local size = table.getn (self.anims_list)
+	if size == 0 then
+		return nil
+	end
+	if self.flags == 0 then
+	   self.current_animation = self.current_animation + 1
+	   if self.current_animation > size then
+		   self.current_animation = 1
+	   end
+   	   return self.anims_list[self.current_animation]
+	end
+	self.current_animation = math.random (1, size)
+	return self.anims_list[self.current_animation]
+end
+
+
+----------------------------------------------------------------------------------------------------
+-- класс ActionSet
+class "ActionSet"
+
+
+function ActionSet:__init ()
+	self.actions = {}
+	self.current_action = 0
+end
+
+function ActionSet:add_action (act)
+	local size = table.getn (self.actions)
+	if act == nil then return -1 end
+	table.insert (self.actions, act)
+	return size + 1
+end
+
+function ActionSet:set_action (npc, num_act)
+	if npc == nil then return end
+	if num_act ~= -1 then npc:command (self.actions[num_act])	
+	else
+	   for a = 1, table.getn (self.actions), 1 do
+		   npc:command (self.actions[a])
+	   end	
+	end
+end
+
+
+----------------------------------------------------------------------------------------------------
+class "SinglePatrol"
+
+function SinglePatrol:__init (npc, script_name, path_name, ...)
+	self.npc = npc
+	self.script_name = script_name
+	self.started = false
+	self.path_name = path_name
+	self.current_state = 0
+	self.anims = arg
+	
+	self.phrase_list = {}
+	self.phrase_len_list = {}
+	self.phrase_interval_min = 0
+	self.phrase_interval_max = 0
+	self.next_phrase_time = 0
+
+	-- Для сброса action-ов в начале reload-а или стрельбы:
+	self.was_reloading = false
+	self.had_ammo = false
+	
+	self.last_action = nil
+end
+
+function SinglePatrol:set_phrase_interval(imin, imax)
+	self.phrase_interval_min = imin
+	self.phrase_interval_max = imax
+	self.next_phrase_time = game.time() + math.random(self.phrase_interval_min, self.phrase_interval_max)
+end
+
+function SinglePatrol:add_random_phrase(...)
+	local n = 1
+	while arg[n] ~= nil do
+		table.insert (self.phrase_list, arg[n])
+		table.insert (self.phrase_len_list, arg[n + 1])
+		n = n + 2
+	end
+end
+
+function SinglePatrol:callback (obj, action_type, index)
+
+  	local ptr = patrol (obj:patrol ())
+
+	printf ("Path : %s, index : %d", obj:patrol (), index) 
+
+	-- При выполнении action-а движение прерывается, что генерит callback с index-ом -1.
+	-- Просто игнорировать такие callback-и.
+	if index < 0 then
+		return
+	end
+
+	for anim_num = 1, self.anims.n do
+		if ptr:flag(index, anim_num) then
+			local anim, mov, snd, snd_prob = self.anims[anim_num]:next_anim()
+			act = entity_action();
+			act:set_action( anim )
+			act:set_action( move (move.standing, mov, move.line, ptr) )
+			if snd ~= nil and snd_prob >= math.random(1, 100) then
+				act:set_action( snd )
+			end
+			act:set_action( cond (cond.anim_end) )
+
+			--self.last_action = act
+			
+			if obj ~= nil then
+				obj:command(act, true)
+			end
+			return
+		end
+	end
+end
+
+function SinglePatrol:process ()
+
+	if self.started == false then
+		self.npc:script (true, self.script_name)
+		self.last_action = action (self.npc, move (move.standing, move.walk, move.line, patrol (self.path_name)),
+		        look (look.search), anim (anim.free), cond (cond.time_end, 10000000))
+		self.started = true
+		self.npc:set_callback (self, "callback", game_object.movement)
+		return
+	end
+
+	if self.next_phrase_time ~= 0 and game.time() >= self.next_phrase_time then
+		local size = table.getn (self.phrase_list)
+		if size >= 1 then
+			local phr_num = math.random(1, size)
+			printf("PHRASE=%s", self.phrase_list[phr_num])
+		
+			local act = self.last_action
+			act:set_action( sound (self.phrase_list[phr_num], "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false) )
+			self.npc:command(act, true)
+		
+			self.next_phrase_time = game.time() + self.phrase_len_list[phr_num] +
+			                        math.random(self.phrase_interval_min, self.phrase_interval_max)
+		end
+	end
+end
+
+function SinglePatrol:finish ()
+	self.npc:script (false, self.script_name)
+end
+
+
+----------------------------------------------------------------------------------------------------
+class "Guardian"
+
+function Guardian:__init (npc, script_name, path_name, anims_check)
+	self.npc = npc
+	self.script_name = script_name
+	self.started = false
+	self.path_name = path_name
+	self.current_state = 0
+	self.anims_check = anims_check
+end
+
+
+function Guardian:process ()
+
+	if self.started == false then
+	   self.npc:script (true, self.script_name)
+	   action (self.npc, --move (move.standing, move.stand, move.line, patrol (self.path_name)),
+			   look (look.search), anim (anim.free), cond (cond.anim_end))
+	   self.started = true
+	   return 
+	   end
+	if self.npc:action () then return end
+	reset_action (self.npc, self.script_name)
+    action (self.npc, --move (move.standing, move.stand, move.line, patrol (self.path_name)),
+ 		    look (look.search), self.anims_check:get_animation (), cond (cond.anim_end))
+end
+
+function Guardian:finish ()
+	self.npc:script (false, self.script_name)
+end
+
+----------------------------------------------------------------------------------------------------
+class "NPC"
+-- Обертка над NPC для отслеживания типа выполняемого им в данный момент действия.
+-- Maintained by: Zmey
+
+function NPC:__init(script_name, npc, wpn)
+	printf("_bp: NPC:__init called");
+	printf("_bp: NPC:__init: script_name=%s", if_then_else(script_name ~= nil, script_name, "<nil>"))
+	self.script_name = script_name
+	self.npc = npc
+	self.wpn = wpn
+	
+	self.action_none = 0
+	self.action_talking = 1
+	self.action_looking = 2
+	self.action_shooting = 3
+	self.last_action = self.action_none
+
+	self.dlg_fsm = nil
+
+	-- ЭТИ ПЕРЕМЕННЫЕ ИСПОЛЬЗУЮТСЯ ДЛЯ НАСТРОЙКИ ПОВЕДЕНИЯ, ИХ МОЖНО УСТАНАВЛИВАТЬ ИЗВНЕ:
+	self.default_anim = anim.danger
+	self.look_at_target_when_talking = true
+end
+
+function NPC:look(whom)
+	debug_log(self.script_name, 'NPC:look_at')
+	if not self.npc:get_script() then
+		self.npc:script(true, self.script_name)
+	end
+
+	action(self.npc,
+	       look(look.fire_point, whom),
+	       anim(anim.danger),
+	       cond(cond.time_end, time_infinite)
+	)
+	self.last_action = self.action_looking
+end
+
+function NPC:is_looking()
+	return self.last_action == self.action_looking and self.npc:get_script() and self.npc:action()
+end
+
+function NPC:shoot(whom)
+	debug_log(self.script_name, 'NPC:shoot')
+	-- Всегда отключать looking и talking при начале shooting
+	if self:is_looking() or self:is_talking() then
+		interrupt_action(self.npc, self.script_name)
+	end
+
+	if not self.npc:get_script() then
+		self.npc:script(true, self.script_name)
+	end
+
+	self.npc:set_queue_size(1)
+
+	if self.wpn:get_ammo_in_magazine() ~= 0 then
+		printf("Has ammo!")
+		if self.was_reloading then
+			interrupt_action(self.npc, self.script_name)
+			self.was_reloading = false
+		end
+		--interrupt_action(self.npc, self.script_name)
+		--self.npc:script(false, self.script_name)
+		--self.npc:script(true, self.script_name)
+		action(self.npc,
+		       look(look.fire_point, whom),
+		       anim(anim.danger),
+		       object(self.wpn, object.fire1),
+		       move(move.standing, move.run, move.line, patrol("way_attack_point")),
+		       --move(move.standing, move.stand, move.line, actor), -- бага, с этой строкой крутится нормально!
+		       --cond(cond.move_end, time_infinite)
+		       --cond(cond.time_end, time_infinite) -- не крутится!!!
+		       cond(cond.time_end, 300)
+		)
+		self.had_ammo = true
+	else
+		printf("Has no ammo!")
+		if self.had_ammo then
+			interrupt_action(self.npc, self.script_name)
+			self.had_ammo = false
+		end
+		--self.npc:script(false, self.script_name)
+		--self.npc:script(true, self.script_name)
+		action(self.npc,
+		       look(look.fire_point, whom),
+		       anim(anim.danger),
+		       --object(self.wpn, object.fire1),
+		       move(move.standing, move.run, move.line, patrol("way_reload_point")),
+		       --move(move.standing, move.stand, move.line, actor), -- бага, с этой строкой крутится нормально!
+		       --cond(cond.move_end, time_infinite)
+		       --cond(cond.time_end, time_infinite) -- не крутится!!!
+		       cond(cond.time_end, 300)
+		)
+		self.was_reloading = true
+	end
+
+	self.last_action = self.action_shooting
+end
+
+function NPC:is_shooting()
+	return self.last_action == self.action_shooting and self.npc:get_script() and self.npc:action()
+end
+
+function NPC:talk(to_whom, snd, animat, waitfor_anim_end, bone, fire_point)
+	debug_log(self.script_name, 'NPC:talk snd=\"%s\"', if_then_else(snd ~= nil, snd, "<nil>"))
+	-- Всегда отключать looking при начале talking
+	if self:is_looking() then
+		interrupt_action(self.npc, self.script_name)
+	end
+
+	if not self.npc:get_script() then
+		self.npc:script(true, self.script_name)
+	end
+
+	local use_anim = self.default_anim
+	if animat == nil then
+		debug_log(self.script_name, 'NPC:talk: USING DEFAULT ANIMATION')
+	else
+		debug_log(self.script_name, 'NPC:talk: USING ANIMATION: ' .. animat)
+		use_anim = animat
+	end
+
+	local act = entity_action()
+	if self.look_at_target_when_talking then
+		act:set_action( look(look.fire_point, to_whom) )
+	end
+	act:set_action( anim(use_anim) )
+	if snd ~= nil then
+		act:set_action( sound(snd, if_then_else(bone ~= nil, bone, "bip01_head"),
+			vector():set(0,0,0), vector():set(0,0,0), false) )
+		if not waitfor_anim_end then
+			-- Just wait for sound to end, then interrupt the animation
+			act:set_action( cond(cond.sound_end) )
+		else
+			-- Animation is more important than sound
+			act:set_action( cond(cond.anim_end) )
+		end
+	else
+		act:set_action( cond(cond.time_end, time_infinite) )
+		printf("NPC:talk:snd is nil!")
+	end
+	
+	if fire_point ~= nil then
+		act:set_action( move(move.standing, move.run, move.line, patrol(fire_point)) )
+	end
+
+	self.npc:command(act, false)
+
+	self.last_action = self.action_talking
+end
+
+function NPC:set_dialogue(dlg_fsm)
+	self.dlg_fsm = dlg_fsm
+end
+
+function NPC:get_dialogue()
+	return self.dlg_fsm
+end
+
+-- Если есть патроны - идти на fire_point во время разговора
+function NPC:talk_dialogue(to_whom, fire_point)
+	printf("NPC:talk_dialogue")
+	if self.dlg_fsm ~= nil then
+		printf("NPC:talk_dialogue:self.dlg_fsm ~= nil")
+		local snd, animat, snd_len, waitfor_anim_end, delay, delay_animat = self.dlg_fsm:next_phrase()
+		if animat == nil then
+			printf("NPC:talk_dialogue:animat returned by next_phrase() is nil")
+		else
+			printf("NPC:talk_dialogue:animat returned by next_phrase() is --- " .. animat)
+		end
+		if snd ~= nil then
+			self:talk(to_whom, snd, animat, waitfor_anim_end, nil, fire_point)
+		else
+			printf("NPC:talk_dialogue:snd is nil (POSSIBLY WRONG STATE???), starting the infinite pause")
+			delay = time_infinite
+		end
+		-- Сделать паузу перед следующей фразой:
+		--if delay ~= 0 then -- для 0-й задержки можно даже action с 0-м временем не добавлять - зачем?
+			local act = entity_action()
+			if self.look_at_target_when_talking then
+				act:set_action( look(look.fire_point, to_whom) )
+			end
+			local use_anim = self.default_anim
+			if delay_animat == nil then
+				printf("_bp: talk_dialogue: using DEFAULT anim for idling!")
+			else
+				printf("_bp: talk_dialogue: using \"%s\" anim for idling!", delay_animat)
+				use_anim = delay_animat
+			end
+			act:set_action( anim(use_anim) )
+			if delay ~= nil then
+				printf("_bp: talk_dialogue: condition for idling is TIME_END(%d)!", delay)
+				act:set_action( cond(cond.time_end, delay) )
+			else
+				printf("_bp: talk_dialogue: condition for idling is anim_end!")
+				act:set_action( cond(cond.anim_end) )
+			end
+			if fire_point ~= nil then
+				act:set_action( move(move.standing, move.run, move.line, patrol(fire_point)) )
+			end
+			self.npc:command(act, false)
+		--end
+		printf("_bp: talk_dialogue: delay=%d", if_then_else(delay ~= nil, delay, -1))
+	end
+end
+
+function NPC:is_talking()
+	return self.last_action == self.action_talking and self.npc:get_script() and self.npc:action()
+end
+
+----------------------------------------------------------------------------------------------------
+
+class "DialogueFSM"
+-- FSM для звука. Получает набор имен звуковых файлов. Регистрируются возможные переходы.
+-- Maintained by: Zmey
+
+function DialogueFSM:__init ()
+	self.cur_state = 0
+	self.trans_tbl = {}     -- Время длительности звуков
+	self.last_pos_chosen = -1
+end
+
+-- Adds a phrase to the FSM.
+-- Args: flags, from_state, to_state, sound, {[delay_range_from, [delay_range_to]]}, [animation], [idling_animation])
+-- flags состоит из булевых значений: {is_repeatable, waitfor_anim_end}
+--      тут is_repeatable - разрешено ли повторно выбирать этот звук для проигрывания (если состояние осталось старым)
+--          waitfor_anim_end - ждать ли конца анимации (true), или обрывать анимацию по завершении звука (false, nil)
+-- Примечание: если delay_range не задан вообще, персонаж ничего не будет делать пока не доиграет до конца idling_animation
+-- Если же delay_range задан (одним числом, или двумя, т.е. интервалом) - idling_animation будет прервана по истечении этого срока.
+function DialogueFSM:set(flags, from, to, snd, delay_after_snd, animat, delay_animat)
+	local repeatable = flags[1]
+	local waitfor_anim_end = flags[2]
+
+	printf("DialogueFSM:set: snd=\"%s\"", if_then_else(snd, snd, "<nil>"))
+	local snd_obj = sound_object(snd)
+	if snd_obj ~= nil then
+		printf("DialogueFSM:set: snd_obj is NOT nil")
+	end
+	local snd_len = snd_obj:length() -- длительность звука
+	printf("DialogueFSM:set: snd=\"%s\" snd_len=\"%d\"", snd, if_then_else(snd_len, snd_len, 0)) -- nil crashes %d
+	--[[ Это делается не здесь! Это делает сам монстр, который произносит фразу.
+	local use_anim = anim.danger
+	if animat == nil then
+		printf("DialogueFSM:set: animat is nil, setting to anim.danger")
+	else
+		printf("DialogueFSM:set: animat is --- " .. animat)
+		use_anim = animat
+	end
+	--]]
+	table.insert(self.trans_tbl, {repeatable=repeatable, waitfor_anim_end=waitfor_anim_end, from=from, to=to,
+		snd=snd, animat=animat, snd_len=snd_len, delay_after_snd=delay_after_snd, delay_animat=delay_animat})
+end
+
+function DialogueFSM:clear()
+	self.cur_state = 0
+	self.trans_tbl = {}     -- Время длительности звуков
+	self.last_pos_chosen = -1
+end
+
+function DialogueFSM:reset()
+	self.cur_state = 0
+	self.last_pos_chosen = -1
+end
+
+-- Возвращает следующую в очереди анимацию, движение, звук, вероятность проигрывания звука
+function DialogueFSM:next_phrase()
+	local pos_chosen = -1
+	local worst_case_pos = -1
+	local counter = 1
+	for pos = 1, table.getn(self.trans_tbl) do
+		if self.trans_tbl[pos].from == self.cur_state then
+			if last_pos_chosen ~= pos or self.trans_tbl[pos].repeatable then
+				if math.random(1, counter) == 1 then
+					pos_chosen = pos
+				end
+				counter = counter + 1
+			else
+				worst_case_pos = pos
+			end
+		end
+	end
+	if pos_chosen == -1 then
+		-- не удалось найти неповторяющейся позиции
+		pos_chosen = worst_case_pos -- возьмем хотя бы повторно позицию
+	end
+	if pos_chosen == -1 then
+		-- вообще ничего не удалось выбрать
+		return nil
+	end
+
+	self.last_pos_chosen = pos_chosen
+	self.cur_state = self.trans_tbl[pos_chosen].to
+	
+	-- Обработка задержек вида X, X-Y, XdY+Z
+	local delay_num_members = table.getn(self.trans_tbl[pos_chosen].delay_after_snd)
+	local delay = 0
+	if delay_num_members == 0 then
+		delay = nil
+	elseif delay_num_members == 1 then
+		delay = self.trans_tbl[pos_chosen].delay_after_snd[1]
+	elseif delay_num_members >= 2  and delay_num_members <= 3 then
+		delay = math.random(self.trans_tbl[pos_chosen].delay_after_snd[1], self.trans_tbl[pos_chosen].delay_after_snd[2])
+		if delay_num_members == 3 then
+			delay = self.trans_tbl[pos_chosen].delay_after_snd[3]
+		end
+	else
+		printf("ERROR: DialogueFSM: next_phrase: wrong delay format (1 to 3 arguments expected, got %d). FORCING DELAY TO 0!",
+			delay_num_members)
+	end
+	return self.trans_tbl[pos_chosen].snd, self.trans_tbl[pos_chosen].animat, self.trans_tbl[pos_chosen].snd_len,
+		self.trans_tbl[pos_chosen].waitfor_anim_end, delay, self.trans_tbl[pos_chosen].delay_animat
+end
+
+----------------------------------------------------------------------------------------------------
+class "Camper"
+-- Тип монстра с поведением "кемпер".
+-- Maintained by: Zmey
+
+function Camper:__init(script_name, c_npc, c_enemy, dlg_nothing_happened_yet, dlg_see_enemy, dlg_not_see_enemy)
+	printf("Camper: __init: creating")
+	
+	self.script_name = script_name
+	self.c_npc = c_npc
+	self.c_enemy = c_enemy
+	
+	self.dlg_nothing_happened_yet = dlg_nothing_happened_yet
+	self.dlg_see_enemy = dlg_see_enemy
+	self.dlg_not_see_enemy = dlg_not_see_enemy
+	
+	self.dlg_nothing_happened_yet:reset()
+	self.c_npc:set_dialogue(self.dlg_nothing_happened_yet)
+	
+	-- FINITE STATE MACHINE:
+	self.state = self.nothing_happened_yet 
+
+	-- Сразу взять монстра под скрипт:
+	if not self.c_npc.npc:get_script() then
+		self.c_npc.npc:script(true, self.script_name)
+	end
+end
+
+function Camper:nothing_happened_yet()
+	if not self.c_npc.npc:alive() then
+		self.state = nil
+		return
+	end
+
+	--printf("Camper: nothing_happened_yet: %d", game.time())
+	if self.c_npc.npc:see(self.c_enemy.npc) or self.c_npc.npc.health < 0.99 then
+		printf("Camper: nothing_happened_yet: npc sees enemy or low health")
+		interrupt_action(self.c_npc.npc, self.script_name)
+		self.dlg_see_enemy:reset()
+		self.c_npc:set_dialogue(self.dlg_see_enemy)
+		self.state = self.see_enemy
+		
+		-- Он уже знает, что игрок здесь, и всегда настороже:
+		self.c_npc.look_at_target_when_talking = true
+		return
+	end
+
+	if distance_between(self.c_npc.npc, self.c_enemy.npc) <= 25 then
+		if not self.c_npc:is_talking() and not self.c_npc:is_shooting() then
+			printf("_bp: nothing_happened_yet: Distance OK, not talking, not shooting: %d", game.time())
+			self.c_npc:talk_dialogue(self.c_enemy.npc)
+		end
+	end
+end
+
+function Camper:see_enemy()
+	if not self.c_npc.npc:alive() then
+		self.state = nil
+		return
+	end
+
+	if not self.c_enemy.npc:alive() and self.c_npc:is_shooting() then
+			reset_action(self.c_npc.npc, self.script_name)
+			self.state = nil
+			return
+	end
+
+	--printf("Camper: see_enemy: %d", game.time())
+	if not self.c_npc.npc:see(self.c_enemy.npc) then
+		-- Если стреляет - хватит, он уже потерял его из виду:
+		if self.c_npc:is_shooting() then
+			interrupt_action(self.c_npc.npc, self.script_name)
+		end
+		self.dlg_not_see_enemy:reset()
+		self.c_npc:set_dialogue(self.dlg_not_see_enemy)
+		self.state = self.not_see_enemy
+		return
+	end
+
+	if not self.c_npc:is_shooting() and
+	   (distance_between(self.c_npc.npc, self.c_enemy.npc) <= 40 or self.c_npc.npc.health < 0.99) then -- distance was 10
+		if self.c_npc:is_talking() or self.c_npc:is_looking() then
+			interrupt_action(self.c_npc.npc, self.script_name)
+		end
+		self.c_npc:shoot(self.c_enemy.npc)
+		return
+	end
+
+	if not self.c_npc:is_talking() and not self.c_npc:is_shooting() then
+		self.c_npc:talk_dialogue(self.c_enemy.npc)
+	end
+end
+
+function Camper:not_see_enemy()
+	if not self.c_npc.npc:alive() then
+		self.state = nil
+		return
+	end
+
+	--printf("Camper: not_see_enemy: %d", game.time())
+	if self.c_npc.npc:see(self.c_enemy.npc) then
+		interrupt_action(self.c_npc.npc, self.script_name)
+		self.dlg_see_enemy:reset()
+		self.c_npc:set_dialogue(self.dlg_see_enemy)
+		self.state = self.see_enemy
+		return
+	end
+
+	if not self.c_npc:is_talking() and not self.c_npc:is_shooting() then
+		if self.c_npc.wpn:get_ammo_in_magazine() ~= 0 then
+			self.c_npc:talk_dialogue(self.c_enemy.npc, "way_attack_point") -- разговор вести с точки нападения
+		end
+	end
+end
+
+function Camper:set_nothing_happened_yet_handler(new_handler)
+	if self.state == self.nothing_happened_yet then
+		self.state = new_handler
+	end
+	self.nothing_happened_yet = new_handler
+end
+
+-- "Мотор" всего класса, должна вызываться периодически
+-- Возвращает:
+-- 	true, если сценарий все еще выполняется
+-- 	false, в случае завершения
+function Camper:heartbeat()
+	if self.state ~= nil then
+		self:state()
+		return true
+	end
+
+	if self.c_npc.npc:get_script() then
+		self.c_npc.npc:script(false, self.script_name)
+	end
+	return false
+end
+
+
+
+-- Класс прожектора
+-- Параметры:
+-- 			obj		-	прожектор 
+--			speedh	-   скорость горизонтального поворота в радианах в секунду
+--			speedv	-	скорость вертикального вращения в радианах в секунду
+--			script	-	скрипт
+--			points	- 	таблица точек, куда должен смотреть прожектор
+--			rand	-	случайный (true) или последовательный (false) выбор точек
+
+class "Projector"
+
+function Projector:__init (obj, speedh, speedv, script, points, rand, target)
+	self.projector = obj
+	self.speedh = speedh
+	self.speedv = speedv
+	self.points = points
+	self.rand = rand
+	self.first_call = true
+	self.script = script
+	self.current = 1
+	self.wait_time = 2000
+	self.time_cycle = false
+	self.ctime = 0
+	self.target = target
+	self.target_set = false
+	if self.target ~= nil then self.target_set = true
+	else self.target_set = false end
+end
+
+function Projector:set_wait_time (t)
+	self.wait_time = t
+end
+
+function Projector:set_target (obj)
+	self.target = obj
+	
+	if obj == nil then 
+       self.target_set = false
+	else 
+	   self.target_set = true 
+       reset_action (self.projector, self.script)
+       action (self.projector, look (self.target, self.speedh, self.speedv), cond (cond.time_end, time_infinite))
+    end   
+end
+
+function Projector:process ()
+
+	if self.first_call == true then
+	   self.projector:script (true, self.script)
+	   self.first_call = false
+	   if self.target ~= nil then 
+	   	  action (self.projector, look (self.target, self.speedh, self.speedv), cond (cond.time_end, time_infinite))
+  	   else 
+  	      action (self.projector, look (self.points[1], self.speedh, self.speedv), cond (cond.look_end)) 
+  	   end
+	   return	
+    end	
+
+	if self.target_set == true then
+	   if self.target == nil then 
+	   	  self.target_set = false	
+	   	  reset_action (self.projector, self.script)
+	   	  action (self.projector, look (self.points[1], self.speedh, self.speedv), cond (cond.look_end))
+       else
+    	  return
+       end	  
+    end	  	  
+	   	  
+
+	if self.projector:action () then return
+	else 
+	   if self.time_cycle == false then
+          self.time_cycle = true 
+	      self.ctime = game.time () 
+	   end	
+	end
+
+	if self.time_cycle == true and game.time () - self.ctime < self.wait_time then return end
+	self.time_cycle = false	
+
+
+	local point
+	if self.rand == true and table.getn (self.points) > 1 then 
+	   while true do 
+			 local rnd = math.random (1, table.getn (self.points) + 1)
+			 if rnd ~= self.current then 
+				self.current = rnd
+			    point = self.points[rnd]
+				break 
+			 end
+	   end
+	else
+	   self.current = self.current + 1
+	   if self.current > table.getn (self.points) then self.current = 1 end
+	   point = self.points[self.current]
+	end
+
+	reset_action (self.projector, self.script)
+	action (self.projector, look (point, self.speedh, self.speedv), cond (cond.look_end))
+end	  
+
+
+----------------------------------------------------------------------------------------------------
+-- класс CWaitTime
+class "CWaitTime"
+
+function CWaitTime:__init ()
+    self.current_time = 0
+    self.wait_time = 0
+end
+
+function CWaitTime:initialize (time)
+    self.current_time = device ():time_global ()
+    self.wait_time = time
+end
+
+function CWaitTime:evaluate ()
+    if device ():time_global () - self.current_time >= self.wait_time then return true end
+    return false
+end        

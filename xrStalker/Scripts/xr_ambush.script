@@ -1,0 +1,755 @@
+--[[------------------------------------------------------------------------------------------------
+схема "Засада"
+Чугай Саша
+
+Параметры засад ставятся в globals.script в таблице Ambushes.
+
+Сделать:
+  - если Дима исправит active_sounds_count(), то упростить случайную болтовню
+--------------------------------------------------------------------------------------------------]]
+
+local prop_never_true    = xr_evaluators_id.ambush_never_true
+local prop_attack        = xr_evaluators_id.ambush_attack
+local prop_in_position   = xr_evaluators_id.ambush_in_position
+local prop_can_sleep     = xr_evaluators_id.ambush_can_sleep
+local prop_dead_hook     = xr_evaluators_id.ambush_dead_hook
+local prop_toilet        = xr_evaluators_id.ambush_toilet
+
+local act_wait           = xr_actions_id.ambush_wait
+local act_go_to_position = xr_actions_id.ambush_go_to_position
+local act_alarm          = xr_actions_id.ambush_alarm
+local act_sleep          = xr_actions_id.ambush_sleep
+local act_dead_hook      = xr_actions_id.ambush_dead_hook
+local act_toilet         = xr_actions_id.ambush_toilet
+
+local snd_bad_weather    = xr_sounds_id.ambush_bad_weather
+local snd_enemy          = xr_sounds_id.ambush_enemy
+local snd_good_weather   = xr_sounds_id.ambush_good_weather
+local snd_group_idle     = xr_sounds_id.ambush_group_idle
+local snd_idle           = xr_sounds_id.ambush_idle
+
+local ms2h = 60 * 60 * 1000 -- коэф. мс->часы
+
+-- смены ночного сна. К этим числам случайно прибавляется время (до получаса) во время распределения сна в EnumSquad()
+local sleep_shifts = { { 23 * ms2h, 2.5 * ms2h },
+                       { 3  * ms2h, 7   * ms2h } }
+
+local actor_id
+
+----------------------------------------------------------------------------------------------------
+-- Эвалуатор свойства "можно ли в данный момент атаковать?"
+----------------------------------------------------------------------------------------------------
+class "evaluator_attack" ( property_evaluator )
+
+function evaluator_attack:__init( npc, distance ) super()
+    self.npc = npc
+    self.distance_sqr = distance * distance
+end
+
+function evaluator_attack:evaluate()
+--    return false
+    local enemy = self.npc:best_enemy()
+    local b
+    
+    -- Если есть враг и он на расстоянии атаки от нас или он нас видит или он актёр, то можно!
+    if enemy then
+        local he_sees = ( enemy:id() == actor_id ) or enemy:see( self.npc )
+        b = self.npc:position():distance_to_sqr( enemy:position() ) < self.distance_sqr or he_sees
+        --printf( "best enemy = %s", enemy:name() )
+    else
+        b = false
+    end
+
+    return b
+--    return false
+end
+
+----------------------------------------------------------------------------------------------------
+-- Эвалуатор свойства "сталкер на позиции"
+----------------------------------------------------------------------------------------------------
+class "evaluator_in_position" ( property_evaluator )
+
+function evaluator_in_position:__init( npc, member_params ) super()
+    self.npc = npc
+    self.member_params = member_params
+end
+
+function evaluator_in_position:evaluate()
+    -- Если на расстоянии <= 1м от точки позиции, то считается, что он уже там
+    return self.npc:position():distance_to_sqr( self.member_params.pos ) <= 1
+end
+
+----------------------------------------------------------------------------------------------------
+-- Эвалуатор свойства "можно ли сталкеру в данный момент спать?"
+----------------------------------------------------------------------------------------------------
+class "evaluator_can_sleep" ( property_evaluator )
+
+function evaluator_can_sleep:__init( npc, member_params ) super()
+    self.npc = npc
+    self.member_params = member_params
+end
+
+function evaluator_can_sleep:evaluate()
+    --printf( "can sleep?" )
+    --printf( "%d", day_time() / ms2h )
+    --printf( "%f", level.rain_factor() )
+
+    local dtime = day_time()
+
+    -- проверка нужна, чтобы правильно отследить ситуацию, когда смена начиается вчера, а заканчивается сегодня
+    if self.member_params.sleep_start < self.member_params.sleep_end then
+        return dtime > self.member_params.sleep_start and dtime < self.member_params.sleep_end
+    else
+        return dtime > self.member_params.sleep_start or  dtime < self.member_params.sleep_end
+    end
+end
+
+----------------------------------------------------------------------------------------------------
+-- Эвалуатор свойства "перехвачено ли уже событие смерти сталкера?"
+----------------------------------------------------------------------------------------------------
+class "evaluator_dead_hook" ( property_evaluator )
+
+function evaluator_dead_hook:__init( npc, squad_params ) super()
+    self.npc = npc
+    self.squad_params = squad_params
+end
+
+function evaluator_dead_hook:evaluate()
+    -- если при перечислении в EnumSquad() сталкер был мёртв, то он был бы удалён из таблицы "членов отряда"
+    return not self.squad_params.members[self.npc:id()]
+end
+
+----------------------------------------------------------------------------------------------------
+-- Эвалуатор свойства "приспичило!"
+----------------------------------------------------------------------------------------------------
+class "evaluator_toilet" ( property_evaluator )
+
+function evaluator_toilet:__init( npc, member_params ) super()
+    self.npc = npc
+    self.member_params = member_params
+end
+
+function evaluator_toilet:evaluate()
+    return day_time() >= self.member_params.toilet_time and not self.member_params.toilet_today and not self.npc:best_enemy()
+end
+
+----------------------------------------------------------------------------------------------------
+-- Действие "идти на позицию". Встаёт (если сидел) и идёт на позицию засады.
+----------------------------------------------------------------------------------------------------
+class "action_go_to_position" ( action_base )
+
+function action_go_to_position:__init( name, squad_params, member_params ) super( nil, name )
+    self.squad_params  = squad_params
+    self.member_params = member_params
+end
+
+function action_go_to_position:initialize()
+    action_base.initialize( self )
+    
+    self.object:set_node_evaluator()
+    self.object:set_path_evaluator()
+    self.object:set_desired_position()
+    self.object:set_desired_direction()
+
+    self.stand_up_finished = false
+
+    if self.squad_params.members[self.object:id()].sitting then
+        self.object:add_animation( "stalker_1_up", true )
+    end
+
+    printf( "action_go_to_position initialized" )
+end
+
+function action_go_to_position:execute()
+    action_base.execute( self )
+
+    self.object:set_item( object.idle, self.object:best_weapon() )
+
+    if self.object:animation_count() == 0 and not self.stand_up_finished then
+        self.object:set_sight               ( look.danger, nil, 0 )
+        self.object:set_item                ( object.idle )
+        self.object:set_body_state          ( move.standing )
+        self.object:set_movement_type       ( move.walk )
+        --self.object:set_mental_state        ( anim.free )
+        self.object:set_path_type           ( game_object.level_path )
+        self.object:set_dest_level_vertex_id( self.squad_params.way:level_vertex_id( self.member_params.pos_wpt_index ) )
+        self.object:set_desired_position    ( self.squad_params.way:point( self.member_params.pos_wpt_index ) )
+
+        self.stand_up_finished = true
+    end
+end
+
+function action_go_to_position:finalize()
+    self.squad_params.members[self.object:id()].sitting = false
+
+    action_base.finalize( self )
+
+    printf( "action go_to_position finalized" )
+end
+
+----------------------------------------------------------------------------------------------------
+-- Действие "сон". Просто спит.
+----------------------------------------------------------------------------------------------------
+class "action_sleep" ( action_base )
+
+function action_sleep:__init( name, squad_params ) super( nil, name )
+    self.squad_params = squad_params
+end
+
+function action_sleep:initialize()
+    action_base.initialize( self )
+    
+    self.object:set_node_evaluator()
+    self.object:set_path_evaluator()
+    self.object:set_desired_position()
+    self.object:set_desired_direction()
+
+--    self.object:set_sight        ( look.point, self.look_pos, 0 )
+--    self.object:set_body_state   ( move.crouch )
+--    self.object:set_movement_type( move.stand )
+    self.object:set_item( object.idle )
+    
+    if not self.squad_params.members[self.object:id()].sitting then
+        self.object:add_animation( "stalker_1_down", true )
+    end
+
+    -- что-бы каждые сутки ходил в туалет в разное время
+    this.SetToiletTime( self.object, self.squad_params )
+
+    printf( "action_sleep initialized" )
+end
+
+function action_sleep:execute()
+    action_base.execute( self )
+
+    -- Поменять дислокацию, если надо
+    this.CheckSquadLocation( self.squad_params )
+
+    -- анимации
+    if self.object:animation_count() < 3 then
+        if math.random( 100 ) < 70 then
+            self.object:add_animation( "spit_2", true )
+        else
+            self.object:add_animation( "spit_ 0", true )
+        end
+    end
+end
+
+function action_sleep:finalize()
+    self.object:clear_animations()
+
+    self.squad_params.members[self.object:id()].sitting = not self.object:best_enemy()
+
+    action_base.finalize( self )
+
+    printf( "action sleep finalized" )
+end
+
+----------------------------------------------------------------------------------------------------
+-- Действие рутинного ожидания. Просто сидит, смотрит в указанную точку, иногда болтает разные звуки в зависимости от погоды,
+-- наличия сообщников. Иногда случайные анимации.
+----------------------------------------------------------------------------------------------------
+class "action_wait" ( action_base )
+
+function action_wait:__init( name, squad_params, member_params ) super( nil, name )
+    self.squad_params  = squad_params
+    self.member_params = member_params
+end
+
+function action_wait:initialize()
+    action_base.initialize( self )
+    
+    self.object:set_node_evaluator()
+    self.object:set_path_evaluator()
+    self.object:set_desired_position()
+    self.object:set_desired_direction()
+    
+    self.object:set_item         ( object.idle, self.object:best_weapon() )
+    self.object:set_sight        ( look.point, self.member_params.look_pos, 0 )
+    self.object:set_body_state   ( move.crouch )
+    self.object:set_movement_type( move.stand )
+
+    if not self.squad_params.members[self.object:id()].sitting then
+        self.object:add_animation( "stalker_1_down", true )
+    end
+
+    self.snd = 2 -- 0=before, 1=playing, 2=after
+
+    printf( "action_wait initialized" )
+end
+
+function action_wait:execute()
+    action_base.execute( self )
+    
+    -- Поменять дислокацию, если надо
+    this.CheckSquadLocation( self.squad_params )
+
+    -- случайные анимации
+    
+    if self.object:animation_count() < 3 then
+        local p = math.random( 100 )
+        
+        if p < 80 then
+            self.object:add_animation( "stalker_1_2", true )
+        elseif p < 90 then
+            self.object:add_animation( "stalker_1_1", true )
+        elseif p <= 100 then 
+            self.object:add_animation( "sidya_kurit_2", true )
+            --self.object:add_animation( "stalker_1_1", true )
+        end
+    end
+
+    -- случайные звуки
+
+    local snd_cur = self.object:active_sound_count()
+
+    if self.snd == 0 and snd_cur == 1 then
+        self.snd = 1
+    elseif self.snd == 1 and snd_cur == 0 then
+        self.snd = 2
+    elseif self.snd == 2 and snd_cur == 0 then
+        local r = math.random( 100 )
+        
+        if r < 50 then
+            self.object:play_sound( snd_idle, 2 * 60000, 0.5 * 60000 )
+        elseif r < 80 then
+            if self.squad_params.members_count > 1 then
+                self.object:play_sound( snd_group_idle, 3 * 60000, 0.5 * 60000 )
+            end
+        else
+            if level.rain_factor() < 0.0006 then
+                self.object:play_sound( snd_good_weather, 3 * 60000, 1 * 60000 )
+            else
+                self.object:play_sound( snd_bad_weather, 3 * 60000, 1 * 60000 )
+            end
+        end
+
+        self.snd = 0
+    end
+end
+
+function action_wait:finalize()
+    self.object:clear_animations()
+    
+    self.member_params.sitting = not self.object:best_enemy()
+
+    -- сбросить все звуки
+    self.object:set_sound_mask( -1 )
+    self.object:set_sound_mask( 0 )
+
+    action_base.finalize( self )
+
+    printf( "action wait finalized" )
+end
+
+----------------------------------------------------------------------------------------------------
+-- Действие "тревога". Поджидание врага, когда он уже замечен, но нас не видит
+----------------------------------------------------------------------------------------------------
+class "action_alarm" ( action_base )
+
+function action_alarm:__init( name, squad_params ) super( nil, name )
+    self.squad_params = squad_params
+end
+
+function action_alarm:initialize()
+    action_base.initialize( self )
+    
+    local wpn = self.object:best_weapon()
+    if wpn then
+        self.object:set_item( object.activate, wpn )
+    end
+
+    local enemy = self.object:best_enemy()
+    
+    self.object:set_node_evaluator()
+    self.object:set_path_evaluator()
+    self.object:set_desired_position()
+    self.object:set_desired_direction()
+    
+    if enemy then
+        self.object:set_sight( look.fire_point, enemy:position(), 0 )
+    end
+    
+    self.object:set_body_state   ( move.crouch )
+    self.object:set_movement_type( move.stand )
+
+    --self.snd = 2 -- 0=before, 1=playing, 2=after
+    self.object:play_sound( snd_enemy, 1, 0 )
+
+    printf( "action_alarm initialized" )
+end
+
+function action_alarm:execute()
+    action_base.execute( self )
+end
+
+function action_alarm:finalize()
+    action_base.finalize( self )
+
+    self.squad_params.members[self.object:id()].sitting = not self.object:best_enemy()
+
+    printf( "action alarm finalized" )
+end
+
+----------------------------------------------------------------------------------------------------
+-- Действие для перехвата смерти сталкера
+----------------------------------------------------------------------------------------------------
+class "action_dead_hook" ( action_base )
+
+function action_dead_hook:__init( name, squad_params ) super( nil, name )
+    self.squad_params = squad_params
+end
+
+function action_dead_hook:initialize()
+    action_base.initialize( self )
+
+    this.EnumSquad( self.squad_params )
+
+    printf( "action_dead_hook initialized" )
+end
+
+function action_dead_hook:execute()
+    action_base.execute( self )
+end
+
+function action_dead_hook:finalize()
+    action_base.finalize( self )
+    printf( "action_dead_hook finalized" )
+end
+
+----------------------------------------------------------------------------------------------------
+-- Действие "сходить в туалет"
+----------------------------------------------------------------------------------------------------
+class "action_toilet" ( action_base )
+
+function action_toilet:__init( name, squad_params, member_params ) super( nil, name )
+    self.member_params = member_params
+    self.squad_params  = squad_params
+end
+
+function action_toilet:initialize()
+    action_base.initialize( self )
+    
+    self.stand_up_finished = false
+    self.toilet_end_time   = nil
+
+    if self.squad_params.members[self.object:id()].sitting then
+        self.object:add_animation( "stalker_1_up", true )
+    end
+
+    printf( "action_toilet initialized" )
+end
+
+function action_toilet:execute()
+    action_base.execute( self )
+
+    if self.object:position():distance_to_sqr( self.squad_params.toilet_point ) > 1 then
+        if self.object:animation_count() == 0 and not self.stand_up_finished then
+            self.object:set_sight               ( look.danger, nil, 0 )
+            self.object:set_body_state          ( move.standing )
+            self.object:set_movement_type       ( move.walk )
+            --self.object:set_mental_state        ( anim.free )
+            self.object:set_path_type           ( game_object.level_path )
+            self.object:set_dest_level_vertex_id( self.squad_params.toilet_vertex_id )
+            self.object:set_desired_position    ( self.squad_params.toilet_point )
+
+            self.stand_up_finished = true
+        else
+            self.object:set_item( object.idle, self.object:best_weapon() )
+        end
+    else
+        if not self.toilet_end_time then
+            self.object:set_body_state          ( move.crouch )
+            self.object:set_movement_type       ( move.stand )
+            self.object:set_item                ( object.idle )
+
+            self.toilet_end_time = device():time_global() + 1000
+        elseif device():time_global() >= self.toilet_end_time then
+            self.member_params.toilet_today = true
+        end
+    end
+end
+
+function action_toilet:finalize()
+    action_base.finalize( self )
+
+    self.member_params.sitting = false
+
+    printf( "action_toilet finalized" )
+end
+
+--------------------------------------------------------------------------------------------------------
+-- Самый обычный байндер. Цепляет эвалуаторы, действия, загружает звуки, делает всякую там инициализацию
+--------------------------------------------------------------------------------------------------------
+class "ambush_binder" ( object_binder )
+
+function ambush_binder:__init( npc, squad_params, member ) super( npc )
+    self.npc          = npc
+    self.squad_params = squad_params
+    
+    printf( "binder __init called" )
+end
+
+function ambush_binder:reinit()
+    object_binder.reinit( self )
+end
+
+function ambush_binder:reload( section )
+    object_binder.reload( self, section )
+
+    local manager = self.object:motivation_action_manager()
+    
+    local member_params = self.squad_params.members[self.npc:id()]
+    
+    this.CheckSquadLocation( self.squad_params, member_params )
+    
+    manager:add_evaluator( prop_in_position, this.evaluator_in_position( self.npc, member_params ) )
+    manager:add_evaluator( prop_never_true,  const_evaluator( false ) )
+    manager:add_evaluator( prop_attack,      this.evaluator_attack( self.npc, self.squad_params.dist ) )
+    manager:add_evaluator( prop_can_sleep,   this.evaluator_can_sleep( self.npc, member_params ) )
+    manager:add_evaluator( prop_dead_hook,   this.evaluator_dead_hook( self.npc, self.squad_params ) )
+    manager:add_evaluator( prop_toilet,      this.evaluator_toilet( self.npc, member_params ) )
+
+
+    local action = this.action_go_to_position( "action_go_to_position", self.squad_params, member_params )
+    action:add_precondition( world_property( stalker_ids.property_items, false ) )
+    action:add_precondition( world_property( stalker_ids.property_enemy, false ) )
+    action:add_precondition( world_property( prop_toilet, false ) )
+    action:add_effect( world_property( prop_in_position, true ) )
+    manager:add_action( act_go_to_position, action )
+
+    action = this.action_sleep( "action_sleep", self.squad_params )
+    action:add_precondition( world_property( prop_in_position, true ) )
+    action:add_precondition( world_property( stalker_ids.property_enemy, false ) )
+    action:add_effect( world_property( prop_can_sleep, false ) )
+    manager:add_action( act_sleep, action )
+    
+    action = this.action_toilet( "action_toilet", self.squad_params, member_params )
+    action:add_precondition( world_property( stalker_ids.property_enemy, false ) )
+    action:add_effect( world_property( prop_toilet, false ) )
+    manager:add_action( act_toilet, action )
+
+    action = this.action_wait( "action_wait", self.squad_params, member_params )
+    action:add_precondition( world_property( prop_in_position, true ) )
+    action:add_precondition( world_property( prop_can_sleep, false ) )
+    action:add_precondition( world_property( stalker_ids.property_enemy, false ) )
+    action:add_precondition( world_property( prop_toilet, false ) )
+    action:add_effect( world_property( prop_never_true, true ) )
+    manager:add_action( act_wait, action )
+
+    action = manager:action( stalker_ids.action_free_no_alife )
+    action:add_precondition( world_property( prop_never_true, true ) )
+
+
+    action = this.action_alarm( "action_alarm", self.squad_params )
+    action:add_effect( world_property( prop_attack, true ) )
+    manager:add_action( act_alarm, action )
+
+    
+    action = manager:action( stalker_ids.action_kill_enemy_very_aggressive )
+    action:add_precondition( world_property( prop_attack, true ) )
+
+    action = manager:action( stalker_ids.action_kill_enemy_aggressive )
+    action:add_precondition( world_property( prop_attack, true ) )
+
+    action = manager:action( stalker_ids.action_kill_enemy_moderate )
+    action:add_precondition( world_property( prop_attack, true ) )
+
+    action = manager:action( stalker_ids.action_kill_enemy_avoid )
+    action:add_precondition( world_property( prop_attack, true ) )
+
+
+    action = manager:action( stalker_ids.action_get_ready_to_kill_very_aggressive )
+    action:add_precondition( world_property( prop_attack, true ) )
+
+    action = manager:action( stalker_ids.action_get_ready_to_kill_aggressive )
+    action:add_precondition( world_property( prop_attack, true ) )
+
+    action = manager:action( stalker_ids.action_get_ready_to_kill_moderate )
+    action:add_precondition( world_property( prop_attack, true ) )
+
+    action = manager:action( stalker_ids.action_get_ready_to_kill_avoid )
+    action:add_precondition( world_property( prop_attack, true ) )
+
+
+    action = this.action_dead_hook( "action_dead_hook", self.squad_params )
+    action:add_effect( world_property( prop_dead_hook, true ) )
+    manager:add_action( act_dead_hook, action )
+
+    action = manager:action( stalker_ids.action_dead )
+    action:add_precondition( world_property( prop_dead_hook, true ) )
+
+
+    self.object:add_sound( "scripts\\ambush\\ambush1_bad_weather",  13, snd_type.talk, 2, 1, snd_bad_weather )
+    self.object:add_sound( "scripts\\ambush\\ambush1_enemy",        13, snd_type.talk, 2, 1, snd_enemy )
+    self.object:add_sound( "scripts\\ambush\\ambush1_good_weather", 13, snd_type.talk, 2, 1, snd_good_weather )
+    self.object:add_sound( "scripts\\ambush\\ambush1_group_idle",   13, snd_type.talk, 2, 1, snd_group_idle )
+    self.object:add_sound( "scripts\\ambush\\ambush1_idle",         13, snd_type.talk, 2, 1, snd_idle )
+
+    printf( "reload called" )
+end
+
+function ambush_binder:net_spawn( server_object )
+    printf( "NetSpawn called" )
+    return object_binder.net_spawn( self, server_object )
+end
+
+function ambush_binder:net_destroy()
+    printf( "NetDestroy called" )
+    flush()
+    object_binder.net_destroy( self )
+end
+
+----------------------------------------------------------------------------------------------------
+
+-- Переучёт всех сталкеров в отряде. Установка времени сна с учётом смены дежурных. Подсчёт кол-ва живых
+-- Установка времени ходьбы в туалет
+-- Если остался один в отряде, то отпустить на все 4 стороны
+function EnumSquad( squad_params, init )
+    local shift = 1
+    local count = 0
+    local npc_last
+    local dead  = {}
+    
+    for k, v in pairs( squad_params.members ) do
+        local npc = v.npc
+
+        if npc:alive() then
+            v.sleep_start = sleep_shifts[shift][1] + math.random( 0.5 * ms2h )
+            v.sleep_end   = sleep_shifts[shift][2] + math.random( 0.5 * ms2h )
+
+            count = count + 1
+            
+            npc_last = npc
+        else
+            table.insert( dead, npc )
+        end
+
+        if shift == 1 then
+            shift = 2
+        else
+            shift = 1
+        end
+    end
+    
+    for i = 1, table.getn( dead ) do
+        squad_params.members[dead[i]:id()] = nil
+    end
+
+    squad_params.members_count = count
+
+    if not init and count == 1 then
+        this.UnloadAmbushBindings( npc_last )
+    end
+end
+
+-- функция, убирающая связи с моими действиями. После неё сталкер гуляет только базовыми действиями.
+function UnloadAmbushBindings( npc )
+    local manager = npc:motivation_action_manager()
+    
+    local action = manager:action( stalker_ids.action_free_no_alife )
+    action:remove_precondition( prop_never_true )
+    
+
+    action = manager:action( stalker_ids.action_get_ready_to_kill_very_aggressive )
+    action:remove_precondition( prop_attack )
+
+    action = manager:action( stalker_ids.action_get_ready_to_kill_aggressive)
+    action:remove_precondition( prop_attack )
+    
+    action = manager:action( stalker_ids.action_get_ready_to_kill_moderate )
+    action:remove_precondition( prop_attack )
+    
+    action = manager:action( stalker_ids.action_get_ready_to_kill_avoid )
+    action:remove_precondition( prop_attack )
+
+
+    action = manager:action( stalker_ids.action_kill_enemy_very_aggressive )
+    action:remove_precondition( prop_attack )
+
+    action = manager:action( stalker_ids.action_kill_enemy_aggressive )
+    action:remove_precondition( prop_attack )
+    
+    action = manager:action( stalker_ids.action_kill_enemy_moderate )
+    action:remove_precondition( prop_attack )
+    
+    action = manager:action( stalker_ids.action_kill_enemy_avoid )
+    action:remove_precondition( prop_attack )
+    
+
+    action = manager:action( stalker_ids.action_dead )
+    action:remove_precondition( prop_dead_hook )
+end
+
+-- member_params указывается только при начальной ИНИЦИАЛИЗАЦИИ, иначе работает на ВСЕХ в отряде
+function CheckSquadLocation( squad_params, member_params )
+    -- считает где сидеть надо, время следующей смены места отсидки
+    local function _NewWayAndTime()
+        local k = 1
+        local n = table.getn( squad_params.ways )
+
+        if n > 1 then
+            repeat
+                k = math.random( n ) 
+            until k ~= squad_params.current_way_index
+        end
+
+        squad_params.current_way_index = k
+        squad_params.way = patrol( squad_params.ways[k] )
+        
+        local index = squad_params.way:index( "toilet" )
+        squad_params.toilet_point     = squad_params.way:point( index )
+        squad_params.toilet_vertex_id = squad_params.way:level_vertex_id( index )
+        
+        squad_params.time_leave = game.time() + math.random( squad_params.time_leave_min * ms2h, squad_params.time_leave_max * ms2h )
+    end
+
+    -- устанавливает точки для конкретного члена отряда
+    local function _UpdateMemberParams( dummy, member_params )
+        local ambush_way = squad_params.way
+        
+        member_params.look_pos      = ambush_way:point( ambush_way:index( "look"..member_params.num ) )
+        member_params.pos_wpt_index = ambush_way:index( "pos"..member_params.num )
+        member_params.pos           = ambush_way:point( member_params.pos_wpt_index )
+    end
+
+    if member_params then
+        if not squad_params.time_leave then
+            _NewWayAndTime()
+        end
+
+        _UpdateMemberParams( nil, member_params )
+    else
+        if game.time() >= squad_params.time_leave then
+            printf( "Changing squad location" )
+            _NewWayAndTime()
+            table.foreach( squad_params.members, _UpdateMemberParams )
+        end
+    end
+end
+
+-- Установка времени ходьбы в туалет, сброс флажка "ходил уже сегодня гадить"
+function SetToiletTime( npc, squad_params )
+    local member_params = squad_params.members[npc:id()]
+    -- лучше, чтоб время для туалета не перекрывалось с возможным сном
+    member_params.toilet_time  = math.random( 8 * ms2h, 22 * ms2h )
+    member_params.toilet_today = false
+end
+
+-- Постановка в засаду, создание служебных переменных
+function AddToAmbush( _npc, group, squad, member )
+    actor_id = get_actor():id() -- пришлось поставить здесь
+    
+    local squad_params = globals.Ambushes[group][squad]
+
+    if not squad_params.members then
+        squad_params.members = {}
+    end
+    
+    squad_params.members[_npc:id()] = { num = member, npc = _npc }
+    this.EnumSquad( squad_params, true )
+    
+    this.SetToiletTime( _npc, squad_params )
+    
+    _npc:bind_object( this.ambush_binder( _npc, squad_params, member ) )    
+end

@@ -1,0 +1,113 @@
+--script_zone02
+--m_dog01-08
+module( "monsters" )
+module( "m_Manager" )
+
+class "m_Sleep"
+function m_Sleep:__init( mnstr, script_name )
+    self.npc_name   = mnstr
+    self.npc	 	= nil
+    self.scr_name   = script_name
+	self.on_line    = false
+end
+
+function m_Sleep:is_on_line()
+	if( level.object( self.npc_name ) ) then
+    	if( self.on_line == false ) then
+        	self.npc = level.object( self.npc_name )
+            self.npc:script( true, self.scr_name )
+            self.on_line = true
+        end
+    else
+    	if( self.on_line ) then
+        	self.npc = nil
+            self.on_line = false
+        end
+    end
+end
+
+function m_Sleep:execute()
+	--Проверяем на online/offline.
+    self:is_on_line()
+    if( self.on_line == false ) then return end
+
+
+    if( self.npc:action() ) then return end
+    printf( "Id = %d", self.npc:id() )
+    action( self.npc, anim( anim.sleep, 0 ), cond( cond.time_end, 10000000 ) )
+--    this.action2( self.npc, anim( anim.sleep, 0 ), cond( cond.time_end, 10000000 ) )
+
+end
+
+
+function m_Sleep:check_completed()
+
+	if( self.npc == nil ) then return false end
+
+
+    if( self.npc:get_enemy() ~= nil or
+    	self.npc:alive() == false ) then return true end
+
+    return false
+end
+
+function m_Sleep:finalize()
+    printf( "1" )
+    if( self.npc == nil ) then return end
+    printf( "2" )
+    if( self.npc:get_script() ) then
+        printf( "3" )
+        self.npc:script( false, self.scr_name )
+    end
+end
+
+local monstr =  {
+					"m_dog01",
+                    "m_dog02",
+                    "m_dog03",
+                    "m_dog04",
+                    "m_dog05",
+                    "m_dog06",
+                    "m_dog07",
+                    "m_dog08"
+                 }
+
+local zone = nil
+
+function on_enter( zone, obj )
+	if( level.actor() == nil ) then return end
+
+    if( level.actor():id() == obj:id() ) then
+    	monsters.ini.garbage2 = true
+    end
+end
+
+function is_on_line()
+	if( zone == nil ) then
+    	if( level.object( "script_zone02" ) == nil ) then return end
+        zone = level.object( "script_zone02" )
+        zone:set_callback( this.on_enter, true )
+    else
+    	if( level.object( "script_zone02" ) == nil ) then zone = nil end
+    end
+end
+
+function main()
+	local troop  = m_manager.Easy()
+
+    for i = 1, table.getn( monstr ) do
+    	printf( "Insert %s in table", monstr[i] )
+       	troop:insert( this.m_Sleep( monstr[i], this.script_name() ) )
+    end
+
+    while( troop:execute() and monsters.ini.garbage2 == false ) do
+    	wait()
+        this.is_on_line()
+    end
+
+    troop:finalize()
+
+    if( zone ) then zone:clear_callback( true )  printf( "clear callback" ) end
+
+    printf( "dog freeded" )
+end

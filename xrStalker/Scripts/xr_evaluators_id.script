@@ -1,0 +1,42 @@
+----------------------------------------------------------------------------------------------------------------------
+--  Айдишники эвалуаторов
+--  последнее обновление: 25.05.2004
+----------------------------------------------------------------------------------------------------------------------
+
+-- эвалуаторы Глобальные
+global_evaluators           = stalker_ids.property_script
+final_trade_init            = stalker_ids.property_script + 1
+final_trade_processed       = stalker_ids.property_script + 2
+
+-- эвалуаторы Стохе
+stohe_evaluators = stalker_ids.property_script + 100
+
+stohe_tradeseller_base      = stohe_evaluators
+stohe_kamp_base        = stohe_evaluators + 20
+stohe_meet_base        = stohe_evaluators + 30
+
+--эвалуаторы Сидоровича
+sidor_evaluator                     =   stohe_evaluators    + 1024
+sidor_pathend_commander_property    =   sidor_evaluator     + 0
+sidor_pathend_soldier_property      =   sidor_evaluator     + 5
+sidor_prop_patrol_base              =   sidor_evaluator + 0
+sidor_wounded_base                  =   sidor_evaluator + 10
+sidor_bandits_base                  =   sidor_evaluator + 20
+sidor_swat_base                     =   sidor_evaluator + 40
+
+-- эвалуаторы Чугай
+chugai_evaluators    = sidor_evaluator   + 1024
+
+ambush_never_true    = chugai_evaluators + 0
+ambush_attack        = chugai_evaluators + 1
+ambush_in_position   = chugai_evaluators + 2
+ambush_can_sleep     = chugai_evaluators + 3
+ambush_dead_hook     = chugai_evaluators + 4
+ambush_toilet        = chugai_evaluators + 5
+
+commander_commander  = chugai_evaluators + 20
+
+-- эвалуаторы Змея
+zmey_evaluators = stalker_ids.property_script + 10000
+zmey_property_guard_activity_end    = zmey_evaluators + 1
+zmey_guard_base      = zmey_evaluators + 0
