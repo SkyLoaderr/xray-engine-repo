@@ -82,8 +82,8 @@ void CRender::Render	()
 		for	(u32 pid=0; pid<Lvec.size(); pid++)
 		{
 			light*	L	= Lvec[pid];
-
-			Target.accum_point_unshadow	(L);
+			if (IRender_Light::POINT==L->flags.type)	Target.accum_point_unshadow	(L);
+			else										Target.accum_spot_unshadow	(L);
 		}
 	}
 
@@ -95,32 +95,58 @@ void CRender::Render	()
 		for	(u32 pid=0; pid<Lvec.size(); pid++)
 		{
 			light*	L	= Lvec[pid];
+			if (IRender_Light::POINT==L->flags.type)	
+			{
+				// Render shadowmap
+				for (u32 pls_phase=0; pls_phase<6; pls_phase++)
+				{
+					marker									++;
+					phase									= PHASE_SMAP_P;
 
-			// Render shadowmap
-			for (u32 pls_phase=0; pls_phase<6; pls_phase++)
+					// calculate
+					LR_Direct.compute_xfp_1					(pls_phase, L);
+					render_smap_direct						(LR_Direct.L_combine);
+					LR_Direct.compute_xfp_2					(pls_phase, L);
+
+					// rendering
+					if (mapNormal.size())
+					{
+						Target.phase_smap_point				(pls_phase);
+						RCache.set_xform_world				(Fidentity);			// ???
+						RCache.set_xform_view				(LR_Direct.L_view);
+						RCache.set_xform_project			(LR_Direct.L_project);
+						render_scenegraph					();
+					}
+				}
+
+				// Render light
+				Target.phase_accumulator		();
+				Target.accum_point_shadow		(L);
+			}
+			else
 			{
 				marker									++;
-				phase									= PHASE_SMAP_P;
+				phase									= PHASE_SMAP_S;
 
 				// calculate
-				LR_Direct.compute_xfp_1					(pls_phase, L);
+				LR_Direct.compute_xfs_1					(0, L);
 				render_smap_direct						(LR_Direct.L_combine);
-				LR_Direct.compute_xfp_2					(pls_phase, L);
+				LR_Direct.compute_xfp_2					(0, L);
 
 				// rendering
 				if (mapNormal.size())
 				{
-					Target.phase_smap_point				(pls_phase);
+					Target.phase_smap_spot				(0);
 					RCache.set_xform_world				(Fidentity);			// ???
 					RCache.set_xform_view				(LR_Direct.L_view);
 					RCache.set_xform_project			(LR_Direct.L_project);
 					render_scenegraph					();
 				}
-			}
 
-			// Render light
-			Target.phase_accumulator		();
-			Target.accum_point_shadow		(L);
+				// Render light
+				Target.phase_accumulator		();
+				Target.accum_spot_shadow		(L);
+			}
 		}
 	}
 
