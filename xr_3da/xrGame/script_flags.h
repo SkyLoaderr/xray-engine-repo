@@ -10,9 +10,7 @@
 
 #include "script_export_space.h"
 
-struct CScriptFlags {
-	DECLARE_SCRIPT_REGISTER_FUNCTION
-};
+typedef class_exporter<Flags32> CScriptFlags;
 add_to_type_list(CScriptFlags)
 #undef script_type_list
 #define script_type_list save_type_list(CScriptFlags)

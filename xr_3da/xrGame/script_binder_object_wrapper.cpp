@@ -60,22 +60,22 @@ void CScriptBinderObjectWrapper::net_Destroy_static		(CScriptBinderObject *scrip
 	script_binder_object->CScriptBinderObject::net_Destroy();
 }
 
-void CScriptBinderObjectWrapper::net_Import				(NetPacket *net_packet)
+void CScriptBinderObjectWrapper::net_Import				(NET_Packet *net_packet)
 {
 	luabind::call_member<void>		(this,"net_import",net_packet);
 }
 
-void CScriptBinderObjectWrapper::net_Import_static		(CScriptBinderObject *script_binder_object, NetPacket *net_packet)
+void CScriptBinderObjectWrapper::net_Import_static		(CScriptBinderObject *script_binder_object, NET_Packet *net_packet)
 {
 	script_binder_object->CScriptBinderObject::net_Import	(net_packet);
 }
 
-void CScriptBinderObjectWrapper::net_Export				(NetPacket *net_packet)
+void CScriptBinderObjectWrapper::net_Export				(NET_Packet *net_packet)
 {
 	luabind::call_member<void>		(this,"net_export",net_packet);
 }
 
-void CScriptBinderObjectWrapper::net_Export_static		(CScriptBinderObject *script_binder_object, NetPacket *net_packet)
+void CScriptBinderObjectWrapper::net_Export_static		(CScriptBinderObject *script_binder_object, NET_Packet *net_packet)
 {
 	script_binder_object->CScriptBinderObject::net_Export	(net_packet);
 }
@@ -88,4 +88,24 @@ void CScriptBinderObjectWrapper::shedule_Update			(u32 time_delta)
 void CScriptBinderObjectWrapper::shedule_Update_static	(CScriptBinderObject *script_binder_object, u32 time_delta)
 {
 	script_binder_object->CScriptBinderObject::shedule_Update	(time_delta);
+}
+
+void CScriptBinderObjectWrapper::save					(NET_Packet *output_packet)
+{
+	luabind::call_member<void>		(this,"save",output_packet);
+}
+
+void CScriptBinderObjectWrapper::save_static			(CScriptBinderObject *script_binder_object, NET_Packet *output_packet)
+{
+	script_binder_object->CScriptBinderObject::save		(output_packet);
+}
+
+void CScriptBinderObjectWrapper::load					(IReader *input_packet)
+{
+	luabind::call_member<void>		(this,"load",*input_packet);
+}
+
+void CScriptBinderObjectWrapper::load					(CScriptBinderObject *script_binder_object, IReader *input_packet)
+{
+	script_binder_object->CScriptBinderObject::load		(input_packet);
 }

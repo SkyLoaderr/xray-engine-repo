@@ -24,6 +24,8 @@ public:
 	virtual BOOL				net_Spawn		(LPVOID DC);
 	virtual void				net_Destroy		();
 	virtual void				shedule_Update	(u32 time_delta);
+	virtual void				save			(NET_Packet &output_packet);
+	virtual void				load			(IReader &input_packet);
 			void				set_object		(CScriptBinderObject *object);
 	IC		CScriptBinderObject	*object			();
 };

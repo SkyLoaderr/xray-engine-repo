@@ -92,3 +92,15 @@ void CScriptBinder::shedule_Update	(u32 time_delta)
 	if (m_object)
 		m_object->shedule_Update	(time_delta);
 }
+
+void CScriptBinder::save			(NET_Packet &output_packet)
+{
+	if (m_object)
+		m_object->save				(&output_packet);
+}
+
+void CScriptBinder::load			(IReader &input_packet)
+{
+	if (m_object)
+		m_object->load				(&input_packet);
+}

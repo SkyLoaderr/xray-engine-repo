@@ -275,13 +275,20 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 void CGameObject::net_Save		(NET_Packet &net_packet)
 {
 	u32	position;
-	net_packet.w_chunk_open8(position);
+	net_packet.w_chunk_open8	(position);
 	save(net_packet);
-	net_packet.w_chunk_close8(position);
+	net_packet.w_chunk_close8	(position);
 }
 
-void CGameObject::save		(NET_Packet &output_packet) {}
-void CGameObject::load		(IReader &input_packet) {}
+void CGameObject::save			(NET_Packet &output_packet) 
+{
+	CScriptBinder::save			(output_packet);
+}
+
+void CGameObject::load			(IReader &input_packet)
+{
+	CScriptBinder::load			(input_packet);
+}
 
 void CGameObject::spawn_supplies()
 {

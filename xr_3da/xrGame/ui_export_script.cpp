@@ -35,7 +35,7 @@ void UIRegistrator::script_register(lua_State *L)
 			],
 
 		class_<CUICaption>("CUICaption")
-		.def("addCustomMessage",	&CUICaption::addCustomMessage)
-		.def("setCaption",			&CUICaption::setCaption)
+			.def("addCustomMessage",	&CUICaption::addCustomMessage)
+			.def("setCaption",			&CUICaption::setCaption)
 	];
 }

@@ -4884,6 +4884,16 @@
 							RelativePath=".\key_binding_registrator_script.cpp">
 						</File>
 					</Filter>
+					<Filter
+						Name="ScriptReader"
+						Filter="">
+						<File
+							RelativePath=".\script_reader.h">
+						</File>
+						<File
+							RelativePath=".\script_reader_script.cpp">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="ScriptDebugger"
@@ -8372,21 +8382,6 @@
 					Filter="">
 					<File
 						RelativePath=".\dRayMotions.cpp">
-						<FileConfiguration
-							Name="Debug|Win32">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Mixed|Win32">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\dRayMotions.h">

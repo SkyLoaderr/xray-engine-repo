@@ -1,16 +1,16 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: script_flags.h
-//	Created 	: 19.07.2004
-//  Modified 	: 19.07.2004
+//	Module 		: script_reader.h
+//	Created 	: 05.10.2004
+//  Modified 	: 05.10.2004
 //	Author		: Dmitriy Iassenev
-//	Description : Script flags
+//	Description : Script reader
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once
 
 #include "script_export_space.h"
 
-typedef class_exporter<Flags32> CScriptFlags;
-add_to_type_list(CScriptFlags)
+typedef class_exporter<IReader> CScriptReader;
+add_to_type_list(CScriptReader)
 #undef script_type_list
-#define script_type_list save_type_list(CScriptFlags)
+#define script_type_list save_type_list(CScriptReader)
