@@ -21,7 +21,6 @@ void set_status(char* N, int id, int f, int v)
 BOOL OGF_Vertex::similar(OGF* ogf, OGF_Vertex& V)
 {
 	const float ntb		= _cos	(deg2rad(5.f));
-	if (!P.similar(V.P)) 		return FALSE;
 	if (!N.similar(V.N)) 		return FALSE;
 	if (!T.similar(V.T)) 		return FALSE;
 	if (!B.similar(V.B)) 		return FALSE;
@@ -35,6 +34,22 @@ BOOL OGF_Vertex::similar(OGF* ogf, OGF_Vertex& V)
 		if (!UV[i].similar(V.UV[i],eu,ev)) return FALSE;
 	}
 	return TRUE;
+}
+BOOL x_vertex::similar	(OGF* ogf, x_vertex& V)
+{
+	if (!P.similar(V.P)) 			return FALSE;
+	OGF_Texture *T = &*ogf->textures.begin();
+	b_texture	*B = T->pSurface;
+	float		eu = 2.f/float	(B->dwWidth );
+	float		ev = 2.f/float	(B->dwHeight);
+	if (!UV.similar(V.UV,eu,ev))	return FALSE;
+}
+u16 OGF::x_BuildVertex	(x_vertex& V1)
+{
+	for (itXV it=x_vertices.begin(); it!=x_vertices.end(); it++)
+		if (it->similar(this,V1)) return u16(it-x_vertices.begin());
+	x_vertices.push_back	(V1);
+	return (u32)			x_vertices.size()-1;
 }
 
 u16 OGF::_BuildVertex	(OGF_Vertex& V1)
@@ -50,9 +65,25 @@ u16 OGF::_BuildVertex	(OGF_Vertex& V1)
 	return (u32)vertices.size()-1;
 }
 
+void OGF::x_BuildFace	(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3)
+{
+	x_face	F;
+	u32		VertCount = (u32)x_vertices.size();
+	F.v[0]	= x_BuildVertex(x_vertex(V1));
+	F.v[1]	= x_BuildVertex(x_vertex(V2));
+	F.v[2]	= x_BuildVertex(x_vertex(V3));
+	if (!F.Degenerate()) {
+		for (itOGF_F I=x_faces.begin(); I!=x_faces.end(); I++)		if (I->Equal(F)) return;
+		x_faces.push_back(F);
+	} else {
+		if (x_vertices.size()>VertCount) 
+			x_vertices.erase(x_vertices.begin()+VertCount,x_vertices.end());
+	}
+}
 void OGF::_BuildFace	(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3)
 {
-	OGF_Face F;
+	x_BuildFace			(V1,V2,V3);
+	OGF_Face			F;
 	u32	VertCount = (u32)vertices.size();
 	F.v[0]	= _BuildVertex(V1);
 	F.v[1]	= _BuildVertex(V2);

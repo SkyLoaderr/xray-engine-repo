@@ -12,23 +12,32 @@ struct OGF_Texture
 	shared_str			name;
 	b_texture*			pSurface;
 };
-typedef svector<OGF_Texture,3>	vecOGF_T;
-typedef vecOGF_T::iterator		itOGF_T;
+typedef svector<OGF_Texture,3>		vecOGF_T;
+typedef vecOGF_T::iterator			itOGF_T;
 
 struct OGF;
 struct OGF_Vertex
 {
 	Fvector				P;
-	Fvector				N;		// normal
-	base_basis			T;		// tangent
-	base_basis			B;		// binormal
+	Fvector				N;			// normal
+	base_basis			T;			// tangent
+	base_basis			B;			// binormal
 	base_color			Color;
 	svector<Fvector2,2>	UV;
 
-	BOOL				similar	(OGF* p, OGF_Vertex&	other);
+	BOOL				similar		(OGF* p, OGF_Vertex&	other);
 };
-typedef xr_vector<OGF_Vertex>	vecOGF_V;
-typedef vecOGF_V::iterator		itOGF_V;
+typedef xr_vector<OGF_Vertex>		vecOGF_V;
+typedef vecOGF_V::iterator			itOGF_V;
+struct x_vertex						// "fast" geometry, 16b/vertex
+{
+	Fvector				P;
+	Fvector2			UV;
+	x_vertex			(const OGF_Vertex& c)	{ P	= c.P; UV	= c.UV[0];	}
+	BOOL				similar		(OGF* p, x_vertex&	other);
+};
+typedef xr_vector<x_vertex>			vec_XV;
+typedef vec_XV::iterator			itXV;
 
 #pragma pack(push,1)
 struct OGF_Face
@@ -57,6 +66,7 @@ struct OGF_Face
 };
 typedef xr_vector<OGF_Face>		vecOGF_F;
 typedef vecOGF_F::iterator		itOGF_F;
+typedef OGF_Face				x_face;
 #pragma pack(pop)
 
 struct OGF;
@@ -89,21 +99,25 @@ extern xr_vector<OGF_Base *>		g_tree;
 
 struct OGF : public OGF_Base
 {
-	u32					material;
-	vecOGF_T			textures;
+	u32					material	;
+	vecOGF_T			textures	;
 	vecOGF_V			vertices, vertices_saved;
 	vecOGF_F			faces,    faces_saved;
 
-	// Progressive
-	xr_vector<Vsplit>	pmap_vsplit;
-	xr_vector<u16>		pmap_faces;
-	u32					dwMinVerts;
-	int					I_Current;
+	// fast-vertices
+	vec_XV				x_vertices	;
+	vecOGF_F			x_faces		;
 
-	FSlideWindowItem	m_SWI;// The records of the collapses.
+	// Progressive
+	xr_vector<Vsplit>	pmap_vsplit	;
+	xr_vector<u16>		pmap_faces	;
+	u32					dwMinVerts	;
+	int					I_Current	;
+
+	FSlideWindowItem	m_SWI;		// The records of the collapses.
 
 	// for build only
-	u32					dwRelevantUV;
+	u32					dwRelevantUV	;
 	u32					dwRelevantUVMASK;
 
 	u32					vb_id;
@@ -126,6 +140,8 @@ struct OGF : public OGF_Base
 	~OGF(){
 		xr_free			(m_SWI.sw);
 	}
+	u16					x_BuildVertex	(x_vertex&	V);
+	void				x_BuildFace		(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3);
 	u16					_BuildVertex	(OGF_Vertex& V1);
 	void				_BuildFace		(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3);
 
