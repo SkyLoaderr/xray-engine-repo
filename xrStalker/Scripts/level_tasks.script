@@ -722,7 +722,7 @@ function process_map_spot(info_id)
 
 	elseif info_id == "rad_code_door" then
 		add_location(1001, "rad_code_door_location")
-	elseif info_id == "rad_code_door_open" then
+	elseif info_id == "rad_code_door_found" then
 		remove_location (1001, "rad_code_door_location")
 	
 	end	
