@@ -26,10 +26,10 @@ public:
 
 class CGlowManager 
 {
-	xr_vector<CGlow>			Glows;
+	xr_vector<CGlow>		Glows;
 	CGlow*					Selected[MAX_GlowsPerFrame];
 	u32						Selected_Count;
-	SGeometry*				hGeom;
+	ref_geom				hGeom;
 
 	u32						dwTestID;
 public:

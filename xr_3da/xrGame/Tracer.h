@@ -6,7 +6,7 @@
 #define AFX_TRACER_H__AC263474_060A_489E_B84A_E879CD630A1E__INCLUDED_
 #pragma once
 
-class CTracer : public pureDeviceDestroy, public pureDeviceCreate
+class CTracer
 {
 	struct Bullet
 	{
@@ -30,9 +30,6 @@ public:
 	void		Add		(const Fvector& from, const Fvector& to, float bullet_speed, float trail_speed_factor, float start_length, float width);
 	void		Render	();
 
-	virtual void		OnDeviceCreate();
-	virtual void		OnDeviceDestroy();
-	
 	CTracer();
 	~CTracer();
 };

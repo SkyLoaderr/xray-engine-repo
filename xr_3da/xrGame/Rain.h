@@ -75,8 +75,6 @@ private:
 	void							RayTest			(Item& dest, float height);
 	void							Hit				(Fvector& pos);
 public:
-	virtual void					OnDeviceCreate	();
-	virtual void					OnDeviceDestroy	();
 	virtual void					OnEvent			(EVENT E, u64 P1, u64 P2);
 
 	void							Render			();
