@@ -408,7 +408,7 @@ void	CRender::Render		()
 	Device.Statistic.RenderDUMP_HUD.End		();
 
 	// Postprocess
-	if (Target.Available())	Target.End		(sinf(12*Device.fTimeGlobal));
+	if (Target.Available())	Target.End		(1.f);
 	
 	// HUD
 	Device.Statistic.RenderDUMP_HUD.Begin	();

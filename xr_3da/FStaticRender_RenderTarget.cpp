@@ -105,7 +105,7 @@ void CRenderTarget::End		(float blur)
 	shift.set		(.5f/tw, .5f/th);
 	shift.mul		(blur);
 	p0.set			(.5f/tw, .5f/th);
-	p1.set			((tw-.5f)/tw, (th-.5f)/th );
+	p1.set			((tw+.5f)/tw, (th+.5f)/th );
 	p0.add			(shift);
 	p1.add			(shift);
 	
