@@ -104,12 +104,6 @@ void		CWallmarksEngine::static_wm_render		(CWallmarksEngine::static_wallmark*	W,
 		V->t.set		(S->t);
 	}
 }
-// render skeleton wm 
-void		CWallmarksEngine::skeleton_wm_render		(CSkeletonWallmark*	W, FVF::LIT* &dst)
-{
-	Memory.mem_copy				(dst,&*W->r_verts.begin	(),W->r_verts.size()*sizeof(FVF::LIT));
-	dst							+= W->r_verts.size();
-}
 //--------------------------------------------------------------------------------
 void CWallmarksEngine::RecurseTri(u32 t, Fmatrix &mView, CWallmarksEngine::static_wallmark	&W)
 {
@@ -269,8 +263,8 @@ void CWallmarksEngine::AddSkeletonWallmark(CSkeletonWallmark* wm)
 {
 	lock.Enter				();
 	// search if similar wallmark exists
-	wm_slot* slot			= FindSlot	(wm->shader);
-	if (0==slot) slot		= AppendSlot(wm->shader);
+	wm_slot* slot			= FindSlot	(wm->Shader());
+	if (0==slot) slot		= AppendSlot(wm->Shader());
 	// no similar - register _new_
 	slot->skeleton_items.push_back(wm);
 	lock.Leave				();
@@ -340,12 +334,12 @@ void CWallmarksEngine::Render()
 		// dynamic wallmarks
 		for (xr_vector<CSkeletonWallmark*>::iterator w_it=slot->skeleton_items.begin(); w_it!=slot->skeleton_items.end(); w_it++){
 			CSkeletonWallmark* W	= *w_it;
-			float dst	= Device.vCameraPosition.distance_to_sqr(W->bounds.P);
-			float ssa	= W->bounds.R * W->bounds.R / dst;
+			float dst	= Device.vCameraPosition.distance_to_sqr(W->m_Bounds.P);
+			float ssa	= W->m_Bounds.R * W->m_Bounds.R / dst;
 			if (ssa>=ssaCLIP){
 				Device.Statistic.RenderDUMP_WMD_Count++;
 				u32 w_count		= u32(w_verts-w_start);
-				if ((w_count+W->r_verts.size())>=(MAX_TRIS*3)){
+				if ((w_count+W->VCount())>=(MAX_TRIS*3)){
 					if (w_count){
 						// Flush stream
 						RCache.Vertex.Unlock	(w_count,hGeom->vb_stride);
@@ -360,7 +354,7 @@ void CWallmarksEngine::Render()
 						Device.Statistic.RenderDUMP_WMT_Count += w_count/3;
 					}
 				}
-				skeleton_wm_render	(W,w_verts);
+				W->Parent()->RenderWallmark	(W,w_verts);
 			}
 		}
 		slot->skeleton_items.clear();
