@@ -425,7 +425,7 @@ BOOL CCF_Rigid::_RayPick( RayPickResult& result, const Fvector& _start, const Fv
 		if (RAYvsOBB(*I,_start,_dir,range)) 
 		{
 			bHIT		= TRUE;
-			result.AppendResult(range,I-model.begin(),_flags&CDB::OPT_ONLYNEAREST);
+			result.AppendResult(range,u32(I-model.begin()),_flags&CDB::OPT_ONLYNEAREST);
 			if (_flags&CDB::OPT_ONLYFIRST) return TRUE;
 		}
 	}
