@@ -311,19 +311,21 @@ public:
 		l_tpEntityAlive1->tfGetRelationType(l_tpEntityAlive2);
 	}
 
-	// CCustomMonsster
+	// CScriptMonster
 	
-	BIND_FUNCTION02	(m_tpGameObject,	SetScriptControl,	CCustomMonster,	SetScriptControl,	bool,								LPCSTR,					bool,					LPCSTR);
-	BIND_FUNCTION10	(m_tpGameObject,	GetScriptControl,	CCustomMonster,	GetScriptControl,	bool,								false);
-	BIND_FUNCTION10	(m_tpGameObject,	GetScriptControlName,CCustomMonster,GetScriptControlName,LPCSTR,							"");
+	BIND_FUNCTION02	(m_tpGameObject,	SetScriptControl,	CScriptMonster,	SetScriptControl,	bool,								LPCSTR,					bool,					LPCSTR);
+	BIND_FUNCTION10	(m_tpGameObject,	GetScriptControl,	CScriptMonster,	GetScriptControl,	bool,								false);
+	BIND_FUNCTION10	(m_tpGameObject,	GetScriptControlName,CScriptMonster,GetScriptControlName,LPCSTR,							"");
+	BIND_FUNCTION01	(m_tpGameObject,	AddAction,			CScriptMonster,	AddAction,			const CEntityAction *,				const CEntityAction *);
+	BIND_FUNCTION10	(m_tpGameObject,	GetCurrentAction,	CScriptMonster,	GetCurrentAction,	const CEntityAction *,				0);
+
+	// CCustomMonster
 	BIND_FUNCTION11	(m_tpGameObject,	CheckObjectVisibility,CCustomMonster,CheckObjectVisibility,	bool,							false,					const CLuaGameObject*,	const CObject*);
 
 	// CAI_Stalker
 	BIND_FUNCTION01	(m_tpGameObject,	UseObject,			CAI_Stalker,	UseObject,			const CLuaGameObject*,				CObject*);
 	BIND_FUNCTION10	(m_tpGameObject,	GetRank,			CAI_Stalker,	GetRank,			u32,								eStalkerRankDummy);
 	BIND_FUNCTION10	(m_tpGameObject,	GetWeaponAmmo,		CAI_Stalker,	GetWeaponAmmo,		u32,								0);
-	BIND_FUNCTION01	(m_tpGameObject,	AddAction,			CAI_Stalker,	AddAction,			const CEntityAction *,				const CEntityAction *);
-	BIND_FUNCTION10	(m_tpGameObject,	GetCurrentAction,	CAI_Stalker,	GetCurrentAction,	const CEntityAction *,				0);
 	
 			CLuaGameObject	*GetCurrentWeapon	() const;
 			CLuaGameObject	*GetCurrentEquipment() const;

@@ -30,14 +30,15 @@ bool CCar::bfAssignMovement(CEntityAction *tpEntityAction)
 
 	u32		l_tInput = tpEntityAction->m_tMovementAction.m_tInputKeys;
 
-	vfProcessInputKey(kFWD		,	!!(l_tInput & CMovementAction::eInputKeyForward	));
+	vfProcessInputKey(kFWD		,	!!(l_tInput & CMovementAction::eInputKeyForward		));
 	vfProcessInputKey(kBACK		,	!!(l_tInput & CMovementAction::eInputKeyBack		));
 	vfProcessInputKey(kL_STRAFE	,	!!(l_tInput & CMovementAction::eInputKeyLeft		));
 	vfProcessInputKey(kR_STRAFE	,	!!(l_tInput & CMovementAction::eInputKeyRight		));
-	vfProcessInputKey(kACCEL	,	!!(l_tInput & CMovementAction::eInputKeyShiftUp	));
+	vfProcessInputKey(kACCEL	,	!!(l_tInput & CMovementAction::eInputKeyShiftUp		));
 	vfProcessInputKey(kCROUCH	,	!!(l_tInput & CMovementAction::eInputKeyShiftDown	));
-	vfProcessInputKey(kJUMP		,	!!(l_tInput & CMovementAction::eInputKeyBreaks	));
-	vfProcessInputKey(kWPN_FIRE	,	!!(l_tInput & CMovementAction::eInputKeyEngine	));
+	vfProcessInputKey(kJUMP		,	!!(l_tInput & CMovementAction::eInputKeyBreaks		));
+	if (!!(l_tInput & CMovementAction::eInputKeyEngineOn))	StartEngine();
+	if (!!(l_tInput & CMovementAction::eInputKeyEngineOff)) StopEngine();
 
 	return	(false);
 }

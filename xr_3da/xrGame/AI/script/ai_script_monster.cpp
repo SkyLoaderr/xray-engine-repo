@@ -16,7 +16,11 @@
 
 CScriptMonster::CScriptMonster()
 {
-	m_iCurrentPatrolPoint = m_iPreviousPatrolPoint = -1;
+	m_bScriptControl		= false;
+	strcpy					(m_caScriptName,"");
+	m_tpScriptAnimation		= 0;
+	m_iCurrentPatrolPoint	= m_iPreviousPatrolPoint = -1;
+	m_tpActionQueue.clear	();
 }
 
 CScriptMonster::~CScriptMonster()

@@ -346,10 +346,11 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 				value("up",						int(CMovementAction::eInputKeyShiftUp)),
 				value("down",					int(CMovementAction::eInputKeyShiftDown)),
 				value("break",					int(CMovementAction::eInputKeyBreaks)),
-				value("engine",					int(CMovementAction::eInputKeyEngine))
+				value("on",						int(CMovementAction::eInputKeyEngineOn)),
+				value("off",					int(CMovementAction::eInputKeyEngineOff))
 			]
 			.def(								constructor<>())
-			.def(								constructor<const CMovementAction::EInputKeys &>())
+			.def(								constructor<const CMovementAction::EInputKeys>())
 			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,CLuaGameObject*>())
 			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,CLuaGameObject*,float>())
 			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,const CPatrolPathParams &>())

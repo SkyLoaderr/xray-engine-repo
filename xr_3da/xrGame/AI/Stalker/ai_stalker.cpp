@@ -115,8 +115,6 @@ void CAI_Stalker::Init()
 
 	m_tTaskState					= eTaskStateChooseTask;
 	m_bCanFire						= true;
-	
-	m_tpPatrolPath					= 0;
 }
 
 void CAI_Stalker::Die				()

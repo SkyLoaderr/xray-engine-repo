@@ -79,8 +79,9 @@ public:
 		eInputKeyShiftUp	= u32(1) << 5,
 		eInputKeyShiftDown	= u32(1) << 6,
 		eInputKeyBreaks		= u32(1) << 7,
-		eInputKeyEngine		= u32(1) << 8,
-		eInputKeyDummy		= u32(1) << 9,
+		eInputKeyEngineOn	= u32(1) << 8,
+		eInputKeyEngineOff	= u32(1) << 9,
+		eInputKeyDummy		= u32(1) << 10,
 	};
 
 	MonsterSpace::EBodyState		m_tBodyState;

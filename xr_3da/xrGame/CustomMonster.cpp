@@ -56,10 +56,6 @@ void CCustomMonster::Init()
 	m_tEyeShift.set		(0,0,0);
 	m_fEyeShiftYaw		= 0.f;
 	NET_WasExtrapolating = FALSE;
-
-	m_bScriptControl	= false;
-	strcpy				(m_caScriptName,"");
-	m_tpScriptAnimation	= 0;
 }
 
 CCustomMonster::CCustomMonster()
