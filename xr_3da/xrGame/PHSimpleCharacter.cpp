@@ -761,7 +761,7 @@ void CPHSimpleCharacter::ApplyAcceleration()
 			dReal proj=dDOT(accel,m_wall_contact_normal);
 			fvdir[0]=accel[0]-m_wall_contact_normal[0]*(proj+press_to_ladder);
 			//fvdir[1]=-proj;
-			fvdir[1]=m_wall_contact_normal[1]<0.1f ? -proj : -m_wall_contact_normal[1]*proj;//accel[1]-m_wall_contact_normal[1]*proj,
+			fvdir[1]=m_wall_contact_normal[1]<0.1f ? -proj : -m_wall_contact_normal[1]*(proj+press_to_ladder);//accel[1]-m_wall_contact_normal[1]*proj,
 			fvdir[2]=accel[2]-m_wall_contact_normal[2]*(proj+press_to_ladder);
 			dNormalize3(fvdir);
 			m_control_force[0]+=fvdir[0]*m.mass*30.f;
