@@ -98,23 +98,23 @@ void CConsole::OnRender	()
 		switch (LogFile[i][0]) {
 		case '~':
 			pFont->SetColor(color_rgba(0  ,0  ,255, 255));
-			pFont->Out  (-1.f,ypos,"%s",&(LogFile[i][2]));
+			pFont->Out  (-1.f,ypos,"%s",&(*LogFile[i])[2]);
 			break;
 		case '!':
 			pFont->SetColor(color_rgba(255,0  ,0  , 255));
-			pFont->Out  (-1.f,ypos,"%s",&(LogFile[i][2]));
+			pFont->Out  (-1.f,ypos,"%s",&(*LogFile[i])[2]);
 			break;
 		case '*':
 			pFont->SetColor(color_rgba(128,128,128, 255));
-			pFont->Out  (-1.f,ypos,"%s",&(LogFile[i][2]));
+			pFont->Out  (-1.f,ypos,"%s",&(*LogFile[i])[2]);
 			break;
 		case '-':
 			pFont->SetColor(color_rgba(0  ,255,0  , 255));
-			pFont->Out  (-1.f,ypos,"%s",&(LogFile[i][2]));
+			pFont->Out  (-1.f,ypos,"%s",&(*LogFile[i])[2]);
 			break;
 		default:
 			pFont->SetColor(color_rgba(255,255,255, 255));
-			pFont->Out  (-1.f,ypos,"%s",LogFile[i]);
+			pFont->Out  (-1.f,ypos,"%s",*LogFile[i]);
 		}
 	}
 	pFont->OnRender();
@@ -382,7 +382,7 @@ void CConsole::SelectCommand()
 		if (LogFile[p][0]=='~') {
 			k--;
 			if (k==cmd_delta) {
-				strcpy(editor,&(LogFile[p][2]));
+				strcpy(editor,&(*LogFile[p])[2]);
 				found=true;
 			}
 		}

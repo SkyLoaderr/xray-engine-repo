@@ -63,9 +63,11 @@
 				OutputFile="x:\xrCPU_Pipe.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				GenerateDebugInformation="FALSE"
-				GenerateMapFile="TRUE"
+				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="$(OutDir)/$(ProjectName).pdb"
+				GenerateMapFile="FALSE"
 				MapFileName="x:\xrCPU_Pipe.map"
+				SubSystem="0"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				ImportLibrary="x:\xrCPU_Pipe.lib"/>

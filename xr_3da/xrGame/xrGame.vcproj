@@ -232,9 +232,10 @@
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
 				AdditionalLibraryDirectories=""
-				GenerateDebugInformation="FALSE"
-				GenerateMapFile="TRUE"
+				GenerateDebugInformation="TRUE"
+				GenerateMapFile="FALSE"
 				MapFileName="x:\xrGame.map"
+				SubSystem="0"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				ImportLibrary="x:\xrGame.lib"/>
