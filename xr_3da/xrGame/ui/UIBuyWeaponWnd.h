@@ -311,7 +311,7 @@ protected:
 
 	// Дополнительные функции для получения информации о вещах в слотах
 	CUIDragDropItemMP * GetWeapon(u32 slotNum, u32 idx = 0);
-	const u8 GetItemIndex(u32 slotNum, u32 idxInArr = 0);
+	const u8 GetItemIndex(u32 slotNum, u32 idxInArr, u8 &sectionNum);
 
 public:
 	// Получить имя секции в weapon.ltx соответствующий оружию в слоте или на поясе
@@ -320,7 +320,7 @@ public:
 	// Получить индекс оружия в массиве доступных, из заданного слота.
 	// Первое оружие имеет индекс 0. Если в слоте нет ничего, то возвращаем -1
 	const u8 GetWeaponIndex(u32 slotNum);
-	const u8 GetWeaponIndexInBelt(u32 indexInBelt);
+	const u8 GetWeaponIndexInBelt(u32 indexInBelt, u8 &sectionId, u8 &itemId);
 	// Получить имя оружия по индексу, и номеру слота
 	const char *GetWeaponNameByIndex(u32 slotNum, u8 idx);
 	// Получить данные о аддонах к оружию. Младшие 3 бита, если установлены в 1 означают:

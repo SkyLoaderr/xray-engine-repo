@@ -728,11 +728,12 @@ void CUIBuyWeaponWnd::Hide()
 //	}
 
 	// For test purposes
-//	const u8 a = GetWeaponIndexInBelt(0);
-//	const u8 e = GetWeaponIndexInBelt(1);
-//	const char *b = GetWeaponNameInBelt(2);
-//	const char *c = GetWeaponNameInBelt(3);
-//	const char *d = GetWeaponNameInBelt(GetBeltSize() - 1);
+//	u8 nn;
+//	const u8 a = GetItemIndex(KNIFE_SLOT, 0, nn);
+//	const u8 b = GetItemIndex(RIFLE_SLOT, 0, nn);
+//	const u8 c = GetItemIndex(BELT_SLOT, 3, nn);
+//	nn++;
+//	GetWeaponIndexInBelt(nn, nn, nn);
 
 	inherited::Hide();
 }
@@ -1214,9 +1215,10 @@ const char * CUIBuyWeaponWnd::GetWeaponNameInBelt(u32 indexInBelt)
 	return NULL;
 }
 
-const u8 CUIBuyWeaponWnd::GetItemIndex(u32 slotNum, u32 idxInArr)
+const u8 CUIBuyWeaponWnd::GetItemIndex(u32 slotNum, u32 idxInArr, u8 &sectionNum)
 {
 	u8 returnID = static_cast<u8>(-1);
+	sectionNum = 0;
 
 	CUIDragDropItemMP *pDDItemMP = GetWeapon(slotNum, idxInArr);
 	if (!pDDItemMP) return returnID;
@@ -1248,18 +1250,21 @@ const u8 CUIBuyWeaponWnd::GetItemIndex(u32 slotNum, u32 idxInArr)
 			}
 			return returnID;
 		}
+		++sectionNum;
 	}
 	return returnID;
 }
 
 const u8 CUIBuyWeaponWnd::GetWeaponIndex(u32 slotNum)
 {
-	return GetItemIndex(slotNum, 0);
+	u8 tmp;
+	return GetItemIndex(slotNum, 0, tmp);
 }
 
-const u8 CUIBuyWeaponWnd::GetWeaponIndexInBelt(u32 indexInBelt)
+const u8 CUIBuyWeaponWnd::GetWeaponIndexInBelt(u32 indexInBelt, u8 &sectionId, u8 &itemId)
 {
-	return GetItemIndex(BELT_SLOT, indexInBelt);
+	itemId = GetItemIndex(BELT_SLOT, indexInBelt, sectionId);
+	return itemId;
 }
 
 const char * CUIBuyWeaponWnd::GetWeaponNameByIndex(u32 slotNum, u8 idx)
