@@ -2,7 +2,7 @@
 #define _D3D_EXT_internal
 
 #ifndef NO_XR_LIGHT
-typedef struct _light {
+struct Flight {
 public:
     u32           type;             /* Type of light source */
     Fcolor          diffuse;          /* Diffuse color of light */
@@ -20,8 +20,8 @@ public:
 	
 	IC	void		set	(u32 ltType, float x, float y, float z) 
 	{
-		VERIFY(sizeof(_light)==sizeof(D3DLIGHT9));
-		ZeroMemory( this, sizeof(_light) );
+		VERIFY(sizeof(Flight)==sizeof(D3DLIGHT9));
+		ZeroMemory( this, sizeof(Flight) );
 		type=ltType;
 		diffuse.set(1.0f, 1.0f, 1.0f, 1.0f);
 		specular.set(diffuse);
@@ -30,16 +30,17 @@ public:
 		direction.normalize();
 		range= _sqrt(flt_max);
 	}
-    IC	void		mul(float brightness){
+    IC	void		mul		(float brightness){
 	    diffuse.mul_rgb		(brightness);
     	ambient.mul_rgb		(brightness);
 	    specular.mul_rgb	(brightness);
     }
-} Flight;
+};
 #endif
 
 #ifndef NO_XR_MATERIAL
-typedef struct _material {
+struct Fmaterial 
+{
 public:
     Fcolor			diffuse;        /* Diffuse color RGBA */
     Fcolor			ambient;        /* Ambient color RGB */
@@ -49,8 +50,8 @@ public:
 	
 	IC	void		set	(float r, float g, float b)
 	{
-		VERIFY		(sizeof(_material)==sizeof(D3DMATERIAL9));
-		ZeroMemory	(this, sizeof(_material));
+		VERIFY		(sizeof(Fmaterial)==sizeof(D3DMATERIAL9));
+		ZeroMemory	(this, sizeof(Fmaterial));
 		diffuse.r = ambient.r = r;
 		diffuse.g = ambient.g = g;
 		diffuse.b = ambient.b = b;
@@ -59,25 +60,49 @@ public:
 	}
 	IC	void	set(float r, float g, float b, float a)
 	{
-		VERIFY		(sizeof(_material)==sizeof(D3DMATERIAL9));
-		ZeroMemory	(this, sizeof(_material));
+		VERIFY		(sizeof(Fmaterial)==sizeof(D3DMATERIAL9));
+		ZeroMemory	(this, sizeof(Fmaterial));
 		diffuse.r = ambient.r = r;
 		diffuse.g = ambient.g = g;
 		diffuse.b = ambient.b = b;
 		diffuse.a = ambient.a = a;
 		power	  = 0;
 	}
-	IC	void	set(Fcolor &c)
+	IC	void	set	(Fcolor &c)
 	{
-		VERIFY		(sizeof(_material)==sizeof(D3DMATERIAL9));
-		ZeroMemory	( this, sizeof(_material) );
+		VERIFY		(sizeof(Fmaterial)==sizeof(D3DMATERIAL9));
+		ZeroMemory	( this, sizeof(Fmaterial) );
 		diffuse.r = ambient.r = c.r;
 		diffuse.g = ambient.g = c.g;
 		diffuse.b = ambient.b = c.b;
 		diffuse.a = ambient.a = c.a;
 		power	  = 0;
 	}
-} Fmaterial;
+};
 #endif
 
+#ifndef NO_XR_VDECLARATOR
+struct	VDeclarator	: public svector<D3DVERTEXELEMENT9, MAXD3DDECLLENGTH+1>
+{
+	void	set		(DWORD FVF)
+	{
+		D3DXDeclaratorFromFVF	(FVF,begin());
+		resize					(D3DXGetDeclLength(begin())+1);
+	}
+	void	set		(D3DVERTEXELEMENT9* dcl)
+	{
+		resize					(D3DXGetDeclLength(dcl)+1);
+		CopyMemory				(begin(),dcl,size()*sizeof(D3DVERTEXELEMENT9));
+	}
+	void	set		(const VDeclarator& d)
+	{
+		*this		= d;
+	}
+	u32		vertex	()				{ return D3DXGetDeclVertexSize(begin(),0)+1;	}
+	BOOL	equal	(const VDeclarator& d)	
+	{ 
+		if (size()!=d.size())	return false;
+		else					return 0==memcmp(begin(),d.begin(),size()*sizeof(D3DVERTEXELEMENT9));
+	}
+};
 #endif

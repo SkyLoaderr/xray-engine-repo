@@ -4,45 +4,52 @@
 #include "fs.h"
 
 // Vertex containers
-class VBContainer {
-	vector<DWORD>			FVF;
+class VBContainer 
+{
+	vector<VDeclarator>		vDcl;
 	vector<vector<BYTE> >	vContainers;
 
 	// Recording
-	DWORD					R_FVF;
+	VDeclarator				R_DCL;
 	vector<BYTE>			R_DATA;
 
 public:
 	// Constructor & destructor
-	VBContainer()			{	R_FVF = 0;	}
+	VBContainer()			{	R_DCL.clear();	}
 
 	// Methods
 	void	Begin			(DWORD	dwFVF)
 	{
-		VERIFY(R_FVF==0);
-		VERIFY(R_DATA.empty());
-		R_FVF = dwFVF;
+		R_ASSERT		(R_DCL.empty());
+		R_ASSERT		(R_DATA.empty());
+		R_DCL.set	(dwFVF);
+	}
+	void	Begin			(const VDeclarator& D)
+	{
+		R_ASSERT		(R_DCL.empty());
+		R_ASSERT		(R_DATA.empty());
+		R_DCL.set	(D);
 	}
 	void	Add				(VOID* PTR, DWORD cnt)
 	{
-		VERIFY(R_FVF);
-		BYTE*	P = (BYTE*) PTR;
+		R_ASSERT		(R_DCL.size());
+		BYTE*	P	= (BYTE*) PTR;
 		R_DATA.insert(R_DATA.end(),P,P+cnt);
 	}
 	void	End				(DWORD* dwContainerID, DWORD *dwIndexStart)
 	{
-		VERIFY(R_FVF);
-		VERIFY(! R_DATA.empty());
+		R_ASSERT		(! R_DCL.empty()	);
+		R_ASSERT		(! R_DATA.empty()	);
 		
-		DWORD	dwSize  = D3DXGetFVFVertexSize(R_FVF);
-		VERIFY(R_DATA.size()%dwSize == 0);
+		DWORD		dwSize  = R_DCL.vertex	();
+		R_ASSERT		(R_DATA.size()%dwSize == 0);
 		
 		// Search for container capable of handling data
 		DWORD bytes_collected	= R_DATA.size();
 		DWORD vertices_collected= bytes_collected/dwSize;
 		for (DWORD CID = 0; CID<FVF.size(); CID++)
 		{
-			if (FVF[CID]!=R_FVF) continue;
+			if (!vDcl[CID].equal(R_DCL))	continue;
 			
 			DWORD bytes_already	= vContainers[CID].size();
 			if ((bytes_already+bytes_collected)>g_params.m_VB_maxSize) continue;
@@ -52,37 +59,37 @@ public:
 			// If we get here - container CID can take the data
 			*dwContainerID			= CID;
 			*dwIndexStart			= vertices_already;
-			vContainers[CID].insert(vContainers[CID].end(),R_DATA.begin(),R_DATA.end());
-			R_FVF=0;
+			vContainers[CID].insert	(vContainers[CID].end(),R_DATA.begin(),R_DATA.end());
+			R_DCL.clear	();
 			R_DATA.clear();
 			return;
 		}
 		
 		// No such format found
 		// Simple add it and register
-		*dwContainerID			= FVF.size();
+		*dwContainerID			= vDCL.size();
 		*dwIndexStart			= 0;
-		FVF.push_back			(R_FVF);	R_FVF=0;
+		vDcl.push_back			(R_DCL);	R_DCL.clear();
 		vContainers.push_back	(R_DATA);	R_DATA.clear();
 	}
 	void	Save	(CFS_Base &fs)
 	{
-		VERIFY(R_FVF==0);
-		VERIFY(R_DATA.empty());
-		fs.Wdword(FVF.size());
-		for (DWORD i=0; i<FVF.size(); i++)
+		R_ASSERT		(R_DCL.empty());
+		R_ASSERT		(R_DATA.empty());
+		fs.Wdword		(vDcl.size());
+		for (DWORD i=0; i<vDcl.size(); i++)
 		{
-			DWORD dwOneSize		= D3DXGetFVFVertexSize(FVF[i]);
+			DWORD dwOneSize		= vDcl[i].vertex();
 			DWORD dwTotalSize	= vContainers[i].size();
 			DWORD dwVertCount	= dwTotalSize/dwOneSize;
 
-			VERIFY(dwVertCount*dwOneSize == dwTotalSize);
-
-			fs.Wdword(FVF[i]);		// Vertex format
-			fs.Wdword(dwVertCount);	// Number of vertices
-			fs.write(vContainers[i].begin(),dwTotalSize);
+			R_ASSERT	(dwVertCount*dwOneSize == dwTotalSize);
+			
+			fs.write	(vDcl[i].begin(), vDcl[i].size()*sizeof(D3DVERTEXELEMENT9));	// Vertex format
+			fs.Wdword	(dwVertCount);													// Number of vertices
+			fs.write	(vContainers[i].begin(),dwTotalSize);
 		}
-		FVF.clear			();
+		vDcl.clear			();
 		vContainers.clear	();
 	}
 };
