@@ -524,3 +524,11 @@ function get_nearest_waypoint(obj, pathname, ptr, cnt)
 	end
 	return pt_chosen
 end
+
+function obj_by_sid(sid)
+	local se_obj = alife():story_object(sid)
+	if se_obj then
+		return db.obj_by_id[se_obj.id]
+	end
+	return nil
+end

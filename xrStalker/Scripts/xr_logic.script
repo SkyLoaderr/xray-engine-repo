@@ -277,7 +277,7 @@ function enable_generic_schemes(ini, npc, stype, section)
 end
 
 function activate_by_section(npc, ini, section)
-	--printf("DEBUG: object '%s': activate_by_section: looking for section '%s'", npc:name(), section)
+	printf("DEBUG: object '%s': activate_by_section: looking for section '%s'", npc:name(), section)
 
 	local npc_id = npc:id()
 	if db.storage[npc_id]["active_section"] then
