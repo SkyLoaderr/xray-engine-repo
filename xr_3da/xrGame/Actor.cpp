@@ -411,15 +411,29 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who, s16 element
 		{
 			int id		= -1;
 			Fvector a	= {0,0,1};
-			Fvector b	= {vLocalDir.x,0,vLocalDir.z};
+			//---------------------------------------------------------
+			Fvector b;//	= {vLocalDir.x,0,vLocalDir.z};
+			if (who && GameID() != GAME_SINGLE)
+			{
+//				b.set(who->Position().x - Position().x, 0,who->Position().z - Position().z);
+				Fmatrix m_inv;
+				Fvector tmp_v, tmp_d = {who->Position().x, 0,who->Position().z};
+				m_inv.invert(XFORM());
+				m_inv.transform_tiny(b, tmp_d);
+			}
+			else
+				b.set(vLocalDir.x,0,vLocalDir.z);
+			//---------------------------------------------------------
 			float mb	= b.magnitude();		
 			if (!fis_zero(mb)){
 				b.mul	(1.f/mb);
 				bool FB	= _abs(a.dotproduct(b))>0.7071f;
 //				float x	= _abs(vLocalDir.x);
 //				float z	= _abs(vLocalDir.z);
-				if (FB)	id = (vLocalDir.z<0)?2:0;
-				else	id = (vLocalDir.x<0)?3:1;
+			//---------------------------------------------------------
+				if (FB)	id = (b.z<0)?2:0;
+				else	id = (b.x<0)?3:1;
+			//---------------------------------------------------------
 				HUD().Hit(id);
 			}
 		}
@@ -1047,11 +1061,14 @@ void CActor::ForceTransform(const Fmatrix& m)
 
 #ifdef DEBUG
 void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvector &D, Fvector &U);
+//extern	Flags32	dbg_net_Draw_Flags;
+
 void CActor::OnRender	()
 {
 	if (!bDebug)				return;
 
-	m_PhysicMovementControl->dbg_Draw	();
+//	if ((dbg_net_Draw_Flags.is_any((1<<5))))
+		m_PhysicMovementControl->dbg_Draw	();
 
 	OnRender_Network();
 }
