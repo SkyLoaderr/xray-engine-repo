@@ -11,10 +11,26 @@
 #ifdef _EDITOR
 	#include "motion.h"
 	#include "bone.h"
+	#include "ImageManager.h"
 #endif
 
 // mimimal bounding box size
 float g_MinBoxSize 	= 0.05f;
+
+#ifdef _EDITOR
+void CSurface::CreateImageData()
+{
+	VERIFY		(0==m_ImageData);
+    m_ImageData			= xr_new<SSimpleImage>();
+	m_ImageData->name	= m_Texture;
+    m_ImageData->layers.push_back	(U32Vec());
+    ImageLib.LoadTextureData		(*m_ImageData->name,m_ImageData->layers.back(),m_ImageData->w,m_ImageData->h);
+}
+void CSurface::RemoveImageData()
+{
+	xr_delete	(m_ImageData);
+}
+#endif
 
 CEditableObject::CEditableObject(LPCSTR name)
 {

@@ -33,10 +33,19 @@ struct sb_light_control						// controller or "layer", 30fps
 struct e_b_lod{        
 	b_lod				lod;
     U32Vec				data;
+    U32Vec				ndata;
     shared_str		   	lod_name;
 };
 
 class SceneBuilder{
+public:
+    struct SBuildLight{
+        Flight	light;
+        float	energy;
+    };
+    DEFINE_VECTOR(SBuildLight,BLVec,BLIt);
+protected:
+    BLVec						simple_hemi;
 public:
 	CEditableObject*			object_for_render;
 

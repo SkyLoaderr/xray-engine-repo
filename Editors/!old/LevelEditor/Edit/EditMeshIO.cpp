@@ -163,6 +163,7 @@ bool CEditableMesh::LoadMesh(IReader& F){
     	 	return false;
         }
         F.r				(&*face_lst.begin(), face_lst.size()*sizeof(int));
+        std::sort		(face_lst.begin(),face_lst.end());
     }
 
     if(F.find_chunk(EMESH_CHUNK_VMAPS_2)){

@@ -21,16 +21,20 @@ class CCustomObject;
     public:
     	class SResult{
 		public:            
-        	Fvector			verts[3];      
+        	Fvector			verts[3];
+            float			u,v;      
             float			range;
             CEditableObject*e_obj;
             CEditableMesh*	e_mesh;
             u32				tag;
+            bool operator <	(const SResult& F)const{return range<F.range;}
             SResult			(const SResult& F)
             {
                 verts[0]	= F.verts[0];
                 verts[1]	= F.verts[1];
                 verts[2]	= F.verts[2];
+                u			= F.u;
+                v			= F.v;
                 range		= F.range;
                 tag			= F.tag;
                 e_obj		= F.e_obj;
@@ -41,6 +45,8 @@ class CCustomObject;
                 parent.transform_tiny(verts[0],r->verts[0]);
                 parent.transform_tiny(verts[1],r->verts[1]);
                 parent.transform_tiny(verts[2],r->verts[2]);
+                u			= r->u;
+                v			= r->v;
                 range		= r->range;
                 tag			= r->dummy;
                 e_obj		= obj;
@@ -51,6 +57,8 @@ class CCustomObject;
             	verts[0]	= r->verts[0];
             	verts[1]	= r->verts[1];
             	verts[2]	= r->verts[2];
+                u			= r->u;
+                v			= r->v;
                 range		= r->range;
                 tag			= r->dummy;
                 e_obj		= obj;
@@ -106,6 +114,10 @@ class CCustomObject;
         IC void r_clear		()
         {
         	results.clear	();
+        }
+        IC void r_sort		()
+        {
+        	std::sort		(results.begin(),results.end());
         }
     };
 	struct SRayPickInfo{

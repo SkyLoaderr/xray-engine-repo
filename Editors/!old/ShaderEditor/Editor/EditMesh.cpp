@@ -254,7 +254,9 @@ CSurface*	CEditableMesh::GetSurfaceByFaceID(u32 fid)
 	R_ASSERT(fid<m_Faces.size());
     for (SurfFacesPairIt sp_it=m_SurfFaces.begin(); sp_it!=m_SurfFaces.end(); sp_it++){
 		IntVec& face_lst = sp_it->second;
-        if (std::find(face_lst.begin(),face_lst.end(),fid)!=face_lst.end()) return sp_it->first;
+        IntIt f_it = std::lower_bound(face_lst.begin(),face_lst.end(),fid);
+        if ((f_it!=face_lst.end())&&(*f_it==fid)) return sp_it->first;
+//.		if (std::find(face_lst.begin(),face_lst.end(),fid)!=face_lst.end()) return sp_it->first;
 	}
     return 0;
 }

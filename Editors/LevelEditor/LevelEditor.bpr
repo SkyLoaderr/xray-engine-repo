@@ -75,7 +75,7 @@
       intermediate\ESceneWallmarkTools.obj 
       intermediate\ESceneWallmarkControls.obj 
       intermediate\xrServer_Objects_Abstract.obj 
-      intermediate\GeometryPartExtractor.obj"/>
+      intermediate\GeometryPartExtractor.obj intermediate\BuilderLODs.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -273,6 +273,7 @@
       <FILE FILENAME="Engine\Game\xrServer_Objects_Abstract.cpp" FORMNAME="" UNITNAME="xrServer_Objects_Abstract" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\GeometryPartExtractor.cpp" FORMNAME="" UNITNAME="GeometryPartExtractor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\client_id.h" FORMNAME="" UNITNAME="client_id.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\BuilderLODs.cpp" FORMNAME="" UNITNAME="BuilderLODs" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

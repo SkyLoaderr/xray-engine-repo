@@ -6,6 +6,7 @@
 #include "SceneObject.h"  
 #include "EditObject.h"  
 #include "ui_main.h"
+#include "scene.h"
 
 //------------------------------------------------------------------------------
 #define LEVEL_LODS_TEX_NAME "level_lods"
@@ -15,14 +16,8 @@
 //------------------------------------------------------------------------------
 // lod build functions
 //------------------------------------------------------------------------------
-static const float 	LOD_CALC_SAMPLES 		= 7.f;
-static const s32	LOD_CALC_SAMPLES_LIM 	= LOD_CALC_SAMPLES/2;
-static const s32	LOD_HEMI_SAMPLE 		= 2;
-
 DEFINE_VECTOR(Fvector4,Fvector4Vec,Fvector4It);
-DEFINE_VECTOR(Fvector4Vec,SampleVec,SampleIt);
-
-BOOL GetPointColor(SPickQuery::SResult* R, float& alpha)
+BOOL GetPointColor(SPickQuery::SResult* R, u32& alpha)
 {
     CSurface* surf			= R->e_mesh->GetSurfaceByFaceID(R->tag); VERIFY(surf);
     Shader_xrLC* c_sh		= Device.ShaderXRLC.Get(surf->_ShaderXRLCName());
@@ -45,7 +40,7 @@ BOOL GetPointColor(SPickQuery::SResult* R, float& alpha)
     U %= surf->m_ImageData->w;	if (U<0) U+=surf->m_ImageData->w;
     V %= surf->m_ImageData->h;	if (V<0) V+=surf->m_ImageData->h;
 
-    alpha = color_get_A(surf->m_ImageData->layers.back()[V*surf->m_ImageData->w+U])/255.f;
+    alpha = color_get_A(surf->m_ImageData->layers.back()[V*surf->m_ImageData->w+U]);
     return TRUE;
 }
 
@@ -88,8 +83,6 @@ int	SceneBuilder::BuildObjectLOD(const Fmatrix& parent, CEditableObject* E, int 
     ImageLib.CreateLODTexture	(bb, b.data, LOD_IMAGE_SIZE,LOD_IMAGE_SIZE,LOD_SAMPLE_COUNT);
     E->m_Flags.set				(CEditableObject::eoUsingLOD,TRUE);
 
-    // prepare mesh
-    
     // build lod normals
     b.ndata.resize				(LOD_IMAGE_SIZE*LOD_IMAGE_SIZE*LOD_SAMPLE_COUNT);
     U8Vec hemi_temp				(LOD_IMAGE_SIZE*LOD_IMAGE_SIZE*LOD_SAMPLE_COUNT,0);
@@ -100,10 +93,15 @@ int	SceneBuilder::BuildObjectLOD(const Fmatrix& parent, CEditableObject* E, int 
     SPBItem* PB					= UI->ProgressStart(LOD_SAMPLE_COUNT*LOD_IMAGE_SIZE,lod_name.c_str());
     float dW 					= _max(o_size.x,o_size.z)/(LOD_IMAGE_SIZE/2);
     float dH 					= o_size.y/(LOD_IMAGE_SIZE/2);
+    float dR					= bb.getradius();
+    float d2R					= dR*2.f;
 	XRC.ray_options				(CDB::OPT_CULL);
 	ETOOLS::ray_options			(CDB::OPT_CULL);
 
     float tN=0.f,tH=0.f,tT=0.f,tR=0.f;
+    
+	float 	LOD_CALC_SAMPLES 	= Scene->m_LevelOp.m_LOD_Quality;
+	s32		LOD_CALC_SAMPLES_LIM= LOD_CALC_SAMPLES/2;
 
     // preload textures
     for (SurfaceIt surf_it=E->Surfaces().begin(); surf_it!=E->Surfaces().end(); surf_it++){
@@ -137,90 +135,79 @@ int	SceneBuilder::BuildObjectLOD(const Fmatrix& parent, CEditableObject* E, int 
 				if (0==src_a)	continue;
                 
                 FvectorVec		n_vec;
-                SampleVec		sample_pt_vec(iFloor(LOD_CALC_SAMPLES*LOD_CALC_SAMPLES));
+                Fvector4Vec		sample_pt_vec;//(iFloor(LOD_CALC_SAMPLES*LOD_CALC_SAMPLES));
 //.				FvectorVec		c_vec;
 				Fvector			start;
-                CTimer TT,TT1;
-				TT.Start		();
-                u32 sample_pt_idx	= 0;
+CTimer 	TT,TT1;
+TT.Start();
+                SPickQuery 		PQ;
                 for (s32 iiH=-LOD_CALC_SAMPLES_LIM; iiH<=LOD_CALC_SAMPLES_LIM; iiH++){
                 	float dY	= iiH*(dH/LOD_CALC_SAMPLES);
                     for (s32 iiW=-LOD_CALC_SAMPLES_LIM; iiW<=LOD_CALC_SAMPLES_LIM; iiW++){
 	                	float dX= iiW*(dW/LOD_CALC_SAMPLES);
                         start.set		(X+dX,Y+dY,0);
                         M.transform_tiny(start);
-                        start.mad		(M.k,-1000.f);
-                        SPickQuery 		PQ;
-                        PQ.prepare_rq	(start,M.k,2000.f,CDB::OPT_CULL);
-                        E->RayQuery		(Fidentity,Fidentity,PQ);
+                        start.mad		(M.k,-dR);
+                        PQ.prepare_rq	(start,M.k,d2R,CDB::OPT_CULL);
+                        E->RayQuery		(PQ);
                         if (PQ.r_count()){
                             PQ.r_sort();
                             Fvector N	= {0,0,0};
                             for (s32 k=PQ.r_count()-1; k>=0; k--){
                             	SPickQuery::SResult* R = PQ.r_begin()+k;
-								float a;
-                            	if (!GetPointColor(R,a)) continue;
-								if (!fis_zero(a)){
-                                	if (((iiH==-LOD_HEMI_SAMPLE)||(iiH==+LOD_HEMI_SAMPLE)||(iiH==0))&&
-                                    	((iiW==-LOD_HEMI_SAMPLE)||(iiW==+LOD_HEMI_SAMPLE)||(iiW==0)))
-                                    {
-                                        Fvector pt; 	pt.mad(PQ.m_Start,PQ.m_Direction,R->range-EPS_L);
-                                        sample_pt_vec[sample_pt_idx].push_back(Fvector4().set(pt.x,pt.y,pt.z,a));
-                                    }
+								u32 	uA;
+                            	if (!GetPointColor(R,uA)) continue;
+                                float	fA = float(uA)/255.f;
+								if (uA){
+                                    Fvector  pt; 	pt.mad(PQ.m_Start,PQ.m_Direction,R->range-EPS_L);
+                                    Fvector4 ptt;	ptt.set(pt.x,pt.y,pt.z,fA);
+                                    sample_pt_vec.push_back(ptt);
                                 }
                                 // normal
                                 Fvector Nn;
                                 Nn.mknormal		(R->verts[0],R->verts[1],R->verts[2]);
-                                Nn.mul			(a);
+                                Nn.mul			(fA);
 
-                                N.mul			(1.f-a);
+                                N.mul			(1.f-fA);
                                 N.add			(Nn);
                             }
                             float n_mag			= N.magnitude();
                             if (!fis_zero(n_mag,EPS))
                                 n_vec.push_back	(N.div(n_mag));
-
-//.							Fvector x; x.set	(C.r,C.g,C.b);
-//.							c_vec.push_back		(x);
-							sample_pt_idx++;
                         }
                     }
                 }
-                tN		+=				TT.Stop();
-                TT.Start();
+tN+=TT.Stop();
+
+TT.Start();
                 // light points
                 float res_transp		= 0.f;
-                for (SampleIt sample_pt_it=sample_pt_vec.begin(); sample_pt_it!=sample_pt_vec.end(); sample_pt_it++){
-                    for (Fvector4It pt_it=sample_pt_it->begin(); pt_it!=sample_pt_it->end(); pt_it++){
-                        float avg_transp	= 0.f;
-                        for (BLIt it=simple_hemi.begin(); it!=simple_hemi.end(); it++){
+                for (Fvector4It pt_it=sample_pt_vec.begin(); pt_it!=sample_pt_vec.end(); pt_it++){
+                    float avg_transp	= 0.f;
+                    for (BLIt it=simple_hemi.begin(); it!=simple_hemi.end(); it++){
 TT1.Start();
-                            Fvector 		start;
-                            Fvector dir; 	dir.invert(it->light.direction);
-                            start.mad		(Fvector().set(pt_it->x,pt_it->y,pt_it->z),dir,100.f);
-                            SPickQuery 		PQ;
-                            PQ.prepare_rq	(start,it->light.direction,100.f,CDB::OPT_CULL);
-                            E->RayQuery		(Fidentity,Fidentity,PQ);
+                        Fvector 		start;
+                        start.mad		(Fvector().set(pt_it->x,pt_it->y,pt_it->z),it->light.direction,-dR);
+                        PQ.prepare_rq	(start,it->light.direction,dR,CDB::OPT_CULL);
+                        E->RayQuery		(PQ);
 tR+=TT1.Stop();                             
-                            float ray_transp= 1.f;
-                            if (PQ.r_count()){
-//.                            	PQ.r_sort	();
-                                for (s32 k=PQ.r_count()-1; k>=0; k--){
-                                    float a;
-                                    TT1.Start();
-                                    if (!GetPointColor(PQ.r_begin()+k,a)) continue;
-                                    tT+=TT1.Stop();
-                                    ray_transp		*= a;
-                                }
+                        float ray_transp= 1.f;
+                        if (PQ.r_count()){
+                            for (s32 k=0; k<PQ.r_count(); k++){
+                                u32 	a;
+TT1.Start();
+                                if (!GetPointColor(PQ.r_begin()+k,a)) continue;
+tT+=TT1.Stop();
+                                ray_transp		*= (1.f - float(a)/255.f);
+								if (fis_zero(ray_transp,EPS_L)) break;
                             }
-                            avg_transp				+= ray_transp;
                         }
-                        avg_transp					/= simple_hemi.size();
-                        res_transp					= res_transp*(1.f-pt_it->w)+avg_transp*pt_it->w;
-//						if (fsimilar(pt_it->w,1.f))	break;
+                        avg_transp				+= ray_transp;
                     }
+                    avg_transp					/= simple_hemi.size();
+                    res_transp					= res_transp*(1.f-pt_it->w)+avg_transp*pt_it->w;
                 }
-                tH		+=				TT.Stop();
+tH+=TT.Stop();
 
 				tgt_h				= iFloor	(res_transp*255.f);
 

@@ -49,6 +49,12 @@ bool CEditableObject::RayPick(float& dist, const Fvector& S, const Fvector& D, c
 	return picked;
 }
 
+void CEditableObject::RayQuery(SPickQuery& pinf)
+{
+    for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
+        (*m)->RayQuery(pinf);
+}
+
 void CEditableObject::RayQuery(const Fmatrix& parent, const Fmatrix& inv_parent, SPickQuery& pinf)
 {
     for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)

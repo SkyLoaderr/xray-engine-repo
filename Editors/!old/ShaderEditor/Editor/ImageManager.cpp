@@ -576,7 +576,7 @@ IC void GET(U32Vec& pixels, u32 w, u32 h, u32 x, u32 y, u32 ref, u32 &count, u32
     count++;
 }
 
-BOOL ApplyBorders(U32Vec& pixels, u32 w, u32 h, u32 ref)
+BOOL _ApplyBorders(U32Vec& pixels, u32 w, u32 h, u32 ref)
 {
     BOOL    bNeedContinue = FALSE;
 
@@ -613,6 +613,17 @@ BOOL ApplyBorders(U32Vec& pixels, u32 w, u32 h, u32 ref)
         Msg("* ERROR: ApplyBorders");
     }
     return bNeedContinue;
+}
+
+void CImageManager::ApplyBorders(U32Vec& tgt_data, u32 w, u32 h)
+{
+    U32Vec border_pixels 		= tgt_data;
+    for (U32It it=tgt_data.begin(); it!=tgt_data.end(); it++)
+        *it=(color_get_A(*it)>200)?subst_alpha(*it,0xFF):subst_alpha(*it,0x00);
+    for (u32 ref=254; ref>0; ref--)
+        _ApplyBorders(tgt_data,w,h,ref);
+    for (int t=0; t<int(tgt_data.size()); t++)
+        tgt_data[t]=subst_alpha(tgt_data[t],color_get_A(border_pixels[t]));
 }
 
 #include "d3dutils.h"
@@ -662,13 +673,8 @@ void CImageManager::CreateLODTexture(const Fbox& bb, U32Vec& tgt_data, u32 tgt_w
 		for (u32 y=0; y<tgt_h; y++)
     		CopyMemory			(tgt_data.begin()+y*pitch+frame*tgt_w,pixels.begin()+y*tgt_w,tgt_w*sizeof(u32));
     }
-    U32Vec border_pixels 		= tgt_data;
-    for (U32It it=tgt_data.begin(); it!=tgt_data.end(); it++)
-        *it=(color_get_A(*it)>200)?subst_alpha(*it,0xFF):subst_alpha(*it,0x00);
-    for (u32 ref=254; ref>0; ref--)
-        ApplyBorders(tgt_data,pitch,tgt_h,ref);
-    for (int t=0; t<int(tgt_data.size()); t++)
-        tgt_data[t]=subst_alpha(tgt_data[t],color_get_A(border_pixels[t]));
+
+    ApplyBorders				(tgt_data,pitch,tgt_h);
 
     // flip data
 	for (u32 y=0; y<tgt_h/2; y++){

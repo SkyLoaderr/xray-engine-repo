@@ -36,7 +36,7 @@
 #define CHUNK_LO_PREFIX 		0x7804
 #define CHUNK_LO_BP_VERSION		0x7849
 #define CHUNK_BUILD_PARAMS		0x7850
-
+#define CHUNK_LOD_QUALITY		0x7851
 //------------------------------------------------------------------------------------------------
 // Level Options
 //------------------------------------------------------------------------------------------------
@@ -64,6 +64,10 @@ void st_LevelOptions::Save( IWriter& F ){
     F.open_chunk( CHUNK_BUILD_PARAMS );
 	F.w			( &m_BuildParams, sizeof(m_BuildParams) );
     F.close_chunk();
+
+    F.open_chunk( CHUNK_LOD_QUALITY );
+	F.w_float	( m_LOD_Quality );
+    F.close_chunk();
 }
 
 void st_LevelOptions::Read(IReader& F)
@@ -87,6 +91,9 @@ void st_LevelOptions::Read(IReader& F)
     if (F.find_chunk(CHUNK_LO_BP_VERSION))
 	    vers = F.r_u32( );
 
+    if (F.find_chunk(CHUNK_LOD_QUALITY))
+	    m_LOD_Quality= F.r_float( );
+        
     if (CURRENT_LEVELOP_BP_VERSION==vers){
 	    if (F.find_chunk(CHUNK_BUILD_PARAMS)) 	
         	F.r(&m_BuildParams, sizeof(m_BuildParams));
@@ -506,17 +513,27 @@ void EScene::LoadCompilerError(LPCSTR fn)
 	IReader* F	= FS.r_open(fn);
 
     Tools->m_Errors.Clear();
-    if (F->find_chunk(0)){ // lc error (TJ)
+    Fvector 		pt[3];
+    if (F->find_chunk(10)){ // lc error (TJ)
         Tools->m_Errors.m_Points.resize(F->r_u32());
         F->r(Tools->m_Errors.m_Points.begin(),sizeof(CLevelTools::ERR::Point)*Tools->m_Errors.m_Points.size());
+    }else if (F->find_chunk(0)){ // lc error (TJ)
+    	u32 cnt			= F->r_u32();
+        for (u32 k=0;k<cnt; k++){ F->r(pt,sizeof(Fvector)); Tools->m_Errors.AppendPoint(pt[0]); }
     }
-    if (F->find_chunk(1)){ // lc error (multiple edges)
+    if (F->find_chunk(11)){ // lc error (multiple edges)
         Tools->m_Errors.m_Lines.resize(F->r_u32());
         F->r(Tools->m_Errors.m_Lines.begin(),sizeof(CLevelTools::ERR::Line)*Tools->m_Errors.m_Lines.size());
+    }else if (F->find_chunk(1)){ // lc error (multiple edges)
+    	u32 cnt			= F->r_u32();
+        for (u32 k=0;k<cnt; k++){ F->r(pt,sizeof(Fvector)*2); Tools->m_Errors.AppendLine(pt[0],pt[1]); }
     }
-    if (F->find_chunk(2)){ // lc error (invalid faces)
+    if (F->find_chunk(12)){ // lc error (invalid faces)
         Tools->m_Errors.m_Faces.resize(F->r_u32());
         F->r(Tools->m_Errors.m_Faces.begin(),sizeof(CLevelTools::ERR::Face)*Tools->m_Errors.m_Faces.size());
+    }else if (F->find_chunk(2)){ // lc error (invalid faces)
+    	u32 cnt			= F->r_u32();
+        for (u32 k=0;k<cnt; k++){ F->r(pt,sizeof(Fvector)*3); Tools->m_Errors.AppendFace(pt[0],pt[1],pt[2]); }
     }
     FS.r_close(F);
 }
@@ -527,19 +544,19 @@ void EScene::SaveCompilerError(LPCSTR fn)
 	IWriter&		err = *fs;
 
 	// t-junction
-	err.open_chunk	(0);
+	err.open_chunk	(10);
 	err.w_u32		(Tools->m_Errors.m_Points.size());
 	err.w			(Tools->m_Errors.m_Points.begin(), Tools->m_Errors.m_Points.size()*sizeof(CLevelTools::ERR::Point));
 	err.close_chunk	();
 
 	// m-edje
-	err.open_chunk	(1);
+	err.open_chunk	(11);
 	err.w_u32		(Tools->m_Errors.m_Lines.size());
 	err.w			(Tools->m_Errors.m_Lines.begin(), Tools->m_Errors.m_Lines.size()*sizeof(CLevelTools::ERR::Line));
 	err.close_chunk	();
 
 	// invalid
-	err.open_chunk	(2);
+	err.open_chunk	(12);
 	err.w_u32		(Tools->m_Errors.m_Faces.size());
 	err.w			(Tools->m_Errors.m_Faces.begin(), Tools->m_Errors.m_Faces.size()*sizeof(CLevelTools::ERR::Face));
 	err.close_chunk	();

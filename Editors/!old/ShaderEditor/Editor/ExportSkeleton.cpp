@@ -149,7 +149,7 @@ void CExportSkeleton::SSplit::Save(IWriter& F)
             F.w			(&pV.T,sizeof(Fvector));		// T        
             F.w			(&pV.B,sizeof(Fvector));		// B        
             F.w			(&pV.UV,sizeof(Fvector2));		// tu,tv
-            F.w_u32		(pV.B0);
+            F.w_u32		(pV.B0); 
 /*
             Fvector p0, p1;
             p0			= pV.O;

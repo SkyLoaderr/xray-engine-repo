@@ -30,6 +30,7 @@ void st_LevelOptions::InitDefaultText()
 	char deffilename[MAX_PATH];
 	int handle;
 	m_BOPText="";
+    m_LOD_Quality	= 5.f;
 }
 
 void st_LevelOptions::Reset()

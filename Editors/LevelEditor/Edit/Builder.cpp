@@ -11,10 +11,21 @@
 #include "ESceneDOTools.h"
 #include "ui_main.h"
 #include "ui_toolscustom.h"
+#include "xrHemisphere.h"
 //----------------------------------------------------
 
 SceneBuilder Builder;
 //----------------------------------------------------
+
+ICF static void simple_hemi_callback(float x, float y, float z, float E, LPVOID P)
+{
+    SceneBuilder::BLVec* dst 	= (SceneBuilder::BLVec*)P;
+    SceneBuilder::SBuildLight 	T;
+    T.energy     				= E;
+    T.light.direction.set		(x,y,z);
+    dst->push_back  			(T);
+}
+
 SceneBuilder::SceneBuilder()
 {
     m_iDefaultSectorNum = 0;
@@ -52,6 +63,9 @@ BOOL SceneBuilder::Compile()
             bool bTestPortal = Scene->ObjCount(OBJCLASS_SECTOR)||Scene->ObjCount(OBJCLASS_PORTAL);
 	        // validate scene
     	    VERIFY_COMPILE(Scene->Validate(false,bTestPortal,true,true,true),"Validation failed.","Invalid scene.");
+			// fill simple hemi
+            simple_hemi.clear	();
+	        xrHemisphereBuild	(1,2.f,simple_hemi_callback,&simple_hemi);
         	// build
             VERIFY_COMPILE(PreparePath(),				"Failed to prepare level path","");
             VERIFY_COMPILE(PrepareFolders(),			"Failed to prepare level folders","");

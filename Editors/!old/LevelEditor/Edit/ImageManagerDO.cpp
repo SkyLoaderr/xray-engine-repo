@@ -103,7 +103,7 @@ IC bool _rect_place(U8Vec& mask, int dest_width, int dest_height, Irect& r, BOOL
 bool item_area_sort_pred(const SSimpleImage& item0, const SSimpleImage& item1){return ((item0.Area()>item1.Area())||(item0.LongestEdge()>item1.LongestEdge()));}
 extern bool Surface_Load(LPCSTR full_name, U32Vec& data, u32& w, u32& h, u32& a);
 
-int CImageManager::CreateMergedTexture(SSimpleImageVec& src_images, SSimpleImage& dst_image, int dest_width, int dest_height, Fvector2Vec& dest_offset, Fvector2Vec& dest_scale, boolVec& dest_rotate, U32Vec& dest_remap)
+int CImageManager::CreateMergedTexture(u32 layer_cnt, SSimpleImageVec& src_images, SSimpleImage& dst_image, int dest_width, int dest_height, Fvector2Vec& dest_offset, Fvector2Vec& dest_scale, boolVec& dest_rotate, U32Vec& dest_remap)
 {
 	if (src_images.empty()) return -1;
 
@@ -112,7 +112,9 @@ int CImageManager::CreateMergedTexture(SSimpleImageVec& src_images, SSimpleImage
     dest_rotate.clear	();
     dest_remap.resize	(src_images.size());
 
-	U32Vec 	dest_pixels	(dest_width*dest_height,0); 
+    SSimpleImage::DATAVec dest_layers(layer_cnt);
+    for (SSimpleImage::DATAIt layer_it=dest_layers.begin(); layer_it!=dest_layers.end(); layer_it++)
+    	layer_it->resize(dest_width*dest_height,0);
 	U8Vec 	dest_mask	(dest_width*dest_height,0); 
 
     int max_area		= dest_width*dest_height;
@@ -142,25 +144,28 @@ int CImageManager::CreateMergedTexture(SSimpleImageVec& src_images, SSimpleImage
         dest_scale.push_back	(scale);
         dest_rotate.push_back	(bRotated);
         // Perform BLIT
-        if (!bRotated) 	blit	(dest_pixels.begin(),dest_width,dest_height,s_it->data.begin(),s_it->w,s_it->h,R.lt.x,R.lt.y);
-        else            blit_r  (dest_pixels.begin(),dest_width,dest_height,s_it->data.begin(),s_it->w,s_it->h,R.lt.x,R.lt.y);
+        VERIFY			(s_it->layers.size()==layer_cnt);
+        for (u32 k=0; k<layer_cnt; k++){
+            if (!bRotated) 	blit	(dest_layers[k].begin(),dest_width,dest_height,s_it->layers[k].begin(),s_it->w,s_it->h,R.lt.x,R.lt.y);
+            else            blit_r  (dest_layers[k].begin(),dest_width,dest_height,s_it->layers[k].begin(),s_it->w,s_it->h,R.lt.x,R.lt.y);
+        }
     }
 
     dst_image.w			= dest_width;
     dst_image.h			= dest_height;
     dst_image.a			= TRUE;
-    dst_image.data		= dest_pixels;
+    dst_image.layers	= dest_layers;
 
     return 1;
 }
 
-int	CImageManager::CreateMergedTexture	(SSimpleImageVec& src_images, SSimpleImage& dst_image, int dest_width_min, int dest_width_max, int dest_height_min, int dest_height_max, Fvector2Vec& dest_offset, Fvector2Vec& dest_scale, boolVec& dest_rotate, U32Vec& dest_remap)
+int	CImageManager::CreateMergedTexture	(u32 layer_cnt, SSimpleImageVec& src_images, SSimpleImage& dst_image, int dest_width_min, int dest_width_max, int dest_height_min, int dest_height_max, Fvector2Vec& dest_offset, Fvector2Vec& dest_scale, boolVec& dest_rotate, U32Vec& dest_remap)
 {
     int res	        = 0;
     int w	        = dest_width_min;
 	int h	        = dest_height_min;
     do{
-        res	        = ImageLib.CreateMergedTexture(src_images,dst_image,w,h,dest_offset,dest_scale,dest_rotate,dest_remap);
+        res	        = ImageLib.CreateMergedTexture(layer_cnt, src_images,dst_image,w,h,dest_offset,dest_scale,dest_rotate,dest_remap);
         if (0==res){
     	    if ((w<=h)&&(w<dest_width_max))		w *= 2;
 	        else if ((h<w)&&(h<dest_height_max))h *= 2;
@@ -193,9 +198,10 @@ int CImageManager::CreateMergedTexture(const RStringVec& _names, LPCSTR dest_nam
     SSimpleImageVec src_items	(src_names.size());
     SSimpleImageVecIt s_it		= src_items.begin();
     for (RStringVecIt n_it=src_names.begin(); n_it!=src_names.end(); n_it++,s_it++){
+    	s_it->layers.resize(1);
     	xr_string		t_name;
         FS.update_path	(t_name,_textures_,**n_it);
-        if (!Surface_Load(EFS.ChangeFileExt(t_name,".tga").c_str(),s_it->data,s_it->w,s_it->h,s_it->a)){
+        if (!Surface_Load(EFS.ChangeFileExt(t_name,".tga").c_str(),s_it->layers.back(),s_it->w,s_it->h,s_it->a)){
             ELog.DlgMsg	(mtError,"Can't load texture '%s'. Check file existence.",**n_it);
             return -1;
         }
@@ -226,8 +232,8 @@ int CImageManager::CreateMergedTexture(const RStringVec& _names, LPCSTR dest_nam
         dest_scale.push_back	(scale);
         dest_rotate.push_back	(bRotated);
         // Perform BLIT
-        if (!bRotated) 	blit	(dest_pixels.begin(),dest_width,dest_height,s_it->data.begin(),s_it->w,s_it->h,R.lt.x,R.lt.y);
-        else            blit_r  (dest_pixels.begin(),dest_width,dest_height,s_it->data.begin(),s_it->w,s_it->h,R.lt.x,R.lt.y);
+        if (!bRotated) 	blit	(dest_pixels.begin(),dest_width,dest_height,s_it->layers.back().begin(),s_it->w,s_it->h,R.lt.x,R.lt.y);
+        else            blit_r  (dest_pixels.begin(),dest_width,dest_height,s_it->layers.back().begin(),s_it->w,s_it->h,R.lt.x,R.lt.y);
     }
 
     // all right. make texture.

@@ -28,6 +28,7 @@
 //------------------------------------------------------------------------------
 
 #define LEVEL_LODS_TEX_NAME "level_lods"
+#define LEVEL_LODS_NRM_NAME "level_lods_nm"
 #define LEVEL_DI_TEX_NAME "level_stat"
 
 class CSceneStat{
@@ -485,16 +486,10 @@ int	SceneBuilder::BuildLightControl(LPCSTR name)
 	return l_light_control.size()-1;
 }
 
-struct SBuildLight{
-	Flight	light;
-    float	energy;
-};
-DEFINE_VECTOR(SBuildLight,BLVec,BLIt);
-
 struct SHemiData
 {
-    BLVec* 		dest;
-    SBuildLight	T;
+    SceneBuilder::BLVec* 		dest;
+    SceneBuilder::SBuildLight	T;
 };
 void __stdcall 	hemi_callback(float x, float y, float z, float E, LPVOID P)
 {
@@ -805,51 +800,6 @@ int SceneBuilder::BuildTexture(const char* name)
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// lod build functions
-//------------------------------------------------------------------------------
-int	SceneBuilder::BuildObjectLOD(const Fmatrix& parent, CEditableObject* E, int sector_num)
-{
-	if (!E->m_Flags.is(CEditableObject::eoUsingLOD)) return -1;
-    xr_string lod_name = E->GetLODTextureName();
-
-    b_material 		mtl;
-    mtl.surfidx		= BuildTexture		(LEVEL_LODS_TEX_NAME);
-    mtl.shader      = BuildShader		(E->GetLODShaderName());
-    mtl.sector		= sector_num;
-    mtl.shader_xrlc	= -1;
-    if ((u16(-1)==mtl.surfidx)||(u16(-1)==mtl.shader)) return -2;
-
-    int mtl_idx		= FindInMaterials(&mtl);
-    if (mtl_idx<0){
-        l_materials.push_back(mtl);
-        mtl_idx 	= l_materials.size()-1;
-    }
-
-    l_lods.push_back(e_b_lod());
-    e_b_lod& b		= l_lods.back();
-    Fvector    		p[4];
-    Fvector2 		t[4];
-    for (int frame=0; frame<LOD_SAMPLE_COUNT; frame++){
-        E->GetLODFrame(frame,p,t,&parent);
-        for (int k=0; k<4; k++){
-            b.lod.faces[frame].v[k].set(p[k]);
-            b.lod.faces[frame].t[k].set(t[k]);
-        }
-    }
-    b.lod.dwMaterial= mtl_idx;
-    b.lod_name		= lod_name.c_str();
-
-    // make lod
-    E->m_Flags.set				(CEditableObject::eoUsingLOD,FALSE);
-    object_for_render			= E;
-    ImageLib.CreateLODTexture	(E->GetBox(), b.data, LOD_IMAGE_SIZE,LOD_IMAGE_SIZE,LOD_SAMPLE_COUNT);
-    E->m_Flags.set				(CEditableObject::eoUsingLOD,TRUE);
-
-    return l_lods.size()-1;
-}
-//------------------------------------------------------------------------------
-
-//------------------------------------------------------------------------------
 // material build functions
 //------------------------------------------------------------------------------
 int SceneBuilder::FindInMaterials(b_material* m)
@@ -983,17 +933,20 @@ BOOL SceneBuilder::CompileStatic()
             images.push_back(SSimpleImage());
             SSimpleImage& I	= images.back();
             I.name			= l_lods[k].lod_name;
-            I.data			= l_lods[k].data;
+            I.layers.push_back(l_lods[k].data);
+            I.layers.push_back(l_lods[k].ndata);
             I.w				= LOD_IMAGE_SIZE*LOD_SAMPLE_COUNT;
             I.h				= LOD_IMAGE_SIZE;
 	        pb->Inc();
         }       
 
         SSimpleImage merged_image;
-        xr_string fn 		= ChangeFileExt	(MakeLevelPath(LEVEL_LODS_TEX_NAME).c_str(),".dds").c_str();
-        if (1==ImageLib.CreateMergedTexture	(images,merged_image,512,2048,64,1024,offsets,scales,rotated,remap)){
+        xr_string fn_color	= ChangeFileExt	(MakeLevelPath(LEVEL_LODS_TEX_NAME).c_str(),".dds").c_str();
+        xr_string fn_normal	= ChangeFileExt	(MakeLevelPath(LEVEL_LODS_NRM_NAME).c_str(),".dds").c_str();
+        if (1==ImageLib.CreateMergedTexture	(2,images,merged_image,512,2048,64,1024,offsets,scales,rotated,remap)){
             // all right, make texture
-            ImageLib.MakeGameTexture		(fn.c_str(),merged_image.data.begin(),merged_image.w,merged_image.h,STextureParams::tfDXT5,STextureParams::ttImage,STextureParams::flDitherColor|STextureParams::flGenerateMipMaps);
+            ImageLib.MakeGameTexture		(fn_color.c_str(),merged_image.layers[0].begin(),merged_image.w,merged_image.h,STextureParams::tfDXT5,STextureParams::ttImage,STextureParams::flDitherColor|STextureParams::flGenerateMipMaps);
+            ImageLib.MakeGameTexture		(fn_normal.c_str(),merged_image.layers[1].begin(),merged_image.w,merged_image.h,STextureParams::tfDXT5,STextureParams::ttImage,STextureParams::flDitherColor|STextureParams::flGenerateMipMaps);
 	        for (k=0; k<(int)l_lods.size(); k++){        
 	            e_b_lod& l	= l_lods[k];         
                 for (u32 f=0; f<8; f++){
