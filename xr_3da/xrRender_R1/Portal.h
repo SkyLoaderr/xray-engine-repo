@@ -98,10 +98,10 @@ public:
 	void					DebugDump		();
 	IVisual*				Root			()	{ return pRoot; }
 
-	void					get_objects	(CFrustum& F, Fvector& vBase, Fmatrix& mFullXFORM, objSET &D, objQualifier* Q, void* P);
+	void					get_objects		(CFrustum& F, Fvector& vBase, Fmatrix& mFullXFORM, objSET &D, objQualifier* Q, void* P);
 
-	CSector					(int ID)	{SelfID=ID; pRoot = 0;	}
-	virtual					~CSector	();
+	CSector					(int ID)		{SelfID=ID; pRoot = 0;	}
+	virtual					~CSector		();
 };
 
 #endif // !defined(AFX_PORTAL_H__1FC2D371_4A19_49EA_BD1E_2D0F8DEBBF15__INCLUDED_)
