@@ -660,35 +660,41 @@
 						Name="problem_solver"
 						Filter="">
 						<File
-							RelativePath=".\condition_state.h">
-						</File>
-						<File
-							RelativePath=".\condition_state_inline.h">
-						</File>
-						<File
-							RelativePath=".\operator_abstract.h">
-						</File>
-						<File
-							RelativePath=".\operator_abstract_inline.h">
-						</File>
-						<File
-							RelativePath=".\operator_condition.h">
-						</File>
-						<File
-							RelativePath=".\operator_condition_inline.h">
-						</File>
-						<File
-							RelativePath=".\operator_effect.h">
-						</File>
-						<File
-							RelativePath=".\operator_effect_inline.h">
-						</File>
-						<File
 							RelativePath=".\problem_solver.h">
 						</File>
 						<File
 							RelativePath=".\problem_solver_inline.h">
 						</File>
+						<Filter
+							Name="condition_state"
+							Filter="">
+							<File
+								RelativePath=".\condition_state.h">
+							</File>
+							<File
+								RelativePath=".\condition_state_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="operator_abstract"
+							Filter="">
+							<File
+								RelativePath=".\operator_abstract.h">
+							</File>
+							<File
+								RelativePath=".\operator_abstract_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="operator_condition"
+							Filter="">
+							<File
+								RelativePath=".\operator_condition.h">
+							</File>
+							<File
+								RelativePath=".\operator_condition_inline.h">
+							</File>
+						</Filter>
 					</Filter>
 				</Filter>
 			</Filter>
