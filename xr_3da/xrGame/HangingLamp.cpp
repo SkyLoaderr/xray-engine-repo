@@ -4,7 +4,7 @@
 #include "HangingLamp.h"
 #include "../LightAnimLibrary.h"
 #include "PhysicsShell.h"
- 
+#include "Physics.h"
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -61,7 +61,7 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 
 	lanim					= LALib.FindItem(*lamp->color_animator);
 
-	if (lamp->flags.is(CSE_ALifeObjectHangingLamp::flPhysic))		CreateBody(lamp->mass);
+	if (lamp->flags.is(CSE_ALifeObjectHangingLamp::flPhysic))		CreateBody(lamp);
 	if(PSkeletonAnimated(Visual()))	PSkeletonAnimated(Visual())->PlayCycle("idle");
 	//PKinematics(Visual())->Calculate();
 	setVisible(true);
@@ -179,45 +179,48 @@ void CHangingLamp::AddElement(CPhysicsElement* root_e, int id)
 	}
 }
 static BONE_P_MAP bone_map=BONE_P_MAP();
-void CHangingLamp::CreateBody(float/* mass*/)
+void CHangingLamp::CreateBody(CSE_ALifeObjectHangingLamp	*lamp)
 {
-	//m_pPhysicsShell		= P_create_Shell();
-	//m_pPhysicsShell->set_Kinematics(PKinematics(Visual()));
-	//AddElement			(0,PKinematics(Visual())->LL_GetBoneRoot());
-	//m_pPhysicsShell->mXFORM.set(renderable.xform);
-	//m_pPhysicsShell->SetAirResistance(0.001f, 0.02f);
-	//m_pPhysicsShell->setMass(mass);
-	//m_pPhysicsShell->SmoothElementsInertia(0.2f);
-	//m_pPhysicsShell->set_PhysicsRefObject(this);
-	if (!Visual()) return;
 
+	if (!Visual()) return;
+	if(m_pPhysicsShell) return;
 	CKinematics* pKinematics=PKinematics(Visual());
 
-	if(m_pPhysicsShell) return;
 	m_pPhysicsShell		= P_create_Shell();
-	CPhysicsElement* fixed_element=NULL;
-	//u32 fixed_bone_id=pKinematics->LL_BoneID(po->fixed_bone);
-	u32 fixed_bone_id=pKinematics->LL_GetBoneRoot();
-	R_ASSERT2(BI_NONE!=fixed_bone_id,"wrong fixed bone");
-	bone_map.clear();
-	bone_map.insert(mk_pair(fixed_bone_id,physicsBone()));
+
+	bone_map					.clear();
+	LPCSTR	fixed_bones=*lamp->fixed_bones;
+	if(fixed_bones)
+	{
+		int count =					_GetItemCount(fixed_bones);
+		for (int i=0 ;i<count; ++i) 
+		{
+			string64					fixed_bone							;
+			_GetItem					(fixed_bones,i,fixed_bone)			;
+			u16 fixed_bone_id=pKinematics->LL_BoneID(fixed_bone)			;
+			R_ASSERT2(BI_NONE!=fixed_bone_id,"wrong fixed bone")			;
+			bone_map.insert(mk_pair(fixed_bone_id,physicsBone()))			;
+		}
+	
+	}
+	else
+	{
+		bone_map.insert(mk_pair(pKinematics->LL_GetBoneRoot(),physicsBone()))			;
+	}
+
 	m_pPhysicsShell->build_FromKinematics(pKinematics,&bone_map);
-	fixed_element=bone_map.find(fixed_bone_id)->second.element;
-	R_ASSERT2(fixed_element,"fixed bone has no physics");
-
-
 	m_pPhysicsShell->set_PhysicsRefObject(this);
 	m_pPhysicsShell->mXFORM.set(XFORM());
 	m_pPhysicsShell->Activate(true,true);//,
 	//m_pPhysicsShell->SmoothElementsInertia(0.3f);
 	m_pPhysicsShell->SetAirResistance();//0.0014f,1.5f
-	if(fixed_element)
+	BONE_P_PAIR_IT i=bone_map.begin(),e=bone_map.end();
+
+	for(;i!=e;i++)
 	{
-		dMass m;
-		dMassSetBox(&m,1.f,10000.f,10000.f,10000.f);
-		dMassAdjust(&m,100000000.f);
-		dBodySetMass(fixed_element->get_body(),&m);
-		dBodySetGravityMode(fixed_element->get_body(),0);
+		CPhysicsElement* fixed_element=i->second.element;
+		R_ASSERT2(fixed_element,"fixed bone has no physics");
+		FixBody(fixed_element->get_body());
 	}
 
 	m_pPhysicsShell->mXFORM.set(XFORM());

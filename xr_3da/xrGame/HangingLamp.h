@@ -27,7 +27,7 @@ private:
 	float			fBrightness;
 
 	void			AddElement		(CPhysicsElement* root_e, int id);
-	void			CreateBody		(float mass);
+	void			CreateBody		(CSE_ALifeObjectHangingLamp	*lamp);
 	bool			Alive			(){return fHealth>0.f;}
 public:
 					CHangingLamp	();

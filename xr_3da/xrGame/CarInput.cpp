@@ -93,7 +93,7 @@ bool CCar::bfAssignObject(CEntityAction *tpEntityAction)
 			default : 
 				return	((l_tObjectAction.m_bCompleted = true) == false);
 		}
-		return		(false);
+	
 	}
 	
 	return			(false);
