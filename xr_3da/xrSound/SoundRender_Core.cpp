@@ -311,8 +311,7 @@ void	CSoundRender_Core::play					( ref_sound& S, CObject* O, u32 flags, float de
 	if (!bPresent || 0==S.handle)	return;
 
 	S.g_object		= O;
-	if (S.feedback)	
-	{
+	if (S.feedback)	{
 		CSoundRender_Emitter* E = (CSoundRender_Emitter*)S.feedback;
 		E->rewind	();
 	}	
@@ -329,8 +328,7 @@ void	CSoundRender_Core::play_at_pos			( ref_sound& S, CObject* O, const Fvector 
 {
 	if (!bPresent || 0==S.handle) return;
 	S.g_object		= O;
-	if (S.feedback)	
-	{
+	if (S.feedback)	{
 		CSoundRender_Emitter* E = (CSoundRender_Emitter*)S.feedback;
 		E->rewind	();
 	}	

@@ -78,8 +78,8 @@ void CWeaponPistol::PlayAnimHide()
 {
 	if(m_opened) 
 	{
-		UpdateFP();
-		PlaySound(sndClose,vLastFP);
+		UpdateFP	();
+		PlaySound	(sndClose,vLastFP);
 		m_pHUD->animPlay (mhud_close[Random.randI(mhud_close.size())],TRUE,this);
 	} 
 	else 
@@ -126,12 +126,12 @@ void CWeaponPistol::OnAnimationEnd()
 void CWeaponPistol::OnShot		()
 {
 	// Sound
-	UpdateFP();
-	PlaySound(*m_pSndShotCurrent,vLastFP);
+	UpdateFP		();
+	PlaySound		(*m_pSndShotCurrent,vLastFP);
 
-	AddShotEffector();
+	AddShotEffector	();
 	
-	PlayAnimShoot();
+	PlayAnimShoot	();
 
 	// Shell Drop
 	Fvector vel; 

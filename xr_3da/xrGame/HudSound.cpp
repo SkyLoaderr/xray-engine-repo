@@ -59,10 +59,10 @@ void HUD_SOUND::DestroySound	(HUD_SOUND& hud_snd)
 	hud_snd.snd.destroy();
 }
 
-void HUD_SOUND::PlaySound(HUD_SOUND& hud_snd,
-						  const Fvector& position,
-						  const CObject* parent,
-						  bool hud_mode)
+void HUD_SOUND::PlaySound(HUD_SOUND&		hud_snd,
+						  const Fvector&	position,
+						  const CObject*	parent,
+						  bool				hud_mode)
 {
 	hud_snd.snd.set_volume	(hud_snd.volume);
 	hud_snd.snd.play_at_pos	(const_cast<CObject*>(parent),

@@ -224,8 +224,8 @@ void CWeaponBinoculars::switch2_Hiding	()
 	FireEnd					();
 	m_bPending				= TRUE;
 	
-	//UpdateFP();
-	sndHide.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0);
+	UpdateFP				();
+	sndHide.play_at_pos		(H_Root(),vLastFP,hud_mode?sm_2D:0);
 
 	m_pHUD->animPlay		(mhud_hide[Random.randI(mhud_hide.size())],TRUE,this);
 
@@ -244,11 +244,10 @@ void CWeaponBinoculars::switch2_Showing	()
 {
 	setVisible				(TRUE);
 	
-	//UpdateFP();
-	sndShow.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0);
+	UpdateFP				();
+	sndShow.play_at_pos		(H_Root(),vLastFP,hud_mode?sm_2D:0);
 	m_pHUD->animPlay		(mhud_show[Random.randI(mhud_show.size())],FALSE,this);
 }
-
 
 void CWeaponBinoculars::Fire2Start () {
 	inherited::Fire2Start();

@@ -48,7 +48,8 @@ u32 CGrenade::State(u32 state)
 	if(state == MS_THREATEN) 
 	{
 		//UpdateFP();
-		PlaySound(sndCheckout,Position());
+#pragma todo("Oles to Yura: position can be under level, use 'Center' instead")
+		PlaySound	(sndCheckout,Center());	// 
 	}
 	return inherited::State(state);
 }
