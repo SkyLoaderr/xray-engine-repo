@@ -126,6 +126,7 @@ void CDetailManager::VS_Render()
 	DWORD		iOffset	=	0;
 	
 	// Iterate
+	Device.Primitive.setVerticesUC	(VS_Code,sizeof(vertHW),VS_VB);
 	for (DWORD O=0; O<objects.size(); O++)
 	{
 		CList<SlotItem*>&	vis = visible	[O];
@@ -167,12 +168,10 @@ void CDetailManager::VS_Render()
 				dwBatch	++;
 				if (dwBatch == VS_BatchSize)	
 				{
-					dwBatch	= 1;
 					// flush
 					VSC.flush						(1,dwBatch*5);
 					DWORD dwCNT_verts				= dwBatch * Object.number_vertices;
 					DWORD dwCNT_prims				= (dwBatch * Object.number_indices)/3;
-					Device.Primitive.setVerticesUC	(VS_Code,sizeof(vertHW),VS_VB);
 					Device.Primitive.setIndicesUC	(vOffset, VS_IB);
 					Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,dwCNT_verts,iOffset,dwCNT_prims);
 					UPDATEC							(dwCNT_verts,dwCNT_prims,2);
@@ -185,11 +184,9 @@ void CDetailManager::VS_Render()
 			// flush if nessecary
 			if (dwBatch)
 			{
-				dwBatch	= 1;
 				VSC.flush						(1,dwBatch*5);
 				DWORD dwCNT_verts				= dwBatch * Object.number_vertices;
 				DWORD dwCNT_prims				= (dwBatch * Object.number_indices)/3;
-				Device.Primitive.setVerticesUC	(VS_Code,sizeof(vertHW),VS_VB);
 				Device.Primitive.setIndicesUC	(vOffset, VS_IB);
 				Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,dwCNT_verts,iOffset,dwCNT_prims);
 				UPDATEC							(dwCNT_verts,dwCNT_prims,2);
