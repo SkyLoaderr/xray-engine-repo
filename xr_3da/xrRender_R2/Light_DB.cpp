@@ -59,7 +59,7 @@ void CLight_DB::Load			(IReader *fs)
 				L->flags.bStatic	= true;
 				L->set_type			(IRender_Light::DIRECT);
 				L->set_shadow		(true);
-				L->set_direction	(Ldata.direction,tmp_R);
+				L->set_rotation		(Ldata.direction,tmp_R);
 			}
 			else
 			{
@@ -168,8 +168,8 @@ void			CLight_DB::Update			()
 		Dbase.set(0,-1,0).add		(E.sun_dir).normalize	();
 		Pbase.mad					(Device.vCameraPosition,Dbase,		-500.f);
 		P.mad						(Device.vCameraPosition,E.sun_dir,	-500.f);
-		sun->set_direction			(E.sun_dir);
-		sun_base->set_direction		(Dbase);
+		sun->set_rotation			(E.sun_dir,sun->right);
+		sun_base->set_rotation		(Dbase,sun->right);
 		sun->set_color				(E.sun_color.x,E.sun_color.y,E.sun_color.z);
 		sun_base->set_color			(E.sun_color.x,E.sun_color.y,E.sun_color.z);
 		sun->set_position			(P);
