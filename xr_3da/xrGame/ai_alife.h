@@ -12,6 +12,8 @@
 #include "ai_alife_objects.h"
 #include "ai_alife_registries.h"
 
+#define ALIFE_SUPPORT_CONSOLE_COMMANDS
+
 class CAI_ALife : public CSheduled {
 public:
 	typedef CSheduled inherited;
@@ -107,12 +109,12 @@ public:
 	virtual void					Update					(u32 dt);	
 			void					Save					();
 			void					Generate				();
-	// temporary
+#ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
 			void					vfListObjects			();
 			void					vfListEvents			();
 			void					vfListTasks				();
-			void					vfObjectInfo			();
-			void					vfEventInfo				();
-			void					vfTaskInfo				();
-	//
+			void					vfObjectInfo			(_OBJECT_ID	&tObjectID);
+			void					vfEventInfo				(_EVENT_ID &tEventID);
+			void					vfTaskInfo				(_TASK_ID &tTaskID);
+#endif
 };

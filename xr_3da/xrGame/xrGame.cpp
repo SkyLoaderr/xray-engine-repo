@@ -127,11 +127,11 @@ class CCC_ALifePath : public CConsoleCommand {
 public:
 	CCC_ALifePath(LPCSTR N) : CConsoleCommand(N)  { };
 	virtual void Execute(LPCSTR args) {
-		int id1=-1, id2=-1;
-		sscanf(args ,"%d %d",&id1,&id2);
 		if (!Level().AI.bfCheckIfGraphLoaded())
 			Msg("! there is no graph!");
-		else
+		else {
+			int id1=-1, id2=-1;
+			sscanf(args ,"%d %d",&id1,&id2);
 			if ((id1 != -1) && (id2 != -1))
 				if (max(id1,id2) > (int)Level().AI.GraphHeader().dwVertexCount - 1)
 					Msg("! there are only %d vertexes!",Level().AI.GraphHeader().dwVertexCount);
@@ -148,6 +148,7 @@ public:
 					}
 			else
 				Msg("! not enough parameters!");
+		}
 	}
 };
 
@@ -160,6 +161,26 @@ public:
 			if (tpGame && tpGame->m_tALife.m_bLoaded) {
 				tpGame->m_tALife.Save();
 				Log("* ALife simulation is successfully saved!");
+			}
+			else
+				Log("!ALife simulation cannot be saved!");
+		}
+		else
+			Log("!Not a single player game!");
+	}
+};
+
+#ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
+class CCC_ALifeListAll : public CConsoleCommand {
+public:
+	CCC_ALifeListAll(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR args) {
+		if (Level().game.type == GAME_SINGLE) {
+			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
+			if (tpGame && tpGame->m_tALife.m_bLoaded) {
+				tpGame->m_tALife.vfListObjects();
+				tpGame->m_tALife.vfListEvents();
+				tpGame->m_tALife.vfListTasks();
 			}
 			else
 				Log("!ALife simulation cannot be saved!");
@@ -227,7 +248,12 @@ public:
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			if (tpGame && tpGame->m_tALife.m_bLoaded) {
-				tpGame->m_tALife.vfObjectInfo();
+				ALife::_OBJECT_ID id1 = ALife::_OBJECT_ID(-1);
+				sscanf(args ,"%d",&id1);
+				if (id1 >= tpGame->m_tALife.m_tObjectRegistry.m_tObjectID)
+					Msg("Invalid object ID! (%d)",id1);
+				else
+					tpGame->m_tALife.vfObjectInfo(id1);
 			}
 			else
 				Log("!ALife simulation cannot be saved!");
@@ -244,7 +270,12 @@ public:
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			if (tpGame && tpGame->m_tALife.m_bLoaded) {
-				tpGame->m_tALife.vfEventInfo();
+				ALife::_EVENT_ID id1 = ALife::_EVENT_ID(-1);
+				sscanf(args ,"%d",&id1);
+				if (id1 >= tpGame->m_tALife.m_tObjectRegistry.m_tObjectID)
+					Msg("Invalid event ID! (%d)",id1);
+				else
+					tpGame->m_tALife.vfEventInfo(id1);
 			}
 			else
 				Log("!ALife simulation cannot be saved!");
@@ -261,7 +292,12 @@ public:
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			if (tpGame && tpGame->m_tALife.m_bLoaded) {
-				tpGame->m_tALife.vfTaskInfo();
+				ALife::_TASK_ID id1 = ALife::_TASK_ID(-1);
+				sscanf(args ,"%d",&id1);
+				if (id1 >= tpGame->m_tALife.m_tObjectRegistry.m_tObjectID)
+					Msg("Invalid task ID! (%d)",id1);
+				else
+					tpGame->m_tALife.vfTaskInfo(id1);
 			}
 			else
 				Log("!ALife simulation cannot be saved!");
@@ -270,6 +306,7 @@ public:
 			Log("!Not a single player game!");
 	}
 };
+#endif
 //-----------------------------------------------------------------------
 class CCC_DemoRecord : public CConsoleCommand
 {
@@ -314,12 +351,15 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		// alife
 		CMD1(CCC_ALifePath,			"alife_path"			);
 		CMD1(CCC_ALifeSave,			"alife_save"			);
+#ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
+		CMD1(CCC_ALifeListAll,		"alife_la"				);
 		CMD1(CCC_ALifeListObjects,	"alife_lo"				);
 		CMD1(CCC_ALifeListEvents,	"alife_le"				);
 		CMD1(CCC_ALifeListTasks,	"alife_lt"				);
 		CMD1(CCC_ALifeObjectInfo,	"alife_io"				);
 		CMD1(CCC_ALifeEventInfo,	"alife_ie"				);
 		CMD1(CCC_ALifeTaskInfo,		"alife_it"				);
+#endif
 
 		// hud
 		CMD3(CCC_Mask,				"hud_crosshair",		&psHUD_Flags,	HUD_CROSSHAIR);
