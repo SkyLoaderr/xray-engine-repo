@@ -267,7 +267,7 @@ function action_single_patrol:check_return ()
               self.a.enabled = false
               return true
            end         
-           self.object:set_patrol_path (self.a.escape_path, patrol.nearest, patrol.stop, false) 
+           self.object:set_patrol_path (self.a.escape_path, patrol.nearest, patrol.stop, true) 
            self.object:set_mental_state (anim.danger)
            self.object:set_movement_type (move.run)
            self:set_command (leader_return)
