@@ -11,32 +11,74 @@
 
 CLocatorAPI::CLocatorAPI()
 {
-
+	
 }
 
 CLocatorAPI::~CLocatorAPI()
 {
-
+	
 }
 
-void CLocatorAPI::ProcessOne(_finddata_t& F, const char* path)
+void CLocatorAPI::Register		(LPCSTR name, DWORD vfs, DWORD ptr, BOOL bCompressed)
+{
+	file				desc;
+	desc.name			= strlwr(strdup(name));
+	desc.vfs			= vfs;
+	desc.ptr			= ptr;
+	desc.bCompressed	= bCompressed;
+	files.insert		(desc); 
+}
+
+void CLocatorAPI::ProcessArchive(const char* path)
+{
+	// Open archive
+	archive				A;
+	A.vfs				= new CVirtualFileStream(path);
+	archives.push_back	(A);
+
+	// Create base path
+	string256			base;
+	strcpy				(base,path);
+	*strext(base)		= 0;
+	strcat				(base,"\\");
+
+	// Read headers
+	CStream*	hdr		= A.vfs->OpenChunk(1);
+	while (!hdr->Eof())
+	{
+		string512		name,full;
+		hdr->RstringZ	(name);
+		strconcat		(full,base,name);
+
+		DWORD vfs		= archives.size()-1;
+		BOOL  bPacked	= (hdr->Rdword())?FALSE:TRUE;
+		DWORD ptr		= hdr->Rdword();
+		DWORD size		= hdr->Rdword();
+		Register		(full,vfs,ptr,size,bPacked);
+	}
+	hdr->Close			();
+}
+
+void CLocatorAPI::ProcessOne	(_finddata_t& F, const char* path)
 {
 	FILE_NAME	N;
 	strcpy		(N,path);
 	strcat		(N,F.name);
-
+	strlwr		(N);
+	
 	if (F.attrib&_A_SUBDIR) {
 		if (0==strcmp(F.name,"."))	return;
 		if (0==strcmp(F.name,"..")) return;
-		strcat(N,"\\");
-		files.insert(strlwr(strdup(N)));
-		Recurse(N);
+		strcat		(N,"\\");
+		Register	(N,0xffffffff,0,0);
+		Recurse		(N);
 	} else {
-		files.insert(strlwr(strdup(N))); 
+		if (strext(N) && 0==strcmp(strext(N),".xrp"))	ProcessArchive	(N);
+		else											Register		(N,0xffffffff,F.size,0);
 	}
 }
 
-void CLocatorAPI::Recurse(const char* path)
+void CLocatorAPI::Recurse		(const char* path)
 {
     _finddata_t		sFile;
     int				hFile;
@@ -54,13 +96,13 @@ void CLocatorAPI::Recurse(const char* path)
     _findclose		( hFile );
 }
 
-void CLocatorAPI::Initialize()
+void CLocatorAPI::Initialize	()
 {
 	Log		("Initializing File System...");
 	Recurse	("");
 	Msg		("FS: %d files cached",files.size());
 }
-void CLocatorAPI::Destroy	()
+void CLocatorAPI::Destroy		()
 {
 	Log		("ShutDown: File System...");
 	for		(set_cstr_it I=files.begin(); I!=files.end(); I++)
@@ -71,7 +113,7 @@ void CLocatorAPI::Destroy	()
 	files.clear();
 }
 
-BOOL CLocatorAPI::Exist(const char* F)
+BOOL CLocatorAPI::Exist			(const char* F)
 {
 	FILE_NAME		N;
 	strcpy			(N,F);
@@ -81,17 +123,17 @@ BOOL CLocatorAPI::Exist(const char* F)
 	return			I != files.end();
 }
 
-BOOL CLocatorAPI::Exist(char* fn, const char* path, const char* name){
+BOOL CLocatorAPI::Exist			(char* fn, const char* path, const char* name){
 	strconcat		(fn, path, name);
 	return Exist(fn);
 }
 
-BOOL CLocatorAPI::Exist(char* fn, const char* path, const char* name, const char* ext){
+BOOL CLocatorAPI::Exist			(char* fn, const char* path, const char* name, const char* ext){
 	strconcat		(fn, path, name, ext);
 	return Exist(fn);
 }
 
-void CLocatorAPI::List(vector<char*>& dest, const char* path, DWORD flags)
+void CLocatorAPI::List			(vector<char*>& dest, const char* path, DWORD flags)
 {
 	VERIFY			(flags);
 

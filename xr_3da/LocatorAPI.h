@@ -19,25 +19,37 @@ public:
 	struct	file
 	{
 		LPCSTR	name;			// low-case name
-		DWORD	vfs;			// 0xffff - standart file
+		DWORD	vfs;			// 0xffffffff - standart file
 		DWORD	ptr;			// pointer inside vfs
+		DWORD	size;
 		BOOL	bCompressed;
 		
 		IC bool operator < (CLocatorAPI& other) const
 		{	return strcmp(name,other.name)<0;	}
 	};
+	struct	archive
+	{
+		CVirtualFileStream*		vfs;
+	};
 private:
-	typedef set<file>			set_files;
-	typedef set_files::iterator	set_files_it;
+	typedef set<file>				set_files;
+	typedef set_files::iterator		set_files_it;
+	typedef vector<archive>			vec_archives;
+	typedef vec_archives::iterator	vec_archives_it;
 
 	set_files					files;
+	vec_archives				archives;
 
+	void						Register		(const char* name, DWORD vfs, DWORD ptr, DWORD size, BOOL bCompressed);
 	void						ProcessArchive	(const char* path);
-	void						ProcessOne		(_finddata_t& F, const char* path);
+	void						ProcessOne		(const char* path, _finddata_t& F);
 	void						Recurse			(const char* path);
 public:
 	void						Initialize		();
 	void						Destroy			();
+
+	CStream*					Open			(const char* N);
+	void						Close			(CStream* S);
 
 	BOOL						Exist			(const char* N);
 	BOOL						Exist			(char* fn, const char* path, const char* name);
