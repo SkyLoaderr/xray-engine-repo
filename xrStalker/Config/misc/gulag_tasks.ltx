@@ -483,61 +483,38 @@ path_main = sleep7
 ;-------------------------------------------------------------------------------------------------
 ;-- ESCAPE FACTORY BANDITS
 ;-------------------------------------------------------------------------------------------------
-; снайпер, охран€ющий лестницу на чердак
-;[camper@esc_fabrika_bandit]
-;path_walk = day_night_sniper_walk
-;path_look = day_night_sniper_look
-;radius    = 5
+[logic@esc_fabrika_bandit_walker1]
+active = walker1@esc_fabrika_bandit
 
-; часовые днЄм
-[logic@esc_fabrika_bandit_day_walker1]
-active = walker1@esc_fabrika_bandit_day
-
-[walker1@esc_fabrika_bandit_day]
+[walker1@esc_fabrika_bandit]
 path_walk = day_walk1
 path_look = day_look1
 
 
-[logic@esc_fabrika_bandit_day_walker2]
-active = walker2@esc_fabrika_bandit_day
+[logic@esc_fabrika_bandit_walker2]
+active = walker2@esc_fabrika_bandit
 
-[walker2@esc_fabrika_bandit_day]
+[walker2@esc_fabrika_bandit]
 path_walk = day_walk2
 path_look = day_look2
 
 
-[logic@esc_fabrika_bandit_day_walker3]
-active = walker3@esc_fabrika_bandit_day
+[logic@esc_fabrika_bandit_walker3]
+active = walker3@esc_fabrika_bandit
 
-[walker3@esc_fabrika_bandit_day]
+[walker3@esc_fabrika_bandit]
 path_walk = day_walk3
 path_look = day_look3
 
 
-[logic@esc_fabrika_bandit_day_walker4]
-active = walker4@esc_fabrika_bandit_day
+[logic@esc_fabrika_bandit_walker4]
+active = walker4@esc_fabrika_bandit
 
-[walker4@esc_fabrika_bandit_day]
+[walker4@esc_fabrika_bandit]
 path_walk = day_walk4
 path_look = day_look4
 
 
-[logic@esc_fabrika_bandit_day_walker5]
-active = walker5@esc_fabrika_bandit_day
-
-[walker5@esc_fabrika_bandit_day]
-path_walk = day_walk5
-path_look = day_look5
-
-
-[logic@esc_fabrika_bandit_day_walker6]
-active = walker6@esc_fabrika_bandit_day
-
-[walker6@esc_fabrika_bandit_day]
-path_walk = day_walk6
-path_look = day_look6
-
-; сид€щие у костра всегда и сид€щие у костра ночью
 [logic@esc_fabrika_bandit_kamp]
 active = kamp@esc_fabrika_bandit
 
@@ -545,3 +522,49 @@ active = kamp@esc_fabrika_bandit
 center_point = camp_center
 
 
+[camper@esc_fabrika_bandit_walker1]
+active = camper1@esc_fabrika_bandit
+
+[camper1@esc_fabrika_bandit]
+path_walk = day_alarm_walk1
+path_look = day_alarm_look1
+
+
+[camper@esc_fabrika_bandit_walker2]
+active = camper2@esc_fabrika_bandit
+
+[camper2@esc_fabrika_bandit]
+path_walk = day_alarm_walk2
+path_look = day_alarm_look2
+
+
+[camper@esc_fabrika_bandit_walker3]
+active = camper3@esc_fabrika_bandit
+
+[camper3@esc_fabrika_bandit]
+path_walk = day_alarm_walk3
+path_look = day_alarm_look3
+
+
+[camper@esc_fabrika_bandit_walker4]
+active = camper4@esc_fabrika_bandit
+
+[camper4@esc_fabrika_bandit]
+path_walk = day_alarm_walk4
+path_look = day_alarm_look4
+
+
+[camper@esc_fabrika_bandit_walker5]
+active = camper5@esc_fabrika_bandit
+
+[camper5@esc_fabrika_bandit]
+path_walk = day_alarm_walk5
+path_look = day_alarm_look5
+
+
+[camper@esc_fabrika_bandit_walker6]
+active = camper6@esc_fabrika_bandit
+
+[camper6@esc_fabrika_bandit]
+path_walk = day_alarm_walk6
+path_look = day_alarm_look6

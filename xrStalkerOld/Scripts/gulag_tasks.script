@@ -93,20 +93,20 @@ function loadJob(sj, gname, type, squad, groups)
 	if type == "blockpost" then
 		t = { section = "logic@esc_blockpost_patrol1",
 			idle = 4 * 1000 * 60 * 60,
-			prior = 8, state = {0,1,2}, squad = squad, group = groups[2],
+			prior = 8, state = {0,1}, squad = squad, group = groups[2],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		
 		t = { section = "logic@esc_blockpost_follower1",
 			idle = 4 * 1000 * 60 * 60,
-			prior = 7, state = {0,1,2}, squad = squad, group = groups[2],
+			prior = 7, state = {0,1}, squad = squad, group = groups[2],
 			in_rest = "", out_rest = "",
 			leader = "logic@esc_blockpost_patrol1"
 		}
 		table.insert(sj, t)		
 		t = { section = "logic@esc_blockpost_follower2",
 			idle = 4 * 1000 * 60 * 60,
-			prior = 7, state = {0,1,2}, squad = squad, group = groups[2],
+			prior = 7, state = {0,1}, squad = squad, group = groups[2],
 			in_rest = "", out_rest = "",
 			leader = "logic@esc_blockpost_patrol1"
 		}
@@ -349,93 +349,96 @@ function loadJob(sj, gname, type, squad, groups)
 
 	--' Ѕандиты на фабрике
 	if type == "esc_fabrika_bandit" then
-		-- снайпер, охран€ющий лестницу на чердак
---		t = { section = "camper@esc_fabrika_bandit",
---			idle = 0,
---			prior = 3, state = {0, 1},
---			in_rest = "", out_rest = ""
---		}
---		table.insert(sj, t)
 		-- часовые днЄм
-		t = { section = "logic@esc_fabrika_bandit_day_walker1",
+		t = { section = "logic@esc_fabrika_bandit_walker1",
 			idle = 0,
 			prior = 2, state = {0},
 			squad = squad, group = groups[1],
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "esc_fabrika_bandit_space_restrictor"
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_fabrika_bandit_day_walker2",
+		t = { section = "logic@esc_fabrika_bandit_walker2",
 			idle = 0,
 			prior = 2, state = {0},
 			squad = squad, group = groups[1],
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "esc_fabrika_bandit_space_restrictor"
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_fabrika_bandit_day_walker3",
+		t = { section = "logic@esc_fabrika_bandit_walker3",
 			idle = 0,
 			prior = 2, state = {0},
 			squad = squad, group = groups[1],
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "esc_fabrika_bandit_space_restrictor"
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_fabrika_bandit_day_walker4",
+		t = { section = "logic@esc_fabrika_bandit_walker4",
 			idle = 0,
 			prior = 2, state = {0},
 			squad = squad, group = groups[1],
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "esc_fabrika_bandit_space_restrictor"
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_fabrika_bandit_day_walker5",
-			idle = 0,
-			prior = 2, state = {0},
-			squad = squad, group = groups[1],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_fabrika_bandit_day_walker6",
-			idle = 0,
-			prior = 2, state = {0},
-			squad = squad, group = groups[1],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		-- сид€щие у костра всегда
+		-- сид€щие у костра
 		t = { section = "logic@esc_fabrika_bandit_kamp",
 			idle = 0,
-			prior = 1, state = {0, 1},
+			prior = 1, state = {0},
 			squad = squad, group = groups[1],
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "esc_fabrika_bandit_space_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_fabrika_bandit_kamp",
 			idle = 0,
-			prior = 1, state = {0, 1},
+			prior = 1, state = {0},
 			squad = squad, group = groups[1],
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "esc_fabrika_bandit_space_restrictor"
 		}
 		table.insert(sj, t)
-		-- сид€щие у костра ночью
-		t = { section = "logic@esc_fabrika_bandit_kamp",
+		-- аларм
+		t = { section = "camper@esc_fabrika_bandit_walker1",
 			idle = 0,
-			prior = 0, state = {1},
+			prior = 5, state = {2},
 			squad = squad, group = groups[1],
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "esc_fabrika_bandit_space_restrictor"
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_fabrika_bandit_kamp",
+		t = { section = "camper@esc_fabrika_bandit_walker2",
 			idle = 0,
-			prior = 0, state = {1},
+			prior = 5, state = {2},
 			squad = squad, group = groups[1],
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "esc_fabrika_bandit_space_restrictor"
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_fabrika_bandit_kamp",
+		t = { section = "camper@esc_fabrika_bandit_walker3",
 			idle = 0,
-			prior = 0, state = {1},
+			prior = 5, state = {2},
 			squad = squad, group = groups[1],
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "esc_fabrika_bandit_space_restrictor"
 		}
 		table.insert(sj, t)
+		t = { section = "camper@esc_fabrika_bandit_walker4",
+			idle = 0,
+			prior = 5, state = {2},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "esc_fabrika_bandit_space_restrictor"
+		}
+		table.insert(sj, t)
+		t = { section = "camper@esc_fabrika_bandit_walker5",
+			idle = 0,
+			prior = 2, state = {2},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "esc_fabrika_bandit_space_restrictor"
+		}
+		table.insert(sj, t)
+		t = { section = "camper@esc_fabrika_bandit_walker6",
+			idle = 0,
+			prior = 2, state = {2},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "esc_fabrika_bandit_space_restrictor"
+		}
+		table.insert(sj, t)
+
+		
+		
 	end
 
 	gulag_garbage.load_job    (sj, gname, type, squad, groups)
@@ -501,13 +504,32 @@ function loadStates(gname, type)
 		end
 	end
 
-	if type == "esc_lager" or type == "esc_fabrika_bandit" then
+	if type == "esc_lager" then
 		return function(gulag)
 			if level.get_time_hours() >= 8 and level.get_time_hours() <= 21 then
 				return 0  -- день
 			else
 				return 1  -- ночь
 			end
+		end
+	end
+
+	if type == "esc_fabrika_bandit" then
+		return function(gulag)
+				for k,v in gulag.Object do
+					enemy = v:best_enemy()
+					if enemy ~= nil then
+   						gulag.alarm_start = game.get_game_time()
+   						return 2 -- тревога
+					end
+				end		
+		
+				if gulag.alarm_start == nil or
+					game.get_game_time():diffSec(gulag.alarm_start) > 300 then
+					return 0  -- день
+				else
+					return 2
+				end
 		end
 	end
 
