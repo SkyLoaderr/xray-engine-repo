@@ -132,11 +132,32 @@ void CLightPPA_Manager::Render()
 CLightPPA*		CLightPPA_Manager::Create			()
 {
 	CLightPPA*	L	= xr_new<CLightPPA>	();
-	incative.insert	(L);
-	return L;
+	inactive.insert	(L);
+	return		L;
 }
 void			CLightPPA_Manager::Destroy			(CLightPPA* L)
 {
+	set<CLightPPA*>::iterator	it;
 
+	//
+	it = inactive.find	(L);
+	if (it!=inactive.end())	
+	{
+		inactive.erase	(it);
+		xr_delete		(L);
+		return;
+	}
+
+	// 
+	it = active.find	(L);
+	if (it!=active.end())	
+	{
+		active.erase(it);
+		xr_delete	(L);
+		return;
+	}
+
+	// ???
 	xr_delete	(L);
+	Msg			("! xrRENDER: unregistered light destroyed");
 }

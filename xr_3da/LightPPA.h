@@ -34,7 +34,7 @@ public:
 class CLightPPA_Manager
 {
 	set<CLightPPA*>					active;
-	set<CLightPPA*>					incative;
+	set<CLightPPA*>					inactive;
 	
 	Shader*							hShader;
 	SGeometry*						hGeom;
