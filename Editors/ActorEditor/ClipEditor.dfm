@@ -1,6 +1,6 @@
 object ClipMaker: TClipMaker
-  Left = 396
-  Top = 411
+  Left = 462
+  Top = 465
   Width = 500
   Height = 256
   HorzScrollBar.Style = ssFlat
@@ -44,26 +44,26 @@ object ClipMaker: TClipMaker
       BevelOuter = bvNone
       Color = 6908265
       TabOrder = 0
-      OnResize = paFrameResize
       object sbBase: TScrollBox
         Left = 0
         Top = 0
         Width = 388
         Height = 121
         HorzScrollBar.Style = ssFlat
+        HorzScrollBar.Tracking = True
         VertScrollBar.Visible = False
         Align = alClient
         BorderStyle = bsNone
         TabOrder = 0
         object paFrame: TPanel
-          Left = 0
+          Left = 21
           Top = 0
           Width = 241
-          Height = 104
+          Height = 121
+          Align = alLeft
           BevelOuter = bvNone
           ParentColor = True
           TabOrder = 0
-          OnResize = paFrameResize
           object Bevel6: TBevel
             Left = 0
             Top = 34
@@ -121,6 +121,7 @@ object ClipMaker: TClipMaker
             TabOrder = 0
             OnDragDrop = ClipDragDrop
             OnDragOver = ClipDragOver
+            OnMouseDown = ClipMouseDown
             object Bevel9: TBevel
               Left = 0
               Top = 0
@@ -251,6 +252,30 @@ object ClipMaker: TClipMaker
             OnPaint = BPOnPaint
           end
         end
+        object Gradient1: TGradient
+          Left = 0
+          Top = 0
+          Width = 21
+          Height = 121
+          BeginColor = 5460819
+          EndColor = 6908265
+          FillDirection = fdUpToBottom
+          NumberOfColors = 32
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = [fsBold]
+          Caption = ' '
+          TextTop = 5
+          TextLeft = 12
+          Border = True
+          BorderWidth = 0
+          BorderColor = clGray
+          Color = 5460819
+          Align = alLeft
+          OnPaint = gtClipPaint
+        end
       end
     end
     object paClipProps: TPanel
@@ -293,7 +318,7 @@ object ClipMaker: TClipMaker
     TabOrder = 1
     object ebInsertClip: TExtBtn
       Left = 1
-      Top = 150
+      Top = 123
       Width = 101
       Height = 15
       Align = alNone
@@ -315,7 +340,7 @@ object ClipMaker: TClipMaker
     end
     object ebAppendClip: TExtBtn
       Left = 1
-      Top = 166
+      Top = 139
       Width = 101
       Height = 15
       Align = alNone
@@ -337,103 +362,281 @@ object ClipMaker: TClipMaker
     end
     object Bevel14: TBevel
       Left = 103
-      Top = 106
+      Top = 103
       Width = 1
-      Height = 123
+      Height = 126
       Align = alRight
       Shape = bsRightLine
       Style = bsRaised
     end
     object Bevel16: TBevel
       Left = 0
-      Top = 105
+      Top = 102
       Width = 104
       Height = 1
       Align = alTop
       Shape = bsBottomLine
       Style = bsRaised
     end
-    object MxLabel5: TMxLabel
-      Left = 0
-      Top = 106
-      Width = 51
+    object ebPlay: TExtBtn
+      Left = 21
+      Top = 105
+      Width = 20
       Height = 15
-      Caption = 'Length:'
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = 12698049
-      Font.Height = -12
-      Font.Name = 'Courier New'
+      Hint = 'Play'
+      Align = alNone
+      BevelShow = False
+      HotTrack = True
+      HotColor = 15790320
+      BtnColor = 10528425
+      CloseButton = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
       Font.Style = []
+      Glyph.Data = {
+        C2010000424DC20100000000000036000000280000000C0000000B0000000100
+        1800000000008C010000120B0000120B00000000000000000000FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFA7A7A7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFBABABA0000005050508E8E8EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFBABABA0000000000000000004F4F4F7B7B7BFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFBABABA00000000000000000000000008080828
+        2828898989FFFFFFFFFFFFFFFFFFFFFFFFBABABA000000000000000000000000
+        0000000000001212121F1F1FC6C6C6FFFFFFFFFFFFBABABA0000000000000000
+        00000000080808282828898989FFFFFFFFFFFFFFFFFFFFFFFFBABABA00000000
+        00000000004F4F4F7B7B7BFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFBABABA
+        0000005050508E8E8EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFA7A7A7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFF}
       ParentFont = False
-      ShadowColor = clBlack
-      ShadowPos = spRightBottom
+      ParentShowHint = False
+      ShowHint = True
+      Transparent = False
+      FlatAlwaysEdge = True
+      OnClick = ebPlayClick
+    end
+    object ebPause: TExtBtn
+      Left = 41
+      Top = 105
+      Width = 20
+      Height = 15
+      Hint = 'Pause'
+      Align = alNone
+      BevelShow = False
+      HotTrack = True
+      HotColor = 15790320
+      BtnColor = 10528425
+      CloseButton = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Glyph.Data = {
+        9E010000424D9E0100000000000036000000280000000B0000000A0000000100
+        18000000000068010000120B0000120B00000000000000000000FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFF
+        FFFFFFFFA5A5A5ADADADFFFFFFFFFFFFFFFFFFADADADA5A5A5FFFFFFFFFFFF00
+        0000FFFFFF969696000000000000969696FFFFFF969696000000000000969696
+        FFFFFF000000FFFFFF969696000000000000969696FFFFFF9696960000000000
+        00969696FFFFFF000000FFFFFF969696000000000000969696FFFFFF96969600
+        0000000000969696FFFFFF000000FFFFFF969696000000000000969696FFFFFF
+        969696000000000000969696FFFFFF000000FFFFFF9696960000000000009696
+        96FFFFFF969696000000000000969696FFFFFF000000FFFFFF96969600000000
+        0000969696FFFFFF969696000000000000969696FFFFFF000000FFFFFFFFFFFF
+        A5A5A5ADADADFFFFFFFFFFFFFFFFFFADADADA5A5A5FFFFFFFFFFFF000000FFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00
+        0000}
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      Transparent = False
+      FlatAlwaysEdge = True
+      OnClick = ebPauseClick
+    end
+    object ebStop: TExtBtn
+      Left = 61
+      Top = 105
+      Width = 20
+      Height = 15
+      Hint = 'Stop'
+      Align = alNone
+      BevelShow = False
+      HotTrack = True
+      HotColor = 15790320
+      BtnColor = 10528425
+      CloseButton = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Glyph.Data = {
+        9E010000424D9E0100000000000036000000280000000C0000000A0000000100
+        18000000000068010000120B0000120B00000000000000000000FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFA5A5A5ADADADADADADADADADADADADA5A5A5FFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFF969696000000000000000000000000000000000000969696
+        FFFFFFFFFFFFFFFFFFFFFFFF9696960000000000000000000000000000000000
+        00969696FFFFFFFFFFFFFFFFFFFFFFFF96969600000000000000000000000000
+        0000000000969696FFFFFFFFFFFFFFFFFFFFFFFF969696000000000000000000
+        000000000000000000969696FFFFFFFFFFFFFFFFFFFFFFFF9696960000000000
+        00000000000000000000000000969696FFFFFFFFFFFFFFFFFFFFFFFF96969600
+        0000000000000000000000000000000000969696FFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFA5A5A5ADADADADADADADADADADADADA5A5A5FFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFF}
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      Transparent = False
+      FlatAlwaysEdge = True
+      OnClick = ebStopClick
+    end
+    object ebPrevClip: TExtBtn
+      Left = 1
+      Top = 105
+      Width = 20
+      Height = 15
+      Hint = 'Prev Clip'
+      Align = alNone
+      BevelShow = False
+      HotTrack = True
+      HotColor = 15790320
+      BtnColor = 10528425
+      CloseButton = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Glyph.Data = {
+        16020000424D16020000000000003600000028000000100000000A0000000100
+        180000000000E0010000120B0000120B00000000000000000000FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFBA
+        BABAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFBABABAFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFBABABA222222BABABAFFFFFFFFFFFFFFFFFFBABA
+        BA292929BABABAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFBABABA3434340000000B
+        0B0BBABABAFFFFFFBABABA505050000000000000BABABAFFFFFFFFFFFFFFFFFF
+        777777454545000000000000000000060606BABABA5656560000000000000000
+        00000000BABABAFFFFFFFFFFFFFFFFFF77777745454500000000000000000006
+        0606BABABA565656000000000000000000000000BABABAFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFBABABA3434340000000B0B0BBABABAFFFFFFBABABA5050500000
+        00000000BABABAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFBABABA22
+        2222BABABAFFFFFFFFFFFFFFFFFFBABABA292929BABABAFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFBABABAFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFBABABAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      Transparent = False
+      FlatAlwaysEdge = True
+      OnClick = ebPrevClipClick
+    end
+    object ebNextClip: TExtBtn
+      Left = 81
+      Top = 105
+      Width = 20
+      Height = 15
+      Hint = 'Next Clip'
+      Align = alNone
+      BevelShow = False
+      HotTrack = True
+      HotColor = 15790320
+      BtnColor = 10528425
+      CloseButton = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Glyph.Data = {
+        16020000424D16020000000000003600000028000000100000000A0000000100
+        180000000000E0010000120B0000120B00000000000000000000FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFBABABAFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFBABABAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFBABABA
+        292929BABABAFFFFFFFFFFFFFFFFFFBABABA222222BABABAFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFBABABA000000000000505050BABABAFFFFFFBA
+        BABA0B0B0B000000343434BABABAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFBABABA
+        000000000000000000000000565656BABABA0606060000000000000000004545
+        45BABABAFFFFFFFFFFFFFFFFFFBABABA000000000000000000000000565656BA
+        BABA060606000000000000000000454545BABABAFFFFFFFFFFFFFFFFFFBABABA
+        000000000000505050BABABAFFFFFFBABABA0B0B0B000000343434BABABAFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFBABABA292929BABABAFFFFFFFFFFFFFFFFFFBA
+        BABA222222BABABAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        BABABAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFBABABAFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      Transparent = False
+      FlatAlwaysEdge = True
+      OnClick = ebNextClipClick
     end
     object Bevel17: TBevel
-      Left = 48
-      Top = 107
-      Width = 47
-      Height = 16
+      Left = 0
+      Top = 121
+      Width = 104
+      Height = 1
+      Shape = bsBottomLine
+      Style = bsRaised
     end
-    object MxLabel7: TMxLabel
-      Left = 95
-      Top = 108
-      Width = 7
-      Height = 13
-      Caption = 's'
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = clWhite
+    object ebClearAll: TExtBtn
+      Left = 1
+      Top = 155
+      Width = 101
+      Height = 15
+      Align = alNone
+      BevelShow = False
+      HotTrack = True
+      HotColor = 15790320
+      BtnColor = 10528425
+      CloseButton = False
+      Caption = 'Remove All'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
-      ShadowColor = clBlack
-      ShadowPos = spRightBottom
-      Transparent = True
+      Transparent = False
+      FlatAlwaysEdge = True
+      OnClick = ebRemoveAllClick
     end
-    object MxLabel8: TMxLabel
-      Left = 0
-      Top = 124
-      Width = 37
+    object ebRemoveCurrent: TExtBtn
+      Left = 1
+      Top = 171
+      Width = 101
       Height = 15
-      Caption = 'Zoom:'
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = 12698049
-      Font.Height = -12
-      Font.Name = 'Courier New'
+      Align = alNone
+      BevelShow = False
+      HotTrack = True
+      HotColor = 15790320
+      BtnColor = 10528425
+      CloseButton = False
+      Caption = 'Remove Current'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
-      ShadowColor = clBlack
-      ShadowPos = spRightBottom
-    end
-    object Bevel18: TBevel
-      Left = 48
-      Top = 125
-      Width = 47
-      Height = 16
-    end
-    object seLength: TMultiObjSpinEdit
-      Left = 50
-      Top = 109
-      Width = 44
-      Height = 13
-      LWSensitivity = 0.01
-      ButtonKind = bkLightWave
-      Decimal = 1
-      MaxValue = 999
-      MinValue = 1
-      ValueType = vtFloat
-      Value = 60
-      AutoSize = False
-      BorderStyle = bsNone
-      Color = 10526880
-      TabOrder = 1
-      OnChange = seLengthChange
+      Transparent = False
+      FlatAlwaysEdge = True
+      OnClick = ebRemoveCurrentClick
     end
     object Panel1: TPanel
       Left = 0
       Top = 0
       Width = 104
-      Height = 105
+      Height = 102
       Align = alTop
       BevelOuter = bvNone
       Color = 6316128
@@ -491,7 +694,7 @@ object ClipMaker: TClipMaker
         Left = 28
         Top = 0
         Width = 1
-        Height = 105
+        Height = 100
         Shape = bsRightLine
         Style = bsRaised
       end
@@ -537,7 +740,7 @@ object ClipMaker: TClipMaker
       end
       object MxLabel4: TMxLabel
         Left = 30
-        Top = 86
+        Top = 85
         Width = 42
         Height = 16
         Caption = 'Time:'
@@ -570,7 +773,7 @@ object ClipMaker: TClipMaker
         Left = 103
         Top = 0
         Width = 1
-        Height = 105
+        Height = 102
         Align = alRight
         Shape = bsRightLine
         Style = bsRaised
@@ -624,26 +827,9 @@ object ClipMaker: TClipMaker
         ShadowPos = spRightBottom
       end
     end
-    object seScale: TMultiObjSpinEdit
-      Left = 50
-      Top = 127
-      Width = 44
-      Height = 13
-      LWSensitivity = 0.01
-      ButtonKind = bkLightWave
-      MaxValue = 100
-      MinValue = 2
-      Value = 4
-      AutoSize = False
-      BorderStyle = bsNone
-      Color = 10526880
-      TabOrder = 2
-      OnChange = seScaleChange
-    end
   end
   object fsStorage: TFormStorage
     IniSection = 'ClipMaker'
-    Options = []
     OnSavePlacement = fsStorageSavePlacement
     OnRestorePlacement = fsStorageRestorePlacement
     StoredValues = <>
@@ -676,8 +862,16 @@ object ClipMaker: TClipMaker
       Caption = 'Remove All'
       OnClick = RemoveAll1Click
     end
-    object MenuItem3: TMenuItem
+    object N1: TMenuItem
       Caption = '-'
+    end
+    object ClearMotions1: TMenuItem
+      Caption = 'Clear Current'
+      OnClick = ClearMotions1Click
+    end
+    object ClearAll1: TMenuItem
+      Caption = 'Clear All'
+      OnClick = ClearAll1Click
     end
   end
 end
