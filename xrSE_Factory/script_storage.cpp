@@ -122,10 +122,10 @@ int CScriptStorage::vscript_log			(ScriptStorage::ELuaMessageType tLuaMessageTyp
 	strcpy	(S2,SS);
 	S1		= S2 + xr_strlen(SS);
 	vsprintf(S1,caFormat,marker);
-	strcat	(S2,"\n");
+	strcat	(S2,"\r\n");
 
 #ifndef ENGINE_BUILD
-	ai().script_engine().m_output.w_stringZ(S2);
+	ai().script_engine().m_output.w(S2,xr_strlen(S2)*sizeof(char));
 #endif
 
 	return	(l_iResult);
@@ -238,20 +238,22 @@ bool CScriptStorage::do_file	(LPCSTR caScriptName, LPCSTR caNameSpaceName, bool 
 	int				start = lua_gettop(lua());
 	string256		l_caLuaFileName;
 	IReader			*l_tpFileReader = FS.r_open(caScriptName);
-	R_ASSERT3		(l_tpFileReader,"Cannot open script file ",caScriptName);
+	if (!l_tpFileReader) {
+		script_log	(eLuaMessageTypeError,"Cannot open file \"%s\"",caScriptName);
+		return		(false);
+	}
 	strconcat		(l_caLuaFileName,"@",caScriptName);
 	
 	if (!load_buffer(lua(),static_cast<LPCSTR>(l_tpFileReader->pointer()),(size_t)l_tpFileReader->length(),l_caLuaFileName,caNameSpaceName)) {
 		VERIFY		(lua_gettop(lua()) >= 4);
 		lua_pop		(lua(),4);
-//		VERIFY		(lua_gettop(lua()) == start - 3);
+		VERIFY		(lua_gettop(lua()) == start - 3);
 		FS.r_close	(l_tpFileReader);
 		return		(false);
 	}
 	FS.r_close		(l_tpFileReader);
 
 	if (bCall) {
-//		int			l_iErrorCode = lua_pcall(lua(),0,0,0); //backup___Dima
 		int errFuncId = -1;
 #ifdef USE_DEBUGGER
 		if( ai().script_engine().debugger() )
