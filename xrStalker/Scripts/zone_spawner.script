@@ -8,6 +8,7 @@ function add_member (obj)
     if ini == nil or ini:section_exist ("zone_spawner") == false then
        return 
     end
+    
     table.insert (members, obj.id)
     this.switch_offline (obj)
     return        
