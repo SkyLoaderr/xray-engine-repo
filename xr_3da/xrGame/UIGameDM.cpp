@@ -83,13 +83,13 @@ void	CUIGameDM::Init				()
 
 void	CUIGameDM::ClearLists ()
 {
-	for (u32 i=0; i<m_aFragsLists.size(); i++)
+	for (u32 i=0; i<m_aFragsLists.size(); ++i)
 	{
 		xr_delete(m_aFragsLists[i]);
 	}
 	m_aFragsLists.clear();
 
-	for (u32 i=0; i<m_aPlayersLists.size(); i++)
+	for (u32 i=0; i<m_aPlayersLists.size(); ++i)
 	{
 		xr_delete(m_aPlayersLists[i]);
 	}
@@ -112,7 +112,7 @@ void CUIGameDM::OnFrame()
 
 	switch (Game().phase){
 	case GAME_PHASE_PENDING: 
-		for (u32 i=0; i<m_aPlayersLists.size(); i++)
+		for (u32 i=0; i<m_aPlayersLists.size(); ++i)
 		{
 			m_aPlayersLists[i]->Update();
 			if (!m_aPlayersLists[i]->IsShown()) 
@@ -125,7 +125,7 @@ void CUIGameDM::OnFrame()
 		{
 			if (uFlags&flShowFragList) 
 			{
-				for (u32 i=0; i<m_aFragsLists.size(); i++)
+				for (u32 i=0; i<m_aFragsLists.size(); ++i)
 				{
 					m_aFragsLists[i]->Update();
 				};
