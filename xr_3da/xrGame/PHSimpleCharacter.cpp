@@ -1277,3 +1277,10 @@ void CPHSimpleCharacter::get_spatial_params()
 {
 	spatialParsFromDGeom((dGeomID)m_space,spatial.center,AABB,spatial.radius);
 }
+
+float CPHSimpleCharacter::FootRadius()
+{
+	if(b_exist) return m_radius;
+	else		return 0.f;
+
+}

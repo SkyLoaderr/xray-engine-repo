@@ -30,6 +30,7 @@ public:
 	virtual		void		GetVelocity							(Fvector& /**vel/**/)	{}	;
 	virtual		void		SetVelocity							(Fvector /**vel/**/)	{}	;
 	virtual		void		GetPosition							(Fvector& /**pos/**/)	{}	;
+	virtual		float		FootRadius							()			 {return 0.f;}	;
 	virtual		void		SetMas								(dReal mass)		;
 	virtual		bool		TryPosition							(Fvector /**pos/**/)	{return false;};
 	virtual		void		SetPhysicsRefObject					(CGameObject* /**ref_object/**/){};

@@ -1365,12 +1365,14 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 			//if (!g_pGameLevel->ObjectSpace.EllipsoidCollide(CFORM(),XFORM(),start_pos,bbStandBox))
 			Fbox stand_box=m_PhysicMovementControl->Boxes()[0];
 			//stand_box.y1+=m_PhysicMovementControl->FootExtent().y;
+			stand_box.y1+=m_PhysicMovementControl->FootRadius();
 			m_PhysicMovementControl->GetPosition(start_pos);
 			start_pos.y+=(
 				//-(m_PhysicMovementControl->Box().y2-m_PhysicMovementControl->Box().y1)+
 				(m_PhysicMovementControl->Boxes()[0].y2-m_PhysicMovementControl->Boxes()[0].y1)
 				)/2.f;
 			//start_pos.y+=m_PhysicMovementControl->FootExtent().y/2.f;
+			start_pos.y+=m_PhysicMovementControl->FootRadius();
 			if (!g_pGameLevel->ObjectSpace.EllipsoidCollide(CFORM(),XFORM(),start_pos,stand_box))
 			{
 				mstate_real &= ~mcCrouch;

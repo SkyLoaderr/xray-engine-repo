@@ -88,16 +88,17 @@ virtual		void		GetVelocity							(Fvector& vvel)												=0 ;
 virtual		void		SetVelocity							(Fvector vel)												=0 ;
 virtual		void		GetPosition							(Fvector& vpos)												=0 ;
 virtual		void		SetMas								(dReal mass)												=0 ;
-virtual		void		SetPhysicsRefObject					(CGameObject* ref_object)								=0 ;
-virtual		CGameObject* PhysicsRefObject					(){return m_phys_ref_object;}
+virtual		void		SetPhysicsRefObject					(CGameObject* ref_object)									=0 ;
+virtual		CGameObject* PhysicsRefObject					()									{return m_phys_ref_object;}
 
 //AICharacter
 virtual		void		GetDesiredPosition					(Fvector& /**dpos/**/)										{}
 virtual		void		SetDesiredPosition					(const Fvector& /**pos/**/)									{}
 virtual		void		BringToDesired						(float /**time/**/,float /**velocity/**/,float force=1.f)	{}
 virtual		bool		TryPosition							(Fvector /**pos/**/)										{return false;}
-virtual		void		getForce							(Fvector& force);
-virtual		void		setForce							(const	Fvector& force);
+virtual		void		getForce							(Fvector& force)											;
+virtual		void		setForce							(const	Fvector& force)										;
+virtual		float		FootRadius							()															=0 ;
 virtual		void		get_State							(		SPHNetState&	state)								;
 virtual		void		set_State							(const	SPHNetState&	state)								;
 virtual		void		cv2obj_Xfrom						(const Fquaternion& q,const Fvector& pos, Fmatrix& xform)	{;}

@@ -16,11 +16,11 @@ void	SPHNetState::net_Export(NET_Packet& P)
 void	SPHNetState::net_Import(NET_Packet&	P)
 {
 	P.r_vec3(linear_vel);
-	//P.r_vec3(angular_vel);
-	//P.r_vec3(force);
-	//P.r_vec3(torque);
+	angular_vel.set(0.f,0.f,0.f);		//P.r_vec3(angular_vel);
+	force.set(0.f,0.f,0.f);				//P.r_vec3(force);
+	torque.set(0.f,0.f,0.f);			//P.r_vec3(torque);
 	P.r_vec3(position);
 	P.r_vec4(*((Fvector4*)&quaternion));
-	//P.r_vec4(*((Fvector4*)&previous_quaternion));
+	previous_quaternion.set(quaternion);//P.r_vec4(*((Fvector4*)&previous_quaternion));
 	enabled=!!P.r_u8	();
 }

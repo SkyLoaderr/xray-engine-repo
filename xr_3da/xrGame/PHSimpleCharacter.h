@@ -112,6 +112,7 @@ public:
 	virtual		void		GetVelocity							(Fvector& vvel)		;
 	virtual		void		SetVelocity							(Fvector vel)		;
 	virtual		void		GetPosition							(Fvector& vpos)		;
+	virtual		float		FootRadius							()					;
 	virtual		void		DeathPosition						(Fvector& deathPos){ deathPos.set(m_death_position);deathPos.y=m_death_position[1]-m_radius;}
 	virtual		void		IPosition							(Fvector& pos)		;
 	virtual		u16			ContactBone							();
