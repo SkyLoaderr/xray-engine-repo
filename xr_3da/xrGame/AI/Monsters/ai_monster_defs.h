@@ -83,7 +83,7 @@ class CBlend;
 #define SIMPLE_ENEMY_HIT_TEST
 //#define TEST_EAT_STATE
 
-#include "../../cameramanager.h"
+#include "../../../cameramanager.h"
 
 // StepSounds
 struct SStepSound {
