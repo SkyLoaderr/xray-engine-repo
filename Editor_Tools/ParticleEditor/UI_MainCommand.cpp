@@ -128,6 +128,10 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     case COMMAND_CHANGE_ACTION:
     	Tools.ChangeAction(p1);
     	break;
+    case COMMAND_UNDO:
+    case COMMAND_REDO:
+    	// fake
+    	break;
  	default:
 		ELog.DlgMsg( mtError, "Warning: Undefined command: %04d", _Command );
         bRes = false;
