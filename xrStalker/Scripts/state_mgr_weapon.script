@@ -6,6 +6,14 @@ function eva_state_mgr_weapon:__init(name, st) super (nil, name)
 	self.st = st
 end
 function eva_state_mgr_weapon:evaluate()
+--[[
+	if self.object:best_weapon() == nil or
+	   get_clsid(self.object:best_weapon()) == clsid.obj_bolt 
+	then
+		printf("WEAPON NOT PRESENT")
+		return true
+	end
+]]
 	if (state_lib.states[self.st.target_state].weapon == nil) or
 	   (state_lib.states[self.st.target_state].weapon == "strapped" and
 		self.object:weapon_strapped()) or

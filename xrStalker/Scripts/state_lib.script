@@ -155,7 +155,24 @@ states = {
 				bodystate = move.standing,
 				animstate = "wounded",
 				animation = "help_me"
-			}
+			},
 
+
+	-- Бармен
+	barman_walk = {	weapon = nil,
+				movement = move.walk,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = nil
+			},
+
+	barman_wait = {	weapon = nil,
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = nil
+			}
 			
 }
