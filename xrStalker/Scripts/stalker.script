@@ -166,7 +166,7 @@ end
 function stalker_binder:net_export	(packet)
 	object_binder.net_export	(self,packet)
 end
-
+ 
 function stalker_binder:net_import	(packet)
 	object_binder.net_import	(self,packet)
 end
