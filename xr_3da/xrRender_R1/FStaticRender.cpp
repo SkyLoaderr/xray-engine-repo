@@ -136,24 +136,32 @@ void					CRender::add_Wallmark			(ref_shader& S, const Fvector& P, float s, CDB:
 void					CRender::set_Object				(IRenderable*		O )	
 {
 	val_pObject				= O;		// NULL is OK, trust me :)
-	L_Shadows->set_object	(O);
-	L_Projector->set_object	(O);
-	if (O)
+	if (PHASE_NORMAL==phase)
 	{
-		VERIFY				(O->renderable.ROS);
-		CLightTrack*		T = (CLightTrack*)O->renderable.ROS;
-		T->ltrack			(O);
+		L_Shadows->set_object	(O);
+		L_Projector->set_object	(O);
+		if (O)	{
+			VERIFY				(O->renderable.ROS);
+			CLightTrack*		T = (CLightTrack*)O->renderable.ROS;
+			T->ltrack			(O);
+		}
+	} else {
+		L_Shadows->set_object	(0);
+		L_Projector->set_object	(0);
 	}
 }
 void					CRender::ApplyObject			(IRenderable*		O )
 {
 	if (0==O)			return;
-	VERIFY				(O->renderable.ROS);
-	CLightTrack& LT		= *((CLightTrack*)O->renderable.ROS);
+	if (PHASE_NORMAL==phase)
+	{
+		VERIFY				(O->renderable.ROS);
+		CLightTrack& LT		= *((CLightTrack*)O->renderable.ROS);
 
-	// shadowing
-	if ((LT.Shadowed_dwFrame==Device.dwFrame) && O->renderable_ShadowReceive())	
-		RImplementation.L_Projector->setup	(LT.Shadowed_Slot);
+		// shadowing
+		if ((LT.Shadowed_dwFrame==Device.dwFrame) && O->renderable_ShadowReceive())	
+			RImplementation.L_Projector->setup	(LT.Shadowed_Slot);
+	}
 }
 
 // Misc
