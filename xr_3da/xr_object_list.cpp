@@ -8,8 +8,6 @@
 #include "xr_object.h"
 #include "net_utils.h"
 
-extern Flags32		psNET_Flags;
-
 class fClassEQ {
 	CLASS_ID cls;
 public:
@@ -111,10 +109,6 @@ void CObjectList::net_Unregister(CObject* O)
 
 void CObjectList::net_Export	(NET_Packet* _Packet)
 {
-#ifdef DEBUG
-	if (psNET_Flags.test(0x1))	Msg("----------------- export start");
-#endif
-
 	NET_Packet& Packet	= *_Packet;
 	u32			position;
 	for (xr_vector<CObject*>::iterator O=objects.begin(); O!=objects.end(); O++) 
@@ -126,48 +120,20 @@ void CObjectList::net_Export	(NET_Packet* _Packet)
 			Packet.w_chunk_open8	(position);
 			P->net_Export			(Packet);
 			Packet.w_chunk_close8	(position);
-#ifdef DEBUG
-			if (psNET_Flags.test(0x1))	{
-				u32			_size	= Packet.w_tell()-position-1;
-				string32	_cls;	CLSID2TEXT	(P->SUB_CLS_ID,_cls);	_cls[8]=0;
-				Msg		("* export[%2d] [%s]-[%s]-[%s]",_size,*P->cName(),*P->cNameSect(),_cls);
-			}
-#endif
 		}
 	}
-#ifdef DEBUG
-	if (psNET_Flags.test(0x1))	Msg("----------------- export end");
-#endif
 }
 
 void CObjectList::net_Import		(NET_Packet* Packet)
 {
-#ifdef DEBUG
-	if (psNET_Flags.test(0x1))	Msg("----------------- import start");
-#endif
 	while (!Packet->r_eof())
 	{
 		u16 ID;		Packet->r_u16	(ID);
 		u8  size;	Packet->r_u8	(size);
 		CObject* P  = net_Find		(u32(ID));
-		if (P)	{ 
-#ifdef DEBUG
-			u32		a = Packet->r_pos;
-			P->net_Import		(*Packet);
-			if (psNET_Flags.test(0x1))	{
-				u32		b = Packet->r_pos;
-				string32	_cls;	CLSID2TEXT	(P->SUB_CLS_ID,_cls);	_cls[8]=0;
-				Msg		("* import[%2d] actual[%2d] [%s]-[%s]-[%s]",u32(size),(b-a),*P->cName(),*P->cNameSect(),_cls);
-			}
-#else
-			P->net_Import		(*Packet);
-#endif
-		}
-		else	Packet->r_advance	(size);
+		if (P)		P->net_Import	(*Packet);
+		else		Packet->r_advance(size);
 	}
-#ifdef DEBUG
-	if (psNET_Flags.test(0x1))	Msg("----------------- import end");
-#endif
 }
 
 CObject* CObjectList::net_Find			(u32 ID)
