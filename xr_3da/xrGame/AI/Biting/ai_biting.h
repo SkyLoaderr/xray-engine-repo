@@ -37,23 +37,6 @@ enum EBitingPathState {
 
 typedef VisionElem SEnemy;
 
-// Attack 
-typedef struct {
-	u32		i_anim;				// анимация аттаки
-
-	TTime	time_started;		//
-	TTime	time_from;			// диапазон времени когда можно наносить hit
-	TTime	time_to;
-
-	Fvector	TraceFrom;
-	float	dist;
-
-	TTime	LastAttack;
-	bool	b_fire_anyway;		// трассировка не нужна
-	bool	b_attack_rat;
-
-} SAttackAnimation;
-
 
 
 class CAI_Biting : public CCustomMonster, 
