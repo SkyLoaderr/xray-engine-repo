@@ -58,6 +58,9 @@ public:
 	virtual		IC CUI*		GetUI				(){return pUI;}
 
 	virtual		void		Hit					(int idx){HitMarker.Hit(idx);}
+	
+	//текущий предмет на который смотрит HUD
+	Collide::rq_result&		GetCurrentRayQuery	() {return HUDCursor.RQ;}
 
 	virtual		void		OnDeviceCreate		();
 

@@ -28,6 +28,8 @@ CHUDCursor::CHUDCursor	()
 	fuzzyShowInfo		= 0.f;
 	hGeom.create		(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
 	hShader.create		("hud\\cursor","ui\\cursor");
+
+	RQ.set(NULL, 0.f, -1);
 }
 
 CHUDCursor::~CHUDCursor	()
@@ -55,7 +57,6 @@ void CHUDCursor::Render()
 	
 	g_pGameLevel->CurrentEntity()->setEnabled(false);
 	u32 C			= C_DEFAULT;
-	Collide::rq_result	RQ;
 
 	if (g_pGameLevel->ObjectSpace.RayPick( p1, dir, dist, Collide::rqtBoth, RQ )){
 		// if (RQ.O && (RQ.O->CLS_ID == CLSID_ENTITY) && (((CEntity*)RQ.O)->id_Team!=cur_team)) C = C_ON_ENEMY;
