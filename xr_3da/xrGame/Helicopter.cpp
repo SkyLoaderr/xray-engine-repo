@@ -61,15 +61,17 @@ void
 CHelicopter::init()
 {
 	m_destEnemy = 0;
-	m_velocity = 5.0f;
-//	m_velocity = 33.0f;
+//	m_velocity = 5.0f;
+	m_velocity = 33.0f;
 	m_altitude = 20.0f;
 	m_bone_x_angle = 0.0f;
 	m_bone_y_angle = 0.0f;
 	m_maxFireDist = 100.0f;
 	m_movementMngr.init(this);
-//	setState(CHelicopter::eInitiatePatrolZone);
-	FireStart();
+	setState(CHelicopter::eInitiatePatrolZone);
+	SetfHealth(100.0f);
+
+//	FireStart();
 }
 
 void		
@@ -111,7 +113,6 @@ CHelicopter::net_Spawn(LPVOID	DC)
 	R_ASSERT			(Visual()&&PKinematics(Visual()));
 	CKinematics* K		= PKinematics(Visual());
 	CInifile* pUserData	= K->LL_UserData();
-	int id;
 
 	m_rotate_x_bone		= K->LL_BoneID	(pUserData->r_string("helicopter_definition","wpn_rotate_x_bone"));
 	m_rotate_y_bone		= K->LL_BoneID	(pUserData->r_string("helicopter_definition","wpn_rotate_y_bone"));
@@ -229,6 +230,11 @@ CHelicopter::shedule_Update(u32	time_delta)
 
 	updateMGunDir();
 
+	if ( GetfHealth() <= 0.0f )
+	{//die
+
+	}
+
 /*	if(state()==CHelicopter::eMovingByAttackTraj)
 	{
 		updateMGunDir();
@@ -260,9 +266,15 @@ CHelicopter::Hit(	float P,
 	bonesIt It = m_hitBones.find(element);
 	if(It != m_hitBones.end())
 	{
-	}
-	else
-		CEntity::Hit(P,dir,who,element,position_in_bone_space,impulse,hit_type );
+		float curHealth = GetfHealth();
+				curHealth -= P*5.0f*It->second;
+
+		SetfHealth(curHealth);
+	}else
+//		CEntity::Hit(P,dir,who,element,position_in_bone_space,impulse,hit_type );
+	{
+		SetfHealth(GetfHealth()-P*0.2f);
+	};
 
 	CGameObject* GO = dynamic_cast<CGameObject*>(who);
 	if (GO){
@@ -280,15 +292,15 @@ CHelicopter::Hit(	float P,
 void					
 CHelicopter::doHunt(CObject* dest)
 {
-/*	if( state()==CHelicopter::eInitiateHunt || 
+	if( state()==CHelicopter::eInitiateHunt || 
 		state()==CHelicopter::eMovingToAttackTraj ||
 		state()==CHelicopter::eMovingByAttackTraj)
 		return;
-*/
+
 	m_destEnemy = dest;
 	m_destEnemyPos = dest->XFORM().c;
 
-//	setState(CHelicopter::eInitiateHunt);
+	setState(CHelicopter::eInitiateHunt);
 //
-		m_movementMngr.buildHuntPath(dest->XFORM().c);
+//		m_movementMngr.buildHuntPath(dest->XFORM().c);
 }

@@ -469,14 +469,11 @@ CHelicopterMovementManager::build_smooth_path (int startKeyIdx, bool bClearOld, 
 
 	if (compute_path(start,dest,&m_path,m_startParams,finish_params,straight_line_index,straight_line_index_negative)) 
 	{
-		for(pathIt It = m_path.begin(); It!=m_path.end(); ++It)
-			(*It).position.y = helicopter()->altitude();
+/*		for(pathIt It = m_path.begin(); It!=m_path.end(); ++It)
+			(*It).position.y = helicopter()->altitude();*/
 
-/*		float xz_dist	= start.position.distance_to(dest.position); 
-		float fullDist	= _sqrt( xz_dist*xz_dist+(destH-startH)*(destH-startH) );
-		float deltaH	= (destH-startH)/fullDist;
 
-		float currDist	= 0.0f;*/
+
 
 		m_failed	= false;
 
@@ -498,6 +495,8 @@ CHelicopterMovementManager::build_smooth_path (int startKeyIdx, bool bClearOld, 
 		prev_xyz = (*B).xyz;
 
 		++E;
+
+		float	fullDist = 0.0f;
 		for(;E!=m_path.end();++B,++E) {
 			Fvector& b_p  = (*B).position;
 			Fvector& e_p  = (*E).position;
@@ -506,7 +505,10 @@ CHelicopterMovementManager::build_smooth_path (int startKeyIdx, bool bClearOld, 
 
 
 			//time
-			float dist = b_p.distance_to( e_p );
+			float dist = b_p.distance_to_xz( e_p );
+			
+			fullDist += dist; //for altitude
+
 			u32 t = (*B).time + (dist/helicopter()->velocity())*1000;
 			(*E).time = t;
 
@@ -531,6 +533,27 @@ CHelicopterMovementManager::build_smooth_path (int startKeyIdx, bool bClearOld, 
 
 		};
 		(*B).xyz = prev_xyz;
+
+
+		float deltaH	= (destH-startH)/fullDist;
+		float currH = startH;
+
+		for(u32 i=oldSize;i<m_path.size();++i)
+		{
+			if( oldSize==i )
+			{
+				m_path[i].position.y = startH;
+				continue;
+			}
+
+			Fvector& b_p  = m_path[i-1].position;
+			Fvector& e_p  = m_path[i].position;
+			float currDist = b_p.distance_to_xz(e_p);
+
+			e_p.y = currH + deltaH*currDist;
+			currH = e_p.y;
+
+		}
 	}
 }
 
@@ -571,9 +594,9 @@ CHelicopterMovementManager::init_build(	int startKeyIdx,
 
 	if(m_path.size())
 	{
-		start.direction		= v2d(m_path[m_path.size()-2].direction);
+		start.direction					= v2d(m_path[m_path.size()-2].direction);
 	}else
-		start.direction		= v2d(m_lastXYZ);
+		start.direction					= v2d(m_lastXYZ);
 	
 	
 

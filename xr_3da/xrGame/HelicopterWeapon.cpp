@@ -115,6 +115,6 @@ CHelicopter::updateMGunDir()
 //	B_.y = 0; B_.normalize();
 
 	m_bone_y_angle = acos( A_.dotproduct(B_) );
-	Log("-----m_bone_y_angle", m_bone_y_angle);
+//	Log("-----m_bone_y_angle", m_bone_y_angle);
 
 }

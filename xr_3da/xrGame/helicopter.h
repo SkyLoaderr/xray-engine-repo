@@ -9,6 +9,7 @@
 //#define HELI_MAX_ANGULAR_VELOCITY PI
 //#define HELI_MIN_ANGULAR_VELOCITY 0.0f
 #define HELI_PITCH_K (-0.006f)
+#define HELI_VELOCITY_ROLL_K (0.03f)
 
 class CHelicopter : 
 	public CEntity,

@@ -3,6 +3,7 @@
 #include "Helicopter.h"
 
 
+
 bool time_lesser (const CHelicopterMovementManager::STravelPathPoint& el1, 
 				  const CHelicopterMovementManager::STravelPathPoint& el2)
 {
@@ -22,12 +23,11 @@ CHelicopterMovementManager::~CHelicopterMovementManager()
 void 
 CHelicopterMovementManager::OnRender()
 {
-	return;
-	Fvector pos, prev_pos, lastDir;
+//	return;
+	Fvector pos, prev_pos;
 
 	RCache.OnFrameEnd	();
 
-	float traj_box_size = .505f;
 	float path_box_size = .105f;
 
 	for(u32 i=0;i<m_path.size();++i)
@@ -159,7 +159,7 @@ CHelicopterMovementManager::getPathPosition(u32 timeCurr,
 	m_lastXYZ.y = angle_normalize_signed(m_lastXYZ.y);
 	m_lastXYZ.z = angle_normalize_signed(m_lastXYZ.z);
 
-	float z_ang_delta = PI_DIV_4*(fTimeDelta);
+	float z_ang_delta = PI_DIV_4*(fTimeDelta)*HELI_VELOCITY_ROLL_K*helicopter()->velocity();
 
 	if( !fsimilar(m_lastXYZ.z, xyz.z) )
 	{
@@ -237,22 +237,10 @@ CHelicopterMovementManager::shedule_Update(u32 time_delta)
 		if( (int)(tt - lt) < 500 )
 		{
 			helicopter()->setState(CHelicopter::eInitiatePatrolZone);
-//			helicopter()->setState(CHelicopter::eInitiateAttackTraj);
 		}
 	}
 
-
-/*	if( (helicopter()->state()==CHelicopter::eMovingByAttackTraj)&&(m_path.size()) )
-	{
-		u32 tt = m_path.back().time;
-		u32 lt = Level().timeServer();
-		if( (int)(tt - lt) < 1000 )
-		{
-//			helicopter()->setState(CHelicopter::eInitiatePatrolZone);
-		}
-	}*/
-
-	if( (helicopter()->state()==CHelicopter::eInitiateAttackTraj) )
+/*	if( (helicopter()->state()==CHelicopter::eInitiateAttackTraj) )
 	{
 		u32				prev_time;
 		Fvector			prev_point;
@@ -280,7 +268,7 @@ CHelicopterMovementManager::shedule_Update(u32 time_delta)
 		{
 
 			float dist = prev_point.distance_to((*It).position);
-			u32 t = prev_time + (dist/helicopter()->velocity())*1000;
+			u32 t = prev_time + (u32)(dist/helicopter()->velocity())*1000;
 			(*It).time = t;
 
 			prev_point = (*It).position;
@@ -288,7 +276,7 @@ CHelicopterMovementManager::shedule_Update(u32 time_delta)
 		}
 
 		helicopter()->setState(CHelicopter::eMovingByAttackTraj);
-	}
+	}*/
 
 	if( (helicopter()->state()==CHelicopter::eInitiatePatrolZone) )
 	{

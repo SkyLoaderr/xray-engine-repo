@@ -36,7 +36,7 @@ CHelicopterMovementManager::createLevelPatrolTrajectory(u32 keyCount, xr_vector<
 			keyPoint.x = ::Random.randF(level_box.min.x, level_box.max.x);
 		}
 
-		keyPoint.y = helicopter()->altitude();
+		keyPoint.y = helicopter()->altitude()+::Random.randF(-10.0f, 10.0f);
 /*		keyPoint.y = ::Random.randF(30.0f, 40.0f);
 		keyPoint.y = level_box.max.y;
 		Level().ObjectSpace.RayPick(keyPoint, down_dir, level_box.max.y-level_box.min.y+1.0f, Collide::rqtStatic, R);
@@ -67,6 +67,8 @@ CHelicopterMovementManager::makeIntermediateKey(Fvector& start, Fvector& dest, f
 {
 	Fvector point;
 	point.lerp(start, dest, k);
+	float h = point.y;
 	point.add( Fvector().random_dir().mul(10.0f) );
+	point.y = h;
 	return point;
 }
