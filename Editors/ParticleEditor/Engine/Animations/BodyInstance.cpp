@@ -552,7 +552,7 @@ void CKinematics::Spawn()
 {
 	IBlend_Startup			();
 
-	for (u32 i=0; i<size; i++)
+	for (u32 i=0; i<bones->size(); i++)
 		bone_instances[i].construct();
 }
 
