@@ -58,14 +58,14 @@ ShaderElement::ShaderElement()
 {
 	Flags.iPriority		= 1;
 	Flags.bStrictB2F	= FALSE;
-	Flags.bLighting		= FALSE;
+	Flags.bEmissive		= FALSE;
 }
 
 BOOL ShaderElement::equal	(ShaderElement& S)
 {
 	if (Flags.iPriority		!= S.Flags.iPriority)	return FALSE;
 	if (Flags.bStrictB2F	!= S.Flags.bStrictB2F)	return FALSE;
-	if (Flags.bLighting		!= S.Flags.bLighting)	return FALSE;
+	if (Flags.bEmissive		!= S.Flags.bEmissive)	return FALSE;
 	if (Passes.size() != S.Passes.size())			return FALSE;
 	for (u32 p=0; p<Passes.size(); p++)
 		if (Passes[p] != S.Passes[p])				return FALSE;

@@ -64,7 +64,7 @@ void	CBlender_Compile::SetParams		(int iPriority, bool bStrictB2F)
 {
 	SH->Flags.iPriority		= iPriority;
 	SH->Flags.bStrictB2F	= bStrictB2F;
-	SH->Flags.bLighting		= FALSE;
+	//SH->Flags.bLighting		= FALSE;
 }
 
 //
@@ -144,7 +144,7 @@ void	CBlender_Compile::PassSET_LightFog	(BOOL bLight, BOOL bFog)
 {
 	RS.SetRS(D3DRS_LIGHTING,			BC(bLight));
 	RS.SetRS(D3DRS_FOGENABLE,			BC(bFog));
-	SH->Flags.bLighting					|= !!bLight;
+	//SH->Flags.bLighting				|= !!bLight;
 }
 
 //
