@@ -299,7 +299,8 @@ void CBuild::MergeLM()
 					g_deflectors.erase(OLD);
 					delete SEL[iRealIndex];
 				}
-				deflNew.push_back(pDEFL);
+				pDEFL->Save			();
+				deflNew.push_back	(pDEFL);
 				
 				// Cleanup
 				SEL.clear			();
