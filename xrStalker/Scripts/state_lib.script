@@ -216,7 +216,7 @@ states = {
 				animation = "backoff2",
 				reset = true
 			},
-	suicide = {	weapon = "fire",
+	suicide = {	weapon = "unstrapped",
 				movement = move.stand,
 				mental = anim.free,
 				bodystate = move.standing,

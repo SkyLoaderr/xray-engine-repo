@@ -77,7 +77,7 @@ function action_remark_activity:signal_arrival()
 end
 
 function action_remark_activity:activate_sound()
-	if self.snd_scheduled then
+	if self.snd_scheduled or not self.st.snd then
 		return
 	end
 	printf("_bp: %s: action_remark_activity:activate_sound(): activating sound", self.object:name())
@@ -113,8 +113,16 @@ function action_remark_activity:get_sug_body_state()
 end
 
 function action_remark_activity:signal_action_end()
-	if not self.action_end_signalled and self.move_end_signalled and
-	   self.sound_end_signalled and self.anim_end_signalled then
+	printf("_bp_ signal_action_end [%s, %s, %s, [%s or %s]]",
+		utils.to_str(not self.action_end_signalled),
+		utils.to_str(self.move_end_signalled),
+		utils.to_str(self.sound_end_signalled),
+		utils.to_str(not self.st.anim),
+		utils.to_str(self.anim_end_signalled))
+	if not self.action_end_signalled and
+	   (self.st.no_move or self.move_end_signalled) and
+	   (not self.st.snd or self.sound_end_signalled) and
+	   (not self.st.anim or self.anim_end_signalled) then
 		self.action_end_signalled = true
 		self.st.signals["action_end"] = true
 		printf("xr_remark: signalling action_end")
@@ -122,6 +130,7 @@ function action_remark_activity:signal_action_end()
 end
 
 function action_remark_activity:time_callback()
+	self:activate_sound()
 	if not self.anim_end_signalled then
 		self.anim_end_signalled = true
 		self.st.signals["anim_end"] = true
@@ -135,7 +144,9 @@ end
 function action_remark_activity:turn_end_callback()
 	if self.st.snd then
 		printf("_bp: action_remark_activity:step(): calling activate_sound from state_initial")
-		self:activate_sound()
+		if not self.st.snd_anim_sync then
+			self:activate_sound()
+		end
 	end
 end
 
@@ -224,7 +235,9 @@ function action_remark_activity:step()
 		   (distance_between(self.object, self.target) <= self.st.snd_dist or
 		    device():time_global() - self.reset_time >= self.st.snd_timeout) then
 			printf("_bp: action_remark_activity:step(): calling activate_sound from state_going_to_plr")
-			self:activate_sound()
+			if not self.st.snd_anim_sync then
+				self:activate_sound()
+			end
 		end
 
 		if distance_between(self.object, self.target) < 3 or
@@ -242,7 +255,9 @@ function action_remark_activity:step()
 	if self.state == state_standing then
 		if self.st.snd then
 			printf("_bp: action_remark_activity:step(): calling activate_sound from state_standing")
-			self:activate_sound()
+			if not self.st.snd_anim_sync then
+				self:activate_sound()
+			end
 		end
 		self:if_actor_far_go_to_actor()
 		return
@@ -324,10 +339,11 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
 	st.no_rotate = utils.cfg_get_bool         (ini, section,   "no_rotate",       npc, false)
 	st.no_wpn = utils.cfg_get_bool            (ini, section,   "no_wpn",          npc, false)
+	st.snd_anim_sync = utils.cfg_get_bool     (ini, section,   "snd_anim_sync",       npc, false)
 	if st.no_wpn then
 		utils.abort("object '%s': xr_remark.set_scheme: no_wpn field is deprecated", npc:name())
 	end
-	st.snd = utils.cfg_get_string             (ini, section,   "snd",             npc, false, "")
+	st.snd = utils.cfg_get_string             (ini, section,   "snd",             npc, false, "", nil)
 	st.snd_dist = utils.cfg_get_number        (ini, section,   "snd_dist",        npc, false,     5)
 	st.snd_timeout = utils.cfg_get_number     (ini, section,   "snd_timeout",     npc, false,     4000)
 	st.arrival_timeout = utils.cfg_get_number (ini, section,   "arrival_timeout", npc, false,     5000)

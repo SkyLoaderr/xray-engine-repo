@@ -158,13 +158,31 @@ function val_sacrifice_victim_dead(actor, npc)
 end
 
 function val_suicide_kill_self(actor, npc)
+	local snd_obj = sound_object([[Weapons\walther_shoot]])
+	if snd_obj ~= nil then
+		snd_obj:play_at_pos(db.actor, npc:position(), sound_object.s3d)
+	end
+
+	--[[
+	snd_obj = sound_object([[ambient\random\rnd_fallscream]])
+	if snd_obj ~= nil then
+		snd_obj:play_at_pos(db.actor, npc:position(), sound_object.s3d)
+	end
+	--]]
+
+	action(
+		npc,
+		particle("nature\\fog_stormy","bip01_head",particle_params(vector():set(0,0,0.3),vector():set(0,0,0),vector():set(1,0,0)),false),
+		cond	(cond.time_end, time_infinite)
+	)
+
 	printf("_bp: val_suicide_kill_self: npc='%s'", npc:name())
 	local h = hit()
-	h.power = 10000
+	h.power = 1000
 	h.direction = npc:direction()
 	h.bone = "bip01_head"
 	h.draftsman = npc 
-	h.impulse = 2000
+	h.impulse = 100
 	h.type = hit.wound
 	npc:hit(h)
 end
