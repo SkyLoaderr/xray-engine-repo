@@ -14,17 +14,30 @@
 #endif
 
 
-// CxrUpdateApp
+#define ON_MESSAGE__(message, memberFxn) \
+	{ message, 0, 0, 0, AfxSig_lwl, \
+		(AFX_PMSG)(static_cast< LRESULT (CCmdTarget::*)(WPARAM, LPARAM) > \
+		(memberFxn)) },
 
 BEGIN_MESSAGE_MAP(CxrUpdateApp, CWinApp)
 	ON_COMMAND(ID_APP_ABOUT, OnAppAbout)
 	ON_COMMAND(ID_FILE_NEW, CWinApp::OnFileNew)
 	ON_COMMAND(ID_FILE_OPEN, CWinApp::OnFileOpen)
+
 END_MESSAGE_MAP()
 
+/*
+#define ON_MESSAGE(message, memberFxn) \
+	{ message, 0, 0, 0, AfxSig_lwl, \
+		(AFX_PMSG)(AFX_PMSGW) \
+		(static_cast< LRESULT (AFX_MSG_CALL CWnd::*)(WPARAM, LPARAM) > \
+		(memberFxn)) },
+*/
+	
 
 // CxrUpdateApp construction
 extern CLogDlg*	g_log_dlg = NULL;
+extern HWND g_app_wnd =NULL;
 void	__stdcall log_cb_fn (LPCSTR string)
 {
 	if(!g_log_dlg)
@@ -33,6 +46,7 @@ void	__stdcall log_cb_fn (LPCSTR string)
 	g_log_dlg->m_list_box.AddString(string);
 	g_log_dlg->ShowWindow(SW_SHOW);
 }
+
 
 CxrUpdateApp::CxrUpdateApp()
 {
@@ -45,9 +59,15 @@ CxrUpdateApp::~CxrUpdateApp()
 	Core._destroy();
 	g_log_dlg = NULL;
 	xr_delete(m_log_dlg);
-}
+	FreeConsole();
 
-// The one and only CxrUpdateApp object
+	if( m_pReadThread )
+	{
+		TerminateThread( m_pReadThread->m_hThread,0 );
+//		delete m_pReadThread;
+	}
+
+}
 
 CxrUpdateApp theApp;
 
@@ -61,6 +81,11 @@ BOOL CxrUpdateApp::InitInstance()
 	m_log_dlg->Create( MAKEINTRESOURCE(IDD_LOG_DIALOG) , NULL);
 	m_log_dlg->ShowWindow(SW_SHOW);
 
+	BOOL r = AllocConsole();
+	HANDLE h_in  =GetStdHandle(STD_INPUT_HANDLE);
+	HANDLE h_out =GetStdHandle(STD_OUTPUT_HANDLE);
+	HANDLE h_err =GetStdHandle(STD_ERROR_HANDLE);
+	CreateShellRedirect();
 	Core._initialize("xrUpdate",log_cb_fn,FALSE);
 	FS._initialize(CLocatorAPI::flTargetFolderOnly,"x:\\upd_scripts");
 

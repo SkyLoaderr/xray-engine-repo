@@ -8,6 +8,7 @@
 
 #include "resource.h"       // main symbols
 
+#define ADD_LOG_MSG WM_USER+456
 
 // CxrUpdateApp:
 // See xrUpdate.cpp for the implementation of this class
@@ -19,17 +20,19 @@ public:
 	CxrUpdateApp();
 	~CxrUpdateApp();
 
+	CWinThread*	m_pReadThread;
 
-// Overrides
+	BOOL CreateShellRedirect();
+	static UINT ReadPipeThreadProc( LPVOID pParam );
 public:
 	CLogDlg*	m_log_dlg;
 	virtual BOOL InitInstance();
 
-// Implementation
 	afx_msg void OnAppAbout();
 	DECLARE_MESSAGE_MAP()
 };
 
 extern CxrUpdateApp theApp;
+extern HWND g_app_wnd;
 extern void	__stdcall log_cb_fn (LPCSTR string);
 extern CLogDlg*	g_log_dlg;

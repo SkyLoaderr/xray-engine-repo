@@ -84,6 +84,8 @@ public:
 	afx_msg void			OnBnClickedUpdBtn									();
 
 	LRESULT					OnTvCheckbox										(WPARAM wp, LPARAM lp);
+	LRESULT					OnAddLogMsg											(WPARAM wp, LPARAM lp);
+
 };
 
 inline CxrUpdateDoc* CxrUpdateView::GetDocument() const

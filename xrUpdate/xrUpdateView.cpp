@@ -53,6 +53,7 @@ BEGIN_MESSAGE_MAP(CxrUpdateView, CFormView)
 	ON_COMMAND(ID_COPYFILESTASK_EXECUTEPROCESS,  OnAddExecuteTask)
 	ON_COMMAND(ID_COPYFILESTASK_BATCHEXECUTE,  OnAddBatchExecuteTask)
 
+	ON_MESSAGE(ADD_LOG_MSG, OnAddLogMsg)
 
 	ON_EN_CHANGE(IDC_EDIT_TASK_NAME, OnEnChangeEditTaskName)
 	ON_NOTIFY(NM_CLICK, IDC_TREE1, OnNMClickTree1)
@@ -64,6 +65,12 @@ BEGIN_MESSAGE_MAP(CxrUpdateView, CFormView)
 END_MESSAGE_MAP()
 
 // CxrUpdateView construction/destruction
+
+LRESULT	 CxrUpdateView::OnAddLogMsg(WPARAM wp, LPARAM lp)
+{
+	log_cb_fn((LPCSTR)wp );
+	return 0;
+}
 
 CxrUpdateView::CxrUpdateView()
 	: CFormView(CxrUpdateView::IDD)
@@ -133,6 +140,8 @@ void CxrUpdateView::OnInitialUpdate()
 	}
 	g_tree_ctrl = &m_tree_ctrl;
 	b_initialized = TRUE;
+
+	g_app_wnd = GetSafeHwnd();
 }
 
 // CxrUpdateView diagnostics

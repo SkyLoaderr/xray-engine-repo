@@ -189,6 +189,9 @@
 				RelativePath=".\SectionQueryDlg.h">
 			</File>
 			<File
+				RelativePath=".\ShellView.cpp">
+			</File>
+			<File
 				RelativePath=".\stdafx.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
