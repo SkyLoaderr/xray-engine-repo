@@ -136,12 +136,31 @@ protected:
 		void 			CalculateTB		();
 
         void 			Save			(IWriter& F, BOOL b2Link);
+
+        void			ComputeBounding	()
+        {
+            // calculate BBox
+            m_Box.invalidate	();
+            for (SkelVertIt v_it=m_Verts.begin(); v_it!=m_Verts.end(); v_it++){
+                SSkelVert& pV 	= *v_it;
+                m_Box.modify(pV.O);
+            }
+        }
     };
 	DEFINE_VECTOR		(SSplit,SplitVec,SplitIt);
 	SplitVec			m_Splits;
+    Fbox 				m_Box;
 //----------------------------------------------------
 	void 				ComputeOBB			(Fobb &B, FvectorVec& V);
     int     			FindSplit			(LPCSTR shader, LPCSTR texture);
+    void				ComputeBounding	()
+    {
+        m_Box.invalidate();
+        for (SplitIt it=m_Splits.begin(); it!=m_Splits.end(); it++){
+            it->ComputeBounding	();
+            m_Box.merge			(it->m_Box);
+        }
+    }
 public:
     virtual bool    	Export				(IWriter& F)=0;
 };

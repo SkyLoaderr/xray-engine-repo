@@ -62,7 +62,7 @@ void IRender_Visual::Load		(const char* N, IReader *data, u32 dwFlags)
 
     // desc
 #ifdef _EDITOR
-    if (data->find_chunk(OGF_DESC)) 
+    if (data->find_chunk(OGF_S_DESC)) 
 	    desc.Load		(*data);
 #endif
 }

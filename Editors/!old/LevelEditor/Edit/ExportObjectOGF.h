@@ -127,13 +127,31 @@ class CExportObjectOGF
 //		void 			MakeProgressive	();
         				SSplit			(CSurface* surf, const Fbox& bb);
         				~SSplit			();
+		void 			ComputeBounding	()
+        {
+            m_Box.invalidate();
+            for (COGFCPIt it=m_Parts.begin(); it!=m_Parts.end(); it++){
+                CObjectOGFCollectorPacked* part = *it;
+                part->ComputeBounding	();
+                m_Box.merge				(part->m_Box);
+            }
+        }
     };
 	DEFINE_VECTOR		(SSplit*,SplitVec,SplitIt);
 	SplitVec			m_Splits;
 	CEditableObject*	m_Source;
+    Fbox 				m_Box;   	
 //----------------------------------------------------
 //	void 	ComputeOBB			(Fobb &B, FvectorVec& V);
     SSplit*	FindSplit			(CSurface* surf);
+    void 				ComputeBounding	()
+    {
+        m_Box.invalidate();
+        for (SplitIt it=m_Splits.begin(); it!=m_Splits.end(); it++){
+            (*it)->ComputeBounding	();
+            m_Box.merge				((*it)->m_Box);
+        }
+    }
 public:
 			CExportObjectOGF	(CEditableObject* object);
 			~CExportObjectOGF	();

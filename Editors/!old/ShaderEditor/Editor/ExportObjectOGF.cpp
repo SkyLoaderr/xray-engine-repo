@@ -135,11 +135,8 @@ void CExportObjectOGF::SSplit::AppendPart(int apx_vertices, int apx_faces)
 
 void CExportObjectOGF::SSplit::Save(IWriter& F, int& chunk_id)
 {
-	m_Box.invalidate();
 	for (COGFCPIt it=m_Parts.begin(); it!=m_Parts.end(); it++){
 	    CObjectOGFCollectorPacked* part = *it;
-        part->ComputeBounding	();
-		m_Box.merge				(part->m_Box);
         F.open_chunk			(chunk_id);
         {
             // Header
@@ -148,6 +145,9 @@ void CExportObjectOGF::SSplit::Save(IWriter& F, int& chunk_id)
             H.format_version	= xrOGF_FormatVersion;
             H.type				= /*(I_Current>=0)?MT_PROGRESSIVE:*/MT_NORMAL;
             H.shader_id			= 0;
+            H.bb.min			= part->m_Box.min;
+            H.bb.max			= part->m_Box.max;
+            part->m_Box.getsphere(H.bs.c,H.bs.r);
             F.w					(&H,sizeof(H));
             F.close_chunk		();
 
@@ -155,11 +155,6 @@ void CExportObjectOGF::SSplit::Save(IWriter& F, int& chunk_id)
             F.open_chunk		(OGF_TEXTURE);
             F.w_stringZ			(m_Surf->_Texture());
             F.w_stringZ			(m_Surf->_ShaderName());
-            F.close_chunk		();
-
-            // Game material
-            F.open_chunk		(OGF_MATERIAL);
-            F.w_stringZ			(m_Surf->_GameMtlName());
             F.close_chunk		();
 
             // Vertices
@@ -204,11 +199,6 @@ void CExportObjectOGF::SSplit::Save(IWriter& F, int& chunk_id)
                 F.close_chunk();
             }
 */
-            // BBox (already computed)
-            F.open_chunk		(OGF_BBOX);
-            F.w					(&part->m_Box,sizeof(part->m_Box));
-            F.close_chunk		();
-
 /*
             F.open_chunk		(OGF_OBB);
             F.w					(&part->m_OBB,sizeof(part->m_OBB));
@@ -435,38 +425,36 @@ bool CExportObjectOGF::Export(IWriter& F)
     	return 			false;
     }
     
+	// Compute bounding...
+    ComputeBounding	();
+
 	// create OGF
 	// Saving geometry...
-    Fbox BBox;   	BBox.invalidate	();
 
     // Header
     ogf_header 		H;
     H.format_version= xrOGF_FormatVersion;
     H.type			= MT_HIERRARHY;
     H.shader_id		= 0;
+    H.bb.min		= m_Box.min;
+    H.bb.max		= m_Box.max;
+    m_Box.getsphere(H.bs.c,H.bs.r);
     F.w_chunk		(OGF_HEADER,&H,sizeof(H));
 
     // Desc
     ogf_desc		desc;
     m_Source->PrepareOGFDesc(desc);
-    F.open_chunk	(OGF_DESC);
+    F.open_chunk	(OGF_S_DESC);
     desc.Save		(F);
     F.close_chunk	();
 
     // OGF_CHILDREN
     F.open_chunk	(OGF_CHILDREN);
     int chunk=0;
-    for (SplitIt split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++){
+    for (SplitIt split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++)
         (*split_it)->Save(F,chunk);
-		BBox.merge	((*split_it)->m_Box);
-    }
     F.close_chunk	();
     UI->ProgressInc	();
-
-    // BBox (already computed)
-    F.open_chunk	(OGF_BBOX);
-    F.w				(&BBox,sizeof(Fbox));
-    F.close_chunk	();
 
     UI->ProgressEnd	();
 

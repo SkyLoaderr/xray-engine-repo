@@ -106,9 +106,12 @@ void CExportSkeleton::SSplit::Save(IWriter& F, BOOL b2Link)
     H.format_version	= xrOGF_FormatVersion;
     H.type				= (I_Current>=0)?MT_SKELETON_GEOMDEF_PM:MT_SKELETON_GEOMDEF_ST;
     H.shader_id			= 0;
+    H.bb.min			= m_Box.min;
+    H.bb.max			= m_Box.max;
+    m_Box.getsphere		(H.bs.c,H.bs.r);
     F.w					(&H,sizeof(H));
     F.close_chunk		();
-
+    
     // Texture
     F.open_chunk		(OGF_TEXTURE);
     F.w_stringZ			(m_Texture);
@@ -116,14 +119,12 @@ void CExportSkeleton::SSplit::Save(IWriter& F, BOOL b2Link)
     F.close_chunk		();
 
     // Vertices
-    m_Box.invalidate	();
     F.open_chunk		(OGF_VERTICES);
-    F.w_u32				(b2Link?OGF_SKELETON_2L:OGF_SKELETON_1L);
+    F.w_u32				(b2Link?OGF_VERTEXFORMAT_FVF_2L:OGF_VERTEXFORMAT_FVF_1L);
     F.w_u32				(m_Verts.size());
     if (b2Link){
         for (SkelVertIt v_it=m_Verts.begin(); v_it!=m_Verts.end(); v_it++){
             SSkelVert& pV 	= *v_it;
-            m_Box.modify(pV.O);
 			// write vertex
             F.w_u16		(pV.B0);
             F.w_u16		(pV.B1);
@@ -137,7 +138,6 @@ void CExportSkeleton::SSplit::Save(IWriter& F, BOOL b2Link)
     }else{
         for (SkelVertIt v_it=m_Verts.begin(); v_it!=m_Verts.end(); v_it++){
             SSkelVert& pV 	= *v_it;
-            m_Box.modify(pV.O);
             F.w			(&pV.O,sizeof(Fvector));		// position (offset)
             F.w			(&pV.N,sizeof(Fvector));		// normal
             F.w			(&(pV.O),sizeof(Fvector));		// T        //.
@@ -176,11 +176,6 @@ void CExportSkeleton::SSplit::Save(IWriter& F, BOOL b2Link)
         }
         F.close_chunk();
     }
-
-    // BBox (already computed)
-    F.open_chunk(OGF_BBOX);
-    F.w(&m_Box,sizeof(Fvector)*2);
-    F.close_chunk();
 }
 
 void CExportSkeleton::SSplit::CalculateTB()
@@ -395,6 +390,7 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
     UI->ProgressStart(5+m_Source->MeshCount()*2+m_Source->SurfaceCount(),"Export skeleton geometry...");
     UI->ProgressInc();
 
+    BoneVec& bones 			= m_Source->Bones();
     xr_vector<FvectorVec>	bone_points;
 	bone_points.resize	(m_Source->BoneCount());
 
@@ -454,32 +450,35 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
     UI->SetStatus("Make progressive...");
     // fill per bone vertices
     for (SplitIt split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++){
+//.		if (m_Source->m_Flags.is(CEditableObject::eoProgressive)) split_it->MakeProgressive();
+		split_it->CalculateTB();
 		SkelVertVec& lst = split_it->getV_Verts();
 	    for (SkelVertIt sv_it=lst.begin(); sv_it!=lst.end(); sv_it++){
 		    bone_points[sv_it->B0].push_back(sv_it->O);
+            bones[sv_it->B0]->_RITransform().transform_tiny(bone_points[sv_it->B0].back());
         }
-//.		if (m_Source->m_Flags.is(CEditableObject::eoProgressive)) split_it->MakeProgressive();
-		split_it->CalculateTB();
 		UI->ProgressInc();
     }
 	UI->ProgressInc();
 
+    // coumpute bounding
+    ComputeBounding	();
+
 	// create OGF
-
-	// Saving geometry...
-    Fbox rootBB;    rootBB.invalidate();
-
     // Header
     ogf_header 		H;
     H.format_version= xrOGF_FormatVersion;
     H.type			= m_Source->IsAnimated()?MT_SKELETON_ANIM:MT_SKELETON_RIGID;
     H.shader_id		= 0;
+    H.bb.min		= m_Box.min;
+    H.bb.max		= m_Box.max;
+    m_Box.getsphere	(H.bs.c,H.bs.r);
     F.w_chunk		(OGF_HEADER,&H,sizeof(H));
 
     // Desc
     ogf_desc		desc;
     m_Source->PrepareOGFDesc(desc);
-    F.open_chunk	(OGF_DESC);
+    F.open_chunk	(OGF_S_DESC);
     desc.Save		(F);
     F.close_chunk	();
 	
@@ -490,21 +489,16 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
 	    F.open_chunk(chield++);
         split_it->Save(F,b2Link);
 	    F.close_chunk();
-		rootBB.merge(split_it->m_Box);
     }
     F.close_chunk();
     UI->ProgressInc();
 
 
     UI->SetStatus("Compute bounding volume...");
-    // BBox (already computed)
-    F.open_chunk(OGF_BBOX);
-    F.w(&rootBB,sizeof(Fbox));
-    F.close_chunk();
 	UI->ProgressInc();
 
     // BoneNames
-    F.open_chunk(OGF_BONE_NAMES);
+    F.open_chunk(OGF_S_BONE_NAMES);
     F.w_u32(m_Source->BoneCount());
     int bone_idx=0;
     for (BoneIt bone_it=m_Source->FirstBone(); bone_it!=m_Source->LastBone(); bone_it++,bone_idx++){
@@ -518,13 +512,13 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
 
     bool bRes = true;
                     
-    F.open_chunk(OGF_IKDATA);
+    F.open_chunk(OGF_S_IKDATA);
     for (bone_it=m_Source->FirstBone(); bone_it!=m_Source->LastBone(); bone_it++,bone_idx++)
         if (!(*bone_it)->ExportOGF(F)) bRes=false; 
     F.close_chunk();
 
     if (m_Source->GetClassScript().size()){
-        F.open_chunk(OGF_USERDATA);
+        F.open_chunk(OGF_S_USERDATA);
         F.w(*m_Source->GetClassScript(),m_Source->GetClassScript().size());
         F.close_chunk();
     }
@@ -553,11 +547,11 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
     CSMotion* active_motion=m_Source->ResetSAnimation();
 
     // Motions
-    F.open_chunk(OGF_MOTIONS);
-    F.open_chunk(0);
-    F.w_u32(m_Source->SMotionCount());
-    F.close_chunk();
-    int smot = 1;
+    F.open_chunk			(OGF_S_MOTIONS);
+    F.open_chunk			(0);
+    F.w_u32					(m_Source->SMotionCount());
+    F.close_chunk			();
+    int smot 				= 1;
 
     // use global transform
     Fmatrix	mGT,mTranslate,mRotate;
@@ -698,13 +692,13 @@ bool CExportSkeleton::ExportMotionDefs(IWriter& F)
     UI->ProgressInc		();
 
     if (m_Source->m_SMotionRefs.size()){
-	    F.open_chunk	(OGF_MOTION_REFS);
+	    F.open_chunk	(OGF_S_MOTION_REFS);
     	F.w_stringZ		(m_Source->m_SMotionRefs);
 	    F.close_chunk	();
         UI->ProgressInc	();
     }else{
         // save smparams
-        F.open_chunk	(OGF_SMPARAMS);
+        F.open_chunk	(OGF_S_SMPARAMS);
         F.w_u16			(xrOGF_SMParamsVersion);
         // bone parts
         BPVec& bp_lst 	= m_Source->BoneParts();
@@ -738,7 +732,7 @@ bool CExportSkeleton::ExportMotionDefs(IWriter& F)
             CSMotion* motion = *motion_it;
             // verify
             if (!motion->m_Flags.is(esmFX)){
-                if (!((motion->m_BoneOrPart==BI_NONE)||(motion->m_BoneOrPart<bp_lst.size()))){
+                if (!((motion->m_BoneOrPart==BI_NONE)||(motion->m_BoneOrPart<(int)bp_lst.size()))){
                     ELog.Msg(mtError,"Invalid Bone Part of motion: '%s'.",motion->Name());
                     bRes=false;
                     continue;
