@@ -188,6 +188,7 @@ void CSE_ALifeSimulator::vfGenerateAnomalyMap()
 		l_tpALifeKnownAnomaly->m_tAnomalousZoneType		= randI(10) ? l_tpALifeAnomalousZone->m_tAnomalyType : EAnomalousZoneType(randI(eAnomalousZoneTypeDummy));
 		l_tpALifeKnownAnomaly->m_fAnomalyPower			= randF(l_tpALifeAnomalousZone->m_maxPower*.5f,l_tpALifeAnomalousZone->m_maxPower*1.5f);
 		l_tpALifeKnownAnomaly->m_fDistance				= randF(l_tpALifeAnomalousZone->m_fDistance*.5f,l_tpALifeAnomalousZone->m_fDistance*1.5f);
+		l_tpALifeKnownAnomaly->m_tGraphID				= l_tpALifeAnomalousZone->m_tGraphID;
 		m_tpAnomalies[l_tpALifeAnomalousZone->m_tGraphID].push_back(l_tpALifeKnownAnomaly);
 
 		// updating known anomaly data
@@ -682,20 +683,34 @@ void CSE_ALifeSimulator::vfUpdateTasks()
 		U32_SET_IT				i = (*J).second.begin();
 		U32_SET_IT				e = (*J).second.end();
 		for ( ; i != e; i++) {
+			CLASS_ID			l_tClassID = pSettings->r_clsid((*I).first,"class");
 			// iterating on all the active anomalies by the particular type
 			ANOMALY_P_IT		II = m_tpCrossAnomalies[*i].begin();
 			ANOMALY_P_IT		EE = m_tpCrossAnomalies[*i].end();
 			for ( ; II != EE; II++) {
-				// creating new task
-				CSE_ALifeTask	*l_tpALifeTask = xr_new<CSE_ALifeTask>();
-				l_tpALifeTask->m_tTaskType = eTaskTypeSearchForItemCG;
-				
-				// itarting on all the traders who ordered this type of artefact
+				// iterating on all the traders who ordered this type of artefact
+				float			l_fMinDistance = 10000000.f;
 				TRADER_SET_IT	ii = (*I).second.begin();
-				TRADER_SET_IT	ee = (*I).second.end();
+				TRADER_SET_IT	ee = (*I).second.end(), jj = ee;
 				for ( ; ii != ee; ii++) {
-					
+					float		l_fDistance = ffFindMinimalPath((*ii)->m_tGraphID,(*II)->m_tGraphID);
+					if (l_fDistance < l_fMinDistance) {
+						l_fMinDistance = l_fDistance;
+						jj = ii;
+					}
 				}
+				R_ASSERT2		(jj != ee,"Data mismatch!");
+				// creating new task
+				CSE_ALifeTask				*l_tpALifeTask = xr_new<CSE_ALifeTask>();
+				l_tpALifeTask->m_tTaskType	= eTaskTypeSearchForItemCG;
+				l_tpALifeTask->m_tClassID	= l_tClassID;
+				l_tpALifeTask->m_tGraphID	= (*ii)->m_tGraphID;
+				l_tpALifeTask->m_tTimeID	= tfGetGameTime();
+				l_tpALifeTask->m_tCustomerID= (*ii)->ID;
+#pragma todo("Correct task price")
+				l_tpALifeTask->m_fCost		= 100.f;
+				l_tpALifeTask->m_tTaskID	= m_tTaskID++;
+				m_tTaskRegistry.insert(std::make_pair(l_tpALifeTask->m_tTaskID,l_tpALifeTask));
 			}
 		}
 	}

@@ -101,6 +101,7 @@ public:
 	EAnomalousZoneType				m_tAnomalousZoneType;
 	float							m_fAnomalyPower;
 	float							m_fDistance;
+	_GRAPH_ID						m_tGraphID;
 
 									CSE_ALifeKnownAnomaly()
 	{
@@ -111,6 +112,7 @@ public:
 		tMemoryStream.w				(&m_tAnomalousZoneType,	sizeof(m_tAnomalousZoneType));
 		tMemoryStream.w_float		(m_fAnomalyPower);
 		tMemoryStream.w_float		(m_fDistance);
+		tMemoryStream.w				(&m_tGraphID,sizeof(m_tGraphID));
 	}
 	
 	virtual void					Load(IReader	&tFileStream)
@@ -118,6 +120,7 @@ public:
 		tFileStream.r				(&m_tAnomalousZoneType,	sizeof(m_tAnomalousZoneType));
 		m_fAnomalyPower				= tFileStream.r_float();
 		m_fDistance					= tFileStream.r_float();
+		tFileStream.r				(&m_tGraphID,sizeof(m_tGraphID));
 	};
 };
 
