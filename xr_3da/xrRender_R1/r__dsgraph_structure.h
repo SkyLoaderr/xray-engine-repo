@@ -53,6 +53,8 @@ public:
 	xr_vector<ISpatial*>										lstRenderables;
 	xr_vector<ISpatial*>										lstSpatial;
 	xr_vector<IRender_Visual*>									lstVisuals;
+
+	xr_vector<IRender_Visual*>									lstRecorded;
 public:
 	virtual		void					set_Transform			(Fmatrix*	M	)				{ VERIFY(M);	val_pTransform = M;	}
 	virtual		void					set_HUD					(BOOL 		V	)				{ val_bHUD		= V;				}
