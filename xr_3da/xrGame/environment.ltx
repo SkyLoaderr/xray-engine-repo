@@ -1,7 +1,7 @@
 
 
 [flares_default10]
-flare_opacity            = 0.060, 0.040, 0.100, 0.080, 0.040, 0.040
+flare_opacity            = 0.120, 0.080, 0.200, 0.160, 0.080, 0.080
 flare_position           = 1.300, 1.000, 0.500, -0.300, -0.600, -1.000
 flare_radius             = 0.080, 0.120, 0.040, 0.080, 0.120, 0.300
 flare_textures           = fx\fx_flare1.tga, fx\fx_flare2.tga, fx\fx_flare2.tga, fx\fx_flare2.tga, fx\fx_flare3.tga, fx\fx_flare1.tga
@@ -341,6 +341,7 @@ sun_dir			=	-28.0, 292
 12:00:00			=	e_12
 13:00:00			=	e_13
 14:00:00			=	e_14
+14:30:00			=	e_141
 15:00:00			=	e_15
 16:00:00			=	e_16
 17:00:00			=	e_17
@@ -686,7 +687,7 @@ sun_dir			=	-28.0, 292
 
 
 [e_13]
-flares			=	flares_default	
+flares			=	flares_default10	
 sky_texture		=	sky\sky_19_cube
 sky_rotation	=	0
 sky_color		=	1.0,    1.0,  	1.0
@@ -708,6 +709,29 @@ sun_dir			=	-28.0, 292
 
 
 [e_14]
+flares			=	
+sky_texture		=	sky\sky_13_cube
+sky_rotation	=	0
+sky_color		=	1.0,    1.0,  	1.0
+far_plane		=	250
+fog_color		=	0.408, 0.400, 0.408
+fog_density		=	0.9
+rain_density	=	0.0
+rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	off
+bolt_period		=	3.f
+bolt_duration	=	0.25f
+wind_velocity	=	0.0 
+wind_direction	=	0.0
+ambient			=	0.06,   0.06,  	0.06
+lmap_color		=	1.0,    1.0,  	1.0
+hemi_color		=	1.5,	1.5,	1.5
+sun_color		=	0.0,    0.0,  	0.0
+sun_dir			=	-28.0, 292
+
+
+
+[e_141]
 flares			=	
 sky_texture		=	sky\sky_13_cube
 sky_rotation	=	0
