@@ -24,6 +24,7 @@ light::~light(void)
 {
 }
 
+#if RENDER==R_R2 
 void light::set_texture		(LPCSTR name)
 {
 	if (NULL==name)
@@ -36,10 +37,17 @@ void light::set_texture		(LPCSTR name)
 		return;
 	}
 
-#pragma todo("Only shadowed spot implements projective texture")
+#pragma todo				("Only shadowed spot implements projective texture")
 	string128				temp;
 	s_spot_s.create			(RImplementation.Target.b_accum_spot_s,strconcat(temp,"r2\\accum_spot_s_",name),name);
 }
+#endif
+
+#if RENDER==R_R1
+void light::set_texture		(LPCSTR name)
+{
+}
+#endif
 
 void light::set_active		(bool a)
 {

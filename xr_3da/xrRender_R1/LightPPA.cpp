@@ -8,34 +8,6 @@
 const u32	MAX_POLYGONS=1024*8;
 const float MAX_DISTANCE=50.f;
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
-
-CLightPPA::CLightPPA()
-{
-}
-
-CLightPPA::~CLightPPA()
-{
-}
-
-void CLightPPA::set_active(bool a)
-{
-	if (a)
-	{
-		if (bActive)		return;
-		bActive				= true;
-		RImplementation.L_Dynamic->Activate		(this);	
-	}
-	else
-	{
-		if (!bActive)		return;
-		bActive				= false;
-		RImplementation.L_Dynamic->Deactivate	(this);
-	}
-}
-
 IC void mk_vertex		(CLightPPA_Vertex& D, Fvector& P, Fvector& N, Fvector& C, float r2)
 {
 	D.P.set	(P);
@@ -105,7 +77,7 @@ void CLightPPA::Render	(ref_geom& hGeom)
 	if (actual) RCache.Render	(D3DPT_TRIANGLELIST,vOffset,actual);
 }
 
-void CLightPPA_Manager::Render()
+void CLightPPA_Manager::Render	()
 {
 	// Projection
 	float _43					 = Device.mProject._43;
@@ -113,7 +85,7 @@ void CLightPPA_Manager::Render()
 	RCache.set_xform_project	(Device.mProject);
 
 	RCache.set_Shader	(hShader);
-	for (xr_set<CLightPPA*>::iterator it=active.begin(); it!=active.end(); it++)
+	for (xr_vector<light*>::iterator it=selected.begin(); it!=selected.end(); it++)
 	{
 		CLightPPA&	PPL = *(*it);
 

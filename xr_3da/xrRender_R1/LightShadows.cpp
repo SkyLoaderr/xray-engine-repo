@@ -114,7 +114,7 @@ void CLightShadows::add_element	(NODE* N)
 	casters.back()->nodes.push_back	(*N);
 }
 
-IC float PLC_energy	(Fvector& P, Fvector& N, Flight* L, float E)
+IC float PLC_energy	(Fvector& P, Fvector& N, light* L, float E)
 {
 	Fvector Ldir;
 	if (L->type==D3DLIGHT_DIRECTIONAL)
