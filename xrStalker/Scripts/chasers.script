@@ -29,7 +29,7 @@ function main ()
              for a = 1, table.getn (monsters), 1 do
                  if monsters[a] ~= nil and monsters[a] ~= scr_monster and monsters[a]:alive () == true then
                     local t = distance_between (actor, monsters[a])
-                    if t < 50 and monster[a] ~= old_monster then
+                    if t < 50 and monsters[a] ~= old_monster then
                        scr_monster = monsters[a]
                        scr_monster:script (true, chasers.script_name ())
                        action (scr_monster, move (move.act_run, move_force_type, actor), cond (cond.move_end))
