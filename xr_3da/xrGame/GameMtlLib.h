@@ -36,6 +36,9 @@
 #ifdef _MAX_PLUGIN	
 #define GM_NON_GAME 
 #endif
+#ifdef _LW_SHADER
+#define GM_NON_GAME 
+#endif
 
 #ifdef GM_NON_GAME
 	#define SoundSVec4 		AnsiString
