@@ -285,6 +285,8 @@ function action_sniper_idle:state_walk			()
 		self.state	= walk
     end
 
+    printf("walk")
+
 	if(self.object:level_vertex_id() == self.last_point) then
     	self:init_state_sit_down	()
     end
