@@ -9,15 +9,18 @@ private:
 	T			array[dim];
 	u32			count;
 public:
-	typedef T*	iterator;
+	typedef T*			iterator;
+	typedef const T*	const_iterator;
 
 	svector() : count(0) 
 	{}
-	svector(T* p, int c) 
+	svector(iterator p, int c) 
 	{ assign(p,c); }
 
-	IC T*		begin()						{ return array;							}
-	IC T*		end	 ()						{ return array+count;					}
+	IC iterator	begin()						{ return array;							}
+	IC iterator	end	 ()						{ return array+count;					}
+	IC const_iterator	begin()	const		{ return array;							}
+	IC const_iterator	end	 ()	const		{ return array+count;					}
 	IC u32		size()		const			{ return count;							}
 	IC void		clear()						{ count=0;								}
 	IC void		resize(int c)				{ VERIFY(c<=dim); count=c;				}
@@ -26,12 +29,15 @@ public:
 	IC void		push_back(T e)				{ VERIFY(count<dim); array[count++]=e;	}
 	IC void		pop_back()					{ VERIFY(count); count--;				}
 
-	IC T&		operator[] (u32 id)			{ VERIFY(id<count); return array[id];	}
-	IC const T&	operator[] (u32 id)	const	{ VERIFY(id<count); return array[id];	}
+	IC iterator&		operator[] (u32 id)			{ VERIFY(id<count); return array[id];	}
+	IC const_iterator&	operator[] (u32 id)	const	{ VERIFY(id<count); return array[id];	}
 
-	IC T&		front()						{ return array[0];						}
-	IC T&		back()						{ return array[count-1];				}
-	IC T&		last()						{ VERIFY(count<dim); return array[count];}
+	IC iterator&front()						{ return array[0];						}
+	IC iterator&back()						{ return array[count-1];				}
+	IC iterator&last()						{ VERIFY(count<dim); return array[count];}
+	IC const_iterator&front() const			{ return array[0];						}
+	IC const_iterator&back()  const			{ return array[count-1];				}
+	IC const_iterator&last()  const			{ VERIFY(count<dim); return array[count];}
 	IC void		inc	()						{ count++; }
 	IC bool		empty()		const			{ return 0==count;	}
 
@@ -41,7 +47,7 @@ public:
 		for (u32 i=id; i<count; i++)
 			array[i] = array[i+1];
 	}
-	IC void		erase(T* it)				{ erase(u32(it-begin()));	}
+	IC void		erase(iterator it)				{ erase(u32(it-begin()));	}
 
 	IC void		insert(u32 id, T& V)
 	{
@@ -50,8 +56,8 @@ public:
 		count++;
 		array[id] = V;
 	}
-	IC void		assign(T* p, int c) { VERIFY(c>0 && c<dim); CopyMemory(array,p,c*sizeof(T)); count=c; }
-	IC BOOL		equal (svector<T,dim>& base)
+	IC void		assign(iterator p, int c) { VERIFY(c>0 && c<dim); CopyMemory(array,p,c*sizeof(T)); count=c; }
+	IC BOOL		equal (const svector<T,dim>& base) const
 	{
 		if (size()!=base.size())	return FALSE;
 		for (u32 cmp=0; cmp<size(); cmp++)	if ((*this)[cmp]!=base[cmp])	return FALSE;
