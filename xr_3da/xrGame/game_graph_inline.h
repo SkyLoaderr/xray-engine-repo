@@ -30,8 +30,7 @@ IC CGameGraph::CGameGraph		(LPCSTR file_name, u32 current_version)
 		m_reader->r_stringZ		(l_tLevel.caLevelName);
 		m_reader->r_fvector3	(l_tLevel.tOffset);
 		m_reader->r				(&l_tLevel.tLevelID,sizeof(l_tLevel.tLevelID));
-		if (header().version() > 7)
-			m_reader->r_stringZ	(l_tLevel.m_section);
+		m_reader->r_stringZ		(l_tLevel.m_section);
 		m_header.tpLevels.insert(mk_pair(l_tLevel.tLevelID,l_tLevel));
 	}
 #ifndef AI_COMPILER
