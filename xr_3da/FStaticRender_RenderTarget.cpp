@@ -53,7 +53,7 @@ BOOL CRenderTarget::Create	()
 	string64	_rt_2_name;
 	strconcat					(_rt_2_name,RTname,",",RTname);
 	pVS							= Device.Shader._CreateVS		(FVF::F_TL);
-	pVS							= Device.Shader._CreateVS		(FVF::F_TL2uv);
+	pVS2						= Device.Shader._CreateVS		(FVF::F_TL2uv);
 	pShaderSet					= Device.Shader.Create			("effects\\screen_set",		RTname);
 	pShaderGray					= Device.Shader.Create			("effects\\screen_gray",	RTname);
 	pShaderBlend				= Device.Shader.Create			("effects\\screen_blend",	RTname);
