@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "Blender_Shadow_Texture.h"
+#include "Blender_Shadow_World.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
