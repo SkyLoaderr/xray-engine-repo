@@ -353,6 +353,7 @@ void		CLevel::UpdateDeltaUpd	( u32 LastTime )
 void		CLevel::ReculcInterpolationSteps ()
 {
 	lvInterpSteps = iFloor(float(m_dwDeltaUpdate) / (fixed_step*1000));
+	if (lvInterpSteps > 50) lvInterpSteps = 50;
 	if (lvInterpSteps < 3) lvInterpSteps = 3;
 };
 

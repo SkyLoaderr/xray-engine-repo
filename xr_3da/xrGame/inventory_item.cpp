@@ -531,6 +531,8 @@ void CInventoryItem::make_Interpolation	()
 		else {
 			VERIFY			(CurTime <= m_dwIEndTime);
 			float factor	= float(CurTime - m_dwIStartTime)/(m_dwIEndTime - m_dwIStartTime);
+			if (factor > 1) factor = 1.0f;
+			else if (factor < 0) factor = 0;
 
 			Fvector IPos;
 			Fquaternion IRot;
