@@ -13,10 +13,10 @@ function actor_binder:net_spawn(data)
 	if object_binder.net_spawn(self,data) == false then
 		return false
 	else
-		printf("NET SPAWN CALLED")
 		if self.object:dont_has_info("storyline_actor_start") then
 			self.object:give_info_portion("encyclopedy")
 			self.object:give_info_portion("storyline_actor_start")
+			self.object:give_info_portion("level_changer_icons")		
 		end
 		return true
 	end
