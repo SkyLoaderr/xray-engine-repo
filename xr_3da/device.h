@@ -43,7 +43,7 @@ public:
 	BOOL									bReady;
 	BOOL									bActive;
 
-	__declspec(noreturn) void __cdecl		Fatal	(const char* F,...);
+	void __cdecl							Fatal	(const char* F,...);
 	void									Error	(HRESULT,LPCSTR,int);
 public:
 	// Registrators

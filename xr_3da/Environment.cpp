@@ -205,7 +205,6 @@ void CEnvironment::OnDeviceCreate()
 
 void CEnvironment::OnDeviceDestroy()
 {
-	Log						("---------------------------------");
 	Render->model_Delete	(pSkydome);
 }
 
