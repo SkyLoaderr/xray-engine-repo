@@ -356,9 +356,6 @@ void CCustomMonster::UpdateCL	()
 		// BAD.	extrapolation
 		//Log("Extrapolation");
 		NET_Last		= N;
-#pragma todo("Dima to All : this is FAKE, network is not supported here!")
-		if (dwTime > N.dwTimeStamp)
-			AI_Path.Calculate(this,N.p_pos,Position(),m_fCurSpeed,float(dwTime - N.dwTimeStamp)/1000.f);
 	}
 	else {
 		// OK.	interpolation
@@ -390,6 +387,32 @@ void CCustomMonster::UpdateCL	()
 			NET_Time				= dwTime;
 		}
 	}
+
+//#pragma todo("Dima to All : this is FAKE, network is not supported here!")
+//	u32	dwTime			= Level().timeServer()-NET_Latency;
+//	net_update&	N		= NET.back();
+//	if ((dwTime <= N.dwTimeStamp) && (NET.size() > 1)) {
+//		int select		= -1;
+//		for (u32 id=0; id<NET.size()-1; id++)
+//			if ((NET[id].dwTimeStamp <= dwTime) && (dwTime <= NET[id+1].dwTimeStamp))
+//				select=id;
+//		if (select>=0) {
+//			N						= NET[select];
+//			NET_WasInterpolating	= TRUE;
+//			NET_Time				= dwTime;
+//		}
+//	}
+//	else
+//		NET_Last = N;
+//
+//
+//	AI_Path.Calculate(this,N.p_pos,Position(),m_fCurSpeed,float(dwTime - N.dwTimeStamp)/1000.f);
+//
+//	if (!bfScriptAnimation()) {
+//		Fvector				dir;
+//		AI_Path.Direction	(dir);
+//		SelectAnimation		(XFORM().k,dir,AI_Path.fSpeed);
+//	}
 
 	// Use interpolated/last state
 	// mTransformCL	= mTransform;
