@@ -111,7 +111,7 @@ void CHOM::Render		(CFrustum& base)
 	Raster.clear		();
 
 	// Query DB
-	XRC.frustum_options	();
+	XRC.frustum_options	(0);
 	XRC.frustum_query	(m_pModel,base);
 
 	// Perfrom selection, sorting, culling
@@ -131,9 +131,9 @@ void CHOM::Render		(CFrustum& base)
 		CDB::TRI& t	= m_pModel->get_tris() [it->id];
 
 		// XForm
-		xform		(T.raster[0],*t.verts[0]);
-		xform		(T.raster[1],*t.verts[1]);
-		xform		(T.raster[2],*t.verts[2]);
+		xform		(XF,T.raster[0],*t.verts[0],dim);
+		xform		(XF,T.raster[1],*t.verts[1],dim);
+		xform		(XF,T.raster[2],*t.verts[2],dim);
 		
 		// Rasterize
 		Raster.rasterize(&T);
