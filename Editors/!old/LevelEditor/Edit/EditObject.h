@@ -34,7 +34,7 @@ struct  ogf_desc;
 	#include <lwsurf.h>
 #endif
 
-#define LOD_SHADER_NAME 	"def_shaders\\lod"
+#define LOD_SHADER_NAME 	"details\\lod"
 #define LOD_SAMPLE_COUNT 	8.f
 #define LOD_IMAGE_SIZE 		64.f
 

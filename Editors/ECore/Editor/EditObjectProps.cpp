@@ -24,6 +24,7 @@ void CEditableObject::FillSurfaceProps(CSurface* SURF, LPCSTR pref, PropItemVec&
     V=PHelper.CreateChoose		(items, FHelper.PrepareKey(pref,"Compile"), 	&SURF->m_ShaderXRLCName,smCShader);
     PHelper.CreateChoose		(items, FHelper.PrepareKey(pref,"Game Mtl"),	&SURF->m_GameMtlName, smGameMaterial);
     V=PHelper.CreateFlag<Flags32>(items, FHelper.PrepareKey(pref,"2 Sided"), 	&SURF->m_Flags, CSurface::sf2Sided);V->OnChangeEvent=OnChangeShader;
+	PHelper.CreateCaption		(items, FHelper.PrepareKey(pref,"Face Count"),	GetSurfFaceCount(SURF->_Name()));   
 }
 //---------------------------------------------------------------------------
 

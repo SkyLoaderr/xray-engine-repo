@@ -28,7 +28,7 @@ void __fastcall TfrmLog::ShowLog(){
 }
 void __fastcall TfrmLog::HideLog(){
 	VERIFY(form);
-	form->Hide();
+	form->Close();    
 }
 
 void __fastcall TfrmLog::ebClearClick(TObject *Sender)

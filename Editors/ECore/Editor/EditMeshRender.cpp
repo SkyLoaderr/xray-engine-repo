@@ -34,6 +34,7 @@ void CEditableMesh::CreateRenderBuffers()
 		int v_cnt=num_verts;
         int start_face=0;
         int num_face;
+        VERIFY3	(v_cnt,"Empty surface arrive.",_S->_Name());
         do{
 	        rb_vec.push_back	(st_RenderBuffer(0,(v_cnt<V_LIM)?v_cnt:V_LIM));
             st_RenderBuffer& rb	= rb_vec.back();
@@ -224,7 +225,8 @@ void CEditableMesh::RenderSelection(const Fmatrix& parent, CSurface* s, u32 colo
     // render
 	RCache.set_xform_world(parent);
     if (s){
-    	RenderList(parent,color,false,m_SurfFaces[s]);
+        SurfFacesPairIt sp_it = m_SurfFaces.find(s);
+        if (sp_it!=m_SurfFaces.end()) RenderList(parent,color,false,sp_it->second);
     }else{
 	    Device.SetRS(D3DRS_TEXTUREFACTOR,	color);
         for (RBMapPairIt p_it=m_RenderBuffers.begin(); p_it!=m_RenderBuffers.end(); p_it++){
@@ -249,7 +251,8 @@ void CEditableMesh::RenderEdge(const Fmatrix& parent, CSurface* s, u32 color)
     // render
     Device.SetRS(D3DRS_FILLMODE,D3DFILL_WIREFRAME);
     if (s){
-    	RenderList(parent,color,true,m_SurfFaces[s]);
+        SurfFacesPairIt sp_it = m_SurfFaces.find(s);
+        if (sp_it!=m_SurfFaces.end()) RenderList(parent,color,true,sp_it->second);
     }else{
 	    Device.SetRS(D3DRS_TEXTUREFACTOR,	color);
         for (RBMapPairIt p_it=m_RenderBuffers.begin(); p_it!=m_RenderBuffers.end(); p_it++){
