@@ -9,7 +9,7 @@
 DEFINE_MAP(AnsiString,HANDLE,HANDLEMap,HANDLEPairIt);
 #endif
 
-class EFS_Utils {
+class XRCORE_API EFS_Utils {
 #ifdef M_BORLAND
     HANDLEMap 	m_LockFiles;
     string256	m_LastAccessFN;
