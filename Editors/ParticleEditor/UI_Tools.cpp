@@ -766,7 +766,7 @@ void __fastcall CParticleTools::ResetState()
 void CParticleTools::GetCurrentFog(u32& fog_color, float& s_fog, float& e_fog)
 {
 	s_fog		= UI.ZFar();
-	e_fog		= UI.ZFar();
+	e_fog		= 0.99f*UI.ZFar();
 	fog_color	= DEFAULT_CLEARCOLOR;
 }
 

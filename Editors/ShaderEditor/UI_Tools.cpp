@@ -191,7 +191,7 @@ void CShaderTools::ShowProperties()
 void CShaderTools::GetCurrentFog(u32& fog_color, float& s_fog, float& e_fog)
 {
 	s_fog		= UI.ZFar();
-	e_fog		= UI.ZFar();
+	e_fog		= 0.99f*UI.ZFar();
 	fog_color	= DEFAULT_CLEARCOLOR;
 }
 
