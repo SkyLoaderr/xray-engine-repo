@@ -44,26 +44,6 @@ void CMovementManager::process_level_path()
 			CDetailPathManager::set_state_patrol_path(false);
 			CDetailPathManager::set_start_position(Position());
 			CDetailPathManager::set_start_direction(Fvector().setHP(-m_body.current.yaw,0));
-			if (CLevelLocationSelector::used()) {
-				for (u32 i=0; i<CLevelPathManager::path().size(); i++) {
-					if (!ai().level_graph().valid_vertex_id(CLevelPathManager::path()[i])) {
-						__asm int 0x3;
-					}
-
-					Fvector position = ai().level_graph().vertex_position(CLevelPathManager::path()[i]);
-					if (!accessible(position)) {
-						bool b_node = false;
-						if (accessible(CLevelPathManager::path()[i])) b_node = true;
-						__asm int 0x3;
-					}
-				}
-				CDetailPathManager::set_dest_position(
-					ai().level_graph().vertex_position(
-						CLevelPathManager::intermediate_vertex_id()
-					)
-				);
-			}
-            
 			CDetailPathManager::build_path(
 				CLevelPathManager::path(),
 				CLevelPathManager::intermediate_index()
