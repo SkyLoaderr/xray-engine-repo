@@ -28,10 +28,10 @@ extern xrMemFill_32b	xrMemFill32_MMX;
 
 
 extern "C" {
-	__declspec(dllexport) void	__cdecl	xrBind_PSGP	(xrDispatchTable* T)
+	__declspec(dllexport) void	__cdecl	xrBind_PSGP	(xrDispatchTable* T, DWORD dwFeatures)
 	{
 		// analyze features
-		DWORD dwFeatures = CPU::ID.feature & CPU::ID.os_support;
+		// DWORD dwFeatures = CPU::ID.feature & CPU::ID.os_support;
 
 		if(strstr(strlwr(GetCommandLine()),"-x86"))	dwFeatures &= ~(_CPU_FEATURE_SSE+_CPU_FEATURE_3DNOW);
 

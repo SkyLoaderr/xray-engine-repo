@@ -8,11 +8,7 @@ struct _FpsController {
 	float	fMinFPS;			//	Minimal possible FPS'es
 	float	fMaxFPS;			//	Maximal possible FPS'es
 	float	fGeometryLOD;		//	User prefferred LOD
-
-	// Calculated values
-	float	fScaleGLOD;			//	Geometry LOD scale
 };
-
 extern	_FpsController		QualityControl;
 
 typedef vector<CVisual*>	vecGEO;

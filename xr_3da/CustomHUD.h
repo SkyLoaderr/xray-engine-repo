@@ -21,19 +21,21 @@ class ENGINE_API CCustomHUD:
 public:
 					CCustomHUD				();
 	virtual			~CCustomHUD				();
-	virtual	void	Load					(){;}
-	
-	virtual void	Render_Affected			() {;}
-	virtual	void	Render_Direct			() {;}
-	
-	virtual	void	OnMove					(){;}
-	virtual	void	OnEvent					(EVENT E, DWORD P1, DWORD P2){;}
 
-	virtual	void	Hit						(int idx){;}
+	virtual		void		Load					(){;}
+	
+	virtual		void		Render_Calcualte		() {;}
+	virtual		void		Render_Affected			() {;}
+	virtual		void		Render_Direct			() {;}
+	
+	virtual		void		OnMove					(){;}
+	virtual		void		OnEvent					(EVENT E, DWORD P1, DWORD P2){;}
 
-	virtual	void	UIActivate				()=0;
-	virtual	void	UIDeactivate			()=0;
-	virtual	BOOL	IsUIActive				()=0;
+	virtual		void		Hit						(int idx){;}
+
+	virtual		void		UIActivate				()=0;
+	virtual		void		UIDeactivate			()=0;
+	virtual		BOOL		IsUIActive				()=0;
 
 	virtual IC CUI*	GetUI					()=0;
 };

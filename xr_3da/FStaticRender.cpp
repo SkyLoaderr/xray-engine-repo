@@ -148,8 +148,6 @@ IC		void		gm_SetLighting		(CObject* O)
 //////////////////////////////////////////////////////////////////////
 CRender::CRender()
 {
-	// Q-Control
-	QualityControl.fScaleGLOD=0.0f;
 }
 
 CRender::~CRender()
@@ -158,26 +156,16 @@ CRender::~CRender()
 
 void CRender::Calculate()
 {
-	float	diff;
- 
 	Device.Statistic.RenderCALC.Begin();
-	diff=Device.Statistic.fFPS-QualityControl.fMinFPS;
-
-	QualityControl.fScaleGLOD		+= diff*Device.fTimeDelta*0.1f; //*0.0001f
-	if (QualityControl.fScaleGLOD<0.001f) QualityControl.fScaleGLOD=0.001f;
-	if (QualityControl.fScaleGLOD>1.2f) QualityControl.fScaleGLOD=1.2f;
-
-	// ******************** Geometry detail
-	ViewBase.CreateFromMatrix		(Device.mFullTransform,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
-	View			= 0;
 
 	// Transfer to global space to avoid deep pointer access
-	float fFar	=	50.f;
-	g_fFarSq	=	fFar; 
-	g_fFarSq	*=	g_fFarSq;
-	g_fSCREEN	=	float(Device.dwWidth*Device.dwHeight);
+	g_fFarSq						=	75.f;
+	g_fFarSq						*=	g_fFarSq;
+	g_fSCREEN						=	float(Device.dwWidth*Device.dwHeight);
 	
-	// HOM rendering
+	// Frustum & HOM rendering
+	ViewBase.CreateFromMatrix		(Device.mFullTransform,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
+	View							= 0;
 	HOM.Render						(ViewBase);
 
 	// Build L_DB visibility & perform basic initialization
@@ -194,7 +182,7 @@ void CRender::Calculate()
 	gm_SetNearer					(FALSE);
 	gm_SetLighting					(0);
 		
-	// Render current sector and beyond
+	// Detect camera-sector
 	if (!vLastCameraPos.similar(Device.vCameraPosition,EPS_S)) 
 	{
 		CSector* pSector = detectSector(Device.vCameraPosition);
@@ -411,7 +399,7 @@ void	CRender::Render		()
 	Device.Statistic.RenderDUMP.Begin();
 
 	// Target.set_blur	(1.f);
-	Target.Begin	();
+	Target.Begin							();
 
 	// Environment render
 	pCreator->Environment.RenderFirst		();

@@ -34,7 +34,7 @@ private:
 	};
 	svector<Model,8>		Models;
 
-	float				fScale;
+	float					fScale;
 public:
 	// hud font
 	CFontGame*				pGameFont;
@@ -47,6 +47,7 @@ public:
 
 	virtual		void		Load				();
 	
+	virtual		void		Render_Calcualte	();
 	virtual		void		Render_Affected		();
 	virtual		void		Render_Direct		();
 	virtual		void		OnMove				();

@@ -32,7 +32,7 @@ void CEngine::Initialize	(void)
 	R_ASSERT	(hPSGP);
 	
 	xrBinder*	bindCPU	= (xrBinder*)	GetProcAddress(hPSGP,"xrBind_PSGP");	R_ASSERT(bindCPU);
-	bindCPU		(&PSGP);
+	bindCPU		(&PSGP, CPU::ID.feature & CPU::ID.os_support);
 	
 	// Other stuff
 	Engine.FS.Initialize				( );
