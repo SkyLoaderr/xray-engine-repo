@@ -355,6 +355,7 @@ float CPersonalWeaponTypeFunction::ffGetValue()
 		case CLSID_AI_BOAR: 
 			m_fLastValue =  2;
 			break;
+		case CLSID_Z_TORRID :
 		case CLSID_Z_MBALD : {
 			m_fLastValue =  13;
 			break;
@@ -363,6 +364,7 @@ float CPersonalWeaponTypeFunction::ffGetValue()
 			m_fLastValue =  14;
 			break;
 		}
+		case CLSID_Z_DEAD :
 		case CLSID_Z_RADIO : {
 			m_fLastValue =  15;
 			break;
@@ -810,6 +812,7 @@ float CEnemyAnomalyType::ffGetValue()
 		return					(m_fLastValue);
 
 	switch (clsid_member()) {
+		case CLSID_Z_TORRID :
 		case CLSID_Z_MBALD : {
 			m_fLastValue		=  1;
 			break;
@@ -818,6 +821,7 @@ float CEnemyAnomalyType::ffGetValue()
 			m_fLastValue		=  2;
 			break;
 		}
+		case CLSID_Z_DEAD :
 		case CLSID_Z_RADIO : {
 			m_fLastValue		=  3;
 			break;
