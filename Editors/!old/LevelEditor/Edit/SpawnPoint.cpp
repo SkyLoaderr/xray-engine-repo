@@ -199,12 +199,14 @@ void CSpawnPoint::Construct(LPVOID data)
 	        	m_Type 		= ptRPoint;
 			    m_RP_TeamID	= 0;
     		}else if (strcmp(LPSTR(data),ENVMOD_CHOOSE_NAME)==0){
-	        	m_Type 			= ptEnvMod;
-                m_EM_Radius		= 10.f;
-                m_EM_Power		= 1.f;
-                m_EM_ViewDist	= 300.f;
-                m_EM_FogColor	= 0x00FFFFFF;
-                m_EM_FogDensity	= 1.f;
+	        	m_Type 				= ptEnvMod;
+                m_EM_Radius			= 10.f;
+                m_EM_Power			= 1.f;
+                m_EM_ViewDist		= 300.f;
+                m_EM_FogColor		= 0x00FFFFFF;
+                m_EM_FogDensity		= 1.f;
+	    		m_EM_AmbientColor	= 0x00FFFFFF;
+    	        m_EM_LMapColor		= 0x00FFFFFF;
     	    }else{
         		SetValid(false);
 	        }
@@ -387,7 +389,7 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
                 case ptEnvMod:{
                 	Fvector pos={0,0,0};
                     DU.DrawCross(pos,0.25f,0x20FFAE00,true);
-                    if (Selected()) DU.DrawSphere(Fidentity,PPosition,m_EM_Radius,subst_alpha(m_EM_FogColor,0x30),m_EM_FogColor,true,true);
+                    if (Selected()) DU.DrawSphere(Fidentity,PPosition,m_EM_Radius,0x30FFAE00,0x00FFAE00,true,true);
                 }break;
                 default: THROW2("CSpawnPoint:: Unknown Type");
                 }
@@ -512,11 +514,13 @@ bool CSpawnPoint::Load(IReader& F){
         break;
         case ptEnvMod:
 		    if (F.find_chunk(SPAWNPOINT_CHUNK_ENVMOD)){ 
-                m_EM_Radius		= F.r_float();
-                m_EM_Power		= F.r_float();
-                m_EM_ViewDist	= F.r_float();
-                m_EM_FogColor	= F.r_u32();
-                m_EM_FogDensity	= F.r_float();
+                m_EM_Radius			= F.r_float();
+                m_EM_Power			= F.r_float();
+                m_EM_ViewDist		= F.r_float();
+                m_EM_FogColor		= F.r_u32();
+                m_EM_FogDensity		= F.r_float();
+                m_EM_AmbientColor	= F.r_u32();
+                m_EM_LMapColor		= F.r_u32();
             }
         break;
         default: THROW;
@@ -563,6 +567,8 @@ void CSpawnPoint::Save(IWriter& F){
             F.w_float	(m_EM_ViewDist);
             F.w_u32		(m_EM_FogColor);
             F.w_float	(m_EM_FogDensity);
+        	F.w_u32		(m_EM_AmbientColor);
+            F.w_u32		(m_EM_LMapColor);
             F.close_chunk();
         break;
         default: THROW;
@@ -595,6 +601,8 @@ bool CSpawnPoint::ExportGame(SExportStreams& F)
             F.envmodif.stream.w_float	(m_EM_ViewDist);
             F.envmodif.stream.w_u32	 	(m_EM_FogColor);
             F.envmodif.stream.w_float	(m_EM_FogDensity);
+            F.envmodif.stream.w_u32	 	(m_EM_AmbientColor);
+            F.envmodif.stream.w_u32	 	(m_EM_LMapColor);
 			F.envmodif.stream.close_chunk();
         break;
         default: THROW;
@@ -622,6 +630,8 @@ void CSpawnPoint::FillProp(LPCSTR pref, PropItemVec& items)
         	PHelper.CreateFloat	(items, FHelper.PrepareKey(pref,"Environment Modificator\\View Distance"),	&m_EM_ViewDist, EPS_L,10000.f);
         	PHelper.CreateColor	(items, FHelper.PrepareKey(pref,"Environment Modificator\\Fog Color"), 		&m_EM_FogColor);
         	PHelper.CreateFloat	(items, FHelper.PrepareKey(pref,"Environment Modificator\\Fog Density"), 	&m_EM_FogDensity, 0.f,10000.f);
+        	PHelper.CreateColor	(items, FHelper.PrepareKey(pref,"Environment Modificator\\Ambient Color"), 	&m_EM_AmbientColor);
+        	PHelper.CreateColor	(items, FHelper.PrepareKey(pref,"Environment Modificator\\LMap Color"), 	&m_EM_LMapColor);
         }break;
         default: THROW;
         }

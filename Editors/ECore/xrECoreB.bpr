@@ -71,9 +71,9 @@
       Intermediate\UI_Camera.obj Intermediate\UI_MainCommand.obj 
       Intermediate\UI_Main.obj Intermediate\stdafx.obj 
       Intermediate\UI_ToolsCustom.obj Intermediate\ImageManagerDO.obj 
-      Intermediate\ParticleEffectDef.obj Intermediate\LevelGameDef.obj 
-      Intermediate\ai_sounds.obj Intermediate\GeometryCollector.obj 
-      Intermediate\SceneCustom.obj Intermediate\ResourceManager_Reset.obj 
+      Intermediate\ParticleEffectDef.obj Intermediate\ai_sounds.obj 
+      Intermediate\GeometryCollector.obj Intermediate\SceneCustom.obj 
+      Intermediate\ResourceManager_Reset.obj 
       Intermediate\ParticleEffectActions.obj Intermediate\CustomObjectLE.obj"/>
     <RESFILES value="resource.res"/>
     <IDLFILES value=""/>
@@ -264,7 +264,6 @@
       <FILE FILENAME="Editor\UI_ToolsCustom.cpp" FORMNAME="" UNITNAME="UI_ToolsCustom" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ImageManagerDO.cpp" FORMNAME="" UNITNAME="ImageManagerDO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\ParticleEffectDef.cpp" FORMNAME="" UNITNAME="ParticleEffectDef" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\LevelGameDef.cpp" FORMNAME="" UNITNAME="LevelGameDef" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\ai_sounds.cpp" FORMNAME="" UNITNAME="ai_sounds" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\GeometryCollector.cpp" FORMNAME="" UNITNAME="GeometryCollector" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\SceneCustom.h" FORMNAME="" UNITNAME="SceneCustom.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>

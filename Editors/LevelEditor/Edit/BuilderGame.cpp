@@ -16,39 +16,55 @@ BOOL SceneBuilder::BuildGame()
     Scene->ExportGame	(F);
 
     // save spawn
-    AnsiString lev_spawn = m_LevelPath+"level.spawn";
-    EFS.MarkFile	(lev_spawn,true);
-    if (F.spawn.chunk)
-	    F.spawn.stream.save_to(lev_spawn.c_str());
+    {
+        AnsiString lev_spawn = m_LevelPath+"level.spawn";
+        EFS.MarkFile	(lev_spawn,true);
+        if (F.spawn.chunk)
+            F.spawn.stream.save_to(lev_spawn.c_str());
+    }
 
     // save game
-	CMemoryWriter GAME;
-    GAME.w_chunk(WAY_PATROLPATH_CHUNK,	F.patrolpath.stream.pointer(),	F.patrolpath.stream.size());
-    GAME.w_chunk(RPOINT_CHUNK,			F.rpoint.stream.pointer(),		F.rpoint.stream.size());
-    GAME.w_chunk(ENVMOD_CHUNK,			F.envmodif.stream.pointer(),	F.envmodif.stream.size());
+    {
+        CMemoryWriter GAME;
+        GAME.w_chunk(WAY_PATROLPATH_CHUNK,	F.patrolpath.stream.pointer(),	F.patrolpath.stream.size());
+        GAME.w_chunk(RPOINT_CHUNK,			F.rpoint.stream.pointer(),		F.rpoint.stream.size());
+        AnsiString lev_game					= m_LevelPath+"level.game";
+        EFS.MarkFile						(lev_game,true);
+        if (GAME.size())
+            GAME.save_to					(lev_game.c_str());
+    }
 
-    AnsiString lev_game	= m_LevelPath+"level.game";
-    EFS.MarkFile	(lev_game,true);
-    if (GAME.size())
-	    GAME.save_to		(lev_game.c_str());
+    // save weather env modificator
+    {
+        AnsiString lev_env_mod				= m_LevelPath+"level.env_mod";
+        EFS.MarkFile						(lev_env_mod,true);
+        if (F.envmodif.chunk)
+	        F.envmodif.stream.save_to		(lev_env_mod.c_str());
+    }
 
     // save static sounds
-    AnsiString lev_sound_static = m_LevelPath+"level.sound_static";
-    EFS.MarkFile	(lev_sound_static,true);
-    if (F.sound_static.chunk)    	
-	    F.sound_static.stream.save_to(lev_sound_static.c_str());
+    {
+        AnsiString lev_sound_static 		= m_LevelPath+"level.sound_static";
+        EFS.MarkFile						(lev_sound_static,true);
+        if (F.sound_static.chunk)    	
+            F.sound_static.stream.save_to	(lev_sound_static.c_str());
+    }
 
     // save sound envs
-    AnsiString lev_sound_env = m_LevelPath+"level.sound_environment";
-    EFS.MarkFile			(lev_sound_env,true);
-	if (LSndLib->MakeEnvGeometry(F.sound_env_geom.stream,false))
-    	F.sound_env_geom.stream.save_to(lev_sound_env.c_str());
+    {
+        AnsiString lev_sound_env 			= m_LevelPath+"level.sound_environment";
+        EFS.MarkFile						(lev_sound_env,true);
+        if (LSndLib->MakeEnvGeometry		(F.sound_env_geom.stream,false))
+            F.sound_env_geom.stream.save_to	(lev_sound_env.c_str());
+    }
 
     // save static PG
-    AnsiString lev_pe_static = m_LevelPath+"level.ps_static";
-    EFS.MarkFile	(lev_pe_static,true);
-    if (F.pe_static.chunk)    	
-	    F.pe_static.stream.save_to(lev_pe_static.c_str());
+    {
+        AnsiString lev_pe_static 			= m_LevelPath+"level.ps_static";
+        EFS.MarkFile						(lev_pe_static,true);
+        if (F.pe_static.chunk)    	
+            F.pe_static.stream.save_to		(lev_pe_static.c_str());
+    }
     return TRUE;
 }
 

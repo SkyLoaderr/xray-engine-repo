@@ -60,6 +60,8 @@ public:
             float	m_EM_ViewDist;
             u32		m_EM_FogColor;
             float	m_EM_FogDensity;
+            u32		m_EM_AmbientColor;
+            u32		m_EM_LMapColor;
         };
     };
 

@@ -32,7 +32,6 @@ extern ECORE_API xr_token rpoint_type[];
 
 // POINT chunks
 #define RPOINT_CHUNK				POINT_BASE+ptRPoint
-#define ENVMOD_CHUNK				POINT_BASE+ptEnvMod
 
 // WAY chunks
 #define WAY_PATROLPATH_CHUNK		WAY_BASE+wtPatrolPath
@@ -59,15 +58,6 @@ extern ECORE_API xr_token rpoint_type[];
         u8		(team_id);
         u8		(type)
         u16		(reserved)
-    ...
-    - chunk #n
-- chunk ENVMOD_CHUNK
-	- chunk #0
-        float			(m_EM_Radius);
-        w_float			(m_EM_Power);
-        w_float			(m_EM_ViewDist);
-        w_u32			(m_EM_FogColor);
-        w_float			(m_EM_FogDensity);
     ...
     - chunk #n
     
@@ -101,6 +91,18 @@ extern ECORE_API xr_token rpoint_type[];
 	-//-
 - chunk WAY_CUSTOM_CHUNK
 	-//-
+
+- file level.env_mod
+	- chunk #0
+        float			(m_EM_Radius);
+        w_float			(m_EM_Power);
+        w_float			(m_EM_ViewDist);
+        w_u32			(m_EM_FogColor);
+        w_float			(m_EM_FogDensity);
+        w_u32			(m_EM_AmbientColor);
+        w_u32			(m_EM_LMapColor);
+    ...
+    - chunk #n
 */
 class CCustomGamePoint {
 public:
