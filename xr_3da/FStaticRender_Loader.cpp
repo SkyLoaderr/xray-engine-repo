@@ -207,7 +207,7 @@ void CRender::LoadSectors(CStream* fs)
 	S->Close();
 
 	// load portals
-	RAPID::Collector	CL;
+	CDB::Collector	CL;
 	fs->FindChunk(fsL_PORTALS);
 	for (i=0; i<count; i++)
 	{
@@ -219,14 +219,14 @@ void CRender::LoadSectors(CStream* fs)
 		for (DWORD j=2; j<P.vertices.size(); j++)
 			CL.add_face_packed(
 				P.vertices[0],P.vertices[j-1],P.vertices[j],
-				RAPID::edge_open,RAPID::edge_open,RAPID::edge_open,
+				CDB::edge_open,CDB::edge_open,CDB::edge_open,
 				0,0,DWORD(&Portals[i])
 			);
 	}
 
 	// build portal model
-	rmPortals = new RAPID::Model;
-	rmPortals->BuildModel(CL.getV(),CL.getVS(),CL.getT(),CL.getTS());
+	rmPortals = new CDB::MODEL;
+	rmPortals->build	(CL.getV(),CL.getVS(),CL.getT(),CL.getTS());
 
 	pLastSector = 0;
 }

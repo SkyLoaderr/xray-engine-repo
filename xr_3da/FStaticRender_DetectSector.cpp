@@ -35,7 +35,7 @@ CSector* CRender::detectSector(Fvector& P)
 
 	if (ID==id1) {
 		// Take sector, facing to our point from portal
-		CDB::TRI*	pTri	= rmPortals->tris + ID;
+		CDB::TRI*	pTri	= rmPortals->get_tris() + ID;
 		CPortal*	pPortal	= (CPortal*) pTri->dummy;
 		return pPortal->getSectorFacing(P);
 	} else {
