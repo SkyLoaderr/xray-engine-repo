@@ -59,7 +59,7 @@ private:
 
 	void					internalStopOrComplete	();
 public:
-	BOOL					isPlaying				(void)	{ return (dwStatus&DSBSTATUS_PLAYING)||bMustPlay; }
+	BOOL					isPlaying				(void)	{ return (dwState!=stStopped) || bMustPlay; }
 
 	void					Play					(C3DSound** P, BOOL bLoop=false, int lcnt=0);
 	void					Rewind					();

@@ -24,7 +24,7 @@ C3DSound::C3DSound()
 	fBaseVolume	= 1.f;
 	fRealVolume	= 1.f;
 
-	dwStatus	= 0;
+	dwState 	= stStopped;
 	pBuffer		= NULL;
 	pBuffer3D	= NULL;
 	pExtensions	= NULL;
@@ -33,7 +33,7 @@ C3DSound::C3DSound()
 	bMustPlay	= false;
 	bMustLoop	= false;
 	bCtrlFreq	= false;
-	iLoopCountRested	= 0;
+	iLoopCount	= 0;
 
 	owner		= 0;
 }
@@ -187,11 +187,11 @@ void C3DSound::SetMinMax	(float min, float max)
 
 void C3DSound::Play			(C3DSound** P, BOOL bLoop, int LoopCount)
 {
-	VERIFY((dwStatus & DSBSTATUS_PLAYING) == 0);
+	R_ASSERT	(dwState == stStopped);
 	owner		= P;
 	bMustPlay	= true;
 	iLoopCount	= LoopCount;
-	bMustLoop	= bLoop?((1==LoopCount)?FALSE:TRUE);
+	bMustLoop	= bLoop?((1==LoopCount)?FALSE:TRUE):FALSE;
 }
 
 void C3DSound::Stop			()
