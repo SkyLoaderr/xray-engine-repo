@@ -43,6 +43,9 @@ class CSE_ALifeSimulator :
 	D_OBJECT_MAP					m_tpGraphPointObjects;
 
 	// temporary buffers for trading
+	ITEM_P_VECTOR					m_tpItems1;
+	ITEM_P_VECTOR					m_tpItems2;
+
 	enum {
 		MAX_STACK_DEPTH				= u32(128),
 		SUM_COUNT_THRESHOLD			= u32(30),

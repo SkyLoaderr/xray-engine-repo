@@ -548,15 +548,15 @@ bool CSE_ALifeHumanAbstract::bfChooseFast()
 	return							(false);
 }
 
-void CSE_ALifeHumanAbstract::vfChooseEquipment()
+int CSE_ALifeHumanAbstract::ifChooseEquipment(bool bErase)
 {
 	// choosing equipment
 	CSE_ALifeInventoryItem			*l_tpALifeItemBest	= 0;
 	float							l_fItemBestValue	= -1.f;
 	getAI().m_tpCurrentALifeMember	= this;
 
-	ITEM_P_IT				I = m_tpALife->m_tpItemVector.begin(), X;
-	ITEM_P_IT				E = m_tpALife->m_tpItemVector.end();
+	ITEM_P_IT					I = m_tpALife->m_tpItemVector.begin(), X;
+	ITEM_P_IT					E = m_tpALife->m_tpItemVector.end();
 	for ( ; I != E; I++) {
 		// checking if it is an equipment item
 		getAI().m_tpCurrentALifeObject = dynamic_cast<CSE_ALifeObject*>(*I);
@@ -566,18 +566,21 @@ void CSE_ALifeHumanAbstract::vfChooseEquipment()
 		float					l_fCurrentValue = getAI().m_pfEquipmentType->ffGetValue();
 		// choosing the best item
 		if ((l_fCurrentValue > l_fItemBestValue) && bfCanGetItem(*I)) {
-			l_fItemBestValue = l_fCurrentValue;
-			l_tpALifeItemBest = *I;
-			X = I;
+			l_fItemBestValue	= l_fCurrentValue;
+			l_tpALifeItemBest	= *I;
+			X					= I;
 		}
 	}
 	if (l_tpALifeItemBest) {
 		m_tpALife->vfAttachItem	(*this,l_tpALifeItemBest,dynamic_cast<CSE_ALifeDynamicObject*>(l_tpALifeItemBest)->m_tGraphID);
-		m_tpALife->m_tpItemVector.erase(X);
+		if (bErase)
+			m_tpALife->m_tpItemVector.erase(X);
+		return					(1);
 	}
+	return						(0);
 }
 
-void CSE_ALifeHumanAbstract::vfChooseWeapon(EWeaponPriorityType tWeaponPriorityType)
+int  CSE_ALifeHumanAbstract::ifChooseWeapon(EWeaponPriorityType tWeaponPriorityType, bool bErase)
 {
 	CSE_ALifeInventoryItem			*l_tpALifeItemBest	= 0;
 	float							l_fItemBestValue	= -1.f;
@@ -627,11 +630,15 @@ void CSE_ALifeHumanAbstract::vfChooseWeapon(EWeaponPriorityType tWeaponPriorityT
 		m_tpALife->vfAttachItem	(*this,l_tpALifeItemBest,dynamic_cast<CSE_ALifeDynamicObject*>(l_tpALifeItemBest)->m_tGraphID);
 		attach_available_ammo	(dynamic_cast<CSE_ALifeItemWeapon*>(l_tpALifeItemBest),m_tpALife->m_tpItemVector);
 		ITEM_P_IT				I = remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
-		m_tpALife->m_tpItemVector.erase(I,m_tpALife->m_tpItemVector.end());
+		size_t					l_dwItemCount = m_tpALife->m_tpItemVector.end() - I;
+		if (bErase)
+			m_tpALife->m_tpItemVector.erase(I,m_tpALife->m_tpItemVector.end());
+		return					(int(l_dwItemCount));
 	}
+	return						(0);
 }
 
-void CSE_ALifeHumanAbstract::vfChooseFood()
+int  CSE_ALifeHumanAbstract::ifChooseFood(bool bErase)
 {
 #pragma todo("Dima to Dima : Add food and medikit items need count computations")
 	// choosing food
@@ -651,11 +658,13 @@ void CSE_ALifeHumanAbstract::vfChooseFood()
 	}
 	if (l_dwCount) {
 		ITEM_P_IT			I = remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
-		m_tpALife->m_tpItemVector.erase(I,m_tpALife->m_tpItemVector.end());
+		if (bErase)
+			m_tpALife->m_tpItemVector.erase(I,m_tpALife->m_tpItemVector.end());
 	}
+	return					(l_dwCount);
 }
 
-void CSE_ALifeHumanAbstract::vfChooseMedikit()
+int  CSE_ALifeHumanAbstract::ifChooseMedikit(bool bErase)
 {
 	// choosing medikits
 	u32							l_dwCount = 0;
@@ -673,42 +682,45 @@ void CSE_ALifeHumanAbstract::vfChooseMedikit()
 	}
 	if (l_dwCount) {
 		ITEM_P_IT			I = remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
-		m_tpALife->m_tpItemVector.erase(I,m_tpALife->m_tpItemVector.end());
+		if (bErase)
+			m_tpALife->m_tpItemVector.erase(I,m_tpALife->m_tpItemVector.end());
 	}
+	return					(l_dwCount);
 }
 
-void CSE_ALifeHumanAbstract::vfChooseDetector()
+int  CSE_ALifeHumanAbstract::ifChooseDetector(bool bErase)
 {
 	// choosing detector
 	CSE_ALifeInventoryItem			*l_tpALifeItemBest	= 0;
 	float							l_fItemBestValue	= -1.f;
 	getAI().m_tpCurrentALifeMember	= this;
-	{
-		ITEM_P_IT				I = m_tpALife->m_tpItemVector.begin(), X;
-		ITEM_P_IT				E = m_tpALife->m_tpItemVector.end();
-		for ( ; I != E; I++) {
-			// checking if it is an item
-			CSE_ALifeItemDetector	*l_tpALifeItem = dynamic_cast<CSE_ALifeItemDetector*>(*I);
-			if (!l_tpALifeItem)
-				continue;
-			// evaluating item
-			getAI().m_tpCurrentALifeObject = l_tpALifeItem;
-			float					l_fCurrentValue = getAI().m_pfEquipmentType->ffGetValue();
-			// choosing the best item
-			if ((l_fCurrentValue > l_fItemBestValue) && bfCanGetItem(l_tpALifeItem)) {
-				l_fItemBestValue = l_fCurrentValue;
-				l_tpALifeItemBest = l_tpALifeItem;
-				X = I;
-			}
-		}
-		if (l_tpALifeItemBest) {
-			m_tpALife->vfAttachItem	(*this,l_tpALifeItemBest,dynamic_cast<CSE_ALifeDynamicObject*>(l_tpALifeItemBest)->m_tGraphID);
-			m_tpALife->m_tpItemVector.erase(X);
+	ITEM_P_IT				I = m_tpALife->m_tpItemVector.begin(), X;
+	ITEM_P_IT				E = m_tpALife->m_tpItemVector.end();
+	for ( ; I != E; I++) {
+		// checking if it is an item
+		CSE_ALifeItemDetector	*l_tpALifeItem = dynamic_cast<CSE_ALifeItemDetector*>(*I);
+		if (!l_tpALifeItem)
+			continue;
+		// evaluating item
+		getAI().m_tpCurrentALifeObject = l_tpALifeItem;
+		float					l_fCurrentValue = getAI().m_pfEquipmentType->ffGetValue();
+		// choosing the best item
+		if ((l_fCurrentValue > l_fItemBestValue) && bfCanGetItem(l_tpALifeItem)) {
+			l_fItemBestValue = l_fCurrentValue;
+			l_tpALifeItemBest = l_tpALifeItem;
+			X = I;
 		}
 	}
+	if (l_tpALifeItemBest) {
+		m_tpALife->vfAttachItem	(*this,l_tpALifeItemBest,dynamic_cast<CSE_ALifeDynamicObject*>(l_tpALifeItemBest)->m_tGraphID);
+		if (bErase)
+			m_tpALife->m_tpItemVector.erase(X);
+		return					(1);
+	}
+	return						(0);
 }
 
-void CSE_ALifeHumanAbstract::vfChooseValuables()
+int  CSE_ALifeHumanAbstract::ifChooseValuables(bool bErase)
 {
 	// choosing the rest objects
 	ITEM_P_IT				I = m_tpALife->m_tpItemVector.begin();
@@ -718,7 +730,10 @@ void CSE_ALifeHumanAbstract::vfChooseValuables()
 			m_tpALife->vfAttachItem	(*this,*I,dynamic_cast<CSE_ALifeDynamicObject*>(*I)->m_tGraphID);
 
 	I						= remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
-	m_tpALife->m_tpItemVector.erase(I,m_tpALife->m_tpItemVector.end());
+	size_t					l_dwItemCount = m_tpALife->m_tpItemVector.end() - I;
+	if (bErase)
+		m_tpALife->m_tpItemVector.erase(I,m_tpALife->m_tpItemVector.end());
+	return					(int(l_dwItemCount));
 }
 
 void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
@@ -742,16 +757,16 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 	sort						(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CSortItemPredicate());
 
 	if ((tTakeType == eTakeTypeAll) || (tTakeType == eTakeTypeMin)) {
-		vfChooseEquipment		();
-		vfChooseWeapon			(eWeaponPriorityTypeKnife);
-		vfChooseWeapon			(eWeaponPriorityTypeSecondary);
-		vfChooseWeapon			(eWeaponPriorityTypePrimary);
-		vfChooseWeapon			(eWeaponPriorityTypeGrenade);
-		vfChooseFood			();
-		vfChooseMedikit			();
-		vfChooseDetector		();
+		ifChooseEquipment		();
+		ifChooseWeapon			(eWeaponPriorityTypeKnife);
+		ifChooseWeapon			(eWeaponPriorityTypeSecondary);
+		ifChooseWeapon			(eWeaponPriorityTypePrimary);
+		ifChooseWeapon			(eWeaponPriorityTypeGrenade);
+		ifChooseFood			();
+		ifChooseMedikit			();
+		ifChooseDetector		();
 	}
 
 	if ((tTakeType == eTakeTypeAll) || (tTakeType == eTakeTypeRest))
-		vfChooseValuables		();
+		ifChooseValuables		();
 }

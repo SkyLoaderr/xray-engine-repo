@@ -258,12 +258,12 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 			void					vfCollectAmmoBoxes		();
 	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		();
 	virtual	void					vfDetachAll				();
-			void					vfChooseEquipment		();
-			void					vfChooseWeapon			(EWeaponPriorityType	tWeaponPriorityType);
-			void					vfChooseFood			();
-			void					vfChooseMedikit			();
-			void					vfChooseDetector		();
-			void					vfChooseValuables		();
+			int						ifChooseEquipment		(bool bErase = true);
+			int						ifChooseWeapon			(EWeaponPriorityType	tWeaponPriorityType,		bool			bErase = true);
+			int						ifChooseFood			(bool bErase = true);
+			int						ifChooseMedikit			(bool bErase = true);
+			int						ifChooseDetector		(bool bErase = true);
+			int						ifChooseValuables		(bool bErase = true);
 			bool					bfChooseFast			();
 			void					vfChooseGroup			(CSE_ALifeGroupAbstract *tpALifeGroupAbstract);
 #endif

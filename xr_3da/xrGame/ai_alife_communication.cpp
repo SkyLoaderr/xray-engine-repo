@@ -317,28 +317,95 @@ void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAb
 	vfAppendItemVector	(tpALifeHumanAbstract1->children,m_tpItemVector);
 	vfAppendItemVector	(tpALifeHumanAbstract2->children,m_tpItemVector);
 
+	m_tpItems1.clear	();
+	m_tpItems2.clear	();
+	
+	m_tpItems1.insert	(m_tpItems1.end(),m_tpItemVector.begin(),m_tpItemVector.begin() + tpALifeHumanAbstract1->children.size());
+	m_tpItems2.insert	(m_tpItems2.end(),m_tpItemVector.begin() + tpALifeHumanAbstract1->children.size(),m_tpItemVector.end());
+	
+	sort				(m_tpItems1.begin(),m_tpItems1.end());
+	sort				(m_tpItems2.begin(),m_tpItems2.end());
+
 	sort				(m_tpItemVector.begin(),m_tpItemVector.end(),CSortItemPredicate());
 
-	tpALifeHumanAbstract1->vfChooseEquipment	();
-	tpALifeHumanAbstract2->vfChooseEquipment	();
-	tpALifeHumanAbstract1->vfChooseWeapon		(eWeaponPriorityTypeKnife);
-	tpALifeHumanAbstract2->vfChooseWeapon		(eWeaponPriorityTypeKnife);
-	tpALifeHumanAbstract1->vfChooseWeapon		(eWeaponPriorityTypeSecondary);
-	tpALifeHumanAbstract2->vfChooseWeapon		(eWeaponPriorityTypeSecondary);
-	tpALifeHumanAbstract1->vfChooseWeapon		(eWeaponPriorityTypePrimary);
-	tpALifeHumanAbstract2->vfChooseWeapon		(eWeaponPriorityTypePrimary);
-	tpALifeHumanAbstract1->vfChooseWeapon		(eWeaponPriorityTypeGrenade);
-	tpALifeHumanAbstract2->vfChooseWeapon		(eWeaponPriorityTypeGrenade);
-	tpALifeHumanAbstract1->vfChooseFood			();
-	tpALifeHumanAbstract2->vfChooseFood			();
-	tpALifeHumanAbstract1->vfChooseMedikit		();
-	tpALifeHumanAbstract2->vfChooseMedikit		();
-	tpALifeHumanAbstract1->vfChooseDetector		();
-	tpALifeHumanAbstract2->vfChooseDetector		();
+	tpALifeHumanAbstract1->vfDetachAll();
+	tpALifeHumanAbstract2->vfDetachAll();
+
+	int					l_iItemCount1 = -1, l_iItemCount2 = -1;
+	for (int j=0; j<8; j++) {
+		switch (j) {
+			case 0 : {
+				l_iItemCount1		= tpALifeHumanAbstract1->ifChooseEquipment	(false);
+				l_iItemCount2		= tpALifeHumanAbstract2->ifChooseEquipment	(false);
+				break;
+			}
+			case 1 : {
+				l_iItemCount1		= tpALifeHumanAbstract1->ifChooseWeapon		(eWeaponPriorityTypeKnife,false);
+				l_iItemCount2		= tpALifeHumanAbstract2->ifChooseWeapon		(eWeaponPriorityTypeKnife,false);
+				break;
+			}
+			case 2 : {
+				l_iItemCount1		= tpALifeHumanAbstract1->ifChooseWeapon		(eWeaponPriorityTypeSecondary,false);
+				l_iItemCount2		= tpALifeHumanAbstract2->ifChooseWeapon		(eWeaponPriorityTypeSecondary,false);
+				break;
+			}
+			case 3 : {
+				l_iItemCount1		= tpALifeHumanAbstract1->ifChooseWeapon		(eWeaponPriorityTypePrimary,false);
+				l_iItemCount2		= tpALifeHumanAbstract2->ifChooseWeapon		(eWeaponPriorityTypePrimary,false);
+				break;
+			}
+			case 4 : {
+				l_iItemCount1		= tpALifeHumanAbstract1->ifChooseWeapon		(eWeaponPriorityTypeGrenade,false);
+				l_iItemCount2		= tpALifeHumanAbstract2->ifChooseWeapon		(eWeaponPriorityTypeGrenade,false);
+				break;
+			}
+			case 5 : {
+				l_iItemCount1		= tpALifeHumanAbstract1->ifChooseFood		(false);
+				l_iItemCount2		= tpALifeHumanAbstract2->ifChooseFood		(false);
+				break;
+			}
+			case 6 : {
+				l_iItemCount1		= tpALifeHumanAbstract1->ifChooseMedikit	(false);
+				l_iItemCount2		= tpALifeHumanAbstract2->ifChooseMedikit	(false);
+				break;
+			}
+			case 7 : {
+				l_iItemCount1		= tpALifeHumanAbstract1->ifChooseDetector	(false);
+				l_iItemCount2		= tpALifeHumanAbstract2->ifChooseDetector	(false);
+				break;
+			}
+			default : NODEFAULT;
+		}
+		
+		if (l_iItemCount1*l_iItemCount2) {
+			OBJECT_IT			I = tpALifeHumanAbstract1->children.begin() + l_iItemCount1;
+			OBJECT_IT			E = tpALifeHumanAbstract1->children.end();
+			for ( ; I != E; I++) {
+				OBJECT_IT		i = tpALifeHumanAbstract2->children.begin() + l_iItemCount2;
+				OBJECT_IT		e = tpALifeHumanAbstract2->children.end();
+				for ( ; i != e; i++)
+					if (*I == *i) {
+
+					}
+			}
+		}
+	}
 
 	if (!bfCheckIfCanNullTradersBallance(tpALifeHumanAbstract1,tpALifeHumanAbstract2,ifComputeBallance(tpALifeHumanAbstract1,tpALifeHumanAbstract2))) {
-	}
-	else {
+		tpALifeHumanAbstract1->vfDetachAll();
+		tpALifeHumanAbstract2->vfDetachAll();
+		{
+			ITEM_P_IT		I = m_tpItems1.begin();
+			ITEM_P_IT		E = m_tpItems1.end();
+			for ( ; I != E; I++)
+				vfAttachItem(*tpALifeHumanAbstract1,*I,dynamic_cast<CSE_ALifeDynamicObject*>(*I)->m_tGraphID);
+		}
+		{
+			ITEM_P_IT		I = m_tpItems2.begin();
+			ITEM_P_IT		E = m_tpItems2.end();
+			for ( ; I != E; I++)
+				vfAttachItem(*tpALifeHumanAbstract2,*I,dynamic_cast<CSE_ALifeDynamicObject*>(*I)->m_tGraphID);
+		}
 	}
 }
 
