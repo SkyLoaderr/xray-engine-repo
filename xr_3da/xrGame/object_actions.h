@@ -33,6 +33,8 @@ public:
 	IC		void		set_property		(_condition_type condition_id, _value_type value);
 };
 
+class CGameObject;
+
 typedef CObjectActionBase<CGameObject> CSObjectActionBase;
 
 //////////////////////////////////////////////////////////////////////////

@@ -1,5 +1,4 @@
 #pragma once
-#include "gameobject.h"
 #include "inventory_item.h"
 
 class CInventory;

@@ -11,6 +11,8 @@
 #include "action_planner.h"
 #include "script_space.h"
 
+class CLuaGameObject;
+
 typedef CActionPlanner<CLuaGameObject> CScriptActionPlanner;
 
 class CScriptActionPlannerWrapper : public CScriptActionPlanner, public luabind::wrap_base {

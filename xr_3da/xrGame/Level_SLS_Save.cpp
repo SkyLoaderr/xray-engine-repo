@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "HUDmanager.h"
 #include "../xrLevel.h"
+#include "Level.h"
+#include "xrserver.h"
 
 void	CLevel::net_Save				(LPCSTR name)		// Game Save
 {

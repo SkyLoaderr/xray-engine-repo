@@ -10,6 +10,7 @@
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
 #include"../hudmanager.h"
+#include"../level.h"
 
 // Constants
 const char * const	SKIN_SELECTOR_XML		= "skin_selector.xml";

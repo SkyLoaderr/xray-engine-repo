@@ -10,6 +10,7 @@
 #include "xrServer_Objects_ALife_Monsters.h"
 #include "alife_simulator.h"
 #include "alife_time_manager.h"
+#include "ai_space.h"
 
 using namespace ALife;
 

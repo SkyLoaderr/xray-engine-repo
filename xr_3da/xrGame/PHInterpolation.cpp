@@ -2,6 +2,8 @@
 #include "PHInterpolation.h"
 #include "PHDynamicData.h"
 #include "Physics.h"
+#include "level.h"
+
 CPHInterpolation::CPHInterpolation(){
 m_body=NULL;
 //fTimeDelta=0.f;

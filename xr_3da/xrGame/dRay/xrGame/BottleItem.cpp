@@ -4,9 +4,8 @@
 ///////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-
 #include "BottleItem.h"
-
+#include "xrmessages.h"
 
 #define BREAK_POWER 5.f
 

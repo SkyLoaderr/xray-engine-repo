@@ -5,6 +5,7 @@
 #include "Actor_Flags.h"
 #include "inventory.h"
 #include "weapon.h"
+#include "level.h"
 #include "level_bullet_manager.h"
 
 CCartridge::CCartridge() 
@@ -71,7 +72,7 @@ void CWeaponAmmo::Load(LPCSTR section)
 	m_boxCurr = m_boxSize;
 
 	if(pSettings->line_exist(section,"can_be_unlimited"))
-		m_bCanBeUnlimited = pSettings->r_bool(section,"can_be_unlimited");
+		m_bCanBeUnlimited = !!pSettings->r_bool(section,"can_be_unlimited");
 	else
 		m_bCanBeUnlimited = true;
 }

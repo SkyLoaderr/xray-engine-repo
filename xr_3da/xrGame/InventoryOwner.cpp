@@ -6,7 +6,6 @@
 
 #include "stdafx.h"
 #include "InventoryOwner.h"
-#include "gameobject.h"
 #include "entity_alive.h"
 #include "pda.h"
 #include "actor.h"

@@ -8,6 +8,9 @@
 
 #include "game_sv_single.h"
 #include "alife_simulator.h"
+#include "level.h"
+#include "xrmessages.h"
+#include "game_cl_base.h"
 
 
 #define ONLINE_RADIUS 2.f
@@ -40,7 +43,7 @@ void CActor::Awoke()
 
 	Level().SetGameTimeFactor(m_fOldTimeFactor);
 
-	if ((Level().game.type == GAME_SINGLE)  &&ai().get_alife()) {
+	if ((Level().game->type == GAME_SINGLE)  &&ai().get_alife()) {
 		NET_Packet		P;
 		P.w_begin		(M_SWITCH_DISTANCE);
 		P.w_float		(m_fOldOnlineRadius);
@@ -75,7 +78,7 @@ void CActor::UpdateSleep()
 		m_fOldTimeFactor = Level().GetGameTimeFactor();
 		Level().SetGameTimeFactor(m_fSleepTimeFactor*m_fOldTimeFactor);
 
-		if ((Level().game.type == GAME_SINGLE) && ai().get_alife()) {
+		if ((Level().game->type == GAME_SINGLE) && ai().get_alife()) {
 			m_fOldOnlineRadius = ai().alife().switch_distance();
 //			ai().alife().set_switch_distance(ONLINE_RADIUS);
 			NET_Packet		P;

@@ -21,6 +21,8 @@
 #include "alife_task_registry.h"
 #include "alife_schedule_registry.h"
 #include "alife_simulator_header.h"
+#include "xrserver.h"
+#include "ai_space.h"
 
 using namespace ALife;
 

@@ -14,6 +14,7 @@
 #include "PhysicsShell.h"
 #include "entity_alive.h"
 #include "phmovementcontrol.h"
+#include "xrmessages.h"
 
 CGraviZone::CGraviZone(void)
 {

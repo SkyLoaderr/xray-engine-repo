@@ -4,6 +4,8 @@
 #include "UI.h"
 #include "entity_alive.h"
 #include "hudmanager.h"
+#include "game_cl_base.h"
+#include "level.h"
 
 static const int money_x_offs = 785; 
 static const int money_y_offs = 485;

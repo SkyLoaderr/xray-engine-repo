@@ -10,6 +10,7 @@
 
 #include "../feel_touch.h"
 #include "inventory_item.h"
+#include "ai_sounds.h"
 
 class CExplosive:
 	virtual public CInventoryItem,

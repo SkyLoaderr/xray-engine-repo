@@ -11,6 +11,7 @@
 #include "inventory_space.h"
 #include "physic_item.h"
 #include "phsynchronize.h"
+#include "entitycondition.h"
 
 class CInventoryItem : public CPhysicItem {
 	typedef CPhysicItem	inherited;

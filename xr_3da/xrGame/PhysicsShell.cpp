@@ -8,6 +8,8 @@
 #include "PHJoint.h"
 #include "PHJointDestroyInfo.h"
 #include "PHSplitedShell.h"
+#include "gameobject.h"
+
 CPhysicsElement*			P_create_Element		()
 {
 	CPHElement* element=xr_new<CPHElement>	();

@@ -10,6 +10,9 @@
 #include "actor.h"
 #include "hudmanager.h"
 #include "xrServer_Objects.h"
+#include "game_cl_base.h"
+#include "level.h"
+#include "xr_level_controller.h"
 
 //--------------------------------------------------------------------
 //////////////////////////////////////////////////////////////////////

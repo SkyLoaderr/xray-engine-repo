@@ -13,8 +13,9 @@
 
 #include "ActorEffector.h"
 
-
 #include "PHWorld.h"
+#include "level.h"
+#include "xr_level_controller.h"
 
 static u32	g_dwStartTime		= 0;
 static u32	g_dwLastUpdateTime	;

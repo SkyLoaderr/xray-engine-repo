@@ -2,6 +2,7 @@
 #include "uigroup.h"
 #include "hudmanager.h"
 #include "entity.h"
+#include "level.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

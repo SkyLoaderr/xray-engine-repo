@@ -5,6 +5,8 @@
 #include "ParticlesObject.h"
 #include "ai_script_processor.h"
 #include "script_engine.h"
+#include "level.h"
+#include "game_cl_base.h"
 
 void CLevel::vfCreateAllPossiblePaths(LPCSTR sName, SPath &tpPatrolPath)
 {

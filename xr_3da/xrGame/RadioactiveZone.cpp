@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "radioactivezone.h"
 #include "hudmanager.h"
+#include "level.h"
+#include "xrmessages.h"
 
 CRadioactiveZone::CRadioactiveZone(void) 
 {

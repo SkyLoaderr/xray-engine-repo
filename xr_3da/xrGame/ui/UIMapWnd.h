@@ -18,6 +18,8 @@
 
 #include "UICharacterInfo.h"
 
+class CGameObject;
+
 class CUIMapWnd: public CUIDialogWnd
 {
 private:

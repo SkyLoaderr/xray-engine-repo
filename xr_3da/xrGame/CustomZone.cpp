@@ -6,8 +6,7 @@
 #include "ParticlesObject.h"
 #include "xrserver_objects_alife_monsters.h"
 #include "../LightAnimLibrary.h"
-
-
+#include "level.h"
 
 CCustomZone::CCustomZone(void) 
 {

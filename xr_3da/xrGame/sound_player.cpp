@@ -10,6 +10,7 @@
 #include "sound_player.h"
 #include "script_engine.h"
 #include "ai/stalker/ai_stalker_space.h"
+#include "ai_space.h"
 
 CSoundPlayer::CSoundPlayer			()
 {

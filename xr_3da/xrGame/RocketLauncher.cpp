@@ -6,9 +6,8 @@
 #include "stdafx.h"
 #include "RocketLauncher.h"
 #include "CustomRocket.h"
-
 #include "xrserver_objects_alife_items.h"
-
+#include "level.h"
 
 CRocketLauncher::CRocketLauncher()
 {

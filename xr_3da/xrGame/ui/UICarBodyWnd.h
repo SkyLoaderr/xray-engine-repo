@@ -9,9 +9,6 @@
 
 class CInventory;
 
-#include "../gameobject.h"
-
-
 #include "UIDialogWnd.h"
 #include "UIStatic.h"
 #include "UIButton.h"

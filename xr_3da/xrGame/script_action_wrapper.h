@@ -11,6 +11,8 @@
 #include "action_base.h"
 #include "script_space.h"
 
+class CLuaGameObject;
+
 typedef CActionBase<CLuaGameObject> CScriptAction;
 
 class CScriptActionWrapper : public CScriptAction, public luabind::wrap_base {

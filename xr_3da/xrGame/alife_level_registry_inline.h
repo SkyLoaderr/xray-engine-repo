@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "ai_space.h"
+
 IC	CALifeLevelRegistry::CALifeLevelRegistry	(const ALife::_LEVEL_ID &level_id)
 {
 	m_level_id			= level_id;

@@ -15,6 +15,8 @@
 
 #include "ActorEffector.h"
 #include "EffectorZoomInertion.h"
+#include "level.h"
+#include "xr_level_controller.h"
 
 
 

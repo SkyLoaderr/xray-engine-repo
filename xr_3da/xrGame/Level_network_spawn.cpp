@@ -1,6 +1,8 @@
 #include "stdafx.h"
-#include "gameobject.h"
 #include "xrServer_Objects_ALife_All.h"
+#include "level.h"
+#include "game_cl_base.h"
+#include "net_queue.h"
 
 void CLevel::g_cl_Spawn		(LPCSTR name, u8 rp, u16 flags)
 {
@@ -67,7 +69,7 @@ void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 			GEN.w_u16			(GE_OWNERSHIP_TAKE);
 			GEN.w_u16			(E->ID_Parent);
 			GEN.w_u16			(u16(O->ID()));
-			game_events.insert	(GEN);
+			game_events->insert	(GEN);
 		}
 	}
 }

@@ -19,10 +19,10 @@
 #include "../Car.h"
 #include "../Trade.h"
 #include "../UIGameSP.h"
-#include "../gameobject.h"
 
 #include "../eatable_item.h"
 #include "../inventory.h"
+#include "../level.h"
 
 
 

@@ -5,6 +5,9 @@
 #include "PHContactBodyEffector.h"
 
 #include "ParticlesObject.h"
+#include "gamemtllib.h"
+#include "level.h"
+#include "gameobject.h"
  
 
 ///////////////////////////////////////////////////////////////
@@ -16,7 +19,6 @@
 #pragma warning(default:4267)
 #pragma warning(default:4995)
 
-#include "gameobject.h"
 ///////////////////////////////////////////////////////////////////
 
 #include "ExtendedGeom.h"

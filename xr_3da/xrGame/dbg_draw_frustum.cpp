@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "level.h"
 
 #ifdef DEBUG
 void MK_Frustum(CFrustum& F, float FOV, float _FAR, float A, Fvector &P, Fvector &D, Fvector &U)

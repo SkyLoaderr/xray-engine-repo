@@ -9,7 +9,7 @@
 #include "FoodItem.h"
 #include "WeaponHud.h"
 #include "PhysicsShell.h"
-
+#include "xr_level_controller.h"
 
 #define PLAYING_ANIM_TIME 10000
 

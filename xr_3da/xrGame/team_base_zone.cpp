@@ -11,6 +11,8 @@
 #include "xrserver_objects_alife_monsters.h"
 #include "Actor.h"
 #include "HUDManager.h"
+#include "level.h"
+#include "xrserver.h"
 
 CTeamBaseZone::CTeamBaseZone		()
 {

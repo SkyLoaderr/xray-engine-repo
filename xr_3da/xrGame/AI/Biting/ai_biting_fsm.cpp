@@ -10,6 +10,7 @@
 #include "ai_biting.h"
 #include "../../phmovementcontrol.h"
 #include "../ai_monster_debug.h"
+#include "../ai_monster_group.h"
 
 
 void CAI_Biting::Think()
@@ -35,7 +36,7 @@ void CAI_Biting::Think()
 	CMonsterMovement::Frame_Init();
 
 	// Squad calculations
-	CMonsterSquad	*pSquad = Level().SquadMan.GetSquad((u8)g_Squad());
+	CMonsterSquad	*pSquad = Level().SquadMan->GetSquad((u8)g_Squad());
 	if (pSquad && pSquad->SquadActive()) {
 		pSquad->UpdateMonsterData(this,const_cast<CEntityAlive *>(EnemyMan.get_enemy()));
 		if ((pSquad->GetLeader() == this)) {

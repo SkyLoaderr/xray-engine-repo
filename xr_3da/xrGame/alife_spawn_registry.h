@@ -10,6 +10,7 @@
 
 #include "alife_spawn_registry_header.h"
 #include "xrServer_Objects_ALife_Monsters.h"
+#include "game_graph.h"
 
 class CALifeSpawnRegistry : CRandom {
 public:

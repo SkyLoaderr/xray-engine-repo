@@ -6,6 +6,7 @@
 #include "weapon.h"
 #include "inventory.h"
 #include "missile.h"
+#include "level.h"
 
 static const float y_spin_factor		= 0.4f;
 static const float y_shoulder_factor	= 0.4f;

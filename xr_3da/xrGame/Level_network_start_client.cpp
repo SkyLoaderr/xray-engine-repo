@@ -4,6 +4,7 @@
 #include "HUDmanager.h"
 #include "PHdynamicdata.h"
 #include "Physics.h"
+#include "level.h"
 
 extern	pureFrame*				g_pNetProcessor;
 

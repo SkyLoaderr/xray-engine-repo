@@ -4,6 +4,7 @@
 
 #include "PHDefs.h"
 #include "PhysicsCommon.h"
+#include "alife_space.h"
 
 class CPhysicsJoint;
 class CPhysicsElement;
@@ -12,6 +13,8 @@ class CPHFracture;
 class CPHJointDestroyInfo;
 class CODEGeom;
 class CPHSynchronize;
+class CGameObject;
+
 struct physicsBone
 {
 	CPhysicsJoint* joint;
@@ -90,7 +93,7 @@ public:
 	u16						m_SelfID;
 	virtual CPhysicsShell*	PhysicsShell			()												= 0;		
 	virtual void			set_ContactCallback		(ContactCallbackFun* callback)					= 0;
-	virtual CGameObject*	PhysicsRefObject	()												= 0;
+	virtual CGameObject*	PhysicsRefObject		()												= 0;
 	virtual	void			add_Sphere				(const Fsphere&		V)							= 0;
 	virtual	void			add_Box					(const Fobb&		V)							= 0;
 	virtual	void			add_Cylinder			(const Fcylinder&	V)							= 0;

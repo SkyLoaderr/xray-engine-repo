@@ -14,6 +14,8 @@
 	#include "xrLevel.h"
 #endif
 
+#include "alife_space.h"
+
 class CCoverPoint;
 
 class CLevelGraph {

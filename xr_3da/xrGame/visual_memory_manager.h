@@ -9,7 +9,7 @@
 #pragma once
 
 #include "../feel_vision.h"
-#include "memory_space.h"
+#include "memory_space_impl.h"
 
 class CVisualMemory : public Feel::Vision {
 protected:

@@ -2,6 +2,8 @@
 #include "game_sv_teamdeathmatch.h"
 #include "HUDmanager.h"
 #include "xrserver_objects_alife_monsters.h"
+#include "xrserver.h"
+#include "level.h"
 
 void	game_sv_TeamDeathmatch::Create					(LPSTR &options)
 {

@@ -3,6 +3,7 @@
 #define PH_CAPTURE_H
 
 #include "phobject.h"
+#include "gameobject.h"
 
 class CPHCapture : public CPHUpdateObject
 {

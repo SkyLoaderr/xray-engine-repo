@@ -1,6 +1,9 @@
 
 #ifndef CHARACTER_PHYSICS_SUPPORT
 #define CHARACTER_PHYSICS_SUPPORT
+
+#include "alife_space.h"
+
 class CEntityAlive;
 class CPhysicsShell;
 class CPHMovementControl;

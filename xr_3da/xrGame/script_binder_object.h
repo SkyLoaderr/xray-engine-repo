@@ -8,6 +8,9 @@
 
 #pragma once
 
+class CSE_Abstract;
+class CLuaGameObject;
+
 class CScriptBinderObject {
 public:
 	typedef CSE_Abstract*	SpawnType;

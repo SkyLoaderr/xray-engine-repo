@@ -9,6 +9,8 @@
 #include "inventory.h"
 #include "hudmanager.h"
 #include "character_info.h"
+#include "level.h"
+#include "xr_level_controller.h"
 
 #define PICKUP_INFO_COLOR 0xFFAAAAAA
 

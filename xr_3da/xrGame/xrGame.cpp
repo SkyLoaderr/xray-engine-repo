@@ -49,6 +49,10 @@
 #include "WeaponMounted.h"
 #include "ui/UIMainIngameWnd.h"
 #include "xrServer_Objects.h"
+#include "level.h"
+#include "xrserver.h"
+#include "xr_level_controller.h"
+#include "game_cl_base.h"
 
 ENGINE_API extern float		psHUD_FOV;
 extern	float				psSqueezeVelocity;
@@ -253,7 +257,7 @@ class CCC_ALifeListAll : public IConsole_Command {
 public:
 	CCC_ALifeListAll(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
 	virtual void Execute(LPCSTR /**args/**/) {
-		if (Level().game.type == GAME_SINGLE) {
+		if (Level().game->type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			if (tpGame && tpGame->alife().m_bLoaded) {
 				tpGame->alife().vfListObjects();
@@ -274,7 +278,7 @@ class CCC_ALifeListObjects : public IConsole_Command {
 public:
 	CCC_ALifeListObjects(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
 	virtual void Execute(LPCSTR /**args/**/) {
-		if (Level().game.type == GAME_SINGLE) {
+		if (Level().game->type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			if (tpGame && tpGame->alife().m_bLoaded) {
 				tpGame->alife().vfListObjects();
@@ -291,7 +295,7 @@ class CCC_ALifeListEvents : public IConsole_Command {
 public:
 	CCC_ALifeListEvents(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
 	virtual void Execute(LPCSTR /**args/**/) {
-		if (Level().game.type == GAME_SINGLE) {
+		if (Level().game->type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			if (tpGame && tpGame->alife().m_bLoaded) {
 				tpGame->alife().vfListEvents();
@@ -308,7 +312,7 @@ class CCC_ALifeListTasks : public IConsole_Command {
 public:
 	CCC_ALifeListTasks(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
 	virtual void Execute(LPCSTR /**args/**/) {
-		if (Level().game.type == GAME_SINGLE) {
+		if (Level().game->type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			if (tpGame && tpGame->alife().m_bLoaded) {
 				tpGame->alife().vfListTasks();
@@ -325,7 +329,7 @@ class CCC_ALifeListTerrain : public IConsole_Command {
 public:
 	CCC_ALifeListTerrain(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
 	virtual void Execute(LPCSTR /**args/**/) {
-		if (Level().game.type == GAME_SINGLE) {
+		if (Level().game->type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			if (tpGame && tpGame->alife().m_bLoaded) {
 				tpGame->alife().vfListTerrain();
@@ -342,7 +346,7 @@ class CCC_ALifeListSpawns : public IConsole_Command {
 public:
 	CCC_ALifeListSpawns(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
 	virtual void Execute(LPCSTR /**args/**/) {
-		if (Level().game.type == GAME_SINGLE) {
+		if (Level().game->type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			if (tpGame && tpGame->alife().m_bLoaded) {
 				tpGame->alife().vfListSpawnPoints();
@@ -359,7 +363,7 @@ class CCC_ALifeObjectInfo : public IConsole_Command {
 public:
 	CCC_ALifeObjectInfo(LPCSTR N) : IConsole_Command(N)  { };
 	virtual void Execute(LPCSTR args) {
-		if (Level().game.type == GAME_SINGLE) {
+		if (Level().game->type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			if (tpGame && tpGame->alife().m_bLoaded) {
 				int id1 = -1;
@@ -378,7 +382,7 @@ class CCC_ALifeEventInfo : public IConsole_Command {
 public:
 	CCC_ALifeEventInfo(LPCSTR N) : IConsole_Command(N)  { };
 	virtual void Execute(LPCSTR args) {
-		if (Level().game.type == GAME_SINGLE) {
+		if (Level().game->type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			if (tpGame && tpGame->alife().m_bLoaded) {
 				int id1 = -1;
@@ -400,7 +404,7 @@ class CCC_ALifeTaskInfo : public IConsole_Command {
 public:
 	CCC_ALifeTaskInfo(LPCSTR N) : IConsole_Command(N)  { };
 	virtual void Execute(LPCSTR args) {
-		if (Level().game.type == GAME_SINGLE) {
+		if (Level().game->type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			if (tpGame && tpGame->alife().m_bLoaded) {
 				int id1 = -1;
@@ -422,7 +426,7 @@ class CCC_ALifeSpawnInfo : public IConsole_Command {
 public:
 	CCC_ALifeSpawnInfo(LPCSTR N) : IConsole_Command(N)  { };
 	virtual void Execute(LPCSTR /**args/**/) {
-//		if (Level().game.type == GAME_SINGLE) {
+//		if (Level().game->type == GAME_SINGLE) {
 //			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 //			if (tpGame && tpGame->alife().m_bLoaded) {
 //				u32 id1 = u32(-1);
@@ -446,7 +450,7 @@ class CCC_ALifeGraphInfo : public IConsole_Command {
 public:
 	CCC_ALifeGraphInfo(LPCSTR N) : IConsole_Command(N)  { };
 	virtual void Execute(LPCSTR args) {
-		if (Level().game.type == GAME_SINGLE) {
+		if (Level().game->type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			if (ai().get_level_graph()) {
 				u32 id1 = u32(-1);
@@ -470,7 +474,7 @@ class CCC_ALifeScheduleMin : public IConsole_Command {
 public:
 	CCC_ALifeScheduleMin(LPCSTR N) : IConsole_Command(N)  { };
 	virtual void Execute(LPCSTR args) {
-		if (Level().game.type == GAME_SINGLE) {
+		if (Level().game->type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			if (tpGame && tpGame->alife().m_bLoaded) {
 				int id1 = 0;
@@ -492,7 +496,7 @@ class CCC_ALifeScheduleMax : public IConsole_Command {
 public:
 	CCC_ALifeScheduleMax(LPCSTR N) : IConsole_Command(N)  { };
 	virtual void Execute(LPCSTR args) {
-		if (Level().game.type == GAME_SINGLE) {
+		if (Level().game->type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			if (tpGame && tpGame->alife().m_bLoaded) {
 				int id1 = 0;
@@ -528,7 +532,7 @@ class CCC_ALifeSwitchDistance : public IConsole_Command {
 public:
 	CCC_ALifeSwitchDistance(LPCSTR N) : IConsole_Command(N)  { };
 	virtual void Execute(LPCSTR args) {
-		if ((Level().game.type == GAME_SINGLE)  &&ai().get_alife()) {
+		if ((Level().game->type == GAME_SINGLE)  &&ai().get_alife()) {
 			float id1 = 0.0f;
 			sscanf(args ,"%f",&id1);
 			if (id1 < 2.0f)
@@ -549,7 +553,7 @@ class CCC_ALifeProcessTime : public IConsole_Command {
 public:
 	CCC_ALifeProcessTime(LPCSTR N) : IConsole_Command(N)  { };
 	virtual void Execute(LPCSTR args) {
-		if ((Level().game.type == GAME_SINGLE)  &&ai().get_alife()) {
+		if ((Level().game->type == GAME_SINGLE)  &&ai().get_alife()) {
 			game_sv_Single	*tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			VERIFY			(tpGame);
 			int id1 = 0;
@@ -568,7 +572,7 @@ class CCC_ALifeSwitchFactor : public IConsole_Command {
 public:
 	CCC_ALifeSwitchFactor(LPCSTR N) : IConsole_Command(N)  { };
 	virtual void Execute(LPCSTR args) {
-		if ((Level().game.type == GAME_SINGLE)  &&ai().get_alife()) {
+		if ((Level().game->type == GAME_SINGLE)  &&ai().get_alife()) {
 			game_sv_Single	*tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			VERIFY			(tpGame);
 			float id1 = 0;

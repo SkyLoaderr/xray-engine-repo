@@ -17,7 +17,9 @@
 #include "explode_effector.h" 
 #include "actor.h"
 #include "actoreffector.h"
+#include "level.h"
 #include "level_bullet_manager.h"
+#include "xrmessages.h"
 
 #define EFFECTOR_RADIUS 30.f
 

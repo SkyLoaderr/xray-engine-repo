@@ -14,6 +14,7 @@
 #include "../../bolt.h"
 #include "../../pda.h"
 #include "../../inventory.h"
+#include "../../xrmessages.h"
 
 IC BOOL BE	(BOOL A, BOOL B)
 {

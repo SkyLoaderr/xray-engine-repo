@@ -28,20 +28,6 @@
 #include "../SkeletonAnimated.h"
 #include "../SkeletonRigid.h"
 
-
 #include "ode_include.h"
 
-#include "xr_level_controller.h"
-#include "Level.h"
-#include "GameMtlLib.h"
-#include "random32.h"
-
 #define BOOST_THROW_EXCEPTION_HPP_INCLUDED
-//temporaraly by Kostya & Dima
-//#undef		VERIFY
-//#undef		VERIFY2
-//#undef		VERIFY3
-//
-//#define		VERIFY(a)
-//#define		VERIFY2(a,b)
-//#define		VERIFY3(a,b,c)

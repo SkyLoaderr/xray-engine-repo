@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "material_manager.h"
 #include "phmovementcontrol.h"
+#include "entity_alive.h"
 
 CMaterialManager::CMaterialManager	()
 {

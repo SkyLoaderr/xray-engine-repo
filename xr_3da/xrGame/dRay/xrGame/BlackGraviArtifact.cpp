@@ -7,10 +7,10 @@
 #include "stdafx.h"
 #include "BlackGraviArtifact.h"
 #include "PhysicsShell.h"
-#include "GameObject.h"
 #include "entity_alive.h"
 #include "ParticlesObject.h"
 #include "phmovementcontrol.h"
+#include "xrmessages.h"
 
 CBlackGraviArtifact::CBlackGraviArtifact(void) 
 {

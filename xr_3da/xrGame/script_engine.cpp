@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "script_engine.h"
 #include "ai_script_processor.h"
+#include "ai_space.h"
 
 CScriptEngine::CScriptEngine	()
 {

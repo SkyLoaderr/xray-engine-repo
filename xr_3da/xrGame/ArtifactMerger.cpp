@@ -8,8 +8,8 @@
 #include "ArtifactMerger.h"
 #include "PhysicsShell.h"
 //#include "ai_script_processor.h"
-#include "level.h"
 #include "xrserver_objects_alife.h"
+#include "level.h"
 
 //глобальный указатель на функтор, который
 //запускает функцию сочетания артефактов из 

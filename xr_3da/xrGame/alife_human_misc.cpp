@@ -10,6 +10,7 @@
 #include "xrServer_Objects_ALife_All.h"
 #include "alife_simulator.h"
 #include "alife_object_registry.h"
+#include "ai_space.h"
 
 bool CSE_ALifeHumanAbstract::bfHealthIsGood			()
 {

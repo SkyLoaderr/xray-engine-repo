@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "xrserver_space.h"
+
 namespace MonsterSpace {
 	enum EBodyState {
 		eBodyStateCrouch = 0,

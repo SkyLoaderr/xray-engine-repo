@@ -20,6 +20,8 @@
 #include "../../xrserver_objects_alife_monsters.h"
 #include "../../cover_evaluators.h"
 #include "../../character_info.h"
+#include "../../xrserver.h"
+#include "../../xr_level_controller.h"
 
 #ifdef OLD_DECISION_BLOCK
 CAI_Stalker::CAI_Stalker			() : CStateManagerStalker("StalkerManager")

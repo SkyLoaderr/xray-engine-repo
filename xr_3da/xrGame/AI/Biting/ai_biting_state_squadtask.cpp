@@ -2,6 +2,7 @@
 #include "ai_biting.h"
 #include "ai_biting_state.h"
 #include "../ai_monster_utils.h"
+#include "../ai_monster_group.h"
 #include "../../phmovementcontrol.h"
 
 CBitingSquadTask::CBitingSquadTask(CAI_Biting *p)
@@ -15,7 +16,7 @@ void CBitingSquadTask::Init()
 	inherited::Init();
 
 	// Get task
-	CMonsterSquad *pSquad = Level().SquadMan.GetSquad((u8)pMonster->g_Squad());
+	CMonsterSquad *pSquad = Level().SquadMan->GetSquad((u8)pMonster->g_Squad());
 	GTask &task = pSquad->GetTask(pMonster);
 
 	switch (task.state.command) {
@@ -47,7 +48,7 @@ void CBitingSquadTask::Init()
 void CBitingSquadTask::Run()
 {
 	// Get task
-	CMonsterSquad *pSquad = Level().SquadMan.GetSquad((u8)pMonster->g_Squad());
+	CMonsterSquad *pSquad = Level().SquadMan->GetSquad((u8)pMonster->g_Squad());
 	GTask &task = pSquad->GetTask(pMonster);
 
 	switch (task.state.command) {

@@ -5,6 +5,10 @@
 
 #include "stdafx.h"
 #include "Level_Bullet_Manager.h"
+#include "entity.h"
+#include "gamemtllib.h"
+#include "level.h"
+#include "xrmessages.h"
 
 
 

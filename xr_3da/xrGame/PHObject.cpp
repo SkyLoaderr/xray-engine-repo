@@ -2,6 +2,7 @@
 #include "Physics.h"
 #include "PHObject.h"
 #include "PHWorld.h"
+#include "level.h"
 
 DEFINE_VECTOR(ISpatial*,qResultVec,qResultIt)
 

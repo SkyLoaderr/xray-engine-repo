@@ -9,6 +9,7 @@
 #pragma once
 
 #include "alife_interfaces.h"
+#include "alife_space.h"
 
 class CALifeTimeManager {
 private:

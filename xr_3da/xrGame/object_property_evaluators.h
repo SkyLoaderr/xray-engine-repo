@@ -14,6 +14,7 @@
 class CAI_Stalker;
 class CWeapon;
 class CMissile;
+class CGameObject;
 
 typedef CPropertyEvaluatorMember<CAI_Stalker> CObjectPropertyEvaluatorMember;
 

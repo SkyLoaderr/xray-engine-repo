@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "LevelFogOfWar.h"
-
+#include "level.h"
 
 float CFogOfWar::FOG_CELL_SIZE = 20.f;
 float CFogOfWar::ACTOR_FOG_REMOVE_RADIUS = 25.f;

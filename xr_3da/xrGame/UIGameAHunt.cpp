@@ -6,6 +6,8 @@
 
 #include "hudmanager.h"
 #include "team_base_zone.h"
+#include "level.h"
+#include "game_cl_base.h"
 
 #define MSGS_OFFS 510
 

@@ -1,6 +1,8 @@
 #pragma once
 
 class CBurer;
+class CGameObject;
+class CEntityAlive;
 
 class CBurerAttackTele : public IState {
 	typedef	IState inherited;

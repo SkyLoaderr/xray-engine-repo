@@ -9,6 +9,10 @@
 
 #include "eatable_item.h"
 #include "script_engine.h"
+#include "xrmessages.h"
+#include "level.h"
+#include "game_cl_base.h"
+#include "xr_level_controller.h"
 
 using namespace InventoryUtilities;
 
@@ -395,6 +399,12 @@ bool CInventory::Activate(u32 slot)
 PIItem CInventory::ActiveItem()const
 {
 	return m_iActiveSlot < m_slots.size() ? m_slots[m_iActiveSlot].m_pIItem : NULL;
+}
+
+PIItem CInventory::ItemFormSlot(u32 slot) const
+{
+	VERIFY(NO_ACTIVE_SLOT != slot);
+	return m_slots[slot].m_pIItem;
 }
 
 PIItem CInventory::ItemFormSlot(u32 slot) const

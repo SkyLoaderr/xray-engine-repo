@@ -10,6 +10,8 @@
 
 #include "object_manager.h"
 
+class CGameObject;
+
 class CItemManager : public CObjectManager<const CGameObject > {
 	typedef CObjectManager<const CGameObject > inherited;
 public:

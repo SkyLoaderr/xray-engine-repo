@@ -8,6 +8,9 @@
 
 #pragma once
 
+#include "ai_space.h"
+#include "game_graph.h"
+
 IC	CALifeAnomalyRegistry::CALifeAnomalyRegistry	(LPCSTR section)
 {
 	m_anomalies.resize				(ai().game_graph().header().vertex_count());

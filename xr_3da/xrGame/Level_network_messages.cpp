@@ -1,6 +1,10 @@
 #include "stdafx.h"
 #include "entity.h"
 #include "xrserver_objects.h"
+#include "level.h"
+#include "xrmessages.h"
+#include "game_cl_base.h"
+#include "net_queue.h"
 
 void CLevel::ClientReceive()
 {
@@ -34,19 +38,19 @@ void CLevel::ClientReceive()
 			}
 			break;
 		case M_UPDATE:
-			game.net_import_update	(*P);
+			game->net_import_update	(*P);
 			Objects.net_Import		(P);
 			
 			UpdateDeltaUpd(timeServer());
 			break;
 		case M_SV_CONFIG_GAME:
-			game.net_import_state	(*P);
+			game->net_import_state	(*P);
 			break;
 		case M_SV_CONFIG_FINISHED:
 			game_configured			= TRUE;
 			break;
 		case M_EVENT:
-			game_events.insert		(*P);
+			game_events->insert		(*P);
 			break;
 		case M_MIGRATE_DEACTIVATE:	// TO:   Changing server, just deactivate
 			{

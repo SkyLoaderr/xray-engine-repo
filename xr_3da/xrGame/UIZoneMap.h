@@ -5,6 +5,9 @@
 #include "uistaticitem.h"
 #include "uidynamicitem.h"
 
+class CEntity;
+class CTeam;
+
 class CUIZoneMap
 {
 	CUIStaticItem	landscape;

@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#include "xrserver.h"
+#include "xrmessages.h"
 #include "xrserver_objects.h"
 
 void xrServer::SLS_Save	(IWriter& fs)

@@ -10,6 +10,7 @@
 
 #include "ai_object_location.h"
 #include "ai/script/ai_script_monster.h"
+#include "level.h"
 
 class CPatrolPathManager : 
 	virtual public CAI_ObjectLocation

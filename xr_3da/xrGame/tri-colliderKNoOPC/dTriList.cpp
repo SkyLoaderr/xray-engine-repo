@@ -5,6 +5,7 @@
 #include "dcTriListCollider.h"
 
 #include "dcTriListCollider.cpp"	// Allow inlining
+#include "../gameobject.h"
 
 
 

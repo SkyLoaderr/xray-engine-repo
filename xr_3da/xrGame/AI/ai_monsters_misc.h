@@ -9,7 +9,6 @@
 #pragma once
 
 #include "../ai_space.h"
-#include "../Level.h"
 #include "../Entity.h"
 #include "../CustomMonster.h"
 #include "../Group.h"

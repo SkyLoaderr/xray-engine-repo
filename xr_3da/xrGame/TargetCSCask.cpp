@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "targetcscask.h"
 #include "targetcs.h"
+#include "xrmessages.h"
+#include "level.h"
 
 CTargetCSCask::CTargetCSCask(void) {}
 

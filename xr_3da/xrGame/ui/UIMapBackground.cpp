@@ -7,8 +7,8 @@
 #include "UIMapBackground.h"
 
 #include "../actor.h"
-#include "../level.h"
 #include "../levelFogOfWar.h"
+#include "../level.h"
 
 
 //размер просматриваемого в текущей момент

@@ -3,6 +3,8 @@
 
 #include "stdafx.h"
 #include "UISleepWnd.h"
+#include "../alife_space.h"
+#include "../level.h"
 
 const char * const SLEEP_DIALOG_XML = "sleep_dialog.xml";
 

@@ -8,13 +8,13 @@
 #include "../HUDManager.h"
 
 #include "../actor.h"
-#include "../level.h"
 
 #include "../pda.h"
 #include "../infoportion.h"
 
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
+#include "../level.h"
 
 #include "UIInventoryUtilities.h"
 using namespace InventoryUtilities;

@@ -11,6 +11,8 @@
 #include <stdarg.h>
 #ifndef ENGINE_BUILD
 #include "script_engine.h"
+#include "ai_debug.h"
+#include "ai_space.h"
 #endif
 
 CScriptStorage::CScriptStorage		()

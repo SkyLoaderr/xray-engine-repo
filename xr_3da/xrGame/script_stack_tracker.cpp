@@ -10,6 +10,7 @@
 #include "script_stack_tracker.h"
 #include "script_storage_space.h"
 #include "script_engine.h"
+#include "ai_space.h"
 
 CScriptStackTracker::~CScriptStackTracker	()
 {

@@ -6,6 +6,9 @@
 #include "xrServer.h"
 #include "xrMessages.h"
 #include "xrServer_Objects_ALife_All.h"
+#include "level.h"
+#include "game_cl_base.h"
+#include "ai_space.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

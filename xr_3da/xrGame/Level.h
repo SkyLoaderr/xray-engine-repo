@@ -6,29 +6,27 @@
 #define AFX_LEVEL_H__38F63863_DB0C_494B_AFAB_C495876EC671__INCLUDED_
 #pragma once
 
-#include "xrServer.h"
-#include "game_cl_base.h"
 #include "group.h"
-#include "ai_sounds.h"
-#include "net_queue.h"
-#include "ai/ai_monster_group.h"
-#include "memory_space.h"
 #include "memory_space.h"
 
 class	CHUDManager;
 class	CParticlesObject;
+class	xrServer;
+class	CSquadManager;
+struct	SMapLocation;
+class	CEntity;
+class	game_cl_GameState;
+class	NET_Queue_Event;
+class	CSE_Abstract;
+
+DEFINE_VECTOR (SMapLocation*, LOCATIONS_PTR_VECTOR, LOCATIONS_PTR_VECTOR_IT);
 
 #define DEFAULT_FOV				90.f
 const int maxGroups				= 32;
 
-
-struct SMapLocation;
-DEFINE_VECTOR (SMapLocation*, LOCATIONS_PTR_VECTOR, LOCATIONS_PTR_VECTOR_IT);
-
-class CSquad
-{
+class CSquad {
 public:
-	CEntity*					Leader;
+	CEntity						*Leader;
 	xr_vector<CGroup>			Groups;
 	xr_vector<CVisibleObject>	m_visible_objects;
 	xr_vector<CSoundObject>		m_sound_objects;
@@ -52,6 +50,7 @@ public:
 const int maxTeams				= 32;
 const int maxSquads				= 32;
 const int maxRP					= 64;
+
 class CTeam
 {
 public:
@@ -102,14 +101,14 @@ public:
 	DEFINE_VECTOR				(CParticlesObject*,POVec,POIt);
 	POVec						m_StaticParticles;
 
-	game_cl_GameState			game;
+	game_cl_GameState			*game;
 	BOOL						game_configured;
-	NET_Queue_Event				game_events;
+	NET_Queue_Event				*game_events;
 	xr_deque<CSE_Abstract*>		game_spawn_queue;
 	xrServer*					Server;
 public:
 	svector<CTeam,maxTeams>		Teams;
-	CSquadManager				SquadMan;
+	CSquadManager				*SquadMan;
 
 	// sounds
 	xr_vector<ref_sound*>		static_Sounds;
@@ -235,27 +234,12 @@ public:
 	//by Dandy
 	//gets the time from the game simulation
 	//receive game time
-	IC	ALife::_TIME_ID GetGameTime()
-	{
-		return			(Server->game->GetGameTime());
-	}
+			ALife::_TIME_ID		GetGameTime				();
+			float				GetGameTimeFactor		();
+			void				SetGameTimeFactor		(const float fTimeFactor);
+			void				SetGameTime				(ALife::_TIME_ID GameTime);
 
-	IC	float	GetGameTimeFactor()
-	{
-		return			(Server->game->GetGameTimeFactor());
-	}
-
-	IC	void	SetGameTimeFactor(const float fTimeFactor)
-	{
-		Server->game->SetGameTimeFactor(fTimeFactor);
-	}
-	
-	IC	void	SetGameTime(ALife::_TIME_ID GameTime)
-	{
-		Server->game->SetGameTime(GameTime);
-	}
-
-	IC	float	GetGameTimeSec()
+	IC		float	GetGameTimeSec()
 	{
 		return			(float(s64(GetGameTime()))/1000.f);
 	}
@@ -293,23 +277,14 @@ public:
 	}
 
 	//by Mad Max 
-	IC bool	IsServer ()
-	{
-		if (!Server) return false;
-		return (Server->client_Count() != 0);
-	};
-	IC bool IsClient ()
-	{
-		if (!Server) return true;
-		return (Server->client_Count() == 0);
-	};
-
-	CSE_Abstract		*spawn_item	(LPCSTR section, const Fvector &position, u32 level_vertex_id, u16 parent_id, bool return_item = false);
+			bool			IsServer					();
+			bool			IsClient					();
+			CSE_Abstract	*spawn_item					(LPCSTR section, const Fvector &position, u32 level_vertex_id, u16 parent_id, bool return_item = false);
 };
 
 IC CLevel&				Level()		{ return *((CLevel*) g_pGameLevel);			}
-IC game_cl_GameState&	Game()		{ return Level().game;					}
-IC u32					GameID()	{ return Game().type;					}
+IC game_cl_GameState&	Game()		{ return *Level().game;					}
+	u32					GameID();
 IC CHUDManager&			HUD()		{ return *((CHUDManager*)Level().pHUD);	}
 	//by Mad Max 
 IC bool					OnServer()	{ return Level().IsServer();				}

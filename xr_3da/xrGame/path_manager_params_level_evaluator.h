@@ -10,6 +10,7 @@
 
 #include "path_manager_params.h"
 #include "level_graph.h"
+#include "group.h"
 
 #define CHECK_CONDITION(A)				((qwFlags & A) == A)
 

@@ -8,6 +8,10 @@
 
 #pragma once
 
+#include "gamemtllib.h"
+
+class CPHMovementControl;
+
 class CMaterialManager {
 private:
 	//в режиме бега подставляем другие звуки

@@ -18,7 +18,6 @@
 #include "actor.h"
 #include "ai_script_classes.h"
 #include "ai/stalker/ai_stalker.h"
-#include "alife_space.h"
 #include "script_binder_object.h"
 #include "pdamsg.h"
 

@@ -11,6 +11,8 @@
 #include "control_action.h"
 #include "ai_monster_space.h"
 
+class CGameObject;
+
 class CObjectAction : public CControlAction {
 protected:
 	MonsterSpace::EObjectAction	m_item_action;

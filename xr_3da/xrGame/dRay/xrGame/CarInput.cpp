@@ -6,6 +6,7 @@
 #include "cameralook.h"
 #include "camerafirsteye.h"
 #include "ai_script_actions.h"
+#include "xr_level_controller.h"
 
 void	CCar::OnMouseMove(int dx, int dy)
 {

@@ -12,6 +12,9 @@
 #include "Physics.h"
 #include "xrserver_objects_alife.h"
 #include "xrserver_objects_alife_items.h"
+#include "entity_alive.h"
+#include "level.h"
+#include "game_cl_base.h"
 
 CInventoryItem::CInventoryItem() 
 {

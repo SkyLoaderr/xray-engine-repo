@@ -4,6 +4,9 @@
 #include "ai_script_processor.h"
 #include "xrServer_Objects_ALife_Monsters.h"
 #include "script_engine.h"
+#include "level.h"
+#include "xrserver.h"
+#include "ai_space.h"
 
 // Main
 game_PlayerState*	game_sv_GameState::get_it					(u32 it)

@@ -3,6 +3,7 @@
 
 #include "../GameFont.h"
 #include "CameraLook.h"
+#include "xr_level_controller.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

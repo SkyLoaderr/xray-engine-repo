@@ -3,6 +3,7 @@
 #include "ExtendedGeom.h"
 #include "tri-colliderknoopc/dTriList.h"
 #include "PhysicsCommon.h"
+#include "gamemtllib.h"
 
 void CPHContactBodyEffector::Init(dBodyID body, dContact& contact, float flotation)
 {

@@ -3,7 +3,6 @@
 #include "phcharacter.h"
 #include "Physics.h"
 #include "ExtendedGeom.h"
-#include "GameObject.h"
 #include "PHCapture.h"
 #include "entity_alive.h"
 #include "phmovementcontrol.h"

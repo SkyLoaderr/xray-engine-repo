@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "targetcs.h"
 #include "targetcscask.h"
+#include "level.h"
+#include "game_cl_base.h"
 
 CTargetCS::CTargetCS()
 {

@@ -3,6 +3,8 @@
 #include "HUDmanager.h"
 #include "xrserver_objects_alife_monsters.h"
 #include "ui\UIBuyWeaponWnd.h"
+#include "level.h"
+#include "xrserver.h"
 
 int		SkinID = -1;
 u32		g_dwMaxCorpses = 10;

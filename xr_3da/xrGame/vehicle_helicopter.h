@@ -8,9 +8,9 @@
 
 #pragma once
 
-#include "gameobject.h"
 #include "../feel_touch.h"
 #include "holder_custom.h"
+#include "entity.h"
 
 class CObjectAnimator;
 class CMotionDef;
@@ -21,7 +21,7 @@ class CVehicleHelicopter :
 	public Feel::Touch,
 	public CHolderCustom
 {
-	typedef CGameObject inherited;
+	typedef CEntity inherited;
 protected:
 	ref_sound			m_engine_sound;
 	CObjectAnimator		*m_animator;

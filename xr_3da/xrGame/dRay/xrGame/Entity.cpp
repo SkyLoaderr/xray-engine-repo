@@ -7,6 +7,9 @@
 #include "Entity.h"
 #include "actor.h"
 #include "xrserver_objects_alife_monsters.h"
+#include "entity.h"
+#include "level.h"
+#include "ai/ai_monster_group.h"
 
 #define MAX_ARMOR		200
 #define MAX_HEALTH		100
@@ -220,7 +223,7 @@ BOOL CEntity::net_Spawn		(LPVOID DC)
 	
 	CActor	*pA = dynamic_cast<CActor*>(this);
 	if (!pA) {
-		Level().SquadMan.RegisterMember((u8)id_Squad, this);
+		Level().SquadMan->RegisterMember((u8)id_Squad, this);
 		//Level().SquadMan.Dump();
 	}
 
@@ -247,7 +250,7 @@ void CEntity::net_Destroy	()
 
 	CActor	*pA = dynamic_cast<CActor*>(this);
 	if (!pA) {
-		Level().SquadMan.RemoveMember((u8)g_Squad(), this);
+		Level().SquadMan->RemoveMember((u8)g_Squad(), this);
 		//Level().SquadMan.Dump();
 	}
 

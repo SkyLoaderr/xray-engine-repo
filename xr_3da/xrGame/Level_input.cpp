@@ -9,6 +9,9 @@
 #include "ai/monsters/burer/burer.h"
 
 #include "../fdemorecord.h"
+#include "level.h"
+#include "xr_level_controller.h"
+#include "game_cl_base.h"
 
 #ifdef DEBUG
 extern EStalkerBehaviour	g_stalker_behaviour;

@@ -5,6 +5,7 @@
 #include "actor.h"
 #include "cameralook.h"
 #include "camerafirsteye.h"
+#include "level.h"
 
 void	CCar::cam_Update			(float /**dt/**/)
 {

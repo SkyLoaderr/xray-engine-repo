@@ -11,6 +11,7 @@
 #include "script_engine.h"
 #include "ai_script_processor.h"
 #include "ai_script.h"
+#include "ai_space.h"
 
 DEFINE_VECTOR(LPSTR,LPSTR_VECTOR,LPSTR_IT);
 

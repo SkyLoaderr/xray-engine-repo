@@ -2,6 +2,7 @@
 #include "ai_monster_debug.h"
 #include "../entity_alive.h"
 #include "../hudmanager.h"
+#include "../level.h"
 
 #define	DISABLE_MONSTER_DEBUG
 

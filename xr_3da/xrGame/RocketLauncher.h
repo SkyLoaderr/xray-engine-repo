@@ -7,6 +7,7 @@
 #pragma once
 
 class CCustomRocket;
+class CGameObject;
 
 class CRocketLauncher
 {

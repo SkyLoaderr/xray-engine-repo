@@ -11,6 +11,7 @@
 
 #include "../HUDManager.h"
 #include "../actor.h"
+#include "../level.h"
 
 #define PDA_XML "pda.xml"
 

@@ -11,6 +11,7 @@
 #include "lstate.h"
 #include "script_engine.h"
 #include "ai_script.h"
+#include "ai_space.h"
 
 CScript::CScript(LPCSTR caNamespaceName)
 {

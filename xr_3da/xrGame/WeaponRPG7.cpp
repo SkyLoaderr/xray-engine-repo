@@ -1,11 +1,10 @@
 #include "stdafx.h"
-
 #include "weaponrpg7.h"
-
 #include "WeaponHUD.h"
 #include "xrserver_objects_alife_items.h"
-
 #include "explosiverocket.h"
+#include "entity.h"
+#include "level.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //

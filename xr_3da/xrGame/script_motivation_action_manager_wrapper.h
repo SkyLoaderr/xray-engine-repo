@@ -11,6 +11,8 @@
 #include "motivation_action_manager.h"
 #include "script_space.h"
 
+class CLuaGameObject;
+
 typedef CMotivationActionManager<CLuaGameObject> CScriptMotivationActionManager;
 
 class CScriptMotivationActionManagerWrapper : public CScriptMotivationActionManager, public luabind::wrap_base {

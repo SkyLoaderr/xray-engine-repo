@@ -2,6 +2,9 @@
 #include "targetcsbase.h"
 #include "targetcs.h"
 #include "xrserver_objects.h"
+#include "level.h"
+#include "game_cl_base.h"
+#include "ai_sounds.h"
 
 CTargetCSBase::CTargetCSBase(void)
 {

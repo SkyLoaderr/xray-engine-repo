@@ -175,8 +175,8 @@ void CMonsterSquad::ProcessGroupIntel(const GTask &task)
 			if (ActiveTask(&pTask)) {
 				u8 p1, p2;
 
-				p1 = Level().SquadMan.TransformPriority(pTask.state.command);
-				p2 = Level().SquadMan.TransformPriority(task.state.command);
+				p1 = Level().SquadMan->TransformPriority(pTask.state.command);
+				p2 = Level().SquadMan->TransformPriority(task.state.command);
 				
 				// проверить приоритет новой задачи и текущей
 				if (p1 < p2) {
@@ -333,7 +333,7 @@ void CMonsterSquad::AskMember(CEntity *pE, const GTask &new_task)
 
 bool CMonsterSquad::IsPriorityHigher(ESquadCommand com_new, ESquadCommand com_old)
 {
-	return (Level().SquadMan.TransformPriority(com_new) >  Level().SquadMan.TransformPriority(com_old));
+	return (Level().SquadMan->TransformPriority(com_new) >  Level().SquadMan->TransformPriority(com_old));
 }
 
 //////////////////////////////////////////////////////////////////////////

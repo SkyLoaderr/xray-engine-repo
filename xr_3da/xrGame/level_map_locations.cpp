@@ -3,10 +3,11 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "level.h"
 #include "map_location.h"
 #include "character_info.h"
 #include "inventoryowner.h"
+#include "entity.h"
+#include "level.h"
 
 void CLevel::AddMapLocation(const SMapLocation& map_location)
 {

@@ -3,7 +3,6 @@
 #include "entity.h"
 #include "hudmanager.h"
 
-#include "level.h"
 #include "levelFogOfWar.h"
 
 #include "targetcs.h"
@@ -14,6 +13,8 @@
 #include "Pda.h"
 
 #include "Grenade.h"
+#include "level.h"
+#include "game_cl_base.h"
 
 #define MAX_VIEW_DISTANCE 50.f
 #define VIEW_DISTANCE	(MAX_VIEW_DISTANCE/m_fScale)

@@ -3,6 +3,7 @@
 #include "WeaponHUD.h"
 #include "entity.h"
 #include "ParticlesObject.h"
+#include "xr_level_controller.h"
 
 CWeaponShotgun::CWeaponShotgun(void) : CWeaponCustomPistol("TOZ34")
 {

@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "alife_simulator.h"
 #include "xrServer_Objects_ALife.h"
+#include "ai_space.h"
 
 LPCSTR alife_section = "alife";
 

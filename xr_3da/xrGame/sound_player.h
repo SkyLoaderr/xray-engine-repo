@@ -8,6 +8,10 @@
 
 #pragma once
 
+#include "random32.h"
+#include "ai_sounds.h"
+#include "level.h"
+
 class CSoundPlayer : public CRandom32 {
 public:
 	struct CSoundParams {

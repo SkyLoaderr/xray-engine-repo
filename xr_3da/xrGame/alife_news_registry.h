@@ -9,6 +9,7 @@
 #pragma once
 
 #include "alife_news.h"
+#include "alife_space.h"
 
 class CALifeNewsRegistry {
 protected:

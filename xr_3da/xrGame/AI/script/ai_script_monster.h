@@ -13,6 +13,7 @@
 #include "../../ai_script_callback.h"
 
 class CEntityAction;
+class CEntity;
 
 class CScriptMonster : virtual public CGameObject {
 public:

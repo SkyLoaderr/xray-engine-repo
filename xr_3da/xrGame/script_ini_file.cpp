@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "script_ini_file.h"
 #include "script_engine.h"
+#include "ai_space.h"
 
 CScriptIniFile::CScriptIniFile		(IReader *F, LPCSTR path) :
 	inherited	(F,path)

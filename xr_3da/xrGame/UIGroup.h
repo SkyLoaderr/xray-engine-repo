@@ -4,6 +4,9 @@
 
 #include "uistaticitem.h"
 
+class CGroup;
+class CSquad;
+
 class CUIGroup{
 	CUIStaticItem	back;
 	CUIStaticItem	back_sel;

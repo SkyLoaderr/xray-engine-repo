@@ -8,6 +8,9 @@
 
 #pragma once
 
+#include "random32.h"
+#include "alife_space.h"
+
 class xrServer;
 class CALifeSimulatorHeader;
 class CALifeTimeManager;

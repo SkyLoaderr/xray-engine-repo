@@ -9,6 +9,7 @@
 #include "ShootingHitEffector.h"
 #include "SleepEffector.h"
 #include "ActorEffector.h"
+#include "level.h"
 
 void CActor::cam_Set	(EActorCameras style)
 {

@@ -9,7 +9,7 @@
 #pragma once
 
 #include "sight_manager_space.h"
-#include "memory_space.h"
+#include "memory_space_impl.h"
 #include "control_action.h"
 
 class CAI_Stalker;

@@ -5,6 +5,7 @@
 #include "ai/trader/ai_trader.h"
 #include "artifact.h"
 #include "inventory.h"
+#include "xrmessages.h"
 
 class CInventoryOwner;
 

@@ -8,7 +8,8 @@
 
 #pragma once
 
-#include "memory_space.h"
+#include "memory_space_impl.h"
+#include "entity_alive.h"
 
 class CHitMemoryManager {
 private:

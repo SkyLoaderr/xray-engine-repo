@@ -6,7 +6,6 @@
 #include "ExtendedGeom.h"
 #include "../cl_intersect.h"
 #include "tri-colliderKNoOPC\__aabb_tri.h"
-#include "GameObject.h"
 
 
 

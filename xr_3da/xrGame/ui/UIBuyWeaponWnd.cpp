@@ -15,6 +15,7 @@
 #include "../WeaponAmmo.h"
 #include "../CustomOutfit.h"
 #include "../ArtifactMerger.h"
+#include "../level.h"
 
 //#include "../weapon.h"
 //#include "../silencer.h"

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "uigamesp.h"
-
 #include "actor.h"
+#include "level.h"
 
 CUIGameSP::CUIGameSP(CUI* parent) : CUIGameCustom(parent) 
 {

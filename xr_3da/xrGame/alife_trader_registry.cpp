@@ -8,6 +8,8 @@
 
 #include "stdafx.h"
 #include "alife_trader_registry.h"
+#include "ai_space.h"
+#include "game_graph.h"
 
 CALifeTraderRegistry::~CALifeTraderRegistry	()
 {

@@ -5,6 +5,8 @@
 #include "UITDMFragList.h"
 
 #include "hudmanager.h"
+#include "game_cl_base.h"
+#include "level.h"
 
 #define MSGS_OFFS 510
 

@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "mincer.h"
 #include "hudmanager.h"
+#include "xrmessages.h"
+#include "level.h"
 
 CMincer::CMincer(void) 
 {

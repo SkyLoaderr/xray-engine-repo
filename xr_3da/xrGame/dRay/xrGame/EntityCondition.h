@@ -6,8 +6,7 @@
 #define _ENTITY_CONDITION_H_
 #pragma once
 
-
-#include "gameobject.h"
+#include "alife_space.h"
 
 //раны полученные различными типами хитов
 typedef	svector<float,ALife::eHitTypeMax> HitTypeSVec;

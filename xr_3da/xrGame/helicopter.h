@@ -1,10 +1,10 @@
 #pragma once
 
-#include "gameobject.h"
 #include "HelicopterMovementManager.h"
 #include "shootingobject.h"
 #include "weaponammo.h"
 #include "rocketlauncher.h"
+#include "entity.h"
 
 
 

@@ -545,6 +545,9 @@
 					<File
 						RelativePath=".\memory_space.h">
 					</File>
+					<File
+						RelativePath=".\memory_space_impl.h">
+					</File>
 					<Filter
 						Name="EnemyManager"
 						Filter="">

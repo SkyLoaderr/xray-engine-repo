@@ -10,6 +10,9 @@
 
 #include "actoreffector.h"
 #include "effectorshot.h"
+#include "ai_sounds.h"
+#include "level.h"
+#include "xr_level_controller.h"
 
 
 //----------------------------------------------------------------------------------------

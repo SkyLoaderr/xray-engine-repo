@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "PHShellCreator.h"
-#include "GameObject.h"
 #include "PhysicsShell.h"
+#include "gameobject.h"
 
 void CPHShellSimpleCreator::CreatePhysicsShell()
 {

@@ -12,6 +12,8 @@
 #include "script_engine.h"
 #include "ai_script_bind.h"
 #include "script_engine.h"
+#include "ai_sounds.h"
+#include "ai_space.h"
 
 class CLuaGameObject;
 

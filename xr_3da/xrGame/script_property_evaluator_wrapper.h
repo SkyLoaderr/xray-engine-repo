@@ -11,6 +11,8 @@
 #include "property_evaluator.h"
 #include "script_space.h"
 
+class CLuaGameObject;
+
 typedef CPropertyEvaluator<CLuaGameObject> CScriptPropertyEvaluator;
 
 class CPropertyEvaluatorWrapper : public CScriptPropertyEvaluator, public luabind::wrap_base {

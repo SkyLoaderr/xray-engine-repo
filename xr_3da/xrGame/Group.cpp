@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "level.h"
 #include "entity.h"
 #include "custommonster.h"
 #include "ai_space.h"

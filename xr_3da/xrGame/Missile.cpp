@@ -6,6 +6,8 @@
 #include "../CameraBase.h"
 #include "xrserver_objects_alife.h"
 #include "ActorEffector.h"
+#include "level.h"
+#include "xr_level_controller.h"
 
 #define PLAYING_ANIM_TIME 10000
 

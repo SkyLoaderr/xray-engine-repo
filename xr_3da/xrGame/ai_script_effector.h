@@ -11,6 +11,7 @@
 #include "script_space.h"
 #include "ai_script_bind.h"
 #include "../effectorpp.h"
+#include "level.h"
 
 class CLuaEffector : public CEffectorPP {
 public:

@@ -5,6 +5,7 @@
 #include "UIXmlInit.h"
 
 #include "../hudmanager.h"
+#include "../level.h"
 
 //-----------------------------------------------------------------------------/
 //  Ctor and Dtor

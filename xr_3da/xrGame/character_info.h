@@ -4,6 +4,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #pragma		once
+#include "alife_space.h"
 
 #define DEFAULT_CHARACTER_FILE "npc_profile.xml"
 

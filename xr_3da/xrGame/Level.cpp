@@ -10,6 +10,11 @@
 #include "ParticlesObject.h"
 
 #include "Level.h"
+#include "xrServer.h"
+#include "net_queue.h"
+#include "game_cl_base.h"
+#include "ai/ai_monster_group.h"
+
 #include "entity_alive.h"
 #include "hudmanager.h"
 #include "ai_space.h"
@@ -40,6 +45,10 @@ CLevel::CLevel():IPureClient(Device.GetTimerGlobal())
 {
 //	XML_DisableStringCaching();
 	Server						= NULL;
+
+	game						= xr_new<game_cl_GameState>();
+	game_events					= xr_new<NET_Queue_Event>();
+	SquadMan					= xr_new<CSquadManager>();
 
 	game_configured				= FALSE;
 
@@ -125,8 +134,12 @@ CLevel::~CLevel()
 	
 	ai().script_engine().remove_script_processor("level");
 
-	xr_free				(m_caServerOptions);
-	xr_free				(m_caClientOptions);
+	xr_free						(m_caServerOptions);
+	xr_free						(m_caClientOptions);
+
+	xr_delete					(game);
+	xr_delete					(game_events);
+	xr_delete					(SquadMan);
 }
 
 // Game interface ////////////////////////////////////////////////////
@@ -169,14 +182,14 @@ void CLevel::OnFrame	()
 		u32 svT				= timeServer()-NET_Latency;
 
 		/*
-		if (!game_events.queue.empty())	
-			Msg("- d[%d],ts[%d] -- E[svT=%d],[evT=%d]",Device.dwTimeGlobal,timeServer(),svT,game_events.queue.begin()->timestamp);
+		if (!game_events->queue.empty())	
+			Msg("- d[%d],ts[%d] -- E[svT=%d],[evT=%d]",Device.dwTimeGlobal,timeServer(),svT,game_events->queue.begin()->timestamp);
 		*/
 
-		while	(game_events.available(svT))
+		while	(game_events->available(svT))
 		{
 			u16 dest,type;
-			game_events.get	(dest,type,P);
+			game_events->get	(dest,type,P);
 
 			// Msg				("--- event[%d] for [%d]",type,dest);
 			CObject*	 O	= Objects.net_Find	(dest);
@@ -475,4 +488,41 @@ CSE_Abstract *CLevel::spawn_item		(LPCSTR section, const Fvector &position, u32 
 	}
 	else
 		return				(abstract);
+}
+
+ALife::_TIME_ID CLevel::GetGameTime()
+{
+	return			(Server->game->GetGameTime());
+}
+
+float CLevel::GetGameTimeFactor()
+{
+	return			(Server->game->GetGameTimeFactor());
+}
+
+void CLevel::SetGameTimeFactor(const float fTimeFactor)
+{
+	Server->game->SetGameTimeFactor(fTimeFactor);
+}
+
+void CLevel::SetGameTime(ALife::_TIME_ID GameTime)
+{
+	Server->game->SetGameTime(GameTime);
+}
+
+bool CLevel::IsServer ()
+{
+	if (!Server) return false;
+	return (Server->client_Count() != 0);
+}
+
+bool CLevel::IsClient ()
+{
+	if (!Server) return true;
+	return (Server->client_Count() == 0);
+}
+
+u32	GameID()
+{
+	return Game().type;
 }

@@ -7,11 +7,13 @@
 #pragma once
 
 #include "ShootingHitEffector.h"
+#include "alife_space.h"
 
 class CCartridge;
+class CParticlesObject;
+extern const Fvector zero_vel;
+
 #define WEAPON_MATERIAL_NAME "objects\\bullet"
-
-
 
 class CShootingObject
 {

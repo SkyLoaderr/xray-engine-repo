@@ -20,6 +20,7 @@
 #include "cover_point.h"
 #include "cover_evaluators.h"
 #include "script_ini_file.h"
+#include "xrmessages.h"
 
 void CLuaGameObject::Hit(CLuaHit &tLuaHit)
 {

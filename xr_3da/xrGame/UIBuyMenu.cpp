@@ -6,6 +6,8 @@
 #define BUY_MENU_OFFS_ROW	200
 #define BUY_MENU_OFFS_COL1	0
 #define BUY_MENU_OFFS_COL2	200
+
+#include "level.h"
 //--------------------------------------------------------------------
 CUIBuyMenu::CUIBuyMenu	()
 {

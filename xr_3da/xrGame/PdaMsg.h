@@ -5,6 +5,7 @@
 /////////////////////////////////////////////////////
 
 #pragma once
+#include "alife_space.h"
 
 //типы сообщений PDA
 enum EPdaMsg {

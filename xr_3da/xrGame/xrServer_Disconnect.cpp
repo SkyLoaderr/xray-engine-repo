@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "xrServer.h"
 
 void xrServer::Disconnect()
 {

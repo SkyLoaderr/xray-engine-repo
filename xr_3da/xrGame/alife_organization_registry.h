@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "alife_space.h"
+
 class CSE_ALifeTrader;
 
 class CALifeOrganizationRegistry : CRandom {

@@ -3,6 +3,7 @@
 #include "hudmanager.h"
 #include "artifact.h"
 #include "inventory.h"
+#include "level.h"
 
 CCustomDetector::CCustomDetector(void) 
 {

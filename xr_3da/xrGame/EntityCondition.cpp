@@ -8,6 +8,8 @@
 #include "customoutfit.h"
 #include "inventory.h"
 #include "wound.h"
+#include "level.h"
+#include "game_cl_base.h"
 
 
 #define MAX_HEALTH 1.0f

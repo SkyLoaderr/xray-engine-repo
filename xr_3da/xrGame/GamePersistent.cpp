@@ -3,6 +3,7 @@
 
 #include "gamepersistent.h"
 #include "../xr_ioconsole.h"
+#include "gamemtllib.h"
 
 CGamePersistent::CGamePersistent(void)
 {

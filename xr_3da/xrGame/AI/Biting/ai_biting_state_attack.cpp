@@ -175,7 +175,7 @@ void CBitingAttack::Run()
 			if (IS_NEED_REBUILD()) bNeedRebuild = true;
 			
 			
-			pSquad = Level().SquadMan.GetSquad((u8)pMonster->g_Squad());
+			pSquad = Level().SquadMan->GetSquad((u8)pMonster->g_Squad());
 			squad_active = pSquad && pSquad->SquadActive();
 			
 			if (bNeedRebuild) {

@@ -10,6 +10,8 @@
 #include "silencer.h"
 #include "grenadelauncher.h"
 #include "inventory.h"
+#include "level.h"
+#include "xr_level_controller.h"
 
 IC BOOL BE	(BOOL A, BOOL B)
 {

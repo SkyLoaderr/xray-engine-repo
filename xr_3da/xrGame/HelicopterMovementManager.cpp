@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "HelicopterMovementManager.h"
 #include "Helicopter.h"
-
+#include "level.h"
 
 #ifdef MOV_MANAGER_OLD
 

@@ -10,6 +10,8 @@
 #include "UIGameTDM.h"
 #include "UIGameAHunt.h"
 #include "actor.h"
+#include "level.h"
+#include "game_cl_base.h"
 
 #define MSGS_OFFS 510
 

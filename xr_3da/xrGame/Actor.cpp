@@ -52,6 +52,9 @@
 #include "inventory.h"
 
 #include "Physics.h"
+#include "level.h"
+#include "game_cl_base.h"
+#include "xrmessages.h"
 
 const u32		patch_frames	= 50;
 const float		respawn_delay	= 1.f;
@@ -1144,7 +1147,7 @@ bool		CActor::use_bolts				() const
 
 bool  CActor::NeedToDestroyObject() const
 {
-	if(Level().game.type == GAME_SINGLE)
+	if(Level().game->type == GAME_SINGLE)
 	{
 		return false;
 	}

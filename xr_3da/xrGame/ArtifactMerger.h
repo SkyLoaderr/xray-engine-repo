@@ -14,6 +14,7 @@
 #include "GraviArtifact.h"
 #include "BlackDrops.h"
 #include "Needles.h"
+#include "xrmessages.h"
 
 DEF_LIST (ARTIFACT_LIST, CArtifact*);
 

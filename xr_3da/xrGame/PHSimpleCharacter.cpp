@@ -12,6 +12,10 @@
 #include "SpaceUtils.h"
 #include "PhysicsGamePars.h"
 #include "MathUtils.h"
+#include "level.h"
+#include "gamemtllib.h"
+#include "gameobject.h"
+
 const float LOSE_CONTROL_DISTANCE=0.5f; //fly distance to lose control
 const float CLAMB_DISTANCE=0.5f;
 const float CLIMB_GETUP_HEIGHT=0.3f;

@@ -11,6 +11,7 @@
 #include "WeaponAmmo.h"
 
 #include "actor.h"
+#include "level.h"
 #include "level_bullet_manager.h"
 
 #define HIT_POWER_EPSILON 0.05f

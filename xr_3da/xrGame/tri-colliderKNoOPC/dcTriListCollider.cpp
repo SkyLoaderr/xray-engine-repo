@@ -6,6 +6,8 @@
 #include "dSortTriPrimitive.h"
 #include "../dCylinder/dCylinder.h"
 #include "../MathUtils.h"
+#include "../level.h"
+
 dcTriListCollider::dcTriListCollider(dxGeom* Geometry)
 {
 	this->Geometry = Geometry;

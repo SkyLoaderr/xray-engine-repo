@@ -10,6 +10,7 @@
 
 #include "uiwindow.h"
 
+class CGameObject;
 
 class CUI3dStatic : public CUIWindow  
 {

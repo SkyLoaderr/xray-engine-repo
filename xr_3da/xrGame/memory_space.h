@@ -3,13 +3,17 @@
 //	Created 	: 25.12.2003
 //  Modified 	: 25.12.2003
 //	Author		: Dmitriy Iassenev
-//	Description : Mmemory space
+//	Description : Memory space
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once
 
-#include "gameobject.h"
-#include "entity_alive.h"
+#include "ai_sounds.h"
+#include "xrserver_space.h"
+#include "alife_space.h"
+
+class CEntityAlive;
+class CGameObject;
 
 namespace MemorySpace {
 	struct SObjectParams {
@@ -20,19 +24,8 @@ namespace MemorySpace {
 	
 	template <typename T>
 	struct CObjectParams : public SObjectParams {
-		IC		SRotation orientation				(const T *object) const
-		{
-			Fvector					t;
-			object->XFORM().getHPB	(t.x,t.y,t.z);
-			return					(SRotation(t.x,t.y));
-		}
-		
-		IC		void	fill						(const T *game_object)
-		{
-			m_level_vertex_id		= game_object->level_vertex_id();
-			m_position				= game_object->Position();
-			m_orientation			= orientation(game_object);
-		}
+		IC		SRotation orientation	(const T *object) const;
+		IC		void	fill			(const T *game_object);
 	};
 
 	struct SMemoryObject {
@@ -65,24 +58,8 @@ namespace MemorySpace {
 		CObjectParams<T>			m_object_params;
 		CObjectParams<T>			m_self_params;
 
-		IC	bool	operator==						(u32 id) const
-		{
-			VERIFY					(m_object);
-			return					(object_id(m_object) == id);
-		}
-
-		IC	void	fill							(const T *game_object, const T *self)
-		{
-			++m_update_count;
-			m_object				= game_object;
-			m_last_game_time		= m_game_time;
-			m_last_level_time		= m_level_time;
-			m_game_time				= Level().GetGameTime();
-			m_level_time			= Level().timeServer();
-			m_object_params.fill	(game_object);
-			m_self_params.fill		(self);
-			SMemoryObject::fill		();
-		}
+		IC	bool	operator==		(u32 id) const;
+		IC	void	fill			(const T *game_object, const T *self);
 	};
 
 	struct CVisibleObject : CMemoryObject<CGameObject> {
@@ -149,9 +126,3 @@ namespace MemorySpace {
 };
 
 using namespace MemorySpace;
-
-template <typename T>
-IC	u16 object_id(const T *object)
-{
-	return			(object ? u16(object->ID()) : u16(0xffff));
-}

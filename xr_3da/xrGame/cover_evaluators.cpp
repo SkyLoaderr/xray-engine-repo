@@ -9,6 +9,8 @@
 #include "stdafx.h"
 #include "cover_evaluators.h"
 #include "cover_point.h"
+#include "ai_space.h"
+#include "level_graph.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CCoverEvaluatorCloseToEnemy

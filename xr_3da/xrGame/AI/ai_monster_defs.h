@@ -473,6 +473,8 @@ struct SMonsterEnemy {
 	float	danger;
 };
 
+class CEntityAlive;
+
 DEFINE_MAP(const CEntityAlive *,SMonsterEnemy,ENEMIES_MAP, ENEMIES_MAP_IT);
 
 struct SMonsterCorpse {

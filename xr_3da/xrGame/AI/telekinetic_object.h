@@ -7,6 +7,8 @@ enum ETelekineticState {
 	TS_Fire,
 };
 
+class CGameObject;
+
 class CTelekineticObject {
 
 public:

@@ -41,6 +41,8 @@ using namespace InventoryUtilities;
 
 
 #include "../InfoPortion.h"
+#include "../level.h"
+#include "../game_cl_base.h"
 
 #define MAX_ITEMS	70
 

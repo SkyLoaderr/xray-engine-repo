@@ -2,6 +2,8 @@
 #include "game_sv_ArtefactHunt.h"
 #include "HUDmanager.h"
 #include "xrserver_objects_alife_monsters.h"
+#include "xrserver.h"
+#include "Level.h"
 #include "LevelGameDef.h"
 
 void	game_sv_ArtefactHunt::Create					(LPSTR &options)

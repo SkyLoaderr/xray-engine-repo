@@ -24,6 +24,7 @@
 #include "../eatable_item.h"
 
 #include "../inventory.h"
+#include "../level.h"
 
 using namespace InventoryUtilities;
 

@@ -11,6 +11,8 @@
 #include "motivation.h"
 #include "script_space.h"
 
+class CLuaGameObject;
+
 typedef CMotivation<CLuaGameObject> CScriptMotivation;
 
 class CScriptMotivationWrapper : public CScriptMotivation, public luabind::wrap_base {

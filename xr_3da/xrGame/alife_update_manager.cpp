@@ -16,6 +16,7 @@
 #include "alife_spawn_registry.h"
 #include "alife_object_registry.h"
 #include "ef_storage.h"
+#include "xrserver.h"
 
 using namespace ALife;
 

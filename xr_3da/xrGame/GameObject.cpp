@@ -17,6 +17,7 @@
 #include "ph_shell_interface.h"
 #include "ai_script_classes.h"
 #include "xrserver_objects_alife.h"
+#include "game_cl_base.h"
 
 #define OBJECT_REMOVE_TIME 180000
 //////////////////////////////////////////////////////////////////////

@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "group.h"
+
 class CEnemyLocationPredictor {
 	typedef svector<Fvector,MAX_SUSPICIOUS_NODE_COUNT>	SuspiciousPoints;
 	typedef svector<Fvector,MAX_SUSPICIOUS_NODE_COUNT>	SuspiciousForces;

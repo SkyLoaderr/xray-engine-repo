@@ -13,7 +13,6 @@
 
 #include "level_graph.h"
 #include "../customhud.h"
-#include "level.h"
 #include "ai_space.h"
 #include "hudmanager.h"
 #include "game_graph.h"
@@ -28,6 +27,7 @@
 #include "alife_simulator.h"
 #include "alife_graph_registry.h"
 #include "alife_object_registry.h"
+#include "game_cl_base.h"
 
 #define NORMALIZE_VECTOR(t) t.x /= 10.f, t.x += tCameraPosition.x, t.y /= 10.f, t.y += 20.f, t.z /= 10.f, t.z += tCameraPosition.z;
 #define DRAW_GRAPH_POINT(t0,c0,c1,c2) {\
@@ -290,7 +290,7 @@ void CLevelGraph::render()
 //				//				RCache.dbg_DrawAABB(t2,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
 //				//			}
 //			}
-			if (Level().game.type == GAME_SINGLE && ai().get_alife()) {
+			if (Level().game->type == GAME_SINGLE && ai().get_alife()) {
 				{
 					ALife::_LEVEL_ID	J = ai().game_graph().vertex(ai().alife().graph().actor()->m_tGraphID)->level_id();
 					for (int i=0, n=(int)ai().game_graph().header().vertex_count(); i<n; ++i) {

@@ -9,7 +9,7 @@
 #pragma once
 
 #include "../feel_sound.h"
-#include "memory_space.h"
+#include "memory_space_impl.h"
 
 class CSoundMemoryManager : public Feel::Sound {
 private:

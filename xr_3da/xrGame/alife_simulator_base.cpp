@@ -20,6 +20,9 @@
 #include "alife_anomaly_registry.h"
 #include "alife_organization_registry.h"
 #include "alife_news_registry.h"
+#include "level.h"
+#include "xrserver.h"
+#include "level_graph.h"
 
 using namespace ALife;
 

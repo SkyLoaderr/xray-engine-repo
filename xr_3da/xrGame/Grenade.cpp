@@ -7,6 +7,10 @@
 #include "ParticlesObject.h"
 #include "actor.h"
 #include "inventory.h"
+#include "level.h"
+#include "xrmessages.h"
+#include "xr_level_controller.h"
+#include "game_cl_base.h"
 
 #define GRENADE_REMOVE_TIME		30000
 

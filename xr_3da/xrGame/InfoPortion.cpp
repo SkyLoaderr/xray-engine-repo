@@ -5,6 +5,8 @@
 
 #include "stdafx.h"
 #include "InfoPortion.h"
+#include "level.h"
+#include "gameobject.h"
 
 ///////////////////////////////////////////////////
 //  глобальное хранилище для всех порций информации

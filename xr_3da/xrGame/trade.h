@@ -3,6 +3,7 @@
 class CInventoryOwner;
 class CInventory;
 class CInventoryItem;
+class CEntity;
 
 struct TradeFactors {
 	float	TraderBuyPriceFactor;

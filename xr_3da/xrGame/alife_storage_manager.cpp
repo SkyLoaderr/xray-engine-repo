@@ -18,6 +18,7 @@
 #include "alife_anomaly_registry.h"
 #include "alife_organization_registry.h"
 #include "alife_news_registry.h"
+#include "xrserver.h"
 
 using namespace ALife;
 

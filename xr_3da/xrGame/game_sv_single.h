@@ -2,6 +2,7 @@
 
 #include "game_sv_base.h"
 
+class xrServer;
 class CALifeSimulator;
 
 class	game_sv_Single				: public game_sv_GameState

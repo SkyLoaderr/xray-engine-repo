@@ -6,6 +6,8 @@
 #include "gamemtllib.h"
 #include "phmovementcontrol.h"
 #include "wound.h"
+#include "xrmessages.h"
+#include "level.h"
 
 
 #define SMALL_ENTITY_RADIUS		0.6f

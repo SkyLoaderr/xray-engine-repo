@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "agent_manager.h"
+#include "level.h"
 
 CAgentManager::CAgentManager		()
 {

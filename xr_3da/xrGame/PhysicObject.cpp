@@ -3,6 +3,7 @@
 #include "PhysicsShell.h"
 #include "Physics.h"
 #include "xrserver_objects_alife.h"
+#include "level.h"
 
 u32 CPhysicObject::remove_time=5000;
 

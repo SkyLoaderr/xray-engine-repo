@@ -6,6 +6,7 @@
 #include "stdafx.h"
 #include "uistatic.h"
 #include "../HUDManager.h"
+#include "../level.h"
 
 #include <string.h>
 

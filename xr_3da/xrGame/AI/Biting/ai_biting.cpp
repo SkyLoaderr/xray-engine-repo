@@ -10,6 +10,7 @@
 #include "../ai_monster_jump.h"
 #include "../ai_monster_utils.h"
 #include "../ai_monster_debug.h"
+#include "../ai_monster_group.h"
 
 
 CAI_Biting::CAI_Biting()
@@ -381,7 +382,7 @@ void CAI_Biting::Die()
 	CSoundPlayer::play(MonsterSpace::eMonsterSoundDie);
 	MotionMan.ForceAnimSelect();
 
-	Level().SquadMan.RemoveMember((u8)g_Squad(), this);
+	Level().SquadMan->RemoveMember((u8)g_Squad(), this);
 }
 
 

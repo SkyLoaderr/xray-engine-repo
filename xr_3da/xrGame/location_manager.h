@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "alife_space.h"
+
 class CLocationManager {
 private:
 	ALife::TERRAIN_VECTOR	m_vertex_types;

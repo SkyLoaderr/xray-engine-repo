@@ -10,6 +10,7 @@
 
 #include "alife_known_anomaly.h"
 #include "object_broker.h"
+#include "alife_space.h"
 
 class CALifeAnomalyRegistry {
 protected:

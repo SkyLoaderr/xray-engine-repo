@@ -4,6 +4,9 @@
 #include "WeaponHUD.h"
 #include "Entity.h"
 #include "Actor.h"
+#include "level.h"
+#include "xr_level_controller.h"
+#include "game_cl_base.h"
 
 
 #define KNIFE_MATERIAL_NAME "objects\\bullet"

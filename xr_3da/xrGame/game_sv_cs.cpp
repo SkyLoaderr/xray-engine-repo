@@ -2,6 +2,8 @@
 #include "game_sv_cs.h"
 #include "HUDManager.h"
 #include "xrServer_Objects_ALife_Monsters.h"
+#include "xrServer.h"
+#include "level.h"
 
 cs_money::cs_money() {
 	string256 fn;

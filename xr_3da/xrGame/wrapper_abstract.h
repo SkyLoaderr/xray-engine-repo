@@ -8,6 +8,8 @@
 
 #pragma once
 
+class CLuaGameObject;
+
 template <
 	typename _object_type,
 	template <typename _base_object_type> class ancestor,

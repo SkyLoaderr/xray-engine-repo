@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "xrserver.h"
 #include "xrserver_objects.h"
 
 void xrServer::Process_event_ownership(NET_Packet& P, DPNID sender, u32 time, u16 ID)

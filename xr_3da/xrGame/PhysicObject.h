@@ -5,9 +5,7 @@
 class CSE_ALifeObjectPhysic;
 
 class CPhysicsElement;
-class CPhysicObject :
-	public CGameObject
-{
+class CPhysicObject : public CGameObject {
 	typedef CGameObject inherited;
 	EPOType				m_type;
 	float				m_mass;

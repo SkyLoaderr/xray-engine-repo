@@ -11,6 +11,7 @@
 #include "UIXmlInit.h"
 
 #include "../HUDManager.h"
+#include "../level.h"
 
 #define PDA_XML "pda.xml"
 

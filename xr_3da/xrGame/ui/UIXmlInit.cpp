@@ -9,6 +9,7 @@
 
 #include "../hudmanager.h"
 #include "../UI.h"
+#include "../level.h"
 
 
 #define HEADER_FONT_NAME		"header"

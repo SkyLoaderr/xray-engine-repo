@@ -1,7 +1,10 @@
 #include "stdafx.h"
-
+#include "level.h"
 #include "LevelFogOfWar.h"
 #include "Level_Bullet_Manager.h"
+#include "xrserver.h"
+#include "game_cl_base.h"
+#include "xrmessages.h"
 
 BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 {

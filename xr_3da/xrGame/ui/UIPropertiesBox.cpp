@@ -8,6 +8,7 @@
 #include "UIPropertiesBox.h"
 
 #include "../hudmanager.h"
+#include "../level.h"
 
 
 #define OFFSET_X 20

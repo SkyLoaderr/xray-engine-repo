@@ -10,7 +10,6 @@
 #include "visual_memory_manager.h"
 #include "custommonster.h"
 #include "ai/stalker/ai_stalker.h"
-//#include "actor.h"
 
 CVisualMemoryManager::CVisualMemoryManager		()
 {
