@@ -1100,6 +1100,28 @@ inv_grid_y			= 2
 scope_texture		= wpn\wpn_crosshair
 scope_zoom_factor	= 15		;оян-1 4X
 
+[wpn_addon_scope_susat]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\addons\scope_susat" ; option for Level Editor
+class			= W_SCOPE
+cform           = skeleton
+visual          = Weapon\upgrade\wpn_scope_susat.ogf
+;$prefetch 		= 64
+
+cost					 = 200
+
+inv_name		= "Scope"
+inv_name_short	= "Scope"
+inv_weight		= .2
+
+inv_grid_width		= 2
+inv_grid_height		= 1
+inv_grid_x			= 18
+inv_grid_y			= 2
+scope_texture		= wpn\wpn_crosshair
+scope_zoom_factor	= 15		;SUSAT 4X
+
 [wpn_addon_silencer]
 GroupControlSection	= spawn_group
 discovery_dependency = 
@@ -1140,7 +1162,29 @@ inv_grid_height		= 1
 inv_grid_x			= 18
 inv_grid_y			= 0
 
-grenade_vel			= 100
+grenade_vel			= 76
+
+[wpn_addon_grenade_launcher_m203]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\addons\grenade_launcher_m203" ; option for Level Editor
+class			= W_GLAUNC
+cform           = skeleton
+visual          = Weapon\upgrade\wpn_grenade_launcher_m203.ogf
+;$prefetch 		= 64
+
+cost					 = 250
+
+inv_name		= "Grenade Launcher Addon"
+inv_name_short	= "Grenade Launcher Addon"
+inv_weight		= .2
+
+inv_grid_width		= 2
+inv_grid_height		= 1
+inv_grid_x			= 18
+inv_grid_y			= 0
+
+grenade_vel			= 76
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Explosive Inventory Items
