@@ -208,6 +208,13 @@ void CInventoryOwner::ReceivePdaMessage(u16 who, EPdaMsg msg, int info_index)
 	VERIFY(pWhoPda);
 	CGameObject* pWho = dynamic_cast<CGameObject*>(pWhoPda->H_Parent());
 
+
+	/*Msg("who pda %d, who parent %d, we pda %d, we parent %d", who, 
+		pWho->ID(),
+		GetPDA()->ID(),
+		GetPDA()->GetOriginalOwnerID());*/
+
+
  	SCRIPT_CALLBACK_EXECUTE_4(m_pPdaCallback, 
 							  pThisGameObject->lua_game_object(),
 							  pWho->lua_game_object(), 
