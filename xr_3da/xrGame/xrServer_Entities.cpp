@@ -1039,7 +1039,7 @@ void	xrSE_Zone::FillProp			(LPCSTR pref, PropItemVec& items)
 #ifdef _EDITOR
 	static TokenValue4::ItemVec terrain_ids;
 	static TokenValue4::ItemVec terrain_sub_ids;
-	static TokenValue4::ItemVec level_ids;
+	static TokenValue4::ItemVec	level_ids;
 #endif
 
 xrGraphPoint::xrGraphPoint() {
@@ -1076,10 +1076,11 @@ void xrGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
 {
     PHelper.CreateText	(items,	PHelper.PrepareKey(pref,s_name,"ConnectionPoint"),	m_caConnectionPointName,	sizeof(m_caConnectionPointName));
 	
+    CInifile					*Ini = xr_new<CInifile>("game.ltx");
     if(terrain_ids.empty()){
-        R_ASSERT					(pSettings->SectionExists("terrain_ids"));
+        R_ASSERT					(Ini->SectionExists("terrain_ids"));
         LPCSTR N,V;
-        for (u32 k = 0; pSettings->ReadLINE("terrain_ids",k,&N,&V); k++) {
+        for (u32 k = 0; Ini->ReadLINE("terrain_ids",k,&N,&V); k++) {
    			terrain_ids.push_back	(TokenValue4::Item());
             TokenValue4::Item& val	= terrain_ids.back();
             val.str					= V;
@@ -1088,9 +1089,9 @@ void xrGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
     }
     
 	if(terrain_sub_ids.empty()){
-        R_ASSERT					(pSettings->SectionExists("terrain_sub_ids"));
+        R_ASSERT					(Ini->SectionExists("terrain_sub_ids"));
         LPCSTR N,V;
-        for (u32 k = 0; pSettings->ReadLINE("terrain_sub_ids",k,&N,&V); k++) {
+        for (u32 k = 0; Ini->ReadLINE("terrain_sub_ids",k,&N,&V); k++) {
    			terrain_sub_ids.push_back	(TokenValue4::Item());
             TokenValue4::Item& val	= terrain_sub_ids.back();
             val.str					= V;
@@ -1099,20 +1100,18 @@ void xrGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
     }
     
 	if(level_ids.empty()){
-        CInifile					*Ini = xr_new<CInifile>("xrAI.ini");
-		R_ASSERT					(Ini->SectionExists("game_levels"));
+		R_ASSERT					(Ini->SectionExists("levels"));
         LPCSTR N,V;
-        for (u32 k = 0; Ini->ReadLINE("game_levels",k,&N,&V); k++) {
+        for (u32 k = 0; Ini->ReadLINE("levels",k,&N,&V); k++) {
+			R_ASSERT(Ini->SectionExists(V));
    			level_ids.push_back		(TokenValue4::Item());
             TokenValue4::Item& val	= level_ids.back();
-            LPCSTR					S;
-			float					fDummy;
-			sscanf(V,"%f,%f,%f,%s",&fDummy,&fDummy,&fDummy,S);
+			LPCSTR					S = Ini->ReadSTRING			(V,"caption")
 			val.str					= S;
-            val.ID					= atoi(N);
+            val.ID					= Ini->ReadINT(V,"id");
         }
-		xr_delete(Ini);
     }
+	xr_delete(Ini);
 	
 	PHelper.CreateToken4	(items,	PHelper.PrepareKey(pref,s_name,"LevelID"),		&m_tLevelID,		&level_ids);
 	PHelper.CreateToken4	(items,	PHelper.PrepareKey(pref,s_name,"TerrainIDs"),	&m_tTerrainID,		&terrain_ids);
