@@ -94,7 +94,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	*/
 
 	// Net params
-	setLocal						(E->s_flags&M_SPAWN_OBJECT_LOCAL);
+	setLocal						(E->s_flags.is(M_SPAWN_OBJECT_LOCAL));
 	setReady						(TRUE);
 	setID							(E->ID);
 	pCreator->Objects.net_Register	(this);

@@ -242,7 +242,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	NET_SavedAccel.set		(0,0,0);
 	NET_WasInterpolating	= TRUE;
 
-	setEnabled				(E->s_flags&M_SPAWN_OBJECT_LOCAL);
+	setEnabled				(E->s_flags.is(M_SPAWN_OBJECT_LOCAL));
 	setActive				(TRUE);
 
 	patch_frame				= 0;

@@ -36,7 +36,7 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWithClients
 		Phantom->owner			=	NULL;
 		entities.insert			(make_pair(Phantom->ID,Phantom));
 
-		Phantom->s_flags		|=	M_SPAWN_OBJECT_PHANTOM;
+		Phantom->s_flags.set	(M_SPAWN_OBJECT_PHANTOM,TRUE);
 
 		// Spawn entity
 		E->ID					=	PerformIDgen(E->ID);
@@ -44,12 +44,12 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWithClients
 		E->owner				=	CL;
 		entities.insert			(make_pair(E->ID,E));
 	} else {
-		if (E->s_flags & M_SPAWN_OBJECT_PHANTOM)
+		if (E->s_flags.is(M_SPAWN_OBJECT_PHANTOM))
 		{
 			// Clone from Phantom
 			E->ID					=	PerformIDgen(0xffff);
 			E->owner				=	CL		= SelectBestClientToMigrateTo	(E);
-			E->s_flags				&=	~M_SPAWN_OBJECT_PHANTOM;
+			E->s_flags.set			(M_SPAWN_OBJECT_PHANTOM,FALSE);
 			entities.insert			(make_pair(E->ID,E));
 		} else {
 			// Simple spawn
@@ -67,7 +67,7 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWithClients
 	}
 
 	// PROCESS NAME; Name this entity
-	if (CL && (E->s_flags&M_SPAWN_OBJECT_ASPLAYER))
+	if (CL && (E->s_flags.is(M_SPAWN_OBJECT_ASPLAYER)))
 	{
 		CL->owner		= E;
 		// strcpy		(E->s_name_replace,CL->Name);

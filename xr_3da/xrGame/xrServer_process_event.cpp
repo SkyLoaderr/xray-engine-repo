@@ -67,7 +67,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			xrServerEntity*		E	= ID_to_entity	(destination);
 			if (E) 
 			{
-				R_ASSERT			(E->s_flags&M_SPAWN_OBJECT_PHANTOM);
+				R_ASSERT			(E->s_flags.is(M_SPAWN_OBJECT_PHANTOM));
 
 				svs_respawn			R;
 				R.timestamp			= timestamp	+ E->RespawnTime*1000;

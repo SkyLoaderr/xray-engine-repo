@@ -4,7 +4,7 @@
 void xrServer::Perform_connect_spawn(xrServerEntity* E, xrClientData* CL, NET_Packet& P)
 {
 	if (E->net_Processed)						return;
-	if (E->s_flags & M_SPAWN_OBJECT_PHANTOM)	return;
+	if (E->s_flags.is(M_SPAWN_OBJECT_PHANTOM))	return;
 
 	// Connectivity order
 	xrServerEntity* Parent = ID_to_entity	(E->ID_Parent);
@@ -14,7 +14,7 @@ void xrServer::Perform_connect_spawn(xrServerEntity* E, xrClientData* CL, NET_Pa
 	if (0==E->owner)	
 	{
 		// PROCESS NAME; Name this entity
-		if (E->s_flags & M_SPAWN_OBJECT_ASPLAYER)
+		if (E->s_flags.is(M_SPAWN_OBJECT_ASPLAYER))
 		{
 			CL->owner		= E;
 			strcpy			(E->s_name_replace,CL->Name);

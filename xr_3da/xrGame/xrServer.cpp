@@ -117,7 +117,7 @@ void xrServer::Update	()
 			if (0==Test.owner)							continue;	// Phantom(?)
 			if (!Test.net_Ready)						continue;
 			if (Test.owner == Client)					continue;	// Can't be relevant
-			if (Test.s_flags&M_SPAWN_OBJECT_PHANTOM)	continue;	// Surely: phantom
+			if (Test.s_flags.is(M_SPAWN_OBJECT_PHANTOM))	continue;	// Surely: phantom
 
 			// write specific data
 			{

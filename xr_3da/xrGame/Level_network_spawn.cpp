@@ -16,7 +16,7 @@ void CLevel::g_cl_Spawn		(LPCSTR name, u8 rp, u16 flags)
 	E->ID				=	0xffff;
 	E->ID_Parent		=	0xffff;
 	E->ID_Phantom		=	0xffff;
-	E->s_flags			=	flags;
+	E->s_flags.set		(flags);
 	E->RespawnTime		=	0;
 
 	// Send
@@ -52,8 +52,8 @@ void CLevel::g_sv_Spawn		(NET_Packet* Packet)
 		Objects.DestroyObject	(O);
 		Msg						("! Failed to spawn entity '%s'",s_name);
 	} else {
-		if ((E->s_flags&M_SPAWN_OBJECT_LOCAL) && (E->s_flags&M_SPAWN_OBJECT_ASPLAYER))	SetEntity		(O);
-		if (E->s_flags&M_SPAWN_OBJECT_ACTIVE)											O->OnActivate	( );
+		if ((E->s_flags.is(M_SPAWN_OBJECT_LOCAL)) && (E->s_flags.is(M_SPAWN_OBJECT_ASPLAYER)))	SetEntity		(O);
+		if (E->s_flags.is(M_SPAWN_OBJECT_ACTIVE))											O->OnActivate	( );
 		O->OnDeviceCreate		( );
 
 		if (0xffff != E->ID_Parent)	
