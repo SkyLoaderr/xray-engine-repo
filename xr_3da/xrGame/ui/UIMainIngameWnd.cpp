@@ -418,7 +418,7 @@ void CUIMainIngameWnd::Update()
 				//сторока для вывода патронов к оружию
 //				sprintf(text_str, "%d/%d %s",AE,AC, 
 //										 *m_pWeapon->m_ammoName?*m_pWeapon->m_ammoName:"");
-				sprintf(text_str, "%d/%d",AE,AC);
+				sprintf(text_str, "%d/%d",AE,AC - AE);
 				UIWeaponSignAmmo.SetText(text_str);
 			}
 		}
