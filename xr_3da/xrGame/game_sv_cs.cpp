@@ -41,12 +41,13 @@ void	game_sv_CS::OnRoundStart	()
 
 	Lock	();
 	// Spawn "artifacts"
+	vector<RPoint>&		rp	= rpoints[2];
+	random_shuffle( rp.begin( ), rp.end( ) );
 	for(s32 i = 0; i < 3; i++) {
 		xrServerEntity*		E	=	spawn_begin	("m_target_cs");									// create SE
 		xrSE_Target_CS*	A			=	(xrSE_Target_CS*) E;					
 		A->s_flags				=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL;				// flags
-		vector<RPoint>&		rp	= rpoints[2];
-		RPoint&				r	= rp[::Random.randI(rp.size())];
+		RPoint&				r	= rp[i];
 		A->o_Position.set	(r.P);
 		A->o_Angle.set		(r.A);
 		spawn_end			(A,0);
@@ -217,8 +218,8 @@ void	game_sv_CS::Update			()
 
 	CHUDManager* HUD	= (CHUDManager*)Level().HUD();
 	HUD->pFontSmall->Color(0xffffffff);
-	HUD->pFontSmall->OutSet(700,100); HUD->pFontSmall->OutNext("Team 0 %d:", teams[0].num_targets);
-	HUD->pFontSmall->OutSet(700,120); HUD->pFontSmall->OutNext("Team 1 %d:", teams[1].num_targets);
+	HUD->pFontSmall->OutSet(700,100); HUD->pFontSmall->OutNext("Team 0: %d", teams[0].num_targets);
+	HUD->pFontSmall->OutSet(700,120); HUD->pFontSmall->OutNext("Team 1: %d", teams[1].num_targets);
 }
 
 void	game_sv_CS::OnPlayerReady			(u32 id)
@@ -278,7 +279,11 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u32 eid_who, LPCSTR what)
 	R_ASSERT				(cost);
 	
 	// check if has money to pay
-	// ???
+	game_PlayerState*	ps_who	=	get_id	(id_who);
+	if(ps_who->money_total < cost) return;
+	Lock();
+	ps_who->money_total -= cost;
+	Unlock();
 
 	// spawn it right in hands
 	string64				name;

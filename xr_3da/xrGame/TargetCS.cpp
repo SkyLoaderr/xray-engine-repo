@@ -14,7 +14,7 @@ BOOL CTargetCS::net_Spawn(LPVOID DC) {
 	setVisible					(true);
 	setEnabled					(true);
 	xrSE_Target_CS* E = (xrSE_Target_CS*)DC;
-	// cNameVisual_set(E->s_Model);
+	//cNameVisual_set(E->s_Model);
 	return TRUE;
 }
 
