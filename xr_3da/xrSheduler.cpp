@@ -150,8 +150,8 @@ void CSheduler::ProcessStep			()
 		T.Object->shedule.b_locked	= TRUE;
 		T.Object->shedule_Update	(Elapsed);
 		T.Object->shedule.b_locked	= FALSE;
-		u32	execTime				= eTimer.GetElapsed_ms		();
 #ifdef DEBUG
+		u32	execTime				= eTimer.GetElapsed_ms		();
 		if (execTime>3)
 		{
 			LPCSTR		_class			= typeid(T.Object).name	();
