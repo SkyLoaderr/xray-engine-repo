@@ -240,8 +240,9 @@ void __fastcall matrix_L2(SceneGraph::mapMatrixItem::TNode *N)
 	CVisual *V = N->val.pVisual;
 	CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,(D3DMATRIX*)N->val.Matrix.d3d()));
 	::Render_Implementation.L_DB.Select(N->val.vCenter,V->bv_Radius);
-	gm_SetAmbientLevel(N->val.iLighting);
-	V->Render(calcLOD(N->key,V->bv_Radius));
+	gm_SetAmbientLevel	(N->val.iLighting);
+	gm_SetNearer		(N->val.nearer);
+	V->Render			(calcLOD(N->key,V->bv_Radius));
 }
 
 void __fastcall matrix_L1(SceneGraph::mapMatrix_Node *N)
@@ -258,8 +259,9 @@ void __fastcall sorted_L1(SceneGraph::mapSorted_Node *N)
 	Device.Shader.set_Shader		(V->hShader);
 	CHK_DX(HW.pDevice->SetTransform	(D3DTS_WORLD,N->val.Matrix.d3d()));
 	::Render_Implementation.L_DB.Select			(N->val.vCenter,V->bv_Radius);
-	gm_SetAmbientLevel				(N->val.iLighting);
-	V->Render						(calcLOD(N->key,V->bv_Radius));
+	gm_SetAmbientLevel	(N->val.iLighting);
+	gm_SetNearer		(N->val.nearer);
+	V->Render			(calcLOD(N->key,V->bv_Radius));
 }
 /*
 void CRender::flush_Models()

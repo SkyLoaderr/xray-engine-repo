@@ -45,7 +45,7 @@ public:
 	IC		void					set_Frustum				(CFrustum*	O	)			{ VERIFY(O);	View = O;			}
 	IC		void					set_Transform			(Fmatrix*	M	)			{ VERIFY(M);	val_pTransform = M;	}
 	IC		void					set_LightLevel			(int		L	)			{ val_iLightLevel	= L;			}
-	IC		void					set_Nearer				(BOOL 		V	)			{ val_bNearer		= B;			}
+	IC		void					set_Nearer				(BOOL 		V	)			{ val_bNearer		= V;			}
 	virtual void					set_Object				(CObject*	O	)	= 0;
 	virtual void					add_Visual				(CVisual*	V	)	= 0;	// add visual leaf	(no culling performed at all)
 	virtual void					add_Geometry			(CVisual*	V	)	= 0;	// add visual(s)	(all culling performed)
