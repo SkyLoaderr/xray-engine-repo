@@ -20,7 +20,7 @@ enum {
 	rsNoVSync			= (1ul<<2ul),
 	rsWireframe			= (1ul<<3ul),
 	rsWarmHZB			= (1ul<<4ul),
-	rsOcclusion			= (1ul<<50ul),
+	rsOcclusion			= (1ul<<5ul),
 	rsStatistic			= (1ul<<6ul),
 	rsDetails			= (1ul<<7ul),
 	rsRefresh60hz		= (1ul<<8ul),
