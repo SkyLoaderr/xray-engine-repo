@@ -169,6 +169,51 @@ function enable_meet(npc)
 		db.storage[npc:id()].meet.enabled = true
 	end
 end
+
+----------------------------------------------------------------------------------------------------------------------
+-- Talk State Scheme
+----------------------------------------------------------------------------------------------------------------------
+class "evaluator_state_talk" (property_evaluator)
+function evaluator_state_talk:__init(name, storage) super (nil, name)
+	self.a = storage
+end
+function evaluator_state_talk:evaluate()
+	local overrides = xr_logic.generic_scheme_overrides(self.object)
+	if overrides.meet_state == "nil" then
+		return false
+	end
+	return self.object:is_talking()
+end
+
+--' Стоим, болтаем
+class "action_state_talk" (action_base)
+function action_state_talk:__init (npc_name,action_name, storage) super (nil, action_name)
+	self.a = storage
+end
+function action_state_talk:initialize()
+	action_base.initialize(self)
+	self.object:set_node_evaluator()
+	self.object:set_path_evaluator()
+	self.object:set_desired_position()
+	self.object:set_desired_direction()
+
+	local overrides = xr_logic.generic_scheme_overrides(self.object)
+	if overrides.meet_state == nil then 
+		state_mgr.set_state(self.object, "wait", nil, nil, {look_object = db.actor})
+	else
+		state_mgr.set_state(self.object, overrides.meet_state, nil, nil, {look_object = db.actor})
+	end
+end
+function action_state_talk:execute ()
+	action_base.execute (self)
+end
+function action_state_talk:finalize ()
+	action_base.finalize (self)
+end
+
+
+
+
 ----------------------------------------------------------------------------------------------------------------------
 -- binder
 ----------------------------------------------------------------------------------------------------------------------
@@ -181,14 +226,17 @@ function add_to_binder(object, char_ini)
 	properties["event"] 		= xr_evaluators_id.reaction
 	properties["contact"]		= xr_evaluators_id.stohe_meet_base + 1         
 	properties["weapon"]		= xr_evaluators_id.stohe_meet_base + 2
+	properties["state_talk"]	= xr_evaluators_id.stohe_meet_base + 3
 	properties["need_punch"]	= xr_evaluators_id.zmey_punch_base + 1
 
 	operators["wait_trade"]			= xr_actions_id.stohe_meet_base + 1
 	operators["weapon"]				= xr_actions_id.stohe_meet_base + 2
+	operators["state_talk"]			= xr_actions_id.stohe_meet_base + 3
 
 	-- Evaluators
-	manager:add_evaluator (properties["contact"], 		evaluator_contact	("meet_contact", db.storage[object:id()].meet, "meet_contact"))
-	manager:add_evaluator (properties["weapon"], 		evaluator_weapon	("meet_weapon", db.storage[object:id()].meet, "meet_weapon"))
+	manager:add_evaluator (properties["contact"], 		evaluator_contact	("meet_contact", db.storage[object:id()].meet))
+	manager:add_evaluator (properties["weapon"], 		evaluator_weapon	("meet_weapon", db.storage[object:id()].meet))
+	manager:add_evaluator (properties["state_talk"], 	evaluator_state_talk("state_talk", db.storage[object:id()].meet))
 
 	-- Actions
 	local action = action_meet_wait (object:name(),"action_meet_wait", db.storage[object:id()].meet, char_ini)
@@ -208,8 +256,16 @@ function add_to_binder(object, char_ini)
 	manager:add_action (operators["weapon"], action)
 
 
+	action = action_state_talk (object:name(),"state_talk", db.storage[object:id()].meet)
+	action:add_precondition		(world_property(stalker_ids.property_alive, true))
+	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
+	action:add_precondition		(world_property(properties["state_talk"], 	true))
+	action:add_effect 		(world_property(properties["state_talk"], 		false))
+	manager:add_action (operators["state_talk"], action)
+
 	action = manager:action (xr_actions_id.alife)	
 	action:add_precondition		(world_property(properties["contact"],		false))
+	action:add_precondition		(world_property(properties["state_talk"],	false))
 
     if char_ini ~= nil and char_ini:section_exist("meet") == true then
         if char_ini:line_exist("meet", "enabled") == true then
@@ -241,10 +297,10 @@ function dialog_manager_reset(npc, stype)
 			end
 
 			if overrides.meet_dialog then
---				printf("*DIALOGS*: Set start dialog %s", overrides.meet_dialog)
+				printf("*DIALOGS*: Set start dialog %s", overrides.meet_dialog)
 				npc:set_start_dialog(overrides.meet_dialog)
 			else
---				printf("*DIALOGS*: Restore start dialog")
+				printf("*DIALOGS*: Restore start dialog")
 				npc:restore_default_start_dialog()
 			end
 		else

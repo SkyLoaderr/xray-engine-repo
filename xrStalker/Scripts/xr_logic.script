@@ -845,11 +845,12 @@ function cfg_get_overrides(ini, section, npc)
 	l.meet_enabled = utils.cfg_get_bool(ini, section, "meet_enabled", npc, false)
 	l.meet_talk_enabled = utils.cfg_get_bool(ini, section, "meet_talk_enabled", npc, false)
 	l.meet_dialog  = utils.cfg_get_string(ini, section, "meet_dialog", npc, false, "")
+	l.meet_state     = utils.cfg_get_string(ini, section, "meet_state", npc, false, "")
 	l.reactions    = parse_names(utils.cfg_get_string(ini, section, "reactions", npc, false, "", ""))
 	l.heli_hunter  = utils.cfg_get_bool(ini, section, "heli_hunter", npc, false)
 	l.wounded_enabled = utils.cfg_get_bool(ini, section, "wounded_enabled", npc, false)
 	l.combat_ignore   = cfg_get_condlist(ini, section, "combat_ignore_cond", npc)
-	l.combat_type     = cfg_get_condlist(ini, section, "combat_type", npc)
+	l.combat_type     = cfg_get_condlist(ini, section, "combat_type", npc)	
 
 	return l
 end
