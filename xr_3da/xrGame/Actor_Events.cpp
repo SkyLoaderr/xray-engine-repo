@@ -35,7 +35,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			CObject* O	= Level().Objects.net_Find	(id);
 			if (!O)
 			{
-				Msg("!Error: No object to take/buy [%d]", id);
+				Msg("! Error: No object to take/buy [%d]", id);
 				break;
 			}
 
@@ -92,7 +92,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			CObject* O	= Level().Objects.net_Find	(id);
 			if (!O)
 			{
-				Msg("!Error: No object to reject/sell [%d]", id);
+				Msg("! Error: No object to reject/sell [%d]", id);
 				break;
 			}
 			
