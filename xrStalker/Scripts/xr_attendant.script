@@ -126,22 +126,20 @@ class "action_follow" (action_base)
 --------
 function action_follow:__init (name, storage) super (nil, name)
     self.st = storage
-    self.vertex_id = nil
-    self.index = nil
-    self.state = 0 -- 0 - идем, 1 - стоим
-    self.st.signals = {}
-    self.st.signals["leader_section_changed"] = false
-    self.st.signals["leader_dead"] = false
+    self.was_reset  = false
 end
 --------
 function action_follow:initialize ()
     action_base.initialize (self)
-    self.st.signals["leader_section_changed"] = false
-    self.st.signals["leader_dead"] = false
+    self:reset_scheme ()
 end
 --------
 function action_follow:execute ()
     action_base.execute (self)
+    
+    if not self.was_reset then
+       self:reset_scheme()
+    end
 
     --local pos = self.object:position ()
     --printf ("FOLLWER %s POSITION x = %f, y = %f, z = %f", self.object:name (), pos.x, pos.y, pos.z)
@@ -311,6 +309,22 @@ function action_follow:free ()
        printf ("!!!FOLLOWER %s!!! LEADER SECTION CHANGED - NEED NEW JOB FROM LOGIC", self.object:name ()) 
     end
     --self.st.leader_id = nil
+end
+--------
+function action_follow:reset_scheme ()
+    self.was_reset = true
+    self.vertex_id = nil
+    self.index = nil
+    self.state = 0 -- 0 - идем, 1 - стоим
+    self.st.signals["leader_section_changed"] = false
+    self.st.signals["leader_dead"] = false
+    self.st.signals = {}
+    self.st.signals["leader_section_changed"] = false
+    self.st.signals["leader_dead"] = false
+end
+--------
+function action_follow:activate_scheme ()
+    self.was_reset = false
 end
 -----------------------------------------------------------------------------------
 
