@@ -88,7 +88,7 @@ void	CRenderTarget::OnDeviceCreate	()
 		u32	w=Device.dwWidth, h=Device.dwHeight;
 		rt_Position.create			(r2_RT_P,		w,h,D3DFMT_A16B16G16R16F);
 		rt_Normal.create			(r2_RT_N_H,		w,h,D3DFMT_A16B16G16R16F);
-		rt_Color.create				(r2_RT_D_G,		w,h,D3DFMT_A16B16G16R16);
+		rt_Color.create				(r2_RT_D_G,		w,h,D3DFMT_A16B16G16R16F);
 		s_decompress				= NULL;
 	}
 

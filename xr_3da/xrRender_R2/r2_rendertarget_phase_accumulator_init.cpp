@@ -13,7 +13,7 @@ void CRenderTarget::phase_accumulator_init()
 
 	// ***** Prepare mask for skybox *****
 	// Render white quad where stencil = 0
-	if (1)
+	if (0)
 	{
 		RCache.set_Stencil			(TRUE,D3DCMP_EQUAL,0x00,0xff,0x00);
 
@@ -36,7 +36,7 @@ void CRenderTarget::phase_accumulator_init()
 
 	//  *****  Prepare mask for skybox  *****
 	// ***** Downsample into bloom2.rgba *****
-	if (1)
+	if (0)
 	{
 		// 1. nv3x - ZB doesn't help
 		// 2. nv3x - Viewport doesn't help
@@ -75,13 +75,13 @@ void CRenderTarget::phase_accumulator_init()
 	if (ps_r2_ls_flags.test(R2FLAG_SUN))
 	{
 		// Restore targets
-		u_setrt								(rt_Accumulator,NULL,NULL,HW.pBaseZB);
-		RCache.set_Stencil					(TRUE,D3DCMP_LESSEQUAL,0x03,0x01,0x02,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE,D3DSTENCILOP_KEEP);
+		u_setrt						(rt_Accumulator,NULL,NULL,HW.pBaseZB);
+		RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,0x03,0x01,0x02,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE,D3DSTENCILOP_KEEP);
 
 		// Assuming next usage will be for directional light
 		u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
-		float	_w					= float(Device.dwWidth);
-		float	_h					= float(Device.dwHeight);
+		float	_w					= float			(Device.dwWidth);
+		float	_h					= float			(Device.dwHeight);
 
 		p0.set						(.5f/_w, .5f/_h);
 		p1.set						((_w+.5f)/_w, (_h+.5f)/_h );
