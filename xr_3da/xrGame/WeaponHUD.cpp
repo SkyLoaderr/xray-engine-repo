@@ -14,13 +14,13 @@
 
 CWeaponHUD::CWeaponHUD()
 {
-	cur_mstate	= hsIdle;
-	new_mstate	= hsIdle;
+	cur_mstate					= hsIdle;
+	new_mstate					= hsIdle;
 	mTransform.identity			();
 	m_Offset.identity			();
-	pVisualName	= 0;
-	pVisual		= 0;
-	iFireBone	= -1;
+	pVisualName					= 0;
+	pVisual						= 0;
+	iFireBone					= -1;
 
 	Device.seqDevDestroy.Add	(this);
 	Device.seqDevCreate.Add		(this);

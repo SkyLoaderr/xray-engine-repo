@@ -119,7 +119,7 @@ void CWeaponAK74::UpdateXForm(BOOL bHUDView)
 				m_pHUD->UpdatePosition(trans);
 			}
 		} else {
-			Fmatrix mRes;
+			Fmatrix			mRes;
 			CKinematics* V	= PKinematics(m_pParent->Visual());
 			V->Calculate	();
 			Fmatrix& mL		= V->LL_GetTransform(m_pContainer->m_iACTboneL);
