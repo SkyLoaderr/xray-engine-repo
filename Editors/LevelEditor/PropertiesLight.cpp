@@ -26,6 +26,7 @@ __fastcall TfrmPropertiesLight::TfrmPropertiesLight(TComponent* Owner)
     : TForm(Owner)
 {
     m_Props = TfrmProperties::CreateProperties(tsSun,alClient);
+	DEFINE_INI(fsStorage);
 }
 //----------------------------------------------------
 void __fastcall TfrmPropertiesLight::FormClose(TObject *Sender,

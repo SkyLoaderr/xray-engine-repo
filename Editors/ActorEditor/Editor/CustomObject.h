@@ -17,7 +17,6 @@ class CGroupObject;
 
 class CCustomObject {
 	EObjClass 		FClassID;
-	string64		FName;
 
     BOOL			m_bUpdateTransform;
 
@@ -26,9 +25,9 @@ class CCustomObject {
     BOOL 			m_bLocked;
     BOOL 			m_bValid;
 
-	LPSTR			GetName			(){return FName; }
-	void			SetName			(LPCSTR N){strcpy(FName,N); strlwr(FName); }
 public:
+	string64		FName;
+
     // orientation
     Fvector 		FPosition;
     Fvector 		FScale;
@@ -40,6 +39,9 @@ public:
 
     CGroupObject*	m_pGroupObject;
 protected:
+	LPSTR			GetName			(){return FName; }
+	void			SetName			(LPCSTR N){strcpy(FName,N); strlwr(FName); }
+
     virtual Fvector& GetPosition	()	{ return FPosition; 	}
     virtual Fvector& GetRotation	()	{ return FRotation;		}
     virtual Fvector& GetScale		()	{ return FScale; 		}
@@ -112,13 +114,13 @@ public:
 	virtual void 	OnSynchronize	(){;}
     virtual void    OnShowHint      (AStringVec& dest);
 
-					CCustomObject	(){
+					CCustomObject	(LPVOID data){
                         ClassID 	= OBJCLASS_DUMMY;
                         FName[0] 	= 0;
                         m_bSelected = false;
                         m_bVisible 	= true;
                         m_bLocked 	= false;
-                        m_bValid	= false;
+                        m_bValid	= true;
                         m_pGroupObject= 0;
                         ResetTransform();
                         m_bUpdateTransform = FALSE;
@@ -130,7 +132,7 @@ public:
                         m_bSelected	= false;
                         m_bVisible 	= true;
                         m_bLocked 	= false;
-                        m_bValid	= false;
+                        m_bValid	= true;
                         m_pGroupObject= 0;
 					}
 

@@ -17,16 +17,11 @@
 #define BLINK_TIME 300.f
 
 //----------------------------------------------------
-CSceneObject::CSceneObject( char *name ):CCustomObject(){
-	Construct	();
-	Name		= name;
+CSceneObject::CSceneObject(LPVOID data):CCustomObject(data){
+	Construct	(data);
 }
 
-CSceneObject::CSceneObject( ):CCustomObject(){
-	Construct	();
-}
-
-void CSceneObject::Construct(){
+void CSceneObject::Construct(LPVOID data){
 	ClassID		= OBJCLASS_SCENEOBJECT;
 
 	m_pRefs 	= 0;

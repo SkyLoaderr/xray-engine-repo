@@ -44,9 +44,8 @@ protected:
     WPVec			m_WayPoints;
     typedef CCustomObject inherited;
 public:
-					CWayObject		();
-					CWayObject		(LPSTR name);
-    void            Construct   	();
+					CWayObject		(LPVOID data);
+    void            Construct   	(LPVOID data);
 	virtual			~CWayObject		();
     void			Clear			();
 

@@ -34,9 +34,8 @@ protected:
 public:
     PS::SEmitter		m_Emitter;
 public:
-	                	CPSObject   ();
-	                	CPSObject   ( char *name );
-    void            	Construct   ();
+	                	CPSObject   (LPVOID data);
+    void            	Construct   (LPVOID data);
 	virtual         	~CPSObject  ();
 
     void				RenderSingle();

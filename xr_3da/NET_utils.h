@@ -1,3 +1,6 @@
+#ifndef _INCDEF_NETUTILS_H_
+#define _INCDEF_NETUTILS_H_
+
 #pragma once
 
 #include "net_compressor.h"
@@ -169,5 +172,7 @@ public:
 		r_vec3	(M.c);	M._44_	= 1;
 	}
 };
-
 #pragma pack(pop)
+
+#endif /*_INCDEF_NETUTILS_H_*/
+

@@ -617,7 +617,7 @@ void TUI::ApplyShortCut(WORD Key, TShiftState Shift)
         	else if (Key=='4')  Command(COMMAND_CHANGE_TARGET, etEvent);
         	else if (Key=='5')  Command(COMMAND_CHANGE_TARGET, etGlow);
         	else if (Key=='6')  Command(COMMAND_CHANGE_TARGET, etDO);
-        	else if (Key=='7')  Command(COMMAND_CHANGE_TARGET, etRPoint);
+        	else if (Key=='7')  Command(COMMAND_CHANGE_TARGET, etSpawnPoint);
         	else if (Key=='8')  Command(COMMAND_CHANGE_TARGET, etWay);
         	else if (Key=='9')  Command(COMMAND_CHANGE_TARGET, etSector);
         	else if (Key=='0')  Command(COMMAND_CHANGE_TARGET, etPortal);

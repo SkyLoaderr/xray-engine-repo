@@ -24,18 +24,12 @@
 
 //using namespace PS;
 
-CPSObject::CPSObject( char *name ):CCustomObject(){
-	Construct();
-	Name		= name;
+CPSObject::CPSObject(LPVOID data):CCustomObject(data){
+	Construct(data);
 }
 //----------------------------------------------------
 
-CPSObject::CPSObject():CCustomObject(){
-	Construct();
-}
-//----------------------------------------------------
-
-void CPSObject::Construct(){
+void CPSObject::Construct(LPVOID data){
 	ClassID   	= OBJCLASS_PS;
 	m_Emitter.Reset();
     m_Emitter.m_ConeDirection.set(0.f,1.f,0.f);

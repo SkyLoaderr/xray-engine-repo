@@ -62,10 +62,9 @@ public:
     void			RemoveSelectedForm	();
 	void 			GetRenderBox		(Fbox& box);
 public:
-					CEvent		();
-					CEvent		( char *name );
+					CEvent		(LPVOID data);
 	virtual 		~CEvent		();
-	void 			Construct	();
+	void 			Construct	(LPVOID data);
 
 	virtual void 	Render			( int priority, bool strictB2F );
 	virtual bool 	RayPick 		( float& distance, Fvector& start,

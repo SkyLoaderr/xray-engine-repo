@@ -26,18 +26,12 @@
 #define PORTAL_CHUNK_VERTICES				0xFA50
 //------------------------------------------------------------------------------
 
-CPortal::CPortal( char *name ):CCustomObject(){
-	Construct();
-    Name		= name;
+CPortal::CPortal(LPVOID data):CCustomObject(data){
+	Construct(data);
 }
 //------------------------------------------------------------------------------
 
-CPortal::CPortal():CCustomObject(){
-	Construct();
-}
-//------------------------------------------------------------------------------
-
-void CPortal::Construct(){
+void CPortal::Construct(LPVOID data){
 	ClassID		= OBJCLASS_PORTAL;
 	m_Center.set(0,0,0);
 	m_SectorFront=0;

@@ -8,7 +8,7 @@
 #include "Builder.h"
 #include "Scene.h"
 #include "WayPoint.h"
-#include "RPoint.h"
+#include "SpawnPoint.h"
 #include "Event.h"
 #include "net_utils.h"
 #include "xrMessages.h"

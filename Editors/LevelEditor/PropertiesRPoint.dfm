@@ -1,11 +1,13 @@
-object frmPropertiesRPoint: TfrmPropertiesRPoint
-  Left = 347
-  Top = 514
+object frmPropertiesSpawnPoint: TfrmPropertiesSpawnPoint
+  Left = 380
+  Top = 360
   BorderStyle = bsDialog
   Caption = 'Spawn properties'
-  ClientHeight = 172
-  ClientWidth = 435
+  ClientHeight = 292
+  ClientWidth = 245
   Color = 10528425
+  Constraints.MinHeight = 319
+  Constraints.MinWidth = 253
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -16,14 +18,15 @@ object frmPropertiesRPoint: TfrmPropertiesRPoint
   Position = poScreenCenter
   Scaled = False
   OnClose = FormClose
+  OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object paBottom: TPanel
     Left = 0
-    Top = 150
-    Width = 435
+    Top = 270
+    Width = 245
     Height = 22
     Align = alBottom
     BevelOuter = bvNone
@@ -58,82 +61,21 @@ object frmPropertiesRPoint: TfrmPropertiesRPoint
       OnClick = ebCancelClick
     end
   end
-  object GroupBox1: TGroupBox
+  object paProps: TPanel
     Left = 0
     Top = 0
-    Width = 435
-    Height = 150
+    Width = 245
+    Height = 270
     Align = alClient
+    BevelOuter = bvNone
+    ParentColor = True
     TabOrder = 1
-    object RxLabel1: TLabel
-      Left = 6
-      Top = 14
-      Width = 31
-      Height = 13
-      Caption = 'Name:'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-    end
-    object edName: TEdit
-      Left = 44
-      Top = 11
-      Width = 152
-      Height = 18
-      AutoSize = False
-      Color = 10526880
-      TabOrder = 0
-      OnChange = OnModified
-    end
-    object paEntity: TPanel
-      Left = 2
-      Top = 29
-      Width = 196
-      Height = 40
-      BevelOuter = bvNone
-      ParentColor = True
-      TabOrder = 1
-      object Label3: TLabel
-        Left = 3
-        Top = 22
-        Width = 29
-        Height = 13
-        Caption = 'Entity:'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-      end
-      object ebEntityRefs: TExtBtn
-        Left = 41
-        Top = 20
-        Width = 153
-        Height = 18
-        Align = alNone
-        BevelShow = False
-        BtnColor = 10528425
-        CloseButton = False
-        Caption = '<none>'
-        Margin = 1
-        Transparent = False
-        FlatAlwaysEdge = True
-        OnClick = ebEntityRefsClick
-      end
-      object cbActive: TMultiObjCheck
-        Left = 2
-        Top = 2
-        Width = 52
-        Height = 17
-        Alignment = taLeftJustify
-        Caption = 'Active:'
-        TabOrder = 0
-        OnClick = OnModified
-      end
-    end
+  end
+  object fsStorage: TFormStorage
+    OnSavePlacement = fsStorageSavePlacement
+    OnRestorePlacement = fsStorageRestorePlacement
+    StoredValues = <>
+    Left = 65528
+    Top = 65528
   end
 end

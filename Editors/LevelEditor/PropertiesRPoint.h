@@ -12,48 +12,49 @@
 #include "ExtBtn.hpp"
 #include "MXCtrls.hpp"
 
-#include "RPoint.h"
+#include "PropertiesList.h"
+#include "SpawnPoint.h"
+#include "mxPlacemnt.hpp"
 
 // refs
 class CCustomObject;
+class TfrmProperties;
 
-class TfrmPropertiesRPoint : public TForm
+class TfrmPropertiesSpawnPoint : public TForm
 {
 __published:	// IDE-managed Components
     TExtBtn *ebOk;
     TExtBtn *ebCancel;
     TPanel *paBottom;
-	TGroupBox *GroupBox1;
-	TEdit *edName;
-	TLabel *RxLabel1;
-	TPanel *paEntity;
-	TLabel *Label3;
-	TExtBtn *ebEntityRefs;
-	TMultiObjCheck *cbActive;
+	TPanel *paProps;
+	TFormStorage *fsStorage;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall ebCancelClick(TObject *Sender);
     void __fastcall ebOkClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
-    void __fastcall OnModified(TObject *Sender);
+    void __fastcall OnMModified(TObject *Sender);
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
-	void __fastcall ebEntityRefsClick(TObject *Sender);
-	void __fastcall ebTypeClick(TObject *Sender);
+	void __fastcall fsStorageRestorePlacement(TObject *Sender);
+	void __fastcall fsStorageSavePlacement(TObject *Sender);
+	void __fastcall FormDestroy(TObject *Sender);
 private:	// User declarations
-	static TfrmPropertiesRPoint* form;
+	static TfrmPropertiesSpawnPoint* form;
     static bool bLoadMode;
+    TfrmProperties* m_Props;
     list<CCustomObject*>* m_Objects;
     void GetObjectsInfo     ();
     bool ApplyObjectsInfo   ();
     bool bMultiSel;
-    bool bTypeChanged;
-    bool bEntityChanged;
-    void __fastcall SetType(CRPoint::EType type);
+    void __fastcall OnModified();
+    void __fastcall UpdateProps(CSpawnPoint*);
+    // props events
+    void __fastcall OnNameAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
 public:		// User declarations
-    __fastcall TfrmPropertiesRPoint(TComponent* Owner);
+    __fastcall TfrmPropertiesSpawnPoint(TComponent* Owner);
     static int __fastcall Run(list<CCustomObject*>* pObjects, bool& bChange);
     static bool __fastcall Visible(){return !!form;}
-    static TfrmPropertiesRPoint* GetForm(){VERIFY(form); return form;}
+    static TfrmPropertiesSpawnPoint* GetForm(){VERIFY(form); return form;}
 };
 //---------------------------------------------------------------------------
 #endif

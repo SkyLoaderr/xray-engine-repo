@@ -275,7 +275,13 @@ void __fastcall TfrmProperties::tvPropertiesItemDraw(TObject *Sender,
 	TRect  R1;
     int  sid;
 	Surface->Brush->Style = bsClear;
-    Surface->Font->Color = clBlack;
+    if (Item->Enabled){
+	    Surface->Font->Color 	= clBlack;
+    	Surface->Font->Style 	= TFontStyles();
+    }else{
+	    Surface->Font->Color 	= clSilver;
+    	Surface->Font->Style 	= TFontStyles()<< fsItalic;
+    }
   	if (SectionIndex == 1){
     	DWORD type = (DWORD)Item->Tag;
         switch(type){
@@ -370,7 +376,8 @@ void __fastcall TfrmProperties::tvPropertiesMouseDown(TObject *Sender,
 	CancelEditControl();
 	int HS;
 	TElTreeItem* item = tvProperties->GetItemAt(X,Y,TSTItemPart(0),HS);
-  	if ((HS==1)&&(Button==mbLeft)){
+  	if (item&&(HS==1)&&(Button==mbLeft)){
+    	if (!item->Enabled) return;
     	DWORD type = (DWORD)item->Tag;
 		pmEnum->Tag = (int)item;
         switch(type){
@@ -807,8 +814,8 @@ void TfrmProperties::ApplyLWText()
     	case PROP_TEXT:{
 	        TextValue* V 		= (TextValue*)item->Data; VERIFY(V);
             edText->MaxLength	= V->lim;
-			AnsiString new_val=edText->Text;
-			AnsiString old_val=V->val;
+			AnsiString new_val	= edText->Text;
+			AnsiString old_val	= V->val;
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
 			strcpy(V->val,new_val.c_str());
             if (new_val != old_val)	Modified();

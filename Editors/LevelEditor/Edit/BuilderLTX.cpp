@@ -13,7 +13,7 @@
 #include "SceneObject.h"
 #include "Sound.h"
 #include "ELight.h"
-#include "RPoint.h"
+#include "SpawnPoint.h"
 #include "Event.h"
 #include "WayPoint.h"
 #include "xr_ini.h"
@@ -140,21 +140,6 @@ bool SceneBuilder::BuildLTX(){
 		}
         if (suns.Length()) pIni->WriteString("environment", "suns", suns.c_str());
 	}
-
-	// -- add respawn point --
-	if (Scene.ObjCount(OBJCLASS_RPOINT)) {
-		i = Scene.FirstObj(OBJCLASS_RPOINT);
-        _E  = Scene.LastObj(OBJCLASS_RPOINT);
-        AnsiString temp;
-        for(;i!=_E;i++){
-            CRPoint *rpt = (CRPoint *)(*i);
-            if (CRPoint::etPlayer==rpt->m_Type){
-	            temp.sprintf("%.3f,%.3f,%.3f,%d,%.3f", rpt->PPosition.x,rpt->PPosition.y,rpt->PPosition.z,rpt->m_dwTeamID,rpt->PRotation.x);
-    	        pIni->WriteString("respawn_point",rpt->Name,temp.c_str());
-            }
-		}
-	}
-
 
 end_ltx_build:
     delete pIni;

@@ -49,18 +49,13 @@ LPCSTR __fastcall TfrmChoseItem::SelectEntity(LPCSTR init_name)
     // fill object list
 	AnsiString fld;
     CInifile* sys_ini;
-    AnsiString fn="system.ltx";
-    Engine.FS.m_GameRoot.Update(fn);
-    sys_ini = new CInifile(fn.c_str(),true);
-    CInifile::Root& data = sys_ini->Sections();
+    CInifile::Root& data = pSettings->Sections();
     for (CInifile::RootIt it=data.begin(); it!=data.end(); it++)
     {
     	LPCSTR val;
     	if (it->LineExists("$spawn",&val))
-			if (CInifile::IsBOOL(val))
-            	FOLDER::AppendObject(form->tvItems,it->Name);;
+			if (CInifile::IsBOOL(val)) FOLDER::AppendObject(form->tvItems,it->Name);
     }
-    _DELETE(sys_ini);
     // redraw
 	form->tvItems->IsUpdating		= false;
 	// show
@@ -81,22 +76,17 @@ LPCSTR __fastcall TfrmChoseItem::SelectEntityCLSID(LPCSTR init_name)
     form->tvItems->Items->Clear		();
     // fill object list
 	AnsiString fld;
-    CInifile* sys_ini;
-    AnsiString fn="system.ltx";
-    Engine.FS.m_GameRoot.Update(fn);
-    sys_ini = new CInifile(fn.c_str(),true);
-    CInifile::Root& data = sys_ini->Sections();
+    CInifile::Root& data = pSettings->Sections();
 	FOLDER::AppendObject(form->tvItems,"O_ACTOR");
     for (CInifile::RootIt it=data.begin(); it!=data.end(); it++)
     {
     	AnsiString sect=it->Name;
         if (1==sect.Pos("m_"))
-        	if (sys_ini->LineExists(it->Name,"class")){
-            	LPCSTR N=sys_ini->ReadSTRING(it->Name,"class");
+        	if (pSettings->LineExists(it->Name,"class")){
+            	LPCSTR N=pSettings->ReadSTRING(it->Name,"class");
         		FOLDER::AppendObject(form->tvItems,N);
             }
     }
-    _DELETE(sys_ini);
     // redraw
 	form->tvItems->IsUpdating		= false;
 	// show

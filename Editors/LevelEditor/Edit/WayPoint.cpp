@@ -147,18 +147,12 @@ bool CWayPoint::RemoveLink(CWayPoint* P)
 //------------------------------------------------------------------------------
 // Way Object
 //------------------------------------------------------------------------------
-CWayObject::CWayObject(char *name):CCustomObject()
+CWayObject::CWayObject(LPVOID data):CCustomObject(data)
 {
-	Construct();
-	Name		= name;
+	Construct(data);
 }
 
-CWayObject::CWayObject():CCustomObject()
-{
-	Construct();
-}
-
-void CWayObject::Construct()
+void CWayObject::Construct(LPVOID data)
 {
 	ClassID   	= OBJCLASS_WAY;
     m_Type		= wtPatrolPath;

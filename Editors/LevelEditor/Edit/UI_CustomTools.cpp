@@ -92,16 +92,16 @@ void TUI_CustomTools::ShowProperties(){
     if(!objset.empty()){
 //    	TfrmProperties* P = new TfrmProperties(0);
 	    switch(objclass){
-    	case OBJCLASS_GROUP:		TfrmPropertiesGroup::Run(&objset,bChange); break;
-    	case OBJCLASS_SCENEOBJECT:	TfrmPropertiesSceneObject::Run(&objset,bChange); break;
-	    case OBJCLASS_LIGHT:    	frmPropertiesLightRun(&objset,bChange);		break;
-	    case OBJCLASS_SOUND:    	frmPropertiesSoundRun(&objset,bChange); 	break;
-	    case OBJCLASS_GLOW:     	frmPropertiesGlowRun(&objset,bChange);		break;
-	    case OBJCLASS_SECTOR:   	frmPropertiesSectorRun(&objset,bChange); 	break;
-	    case OBJCLASS_EVENT:   		frmPropertiesEventRun(&objset,bChange);		break;
-	    case OBJCLASS_RPOINT:   	TfrmPropertiesRPoint::Run(&objset,bChange); break;
-	    case OBJCLASS_WAY:   		TfrmPropertiesWayPoint::Run(&objset,bChange);break;
-        case OBJCLASS_PS:			TfrmPropertiesPS::Run(&objset,bChange);		break;
+    	case OBJCLASS_GROUP:		TfrmPropertiesGroup::Run(&objset,bChange); 		break;
+    	case OBJCLASS_SCENEOBJECT:	TfrmPropertiesSceneObject::Run(&objset,bChange);break;
+	    case OBJCLASS_LIGHT:    	frmPropertiesLightRun(&objset,bChange);			break;
+	    case OBJCLASS_SOUND:    	frmPropertiesSoundRun(&objset,bChange); 		break;
+	    case OBJCLASS_GLOW:     	frmPropertiesGlowRun(&objset,bChange);			break;
+	    case OBJCLASS_SECTOR:   	frmPropertiesSectorRun(&objset,bChange); 		break;
+	    case OBJCLASS_EVENT:   		frmPropertiesEventRun(&objset,bChange);			break;
+	    case OBJCLASS_SPAWNPOINT:   TfrmPropertiesSpawnPoint::Run(&objset,bChange); break;
+	    case OBJCLASS_WAY:   		TfrmPropertiesWayPoint::Run(&objset,bChange);	break;
+        case OBJCLASS_PS:			TfrmPropertiesPS::Run(&objset,bChange);			break;
     	default:{ ELog.Msg(mtInformation, "Can't find properties form.");}
 	    }
 //        if (P->IsModified()) Scene.UndoSave();

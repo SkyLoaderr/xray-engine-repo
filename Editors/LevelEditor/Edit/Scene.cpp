@@ -478,7 +478,7 @@ void EScene::Render( const Fmatrix& camera )
 	// draw lights, sounds, respawn points, pclipper, sector, event
     RENDER_CLASS_NORMAL(1,OBJCLASS_LIGHT);
     RENDER_CLASS_NORMAL(1,OBJCLASS_SOUND);
-    RENDER_CLASS_NORMAL(1,OBJCLASS_RPOINT);
+    RENDER_CLASS_NORMAL(1,OBJCLASS_SPAWNPOINT);
     RENDER_CLASS_NORMAL(1,OBJCLASS_WAY);
     RENDER_CLASS_NORMAL(1,OBJCLASS_EVENT);
     RENDER_CLASS_NORMAL(1,OBJCLASS_SECTOR);
@@ -631,7 +631,7 @@ bool EScene::Validate(bool bNeedMsg, bool bTestPortal){
 	    	return false;
     	}
     }
-    if (ObjCount(OBJCLASS_RPOINT)==0){
+    if (ObjCount(OBJCLASS_SPAWNPOINT)==0){
     	ELog.DlgMsg(mtError,"*ERROR: Can't find 'Respawn Point'.\nPlease add at least one.");
         return false;
     }

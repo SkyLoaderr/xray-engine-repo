@@ -202,19 +202,14 @@ void CEvent::SForm::Scale( Fvector& amount )
 }
 //------------------------------------------------------------------------------
 
-CEvent::CEvent( char *name ):CCustomObject(){
-	Construct();
-	Name			= name;
-}
-
-CEvent::CEvent():CCustomObject(){
-	Construct();
+CEvent::CEvent(LPVOID data):CCustomObject(data){
+	Construct(data);
 }
 
 CEvent::~CEvent(){
 }
 
-void CEvent::Construct(){
+void CEvent::Construct(LPVOID data){
 	ClassID 		= OBJCLASS_EVENT;
     m_Actions.clear	();
     m_Forms.clear	();

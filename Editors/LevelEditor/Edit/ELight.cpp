@@ -37,16 +37,11 @@
 #define NORM_DYN_COLOR 	0x0000FF00
 #define LOCK_COLOR 		0x00FF0000
 
-CLight::CLight( char *name ):CCustomObject(){
-	Construct();
-	Name			= name;
+CLight::CLight(LPVOID data):CCustomObject(data){
+	Construct(data);
 }
 
-CLight::CLight():CCustomObject(){
-	Construct();
-}
-
-void CLight::Construct(){
+void CLight::Construct(LPVOID data){
 	ClassID 		= OBJCLASS_LIGHT;
 
     m_UseInD3D		= true;

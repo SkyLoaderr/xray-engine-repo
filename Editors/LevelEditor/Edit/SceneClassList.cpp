@@ -21,19 +21,19 @@
 #include "GroupObject.h"
 //----------------------------------------------------
 
-CCustomObject *NewObjectFromClassID( int _ClassID ){
+CCustomObject *NewObjectFromClassID( int _ClassID, LPVOID data ){
 	switch( _ClassID ){
-    	case OBJCLASS_GROUP:		return new CGroupObject();
-		case OBJCLASS_SCENEOBJECT: 	return new CSceneObject();
-		case OBJCLASS_LIGHT:    	return new CLight();
-		case OBJCLASS_SOUND:    	return new CSound();
-		case OBJCLASS_GLOW:     	return new CGlow();
-        case OBJCLASS_SPAWNPOINT:	return new CSpawnPoint();
-        case OBJCLASS_WAY:			return new CWayObject();
-        case OBJCLASS_SECTOR:		return new CSector();
-        case OBJCLASS_PORTAL:		return new CPortal();
-        case OBJCLASS_EVENT:		return new CEvent();
-        case OBJCLASS_PS:			return new CPSObject();
+    	case OBJCLASS_GROUP:		return new CGroupObject(data);
+		case OBJCLASS_SCENEOBJECT: 	return new CSceneObject(data);
+		case OBJCLASS_LIGHT:    	return new CLight(data);
+		case OBJCLASS_SOUND:    	return new CSound(data);
+		case OBJCLASS_GLOW:     	return new CGlow(data);
+        case OBJCLASS_SPAWNPOINT:	return new CSpawnPoint(data);
+        case OBJCLASS_WAY:			return new CWayObject(data);
+        case OBJCLASS_SECTOR:		return new CSector(data);
+        case OBJCLASS_PORTAL:		return new CPortal(data);
+        case OBJCLASS_EVENT:		return new CEvent(data);
+        case OBJCLASS_PS:			return new CPSObject(data);
         default: throw -1;
 	}
 }

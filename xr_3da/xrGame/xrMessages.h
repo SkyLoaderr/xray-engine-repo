@@ -1,3 +1,6 @@
+#ifndef _INCDEF_XRMESSAGES_H_
+#define _INCDEF_XRMESSAGES_H_
+
 #pragma once
 
 // CL	== client 2 server message
@@ -210,3 +213,5 @@ M_DIE
 {
 }
 */
+#endif /*_INCDEF_XRMESSAGES_H_*/
+

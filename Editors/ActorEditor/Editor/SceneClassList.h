@@ -57,7 +57,7 @@ enum EObjClass{
 };
 
 //----------------------------------------------------
-CCustomObject*	NewObjectFromClassID	(int _ClassID);
+CCustomObject*	NewObjectFromClassID	(int _ClassID, LPVOID data);
 LPSTR 			GetNameByClassID		(EObjClass cls_id);
 bool 			IsClassID				(EObjClass cls_id);
 bool 			IsObjectListClassID		(EObjClass cls_id);

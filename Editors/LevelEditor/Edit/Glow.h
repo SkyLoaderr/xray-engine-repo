@@ -20,9 +20,8 @@ protected:
     virtual Fvector& GetScale		()	{ FScale.set(m_Range,m_Range,m_Range); return FScale; 	}
 	virtual void 	SetScale		(Fvector& sc){float v=m_Range; if (!fsimilar(FScale.x,sc.x)) v=sc.x; if (!fsimilar(FScale.y,sc.y)) v=sc.y; if (!fsimilar(FScale.z,sc.z)) v=sc.z; FScale.set(v,v,v); m_Range=v; UpdateTransform();}
 public:
-	                CGlow       ();
-	                CGlow       ( char *name );
-    void            Construct   ();
+	                CGlow       (LPVOID data);
+    void            Construct   (LPVOID data);
 	virtual         ~CGlow      ();
 
     void			Compile		();

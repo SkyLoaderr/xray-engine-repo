@@ -15,20 +15,18 @@ class CFrustum;
 class CSpawnPoint : public CCustomObject {
     friend class    SceneBuilder;
 public:
-	AnsiString		m_EntityRef;
 	xrServerEntity*	m_SpawnData;
 protected:
-    virtual Fvector& GetPosition	()				{ m_SpawnData?return m_SpawnData->o_Position:return FPosition; }
-    virtual void 	SetPosition		(Fvector& pos)	{ if (m_SpawnData) m_SpawnData->o_Position.set(pos) else FPosition.set(pos); UpdateTransform();}
-    virtual Fvector& GetRotation	()				{ m_SpawnData?return m_SpawnData->o_Position:return FPosition; }
-    virtual void 	SetRotation		(Fvector& rot)	{ if (m_SpawnData) m_SpawnData->o_Angle.set(pos); else PRotation.set(rot); UpdateTransform();}
+    virtual Fvector& GetPosition	()				{ R_ASSERT(m_SpawnData); return m_SpawnData->o_Position; }
+    virtual void 	SetPosition		(Fvector& pos)	{ R_ASSERT(m_SpawnData); m_SpawnData->o_Position.set(pos);	UpdateTransform();}
+    virtual Fvector& GetRotation	()				{ R_ASSERT(m_SpawnData); return m_SpawnData->o_Angle; }
+    virtual void 	SetRotation		(Fvector& rot)	{ R_ASSERT(m_SpawnData); m_SpawnData->o_Angle.set(rot); 	UpdateTransform();}
 public:
-	                CSpawnPoint    	();
-	                CSpawnPoint    	( char *name );
-    void            Construct   	();
-	virtual         ~CSpawnPoint   	();
+	                CSpawnPoint    	(LPVOID data);
+    void            Construct   	(LPVOID data);
+    virtual         ~CSpawnPoint   	();
 
-    void			CreateSpawnData	(LPCSTR entity_ref);
+    bool			CreateSpawnData	(LPCSTR entity_ref);
 	virtual void    Render      	( int priority, bool strictB2F );
 	virtual bool    RayPick     	( float& distance,	Fvector& start,	Fvector& direction,
 		                          	  SRayPickInfo* pinf = NULL );

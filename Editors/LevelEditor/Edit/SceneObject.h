@@ -78,12 +78,11 @@ protected:
     Fvector 		m_Center; 			// центр в мировых координатах
 public:
     // constructor/destructor methods
-					CSceneObject			();
-					CSceneObject			(char *name);
+					CSceneObject			(LPVOID data);
 	virtual 		~CSceneObject			();
 
 	virtual void 	Select					(BOOL flag);
-	void 			Construct				();
+	void 			Construct				(LPVOID data);
 
     IC bool			CheckVersion			()  {return m_pRefs?(m_ObjVer==m_pRefs->m_ObjVer):false;}
     // get object properties methods
