@@ -678,11 +678,9 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		// keyboard binding
 		CCC_RegisterInput			();
 		}
-		GamePersistent		= xr_new<CGamePersistent> ();
 		break;
 	case DLL_PROCESS_DETACH:
 		xr_delete			(tpAI_Space);
-		xr_delete			(GamePersistent);
 		break;
 	}
     return TRUE;

@@ -7,6 +7,7 @@
 //-----------------------------------------------------------------------------
 #include "stdafx.h"
 #include "igame_level.h"
+#include "igame_persistant.h"
 
 #include "xr_input.h"
 #include "xr_ioconsole.h"
@@ -61,6 +62,7 @@ void Startup				()
 	Device.Create				( );
 	LALib.OnCreate				( );
 	pApp						= xr_new<CApplication>	();
+	g_pGamePersistent			= (IGame_Persistant*)	NEW_INSTANCE (CLSID_GAME_PERSISTANT);
 
 	// Destroy LOGO
 	DestroyWindow				(logoWindow);
@@ -70,7 +72,8 @@ void Startup				()
 	Device.Run					( );
 
 	// Destroy APP
-	xr_delete					( pApp			);
+	DEL_INSTANCE				( g_pGamePersistent );
+	xr_delete					( pApp				);
 	Engine.Event.Dump			( );
 
 	// Destroying
@@ -243,7 +246,7 @@ void CApplication::OnEvent(EVENT E, u64 P1, u64 P2)
 		LPSTR		op_server		= LPSTR	(P1);
 		LPSTR		op_client		= LPSTR	(P2);
 		R_ASSERT	(0==g_pGameLevel);
-		g_pGameLevel	= (IGame_Level*)	NEW_INSTANCE(CLSID_LEVEL);
+		g_pGameLevel= (IGame_Level*)	NEW_INSTANCE(CLSID_GAME_LEVEL);
 		R_ASSERT	(g_pGameLevel->net_Start(op_server,op_client));
 		xr_free		(op_server);
 		xr_free		(op_client);

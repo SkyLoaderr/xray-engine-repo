@@ -12,8 +12,7 @@
 #include "..\\ai_monsters_misc.h"
 #include "ai_biting_anim.h"
 #include "ai_biting_space.h"
-#include "ai_biting_state.h"
-
+//#include "ai_biting_state.h"
 
 class CAI_Biting : public CCustomMonster, public CBitingAnimations
 {
