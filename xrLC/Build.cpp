@@ -8,7 +8,6 @@
 
 vector<OGF_Base *>		g_tree;
 b_params				g_params;
-HANDLE					hLargeHeap=0;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

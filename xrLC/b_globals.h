@@ -34,5 +34,3 @@ extern b_params					g_params;
 extern const int				edge2idx	[3][2];
 extern const int				edge2idx3	[3][3];
 extern const int				idx2edge	[3][3];
-
-extern HANDLE					hLargeHeap;

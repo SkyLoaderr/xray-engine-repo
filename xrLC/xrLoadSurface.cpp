@@ -117,7 +117,7 @@ DWORD*	Surface_Load(char* name, DWORD& w, DWORD& h)
 	w					= FreeImage_GetWidth	(map32);
 
 	DWORD		memSize	= w*h*4;
-	LPDWORD		memPTR	= LPDWORD(HeapAlloc(GetProcessHeap(),0,memSize));
+	LPDWORD		memPTR	= LPDWORD(xr_malloc(memSize));
 	LPDWORD		memDATA	= LPDWORD(FreeImage_GetScanLine(map32,0));
 	CopyMemory	(memPTR,memDATA,memSize);
 	FreeImage_Free		(map32);
