@@ -102,6 +102,13 @@ public:
 	virtual void			UPDATE_Write		(NET_Packet& P)	{};
 };
 
+class xrSE_Crow : public xrSE_Teamed
+{
+public:
+	virtual void			UPDATE_Read			(NET_Packet& P)	{};
+	virtual void			UPDATE_Write		(NET_Packet& P)	{};
+};
+
 class xrSE_Actor : public xrSE_Teamed
 {
 public:	
@@ -310,7 +317,7 @@ xrServerEntity*	xrServer::entity_Create		(LPCSTR name)
 	case CLSID_AI_RAT:			return new	xrSE_Enemy;
 	case CLSID_AI_SOLDIER:		return new	xrSE_Enemy;
 	case CLSID_AI_ZOMBIE:		return new	xrSE_Enemy;
-	case CLSID_AI_CROW:			return new	xrSE_Enemy;
+	case CLSID_AI_CROW:			return new	xrSE_Crow;
 	case CLSID_EVENT:			return new  xrSE_Event;
 	case CLSID_CAR_NIVA:		return new  xrSE_Car;
 	}
