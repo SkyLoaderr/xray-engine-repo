@@ -30,8 +30,8 @@ struct record
 	Vertex	*T;
 };
 
-vector<record>	vecJunctions;
-vector<record>	vecEdges;
+vector<record>*	vecJunctions;
+vector<record>*	vecEdges;
 
 void check(Vertex* vE1, Vertex* vE2, Vertex* vTEST)
 {
@@ -41,9 +41,9 @@ void check(Vertex* vE1, Vertex* vE2, Vertex* vTEST)
 		
 		// check for duplicated errors
 		if (vE1>vE2)	swap(vE1,vE2);
-		for (DWORD i=0; i<vecJunctions.size(); i++)
+		for (DWORD i=0; i<vecJunctions->size(); i++)
 		{
-			record&	rec = vecJunctions[i];
+			record&	rec = (*vecJunctions)[i];
 			if (rec.T==vTEST)						return;
 			if (rec.T->P.similar(vTEST->P,.005f))	bWeld = TRUE;
 		}
@@ -53,7 +53,7 @@ void check(Vertex* vE1, Vertex* vE2, Vertex* vTEST)
 		rec.E1	= vE1;
 		rec.E2	= vE2;
 		rec.T	= vTEST;
-		vecJunctions.push_back	(rec);
+		vecJunctions->push_back	(rec);
 		
 		// display
 		if (bWeld)	Msg	("ERROR. unwelded vertex      [%3.1f,%3.1f,%3.1f]",	VPUSH(vTEST->P));
@@ -68,9 +68,9 @@ void edge(Vertex* vE1, Vertex* vE2)
 
 	// check for duplicated errors
 	if (vE1>vE2)	swap(vE1,vE2);
-	for (DWORD i=0; i<vecEdges.size(); i++)
+	for (DWORD i=0; i<vecEdges->size(); i++)
 	{
-		record&	rec = vecEdges[i];
+		record&	rec = (*vecEdges)[i];
 		if ((rec.E1==vE1)&&(rec.E2==vE2))		return;
 	}
 	
@@ -79,7 +79,7 @@ void edge(Vertex* vE1, Vertex* vE2)
 	rec.E1	= vE1;
 	rec.E2	= vE2;
 	rec.T	= 0;
-	vecEdges.push_back	(rec);
+	vecEdges->push_back	(rec);
 	
 	Msg	("ERROR: too long edge        %3.1fm [%3.1f,%3.1f,%3.1f] - [%3.1f,%3.1f,%3.1f]",len,VPUSH(vE1->P),VPUSH(vE2->P));
 }
@@ -87,8 +87,9 @@ void edge(Vertex* vE1, Vertex* vE2)
 void CBuild::CorrectTJunctions()
 {
 	Status					("Processing...");
-	vecJunctions.reserve	(1024);
-	vecEdges.reserve		(1024);
+	vecJunctions			= new vector<record>(); vecJunctions->reserve	(1024);
+	vecEdges				= new vector<record>(); vecEdges->reserve		(1024);
+
 	for (DWORD I=0; I<g_faces.size(); I++)
 	{
 		Face* F = g_faces[I];
@@ -132,5 +133,8 @@ void CBuild::CorrectTJunctions()
 		}
 		Progress(float(I)/float(g_faces.size()));
 	}
-	Msg("*** %d junctions and %d long edges found.",vecJunctions.size(),vecEdges.size());
+	Msg("*** %d junctions and %d long edges found.",vecJunctions->size(),vecEdges->size());
+
+	_DELETE(vecJunctions);
+	_DELETE(vecEdges);
 }
