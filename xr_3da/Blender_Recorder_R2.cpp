@@ -73,8 +73,7 @@ void	CBlender_Compile::r2_Sampler	(LPCSTR _name, LPCSTR texture, u32 address, u3
 
 	// Create texture
 	while (stage>=passTextures.size())	passTextures.push_back	(NULL);
-	if (passTextures[stage])	Device.Shader._DeleteTexture	(passTextures[stage]);
-	passTextures[stage]			= Device.Shader._CreateTexture	(texture);
+	passTextures[stage]		= Device.Shader._CreateTexture		(texture);
 
 	// Sampler states
 	RS.SetSAMP				(stage,D3DSAMP_ADDRESSU,	address);

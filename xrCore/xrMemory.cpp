@@ -3,10 +3,6 @@
 
 #include <malloc.h>
 
-#include "xrMemory.h"
-#include "xrMemory_pso.h"
-#include "xrMemory_align.h"
-
 xrMemory	Memory;
 BOOL		mem_initialized	= FALSE;
 
