@@ -7,6 +7,7 @@
 #include "spawnpoint.h"
 #include "xr_ini.h"
 #include "clsid_game.h"
+#include "d3dutils.h"
 
 #define SPAWNPOINT_VERSION   			0x0012
 //----------------------------------------------------

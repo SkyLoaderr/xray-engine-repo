@@ -9,6 +9,7 @@
 #include "ExportSkeleton.h"
 #include "ExportObjectOGF.h"
 #include "xr_trims.h"
+#include "d3dutils.h"
 
 static FVF::LIT LOD[4]={
 	-1.0f, 1.0f, 0.0f,  0xFFFFFFFF, 0.0f,0.0f, // F 0

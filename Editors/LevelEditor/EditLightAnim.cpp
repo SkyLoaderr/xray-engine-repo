@@ -8,6 +8,7 @@
 #include "FolderLib.h"
 #include "LightAnimLibrary.h"
 #include "ColorPicker.h"
+#include "ui_main.h"
 //---------------------------------------------------------------------------
 #pragma link "multi_edit"
 #pragma link "Gradient"

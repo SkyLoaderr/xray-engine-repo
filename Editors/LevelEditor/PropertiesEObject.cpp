@@ -7,6 +7,7 @@
 #include "EditMesh.h"
 #include "ImageThumbnail.h"
 #include "FolderLib.h"
+#include "ui_main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ElXPThemedControl"

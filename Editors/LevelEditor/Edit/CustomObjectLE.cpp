@@ -1,10 +1,12 @@
 #include "stdafx.h"
+#pragma hdrstop
 
 #include "scene.h"
 #include "sceneobject.h"
 #include "GroupObject.h"
 #include "topbar.h"
 #include "editorpref.h"
+#include "ui_main.h"
 
 //------------------------------------------------------------------------------
 // static part
