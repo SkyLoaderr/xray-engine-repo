@@ -246,7 +246,7 @@ void TUI_Tools::OnShowHint(AStringVec& ss){
 }
 //---------------------------------------------------------------------------
 
-bool TUI_Tools::Pick()
+bool TUI_Tools::Pick(TShiftState Shift)
 {
     if( Scene.locked() && (esEditLibrary==UI.GetEState())){
         UI.iGetMousePosReal(Device.m_hRenderWnd, UI.m_CurrentCp);

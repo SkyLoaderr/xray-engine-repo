@@ -129,7 +129,7 @@ public:
     bool __fastcall KeyPress    	(WORD Key, TShiftState Shift);
     EObjClass 		CurrentClassID();
 
-    bool			Pick			();
+    bool			Pick			(TShiftState Shift);
 
     void			ShowObjectList	();
 

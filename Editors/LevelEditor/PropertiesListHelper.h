@@ -219,7 +219,7 @@ public:
 	    V->Owner()->OnDrawTextEvent	= FvectorRDOnDraw;
         return V;					
     }
-    IC TextValue* 		CreateName		(PropItemVec& items, LPCSTR key, LPSTR val, int lim, int tag)
+    IC TextValue* 		CreateName		(PropItemVec& items, LPCSTR key, LPSTR val, int lim, int tag)  
     {   TextValue* V	= (TextValue*)		CreateText	(items,key,val,lim);
         V->OnAfterEditEvent			= FHelper.NameAfterEdit;
         V->OnBeforeEditEvent		= FHelper.NameBeforeEdit;

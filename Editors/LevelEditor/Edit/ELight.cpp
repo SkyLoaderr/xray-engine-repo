@@ -300,9 +300,9 @@ void CLight::FillProp(LPCSTR pref, PropItemVec& items)
     PropValue* V=0;
 
     V=PHelper.CreateToken	(items,	PHelper.PrepareKey(pref,"Type"),			&m_D3D.type,token_light_type,4);
-    V->SetEvents			(0,0,OnTypeChange);
+    V->OnChangeEvent		= OnTypeChange;
     V=PHelper.CreateFColor	(items,	PHelper.PrepareKey(pref,"Color"),			&m_D3D.diffuse);
-	V->SetEvents			(0,0,OnNeedUpdate);
+	V->OnChangeEvent		= OnNeedUpdate;
     PHelper.CreateFloat		(items,	PHelper.PrepareKey(pref,"Brightness"),		&m_Brightness,-3.f,3.f,0.1f,2);
     PHelper.CreateBOOL		(items,	PHelper.PrepareKey(pref,"Use In D3D"),		&m_UseInD3D);
     PHelper.CreateFlag32	(items,	PHelper.PrepareKey(pref,"Usage\\LightMap"),	&m_Flags,	CLight::flAffectStatic);
@@ -331,13 +331,13 @@ void CLight::FillSunProp(LPCSTR pref, PropItemVec& items)
     PHelper.CreateFlag32	(items, PHelper.PrepareKey(pref,"Sun\\Source\\Enabled"),		&F.m_Flags,				CEditFlare::flSource);
     PHelper.CreateFloat		(items, PHelper.PrepareKey(pref,"Sun\\Source\\Radius"),			&F.m_Source.fRadius,	0.f,10.f);
     prop 					= PHelper.CreateTexture	(items, PHelper.PrepareKey(pref,"Sun\\Source\\Texture"),		F.m_Source.texture,		sizeof(F.m_Source.texture));
-	prop->SetEvents			(0,0,OnNeedUpdate);
+	prop->OnChangeEvent		= OnNeedUpdate;
 
     PHelper.CreateFlag32	(items, PHelper.PrepareKey(pref,"Sun\\Gradient\\Enabled"),		&F.m_Flags,				CEditFlare::flGradient);
     PHelper.CreateFloat		(items, PHelper.PrepareKey(pref,"Sun\\Gradient\\Radius"),		&F.m_Gradient.fRadius,	0.f,100.f);
     PHelper.CreateFloat		(items, PHelper.PrepareKey(pref,"Sun\\Gradient\\Opacity"),		&F.m_Gradient.fOpacity,	0.f,1.f);
 	prop					= PHelper.CreateTexture	(items, PHelper.PrepareKey(pref,"Sun\\Gradient\\Texture"),	F.m_Gradient.texture,	sizeof(F.m_Gradient.texture));
-	prop->SetEvents			(0,0,OnNeedUpdate);
+	prop->OnChangeEvent		= OnNeedUpdate;
 
     PHelper.CreateFlag32	(items, PHelper.PrepareKey(pref,"Sun\\Flares\\Enabled"),		&F.m_Flags,				CEditFlare::flFlare);
 	for (CEditFlare::FlareIt it=F.m_Flares.begin(); it!=F.m_Flares.end(); it++){
@@ -346,7 +346,7 @@ void CLight::FillSunProp(LPCSTR pref, PropItemVec& items)
         PHelper.CreateFloat	(items, PHelper.PrepareKey(nm.c_str(),"Opacity"),	&it->fOpacity,	0.f,1.f);
         PHelper.CreateFloat	(items, PHelper.PrepareKey(nm.c_str(),"Position"),	&it->fPosition,	-10.f,10.f);
         prop				= PHelper.CreateTexture	(items, PHelper.PrepareKey(nm.c_str(),"Texture"),	it->texture,	sizeof(it->texture));
-        prop->SetEvents		(0,0,OnNeedUpdate);
+        prop->OnChangeEvent	= OnNeedUpdate;
 	}
 }
 //----------------------------------------------------
@@ -385,9 +385,7 @@ void CLight::FillSpotProp(LPCSTR pref, PropItemVec& items)
 {
 	PropValue* V=0;
 	PHelper.CreateFloat		(items,	PHelper.PrepareKey(pref, "Spot", "Range"),					&m_D3D.range,	0.1f,1000.f);
-	V=PHelper.CreateFloat	(items,	PHelper.PrepareKey(pref, "Spot", "Cone Angle"),				&m_D3D.phi,		0.1f,120.f,0.01f,2);
-    V->SetEvents			(PHelper.floatRDOnAfterEdit,PHelper.floatRDOnBeforeEdit);
-    V->Owner()->SetEvents	(PHelper.floatRDOnDraw);
+	V=PHelper.CreateAngle	(items,	PHelper.PrepareKey(pref, "Spot", "Cone Angle"),				&m_D3D.phi,		0.1f,120.f,0.01f,2);
 	PHelper.CreateATexture	(items,	PHelper.PrepareKey(pref, "Spot", "Attenuation\\Texture"),	&m_SpotAttTex);
 }
 //----------------------------------------------------

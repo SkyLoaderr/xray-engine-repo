@@ -184,15 +184,15 @@ void ESoundSource::FillProp(LPCSTR pref, PropItemVec& values)
     B->OnBtnClickEvent			= OnControlClick;
     PropValue* V;
     V=PHelper.CreateASoundSrc	(values,PHelper.PrepareKey(pref,"WAVE name"),	&m_WAVName);
-    V->SetEvents				(0,0,OnChangeWAV);
+    V->OnChangeEvent			= OnChangeWAV;
 	V=PHelper.CreateFloat		(values,PHelper.PrepareKey(pref,"Min dist"),	&m_Params.min_distance,	0.1f,1000.f,0.1f,1);
-    V->SetEvents				(0,0,OnChangeSource);
+    V->OnChangeEvent			= OnChangeSource;
 	V=PHelper.CreateFloat		(values,PHelper.PrepareKey(pref,"Max dist"),	&m_Params.max_distance,	0.1f,1000.f,0.1f,1);
-    V->SetEvents				(0,0,OnChangeSource);
+    V->OnChangeEvent			= OnChangeSource;
 	V=PHelper.CreateFloat		(values,PHelper.PrepareKey(pref,"Frequency"),	&m_Params.freq,			0.0f,2.f);
-    V->SetEvents				(0,0,OnChangeSource);
+    V->OnChangeEvent			= OnChangeSource;
 	V=PHelper.CreateFloat		(values,PHelper.PrepareKey(pref,"Volume"),		&m_Params.volume,		0.0f,2.f);
-    V->SetEvents				(0,0,OnChangeSource);
+    V->OnChangeEvent			= OnChangeSource;
 }
 //----------------------------------------------------
 

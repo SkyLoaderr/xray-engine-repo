@@ -119,10 +119,10 @@ void __fastcall ESoundEnvironment::OnChangeEnvs	(PropValue* prop)
 void ESoundEnvironment::FillProp(LPCSTR pref, PropItemVec& values)
 {
 	PropValue* P;
-    P=PHelper.CreateASoundEnv		(values, PHelper.PrepareKey(pref,"Evironment Inner"),	&m_EnvInner);
-    P->SetEvents	(0,0,OnChangeEnvs);
-    P=PHelper.CreateASoundEnv		(values, PHelper.PrepareKey(pref,"Evironment Outer"),	&m_EnvOuter);
-    P->SetEvents	(0,0,OnChangeEnvs);
+    P=PHelper.CreateASoundEnv	(values, PHelper.PrepareKey(pref,"Evironment Inner"),	&m_EnvInner);
+    P->OnChangeEvent			= OnChangeEnvs;
+    P=PHelper.CreateASoundEnv	(values, PHelper.PrepareKey(pref,"Evironment Outer"),	&m_EnvOuter);
+    P->OnChangeEvent			= OnChangeEnvs;
 }
 //----------------------------------------------------
 

@@ -118,7 +118,8 @@
       intermediate\xrServer_Objects_ALife_Monsters.obj 
       intermediate\xrServer_Factory.obj intermediate\xrServer_Objects.obj 
       intermediate\xrServer_Objects_ALife.obj 
-      intermediate\xrServer_Objects_ALife_Items.obj"/>
+      intermediate\xrServer_Objects_ALife_Items.obj 
+      intermediate\EditObjectProps.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -408,6 +409,7 @@
       <FILE FILENAME="Engine\Game\xrServer_Objects.cpp" FORMNAME="" UNITNAME="xrServer_Objects.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Game\xrServer_Objects_ALife.cpp" FORMNAME="" UNITNAME="xrServer_Objects_ALife.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Game\xrServer_Objects_ALife_Items.cpp" FORMNAME="" UNITNAME="xrServer_Objects_ALife_Items.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\EditObjectProps.cpp" FORMNAME="" UNITNAME="EditObjectProps" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

@@ -188,8 +188,8 @@ void CGlow::FillProp(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp(pref, items);
     PropValue* V=0;
-    V=PHelper.CreateATexture(items,PHelper.PrepareKey(pref,"Texture"), 		&m_TexName);	V->SetEvents(0,0,ShaderChange);
-    V=PHelper.CreateAEShader(items,PHelper.PrepareKey(pref,"Shader"),		&m_ShaderName);	V->SetEvents(0,0,ShaderChange);
+    V=PHelper.CreateATexture(items,PHelper.PrepareKey(pref,"Texture"), 		&m_TexName);	V->OnChangeEvent=ShaderChange;
+    V=PHelper.CreateAEShader(items,PHelper.PrepareKey(pref,"Shader"),		&m_ShaderName);	V->OnChangeEvent=ShaderChange;
     PHelper.CreateFloat		(items,PHelper.PrepareKey(pref,"Radius"),		&m_fRadius,		0.01f,10000.f);
     PHelper.CreateFlag8		(items,PHelper.PrepareKey(pref,"Fixed size"),	&m_Flags, 		gfFixedSize);
 }

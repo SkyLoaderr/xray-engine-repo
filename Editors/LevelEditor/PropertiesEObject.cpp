@@ -72,7 +72,11 @@ void TfrmPropertiesEObject::FillSurfProps()
     PropItemVec values;
     if (S->GetReference()){
     	CEditableObject* 	O = S->GetReference();
-        O->FillPropSurf		(0,values);
+        O->FillSurfacesProps("Surfaces",values);
+        for (SurfaceIt it=O->FirstSurface(); it!=O->LastSurface(); it++){
+        	AnsiString	pref = AnsiString("Surfaces\\")+(*it)->_Name();
+        	O->FillSurfaceProps(*it,pref.c_str(),values);
+        }
     }
     m_SurfProp->AssignItems(values,true);
 }

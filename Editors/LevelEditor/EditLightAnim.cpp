@@ -172,15 +172,9 @@ void TfrmEditLightAnim::GetItemData()
 {
     PropItemVec items;
 	if (m_CurrentItem){
-        PropValue* V=0;
-        V = PHelper.CreateText	(items,	"Name",			m_CurrentItem->cName,		sizeof(m_CurrentItem->cName));
-        V->SetEvents			(FHelper.NameAfterEdit,FHelper.NameBeforeEdit);
-        V->Owner()->SetEvents	(FHelper.NameDraw);
-        PHelper.CreateFloat		(items,	"FPS",			&m_CurrentItem->fFPS,		0.1f,1000,1.f,1);
-        PHelper.CreateS32		(items,	"Frame Count",	&m_CurrentItem->iFrameCount,1,100000,1);
-		// set name
-        PropItem* P				= V->Owner(); VERIFY(P);
-        P->tag					= (int)tvItems->Items->LookForItem(0,m_CurrentItem->cName,0,0,false,true,false,true,true); VERIFY(P->tag);
+        PHelper.CreateName	(items,	"Name",			m_CurrentItem->cName,		sizeof(m_CurrentItem->cName), (int)tvItems->Items->LookForItem(0,m_CurrentItem->cName,0,0,false,true,false,true,true));
+        PHelper.CreateFloat	(items,	"FPS",			&m_CurrentItem->fFPS,		0.1f,1000,1.f,1);
+        PHelper.CreateS32	(items,	"Frame Count",	&m_CurrentItem->iFrameCount,1,100000,1);
     }
     m_Props->AssignItems	(items,true);
     UpdateView();

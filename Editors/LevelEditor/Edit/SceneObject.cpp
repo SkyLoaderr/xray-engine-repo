@@ -410,9 +410,9 @@ void __fastcall CSceneObject::ReferenceChange(PropValue* sender)
 
 void CSceneObject::FillProp(LPCSTR pref, PropItemVec& items)
 {
-	inherited::FillProp		(pref,items);
-    PropValue* V=0;
-	V=PHelper.CreateALibObject	(items,PHelper.PrepareKey(pref,"Reference"),	&m_ReferenceName); V->SetEvents(0,0,ReferenceChange);
+	inherited::FillProp	(pref,items);
+    PropValue* V		= PHelper.CreateALibObject	(items,PHelper.PrepareKey(pref,"Reference"),	&m_ReferenceName); 
+    V->OnChangeEvent 	= ReferenceChange;
 }
 
 bool CSceneObject::GetSummaryInfo(SSceneSummary* inf)
