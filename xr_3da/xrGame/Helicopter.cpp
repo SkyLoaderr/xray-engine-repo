@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "helicopter.h"
 #include "xrserver_objects_alife.h"
+#include "PhysicsShell.h"
 
 CHelicopter::CHelicopter()
 {
@@ -250,7 +251,7 @@ CHelicopter::shedule_Update(u32	time_delta)
 
 	updateMGunDir();
 
-	if ( GetfHealth() <= 0.0f )
+	if ( GetfHealth() <= 0.0f && !PPhysicsShell() )
 	{//die
 		PPhysicsShell()=P_build_Shell	(this,false);
 	}
@@ -293,7 +294,8 @@ CHelicopter::Hit(	float P,
 	}else
 //		CEntity::Hit(P,dir,who,element,position_in_bone_space,impulse,hit_type );
 	{
-		SetfHealth(GetfHealth()-P*0.2f);
+//		SetfHealth(GetfHealth()-P*0.2f);
+		SetfHealth(-0.5f);
 	};
 
 	CGameObject* GO = dynamic_cast<CGameObject*>(who);
