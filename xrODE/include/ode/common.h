@@ -121,14 +121,16 @@ typedef dReal dQuaternion[4];
 
 #if defined(dSINGLE)
 
-#define REAL(x) (x ## f)			/* form a constant */
-#define dRecip(x) ((float)(1.0f/(x)))		/* reciprocal */
-#define dSqrt(x) ((float)sqrt(x))		/* square root */
-#define dRecipSqrt(x) ((float)(1.0f/sqrt(x)))	/* reciprocal square root */
-#define dSin(x) ((float)sin(x))			/* sine */
-#define dCos(x) ((float)cos(x))			/* cosine */
-#define dFabs(x) ((float)fabs(x))		/* absolute value */
-#define dAtan2(y,x) ((float)atan2((y),(x)))	/* arc tangent with 2 args */
+#define REAL(x) (x ## f)					/* form a constant */
+#define dRecip(x) ((float)(1.0f/(x)))				/* reciprocal */
+#define dSqrt(x) ((float)sqrtf(float(x)))			/* square root */
+#define dRecipSqrt(x) ((float)(1.0f/sqrtf(float(x))))		/* reciprocal square root */
+#define dSin(x) ((float)sinf(float(x)))				/* sine */
+#define dCos(x) ((float)cosf(float(x)))				/* cosine */
+#define dFabs(x) ((float)fabsf(float(x)))			/* absolute value */
+#define dAtan2(y,x) ((float)atan2f(float(y),float(x)))		/* arc tangent with 2 args */
+#define dFMod(a,b) ((float)fmodf(float(a),float(b)))		/* modulo */
+#define dCopySign(a,b) ((float)copysignf(float(a),float(b)))
 
 #elif defined(dDOUBLE)
 
@@ -140,6 +142,8 @@ typedef dReal dQuaternion[4];
 #define dCos(x) cos(x)
 #define dFabs(x) fabs(x)
 #define dAtan2(y,x) atan2((y),(x))
+#define dFMod(a,b) (fmod((a),(b)))
+#define dCopySign(a,b) (copysign((a),(b)))
 
 #else
 #error You must #define dSINGLE or dDOUBLE
@@ -159,7 +163,7 @@ typedef dReal dQuaternion[4];
  */
 
 #define dALLOCA16(n) \
-  ((char*)dEFFICIENT_SIZE(((int)(alloca((n)+(EFFICIENT_ALIGNMENT-1))))))
+  ((char*)dEFFICIENT_SIZE(((size_t)(alloca((n)+(EFFICIENT_ALIGNMENT-1))))))
 
 
 /* internal object types (all prefixed with `dx') */

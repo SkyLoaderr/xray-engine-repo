@@ -121,8 +121,7 @@ struct dxGeom : public dBase {
   // the GEOM_AABB_BAD flag.
 
   void recomputeAABB() {
-    //if (gflags & GEOM_AABB_BAD)
-	{
+    if (gflags & GEOM_AABB_BAD) {
       computeAABB();
       gflags &= ~GEOM_AABB_BAD;
     }

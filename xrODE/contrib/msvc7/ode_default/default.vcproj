@@ -316,6 +316,9 @@
 				RelativePath="..\..\..\include\ode\odecpp_collision.h">
 			</File>
 			<File
+				RelativePath="..\..\..\ode\src\quickstep.h">
+			</File>
+			<File
 				RelativePath="..\..\..\ode\src\stack.h">
 			</File>
 			<File
@@ -411,6 +414,9 @@
 				RelativePath="..\..\..\ode\src\error.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\ode\src\export-dif.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\ode\src\fastdot.c">
 			</File>
 			<File
@@ -456,6 +462,9 @@
 				RelativePath="..\..\..\ode\src\odemath.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\ode\src\quickstep.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\ode\src\rotation.cpp">
 			</File>
 			<File
@@ -472,6 +481,12 @@
 			</File>
 			<File
 				RelativePath="..\..\..\ode\src\timer.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\ode\src\util.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\ode\src\util.h">
 			</File>
 		</Filter>
 		<File

@@ -32,8 +32,8 @@
 
 
 #define AXIS0 0
-#define AXIS1 2
-#define UP 1
+#define AXIS1 1
+#define UP 2
 
 //#define DRAWBLOCKS
 
