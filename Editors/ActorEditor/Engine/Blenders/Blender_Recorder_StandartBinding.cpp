@@ -10,6 +10,7 @@
 #else
 	#include "igame_level.h"
 	#include "environment.h"
+	#include "xr_effsun.h"
 #endif
 
 // matrices
@@ -96,6 +97,45 @@ class cl_eye_N		: public R_constant_setup {
 };
 static cl_eye_N		binder_eye_N;
 
+// D-Light0
+class cl_sun0_color	: public R_constant_setup {
+	u32			marker;
+	Fvector4	result;
+	virtual void setup	(R_constant* C)	{
+		if (marker!=Device.dwFrame)	{
+			CSun&	sun				= *(g_pGameLevel->Environment->Suns.front());
+			result.set				(sun.Color().r,	sun.Color().g,	sun.Color().b,	0);
+		}
+		RCache.set_c	(C,result);
+	}
+};	static cl_sun0_color		binder_sun0_color;
+
+class cl_sun0_dir_w	: public R_constant_setup {
+	u32			marker;
+	Fvector4	result;
+	virtual void setup	(R_constant* C)	{
+		if (marker!=Device.dwFrame)	{
+			CSun&	sun				= *(g_pGameLevel->Environment->Suns.front());
+			result.set				(sun.Direction().x,	sun.Direction().y,	sun.Direction().z,	0);
+		}
+		RCache.set_c	(C,result);
+	}
+};	static cl_sun0_dir_w		binder_sun0_dir_w;
+class cl_sun0_dir_e	: public R_constant_setup {
+	u32			marker;
+	Fvector4	result;
+	virtual void setup	(R_constant* C)	{
+		if (marker!=Device.dwFrame)	{
+			Fvector D;
+			CSun&	sun				=	*(g_pGameLevel->Environment->Suns.front());
+			Device.mView.transform_dir	(D,sun.Direction());
+			D.normalize					();
+			result.set					(D.x,D.y,D.z,0);
+		}
+		RCache.set_c	(C,result);
+	}
+};	static cl_sun0_dir_e		binder_sun0_dir_e;
+
 // Standart constant-binding
 void	CBlender_Compile::SetMapping	()
 {
@@ -115,6 +155,11 @@ void	CBlender_Compile::SetMapping	()
 	r_Constant				("eye_position",	&binder_eye_P);
 	r_Constant				("eye_direction",	&binder_eye_D);
 	r_Constant				("eye_normal",		&binder_eye_N);
+
+	// global-lighting (env params)
+	r_Constant				("sun0_color",		&binder_sun0_color);
+	r_Constant				("sun0_dir_w",		&binder_sun0_dir_w);
+	r_Constant				("sun0_dir_e",		&binder_sun0_dir_e);
 
 	// detail
 	if (bDetail	&& detail_scaler)
