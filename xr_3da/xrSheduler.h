@@ -7,6 +7,7 @@ public:
 	DWORD								shedule_Max;		// maximal bound of update time (sample: 200ms)
 	DWORD								shedule_TimeStamp;	// last update global device time
 	float								shedule_PMON;		// performance monitor (microseconds)
+	BOOL								shedule_RT;
 
 	CSheduled			();
 	virtual ~CSheduled	();
@@ -59,10 +60,9 @@ public:
 			Switch();
 	}
 
-	void			RegisterRT	(CSheduled* A	);
-	void			UnregisterRT(CSheduled* A	);
-	void			Register	(CSheduled* A	);
+	void			Register	(CSheduled* A, BOOL RT=FALSE );
 	void			Unregister	(CSheduled* A	);
+	void			EnsureOrder	(CSheduled* Before, CSheduled* After);
 
 	void			Initialize	();
 	void			Destroy		();

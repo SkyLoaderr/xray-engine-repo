@@ -49,46 +49,64 @@ void CSheduler::Destroy			()
 	DeleteFiber			(fiber_thread);
 }
 
-void CSheduler::RegisterRT		(CSheduled* O)
+void CSheduler::Register		(CSheduled* O, BOOL RT)
 {
-	// Fill item structure
-	Item						TNext;
-	TNext.dwTimeForExecute		= Device.dwTimeGlobal+O->shedule_Min;
-	TNext.dwTimeOfLastExecute	= Device.dwTimeGlobal;
-	TNext.Object				= O;
-
-	ItemsRT.push_back			(TNext);
-}
-
-void CSheduler::Register		(CSheduled* O)
-{
-	// Fill item structure
-	Item						TNext;
-	TNext.dwTimeForExecute		= Device.dwTimeGlobal+O->shedule_Min;
-	TNext.dwTimeOfLastExecute	= Device.dwTimeGlobal;
-	TNext.Object				= O;
-	
-	// Insert into priority Queue
-	Push						(TNext);
-}
-
-void CSheduler::UnregisterRT	(CSheduled* O)
-{
-	for (DWORD i=0; i<ItemsRT.size(); i++)
+	if (RT)
 	{
-		if (ItemsRT[i].Object==O) {
-			ItemsRT.erase(ItemsRT.begin()+i);
-			return;
-		}
+		// Fill item structure
+		Item						TNext;
+		TNext.dwTimeForExecute		= Device.dwTimeGlobal+O->shedule_Min;
+		TNext.dwTimeOfLastExecute	= Device.dwTimeGlobal;
+		TNext.Object				= O;
+		O->shedule_RT				= TRUE;
+
+		ItemsRT.push_back			(TNext);
+	} else {
+		// Fill item structure
+		Item						TNext;
+		TNext.dwTimeForExecute		= Device.dwTimeGlobal+O->shedule_Min;
+		TNext.dwTimeOfLastExecute	= Device.dwTimeGlobal;
+		TNext.Object				= O;
+		O->shedule_RT				= FALSE;
+
+		// Insert into priority Queue
+		Push						(TNext);
 	}
 }
 
 void CSheduler::Unregister		(CSheduled* O)
 {
-	for (DWORD i=0; i<Items.size(); i++)
+	if (O->shedule_RT)
 	{
-		if (Items[i].Object==O) {
-			Items.erase(Items.begin()+i);
+		for (DWORD i=0; i<ItemsRT.size(); i++)
+		{
+			if (ItemsRT[i].Object==O) {
+				ItemsRT.erase(ItemsRT.begin()+i);
+				return;
+			}
+		}
+	} else {
+		for (DWORD i=0; i<Items.size(); i++)
+		{
+			if (Items[i].Object==O) {
+				Items.erase(Items.begin()+i);
+				return;
+			}
+		}
+	}
+}
+
+void CSheduler::EnsureOrder	(CSheduled* Before, CSheduled* After)
+{
+	VERIFY(Before->shedule_RT && After->shedule_RT);
+
+	for (DWORD i=0; i<ItemsRT.size(); i++)
+	{
+		if (ItemsRT[i].Object==After) 
+		{
+			Item	A			= ItemsRT[i];
+			ItemsRT.erase		(ItemsRT.begin()+i);
+			ItemsRT.push_back	(A);
 			return;
 		}
 	}

@@ -129,6 +129,7 @@ public:
 	virtual void			OnShow				()			{};
 	virtual void			OnZoomIn			()			{};
 	virtual void			OnZoomOut			()			{};
+	virtual void			OnDrawFlame			();
 public:
 							CWeapon				(LPCSTR name);
 	virtual					~CWeapon			();
@@ -141,7 +142,6 @@ public:
 	virtual void			net_Import			(NET_Packet& P);	// import from server
 	virtual void			Update				(DWORD dt);
 	virtual void			OnVisible			();
-	virtual void			OnDrawFlame			();
 
 	// logic & effects
 	virtual void			SetDefaults			();
