@@ -100,7 +100,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="odbc32.lib odbccp32.lib d3dxd.lib ddraw.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib"
 				OutputFile="x:\ETools.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
