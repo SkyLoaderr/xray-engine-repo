@@ -10,9 +10,9 @@ void	uber_deffer	(CBlender_Compile& C, LPCSTR _vspec, LPCSTR _pspec, BOOL _aref)
 	bool			bump	= _t.bump_exist		();
 
 	string256		ps,vs,dt;
-	strconcat		(vs,"deffer", _vspec	);
-	strconcat		(ps,"deffer", _pspec	);
-	strcpy			(dt,C.detail_texture	);
+	strconcat		(vs,"deffer_", _vspec	);
+	strconcat		(ps,"deffer_", _pspec	);
+	strcpy			(dt,C.detail_texture?C.detail_texture:"");
 
 	if	(_aref)		{ strcat(ps,"_aref");	}
 
