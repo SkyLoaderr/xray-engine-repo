@@ -138,6 +138,9 @@ VOID CDeflector::OA_Export()
 		T->owner = F;
 	}
 	bb.getsphere(Center,Radius);
+
+	lm.dwWidth	+= 2;	// border
+	lm.dwHeight	+= 2;	// border
 }
 
 BOOL CDeflector::OA_Place(Face *owner)
@@ -166,17 +169,21 @@ VOID CDeflector::GetRect(UVpoint &min, UVpoint &max)
 	}
 }
 
-VOID CDeflector::Capture(CDeflector *D,UVpoint &fBase,UVpoint &fScale)
+VOID CDeflector::Capture(CDeflector *D, int b_u, int b_v, int s_u, int s_v)
 {
-	UVpoint half; half.set(.5f/512.f, .5f/512.f);
+	UVpoint half;	half.set	(.5f/512.f, .5f/512.f);
+	UVpoint guard;	guard.set	(1.f/512.f, 1.f/512.f);
+	UVpoint scale;  scale.set	(float(s_u-2)/512.f, float(s_v-2)/512.f);	// take in mind border
+	UVpoint base;	base.set	(float(b_u)/512.f, float(b_v)/512.f);		// offset in UV space
+
 	for (UVIt T=D->tris.begin(); T!=D->tris.end(); T++)
 	{
 		UVtri	P;
 		Face	*F = T->owner;
 
-		P.uv[0].set(T->uv[0]); P.uv[0].mul(fScale); P.uv[0].add(fBase); P.uv[0].add(half);
-		P.uv[1].set(T->uv[1]); P.uv[1].mul(fScale); P.uv[1].add(fBase); P.uv[1].add(half);
-		P.uv[2].set(T->uv[2]); P.uv[2].mul(fScale); P.uv[2].add(fBase); P.uv[2].add(half); 
+		P.uv[0].set(T->uv[0]); P.uv[0].mul(scale); P.uv[0].add(base); P.uv[0].add(guard);	P.uv[0].add(half);
+		P.uv[1].set(T->uv[1]); P.uv[1].mul(scale); P.uv[1].add(base); P.uv[1].add(guard);	P.uv[1].add(half);
+		P.uv[2].set(T->uv[2]); P.uv[2].mul(scale); P.uv[2].add(base); P.uv[2].add(guard);	P.uv[2].add(half); 
 
 		P.owner			= F;
 		F->pDeflector	= this;
