@@ -2,6 +2,7 @@
 
 #include "uber_deffer.h"
 
+#include "blender_BmmD.h"
 #include "blender_deffer_flat.h"
 #include "blender_deffer_model.h"
 #include "blender_deffer_aref.h"
@@ -23,7 +24,7 @@ IBlender*	CRender::blender_create	(CLASS_ID cls)
 	case B_EDITOR_WIRE:		return 0;
 	case B_EDITOR_SEL:		return 0;
 	case B_LIGHT:			return 0;
-	case B_LmBmmD:			return 0;
+	case B_LmBmmD:			return xr_new<CBlender_BmmD>			();	
 	case B_LaEmB:			return 0;
 	case B_LmEbB:			return 0;
 	case B_B:				return 0;
