@@ -40,6 +40,7 @@ OPT:	precompute invisible list (visuals) for static lights at load time
 +		:	fading of bloom
 +BUG	:	jumping transform for projected texture
 +BUG	:	biasing for spot-lighting
++BUG	:	fucking light-flickering!!!
 
 self-ilum
 volume-fog
