@@ -128,6 +128,8 @@ xrSE_DECLARE_BEGIN(xrSE_Weapon,xrServerEntity)
 
 	xrSE_Weapon				();
 
+	virtual void			OnEvent			(NET_Packet& P, u16 type, u32 time, u32 sender );
+
 	u8						get_slot		();
 	u16						get_ammo_limit	();
 	u16						get_ammo_total	();

@@ -114,13 +114,13 @@ void	xrSE_Weapon::STATE_Read		(NET_Packet& P, u16 size)
 {
 	P.r_u16				(a_current);
 	P.r_u16				(a_elapsed);
-	P.r_u16				(state);
+	P.r_u8				(state);
 }
 void	xrSE_Weapon::STATE_Write	(NET_Packet& P)
 {
 	P.w_u16				(a_current);
 	P.w_u16				(a_elapsed);
-	P.w_u16				(state);
+	P.w_u8				(state);
 }
 void	xrSE_Weapon::OnEvent		(NET_Packet& P, u16 type, u32 time, u32 sender )
 {
