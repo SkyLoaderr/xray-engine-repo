@@ -17,12 +17,11 @@ typedef struct tagSAIMapData {
 
 #pragma pack(push,4)
 typedef struct tagSNode {
-	int			ucOpenCloseMask:8;
-	int			iIndex:24;
+	u32			ucOpenCloseMask:8;
+	u32			iIndex:24;
 	float		f;
 	float		g;
 	float		h;
-	tagSNode	*tpForward;
 	tagSNode	*tpBack;
 } SNode;
 
@@ -180,7 +179,6 @@ public:
 				}
 				else {
 					tpTemp2 = tpIndexes[iNodeIndex].tpNode = tpHeap + dwHeap++;
-					tpTemp2->tpForward = 0;
 					tpIndexes[iNodeIndex].dwTime = dwAStarStaticCounter;
 
 					tpTemp2->iIndex = iNodeIndex;
@@ -192,9 +190,6 @@ public:
 					tpTemp2->f = tpTemp2->g + tpTemp2->h;
 					
 					tpTemp2->ucOpenCloseMask = 1;
-					
-					// make it a BESTNODE successor
-					tpBestNode->tpForward = tpTemp2;
 					
 					*tppHeapEnd = tpTemp2;
 					std::push_heap(tppHeapStart,++tppHeapEnd,CComparePredicate());
@@ -249,8 +244,6 @@ public:
 			// check if that node is our goal
 			int iBestIndex = tpBestNode->iIndex;
 			if (iBestIndex == (int)dwGoalNode) {
-//				fValue = tpBestNode->g;
-
 				tpTemp1 = tpBestNode;
 				tpTemp = tpTemp1->tpBack;
 				for (u32 i=1; tpTemp; tpTemp1 = tpTemp, tpTemp = tpTemp->tpBack, i++) ;
@@ -301,7 +294,6 @@ public:
 				}
 				else {
 					tpTemp2 = tpIndexes[iNodeIndex].tpNode = tpHeap + dwHeap++;
-					tpTemp2->tpForward = 0;
 					tpIndexes[iNodeIndex].dwTime = dwAStarStaticCounter;
 
 					tpTemp2->iIndex = iNodeIndex;
@@ -313,9 +305,6 @@ public:
 					tpTemp2->f = tpTemp2->g + tpTemp2->h;
 					
 					tpTemp2->ucOpenCloseMask = 1;
-					
-					// make it a BESTNODE successor
-					tpBestNode->tpForward = tpTemp2;
 					
 					*tppHeapEnd = tpTemp2;
 					std::push_heap(tppHeapStart,++tppHeapEnd,CComparePredicate());

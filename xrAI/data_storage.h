@@ -132,7 +132,8 @@ public:
 		VERIFY					(node_index < max_node_count);
 		CGraphNode				*node = indexes[node_index].node = nodes + node_count++;
 		indexes[node_index].epoch_id = epoch_count;
-		Memory.mem_fill			(node,0,sizeof(CGraphNode));
+#pragma todo("Dima to Dima : remove next line here")
+		node->back				= 0;
 		node->_index			= node_index;
 		return					(*node);
 	}

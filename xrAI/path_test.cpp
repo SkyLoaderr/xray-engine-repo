@@ -14,35 +14,34 @@
 #include "path_manager.h"
 #include "path_test_old.h"
 
-typedef CDataStorage<float,u32,u32,true,24,8>							CHeapDataStorage;
-typedef CPathManager<CAI_Map,CHeapDataStorage,float,u32,u32>			CDistancePathManager;
-typedef CAStar<CHeapDataStorage,CDistancePathManager,CAI_Map,u32,float>	CAStarSearch;
+typedef CDataStorage<float,int,u32,true,24,8>							CHeapDataStorage;
+typedef CPathManager1<CAI_Map,CHeapDataStorage,float,int,u32>			CDistancePathManager;
+typedef CAStar<CHeapDataStorage,CDistancePathManager,CAI_Map,int,float>	CAStarSearch;
 
 void path_test(LPCSTR caLevelName)
 {
-	xr_vector<u32>			path;
+	xr_vector<int>			path;
 	CAI_Map					*graph			= xr_new<CAI_Map>				(caLevelName);
 	CHeapDataStorage		*data_storage	= xr_new<CHeapDataStorage>		(graph->get_node_count());
-	CDistancePathManager	*path_manager	= xr_new<CDistancePathManager>	();
+	CDistancePathManager	*path_manager	= xr_new<CDistancePathManager>	(graph,data_storage);
 	CAStarSearch			*a_star			= xr_new<CAStarSearch>			();
 	
 	Msg						("Total %d nodes",graph->get_node_count() - 1);
-	path_manager->init		(
-		graph,
-		data_storage,
-		&path,
-		1,
-		graph->get_node_count() - 1,
-		u32(-1),
-		6000,
-		u32(-1)
-	);
 
-	
 	u64						start, finish;
 	Sleep					(1);
 	start					= CPU::GetCycleCount();
-	a_star->find			(*data_storage,*path_manager,*graph);
+	for (int i=0; i<100; ++i) {
+		path_manager->init		(
+			&path,
+			1 + i,
+			graph->get_node_count() - 1 - i,
+			u32(-1),
+			6000,
+			u32(-1)
+			);
+		a_star->find		(*data_storage,*path_manager,*graph);
+	}
 	finish					= CPU::GetCycleCount();
 	Msg						("%f microseconds",float(s64(finish - start))*CPU::cycles2microsec);
 

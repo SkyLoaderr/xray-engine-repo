@@ -64,7 +64,8 @@ void path_test_old(LPCSTR caLevelName)
 	u64						start, finish;
 	Sleep					(1);
 	start					= CPU::GetCycleCount();
-	search->Find			(1,graph->get_node_count() - 1);
+	for (int i=0; i<100; ++i)
+		search->Find		(1+i,graph->get_node_count() - 1 - i);
 	finish					= CPU::GetCycleCount();
 	Msg						("%f microseconds",float(s64(finish - start))*CPU::cycles2microsec);
 	

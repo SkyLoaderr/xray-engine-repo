@@ -23,16 +23,20 @@ public:
 		// here we do nothing
 	}
 
-	IC		void		init			(_DataStorage &data_storage, _PathManager &path_manager, const _Graph &graph)
+	IC		void		init			(_DataStorage &data_storage, _PathManager &path_manager)
 	{
 		// initialize data structures before we started path search
 		data_storage.init		();
+		// initialize path manager before we started path search
+		path_manager.init		();
 		// create a node
 		CGraphNode				&start = data_storage.create_node(path_manager.start_node());
 		// assign correspoding values to the created node
 		start.g()				= _dist_type(0);
 		start.h()				= path_manager.estimate(start.index());
-		start.f()				= start.g() + start.h();
+		start.f()				= start.h();
+//#pragma todo("Dima to Dima : change to assign_parent respectively")
+//		start.back				= 0;
 		// add start node to the opened list
 		data_storage.add_opened	(start);
 	}
@@ -157,15 +161,16 @@ public:
 	IC		bool		find			(_DataStorage &data_storage, _PathManager &path_manager, const _Graph &graph)
 	{
 		// initialize data structures with new search
-		init					(data_storage, path_manager, graph);
+		init					(data_storage, path_manager);
 		// iterate while opened list is not empty
-		for (_iteration_type i = _iteration_type(0); !data_storage.is_opened_empty(); ++i) {
+//		for (_iteration_type i = _iteration_type(0); !data_storage.is_opened_empty(); ++i) {
+		for (; !data_storage.is_opened_empty();) {
 			// check if we reached limit
-			if (path_manager.is_limit_reached(i)) {
-				// so we reaches limit, return failure
+//			if (path_manager.is_limit_reached(i)) {
+//				// so we reaches limit, return failure
 //				Msg				("Limit reached!");
-				return			(false);
-			}
+//				return			(false);
+//			}
 			
 			// so, limit is not reached
 			// check if new step will get us success
