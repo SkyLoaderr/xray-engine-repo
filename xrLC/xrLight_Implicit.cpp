@@ -226,14 +226,12 @@ void CBuild::ImplicitLighting()
 			for (u32 V=0; V<defl.Height(); V++)	{
 				for (u32 U=0; U<defl.Width(); U++)	{
 					// Retreive Texel
-					float	h	= defl.Lumel(U,V).hemi;
+					float	h	= defl.Lumel(U,V).h._r();
 					u32 &C		= color[V*defl.Width() + U];
 					C			= subst_alpha(C,u8_clr(h));
 				}
 			}
 		}
-
-
 
 		// base
 		Status	("Saving base...");
