@@ -29,8 +29,7 @@ CTexture::~CTexture()
 
 void				CTexture::surface_set	(IDirect3DTexture8* surf)
 {
-	R_ASSERT			(surf);
-	surf->AddRef		();
+	if (surf)			surf->AddRef		();
 	_RELEASE			(pSurface);
 	pSurface			= surf;
 }

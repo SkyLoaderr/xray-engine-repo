@@ -8,9 +8,7 @@ const static DWORD		as_id[4*3] = {0,1,4,  1,2,4,  2,3,4,  3,0,4};
 
 //--------------------------------------------------------------------
 CHitMarker::CHitMarker(){
-	hShader			= Device.Shader.Create("hud\\hitmarker","hud_hitmarker");
 	ZeroMemory		(fHitMarks,sizeof(float)*4);
-	VS				= Device.Streams.Create(FVF::F_TL,4*3);
 	as_PC[0].set	(-0.5f,-0.67f);
 	as_PC[1].set	(0.5f,-0.67f);
 	as_PC[2].set	(0.5f,0.67f);
@@ -21,14 +19,27 @@ CHitMarker::CHitMarker(){
 	as_TC[2].set	(0.f,0.f);
 	as_TC[3].set	(1.f,0.f);
 	as_TC[4].set	(.5f,1.f);
+	hShader			= 0;
+	VS				= 0;
+	OnDeviceCreate	();
+} 
+//--------------------------------------------------------------------
+CHitMarker::~CHitMarker(){
+	VS				= 0;
+	OnDeviceDestroy	();
 } 
 //--------------------------------------------------------------------
 
-CHitMarker::~CHitMarker(){
-	VS				= 0;
+void CHitMarker::OnDeviceDestroy()
+{
 	Device.Shader.Delete(hShader);
-} 
-//--------------------------------------------------------------------
+}
+void CHitMarker::OnDeviceCreate()
+{
+	REQ_CREATE	();
+	hShader		= Device.Shader.Create("hud\\hitmarker","hud_hitmarker");
+	VS			= Device.Streams.Create(FVF::F_TL,4*3);
+}
 
 const static float fShowTime = 0.2f;
 void CHitMarker::Render()

@@ -2,16 +2,21 @@
 #define __XR_HITMARKER_H__
 #pragma once
 
-class CHitMarker{
+class CHitMarker	: public pureDeviceDestroy, pureDeviceCreate
+{
 public:
 	float					fHitMarks[4];
 	Shader*					hShader;
 	CVertexStream*			VS;
 public:
-							CHitMarker();
-							~CHitMarker();
-	void					Render();
-	void					Hit(int id);
+							CHitMarker	();
+							~CHitMarker	();
+
+	void					Render		();
+	void					Hit			(int id);
+
+	virtual void			OnDeviceDestroy	();
+	virtual void			OnDeviceCreate	();
 };
 
 #endif // __XR_HITMARKER_H__
