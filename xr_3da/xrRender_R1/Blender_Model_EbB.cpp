@@ -100,7 +100,7 @@ void	CBlender_Model_EbB::Compile(CBlender_Compile& C)
 				C.StageSET_TMC		(oT_Name, oT_xform, "$null", 0);
 				C.StageEnd			();
 
-				C.PassSET_PS		("r1_model_env");
+				C.PassSET_PS		("r1\\r1_model_env");
 				break;
 			case 1:	// Lowest LOD
 				// Stage1 - Env texture
