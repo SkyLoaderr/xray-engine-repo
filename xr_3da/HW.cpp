@@ -205,7 +205,7 @@ DWORD CHW::CreateDevice		(HWND m_hWnd,DWORD &dwWidth,DWORD &dwHeight)
 	R_CHK	(pDevice->GetDepthStencilSurface	(&pBaseZB));
 	R_CHK	(pDevice->CreateDepthStencilSurface	(512,512,fDepth,D3DMULTISAMPLE_NONE,&pTempZB));
 	DWORD	memory								= pDevice->GetAvailableTextureMem	();
-	Log		("* Texture memory:     %d M",		memory/1024);
+	Msg		("* Texture memory:     %d M",		memory/1024);
 	return dwWindowStyle;
 }
 

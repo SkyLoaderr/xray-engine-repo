@@ -536,7 +536,7 @@ _DDS:
 		_RELEASE				(T_sysmem);
 
 		// Log
-		Msg						("* T[%d-%d](%dK): ",top_width,top_height,_MemUsage(pTexture)/1024,fn);
+		Msg						("* T[%d-%d](%dK): %s",top_width,top_height,_MemUsage(pTexture)/1024,fn);
 
 		// OK
 		dwWidth					= top_width;
