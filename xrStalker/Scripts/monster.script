@@ -32,34 +32,34 @@ function bind(obj)
 	----------------------------------------------------------------------------------------
 
 	// Читер на ростке(кровосос)
-	if(char_ini:section_exist("rostok_bloodsuceker")) then
-		obj:bind_object(bloodsucker.CRostokBloodSucker(obj))
-		return
-	end
+	--if(char_ini:section_exist("rostok_bloodsuceker")) then
+	--	obj:bind_object(bloodsucker.CRostokBloodSucker(obj))
+	--	return
+	--end
 	
 	// Собака доктора
-	if(char_ini:section_exist("outcast_dog")) then
-		obj:bind_object(monster_bind.COutcastDog(obj))
-		return
-	end
+	--if(char_ini:section_exist("outcast_dog")) then
+	--	obj:bind_object(monster_bind.COutcastDog(obj))
+	--	return
+	--end
 
 	// Монстр, который после смерти пинает труп
-	if(char_ini:section_exist("play_with_corpse")) then
-		obj:bind_object(monster_bind.CNecrophil(obj))
-		return
-	end
+	--if(char_ini:section_exist("play_with_corpse")) then
+	--	obj:bind_object(monster_bind.CNecrophil(obj))
+	--	return
+	--end
 	
 	// Монтры, которые играю в футбол
-	if(char_ini:section_exist("play_football")) then
-		obj:bind_object(pripyat_football.CFootballPlayer(obj))
-		return
+	--if(char_ini:section_exist("play_football")) then
+	--	obj:bind_object(pripyat_football.CFootballPlayer(obj))
+	--	return
 	end
 
 	// Контролер, тренер монстров игроков
-	if(char_ini:section_exist("controler_trainer")) then
-		obj:bind_object(pripyat_football.CControlerTrainer(obj))
-		return
-	end
+	--if(char_ini:section_exist("controler_trainer")) then
+	--	obj:bind_object(pripyat_football.CControlerTrainer(obj))
+	--	return
+	--end
 	
 	// Сюжетные и не только скрипты
 	--if(char_ini:section_exist("gameplay")) then
