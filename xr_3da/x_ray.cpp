@@ -36,7 +36,7 @@ void Startup()
 	Engine.External.Initialize	( );
 	
 	// Execute script
-	Console.Execute				("startup.ltx");
+	Console.ExecuteScript		("startup.ltx");
 	if (strstr(Engine.Params,"-ltx "))
 		Console.Execute			(strstr(Engine.Params,"-ltx ")+5);
 

@@ -393,7 +393,7 @@ void CConsole::Execute(char *cmd)
 {
 	strncpy(editor,cmd,63); editor[63]=0;
 	RecordCommands	= false;
-	ExecuteCommand();
+	ExecuteCommand	();
 	RecordCommands	= true;
 }
 
