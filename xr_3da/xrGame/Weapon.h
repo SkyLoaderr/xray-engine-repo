@@ -135,6 +135,11 @@ protected:
 
 	//состояние подключенных аддонов
 	u8			m_flagsAddOnState;
+
+	//время удаления оружия
+	ALife::_TIME_ID			m_dwWeaponRemoveTime;
+	ALife::_TIME_ID			m_dwWeaponIndependencyTime;
+
 protected:
 	////////////////// network ///////////////////	
 protected:
@@ -201,6 +206,8 @@ public:
 	virtual void			StartSmokeParticles	();
 	//партиклы гильз
 	virtual void			OnShellDrop		();
+
+	virtual ALife::_TIME_ID	TimePassedAfterIndependant();
 public:
 							CWeapon				(LPCSTR name);
 	virtual					~CWeapon			();
@@ -215,11 +222,14 @@ public:
 	
 	virtual void			UpdateCL			();
 	virtual void			shedule_Update		(u32 dt);
+
+	virtual bool			NeedToDestroyObject();
 	
 	virtual void			renderable_Render	();
 	
 	virtual void			OnH_B_Chield		();
 	virtual void			OnH_B_Independent	();
+	virtual void			OnH_A_Independent	();
 	virtual void			OnEvent				(NET_Packet& P, u16 type) {inherited::OnEvent(P,type);}
 
 	virtual	void			Hit					(float P, Fvector &dir,	

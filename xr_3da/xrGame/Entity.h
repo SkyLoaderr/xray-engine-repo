@@ -49,8 +49,7 @@ protected:
 	int m_iMapIconY;
 
 	//время через которое мертвое тело убирется с уровня
-	ALife::_TIME_ID			m_dwBodyRemoveTime;
-	bool					m_bBodyRemoved;
+	ALife::_TIME_ID			m_dwBodyRemoveTime;	
 
 public:
 	float				m_fMorale;
@@ -78,7 +77,6 @@ public:
 	virtual void			reinit				();
 	virtual BOOL			net_Spawn			(LPVOID DC);
 	virtual void			net_Destroy			();
-	virtual void			shedule_Update		(u32 dt);	
 	virtual void			renderable_Render	();
 
 	bool					IsFocused			()const	{ return (dynamic_cast<const CEntity*>(g_pGameLevel->CurrentEntity())==this);		}
@@ -94,11 +92,6 @@ public:
 	virtual bool			AlreadyDie()			{return  0!=m_dwDeathTime?true:false;}
 	virtual ALife::_TIME_ID	GetDeathTime()			{return m_dwDeathTime;}
 	
-	virtual ALife::_TIME_ID	TimePassedAfterDeath();
-	virtual bool			NeedToDestroyEntity();
-	virtual void			DestroyEntity();
-
-
 	virtual float			CalcCondition		(float hit);
 
 	int						g_Team				()const	{ return id_Team;	}

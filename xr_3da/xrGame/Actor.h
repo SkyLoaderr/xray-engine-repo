@@ -400,8 +400,8 @@ private:
 	CGameObject*			pick_Object				(u16& element);
 	void					ActorUse				();
 
-	virtual bool			NeedToDestroyEntity();
-	virtual void			DestroyEntity();
+	virtual bool			NeedToDestroyObject();	
+	virtual ALife::_TIME_ID	TimePassedAfterDeath();
 
 
 public:

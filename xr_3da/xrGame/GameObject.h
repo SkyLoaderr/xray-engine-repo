@@ -36,6 +36,10 @@ class CGameObject :
 	u32						m_dwFrameClient;
 protected:
 	CSE_ALifeSimulator		*m_tpALife;
+	
+	//время удаления объекта
+	bool					m_bObjectRemoved;
+
 public:
 	CPhysicsShell			*m_pPhysicsShell;
 	IC CPhysicsShell		*&PPhysicsShell()		
@@ -55,6 +59,7 @@ public:
 	virtual BOOL			Ready				()	{ return getReady();	}	// update only if active and fully initialized by/for network
 	virtual float			renderable_Ambient	();
 
+	virtual void			shedule_Update		(u32 dt);	
 	virtual void			renderable_Render			();
 	virtual void			OnEvent				(NET_Packet& P, u16 type);
 	virtual void			UpdateCL			();
@@ -86,6 +91,11 @@ public:
 	virtual void			PH_A_CrPr		() {}; // actions & operations after phisic correction-prediction steps
 ///////////////////////////////////////////////////////////////////////
 	virtual bool			IsVisibleForZones() { return true; }
+///////////////////////////////////////////////////////////////////////
+	virtual bool			NeedToDestroyObject();
+	virtual void			DestroyObject();
+///////////////////////////////////////////////////////////////////////
+
 
 	// Position stack
 	virtual	SavedPosition	ps_Element			(u32 ID);

@@ -786,7 +786,7 @@ void CActor::net_Destroy	()
 {
 	inherited::net_Destroy	();
 
-	CInventoryOwner::net_Destroy();
+//	CInventoryOwner::net_Destroy();
 	::Sound->destroy			(sndZoneHeart);
 	::Sound->destroy			(sndZoneDetector);
 
@@ -2167,7 +2167,7 @@ CActor::SMemoryPos*				CActor::FindMemoryPos (u32 Time)
 };
 
 
-bool  CActor::NeedToDestroyEntity()
+bool  CActor::NeedToDestroyObject()
 {
 	if(Level().game.type == GAME_SINGLE)
 	{
@@ -2185,9 +2185,11 @@ bool  CActor::NeedToDestroyEntity()
 		}
 	}
 }
-void CActor::DestroyEntity()
-{
-//	inventory().DropAll();
-	inherited::DestroyEntity();
-}
 
+ALife::_TIME_ID	 CActor::TimePassedAfterDeath()	
+{
+	if(!g_Alive())
+		return Level().GetGameTime() - m_dwDeathTime;
+	else
+		return 0;
+}
