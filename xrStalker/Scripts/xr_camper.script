@@ -163,7 +163,6 @@ end
 function action_retreat:initialize()
     action_base.initialize(self)
     
---    patrol_path:level_vertex_id(path_point)
     
     local path_walk = patrol(self.a.path_walk)
     if path_walk then
@@ -187,14 +186,14 @@ end
 function action_retreat:execute()
 	action_base.execute(self)
 
-	self.object:set_sight(look.direction, self.object:best_enemy():position():sub(self.object:position()), true)	
-	printf("_bp: %d: see_enemy?", device():time_global())
-	if self.object:see(self.object:best_enemy()) == true then
-		printf("_bp: YES")
-		self.object:set_item(object.fire1, self.object:best_weapon())
-	else
-		printf("_bp: NO")
-		self.object:set_item(object.idle, self.object:best_weapon())
+	if self.object:best_enemy() then
+		self.object:set_sight(look.direction, self.object:best_enemy():position():sub(self.object:position()), true)	
+
+		if self.object:see(self.object:best_enemy()) == true then
+			self.object:set_item(object.fire1, self.object:best_weapon())
+		else
+			self.object:set_item(object.idle, self.object:best_weapon())
+		end
 	end
 	
 end
