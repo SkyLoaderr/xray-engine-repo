@@ -418,7 +418,7 @@ bool EDetailManager::UpdateSlotObjects(int x, int z){
             if (bNotFound) break;
         }
 
-        slot->color					= 0xffffffff;
+        slot->color					= 0xff7f7f7f;
         // density
         float f = objects[slot->items[k].id]->m_fDensityFactor;
 
@@ -426,16 +426,6 @@ bool EDetailManager::UpdateSlotObjects(int x, int z){
         slot->items[k].palette.a1 	= iFloor(best[k].dens[1]*f*15.f+.5f);
         slot->items[k].palette.a2 	= iFloor(best[k].dens[2]*f*15.f+.5f);
         slot->items[k].palette.a3 	= iFloor(best[k].dens[3]*f*15.f+.5f);
-/*
-		static bool bFnd=false;
-
-        slot->items[k].palette.a0 	= bFnd?0:7;//iFloor(best[k].dens[3]*f*15.f+.5f);
-        slot->items[k].palette.a1 	= 0;//iFloor(best[k].dens[2]*f*15.f+.5f);
-        slot->items[k].palette.a2 	= 0;//iFloor(best[k].dens[1]*f*15.f+.5f);
-        slot->items[k].palette.a3 	= 0;//iFloor(best[k].dens[0]*f*15.f+.5f);
-        bFnd=true;
-*/
-//		Msg("Palette: %d %d %d %d",slot->items[k].palette.a0,slot->items[k].palette.a1,slot->items[k].palette.a2,slot->items[k].palette.a3);
     }
 
     // определим ID незаполненных слотов как пустышки
