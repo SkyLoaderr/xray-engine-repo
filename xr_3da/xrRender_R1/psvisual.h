@@ -1,7 +1,7 @@
 #ifndef _INCDEF_PSVisual_H_
 #define _INCDEF_PSVisual_H_
 
-#include "FBasicVisual.h"
+#include "..\FBasicVisual.h"
 #include "ParticleSystem.h"
 
 #define MAX_PARTICLES	1024

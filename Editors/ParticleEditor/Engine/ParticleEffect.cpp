@@ -2,8 +2,8 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#include "..\psystem.h"
 #include "ParticleEffect.h"
-#include "psystem.h"
 
 using namespace PAPI;
 using namespace PS;
