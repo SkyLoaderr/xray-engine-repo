@@ -732,6 +732,7 @@ void CWeapon::OnDrawFlame	()
 
 void CWeapon::OnEvent		(NET_Packet& P, u16 type)
 {
+	inherited::OnEvent		(P,type);
 	switch (type)
 	{
 	case GE_ADD_AMMO:
