@@ -66,6 +66,10 @@ void CBatchTaskDlgProp::OnEnChangeEditCmd()
 void CBatchTaskDlgProp::OnBnClickedBtnAddFile3()
 {
 	CFileDialog fd(TRUE,0,0,OFN_ALLOWMULTISELECT,0,0,0);
+	TCHAR FileNameList[8192]= {0};
+	fd.m_ofn.lpstrFile = FileNameList;
+	fd.m_ofn.nMaxFile=8192;
+
 	if (fd.DoModal()==IDOK){
 		POSITION pos = fd.GetStartPosition();
 		while(pos){

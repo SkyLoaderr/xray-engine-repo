@@ -89,7 +89,7 @@ BOOL CxrUpdateApp::InitInstance()
 	_VerifyPath("x:\\upd_scripts\\");
 	SetCurrentDirectoryA("x:\\upd_scripts");
 
-	CreateShellRedirect();
+//	CreateShellRedirect();
 	Core._initialize("xrUpdate",log_cb_fn,FALSE);
 	FS._initialize(CLocatorAPI::flTargetFolderOnly,"x:\\upd_scripts");
 

@@ -113,18 +113,18 @@ void CTaskBatchExecute::run					()
 		Msg("[%s]:Executing %s", name(), params.GetBuffer() );
 		system(*m_params);
 		Msg("[%s]:Done.",name());
-		return;
-	}
+	}else{
+	
 
-	for(;it!=m_file_names.end();++it){
-		params = parseParams(*(*it), *m_params);
-//		spawnl(_P_WAIT, *m_app_name, (params.IsEmpty())?" ":params.GetBuffer() );
-//		command.Format( "%s %s",*m_app_name,params.GetBuffer() );
-		Msg("[%s]:Executing %s", name(), params.GetBuffer() );
-		system(params.GetBuffer());
-		Msg("[%s]:Done.",name());
+		for(;it!=m_file_names.end();++it){
+			params = parseParams(*(*it), *m_params);
+	//		spawnl(_P_WAIT, *m_app_name, (params.IsEmpty())?" ":params.GetBuffer() );
+	//		command.Format( "%s %s",*m_app_name,params.GetBuffer() );
+			Msg("[%s]:Executing %s", name(), params.GetBuffer() );
+			system(params.GetBuffer());
+			Msg("[%s]:Done.",name());
+		}
 	}
-
 
 	if( xr_strlen(m_working_folder) )
 		SetCurrentDirectoryA(cur_dir);

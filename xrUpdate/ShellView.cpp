@@ -89,11 +89,7 @@ UINT CxrUpdateApp::ReadPipeThreadProc( LPVOID pParam )
 
 void AddTexts(LPCTSTR string)
 {
-	PostMessage(g_app_wnd,ADD_LOG_MSG,(WPARAM)string,0);
-/*
-	MoveToEnd();
-	GetEditCtrl().ReplaceSel( string );
-*/
+	SendMessage(g_app_wnd,ADD_LOG_MSG,(WPARAM)string,0);
 }
 
 void AddTexts(TCHAR ch)
