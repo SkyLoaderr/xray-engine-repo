@@ -462,6 +462,11 @@ function pick_section_from_condlist(actor, npc, condlist)
 	return nil
 end
 
+function stalker_in_zone(stalker, zone)
+	-- FIXME
+	return false
+end
+
 -- Выполняет переключение на указанную секцию, если задана.
 -- Если section == nil, остается работать старая секция.
 function switch_to_section(npc, st, section)
@@ -502,12 +507,14 @@ function try_switch_to_another_section(npc, st, actor)
 			end
 		elseif c.name == "on_actor_dist_ge" then
 			--printf("_bp: dist=%d (need <= %d), see_actor: %s", distance_between(actor, npc), c.v1, utils.to_str(npc:see(actor)))
-			if npc:see(actor) and distance_between(actor, npc) >= c.v1 then
+			-- ТУТ УМЫШЛЕННО >, А НЕ >=, потому что оно составляет пару с on_actor_dist_le, где <=
+			if npc:see(actor) and distance_between(actor, npc) > c.v1 then
 				--printf("_bp: conditions met")
 				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 			end
 		elseif c.name == "on_actor_dist_ge_nvis" then
-			if distance_between(actor, npc) >= c.v1 then
+			-- ТУТ УМЫШЛЕННО >, А НЕ >=, потому что оно составляет пару с on_actor_dist_le_nvis, где <=
+			if distance_between(actor, npc) > c.v1 then
 				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 			end
 		elseif c.name == "on_signal" then
@@ -516,7 +523,8 @@ function try_switch_to_another_section(npc, st, actor)
 				--printf("_bp: signalled")
 				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 			end
-		elseif c.name == "on_info" or c.name == "on_info2" then
+		-- FIXME: не дублировать тут имена, оставить один on_info, но добавлять несколько его экземпляров в список
+		elseif c.name == "on_info" or c.name == "on_info2" or c.name == "on_info3" then
 			switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 		elseif c.name == "on_timer" then
 			--printf("_bp: on_timer: %d >= %d", device():time_global(),
@@ -524,8 +532,17 @@ function try_switch_to_another_section(npc, st, actor)
 			if device():time_global() >= xr_motivator.storage[npc_id].activation_time + c.v1 then
 				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 			end
+		elseif c.name == "on_actor_in_zone" then
+			if stalker_in_zone(actor, c.v1) then
+				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
+			end
+		elseif c.name == "on_actor_not_in_zone" then
+			if not stalker_in_zone(actor, c.v1) then
+				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
+			end
 		else
-			printf("WARNING: object '%s': try_switch_to_another_section: unknown condition '%s' encountered",
+			utils.abort(
+				"WARNING: object '%s': try_switch_to_another_section: unknown condition '%s' encountered",
 				npc:name(), c.name)
 		end
 
@@ -730,7 +747,10 @@ function cfg_get_switch_conditions(ini, section, npc)
 	n = add_condition(l, n, cfg_get_string_and_condlist(ini, section, "on_signal",              npc))
 	n = add_condition(l, n, cfg_get_condlist           (ini, section, "on_info",                npc))
 	n = add_condition(l, n, cfg_get_condlist           (ini, section, "on_info2",               npc))
+	n = add_condition(l, n, cfg_get_condlist           (ini, section, "on_info3",               npc))
 	n = add_condition(l, n, cfg_get_number_and_condlist(ini, section, "on_timer",               npc))
+	n = add_condition(l, n, cfg_get_string_and_condlist(ini, section, "on_actor_in_zone",       npc))
+	n = add_condition(l, n, cfg_get_string_and_condlist(ini, section, "on_actor_not_in_zone",   npc))
 
 	return l
 end

@@ -90,6 +90,8 @@ end
 function generic_object_binder:reinit()
 	object_binder.reinit(self)
 
+	self.object:set_patrol_extrapolate_callback(generic_object_binder.extrapolate_callback, self)
+
 	printf("generic_object_binder:reinit()")
 
 	printf("_bp: generic_object_binder: %s", self.object:name())
@@ -150,6 +152,17 @@ function generic_object_binder:update(delta)
 --TEST-------------------------------------------------------------
 	--reset_action(self.object, script_name())
 --TEST-------------------------------------------------------------
+end
+
+function generic_object_binder:extrapolate_callback()
+	local cur_pt = self.object:get_current_point_index()
+	printf("_bp: generic_object_binder: extrapolate_callback: cur_pt = %d", cur_pt)
+	if patrol(self.object:patrol()):flags(cur_pt):get() == 0 then
+		printf("_bp: generic_object_binder: extrapolate_callback: true")
+		return true
+	end
+	printf("_bp: generic_object_binder: extrapolate_callback: false")
+	return false
 end
 
 function generic_object_binder:waypoint_callback(obj, action_type, index)

@@ -19,12 +19,12 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:extrapolate_callback()
 	local cur_pt = self.object:get_current_point_index()
-	printf("_bp: extrapolate_callback: cur_pt = %d", cur_pt)
+	printf("_bp: motivator_binder: extrapolate_callback: cur_pt = %d", cur_pt)
 	if patrol(self.object:patrol()):flags(cur_pt):get() == 0 then
-		printf("_bp: extrapolate_callback: true")
+		printf("_bp: motivator_binder: extrapolate_callback: true")
 		return true
 	end
-	printf("_bp: extrapolate_callback: false")
+	printf("_bp: motivator_binder: extrapolate_callback: false")
 	return false
 end
 ----------------------------------------------------------------------------------------------------------------------

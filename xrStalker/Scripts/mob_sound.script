@@ -56,6 +56,10 @@ local snd = {
 		[[characters_voice\human_01\scenario\trader\trader_tutorial_map_on_3]]
 	},
 
+	trader_tutorial_alarm = {
+		[[characters_voice\human_01\scenario\trader\trader_tutorial_rejection_1]]
+	},
+
 	trader_door_open_start = {
 		[[device\door_start]]
 	},
