@@ -2,6 +2,8 @@
 class "se_monster" (cse_alife_monster_base)
 --------------------
 function se_monster:__init (section) super (section)
+    self.ini = nil
+    self.spawner_present = false
 end
 --------------------
 function se_monster:can_switch_offline ()
@@ -9,8 +11,11 @@ function se_monster:can_switch_offline ()
 end
 --------------------
 function se_monster:can_switch_online ()
-    local ini = self:spawn_ini ()
-    if ini == nil or ini:section_exist ("spawner") == false then 
+    if self.ini == nil then
+       self.ini = self:spawn_ini () 
+       self.spawner_present = self.ini:section_exist ("spawner")
+    end
+    if self.ini == nil or self.spawner_present == false then 
        return cse_alife_monster_base.can_switch_online (self)
     end    
     return xr_spawner.check_spawn (self)
