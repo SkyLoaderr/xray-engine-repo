@@ -45,6 +45,7 @@ void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 	if (0==O || (!O->net_Spawn	(E))) 
 	{
 		O->net_Destroy			( );
+		Objects.Destroy			(O);
 		Msg						("! Failed to spawn entity '%s'",E->s_name);
 	} else {
 		//Msg			("--spawn--SPAWN: %f ms",1000.f*T.GetAsync());

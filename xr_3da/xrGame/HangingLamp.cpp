@@ -24,9 +24,6 @@ CHangingLamp::CHangingLamp	()
 
 CHangingLamp::~CHangingLamp	()
 {
-	::Render->light_destroy	(light_render);
-	::Render->light_destroy	(light_ambient);
-	::Render->glow_destroy	(glow_render);
 }
 
 void CHangingLamp::Center	(Fvector& C) const 
@@ -48,10 +45,19 @@ void CHangingLamp::Load		(LPCSTR section)
 	inherited::Load			(section);
 }
 
+void CHangingLamp::net_Destroy()
+{
+	inherited::net_Destroy	();
+	::Render->light_destroy	(light_render);
+	::Render->light_destroy	(light_ambient);
+	::Render->glow_destroy	(glow_render);
+}
+
 BOOL CHangingLamp::net_Spawn(LPVOID DC)
 {
 	CSE_Abstract			*e		= (CSE_Abstract*)(DC);
 	CSE_ALifeObjectHangingLamp	*lamp	= dynamic_cast<CSE_ALifeObjectHangingLamp*>(e);
+	return FALSE;
 	R_ASSERT				(lamp);
 	inherited::net_Spawn	(DC);
 	Fcolor					clr;
