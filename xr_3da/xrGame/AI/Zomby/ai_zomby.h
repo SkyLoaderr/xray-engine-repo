@@ -69,8 +69,8 @@ class CAI_Zomby : public CCustomMonster
 		DWORD			m_dwHitInterval;
 		DWORD			m_dwAttackStartTime;
 		
-		vector<SSubNode> tpFreeNeighbourNodes;
 		vector<SSubNode> tpSubNodes;
+		DWORD			m_dwLastUpdate;
 
 		// finite state machine
 		stack<EZombyStates>	tStateStack;

@@ -557,7 +557,6 @@ void CAI_Rat::FollowLeader(CSquad &Squad, CEntity* Leader)
 		else
 			m_bMobility = false;
 	}
-	SpinCallback(m_tpBoneSpine);
 }
 
 void CAI_Rat::Attack()
