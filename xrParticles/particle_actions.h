@@ -6,7 +6,7 @@
 namespace PAPI{
 // refs
 	struct ParticleEffect;
-	struct ParticleAction
+	struct PARTICLES_API			ParticleAction
 	{
 		enum{
 			ALLOW_ROTATE	= (1<<1)
