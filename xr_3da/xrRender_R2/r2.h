@@ -35,6 +35,7 @@ public:
 	BOOL														b_nv3x;
 	BOOL														b_HW_smap;
 	BOOL														b_noshadows;
+	BOOL														b_emap;
 public:
 	struct		_stats
 	{
