@@ -80,6 +80,83 @@ blowout_wind_time_peak      = 600
 blowout_wind_time_end		= 899
 blowout_wind_power			= 0.5			;сила поднимаего ветра (от 0 до 1), в момент blowout_wind_time_peak 
 
+[zone_death]
+GroupControlSection	= spawn_group_zone
+$spawn 			= "zones\death"
+$prefetch 		= 16
+class			= Z_MBALD
+hit_impulse_scale	= 0.3;0.5 ;0.1
+sound			= zone_mosquito_bald
+
+postprocess		= postprocess_death
+
+artefacts		= 
+BirthProbability	= 0.9
+hit_type			= strike
+
+idle_particles		= 
+blowout_particles	= anomaly2\gravity_blast_01
+
+hit_small_particles			= hit_fx\hit_metal_02
+hit_big_particles			= anomaly2\gravity_damage_02_blood2
+idle_small_particles		= anomaly2\gravity_damage_01_smoke
+idle_big_particles			= anomaly2\gravity_damage_02_smoke
+entrance_small_particles	= anomaly2\gravity_entrance_small
+entrance_big_particles		= anomaly2\gravity_entrance_big ;anomaly2\gravity_entrance_big
+
+idle_sound			= anomaly\gravi_rumble1; ambient\fx2		;постоянный звук
+blowout_sound		= anomaly\anomaly_gravy_blast1; anomaly_gravy_blast01	;во время выброса(удара) в центре аномалии	
+hit_sound			= anomaly\anomaly_gravy_hit1								;на персонаже, когда тот получает хит
+entrance_sound		= anomaly\anomaly_gravy_hit1								;при попадании объекта в аномалию
+
+
+awaking_time		= 100
+blowout_time		= 900	
+accamulate_time		= 200 ;200
+
+blowout_light_time		= 600
+blowout_explosion_time	= 600
+blowout_particles_time	= 600
+blowout_sound_time  	= 400
+
+disable_time		= -1 ; 5000		;время игнорирования неживого объекта в зоне (-1 если не нужно)
+disable_time_small	= 1000		;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
+disable_idle_time	= 1000		;время отключения idle партиклов
+
+ignore_nonalive		= true
+ignore_small		= true
+ignore_artefacts	= true
+
+blowout_light		= on
+light_color		    = 0.5,0.4,0.3
+light_range		    = 30.0
+light_time 		    = 0.9;0.35
+light_height		= 1.5			;подъем источника света на высоту
+
+
+idle_light			= off
+
+visible_by_detector = on
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;рождение артефактов 
+
+
+
+;;во время срабатывания в online
+spawn_blowout_artefacts = off
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ветер
+blowout_wind		= on
+
+blowout_wind_time_start     = 0
+blowout_wind_time_peak      = 600
+blowout_wind_time_end		= 899
+blowout_wind_power			= 0.5			;сила поднимаего ветра (от 0 до 1), в момент blowout_wind_time_peak 
+
 [zone_radioactive]
 GroupControlSection	= spawn_group_zone
 $spawn 			= "zones\radioactive"
@@ -95,7 +172,7 @@ BirthProbability = 0.9
 hit_type		= radiation
 
 disable_time		= -1	;время игнорирования неживого объекта в зоне (-1 если не нужно)
-disable_time_small	= 500		;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
+disable_time_small	= -1		;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
 disable_idle_time	= -1	;время отключения idle партиклов
 
 ignore_nonalive		= true;
@@ -105,9 +182,9 @@ ignore_artefacts	= true
 blowout_light		= off
 idle_light			= off
 
-awaking_time		= 1000
-blowout_time		= 300	
-accamulate_time		= 10000
+awaking_time		= 100
+blowout_time		= 100	
+accamulate_time		= 500
 
 visible_by_detector = on
 
@@ -121,29 +198,52 @@ spawn_blowout_artefacts = off
 [zone_lava]
 GroupControlSection	= spawn_group_zone
 $spawn 			= "zones\lava"
-;$prefetch 		= 16
-class			= Z_RADIO
-
-hit_impulse_scale = .001
-
-sound			= zone_mosquito_bald
+$prefetch 		= 16
+class			= Z_MBALD
+hit_impulse_scale	= .00
+sound			= 
 postprocess		= postprocess_flame
 
 artefacts		= 
-BirthProbability = 0.9
+BirthProbability = 0.01
+
+idle_particles		= static\static_lava_01
+blowout_particles	= damage_fx\burn_creatures00
+
+hit_small_particles			= damage_fx\burn_creatures
+hit_big_particles			= damage_fx\burn_creatures00
+idle_small_particles		= damage_fx\burn_creatures
+idle_big_particles			= damage_fx\burn_creatures00
+entrance_small_particles	= damage_fx\burn_creatures
+entrance_big_particles		= damage_fx\burn_creatures00
+
+idle_sound			= ambient\fire2						;постоянный звук
+blowout_sound		= ambient\fire2		;во время выброса(удара) в центре аномалии	
+hit_sound			= ambient\fire2								;на персонаже, когда тот получает хит
+entrance_sound		= ambient\fire2									;при попадании объекта в аномалию
 
 hit_type		= burn
 
 disable_time		= -1	;время игнорирования неживого объекта в зоне (-1 если не нужно)
-disable_time_small	= 500		;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
-disable_idle_time	= -1	;время отключения idle партиклов
+disable_time_small	= -1		;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
+disable_idle_time	= 50000	;время отключения idle партиклов
 
-ignore_nonalive		= true;
-ignore_small		= false;
+ignore_nonalive		= true
+ignore_small		= true
 ignore_artefacts	= true
 
-blowout_light		= off
+blowout_light		= on
+light_color		    = 1.8,1.7,1.4
+light_range		    = 8.0
+light_time 		    = 0.35
+light_height		= 1.5			;подъем источника света на высоту
+
+
 idle_light			= off
+idle_light_range	= 10.0
+idle_light_range_delta = 0.4
+idle_light_anim		= koster_01
+idle_light_height	= 1.5			;подъем источника света на высоту
 
 awaking_time		= 1000
 blowout_time		= 300	
@@ -326,8 +426,8 @@ sound			= zone_mosquito_bald
 postprocess		= postprocess_fuzz
 
 
-artefacts		= 
-BirthProbability = 0.9
+artefacts		= af_fuzz_kolobok,1
+BirthProbability = 0.5
 
 hit_type		= burn
 hit_effect		= anomaly2\hit_metal_02
@@ -380,7 +480,7 @@ hit_impulse_scale	= .1
 sound			= zone_mosquito_bald
 postprocess		= postprocess_new
 
-artefacts		= 
+artefacts		= af_rusty_thorn,0.7,af_rusty_kristall,0.25,af_rusty_sea-urchin,0.05
 BirthProbability = 0.9
 
 hit_type		= shock
@@ -458,12 +558,9 @@ sound			= zone_mosquito_bald
 postprocess		= postprocess_gravi
 hit_effect		= explosions\expl_02_sparks
 
-artefacts		= 
+artefacts		= af_blood,0.7, af_mincer_meat, 0.25, af_soul, 0.05
 BirthProbability = 0.9
 
-
-tearing_particles	=anomaly2\body_tear_00
-torn_particles      =anomaly2\body_tear_01
 idle_particles		= anomaly2\gravity_idle
 blowout_particles	= anomaly2\group_items\gravi_zaxvat_myasorubka ;gravity_blast_03
 
@@ -481,7 +578,7 @@ idle_sound			= anomaly\gravi_rumble1;  gravi_idle01							;постоянный звук
 blowout_sound		= anomaly\anomaly_mincer_blowout; anomaly_gravy_blast01	;во время выброса(удара) в центре аномалии	
 hit_sound			= anomaly\anomaly_gravy_hit1						;на персонаже, когда тот получает хит
 entrance_sound		= anomaly\gravi_idle01								;при попадании объекта в аномалию
-body_tearing_sound	= anomaly\anomaly_body_tear_1
+
 hit_type		= wound
 hit_impulse_scale	= 0.1			;соотношение физического импульса и силы хита
 
@@ -501,19 +598,19 @@ light_height		= 1.5			;подъем источника света на высоту
 
 idle_light			= off
 
-awaking_time		= 1
+awaking_time		= 10000
 blowout_time		= 10000	
-accamulate_time		= 1
+accamulate_time		= 10000
 
 
 blowout_light_time		= 5999
 blowout_explosion_time	= 5999
 
 ;параметры телекинеза для зоны
-throw_in_impulse		= 2000		;сила втягивания для единичной массы на расстоянии один метр
-throw_in_impulse_alive	= 400;800	;сила импульса втягивания для живых
+throw_in_impulse		= 800		;сила втягивания для единичной массы на расстоянии один метр
+throw_in_impulse_alive	= 300;800	;сила импульса втягивания для живых
 throw_in_atten			= 3			;коэфф. затягивания (чем меньше, тем плавнее затягивает)
-blowout_radius_percent	= 0.0		;радиус (в процентах от всего радиуса) непосредственно выброса
+blowout_radius_percent	= 0.5		;радиус (в процентах от всего радиуса) непосредственно выброса
 
 tele_height				= 10 ;1.5		;высота подъема телекинеза 
 time_to_tele			= 7000		;время деражания объекта в воздухе
@@ -521,11 +618,23 @@ tele_pause				= 3000		;пауза перед тем как снова поднять упавший объект
 
 visible_by_detector = on
 
-blowout_wind		= off
+;; ветер
+blowout_wind		= on
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+blowout_wind_time_start     = 0
+blowout_wind_time_peak      = 5999
+blowout_wind_time_end		= 9999
+blowout_wind_power			= 1			;сила поднимаего ветра (от 0 до 1), в момент blowout_wind_time_peak 
+
 ;рождение артефактов во время срабатывания
-spawn_blowout_artefacts = off
+spawn_blowout_artefacts = on   ;on
+
+artefact_spawn_probability = 0.07				;вероятность, что во время срабатывания аномалии будет рожден артефакт
+artefact_spawn_particles = anomaly2\gravi_anomaly_shield_00	;партиклы, которые отыграются на месте рождения артефакта (опционально)
+artefact_born_sound =  anomaly\anomaly_gravy_hit1		;звук, который отыграются на месте рождения артефакта (опционально)
+
+throw_out_power = 100			;импульс с которым артефакт будет выброшен из зоны в произвольном направлении
+artefact_spawn_height = 10		;(м) высота на центром зоны где будет рожден артефакт
 
 
 [zone_gravi_zone]
@@ -631,7 +740,7 @@ $spawn 			= "zones\flame"
 $prefetch 		= 16
 class			= Z_MBALD
 hit_impulse_scale	= .00
-sound			= zone_mosquito_bald
+sound			= 
 postprocess		= postprocess_flame
 
 artefacts		= 
@@ -639,6 +748,68 @@ BirthProbability = 0.01
 
 idle_particles		= explosions\campfire_04
 blowout_particles	= damage_fx\burn_creatures00
+
+hit_small_particles			= damage_fx\burn_creatures
+hit_big_particles			= damage_fx\burn_creatures00
+idle_small_particles		= damage_fx\burn_creatures
+idle_big_particles			= damage_fx\burn_creatures00
+entrance_small_particles	= damage_fx\burn_creatures
+entrance_big_particles		= damage_fx\burn_creatures00
+
+idle_sound			= ambient\fire2						;постоянный звук
+blowout_sound		= ambient\fire2		;во время выброса(удара) в центре аномалии	
+hit_sound			= ambient\fire2								;на персонаже, когда тот получает хит
+entrance_sound		= ambient\fire2									;при попадании объекта в аномалию
+
+hit_type		= burn
+
+disable_time		= 0	;время игнорирования неживого объекта в зоне (-1 если не нужно)
+disable_time_small	= -1		;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
+disable_idle_time	= 50000	;время отключения idle партиклов
+
+ignore_nonalive		= false
+ignore_small		= true
+ignore_artefacts	= true
+
+blowout_light		= on
+light_color		    = 1.8,1.7,1.4
+light_range		    = 8.0
+light_time 		    = 0.35
+light_height		= 1.5			;подъем источника света на высоту
+
+
+idle_light			= on
+idle_light_range	= 5.0
+idle_light_range_delta = 0.4
+idle_light_anim		= koster_01
+idle_light_height	= 1.5			;подъем источника света на высоту
+
+awaking_time		= 1000
+blowout_time		= 300	
+accamulate_time		= 1000
+
+visible_by_detector = off
+
+blowout_wind		= off
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;рождение артефактов во время срабатывания
+spawn_blowout_artefacts = off
+
+[zone_flame_small]
+GroupControlSection	= spawn_group_zone
+$spawn 			= "zones\campfire"
+$prefetch 		= 16
+class			= Z_MBALD
+hit_impulse_scale	= .00
+sound			= 
+postprocess		= postprocess_flame
+
+artefacts		= 
+BirthProbability = 0.01
+
+idle_particles		= explosions\campfire_05
+blowout_particles	= explosions\campfire_06
 
 hit_small_particles			= damage_fx\burn_creatures
 hit_big_particles			= damage_fx\burn_creatures00
@@ -655,11 +826,11 @@ entrance_sound		= ambient\fire2									;при попадании объекта в аномалию
 hit_type		= burn
 
 disable_time		= 0	;время игнорирования неживого объекта в зоне (-1 если не нужно)
-disable_time_small	= 500		;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
+disable_time_small	= -1		;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
 disable_idle_time	= 50000	;время отключения idle партиклов
 
 ignore_nonalive		= false
-ignore_small		= false
+ignore_small		= true
 ignore_artefacts	= true
 
 blowout_light		= on
@@ -672,12 +843,12 @@ light_height		= 1.5			;подъем источника света на высоту
 idle_light			= on
 idle_light_range	= 5.0
 idle_light_range_delta = 0.4
-idle_light_anim		= koster_01
+idle_light_anim		= koster_00
 idle_light_height	= 1.5			;подъем источника света на высоту
 
-awaking_time		= 500
+awaking_time		= 1000
 blowout_time		= 300	
-accamulate_time		= 500
+accamulate_time		= 1000
 
 visible_by_detector = off
 
@@ -695,7 +866,7 @@ $prefetch 		= 16
 class			= Z_MBALD
 hit_impulse_scale	= 0
 sound			= zone_mosquito_bald
-postprocess		= postprocess_new
+postprocess		= postprocess_psi
 
 artefacts		= 
 BirthProbability = 0.9
@@ -848,8 +1019,8 @@ class					= Z_TORRID
 hit_impulse_scale	=   0
 postprocess		= postprocess_flame
 
-artefacts		= 
-BirthProbability = 0.9
+artefacts		= af_drops,0.7, af_fireball, 0.25, af_cristall, 0.05
+BirthProbability = 0.01
 idle_light		= off
 
 idle_particles		= anomaly2\heat_00
@@ -884,13 +1055,7 @@ light_time 		    = 5
 light_height		= 1.5			;подъем источника света на высоту
 
 
-idle_light			= on
-idle_light_range	= 15.0
-idle_light_range_delta = 0.2
-idle_light_anim		= koster_01
-idle_light_height	= 1.5			;подъем источника света на высоту
-
-awaking_time		= 1000
+awaking_time		= 100
 blowout_time		= 300	
 accamulate_time		= 1000
 
@@ -898,9 +1063,15 @@ visible_by_detector = off
 
 blowout_wind		= off
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;рождение артефактов во время срабатывания
-spawn_blowout_artefacts = off
+spawn_blowout_artefacts = on   ;on
+
+artefact_spawn_probability = 0.2				;вероятность, что во время срабатывания аномалии будет рожден артефакт
+artefact_spawn_particles = anomaly2\gravi_anomaly_shield_00	;партиклы, которые отыграются на месте рождения артефакта (опционально)
+artefact_born_sound =  anomaly\anomaly_gravy_hit1		;звук, который отыграются на месте рождения артефакта (опционально)
+
+throw_out_power = 50			;импульс с которым артефакт будет выброшен из зоны в произвольном направлении
+artefact_spawn_height = 2		;(м) высота на центром зоны где будет рожден артефакт
 
 
 
@@ -914,7 +1085,6 @@ postprocess		= postprocess_flame
 
 artefacts		= 
 BirthProbability = 0.9
-idle_light		= off
 
 idle_particles		= anomaly2\heat_02
 blowout_particles	= anomaly2\heat_03
