@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "telekinesis.h"
-#include "../entity_alive.h"
-#include "../PhysicsShell.h"
+#include "../../entity_alive.h"
+#include "../../PhysicsShell.h"
 
 bool	CTelekinesis::activate			(CPhysicsShellHolder *obj, float strength, float height, u32 max_time_keep)
 {

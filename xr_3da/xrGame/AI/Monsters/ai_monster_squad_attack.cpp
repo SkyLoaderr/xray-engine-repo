@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "ai_monster_squad.h"
-#include "../entity.h"
+#include "../../entity.h"
 
 void CMonsterSquad::ProcessAttack()
 {

@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "ai_monster_debug.h"
-#include "../entity_alive.h"
-#include "../hudmanager.h"
-#include "../level.h"
+#include "../../entity_alive.h"
+#include "../../hudmanager.h"
+#include "../../level.h"
 
 CMonsterDebug::CMonsterDebug(CEntityAlive *pM, const Fvector &shift_vec, float height)
 {
