@@ -21,7 +21,7 @@ public:
 	u32								m_dwStartTime;
 	float							m_fTimeFactor;
 
-	virtual void					Save(CMemoryWriter	&tMemoryStream)
+	virtual void					Save(IWriter	&tMemoryStream)
 	{
 		m_tGameTime					= tfGetGameTime();
 		m_dwStartTime				= Device.dwTimeGlobal;
@@ -32,7 +32,7 @@ public:
 		tMemoryStream.close_chunk	();
 	};
 	
-	virtual void					Load(CStream	&tFileStream)
+	virtual void					Load(IReader	&tFileStream)
 	{
 		R_ASSERT					(tFileStream.find_chunk(GAME_TIME_CHUNK_DATA));
 		tFileStream.r				(&m_tGameTime,		sizeof(m_tGameTime));
@@ -67,7 +67,7 @@ public:
 		m_tZoneState				= eZoneStateAfterSurge;
 	}
 
-	virtual void					Save(CMemoryWriter	&tMemoryStream)
+	virtual void					Save(IWriter	&tMemoryStream)
 	{
 		tMemoryStream.open_chunk	(ALIFE_CHUNK_DATA);
 		tMemoryStream.w				(&m_tALifeVersion,	sizeof(m_tALifeVersion));
@@ -75,7 +75,7 @@ public:
 		tMemoryStream.close_chunk	();
 	}
 	
-	virtual void					Load(CStream	&tFileStream)
+	virtual void					Load(IReader	&tFileStream)
 	{
 		R_ASSERT					(tFileStream.find_chunk(ALIFE_CHUNK_DATA));
 		tFileStream.r			(&m_tALifeVersion,	sizeof(m_tALifeVersion));
