@@ -377,12 +377,16 @@ void CModelPool::dump()
 }
 
 #ifdef _EDITOR
-IC bool	_IsRender(IRender_Visual* visual, const Fmatrix& transform, u32 priority, bool strictB2F)
+IC bool	_IsBoxVisible(IRender_Visual* visual, const Fmatrix& transform)
 {
-	if ((priority==(visual->hShader?visual->hShader->E[0]->flags.iPriority:1))&&(strictB2F==!!(visual->hShader?visual->hShader->E[0]->flags.bStrictB2F:false))){
-        Fbox bb; bb.xform(visual->vis.box,transform);
-        return ::Render->occ_visible(bb);
-    }
+    Fbox 		bb; 
+    bb.xform	(visual->vis.box,transform);
+    return 		::Render->occ_visible(bb);
+}
+IC bool	_IsValidShader(IRender_Visual* visual, u32 priority, bool strictB2F)
+{
+	if (visual->hShader)
+        return (priority==visual->hShader->E[0]->flags.iPriority)&&(strictB2F==visual->hShader->E[0]->flags.bStrictB2F);
     return false;
 }
 
@@ -394,39 +398,47 @@ void 	CModelPool::Render(IRender_Visual* m_pVisual, const Fmatrix& mTransform, i
     case MT_SKELETON_ANIM:
     case MT_SKELETON_RIGID:
     case MT_HIERRARHY:{
-        if (_IsRender(m_pVisual,mTransform,priority,strictB2F)){
+        if (_IsBoxVisible(m_pVisual,mTransform)){
             FHierrarhyVisual* pV		= dynamic_cast<FHierrarhyVisual*>(m_pVisual); VERIFY(pV);
             I = pV->children.begin		();
             E = pV->children.end		();
             for (; I!=E; I++){
-                RCache.set_Shader		((*I)->hShader?(*I)->hShader:Device.m_WireShader);
-                RCache.set_xform_world	(mTransform);
-                (*I)->Render		 	(m_fLOD);
+		        if (_IsValidShader(*I,priority,strictB2F)){
+	                RCache.set_Shader		((*I)->hShader?(*I)->hShader:Device.m_WireShader);
+    	            RCache.set_xform_world	(mTransform);
+        	        (*I)->Render		 	(m_fLOD);
+                }
             }
         }
     }break;
     case MT_PARTICLE_GROUP:{
         PS::CParticleGroup* pG			= dynamic_cast<PS::CParticleGroup*>(m_pVisual); VERIFY(pG);
-        RCache.set_xform_world			(mTransform);
-	    for (PS::CParticleGroup::SItemVecIt i_it=pG->items.begin(); i_it!=pG->items.end(); i_it++){
-            xr_vector<IRender_Visual*>	visuals;
-            i_it->GetVisuals			(visuals);
-            for (xr_vector<IRender_Visual*>::iterator it=visuals.begin(); it!=visuals.end(); it++)
-	            Render					(*it,Fidentity,priority,strictB2F,m_fLOD);
+        if (_IsBoxVisible(m_pVisual,mTransform)){
+            RCache.set_xform_world	  		(mTransform);
+            for (PS::CParticleGroup::SItemVecIt i_it=pG->items.begin(); i_it!=pG->items.end(); i_it++){
+                xr_vector<IRender_Visual*>	visuals;
+                i_it->GetVisuals			(visuals);
+                for (xr_vector<IRender_Visual*>::iterator it=visuals.begin(); it!=visuals.end(); it++)
+                    Render					(*it,Fidentity,priority,strictB2F,m_fLOD);
+            }
         }
     }break;
     case MT_PARTICLE_EFFECT:{
-		if (_IsRender(m_pVisual,Fidentity,priority,strictB2F)){
-	        RCache.set_Shader			(m_pVisual->hShader?m_pVisual->hShader:Device.m_WireShader);
-            RCache.set_xform_world		(mTransform);
-            m_pVisual->Render		 	(m_fLOD);
+        if (_IsBoxVisible(m_pVisual,mTransform)){
+            if (_IsValidShader(m_pVisual,priority,strictB2F)){
+                RCache.set_Shader			(m_pVisual->hShader?m_pVisual->hShader:Device.m_WireShader);
+                RCache.set_xform_world		(mTransform);
+                m_pVisual->Render		 	(m_fLOD);
+            }
         }
     }break;
     default:
-		if (_IsRender(m_pVisual,mTransform,priority,strictB2F)){
-	        RCache.set_Shader			(m_pVisual->hShader?m_pVisual->hShader:Device.m_WireShader);
-            RCache.set_xform_world		(mTransform);
-            m_pVisual->Render		 	(m_fLOD);
+        if (_IsBoxVisible(m_pVisual,mTransform)){
+            if (_IsValidShader(m_pVisual,priority,strictB2F)){
+                RCache.set_Shader			(m_pVisual->hShader?m_pVisual->hShader:Device.m_WireShader);
+                RCache.set_xform_world		(mTransform);
+                m_pVisual->Render		 	(m_fLOD);
+            }
         }
         break;
     }
