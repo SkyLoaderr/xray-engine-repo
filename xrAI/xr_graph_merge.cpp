@@ -27,6 +27,8 @@ typedef struct tagSConnectionVertex {
 	u32			dwLevelID;
 } SConnectionVertex;
 
+extern  HWND logWindow;
+
 class CCompareVertexPredicate {
 public:
 	IC bool operator()(LPCSTR S1, LPCSTR S2) const
@@ -296,7 +298,7 @@ public:
 CGraphMerger::CGraphMerger(LPCSTR name)
 {
 	// load all the graphs
-	Phase("Reading level graphs");
+	Phase("Processing level graphs");
 	
 	CInifile *Ini = xr_new<CInifile>(INI_FILE);
 	if (!Ini->section_exist("levels"))
@@ -321,6 +323,7 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 		strconcat					(S2,name,S1);
 		strconcat					(S1,S2,"\\");//level.graph");
 		tLevel.tLevelID				= Ini->r_s32(N,"id");
+		Msg							("%9s %2d %s","level",tLevel.tLevelID,V);
 		::CLevelGameGraph			*tpLevelGraph = xr_new<::CLevelGameGraph>(tLevel,S1,dwOffset,tLevel.id(), Ini);
 		dwOffset					+= tpLevelGraph->m_tpGraph->header().vertex_count();
 		R_ASSERT2					(tpGraphs.find(tLevel.id()) == tpGraphs.end(),"Level ids _MUST_ be different!");
@@ -415,6 +418,20 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 	
 	string256						l_caFileName;
 	FS.update_path					(l_caFileName,"$game_data$","game.graph");
+
+
+	while (!DeleteFile(l_caFileName)) {
+		string512					S;
+		sprintf						(S,"Cannot delete file\"%s\"!\nClose all the applications which are using it and press 'Retry'.\nIf you don't want to save the game graph (i.e. all the levels can be INVALID)- press 'Cancel'",l_caFileName);
+		int							result = MessageBox(
+			logWindow,
+			S,
+			"Error!",
+			MB_RETRYCANCEL|MB_ICONWARNING
+		);
+		if (result == IDCANCEL)
+			break;
+	}
 	F.save_to						(l_caFileName);
 
 	// free all the graphs
