@@ -17,8 +17,8 @@ CSun::~CSun	( ) {
 
 void CSun::LoadSunData	( CInifile* pIni, LPCSTR section ) {
 	VERIFY( section );
-	sun_color.set		( pIni->ReadCOLOR( section, "sun_color" ));
-	sun_dir				= pIni->ReadVECTOR( section, "sun_dir"  );
+	sun_color.set		( pIni->r_color		( section, "sun_color" ));
+	sun_dir				= pIni->r_fvector3	( section, "sun_dir"  );
 	sun_dir.normalize	();
 }
 

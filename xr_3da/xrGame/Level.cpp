@@ -58,7 +58,7 @@ int	CLevel::get_RPID(LPCSTR name)
 {
 	/*
 	// Gain access to string
-	LPCSTR	params = pLevel->ReadSTRING("respawn_point",name);
+	LPCSTR	params = pLevel->r_string("respawn_point",name);
 	if (0==params)	return -1;
 
 	// Read data

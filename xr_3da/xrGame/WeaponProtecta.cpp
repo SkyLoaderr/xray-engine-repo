@@ -46,8 +46,8 @@ void CWeaponProtecta::Load(LPCSTR section){
 	
 	m_pShootPS		= xr_new<CPSObject> ("protecta_smoke");
 
-	vFirePoint		= ini->ReadVECTOR(section,"fire_point");
-	iShotCount		= ini->ReadINT(section,"shot_count");
+	vFirePoint		= ini->r_fvector3(section,"fire_point");
+	iShotCount		= ini->r_s32(section,"shot_count");
 }
 
 void CWeaponProtecta::FireStart()

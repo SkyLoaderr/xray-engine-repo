@@ -111,9 +111,9 @@ void CEntity::Load		(LPCSTR section)
 	//fHealth				= fArmor = 100;
 
 	// Team params
-	id_Team = -1; if (pSettings->LineExists(section,"team"))	id_Team		= pSettings->ReadINT	(section,"team");
-	id_Squad= -1; if (pSettings->LineExists(section,"squad"))	id_Squad	= pSettings->ReadINT	(section,"squad");
-	id_Group= -1; if (pSettings->LineExists(section,"group"))	id_Group	= pSettings->ReadINT	(section,"group");
+	id_Team = -1; if (pSettings->line_exist(section,"team"))	id_Team		= pSettings->r_s32	(section,"team");
+	id_Squad= -1; if (pSettings->line_exist(section,"squad"))	id_Squad	= pSettings->r_s32	(section,"squad");
+	id_Group= -1; if (pSettings->line_exist(section,"group"))	id_Group	= pSettings->r_s32	(section,"group");
 	
 	m_fMorale = 66.f;
 
@@ -206,20 +206,20 @@ void CEntityAlive::Load		(LPCSTR section)
 	Fbox	bb;
 
 	// Movement: BOX
-	Fvector	vBOX0_center= pSettings->ReadVECTOR	(section,"ph_box0_center"	);
-	Fvector	vBOX0_size	= pSettings->ReadVECTOR	(section,"ph_box0_size"		);
+	Fvector	vBOX0_center= pSettings->r_fvector3	(section,"ph_box0_center"	);
+	Fvector	vBOX0_size	= pSettings->r_fvector3	(section,"ph_box0_size"		);
 	bb.set	(vBOX0_center,vBOX0_center); bb.grow(vBOX0_size);
 	Movement.SetBox		(0,bb);
 
 	// Movement: BOX
-	Fvector	vBOX1_center= pSettings->ReadVECTOR	(section,"ph_box1_center"	);
-	Fvector	vBOX1_size	= pSettings->ReadVECTOR	(section,"ph_box1_size"		);
+	Fvector	vBOX1_center= pSettings->r_fvector3	(section,"ph_box1_center"	);
+	Fvector	vBOX1_size	= pSettings->r_fvector3	(section,"ph_box1_size"		);
 	bb.set	(vBOX1_center,vBOX1_center); bb.grow(vBOX1_size);
 	Movement.SetBox		(1,bb);
 
 	// Movement: Foots
-	Fvector	vFOOT_center= pSettings->ReadVECTOR	(section,"ph_foot_center"	);
-	Fvector	vFOOT_size	= pSettings->ReadVECTOR	(section,"ph_foot_size"		);
+	Fvector	vFOOT_center= pSettings->r_fvector3	(section,"ph_foot_center"	);
+	Fvector	vFOOT_size	= pSettings->r_fvector3	(section,"ph_foot_size"		);
 	bb.set	(vFOOT_center,vFOOT_center); bb.grow(vFOOT_size);
 	Movement.SetFoots	(vFOOT_center,vFOOT_size);
 

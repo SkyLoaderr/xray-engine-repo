@@ -48,13 +48,13 @@ BOOL CCustomZone::net_Spawn(LPVOID DC) {
 
 void CCustomZone::Load(LPCSTR section) {
 	// verify class
-	LPCSTR Class = pSettings->ReadSTRING(section,"class");
+	LPCSTR Class = pSettings->r_string(section,"class");
 	CLASS_ID load_cls = TEXT2CLSID(Class);
 	R_ASSERT(load_cls==SUB_CLS_ID);
 
 	inherited::Load(section);
 
-	LPCSTR l_PSnd = pSettings->ReadSTRING(section,"sound");
+	LPCSTR l_PSnd = pSettings->r_string(section,"sound");
 	SoundCreate(m_ambient, l_PSnd);
 
 

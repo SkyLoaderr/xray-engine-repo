@@ -34,16 +34,16 @@ void CDummyObject::Load		(LPCSTR section)
 	inherited::Load			(section);
 
 	/*
-	if (pSettings->LineExists(section,"motions")){
+	if (pSettings->line_exist(section,"motions")){
 		style			|= esAnimated;
 	}
 	if (pVisual->Type==MT_SKELETON){
 		style			|= esSkeleton;
 		PKinematics(pVisual)->PlayCycle	("idle");
 	}
-	if (pSettings->LineExists(section,"sound"))
+	if (pSettings->line_exist(section,"sound"))
 	{
-		LPCSTR N = pSettings->ReadSTRING(section,"sound");
+		LPCSTR N = pSettings->r_string(section,"sound");
 		::Sound->Create(sndDummy,TRUE,N);
 	}
 

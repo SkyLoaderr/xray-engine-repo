@@ -34,7 +34,7 @@ void CWeaponShotgun::Load	(LPCSTR section)
 	animGet				(mhud_shot_boths,	"shoot_both");
 
 	//
-	if(pSettings->LineExists(section,"fire_point2")) vFirePoint2 = pSettings->ReadVECTOR(section,"fire_point2");
+	if(pSettings->line_exist(section,"fire_point2")) vFirePoint2 = pSettings->r_fvector3(section,"fire_point2");
 	else vFirePoint2 = vFirePoint;
 }
 

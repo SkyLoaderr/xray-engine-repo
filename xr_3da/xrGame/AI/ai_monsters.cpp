@@ -31,7 +31,7 @@ IC void vfNormalizeSafe(Fvector& Vector)
 
 void CAISelectorBase::Load	(LPCSTR section)
 {
-	sscanf(pSettings->ReadSTRING(section,Name),
+	sscanf(pSettings->r_string(section,Name),
 		"%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f",
 		&fSearchRange,
 		&fEnemySurround,

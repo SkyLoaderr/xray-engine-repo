@@ -98,15 +98,15 @@ void CAI_Zombie::Load(LPCSTR section)
 
 	// active\passive
 	m_fChangeActiveStateProbability = pSettings->ReadFLOAT (section,"ChangeActiveStateProbability");
-	m_dwPassiveScheduleMin			= pSettings->ReadINT   (section,"PassiveScheduleMin");
-	m_dwPassiveScheduleMax			= pSettings->ReadINT   (section,"PassiveScheduleMax");
-	m_dwActiveCountPercent			= pSettings->ReadINT   (section,"ActiveCountPercent");
+	m_dwPassiveScheduleMin			= pSettings->r_s32   (section,"PassiveScheduleMin");
+	m_dwPassiveScheduleMax			= pSettings->r_s32   (section,"PassiveScheduleMax");
+	m_dwActiveCountPercent			= pSettings->r_s32   (section,"ActiveCountPercent");
 
 	// eye shift
 	m_tEyeShift.y					= pSettings->ReadFLOAT (section,"EyeYShift");
 
 	// former constants
-	m_dwLostMemoryTime				= pSettings->ReadINT   (section,"LostMemoryTime");
+	m_dwLostMemoryTime				= pSettings->r_s32   (section,"LostMemoryTime");
 	m_fAttackStraightDistance		= pSettings->ReadFLOAT (section,"AttackStraightDistance");
 	m_fStableDistance				= pSettings->ReadFLOAT (section,"StableDistance");
 	m_fWallMinTurnValue				= pSettings->ReadFLOAT (section,"WallMinTurnValue")/180.f*PI;
@@ -114,7 +114,7 @@ void CAI_Zombie::Load(LPCSTR section)
 
 	m_fAngleSpeed					= pSettings->ReadFLOAT (section,"AngleSpeed");
 	m_fSafeGoalChangeDelta	 		= pSettings->ReadFLOAT (section,"GoalChangeDelta");
-	m_tGoalVariation	  			= pSettings->ReadVECTOR(section,"GoalVariation");
+	m_tGoalVariation	  			= pSettings->r_fvector3(section,"GoalVariation");
 	m_fSoundThreshold				= pSettings->ReadFLOAT (section,"SoundThreshold");
 	m_fMaxHealthValue	 			= pSettings->ReadFLOAT (section,"MaxHealthValue");
 

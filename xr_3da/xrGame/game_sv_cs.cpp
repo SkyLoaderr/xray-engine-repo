@@ -7,12 +7,12 @@ cs_money::cs_money() {
 	string256 fn;
 	if (FS.exist(fn,Path.GameData,"game_cs.ltx")) {
 		CInifile* ini = CInifile::Create(fn);
-		startup = ini->ReadINT("cs_money","startup");
-		win = ini->ReadINT("cs_money","win");
-		lose = ini->ReadINT("cs_money","lose");
-		draw = ini->ReadINT("cs_money","draw");
-		kill = ini->ReadINT("cs_money","kill");
-		mission = ini->ReadINT("cs_money","mission");
+		startup = ini->r_s32("cs_money","startup");
+		win = ini->r_s32("cs_money","win");
+		lose = ini->r_s32("cs_money","lose");
+		draw = ini->r_s32("cs_money","draw");
+		kill = ini->r_s32("cs_money","kill");
+		mission = ini->r_s32("cs_money","mission");
 		CInifile::Destroy	(ini);
 	}
 }
@@ -57,10 +57,10 @@ void game_sv_CS::SaveDefaultWeapon(CMemoryWriter &store) {		//@@@ WT: Это надо п
 	string256 fn;
 	if (FS.exist(fn,Path.GameData,"game_cs.ltx")) {
 		CInifile* ini = CInifile::Create(fn);
-		LPCSTR prim = ini->ReadSTRING("cs_start_Arms","primary");
-		u32 prim_ammo = ini->ReadINT("cs_start_Arms","primary_ammo");
-		LPCSTR pistol = ini->ReadSTRING("cs_start_Arms","pistol");
-		u32 pistol_ammo = ini->ReadINT("cs_start_Arms","pistol_ammo");
+		LPCSTR prim = ini->r_string("cs_start_Arms","primary");
+		u32 prim_ammo = ini->r_s32("cs_start_Arms","primary_ammo");
+		LPCSTR pistol = ini->r_string("cs_start_Arms","pistol");
+		u32 pistol_ammo = ini->r_s32("cs_start_Arms","pistol_ammo");
 		xrSE_Weapon *W_prim = 0, *W_pistol = 0;
 		if(prim) {
 			W_prim = dynamic_cast<xrSE_Weapon*>(spawn_begin(prim));
@@ -231,10 +231,10 @@ void game_sv_CS::OnRoundStart() {
 //		string256 fn;
 //		if (FS.exist(fn,Path.GameData,"game_cs.ltx")) {
 //			CInifile* ini = CInifile::Create(fn);
-//			LPCSTR prim = ini->ReadSTRING("cs_start_Arms","primary");
-//			u32 prim_ammo = ini->ReadINT("cs_start_Arms","primary_ammo");
-//			LPCSTR pistol = ini->ReadSTRING("cs_start_Arms","pistol");
-//			u32 pistol_ammo = ini->ReadINT("cs_start_Arms","pistol_ammo");
+//			LPCSTR prim = ini->r_string("cs_start_Arms","primary");
+//			u32 prim_ammo = ini->r_s32("cs_start_Arms","primary_ammo");
+//			LPCSTR pistol = ini->r_string("cs_start_Arms","pistol");
+//			u32 pistol_ammo = ini->r_s32("cs_start_Arms","pistol_ammo");
 //			xrSE_Weapon *W_prim = 0, *W_pistol = 0;
 //			if(prim) {
 //				W_prim = dynamic_cast<xrSE_Weapon*>(spawn_begin(prim));
@@ -700,10 +700,10 @@ void game_sv_CS::OnPlayerConnect	(u32 id_who)
 /*	string256 fn;
 	if (FS.exist(fn,Path.GameData,"game_cs.ltx")) {
 		CInifile* ini = CInifile::Create(fn);
-		LPCSTR prim = ini->ReadSTRING("cs_start_Arms","primary");
-		u32 prim_ammo = ini->ReadINT("cs_start_Arms","primary_ammo");
-		LPCSTR pistol = ini->ReadSTRING("cs_start_Arms","pistol");
-		u32 pistol_ammo = ini->ReadINT("cs_start_Arms","pistol_ammo");
+		LPCSTR prim = ini->r_string("cs_start_Arms","primary");
+		u32 prim_ammo = ini->r_s32("cs_start_Arms","primary_ammo");
+		LPCSTR pistol = ini->r_string("cs_start_Arms","pistol");
+		u32 pistol_ammo = ini->r_s32("cs_start_Arms","pistol_ammo");
 		xrSE_Weapon *W_prim = 0, *W_pistol = 0;
 		if(prim) {
 			W_prim = dynamic_cast<xrSE_Weapon*>(spawn_begin(prim));

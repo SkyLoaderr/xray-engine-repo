@@ -33,10 +33,10 @@ void CCustomEvent::Load			(LPCSTR section)
 	// Geometry and transform
 	/*
 	Fvector dir,norm;
-	vPosition					= ini->ReadVECTOR(section,"position");
-	vScale						= ini->ReadVECTOR(section,"scale");
-	dir							= ini->ReadVECTOR(section,"direction");
-	norm						= ini->ReadVECTOR(section,"normal");
+	vPosition					= ini->r_fvector3(section,"position");
+	vScale						= ini->r_fvector3(section,"scale");
+	dir							= ini->r_fvector3(section,"direction");
+	norm						= ini->r_fvector3(section,"normal");
 	mRotate.rotation			(dir,norm);
 	UpdateTransform				();
 	*/

@@ -104,9 +104,10 @@ void IPureServer::config_Load()
 void IPureServer::config_Save	()
 {
 	// traffic in
-	CFileWriter		fs	(nameTraffic);
-	fs.w				(&traffic_in,sizeof(traffic_in));
-	fs.w				(&traffic_out,sizeof(traffic_out));
+	IWriter*		fs	= FS.w_open(nameTraffic);
+	fs->w				(&traffic_in,sizeof(traffic_in));
+	fs->w				(&traffic_out,sizeof(traffic_out));
+	FS.w_close		(fs);
 }
 
 void IPureServer::Reparse	()

@@ -78,7 +78,7 @@ void CAI_Stalker::Load				(LPCSTR section)
 	m_tSelectorRetreat.Load			(section);
 	m_tSelectorAttack.Load			(section);
 	// visibility
-	m_dwMovementIdleTime			= pSettings->ReadINT(section,"MovementIdleTime");
+	m_dwMovementIdleTime			= pSettings->r_s32(section,"MovementIdleTime");
 	m_fMaxInvisibleSpeed			= pSettings->ReadFLOAT(section,"MaxInvisibleSpeed");
 	m_fMaxViewableSpeed				= pSettings->ReadFLOAT(section,"MaxViewableSpeed");
 	m_fMovementSpeedWeight			= pSettings->ReadFLOAT(section,"MovementSpeedWeight");
@@ -95,10 +95,10 @@ void CAI_Stalker::Load				(LPCSTR section)
 	m_fRunFactor					= pSettings->ReadFLOAT(section,"RunFactor");
 
 	//fire
-	m_dwFireRandomMin  				= pSettings->ReadINT(section,"FireRandomMin");
-	m_dwFireRandomMax  				= pSettings->ReadINT(section,"FireRandomMax");
-	m_dwNoFireTimeMin  				= pSettings->ReadINT(section,"NoFireTimeMin");
-	m_dwNoFireTimeMax  				= pSettings->ReadINT(section,"NoFireTimeMax");
+	m_dwFireRandomMin  				= pSettings->r_s32(section,"FireRandomMin");
+	m_dwFireRandomMax  				= pSettings->r_s32(section,"FireRandomMax");
+	m_dwNoFireTimeMin  				= pSettings->r_s32(section,"NoFireTimeMin");
+	m_dwNoFireTimeMax  				= pSettings->r_s32(section,"NoFireTimeMax");
 	m_fMinMissDistance 				= pSettings->ReadFLOAT(section,"MinMissDistance");
 	m_fMinMissFactor   				= pSettings->ReadFLOAT(section,"MinMissFactor");
 	m_fMaxMissDistance 				= pSettings->ReadFLOAT(section,"MaxMissDistance");
@@ -108,7 +108,7 @@ void CAI_Stalker::Load				(LPCSTR section)
 	eye_range						= pSettings->ReadFLOAT(section,"eye_range");
 
 	m_tpaTerrain.clear				();
-	LPCSTR							S = pSettings->ReadSTRING(section,"terrain");
+	LPCSTR							S = pSettings->r_string(section,"terrain");
 	u32								N = _GetItemCount(S);
 	R_ASSERT						(((N % (LOCATION_TYPE_COUNT + 2)) == 0) && (N));
 	STerrainPlace					tTerrainPlace;
@@ -124,8 +124,8 @@ void CAI_Stalker::Load				(LPCSTR section)
 	}
 	m_fGoingSpeed					= pSettings->ReadFLOAT	(section, "going_speed");
 
-	m_dwMaxDynamicObjectsCount		= _min(pSettings->ReadINT(section,"DynamicObjectsCount"),MAX_DYNAMIC_OBJECTS);
-	m_dwMaxDynamicSoundsCount		= _min(pSettings->ReadINT(section,"DynamicSoundsCount"),MAX_DYNAMIC_SOUNDS);
+	m_dwMaxDynamicObjectsCount		= _min(pSettings->r_s32(section,"DynamicObjectsCount"),MAX_DYNAMIC_OBJECTS);
+	m_dwMaxDynamicSoundsCount		= _min(pSettings->r_s32(section,"DynamicSoundsCount"),MAX_DYNAMIC_SOUNDS);
 
 	// physics
 	skel_density_factor				= pSettings->ReadFLOAT(section,"ph_skeleton_mass_factor");
@@ -133,7 +133,7 @@ void CAI_Stalker::Load				(LPCSTR section)
 	skel_airr_ang_factor			= pSettings->ReadFLOAT(section,"ph_skeleton_airr_ang_factor");
 	hinge_force_factor				= pSettings->ReadFLOAT(section,"ph_skeleton_hinger_factor");
 	hinge_force_factor1				= pSettings->ReadFLOAT(section,"ph_skeleton_hinger_factor1");
-	skel_ddelay						= pSettings->ReadINT(section,"ph_skeleton_ddelay");
+	skel_ddelay						= pSettings->r_s32(section,"ph_skeleton_ddelay");
 	hinge_force_factor2				= pSettings->ReadFLOAT(section,"ph_skeleton_hinger_factor2");
 	hinge_vel						= pSettings->ReadFLOAT(section,"ph_skeleton_hinge_vel");
 	skel_fatal_impulse_factor		= pSettings->ReadFLOAT(section,"ph_skel_fatal_impulse_factor");

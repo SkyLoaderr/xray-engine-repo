@@ -19,7 +19,7 @@ BOOL CCustomDetector::net_Spawn(LPVOID DC) {
 
 void CCustomDetector::Load(LPCSTR section) {
 	// verify class
-	LPCSTR Class = pSettings->ReadSTRING(section,"class");
+	LPCSTR Class = pSettings->r_string(section,"class");
 	CLASS_ID load_cls = TEXT2CLSID(Class);
 	R_ASSERT(load_cls==SUB_CLS_ID);
 
@@ -35,19 +35,19 @@ void CCustomDetector::Load(LPCSTR section) {
 	pCreator->ObjectSpace.Object_Register		(this);
 	cfModel->OnMove								();
 
-	LPCSTR l_soundName = pSettings->ReadSTRING(section,"noise");
+	LPCSTR l_soundName = pSettings->r_string(section,"noise");
 	SoundCreate(m_noise, l_soundName);
-	l_soundName = pSettings->ReadSTRING(section,"buzzer");
+	l_soundName = pSettings->r_string(section,"buzzer");
 	SoundCreate(m_buzzer, l_soundName);
 	u32 i = 1;
 	string256 temp;
 	do {
 		sprintf(temp, "zone_class_%d", i);
-		if(pSettings->LineExists(section,temp)) {
-			LPCSTR z_Class = pSettings->ReadSTRING(section,temp);
-			CLASS_ID zone_cls = TEXT2CLSID(pSettings->ReadSTRING(z_Class,"class"));
+		if(pSettings->line_exist(section,temp)) {
+			LPCSTR z_Class = pSettings->r_string(section,temp);
+			CLASS_ID zone_cls = TEXT2CLSID(pSettings->r_string(z_Class,"class"));
 			sprintf(temp, "zone_sound_%d", i);
-			l_soundName = pSettings->ReadSTRING(section,temp);
+			l_soundName = pSettings->r_string(section,temp);
 			sound *l_pSound = xr_new<sound>();
 			SoundCreate(*l_pSound, l_soundName);
 			m_sounds[zone_cls] = l_pSound;

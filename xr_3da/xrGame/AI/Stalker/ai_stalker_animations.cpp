@@ -127,13 +127,13 @@ bool CAI_Stalker::bfCheckIfCanKillEnemy()
 
 void CAI_Stalker::vfAssignBones(CInifile *ini, const char *section)
 {
-	int head_bone		= PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_head"));
+	int head_bone		= PKinematics(pVisual)->LL_BoneID(ini->r_string(section,"bone_head"));
 	PKinematics(pVisual)->LL_GetInstance(head_bone).set_callback(HeadCallback,this);
 	
-	int shoulder_bone	= PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_shoulder"));
+	int shoulder_bone	= PKinematics(pVisual)->LL_BoneID(ini->r_string(section,"bone_shoulder"));
 	PKinematics(pVisual)->LL_GetInstance(shoulder_bone).set_callback(ShoulderCallback,this);
 	
-	int spin_bone		= PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_spin"));
+	int spin_bone		= PKinematics(pVisual)->LL_BoneID(ini->r_string(section,"bone_spin"));
 	PKinematics(pVisual)->LL_GetInstance(spin_bone).set_callback(SpinCallback,this);
 }
 

@@ -94,7 +94,7 @@ void CWeaponM134::Load	(LPCSTR section)
 	inherited::Load		(section);
 	R_ASSERT(m_pHUD);
 	
-	LPCSTR rot_bone = pSettings->ReadSTRING	(section,"rot_bone");
+	LPCSTR rot_bone = pSettings->r_string	(section,"rot_bone");
 	
 	iWpnRotBone		= PKinematics(Visual())->LL_BoneID(rot_bone);
 	iHUDRotBone		= PKinematics(m_pHUD->Visual())->LL_BoneID(rot_bone);
@@ -103,18 +103,18 @@ void CWeaponM134::Load	(LPCSTR section)
 	fRotateSpinupAccel	= pSettings->ReadFLOAT	(section,"rot_spinup_accel");
 	fRotateBreakAccel	= pSettings->ReadFLOAT	(section,"rot_break_accel");
 	
-	LPCSTR fire_bone= pSettings->ReadSTRING	(section,"fire_bone");
+	LPCSTR fire_bone= pSettings->r_string	(section,"fire_bone");
 	iFireBone		= PKinematics(Visual())->LL_BoneID(fire_bone);
 	
 	bRotAxisHUD		= pSettings->ReadTOKEN(section,"rot_axis_hud",axis_token);
 	bRotAxisWpn		= pSettings->ReadTOKEN(section,"rot_axis_wpn",axis_token);
 	
-	iFlameDiv		= pSettings->ReadINT	(section,"flame_div");
+	iFlameDiv		= pSettings->r_s32	(section,"flame_div");
 	fFlameLength	= pSettings->ReadFLOAT(section,"flame_length");
 	fFlameSize		= pSettings->ReadFLOAT(section,"flame_size");
 	
-	dwServoMaxFreq	= pSettings->ReadINT(section,"servo_max_freq");
-	dwServoMinFreq	= pSettings->ReadINT(section,"servo_min_freq");
+	dwServoMaxFreq	= pSettings->r_s32(section,"servo_max_freq");
+	dwServoMinFreq	= pSettings->r_s32(section,"servo_min_freq");
 	
 	// PKinematics(pVisual)->PlayCycle("idle");
 	PKinematics(pVisual)->LL_GetInstance(iWpnRotBone).set_callback			(RotateCallback_norm,this);
@@ -130,7 +130,7 @@ void CWeaponM134::Load	(LPCSTR section)
 void CWeaponM134::FlameLOAD()
 {
 	// flame textures
-	LPCSTR S		= pSettings->ReadSTRING	(cName(),"flame");
+	LPCSTR S		= pSettings->r_string	(cName(),"flame");
 	u32 scnt		= _GetItemCount(S);
 	char name[255];
 	for (u32 i=0; i<scnt; i++)

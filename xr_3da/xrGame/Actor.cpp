@@ -126,20 +126,20 @@ void CActor::Load		(LPCSTR section )
 	Fbox	bb;
 
 	// Movement: BOX
-	Fvector	vBOX0_center= pSettings->ReadVECTOR	(section,"ph_box0_center"	);
-	Fvector	vBOX0_size	= pSettings->ReadVECTOR	(section,"ph_box0_size"		);
+	Fvector	vBOX0_center= pSettings->r_fvector3	(section,"ph_box0_center"	);
+	Fvector	vBOX0_size	= pSettings->r_fvector3	(section,"ph_box0_size"		);
 	bb.set	(vBOX0_center,vBOX0_center); bb.grow(vBOX0_size);
 	ph_Movement.SetBox		(0,bb);
 
 	// Movement: BOX
-	Fvector	vBOX1_center= pSettings->ReadVECTOR	(section,"ph_box1_center"	);
-	Fvector	vBOX1_size	= pSettings->ReadVECTOR	(section,"ph_box1_size"		);
+	Fvector	vBOX1_center= pSettings->r_fvector3	(section,"ph_box1_center"	);
+	Fvector	vBOX1_size	= pSettings->r_fvector3	(section,"ph_box1_size"		);
 	bb.set	(vBOX1_center,vBOX1_center); bb.grow(vBOX1_size);
 	ph_Movement.SetBox		(1,bb);
 
 	// Movement: Foots
-	Fvector	vFOOT_center= pSettings->ReadVECTOR	(section,"ph_foot_center"	);
-	Fvector	vFOOT_size	= pSettings->ReadVECTOR	(section,"ph_foot_size"		);
+	Fvector	vFOOT_center= pSettings->r_fvector3	(section,"ph_foot_center"	);
+	Fvector	vFOOT_size	= pSettings->r_fvector3	(section,"ph_foot_size"		);
 	bb.set	(vFOOT_center,vFOOT_center); bb.grow(vFOOT_size);
 	ph_Movement.SetFoots	(vFOOT_center,vFOOT_size);
 
@@ -177,7 +177,7 @@ void CActor::Load		(LPCSTR section )
 	skel_airr_ang_factor=pSettings->ReadFLOAT(section,"ph_skeleton_airr_ang_factor");
 	hinge_force_factor  =pSettings->ReadFLOAT(section,"ph_skeleton_hinger_factor");
 	hinge_force_factor1 =pSettings->ReadFLOAT(section,"ph_skeleton_hinger_factor1");
-	skel_ddelay			=pSettings->ReadINT(section,"ph_skeleton_ddelay");
+	skel_ddelay			=pSettings->r_s32(section,"ph_skeleton_ddelay");
 	hinge_force_factor2 =pSettings->ReadFLOAT(section,"ph_skeleton_hinger_factor2");
 	hinge_vel			=pSettings->ReadFLOAT(section,"ph_skeleton_hinge_vel");
 	skel_fatal_impulse_factor=pSettings->ReadFLOAT(section,"ph_skel_fatal_impulse_factor");
@@ -366,9 +366,9 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	Weapons->Init		("bip01_r_hand","bip01_l_finger1");
 
 	// load damage params
-	if (pSettings->LineExists(cNameSect(),"damage"))
+	if (pSettings->line_exist(cNameSect(),"damage"))
 	{
-		CInifile::Sect& dam_sect	= pSettings->ReadSection(pSettings->ReadSTRING(cNameSect(),"damage"));
+		CInifile::Sect& dam_sect	= pSettings->r_section(pSettings->r_string(cNameSect(),"damage"));
 		for (CInifile::SectIt it=dam_sect.begin(); it!=dam_sect.end(); it++)
 		{
 			if (0==strcmp(it->first,"default")){

@@ -49,7 +49,7 @@ BOOL CCF_Polygonal::LoadModel( CInifile* ini, const char *section )
 
 	// Locate file
 	string256			full_path;
-	LPCSTR				N = ini->ReadSTRING(section,"cform");
+	LPCSTR				N = ini->r_string(section,"cform");
 	if (!FS.exist(full_path, Path.Current, N))
 		if (!FS.exist(full_path, Path.CForms, N)){
 			Msg("Can't find cform file '%s'.",N);

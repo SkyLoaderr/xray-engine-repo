@@ -15,10 +15,10 @@ CCameraFirstEye::CCameraFirstEye(CObject* p, CInifile* ini, LPCSTR section, BOOL
 {
 	style				= csFirstEye;
 
-	bApplyInert			= ini->ReadBOOL		(section,"apply_inert");
-	lim_pitch			= ini->ReadVECTOR2	(section,"lim_pitch");
-	lim_yaw				= ini->ReadVECTOR2	(section,"lim_yaw");
-	rot_speed			= ini->ReadVECTOR	(section,"rot_speed");
+	bApplyInert			= ini->r_bool		(section,"apply_inert");
+	lim_pitch			= ini->r_fvector2	(section,"lim_pitch");
+	lim_yaw				= ini->r_fvector2	(section,"lim_yaw");
+	rot_speed			= ini->r_fvector3	(section,"rot_speed");
 	bClampPitch			= (lim_pitch[0]!=0)||(lim_pitch[1]!=0);
 	bClampYaw			= (lim_yaw[0]!=0)||(lim_yaw[1]!=0);
 	if (bClampPitch)	pitch = (lim_pitch[0]+lim_pitch[1])*0.5f;

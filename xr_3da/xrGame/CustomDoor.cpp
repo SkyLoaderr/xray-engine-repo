@@ -21,9 +21,9 @@ void CCustomDoor::Load			(LPCSTR section)
 	R_ASSERT	(pVisual->Type==MT_SKELETON);
 	PKinematics(pVisual)->PlayCycle("close");
 
-	if (pSettings->LineExists(section,"sound"))
+	if (pSettings->line_exist(section,"sound"))
 	{
-		LPCSTR N	= pSettings->ReadSTRING(section,"sound");
+		LPCSTR N	= pSettings->r_string(section,"sound");
 		::Sound->Create(sndOpenClose,TRUE,N);
 	}
 }

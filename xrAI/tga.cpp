@@ -53,19 +53,6 @@ VOID TGAdesc::maketga( IWriter& fs ){
 	}
 }
 
-#ifdef ENGINE_BUILD
-VOID TGAdesc::maketga( char *fname )
-{
-	static int sshotnum=0;
-	char FN[_MAX_PATH];
-	sprintf(FN,"%s%d.tga",fname,sshotnum++);
-
-	CFileWriter fs	(FN);
-	maketga			(fs);
-
-	Msg				("Screenshot saved (%s).",FN);
-}
-#else
 #ifdef XRLC
 VOID TGAdesc::maketga( char *fname )
 {
@@ -75,5 +62,4 @@ VOID TGAdesc::maketga( char *fname )
 	CFS_File fs	(FN);
 	maketga	(fs);
 }
-#endif
 #endif

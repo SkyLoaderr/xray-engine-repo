@@ -119,8 +119,8 @@ void CObject::Load				(LPCSTR section )
 	R_ASSERT					( pCreator );
 
 	// Visual and light-track
-	if (pSettings->LineExists(section,"visual")) 
-		cNameVisual_set	(pSettings->ReadSTRING(section,"visual"));
+	if (pSettings->line_exist(section,"visual")) 
+		cNameVisual_set	(pSettings->r_string(section,"visual"));
 	pLights						= xr_new<CLightTrack> ();
 	setVisible					(false);
 }
@@ -131,8 +131,8 @@ BOOL CObject::net_Spawn			(LPVOID data)
 
 	if (0==cfModel) 
 	{
-		if (pSettings->LineExists(cNameSect(),"cform")) {
-			LPCSTR cf				= pSettings->ReadSTRING(cNameSect(), "cform");
+		if (pSettings->line_exist(cNameSect(),"cform")) {
+			LPCSTR cf				= pSettings->r_string(cNameSect(), "cform");
 
 			if (strcmp(cf,"skeleton")==0) cfModel	= xr_new<CCF_Skeleton> (this);
 			else {

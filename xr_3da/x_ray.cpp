@@ -54,7 +54,7 @@ void Startup				()
 #endif
 
 	pInput						= xr_new<CInput>		(bCaptureInput);
-	Sound->_initialize			();
+	Sound->_initialize			(u32(Device.m_hWnd));
 
 	// ...command line for auto start
 	LPCSTR	pStartup			= strstr		(Core.Params,"-start ");
@@ -252,7 +252,7 @@ void CApplication::OnFrame( )
 void CApplication::Level_Scan()
 {
 	vector<char*>	folder;
-	FS.List	(folder,Path.Levels,FS_ListFolders);
+	FS.file_list	(folder,Path.Levels,FS_ListFolders);
 	R_ASSERT		(!folder.empty());
 	for (u32 i=0; i<folder.size(); i++)
 	{

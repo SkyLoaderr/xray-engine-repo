@@ -26,15 +26,15 @@ CWeaponBinoculars::~CWeaponBinoculars()
 void CWeaponBinoculars::Load	(LPCSTR section)
 {
 	// verify class
-	LPCSTR Class		= pSettings->ReadSTRING(section,"class");
+	LPCSTR Class		= pSettings->r_string(section,"class");
 	CLASS_ID load_cls	= TEXT2CLSID(Class);
 	R_ASSERT(load_cls==SUB_CLS_ID);
 
 	CGameObject::Load	(section);
 
 	Fvector				pos,ypr;
-	pos					= pSettings->ReadVECTOR(section,"position");
-	ypr					= pSettings->ReadVECTOR(section,"orientation");
+	pos					= pSettings->r_fvector3(section,"position");
+	ypr					= pSettings->r_fvector3(section,"orientation");
 	ypr.mul				(PI/180.f);
 
 	fMaxZoomFactor		= pSettings->ReadFLOAT	(section,"max_zoom_factor");
@@ -44,7 +44,7 @@ void CWeaponBinoculars::Load	(LPCSTR section)
 
 	ShaderCreate		(hUIIcon,"hud\\default","");
 
-	LPCSTR hud_sect		= pSettings->ReadSTRING	(section,"hud");
+	LPCSTR hud_sect		= pSettings->r_string	(section,"hud");
 	m_pHUD->Load		(hud_sect);
 
 	camMaxAngle			= pSettings->ReadFLOAT	(section,"cam_max_angle"	); camMaxAngle = deg2rad(camMaxAngle);
@@ -54,10 +54,10 @@ void CWeaponBinoculars::Load	(LPCSTR section)
 	dispVelFactor		= pSettings->ReadFLOAT	(section,"disp_vel_factor"	);
 	dispJumpFactor		= pSettings->ReadFLOAT	(section,"disp_jump_factor"	);
 	dispCrouchFactor	= pSettings->ReadFLOAT	(section,"disp_crouch_factor");
-	eHandDependence		= CWeapon::EHandDependence(pSettings->ReadINT(section,"hand_dependence"));
+	eHandDependence		= CWeapon::EHandDependence(pSettings->r_s32(section,"hand_dependence"));
 
 	// slot
-	iSlotBinding		= pSettings->ReadINT		(section,"slot");
+	iSlotBinding		= pSettings->r_s32		(section,"slot");
 
 	setVisible			(FALSE);
 

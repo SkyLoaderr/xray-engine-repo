@@ -101,7 +101,7 @@ void CAI_Crow::Load( LPCSTR section )
 	fASpeed						= pSettings->ReadFLOAT	(section,"angular_speed");
 	fGoalChangeDelta			= pSettings->ReadFLOAT	(section,"goal_change_delta");
 	fMinHeight					= pSettings->ReadFLOAT	(section,"min_height");
-	vVarGoal					= pSettings->ReadVECTOR	(section,"goal_variability");
+	vVarGoal					= pSettings->r_fvector3	(section,"goal_variability");
 	fIdleSoundDelta				= pSettings->ReadFLOAT	(section,"idle_sound_delta");
 	fIdleSoundTime				= fIdleSoundDelta+fIdleSoundDelta*Random.randF(-.5f,.5f);
 

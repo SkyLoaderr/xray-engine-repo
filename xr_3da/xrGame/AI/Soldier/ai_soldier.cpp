@@ -129,7 +129,7 @@ void CAI_Soldier::Load	(LPCSTR section)
 	vfLoadSelectors(section);
 	
 	// visibility
-	m_dwMovementIdleTime = pSettings->ReadINT(section,"MovementIdleTime");
+	m_dwMovementIdleTime = pSettings->r_s32(section,"MovementIdleTime");
 	m_fMaxInvisibleSpeed = pSettings->ReadFLOAT(section,"MaxInvisibleSpeed");
 	m_fMaxViewableSpeed = pSettings->ReadFLOAT(section,"MaxViewableSpeed");
 	m_fMovementSpeedWeight = pSettings->ReadFLOAT(section,"MovementSpeedWeight");
@@ -142,10 +142,10 @@ void CAI_Soldier::Load	(LPCSTR section)
 	m_fShadowWeight = pSettings->ReadFLOAT(section,"ShadowWeight");
 	
 	//fire
-	m_dwFireRandomMin  = pSettings->ReadINT(section,"FireRandomMin");
-	m_dwFireRandomMax  = pSettings->ReadINT(section,"FireRandomMax");
-	m_dwNoFireTimeMin  = pSettings->ReadINT(section,"NoFireTimeMin");
-	m_dwNoFireTimeMax  = pSettings->ReadINT(section,"NoFireTimeMax");
+	m_dwFireRandomMin  = pSettings->r_s32(section,"FireRandomMin");
+	m_dwFireRandomMax  = pSettings->r_s32(section,"FireRandomMax");
+	m_dwNoFireTimeMin  = pSettings->r_s32(section,"NoFireTimeMin");
+	m_dwNoFireTimeMax  = pSettings->r_s32(section,"NoFireTimeMax");
 	m_fMinMissDistance = pSettings->ReadFLOAT(section,"MinMissDistance");
 	m_fMinMissFactor   = pSettings->ReadFLOAT(section,"MinMissFactor");
 	m_fMaxMissDistance = pSettings->ReadFLOAT(section,"MaxMissDistance");
@@ -155,8 +155,8 @@ void CAI_Soldier::Load	(LPCSTR section)
 	m_fMaxRadioIinterval = pSettings->ReadFLOAT(section,"MaxRadioIinterval");
 	m_fRadioRefreshRate	 = pSettings->ReadFLOAT(section,"RadioRefreshRate");
 	
-	m_dwMaxDynamicObjectsCount = _min(pSettings->ReadINT(section,"DynamicObjectsCount"),MAX_DYNAMIC_OBJECTS);
-	m_dwMaxDynamicSoundsCount = _min(pSettings->ReadINT(section,"DynamicSoundsCount"),MAX_DYNAMIC_SOUNDS);
+	m_dwMaxDynamicObjectsCount = _min(pSettings->r_s32(section,"DynamicObjectsCount"),MAX_DYNAMIC_OBJECTS);
+	m_dwMaxDynamicSoundsCount = _min(pSettings->r_s32(section,"DynamicSoundsCount"),MAX_DYNAMIC_SOUNDS);
 }
 
 BOOL CAI_Soldier::net_Spawn	(LPVOID DC)

@@ -10,15 +10,15 @@ void CObjectList::Load()
 	u32	mem_0			= Memory.mem_usage();
 	CTimer T;			T.Start		();
 
-	CInifile::Root&	R	= pSettings->Sections();
+	CInifile::Root&	R	= pSettings->sections();
 	int	p_count			= 0;
 	for (CInifile::RootIt	S	= R.begin(); S!=R.end(); S++)
 	{
-		if (pSettings->LineExists(S->Name,"$prefetch"))
+		if (pSettings->line_exist(S->Name,"$prefetch"))
 		{
-			int		count		=	pSettings->ReadINT(S->Name,"$prefetch");
+			int		count		=	pSettings->r_s32(S->Name,"$prefetch");
 			R_ASSERT2			((count>0) && (count<=128), "Too many objects for prefetching");
-			CLASS_ID CLS		=	pSettings->ReadCLSID(S->Name,"class");
+			CLASS_ID CLS		=	pSettings->r_clsid(S->Name,"class");
 			p_count				+=	count;
 
 			for (int c=0; c<count; c++)

@@ -68,20 +68,20 @@ void CCustomMonster::Load		(LPCSTR section)
 	Fbox	bb;
 
 	// Movement: BOX
-	Fvector	vBOX0_center= pSettings->ReadVECTOR	(section,"ph_box0_center"	);
-	Fvector	vBOX0_size	= pSettings->ReadVECTOR	(section,"ph_box0_size"		);
+	Fvector	vBOX0_center= pSettings->r_fvector3	(section,"ph_box0_center"	);
+	Fvector	vBOX0_size	= pSettings->r_fvector3	(section,"ph_box0_size"		);
 	bb.set	(vBOX0_center,vBOX0_center); bb.grow(vBOX0_size);
 	Movement.SetBox		(0,bb);
 
 	// Movement: BOX
-	Fvector	vBOX1_center= pSettings->ReadVECTOR	(section,"ph_box1_center"	);
-	Fvector	vBOX1_size	= pSettings->ReadVECTOR	(section,"ph_box1_size"		);
+	Fvector	vBOX1_center= pSettings->r_fvector3	(section,"ph_box1_center"	);
+	Fvector	vBOX1_size	= pSettings->r_fvector3	(section,"ph_box1_size"		);
 	bb.set	(vBOX1_center,vBOX1_center); bb.grow(vBOX1_size);
 	Movement.SetBox		(1,bb);
 
 	// Movement: Foots
-	Fvector	vFOOT_center= pSettings->ReadVECTOR	(section,"ph_foot_center"	);
-	Fvector	vFOOT_size	= pSettings->ReadVECTOR	(section,"ph_foot_size"		);
+	Fvector	vFOOT_center= pSettings->r_fvector3	(section,"ph_foot_center"	);
+	Fvector	vFOOT_size	= pSettings->r_fvector3	(section,"ph_foot_size"		);
 	bb.set	(vFOOT_center,vFOOT_center); bb.grow(vFOOT_size);
 	Movement.SetFoots	(vFOOT_center,vFOOT_size);
 
@@ -618,12 +618,12 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 	R_ASSERT				(pVisual->Type==MT_SKELETON);
 
 	// Eyes
-	eye_bone				= PKinematics(pVisual)->LL_BoneID(pSettings->ReadSTRING(cNameSect(),"bone_head"));
+	eye_bone				= PKinematics(pVisual)->LL_BoneID(pSettings->r_string(cNameSect(),"bone_head"));
 
 	// weapons
-	if (pSettings->ReadINT(cNameSect(),"weapon_usage")) {
+	if (pSettings->r_s32(cNameSect(),"weapon_usage")) {
 		Weapons					= xr_new<CWeaponList>(this);
-		LPCSTR S1 = pSettings->ReadSTRING(cNameSect(),"bone_torso_weapon"),S2 = pSettings->ReadSTRING(cNameSect(),"bone_head_weapon");
+		LPCSTR S1 = pSettings->r_string(cNameSect(),"bone_torso_weapon"),S2 = pSettings->r_string(cNameSect(),"bone_head_weapon");
 		Weapons->Init			(S1,S2);
 	}
 

@@ -255,15 +255,15 @@ void CWeapon::UpdateFP		()
 void CWeapon::Load		(LPCSTR section)
 {
 	// verify class
-	LPCSTR Class		= pSettings->ReadSTRING		(section,"class");
+	LPCSTR Class		= pSettings->r_string		(section,"class");
 	CLASS_ID load_cls	= TEXT2CLSID(Class);
 	R_ASSERT			(load_cls==SUB_CLS_ID);
 
 	inherited::Load		(section);
 
 	Fvector				pos,ypr;
-	pos					= pSettings->ReadVECTOR		(section,"position");
-	ypr					= pSettings->ReadVECTOR		(section,"orientation");
+	pos					= pSettings->r_fvector3		(section,"position");
+	ypr					= pSettings->r_fvector3		(section,"orientation");
 	ypr.mul				(PI/180.f);
 
 	m_Offset.setHPB		(ypr.x,ypr.y,ypr.z);
@@ -272,17 +272,17 @@ void CWeapon::Load		(LPCSTR section)
 	fTimeToFire			= pSettings->ReadFLOAT		(section,"rpm");
 	fTimeToFire			= 60 / fTimeToFire;
 
-	LPCSTR	name		= pSettings->ReadSTRING		(section,"wm_name");
+	LPCSTR	name		= pSettings->r_string		(section,"wm_name");
 	pstrWallmark		= xr_strdup(name);
 	fWallmarkSize		= pSettings->ReadFLOAT		(section,"wm_size");
 
-	LPCSTR hud_sect		= pSettings->ReadSTRING		(section,"hud");
+	LPCSTR hud_sect		= pSettings->r_string		(section,"hud");
 	m_pHUD->Load		(hud_sect);
 
-	iAmmoLimit			= pSettings->ReadINT		(section,"ammo_limit"		);
-	iAmmoCurrent		= pSettings->ReadINT		(section,"ammo_current"		);
-	iAmmoElapsed		= pSettings->ReadINT		(section,"ammo_elapsed"		);
-	iMagazineSize		= pSettings->ReadINT		(section,"ammo_mag_size"	);
+	iAmmoLimit			= pSettings->r_s32		(section,"ammo_limit"		);
+	iAmmoCurrent		= pSettings->r_s32		(section,"ammo_current"		);
+	iAmmoElapsed		= pSettings->r_s32		(section,"ammo_elapsed"		);
+	iMagazineSize		= pSettings->r_s32		(section,"ammo_mag_size"	);
 	
 	fireDistance		= pSettings->ReadFLOAT		(section,"fire_distance"	);
 	fireDispersionBase	= pSettings->ReadFLOAT		(section,"fire_dispersion_base"	);	fireDispersionBase	= deg2rad(fireDispersionBase);
@@ -306,30 +306,30 @@ void CWeapon::Load		(LPCSTR section)
 	tracerWidth			= pSettings->ReadFLOAT		(section,"tracer_width"			);
 
 	// light
-	Fvector clr			= pSettings->ReadVECTOR		(section,"light_color"		);
+	Fvector clr			= pSettings->r_fvector3		(section,"light_color"		);
 	light_base.SetColor	(clr.x,clr.y,clr.z);
 	light_base.SetRange	(pSettings->ReadFLOAT		(section,"light_range"		));
 	light_var_color		= pSettings->ReadFLOAT		(section,"light_var_color"	);
 	light_var_range		= pSettings->ReadFLOAT		(section,"light_var_range"	);
 	light_lifetime		= pSettings->ReadFLOAT		(section,"light_time"		);
 	light_time			= -1.f;
-	iHitPower			= pSettings->ReadINT		(section,"hit_power"		);
-	if(pSettings->LineExists(section,"hit_impulse_scale")) fHitImpulseScale = pSettings->ReadFLOAT(section,"hit_impulse_scale");
+	iHitPower			= pSettings->r_s32		(section,"hit_power"		);
+	if(pSettings->line_exist(section,"hit_impulse_scale")) fHitImpulseScale = pSettings->ReadFLOAT(section,"hit_impulse_scale");
 	else fHitImpulseScale = 1.f;
 
-	vFirePoint			= pSettings->ReadVECTOR		(section,"fire_point"		);
-	vShellPoint			= pSettings->ReadVECTOR		(section,"shell_point"		);
+	vFirePoint			= pSettings->r_fvector3		(section,"fire_point"		);
+	vShellPoint			= pSettings->r_fvector3		(section,"shell_point"		);
 
 	// flames
-	iFlameDiv			= pSettings->ReadINT		(section,"flame_div"		);
+	iFlameDiv			= pSettings->r_s32		(section,"flame_div"		);
 	fFlameLength		= pSettings->ReadFLOAT		(section,"flame_length"		);
 	fFlameSize			= pSettings->ReadFLOAT		(section,"flame_size"		);
 
 	// hands
-	eHandDependence		= EHandDependence(pSettings->ReadINT(section,"hand_dependence"));
+	eHandDependence		= EHandDependence(pSettings->r_s32(section,"hand_dependence"));
 
 	// slot
-	iSlotBinding		= pSettings->ReadINT		(section,"slot");
+	iSlotBinding		= pSettings->r_s32		(section,"slot");
 
 	setVisible			(FALSE);
 }

@@ -17,7 +17,7 @@ void CMosquitoBald::Load(LPCSTR section) {
 	inherited::Load(section);
 	m_hitImpulseScale = pSettings->ReadFLOAT(section,"hit_impulse_scale");
 
-	LPCSTR l_PP = pSettings->ReadSTRING(section,"postprocess");
+	LPCSTR l_PP = pSettings->r_string(section,"postprocess");
 	m_pp.duality_h = pSettings->ReadFLOAT(l_PP,"duality_h");
 	m_pp.duality_v = pSettings->ReadFLOAT(l_PP,"duality_v");
 	m_pp.gray = pSettings->ReadFLOAT(l_PP,"gray");
@@ -25,7 +25,7 @@ void CMosquitoBald::Load(LPCSTR section) {
 	m_pp.gray = pSettings->ReadFLOAT(l_PP,"gray");
 	m_pp.noise = pSettings->ReadFLOAT(l_PP,"noise");
 	m_pp.noise_scale = pSettings->ReadFLOAT(l_PP,"noise_scale");
-	sscanf(pSettings->ReadSTRING(l_PP,"noise_color"), "%d,%d,%d,%d", &m_pp.r, &m_pp.g, &m_pp.b, &m_pp.a);
+	sscanf(pSettings->r_string(l_PP,"noise_color"), "%d,%d,%d,%d", &m_pp.r, &m_pp.g, &m_pp.b, &m_pp.a);
 }
 
 void CMosquitoBald::Affect(CObject* O) {

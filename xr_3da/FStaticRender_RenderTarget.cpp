@@ -95,7 +95,7 @@ void CRenderTarget::eff_load	(LPCSTR n)
 	param_gray					= pSettings->ReadFLOAT	(n,"gray");
 	param_noise					= pSettings->ReadFLOAT	(n,"noise");
 	param_noise_scale			= pSettings->ReadFLOAT	(n,"noise_scale");
-	param_noise_color			= pSettings->ReadCOLOR	(n,"noise_color");
+	param_noise_color			= pSettings->r_color	(n,"noise_color");
 	*/
 }
 

@@ -67,7 +67,7 @@ void CObjectAnimator::LoadMotions(const char* fname)
 /*
 void CObjectAnimator::Load(CInifile* ini, const char * section)
 {
-	LPCSTR temp			= ini->ReadSTRING(section,"motions");
+	LPCSTR temp			= ini->r_string(section,"motions");
 	Load				(temp);
 }
 */

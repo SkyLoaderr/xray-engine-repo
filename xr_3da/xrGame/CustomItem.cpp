@@ -60,10 +60,10 @@ void	CCustomItem::Load	(LPCSTR section)
 {
 	CObject::Load	(section);
 	
-	clsid_target	= TEXT2CLSID(pSettings->ReadSTRING(section, "target"));
-	iValue			= pSettings->ReadINT(section, "value");
+	clsid_target	= TEXT2CLSID(pSettings->r_string(section, "target"));
+	iValue			= pSettings->r_s32(section, "value");
 	start_pos.set	(vPosition);
-	::Sound->Create	(sndTake, TRUE, pSettings->ReadSTRING(section, "snd_take"));
+	::Sound->Create	(sndTake, TRUE, pSettings->r_string(section, "snd_take"));
 }
 
 void	CCustomItem::OnMove()

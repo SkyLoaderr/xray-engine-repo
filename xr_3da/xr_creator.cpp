@@ -114,7 +114,7 @@ BOOL CCreator::Load(u32 dwNum)
 	// Load Sounds
 	pApp->LoadTitle				("Loading sound and music...");
 	{
-		CInifile::Sect& S = pLevel->ReadSection		("static_sounds");
+		CInifile::Sect& S = pLevel->r_section		("static_sounds");
 		Sounds.reserve			(S.size());
 		for (CInifile::SectIt I=S.begin(); I!=S.end(); I++) {
 			Fvector				pos;
@@ -125,17 +125,17 @@ BOOL CCreator::Load(u32 dwNum)
 			Sound->create		(Sounds.back(),TRUE,fname);
 			Sound->play_at_pos	(Sounds.back(),0,pos,true);
 		}
-		if (pLevel->LineExists("static_sounds","ambient"))
+		if (pLevel->line_exist("static_sounds","ambient"))
 		{
-			LPCSTR fname		= pLevel->ReadSTRING("static_sounds","ambient");
+			LPCSTR fname		= pLevel->r_string("static_sounds","ambient");
 			Sound->create		(Sounds_Ambience,FALSE,fname);
 			Sound->play			(Sounds_Ambience,0,true);
 		} 
 	}
 	{
-		if (pLevel->SectionExists("random_sounds"))	
+		if (pLevel->section_exist("random_sounds"))	
 		{
-			CInifile::Sect& S		= pLevel->ReadSection("random_sounds");
+			CInifile::Sect& S		= pLevel->r_section("random_sounds");
 			Sounds_Random.reserve	(S.size());
 			for (CInifile::SectIt I=S.begin(); I!=S.end(); I++) {
 				Sounds_Random.push_back	(sound());

@@ -86,7 +86,7 @@ void CAI_ALife::vfNewGame()
 			OBJECT_IT			EE = tpALifeAbstractGroup->m_tpMembers.end();
 			for ( ; II != EE; II++) {
 				NET_Packet			tNetPacket;
-				LPCSTR				S = pSettings->ReadSTRING((*I)->s_name,"monster_section");
+				LPCSTR				S = pSettings->r_string((*I)->s_name,"monster_section");
 				xrServerEntity		*tp1 = F_entity_Create	(S);
 				R_ASSERT2			(tp1,"Can't create entity.");
 				CALifeDynamicObject	*tp2 = dynamic_cast<CALifeDynamicObject*>(tp1);
@@ -151,11 +151,11 @@ void CAI_ALife::Load()
 	m_dwObjectsBeingSwitched	= 0;
 	
 	Log							("* Loading parameters...");
-	shedule_Min					= pSettings->ReadINT	("alife","schedule_min");
-	shedule_Max					= pSettings->ReadINT	("alife","schedule_max");
-	m_qwMaxProcessTime			= pSettings->ReadINT	("alife","procees_time")*CPU::cycles_per_microsec;
+	shedule_Min					= pSettings->r_s32	("alife","schedule_min");
+	shedule_Max					= pSettings->r_s32	("alife","schedule_max");
+	m_qwMaxProcessTime			= pSettings->r_s32	("alife","procees_time")*CPU::cycles_per_microsec;
 	m_fOnlineDistance			= pSettings->ReadFLOAT	("alife","online_distance");
-	m_dwSwitchDelay				= pSettings->ReadINT	("alife","switch_delay");
+	m_dwSwitchDelay				= pSettings->r_s32	("alife","switch_delay");
 	m_fTimeFactor				= pSettings->ReadFLOAT	("alife","time_factor");
 
 	string256					caFileName;

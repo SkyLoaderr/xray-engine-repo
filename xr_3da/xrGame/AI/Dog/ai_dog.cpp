@@ -91,19 +91,19 @@ void CAI_Dog::Load(LPCSTR section)
 	
 	// active\passive
 	m_fChangeActiveStateProbability = pSettings->ReadFLOAT (section,"ChangeActiveStateProbability");
-	m_dwPassiveScheduleMin			= pSettings->ReadINT   (section,"PassiveScheduleMin");
-	m_dwPassiveScheduleMax			= pSettings->ReadINT   (section,"PassiveScheduleMax");
-	m_dwActiveCountPercent			= pSettings->ReadINT   (section,"ActiveCountPercent");
-	m_dwStandingCountPercent		= pSettings->ReadINT   (section,"StandingCountPercent");
+	m_dwPassiveScheduleMin			= pSettings->r_s32   (section,"PassiveScheduleMin");
+	m_dwPassiveScheduleMax			= pSettings->r_s32   (section,"PassiveScheduleMax");
+	m_dwActiveCountPercent			= pSettings->r_s32   (section,"ActiveCountPercent");
+	m_dwStandingCountPercent		= pSettings->r_s32   (section,"StandingCountPercent");
 
 	// eye shift
 	m_tEyeShift.y					= pSettings->ReadFLOAT (section,"EyeYShift");
 
 	// former constants
-	m_dwLostMemoryTime				= pSettings->ReadINT   (section,"LostMemoryTime");
-	m_dwLostRecoilTime				= pSettings->ReadINT   (section,"LostRecoilTime");
+	m_dwLostMemoryTime				= pSettings->r_s32   (section,"LostMemoryTime");
+	m_dwLostRecoilTime				= pSettings->r_s32   (section,"LostRecoilTime");
 	m_fUnderFireDistance			= pSettings->ReadFLOAT (section,"UnderFireDistance");
-	m_dwRetreatTime					= pSettings->ReadINT   (section,"RetreatTime");
+	m_dwRetreatTime					= pSettings->r_s32   (section,"RetreatTime");
 	m_fRetreatDistance				= pSettings->ReadFLOAT (section,"RetreatDistance");
 	m_fAttackStraightDistance		= pSettings->ReadFLOAT (section,"AttackStraightDistance");
 	m_fStableDistance				= pSettings->ReadFLOAT (section,"StableDistance");
@@ -112,17 +112,17 @@ void CAI_Dog::Load(LPCSTR section)
 
 	m_fAngleSpeed					= pSettings->ReadFLOAT (section,"AngleSpeed");
 	m_fSafeGoalChangeDelta	 		= pSettings->ReadFLOAT (section,"GoalChangeDelta");
-	m_tGoalVariation	  			= pSettings->ReadVECTOR(section,"GoalVariation");
+	m_tGoalVariation	  			= pSettings->r_fvector3(section,"GoalVariation");
 
 	m_fMoraleDeathDistance	 		= pSettings->ReadFLOAT (section,"MoraleDeathDistance");
-	m_dwActionRefreshDoge	 		= pSettings->ReadINT   (section,"ActionRefreshDoge");
+	m_dwActionRefreshDoge	 		= pSettings->r_s32   (section,"ActionRefreshDoge");
 
 	m_fMaxHealthValue	 			= pSettings->ReadFLOAT (section,"MaxHealthValue");
 	m_fSoundThreshold				= pSettings->ReadFLOAT (section,"SoundThreshold");
 
-	m_bEatMemberCorpses				= pSettings->ReadBOOL  (section,"EatMemberCorpses");
-	m_bCannibalism					= pSettings->ReadBOOL  (section,"Cannibalism");
-	m_dwEatCorpseInterval			= pSettings->ReadINT   (section,"EatCorpseInterval");
+	m_bEatMemberCorpses				= pSettings->r_bool  (section,"EatMemberCorpses");
+	m_bCannibalism					= pSettings->r_bool  (section,"Cannibalism");
+	m_dwEatCorpseInterval			= pSettings->r_s32   (section,"EatCorpseInterval");
 
 	m_dwActiveScheduleMin			= shedule_Min;
 	m_dwActiveScheduleMax			= shedule_Max;

@@ -5,7 +5,7 @@
 
 CObject*	CObjectList::Create				( LPCSTR	name	)
 {
-	CLASS_ID CLS		=	pSettings->ReadCLSID(name,"class");
+	CLASS_ID CLS		=	pSettings->r_clsid(name,"class");
 	multimap<CLASS_ID,CObject*>::iterator	it	= map_POOL.find	(CLS);
 	if (it!=map_POOL.end())
 	{
@@ -32,7 +32,7 @@ void		CObjectList::Destroy			( CObject*	O		)
 	OBJ_IT it				=	find		(objects.begin(),objects.end(),O);
 	if (it!=objects.end())	objects.erase	(it);
 
-	CLASS_ID CLS			=	pSettings->ReadCLSID(O->cNameSect(),"class");
+	CLASS_ID CLS			=	pSettings->r_clsid(O->cNameSect(),"class");
 	R_ASSERT(O->SUB_CLS_ID	==	CLS);
 	map_POOL.insert			(make_pair(CLS,O));
 }

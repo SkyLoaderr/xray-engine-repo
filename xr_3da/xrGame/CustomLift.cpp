@@ -20,7 +20,7 @@ CCustomLift::~CCustomLift()
 void CCustomLift::Load(LPCSTR section)
 {
 	inherited::Load	(section);
-	floor_count		= pSettings->ReadINT(section,"floor_count");
+	floor_count		= pSettings->r_s32(section,"floor_count");
 }
 
 void CCustomLift::OnMove()

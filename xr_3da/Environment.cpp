@@ -45,8 +45,8 @@ void CEnvironment::Load(CInifile *pIni, char *section)
 	{
 		char	name[32];
 		sprintf(name,"env%d",env);
-		if (!pIni->LineExists(section,name)) break;
-		LPCSTR	E	= pIni->ReadSTRING(section,name);
+		if (!pIni->line_exist(section,name)) break;
+		LPCSTR	E	= pIni->r_string(section,name);
 		SEnvDef	D;
 		sscanf	(E,"%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f",
 			&D.Ambient.r,&D.Ambient.g,&D.Ambient.b,
@@ -57,12 +57,12 @@ void CEnvironment::Load(CInifile *pIni, char *section)
 		Palette.push_back	(D);
 	}
 	
-	if (pIni->LineExists(section,"suns"))
+	if (pIni->line_exist(section,"suns"))
 	{
 		LPCSTR		S;
 		string256	name;
 		CSun*		pSun;
-		S = pIni->ReadSTRING(section,"suns");
+		S = pIni->r_string(section,"suns");
 		u32 scnt = _GetItemCount(S);
 		for (u32 i=0; i<scnt; i++){
 			_GetItem(S,i,name);
@@ -72,9 +72,9 @@ void CEnvironment::Load(CInifile *pIni, char *section)
 	}
 
 	// environment objects
-	if ((0==pSkydome) && (pCreator->pLevel->LineExists("environment","sky")))
+	if ((0==pSkydome) && (pCreator->pLevel->line_exist("environment","sky")))
 	{
-		LPCSTR S			= pCreator->pLevel->ReadSTRING("environment","sky");
+		LPCSTR S			= pCreator->pLevel->r_string("environment","sky");
 		pSkydome			= Render->model_Create	(S);
 	} else {
 		pSkydome			= 0;
@@ -96,22 +96,22 @@ void CEnvironment::Load(CInifile *pIni, char *section)
 void CEnvironment::Load_Music(CInifile* INI)
 {
 	/*
-	if (INI->SectionExists("music")) 
+	if (INI->section_exist("music")) 
 	{
 		for (int i=0; ; i++)
 		{
 			char buf[128];
 			sprintf(buf,"track%d",i);
 
-			if (!INI->LineExists("music",buf)) break;
+			if (!INI->line_exist("music",buf)) break;
 
-			LPCSTR N		= INI->ReadSTRING("music",buf);
+			LPCSTR N		= INI->r_string("music",buf);
 			CSoundStream* S = Sounds->CreateStream(N);
 			R_ASSERT		(S);
 			Music.push_back	(S);
 		}
-		if (INI->LineExists("music","track")) {
-			LPCSTR N		= INI->ReadSTRING("music","track");
+		if (INI->line_exist("music","track")) {
+			LPCSTR N		= INI->r_string("music","track");
 			CSoundStream* S = pSounds->CreateStream((char*)N);
 			R_ASSERT		(S);
 			S->Play			(true);

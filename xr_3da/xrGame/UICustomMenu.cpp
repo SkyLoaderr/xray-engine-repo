@@ -19,12 +19,12 @@ CUICustomMenuItem* UIParseMenu	(CUICustomMenu* owner, CInifile* ini, CUICustomMe
 	int ln_cnt = ini->LineCount(sect);
 	if (ln_cnt){
 		if (!root)	root		= xr_new<CUICustomMenuItem> (owner,(CUICustomMenuItem *)NULL,"root",(LPCSTR)NULL,(LPCSTR)NULL,(OnExecuteEvent)NULL,(OnItemDrawEvent)NULL);
-		if (ini->LineExists(sect,"title"))	root->SetTitle(ini->ReadSTRING(sect,"title"));
+		if (ini->line_exist(sect,"title"))	root->SetTitle(ini->r_string(sect,"title"));
 		for (int i=1; i<=ln_cnt; i++){
 			// append if exist menu item
 			sprintf(buf,"menu_%d",i);
-			if (ini->LineExists(sect,buf)){
-				LPCSTR line		= ini->ReadSTRING(sect,buf);	R_ASSERT(_GetItemCount(line)==2);
+			if (ini->line_exist(sect,buf)){
+				LPCSTR line		= ini->r_string(sect,buf);	R_ASSERT(_GetItemCount(line)==2);
 				LPCSTR	name	= _GetItem(line,0,buf);
 				LPCSTR	new_sect= strlwr(_GetItem(line,1,buf1));
 				I				= xr_new<CUICustomMenuItem> (owner,root,name,(LPCSTR)NULL,(LPCSTR)NULL,(OnExecuteEvent)NULL,draw);
@@ -33,8 +33,8 @@ CUICustomMenuItem* UIParseMenu	(CUICustomMenu* owner, CInifile* ini, CUICustomMe
 			}
 			// append if exist value item
 			sprintf(buf,"item_%d",i);
-			if (ini->LineExists(sect,buf)){
-				LPCSTR line		= ini->ReadSTRING(sect,buf);	R_ASSERT(_GetItemCount(line)>=2);
+			if (ini->line_exist(sect,buf)){
+				LPCSTR line		= ini->r_string(sect,buf);	R_ASSERT(_GetItemCount(line)>=2);
 				LPCSTR	name	= _GetItem(line,0,buf);
 				LPCSTR	value0	= _GetItem(line,1,buf1);
 				LPCSTR	value1	= (_GetItemCount(line)>2)?_GetItem(line,2,buf2):0;
