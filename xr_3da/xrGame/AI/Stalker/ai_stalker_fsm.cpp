@@ -178,6 +178,7 @@ void CAI_Stalker::Detour()
 {
 	WRITE_TO_LOG("Detour");
 
+	m_dwInertion				= 60000;
 	if (m_bStateChanged) {
 		m_tActionState = eActionStateWatchLook;
 		m_dwActionStartTime = Level().timeServer();
@@ -202,7 +203,7 @@ void CAI_Stalker::Detour()
 	
 	float fDistance = min(vPosition.distance_to(m_tSavedEnemyPosition),f);
 	dwDelay1 = iFloor((fDistance / f) * 20000);
-	dwDelay2 = 20000 - dwDelay1;
+	dwDelay2 = max(u32(20000 - dwDelay1),u32(2000));
 	switch (m_tActionState) {
 		case eActionStateWatchGo : {
 			WRITE_TO_LOG			("WatchGo : Detour");
