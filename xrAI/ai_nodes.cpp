@@ -19,7 +19,7 @@ typedef struct tagSSegment {
 	Fvector v1,v2;
 } SSegment;
 
-#define EPS_H				0.4f
+#define EPS_H				0.5f
 
 #define	LI_NONE				0
 #define LI_COLLINEAR        0
@@ -282,7 +282,8 @@ void vfGetIntersectionPoints(NodeCompressed &Node, SContour tCurContour, Fvector
 
 	switch (dwCount) {
 		case 0 : {
-			R_ASSERT(false);
+			//R_ASSERT(false);
+			throw("");
 			break;
 		}
 		case 1 : {
@@ -362,9 +363,9 @@ float ffCheckPositionInDirection(u32 dwStartNode, Fvector tStartPoint, Fvector t
 			return(fCumulativeDistance);
 		UnpackContour(tCurContour,dwCurNode);
 		tpNode = Node(dwCurNode);
-		if (dwCurNode == 7723) {
-			dwCurNode = dwCurNode;
-		}
+//		if (dwCurNode == 60199) {
+//			dwCurNode = dwCurNode;
+//		}
 		vfGetIntersectionPoints(*tpNode,tCurContour,tStartPoint,tFinishPoint,tPoint);
 		taLinks = (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
 		iCount = tpNode->links;
