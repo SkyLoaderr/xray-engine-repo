@@ -13,7 +13,7 @@ class CUICursor
 	float m_fSensitivity;
 public:
 					CUICursor	();
-					~CUICursor	();
+	virtual			~CUICursor	();
 	void			Render		();
 	
 	//const Fvector2&	GetPos		(){return vPos;}
