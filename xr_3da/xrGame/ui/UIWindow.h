@@ -127,7 +127,7 @@ public:
 
 
 	//абсолютные координаты
-	Ivector2				GetAbsolutePos		() const							{Irect abs = GetAbsoluteRect(); 
+	Ivector2				GetAbsolutePos		() const							{Irect abs = GetAbsoluteRect();}; 
 																					return Ivector2().set(abs.x1,abs.y1);)
 	Irect					GetAbsoluteRect		();
 
