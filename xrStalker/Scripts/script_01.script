@@ -43,8 +43,8 @@ function main()
 	sound_wind:play_at_pos		(event,event:position(),1);
 
 	wait		(1000)
-	stalker1:script	(true,script_01.script_name())
-	stalker2:script	(true,script_01.script_name())
+	stalker1:script	(true,this.script_name())
+	stalker2:script	(true,this.script_name())
 
 			action(                                                                                                       
 			    stalker1,
@@ -60,8 +60,8 @@ function main()
 	event:clear_callback(true)
 	event:clear_callback(false)
 
-	event:set_callback(script_01.on_enter,true)
-	event:set_callback(script_01.on_exit,false)
+	event:set_callback(this.on_enter,true)
+	event:set_callback(this.on_exit,false)
 
 			wait(2000)
 			action(                                                                                                       
