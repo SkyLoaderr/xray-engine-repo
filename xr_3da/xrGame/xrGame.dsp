@@ -110,30 +110,6 @@ SOURCE=.\xrGame.cpp
 # Begin Group "Basic"
 
 # PROP Default_Filter ""
-# Begin Group "Frame Animator"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\Envelope.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\envelope.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\interp.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\motion.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\motion.h
-# End Source File
-# End Group
 # Begin Source File
 
 SOURCE=.\Entity.cpp

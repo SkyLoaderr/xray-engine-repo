@@ -6,7 +6,7 @@
 #include "..\xr_streamsnd.h"
 
 #include "DemoActor.h"
-#include "ObjectAnimator.h"
+#include "..\ObjectAnimator.h"
 #include "dummyobject.h"
 
 //////////////////////////////////////////////////////////////////////

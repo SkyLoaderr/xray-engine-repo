@@ -197,6 +197,10 @@ SOURCE=.\x_ray.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\xr_func.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\xr_func.h
 # End Source File
 # Begin Source File
@@ -1692,6 +1696,38 @@ SOURCE=.\AI_PathQuantizer.cpp
 
 SOURCE=.\AI_PathQuantizer.h
 # PROP Exclude_From_Build 1
+# End Source File
+# End Group
+# Begin Group "Animator"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\Envelope.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\envelope.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\interp.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\motion.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\motion.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ObjectAnimator.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ObjectAnimator.h
 # End Source File
 # End Group
 # Begin Source File

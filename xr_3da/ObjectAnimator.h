@@ -5,7 +5,7 @@
 class COMotion;
 class ENGINE_API CInifile;
 
-struct st_AnimParam{
+struct ENGINE_API st_AnimParam{
     float				t;
     float				min_t;
     float				max_t;
@@ -16,11 +16,11 @@ struct st_AnimParam{
 };
 
 
-class CObjectAnimator
+class ENGINE_API CObjectAnimator
 {
 private:
 	struct str_pred : public binary_function<char*, char*, bool>{	
-		IC bool operator()(const char* x, const char* y) const {return strcmp(x,y)<0;}
+		IC bool operator()(LPCSTR x, LPCSTR y) const {return strcmp(x,y)<0;}
 	};
 	DEFINE_MAP_PRED		(LPSTR,COMotion*,MotionMap,MotionPairIt,str_pred);
 protected:
@@ -30,7 +30,7 @@ protected:
     COMotion*			m_ActiveMotion;
     st_AnimParam		m_MParam;
 	MotionMap			m_Motions;
-	void				LoadMotions		(const char* fname);
+	void				LoadMotions		(LPCSTR fname);
 
     IC bool				IsMotionable	()	{return	!!m_Motions.size();}
 	void				SetActiveMotion	(COMotion* mot, bool bLoop=true);
@@ -39,7 +39,8 @@ public:
 						CObjectAnimator	();
 	virtual				~CObjectAnimator();
 
-	void				Load			(CInifile* ini, const char * section);
+	void				Load			(CInifile* ini, LPCSTR section);
+	void				Load			(LPCSTR name);
 
 	COMotion*			PlayMotion		(LPCSTR name, bool bLoop);
 	void				StopMotion		();

@@ -46,7 +46,7 @@ struct st_Key{
 
 DEFINE_VECTOR(st_Key*,KeyVec,KeyIt);
 
-class CEnvelope {
+class ENGINE_API CEnvelope {
 	friend class CBoneData;
 	friend class CCustomMotion;
 	friend float evalEnvelope(CEnvelope *env, float time);

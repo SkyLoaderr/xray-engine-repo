@@ -8,7 +8,7 @@
 #include "..\3dsound.h"
 
 #include "DummyObject.h"
-#include "ObjectAnimator.h"
+#include "..\ObjectAnimator.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

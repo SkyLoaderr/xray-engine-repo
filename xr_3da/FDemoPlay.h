@@ -8,10 +8,17 @@
 #include "ftimer.h"
 #include "effector.h"
 #include "xr_list.h"
+#include "ObjectAnimator.h"
+
+// refs
+class COMotion;
 
 class ENGINE_API CDemoPlay :
 	public CEffector
 {
+    COMotion*			m_pMotion;
+    st_AnimParam		m_MParam;
+
 	vector	<Fmatrix>	seq;
 	int					m_count;
 	float				fStartTime;

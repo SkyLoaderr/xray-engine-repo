@@ -36,7 +36,7 @@ struct st_BoneMotion{
 DEFINE_VECTOR(st_BoneMotion,BoneMotionVec,BoneMotionIt);
 
 //--------------------------------------------------------------------------
-class CCustomMotion{
+class ENGINE_API CCustomMotion{
 protected:
 	enum EMotionType{
 		mtObject	= 0,
@@ -73,7 +73,7 @@ public:
 };
 
 //--------------------------------------------------------------------------
-class COMotion: public CCustomMotion{
+class ENGINE_API COMotion: public CCustomMotion{
 	CEnvelope*		envs[ctMaxChannel];
 public:
 					COMotion		();
@@ -93,7 +93,7 @@ public:
 };
 
 //--------------------------------------------------------------------------
-class CSMotion: public CCustomMotion{
+class ENGINE_API CSMotion: public CCustomMotion{
 	BoneMotionVec	bone_mots;
 public:
 	char			cStartBone[MAX_OBJ_NAME];
