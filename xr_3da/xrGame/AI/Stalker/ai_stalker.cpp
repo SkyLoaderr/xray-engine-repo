@@ -39,6 +39,8 @@ CAI_Stalker::CAI_Stalker			()
 	m_dwSavedEnemyNodeID			= u32(-1);
 	m_tpWeaponToTake				= 0;
 	m_bActionStarted				= false;
+	m_iSoundIndex					= -1;
+	m_dwSoundTime					= 0;
 	
 //	m_fAccuracy						= 100.f;
 //	m_fIntelligence					= 100.f;
@@ -114,23 +116,26 @@ void CAI_Stalker::Load				(LPCSTR section)
 	string16						I;
 	for (u32 i=0; i<N;) {
 		for (u32 j=0; j<LOCATION_TYPE_COUNT; j++, i++)
-			tTerrainPlace.tMask[j] = _LOCATION_ID(atoi(_GetItem(S,i,I)));
+			tTerrainPlace.tMask[j]	= _LOCATION_ID(atoi(_GetItem(S,i,I)));
 		tTerrainPlace.dwMinTime		= atoi(_GetItem(S,i++,I))*1000;
 		tTerrainPlace.dwMaxTime		= atoi(_GetItem(S,i++,I))*1000;
-		m_tpaTerrain.push_back(tTerrainPlace);
+		m_tpaTerrain.push_back		(tTerrainPlace);
 	}
 	m_fGoingSpeed					= pSettings->ReadFLOAT	(section, "going_speed");
 
+	m_dwMaxDynamicObjectsCount		= _min(pSettings->ReadINT(section,"DynamicObjectsCount"),MAX_DYNAMIC_OBJECTS);
+	m_dwMaxDynamicSoundsCount		= _min(pSettings->ReadINT(section,"DynamicSoundsCount"),MAX_DYNAMIC_SOUNDS);
+
 	// physics
-	skel_density_factor = pSettings->ReadFLOAT(section,"ph_skeleton_mass_factor");
-	skel_airr_lin_factor=pSettings->ReadFLOAT(section,"ph_skeleton_airr_lin_factor");
-	skel_airr_ang_factor=pSettings->ReadFLOAT(section,"ph_skeleton_airr_ang_factor");
-	hinge_force_factor  =pSettings->ReadFLOAT(section,"ph_skeleton_hinger_factor");
-	hinge_force_factor1 =pSettings->ReadFLOAT(section,"ph_skeleton_hinger_factor1");
-	skel_ddelay			=pSettings->ReadINT(section,"ph_skeleton_ddelay");
-	hinge_force_factor2 =pSettings->ReadFLOAT(section,"ph_skeleton_hinger_factor2");
-	hinge_vel			=pSettings->ReadFLOAT(section,"ph_skeleton_hinge_vel");
-	skel_fatal_impulse_factor=pSettings->ReadFLOAT(section,"ph_skel_fatal_impulse_factor");
+	skel_density_factor				= pSettings->ReadFLOAT(section,"ph_skeleton_mass_factor");
+	skel_airr_lin_factor			= pSettings->ReadFLOAT(section,"ph_skeleton_airr_lin_factor");
+	skel_airr_ang_factor			= pSettings->ReadFLOAT(section,"ph_skeleton_airr_ang_factor");
+	hinge_force_factor				= pSettings->ReadFLOAT(section,"ph_skeleton_hinger_factor");
+	hinge_force_factor1				= pSettings->ReadFLOAT(section,"ph_skeleton_hinger_factor1");
+	skel_ddelay						= pSettings->ReadINT(section,"ph_skeleton_ddelay");
+	hinge_force_factor2				= pSettings->ReadFLOAT(section,"ph_skeleton_hinger_factor2");
+	hinge_vel						= pSettings->ReadFLOAT(section,"ph_skeleton_hinge_vel");
+	skel_fatal_impulse_factor		= pSettings->ReadFLOAT(section,"ph_skel_fatal_impulse_factor");
 
 	// Msg	("! stalker size: %d",sizeof(*this));
 }
@@ -183,15 +188,15 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 	
 	float							f1;
 	if (m_tCurGP != u16(-1)) {
-		f1								= vPosition.distance_to		(getAI().m_tpaGraph[m_tCurGP].tLocalPoint);
-		P.w								(&f1,						sizeof(f1));
-		f1								= vPosition.distance_to		(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
-		P.w								(&f1,						sizeof(f1));
+		f1							= vPosition.distance_to		(getAI().m_tpaGraph[m_tCurGP].tLocalPoint);
+		P.w							(&f1,						sizeof(f1));
+		f1							= vPosition.distance_to		(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
+		P.w							(&f1,						sizeof(f1));
 	}
 	else {
-		f1								= 0;
-		P.w								(&f1,						sizeof(f1));
-		P.w								(&f1,						sizeof(f1));
+		f1							= 0;
+		P.w							(&f1,						sizeof(f1));
+		P.w							(&f1,						sizeof(f1));
 	}
 }
 

@@ -134,6 +134,7 @@ private:
 	SuspiciousForces		m_tpaSuspiciousForces;
 	vector<u32>				m_tpaNodeStack;
 	bool					m_bActionStarted;
+	u32						m_dwSoundTime;
 
 	//HIT PHYS
 	float					m_saved_impulse;

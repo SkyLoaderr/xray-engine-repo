@@ -88,7 +88,7 @@ void CAI_Stalker::vfBuildPathToDestinationPoint(CAISelectorBase *S, bool bCanStr
 				tpaLine.clear();
 				tpaLine.push_back(tpaPoints[i-1]);
 				tpaLine.push_back(tpaPoints[i]);
-				getAI().vfCreateFastRealisticPath(tpaLine,getAI().q_LoadSearch(tpaLine[0]),tpaDeviations,tpaTravelPath,tpaNodes,false,false,0,0);
+				getAI().vfCreateFastRealisticPath(tpaLine,tpaPointNodes[i-1],tpaDeviations,tpaTravelPath,tpaNodes,false,false,0,0);
 				u32 n = tpaTravelPath.size();
 				AI::CPathNodes::CTravelNode	T;
 				for (u32 j= i<2?0:1; j<n; j++) {
@@ -377,7 +377,7 @@ void CAI_Stalker::vfSetMovementType(EBodyState tBodyState, EMovementType tMoveme
 			break;
 		}
 		case eLookTypeSearch : {
-			SetLessCoverLook();
+			SetLessCoverLook(AI_Node);
 			break;
 		}
 		case eLookTypeDanger : {
@@ -424,18 +424,19 @@ void CAI_Stalker::vfMarkVisibleNodes(CEntity *tpEntity)
 	if (!tpCustomMonster)
 		return;
 
-	CAI_Space &AI = getAI();
 	Fvector tDirection;
-	float /**fFov = tpCustomMonster->ffGetFov()*PI/180.f, /**/fRange = tpCustomMonster->ffGetRange();
+	float fRange = tpCustomMonster->ffGetRange();
 	
 	for (float fIncrement = 0; fIncrement < PI_MUL_2; fIncrement += PI/10.f) {
 		tDirection.setHP(fIncrement,0.f);
-		AI.ffMarkNodesInDirection(tpCustomMonster->AI_NodeID,tpCustomMonster->Position(),tDirection,AI.q_mark_bit,fRange,m_tpaNodeStack);
+		getAI().ffMarkNodesInDirection(tpCustomMonster->AI_NodeID,tpCustomMonster->Position(),tDirection,getAI().q_mark_bit,fRange,m_tpaNodeStack);
 	}
 }
 
 void CAI_Stalker::vfFindAllSuspiciousNodes(u32 StartNode, Fvector tPointPosition, const Fvector& BasePos, float Range, CGroup &Group)
 {
+	Msg("%d : searching for suspicious nodes",Level().timeServer());
+
 	Device.Statistic.AI_Range.Begin	();
 
 	Group.m_tpaSuspiciousNodes.clear();
@@ -483,7 +484,7 @@ void CAI_Stalker::vfFindAllSuspiciousNodes(u32 StartNode, Fvector tPointPosition
 	for (int i=0; i<(int)Group.Members.size(); i++)
 		vfMarkVisibleNodes(Group.Members[i]);
 
-	Msg("Nodes being checked for suspicious :");
+//	Msg("Nodes being checked for suspicious :");
 	for (u32 it=0; it<AI.q_stack.size(); it++) {
 		u32 ID = AI.q_stack[it];
 
@@ -521,7 +522,7 @@ void CAI_Stalker::vfFindAllSuspiciousNodes(u32 StartNode, Fvector tPointPosition
 			SRotation tRotation;
 			mk_rotation(tDirection,tRotation);
 			float fCost = ffGetCoverInDirection(tRotation.yaw,T);
-			Msg("%d %.2f",Test,fCost);
+//			Msg("%d %.2f",Test,fCost);
 			if (fCost < .6f) {
 				bool bOk = false;
 				float fMax = 0.f;
@@ -587,9 +588,9 @@ void CAI_Stalker::vfFindAllSuspiciousNodes(u32 StartNode, Fvector tPointPosition
 	}
 	//AI.q_mark_bit.assign(AI.Header().count,false);
 	
-	Msg("Suspicious nodes :");
-	for (int k=0; k<(int)Group.m_tpaSuspiciousNodes.size(); k++)
-		Msg("%d",Group.m_tpaSuspiciousNodes[k].dwNodeID);
+//	Msg("Suspicious nodes :");
+//	for (int k=0; k<(int)Group.m_tpaSuspiciousNodes.size(); k++)
+//		Msg("%d",Group.m_tpaSuspiciousNodes[k].dwNodeID);
 
 	Device.Statistic.AI_Range.End();
 }
@@ -676,11 +677,13 @@ void CAI_Stalker::vfChooseSuspiciousNode(CAISelectorBase &tSelector)
 //			getGroup()->m_tpaSuspiciousNodes.clear();
 //			vfFindAllSuspiciousNodes(m_dwSavedEnemyNodeID,m_tSavedEnemyPosition,m_tSavedEnemyPosition,_min(20.f,_min(1*8.f*vPosition.distance_to(m_tSavedEnemyPosition)/4.5f,60.f)),*getGroup());
 //			vfClasterizeSuspiciousNodes(*getGroup());
+//			m_bActionStarted = false;
+
 			m_tSelectorRetreat.m_tEnemyPosition = m_tMySavedPosition;
 			m_tSelectorRetreat.m_tpEnemyNode = getAI().Node(m_dwMyNodeID);
 			m_tSelectorRetreat.m_tMyPosition = vPosition;
 			m_tSelectorRetreat.m_tpMyNode = AI_Node;
-			vfChoosePointAndBuildPath(m_tSelectorRetreat);
+			vfChoosePointAndBuildPath(m_tSelectorRetreat,true);
 			m_iCurrentSuspiciousNodeIndex = -1;
 			m_bActionStarted = true;
 		}
@@ -692,18 +695,29 @@ void CAI_Stalker::vfChooseSuspiciousNode(CAISelectorBase &tSelector)
 					Group.m_tpaSuspiciousNodes[i].dwSearched = 2;
 				iCount++;
 			}
-		if ((m_iCurrentSuspiciousNodeIndex != -1) && (Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwSearched == 2))
+		if ((m_iCurrentSuspiciousNodeIndex != -1) && (Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwSearched == 2)) {
 			AI_Path.TravelPath.clear();
-		if (!iCount && (m_dwCurrentUpdate - m_dwLostEnemyTime > TIME_TO_SEARCH)) {
-			m_tSavedEnemy = 0;
-			GO_TO_PREV_STATE;
-		}
-		if (m_iCurrentSuspiciousNodeIndex != -1) {
-			if (AI_Path.DestNode != Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID) {
-				AI_Path.DestNode = Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID;
-				vfBuildPathToDestinationPoint(0,true);
+			if (!iCount && (m_dwCurrentUpdate - m_dwLostEnemyTime > TIME_TO_SEARCH)) {
+				m_tSavedEnemy = 0;
+				GO_TO_PREV_STATE;
+			}
+			else {
+				m_tSelectorRetreat.m_tEnemyPosition = m_tMySavedPosition;
+				m_tSelectorRetreat.m_tpEnemyNode = getAI().Node(m_dwMyNodeID);
+				m_tSelectorRetreat.m_tMyPosition = vPosition;
+				m_tSelectorRetreat.m_tpMyNode = AI_Node;
+				vfChoosePointAndBuildPath(m_tSelectorRetreat,true);
+				m_iCurrentSuspiciousNodeIndex = -1;
+				m_bActionStarted = true;
 			}
 		}
+		else
+			if (m_iCurrentSuspiciousNodeIndex != -1) {
+				if (AI_Path.DestNode != Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID) {
+					AI_Path.DestNode = Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID;
+					vfBuildPathToDestinationPoint(0,true);
+				}
+			}
 	}
 }
 

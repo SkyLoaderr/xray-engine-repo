@@ -119,20 +119,6 @@ bool CAI_Stalker::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvec
 	return(fAlpha < FIRE_SAFETY_ANGLE);
 }
 
-bool CAI_Stalker::bfCheckIfCanKillEnemy() 
-{
-	if (!Weapons->ActiveWeapon() || !m_tEnemy.Enemy)
-		return(false);
-
-	Fvector fire_pos, fire_dir;
-	Weapons->GetFireParams(fire_pos,fire_dir);
-	fire_pos.sub(m_tEnemy.Enemy->Position(),vPosition);
-	float yaw1,yaw2,pitch1,pitch2;
-	fire_pos.getHP(yaw1,pitch1);
-	fire_dir.getHP(yaw2,pitch2);
-	return(getAI().bfTooSmallAngle(yaw1,yaw2,PI_DIV_4) && getAI().bfTooSmallAngle(pitch1,pitch2,PI_DIV_4));
-}
-
 bool CAI_Stalker::bfCheckIfCanKillMember()
 {
 	Fvector tFireVector, tMyPosition = Position();

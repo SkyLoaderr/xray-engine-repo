@@ -11,6 +11,7 @@
 #include "..\\ai_monsters_misc.h"
 
 #define MIN_SOUND_VOLUME				.05f
+#define SOUND_UPDATE_DELAY				3000
 
 static BOOL __fastcall StalkerQualifier(CObject* O, void* P)
 {
@@ -256,100 +257,6 @@ void CAI_Stalker::Exec_Look(float dt)
 	Engine.Sheduler.Slice	();
 }
 
-void CAI_Stalker::feel_sound_new(CObject* who, int eType, Fvector& Position, float power)
-{
-	#ifdef WRITE_LOG
-		Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
-	#endif
-
-	if (g_Health() <= 0) {
-		m_tpaDynamicSounds.clear();
-		return;
-	}
-	
-	power *= ffGetStartVolume(ESoundTypes(eType));
-	if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING)
-		power = 1.f;//expf(.1f*log(power));
-
-	u32 dwTime = m_dwCurrentUpdate;
-	
-	if ((power >= m_fSensetivity*m_fSoundPower) && (power >= MIN_SOUND_VOLUME)) {
-		if (this != who) {
-			int j;
-			CEntity *tpEntity = dynamic_cast<CEntity *>(who);
-			for ( j=0; j<(int)m_tpaDynamicSounds.size(); j++)
-				if (who == m_tpaDynamicSounds[j].tpEntity) {
-					m_tpaDynamicSounds[j].eSoundType		= ESoundTypes(eType);
-					m_tpaDynamicSounds[j].dwTime			= dwTime;
-					m_tpaDynamicSounds[j].fPower			= power;
-					m_tpaDynamicSounds[j].dwUpdateCount++;
-					m_tpaDynamicSounds[j].tSavedPosition	= Position;
-					m_tpaDynamicSounds[j].tOrientation		= tfGetOrientation(tpEntity);
-					m_tpaDynamicSounds[j].tMySavedPosition	= vPosition;
-					m_tpaDynamicSounds[j].tMyOrientation	= r_torso_current;
-					m_tpaDynamicSounds[j].tpEntity			= tpEntity;
-					m_tpaDynamicSounds[j].dwNodeID			= tpEntity ? tpEntity->AI_NodeID : 0;
-					m_tpaDynamicSounds[j].dwMyNodeID		= AI_NodeID;
-				}
-			if (j >= (int)m_tpaDynamicSounds.size()) {
-				if ((int)m_tpaDynamicSounds.size() >= m_dwMaxDynamicSoundsCount)	{
-					u32 dwBest = dwTime + 1, dwIndex = u32(-1);
-					for (int j=0; j<(int)m_tpaDynamicSounds.size(); j++)
-						if (m_tpaDynamicSounds[j].dwTime < dwBest) {
-							dwIndex = j;
-							dwBest = m_tpaDynamicSounds[j].dwTime;
-						}
-					if (dwIndex < (int)m_tpaDynamicSounds.size()) {
-						m_tpaDynamicSounds[dwIndex].eSoundType			= ESoundTypes(eType);
-						m_tpaDynamicSounds[dwIndex].dwTime				= dwTime;
-						m_tpaDynamicSounds[dwIndex].fPower				= power;
-						m_tpaDynamicSounds[dwIndex].dwUpdateCount		= 1;
-						m_tpaDynamicSounds[dwIndex].tSavedPosition		= Position;
-						m_tpaDynamicSounds[dwIndex].tOrientation		= tfGetOrientation(tpEntity);
-						m_tpaDynamicSounds[dwIndex].tMySavedPosition	= vPosition;
-						m_tpaDynamicSounds[dwIndex].tMyOrientation		= r_torso_current;
-						m_tpaDynamicSounds[dwIndex].tpEntity			= tpEntity;
-						m_tpaDynamicSounds[dwIndex].dwNodeID			= tpEntity ? tpEntity->AI_NodeID : 0;
-						m_tpaDynamicSounds[dwIndex].dwMyNodeID			= AI_NodeID;
-					}
-				}
-				else {
-					SDynamicSound					tDynamicSound;
-					tDynamicSound.eSoundType		= ESoundTypes(eType);
-					tDynamicSound.dwTime			= dwTime;
-					tDynamicSound.fPower			= power;
-					tDynamicSound.dwUpdateCount		= 1;
-					tDynamicSound.tSavedPosition	= Position;
-					tDynamicSound.tOrientation		= tfGetOrientation(tpEntity);
-					tDynamicSound.tMySavedPosition	= vPosition;
-					tDynamicSound.tMyOrientation	= r_torso_current;
-					tDynamicSound.tpEntity			= tpEntity;
-					tDynamicSound.dwNodeID			= tpEntity ? tpEntity->AI_NodeID : 0;
-					tDynamicSound.dwMyNodeID		= AI_NodeID;
-					m_tpaDynamicSounds.push_back	(tDynamicSound);
-				}
-			}
-		}
-	}
-	// computing total power of my own sounds for computing tha ability to hear the others
-	if (m_fSoundPower < power) {
-		m_fSoundPower = m_fStartPower = power;
-		m_dwSoundUpdate = dwTime;
-	}
-}
-
-void CAI_Stalker::SelectSound(int &iIndex)
-{
-	iIndex = -1;
-	float fMaxPower = 0.f;
-	for (int i=0; i<(int)m_tpaDynamicSounds.size(); i++)
-		if ((!m_tpaDynamicSounds[i].tpEntity) || (m_tpaDynamicSounds[i].tpEntity->g_Team() != g_Team()))
-			if ((m_tpaDynamicSounds[i].dwTime + 10000 > m_dwCurrentUpdate) && (m_tpaDynamicSounds[i].fPower > fMaxPower)) {
-				fMaxPower = m_tpaDynamicSounds[i].fPower;
-				iIndex = i;
-			}
-}
-
 void CAI_Stalker::vfUpdateDynamicObjects()
 {
 	feel_vision_get(m_tpaVisibleObjects);
@@ -483,5 +390,105 @@ bool CAI_Stalker::bfCheckIfSound()
 {
 	int iIndex;
 	SelectSound(iIndex);
-	return((iIndex > 0) && m_tpaDynamicSounds[iIndex].tpEntity);
+	if ((iIndex > 0) && m_tpaDynamicSounds[iIndex].tpEntity && ((iIndex != m_iSoundIndex) || (m_tpaDynamicSounds[iIndex].dwTime > m_dwSoundTime))) {
+		m_iSoundIndex = iIndex;
+		m_dwSoundTime = m_tpaDynamicSounds[iIndex].dwTime;
+		return(true);
+	}
+	else
+		return(false);
+}
+
+void CAI_Stalker::SelectSound(int &iIndex)
+{
+	iIndex = -1;
+	float fMaxPower = 0.f;
+	for (int i=0; i<(int)m_tpaDynamicSounds.size(); i++)
+		if ((!m_tpaDynamicSounds[i].tpEntity) || (m_tpaDynamicSounds[i].tpEntity->g_Team() != g_Team()))
+			if ((m_tpaDynamicSounds[i].dwTime + SOUND_UPDATE_DELAY > m_dwCurrentUpdate) && (m_tpaDynamicSounds[i].fPower > fMaxPower)) {
+				fMaxPower = m_tpaDynamicSounds[i].fPower;
+				iIndex = i;
+			}
+}
+
+void CAI_Stalker::feel_sound_new(CObject* who, int eType, Fvector& Position, float power)
+{
+	#ifdef WRITE_LOG
+//		Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
+	#endif
+
+	if (g_Health() <= 0) {
+		m_tpaDynamicSounds.clear();
+		return;
+	}
+	
+	power *= ffGetStartVolume(ESoundTypes(eType));
+	if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING)
+		power = 1.f;//expf(.1f*log(power));
+
+	u32 dwTime = m_dwCurrentUpdate;
+	
+	if ((power >= 0*m_fSensetivity*m_fSoundPower) && (power >= MIN_SOUND_VOLUME)) {
+		if (this != who) {
+			int j;
+			CEntity *tpEntity = dynamic_cast<CEntity *>(who);
+			for ( j=0; j<(int)m_tpaDynamicSounds.size(); j++)
+				if (who == m_tpaDynamicSounds[j].tpEntity) {
+					m_tpaDynamicSounds[j].eSoundType		= ESoundTypes(eType);
+					m_tpaDynamicSounds[j].dwTime			= dwTime;
+					m_tpaDynamicSounds[j].fPower			= power;
+					m_tpaDynamicSounds[j].dwUpdateCount++;
+					m_tpaDynamicSounds[j].tSavedPosition	= Position;
+					m_tpaDynamicSounds[j].tOrientation		= tfGetOrientation(tpEntity);
+					m_tpaDynamicSounds[j].tMySavedPosition	= vPosition;
+					m_tpaDynamicSounds[j].tMyOrientation	= r_torso_current;
+					m_tpaDynamicSounds[j].tpEntity			= tpEntity;
+					m_tpaDynamicSounds[j].dwNodeID			= tpEntity ? tpEntity->AI_NodeID : 0;
+					m_tpaDynamicSounds[j].dwMyNodeID		= AI_NodeID;
+				}
+			if (j >= (int)m_tpaDynamicSounds.size()) {
+				if ((int)m_tpaDynamicSounds.size() >= m_dwMaxDynamicSoundsCount)	{
+					u32 dwBest = dwTime + 1, dwIndex = u32(-1);
+					for (int j=0; j<(int)m_tpaDynamicSounds.size(); j++)
+						if (m_tpaDynamicSounds[j].dwTime < dwBest) {
+							dwIndex = j;
+							dwBest = m_tpaDynamicSounds[j].dwTime;
+						}
+					if (dwIndex < (int)m_tpaDynamicSounds.size()) {
+						m_tpaDynamicSounds[dwIndex].eSoundType			= ESoundTypes(eType);
+						m_tpaDynamicSounds[dwIndex].dwTime				= dwTime;
+						m_tpaDynamicSounds[dwIndex].fPower				= power;
+						m_tpaDynamicSounds[dwIndex].dwUpdateCount		= 1;
+						m_tpaDynamicSounds[dwIndex].tSavedPosition		= Position;
+						m_tpaDynamicSounds[dwIndex].tOrientation		= tfGetOrientation(tpEntity);
+						m_tpaDynamicSounds[dwIndex].tMySavedPosition	= vPosition;
+						m_tpaDynamicSounds[dwIndex].tMyOrientation		= r_torso_current;
+						m_tpaDynamicSounds[dwIndex].tpEntity			= tpEntity;
+						m_tpaDynamicSounds[dwIndex].dwNodeID			= tpEntity ? tpEntity->AI_NodeID : 0;
+						m_tpaDynamicSounds[dwIndex].dwMyNodeID			= AI_NodeID;
+					}
+				}
+				else {
+					SDynamicSound					tDynamicSound;
+					tDynamicSound.eSoundType		= ESoundTypes(eType);
+					tDynamicSound.dwTime			= dwTime;
+					tDynamicSound.fPower			= power;
+					tDynamicSound.dwUpdateCount		= 1;
+					tDynamicSound.tSavedPosition	= Position;
+					tDynamicSound.tOrientation		= tfGetOrientation(tpEntity);
+					tDynamicSound.tMySavedPosition	= vPosition;
+					tDynamicSound.tMyOrientation	= r_torso_current;
+					tDynamicSound.tpEntity			= tpEntity;
+					tDynamicSound.dwNodeID			= tpEntity ? tpEntity->AI_NodeID : 0;
+					tDynamicSound.dwMyNodeID		= AI_NodeID;
+					m_tpaDynamicSounds.push_back	(tDynamicSound);
+				}
+			}
+		}
+	}
+	// computing total power of my own sounds for computing tha ability to hear the others
+	if (m_fSoundPower < power) {
+		m_fSoundPower = m_fStartPower = power;
+		m_dwSoundUpdate = dwTime;
+	}
 }

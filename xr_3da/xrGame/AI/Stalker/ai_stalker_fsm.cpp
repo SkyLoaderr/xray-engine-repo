@@ -13,8 +13,8 @@
 #undef	WRITE_TO_LOG
 //#define WRITE_TO_LOG(s) m_bStopThinking = true;
 #define WRITE_TO_LOG(s) {\
-	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
 	m_bStopThinking = true;\
+	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
 }
 
 #ifndef DEBUG
@@ -280,6 +280,8 @@ void CAI_Stalker::PursuitUnknown()
 	int						iIndex;
 	SelectSound				(iIndex);
 	
+	CHECK_IF_GO_TO_PREV_STATE(iIndex == -1);
+
 	m_tSavedEnemy			= m_tpaDynamicSounds[iIndex].tpEntity;
 	m_tSavedEnemyPosition	= m_tpaDynamicSounds[iIndex].tSavedPosition;
 	m_dwSavedEnemyNodeID	= m_tpaDynamicSounds[iIndex].dwNodeID;
@@ -297,7 +299,7 @@ void CAI_Stalker::PursuitKnown()
 	
 	if (m_bStateChanged) {
 		getGroup()->m_tpaSuspiciousNodes.clear();
-		//vfFindAllSuspiciousNodes(m_dwSavedEnemyNodeID,m_tSavedEnemyPosition,m_tSavedEnemyPosition,_min(20.f,_min(1*8.f*vPosition.distance_to(m_tSavedEnemyPosition)/4.5f,60.f)),*getGroup());
+		vfFindAllSuspiciousNodes(m_dwSavedEnemyNodeID,m_tSavedEnemyPosition,m_tSavedEnemyPosition,_min(20.f,_min(1*8.f*vPosition.distance_to(m_tSavedEnemyPosition)/4.5f,60.f)),*getGroup());
 		vfClasterizeSuspiciousNodes(*getGroup());
 		m_iCurrentSuspiciousNodeIndex = -1;
 	}
@@ -309,7 +311,7 @@ void CAI_Stalker::PursuitKnown()
 	// I see enemy
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(m_tEnemy.Enemy,eStalkerStateAttack);
 
-//	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfCheckIfSound(),eStalkerStatePursuitUnknown);
+	CHECK_IF_GO_TO_NEW_STATE	(bfCheckIfSound(),eStalkerStatePursuitUnknown);
 
 	// I have to recharge active weapon
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(Weapons->ActiveWeapon() && !Weapons->ActiveWeapon()->GetAmmoElapsed(),eStalkerStateRecharge);
@@ -320,7 +322,7 @@ void CAI_Stalker::PursuitKnown()
 
 	vfChooseSuspiciousNode		(m_tSelectorFreeHunting);
 	
-	vfSetMovementType			(eBodyStateStand,eMovementTypeRun,eLookTypeSearch);
+	vfSetMovementType			(eBodyStateStand,eMovementTypeRun,eLookTypePatrol);
 	
 	if (m_fCurSpeed < EPS_L)
 		r_torso_target.yaw		= r_target.yaw;
