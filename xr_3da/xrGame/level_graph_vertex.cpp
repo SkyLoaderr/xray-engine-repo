@@ -619,7 +619,6 @@ bool CLevelGraph::neighbour_in_direction	(const Fvector &direction, u32 start_ve
 	float					cur_sqr = _sqr(temp.x - dest.x) + _sqr(temp.y - dest.y);
 	const_iterator			I,E;
 	begin					(cur_vertex_id,I,E);
-	bool					found = false;
 	for ( ; I != E; ++I) {
 		u32					next_vertex_id = value(cur_vertex_id,I);
 		if ((next_vertex_id == prev_vertex_id) || !is_accessible(next_vertex_id))
