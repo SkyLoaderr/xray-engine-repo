@@ -352,11 +352,12 @@ void	CRender::Render()
 	
 	// NORMAL			*** mostly the main level
 	// Perform sorting based on "shader" minimal distance
-	CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d()));
 	for (DWORD pr=0; pr<4; pr++)	
 	{
 		if (0==mapNormal[pr].size())	continue;
 
+		CHK_DX					(HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d()));
+		Lights.BeginStatic		();
 		mapNormal[pr].getANY_P	(vecNormalNodes);
 		std::sort				(vecNormalNodes.begin(),vecNormalNodes.end(),cmp_nodes);
 		for (DWORD I=0; I<vecNormalNodes.size(); I++)	{
@@ -371,17 +372,13 @@ void	CRender::Render()
 			Wallmarks.Render		();		// Wallmarks has priority as normal geometry
 			Lights_Dynamic.Render	();		// Lights has priority the same as normal geom
 		}
+		if (2==pr)			{
+			// NORMAL-matrix	*** actors and dyn. objects
+			mapMatrix.traverseANY	(matrix_L1);
+			mapMatrix.clear			();
+		}
 	}
 	
-	// NORMAL-matrix	*** actors and dyn. objects
-	mapMatrix.traverseANY	(matrix_L1);
-	mapMatrix.clear			();
-
-	/*
-	CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d()));
-	Wallmarks.Render		();
-	*/
-
 	// Sorted (back to front)
 	Lights.BeginStatic		();
 	mapSorted.traverseRL	(sorted_L1);
