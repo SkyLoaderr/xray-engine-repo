@@ -1184,6 +1184,28 @@ struct MI2W : public MI2, public wrap_base
 template <typename T>
 struct AW : public T, public wrap_base {};
 
+struct CAbstractClass {
+	CAbstractClass(int a){}
+	virtual void pure_vf() = 0;
+};
+
+struct CAbstractClassWrapper : public CAbstractClass, public wrap_base {
+	typedef CAbstractClass inherited;
+	CAbstractClassWrapper(int a) : inherited(a) {}
+	virtual void pure_vf()
+	{
+		call_member<void>(this,"pure_vf");
+	}
+
+	static void pure_vf_static(CAbstractClass *a)
+	{
+		printf("Pure virtual function call!\n");
+	}
+};
+
+struct vA{virtual ~vA(){}};
+struct vB : virtual public vA{virtual ~vB(){}};
+
 void test1()
 {
 //	test0();
@@ -1219,13 +1241,23 @@ void test1()
 			.def("add",&CInternalStorage::add,adopt(_2))
 			.def("get",&CInternalStorage::get),
 
+		class_<MI0>("mi0")
+			.def(constructor<>()),
+
 		class_<MI1>("mi1")
 			.def(constructor<>())
 			.def("add",&MI1::add,adopt(_2)),
 
-		class_<MI2,MI2W,MI1>("mi2")
+		class_<MI2,MI2W,bases<MI1,MI0> >("mi2")
 			.def(constructor<>())
 			.def("vf",&MI2::vf,&MI2W::vf_static),
+
+		class_<CAbstractClass,CAbstractClassWrapper>("abstract_class")
+			.def(constructor<int>())
+			.def("pure_vf",&CAbstractClass::pure_vf,&CAbstractClassWrapper::pure_vf_static),
+
+//		class_<vA>("vA"),
+//		class_<vB,bases<vA> >("vB"),
 
 		def("test_object",&test_object),
 		def("test_object",&test_object1),
