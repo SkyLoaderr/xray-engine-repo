@@ -13,6 +13,8 @@ function FSM:__init(npc_obj)
 	transition_matrix = {}
 	-- номер текущего состояния
 	self.current_state = 0
+
+	log	("scripted FSM for NPC initialized")
 end
 
 -- 	добавление указателя на булеву
