@@ -78,7 +78,8 @@
       intermediate\ELight_props.obj intermediate\ELight_IO.obj 
       intermediate\ESceneObjectToolsExportBreakable.obj 
       intermediate\xrHemisphere.obj intermediate\object_factory.obj 
-      intermediate\object_factory_register.obj intermediate\PHNetState.obj"/>
+      intermediate\object_factory_register.obj intermediate\PHNetState.obj 
+      intermediate\alife_event_personal.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -281,6 +282,7 @@
       <FILE FILENAME="Engine\Game\object_factory.cpp" FORMNAME="" UNITNAME="object_factory.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Game\object_factory_register.cpp" FORMNAME="" UNITNAME="object_factory_register" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Game\PHNetState.cpp" FORMNAME="" UNITNAME="PHNetState" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Game\alife_event_personal.cpp" FORMNAME="" UNITNAME="alife_event_personal" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

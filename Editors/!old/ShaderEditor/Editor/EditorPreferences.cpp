@@ -136,7 +136,7 @@ void CEditorPreferences::Edit()
 #define R_FLOAT_SAFE(S,L,D)	I->line_exist(S,L)?I->r_float(S,L):D;
 #define R_U32_SAFE(S,L,D) 	I->line_exist(S,L)?I->r_u32(S,L):D;
 #define R_BOOL_SAFE(S,L,D) 	I->line_exist(S,L)?I->r_bool(S,L):D;
-#define R_STRING_SAFE(S,L,D)I->line_exist(S,L)?I->r_string(S,L):D;
+#define R_STRING_SAFE(S,L,D)I->line_exist(S,L)?I->r_string_wb(S,L):D;
 
 void CEditorPreferences::OnCreate()
 {
@@ -187,8 +187,8 @@ void CEditorPreferences::OnCreate()
 
 	// read recent list    
     for (u32 i=0; i<scene_recent_count; i++){
-	    LPCSTR fn		= R_STRING_SAFE	("editor_prefs",AnsiString().sprintf("recent_files_%d",i).c_str(),"" );
-        if (fn&&fn[0]) 	scene_recent_list.push_back(fn);
+	    ref_str fn		= R_STRING_SAFE	("editor_prefs",AnsiString().sprintf("recent_files_%d",i).c_str(),ref_str("") );
+        if (fn.size())	scene_recent_list.push_back(*fn);
     }
 
     xr_delete	(I);
@@ -248,8 +248,11 @@ void CEditorPreferences::OnDestroy()
 
     I->w_u32	("editor_prefs","object_flags",		object_flags.flags);
 
-    for (AStringIt it=scene_recent_list.begin(); it!=scene_recent_list.end(); it++)
-		I->w_string("editor_prefs",AnsiString().sprintf("recent_files_%d",it-scene_recent_list.begin()).c_str(),it->c_str());
+    for (AStringIt it=scene_recent_list.begin(); it!=scene_recent_list.end(); it++){
+    	AnsiString L; L.sprintf("recent_files_%d",it-scene_recent_list.begin());
+    	AnsiString V; V.sprintf("\"%s\"",it->c_str());
+		I->w_string("editor_prefs",L.c_str(),V.c_str());
+    }
 
 	xr_delete	(I);
 }

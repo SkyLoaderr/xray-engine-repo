@@ -39,16 +39,16 @@ void CSoundRender_Source::LoadWave	(LPCSTR pName, BOOL b3D)
 {
 	// Load file into memory and parse WAV-format
 	wave					= FS.r_open(pName); 
-	R_ASSERT2				(wave,pName);
+	R_ASSERT3				(wave&&wave->length(),"Can't open wave file:",pName);
 
 	ov_callbacks ovc		= {ov_read_func,ov_seek_func,ov_close_func,ov_tell_func};
 	ov_open_callbacks		(wave,ovf,NULL,0,ovc);
 
 	vorbis_info* ovi		= ov_info(ovf,-1);
 	// verify
+	R_ASSERT3				(ovi,"Invalid source info:",pName);
 	R_ASSERT3				(b3D?ovi->channels==1:ovi->channels==2,"Invalid source num channels:",pName);
 	R_ASSERT3				(ovi->rate==44100,"Invalid source rate:",pName);
-//	ov_halfrate				(ovf,psSoundFreq==sf_22K);
 
 	WAVEFORMATEX wfxdest 	= SoundRender->wfm;
 	wfxdest.nChannels		= u16(ovi->channels); 

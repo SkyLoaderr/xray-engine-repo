@@ -51,8 +51,8 @@
       -IR:\SDK\ogg\ogg\include -IR:\SDK\ogg\vorbis\include 
       -IR:\SDK\eax20\Include -IR:\SDK\OpenAL\include -IR:\SDK\OpenAL\include\AL 
       -src_suffix cpp -D_EDITOR -D_XRSOUNDB -DXRSOUND_EXPORTS -D_DEBUG -boa"/>
-    <CFLAG1 value="-WD -vGc -vGt -vGd -Od -H=intermediate\pch.csm -Hc -Q -Vx -Ve -xf -xp -VF 
-      -ff -X- -r- -ps -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
+    <CFLAG1 value="-WD -Od -H=intermediate\pch.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps 
+      -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
     <AFLAGS value="/mu /w2 /zi"/>
@@ -62,7 +62,7 @@
   <LINKER>
     <ALLOBJ value="c0d32.obj $(PACKAGES) Memmgr.Lib sysinit.obj $(OBJFILES)"/>
     <ALLRES value="$(RESFILES)"/>
-    <ALLLIB value="cg32.lib $(LIBFILES) $(LIBRARIES) import32.lib cp32mti.lib"/>
+    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mti.lib"/>
     <OTHERFILES value=""/>
   </LINKER>
   <FILELIST>
@@ -226,7 +226,7 @@ RemoteDebug=0
 [Compiler]
 ShowInfoMsgs=0
 LinkDebugVcl=0
-LinkCGLIB=1
+LinkCGLIB=0
 
 [CORBA]
 AddServerUnit=1

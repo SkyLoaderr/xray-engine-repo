@@ -13,6 +13,8 @@ CSoundRender_Source::CSoundRender_Source	()
 	fname			= 0;
 	wave			= 0;
     ovf				= xr_new<OggVorbis_File>();
+    CAT.table		= 0;
+    CAT.size		= 0;
 }
 
 CSoundRender_Source::~CSoundRender_Source	()
