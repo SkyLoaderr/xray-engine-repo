@@ -45,6 +45,9 @@ CVisual*	CModelPool::Instance_Create(DWORD type)
 	case MT_CACHED:
 		V	= new FCached;
 		break;
+	case MT_LOD:
+		V	= new FLOD;
+		break;
 	default:
 		R_ASSERT2(0,"Unknown visual type");
 		break;
