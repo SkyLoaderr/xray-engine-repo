@@ -7,5 +7,5 @@ level.start_stop_menu(dlg,true)
 --	while (1) do
 	--	wait(1000)
 	--end
-
+printf("dddddddddddddddddd")
 end
