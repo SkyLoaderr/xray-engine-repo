@@ -8,10 +8,18 @@ function main ()
 
 	local time = game.time ()
 
+	bool act = false
+
 	while true do 
 		  if game.time () - time > 5000 then
 			 time = game.time ()
-			 update_action (mover, s_test2.script_name (), sound ("scripts\\stalker_prof\\prof_do_basi_bi_dobratsya", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false))
+			 if act == false then
+  			    update_action (mover, s_test2.script_name (), sound ("scripts\\stalker_prof\\prof_do_basi_bi_dobratsya", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false), look (look.path_dir))
+				act = true
+			 else 
+			    update_action (mover, s_test2.script_name (), look (look.fire_point, get_actor ()))
+				act = false
+			 end
 		  end
 		  wait ()
 	end	
