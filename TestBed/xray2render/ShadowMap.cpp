@@ -149,6 +149,7 @@ public:
 
 	HRESULT RenderFAT					();
 	HRESULT RenderLight_Direct			();
+	HRESULT RenderLight_Direct_smap		();
 	HRESULT RenderCombine				(COMBINE_MODE M);
 	HRESULT RenderCombineDBG_Normals	();
 	HRESULT RenderCombineDBG_Accumulator();
@@ -242,7 +243,7 @@ HRESULT CMyD3DApplication::Render		()
 
 		RenderFAT					();
 		RenderShadowMap				();
-		RenderLight_Direct			();
+		RenderLight_Direct_smap		();
 		RenderCombine				(CM_DBG_ACCUMULATOR);
 		RenderOverlay				();
 
@@ -804,6 +805,91 @@ HRESULT CMyD3DApplication::RenderLight_Direct	()
 	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
 	m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, FALSE);
 	*/
+
+	// Cleanup
+	m_pd3dDevice->SetTexture				(0, NULL);
+	m_pd3dDevice->SetTexture				(1, NULL);
+	m_pd3dDevice->SetTexture				(2, NULL);
+	m_pd3dDevice->SetRenderTarget			(0, pBaseTarget	);
+	pBaseTarget->Release					();
+
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILENABLE,		FALSE				);
+
+	return S_OK;
+}
+
+//-----------------------------------------------------------------------------
+// Name: RenderLight_Direct				()
+//-----------------------------------------------------------------------------
+HRESULT CMyD3DApplication::RenderLight_Direct_smap	()
+{
+	LPDIRECT3DSURFACE9						pBaseTarget;
+
+	// Set new render targets
+	m_pd3dDevice->GetRenderTarget			(0, &pBaseTarget	);
+	m_pd3dDevice->SetRenderTarget			(0, d_Accumulator_S	);
+	m_pd3dDevice->Clear						(0L, NULL, D3DCLEAR_TARGET, 0x00, 1.0f, 0L);
+
+	// samplers and texture (POS)
+	m_pd3dDevice->SetTexture				(0, d_Position);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MINFILTER,	D3DTEXF_POINT);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MAGFILTER,	D3DTEXF_POINT);
+
+	// samplers and texture (NORM)
+	m_pd3dDevice->SetTexture				(1, d_Normal);
+	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MINFILTER,	D3DTEXF_POINT);
+	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MAGFILTER,	D3DTEXF_POINT);
+
+	// samplers and texture (Power32)
+	m_pd3dDevice->SetTexture				(2, t_SpecularPower_32);
+	m_pd3dDevice->SetSamplerState			(2, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(2, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(2, D3DSAMP_MINFILTER,	D3DTEXF_LINEAR);
+	m_pd3dDevice->SetSamplerState			(2, D3DSAMP_MAGFILTER,	D3DTEXF_LINEAR);
+
+	// samplers and texture (NORM)
+	m_pd3dDevice->SetTexture				(1, d_Normal);
+	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MINFILTER,	D3DTEXF_POINT);
+	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MAGFILTER,	D3DTEXF_POINT);
+
+	// Set up the stencil states
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILENABLE,		TRUE				);
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILFUNC,		D3DCMP_LESSEQUAL	);
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILREF,			0x01				);
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILMASK,		0xff				);
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILWRITEMASK,	0x00				);
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP	);
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILPASS,		D3DSTENCILOP_KEEP	);
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILZFAIL,		D3DSTENCILOP_KEEP	);
+
+	// Shader and params
+	m_pd3dDevice->SetPixelShader			(s_Light_Direct_smap.ps);
+	m_pd3dDevice->SetVertexShader			(s_Light_Direct_smap.vs);
+	m_pd3dDevice->SetFVF					(TVERTEX_FVF);
+	D3DXVECTOR3 vLightDir					= dv_LightDir;
+	D3DXMATRIX	mInvView;
+	D3DXVec3Normalize						(&vLightDir, &vLightDir);
+	D3DXMatrixInverse						(&mInvView,0,&dm_2view);
+	D3DXVec3TransformNormal					(&vLightDir, &vLightDir,&mInvView);
+	D3DXVec3Normalize						(&vLightDir, &vLightDir);
+	cc.set									(s_Light_Direct_smap.constants.get("light_direction"),	vLightDir.x,vLightDir.y,vLightDir.z,0	);
+	cc.set									(s_Light_Direct_smap.constants.get("light_color"),		.3f,		.3f,		1.,			.9	);
+	cc.set									(s_Light_Direct_smap.constants.get("light_xform"),		dm_model2world2view2projection_light	);
+	cc.flush								(m_pd3dDevice);
+
+	// Blend mode - directional light comes first - means no blending
+	m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, FALSE);
+
+	// Render Quad
+	m_pd3dDevice->SetRenderState			(D3DRS_CULLMODE,	D3DCULL_NONE);
+	m_pd3dDevice->SetStreamSource			(0, m_pQuadVB, 0, sizeof(TVERTEX));
+	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
 
 	// Cleanup
 	m_pd3dDevice->SetTexture				(0, NULL);
