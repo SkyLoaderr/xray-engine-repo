@@ -757,7 +757,7 @@ quat::quat(const vec3& axis, nv_scalar angle)
 		x = scale * axis[0];
 		y = scale * axis[1];
 		z = scale * axis[2];
-		w = cosf(angle2);
+		w = _cos(angle2);
 	}
 }
 
@@ -895,7 +895,7 @@ quat & axis_to_quat(quat& q, const vec3& a, const nv_scalar phi)
     q.x = s * tmp.x;
     q.y = s * tmp.y;
     q.z = s * tmp.z;
-    q.w = cosf(phi/nv_two);
+    q.w = _cos(phi/nv_two);
     return q;
 }
 
