@@ -289,14 +289,11 @@ void CWeapon::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::r
 			PS->PlayAtPos		(vEnd);
 		}
 	} else {
-		/*
-		::Render.Wallmarks.AddWallmark(
-			pCreator->ObjectSpace.GetStaticTris()+R.element,
-			vEnd,
+		::Render->add_Wallmark	(
 			hWallmark,
-			fWallmarkSize
-			);
-		*/
+			vEnd,
+			fWallmarkSize,
+			pCreator->ObjectSpace.GetStaticTris()+R.element);
 	}
 }
 
