@@ -101,7 +101,7 @@ void CWallmarksEngine::RecurseTri(u32 t, Fmatrix &mView, CWallmarksEngine::wallm
 	T->dummy				= 0xffffffff;
 	
 	// Some vars
-	u32*		v_ids		= T->IDverts();
+	u32*		v_ids		= T->verts;
 	Fvector*	v_data		= sml_collector.getV();
 	sml_poly_src.clear		();
 	sml_poly_src.push_back	(v_data[v_ids[0]]);
