@@ -70,14 +70,14 @@ function update()
 		end
 
 		-- вертолёт атакует новичков
---[[		if not heli_mgr.enemy then
+		if not heli_mgr.enemy then
 			heli_mgr:set_enemy( newbies[1], 1000 )
 		else
 			if not heli_mgr.enemy:alive() then
 				table.remove( newbies, 1 )
 				heli_mgr:set_enemy( newbies[1], 1000 )
 			end
-		end]]
+		end
 
 		-- после первого захода стрелять ракетами
 		if heli_mgr.attack_pass_state == 1 then
@@ -124,9 +124,8 @@ end
 function main()
 	actor = get_actor()
 
---	local snd = sound_object( "ambient\\gunfire" )
---	snd:play_at_pos( actor, actor:position():add( vector():set( 0, 100, 0 ) ) )
---	printf( "gunfire" )
+	local snd = sound_object( "ambient\\gunfire" )
+	snd:play_at_pos( actor, actor:position():add( vector():set( 0, 100, 0 ) ) )
 
 	heli_mgr = xr_heli.HeliManager()
 	heli_mgr:initialize( "heli", nil, 30, 30 )
