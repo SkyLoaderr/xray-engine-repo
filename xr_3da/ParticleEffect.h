@@ -4,6 +4,7 @@
 //---------------------------------------------------------------------------
 
 #include "FBasicVisual.h"
+#include "ParticleCustom.h"
 
 // refs
 namespace PAPI{
@@ -111,7 +112,7 @@ public:
 #endif
 };
 
-class ENGINE_API CParticleEffect: public IRender_Visual
+class ENGINE_API CParticleEffect: public IRender_Visual, IParticleCustom
 {
 	friend class PFunction;
 protected:
@@ -141,6 +142,7 @@ protected:
 public:
 						CParticleEffect		();
 	virtual 			~CParticleEffect	();
+
 	void	 			OnFrame				(u32 dt);
 
 	u32					RenderTO			(FVF::TL* V);

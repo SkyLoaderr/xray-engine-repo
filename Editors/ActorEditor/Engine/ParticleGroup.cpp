@@ -184,3 +184,15 @@ void CParticleGroup::Stop(bool bFinishPlaying)
         ((CParticleEffect*)children[i])->Stop(bFinishPlaying);
 }
 
+void CParticleGroup::OnDeviceCreate()
+{
+    for (u32 i=0; i<children.size(); i++)
+        ((CParticleEffect*)children[i])->OnDeviceCreate();
+}
+
+void CParticleGroup::OnDeviceDestroy()
+{
+    for (u32 i=0; i<children.size(); i++)
+        ((CParticleEffect*)children[i])->OnDeviceDestroy();
+}
+

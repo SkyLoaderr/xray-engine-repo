@@ -50,7 +50,7 @@ public:
 };
 DEFINE_VECTOR(CPGDef*,PGDVec,PGDIt);
 
-class CParticleGroup: public FHierrarhyVisual{
+class CParticleGroup: public FHierrarhyVisual, IParticleCustom{
 	const CPGDef*		m_Def;
     float				m_CurrentTime;
 	Fvector				m_InitialPosition;
@@ -67,8 +67,8 @@ public:
 
 	virtual void		Copy			(IRender_Visual* pFrom) {Debug.fatal("Can't duplicate particle system - NOT IMPLEMENTED");}
 
-    void 				OnDeviceCreate	(){;}
-    void 				OnDeviceDestroy	(){;}
+    void 				OnDeviceCreate	();
+    void 				OnDeviceDestroy	();
 
     void				UpdateParent	(const Fmatrix& m, const Fvector& velocity);
 
