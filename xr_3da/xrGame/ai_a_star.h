@@ -22,7 +22,7 @@ typedef unsigned int  uint;
 
 #pragma pack(4)
 typedef struct tagTNode {
-	uchar		ucOpenCloseMask:1;
+	int			ucOpenCloseMask:1;
 	int			iIndex:31;
 	float		f;
 	float		g;

@@ -124,8 +124,12 @@ void CAI_Space::vfLoadSearch()
 	fSize2		= _sqr(fSize = this->m_header.size)/4;
 	fYSize2		= _sqr(fYSize = (float)(this->m_header.size_y/32767.0))/4;
 
+	DWORD M1	= Engine.mem_Usage();
 	DWORD S1	= (this->m_header.count + 1) *	sizeof(TNode);		taHeap		= (TNode *)		xr_malloc(S1); ZeroMemory(taHeap,S1);
 	DWORD S2	= (this->m_header.count)	 *	sizeof(TIndexNode);	tpaIndexes	= (TIndexNode *)xr_malloc(S2); ZeroMemory(tpaIndexes,S2);
+	DWORD M2	= Engine.mem_Usage();
+	Msg			("* AI path-finding-structures: %d K",(M2-M1)/(1024));
+
 	// taHeap		= (TNode *)calloc((this->m_header.count + 1), sizeof(TNode));
 	// tpaIndexes	= (TIndexNode *)calloc(this->m_header.count, sizeof(TIndexNode));
 }
