@@ -97,6 +97,6 @@ p2f 	p_main	( v2p_in IN )
   half	l_S 	= tex1D		(s_power,	saturate(dot(normalize(L + V), N)));
   
   // Final color
-  OUT.C 		= shadow*light_color *		half4(l_D,l_D,l_D,l_S);
+  OUT.C 		= shadow * light_color * half4(l_D,l_D,l_D,l_S);
   return OUT;
 }
