@@ -58,7 +58,7 @@ void IVisual::Load		(const char* N, IReader *data, u32 dwFlags)
 		vis.sphere.P.add(bbox.min);
 		vis.box.grow	(EPS_S);
 	} else {
-		Debug.fatal	("Invalid visual");
+		Debug.fatal		("Invalid visual");
 	}
 
 	// Sphere (if exists)
