@@ -16,13 +16,14 @@ public:
 		u32			bActive	:	1;
 		u32			bShadow	:	1;
 	}				flags;
-	Fvector			position;
-	Fvector			direction;
-	Fvector			right;
-	float			range;
-	float			cone;
-	Fcolor			color;
+	Fvector			position	;
+	Fvector			direction	;
+	Fvector			right		;
+	float			range		;
+	float			cone		;
+	Fcolor			color		;
 
+	vis_data		hom			;
 	u32				frame_render;
 
 #if RENDER==R_R2
@@ -94,6 +95,7 @@ public:
 
 	virtual IRender_Light*	dcast_Light		()	{ return this; }
 
+	vis_data&		get_homdata				();
 #if RENDER==R_R2
 	void			gi_generate				();
 	void			xform_calc				();

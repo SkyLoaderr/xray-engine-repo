@@ -142,6 +142,8 @@ void	light::spatial_move			()
 		}
 		break;
 	}
+
+	// update spatial DB
 	ISpatial::spatial_move			();
 
 #if RENDER==R_R2
@@ -149,6 +151,15 @@ void	light::spatial_move			()
 	svis.invalidate					();
 #endif
 }
+
+vis_data&	get_homdata				()
+{
+	// commit vis-data
+	hom.sphere.set	(spatial.center,spatial.radius);
+	hom.box.set		(spatial.center,spatial.center);
+	hom.box.grow	(spatial.radius);
+	return			hom;
+};
 
 Fvector	light::spatial_sector_point	()	
 { 
