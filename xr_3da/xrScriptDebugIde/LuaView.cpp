@@ -179,7 +179,6 @@ BOOL CLuaView::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 		*pResult = OnSci((SCNotification*)lParam);
 		return TRUE;
 	}
-	
 	return CView::OnNotify(wParam, lParam, pResult);
 }
 

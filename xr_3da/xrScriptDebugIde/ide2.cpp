@@ -93,7 +93,6 @@ BOOL CIdeApp::InitInstance()
 
 	if (!g_mainFrame->LoadFrame(IDR_MAINFRAME))
 		return FALSE;
-
 	g_mainFrame->SetMode(CMainFrame::modeNoProject);
 	g_mainFrame->OpenDefaultProject();
 

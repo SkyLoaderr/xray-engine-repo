@@ -354,6 +354,7 @@ BEGIN
         MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
         MENUITEM "&Close",                      ID_FILE_CLOSE
         MENUITEM "&Save\tCtrl+S",               ID_FILE_SAVE
+        MENUITEM "Save modified \tCtrl+Shift+S", ID_FILE_SAVEALLMODIFIED
         MENUITEM "Save &As...",                 ID_FILE_SAVE_AS
         MENUITEM SEPARATOR
         MENUITEM "N&ew Project",                ID_FILE_NEWPROJECT
@@ -473,6 +474,7 @@ BEGIN
     VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
     "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
     "F",            ID_EDIT_FIND,           VIRTKEY, CONTROL, NOINVERT
+    VK_F3,          ID_EDIT_FINDNEXT,       VIRTKEY, NOINVERT
     "G",            ID_EDIT_GOTOLINE,       VIRTKEY, CONTROL, NOINVERT
     "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
     VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
@@ -489,7 +491,8 @@ BEGIN
     VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
     VK_F7,          ID_PROJECT_PROPERTIES,  VIRTKEY, ALT, NOINVERT
     VK_F9,          ID_TOGGLE_BREAKPOINT,   VIRTKEY, NOINVERT
-    VK_F3,          ID_EDIT_FINDNEXT,       VIRTKEY, NOINVERT
+    "S",            ID_FILE_SAVEALLMODIFIED, VIRTKEY, SHIFT, CONTROL, 
+                                                    NOINVERT
 END
 
 IDR_ACCEL_DEBUG ACCELERATORS 
@@ -500,6 +503,7 @@ BEGIN
     VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
     "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
     "F",            ID_EDIT_FIND,           VIRTKEY, CONTROL, NOINVERT
+    VK_F3,          ID_EDIT_FINDNEXT,       VIRTKEY, NOINVERT
     "G",            ID_EDIT_GOTOLINE,       VIRTKEY, CONTROL, NOINVERT
     "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
     VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
@@ -514,7 +518,8 @@ BEGIN
     "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL, NOINVERT
     VK_F5,          ID_PROJECT_RUNPROJECT,  VIRTKEY, CONTROL, NOINVERT
     VK_F9,          ID_TOGGLE_BREAKPOINT,   VIRTKEY, NOINVERT
-    VK_F3,          ID_EDIT_FINDNEXT,       VIRTKEY, NOINVERT
+    "S",            ID_FILE_SAVEALLMODIFIED, VIRTKEY, SHIFT, CONTROL, 
+                                                    NOINVERT
 END
 
 IDR_ACCEL_DEBUG_BREAK ACCELERATORS 
@@ -532,6 +537,7 @@ BEGIN
     VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
     "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
     "F",            ID_EDIT_FIND,           VIRTKEY, CONTROL, NOINVERT
+    VK_F3,          ID_EDIT_FINDNEXT,       VIRTKEY, NOINVERT
     "G",            ID_EDIT_GOTOLINE,       VIRTKEY, CONTROL, NOINVERT
     "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
     VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
@@ -548,7 +554,8 @@ BEGIN
     VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
     VK_F5,          ID_PROJECT_RUNPROJECT,  VIRTKEY, CONTROL, NOINVERT
     VK_F9,          ID_TOGGLE_BREAKPOINT,   VIRTKEY, NOINVERT
-    VK_F3,          ID_EDIT_FINDNEXT,       VIRTKEY, NOINVERT
+    "S",            ID_FILE_SAVEALLMODIFIED, VIRTKEY, SHIFT, CONTROL, 
+                                                    NOINVERT
 END
 
 IDR_ACCEL_NO_PROJECT ACCELERATORS 
@@ -558,6 +565,7 @@ BEGIN
     VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
     "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
     "F",            ID_EDIT_FIND,           VIRTKEY, CONTROL, NOINVERT
+    VK_F3,          ID_EDIT_FINDNEXT,       VIRTKEY, NOINVERT
     "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
     VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
     "Y",            ID_EDIT_REDO,           VIRTKEY, CONTROL, NOINVERT
@@ -568,7 +576,8 @@ BEGIN
     "N",            ID_FILE_NEW,            VIRTKEY, CONTROL, NOINVERT
     "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
     "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL, NOINVERT
-    VK_F3,          ID_EDIT_FINDNEXT,       VIRTKEY, NOINVERT
+    "S",            ID_FILE_SAVEALLMODIFIED, VIRTKEY, SHIFT, CONTROL, 
+                                                    NOINVERT
 END
 
 

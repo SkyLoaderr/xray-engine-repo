@@ -117,9 +117,11 @@ protected:
 	afx_msg void OnFileCloseproject();
 	afx_msg void OnDebugBreak();
 	afx_msg void OnToolsOptions();
+	afx_msg void OnSaveAllModified();
 
 	afx_msg void OnUpdateDebugMenu(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateToolsOptions(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateSaveAllModified(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

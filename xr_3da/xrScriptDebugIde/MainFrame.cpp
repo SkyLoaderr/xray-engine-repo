@@ -66,6 +66,9 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
 	ON_COMMAND(IDR_TOOLS_OPTIONS, OnToolsOptions)
 	ON_UPDATE_COMMAND_UI(IDR_TOOLS_OPTIONS, OnUpdateToolsOptions)
 
+	ON_COMMAND(ID_FILE_SAVEALLMODIFIED, OnSaveAllModified)
+	ON_UPDATE_COMMAND_UI(ID_FILE_SAVEALLMODIFIED, OnUpdateSaveAllModified)
+
 	
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -339,9 +342,11 @@ CLuaView* CMainFrame::GetActiveView()
 
 LRESULT CMainFrame::WindowProc(UINT message, WPARAM wParam, LPARAM lParam) 
 {
+	if(message == WM_MDINEXT){
+		int uu = 0;
+	}
 	if ( message >= _DMSG_FIRST_MSG && message <= _DMSG_LAST_MSG )
 		return DebugMessage(message, wParam, lParam);
-	
 	return CMDIFrameWnd::WindowProc(message, wParam, lParam);
 }
 
@@ -901,4 +906,14 @@ BOOL CMainFrame::checkExistingFolder(CString str)
 void CMainFrame::OnUpdateToolsOptions(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable(TRUE);
+}
+
+void CMainFrame::OnUpdateSaveAllModified(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(TRUE);
+}
+
+void CMainFrame::OnSaveAllModified()
+{
+	AfxGetApp()->SaveAllModified();
 }
