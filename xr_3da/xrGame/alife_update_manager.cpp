@@ -21,6 +21,7 @@
 #include "graph_engine.h"
 #include "../x_ray.h"
 #include "restriction_space.h"
+#include "profiler.h"
 
 using namespace ALife;
 
@@ -156,7 +157,6 @@ void CALifeUpdateManager::update(bool switch_objects)
 		case eZoneStateSurge : {
 			surge						();
 			header().set_state			(eZoneStateBetweenSurges);
-//			save						();
 			break;
 		}
 		case eZoneStateBetweenSurges : {
@@ -179,12 +179,18 @@ void CALifeUpdateManager::update(bool switch_objects)
 				break;
 			}
 			
+			START_PROFILE("AI/ALife/switch");
 			if (switch_objects)
 				graph().level().update	(CSwitchPredicate(this));
+			STOP_PROFILE
 
-			Device.Statistic.TEST2.Begin();
+			START_PROFILE("AI/ALife/spawn");
+			spawns().update				();
+			STOP_PROFILE
+
+			START_PROFILE("AI/ALife/scheduled");
 			scheduled().update			();
-			Device.Statistic.TEST2.End	();
+			STOP_PROFILE
 
 			break;
 		}

@@ -55,6 +55,7 @@ public:
 	virtual									~CALifeSpawnRegistry		();
 	virtual void							load						(IReader &file_stream);
 	virtual void							save						(IWriter &memory_stream);
+	virtual void							update						();
 			void							load						(IReader &file_stream, LPCSTR game_name);
 			void							load						(LPCSTR spawn_name);
 			void							fill_redundant_spawns		(xr_vector<ALife::_SPAWN_ID> &spawns);

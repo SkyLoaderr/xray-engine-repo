@@ -203,3 +203,7 @@ void CALifeSpawnRegistry::build_root_spawns		()
 
 	m_spawn_roots.erase						(I,m_spawn_roots.end());
 }
+
+void CALifeSpawnRegistry::update			()
+{
+}
