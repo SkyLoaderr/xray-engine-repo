@@ -54,11 +54,14 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			}
 		}
 		break;
+	case GE_WPN_STATE_CHANGE:
+		break;
 	case GE_OWNERSHIP_TAKE:
 		Process_event_ownership	(P,sender,timestamp,destination);
 		break;
 	case GE_OWNERSHIP_REJECT:
 		Process_event_reject	(P,sender,timestamp,destination);
+		SendBroadcast			(0xffffffff,P,MODE);
 		break;
 	case GE_TRANSFER_AMMO:
 		{

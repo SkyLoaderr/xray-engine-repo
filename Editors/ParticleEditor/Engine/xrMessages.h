@@ -32,9 +32,9 @@ enum {
 	GE_DESTROY,					// authorative client request for entity-destroy
 
 	GE_BUY,
-	GE_ADD_AMMO,
 
-	GE_WPN_STATECHANGE,
+	GE_WPN_AMMO_ADD,
+	GE_WPN_STATE_CHANGE,
 
 	GEG_SIGNAL,
 	GEG_PLAYER_READY,
@@ -259,7 +259,7 @@ GE_DIE
 GE_DESTROY
 {
 }
-GE_WPN_STATECHANGE
+GE_WPN_STATE_CHANGE
 {
 	u8			state;
 }

@@ -529,7 +529,6 @@ void CWeapon::SwitchState(u32 S)
 {
 	if (Local() && (S!=STATE))	
 	{
-		OnStateSwitch	(S);
 		NET_Packet		P;
 		u_EventGen		(P,GE_WPN_STATECHANGE,ID());
 		P.w_u8			(u8(STATE));
@@ -739,6 +738,13 @@ void CWeapon::OnEvent		(NET_Packet& P, u16 type)
 	inherited::OnEvent		(P,type);
 	switch (type)
 	{
+	case GE_WPN_STATECHANGE:
+		{
+			u8				S;
+			P.r_u8			(S);
+			OnStateSwitch	(u32(S));
+		}
+		break;
 	case GE_ADD_AMMO:
 		{
 			u16 amount;
