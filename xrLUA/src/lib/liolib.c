@@ -633,7 +633,7 @@ static int io_date (lua_State *L) {
     stm = localtime(&t);
   if (stm == NULL)  /* invalid date? */
     lua_pushnil(L);
-  else if (strcmp(s, "*t") == 0) {
+  else if (xr_strcmp(s, "*t") == 0) {
     lua_newtable(L);
     setfield(L, "sec", stm->tm_sec);
     setfield(L, "min", stm->tm_min);

@@ -568,7 +568,7 @@ static const char *getname_aux (char *buff, const char **pc) {
 }
 
 
-#define EQ(s1)	(strcmp(s1, inst) == 0)
+#define EQ(s1)	(xr_strcmp(s1, inst) == 0)
 
 #define getnum	(getnum_aux(L, &pc))
 #define getname	(getname_aux(buff, &pc))

@@ -19,7 +19,7 @@ private:
 	struct str_pred : public std::binary_function<char*, char*, bool> 
 	{	
 		IC bool operator()(LPCSTR x, LPCSTR y) const
-		{	return strcmp(x,y)<0;	}
+		{	return xr_strcmp(x,y)<0;	}
 	};
 	struct ModelDef
 	{

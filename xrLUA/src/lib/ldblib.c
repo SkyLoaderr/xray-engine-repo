@@ -205,7 +205,7 @@ static int debug (lua_State *L) {
     char buffer[250];
     fputs("lua_debug> ", stderr);
     if (fgets(buffer, sizeof(buffer), stdin) == 0 ||
-        strcmp(buffer, "cont\n") == 0)
+        xr_strcmp(buffer, "cont\n") == 0)
       return 0;
     lua_dostring(L, buffer);
     lua_settop(L, 0);  /* remove eventual returns */

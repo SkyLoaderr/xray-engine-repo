@@ -40,7 +40,7 @@ LUALIB_API int luaL_argerror (lua_State *L, int narg, const char *extramsg) {
   lua_Debug ar;
   lua_getstack(L, 0, &ar);
   lua_getinfo(L, "n", &ar);
-  if (strcmp(ar.namewhat, "method") == 0) {
+  if (xr_strcmp(ar.namewhat, "method") == 0) {
     narg--;  /* do not count `self' */
     if (narg == 0)  /* error is in the self argument itself? */
       return luaL_error(L, "calling `%s' on bad self (%s)", ar.name, extramsg);
@@ -93,7 +93,7 @@ LUALIB_API int luaL_error (lua_State *L, const char *fmt, ...) {
 LUALIB_API int luaL_findstring (const char *name, const char *const list[]) {
   int i;
   for (i=0; list[i]; i++)
-    if (strcmp(list[i], name) == 0)
+    if (xr_strcmp(list[i], name) == 0)
       return i;
   return -1;  /* name not found */
 }
@@ -127,7 +127,7 @@ LUALIB_API void *luaL_checkudata (lua_State *L, int ud, const char *tname) {
   if (!lua_getmetatable(L, ud)) return NULL;  /* no metatable? */
   lua_rawget(L, LUA_REGISTRYINDEX);  /* get registry[metatable] */
   tn = lua_tostring(L, -1);
-  if (tn && (strcmp(tn, tname) == 0)) {
+  if (tn && (xr_strcmp(tn, tname) == 0)) {
     lua_pop(L, 1);
     return lua_touserdata(L, ud);
   }

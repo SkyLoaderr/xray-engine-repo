@@ -49,7 +49,7 @@ class CkString
 	// Same as clearing the string and appending.
         void setString(const char *s);
 
-	// Same as strcmp
+	// Same as xr_strcmp
         int compare(const char *s) const;
 
 	const char *getString(void) const;
