@@ -58,6 +58,8 @@
 		</location>	
 		<task>tutorial_help_wounded</task>
 	</info_portion>
+	<info_portion id="tutorial_wounded_must_spawn">
+	</info_portion>
 	<info_portion id="tutorial_wounded_help">
 		<task>tutorial_help_wounded</task>
 		<disable>tutorial_wounded_start</disable>
