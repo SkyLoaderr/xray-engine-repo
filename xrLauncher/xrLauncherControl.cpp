@@ -33,6 +33,7 @@ void xrLauncherControl::Init()
 {
 	InitSoundPage();
 	InitRenderPage();
+	goSoundBtn_Click(0,0);
 }
 
 

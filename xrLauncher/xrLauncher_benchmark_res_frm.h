@@ -317,6 +317,7 @@ namespace xrLauncher
 			this->Controls->Add(this->panel1);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::None;
 			this->Name = S"xrLauncher_benchmark_res_frm";
+			this->ShowInTaskbar = false;
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = S"xrLauncher_benchmark_res_frm";
 			this->panel1->ResumeLayout(false);
