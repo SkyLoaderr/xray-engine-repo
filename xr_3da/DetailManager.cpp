@@ -75,6 +75,16 @@ CDetailManager::~CDetailManager	()
 /*
 */
 #ifndef _EDITOR
+
+/*
+void dump	(CDetailManager::vis_list& lst)
+{
+	for (int i=0; i<lst.size(); i++)
+	{
+		Msg("%8x / %8x / %8x",	lst[i]._M_start, lst[i]._M_finish, lst[i]._M_end_of_storage._M_data);
+	}
+}
+*/
 void CDetailManager::Load		()
 {
 	// Open file stream
@@ -104,14 +114,14 @@ void CDetailManager::Load		()
 	m_fs->Close		();
 	
 	// Get pointer to database (slots)
-	CStream* m_slots= dtFS->OpenChunk(2);
-	dtSlots			= (DetailSlot*)m_slots->Pointer();
-	m_slots->Close	();
+	CStream* m_slots	= dtFS->OpenChunk(2);
+	dtSlots				= (DetailSlot*)m_slots->Pointer();
+	m_slots->Close		();
 	
 	// Initialize 'vis' and 'cache'
-	visible[0].resize	(objects.size());
-	visible[1].resize	(objects.size());
-	visible[2].resize	(objects.size());
+	visible[0].resize	(objects.size());	// dump(visible[0]);
+	visible[1].resize	(objects.size());	// dump(visible[1]);
+	visible[2].resize	(objects.size());	// dump(visible[2]);
 	cache_Initialize	();
 
 	// Make dither matrix

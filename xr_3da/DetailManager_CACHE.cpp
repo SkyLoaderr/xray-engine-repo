@@ -121,7 +121,7 @@ void	CDetailManager::cache_Update	(int v_x, int v_z, Fvector& view, int limit)
 			for (int x=0; x<dm_cache_line; x++)
 			{
 				Slot*	S	= cache[0][x];
-				for			(int z=0; z<dm_cache_line; z++)		cache[z-1][x] = cache[z][x];
+				for			(int z=1; z<dm_cache_line; z++)		cache[z-1][x] = cache[z][x];
 				cache		[dm_cache_line-1][x]	= S;
 				cache_Task	(x,dm_cache_line-1,S);
 			}
