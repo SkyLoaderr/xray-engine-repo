@@ -72,7 +72,7 @@ void CObjectHandler::reinit			(CAI_Stalker *object)
 	set_goal						(eObjectActionIdle);
 
 #ifdef LOG_ACTION
-//	m_use_log						= true;
+	m_use_log						= true;
 #endif
 }
 
@@ -308,6 +308,7 @@ LPCSTR CObjectHandler::property2string(const _condition_type &id)
 		case ObjectHandlerSpace::eWorldPropertyThreaten		: {strcat(S,"Threaten");	break;}
 		case ObjectHandlerSpace::eWorldPropertyPrepared		: {strcat(S,"Prepared");	break;}
 		case ObjectHandlerSpace::eWorldPropertyUsed			: {strcat(S,"Used");		break;}
+		case ObjectHandlerSpace::eWorldPropertyUseEnough	: {strcat(S,"UseEnough");	break;}
 		case ObjectHandlerSpace::eWorldPropertyItemID		: {S[xr_strlen(S) - 1] = 0;	break;}
 		default												: NODEFAULT;
 	}
@@ -663,7 +664,6 @@ void CObjectHandler::add_operators		(CFoodItem *food_item)
 	// idle
 	action				= xr_new<CObjectActionIdle>(food_item,m_object,&m_storage,"idle");
 	add_condition		(action,id,eWorldPropertyHidden,	false);
-	add_condition		(action,id,eWorldPropertyUseEnough,	true);
 	add_effect			(action,id,eWorldPropertyIdle,		true);
 	add_effect			(action,id,eWorldPropertyUseEnough,	false);
 	add_operator		(uid(id,eWorldOperatorIdle),		action);

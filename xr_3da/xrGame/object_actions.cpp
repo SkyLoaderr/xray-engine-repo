@@ -337,6 +337,7 @@ CObjectActionIdle::CObjectActionIdle(CInventoryItem *item, CAI_Stalker *owner, C
 void CObjectActionIdle::initialize	()
 {
 	inherited::initialize();
+	if (m_storage->property(ObjectHandlerSpace::eWorldPropertyUseEnough))
+		m_object->CObjectHandler::set_goal(MonsterSpace::eObjectActionActivate,m_object->inventory().ActiveItem());
 	m_storage->set_property	(ObjectHandlerSpace::eWorldPropertyUseEnough,false);
-	m_object->CObjectHandler::set_goal(MonsterSpace::eObjectActionActivate);
 }
