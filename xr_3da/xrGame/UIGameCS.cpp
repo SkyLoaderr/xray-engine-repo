@@ -76,7 +76,7 @@ void CUIGameCS::OnFrame()
 		m_Parent->m_Parent->pFontBigDigit->SetAligment	(CGameFont::alRight);
 		m_Parent->m_Parent->pFontBigDigit->Out			((float)vMoneyPlace.x,(float)vMoneyPlace.y,"$%d",P->money_total);
 		m_Parent->m_Parent->pFontBigDigit->SetAligment	(CGameFont::alCenter);
-		m_Parent->m_Parent->pFontBigDigit->Out			((float)vTimePlace.x,(float)vTimePlace.y,"%s",make_time(buf,(Game().timelimit-(Level().timeServer()-Game().start_time))/1000));
+		m_Parent->m_Parent->pFontBigDigit->Out			((float)vTimePlace.x,(float)vTimePlace.y,"\x60%s",make_time(buf,(Game().timelimit-(Level().timeServer()-Game().start_time))/1000));
 /*
 		map<u32,game_cl_GameState::Player>::iterator I=Game().players.begin();
 		map<u32,game_cl_GameState::Player>::iterator E=Game().players.end();

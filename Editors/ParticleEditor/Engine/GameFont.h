@@ -7,11 +7,19 @@ class ENGINE_API CGameFont: public pureDeviceDestroy, public pureDeviceCreate
 	, public pureRender
 #endif
 {
+public:
+	enum EAligment{
+		alLeft				= 0,
+		alRight,
+		alCenter
+	};
+private:
 	struct String {
 		string128	string;
 		float		x,y;
 		float		size;
-		u32		c;
+		u32			c;
+		EAligment	align;
 	};
 	LPSTR					cShader;
 	LPSTR					cTexture;
@@ -19,6 +27,7 @@ protected:
 	Fvector2				vHalfPixel;
 	Ivector2				vTS;
 
+	EAligment				eCurrentAlignment;
 	u32						dwCurrentColor;
 	float					fCurrentSize;
 	float					fCurrentX, fCurrentY;
@@ -42,13 +51,6 @@ public:
 
 		fsForceDWORD		= u32(-1)
 	};
-	enum EAligment{
-		alLeft				= 0,
-		alRight,
-		alCenter
-	};
-protected:
-	EAligment				uAligment;
 protected:
 	IC	float				ConvertSize		(float sz)	{return (uFlags&fsDeviceIndependent)?sz*Device.dwWidth:sz;}
 
@@ -62,7 +64,7 @@ public:
 	IC void					SetSize			(float S)	{fCurrentSize=S;};
 	IC void					SetInterval		(float x, float y) {vInterval.set(x,y);};
 	IC void					SetInterval		(const Fvector2& v) {vInterval.set(v);};
-	IC void					SetAligment		(EAligment aligment){ uAligment=aligment; }
+	IC void					SetAligment		(EAligment aligment){ eCurrentAlignment=aligment; }
 	IC void					Add				(float _x, float _y, char *s, u32 _c=0xffffffff, float _size=0.01f);
 	float					SizeOf			(char *s);
 	void					OutSet			(float x, float y)	{fCurrentX=x; fCurrentY=y;}

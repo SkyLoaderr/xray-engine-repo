@@ -22,7 +22,7 @@ CGameFont::CGameFont(LPCSTR shader, LPCSTR texture, u32 flags)
 }
 void CGameFont::Initialize(LPCSTR shader, LPCSTR texture, u32 flags)
 {
-	uAligment					= alLeft;
+	eCurrentAlignment			= alLeft;
 	uFlags						= flags;
 	cShader						= xr_strdup(shader);
 	cTexture					= xr_strdup(texture);
@@ -156,7 +156,7 @@ void CGameFont::OnRender()
 				float	Y2	= Y+S;
 				S			= (S*vTS.x)/fHeight;
 
-				switch(uAligment){
+				switch(PS.align){
 				case alCenter:	X-=SizeOf(PS.string)*.5f;	break;
 				case alRight:	X-=SizeOf(PS.string);		break;
 				}
@@ -223,6 +223,7 @@ void __cdecl CGameFont::Out(float _x, float _y, char *fmt,...)
 	rs.y=_y;
 	rs.c=dwCurrentColor;
 	rs.size=fCurrentSize;
+	rs.align=eCurrentAlignment;
 
 	va_list p;
 	va_start(p,fmt);
@@ -240,6 +241,7 @@ void __cdecl CGameFont::OutNext(char *fmt,...)
 	rs.y=fCurrentY;
 	rs.c=dwCurrentColor;
 	rs.size=fCurrentSize;
+	rs.align=eCurrentAlignment;
 
 	va_list p;
 	va_start(p,fmt);
@@ -258,6 +260,7 @@ void __cdecl CGameFont::OutPrev(char *fmt,...)
 	rs.y=fCurrentY;
 	rs.c=dwCurrentColor;
 	rs.size=fCurrentSize;
+	rs.align=eCurrentAlignment;
 
 	va_list p;
 	va_start(p,fmt);
