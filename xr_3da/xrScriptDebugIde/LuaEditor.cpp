@@ -427,8 +427,8 @@ void CLuaEditor::SetLuaLexer()
 {
    const char font[] = "Verdana";
    const char monospace[] = "Courier";
-   const short fontsize = 9;
-   const char keywords[] = "and break do else elseif end false for function global if in local nil not or repeat return then true until while";
+   const short fontsize = 10;
+   const char keywords[] = "module class self __finalize __init and break do else elseif end false for function global if in local nil not or repeat return then true until while";
 
    // set style bits, choose the right lexer (Lua) and set the keywords list
    Sci(SCI_SETSTYLEBITS,5,0);
@@ -437,7 +437,7 @@ void CLuaEditor::SetLuaLexer()
    
    // set up basic features (iguides on, tab=3, tabs-to-spaces, EOL=CRLF)
    Sci(SCI_SETINDENTATIONGUIDES,1,0);
-   Sci(SCI_SETTABWIDTH,3,0);
+   Sci(SCI_SETTABWIDTH,4,0);
    Sci(SCI_SETUSETABS,0,0);
    Sci(SCI_SETEOLMODE,SC_EOL_CRLF,0);
 
@@ -458,16 +458,18 @@ void CLuaEditor::SetLuaLexer()
    // style 3: doc comment (grey???)
    Sci(SCI_STYLESETFORE,3, 0x7F7F7F);      
    // style 4: numbers (blue)
-   Sci(SCI_STYLESETFORE,4, 0xFF0000);
+   Sci(SCI_STYLESETFORE,4, 0x0000FF);
    // style 5: keywords (black bold)
    Sci(SCI_STYLESETFONT,5, (int)font);
    Sci(SCI_STYLESETSIZE,5, (int)fontsize);
    Sci(SCI_STYLESETFORE,5, 0x000000);
    Sci(SCI_STYLESETBOLD,5, 1);
    // style 6: double qouted strings (???)
-   Sci(SCI_STYLESETFORE,6, 0x7F007F);
+   Sci(SCI_STYLESETFORE,6, 0xFF0000);
+//   Sci(SCI_STYLESETFORE,6, 0x7F007F);
    // style 7: single quoted strings (???)
-   Sci(SCI_STYLESETFORE,7, 0x7F007F);
+   Sci(SCI_STYLESETFORE,7, 0xFF0000);
+//   Sci(SCI_STYLESETFORE,7, 0x7F007F);
    // style 8: UUIDs (IDL only, not used in Lua)
    // style 9: preprocessor directives (not used in Lua 4)
    // style 10: operators (black bold)
@@ -476,6 +478,11 @@ void CLuaEditor::SetLuaLexer()
    Sci(SCI_STYLESETFORE,10, 0x000000);
    Sci(SCI_STYLESETBOLD,10, 1);
    // style 11: identifiers (leave to default)
+   Sci(SCI_STYLESETFONT,11, (int)font);
+   Sci(SCI_STYLESETSIZE,11, fontsize);
+   Sci(SCI_STYLESETFORE,11, 0x00000);
+   Sci(SCI_STYLESETBOLD,11, 0);
+
    // style 12: end of line where string is not closed (black on violet, eol-filled)
    Sci(SCI_STYLESETFORE,12, 0x000000);
    Sci(SCI_STYLESETBACK,12, 0xE0C0E0);
