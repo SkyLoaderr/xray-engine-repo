@@ -10,12 +10,12 @@
 #include "patrol_path.h"
 #include "levelgamedef.h"
 
-#ifdef DEBUG
 CPatrolPath::CPatrolPath			(shared_str name)
 {
+#ifdef DEBUG
 	m_name			= name;
-}
 #endif
+}
 
 CPatrolPath	&CPatrolPath::load_path	(IReader &stream)
 {

@@ -27,8 +27,10 @@ protected:
 public:
 #ifdef DEBUG
 	shared_str				m_name;
-							CPatrolPath		(shared_str name);
 #endif
+
+public:
+							CPatrolPath		(shared_str name);
 	virtual					~CPatrolPath	();
 			CPatrolPath		&load_path		(IReader &stream);
 	IC		const CVertex	*point			(shared_str name) const;
