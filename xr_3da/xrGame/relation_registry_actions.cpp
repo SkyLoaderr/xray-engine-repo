@@ -115,7 +115,12 @@ void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationA
 
 				if(delta_goodwill)
 				{
-					ChangeGoodwill(stalker->ID(), actor->ID(), delta_goodwill);
+					//изменить отношение ко всем членам атакованой группы (если такая есть)
+					//как к тому кого атаковали
+					CGroupHierarchyHolder& group = Level().seniority_holder().team(stalker->g_Team()).squad(stalker->g_Squad()).group(stalker->g_Group());
+					for(std::size_t i = 0;  i < group.members().size(); i++)
+						ChangeGoodwill(group.members()[i]->ID(), actor->ID(), delta_goodwill);
+						
 					ChangeCommunityGoodwill(stalker->Community(), actor->ID(), 
 						(CHARACTER_GOODWILL)(CHARACTER_COMMUNITY::sympathy(stalker->Community())*(float)delta_goodwill));
 				}
@@ -160,8 +165,19 @@ void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationA
 				CHARACTER_GOODWILL community_goodwill = (CHARACTER_GOODWILL)(CHARACTER_COMMUNITY::sympathy(stalker->Community())*
 					(float)(delta_goodwill+community_member_kill_goodwill));
 
+
 				if(community_goodwill)
+				{
+					//изменить отношение ко всем членам группы (если такая есть)
+					//убитого, кроме него самого
+					CGroupHierarchyHolder& group = Level().seniority_holder().team(stalker->g_Team()).squad(stalker->g_Squad()).group(stalker->g_Group());
+					for(std::size_t i = 0;  i < group.members().size(); i++)
+						if(stalker->ID() != group.members()[i]->ID())
+							ChangeGoodwill(group.members()[i]->ID(), actor->ID(), delta_goodwill);
+
+
 					ChangeCommunityGoodwill(stalker->Community(), actor->ID(), community_goodwill);
+				}
 
 				if(delta_reputation)
 					actor->ChangeReputation(delta_reputation);
@@ -199,7 +215,12 @@ void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationA
 
 				if(delta_goodwill)
 				{
-					ChangeGoodwill(stalker->ID(), actor->ID(), delta_goodwill);
+					//изменить отношение ко всем членам атакованой группы (если такая есть)
+					//как к тому кого атаковали
+					CGroupHierarchyHolder& group = Level().seniority_holder().team(stalker->g_Team()).squad(stalker->g_Squad()).group(stalker->g_Group());
+					for(std::size_t i = 0;  i < group.members().size(); i++)
+						ChangeGoodwill(group.members()[i]->ID(), actor->ID(), delta_goodwill);
+
 					ChangeCommunityGoodwill(stalker->Community(), actor->ID(), 
 						(CHARACTER_GOODWILL)(CHARACTER_COMMUNITY::sympathy(stalker->Community())*(float)delta_goodwill));
 				}
