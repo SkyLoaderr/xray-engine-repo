@@ -277,13 +277,18 @@ void	CRenderTarget::OnDeviceCreate	()
 					u16*	p	=	(u16*)		(LPBYTE (R.pBits) + y*R.Pitch + x*2);
 					float	ld	=	float(x)	/ float	(TEX_material_LdotN-1);
 					float	ls	=	float(y)	/ float	(TEX_material_LdotH-1);
+
 							ls	*=	powf		(ld,1/32.f);						// minimize specular where diffuse near zero
-					s32		_d	=	iFloor		(ld*255.5f);						clamp(_d,0,255);
-					s32		_s	=	iFloor		(powf(ls,ps_r2_ls_spower)*255.5f);	clamp(_s,0,255);
+					s32		_d	=	clampr		(iFloor	(ld*255.5f),						0,255);
+					s32		_s	=	clampr		(iFloor	(powf(ls,ps_r2_ls_spower)*255.5f),	0,255);
+
 					*p			=	u16			(_s*256 + _d);						// color_rgba	(_d,_d,_d,_s);
 				}
 			}
-			R_CHK						(t_material_surf->UnlockRect	(0));
+			R_CHK					(t_material_surf->UnlockRect	(0));
+#ifdef DEBUG
+			R_CHK					(D3DXSaveTextureToFile	("x:\\r2_material.dds",D3DXIFF_DDS,t_material_surf,0));
+#endif
 		}
 
 		// Build encode table - RG

@@ -12,17 +12,16 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-
 CTexture::CTexture		()
 {
 	pSurface			= NULL;
 	pAVI				= NULL;
 	desc_cache			= 0;
 	seqMSPF				= 0;
-	seqCycles			= FALSE;
 	flags.MemoryUsage	= 0;
 	flags.bLoaded		= false;
 	flags.bUser			= false;
+	flags.seqCycles		= FALSE;
 }
 
 CTexture::~CTexture()
@@ -65,7 +64,7 @@ void CTexture::Apply	(u32 dwStage)
 		// SEQ
 		u32	frame		= Device.dwTimeGlobal/seqMSPF;
 		u32	frame_data	= seqDATA.size();
-		if (seqCycles)		{
+		if (flags.seqCycles)		{
 			u32	frame_id	= frame%(frame_data*2);
 			if (frame_id>=frame_data)	frame_id = (frame_data-1) - (frame_id%frame_data);
 			pSurface 			= seqDATA[frame_id];
@@ -125,11 +124,11 @@ void CTexture::Load()
 		char buffer[256];
 		destructor<IReader>	fs(FS.r_open(fn));
 
-		seqCycles	= FALSE;
+		flags.seqCycles	= FALSE;
 		fs().r_string	(buffer);
 		if (0==stricmp	(buffer,"cycled"))
 		{
-			seqCycles		= TRUE;
+			flags.seqCycles	= TRUE;
 			fs().r_string	(buffer);
 		}
 		u32 fps	= atoi(buffer);
