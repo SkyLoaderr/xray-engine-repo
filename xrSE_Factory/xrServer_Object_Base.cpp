@@ -82,8 +82,10 @@ CSE_Abstract::CSE_Abstract					(LPCSTR caSection)
 	m_bALifeControl				= false;
 	m_wVersion					= 0;
 	m_script_version			= 0;
-	m_tClassID					= TEXT2CLSID(pSettings->r_string(caSection,"class"));	
+	m_tClassID					= TEXT2CLSID(pSettings->r_string(caSection,"class"));
+#ifndef AI_COMPILER
 	m_script_clsid				= object_factory().script_clsid(m_tClassID);
+#endif
 
 	client_data.clear			();
 }
