@@ -172,22 +172,22 @@ bool CBaseMonster::bfAssignMonsterAction(CScriptEntityAction *tpEntityAction)
 			break;
 		case eGA_Eat:		
 			if (pE && !pE->getDestroy() && !pE->g_Alive()){
-				StateMan->force_script_state(eStateEat);	
 				CorpseMan.force_corpse(pE);
+				StateMan->force_script_state(eStateEat);	
 			} else StateMan->force_script_state(eStateRest);	
 
 			break;
 		case eGA_Attack:
 			if (pE && !pE->getDestroy() && pE->g_Alive()){
-				StateMan->force_script_state(eStateAttack);
 				EnemyMan.force_enemy(pE);
+				StateMan->force_script_state(eStateAttack);
 			} else StateMan->force_script_state(eStateRest);
 
 			break;
 		case eGA_Panic:		
 			if (pE && !pE->getDestroy() && pE->g_Alive()){
-				StateMan->force_script_state	(eStatePanic);
 				EnemyMan.force_enemy			(pE);
+				StateMan->force_script_state	(eStatePanic);
 			} else StateMan->force_script_state	(eStateRest);	
 			break;
 	}
@@ -237,8 +237,11 @@ void CBaseMonster::ProcessScripts()
 
 	// Удалить все враги и объекты, которые были принудительно установлены
 	// во время выполнения скриптового действия
-	EnemyMan.unforce_enemy();
-	CorpseMan.unforce_corpse();
+	if (b_script_state_must_execute) {
+		EnemyMan.unforce_enemy();
+		CorpseMan.unforce_corpse();
+	}
+
 	force_real_speed	= false;
 
 	// Debuging
