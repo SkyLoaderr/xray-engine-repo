@@ -66,10 +66,8 @@ BOOL shared(occTri* T1, occTri* T2)
 	if (T1->adjacent[1]==T2)	return TRUE;
 	return FALSE;
 }
-/* Rasterize a scan line between given X point values, corresponding Z values
-and current color
+/* Rasterize a scan line between given X point values, corresponding Z values and current color
 */
-
 void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startT, float endT, float startX, float endX, float startR, float endR, float startZ, float endZ)
 {
 //	if (13==curY)	__asm int 3;
@@ -111,14 +109,6 @@ void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startT, float endT, 
 	for (; X<maxX; X++, i++, Z+=dZ) 
 	{
 		if (Z < pDepth[i])	{ pFrame[i]	= T; pDepth[i] = Z; }
-		if (shared(T,pFrame[i-occ_dim0*2]))	{
-			float ZR = (Z+pDepth[i-occ_dim0*2])/2;
-			if (ZR<pDepth[i-occ_dim0])	{ pFrame[i-occ_dim0] = T; pDepth[i-occ_dim0] = ZR; }
-		}
-		if (shared(T,pFrame[i+occ_dim0*2]))	{
-			float ZR = (Z+pDepth[i+occ_dim0*2])/2;
-			if (ZR<pDepth[i+occ_dim0])	{ pFrame[i+occ_dim0] = T; pDepth[i+occ_dim0] = ZR; }
-		}
 	}
 	
 	// right connector
@@ -131,13 +121,69 @@ void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startT, float endT, 
 	}
 }
 
+void i_test	( occRasterizer* OCC, occTri* T, int x, int y, DWORD C=255<<16  )
+{
+	occTri**	pFrame	= OCC->get_frame();
+	float*		pDepth	= OCC->get_depth();
+	
+	if (x<1) return; else if (x>=occ_dim0-1)	return;
+	if (y<1) return; else if (y>=occ_dim0-1)	return;
+	int	pos		= y*occ_dim0+x;
+	int	pos_up	= pos-occ_dim0;
+	int	pos_down= pos+occ_dim0;
+	
+	occTri* T1	= pFrame[pos_up		];
+	occTri* T2	= pFrame[pos_down	];
+	if (T1 && shared(T1,T2))	
+	{
+		float ZR = (pDepth[pos_up]+pDepth[pos_down])/2;
+		if (ZR<pDepth[pos])	{ pFrame[pos] = T1; pDepth[pos] = ZR; }
+	}
+}
+
+void i_line	( occRasterizer* OCC, int x1, int y1, int x2, int y2 )
+{
+    int dx = abs(x2 - x1);
+    int dy = abs(y2 - y1);
+    int sx = x2 >= x1 ? 1 : -1;
+    int sy = y2 >= y1 ? 1 : -1;
+	
+    if ( dy <= dx ){
+        int d  = ( dy << 1 ) - dx;
+        int d1 = dy << 1;
+        int d2 = ( dy - dx ) << 1;
+		
+		i_test(x1,y1);
+		
+        for  (int x = x1 + sx, y = y1, i = 1; i <= dx; i++, x += sx){
+            if ( d > 0){
+                d += d2; y += sy;
+            }else
+                d += d1;
+			i_test(x,y);
+        }
+    }else{
+        int d  = ( dx << 1 ) - dy;
+        int d1 = dx << 1;
+        int d2 = ( dx - dy ) << 1;
+		
+		i_test(x1,y1);
+        for  (int x = x1, y = y1 + sy, i = 1; i <= dy; i++, y += sy ){
+            if ( d > 0){
+                d += d2; x += sx;
+            }else
+                d += d1;
+			i_test(x,y);
+        }
+    }
+}
+
+
 /* 
-Rasterises 1 section of the triangle
-a 'section' of a triangle is the poriton of a triangle between 
+Rasterises 1 section of the triangle a 'section' of a triangle is the portion of a triangle between 
 2 horizontal scan lines corresponding to 2 vertices of a triangle
 p2.y >= p1.y, p1, p2 are start/end vertices
-E1 E2 are the triangle edge differences of the 2 bounding edges for this 
-section
+E1 E2 are the triangle edge differences of the 2 bounding edges for this section
 */
 
 float maxp(float a, float b)
