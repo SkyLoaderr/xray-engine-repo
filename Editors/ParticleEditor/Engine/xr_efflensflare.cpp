@@ -16,7 +16,7 @@
 	#include "igame_level.h"
 #endif
 
-#define FAR_DIST g_pGamePersistent->Environment.Current.far_plane
+#define FAR_DIST g_pGamePersistent->Environment.CurrentEnv.far_plane
 
 #define MAX_Flares	24
 //////////////////////////////////////////////////////////////////////////////
@@ -147,10 +147,10 @@ void CLensFlare::lerp(int a, int b, float f)
 #endif
 	dwFrame			= Device.dwFrame;
 
-	vSunDir.mul		(g_pGamePersistent->Environment.Current.sun_dir,-1);
+	vSunDir.mul		(g_pGamePersistent->Environment.CurrentEnv.sun_dir,-1);
 
 	// color
-    Fvector& c		= g_pGamePersistent->Environment.Current.sun_color;
+    Fvector& c		= g_pGamePersistent->Environment.CurrentEnv.sun_color;
 	LightColor.set	(c.x,c.y,c.z,1.f);
 
 	first_desc		= (a<0)?0:&m_Palette[a];
