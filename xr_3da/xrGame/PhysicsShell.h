@@ -258,7 +258,9 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	//build_FromKinematics		in returns elements  & joint pointers according bone IDs;
 	};
 
-
+# define DET(a) 	 (( a._11 * ( a._22 * a._33 - a._23 * a._32 ) -\
+a._12 * ( a._21 * a._33 - a._23 * a._31 ) +\
+a._13 * ( a._21 * a._32 - a._22 * a._31 ) ))
 // Implementation creator
 CPhysicsJoint*				P_create_Joint			(CPhysicsJoint::enumType type ,CPhysicsElement* first,CPhysicsElement* second);
 CPhysicsElement*			P_create_Element		();
