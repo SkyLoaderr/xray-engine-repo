@@ -80,7 +80,7 @@ function main ()
 		object1:update()
 		wait		()
 		if (stalker:see(actor)) then
-			printf("I see actor!")
+			printf("[%6d] I see actor!",device().time_global)
 		end
 	end
 	
