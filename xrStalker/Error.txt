@@ -2,3 +2,15 @@
 2. O(1) AI node search
 3. Повреждения не увеличиваются при попадании в голову на истукане m_stalker_demo
 4. Громкость звука ударов физических объектов не зависит от силы удара
+
+; legend
+; -D - from Dima
+; -A - from AlexMX
+; -S - from Slipch
+; -W - from Vitya
+; -J - from Jim
+; -O - from Oles
+; -Y - from Yura
+
+To OLES : 
+-D memory leak during reload (press f7 for reload) ~ 346kb on occ_part
