@@ -66,9 +66,18 @@ void CSE_ALifeSimulator::vfUpdateDynamicData(CSE_ALifeDynamicObject *tpALifeDyna
 		CSE_ALifeDynamicObject			*II = tpfGetObjectByID(l_tpALifeInventoryItem->ID_Parent);
 		xr_vector<u16>::iterator		i = II->children.begin();
 		xr_vector<u16>::iterator		e = II->children.end();
+		bool							bOk = true;
 		for ( ; i != e; i++)
-			VERIFY(*i != l_tpALifeInventoryItem->ID);
-		II->children.push_back(l_tpALifeInventoryItem->ID);
+			if (*i == l_tpALifeInventoryItem->ID) {
+				bOk = false;
+				break;
+			}
+		if (bOk)
+			II->children.push_back(l_tpALifeInventoryItem->ID);
+#ifdef ALIFE_LOG
+		else
+			Msg							("Specified item [%s][%d] is already attached to the specified object [%s][%d]",l_tpALifeInventoryItem->s_name_replace,l_tpALifeInventoryItem->ID,II->s_name_replace,II->ID);
+#endif
 	}
 	
 	CSE_ALifeSchedulable				*l_tpALifeSchedulable = dynamic_cast<CSE_ALifeSchedulable*>(tpALifeDynamicObject);
