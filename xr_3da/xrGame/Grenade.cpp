@@ -34,6 +34,18 @@ void CGrenade::Load(LPCSTR section) {
 	pstrWallmark = xr_strdup(name);
 	fWallmarkSize = pSettings->r_float(section,"wm_size");
 
+	strcpy(m_effectsSTR, pSettings->r_string(section,"effects"));
+	char* l_effectsSTR = m_effectsSTR; R_ASSERT(l_effectsSTR);
+	m_effects.clear(); m_effects.push_back(l_effectsSTR);
+	while(*l_effectsSTR) {
+		if(*l_effectsSTR == ',') {
+			*l_effectsSTR = 0; l_effectsSTR++;
+			while(*l_effectsSTR == ' ' || *l_effectsSTR == '\t') l_effectsSTR++;
+			m_effects.push_back(l_effectsSTR);
+		}
+		l_effectsSTR++;
+	}
+
 	SoundCreate(sndExplode, "explode", m_eSoundExplode);
 	SoundCreate(sndRicochet[0], "ric1", m_eSoundRicochet);
 	SoundCreate(sndRicochet[1], "ric2", m_eSoundRicochet);
@@ -177,9 +189,10 @@ void CGrenade::Explode() {
 			FragWallmark(l_dir, l_end, RQ);
 		}
 	}
-	CPGObject* pStaticPG;
-	pStaticPG = xr_new<CPGObject>("explosions\\expl_02_smoke",Sector());	pStaticPG->play_at_pos(vPosition);
-	pStaticPG = xr_new<CPGObject>("explosions\\expl_01_sparks",Sector());	pStaticPG->play_at_pos(vPosition);
+	CPGObject* pStaticPG; s32 l_c = m_effects.size();
+	for(s32 i = 0; i < l_c; i++) {
+		pStaticPG = xr_new<CPGObject>(m_effects[i],Sector()); pStaticPG->play_at_pos(vPosition);
+	}
 	setEnabled(true);
 }
 

@@ -44,4 +44,6 @@ public:
 	sound sndRicochet[SND_RIC_COUNT], sndExplode;
 	ESoundTypes m_eSoundRicochet, m_eSoundExplode;
 	u32 m_expoldeTime;
+	char m_effectsSTR[255];
+	vector<LPCSTR> m_effects;
 };
