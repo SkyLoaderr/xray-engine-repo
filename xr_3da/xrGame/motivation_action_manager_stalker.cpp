@@ -46,6 +46,13 @@ LPCSTR CMotivationActionManagerStalker::property2string	(const _condition_type &
 {
 	return					(inherited::property2string(property_id));
 }
+
+LPCSTR CMotivationActionManagerStalker::object_name		() const
+{
+	if (!m_object)
+		return				("undefined");
+	return					(*m_object->cName());
+}
 #endif
 
 void CMotivationActionManagerStalker::Load				(LPCSTR section)

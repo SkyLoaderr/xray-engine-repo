@@ -130,7 +130,7 @@ void CPlanner::update				(u32 time_delta)
 	// printing solution
 	if (m_use_log) {
 		if (m_solution_changed) {
-			Msg						("%6d : Solution",Level().timeServer());
+			Msg						("%6d : Solution for object %s",Level().timeServer(),object_name());
 			for (int i=0; i<(int)solution().size(); ++i)
 				Msg					("%s",action2string(solution()[i]));
 		}
@@ -258,6 +258,12 @@ LPCSTR CPlanner::property2string	(const _condition_type &property_id)
 	return			(itoa(property_id,m_temp_string,10));
 }
 #endif
+
+TEMPLATE_SPECIALIZATION
+LPCSTR CPlanner::object_name		() const
+{
+	return			("");
+}
 
 #undef TEMPLATE_SPECIALIZATION
 #undef CPlanner

@@ -45,6 +45,9 @@ public:
 	virtual	void			reinit								(CAI_Stalker *object, bool clear_all = false);
 	virtual	void			reload								(LPCSTR section);
 	virtual	void			update								(u32 time_delta);
+#ifdef LOG_ACTION
+	virtual	LPCSTR			object_name							() const;
+#endif
 };
 
 #include "motivation_action_manager_stalker_inline.h"

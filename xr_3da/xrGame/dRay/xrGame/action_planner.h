@@ -72,6 +72,7 @@ public:
 #ifdef LOG_ACTION
 	virtual LPCSTR			action2string			(const _action_id_type &action_id);
 	virtual LPCSTR			property2string			(const _condition_type &action_id);
+	virtual LPCSTR			object_name				() const;
 #endif
 };
 
