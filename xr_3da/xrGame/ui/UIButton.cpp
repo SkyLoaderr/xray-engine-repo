@@ -6,8 +6,8 @@
 #include "UIButton.h"
 #include "../HUDManager.h"
 
-#define PUSH_OFFSET_RIGHT 2
-#define PUSH_OFFSET_DOWN  3
+#define PUSH_OFFSET_RIGHT 1
+#define PUSH_OFFSET_DOWN  1
 
 
 //////////////////////////////////////////////////////////////////////
