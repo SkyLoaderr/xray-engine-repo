@@ -466,6 +466,10 @@ protected:
     int									m_r_finger2;
 	int									m_head;
 
+	int									m_spine1;
+	int									m_spine;
+	int									m_neck;
+
 
 
 	//////////////////////////////////////////////////////////////////////////
@@ -645,6 +649,8 @@ protected:
 	CObject*					m_pLastHittingWeapon;
 	s16							m_s16LastHittedElement;
 	bool						m_bWasBackStabbed;
+
+	virtual		bool			Check_for_BackStab_Bone			(u16 element);
 public:
 	virtual void			SetHitInfo				(CObject* who, CObject* weapon, s16 element);
 

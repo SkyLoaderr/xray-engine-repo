@@ -894,6 +894,10 @@ void	CActor::OnChangeVisual()
 	m_l_finger1			= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(*cNameSect(),"weapon_bone1"));
 	m_r_finger2			= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(*cNameSect(),"weapon_bone2"));
 	//-------------------------------------------------------------------------------
+	m_neck				= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_neck");
+	m_spine1			= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_spine1");
+	m_spine				= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_spine");
+	//-------------------------------------------------------------------------------
 	reattach_items();
 	//-------------------------------------------------------------------------------
 	m_pPhysics_support->in_ChangeVisual();
@@ -1820,3 +1824,15 @@ void				CActor::OnCriticalRadiationHealthLoss	()
 	P.w_u8	(0);
 	u_EventSend(P);
 };
+
+bool				CActor::Check_for_BackStab_Bone			(u16 element)
+{
+	if (element == m_head) return true;
+	else
+		if (element == m_neck) return true;
+		else
+			if (element == m_spine1) return true;
+			else 
+				if (element == m_spine) return true;
+	return false;
+}

@@ -438,7 +438,7 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 	default:
 		{
 			m_bWasBackStabbed = false;
-			if (hit_type == ALife::eHitTypeWound_2)
+			if (hit_type == ALife::eHitTypeWound_2 && Check_for_BackStab_Bone(element))
 			{
 				// convert impulse into local coordinate system
 				Fmatrix					mInvXForm;
@@ -454,6 +454,7 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 			};
 			
 			float hit_power = 0;
+
 			if (m_bWasBackStabbed) hit_power = 100000;
 			else hit_power	= HitArtefactsOnBelt(iLost, hit_type);
 
