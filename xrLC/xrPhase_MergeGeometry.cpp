@@ -121,7 +121,7 @@ void CBuild::xrPhase_MergeGeometry	()
 
 			// **OK**. Perform merge
 			subdiv.insert	(subdiv.begin(), g_XSplit[selected]->begin(), g_XSplit[selected]->end());
-			_DELETE			(g_XSplit[selected]);
+			xr_delete		(g_XSplit[selected]);
 			g_XSplit.erase	(g_XSplit.begin()+selected);
 		}
 		Progress(_sqrt(_sqrt(float(split)/float(g_XSplit.size()))));

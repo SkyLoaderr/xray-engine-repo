@@ -136,6 +136,6 @@ void CBuild::CorrectTJunctions()
 	}
 	Msg("*** %d junctions and %d long edges found.",vecJunctions->size(),vecEdges->size());
 
-	_DELETE(vecJunctions);
-	_DELETE(vecEdges);
+	xr_delete(vecJunctions);
+	xr_delete(vecEdges);
 }

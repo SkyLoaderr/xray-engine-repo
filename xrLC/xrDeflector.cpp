@@ -44,20 +44,20 @@ IC BOOL UVpointInside(UVpoint &P, UVtri &T)
 
 CDeflector::CDeflector()
 {
-	Deflector	= this;
-	N.set		(0,1,0);
-	Sphere.P.set(flt_max,flt_max,flt_max);
-	Sphere.R	= 0;
-	dwWidth		= 0;
-	dwHeight	= 0;
-	bMerged		= FALSE;
+	Deflector		= this;
+	N.set			(0,1,0);
+	Sphere.P.set	(flt_max,flt_max,flt_max);
+	Sphere.R		= 0;
+	dwWidth			= 0;
+	dwHeight		= 0;
+	bMerged			= FALSE;
 	UVpolys.reserve	(32);
 	layers.reserve	(2);
 }
 CDeflector::~CDeflector()
 {
 	for (u32 I=0; I<layers.size(); I++)
-		_FREE	(layers[I].lm.pSurface);
+		xr_free	(layers[I].lm.pSurface);
 	layers.clear();
 }
 

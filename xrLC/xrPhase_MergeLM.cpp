@@ -191,6 +191,6 @@ void CBuild::xrPhase_MergeLM()
 	Progress	(1.f);
 	Status		("Destroying deflectors...");
 	for (DWORD it=0; it<g_deflectors.size(); it++)
-		_DELETE(g_deflectors[it]);
+		xr_delete(g_deflectors[it]);
 	g_deflectors.clear	();
 }

@@ -228,11 +228,11 @@ void CBuild::BuildRelevance(CFS_Base &fs)
 	}
 
 
-	_DELETE(pvs_map_stream);
+	xr_delete		(pvs_map_stream);
 
-	fs.open_chunk(fsV_NODES);
-	SaveDATA(fs,vis_nodes);
-	fs.close_chunk();
+	fs.open_chunk	(fsV_NODES);
+	SaveDATA		(fs,vis_nodes);
+	fs.close_chunk	();
 
 	fs.open_chunk(fsV_LIGHTS);
 	SaveDATA(fs,vis_lights);

@@ -158,5 +158,5 @@ void CLightmap::Save()
 		DXTCompress				(FN,raw_data,w,h,pitch,&fmt,4);
 	}
 
-	_FREE			(lm.pSurface);
+	xr_free			(lm.pSurface);
 }

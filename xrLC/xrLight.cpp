@@ -232,6 +232,6 @@ void CBuild::LightVertex()
 		}
 	}
 
-	_DELETE(VL_faces);
-	_DELETE(g_trans);
+	xr_delete(VL_faces);
+	xr_delete(g_trans);
 }

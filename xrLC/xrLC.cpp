@@ -77,8 +77,8 @@ void Startup(LPSTR     lpCmdLine)
 	CStream*	F			= new CFileStream(prjName.c_str());
 	F->Read		(&id,8);
 	if (0==strcmp(id,ID))	{
-		_DELETE		(F);
-		F			= new CCompressedStream(prjName.c_str(),ID);
+		xr_delete		(F);
+		F				= new CCompressedStream(prjName.c_str(),ID);
 	}
 	CStream&				FS	= *F;
 
@@ -109,7 +109,7 @@ void Startup(LPSTR     lpCmdLine)
 	// Conversion
 	Phase					("Converting data structures...");
 	pBuild					= new CBuild(Params,FS);
-	_DELETE					(F);
+	xr_delete					(F);
 	
 	// Call for builder
 	pBuild->Run				("gamedata\\levels\\"+string(name));

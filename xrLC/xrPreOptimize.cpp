@@ -153,7 +153,7 @@ void CBuild::PreOptimize()
 			for (int iy=0; iy<HDIM_Y+1; iy++)
 				for (int iz=0; iz<HDIM_Z+1; iz++)
 				{
-					_DELETE(HASH[ix][iy][iz]);
+					xr_delete(HASH[ix][iy][iz]);
 				}
 	}
 	mem_Compact			();

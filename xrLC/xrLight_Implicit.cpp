@@ -42,8 +42,8 @@ public:
 	}
 	void			Deallocate()
 	{
-		_FREE		(temp);
-		_FREE		(lmap);
+		xr_free		(temp);
+		xr_free		(lmap);
 	}
 	
 	u32		Width()	{ return texture->dwWidth; }
@@ -386,7 +386,7 @@ void CBuild::ImplicitLighting()
 			p.data			= markup;
 			p.maketga		(out_name);
 		}
-		_FREE(markup)
+		xr_free(markup)
 		*/
 	}
 

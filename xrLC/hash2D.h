@@ -53,6 +53,6 @@ public:
 	{
 		for (DWORD y=0; y<s_Y; y++)
 			for (DWORD x=0; x<s_Y; x++)
-				_DELETE(table[y][x]);
+				xr_delete(table[y][x]);
 	}
 };

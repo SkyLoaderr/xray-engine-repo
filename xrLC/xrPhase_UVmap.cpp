@@ -111,7 +111,7 @@ void	CBuild::xrPhase_UVmap()
 			} else {
 				if (g_XSplit[SP]->empty()) 
 				{
-					_DELETE			(g_XSplit[SP]);
+					xr_delete		(g_XSplit[SP]);
 					g_XSplit.erase	(g_XSplit.begin()+SP);
 					SP--;
 				}
@@ -132,7 +132,7 @@ void CBuild::mem_CompactSubdivs()
 	{
 		temp.clear			();
 		temp.assign			(g_XSplit[SP]->begin(),g_XSplit[SP]->end());
-		_DELETE				(g_XSplit[SP]);
+		xr_delete				(g_XSplit[SP]);
 		mem_Compact			();
 		g_XSplit[SP]		= new vecFace;
 		g_XSplit[SP]->assign(temp.begin(),temp.end());

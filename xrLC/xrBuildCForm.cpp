@@ -106,8 +106,8 @@ void CBuild::BuildCForm(CFS_Base &fs)
 	}
 	if (bCriticalErrCnt)
 		Msg("MultipleEdges: %d faces",bCriticalErrCnt);
-	_DELETE			(cfFaces);
-	_DELETE			(cfVertices);
+	xr_delete		(cfFaces);
+	xr_delete		(cfVertices);
 
 	// Saving
 	CFS_Memory		MFS;

@@ -12,7 +12,7 @@ void CBuild::xrPhase_Subdivide()
 	{
 		if (g_XSplit[X]->empty()) 
 		{
-			_DELETE			(g_XSplit[X]);
+			xr_delete		(g_XSplit[X]);
 			g_XSplit.erase	(g_XSplit.begin()+X);
 			X--;
 			continue;
@@ -92,7 +92,7 @@ void CBuild::xrPhase_Subdivide()
 				{
 					if (g_deflectors[it]==defl_base)	{
 						g_deflectors.erase	(g_deflectors.begin()+it);
-						_DELETE				(defl_base);
+						xr_delete			(defl_base);
 						break;
 					}
 				}
@@ -103,7 +103,7 @@ void CBuild::xrPhase_Subdivide()
 			}
 			
 			// Delete old SPLIT and push two new
-			_DELETE				(g_XSplit[X]);
+			xr_delete				(g_XSplit[X]);
 			g_XSplit.erase		(g_XSplit.begin()+X); X--;
 			g_XSplit.push_back	(new vecFace(s1));	Detach(&s1);
 			g_XSplit.push_back	(new vecFace(s2));	Detach(&s2);
