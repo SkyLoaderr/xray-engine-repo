@@ -76,7 +76,7 @@ void CPlanner::update				()
 #endif
 
 #ifdef LOG_ACTION
-	if (m_failed && psAI_Flags.test(aiLua)) {
+	if (m_failed) {
 		// printing current world state
 		show					();
 		{
