@@ -255,14 +255,14 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectPhysic,CSE_ALifeDynamicObjectVisual)
 	f32 							mass;
     ref_str 						fixed_bones;
 	u64								bones_mask;
-	u32								unsplit_time;
 	u16								root_bone;
 	u16								source_id;//for break only
 	ref_str							startup_animation;
     enum{
     	flActive					= (1<<0),
 		flSpawnCopy					= (1<<1),
-		flSavedData					= (1<<2)
+		flSavedData					= (1<<2),
+		flNotSave					= (1<<3)
     };
     Flags8							flags;
 									CSE_ALifeObjectPhysic	(LPCSTR caSection);

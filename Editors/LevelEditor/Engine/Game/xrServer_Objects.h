@@ -77,7 +77,7 @@
 // 58 - CSE_ALifeObject					appended with ini_string
 // 59 - CSE_ALifeItemPDA				appended with m_original_owner
 // 60 - CSE_AlifeInventoryItem			appended with property m_eItemPlace
-// 61 - CSE_AlifeObjectPhysic			appended with unsplit_time, bones_mask, root_bone
+// 61 - CSE_AlifeObjectPhysic			appended with bones_mask, root_bone
 //------------------------------------------------------------------------------
 
 class CPureServerObject : public IPureServerObject {

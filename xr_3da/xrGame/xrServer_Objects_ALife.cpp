@@ -793,7 +793,6 @@ CSE_ALifeObjectPhysic::CSE_ALifeObjectPhysic(LPCSTR caSection) : CSE_ALifeDynami
 	m_flags.set					(flUseSwitches,FALSE);
 	m_flags.set					(flSwitchOffline,FALSE);
 	bones_mask					=u64(-1);
-	unsplit_time				=u32(-1);
 	root_bone					=0;
 }
 
@@ -829,7 +828,6 @@ void CSE_ALifeObjectPhysic::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 		tNetPacket.r_u16		(source_id);
 
 	if (m_wVersion>60	&&	flags.test(flSavedData)) {
-		unsplit_time				=tNetPacket.r_u32();
 		bones_mask					=tNetPacket.r_u64();
 		root_bone					=tNetPacket.r_u16();
 	}
@@ -850,7 +848,6 @@ void CSE_ALifeObjectPhysic::STATE_Write		(NET_Packet	&tNetPacket)
 ////////////////////////saving///////////////////////////////////////
 	if(flags.test(flSavedData))
 	{
-		tNetPacket.w_u32			(unsplit_time);
 		tNetPacket.w_u64			(bones_mask);
 		tNetPacket.w_u16			(root_bone);
 	}
@@ -859,27 +856,17 @@ void CSE_ALifeObjectPhysic::STATE_Write		(NET_Packet	&tNetPacket)
 void CSE_ALifeObjectPhysic::UPDATE_Read		(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
-	//flags.set					(tNetPacket.r_u8());
-	//unsplit_time				=tNetPacket.r_u32();
-	//bones_mask					=tNetPacket.r_u64();
-	//root_bone					=tNetPacket.r_u16();
 }
 
 void CSE_ALifeObjectPhysic::UPDATE_Write	(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
-	//tNetPacket.w_u8				(flags.get());
-	//tNetPacket.w_u32(unsplit_time);
-	//tNetPacket.w_u64(bones_mask);
-	//tNetPacket.w_u16(root_bone);
-
 }
 
 void CSE_ALifeObjectPhysic::load(NET_Packet &tNetPacket)
 {
 	inherited::load(tNetPacket);
 	flags.set					(tNetPacket.r_u8());
-	unsplit_time				=tNetPacket.r_u32();
 	bones_mask					=tNetPacket.r_u64();
 	root_bone					=tNetPacket.r_u16();
 	flags.set(flSavedData,TRUE);
@@ -948,8 +935,7 @@ bool CSE_ALifeObjectPhysic::used_ai_locations	() const
 
 bool CSE_ALifeObjectPhysic::can_save			() const
 {
-//	return						(!flags.test(flSpawnCopy));
-	return						(true);
+	return						(!flags.test(flNotSave));
 }
 
 ////////////////////////////////////////////////////////////////////////////
