@@ -42,7 +42,9 @@ public:
 	void			Zoom				(BOOL bZoom);
 	void			Reload				();
 	IC BOOL			isZoomed			()	{ return m_bZoomed; }
-
+	int				getAmmoElapsed		()	{ CWeapon* W = ActiveWeapon(); if (W) return W->GetAmmoElapsed(); }
+	int				getAmmoCurrent		()	{ CWeapon* W = ActiveWeapon(); if (W) return W->GetAmmoCurrent(); }
+	
 	BOOL			TakeItem			(CLASS_ID cls, int iAmmoCount);
 	void			LeaveWeapon			(CLASS_ID cls);
 
