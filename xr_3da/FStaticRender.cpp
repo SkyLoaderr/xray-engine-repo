@@ -444,28 +444,6 @@ void	CRender::Render		()
 void CRender::OnDeviceDestroy()
 {
 	level_Unload();
-
-	// normal map
-	for (DWORD pr=0; pr<4; pr++)
-	{
-		SceneGraph::mapNormal_Node	*cur=mapNormal[pr].begin(), *_end = mapNormal[pr].begin()+mapNormal[pr].allocated();
-		for (; cur!=_end; cur++)	
-		{
-			cur->val.direct.sorted.discard();
-			cur->val.cached.sorted.discard();
-		}
-		mapNormal[pr].discard();
-	}
-	// matrix map
-	{
-		SceneGraph::mapMatrix_Node	*cur=mapMatrix.begin(), *_end = mapMatrix.begin()+mapMatrix.allocated();
-		for (; cur!=_end; cur++)	cur->val.discard();
-		mapMatrix.discard();
-	}
-
-	mapSorted.discard();	// sorted map
-	mapLines.discard();		// lines map
-	vecPatches.clear();		// patches
 }
 
 void CRender::OnDeviceCreate()
