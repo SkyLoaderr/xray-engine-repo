@@ -7,7 +7,7 @@
 bool WriteSlot	(char *name, char* dest, char *msg) 
 {
 	HANDLE	hFile; 
-	u32	cbWritten;
+	u32		cbWritten;
 	BOOL	fResult;
 	char    cName[256];
 
