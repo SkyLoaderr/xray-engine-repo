@@ -170,6 +170,12 @@ CPhysicsElement* CPHShell::get_Element(LPCSTR bone_name)
 	return (CPhysicsElement*) (instance.Callback_Param);
 }
 
+CPhysicsElement* CPHShell::get_ElementByStoreOrder(u16 num)
+{
+	R_ASSERT2(num<elements.size(),"argument is out of range");
+	return dynamic_cast<CPhysicsElement*>(elements[num]);
+}
+
 CPhysicsElement* CPHShell::get_Element(s16 bone_id)
 {
 	VERIFY(m_pKinematics);
