@@ -102,15 +102,16 @@ void		xrRender_initconsole	()
 	CMD3(CCC_Mask,		"r2_sky",				&ps_r2_ls_flags,			R2FLAG_SKY);
 	CMD3(CCC_Mask,		"r2_bump_af",			&ps_r2_ls_flags,			R2FLAG_BUMP_AF);
 	CMD3(CCC_Mask,		"r2_spot_unmask",		&ps_r2_ls_flags,			R2FLAG_SPOT_UNMASK);
+	CMD3(CCC_Mask,		"r2_aa",				&ps_r2_ls_flags,			R2FLAG_AA);
 	CMD4(CCC_Float,		"r2_aa_kernel",			&ps_r2_aa_kernel,			0.01f,	0.99f	);
-
-	tw_min.set			(0,0,0);	tw_max.set			(2,2,2);
-	CMD4(CCC_Vector3,	"r2_ls_hemi",			&ps_r2_ls_hemi,				tw_min, tw_max	);
 
 	tw_min.set			(0,0,0);	tw_max.set			(1,1,1);
 	CMD4(CCC_Vector3,	"r2_aa_break",			&ps_r2_aa_barier,			tw_min, tw_max	);
 
 	tw_min.set			(0,0,0);	tw_max.set			(1,1,1);
 	CMD4(CCC_Vector3,	"r2_aa_weight",			&ps_r2_aa_weight,			tw_min, tw_max	);
+
+	tw_min.set			(0,0,0);	tw_max.set			(2,2,2);
+	CMD4(CCC_Vector3,	"r2_ls_hemi",			&ps_r2_ls_hemi,				tw_min, tw_max	);
 }
 #endif
