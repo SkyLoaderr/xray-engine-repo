@@ -259,6 +259,7 @@ void C3DSound::Load		(LPCSTR name, BOOL ctrl_freq)
 	if (!pBuffer)		THROW;
 
 	pBuffer->QueryInterface(IID_IDirectSound3DBuffer,(void **)(&pBuffer3D));
+	ps.dwMode			= DS3DMODE_DISABLE;
 	bNeedUpdate			= true;
 }
 
@@ -274,13 +275,15 @@ void C3DSound::Load		(const C3DSound *pOriginal)
 	VERIFY				(pBuffer);
 	pBuffer->QueryInterface(IID_IDirectSound3DBuffer,(void **)(&pBuffer3D));
 	ps.set				(pOriginal->ps);
+	ps.dwMode			= DS3DMODE_DISABLE;
 	bNeedUpdate			= true;
 }
 
 void C3DSound::Update()
 {
 	if (dwStatus&DSBSTATUS_BUFFERLOST) pBuffer->Restore();
-	if (bNeedUpdate) {
+	if (bNeedUpdate) 
+	{
 		if (bCtrlFreq) pBuffer->SetFrequency(dwFreq);
 		fRealVolume = .9f*fRealVolume + .1f*fVolume;
 		pBuffer->SetVolume( LONG((1-fRealVolume*psSoundVEffects*fBaseVolume)*float(DSBVOLUME_MIN)) );
@@ -306,6 +309,7 @@ void C3DSound::OnMove()
 	} else {
 		if (bMustPlay) {
 			bMustPlay	= false;
+			ps.dwMode	= DS3DMODE_NORMAL;
 			Update		( );
 			pBuffer->Play( 0, 0, bMustLoop?DSBPLAY_LOOPING:0 );
 			dwStatus	|= DSBSTATUS_PLAYING;

@@ -55,8 +55,10 @@ void C3DSoundRender::RenderClipPlanes()
 const DWORD dwSndKillTime = 3;
 void C3DSoundRender::OnMove()
 {
-	for (DWORD i=0; i<sounds.size(); i++) {
-		for (DWORD j=0; j<sounds[i].size(); j++) {
+	for (DWORD i=0; i<sounds.size(); i++) 
+	{
+		for (DWORD j=0; j<sounds[i].size(); j++) 
+		{
 			C3DSound *pSnd = sounds[i][j];
 			pSnd->OnMove		();
 			if (pSnd->isPlaying	()) {
