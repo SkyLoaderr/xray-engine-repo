@@ -138,7 +138,10 @@ public:
 	// Misc
 	CTeam&						get_team				(int ID)
 	{
-		if (ID >= (int)(Teams.size()))	Teams.resize(ID+1);
+		if (ID >= (int)(Teams.size()))	{
+			R_ASSERT2	(ID < maxTeams,"Team number is out of range!");
+			Teams.resize(ID+1);
+		}
 		return Teams[ID];
 	}
 	CTeam&						acc_team				(int ID)
@@ -149,7 +152,10 @@ public:
 	CSquad&						get_squad				(int ID, int S)
 	{
 		CTeam&	T = get_team(ID);
-		if (S >= (int)(T.Squads.size()))	T.Squads.resize(S+1);
+		if (S >= (int)(T.Squads.size())) {
+			R_ASSERT2	(S < maxTeams,"Squad number is out of range!");
+			T.Squads.resize(S+1);
+		}
 		return T.Squads[S];
 	}
 	CSquad&						acc_squad				(int ID, int S)
@@ -161,7 +167,10 @@ public:
 	CGroup&						get_group				(int ID, int S, int G)
 	{
 		CSquad&	SQ = get_squad(ID,S);
-		if (G >= (int)(SQ.Groups.size()))	SQ.Groups.resize(G+1);
+		if (G >= (int)(SQ.Groups.size())) {
+			R_ASSERT2	(G < maxTeams,"Group number is out of range!");
+			SQ.Groups.resize(G+1);
+		}
 		return SQ.Groups[G];
 	}
 	int							get_RPID				(LPCSTR name);
