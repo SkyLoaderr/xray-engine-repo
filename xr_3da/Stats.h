@@ -8,12 +8,12 @@
 
 #include "stats_timer.h"
 
-class ENGINE_API CCustomFont;
+class ENGINE_API CFontHUD;
 
 class ENGINE_API CStats
 {
 public:
-	CCustomFont*	font;
+	CFontHUD*	font;
 
 	float		fFPS,fRFPS,fTPS;	// FPS, RenderFPS, TPS
 	DWORD		dwPoly, dwVert;

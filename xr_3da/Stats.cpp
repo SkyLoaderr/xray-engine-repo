@@ -1,9 +1,6 @@
 #include "stdafx.h"
-#pragma hdrstop
-
-#include "Stats.h"
-#include "hw.h"
 #include "xr_hudfont.h"
+#pragma hdrstop
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
