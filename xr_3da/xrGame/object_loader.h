@@ -63,16 +63,40 @@ struct CLoader {
 	};
 
 	struct CHelper3 {
-		template <template <typename _1> class T1, typename T2>
-		IC	static void add(T1<T2> &data, typename T1<T2>::value_type &value)
-		{
-			data.push_back	(value);
-		}
+		template <typename T>
+		struct has_value_compare {
+		template <typename _P> static object_type_traits::detail::yes	select(object_type_traits::detail::other<typename _P::value_compare>*);
+			template <typename _P> static object_type_traits::detail::no		select(...);
+			enum { value = sizeof(object_type_traits::detail::yes) == sizeof(select<T>(0)) };
+		};
+
+		template <typename T>
+		struct is_tree_structure {
+			enum { 
+				value = 
+					has_value_compare<T>::value
+			};
+		};
 
 		template <typename T1, typename T2>
-		IC	static void add(T1 &data, typename T2 &value)
+		struct add_helper {
+			template <bool>
+			IC	static void add(T1 &data, T2 &value)
+			{
+				data.push_back	(value);
+			}
+
+			template <>
+			IC	static void add<true>(T1 &data, T2 &value)
+			{
+				data.insert		(value);
+			}
+		};
+
+		template <typename T1, typename T2>
+		IC	static void add(T1 &data, T2 &value)
 		{
-			data.insert		(value);
+			add_helper<T1,T2>::add<is_tree_structure<T1>::value>(data,value);
 		}
 
 		template <typename T>

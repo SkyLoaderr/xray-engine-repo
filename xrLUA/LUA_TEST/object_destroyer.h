@@ -9,6 +9,11 @@
 #ifndef XRAY_OBJECT_DESTROYER
 #define XRAY_OBJECT_DESTROYER
 
+#ifndef XRAY_COMPATIBIBLE
+#	define xr_free		free
+#	define xr_delete	delete
+#endif
+
 struct CDestroyer {
 	IC	static void delete_data(LPCSTR data)
 	{

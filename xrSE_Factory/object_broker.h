@@ -9,8 +9,13 @@
 #ifndef XRAY_OBJECT_BROKER
 #define XRAY_OBJECT_BROKER
 
+#define XRAY_COMPATIBIBLE
+
+#ifdef XRAY_COMPATIBIBLE
+#	include "net_utils.h"
+#endif
+
 #include <queue>
-#include "net_utils.h"
 #include "object_interfaces.h"
 #include "object_type_traits.h"
 #include "object_comparer.h"

@@ -78,6 +78,11 @@ vertex_type_add(VertexE)
 
 struct VertexF : public VertexB
 {
+	IC	VertexF() {}
+	IC	VertexF(const VertexF &v)
+	{
+		*this = v;
+	}
 };
 vertex_type_add(VertexF)
 #undef final_vertex_type_list

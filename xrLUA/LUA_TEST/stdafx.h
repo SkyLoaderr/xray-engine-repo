@@ -8,3 +8,5 @@
 // TODO: reference additional headers your program requires here
 
 #pragma warning(disable:4100)
+
+#define XRSE_FACTORY_EXPORTS

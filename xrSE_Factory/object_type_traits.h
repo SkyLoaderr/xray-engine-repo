@@ -21,8 +21,8 @@
 	#define declare_has(a) \
 		template <typename T>\
 		struct has_##a {\
-		template <typename P> static detail::yes	select(detail::other<typename P::a>*);\
-			template <typename P> static detail::no		select(...);\
+			template <typename P> static detail::yes	select(detail::other<typename P::a>*);\
+			template <typename P> static detail::no	select(...);\
 			enum { value = sizeof(detail::yes) == sizeof(select<T>(0)) };\
 		};
 
@@ -150,8 +150,8 @@
 				value = 
 					is_class<T1>::result && 
 					is_class<T2>::result && 
-					sizeof(detail::yes) == sizeof(select((T2*)(0))) &&
-					!is_same<T1,T2>::value
+					!is_same<T1,T2>::value &&
+					sizeof(detail::yes) == sizeof(select((T2*)(0)))
 			};
 		};
 
@@ -161,6 +161,7 @@
 		declare_has(const_reference);
 		declare_has(value_type);
 		declare_has(size_type);
+//		declare_has(value_compare);
 
 		template <typename T>
 		struct is_stl_container {
@@ -175,6 +176,13 @@
 			};
 		};
 
+//		template <typename _T>
+//		struct is_tree_structure {
+//			enum { 
+//				value = 
+//					has_value_compare<_T>::value
+//			};
+//		};
 	};
 #endif
 #endif

@@ -409,6 +409,9 @@
 				RelativePath=".\broker_test.cpp">
 			</File>
 			<File
+				RelativePath=".\client_id.h">
+			</File>
+			<File
 				RelativePath=".\NET_utils.h">
 			</File>
 			<File
