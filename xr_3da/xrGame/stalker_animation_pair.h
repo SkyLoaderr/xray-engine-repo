@@ -21,12 +21,16 @@ private:
 	CBlend					*m_blend;
 	bool					m_actual;
 	bool					m_step_dependence;
+	bool					m_global_animation;
 
 private:
 #ifdef DEBUG
 	LPCSTR					m_object_name;
 	LPCSTR					m_animation_type_name;
 #endif
+
+protected:
+			void			play_global_animation	(CSkeletonAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object);
 
 public:
 	IC						CStalkerAnimationPair	();
@@ -38,6 +42,8 @@ public:
 	IC		CBlend			*blend					() const;
 	IC		void			step_dependence			(bool value);
 	IC		bool			step_dependence			() const;
+	IC		void			global_animation		(bool global_animation);
+	IC		bool			global_animation		() const;
 			void			play					(CSkeletonAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object);
 #ifdef DEBUG
 	IC		void			set_dbg_info			(LPCSTR object_name, LPCSTR animation_type_name);

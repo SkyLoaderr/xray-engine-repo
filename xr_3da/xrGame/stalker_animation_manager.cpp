@@ -17,10 +17,16 @@ void CStalkerAnimationManager::reinit				()
 	m_direction_start_time		= 0;
 	m_movement_direction		= eMovementDirectionForward;
 	m_desirable_direction		= eMovementDirectionForward;
+	
 	m_script_animations.clear	();
+	
 	m_legs.step_dependence		(true);
 	m_global.step_dependence	(true);
 	m_script.step_dependence	(true);
+	
+	m_global.global_animation	(true);
+	m_script.global_animation	(true);
+	
 	m_setup_flag				= false;
 }
 

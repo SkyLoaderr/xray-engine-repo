@@ -30,13 +30,31 @@ void CStalkerAnimationPair::synchronize		(const CStalkerAnimationPair &stalker_a
 	blend()->timeCurrent	= stalker_animation.blend()->timeCurrent;
 }
 
+void CStalkerAnimationPair::play_global_animation	(CSkeletonAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object)
+{
+	m_blend				= 0;
+	for (u16 i=0; i<MAX_PARTS; ++i) {
+		CBlend			*blend = 0;
+		if (!m_blend)
+			blend		= animation()->animation()->PlayCycle(skeleton_animated,i,TRUE,callback,object);
+		else
+			animation()->animation()->PlayCycle(skeleton_animated,i,TRUE,0,0);
+
+		if (blend && !m_blend)
+			m_blend		= blend;
+	}
+}
+
 void CStalkerAnimationPair::play			(CSkeletonAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object)
 {
 	VERIFY					(animation());
 	if (actual())
 		return;
 
-	m_blend					= skeleton_animated->PlayCycle(animation()->animation(),TRUE,callback,object);
+	if (!global_animation())
+		m_blend				= skeleton_animated->PlayCycle(animation()->animation(),TRUE,callback,object);
+	else
+		play_global_animation	(skeleton_animated,callback,object);
 	m_actual				= true;
 
 	if (m_step_dependence)

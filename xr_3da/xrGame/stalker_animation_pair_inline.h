@@ -63,3 +63,13 @@ IC	void CStalkerAnimationPair::set_dbg_info		(LPCSTR object_name, LPCSTR animati
 	m_animation_type_name	= animation_type_name;
 }
 #endif
+
+IC	void CStalkerAnimationPair::global_animation	(bool global_animation)
+{
+	m_global_animation		= global_animation;
+}
+
+IC	bool CStalkerAnimationPair::global_animation	() const
+{
+	return					(m_global_animation);
+}

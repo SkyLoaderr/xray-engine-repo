@@ -603,7 +603,8 @@ void CHelicopter::shedule_Update(u32 time_delta)
 		Die();
 */
 	if(state() != CHelicopter::eDead){
-		float dist = GetDistanceToDestPosition();
+//		float dist = 
+			GetDistanceToDestPosition();
 
 
 
