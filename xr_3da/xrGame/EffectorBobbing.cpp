@@ -33,6 +33,11 @@ void CEffectorBobbing::Process		(Fvector &p, Fvector &d, Fvector &n)
 	if (dwMState&CActor::EMoveCommand::mcAnyMove){
 		if (fReminderFactor<1.f)	fReminderFactor += SPEED_REMINDER*Device.fTimeDelta;
 		else						fReminderFactor = 1.f;
+	}else{
+		if (fReminderFactor>0.f)	fReminderFactor -= SPEED_REMINDER*Device.fTimeDelta;
+		else						fReminderFactor = 0.f;
+	}
+	if (!fsimilar(fReminderFactor,0)){
 		Fmatrix		M;
 		M.identity	();
 		M.j.set		(n);
@@ -62,9 +67,6 @@ void CEffectorBobbing::Process		(Fvector &p, Fvector &d, Fvector &n)
 		
 		d.set		(mR.k);
 		n.set		(mR.j);
-	}else{
-		if (fReminderFactor>0.f)	fReminderFactor -= SPEED_REMINDER*Device.fTimeDelta;
-		else						fReminderFactor = 0.f;
 	}
 //	else{
 //		fTime		= 0;
