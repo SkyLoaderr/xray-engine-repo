@@ -115,11 +115,12 @@ void CUIMainIngameWnd::Init()
 
 	AttachChild(&UIWeaponBack);
 	xml_init.InitStatic(uiXml, "static", 1, &UIWeaponBack);
+
 	UIWeaponBack.AttachChild(&UIWeaponSignAmmo);
-
 	xml_init.InitStatic(uiXml, "static", 2, &UIWeaponSignAmmo);
-	UIWeaponBack.AttachChild(&UIWeaponIcon);
+	UIWeaponSignAmmo.SetElipsis(CUIStatic::eepEnd, 2);
 
+	UIWeaponBack.AttachChild(&UIWeaponIcon);
 	xml_init.InitStatic(uiXml, "static", 3, &UIWeaponIcon);
 	UIWeaponIcon.SetShader(GetEquipmentIconsShader());
 	UIWeaponIcon.ClipperOn();
@@ -891,13 +892,13 @@ void CUIMainIngameWnd::RenderQuickInfos()
 	LPCSTR actor_action = m_pActor->GetDefaultActionForObject();
 	if (pObject && actor_action)
 	{
-		LPCSTR object_name = pObject->Name();
+//		LPCSTR object_name = pObject->Name();
 
 		if (fuzzyShowInfo>0.5f)
 		{
 			UIStaticQuickHelp.SetTextColor(subst_alpha(C,u8(iFloor(255.f*(fuzzyShowInfo-0.5f)*2.f))));
-			strconcat(text, object_name, ": ");
-			strconcat(text, text, m_pActor->GetDefaultActionForObject());
+//			strconcat(text, object_name, ": ");
+			strcpy(text, m_pActor->GetDefaultActionForObject());
 			UIStaticQuickHelp.SetText(text);
 		}
 		fuzzyShowInfo += SHOW_INFO_SPEED*Device.fTimeDelta;
