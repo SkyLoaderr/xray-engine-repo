@@ -230,6 +230,7 @@ void CWeaponM134::Update(float dt, BOOL bHUDView)
 			pSounds->Play3DAtPos(sndServo,		vLastFP,true);
 			break;
 		case eM134Brake:
+			Level().Cameras.AddEffector(0);
 			// sound fire loop
 			if (sndFireLoop.feedback) sndFireLoop.feedback->Stop();
 
@@ -249,6 +250,7 @@ void CWeaponM134::Update(float dt, BOOL bHUDView)
 				pSounds->Play3DAtPos(sndFireLoop,vLastFP,true);
 				if (sndServo.feedback) sndServo.feedback->Stop();
 			}
+			Level().Cameras.AddEffector(new CEffectorNoise(.1f,1000));
 			break;
 		}
 		st_current=st_target;
