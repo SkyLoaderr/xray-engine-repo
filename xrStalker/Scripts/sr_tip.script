@@ -24,7 +24,7 @@ function action_tip:update(delta)
 
 	if self.object:inside(actor:position()) then
 		printf("inside!!!")
-		print_table(self.st.conditions)	
+		--print_table(self.st.conditions)	
 		--printf("condlist %s", utils.to_str(xr_logic.pick_section_from_condlist(actor, nil, self.st.conditions.condlist)))
 		if self.st.conditions == nil or
 		   xr_logic.pick_section_from_condlist(actor, nil, self.st.conditions.condlist) ~= nil
