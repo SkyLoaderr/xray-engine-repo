@@ -95,7 +95,7 @@
 				PreprocessorDefinitions="WIN32,_DEBUG,_CONSOLE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="5"
-				UsePrecompiledHeader="2"
+				UsePrecompiledHeader="3"
 				PrecompiledHeaderFile=".\Debug/efc.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
