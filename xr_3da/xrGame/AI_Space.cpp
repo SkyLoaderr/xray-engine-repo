@@ -111,6 +111,13 @@ void CAI_Space::Load(LPCSTR name)
 	m_tpIndexes				= (SIndexNode *)xr_malloc(S2);
 	ZeroMemory				(m_tpIndexes,S2);
 	Msg						("* AI path-finding structures: %d K",(S1 + S2)/(1024));
+
+	float				fDistance;
+	SAIMapData			tData;
+	tData.tpAI_Space	= this;
+	tData.dwFinishNode	= 387;
+	m_tpGraphPath.vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,tData,195,tData.dwFinishNode,10000.f,fDistance,m_tpaNodes,false);
+	Msg("* [%7.2f][%d]",fDistance,m_tpaNodes.size());
 }
 
 void CAI_Space::Render()
@@ -137,6 +144,18 @@ void CAI_Space::Render()
 			F->SetSize	(0.05f/sqrtf(_abs(S.w)));
 			F->SetColor(0xffffffff);
 			F->Out(S.x,-S.y,"%d",i);
+		}
+		if (m_tpaNodes.size()) {
+			Fvector t1 = m_tpaGraph[m_tpaNodes[0]].tPoint;
+			t1.y += .6f;
+			Device.Primitive.dbg_DrawAABB(t1,.5f,.5f,.5f,D3DCOLOR_XRGB(0,0,255));
+			for (int i=1; i<(int)m_tpaNodes.size(); i++) {
+				Fvector t2 = m_tpaGraph[m_tpaNodes[i]].tPoint;
+				t2.y += .6f;
+				Device.Primitive.dbg_DrawAABB(t2,.5f,.5f,.5f,D3DCOLOR_XRGB(0,0,255));
+				Device.Primitive.dbg_DrawLINE(Fidentity,t1,t2,D3DCOLOR_XRGB(255,0,0));
+				t1 = t2;
+			}
 		}
 	}
 

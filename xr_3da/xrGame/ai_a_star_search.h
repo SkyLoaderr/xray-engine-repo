@@ -122,6 +122,11 @@ public:
 			// finding the node being estimated as the cheapest among the opened ones
 			tpBestNode = tpOpenedList->tpOpenedNext;
 			
+			if (tpBestNode->f >= fMaxValue) {
+				fValue = fMaxValue;
+				tpaNodes.clear();
+				return;
+			}
 			// remove that node from the opened list and put that node to the closed list
 			tpOpenedList->tpOpenedNext = tpBestNode->tpOpenedNext;
 			if (tpBestNode->tpOpenedNext)
@@ -155,6 +160,9 @@ public:
 			for (  ; tIterator != tEnd; tIterator++) {
 				// checking if that node is in the path of the BESTNODE ones
 				int iNodeIndex = tTemplateNode.get_value(tIterator);
+				if (iNodeIndex == 408) {
+					iNodeIndex = iNodeIndex;
+				}
 				// checking if that node the node of the moving object 
 				if ((bUseMarks) && (!tTemplateNode.bfCheckIfAccessible(iNodeIndex)))
 					continue;
@@ -179,6 +187,9 @@ public:
 					float dG = tpBestNode->g + tTemplateNode.ffEvaluate(iBestIndex,iNodeIndex);
 					
 					// check if this node is already in the opened list
+					if (tpTemp - tpHeap == 62) {
+						tpTemp = tpTemp;
+					}
 					if (tpTemp->ucOpenCloseMask) {
 						if (tpTemp->g > dG) {
 							tpTemp->g = dG;
