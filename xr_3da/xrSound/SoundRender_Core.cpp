@@ -10,9 +10,9 @@
 CSoundRender_Core				SoundRender;
 CSound_manager_interface*		Sound		= &SoundRender;
 
-int		psSoundRelaxTime		= 10;
+int		psSoundTargets			= 12;
 Flags32	psSoundFlags			= {ssWaveTrace | ssSoftware};
-float	psSoundOcclusionScale	= 0.85f;
+float	psSoundOcclusionScale	= 0.5f;
 float	psSoundCull				= 0.01f;
 float	psSoundRolloff			= 0.25f;
 float	psSoundDoppler			= 0.3f;
@@ -113,7 +113,7 @@ void CSoundRender_Core::_initialize	(u32 window)
 
 	// Pre-create targets
 	CSoundRender_Target*	T	= 0;
-	for (u32 tit=0; tit<4; tit++)
+	for (u32 tit=0; tit<psSoundTargets; tit++)
 	{
 		T							=	xr_new<CSoundRender_Target>();
 		T->_initialize				();	
