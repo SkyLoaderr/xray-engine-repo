@@ -306,7 +306,7 @@ void CHangingLamp::CreateBody(CSE_ALifeObjectHangingLamp	*lamp)
 	m_pPhysicsShell->build_FromKinematics(pKinematics,&bone_map);
 	m_pPhysicsShell->set_PhysicsRefObject(this);
 	m_pPhysicsShell->mXFORM.set(XFORM());
-	m_pPhysicsShell->Activate(true,true);//,
+	m_pPhysicsShell->Activate(true);//,
 	//m_pPhysicsShell->SmoothElementsInertia(0.3f);
 	m_pPhysicsShell->SetAirResistance();//0.0014f,1.5f
 

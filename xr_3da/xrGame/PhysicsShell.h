@@ -42,7 +42,7 @@ public:
 public:
 	virtual void			Activate				(const Fmatrix& m0, float dt01, const Fmatrix& m2,bool disable=false)						= 0;
 	virtual void			Activate				(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel,bool disable=false)	= 0;
-	virtual void			Activate				(bool  place_current_forms=false,bool disable=false)									    = 0;
+	virtual void			Activate				(bool disable=false)									    = 0;
 	virtual void			Activate				(const Fmatrix& form,bool disable=false)				= 0;
 	virtual void			InterpolateGlobalTransform(Fmatrix* m)											= 0;
 	virtual void			GetGlobalTransformDynamic(Fmatrix* m)											= 0;
@@ -273,7 +273,7 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	virtual CPhysicsElement*	NearestToPoint			(const Fvector& point)								= 0;
 	virtual void				build_FromKinematics	(CKinematics* K,BONE_P_MAP* p_geting_map=NULL)		= 0;
 	virtual void				preBuild_FromKinematics	(CKinematics* K,BONE_P_MAP* p_geting_map=NULL)		= 0;
-	virtual	void				Build					(bool place_current_forms=true,bool disable=false)	= 0;
+	virtual	void				Build					(bool disable=false)	= 0;
 	virtual	void				SetMaxAABBRadius		(float size)										 {};
 	virtual void				AddTracedGeom			(u16 element=0,u16 geom=0)							= 0;
 	virtual	void				RunSimulation			(bool place_current_forms=true)						= 0;

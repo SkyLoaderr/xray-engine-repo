@@ -7490,6 +7490,9 @@
 					RelativePath="Physics.h">
 				</File>
 				<File
+					RelativePath=".\physics_game.cpp">
+				</File>
+				<File
 					RelativePath=".\PhysicsCommon.h">
 				</File>
 				<File

@@ -45,7 +45,7 @@ CPhysicsShell*				P_build_Shell			(CGameObject* obj,bool not_active_state,BONE_P
 
 	pPhysicsShell->set_PhysicsRefObject(dynamic_cast<CPhysicsShellHolder*>(obj));
 	pPhysicsShell->mXFORM.set(obj->XFORM());
-	pPhysicsShell->Activate(true,not_active_state);//,
+	pPhysicsShell->Activate(not_active_state);//,
 	//m_pPhysicsShell->SmoothElementsInertia(0.3f);
 	pPhysicsShell->SetAirResistance();//0.0014f,1.5f
 

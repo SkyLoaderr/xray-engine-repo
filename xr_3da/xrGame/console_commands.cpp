@@ -20,6 +20,7 @@
 #include "script_process.h"
 #include "xrServer_Objects.h"
 #include "ui/UIMainIngameWnd.h"
+#include "PhysicsGamePars.h"
 
 #include "string_table.h"
 
@@ -978,13 +979,13 @@ void CCC_RegisterCommands()
 	CMD1(CCC_PostprocessTest,	"pp_test");
 
 	// Physics
-	CMD4(CCC_Integer,			"ph_fps",				&phFPS,			10,		100);
-	CMD1(CCC_PHIterations,		"ph_iterations");
-
-	CMD4( CCC_FloatBlock,		"ph_timefactor",		&phTimefactor,	0.0001f,1000.f);
-
-	CMD4( CCC_FloatBlock,		"ph_break_common_factor",		&phBreakCommonFactor,		0.f,1000000000.f);
-	CMD4( CCC_FloatBlock,		"ph_rigid_break_weapon_factor",	&phRigidBreakWeaponFactor,	0.f,1000000000.f);
+	CMD4(CCC_Integer,			"ph_fps",						&phFPS						,			10,		100				);
+	CMD1(CCC_PHIterations,		"ph_iterations"																					);
+	CMD4( CCC_FloatBlock,		"ph_timefactor",				&phTimefactor				,			0.0001f	,1000.f			);
+	CMD4( CCC_FloatBlock,		"ph_break_common_factor",		&phBreakCommonFactor		,			0.f		,1000000000.f	);
+	CMD4( CCC_FloatBlock,		"ph_rigid_break_weapon_factor",	&phRigidBreakWeaponFactor	,			0.f		,1000000000.f	);
+	CMD4(CCC_FloatBlock,		"snd_collide_max_volume",		&collide_volume_max			,			1.f		,5000.f			);
+	CMD4(CCC_FloatBlock,		"snd_collide_min_volume",		&collide_volume_min 		,			1.f		,5000.f			);
 	// Mad Max
 	// Net Interpolation
 	CMD4(CCC_Float,					"net_cl_interpolation",		&g_cl_lvInterp,				-1,1);

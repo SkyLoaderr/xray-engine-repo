@@ -252,52 +252,11 @@ CPHElement::~CPHElement	()
 
 }
 
-void CPHElement::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disable){
-	mXFORM.set(m0);
-	Start();
-	SetTransform(m0);
-	dBodySetLinearVel(m_body,m2.c.x-m0.c.x,m2.c.y-m0.c.y,m2.c.z-m0.c.z);
-
-	dVectorSet(m_safe_position,dBodyGetPosition(m_body));
-	dQuaternionSet(m_safe_quaternion,dBodyGetQuaternion(m_body));
-	dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
-
-	//////////////////////////////////////////////////////////////
-	//initializing values for disabling//////////////////////////
-	//////////////////////////////////////////////////////////////
-	/*
-	mean_w[0]=0.f;
-	mean_w[1]=0.f;
-	mean_w[2]=0.f;
-	mean_v[0]=0.f;
-	mean_v[1]=0.f;
-	mean_v[2]=0.f;
-	*/
-
-	m_body_interpolation.SetBody(m_body);
-	//previous_f[0]=dInfinity;
-	if(disable) dBodyDisable(m_body);
-	bActive=true;
-	bActivating=true;
-}
-
 void CPHElement::Activate(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel,bool disable){
 	mXFORM.set(transform);
 	Start();
 	SetTransform(transform);
-	//i=elements.begin();
-	//m_body=(*i)->get_body();
-	//m_inverse_local_transform.set((*i)->m_inverse_local_transform);
-	//Fmatrix33 m33;
-	//Fmatrix m,m1;
-	//m1.set(m0);
-	//m1.identity();
-	//m1.invert();
-	//m.mul(m1,m2);
-	//m.mul(1.f/dt01);
-	//m33.set(m);
-	//dMatrix3 R;
-	//PHDynamicData::FMX33toDMX(m33,R);
+
 	dBodySetLinearVel(m_body,lin_vel.x,lin_vel.y,lin_vel.z);
 
 	dBodySetAngularVel(m_body,ang_vel.x,ang_vel.y,ang_vel.z);
@@ -306,23 +265,39 @@ void CPHElement::Activate(const Fmatrix &transform,const Fvector& lin_vel,const 
 	dQuaternionSet(m_safe_quaternion,dBodyGetQuaternion(m_body));
 	dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
 
-
-	//////////////////////////////////////////////////////////////
-	//initializing values for disabling//////////////////////////
-	//////////////////////////////////////////////////////////////
-	/*
-	mean_w[0]=0.f;
-	mean_w[1]=0.f;
-	mean_w[2]=0.f;
-	mean_v[0]=0.f;
-	mean_v[1]=0.f;
-	mean_v[2]=0.f;
-	*/
 	m_body_interpolation.SetBody(m_body);
-	//previous_f[0]=dInfinity;
+
 	if(disable) dBodyDisable(m_body);
 	bActive=true;
 	bActivating=true;
+}
+void CPHElement::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disable){
+
+	Fvector lvel,avel;
+	lvel.set(m2.c.x-m0.c.x,m2.c.y-m0.c.y,m2.c.z-m0.c.z);
+	avel.set(0.f,0.f,0.f);
+	Activate(m0,lvel,avel,disable);
+}
+
+
+void CPHElement::Activate(bool disable){
+
+	Fvector lvel,avel;
+	lvel.set(0.f,0.f,0.f);
+	avel.set(0.f,0.f,0.f);
+	Activate(mXFORM,lvel,avel,disable);
+
+}
+
+void CPHElement::Activate(const Fmatrix& start_from,bool disable){
+	Fmatrix globe;
+	globe.mul(start_from,mXFORM);
+
+	Fvector lvel,avel;
+	lvel.set(0.f,0.f,0.f);
+	avel.set(0.f,0.f,0.f);
+	Activate(globe,lvel,avel,disable);
+
 }
 
 void CPHElement::Update(){
@@ -615,26 +590,6 @@ void CPHElement::InterpolateGlobalPosition(Fvector* v){
 
 
 
-void CPHElement::Activate(bool place_current_forms,bool disable){
-
-	Start();
-	if(place_current_forms)
-	{
-		SetTransform(mXFORM);
-	}
-	dVectorSet(m_safe_position,dBodyGetPosition(m_body));
-	dQuaternionSet(m_safe_quaternion,dBodyGetQuaternion(m_body));
-	dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
-
-	//////////////////////////////////////////////////////////////
-	//initializing values for disabling//////////////////////////
-	//////////////////////////////////////////////////////////////
-
-	m_body_interpolation.SetBody(m_body);
-	//previous_f[0]=dInfinity;
-	if(disable) dBodyDisable(m_body);
-
-}
 
 void CPHElement::build(bool disable){
 
@@ -672,33 +627,6 @@ void CPHElement::RunSimulation(const Fmatrix& start_from)
 
 }
 
-void CPHElement::Activate(const Fmatrix& start_from,bool disable){
-	if(bActive) return;
-	bActive=true;
-	bActivating=true;
-	Start();
-	//	if(place_current_forms)
-	{
-		Fmatrix globe;
-		globe.mul(start_from,mXFORM);
-		SetTransform(globe);
-	}
-	dVectorSet(m_safe_position,dBodyGetPosition(m_body));
-	dQuaternionSet(m_safe_quaternion,dBodyGetQuaternion(m_body));
-	dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
-
-
-
-	//////////////////////////////////////////////////////////////
-	//initializing values for disabling//////////////////////////
-	//////////////////////////////////////////////////////////////
-
-	m_body_interpolation.SetBody(m_body);
-	//previous_f[0]=dInfinity;
-	if(disable) dBodyDisable(m_body);
-
-
-}
 
 
 void CPHElement::StataticRootBonesCallBack(CBoneInstance* B)

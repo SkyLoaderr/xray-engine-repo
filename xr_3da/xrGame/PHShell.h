@@ -63,9 +63,9 @@ public:
 
 	virtual void			Activate				(const Fmatrix& m0, float dt01, const Fmatrix& m2,bool disable=false);
 	virtual void			Activate				(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel,bool disable=false);
-	virtual void			Activate				(bool place_current_forms=false,bool disable=false);
+	virtual void			Activate				(bool disable=false);
 	virtual void			Activate				(const Fmatrix& start_from, bool disable=false){};
-	virtual	void			Build					(bool place_current_forms=true,bool disable=false);
+	virtual	void			Build					(bool disable=false);
 	virtual	void			RunSimulation			(bool place_current_forms=true);
 	virtual	void			net_Import				(NET_Packet& P);
 	virtual	void			net_Export				(NET_Packet& P);
