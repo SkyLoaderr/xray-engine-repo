@@ -154,7 +154,8 @@ void CMotionManager::FrameUpdate()
 
 void CMotionManager::ScheduledInit()
 {
-	spec_params	= 0;
+	spec_params			= 0;
+	accel_deactivate	();
 }
 
 void CMotionManager::UpdateScheduled()

@@ -7,10 +7,11 @@
 class CMotionStats;
 class CAbstractVertexEvaluator;
 class CAI_Biting;
+class CCoverEvaluatorCloseToEnemy;
 
 class CMonsterMovement : virtual public CMovementManager {
 	typedef CMovementManager inherited;
-
+public:
 	CAI_Biting			*pMonster;
 	bool				b_try_min_time;
 	bool				b_enable_movement;
@@ -22,16 +23,12 @@ class CMonsterMovement : virtual public CMovementManager {
 	bool				b_targeted_path;		// предположительно путь ведЄт к целевой точке
 
 	u32					m_dwFrameReinit;
-
-public:
+	u32					m_dwFrameLoad;
 
 	SVelocity			m_velocity_linear;
 	float				m_velocity_angular;
 
-public:
-
-		CAbstractVertexEvaluator	*m_tSelectorApproach;
-		CMotionStats				*MotionStats;
+	CMotionStats		*MotionStats;
 
 	// -------------------------------------------------------------------
 		void	MoveToTarget			(const CEntity *entity); 
@@ -70,22 +67,22 @@ public:
 
 public:
 						CMonsterMovement	();
-						~CMonsterMovement	();
+	virtual				~CMonsterMovement	();
+			
 			void		InitExternal		(CAI_Biting	*pM);
-
 	virtual void		reinit				();
-		
+	virtual void		Load				(LPCSTR section);	
 
 				
-			void		Frame_Init			();
-			void		Frame_Update		();
-			void		Frame_Finalize		();
-		
+			void		Update_Initialize	();
+			void		Update_Execute		();
+			void		Update_Finalize		();
+
 
 			void		WalkNextGraphPoint	();
 
 			void		update_velocity		();
-private:
+//private:
 	
 		// проверка на завершение пути
 		bool		IsPathEnd				(u32 n_points);
@@ -94,5 +91,44 @@ private:
 		void		SetPathParams			(u32 dest_vertex_id, const Fvector &dest_pos);
 		void		SetSelectorPathParams	();
 
+
+//////////////////////////////////////////////////////////////////////////
+public:
+
+		struct {
+			Fvector		position;
+			u32			node;
+		} m_target, m_intermediate;
+
+		u32			m_time;					// врем€ перестроени€ пути
+		u32			m_last_time_target_set;
+		float		m_distance_to_path_end;
+		bool		m_path_end;
+		bool		m_failed;
+		
+		struct {
+			bool	use_covers;
+			float	min_dist;
+			float	max_dist;
+			float	deviation;
+			float	radius;
+		} m_cover_info;
+
+		void		set_target_point		(const Fvector &position, u32 node = u32(-1));
+	IC	void		set_rebuild_time		(u32 time);
+	IC	void		set_use_covers			(float min, float max, float dev, float radius);
+	IC	void		force_target_set		();
+	IC	bool		failed					();
+	IC	bool		path_end				();
+
+		CCoverEvaluatorCloseToEnemy			*m_cover_approach;
+		CAbstractVertexEvaluator			*m_selector_approach;
+
+		void		get_intermediate		(const Fvector &position);
+		bool		position_in_direction	(const Fvector &target, u32 &node);
+		void		set_parameters			();
+		void		update_target_point		();
 		
 };
+
+#include "ai_monster_movement_inline.h"

@@ -5,19 +5,38 @@
 #include "ai_monster_motion_stats.h"
 #include "../phmovementcontrol.h"
 #include "ai_monster_debug.h"
+#include "../cover_evaluators.h"
+
+//////////////////////////////////////////////////////////////////////////
+// Construction / Destruction
+//////////////////////////////////////////////////////////////////////////
 
 CMonsterMovement::CMonsterMovement()
 {
-	m_tSelectorApproach		= xr_new<CVertexEvaluator<aiSearchRange | aiEnemyDistance>  >();
+	m_selector_approach		= xr_new<CVertexEvaluator<aiSearchRange | aiEnemyDistance>  >();
+	m_cover_approach		= xr_new<CCoverEvaluatorCloseToEnemy>(this);
+	
 	pMonster				= 0;
 
 	m_dwFrameReinit			= u32(-1);
+	m_dwFrameLoad			= u32(-1);
 }
 
 CMonsterMovement::~CMonsterMovement()
 {
-	xr_delete(m_tSelectorApproach);
+	xr_delete(m_selector_approach);
 	xr_delete(MotionStats);
+	xr_delete(m_cover_approach);
+}
+
+void CMonsterMovement::Load(LPCSTR section)
+{
+	if (!frame_check(m_dwFrameLoad))
+		return;
+	
+	inherited::Load(section);
+
+	m_selector_approach->Load(section,"selector_approach");
 }
 
 void CMonsterMovement::reinit()
@@ -33,6 +52,13 @@ void CMonsterMovement::reinit()
 
 	m_velocity_linear.set			(0.f,0.f);
 	m_velocity_angular				= 0.f;
+
+	m_time							= 0;
+	m_last_time_target_set			= 0;
+	m_distance_to_path_end			= 1.f;
+	m_path_end						= false;
+	m_failed						= false;
+	m_cover_info.use_covers			= false;
 }
 
 void CMonsterMovement::InitExternal(CAI_Biting *pM)
@@ -44,44 +70,8 @@ void CMonsterMovement::InitExternal(CAI_Biting *pM)
 }
 
 //////////////////////////////////////////////////////////////////////////
-// Init Movement
-void CMonsterMovement::Frame_Init()
-{
-	CLevelLocationSelector::set_evaluator			(0);
-	CDetailPathManager::set_path_type				(eDetailPathTypeSmooth);
-	b_try_min_time									= true;
-	b_enable_movement								= true;
-	set_path_targeted								(false);
-	set_use_dest_orient								(false);
-}
+// Services
 
-
-//////////////////////////////////////////////////////////////////////////
-// Update Movement
-void CMonsterMovement::Frame_Update()
-{
-	CDetailPathManager::set_try_min_time			(b_try_min_time); 
-	CDetailPathManager::set_use_dest_orientation	(b_use_dest_orient);
-	
-	if (pMonster->m_PhysicMovementControl->JumpState()) 
-		enable_movement(false);
-	else 
-		enable_movement								(b_enable_movement);
-	
-	update_path								();
-}
-
-
-//////////////////////////////////////////////////////////////////////////
-// Finalize Movement
-void CMonsterMovement::Frame_Finalize()
-{
-	set_desirable_speed						(pMonster->m_fCurSpeed);
-}
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-// Функция InitSelector
 void CMonsterMovement::InitSelector(CAbstractVertexEvaluator &S, Fvector target_pos)
 {
 	S.m_dwCurTime		= pMonster->m_dwCurrentTime;
@@ -124,7 +114,7 @@ void CMonsterMovement::MoveToTarget(const Fvector &position)
 	if (IsPathEnd(2,1.5f)) new_params = true;
 
 	// перестраивать если вышел временной квант
-	if (m_tSelectorApproach->m_dwCurTime  + 2000 < pMonster->m_dwCurrentTime) new_params = true;
+	if (m_selector_approach->m_dwCurTime  + 2000 < pMonster->m_dwCurrentTime) new_params = true;
 
 	if (!new_params) return;
 
@@ -136,7 +126,7 @@ void CMonsterMovement::MoveToTarget(const Fvector &position)
 		SetPathParams (node_id, position);
 
 		// хранить в данном селекторе время последнего перестраивания пути
-		m_tSelectorApproach->m_dwCurTime = pMonster->m_dwCurrentTime;
+		m_selector_approach->m_dwCurTime = pMonster->m_dwCurrentTime;
 	} else {
 		bool use_selector = true;
 
@@ -146,15 +136,15 @@ void CMonsterMovement::MoveToTarget(const Fvector &position)
 				SetPathParams (vertex_id, position);
 
 				// хранить в данном селекторе время последнего перестраивания пути
-				m_tSelectorApproach->m_dwCurTime = pMonster->m_dwCurrentTime;
+				m_selector_approach->m_dwCurTime = pMonster->m_dwCurrentTime;
 
 				use_selector = false;
 			}
 		}
 
 		if (use_selector) {
-			CLevelLocationSelector::set_evaluator(m_tSelectorApproach);
-			InitSelector(*m_tSelectorApproach, position);
+			CLevelLocationSelector::set_evaluator(m_selector_approach);
+			InitSelector(*m_selector_approach, position);
 
 			CLevelLocationSelector::set_query_interval(0);	
 			SetSelectorPathParams ();

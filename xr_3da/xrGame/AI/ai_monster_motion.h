@@ -238,6 +238,10 @@ public:
 		void	DeactivateJump			();
 		bool	JumpActive				();
 
+	// Critical Action
+
+		bool	IsCriticalAction		();
+
 public:
 		
 		// информация о текущей анимации

@@ -659,4 +659,10 @@ bool CMotionManager::JumpActive()
 {
 	if (pJumping && pJumping->IsActive()) return true;
 	return false;
+
+}
+
+bool CMotionManager::IsCriticalAction()
+{
+	return (JumpActive() || Seq_Active() || TA_IsActive());
 }

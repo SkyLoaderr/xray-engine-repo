@@ -2015,6 +2015,12 @@
 								<File
 									RelativePath=".\ai\state_inline.h">
 								</File>
+								<File
+									RelativePath=".\ai\state_movement.h">
+								</File>
+								<File
+									RelativePath=".\ai\state_movement_inline.h">
+								</File>
 							</Filter>
 							<Filter
 								Name="Movement"
@@ -2029,6 +2035,15 @@
 										<Tool
 											Name="VCCustomBuildTool"/>
 									</FileConfiguration>
+								</File>
+								<File
+									RelativePath=".\ai\ai_monster_movement_inline.h">
+								</File>
+								<File
+									RelativePath=".\ai\ai_monster_movement_path.cpp">
+								</File>
+								<File
+									RelativePath=".\ai\ai_monster_movement_update.cpp">
 								</File>
 							</Filter>
 							<Filter
@@ -2271,9 +2286,6 @@
 							RelativePath="AI\Biting\ai_biting_feel.cpp">
 						</File>
 						<File
-							RelativePath="AI\Biting\ai_biting_fsm.cpp">
-						</File>
-						<File
 							RelativePath=".\ai\biting\ai_biting_inline.h">
 						</File>
 						<File
@@ -2290,6 +2302,9 @@
 						</File>
 						<File
 							RelativePath=".\ai\biting\ai_biting_startup.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\biting\ai_biting_think.cpp">
 						</File>
 						<Filter
 							Name="States"

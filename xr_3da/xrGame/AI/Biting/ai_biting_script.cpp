@@ -200,7 +200,7 @@ void CAI_Biting::ProcessScripts()
 	// Инициализировать action
 	MotionMan.m_tAction = ACT_STAND_IDLE;
 
-	CMonsterMovement::Frame_Init				();
+	CMonsterMovement::Update_Initialize			();
 	
 	// Выполнить скриптовые actions
 	b_script_state_must_execute					= false;
@@ -222,12 +222,12 @@ void CAI_Biting::ProcessScripts()
 	TranslateActionToPathParams					();
 
 	// обновить путь
-	CMonsterMovement::Frame_Update				();
+	CMonsterMovement::Update_Execute			();
 
 	MotionMan.Update							();
 	
 	// установить текущую скорость
-	CMonsterMovement::Frame_Finalize			();
+	CMonsterMovement::Update_Finalize			();
 
 	// Удалить все враги и объекты, которые были принудительно установлены
 	// во время выполнения скриптового действия
