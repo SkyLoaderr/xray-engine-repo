@@ -139,7 +139,7 @@ void CSE_ALifeEventRegistry::Save(IWriter &tMemoryStream)
 {
 	tMemoryStream.open_chunk	(EVENT_CHUNK_DATA);
 	tMemoryStream.w				(&m_tEventID,sizeof(m_tEventID));
-	//save_map					(m_tEventRegistry,tMemoryStream);
+	save_map					(m_tEventRegistry,tMemoryStream);
 	tMemoryStream.close_chunk	();
 }
 
@@ -147,7 +147,7 @@ void CSE_ALifeEventRegistry::Load(IReader	&tFileStream)
 {
 	R_ASSERT2					(tFileStream.find_chunk(EVENT_CHUNK_DATA),"Can't find chunk EVENT_CHUNK_DATA!");
 	tFileStream.r				(&m_tEventID,sizeof(m_tEventID));
-	//load_map					(m_tEventRegistry,tFileStream,tfChooseEventKeyPredicate);
+	load_map					(m_tEventRegistry,tFileStream,tfChooseEventKeyPredicate);
 }
 
 void CSE_ALifeEventRegistry::Add(CSE_ALifeEvent	*tpEvent)
@@ -173,7 +173,7 @@ void CSE_ALifeTaskRegistry::Save(IWriter &tMemoryStream)
 {
 	tMemoryStream.open_chunk	(TASK_CHUNK_DATA);
 	tMemoryStream.w				(&m_tTaskID,sizeof(m_tTaskID));
-	//save_map					(m_tTaskRegistry,tMemoryStream);
+	save_map					(m_tTaskRegistry,tMemoryStream);
 	tMemoryStream.close_chunk	();
 }
 
@@ -181,7 +181,7 @@ void CSE_ALifeTaskRegistry::Load(IReader	&tFileStream)
 {
 	R_ASSERT2					(tFileStream.find_chunk(TASK_CHUNK_DATA),"Can't find chunk TASK_CHUNK_DATA");
 	tFileStream.r				(&m_tTaskID,sizeof(m_tTaskID));
-	//		load_map					(m_tTaskRegistry,tFileStream,tfChooseTaskKeyPredicate);
+	load_map					(m_tTaskRegistry,tFileStream,tfChooseTaskKeyPredicate);
 }
 
 void CSE_ALifeTaskRegistry::Add	(CSE_ALifeTask	*tpTask)
@@ -510,11 +510,7 @@ void CSE_ALifeSpawnRegistry::Load(IReader	&tFileStream)
 	}
 	{
 		R_ASSERT2				(0!=(S = tFileStream.open_chunk(id++)),"Can't find artefact spawn points chunk in the 'game.spawn'");
-		m_tpArtefactSpawnPositions.resize(tFileStream.r_u32());
-		LEVEL_POINT_IT			I = m_tpArtefactSpawnPositions.begin();
-		LEVEL_POINT_IT			E = m_tpArtefactSpawnPositions.end();
-		for ( ; I != E; I++)
-			tFileStream.r		(&*I,sizeof(*I));
+		load_vector				(m_tpArtefactSpawnPositions,tFileStream);
 	}
 }
 
@@ -601,11 +597,7 @@ void CSE_ALifeOrganizationRegistry::Save(IWriter &tMemoryStream)
 	tMemoryStream.open_chunk	(DISCOVERY_CHUNK_DATA);
 	save_map					(m_tOrganizationRegistry,tMemoryStream);
 	save_map					(m_tDiscoveryRegistry,tMemoryStream);
-	tMemoryStream.w_u32			(m_tArtefactRegistry.size());
-	LPSTR_IT					I = m_tArtefactRegistry.begin();
-	LPSTR_IT					E = m_tArtefactRegistry.end();
-	for ( ; I != E; I++)
-		tMemoryStream.w_string	(*I);
+	save_vector					(m_tArtefactRegistry,tMemoryStream);
 	tMemoryStream.close_chunk	();
 }
 
@@ -614,11 +606,5 @@ void CSE_ALifeOrganizationRegistry::Load(IReader &tFileStream)
 	R_ASSERT2					(tFileStream.find_chunk(DISCOVERY_CHUNK_DATA),"Can't find chunk DISCOVERY_CHUNK_DATA!");
 	load_initialized_map		(m_tOrganizationRegistry,tFileStream);
 	load_initialized_map		(m_tDiscoveryRegistry,tFileStream);
-	m_tArtefactRegistry.resize	(tFileStream.r_u32());
-	LPSTR_IT					I = m_tArtefactRegistry.begin();
-	LPSTR_IT					E = m_tArtefactRegistry.end();
-	for ( ; I != E; I++) {
-		*I						= (LPSTR)xr_malloc(64*sizeof(char));
-		tFileStream.r_string	(*I);
-	}
+	load_vector					(m_tArtefactRegistry,tFileStream);
 }

@@ -9,9 +9,9 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#ifdef AI_COMPILER
+//#ifdef AI_COMPILER
 	#include "net_utils.h"
-#endif
+//#endif
 
 #include "xrServer_Objects_ALife_Monsters.h"
 #include "ai_alife_templates.h"

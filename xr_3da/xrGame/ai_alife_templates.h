@@ -16,6 +16,7 @@ void delete_vector(xr_vector<T *> &tpVector)
 	xr_vector<T *>::iterator	E = tpVector.end();
 	for ( ; I != E; I++)
 		xr_delete				(*I);
+	tpVector.clear				();
 };
 
 template <class T> 
@@ -25,6 +26,7 @@ void free_vector(xr_vector<T *> &tpVector)
 	xr_vector<T *>::iterator	E = tpVector.end();
 	for ( ; I != E; I++)
 		xr_free					(*I);
+	tpVector.clear				();
 };
 
 template <class T1, class T2, class T3>
@@ -34,6 +36,7 @@ void delete_map(xr_map<T1,T2 *,T3> &tpMap)
 	xr_map<T1,T2 *,T3>::iterator	E = tpMap.end();
 	for ( ; I != E; I++)
 		xr_delete				((*I).second);
+	tpMap.clear					();
 };
 
 template <class T, class M>
@@ -43,7 +46,7 @@ void save_vector(xr_vector<T *> &tpVector, M &tNetPacket)
 	xr_vector<T *>::iterator	I = tpVector.begin();
 	xr_vector<T *>::iterator	E = tpVector.end();
 	for ( ; I != E; I++)
-		(*I)->UPDATE_Write		(tNetPacket);
+		(*I)->Save				(tNetPacket);
 };
 
 template <class T, class M>
@@ -78,16 +81,34 @@ void save_vector(xr_vector<bool> &baVector, M &tNetPacket)
 	}
 };
 
+template <class M>
+void save_vector(xr_vector<LPSTR> &tpVector, M &tNetPacket)
+{
+	tNetPacket.w_u32			((u32)tpVector.size());
+	xr_vector<LPSTR>::iterator	I = tpVector.begin();
+	xr_vector<LPSTR>::iterator	E = tpVector.end();
+	for ( ; I != E; I++)
+		tNetPacket.w_string		(*I);
+};
+
+template <class T1, class T2, class T3, class M>
+void save_map(xr_map<T1,T2 *,T3> &tpMap, M &tNetPacket)
+{
+	tNetPacket.w_u32				(tpMap.size());
+	xr_map<T1,T2 *,T3>::iterator	I = tpMap.begin();
+	xr_map<T1,T2 *,T3>::iterator	E = tpMap.end();
+	for ( ; I != E; I++)
+		(*I).second->Save			(tNetPacket);
+};
+
 template <class T, class M>
 void load_vector(xr_vector<T *> &tpVector, M &tNetPacket)
 {
-	u32							dwDummy;
-	tNetPacket.r_u32			(dwDummy);
-	tpVector.resize				(dwDummy);
+	tpVector.resize				(tNetPacket.r_u32());
 	xr_vector<T *>::iterator	I = tpVector.begin();
 	xr_vector<T *>::iterator	E = tpVector.end();
 	for ( ; I != E; I++) {
-		*I = xr_new<T>			();
+		*I						= xr_new<T>();
 		(*I)->UPDATE_Read		(tNetPacket);
 	}
 };
@@ -95,9 +116,7 @@ void load_vector(xr_vector<T *> &tpVector, M &tNetPacket)
 template <class T, class M>
 void load_vector(xr_vector<T> &tpVector, M &tNetPacket)
 {
-	u32							dwDummy;
-	tNetPacket.r_u32			(dwDummy);
-	tpVector.resize				(dwDummy);
+	tpVector.resize				(tNetPacket.r_u32());
 	xr_vector<T>::iterator		I = tpVector.begin();
 	xr_vector<T>::iterator		E = tpVector.end();
 	for ( ; I != E; I++)
@@ -107,37 +126,34 @@ void load_vector(xr_vector<T> &tpVector, M &tNetPacket)
 template <class M>
 void load_vector(xr_vector<bool> &baVector, M &tNetPacket)
 {
-	u32							dwDummy;
-	tNetPacket.r_u32			(dwDummy);
-	baVector.resize				(dwDummy);
+	baVector.resize				(tNetPacket.r_u32());
 	xr_vector<bool>::iterator 	I = baVector.begin();
 	xr_vector<bool>::iterator 	E = baVector.end();
 	u32							dwMask = 0;
 	for (int j=32; I != E; I++, j++) {
 		if (j >= 32) {
-			tNetPacket.r_u32	(dwMask);
+			dwMask				= tNetPacket.r_u32();
 			j					= 0;
 		}
 		*I						= !!(dwMask & (u32(1) << j));
 	}
 };
 
-template <class T, class M>
-void save_object_vector(xr_vector<T *> &tpVector, M &tNetPacket)
+template <class M>
+void load_vector(xr_vector<LPSTR> &tpVector, M &tNetPacket)
 {
-	tNetPacket.w_u32			((u32)tpVector.size());
-	xr_vector<T *>::iterator	I = tpVector.begin();
-	xr_vector<T *>::iterator	E = tpVector.end();
+	tpVector.resize				(tNetPacket.r_u32());
+	string4096					S;
+	xr_vector<LPSTR>::iterator	I = tpVector.begin();
+	xr_vector<LPSTR>::iterator	E = tpVector.end();
 	for ( ; I != E; I++)
-		(*I)->Save				(tNetPacket);
+		*I						= xr_strdup(S);
 };
 
 template <class T, class M>
-void load_object_vector(xr_vector<T *> &tpVector, M &tNetPacket)
+void load_vector(xr_vector<T *> &tpVector, M &tNetPacket)
 {
-	u32							dwDummy;
-	dwDummy						= tNetPacket.r_u32();
-	tpVector.resize				(dwDummy);
+	tpVector.resize				(tNetPacket.r_u32());
 	xr_vector<T *>::iterator	I = tpVector.begin();
 	xr_vector<T *>::iterator	E = tpVector.end();
 	for ( ; I != E; I++) {
@@ -154,16 +170,6 @@ void load_object_initialized_vector(xr_vector<T *> &tpVector, M &tNetPacket)
 	xr_vector<T *>::iterator	E = tpVector.end();
 	for ( ; I != E; I++)
 		(*I)->Load				(tNetPacket);
-};
-
-template <class T1, class T2, class T3, class M>
-void save_map(xr_map<T1,T2 *,T3> &tpMap, M &tNetPacket)
-{
-	tNetPacket.w_u32				(tpMap.size());
-	xr_map<T1,T2 *,T3>::iterator	I = tpMap.begin();
-	xr_map<T1,T2 *,T3>::iterator	E = tpMap.end();
-	for ( ; I != E; I++)
-		(*I).second->Save			(tNetPacket);
 };
 
 template <class T1, class T2, class T3, class M>
