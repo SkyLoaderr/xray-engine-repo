@@ -47,20 +47,17 @@ p2f 	p_main	( v2p_in IN )
   // Sample the fat framebuffer:
   float4 _P		= tex2D 	(s_position, float2(IN.Tex0.x, IN.Tex0.y)); 
   float4 _N		= tex2D 	(s_normal,   float2(IN.Tex0.x, IN.Tex0.y)); 
-  float3 P		= float3	(_P.x,_P.y,_P.z);
+
+  // Normal, vector2eye, vector2light
   float3 N		= float3	(_N.x,_N.y,_N.z);
-
-  // Vector to the eye:
-  float3 V 		= -normalize(P);
-
-  // Vector to the light:
+  float3 V 		= -normalize(float3(_P.x,_P.y,_P.z));
   float3 L 		= -float3	(light_direction.x,light_direction.y,light_direction.z);
 
   // Diffuse = (L • N)
-  float l_D		= saturate	(dot(L, N));
+  float	l_D 	= saturate	(dot	(L, N));
 
   // Specular = (H • N)^m
-  float l_S 	= tex1D		(s_power,	saturate(dot(normalize(L + V), N))); //pow		(saturate(dot(H, N)), 32);
+  float l_S 	= tex1D		(s_power,	saturate(dot(normalize(L + V), N)));
   
   // Final color
   OUT.C 		= light_color *		float4(l_D,l_D,l_D,l_S);
