@@ -68,9 +68,10 @@ float CCar::SWheelDrive::ASpeed()
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CCar::SWheelSteer::Init()
 {
+	CKinematics* pKinematics=PKinematics(pwheel->car->Visual());
 	pwheel->Init();
 	(bone_map.find(pwheel->bone_id))->second.joint->GetLimits(lo_limit,hi_limit,0);
-	CBoneData& bone_data= PKinematics(pwheel->car->Visual())->LL_GetData(pwheel->bone_id);
+	CBoneData& bone_data= pKinematics->LL_GetData(pwheel->bone_id);
 	switch(bone_data.IK_data.type)
 	{
 	case jtWheelXZ:	
@@ -87,9 +88,10 @@ void CCar::SWheelSteer::Init()
 		break;
 	default: NODEFAULT;
 	}
-
+	
 	pos_right=pos_right>0.f ? -1.f : 1.f;
-	dJointSetHinge2Param(pwheel->joint, dParamFMax, 1000.f);
+
+	dJointSetHinge2Param(pwheel->joint, dParamFMax, pKinematics->LL_UserData()->r_float("car_definition","steering_torque"));
 	dJointSetHinge2Param(pwheel->joint, dParamVel, 0.f);
 	limited=false;
 }

@@ -138,7 +138,7 @@ void	CCar::UpdateCL				( )
 	inherited::UpdateCL();
 
 
-#ifdef DEBUG
+//#ifdef DEBUG
 	if(m_pPhysicsShell&&m_owner)
 	{
 		Fvector v;
@@ -157,7 +157,7 @@ void	CCar::UpdateCL				( )
 		//HUD().pFontSmall->OutNext("Vel Magnitude: [%3.2f]",ph_Movement.GetVelocityMagnitude());
 		//HUD().pFontSmall->OutNext("Vel Actual:    [%3.2f]",ph_Movement.GetVelocityActual());
 	}
-#endif
+//#endif
 	//	Log("UpdateCL",Device.dwFrame);
 	//XFORM().set(m_pPhysicsShell->mXFORM);
 	m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
@@ -390,11 +390,11 @@ void CCar::Init()
 	//get reference wheel radius
 	CKinematics* pKinematics=PKinematics(Visual());
 	CInifile* ini = pKinematics->LL_UserData();
-	SWheel& ref_wheel=m_wheels_map.find(pKinematics->LL_BoneID(ini->r_string("car_definition","reference_wheel")))->second;
+	///SWheel& ref_wheel=m_wheels_map.find(pKinematics->LL_BoneID(ini->r_string("car_definition","reference_wheel")))->second;
 	if(ini->line_exist("car_definition","steer"))
 		pKinematics->LL_GetInstance(pKinematics->LL_BoneID(ini->r_string("car_definition","steer"))).set_callback(cb_Steer,this);
-	ref_wheel.Init();
-	m_ref_radius=ref_wheel.radius;
+	//ref_wheel.Init();
+	m_ref_radius=ini->r_float("car_definition","reference_radius");//ref_wheel.radius;
 
 	b_engine_on=false;
 	b_clutch   =false;
@@ -519,6 +519,7 @@ b_engine_on=false;
 void CCar::Stall()
 {
 	m_car_sound->Stall();
+	StopExhausts();
 	NeutralDrive();//set zero speed
 	UpdatePower();//set engine friction;
 	b_engine_on=false;
