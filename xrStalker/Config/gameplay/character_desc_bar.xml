@@ -225,7 +225,7 @@
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Один из основателей Долга и по совместительству главный идеолог. Это он разработал свод правил и завербовал практически всех нынешних членов Долга.</bio>
 
-		<class>stalker_bar_dolg</class>
+		<class>stalker_bar_petrenko</class>
 		<community>dolg</community>
 		
 		<rank>50</rank>

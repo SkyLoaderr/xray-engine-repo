@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding="UTF-8"?>
+﻿<?xml version='1.0' encoding="UTF-8"?>
 
 <xml>
 	<character id="default">
@@ -271,6 +271,11 @@
 	<character id="bar_barman_guard">
 		<class>stalker_bar_guard</class>
 	</character>
+	<character id="bar_dolg_petrenko">
+		<class>stalker_bar_petrenko</class>
+	</character>
+
+
 	
 	
 </xml>
