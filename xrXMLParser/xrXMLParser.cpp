@@ -206,14 +206,16 @@ LPCSTR CUIXml::ReadAttrib(XML_NODE* node, LPCSTR attrib, LPCSTR   default_str_va
 	else
 	{
 		CkString str;
-		LPCSTR result_str;
+		//обязательно делаем ref_str, а то 
+		//не сможем запомнить строку и return вернет левый указатель
+		ref_str result_str;
 
 		bool result = node->GetAttrValue(attrib, str); 
 		
 		if(result)
 		{
 			result_str = str.getString();
-			return result_str;
+			return *result_str;
 		}
 		else
 		{
