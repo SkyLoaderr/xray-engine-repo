@@ -21,9 +21,9 @@ public:
 	virtual ~CUIListItemEx(void);
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void* pData);
 	virtual void Draw();
-	        void SetPerformTextLimit(bool bPerform);
+//	        void SetPerformTextLimit(bool bPerform);
 
 protected:
-	bool m_bPerformTextLimit;
+//	bool m_bPerformTextLimit;
 
 };
