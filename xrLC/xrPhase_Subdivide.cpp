@@ -76,6 +76,8 @@ void CBuild::xrPhase_Subdivide()
 		{
 			// splitting failed
 		} else {
+			// Split deflector into TWO
+
 			// Delete old and push two new
 			g_XSplit[X].clear	();
 			g_XSplit.erase		(g_XSplit.begin()+X); X--;

@@ -118,7 +118,7 @@ VOID CDeflector::OA_Export()
 	dwHeight	= iCeil(size.v*g_params.m_lm_pixels_per_meter*density+.5f); // clamp(dwHeight,1ul,512ul-2*BORDER);
 }
 
-BOOL CDeflector::OA_Place(Face *owner)
+BOOL CDeflector::OA_Place	(Face *owner)
 {
 	float cosa = N.dotproduct(owner->N);
 	if (cosa<cosf(deg2rad(g_params.m_lm_split_angle))) return FALSE;
@@ -129,8 +129,19 @@ BOOL CDeflector::OA_Place(Face *owner)
 	owner->pDeflector = this;
 	return TRUE;
 }
-
-VOID CDeflector::GetRect(UVpoint &min, UVpoint &max)
+void CDeflector::OA_Place	(vecFace& lst)
+{
+	tris.clear	();
+	for (DWORD I=0; I<lst.size(); I++)
+	{
+		UVtri T;
+		Face* F			= lst[I];
+		T.owner			= F;
+		tris.push_back	(T);
+		F->pDeflector	= this;
+	}
+}
+VOID CDeflector::GetRect	(UVpoint &min, UVpoint &max)
 {
 	// Calculate bounds
 	vector<UVtri>::iterator it=tris.begin();

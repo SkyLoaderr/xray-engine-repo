@@ -70,8 +70,9 @@ public:
 
 	void	OA_SetNormal		(Fvector &_N )	{ N.set(_N); N.normalize(); }
 	BOOL	OA_Place			(Face *owner);
+	void	OA_Place			(vecFace& lst);
 	void	OA_Export			();
-
+		
 	void	GetRect				(UVpoint &min, UVpoint &max);
 	Layer*	GetLayer			(b_light* base);
 	DWORD	GetFaceCount()		{ return tris.size();	};
