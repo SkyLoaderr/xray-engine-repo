@@ -508,8 +508,9 @@ void	game_sv_Deathmatch::assign_RP				(CSE_Abstract* E)
 		game_PlayerState*	ps	=	get_it	(it);
 		if (ps->flags & GAME_PLAYER_FLAG_VERY_VERY_DEAD) continue;
 		if (ps->team == pA->s_team && !teams.empty()) pFriends.push_back(it);
-		else pEnemies.push_back(it);
+//		else pEnemies.push_back(it);
 	};
+	
 
 	if (pEnemies.empty()) 
 	{
