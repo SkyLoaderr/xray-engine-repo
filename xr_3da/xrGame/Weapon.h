@@ -63,6 +63,9 @@ protected:
 	float					fTimeToFire;
 	int						iHitPower;
 	float					fHitImpulse;
+	//скорость вылета пули из ствола
+	float					m_fStartBulletSpeed;
+
 
 	Fvector					vLastFP, vLastFP2;
 	Fvector					vLastFD;

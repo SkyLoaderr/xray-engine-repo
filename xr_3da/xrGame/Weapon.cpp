@@ -41,6 +41,8 @@ CWeapon::CWeapon(LPCSTR name)
 {
 	fTimeToFire			= 0;
 	iHitPower			= 0;
+	m_fStartBulletSpeed = 1000.f;
+
 	STATE				= NEXT_STATE		= eHidden;
 
 	SetDefaults			();
@@ -304,6 +306,8 @@ void CWeapon::Load		(LPCSTR section)
 	iHitPower			= pSettings->r_s32		(section,"hit_power"		);
 	fHitImpulse			= pSettings->r_float	(section,"hit_impulse"		);
 	fireDistance		= pSettings->r_float	(section,"fire_distance"	);
+
+	m_fStartBulletSpeed = pSettings->r_float	(section,"bullet_speed"		);
 
 	fireDispersionBase	= pSettings->r_float		(section,"fire_dispersion_base"	);	
 	fireDispersionBase	= deg2rad(fireDispersionBase);

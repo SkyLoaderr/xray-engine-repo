@@ -1171,7 +1171,7 @@ void CActor::UpdateCL()
 	else
 	{
 		//update the fog of war
-		Level().m_pFogOfWar->UpdateFog(Position(), CFogOfWar::ACTOR_FOG_REMOVE_RADIUS);
+		Level().FogOfWar().UpdateFog(Position(), CFogOfWar::ACTOR_FOG_REMOVE_RADIUS);
 	};
 
 	if (g_Alive()) 

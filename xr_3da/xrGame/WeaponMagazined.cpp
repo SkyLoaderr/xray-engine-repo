@@ -51,7 +51,7 @@ void CWeaponMagazined::net_Destroy()
 void CWeaponMagazined::Load	(LPCSTR section)
 {
 	inherited::Load		(section);
-
+		
 	// Sounds
 	LoadSound(section,"snd_draw"	, sndShow		, TRUE, m_eSoundShow		);
 	LoadSound(section,"snd_holster"	, sndHide		, TRUE, m_eSoundHide		);

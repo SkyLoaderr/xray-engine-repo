@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 #include "LevelFogOfWar.h"
+#include "Level_Bullet_Manager.h"
 
 BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 {
@@ -65,9 +66,10 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 	};
 
 	//init the fog of war for the current level
-	m_pFogOfWar->Init();
-
+	FogOfWar().Init();
 	
+	//init bullet manager
+	BulletManager().Clear		();
 
 	pApp->LoadEnd				();
 

@@ -13,6 +13,8 @@
 #include "actoreffector.h"
 #include "effectorshot.h"
 
+#include "level_bullet_manager.h"
+
 #define FLAME_TIME 0.05f
 
 
@@ -67,6 +69,23 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 		m_fCurrentFireDist = fireDistance;
 		m_iCurrentParentID = H_Parent()->ID();
 
+		/*
+		*	const Fvector& position,
+		const Fvector& dir,
+		float speed
+		float power,
+		float impulse,
+		u16	sender_id,
+		ALife::EHitType e_hit_type,
+		const CCartridge& cartridge
+		 */
+		Level().BulletManager().AddBullet(xr_new<SBullet>(P, D , m_fStartBulletSpeed,
+													float(iHitPower),
+													fHitImpulse,
+													H_Parent()->ID(),
+													ALife::eHitTypeFireWound,
+													l_cartridge));
+		/*
 		// ...and trace line
 		m_vEndPoint.mad(m_vCurrentShootPos,	m_vCurrentShootDir,fireDistance*l_cartridge.m_kDist);
 
@@ -81,7 +100,7 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 			tracerFrame = Device.dwFrame;
 			Level().Tracers.Add	(Peff,m_vEndPoint,tracerHeadSpeed,
 								 tracerTrailCoeff,tracerStartLength,tracerWidth);
-		}
+		}*/
 	}
 
 	// light

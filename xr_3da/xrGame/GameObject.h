@@ -47,8 +47,8 @@ public:
 		return m_pPhysicsShell;
 	}
 	// Utilities
-	void					u_EventGen			(NET_Packet& P, u32 type, u32 dest	);
-	void					u_EventSend			(NET_Packet& P, BOOL sync=TRUE		);
+	static void				u_EventGen			(NET_Packet& P, u32 type, u32 dest	);
+	static void				u_EventSend			(NET_Packet& P, BOOL sync=TRUE		);
 	
 	// Methods
 	virtual void			Load				(LPCSTR section);

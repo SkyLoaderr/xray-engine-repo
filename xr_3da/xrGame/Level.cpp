@@ -21,8 +21,9 @@
 
 #include "ShootingObject.h"
 
-//fog over the map
 #include "LevelFogOfWar.h"
+#include "Level_Bullet_Manager.h"
+
 #include "ai_script_processor.h"
 
 CPHWorld*	ph_world = 0;
@@ -54,6 +55,14 @@ CLevel::CLevel()
 	m_pFogOfWar					= NULL;
 	m_pFogOfWar					= xr_new<CFogOfWar>();
 
+	m_pBulletManager			= xr_new<CBulletManager>();
+
+	//----------------------------------------------------
+	//получить материал пули
+	CShootingObject::bullet_material_idx  = GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);
+	BulletManager().bullet_material_idx   = GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);;
+
+
 	m_tpScriptProcessor			= 0;
 //----------------------------------------------------
 	m_bNeed_CrPr					= false;
@@ -62,10 +71,7 @@ CLevel::CLevel()
 	m_dwLastNetUpdateTime		= 0;
 
 	physics_step_time_callback	= (PhysicsStepTimeCallback*) &PhisStepsCallback;
-//----------------------------------------------------
-	//получить материал пули
 
-	CShootingObject::bullet_material_idx  = GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);
 
 #ifdef DEBUG
 	m_bSynchronization			= false;
@@ -104,6 +110,10 @@ CLevel::~CLevel()
 	//by Dandy
 	//destroy fog of war
 	xr_delete			(m_pFogOfWar);
+	//destroy bullet manager
+	xr_delete			(m_pBulletManager);
+
+
 	{
 		SPathPairIt			I = m_PatrolPaths.begin();
 		SPathPairIt			E = m_PatrolPaths.end();
@@ -247,6 +257,9 @@ void CLevel::OnFrame	()
 
 	if (m_tpScriptProcessor)
 		m_tpScriptProcessor->Update();
+
+	//просчитать полет пуль 
+	BulletManager().Update();
 }
 
 void CLevel::OnRender()

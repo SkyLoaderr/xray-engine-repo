@@ -58,6 +58,8 @@ public:
 //for the fog over the map
 class CFogOfWar;
 class CScriptProcessor;
+//менеджер полета пуль
+class CBulletManager;
 
 class CLevel					: public IGame_Level, public IPureClient
 {
@@ -264,7 +266,12 @@ public:
 		return			(float(s64(GetGameTime() % (24*60*60*1000)))/1000.f);
 	}
 
-	CFogOfWar* m_pFogOfWar;
+	CFogOfWar*			m_pFogOfWar;
+	IC CFogOfWar&		FogOfWar() {return	*m_pFogOfWar;}
+
+	CBulletManager*		m_pBulletManager;
+	IC CBulletManager&	BulletManager() {return	*m_pBulletManager;}
+
 
 	// by Jim
 	// gets current daytime [0..23]
