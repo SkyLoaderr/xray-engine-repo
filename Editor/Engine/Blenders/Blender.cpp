@@ -27,24 +27,24 @@ CBlender::~CBlender()
 
 void	CBlender::Save(	CFS_Base& FS )
 {
-	FS.write	(&description,sizeof(description));
-	xrPWRITE_MARKER ("General");
-	xrPWRITE_PROP	("Priority",		xrPID_INTEGER,	oPriority);
-	xrPWRITE_PROP	("Strict sorting",	xrPID_BOOL,		oStrictSorting);
-	xrPWRITE_MARKER	("Base Texture");
-	xrPWRITE_PROP	("Name",			xrPID_TEXTURE,	oT_Name);
-	xrPWRITE_PROP	("Transform",		xrPID_MATRIX,	oT_xform);
+	FS.write		(&description,sizeof(description));
+	xrPWRITE_MARKER (FS,"General");
+	xrPWRITE_PROP	(FS,"Priority",			xrPID_INTEGER,	oPriority);
+	xrPWRITE_PROP	(FS,"Strict sorting",	xrPID_BOOL,		oStrictSorting);
+	xrPWRITE_MARKER	(FS,"Base Texture");
+	xrPWRITE_PROP	(FS,"Name",				xrPID_TEXTURE,	oT_Name);
+	xrPWRITE_PROP	(FS,"Transform",		xrPID_MATRIX,	oT_xform);
 }
 
 void	CBlender::Load(	CStream& FS )
 {
-	FS.Read		(&description,sizeof(description));
-	xrPREAD_MARKER	();
-	xrPREAD_PROP		(xrPID_INTEGER,	oPriority);
-	xrPREAD_PROP		(xrPID_BOOL,	oStrictSorting);
-	xrPREAD_MARKER	();
-	xrPREAD_PROP		(xrPID_TEXTURE,	oT_Name);
-	xrPREAD_PROP		(xrPID_MATRIX,	oT_xform);
+	FS.Read			(&description,sizeof(description));
+	xrPREAD_MARKER	(FS);
+	xrPREAD_PROP	(FS,xrPID_INTEGER,	oPriority);
+	xrPREAD_PROP	(FS,xrPID_BOOL,		oStrictSorting);
+	xrPREAD_MARKER	(FS);
+	xrPREAD_PROP	(FS,xrPID_TEXTURE,	oT_Name);
+	xrPREAD_PROP	(FS,xrPID_MATRIX,	oT_xform);
 }
 //////////////////////////////////////////////////////////////////////
 #include "blender_clsid.h"

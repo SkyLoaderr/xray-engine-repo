@@ -26,14 +26,14 @@ CBlender_Vertex_aref::~CBlender_Vertex_aref()
 
 void	CBlender_Vertex_aref::Save(	CFS_Base& FS )
 {
-	CBlender::Save	(FS);
-	xrPWRITE_PROP		("Alpha ref",	xrPID_INTEGER,	oAREF);
+	CBlender::Save		(FS);
+	xrPWRITE_PROP		(FS,"Alpha ref",	xrPID_INTEGER,	oAREF);
 }
 
 void	CBlender_Vertex_aref::Load(	CStream& FS )
 {
-	CBlender::Load	(FS);
-	xrPREAD_PROP			(xrPID_INTEGER,		oAREF);
+	CBlender::Load		(FS);
+	xrPREAD_PROP		(FS,xrPID_INTEGER,	oAREF);
 }
 
 void	CBlender_Vertex_aref::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param, BOOL bEditor)
