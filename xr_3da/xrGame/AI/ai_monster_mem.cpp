@@ -208,7 +208,7 @@ void CVisionMemory::Init(TTime mem_time)
 	timeMemoryDefault	= timeMemory = mem_time;
 	timeLastUpdateIgnoreObjects = 0;
 
-	timeCurrent			= Level().timeServer();
+	timeCurrent			= 0;
 
 	Selected.obj		= 0;
 
@@ -424,7 +424,7 @@ void CVisionMemory::AddIgnoreObject(CEntity *pObj)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CMonsterMemory::UpdateMemory()
 {
-	TTime curtime = Level().timeServer();
+	TTime curtime = 0;
 
 	UpdateVision(curtime);
 	UpdateHearing(curtime);

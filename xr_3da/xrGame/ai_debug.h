@@ -18,3 +18,4 @@ extern	Flags32		psAI_Flags;
 #define aiALife		(1<<5)
 #define aiLua		(1<<6)
 #define aiGOAP		(1<<7)
+#define aiCover		(1<<8)

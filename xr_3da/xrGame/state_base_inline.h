@@ -31,8 +31,8 @@ void CStateBaseAbstract::init			(LPCSTR state_name)
 	m_object			= 0;
 #ifdef LOG_STATE
 	m_state_name		= state_name;
-	if (xr_strlen(m_state_name))
-		debug_log		(eStateStateConstructed);
+//	if (xr_strlen(m_state_name))
+//		debug_log		(eStateStateConstructed);
 #endif
 }
 
@@ -40,8 +40,8 @@ TEMPLATE_SPECIALIZATION
 void CStateBaseAbstract::Load			(LPCSTR section)
 {
 #ifdef LOG_STATE
-	if (xr_strlen(m_state_name))
-		debug_log		(eStateStateLoaded);
+//	if (xr_strlen(m_state_name))
+//		debug_log		(eStateStateLoaded);
 #endif
 }
 

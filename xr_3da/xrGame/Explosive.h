@@ -25,8 +25,8 @@ public:
 
 	virtual void Load(LPCSTR section);
 	
-	virtual BOOL net_Spawn(LPVOID DC) = 0;
-	virtual void net_Destroy();
+	virtual BOOL net_Spawn			(LPVOID DC);
+	virtual void net_Destroy		();
 	virtual void net_Export			(NET_Packet& P) = 0;	// export to server
 	virtual void net_Import			(NET_Packet& P) = 0;	// import from server
 
@@ -44,7 +44,7 @@ public:
 						 Fvector position_in_object_space, float impulse, 
 						 ALife::EHitType hit_type = ALife::eHitTypeWound)	{inherited::Hit(P, dir, who, element, position_in_object_space,impulse,hit_type);}
 	
-	virtual void renderable_Render() = 0;
+	virtual void renderable_Render	();
 
 
 

@@ -48,25 +48,26 @@ CExplosive::~CExplosive(void)
 
 void CExplosive::Load(LPCSTR section) 
 {
-	m_fBlastHit = pSettings->r_float(section,"blast");
-	m_fBlastRadius = pSettings->r_float(section,"blast_r");
-	m_iFragsNum = pSettings->r_s32(section,"frags");
-	m_fFragsRadius = pSettings->r_float(section,"frags_r");
-	m_fFragHit = pSettings->r_float(section,"frag_hit");
+	inherited::Load		(section);
+	m_fBlastHit			= pSettings->r_float(section,"blast");
+	m_fBlastRadius		= pSettings->r_float(section,"blast_r");
+	m_iFragsNum			= pSettings->r_s32(section,"frags");
+	m_fFragsRadius		= pSettings->r_float(section,"frags_r");
+	m_fFragHit			= pSettings->r_float(section,"frag_hit");
 
-	m_eHitTypeBlast	= ALife::g_tfString2HitType(pSettings->r_string(section, "hit_type_blast"));
-	m_eHitTypeFrag	= ALife::g_tfString2HitType(pSettings->r_string(section, "hit_type_frag"));
+	m_eHitTypeBlast		= ALife::g_tfString2HitType(pSettings->r_string(section, "hit_type_blast"));
+	m_eHitTypeFrag		= ALife::g_tfString2HitType(pSettings->r_string(section, "hit_type_frag"));
 
-	m_fUpThrowFactor = pSettings->r_float(section,"up_throw_factor");
+	m_fUpThrowFactor	= pSettings->r_float(section,"up_throw_factor");
 	m_fBlastImpulseFactor = pSettings->r_float(section,"blast_impulse_factor");
 
-	fWallmarkSize = pSettings->r_float(section,"wm_size");
-	R_ASSERT(fWallmarkSize>0);
+	fWallmarkSize		= pSettings->r_float(section,"wm_size");
+	R_ASSERT			(fWallmarkSize>0);
 
 	m_sExplodeParticles = pSettings->r_string(section,"explode_particles");
 
-	sscanf(pSettings->r_string(section,"light_color"), "%f,%f,%f", &m_LightColor.r, &m_LightColor.g, &m_LightColor.b);
-	m_fLightRange	= pSettings->r_float(section,"light_range");
+	sscanf				(pSettings->r_string(section,"light_color"), "%f,%f,%f", &m_LightColor.r, &m_LightColor.g, &m_LightColor.b);
+	m_fLightRange		= pSettings->r_float(section,"light_range");
 	m_dwLightTime		= iFloor(pSettings->r_float(section,"light_time")*1000.f);
 
 	//трассы для разлета осколков
@@ -77,21 +78,24 @@ void CExplosive::Load(LPCSTR section)
 	tracerDist			= pSettings->r_float		(section,"tracer_distance"		);
 
 
-	ref_str snd_name = pSettings->r_string(section,"snd_explode");
-	sndExplode.create(TRUE,*snd_name, m_eSoundExplode);
-
+	ref_str				snd_name = pSettings->r_string(section,"snd_explode");
+	sndExplode.create	(TRUE,*snd_name, m_eSoundExplode);
 
 	m_dwExplodeDurationMax= EXPLODE_TIME_MAX;
-
 
 	effector.time			= pSettings->r_float("explode_effector","time");
 	effector.amplitude		= pSettings->r_float("explode_effector","amplitude");
 	effector.period_number	= pSettings->r_float("explode_effector","period_number");
 }
 
-
-void CExplosive::net_Destroy()
+BOOL CExplosive::net_Spawn		(LPVOID DC)
 {
+	return				(inherited::net_Spawn(DC));
+}
+
+void CExplosive::net_Destroy	()
+{
+	inherited::net_Destroy();
 	m_pLight->set_active(false);
 }
 
@@ -345,14 +349,14 @@ void CExplosive::reinit				()
 	inherited::reinit			();
 }
 
-void CExplosive::reload				(LPCSTR section)
+void CExplosive::reload					(LPCSTR section)
 {
-	inherited::reload			(section);
+	inherited::reload				(section);
 }
 
 void CExplosive::create_physic_shell	()
 {
-	inherited::create_physic_shell();
+	inherited::create_physic_shell	();
 }
 
 void CExplosive::activate_physic_shell	()
@@ -362,5 +366,10 @@ void CExplosive::activate_physic_shell	()
 
 void CExplosive::setup_physic_shell		()
 {
-	inherited::setup_physic_shell();
+	inherited::setup_physic_shell	();
+}
+
+void CExplosive::renderable_Render		()
+{
+	inherited::renderable_Render	();
 }

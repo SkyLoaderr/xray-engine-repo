@@ -39,8 +39,8 @@ void CBaseAction::init			(_object_type *object, LPCSTR action_name)
 #ifdef LOG_ACTION
 	m_use_log			= false;
 	m_action_name		= action_name;
-	if (xr_strlen(m_action_name))
-		debug_log		(eActionStateConstructed);
+//	if (xr_strlen(m_action_name))
+//		debug_log		(eActionStateConstructed);
 #endif
 }
 
@@ -48,8 +48,8 @@ TEMPLATE_SPECIALIZATION
 void CBaseAction::Load			(LPCSTR section)
 {
 #ifdef LOG_ACTION
-	if (xr_strlen(m_action_name))
-		debug_log		(eActionStateLoaded);
+//	if (xr_strlen(m_action_name))
+//		debug_log		(eActionStateLoaded);
 #endif
 }
 

@@ -878,6 +878,7 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 		CMD3(CCC_Mask,				"ai_dbg_alife",			&psAI_Flags,	aiALife);
 		CMD3(CCC_Mask,				"ai_dbg_lua",			&psAI_Flags,	aiLua);
 		CMD3(CCC_Mask,				"ai_dbg_goap",			&psAI_Flags,	aiGOAP);
+		CMD3(CCC_Mask,				"ai_dbg_cover",			&psAI_Flags,	aiCover);
 		CMD1(CCC_Script,			"run_script");
 		CMD1(CCC_ScriptCommand,		"run_string");
 

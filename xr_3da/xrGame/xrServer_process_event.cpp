@@ -192,6 +192,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 		{
 			// Parse message
 			u16					id_dest		=	destination;
+			Msg					("SERVER : Destroying object [%d]",id_dest);
 			CSE_Abstract*		e_dest		=	game->get_entity_from_eid	(id_dest);	// кто должен быть уничтожен
 			if (0==e_dest)		Msg			("SV:ge_destroy: [%d]",id_dest);
 

@@ -22,7 +22,7 @@ void CSE_ALifeSimulator::vfReleaseObject(CSE_Abstract *tpSE_Abstract, bool bALif
 {
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
-		Msg							("[LSS] Releasing object [%s][%d]",tpSE_Abstract->s_name_replace,tpSE_Abstract->ID);
+		Msg							("[LSS] Releasing object [%s][%s][%d]",tpSE_Abstract->s_name_replace,tpSE_Abstract->s_name,tpSE_Abstract->ID);
 	}
 #endif
 	CSE_ALifeDynamicObject			*tpALifeDynamicObject = tpfGetObjectByID(tpSE_Abstract->ID);
@@ -62,7 +62,7 @@ void CSE_ALifeSimulator::vfCreateOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
-		Msg							("[LSS] Spawning object [%s][%d]",tpALifeDynamicObject->s_name_replace,tpALifeDynamicObject->ID);
+		Msg							("[LSS] Spawning object [%s][%s][%d]",tpALifeDynamicObject->s_name_replace,tpALifeDynamicObject->s_name,tpALifeDynamicObject->ID);
 	}
 #endif
 
@@ -80,7 +80,7 @@ void CSE_ALifeSimulator::vfCreateOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 
 #ifdef DEBUG
 			if (psAI_Flags.test(aiALife)) {
-				Msg					("[LSS] Spawning item [%s][%d]",l_tpALifeInventoryItem->s_name_replace,l_tpALifeDynamicObject->ID);
+				Msg					("[LSS] Spawning item [%s][%s][%d]",l_tpALifeInventoryItem->s_name_replace,l_tpALifeInventoryItem->s_name,l_tpALifeDynamicObject->ID);
 			}
 #endif
 
@@ -110,7 +110,7 @@ void CSE_ALifeSimulator::vfRemoveOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
-		Msg							("[LSS] Destroying object [%s][%d]",tpALifeDynamicObject->s_name_replace,tpALifeDynamicObject->ID);
+		Msg							("[LSS] Destroying object [%s][%s][%d]",tpALifeDynamicObject->s_name_replace,tpALifeDynamicObject->s_name,tpALifeDynamicObject->ID);
 	}
 #endif
 
@@ -124,19 +124,19 @@ void CSE_ALifeSimulator::vfRemoveOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 			R_ASSERT2				(l_tpALifeInventoryItem,"Non inventory item object has parent?!");
 #ifdef DEBUG
 			if (psAI_Flags.test(aiALife)) {
-				Msg					("[LSS] Destroying item [%s]",l_tpALifeInventoryItem->s_name_replace,l_tpALifeInventoryItem->ID);
+				Msg					("[LSS] Destroying item [%s][%s][%d]",l_tpALifeInventoryItem->s_name_replace,l_tpALifeInventoryItem->s_name,l_tpALifeInventoryItem->ID);
 			}
 #endif
-			CSE_ALifeItemBolt		*bolt = dynamic_cast<CSE_ALifeItemBolt*>(l_tpALifeDynamicObject);
-			if (!bolt) {
+//			CSE_ALifeItemBolt		*bolt = dynamic_cast<CSE_ALifeItemBolt*>(l_tpALifeDynamicObject);
+//			if (!bolt) {
 				m_tpServer->Perform_destroy(l_tpALifeInventoryItem,net_flags(TRUE,TRUE));
 				_OBJECT_ID				l_tObjectID = l_tpALifeInventoryItem->ID;
 				l_tpALifeInventoryItem->ID	= m_tpServer->PerformIDgen(l_tpALifeInventoryItem->ID);
 				R_ASSERT2				(l_tpALifeInventoryItem->ID == l_tObjectID,"Object ID has changed during ID generation!");
 				l_tpALifeDynamicObject->m_bOnline = false;
-			}
-			else
-				vfReleaseObject		(bolt);
+//			}
+//			else
+//				vfReleaseObject		(bolt);
 		}
 	}
 	
@@ -259,6 +259,12 @@ void CSE_ALifeSimulator::vfFurlObjectOffline(CSE_ALifeDynamicObject *I)
 void CSE_ALifeSimulator::vfValidatePosition(CSE_ALifeDynamicObject *I)
 {
 	VERIFY					(ai().level_graph().level_id() == ai().game_graph().vertex(I->m_tGraphID)->level_id());
+	xr_vector<u16>			test = I->children;
+	std::sort				(test.begin(),test.end());
+	for (u32 i=1, n=test.size(); i<n; ++i)
+		if (test[i - 1] == test[i]) {
+			VERIFY			(false);
+		}
 
 	// check if we do not use ai locations
 	if (!I->used_ai_locations())

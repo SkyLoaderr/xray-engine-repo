@@ -18,7 +18,9 @@ CExplosiveItem::~CExplosiveItem(void)
 
 void CExplosiveItem::Load(LPCSTR section)
 {
-	m_bUsingCondition = true;
+	inherited::Load							(section);
+
+	m_bUsingCondition						= true;
 
 	m_HitTypeK[ALife::eHitTypeBurn]			= pSettings->r_float(section,"burn_immunity");
 	m_HitTypeK[ALife::eHitTypeStrike]		= pSettings->r_float(section,"strike_immunity");
@@ -29,15 +31,11 @@ void CExplosiveItem::Load(LPCSTR section)
 	m_HitTypeK[ALife::eHitTypeChemicalBurn] = pSettings->r_float(section,"chemical_burn_immunity");
 	m_HitTypeK[ALife::eHitTypeFireWound]	= pSettings->r_float(section,"fire_wound_immunity");
 	m_HitTypeK[ALife::eHitTypeExplosion]	= pSettings->r_float(section,"explosion_immunity");
-
-
-	inherited::Load(section);
 }
 
 void CExplosiveItem::net_Destroy()
 {
 	CExplosive::net_Destroy();
-	CInventoryItem::net_Destroy();
 }
 
 void CExplosiveItem::Hit(float P, Fvector &dir,	CObject* who, s16 element,
@@ -63,15 +61,13 @@ void CExplosiveItem::Hit(float P, Fvector &dir,	CObject* who, s16 element,
 void  CExplosiveItem::OnEvent (NET_Packet& P, u16 type)
 {
 	CExplosive::OnEvent (P, type);
-	CInventoryItem::OnEvent (P, type);
 
 }
 void CExplosiveItem::UpdateCL()
 {
 	CExplosive::UpdateCL();
-	CInventoryItem::UpdateCL();
 }
 void CExplosiveItem::renderable_Render()
 {
-	CInventoryItem::renderable_Render();
+	CExplosive::renderable_Render();
 }

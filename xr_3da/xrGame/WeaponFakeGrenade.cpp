@@ -81,8 +81,7 @@ void __stdcall CWeaponFakeGrenade::ObjectContactCallback(bool& do_colide,dContac
 
 void CWeaponFakeGrenade::Load(LPCSTR section) 
 {
-	inherited::Load(section);
-	CExplosive::Load(section);
+	CExplosive::Load	(section);
 
 	m_mass = pSettings->r_float(section,"ph_mass");
 	m_fJumpHeight = pSettings->r_float(section, "jump_height");
@@ -117,7 +116,7 @@ void CWeaponFakeGrenade::Explode(const Fvector &pos, const Fvector &/**normal/**
 
 BOOL CWeaponFakeGrenade::net_Spawn(LPVOID DC) 
 {
-	BOOL result = CInventoryItem::net_Spawn(DC);
+	BOOL result = CExplosive::net_Spawn(DC);
 	
 	m_state = stInactive;
 	m_pos.set(0, 0, 0); m_vel.set(0, 0, 0);
@@ -130,7 +129,6 @@ BOOL CWeaponFakeGrenade::net_Spawn(LPVOID DC)
 void CWeaponFakeGrenade::net_Destroy() 
 {
 	CExplosive::net_Destroy();
-	CInventoryItem::net_Destroy();
 }
 
 void CWeaponFakeGrenade::Destroy() 
