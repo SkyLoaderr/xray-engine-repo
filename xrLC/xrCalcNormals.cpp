@@ -60,6 +60,7 @@ void CBuild::CalcNormals()
 
 		Progress(p_total+=p_cost);
 	}
+	Progress		(1.f);
 
 	// Destroy unused vertices
 	g_bUnregister	= false;
@@ -68,6 +69,10 @@ void CBuild::CalcNormals()
 	g_vertices.erase(g_vertices.begin(),g_vertices.begin()+Vcount);
 	for (u32 I=0; I<Vcount; I++) VertexPool.destroy	(vtmp[I]);
 	g_bUnregister = true;
+
+	// Recalculate normals
+	for (vecVertexIt it=g_vertices.begin(); it!=g_vertices.end(); it++)
+		(*it)->normalFromAdj	();
 
 	clMsg	("%d vertices was duplicated 'cause of SM groups",g_vertices.size()-Vcount);
 
