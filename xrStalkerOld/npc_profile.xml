@@ -233,4 +233,9 @@
 		<class>Bandit_borov</class>
 	</character>
 
+
+	<character id="svoboda_master_max">
+		<class>Svoboda_master</class>
+	</character>
+
 </xml>
