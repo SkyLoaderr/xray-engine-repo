@@ -146,6 +146,7 @@ function motivator_binder:reload (section)
 		action = 0,
         last_action = 0,
         patrol_path = {},
+        path_look = {},
         pos_id = -1,
         body_state = 0,
         timer = { act1 = {begin = nil, time = 120},
