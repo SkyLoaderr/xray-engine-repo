@@ -142,10 +142,12 @@ void			CLight_DB::add_sector_lights(vector<WORD> &L)
 		light*  T	= v_static[ID];
 		if ((0==T) || (T.dwFrame==Device.dwFrame)) continue;
 		
-		if (RImplementation->View->testSphere_dirty	(T.position, T.range))) 
+		if (RImplementation->View->testSphere_dirty	(T->sphere.P, T->sphere.R))) 
 		{
-			Selected.push_back	(ID);
-			T.dwFrame=Device.dwFrame;
+			T.dwFrame				=Device.dwFrame;
+			if (T->flags.bShadow)	v_selected_shadowed.push_back	(T);
+			else					v_selected_unshadowed.push_back	(T);
+			Selected.push_back		(ID);
 		}
 	}
-};
+}
