@@ -62,6 +62,7 @@ private:
 	// demo mode
 private:
 	bool						m_demo_mode;
+	float						m_panic_threshold;
 	
 	// ALife
 private:
@@ -325,6 +326,7 @@ public:
 			bool						alife_task_completed			();
 			void						communicate						(CInventoryOwner *trader);
 	IC	CStalkerAnimationManager		&animation_manager				() const;
+	IC	float							panic_threshold					() const;
 };
 
 #include "ai_stalker_inline.h"

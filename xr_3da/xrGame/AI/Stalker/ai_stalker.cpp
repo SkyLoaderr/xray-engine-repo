@@ -139,6 +139,8 @@ void CAI_Stalker::reload			(LPCSTR section)
 	m_r_hand						= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(section,"weapon_bone0"));
 	m_l_finger1						= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(section,"weapon_bone1"));
 	m_r_finger2						= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(section,"weapon_bone2"));
+
+	m_panic_threshold				= pSettings->r_float(section,"panic_threshold");
 }
 
 void CAI_Stalker::Die				(CObject* who)
@@ -223,8 +225,6 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 
 	if (!g_Alive())
 		CSoundPlayer::set_sound_mask(u32(eStalkerSoundMaskDie));
-
-
 
 	//загрузить иммунитеты из модельки сталкера
 	CKinematics* pKinematics = smart_cast<CKinematics*>(Visual()); VERIFY(pKinematics);

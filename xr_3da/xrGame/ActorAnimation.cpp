@@ -112,11 +112,12 @@ void ACTOR_DEFS::SActorMotions::SActorState::SAnimState::Create(CSkeletonAnimate
 
 void ACTOR_DEFS::SActorMotions::SActorState::SAnimState::CreateSprint(CSkeletonAnimated* K)
 {
-	legs_fwd		= K->ID_Cycle("escape_0");
-	legs_back		= K->ID_Cycle("escape_0");
-	legs_ls			= K->ID_Cycle("escape_ls_0");
-	legs_rs			= K->ID_Cycle("escape_rs_0");
+	legs_fwd		= K->ID_Cycle("norm_escape_0");
+	legs_back		= K->ID_Cycle("norm_escape_0");
+	legs_ls			= K->ID_Cycle("norm_escape_ls_0");
+	legs_rs			= K->ID_Cycle("norm_escape_rs_0");
 }
+
 void ACTOR_DEFS::SActorMotions::SActorState::CreateClimb(CSkeletonAnimated* K)
 {
 	string128		buf,buf1;

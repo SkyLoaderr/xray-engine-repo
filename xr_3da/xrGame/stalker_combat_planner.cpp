@@ -151,6 +151,7 @@ void CStalkerCombatPlanner::add_actions			()
 	add_condition			(action,eWorldPropertyReadyToKill,	true);
 	add_condition			(action,eWorldPropertySeeEnemy,		true);
 	add_condition			(action,eWorldPropertyInCover,		true);
+	add_condition			(action,eWorldPropertyPanic,		false);
 	add_effect				(action,eWorldPropertyEnemy,		false);
 	add_operator			(eWorldOperatorKillEnemy,				action);
 
@@ -197,6 +198,7 @@ void CStalkerCombatPlanner::add_actions			()
 	add_condition			(action,eWorldPropertyLookedOut,	true);
 	add_condition			(action,eWorldPropertyPositionHolded,true);
 	add_condition			(action,eWorldPropertyEnemyDetoured,true);
+	add_condition			(action,eWorldPropertyPanic,		false);
 	add_effect				(action,eWorldPropertyEnemy,		false);
 	add_operator			(eWorldOperatorSearchEnemy,			action);
 }

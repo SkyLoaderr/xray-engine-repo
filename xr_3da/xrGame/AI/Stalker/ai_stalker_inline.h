@@ -29,3 +29,7 @@ IC	LPCSTR CAI_Stalker::Name						() const
 	return	(CInventoryOwner::Name());
 }
 
+IC	float CAI_Stalker::panic_threshold				() const
+{
+	return	(m_panic_threshold);
+}
