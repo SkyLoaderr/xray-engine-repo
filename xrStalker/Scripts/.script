@@ -979,7 +979,11 @@ function print_table(table, subs)
 			printf(sub.."%s:", k)
 			this.print_table(v, sub.."    ")
 		else
-			printf(sub.."%s:%s", k,v)
+			if v ~= nil then
+				printf(sub.."%s:%s", k,v)
+			else
+				printf(sub.."%s:nil", k,v)
+			end
 		end
 	end
 end
