@@ -109,10 +109,13 @@ void CExplosive::Explode()
 	//////////////////////////////
 	for(int i = 0; i < m_iFragsNum; ++i) 
 	{
-		frag_dir.set(::Random.randF(-.5f,.5f), 
-				  ::Random.randF(-.5f,.5f), 
-				  ::Random.randF(-.5f,.5f)); 
+		frag_dir.random_dir();
 		frag_dir.normalize();
+		/*
+		frag_dir.set(::Random.randF(-.5f,.5f), 
+			::Random.randF(-.5f,.5f), 
+			::Random.randF(-.5f,.5f)); 
+		*/
 			
 		// ...and trace line
 		m_vEndPoint.set(0,0,0);
