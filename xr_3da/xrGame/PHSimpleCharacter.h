@@ -115,7 +115,7 @@ public:
 	//Check state
 	virtual		bool			 ContactWas						()					{if(b_meet_control) {b_meet_control=false;return true;} else return false;}
 	virtual		EEnvironment	 CheckInvironment				()					;
-
+	virtual		const Fvector&	 GroundNormal					()					;
 	//Creating
 	virtual		void		Create								(dVector3 sizes)	;
 	virtual		void		Destroy								(void)				;

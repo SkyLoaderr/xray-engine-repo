@@ -13,9 +13,15 @@ static const float	s_fLandingTime1		= 0.1f;// через сколько снять флаг Landing1 
 static const float	s_fLandingTime2		= 0.3f;// через сколько снять флаг Landing2 (т.е. включить следующую анимацию)
 static const float	s_fJumpTime			= 0.3f;
 static const float	s_fJumpGroundTime	= 0.1f;	// для снятия флажка Jump если на земле
-
 	   const float	s_fFallTime			= 0.2f;
 
+IC static void generate_orthonormal_basis1(const Fvector& dir,Fvector& updir, Fvector& right)
+{
+
+	right.crossproduct(dir,updir); //. <->
+	right.normalize();
+	updir.crossproduct(right,dir);
+}
 
 
 void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
@@ -206,6 +212,10 @@ void CActor::g_Orientate	(u32 mstate_rl, float dt)
 {
 	// visual effect of "fwd+strafe" like motion
 	float calc_yaw = 0;
+	if(mstate_real&mcClimb)
+	{
+		if(g_LeaderOrient(mstate_rl,dt)) return;
+	}
 	switch(mstate_rl&mcAnyMove)
 	{
 	case mcFwd+mcLStrafe:
@@ -233,7 +243,43 @@ void CActor::g_Orientate	(u32 mstate_rl, float dt)
 	mXFORM.c.set	(Position());
 	XFORM().set		(mXFORM);
 }
+bool CActor::g_LeaderOrient(u32/* mstate_rl*/,float dt)
+{
+	Fvector leader_norm;
+	leader_norm.set(m_PhysicMovementControl->GroundNormal());
+	if(_abs(leader_norm.y)>M_SQRT1_2) return false;
+	//leader_norm.y=0.f;
+	float mag=leader_norm.magnitude();
+	if(mag<EPS_L) return false;
+	leader_norm.div(mag);
+	leader_norm.invert();
+	Fmatrix M;
+	M.k.set(leader_norm);
+	M.j.set(0.f,1.f,0.f);
+	generate_orthonormal_basis1(M.k,M.j,M.i);
+	M.i.invert();
+	//M.j.invert();
 
+
+	Fquaternion q1,q2,q3;
+	q1.set(XFORM());
+	q2.set(M);
+	q3.slerp(q1,q2,dt);
+	//Fvector angles1,angles2,angles3;
+	//XFORM().getHPB(angles1.x,angles1.y,angles1.z);
+	//M.getHPB(angles2.x,angles2.y,angles2.z);
+	////angle_lerp(angles3.x,angles1.x,angles2.x,dt);
+	////angle_lerp(angles3.y,angles1.y,angles2.y,dt);
+	////angle_lerp(angles3.z,angles1.z,angles2.z,dt);
+
+	//angles3.lerp(angles1,angles2,dt);
+	////angle_lerp(angles3.y,angles1.y,angles2.y,dt);
+	////angle_lerp(angles3.z,angles1.z,angles2.z,dt);
+	//angle_lerp(angles3.x,angles1.x,angles2.x,dt);
+	//XFORM().setHPB(angles3.x,angles3.y,angles3.z);
+	XFORM().rotation(q3);
+	return true;
+}
 // ****************************** Update actor orientation according to camera orientation
 void CActor::g_cl_Orientate	(u32 mstate_rl, float dt)
 {

@@ -5,6 +5,7 @@
 #include "PHCharacter.h"
 #include "detail_path_manager.h"
 
+
 class CPHAICharacter;
 class CPHSimpleCharacter;
 class CPHCapture;
@@ -136,6 +137,7 @@ public:
 	float				GetVelocityMagnitude()		{ return vVelocity.magnitude();	}
 	float				GetVelocityActual	()		{ return fActualVelocity;	}
 	float				GetContactSpeed		()		{ return fContactSpeed; }
+	const Fvector&		GroundNormal		()								;
 	CPHSynchronize*		GetSyncItem			()								;
 	void				Freeze				()								;
 	void				UnFreeze			()								;

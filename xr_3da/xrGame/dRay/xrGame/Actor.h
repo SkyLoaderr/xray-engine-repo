@@ -326,7 +326,7 @@ public:
 	void					g_cl_Orientate			(u32 mstate_rl, float dt);
 	void					g_sv_Orientate			(u32 mstate_rl, float dt);
 	void					g_Orientate				(u32 mstate_rl, float dt);
-
+	bool					g_LeaderOrient			(u32 mstate_rl,float dt) ;
 	static bool				isAccelerated			(u32 mstate);
 	bool					CanAccelerate			();
 	bool					CanJump					();

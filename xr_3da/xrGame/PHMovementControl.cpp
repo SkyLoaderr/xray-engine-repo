@@ -680,7 +680,13 @@ case peInAir :		eEnvironment=peInAir		;break;
 case peAtWall : eEnvironment=peAtWall		;break;
 	}
 }
+static Fvector default_ground_normal={0.f,1.f,0.f};
+const Fvector&	CPHMovementControl::GroundNormal()		
+{
+if(m_character&&m_character->b_exist)return m_character->GroundNormal();
+else return default_ground_normal;
 
+}
 
 void	CPHMovementControl::SetEnvironment( int enviroment,int old_enviroment){
 	switch(enviroment){

@@ -193,7 +193,8 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		// Legs
 		if		(mstate_rl&mcLanding)	M_legs	= ST->landing[0];
 		else if (mstate_rl&mcLanding2)	M_legs	= ST->landing[1];
-		else if (mstate_rl&mcTurn)		M_legs	= ST->legs_turn;
+		else if ((mstate_rl&mcTurn)&&
+				!(mstate_rl&mcClimb))	M_legs	= ST->legs_turn;
 		else if (mstate_rl&mcFall)		M_legs	= ST->jump_idle;
 		else if (mstate_rl&mcJump)		M_legs	= ST->jump_begin;
 		else if (mstate_rl&mcFwd)		M_legs	= AS->legs_fwd;

@@ -1341,6 +1341,19 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide){
 
 
 }
+
+const Fvector& CPHSimpleCharacter::GroundNormal()
+{
+	if(b_at_wall)
+	{
+		return *((Fvector*)m_wall_contact_normal);
+
+	}
+	else
+	{
+		return *((Fvector*)m_ground_contact_normal);
+	}
+}
 u16 CPHSimpleCharacter::ContactBone()
 {
 	return RetriveContactBone();

@@ -78,6 +78,7 @@ virtual		void		Jump								(const Fvector& jump_velocity)								=0 ;
 virtual		bool		JumpState							()															=0 ;
 virtual		EEnvironment CheckInvironment					()															=0 ;
 virtual		bool		ContactWas							()															=0 ;
+virtual	const Fvector&	GroundNormal						()															=0 ;
 virtual		void		Create								(dVector3 /**sizes/**/)										=0 ;
 virtual		void		Destroy								(void)														=0 ;
 virtual		void		SetAcceleration						(Fvector accel)												=0 ;
