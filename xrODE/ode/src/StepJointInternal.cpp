@@ -219,7 +219,7 @@ dInternalStepJointContact (dxWorld * world, dxBody * body[2], dReal * GI[2], dRe
 	dTimerNow ("solving LCP problem");
 #	endif
 	dReal lambda[3];
-	dReal lambda1[3];
+///	dReal lambda1[3];
 	dReal residual[3];
 	dReal lo[3], hi[3],lo1[6],hi1[6];
 	memcpy (lo, Jinfo.lo, 3 * sizeof (dReal));
