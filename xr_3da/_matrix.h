@@ -241,13 +241,13 @@ public:
 		m[3][0] = 0;		m[3][1] = 0;		m[3][2] = 0;		m[3][3]=1;
 	}
 
-	IC	void	getDNR		(Tvector &D, Tvector &N, Tvector &R) const
-	{
-		R.set(m[0][0],m[0][1],m[0][2]);
-		N.set(m[1][0],m[1][1],m[1][2]);
-		D.set(m[2][0],m[2][1],m[2][2]);
-	}
-
+	IC	void	mapXYZ		()	{i.set(1, 0, 0);_14=0;j.set(0, 1, 0);_24=0;k.set(0, 0, 1);_34=0;c.set(0, 0, 0);_44=1;	}
+	IC	void	mapXZY		()	{i.set(1, 0, 0);_14=0;j.set(0, 0, 1);_24=0;k.set(0, 1, 0);_34=0;c.set(0, 0, 0);_44=1;	}
+	IC	void	mapYXZ		()	{i.set(0, 1, 0);_14=0;j.set(1, 0, 0);_24=0;k.set(0, 0, 1);_34=0;c.set(0, 0, 0);_44=1;	}
+	IC	void	mapYZX		()	{i.set(0, 1, 0);_14=0;j.set(0, 0, 1);_24=0;k.set(1, 0, 0);_34=0;c.set(0, 0, 0);_44=1;	}
+	IC	void	mapZXY		()	{i.set(0, 0, 1);_14=0;j.set(1, 0, 0);_24=0;k.set(0, 1, 0);_34=0;c.set(0, 0, 0);_44=1;	}
+	IC	void	mapZYX		()	{i.set(0, 0, 1);_14=0;j.set(0, 1, 0);_24=0;k.set(1, 0, 0);_34=0;c.set(0, 0, 0);_44=1;	}
+	
 	IC	void	rotation	( const Tvector &axis, T Angle )
 	{
 		T Cosine	= cosf(Angle);
