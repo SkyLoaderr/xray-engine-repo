@@ -90,7 +90,7 @@ void CWeapon::animGet	(MotionSVec& lst, LPCSTR prefix)
 void CWeapon::SoundCreate(sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq)
 {
 	string256	name,temp;
-	strconcat	(name,"weapons\\",GetName(),"_",s_name);
+	strconcat	(name,"weapons\\",GetName(),"_",s_name,".wav");
 	if (FS.exist(temp,"$game_sounds$",name)) 
 	{
 		dest.create		(TRUE,name,iType);
