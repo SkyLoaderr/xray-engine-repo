@@ -2,7 +2,7 @@
 #include "occRasterizer.h"
 
 static occTri*	currentTri	= 0;
-static u32	dwPixels	= 0;
+static u32		dwPixels	= 0;
 static float	currentA[3],currentB[3],currentC[3];
 
 const int BOTTOM = 0, TOP = 1;

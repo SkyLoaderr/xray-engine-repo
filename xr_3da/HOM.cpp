@@ -220,11 +220,10 @@ void CHOM::Render_ZB	()
 {
 	if (m_ZB.empty())		return;
 
-	/*
 	// Fill VB
-	u32							vCount	= m_ZB.size()*3;
-	u32							vOffset;
-	FVF::L*		V					= (FVF::L*) RCache.Vertex.Lock	(vCount,m_VS->vb_stride, vOffset);
+	u32								vCount	= m_ZB.size()*3;
+	u32								vOffset;
+	FVF::L*		V					= (FVF::L*) RCache.Vertex.Lock	(vCount,h_Geom->vb_stride, vOffset);
 
 	vector<u32>::iterator	I		= m_ZB.begin	();
 	vector<u32>::iterator	E		= m_ZB.end		();
@@ -238,17 +237,15 @@ void CHOM::Render_ZB	()
 		V->set	(*t.verts[2],C);	V++;
 	}
 
-	RCache.Vertex.Unlock	(vCount,m_VS->vb_stride);
+	RCache.Vertex.Unlock			(vCount,h_Geom->vb_stride);
 
 	// Render it
 	RCache.set_xform_world			(Fidentity);
-	RCache.set_Shader				(m_Shader);
-	RCache.set_Indices		(0,0);
-	RCache.set_Vertices		(m_VS->dwHandle,m_VS->vb_stride,RCache.Vertex.Buffer());
-	CHK_DX(HW.pDevice->SetRenderState(D3DRS_COLORWRITEENABLE,0));
-	RCache.Render			(D3DPT_TRIANGLELIST,vOffset,vCount/3);
-	CHK_DX(HW.pDevice->SetRenderState(D3DRS_COLORWRITEENABLE,0xf));
-	*/
+	RCache.set_Shader				(h_Shader);
+	RCache.set_Geometry				(h_Geom);
+	//CHK_DX(HW.pDevice->SetRenderState(D3DRS_COLORWRITEENABLE,0));
+	RCache.Render					(D3DPT_TRIANGLELIST,vOffset,vCount/3);
+	//CHK_DX(HW.pDevice->SetRenderState(D3DRS_COLORWRITEENABLE,0xf));
 }
 
 void CHOM::Debug		()
