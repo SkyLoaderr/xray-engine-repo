@@ -238,7 +238,7 @@ void CLensFlare::OnMove()
 		Device.mFullTransform.transform	( scr_pos, vecLight );
 		float kx = 1, ky = 1;
 		float sun_blend		= 0.5f;
-		float sun_max		= 1.75f;
+		float sun_max		= 2.5f;
 		scr_pos.y			*= -1;
 		
 		if (fabsf(scr_pos.x) > sun_blend)	kx = ((sun_max - (float)fabsf(scr_pos.x))) / (sun_max - sun_blend);
