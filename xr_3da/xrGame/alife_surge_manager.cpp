@@ -31,57 +31,6 @@ CALifeSurgeManager::~CALifeSurgeManager	()
 {
 }
 
-void CALifeSurgeManager::surge		()
-{
-#ifdef DEBUG
-	if (psAI_Flags.test(aiALife)) {
-		Msg								("[LSS] Surge is started...");
-	}
-#endif
-	
-	random().seed						(u32(CPU::GetCycleCount() & 0xffffffff));
-	m_alive_spawn_objects.assign		(spawns().header().count(),false);
-	
-	// update all the objects
-	D_OBJECT_P_MAP::const_iterator		I = objects().objects().begin();
-	D_OBJECT_P_MAP::const_iterator		E = objects().objects().end();
-	for ( ; I != E; ++I)
-		(*I).second->on_surge			();
-	
-//	kill_creatures						();
-
-	create_objects						();
-
-	generate_anomaly_map				();
-	VERIFY								(graph().actor());
-	{
-		CALifeTraderRegistry::TRADER_REGISTRY::const_iterator	I = traders().traders().begin();
-		CALifeTraderRegistry::TRADER_REGISTRY::const_iterator	E = traders().traders().end();
-		for ( ; I != E; ++I) {
-			sell_artefacts				(**I);
-			buy_supplies				(**I);
-			give_military_bribe			(**I);
-		}
-	}
-	organizations().update				();
-	{
-		CALifeTraderRegistry::TRADER_REGISTRY::const_iterator	I = traders().traders().begin();
-		CALifeTraderRegistry::TRADER_REGISTRY::const_iterator	E = traders().traders().end();
-		for ( ; I != E; ++I)
-			organizations().update_artefact_orders(**I);
-	}
-	update_tasks						();
-	assign_stalker_customers			();
-
-	time_manager().last_surge_time		(time_manager().game_time());
-
-#ifdef DEBUG
-	if (psAI_Flags.test(aiALife)) {
-		Msg								("[LSS] Surge is successfully completed");
-	}
-#endif
-}
-
 void CALifeSurgeManager::generate_anomaly_map	()
 {
 	anomalies().clear						();
@@ -406,10 +355,81 @@ void CALifeSurgeManager::assign_stalker_customers()
 	}
 }
 
-void CALifeSurgeManager::create_objects	()
+void CALifeSurgeManager::update_objects_before_surge()
 {
-//	D_OBJECT_P_MAP::const_iterator	I = objects().objects().begin();
-//	D_OBJECT_P_MAP::const_iterator	E = objects().objects().end();
-//	for ( ; I != E; ++I)
-//		(*I).second->on_surge		();
+	// update all the objects
+	D_OBJECT_P_MAP::const_iterator	I = objects().objects().begin();
+	D_OBJECT_P_MAP::const_iterator	E = objects().objects().end();
+	for ( ; I != E; ++I)
+		(*I).second->on_surge		();
+}
+
+void CALifeSurgeManager::update_traders				()
+{
+	CALifeTraderRegistry::TRADER_REGISTRY::const_iterator	I = traders().traders().begin();
+	CALifeTraderRegistry::TRADER_REGISTRY::const_iterator	E = traders().traders().end();
+	for ( ; I != E; ++I) {
+		sell_artefacts										(**I);
+		buy_supplies										(**I);
+		give_military_bribe									(**I);
+	}
+}
+
+void CALifeSurgeManager::update_organizations		()
+{
+	organizations().update									();
+	CALifeTraderRegistry::TRADER_REGISTRY::const_iterator	I = traders().traders().begin();
+	CALifeTraderRegistry::TRADER_REGISTRY::const_iterator	E = traders().traders().end();
+	for ( ; I != E; ++I)
+		organizations().update_artefact_orders				(**I);
+}
+
+void CALifeSurgeManager::setup_next_surge_time		()
+{
+	time_manager().last_surge_time	(time_manager().game_time());
+}
+
+IC	bool CALifeSurgeManager::redundant				(CSE_ALifeDynamicObject *object) const
+{
+	return						(true);
+}
+
+void CALifeSurgeManager::remove_redundant_objects	()
+{
+	m_temp.clear					();
+	D_OBJECT_P_MAP::const_iterator	I = objects().objects().begin();
+	D_OBJECT_P_MAP::const_iterator	E = objects().objects().end();
+	for ( ; I != E; ++I) {
+		if (!spawns().valid_spawn_id((*I).second->m_tSpawnID))
+			continue;
+
+		if (redundant((*I).second))
+			m_temp.push_back		((*I).second->ID);
+	}
+
+	{
+		ALife::OBJECT_IT			I = m_temp.begin();
+		ALife::OBJECT_IT			E = m_temp.end();
+		for ( ; I != E; ++I)
+			release					(objects().object(*I));
+	}
+}
+
+void CALifeSurgeManager::spawn_new_objects			()
+{
+	VERIFY						(graph().actor());
+}
+
+void CALifeSurgeManager::surge						()
+{
+	update_objects_before_surge	();
+//	kill_creatures				();
+	remove_redundant_objects	();
+	spawn_new_objects			();
+	generate_anomaly_map		();
+	update_traders				();
+	update_organizations		();
+	update_tasks				();
+	assign_stalker_customers	();
+	setup_next_surge_time		();
 }

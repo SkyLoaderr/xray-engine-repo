@@ -18,16 +18,18 @@ protected:
 	typedef CALifeSimulatorBase inherited;
 
 protected:
-	xr_vector<bool>					m_alive_spawn_objects;
 	ALife::ORGANIZATION_ORDER_MAP	m_tpSoldArtefacts;
 	ALife::ITEM_COUNT_MAP			m_tpTraderItems;
+	ALife::OBJECT_VECTOR			m_temp;
 
 public:
 	DWORD_VECTOR					m_tpTempPath;
 
+private:
+	IC		bool			redundant					(CSE_ALifeDynamicObject *object) const;
+
 protected:
 			void			surge						();
-			void			create_objects				();
 			void			generate_anomaly_map		();
 			void			sell_artefacts				(CSE_ALifeTrader &trader);
 			void			buy_supplies				(CSE_ALifeTrader &trader);
@@ -35,6 +37,12 @@ protected:
 			void			kill_creatures				();
 			void			update_tasks				();
 			void			assign_stalker_customers	();
+			void			remove_redundant_objects	();
+			void			spawn_new_objects			();
+			void			update_objects_before_surge	();
+			void			update_traders				();
+			void			update_organizations		();
+			void			setup_next_surge_time		();
 			float			distance					(const DWORD_VECTOR &path) const;
 
 public:
