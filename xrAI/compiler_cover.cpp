@@ -250,10 +250,40 @@ public:
 	}
 };
 
+#define NUM_THREADS	8
 void	xrCover	()
 {
 	Status("Calculating...");
-	DWORD	start_time = timeGetTime();
+	DWORD	start_time		= timeGetTime();
+	
+	// Start threads
+	CoverThread*			THP	[NUM_THREADS];
+	DWORD	stride			= g_nodes.size()/NUM_THREADS;
+	DWORD	last			= g_nodes.size()-stride*NUM_THREADS;
+	for (DWORD thID=0; thID<NUM_THREADS; thID++)
+		THP[thID]	= new CoverThread(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride));
+	
+	// Wait for completition
+	for (;;)
+	{
+		Sleep	(1000);
+		
+		float	sumProgress=0;
+		DWORD	sumComplete=0;
+		for (DWORD ID=0; ID<NUM_THREADS; ID++)
+		{
+			sumProgress += THP[ID]->thProgress;
+			sumComplete	+= THP[ID]->thCompleted?1:0;
+		}
+		
+		Progress(sumProgress/float(NUM_THREADS));
+		if (sumComplete == NUM_THREADS)	break;
+	}
+	
+	// Delete threads
+	for (thID=0; thID<NUM_THREADS; thID++)
+		_DELETE(THP[thID]);
+	
 	Msg("%d seconds elapsed.",(timeGetTime()-start_time)/1000);
 
 	Status	("Smoothing coverage mask...");
