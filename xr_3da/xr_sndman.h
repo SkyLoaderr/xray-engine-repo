@@ -48,8 +48,8 @@ public:
 	void					StopCDTrack				( );
 	
 	// Sound interface
-	void					Create					( sound& S, BOOL _3D=TRUE,	CInifile* ini,	LPCSTR section,			int		type=0);
-	void					Create					( sound& S, BOOL _3D=TRUE,	LPCSTR fName,	BOOL bCtrlFreq=FALSE,	int		type=0);
+	void					Create					( sound& S, BOOL _3D,	CInifile* ini,	LPCSTR section,			int		type=0);
+	void					Create					( sound& S, BOOL _3D,	LPCSTR fName,	BOOL bCtrlFreq=FALSE,	int		type=0);
 	void					Play					( sound& S, CObject* O,								BOOL bLoop=false,	int	iLoopCnt=0);
 	void					Play_Unlimited			( sound& S, CObject* O,								BOOL bLoop=false,	int	iLoopCnt=0);
 	void					PlayAtPos				( sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false,	int iLoopCnt=0);

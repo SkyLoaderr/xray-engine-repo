@@ -66,13 +66,13 @@ void CWeapon::SoundCreate(sound& dest, LPCSTR s_name, int iType)
 	strconcat	(name,"weapons\\",GetName(),"_",s_name);
 	if (Engine.FS.Exist(temp,Path.Sounds,name,".wav"))	
 	{
-		pSounds->Create3D(dest,name,FALSE,iType);
+		pSounds->Create(dest,TRUE,name,FALSE,iType);
 		return;
 	}
 	strconcat	(name,"weapons\\","generic_",s_name);
 	if (Engine.FS.Exist(temp,Path.Sounds,name,".wav"))	
 	{
-		pSounds->Create3D(dest,name,FALSE,iType);
+		pSounds->Create3D(dest,TRUE,name,FALSE,iType);
 		return;
 	}
 	Device.Fatal("Can't find sound '%s' for weapon '%s'",name,GetName());

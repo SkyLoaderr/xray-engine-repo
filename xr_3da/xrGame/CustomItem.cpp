@@ -63,7 +63,7 @@ void	CCustomItem::Load(CInifile *pIni, const char *section)
 	clsid_target	= TEXT2CLSID(pIni->ReadSTRING(section, "target"));
 	iValue			= pIni->ReadINT(section, "value");
 	start_pos.set	(vPosition);
-	pSounds->Create3D(sndTake, pIni->ReadSTRING(section, "snd_take"));
+	pSounds->Create	(sndTake, TRUE, pIni->ReadSTRING(section, "snd_take"));
 }
 
 void	CCustomItem::OnMove()

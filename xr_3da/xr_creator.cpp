@@ -16,8 +16,6 @@ CCreator::CCreator( )
 	bReady						= false;
 	pCurrentEntity				= NULL;
 	LL_Stream					= NULL;
-	Sounds_Ambience				= -1;
-
 	pHUD						= (CCustomHUD*)NEW_INSTANCE(CLSID_HUDMANAGER);
 }
 
@@ -34,7 +32,7 @@ CCreator::~CCreator	( )
 	bReady						= false;
 	_DELETE						( pLevel );
 
-	if (Sounds_Ambience>=0)		pSounds->Delete(Sounds_Ambience);
+	pSounds->Delete				(Sounds_Ambience);
 
 	// Render-level unload
 	Render->OnDeviceDestroy		( );
@@ -134,14 +132,14 @@ BOOL CCreator::Load(DWORD dwNum)
 			sscanf				( I->second,"%[^,],%f,%f,%f",fname,&pos.x,&pos.y,&pos.z);
 			if (0==stricmp(fname,"ambient"))	continue;
 			Sounds.push_back	(sound());
-			pSounds->Create		(Sounds.back(),fname);
+			pSounds->Create		(Sounds.back(),TRUE,fname);
 			pSounds->PlayAtPos	(Sounds.back(),0,pos,true);
 		}
 		if (pLevel->LineExists("static_sounds","ambient"))
 		{
 			LPCSTR fname		= pLevel->ReadSTRING("static_sounds","ambient");
-			Sounds_Ambience		= pSounds->Create(fname);
-			pSounds->Play		(Sounds_Ambience,true);
+			pSounds->Create		(Sounds_Ambience,FALSE,fname);
+			pSounds->Play		(Sounds_Ambience,0,true);
 		} 
 	}
 	{
@@ -151,7 +149,7 @@ BOOL CCreator::Load(DWORD dwNum)
 			Sounds_Random.reserve	(S.size());
 			for (CInifile::SectIt I=S.begin(); I!=S.end(); I++) {
 				Sounds_Random.push_back	(sound());
-				pSounds->Create		(Sounds_Random.back(),I->second);
+				pSounds->Create			(Sounds_Random.back(),TRUE,I->second);
 			}
 			Sounds_dwNextTime		= Device.TimerAsync	()	+ 5000;
 		}

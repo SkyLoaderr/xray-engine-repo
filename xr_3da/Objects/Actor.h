@@ -13,9 +13,9 @@
 class ENGINE_API CCameraBase;
 class ENGINE_API CBoneInstance;
 class ENGINE_API CMotionDef;
-class CWeaponList;
 class ENGINE_API CKinematics;
 class ENGINE_API CBlend;
+class CWeaponList;
 class CEffectorBobbing;
 
 #define DEFAULT_FOV 90.f
@@ -56,8 +56,6 @@ protected:
 	sound				sndLanding;
 	sound				sndZoneHeart;
 	sound				sndZoneDetector;
-	sound				sndWeaponChange;
-	sound				sndRespawn;
 	sound				sndHit[SND_HIT_COUNT];
 	sound				sndDie[SND_DIE_COUNT];
 

@@ -40,10 +40,10 @@ protected:
 	CObject*					pCurrentViewEntity;
 
 	// Static sounds
+	sound						Sounds_Ambience;
 	vector<sound>				Sounds;
 	vector<sound>				Sounds_Random;
 	DWORD						Sounds_dwNextTime;
-	int							Sounds_Ambience;
 public:
 	CObjectList					Objects;
 	CEnvironment				Environment;

@@ -30,7 +30,7 @@ CEffect_Rain::CEffect_Rain()
 	control_start		= Engine.Event.Handler_Attach	("level.weather.rain.start",this);
 	control_stop		= Engine.Event.Handler_Attach	("level.weather.rain.stop",this);
 	
-	snd_Ambient			= pSounds->Create2D	("amb_rain");
+	pSounds->Create		(snd_Ambient,FALSE,"amb_rain");
 	snd_Ambient_control	= 0;
 	snd_Ambient_volume	= 0;
 

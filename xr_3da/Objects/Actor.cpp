@@ -153,17 +153,15 @@ CActor::~CActor()
 	for (int i=0; i<eacMaxCam; i++) _DELETE(cameras[i]);
 
 	// sounds 2D
-	pSounds->Delete2D(sndStep[0]);
-	pSounds->Delete2D(sndStep[1]);
-	pSounds->Delete2D(sndLanding);
-	pSounds->Delete2D(sndZoneHeart);
-	pSounds->Delete2D(sndZoneDetector);
+	pSounds->Delete(sndStep[0]);
+	pSounds->Delete(sndStep[1]);
+	pSounds->Delete(sndLanding);
+	pSounds->Delete(sndZoneHeart);
+	pSounds->Delete(sndZoneDetector);
 
 	// sounds 3D
-	for (i=0; i<SND_HIT_COUNT; i++) pSounds->Delete3D(sndHit[i]);
-	for (i=0; i<SND_DIE_COUNT; i++) pSounds->Delete3D(sndDie[i]);
-	pSounds->Delete3D(sndRespawn);
-	pSounds->Delete3D(sndWeaponChange);
+	for (i=0; i<SND_HIT_COUNT; i++) pSounds->Delete(sndHit[i]);
+	for (i=0; i<SND_DIE_COUNT; i++) pSounds->Delete(sndDie[i]);
 }
 
 void CActor::Load(CInifile* ini, const char* section )
@@ -189,21 +187,19 @@ void CActor::Load(CInifile* ini, const char* section )
 	
 	// sounds
 	char buf[256];
-	sndStep[0]			= pSounds->Create2D	(strconcat(buf,cName(),"\\stepL"));
-	sndStep[1]			= pSounds->Create2D	(strconcat(buf,cName(),"\\stepR"));
-	sndLanding			= pSounds->Create2D	(strconcat(buf,cName(),"\\landing"));
-	sndZoneHeart		= pSounds->Create2D	("\\heart\\1");
-	sndZoneDetector		= pSounds->Create2D	("\\detectors\\geiger");
-	pSounds->Create3D	(sndWeaponChange,	strconcat(buf,cName(),"\\weaponchange"));
-	pSounds->Create3D	(sndRespawn,		strconcat(buf,cName(),"\\respawn"));
-	pSounds->Create3D	(sndHit[0],			strconcat(buf,cName(),"\\hurt1"));
-	pSounds->Create3D	(sndHit[1],			strconcat(buf,cName(),"\\hurt2"));
-	pSounds->Create3D	(sndHit[2],			strconcat(buf,cName(),"\\hurt3"));
-	pSounds->Create3D	(sndHit[3],			strconcat(buf,cName(),"\\hurt4"));
-	pSounds->Create3D	(sndDie[0],			strconcat(buf,cName(),"\\die0"));
-	pSounds->Create3D	(sndDie[1],			strconcat(buf,cName(),"\\die1"));
-	pSounds->Create3D	(sndDie[2],			strconcat(buf,cName(),"\\die2"));
-	pSounds->Create3D	(sndDie[3],			strconcat(buf,cName(),"\\die3"));
+	pSounds->Create		(sndStep[0],		FALSE, strconcat(buf,cName(),"\\stepL"));
+	pSounds->Create		(sndStep[1],		FALSE, strconcat(buf,cName(),"\\stepR"));
+	pSounds->Create		(sndLanding,		FALSE, strconcat(buf,cName(),"\\landing"));
+	pSounds->Create		(sndZoneHeart,		FALSE, strconcat(buf,cName(),"\\heart\\1"));
+	pSounds->Create		(sndZoneDetector,	FALSE, strconcat(buf,cName(),"\\detectors\\geiger"));
+	pSounds->Create		(sndHit[0],			strconcat(buf,cName(),"\\hurt1"));
+	pSounds->Create		(sndHit[1],			strconcat(buf,cName(),"\\hurt2"));
+	pSounds->Create		(sndHit[2],			strconcat(buf,cName(),"\\hurt3"));
+	pSounds->Create		(sndHit[3],			strconcat(buf,cName(),"\\hurt4"));
+	pSounds->Create		(sndDie[0],			strconcat(buf,cName(),"\\die0"));
+	pSounds->Create		(sndDie[1],			strconcat(buf,cName(),"\\die1"));
+	pSounds->Create		(sndDie[2],			strconcat(buf,cName(),"\\die2"));
+	pSounds->Create		(sndDie[3],			strconcat(buf,cName(),"\\die3"));
 
 	// take index spine bone
 	int spine_bone		= PKinematics(pVisual)->LL_BoneID("bip01_spine2");
