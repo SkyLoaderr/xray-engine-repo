@@ -293,16 +293,18 @@ void CSHEngineTools::Load()
                 CBlender_DESC	desc;
                 chunk->r		(&desc,sizeof(desc));
                 IBlender*		B = IBlender::Create(desc.CLS);
-				if	(B->getDescription().version != desc.version)
-				{
-					Msg			("! Version conflict in shader '%s'",desc.cName);
-				}
-                chunk->seek		(0);
-                B->Load			(*chunk,desc.version);
+                if (B){
+                    if	(B->getDescription().version != desc.version)
+                    {
+                        Msg			("! Version conflict in shader '%s'",desc.cName);
+                    }
+                    chunk->seek		(0);
+                    B->Load			(*chunk,desc.version);
 
-                LPSTR blender_name = xr_strdup(desc.cName);
-                std::pair<BlenderPairIt, bool> I =  m_Blenders.insert(mk_pair(blender_name,B));
-                R_ASSERT2		(I.second,"shader.xr - found duplicate name!!!");
+                    LPSTR blender_name = xr_strdup(desc.cName);
+                    std::pair<BlenderPairIt, bool> I =  m_Blenders.insert(mk_pair(blender_name,B));
+                    R_ASSERT2		(I.second,"shader.xr - found duplicate name!!!");
+                }
                 chunk->close	();
                 chunk_id++;
             }
