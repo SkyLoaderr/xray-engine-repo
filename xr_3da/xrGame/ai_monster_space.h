@@ -99,21 +99,21 @@ namespace MonsterSpace {
 	};
 
 	enum EActState {
-		eActStandIdle = u32(0),
-		eActSitIdle,
-		eActLieIdle,
-		eActWalkFwd,
-		eActWalkBkwd,
-		eActRun,
-		eActEat,
-		eActSleep,
-		eActRest,
-		eActDrag,
-		eActAttack,
-		eActSteal,
-		eActLookAround,
-		eActJump,
-		eActNone	 = u32(-1),
+		eActStandIdle = u32(0), // movement parameter (body state)
+		eActSitIdle,			// movement parameter (body state)
+		eActLieIdle,			// movement parameter (body state)
+		eActWalkFwd,			// movement parameter
+		eActWalkBkwd,			// movement parameter
+		eActRun,				// movement parameter
+		eActEat,				// object parameter
+		eActSleep,				// animation parameter (a-la mental state)
+		eActRest,				// animation parameter (a-la mental state)
+		eActDrag,				// object parameter
+		eActAttack,				// object parameter
+		eActSteal,				// animation parameter (a-la mental state)
+		eActLookAround,			// watch parameter
+		eActJump,				// movement parameter
+		eActNone	 = u32(-1),	
 	};
 	
 	enum EActTypeEx {
