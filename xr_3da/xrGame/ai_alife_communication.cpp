@@ -54,7 +54,7 @@ void CSE_ALifeSimulator::vfRunFunctionByIndex(CSE_ALifeHumanAbstract *tpALifeHum
 	sort				(m_tpItemVector.begin(),m_tpItemVector.end(),CSortByOwnerPredicate(this,tpALifeHumanAbstract->ID));
 	switch (i) {
 		case 0 : {
-			j	= tpALifeHumanAbstract->ifChooseEquipment	(&tpBlockedItems);
+			j	= tpALifeHumanAbstract->ifChooseFood		(&tpBlockedItems);
 			break;
 		}
 		case 1 : {
@@ -74,15 +74,15 @@ void CSE_ALifeSimulator::vfRunFunctionByIndex(CSE_ALifeHumanAbstract *tpALifeHum
 			break;
 		}
 		case 5 : {
-			j	= tpALifeHumanAbstract->ifChooseFood		(&tpBlockedItems);
-			break;
-		}
-		case 6 : {
 			j	= tpALifeHumanAbstract->ifChooseMedikit		(&tpBlockedItems);
 			break;
 		}
-		case 7 : {
+		case 6 : {
 			j	= tpALifeHumanAbstract->ifChooseDetector	(&tpBlockedItems);
+			break;
+		}
+		case 7 : {
+			j	= tpALifeHumanAbstract->ifChooseEquipment	(&tpBlockedItems);
 			break;
 		}
 		default :			NODEFAULT;
@@ -511,7 +511,7 @@ void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAb
 	tpALifeHumanAbstract1->vfDetachAll();
 	tpALifeHumanAbstract2->vfDetachAll();
 
-	for (int j=0, k=0; j<7; j++) {
+	for (int j=0, k=0; j<8; j++) {
 		int				l_iItemCount1 = 0, l_iItemCount2 = 0;
 		switch (k) {
 			case 0 : {

@@ -811,14 +811,14 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 	sort						(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CSortItemPredicate());
 
 	if ((tTakeType == eTakeTypeAll) || (tTakeType == eTakeTypeMin)) {
-		ifChooseEquipment		();
+		ifChooseFood			();
 		ifChooseWeapon			(eWeaponPriorityTypeKnife);
 		ifChooseWeapon			(eWeaponPriorityTypeSecondary);
 		ifChooseWeapon			(eWeaponPriorityTypePrimary);
 		ifChooseWeapon			(eWeaponPriorityTypeGrenade);
-		ifChooseFood			();
 		ifChooseMedikit			();
 		ifChooseDetector		();
+		ifChooseEquipment		();
 	}
 
 	if ((tTakeType == eTakeTypeAll) || (tTakeType == eTakeTypeRest))
