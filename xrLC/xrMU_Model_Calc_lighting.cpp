@@ -205,7 +205,7 @@ void xrMU_Model::calc_lighting		()
 	clMsg				("model '%s' - REF_lighted.",m_name);
 	// calc_lighting		(color,Fidentity,0,0);
 	Fcolor ref;
-	ref.set				(.5f,.5f,.5f,1.f);
+	ref.set				(.5f, .5f, .5f, 1.f);
 	color.assign		(m_vertices.size(),ref);
 }
 
@@ -237,13 +237,13 @@ void xrMU_Reference::calc_lighting	()
 	vfOptimizeParameters	(A,B,C,D);
 
 	// 
-	c_scale.x			= C[0];
-	c_scale.y			= C[1];
-	c_scale.z			= C[2];
+	c_scale.x			= 0; //C[0];
+	c_scale.y			= 1; //C[1];
+	c_scale.z			= 0; //C[2];
 	c_scale.w			= 0;
 
-	c_bias.x			= D[0];
-	c_bias.y			= D[1];
-	c_bias.z			= D[2];
+	c_bias.x			= 0;	//D[0];
+	c_bias.y			= .5f;	//D[1];
+	c_bias.z			= 0;	//D[2];
 	c_bias.w			= 1;
 }
