@@ -11,7 +11,7 @@
 	<!-- BUTTONS -->
 	<button x="437" y="726" width="138" height="30">
 		<texture>ui\ui_button_01</texture>
-		<text align="c" r="255" g="232" b="208">Trade</text>
+		<text align="c" x="20" r="255" g="232" b="208">Trade</text>
 	</button>
 
 	<!-- DIALOG FRAME -->
@@ -35,7 +35,7 @@
 	</frame_window>
 
 	<!-- PHRASES LIST -->
-	<list x="20" y="20" width="557" height="125" item_height="18" active_bg="1">
+	<list x="20" y="20" width="557" height="125" item_height="16" active_bg="1">
 		<font font="letterica18" r="255" g="232" b="208"></font>
 	</list>
 
