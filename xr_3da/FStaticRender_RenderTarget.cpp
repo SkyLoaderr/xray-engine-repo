@@ -21,7 +21,7 @@ CRenderTarget::CRenderTarget()
 BOOL CRenderTarget::Create	()
 {
 	// 
-	RT			= Device.Shader._CreateRT		(RTname,512/*Device.dwWidth*/,512/*Device.dwHeight*/);
+	RT			= Device.Shader._CreateRT		(RTname,Device.dwWidth,Device.dwHeight);
 	
 	// Shaders and stream
 	pStream		= Device.Streams.Create			(FVF::F_TL,8);
@@ -33,8 +33,8 @@ BOOL CRenderTarget::Create	()
 
 void CRenderTarget::OnDeviceCreate	()
 {
-	hPS			= Device.Shader._CreatePS		("transfer");
-	hTex		= Device.Shader._CreateTexture	("transfer3");
+	// hPS			= Device.Shader._CreatePS		("transfer");
+	// hTex		= Device.Shader._CreateTexture	("transfer3");
 
 	bAvailable	= Create	();
 }
@@ -46,8 +46,8 @@ void CRenderTarget::OnDeviceDestroy	()
 	Device.Shader.Delete		(pShaderSet);
 	Device.Shader._DeleteRT		(RT);
 
-	Device.Shader._DeletePS		(hPS);
-	Device.Shader._DeleteTexture(hTex);
+	// Device.Shader._DeletePS		(hPS);
+	// Device.Shader._DeleteTexture(hTex);
 }
 
 void CRenderTarget::Begin	()

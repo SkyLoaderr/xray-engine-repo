@@ -35,7 +35,6 @@ private:
 	CVertexStream*			vs_Blur;
 	Shader*					sh_Screen;
 	CVertexStream*			vs_Screen;
-private:
 public:
 	void					set_object		(CObject*	O);
 	void					add_element		(NODE*		N);

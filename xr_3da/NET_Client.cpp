@@ -401,12 +401,18 @@ void	IPureClient::Sync_Thread	()
 		clPing.dwTime_ClientSend	= Device.TimerAsync();
 
 		// Send it
-		DPN_BUFFER_DESC		desc;
-		DPNHANDLE			hAsync=0;
-		desc.dwBufferSize	= sizeof(clPing);
-		desc.pBufferData	= LPBYTE(&clPing);
-		if (0==NET)			break;
-		if (FAILED(NET->Send(&desc,1,0,0,&hAsync,net_flags(FALSE,FALSE,TRUE))))	{
+		try {
+			DPN_BUFFER_DESC		desc;
+			DPNHANDLE			hAsync=0;
+			desc.dwBufferSize	= sizeof(clPing);
+			desc.pBufferData	= LPBYTE(&clPing);
+			if (0==NET)			break;
+			if (FAILED(NET->Send(&desc,1,0,0,&hAsync,net_flags(FALSE,FALSE,TRUE))))	{
+				Msg("* CLIENT: Thread: EXIT. (failed to send - disconnected?)");
+				break;
+			}
+		} catch (...)
+		{
 			Msg("* CLIENT: Thread: EXIT. (failed to send - disconnected?)");
 			break;
 		}

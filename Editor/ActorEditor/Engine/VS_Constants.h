@@ -15,10 +15,10 @@ public:
 	{ 
 		const float f = 1.0f / 255.0f;
 		access(id)->set(
-			f * (float) BYTE(A >> 16),	// r/x
-			f * (float) BYTE(A >>  8),	// g/y
-			f * (float) BYTE(A >>  0),	// b/z
-			f * (float) BYTE(A >> 24)	// w/a
+			f * float((A >> 16)&0xff),	// r/x
+			f * float((A >>  8)&0xff),	// g/y
+			f * float((A >>  0)&0xff),	// b/z
+			f * float((A >> 24)&0xff)	// w/a
 		);
 	}
 	IC void					set		(u32 id, float x, float y, float z, float w)

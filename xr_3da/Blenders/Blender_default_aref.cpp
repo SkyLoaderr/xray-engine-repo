@@ -74,24 +74,16 @@ void CBlender_default_aref::Compile(CBlender_Compile& C)
 	} else {
 		if (C.bLighting)	
 		{
-			// Lighting only, but use alpha-channel
+			// Lighting only, not use alpha-channel
 			C.PassBegin		();
 			{
 				C.PassSET_ZB			(TRUE,TRUE);
-				if (oBlend.value)		C.PassSET_Blend			(TRUE, D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA,	TRUE,oAREF.value);
-				else					C.PassSET_Blend			(TRUE, D3DBLEND_ONE, D3DBLEND_ZERO,				TRUE,oAREF.value);
+				C.PassSET_Blend_SET		();
 				C.PassSET_LightFog		(FALSE,FALSE);
 				
 				// Stage0 - Lightmap
 				C.StageBegin			();
 				C.StageTemplate_LMAP0	();
-				C.StageEnd				();
-				
-				// Stage1 - Base texture
-				C.StageBegin			();
-				C.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG2,	D3DTA_CURRENT);	// color from lmap
-				C.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_CURRENT);	// alpha from base
-				C.StageSET_TMC			(oT_Name, oT_xform, "$null", 0);
 				C.StageEnd				();
 			}
 			C.PassEnd		();

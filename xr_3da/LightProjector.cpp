@@ -9,31 +9,13 @@
 #include "lighttrack.h"
 
 const	int		P_rt_size	= 512;
-const	int		P_o_size	= 64;
+const	int		P_o_size	= 32;
 const	int		P_o_line	= P_rt_size/P_o_size;
 const	int		P_o_count	= P_o_line*P_o_line;
 const	float	P_distance	= 48;
 const	float	P_distance2	= P_distance*P_distance;
-const	float	P_cam_dist	= 20;
-const	float	P_cam_range = 1.f;
-
-/*
-int		psSH_Blur			= 1;
-
-const	float	S_distance	= 48;
-const	float	S_distance2	= S_distance*S_distance;
-
-const	float	S_fade		= 3;
-const	float	S_fade2		= S_fade*S_fade;
-
-const	float	S_level		= .1f;
-const	int		S_size		= 102;
-const	int		P_rt_size	= 512;
-const	int		batch_size	= 128;
-const	float	S_tess		= .5f;
-const	int 	S_ambient	= 64;
-const	int 	S_clip		= 256-24;
-*/
+const	float	P_cam_dist	= 200;
+const	float	P_cam_range = 5.f;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -151,8 +133,8 @@ void CLightProjector::calculate	()
 		Fmatrix		mView;
 		Fvector		v_C, v_N;
 		v_C.set					(C.C);
-		v_C.y				-=	P_cam_dist;
-		v_N.set					(1,0,0);
+		v_C.y					+=	P_cam_dist;
+		v_N.set					(0,0,-1);
 		mView.build_camera		(v_C,C.C,v_N);
 		Device.set_xform_view	(mView);
 		
@@ -168,12 +150,15 @@ void CLightProjector::calculate	()
 
 		// Clear color to ambience
 		float	c_a			=	C.O->Lights()->ambient;
-		int		c_i			=	iFloor(c_a);
+		int		c_i			=	iFloor(c_a)/2;
 		CHK_DX					(HW.pDevice->Clear(0,0, D3DCLEAR_TARGET, D3DCOLOR_RGBA(c_i,c_i,c_i,c_i), 1, 0 ));
 		
 		// Build bbox and render
+		Fvector	min,max;
 		Fbox	BB;
-		BB.set					(C.C.x-p_R,C.C.y,C.C.z-p_R,C.C.x+p_R,C.C.y+P_cam_range,C.C.z+p_R);
+		min.set					(C.C.x-p_R,	C.C.y-(p_R+P_cam_range),	C.C.z-p_R);
+		max.set					(C.C.x+p_R,	C.C.y+0,					C.C.z+p_R);
+		BB.set					(min,max);
 		::Render->RenderBox		(C.O->Sector(),BB,2);
 		
 		// register shadow and increment slot
@@ -243,6 +228,17 @@ void CLightProjector::calculate	()
 #define CLS(a) D3DCOLOR_RGBA(a,a,a,a)
 void CLightProjector::render	()
 {
+/*
+	Device.set_xform_world		(Fidentity);
+	Device.Shader.OnFrameEnd	();
+	for (u32 it=0; it<boxes.size(); it++)
+	{
+		Fvector C,D; boxes[it].get_CD	(C,D);
+		Device.Primitive.dbg_DrawAABB	(C,D.x,D.y,D.z,0xffffffff);
+	}
+	boxes.clear();
+*/
+
 	// Debug
 	{
 		// UV
