@@ -72,7 +72,7 @@ public:
 		
 	void	GetRect				(Fvector2 &min, Fvector2 &max);
 	Layer*	GetLayer			(int base_id);
-	u32		GetFaceCount()		{ return UVpolys.size();	};
+	u32		GetFaceCount()		{ return (u32)UVpolys.size();	};
 		
 	VOID	Light				(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H	);
 	VOID	L_Direct			(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H  );

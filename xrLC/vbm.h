@@ -45,13 +45,13 @@ public:
 		R_ASSERT		(R_DATA.size()%dwSize == 0);
 		
 		// Search for container capable of handling data
-		u32 bytes_collected	= R_DATA.size();
+		u32 bytes_collected	= (u32)R_DATA.size();
 		u32 vertices_collected= bytes_collected/dwSize;
 		for (u32 CID = 0; CID<vDcl.size(); CID++)
 		{
 			if (!vDcl[CID].equal(R_DCL))	continue;
 			
-			u32 bytes_already	= vContainers[CID].size();
+			u32 bytes_already	= (u32)vContainers[CID].size();
 			if ((bytes_already+bytes_collected)>g_params.m_VB_maxSize) continue;
 			u32 vertices_already = bytes_already/dwSize;
 			if ((vertices_already+vertices_collected)>g_params.m_VB_maxVertices) continue;
@@ -67,7 +67,7 @@ public:
 		
 		// No such format found
 		// Simple add it and register
-		*dwContainerID			= vDcl.size();
+		*dwContainerID			= (u32)vDcl.size();
 		*dwIndexStart			= 0;
 		vDcl.push_back			(R_DCL);	R_DCL.clear();
 		vContainers.push_back	(R_DATA);	R_DATA.clear();
@@ -76,12 +76,12 @@ public:
 	{
 		R_ASSERT		(R_DCL.empty());
 		R_ASSERT		(R_DATA.empty());
-		fs.w_u32		(vDcl.size());
+		fs.w_u32		((u32)vDcl.size());
 		for (u32 i=0; i<vDcl.size(); i++)
 		{
 			u32 dwOneSize		= vDcl[i].vertex();
-			u32 dwTotalSize	= vContainers[i].size();
-			u32 dwVertCount	= dwTotalSize/dwOneSize;
+			u32 dwTotalSize		= (u32)vContainers[i].size();
+			u32 dwVertCount		= dwTotalSize/dwOneSize;
 
 			R_ASSERT	(dwVertCount*dwOneSize == dwTotalSize);
 			
@@ -103,7 +103,7 @@ class IBContainer
 public:
 	void	Register		(u16* begin, u16* end, u32* dwContainerID, u32 *dwStart)
 	{
-		u32 size				= end-begin;
+		u32 size				= (u32)(end-begin);
 
 		// 
 		for	(u32 ID=0; ID<data.size(); ID++)
@@ -111,25 +111,25 @@ public:
 			if ((data[ID].size()+size) < LIMIT)	
 			{
 				*dwContainerID	= ID;
-				*dwStart		= data[ID].size();
+				*dwStart		= (u32)data[ID].size();
 				data[ID].insert	(data[ID].end(),begin,end);
 				return;
 			}
 		}
 
 		// Can't find suitable container - register new
-		*dwContainerID		= data.size();
+		*dwContainerID		= (u32)data.size();
 		*dwStart			= 0;
 		data.push_back		(xr_vector<u16> ());
 		data.back().assign	(begin,end);
 	}
 	void	Save	(IWriter &fs)
 	{
-		fs.w_u32	(data.size());
+		fs.w_u32	((u32)data.size());
 		for (u32 i=0; i<data.size(); i++)
 		{
-			fs.w_u32	(data[i].size());
-			fs.w		(&*data[i].begin(),data[i].size()*2);
+			fs.w_u32	((u32)data[i].size());
+			fs.w		(&*data[i].begin(),(u32)data[i].size()*2);
 		}
 		data.clear	();
 	}

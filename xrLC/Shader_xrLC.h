@@ -66,7 +66,7 @@ public:
 	void					Save	(LPCSTR name)
 	{
 		IWriter* F			= FS.w_open(name);
-		F->w				(&*library.begin(),library.size()*sizeof(Shader_xrLC));
+		F->w				(&*library.begin(),(u32)library.size()*sizeof(Shader_xrLC));
         FS.w_close			(F);
 	}
 	void					Unload	()
