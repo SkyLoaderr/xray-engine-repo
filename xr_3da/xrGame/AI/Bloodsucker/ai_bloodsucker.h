@@ -2,24 +2,19 @@
 
 #include "..\\biting\\ai_biting.h"
 
-class CAI_Flesh : public CAI_Biting {
+class CAI_Bloodsucker : public CAI_Biting {
 
 	typedef		CAI_Biting	inherited;
 public:
-							CAI_Flesh		();
-	virtual					~CAI_Flesh		();	
-	
+							CAI_Bloodsucker	();
+	virtual					~CAI_Bloodsucker();	
+
 	virtual void	Init					();
 
 	virtual void	Think					();
 	virtual void	UpdateCL				();
 
 	virtual	void	MotionToAnim			(EMotionAnim motion, int &index1, int &index2, int &index3);
-	virtual	void	LoadAttackAnim			();
-			void	CheckAttackHit			();
-
-			bool	ConeSphereIntersection	(Fvector ConeVertex, float ConeAngle, Fvector ConeDir, 
-											 Fvector SphereCenter, float SphereRadius);
 
 	// Flesh-specific FSM
 	CBitingRest			*stateRest;
@@ -41,22 +36,6 @@ public:
 	friend	class 		CBitingExploreDNE;
 	friend	class 		CBitingExploreDE;
 	friend	class 		CBitingExploreNDE;
-
-// TEMP
-	FvectorVec			PTurn;
-	u32					PState;
-	Fvector				PStart, PFinish;
-	Fmatrix				MStart;
-	TTime				PressedLastTime;
-	
-			void	MakeTurn();
-			void	SetPoints();
-			void	MoveInAxis(Fvector &Pos, const Fvector &dir,  float dx);
-// ---
-
-#ifdef DEBUG
-	virtual void	OnRender				();
-#endif
 
 };
 

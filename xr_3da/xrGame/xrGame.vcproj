@@ -726,6 +726,16 @@
 							RelativePath="AI\Zombie\ai_zombie_templates.cpp">
 						</File>
 					</Filter>
+					<Filter
+						Name="ai_bloodsucker"
+						Filter="">
+						<File
+							RelativePath=".\Ai\Bloodsucker\ai_bloodsucker.cpp">
+						</File>
+						<File
+							RelativePath=".\Ai\Bloodsucker\ai_bloodsucker.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="_actor"

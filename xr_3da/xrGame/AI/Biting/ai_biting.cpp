@@ -48,7 +48,6 @@ void CAI_Biting::Init()
 	
 	InitMemory						(10000,10000);
 
-
 	Motion.Init						();
 
 	m_dwPathBuiltLastTime			= 0;
@@ -60,6 +59,8 @@ void CAI_Biting::Init()
 	m_pPhysics_support				->in_Init();
 
 	m_tAttackAnim.Clear				();
+
+
 }
 
 void CAI_Biting::Die()
