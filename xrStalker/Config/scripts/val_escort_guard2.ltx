@@ -1,7 +1,21 @@
 [logic]
 active = follower1
+on_death = death
+on_hit = hit
 combat_ignore = combat_ignore
+
+[death]
+on_info = {=killed_by_actor} %+val_escort_actor_helped%
+
+[hit]
+on_info = {=hit_by_actor} %+val_escort_actor_helped%
 
 [follower1]
 leader = 400
 combat_ignore_cond = {=val_enemy_captive}
+on_signal = leader_dead | walker1
+
+[walker1]
+path_walk = val_escort_guard2_return_walk 
+path_look = val_escort_guard2_return_look
+

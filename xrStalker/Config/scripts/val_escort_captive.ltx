@@ -1,12 +1,12 @@
 [logic]
 active = walker1
 combat_ignore = combat_ignore
-on_hit = hit
 
 [walker1]
 path_walk = val_escort_captive_walk
 path_look = val_escort_captive_look
 on_signal = flee | walker@flee
+on_info = {+val_escort_actor_helped} remark@after_fight
 combat_ignore_cond = always
 
 [walker@flee]
@@ -14,12 +14,13 @@ path_walk = val_escort_captive_flee_walk
 path_look = val_escort_captive_flee_look
 combat_ignore_cond = always
 
-;[remark1]
-;anim = hello
-;snd = gar_dm_newbie_help_me
-;no_rotate = true
-;no_wpn = true
-;no_danger = true
-;on_signal = sound_end | remark2 %+gar_dm_novice_asked_for_help%
-;on_info2 = {+gar_dm_bandit1_dead +gar_dm_bandit2_dead +gar_dm_bandit3_dead} remark@after_fight
-;reactions = ignore
+[remark@after_fight]
+no_move = false
+no_wpn = true
+no_danger = true
+; FIXME
+snd = gar_dm_newbie_thank_you
+arrival_timeout = 20000
+snd_timeout = 20000
+reactions = ignore
+on_signal = action_end | nil %=actor_friend%

@@ -7,6 +7,7 @@
 <info_portion id="val_bs_victim_killed"></info_portion>
 
 <!-- Сцена 3 - транспортировка пленного -->
+<info_portion id="val_escort_actor_helped"></info_portion>
 <info_portion id="val_escort_start"></info_portion>
 
 <!-- Стартует машина около бензоколонки -->

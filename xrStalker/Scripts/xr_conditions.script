@@ -50,6 +50,12 @@ function hit_by_actor(actor, npc)
 	printf("_bp: hit_by_actor: %s", if_then_else(hit_by_actor, "true", "false"))
 end
 
+function killed_by_actor(actor, npc)
+	local t = db.storage[npc:id()].death
+	local killed_by_actor = t ~= nil and t.killed == actor:id()
+	printf("_bp: killed_by_actor: %s", if_then_else(killed_by_actor, "true", "false"))
+end
+
 function actor_has_weapon (actor, npc)
     local obj = actor:active_item ()
     if obj == nil or isWeapon (obj) == false then return false end
