@@ -38,42 +38,6 @@
 
 #define TSTRING_COUNT 	4
 const LPSTR TEXTUREString[TSTRING_COUNT]={"Custom...","-","$null","$base0"};
-
-LPCSTR 	TokenValue::GetText(){
-	int draw_val 	= *val;
-    if (OnDrawValue)OnDrawValue(this, &draw_val);
-	for(int i=0; token[i].name; i++) if (token[i].id==draw_val) return token[i].name;
-    return 0;
-}
-LPCSTR 	TokenValue2::GetText(){
-	DWORD draw_val 	= *val;
-    if (OnDrawValue)OnDrawValue(this, &draw_val);
-    if ((draw_val<0)||(draw_val>items.size())) return "";
-	return items[draw_val].c_str();
-}
-LPCSTR TokenValue3::GetText(){
-	VERIFY(*val<cnt);
-	DWORD draw_val 	= *val;
-    if (OnDrawValue)OnDrawValue(this, &draw_val);
-    return items[draw_val].str;
-}
-AnsiString prop_draw_text;
-LPCSTR	ListValue::GetText(){
-    prop_draw_text=val;
-    if (OnDrawValue)OnDrawValue(this, &prop_draw_text);
-    return prop_draw_text.c_str();
-}
-LPCSTR 	TextValue::GetText(){
-    prop_draw_text=val;
-    if (OnDrawValue)OnDrawValue(this, &prop_draw_text);
-    return prop_draw_text.c_str();
-}
-LPCSTR 	AnsiTextValue::GetText(){
-    prop_draw_text=*val;
-    if (OnDrawValue)OnDrawValue(this, &prop_draw_text);
-    return prop_draw_text.c_str();
-}
-
 //---------------------------------------------------------------------------
 TElTreeItem* __fastcall TProperties::BeginEditMode(LPCSTR section)
 {
@@ -121,12 +85,6 @@ void __fastcall TProperties::EndFillMode(bool bFullExpand)
     tvProperties->IsUpdating = false;
     tvProperties->Selected = FOLDER::FindItem(tvProperties,last_selected_item.c_str());
 };
-//---------------------------------------------------------------------------
-void __fastcall TProperties::ResetProperties()
-{
-    for (PropValIt it=m_Params.begin(); it!=m_Params.end(); it++)
-        (*it)->Reset();
-}
 //---------------------------------------------------------------------------
 void TProperties::ClearParams(TElTreeItem* node)
 {
@@ -245,7 +203,7 @@ void __fastcall TProperties::AddItems(TElTreeItem* parent, CStream& data)
         case xrPID_BOOL:{ 	
         	sz=sizeof(xrP_BOOL); 	
             xrP_BOOL* V = (xrP_BOOL*)data.Pointer();
-            AddItem(marker_parent,PROP_BOOL,key,&V->value); 
+            AddItem(marker_parent,PROP_BOOLEAN,key,MakeBOOLValue(&V->value)); 
         }break;
         case xrPID_TOKEN:{ 	
         	sz=sizeof(xrP_TOKEN)+sizeof(xrP_TOKEN::Item)*(((xrP_TOKEN*)data.Pointer())->Count);
@@ -274,9 +232,12 @@ TElTreeItem* __fastcall TProperties::AddItem(TElTreeItem* parent, EPropType type
     switch (type){
     case PROP_MARKER:		break;
     case PROP_MARKER2:		TI->ColumnText->Add(AnsiString((LPSTR)value)); break;
-    case PROP_BOOL:			break;
     case PROP_WAVE:			TI->ColumnText->Add("[Wave]");	break;
     case PROP_COLOR:		break;
+    case PROP_BOOLEAN:		break;
+    case PROP_LIGHTANIM:
+    case PROP_LIBOBJECT:
+    case PROP_ENTITY:
     case PROP_ANSI_TEXT:
     case PROP_TEXT:
     case PROP_FLAG:
@@ -364,11 +325,15 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             if (*V->val&V->mask)Surface->Draw(R.Left,R.Top+3,m_BMCheck);
             else				Surface->Draw(R.Left,R.Top+3,m_BMDot);
         }break;
-        case PROP_BOOL:
+        case PROP_BOOLEAN:{
+        	BOOLValue* V=(BOOLValue*)Item->Data;
         	Surface->CopyMode = cmSrcAnd;//cmSrcErase;
-            if (*(BOOL*)Item->Data)	Surface->Draw(R.Left,R.Top+3,m_BMCheck);
-            else				   	Surface->Draw(R.Left,R.Top+3,m_BMDot);
-        break;
+            if (*V->GetText())	Surface->Draw(R.Left,R.Top+3,m_BMCheck);
+            else			   	Surface->Draw(R.Left,R.Top+3,m_BMDot);
+        }break;
+        case PROP_LIGHTANIM:
+        case PROP_LIBOBJECT:
+        case PROP_ENTITY:
         case PROP_TEXTURE:
         case PROP_TEXTURE2:
         case PROP_ANSI_TEXTURE:
@@ -447,11 +412,16 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
 	            RefreshProperties();
             }
         }break;
-		case PROP_BOOL:{
-        	BOOL& V=*(BOOL*)item->Data;
-            V=!V;
-			Modified();
-            RefreshProperties();
+		case PROP_BOOLEAN:{
+        	BOOLValue* V				= (BOOLValue*)item->Data;
+            BOOL old_val 				= *V->GetValue();
+            BOOL new_val 				= !old_val;
+			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
+			V->ApplyValue				(&new_val);
+            if (new_val!=old_val){
+                Modified();
+	            RefreshProperties();
+            }
         }break;
 		case PROP_TOKEN:{
             pmEnum->Items->Clear();
@@ -499,6 +469,9 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
         case PROP_VECTOR: 			VectorClick(item); 			break;
         case PROP_WAVE: 			CustomClick(item); 			break;
         case PROP_COLOR: 			ColorClick(item); 			break;
+        case PROP_LIGHTANIM:
+        case PROP_LIBOBJECT:
+        case PROP_ENTITY:
         case PROP_TEXTURE:
         case PROP_SH_ENGINE:
         case PROP_SH_COMPILE:		CustomTextClick(item);      break;
@@ -584,8 +557,8 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
         }break;
 		case PROP_TEXTURE2:{
         	TextValue* V				= (TextValue*)item->Data; 
-			AnsiString old_val			= V->val;
-			AnsiString edit_val			= V->val;
+			AnsiString old_val			= V->GetValue();
+			AnsiString edit_val			= V->GetValue();
 			if (V->OnBeforeEdit) 		V->OnBeforeEdit(item,V,&edit_val);
             LPCSTR new_val 				= 0;
         	if (mi->MenuIndex==0){
@@ -596,7 +569,7 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
             if (new_val){
                 edit_val			= new_val;
                 if (V->OnAfterEdit) V->OnAfterEdit(item,V,&edit_val);
-                strcpy(V->val,edit_val.c_str());
+                V->ApplyValue		(edit_val.c_str());
                 if (edit_val!=old_val)	Modified();
                 item->ColumnText->Strings[0]= V->GetText();
             }
@@ -654,20 +627,23 @@ void __fastcall TProperties::VectorClick(TElTreeItem* item)
 void __fastcall TProperties::CustomTextClick(TElTreeItem* item)
 {
 	TextValue* V			= (TextValue*)item->Data;
-	AnsiString old_val		= V->val;
-	AnsiString edit_val		= V->val;
+	AnsiString old_val		= V->GetValue();
+	AnsiString edit_val		= V->GetValue();
 	if (V->OnBeforeEdit) 	V->OnBeforeEdit(item,V,&edit_val);
     LPCSTR new_val=0;
     switch (item->Tag){
     case PROP_SH_ENGINE:	new_val	= TfrmChoseItem::SelectShader(edit_val.c_str());		break;
 	case PROP_SH_COMPILE:	new_val	= TfrmChoseItem::SelectShaderXRLC(edit_val.c_str());	break;
     case PROP_TEXTURE:		new_val = TfrmChoseItem::SelectTexture(false,edit_val.c_str(),true);break;
+	case PROP_LIGHTANIM:	new_val = TfrmChoseItem::SelectLAnim(false,0,edit_val.c_str());	break;
+    case PROP_LIBOBJECT:	new_val = TfrmChoseItem::SelectObject(false,0,edit_val.c_str());break;
+    case PROP_ENTITY:		new_val = TfrmChoseItem::SelectEntity(edit_val.c_str());		break;
     default: THROW2("Unknown props");
     }
     if (new_val){
-        edit_val				= new_val;
-        if (V->OnAfterEdit) 	V->OnAfterEdit(item,V,&edit_val);
-		strcpy(V->val,edit_val.c_str());
+        edit_val			= new_val;
+        if (V->OnAfterEdit) V->OnAfterEdit(item,V,&edit_val);
+        V->ApplyValue		(edit_val.c_str());
         if (edit_val!=old_val)	Modified();
         item->ColumnText->Strings[0]= V->GetText();
     }
@@ -677,8 +653,8 @@ void __fastcall TProperties::CustomTextClick(TElTreeItem* item)
 void __fastcall TProperties::CustomAnsiTextClick(TElTreeItem* item)
 {
 	AnsiTextValue* V		= (AnsiTextValue*)item->Data;
-	AnsiString old_val		= *V->val;
-	AnsiString edit_val		= *V->val;
+	AnsiString old_val		= *V->GetValue();
+	AnsiString edit_val		= *V->GetValue();
 	if (V->OnBeforeEdit) 	V->OnBeforeEdit(item,V,&edit_val);
     LPCSTR new_val=0;
     switch (item->Tag){
@@ -690,7 +666,7 @@ void __fastcall TProperties::CustomAnsiTextClick(TElTreeItem* item)
     if (new_val){
         edit_val				= new_val;
         if (V->OnAfterEdit) 	V->OnAfterEdit(item,V,&edit_val);
-		*V->val					= edit_val;
+        V->ApplyValue			(&edit_val);
         if (old_val!=edit_val)	Modified();
         item->ColumnText->Strings[0]= V->GetText();
     }
@@ -821,15 +797,13 @@ void TProperties::PrepareLWText(TElTreeItem* item)
     switch (type){
     case PROP_ANSI_TEXT:{
         AnsiTextValue* V	= (AnsiTextValue*)item->Data; VERIFY(V);
-		AnsiString edit_val;
-    	edit_val=*V->val;
+        AnsiString edit_val	= *V->GetValue();
         if (V->OnBeforeEdit) V->OnBeforeEdit(item,V,&edit_val);
 	    edText->Text 		= edit_val;
     }break;
     case PROP_TEXT:{
         TextValue* V 		= (TextValue*)item->Data; VERIFY(V);
-		AnsiString edit_val;
-    	edit_val=V->val;
+		AnsiString edit_val	= V->GetValue();
         if (V->OnBeforeEdit) V->OnBeforeEdit(item,V,&edit_val);
 	    edText->Text 		= edit_val;
     }break;
@@ -858,9 +832,9 @@ void TProperties::ApplyLWText()
 	        AnsiTextValue* V 	= (AnsiTextValue*)item->Data; VERIFY(V);
 			AnsiString new_val	= edText->Text;
             edText->MaxLength	= 0;
-			AnsiString old_val	= *V->val;
+			AnsiString old_val	= *V->GetValue();
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
-			*V->val				= new_val;
+            V->ApplyValue		(&new_val);
             if (new_val != old_val)	Modified();
             item->ColumnText->Strings[0] = V->GetText();
         }break;
@@ -868,9 +842,9 @@ void TProperties::ApplyLWText()
 	        TextValue* V 		= (TextValue*)item->Data; VERIFY(V);
             edText->MaxLength	= V->lim;
 			AnsiString new_val	= edText->Text;
-			AnsiString old_val	= V->val;
+			AnsiString old_val	= V->GetValue();
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
-			strcpy(V->val,new_val.c_str());
+            V->ApplyValue		(new_val.c_str());
             if (new_val != old_val)	Modified();
             item->ColumnText->Strings[0] = V->GetText();
         }break;

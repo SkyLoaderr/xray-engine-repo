@@ -8,6 +8,9 @@
 #include "xr_efflensflare.h"
 #include "CustomObject.h"
 
+// refs
+class CLAItem;
+
 class CEditFlare: public CLensFlare{
 public:
 					CEditFlare();
@@ -35,6 +38,8 @@ public:
 	// build options
     int 			m_UseInD3D;
     float 			m_Brightness;
+
+    CLAItem*		m_pAnimRef;
 
     // flares
     CEditFlare		m_LensFlare;

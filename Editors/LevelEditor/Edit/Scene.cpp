@@ -620,26 +620,23 @@ void EScene::Unload(){
 
 bool EScene::Validate(bool bNeedOkMsg, bool bTestPortal){
 	if (bTestPortal){
-//        if (ObjCount(OBJCLASS_SECTOR)<2){
-//            ELog.DlgMsg(mtError,"*ERROR: Can't find 'Sector'.");
-//            return false;
-//        }
-//        if (ObjCount(OBJCLASS_PORTAL)==0){
-//            ELog.DlgMsg(mtError,"*ERROR: Can't find 'Portal'.");
-//            return false;
-//        }
 		if (!PortalUtils.Validate(false)){
 			ELog.DlgMsg(mtError,"*ERROR: Scene has non associated face!");
 	    	return false;
     	}
     }
-//    if (!m_HOM)
-    {
-//    	if (mrNo==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Level doesn't contain HOM.\nContinue anyway?"))
-//        	return false;
+    bool bHasHOM=false;
+    ObjectList& lst = ListObj(OBJCLASS_SCENEOBJECT);
+    for(ObjectIt it=lst.begin();it!=lst.end();it++){
+    	CEditableObject* O = ((CSceneObject*)(*it))->GetReference(); R_ASSERT(O);
+        if (O->IsFlag(CEditableObject::eoHOM)){ bHasHOM = true; break; }
     }
+    if (!bHasHOM)
+    	if (mrNo==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Level doesn't contain HOM.\nContinue anyway?"))
+        	return false;
+
     if (ObjCount(OBJCLASS_SPAWNPOINT)==0){
-    	ELog.DlgMsg(mtError,"*ERROR: Can't find 'Respawn Point'.\nPlease add at least one.");
+    	ELog.DlgMsg(mtError,"*ERROR: Can't find 'Spawn Point'.\nPlease add at least one.");
         return false;
     }
     if (ObjCount(OBJCLASS_LIGHT)==0){

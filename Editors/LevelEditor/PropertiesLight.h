@@ -73,6 +73,7 @@ __published:	// IDE-managed Components
 	TExtBtn *ebOk;
 	TExtBtn *ebCancel;
 	TFormStorage *fsStorage;
+	TPanel *paProps;
     void __fastcall mcColorMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
     void __fastcall btApplyClick(TObject *Sender);
@@ -105,6 +106,7 @@ private:	// User declarations
 
     CLight* 		m_SaveLight;
     CLight* 		m_CurLight;
+    TProperties*	m_SunProps;
     TProperties*	m_Props;
 public:		// User declarations
     __fastcall TfrmPropertiesLight(TComponent* Owner);

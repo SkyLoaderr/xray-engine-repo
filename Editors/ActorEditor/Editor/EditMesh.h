@@ -200,20 +200,20 @@ public:
     IC FvectorVec&	GetFNormals				(){ return m_FNormals;}
 
     // pick routine
-	bool            RayPick					(float& dist, Fvector& start, Fvector& dir, Fmatrix& inv_parent, SRayPickInfo* pinf = NULL);
+	bool            RayPick					(float& dist, const Fvector& start, const Fvector& dir, const Fmatrix& inv_parent, SRayPickInfo* pinf = NULL);
 #ifdef _LEVEL_EDITOR
-    bool 			BoxPick					(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf);
+    bool 			BoxPick					(const Fbox& box, const Fmatrix& parent, SBoxPickInfoVec& pinf);
 	bool            FrustumPick				(const CFrustum& frustum, const Fmatrix& parent);
-    void            FrustumPickFaces		(const CFrustum& frustum, Fmatrix& parent, DWORDVec& fl);
-    bool			CHullPickMesh			(PlaneVec& pl, Fmatrix& parent);
+    void            FrustumPickFaces		(const CFrustum& frustum, const Fmatrix& parent, DWORDVec& fl);
+    bool			CHullPickMesh			(PlaneVec& pl, const Fmatrix& parent);
 	void 			GetTiesFaces			(int start_id, DWORDVec& fl, float fSoftAngle, bool bRecursive);
 #endif
 
     // render routine
 	void 			Render					(const Fmatrix& parent, CSurface* S);
 	void            RenderList				(const Fmatrix& parent, DWORD color, bool bEdge, DWORDVec& fl);
-	void 			RenderEdge				(Fmatrix& parent, DWORD color);
-	void 			RenderSelection			(Fmatrix& parent, DWORD color);
+	void 			RenderEdge				(const Fmatrix& parent, DWORD color);
+	void 			RenderSelection			(const Fmatrix& parent, DWORD color);
 
     // statistics methods
     int 			GetFaceCount			(bool bMatch2Sided=true);

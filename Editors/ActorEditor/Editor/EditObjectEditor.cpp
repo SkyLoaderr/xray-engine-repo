@@ -75,7 +75,7 @@ void CEditableObject::Render(const Fmatrix& parent, int priority, bool strictB2F
     if (!(m_LoadState&EOBJECT_LS_RENDERBUFFER)) UpdateRenderBuffers();
 
     if (IsFlag(eoUsingLOD)){
-		if ((1==priority)&&(false==strictB2F)) RenderLOD(parent);
+		if ((1==priority)&&(true==strictB2F)) RenderLOD(parent);
     }else{
 		Device.SetTransform(D3DTS_WORLD,parent);
         
@@ -209,8 +209,8 @@ void CEditableObject::GetLODFrame(int frame, Fvector p[4], Fvector2 t[4], const 
 
 void CEditableObject::RenderLOD(const Fmatrix& parent)
 {
-    Fvector C		= Device.m_Camera.GetDirection();
-    C.y=0;
+    Fvector C;
+    C.sub			(parent.c,Device.m_Camera.GetPosition()); C.y = 0;
     float m 		= C.magnitude();
     if (m<EPS) return;
     C.div			(m);

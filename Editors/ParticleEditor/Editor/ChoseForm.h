@@ -85,6 +85,7 @@ private:	// User declarations
         smTexture,
         smEntity,
         smEntityCLSID,
+        smLAnim,
         smMaxMode
     };
     ESelectMode Mode;
@@ -100,6 +101,7 @@ public:		// User declarations
 // static function
     static LPCSTR __fastcall SelectSound	(bool bMulti=false, LPCSTR init_name=0, bool bIgnoreExt=false);
     static LPCSTR __fastcall SelectObject	(bool bMulti=false, LPCSTR start_folder=0, LPCSTR init_name=0);
+    static LPCSTR __fastcall SelectLAnim	(bool bMulti=false, LPCSTR start_folder=0, LPCSTR init_name=0);
     static LPCSTR __fastcall SelectShader	(LPCSTR init_name=0);
     static LPCSTR __fastcall SelectShaderXRLC(LPCSTR init_name=0);
     static LPCSTR __fastcall SelectPS		(LPCSTR start_folder=0, LPCSTR init_name=0);

@@ -359,7 +359,7 @@ void CPSObject::OnDeviceDestroy(){
     Device.Shader.Delete(m_Shader);
 }
 
-bool CPSObject::ExportSpawn( CFS_Base& F, int& chunk_id )
+bool CPSObject::ExportGame(SExportStreams& F)
 {
     NET_Packet Packet;
     Packet.w_begin		(M_SPAWN);
@@ -385,9 +385,9 @@ bool CPSObject::ExportSpawn( CFS_Base& F, int& chunk_id )
     u16 size			= u16(Packet.w_tell()-position);
     Packet.w_seek		(position,&size,sizeof(u16));
 
-    F.open_chunk		(chunk_id++);
-    F.write				(Packet.B.data,Packet.B.count);
-    F.close_chunk		();
+    F.spawn.stream.open_chunk	(F.spawn.chunk++);
+    F.spawn.stream.write		(Packet.B.data,Packet.B.count);
+    F.spawn.stream.close_chunk	();
     return true;
 }
 //----------------------------------------------------

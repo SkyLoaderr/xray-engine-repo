@@ -1,5 +1,4 @@
 //---------------------------------------------------------------------------
-
 #ifndef PropertiesListH
 #define PropertiesListH
 //---------------------------------------------------------------------------
@@ -18,192 +17,8 @@
 #include "ElTreeAdvEdit.hpp"
 #include <Mask.hpp>
 
-enum EPropType{
-	PROP_WAVE 			= 0x1000,
-	PROP_FLAG,
-	PROP_TOKEN,
-	PROP_TOKEN2,
-    PROP_TOKEN3,
-	PROP_LIST,
-	PROP_INTEGER,
-	PROP_FLOAT,
-    PROP_VECTOR,
-	PROP_BOOL,
-	PROP_MARKER,
-	PROP_MARKER2,
-	PROP_COLOR,
-	PROP_TEXT,
-    PROP_ANSI_TEXT,
-	PROP_SH_ENGINE,
-	PROP_SH_COMPILE,
-	PROP_TEXTURE,
-	PROP_TEXTURE2,
-	PROP_ANSI_SH_ENGINE,
-	PROP_ANSI_SH_COMPILE,
-	PROP_ANSI_TEXTURE
-};
-// refs
-struct 	xr_token;
-class PropValue;
+#include "PropertiesListTypes.h"
 
-typedef void 	__fastcall (__closure *TBeforeEdit)		(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
-typedef void 	__fastcall (__closure *TAfterEdit)		(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
-typedef void 	__fastcall (__closure *TOnDrawValue)	(PropValue* sender, LPVOID draw_val);
-typedef void 	__fastcall (__closure *TOnModifiedEvent)(void);
-typedef void 	__fastcall (__closure *TOnItemFocused)	(TElTreeItem* item);
-
-class PropValue{
-public:
-    TAfterEdit			OnAfterEdit;
-    TBeforeEdit			OnBeforeEdit;
-    TOnDrawValue		OnDrawValue;
-public:
-						PropValue		(TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):OnAfterEdit(after),OnBeforeEdit(before),OnDrawValue(draw){};
-	virtual 			~PropValue		(){};
-    virtual LPCSTR		GetText			()=0;
-    virtual bool		IsChanged		()=0;
-    virtual void		Reset			()=0;
-//	virtual void		Load			(CStream& F){;}
-//	virtual void		Save			(CFS_Base& F){;}
-};
-class TextValue: public PropValue{
-	AnsiString			init_val;
-public:
-	int					lim;
-	LPSTR				val;
-						TextValue		(LPSTR value, int _lim, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):init_val(value),val(value),lim(_lim),PropValue(after,before,draw){};
-    virtual LPCSTR		GetText			();
-    virtual bool		IsChanged		(){return (init_val==val);}
-    virtual void		Reset			(){strcpy(val,init_val.c_str());}
-};
-class AnsiTextValue: public PropValue{
-	AnsiString			init_val;
-public:
-	AnsiString*			val;
-						AnsiTextValue	(AnsiString* value, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):init_val(*value),val(value),PropValue(after,before,draw){};
-    virtual LPCSTR		GetText			();
-    virtual bool		IsChanged		(){return (init_val==*val);}
-    virtual void		Reset			(){*val=init_val;}
-};
-class IntValue: public PropValue{
-	int					init_val;
-public:
-	int*				val;
-	int					lim_mn;
-    int					lim_mx;
-    int 				inc;
-    					IntValue		(int* value, int mn, int mx, int increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):init_val(*value),val(value),lim_mn(mn),lim_mx(mx),inc(increm),PropValue(after,before,draw){};
-    virtual LPCSTR		GetText			()
-    {
-    	int draw_val 	= *val;
-        if (OnDrawValue)OnDrawValue(this, &draw_val);
-		static AnsiString draw_text;
-        draw_text		= draw_val;
-        return draw_text.c_str();
-    }
-    virtual bool		IsChanged		(){return (init_val==*val);}
-    virtual void		Reset			(){*val=init_val;}
-};
-class FloatValue: public PropValue{
-	float				init_val;
-public:
-	float*				val;
-	float				lim_mn;
-    float				lim_mx;
-    float 				inc;
-    int 				dec;
-    					FloatValue		(float* value, float mn, float mx, float increment, int decimal, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):init_val(*value),val(value),lim_mn(mn),lim_mx(mx),inc(increment),dec(decimal),PropValue(after,before,draw){};
-    virtual LPCSTR		GetText			()
-    {
-    	float draw_val 	= *val;
-        if (OnDrawValue)OnDrawValue(this, &draw_val);
-        static AnsiString draw_text;
-		AnsiString fmt; fmt.sprintf("%%.%df",dec);
-        draw_text.sprintf(fmt.c_str(),draw_val);
-		return draw_text.c_str();
-    }
-    virtual bool		IsChanged		(){return (init_val==*val);}
-    virtual void		Reset			(){*val=init_val;}
-};
-class VectorValue: public PropValue{
-	Fvector				init_val;
-public:
-	Fvector*			val;
-	float				lim_mn;
-    float				lim_mx;
-    float 				inc;
-    int 				dec;
-						VectorValue		(Fvector* value, float mn, float mx, float increment, int decimal, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):init_val(*value),val(value),lim_mn(mn),lim_mx(mx),inc(increment),dec(decimal),PropValue(after,before,draw){};
-    virtual LPCSTR		GetText			()
-    {
-		Fvector draw_val 	= *val;
-        if (OnDrawValue)OnDrawValue(this, &draw_val);
-        static AnsiString draw_text;
-		AnsiString fmt; fmt.sprintf("{%%.%df, %%.%df, %%.%df}",dec,dec,dec);
-        draw_text.sprintf(fmt.c_str(),draw_val.x,draw_val.y,draw_val.z);
-		return draw_text.c_str();
-    }
-    virtual bool		IsChanged		(){return (init_val.similar(*val));}
-    virtual void		Reset			(){val->set(init_val);}
-};
-class FlagValue: public PropValue{
-	DWORD				init_val;
-public:
-	DWORD*				val;
-	DWORD				mask;
-						FlagValue		(DWORD* value, DWORD _mask, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):init_val(*value),val(value),mask(_mask),PropValue(after,before,draw){};
-    virtual LPCSTR		GetText			(){return 0;}
-    virtual bool		IsChanged		(){return (init_val==*val);}
-    virtual void		Reset			(){*val=init_val;}
-};
-class TokenValue: public PropValue{
-	DWORD				init_val;
-public:
-	DWORD*				val;
-	xr_token* 			token;
-						TokenValue		(DWORD* value, xr_token* _token, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):init_val(*value),val(value),token(_token),PropValue(after,before,draw){};
-	virtual LPCSTR 		GetText			();
-    virtual bool		IsChanged		(){return (init_val==*val);}
-    virtual void		Reset			(){*val=init_val;}
-};
-class TokenValue2: public PropValue{
-	DWORD				init_val;
-public:
-	DWORD*				val;
-	AStringVec 			items;
-						TokenValue2		(DWORD* value, AStringVec* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):init_val(*value),val(value),items(*_items),PropValue(after,before,draw){};
-	virtual LPCSTR 		GetText			();
-    virtual bool		IsChanged		(){return (init_val==*val);}
-    virtual void		Reset			(){*val=init_val;}
-};
-class TokenValue3: public PropValue{
-	DWORD				init_val;
-public:
-	struct Item {
-		DWORD		ID;
-		string64	str;
-	};
-	DWORD*				val;
-	DWORD				cnt;
-    const Item*			items;
-						TokenValue3		(DWORD* value, DWORD _cnt, const Item* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):init_val(*value),val(value),cnt(_cnt),items(_items),PropValue(after,before,draw){};
-	virtual LPCSTR 		GetText			();
-    virtual bool		IsChanged		(){return (init_val==*val);}
-    virtual void		Reset			(){*val=init_val;}
-};
-class ListValue: public PropValue{
-	LPSTR				init_val;
-public:
-	LPSTR				val;
-	AStringVec 			items;
-						ListValue		(LPSTR value, AStringVec* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):init_val(value),val(value),items(*_items),PropValue(after,before,draw){};
-						ListValue		(LPSTR value, DWORD cnt, LPCSTR* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):init_val(value),val(value),PropValue(after,before,draw){items.resize(cnt); int i=0; for (AStringIt it=items.begin(); it!=items.end(); it++,i++) *it=_items[i]; };
-	virtual LPCSTR		GetText			();
-    virtual bool		IsChanged		(){return (strcmp(init_val,val));}
-    virtual void		Reset			(){strcpy(val,init_val);}
-};
-//---------------------------------------------------------------------------
-DEFINE_VECTOR(PropValue*,PropValVec,PropValIt)
 
 class TProperties : public TForm
 {
@@ -274,7 +89,6 @@ public:		// User declarations
     void __fastcall ShowProperties			();
     void __fastcall HideProperties			();                                   
     void __fastcall ClearProperties			();
-    void __fastcall ResetProperties			();
     bool __fastcall IsModified				(){return bModified;}
     void __fastcall ResetModified			(){bModified = false;}
     void __fastcall RefreshProperties		(){tvProperties->Repaint();}
@@ -358,6 +172,12 @@ public:		// User declarations
 	IntValue* 		MakeIntValue			(LPVOID val, int mn=0, int mx=100, int inc=1, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
     	IntValue* V	=new IntValue((int*)val,mn,mx,inc,after,before,draw);
+        m_Params.push_back(V);
+    	return V;
+    }
+	BOOLValue* 		MakeBOOLValue			(LPVOID val, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+    {
+    	BOOLValue* V	=new BOOLValue((BOOL*)val,after,before,draw);
         m_Params.push_back(V);
     	return V;
     }

@@ -297,9 +297,10 @@ void CEvent::Select(int flag)
 bool CEvent::RaySelect(int flag, Fvector& start,Fvector& dir, bool bRayTest)
 {
     if (IsFormMode()){
-    	if ((bRayTest&&RayPick(UI.ZFar(),start,dir))||!bRayTest) Select(1);
-        FormIt nearest=m_Forms.end();
         float dist = UI.ZFar();
+    	if ((bRayTest&&RayPick(dist,start,dir))||!bRayTest) Select(1);
+        FormIt nearest=m_Forms.end();
+        dist = UI.ZFar();
 		for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++)
 			if (it->RayPick(FTransform,dist,start,dir)) nearest=it;
         if (nearest!=m_Forms.end()){
@@ -423,7 +424,7 @@ void CEvent::Save(CFS_Base& F){
 }
 //----------------------------------------------------
 
-bool CEvent::ExportSpawn( CFS_Base& F, int& chunk_id )
+bool CEvent::ExportGame(SExportStreams& F)
 {
     NET_Packet Packet;
     Packet.w_begin		(M_SPAWN);
@@ -466,9 +467,9 @@ bool CEvent::ExportSpawn( CFS_Base& F, int& chunk_id )
     u16 size			= u16(Packet.w_tell()-position);
     Packet.w_seek		(position,&size,sizeof(u16));
 
-    F.open_chunk		(chunk_id++);
-    F.write				(Packet.B.data,Packet.B.count);
-    F.close_chunk		();
+    F.spawn.stream.open_chunk	(F.spawn.chunk++);
+    F.spawn.stream.write		(Packet.B.data,Packet.B.count);
+    F.spawn.stream.close_chunk	();
 
     return true;
 }

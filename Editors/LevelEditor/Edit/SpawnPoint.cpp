@@ -221,47 +221,35 @@ void CSpawnPoint::Save(CFS_Base& F){
 }
 //----------------------------------------------------
 
-bool CSpawnPoint::ExportSpawn( CFS_Base& F, int& chunk_id )
+bool CSpawnPoint::ExportGame(SExportStreams& F)
 {
+	// spawn
 	if (m_SpawnData){
-        strcpy	  		(m_SpawnData->s_name_replace,Name);
-        NET_Packet		Packet;
-        m_SpawnData->Spawn_Write(Packet,FALSE);
-        F.open_chunk	(chunk_id++);
-        F.write			(Packet.B.data,Packet.B.count);
-        F.close_chunk	();
-	    return true;
-    }
-    return false;
-}
-//----------------------------------------------------
-
-bool CSpawnPoint::ExportGame(CFS_Base& F, int& chunk_id)
-{
-	EPointType type = EPointType(data);
-	if (!m_SpawnData){
-        if (m_Type==type){
-            switch (type){
-            case ptRPoint: 
-                F.open_chunk	(chunk_id++);
-                F.Wvector		(PPosition);
-                F.Wvector		(PRotation);
-                F.Wdword		(m_dwTeamID);
-                F.close_chunk	();
-            return true;
-            case ptAIPoint:
-            break;
-            default: THROW;
-            }
+        strcpy	  					(m_SpawnData->s_name_replace,Name);
+        NET_Packet					Packet;
+        m_SpawnData->Spawn_Write	(Packet,FALSE);
+        
+        F.spawn.stream.open_chunk	(F.spawn.chunk++);
+        F.spawn.stream.write		(Packet.B.data,Packet.B.count);
+        F.spawn.stream.close_chunk	();
+    }else{
+        // game
+        switch (m_Type){
+        case ptRPoint: 
+	        F.rpoint.stream.open_chunk	(F.rpoint.chunk++);
+            F.rpoint.stream.Wvector		(PPosition);
+            F.rpoint.stream.Wvector		(PRotation);
+            F.rpoint.stream.Wdword		(m_dwTeamID);
+			F.rpoint.stream.close_chunk	();
+        case ptAIPoint:
+        break;
+        default: THROW;
         }
     }
-    if (type==ptAIPoint){
-        F.open_chunk	(chunk_id);
-        F.Wvector		(PPosition);
-        F.close_chunk	();
-	    return true;
-    }    
-    return false;
+    F.aipoint.stream.open_chunk		(F.aipoint.chunk++);
+    F.aipoint.stream.Wvector		(PPosition);
+    F.aipoint.stream.close_chunk	();
+    return true;
 }
 //----------------------------------------------------
 

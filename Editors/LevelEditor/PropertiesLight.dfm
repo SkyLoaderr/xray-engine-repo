@@ -1,10 +1,10 @@
 object frmPropertiesLight: TfrmPropertiesLight
-  Left = 473
-  Top = 272
+  Left = 869
+  Top = 308
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsDialog
   Caption = 'Light properties'
-  ClientHeight = 424
+  ClientHeight = 563
   ClientWidth = 301
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -23,10 +23,10 @@ object frmPropertiesLight: TfrmPropertiesLight
   TextHeight = 13
   object gbColor: TGroupBox
     Left = 0
-    Top = 265
+    Top = 405
     Width = 301
     Height = 37
-    Align = alTop
+    Align = alBottom
     Caption = ' Color: '
     TabOrder = 1
     object mcDiffuse: TMultiObjColor
@@ -90,10 +90,10 @@ object frmPropertiesLight: TfrmPropertiesLight
   end
   object gbAddition: TGroupBox
     Left = 0
-    Top = 302
+    Top = 442
     Width = 301
     Height = 100
-    Align = alTop
+    Align = alBottom
     Caption = ' Addition: '
     TabOrder = 2
     object MxLabel1: TLabel
@@ -471,7 +471,7 @@ object frmPropertiesLight: TfrmPropertiesLight
   end
   object Panel1: TPanel
     Left = 0
-    Top = 403
+    Top = 542
     Width = 301
     Height = 21
     Align = alBottom
@@ -516,6 +516,16 @@ object frmPropertiesLight: TfrmPropertiesLight
       FlatAlwaysEdge = True
       OnClick = btCancelClick
     end
+  end
+  object paProps: TPanel
+    Left = 0
+    Top = 265
+    Width = 301
+    Height = 128
+    Align = alTop
+    BevelInner = bvRaised
+    BevelOuter = bvLowered
+    TabOrder = 4
   end
   object tmAnimation: TTimer
     Enabled = False

@@ -41,10 +41,13 @@ bool SceneBuilder::BuildHOMModel(){
     	CEditableObject* E=((CSceneObject*)(*it))->GetReference(); R_ASSERT(E);
     	if (E->IsFlag(CEditableObject::eoHOM)) E->ExportHOMPart(F);
     }
+    BOOL bValid = !!F.chunk_size();
     F.close_chunk();
-    AnsiString hom_name = "level.hom";
-	m_LevelPath.Update(hom_name);
-    F.SaveTo(hom_name.c_str(),0);
+    if (bValid){
+	    AnsiString hom_name = "level.hom";
+		m_LevelPath.Update(hom_name);
+	    F.SaveTo(hom_name.c_str(),0);
+    }
 	return true;
 }
 /*

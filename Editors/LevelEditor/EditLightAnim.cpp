@@ -9,6 +9,7 @@
 #include "LightAnimLibrary.h"
 #include "ColorPicker.h"
 #include "ui_main.h"
+#include "PropertiesList.h"
 //---------------------------------------------------------------------------
 #pragma link "multi_edit"
 #pragma link "Gradient"
@@ -28,15 +29,17 @@ __fastcall TfrmEditLightAnim::TfrmEditLightAnim(TComponent* Owner)
     DEFINE_INI(fsStorage);
     bFinalClose		= false;
     m_CurrentItem 	= 0;
-	bFreezeUpdate 	= false;
+//	bFreezeUpdate 	= false;
     iMoveKey        = -1;
     InplaceTextEdit->Editor->Color			= TColor(0x00A0A0A0);
     InplaceTextEdit->Editor->BorderStyle	= bsNone;
+    m_Props 		= 0;
 }
 //---------------------------------------------------------------------------
-void TfrmEditLightAnim::OnModified()
+void __fastcall TfrmEditLightAnim::OnModified()
 {
 	ebSave->Enabled = true;
+    UpdateView();
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLightAnim::ShowEditor()
@@ -104,7 +107,7 @@ bool TfrmEditLightAnim::FinalClose(){
 
 void __fastcall TfrmEditLightAnim::tvItemsItemFocused(TObject *Sender)
 {
-	if (bFreezeUpdate) return;
+//	if (bFreezeUpdate) return;
     
     TElTreeItem* node = tvItems->Selected;
 
@@ -123,8 +126,9 @@ void __fastcall TfrmEditLightAnim::tvItemsItemFocused(TObject *Sender)
 void TfrmEditLightAnim::InitItems()
 {
 	tvItems->IsUpdating		= true;
+    SetCurrentItem			(0);
     tvItems->Items->Clear();
-    for (ELightAnimLibrary::LAItemIt it=LALib.Items.begin(); it!=LALib.Items.end(); it++)
+    for (LAItemIt it=LALib.Items.begin(); it!=LALib.Items.end(); it++)
         FOLDER::AppendObject(tvItems,(*it)->cName);
 	tvItems->IsUpdating		= false;
 }
@@ -163,15 +167,29 @@ void TfrmEditLightAnim::UpdateView()
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmEditLightAnim::NameOnAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+{
+	FOLDER::AfterTextEdit(tvItems->Selected,((TextValue*)sender)->val,*(AnsiString*)edit_val);
+}
+//------------------------------------------------------------------------------
+void __fastcall TfrmEditLightAnim::NameOnBeforeEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+{
+	FOLDER::BeforeTextEdit(((TextValue*)sender)->val,*(AnsiString*)edit_val);
+}
+//------------------------------------------------------------------------------
+void __fastcall TfrmEditLightAnim::NameOnDraw(PropValue* sender, LPVOID draw_val)
+{
+	FOLDER::TextDraw(((TextValue*)sender)->val,*(AnsiString*)draw_val);
+}
+//------------------------------------------------------------------------------
 void TfrmEditLightAnim::GetItemData()
 {
 	if (m_CurrentItem){
-		bFreezeUpdate = true;
-		edName->Text 		= m_CurrentItem->cName;
-        seFPS->Value 		= m_CurrentItem->fFPS;
-        seFrameCount->Value = m_CurrentItem->iFrameCount;
-        sePointer->Value	= 0;
-		bFreezeUpdate = false;
+    	m_Props->BeginFillMode();
+        m_Props->AddItem(0,PROP_TEXT,	"Name",			m_Props->MakeTextValue	(m_CurrentItem->cName,sizeof(m_CurrentItem->cName),NameOnAfterEdit,NameOnBeforeEdit,NameOnDraw));
+        m_Props->AddItem(0,PROP_FLOAT,	"FPS",			m_Props->MakeFloatValue	(&m_CurrentItem->fFPS,0.1f,1000,1.f,1));
+        m_Props->AddItem(0,PROP_INTEGER,"Frame Count",	m_Props->MakeIntValue	(&m_CurrentItem->iFrameCount,1,100000,1));
+    	m_Props->EndFillMode();
         UpdateView			();
     }
 }
@@ -229,7 +247,9 @@ void __fastcall TfrmEditLightAnim::ebReloadClick(TObject *Sender)
 	ebSave->Enabled = false;
 	m_CurrentItem = 0;
 	LALib.Reload();
+//	bFreezeUpdate = true;
     InitItems();
+//	bFreezeUpdate = false;
 }
 //---------------------------------------------------------------------------
 
@@ -382,49 +402,10 @@ void __fastcall TfrmEditLightAnim::pbGPaint(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-
-void __fastcall TfrmEditLightAnim::seFrameCountExit(TObject *Sender)
-{
-	if (bFreezeUpdate) return;
-	m_CurrentItem->Resize(seFrameCount->Value);
-    UpdateView();
-    OnModified();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmEditLightAnim::seFrameCountLWChange(TObject *Sender,
-      int Val)
-{
-	if (bFreezeUpdate) return;
-	m_CurrentItem->Resize(seFrameCount->Value);
-    UpdateView();
-    OnModified();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmEditLightAnim::seFrameCountKeyDown(TObject *Sender,
-      WORD &Key, TShiftState Shift)
-{
-	if (bFreezeUpdate) return;
-    if (Key==VK_RETURN){
-		m_CurrentItem->Resize(seFrameCount->Value);
-    	UpdateView();
-	    OnModified();
-    }
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfrmEditLightAnim::sePointerKeyDown(TObject *Sender,
       WORD &Key, TShiftState Shift)
 {
 	if (Key==VK_RETURN) pbG->Repaint();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmEditLightAnim::sePointerLWChange(TObject *Sender,
-      int Val)
-{
-	pbG->Repaint();
 }
 //---------------------------------------------------------------------------
 
@@ -475,10 +456,36 @@ void __fastcall TfrmEditLightAnim::Rename1Click(TObject *Sender)
     if (node) tvItems->EditItem(node,-1);
 }
 //---------------------------------------------------------------------------
-
 void __fastcall TfrmEditLightAnim::InplaceTextEditValidateResult(
       TObject *Sender, bool &InputValid)
 {
+/*
+	TElTreeInplaceAdvancedEdit* IE=InplaceParticleEdit;
+
+    AnsiString new_text = AnsiString(IE->Editor->Text).LowerCase();
+    IE->Editor->Text = new_text;
+
+    TElTreeItem* node = IE->Item;
+    for (TElTreeItem* item=node->GetFirstSibling(); item; item=item->GetNextSibling()){
+        if ((item->Text==new_text)&&(item!=IE->Item)){
+            InputValid = false;
+            return;
+        }
+    }
+    AnsiString full_name;
+    if (FOLDER::IsFolder(node)){
+        for (item=node->GetFirstChild(); item&&(item->Level>node->Level); item=item->GetNext()){
+            if (FOLDER::IsObject(item)){
+                FOLDER::MakeName(item,0,full_name,false);
+                Tools.RenameMotion(full_name.c_str(),new_text.c_str());//,node->Level);
+            }
+        }
+    }else if (FOLDER::IsObject(node)){
+        FOLDER::MakeName(node,0,full_name,false);
+        Tools.RenameMotion(full_name.c_str(),new_text.c_str());//,node->Level);
+    }
+	Tools.MotionModified();
+*/
 	TElTreeInplaceAdvancedEdit* IE=0;
     IE=InplaceTextEdit;
 
@@ -539,36 +546,6 @@ void __fastcall TfrmEditLightAnim::CollapseAll1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmEditLightAnim::seFPSLWChange(TObject *Sender, int Val)
-{
-	if (bFreezeUpdate) return;
-	m_CurrentItem->fFPS = seFPS->Value;
-    UpdateView();
-    OnModified();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmEditLightAnim::seFPSKeyDown(TObject *Sender, WORD &Key,
-      TShiftState Shift)
-{
-	if (bFreezeUpdate) return;
-    if (Key==VK_RETURN){
-		m_CurrentItem->fFPS = seFPS->Value;
-    	UpdateView();
-	    OnModified();
-    }
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmEditLightAnim::seFPSExit(TObject *Sender)
-{
-	if (bFreezeUpdate) return;
-	m_CurrentItem->fFPS = seFPS->Value;
-    UpdateView();
-    OnModified();
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfrmEditLightAnim::OnIdle(){
 	if (form){
 		if (form->m_CurrentItem){
@@ -578,6 +555,7 @@ void __fastcall TfrmEditLightAnim::OnIdle(){
         }
     }
 }
+//---------------------------------------------------------------------------
 
 void __fastcall TfrmEditLightAnim::sePointerChange(TObject *Sender)
 {
@@ -621,7 +599,7 @@ void __fastcall TfrmEditLightAnim::ebMoveKeyLeftClick(TObject *Sender)
         f1--;
         if (f1>=0){
 	        m_CurrentItem->MoveKey(f0,f1);
-    	    sePointer->Value++;
+    	    sePointer->Value--;
         	pbG->Repaint();
 	        OnModified();
         }
@@ -656,6 +634,31 @@ void __fastcall TfrmEditLightAnim::ebFirstFrameClick(TObject *Sender)
 {
 	sePointer->Value	= 0;
 	pbG->Repaint();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmEditLightAnim::FormCreate(TObject *Sender)
+{
+    m_Props = TProperties::CreateForm(paProps,alClient,OnModified);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmEditLightAnim::FormDestroy(TObject *Sender)
+{
+	TProperties::DestroyForm(m_Props);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmEditLightAnim::fsStorageRestorePlacement(
+      TObject *Sender)
+{
+	m_Props->RestoreColumnWidth(fsStorage);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmEditLightAnim::fsStorageSavePlacement(TObject *Sender)
+{
+	m_Props->SaveColumnWidth(fsStorage);
 }
 //---------------------------------------------------------------------------
 

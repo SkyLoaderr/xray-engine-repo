@@ -90,6 +90,7 @@ void SceneBuilder::SaveBuild()
 
     F.open_chunk	(EB_Light_control);
     for (vector<sb_light_control>::iterator lc_it=l_light_control.begin(); lc_it!=l_light_control.end(); lc_it++){
+    	F.write		(lc_it->name,sizeof(lc_it->name));
     	F.Wdword	(lc_it->data.size());
     	F.write		(lc_it->data.begin(),sizeof(DWORD)*lc_it->data.size());
     }
@@ -109,7 +110,7 @@ void SceneBuilder::SaveBuild()
 
     AnsiString fn	= "build.prj";
 	m_LevelPath.Update(fn);
-    F.SaveTo		(fn.c_str(),0);
+    F.SaveTo		(fn.c_str(),BUILD_PROJECT_MARK);
 }
 
 int SceneBuilder::CalculateSector(const Fvector& P, float R){
@@ -243,10 +244,15 @@ BOOL SceneBuilder::BuildObject(CSceneObject* obj){
     UI.SetStatus(temp.c_str());
 
     const Fmatrix& T 	= obj->_Transform();
-    // build LOD                           
-	int	lod_id 			= BuildObjectLOD(T,O);
+    // build LOD           
+    Fbox bb;                
+    Fvector C;
+    float r;
+    obj->GetBox			(bb);
+    bb.getsphere		(C,r);
+	int	lod_id 			= BuildObjectLOD(T,O,CalculateSector(C,r));
     if (lod_id==-2)    	return FALSE;
-
+	// parse mesh data
     for(EditMeshIt M=O->FirstMesh();M!=O->LastMesh();M++){
 		CSector* S = PortalUtils.FindSector(obj,*M);
 	    int sect_num = S?S->sector_num:m_iDefaultSectorNum;
@@ -278,41 +284,40 @@ BOOL SceneBuilder::BuildLight(CLight* e, BOOL bRoot)
     if (!e->m_Flags.bAffectStatic&&!e->m_Flags.bAffectDynamic)
     	return FALSE;
 
-    b_light		b;
-    CopyMemory				(&b.data,&e->m_D3D,sizeof(Flight));
-    b.data.diffuse.mul_rgb	(e->m_Brightness);
-    b.data.ambient.mul_rgb	(e->m_Brightness);
-    b.data.specular.mul_rgb	(e->m_Brightness);
-
-    b.controller_ID= 0;
+    int controller_ID 	= BuildLightControl(e);
+    Flight L;
+    CopyMemory			(&L,&e->m_D3D,sizeof(Flight));
+    L.diffuse.mul_rgb	(e->m_Brightness);
+    L.ambient.mul_rgb	(e->m_Brightness);
+    L.specular.mul_rgb	(e->m_Brightness);
     
     if (e->m_Flags.bProcedural){
 //	    b.controller_ID= ?;
     }
     
     if (e->m_Flags.bAffectStatic){
-        if (D3DLIGHT_DIRECTIONAL==b.data.type){
+        if (D3DLIGHT_DIRECTIONAL==L.type){
             if (bRoot){
                 BuildSun(e);
             }else{
                 l_light_static.push_back(b_light_static());
                 b_light_static& sl	= l_light_static.back();
-                sl.controller_ID 	= b.controller_ID;
-                sl.data			    = b.data;
+                sl.controller_ID 	= controller_ID;
+                sl.data			    = L;
             }
         }else{
-        	R_ASSERT(D3DLIGHT_POINT==b.data.type);
+        	R_ASSERT(D3DLIGHT_POINT==L.type);
             l_light_static.push_back(b_light_static());
             b_light_static& sl		= l_light_static.back();
-            sl.controller_ID 		= b.controller_ID;
-            sl.data			    	= b.data;
+            sl.controller_ID 		= controller_ID;
+            sl.data			    	= L;
         }
     }
 
     if (e->m_Flags.bAffectDynamic){
         b_light_dynamic dl;
-        dl.controller_ID 			= b.controller_ID;
-        dl.data			    		= b.data;
+        dl.controller_ID 			= controller_ID;
+        dl.data			    		= L;
 
         switch(dl.data.type){
         case D3DLIGHT_POINT:
@@ -337,11 +342,12 @@ BOOL SceneBuilder::BuildLight(CLight* e, BOOL bRoot)
                         dl.sectors.push_back(_S->sector_num);
                 }
                 if (dl.sectors.empty()) return FALSE; 
-                l_light_dynamic.push_back(dl);
             }
+            l_light_dynamic.push_back(dl);
         break;
         case D3DLIGHT_DIRECTIONAL:
             R_ASSERT(bRoot);
+            l_light_dynamic.push_back(dl);
         break;
         }
     }
@@ -469,7 +475,7 @@ int SceneBuilder::BuildTexture(const char* name){
 //------------------------------------------------------------------------------
 // lod build functions
 //------------------------------------------------------------------------------
-int	SceneBuilder::BuildObjectLOD(const Fmatrix& parent, CEditableObject* e)
+int	SceneBuilder::BuildObjectLOD(const Fmatrix& parent, CEditableObject* e, int sector_num)
 {
 	if (!e->IsFlag(CEditableObject::eoUsingLOD)) return -1;
     AnsiString lod_name;
@@ -484,7 +490,7 @@ int	SceneBuilder::BuildObjectLOD(const Fmatrix& parent, CEditableObject* e)
     b_material 		mtl;
     mtl.surfidx		= BuildTexture		(lod_name.c_str());
     mtl.shader      = BuildShader		(e->GetLODShaderName());
-    mtl.sector		= -1;
+    mtl.sector		= sector_num;
     mtl.shader_xrlc	= -1;
     mtl.lod_id		= -1;
 

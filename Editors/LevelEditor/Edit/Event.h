@@ -85,7 +85,7 @@ public:
 
   	virtual bool 	Load			( CStream& );
 	virtual void 	Save			( CFS_Base& );
-    virtual bool	ExportSpawn		( CFS_Base&, int& chunk_id );
+    virtual bool	ExportGame		(SExportStreams& data);
 
 	virtual bool 	GetBox			( Fbox& box );
 

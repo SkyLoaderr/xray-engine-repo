@@ -62,7 +62,7 @@ class SceneBuilder{
     BOOL    BuildLight		(CLight* e, BOOL bRoot);
 
     int     FindInLODs   	(b_lod* s);
-    int		BuildObjectLOD  (const Fmatrix& parent, CEditableObject* e);
+    int		BuildObjectLOD  (const Fmatrix& parent, CEditableObject* e, int sector_num);
 
     int     FindInShaders   (b_shader* s);
     int     BuildShader     (LPCSTR s);

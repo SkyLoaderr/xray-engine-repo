@@ -10,6 +10,7 @@
 #include "BottomBar.h"
 #include "ui_main.h"
 #include "d3dutils.h"
+#include "LightAnimLibrary.h"
 
 #define LIGHT_VERSION   				0x0011
 //----------------------------------------------------
@@ -19,6 +20,7 @@
 #define LIGHT_CHUNK_D3D_PARAMS         	0xB435
 #define LIGHT_CHUNK_USE_IN_D3D			0xB436
 #define LIGHT_CHUNK_ROTATE				0xB437
+#define LIGHT_CHUNK_ANIMREF				0xB438
 //----------------------------------------------------
 //----------------------------------------------------
 #define FLARE_CHUNK_FLAG				0x1002
@@ -56,6 +58,8 @@ void CLight::Construct(LPVOID data){
 
 	m_D3DIndex 		= -1;
     m_Enabled 		= TRUE;
+
+    m_pAnimRef		= 0;
 
     m_Flags.bAffectStatic 	= TRUE;
     m_Flags.bAffectDynamic 	= FALSE;
@@ -197,7 +201,7 @@ void CLight::OnShowHint(AStringVec& dest){
 bool CLight::Load(CStream& F){
 	DWORD version = 0;
 
-    char buf[1024];
+    string1024 buf;
     R_ASSERT(F.ReadChunk(LIGHT_CHUNK_VERSION,&version));
     if((version!=0x0010)&&(version!=LIGHT_VERSION)){
         ELog.DlgMsg( mtError, "CLight: Unsupported version.");
@@ -227,6 +231,13 @@ bool CLight::Load(CStream& F){
 
 	if (D3DLIGHT_DIRECTIONAL==m_D3D.type) m_LensFlare.Load(F);
 
+    if (F.FindChunk(LIGHT_CHUNK_ANIMREF)){
+    	F.RstringZ(buf);
+        m_pAnimRef	= LALib.FindItem(buf);
+        if (!m_pAnimRef) ELog.Msg(mtError, "Can't find light animation: %s",buf);
+    }
+    
+    
 	UpdateTransform	();
 
     return true;
@@ -246,6 +257,12 @@ void CLight::Save(CFS_Base& F){
 	F.write_chunk	(LIGHT_CHUNK_D3D_PARAMS,&m_D3D,sizeof(m_D3D));
     F.write_chunk	(LIGHT_CHUNK_USE_IN_D3D,&m_UseInD3D,sizeof(m_UseInD3D));
     F.write_chunk	(LIGHT_CHUNK_FLAG,&m_Flags,sizeof(DWORD));
+    
+    if (m_pAnimRef){
+		F.open_chunk(LIGHT_CHUNK_ANIMREF);
+		F.WstringZ	(m_pAnimRef->cName);
+		F.close_chunk();
+    }
 }
 //----------------------------------------------------
 

@@ -24,13 +24,15 @@ void frmPropertiesLightRun(ObjectList* pObjects, bool& bChange){
 __fastcall TfrmPropertiesLight::TfrmPropertiesLight(TComponent* Owner)
     : TForm(Owner)
 {
-    m_Props = TProperties::CreateForm(tsSun,alClient);
+    m_SunProps 	= TProperties::CreateForm(tsSun,alClient);
+    m_Props		= TProperties::CreateForm(paProps,alClient);
 	DEFINE_INI(fsStorage);
 }
 //----------------------------------------------------
 void __fastcall TfrmPropertiesLight::FormClose(TObject *Sender,
       TCloseAction &Action)
 {
+	TProperties::DestroyForm(m_SunProps);
 	TProperties::DestroyForm(m_Props);
 }
 //---------------------------------------------------------------------------
@@ -119,7 +121,7 @@ void TfrmPropertiesLight::GetObjectsInfo(){
 
     switch(_L->m_D3D.type){
     case D3DLIGHT_POINT:   		pcType->ActivePage = tsPoint;   break;
-    case D3DLIGHT_DIRECTIONAL: 	pcType->ActivePage = tsSun; break;
+    case D3DLIGHT_DIRECTIONAL: 	pcType->ActivePage = tsSun; 	break;
     default: THROW;
     }
 
@@ -165,33 +167,33 @@ void TfrmPropertiesLight::GetObjectsInfo(){
     // init flares
     if (m_Objects->size()==1){
 		CEditFlare& F = ((CLight*)m_Objects->front())->m_LensFlare;
-    	m_Props->Enabled = true;
-		m_Props->BeginFillMode();
+    	m_SunProps->Enabled = true;
+		m_SunProps->BeginFillMode();
         TElTreeItem* M=0;
         TElTreeItem* N=0;
-		M = m_Props->AddItem(0,PROP_MARKER,	"Source");
-			m_Props->AddItem(M,PROP_FLAG,	"Enabled",	m_Props->MakeFlagValue(&F.m_Flags,CEditFlare::flSource));
-			m_Props->AddItem(M,PROP_FLOAT,	"Radius", 	m_Props->MakeFloatValue(&F.m_Source.fRadius,0.f,10.f));
-			m_Props->AddItem(M,PROP_TEXTURE,"Texture",	m_Props->MakeTextValue(&F.m_Source.texture,sizeof(F.m_Source.texture)));
-		M = m_Props->AddItem(0,PROP_MARKER,	"Gradient");
-			m_Props->AddItem(M,PROP_FLAG,	"Enabled",	m_Props->MakeFlagValue(&F.m_Flags,CEditFlare::flGradient));
-			m_Props->AddItem(M,PROP_FLOAT,	"Radius", 	m_Props->MakeFloatValue(&F.m_Gradient.fRadius,0.f,100.f));
-			m_Props->AddItem(M,PROP_FLOAT,	"Opacity",	m_Props->MakeFloatValue(&F.m_Gradient.fOpacity,0.f,1.f));
-			m_Props->AddItem(M,PROP_TEXTURE,"Texture",	m_Props->MakeTextValue(&F.m_Gradient.texture,sizeof(F.m_Gradient.texture)));
-		M = m_Props->AddItem(0,PROP_MARKER,	"Flares");
-			m_Props->AddItem(M,PROP_FLAG,	"Enabled",	m_Props->MakeFlagValue(&F.m_Flags,CEditFlare::flFlare));
+		M = m_SunProps->AddItem(0,PROP_MARKER,	"Source");
+			m_SunProps->AddItem(M,PROP_FLAG,	"Enabled",	m_SunProps->MakeFlagValue(&F.m_Flags,CEditFlare::flSource));
+			m_SunProps->AddItem(M,PROP_FLOAT,	"Radius", 	m_SunProps->MakeFloatValue(&F.m_Source.fRadius,0.f,10.f));
+			m_SunProps->AddItem(M,PROP_TEXTURE,"Texture",	m_SunProps->MakeTextValue(&F.m_Source.texture,sizeof(F.m_Source.texture)));
+		M = m_SunProps->AddItem(0,PROP_MARKER,	"Gradient");
+			m_SunProps->AddItem(M,PROP_FLAG,	"Enabled",	m_SunProps->MakeFlagValue(&F.m_Flags,CEditFlare::flGradient));
+			m_SunProps->AddItem(M,PROP_FLOAT,	"Radius", 	m_SunProps->MakeFloatValue(&F.m_Gradient.fRadius,0.f,100.f));
+			m_SunProps->AddItem(M,PROP_FLOAT,	"Opacity",	m_SunProps->MakeFloatValue(&F.m_Gradient.fOpacity,0.f,1.f));
+			m_SunProps->AddItem(M,PROP_TEXTURE,"Texture",	m_SunProps->MakeTextValue(&F.m_Gradient.texture,sizeof(F.m_Gradient.texture)));
+		M = m_SunProps->AddItem(0,PROP_MARKER,	"Flares");
+			m_SunProps->AddItem(M,PROP_FLAG,	"Enabled",	m_SunProps->MakeFlagValue(&F.m_Flags,CEditFlare::flFlare));
 		for (CEditFlare::FlareIt it=F.m_Flares.begin(); it!=F.m_Flares.end(); it++){
             AnsiString nm; nm.sprintf("Flare %d",it-F.m_Flares.begin());
-		N = m_Props->AddItem(M,PROP_MARKER,	nm.c_str());
-			m_Props->AddItem(N,PROP_FLOAT,	"Radius", 	m_Props->MakeFloatValue(&it->fRadius,0.f,10.f));
-			m_Props->AddItem(N,PROP_FLOAT,	"Opacity", 	m_Props->MakeFloatValue(&it->fOpacity,0.f,1.f));
-			m_Props->AddItem(N,PROP_FLOAT,	"Position",	m_Props->MakeFloatValue(&it->fPosition,-10.f,10.f));
-			m_Props->AddItem(N,PROP_TEXTURE,"Texture",	m_Props->MakeTextValue(&it->texture,sizeof(it->texture)));
+		N = m_SunProps->AddItem(M,PROP_MARKER,	nm.c_str());
+			m_SunProps->AddItem(N,PROP_FLOAT,	"Radius", 	m_SunProps->MakeFloatValue(&it->fRadius,0.f,10.f));
+			m_SunProps->AddItem(N,PROP_FLOAT,	"Opacity", 	m_SunProps->MakeFloatValue(&it->fOpacity,0.f,1.f));
+			m_SunProps->AddItem(N,PROP_FLOAT,	"Position",	m_SunProps->MakeFloatValue(&it->fPosition,-10.f,10.f));
+			m_SunProps->AddItem(N,PROP_TEXTURE,"Texture",	m_SunProps->MakeTextValue(&it->texture,sizeof(it->texture)));
 		}
 
-		m_Props->EndFillMode();
+		m_SunProps->EndFillMode();
     }else{
-    	m_Props->Enabled = false;
+    	m_SunProps->Enabled = false;
     }
 }
 
@@ -307,7 +309,7 @@ void __fastcall TfrmPropertiesLight::tbBrightnessChange(TObject *Sender)
 void __fastcall TfrmPropertiesLight::FormKeyDown(TObject *Sender,
       WORD &Key, TShiftState Shift)
 {
-	if (!m_Props->tvProperties->Focused()){
+	if (!m_SunProps->tvProperties->Focused()){
 	    if (Key==VK_ESCAPE) ebCancel->Click();
     	if (Key==VK_RETURN) ebOk->Click();
     }
@@ -376,6 +378,7 @@ void __fastcall TfrmPropertiesLight::cbTargetAnimatedClick(TObject *Sender){
 void __fastcall TfrmPropertiesLight::fsStorageRestorePlacement(
       TObject *Sender)
 {
+	m_SunProps->RestoreColumnWidth(fsStorage);
 	m_Props->RestoreColumnWidth(fsStorage);
 }
 //---------------------------------------------------------------------------
@@ -383,6 +386,7 @@ void __fastcall TfrmPropertiesLight::fsStorageRestorePlacement(
 void __fastcall TfrmPropertiesLight::fsStorageSavePlacement(
       TObject *Sender)
 {
+	m_SunProps->SaveColumnWidth(fsStorage);
 	m_Props->SaveColumnWidth(fsStorage);
 }
 //---------------------------------------------------------------------------

@@ -600,6 +600,8 @@ Level:
 - Library access witout clear
 - FindObjectByName не использовать с классом
 - Cancel ImageEditor вернуть текстуры
+- Render bug Lines
+- Render на расстоянии боксами
 
 - осветить DO
 - sound library

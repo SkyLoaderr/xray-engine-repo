@@ -26,6 +26,8 @@
 //---------------------------------------------------------------------------
 // refs
 class CLAItem;
+class TProperties;
+class PropValue;
 //---------------------------------------------------------------------------
 
 class TfrmEditLightAnim : public TForm
@@ -39,15 +41,9 @@ __published:	// IDE-managed Components
 	TPanel *Panel2;
 	TExtBtn *ebAddAnim;
 	TExtBtn *ebDeleteAnim;
-	TMultiObjSpinEdit *seFPS;
-	TEdit *edName;
 	TBevel *Bevel1;
-	TLabel *Label1;
-	TLabel *Label2;
-	TLabel *Label3;
 	TExtBtn *ebSave;
 	TExtBtn *ebReload;
-	TMultiObjSpinEdit *seFrameCount;
 	TPaintBox *pbG;
 	TMultiObjSpinEdit *sePointer;
 	TStaticText *stStartFrame;
@@ -71,6 +67,8 @@ __published:	// IDE-managed Components
 	TExtBtn *ebFirstFrame;
 	TExtBtn *ebLastFrame;
 	TMxLabel *lbCurFrame;
+	TPanel *paProps;
+	TMenuItem *N2;
     void __fastcall FormShow(TObject *Sender);
     void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
@@ -82,15 +80,10 @@ __published:	// IDE-managed Components
 	void __fastcall ebSaveClick(TObject *Sender);
 	void __fastcall ebReloadClick(TObject *Sender);
 	void __fastcall pbGPaint(TObject *Sender);
-	void __fastcall seFrameCountExit(TObject *Sender);
-	void __fastcall seFrameCountLWChange(TObject *Sender, int Val);
-	void __fastcall seFrameCountKeyDown(TObject *Sender, WORD &Key,
-          TShiftState Shift);
 	void __fastcall pbGMouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
 	void __fastcall sePointerKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
-	void __fastcall sePointerLWChange(TObject *Sender, int Val);
 	void __fastcall sePointerExit(TObject *Sender);
 	void __fastcall ebDeleteKeyClick(TObject *Sender);
 	void __fastcall tvItemsDragDrop(TObject *Sender, TObject *Source, int X,
@@ -107,10 +100,6 @@ __published:	// IDE-managed Components
 	void __fastcall CreateFolder1Click(TObject *Sender);
 	void __fastcall ExpandAll1Click(TObject *Sender);
 	void __fastcall CollapseAll1Click(TObject *Sender);
-	void __fastcall seFPSLWChange(TObject *Sender, int Val);
-	void __fastcall seFPSKeyDown(TObject *Sender, WORD &Key,
-          TShiftState Shift);
-	void __fastcall seFPSExit(TObject *Sender);
 	void __fastcall ebCreateKeyClick(TObject *Sender);
 	void __fastcall pbGMouseMove(TObject *Sender, TShiftState Shift, int X,
           int Y);
@@ -126,6 +115,10 @@ __published:	// IDE-managed Components
 	void __fastcall ebLastFrameClick(TObject *Sender);
 	void __fastcall ebFirstFrameClick(TObject *Sender);
 	void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
+	void __fastcall FormCreate(TObject *Sender);
+	void __fastcall FormDestroy(TObject *Sender);
+	void __fastcall fsStorageRestorePlacement(TObject *Sender);
+	void __fastcall fsStorageSavePlacement(TObject *Sender);
 private:	// User declarations
     void InitItems();
     bool bFinalClose;
@@ -135,12 +128,16 @@ private:	// User declarations
     CLAItem* 		m_CurrentItem;
     void	SetCurrentItem(CLAItem* item);
     void 	GetItemData();
-    bool 	bFreezeUpdate;
     void	UpdateView();
-    void 	OnModified();
     int		iMoveKey;
     int 	iTgtMoveKey;
     void __fastcall OnRenameItem(LPCSTR p0, LPCSTR p1);
+
+    TProperties*		m_Props;
+    void __fastcall		OnModified		(void);
+	void __fastcall 	NameOnAfterEdit	(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall 	NameOnBeforeEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall 	NameOnDraw		(PropValue* sender, LPVOID draw_val);
 public:		// User declarations
     __fastcall TfrmEditLightAnim(TComponent* Owner);
     static bool FinalClose();

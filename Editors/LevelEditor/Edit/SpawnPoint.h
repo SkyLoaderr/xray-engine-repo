@@ -36,11 +36,11 @@ public:
 	virtual bool    RayPick     	( float& distance,	Fvector& start,	Fvector& direction,
 		                          	  SRayPickInfo* pinf = NULL );
     virtual bool 	FrustumPick		( const CFrustum& frustum );
+	virtual bool    GetBox      	(Fbox& box);
+
   	virtual bool 	Load			(CStream&);
 	virtual void 	Save			(CFS_Base&);
-    virtual bool	ExportSpawn		(CFS_Base&, int& chunk_id);
-    virtual bool	ExportGame		(CFS_Base&, int& chunk_id);
-	virtual bool    GetBox      	(Fbox& box);
+    virtual bool	ExportGame		(SExportStreams& data);
 
 	virtual void	PropWrite		(CFS_Base& F);
 	virtual void	PropRead		(CStream& F);

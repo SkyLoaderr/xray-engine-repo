@@ -301,9 +301,10 @@ void CWayObject::Select(int flag)
 bool CWayObject::RaySelect(int flag, Fvector& start,Fvector& dir, bool bRayTest)
 {
     if (IsPointMode()){
-    	if ((bRayTest&&RayPick(UI.ZFar(),start,dir))||!bRayTest) Select(1);
+    	float dist = UI.ZFar();
+    	if ((bRayTest&&RayPick(dist,start,dir))||!bRayTest) Select(1);
         CWayPoint* nearest=0;
-        float dist = UI.ZFar();
+        dist = UI.ZFar();
 		for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++)
 			if ((*it)->RayPick(dist,start,dir)) nearest=*it;
         if (nearest!=0){
@@ -476,50 +477,42 @@ void CWayObject::Save(CFS_Base& F)
     F.close_chunk	();
 }
 
-bool CWayObject::ExportGame(CFS_Base& F, int& chunk_id){
-	F.open_chunk	(WAY_BASE+chunk_id++);
+bool CWayObject::ExportGame(SExportStreams& F){
+	F.patrolpath.stream.open_chunk		(F.patrolpath.chunk++);
 	{
-        F.open_chunk	(WAYOBJECT_CHUNK_VERSION);
-        F.Wword			(WAYOBJECT_VERSION);
-        F.close_chunk	();
+        F.patrolpath.stream.open_chunk	(WAYOBJECT_CHUNK_VERSION);
+        F.patrolpath.stream.Wword		(WAYOBJECT_VERSION);
+        F.patrolpath.stream.close_chunk	();
 
-        F.open_chunk	(WAYOBJECT_CHUNK_TYPE);
-        F.Wdword		(m_Type);
-        F.close_chunk	();
-
-        F.open_chunk	(WAYOBJECT_CHUNK_NAME);
-        F.WstringZ		(Name);
-        F.close_chunk	();
-
-        F.open_chunk	(WAYOBJECT_CHUNK_TYPE);
-        F.Wdword		(m_Type);
-        F.close_chunk	();
+        F.patrolpath.stream.open_chunk	(WAYOBJECT_CHUNK_NAME);
+        F.patrolpath.stream.WstringZ	(Name);
+        F.patrolpath.stream.close_chunk	();
 
         int l_cnt		= 0;
-        F.open_chunk	(WAYOBJECT_CHUNK_POINTS);
-        F.Wword			(m_WayPoints.size());
+        F.patrolpath.stream.open_chunk	(WAYOBJECT_CHUNK_POINTS);
+        F.patrolpath.stream.Wword		(m_WayPoints.size());
         for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++){
             CWayPoint* W = *it;
-            F.Wvector	(W->m_vPosition);
-            F.Wdword	(W->m_dwFlags);
+            F.patrolpath.stream.Wvector	(W->m_vPosition);
+            F.patrolpath.stream.Wdword	(W->m_dwFlags);
             l_cnt		+= W->m_Links.size();
         }
-        F.close_chunk	();
+        F.patrolpath.stream.close_chunk	();
 
-        F.open_chunk	(WAYOBJECT_CHUNK_LINKS);
-        F.Wword			(l_cnt);
+        F.patrolpath.stream.open_chunk	(WAYOBJECT_CHUNK_LINKS);
+        F.patrolpath.stream.Wword		(l_cnt);
         for (it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++){
             CWayPoint* W= *it;
             int from	= it-m_WayPoints.begin();
             for (WPIt l_it=W->m_Links.begin(); l_it!=W->m_Links.end(); l_it++){
                 WPIt to	= find(m_WayPoints.begin(),m_WayPoints.end(),*l_it); R_ASSERT(to!=W->m_Links.end());
-                F.Wword	(from);
-                F.Wword	(to-m_WayPoints.begin());
+                F.patrolpath.stream.Wword	(from);
+                F.patrolpath.stream.Wword	(to-m_WayPoints.begin());
             }
         }
-        F.close_chunk	();
+        F.patrolpath.stream.close_chunk	();
     }
-    F.close_chunk		();
+    F.patrolpath.stream.close_chunk		();
     return true;
 }
 //----------------------------------------------------

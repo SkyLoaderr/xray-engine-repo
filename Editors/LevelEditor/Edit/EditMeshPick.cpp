@@ -68,7 +68,7 @@ void CEditableMesh::GenerateCFModel(){
 	m_LoadState |= EMESH_LS_CF_MODEL;
 }
 
-bool CEditableMesh::RayPick(float& distance, Fvector& start, Fvector& direction, Fmatrix& inv_parent, SRayPickInfo* pinf){
+bool CEditableMesh::RayPick(float& distance, const Fvector& start, const Fvector& direction, const Fmatrix& inv_parent, SRayPickInfo* pinf){
 	if (!m_Visible) return false;
 
     if (!m_CFModel) GenerateCFModel();
@@ -95,7 +95,7 @@ bool CEditableMesh::RayPick(float& distance, Fvector& start, Fvector& direction,
 //----------------------------------------------------
 #ifdef _LEVEL_EDITOR
 
-bool CEditableMesh::CHullPickMesh(PlaneVec& pl, Fmatrix& parent){
+bool CEditableMesh::CHullPickMesh(PlaneVec& pl, const Fmatrix& parent){
 	DWORD i=0;
 	Fvector p;
     vector<bool> inside(m_Points.size(),true);
@@ -150,7 +150,7 @@ void CEditableMesh::GetTiesFaces(int start_id, DWORDVec& fl, float fSoftAngle, b
 }
 //----------------------------------------------------
 
-bool CEditableMesh::BoxPick(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf){
+bool CEditableMesh::BoxPick(const Fbox& box, const Fmatrix& parent, SBoxPickInfoVec& pinf){
     if (!m_CFModel) GenerateCFModel();
 
     XRC.box_query(parent, m_CFModel, box);
@@ -179,7 +179,7 @@ bool CEditableMesh::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
 }
 //---------------------------------------------------------------------------
 
-void CEditableMesh::FrustumPickFaces(const CFrustum& frustum, Fmatrix& parent, DWORDVec& fl){
+void CEditableMesh::FrustumPickFaces(const CFrustum& frustum, const Fmatrix& parent, DWORDVec& fl){
 	if (!m_Visible) return;
 
 	DWORD i=0;
