@@ -99,6 +99,8 @@ void CLocatorAPI::ProcessOne	(const char* path, LPVOID _F)
 	strcat		(N,F.name);
 	strlwr		(N);
 	
+	if (F.attrib&_A_HIDDEN)			return;
+
 	if (F.attrib&_A_SUBDIR) {
 		if (0==strcmp(F.name,"."))	return;
 		if (0==strcmp(F.name,"..")) return;
