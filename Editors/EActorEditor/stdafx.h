@@ -146,36 +146,14 @@ struct astr_pred : public std::binary_function<const AnsiString&, const AnsiStri
 
 #ifdef _LEVEL_EDITOR
 	#include "net_utils.h"
-	#define _EDITOR_FILE_NAME_ 	"level"
-	#define _EDITOR_NAME_ 		"Level Editor"
 	#define _HAVE_RECENT_FILES
 #else
-	#ifdef _SHADER_EDITOR
-		#define _EDITOR_FILE_NAME_ 	"shader"
-		#define _EDITOR_NAME_ 		"Shader Editor"
-    #else
-		#ifdef _PARTICLE_EDITOR
-			#define _EDITOR_FILE_NAME_ 	"particle"
-			#define _EDITOR_NAME_ 		"Particle Editor"
-        #else
-			#ifdef _ACTOR_EDITOR
-				#define _EDITOR_FILE_NAME_ 	"actor"
-				#define _EDITOR_NAME_ 		"Actor Editor"
-				#define _HAVE_RECENT_FILES
-            #else
-            	#ifdef _LEVEL_OPTIONS
-					#define _EDITOR_FILE_NAME_ 	"options"
-					#define _EDITOR_NAME_ 		"Level Options"
-                #else
-					#define _EDITOR_FILE_NAME_ 	"undef"
-					#define _EDITOR_NAME_ 		"undef"
-                #endif
-    		#endif
-		#endif
+    #ifdef _ACTOR_EDITOR
+        #define _HAVE_RECENT_FILES
     #endif
 #endif
 
-#define INI_NAME(buf) 		{buf=AnsiString(_EDITOR_FILE_NAME_)+".ini"; FS.update_path(buf,"$local_root$",buf.c_str());}
+#define INI_NAME(buf) 		{buf=AnsiString(UI->EditorName())+".ini"; FS.update_path(buf,"$local_root$",buf.c_str());}
 #define DEFINE_INI(storage)	{AnsiString buf;	INI_NAME(buf); storage->IniFileName=buf;}
 #define NONE_CAPTION "<none>"
 #define MULTIPLESEL_CAPTION "<multiple selection>"
