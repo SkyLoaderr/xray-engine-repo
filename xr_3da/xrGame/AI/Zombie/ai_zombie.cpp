@@ -181,6 +181,7 @@ void CAI_Zombie::net_Export(NET_Packet& P)
 	// export last known packet
 	R_ASSERT				(!NET.empty());
 	net_update& N			= NET.back();
+	P.w_float_q16		(fHealth,-1000,1000);
 	P.w_u32					(N.dwTimeStamp);
 	P.w_u8					(0);
 	P.w_vec3				(N.p_pos);
@@ -196,6 +197,7 @@ void CAI_Zombie::net_Import(NET_Packet& P)
 	net_update				N;
 
 	u8 flags;
+	P.r_float_q16			(fHealth,-1000,1000);
 	P.r_u32					(N.dwTimeStamp);
 	P.r_u8					(flags);
 	P.r_vec3				(N.p_pos);

@@ -13,6 +13,18 @@
 void CAI_ALife::vfCreateObject(CALifeDynamicObject *tpALifeDynamicObject)
 {
 	NET_Packet						tNetPacket;
+	CALifeTraderParams				*tpTraderParams = dynamic_cast<CALifeTraderParams*>(tpALifeDynamicObject);
+	if (tpTraderParams) {
+		OBJECT_IT					I = tpALifeDynamicObject->children.begin();
+		OBJECT_IT					E = tpALifeDynamicObject->children.end();
+		for ( ; I != E; I++) {
+			CALifeDynamicObject		*tpItem = dynamic_cast<CALifeDynamicObject*>(m_tObjectRegistry[*I]);
+			VERIFY(tpItem);
+			tpItem->s_flags.or		(M_SPAWN_UPDATE);
+			m_tpServer->Process_spawn(tNetPacket,0,FALSE,tpItem);
+			tpItem->s_flags.and		(u16(-1) ^ M_SPAWN_UPDATE);
+		}
+	}
 	tpALifeDynamicObject->s_flags.or(M_SPAWN_UPDATE);
 	m_tpServer->Process_spawn		(tNetPacket,0,FALSE,tpALifeDynamicObject);
 	tpALifeDynamicObject->s_flags.and(u16(-1) ^ M_SPAWN_UPDATE);
@@ -20,6 +32,13 @@ void CAI_ALife::vfCreateObject(CALifeDynamicObject *tpALifeDynamicObject)
 
 void CAI_ALife::vfReleaseObject(CALifeDynamicObject *tpALifeDynamicObject)
 {
+	CALifeTraderParams				*tpTraderParams = dynamic_cast<CALifeTraderParams*>(tpALifeDynamicObject);
+	if (tpTraderParams) {
+		OBJECT_IT					I = tpALifeDynamicObject->children.begin();
+		OBJECT_IT					E = tpALifeDynamicObject->children.end();
+		for ( ; I != E; I++)
+			m_tpServer->Perform_destroy(m_tObjectRegistry[*I],net_flags(TRUE,TRUE));
+	}
 	m_tpServer->Perform_destroy		(tpALifeDynamicObject,net_flags(TRUE,TRUE));
 }
 

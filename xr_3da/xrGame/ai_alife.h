@@ -51,11 +51,11 @@ private:
 	void							vfBallanceCreatures			();
 	void							vfUpdateCreatures			();
 	// after surge
-	CALifeTrader *					tpfGetNearestSuitableTrader	(CALifeHuman *tpALifeHuman);
-	void							vfCommunicateWithTrader		(CALifeHuman *tpALifeHuman, CALifeTrader *tpTrader);
+	CALifeTrader *					tpfGetNearestSuitableTrader	(CALifeHuman			*tpALifeHuman);
+	void							vfCommunicateWithTrader		(CALifeHuman			*tpALifeHuman, CALifeTrader *tpTrader);
 	void							vfUpdateMonster				(CALifeMonsterAbstract	*tpALifeMonsterAbstract);
 	void							vfUpdateHuman				(CALifeHuman			*tpALifeHuman);
-	bool							bfProcessItems				(CALifeHumanParams		&tHumanParams, _GRAPH_ID tGraphID, float fMaxItemMass, float fProbability);
+	bool							bfProcessItems				(xrServerEntity			&tServerEntity, _GRAPH_ID tGraphID, float fMaxItemMass, float fProbability);
 	bool							bfCheckForItems				(CALifeHumanAbstract	*tpALifeHumanAbstract);
 	void							vfCheckForDeletedEvents		(CALifeHumanAbstract	*tpALifeHumanAbstract);
 	void							vfCheckForTheBattle			(CALifeMonsterAbstract	*tpALifeMonsterAbstract);

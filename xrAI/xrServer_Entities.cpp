@@ -137,6 +137,7 @@ void xrSE_WeaponAmmo::FillProp(LPCSTR pref, PropItemVec& values) {
 xrSE_Teamed::xrSE_Teamed(LPCSTR caSection) : CALifeDynamicObject(caSection)
 {
 	s_team = s_squad = s_group = 0;
+	fHealth						= 100;
 }
 
 void	xrSE_Teamed::STATE_Read			(NET_Packet& P, u16 size)
@@ -146,6 +147,7 @@ void	xrSE_Teamed::STATE_Read			(NET_Packet& P, u16 size)
 	P.r_u8				(s_squad);
 	P.r_u8				(s_group);
 }
+
 void	xrSE_Teamed::STATE_Write		(NET_Packet& P)
 {
 	inherited::STATE_Write(P);
@@ -153,8 +155,19 @@ void	xrSE_Teamed::STATE_Write		(NET_Packet& P)
 	P.w_u8				(s_squad);
 	P.w_u8				(s_group);
 }
-void	xrSE_Teamed::UPDATE_Read		(NET_Packet& P)	{inherited::UPDATE_Read(P);};
-void	xrSE_Teamed::UPDATE_Write		(NET_Packet& P)	{inherited::UPDATE_Write(P);};
+
+void	xrSE_Teamed::UPDATE_Read		(NET_Packet& P)
+{
+	inherited::UPDATE_Read(P);
+	P.r_float_q16		(fHealth,	-1000,1000);
+};
+
+void	xrSE_Teamed::UPDATE_Write		(NET_Packet& P)
+{
+	inherited::UPDATE_Write(P);
+	P.w_float_q16		(fHealth,	-1000,1000);
+};
+
 #ifdef _EDITOR
 void	xrSE_Teamed::FillProp			(LPCSTR pref, PropItemVec& items)
 {
@@ -162,6 +175,7 @@ void	xrSE_Teamed::FillProp			(LPCSTR pref, PropItemVec& items)
     PHelper.CreateU8(items,PHelper.PrepareKey(pref,s_name, "Team"),		&s_team, 	0,64,1);
     PHelper.CreateU8(items,PHelper.PrepareKey(pref,s_name, "Squad"),	&s_squad, 	0,64,1);
     PHelper.CreateU8(items,PHelper.PrepareKey(pref,s_name, "Group"),	&s_group, 	0,64,1);
+   	PHelper.CreateFloat(		items, PHelper.PrepareKey(pref,s_name,"Personal",	"Health" 				),&fHealth,							0,200,5);
 }
 #endif
 
@@ -449,7 +463,7 @@ void xrSE_Spectator::FillProp		(LPCSTR pref, PropItemVec& items)
 #endif
 
 //***** Actor
-xrSE_Actor::xrSE_Actor			(LPCSTR caSection) : xrSE_Teamed(caSection)
+xrSE_Actor::xrSE_Actor				(LPCSTR caSection) : xrSE_Teamed(caSection), CALifeTraderParams(caSection)
 {
 	caModel[0]						= 0;
 	strcat(caModel,"actors\\Different_stalkers\\stalker_hood_multiplayer.ogf");
@@ -458,6 +472,7 @@ xrSE_Actor::xrSE_Actor			(LPCSTR caSection) : xrSE_Teamed(caSection)
 void xrSE_Actor::STATE_Read			(NET_Packet& P, u16 size)
 {
 	inherited::STATE_Read(P,size);
+	CALifeTraderParams::STATE_Read(P,size);
 	if (m_wVersion >= 3)
 		P.r_string(caModel);
 };
@@ -465,12 +480,14 @@ void xrSE_Actor::STATE_Read			(NET_Packet& P, u16 size)
 void xrSE_Actor::STATE_Write		(NET_Packet& P)
 {
 	inherited::STATE_Write(P);
+	CALifeTraderParams::STATE_Write(P);
 	P.w_string(caModel);
 };
 
 void xrSE_Actor::UPDATE_Read		(NET_Packet& P)
 {
 	inherited::UPDATE_Read(P);
+	CALifeTraderParams::UPDATE_Read(P);
 	P.r_u32				(timestamp	);
 	P.r_u8				(flags		);
 	P.r_vec3			(o_Position	);
@@ -480,13 +497,13 @@ void xrSE_Actor::UPDATE_Read		(NET_Packet& P)
 	P.r_angle8			(torso.pitch);
 	P.r_sdir			(accel		);
 	P.r_sdir			(velocity	);
-	P.r_float_q16		(fHealth,	-1000,1000);
 	P.r_float_q16		(fArmor,	-1000,1000);
 	P.r_u8				(weapon		);
 };
 void xrSE_Actor::UPDATE_Write		(NET_Packet& P)
 {
 	inherited::UPDATE_Write(P);
+	CALifeTraderParams::UPDATE_Write(P);
 	P.w_u32				(timestamp	);
 	P.w_u8				(flags		);
 	P.w_vec3			(o_Position	);
@@ -496,7 +513,6 @@ void xrSE_Actor::UPDATE_Write		(NET_Packet& P)
 	P.w_angle8			(torso.pitch);
 	P.w_sdir			(accel		);
 	P.w_sdir			(velocity	);
-	P.w_float_q16		(fHealth,	-1000,1000);
 	P.w_float_q16		(fArmor,	-1000,1000);
 	P.w_u8				(weapon		);
 }
@@ -521,8 +537,8 @@ void xrSE_Enemy::UPDATE_Read		(NET_Packet& P)
 	P.r_angle8			(o_model		);
 	P.r_angle8			(o_torso.yaw	);
 	P.r_angle8			(o_torso.pitch	);
-	if (m_wVersion >= 5)
-		P.r_float		(fHealth);
+//	if ((m_wVersion >= 5) && (m_wVersion <= 8))
+//		P.r_float		(fHealth);
 }
 void xrSE_Enemy::UPDATE_Write		(NET_Packet& P)
 {
@@ -533,13 +549,11 @@ void xrSE_Enemy::UPDATE_Write		(NET_Packet& P)
 	P.w_angle8			(o_model		);
 	P.w_angle8			(o_torso.yaw	);
 	P.w_angle8			(o_torso.pitch	);
-	P.w_float			(fHealth);
 }
 #ifdef _EDITOR
 void	xrSE_Enemy::FillProp			(LPCSTR pref, PropItemVec& items)
 {
   	inherited::FillProp(pref,items);
-   	PHelper.CreateFloat(		items, PHelper.PrepareKey(pref,s_name,"Personal",	"Health" 				),&fHealth,							0,200,5);
 }
 #endif
 
@@ -724,14 +738,14 @@ void CALifeMonsterAbstract::UPDATE_Write(NET_Packet &tNetPacket)
 void CALifeMonsterAbstract::UPDATE_Read(NET_Packet &tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
-	if (m_wVersion >= 7) {
+//	if (m_wVersion >= 7) {
 		tNetPacket.r				(&m_tNextGraphID,			sizeof(m_tNextGraphID));
 		tNetPacket.r				(&m_tPrevGraphID,			sizeof(m_tPrevGraphID));
 		tNetPacket.r				(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
 		tNetPacket.r				(&m_fCurSpeed,				sizeof(m_fCurSpeed));
 		tNetPacket.r				(&m_fDistanceFromPoint,		sizeof(m_fDistanceFromPoint));
 		tNetPacket.r				(&m_fDistanceToPoint,		sizeof(m_fDistanceToPoint));
-	}
+//	}
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -835,8 +849,8 @@ void xrSE_Rat::STATE_Write(NET_Packet& P)
 void xrSE_Rat::UPDATE_Read(NET_Packet& P)
 {
 	inherited::UPDATE_Read(P);
-	if ((m_wVersion >= 2) && (m_wVersion <= 5))
-		P.r_float (fHealth);
+//	if ((m_wVersion >= 2) && (m_wVersion <= 5))
+//		P.r_float (fHealth);
 }
 
 void xrSE_Rat::UPDATE_Write(NET_Packet& P)
@@ -1257,7 +1271,7 @@ void xrGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
 }
 #endif
 
-xrSE_Human::xrSE_Human(LPCSTR caSection) : CALifeMonsterAbstract(caSection)
+xrSE_Human::xrSE_Human(LPCSTR caSection) : CALifeMonsterAbstract(caSection), CALifeTraderParams(caSection)
 {
 	caModel[0]						= 0;
 	strcat(caModel,"actors\\Different_stalkers\\stalker_no_hood_singleplayer");
@@ -1269,32 +1283,35 @@ void xrSE_Human::STATE_Read(NET_Packet& P, u16 size)
 {
 	// inherited properties
 	inherited::STATE_Read(P,size);
+	CALifeTraderParams::STATE_Read(P,size);
 	// model
 	P.r_string(caModel);
 	// personal characteristics
-	P.r_float (fHealth);
+	if (m_wVersion <= 8)
+		P.r_float (fHealth);
 }
 
 void xrSE_Human::STATE_Write(NET_Packet& P)
 {
 	// inherited properties
 	inherited::STATE_Write(P);
+	CALifeTraderParams::STATE_Write(P);
 	// model
 	P.w_string(caModel);
-	// personal characteristics
-	P.w_float (fHealth);
 }
 
 void xrSE_Human::UPDATE_Read(NET_Packet& P)
 {
 	inherited::UPDATE_Read(P);
-	if ((m_wVersion >= 2) && (m_wVersion <= 5))
-		P.r_float (fHealth);
+	CALifeTraderParams::UPDATE_Read(P);
+//	if ((m_wVersion >= 2) && (m_wVersion <= 5))
+//		P.r_float (fHealth);
 }
 
 void xrSE_Human::UPDATE_Write(NET_Packet& P)
 {
 	inherited::UPDATE_Write(P);
+	CALifeTraderParams::UPDATE_Write(P);
 }
 
 #ifdef _EDITOR
@@ -1303,8 +1320,6 @@ void xrSE_Human::FillProp(LPCSTR pref, PropItemVec& items)
    	inherited::FillProp(pref, items);
 	// model
     PHelper.CreateGameObject(	items, PHelper.PrepareKey(pref,s_name,"Model"								),caModel,							sizeof(caModel));
-	// personal characteristics
-   	PHelper.CreateFloat(		items, PHelper.PrepareKey(pref,s_name,"Personal",	"Health" 				),&fHealth,							0,200,5);
 }	
 #endif
 

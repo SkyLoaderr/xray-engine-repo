@@ -87,12 +87,12 @@ public:
 		}
 	};
 
-	IC bool bfCheckIfTaskCompleted(CALifeHumanParams &tHumanParams, CALifeHumanAbstract *tpALifeHumanAbstract, OBJECT_IT &I)
+	IC bool bfCheckIfTaskCompleted(xrServerEntity &tServerEntity, CALifeHumanAbstract *tpALifeHumanAbstract, OBJECT_IT &I)
 	{
 		if (tpALifeHumanAbstract->m_dwCurTask >= tpALifeHumanAbstract->m_tpTasks.size())
 			return(false);
-		I = tHumanParams.m_tpItemIDs.begin();
-		OBJECT_IT	E = tHumanParams.m_tpItemIDs.end();
+		I = tServerEntity.children.begin();
+		OBJECT_IT	E = tServerEntity.children.end();
 		CALifePersonalTask	&tPersonalTask = *(tpALifeHumanAbstract->m_tpTasks[tpALifeHumanAbstract->m_dwCurTask]);
 		for ( ; I != E; I++) {
 			switch (tPersonalTask.m_tTaskType) {
@@ -322,10 +322,12 @@ public:
 		vfAddEventToGraphPoint		(tpEvent,tNextGraphPointID);
 	};
 
-	IC void vfAttachItem(CALifeHumanParams &tHumanParams, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID)
+	IC void vfAttachItem(xrServerEntity &tServerEntity, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID)
 	{
-		tHumanParams.m_tpItemIDs.push_back(tpALifeItem->m_tObjectID);
-		tpALifeItem->ID_Parent = tHumanParams.ID;
+		tServerEntity.children.push_back(tpALifeItem->m_tObjectID);
+		CALifeTraderParams *tpALifeTraderParams = dynamic_cast<CALifeTraderParams*>(&tServerEntity);
+		VERIFY(tpALifeTraderParams);
+		tpALifeItem->ID_Parent = tServerEntity.ID;
 		ALIFE_ENTITY_P_IT		I = m_tpGraphObjects[tGraphID].tpObjects.begin();
 		ALIFE_ENTITY_P_IT		E = m_tpGraphObjects[tGraphID].tpObjects.end();
 		for ( ; I != E; I++)
@@ -333,14 +335,14 @@ public:
 				m_tpGraphObjects[tGraphID].tpObjects.erase(I);
 				break;
 			}
-		tHumanParams.m_fCumulativeItemMass += tpALifeItem->m_fMass;
+		tpALifeTraderParams->m_fCumulativeItemMass += tpALifeItem->m_fMass;
 	}
 
-	IC void vfDetachItem(CALifeHumanParams &tHumanParams, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID)
+	IC void vfDetachItem(CALifeTraderParams &tTraderParams, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID)
 	{
 		tpALifeItem->ID = 65535;
 		m_tpGraphObjects[tGraphID].tpObjects.push_back(tpALifeItem);
-		tHumanParams.m_fCumulativeItemMass -= tpALifeItem->m_fMass;
+		tTraderParams.m_fCumulativeItemMass -= tpALifeItem->m_fMass;
 	}
 };
 

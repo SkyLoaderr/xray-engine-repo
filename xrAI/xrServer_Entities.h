@@ -134,6 +134,7 @@ xrSE_DECLARE_BEGIN(xrSE_Teamed,CALifeDynamicObject)
 	u8								s_team;
 	u8								s_squad;
 	u8								s_group;
+	float							fHealth;
 
 									xrSE_Teamed		(LPCSTR caSection);
 	virtual u8						g_team			()					{ return s_team;	}
@@ -228,7 +229,7 @@ xrSE_DECLARE_BEGIN(xrSE_Spectator,xrServerEntity)
 xrSE_DECLARE_END
 
 //***** Actor
-xrSE_DECLARE_BEGIN(xrSE_Actor,xrSE_Teamed)
+xrSE_DECLARE_BEGIN2(xrSE_Actor,xrSE_Teamed,CALifeTraderParams)
 	u32								timestamp;
 	u8								flags;
 	u16								mstate;
@@ -236,7 +237,6 @@ xrSE_DECLARE_BEGIN(xrSE_Actor,xrSE_Teamed)
 	SRotation						torso;
 	Fvector							accel;
 	Fvector							velocity;
-	float							fHealth;
 	float							fArmor;
 	u8								weapon;
 	string64						caModel;
@@ -249,10 +249,8 @@ xrSE_DECLARE_BEGIN(xrSE_Enemy,xrSE_Teamed)
 	u8								flags;
 	float							o_model;				// model yaw
 	SRotation						o_torso;				// torso in world coords
-	float							fHealth;
 									xrSE_Enemy		(LPCSTR caSection) : xrSE_Teamed(caSection)
 	{
-		fHealth						= 100;
 	}
 xrSE_DECLARE_END
 
@@ -316,9 +314,9 @@ public:
 	virtual void					UPDATE_Read	(NET_Packet &tNetPacket);
 };
 
-class CALifeMonster : public CALifeMonsterAbstract, public CALifeMonsterParams {
+class CALifeMonster : public CALifeMonsterAbstract {
 public:
-									CALifeMonster(LPCSTR caSection) : CALifeMonsterAbstract(caSection), CALifeMonsterParams(caSection)
+									CALifeMonster(LPCSTR caSection) : CALifeMonsterAbstract(caSection)
 	{
 	};
 	virtual void					STATE_Write	(NET_Packet &tNetPacket);
@@ -362,9 +360,9 @@ public:
 
 };
 
-class CALifeHuman : public CALifeHumanAbstract, public CALifeHumanParams {
+class CALifeHuman : public CALifeHumanAbstract {
 public:
-									CALifeHuman	(LPCSTR caSection) : CALifeHumanAbstract(caSection), CALifeHumanParams(caSection)
+									CALifeHuman	(LPCSTR caSection) : CALifeHumanAbstract(caSection)
 	{
 	};
 	virtual void					STATE_Write	(NET_Packet &tNetPacket);
@@ -456,7 +454,7 @@ xrSE_DECLARE_BEGIN(xrSE_Dog,CALifeMonsterAbstract)
 									xrSE_Dog	(LPCSTR caSection);				// constructor for variable initialization
 xrSE_DECLARE_END
 
-xrSE_DECLARE_BEGIN(xrSE_Human,CALifeMonsterAbstract)
+xrSE_DECLARE_BEGIN2(xrSE_Human,CALifeMonsterAbstract,CALifeTraderParams)
 	// model
 	string64						caModel;
 	

@@ -61,27 +61,6 @@ void CALifeObject::FillProp	(LPCSTR pref, PropItemVec& items)
 	PHelper.CreateU32			(items,	PHelper.PrepareKey(pref, "ALife\\Spawn group ID"),	&m_dwSpawnGroup,	0,0xffffffff);
 }
 #endif
-// CALifeMonsterParams
-void CALifeMonsterParams::STATE_Write(NET_Packet &tNetPacket)
-{
-}
-
-void CALifeMonsterParams::STATE_Read(NET_Packet &tNetPacket, u16 size)
-{
-}
-
-void CALifeMonsterParams::UPDATE_Write(NET_Packet &tNetPacket)
-{
-	tNetPacket.w_s32			(m_iHealth);
-	tNetPacket.w_u16			(ID);
-};
-
-void CALifeMonsterParams::UPDATE_Read(NET_Packet &tNetPacket)
-{
-	tNetPacket.r_s32			(m_iHealth);
-	tNetPacket.r_u16			(ID);
-};
-
 // CALifeTraderParams
 void CALifeTraderParams::STATE_Write(NET_Packet &tNetPacket)
 {
@@ -96,7 +75,6 @@ void CALifeTraderParams::UPDATE_Write(NET_Packet &tNetPacket)
 	tNetPacket.w_float			(m_fCumulativeItemMass);
 	tNetPacket.w_u32			(m_dwMoney);
 	tNetPacket.w_u32			(m_tRank);
-	save_base_vector			(m_tpItemIDs,tNetPacket);
 };
 
 void CALifeTraderParams::UPDATE_Read(NET_Packet &tNetPacket)
@@ -106,33 +84,13 @@ void CALifeTraderParams::UPDATE_Read(NET_Packet &tNetPacket)
 	u32							dwDummy;
 	tNetPacket.r_u32			(dwDummy);
 	m_tRank						= EStalkerRank(m_tRank);
-	load_base_vector			(m_tpItemIDs,tNetPacket);
 };
 
-// CALifeHumanParams
-void CALifeHumanParams::STATE_Write(NET_Packet &tNetPacket)
+#ifdef _EDITOR
+void CALifeTraderParams::FillProp(LPCSTR pref, PropItemVec& items)
 {
-	CALifeMonsterParams::STATE_Write(tNetPacket);
-	CALifeTraderParams::STATE_Write(tNetPacket);
 }
-
-void CALifeHumanParams::STATE_Read(NET_Packet &tNetPacket, u16 size)
-{
-	CALifeMonsterParams::STATE_Read(tNetPacket, size);
-	CALifeTraderParams::STATE_Read(tNetPacket, size);
-}
-
-void CALifeHumanParams::UPDATE_Write(NET_Packet &tNetPacket)
-{
-	CALifeMonsterParams::UPDATE_Write(tNetPacket);
-	CALifeTraderParams::UPDATE_Write(tNetPacket);
-};
-
-void CALifeHumanParams::UPDATE_Read(NET_Packet &tNetPacket)
-{
-	CALifeMonsterParams::UPDATE_Read(tNetPacket);
-	CALifeTraderParams::UPDATE_Read(tNetPacket);
-};
+#endif
 
 // CALifeTraderAbstract
 void CALifeTraderAbstract::STATE_Write(NET_Packet &tNetPacket)
@@ -434,28 +392,24 @@ void CALifeAnomalousZone::UPDATE_Read(NET_Packet &tNetPacket)
 void CALifeTrader::STATE_Write(NET_Packet &tNetPacket)
 {
 	CALifeDynamicObject::STATE_Write(tNetPacket);
-	CALifeTraderParams::STATE_Write(tNetPacket);
 	CALifeTraderAbstract::STATE_Write(tNetPacket);
 }
 
 void CALifeTrader::STATE_Read(NET_Packet &tNetPacket, u16 size)
 {
 	CALifeDynamicObject::STATE_Read(tNetPacket, size);
-	CALifeTraderParams::STATE_Read(tNetPacket, size);
 	CALifeTraderAbstract::STATE_Read(tNetPacket, size);
 }
 
 void CALifeTrader::UPDATE_Write(NET_Packet &tNetPacket)
 {
 	CALifeDynamicObject::UPDATE_Write(tNetPacket);
-	CALifeTraderParams::UPDATE_Write(tNetPacket);
 	CALifeTraderAbstract::UPDATE_Write(tNetPacket);
 };
 
 void CALifeTrader::UPDATE_Read(NET_Packet &tNetPacket)
 {
 	CALifeDynamicObject::UPDATE_Read(tNetPacket);
-	CALifeTraderParams::UPDATE_Read(tNetPacket);
 	CALifeTraderAbstract::UPDATE_Read(tNetPacket);
 };
 
@@ -488,25 +442,21 @@ void CALifeDynamicAnomalousZone::UPDATE_Read(NET_Packet &tNetPacket)
 void CALifeMonster::STATE_Write(NET_Packet &tNetPacket)
 {
 	CALifeMonsterAbstract::STATE_Write(tNetPacket);
-	CALifeMonsterParams::STATE_Write(tNetPacket);
 }
 
 void CALifeMonster::STATE_Read(NET_Packet &tNetPacket, u16 size)
 {
 	CALifeMonsterAbstract::STATE_Read(tNetPacket, size);
-	CALifeMonsterParams::STATE_Read(tNetPacket, size);
 }
 
 void CALifeMonster::UPDATE_Write(NET_Packet &tNetPacket)
 {
 	CALifeMonsterAbstract::UPDATE_Write(tNetPacket);
-	CALifeMonsterParams::UPDATE_Write(tNetPacket);
 };
 
 void CALifeMonster::UPDATE_Read(NET_Packet &tNetPacket)
 {
 	CALifeMonsterAbstract::UPDATE_Read(tNetPacket);
-	CALifeMonsterParams::UPDATE_Read(tNetPacket);
 };
 
 // CALifeHumanAbstract
@@ -556,23 +506,19 @@ void CALifeHumanAbstract::UPDATE_Read(NET_Packet &tNetPacket)
 void CALifeHuman::STATE_Write(NET_Packet &tNetPacket)
 {
 	CALifeHumanAbstract::STATE_Write(tNetPacket);
-	CALifeHumanParams::STATE_Write(tNetPacket);
 }
 
 void CALifeHuman::STATE_Read(NET_Packet &tNetPacket, u16 size)
 {
 	CALifeHumanAbstract::STATE_Read(tNetPacket, size);
-	CALifeHumanParams::STATE_Read(tNetPacket, size);
 }
 
 void CALifeHuman::UPDATE_Write(NET_Packet &tNetPacket)
 {
 	CALifeHumanAbstract::UPDATE_Write(tNetPacket);
-	CALifeHumanParams::UPDATE_Write(tNetPacket);
 };
 
 void CALifeHuman::UPDATE_Read(NET_Packet &tNetPacket)
 {
 	CALifeHumanAbstract::UPDATE_Read(tNetPacket);
-	CALifeHumanParams::UPDATE_Read(tNetPacket);
 };

@@ -336,13 +336,14 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 	// export last known packet
 	R_ASSERT						(!NET.empty());
 	net_update& N					= NET.back();
+	P.w_float_q16					(fHealth,-1000,1000);
+
 	P.w_u32							(N.dwTimeStamp);
 	P.w_u8							(0);
 	P.w_vec3						(N.p_pos);
 	P.w_angle8						(N.o_model);
 	P.w_angle8						(N.o_torso.yaw);
 	P.w_angle8						(N.o_torso.pitch);
-	P.w_float						(N.fHealth);
 	
 	P.w								(&m_tNextGP,				sizeof(m_tNextGP));
 	P.w								(&m_tCurGP,					sizeof(m_tCurGP));
@@ -361,6 +362,10 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 		P.w							(&f1,						sizeof(f1));
 		P.w							(&f1,						sizeof(f1));
 	}
+	
+	P.w_float						(m_inventory.TotalWeight());
+	P.w_u32							(0);
+	P.w_u32							(0);
 }
 
 void CAI_Stalker::net_Import		(NET_Packet& P)
@@ -369,13 +374,14 @@ void CAI_Stalker::net_Import		(NET_Packet& P)
 	net_update						N;
 
 	u8 flags;
+	P.r_float_q16					(fHealth,-1000,1000);
+
 	P.r_u32							(N.dwTimeStamp);
 	P.r_u8							(flags);
 	P.r_vec3						(N.p_pos);
 	P.r_angle8						(N.o_model);
 	P.r_angle8						(N.o_torso.yaw);
 	P.r_angle8						(N.o_torso.pitch);
-	P.r_float						(N.fHealth);
 
 	P.r								(&m_tNextGP,		sizeof(m_tNextGP));
 	P.r								(&m_tCurGP,			sizeof(m_tCurGP));
@@ -384,6 +390,12 @@ void CAI_Stalker::net_Import		(NET_Packet& P)
 		NET.push_back				(N);
 		NET_WasInterpolating		= TRUE;
 	}
+
+	float fDummy;
+	u32 dwDummy;
+	P.r_float			(fDummy);
+	P.r_u32				(dwDummy);
+	P.r_u32				(dwDummy);
 
 	setVisible						(TRUE);
 	setEnabled						(TRUE);

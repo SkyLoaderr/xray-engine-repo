@@ -194,13 +194,13 @@ void CCustomMonster::net_Export(NET_Packet& P)					// export to server
 	// export last known packet
 	R_ASSERT				(!NET.empty());
 	net_update& N			= NET.back();
+	P.w_float_q16		(fHealth,-1000,1000);
 	P.w_u32					(N.dwTimeStamp);
 	P.w_u8					(0);
 	P.w_vec3				(N.p_pos);
 	P.w_angle8				(N.o_model);
 	P.w_angle8				(N.o_torso.yaw);
 	P.w_angle8				(N.o_torso.pitch);
-	P.w_float				(N.fHealth);
 }
 
 void CCustomMonster::net_Import(NET_Packet& P)
@@ -209,14 +209,14 @@ void CCustomMonster::net_Import(NET_Packet& P)
 	net_update				N;
 
 	u8 flags;
+	P.r_float_q16		(fHealth,-1000,1000);
 	P.r_u32					(N.dwTimeStamp);
 	P.r_u8					(flags);
 	P.r_vec3				(N.p_pos);
 	P.r_angle8				(N.o_model);
 	P.r_angle8				(N.o_torso.yaw);
 	P.r_angle8				(N.o_torso.pitch);
-	P.r_float				(N.fHealth);
-
+	
 	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	{
 		NET.push_back			(N);
 		NET_WasInterpolating	= TRUE;

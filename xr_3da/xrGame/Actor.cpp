@@ -236,7 +236,13 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 	//VERIFY				(Weapons);
 
 	u8					flags=0;
-	CGameObject::net_Export(P);
+	//CGameObject::net_Export(P);
+	P.w_float_q16		(fHealth,-1000,1000);
+
+	P.w_float			(m_inventory.TotalWeight());
+	P.w_u32				(0);
+	P.w_u32				(0);
+
 	P.w_u32				(Level().timeServer());
 	P.w_u8				(flags);
 	P.w_vec3			(vPosition);
@@ -246,7 +252,6 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 	P.w_angle8			(r_torso.pitch);
 	P.w_sdir			(NET_SavedAccel);
 	P.w_sdir			(ph_Movement.GetVelocity());
-	P.w_float_q16		(fHealth,-1000,1000);
 	P.w_float_q16		(fArmor,-1000,1000);
 
 	int w_id = -1;//Weapons->ActiveWeaponID	();
@@ -263,7 +268,15 @@ void CActor::net_Import		(NET_Packet& P)					// import from server
 
 	u8	flags;
 	u16	tmp;
-	CGameObject::net_Import(P);
+	//CGameObject::net_Import(P);
+	P.r_float_q16		(fHealth,-1000,1000);
+
+	float fDummy;
+	u32 dwDummy;
+	P.r_float			(fDummy);
+	P.r_u32				(dwDummy);
+	P.r_u32				(dwDummy);
+
 	P.r_u32				(N.dwTimeStamp	);
 	P.r_u8				(flags			);
 	P.r_vec3			(N.p_pos		);
@@ -273,7 +286,6 @@ void CActor::net_Import		(NET_Packet& P)					// import from server
 	P.r_angle8			(N.o_torso.pitch);
 	P.r_sdir			(N.p_accel		);
 	P.r_sdir			(N.p_velocity	);
-	P.r_float_q16		(fHealth,-1000,1000);
 	P.r_float_q16		(fArmor,-1000,1000);
 
 	u8					wpn;

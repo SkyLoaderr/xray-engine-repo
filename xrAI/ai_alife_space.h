@@ -31,8 +31,6 @@
 #define SAVE_NAME					"game.sav"
 #define SPAWN_NAME					"game.spawn"
 
-class CALifeMonsterParams;
-class CALifeHumanParams;
 class CALifeEventGroup;
 class CALifeDynamicObject;
 class CALifeMonsterAbstract;
@@ -44,7 +42,7 @@ class CALifePersonalTask;
 
 namespace ALife {
 	typedef u64	_CLASS_ID;									// Class ID
-	typedef u32	_OBJECT_ID;									// Object ID
+	typedef u16	_OBJECT_ID;									// Object ID
 	typedef u64	_TIME_ID;									// Time  ID
 	typedef u32	_EVENT_ID;									// Event ID
 	typedef u32	_TASK_ID;									// Event ID
@@ -64,8 +62,6 @@ namespace ALife {
 	DEFINE_VECTOR	(_TASK_ID,					TASK_VECTOR,					TASK_IT);
 	DEFINE_VECTOR	(_GRAPH_ID,					GRAPH_VECTOR,					GRAPH_IT);
 	DEFINE_VECTOR	(OBJECT_VECTOR,				OBJECT_VECTOR_VECTOR,			OBJECT_VECTOR_IT);
-	DEFINE_VECTOR	(CALifeMonsterParams *,		MONSTER_PARAMS_P_VECTOR,		MONSTER_PARAMS_P_IT);
-	DEFINE_VECTOR	(CALifeHumanParams *,		HUMAN_PARAMS_P_VECTOR,			HUMAN_PARAMS_P_IT);
 	DEFINE_VECTOR	(CALifeDynamicObject *,		DYNAMIC_OBJECT_P_VECTOR,		DYNAMIC_OBJECT_P_IT);
 	DEFINE_VECTOR	(CALifeMonsterAbstract *,	ALIFE_MONSTER_P_VECTOR,			ALIFE_MONSTER_P_IT);
 	DEFINE_VECTOR	(CALifeTrader *,			TRADER_P_VECTOR,				TRADER_P_IT);
