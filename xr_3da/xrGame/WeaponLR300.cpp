@@ -9,14 +9,14 @@
 #include "hudmanager.h"
 
 #include "WeaponHUD.h"
-#include "WeaponGroza.h"
+#include "WeaponLR300.h"
 #include "entity.h"
 #include "xr_weapon_list.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-CWeaponGroza::CWeaponGroza() : CWeapon("GROZA")
+CWeaponLR300::CWeaponLR300() : CWeapon("GROZA")
 {
 	pSounds->Create3D(sndFireLoop,	 "weapons\\Groza_fire");
 	pSounds->Create3D(sndRicochet[0],"weapons\\ric1");
@@ -35,7 +35,7 @@ CWeaponGroza::CWeaponGroza() : CWeapon("GROZA")
 	fTime			= 0;
 }
 
-CWeaponGroza::~CWeaponGroza()
+CWeaponLR300::~CWeaponLR300()
 {
 	FlameUNLOAD		();
 	
@@ -44,7 +44,7 @@ CWeaponGroza::~CWeaponGroza()
 	for (int i=0; i<SND_RIC_COUNT; i++) pSounds->Delete3D(sndRicochet[i]);
 }
 
-void CWeaponGroza::Load(CInifile* ini, const char* section){
+void CWeaponLR300::Load(CInifile* ini, const char* section){
 	inherited::Load(ini, section);
 	R_ASSERT		(m_pHUD);
 	
@@ -56,7 +56,7 @@ void CWeaponGroza::Load(CInifile* ini, const char* section){
 	bFlame			= FALSE;
 }
 
-void CWeaponGroza::FlameLOAD()
+void CWeaponLR300::FlameLOAD()
 {
 	// flame textures
 	LPCSTR S		= pSettings->ReadSTRING	(cName(),"flame");
@@ -66,25 +66,25 @@ void CWeaponGroza::FlameLOAD()
 		hFlames.push_back(Device.Shader.Create("particles\\add",_GetItem(S,i,name),false));
 }
 
-void CWeaponGroza::FlameUNLOAD()
+void CWeaponLR300::FlameUNLOAD()
 {
 	for (DWORD i=0; i<hFlames.size(); i++)
 		Device.Shader.Delete(hFlames[i]);
 	hFlames.clear();
 }
-void CWeaponGroza::OnDeviceCreate()
+void CWeaponLR300::OnDeviceCreate()
 {
 	REQ_CREATE	();
 	inherited::OnDeviceCreate	();
 	FlameLOAD	();
 }
-void CWeaponGroza::OnDeviceDestroy()
+void CWeaponLR300::OnDeviceDestroy()
 {
 	inherited::OnDeviceDestroy	();
 	FlameUNLOAD	();
 }
 
-void CWeaponGroza::FireStart()
+void CWeaponLR300::FireStart()
 {
 	if (!IsWorking() && IsValid()){ 
 		CWeapon::FireStart();
@@ -92,7 +92,7 @@ void CWeaponGroza::FireStart()
 	}
 }
 
-void CWeaponGroza::FireEnd	()
+void CWeaponLR300::FireEnd	()
 {
 	if (IsWorking())
 	{
@@ -102,7 +102,7 @@ void CWeaponGroza::FireEnd	()
 	}
 }
 
-void CWeaponGroza::UpdateXForm(BOOL bHUDView)
+void CWeaponLR300::UpdateXForm(BOOL bHUDView)
 {
 	if (Device.dwFrame!=dwXF_Frame)
 	{
@@ -134,7 +134,7 @@ void CWeaponGroza::UpdateXForm(BOOL bHUDView)
 	}
 }
 
-void CWeaponGroza::UpdateFP(BOOL bHUDView)
+void CWeaponLR300::UpdateFP(BOOL bHUDView)
 {
 	if (Device.dwFrame!=dwFP_Frame) 
 	{
@@ -167,7 +167,7 @@ void CWeaponGroza::UpdateFP(BOOL bHUDView)
 	}
 }
 
-void CWeaponGroza::Update(float dt, BOOL bHUDView)
+void CWeaponLR300::Update(float dt, BOOL bHUDView)
 {
 	BOOL bShot = false;
 
@@ -233,7 +233,7 @@ void CWeaponGroza::Update(float dt, BOOL bHUDView)
 	m_pHUD->UpdateAnimation();
 }
 
-void CWeaponGroza::Render(BOOL bHUDView)
+void CWeaponLR300::Render(BOOL bHUDView)
 {
 	inherited::Render		(bHUDView);
 	UpdateXForm	(bHUDView);
@@ -277,23 +277,23 @@ void CWeaponGroza::Render(BOOL bHUDView)
 	}
 }
 
-void CWeaponGroza::SetDefaults	()
+void CWeaponLR300::SetDefaults	()
 {
 	CWeapon::SetDefaults		();
 	iAmmoElapsed				= 0;
 }
 
-void CWeaponGroza::Hide			()
+void CWeaponLR300::Hide			()
 {
 	inherited::Hide				();
 	signal_HideComplete			();
 }
-void CWeaponGroza::Show			()
+void CWeaponLR300::Show			()
 {
 	inherited::Show				();
 }
 
-void CWeaponGroza::FireShotmark(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R) 
+void CWeaponLR300::FireShotmark(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R) 
 {
 	inherited::FireShotmark	(vDir, vEnd, R);
 	pSounds->Play3DAtPos	(sndRicochet[Random.randI(SND_RIC_COUNT)], vEnd,false);

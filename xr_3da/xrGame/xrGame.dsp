@@ -367,6 +367,18 @@ SOURCE=.\WeaponAK74.cpp
 SOURCE=.\WeaponAK74.h
 # End Source File
 # End Group
+# Begin Group "LR 300"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\WeaponLR300.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\WeaponLR300.h
+# End Source File
+# End Group
 # Begin Source File
 
 SOURCE=.\xr_weapon_list.cpp
