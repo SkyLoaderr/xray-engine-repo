@@ -9,6 +9,7 @@
 #include "../actor.h"
 #include "../level.h"
 #include "UIInventoryUtilities.h"
+#include "../string_table.h"
 
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
@@ -95,7 +96,7 @@ void CUIPdaListItem::InitCharacter(CInventoryOwner* pInvOwner)
 	sprintf(str, "%s", pInvOwner->CharacterInfo().Name());
 	UIName.SetText(str);
 
-	sprintf(str, "%d", pInvOwner->CharacterInfo().Rank());
+	sprintf(str, "%s", *CStringTable()(InventoryUtilities::GetRankAsText(pInvOwner->CharacterInfo().Rank())));
 	UICharText.GetPhraseByIndex(eRank)->str = str;
 
 	sprintf(str, "%s", *pInvOwner->CharacterInfo().Community());

@@ -416,10 +416,10 @@ void InitCharacterInfoStrings()
 	if (charInfoReputationStrings && charInfoRankStrings) return;
 
 	LPCSTR relationsLtxSection	= "game_relations";
-	LPCSTR ratingField			= "raiting";
+	LPCSTR ratingField			= "rating";
 	LPCSTR reputationgField		= "reputation";
 
-	if (!charInfoRankStrings)
+	if (!charInfoReputationStrings)
 	{
 		// Create string->Id DB
 		charInfoReputationStrings	= xr_new<CharInfoStrings>();
@@ -427,7 +427,7 @@ void InitCharacterInfoStrings()
 		LoadStrings(charInfoReputationStrings, relationsLtxSection, reputationgField);
 	}
 
-	if (!charInfoReputationStrings)
+	if (!charInfoRankStrings)
 	{
 		// Create string->Id DB
 		charInfoRankStrings			= xr_new<CharInfoStrings>();
@@ -451,7 +451,7 @@ LPCSTR InventoryUtilities::GetRankAsText(CHARACTER_RANK rankID)
 	InitCharacterInfoStrings();
 	R_ASSERT(charInfoRankStrings);
 
-	CharInfoStrings::const_iterator cit = charInfoRankStrings->upper_bound(rankID);
+	CharInfoStrings::const_iterator cit = charInfoRankStrings->upper_bound(rankID - 1);
 	R_ASSERT(charInfoRankStrings->end() != cit);
 	return *cit->second;
 }
@@ -463,7 +463,7 @@ LPCSTR InventoryUtilities::GetReputationAsText(CHARACTER_REPUTATION rankID)
 	InitCharacterInfoStrings();
 	R_ASSERT(charInfoReputationStrings);
 
-	CharInfoStrings::const_iterator cit = charInfoReputationStrings->upper_bound(rankID);
+	CharInfoStrings::const_iterator cit = charInfoReputationStrings->upper_bound(rankID - 1);
 	R_ASSERT(charInfoReputationStrings->end() != cit);
 	return *cit->second;
 }
