@@ -53,11 +53,11 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScr
 	vfLoadStandardScripts(tpLuaVirtualMachine,caScriptName);
 }
 
-void Script::vfLoadFileIntoNamespace(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScriptName, bool bCall = true)
+void Script::vfLoadFileIntoNamespace(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScriptName, bool bCall)
 {
 	string256		l_caScriptName;
 	_splitpath		(caScriptName,0,0,l_caScriptName,0);
-	R_ASSERT3		(strlen(l_caScriptName),"Invalid script name ",caFileName);
+	R_ASSERT3		(strlen(l_caScriptName),"Invalid script name ",caScriptName);
 	lua_newtable	(tpLuaVirtualMachine);
 	lua_pushstring	(tpLuaVirtualMachine,l_caScriptName);
 	lua_pushvalue	(tpLuaVirtualMachine,-2);
@@ -75,15 +75,14 @@ void Script::vfLoadFileIntoNamespace(CLuaVirtualMachine *tpLuaVirtualMachine, LP
 
 	IReader			*l_tpFileReader = FS.r_open(caScriptName);
 	R_ASSERT		(l_tpFileReader);
-	string256		l_caScriptName;
 	strconcat		(l_caScriptName,"@",caScriptName);
-	int				i = luaL_loadbuffer(tpLuaVirtualMachine,static_cast<LPCSTR>(l_tpFileReader->pointer()),(size_t)l_tpFileReader->length(),l_caScriptName);
+	int				l_iErrorCode = luaL_loadbuffer(tpLuaVirtualMachine,static_cast<LPCSTR>(l_tpFileReader->pointer()),(size_t)l_tpFileReader->length(),l_caScriptName);
 	FS.r_close		(l_tpFileReader);
 
 #ifdef DEBUG
-	if (i) {
-		vfPrintOutput(l_tpThread,m_caScriptFileName);
-		vfPrintError(l_tpThread,i);
+	if (l_iErrorCode) {
+		vfPrintOutput	(tpLuaVirtualMachine,caScriptName);
+		vfPrintError	(tpLuaVirtualMachine,l_iErrorCode);
 	}
 #endif
 	
