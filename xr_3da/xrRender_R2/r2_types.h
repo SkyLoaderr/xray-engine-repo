@@ -27,8 +27,10 @@
 #define r2_float2B			"$user$float2b"			// --- compression/encoding table
 #define r2_ds2_fade			"$user$ds2_fade"		// ---
 
-const u32					SMAP_size			= 1024;
-const float					SMAP_near_plane		= .1f;
+const	u32					SMAP_size			= 1024;
+const	float				SMAP_near_plane		= .1f;
+
+const	u32					
 
 const u32					TEX_material_LdotN	= 128;	// diffuse,		X, almost linear = small res
 const u32					TEX_material_LdotH	= 256;	// specular,	Y
