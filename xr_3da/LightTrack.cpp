@@ -39,6 +39,11 @@ void CLightTrack::remove(int id)
 	}
 }
 
+IC bool	pred_energy		(CLightTrack::Light& L1, CLightTrack::Light& L2)
+{
+	return L1.energy>L2.energy;
+}
+
 void	CLightDB_Static::Track	(CObject* O)
 {
 	Fvector				pos; 
@@ -113,4 +118,7 @@ void	CLightDB_Static::Track	(CObject* O)
 			L.energy				= E;
 		}
 	}
+	
+	// Sort lights by importance
+	std::sort(dest.lights.begin(),dest.lights.end(), pred_energy);
 }
