@@ -44,6 +44,9 @@ TEMPLATE_SPECIALIZATION
 void CPlanner::init				()
 {
 	m_initialized			= false;
+#ifdef LOG_ACTION
+	m_use_log				= false;
+#endif
 }
 
 TEMPLATE_SPECIALIZATION
@@ -74,8 +77,12 @@ void CPlanner::reinit				(_object_type *object, bool clear_all)
 		OPERATOR_VECTOR::iterator	I = m_operators.begin();
 		OPERATOR_VECTOR::iterator	E = m_operators.end();
 		for ( ; I != E; ++I)
-			if (!clear_all)
+			if (!clear_all) {
 				(*I).get_operator()->reinit(object,&m_storage,clear_all);
+#ifdef LOG_ACTION
+				(*I).get_operator()->m_use_log = m_use_log;
+#endif
+			}
 			else
 				xr_delete	((*I).m_operator);
 		if (clear_all)
@@ -119,6 +126,15 @@ void CPlanner::update				(u32 time_delta)
 	solve						();
 
 	VERIFY						(!solution().empty());
+
+#ifdef LOG_ACTION
+	// printing solution
+	if (m_use_log) {
+		Msg						("%6d : Solution",Level().timeServer());
+		for (int i=0; i<(int)solution().size(); ++i)
+			Msg					("%s",action2string(solution()[i]));
+	}
+#endif
 
 	if (initialized()) {
 		if (current_action_id() != solution().front()) {
@@ -195,6 +211,20 @@ void CPlanner::clear				()
 	m_operators.clear				();
 	m_evaluators.clear				();
 }
+
+#ifdef LOG_ACTION
+TEMPLATE_SPECIALIZATION
+LPCSTR CPlanner::action2string		(const _action_id_type &action_id)
+{
+	return			(action(action_id).m_action_name);
+}
+
+TEMPLATE_SPECIALIZATION
+LPCSTR CPlanner::property2string	(const _condition_type &property_id)
+{
+	return			(itoa(property_id,m_temp_string,10));
+}
+#endif
 
 #undef TEMPLATE_SPECIALIZATION
 #undef CPlanner

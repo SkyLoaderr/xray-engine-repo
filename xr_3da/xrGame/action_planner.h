@@ -44,6 +44,12 @@ protected:
 	bool					m_initialized;
 	_action_id_type			m_current_action_id;
 
+#ifdef LOG_ACTION
+public:
+	bool					m_use_log;
+	string64				m_temp_string;
+#endif
+
 public:
 	_object_type			*m_object;
 	CPropertyStorage		m_storage;
@@ -63,6 +69,10 @@ public:
 	IC		void			add_condition			(_world_operator *action, _condition_type condition_id, _value_type condition_value);
 	IC		void			add_effect				(_world_operator *action, _condition_type condition_id, _value_type condition_value);
 	virtual void			clear					();
+#ifdef LOG_ACTION
+	virtual LPCSTR			action2string			(const _action_id_type &action_id);
+	virtual LPCSTR			property2string			(const _condition_type &action_id);
+#endif
 };
 
 #include "action_planner_inline.h"

@@ -27,6 +27,9 @@ CMotivationActionManagerStalker::~CMotivationActionManagerStalker	()
 
 void CMotivationActionManagerStalker::init				()
 {
+#ifdef LOG_ACTION
+//	m_use_log				= true;
+#endif
 }
 
 void CMotivationActionManagerStalker::Load				(LPCSTR section)
@@ -132,3 +135,15 @@ void CMotivationActionManagerStalker::add_actions			()
 	add_effect				(action,eWorldPropertyEnemies,		false);
 	add_operator			(eWorldOperatorKillEnemy,			action);
 }
+
+#ifdef LOG_ACTION
+LPCSTR CMotivationActionManagerStalker::action2string	(const _action_id_type &action_id)
+{
+	return					(inherited::action2string(action_id));
+}
+
+LPCSTR CMotivationActionManagerStalker::property2string	(const _condition_type &property_id)
+{
+	return					(inherited::property2string(property_id));
+}
+#endif

@@ -35,6 +35,7 @@ void CBaseAction::init			(_object_type *object, LPCSTR action_name)
 	m_storage			= 0;
 	m_object			= object;
 #ifdef LOG_ACTION
+	m_use_log			= false;
 	m_action_name		= action_name;
 	if (xr_strlen(m_action_name))
 		debug_log		(eActionStateConstructed);
@@ -77,7 +78,7 @@ TEMPLATE_SPECIALIZATION
 void CBaseAction::initialize		()
 {
 #ifdef LOG_ACTION
-	if (xr_strlen(m_action_name))
+	if (m_use_log && xr_strlen(m_action_name))
 		debug_log		(eActionStateInitialized);
 #endif
 	m_start_level_time	= Level().timeServer();
@@ -88,7 +89,7 @@ TEMPLATE_SPECIALIZATION
 void CBaseAction::execute		()
 {
 #ifdef LOG_ACTION
-	if (xr_strlen(m_action_name))
+	if (m_use_log && xr_strlen(m_action_name))
 		debug_log		(eActionStateExecuted);
 #endif
 }
@@ -97,7 +98,7 @@ TEMPLATE_SPECIALIZATION
 void CBaseAction::finalize		()
 {
 #ifdef LOG_ACTION
-	if (xr_strlen(m_action_name))
+	if (m_use_log && xr_strlen(m_action_name))
 		debug_log		(eActionStateFinalized);
 #endif
 }

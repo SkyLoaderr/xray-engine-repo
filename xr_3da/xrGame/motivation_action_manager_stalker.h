@@ -24,6 +24,13 @@ protected:
 
 protected:
 	IC		void			add_condition						(CWorldState &goal, _condition_type condition_id, _value_type value);
+			void			add_evaluators						();
+			void			add_actions							();
+			void			add_motivations						();
+#ifdef LOG_ACTION
+	virtual LPCSTR			action2string						(const _action_id_type &action_id);
+	virtual LPCSTR			property2string						(const _condition_type &property_id);
+#endif
 
 public:
 							CMotivationActionManagerStalker		();
@@ -33,9 +40,6 @@ public:
 	virtual	void			reinit								(CAI_Stalker *object, bool clear_all = false);
 	virtual	void			reload								(LPCSTR section);
 	virtual	void			update								(u32 time_delta);
-			void			add_evaluators						();
-			void			add_actions							();
-			void			add_motivations						();
 };
 
 #include "motivation_action_manager_stalker_inline.h"

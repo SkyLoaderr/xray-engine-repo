@@ -131,6 +131,10 @@ protected:
 			void			remove_evaluators		(CObject		*object);
 			void			remove_operators		(CObject		*object);
 	IC		EWorldProperties object_property		(MonsterSpace::EObjectAction object_action) const;
+#ifdef LOG_ACTION
+	virtual LPCSTR			action2string			(const _action_id_type &action_id);
+	virtual LPCSTR			property2string			(const _condition_type &property_id);
+#endif
 
 public:
 							CObjectHandlerGOAP		();

@@ -40,10 +40,13 @@ protected:
 	ALife::_TIME_ID				m_start_game_time;
 	u32							m_inertia_time;
 	bool						m_log;
+
+#ifdef LOG_ACTION
+public:
 	LPCSTR						m_action_name;
+	bool						m_use_log;
 
 protected:
-#ifdef LOG_ACTION
 	virtual void				debug_log			(const EActionStates state_state) const;
 #endif
 

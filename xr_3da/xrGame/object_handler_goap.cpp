@@ -204,19 +204,19 @@ void CObjectHandlerGOAP::remove_operators	(CObject *object)
 	}
 }
 
-#ifdef DEBUG
-LPCSTR action2string(const u32 id)
+#ifdef LOG_ACTION
+LPCSTR CObjectHandlerGOAP::action2string(const _action_id_type &id)
 {
-	static	string4096 S;
-	if ((id >> 16) != 0xffff)
-		if (Level().Objects.net_Find(id >> 16))
-			strcpy	(S,*Level().Objects.net_Find(id >> 16)->cName());
+	LPSTR S = m_temp_string;
+	if (action_object_id(id) != 0xffff)
+		if (Level().Objects.net_Find(action_object_id(id)))
+			strcpy	(S,*Level().Objects.net_Find(action_object_id(id))->cName());
 		else
 			strcpy	(S,"no_items");
 	else
 		strcpy	(S,"no_items");
 	strcat		(S,":");
-	switch (id & 0xffff) {
+	switch (action_state_id(id)) {
 		case CObjectHandlerGOAP::eWorldOperatorShow			: {strcat(S,"Show");		break;}
 		case CObjectHandlerGOAP::eWorldOperatorHide			: {strcat(S,"Hide");		break;}
 		case CObjectHandlerGOAP::eWorldOperatorDrop			: {strcat(S,"Drop");		break;}
@@ -243,18 +243,18 @@ LPCSTR action2string(const u32 id)
 	return		(S);
 }
 
-LPCSTR property2string(const u32 id)
+LPCSTR CObjectHandlerGOAP::property2string(const _condition_type &id)
 {
-	static	string4096 S;
-	if ((id >> 16) != 0xffff)
-		if (Level().Objects.net_Find(id >> 16))
-			strcpy	(S,*Level().Objects.net_Find(id >> 16)->cName());
+	LPSTR S = m_temp_string;
+	if (action_object_id(id) != 0xffff)
+		if (Level().Objects.net_Find(action_object_id(id)))
+			strcpy	(S,*Level().Objects.net_Find(action_object_id(id))->cName());
 		else
 			strcpy	(S,"no_items");
 	else
 		strcpy	(S,"no_items");
 	strcat		(S,":");
-	switch (id & 0xffff) {
+	switch (action_state_id(id)) {
 		case CObjectHandlerGOAP::eWorldPropertyHidden		: {strcat(S,"Hidden");		break;}
 		case CObjectHandlerGOAP::eWorldPropertyStrapping	: {strcat(S,"Strapping");	break;}
 		case CObjectHandlerGOAP::eWorldPropertyStrapped		: {strcat(S,"Strapped");	break;}
@@ -585,7 +585,8 @@ void CObjectHandlerGOAP::set_goal	(MonsterSpace::EObjectAction object_action, CG
 		condition_id		= u32(eWorldPropertyNoItemsIdle);
 
 #ifdef LOG_ACTION
-	Msg						("%6d : Goal %s",Level().timeServer(),property2string(condition_id));
+	if (m_use_log)
+		Msg					("%6d : Goal %s",Level().timeServer(),property2string(condition_id));
 #endif
 	CState					condition;
 	condition.add_condition	(CWorldProperty(condition_id,true));
@@ -596,7 +597,7 @@ void CObjectHandlerGOAP::update(u32 time_delta)
 {
 	inherited::update			(time_delta);
 #ifdef LOG_ACTION
-//	if (!solution().empty()) {
+	if (m_use_log) {
 //		// printing current world state
 //		{
 //			Msg						("%6d : Current world state",Level().timeServer());
@@ -625,10 +626,6 @@ void CObjectHandlerGOAP::update(u32 time_delta)
 //				}
 //			}
 //		}
-		// printing solution
-		Msg						("%6d : Solution",Level().timeServer());
-		for (int i=0; i<(int)solution().size(); ++i)
-			Msg					("%s",action2string(solution()[i]));
-//	}
+	}
 #endif
 }
