@@ -6,7 +6,8 @@
 //	Description : A-Life space
 ////////////////////////////////////////////////////////////////////////////
 
-#pragma once
+#ifndef XRAY_AI_ALIFE_SPACE
+#define XRAY_AI_ALIFE_SPACE
 
 // spawn points
 #define SPAWN_POINT_VERSION			0x0001
@@ -180,3 +181,5 @@ namespace ALife {
 		eArtefactTypeDummy = u32(-1),
 	};
 };
+
+#endif
