@@ -236,8 +236,8 @@ function add_to_binder( obj )
 
     local rnd_phrases = {
         idle    = 0,
-        maxidle = 2,
-        sumidle = 3,
+        maxidle = 10,
+        sumidle = 5,
         rnd     = 100,
         sounds  = {}
     }
