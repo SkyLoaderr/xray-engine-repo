@@ -18,6 +18,7 @@ class CRender	:	public IRender_interface
 {
 public:
 	// Dynamic scene graph
+	SceneGraph::mapNormal_T									mapNormal	[4];
 	SceneGraph::mapMatrix_T									mapMatrix;
 	SceneGraph::mapSorted_T									mapSorted;
 	SceneGraph::mapHUD_T									mapHUD;

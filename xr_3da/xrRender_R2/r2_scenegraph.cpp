@@ -29,20 +29,17 @@ void CRender::InsertSG_Dynamic	(IVisual *pVisual, Fvector& Center)
 	ShaderElement*		sh		= pVisual->hShader->lod0;
 	if (val_bHUD)	{
 		SceneGraph::mapHUD_Node* N			= mapHUD.insertInAnyWay(distSQ);
-		N->val.pObject			= val_pObject;
 		N->val.pVisual			= pVisual;
 		N->val.Matrix			= *val_pTransform;
 		N->val.vCenter.set		(Center);
 	} else if (sh->Flags.bStrictB2F) {
 		SceneGraph::mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
-		N->val.pObject			= val_pObject;
 		N->val.pVisual			= pVisual;
 		N->val.Matrix			= *val_pTransform;
 		N->val.vCenter.set		(Center);
 	} else {
 		SceneGraph::mapMatrix_Node* N		= mapMatrix.insert		(sh		);
 		SceneGraph::mapMatrixItem::TNode* C	= N->val.insertInAnyWay	(distSQ	);
-		C->val.pObject			= val_pObject;
 		C->val.pVisual			= pVisual;
 		C->val.Matrix			= *val_pTransform;
 		C->val.vCenter.set		(Center);
@@ -67,29 +64,25 @@ void CRender::InsertSG_Static	(IVisual *pVisual)
 			N->val.Matrix			= Fidentity;
 			N->val.vCenter.set		(pVisual->vis.sphere.P);
 		} else {
-			SPass&									pass	= sh->Passes[0];
-			SceneGraph::mapNormalCodes&				codes	= mapNormal	[sh->Flags.iPriority][pass_id];
-			SceneGraph::mapNormalCodes::TNode*		Ncode	= codes.insert		(pass.state);
-			SceneGraph::mapNormalTextures::TNode*	Ntex	= Ncode->val.insert	(pass.T);
-			SceneGraph::mapNormalVS::TNode*			Nvs		= Ntex->val.insert	(pass.vs);
-			SceneGraph::mapNormalVB::TNode*			Nvb		= Nvs->val.insert	(pVisual->hGeom->vb);
-			SceneGraph::mapNormalMatrices::TNode*	Nmat	= Nvb->val.insert	(pass.M);
-			SceneGraph::mapNormalConstants::TNode*	Nconst	= Nmat->val.insert	(pass.C);
-			SceneGraph::mapNormalItems&				item	= Nconst->val;
+			SPass&									pass	= *sh->Passes.front();
+			SceneGraph::mapNormal_T&				map		= mapNormal			[sh->Flags.iPriority];
+			SceneGraph::mapNormalVS::TNode*			Nvs		= map.insert		(pass.vs);
+			SceneGraph::mapNormalPS::TNode*			Nps		= Nvs->val.insert	(pass.ps);
+			SceneGraph::mapNormalCodes::TNode*		Nstate	= Nps->val.insert	(pass.state);
+			SceneGraph::mapNormalTextures::TNode*	Ntex	= Nstate->val.insert(pass.T);
+			SceneGraph::mapNormalVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->hGeom->vb);
+			SceneGraph::mapNormalItems&				item	= Nvb->val;
 
 			// Need to sort for HZB efficient use
-			if (SSA>Nconst->val.ssa) {
-				Nconst->val.ssa = SSA;
-				if (SSA>Nmat->val.ssa) {
-					Nmat->val.ssa = SSA;
-					if (SSA>Nvs->val.ssa) {
-						Nvs->val.ssa = SSA;
-						if (SSA>Nvb->val.ssa) {
-							Nvb->val.ssa = SSA;
-							if (SSA>Ntex->val.ssa)	{
-								Ntex->val.ssa = SSA; 
-								if (SSA>Ncode->val.ssa) Ncode->val.ssa = SSA;
-							}
+			if (SSA>Nvb->val.ssa) {
+				Nvb->val.ssa = SSA;
+				if (SSA>Ntex->val.ssa) {
+					Ntex->val.ssa = SSA;
+					if (SSA>Nstate->val.ssa) {
+						Nstate->val.ssa = SSA;
+						if (SSA>Nps->val.ssa) {
+							Nps->val.ssa = SSA;
+							if (SSA>Nvs->val.ssa)	Nvs->val.ssa = SSA; 
 						}
 					}
 				}
@@ -175,9 +168,11 @@ void CRender::add_leafs_Static(IVisual *pVisual)
 			float		ssa		= CalcSSA	(D,pV->vis.sphere.P,pV);
 			if (ssa<r_ssaLOD_A)
 			{
+				/*
 				SceneGraph::mapLOD_Node*	N	= mapLOD.insertInAnyWay(D);
 				N->val.ssa						= ssa;
 				N->val.pVisual					= pVisual;
+				*/
 			}
 			if (ssa>r_ssaLOD_B)
 			{
@@ -303,9 +298,11 @@ void CRender::add_Static(IVisual *pVisual, u32 planes)
 			float		ssa		= CalcSSA	(D,pV->vis.sphere.P,pV);
 			if (ssa<r_ssaLOD_A)	
 			{
+				/*
 				SceneGraph::mapLOD_Node*	N	= mapLOD.insertInAnyWay(D);
 				N->val.ssa						= ssa;
 				N->val.pVisual					= pVisual;
+				*/
 			}
 			if (ssa>r_ssaLOD_B)
 			{
