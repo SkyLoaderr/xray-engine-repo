@@ -45,6 +45,7 @@ static class cl_decodeZ01		: public R_constant_setup		{	virtual void setup	(R_co
 {
 	float		f	= g_pGamePersistent->Environment.CurrentEnv.far_plane;
 	Fvector3	enc = {f/1.f,f/256.f,f/65536.f};
+	enc.mul			(0.995f);
 	RCache.set_c	(C,enc.x,enc.y,enc.z,0.f);
 }}	binder_decodeZ01;
 //////////////////////////////////////////////////////////////////////////
