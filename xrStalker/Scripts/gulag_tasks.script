@@ -21,6 +21,14 @@ function loadJob(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)
 	end
+	if type == "test1" then
+		t = { section = "sleeper@test1",
+			idle = 0,
+			prior = 0, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+	end
 --'--------------------------------------------------------------------------	
 --' Универсальные гулаги для smart terrain
 --'--------------------------------------------------------------------------
@@ -171,9 +179,9 @@ function loadJob(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 	end
 	
-	--' Escape novice camp
+	--' Лагерь новичков на Escape
 	if type == "esc_lager" then
-		-- Волк
+--[[		-- Волк
 		t = { section = "walker@esc_lager_wolf",
 			idle = 0,
 			prior = 10, state = {0, 1},
@@ -192,7 +200,7 @@ function loadJob(sj, gname, type, squad, groups)
 			              return obj:profile_name() == "stalker_esc_bariga"
 			            end
 		}
-		table.insert(sj, t)
+		table.insert(sj, t)]]
 		-- охранники
 		t = { section = "zoneguard1@esc_lager",
 			idle = 0,
