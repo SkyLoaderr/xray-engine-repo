@@ -536,6 +536,7 @@ void CDetailPathManager::build_path_via_key_points(
 	}
 	
 	ai().level_graph().assign_y_values	(m_path);
+	m_failed							= false;
 }
 
 void CDetailPathManager::build_smooth_path		(
@@ -548,6 +549,7 @@ void CDetailPathManager::build_smooth_path		(
 	build_straight_path					(level_path,intermediate_index);
 	m_current_travel_point				= 0;
 #else
+	m_failed							= true;
 
 	STrajectoryPoint					start,dest;
 
@@ -560,6 +562,7 @@ void CDetailPathManager::build_smooth_path		(
 
 	if (compute_path(start,dest,&m_path,m_start_params,finish_params)) {
 		ai().level_graph().assign_y_values(m_path);
+		m_failed						= false;
 		Device.Statistic.AI_Range.End	();
 		return;
 	}
