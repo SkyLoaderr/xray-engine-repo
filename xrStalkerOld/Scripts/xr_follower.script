@@ -509,7 +509,7 @@ function  add_to_binder(npc, ini, scheme, section, storage)
     action:add_effect (world_property(properties["raid"], false))
     manager:add_action (operators["raid"], action)
     
-    xr_logic.subscribe_action_for_events (npc, action)
+    xr_logic.subscribe_action_for_events (npc, storage, action)
     
     action = manager:action     (xr_actions_id.alife)
     action:add_precondition     (world_property (properties["follow"],  false))

@@ -38,7 +38,7 @@ function assign_storage_and_bind(npc, ini, scheme, section)
 	для схемы. Примечание: в storage при этом могут оставаться старые данные, схема должна очистить его
 	самостоятельно.
 
-function subscribe_action_for_events(npc, new_action)
+function subscribe_action_for_events(npc, storage, new_action)
 Предназначение:
 	Регистрирует класс для получения нотификаций о таких событиях как сброс схемы, сохранение и т.д.
 	Класс реализует соответствующие функции (reset_scheme() и т.д.), которые будут вызываться из xr_logic
@@ -84,11 +84,11 @@ function reset_generic_schemes_on_scheme_switch(npc)
 	Производит сброс состояния объекта (снимает коллбеки, отключает разговор) непосредственно перед включением
 	новой схемы.
 
-function reset_actions_event(st)
+function reset_actions_event(npc, st)
 Предназначение:
 	Вызывает у всех классов, подписанных на события, метод reset_scheme.
 	
-function non_goap_update_actions_event(st, delta)
+function non_goap_update_actions_event(npc, st, delta)
 Предназначение:
 	Вызывает у всех монстров и физических объектов, подписанных на события, метод update.
 	Для сталкеров эта функция не вызывается из xr_logic, поскольку у них updates обеспечивает GOAP.
@@ -139,6 +139,7 @@ function gulag_activate(npc, ini, section, gulag_name, death, combat)
 	local npc_id = npc:id()
 
 	xr_motivator.storage[npc_id]["active_section"] = nil
+	xr_motivator.storage[npc_id]["active_scheme"] = nil
 	xr_motivator.storage[npc_id]["gulag_name"] = if_then_else(gulag_name, gulag_name, "")
 	xr_motivator.storage[npc_id]["stype"] = stypes[utils.get_scheme_by_section(section)]
 
@@ -152,6 +153,7 @@ function enable_scripts(npc, ini, stype)
 	local npc_id = npc:id()
 
 	xr_motivator.storage[npc_id]["active_section"] = nil
+	xr_motivator.storage[npc_id]["active_scheme"] = nil
 	xr_motivator.storage[npc_id]["gulag_name"] = ""
 	xr_motivator.storage[npc_id]["stype"] = stype
 
@@ -215,6 +217,7 @@ function activate_by_section(npc, ini, section)
 		xr_motivator.storage[npc_id].overrides = nil
 		reset_generic_schemes_on_scheme_switch(npc)
 		xr_motivator.storage[npc_id]["active_section"] = nil
+		xr_motivator.storage[npc_id]["active_scheme"] = nil
 		return
 	end
 
@@ -242,8 +245,9 @@ function activate_by_section(npc, ini, section)
 		_G[schemes[scheme]].set_scheme(npc, ini, scheme, section, xr_motivator.storage[npc_id]["gulag_name"])
 		printf("DEBUG: activate_by_section: scheme '%s' activated from section '%s'", scheme, section)
 		xr_motivator.storage[npc_id]["active_section"] = section
+		xr_motivator.storage[npc_id]["active_scheme"] = scheme
 
-		reset_actions_event(xr_motivator.storage[npc_id])
+		reset_actions_event(npc, xr_motivator.storage[npc_id][scheme])
 	else
 		utils.abort("object '%s': activate_by_section: section '%s' does not exist",
 			npc:name(), section)
@@ -295,22 +299,23 @@ function assign_storage_and_bind(npc, ini, scheme, section)
 	return st
 end
 
-function subscribe_action_for_events(npc, new_action)
+function subscribe_action_for_events(npc, storage, new_action)
 	printf("DEBUG: registering new action for reset event (npc:name() = '%s')", npc:name())
 
-	local npc_id = npc:id()
-	if not xr_motivator.storage[npc_id].actions then
-		xr_motivator.storage[npc_id].actions = {}
+	if not storage.actions then
+		storage.actions = {}
 	end
 	
-	xr_motivator.storage[npc_id].actions[new_action] = true
+	storage.actions[new_action] = true
 end
 
-function reset_actions_event(st)
+-- st - storage активной схемы
+function reset_actions_event(npc, st)
 	printf("DEBUG: reset_actions_event")
 	if not st.actions then
+		local global_st = xr_motivator.storage[npc:id()]
 		printf("WARNING: reset_actions: scheme '%s', section '%s': at least one action in a scheme must be " ..
-			"subscribed for events", utils.get_scheme_by_section(st.active_section), st.active_section)
+			"subscribed for events", global_st.active_scheme, global_st.active_section)
 		return
 	end
 	for action_ptr, is_active in pairs(st.actions) do
@@ -318,12 +323,13 @@ function reset_actions_event(st)
 	end
 end
 
-function non_goap_update_actions_event(st, delta)
-	--printf("DEBUG: non_goap_update_actions_event [%s]", utils.to_str(st.active_section))
+function non_goap_update_actions_event(npc, st, delta)
+	--printf("DEBUG: non_goap_update_actions_event [%s]", utils.to_str(xr_motivator.storage[npc:id()].active_section))
 	
 	if not st.actions then
+		local global_st = xr_motivator.storage[npc:id()]
 		printf("WARNING: reset_actions: scheme '%s', section '%s': at least one action in a scheme must be " ..
-			"subscribed for events", utils.get_scheme_by_section(st.active_section), st.active_section)
+			"subscribed for events", global_st.active_scheme, global_st.active_section)
 		return
 	end
 	for action_ptr, is_active in pairs(st.actions) do
@@ -413,6 +419,7 @@ function switch_to_section(npc, st, section)
 		return
 	end
 	xr_motivator.storage[npc:id()]["active_section"] = nil
+	xr_motivator.storage[npc:id()]["active_scheme"] = nil
 	activate_by_section(npc, st.ini, section)
 end
 
