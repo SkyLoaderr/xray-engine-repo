@@ -262,7 +262,8 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 
 		if (isAccelerated(mstate_rl))	AS = &ST->m_run;
 		else							AS = &ST->m_walk;
-		if	(mstate_rl&mcSprint)		AS  = &ST->m_sprint;
+		if	(mstate_rl&mcSprint)		
+			AS  = &ST->m_sprint;
 		// анимации
 		CMotionDef* M_legs	= 0;
 		CMotionDef* M_torso	= 0;
@@ -350,16 +351,16 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 			else						smart_cast<CSkeletonAnimated*>	(Visual())->PlayCycle(M_torso);
 			m_current_torso=M_torso;
 		}
-		if (m_current_legs!=M_legs){
-			m_current_legs_blend = smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle(M_legs,TRUE,legs_play_callback,this);
-			m_current_legs=M_legs;
-		}
-
 		if(m_current_head!=M_head)
 		{
 			if(M_head)smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle(M_head);
 			m_current_head=M_head;
 		}
+		if (m_current_legs!=M_legs){
+			m_current_legs_blend = smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle(M_legs,TRUE,legs_play_callback,this);
+			m_current_legs=M_legs;
+		}
+
 
 	}else{
 		if (m_current_legs||m_current_torso){
