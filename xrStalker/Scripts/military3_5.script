@@ -54,12 +54,12 @@ end
 
 function Patrol:reset ()
 	printf ("Reset start object %s, script %s", self.npc:name (), self.script)
-	printf ("%d",self.npc)
-	printf ("%s",self.script)
 	self.npc:script (false, self.script)
-	printf ("%d",self.npc)
+	printf ("%s",self.npc:name())
 	printf ("%s",self.script)
 	self.npc:script (true, self.script)
+	printf ("%s",self.npc:name())
+	printf ("%s",self.script)
 	printf ("Reset end object %s, script %s", self.npc:name (), self.script)
 end
 
