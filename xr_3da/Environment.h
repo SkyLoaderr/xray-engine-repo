@@ -53,13 +53,7 @@ public:
 	}
 
 	// Skydome
-	FBasicVisual*		pSkydome;
-//	FBasicVisual*		pWeather;
-//	SPSE_Params			m_WEmitter;
-
-	BOOL				bUpdateBrightness;
-	float				fBrightness;
-	float				fFlash;
+	FBasicVisual*			pSkydome;
 public:
 					CEnvironment		();
 					~CEnvironment		();
