@@ -138,13 +138,7 @@ m_cap=dCreateSphere(0,m_radius+m_radius/30.f);
 m_wheel=dCreateSphere(0,m_radius);
 m_hat=dCreateSphere(0,m_radius/k);
 
-if(m_phys_ref_object)
-{
-	dGeomUserDataSetPhysicsRefObject(m_geom_shell,m_phys_ref_object);
-	dGeomUserDataSetPhysicsRefObject(m_cap,m_phys_ref_object);
-	dGeomUserDataSetPhysicsRefObject(m_wheel,m_phys_ref_object);
-	dGeomUserDataSetPhysicsRefObject(m_hat,m_phys_ref_object);
-}
+
 
 m_cap_transform=dCreateGeomTransform(0);
 m_shell_transform=dCreateGeomTransform(0);
@@ -183,6 +177,14 @@ dGeomCreateUserData(m_geom_shell);
 dGeomCreateUserData(m_cap);
 dGeomCreateUserData(m_wheel);
 dGeomCreateUserData(m_hat);
+
+if(m_phys_ref_object)
+{
+	dGeomUserDataSetPhysicsRefObject(m_geom_shell,m_phys_ref_object);
+	dGeomUserDataSetPhysicsRefObject(m_cap,m_phys_ref_object);
+	dGeomUserDataSetPhysicsRefObject(m_wheel,m_phys_ref_object);
+	dGeomUserDataSetPhysicsRefObject(m_hat,m_phys_ref_object);
+}
 //dGeomUserDataSetPhObject(m_wheel_transform,(CPHObject*)this);
 dGeomUserDataSetPhObject(m_wheel,(CPHObject*)this);
 //dGeomUserDataSetPhObject(m_shell_transform,(CPHObject*)this);
