@@ -34,16 +34,10 @@ public:
 
 			void			ActivateEffector		(float life_time);
 	// Flesh-specific FSM
-	CBloodsuckerRest		*stateRest;
-	CBloodsuckerEat			*stateEat;
-	CBloodsuckerAttack		*stateAttack;
 	CBloodsuckerHearDNE		*stateHearDNE;
 	CBloodsuckerHearNDE		*stateHearNDE;
 	CBloodsuckerPanic		*statePanic;
 
-	friend	class			CBloodsuckerRest;
-	friend	class			CBloodsuckerEat;
-	friend	class			CBloodsuckerAttack;
 	friend	class			CBitingPanic;
 	friend	class			CBloodsuckerHearDNE;
 	friend	class			CBloodsuckerHearNDE;

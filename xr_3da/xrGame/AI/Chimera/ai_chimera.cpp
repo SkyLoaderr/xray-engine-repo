@@ -5,7 +5,7 @@ CAI_Chimera::CAI_Chimera()
 {
 	stateRest			= xr_new<CBitingRest>		(this);
 	stateAttack			= xr_new<CChimeraAttack>	(this);
-	stateEat			= xr_new<CBitingEat>		(this);
+	stateEat			= xr_new<CBitingEat>		(this, true);
 	stateHide			= xr_new<CBitingHide>		(this);
 	stateDetour			= xr_new<CBitingDetour>		(this);
 	statePanic			= xr_new<CBitingPanic>		(this);

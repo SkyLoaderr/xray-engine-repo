@@ -5,9 +5,9 @@
 
 CAI_Bloodsucker::CAI_Bloodsucker()
 {
-	stateRest			= xr_new<CBloodsuckerRest>		(this);
-	stateEat			= xr_new<CBloodsuckerEat>		(this);
-	stateAttack			= xr_new<CBloodsuckerAttack>	(this);
+	stateRest			= xr_new<CBitingRest>			(this);
+	stateEat			= xr_new<CBitingEat>			(this, false);
+	stateAttack			= xr_new<CBitingAttack>			(this);
 	statePanic			= xr_new<CBloodsuckerPanic>		(this);
 	stateHearDNE		= xr_new<CBloodsuckerHearDNE>	(this);
 	stateHearNDE		= xr_new<CBloodsuckerHearNDE>	(this);

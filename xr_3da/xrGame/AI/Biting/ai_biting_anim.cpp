@@ -60,9 +60,7 @@ void CAI_Biting::CheckAttackHit()
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-//
 //		NEW ANIMATION MANAGMENT
-//
 ///////////////////////////////////////////////////////////////////////////////////////////
 CMotionManager::CMotionManager()
 {
@@ -329,7 +327,8 @@ bool CMotionManager::CheckSpecParams()
 		Seq_Switch();
 		return true;
 	}
-	return false;
+	
+	return (pMonster->CheckSpecParams(spec_params));
 }
 
 

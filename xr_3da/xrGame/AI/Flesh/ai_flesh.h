@@ -14,9 +14,11 @@ public:
 
 	virtual	void	CheckAttackHit			();
 
-			bool	ConeSphereIntersection	(Fvector ConeVertex, float ConeAngle, Fvector ConeDir, 
-											 Fvector SphereCenter, float SphereRadius);
+	virtual	bool	CheckSpecParams			(u32 spec_params);
 
+private:
+	bool	ConeSphereIntersection	(Fvector ConeVertex, float ConeAngle, Fvector ConeDir, 
+									Fvector SphereCenter, float SphereRadius);
 };
 
 

@@ -36,24 +36,5 @@ public:
 
 	// Flesh-specific FSM
 	CChimeraAttack		*stateAttack;
-
-	CBitingRest			*stateRest;
-	CBitingEat			*stateEat;
-	CBitingHide			*stateHide;
-	CBitingDetour		*stateDetour;
-	CBitingPanic		*statePanic;
-	CBitingExploreDNE	*stateExploreDNE;
-	CBitingExploreDE	*stateExploreDE;
-	CBitingExploreNDE	*stateExploreNDE;
-
-	friend	class		CBitingRest;
-	friend	class 		CBitingEat;
-	friend	class 		CBitingHide;
-	friend	class 		CBitingDetour;
-	friend	class 		CBitingPanic;
-	friend	class 		CBitingExploreDNE;
-	friend	class 		CBitingExploreDE;
-	friend	class 		CBitingExploreNDE;
-
 	friend  class 		CChimeraAttack;
 };

@@ -10,14 +10,14 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingEat class
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-CBitingEat::CBitingEat(CAI_Biting *p)  
+CBitingEat::CBitingEat(CAI_Biting *p, bool pmt_can_drag)  
 {
-	pMonster = p;
-	Reset();
+	pMonster	= p;
+	bCanDrag	= pmt_can_drag;
+
+	Reset		();
 	SetLowPriority();
 }
-
 
 void CBitingEat::Reset()
 {
@@ -28,7 +28,6 @@ void CBitingEat::Reset()
 	m_dwLastTimeEat		= 0;
 	m_dwEatInterval		= 1000;
 }
-
 void CBitingEat::Init()
 {
 	IState::Init();
@@ -47,10 +46,13 @@ void CBitingEat::Init()
 	m_fDistToDrag		= 20.f;
 	bDragging			= false;
 
-	m_tAction			= ACTION_RUN;
+	m_tAction			= ACTION_CORPSE_APPROACH_RUN;
 
 	flag_once_1			= false;
 	m_dwStandStart		= 0;
+
+	m_dwPrepareDrag		= 0;
+	bEating				= false;
 
 	// Test
 	WRITE_TO_LOG("_ Eat Init _");
@@ -66,40 +68,57 @@ void CBitingEat::Run()
 	float saved_dist	= SavedPos.distance_to(pMonster->Position()); // расстояние, на которое уже оттащен труп
 	float cur_dist		= pCorpse->Position().distance_to(pMonster->Position());
 
+	if (bEating && (cur_dist > m_fDistToCorpse)) m_tAction = ACTION_WALK;
+
 	// Выполнение состояния
 	switch (m_tAction) {
-		case ACTION_RUN:	// бежать к трупу
-
+		case ACTION_CORPSE_APPROACH_RUN:	// бежать к трупу
 			pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
 			pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), true, 0);
 
 			pMonster->MotionMan.m_tAction = ACT_RUN;
+
+			if (cur_dist < 6.f) m_tAction = ACTION_CORPSE_APPROACH_WALK;
+
+			break;
+		case ACTION_CORPSE_APPROACH_WALK:
+
+			pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
+			pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), true, 0);
+
+			pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 			
 			if (cur_dist < m_fDistToCorpse) {
 				
-				// Если труп крысы
-				if (!bEatRat) {
+				// если монстр подбежал к трупу, необходимо отыграть проверку трупа
+				pMonster->MotionMan.SetSpecParams(ASP_CHECK_CORPSE);
+				
+				//if (!tasty_corpse) { pMonster->AddIgnoreObject(pCorpse); m_tAction = ACTION_LOOK_AROUND; } 
+				
+				m_tAction = ACTION_PREPARE_DRAG;
+				m_dwPrepareDrag	= m_dwCurrentTime;
+			}
+			break;
+
+		case ACTION_PREPARE_DRAG:
+			if (m_dwPrepareDrag + 1000 < m_dwCurrentTime) {
+				// Если труп крысы || если не получилось взять
+				bDragging = false;
+				m_tAction = ACTION_EAT;
+
+				if (!bEatRat && bCanDrag) {	// Если не труп крысы и может тащить
 					// пытаться взять труп
 					pMonster->Movement.PHCaptureObject(pCorpse);
 
-					if (pMonster->Movement.PHCapture()->Failed()) {
-						// если не получилось взять
-						bDragging = false;
-						m_tAction = ACTION_EAT;
-					}else {
+					if (!pMonster->Movement.PHCapture()->Failed()) {
 						// тащить труп
 						bDragging = true;
 						m_tAction = ACTION_DRAG;
 					}
-
-				} else {
-					bDragging = false;
-					m_tAction = ACTION_EAT;
-				}
-
-				// если монстр подбежал к трупу, необходимо отыграть проверку трупа
-				pMonster->MotionMan.SetSpecParams(ASP_CHECK_CORPSE);
+				} 
 			}
+	
+			pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
 			break;
 
 		case ACTION_DRAG:
@@ -122,7 +141,7 @@ void CBitingEat::Run()
 
 			break;
 		case ACTION_WALK_LITTLE_AWAY:
-			pMonster->Path_GetAwayFromPoint(pCorpse, pCorpse->Position(), 4.f, 5000);
+			pMonster->Path_GetAwayFromPoint(pCorpse, pCorpse->Position(), 4.f, 500);
 			pMonster->MotionMan.m_tAction = ACT_WALK_FWD; 
 
 			if (cur_dist > 3.f) m_tAction = ACTION_LOOK_AROUND;
@@ -142,17 +161,19 @@ void CBitingEat::Run()
 		case ACTION_WALK:
 
 			pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
-			pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), true, 0,2000);
+			pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), true, 0,500);
 	
 			pMonster->MotionMan.m_tAction = ACT_WALK_FWD; 
 
-			if (cur_dist  + 0.5f  < m_fDistToCorpse) {
+			if (cur_dist  + 0.8f  < m_fDistToCorpse) {
 				m_tAction = ACTION_EAT;
 			}
 
 			break;
 		case ACTION_EAT:
 			pMonster->MotionMan.m_tAction = ACT_EAT; 
+
+			bEating = true;
 
 			if (pMonster->GetSatiety() >= 1.0f) pMonster->flagEatNow = false;
 			else pMonster->flagEatNow = true;

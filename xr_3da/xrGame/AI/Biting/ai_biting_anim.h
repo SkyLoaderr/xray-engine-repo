@@ -73,14 +73,15 @@ enum EPState {
 	PS_STAND,
 	PS_SIT, 
 	PS_LIE,
-	PS_TRANSIT,
 };
 
 // специальные параметры анимаций (animation spec params)
 #define ASP_MOVE_BKWD			(1 << 0) 
 #define ASP_DRAG_CORPSE			(1 << 1) 
 #define ASP_CHECK_CORPSE		(1 << 2)
-
+#define ASP_ATTACK_RAT			(1 << 3)
+#define ASP_ATTACK_RAT_JUMP		(1 << 4)
+#define	ASP_STAND_SCARED		(1 << 5)
 
 DEFINE_VECTOR	(CMotionDef*, ANIM_VECTOR, ANIM_IT);
 struct SAnimItem {
@@ -183,7 +184,6 @@ class CMotionManager {
 	u32						spec_params;			// дополнительные параметры
 
 public:
-
 	EAction					m_tAction;
 	CMotionDef				*m_tpCurAnim;
 
@@ -217,22 +217,25 @@ public:
 	void		ShowDeath				();
 
 	void		SetSpecParams			(u32 param) {spec_params |= param;}
-	
+	void		SetCurAnim				(EMotionAnim a) {cur_anim = a;}
+
+	// работа с последовательностями
+	void		Seq_Add					(EMotionAnim a);
+	void		Seq_Switch				();					// Перейти в следующее состояние, если такового не имеется - завершить
+
 private:	
-	bool		CheckSpecParams			();	
+	// загрузка анимаций
+	void		Load					(LPCTSTR pmt_name, ANIM_VECTOR	*pMotionVect);
 
 	// работа с последовательностями
 	void		Seq_Init				();
-	void		Seq_Add					(EMotionAnim a);
-	void		Seq_Switch				();					// Перейти в следующее состояние, если такового не имеется - завершить
 	void		Seq_Finish				();
-
-	// загрузка анимаций
-	void		Load					(LPCTSTR pmt_name, ANIM_VECTOR	*pMotionVect);
 
 	// работа с анимациями атак
 	void		AA_Clear				(); 
 	void		AA_SwitchAnimation		(EMotionAnim a, u32 i3);
+
+	bool		CheckSpecParams			();	
 
 public:
 	void		AA_PushAttackAnim		(SAttackAnimation AttackAnim);

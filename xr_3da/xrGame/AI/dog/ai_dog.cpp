@@ -6,7 +6,7 @@ CAI_Dog::CAI_Dog()
 {
 	stateRest			= xr_new<CBitingRest>		(this);
 	stateAttack			= xr_new<CBitingAttack>		(this);
-	stateEat			= xr_new<CBitingEat>		(this);
+	stateEat			= xr_new<CBitingEat>		(this, true);
 	stateHide			= xr_new<CBitingHide>		(this);
 	stateDetour			= xr_new<CBitingDetour>		(this);
 	statePanic			= xr_new<CBitingPanic>		(this);

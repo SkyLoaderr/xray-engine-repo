@@ -53,13 +53,59 @@ private:
 			void	Replanning();
 };
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CBitingEat class
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class CBitingEat : public IState {
+	typedef IState inherited;
+	CAI_Biting		*pMonster;
+	bool			bCanDrag;
+
+	enum {
+		ACTION_CORPSE_APPROACH_RUN,
+		ACTION_CORPSE_APPROACH_WALK,
+		ACTION_PREPARE_DRAG,
+		ACTION_DRAG,
+		ACTION_WALK_LITTLE_AWAY,
+		ACTION_LOOK_AROUND,
+		ACTION_WALK,
+		ACTION_EAT,
+	} m_tAction;
+
+	CEntity			*pCorpse;
+	float			m_fDistToCorpse;			//!< дистанция до трупа
+
+	TTime			m_dwLastTimeEat;
+	TTime			m_dwEatInterval;
+
+	Fvector			SavedPos;					// сохранённая позиция до трупа
+	float			m_fDistToDrag;				// на какое расстояние тащить
+	bool			bDragging;
+	bool			bEatRat;
+
+	bool			flag_once_1;
+	TTime			m_dwStandStart;
+	TTime			m_dwPrepareDrag;
+	bool			bEating;
+
+public:
+					CBitingEat		(CAI_Biting *p, bool pmt_can_drag);
+
+	virtual	void	Reset			();
+
+private:
+	virtual void	Init			();
+	virtual void	Run				();
+	virtual void	Done			();
+};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingAttack class
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class CBitingAttack : public IState {
-	
+public:
 	CAI_Biting	*pMonster;
 
 	enum {
@@ -81,58 +127,15 @@ class CBitingAttack : public IState {
 	TTime			m_dwSuperMeleeStarted;
 
 	typedef	IState inherited;
-public:
+	
 					CBitingAttack	(CAI_Biting *p);
 
 	virtual	void	Reset			();
 
-private:
 	virtual	void	Init			();
 	virtual void	Run				();
 
 			
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CBitingEat class
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-class CBitingEat : public IState {
-	typedef IState inherited;
-	CAI_Biting	*pMonster;
-
-	enum {
-		ACTION_RUN,
-		ACTION_DRAG,
-		ACTION_WALK_LITTLE_AWAY,
-		ACTION_LOOK_AROUND,
-		ACTION_WALK,
-		ACTION_EAT,
-	} m_tAction;
-
-	CEntity			*pCorpse;
-	float			m_fDistToCorpse;			//!< дистанция до трупа
-
-	TTime			m_dwLastTimeEat;
-	TTime			m_dwEatInterval;
-
-	Fvector			SavedPos;					// сохранённая позиция до трупа
-	float			m_fDistToDrag;				// на какое расстояние тащить
-	bool			bDragging;
-	bool			bEatRat;
-
-	bool			flag_once_1;
-	TTime			m_dwStandStart;
-
-public:
-					CBitingEat		(CAI_Biting *p);
-
-	virtual	void	Reset			();
-
-private:
-	virtual void	Init			();
-	virtual void	Run				();
-	virtual void	Done			();
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////

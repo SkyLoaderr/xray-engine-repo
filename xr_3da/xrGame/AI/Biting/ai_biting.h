@@ -116,6 +116,8 @@ public:
 
 	virtual void			CheckAttackHit					();
 
+	virtual	bool			CheckSpecParams					(u32 spec_params) {return false;}
+
 	// FSM
 	virtual void            StateSelector					() = 0;  // should be pure 
 	
@@ -203,8 +205,8 @@ public:
 
 	// Biting-specific states
 	CBitingRest				*stateRest;
-	CBitingAttack			*stateAttack;
 	CBitingEat				*stateEat;
+	CBitingAttack			*stateAttack;
 	CBitingHide				*stateHide;
 	CBitingDetour			*stateDetour;
 	CBitingPanic			*statePanic;

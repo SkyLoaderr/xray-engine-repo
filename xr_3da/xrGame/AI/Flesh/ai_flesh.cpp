@@ -8,7 +8,7 @@ CAI_Flesh::CAI_Flesh()
 {
 	stateRest			= xr_new<CBitingRest>		(this);
 	stateAttack			= xr_new<CBitingAttack>		(this);
-	stateEat			= xr_new<CBitingEat>		(this);
+	stateEat			= xr_new<CBitingEat>		(this, true);
 	stateHide			= xr_new<CBitingHide>		(this);
 	stateDetour			= xr_new<CBitingDetour>		(this);
 	statePanic			= xr_new<CBitingPanic>		(this);
@@ -136,10 +136,8 @@ void CAI_Flesh::StateSelector()
 	else if (A && !K && H)		SetState(stateExploreNDE);  // SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
 	else if (B && !K && !H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
 	else if (B && !K && H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
-	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1))	
+	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < 0.85f) || flagEatNow))	
 		SetState(stateEat);
-//	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < 0.85f) || flagEatNow))	
-//		SetState(stateEat);
 	else						SetState(stateRest); 
 }
 
@@ -191,6 +189,26 @@ void CAI_Flesh::CheckAttackHit()
 		}
 	}
 }
+
+bool CAI_Flesh::CheckSpecParams(u32 spec_params)
+{
+	if ((spec_params & ASP_ATTACK_RAT) == ASP_ATTACK_RAT) {
+		MotionMan.SetCurAnim(eAnimAttackRat);
+	} 
+	
+	if ((spec_params & ASP_STAND_SCARED) == ASP_STAND_SCARED) {
+		MotionMan.SetCurAnim(eAnimScared);
+	}
+
+	if ((spec_params & ASP_ATTACK_RAT_JUMP) == ASP_ATTACK_RAT_JUMP) {
+		MotionMan.Seq_Add(eAnimAttackJump);
+		MotionMan.Seq_Switch();
+		return true;
+	} 
+
+	return false;
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // Функция ConeSphereIntersection

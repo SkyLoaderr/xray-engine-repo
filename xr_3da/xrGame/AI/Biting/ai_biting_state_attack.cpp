@@ -48,11 +48,11 @@ void CBitingAttack::Init()
 
 	// Установка дистанции аттаки
 	if (m_bAttackRat) {
-		m_fDistMin = 0.7f;
-		m_fDistMax = 2.8f;
+		m_fDistMin = 0.7f;				// todo: make as ltx parameters
+		m_fDistMax = 2.8f;				// todo: make as ltx parameters
 	} else {
-		m_fDistMin = 2.4f;
-		m_fDistMax = 3.8f;
+		m_fDistMin = 2.4f;				// todo: make as ltx parameters
+		m_fDistMax = 3.8f;				// todo: make as ltx parameters
 	}
 
 	pMonster->SetMemoryTimeDef();
@@ -63,30 +63,34 @@ void CBitingAttack::Init()
 
 void CBitingAttack::Run()
 {
-	if (!pMonster->m_tEnemy.obj) R_ASSERT("Enemy undefined!!!");
-
 	// Если враг изменился, инициализировать состояние
+	if (!pMonster->m_tEnemy.obj) R_ASSERT("Enemy undefined!!!");
 	if (pMonster->m_tEnemy.obj != m_tEnemy.obj) Init();
 	else m_tEnemy = pMonster->m_tEnemy;
 
 	// Выбор состояния
 	bool bAttackMelee = (m_tAction == ACTION_ATTACK_MELEE);
+
 	float dist = m_tEnemy.obj->Position().distance_to(pMonster->Position());
 
-	if (bAttackMelee && (dist < m_fDistMax)) 
-		m_tAction = ACTION_ATTACK_MELEE;
-	else 
-		m_tAction = ((dist > m_fDistMin) ? ACTION_RUN : ACTION_ATTACK_MELEE);
+	if (bAttackMelee && (dist < m_fDistMax)) m_tAction = ACTION_ATTACK_MELEE;
+	else m_tAction = ((dist > m_fDistMin) ? ACTION_RUN : ACTION_ATTACK_MELEE);
 
-	// задержка для построения пути
+	// если враг не виден на протяжении 1 сек - бежать к нему
+	if (m_tAction == ACTION_ATTACK_MELEE && (m_tEnemy.time + 1000 < m_dwCurrentTime)) {
+		m_tAction = ACTION_RUN;
+	}
+
 	u32 delay;
 
-	// если враг не виден - бежать к нему
-	if (!m_bAttackRat) {
-		if (m_tAction == ACTION_ATTACK_MELEE && (m_tEnemy.time != m_dwCurrentTime)) {
-			m_tAction = ACTION_RUN;
-		}
-	}
+	// Invisibility Here - TODO: workout
+	//	// нивидимость Bloodsucker
+	//	if ((dist < pMonster->m_fInvisibilityDist) && (pMonster->GetPower() > pMonster->m_fPowerThreshold)) {
+	//		if (pMonster->m_tVisibility.Switch(false)) {
+	//			pMonster->ChangePower(pMonster->m_ftrPowerDown);
+	//			pMonster->ActivateEffector(pMonster->m_tVisibility.GetInvisibleInterval() / 1000.f);
+	//		}
+	//	}
 
 	// Выполнение состояния
 	switch (m_tAction) {	
@@ -101,37 +105,32 @@ void CBitingAttack::Run()
 			break;
 		case ACTION_ATTACK_MELEE:		// атаковать вплотную
 			// если враг крыса под монстром подпрыгнуть и убить
-
-			// spec flag CLEAR here
-
-			if (dist < 0.6f) {
-				if (!m_dwSuperMeleeStarted)	m_dwSuperMeleeStarted = m_dwCurrentTime;
-				if (m_dwSuperMeleeStarted + 600 < m_dwCurrentTime) {
-					// прыгнуть
-					// spec flag SET here
-					m_dwSuperMeleeStarted = 0;
-				}
-			} else m_dwSuperMeleeStarted = 0;
-
+			if (m_bAttackRat) {
+				if (dist < 0.6f) {
+					if (!m_dwSuperMeleeStarted)	m_dwSuperMeleeStarted = m_dwCurrentTime;
+					if (m_dwSuperMeleeStarted + 600 < m_dwCurrentTime) {
+						// прыгнуть
+						pMonster->MotionMan.SetSpecParams(ASP_ATTACK_RAT_JUMP);
+						m_dwSuperMeleeStarted = 0;
+					}
+				} else m_dwSuperMeleeStarted = 0;
+			}
 
 			// Смотреть на врага 
 			float yaw, pitch;
+			Fvector dir;
+
 			yaw = pMonster->r_torso_target.yaw;
 
 			DO_IN_TIME_INTERVAL_BEGIN(m_dwFaceEnemyLastTime, m_dwFaceEnemyLastTimeInterval);
-
 				pMonster->AI_Path.TravelPath.clear();
-
-				Fvector dir;
 				dir.sub(m_tEnemy.obj->Position(), pMonster->Position());
 				dir.getHP(yaw,pitch);
 				yaw *= -1;
 				yaw = angle_normalize(yaw);
-
 			DO_IN_TIME_INTERVAL_END();
 
-			// set motion params
-			// if (m_bAttackRat) set spec flags
+			if (m_bAttackRat) pMonster->MotionMan.SetSpecParams(ASP_ATTACK_RAT);
 			pMonster->MotionMan.m_tAction = ACT_ATTACK;
 
 			break;

@@ -214,7 +214,7 @@ void CBloodsuckerEat::Run()
 			pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
 			pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), true, 0);
 
-//			pMonster->Motion.m_tParams.SetParams(eAnimRun,pMonster->m_ftrRunAttackSpeed,pMonster->m_ftrRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+//			pMonster->Motion.m_tParams.cSetParams(eAnimRun,pMonster->m_ftrRunAttackSpeed,pMonster->m_ftrRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 //			pMonster->Motion.m_tTurn.Set(eAnimRun,eAnimRun, pMonster->m_ftrRunAttackTurnSpeed,pMonster->m_ftrRunAttackTurnRSpeed,pMonster->m_ftrRunAttackMinAngle);
 
 			break;
@@ -248,118 +248,6 @@ void CBloodsuckerEat::Done()
 	inherited::Done();
 
 	pMonster->flagEatNow = false;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Bloodsucker attack implementation
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-CBloodsuckerAttack::CBloodsuckerAttack(CAI_Bloodsucker *p)
-{
-	pMonster = p;
-	Reset();
-	SetHighPriority();
-}
-
-void CBloodsuckerAttack::Reset()
-{
-	IState::Reset();
-
-	m_tAction			= ACTION_RUN;
-
-	m_tEnemy.obj		= 0;
-
-	m_fDistMin			= 0.f;	
-	m_fDistMax			= 0.f;
-
-	m_dwFaceEnemyLastTime	= 0;
-	m_dwFaceEnemyLastTimeInterval = 1200;
-
-}
-void CBloodsuckerAttack::Init()
-{
-	IState::Init();
-
-	// ѕолучить врага
-	m_tEnemy = pMonster->m_tEnemy;
-
-	// ”становка дистанции аттаки
-	m_fDistMin = 1.4f;
-	m_fDistMax = 2.8f;
-
-	pMonster->SetMemoryTimeDef();
-
-	// Test
-	WRITE_TO_LOG("_ Attack Init _");
-}
-
-void CBloodsuckerAttack::Run()
-{
-	// ≈сли враг изменилс€, инициализировать состо€ние
-	if (!pMonster->m_tEnemy.obj) R_ASSERT("Enemy undefined!!!");
-	if (pMonster->m_tEnemy.obj != m_tEnemy.obj) {
-		Reset();
-		Init();
-	} else m_tEnemy = pMonster->m_tEnemy;
-
-	// ¬ыбор состо€ни€
-	bool bAttackMelee = (m_tAction == ACTION_ATTACK_MELEE);
-
-	float dist = m_tEnemy.obj->Position().distance_to(pMonster->Position());
-
-	if (bAttackMelee && (dist < m_fDistMax)) 
-		m_tAction = ACTION_ATTACK_MELEE;
-	else 
-		m_tAction = ((dist > m_fDistMin) ? ACTION_RUN : ACTION_ATTACK_MELEE);
-
-	// если враг не виден - бежать к нему
-	if (m_tAction == ACTION_ATTACK_MELEE && (m_tEnemy.time != m_dwCurrentTime)) {
-		m_tAction = ACTION_RUN;
-	}
-	
-	// нивидимость
-	if ((dist < pMonster->m_fInvisibilityDist) && (pMonster->GetPower() > pMonster->m_fPowerThreshold)) {
-		if (pMonster->m_tVisibility.Switch(false)) {
-			pMonster->ChangePower(pMonster->m_ftrPowerDown);
-			pMonster->ActivateEffector(pMonster->m_tVisibility.GetInvisibleInterval() / 1000.f);
-		}
-	}
-	
-	// ¬ыполнение состо€ни€
-	switch (m_tAction) {	
-		case ACTION_RUN:		// бежать на врага
-
-			pMonster->AI_Path.DestNode = m_tEnemy.obj->AI_NodeID;
-			pMonster->vfChoosePointAndBuildPath(0,&m_tEnemy.obj->Position(), true, 0, 300);
-
-//			pMonster->Motion.m_tParams.SetParams(eAnimRun,pMonster->m_ftrRunAttackSpeed,pMonster->m_ftrRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-//			pMonster->Motion.m_tTurn.Set(eAnimRun,eAnimRun, pMonster->m_ftrRunAttackTurnSpeed,pMonster->m_ftrRunAttackTurnRSpeed,pMonster->m_ftrRunAttackMinAngle);
-
-			break;
-		case ACTION_ATTACK_MELEE:		// атаковать вплотную
-			// —мотреть на врага 
-			float yaw, pitch;
-			if (m_dwFaceEnemyLastTime + m_dwFaceEnemyLastTimeInterval < m_dwCurrentTime) {
-
-				m_dwFaceEnemyLastTime = m_dwCurrentTime;
-				pMonster->AI_Path.TravelPath.clear();
-
-				Fvector EnemyCenter;
-				Fvector MyCenter;
-
-				m_tEnemy.obj->Center(EnemyCenter);
-				pMonster->Center(MyCenter);
-
-				EnemyCenter.sub(MyCenter);
-				EnemyCenter.getHP(yaw,pitch);
-				yaw *= -1;
-				yaw = angle_normalize(yaw);
-			} else yaw = pMonster->r_torso_target.yaw;
-
-			// set motion params
-//			pMonster->Motion.m_tParams.SetParams(eAnimAttack,0,pMonster->m_ftrRunRSpeed,yaw,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED | MASK_YAW);
-//			pMonster->Motion.m_tTurn.Set(eAnimRun, eAnimRun, 0, pMonster->m_ftrAttackFastRSpeed,pMonster->m_ftrRunAttackMinAngle);
-			break;
-	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -565,12 +453,6 @@ void CBloodsuckerPanic::Run()
 		bFacedOpenArea = false;
 		m_dwStayTime = 0;
 	} else if (m_dwStayTime == 0) m_dwStayTime = m_dwCurrentTime;
-
-	
-	// нивидимость
-	if (pMonster->GetPower() > pMonster->m_fPowerThreshold) {
-		if (pMonster->m_tVisibility.Switch(false)) pMonster->ChangePower(pMonster->m_ftrPowerDown);
-	}
 
 	// строить путь
 	pMonster->vfInitSelector(pMonster->m_tSelectorFreeHunting, false);

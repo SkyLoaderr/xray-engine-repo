@@ -5,10 +5,10 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingPanic class
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 CBitingPanic::CBitingPanic(CAI_Biting *p)
 {
 	pMonster = p;
+
 	Reset();
 	SetHighPriority();
 }
@@ -23,7 +23,6 @@ void CBitingPanic::Reset()
 	prev_pos		= cur_pos;
 	bFacedOpenArea	= false;
 	m_dwStayTime	= 0;
-
 }
 
 void CBitingPanic::Init()
@@ -42,6 +41,9 @@ void CBitingPanic::Init()
 
 void CBitingPanic::Run()
 {
+	if (pMonster->m_tEnemy.obj != m_tEnemy.obj) Init();
+	else m_tEnemy = pMonster->m_tEnemy;
+	
 	cur_pos = pMonster->Position();
 
 	// implementation of 'face the most open area'
@@ -50,10 +52,12 @@ void CBitingPanic::Run()
 		pMonster->AI_Path.TravelPath.clear();
 
 		pMonster->r_torso_target.yaw = angle_normalize(pMonster->r_torso_target.yaw + PI);
-		
-		// Faced the open area
-		// ...
 	} 
+
+//	// нивидимость (for Bloodsucker)
+//	if (pMonster->GetPower() > pMonster->m_fPowerThreshold) {
+//		if (pMonster->m_tVisibility.Switch(false)) pMonster->ChangePower(pMonster->m_ftrPowerDown);
+//	}
 
 	if (!cur_pos.similar(prev_pos)) {
 		bFacedOpenArea = false;
@@ -65,15 +69,15 @@ void CBitingPanic::Run()
 	if (!bFacedOpenArea) {
 			pMonster->MotionMan.m_tAction = ACT_RUN;
 	} else {
-		// try to rebuild path
+		// try to rebuild path 
 		if (pMonster->AI_Path.TravelPath.size() > 5) {
 			pMonster->MotionMan.m_tAction = ACT_RUN;
 		} else {
-			// Set Spec Flags (eAnimStandDamaged)			
-			// ...
-			pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
+			pMonster->MotionMan.SetSpecParams(ASP_STAND_SCARED);
+			pMonster->MotionMan.m_tAction	= ACT_STAND_IDLE;
 		}
 	}
 	
 	prev_pos = cur_pos;
 }
+
