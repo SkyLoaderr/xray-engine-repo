@@ -1342,3 +1342,13 @@ void CActor::OnRender	()
 	dbg_draw_frustum			(C->f_fov, 230.f, 1.f, C->vPosition, C->vDirection, C->vNormal);
 }
 #endif
+
+ENGINE_API extern float		psHUD_FOV;
+float CActor::Radius()const
+{ 
+	float R		= inherited::Radius();
+	CWeapon* W	= dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
+	if (W) R	+= W->Radius();
+	if (HUDview()) R *= 1.f/psHUD_FOV;
+	return R;
+}

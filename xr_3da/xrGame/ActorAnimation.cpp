@@ -73,7 +73,7 @@ void CActor::SActorMotions::SActorState::SAnimState::Create(CKinematics* K, LPCS
 
 void CActor::SActorMotions::SActorState::Create(CKinematics* K, LPCSTR base)
 {
-	char			buf[128];
+	string128		buf;//,buf1;
 	legs_idle		= K->ID_Cycle(strconcat(buf,base,"_idle"));
 	legs_turn		= K->ID_Cycle(strconcat(buf,base,"_turn"));
 	death			= K->ID_Cycle(strconcat(buf,base,"_death"));
@@ -88,6 +88,10 @@ void CActor::SActorMotions::SActorState::Create(CKinematics* K, LPCSTR base)
 	jump_idle		= K->ID_Cycle(strconcat(buf,base,"_jump_idle"));
 	landing[0]		= K->ID_Cycle(strconcat(buf,base,"_jump_end"));
 	landing[1]		= K->ID_Cycle(strconcat(buf,base,"_jump_end_1"));
+/*
+	for (int k=0; k<10; k++)
+		m_damage[k]	= K->ID_Cycle(strconcat(buf,base,"_damage_",itoa(k,buf1,10)));
+*/
 }
 
 void CActor::SActorMotions::Create(CKinematics* V)

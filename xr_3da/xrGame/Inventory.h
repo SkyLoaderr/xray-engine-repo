@@ -76,7 +76,7 @@ public:
 	bool Belt(PIItem pIItem);								// Повесить объект на пояс
 	bool Ruck(PIItem pIItem);								// Полжить объект в рюкзак
 	bool Activate(u32 slot);								// Активировать объект в указанном слоте
-	PIItem ActiveItem();									// Возвращает указатель на объект в актовном слоте
+	PIItem ActiveItem() const;								// Возвращает указатель на объект в актовном слоте
 	bool Action(s32 cmd, u32 flags);						// true если известная команда, иначе false
 	void Update(u32 deltaT);								// Обновление
 	PIItem Same(const PIItem pIItem);						// Ищет на поясе аналогичный IItem

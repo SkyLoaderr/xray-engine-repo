@@ -121,6 +121,9 @@ protected:
 			SAnimState		m_run;
 			STorsoWpn		m_torso[2];
 			CMotionDef*		m_torso_idle;
+
+			CMotionDef*		m_damage[10];
+
 			void			Create(CKinematics* K, LPCSTR base);
 		};
 		CMotionDef*			m_steering_torso_left;
@@ -177,7 +180,7 @@ protected:
 	Fvector					patch_position;
 
 
-int								skel_ddelay;
+	int						skel_ddelay;
 							
 	///////////////////////////////////////////////////
 	static void	__stdcall	SpinCallback	(CBoneInstance*);
@@ -270,7 +273,7 @@ public:
 		if (mstate&mcAccel)	return psActorFlags.test(AF_ALWAYSRUN)?FALSE:TRUE ;
 		else				return psActorFlags.test(AF_ALWAYSRUN)?TRUE :FALSE;
 	}
-	IC BOOL					HUDview				( ) 
+	IC BOOL					HUDview				( )const 
 	{ 
 		return IsFocused()&&(cam_active==eacFirstEye)&&(!m_vehicle); 
 	}
@@ -337,6 +340,7 @@ public:
 	virtual void						OnHUDDraw			(CCustomHUD* hud);
 	//CWeaponList*						tpfGetWeapons		()	{return Weapons;}
 	virtual f32 GetMass() { return g_Alive()?ph_Movement.GetMass():m_phSkeleton?m_phSkeleton->getMass():0; }
+	virtual float						Radius				() const;
 
 #ifdef DEBUG
 	virtual void						OnRender			();
