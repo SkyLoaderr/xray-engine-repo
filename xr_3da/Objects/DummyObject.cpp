@@ -7,7 +7,7 @@
 #include "DummyObject.h"
 #include "..\ObjectAnimator.h"
 #include "..\psvisual.h"
-
+ 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -128,6 +128,7 @@ void CDummyObject::UpdateCL		()
 	if (s_sound.feedback)
 	{
 		s_sound.feedback->SetPosition	(Position());
+		s_sound.feedback->SetMinMax		(10,1000);
 	}
 }
 

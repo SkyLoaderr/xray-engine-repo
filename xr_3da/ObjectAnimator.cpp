@@ -84,7 +84,7 @@ void CObjectAnimator::OnMove()
 		Fvector R;
 		m_ActiveMotion->Evaluate(m_MParam.Frame(),vPosition,R);
 		if (!m_MParam.Update(Device.fTimeDelta)) StopMotion();
-		mRotate.setHPB	(R.x,R.y,R.z);
+		mRotate.setHPB	(-R.x,-R.y,-R.z);
 	}
 }
 
@@ -93,7 +93,7 @@ COMotion* CObjectAnimator::PlayMotion(LPCSTR name, bool bLoop)
 	MotionPairIt I = m_Motions.find(LPSTR(name));
 	if (I!=m_Motions.end())	SetActiveMotion(I->second, bLoop);
 	else {
-		Msg("OBJ ANIM::Cycle '%s' not found.",name);
+		Device.Fatal	("OBJ ANIM::Cycle '%s' not found.",name);
 		return NULL;
 	}
 	return I->second;
