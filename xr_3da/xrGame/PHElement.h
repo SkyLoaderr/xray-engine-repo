@@ -171,6 +171,7 @@ public:
 	virtual float			getVolume				(){return m_volume;}
 	virtual void			setMass					(float M);
 	virtual float			getMass					(){return m_mass.mass;}
+	virtual bool			isBreakable				();
 	virtual void			setDensity				(float M);
 	virtual float			getDensity				(){return m_mass.mass/m_volume;}
 	virtual void			setMassMC				(float M,const Fvector& mass_center);

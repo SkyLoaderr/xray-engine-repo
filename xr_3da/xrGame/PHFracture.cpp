@@ -256,7 +256,7 @@ m_end_geom_num	=u16(-1);
 m_breaked=false;
 }
 
-//#define DBG_BREAK
+#define DBG_BREAK
 bool CPHFracture::Update(CPHElement* element)
 {
 

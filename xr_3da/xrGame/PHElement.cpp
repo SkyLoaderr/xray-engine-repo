@@ -1295,6 +1295,7 @@ void CPHElement::SplitProcess(ELEMENT_PAIR_VECTOR &new_elements)
 	
 }
 
+
 void CPHElement::CreateSimulBase()
 {
 	m_body=dBodyCreate(phWorld);
@@ -1391,6 +1392,10 @@ void CPHElement::PresetActive()
 	
 }
 
+bool CPHElement::isBreakable()
+{
+	return !!m_fratures_holder;
+}
 u16	CPHElement::setGeomFracturable(CPHFracture& fracture)
 {
 	if(!m_fratures_holder) m_fratures_holder=xr_new<CPHFracturesHolder>();
