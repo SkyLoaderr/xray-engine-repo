@@ -61,7 +61,7 @@
 				OutputFile="x:\xrCPU_Pipe.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				GenerateDebugInformation="TRUE"
+				GenerateDebugInformation="FALSE"
 				GenerateMapFile="TRUE"
 				MapFileName="x:\xrCPU_Pipe.map"
 				ImportLibrary="x:\xrCPU_Pipe.lib"/>
@@ -233,7 +233,7 @@
 		</Configuration>
 		<Configuration
 			Name="Mixed|Win32"
-			OutputDirectory="Mixed"
+			OutputDirectory="x:\"
 			IntermediateDirectory="Mixed"
 			ConfigurationType="2"
 			UseOfMFC="0"
@@ -242,7 +242,7 @@
 			WholeProgramOptimization="FALSE">
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
+				Optimization="3"
 				GlobalOptimizations="TRUE"
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="TRUE"

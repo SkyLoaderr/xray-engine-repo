@@ -149,7 +149,7 @@
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)/xrSound.dll"
 				LinkIncremental="1"
-				GenerateDebugInformation="FALSE"
+				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
