@@ -944,7 +944,7 @@ bool CCar::Use(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos)
 		if(Enter(pos,dir,foot_pos)) return true;
 	}
 
-	Collide::ray_defs Q(pos, dir, 3.f, 0,Collide::rqtDynamic);  // CDB::OPT_ONLYFIRST CDB::OPT_ONLYNEAREST
+	Collide::ray_defs Q(pos, dir, 3.f, 0,Collide::rqtObject);  // CDB::OPT_ONLYFIRST CDB::OPT_ONLYNEAREST
 	if (g_pGameLevel->ObjectSpace.RayQuery(collidable.model,Q))
 	{
 		Collide::rq_results& R = g_pGameLevel->ObjectSpace.r_results;

@@ -122,7 +122,7 @@ bool CAI_Biting::RayPickEnemy(const CObject *target_obj, const Fvector &trace_fr
 	this->setEnabled(false);
 	Collide::rq_result	l_rq;
 	
-	if (Level().ObjectSpace.RayPick(trace_from, dir, dist, Collide::rqtDynamic, l_rq)) {
+	if (Level().ObjectSpace.RayPick(trace_from, dir, dist, Collide::rqtObject, l_rq)) {
 		if ((l_rq.O == target_obj) && (l_rq.range < dist)) ret_val = true;
 	} else {
 		// макс. угол отклонения
@@ -143,7 +143,7 @@ bool CAI_Biting::RayPickEnemy(const CObject *target_obj, const Fvector &trace_fr
 			new_dir.setHP(new_h,new_p);
 			new_dir.normalize();
 
-			if (Level().ObjectSpace.RayPick(trace_from, new_dir, dist, Collide::rqtDynamic, l_rq)) {
+			if (Level().ObjectSpace.RayPick(trace_from, new_dir, dist, Collide::rqtObject, l_rq)) {
 				if ((l_rq.O == target_obj) && (l_rq.range < dist)) {
 					ret_val = true;
 					break;

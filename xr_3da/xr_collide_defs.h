@@ -27,9 +27,12 @@ namespace Collide
 	};
 	enum rq_target{
 		rqtNone		= (0),
-		rqtDynamic	= (1<<0),
+		rqtObject	= (1<<0),
 		rqtStatic	= (1<<1),
-		rqtBoth		= (rqtDynamic|rqtStatic)
+		rqtShape	= (1<<2),
+		rqtBoth		= (rqtObject|rqtStatic),
+		rqtAll		= (rqtObject|rqtStatic|rqtShape),
+		rqtDyn		= (rqtObject|rqtShape)
 	};
 	struct			ray_defs
 	{

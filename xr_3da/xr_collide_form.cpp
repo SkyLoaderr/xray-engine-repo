@@ -10,14 +10,14 @@
 #include "frustum.h"
 
 using namespace	Collide;
-
 //----------------------------------------------------------------------
 // Class	: CXR_CFObject
 // Purpose	: stores collision form
 //----------------------------------------------------------------------
-ICollisionForm::ICollisionForm( CObject* _owner )
+ICollisionForm::ICollisionForm( CObject* _owner, ECollisionFormType tp )
 {
 	owner				= _owner;
+	m_type				= tp;
 	bv_sphere.identity	( );
 }
 
@@ -26,7 +26,7 @@ ICollisionForm::~ICollisionForm( )
 }
 
 //----------------------------------------------------------------------------------
-CCF_Polygonal::CCF_Polygonal(CObject* O) : ICollisionForm(O)
+CCF_Polygonal::CCF_Polygonal(CObject* O) : ICollisionForm(O,cftObject)
 {
 }
 
@@ -128,15 +128,15 @@ void CCF_Polygonal::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
-IC BOOL RAYvsOBB(CCF_OBB &B, const Fvector &S, const Fvector &D, float &R, BOOL bCull)
+IC BOOL RAYvsOBB(const Fmatrix& IM, Fbox& B, const Fvector &S, const Fvector &D, float &R, BOOL bCull)
 {
 	// XForm world-2-local
 	Fvector	SL,DL,PL;
-	B.IM.transform_tiny	(SL,S);
-	B.IM.transform_dir	(DL,D);
+	IM.transform_tiny	(SL,S);
+	IM.transform_dir	(DL,D);
 
 	// Actual test
-	Fbox::ERP_Result rp_res = B.B.Pick2(SL,DL,PL);
+	Fbox::ERP_Result rp_res = B.Pick2(SL,DL,PL);
 	if ((rp_res==Fbox::rpOriginOutside)||(!bCull&&(rp_res==Fbox::rpOriginInside)))
 	{
 		float d = PL.distance_to_sqr(SL);
@@ -148,7 +148,7 @@ IC BOOL RAYvsOBB(CCF_OBB &B, const Fvector &S, const Fvector &D, float &R, BOOL 
 	return FALSE;
 }
 
-CCF_Skeleton::CCF_Skeleton(CObject* O) : ICollisionForm(O)
+CCF_Skeleton::CCF_Skeleton(CObject* O) : ICollisionForm(O,cftObject)
 {
 	CKinematics* K	= PKinematics(O->Visual());
 	base_box.set	(K->vis.box);
@@ -231,7 +231,7 @@ BOOL CCF_Skeleton::_RayQuery( const Collide::ray_defs& Q, Collide::rq_results& R
 			continue;
 		}
 		float range		= Q.range;
-		if (RAYvsOBB(*I,Q.start,Q.dir,range,Q.flags&CDB::OPT_CULL)) 
+		if (RAYvsOBB(I->IM,I->B,Q.start,Q.dir,range,Q.flags&CDB::OPT_CULL)) 
 		{
 			bHIT		= TRUE;
 			R.append_result(owner,range,I->elem_id,Q.flags&CDB::OPT_ONLYNEAREST);
@@ -266,7 +266,7 @@ void CCF_Skeleton::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
-CCF_Rigid::CCF_Rigid(CObject* O) : ICollisionForm(O)
+CCF_Rigid::CCF_Rigid(CObject* O) : ICollisionForm(O,cftObject)
 {
 	FHierrarhyVisual* pH= dynamic_cast<FHierrarhyVisual*>(O->Visual());
 	if (pH){
@@ -351,7 +351,7 @@ BOOL CCF_Rigid::_RayQuery( const Collide::ray_defs& Q, Collide::rq_results& R)
 	BOOL bHIT = FALSE;
 	for (xr_vector<CCF_OBB>::iterator I=models.begin(); I!=models.end(); I++){
 		float range		= Q.range;
-		if (RAYvsOBB(*I,Q.start,Q.dir,range,Q.flags&CDB::OPT_CULL)){
+		if (RAYvsOBB(I->IM,I->B,Q.start,Q.dir,range,Q.flags&CDB::OPT_CULL)){
 			bHIT		= TRUE;
 			R.append_result(owner,range,int(I-models.begin()),Q.flags&CDB::OPT_ONLYNEAREST);
 			if (CDB::OPT_ONLYFIRST) return TRUE;
@@ -385,7 +385,7 @@ void CCF_Rigid::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
 
-CCF_EventBox::CCF_EventBox( CObject* O ) : ICollisionForm(O)
+CCF_EventBox::CCF_EventBox( CObject* O ) : ICollisionForm(O,cftShape)
 {
 	Fvector A[8],B[8];
 	A[0].set( -1, -1, -1);
@@ -436,11 +436,59 @@ void CCF_EventBox::_BoxQuery(const Fbox& B, const Fmatrix& M, u32 flags)
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
-CCF_Shape::CCF_Shape(CObject* _owner) : ICollisionForm(_owner)
+CCF_Shape::CCF_Shape(CObject* _owner) : ICollisionForm(_owner,cftShape)
 {
 }
 BOOL CCF_Shape::_RayQuery(const Collide::ray_defs& Q, Collide::rq_results& R)
-{	return FALSE; }
+{	
+	// Convert ray into local model space
+	Fvector dS, dD;
+	Fmatrix temp; 
+	temp.invert			(owner->XFORM());
+	temp.transform_tiny	(dS,Q.start);
+	temp.transform_dir	(dD,Q.dir);
+
+	// 
+	if (!bv_sphere.intersect(dS,dD))	return FALSE;
+
+	BOOL bHIT = FALSE;
+	for (u32 el=0; el<shapes.size(); el++)
+	{
+		shape_def& shape= shapes[el];
+		float range		= Q.range;
+		switch (shape.type)
+		{
+		case 0: // sphere
+			if (shape.data.sphere.intersect(dS,dD,range)){
+				bHIT	= TRUE;
+				R.append_result(owner,range,el,Q.flags&CDB::OPT_ONLYNEAREST);
+				if (Q.flags&CDB::OPT_ONLYFIRST) return TRUE;
+			}
+			break;
+		case 1: // box
+			{
+				Fbox				box;
+				box.identity		();
+				Fmatrix& B			= shape.data.ibox;
+				Fvector				S1,D1,P;
+				B.transform_tiny	(S1,dS);
+				B.transform_dir		(D1,dD);
+				Fbox::ERP_Result	rp_res 	= box.Pick2(S1,D1,P);
+				if ((rp_res==Fbox::rpOriginOutside)||(!(Q.flags&CDB::OPT_CULL)&&(rp_res==Fbox::rpOriginInside))){
+					float d			= P.distance_to_sqr(dS);
+					if (d<range*range) {
+						range		= _sqrt(d);
+						bHIT		= TRUE;
+						R.append_result(owner,range,el,Q.flags&CDB::OPT_ONLYNEAREST);
+						if (CDB::OPT_ONLYFIRST) return TRUE;
+					}
+				}
+			}
+			break;
+		}
+	}
+	return bHIT;
+}
 void CCF_Shape::_BoxQuery(const Fbox& B, const Fmatrix& M, u32 flags)
 {   return; }
 
@@ -456,6 +504,7 @@ void CCF_Shape::add_box		(Fmatrix& B )
 	shapes.push_back(shape_def());
 	shapes.back().type	= 1;
 	shapes.back().data.box.set(B);
+	shapes.back().data.ibox.invert(B);
 }
 
 void CCF_Shape::ComputeBounds()

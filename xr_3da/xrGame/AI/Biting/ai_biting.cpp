@@ -457,7 +457,7 @@ float CAI_Biting::GetRealDistToEnemy(const CEntity *pE)
 	
 	Fvector dir; 
 	dir.sub(enemy_center, global_transform.c);
-	Collide::ray_defs	r_query(global_transform.c, dir, 10.f, CDB::OPT_CULL | CDB::OPT_ONLYNEAREST, Collide::rqtDynamic);
+	Collide::ray_defs	r_query(global_transform.c, dir, 10.f, CDB::OPT_CULL | CDB::OPT_ONLYNEAREST, Collide::rqtObject);
 	Collide::rq_results	r_res;
 
 	float ret_val = -1.f;

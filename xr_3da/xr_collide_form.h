@@ -75,6 +75,11 @@ struct clQueryCollision
 	}
 };
 
+enum ENGINE_API	ECollisionFormType{
+	cftObject,
+	cftShape
+};
+
 class ENGINE_API	ICollisionForm
 {
 	friend class	CObjectSpace;
@@ -84,8 +89,10 @@ protected:
 protected:
 	Fbox			bv_box;			// (Local) BBox объекта
 	Fsphere			bv_sphere;		// (Local) Sphere 
+private:
+	ECollisionFormType	m_type;
 public:
-					ICollisionForm	( CObject* _owner );
+					ICollisionForm	( CObject* _owner, ECollisionFormType tp );
 	virtual			~ICollisionForm	( );
 
 	virtual BOOL	_RayQuery		( const Collide::ray_defs& Q, Collide::rq_results& R) = 0;
@@ -95,6 +102,7 @@ public:
 	const Fbox&		getBBox			( )	const				{ return bv_box;		}
 	float			getRadius		( )	const				{ return bv_sphere.R;	}
 	const Fsphere&	getSphere		( )	const				{ return bv_sphere;		}
+	const ECollisionFormType Type	( ) const				{ return m_type;		}
 };
 
 class ENGINE_API	CCF_Polygonal : public ICollisionForm
@@ -182,7 +190,10 @@ public:
 	union shape_data
 	{
 		Fsphere		sphere;
-		Fmatrix		box;
+		struct{
+			Fmatrix	box;
+			Fmatrix	ibox;
+		};
 	};
 	struct shape_def
 	{
@@ -200,7 +211,7 @@ public:
 	void			add_box			( Fmatrix& B	);
 	void			ComputeBounds	( );
 	BOOL			Contact			( CObject* O	);
-	xr_vector<shape_def>&	Shapes		(){return shapes;}
+	xr_vector<shape_def>& Shapes	(){return shapes;}
 };
 
 #endif //__XR_COLLIDE_FORM_H__
