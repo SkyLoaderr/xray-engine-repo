@@ -63,16 +63,7 @@ public:
 	float				m_fMaxSpeed;
 	float				m_fCurSpeed;
 
-	/**
-	stack<AI::CAIState*> STATE;
-	EGroupState			Goal()					{ return Level().get_group(id_Team,id_Squad,id_Group).State; }
-	AI::CAIState*		State_Get				( )					{ return STATE.top();	}
-	void				State_Set				( AI::CAIState* S )	{ _DELETE(STATE.top());	STATE.top() = S;}
-	void				State_Push				( AI::CAIState* S )	{ STATE.push(S); }
-	void				State_Pop				( )					{ if(!STATE.empty()) STATE.pop(); }
-	/**/
 	virtual void		Think() = 0;
-	/**/
 
 	// Rotation
 	SRotation			r_current,r_target;
@@ -82,11 +73,8 @@ public:
 	CMotionDef*			m_current;
 	CMotionDef*			m_death;
 	CMotionDef*			m_idle;
-//	CMotionDef*			m_crouch;
 	SAnimState			m_walk;
 	SAnimState			m_run;
-//	SAnimState			m_crouch_walk;
-//	SAnimState			m_crouch_run;
 
 	// movement
 	float				m_fWalkAccel;
@@ -133,7 +121,7 @@ public:
 						CCustomMonster			( );
 	virtual				~CCustomMonster			( );
 
-	virtual BOOL		Spawn					( BOOL bLocal, int sid, int team, int squad, int group, Fvector& o_pos, Fvector& o_angle );
+	virtual BOOL		Spawn					( BOOL bLocal, int sid, int team, int squad, int group, Fvector& o_pos, Fvector& o_angle, NET_Packet& P );
 	virtual void		Death					( );
 	virtual void		HitSignal				( int iHitAmount, Fvector& vLocalDir, CEntity* who);
 	virtual void		SenseSignal				( int iSenseAmount, Fvector& vLocalDir, CEntity* who);

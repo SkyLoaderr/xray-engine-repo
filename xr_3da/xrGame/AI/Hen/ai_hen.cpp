@@ -67,13 +67,6 @@ void CAI_Hen::Load(CInifile* ini, const char* section)
 	SelectorUnderFire.Load(ini,section);
 }
 
-BOOL CAI_Hen::Spawn(BOOL bLocal, int server_id, int team, int squad, int group, Fvector& o_pos, Fvector& o_angle)
-{
-	BOOL A	= inherited::Spawn(bLocal,server_id,team,squad,group,o_pos,o_angle);
-	bActive = TRUE;
-	return A;
-}
-
 // when someone hit hen
 void CAI_Hen::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 {
