@@ -73,6 +73,12 @@ IC	u32	btwCount1(u32 v)
 	return (v + (v >> 9) + (v >> 18) + (v >> 27)) & 0x3f;
 }
 
+IC	u64	btwCount1(u64 v)
+{
+	return btwCount1(u32(v&u32(-1)))+btwCount1(u32(v>>u64(32)));
+}
+
+
 IC int iFloor (float x)
 {
     int a			= *(const int*)(&x);
