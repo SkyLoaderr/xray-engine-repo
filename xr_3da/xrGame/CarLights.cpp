@@ -66,9 +66,13 @@ void SCarLight::Switch()
 void SCarLight::TurnOn()
 {
 	if(isOn()) return;
-	smart_cast<CKinematics*>(m_holder->PCar()->Visual())->LL_SetBoneVisible(bone_id,TRUE,TRUE);
+	CKinematics* K=smart_cast<CKinematics*>(m_holder->PCar()->Visual());
+	K->LL_SetBoneVisible(bone_id,TRUE,TRUE);
+	K->CalculateBones_Invalidate();
+	K->CalculateBones();
 	glow_render ->set_active(true);
 	light_render->set_active(true);
+
 }
 void SCarLight::TurnOff()
 {

@@ -20,7 +20,7 @@ bool		CTeleWhirlwindObject::		init(CTelekinesis* tele,CPhysicsShellHolder *obj, 
 
 void		CTeleWhirlwindObject::		raise					(float power)
 {
-		float time=10.f;
+		float time=1.f;
 		CPhysicsShell*	p			=	get_object()	->PPhysicsShell();
 		u16				element		=	p				->get_ElementsNumber()-1;
 		Fvector			center		=	m_telekinesis	->Center();
@@ -33,19 +33,20 @@ void		CTeleWhirlwindObject::		raise					(float power)
 			E->get_LinearVel(vel);
 			Fvector diff;
 			diff.sub(center,pos);
-			diff.mul(1.f/time/fixed_step);
+			float mag=diff.magnitude();
+			diff.mul(100.f*E->getMass()/mag/mag/mag);
 			E->applyForce(diff.x,diff.y,diff.z);
 		}
 }
 void		CTeleWhirlwindObject::		keep					()
 {
-
+	inherited::keep();
 }
 void		CTeleWhirlwindObject::		fire					(const Fvector &target)
 {
-
+	inherited::fire(target);
 }
 void		CTeleWhirlwindObject::		fire					(const Fvector &target, float power)
 {
-
+	inherited:: fire(target,power);
 }

@@ -3,7 +3,7 @@
 #include "hudmanager.h"
 #include "xrmessages.h"
 #include "level.h"
-
+#include "CustomZone.h"
 CMincer::CMincer(void) 
 {
 }
@@ -11,7 +11,25 @@ CMincer::CMincer(void)
 CMincer::~CMincer(void) 
 {
 }
+void CMincer::SwitchZoneState(EZoneState new_state)
+{
+	if(new_state==eZoneStateBlowout)
+	{
+		xr_set<CObject*>::iterator it=m_inZone.begin(),e=m_inZone.end();
+		for(;e!=it;++it)
+		{
+			CPhysicsShellHolder * GO = smart_cast<CPhysicsShellHolder *>(*it);
+			Telekinesis().activate(GO, 0.1f, m_fTeleHeight, 100000);
 
+		}
+	}
+
+	if(m_eZoneState==eZoneStateBlowout && new_state!=eZoneStateBlowout)
+	{
+		Telekinesis().deactivate();
+	}
+	inherited::SwitchZoneState(new_state);
+}
 void CMincer::Load (LPCSTR section)
 {
 	inherited::Load(section);

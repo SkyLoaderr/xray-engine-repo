@@ -249,7 +249,7 @@ void	CCar::UpdateCL				( )
 	m_car_sound->Update();
 	if(Owner())
 	{
-		m_pPhysicsShell->InterpolateGlobalTransform(&Owner()->XFORM());
+		Owner()->XFORM().set(XFORM());
 		if(m_pPhysicsShell->isEnabled())Owner()->XFORM().mulB	(m_sits_transforms[0]);
 
 		if(Owner()->IsMyCamera()) 
@@ -330,7 +330,11 @@ bool CCar::attach_Actor(CActor* actor)
 	CBoneInstance& instance=K->LL_GetBoneInstance				(u16(id));
 	m_sits_transforms.push_back(instance.mTransform);
 
+	&Owner()->XFORM().set(XFORM());
+	Owner()->XFORM().mulB	(m_sits_transforms[0]);
 
+	if(Owner()->IsMyCamera()) 
+		cam_Update	(Device.fTimeDelta);
 	//CBoneData&	bone_data=K->LL_GetData(id);
 	//Fmatrix driver_pos_tranform;
 	//driver_pos_tranform.setHPB(bone_data.bind_hpb.x,bone_data.bind_hpb.y,bone_data.bind_hpb.z);
