@@ -31,7 +31,7 @@ void	CBlender_accum_direct::Compile(CBlender_Compile& C)
 			C.r2_End				();
 			break;
 		case 2:		// lighting pass
-			C.r2_Pass				("null",		r2s("r2_accum_direct_L"),FALSE,FALSE,TRUE,	D3DBLEND_DESTCOLOR,		D3DBLEND_ZERO);
+			C.r2_Pass				("null",		r2s("r2_accum_direct_L"),FALSE,FALSE,FALSE/*$$$TRUE*/,	D3DBLEND_ONE /*$$$D3DBLEND_DESTCOLOR*/,		D3DBLEND_ZERO);
 			C.r2_Sampler_rtf		("s_position0",	r2_RT_DEFFER, r2_RT_DEFFER_P0	);
 			C.r2_Sampler_rtf		("s_position1",	r2_RT_DEFFER, r2_RT_DEFFER_P1	);
 			C.r2_Sampler_rtf		("s_normal",	r2_RT_DEFFER, r2_RT_DEFFER_N_H	);

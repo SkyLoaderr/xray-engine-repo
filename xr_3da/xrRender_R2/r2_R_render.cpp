@@ -34,7 +34,7 @@ void CRender::Render	()
 		mapSorted.clear							();
 	}
 
-	if (ps_r2_ls_flags.test(R2FLAG_SUN))
+	if (0 && ps_r2_ls_flags.test(R2FLAG_SUN) )
 	{
 		for (u32 dls_phase=0; dls_phase<2; dls_phase++)
 		{
@@ -73,8 +73,12 @@ void CRender::Render	()
 		Target.accum_direct						();
 	}
 
+	//$$$
+	Target.phase_accumulator			();
+	Target.accum_direct					();
+
 	// Point lighting (unshadowed)
-	if (1)
+	if (0)
 	{
 		Target.phase_accumulator		();
 		HOM.Disable						();
@@ -87,8 +91,8 @@ void CRender::Render	()
 		}
 	}
 
-	// Point lighting (shadowed)
-	if (1)
+	// Point/spot lighting (shadowed)
+	if (0)
 	{
 		HOM.Disable								();
 		vector<light*>&	Lvec	= Lights.v_selected_shadowed;
@@ -151,14 +155,11 @@ void CRender::Render	()
 	}
 
 	// Postprocess
-	Target.phase_bloom						();
+	//$$$ Target.phase_bloom				();
 	Target.phase_combine					();
 	
 	// HUD
 	Device.Statistic.RenderDUMP_HUD.Begin	();
 	pCreator->pHUD->Render_Direct			();
 	Device.Statistic.RenderDUMP_HUD.End		();
-
-	// pCreator->Environment.RenderFirst	();
-	// pCreator->Environment.RenderLast		();
 }

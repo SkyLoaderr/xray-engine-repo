@@ -133,6 +133,6 @@ void CRenderTarget::accum_direct()
 	RCache.set_c				("light_color",		L_clr.x,L_clr.y,L_clr.z,L_spec);
 
 	// Render if stencil >= 0x2
-	CHK_DX						(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,		0x02	));
+	//$$$CHK_DX						(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,		0x02	));
 	RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 }

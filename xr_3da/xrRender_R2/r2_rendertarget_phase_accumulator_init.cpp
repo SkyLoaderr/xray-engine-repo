@@ -43,7 +43,7 @@ void CRenderTarget::phase_accumulator_init()
 
 	//  *****  Prepare mask for skybox  *****
 	// ***** Downsample into bloom2.rgba *****
-	if (1)
+	if (0)
 	{
 		u_setrt								(rt_Bloom_2,NULL,NULL,NULL); // No need for ZBuffer at all
 		CHK_DX	(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		FALSE				));
@@ -74,7 +74,7 @@ void CRenderTarget::phase_accumulator_init()
 	// Stencil	- draw only where stencil >= 0x1
 	// Stencil	- increment value if both (stencil,aref) pass
 	// Stencil	- result -> 0x2 where pixel can be potentialy lighted/shadowed
-	if (ps_r2_ls_flags.test(R2FLAG_SUN))
+	if (1 || ps_r2_ls_flags.test(R2FLAG_SUN))	//$$$
 	{
 		// Restore targets
 		u_setrt								(rt_Accumulator,NULL,NULL,HW.pBaseZB);
