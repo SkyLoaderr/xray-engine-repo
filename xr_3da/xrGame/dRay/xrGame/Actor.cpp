@@ -455,7 +455,7 @@ void CActor::Die	( )
 		else
 			if((*I).m_pIItem) inventory().Ruck((*I).m_pIItem);
 	};
-	///!!! чистка рюкзака
+	///!!! выбрасываем артефакты
 	TIItemList &l_list = inventory().m_ruck;
 	for(PPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it)
 	{
@@ -465,20 +465,17 @@ void CActor::Die	( )
 	}
 
 	///!!! чистка пояса
-	l_list = inventory().m_belt;
-	for(l_it = l_list.begin(); l_list.end() != l_it; ++l_it)
+	TIItemList &l_blist = inventory().m_belt;
+	for(PPIItem l_bit = l_blist.begin(); l_blist.end() != l_blist.begin(); ++l_bit)
 	{
-		PIItem m_pItem = *l_it;
-		if(m_pItem) inventory().Ruck(m_pItem);
+		if(*l_bit) inventory().Ruck(*l_bit);
 	}
 
 	if (OnServer() && Game().type != GAME_SINGLE)
 	{
 		//if we are on server and actor has PDA - destroy PDA
-		xr_vector <u16> ItemsToRemove;
-		ItemsToRemove.clear();
-		TIItemList &l_list = inventory().m_ruck;
-		for(PPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it)
+		TIItemList &l_rlist = inventory().m_ruck;
+		for(PPIItem l_it = l_rlist.begin(); l_rlist.end() != l_it; ++l_it)
 		{
 			if (Game().type == GAME_ARTEFACTHUNT)
 			{
@@ -488,7 +485,7 @@ void CActor::Die	( )
 				};
 			};
 
-			ItemsToRemove.push_back((*l_it)->ID());
+			
 			//пока у нас нельзя обыскивать трупы, удаляем все объекты из инвентаря
 //			if ((*l_it)->SUB_CLS_ID == CLSID_DEVICE_PDA)
 			{
