@@ -372,10 +372,10 @@ namespace AI {
 					} else {
 						// fill it with data
 						CSquad&	Squad		= Level().Teams[Me->g_Team()].Squads[Me->g_Squad()];
-						SelectorAttack&	S	= Me->fuzzyAttack;
-						S.posMy				= Me->Position();
-						S.posTarget			= Enemy.E->Position();
-						Squad.Groups[Me->g_Group()].GetMemberDedication(S.Members,Me);
+						SelectorAttack&	S	= Me->fuzzyPursuit;
+						S.posMy				= Me->Position		();
+						S.posTarget			= savedPosition;
+						Squad.Groups		[Me->g_Group()].GetMemberDedication(S.Members,Me);
 						
 						// *** query and move if needed
 						Level().AI.q_Range	(Me->AI_NodeID,Me->Position(),30.f,S);
