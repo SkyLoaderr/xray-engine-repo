@@ -102,6 +102,8 @@ WaveValue* 		CPropHelper::CreateWave		(PropItemVec& items, shared_str key, WaveF
 {	return		(WaveValue*)	AppendValue	(items,key,xr_new<WaveValue>(val),PROP_WAVE);           			}
 FloatValue* 	CPropHelper::CreateTime		(PropItemVec& items, shared_str key, float* val, float mn, float mx)
 {	return		(FloatValue*)	AppendValue	(items,key,xr_new<FloatValue>(val,mn,mx,0,0),PROP_TIME);    		}
+ShortcutValue*	CPropHelper::CreateShortcut	(PropItemVec& items, shared_str key, xr_shortcut* val)
+{	return		(ShortcutValue*)AppendValue	(items,key,xr_new<ShortcutValue>(val),PROP_SHORTCUT);								}
 //---------------------------------------------------------------------------
 ChooseValue*	CPropHelper::CreateChoose	(PropItemVec& items, shared_str key, shared_str* val, u32 mode, LPCSTR path, void* fill_param, u32 sub_item_count)
 {	

@@ -45,12 +45,12 @@
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-src_suffix cpp -D_EDITOR -D_XRCOREB -DXRCORE_EXPORTS -D_DEBUG 
-      -I&quot;R:\SDK\Microsoft DirectX 9.0 SDK (October 2004)\Include&quot; 
+    <IDLCFLAGS value="-I&quot;R:\SDK\Microsoft DirectX 9.0 SDK (October 2004)\Include&quot; 
       -I$(BCB)\include -I$(BCB)\include\vcl -IR:\SDK\MagicFM_Borland\Sdk\Include 
       -IR:\Borland\Components6\AlexMX 
       -IR:\Borland\Components6\ElPack\Code\Source -IR:\Borland\CBuilder6\Include\Mfc 
-      -I..\Tools\Etools -boa"/>
+      -I..\Tools\Etools -src_suffix cpp -D_EDITOR -D_XRCOREB -DXRCORE_EXPORTS 
+      -D_DEBUG -boa"/>
     <CFLAG1 value="-WD -Od -H=intermediate\pch.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps 
       -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
@@ -191,6 +191,9 @@ OriginalFilename=
 ProductName=
 ProductVersion=1.0.0.0
 Comments=
+
+[Excluded Packages]
+H:\RAD\Borland\Components6\AlexMX\editor.bpl=editor
 
 [HistoryLists\hlIncludePath]
 Count=22

@@ -155,18 +155,25 @@ public:
     bool	equal		(LPCSTR _nm)		{return (0==xr_strcmp(*name,_nm));}
 };
 
+#pragma pack (push,1)
 struct XRCORE_API xr_shortcut{
     enum{
-        flAlt	= (1<<0),
-        flCtrl	= (1<<1),
-        flShift	= (1<<2)
+        flShift	= 0x20,
+        flCtrl	= 0x40,
+        flAlt	= 0x80,
     };
-    Flags8		ext;
-    u16	 		key;
-                xr_shortcut		(u16 k, BOOL a, BOOL c, BOOL s):key(k){ext.assign((a?flAlt:0)|(c?flCtrl:0)|(s?flShift:0));}
-                xr_shortcut		(){}
+    union{
+    	struct{
+            u8	 	key;
+            Flags8	ext;
+        };
+        u16		hotkey;
+    };
+                xr_shortcut		(u8 k, BOOL a, BOOL c, BOOL s):key(k){ext.assign((a?flAlt:0)|(c?flCtrl:0)|(s?flShift:0));}
+                xr_shortcut		(){ext.zero();key=0;}
     bool		similar			(const xr_shortcut& v)const{return ext.equal(v.ext)&&(key==v.key);}
 };
+#pragma pack (pop)
 
 DEFINE_VECTOR	(shared_str,RStringVec,RStringVecIt);
 DEFINE_SET		(shared_str,RStringSet,RStringSetIt);

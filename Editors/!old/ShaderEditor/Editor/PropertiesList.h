@@ -18,8 +18,8 @@
 #include <Mask.hpp>
 
 #include "PropertiesListHelper.h"
-#include "ElBtnCtl.hpp"
-#include "ElPopBtn.hpp"
+#include "RenderWindow.hpp"
+#include "MxShortcut.hpp"
 #include "ExtBtn.hpp"
 
 #define TElFString ::TElFString
@@ -54,6 +54,7 @@ __published:	// IDE-managed Components
 	TSplitter *spFolders;
 	TElTreeInplaceEdit *ElTreeInplaceEdit1;
 	TMenuItem *miAutoExpand;
+	TMxHotKey *hkShortcut;
 	void __fastcall 	FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall 	tvPropertiesClick(TObject *Sender);
 	void __fastcall 	tvPropertiesItemDraw(TObject *Sender, TElTreeItem *Item, TCanvas *Surface, TRect &R, int SectionIndex);
@@ -86,6 +87,9 @@ __published:	// IDE-managed Components
 	void __fastcall tvPropertiesCompareItems(TObject *Sender,
           TElTreeItem *Item1, TElTreeItem *Item2, int &res);
 	void __fastcall miAutoExpandClick(TObject *Sender);
+	void __fastcall hkShortcut_KeyDown(TObject *Sender, WORD &Key,
+          TShiftState Shift);
+	void __fastcall hkShortcut_Exit(TObject *Sender);
 private:	// User declarations
     void __fastcall 	PMItemClick		(TObject *Sender);
 	void __fastcall 	WaveFormClick	(TElTreeItem* item);
@@ -111,8 +115,14 @@ private:	// User declarations
     void 				HideLWText		();
     void 				PrepareLWText	(TElTreeItem* node);
     void 				ShowLWText		(TRect& R);
-    void 				ApplyLWText	();
+    void 				ApplyLWText		();
     void 				CancelLWText	();
+    // shortcut
+    void 				HideSCText		();
+    void 				PrepareSCText	(TElTreeItem* node);
+    void 				ShowSCText		(TRect& R);
+    void 				ApplySCText		();
+    void 				CancelSCText	();
 
     PropItemVec 		m_Items;
     PropItemVec 		m_ViewItems;

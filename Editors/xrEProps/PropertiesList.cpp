@@ -31,6 +31,11 @@
 #pragma link "ElBtnCtl"
 #pragma link "ElPopBtn"
 #pragma link "ExtBtn"
+#pragma link "ElEdits"
+#pragma link "ElHotKey"
+#pragma link "RenderWindow"
+#pragma link "MxShortcut"
+#pragma link "ExtBtn"
 #pragma resource "*.dfm"
 
 #define TSTRING_COUNT 	4
@@ -98,12 +103,14 @@ __fastcall TProperties::TProperties(TComponent* Owner) : TForm(Owner)
 	m_BMCheck->LoadFromResourceName		((u32)HInstance,"CHECK");
 	m_BMDot->LoadFromResourceName		((u32)HInstance,"DOT");
 	m_BMEllipsis->LoadFromResourceName	((u32)HInstance,"ELLIPSIS");
-    seNumber->Parent= tvProperties;
-    seNumber->Hide	();
-    edText->Parent	= tvProperties;
-    edText->Hide	();
-    m_Flags.zero	();
-    m_Folders		= 0;
+    seNumber->Parent	= tvProperties;
+    seNumber->Hide		();
+    edText->Parent		= tvProperties;
+    edText->Hide		();
+    hkShortcut->Parent	= tvProperties;
+    hkShortcut->Hide	();
+    m_Flags.zero		();
+    m_Folders			= 0;
 }
 //---------------------------------------------------------------------------
 
@@ -620,6 +627,10 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 if (edText->Tag!=(int)Item)
                     OutText(prop->GetDrawText().c_str(),Surface,R,prop->Enabled(),m_BMEllipsis);
             break;
+            case PROP_SHORTCUT:
+                if (hkShortcut->Tag!=(int)Item)
+                    OutText(prop->GetDrawText().c_str(),Surface,R,prop->Enabled());
+            break;
             case PROP_VECTOR:
                 OutText(prop->GetDrawText().c_str(),Surface,R,prop->Enabled());
             break;
@@ -634,6 +645,9 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
         // show LW edit
         if (!prop->m_Flags.is(PropItem::flDisabled)){
             switch(type){
+            case PROP_SHORTCUT:
+                if (hkShortcut->Tag==(int)Item) if (!hkShortcut->Visible) ShowSCText(R);
+            break;
             case PROP_TIME:
             case PROP_CTEXT:
             case PROP_STEXT:
@@ -798,6 +812,9 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                 case PROP_RTEXT:
                 	if ((X-prop->draw_rect.x1)<(prop->draw_rect.width()-(m_BMEllipsis->Width+2)))	PrepareLWText(item);
                     else								                   							ExecTextEditor(prop);
+                break;
+                case PROP_SHORTCUT:
+                	PrepareSCText(item);
                 break;
                 case PROP_TIME:
                 	PrepareLWText(item);
@@ -1431,6 +1448,86 @@ void TProperties::ExecTextEditor(PropItem* prop)
 }
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Shortcut editor
+//---------------------------------------------------------------------------
+void TProperties::CancelSCText()
+{
+    HideSCText();
+}
+
+void TProperties::HideSCText()
+{
+	// последовательность важна (может быть 2 Apply)
+    hkShortcut->Tag		= 0;
+    if (hkShortcut->Visible&&Visible) 	tvProperties->SetFocus();
+    hkShortcut->Hide	();
+}
+void TProperties::PrepareSCText(TElTreeItem* item)
+{
+	PropItem* prop 		= (PropItem*)item->Tag;
+    switch (prop->type){
+    case PROP_SHORTCUT:{
+		ShortcutValue* V		= dynamic_cast<ShortcutValue*>(prop->GetFrontValue()); R_ASSERT(V);
+        xr_shortcut edit_val	= V->GetValue();
+	    prop->BeforeEdit<ShortcutValue,xr_shortcut>(edit_val);
+        hkShortcut->HotKey		= edit_val.hotkey;
+    }break;
+    }
+    hkShortcut->Tag 	= (int)item;
+    tvProperties->Refresh();
+}
+void TProperties::ShowSCText(TRect& R)
+{
+    hkShortcut->Left 	= R.Left;
+    hkShortcut->Top  	= R.Top+tvProperties->HeaderHeight;
+    hkShortcut->Width	= R.Right-R.Left+0;
+    hkShortcut->Height	= R.Bottom-R.Top+2;
+
+    hkShortcut->Show	();
+    hkShortcut->SetFocus();
+}
+
+void TProperties::ApplySCText()
+{
+	TElTreeItem* item 			= (TElTreeItem*)hkShortcut->Tag;
+    hkShortcut->Tag					= 0;
+    if (item){
+		PropItem* prop 			= (PropItem*)item->Tag;
+        hkShortcut->Update();
+        switch (prop->type){
+        case PROP_SHORTCUT:{
+            ShortcutValue* V  	= dynamic_cast<ShortcutValue*>(prop->GetFrontValue()); R_ASSERT(V);
+            xr_shortcut new_val;
+            new_val.hotkey		= hkShortcut->HotKey;
+            if (prop->AfterEdit<ShortcutValue,xr_shortcut>(new_val))
+                if (prop->ApplyValue<ShortcutValue,xr_shortcut>(new_val)){
+                    Modified		();
+                }
+            item->ColumnText->Strings[0] = V->GetDrawText(0).c_str();
+		}break;        
+    	}
+    }
+}
+void __fastcall TProperties::hkShortcut_Exit(TObject *Sender)
+{
+	ApplySCText();
+	HideSCText();
+}
+void __fastcall TProperties::hkShortcut_KeyDown(TObject *Sender, WORD &Key,
+      TShiftState Shift)
+{
+/*
+	if (VK_RETURN==Key){
+		ApplySCText();
+		HideSCText();
+    }else if (VK_ESCAPE==Key){
+		CancelSCText();
+    }
+*/
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TProperties::tvPropertiesItemFocused(TObject *Sender)
 {
 	if (!OnItemFocused.empty()) 	OnItemFocused(tvProperties->Selected);
@@ -1455,6 +1552,8 @@ void TProperties::ApplyEditControl()
 	HideLWText		();
 	ApplyLWNumber	();
 	HideLWNumber	();
+	ApplySCText		();
+	HideSCText		();
 }
 //---------------------------------------------------------------------------
 
@@ -1462,6 +1561,7 @@ void TProperties::CancelEditControl()
 {
 	CancelLWNumber	();
 	CancelLWText	();
+	CancelSCText	();
 }
 //---------------------------------------------------------------------------
 
@@ -1599,9 +1699,4 @@ void __fastcall TProperties::tvPropertiesCompareItems(TObject *Sender,
     else if (type2==TYPE_FOLDER)	    	res =  1;
 }
 //---------------------------------------------------------------------------
-
-
-
-
-
 

@@ -59,6 +59,7 @@ public:
 	virtual STextValue* 		__stdcall	CreateSText		    (PropItemVec& items, shared_str key, std::string* val);
 	virtual WaveValue* 			__stdcall	CreateWave		    (PropItemVec& items, shared_str key, WaveForm* val);
     virtual FloatValue* 		__stdcall	CreateTime		    (PropItemVec& items, shared_str key, float* val, float mn=0.f, float mx=86400.f);
+    virtual ShortcutValue*		__stdcall	CreateShortcut		(PropItemVec& items, shared_str key, xr_shortcut* val);
 
     virtual FloatValue* 		__stdcall	CreateAngle		    (PropItemVec& items, shared_str key, float* val, float mn=0.f, float mx=PI_MUL_2, float inc=0.01f, int decim=2);
     virtual VectorValue* 		__stdcall	CreateAngle3	    (PropItemVec& items, shared_str key, Fvector* val, float mn=0.f, float mx=PI_MUL_2, float inc=0.01f, int decim=2);

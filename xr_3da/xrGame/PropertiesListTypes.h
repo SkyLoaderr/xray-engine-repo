@@ -276,39 +276,7 @@ public:
     	return false;
     }
 };
-/*
-class ShortcutValue: public PropValue{
-public:
-	enum{
-    	ssCtrl			= (1<<0),
-    	ssShift			= (1<<1),
-    	ssAlt			= (1<<2),
-    };
-    Flags8*				shift_state;
-    char*				key;
-    u16*				value;
-public:
-						ShortcutValue	():key(0){shift_state.zero();}
-    virtual std::string	GetDrawText		(TOnDrawTextEvent)
-    {
-    	std::string 	tmp;
-        if (shift_state.is(ssCtrl)) 	tmp = tmp.size()?"+Ctrl"	:"Ctrl"; 
-        if (shift_state.is(ssShift)) 	tmp = tmp.size()?"+Shift"	:"Shift"; 
-        if (shift_state.is(ssAlt)) 		tmp = tmp.size()?"+Alt"		:"Alt"; 
-        if (tmp.size())					tmp	+="+";
-        tmp									+="/'";
-        tmp									+=key;
-        tmp									+="/'";
-        return 			tmp;
-    }
-    virtual	void		ResetValue		(){;}
-    virtual	bool		Equal			(PropValue* val)
-    {
-    	ShortcutValue* prop = (ShortcutValue*)val;
-        return (shift_state.equal(prop->shift_state))&&(key==prop->key);
-    }
-};
-*/
+
 class ButtonValue: public PropValue{
 public:
 	RStringVec			value;
@@ -341,6 +309,12 @@ public:
 };
 //------------------------------------------------------------------------------
 
+IC bool operator == (const xr_shortcut& A, const xr_shortcut& B){return !!A.similar(B);}
+class ShortcutValue: public CustomValue<xr_shortcut>{
+public:
+						ShortcutValue	(TYPE* val):CustomValue<xr_shortcut>(val){}
+    virtual std::string	GetDrawText		(TOnDrawTextEvent OnDrawText);
+};
 class RTextValue: public CustomValue<shared_str>{
 public:
 						RTextValue		(TYPE* val):CustomValue<shared_str>(val){};
