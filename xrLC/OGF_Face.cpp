@@ -111,22 +111,6 @@ void OGF::Optimize()
 	}
 }
 
-/*
-void OGF::CreateOccluder()
-{
-	ORM_Vertex* pV = ORM_Begin(vertices.size(),faces.size()*3,(u16*)faces.begin());
-	for (u32 i=0; i<vertices.size(); i++)
-	{
-		OGF_Vertex& V = vertices[i];
-		pV->x = V.P.x;
-		pV->y = V.P.y;
-		pV->z = V.P.z;
-		pV->dummycolor = 0xffffffff;
-		pV++;
-	}
-	ORM_End(C,R);
-}
-*/
 // Calculate T&B
 void OGF::CalculateTB()
 {

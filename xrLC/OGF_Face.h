@@ -130,12 +130,9 @@ struct OGF : public OGF_Base
 	void				_BuildFace		(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3);
 
 	void				Optimize		();
-	void				CreateOccluder	();
 	void				CalculateTB		();
 	void				MakeProgressive	();
 	void				Stripify		();
-	void				PerturbPMAP		();
-	void				BuildVSPLIT		();
 	void				DumpFaces		();
 
 	virtual void		PreSave			();
