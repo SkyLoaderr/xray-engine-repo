@@ -61,14 +61,16 @@ CEditableObject::~CEditableObject()
 void CEditableObject::VerifyMeshNames()
 {
 	int idx=0;
-	string256 nm; 
+	string256 nm,pref; 
     for(EditMeshIt m_def=m_Meshes.begin();m_def!=m_Meshes.end();m_def++){
-		strcpy(nm,(*m_def)->m_Name[0]?(*m_def)->m_Name:"mesh");
+		strcpy	(pref,(*m_def)->m_Name[0]?(*m_def)->m_Name:"mesh");
+        _Trim	(pref);
+		strcpy	(nm,pref);
 		while (FindMeshByName(nm,*m_def))
-			sprintf(nm,"%s_%d",(*m_def)->m_Name[0]?(*m_def)->m_Name:"mesh",idx++);
+			sprintf(nm,"%s%2d",pref,idx++);
+        VERIFY(xr_strlen(nm)<sizeof((*m_def)->m_Name));
+        strcpy((*m_def)->m_Name,nm);
     }
-	VERIFY(xr_strlen(nm)<sizeof((*m_def)->m_Name));
-	strcpy((*m_def)->m_Name,nm);
 }
 
 bool CEditableObject::ContainsMesh(const CEditableMesh* m)
