@@ -9,13 +9,11 @@
 #include "PhysicsShell.h"
 #include "GameObject.h"
 #include "Entity.h"
+#include "ParticlesObject.h"
 
 CBlackGraviArtifact::CBlackGraviArtifact(void) 
 {
 	m_fImpulseThreshold = 10.f;
-//	m_fEnergy = 0.f;
-//	m_fEnergyDecreasePerTime = 1.1f;
-	
 	m_fRadius = 10.f;
 	m_fStrikeImpulse = 50.f;
 
@@ -30,6 +28,11 @@ CBlackGraviArtifact::~CBlackGraviArtifact(void)
 void CBlackGraviArtifact::Load(LPCSTR section) 
 {
 	inherited::Load(section);
+
+	m_fImpulseThreshold = pSettings->r_float(section,"impulse_threshold");
+	m_fRadius = pSettings->r_float(section,"radius");
+	m_fStrikeImpulse = pSettings->r_float(section,"strike_impulse");
+	m_sParticleName = pSettings->r_string(section,"particle");
 }
 
 void CBlackGraviArtifact::UpdateCL() 
@@ -45,6 +48,18 @@ void CBlackGraviArtifact::UpdateCL()
 			feel_touch_update(P,m_fRadius);
 
 			GraviStrike();
+
+
+			CParticlesObject* pStaticPG;
+			pStaticPG = xr_new<CParticlesObject>(*m_sParticleName,Sector());
+			Fmatrix pos; 
+			pos.set(XFORM()); 
+			Fvector vel; 
+			//vel.sub(Position(),ps_Element(0).vPosition); 
+			//vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
+			vel.set(0,0,0);
+			pStaticPG->UpdateParent(pos, vel); 
+			pStaticPG->Play();
 
 			m_bStrike = false;
 		}

@@ -49,4 +49,6 @@ protected:
 	//флаг, того что артефакт получил хит 
 	//и теперь может совершить бросок
 	bool m_bStrike;	
+
+	ref_str	m_sParticleName;
 };
