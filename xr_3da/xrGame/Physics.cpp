@@ -237,7 +237,7 @@ IC static bool CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,
 		/////////////////////////////////////////////////////////////////////////////////////////////////
 		if	(pushing_neg)
 			surface.mu=dInfinity;
-		if	(do_collide)
+		if	(do_collide&&world->CheckSize())
 		{
 			collided=true;
 			#ifdef DRAW_CONTACTS

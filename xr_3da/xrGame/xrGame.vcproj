@@ -7367,6 +7367,9 @@
 						<File
 							RelativePath=".\PhysicsShell.h">
 						</File>
+						<File
+							RelativePath=".\PhysicsShellScript.cpp">
+						</File>
 					</Filter>
 					<Filter
 						Name="Elemenet"

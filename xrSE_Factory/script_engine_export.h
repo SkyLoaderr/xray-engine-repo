@@ -62,5 +62,5 @@
 #	include "script_monster_action.h"
 #	include "script_entity_action.h"
 #	include "game_sv_Deathmatch.h"
-
+#	include	"PhysicsShell.h"
 #endif

@@ -5,6 +5,8 @@
 #include "PHDefs.h"
 #include "PhysicsCommon.h"
 #include "alife_space.h"
+#include "script_export_space.h"
+
 ObjectContactCallbackFun PushOutCallback;
 class CPhysicsJoint;
 class CPhysicsElement;
@@ -125,7 +127,12 @@ public:
 	virtual bool			isFixed					()												= 0;
 
 	virtual ~CPhysicsElement						()												{};
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+
+add_to_type_list(CPhysicsElement)
+#undef script_type_list
+#define script_type_list save_type_list(CPhysicsElement)
 
 //ABSTRACT:
 // Joint between two elements 
@@ -166,49 +173,54 @@ protected:
 //	CPhysicsJoint(CPhysicsElement* first,CPhysicsElement* second,enumType type){pFirst_element=first; pSecond_element=second; eType=type;bActive=false;}
 
 public:
-	virtual ~CPhysicsJoint	()																{};
+	virtual ~CPhysicsJoint									()												{};
 		
 	//virtual void SetAxis					(const SPHAxis& axis,const int axis_num)		=0;
-virtual CPhysicsElement* PFirst_element()													=0;
-virtual CPhysicsElement* PSecond_element()													=0;
-	virtual void Activate					()												=0;
-	virtual void Create						()												=0;
-	virtual void RunSimulation				()												=0;
-	virtual void Deactivate					()												=0;
-	virtual void SetBackRef					(CPhysicsJoint** j)								=0;
-	virtual void SetAnchor					(const Fvector& position)						=0;
-	virtual void SetAxisSDfactors			(float spring_factor,float damping_factor,int axis_num)=0;
-	virtual void SetJointSDfactors			(float spring_factor,float damping_factor)		=0;
-	virtual void SetAnchorVsFirstElement	(const Fvector& position)						=0;
-	virtual void SetAnchorVsSecondElement	(const Fvector& position)						=0;
+	virtual u16				 	BoneID						()												=0;
+	virtual	void				SetBoneID					(u16 bone_id)									=0;
+	virtual CPhysicsElement*	PFirst_element				()												=0;
+	virtual CPhysicsElement*	PSecond_element				()												=0;
+	virtual void 				Activate					()												=0;
+	virtual void 				Create						()												=0;
+	virtual void 				RunSimulation				()												=0;
+	virtual void 				Deactivate					()												=0;
+	virtual void 				SetBackRef					(CPhysicsJoint** j)								=0;
+	virtual void 				SetAnchor					(const Fvector& position)						=0;
+	virtual void 				SetAxisSDfactors			(float spring_factor,float damping_factor,int axis_num)=0;
+	virtual void 				SetJointSDfactors			(float spring_factor,float damping_factor)		=0;
+	virtual void 				SetAnchorVsFirstElement		(const Fvector& position)						=0;
+	virtual void 				SetAnchorVsSecondElement	(const Fvector& position)						=0;
 
-	virtual void SetAxisDir					(const Fvector& orientation,const int axis_num)	=0;
-	virtual void SetAxisDirVsFirstElement	(const Fvector& orientation,const int axis_num)	=0;
-	virtual void SetAxisDirVsSecondElement	(const Fvector& orientation,const int axis_num)	=0;
+	virtual void				SetAxisDir					(const Fvector& orientation,const int axis_num)	=0;
+	virtual void 				SetAxisDirVsFirstElement	(const Fvector& orientation,const int axis_num)	=0;
+	virtual void 				SetAxisDirVsSecondElement	(const Fvector& orientation,const int axis_num)	=0;
 
-	virtual void SetAnchor					(const float x,const float y,const float z)						=0;
-	virtual void SetAnchorVsFirstElement	(const float x,const float y,const float z)						=0;
-	virtual void SetAnchorVsSecondElement	(const float x,const float y,const float z)						=0;
+	virtual void 				SetAnchor					(const float x,const float y,const float z)						=0;
+	virtual void 				SetAnchorVsFirstElement		(const float x,const float y,const float z)						=0;
+	virtual void 				SetAnchorVsSecondElement	(const float x,const float y,const float z)						=0;
 
-	virtual void SetAxisDir					(const float x,const float y,const float z,const int axis_num)		=0;
-	virtual void SetAxisDirVsFirstElement		(const float x,const float y,const float z,const int axis_num)	=0;
-	virtual void SetAxisDirVsSecondElement		(const float x,const float y,const float z,const int axis_num)	=0;
+	virtual void 				SetAxisDir					(const float x,const float y,const float z,const int axis_num)		=0;
+	virtual void 				SetAxisDirVsFirstElement	(const float x,const float y,const float z,const int axis_num)	=0;
+	virtual void 				SetAxisDirVsSecondElement	(const float x,const float y,const float z,const int axis_num)	=0;
 
 
-	virtual void SetLimits					(const float low,const float high,const int axis_num)			  =0;
-	virtual void SetLimitsVsFirstElement	(const float low,const float high,const int axis_num)			  =0;
-	virtual void SetLimitsVsSecondElement	(const float low,const float high,const int axis_num)			  =0;
+	virtual void 				SetLimits					(const float low,const float high,const int axis_num)			  =0;
+	virtual void 				SetLimitsVsFirstElement		(const float low,const float high,const int axis_num)			  =0;
+	virtual void 				SetLimitsVsSecondElement	(const float low,const float high,const int axis_num)			  =0;
 
-	virtual void SetBreakable				(u16 bone_id, float force, float torque)						  =0;
-virtual CPHJointDestroyInfo* JointDestroyInfo()																  =0;
-	virtual void SetForceAndVelocity		(const float force,const float velocity=0.f,const int axis_num=-1)=0;
-	virtual dJointID GetDJoint				()																  =0;
-	virtual void GetLimits					(float& lo_limit,float& hi_limit,int axis_num)					  =0;
-	virtual void GetAxisDir					(int num,Fvector& axis,eVs& vs)									  =0;
-	virtual void GetAxisDirDynamic			(int num,Fvector& axis)											  =0;
-	virtual void GetAnchorDynamic			(Fvector& anchor)												  =0;
+	virtual void 				SetBreakable				(float force, float torque)										  =0;
+virtual CPHJointDestroyInfo*	JointDestroyInfo			()																  =0;
+	virtual void				SetForceAndVelocity			(const float force,const float velocity=0.f,const int axis_num=-1)=0;
+	virtual dJointID			GetDJoint					()																  =0;
+	virtual void 				GetLimits					(float& lo_limit,float& hi_limit,int axis_num)					  =0;
+	virtual void 				GetAxisDir					(int num,Fvector& axis,eVs& vs)									  =0;
+	virtual void 				GetAxisDirDynamic			(int num,Fvector& axis)											  =0;
+	virtual void 				GetAnchorDynamic			(Fvector& anchor)												  =0;
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
-
+add_to_type_list(CPhysicsJoint)
+#undef script_type_list
+#define script_type_list save_type_list(CPhysicsJoint)
 // ABSTRACT: 
 class CPHIsland;
 class CPhysicsShell			: public CPhysicsBase
@@ -239,7 +251,7 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	virtual	void				setEquelInertiaForEls	(const dMass& M)									= 0;
 	virtual	void				addEquelInertiaToEls	(const dMass& M)									= 0;
 	virtual ELEMENT_STORAGE&	Elements				()													= 0;
-	virtual CPhysicsElement*	get_Element				(s16 bone_id)										= 0;
+	virtual CPhysicsElement*	get_Element				(u16 bone_id)										= 0;
 	virtual CPhysicsElement*	get_Element				(ref_str bone_name)									= 0;
 	virtual CPhysicsElement*	get_ElementByStoreOrder (u16 num)											= 0;
 	virtual u16					get_ElementsNumber		()													= 0;
@@ -265,7 +277,11 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	virtual	void				ObjectToRootForm		(const Fmatrix& form)							    = 0;
 	virtual						~CPhysicsShell		    (){}
 	//build_FromKinematics		in returns elements  & joint pointers according bone IDs;
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 	};
+add_to_type_list(CPhysicsShell)
+#undef script_type_list
+#define script_type_list save_type_list(CPhysicsShell)
 
 # define DET(a) 	 (( a._11 * ( a._22 * a._33 - a._23 * a._32 ) -\
 a._12 * ( a._21 * a._33 - a._23 * a._31 ) +\

@@ -234,10 +234,7 @@ void	CPHShell::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, floa
 CPhysicsElement* CPHShell::get_Element		(ref_str bone_name)
 {
 	VERIFY(m_pKinematics);
-
-	CBoneInstance& instance=m_pKinematics->LL_GetBoneInstance	(m_pKinematics->LL_BoneID(bone_name));
-
-	return (CPhysicsElement*) (instance.Callback_Param);
+	return get_Element(m_pKinematics->LL_BoneID(bone_name));
 }
 
 CPhysicsElement* CPHShell::get_ElementByStoreOrder(u16 num)
@@ -251,13 +248,32 @@ CPHSynchronize*	CPHShell::get_ElementSync			  (u16 element)
 	return dynamic_cast<CPHSynchronize*>(elements[element]);
 }
 
-CPhysicsElement* CPHShell::get_Element(s16 bone_id)
+CPhysicsElement* CPHShell::get_Element(u16 bone_id)
 {
-	VERIFY(m_pKinematics);
-	CBoneInstance& instance=m_pKinematics->LL_GetBoneInstance				(bone_id);
-	return (CPhysicsElement*) instance.Callback_Param;
+	if(m_pKinematics&& bActive)
+	{
+		CBoneInstance& instance=m_pKinematics->LL_GetBoneInstance				(bone_id);
+		if(instance.Callback==BonesCallback||instance.Callback==StataticRootBonesCallBack)
+		{
+			return (CPhysicsElement*) instance.Callback_Param;
+		}
+	}
+
+	ELEMENT_I i=elements.begin(),e=elements.end();
+	for(; e!=i ;++i)
+		if((*i)->m_SelfID==bone_id)
+			return (CPhysicsElement*)(*i);
+	return NULL;
 }
 
+CPhysicsJoint* CPHShell::get_Joint(u16 bone_id)
+{
+	JOINT_I i= joints.begin(),e=joints.end();
+	for(;e!=i;i++)
+		if((*i)->BoneID()==bone_id)
+			return (CPhysicsJoint*)(*i);
+	return NULL;
+}
 void __stdcall CPHShell:: BonesCallback				(CBoneInstance* B){
 	///CPHElement*	E			= dynamic_cast<CPHElement*>	(static_cast<CPhysicsBase*>(B->Callback_Param));
 
@@ -740,11 +756,12 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 				{
 					J->SetForceAndVelocity(joint_data.friction);
 					SetJointRootGeom(root_e,J);
+					J->SetBoneID(id);
 					add_Joint	(J);
 					if(breakable)
 					{
 						setEndJointSplitter();
-						J->SetBreakable(id,joint_data.break_force,joint_data.break_torque);
+						J->SetBreakable(joint_data.break_force,joint_data.break_torque);
 					}
 				}
 			}

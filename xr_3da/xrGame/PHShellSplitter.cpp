@@ -39,12 +39,12 @@ shell_root CPHShellSplitterHolder::SplitJoint(u16 aspl)
 	u16 end_joint=m_pShell->joints[start_joint]->JointDestroyInfo()->m_end_joint;
 
 
-	shell_root ret = mk_pair(new_shell,(m_pShell->joints[start_joint])->JointDestroyInfo()->BoneID());
+	shell_root ret = mk_pair(new_shell,(m_pShell->joints[start_joint])->BoneID());
 
 
 
 	CShellSplitInfo split_inf;
-	split_inf.m_bone_id=m_pShell->joints[start_joint]->JointDestroyInfo()->BoneID();
+	split_inf.m_bone_id=m_pShell->joints[start_joint]->BoneID();
 	split_inf.m_start_el_num=start_element;
 	split_inf.m_end_el_num=end_element;
 	split_inf.m_start_jt_num=start_joint;

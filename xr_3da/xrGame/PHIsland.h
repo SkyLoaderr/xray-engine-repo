@@ -11,17 +11,22 @@
 #include "PhysicsCommon.h"
 class CPHIsland: public dxWorld
 {
-bool			b_active				;
-dxBody			*m_first_body			;
-dxJoint			*m_first_joint			;
-dxJoint			**m_joints_tail			;
-dxBody			**m_bodies_tail			;
-CPHIsland		*m_self_active			;
-int				m_nj					;
-int				m_nb					;
-
+bool						b_active				;
+dxBody						*m_first_body			;
+dxJoint						*m_first_joint			;
+dxJoint						**m_joints_tail			;
+dxBody						**m_bodies_tail			;
+CPHIsland					*m_self_active			;
+int							m_nj					;
+int							m_nb					;
+static	const int			JOINTS_LIMIT	=		1500;
+static	const int			BODIES_LIMIT	=		500;
 public:
 
+IC	bool			CheckSize()		
+{
+	return nj<JOINTS_LIMIT && nb<BODIES_LIMIT;
+}
 IC	bool			IsActive()			{return b_active;}
 
 IC	dWorldID		DWorld()

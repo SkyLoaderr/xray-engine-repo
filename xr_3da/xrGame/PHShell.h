@@ -130,12 +130,13 @@ public:
 	virtual void				SetMaterial				  (u16 m);
 	virtual void				SetMaterial				  (LPCSTR m);
 	virtual ELEMENT_STORAGE&	Elements				  (){return elements;}
-	virtual CPhysicsElement*	get_Element				  (s16 bone_id);
+	virtual CPhysicsElement*	get_Element				  (u16 bone_id);
 	virtual CPhysicsElement*	get_ElementByStoreOrder	  (u16 num);
 	virtual u16					get_ElementsNumber		  (){return (u16)elements.size();}
 	virtual CPHSynchronize*		get_ElementSync			  (u16 element);
 	virtual CPhysicsElement*	get_Element				  (ref_str bone_name);
 	virtual CPhysicsElement*	NearestToPoint			  (const Fvector& point);
+	virtual CPhysicsJoint*		get_Joint				  (u16 bone_id);
 	virtual void				Enable					  ();
 	virtual void				Disable					  ();
 	virtual bool				isEnabled				  (){return CPHObject::is_active();}

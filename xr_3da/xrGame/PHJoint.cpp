@@ -485,6 +485,7 @@ void CPHJoint::SetLimits(const float low, const float high, const int axis_num)
 CPHJoint::CPHJoint(CPhysicsJoint::enumType type ,CPhysicsElement* first,CPhysicsElement* second)
 {
 
+	m_bone_id=u16(-1);
 	m_back_ref	=NULL;
 	m_destroy_info=NULL;
 	pFirstGeom	  =NULL;
@@ -1095,9 +1096,9 @@ CPhysicsElement* CPHJoint::PSecond_element()
 {
 	return dynamic_cast<CPhysicsElement*>(pSecond_element);
 }
-void CPHJoint::SetBreakable(u16 bone_id,float force,float torque)
+void CPHJoint::SetBreakable(float force,float torque)
 {
-	if(!m_destroy_info)	m_destroy_info=xr_new<CPHJointDestroyInfo>(bone_id,force,torque);
+	if(!m_destroy_info)	m_destroy_info=xr_new<CPHJointDestroyInfo>(force,torque);
 }
 
 void CPHJoint::SetShell(CPHShell* p)
