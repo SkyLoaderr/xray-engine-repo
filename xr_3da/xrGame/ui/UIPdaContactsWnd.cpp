@@ -52,9 +52,9 @@ void CUIPdaContactsWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	{
 		if(msg == CUIListWnd::LIST_ITEM_CLICKED)
 		{
-			CObject* pObject = (CObject*)((CUIListItem*)pData)->GetData();
-			R_ASSERT(pObject);
-			m_idContact = pObject->ID();
+			CPda* pda = (CPda*)((CUIListItem*)pData)->GetData();
+			R_ASSERT(pda);
+			m_idContact = pda->GetOriginalOwnerID();
 
 			GetTop()->SendMessage(this, CONTACT_SELECTED);
 		}
@@ -62,20 +62,20 @@ void CUIPdaContactsWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	inherited::SendMessage(pWnd, msg, pData);
 }
 
-void CUIPdaContactsWnd::AddContact(CObject* pOwnerObject)
+void CUIPdaContactsWnd::AddContact(CPda* pda)
 {
-	VERIFY(pOwnerObject);
+	VERIFY(pda);
 
 	CUIPdaListItem* pItem = NULL;
 	pItem = xr_new<CUIPdaListItem>();
 	UIListWnd.AddItem(pItem); 
-	pItem->InitCharacter(dynamic_cast<CInventoryOwner*>(pOwnerObject));
-	pItem->SetData(pOwnerObject);
+	pItem->InitCharacter(pda->GetOriginalOwner());
+	pItem->SetData(pda);
 }
 
-void CUIPdaContactsWnd::RemoveContact(CObject* pOwnerObject)
+void CUIPdaContactsWnd::RemoveContact(CPda* pda)
 {
-	UIListWnd.RemoveItem(UIListWnd.FindItem(pOwnerObject));
+	UIListWnd.RemoveItem(UIListWnd.FindItem(pda));
 }
 //удалить все контакты из списка
 void CUIPdaContactsWnd::RemoveAll()
@@ -83,9 +83,9 @@ void CUIPdaContactsWnd::RemoveAll()
 	UIListWnd.RemoveAll();
 }
 
-bool CUIPdaContactsWnd::IsInList(CObject* pOwnerObject)
+bool CUIPdaContactsWnd::IsInList(CPda* pda)
 {
-	if(UIListWnd.FindItem(pOwnerObject)==-1) 
+	if(UIListWnd.FindItem(pda)==-1) 
 		return false;
 	else
 		return true;

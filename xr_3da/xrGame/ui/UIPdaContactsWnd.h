@@ -12,6 +12,8 @@
 #include "UIListWnd.h"
 
 
+class CPda;
+
 class CUIPdaContactsWnd: public CUIWindow  
 {
 private:
@@ -33,11 +35,11 @@ public:
 	void Show();
 	void Hide();
 
-	void AddContact(CObject* pOwnerObject);
-	void RemoveContact(CObject* pOwnerObject);
+	void AddContact(CPda* pda);
+	void RemoveContact(CPda* pda);
 	void RemoveAll();
 
-	bool IsInList(CObject* pOwnerObject);
+	bool IsInList(CPda* pda);
 
 	//список контактов PDA
 	CUIListWnd UIListWnd;

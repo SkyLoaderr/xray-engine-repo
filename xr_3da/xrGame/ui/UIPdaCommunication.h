@@ -62,6 +62,8 @@ protected:
 	u32					m_idContact;
 	CObject*			m_pContactObject;
 	CInventoryOwner*	m_pContactInvOwner;
+	CPda*				m_pContactPda;
+
 
 	//потеря контакта во время диалога
 	bool m_bContactLoss;

@@ -116,7 +116,7 @@ void CUIPdaCommunication::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 		else if(msg == CUIPdaDialogWnd::MESSAGE_BUTTON_CLICKED)
 		{
 			EPdaMsg pda_msg = ePdaMsgAccept;
-			u32 id_pda_contact = m_pContactInvOwner->GetPDA()->ID();
+			u32 id_pda_contact = m_pContactPda->ID();
 
 			if(m_pPda->NeedToAnswer(id_pda_contact))
 			{
@@ -199,7 +199,7 @@ void CUIPdaCommunication::InitPdaContacts()
 	PDA_LIST_it it;
 	for(it = m_pPda->m_PDAList.begin(); m_pPda->m_PDAList.end() != it; ++it)
 	{
-		UIPdaContactsWnd.AddContact((*it)->GetOwnerObject());
+		UIPdaContactsWnd.AddContact(*it);
 	}
 }
 
@@ -211,31 +211,30 @@ void CUIPdaCommunication::UpdatePdaContacts()
 	//удалить из списка все PDA ушедшие из зоны дос€гаемости
 	for(it = m_pPda->m_DeletedPDAList.begin(); m_pPda->m_DeletedPDAList.end() != it; ++it)
 	{	
-		UIPdaContactsWnd.RemoveContact((*it)->GetOwnerObject());
+		UIPdaContactsWnd.RemoveContact(*it);
 
 		//текущий контак вышел из зоны дос€гаемости!
-		if(m_pContactInvOwner == (*it)->GetOriginalOwner())
+		if(m_pContactPda == *it)
 		{
 			UIPdaDialogWnd.ContactLoss();
 		}
 	}
 
+	
 	//добавить новые
 	for(it = m_pPda->m_NewPDAList.begin(); m_pPda->m_NewPDAList.end() != it; ++it)
 	{	
 		//только если объекта еще нет в списке
-		if(UIPdaContactsWnd.IsInList((*it)->GetOwnerObject())==false)
-			UIPdaContactsWnd.AddContact((*it)->GetOwnerObject());
+		if(UIPdaContactsWnd.IsInList(*it)==false)
+			UIPdaContactsWnd.AddContact(*it);
 
 		//текущий контак снова вошел в зону дос€гаемости
-		if(m_pContactInvOwner == (*it)->GetOriginalOwner())
+		if(m_pContactPda == *it)
 		{
 			UIPdaDialogWnd.ContactRestore();
 		}
 	}
 }
-
-
 
 /////////////////////////////////////////
 // ‘ункции работы дл€ поддержани€ диалога
@@ -250,6 +249,8 @@ void CUIPdaCommunication::InitPdaDialog()
 	R_ASSERT2(m_pContactObject, "wrong ID");
 	m_pContactInvOwner = dynamic_cast<CInventoryOwner*>(m_pContactObject);
 	R_ASSERT2(m_pContactInvOwner, "can't cast to inventory owner");
+	m_pContactPda = m_pContactInvOwner->GetPDA();
+	VERIFY(m_pContactPda);
 
 	//что за глюк?! херит пам€ть если выводить m_pContactObject->cName()
 
@@ -274,8 +275,7 @@ void CUIPdaCommunication::UpdateMessageLog()
 
 	u32 id_pda_contact;
 
-	if(m_pContactInvOwner)
-		id_pda_contact = m_pContactInvOwner->GetPDA()->ID();
+		id_pda_contact = m_pContactPda->ID();
 
 	//котактов еще не было
 	if(m_pPda->m_mapPdaLog.find(id_pda_contact) == m_pPda->m_mapPdaLog.end()) return;
@@ -305,8 +305,7 @@ void CUIPdaCommunication::UpdateMsgButtons()
 {
 	u32 id_pda_contact = 0xffff;
 
-	if(m_pContactInvOwner)
-		id_pda_contact = m_pContactInvOwner->GetPDA()->ID();
+	id_pda_contact = m_pContactPda->ID();
 
 
 	if(m_pPda->WaitForReply(id_pda_contact))
