@@ -62,7 +62,7 @@ void CSE_ALifeObject::spawn_supplies		(LPCSTR ini_string)
 				{
 					if (W->m_scope_status == CSE_ALifeItemWeapon::eAddonAttachable)
 						W->m_addon_flags.set(CSE_ALifeItemWeapon::eWeaponAddonScope, A[0]);
-					if (W->m_silincer_status == CSE_ALifeItemWeapon::eAddonAttachable)
+					if (W->m_silencer_status == CSE_ALifeItemWeapon::eAddonAttachable)
 						W->m_addon_flags.set(CSE_ALifeItemWeapon::eWeaponAddonSilencer, A[1]);
 					if (W->m_grenade_launcher_status == CSE_ALifeItemWeapon::eAddonAttachable)
 						W->m_addon_flags.set(CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher, A[2]);
