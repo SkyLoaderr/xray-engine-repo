@@ -106,8 +106,8 @@ void CLevelSpawnConstructor::add_spawn_group					(CSE_Abstract			*abstract)
 	CSE_SpawnGroup			*spawn_group = smart_cast<CSE_SpawnGroup*>(abstract);
 	R_ASSERT				(spawn_group);
 	m_spawn_groups.insert	(std::make_pair(spawn_group->s_name_replace,spawn_group));
-	if (xr_strlen(spawn_group->m_group_control))
-		add_group_object	(spawn_group,spawn_group->m_group_control);
+	if (xr_strlen(spawn_group->m_spawn_control))
+		add_group_object	(spawn_group,spawn_group->m_spawn_control);
 	add_free_object			(abstract);
 }
 
@@ -241,7 +241,7 @@ void CLevelSpawnConstructor::fill_spawn_groups					()
 		GROUP_OBJECTS::iterator					i = (*I).second->begin();
 		GROUP_OBJECTS::iterator					e = (*I).second->end();
 		for ( ; i != e; i++) {
-			m_game_spawn_constructor->add_edge	((*J).second->m_tSpawnID,(*i)->m_tSpawnID,(*i)->m_fProbability);
+			m_game_spawn_constructor->add_edge	((*J).second->m_tSpawnID,(*i)->m_tSpawnID,(*i)->m_spawn_probability);
 			CSE_ALifeAnomalousZone				*zone = smart_cast<CSE_ALifeAnomalousZone*>(*i);
 			if (zone)
 				normalize_probability			(zone);
