@@ -134,3 +134,7 @@ function test_predicate1(first_speaker, second_speaker)
 end
 
 
+-- функция генерит текст задания для артефактов 
+function artefacts_task_text(first_speaker, second_speaker)
+	return "artefact job \\n"
+end
