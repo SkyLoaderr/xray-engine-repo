@@ -128,7 +128,7 @@
 				OutputFile="$(OutDir)/ode.dll"
 				LinkIncremental="1"
 				ModuleDefinitionFile="../../../config/msvcdefs.def"
-				GenerateDebugInformation="FALSE"
+				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
