@@ -41,10 +41,13 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:reinit()
 	object_binder.reinit(self)
+	
+	local npc_id = self.object:id()
 
-	db.storage[self.object:id()] = { }
+	db.storage[npc_id] = { }
 
-	self.st = db.storage[self.object:id()]
+	self.st = db.storage[npc_id]
+	self.st.pstor = nil
 
 	self.object:set_callback(callback.inventory_info, self.info_callback, self)
 	self.object:set_callback(callback.on_item_take, self.inventory_callback, self)
@@ -132,6 +135,20 @@ function actor_binder:update(delta)
 	end			
 
 
+end
+----------------------------------------------------------------------------------------------------------------------
+function actor_binder:save(packet)
+	printf("motivator_binder:save(): self.object:name()='%s'", self.object:name())
+	object_binder.save(self, packet)
+
+	xr_logic.pstor_save_all(self.object, packet)
+end
+----------------------------------------------------------------------------------------------------------------------
+function actor_binder:load(reader)
+	printf("motivator_binder:load(): self.object:name()='%s'", self.object:name())
+	object_binder.load(self, reader)
+
+	xr_logic.pstor_load_all(self.object, reader)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_init    (npc)
