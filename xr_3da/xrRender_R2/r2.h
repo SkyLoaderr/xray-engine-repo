@@ -1,9 +1,10 @@
 #pragma once
 
+#include "r__dsgraph_structure.h"
+
 #include "PSLibrary.h"
 
 #include "r2_types.h"
-#include "r2_scenegraph.h"
 #include "r2_rendertarget.h"
 
 #include "hom.h"

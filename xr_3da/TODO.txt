@@ -29,7 +29,16 @@
 		*	BUG:		vert_aref					- черный
 		*	BUG:		засветка кончиков моделей 
 		*	BUG:		5-color-lods
-		*	BUG:
+
+***[OLES]*** Done:
+-------------------------
+		*	BUG:		освещение монстров вдали (загасить проекцию)
+		*	OPT:		ref-str for constant lookups
+		*	OPT+MEM:	Animation sharing
+		* 	NEW:		фонарик
+		*	NEW:		sub-rendering
+		*	NEW:		projective texturing in ps1_1
+		*	BUG:		projector - 
 
 ***[OLES]*** In progress:
 -------------------------
@@ -39,7 +48,6 @@
 		*	dynamic-glow
 
 		bugs/features:
-		*	освещение монстров вдали (загасить проекцию)
 		*	проверить transluency на деревьях (test_light) 
 
 		to think:
@@ -63,8 +71,6 @@
 		
 		*	smooth lerping of tree-lods
 		
-		*	Animation compression 			- 32bit quats / 48bit pos (???)		- или T на ключ, или T на скелет/motion
-		*	Animation sharing				(? how ?)
 
 		*	wallmark на персонажах
 		*	кровь, следы от машин
@@ -90,7 +96,6 @@
 
 		to think:
 		*	разрушаемые обьекты
-		* 	фонарик
 		*	освещение партиклов
 		*	PVS ???
 		*	вариации оккл. кулинга ???
