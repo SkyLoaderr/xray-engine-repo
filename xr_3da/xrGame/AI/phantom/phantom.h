@@ -15,14 +15,17 @@ private:
 		stIdle			= -1,
 		stBirth			= 0,
 		stFly			= 1,
-		stAttack		= 2,
-		stDeath			= 3,
+		stContact		= 2,
+		stShoot			= 3,
 		stCount
 	};
 	EState				m_State;
 
 	void				SwitchToState				(EState new_state);
 	void __stdcall		OnFlyState					();
+	void __stdcall		OnDeadState					();
+
+	void				UpdateFlyMedia				();
 
 	fastdelegate::FastDelegate0						UpdateEvent;
 private:
@@ -41,7 +44,9 @@ private:
 	float				fSpeed;	
 	float				fASpeed;
 	Fvector2			vHP;
-	
+
+	float				fContactHit;
+
 	Fmatrix				XFORM_center				();
 
 	CParticlesObject*	PlayParticles				(const shared_str& name, BOOL bAutoRemove, const Fmatrix& xform);
@@ -69,7 +74,6 @@ public:
 	virtual void		HitSignal					(float	HitAmount,	Fvector& local_dir, CObject* who, s16 element){}
 	virtual void		HitImpulse					(float	amount,		Fvector& vWorldDir, Fvector& vLocalDir){}
 	virtual void		Hit							(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type);
-	virtual void		Die							(CObject* who);
 
 	virtual BOOL		IsVisibleForHUD				() {return false;}
 	virtual bool		IsVisibleForZones			() {return false;}

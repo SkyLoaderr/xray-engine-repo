@@ -22,18 +22,19 @@ void CObject::cNameVisual_set	(shared_str N)
 { 
 	// check if equal
 	if (*N && *NameVisual)
-		if (N==NameVisual)	return;
+		if (N==NameVisual)		return;
 
 	// replace model
 	if (*N && N[0]) 
 	{
 		::Render->model_Delete	(renderable.visual);
-		NameVisual			= N;
-		renderable.visual	= Render->model_Create	(*N);
+		NameVisual				= N;
+		renderable.visual		= Render->model_Create	(*N);
 	} else {
 		::Render->model_Delete	(renderable.visual,TRUE);
-		NameVisual			= 0;
+		NameVisual				= 0;
 	}
+	OnChangeVisual				();
 }
 
 // flagging
@@ -163,6 +164,8 @@ void CObject::net_Destroy		()
 	shedule_unregister			();
 	spatial_unregister			();
 	setDestroy					(true);
+	// remove visual
+	cNameVisual_set				( 0 );
 }
 
 //////////////////////////////////////////////////////////////////////////

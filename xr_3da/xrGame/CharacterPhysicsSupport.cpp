@@ -330,6 +330,8 @@ void CCharacterPhysicsSupport::ActivateShell			(CObject* who)
 
 	m_pPhysicsShell=m_physics_skeleton;
 	m_physics_skeleton=NULL;
+	CKinematics* K=smart_cast<CKinematics*>(m_EntityAlife.Visual());
+	m_pPhysicsShell->set_Kinematics(K);
 	m_pPhysicsShell->RunSimulation();
 	m_pPhysicsShell->mXFORM.set(mXFORM);
 	m_pPhysicsShell->SetCallbacks(m_pPhysicsShell->GetBonesCallback());
@@ -338,7 +340,7 @@ void CCharacterPhysicsSupport::ActivateShell			(CObject* who)
 		velocity.mul(1.25f*m_after_death_velocity_factor);
 	}
 	m_pPhysicsShell->set_LinearVel(velocity);
-	CKinematics* K=smart_cast<CKinematics*>(m_EntityAlife.Visual());
+	
 	K->CalculateBones_Invalidate();
 	K->CalculateBones	();
 	b_death_anim_on=false;

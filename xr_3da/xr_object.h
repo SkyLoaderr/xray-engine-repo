@@ -108,6 +108,7 @@ public:
 	ICF ICollisionForm*					CFORM				() const			{ return collidable.model;			}
 	virtual		CObject*				dcast_CObject		()					{ return this;						}
 	virtual		IRenderable*			dcast_Renderable	()					{ return this;						}
+	virtual void						OnChangeVisual		()					{ }
 
 	// Name management
 	ICF shared_str						cName				()			const	{ return NameObject;				}

@@ -25,7 +25,7 @@ public:
 	virtual CParticlesPlayer*			cast_particles_player		()								{return this;}
 	virtual void						shedule_Update				(u32 dt)						;
 	virtual bool						CanRemoveObject				()								;
-
+	virtual void						OnChangeVisual				();
 protected:
 			void						Destroy						()								;
 private:

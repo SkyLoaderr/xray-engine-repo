@@ -146,6 +146,13 @@ void	CPhysicsShellHolder::PHFreeze()
 	if(m_pPhysicsShell) m_pPhysicsShell->Freeze();
 }
 
+void CPhysicsShellHolder::OnChangeVisual()
+{
+	inherited::OnChangeVisual();
+	if (0==renderable.visual) xr_delete(m_pPhysicsShell);
+	VERIFY(0==m_pPhysicsShell);
+}
+
 void CPhysicsShellHolder::UpdateCL	()
 {
 	inherited::UpdateCL	();

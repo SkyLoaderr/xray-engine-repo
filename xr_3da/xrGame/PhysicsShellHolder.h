@@ -66,6 +66,7 @@ public:
 	virtual BOOL			net_Spawn			(CSE_Abstract*	DC);
 			void			init				();
 
+	virtual void			OnChangeVisual		();
 	//для наследования CParticlesPlayer
 	virtual void			UpdateCL			();
 };

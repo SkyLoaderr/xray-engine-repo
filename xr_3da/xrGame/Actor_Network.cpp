@@ -885,31 +885,33 @@ void	CActor::ResetCallbacks()
 
 void	CActor::OnChangeVisual()
 {
-	CSkeletonAnimated* V= smart_cast<CSkeletonAnimated*>(Visual());
-	VERIFY				(V);
-	SetCallbacks		();
-	m_anims->Create			(V);
-	m_vehicle_anims->Create			(V);
-	CDamageManager::reload(*cNameSect(),pSettings);
-	//-------------------------------------------------------------------------------
-	m_head				= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_head");
-	m_r_hand			= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(*cNameSect(),"weapon_bone0"));
-	m_l_finger1			= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(*cNameSect(),"weapon_bone1"));
-	m_r_finger2			= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(*cNameSect(),"weapon_bone2"));
-	//-------------------------------------------------------------------------------
-	m_neck				= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_neck");
-	m_spine1			= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_spine1");
-	m_spine				= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_spine");
-	//-------------------------------------------------------------------------------
-	reattach_items();
-	//-------------------------------------------------------------------------------
-	m_pPhysics_support->in_ChangeVisual();
-	//-------------------------------------------------------------------------------
-	SetCallbacks		();
-	//-------------------------------------------------------------------------------
-	m_current_head.invalidate	();
-	m_current_legs.invalidate	();
-	m_current_torso.invalidate	();
+	inherited::OnChangeVisual();
+	CSkeletonAnimated* V	= smart_cast<CSkeletonAnimated*>(Visual());
+	if (V){
+		SetCallbacks		();
+		m_anims->Create		(V);
+		m_vehicle_anims->Create			(V);
+		CDamageManager::reload(*cNameSect(),pSettings);
+		//-------------------------------------------------------------------------------
+		m_head				= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_head");
+		m_r_hand			= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(*cNameSect(),"weapon_bone0"));
+		m_l_finger1			= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(*cNameSect(),"weapon_bone1"));
+		m_r_finger2			= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(*cNameSect(),"weapon_bone2"));
+		//-------------------------------------------------------------------------------
+		m_neck				= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_neck");
+		m_spine1			= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_spine1");
+		m_spine				= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_spine");
+		//-------------------------------------------------------------------------------
+		reattach_items();
+		//-------------------------------------------------------------------------------
+		m_pPhysics_support->in_ChangeVisual();
+		//-------------------------------------------------------------------------------
+		SetCallbacks		();
+		//-------------------------------------------------------------------------------
+		m_current_head.invalidate	();
+		m_current_legs.invalidate	();
+		m_current_torso.invalidate	();
+	}
 };
 
 void	CActor::ChangeVisual			( shared_str NewVisual )

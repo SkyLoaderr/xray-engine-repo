@@ -10,6 +10,7 @@ CPhantom::CPhantom()
 	fSpeed				= 4.f;
 	fASpeed				= 1.7f;
 	vHP.set				(0,0);
+	fContactHit			= 0.f;
 }
 
 CPhantom::~CPhantom()
@@ -27,6 +28,9 @@ void CPhantom::Load( LPCSTR section )
 		self->spatial.type &=~STYPE_REACTTOSOUND;
 	}
 	//////////////////////////////////////////////////////////////////////////
+	fSpeed							= pSettings->r_float(section,"speed");
+	fASpeed							= pSettings->r_float(section,"angular_speed");
+	fContactHit						= pSettings->r_float(section,"contact_hit");
 
 	LPCSTR snd_name			= 0;
 	m_state_data[stBirth].particles	= pSettings->r_string(section,"particles_birth");
@@ -37,13 +41,13 @@ void CPhantom::Load( LPCSTR section )
 	snd_name						= pSettings->r_string(section,"sound_fly");
 	if (snd_name&&snd_name[0])		m_state_data[stFly].sound.create(TRUE,snd_name);
 
-	m_state_data[stAttack].particles= pSettings->r_string(section,"particles_attack");
-	snd_name						= pSettings->r_string(section,"sound_attack");
-	if (snd_name&&snd_name[0])		m_state_data[stAttack].sound.create(TRUE,snd_name);
+	m_state_data[stContact].particles= pSettings->r_string(section,"particles_contact");
+	snd_name						= pSettings->r_string(section,"sound_contact");
+	if (snd_name&&snd_name[0])		m_state_data[stContact].sound.create(TRUE,snd_name);
 
-	m_state_data[stDeath].particles	= pSettings->r_string(section,"particles_death");
-	snd_name						= pSettings->r_string(section,"sound_death");
-	if (snd_name&&snd_name[0])		m_state_data[stDeath].sound.create(TRUE,snd_name);
+	m_state_data[stShoot].particles	= pSettings->r_string(section,"particles_shoot");
+	snd_name						= pSettings->r_string(section,"sound_shoot");
+	if (snd_name&&snd_name[0])		m_state_data[stShoot].sound.create(TRUE,snd_name);
 }
 BOOL CPhantom::net_Spawn(CSE_Abstract* DC)
 {
@@ -85,12 +89,12 @@ BOOL CPhantom::net_Spawn(CSE_Abstract* DC)
 	CSkeletonAnimated *K			= smart_cast<CSkeletonAnimated*>(Visual());
 	m_state_data[stBirth].motion	= K->ID_Cycle("birth_0");	
 	m_state_data[stFly].motion		= K->ID_Cycle("fly_0");
-	m_state_data[stAttack].motion	= K->ID_Cycle("death_0");	
-	m_state_data[stDeath].motion	= K->ID_Cycle("death_0");	
+	m_state_data[stContact].motion	= K->ID_Cycle("contact_0"); 
+	m_state_data[stShoot].motion	= K->ID_Cycle("shoot_0");	
 
 	VERIFY(K->LL_GetMotionDef(m_state_data[stBirth].motion)->flags&esmStopAtEnd);
-	VERIFY(K->LL_GetMotionDef(m_state_data[stAttack].motion)->flags&esmStopAtEnd);
-	VERIFY(K->LL_GetMotionDef(m_state_data[stDeath].motion)->flags&esmStopAtEnd);
+	VERIFY(K->LL_GetMotionDef(m_state_data[stContact].motion)->flags&esmStopAtEnd);
+	VERIFY(K->LL_GetMotionDef(m_state_data[stShoot].motion)->flags&esmStopAtEnd);
 
 	// set state
 	EState new_state= m_State;
@@ -106,6 +110,10 @@ void CPhantom::net_Destroy	()
 {
 	inherited::net_Destroy	();
 
+	// stop looped
+	SStateData& sdata			= m_state_data[stFly];
+	sdata.sound.stop			();
+	CParticlesObject::Destroy	(m_fly_particles);
 }
 
 //---------------------------------------------------------------------
@@ -114,9 +122,9 @@ void __stdcall CPhantom::animation_end_callback(CBlend* B)
 {
 	CPhantom *phantom				= (CPhantom*)B->CallbackParam;
 	switch (phantom->m_State){
-	case stBirth: phantom->SwitchToState(stFly);	break;
-	case stAttack:phantom->SwitchToState(stDeath);	break;
-	case stDeath: phantom->SwitchToState(stIdle);	break;
+	case stBirth:	phantom->SwitchToState(stFly);	break;
+	case stContact:	phantom->SwitchToState(stIdle);	break;
+	case stShoot:	phantom->SwitchToState(stIdle);	break;
 	}
 }
 //---------------------------------------------------------------------
@@ -129,13 +137,22 @@ void CPhantom::SwitchToState(EState new_state)
 		// after event
 		switch (m_State){
 		case stBirth:		break;
-		case stFly:{
-			// stop fly effects
-			CParticlesObject::Destroy		(m_fly_particles);
-			m_state_data[stFly].sound.stop	();
-				   }break;
-		case stAttack:		break;
-		case stDeath:		break;
+		case stFly:			break;
+		case stContact:{
+			SStateData& sdata	= m_state_data[m_State];
+			PlayParticles		(sdata.particles.c_str(),FALSE,xform);
+			Fvector vE,vP;
+			m_enemy->Center		(vE);
+			Center				(vP);
+			if (vP.distance_to_sqr(vE)<_sqr(Radius())){ 
+				// hit enemy
+				PsyHit			(m_enemy,fContactHit);
+			}
+			}break;
+		case stShoot:{
+			SStateData& sdata	= m_state_data[m_State];
+			PlayParticles		(sdata.particles.c_str(),FALSE,xform);
+		}break;
 		case stIdle:		break;
 		}
 		// before event
@@ -147,27 +164,31 @@ void CPhantom::SwitchToState(EState new_state)
 			K->PlayCycle		(sdata.motion, TRUE, animation_end_callback, this);
 		}break;
 		case stFly:{
+			UpdateEvent.bind	(this,&CPhantom::OnFlyState);
 			SStateData& sdata	= m_state_data[new_state];
-			UpdateEvent.bind	(this,&CPhantom::OnFlyState);	
 			m_fly_particles		= PlayParticles(sdata.particles.c_str(),FALSE,xform);
 			sdata.sound.play_at_pos(0,xform.c,sm_Looped);
 			K->PlayCycle		(sdata.motion);
 		}break;
-		case stAttack:{
+		case stContact:{
+			UpdateEvent.bind	(this,&CPhantom::OnDeadState);	
 			SStateData& sdata	= m_state_data[new_state];
-			PlayParticles		(sdata.particles.c_str(),FALSE,xform);
 			sdata.sound.play_at_pos(0,xform.c);
 			K->PlayCycle		(sdata.motion, TRUE, animation_end_callback, this);
 		}break;
-		case stDeath:{
+		case stShoot:{
+			UpdateEvent.bind	(this,&CPhantom::OnDeadState);	
 			SStateData& sdata	= m_state_data[new_state];
 			PlayParticles		(sdata.particles.c_str(),TRUE,xform);
-			sdata.sound.play_at_pos_unlimited(0,xform.c);
+			sdata.sound.play_at_pos(0,xform.c);
 			K->PlayCycle		(sdata.motion, TRUE, animation_end_callback, this);
 		}break;
 		case stIdle:{
-			VERIFY(0==m_fly_particles && 0==m_state_data[stFly].sound.feedback);
-			DestroyObject	();
+			// stop fly effects
+			SStateData& sdata	= m_state_data[m_State];
+			sdata.sound.stop	();
+			CParticlesObject::Destroy(m_fly_particles);
+			DestroyObject		();
 		}break;
 		}
 		m_State				= new_state;
@@ -175,27 +196,33 @@ void CPhantom::SwitchToState(EState new_state)
 }
 void CPhantom::OnFlyState()
 {
+	UpdateFlyMedia			();
 	if (g_Alive()){
 		Fvector vE,vP;
 		m_enemy->Center		(vE);
 		Center				(vP);
-		if (vP.distance_to_sqr(vE)<_sqr(Radius())){
-			// hit enemy
-			PsyHit			(m_enemy,1);
-			SwitchToState	(stAttack);
-		}else{
-			UpdatePosition	(m_enemy->Position());
-			Fmatrix	xform	= XFORM_center();
-			// update particles
-			if (m_fly_particles){		
-				Fvector		vel;
-				vel.sub		(m_enemy->Position(),Position()).normalize_safe().mul(fSpeed);
-				m_fly_particles->UpdateParent(xform,vel);
-			}
-			// update sound
-			if (m_state_data[stFly].sound.feedback) m_state_data[stFly].sound.set_position(xform.c);
+		if (vP.distance_to_sqr(vE)<_sqr(Radius()+m_enemy->Radius())){
+			SwitchToState	(stContact);
+			Hit				(1000.f,Fvector().set(0,0,1),this,-1,Fvector().set(0,0,0),100.f,ALife::eHitTypeFireWound);
 		}
 	}
+}
+void CPhantom::OnDeadState() 
+{
+	UpdateFlyMedia	();
+}
+void CPhantom::UpdateFlyMedia()
+{
+	UpdatePosition	(m_enemy->Position());
+	Fmatrix	xform			= XFORM_center();
+	// update particles
+	if (m_fly_particles){		
+		Fvector		vel;
+		vel.sub		(m_enemy->Position(),Position()).normalize_safe().mul(fSpeed);
+		m_fly_particles->UpdateParent(xform,vel);
+	}
+	// update sound
+	if (m_state_data[stFly].sound.feedback) m_state_data[stFly].sound.set_position(xform.c);
 }
 //---------------------------------------------------------------------
 
@@ -205,6 +232,9 @@ void CPhantom::shedule_Update(u32 DT)
 	spatial.type &=~STYPE_VISIBLEFORAI;
 
 	inherited::shedule_Update(DT);
+
+	CSkeletonAnimated *K	= smart_cast<CSkeletonAnimated*>(Visual());
+	K->Update				();
 }
 
 void CPhantom::UpdateCL()
@@ -216,16 +246,13 @@ void CPhantom::UpdateCL()
 //---------------------------------------------------------------------
 void CPhantom::Hit	(float P, Fvector &dir, CObject* who, s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 {
-	fEntityHealth	= -1.f;
-	inherited::Hit	(P,dir,who,element,p_in_object_space,impulse/100.f, hit_type);
+	if (m_State==stFly)	SwitchToState(stShoot);
+	if (g_Alive()){
+		fEntityHealth	= -1.f;
+		inherited::Hit	(P,dir,who,element,p_in_object_space,impulse/100.f, hit_type);
+	}
 }
 //---------------------------------------------------------------------
-void CPhantom::Die	(CObject* who)
-{
-	inherited::Die	(who);
-	SwitchToState	(stDeath);
-};
-
 Fmatrix	CPhantom::XFORM_center()
 {
 	Fvector			center;
@@ -265,8 +292,8 @@ void CPhantom::PsyHit(const CObject *object, float value)
 	NET_Packet		P;
 
 	u_EventGen		(P,GE_HIT, object->ID());				// 
-	P.w_u16			(ID());									// own
-	P.w_u16			(ID());									// own
+	P.w_u16			(object->ID());							// own
+	P.w_u16			(object->ID());							// own
 	P.w_dir			(Fvector().set(0.f,1.f,0.f));			// direction
 	P.w_float		(value);								// hit value	
 	P.w_s16			(BI_NONE);								// bone

@@ -10,6 +10,7 @@
 #include "game_object_space.h"
 #include "script_callback_ex.h"
 #include "script_game_object.h"
+#include "PhysicsShell.h"
 CDestroyablePhysicsObject ::CDestroyablePhysicsObject()
 {
 	m_fHealth=100.f;
@@ -18,6 +19,14 @@ CDestroyablePhysicsObject ::CDestroyablePhysicsObject()
 CDestroyablePhysicsObject::~CDestroyablePhysicsObject()
 {
 
+}
+void CDestroyablePhysicsObject::OnChangeVisual()
+{
+	if (m_pPhysicsShell){
+		xr_delete		(m_pPhysicsShell);
+		VERIFY			(0==Visual());
+	}
+	inherited::OnChangeVisual();
 }
 CPhysicsShellHolder*	 CDestroyablePhysicsObject ::	PPhysicsShellHolder			()
 {
@@ -41,26 +50,12 @@ BOOL CDestroyablePhysicsObject::net_Spawn(CSE_Abstract* DC)
 	if(ini&&ini->section_exist("destroyed"))
 		CPHDestroyable::Load(ini,"destroyed");
 	CDamageManager::init_bones();
-	if(ini)
-	{	
-
-		if(ini->section_exist("immunities"))
-			CHitImmunity::InitImmunities("immunities",ini);
-		if(ini->section_exist("damage_section"))
-		{
-			CDamageManager::load_section("damage_section",ini);
-		}
-
+	if(ini){	
+		if(ini->section_exist("immunities"))		CHitImmunity::InitImmunities("immunities",ini);
+		if(ini->section_exist("damage_section"))	CDamageManager::load_section("damage_section",ini);
 		CPHCollisionDamageReceiver::Init();
-
-		if(ini->section_exist("sound"))
-		{
-			m_destroy_sound.create(TRUE,ini->r_string("sound","break_sound"));
-		}
-		if(ini->section_exist("particles"))
-		{
-			m_destroy_particles=ini->r_string("particles","destroy_particles");
-		}
+		if(ini->section_exist("sound"))				m_destroy_sound.create(TRUE,ini->r_string("sound","break_sound"));
+		if(ini->section_exist("particles"))			m_destroy_particles=ini->r_string("particles","destroy_particles");
 	}
 	CParticlesPlayer::LoadParticles(K);
 	RunStartupAnim(DC);
