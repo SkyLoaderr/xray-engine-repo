@@ -218,11 +218,6 @@ void	game_sv_CS::Update			()
 				if ((Device.TimerAsync()-start_time)>u32(10*1000)) OnRoundStart();
 		} break;
 	}
-
-	CHUDManager* HUD	= (CHUDManager*)Level().HUD();
-	HUD->pFontSmall->Color(0xffffffff);
-	HUD->pFontSmall->OutSet(700,100); HUD->pFontSmall->OutNext("Team 0: %d", teams[0].num_targets);
-	HUD->pFontSmall->OutSet(700,120); HUD->pFontSmall->OutNext("Team 1: %d", teams[1].num_targets);
 }
 
 void	game_sv_CS::OnPlayerReady			(u32 id)
