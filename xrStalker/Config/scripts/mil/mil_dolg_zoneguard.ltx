@@ -13,10 +13,10 @@ path_look = mil_dolg_path_look1
 zone_warn = mil_dolg_war_zone1
 team = test
 no_move = true
-enable_dialog = true
-meet_enabled = true
+;enable_dialog = true
+meet_talk_enabled = true
 meet_dialog = mil_dolg_dialog
-on_info = {+mil_dolg_attack} walker1
+on_info = {+mil_dolg_attack -mil_dolg_mission_complete} walker1
 
 [death]
 on_info = %=military_dolg_dead%
@@ -36,4 +36,8 @@ combat_ignore = always
 [walker3]
 path_walk = mil_dolg_attack_way1_3
 def_state_moving1 = run
-on_signal = final | zoneguard1
+on_signal = final | walker4 %+mil_dolg_mission_complete%
+
+[walker4]
+path_walk = mil_dolg_return1
+on_signal = return | zoneguard1
