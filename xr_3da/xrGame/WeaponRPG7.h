@@ -19,9 +19,7 @@ public:
 	virtual void ReloadMagazine	();
 	virtual void Load			(LPCSTR section);
 	virtual void switch2_Fire	();
-	virtual void Fire2Start		();
-	virtual void Fire2End		();
-	virtual bool Action			(s32 cmd, u32 flags);
+
 	virtual void FireStart		();
 	virtual void SwitchState	(u32 S);
 

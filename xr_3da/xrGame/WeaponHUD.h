@@ -91,7 +91,12 @@ public:
 	Fvector&			FirePoint		()	{return m_pSharedHudInfo->vFirePoint;}
 	Fvector&			FirePoint2		()	{return m_pSharedHudInfo->vFirePoint2;}
 	Fvector&			ShellPoint		()	{return m_pSharedHudInfo->vShellPoint;}
-	
+
+	const Fvector&		ZoomOffset		()	const {return m_fZoomOffset;}
+	float				ZoomRotateY		()	const {return m_fZoomRotateY;}
+	void				SetZoomOffset	(const Fvector& zoom_offset)  { m_fZoomOffset = zoom_offset;}
+	void				SetZoomRotateY	(float zoom_rotate_y)		  { m_fZoomRotateY = zoom_rotate_y;}
+
 	// Animations
 	void				animPlay		(CMotionDef* M, BOOL bMixIn=TRUE, CInventoryItem*  W=0);
 	CMotionDef*			animGet			(LPCSTR name);

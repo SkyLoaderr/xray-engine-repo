@@ -44,16 +44,12 @@ void CUIString::AppendText(LPCSTR str)
 	m_str.push_back(0);
 }
 
-char* CUIString::GetBuf()
+LPCSTR CUIString::GetBuf()
 {
 	return &m_str.front();
 }
 
-CUIString::operator char*()
+CUIString::operator LPCSTR ()
 {
-	return GetBuf();
-}
-CUIString::operator const char* ()
-{
-	return (const char*)GetBuf();
+	return (LPCSTR)GetBuf();
 }

@@ -9,9 +9,12 @@
 #include "HUDManager.h"
 #include "WeaponHUD.h"
 #include "entity_alive.h"
-#include "actor.h"
+
 #include "inventory.h"
 #include "xrserver_objects_alife_items.h"
+
+#include "actor.h"
+#include "actoreffector.h"
 
 #define WEAPON_REMOVE_TIME		180000
 
@@ -62,7 +65,9 @@ CWeapon::CWeapon(LPCSTR name)
 
 	eHandDependence		= hdNone;
 
-	m_fZoomFactor			= DEFAULT_FOV;
+	m_fZoomFactor		= DEFAULT_FOV;
+	m_fZoomRotationFactor = 0.f;
+
 
 	m_pAmmo				= NULL;
 
@@ -329,6 +334,12 @@ void CWeapon::Load		(LPCSTR section)
 	m_eGrenadeLauncherStatus = (ALife::EWeaponAddonStatus)pSettings->r_s32(section,"grenade_launcher_status");
 
 	m_bZoomEnabled = !!pSettings->r_bool(section,"zoom_enabled");
+
+	if(m_bZoomEnabled && m_pHUD)
+	{
+		m_pHUD->SetZoomOffset(pSettings->r_fvector3(hud_sect, "zoom_offset"));
+		m_pHUD->SetZoomRotateY(pSettings->r_float(hud_sect, "zoom_rotate_y"));
+	}
 
 	if(m_eScopeStatus == ALife::eAddonAttachable)
 	{
@@ -1056,4 +1067,49 @@ bool CWeapon::ready_to_kill	() const
 		((STATE == eIdle) || (STATE == eFire) || (STATE == eFire2)) && 
 		GetAmmoElapsed()
 	);
+}
+
+
+#define ROTATION_TIME 0.4f
+
+//Модификация функции для CWeapon
+//отличается от оригинала в CHUDItem,тем что
+//просчитывается смещения HUD в режиме приближения
+void CWeapon::UpdateHudPosition	()
+{
+	if (Device.dwFrame == dwHudUpdate_Frame) 
+		return;
+	
+	dwHudUpdate_Frame = Device.dwFrame;
+
+	if (m_pHUD && hud_mode)
+	{
+		Fmatrix							trans;
+
+		CActor* pActor = dynamic_cast<CActor*>(H_Parent());
+		if(pActor)
+		{
+			pActor->EffectorManager().affected_Matrix	(trans);
+			
+			if((pActor->IsZoomAimingMode() && m_fZoomRotationFactor<=1.f)
+					|| (!pActor->IsZoomAimingMode() && m_fZoomRotationFactor>0.f))
+			{
+				Fmatrix hud_rotation;
+				hud_rotation.identity();
+				hud_rotation.rotateY(m_pHUD->ZoomRotateY()*m_fZoomRotationFactor);
+				Fvector offset = m_pHUD->ZoomOffset();
+				offset.mul(m_fZoomRotationFactor);
+				hud_rotation.translate_over(offset);
+				trans.mulB(hud_rotation);
+
+				if(pActor->IsZoomAimingMode())
+					m_fZoomRotationFactor += Device.fTimeDelta/ROTATION_TIME;
+				else
+					m_fZoomRotationFactor -= Device.fTimeDelta/ROTATION_TIME;
+				clamp(m_fZoomRotationFactor, 0.f, 1.f);
+			}
+
+			m_pHUD->UpdatePosition						(trans);
+		}
+	}
 }

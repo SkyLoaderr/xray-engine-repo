@@ -212,31 +212,3 @@ void CWeaponRPG7::OnEvent(NET_Packet& P, u16 type)
 		} break;
 	}
 }
-
-void CWeaponRPG7::Fire2Start () 
-{
-	inherited::Fire2Start();
-	OnZoomIn();
-	m_fZoomFactor = m_fScopeZoomFactor;
-}
-void CWeaponRPG7::Fire2End () 
-{
-	inherited::Fire2End();
-	OnZoomOut();
-	m_fZoomFactor = DEFAULT_FOV;
-}
-
-bool CWeaponRPG7::Action(s32 cmd, u32 flags) 
-{
-	if(inherited::Action(cmd, flags)) return true;
-	
-	switch(cmd) 
-	{
-	case kWPN_ZOOM:
-		{
-			if(flags&CMD_START) Fire2Start();
-			else Fire2End();
-		} return true;
-	}
-	return false;
-}

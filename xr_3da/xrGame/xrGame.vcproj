@@ -3776,16 +3776,6 @@
 									</File>
 								</Filter>
 								<Filter
-									Name="HUD"
-									Filter="">
-									<File
-										RelativePath=".\WeaponHUD.cpp">
-									</File>
-									<File
-										RelativePath=".\WeaponHUD.h">
-									</File>
-								</Filter>
-								<Filter
 									Name="Pistol"
 									Filter="">
 									<File
@@ -3867,209 +3857,223 @@
 								</File>
 							</Filter>
 							<Filter
-								Name="Weapon AK74"
+								Name="Various wepons"
 								Filter="">
-								<File
-									RelativePath=".\WeaponAK74.cpp">
-								</File>
-								<File
-									RelativePath=".\WeaponAK74.h">
-								</File>
+								<Filter
+									Name="Weapon Walther 99"
+									Filter="">
+									<File
+										RelativePath="WeaponWalther.cpp">
+									</File>
+									<File
+										RelativePath="WeaponWalther.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="Weapon Vintorez"
+									Filter="">
+									<File
+										RelativePath="WeaponVintorez.cpp">
+									</File>
+									<File
+										RelativePath="WeaponVintorez.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="Knife"
+									Filter="">
+									<File
+										RelativePath=".\WeaponKnife.cpp">
+									</File>
+									<File
+										RelativePath=".\WeaponKnife.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="Weapon Groza"
+									Filter="">
+									<File
+										RelativePath="WeaponGroza.cpp">
+									</File>
+									<File
+										RelativePath="WeaponGroza.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="RGD5"
+									Filter="">
+									<File
+										RelativePath="RGD5.cpp">
+									</File>
+									<File
+										RelativePath="RGD5.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="Weapon Val"
+									Filter="">
+									<File
+										RelativePath="WeaponVal.cpp">
+									</File>
+									<File
+										RelativePath="WeaponVal.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="Weapon USP45"
+									Filter="">
+									<File
+										RelativePath="WeaponUSP45.cpp">
+									</File>
+									<File
+										RelativePath="WeaponUSP45.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="Bolt"
+									Filter="">
+									<File
+										RelativePath="Bolt.cpp">
+									</File>
+									<File
+										RelativePath="Bolt.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="SVU"
+									Filter="">
+									<File
+										RelativePath="WeaponSVU.cpp">
+									</File>
+									<File
+										RelativePath="WeaponSVU.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="RPG7"
+									Filter="">
+									<File
+										RelativePath="WeaponRPG7.cpp">
+									</File>
+									<File
+										RelativePath="WeaponRPG7.h">
+									</File>
+									<File
+										RelativePath=".\WeaponRPG7Grenade.cpp">
+									</File>
+									<File
+										RelativePath=".\WeaponRPG7Grenade.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="Grenade F1"
+									Filter="">
+									<File
+										RelativePath="F1.cpp">
+									</File>
+									<File
+										RelativePath="F1.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="SVD"
+									Filter="">
+									<File
+										RelativePath="WeaponSVD.cpp">
+									</File>
+									<File
+										RelativePath="WeaponSVD.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="Weapon AK74"
+									Filter="">
+									<File
+										RelativePath=".\WeaponAK74.cpp">
+									</File>
+									<File
+										RelativePath=".\WeaponAK74.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="LR300"
+									Filter="">
+									<File
+										RelativePath=".\WeaponLR300.cpp">
+									</File>
+									<File
+										RelativePath=".\WeaponLR300.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="FN2000"
+									Filter="">
+									<File
+										RelativePath=".\WeaponFN2000.cpp">
+									</File>
+									<File
+										RelativePath=".\WeaponFN2000.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="HPSA"
+									Filter="">
+									<File
+										RelativePath=".\WeaponHPSA.cpp">
+									</File>
+									<File
+										RelativePath=".\WeaponHPSA.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="PM"
+									Filter="">
+									<File
+										RelativePath="WeaponPM.cpp">
+									</File>
+									<File
+										RelativePath="WeaponPM.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="Binocular"
+									Filter="">
+									<File
+										RelativePath="WeaponBinoculars.cpp">
+									</File>
+									<File
+										RelativePath="WeaponBinoculars.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="Weapon Shotgun"
+									Filter="">
+									<File
+										RelativePath="WeaponShotgun.cpp">
+									</File>
+									<File
+										RelativePath="WeaponShotgun.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="FORT"
+									Filter="">
+									<File
+										RelativePath="WeaponFORT.cpp">
+									</File>
+									<File
+										RelativePath="WeaponFORT.h">
+									</File>
+								</Filter>
 							</Filter>
 							<Filter
-								Name="LR300"
+								Name="HUD"
 								Filter="">
 								<File
-									RelativePath=".\WeaponLR300.cpp">
+									RelativePath=".\WeaponHUD.cpp">
 								</File>
 								<File
-									RelativePath=".\WeaponLR300.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="FN2000"
-								Filter="">
-								<File
-									RelativePath=".\WeaponFN2000.cpp">
-								</File>
-								<File
-									RelativePath=".\WeaponFN2000.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="HPSA"
-								Filter="">
-								<File
-									RelativePath=".\WeaponHPSA.cpp">
-								</File>
-								<File
-									RelativePath=".\WeaponHPSA.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="PM"
-								Filter="">
-								<File
-									RelativePath="WeaponPM.cpp">
-								</File>
-								<File
-									RelativePath="WeaponPM.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="FORT"
-								Filter="">
-								<File
-									RelativePath="WeaponFORT.cpp">
-								</File>
-								<File
-									RelativePath="WeaponFORT.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="Binocular"
-								Filter="">
-								<File
-									RelativePath="WeaponBinoculars.cpp">
-								</File>
-								<File
-									RelativePath="WeaponBinoculars.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="Weapon Shotgun"
-								Filter="">
-								<File
-									RelativePath="WeaponShotgun.cpp">
-								</File>
-								<File
-									RelativePath="WeaponShotgun.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="SVD"
-								Filter="">
-								<File
-									RelativePath="WeaponSVD.cpp">
-								</File>
-								<File
-									RelativePath="WeaponSVD.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="SVU"
-								Filter="">
-								<File
-									RelativePath="WeaponSVU.cpp">
-								</File>
-								<File
-									RelativePath="WeaponSVU.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="Bolt"
-								Filter="">
-								<File
-									RelativePath="Bolt.cpp">
-								</File>
-								<File
-									RelativePath="Bolt.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="RPG7"
-								Filter="">
-								<File
-									RelativePath="WeaponRPG7.cpp">
-								</File>
-								<File
-									RelativePath="WeaponRPG7.h">
-								</File>
-								<File
-									RelativePath=".\WeaponRPG7Grenade.cpp">
-								</File>
-								<File
-									RelativePath=".\WeaponRPG7Grenade.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="Grenade F1"
-								Filter="">
-								<File
-									RelativePath="F1.cpp">
-								</File>
-								<File
-									RelativePath="F1.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="RGD5"
-								Filter="">
-								<File
-									RelativePath="RGD5.cpp">
-								</File>
-								<File
-									RelativePath="RGD5.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="Weapon Val"
-								Filter="">
-								<File
-									RelativePath="WeaponVal.cpp">
-								</File>
-								<File
-									RelativePath="WeaponVal.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="Weapon USP45"
-								Filter="">
-								<File
-									RelativePath="WeaponUSP45.cpp">
-								</File>
-								<File
-									RelativePath="WeaponUSP45.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="Weapon Groza"
-								Filter="">
-								<File
-									RelativePath="WeaponGroza.cpp">
-								</File>
-								<File
-									RelativePath="WeaponGroza.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="Knife"
-								Filter="">
-								<File
-									RelativePath=".\WeaponKnife.cpp">
-								</File>
-								<File
-									RelativePath=".\WeaponKnife.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="Weapon Vintorez"
-								Filter="">
-								<File
-									RelativePath="WeaponVintorez.cpp">
-								</File>
-								<File
-									RelativePath="WeaponVintorez.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="Weapon Walther 99"
-								Filter="">
-								<File
-									RelativePath="WeaponWalther.cpp">
-								</File>
-								<File
-									RelativePath="WeaponWalther.h">
+									RelativePath=".\WeaponHUD.h">
 								</File>
 							</Filter>
 						</Filter>
@@ -4294,12 +4298,6 @@
 						<Filter
 							Name="PDA &amp; information"
 							Filter="">
-							<File
-								RelativePath=".\InfoPortion.cpp">
-							</File>
-							<File
-								RelativePath=".\InfoPortion.h">
-							</File>
 							<File
 								RelativePath=".\PDA.cpp">
 							</File>
@@ -4770,6 +4768,22 @@
 						</File>
 						<File
 							RelativePath=".\BreakableObject.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="Info &amp; Dialogs"
+						Filter="">
+						<File
+							RelativePath=".\InfoPortion.cpp">
+						</File>
+						<File
+							RelativePath=".\InfoPortion.h">
+						</File>
+						<File
+							RelativePath=".\Phrase.cpp">
+						</File>
+						<File
+							RelativePath=".\Phrase.h">
 						</File>
 					</Filter>
 				</Filter>

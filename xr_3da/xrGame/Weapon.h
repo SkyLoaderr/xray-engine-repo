@@ -208,7 +208,9 @@ protected:
 	float			m_fScopeZoomFactor;
 	//когда режим приближения включен
 	bool			m_bZoomMode;
-
+	//от 0 до 1, показывает насколько процентов
+	//мы перемещаем HUD  
+	float m_fZoomRotationFactor;
 public:
 
 	IC bool					IsZoomEnabled		()	const	{return m_bZoomEnabled;}
@@ -253,7 +255,7 @@ protected:
 	virtual void			UpdatePosition		(const Fmatrix& transform);
 	virtual void			UpdateFP			();
 	virtual void			UpdateXForm			();
-
+	virtual void			UpdateHudPosition	();
 
 //////////////////////////////////////////////////////////////////////////
 // Weapon fire
