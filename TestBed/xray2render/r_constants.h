@@ -73,11 +73,10 @@ public:
 
 class	ENGINE_API			R_constant_table
 {
-private:
+public:
 	typedef svector<R_constant*,32>		c_table;
-
 	c_table					table;
-
+private:
 	void					fatal		(LPCSTR s);
 public:
 	BOOL					parse		(D3DXSHADER_CONSTANTTABLE* desc, u16 destination);

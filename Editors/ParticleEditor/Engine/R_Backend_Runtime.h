@@ -106,8 +106,15 @@ IC void CBackend::set_Matrices			(SMatrixList*	_M)
 
 IC void CBackend::set_Constants			(R_constant_table* C)
 {
+	// caching
 	if (ctable==C)	return;
-	if (C)			xforms.set_mapping	(&C->mapping);
+	ctable			= C;
+	if (0==C)		return;
+
+	// process constant-loaders
+	R_constant**	it	= C->table.begin();
+	R_constant**	end	= C->table.end	();
+	for ()
 }
 
 IC void CBackend::set_Element			(ShaderElement* S, u32	pass)
