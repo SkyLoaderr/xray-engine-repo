@@ -8,12 +8,17 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 	u16			destination;
 	u32			MODE			= net_flags(TRUE,TRUE);
 
-	// replace timestamp with server-unique-time (note: direct message correction)
-	timestamp	= Device.TimerAsync	();
-	CopyMemory	(&P.B.data[P.r_pos], &timestamp, 4);
+	// correct timestamp with server-unique-time (note: direct message correction)
+	P.r_u32		(timestamp	);
+	xrClientData*	c_sender	= ID_to_client	(sender);
+	if (c_sender)
+	{
+		u32			sv_timestamp	= Device.TimerAsync	() - (c_sender->stats.getPing()/2);		// approximate time this message travels
+		timestamp					= (timestamp+sv_timestamp)/2;								// approximate timestamp with both client and server time
+		CopyMemory	(&P.B.data[P.r_pos-4], &timestamp, 4);
+	}
 
 	// read generic info
-	P.r_u32		(timestamp	);
 	P.r_u16		(type		);
 	P.r_u16		(destination);
 
