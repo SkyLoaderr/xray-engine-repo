@@ -613,16 +613,22 @@ void CAI_Soldier::FollowLeaderPatrol()
 				}
 				tTemp.normalize();
 				
-				if (Group.Members[0] == this) 
-					if (m_dwLoopCount % 2)
+				if (m_bLooped)
+					if (Group.Members[0] == this) 
 						tTemp.set(tTemp.z,0,-tTemp.x);
 					else
 						tTemp.set(-tTemp.z,0,tTemp.x);
 				else
-					if (m_dwLoopCount % 2)
-						tTemp.set(-tTemp.z,0,tTemp.x);
+					if (Group.Members[0] == this) 
+						if (m_dwLoopCount % 2)
+							tTemp.set(tTemp.z,0,-tTemp.x);
+						else
+							tTemp.set(-tTemp.z,0,tTemp.x);
 					else
-						tTemp.set(tTemp.z,0,-tTemp.x);
+						if (m_dwLoopCount % 2)
+							tTemp.set(-tTemp.z,0,tTemp.x);
+						else
+							tTemp.set(tTemp.z,0,-tTemp.x);
 				
 				AI_Path.TravelPath[j].P.add(tTemp);
 			}
@@ -698,7 +704,8 @@ void CAI_Soldier::Patrol()
 		if (m_bStateChanged)
 			m_dwLoopCount = 0;
 		
-		if (m_dwLoopCount % 2 == 0) {
+		//if (m_dwLoopCount % 2 == 0) {
+		if ((m_bLooped) || (m_dwLoopCount % 2 == 0)) {
 			vector<CLevel::SPatrolPath> &tpaPatrolPaths = Level().tpaPatrolPaths;
 			m_dwStartPatrolNode = tpaPatrolPaths[m_dwPatrolPathIndex].dwStartNode;
 			vfCreatePointSequence(tpaPatrolPaths[m_dwPatrolPathIndex],m_tpaPatrolPoints,m_bLooped);
@@ -707,18 +714,21 @@ void CAI_Soldier::Patrol()
 		AI_Path.TravelStart = 0;
 		vfCreateFastRealisticPath(m_tpaPatrolPoints, m_dwStartPatrolNode, m_tpaPointDeviations, AI_Path.TravelPath, m_bLooped);
 		if (AI_Path.TravelPath.size()) {
-			m_dwLoopCount++;
-			if (m_dwLoopCount % 2 == 0) {
-				DWORD dwCount = AI_Path.TravelPath.size();
-				for (int i=0; i<dwCount / 2; i++) {
-					Fvector tTemp = AI_Path.TravelPath[i].P;
-					AI_Path.TravelPath[i].P = AI_Path.TravelPath[dwCount - i - 1].P;
-					AI_Path.TravelPath[dwCount - i - 1].P = tTemp;
+			if (!m_bLooped) {
+				m_dwLoopCount++;
+				if (m_dwLoopCount % 2 == 0) {
+					DWORD dwCount = AI_Path.TravelPath.size();
+					for (int i=0; i<dwCount / 2; i++) {
+						Fvector tTemp = AI_Path.TravelPath[i].P;
+						AI_Path.TravelPath[i].P = AI_Path.TravelPath[dwCount - i - 1].P;
+						AI_Path.TravelPath[dwCount - i - 1].P = tTemp;
+					}
 				}
 			}
 			m_dwLastRangeSearch = Level().timeServer();
 		}
-		//else
+		else
+			AI_Path.TravelPath.clear();
 		//	m_dwLoopCount = 0;
 	}
 	
