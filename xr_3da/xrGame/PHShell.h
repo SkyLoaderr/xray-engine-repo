@@ -19,7 +19,7 @@ class CPHShell: public CPhysicsShell,public CPHObject {
 	dSpaceID			    m_space;
 	bool					b_contacts_saved;		//e					//aux
 	dJointGroupID			m_saved_contacts;		//e					//bt
-
+	bool					was_enabled_before_freeze;
 	CPHShellSplitterHolder* m_spliter_holder;
 public:
 	Fmatrix					m_object_in_root;

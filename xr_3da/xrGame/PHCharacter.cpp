@@ -41,8 +41,9 @@ CPHCharacter::~CPHCharacter(void)
 
 void	CPHCharacter::Freeze()
 {
-	was_enabled_before_freeze=!!dBodyIsEnabled(m_body);
+	was_enabled_before_freeze=CPHObject::IsActive();//!!dBodyIsEnabled(m_body);
 	dBodyDisable(m_body);
+	CPHObject::Deactivate();
 }
 
 void	CPHCharacter::getForce(Fvector& force)
@@ -57,7 +58,11 @@ void	CPHCharacter::setForce(const Fvector &force)
 }
 void	CPHCharacter::UnFreeze()
 {
-	if(was_enabled_before_freeze)dBodyEnable(m_body);
+	if(was_enabled_before_freeze)
+	{
+		dBodyEnable(m_body);
+		CPHObject::Activate();
+	}
 }
 
 void CPHCharacter::get_State(SPHNetState& state)
@@ -75,7 +80,7 @@ void CPHCharacter::get_State(SPHNetState& state)
 		state.enabled=false;
 		return;
 	}
-	state.enabled=!!dBodyIsEnabled(m_body);
+	state.enabled=CPHObject::IsActive();//!!dBodyIsEnabled(m_body);
 }
 void CPHCharacter::set_State(const SPHNetState& state)
 {
@@ -89,12 +94,11 @@ void CPHCharacter::set_State(const SPHNetState& state)
 //	SetMaximumVelocity(state.max_velocity);
 
 	if(!b_exist) return;
-	if(state.enabled&& !dBodyIsEnabled(m_body)) 
+	if(state.enabled) 
 	{
-		dBodyEnable(m_body);
-		CPHObject::Activate();
+		Enable();
 	};
-	if(!state.enabled && dBodyIsEnabled(m_body)) 
+	if(!state.enabled ) 
 	{
 		Disable();
 	};

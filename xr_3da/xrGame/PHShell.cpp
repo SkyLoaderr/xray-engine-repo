@@ -176,15 +176,18 @@ void CPHShell::Update(){
 
 void	CPHShell::Freeze()
 {
+	was_enabled_before_freeze=CPHObject::IsActive();
 	ELEMENT_I i=elements.begin(),e=elements.end();
 	for(; e!=i ;++i)
 		(*i)->Freeze();
+	DisableObject();
 }
 void	CPHShell::UnFreeze()
 {
 	ELEMENT_I i=elements.begin(),e=elements.end();
 	for(; e!=i ;++i)
 		(*i)->UnFreeze();
+	if(was_enabled_before_freeze) EnableObject();
 }
 void	CPHShell::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val){
 	if(!bActive) return;
