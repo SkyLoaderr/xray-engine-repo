@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "targetcsbase.h"
+#include "targetcs.h"
 
 CTargetCSBase::CTargetCSBase(void)
 {
@@ -35,6 +36,10 @@ void CTargetCSBase::OnDeviceCreate()
 }
 
 void CTargetCSBase::feel_touch_new			(CObject* O) {
+	CTargetCS *l_pTarg = dynamic_cast<CTargetCS*>(O);
+	if(l_pTarg) {
+		l_pTarg=l_pTarg;
+	}
 }
 
 void CTargetCSBase::feel_touch_delete		(CObject* O) {
