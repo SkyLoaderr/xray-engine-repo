@@ -118,8 +118,7 @@ void CActorTools::EngineModel::SaveParams(TFormStorage* s)
 
 void CActorTools::OnMotionKeysModified()
 {
-	m_bObjectModified = true;
-	UI.Command(COMMAND_UPDATE_CAPTION);
+	Modified			();
 	m_Flags.set			(flUpdateMotionKeys,TRUE);
     if (fraLeftBar->ebRenderEngineStyle->Down){
 		m_Flags.set		(flUpdateMotionKeys,FALSE);
@@ -135,8 +134,7 @@ void CActorTools::OnMotionKeysModified()
 
 void CActorTools::OnMotionDefsModified()
 {
-	m_bObjectModified = true;
-	UI.Command(COMMAND_UPDATE_CAPTION);
+	Modified			();
 	m_Flags.set			(flUpdateMotionDefs,TRUE);
     if (fraLeftBar->ebRenderEngineStyle->Down){
 		m_Flags.set		(flUpdateMotionDefs,FALSE);

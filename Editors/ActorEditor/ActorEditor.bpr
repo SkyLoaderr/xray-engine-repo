@@ -73,7 +73,7 @@
       Intermediate\EditObjectProps.obj Intermediate\UI_ToolsProps.obj 
       Intermediate\du_cylinder.obj Intermediate\BoneEditor.obj 
       Intermediate\ItemListTypes.obj Intermediate\ItemList.obj 
-      Intermediate\ItemListHelper.obj"/>
+      Intermediate\ItemListHelper.obj Intermediate\UI_ToolsUndo.obj"/>
     <RESFILES value="ActorEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -270,6 +270,7 @@
       <FILE FILENAME="Editor\ItemListTypes.cpp" FORMNAME="" UNITNAME="ItemListTypes.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ItemList.cpp" FORMNAME="ItemList" UNITNAME="ItemList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ItemListHelper.cpp" FORMNAME="" UNITNAME="ItemListHelper.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="UI_ToolsUndo.cpp" FORMNAME="" UNITNAME="UI_ToolsUndo" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

@@ -119,6 +119,8 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 	        Command	(COMMAND_UPDATE_PROPERTIES);
 			// lock
 			EFS.LockFile(0,m_LastFileName);
+            Tools.UndoClear();
+            Tools.UndoSave();
         }
     	}break;
 	case COMMAND_CLEAR:
@@ -131,6 +133,8 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
             Tools.Clear();
 			Command	(COMMAND_UPDATE_CAPTION);
 	        Command	(COMMAND_UPDATE_PROPERTIES);
+		    Tools.UndoClear();
+		    Tools.UndoSave();
 		}
 		break;
     case COMMAND_PREVIEW_OBJ_PREF:
@@ -149,6 +153,14 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
     case COMMAND_FILE_MENU:
 		FHelper.ShowPPMenu(fraLeftBar->pmSceneFile,0);
     	break;
+	case COMMAND_UNDO:
+        if( !Tools.Undo() ) ELog.DlgMsg( mtInformation, "Undo buffer empty" );
+        else				Command(COMMAND_CHANGE_ACTION, eaSelect);
+		break;
+	case COMMAND_REDO:
+        if( !Tools.Redo() ) ELog.DlgMsg( mtInformation, "Redo buffer empty" );
+        else				Command(COMMAND_CHANGE_ACTION, eaSelect);
+		break;
     default:
 		ELog.DlgMsg( mtError, "Warning: Undefined command: %04d", _Command );
         bRes = false;
@@ -180,7 +192,9 @@ bool __fastcall TUI::ApplyGlobalShortCutExt(WORD Key, TShiftState Shift)
 {
 	bool bExec = false;
     if (Shift.Contains(ssCtrl)){
-		if (Key=='R')					COMMAND0(COMMAND_LOAD_FIRSTRECENT);
+		if (Key=='R')					COMMAND0(COMMAND_LOAD_FIRSTRECENT)
+        else if (Key=='Z')    			COMMAND0(COMMAND_UNDO)
+        else if (Key=='Y')    			COMMAND0(COMMAND_REDO)
     }
     return bExec;
 }

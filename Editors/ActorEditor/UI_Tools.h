@@ -163,6 +163,7 @@ protected:
     void				RealUpdateProperties	();
 
     void __fastcall 	PMMotionItemClick		(TObject *Sender);
+    
 public:
 	EngineModel			m_RenderObject;
     PreviewModel		m_PreviewObject;
@@ -171,6 +172,20 @@ public:
     TProperties*		m_ItemProps;
 
     TfrmKeyBar* 		m_KeyBar;
+// undo part
+protected:
+    #pragma pack( push,1 )
+    struct UndoItem {
+        char m_FileName[MAX_PATH];
+    };
+    #pragma pack( pop )
+	xr_deque<UndoItem> 	m_UndoStack;
+	xr_deque<UndoItem> 	m_RedoStack;
+public:
+	void 				UndoClear			();
+	void 				UndoSave			();
+	bool 				Undo				();
+	bool 				Redo				();
 public:
 						CActorTools			();
     virtual 			~CActorTools		();
@@ -184,7 +199,7 @@ public:
 
     bool				IfModified			();
     bool				IsModified			(){return m_bObjectModified;}
-    bool				IsObjectModified	(){return m_bObjectModified;}
+    void				Modified			(bool bInternal=false); 
     void __fastcall		OnBoneModified		(void);
     void __fastcall		OnObjectModified	(void);
     void __fastcall		OnMotionDefsModified(void); 
@@ -216,7 +231,7 @@ public:
 	void				SetNumScale			(CCustomObject* p1){;}
 
     bool				Load				(LPCSTR name);
-    bool				Save				(LPCSTR name);
+    bool				Save				(LPCSTR name, bool bInternal=false);
     bool				ExportOGF			(LPCSTR name);
     bool				LoadMotions			(LPCSTR name);
     bool				SaveMotions			(LPCSTR name);

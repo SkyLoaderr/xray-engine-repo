@@ -171,6 +171,14 @@ void CActorTools::OnDestroy()
 }
 //---------------------------------------------------------------------------
 
+void CActorTools::Modified(bool bInternal)
+{
+	m_bObjectModified	= true;
+    UI.Command			(COMMAND_UPDATE_CAPTION);
+	if (!bInternal)		UndoSave(); 
+}
+//---------------------------------------------------------------------------
+
 bool CActorTools::IfModified(){
     if (IsModified()){
         int mr = ELog.DlgMsg(mtConfirmation, "The '%s' has been modified.\nDo you want to save your changes?",UI.GetEditFileName());
@@ -186,7 +194,7 @@ bool CActorTools::IfModified(){
 
 void CActorTools::OnObjectModified()
 {
-	m_bObjectModified 		= true;
+	Modified				();
     m_Flags.set				(flUpdateGeometry,TRUE);
     OnGeometryModified		();
 	UI.Command				(COMMAND_UPDATE_CAPTION);
@@ -345,7 +353,7 @@ void CActorTools::Clear()
 	m_Flags.set			(flUpdateGeometry|flUpdateMotionDefs|flUpdateMotionKeys,FALSE);
     m_EditMode			= emObject;
     
-    UI.RedrawScene();
+    UI.RedrawScene		();
 }
 
 bool CActorTools::Load(LPCSTR name)
@@ -361,6 +369,8 @@ bool CActorTools::Load(LPCSTR name)
             // delete visual
             m_RenderObject.Clear();
             fraLeftBar->SetRenderStyle(false);
+
+            UpdateProperties();
             return true;
         }
 //        else{ ELog.DlgMsg(mtError,"Can't load non dynamic object '%s'.",name); }
@@ -372,12 +382,12 @@ bool CActorTools::Load(LPCSTR name)
     return false;
 }
 
-bool CActorTools::Save(LPCSTR name)
+bool CActorTools::Save(LPCSTR name, bool bInternal)
 {
 	VERIFY(m_bReady);
     if (m_pEditObject){
     	m_pEditObject->SaveObject(name);
-		m_bObjectModified = false;
+		if (!bInternal) m_bObjectModified = false;
         return true;
     }
 	return false;
@@ -471,20 +481,22 @@ bool __fastcall CActorTools::MouseEnd(TShiftState Shift)
     case eaMove:{
     	switch (m_EditMode){
         case emObject:
+			OnMotionKeysModified();
 //.            m_ObjectItems->RefreshForm();
         break;
         case emBone:
-//	        OnBoneModified();
+	        OnBoneModified();
         break;
         }
     }break;
     case eaRotate:{
     	switch (m_EditMode){
         case emObject:
+			OnMotionKeysModified();
 //.            m_ObjectItems->RefreshForm();
         break;
         case emBone:
-//	        OnBoneModified();
+	        OnBoneModified();
         break;
         }
     }break;
@@ -502,7 +514,7 @@ bool __fastcall CActorTools::MouseEnd(TShiftState Shift)
 void __fastcall CActorTools::OnBoneModified(void)
 {
 	RefreshSubProperties	();
-	m_bObjectModified 		= true;
+    Modified				();
 	UI.Command				(COMMAND_UPDATE_CAPTION);
 }
 
@@ -529,7 +541,7 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
     	switch (m_EditMode){
         case emObject:
             m_pEditObject->a_vPosition.add(amount);
-			OnMotionKeysModified();
+//			OnMotionKeysModified();
 //            m_ObjectProps->RefreshForm();
 //            OnObjectModified();
         break;
@@ -540,7 +552,7 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
                     for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
                         (*b_it)->ShapeMove(amount);
             }
-	        OnBoneModified();
+//	        OnBoneModified();
         break;
         }
     }break;
@@ -550,7 +562,7 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
     	switch (m_EditMode){
         case emObject:
             m_pEditObject->a_vRotate.mad(m_RotateVector,amount);
-			OnMotionKeysModified();
+//			OnMotionKeysModified();
 //            m_ObjectProps->RefreshForm();
 //            OnObjectModified();
         break;
@@ -567,7 +579,7 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
                         (*b_it)->BoneRotate(rot);
                 }
             }
-	        OnBoneModified();
+//	        OnBoneModified();
         }break;
         }
     }break;
@@ -590,7 +602,7 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
                 if (m_pEditObject->GetSelectedBones(lst))
                     for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
                         (*b_it)->ShapeScale(amount);
-    	        OnBoneModified();
+//    	        OnBoneModified();
 			}
         break;
         }
