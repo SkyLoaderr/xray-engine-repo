@@ -1,15 +1,12 @@
 
-if (editor() == false) and (user_name ~= nil and user_name() == "Andy") then
+if (editor() == false) then
 	module	("game_last_sv")
    module   ("game_last_cl")
 end
 
 function register(object_factory)
 
-   --game_last.test()
-
-	if(user_name == nil or user_name() ~= "Andy") then return end
-	
+   
 	if (editor() == false) then
 		object_factory:register ("game_last_sv.game_sv_LastStanding","SV_LAST","game_sv_LastStanding")
 		object_factory:register ("game_last_cl.game_cl_LastStanding","CL_LAST","game_cl_LastStanding")
@@ -32,10 +29,6 @@ function get_game_clsid(game_type_option,is_server)
 		if(game_type_option == "artefacthunt") then 
 			return "SV_AHUNT" end
 
-
-		if(game_type_option == "new_dm") then 
-			return "SV_NEWDM" end
-
 		if(game_type_option == "laststanding") then 
 			return "SV_LAST" end
 		
@@ -54,9 +47,6 @@ function get_game_clsid(game_type_option,is_server)
 		if(game_type_option == "artefacthunt") then 
 			return "CL_AHUNT" end
 
-
-		if(game_type_option == "new_dm") then 
-			return "CL_DM" end
 
 		if(game_type_option == "laststanding") then 
 			return "CL_LAST" end

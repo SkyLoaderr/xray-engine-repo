@@ -1,9 +1,6 @@
 
 module("game_types")
---module("game_phases")
---module("game_messages")
 module("game_last_ps")
---module("game_player_flags")
 
 
 
@@ -31,7 +28,7 @@ end
 ---------------------------------------------------------
 function game_sv_LastStanding:Create   (str)
    game_sv_mp_script.Create(self, str)
-   self.lifecount = self:get_option_i (str,"lifecount",5)
+   self.lifecount = self:get_option_i (str,"lifecount",5) --5 is default value
 
    self:loadGameOptions()
 
@@ -54,8 +51,6 @@ end
 
 ---------------------------------------------------------
 function game_sv_LastStanding:OnPlayerConnect	(cl_id_who)
-	printf("---------PLAYER CONNECTED---------%d",cl_id_who:value() )
---   game_sv_mp_script.OnPlayerConnect	(self, cl_id_who)
 
 	local	ps_who	=	self:get_id	(cl_id_who)
 
@@ -78,19 +73,17 @@ function game_sv_LastStanding:OnPlayerConnect	(cl_id_who)
 end
 
 ---------------------------------------------------------
-function game_sv_LastStanding:OnPlayerDisconnect(cl_id_who)
-   --game_sv_mp_script.OnPlayerDisconnect	(self, cl_id_who)
+function game_sv_LastStanding:OnPlayerDisconnect(cl_id_who, player_name)
    
    self:KillPlayer(cl_id_who)
 
    local P = net_packet()
    self:GenerateGameMessage (P)
    P:w_u32				   (game_messages.GAME_EVENT_PLAYER_DISCONNECTED)
-   P:w_stringZ			(self:get_player_name_id(cl_id_who) )
+   P:w_stringZ			(player_name)
    self:u_EventSend(P)
 
    self:signal_Syncronize()
---TODO if its local->shutDown Server
 end
 
 ---------------------------------------------------------
@@ -123,8 +116,9 @@ function game_sv_LastStanding:OnEvent (P, type, time, cl_id )
 
    elseif type == game_messages.GAME_EVENT_PLAYER_DISCONNECTED then
       local cl_id = P:r_clientID()
-      self:OnPlayerDisconnect(cl_id)
-   elseif type == game_messages.GAME_EVENT_PLAYER_KILL then --g_kill console command
+      local player_name =P:r_stringZ()
+      self:OnPlayerDisconnect(cl_id, player_name)
+   elseif type == game_messages.GAME_EVENT_PLAYER_KILL then --on "g_kill" console command
 		
       self:KillPlayer(cl_id)
 	   local	ps_who	=	self:get_id	(cl_id)
