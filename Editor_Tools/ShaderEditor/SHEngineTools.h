@@ -1,17 +1,7 @@
 //---------------------------------------------------------------------------
-#ifndef ShaderToolsH
-#define ShaderToolsH
+#ifndef SHEngineToolsH
+#define SHEngineToolsH
 
-// refs
-class CEditableObject;
-class CLibObject;
-class CBlender;
-
-struct str_pred : public binary_function<char*, char*, bool>
-{
-    IC bool operator()(LPCSTR x, LPCSTR y) const
-    {	return strcmp(x,y)<0;	}
-};
 DEFINE_VECTOR(CBlender*,TemplateVec,TemplateIt);
 DEFINE_MAP_PRED(LPSTR,CConstant*,ConstantMap,ConstantPairIt,str_pred);
 DEFINE_MAP_PRED(LPSTR,CMatrix*,MatrixMap,MatrixPairIt,str_pred);
@@ -22,10 +12,8 @@ public:
 	virtual void Parse(DWORD type, LPCSTR key, LPVOID data)=0;
 };
 
-class CShaderTools: public pureDeviceCreate, public pureDeviceDestroy
+class CSHEngineTools
 {
-	CLibObject*			m_LibObject;
-	CEditableObject*	m_EditObject;
 	BOOL				m_bModified;
 
 	TemplateVec			m_TemplatePalette;
@@ -80,15 +68,12 @@ public:
 
     void 				ClearData			();
 public:
-						CShaderTools		();
-    virtual 			~CShaderTools		();
+						CSHEngineTools		();
+    virtual 			~CSHEngineTools		();
 
 	void				Reload				();
 	void				Load				();
 	void				Save				();
-
-    void				Render				();
-    void				Update				();
 
     bool				IfModified			();
     bool				IsModified			(){return m_bModified;}
@@ -97,19 +82,10 @@ public:
     void				OnCreate			();
     void				OnDestroy			();
 
-    void				ZoomObject			();
-
-    virtual void		OnDeviceCreate		();
-    virtual void		OnDeviceDestroy		();
-
-    void				SelectPreviewObject	(int p);
-    void				ResetPreviewObject	();
-
     // misc
     void				SetCurrentBlender	(CBlender* B);
     void				SetCurrentBlender	(LPCSTR name);
     void				ApplyChanges		();
 };
-extern CShaderTools	SHTools;
 //---------------------------------------------------------------------------
 #endif

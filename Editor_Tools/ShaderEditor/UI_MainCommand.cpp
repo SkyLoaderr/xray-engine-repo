@@ -28,19 +28,24 @@ bool TUI::Command( int _Command, int p1 ){
 	    frmEditorPreferences->ShowModal();
         break;
 	case COMMAND_SAVE:
-    	SHTools.Save();
+    	SHTools.Engine.Save();
+    	SHTools.Compiler.Save();
 		Command(COMMAND_UPDATE_CAPTION);
     	break;
     case COMMAND_RELOAD:
-    	if (!SHTools.IfModified()) return false;
-		if (ELog.DlgMsg(mtConfirmation,"Reload shaders?")==mrYes){
-        	SHTools.Reload();
-			Command(COMMAND_UPDATE_CAPTION);
+    	if (SHTools.ActiveEditor()==aeEngine){
+	    	if (!SHTools.Engine.IfModified()) return false;
+            if (ELog.DlgMsg(mtConfirmation,"Reload shaders?")==mrYes)
+                SHTools.Engine.Reload();
+    	}else if (SHTools.ActiveEditor()==aeCompiler){
+	    	if (!SHTools.Compiler.IfModified()) return false;
+            if (ELog.DlgMsg(mtConfirmation,"Reload shaders?")==mrYes)
+                SHTools.Compiler.Reload();
         }
+		Command(COMMAND_UPDATE_CAPTION);
     	break;
 	case COMMAND_CLEAR:
 		{
-	    	if (!SHTools.IfModified()) return false;
 			Device.m_Camera.Reset();
             SHTools.ResetPreviewObject();
 			Command(COMMAND_UPDATE_CAPTION);
@@ -73,7 +78,8 @@ bool TUI::Command( int _Command, int p1 ){
 		SHTools.SelectPreviewObject(p1);
     	break;
     case COMMAND_APPLY_CHANGES:
-    	SHTools.ApplyChanges();
+    	if (SHTools.ActiveEditor()==aeEngine)		SHTools.Engine.ApplyChanges();
+    	else if (SHTools.ActiveEditor()==aeCompiler)SHTools.Compiler.ApplyChanges();
     	break;
  	default:
 		ELog.DlgMsg( mtError, "Warning: Undefined command: %04d", _Command );

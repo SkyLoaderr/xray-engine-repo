@@ -46,10 +46,6 @@ __published:	// IDE-managed Components
 	TFormStorage *fsStorage;
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall FormShow(TObject *Sender);
-	void __fastcall InplaceFloatAfterOperation(TObject *Sender,
-          bool &Accepted, bool &DefaultConversion);
-	void __fastcall InplaceNumberAfterOperation(TObject *Sender,
-          bool &Accepted, bool &DefaultConversion);
 	void __fastcall InplaceNumberBeforeOperation(TObject *Sender,
           bool &DefaultConversion);
 	void __fastcall InplaceFloatBeforeOperation(TObject *Sender,
@@ -59,6 +55,10 @@ __published:	// IDE-managed Components
           TCanvas *Surface, TRect &R, int SectionIndex);
 	void __fastcall tvPropertiesMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
+	void __fastcall InplaceFloatValidateResult(TObject *Sender,
+          bool &InputValid);
+	void __fastcall InplaceNumberValidateResult(TObject *Sender,
+          bool &InputValid);
 private:	// User declarations
 	static TfrmShaderProperties *form;
     void __fastcall PMItemClick(TObject *Sender);

@@ -193,7 +193,7 @@ void CRenderDevice::OnDeviceCreate(){
 	seqDevCreate.Process		(rp_DeviceCreate);
 	Primitive.OnDeviceCreate	();
 
-#ifdef _EDITOR
+#ifdef _LEVEL_EDITOR
     UpdateFog();
 #else
     UpdateFog(dwClearColor,0.f,m_Camera.m_Zfar);
@@ -244,7 +244,7 @@ void CRenderDevice::OnDeviceDestroy(){
 	_RELEASE					(Streams_QuadIB);
 }
 
-#ifdef _EDITOR
+#ifdef _LEVEL_EDITOR
 #include "scene.h"
 void CRenderDevice::UpdateFog(){
 	st_Environment& E	= Scene->m_LevelOp.m_Envs[Scene->m_LevelOp.m_CurEnv];

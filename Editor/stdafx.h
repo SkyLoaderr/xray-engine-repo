@@ -145,6 +145,12 @@ extern "C" DLL_API LPCSTR InterpretError(HRESULT hr);
 	typedef lst::iterator it;
 #define _SHOW_REF(msg, x)   	{if(x){ x->AddRef(); Log(msg,x->Release());}}
 
+struct str_pred : public binary_function<char*, char*, bool>
+{
+    IC bool operator()(LPCSTR x, LPCSTR y) const
+    {	return strcmp(x,y)<0;	}
+};
+
 DEFINE_VECTOR(bool,BOOLVec,BOOLIt);
 DEFINE_VECTOR(BYTE,BYTEVec,BYTEIt);
 DEFINE_VECTOR(WORD,WORDVec,WORDIt);

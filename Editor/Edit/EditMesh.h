@@ -176,7 +176,7 @@ public:
 	void            Transform				(const Fmatrix& parent);
 
     // pick routine
-#ifdef _EDITOR
+#ifdef _LEVEL_EDITOR
 	bool            RayPick					(float& dist, Fvector& start, Fvector& dir, Fmatrix& parent, SRayPickInfo* pinf = NULL);
     void 			BoxPick					(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf);
 	bool            FrustumPick				(const CFrustum& frustum, const Fmatrix& parent);

@@ -248,7 +248,7 @@ void CEditableObject::RenderSelection(Fmatrix& parent){
     Device.ResetNearer();
 }
 
-#ifdef _EDITOR
+#ifdef _LEVEL_EDITOR
 bool CEditableObject::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
 	for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
 		if((*m)->FrustumPick(frustum, parent))	return true;

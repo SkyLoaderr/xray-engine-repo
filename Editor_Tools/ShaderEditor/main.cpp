@@ -149,29 +149,29 @@ void __fastcall TfrmMain::ApplyShortCut(WORD Key, TShiftState Shift)
 {
 //    if (Key==VK_ESCAPE)   		UI->Command(COMMAND_CHANGE_ACTION, eaSelect);
     if (Shift.Contains(ssCtrl)){
-		if (Key=='S')					UI->Command(COMMAND_SAVE);
+		if (Key=='S') 				UI->Command(COMMAND_SAVE);
     }else{
         if (Shift.Contains(ssAlt)){
         }else{
-        	if (Key=='P')				UI->Command(COMMAND_EDITOR_PREF);
+        	if (Key=='P')			UI->Command(COMMAND_EDITOR_PREF);
         }
     }
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmMain::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
-{                                   
+{
     if (Shift.Contains(ssCtrl)){
-        if (Key=='S')					UI->Command(COMMAND_SAVE);
+        if (Key=='S')				UI->Command(COMMAND_SAVE);
     }
-    if (Key==VK_OEM_3)		  			UI->Command(COMMAND_RENDER_FOCUS);
+    if (Key==VK_OEM_3)		  		UI->Command(COMMAND_RENDER_FOCUS);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmMain::UpdateCaption()
 {
     AnsiString name;
-    name.sprintf("Shader Editor - [shaders.xr%s]",SHTools.IsModified()?"*":"");
+    name.sprintf("Shader Editor %s",SHTools.IsModified()?"- [modified*]":"");
     Caption = name;
 }
 //---------------------------------------------------------------------------

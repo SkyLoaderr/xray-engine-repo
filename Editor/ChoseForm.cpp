@@ -11,7 +11,7 @@
 #include "EditObject.h"
 #include "D3DUtils.h"
 
-#ifdef _EDITOR
+#ifdef _LEVEL_EDITOR
 #include "PSLibrary.h"
 #endif
 //---------------------------------------------------------------------------
@@ -77,7 +77,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectShader(bool bExcludeSystem, LPCSTR start_
     return select_item.c_str();
 }
 //---------------------------------------------------------------------------
-#ifdef _EDITOR
+#ifdef _LEVEL_EDITOR
 LPCSTR __fastcall TfrmChoseItem::SelectPS(LPCSTR start_folder, LPCSTR init_name){
 	VERIFY(!form);
 	form = new TfrmChoseItem(0);

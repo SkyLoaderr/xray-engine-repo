@@ -135,7 +135,7 @@ public:
     void					UpdateView		();
 	void					UpdateTimer		();
     void					UpdateFog		(DWORD color, float fogness, float view_dist);
-#ifdef _EDITOR
+#ifdef _LEVEL_EDITOR
 	void 					UpdateFog		();
 #endif
 

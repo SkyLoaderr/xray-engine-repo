@@ -18,6 +18,7 @@
 
 #include "ShaderTools.h"
 #include "ElTreeAdvEdit.hpp"
+#include "ElPgCtl.hpp"
 
 //---------------------------------------------------------------------------
 class TfraLeftBar : public TFrame
@@ -28,43 +29,58 @@ __published:	// IDE-managed Components
 	TFormStorage *fsStorage;
 	TLabel *APHeadLabel2;
 	TExtBtn *ebSceneMin;
-	TExtBtn *ebSceneFile;
 	TExtBtn *ebSceneCommands;
 	TExtBtn *ebPreferences;
-	TMxPopupMenu *pmSceneFile;
+	TMxPopupMenu *pmEngineShadersFile;
 	TMenuItem *Save1;
 	TMenuItem *Reload1;
 	TMxPopupMenu *pmPreviewObject;
 	TMenuItem *Plane1;
-	TPanel *paShaders;
+	TPanel *paEngineShaders;
 	TLabel *Label1;
-	TPanel *paShaderList;
-	TElTree *tvShaders;
-	TPanel *Panel1;
-	TExtBtn *ebShaderCreate;
-	TExtBtn *ebShaderRemove;
-	TPanel *paAction;
-	TExtBtn *ebShaderProperties;
 	TExtBtn *ExtBtn3;
 	TMenuItem *Box1;
 	TMenuItem *Ball1;
 	TMenuItem *Teapot1;
 	TMenuItem *Custom1;
 	TMenuItem *N3;
-	TExtBtn *ebShaderClone;
-	TExtBtn *ebShaderImport;
-	TExtBtn *ebShaderExport;
 	TMxPopupMenu *pmShaderList;
 	TMenuItem *ExpandAll1;
 	TMenuItem *CollapseAll1;
 	TMenuItem *N1;
 	TMenuItem *CreateFolder1;
-	TExtBtn *ebApplyChanges;
-	TMxPopupMenu *pmBlenderList;
+	TMxPopupMenu *pmTemplateList;
+	TMenuItem *Rename1;
+	TElTreeInplaceAdvancedEdit *InplaceEngineEdit;
+	TMenuItem *N2;
+	TMenuItem *Import1;
+	TMenuItem *Export1;
+	TElPageControl *pcShaders;
+	TElTabSheet *tsEngine;
 	TBevel *Bevel1;
 	TBevel *Bevel2;
-	TMenuItem *Rename1;
-	TElTreeInplaceAdvancedEdit *InplaceEdit;
+	TPanel *Panel1;
+	TExtBtn *ebEngineShaderRemove;
+	TExtBtn *ebEngineShaderClone;
+	TExtBtn *ebEngineShaderFile;
+	TExtBtn *ebEngineShaderCreate;
+	TElTree *tvEngine;
+	TPanel *paAction;
+	TExtBtn *ebEngineShaderProperties;
+	TExtBtn *ebEngineApplyChanges;
+	TElTabSheet *tsCompiler;
+	TPanel *Panel4;
+	TExtBtn *ebCompilerShaderRemove;
+	TExtBtn *ebCompilerShaderClone;
+	TExtBtn *ExtBtn4;
+	TExtBtn *ebCShaderCreate;
+	TPanel *Panel5;
+	TExtBtn *ExtBtn6;
+	TExtBtn *ExtBtn7;
+	TBevel *Bevel4;
+	TBevel *Bevel3;
+	TElTree *tvCompiler;
+	TElTreeInplaceAdvancedEdit *InplaceCompilerEdit;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebReloadClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);
@@ -72,44 +88,55 @@ __published:	// IDE-managed Components
     void __fastcall ebEditorPreferencesClick(TObject *Sender);
     void __fastcall ebRefreshTexturesClick(TObject *Sender);
 	void __fastcall ebResetAnimationClick(TObject *Sender);
-	void __fastcall ebSceneFileMouseDown(TObject *Sender, TMouseButton Button,
+	void __fastcall ebEngineShaderFileMouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
 	void __fastcall ebSceneCommandsMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
-	void __fastcall tvShadersMouseDown(TObject *Sender, TMouseButton Button,
+	void __fastcall tvEngineMouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
-	void __fastcall ebShaderPropertiesClick(TObject *Sender);
+	void __fastcall ebEngineShaderPropertiesClick(TObject *Sender);
 	void __fastcall PreviewClick(TObject *Sender);
-	void __fastcall ebApplyChangesClick(TObject *Sender);
-	void __fastcall ebShaderCreateMouseDown(TObject *Sender,
+	void __fastcall ebEngineApplyChangesClick(TObject *Sender);
+	void __fastcall ebEngineShaderCreateMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
 	void __fastcall CreateFolder1Click(TObject *Sender);
 	void __fastcall ExpandAll1Click(TObject *Sender);
 	void __fastcall CollapseAll1Click(TObject *Sender);
-	void __fastcall tvShadersDblClick(TObject *Sender);
-	void __fastcall ebShaderRemoveClick(TObject *Sender);
-	void __fastcall tvShadersItemFocused(TObject *Sender);
-	void __fastcall ebShaderCloneClick(TObject *Sender);
-	void __fastcall tvShadersKeyDown(TObject *Sender, WORD &Key,
+	void __fastcall tvViewDblClick(TObject *Sender);
+	void __fastcall ebEngineShaderRemoveClick(TObject *Sender);
+	void __fastcall tvEngineItemFocused(TObject *Sender);
+	void __fastcall ebEngineShaderCloneClick(TObject *Sender);
+	void __fastcall tvEngineKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
 	void __fastcall Rename1Click(TObject *Sender);
-	void __fastcall InplaceEditValidateResult(TObject *Sender,
+	void __fastcall InplaceEngineEditValidateResult(TObject *Sender,
           bool &InputValid);
+	void __fastcall ebCShaderCreateClick(TObject *Sender);
+	void __fastcall pcShadersChange(TObject *Sender);
+	void __fastcall ebCompilerShaderRemoveClick(TObject *Sender);
+	void __fastcall ebCompilerShaderCloneClick(TObject *Sender);
 private:	// User declarations
-	void __fastcall TemplateClick(TObject *Sender);
-	void __fastcall ShowPPMenu(TMxPopupMenu* M, TObject* btn);
-	TElTreeItem* 	FindFolder(LPCSTR full_name);
-	TElTreeItem* 	AppendFolder(LPCSTR full_name);
-	bool __fastcall MakeName(TElTreeItem* select_item, AnsiString& folder, bool bFull);
-	void __fastcall GenerateFolderName(TElTreeItem* node,AnsiString& name);
-	TElTreeItem* 	FindFolderItem(TElTreeItem* start_item, const AnsiString& name);
+	void __fastcall TemplateClick	(TObject *Sender);
+	void __fastcall ShowPPMenu		(TMxPopupMenu* M, TObject* btn);
+	TElTreeItem* 	FindFolder		(TElTree* tv, LPCSTR full_name);
+	TElTreeItem* 	AppendFolder	(TElTree* tv, LPCSTR full_name);
+	bool __fastcall MakeName		(TElTreeItem* select_item, AnsiString& folder, bool bFull);
+	void __fastcall GenerateFolderName(TElTree* tv, TElTreeItem* node,AnsiString& name);
+	TElTreeItem* 	FindFolderItem	(TElTree* tv, TElTreeItem* start_item, const AnsiString& name);
+    TElTree*		CurrentView		(){ if (pcShaders->ActivePage==tsEngine) 		return tvEngine;
+									    else if (pcShaders->ActivePage==tsCompiler)	return tvCompiler;
+                                        THROW;
+    								  }
+	void 			AddItem			(TElTree* tv, LPCSTR full_name, bool bLoadMode);
 public:		// User declarations
-        __fastcall TfraLeftBar(TComponent* Owner);
+        __fastcall TfraLeftBar		(TComponent* Owner);
 	void 			ChangeTarget	(int tgt);
     void 			UpdateBar		();
     void 			InitPalette		(TemplateVec& lst);
 	void 			AddBlender		(LPCSTR full_name, bool bLoadMode);
-	void 			ClearBlenderList();
+	void 			AddCShader		(LPCSTR full_name, bool bLoadMode);
+	void 			ClearEShaderList();
+    void			ClearCShaderList();
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfraLeftBar *fraLeftBar;

@@ -101,6 +101,8 @@ USEUNIT("Engine\BLENDERS\Blender_Screen_SET.cpp");
 USEUNIT("Engine\BLENDERS\Blender_Vertex.cpp");
 USEUNIT("Engine\BLENDERS\Blender_Vertex_aref.cpp");
 USEUNIT("Engine\BLENDERS\Blender.cpp");
+USEUNIT("SHEngineTools.cpp");
+USEUNIT("SHCompilerTools.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

@@ -3,26 +3,21 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "ShaderTools.h"
-#include "EditObject.h"
-#include "bottombar.h"
-#include "ui_main.h"
-#include "PropertiesShader.h"
-#include "library.h"
-#include "ChoseForm.h"
+#include "SHEngineTools.h"
 #include "Blender.h"
+#include "ShaderTools.h"
+#include "ui_main.h"
 #include "LeftBar.h"
+#include "PropertiesShader.h"
 #include "xr_trims.h"
 
-//------------------------------------------------------------------------------
-CShaderTools SHTools;
 //------------------------------------------------------------------------------
 class CCollapseBlender: public CParseBlender{
 public:
 	virtual void Parse(DWORD type, LPCSTR key, LPVOID data){
     	switch(type){
-        case BPID_MATRIX: 	SHTools.CollapseMatrix((LPSTR)data); break;
-        case BPID_CONSTANT: SHTools.CollapseConstant((LPSTR)data); break;
+        case BPID_MATRIX: 	SHTools.Engine.CollapseMatrix		((LPSTR)data); break;
+        case BPID_CONSTANT: SHTools.Engine.CollapseConstant		((LPSTR)data); break;
         };
     }
 };
@@ -31,8 +26,8 @@ class CRefsBlender: public CParseBlender{
 public:
 	virtual void Parse(DWORD type, LPCSTR key, LPVOID data){
     	switch(type){
-        case BPID_MATRIX: 	SHTools.UpdateMatrixRefs	((LPSTR)data); break;
-        case BPID_CONSTANT: SHTools.UpdateConstantRefs	((LPSTR)data); break;
+        case BPID_MATRIX: 	SHTools.Engine.UpdateMatrixRefs		((LPSTR)data); break;
+        case BPID_CONSTANT: SHTools.Engine.UpdateConstantRefs	((LPSTR)data); break;
         };
     }
 };
@@ -41,8 +36,8 @@ class CRemoveBlender: public CParseBlender{
 public:
 	virtual void Parse(DWORD type, LPCSTR key, LPVOID data){
     	switch(type){
-        case BPID_MATRIX: 	SHTools.RemoveMatrix((LPSTR)data); break;
-        case BPID_CONSTANT: SHTools.RemoveConstant((LPSTR)data); break;
+        case BPID_MATRIX: 	SHTools.Engine.RemoveMatrix((LPSTR)data); break;
+        case BPID_CONSTANT: SHTools.Engine.RemoveConstant((LPSTR)data); break;
         };
     }
 };
@@ -52,36 +47,30 @@ static CRefsBlender 	ST_UpdateBlenderRefs;
 static CRemoveBlender	ST_RemoveBlender;
 
 //------------------------------------------------------------------------------
-CShaderTools::CShaderTools(){
+CSHEngineTools::CSHEngineTools(){
     m_bModified 		= FALSE;
-	m_LibObject 		= 0;
-	m_EditObject 		= 0;
     m_CurrentBlender 	= 0;
     m_bUpdateCurrent	= false;
     m_BlenderStream.clear();
 }
 
-CShaderTools::~CShaderTools(){
+CSHEngineTools::~CSHEngineTools(){
 }
 //---------------------------------------------------------------------------
 
-void CShaderTools::Modified(){
+void CSHEngineTools::Modified(){
 	m_bModified=TRUE;
 	UI->Command(COMMAND_UPDATE_CAPTION);
 }
 //---------------------------------------------------------------------------
 
-void CShaderTools::OnCreate(){
-    Device.seqDevCreate.Add(this);
-    Device.seqDevDestroy.Add(this);
+void CSHEngineTools::OnCreate(){
 	CBlender::CreatePalette(m_TemplatePalette);
     fraLeftBar->InitPalette(m_TemplatePalette);
     Load();
 }
 
-void CShaderTools::OnDestroy(){
-    Device.seqDevCreate.Remove(this);
-    Device.seqDevDestroy.Remove(this);
+void CSHEngineTools::OnDestroy(){
 	// free palette
 	for (TemplateIt it=m_TemplatePalette.begin(); it!=m_TemplatePalette.end(); it++)
     	_DELETE(*it);
@@ -94,7 +83,7 @@ void CShaderTools::OnDestroy(){
     m_bModified = FALSE;
 }
 
-void CShaderTools::ClearData(){
+void CSHEngineTools::ClearData(){
     // free constants, matrices, blenders
 	// Blender
 	for (BlenderPairIt b=m_Blenders.begin(); b!=m_Blenders.end(); b++)
@@ -119,7 +108,7 @@ void CShaderTools::ClearData(){
 	m_Constants.clear	();
 }
 
-bool CShaderTools::IfModified(){
+bool CSHEngineTools::IfModified(){
     if (m_bModified){
         int mr = ELog.DlgMsg(mtConfirmation, "The shaders has been modified.\nDo you want to save your changes?");
         switch(mr){
@@ -131,86 +120,7 @@ bool CShaderTools::IfModified(){
     return true;
 }
 
-void CShaderTools::Render(){
-	if (m_EditObject)
-    	m_EditObject->RenderSingle(precalc_identity);
-}
-
-void CShaderTools::Update(){
-	if (m_EditObject)
-    	m_EditObject->RTL_Update(Device.fTimeDelta);
-}
-
-void CShaderTools::ZoomObject(){
-	if (m_EditObject){
-        Device.m_Camera.ZoomExtents(m_EditObject->GetBox());
-    }else{
-		Fbox BB;
-        BB.set(-5,-5,-5,5,5,5);
-        Device.m_Camera.ZoomExtents(BB);
-    }
-}
-
-void CShaderTools::OnDeviceCreate(){
-    // add directional light
-    Flight L;
-    ZeroMemory(&L,sizeof(Flight));
-    L.type = D3DLIGHT_DIRECTIONAL;
-    L.diffuse.set(1,1,1,1);
-    L.direction.set(1,-1,1); L.direction.normalize();
-	Device.SetLight(0,L);
-	Device.LightEnable(0,true);
-
-    L.diffuse.set(0.3,0.3,0.3,1);
-    L.direction.set(-1,-1,-1); L.direction.normalize();
-	Device.SetLight(1,L);
-	Device.LightEnable(1,true);
-
-    L.diffuse.set(0.3,0.3,0.3,1);
-    L.direction.set(1,-1,-1); L.direction.normalize();
-	Device.SetLight(2,L);
-	Device.LightEnable(2,true);
-
-    L.diffuse.set(0.3,0.3,0.3,1);
-    L.direction.set(-1,-1,1); L.direction.normalize();
-	Device.SetLight(3,L);
-	Device.LightEnable(3,true);
-
-	L.diffuse.set(1.0,0.8,0.7,1);
-    L.direction.set(0,1,0); L.direction.normalize();
-	Device.SetLight(4,L);
-	Device.LightEnable(4,true);
-}
-
-void CShaderTools::OnDeviceDestroy(){
-}
-
-void CShaderTools::SelectPreviewObject(int p){
-    LPCSTR fn;
-    switch(p){
-        case 0: fn="$ShaderTest_Plane"; 	break;
-        case 1: fn="$ShaderTest_Box"; 		break;
-        case 2: fn="$ShaderTest_Sphere"; 	break;
-        case 3: fn="$ShaderTest_Teapot";	break;
-        case -1: fn=m_EditObject?m_EditObject->GetName():""; fn=TfrmChoseItem::SelectObject(false,true,0,fn); if (!fn) return; break;
-        default: THROW2("Failed select test object.");
-    }
-    m_LibObject = Lib->SearchObject(fn);
-    m_EditObject = 0;
-    if (m_LibObject) m_EditObject = m_LibObject->GetReference();
-    if (!m_LibObject||!m_EditObject)
-        ELog.DlgMsg(mtError,"System object '%s.object' can't find in object library. Preview disabled.",fn);
-	ZoomObject();
-    UI->RedrawScene();
-}
-
-void CShaderTools::ResetPreviewObject(){
-    m_LibObject 	= 0;
-    m_EditObject 	= 0;
-    UI->RedrawScene();
-}
-
-void CShaderTools::ApplyChanges(){
+void CSHEngineTools::ApplyChanges(){
     if (m_CurrentBlender){
         CStream data(m_BlenderStream.pointer(), m_BlenderStream.size());
         m_CurrentBlender->Load(data);
@@ -218,14 +128,14 @@ void CShaderTools::ApplyChanges(){
     }
 }
 
-void CShaderTools::Reload(){
-	fraLeftBar->ClearBlenderList();
+void CSHEngineTools::Reload(){
+	fraLeftBar->ClearEShaderList();
     ResetCurrentBlender();
     ClearData();
     Load();
 }
 
-void CShaderTools::Load(){
+void CSHEngineTools::Load(){
 	AnsiString fn = "shaders.xr";
     FS.m_GameRoot.Update(fn);
 
@@ -276,12 +186,12 @@ void CShaderTools::Load(){
         UpdateRefCounters		();
         ResetCurrentBlender		();
     }else{
-    	ELog.DlgMsg(mtInformation,"Can't find file 'shaders.xr'");
+    	ELog.DlgMsg(mtInformation,"Can't find file '%s'",fn.c_str());
     }
 	m_bUpdateCurrent			= true;
 }
 
-void CShaderTools::Save(){
+void CSHEngineTools::Save(){
     ApplyChanges();
     LPCSTR name					= m_CurrentBlender?m_CurrentBlender->getName():0;
 	ResetCurrentBlender			();
@@ -331,7 +241,7 @@ void CShaderTools::Save(){
     m_bModified	= FALSE;
 }
 
-CBlender* CShaderTools::FindBlender(LPCSTR name){
+CBlender* CSHEngineTools::FindBlender(LPCSTR name){
 	if (name && name[0]){
 		LPSTR N = LPSTR(name);
 		BlenderPairIt I = m_Blenders.find	(N);
@@ -340,7 +250,7 @@ CBlender* CShaderTools::FindBlender(LPCSTR name){
     }else return 0;
 }
 
-CMatrix* CShaderTools::FindMatrix(LPSTR name, bool bDuplicate){
+CMatrix* CSHEngineTools::FindMatrix(LPSTR name, bool bDuplicate){
 	R_ASSERT(name && name[0]);
 	LPSTR N = LPSTR(name);
 	MatrixPairIt I = m_Matrices.find	(N);
@@ -354,7 +264,7 @@ CMatrix* CShaderTools::FindMatrix(LPSTR name, bool bDuplicate){
     return M;
 }
 
-CConstant* CShaderTools::FindConstant(LPSTR name, bool bDuplicate){
+CConstant* CSHEngineTools::FindConstant(LPSTR name, bool bDuplicate){
 	R_ASSERT(name && name[0]);
 	LPSTR N = LPSTR(name);
 	ConstantPairIt I = m_Constants.find	(N);
@@ -368,7 +278,7 @@ CConstant* CShaderTools::FindConstant(LPSTR name, bool bDuplicate){
     return C;
 }
 
-LPCSTR CShaderTools::GenerateBlenderName(LPSTR name, LPCSTR source){
+LPCSTR CSHEngineTools::GenerateBlenderName(LPSTR name, LPCSTR source){
     int cnt = 0;
 	char fld[128]; strcpy(fld,name);
     if (source) strcpy(name,source); else sprintf(name,"%s\shader_%02d",fld,cnt++);
@@ -378,25 +288,25 @@ LPCSTR CShaderTools::GenerateBlenderName(LPSTR name, LPCSTR source){
 	return name;
 }
 
-LPCSTR CShaderTools::GenerateMatrixName(LPSTR name){
+LPCSTR CSHEngineTools::GenerateMatrixName(LPSTR name){
     int cnt = 0;
     do sprintf(name,"%04x",cnt++);
     while(FindMatrix(name,false));
     return name;
 }
 
-LPCSTR CShaderTools::GenerateConstantName(LPSTR name){
+LPCSTR CSHEngineTools::GenerateConstantName(LPSTR name){
     int cnt = 0;
     do sprintf(name,"%04x",cnt++);
     while(FindConstant(name,false));
     return name;
 }
 
-CBlender* CShaderTools::AppendBlender(CLASS_ID cls_id, LPCSTR folder_name, CBlender* parent){
+CBlender* CSHEngineTools::AppendBlender(CLASS_ID cls_id, LPCSTR folder_name, CBlender* parent){
 	// append blender
     CBlender* B = CBlender::Create(cls_id);
     if (parent) *B = *parent;
-    char name[128];
+    char name[128]; name[0]=0;
     if (folder_name) strcpy(name,folder_name);
     B->getDescription().Setup(GenerateBlenderName(name,parent?parent->getName():0));
     // append matrix& constant
@@ -443,12 +353,12 @@ CBlender* CShaderTools::AppendBlender(CLASS_ID cls_id, LPCSTR folder_name, CBlen
     return B;
 }
 
-CBlender* CShaderTools::CloneBlender(LPCSTR name){
+CBlender* CSHEngineTools::CloneBlender(LPCSTR name){
 	CBlender* B = FindBlender(name); R_ASSERT(B);
 	return AppendBlender(B->getDescription().CLS,0,B);
 }
 
-void CShaderTools::RenameBlender(LPCSTR old_full_name, LPCSTR ren_part, int level){
+void CSHEngineTools::RenameBlender(LPCSTR old_full_name, LPCSTR ren_part, int level){
     LPSTR N = LPSTR(old_full_name);
 	BlenderPairIt I = m_Blenders.find	(N);
     R_ASSERT(I!=m_Blenders.end());
@@ -464,17 +374,17 @@ void CShaderTools::RenameBlender(LPCSTR old_full_name, LPCSTR ren_part, int leve
 	if (B==m_CurrentBlender) UpdateStreamFromObject();
 }
 
-void CShaderTools::AddMatrixRef(LPSTR name){
+void CSHEngineTools::AddMatrixRef(LPSTR name){
 	CMatrix* M = FindMatrix(name,false); R_ASSERT(M);
     M->dwReference++;
 }
 
-void CShaderTools::AddConstantRef(LPSTR name){
+void CSHEngineTools::AddConstantRef(LPSTR name){
 	CConstant* C = FindConstant(name,false); R_ASSERT(C);
     C->dwReference++;
 }
 
-LPCSTR CShaderTools::AppendConstant(CConstant* src, CConstant** dest){
+LPCSTR CSHEngineTools::AppendConstant(CConstant* src, CConstant** dest){
     CConstant* C = new CConstant();
     if (src) *C = *src;
     C->dwReference = 1;
@@ -485,7 +395,7 @@ LPCSTR CShaderTools::AppendConstant(CConstant* src, CConstant** dest){
     return I.first->first;
 }
 
-LPCSTR CShaderTools::AppendMatrix(CMatrix* src, CMatrix** dest){
+LPCSTR CSHEngineTools::AppendMatrix(CMatrix* src, CMatrix** dest){
     CMatrix* M = new CMatrix();
     if (src) *M = *src;
     M->dwReference = 1;
@@ -496,7 +406,7 @@ LPCSTR CShaderTools::AppendMatrix(CMatrix* src, CMatrix** dest){
     return I.first->first;
 }
 
-void CShaderTools::RemoveBlender(LPCSTR name){
+void CSHEngineTools::RemoveBlender(LPCSTR name){
 	R_ASSERT(name && name[0]);
 	CBlender* B = FindBlender(name);
     R_ASSERT(B);
@@ -509,7 +419,7 @@ void CShaderTools::RemoveBlender(LPCSTR name){
     m_Blenders.erase(I);
 }
 
-void CShaderTools::RemoveMatrix(LPSTR name){
+void CSHEngineTools::RemoveMatrix(LPSTR name){
 	if (*name=='$') return;
 	R_ASSERT(name && name[0]);
 	CMatrix* M = FindMatrix(name,false); VERIFY(M);
@@ -523,7 +433,7 @@ void CShaderTools::RemoveMatrix(LPSTR name){
     }
 }
 
-void CShaderTools::RemoveConstant(LPSTR name){
+void CSHEngineTools::RemoveConstant(LPSTR name){
 	if (*name=='$') return;
 	R_ASSERT(name && name[0]);
 	CConstant* C = FindConstant(name,false); VERIFY(C);
@@ -537,20 +447,20 @@ void CShaderTools::RemoveConstant(LPSTR name){
     }
 }
 
-void CShaderTools::UpdateStreamFromObject(){
+void CSHEngineTools::UpdateStreamFromObject(){
     m_BlenderStream.clear();
     if (m_CurrentBlender) m_CurrentBlender->Save(m_BlenderStream);
     TfrmShaderProperties::InitProperties();
 }
 
-void CShaderTools::UpdateObjectFromStream(){
+void CSHEngineTools::UpdateObjectFromStream(){
     if (m_CurrentBlender){
         CStream data(m_BlenderStream.pointer(), m_BlenderStream.size());
         m_CurrentBlender->Load(data);
     }
 }
 
-void CShaderTools::SetCurrentBlender(CBlender* B){
+void CSHEngineTools::SetCurrentBlender(CBlender* B){
     if (!m_bUpdateCurrent) return;
 
     UpdateObjectFromStream();
@@ -560,16 +470,16 @@ void CShaderTools::SetCurrentBlender(CBlender* B){
     }
 }
 
-void CShaderTools::ResetCurrentBlender(){
+void CSHEngineTools::ResetCurrentBlender(){
 	m_CurrentBlender=0;
     UpdateStreamFromObject();
 }
 
-void CShaderTools::SetCurrentBlender(LPCSTR name){
+void CSHEngineTools::SetCurrentBlender(LPCSTR name){
 	SetCurrentBlender(FindBlender(name));
 }
 
-void CShaderTools::CollapseMatrix(LPSTR name){
+void CSHEngineTools::CollapseMatrix(LPSTR name){
 	if (*name=='$') return;
 	R_ASSERT(name&&name[0]);
     CMatrix* M = FindMatrix(name,false); VERIFY(M);
@@ -587,7 +497,7 @@ void CShaderTools::CollapseMatrix(LPSTR name){
 	m_OptMatrices.insert(make_pair(strdup(name),N));
 }
 
-void CShaderTools::CollapseConstant(LPSTR name){
+void CSHEngineTools::CollapseConstant(LPSTR name){
 	if (*name=='$') return;
 	R_ASSERT(name&&name[0]);
     CConstant* C = FindConstant(name,false); VERIFY(C);
@@ -604,21 +514,21 @@ void CShaderTools::CollapseConstant(LPSTR name){
 	m_OptConstants.insert(make_pair(strdup(name),C));
 }
 
-void CShaderTools::UpdateMatrixRefs(LPSTR name){
+void CSHEngineTools::UpdateMatrixRefs(LPSTR name){
 	if (*name=='$') return;
 	R_ASSERT(name&&name[0]);
 	CMatrix* M = FindMatrix(name,false); R_ASSERT(M);
 	M->dwReference++;
 }
 
-void CShaderTools::UpdateConstantRefs(LPSTR name){
+void CSHEngineTools::UpdateConstantRefs(LPSTR name){
 	if (*name=='$') return;
 	R_ASSERT(name&&name[0]);
 	CConstant* C = FindConstant(name,false); R_ASSERT(C);
 	C->dwReference++;
 }
 
-void CShaderTools::ParseBlender(CBlender* B, CParseBlender& P){
+void CSHEngineTools::ParseBlender(CBlender* B, CParseBlender& P){
     CFS_Memory M;
     B->Save(M);
 
@@ -649,7 +559,7 @@ void CShaderTools::ParseBlender(CBlender* B, CParseBlender& P){
     B->Load(data);
 }
 
-void CShaderTools::CollapseReferences(){
+void CSHEngineTools::CollapseReferences(){
 	for (BlenderPairIt b=m_Blenders.begin(); b!=m_Blenders.end(); b++)
     	ParseBlender(b->second,ST_CollapseBlender);
 	for (MatrixPairIt m=m_Matrices.begin(); m!=m_Matrices.end(); m++){
@@ -670,7 +580,7 @@ void CShaderTools::CollapseReferences(){
     m_OptMatrices.clear	();
 }
 
-void CShaderTools::UpdateRefCounters(){
+void CSHEngineTools::UpdateRefCounters(){
 	for (BlenderPairIt b=m_Blenders.begin(); b!=m_Blenders.end(); b++)
     	ParseBlender(b->second,ST_UpdateBlenderRefs);
 }
