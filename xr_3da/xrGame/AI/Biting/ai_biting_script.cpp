@@ -228,6 +228,12 @@ void CAI_Biting::ProcessScripts()
 	EnemyMan.unforce_enemy();
 	CorpseMan.unforce_corpse();
 	force_real_speed	= false;
+
+	// Debuging
+#ifdef DEBUG
+	HDebug->SetActive						(true);
+#endif
+
 }
 
 CEntity *CAI_Biting::GetCurrentEnemy()

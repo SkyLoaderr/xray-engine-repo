@@ -45,6 +45,12 @@ extern	int		g_dwInputUpdateDelta		;
 		int		g_dwEventDelay			= 0	;
 		int		net_cl_inputupdaterate	= 50;
 
+#ifdef DEBUG
+		BOOL	g_bDebugNode			= FALSE;
+		u32		g_dwDebugNodeSource		= 0;
+		u32		g_dwDebugNodeDest		= 0;
+#endif
+
 // console commands
 class CCC_Spawn : public IConsole_Command
 {
@@ -831,6 +837,35 @@ public:
 		p_zone->m_effector.SetParam(type,value);
 	}
 };
+
+#ifdef DEBUG
+class CCC_DebugNode : public IConsole_Command {
+public:
+	CCC_DebugNode(LPCSTR N) : IConsole_Command(N)  { };
+
+	virtual void Execute(LPCSTR args) {
+
+		string128 param1, param2;
+		_GetItem(args,0,param1,' ');
+		_GetItem(args,1,param2,' ');
+
+		u32 value1;
+		u32 value2;
+		
+		sscanf(param1,"%u",&value1);
+		sscanf(param2,"%u",&value2);
+		
+		if ((value1 > 0) && (value2 > 0)) {
+			g_bDebugNode		= TRUE;
+			g_dwDebugNodeSource	= value1;
+			g_dwDebugNodeDest	= value2;
+		} else {
+			g_bDebugNode = FALSE;
+		}
+	}
+};
+#endif
+
 class CCC_PHIterations : public CCC_Integer {
 private: 
 int	value;
@@ -921,6 +956,12 @@ void CCC_RegisterCommands()
 	CMD3(CCC_Mask,				"ai_dbg_vision",		&psAI_Flags,	aiVision);
 	CMD3(CCC_Mask,				"ai_dbg_monster",		&psAI_Flags,	aiMonsterDebug);
 	CMD3(CCC_Mask,				"ai_stats",				&psAI_Flags,	aiStats);
+	
+	
+#ifdef DEBUG
+	CMD1(CCC_DebugNode,			"ai_dbg_node");
+#endif // DEBUG
+	
 
 	CMD1(CCC_Script,			"run_script");
 	CMD1(CCC_ScriptCommand,		"run_string");

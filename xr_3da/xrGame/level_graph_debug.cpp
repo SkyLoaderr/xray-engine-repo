@@ -519,6 +519,34 @@ void CLevelGraph::render()
 			}
 		}
 	}
+
+
+#ifdef DEBUG
+#ifndef AI_COMPILER
+	if (g_bDebugNode) {
+		Fvector pos_src, pos_dest;
+			
+		if (ai().level_graph().valid_vertex_id(g_dwDebugNodeSource)) {
+			pos_src		= ai().level_graph().vertex_position(g_dwDebugNodeSource);
+			pos_dest	= pos_src;
+			pos_dest.y	+= 10.0f;
+
+			RCache.dbg_DrawAABB(pos_src,0.35f,0.35f,0.35f,D3DCOLOR_XRGB(0,0,255));
+			RCache.dbg_DrawLINE(Fidentity,pos_src,pos_dest,D3DCOLOR_XRGB(0,0,255));
+		}
+	
+		if (ai().level_graph().valid_vertex_id(g_dwDebugNodeDest)) {
+			pos_src		= ai().level_graph().vertex_position(g_dwDebugNodeDest);
+			pos_dest	= pos_src;
+			pos_dest.y	+= 10.0f;
+
+			RCache.dbg_DrawAABB(pos_src,0.35f,0.35f,0.35f,D3DCOLOR_XRGB(255,0,0));
+			RCache.dbg_DrawLINE(Fidentity,pos_src,pos_dest,D3DCOLOR_XRGB(255,0,0));
+		}
+	}
+#endif
+#endif
+
 }
 
 void CLevelGraph::draw_oriented_bounding_box(Fmatrix &T,	Fvector &half_dim, u32 C,	u32 C1) const

@@ -271,5 +271,17 @@ public:
 #endif
 };
 
+#ifdef DEBUG
+#ifndef AI_COMPILER
+
+extern BOOL	g_bDebugNode;
+extern u32	g_dwDebugNodeSource;
+extern u32	g_dwDebugNodeDest;
+
+#endif
+#endif
+
+
+
 #include "level_graph_inline.h"
 #include "level_graph_vertex_inline.h"
