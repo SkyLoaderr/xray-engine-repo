@@ -43,7 +43,9 @@ CDemoPlay::CDemoPlay(const char *name, float ms, BOOL bc, float life_time) : CEf
 		_FREE		(data);
 		Log			("! Total frames: ",m_count);
 	}
-	stat_Start	();
+	stat_Start		();
+
+	Device.PreCache	(1000);
 }
 
 CDemoPlay::~CDemoPlay()
