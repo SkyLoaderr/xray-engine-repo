@@ -13,8 +13,7 @@
 
 
 #include "../xray/stdafx.h"
-#include "../xrCore/stdafx.h"
-
 #include "../xray/xr_ioconsole.h"
+#include "xrLauncher.h"
 
 void convert(System::String* src, char* dst);

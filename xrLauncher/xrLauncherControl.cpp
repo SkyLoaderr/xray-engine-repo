@@ -1,9 +1,6 @@
 #include "stdafx.h"
 #include "xrLauncherControl.h"
 
-#include "../xray/xr_ioc_wrapper.h"
-#include "../xrCore/LocatorAPI_wrapper.h"
-
 using namespace xrLauncher;
 
 void xrLauncherControl::Init()
@@ -91,7 +88,7 @@ void xrLauncherControl::InitModPage()
 	xr_vector<LPSTR>* dirs =	FS.file_list_open("$mod_dir$",FS_ListFolders);
 
 	xr_vector<LPSTR>::const_iterator it = dirs->begin();
-	string_path file_full_path,s;
+	string_path s;
     for (;it!=dirs->end();++it) {
 		LPCSTR cur = (*it);
 		const CLocatorAPI::file* fn = FS.exist(s,"$mod_dir$",cur,"mod.inf");
@@ -190,15 +187,15 @@ System::Void xrLauncherControl::modRunBtn_Click(System::Object *  sender, System
 		  return;
 
     SmodInfo& info = m_mod_info->at(index);
-	CConsoleWrapper con;
-	con.Execute(info.m_cmd_line);
+	CConsole* con = ::Console;
+	con->Execute(info.m_cmd_line);
 	Close();
 }
 
 
 System::Void xrLauncherControl::runStalker_Click(System::Object *  sender, System::EventArgs *  e)
 {
-	CConsoleWrapper con;
-	con.Execute("start server(andy_test/single) client(localhost)");
+	CConsole* con = ::Console;
+	con->Execute("start server(andy_test/single) client(localhost)");
 	Close();
 }
