@@ -130,8 +130,8 @@ void CAI_Rat::FreeHunting()
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun)
 	}
 
-	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && (m_tLastSound.tpEntity->g_Team() != g_Team())){
-		if (((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) != SOUND_TYPE_WEAPON_SHOOTING)) {
+	if (m_tLastSound.dwTime >= m_dwLastUpdateTime){
+		if (((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) != SOUND_TYPE_WEAPON_SHOOTING) && (m_tLastSound.tpEntity->g_Team() != g_Team())) {
 			m_tSavedEnemy = m_tLastSound.tpEntity;
 			m_dwLostEnemyTime = Level().timeServer();
 			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun);
@@ -145,17 +145,6 @@ void CAI_Rat::FreeHunting()
 		m_fGoalChangeTime = 0;
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatUnderFire);
 	}
-	else 
-		if (((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING)) {
-			m_dwLastRangeSearch = Level().timeServer();
-			Fvector tTemp;
-			tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
-			tTemp.normalize_safe();
-			tTemp.mul(UNDER_FIRE_DISTANCE);
-			m_tSpawnPosition.add(vPosition,tTemp);
-			m_fGoalChangeTime = 0;
-			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatUnderFire);
-		}
     m_tSpawnPosition.set(m_tSafeSpawnPosition);
 	m_fGoalChangeDelta		= 10.f;
 	m_tVarGoal.set			(10.0,0.0,20.0);
@@ -287,6 +276,9 @@ void CAI_Rat::AttackFire()
 	if (eState != eCurrentState)
 		GO_TO_NEW_STATE_THIS_UPDATE(eState);
 
+	//if (!(m_Enemy.Enemy) && m_tSavedEnemy && (Level().timeServer() - m_dwLostEnemyTime < LOST_MEMORY_TIME))
+	//	m_Enemy.Enemy = m_tSavedEnemy;
+
 	CHECK_IF_GO_TO_PREV_STATE(!(m_Enemy.Enemy));// || !m_Enemy.Enemy->g_Alive())
 		
 	CHECK_IF_GO_TO_NEW_STATE((m_Enemy.Enemy->Position().distance_to(vPosition) > ATTACK_DISTANCE),aiRatAttackRun)
@@ -332,7 +324,7 @@ void CAI_Rat::AttackRun()
 	if (m_Enemy.Enemy)
 		m_dwLostEnemyTime = Level().timeServer();
 
-	if (!(m_Enemy.Enemy) && m_tSavedEnemy && ((m_tSavedEnemy->Position().distance_to(vPosition) < ffGetRange()) || (Level().timeServer() - m_dwLostEnemyTime < LOST_MEMORY_TIME)))
+	if (!(m_Enemy.Enemy) && m_tSavedEnemy && (Level().timeServer() - m_dwLostEnemyTime < LOST_MEMORY_TIME))
 		m_Enemy.Enemy = m_tSavedEnemy;
 
 	CHECK_IF_GO_TO_PREV_STATE(!m_Enemy.Enemy);// || !m_Enemy.Enemy->g_Alive())
@@ -418,7 +410,7 @@ void CAI_Rat::Retreat()
 		m_tSafeSpawnPosition.add(vPosition,tTemp);
 	}
 	else
-		if (Level().timeServer() - m_dwLostEnemyTime > RETREAT_TIME) {
+		if ((Level().timeServer() - m_dwLostEnemyTime > RETREAT_TIME) && ((m_tLastSound.dwTime > m_dwLastUpdateTime) || (m_tLastSound.tpEntity->g_Team() == g_Team() || (m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) != SOUND_TYPE_WEAPON_SHOOTING))) {
 			m_tSafeSpawnPosition.set(Level().Teams[g_Team()].Squads[g_Squad()].Leader->Position());
 			GO_TO_PREV_STATE;
 		}
