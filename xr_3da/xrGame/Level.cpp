@@ -434,7 +434,7 @@ void CLevel::OnKeyboardPress(int key)
 	case DIK_RETURN:
 		bDebug	= !bDebug;
 		return;
-	case DIK_F1:
+	case DIK_F12:
 		Render.MakeScreenshot		();
 		return;
 	case DIK_LALT:

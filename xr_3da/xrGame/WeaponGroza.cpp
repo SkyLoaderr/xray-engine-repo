@@ -35,7 +35,7 @@ CWeaponGroza::CWeaponGroza() : CWeapon("Groza")
 
 CWeaponGroza::~CWeaponGroza()
 {
-	for (int i=0; i<hFlames.size(); i++)
+	for (DWORD i=0; i<hFlames.size(); i++)
 		Device.Shader.Delete(hFlames[i]);
 
 	// sounds
