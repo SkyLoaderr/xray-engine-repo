@@ -138,7 +138,7 @@ void CGameObject::Sector_Detect	()
 	} else {
 		// We was moved - so find _new AI-Node
 		if ((AI_Node) && (pVisual)) {
-			Fvector		Pos	= pVisual->bv_Position;
+			Fvector		Pos	= pVisual->vis.sphere.P;		  
 			Pos.add		(vPosition);
 			CAI_Space&	AI = getAI();
 

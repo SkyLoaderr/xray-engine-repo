@@ -142,7 +142,7 @@ void CDummyObject::OnDeviceCreate()
 	{
 		// Physics (Box)
 		Fobb								obb;
-		Visual()->bv_BBox.get_CD			(obb.m_translate,obb.m_halfsize);
+		Visual()->vis.box.get_CD			(obb.m_translate,obb.m_halfsize);
 		obb.m_rotate.identity				();
 
 		// Physics (Elements)
