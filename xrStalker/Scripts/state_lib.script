@@ -58,8 +58,15 @@ states = {
 				animation = nil
 			},			
 	assault = {	weapon = "unstrapped",
+					movement = move.run,
+					mental = anim.danger,
+					bodystate = move.standing,
+					animstate = "stand",
+					animation = nil
+				},
+	rush = {	weapon = "unstrapped",
 				movement = move.run,
-				mental = anim.danger,
+				mental = anim.free,
 				bodystate = move.standing,
 				animstate = "stand",
 				animation = nil
