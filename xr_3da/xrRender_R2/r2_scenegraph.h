@@ -19,7 +19,7 @@ namespace SceneGraph
 	struct	mapNormalDirect
 	{
 		FixedMAP<float,IVisual*>			sorted;
-		std::xr_vector<IVisual*>			unsorted;
+		xr_vector<IVisual*>			unsorted;
 	};
 	struct	mapNormalItems		: public	mapNormalDirect										{	float	ssa;	};
 	struct	mapNormalVB			: public	FixedMAP<IDirect3DVertexBuffer9*,mapNormalItems>	{	float	ssa;	};
@@ -34,7 +34,7 @@ namespace SceneGraph
 	struct	mapMatrixDirect
 	{
 		FixedMAP<float,_MatrixItem>			sorted;
-		std::xr_vector<_MatrixItem>			unsorted;
+		xr_vector<_MatrixItem>				unsorted;
 	};
 	struct	mapMatrixItems		: public	mapMatrixDirect										{	float	ssa;	};
 	struct	mapMatrixVB			: public	FixedMAP<IDirect3DVertexBuffer9*,mapMatrixItems>	{	float	ssa;	};

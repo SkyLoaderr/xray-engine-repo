@@ -96,15 +96,15 @@ public:
 };
 
 
-typedef std::xr_vector<NvFaceInfo*>     NvFaceInfoVec;
-typedef std::xr_list  <NvFaceInfo*>     NvFaceInfoList;
-typedef std::xr_list  <NvFaceInfoVec*>  NvStripList;
-typedef std::xr_vector<NvEdgeInfo*>     NvEdgeInfoVec;
+typedef xr_vector<NvFaceInfo*>     NvFaceInfoVec;
+typedef xr_list  <NvFaceInfo*>     NvFaceInfoList;
+typedef xr_list  <NvFaceInfoVec*>  NvStripList;
+typedef xr_vector<NvEdgeInfo*>     NvEdgeInfoVec;
 
-typedef std::xr_vector<WORD> WordVec;
-typedef std::xr_vector<int> IntVec;
-typedef std::xr_vector<MyVertex> MyVertexVec;
-typedef std::xr_vector<MyFace> MyFaceVec;
+typedef xr_vector<WORD> WordVec;
+typedef xr_vector<int> IntVec;
+typedef xr_vector<MyVertex> MyVertexVec;
+typedef xr_vector<MyFace> MyFaceVec;
 
 template<class T> 
 inline void SWAP(T& first, T& second) 

@@ -30,8 +30,8 @@ namespace SceneGraph
 	// Higher level	- NORMAL
 	struct mapNormalDirect
 	{
-		FixedMAP<float,IVisual*>			sorted;
-		std::xr_vector<IVisual*>			unsorted;
+		FixedMAP<float,IVisual*>	sorted;
+		xr_vector<IVisual*>			unsorted;
 	};
 	struct mapNormalItems		: public	mapNormalDirect											{	float	ssa;	};
 	struct mapNormalMatrices	: public	FixedMAP<SMatrixList*,mapNormalItems>					{	float	ssa;	};
@@ -59,5 +59,5 @@ namespace SceneGraph
 	typedef FixedMAP<float,_LodItem>				mapLOD_T;
 	typedef mapLOD_T::TNode							mapLOD_Node;
 
-	typedef std::xr_vector<_PatchItem>					vecPatches_T;
+	typedef xr_vector<_PatchItem>					vecPatches_T;
 };
