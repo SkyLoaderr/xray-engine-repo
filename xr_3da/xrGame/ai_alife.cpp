@@ -23,6 +23,8 @@ CSE_ALifeSimulator::CSE_ALifeSimulator(xrServer *tpServer)
 		m_tpaCombatGroups[i].reserve(255);
 	}
 	getAI().m_tpALife	= this;
+	m_dwInventorySlotCount	= pSettings->r_u32("inventory","slots");
+	m_tpWeaponVector.resize(m_dwInventorySlotCount);
 }
 
 CSE_ALifeSimulator::~CSE_ALifeSimulator()

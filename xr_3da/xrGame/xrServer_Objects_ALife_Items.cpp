@@ -40,7 +40,12 @@ CSE_ALifeItem::CSE_ALifeItem(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(ca
 
 	m_iGridWidth				= pSettings->r_s32(caSection, "inv_grid_width");
 	m_iGridHeight				= pSettings->r_s32(caSection, "inv_grid_height");
+	R_ASSERT2					((m_iGridWidth <= RUCK_WIDTH) && (m_iGridHeight <= RUCK_HEIGHT),"Invalid inventory grid sizes");
+	m_iVolume					= m_iGridWidth*m_iGridHeight;
 	m_fDeteriorationValue		= 0;
+	m_qwGridBitMask				= 0;
+	for (int i=0; i<m_iGridHeight; i++)
+		m_qwGridBitMask			|= (u64(1) << (m_iGridWidth + i*RUCK_WIDTH)) - 1;
 }
 
 void CSE_ALifeItem::STATE_Write				(NET_Packet &tNetPacket)

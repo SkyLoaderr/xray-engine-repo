@@ -281,11 +281,6 @@ void SortRuckAndBelt(CInventory *pInventory)
 //для вещи
 //вещи размещаются по тому же принципу, что и 
 //в UIInventoryWnd: сначала самые объемные
-
-#define RUCK_HEIGHT 8
-#define RUCK_WIDTH 7
-
-
 //сравнивает элементы по пространству занимаемому ими в рюкзаке
 bool CInventory::GreaterRoomInRuck(PIItem item1, PIItem item2)
 {

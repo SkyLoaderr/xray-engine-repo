@@ -354,6 +354,7 @@ void CSE_ALifeGraphRegistry::vfAttachItem(CSE_Abstract &CSE_Abstract, CSE_ALifeI
 	CSE_ALifeTraderAbstract *tpALifeTraderParams = dynamic_cast<CSE_ALifeTraderAbstract*>(&CSE_Abstract);
 	VERIFY(tpALifeTraderParams);
 	tpALifeTraderParams->m_fCumulativeItemMass += tpALifeItem->m_fMass;
+	tpALifeTraderParams->m_iCumulativeItemVolume += tpALifeItem->m_iVolume;
 }
 
 void CSE_ALifeGraphRegistry::vfDetachItem(CSE_Abstract &CSE_Abstract, CSE_ALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bALifeRequest)
@@ -371,6 +372,7 @@ void CSE_ALifeGraphRegistry::vfDetachItem(CSE_Abstract &CSE_Abstract, CSE_ALifeI
 	CSE_ALifeTraderAbstract *tpTraderParams = dynamic_cast<CSE_ALifeTraderAbstract*>(&CSE_Abstract);
 	VERIFY(tpTraderParams);
 	tpTraderParams->m_fCumulativeItemMass -= tpALifeItem->m_fMass;
+	tpTraderParams->m_iCumulativeItemVolume -= tpALifeItem->m_iVolume;
 }
 
 void CSE_ALifeGraphRegistry::vfAssignGraphPosition(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract)

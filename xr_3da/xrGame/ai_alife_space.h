@@ -25,6 +25,10 @@
 #define SECTION_HEADER				"location_"
 #define SAVE_EXTENSION				".sav"
 #define SPAWN_NAME					"game.spawn"
+// inventory rukzak size
+#define RUCK_HEIGHT					8
+#define RUCK_WIDTH					7
+#define MAX_ITEM_VOLUME				((RUCK_WIDTH)*(RUCK_HEIGHT))
 
 class CSE_ALifeEventGroup;
 class CSE_ALifeDynamicObject;
@@ -39,6 +43,7 @@ class CSE_ALifeOrganization;
 class CSE_ALifeArtefactDemand;
 class CSE_ALifeArtefactNeed;
 class CSE_ALifeItem;
+class CSE_ALifeItemWeapon;
 
 namespace ALife {
 	typedef u64	_CLASS_ID;									// Class ID
@@ -301,6 +306,9 @@ namespace ALife {
 	DEFINE_VECTOR	(STraderSupply,				TRADER_SUPPLY_VECTOR,			TRADER_SUPPLY_IT);
 	DEFINE_VECTOR	(SGraphPoint,				GRAPH_POINT_VECTOR,				GRAPH_POINT_IT);
 	DEFINE_VECTOR	(SArtefactTraderOrder,		ARTEFACT_TRADER_ORDER_VECTOR,	ARTEFACT_TRADER_ORDER_IT);
+	DEFINE_VECTOR	(CSE_ALifeItem*,			ITEM_P_VECTOR,					ITEM_P_IT);
+	DEFINE_VECTOR	(CSE_ALifeItemWeapon*,		WEAPON_P_VECTOR,				WEAPON_P_IT);
+	
 
 	DEFINE_SVECTOR	(ANOMALY_P_VECTOR,			eAnomalousZoneTypeDummy,		ANOMALY_P_VECTOR_SVECTOR,	ANOMALY_P_VECTOR_SIT)
 

@@ -149,7 +149,7 @@ void CSE_ALifeSimulator::vfAppendItemList(OBJECT_VECTOR &tObjectVector, ITEM_P_L
 	for ( ; I != E; I++) {
 		CSE_ALifeItem *l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(tpfGetObjectByID(*I));
 		if (l_tpALifeItem)
-			tItemList.push_back(l_tpALifeItem);
+			tItemList.push_back				(l_tpALifeItem);
 	}
 }
 
@@ -163,7 +163,7 @@ void CSE_ALifeSimulator::vfFinishCombat(ECombatResult tCombatResult)
 			for (int I=0, N=l_tpALifeAbstractGroup->m_tpMembers.size() ; I<N; I++) {
 				CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(tpfGetObjectByID(l_tpALifeAbstractGroup->m_tpMembers[I]));
 				R_ASSERT2					(l_tpALifeMonsterAbstract,"Invalid group member!");
-				l_tpALifeMonsterAbstract->vfUpdateWeaponAmmo();
+				l_tpALifeMonsterAbstract->vfUpdateWeaponAmmo	();
 				if (l_tpALifeMonsterAbstract->fHealth <= 0) {
 					vfAppendItemList							(l_tpALifeMonsterAbstract->children,m_tpItemList);
 					l_tpALifeMonsterAbstract->m_bDirectControl	= true;
@@ -176,7 +176,7 @@ void CSE_ALifeSimulator::vfFinishCombat(ECombatResult tCombatResult)
 			}
 		}
 		else {
-			m_tpaCombatMonsters[i]->vfUpdateWeaponAmmo();
+			m_tpaCombatMonsters[i]->vfUpdateWeaponAmmo			();
 			if (m_tpaCombatMonsters[i]->fHealth <= 0) {
 				vfAppendItemList								(m_tpaCombatMonsters[i]->children,m_tpItemList);
 				vfAssignDeathPosition							(m_tpaCombatMonsters[i], m_tpaCombatMonsters[0]->m_tGraphID);

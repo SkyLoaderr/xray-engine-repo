@@ -24,6 +24,7 @@ class CSE_ALifeItemWeapon;
 class CSE_ALifeTraderAbstract : virtual public CSE_Abstract {
 public:
 	float							m_fCumulativeItemMass;
+	int								m_iCumulativeItemVolume;
 	u32								m_dwMoney;
 	EStalkerRank					m_tRank;
 	float							m_fMaxItemMass;
@@ -195,7 +196,8 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 	CSE_ALifeSimulator				*m_tpALife;
 	svector<char,5>					m_cpEquipmentPreferences;
 	svector<char,4>					m_cpMainWeaponPreferences;
-	ITEM_P_LIST					m_tpTempItemBuffer;
+	ITEM_P_VECTOR					m_tpTempItemBuffer;
+	svector<svector<bool,RUCK_WIDTH>,RUCK_HEIGHT>	m_bppInventoryGrid;
 
 
 									CSE_ALifeHumanAbstract	(LPCSTR					caSection);

@@ -13,12 +13,14 @@
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItem,CSE_ALifeDynamicObjectVisual)
 	float							m_fMass;
+	int								m_iVolume;
 	u32								m_dwCost;
 	s32								m_iHealthValue;
 	s32								m_iFoodValue;
 	float							m_fDeteriorationValue;
 	int								m_iGridWidth;
 	int								m_iGridHeight;
+	u64								m_qwGridBitMask;
 
 									CSE_ALifeItem	(LPCSTR caSection);
 	IC	bool						bfAttached		()

@@ -207,6 +207,7 @@ void CSE_ALifeSimulator::vfObjectInfo(_OBJECT_ID	tObjectID)
 		Msg("* Rank          : %d",tpALifeTraderParams->m_tRank);
 		Msg("* Money         : %d",tpALifeTraderParams->m_dwMoney);
 		Msg("* Item mass     : %7.2f",tpALifeTraderParams->m_fCumulativeItemMass);
+		Msg("* Item volume   : %d",tpALifeTraderParams->m_iCumulativeItemVolume);
 		OBJECT_IT I			= tpALifeTraderParams->children.begin();
 		OBJECT_IT E			= tpALifeTraderParams->children.end();
 		S[0] = 0;

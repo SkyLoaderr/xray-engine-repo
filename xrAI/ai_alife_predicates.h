@@ -60,12 +60,51 @@ public:
 };
 
 class CSortItemPredicate {
-private:
-	ALife::D_OBJECT_MAP				*m_tpMap;
 public:
 	IC bool							operator()							(const CSE_ALifeItem *tpALifeItem1, const CSE_ALifeItem *tpALifeItem2)  const
 	{
 		return						(float(tpALifeItem1->m_dwCost)/1/**tpALifeItem1->m_fMass/**/ > float(tpALifeItem2->m_dwCost)/1/**tpALifeItem2->m_fMass/**/);
+	};
+};
+
+class CRemoveAttachedItemsPredicate {
+public:
+	IC bool							operator()							(const CSE_ALifeItem *tpALifeItem1)  const
+	{
+		return						(tpALifeItem1->ID_Parent != 0xffff);
+	};
+};
+
+class CSortItemVolumePredicate {
+public:
+	IC bool							operator()							(const CSE_ALifeItem *tpALifeItem1, const CSE_ALifeItem *tpALifeItem2)  const
+	{
+		return						(float(tpALifeItem1->m_iGridWidth*tpALifeItem1->m_iGridHeight) > float(tpALifeItem2->m_iGridWidth*tpALifeItem2->m_iGridHeight));
+	};
+};
+
+class CRemoveSlotAndCellItemsPredicate {
+public:
+	u32								m_dwMaxCount;
+	u32								m_dwCurCount;
+	WEAPON_P_VECTOR					*m_tpWeaponVector;
+
+									CRemoveSlotAndCellItemsPredicate	(WEAPON_P_VECTOR *tpWeaponVector, u32 dwMaxCount) : m_dwMaxCount(dwMaxCount), m_dwCurCount(0)
+	{
+		m_tpWeaponVector			= tpWeaponVector;
+	}
+
+	IC bool							operator()							(const CSE_ALifeItem *tpALifeItem)
+	{
+		const CSE_ALifeItemWeapon	*l_tpALifeItemWeapon = dynamic_cast<const CSE_ALifeItemWeapon*>(tpALifeItem);
+		if (l_tpALifeItemWeapon && ((*m_tpWeaponVector)[l_tpALifeItemWeapon->m_dwSlot] == l_tpALifeItemWeapon))
+			return					(true);
+		else
+			if ((m_dwCurCount < m_dwMaxCount) && (tpALifeItem->m_iVolume == 1)) {
+				m_dwCurCount++;
+				return				(true);
+			}
+		return						(false);
 	};
 };
 

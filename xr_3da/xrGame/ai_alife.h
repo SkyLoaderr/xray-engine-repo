@@ -86,6 +86,8 @@ public:
 	bool							m_bLoaded;
 	LPSTR							*m_cppServerOptions;
 	float							m_fOnlineDistance;
+	u32								m_dwInventorySlotCount;
+	WEAPON_P_VECTOR					m_tpWeaponVector;	
 	
 	// temporary buffers for combats
 	ITEM_P_LIST						m_tpItemList;

@@ -31,7 +31,8 @@
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeTraderAbstract::CSE_ALifeTraderAbstract(LPCSTR caSection) : CSE_Abstract(caSection)
 {
-	m_fCumulativeItemMass		= 0.0f;
+	m_fCumulativeItemMass		= 0.f;
+	m_iCumulativeItemVolume		= 0;
 	m_dwMoney					= 0;
 	if (pSettings->line_exist(caSection, "money"))
 		m_dwMoney 				= pSettings->r_u32(caSection, "money");
@@ -63,6 +64,7 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 void CSE_ALifeTraderAbstract::UPDATE_Write	(NET_Packet &tNetPacket)
 {
 	tNetPacket.w_float			(m_fCumulativeItemMass);
+//	tNetPacket.w_float			(m_iCumulativeItemVolume);
 	tNetPacket.w_u32			(m_dwMoney);
 	tNetPacket.w_u32			(m_tRank);
 };
@@ -70,6 +72,7 @@ void CSE_ALifeTraderAbstract::UPDATE_Write	(NET_Packet &tNetPacket)
 void CSE_ALifeTraderAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
 {
 	tNetPacket.r_float			(m_fCumulativeItemMass);
+//	tNetPacket.r_float			(m_iCumulativeItemVolume);
 	tNetPacket.r_u32			(m_dwMoney);
 	u32							dwDummy;
 	tNetPacket.r_u32			(dwDummy);

@@ -45,7 +45,7 @@ void CSE_ALifeSimulator::vfCheckForTheInteraction(CSE_ALifeMonsterAbstract *tpAL
 							break;
 						}
 					
-					l_iGroupIndex	^= 1;
+					l_iGroupIndex		^= 1;
 					if (m_tpaCombatGroups[l_iGroupIndex].empty()) {
 						l_tCombatResult	= l_iGroupIndex ? eCombatResult2Kill1 : eCombatResult1Kill2;
 						break;
@@ -75,25 +75,18 @@ void CSE_ALifeSimulator::vfCommunicateWithCustomer(CSE_ALifeHumanAbstract *tpALi
 	if (tpfGetTaskByID(tpALifeHumanAbstract->m_dwCurTaskID,true)) {
 		OBJECT_IT								I;
 		if (tpALifeHumanAbstract->bfCheckIfTaskCompleted(I)) {
-			D_OBJECT_PAIR_IT						J = m_tObjectRegistry.find(*I);
+			D_OBJECT_PAIR_IT					J = m_tObjectRegistry.find(*I);
 			R_ASSERT2							(J != m_tObjectRegistry.end(), "Specified object hasn't been found in the Object registry!");
 			CSE_ALifeItem						*tpALifeItem = dynamic_cast<CSE_ALifeItem *>((*J).second);
 			if (tpTraderAbstract->m_dwMoney >= tpALifeItem->m_dwCost) {
-				// changing item parent
-				tpTraderAbstract->children.push_back(*I);
-				tpALifeHumanAbstract->children.erase(I);
-				tpALifeItem->ID_Parent			= tpTraderAbstract->ID;
-				// changing cumulative mass
-				tpTraderAbstract->m_fCumulativeItemMass += tpALifeItem->m_fMass;
-				tpALifeHumanAbstract->m_fCumulativeItemMass -= tpALifeItem->m_fMass;
+				vfDetachItem					(*tpALifeHumanAbstract,tpALifeItem,tpALifeHumanAbstract->m_tGraphID);
+				vfAttachItem					(*tpTraderAbstract,tpALifeItem,tpALifeHumanAbstract->m_tGraphID);
 				// paying/receiving money
 				tpTraderAbstract->m_dwMoney		-= tpALifeItem->m_dwCost;
 				tpALifeHumanAbstract->m_dwMoney += tpALifeItem->m_dwCost;
 			}
 		}
 	}
-
 	// update events
-
-	// update tasks
+#pragma todo("Dima to Dima: Update events")
 }
