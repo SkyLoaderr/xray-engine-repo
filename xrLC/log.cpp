@@ -177,8 +177,12 @@ void __cdecl logThread(void *dummy)
 		Msg("Startup time: %s",_strtime(tmpbuf));
 	}
 
-	BOOL bHighPriority	= FALSE;
-	if (strstr(GetCommandLine(),"-oles")!=NULL)	bHighPriority	= TRUE;
+	BOOL		bHighPriority	= FALSE;
+	string128	u_name;
+	DWORD		u_size	= sizeof(u_name)-1;
+	GetUserName	(u_name,&u_size);
+	_strlwr		(u_name);
+	if ((0==strcmp(u_name,"oles"))||(0==strcmp(u_name,"alexmx")))	bHighPriority	= TRUE;
 
 	// Main cycle
 	DWORD	LogSize = 0;
