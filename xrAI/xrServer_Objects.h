@@ -85,8 +85,10 @@
 // 66 - CSE_ALifeObjectPhysic			CSE_ALifeCar - heritage changed
 // 67 - CSE_ALifeCustomZone				new class appended, heritage changed
 // 68 - CSE_ALifeHumanStalker,				
-//		CSE_ALifeMonsterBiting			heritage changed
+//		CSE_ALifeMonsterBiting			new class appended, heritage changed
 // 69 -	object broker changed from this version
+//		CSE_ALifeObjectHangingLamp,				
+//		CSE_ALifeHelicopter				heritage changed
 // 70 -	CSE_Abstract					appended with m_script_version, script version support
 //------------------------------------------------------------------------------
 
