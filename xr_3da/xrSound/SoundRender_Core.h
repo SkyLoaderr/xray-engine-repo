@@ -34,6 +34,7 @@ public:
 	SListener							Listener;
 	CTimer								Timer;
 	sound_event*						Handler;
+	DSCAPS								dsCaps;
 private:
 	// Collider
 	CDB::COLLIDER						geom_DB;

@@ -209,10 +209,11 @@ void	CSoundRender_Target::fill_parameters()
 
 		float	_freq				= pEmitter->p_source.freq;
 		s32		hw_freq				= iFloor	(_freq * float(wfx.nSamplesPerSec) + EPS);
-		if (_abs(hw_freq-cache_hw_freq)>50)
-		{
+		if (_abs(hw_freq-cache_hw_freq)>50)	{
 			cache_hw_freq				= hw_freq;
-			R_CHK(pBuffer->SetFrequency	( hw_freq	));
+			s32		hw_freq_set			= hw_freq;
+			clamp	(hw_freq_set,s32(dwMinSecondarySampleRate),s32(dwMaxSecondarySampleRate));
+			R_CHK	(pBuffer->SetFrequency	( hw_freq_set	));
 		}
 	}
 	

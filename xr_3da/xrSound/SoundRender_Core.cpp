@@ -71,7 +71,6 @@ void CSoundRender_Core::_initialize	(u32 window)
 	}
 
 	// Calculate primary buffer format.
-	DSCAPS						dsCaps;
 	dsCaps.dwSize				= sizeof(DSCAPS);
 	R_ASSERT					(pDevice);
 	R_CHK						(pDevice->GetCaps (&dsCaps));
