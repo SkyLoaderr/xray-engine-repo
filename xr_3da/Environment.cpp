@@ -179,10 +179,6 @@ void CEnvironment::OnMove()
 		// update fog params
 		float start	= (1.0f - c_Fogness)*0.85f * c_Far;
 		float end	= 0.93f * c_Far;
-		if (HW.Caps.bTableFog) {
-			start/=c_Far;
-			end  /=c_Far;
-		}
 		CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGSTART,	*(DWORD *)(&start)	));
 		CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGEND,	*(DWORD *)(&end)	));
 
