@@ -73,7 +73,7 @@ void	CRenderTarget::u_compute_texgen_screen	(Fmatrix& m_Texgen)
 }
 
 // 2D texgen for jitter (texture adjustment matrix)
-void	CRenderTarget::u_compute_texgen_jitter	(Fmatrix& dest)
+void	CRenderTarget::u_compute_texgen_jitter	(Fmatrix&		m_Texgen_J)
 {
 	// place into	0..1 space
 	Fmatrix			m_TexelAdjust		= 
