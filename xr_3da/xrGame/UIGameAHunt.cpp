@@ -150,13 +150,17 @@ void			CUIGameAHunt::OnFrame()
 
 	HUD().pFontDI->SetSize	(0.02f);
 	CActor* pCurActor = dynamic_cast<CActor*> (Level().CurrentEntity());
+
+	m_gameCaptions.setCaption(m_buy_msg_caption, "");
+	m_gameCaptions.setCaption(m_score_caption, "");
+	m_gameCaptions.setCaption(m_todo_caption, "");
+	m_gameCaptions.setCaption(m_round_result_caption, "");
 	switch (m_game->phase)
 	{
 	case GAME_PHASE_INPROGRESS:
 		{
 			///HUD().GetUI()->ShowIndicators();
 
-			m_gameCaptions.setCaption(m_buy_msg_caption, "");
 			if (m_bBuyEnabled)
 			{
 				if (pCurActor && pCurActor->g_Alive() && !pCurBuyMenu->IsShown())
@@ -167,7 +171,6 @@ void			CUIGameAHunt::OnFrame()
 				};
 			};
 
-			m_gameCaptions.setCaption(m_score_caption, "");
 			if (pCurActor && !pCurBuyMenu->IsShown())
 			{
 				game_TeamState team0 = m_game->teams[0];
@@ -188,7 +191,6 @@ void			CUIGameAHunt::OnFrame()
 				m_gameCaptions.setCaption(m_score_caption, S);
 
 	
-			m_gameCaptions.setCaption(m_todo_caption, "");
 			if ( (m_game->artefactBearerID==0) && (m_game->artefactID!=0) )
 				{
 //					StaticMsg.Out				(0.0f, -0.85f, "Grab the Artefact");
