@@ -87,9 +87,9 @@ void CCameraDebug::OnCameraActivate(CCameraBase* old_cam)
 	savedP.set(Device.vCameraPosition);
 	savedD.set(Device.vCameraDirection);
 	savedN.set(Device.vCameraTop);
-	savedStyle = old_cam->style;
-	savedDF	= psDeviceFlags;
-	psDeviceFlags |= rsClearBB;
+	savedStyle				= old_cam->style;
+	savedDF.set				(psDeviceFlags);
+	psDeviceFlags.set		(rsClearBB,TRUE);
 	Device.seqRender.Add	(this,REG_PRIORITY_HIGH+1111);
 	iCapture				();
 	bDebug					= TRUE;
@@ -100,7 +100,7 @@ void CCameraDebug::OnCameraDeactivate()
 	iRelease				();
 	Device.seqRender.Remove	(this);
 
-	psDeviceFlags = savedDF;
+	psDeviceFlags.set		(savedDF);
 }
 
 void CCameraDebug::OnRender()

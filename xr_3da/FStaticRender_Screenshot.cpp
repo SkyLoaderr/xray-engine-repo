@@ -39,7 +39,7 @@ IC void MouseRayFromPoint	( Fvector& direction, int x, int y, Fmatrix& m_CamMat 
 void CRender::Screenshot		(BOOL bSquare)
 {
 	if (!Device.bReady) return;
-	if ((psDeviceFlags&rsFullscreen) == 0) {
+	if ((psDeviceFlags.test(rsFullscreen)) == 0) {
 		Log("! Can't capture screen while in windowed mode...");
 		return;
 	}
