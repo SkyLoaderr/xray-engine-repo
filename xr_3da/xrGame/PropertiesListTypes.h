@@ -141,7 +141,7 @@ public:
     };
     Flags32				m_Flags;
 public:
-						PropItem		(EPropType _type):type(_type),prop_color(clBlack),val_color(clBlack),item(0),key(0),subitem(1),OnClickEvent(0),OnDrawTextEvent(0),OnItemFocused(0){m_Flags.zero();}
+						PropItem		(EPropType _type):type(_type),prop_color(0),val_color(0),item(0),key(0),subitem(1),OnClickEvent(0),OnDrawTextEvent(0),OnItemFocused(0){m_Flags.zero();}
 	virtual 			~PropItem		()
     {
     	for (PropValueIt it=values.begin(); values.end() != it; ++it)
@@ -257,7 +257,7 @@ class CanvasValue: public PropValue{
 	ref_str				value;
 public:
 	typedef fastdelegate::FastDelegate3<CanvasValue*,PropValue*,bool&>			TOnTestEqual;
-	typedef fastdelegate::FastDelegate3<CanvasValue*,void*/* TCanvas* */, const Irect&>	TOnDrawCanvasEvent;
+	typedef fastdelegate::FastDelegate3<CanvasValue*,void* /* TCanvas* */, const Irect&>	TOnDrawCanvasEvent;
 public:
     int					height;
     TOnTestEqual		OnTestEqual;
@@ -282,7 +282,7 @@ public:
     enum{
     	flFirstOnly		= (1<<0)
     };
-    Flags8				m_Flags;
+    Flags32				m_Flags;
 public:
 						ButtonValue		(const ref_str& val, u32 flags)
 	{
@@ -328,7 +328,7 @@ public:
 typedef CustomValue<BOOL>		BOOLValue;
 //------------------------------------------------------------------------------
 
-IC bool operator == (const WaveForm& A, const WaveForm& B){return A.Similar(B);}
+IC bool operator == (const WaveForm& A, const WaveForm& B){return !!A.Similar(B);}
 class WaveValue: public CustomValue<WaveForm>{
 public:
 						WaveValue		(TYPE* val):CustomValue<WaveForm>(val){};
@@ -337,7 +337,7 @@ public:
 //------------------------------------------------------------------------------
 
 IC bool operator == (const Fcolor& A, const Fcolor& B)
-{	return A.similar_rgba(B); }
+{	return !!A.similar_rgba(B); }
 typedef CustomValue<Fcolor>		ColorValue;
 //------------------------------------------------------------------------------
 
@@ -390,7 +390,7 @@ IC ref_str rstring_sprintf(ref_str& s, const float& V, int dec)
 }
 //------------------------------------------------------------------------------
 IC bool operator == (const Fvector& A, const Fvector& B)
-{	return A.similar(B); }
+{	return !!A.similar(B); }
 IC void clamp(Fvector& V, const Fvector& mn, const Fvector& mx)
 {
     clamp(V.x,mn.x,mx.x);
@@ -447,10 +447,11 @@ class FlagValue: public CustomValue<T>, public FlagValueCustom
 {
 public:
 	typedef T			TYPE;
+	typedef typename T::TYPE FLAG_TYPE;
 public:
-    T::TYPE				mask;
+    FLAG_TYPE			mask;
 public:
-						FlagValue		(T* val, T::TYPE _mask, LPCSTR c0, LPCSTR c1, u32 flags):CustomValue<T>(val),FlagValueCustom(flags,c0,c1),mask(_mask){}
+						FlagValue		(T* val, FLAG_TYPE _mask, LPCSTR c0, LPCSTR c1, u32 flags):CustomValue<T>(val),FlagValueCustom(flags,c0,c1),mask(_mask){}
     virtual ref_str		GetText			(TOnDrawTextEvent OnDrawText)
     {	
         ref_str 		draw_val;

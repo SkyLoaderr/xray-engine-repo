@@ -20,8 +20,8 @@ enum EChooseMode{
 };
 
 struct SChooseItem{
-	AnsiString	name;
-	AnsiString	hint;
+	ref_str		name;
+	ref_str		hint;
     bool		bTHM;
     SChooseItem	(LPCSTR nm, LPCSTR ht, bool thm=false):name(nm),hint(ht),bTHM(thm){}
 };
@@ -36,7 +36,7 @@ typedef fastdelegate::FastDelegate4<SChooseItem*, ECustomThumbnail*&, ref_sound&
 typedef void (*TOnChooseFillEvents)();
 
 struct SChooseEvents{
-	AnsiString			caption;
+	ref_str				caption;
     TOnChooseFill 		on_fill;
     TOnChooseSelect 	on_sel;
     bool				thm;

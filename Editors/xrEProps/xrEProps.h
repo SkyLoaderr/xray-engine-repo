@@ -29,6 +29,9 @@ typedef fastdelegate::FastDelegate1<ChooseItemVec&>				TOnChooseFillProp;
 #	include "mxPlacemnt.hpp"
 	DEFINE_VECTOR	(TElTreeItem*,ElItemsVec,ElItemsIt);
     typedef fastdelegate::FastDelegate1<TElTreeItem*>			TOnILItemFocused;
+	//---------------------------------------------------------------------------
+	void XR_EPROPS_API CheckWindowPos(TForm* form);
+	//---------------------------------------------------------------------------
 #endif
 
 //------------------------------------------------------------------------------
@@ -92,7 +95,12 @@ public:
     virtual ref_str  			__stdcall	PrepareKey			(LPCSTR pref0,	LPCSTR pref1, 	LPCSTR pref2,	LPCSTR key)=0;
 };
 //---------------------------------------------------------------------------
-IPropHelper& XR_EPROPS_API PHelper ();
+#ifdef __BORLANDC__
+	extern "C" XR_EPROPS_API IPropHelper& PHelper ();
+#else
+	typedef IPropHelper& (__stdcall *TPHelper) ();
+	extern TPHelper PHelper;
+#endif
 //---------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
@@ -101,7 +109,9 @@ IPropHelper& XR_EPROPS_API PHelper ();
 class XR_EPROPS_API IItemList
 {
 protected:                
-    virtual void 		OnCreate				(LPCSTR title, TWinControl* parent, TAlign align, u32 flags)=0;
+#ifdef __BORLANDC__
+	virtual void 		OnCreate				(LPCSTR title, TWinControl* parent, TAlign align, u32 flags)=0;
+#endif
     virtual void 		OnDestroy				()=0;
 public:
 	enum{
@@ -119,7 +129,9 @@ public:
 //        ilRT_UpdateLocked=(1<<31),
     };
 public:
+#ifdef __BORLANDC__
 	static IItemList* 	CreateForm				(LPCSTR title, TWinControl* parent=0, TAlign align=alNone, u32 flags=ilMultiSelect|ilFolderStore);
+#endif
 	static IItemList* 	CreateModalForm			(LPCSTR title, u32 flags=ilMultiSelect|ilFolderStore);
 	static void 		DestroyForm				(IItemList*& props);
 
@@ -141,9 +153,8 @@ public:
     virtual void 		UnlockUpdating			()=0;
     virtual bool		IsLocked				()=0;
 
-    virtual void		SetImages				(TImageList* image_list)=0;
-
 #ifdef __BORLANDC__
+    virtual void		SetImages				(TImageList* image_list)=0;
     virtual int  		GetSelected				(ElItemsVec& items)=0;
     virtual TElTreeItem*GetSelected				()=0;
 
@@ -152,11 +163,11 @@ public:
 
     virtual void  		SaveParams				(TFormStorage* fs)=0;
     virtual void  		LoadParams				(TFormStorage* fs)=0;
+	virtual void		SetOnItemFocusedEvent	(TOnILItemFocused)=0;
 #endif
 
 	virtual void 		GenerateObjectName		(ref_str name, LPCSTR start_node, LPCSTR pref="object", bool num_first=false)=0;
 
-    virtual void		SetOnItemFocusedEvent	(TOnILItemFocused)=0;
     virtual void		SetOnItemsFocusedEvent	(TOnILItemsFocused)=0;
     virtual void		SetOnCloseEvent			(TOnILCloseEvent)=0;
     virtual void		SetOnItemRenameEvent	(TOnItemRename e)=0;
@@ -176,13 +187,10 @@ public:
 public:
 	virtual ListItem*			__stdcall	CreateItem			(ListItemsVec& items, LPCSTR key, int type, u32 item_flags=0, void* object=0)=0;
 };
-//------------------------------------------------------------------------------
-IListHelper& XR_EPROPS_API LHelper ();
-//------------------------------------------------------------------------------
 
-//---------------------------------------------------------------------------
-void XR_EPROPS_API CheckWindowPos(TForm* form);
-//---------------------------------------------------------------------------
+#ifdef __BORLANDC__
+	extern "C" XR_EPROPS_API IListHelper& LHelper ();
+#endif
 
 #endif
  
