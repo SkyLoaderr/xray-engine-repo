@@ -31,7 +31,7 @@ public:
 	SLevel						m_tLevel;
 	SCompressedGraphVertex		*m_tpaGraph;
 
-								CLevelGraph(SLevel &tLevel)
+								CLevelGraph(SLevel &tLevel, u32 &dwOffset)
 	{
 		m_tLevel				= tLevel;
 		CVirtualFileStream		F(m_tLevel.caLevelName);
@@ -48,10 +48,12 @@ public:
 			(*I).tVertexType		= m_tpaGraph[I - B].tVertexType;
 			(*I).tLevelID			= m_tLevel.tLevelID;
 			(*I).tNeighbourCount	= m_tpaGraph[I - B].tNeighbourCount;
-			(*I).tpaEdges			= (SGraphEdge *)xr_malloc(sizeof(SGraphEdge)*(*I).tNeighbourCount);
+			(*I).tpaEdges			= (SGraphEdge *)xr_malloc((*I).tNeighbourCount*sizeof(SGraphEdge));
 			SGraphEdge				*tpaEdges = (SGraphEdge *)((BYTE *)m_tpaGraph + m_tpaGraph[I - B].dwEdgeOffset);
-			for (int i=0; i<(int)(*I).tNeighbourCount; i++)
+			for (int i=0; i<(int)(*I).tNeighbourCount; i++) {
 				(*I).tpaEdges[i]	= tpaEdges[i];
+				(*I).tpaEdges[i].dwVertexNumber += dwOffset;
+			}
 		}
 	};
 
@@ -70,7 +72,7 @@ public:
 		m_tpVertices[dwVertexNumber].tpaEdges[m_tpVertices[dwVertexNumber].tNeighbourCount - 1] = tGraphEdge;
 	}
 
-	void						vfSaveVertices(CFS_Memory &tMemoryStream, u32 &dwOffset)
+	void						vfSaveVertices(CFS_Memory &tMemoryStream, u32 dwOffset)
 	{
 		GRAPH_VERTEX_IT			I = m_tpVertices.begin();
 		GRAPH_VERTEX_IT			E = m_tpVertices.end();
@@ -102,14 +104,16 @@ void xrMergeGraphs()
 	// load all the graphs
 	if (!pSettings->SectionExists("game_levels"))
 		THROW;
-	GRAPH_P_VECTOR	tpGraphs;
-	string256		S1, S2;
-	SLevel			tLevel;
+	GRAPH_P_VECTOR					tpGraphs;
+	string256						S1, S2;
+	SLevel							tLevel;
+	u32								dwOffset = 0;
 	for (tLevel.tLevelID =0; pSettings->LineExists("game_levels",itoa(tLevel.tLevelID,S1,10)); tLevel.tLevelID++) {
 		sscanf(pSettings->ReadSTRING("game_levels",itoa(tLevel.tLevelID,S1,10)),"%f,%f,%f,%s",&(tLevel.tOffset.x),&(tLevel.tOffset.y),&(tLevel.tOffset.z),S1);
 		strconcat(S2,"gamedata\\levels\\",S1);
 		strconcat(tLevel.caLevelName,S2,"\\level.graph");
-		tpGraphs.push_back(xr_new<CLevelGraph>(tLevel));
+		tpGraphs.push_back(xr_new<CLevelGraph>(tLevel,dwOffset));
+		dwOffset += tpGraphs[tpGraphs.size() - 1]->m_tGraphHeader.dwVertexCount;
 	}
 	R_ASSERT(tpGraphs.size());
 	
@@ -119,13 +123,6 @@ void xrMergeGraphs()
 	//		call vfAddEdge of the 2 corrsponding graphs
 	
 	// save all the graphs
-	u32								dwOffset = 0;
-	{
-		GRAPH_P_IT					I = tpGraphs.begin();
-		GRAPH_P_IT					E = tpGraphs.end();
-		for ( ; I != E; I++)
-			dwOffset				+= (*I)->m_tGraphHeader.dwVertexCount;
-	}
 	CFS_Memory						F;
 	SGraphHeader					tGraphHeader;
 	tGraphHeader.dwLevelCount		= tpGraphs.size();
