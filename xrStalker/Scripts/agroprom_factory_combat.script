@@ -27,6 +27,8 @@ local wpns = {}
 local combat_duration = 25000   -- продолжительность боя в мс
 
 function on_enter( zone, obj )
+	printf( "on_enter. zone=(%s, %d) obj=(%s, %d)", zone:name(), zone:id(), obj:name(), obj:id() )
+
     if obj:id() == the_actor:id() then
         idle = false
         printf( "actor has entered zone %s", zone:name() )
