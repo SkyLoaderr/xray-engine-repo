@@ -303,6 +303,9 @@
 			Name="levels"
 			Filter="">
 			<File
+				RelativePath=".\level_tasks.script">
+			</File>
+			<File
 				RelativePath=".\xr_agro_boar.script">
 			</File>
 			<File
