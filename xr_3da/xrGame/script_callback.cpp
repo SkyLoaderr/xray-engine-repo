@@ -17,6 +17,17 @@ CScriptCallback::~CScriptCallback	()
 	xr_delete(m_lua_object);
 }
 
+CScriptCallback::CScriptCallback	(const CScriptCallback &callback)
+{
+	if (callback.m_lua_function)
+		m_lua_function	= xr_new<luabind::functor<void> >(*callback.m_lua_function);
+
+	if (callback.m_lua_object)
+		m_lua_object	= xr_new<luabind::object>(*callback.m_lua_object);
+
+	m_method_name		= callback.m_method_name;
+}
+
 void CScriptCallback::callback		()
 {
 	if (m_lua_function)

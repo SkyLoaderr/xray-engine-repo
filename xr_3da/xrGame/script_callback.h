@@ -18,6 +18,7 @@ private:
 
 public:
 	IC								CScriptCallback		();
+									CScriptCallback		(const CScriptCallback &callback);
 	virtual							~CScriptCallback	();
 			void					set					(const luabind::functor<void> &lua_function);
 			void					set					(const luabind::object &lua_object, LPCSTR method);
