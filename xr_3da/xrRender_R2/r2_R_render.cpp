@@ -73,8 +73,8 @@ void CRender::Render	()
 		Target.accum_direct						();
 	}
 
-	// Point lighting (unshadowed)
-	if (1)
+	// Point/spot lighting (unshadowed)
+	if (0)
 	{
 		Target.phase_accumulator		();
 		HOM.Disable						();
@@ -88,7 +88,7 @@ void CRender::Render	()
 	}
 
 	// Point/spot lighting (shadowed)
-	if (1)
+	if (0)
 	{
 		HOM.Disable								();
 		vector<light*>&	Lvec	= Lights.v_selected_shadowed;

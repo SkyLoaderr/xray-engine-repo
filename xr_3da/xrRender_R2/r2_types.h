@@ -24,7 +24,7 @@
 #define r2_material			"$user$material"		// ---
 #define r2_ds2_fade			"$user$ds2_fade"		// ---
 
-const u32					DSM_size			= 512;
+const u32					DSM_size			= 1024;
 const float					DSM_distance_1		= 15.f;
 const float					DSM_distance_2		= 100.f;
 const float					DSM_d_range			= 100.f;
