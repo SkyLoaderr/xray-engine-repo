@@ -15,12 +15,19 @@ using namespace	collide;
 //--------------------------------------------------------------------------------
 BOOL CObjectSpace::RayTest	( const Fvector &start, const Fvector &dir, float range, collide::rq_target tgt, collide::ray_cache* cache)
 {
+	Lock.Enter		();
+	BOOL	_ret	= _RayTest(start,dir,range,tgt,cache);
+	Lock.Leave		();
+	return			_ret;
+}
+BOOL CObjectSpace::_RayTest	( const Fvector &start, const Fvector &dir, float range, collide::rq_target tgt, collide::ray_cache* cache)
+{
 	VERIFY					(_abs(dir.magnitude()-1)<EPS);
-
-	r_results.r_clear		();
+	r_temp.r_clear			();
 
 	xrc.ray_options			(CDB::OPT_ONLYFIRST);
-	collide::ray_defs Q		(start,dir,range,CDB::OPT_ONLYFIRST,tgt);
+	collide::ray_defs	Q	(start,dir,range,CDB::OPT_ONLYFIRST,tgt);
+
 	// dynamic test
 	if (tgt&rqtDyn) 
 	{
@@ -33,8 +40,8 @@ BOOL CObjectSpace::RayTest	( const Fvector &start, const Fvector &dir, float ran
 			CObject*	collidable		= spatial->dcast_CObject	();
 			if (collidable)	{
 				ECollisionFormType tp	= collidable->collidable.model->Type();
-				if ((tgt&rqtObject)&&(tp==cftObject)&&collidable->collidable.model->_RayQuery(Q,r_results))	return TRUE;
-				if ((tgt&rqtShape)&&(tp==cftShape)&&collidable->collidable.model->_RayQuery(Q,r_results))	return TRUE;
+				if ((tgt&rqtObject)&&(tp==cftObject)&&collidable->collidable.model->_RayQuery(Q,r_temp))	return TRUE;
+				if ((tgt&rqtShape)&&(tp==cftShape)&&collidable->collidable.model->_RayQuery(Q,r_temp))		return TRUE;
 			}
 		}
 	}
@@ -84,7 +91,14 @@ BOOL CObjectSpace::RayTest	( const Fvector &start, const Fvector &dir, float ran
 //--------------------------------------------------------------------------------
 BOOL CObjectSpace::RayPick	( const Fvector &start, const Fvector &dir, float range, rq_target tgt, rq_result& R)
 {
-	r_temp.r_clear		();
+	Lock.Enter		();
+	BOOL	_res	= _RayPick(start,dir,range,tgt,R);
+	Lock.Leave		();
+	return	_res;
+}
+BOOL CObjectSpace::_RayPick	( const Fvector &start, const Fvector &dir, float range, rq_target tgt, rq_result& R)
+{
+	r_temp.r_clear			();
 	R.O		= 0; R.range = range; R.element = -1;
 	// static test
 	if (tgt&rqtStatic){ 
@@ -107,8 +121,8 @@ BOOL CObjectSpace::RayPick	( const Fvector &start, const Fvector &dir, float ran
 				u32		C	= D3DCOLOR_XRGB	(64,64,64);
 				Q.range		= R.range;
 				if (collidable->collidable.model->_RayQuery(Q,r_temp)){
-					C		= D3DCOLOR_XRGB(128,128,196);
-					R.set_if_less(r_temp.r_begin());
+					C				= D3DCOLOR_XRGB(128,128,196);
+					R.set_if_less	(r_temp.r_begin());
 				}
 #ifdef DEBUG
 				if (bDebug){
@@ -126,6 +140,13 @@ BOOL CObjectSpace::RayPick	( const Fvector &start, const Fvector &dir, float ran
 // RayQuery
 //--------------------------------------------------------------------------------
 BOOL CObjectSpace::RayQuery(const collide::ray_defs& R, collide::rq_callback* CB, LPVOID user_data)
+{
+	Lock.Enter		();
+	BOOL	_res	= _RayQuery	(R,CB,user_data);
+	Lock.Leave		();
+	return	_res;
+}
+BOOL CObjectSpace::_RayQuery(const collide::ray_defs& R, collide::rq_callback* CB, LPVOID user_data)
 {
 	// initialize query
 	r_results.r_clear	();

@@ -16,6 +16,7 @@ class	ENGINE_API						CObjectSpace
 {
 private:
 	// Debug
+	xrCriticalSection					Lock;
 	CDB::MODEL							Static;
 	Fvector								Static_Shift;
 	Fbox								m_BoundingVolume;
@@ -33,6 +34,10 @@ public:
 #endif
 
 	collide::rq_results					r_results;
+private:
+	BOOL								_RayTest			( const Fvector &start, const Fvector &dir, float range, collide::rq_target tgt, collide::ray_cache* cache=NULL);
+	BOOL								_RayPick			( const Fvector &start, const Fvector &dir, float range, collide::rq_target tgt, collide::rq_result& R );
+	BOOL								_RayQuery			( const collide::ray_defs& rq, collide::rq_callback* cb, LPVOID user_data);
 public:
 										CObjectSpace		( );
 										~CObjectSpace		( );
@@ -49,8 +54,6 @@ public:
 	BOOL								RayQuery			( const collide::ray_defs& rq, collide::rq_callback* cb, LPVOID user_data);
 	BOOL								RayQuery			( ICollisionForm* target, const collide::ray_defs& rq);
 	void								BoxQuery			( const Fbox& B, const Fmatrix& M, u32 flags=clGET_TRIS|clGET_BOXES|clQUERY_STATIC|clQUERY_DYNAMIC);
-
-	BOOL								EllipsoidCollide	( ICollisionForm *object, const Fmatrix& T, const Fvector& center_pos, const Fbox& bb);
 
 	int									GetNearest			( ICollisionForm *obj, float range );
 	int									GetNearest			( const Fvector &point, float range );
