@@ -93,9 +93,6 @@ void CDetailPathManager::build_path(const xr_vector<u32> &level_path, u32 interm
 			}
 			default : NODEFAULT;
 		}
-		if (m_restricted_object)
-			m_restricted_object->remove_border();
-
 		if (failed())
 			Msg						("! DetailPathManager has failed!");
 
