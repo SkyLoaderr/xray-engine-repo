@@ -37,5 +37,5 @@ void CSun::RenderFlares( ) {
 
 void CSun::Update() 
 {
-	LensFlare.Update(sun_dir,pCreator->Environment.Current.Far,sun_color);
+	LensFlare.Update(sun_dir,sun_color);
 }
