@@ -58,7 +58,7 @@ int __fastcall TfrmChoseItem::SelectItem(u32 choose_ID, LPCSTR& dest, int sel_cn
     form->iMultiSelLimit 			= sel_cnt;
 
 	// init
-	if (init_name&&init_name[0]) 
+//.	if (init_name&&init_name[0]) 
     	m_LastSelection 			= init_name;
     form->tvItems->Selected 		= 0;
 
