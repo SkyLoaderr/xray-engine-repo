@@ -1,0 +1,6 @@
+function transfer_ak74( first_speaker, second_speaker )
+	local obj = first_speaker:object( "pri_lom_ak74" )
+	if obj then
+		dialogs.relocate_item( second_speaker, obj, "out" )
+	end
+end
