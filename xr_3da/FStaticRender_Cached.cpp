@@ -34,7 +34,6 @@ void __fastcall render_Cached(CList<FCached*>& cache)
 		BYTE*	verts	= LPBYTE(vs->Lock(v_count,vBase));
 		WORD*	indices	= LPWORD(is->Lock(i_count,iBase));
 		DWORD	iOffset	= 0;
-		Fbox	bb; bb.invalidate();
 		for (DWORD I=Start; I!=End; I++)
 		{
 			FCached& V	=	*(cache[I]);
@@ -59,15 +58,11 @@ void __fastcall render_Cached(CList<FCached*>& cache)
 			verts		+=	V.vCount*Stride;
 			indices		+=	V.iCount;
 			iOffset		+=	V.vCount;
-			bb.merge	(V.bv_BBox);
 		}
 		vs->Unlock		(v_count);
 		is->Unlock		(i_count);
 
 		// Render
-		Fsphere	S;		bb.getsphere	(S.P,S.R);
-		::Render.Lights.Select			(S.P,S.R);
-
 		DWORD	dwNumPrimitives			= i_count/3;
 		CHK_DX(HW.pDevice->SetVertexShader		(vs->getFVF()));
 		CHK_DX(HW.pDevice->SetStreamSource		(0,vs->getBuffer(),vs->Stride()));
