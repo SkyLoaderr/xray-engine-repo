@@ -297,7 +297,7 @@ void CWallmarksEngine::Render()
 						float		a2	= cPOS.distance_to_sqr(V)*I_DIST_FADE_SQR;
 						int			a	= iFloor(255.f*(a1+a2)); clamp(a,0,255);
 						mView.transform_tiny(UV,V);
-						VB->set		(V,D3DCOLOR_RGBA(a,a,a,a),UV.x,UV.y); VB++;
+						VB->set		(V,D3DCOLOR_RGBA(255,255,255,a),UV.x,UV.y); VB++;
 					}
 					{	// 1
 						Fvector&	V	= T.p[1];
@@ -305,7 +305,7 @@ void CWallmarksEngine::Render()
 						float		a2	= cPOS.distance_to_sqr(V)*I_DIST_FADE_SQR;
 						int			a	= iFloor(255.f*(a1+a2)); clamp(a,0,255);
 						mView.transform_tiny(UV,V);
-						VB->set		(V,D3DCOLOR_RGBA(a,a,a,a),UV.x,UV.y); VB++;
+						VB->set		(V,D3DCOLOR_RGBA(255,255,255,a),UV.x,UV.y); VB++;
 					}
 					{	// 2
 						Fvector&	V	= T.p[2];
@@ -313,7 +313,7 @@ void CWallmarksEngine::Render()
 						float		a2	= cPOS.distance_to_sqr(V)*I_DIST_FADE_SQR;
 						int			a	= iFloor(255.f*(a1+a2)); clamp(a,0,255);
 						mView.transform_tiny(UV,V);
-						VB->set		(V,D3DCOLOR_RGBA(a,a,a,a),UV.x,UV.y); VB++;
+						VB->set		(V,D3DCOLOR_RGBA(255,255,255,a),UV.x,UV.y); VB++;
 					}
 				}
 				DWORD vCount = VB-B;
