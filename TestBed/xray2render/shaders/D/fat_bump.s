@@ -37,21 +37,31 @@ struct 	p2f
 uniform float3x4 	m_model2view;
 uniform float4x4 	m_model2view2projection;
 uniform sampler2D 	s_texture;
+uniform sampler2D 	s_nmap;
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // Vertex
 v2p_out v_main	( a2v  	IN )
 {
-  // Calculate eye-space position and normal vectors.
-  float3 Pe 	= mul	(m_model2view, 				IN.Position	);
-  float3 Ne 	= mul	((float3x3)m_model2view,	IN.Normal	);
-
-  // Write output registers.
   v2p_out 	OUT;
+  
+  // Positions and TC
   OUT.HPos 		= mul	(m_model2view2projection,	IN.Position	);
+  float3 Pe 	= mul	(m_model2view, 				IN.Position	);
   OUT.Pe 		= float4(Pe.x,Pe.y,Pe.z,0);
-  OUT.Ne 		= float4(Ne.x,Ne.y,Ne.z,0);
   OUT.Tex0 		= IN.TexCoords;
+
+  // Calculate transform from tangent space to eye-space
+  float3x3 xform= mul	(m_model2view, float3x3(
+							IN.tangent.x,IN.tangent.y,IN.tangent.z,
+							IN.binormal.x,IN.binormal.y,IN.binormal.z,
+							IN.normal.x,IN.normal.y,IN.normal.z) 
+							);
+  
+  // Feed this transform to pixel shader
+  OUT.M1 		= float4(xform[0].x,xform[0].y,xform[0].z,0);
+  OUT.M2 		= float4(xform[1].x,xform[1].y,xform[1].z,0);
+  OUT.M3 		= float4(xform[2].x,xform[2].y,xform[2].z,0);
 
   return OUT;
 }
@@ -62,9 +72,18 @@ p2f 	p_main	( v2p_in IN )
 {
   p2f OUT;
 
-  // No calculations here: just sample texture and out all that shit
+  // Transfer position and sample diffuse
   OUT.Pe	= IN.Pe;
-  OUT.Ne 	= normalize	(IN.Ne);
   OUT.C 	= tex2D		(s_texture, float2(IN.Tex0.x, IN.Tex0.y));  // float4    (.7,.5,.3,0);
+
+  // Sample normal and rotate it by matrix
+  float3 N	= tex2D		(s_nmap, float2(IN.Tex0.x,IN.Tex0.y));
+  float3 Ne	= mul		(float3x3(
+							IN.M1.x,IN.M1.y,IN.M1.z,
+							IN.M2.x,IN.M2.y,IN.M2.z,
+							IN.M3.x,IN.M3.y,IN.M3.z),
+							N);
+
+  OUT.Ne 	= normalize	(Ne);
   return OUT;
 }
