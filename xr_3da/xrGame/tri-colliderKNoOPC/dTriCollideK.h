@@ -5,6 +5,8 @@
 #ifndef DTROCOLLIDERH
 #define DTROCOLLIDERH
 
+void dSetTriWallMark(dContactGeom* c,CDB::TRI* T);
+
 extern "C" int dTriBox (
 						//const dReal* v0,const dReal* v1,const dReal* v2,
 						CDB::TRI* T,

@@ -2,8 +2,8 @@
 #include "PHDynamicData.h"
 #include "Physics.h"
 #include "tri-colliderknoopc/dTriList.h"
-//#include "..\ode\src\collision_kernel.h"
-//#include <..\ode\src\joint.h>
+#include "..\ode\src\collision_kernel.h"
+#include <..\ode\src\joint.h>
 //#include "dRay/include/dRay.h"
 #include "ExtendedGeom.h"
 union dInfBytes dInfinityValue = {{0,0,0x80,0x7f}};
@@ -1462,6 +1462,20 @@ void CPHElement::PhDataUpdate(dReal step){
 				else if(w_mag>w_limit){
 					dReal f=w_mag/w_limit;
 					dBodySetAngularVel(m_body,rot[0]/f,rot[1]/f,rot[2]/f);
+				}
+
+				{
+				const dReal* rotation=dBodyGetRotation(m_body);
+				for(int i=0;i<12;i++)
+				{
+					if(!(rotation[i]>-dInfinity&&rotation[i]<dInfinity))
+					{
+					dMatrix3 m;
+					dRSetIdentity(m);
+					dBodySetRotation(m_body,m);
+					break;
+					}
+				}
 				}
 				//const dReal k_w=0.1f;
 				//dBodyAddTorque(m_body,-rot[0]*k_w,-rot[1]*k_w,-rot[2]*k_w);

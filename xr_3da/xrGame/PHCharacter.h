@@ -81,6 +81,7 @@ bool b_at_wall;
 bool was_control;
 bool b_stop_control;
 bool b_on_object;
+bool b_was_on_object;
 u32  m_contact_count;
 dReal m_radius;
 dReal m_cyl_hight;
@@ -111,7 +112,12 @@ void		SetMaximumVelocity								(dReal vel){m_max_velocity=vel; }
 void		SetJupmUpVelocity								(dReal velocity){jump_up_velocity=velocity;}
 const Fvector&	Position									() {return m_position;}
 const Fvector&	Velocity									() {return m_velocity;}
-const float&	ContactVelocity								() {return m_contact_velocity;}
+float	ContactVelocity										() 
+{
+	dReal ret= m_contact_velocity;
+	m_contact_velocity=0;
+	return ret;
+}
 Fvector			IPosition									() {
 																Fvector pos;
 																if(!b_exist){

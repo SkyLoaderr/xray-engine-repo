@@ -100,6 +100,7 @@ m_depart_position[1]=0.f;
 m_depart_position[2]=0.f;
 
 b_on_object=false;
+b_was_on_object=true;
 b_jumping=false;
 is_contact=false;
 was_contact=false;
@@ -178,6 +179,7 @@ dGeomUserDataSetPhObject(m_wheel,(CPHObject*)this);
 dGeomUserDataSetPhObject(m_geom_shell,(CPHObject*)this);
 //dGeomUserDataSetPhObject(m_cap_transform,(CPHObject*)this);
 dGeomUserDataSetPhObject(m_cap,(CPHObject*)this);
+dGeomUserDataSetPhObject(m_hat,(CPHObject*)this);
 //dGeomGetUserData(m_cap_transform)->friction=0.f;
 //dGeomGetUserData(m_shell_transform)->friction=0.f;
 /////////////////////////////////////////////////////////////////////////
@@ -291,6 +293,7 @@ void CPHSimpleCharacter::PhDataUpdate(dReal step){
 	if(!dBodyIsEnabled(m_body)) return;
 	b_climb=false;
 	b_pure_climb=true;
+	b_was_on_object=b_on_object;
 	b_on_object=false;
 
 	m_contact_count=0;
@@ -506,17 +509,13 @@ const dReal spring_rate=0.5f;
 const dReal dumping_rate=20.1f;
 /////////////////////////////////////////////////////////////////
 void CPHSimpleCharacter::InitContact(dContact* c){
-
-	b_on_object=b_on_object||(dGeomGetBody(c->geom.g1)&&dGeomGetBody(c->geom.g2));
+	bool object=(dGeomGetBody(c->geom.g1)&&dGeomGetBody(c->geom.g2));
+	b_on_object=b_on_object||object;
 	*p_lastMaterial=((dxGeomUserData*)dGeomGetData(m_wheel))->tri_material;
-	bool bo1=(c->geom.g1==m_wheel)||c->geom.g1==m_cap_transform||c->geom.g1==m_shell_transform;
+	bool bo1=(c->geom.g1==m_wheel)||c->geom.g1==m_cap_transform||c->geom.g1==m_shell_transform||c->geom.g1==m_hat_transform;
 	if(c->geom.g1==m_cap_transform||c->geom.g2==m_cap_transform||c->geom.g1==m_shell_transform||c->geom.g2==m_shell_transform){//
 		dNormalize3(m_control_force);
-		if(b_lose_control && !b_saved_contact_velocity&&dFabs(c->geom.normal[1])>M_SQRT1_2){
-			b_saved_contact_velocity=true;
-			const Fvector* v=(Fvector*)dBodyGetLinearVel(m_body);
-			m_contact_velocity=v->magnitude();
-		}
+
 		if(is_control&& (dDOT(m_control_force,c->geom.normal))<-M_SQRT1_2)
 			b_side_contact=true;
 
@@ -531,7 +530,30 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 		}
 	
 
-
+		if(object){
+		//const dReal* vel=dBodyGetLinearVel(m_body);
+		dReal c_vel;
+	//	if(bo1)
+		{
+			dBodyID b=dGeomGetBody(c->geom.g2);
+			dMass m;
+			dBodyGetMass(b,&m);
+			const dReal* obj_vel=dBodyGetLinearVel(b);
+		//	dVector3 rel_vel={obj_vel[0]-vel[0],obj_vel[1]-vel[1],obj_vel[2]-vel[2]};
+			c_vel=dFabs(dDOT(obj_vel,c->geom.normal)*dSqrt(m.mass/m_mass));
+		}
+	//	else
+	//	{
+	//		dBodyID b=dGeomGetBody(c->geom.g1);
+	//		dMass m;
+	//		dBodyGetMass(b,&m);
+	//		const dReal* obj_vel=dBodyGetLinearVel(b);
+		//	dVector3 rel_vel={obj_vel[0]-vel[0],obj_vel[1]-vel[1],obj_vel[2]-vel[2]};
+	//		c_vel=dDOT(obj_vel,c->geom.normal)/m_mass*m.mass;
+	//	}
+		if(c_vel>m_contact_velocity) 
+								m_contact_velocity=c_vel;
+		}
 
 		
 		bool bClimable=!!(((DWORD)c->surface.mode)& SGameMtl::flClimbable);
@@ -559,15 +581,25 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 
 	
 	m_contact_count++;
-	
 
-	if(b_lose_control) {
-		const Fvector* v=(Fvector*)dBodyGetLinearVel(m_body);
-		dReal mag=v->magnitude();
-		if(!b_saved_contact_velocity||mag>m_contact_velocity)
-											m_contact_velocity=mag;
-	b_saved_contact_velocity=false;
+//if( !b_saved_contact_velocity)
+//		{//b_lose_control &&
+//			b_saved_contact_velocity=true;
+//			const dReal* v=dBodyGetLinearVel(m_body);
+//			m_contact_velocity=dFabs(dDOT(v,c->geom.normal));
+//		}
+
+	//if(b_lose_control) 
+	{
+		const dReal* v=dBodyGetLinearVel(m_body);
+		dReal mag=dFabs(dDOT(v,c->geom.normal));
+		if(mag>m_contact_velocity)					//!b_saved_contact_velocity||
+						m_contact_velocity=mag;
+	//					b_saved_contact_velocity=false;
 	}
+
+
+
 
 	if(bo1){
 ////////////////////////////

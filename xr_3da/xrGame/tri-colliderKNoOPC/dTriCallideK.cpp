@@ -6,6 +6,8 @@
 #define SURFACE(Ptr, Stride) ((dSurfaceParameters*) (((byte*)Ptr) + (Stride-sizeof(dSurfaceParameters))))
 #define NUMC_MASK (0xffff)
 
+
+
 extern "C" int dSortedTriBox (
 						const dReal* triSideAx0,const dReal* triSideAx1,
 						const dReal* triAx,
@@ -175,7 +177,6 @@ contact->depth = outDepth;
 	SURFACE(contact,i*skip)->bounce_vel=GMLib.GetMaterial(T->material)->fPHBounceStartVelocity;
 	SURFACE(contact,i*skip)->soft_cfm=GMLib.GetMaterial(T->material)->fPHSpring;
 	SURFACE(contact,i*skip)->soft_erp=GMLib.GetMaterial(T->material)->fPHDamping;
-
   }
   return ret;
 
@@ -1324,4 +1325,15 @@ else {//7-12
 	SURFACE(contact,i*skip)->mode=GMLib.GetMaterial(T->material)->Flags.get();
   }
   return ret;  
+}
+
+
+void dSetTriWallMark(dContactGeom* c,CDB::TRI* T)
+{
+//Shader*	hWallmark	= Device.Shader.Create("effects\\wallmark",pstrWallmark);
+//		::Render->add_Wallmark	(
+//			hWallmark,
+//			*((Fvector*)c->pos),
+//			0.3,
+//			T);
 }
