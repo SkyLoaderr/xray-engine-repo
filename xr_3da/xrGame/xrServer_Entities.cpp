@@ -86,10 +86,10 @@ public:
 	virtual void			STATE_Write			(NET_Packet& P)
 	{
 		P.w_u8				(s_style		);
-		P.w_string			(s_Animation	);
-		P.w_string			(s_Model		);
-		P.w_string			(s_Particles	);
-		P.w_string			(s_Sound		);
+		if (s_style&esAnimated)		P.w_string			(s_Animation	);
+		if (s_style&esModel)		P.w_string			(s_Model		);
+		if (s_style&esParticles)	P.w_string			(s_Particles	);
+		if (s_style&esSound)		P.w_string			(s_Sound		);
 	}
 	virtual void			UPDATE_Read			(NET_Packet& P)	{};
 	virtual void			UPDATE_Write		(NET_Packet& P)	{};

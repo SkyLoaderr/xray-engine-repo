@@ -55,6 +55,8 @@ BOOL CDummyObject::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o
 {
 	inherited::Spawn		(bLocal,server_id,o_pos,o_angle,P,flags);
 
+	bVisible				= TRUE;
+
 	UpdateTransform			();
 	relation.set			(svTransform);
 

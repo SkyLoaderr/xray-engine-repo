@@ -31,12 +31,15 @@ BOOL CGameObject::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_
 	nPos.y				+= .1f;
 	int node			= Level().AI.q_LoadSearch(nPos);
 	if (node<0)			{
-		Msg				("! ERROR: AI node not found. (%f,%f,%f)",nPos.x,nPos.y,nPos.z);
-		R_ASSERT		(node>=0);
+		Msg					("! ERROR: AI node not found. (%f,%f,%f)",nPos.x,nPos.y,nPos.z);
+		// R_ASSERT		(node>=0);
+		AI_NodeID			= DWORD(-1);
+		AI_Node				= NULL;
+	} else {
+		AI_NodeID			= DWORD(node);
+		AI_Node				= Level().AI.Node(AI_NodeID);
+		Level().AI.ref_add  (AI_NodeID);
 	}
-	AI_NodeID			= DWORD(node);
-	AI_Node				= Level().AI.Node(AI_NodeID);
-	if (AI_Node)		Level().AI.ref_add  (AI_NodeID);
 	
 	return	bResult;
 }
