@@ -157,7 +157,9 @@ void CDetailManager::Render		(Fvector& vecEYE)
 	int s_x	= iFloor			(EYE.x/dm_slot_size+.5f);
 	int s_z	= iFloor			(EYE.z/dm_slot_size+.5f);
 
+	Device.Statistic.RenderDUMP_DT_Cache.Begin	();
 	cache_Update				(s_x,s_z,EYE,5);
+	Device.Statistic.RenderDUMP_DT_Cache.End	();
 
 	float fade_limit			= dm_fade;	fade_limit=fade_limit*fade_limit;
 	float fade_start			= 1.f;		fade_start=fade_start*fade_start;
@@ -170,12 +172,8 @@ void CDetailManager::Render		(Fvector& vecEYE)
 		for (int _x=-dm_size; _x<=dm_size; _x++)
 		{
 			// Query for slot
-			Device.Statistic.RenderDUMP_DT_VIS.End		();
-			Device.Statistic.RenderDUMP_DT_Cache.Begin	();
 			Slot*	CS		= cache_Query(_x,_z);
 			Slot&	S		= *CS;
-			Device.Statistic.RenderDUMP_DT_Cache.End	();
-			Device.Statistic.RenderDUMP_DT_VIS.Begin	();
 
 			// Transfer visibile and partially visible slot contents
 			DWORD mask		= 0xff;
