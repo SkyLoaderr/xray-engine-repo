@@ -1,4 +1,4 @@
-﻿<?xml version='1.0' encoding="UTF-8"?>
+<?xml version='1.0' encoding="UTF-8"?>
 <window x="0" y="0" w="640" h="480" r="227" g="121" b="222" texture="1">
 
     <!-- BAG FRAME WINDOW -->
@@ -124,9 +124,9 @@
         <background x="0" y="0">ui\ui_inv_progress_rad_empty</background>
     </progress_bar>
 
-    <time_static x="20" y="750" width="200" height="30">
+    <time_static x="20" y="730" width="200" height="30">
         <texture> ui\ui_dg_time</texture>
-        <text x="25" y="2" font="letteric18" r="240" g="217" b="182" a="255"></text>
+        <text x="25" y="10" font="letteric18" r="240" g="217" b="182" a="255"></text>
 	</time_static>
 
 </window>
