@@ -4,6 +4,10 @@ extern float object_demage_factor;
 
 class CPHSimpleCharacter : public CPHCharacter {
 protected:
+	////////////////////////////damage////////////////////////////////////////
+	dContact				m_damege_contact;
+	float					m_dmc_signum;
+	enum{ctStatic,ctObject}	m_dmc_type;
 	/////////////////////////// callback
 	ObjectContactCallbackFun*	m_object_contact_callback;
 	////////////////////////// geometry
@@ -40,7 +44,7 @@ protected:
 	dVector3 m_jump_depart_position;
 	dVector3 m_death_position;
 	Fvector  m_jump_accel;
-	float	 m_contact_velocity;
+
 	//movement state
 	bool is_contact;
 	bool was_contact;
@@ -102,15 +106,13 @@ public:
 	virtual		void		GetPosition							(Fvector& vpos)		;
 	virtual		void		DeathPosition						(Fvector& deathPos){ deathPos.set(m_death_position);deathPos.y=m_death_position[1]-m_radius;}
 	virtual		void		IPosition							(Fvector& pos)		;
-
+	virtual		u16			ContactBone							();
 	virtual		void		ApplyImpulse						(const Fvector& dir,const dReal P);
 	virtual		void		ApplyForce							(const Fvector& force);
 	virtual		void		ApplyForce							(const Fvector& dir,float force);
 	virtual		void		ApplyForce							(float x,float y, float z);
 	virtual		void		SetMaximumVelocity					(dReal vel)			{m_max_velocity=vel; }
 	virtual		void		SetJupmUpVelocity					(dReal velocity)	{jump_up_velocity=velocity;}
-	virtual		float		ContactVelocity						()					{ dReal ret= m_contact_velocity; m_contact_velocity=0; return ret;}
-
 	virtual		void		SetMas								(dReal mass)		;
 
 	virtual		void		SetPhysicsRefObject					(CPhysicsRefObject* ref_object);
@@ -122,6 +124,7 @@ private:
 	void		CheckCaptureJoint					()					;
 	void		ApplyAcceleration					()					;
 	bool		ValidateWalkOn						()					;
+	u16			RetriveContactBone					()					;
 public:	
 #ifdef DEBUG
 	virtual		void		OnRender							()					;

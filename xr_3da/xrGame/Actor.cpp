@@ -757,7 +757,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 				g_pGameLevel->Cameras.AddEffector		(xr_new<CEffectorFall> (Movement.gcontact_Power));
 			Fvector D; D.set					(0,1,0);
 			if (Movement.gcontact_HealthLost)	{
-				Hit	(Movement.gcontact_HealthLost,D,this,s16(6 + 2*::Random.randI(0,2)),0);
+				Hit	(Movement.gcontact_HealthLost,D,this,Movement.ContactBone(),0);//s16(6 + 2*::Random.randI(0,2))
 				if(g_Alive()<=0)
 					Movement.GetDeathPosition(Position());
 			}

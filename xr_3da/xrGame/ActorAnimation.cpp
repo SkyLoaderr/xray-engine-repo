@@ -211,6 +211,11 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 			//CFORM()->OnMove();
 			//PKinematics	(Visual())->PlayCycle("x90",false);
 			////////////////////
+	
+			PKinematics(Visual())->LL_CloseCycle(0) ;
+			PKinematics(Visual())->LL_CloseCycle(1) ;
+			PKinematics(Visual())->LL_CloseCycle(2) ;
+			PKinematics(Visual())->LL_CloseCycle(3) ;
 			PKinematics(Visual())->PlayCycle(m_anims.m_dead_stop);
 		}
 	}

@@ -18,10 +18,12 @@ class CPHCharacter : public CPHObject
 #endif
 {
 protected:
+////////////////////////////damage////////////////////////////////////////
+float					m_contact_velocity;
 ////////////////////////// dynamic
 
 CPHInterpolation m_body_interpolation;
-dBodyID m_body;
+dBodyID				m_body;
 CPhysicsRefObject* m_phys_ref_object;
 
 
@@ -48,22 +50,20 @@ void Disabling											();
 
 public:
 
-	void Enable											(){dBodyEnable(m_body);}
-	bool IsEnabled										(){ if(!b_exist)return false; return !!dBodyIsEnabled(m_body);}
-	dBodyID GetBody										(){return m_body;}
+	void	Enable										()										{dBodyEnable(m_body);}
+	bool	IsEnabled									()										{ if(!b_exist)return false; return !!dBodyIsEnabled(m_body);}
+	dBodyID GetBody										()										{return m_body;}
+	float	ContactVelocity								()										{ dReal ret= m_contact_velocity; m_contact_velocity=0; return ret;}
 	bool b_exist;
 
 public:
-void		SetPLastMaterial								(u32* p){p_lastMaterial=p;}
+void		SetPLastMaterial								(u32* p)								{p_lastMaterial=p;}
 
-virtual void		SetMaximumVelocity								(dReal vel){}
-virtual	void		SetJupmUpVelocity								(dReal velocity){}
-
-virtual float		ContactVelocity									()				{return 0.f;}
-
-virtual	void			IPosition							(Fvector& pos)		{}
-
-virtual void			DeathPosition						(Fvector& deathPos){}
+virtual void			SetMaximumVelocity					(dReal vel)								{}
+virtual	void			SetJupmUpVelocity					(dReal velocity)						{}
+virtual	void			IPosition							(Fvector& pos)							{}
+virtual u16				ContactBone							()										{return 0;}
+virtual void			DeathPosition						(Fvector& deathPos)						{}
 virtual		void		ApplyImpulse						(const Fvector& dir,const dReal P)		{}	;
 virtual		void		ApplyForce							(const Fvector& force)					=0 ;
 virtual		void		ApplyForce							(const Fvector& dir,float force)		=0 ;

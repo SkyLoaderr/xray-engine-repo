@@ -144,9 +144,12 @@ void CPHActorCharacter::InitContact(dContact* c){
 		//	dVector3 rel_vel={obj_vel[0]-vel[0],obj_vel[1]-vel[1],obj_vel[2]-vel[2]};
 		//		c_vel=dDOT(obj_vel,c->geom.normal)/m_mass*m.mass;
 		//	}
-		if(c_vel>m_contact_velocity) {
+		if(c_vel>m_contact_velocity) 
+		{
 			m_contact_velocity=c_vel;
-			//		b_meet_control=true;
+			m_dmc_signum=bo1 ? 1.f : -1.f;
+			m_dmc_type=ctStatic;
+			m_damege_contact=*c;
 		}
 	}
 
@@ -188,9 +191,13 @@ void CPHActorCharacter::InitContact(dContact* c){
 	{
 		const dReal* v=dBodyGetLinearVel(m_body);
 		dReal mag=dFabs(dDOT(v,c->geom.normal));
-		if(mag>m_contact_velocity)					//!b_saved_contact_velocity||
+		if(mag>m_contact_velocity)
+		{
 			m_contact_velocity=mag;
-		//					b_saved_contact_velocity=false;
+			m_dmc_signum=bo1 ? 1.f : -1.f;
+			m_dmc_type=ctStatic;
+			m_damege_contact=*c;
+		}
 	}
 
 

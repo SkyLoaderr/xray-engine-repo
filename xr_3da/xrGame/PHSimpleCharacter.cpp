@@ -64,7 +64,6 @@ CPHSimpleCharacter::CPHSimpleCharacter()
 	m_update_time=0.f;
 	b_meet_control=false;
 	b_jumping=false;
-	m_contact_velocity=0.f;
 	jump_up_velocity=6.f;
 
 	previous_p[0]=dInfinity;
@@ -984,3 +983,63 @@ dGeomUserDataSetObjectContactCallback(m_geom_shell,callback);
 dGeomUserDataSetObjectContactCallback(m_wheel,callback);
 }
 
+u16 CPHSimpleCharacter::RetriveContactBone()
+
+{
+	ICollisionForm::RayPickResult result;
+	Fvector dir;
+	u16 contact_bone=0;
+	dir.set(m_damege_contact.geom.normal[0]*m_dmc_signum,m_damege_contact.geom.normal[1]*m_dmc_signum,m_damege_contact.geom.normal[2]*m_dmc_signum);
+	CObject* object=dynamic_cast<CObject*>(m_phys_ref_object);
+	if (object->collidable.model->_RayPick	(result,*(((Fvector*)(m_damege_contact.geom.pos))), dir, m_radius, CDB::OPT_ONLYNEAREST)) // CDB::OPT_ONLYFIRST CDB::OPT_ONLYNEAREST
+	{
+		
+		ICollisionForm::RayPickResult::Result* R = result.r_begin();
+		contact_bone=(u16)R->element;
+		//int y=result.r_count();
+		//for (int k=0; k<y; k++)
+		//{
+		//	ICollisionForm::RayPickResult::Result* R = result.r_begin()+k;
+		//	if(is_Door(R->element,i)) 
+		//	{
+		//		i->second.Use();
+		//		return false;
+
+		//	}
+		//}
+
+	}
+	else 
+	{
+
+
+		CKinematics* K=PKinematics(object->Visual());
+		u16 count=K->LL_BoneCount();
+		CBoneInstance* bone_instances=&K->LL_GetInstance(0);
+		Fvector pos_in_object;
+		pos_in_object.sub(*(Fvector*)m_damege_contact.geom.pos,object->Position());//vector from object center to contact position currently in global frame
+		Fmatrix object_form;
+		object_form.set(object->XFORM());
+		object_form.transpose();
+		object_form.transform_tiny(pos_in_object); //project pos_in_object on object axes now it is position of contact in object frame
+		float sq_dist=dInfinity;
+		for(u16 i=0;i<count;i++)
+		{
+			Fvector c_to_bone;
+			c_to_bone.sub(bone_instances[i].mTransform.c,pos_in_object);
+			float temp_sq_dist=c_to_bone.square_magnitude();
+			if(temp_sq_dist<sq_dist)
+			{
+				sq_dist=temp_sq_dist;
+				contact_bone=i;
+			}
+		}
+		VERIFY(sq_dist!=dInfinity);
+	}
+	return contact_bone;
+}
+
+u16 CPHSimpleCharacter::ContactBone()
+{
+	return RetriveContactBone();
+}

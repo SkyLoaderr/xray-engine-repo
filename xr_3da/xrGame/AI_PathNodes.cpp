@@ -415,7 +415,7 @@ float precesition=1.f;
 		if (Me->Movement.gcontact_HealthLost) {
 			Fvector d;
 			d.set(0,1,0);
-			Me->Hit	(Me->Movement.gcontact_HealthLost,d,Me,0,p_dest,0);
+			Me->Hit	(Me->Movement.gcontact_HealthLost,d,Me,Me->Movement.ContactBone(),p_dest,0);
 		}
 #endif
 		return;
@@ -499,7 +499,7 @@ float precesition=1.f;
 			Me->Movement.GetPosition(p_dest);
 		if (Me->Movement.gcontact_HealthLost)	
 		{
-			Me->Hit	(Me->Movement.gcontact_HealthLost,mdir,Me,0,p_dest,0);
+			Me->Hit	(Me->Movement.gcontact_HealthLost,mdir,Me,Me->Movement.ContactBone(),p_dest,0);
 		}
 	}
 #endif

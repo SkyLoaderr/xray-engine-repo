@@ -81,7 +81,7 @@ void CPHMovementControl::Calculate(Fvector& vAccel,float ang_speed,float jump,fl
 	gcontact_Was=m_character->ContactWas();
 	fContactSpeed=0.f;
 	//if(gcontact_Was)
-	{
+ 	{
 		fContactSpeed=m_character->ContactVelocity();
 		//m_character->ContactVelocity()=0.f;
 		gcontact_Power				= fContactSpeed/fMaxCrashSpeed;
