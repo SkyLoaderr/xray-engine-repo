@@ -185,15 +185,16 @@ void CObjectSpace::Load	(CStream *F)
 	} else {
 		R_ASSERT			(CFORM_CURRENT_VERSION==H.version);
 	}
-	Static.build		( verts, H.vertcount, tris, H.facecount );
-	Sound->SetGeometry	( &Static );
-    Msg("* Level CFORM memory usage: %dK",Static.memory()/1024);
+	pCreator->Load_GameSpecific_CFORM	( tris, H.facecount );
+	Static.build						( verts, H.vertcount, tris, H.facecount );
+	Sound->SetGeometry					( &Static );
+    Msg						("* Level CFORM memory usage: %dK",Static.memory()/1024);
 
 	// CForm
-	x_count				= iCeil((H.aabb.max.x-H.aabb.min.x)/CL_SLOT_SIZE);
-	z_count				= iCeil((H.aabb.max.z-H.aabb.min.z)/CL_SLOT_SIZE);
-	Static_Shift.invert	(H.aabb.min);
-	Dynamic.SetSize		( x_count, z_count );
+	x_count					= iCeil((H.aabb.max.x-H.aabb.min.x)/CL_SLOT_SIZE);
+	z_count					= iCeil((H.aabb.max.z-H.aabb.min.z)/CL_SLOT_SIZE);
+	Static_Shift.invert		(H.aabb.min);
+	Dynamic.SetSize			( x_count, z_count );
 
 	// Game-postprocess
 	CFOrm_bofisudfds		(version)
