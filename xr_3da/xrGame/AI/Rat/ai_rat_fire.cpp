@@ -16,9 +16,19 @@ void CAI_Rat::Exec_Action(float dt)
 	AI::AIC_Action* L	= (AI::AIC_Action*)C;
 	switch (L->Command) {
 		case AI::AIC_Action::AttackBegin: {
-			::Sound->play_at_pos(m_tpaSoundAttack[Random.randI(SND_ATTACK_COUNT)],this,Position());
 			u32 dwTime = Level().timeServer();
 			if (m_tSavedEnemy && (m_tSavedEnemy->g_Health() > 0) && (dwTime - m_dwStartAttackTime > m_dwHitInterval)) {
+				bool bOk = true;
+
+				for (int i=0; i<SND_ATTACK_COUNT; i++)
+					if (m_tpaSoundAttack[i].feedback) {
+						bOk = false;
+						break;
+					}
+
+				if (bOk)
+					m_tpaSoundAttack[Random.randI(SND_ATTACK_COUNT)].play_at_pos(this,Position());
+
 				m_bActionStarted = true;
 				m_dwStartAttackTime = dwTime;
 				Fvector tDirection;
@@ -30,8 +40,21 @@ void CAI_Rat::Exec_Action(float dt)
 				if ((this->Local()) && (m_tSavedEnemy) && (m_tSavedEnemy->CLS_ID == CLSID_ENTITY))
 					m_tSavedEnemy->Hit(m_fHitPower,tDirection,this,0,position_in_bone_space,0);
 			}
-			else
+			else {
+				if (m_tSavedEnemy) {
+					bool bOk = true;
+
+					for (int i=0; i<SND_ATTACK_COUNT; i++)
+						if (m_tpaSoundAttack[i].feedback) {
+							bOk = false;
+							break;
+						}
+
+					if (bOk && !::Random.randI(100))
+						m_tpaSoundAttack[Random.randI(SND_ATTACK_COUNT)].play_at_pos(this,Position());
+				}
 				m_bActionStarted = false;
+			}
 
 			break;
 		}
