@@ -209,6 +209,10 @@ public:
 	virtual BOOL			net_Spawn			( LPVOID DC );
 	virtual void			net_Destroy			();
 	virtual void			UpdateCL			( ); 
+#ifdef DEBUG
+	virtual void			shedule_Update		(u32 dt);
+#endif
+
 	virtual void			renderable_Render			( ); 
 	
 	// Network

@@ -136,10 +136,37 @@ void	CCar::net_Destroy()
 	inherited::net_Destroy();
 	if(m_pPhysicsShell)m_pPhysicsShell->Deactivate();
 	ClearExhausts();
+	m_wheels_map.clear();
+	m_steering_wheels.clear();
+	m_driving_wheels.clear();
+	m_exhausts.clear();
+	m_breaking_wheels.clear();
+	m_doors.clear();
 	ph_world->RemoveObject(m_ident);
+	CKinematics* pKinematics=PKinematics(Visual());
+	CInifile* ini = pKinematics->LL_UserData();
+	pKinematics->LL_GetInstance(pKinematics->LL_BoneID(ini->r_string("car_definition","steer"))).set_callback(0,0);
 }
-
-
+#ifdef DEBUG
+void	CCar::shedule_Update		(u32 dt)
+{
+	inherited::shedule_Update(dt);
+	if(m_pPhysicsShell&&m_owner)
+	{
+		Fvector v;
+		m_pPhysicsShell->get_LinearVel(v);
+		string32 s;
+		sprintf(s,"speed, %f km/hour",v.magnitude()/1000.f*3600.f);
+		HUD().pFontSmall->SetColor(D3DCOLOR_RGBA(0xff,0xff,0xff,0xff));
+		HUD().pFontSmall->OutSet	(120,530);
+		HUD().pFontSmall->OutNext(s);
+		HUD().pFontSmall->OutNext("Transmission num:      [%d]",m_current_transmission_num);
+		HUD().pFontSmall->OutNext("gear ratio:			  [%3.2f]",m_current_gear_ratio);
+		//HUD().pFontSmall->OutNext("Vel Magnitude: [%3.2f]",ph_Movement.GetVelocityMagnitude());
+		//HUD().pFontSmall->OutNext("Vel Actual:    [%3.2f]",ph_Movement.GetVelocityActual());
+	}
+}
+#endif
 
 void	CCar::UpdateCL				( )
 {
@@ -480,7 +507,8 @@ void CCar::Revert()
 	//if(!bActive) return;
 	//dBodyAddForce(Bodies[0], 0, 2*9000, 0);
 	//dBodyAddRelTorque(Bodies[0], 300, 0, 0);
-	m_pPhysicsShell->applyForce(0,2*9000,0);
+
+	m_pPhysicsShell->applyForce(0,40.f*m_pPhysicsShell->getMass(),0);
 }
 
 void CCar::NeutralDrive()

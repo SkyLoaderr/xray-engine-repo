@@ -104,9 +104,10 @@ void CPHMesh ::Destroy(){
 ////////////////////////////////////////////////////////////////////////////
 ///////////CPHWorld/////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
-
-
-//dGeomID plane;
+//#define PH_PLAIN
+#ifdef PH_PLAIN
+dGeomID plane;
+#endif
 void CPHWorld::Create(){
 
 	phWorld = dWorldCreate();
@@ -120,8 +121,11 @@ void CPHWorld::Create(){
 	Mesh.Create(Space,phWorld);
 	//Jeep.Create(Space,phWorld);//(Space,phWorld)
 	//Gun.Create(Space);
-	//plane=dCreatePlane(Space,0,1,0,0.1f);
+	#ifdef PH_PLAIN
+	plane=dCreatePlane(Space,0,1,0,0.3f);
 	//dGeomCreateUserData(plane);
+	#endif
+
 	//const  dReal k_p=2400000.f;//550000.f;///1000000.f;
 	//const dReal k_d=200000.f;
 	dWorldSetERP(phWorld, ERP(world_spring,world_damping) );
@@ -142,7 +146,9 @@ void CPHWorld::Destroy(){
 	//for(i=elements.begin();i!=elements.end();i++){
 	//delete(*i);
 	//}
-	//dGeomDestroy(plane);
+	#ifdef PH_PLAIN
+	dGeomDestroy(plane);
+	#endif
 	dJointGroupEmpty(ContactGroup);
 	dSpaceDestroy(Space);
 	dWorldDestroy(phWorld);

@@ -1375,7 +1375,7 @@ void CPHElement::SetMaterial(u32 m)
 
 void CPHElement::get_LinearVel(Fvector& velocity)
 {
-	if(!bActive)
+	if(!bActive||!dBodyIsEnabled(m_body))
 	{
 		velocity.set(0,0,0);
 		return;
