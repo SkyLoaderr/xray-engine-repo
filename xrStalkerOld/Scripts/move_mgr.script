@@ -191,6 +191,9 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 
 	self.retval_after_rotation = nil
 
+	self.syn_signal_set_tm = nil
+	self.syn_signal = nil
+
 	self.sound = nil
 	self.play_sound_after_anim_start = false
 	self.play_once = false
@@ -214,7 +217,6 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	self.run_until = device():time_global() + walk_min_time + run_min_time
 	self.keep_state_until = device():time_global()
 
-	self.path_cyclic, self.lowest_sync_val, self.highest_sync_val = self:get_lowest_highest_sync_val()
 	self.team = team
 	if self.team then
 		local s = sync[self.team]
@@ -222,7 +224,7 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 			sync[self.team] = {}
 			s = sync[self.team]
 		end
-		s[self.object:id()] = -1
+		s[self.object:id()] = false -- not synchronized
 	end
 
 	-- self.dialog_mgr:reset(self.object, team) UNCOMMENT ME
@@ -262,55 +264,6 @@ function move_mgr:update_sound()
 	end
 end
 
-function move_mgr:get_lowest_highest_sync_val()
-	local num_points = self.patrol_walk:count()
-	local v
-	local lowest = 100000000
-	local highest = -1
-	local highest_idx = nil
-	for i = 0, num_points - 1 do
-		v = self.path_walk_info[i]["n"]
-		if v then
-			v = tonumber(v)
-			if v > highest then
-				highest = v
-				highest_idx = i
-			end
-			if v < lowest then
-				lowest = v
-			end
-		end
-	end
-
-	local path_cyclic = false
-	if highest_idx then
-		v = self.path_walk_info[highest_idx]["loop"]
-		if v == "true" then
-			path_cyclic = true
-		else
-			path_cyclic = false
-		end
-	end
-	
-	return path_cyclic, lowest, highest
-end
-
--- Сравнивает порядок двух вейпоинтов, считая, что последний вейпоинт меньше первого (для зацикленных маршрутов с
--- синхронизацией)
-function move_mgr:wayp_lesser(arg1, arg2)
-	if not self.path_cyclic then
-		return arg1 < arg2
-	end
-
-	if arg1 == self.highest_sync_val and arg2 == self.lowest_sync_val then
-		return true
-	elseif arg1 == self.lowest_sync_val and arg2 == self.highest_sync_val then
-		return false
-	else
-		return arg1 < arg2
-	end
-end
-
 -- Проверка синхронизации с остальными солдатами на пути.
 -- Возвращает true, если дальнейшее движение разрешено.
 function move_mgr:sync_ok()
@@ -318,30 +271,11 @@ function move_mgr:sync_ok()
 		local s = sync[self.team]
 		local self_id = self.object:id()
 		
-		-- Если только бежим на путь (еще не были в точках синхронизации), то разрешить движение:
-		if s[self_id] == -1 then
-			return true
-		end
-		
-		local highest = -1
-
-		local prev = nil
-		local all_equal = true
 		for k, v in pairs(s) do
-			if v ~= nil then
-				if prev ~= nil and prev ~= v then
-					all_equal = false
-				end
-				if self:wayp_lesser(highest, v) then
-					highest = v
-				end
-				prev = v
+			if v ~= true then
+				return false
 			end
 		end
-
-		-- В этом месте highest ~= -1 благодаря проверке до цикла
-
-		return all_equal or self:wayp_lesser(s[self_id], highest)
 	end
 	return true
 end
@@ -349,6 +283,14 @@ end
 function move_mgr:update()
 	--printf("move_mgr:update(self.state == %s)", utils.to_str(self.state))
 	--printf("move_mgr:update(self.object:anims == %d)", self.object:animation_count())
+	if self.syn_signal and device():time_global() >= self.syn_signal_set_tm then
+		if self:sync_ok() then
+			self:scheme_set_signal(self.syn_signal)
+			self.syn_signal = nil
+			self.syn_signal_set_tm = nil
+		end
+	end
+	
 	if self.can_use_get_current_point_index and not self:arrived_to_first_waypoint() then
 		local t = device():time_global()
 		if t >= self.keep_state_until then
@@ -412,6 +354,9 @@ function move_mgr:update_standing_state(look_pos)
 end
 
 function move_mgr:time_callback()
+	if self.syn_signal then
+		return
+	end
 	if self.last_index and self.patrol_walk:terminal(self.last_index) then
 		if utils.stalker_at_waypoint(self.object, self.patrol_walk, self.last_index) then
 			-- Если стоим на конечной точке пути и с нее никуда не сдвинулись,
@@ -432,6 +377,11 @@ function move_mgr:time_callback()
 			self.no_validation)
 	else
 		self:update_movement_state() -- идти дальше
+		local syn = self.path_look_info[self.last_look_index]["syn"]
+		if syn then
+			utils.abort("object '%s': path_walk '%s': syn flag used on non-terminal waypoint",
+				self.object:name(), self.path_walk)
+		end
 	end
 end
 
@@ -443,9 +393,24 @@ function move_mgr:scheme_set_signal(sig)
 end
 
 function move_mgr:turn_end_callback()
-	local sig = self.path_look_info[self.last_look_index]["sig"]
-	if sig then
-		self:scheme_set_signal(sig)
+	local syn = self.path_look_info[self.last_look_index]["syn"]
+	if syn then
+		self.syn_signal_set_tm = device():time_global() + 1000
+		self.syn_signal = self.path_look_info[self.last_look_index]["sig"]
+		if not self.syn_signal then
+			utils.abort("object '%s': path_look '%s': syn flag uset without sig flag", self.object:name(), self.path_look)
+		end
+
+		-- Отметить, что мы сами уже прибыли в точку синхронизации:		
+		if self.team then
+			sync[self.team][self.object:id()] = true
+		end
+
+	else
+		local sig = self.path_look_info[self.last_look_index]["sig"]
+		if sig then
+			self:scheme_set_signal(sig)
+		end
 	end
 
 	if self.play_sound_after_anim_start then
