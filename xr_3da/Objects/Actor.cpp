@@ -254,36 +254,51 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who)
 
 void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who)
 {
-	sound& S = sndHit[Random.randI(SND_HIT_COUNT)];
-	if (S.feedback) return;
-
-	// Play hit-sound
-	pSounds->PlayAtPos(S,this,vPosition);
-
-	// hit marker
-	if (Local() && (who!=this) && g_Alive())	
+	if (g_Alive()) 
 	{
-		int id		= -1;
-		float x		= _abs(vLocalDir.x);
-		float z		= _abs(vLocalDir.z);
-		if (z>x)	id = (vLocalDir.z<0)?2:0;
-		else		id = (vLocalDir.x<0)?3:1;
-		Level().HUD()->Hit(id);
+		sound& S = sndHit[Random.randI(SND_HIT_COUNT)];
+		if (S.feedback) return;
+
+		// Play hit-sound
+		pSounds->PlayAtPos(S,this,vPosition);
+
+		// hit marker
+		if (Local() && (who!=this))	
+		{
+			int id		= -1;
+			float x		= _abs(vLocalDir.x);
+			float z		= _abs(vLocalDir.z);
+			if (z>x)	id = (vLocalDir.z<0)?2:0;
+			else		id = (vLocalDir.x<0)?3:1;
+			Level().HUD()->Hit(id);
+		}
 	}
 }
 
 void CActor::Die	( )
 {
 	// Play sound
-	pSounds->PlayAtPos	(sndDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
-	cam_Set				(eacFreeLook);
-	g_fireEnd			();
-	mstate_wishful	&=	~mcAnyMove;
-	mstate_real		&=	~mcAnyMove;
+	pSounds->PlayAtPos		(sndDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
+	cam_Set					(eacFreeLook);
+	g_fireEnd				();
+	mstate_wishful	&=		~mcAnyMove;
+	mstate_real		&=		~mcAnyMove;
+
+	// Drop active weapon
+	CObject*		O		= Weapons->ActiveWeapon();
+	if (O) 
+	{
+		NET_Packet		P;
+		u_EventGen		(P,GE_OWNERSHIP_REJECT,ID());
+		P.w_u16			(u16(O->ID()));
+		u_EventSend		(P);
+	}
 }
 
 void CActor::feel_touch_new				(CObject* O)
 {
+	if (!g_Alive())		return;
+
 	NET_Packet	P;
 
 	// Test for weapon
@@ -325,7 +340,7 @@ void CActor::feel_touch_delete	(CObject* O)
 
 void CActor::g_Physics			(Fvector& accel, float jump, float dt)
 {
-	if (g_Alive()<=0) return;
+	if (!g_Alive())					return;
 
 	if (patch_frame<patch_frames)	return;
 
@@ -749,6 +764,8 @@ void CActor::g_PerformDrop	( )
 {
 	VERIFY					(b_DropActivated);
 	b_DropActivated			= FALSE;
+
+	//
 	CObject*		O		= Weapons->ActiveWeapon();
 	if (0==O)				return;
 
