@@ -100,8 +100,8 @@ void CAI_ALife::vfProcessNPC(CALifeMonsterAbstract	*tpALifeMonsterAbstract)
 		CALifeHuman *tpALifeHuman = dynamic_cast<CALifeHuman *>(tpALifeMonsterAbstract);
 		if (tpALifeHuman)
 			vfUpdateHuman(tpALifeHuman);
-		else
-			vfUpdateHumanGroup(dynamic_cast<CALifeHumanGroup *>(tpALifeMonsterAbstract));
+		//else
+		//	vfUpdateHumanGroup(dynamic_cast<CALifeHumanGroup *>(tpALifeMonsterAbstract));
 	}
 	else
 		vfUpdateMonster(tpALifeMonsterAbstract);
@@ -112,10 +112,6 @@ void CAI_ALife::vfUpdateMonster(CALifeMonsterAbstract *tpALifeMonsterAbstract)
 {
 	vfChooseNextRoutePoint	(tpALifeMonsterAbstract);
 	vfCheckForTheBattle		(tpALifeMonsterAbstract);
-}
-
-void CAI_ALife::vfUpdateHumanGroup(CALifeHumanGroup *tpALifeHumanGroup)
-{
 }
 
 void CAI_ALife::vfUpdateHuman(CALifeHuman *tpALifeHuman)

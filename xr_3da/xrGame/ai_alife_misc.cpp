@@ -168,14 +168,15 @@ bool CAI_ALife::bfCheckForItems(CALifeHumanAbstract	*tpALifeHumanAbstract)
 	if (tpALifeHuman)
 		return(bfProcessItems(*tpALifeHuman,tpALifeHuman->m_tGraphID,tpALifeHuman->m_fMaxItemMass,tpALifeHuman->m_tTaskState == eTaskStateSearching ? .25f : .05f));
 	else {
-		CALifeHumanGroup *tpALifeHumanGroup = dynamic_cast<CALifeHumanGroup *>(tpALifeHumanAbstract);
-		VERIFY(tpALifeHumanGroup);
-		HUMAN_PARAMS_P_IT	I = tpALifeHumanGroup->m_tpMembers.begin();
-		HUMAN_PARAMS_P_IT	E = tpALifeHumanGroup->m_tpMembers.end();
-		bool bOk = false;
-		for ( ; I != E; I++)
-			bOk = bOk || bfProcessItems(*(*I),tpALifeHumanGroup->m_tGraphID,tpALifeHumanGroup->m_fMaxItemMass,tpALifeHumanGroup->m_tTaskState == eTaskStateSearching ? .75f : .1f);
-		return(bOk);
+//		CALifeHumanGroup *tpALifeHumanGroup = dynamic_cast<CALifeHumanGroup *>(tpALifeHumanAbstract);
+//		VERIFY(tpALifeHumanGroup);
+//		HUMAN_PARAMS_P_IT	I = tpALifeHumanGroup->m_tpMembers.begin();
+//		HUMAN_PARAMS_P_IT	E = tpALifeHumanGroup->m_tpMembers.end();
+//		bool bOk = false;
+//		for ( ; I != E; I++)
+//			bOk = bOk || bfProcessItems(*(*I),tpALifeHumanGroup->m_tGraphID,tpALifeHumanGroup->m_fMaxItemMass,tpALifeHumanGroup->m_tTaskState == eTaskStateSearching ? .75f : .1f);
+//		return(bOk);
+		return(false);
 	}
 }
 

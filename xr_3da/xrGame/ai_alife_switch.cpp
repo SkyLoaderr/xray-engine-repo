@@ -26,7 +26,18 @@ void CAI_ALife::vfReleaseObject(CALifeDynamicObject *tpALifeDynamicObject)
 void CAI_ALife::vfSwitchObjectOnline(CALifeDynamicObject *tpALifeDynamicObject)
 {
 	VERIFY							(!tpALifeDynamicObject->m_bOnline);
-	vfCreateObject					(tpALifeDynamicObject);
+	CALifeAbstractGroup				*tpALifeAbstractGroup = dynamic_cast<CALifeAbstractGroup*>(tpALifeDynamicObject);
+	if (tpALifeAbstractGroup) {
+		OBJECT_IT					I = tpALifeAbstractGroup->m_tpMembers.begin();
+		OBJECT_IT					E = tpALifeAbstractGroup->m_tpMembers.end();
+		for ( ; I != E; I++) {
+			OBJECT_PAIR_IT			J = m_tObjectRegistry.find(*I);
+			VERIFY					(J != m_tObjectRegistry.end());
+			vfCreateObject			((*J).second);
+		}
+	}
+	else
+		vfCreateObject					(tpALifeDynamicObject);
 	tpALifeDynamicObject->m_dwLastSwitchTime = 0;
 	tpALifeDynamicObject->m_bOnline	= true;
 	Msg								("- SERVER: Going online [%d] '%s'(%d,%d,%d) as #%d, on '%s'",Device.dwTimeGlobal,tpALifeDynamicObject->s_name_replace, tpALifeDynamicObject->g_team(), tpALifeDynamicObject->g_squad(), tpALifeDynamicObject->g_group(), tpALifeDynamicObject->ID, "*SERVER*");
@@ -35,7 +46,18 @@ void CAI_ALife::vfSwitchObjectOnline(CALifeDynamicObject *tpALifeDynamicObject)
 void CAI_ALife::vfSwitchObjectOffline(CALifeDynamicObject *tpALifeDynamicObject)
 {
 	VERIFY							(tpALifeDynamicObject->m_bOnline);
-	vfReleaseObject					(tpALifeDynamicObject);
+	CALifeAbstractGroup				*tpALifeAbstractGroup = dynamic_cast<CALifeAbstractGroup*>(tpALifeDynamicObject);
+	if (tpALifeAbstractGroup) {
+		OBJECT_IT I = tpALifeAbstractGroup->m_tpMembers.begin();
+		OBJECT_IT E = tpALifeAbstractGroup->m_tpMembers.end();
+		for ( ; I != E; I++) {
+			OBJECT_PAIR_IT			J = m_tObjectRegistry.find(*I);
+			VERIFY					(J != m_tObjectRegistry.end());
+			vfReleaseObject			((*J).second);
+		}
+	}
+	else
+		vfReleaseObject				(tpALifeDynamicObject);
 	tpALifeDynamicObject->m_dwLastSwitchTime = 0;
 	tpALifeDynamicObject->m_bOnline	= false;
 	Msg								("- SERVER: Going offline [%d] '%s'(%d,%d,%d) as #%d, on '%s'",Device.dwTimeGlobal,tpALifeDynamicObject->s_name_replace, tpALifeDynamicObject->g_team(), tpALifeDynamicObject->g_squad(), tpALifeDynamicObject->g_group(), tpALifeDynamicObject->ID, "*SERVER*");

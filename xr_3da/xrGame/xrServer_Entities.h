@@ -192,7 +192,6 @@ xrSE_DECLARE_BEGIN(xrSE_Enemy,xrSE_Teamed)
 	SRotation				o_torso;				// torso in world coords
 xrSE_DECLARE_END
 
-//xrSE_DECLARE_BEGIN(xrSE_Rat,xrSE_Enemy)
 xrSE_DECLARE_BEGIN(xrSE_Rat,xrSE_Enemy)
 	// model
 	string64				caModel;

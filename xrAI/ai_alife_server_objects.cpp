@@ -17,9 +17,10 @@ void CALifeObject::STATE_Write(NET_Packet &tNetPacket)
 {
 	tNetPacket.w_u8				(m_ucProbability);
 	tNetPacket.w_u32			(m_dwSpawnGroup);
-	tNetPacket.w_u16			(m_wCount);
 	tNetPacket.w				(&m_tGraphID,sizeof(m_tGraphID));
 	tNetPacket.w_float			(m_fDistance);
+	if (m_wVersion >= 4)
+		tNetPacket.w_u8			(m_bDirectControl);
 }
 
 void CALifeObject::STATE_Read(NET_Packet &tNetPacket, u16 size)
@@ -27,10 +28,18 @@ void CALifeObject::STATE_Read(NET_Packet &tNetPacket, u16 size)
 	if (m_wVersion >= 1) {
 		tNetPacket.r_u8			(m_ucProbability);
 		tNetPacket.r_u32		(m_dwSpawnGroup);
-		tNetPacket.r_u16		(m_wCount);
+		if (m_wVersion < 4) {
+			u16					wDummy;
+			tNetPacket.r_u16	(wDummy);
+		}
 		tNetPacket.r			(&m_tGraphID,sizeof(m_tGraphID));
 		tNetPacket.r_float		(m_fDistance);
 		m_tObjectID				= ID;
+	}
+	if (m_wVersion >= 4) {
+		u8						ucDummy;
+		tNetPacket.r_u8			(ucDummy);
+		m_bDirectControl		= !!ucDummy;
 	}
 }
 
@@ -202,7 +211,7 @@ void CALifeEventGroup::UPDATE_Read(NET_Packet &tNetPacket)
 
 void CALifeEventGroup::Init(LPCSTR caSection)
 {
-	m_wCountAfter				= m_wCount;
+	m_wCountAfter				= m_wCountBefore;
 };
 
 // CALifeEvent
@@ -619,36 +628,6 @@ void CALifeMonster::Init(LPCSTR caSection)
 	CALifeMonsterParams::Init	(caSection);
 };
 
-// CALifeMonsterGroup
-void CALifeMonsterGroup::STATE_Write(NET_Packet &tNetPacket)
-{
-	inherited::STATE_Write		(tNetPacket);
-}
-
-void CALifeMonsterGroup::STATE_Read(NET_Packet &tNetPacket, u16 size)
-{
-	inherited::STATE_Read		(tNetPacket, size);
-}
-
-void CALifeMonsterGroup::UPDATE_Write(NET_Packet &tNetPacket)
-{
-	inherited::UPDATE_Write		(tNetPacket);
-	save_vector					(m_tpMembers,tNetPacket);
-};
-
-void CALifeMonsterGroup::UPDATE_Read(NET_Packet &tNetPacket)
-{
-	inherited::UPDATE_Read		(tNetPacket);
-	load_vector					(m_tpMembers,tNetPacket);
-};
-
-void CALifeMonsterGroup::Init(LPCSTR caSection)
-{
-	inherited::Init				(caSection);
-	m_tpMembers.resize			(m_wCount);
-	init_vector					(m_tpMembers,caSection);
-};
-
 // CALifeHumanAbstract
 void CALifeHumanAbstract::STATE_Write(NET_Packet &tNetPacket)
 {
@@ -735,34 +714,4 @@ void CALifeHuman::Init(LPCSTR caSection)
 {
 	CALifeHumanAbstract::Init	(caSection);
 	CALifeHumanParams::Init		(caSection);
-};
-
-// CALifeHumanGroup
-void CALifeHumanGroup::STATE_Write(NET_Packet &tNetPacket)
-{
-	inherited::STATE_Write		(tNetPacket);
-}
-
-void CALifeHumanGroup::STATE_Read(NET_Packet &tNetPacket, u16 size)
-{
-	inherited::STATE_Read		(tNetPacket, size);
-}
-
-void CALifeHumanGroup::UPDATE_Write(NET_Packet &tNetPacket)
-{
-	inherited::UPDATE_Write		(tNetPacket);
-	save_vector					(m_tpMembers,tNetPacket);
-};
-
-void CALifeHumanGroup::UPDATE_Read(NET_Packet &tNetPacket)
-{
-	inherited::UPDATE_Read		(tNetPacket);
-	load_vector					(m_tpMembers,tNetPacket);
-};
-
-void CALifeHumanGroup::Init(LPCSTR caSection)
-{
-	inherited::Init				(caSection);
-	m_tpMembers.resize			(m_wCount);
-	init_vector					(m_tpMembers,caSection);
 };

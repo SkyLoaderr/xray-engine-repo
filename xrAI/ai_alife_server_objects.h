@@ -20,21 +20,21 @@ public:
 	_OBJECT_ID						m_tObjectID;
 	_GRAPH_ID						m_tGraphID;
 	float							m_fDistance;
-	u16								m_wCount;
 	bool							m_bOnline;
 	u8								m_ucProbability;
 	u32								m_dwSpawnGroup;
+	bool							m_bDirectControl;
 
 									CALifeObject()
 	{
 		m_bOnline					= false;
-		m_wCount					= 1;
 		m_fDistance					= 0.0f;
 		m_tClassID					= _CLASS_ID(-1);
 		m_tObjectID					= _OBJECT_ID(-1);
 		m_tGraphID					= _GRAPH_ID(-1);
 		m_ucProbability				= 1;
 		m_dwSpawnGroup				= 0;
+		m_bDirectControl			= true;
 	};
 
 	virtual void					STATE_Write	(NET_Packet &tNetPacket);
@@ -102,6 +102,7 @@ public:
 class CALifeEventGroup : public CALifeObject {
 public:
 	typedef	CALifeObject inherited;
+	u16								m_wCountBefore;
 	u16								m_wCountAfter;
 	
 	virtual void					STATE_Write(NET_Packet &tNetPacket);
@@ -283,24 +284,6 @@ public:
 	virtual void					Init(LPCSTR caSection);
 };
 
-class CALifeMonsterGroup : public CALifeMonsterAbstract {
-public:
-	typedef	CALifeMonsterAbstract inherited;
-	
-	MONSTER_PARAMS_P_VECTOR			m_tpMembers;
-
-	virtual							~CALifeMonsterGroup()
-	{
-		free_vector					(m_tpMembers);
-	};
-	
-	virtual void					STATE_Write(NET_Packet &tNetPacket);
-	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
-	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
-	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
-	virtual void					Init(LPCSTR caSection);
-};
-
 class CALifeHumanAbstract : public CALifeMonsterAbstract, public CALifeTraderAbstract {
 public:
 	DWORD_VECTOR					m_tpaVertices;
@@ -333,21 +316,98 @@ public:
 	virtual void					Init(LPCSTR caSection);
 };
 
-class CALifeHumanGroup : public CALifeHumanAbstract {
+class CALifeAbstractGroup : public IPureServerObject {
 public:
-	typedef	CALifeHumanAbstract inherited;
+	OBJECT_VECTOR				m_tpMembers;
+	bool						m_bCreateSpawnPositions;
+	u16							m_wCount;
 
-	HUMAN_PARAMS_P_VECTOR			m_tpMembers;
-
-	virtual							~CALifeHumanGroup()
+								CALifeAbstractGroup()
 	{
-		free_vector					(m_tpMembers);
+		m_tpMembers.clear		();
+		m_bCreateSpawnPositions	= true;
+		m_wCount				= 1;
 	};
 
-	virtual void					STATE_Write(NET_Packet &tNetPacket);
-	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
-	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
-	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
-	virtual void					Init(LPCSTR caSection);
+	virtual						~CALifeAbstractGroup()
+	{
+	};
+	
+	virtual void STATE_Read		(NET_Packet& P, u16 size)
+	{
+		u8						uDummy;
+		P.r_u8					(uDummy);
+		m_bCreateSpawnPositions = !!uDummy;
+		P.r_u16					(m_wCount);
+	};
+
+	virtual void STATE_Write	(NET_Packet& P)
+	{
+		P.w_u8					(m_bCreateSpawnPositions);
+		P.w_u16					(m_wCount);
+	};
+
+	virtual void UPDATE_Read	(NET_Packet& P)
+	{
+		load_base_vector		(m_tpMembers,P);
+		u8 uDummy;
+		P.r_u8	  (uDummy);
+		m_bCreateSpawnPositions = !!uDummy;
+		P.r_u16					(m_wCount);
+	};
+
+	virtual void UPDATE_Write	(NET_Packet& P)
+	{
+		save_base_vector		(m_tpMembers,P);
+		P.w_u8					(m_bCreateSpawnPositions);
+		P.w_u16					(m_wCount);
+	};
+
+	#ifdef _EDITOR
+	virtual void FillProp		(LPCSTR pref, PropItemVec& items)
+	{
+	};	
+	#endif
+};
+
+template<class __A> class CALifeGroupTemplate : public __A, public CALifeAbstractGroup {
+	typedef __A					inherited1;
+	typedef CALifeAbstractGroup inherited2;
+public:
+	virtual						~CALifeGroupTemplate()
+	{
+	};
+	
+	virtual void STATE_Read		(NET_Packet& P, u16 size)
+	{
+		inherited1::STATE_Read	(P,size);
+		inherited2::STATE_Read	(P,size);
+	};
+
+	virtual void STATE_Write	(NET_Packet& P)
+	{
+		inherited1::STATE_Write	(P);
+		inherited2::STATE_Write	(P);
+	};
+
+	virtual void UPDATE_Read	(NET_Packet& P)
+	{
+		inherited1::UPDATE_Read	(P);
+		inherited2::UPDATE_Read	(P);
+	};
+
+	virtual void UPDATE_Write	(NET_Packet& P)
+	{
+		inherited1::UPDATE_Write(P);
+		inherited2::UPDATE_Write(P);
+	};
+
+	#ifdef _EDITOR
+	virtual void FillProp		(LPCSTR pref, PropItemVec& items)
+	{
+   		inherited1::FillProp	(pref, items);
+   		inherited2::FillProp	(pref, items);
+	};	
+	#endif
 };
 #endif

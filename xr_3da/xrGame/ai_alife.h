@@ -53,7 +53,6 @@ private:
 	CALifeTrader *					tpfGetNearestSuitableTrader	(CALifeHuman *tpALifeHuman);
 	void							vfCommunicateWithTrader		(CALifeHuman *tpALifeHuman, CALifeTrader *tpTrader);
 	void							vfUpdateMonster				(CALifeMonsterAbstract	*tpALifeMonsterAbstract);
-	void							vfUpdateHumanGroup			(CALifeHumanGroup		*tpALifeHumanGroup);
 	void							vfUpdateHuman				(CALifeHuman			*tpALifeHuman);
 	bool							bfProcessItems				(CALifeHumanParams		&tHumanParams, _GRAPH_ID tGraphID, float fMaxItemMass, float fProbability);
 	bool							bfCheckForItems				(CALifeHumanAbstract	*tpALifeHumanAbstract);

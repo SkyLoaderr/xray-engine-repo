@@ -84,7 +84,7 @@ void CAI_ALife::vfListObjects()
 	for (int i=0; I != E; I++, i++) {
 		Memory.mem_copy(tString,&((*I).second->m_tClassID),sizeof((*I).second->m_tClassID));
 		tString[sizeof((*I).second->m_tClassID)] = 0;
-		Msg("* %4d : %8s[m_tObjectID=%4d][MDL=%10s][CNT=%3d][GID=%4d][UPD=%d]",i,tString,(*I).first,(*I).second->s_name,(*I).second->m_wCount,(*I).second->m_tGraphID,(*I).second->m_tTimeID);
+		Msg("* %4d : %8s[m_tObjectID=%4d][MDL=%10s][GID=%4d][UPD=%d]",i,tString,(*I).first,(*I).second->s_name,(*I).second->m_tGraphID,(*I).second->m_tTimeID);
 	}
 	Msg("Total %d objects",i);
 }
@@ -359,14 +359,14 @@ void CAI_ALife::vfEventInfo(_EVENT_ID &tEventID)
 	Msg("*     Class  m_tObjectID    : %d",tpMG->m_tClassID);
 	Msg("*     Object m_tObjectID    : %d",tpMG->m_tObjectID);
 //	Msg("*     Spawn  m_tObjectID    : %d",tpMG->m_tSpawnID);
-	Msg("*     Count before : %d",tpMG->m_wCount);
+	Msg("*     Count before : %d",tpMG->m_wCountBefore);
 	Msg("*     Count after  : %d",tpMG->m_wCountAfter);
 	Msg("* Monster 2 :");
 	tpMG = tEvent.m_tpMonsterGroup2;
 	Msg("*     Class  m_tObjectID    : %d",tpMG->m_tClassID);
 	Msg("*     Object m_tObjectID    : %d",tpMG->m_tObjectID);
 //	Msg("*     Spawn  m_tObjectID    : %d",tpMG->m_tSpawnID);
-	Msg("*     Count before : %d",tpMG->m_wCount);
+	Msg("*     Count before : %d",tpMG->m_wCountBefore);
 	Msg("*     Count after  : %d",tpMG->m_wCountAfter);
 	{
 		string4096	S;

@@ -10,6 +10,8 @@
 #define CLSID_AI_GRAPH				MK_CLSID('A','I','_','G','R','A','P','H')
 #define CLSID_AI_CROW				MK_CLSID('A','I','_','C','R','O','W',' ')
 #define CLSID_AI_RAT				MK_CLSID('A','I','_','R','A','T',' ',' ')
+#define CLSID_AI_RAT_GROUP			MK_CLSID('A','I','_','R','A','T','_','G ')
+
 #define CLSID_AI_RAT_WOLF			MK_CLSID('A','I','_','R','A','T','_','W')
 #define CLSID_AI_ZOMBIE				MK_CLSID('A','I','_','Z','O','M',' ',' ')
 #define CLSID_AI_ZOMBIE_HUMAN		MK_CLSID('A','I','_','Z','O','M','_','H')
