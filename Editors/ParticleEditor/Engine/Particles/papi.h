@@ -34,7 +34,7 @@
 #define P_EPS 1e-3f
 
 // refs
-struct ParticleAction;
+struct PAHeader;
 
 extern "C"{
 	namespace PAPI{
@@ -111,7 +111,7 @@ extern "C"{
 
 		PARTICLEDLL_API void pSetActionListParenting(int action_list_num, const Fmatrix& m, const Fvector& velocity);
 
-		PARTICLEDLL_API void pAddActionToList(ParticleAction *S);
+		PARTICLEDLL_API void pAddActionToList(PAHeader *S);		
 
 		// Particle Group Calls
 

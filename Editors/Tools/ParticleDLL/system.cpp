@@ -440,7 +440,7 @@ void _pAddActionToList(ParticleAction *S, int size)
 	alist->count++;
 }
 
-PARTICLEDLL_API void pAddActionToList(ParticleAction *S)
+PARTICLEDLL_API void pAddActionToList(PAHeader *S)
 {
 	_pAddActionToList(S,sizeof(PAHeader));
 }
