@@ -8,6 +8,7 @@
 class FSPath{
 public:
 	char m_Root[MAX_PATH];
+	char m_Add[MAX_PATH];
 	char m_Path[MAX_PATH];
 	char m_DefExt[MAX_PATH];
 	char m_FilterString[1024];
@@ -43,6 +44,8 @@ public:
 	string256	m_Local;
 	string256	m_Server;
 	string256	m_ServerData;
+	string256	m_ServerBackup;
+	FSPath 		m_ServerBackupRoot;
 	FSPath 		m_ServerDataRoot;
 	FSPath 		m_ServerRoot;
 	FSPath 		m_LocalRoot;
@@ -101,6 +104,7 @@ public:
     void		MarkFiles		(FSPath* initial, LPSTRVec& files);
 	void 		BackupFile		(const AnsiString& fn);
 	bool 		RestoreBackup	(const AnsiString& fn);
+	void 		BackupFile		(FSPath *initial, const AnsiString& fname);
 
     int			GetFileList		(LPCSTR path, FileMap& items, bool bClampPath, bool bClampExt, bool bRootOnly, LPCSTR ext_mask="*.*"); // return item count
 
@@ -113,6 +117,7 @@ public:
     LPCSTR		GetLockOwner	(FSPath *initial, LPSTR fn);
 
     void		RegisterAccess	(LPSTR fn, LPSTR start_msg);
-};
+    void		WriteAccessLog	(LPSTR fn, LPSTR start_msg);
+};                     
 #endif /*_INCDEF_FileSystem_H_*/
 

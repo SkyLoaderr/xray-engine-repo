@@ -15,6 +15,7 @@ void FSPath::Init( char *_Root, char *_Add, char *_DefExt, char *_FilterString )
 	VERIFY( _Root && _Add );
 	strcpy( m_DefExt, _DefExt );
 	strcpy( m_FilterString, _FilterString );
+    strcpy( m_Add,  _Add);
 	strcpy( m_Root, _Root );
 	strcpy( m_Path, _Root );
 	strcat( m_Path, _Add );
@@ -70,16 +71,15 @@ void CFileSystem::OnCreate(){
 	DWORD		user_sz = sizeof(m_UserName);
 	GetUserName	(m_UserName,&user_sz);
 
-//	VERIFY( _ExeName );
-//	_splitpath( _ExeName, m_Root, 0, 0, 0 );
-//	_splitpath( _ExeName, 0, m_Root+strlen(m_Root), 0, 0 );
-	strcpy(m_Local,		"x:\\");
-    strcpy(m_Server,	"\\\\X-Ray\\stalker$\\");
-    strcpy(m_ServerData,"\\\\X-Ray\\stalkerdata$\\");
+	strcpy(m_Local,			"x:\\");
+    strcpy(m_Server,		"\\\\X-Ray\\stalker$\\");
+    strcpy(m_ServerData,	"\\\\X-Ray\\stalkerdata$\\");
+    strcpy(m_ServerBackup,	"\\\\X-Ray\\stalkerdata$\\Backup\\");
 
 	m_LocalRoot.Init  		(m_Local, 		"",               		"",     			"" );
 	m_ServerRoot.Init  		(m_Server, 		"",               		"",     			"" );
-    m_ServerDataRoot.Init	(m_ServerData, "",               		"",     			"" );
+    m_ServerDataRoot.Init	(m_ServerData, 	"",               		"",     			"" );
+    m_ServerBackupRoot.Init	(m_ServerBackup,"",               		"",     			"" );
     m_GameLevels.Init		(m_Server, 		"game\\data\\levels\\",	"",     			"" );
     m_GameSounds.Init		(m_Server, 		"game\\data\\sounds\\",	"*.wav",			"Wave files" );
 	m_GameRoot.Init 		(m_Server, 		"game\\",         		"",     			"" );
@@ -353,14 +353,30 @@ void CFileSystem::MarkFiles(FSPath* initial, LPSTRVec& files)
     }
 }
 
-void CFileSystem::BackupFile(const AnsiString& fn){
+#ifdef _EDITOR
+void CFileSystem::BackupFile(FSPath *initial, const AnsiString& fname)
+{
+    long tm; time(&tm);
+	AnsiString src_name = fname; initial->Update(src_name);
+	AnsiString dst_name;
+    dst_name.sprintf("%s%s_%x",initial->m_Add,fname.c_str(),tm);
+    m_ServerBackupRoot.Update(dst_name);
+    VerifyPath(dst_name.c_str());
+    CopyFileTo(src_name.c_str(),dst_name.c_str(),true);
+    WriteAccessLog(dst_name.c_str(),"Backup");
+}
+#endif
+
+void CFileSystem::BackupFile(const AnsiString& fn)
+{
 	AnsiString ext = ExtractFileExt(fn);
     ext.Insert("~",2);
 	AnsiString backup_fn = ChangeFileExt(fn,ext);
 	CopyFileTo(fn.c_str(),backup_fn.c_str(),true);
 }
 
-bool CFileSystem::RestoreBackup(const AnsiString& fn){
+bool CFileSystem::RestoreBackup(const AnsiString& fn)
+{
 	AnsiString ext = ExtractFileExt(fn);
     ext.Insert("~",2);
 	AnsiString backup_fn = ChangeFileExt(fn,ext);
@@ -473,14 +489,18 @@ LPSTR CFileSystem::UpdateTextureNameWithFolder(LPSTR tex_name)
 	return tex_name;
 }
 
+void CFileSystem::WriteAccessLog(LPSTR fn, LPSTR start_msg)
+{
+	string128 dt_buf, tm_buf;
+	m_AccessLog->Msg(mtInformation,"%s:   '%s' from computer: '%s' by user: '%s' at %s %s",start_msg,fn,m_CompName,m_UserName,_strdate(dt_buf),_strtime(tm_buf));
+}
+
 void CFileSystem::RegisterAccess(LPSTR fn, LPSTR start_msg)
 {
     CInifile*	ini = CInifile::Create(m_LastAccessFN,false);
 	ini->WriteString("last_access",fn,m_CompName);
     CInifile::Destroy(ini);
-
-	string128 dt_buf, tm_buf;
-	m_AccessLog->Msg(mtInformation,"%s:   '%s' from computer: '%s' by user: '%s' at %s %s",start_msg,fn,m_CompName,m_UserName,_strdate(dt_buf),_strtime(tm_buf));
+    WriteAccessLog(fn,start_msg);
 }
 
 BOOL CFileSystem::CheckLocking(FSPath *initial, LPSTR fname, bool bOnlySelf, bool bMsg)

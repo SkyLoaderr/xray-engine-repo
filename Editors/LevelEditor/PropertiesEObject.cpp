@@ -86,7 +86,6 @@ void TfrmPropertiesEObject::FillBasicProps()
     	CEditableObject* 	O = S->GetReference();
 		m_Basic->AddItem	(0,PROP_MARKER2,"Name",(LPVOID)S->GetRefName());
 		m_Basic->AddItem	(0,PROP_FLAG,	"Dynamic",m_Basic->MakeFlagValue(&O->m_dwFlags,CEditableObject::eoDynamic));
-		m_Basic->AddItem	(0,PROP_ANSI_TEXT,"Script",	m_Basic->MakeAnsiTextValue(&O->m_ClassScript));
         TElTreeItem* M;
 		M=m_Basic->AddItem	(0,PROP_MARKER,	"Transformation");
 		m_Basic->AddItem	(M,PROP_VECTOR,	"Position",	m_Basic->MakeVectorValue(&S->FPosition,	-10000,	10000,0.01,2,OnAfterTransformation));
@@ -101,6 +100,9 @@ void TfrmPropertiesEObject::FillBasicProps()
 	        t.sprintf("V: %d, F: %d",MESH->GetVertexCount(),MESH->GetFaceCount());
 			m_Basic->AddItem(M,PROP_MARKER2,MESH->GetName(),t.c_str());
         }
+		M=m_Basic->AddItem	(0,PROP_MARKER,	"Game options");
+		m_Basic->AddItem	(0,PROP_FLAG,	"Dummy object",m_Basic->MakeFlagValue(&O->m_dwFlags,CEditableObject::eoDummy));
+		m_Basic->AddItem	(0,PROP_ANSI_TEXT,"Script",	m_Basic->MakeAnsiTextValue(&O->m_ClassScript));
     }
     m_Basic->EndFillMode(true);
 }
