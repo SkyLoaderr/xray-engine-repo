@@ -443,26 +443,6 @@ void CActor::Update	(u32 DT)
 		patch_frame			+= 1;
 	}
 
-	// zone test
-	float z_amount		= 0;
-	for (u32 za=0; za<zone_areas.size(); za++)
-	{
-		Fvector	P; 
-		P.set			(zone_areas[za].x,zone_areas[za].y,zone_areas[za].z);
-		float D			= 1-(Position().distance_to(P)/zone_areas[za].w);
-		z_amount		= _max(D,z_amount);
-	}
-
-	if (z_amount>EPS)	ZoneEffect	(z_amount);
-	else				{
-		cam_shift		= 0.f;
-		cam_gray		= 0.f;
-		if (sndZoneHeart.feedback)		sndZoneHeart.feedback->Stop		();
-		if (sndZoneDetector.feedback)	sndZoneDetector.feedback->Stop	();
-	}
-	cam_shift				= 0.f;
-	cam_gray				= 0.f;
-
 	// 
 	clamp					(DT,0u,100u);
 	float	dt				= float(DT)/1000.f;
@@ -491,15 +471,15 @@ void CActor::Update	(u32 DT)
 		} else {
 			f_DropPower			= 0.f;
 		}
-	} else {
+	}
+	else 
+	{
 		// distinguish interpolation/extrapolation
 		u32	dwTime			= Level().timeServer()-NET_Latency;
 		net_update&	N		= NET.back();
 		if ((dwTime > N.dwTimeStamp) || (NET.size()<2))
 		{
 			// BAD.	extrapolation
-			// u32	delta				= dwTime-N.dwTimeStamp;
-
 			if (NET_WasInterpolating)
 			{
 				NET_WasInterpolating	= FALSE;
@@ -509,17 +489,12 @@ void CActor::Update	(u32 DT)
 				Movement.SetVelocity	(NET_Last.p_velocity);
 				vPosition.set			(NET_Last.p_pos);
 				UpdateTransform			();
-
-				/*
-				if (delta)				dt = float(delta)/1000.f;
-				else					dt = EPS_S;
-				*/
 			}
 
-			g_sv_Orientate				(NET_Last.mstate,dt);
-			g_Orientate					(NET_Last.mstate,dt);
-			g_Physics					(NET_Last.p_accel,Jump,dt);
-			g_SetAnimation				(NET_Last.mstate);
+			g_sv_Orientate				(NET_Last.mstate,dt			);
+			g_Orientate					(NET_Last.mstate,dt			);
+			g_Physics					(NET_Last.p_accel,Jump,dt	);
+			g_SetAnimation				(NET_Last.mstate			);
 		} else {
 			// OK.	interpolation
 
@@ -531,7 +506,6 @@ void CActor::Update	(u32 DT)
 			}
 			if (select>=0)	
 			{
-//				R_ASSERT		(select>=0);
 				if (select>0)	NET.erase(NET.begin(),NET.begin()+select);
 				
 				// Interpolate state
@@ -559,6 +533,8 @@ void CActor::Update	(u32 DT)
 				NET_Time				= dwTime;
 			}
 		}
+
+		mstate_real			= NET_Last.mstate;
 	}
 
 	// generic stuff
@@ -581,11 +557,11 @@ void CActor::Update	(u32 DT)
 	Weapons->Update			(dt,HUDview());
 
 	// sound step
-	if ((NET_Last.mstate&mcAnyMove)&&(!(NET_Last.mstate&(mcJump|mcFall|mcLanding|mcLanding2)))){
+	if ((mstate_real&mcAnyMove)&&(!(mstate_real&(mcJump|mcFall|mcLanding|mcLanding2)))){
 		if(m_fTimeToStep<0){
 			bStep				= !bStep;
-			float k				= (NET_Last.mstate&mcCrouch)?0.75f:1.f;
-			float tm			= isAccelerated(NET_Last.mstate)?(PI/(k*10.f)):(PI/(k*7.f));
+			float k				= (mstate_real&mcCrouch)?0.75f:1.f;
+			float tm			= isAccelerated(mstate_real)?(PI/(k*10.f)):(PI/(k*7.f));
 			m_fTimeToStep		= tm;
 			::Sound->PlayAtPos	(sndStep[bStep],this,Position());
 			if (!Local()){
@@ -596,8 +572,8 @@ void CActor::Update	(u32 DT)
 	}
 
 	// sounds update
-	float	s_k			=	(NET_Last.mstate&mcCrouch)?0.75f:1.f;
-	float	s_vol		=	s_k * (isAccelerated(NET_Last.mstate)?1.f:.75f);
+	float	s_k			=	(mstate_real&mcCrouch)?0.75f:1.f;
+	float	s_vol		=	s_k * (isAccelerated(mstate_real)?1.f:.75f);
 	Fvector	s_pos		=	Position	();
 	s_pos.y				+=	.5f;
 	if (sndStep[0].feedback)		{
