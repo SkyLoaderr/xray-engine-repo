@@ -33,6 +33,9 @@
     <string id="val_monolith_guard_password_3">
         <text>Ночное солнце</text>
     </string>
+    <string id="val_monolith_guard_password_4">
+        <text>Пароль</text>
+    </string>
     <string id="val_monolith_guard_password_5">
         <text>Слушай, я вчера напился, забыл пароль. Пропусти меня, я в долгу не останусь.</text>
     </string>
