@@ -10,6 +10,7 @@
 #include "xr_graph_merge.h"
 #include "xr_spawn_merge.h"
 #include "xrCrossTable.h"
+#include "path_test.h"
 
 #pragma comment(linker,"/STACK:0x800000,0x400000")
 
@@ -50,7 +51,7 @@ void Startup(LPSTR     lpCmdLine)
 	strcpy(cmd,lpCmdLine);
 	strlwr(cmd);
 	if (strstr(cmd,"-?") || strstr(cmd,"-h"))			{ Help(); return; }
-	if ((strstr(cmd,"-f")==0) && (strstr(cmd,"-g")==0) && (strstr(cmd,"-m")==0) && (strstr(cmd,"-s")==0))	{ Help(); return; }
+	if ((strstr(cmd,"-f")==0) && (strstr(cmd,"-g")==0) && (strstr(cmd,"-m")==0) && (strstr(cmd,"-s")==0) && (strstr(cmd,"-t")==0))	{ Help(); return; }
 	if (strstr(cmd,"-o"))								bModifyOptions = TRUE;
 
 	// Give a LOG-thread a chance to startup
@@ -68,6 +69,9 @@ void Startup(LPSTR     lpCmdLine)
 		else
 			if (strstr(cmd,"-s"))
 				sscanf	(strstr(cmd,"-s")+2,"%s",name);
+			else
+				if (strstr(cmd,"-t"))
+					sscanf	(strstr(cmd,"-t")+2,"%s",name);
 
 	if (strlen(name))
 		strcat			(name,"\\");
@@ -99,6 +103,10 @@ void Startup(LPSTR     lpCmdLine)
 						name[strlen(name) - 1] = 0;
 					xrMergeSpawns		(name);
 				}
+				else
+					if (strstr(cmd,"-t")) {
+						path_test			(prjName);
+					}
 		}
 	// Show statistic
 	char	stats[256];

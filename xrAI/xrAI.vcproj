@@ -471,6 +471,31 @@
 				<File
 					RelativePath="ai_a_star_search.h">
 				</File>
+				<Filter
+					Name="path_test"
+					Filter="">
+					<File
+						RelativePath=".\a_star.h">
+					</File>
+					<File
+						RelativePath=".\data_storage.h">
+					</File>
+					<File
+						RelativePath=".\graph.h">
+					</File>
+					<File
+						RelativePath=".\path_controller.h">
+					</File>
+					<File
+						RelativePath=".\path_machine.h">
+					</File>
+					<File
+						RelativePath=".\path_test.cpp">
+					</File>
+					<File
+						RelativePath=".\path_test.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Cross"
