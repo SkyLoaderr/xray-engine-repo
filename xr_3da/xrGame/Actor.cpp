@@ -211,16 +211,16 @@ void CActor::Load	(LPCSTR section )
 	Fbox	bb;
 
 	// m_PhysicMovementControl: BOX
-	Fvector	vBOX0_center= pSettings->r_fvector3	(section,"ph_box0_center"	);
-	Fvector	vBOX0_size	= pSettings->r_fvector3	(section,"ph_box0_size"		);
-	bb.set	(vBOX0_center,vBOX0_center); bb.grow(vBOX0_size);
-	m_PhysicMovementControl->SetBox		(0,bb);
-
-	// m_PhysicMovementControl: BOX
 	Fvector	vBOX1_center= pSettings->r_fvector3	(section,"ph_box1_center"	);
 	Fvector	vBOX1_size	= pSettings->r_fvector3	(section,"ph_box1_size"		);
 	bb.set	(vBOX1_center,vBOX1_center); bb.grow(vBOX1_size);
 	m_PhysicMovementControl->SetBox		(1,bb);
+
+	// m_PhysicMovementControl: BOX
+	Fvector	vBOX0_center= pSettings->r_fvector3	(section,"ph_box0_center"	);
+	Fvector	vBOX0_size	= pSettings->r_fvector3	(section,"ph_box0_size"		);
+	bb.set	(vBOX0_center,vBOX0_center); bb.grow(vBOX0_size);
+	m_PhysicMovementControl->SetBox		(0,bb);
 
 	//// m_PhysicMovementControl: Foots
 	//Fvector	vFOOT_center= pSettings->r_fvector3	(section,"ph_foot_center"	);
@@ -691,16 +691,17 @@ void CActor::shedule_Update	(u32 DT)
 		if (NET.size())
 		{
 //			NET_Last = NET.back();
-			if (NET_Last.mstate & mcCrouch)
-				m_PhysicMovementControl->ActivateBox(1);
-			else 
-				m_PhysicMovementControl->ActivateBox(0);
 
 			g_sv_Orientate				(NET_Last.mstate,dt			);
 			g_Orientate					(NET_Last.mstate,dt			);
 			g_Physics					(NET_Last.p_accel,Jump,dt	);
 			g_cl_ValidateMState			(dt,mstate_wishful);
 			g_SetAnimation				(NET_Last.mstate);
+
+			if (mstate_real & mcCrouch)
+				m_PhysicMovementControl->ActivateBox(1);
+			else 
+				m_PhysicMovementControl->ActivateBox(0);
 		};
 	}
 	make_Interpolation();

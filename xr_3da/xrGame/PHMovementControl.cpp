@@ -619,16 +619,16 @@ void CPHMovementControl::Load					(LPCSTR section){
 	Fbox	bb;
 
 	// m_PhysicMovementControl: BOX
-	Fvector	vBOX0_center= pSettings->r_fvector3	(section,"ph_box0_center"	);
-	Fvector	vBOX0_size	= pSettings->r_fvector3	(section,"ph_box0_size"		);
-	bb.set	(vBOX0_center,vBOX0_center); bb.grow(vBOX0_size);
-	SetBox		(0,bb);
-
-	// m_PhysicMovementControl: BOX
 	Fvector	vBOX1_center= pSettings->r_fvector3	(section,"ph_box1_center"	);
 	Fvector	vBOX1_size	= pSettings->r_fvector3	(section,"ph_box1_size"		);
 	bb.set	(vBOX1_center,vBOX1_center); bb.grow(vBOX1_size);
 	SetBox		(1,bb);
+
+	// m_PhysicMovementControl: BOX
+	Fvector	vBOX0_center= pSettings->r_fvector3	(section,"ph_box0_center"	);
+	Fvector	vBOX0_size	= pSettings->r_fvector3	(section,"ph_box0_size"		);
+	bb.set	(vBOX0_center,vBOX0_center); bb.grow(vBOX0_size);
+	SetBox		(0,bb);
 
 	//// m_PhysicMovementControl: Foots
 	//Fvector	vFOOT_center= pSettings->r_fvector3	(section,"ph_foot_center"	);

@@ -5,6 +5,7 @@
 #include "actor.h"
 #include "../CameraBase.h"
 #include "xrserver_objects_alife.h"
+#include "ActorEffector.h"
 
 #define PLAYING_ANIM_TIME 10000
 
@@ -392,23 +393,36 @@ void CMissile::Hide()
 void CMissile::setup_throw_params()
 {
 	CActor* pActor = dynamic_cast<CActor*>(H_Parent());
-	if(pActor && pActor->HUDview())
+	if(pActor)// && pActor->HUDview())
 	{
-		UpdateFP();
+//		UpdateFP();
 		Fmatrix trans;
-		Level().Cameras.unaffected_Matrix(trans);
+//		pActor->EffectorManager().affected_Matrix(trans);
+
+
+		Fvector FirePos, FireDir;
+		pActor->g_fireParams(FirePos, FireDir);
+		trans.k.set(FireDir);
+		Fvector::generate_orthonormal_basis(trans.k, trans.i,trans.j);
+		trans.c.set(FirePos);
+		trans.c.mad(FireDir, 1.f);
+		m_throw_matrix.set(trans);
 		m_throw_direction.set(trans.k);
 
+//		Level().Cameras.unaffected_Matrix(trans);
+//		m_throw_direction.set(trans.k);
+
+
 		//		m_throw_matrix.set(m_pHUD->Transform());
-		m_throw_matrix.identity();
-		m_throw_matrix.c.set(m_vHudThrowPoint);
-		m_throw_matrix.mulA(m_pHUD->Transform());
+//		m_throw_matrix.identity();
+//		m_throw_matrix.c.set(m_vHudThrowPoint);
+//		m_throw_matrix.mulA(m_pHUD->Transform());
 	}
 	else
 	{
 		m_throw_direction.set	(H_Parent()->XFORM().k);
 		m_throw_matrix			= XFORM();
-	}
+	};
 }
 
 void CMissile::Throw() 
