@@ -106,6 +106,10 @@ class CSoundMemory
 	friend class CMonsterMemory;
 
 public:
+	
+		DEFINE_THIS_CLASS_AS_POLYMORPHIC();
+
+
 		void	HearSound				(const SoundElem &s);
 		void	HearSound				(const CObject* who, int eType, const Fvector &Position, float power, TTime time);
 	IC	bool	IsRememberSound			() {return (!Sounds.empty());}		

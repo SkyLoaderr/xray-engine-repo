@@ -72,6 +72,7 @@ void CBitingRest::Run()
 	if (m_bFollowPath) {
 		m_tAction = ACTION_WALK_PATH_END;
 	} else {
+		
 		// проверить нужно ли провести перепланировку
 		DO_IN_TIME_INTERVAL_BEGIN(m_dwLastPlanTime, DELTA_NEXT_THINK);
 			Replanning();

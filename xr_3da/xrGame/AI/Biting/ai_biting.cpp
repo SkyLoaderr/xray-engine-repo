@@ -85,6 +85,8 @@ void CAI_Biting::Init()
 
 }
 
+
+
 void CAI_Biting::Die()
 {
 	inherited::Die( );
@@ -192,6 +194,19 @@ void CAI_Biting::LoadShared(LPCSTR section)
 	_sd->m_fEatFreq						= pSettings->r_float(section,"eat_freq");
 	_sd->m_fEatSlice					= pSettings->r_float(section,"eat_slice");
 	_sd->m_fEatSliceWeight				= pSettings->r_float(section,"eat_slice_weight");
+
+	AddStepSound(section, eAnimWalkFwd,			"step_snd_walk");
+	AddStepSound(section, eAnimWalkDamaged,		"step_snd_walk_dmg");
+	AddStepSound(section, eAnimRun,				"step_snd_run");
+	AddStepSound(section, eAnimRunDamaged,		"step_snd_run_dmg");
+	AddStepSound(section, eAnimStandTurnLeft,	"step_snd_turn");
+	AddStepSound(section, eAnimStandTurnRight,	"step_snd_turn");
+	AddStepSound(section, eAnimSteal,			"step_snd_steal");
+	AddStepSound(section, eAnimDragCorpse,		"step_snd_drag");
+	AddStepSound(section, eAnimWalkTurnLeft,	"step_snd_walk");
+	AddStepSound(section, eAnimWalkTurnRight,	"step_snd_walk");
+	AddStepSound(section, eAnimRunTurnLeft,		"step_snd_run");
+	AddStepSound(section, eAnimRunTurnRight,	"step_snd_run");
 
 	R_ASSERT2 (100 == (_sd->m_dwProbRestWalkFree + _sd->m_dwProbRestStandIdle + _sd->m_dwProbRestLieIdle + _sd->m_dwProbRestTurnLeft), "Probability sum isn't 1");
 }
@@ -309,13 +324,18 @@ void CAI_Biting::UpdateCL()
 	// Проверка состояния анимации (атака)
 	if (g_Alive()) {
 		AA_CheckHit();
+
+		// step sounds
+		float vol = 0.0f, freq = 1.0f;
+		GetStepSound(MotionMan.GetCurAnim(), vol, freq);
+		
+		CMaterialManager::update(Device.fTimeDelta,vol,freq,!!fis_zero(speed()));
 	}
+
 
 	m_pPhysics_support->in_UpdateCL();
 	
 	HDebug->M_Update();
-
-	//UpdatePitch();
 }
 
 void CAI_Biting::shedule_Update(u32 dt)
@@ -407,3 +427,32 @@ float CAI_Biting::GetRealDistToEnemy()
 			
 	return ret_val;
 }
+
+
+void CAI_Biting::AddStepSound(LPCSTR section, EMotionAnim a, LPCSTR name)
+{
+	LPCSTR		str;
+	str = pSettings->r_string(section,name);
+
+	string16	first,second;
+	_GetItem(str,0,first);
+	_GetItem(str,1,second);
+
+	SStepSound		step_snd;
+	step_snd.vol	= float(atof(first));
+	step_snd.freq	= float(atof(second));
+
+	_sd->step_sounds.insert				(mk_pair(a, step_snd));
+}
+
+void CAI_Biting::GetStepSound(EMotionAnim a, float &vol, float &freq) 
+{
+	STEP_SOUND_MAP_IT it = _sd->step_sounds.find(a);
+	if (it == _sd->step_sounds.end()) return;
+	
+	vol		= it->second.vol;
+	freq	= it->second.freq; 
+}
+
+
+

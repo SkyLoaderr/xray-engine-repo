@@ -185,7 +185,7 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 	CDetailPathManager::set_try_min_time(true);
 	SetupVelocityMasks();
 		
-	if (CMovementManager::enabled()) update_path();
+	update_path();
 	
 	PreprocessAction();
 	MotionMan.ProcessAction();

@@ -58,6 +58,17 @@ enum EBitingPathState {
 
 typedef VisionElem SEnemy;
 
+//////////////////////////////////////////////////////////////////////////
+// StepSounds
+struct SStepSound {
+	float	vol;
+	float	freq;
+};
+DEFINE_MAP(EMotionAnim, SStepSound, STEP_SOUND_MAP, STEP_SOUND_MAP_IT);
+//////////////////////////////////////////////////////////////////////////
+
+
+
 class _biting_shared : public CSharedResource {
 public:
 	// float speed factors
@@ -119,6 +130,9 @@ public:
 	float					m_fEatFreq;
 	float					m_fEatSlice;
 	float					m_fEatSliceWeight;
+
+
+	STEP_SOUND_MAP			step_sounds;
 
 };
 
@@ -256,6 +270,9 @@ public:
 
 			Fvector			GetValidPosition				(const CEntity *entity, const Fvector &actual_position);
 
+	// Step sounds
+			void			AddStepSound					(LPCSTR section, EMotionAnim a, LPCSTR name);
+			void			GetStepSound					(EMotionAnim a, float &vol, float &freq);
 // members
 public:
 

@@ -30,6 +30,13 @@ void CAI_Biting::Think()
 		SetState							(stateRest);
 	}
 
+	// Squad calculations
+	CMonsterSquad	*pSquad = Level().SquadMan.GetSquad((u8)g_Squad());
+	pSquad->UpdateMonsterData(this,const_cast<CEntity *>(m_tEnemy.obj));
+	if ((pSquad->GetLeader() == this)) {
+		pSquad->UpdateDecentralized();
+	} 
+
 	StateSelector							();
 	CurrentState->Execute					(m_current_update);
 
@@ -37,7 +44,6 @@ void CAI_Biting::Think()
 	CDetailPathManager::set_path_type		(eDetailPathTypeSmooth);
 	CDetailPathManager::set_try_min_time	(true);
 	update_path								();
-	
 
 	PreprocessAction						();
 	MotionMan.ProcessAction					();
@@ -47,6 +53,10 @@ void CAI_Biting::Think()
 	
 	// process sound
 	ControlSound							(m_current_update);
+
+	// Debuging
+	HDebug->SetActive						(true);
+
 }
 
 

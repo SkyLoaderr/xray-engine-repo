@@ -6,6 +6,7 @@
 #include "../bloodsucker/ai_bloodsucker.h"
 #include "../../actor.h"
 #include "../ai_monster_jump.h"
+#include "../ai_monster_group.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingAttack implementation
@@ -223,7 +224,21 @@ void CBitingAttack::Run()
 			if (IS_NEED_REBUILD()) bNeedRebuild = true;
 			if (bNeedRebuild) {
 				
-				if (dist < max_build_dist) pMonster->MoveToTarget(m_tEnemy.obj);
+				if (dist < max_build_dist) {
+					CMonsterSquad	*pSquad = Level().SquadMan.GetSquad((u8)pMonster->g_Squad());
+					TTime			last_updated;
+					Fvector			target = pSquad->GetTargetPoint(pMonster, last_updated);
+
+					if (last_updated !=0 ) {
+						pMonster->Path_ApproachPoint(0, target);
+						pMonster->m_tSelectorApproach->m_tEnemyPosition = target;
+						pMonster->m_tSelectorApproach->m_tEnemy			= 0;
+
+						pMonster->SetPathParams(pMonster->level_vertex_id(), pMonster->Position()); 
+					} else {
+						pMonster->MoveToTarget(m_tEnemy.obj);
+					}
+				}
 				else {
 					// find_nearest_point_to_point
 					Fvector pos;

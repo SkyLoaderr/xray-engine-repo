@@ -30,9 +30,10 @@ enum ELeaderState {
 };
 
 struct SEntityState {
-	CEntity *pEnemy;
-	Fvector	pEnemyPos;		// для определения актуальности состояния
-	Fvector target_pos;
+	CEntity *pEnemy;		// текущий враг. обновляется со стороны NPC
+	Fvector target_pos;		// результирующая позиция обновляется со стороны Squad
+	u32		last_updated;	// время последнего обновления pEnemy со стороны NPC
+	u32		last_repos;		// время последнего обновления target_pos со стороны Squad (если 0 - то не брать target_pos)
 };
 
 // Задача
@@ -94,8 +95,8 @@ public:
 	// Децентрализованное управление
 	void		UpdateMonsterData	(CEntity *pE, CEntity *pEnemy);
 	void		UpdateDecentralized	();
-	Fvector		GetTargetPoint		(CEntity *pE);
-	bool		IsActual			(CEntity *pE, CEntity *pEnemy);
+	Fvector		GetTargetPoint		(CEntity *pE, u32 &time);
+	
 	// -----------------------------------------------------------------
 
 	// Получить задачу для NPC

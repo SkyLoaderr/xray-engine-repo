@@ -29,15 +29,9 @@ void CAI_Biting::vfInitSelector(PathManagers::CAbstractVertexEvaluator &S, bool 
 	S.m_tMyPosition		= Position();
 
 	if (!hear_sound && m_tEnemy.obj) {
-		S.m_tEnemy			= m_tEnemy.obj;
 		S.m_tEnemyPosition	= m_tEnemy.position;
-		S.m_dwEnemyNode		= m_tEnemy.node_id;
-		S.m_tpEnemyNode		= m_tEnemy.vertex;
 	}
 	
-	INIT_SQUAD_AND_LEADER;
-
-	S.m_taMembers		= &(Squad.Groups[g_Group()].Members);
 	S.m_dwStartNode		= level_vertex_id();		// текущий узел
 	S.m_tStartPosition	= Position();
 }

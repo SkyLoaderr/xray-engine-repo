@@ -1,7 +1,7 @@
 #include "stdafx.h"
+#include "ai_monster_defs.h"
 #include "ai_monster_group.h"
 #include "../entity_alive.h"
-#include "ai_monster_defs.h"
 #include "../movement_manager.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -341,59 +341,56 @@ bool CMonsterSquad::IsPriorityHigher(ESquadCommand com_new, ESquadCommand com_ol
 
 void CMonsterSquad::UpdateMonsterData(CEntity *pE, CEntity *pEnemy)
 {
-	SEntityState S;
-	S.pEnemy = pEnemy;
-	S.target_pos.set(0.f,0.f,0.f);
+	SEntityState	S;
+	S.pEnemy		= pEnemy;
+	S.last_updated	= Level().timeServer();
 	
 	ENTITY_STATE_MAP_IT it = states.find(pE);
 	if (it == states.end()) {
+		S.target_pos.set(0.f,0.f,0.f);
 		states.insert(mk_pair(pE, S));
 	} else {
-		it->second.pEnemy		= pEnemy;
-		it->second.pEnemyPos.set(0.0f,0.f,0.f);
+		S.target_pos = it->second.target_pos;
+		it->second = S;
 	}
 }
 
 
-Fvector CMonsterSquad::GetTargetPoint(CEntity *pE)
+Fvector CMonsterSquad::GetTargetPoint(CEntity *pE, TTime &time)
 {
 	ENTITY_STATE_MAP_IT it = states.find(pE);
 	R_ASSERT(it != states.end());
 	
+	time = it->second.last_repos;
 	return it->second.target_pos;
-}
-
-bool CMonsterSquad::IsActual(CEntity *pE, CEntity *pEnemy)
-{
-	ENTITY_STATE_MAP_IT it = states.find(pE);
-	R_ASSERT(it != states.end());
-
-	if (it->second.pEnemy == pEnemy) {
-		if (it->second.pEnemyPos.similar(pEnemy->Position(),0.1f)) return true;
-	}
-	
-	return false;
 }
 
 void CMonsterSquad::UpdateDecentralized()
 {
-	
+
+	// работаем только с копией new_map
 	ENTITY_STATE_MAP	new_map	= states;
+	// map только для NPC, у которых общий враг
 	ENTITY_STATE_MAP	cur_map;
 	
 	while (!new_map.empty()) {
 		ENTITY_STATE_MAP_IT	it	= new_map.begin();
 		CEntity	*pGeneralEnemy	= it->second.pEnemy;
 
+		// заполнить cur_map
 		for (;it != new_map.end(); it++) {
-			if (it->second.pEnemy == pGeneralEnemy) cur_map.insert(*it);
+			if (it->second.pEnemy == pGeneralEnemy) {
+				// проверить, являются ли данные актуальными
+				TTime cur_time = Level().timeServer();
+				if (it->second.last_updated + 1000 > cur_time) 	cur_map.insert(*it);
+			}
 		}
 
 		if (pGeneralEnemy != 0) SetupMemeberPositions(cur_map,pGeneralEnemy);
 
 		cur_map.clear();
 		
-		// remove from new_map all with pGeneralEnemy
+		// удалить все элементы из new_map, у которых враг = pGeneralEnemy
 		for (ENTITY_STATE_MAP_IT iter = new_map.begin(), temp_it; iter != new_map.end(); iter = temp_it) {
 			temp_it = iter; ++temp_it;
 			if (iter->second.pEnemy == pGeneralEnemy) new_map.erase(iter);
@@ -402,26 +399,26 @@ void CMonsterSquad::UpdateDecentralized()
 }
 
 struct sort_predicate {
-	
 	CEntity *enemy;
 public:
 			sort_predicate	(CEntity *pEnemy) : enemy(pEnemy) {}
 
 	bool	operator()		(CEntity *pE1, CEntity *pE2) const
 	{
-		return	(pE1->Position().distance_to(enemy->Position()) < 
+		return	(pE1->Position().distance_to(enemy->Position()) > 
 				 pE2->Position().distance_to(enemy->Position()));
 	};
 };
-
 
 struct _line {
 	CEntity *pE;
 	Fvector p_from;
 	Fvector p_to;
+	bool	b_changed;
 };
 
-#define MIN_ANGLE PI_DIV_6
+#define MIN_ANGLE			PI_DIV_6
+#define MAX_DIST_THRESHOLD	10.f
 
 void CMonsterSquad::SetupMemeberPositions(ENTITY_STATE_MAP &cur_map, CEntity *enemy)
 {
@@ -433,23 +430,26 @@ void CMonsterSquad::SetupMemeberPositions(ENTITY_STATE_MAP &cur_map, CEntity *en
 	for (ENTITY_STATE_MAP_IT it = cur_map.begin(); it != cur_map.end(); it++) 
 		members.push_back(it->first);
 	
-	// сортировать по убыванию расстояния от npc до врага
+	// сортировать по убыванию расстояния от npc до врага 
 	std::sort(members.begin(), members.end(), sort_predicate(enemy));
 
+	// проходим с конца members в начало (начиная с наименьшего расстояния)
 	while (!members.empty()) {
 		CEntity *pCur;
 
 		pCur = members.back();
 		members.pop_back();
 		
+		// построить текущую линию
 		_line cur_line;
-		cur_line.p_from = pCur->Position();
-		cur_line.p_to	= enemy->Position();
-		cur_line.pE		= pCur;
-		
+		cur_line.p_from		= pCur->Position();
+		cur_line.p_to		= enemy->Position();
+		cur_line.pE			= pCur;
+		cur_line.b_changed	= false;
 		
 		// Установить линии атаки
-		
+
+		// Пройти по всем линиям и определить линию, с которой минимальный угол
 		float	smallest_angle	= flt_max;
 		u32		line_index	= u32(-1);
 		for (u32 i = 0; i < lines.size(); i++){
@@ -463,7 +463,7 @@ void CMonsterSquad::SetupMemeberPositions(ENTITY_STATE_MAP &cur_map, CEntity *en
 			// определить угол между 2-мя векторами
 			float angle = acosf(dir1.dotproduct(dir2));
 			
-			if (angle > MIN_ANGLE) continue;
+			if ((angle > MIN_ANGLE) || (lines[i].b_changed)) continue;
 			else {
 				if (angle < smallest_angle) {
 					smallest_angle	= angle;
@@ -471,17 +471,16 @@ void CMonsterSquad::SetupMemeberPositions(ENTITY_STATE_MAP &cur_map, CEntity *en
 				}
 			}
 		}
-		
+
+		// установить target_pos
 		if (line_index == u32(-1)) {	// нет слишком малых углов
 			lines.push_back(cur_line);
 		} else {
 			_line nearest = lines[line_index];
 			
 			// определить сторону на какой находится nearest.p_from
-			Fvector cur_dir;
-			Fvector dir2;
-			float h,p;
-			float h2,p2;
+			Fvector cur_dir, dir2;
+			float	h, p, h2, p2;
 			
 			cur_dir.sub(cur_line.p_to,cur_line.p_from);
 			cur_dir.getHP(h,p);
@@ -489,27 +488,36 @@ void CMonsterSquad::SetupMemeberPositions(ENTITY_STATE_MAP &cur_map, CEntity *en
 			dir2.getHP(h2,p2);
 
 			float d_angle;
-			d_angle = ((angle_normalize_signed(h2 - h) > 0) ? PI_DIV_3 : -PI_DIV_3);
+			d_angle = ((angle_normalize_signed(h2 - h) > 0) ? -PI_DIV_3 : PI_DIV_3);
 
 			float dist;
 			dist = cur_dir.magnitude();
-			
+			if (dist > MAX_DIST_THRESHOLD) dist = MAX_DIST_THRESHOLD;
+
 			cur_dir.setHP(h + d_angle,p);
 			cur_dir.normalize();
 
 			Fvector new_pos;
 			new_pos.mad(cur_line.p_from, cur_dir, dist);
 
-			cur_line.p_to = new_pos;
+			cur_line.p_to		= new_pos;
+			cur_line.b_changed	= true;
 			lines.push_back(cur_line);
 		}
 	}
 	
 	// Пройти по всем линиям и заполнить таргеты у npc
+	TTime cur_time = Level().timeServer();
+
 	for (u32 i = 0; i < lines.size(); i++){
 		ENTITY_STATE_MAP_IT	it	= states.find(lines[i].pE);
+		R_ASSERT(it != states.end());
+			
 		it->second.target_pos	= lines[i].p_to;
-		it->second.pEnemyPos	= enemy->Position();	
+		
+		if (lines[i].b_changed) it->second.last_repos = cur_time;
+		else it->second.last_repos = 0;
+
 	}
 }
 
