@@ -245,7 +245,7 @@ BOOL CSE_Abstract::Spawn_Read				(NET_Packet	&tNetPacket)
 
 	//client object custom data serialization LOAD
 	if (m_wVersion > 70) {
-		u16 client_data_size	= tNetPacket.r_u16(); //не может быть больше 256 байт
+		u16 client_data_size	= (m_wVersion > 93) ? tNetPacket.r_u16() : tNetPacket.r_u8(); //не может быть больше 256 байт
 		if (client_data_size > 0) {
 			client_data.resize	(client_data_size);
 			tNetPacket.r		(&*client_data.begin(),client_data_size);

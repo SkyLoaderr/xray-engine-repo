@@ -110,8 +110,9 @@
 // 91 - CSE_ALifeHumanStalker			appended with property demo_mode
 // 92 - CSE_AlifeCreatureActor			added base class CSE_PHSkeleton
 // 93 - CSE_AlifeCar					health added in STATE_Read STATE_Write
+// 94 - CSE_Abstract					client_data size increased
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(93)
+#define SPAWN_VERSION	u16(94)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:
