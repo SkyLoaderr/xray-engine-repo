@@ -138,6 +138,24 @@ void LogWinErr(const char *msg, u32 err_code){
     LocalFree	(lpMsgBuf);
 }
 
+ref_str GetWinErr(u32 err_code)
+{
+    LPVOID lpMsgBuf = NULL;
+    FormatMessage(
+        FORMAT_MESSAGE_ALLOCATE_BUFFER |
+        FORMAT_MESSAGE_FROM_SYSTEM |
+        FORMAT_MESSAGE_IGNORE_INSERTS,
+        NULL,
+        err_code,
+        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+        (LPTSTR) &lpMsgBuf,
+        0,
+        NULL);
+    ref_str tmp	= (LPCSTR)lpMsgBuf; 
+    LocalFree	(lpMsgBuf);
+    return tmp;
+}
+
 static char *month[12] = {
 	"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
 };
