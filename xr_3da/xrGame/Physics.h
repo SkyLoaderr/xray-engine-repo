@@ -46,7 +46,7 @@ public:
 /////////////////////////////////////////////////////////////////////////////
 class CPHWorld	: public pureFrame
 {
-	u64		m_steps_num;
+	
 	double	m_start_time;
 	u32		m_delay;
 	u32		m_previous_delay;
@@ -59,6 +59,7 @@ class CPHWorld	: public pureFrame
 	CPHMesh Mesh;
 	xr_list<CPHObject*> m_objects;
 public:
+	u64		m_steps_num;
 	double m_frame_sum;
 	dReal m_frame_time;
 	float m_update_time;
