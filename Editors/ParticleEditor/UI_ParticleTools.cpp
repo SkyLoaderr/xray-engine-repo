@@ -20,11 +20,14 @@
 #include "TextForm.h"
 #include "d3dutils.h"
 #include "ObjectAnimator.h"
+#include "ParticleEffectActions.h"
 //------------------------------------------------------------------------------
 CParticleTools*&	PTools=(CParticleTools*)Tools;
 //------------------------------------------------------------------------------
 #define CHECK_SNAP(R,A,C){ R+=A; if(fabsf(R)>=C){ A=snapto(R,C); R=0; }else{A=0;}}
 //static Fvector zero_vec={0.f,0.f,0.f};
+
+EParticleAction* 	pCreateEActionImpl(PAPI::PActionEnum type);
 
 CParticleTools::CParticleTools()
 {
@@ -38,6 +41,7 @@ CParticleTools::CParticleTools()
     fFogness			= 0.9f;
     dwFogColor			= 0xffffffff;
     m_Flags.zero		();
+    pCreateEAction		= pCreateEActionImpl;
 }
 //---------------------------------------------------------------------------
 
@@ -51,10 +55,7 @@ bool CParticleTools::OnCreate()
 	// shader test locking
 	AnsiString fn; 
     FS.update_path(fn,_game_data_,PSLIB_FILENAME);
-	if (EFS.CheckLocking(0,fn.c_str(),false,true)) return false;
-
-    Device.seqDevCreate.Add(this);
-    Device.seqDevDestroy.Add(this);
+//	if (EFS.CheckLocking(0,fn.c_str(),false,true)) return false;
 
     m_bReady = true;
 
@@ -99,8 +100,6 @@ void CParticleTools::OnDestroy()
 	TProperties::DestroyForm(m_ItemProps);
     xr_delete			(m_EditPG);
     xr_delete			(m_EditPE);
-    Device.seqDevCreate.Remove(this);
-    Device.seqDevDestroy.Remove(this);
 
 //	xr_delete			(stat_graph);
 }
@@ -255,7 +254,6 @@ void CParticleTools::ZoomObject(bool bSelOnly)
 
 void CParticleTools::OnDeviceCreate()
 {
-	VERIFY(m_bReady);
     // add directional light
     Flight L;
     ZeroMemory(&L,sizeof(Flight));
@@ -284,15 +282,10 @@ void CParticleTools::OnDeviceCreate()
     L.direction.set(0,1,0); L.direction.normalize();
 	Device.SetLight(4,L);
 	Device.LightEnable(4,true);
-
-    m_EditPE->OnDeviceCreate();
-    m_EditPG->OnDeviceCreate();
 }
 
 void CParticleTools::OnDeviceDestroy()
 {
-    m_EditPG->OnDeviceDestroy();
-    m_EditPE->OnDeviceDestroy();
 }
 
 void CParticleTools::SelectPreviewObject(int p){
@@ -568,7 +561,7 @@ void CParticleTools::PlayCurrent(int idx)
     case emEffect:	m_EditPE->Play(); 		break;
     case emGroup:	
     	if (idx>-1){
-        	VERIFY(idx<m_EditPG->items.size());
+        	VERIFY(idx<(int)m_EditPG->items.size());
             m_LibPED = ((PS::CParticleEffect*)m_EditPG->items[idx]._effect)->GetDefinition();
 			m_EditPE->Compile(m_LibPED);
         	m_EditPE->Play	();

@@ -2,7 +2,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "ParticleEffectActionsImpl.h"
+#include "ParticleEffectActions.h"
 #include "folderlib.h"
 #include "PropertiesListHelper.h"
 #include "particle_actions_collection.h"
@@ -1129,4 +1129,13 @@ void	EPATurbulence::Render		(const Fmatrix& parent)
         DU.DrawCross	(it->p, csz,csz,csz, csz,csz,csz, it->c.get(), false);
 }
 
+void PS::CPEDef::Render(const Fmatrix& parent)
+{
+	Fmatrix trans; trans.translate(parent.c);
+	for (EPAVecIt it=m_EActionList.begin(); it!=m_EActionList.end(); it++)
+        if ((*it)->flags.is(EParticleAction::flDraw|EParticleAction::flEnabled)){
+        	PBool* ar = (*it)->_bool_safe("Allow Rotate");
+        	(*it)->Render((ar&&ar->val)?parent:trans);
+        }
+}
 
