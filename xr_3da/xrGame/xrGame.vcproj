@@ -252,6 +252,9 @@
 				RelativePath=".\clsid_game.h">
 			</File>
 			<File
+				RelativePath="game_type.h">
+			</File>
+			<File
 				RelativePath=".\xrGame.cpp">
 			</File>
 		</Filter>

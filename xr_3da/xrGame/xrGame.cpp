@@ -18,11 +18,20 @@
 #include "car.h"
 #include "dummyobject.h"
     
-extern int	 				psPhysicsFPS;
-extern float				psSqueezeVelocity;
 ENGINE_API extern DWORD		psAlwaysRun;
 ENGINE_API extern float		psHUD_FOV;
-  
+extern int	 				psPhysicsFPS;
+extern float				psSqueezeVelocity;
+int							GAME;
+
+xr_token					game_type_token						[ ]={
+	{ "single",				GAME_SINGLE								},
+	{ "deathmatch",			GAME_DEATHMATCH							},
+	{ "ctf",				GAME_CTF								},
+	{ "assault",			GAME_ASSAULT							},
+	{ 0,							0								}
+};
+
 // console commands
 class CCC_Spawn : public CConsoleCommand
 {
@@ -56,6 +65,9 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		CMD3(CCC_Mask,		"g_always_run",			&psActorFlags,	AF_ALWAYSRUN);
 		CMD3(CCC_Mask,		"g_god",				&psActorFlags,	AF_GODMODE	);
 		CMD1(CCC_Spawn,		"g_spawn"				);
+		CMD3(CCC_Token,		"g_type",				&GAME,			game_type_token);
+		CMD4(CCC_Integer,	"g_fraglimit",			&g_fraglimit,	0,1000);
+		CMD4(CCC_Integer,	"g_timelimit",			&g_timelimit,	0,1440);
 
 		// hud
 		CMD3(CCC_Mask,		"hud_crosshair",		&psHUD_Flags,	HUD_CROSSHAIR);

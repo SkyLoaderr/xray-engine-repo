@@ -20,6 +20,7 @@
 #pragma warning( 4 : 4244 )
 
 #include "clsid_game.h"
+#include "game_type.h"
 
 #include "..\xr_object.h"
 #include "..\xr_creator.h"
