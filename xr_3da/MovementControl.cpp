@@ -236,7 +236,7 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 	Fvector vel_dir;
 	final_vel.normalize_safe	();
 	vel_dir.normalize_safe		(vVelocity);
-	if ((final_vel.dotproduct	(vel_dir)<0.f)||((s_res/s_calc)<0.001f)){ 
+	if ((final_vel.dotproduct	(vel_dir)<0.f)|| (s_calc < EPS_L) || (s_res/s_calc)<0.001f){ 
 		vVelocity.set(0,0,0);
 		final_pos.set(vPosition);
 	} else {
@@ -269,7 +269,7 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 		gcontact_HealthLost = 0;
 		if (s_res<s_calc)	
 		{
-			float		dt_x	= dt*(s_res/s_calc);
+			float		dt_x	= s_calc > EPS_L ? dt*(s_res/s_calc) : 0;
 			float		dummy_s = 0;
 			float		a		= vAccel.magnitude();
 			Integrate	(fOldActVelocity,dummy_s,a,dt_x,fOldFriction);

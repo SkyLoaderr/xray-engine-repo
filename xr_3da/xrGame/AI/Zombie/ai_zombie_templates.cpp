@@ -565,56 +565,57 @@ void CAI_Zombie::GoToPointViaSubnodes(Fvector &tLeaderPosition)
 						//}
 					}
 			}
-		}
-		/**/
-		// checking the nearest nodes
-		AI_Path.TravelPath.clear();
-		AI_Path.TravelStart = 0;
+			AI_Path.TravelPath.clear();
+			AI_Path.TravelStart = 0;
 
-		//Fvector tLeaderPosition = Leader->Position();
-		DWORD dwTime = Level().timeServer();
-		int iBestI = -1;
-		float fBestCost = _sqr(tLeaderPosition.x - tCurrentPosition.x) + 0*_sqr(tLeaderPosition.y - tCurrentPosition.y) + _sqr(tLeaderPosition.z - tCurrentPosition.z);
-		bool bMobility = false;
-		for ( i=0; i<tpSubNodes.size(); i++)
-			if ((i != iMySubNode) && (tpSubNodes[i].bEmpty)) {
-				bMobility = true;
-				float fCurCost = ffComputeCost(tLeaderPosition,tpSubNodes[i]);
-				if (fCurCost < fBestCost) {
-					iBestI = i;
-					fBestCost = fCurCost;
+			//Fvector tLeaderPosition = Leader->Position();
+			DWORD dwTime = Level().timeServer();
+			int iBestI = -1;
+			float fBestCost = _sqr(tLeaderPosition.x - tCurrentPosition.x) + 0*_sqr(tLeaderPosition.y - tCurrentPosition.y) + _sqr(tLeaderPosition.z - tCurrentPosition.z);
+			bool bMobility = false;
+			for ( i=0; i<tpSubNodes.size(); i++)
+				if ((i != iMySubNode) && (tpSubNodes[i].bEmpty)) {
+					bMobility = true;
+					float fCurCost = ffComputeCost(tLeaderPosition,tpSubNodes[i]);
+					if (fCurCost < fBestCost) {
+						iBestI = i;
+						fBestCost = fCurCost;
+					}
+				}
+			// checking the nearest nodes
+			if (bMobility) {
+				m_bMobility = true;
+				/**
+				if (iBestI < 0)
+					if (dwTime - m_dwLastUpdate > 3000) {
+						m_dwLastUpdate = dwTime;
+						iBestI = ::Random.randI(0,tpSubNodes.size());
+					}
+					//else
+					//	m_bMobility
+				/**/
+				if (iBestI >= 0) {
+					m_dwLastRangeSearch = dwTime;
+					Fvector tFinishPosition;
+					tFinishPosition.x = (tpSubNodes[iBestI].tLeftDown.x + tpSubNodes[iBestI].tRightUp.x)/2.f;
+					tFinishPosition.y = (tpSubNodes[iBestI].tLeftDown.y + tpSubNodes[iBestI].tRightUp.y)/2.f;
+					tFinishPosition.z = (tpSubNodes[iBestI].tLeftDown.z + tpSubNodes[iBestI].tRightUp.z)/2.f;
+					VERIFY(tFinishPosition.x < 1000000.f);
+					CTravelNode	tCurrentPoint,tFinishPoint;
+					tCurrentPoint.P.set(tCurrentPosition);
+					tCurrentPoint.floating = FALSE;
+					AI_Path.TravelPath.push_back(tCurrentPoint);
+					tFinishPoint.P.set(tFinishPosition);
+					tFinishPoint.floating = FALSE;
+					AI_Path.TravelPath.push_back(tFinishPoint);
 				}
 			}
-
-		if (bMobility) {
-			m_bMobility = true;
-			/**
-			if (iBestI < 0)
-				if (dwTime - m_dwLastUpdate > 3000) {
-					m_dwLastUpdate = dwTime;
-					iBestI = ::Random.randI(0,tpSubNodes.size());
-				}
-				//else
-				//	m_bMobility
-			/**/
-			if (iBestI >= 0) {
-				m_dwLastRangeSearch = dwTime;
-				Fvector tFinishPosition;
-				tFinishPosition.x = (tpSubNodes[iBestI].tLeftDown.x + tpSubNodes[iBestI].tRightUp.x)/2.f;
-				tFinishPosition.y = (tpSubNodes[iBestI].tLeftDown.y + tpSubNodes[iBestI].tRightUp.y)/2.f;
-				tFinishPosition.z = (tpSubNodes[iBestI].tLeftDown.z + tpSubNodes[iBestI].tRightUp.z)/2.f;
-				VERIFY(tFinishPosition.x < 1000000.f);
-				CTravelNode	tCurrentPoint,tFinishPoint;
-				tCurrentPoint.P.set(tCurrentPosition);
-				tCurrentPoint.floating = FALSE;
-				AI_Path.TravelPath.push_back(tCurrentPoint);
-				tFinishPoint.P.set(tFinishPosition);
-				tFinishPoint.floating = FALSE;
-				AI_Path.TravelPath.push_back(tFinishPoint);
+			else {
+				m_bMobility = false;
 			}
 		}
 		else {
-			m_bMobility = false;
+			vfGoToPointViaNodes(AI_Path.TravelPath,AI_NodeID,vPosition,tLeaderPosition);
 		}
 	}
 	else {

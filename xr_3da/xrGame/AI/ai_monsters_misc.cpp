@@ -858,3 +858,71 @@ SRotation tfGetOrientation(CEntity *tpEntity)
 	}
 }
 
+void vfGoToPointViaNodes(vector<CTravelNode> &tpaPath, DWORD dwCurNode, Fvector tStartPoint, Fvector tFinishPoint)
+{
+	NodeCompressed *tpNode;
+	PContour tCurContour,tNextContour;
+	NodeLink *taLinks;
+	int iCount, iSavedIndex, iNodeIndex, i;
+	Fvector tTempPoint;
+	CTravelNode tTravelNode;
+ 	CAI_Space &AI = Level().AI;
+	PSegment tSegment;
+	float fHalfSubNodeSize = (Level().AI.GetHeader().size)*.5f;
+
+	tpaPath.clear();
+	UnpackContour(tCurContour,dwCurNode);
+	tpNode = AI.Node(dwCurNode);
+	taLinks = (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
+	iCount = tpNode->link_count;
+	iSavedIndex = -1;
+	tTempPoint = tStartPoint;
+	for ( i=0; i < iCount; i++) {
+		iNodeIndex = AI.UnpackLink(taLinks[i]);
+		UnpackContour(tNextContour,iNodeIndex);
+		vfIntersectContours(tSegment,tCurContour,tNextContour);
+		DWORD dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.P.x,&tTravelNode.P.z);
+		if (dwIntersect == LI_INTERSECT) {
+			if (
+				(COMPUTE_DISTANCE_2D(tFinishPoint,tTravelNode.P) < COMPUTE_DISTANCE_2D(tFinishPoint,tTempPoint) + EPS)
+				) {
+				tTravelNode.P.y = ffGetY(*(tpNode),tTravelNode.P.x,tTravelNode.P.z);
+				tTempPoint = tTravelNode.P;
+				iSavedIndex = iNodeIndex;
+			}
+		}
+		else
+			if (dwIntersect == LI_EQUAL) {
+				if (COMPUTE_DISTANCE_2D(tStartPoint,tSegment.v1) > COMPUTE_DISTANCE_2D(tStartPoint,tTempPoint))
+					if (COMPUTE_DISTANCE_2D(tStartPoint,tSegment.v1) > COMPUTE_DISTANCE_2D(tStartPoint,tSegment.v2)) {
+						tTempPoint = tSegment.v1;
+						iSavedIndex = iNodeIndex;
+					}
+					else {
+						tTempPoint = tSegment.v2;
+						iSavedIndex = iNodeIndex;
+					}
+				else
+					if (COMPUTE_DISTANCE_2D(tStartPoint,tSegment.v2) > COMPUTE_DISTANCE_2D(tStartPoint,tTempPoint)) {
+						tTempPoint = tSegment.v2;
+						iSavedIndex = iNodeIndex;
+					}
+
+			}
+	}
+
+	if (iSavedIndex > -1) {
+		tTravelNode.P = tTempPoint;
+		tpaPath.push_back(tTravelNode);
+		dwCurNode = iSavedIndex;
+	}
+	else
+		if (bfInsideNode(AI,tpNode,tFinishPoint, fHalfSubNodeSize)) {
+			tTravelNode.P = tFinishPoint;
+			tTravelNode.P.y = ffGetY(*(tpNode),tTravelNode.P.x,tTravelNode.P.z);
+		}
+		else {
+			tpaPath.clear();
+			return;
+		}
+}

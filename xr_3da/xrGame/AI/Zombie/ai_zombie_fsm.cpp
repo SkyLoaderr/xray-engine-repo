@@ -74,19 +74,19 @@ void CAI_Zombie::FreeHunting()
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiZombieUnderFire)
 
-	SelectSound(m_iSoundIndex);
-
-	if ((m_iSoundIndex != -1) && (dwCurTime - tpaDynamicSounds[m_iSoundIndex].dwTime < 300)) {
-		tHitDir.sub(tpaDynamicSounds[m_iSoundIndex].tSavedPosition,vPosition);
-		dwHitTime = tpaDynamicSounds[m_iSoundIndex].dwTime;
-		SWITCH_TO_NEW_STATE(aiZombieUnderFire);
-	}
+//	SelectSound(m_iSoundIndex);
+//
+//	if ((m_iSoundIndex != -1) && (dwCurTime - tpaDynamicSounds[m_iSoundIndex].dwTime < 300)) {
+//		tHitDir.sub(tpaDynamicSounds[m_iSoundIndex].tSavedPosition,vPosition);
+//		dwHitTime = tpaDynamicSounds[m_iSoundIndex].dwTime;
+//		SWITCH_TO_NEW_STATE(aiZombieUnderFire);
+//	}
 	
 	INIT_SQUAD_AND_LEADER;
 	
 	CGroup &Group = Squad.Groups[g_Group()];
 	
-	vfInitSelector(SelectorFreeHunting,Squad,Leader);
+//	vfInitSelector(SelectorFreeHunting,Squad,Leader);
 
 	/**
 	if ((AI_Path.TravelPath.empty()) || (AI_Path.TravelStart >= AI_Path.TravelPath.size() - 2) || (!AI_Path.fSpeed)) {
@@ -147,24 +147,48 @@ void CAI_Zombie::FreeHunting()
 		else
 			tSavedEnemyPosition = vPosition;
 	/**/
+
 	if (ps_Size() > 1)
 		if ((m_bStateChanged) || (ps_Element(ps_Size() - 1).dwTime - ps_Element(ps_Size() - 2).dwTime < 500))
 			tSavedEnemyPosition.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
 		else {
-			Fvector tDistance;
-			tDistance.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
+			//Fvector tDistance;
+			//tDistance.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
+			tSavedEnemyPosition.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
+			/**
 			if (tDistance.magnitude() < .05f)
 				tSavedEnemyPosition.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
 			else
 				tSavedEnemyPosition.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
+			/**/
 			//tSavedEnemyPosition.set(::Random.randF(0,1),0,::Random.randF(0,1));
 		}
 	else
 		tSavedEnemyPosition.set(::Random.randF(0,1),0,::Random.randF(0,1));
 
 	tSavedEnemyPosition.normalize();
-	tSavedEnemyPosition.mul(7.f);
+	tSavedEnemyPosition.mul(1000.f);
 	tSavedEnemyPosition.add(vPosition);
+
+//	if (ps_Size() > 1)
+//		if (ps_Element(ps_Size() - 1).dwTime - ps_Element(ps_Size() - 2).dwTime >= 500)	{
+//			Fvector tDistance;
+//			tDistance.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
+//			if (tDistance.magnitude() < .05f)
+//				tSavedEnemyPosition.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
+//			else
+//				tSavedEnemyPosition.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
+//			
+//			tSavedEnemyPosition.normalize();
+//			tSavedEnemyPosition.mul(7.f);
+//			tSavedEnemyPosition.add(vPosition);
+//		}
+//	else {
+//		tSavedEnemyPosition.set(::Random.randF(0,1),0,::Random.randF(0,1));
+//		tSavedEnemyPosition.normalize();
+//		tSavedEnemyPosition.mul(1000.f);
+//		tSavedEnemyPosition.add(vPosition);
+//	}
 
 	GoToPointViaSubnodes(tSavedEnemyPosition);
 
@@ -175,22 +199,22 @@ void CAI_Zombie::FreeHunting()
 
 	vfSetFire(false,Group);
 
-	if	(!m_tpSoundBeingPlayed || !m_tpSoundBeingPlayed->feedback) {
-		if (m_tpSoundBeingPlayed && !m_tpSoundBeingPlayed->feedback) {
-			m_tpSoundBeingPlayed = 0;
-			m_dwLastVoiceTalk = dwCurTime;
-		}
-		if ((dwCurTime - m_dwLastSoundRefresh > m_fVoiceRefreshRate) && ((dwCurTime - m_dwLastVoiceTalk > m_fMaxVoiceIinterval) || ((dwCurTime - m_dwLastVoiceTalk > m_fMinVoiceIinterval) && (::Random.randF(0,1) > (dwCurTime - m_dwLastVoiceTalk - m_fMinVoiceIinterval)/(m_fMaxVoiceIinterval - m_fMinVoiceIinterval))))) {
-			m_dwLastSoundRefresh = dwCurTime;
-			// Play hit-sound
-			m_tpSoundBeingPlayed = &(sndVoices[Random.randI(SND_VOICE_COUNT)]);
-			
-			if (m_tpSoundBeingPlayed->feedback)			
-				return;
-
-			//pSounds->PlayAtPos(*m_tpSoundBeingPlayed,this,vPosition);
-		}
-	}
+//	if	(!m_tpSoundBeingPlayed || !m_tpSoundBeingPlayed->feedback) {
+//		if (m_tpSoundBeingPlayed && !m_tpSoundBeingPlayed->feedback) {
+//			m_tpSoundBeingPlayed = 0;
+//			m_dwLastVoiceTalk = dwCurTime;
+//		}
+//		if ((dwCurTime - m_dwLastSoundRefresh > m_fVoiceRefreshRate) && ((dwCurTime - m_dwLastVoiceTalk > m_fMaxVoiceIinterval) || ((dwCurTime - m_dwLastVoiceTalk > m_fMinVoiceIinterval) && (::Random.randF(0,1) > (dwCurTime - m_dwLastVoiceTalk - m_fMinVoiceIinterval)/(m_fMaxVoiceIinterval - m_fMinVoiceIinterval))))) {
+//			m_dwLastSoundRefresh = dwCurTime;
+//			// Play hit-sound
+//			m_tpSoundBeingPlayed = &(sndVoices[Random.randI(SND_VOICE_COUNT)]);
+//			
+//			if (m_tpSoundBeingPlayed->feedback)			
+//				return;
+//
+//			//pSounds->PlayAtPos(*m_tpSoundBeingPlayed,this,vPosition);
+//		}
+//	}
 
 	vfSetMovementType(BODY_STATE_STAND,m_fMinSpeed);
 }
