@@ -209,6 +209,8 @@ PsyAura_Critical_Value		= 0.2
 PsyAura_Activate_Value		= 0.8
 PsyAura_Postprocess_Section = controller_aura_pp_effector_section
 
+PsyAura_HeadSound			= monsters\controller\controller_control1
+
 ;-----------------------------------------------------------------------------------------
 ; CONTROL Effector
 ;-----------------------------------------------------------------------------------------
@@ -239,17 +241,17 @@ ce_power			= 0.7
 ;-----------------------------------------------------------------------------------------
 
 [controller_aura_pp_effector_section]
-duality_h		= 0.025
-duality_v		= 0.025
-blur			= 0.2
+duality_h		= 0.02
+duality_v		= 0.02
+blur			= 0.1
 gray			= 0.5
-noise_intensity = 1.5
-noise_grain		= 5
-noise_fps		= 15
-color_base		= 1.1,1.3,1
-color_gray		= 0.4,0.4,0.2
-color_add		= 0.4,0.4,0.2
-radius_min		= 0.5
+noise_intensity = 0.5
+noise_grain		= 2
+noise_fps		= 25
+color_base		= 1.8,1.4,0.8
+color_gray		= 0.5,0.4,0.1
+color_add		= 0.08,0.13,0.06
+radius_min		= 0.01
 radius_max		= 0.8
 
 
