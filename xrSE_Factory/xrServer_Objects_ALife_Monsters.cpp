@@ -225,8 +225,8 @@ void CSE_ALifeTraderAbstract::set_specific_character	(SPECIFIC_CHARACTER_INDEX n
 		if(ai().get_alife())
 			ai().alife().registry(specific_characters).remove(m_iSpecificCharacter, true);
 	}
-	m_iSpecificCharacter = new_spec_char;
 #endif
+	m_iSpecificCharacter = new_spec_char;
 
 
 #ifdef XRGAME_EXPORTS
@@ -251,6 +251,9 @@ void CSE_ALifeTraderAbstract::set_specific_character	(SPECIFIC_CHARACTER_INDEX n
 	CSE_ALifeCreatureAbstract* creature = smart_cast<CSE_ALifeCreatureAbstract*>(base());
 	if (creature)
 		creature->s_team = selected_char.Community().team();
+#else
+	//в редакторе специфический профиль оставляем не заполненым
+	m_iSpecificCharacter = NO_SPECIFIC_CHARACTER;
 #endif
 }
 
