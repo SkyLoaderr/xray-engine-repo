@@ -9,6 +9,7 @@
 #pragma once
 
 #include "ai_alife_objects.h"
+#include "game_graph.h"
 using namespace ALife;
 
 class CSE_ALifeObjectRegistry : public IPureALifeLSObject {
@@ -148,7 +149,7 @@ public:
 	typedef CSE_ALifeSpawnHeader inherited;
 	
 	D_OBJECT_P_VECTOR				m_tpSpawnPoints;
-	LEVEL_POINT_VECTOR				m_tpArtefactSpawnPositions;
+	CGameGraph::LEVEL_POINT_VECTOR	m_tpArtefactSpawnPositions;
 	xr_vector<bool>					m_baAliveSpawnObjects;
 	ITEM_SET_MAP					m_tArtefactAnomalyMap;
 
