@@ -16,7 +16,7 @@ function main ()
 	hero:script (true, s_test.script_name ())
     action (hero, anim ("mashina_0"), cond (cond.time_end, 1000000))
 
-	while entered == false then wait () end
+	while entered == false do wait () end
 
 	reset_action (hero, s_test.script_name ())
 	
