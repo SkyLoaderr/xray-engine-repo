@@ -11,7 +11,7 @@
 #include "xrthread.h"
 #include "spawn_constructor_space.h"
 
-class CLevelGraph;
+class CLevelNavigationGraph;
 class CGameLevelCrossTable;
 class CGameSpawnConstructor;
 class CSE_ALifeCreatureActor;
@@ -41,7 +41,7 @@ private:
 	SPAWN_GROUPS						m_spawn_groups;
 	CGameSpawnConstructor				*m_game_spawn_constructor;
 	CSE_ALifeCreatureActor				*m_actor;
-	CLevelGraph							*m_level_graph;
+	CLevelNavigationGraph				*m_level_graph;
 	CGameLevelCrossTable				*m_cross_table;
 	CGraphEngine						*m_graph_engine;
 
@@ -64,7 +64,7 @@ protected:
 	IC		void						normalize_probability				(CSE_ALifeAnomalousZone *zone);
 	IC		void						free_group_objects					();
 	IC		const CGameGraph			&game_graph							() const;
-	IC		const CLevelGraph			&level_graph						() const;
+	IC		const CLevelNavigationGraph	&level_graph						() const;
 	IC		const CGameLevelCrossTable	&cross_table						() const;
 	IC		CGraphEngine				&graph_engine						() const;
 	IC		LEVEL_CHANGER_STORAGE		&level_changers						() const;

@@ -162,10 +162,7 @@ enough:
 		}
 	}
 	
-	CSector						sector;
-	sector.min_vertex_id		= cell_vertex.m_vertex_id;
-	sector.max_vertex_id		= get_vertex_by_group_id((*i1_1)[j2 - 1],group_id).m_vertex_id;
-	sector_graph.add_vertex		(sector,group_id - 1);
+	sector_graph.add_vertex		(CSector(cell_vertex.m_vertex_id,get_vertex_by_group_id((*i1_1)[j2 - 1],group_id).m_vertex_id),group_id - 1);
 
 	global_count				+= (u32(i1 - table.begin()) - i)*(j2 - j);
 }
@@ -325,10 +322,10 @@ IC	void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sec
 				continue;
 			
 			++count;
-			if ((*I).second->data().min_vertex_id == (*I).second->data().max_vertex_id)
-				Msg							("! Node %d is not connected to the graph!",(*I).second->data().min_vertex_id);
+			if ((*I).second->data().min_vertex_id() == (*I).second->data().max_vertex_id())
+				Msg							("! Node %d is not connected to the graph!",(*I).second->data().min_vertex_id());
 			else
-				Msg							("! Sector [%d][%d] is not connected to the graph!",(*I).second->data().min_vertex_id,(*I).second->data().max_vertex_id);
+				Msg							("! Sector [%d][%d] is not connected to the graph!",(*I).second->data().min_vertex_id(),(*I).second->data().max_vertex_id());
 		}
 		if (count) {
 			if (count == 1)

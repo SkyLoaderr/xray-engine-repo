@@ -11,7 +11,7 @@
 #include "compiler.h"
 #include "xrThread.h"
 #include "xrGraph.h"
-#include "level_graph.h"
+#include "level_navigation_graph.h"
 #include "graph_engine.h"
 
 class CGraphThread : public CThread
@@ -20,12 +20,12 @@ class CGraphThread : public CThread
 	u32										m_dwEnd;
 	xr_vector<u32>							m_path;
 	xrCriticalSection						*m_tpCriticalSection;
-	const CLevelGraph						*m_graph;
+	const CLevelNavigationGraph				*m_graph;
 	CGraphEngine							*m_graph_engine;
 	GraphEngineSpace::CStraightLineParams	*m_parameters;
 
 public:
-	CGraphThread(u32 ID, u32 dwStart, u32 dwEnd, float fMaxDistance, xrCriticalSection *tpCriticalSection, const CLevelGraph *graph) : CThread(ID)
+	CGraphThread(u32 ID, u32 dwStart, u32 dwEnd, float fMaxDistance, xrCriticalSection *tpCriticalSection, const CLevelNavigationGraph *graph) : CThread(ID)
 	{
 		m_dwStart				= dwStart;
 		m_dwEnd					= dwEnd;

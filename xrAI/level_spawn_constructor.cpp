@@ -47,7 +47,7 @@ IC	u32	CLevelSpawnConstructor::level_id						(shared_str level_name) const
 	return					(m_game_spawn_constructor->level_id(*level_name));
 }
 
-IC	const CLevelGraph &CLevelSpawnConstructor::level_graph		() const
+IC	const CLevelNavigationGraph &CLevelSpawnConstructor::level_graph() const
 {
 	return					(*m_level_graph);
 }
@@ -68,7 +68,7 @@ void CLevelSpawnConstructor::init								()
 	string256				file_name;
 	FS.update_path			(file_name,"$game_levels$",*m_level.caLevelName);
 	strcat					(file_name,"\\");
-	m_level_graph			= xr_new<CLevelGraph>(file_name);
+	m_level_graph			= xr_new<CLevelNavigationGraph>(file_name);
 	
 	// loading cross table 
 	strcat					(file_name,CROSS_TABLE_NAME);

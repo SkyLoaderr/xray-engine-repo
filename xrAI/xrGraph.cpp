@@ -403,15 +403,15 @@ void vfRemoveIncoherentGraphPoints(CLevelGraph *tpAI_Map, u32 &dwVertexCount)
 //
 void xrBuildGraph(LPCSTR name)
 {
-	CThreadManager		tThreadManager;		// multithreading
-	xrCriticalSection	tCriticalSection;	// thread synchronization
-	CLevelGraph			*tpAI_Map;
+	CThreadManager			tThreadManager;		// multithreading
+	xrCriticalSection		tCriticalSection;	// thread synchronization
+	CLevelNavigationGraph	*tpAI_Map;
 
 	Msg("Building Level %s",name);
 
 	Phase("Loading AI map");
 	Progress(0.0f);
-	tpAI_Map = xr_new<CLevelGraph>(name);
+	tpAI_Map = xr_new<CLevelNavigationGraph>(name);
 	Progress(1.0f);
 	Msg("%d nodes loaded",int(tpAI_Map->header().vertex_count()));
 	

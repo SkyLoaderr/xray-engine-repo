@@ -178,9 +178,9 @@ void init_search			(LPCSTR caLevelName, _Graph *&graph, xr_vector<SPathParams> &
 #define TEST_DIST2	100.f
 
 template <>
-void init_search<CLevelGraph>	(LPCSTR caLevelName, CLevelGraph *&graph, xr_vector<SPathParams> &path_params, bool bRandom)
+void init_search<CLevelNavigationGraph>	(LPCSTR caLevelName, CLevelNavigationGraph *&graph, xr_vector<SPathParams> &path_params, bool bRandom)
 {
-	graph					= xr_new<CLevelGraph>(caLevelName);
+	graph					= xr_new<CLevelNavigationGraph>(caLevelName);
 
 	if (bRandom) {
 		u32					n = graph->header().vertex_count();
@@ -285,7 +285,7 @@ void test_all				(LPCSTR caLevelName, u32 test_count, _dist_type min_value, _dis
 
 void path_test				(LPCSTR caLevelName)
 {
-	test_all<CLevelGraph>				(caLevelName,TEST_COUNT,float(0),float(2000));
+	test_all<CLevelNavigationGraph>		(caLevelName,TEST_COUNT,float(0),float(2000));
 	test_all<CGameGraph>				(caLevelName,TEST_COUNT,float(0),float(2000));
 	test_all<CTestTable<u32,30,30> >	(caLevelName,TEST_COUNT,u32(0),u32(60));
 	test_all<CTestTable<u32,300,300> >	(caLevelName,TEST_COUNT,u32(0),u32(600));
