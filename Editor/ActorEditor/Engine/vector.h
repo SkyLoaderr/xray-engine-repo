@@ -171,9 +171,11 @@ IC float		normalize_angle	(float a){
 	return		frac *	PI_MUL_2;
 }
 
-IC void Fmatrix::get_rapid(_matrix33& R)const{
+template <class T>
+IC void _matrix<T>::get_rapid(_matrix33& R)const{
 	R.m[0][0]	=  m[0][0]; R.m[0][1] =  m[1][0]; R.m[0][2] = m[2][0];
 	R.m[1][0]	=  m[0][1]; R.m[1][1] =  m[1][1]; R.m[1][2] = m[2][1];
 	R.m[2][0]	=  m[0][2]; R.m[2][1] =  m[1][2]; R.m[2][2] = m[2][2];
 }
+
 #endif
