@@ -50,7 +50,12 @@ void Startup(LPSTR     lpCmdLine)
 	InitMath			();
 
 	// Load project
-	name[0]=0; sscanf	(strstr(cmd,"-f")+2,"%s",name);
+	name[0]=0; 
+	if (strstr(cmd,"-f"))
+		sscanf	(strstr(cmd,"-f")+2,"%s",name);
+	else
+		sscanf	(strstr(cmd,"-g")+2,"%s",name);
+
 	string prjName		= "gamedata\\levels\\"+string(name)+"\\";
 
 	DWORD				dwStartupTime	= timeGetTime();
