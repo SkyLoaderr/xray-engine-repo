@@ -38,7 +38,7 @@ void CEntity::OnEvent	(EVENT E, DWORD P1, DWORD P2)
 		{
 			eHealthLost_Enabled		= TRUE;
 			LPCSTR	param			= LPCSTR(P1);
-			sscanf					(param,"%d,%d",&eHealthLost_speed,&eHealthLost_granularity);
+			sscanf					(param,"%f,%f",&eHealthLost_speed,&eHealthLost_granularity);
 			eHealthLost_cumulative	= 0;
 		}
 	} else
