@@ -238,6 +238,7 @@ public:
 	virtual void			Reload				();
 	// обработка визуализации выстрела
 	virtual void			OnShot				(){};
+	virtual void			AddShotEffector		();
 	
 	   BOOL					IsMisfire			() const;
 	   BOOL					CheckForMisfire		();

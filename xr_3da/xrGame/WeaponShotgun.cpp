@@ -109,13 +109,7 @@ void CWeaponShotgun::OnShotBoth()
 	PlaySound(sndShotBoth,vLastFP);
 	
 	// Camera
-	if (hud_mode)
-	{
-		CEffectorShot* S		= dynamic_cast<CEffectorShot*>	(Level().Cameras.GetEffector(cefShot)); 
-		if (!S)	S				= (CEffectorShot*)Level().Cameras.AddEffector(xr_new<CEffectorShot> (camMaxAngle,camRelaxSpeed));
-		R_ASSERT				(S);
-		S->Shot					(camDispersion);
-	}
+	AddShotEffector		();
 	
 	// анимация дуплета
 	m_pHUD->animPlay			(mhud_shot_boths[Random.randI(mhud_shot_boths.size())],FALSE,this);

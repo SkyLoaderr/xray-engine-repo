@@ -13,6 +13,8 @@ class CParticlesObject		:	public CPS_Instance
 	u32					dwLastTime;
 	void				Init				(LPCSTR p_name, IRender_Sector* S, BOOL bAutoRemove);
 	void				UpdateSpatial		();
+
+	ref_str				m_sParticlesName;	
 protected:
 	bool m_bLooped;
 public:
@@ -38,9 +40,8 @@ public:
 	bool				IsPlaying			();
 	void				SetAutoRemove		(bool auto_remove);
 
-#ifdef DEBUG
-	LPCSTR				dbg_ref_name		();
-#endif
+	ref_str				Name				();
+
 
 public:
 	static CParticlesObject*	Create		(LPCSTR p_name, IRender_Sector* S=0, BOOL bAutoRemove=TRUE)

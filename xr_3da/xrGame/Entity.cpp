@@ -23,6 +23,8 @@ CEntity::CEntity()
 
 	m_iTradeIconX = m_iTradeIconY = 0;
 	m_iMapIconX = m_iMapIconY = 0;
+
+	m_bBodyRemoved = false;
 	
 }
 
@@ -277,7 +279,32 @@ void CEntity::renderable_Render()
 
 void CEntity::shedule_Update	(u32 dt)
 {
+	//уничтожить
+	if(NeedToDestroyEntity())
+        DestroyEntity();
+
 	inherited::shedule_Update	(dt);
+}
+bool CEntity::NeedToDestroyEntity()	
+{
+	return false;
+}
+void CEntity::DestroyEntity()			
+{
+	if(m_bBodyRemoved) return;
+	m_bBodyRemoved = true;
+
+	NET_Packet			P;
+	u_EventGen			(P,GE_DESTROY,ID());
+	Msg					("DestroyEntity: ge_destroy: [%d] - %s",ID(),*cName());
+	if (Local()) u_EventSend			(P);
+}
+ALife::_TIME_ID	 CEntity::TimePassedAfterDeath()	
+{
+	if(!g_Alive())
+		return Level().GetGameTime() - m_dwDeathTime;
+	else
+		return 0;
 }
 
 void CEntity::KillEntity(CObject* who)

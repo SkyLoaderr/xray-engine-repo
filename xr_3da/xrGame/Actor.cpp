@@ -415,9 +415,6 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	//проспавнить PDA у InventoryOwner
 	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
 
-	//	m_PhysicMovementControl->CreateCharacter();
-	//	m_PhysicMovementControl->SetPhysicsRefObject(this);
-	//	m_PhysicMovementControl->SetPLastMaterial(&m_last_material_id);
 	m_PhysicMovementControl->SetPosition	(Position());
 	m_PhysicMovementControl->SetVelocity	(0,0,0);
 
@@ -434,10 +431,6 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	mstate_wishful			= 0;
 	mstate_real				= 0;
 	m_bJumpKeyPressed		= FALSE;
-
-	// *** weapons
-	//if (Local()) 			Weapons->ActivateWeaponID	(0);
-	//if(Local()) inventory().Activate(1);
 
 	NET_SavedAccel.set		(0,0,0);
 	NET_WasInterpolating	= TRUE;
@@ -470,14 +463,9 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	V->LL_GetBoneInstance(u16(head_bone)).set_callback		(HeadCallback,this);
 
 	m_anims.Create			(V);
-	//
-	//Weapons->Init		("bip01_r_hand","bip01_l_finger1");
 
 	// load damage params
 	CDamageManager::Load	(*cNameSect());
-
-	//. temporary
-	//	Level().Cameras.AddEffector(xr_new<CEffectorPPHit>	());
 
 	return					TRUE;
 }
@@ -1041,6 +1029,9 @@ void CActor::shedule_Update	(u32 DT)
 	else 
 	{
 		if (pCamBobbing)	{Level().Cameras.RemoveEffector(cefBobbing); pCamBobbing=0;}
+		CWeapon *l_pW = dynamic_cast<CWeapon*>(inventory().GetActiveSlot() < 0xffffff ? 
+			inventory().m_slots[inventory().GetActiveSlot()].m_pIItem : NULL);
+		cam_Update(dt,l_pW?l_pW->GetZoomFactor():DEFAULT_FOV);
 	}
 
 	//если в режиме HUD, то сама модель актера не рисуется
@@ -1361,6 +1352,7 @@ void CActor::g_sv_Orientate(u32 /**mstate_rl/**/, float /**dt/**/)
 
 void CActor::g_fireParams	(Fvector &fire_pos, Fvector &fire_dir)
 {
+	/*
 	if (Local()) {
 		if (HUDview()) 
 		{
@@ -1369,6 +1361,25 @@ void CActor::g_fireParams	(Fvector &fire_pos, Fvector &fire_dir)
 		} //else Weapons->GetFireParams(fire_pos, fire_dir);
 	} else {
 		//Weapons->GetFireParams(fire_pos, fire_dir);
+	}
+	*/
+	if(Level().game.type == GAME_SINGLE)
+	{
+		if (HUDview()) 
+		{
+			fire_pos = Device.vCameraPosition;
+			fire_dir = Device.vCameraDirection;
+		}
+	}
+	else
+	{
+		if (cam_Active()->style != eacFreeLook)
+			cam_Active()->Get(fire_pos, fire_dir, Fvector());
+		else
+		{
+			fire_pos = Device.vCameraPosition;
+			fire_dir = Device.vCameraDirection;
+		}
 	}
 }
 
@@ -1621,8 +1632,31 @@ void CActor::NetUpdate_Apply(net_update &NetUpdate, float dt)
 	mstate_real	= NET_Last.mstate;
 };
 
-bool		CActor::use_bolts				() const
+bool CActor::use_bolts				() const
 {
 	if (Game().type != GAME_SINGLE) return false;
 	return CInventoryOwner::use_bolts();
 };
+
+#define BODY_REMOVE_TIME 100000
+
+bool  CActor::NeedToDestroyEntity()
+{
+	if(Level().game.type == GAME_SINGLE)
+	{
+		return false;
+	}
+	else
+	{
+		if(TimePassedAfterDeath()>BODY_REMOVE_TIME)
+			return true;
+		else
+			return false;
+	}
+}
+void CActor::DestroyEntity()
+{
+	inventory().DropAll();
+	inherited::DestroyEntity();
+}
+

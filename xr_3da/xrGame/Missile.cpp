@@ -337,7 +337,7 @@ void CMissile::UpdateXForm()
 		// Get access to entity and its visual
 		CEntityAlive*	E		= dynamic_cast<CEntityAlive*>(H_Parent());
         
-		if(!E/* || !E->g_Alive()*/) return;
+		if(!E) return;
 
 		R_ASSERT		(E);
 		CKinematics*	V		= PKinematics	(E->Visual());

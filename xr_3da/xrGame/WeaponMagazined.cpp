@@ -455,14 +455,8 @@ void CWeaponMagazined::OnShot		()
 	PlaySound(*m_pSndShotCurrent,vLastFP);
 
 	// Camera
-	if (hud_mode)	
-	{
-		CEffectorShot* S		= dynamic_cast<CEffectorShot*>	(Level().Cameras.GetEffector(cefShot)); 
-		if (!S)	S				= (CEffectorShot*)Level().Cameras.AddEffector(xr_new<CEffectorShot> (camMaxAngle,camRelaxSpeed));
-		R_ASSERT				(S);
-		S->Shot					(camDispersion);
-	}
-	
+	AddShotEffector		();
+
 	// Animation
 	PlayAnimShoot		();
 	

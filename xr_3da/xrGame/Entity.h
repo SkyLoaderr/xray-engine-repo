@@ -48,6 +48,10 @@ protected:
 	int m_iMapIconX;
 	int m_iMapIconY;
 
+	//время через которое мертвое тело убирется с уровня
+	ALife::_TIME_ID			m_dwBodyRemoveTime;
+	bool					m_bBodyRemoved;
+
 public:
 	float				m_fMorale;
 	// Team params
@@ -86,7 +90,14 @@ public:
 	float					g_Accuracy			()const	{ return fAccuracy;	}
 	virtual BOOL			g_Alive				()const	{ return fEntityHealth>0; }
 	virtual BOOL			g_State				(SEntityState &/**state/**/)	{return FALSE;}
-	virtual bool			AlreadyDie()		{return  0!=m_dwDeathTime?true:false;}
+	
+	virtual bool			AlreadyDie()			{return  0!=m_dwDeathTime?true:false;}
+	virtual ALife::_TIME_ID	GetDeathTime()			{return m_dwDeathTime;}
+	
+	virtual ALife::_TIME_ID	TimePassedAfterDeath();
+	virtual bool			NeedToDestroyEntity();
+	virtual void			DestroyEntity();
+
 
 	virtual float			CalcCondition		(float hit);
 
@@ -118,9 +129,9 @@ public:
 	virtual int GetMapIconX() {return m_iMapIconX;}
 	virtual int GetMapIconY() {return m_iMapIconY;}
 
-
 	//time of entity death
 	ALife::_TIME_ID			m_dwDeathTime;
+
 };
 
 #endif // AFX_ENTITY_H__A2C7300B_20F0_4521_90D3_E883BEF837FE__INCLUDED_

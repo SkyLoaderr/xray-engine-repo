@@ -1026,3 +1026,14 @@ void CWeapon::setup_physic_shell()
 {
 	CGameObject::setup_physic_shell();
 }
+
+
+void CWeapon::AddShotEffector		()
+{
+	//if(!hud_mode) return;
+
+	CEffectorShot* S		= dynamic_cast<CEffectorShot*>	(Level().Cameras.GetEffector(cefShot)); 
+	if (!S)	S				= (CEffectorShot*)Level().Cameras.AddEffector(xr_new<CEffectorShot> (camMaxAngle,camRelaxSpeed));
+	R_ASSERT				(S);
+	S->Shot					(camDispersion);
+}

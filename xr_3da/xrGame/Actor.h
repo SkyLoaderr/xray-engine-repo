@@ -251,7 +251,9 @@ private:
 	void					PickupModeOff();
 	void					PickupModeUpdate();
 	void					PickupInfoDraw		(CObject* object);
-		
+
+
+	
 	//------------------------------
 	struct				net_update 		
 	{
@@ -317,6 +319,9 @@ private:
 	CGameObject*			pick_Object				(u16& element);
 	void					ActorUse				();
 
+	virtual bool			NeedToDestroyEntity();
+	virtual void			DestroyEntity();
+
 
 public:
 	void					detach_Vehicle			();
@@ -358,7 +363,6 @@ public:
 	virtual	float						ffGetRange			()	const	{ return 500.f;		}
 
 	// misc
-	//virtual CWeaponList*				GetItemList			(){return Weapons;}
 
 	// Fire control
 	virtual void						g_fireParams		(Fvector& P, Fvector& D);
@@ -399,7 +403,7 @@ public:
 	void								SetPhPosition		(const Fmatrix& pos);
 	// HUD
 	virtual void						OnHUDDraw			(CCustomHUD* hud);
-	//CWeaponList*						tpfGetWeapons		()	{return Weapons;}
+
 	virtual f32 GetMass() { return g_Alive()?m_PhysicMovementControl->GetMass():m_pPhysicsShell?m_pPhysicsShell->getMass():0; }
 	virtual float						Radius				() const;
 

@@ -53,8 +53,8 @@ public:
 	virtual void	PlayAnimReload();
 	virtual void	PlayAnimIdle();
 	virtual void	PlayAnimShoot();
-
-
+	virtual void	PlayAnimModeSwitch();
+	
 	static void	__stdcall GrenadeCallback(CBoneInstance*);
 
 	HUD_SOUND			sndShotG;

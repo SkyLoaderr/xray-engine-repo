@@ -115,12 +115,6 @@ void CHudItem::renderable_Render()
 
 	if(hud_mode && !m_pHUD->IsHidden() && !IsHidden())
 	{ 
-		if(dynamic_cast<CMissile*>(this))
-		{
-			int a =0;
-			a++;
-		}
-
 		// HUD render
 		UpdateHudPosition			();
 		::Render->set_Transform		(&m_pHUD->Transform());
@@ -133,6 +127,15 @@ void CHudItem::renderable_Render()
 
 	if(m_pHUD)
 		PSkeletonAnimated(m_pHUD->Visual())->Update	();
+}
+
+BOOL CHudItem::renderable_ShadowGenerate() 
+{
+	return TRUE;
+	if(hud_mode)
+		return FALSE;
+	else
+		return 	inherited::renderable_ShadowGenerate();
 }
 
 bool CHudItem::Action(s32 cmd, u32 flags) 

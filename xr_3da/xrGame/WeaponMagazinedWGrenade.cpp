@@ -129,15 +129,7 @@ void CWeaponMagazinedWGrenade::OnShot		()
 		UpdateFP();
 		PlaySound(sndShotG, vLastFP);
 		
-		if(hud_mode) 
-		{
-			CEffectorShot* S		= dynamic_cast<CEffectorShot*>	(Level().Cameras.GetEffector(cefShot)); 
-			if (!S)	S				= (CEffectorShot*)Level().Cameras.AddEffector(xr_new<CEffectorShot> (camMaxAngle,camRelaxSpeed));
-			R_ASSERT				(S);
-			S->Shot					(camDispersion);
-			//анимация стрельбы из подствольника
-			m_pHUD->animPlay(mhud_shots_g[Random.randI(mhud_shots_g.size())],TRUE,this);
-		}
+		AddShotEffector		();
 		
 		//партиклы огня вылета гранаты из подствольника
 		StartFlameParticles2();
@@ -157,11 +149,8 @@ void CWeaponMagazinedWGrenade::SwitchMode()
 	
 	UpdateFP();
 	PlaySound(sndSwitch,vLastFP);
-	
-	if(m_bGrenadeMode)
-		m_pHUD->animPlay(mhud_switch_g[Random.randI(mhud_switch_g.size())],FALSE,this);
-	else 
-		m_pHUD->animPlay(mhud_switch[Random.randI(mhud_switch.size())],FALSE,this);
+
+	PlayAnimModeSwitch();
 }
 
 void  CWeaponMagazinedWGrenade::PerformSwitch()
@@ -490,10 +479,26 @@ void CWeaponMagazinedWGrenade::PlayAnimIdle()
 }
 void CWeaponMagazinedWGrenade::PlayAnimShoot()
 {
-	if(IsGrenadeLauncherAttached())
-		m_pHUD->animPlay(mhud_shots_w_gl[Random.randI(mhud_idle.size())],TRUE,this);
+	if(this->m_bGrenadeMode)
+	{
+		//анимация стрельбы из подствольника
+		m_pHUD->animPlay(mhud_shots_g[Random.randI(mhud_shots_g.size())],TRUE,this);
+	}
 	else
-		m_pHUD->animPlay(mhud_shots[Random.randI(mhud_shots.size())],TRUE,this);
+	{
+		if(IsGrenadeLauncherAttached())
+			m_pHUD->animPlay(mhud_shots_w_gl[Random.randI(mhud_idle.size())],TRUE,this);
+		else
+			m_pHUD->animPlay(mhud_shots[Random.randI(mhud_shots.size())],TRUE,this);
+	}
+}
+
+void  CWeaponMagazinedWGrenade::PlayAnimModeSwitch()
+{
+	if(m_bGrenadeMode)
+		m_pHUD->animPlay(mhud_switch_g[Random.randI(mhud_switch_g.size())],FALSE,this);
+	else 
+		m_pHUD->animPlay(mhud_switch[Random.randI(mhud_switch.size())],FALSE,this);
 }
 
 

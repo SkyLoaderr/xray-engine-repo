@@ -25,6 +25,9 @@ void CParticlesObject::Init(LPCSTR p_name, IRender_Sector* S, BOOL bAutoRemove)
 	m_bLooped = false;
 	m_bAutoRemove			= bAutoRemove;
 
+	//запомнить имя партиклов
+	m_sParticlesName = p_name;
+
 	// create visual
 	renderable.visual		= Render->model_CreateParticles(p_name);
 	VERIFY					(renderable.visual);
@@ -84,13 +87,11 @@ void CParticlesObject::UpdateSpatial()
 	}
 }
 
-#ifdef DEBUG
-LPCSTR CParticlesObject::dbg_ref_name()
+
+ref_str CParticlesObject::Name()
 {
-	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
-	return V->Name();
+	return m_sParticlesName;
 }
-#endif
 
 //----------------------------------------------------
 void CParticlesObject::Play()
