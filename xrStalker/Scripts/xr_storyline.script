@@ -2,10 +2,7 @@ function set_storyline(object, char_ini)
     local actor = level.actor()
 
         -- Реакция на бобика
-        if char_ini:section_exist ("bobik") == true and
-           char_ini:line_exist("bobik", "enabled") == true and
-           char_ini:r_bool("bobik", "enabled") == true
-        then
+        if char_ini:section_exist ("bobik") == true then
             escape_bobik.add_to_binder(object)
         end
 
