@@ -15,7 +15,7 @@
 	#include "lualib.h"
 	#include "lauxlib.h"
 //}
-//#pragma comment(lib,"x:\\xrLUA.lib")
+#pragma comment(lib,"x:\\xrLUA.lib")
 
 // Lua-bind
 #pragma warning(disable:4244)

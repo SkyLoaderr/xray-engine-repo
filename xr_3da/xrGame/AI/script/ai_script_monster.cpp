@@ -201,8 +201,8 @@ bool CScriptMonster::bfAssignSound(CEntityAction *tpEntityAction)
 			Msg("SOUND : NO FEEDBACK!");
 	}
 	else {
-		if (strlen(m_caSoundToPlay))
-			::Sound->create	(*(m_tpSound = xr_new<ref_sound>()),TRUE,m_caSoundToPlay);
+		if (strlen(l_tSoundAction.m_caSoundToPlay))
+			::Sound->create	(*(l_tSoundAction.m_tpSound = xr_new<ref_sound>()),TRUE,l_tSoundAction.m_caSoundToPlay);
 		else
 			l_tSoundAction.m_bCompleted = true;
 	}
