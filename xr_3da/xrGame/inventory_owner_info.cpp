@@ -63,8 +63,6 @@ bool CInventoryOwner::OnReceiveInfo(INFO_ID info_id) const
 	else
 		return false;
 
-	Msg("----info received: [%s] %s", Name(), *info_id);
-
 #ifdef DEBUG
 	Msg("[%s] CInventoryOwner::OnReceiveInfo info id %s", Name(), *info_id);
 #endif
@@ -111,7 +109,9 @@ void CInventoryOwner::OnDisableInfo(INFO_ID info_id) const
 	VERIFY( info_id.size() );
 	//удалить запись из реестра
 	
-	Msg("----info disabled: [%s] %s", Name(), *info_id);
+#ifdef DEBUG
+	Msg("[%s] CInventoryOwner::OnDisableInfo info id %s", Name(), *info_id);
+#endif
 
 	KNOWN_INFO_VECTOR& known_info = m_known_info_registry->registry().objects();
 

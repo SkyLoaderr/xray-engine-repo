@@ -101,6 +101,7 @@ void CZoneEffector::Activate()
 {
 	p_effector = xr_new<CZoneEffectPP>(state, EEffectorPPType( u32(u64(this) & u32(-1)) ));
 	Level().Cameras.AddEffector(p_effector);
+
 }
 
 void CZoneEffector::Stop()

@@ -42,9 +42,6 @@ void CHUDCrosshair::Load		()
 
 
 	radius_speed_perc = pSettings->r_float (HUD_CURSOR_SECTION, "radius_lerp_speed");
-//	radius_speed = iFloor(0.5f + radius_speed_perc*float(Device.dwWidth));
-//	if(radius_speed<=0)
-//		radius_speed = 1;
 }
 
 //выставляет radius от min_radius до max_radius
@@ -109,12 +106,24 @@ void CHUDCrosshair::OnRender ()
 	RCache.set_Shader		(hShader);
 	RCache.set_Geometry		(hGeomLine);
 	RCache.Render	   		(D3DPT_LINELIST,dwOffset,dwCount/2);
-	
+
+	radius_speed = iFloor(0.5f + radius_speed_perc*float(Device.dwWidth)*Device.fTimeDelta);
+	if(radius_speed<=0)
+		radius_speed = 1;
+
+	if(_abs(target_radius - radius)>0){
+		if(target_radius < radius)
+			radius -= radius_speed;
+		else
+			radius += radius_speed;
+	};
+	clamp(radius,2,radius);
+/*
 	if(target_radius - radius>radius_speed)
 		radius += radius_speed;
 	else if(radius - target_radius >radius_speed)
 		radius -= radius_speed;
 	else 
 		radius = target_radius;
-
+*/
 }

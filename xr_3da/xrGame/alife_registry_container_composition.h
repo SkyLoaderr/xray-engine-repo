@@ -19,6 +19,7 @@
 
 #include "gametaskdefs.h"
 #include "game_news.h"
+#include "map_location_defs.h"
 
 #pragma warning(push)
 #pragma warning(disable:4005)
@@ -71,5 +72,10 @@ typedef CALifeAbstractRegistry<SPECIFIC_CHARACTER_ID, int > CSpecificCharacterRe
 add_to_registry_type_list(CSpecificCharacterRegistry);
 #define specific_characters define_constant(CSpecificCharacterRegistry) 
 #define registry_type_list save_registry_type_list(CSpecificCharacterRegistry)
+
+//map locations for actor
+add_to_registry_type_list(CMapLocationRegistry);
+#define map_locations define_constant(CMapLocationRegistry) 
+#define registry_type_list save_registry_type_list(CMapLocationRegistry)
 
 #pragma warning(pop)

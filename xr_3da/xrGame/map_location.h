@@ -7,8 +7,15 @@ class CMiniMapSpot;
 class CMapSpotPointer;
 class CUICustomMap;
 
+
 class CMapLocation
 {
+public:
+enum ELocationFlags
+{
+	eSerailizable		= 0x01,
+};
+
 private:
 	flags32					m_flags;
 	string512				m_hint;
@@ -46,6 +53,7 @@ public:
 	u16						Release							() {--m_refCount; return m_refCount;}
 	bool					Update							(); //returns actual
 	Fvector2				GetLastPosition					() {return m_position_global;};
+	bool					Serializable					() const {return !!m_flags.test(eSerailizable);}
 };
 
 

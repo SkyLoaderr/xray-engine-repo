@@ -51,6 +51,10 @@ void CMapLocation::LoadSpot(LPCSTR type)
 	LPCSTR hint = uiXml.ReadAttrib(path_base, 0, "hint", "no hint");
 	SetHint(hint);
 	
+	LPCSTR s = uiXml.ReadAttrib(path_base, 0, "store", NULL);
+	if(s)
+		m_flags.set( eSerailizable, TRUE);
+
 	strconcat(path,path_base,":level_map");
 	node = uiXml.NavigateToNode(path,0);
 	if(node){

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "map_manager.h"
+#include "alife_registry_wrappers.h"
 
 struct FindLocationBySpotID{
 	shared_str	spot_id;
@@ -18,22 +19,74 @@ struct FindLocationByID{
 };
 
 
+void SLocationKey::save(IWriter &stream)
+{
+	stream.w		(&object_id,sizeof(object_id));
+	stream.w_u16	(location->RefCount());
+	stream.w_stringZ(location->GetHint());
+	stream.w_stringZ(spot_type);
+}
+	
+void SLocationKey::load(IReader &stream)
+{
+	stream.r		(&object_id,sizeof(object_id));
+	u16 c =			stream.r_u16();
+	xr_string		hint;
+	stream.r_stringZ(hint);
+	stream.r_stringZ(spot_type);
+
+	location  = xr_new<CMapLocation>(*spot_type, object_id);
+	location->SetHint(hint.c_str());
+	location->SetRefCount(c);
+}
+
+void CMapLocationRegistry::save(IWriter &stream)
+{
+	stream.w_u32			((u32)objects().size());
+	iterator				I = m_objects.begin();
+	iterator				E = m_objects.end();
+	for ( ; I != E; ++I) {
+		u32					size = 0;
+		Locations::iterator	i = (*I).second.begin();
+		Locations::iterator	e = (*I).second.end();
+		for ( ; i != e; ++i) {
+			VERIFY			((*i).location);
+			if ((*i).location->Serializable())
+				++size;
+		}
+		stream.w			(&(*I).first,sizeof((*I).first));
+		stream.w_u32		(size);
+		i					= (*I).second.begin();
+		for ( ; i != e; ++i)
+			if ((*i).location->Serializable())
+				(*i).save	(stream);
+	}
+}
+
+
 CMapManager::CMapManager()
 {
+	m_locations = xr_new<CMapLocationWrapper>();
 }
 
 CMapManager::~CMapManager()
 {
+	xr_delete(m_locations);
+}
+
+void CMapManager::initialize(u16 id)
+{
+	m_locations->registry().init(id);// actor's id
 }
 
 CMapLocation* CMapManager::AddMapLocation(LPCSTR spot_type, u16 id)
 {
 	FindLocationBySpotID key(spot_type, id);
-	Locations_it it = std::find_if(m_locations.begin(),m_locations.end(),key);
-	if( it == m_locations.end() ){
+	Locations_it it = std::find_if(Locations().begin(),Locations().end(),key);
+	if( it == Locations().end() ){
 		CMapLocation* l = xr_new<CMapLocation>(*key.spot_id, key.object_id);
-		m_locations.push_back( SLocationKey(key.spot_id, key.object_id) );
-		m_locations.back().location = l;
+		Locations().push_back( SLocationKey(key.spot_id, key.object_id) );
+		Locations().back().location = l;
 		return l;
 	}else
 		(*it).location->AddRef();
@@ -45,12 +98,12 @@ CMapLocation* CMapManager::AddMapLocation(LPCSTR spot_type, u16 id)
 void CMapManager::RemoveMapLocation(LPCSTR spot_type, u16 id)
 {
 	FindLocationBySpotID key(spot_type, id);
-	Locations_it it = std::find_if(m_locations.begin(),m_locations.end(),key);
-	if( it!=m_locations.end() ){
+	Locations_it it = std::find_if(Locations().begin(),Locations().end(),key);
+	if( it!=Locations().end() ){
 
 		if( 1==(*it).location->RefCount() ){
 			xr_delete				((*it).location);		
-			m_locations.erase		(it);
+			Locations().erase		(it);
 		}else
 			(*it).location->Release();
 	}
@@ -59,20 +112,20 @@ void CMapManager::RemoveMapLocation(LPCSTR spot_type, u16 id)
 void CMapManager::RemoveMapLocationByObjectID(u16 id) //call on destroy object
 {
 	FindLocationByID key(id);
-	Locations_it it = std::find_if(m_locations.begin(),m_locations.end(),key);
-	while( it!= m_locations.end() ){
+	Locations_it it = std::find_if(Locations().begin(),Locations().end(),key);
+	while( it!= Locations().end() ){
 		xr_delete				((*it).location);		
-		m_locations.erase		(it);
+		Locations().erase		(it);
 
-		it = std::find_if(m_locations.begin(),m_locations.end(),key);
+		it = std::find_if(Locations().begin(),Locations().end(),key);
 	}
 }
 
 u16 CMapManager::HasMapLocation(LPCSTR spot_type, u16 id)
 {
 	FindLocationBySpotID key(spot_type, id);
-	Locations_it it = std::find_if(m_locations.begin(),m_locations.end(),key);
-	if( it!=m_locations.end() )
+	Locations_it it = std::find_if(Locations().begin(),Locations().end(),key);
+	if( it!=Locations().end() )
 		return (*it).location->RefCount();
 	
 	return 0;
@@ -80,23 +133,28 @@ u16 CMapManager::HasMapLocation(LPCSTR spot_type, u16 id)
 
 void CMapManager::Cleanup()//force
 {
-	Locations_it it = m_locations.begin();
-	for(; it!=m_locations.end();++it){
+	Locations_it it = Locations().begin();
+	for(; it!=Locations().end();++it){
 		xr_delete		((*it).location);	
 	}
-	m_locations.clear();
+	Locations().clear();
 }
 
 void CMapManager::Update()
 {
-	Locations_it it = m_locations.begin();
-	for(; it!=m_locations.end();++it){
+	Locations_it it = Locations().begin();
+	for(; it!=Locations().end();++it){
 		(*it).actual = (*it).location->Update();
 	}
-	std::sort( m_locations.begin(),m_locations.end() );
+	std::sort( Locations().begin(),Locations().end() );
 
-	while( (!m_locations.empty())&&(!m_locations.back().actual) ){
-		xr_delete(m_locations.back().location);
-		m_locations.pop_back();
+	while( (!Locations().empty())&&(!Locations().back().actual) ){
+		xr_delete(Locations().back().location);
+		Locations().pop_back();
 	}
+}
+
+Locations&	CMapManager::Locations	() 
+{
+	return m_locations->registry().objects();
 }

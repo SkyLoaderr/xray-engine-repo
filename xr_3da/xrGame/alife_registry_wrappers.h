@@ -53,3 +53,4 @@ class CGameTaskRegistryWrapper :		public CALifeRegistryWrapperObject<GAME_TASK_R
 class CGameNewsRegistryWrapper :		public CALifeRegistryWrapperObject<GAME_NEWS_REGISTRY> {};
 class CInfoPortionWrapper :				public CALifeRegistryWrapperObject<KNOWN_INFO_REGISTRY> {};
 class CRelationRegistryWrapper :		public CALifeRegistryWrapperObject<CALifeRegistryWrapper<CRelationRegistry> > {};
+class CMapLocationWrapper :				public CALifeRegistryWrapperObject<CALifeRegistryWrapper<CMapLocationRegistry> > {};
