@@ -704,7 +704,7 @@ u32	hsample	(s32 w, s32 h, s32 p, s32 x, s32 y, u8* src)
 	return color_get_R( *(((u32*)((u8*)src + (y * p)))+x) );
 }
 
-#pragma comment(lib, "nvDXTlib.lib")
+//.#pragma comment(lib, "nvDXTlib.lib")
 
 #include "ETextureParams.h"
 #include "Image_DXTC.h"

@@ -52,7 +52,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="odbc32.lib odbccp32.lib lib/nvDXTlibMTDLL.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib"
 				OutputFile="x:\dxt.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -122,7 +122,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386 /NODEFAULTLIB:LIBCMT"
-				AdditionalDependencies="odbc32.lib odbccp32.lib lib/nvDXTlibMTDLL.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib"
 				OutputFile="x:\dxt.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
@@ -167,6 +167,12 @@
 			Name="Convert"
 			Filter="">
 			<File
+				RelativePath=".\colorconvert.h">
+			</File>
+			<File
+				RelativePath=".\ddsTypes.h">
+			</File>
+			<File
 				RelativePath=".\DXT.cpp">
 			</File>
 			<File
@@ -189,6 +195,15 @@
 			</File>
 			<File
 				RelativePath=".\nvdxt_options.h">
+			</File>
+			<File
+				RelativePath=".\nvDXTlibMTDLL.lib">
+			</File>
+			<File
+				RelativePath=".\tPixel.h">
+			</File>
+			<File
+				RelativePath=".\tVector.h">
 			</File>
 		</Filter>
 		<Filter
@@ -233,37 +248,6 @@
 			</File>
 			<File
 				RelativePath=".\tga.h">
-			</File>
-		</Filter>
-		<Filter
-			Name="lib"
-			Filter="">
-			<File
-				RelativePath=".\Lib\nvDXTlib.lib">
-			</File>
-			<File
-				RelativePath=".\Lib\nvDXTlib6.lib">
-			</File>
-			<File
-				RelativePath=".\Lib\nvDXTlib_S.lib">
-			</File>
-			<File
-				RelativePath=".\Lib\nvDXTlibMT.lib">
-			</File>
-			<File
-				RelativePath=".\Lib\nvDXTlibMT6.lib">
-			</File>
-			<File
-				RelativePath=".\Lib\nvDXTlibMT_S.lib">
-			</File>
-			<File
-				RelativePath=".\Lib\nvDXTlibMTDLL.lib">
-			</File>
-			<File
-				RelativePath=".\Lib\nvDXTlibMTDLL6.lib">
-			</File>
-			<File
-				RelativePath=".\Lib\nvDXTlibMTDLL_S.lib">
 			</File>
 		</Filter>
 		<File

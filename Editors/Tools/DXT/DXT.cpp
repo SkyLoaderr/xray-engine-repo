@@ -24,7 +24,7 @@ const u32 fcc_DXT3 = MAKEFOURCC('D','X','T','3');
 const u32 fcc_DXT4 = MAKEFOURCC('D','X','T','4');
 const u32 fcc_DXT5 = MAKEFOURCC('D','X','T','5');
 
-void __cdecl WriteDTXnFile (DWORD count, void *buffer)
+void __cdecl WriteDTXnFile (DWORD count, void *buffer, void * userData)
 {
 	if (count==sizeof(DDS_HEADER)){
 	// correct DDS header
@@ -45,7 +45,7 @@ void __cdecl WriteDTXnFile (DWORD count, void *buffer)
 }
 
 
-void __cdecl ReadDTXnFile (DWORD count, void *buffer)
+void __cdecl ReadDTXnFile (DWORD count, void *buffer, void * userData)
 {
     _read(gFileIn, buffer, count);
 }
@@ -144,14 +144,15 @@ int DXTCompressImage	(LPCSTR out_name, u8* raw_data, u32 w, u32 h, u32 pitch,
     nvOpt.bBinaryAlpha	    = !!(fmt->flags.is(STextureParams::flBinaryAlpha));
     nvOpt.bAlphaBorder		= !!(fmt->flags.is(STextureParams::flAlphaBorder));
     nvOpt.bBorder			= !!(fmt->flags.is(STextureParams::flColorBorder));
-    nvOpt.BorderColor.u		= fmt->border_color;
+    nvOpt.BorderColor.set	(color_get_R(fmt->border_color),color_get_G(fmt->border_color),color_get_B(fmt->border_color),color_get_A(fmt->border_color));
     nvOpt.bFadeColor		= !!(fmt->flags.is(STextureParams::flFadeToColor));
-    nvOpt.bFadeAlpha		= FALSE;//fmt->flag.bFadeToAlpha;
-    nvOpt.FadeToColor.u		= 0;//fmt->fade_color;
-    nvOpt.FadeAmount		= 0;//fmt->fade_amount;
+	nvOpt.FadeToColor.set	(color_get_R(fmt->fade_color),color_get_G(fmt->fade_color),color_get_B(fmt->fade_color),0);
+    nvOpt.FadeAmount		= fmt->fade_amount;
+	nvOpt.bFadeAlpha		= !!(fmt->flags.is(STextureParams::flFadeToAlpha));
+	nvOpt.FadeToAlpha		= color_get_A(fmt->fade_color);
+	nvOpt.FadeToDelay		= fmt->fade_delay;
     nvOpt.bDitherColor		= !!(fmt->flags.is(STextureParams::flDitherColor));
 	nvOpt.bDitherMIP0		= !!(fmt->flags.is(STextureParams::flDitherEachMIPLevel));
-    nvOpt.bGreyScale		= !!(fmt->flags.is(STextureParams::flGreyScale));
 	nvOpt.TextureType		= (fmt->type==STextureParams::ttCubeMap)?kTextureTypeCube:kTextureType2D;
     switch(fmt->fmt){
     case STextureParams::tfDXT1				: 	nvOpt.TextureFormat = kDXT1	; 	break;
@@ -187,10 +188,7 @@ int DXTCompressImage	(LPCSTR out_name, u8* raw_data, u32 w, u32 h, u32 pitch,
 	case STextureParams::kMIPFilterKaiser	:	nvOpt.MIPFilterType = kMIPFilterKaiser		;	break;
 	}
 //-------------------
- 
-	if ((fmt->flags.is(STextureParams::flGenerateMipMaps))&&((STextureParams::kMIPFilterAdvanced==fmt->mip_filter)||
-		(fmt->flags.is(STextureParams::flFadeToColor))||(fmt->flags.is(STextureParams::flFadeToAlpha))))
-	{
+	if ((fmt->flags.is(STextureParams::flGenerateMipMaps))&&(STextureParams::kMIPFilterAdvanced==fmt->mip_filter)){
 		nvOpt.MipMapType	= dUseExistingMipMaps;
 
 		u8* pImagePixels	= 0;
@@ -206,16 +204,10 @@ int DXTCompressImage	(LPCSTR out_name, u8* raw_data, u32 w, u32 h, u32 pitch,
 		FillRect			(pImagePixels,(u8*)pLastMip,w_offs,pitch,dwH,line_pitch);
 		w_offs				+= dwP;
 
-		float	blend		= 0;
-		float	d			= (float(fmt->fade_amount)/100.f)*numMipmaps-1;
-//		float	d			= numMipmaps-1;
-		if (d<1.f) d		= 1.f;
+		float	inv_fade	= clampr(1.f-float(fmt->fade_amount)/100.f,0.f,1.f);
+		float	blend		= fmt->flags.is_any(STextureParams::flFadeToColor|STextureParams::flFadeToAlpha)?inv_fade:1.f;
 		for (int i=1; i<numMipmaps; i++){
-			if ((fmt->flags.is(STextureParams::flFadeToColor))||(fmt->flags.is(STextureParams::flFadeToAlpha))){
-				blend		= i/d;
-				if (blend>1.f) blend=1.f;
-			}
-			u32* pNewMip	= Build32MipLevel(dwW,dwH,dwP,pLastMip,fmt,blend);
+			u32* pNewMip	= Build32MipLevel(dwW,dwH,dwP,pLastMip,fmt,i<fmt->fade_delay?0.f:1.f-blend);
 			FillRect		(pImagePixels,(u8*)pNewMip,w_offs,dwP,dwH,line_pitch);
 			xr_free			(pLastMip); 
 			pLastMip		= pNewMip; 
@@ -224,10 +216,23 @@ int DXTCompressImage	(LPCSTR out_name, u8* raw_data, u32 w, u32 h, u32 pitch,
 		}
 		xr_free				(pLastMip);
 
-		hr					= nvDXTcompress(pImagePixels, w*2, h, line_pitch, &nvOpt, depth, 0);
+		nvOpt.bFadeColor	= false;
+		nvOpt.bFadeAlpha	= false;
+
+		RGBAImage			pImage(w*2, h);
+		rgba_t* pixels		= pImage.pixels();
+		u8* pixel			= pImagePixels;
+		for (u32 k=0; k<w*2*h; k++,pixel+=4)
+			pixels[k].set	(pixel[2],pixel[1],pixel[0],pixel[3]);
+		hr					= nvDXTcompress(pImage,&nvOpt,0,0);
 		xr_free				(pImagePixels);
 	}else{
-		hr					= nvDXTcompress(raw_data, w, h, pitch, &nvOpt, depth, 0);
+		RGBAImage			pImage(w,h);
+		rgba_t* pixels		= pImage.pixels();
+		u8* pixel			= raw_data;
+		for (u32 k=0; k<w*h; k++,pixel+=4)
+			pixels[k].set	(pixel[2],pixel[1],pixel[0],pixel[3]);
+		hr					= nvDXTcompress(pImage,&nvOpt,0,0);
 	}
     _close					(gFileOut);
 	if (hr!=DD_OK)			return 0;
@@ -250,4 +255,5 @@ int DXTCompress	(LPCSTR out_name, u8* raw_data, u8* normal_map, u32 w, u32 h, u3
 	break;
 	default: NODEFAULT;
 	}
+	return -1;
 }

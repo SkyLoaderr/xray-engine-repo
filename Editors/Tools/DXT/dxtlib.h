@@ -17,7 +17,7 @@
 
 #include "nvdxt_options.h"
 
-typedef HRESULT (*MIPcallback)(void * data, int miplevel, DWORD size, int width, int height, void * user_data);
+typedef HRESULT (__cdecl *MIPcallback)(void * data, int miplevel, DWORD size, int width, int height, void * user_data);
 
 
 // call back
@@ -118,7 +118,7 @@ HRESULT nvDXTcompress32F(fpImage & srcImage,
                 RECT * rect = NULL);   // subrect to operate on, NULL is whole image
 
 
-HRESULT nvDXTcompress(RGBAImage & image,
+HRESULT __cdecl nvDXTcompress(RGBAImage & image,
                       CompressionOptions * options,
                       MIPcallback callback,
                       RECT * rect);
@@ -151,13 +151,13 @@ void SetWriteDTXnFile(DXTDataTransfer UserWriteDTXnFile);
 
 #else
 
-void WriteDTXnFile(DWORD count, void * buffer, void * userData);
-void ReadDTXnFile(DWORD count, void * buffer, void * userData);
+void __cdecl WriteDTXnFile(DWORD count, void * buffer, void * userData);
+void __cdecl ReadDTXnFile(DWORD count, void * buffer, void * userData);
 
-
-#ifndef EXCLUDE_LIBS
 
 /*
+#ifndef EXCLUDE_LIBS
+
 #if _DEBUG
 
  #if _MSC_VER >=1300
@@ -253,13 +253,13 @@ void ReadDTXnFile(DWORD count, void * buffer, void * userData);
  
  #endif // _MSC_VER
 #endif // _DEBUG
-*/
+
 
 
 
 
 #endif
-
+*/
 
 #endif // NVDXTC
 

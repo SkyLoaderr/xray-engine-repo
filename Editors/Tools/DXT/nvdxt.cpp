@@ -1,144 +1,34 @@
-/*********************************************************************NVMH2****
-Path:  C:\Dev\devrel\Nv_sdk_4\Dx8_private\PhotoShop\dxt
-File:  dxt.cpp
+/****************************************************************************************
 
-Copyright (C) 1999, 2000 NVIDIA Corporation
-This file is provided without support, instruction, or implied warranty of any
-kind.  NVIDIA makes no guarantee of its fitness for a particular purpose and is
-not liable under any circumstances for any damages or loss whatsoever arising
-from the use or inability to use this file or items derived from it.
+Copyright (C) NVIDIA Corporation 2003
 
-Comments:
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THIS SOFTWARE IS PROVIDED
+*AS IS* AND NVIDIA AND ITS SUPPLIERS DISCLAIM ALL WARRANTIES, EITHER EXPRESS
+OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS FOR A PARTICULAR PURPOSE.  IN NO EVENT SHALL NVIDIA OR ITS SUPPLIERS
+BE LIABLE FOR ANY SPECIAL, INCIDENTAL, INDIRECT, OR CONSEQUENTIAL DAMAGES
+WHATSOEVER (INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF BUSINESS PROFITS,
+BUSINESS INTERRUPTION, LOSS OF BUSINESS INFORMATION, OR ANY OTHER PECUNIARY LOSS)
+ARISING OUT OF THE USE OF OR INABILITY TO USE THIS SOFTWARE, EVEN IF NVIDIA HAS
+BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
 
-
-******************************************************************************/
-
-#pragma warning(disable : 4786)     //
-
-#include <windows.h>
-#include "NVI_ImageLib.h"
-
-#include "dxtlib.h"
-#include <direct.h>
-#include "string"
-#include <fcntl.h>
-#include <io.h>
-#include <stdio.h>
-#include <errno.h>
-
-#include <sys/stat.h>
-
-bool bUserSpecifiedOutputDir = false;
-bool bFlipTopToBottom = false;
-RescaleOption bRescaleImage = RESCALE_NONE;
-bool bOutputSameDir = false;
-bool bDeep = false;
-
-#include "normalconvert.h"
-#include "NormalMapFilterUI.h"
-#include <shlobj.h>
-#include <string>
-#include <vector>
+*****************************************************************************************/
 
 
 
+#include "nvDXT.h"
+
+/*#ifdef _DEBUG
+#include <Windows.h> 
+#include "MemLeakDetect.h" 
+
+CMemLeakDetect myMemLeakDetect; 
+#endif
+*/
 
 
-
-void compress_some(char * wildcard);
-void compress_recursive(const char *);
-HRESULT compress_image_file(char * inputfile, int);
-void compress_cubemap_from_list();
-HRESULT compress_cube(int);
-
-void ConvertToNormalMap(int kerneltype, int colorcnv, int alpha, float scale, int minz, bool wrap, int w, int h, void * data);
-void ConvertToDepthMap(int type, int colorcnv, int alpha, float scale, int minz, bool wrap, int w, int h, void * data);
-void ProcessDirectory();
-
-char * cubemap_name;
-
-bool bImageMode = false;
-static HFILE filein = 0;
-bool timestamp = false;
-bool bCubeMap = false;
-bool bSwapRGB = false;
-bool bForce4 = false;
-
-bool bFullPathSpecified = false;
-bool list = false;
-
-extern int errno;
-std::string output_dirname;
-std::string input_dirname;
-
-std::string recursive_dirname;
-
-
-
-
-int find_string(std::string & str, char * to_find)
-{
-    char * stemp1 = strdup(str.c_str());
-    char * stemp2 = strdup(to_find);
-
-    std::string temp(stemp1);
-    std::string temp2(stemp2);
-
-    temp = strlwr(const_cast<char *>(temp.c_str()));
-    temp2 = strlwr(const_cast<char *>(temp2.c_str()));
-
-    free(stemp1);
-    free(stemp2);
-    return temp.find(temp2);
-
-
-
-}
-
-
-std::string listfile;
-int Mode24 = 0;
-int Mode32 = 0;
-
-
+HFILE filein = 0;
 HFILE fileout;
-extern char* optarg;
-
-bool bDuDvMap = false;
-bool bNormalMap = false;
-bool bBinaryAlpha = false;
-bool bAlphaBorder = false;
-bool bBorder = false;
-tPixel BorderColor;
-bool bFadeColor = false;
-tPixel FadeToColor;
-bool bFadeAlpha = false;
-int FadeToAlpha = 0;
-int FadeAmount = 15;
-bool bGenMipMaps = true;
-DWORD TextureFormat = dDXT3;
-bool bDitherColor = false;
-bool bOverwrite = false;
-
-
-bool bConversion = false;
-bool bDepthConversion = false;		// true means create a depth map
-
-int kerneltype = PSH_KERNEL_3x3;
-
-int colorcnv = kDAVERAGE_RGB;
-
-
-int alphaResult = kDAlphaNone;
-/*const int16 kDAlphaNone = 33;
-const int16 kDAlphaHeight = 34;
-const int16 kDAlphaClear = 35;*/
-
-float scale = 1.0;
-
-int minz = 0;
-// default 0
-bool wrap = 0;
 
 
 
@@ -146,18 +36,53 @@ bool wrap = 0;
 
 
 
-char * PopupDirectoryRequestor(const char * initialdir,
-                               const char * title)
+
+
+char * supported_extensions[] =
 {
-    static char temp[MAX_PATH];
-    static char dir[MAX_PATH];
-    
+    "*.psd",
+    "*.png",
+    "*.ppm",
+    "*.tga",
+    "*.bmp",
+    "*.gif",
+    "*.pgm",
+    "*.ppm",
+    "*.jpg",
+    "*.jpeg",
+    "*.lbm",
+    "*.vid",
+    "*.kps",
+    "*.xbm",
+    "*.tif",
+    "*.tiff",
+    "*.cel",
+    "*.dds",
+    "*.spr",
+    "*.psg",
+    "*.pcx",
+    0,
+};
+
+
+
+
+
+
+
+
+
+char * PopupDirectoryRequestor(const char * initialdir, const char * title)
+{
+    static char temp[MAX_PATH_NAME];
+    static char dir[MAX_PATH_NAME];
+
     BROWSEINFO bi;
     LPITEMIDLIST list;
-    
+
     //HINSTANCE hInstance = GetModuleHandle(NULL);
     //gd3dApp->Create( hInstance  );
-    
+
     bi.hwndOwner = 0; 
     bi.pidlRoot = 0; 
     bi.pszDisplayName = dir; 
@@ -166,41 +91,28 @@ char * PopupDirectoryRequestor(const char * initialdir,
     bi.lpfn = 0; 
     bi.lParam = 0; 
     bi.iImage = 0; 
-    
+
     list = SHBrowseForFolder(&bi);
-    
+
     if (list == 0)
         return 0;
-    
+
     SHGetPathFromIDList(list, dir);
-    
+
     return dir;
 }
 
 
-char * supported_extensions[] =
-{
-    "*.tga",
-    "*.bmp",
-    "*.gif",
-    "*.ppm",
-    "*.jpg",
-    "*.jpeg",
-    "*.tif",
-    "*.tiff",
-    "*.cel",
-    "*.dds",
-    0,
-};
 
-void compress_all(  )
+
+HRESULT nvDXT::compress_all( )
 {
-    
+
     struct _finddata_t image_file_data;
     long hFile;
-    
 
-    std::vector<std::string>  image_files;
+
+    std::vector<std::string> image_files;
 
     int i = 0;
     int j;
@@ -213,18 +125,18 @@ void compress_all(  )
         hFile = _findfirst( fullwildcard.c_str(), &image_file_data );
         if (hFile != -1)
         {
-            
+
             image_files.push_back(image_file_data.name);
             //compress_image_file(filetga.name, TextureFormat);
-            
-            
+
+
             // Find the rest of the .image files 
             while( _findnext( hFile, &image_file_data ) == 0 )
             {
                 //compress_image_file(filetga.name, TextureFormat);
                 image_files.push_back(image_file_data.name);
             }
-            
+
             _findclose( hFile );
         }
         i++;
@@ -242,7 +154,8 @@ void compress_all(  )
     for(i=0; i<n; i++)
     {
 
-        std::string & filename  = image_files[i];
+        std::string filename  = image_files[i];
+
         int pos = find_string(filename, ".dds");
         // found a .dds file
         if (pos != -1)
@@ -264,6 +177,7 @@ void compress_all(  )
                 // if not a .dds file
                 if (pos2 == -1)
                 {
+                    // is this the same prefix?
                     pos2 = find_string(image_files[j], const_cast<char *>(prefix.c_str()));
                     if (pos2 == 0)
                     {
@@ -277,31 +191,37 @@ void compress_all(  )
     }
 
 
+    HRESULT ahr = 0;
     for(i=0; i<n; i++)
     {
         if (tags[i] == 0)
         {
-            std::string & filename  = image_files[i];
-            compress_image_file(const_cast<char *>(filename.c_str()), TextureFormat);
+            std::string filename  = image_files[i];
+            HRESULT hr = compress_image_file(const_cast<char *>(filename.c_str()), TextureFormat);
+            if (hr)
+                ahr = hr; // last error
         }
     }
 
     delete [] tags;
 
+    return ahr;
 
 }
 
 
-void compress_recursive(const char * dirname)
+void nvDXT::compress_recursive(const char * dirname, HRESULT & ahr)
 {
 
 
     input_dirname = dirname;
 
     printf("Processing %s\n", dirname);
-    ProcessDirectory();
+    HRESULT hr = ProcessDirectory();
+    if (hr)
+        ahr = hr;
 
-    
+
     std::string fullname = dirname;
     fullname += "\\*.*";
 
@@ -309,16 +229,16 @@ void compress_recursive(const char * dirname)
 
 
     //char *wildcard = "*.*";
-    
+
     struct _finddata_t image_file_data;
     long hFile;
-    
-    
+
+
     std::vector<std::string>  image_files;
-    
-    
+
+
     hFile = _findfirst( fullname.c_str(), &image_file_data );
-    
+
     if (hFile != -1 && image_file_data.attrib & _A_SUBDIR)
     {
         if (image_file_data.name[0] != '.')
@@ -327,43 +247,43 @@ void compress_recursive(const char * dirname)
             subname += "\\";
             subname += image_file_data.name; 
 
-            compress_recursive(subname.c_str());
+            compress_recursive(subname.c_str(), ahr);
         }
     }
 
 
 
-    
-    
+
+
     if (hFile != -1)
     {
-        
+
         image_files.push_back(image_file_data.name);
         //compress_image_file(filetga.name, TextureFormat);
-        
-        
+
+
         // Find the rest of the .image files 
         while( _findnext( hFile, &image_file_data ) == 0 )
         {
             //compress_image_file(filetga.name, TextureFormat);
             image_files.push_back(image_file_data.name);
-            
-            if (image_file_data.attrib &_A_SUBDIR)//Subdirectory. Value: 0x10
+
+            if (image_file_data.attrib & _A_SUBDIR)//Subdirectory. Value: 0x10
             {
                 if (image_file_data.name[0] != '.')
                 {
                     std::string subname = dirname;
                     subname += "\\";
                     subname += image_file_data.name; 
-                    
-                    compress_recursive(subname.c_str());
+
+                    compress_recursive(subname.c_str(), ahr);
                 }
-                
+
             }
-            
-            
+
+
         }
-        
+
         _findclose( hFile );
     }
 
@@ -371,124 +291,125 @@ void compress_recursive(const char * dirname)
 
 
 
-bool ProcessFileName(char * wildcard, 	std::string &fullwildcard, std::string & dirname)
+bool nvDXT::ProcessFileName(char * wildcard, std::string &fullwildcard, std::string & dirname)
 {
-	std::string temp;
+    std::string temp;
 
+    fullwildcard = "";
 
-	if (strstr(wildcard, ":\\") || wildcard[0] == '\\')
-	{
-		temp = wildcard;
-		int pos = temp.find_last_of("\\", strlen(wildcard));
-		if (pos >= 0)
-			dirname = temp.substr(0, pos);
-		fullwildcard = wildcard;
+    if (strstr(wildcard, ":\\") || wildcard[0] == '\\')
+    {
+        temp = wildcard;
+        int pos = temp.find_last_of("\\", strlen(wildcard));
+        if (pos >= 0)
+            dirname = temp.substr(0, pos);
+        fullwildcard = wildcard;
 
-		input_dirname = dirname;	
+        input_dirname = dirname;	
         return true;
-	}
-	else if (wildcard[0] == '//')
-	{
-		temp = wildcard;
-		int pos = temp.find_last_of("//", strlen(wildcard));
-		if (pos >= 0)
-			dirname = temp.substr(0, pos);
-		fullwildcard = wildcard;
+    }
+    else if (wildcard[0] == '//')
+    {
+        temp = wildcard;
+        int pos = temp.find_last_of("//", strlen(wildcard));
+        if (pos >= 0)
+            dirname = temp.substr(0, pos);
+        fullwildcard = wildcard;
 
-		input_dirname = dirname;		
+        input_dirname = dirname;		
         return true;
-	}
-	else if (strrchr(wildcard, '\\'))
-	{
-		temp = wildcard;
-		int pos = temp.find_last_of("\\", strlen(wildcard));
-		if (pos >= 0)
-			dirname = temp.substr(0, pos);
+    }
+    else if (strrchr(wildcard, '\\'))
+    {
+        temp = wildcard;
+        int pos = temp.find_last_of("\\", strlen(wildcard));
+        if (pos >= 0)
+            dirname = temp.substr(0, pos);
 
-		fullwildcard = input_dirname;
-		fullwildcard += "\\";
-		fullwildcard += wildcard;
+        fullwildcard = input_dirname;
+        fullwildcard += "\\";
+        fullwildcard += wildcard;
 
 
-		input_dirname = dirname;
+        input_dirname = dirname;
         return true;
 
-	}
-	else if (strrchr(wildcard, '//'))
-	{
-		temp = wildcard;
-		int pos = temp.find_last_of("//", strlen(wildcard));
-		if (pos >= 0)
-			dirname = temp.substr(0, pos);
+    }
+    else if (strrchr(wildcard, '//'))
+    {
+        temp = wildcard;
+        int pos = temp.find_last_of("//", strlen(wildcard));
+        if (pos >= 0)
+            dirname = temp.substr(0, pos);
 
-		fullwildcard = input_dirname;
-		fullwildcard += "\\";
-		fullwildcard += wildcard;
+        fullwildcard = input_dirname;
+        fullwildcard += "\\";
+        fullwildcard += wildcard;
 
-		input_dirname = dirname;
+        input_dirname = dirname;
         return true;
-	}
-	else
-	{
-		fullwildcard = input_dirname;
-		fullwildcard += "\\";
-		fullwildcard += wildcard;
+    }
+    else
+    {
+        fullwildcard = input_dirname;
+        fullwildcard += "\\";
+        fullwildcard += wildcard;
         return false;
-	}
-    
+    }
+
 }
 
-void compress_some(char * wildcard)
+HRESULT nvDXT::compress_some(char * wildcard)
 {
-    
-    
+
+
     int i;
     struct _finddata_t image_file_data;
     long hFile;
-    
+
 
     std::vector<std::string>  image_files;
-    
+
     int j;
     // Find first .c file in current directory 
 
-	std::string fullwildcard;
+    std::string fullwildcard;
     std::string dirname;
 
     ProcessFileName(wildcard, fullwildcard, dirname);
-    
+
 
     std::string name;
     hFile = _findfirst( fullwildcard.c_str(), &image_file_data );
     if (hFile != -1)
     {
-        
-		// pre-pend directory to name
-		//
-		
-		name = dirname;
-		name += "\\";
-		name += image_file_data.name;
+
+        // pre-pend directory to name
+        //
+
+        name = dirname;
+        name += "\\";
+        name += image_file_data.name;
         image_files.push_back(name);
         //compress_image_file(filetga.name, TextureFormat);
-        
-        
+
+
         // Find the rest of the .image files 
         while( _findnext( hFile, &image_file_data ) == 0 )
         {
             //compress_image_file(filetga.name, TextureFormat);
 
-			name = dirname;
-			name += "\\";
-			name += image_file_data.name;
+            name = dirname;
+            name += "\\";
+            name += image_file_data.name;
 
             image_files.push_back(name);
         }
-        
+
         _findclose( hFile );
     }
-    
-    
+
+
     // remove .dds if other name exists
 
     int n = image_files.size();
@@ -500,7 +421,8 @@ void compress_some(char * wildcard)
     for(i=0; i<n; i++)
     {
 
-        std::string & filename  = image_files[i];
+        std::string filename  = image_files[i];
+
         int pos = find_string(filename, ".dds");
         // found a .dds file
         if (pos != -1)
@@ -535,37 +457,42 @@ void compress_some(char * wildcard)
     }
 
 
-
+    HRESULT ahr = 0;
 
     for(i=0; i<n; i++)
     {
         if (tags[i] == 0)
         {
-            std::string & filename  = image_files[i];
+            std::string filename  = image_files[i];
 
-            compress_image_file(const_cast<char *>(filename.c_str()), TextureFormat);
+            HRESULT hr = compress_image_file(const_cast<char *>(filename.c_str()), TextureFormat);
+            if (hr)
+                ahr = hr;
         }
     }
 
     delete [] tags;
 
+    return ahr;
+
 
 }
 
 
-void compress_list(  )
+HRESULT nvDXT::compress_list( )
 {
-    
+
     FILE *fp = fopen( listfile.c_str(), "r");
-    
+
     if (fp == 0)
     {
-        fprintf(stdout, "Can't open list file <%s>\n", listfile.c_str());
-        return;
+        error("Can't open list file <%s>\n", listfile.c_str());
+        return ERROR_BAD_LIST_FILE;
     }
-    
-    char buff[1000];
-    while(fgets(buff, 1000, fp))
+
+    HRESULT ahr = 0;
+    char buff[MAX_PATH_NAME];
+    while(fgets(buff, MAX_PATH_NAME, fp))
     {      
         // has a crlf at the end
         int t = strlen(buff);
@@ -585,7 +512,9 @@ void compress_list(  )
 
 
 
-        compress_image_file(const_cast<char *>(fullname.c_str()), TextureFormat);
+        HRESULT hr = compress_image_file(const_cast<char *>(fullname.c_str()), TextureFormat);
+        if (hr)
+            ahr = hr;
 
 
         input_dirname = save_input_dirname;
@@ -594,8 +523,10 @@ void compress_list(  )
 
     fclose(fp);
 
+    return ahr;
+
 }
-  
+
 
 
 
@@ -610,39 +541,114 @@ void usage()
     fprintf(stdout,"   creates cube maps\n");
     fprintf(stdout,"   writes out .dds file\n");
     fprintf(stdout,"   does batch processing\n");
-    fprintf(stdout,"   reads .tga, .bmp, .gif, .ppm, .jpg, .tif, .cel, .dds\n");
+    fprintf(stdout,"   reads .tga, .bmp, .gif, .ppm, .jpg, .tif, .cel, .dds, .png and .psd\n");
     fprintf(stdout,"   filters MIP maps\n");
     fprintf(stdout,"\n");
     fprintf(stdout,"Options:\n");
+    fprintf(stdout,"  -profile <profile name> : Read a profile created from the Photoshop plugin\n");
+    fprintf(stdout,"  -quick : use fast compression method\n");
+    fprintf(stdout,"  -prescale <int> <int>: rescale image to this size first\n");
+    fprintf(stdout,"  -rescale <nearest | hi | lo | next_lo>: rescale image to nearest, next highest or next lowest power of two\n");
+    fprintf(stdout,"  -rel_scale <float, float> : relative scale of original image. 0.5 is half size Default 1.0, 1.0\n");
+
+    fprintf(stdout,"Optional Filtering for rescaling. Default cube filter:\n");
+
+    fprintf(stdout,"  -RescalePoint\n"); 
+    fprintf(stdout,"  -RescaleBox\n");
+    fprintf(stdout,"  -RescaleTriangle\n");
+    fprintf(stdout,"  -RescaleQuadratic\n");
+    fprintf(stdout,"  -RescaleCubic\n");
+
+    fprintf(stdout,"  -RescaleCatrom\n");
+    fprintf(stdout,"  -RescaleMitchell\n");
+
+    fprintf(stdout,"  -RescaleGaussian\n");
+    fprintf(stdout,"  -RescaleSinc\n");
+    fprintf(stdout,"  -RescaleBessel\n");
+
+    fprintf(stdout,"  -RescaleHanning\n");
+    fprintf(stdout,"  -RescaleHamming\n");
+    fprintf(stdout,"  -RescaleBlackman\n");
+    fprintf(stdout,"  -RescaleKaiser\n");
+
+
+    fprintf(stdout,"  -clamp <int, int> : maximum image size. image width and height are clamped\n");
+    fprintf(stdout,"  -clampScale <int, int> : maximum image size. image width and height are scaled \n");
+    
+    fprintf(stdout,"  -window <left, top, right, bottom> : window of original window to compress\n");
+
     fprintf(stdout,"  -nomipmap : don't generate MIP maps\n");
-    fprintf(stdout,"  -fade : fade MIP maps\n");
+    fprintf(stdout,"  -nmips <int> : specify the number of MIP maps to generate\n");
+
+    fprintf(stdout,"  -rgbe : Image is RGBE format\n");
     fprintf(stdout,"  -dither : add dithering\n");
-    fprintf(stdout,"  -rescale <nearest, hi, lo>: rescale image to nearest, next highest or next lowest power of two\n");
+
+
+
+    fprintf(stdout,"  -sharpenMethod <method>: sharpen method MIP maps\n");
+    fprintf(stdout,"  <method> is \n");
+    fprintf(stdout,"        None\n");
+    fprintf(stdout,"        Negative\n");
+    fprintf(stdout,"        Lighter\n");
+    fprintf(stdout,"        Darker\n");
+    fprintf(stdout,"        ContrastMore\n");
+    fprintf(stdout,"        ContrastLess\n");
+    fprintf(stdout,"        Smoothen\n");
+    fprintf(stdout,"        SharpenSoft\n");
+    fprintf(stdout,"        SharpenMedium\n");
+    fprintf(stdout,"        SharpenStrong\n");
+    fprintf(stdout,"        FindEdges\n");
+    fprintf(stdout,"        Contour\n");
+    fprintf(stdout,"        EdgeDetect\n");
+    fprintf(stdout,"        EdgeDetectSoft\n");
+    fprintf(stdout,"        Emboss\n");
+    fprintf(stdout,"        MeanRemoval\n");
+    fprintf(stdout,"        UnSharp <radius, amount, threshold>\n");
+    fprintf(stdout,"        XSharpen <xsharpen_strength, xsharpen_threshold>\n");
+    //fprintf(stdout,"        WarpSharp\n");
+    fprintf(stdout,"        Custom\n");
+
+
+
+
+    fprintf(stdout,"  -pause : wait for keyboard on error\n");
+    fprintf(stdout,"  -volume <filename> : create volume texture <filename>. Files specified with -list option\n");
     fprintf(stdout,"  -flip : flip top to bottom \n");
     fprintf(stdout,"  -timestamp : Update only changed files\n");
     fprintf(stdout,"  -list <filename> : list of files to convert\n");
     fprintf(stdout,"  -cubemap <filename> : create cube map <filename>. Files specified with -list option\n");
     fprintf(stdout,"                        positive x, negative x, positive y, negative y, positive z, negative z\n");
     fprintf(stdout,"  -all : all image files in current directory\n");
-    fprintf(stdout,"  -outdir : output directory\n");
+    fprintf(stdout,"  -outdir <directory>: output directory\n");
     fprintf(stdout,"  -deep [directory]: include all subdirectories\n");
     fprintf(stdout,"  -outsamedir : output directory same as input\n");
     fprintf(stdout,"  -overwrite : if input is .dds file, overwrite old file\n");
-    fprintf(stdout,"  -file: input file to process. Accepts wild cards\n");
-    fprintf(stdout,"  -24 <dxt1c,dxt1a,dxt3,dxt5,u1555,u4444,u565,u8888, u888, u555> : compress 24 bit images with this format\n");
-    fprintf(stdout,"  -32 <dxt1c,dxt1a,dxt3,dxt5,u1555,u4444,u565,u8888, u888, u555> : compress 32 bit images with this format\n");
+    fprintf(stdout,"  -forcewrite : write over readonly files\n");
+
+    fprintf(stdout,"  -file <filename> : input file to process. Accepts wild cards\n");
+    fprintf(stdout,"  -output <filename> : filename to write to\n");
+    fprintf(stdout,"  -append <filename_append> : append this string to output filename\n");
+    fprintf(stdout,"  -24 <dxt1c | dxt1a | dxt3 | dxt5 | u1555 | u4444 | u565 | u8888 | u888 | u555> : compress 24 bit images with this format\n");
+    fprintf(stdout,"  -32 <dxt1c | dxt1a | dxt3 | dxt5 | u1555 | u4444 | u565 | u8888 | u888 | u555> : compress 32 bit images with this format\n");
     fprintf(stdout,"\n");
 
     fprintf(stdout,"  -swap : swap rgb\n");
+    fprintf(stdout,"  -gamma <float value>: gamma correcting during filtering\n");
     fprintf(stdout,"  -binaryalpha : treat alpha as 0 or 1\n");
+    fprintf(stdout,"  -alpha_threshold <byte>: [0-255] alpha reference value \n");
     fprintf(stdout,"  -alphaborder : border images with alpha = 0\n");
-    fprintf(stdout,"  -fadeamount : percentage to fade each MIP level. Default 15\n");
+    fprintf(stdout,"  -alphaborderLeft : border images with alpha (left) = 0\n");
+    fprintf(stdout,"  -alphaborderRight : border images with alpha (right)= 0\n");
+    fprintf(stdout,"  -alphaborderTop : border images with alpha (top) = 0\n");
+    fprintf(stdout,"  -alphaborderBottom : border images with alpha (bottom)= 0\n");
+
+    fprintf(stdout,"  -fadeamount <int>: percentage to fade each MIP level. Default 15\n");
 
     fprintf(stdout,"  -fadecolor : fade map (color, normal or DuDv) over MIP levels\n");
     fprintf(stdout,"  -fadetocolor <hex color> : color to fade to\n");
 
     fprintf(stdout,"  -fadealpha : fade alpha over MIP levels\n");
-    fprintf(stdout,"  -fadetoalpha : [0-255] alpha to fade to\n");
+    fprintf(stdout,"  -fadetoalpha <byte>: [0-255] alpha to fade to\n");
 
     fprintf(stdout,"  -border : border images with color\n");
     fprintf(stdout,"  -bordercolor <hex color> : color for border\n");
@@ -650,32 +656,56 @@ void usage()
 
 
     fprintf(stdout,"\n");
-    
-    
 
-    fprintf(stdout,"Texture Format options. Default DXT3:\n");
-    fprintf(stdout,"  -dxt1c : DXT1 (color only)\n");
-    fprintf(stdout,"  -dxt1a : DXT1 (one bit alpha)\n");
-    fprintf(stdout,"  -dxt3  : DXT3\n");
-    fprintf(stdout,"  -dxt5  : DXT5\n\n");
-    fprintf(stdout,"  -u1555 : uncompressed 1:5:5:5\n");
-    fprintf(stdout,"  -u4444 : uncompressed 4:4:4:4\n");
-    fprintf(stdout,"  -u565  : uncompressed 5:6:5\n");
-    fprintf(stdout,"  -u8888 : uncompressed 8:8:8:8\n");
-    fprintf(stdout,"  -u888  : uncompressed 0:8:8:8\n");
-    fprintf(stdout,"  -u555  : uncompressed 0:5:5:5\n");
-    fprintf(stdout,"  -p8    : paletted 8 bit\n");
+
+
+    fprintf(stdout,"Texture Format  Default DXT3:\n");
+    fprintf(stdout,"  -dxt1c  : DXT1 (color only)\n");
+    fprintf(stdout,"  -dxt1a  : DXT1 (one bit alpha)\n");
+    fprintf(stdout,"  -dxt3   : DXT3\n");
+    fprintf(stdout,"  -dxt5   : DXT5\n\n");
+    fprintf(stdout,"  -u1555  : uncompressed 1:5:5:5\n");
+    fprintf(stdout,"  -u4444  : uncompressed 4:4:4:4\n");
+    fprintf(stdout,"  -u565   : uncompressed 5:6:5\n");
+    fprintf(stdout,"  -u8888  : uncompressed 8:8:8:8\n");
+    fprintf(stdout,"  -u888   : uncompressed 0:8:8:8\n");
+    fprintf(stdout,"  -u555   : uncompressed 0:5:5:5\n");
+    fprintf(stdout,"  -p8     : paletted 8 bit (256 colors)\n");
+    fprintf(stdout,"  -p4     : paletted 4 bit (16 colors)\n");
+    fprintf(stdout,"  -a8     : 8 bit alpha channel\n");
+    fprintf(stdout,"  -cxv8u8 : normal map format\n");
+    fprintf(stdout,"  -v8u8   : EMBM format (two component signed)\n");
+    fprintf(stdout,"  -A8L8   : 8 bit alpha channel, 8 bit luminance\n");
+    fprintf(stdout,"  -fp32x4 : fp32 four channels (A32B32G32R32F)\n");
+    fprintf(stdout,"  -fp32   : fp32 one channel (R32F)\n");
+    fprintf(stdout,"  -fp16x4 : fp16 four channels (A16B16G16R16F)\n");
+
     fprintf(stdout,"\n");
 
     fprintf(stdout,"Optional Mip Map Filtering. Default box filter:\n");
-    fprintf(stdout,"  -cubic  : cubic filtering\n");
-    fprintf(stdout,"  -kaiser : kaiser filtering\n");
-    fprintf(stdout,"  -gamma  : kaiser gamma filtering\n");
-    fprintf(stdout,"  -full   : full DFT filtering\n");
+
+    fprintf(stdout,"  -Point\n"); 
+    fprintf(stdout,"  -Box\n");
+    fprintf(stdout,"  -Triangle\n");
+    fprintf(stdout,"  -Quadratic\n");
+    fprintf(stdout,"  -Cubic\n");
+
+    fprintf(stdout,"  -Catrom\n");
+    fprintf(stdout,"  -Mitchell\n");
+
+    fprintf(stdout,"  -Gaussian\n");
+    fprintf(stdout,"  -Sinc\n");
+    fprintf(stdout,"  -Bessel\n");
+
+    fprintf(stdout,"  -Hanning\n");
+    fprintf(stdout,"  -Hamming\n");
+    fprintf(stdout,"  -Blackman\n");
+    fprintf(stdout,"  -Kaiser\n");
+
     fprintf(stdout,"\n");
 
-    
-    
+
+
     fprintf(stdout,"***************************\n");
     fprintf(stdout,"To make a normal or dudv map, specify one of\n");
     fprintf(stdout,"  -n4 : normal map 4 sample\n");
@@ -684,6 +714,7 @@ void usage()
     fprintf(stdout,"  -n7x7 : normal map 7x7 filter\n");
     fprintf(stdout,"  -n9x9 : normal map 9x9 filter\n");
     fprintf(stdout,"  -dudv : DuDv\n");
+
     fprintf(stdout,"\n");
 
 
@@ -696,10 +727,12 @@ void usage()
     fprintf(stdout,"  -blue : blue channel\n");
     fprintf(stdout,"  -max : max of (r,g,b)\n");
     fprintf(stdout,"  -colorspace : mix of r,g,b\n");
-    fprintf(stdout,"  -norm : normalize mip maps (source is a normal map)\n");
+    fprintf(stdout,"  -norm : normalize mip maps (source is a normal map)\n\n");
+    fprintf(stdout,"-signed : signed output for normal maps\n");
+
     fprintf(stdout,"\n");
 
-    fprintf(stdout,"Normal/DuDv Map options:\n");
+    fprintf(stdout,"Normal/DuDv Map dxt:\n");
     fprintf(stdout,"  -aheight : store calculated height in alpha field\n");
     fprintf(stdout,"  -aclear : clear alpha channel\n");
     fprintf(stdout,"  -awhite : set alpha channel = 1.0\n");
@@ -722,21 +755,25 @@ void usage()
     fprintf(stdout,"  -max    : max of (r,g,b)\n");
     fprintf(stdout,"  -colorspace : mix of r,g,b\n");
     fprintf(stdout,"\n");
-    fprintf(stdout,"Depth Sprite options:\n");
+    fprintf(stdout,"Depth Sprite dxt:\n");
     fprintf(stdout,"  -aheight : store calculated depth in alpha channel\n");
     fprintf(stdout,"  -aclear : store 0.0 in alpha channel\n");
     fprintf(stdout,"  -awhite : store 1.0 in alpha channel\n");
     fprintf(stdout,"  -scale <float> : scale of depth sprite (default 1.0)\n");
+    fprintf(stdout,"  -alpha_modulate : multiplies color by alpha during filtering\n");
+    fprintf(stdout,"  -dxt5m : dxt5 style normal map\n");
+    fprintf(stdout,"  -unsigned : convert normal maps to [0,1] for storing in unsigned formats (like DXT5)\n");
 
     
+
     fprintf(stdout,"\n");
     fprintf(stdout,"\n");
-	fprintf(stdout,"Examples\n");
+    fprintf(stdout,"Examples\n");
     fprintf(stdout,"  nvdxt -cubemap cubemap.dds -list cubemapfile.lst\n");
     fprintf(stdout,"  nvdxt -file test.tga -dxt1c\n");
     fprintf(stdout,"  nvdxt -file *.tga\n");
-	fprintf(stdout,"  nvdxt -file c:\\temp\\*.tga\n");
-	fprintf(stdout,"  nvdxt -file temp\\*.tga\n");
+    fprintf(stdout,"  nvdxt -file c:\\temp\\*.tga\n");
+    fprintf(stdout,"  nvdxt -file temp\\*.tga\n");
     fprintf(stdout,"  nvdxt -file height_field_in_alpha.tga -n3x3 -alpha -scale 10 -wrap\n");
     fprintf(stdout,"  nvdxt -file grey_scale_height_field.tga -n5x5 -rgb -scale 1.3\n");
     fprintf(stdout,"  nvdxt -file normal_map.tga -norm\n");
@@ -745,8 +782,7 @@ void usage()
     fprintf(stdout,"  nvdxt -file *.tga -depth -max -scale 0.5\n");
 
 
-    fprintf(stdout,"version 5.19\n");
-    fprintf(stdout,"send comments, bug fixes and feature requests to doug@nvidia.com\n");
+    fprintf(stdout,"Send comments, bug fixes and feature requests to doug@nvidia.com\n");
 
 }
 
@@ -756,50 +792,114 @@ void usage()
 
 HRESULT callback(void * data, int miplevel, DWORD size)
 {
-	DWORD * ptr = (DWORD *)data;
-	for(int i=0; i< size/4; i++)
-	{
-		DWORD c = *ptr++;
-	}
+    DWORD * ptr = (DWORD *)data;
+    for(int i=0; i< size/4; i++)
+    {
+        DWORD c = *ptr++;
+    }
 
-	
-	return 0;
+
+    return 0;
 }
 
 
 
-int mipfilter;
-bool all_files = false;
-std::string specified_file;
 
-HRESULT process_command_line(int argc, char * argv[])
+
+HRESULT nvDXT::process_command_line(int argc, char * argv[])
 {
-    
+
     int i;
     i = 1;
     while(i<argc)
     {
         char * token = argv[i];
+
+
+        bool bLegalCommand = false;
         
+        if (strcmp(token, "-pause") == 0)
+        {
+            bPauseOnError = true;
+            bLegalCommand = true;
+
+        }
+        
+        
+        if (strcmp(token, "-dxt5nm") == 0)
+        {
+            bDXT5NormalMap = true;
+            bLegalCommand = true;
+
+        }
+
+        if (strcmp(token, "-alpha_modulate") == 0)
+        {
+            bAlphaModulate = true;
+            bLegalCommand = true;
+
+        }
         if (strcmp(token, "-binaryalpha") == 0)
         {
             bBinaryAlpha = true;
+            bLegalCommand = true;
+
+        }
+        else if (strcmp(token, "-alpha_threshold") == 0)
+        {
+
+            if (i + 1 >= argc)
+            {
+                error("incorrect number of arguments\n");
+                return ERROR_BAD_OPTION;
+                
+            }
+            bLegalCommand = true;
+
+            BinaryAlphaThreshold = atoi(argv[i+1]);
+            i++;
         }
         else if (strcmp(token, "-alphaborder") == 0)
         {
+            bLegalCommand = true;
             bAlphaBorder = true;
         }
+        else if (stricmp(token, "-alphaborderLeft") == 0)
+        {
+            bLegalCommand = true;
+            bAlphaBorderLeft = true;
+        }
+
+        else if (stricmp(token, "-alphaborderRight") == 0)
+        {
+            bLegalCommand = true;
+            bAlphaBorderRight = true;
+        }
+        else if (stricmp(token, "-alphaborderTop") == 0)
+        {
+            bLegalCommand = true;
+            bAlphaBorderTop = true;
+        }
+        else if (stricmp(token, "-alphaborderBottom") == 0)
+        {
+            bLegalCommand = true;
+            bAlphaBorderBottom = true;
+        }
+
+
         else if (strcmp(token, "-flip") == 0)
         {
+            bLegalCommand = true;
             bFlipTopToBottom = true;
         }
         else if (strcmp(token, "-deep") == 0)
         {
+
             bDeep = true;
 
 
             char * type = 0;
-            
+
             if (i + 1 < argc)
                 type = argv[i+1];
 
@@ -810,1386 +910,1692 @@ HRESULT process_command_line(int argc, char * argv[])
             }
             else
             {
-                char cwd[1000];
+                char cwd[MAX_PATH_NAME];
                 char * t;
-                t = _getcwd(cwd, 1000);
+                t = _getcwd(cwd, MAX_PATH_NAME);
                 recursive_dirname = t;
-        
+
             }
 
+            bLegalCommand = true;
 
 
         }
         else if (strcmp(token, "-rescale") == 0)
         {
+            if (i + 1 >= argc)
+            {
+                error("incorrect number of arguments\n");
+                return ERROR_BAD_OPTION;
+                
+            }
+
             char * type = argv[i+1];
-            
+
             if (strcmp(type, "nearest") == 0)
-                bRescaleImage = RESCALE_NEAREST_POWER2;
+                rescaleImageType = RESCALE_NEAREST_POWER2;
             else if (strcmp(type, "hi") == 0)
-                bRescaleImage = RESCALE_BIGGEST_POWER2;
+                rescaleImageType = RESCALE_BIGGEST_POWER2;
             else if (strcmp(type, "lo") == 0)
-                bRescaleImage = RESCALE_SMALLEST_POWER2;
+                rescaleImageType = RESCALE_SMALLEST_POWER2;
+            else if (strcmp(type, "next_lo") == 0)
+                rescaleImageType = RESCALE_NEXT_SMALLEST_POWER2;
             else
             {
-                fprintf(stdout, "Unknown option rescale'%s'\n", type);
-                return -1;
+                error("Unknown option rescale'%s'\n", type);
+                return ERROR_BAD_OPTION;
             }
+            bLegalCommand = true;
             i++;
+        }
+        else if (strcmp(token, "-rel_scale") == 0)
+        {
+
+            if (i + 2 >= argc)
+            {
+                error("incorrect number of arguments\n");
+                return ERROR_BAD_OPTION;
+
+            }
+
+
+            rescaleImageType = RESCALE_RELSCALE;
+
+            scaleX = atof(argv[i+1]);
+            scaleY = atof(argv[i+2]);
+            bLegalCommand = true;
+            i +=2;
+
+        }
+        else if (strcmp(token, "-clamp") == 0)
+        {
+
+            if (i + 2 >= argc)
+            {
+                error("incorrect number of arguments\n");
+                return ERROR_BAD_OPTION;
+
+            }
+
+            ///rescaleImageType = RESCALE_CLAMP;
+
+            bClamp = true;
+            clampX = atof(argv[i+1]);
+            clampY = atof(argv[i+2]);
+            bLegalCommand = true;
+            i +=2;
+
+        }
+        else if (strcmp(token, "-clampScale") == 0)
+        {
+
+            if (i + 2 >= argc)
+            {
+                error("incorrect number of arguments\n");
+                return ERROR_BAD_OPTION;
+
+            }
+
+            ///rescaleImageType = RESCALE_CLAMP;
+
+            bClampScale = true;
+            clampScaleX = atof(argv[i+1]);
+            clampScaleY = atof(argv[i+2]);
+            bLegalCommand = true;
+            i +=2;
+
+        }
+        else if (strcmp(token, "-window") == 0)
+        {
+
+            if (i + 4 >= argc)
+            {
+                error("incorrect number of arguments (window)\n");
+                return ERROR_BAD_OPTION;
+
+            }
+
+            ///rescaleimagetype = rescale_clamp;
+
+            bUseWindow = true;
+            rect.left = atoi(argv[i+1]);
+            rect.top = atoi(argv[i+2]);
+            rect.right = atoi(argv[i+3]);
+            rect.bottom = atoi(argv[i+4]);
+
+            bLegalCommand = true;
+            i +=4;
+
         }
         else if (strcmp(token, "-border") == 0)
         {
             bBorder = true;
+            bLegalCommand = true;
         }
         else if (strcmp(token, "-fadeamount") == 0)
         {
+            if (i + 1 >= argc)
+            {
+                error("incorrect number of arguments\n");
+                return ERROR_BAD_OPTION;
+
+            }
+
             FadeAmount = atoi(argv[i+1]);
+            bLegalCommand = true;
+            i++;
+        }
+        else if (strcmp(token, "-nmips") == 0)
+        {
+            if (i + 1 >= argc)
+            {
+                error("incorrect number of arguments\n");
+                return ERROR_BAD_OPTION;
+
+            }
+            SpecifiedMipMaps = atoi(argv[i+1]);
+            bLegalCommand = true;
             i++;
         }
         else if (strcmp(token, "-force4") == 0)
         {
-            bForce4 = true;
+            bForceDXT1FourColors = true;
+            bLegalCommand = true;
         }
         else if (strcmp(token, "-bordercolor") == 0)
         {
+            if (i + 1 >= argc)
+            {
+                error("incorrect number of arguments\n");
+                return ERROR_BAD_OPTION;
+
+            }
             BorderColor.u = strtoul(argv[i+1], 0, 16);
+            bLegalCommand = true;
             i++;
+        }
+        else if (strcmp(token, "-rgbe") == 0)
+        {
+            bRGBE = true;
+            bLegalCommand = true;
         }
         else if (strcmp(token, "-fadealpha") == 0)
         {
             bFadeAlpha = true;
+            bLegalCommand = true;
         }
 
         else if (strcmp(token, "-fadetoalpha") == 0)
         {
+            if (i + 1 >= argc)
+            {
+                printf("incorrect number of arguments\n");
+                return ERROR_BAD_OPTION;
+
+            }
             FadeToAlpha = atoi(argv[i+1]);
+            bLegalCommand = true;
             i++;
         }
 
         else if (strcmp(token, "-fadecolor") == 0)
         {
             bFadeColor = true;
+            bLegalCommand = true;
         }
         else if (strcmp(token, "-fadetocolor") == 0)
         {
+            if (i + 1 >= argc)
+            {
+                error("incorrect number of arguments\n");
+                return ERROR_BAD_OPTION;
+
+            }
             FadeToColor.u = strtoul(argv[i+1], 0, 16);
+            bLegalCommand = true;
             i++;
         }
+
         else if (strcmp(token, "-nomipmap") == 0)
         {
-            bGenMipMaps = false;
+            MipMapType = dNoMipMaps;
+            bLegalCommand = true;
+            //bGenMipMaps = false;
         }
         else if (strcmp(token, "-dxt1a") == 0)
         {
-            TextureFormat =  dDXT1a;
+            TextureFormat =  kDXT1a;
+            bLegalCommand = true;
         }
         else if ((strcmp(token, "-dxt1c") == 0) || (strcmp(token, "-dxt1") == 0))
         {
-            TextureFormat =  dDXT1;
+            TextureFormat =  kDXT1;
+            bLegalCommand = true;
         }
         else if (strcmp(token, "-dxt3") == 0)
         {
-            TextureFormat =  dDXT3;
+            bLegalCommand = true;
+            TextureFormat =  kDXT3;
         }
         else if (strcmp(token, "-dxt5") == 0)
         {
-            TextureFormat =  dDXT5;
+            bLegalCommand = true;
+            TextureFormat =  kDXT5;
         }
         else if (strcmp(token, "-cubemap") == 0)
         {
+            if (i + 1 >= argc)
+            {
+                error("incorrect number of arguments\n");
+                return ERROR_BAD_OPTION;
+
+            }
             bCubeMap = true;
-            cubemap_name = argv[i+1];
+            cubeMapName = argv[i+1];
+            bLegalCommand = true;
+            i++;
+        }
+        else if (strcmp(token, "-volume") == 0)
+        {
+            if (i + 1 >= argc)
+            {
+                printf("incorrect number of arguments\n");
+                return ERROR_BAD_OPTION;
+
+            }
+            bVolumeTexture = true;
+            volumeTextureName = argv[i+1];
+            bLegalCommand = true;
             i++;
         }
         else if (strcmp(token, "-swap") == 0)
         {
             bSwapRGB = true;
+            bLegalCommand = true;
+        }
+        else if (strcmp(token, "-signed") == 0)
+        {
+            bSigned = true;
+            bLegalCommand = true;
+        }
+        else if (strcmp(token, "-quick") == 0)
+        {
+            bQuickCompress = true;
+            bLegalCommand = true;
+        }
+        else if (strcmp(token, "-profile") == 0)
+        {
+            HRESULT hr = SetProfileName(argv[i+1]);
+            if (hr != 0)
+            {
+                error("Can't open profile %s\n",argv[i+1]);
+                return (ERROR_CANT_OPEN_PROFILE);
+            }
+
+            bLegalCommand = true;
+            i++;
+
         }
         else if (strcmp(token, "-all") == 0)
         {
             all_files = true;
+            bLegalCommand = true;
         }
 
-        
+
         else if (strcmp(token, "-dither") == 0)
         {
             bDitherColor = true;
+            bLegalCommand = true;
         }
+
+        else if (strcmp(token, "-sharpenMethod") == 0)
+        {
+
+            if (i + 1 >= argc)
+            {
+                error("incorrect number of arguments\n");
+                return ERROR_BAD_OPTION;
+                
+            }
+            char * sharpenFilterName = argv[i+1];
+
+            if (strcmp(sharpenFilterName, "None") == 0)
+                SharpenFilterType = kSharpenFilterNone;
+            else if (strcmp(sharpenFilterName, "Negative") == 0)
+                SharpenFilterType = kSharpenFilterNegative;
+            else if (strcmp(sharpenFilterName, "Lighter") == 0)
+                SharpenFilterType = kSharpenFilterLighter;
+            else if (strcmp(sharpenFilterName, "Darker") == 0)
+                SharpenFilterType = kSharpenFilterDarker;
+            else if (strcmp(sharpenFilterName, "ContrastMore") == 0)
+                SharpenFilterType = kSharpenFilterContrastMore;
+            else if (strcmp(sharpenFilterName, "ContrastLess") == 0)
+                SharpenFilterType = kSharpenFilterContrastLess;
+            else if (strcmp(sharpenFilterName, "Smoothen") == 0)
+                SharpenFilterType = kSharpenFilterSmoothen;
+            else if (strcmp(sharpenFilterName, "SharpenSoft") == 0)
+                SharpenFilterType = kSharpenFilterSharpenSoft;
+            else if (strcmp(sharpenFilterName, "SharpenMedium") == 0)
+                SharpenFilterType = kSharpenFilterSharpenMedium;
+            else if (strcmp(sharpenFilterName, "SharpenStrong") == 0)
+                SharpenFilterType = kSharpenFilterSharpenStrong;
+            else if (strcmp(sharpenFilterName, "FindEdges") == 0)
+                SharpenFilterType = kSharpenFilterFindEdges;
+            else if (strcmp(sharpenFilterName, "Contour") == 0)
+                SharpenFilterType = kSharpenFilterContour;
+            else if (strcmp(sharpenFilterName, "EdgeDetect") == 0)
+                SharpenFilterType = kSharpenFilterEdgeDetect;
+            else if (strcmp(sharpenFilterName, "EdgeDetectSoft") == 0)
+                SharpenFilterType = kSharpenFilterEdgeDetectSoft;
+            else if (strcmp(sharpenFilterName, "Emboss") == 0)
+                SharpenFilterType = kSharpenFilterEmboss;
+            else if (strcmp(sharpenFilterName, "MeanRemoval") == 0)
+                SharpenFilterType = kSharpenFilterMeanRemoval;
+            else if (strcmp(sharpenFilterName, "UnSharp") == 0)
+            {
+                SharpenFilterType = kSharpenFilterUnSharp;
+                //
+                if (i + 3 >= argc)
+                {
+                    error("incorrect number of arguments for kSharpenFilterUnSharp\n");
+                return ERROR_BAD_OPTION;
+
+                }
+                unsharp_data.radius = atof(argv[i+1]);
+                unsharp_data.amount = atof(argv[i+2]);
+                unsharp_data.threshold = atoi(argv[i+3]);
+
+
+
+
+                i += 3;
+
+
+            }
+
+
+
+
+            else if (strcmp(sharpenFilterName, "XSharpen") == 0)
+            {
+                SharpenFilterType = kSharpenFilterXSharpen;
+                if (i + 2 >= argc)
+                {
+                    error("incorrect number of arguments for kSharpenFilterXSharpen\n");
+                return ERROR_BAD_OPTION;
+
+                
+                }
+
+                 xsharp_data.strength = atof(argv[i+1]);
+                 xsharp_data.threshold = atof(argv[i+2]);
+
+                //xsharpen_init(xsharpen_strength, xsharpen_threshold);
+
+            }
+            //else if (strcmp(sharpenFilterName, "FilterWarpSharp") == 0)
+            //     SharpenFilterType = kFilterWarpSharp;
+            else if (strcmp(sharpenFilterName, "Custom") == 0)
+            {
+                SharpenFilterType = kSharpenFilterCustom;
+            }
+            else
+            {
+                error("Unrecognized sharpen filter %s\n", sharpenFilterName);
+                return ERROR_BAD_OPTION;
+            }
+
+            bLegalCommand = true;
+            i++;
+        }
+
+        /*else if (strcmp(token, "-lambda") == 0)
+        {
+        if (i + 1 >= argc)
+        {
+        printf("incorrect number of arguments\n");
+        exit(1);
+        }
+        sharpenLambda = atof(argv[i+1]);
+        i++;
+        }
+        else if (strcmp(token, "-sscale") == 0)
+        {
+        if (i + 1 >= argc)
+        {
+        printf("incorrect number of arguments\n");
+        exit(1);
+        }
+        sharpenScale = atof(argv[i+1]);
+        i++;
+        }
+        else if (strcmp(token, "-mu") == 0)
+        {
+        if (i + 1 >= argc)
+        {
+        printf("incorrect number of arguments\n");
+        exit(1);
+        }
+        sharpenMu = atof(argv[i+1]);
+        i++;
+        }
+        else if (strcmp(token, "-sb") == 0)
+        {
+        if (i + 1 >= argc)
+        {
+        printf("incorrect number of arguments\n");
+        exit(1);
+        }
+        sharpenBlur = atoi(argv[i+1]);
+        i++;
+        }
+        else if (strcmp(token, "-sf2") == 0)
+        {
+        if (i + 1 >= argc)
+        {
+        printf("incorrect number of arguments\n");
+        exit(1);
+        }
+        sharpenFlavor2 = atof(argv[i+1]);
+        i++;
+        }       
+        else if (strcmp(token, "-theta") == 0)
+        {
+        if (i + 1 >= argc)
+        {
+        printf("incorrect number of arguments\n");
+        exit(1);
+        }
+        sharpenTheta = atof(argv[i+1]);
+        i++;
+        }        
+        else if (strcmp(token, "-edge_radius") == 0)
+        {
+        if (i + 1 >= argc)
+        {
+        printf("incorrect number of arguments\n");
+        exit(1);
+        }
+        edgeRadius = atoi(argv[i+1]);
+        i++;
+        }
+        else if (strcmp(token, "-tc") == 0)
+        {
+        bTwoComponents = true;
+        }
+        else if (strcmp(token, "-nms") == 0)
+        {
+        bNonMaximalSuppression = true;
+        } */
+
+
+
+
         else if (strcmp(token, "-outdir") == 0)
         {
+            if (i + 1 >= argc)
+            {
+                error("incorrect number of arguments\n");
+                return ERROR_BAD_OPTION;
+                
+
+            }
             output_dirname = argv[i+1];
             i++;
+            bLegalCommand = true;
 
             bUserSpecifiedOutputDir = true;
         }
         else if (strcmp(token, "-outsamedir") == 0)
         {
             bOutputSameDir = true;
+            bLegalCommand = true;
         }
         else if (strcmp(token, "-overwrite") == 0)
         {
+            bLegalCommand = true;
             bOverwrite = true;
         }
+        else if (strcmp(token, "-forcewrite") == 0)
+        {
+            bLegalCommand = true;
+            bForceWrite = true;
+        }
+        
         else if (strcmp(token, "-u4444") == 0)
         {
-            TextureFormat =  d4444;
+            bLegalCommand = true;
+            TextureFormat =  k4444;
         }
         else if (strcmp(token, "-u1555") == 0)
         {
-            TextureFormat =  d1555;
+            TextureFormat =  k1555;
+            bLegalCommand = true;
         }
         else if (strcmp(token, "-u565") == 0)
         {
-            TextureFormat =  d565;
+            bLegalCommand = true;
+            TextureFormat =  k565;
         }
         else if (strcmp(token, "-u8888") == 0)
         {
-            TextureFormat =  d8888;
+            bLegalCommand = true;
+            TextureFormat =  k8888;
+        }
+        else if (strcmp(token, "-fp32x4") == 0)
+        {
+            bLegalCommand = true;
+            TextureFormat =  kA32B32G32R32F;
+        }
+        else if (strcmp(token, "-fp32") == 0)
+        {
+            bLegalCommand = true;
+            TextureFormat =  kR32F;
+        }
+        else if (strcmp(token, "-fp16x4") == 0)
+        {
+            bLegalCommand = true;
+            TextureFormat =  kA16B16G16R16F;
         }
         else if (strcmp(token, "-u888") == 0)
         {
-            TextureFormat =  d888;
+            TextureFormat =  k888;
+            bLegalCommand = true;
         }
         else if (strcmp(token, "-u555") == 0)
         {
-            TextureFormat =  d555;
+            bLegalCommand = true;
+            TextureFormat =  k555;
         }
         else if (strcmp(token, "-p8") == 0)
         {
-            TextureFormat =  d8;
+            bLegalCommand = true;
+            TextureFormat =  k8;
+        }
+        else if (strcmp(token, "-p4") == 0)
+        {
+            bLegalCommand = true;
+            TextureFormat =  k4;
+        }
+        else if (strcmp(token, "-a8") == 0)
+        {
+            bLegalCommand = true;
+            TextureFormat =  kA8;
+        }
+        else if (strcmp(token, "-A8L8") == 0)
+        {
+            bLegalCommand = true;
+            TextureFormat =  kA8L8;
+        }
+        else if (strcmp(token, "-L8") == 0)
+        {
+            bLegalCommand = true;
+            TextureFormat =  kL8;
         }
         else if (strcmp(token, "-timestamp") == 0)
         {
+            bLegalCommand = true;
             timestamp = true;
         }
         else if (strcmp(token, "-list") == 0)
         {
+            if (i + 1 >= argc)
+            {
+                error("incorrect number of arguments\n");
+                return ERROR_BAD_OPTION;
+            }
             list = true;
-            
+
             listfile = argv[i+1];
             i++;
+            bLegalCommand = true;
         }
-        else if (strcmp(token, "-cubic") == 0)
+
+
+
+
+        else if (stricmp(token, "-Point") == 0)
         {
-            mipfilter = dMIPFilterCubic;
+            bLegalCommand = true;
+            MIPFilterType = kMIPFilterPoint;
         }
-        else if (strcmp(token, "-kaiser") == 0)
+        else if (stricmp(token, "-Box") == 0)
         {
-            mipfilter = dMIPFilterKaiser;
+            bLegalCommand = true;
+            MIPFilterType = kMIPFilterBox;
         }
-        else if (strcmp(token, "-gamma") == 0)
+        else if (stricmp(token, "-Triangle") == 0)
         {
-            mipfilter = dMIPFilterLinearLightKaiser;
+            bLegalCommand = true;
+            MIPFilterType = kMIPFilterTriangle;
         }
-        else if (strcmp(token, "-full") == 0)
+        else if (stricmp(token, "-Quadratic") == 0)
         {
-            mipfilter = dMIPFilterFullDFT;
-            
+            bLegalCommand = true;
+            MIPFilterType = kMIPFilterQuadratic;
+
+        }
+        else if (stricmp(token, "-Cubic") == 0)
+        {
+            bLegalCommand = true;
+            MIPFilterType = kMIPFilterCubic;
+
+        }
+        else if (stricmp(token, "-Catrom") == 0)
+        {
+            bLegalCommand = true;
+            MIPFilterType = kMIPFilterCatrom;
+
+        }
+        else if (stricmp(token, "-Mitchell") == 0)
+        {
+            bLegalCommand = true;
+            MIPFilterType = kMIPFilterMitchell;
+
+        }
+        else if (stricmp(token, "-Gaussian") == 0)
+        {
+            bLegalCommand = true;
+            MIPFilterType = kMIPFilterGaussian;
+
+        }
+        else if (stricmp(token, "-Sinc") == 0)
+        {
+            bLegalCommand = true;
+            MIPFilterType = kMIPFilterSinc;
+
+        }
+        else if (stricmp(token, "-Bessel") == 0)
+        {
+            bLegalCommand = true;
+            MIPFilterType = kMIPFilterBessel;
+
+        }
+        else if (stricmp(token, "-Hanning") == 0)
+        {
+            bLegalCommand = true;
+            MIPFilterType = kMIPFilterHanning;
+
+        }
+        else if (stricmp(token, "-Hamming") == 0)
+        {
+            bLegalCommand = true;
+            MIPFilterType = kMIPFilterHamming;
+
+        }
+        else if (stricmp(token, "-Blackman") == 0)
+        {
+            bLegalCommand = true;
+            MIPFilterType = kMIPFilterBlackman;
+
+        }
+        else if (stricmp(token, "-Kaiser") == 0)
+        {
+            bLegalCommand = true;
+            MIPFilterType = kMIPFilterKaiser;
+
+        }
+        /////////////////  prescale
+        else if (stricmp(token, "-RescalePoint") == 0)
+        {
+            bLegalCommand = true;
+            rescaleImageFilter = kMIPFilterPoint;
+        }
+        else if (stricmp(token, "-RescaleBox") == 0)
+        {
+            bLegalCommand = true;
+            rescaleImageFilter = kMIPFilterBox;
+        }
+        else if (stricmp(token, "-RescaleTriangle") == 0)
+        {
+            bLegalCommand = true;
+            rescaleImageFilter = kMIPFilterTriangle;
+        }
+        else if (stricmp(token, "-RescaleQuadratic") == 0)
+        {
+            bLegalCommand = true;
+            rescaleImageFilter = kMIPFilterQuadratic;
+
+        }
+        else if (stricmp(token, "-RescaleCubic") == 0)
+        {
+            bLegalCommand = true;
+            rescaleImageFilter = kMIPFilterCubic;
+
+        }
+        else if (stricmp(token, "-RescaleCatrom") == 0)
+        {
+            bLegalCommand = true;
+            rescaleImageFilter = kMIPFilterCatrom;
+
+        }
+        else if (stricmp(token, "-RescaleMitchell") == 0)
+        {
+            bLegalCommand = true;
+            rescaleImageFilter = kMIPFilterMitchell;
+
+        }
+        else if (stricmp(token, "-RescaleGaussian") == 0)
+        {
+            bLegalCommand = true;
+            rescaleImageFilter = kMIPFilterGaussian;
+
+        }
+        else if (stricmp(token, "-RescaleSinc") == 0)
+        {
+            bLegalCommand = true;
+            rescaleImageFilter = kMIPFilterSinc;
+
+        }
+        else if (stricmp(token, "-RescaleBessel") == 0)
+        {
+            bLegalCommand = true;
+            rescaleImageFilter = kMIPFilterBessel;
+
+        }
+        else if (stricmp(token, "-RescaleHanning") == 0)
+        {
+            bLegalCommand = true;
+            rescaleImageFilter = kMIPFilterHanning;
+
+        }
+        else if (stricmp(token, "-RescaleHamming") == 0)
+        {
+            bLegalCommand = true;
+            rescaleImageFilter = kMIPFilterHamming;
+
+        }
+        else if (stricmp(token, "-RescaleBlackman") == 0)
+        {
+            bLegalCommand = true;
+            rescaleImageFilter = kMIPFilterBlackman;
+
+        }
+        else if (stricmp(token, "-RescaleKaiser") == 0)
+        {
+            bLegalCommand = true;
+            rescaleImageFilter = kMIPFilterKaiser;
+
         }
         else if (strcmp(token, "-n4") == 0)
         {
-            kerneltype = PSH_KERNEL_4x;
-            bNormalMap = true;
-            bDuDvMap = false;
-            bConversion = true;
+            bLegalCommand = true;
+            normalMap.filterKernel = dFilter4x;
+            normalMap.bEnableNormalMapConversion = true;
         }
         else if (strcmp(token, "-n3x3") == 0)
         {
-            kerneltype = PSH_KERNEL_3x3;
-            bConversion = true;
-            bNormalMap = true;
-            bDuDvMap = false;
+            bLegalCommand = true;
+            normalMap.filterKernel  = dFilter3x3;
+            normalMap.bEnableNormalMapConversion = true;
         }
         else if (strcmp(token, "-n5x5") == 0)
         {
-            kerneltype = PSH_KERNEL_5x5;                               
-            bConversion = true;
-            bNormalMap = true;
-            bDuDvMap = false;
+            bLegalCommand = true;
+            normalMap.filterKernel  = dFilter5x5;                               
+            normalMap.bEnableNormalMapConversion = true;
         }
         else if (strcmp(token, "-n7x7") == 0)
         {
-            kerneltype = PSH_KERNEL_7x7;                               
-            bConversion = true;
-            bNormalMap = true;
-            bDuDvMap = false;
+            bLegalCommand = true;
+            normalMap.filterKernel  = dFilter7x7;                               
+            normalMap.bEnableNormalMapConversion = true;
         }
         else if (strcmp(token, "-n9x9") == 0)
         {
-            kerneltype = PSH_KERNEL_9x9;                               
-            bConversion = true;
-            bNormalMap = true;
-            bDuDvMap = false;
+            bLegalCommand = true;
+            normalMap.filterKernel  = dFilter9x9;                               
+            normalMap.bEnableNormalMapConversion = true;
         }
         else if (strcmp(token, "-dudv") == 0)
         {
-            kerneltype = PSH_KERNEL_DuDv;
-            bConversion = true;
-            bDuDvMap = true;
-            bNormalMap = false;
+            bLegalCommand = true;
+
+            normalMap.filterKernel  = dFilterDuDv;
+            normalMap.bEnableNormalMapConversion = true;
+        }
+        else if (strcmp(token, "-unsigned") == 0)
+        {
+            bLegalCommand = true;
+            normalMap.bSignedOutput = false;
+        }
+         
+        else if (strcmp(token, "-v8u8") == 0)
+        {
+            bLegalCommand = true;
+            TextureFormat =  kV8U8;
+        }
+        else if (strcmp(token, "-cxv8u8") == 0)
+        {
+            bLegalCommand = true;
+            TextureFormat =  kCxV8U8;
         }
         else if (strcmp(token, "-depth") == 0)
         {
             //depthtype = 1;
+            bLegalCommand = true;
             bDepthConversion = true;
+        }
+        else if (strcmp(token, "-to_height") == 0)
+        {
+            bLegalCommand = true;
+            bToHeightMapConversion = true;
+            toHeightScale = atof(argv[i+1]);
+            toHeightBias = atof(argv[i+2]);
+            i +=2;
+
         }
         else if (strcmp(token, "-alpha") == 0)
         {
-            colorcnv = kDALPHA;
+            bLegalCommand = true;
+            normalMap.heightConversionMethod = dALPHA;
         }
         else if (strcmp(token, "-rgb") == 0)
         {
-            colorcnv = kDAVERAGE_RGB;
+            bLegalCommand = true;
+            normalMap.heightConversionMethod = dAVERAGE_RGB;
         }
         else if (strcmp(token, "-biased") == 0)
         {
+            bLegalCommand = true;
 
-            colorcnv = kDBIASED_RGB;
+            normalMap.heightConversionMethod = dBIASED_RGB;
         }
         else if (strcmp(token, "-red") == 0)
         {
-            colorcnv = kDRED;
+            bLegalCommand = true;
+            normalMap.heightConversionMethod = dRED;
         }
         else if (strcmp(token, "-green") == 0)
         {
-            colorcnv = kDGREEN;
+            bLegalCommand = true;
+            normalMap.heightConversionMethod = dGREEN;
         }
         else if (strcmp(token, "-blue") == 0)
         {
-            colorcnv = kDBLUE;
+            bLegalCommand = true;
+            normalMap.heightConversionMethod = dBLUE;
         }
         else if (strcmp(token, "-max") == 0)
         {
-            colorcnv = kDMAX;
+            bLegalCommand = true;
+            normalMap.heightConversionMethod = dMAX;
         }
         else if (strcmp(token, "-colorspace") == 0)
         {
-            colorcnv = kDCOLORSPACE;
+            bLegalCommand = true;
+            normalMap.heightConversionMethod = dCOLORSPACE;
         }
         else if (strcmp(token, "-norm") == 0)
         {
-            colorcnv = kDNORMALIZE;
-        }
+            bLegalCommand = true;
+            normalMap.heightConversionMethod = dNORMALIZE;
 
+        }
+        else if (strcmp(token, "-diffusion") == 0)
+        {
+            bLegalCommand = true;
+            bErrorDiffusion = true;
+
+        }
+        else if (strcmp(token, "-alphamod") == 0)
+        {
+            bLegalCommand = true;
+            bAlphaModulate = true;
+
+        }        
         else if (strcmp(token, "-aheight") == 0)
         {
-            alphaResult = kDAlphaHeight;
+            bLegalCommand = true;
+            normalMap.alphaResult = dAlphaHeight;
         }
         else if (strcmp(token, "-aclear") == 0)
         {
-            alphaResult = kDAlphaClear;
+            bLegalCommand = true;
+            normalMap.alphaResult = dAlphaClear;
         }
-        else if (strcmp(token, "-awhite") == 0)
+        if (strcmp(token, "-awhite") == 0)
         {
-            alphaResult = kDAlphaWhite;
+            bLegalCommand = true;
+            normalMap.alphaResult = dAlphaWhite;
         }
-            
+
         else if (strcmp(token, "-file") == 0)
         {
+            if (i + 1 >= argc)
+            {
+                error("incorrect number of arguments\n");
+                return ERROR_BAD_OPTION;
+            }
             specified_file = argv[i+1];
 
             if ( (specified_file.find("\\")  != -1) ||   (specified_file.find("/")  != -1) )
                 bFullPathSpecified = true;
+            bLegalCommand = true;
 
             i++;
         }
+        else if (strcmp(token, "-output") == 0)
+        {
+            if (i + 1 >= argc)
+            {
+                error("incorrect number of arguments\n");
+                return ERROR_BAD_OPTION;
+                
+            }
+            output_specified_file = argv[i+1];
+
+            bOutputFileSpecified = true;
+            bLegalCommand = true;
+
+            i++;
+        }
+        else if (strcmp(token, "-append") == 0)
+        {
+            if (i + 1 >= argc)
+            {
+                error("incorrect number of arguments\n");
+                return ERROR_BAD_OPTION;
+                
+            }
+            output_append = argv[i+1];
+
+            bOutputFileAppend = true;
+            bLegalCommand = true;
+
+            i++;
+        }
+
         else if (strcmp(token, "-24") == 0)
         {
+            if (i + 1 >= argc)
+            {
+                error("incorrect number of arguments\n");
+                return ERROR_BAD_OPTION;
+                
+            }
             char * mode = argv[i+1];
             i++;
-            
+            bLegalCommand = true;
+
+
+            bUseMode24 = true;
             if (strcmp(mode, "dxt1c") == 0)
             {
-                Mode24 = dDXT1;
+                Mode24 = kDXT1;
             }
             else if (strcmp(mode, "dxt1") == 0)
             {
-                Mode24 = dDXT1;
+                Mode24 = kDXT1;
             }
             else if (strcmp(mode, "dxt1a") == 0)
             {
-                Mode24 = dDXT1a;
+                Mode24 = kDXT1a;
             }
             else if (strcmp(mode, "dxt3") == 0)
             {
-                Mode24 = dDXT3;
+                Mode24 = kDXT3;
             }
-            
+
             else if (strcmp(mode, "dxt5") == 0)
             {
-                Mode24 = dDXT5;
+                Mode24 = kDXT5;
             }
-            
+
             else if (strcmp(mode, "u1555") == 0)
             {
-                Mode24 = d1555;
+                Mode24 = k1555;
             }
-            
+
             else if (strcmp(mode, "u4444") == 0)
             {
-                Mode24 = d4444;
+                Mode24 = k4444;
             }
-            
+
             else if (strcmp(mode, "u565") == 0)
             {
-                Mode24 = d565;
+                Mode24 = k565;
             }
-            
+
             else if (strcmp(mode, "u8888") == 0)
             {
-                Mode24 = d8888;
+                Mode24 = k8888;
             }
             else if (strcmp(mode, "u888") == 0)
             {
-                Mode24 = d888;
+                Mode24 = k888;
             }
             else if (strcmp(mode, "u555") == 0)
             {
-                Mode24 = d555;
+                Mode24 = k555;
             }
             else
             {
                 printf("Unknown format %s, using DXT1\n", mode);
-                Mode24 = dDXT1;
+                Mode24 = kDXT1;
+                bLegalCommand = false;
             }
+
 
         }
         else if (strcmp(token, "-32") == 0)
         {
+            if (i + 1 >= argc)
+            {
+                error("incorrect number of arguments\n");
+                return ERROR_BAD_OPTION;
+                
+            }
+            bLegalCommand = true;
+
+
             char * mode = argv[i+1];
             i++;
-            
+
+            bUseMode32 = true;
+
             if (strcmp(mode, "dxt1c") == 0)
             {
-                Mode32 = dDXT1;
+                Mode32 = kDXT1;
             }
             if (strcmp(mode, "dxt1") == 0)
             {
-                Mode32 = dDXT1;
+                Mode32 = kDXT1;
             }
             else if (strcmp(mode, "dxt1a") == 0)
             {
-                Mode32 = dDXT1a;
+                Mode32 = kDXT1a;
             }
             else if (strcmp(mode, "dxt3") == 0)
             {
-                Mode32 = dDXT3;
+                Mode32 = kDXT3;
             }
-            
+
             else if (strcmp(mode, "dxt5") == 0)
             {
-                Mode32 = dDXT5;
+                Mode32 = kDXT5;
             }
-            
+
             else if (strcmp(mode, "u1555") == 0)
             {
-                Mode32 = d1555;
+                Mode32 = k1555;
             }
-            
+
             else if (strcmp(mode, "u4444") == 0)
             {
-                Mode32 = d4444;
+                Mode32 = k4444;
             }
-            
+
             else if (strcmp(mode, "u565") == 0)
             {
-                Mode32 = d565;
+                Mode32 = k565;
             }
-            
+
             else if (strcmp(mode, "u8888") == 0)
             {
-                Mode32 = d8888;
+                Mode32 = k8888;
             }
             else if (strcmp(mode, "u888") == 0)
             {
-                Mode32 = d888;
+                Mode32 = k888;
             }
             else if (strcmp(mode, "u555") == 0)
             {
-                Mode32 = d555;
+                Mode32 = k555;
             }
             else
             {
                 printf("Unknown format %s, using DXT1\n", mode);
-                Mode32 = dDXT1;
+                Mode32 = kDXT1;
+                bLegalCommand = false;
             }
 
         }
         else if (strcmp(token, "-scale") == 0)
         {
-            scale = atof(argv[i+1]);
-            i++;
+            if (i + 1 >= argc)
+            {
+                error("incorrect number of arguments\n");
+                return ERROR_BAD_OPTION;
                 
+            }
+
+            normalMap.scale = atof(argv[i+1]);
+            bLegalCommand = true;
+
+            i++;
+
         }
+        else if (strcmp(token, "-prescale") == 0)
+        {
+            if (i + 2 >= argc)
+            {
+                error("incorrect number of arguments\n");
+                return ERROR_BAD_OPTION;
+                
+            }
+            rescaleImageType = RESCALE_PRESCALE;
+            scaleX = atof(argv[i+1]);
+            scaleY = atof(argv[i+2]);
+            bLegalCommand = true;
+            i+=2;
+
+        }
+
         else if (strcmp(token, "-wrap") == 0)
         {
-            wrap = true;
-                
+            normalMap.bWrap = true;
+            bLegalCommand = true;
+
         }
         else if (strcmp(token, "-minz") == 0)
         {
-            minz = atoi(argv[i+1]);
+            if (i + 1 >= argc)
+            {
+                error("incorrect number of arguments\n");
+                return ERROR_BAD_OPTION;
+
+            }
+            normalMap.minz = atoi(argv[i+1]);
+            bLegalCommand = true;
             i++;
-                
+
         }
-        else if (token[0] == '-')
+        else if (strcmp(token, "-gamma") == 0)
+        {
+            if (i + 1 >= argc)
+            {
+                error("incorrect number of arguments\n");
+                return ERROR_BAD_OPTION;
+
+            }
+            FilterGamma = atof(argv[i+1]);
+            bEnableFilterGamma = true;
+            bLegalCommand = true;
+
+            i++;
+        }
+        
+        
+        if (bLegalCommand == false)
         {
             fprintf(stdout, "Unknown option '%s'\n", token);
-            return -1;
-            
+            return ERROR_BAD_ARG;
+
         }
-        else
+        /*else
         {
             //  must be a file name
             specified_file = argv[i];
             if ( (specified_file.find("\\")  != -1) ||   (specified_file.find("/")  != -1) )
                 bFullPathSpecified = true;
-        }
+        } */
         i++;
     }
     return 0;
 } 
-   
+
 
 
 // input_directory 
-void ProcessDirectory()
+HRESULT  nvDXT::ProcessDirectory()
 {
 
+    HRESULT hr; 
     if (all_files)
     {
-        compress_all();
+        hr = compress_all();
     }
     else if (specified_file.find("*") != -1)
     {
-        compress_some(const_cast<char *>(specified_file.c_str()));
+        hr = compress_some(const_cast<char *>(specified_file.c_str()));
     }
 
     else if (specified_file.size() > 0)
     {
-        //inputfile = argv[optind];
-        compress_image_file(const_cast<char *>(specified_file.c_str()), TextureFormat);
+        //inputfile = argv[optind];]
+
+
+        hr = compress_image_file(const_cast<char *>(specified_file.c_str()), TextureFormat);
     }
     else
         fprintf(stdout, "nothing to do\n");
 
-}
- 
-int main(int argc, char * argv[])
-{
-    
-    specified_file = "";
-    BorderColor.u = 0;
-    FadeToColor.u = 0;
-    if (argc == 1)
-    {
-        usage();
-        return 0;
-    }
-    
-    output_dirname = ".";
-
-    char cwd[1000];
-    char * startdir;
-    startdir = _getcwd(cwd, 1000);
-    input_dirname = startdir;
-
-    mipfilter = dMIPFilterBox;    
-
-    HRESULT hr = process_command_line(argc, argv);
-    if (hr < 0)
-    {
-        return 0;
-    }
-
-    
-
-
-     
-    if (bUserSpecifiedOutputDir == true)
-    {
-        
-        char cwd[1000];
-        char * t;
-        t = _getcwd(cwd, 1000);
-
-
-        int md = _chdir(output_dirname.c_str());
-        
-        _chdir(cwd);
-
-        if (md != 0)
-        {
-            md = _mkdir(output_dirname.c_str());
-            
-            if (md == 0)
-            {
-                fprintf(stdout, "directory %s created\n", output_dirname.c_str());
-                fflush(stdout);
-            }
-            else if (errno != EEXIST)
-            {
-                fprintf(stdout, "problem with output directory %s\n", output_dirname.c_str());
-                return 0;
-            } 
-            else
-            {
-                fprintf(stdout, "output directory %s\n", output_dirname.c_str());
-                fflush(stdout);
-            }
-        }
-    }
-
-
-    if (list)
-    {
-        if (bCubeMap)
-            compress_cubemap_from_list();
-        else
-            compress_list();
-    }
-    else if (bDeep)
-    {
-        compress_recursive(recursive_dirname.c_str());
-        //compress_recursive("c:\\");
-    }
-    else
-        ProcessDirectory();
-
-    
-    return 0;
-}
-
-
-
-char * extensions[] =
-{
-    ".tga",
-    ".bmp",
-    ".gif",
-    ".ppm",
-    ".jpg",
-    ".jpeg",
-    ".tif",
-    ".tiff",
-    ".cel",
-    ".dds",
-    0,
-};
-
-
-
-std::string get_input_filename(char *inputfile)
-{
-    std::string temp;
-    //temp = strlwr(inputfile);
-    temp = inputfile;
-
-    //if (strip)
-    {
-        int pos;
-        pos = temp.find_last_of("\\");
-
-        if (pos == -1)
-            pos = temp.find_last_of("/");
-
-        std::string temp2;
-        if (pos != -1)
-        {
-            temp2 = temp.substr(pos+1);
-            temp = temp2;
-        }
-
-
-    }
-    return temp;
-
-}
-
-std::string get_input_dir(char *inputfile)
-{
-    std::string temp;
-    temp = strlwr(inputfile);
-
-    //if (strip)
-    {
-        int pos;
-        pos = temp.find_last_of("\\");
-
-        if (pos == -1)
-            pos = temp.find_last_of("/");
-
-        std::string temp2;
-        if (pos != -1)
-        {
-            temp2 = temp.substr(0, pos);
-            temp = temp2;
-        }
-
-
-    }
-    return temp;
+    return hr;
 
 }
 
 
-
-void FlipTopToBottom(UINT bpp, UINT width, UINT height, BYTE * pArray)
-{
-
-	BYTE * swap = new BYTE[ width * bpp ];
-
-	DWORD row;
-	BYTE * end_row;
-	BYTE * start_row;
-
-	for( row = 0; row < height / 2; row ++ )
-	{
-		end_row =   & (pArray[ bpp*width*( height - row - 1) ]);
-		start_row = & (pArray[ bpp * width * row ]);
-
-		// copy row toward end of image into temporary swap buffer
-		memcpy( swap, end_row, bpp * width );
-
-		// copy row at beginning to row at end
-		memcpy( end_row, start_row, bpp * width );
-
-		// copy old bytes from row at end (in swap) to row at beginning
-		memcpy( start_row, swap, bpp * width );
-	}
-
-	SAFE_ARRAY_DELETE( swap );
-}
-
-
-
-
-// return planes from original image, planes is 4
-HRESULT read_image(const char * inputfile, bool isdds,
-                           int &width, int &height, int & pitch, int & image_planes,
-                           DWORD * & out_data)
-{
-    NVI_TGA_File		tga;
-    NVI_GraphicsFile	bmp;
-    int image_pitch;
-
-    unsigned char * image;
-    //int image_planes;
-
-    if (isdds)
-    {                                         
-        filein = _open( inputfile, _O_RDONLY | _O_BINARY ,  _S_IREAD );
-        
-        if (filein == -1)
-        {
-            fprintf(stdout, "Can't open intput file '%s' [#2]\n", inputfile);
-            return -1;
-        }
-        
-        int lTotalWidth; 
-        int rowBytes;
-        
-        int src_format;
-        image = nvDXTdecompress(width, height, image_planes, lTotalWidth, rowBytes, src_format);
-        
-        if (image == 0)
-        {
-            fprintf(stdout, "Can't open input file '%s'[#3]\n", inputfile);
-            return -1;
-        }
-
-        image_pitch = lTotalWidth * image_planes;
-
-        out_data = new DWORD[height * width];
-
-        DWORD * out_line = out_data;
-        unsigned char *image_line = image;
-
-        if (image_planes == 4)
-        {
-            for(int y = 0; y<height; y++)
-            {
-                memcpy(out_line, image_line,  width * 4);
-
-                out_line += width;
-                image_line += image_pitch;
-            }
-        }
-        else
-        {          
-
-            unsigned char * image_pix;
-            unsigned char * out_ptr = (unsigned char*)out_data;
-            unsigned char * image_line = image;
-
-            for(int y=0; y < height; y++)
-            {
-                image_pix = image_line;
-                for(int x=0; x < width; x++)
-                {
-                    *out_ptr++ = *image_pix++;
-                    *out_ptr++ = *image_pix++;
-                    *out_ptr++ = *image_pix++;
-                    *out_ptr++ = 0xFF;
-
-                }
-                image_line += image_pitch;
-            }
-            
-        }
-
-        if (bFlipTopToBottom)
-        {
-            FlipTopToBottom(4, width, height, (BYTE *)out_data);
-        }
-
-
-            
-        pitch = width * 4;
-        
-    }
-    else
-    {
-        image = (unsigned char *)tga.ReadFile(const_cast<char *>(inputfile), UL_GFX_PAD);
-        
-
-        //raw_data = read_tga(inputfile, w, h); 
-
-        
-        if (image == 0)
-        {
-            image = (unsigned char *)bmp.ReadFile(const_cast<char *>(inputfile), UL_GFX_PAD);
-            
-            if (image == 0)
-            {
-                fprintf(stdout, "Can't open input file '%s'[GBM failed to read file]\n", inputfile);
-                return -1;
-            }
-            //image_planes = bmp.GetBytesPerPixel();
-            image_planes = tga.m_original_bytes_per_pixel;
-            
-            width = bmp.GetWidth();
-            height = bmp.GetHeight();
-
-            if (bFlipTopToBottom)
-                bmp.FlipTopToBottom();
-        }  
-        else
-        {
-            width = tga.GetWidth();
-            height = tga.GetHeight();
-            //image_planes = tga.GetBytesPerPixel();
-            image_planes = tga.m_original_bytes_per_pixel;
-
-            if (bFlipTopToBottom)
-                tga.FlipTopToBottom();
-
-        }
-
-
-        out_data = new DWORD[height * width];
-        memcpy(out_data, image, height * width * 4);
-
-        pitch = width * 4;
-        /*
-
-        unsigned char * dataline = raw_data;
-        int linewidth = width * planes;
-
-        for(int y = 0; y<height; y++)
-        {
-            memcpy(dataline, &image[y * pitch],  linewidth);
-            out_line += width;
-        } */
-
-    }
-    return 0;
-}
-        
-
-
-HRESULT compress_image_file(char * shortfilename, int localTextureFormat)
-{
-    int width, height; 
-    int pitch;
-
-    DWORD * raw_data;
-
-
-
-    std::string temp = get_input_filename(shortfilename);
-        
-
-    bool isdds = false;
-    if (find_string(temp, ".dds") != -1)
-        isdds = true; 
-    
-    // determine output file name
-
-    int i = 0;
-    int pos = -1;
-    while(extensions[i] != 0 && pos == -1)
-    {
-        pos = find_string(temp, extensions[i]);
-        i++;
-    }
-
-    if (pos == -1)
-    {
-        fprintf(stdout, "Can't open input file '%s'[#5]\n", shortfilename);
-        return 0;
-    }
-
-        
-    std::string fullpathname;
-
-
-    if (bFullPathSpecified)
-    {
-        fullpathname = shortfilename;
-    }
-    else
-    {
-        fullpathname = input_dirname;
-        fullpathname += "\\";
-        fullpathname += shortfilename;
-    }
-
-
-    std::string ddsname, finalname_out;
-
-    ddsname = temp.substr(0, pos);
-
-    if (isdds && bOverwrite == false)
-        ddsname.append("_");
-    
-
-    finalname_out = ddsname.append(".dds");
-
-
-    if (bOutputSameDir)
-    {
-        //output_dirname =  get_input_dir(inputfile);
-        output_dirname =  input_dirname;
-    }
-
-
-    finalname_out = output_dirname;
-    finalname_out.append("\\");
-    finalname_out += ddsname;
-
-
-    struct _finddata_t filedataSrc;
-    struct _finddata_t filedataDest;
-
-
-    if (timestamp)
-    {
-        // compare times 
-
-        long hFileSrc;
-        long hFileDest;
-
-
-
-        hFileSrc = _findfirst(fullpathname.c_str(), &filedataSrc );
-        hFileDest = _findfirst(finalname_out.c_str(), &filedataDest );
-
-
-        if (hFileDest != -1)
-        {
-            // if it exists and is newer then return
-            if (filedataSrc.time_write < filedataDest.time_write)
-            {
-                fprintf(stdout, "<%s> is up to date\n", finalname_out.c_str());
-                return 0;
-            }
-        }
-
-
-    }
-
-
-    fprintf(stdout, "    %s --> ",shortfilename);
-    fflush(stdout);
-
-
-    int image_planes;
-    HRESULT hr = read_image(fullpathname.c_str(), isdds,
-                           width, height, pitch, image_planes,
-                           raw_data);
-
-    if (hr != 0)
-        return hr;
-
-    bImageMode = false;
-
-    if( (IsPower2(width) == false) || (IsPower2(height) == false) )
-    {
-        // only a warning in uncompressed
-        fprintf(stdout, "Image is not a power of 2 (%d x %d) ", width, height);
-        if (bRescaleImage != RESCALE_NONE)
-            fprintf(stdout, "Rescaling ");
-
-        bImageMode = true;
-
-
-        switch(localTextureFormat)
-        {
-        case dDXT1:  
-        case dDXT1a:
-        case dDXT3:
-        case dDXT5:
-            if (bRescaleImage != RESCALE_NONE)
-                bImageMode = false; 
-            else
-            {
-                fprintf(stdout, "\n");
-                return -1;                  
-            }
-
-            break;
-
-        default:
-            if (bRescaleImage == RESCALE_NONE)
-                fprintf(stdout, "MIP maps are disabled for this image\n");
-            else
-                bImageMode = false;
-
-            break;
-
-        }
-    }
-
-    if (Mode24 && image_planes == 3)
-    {
-        localTextureFormat = Mode24;
-    }
-
-    if (Mode32 && image_planes == 4)
-    {
-        localTextureFormat = Mode32;
-    }
-
-
-
-
-    std::string temp_filename_out;
-
-    temp_filename_out = output_dirname;
-    temp_filename_out.append("\\");
-    temp_filename_out += "scratch.tmp";
-
-
-    fileout = _open( temp_filename_out.c_str(), _O_WRONLY | _O_BINARY | _O_CREAT | _O_TRUNC,  _S_IWRITE );
-
-    fprintf(stdout, "%s\n", finalname_out.c_str());
-
-    if (fileout== -1)
-    {
-        fprintf(stdout, "Can't open output file '%s'[#6]\n", finalname_out.c_str());
-        return 0;
-    }
-        
-
-    if (Mode24 && image_planes == 3)
-    {
-        localTextureFormat = Mode24;
-    }
-
-    if (Mode32 && image_planes == 4)
-    {
-        localTextureFormat = Mode32;
-    }
-
-              
-
-    CompressionOptions options;
-    memset(&options, 0, sizeof(options));
-
-    options.bMipMapsInImage = false;  // mip have been loaded in during read
-    options.MIPFilterType = mipfilter;
-
-    if (bImageMode == true || bGenMipMaps == false)
-        options.MipMapType = dNoMipMaps;      // dNoMipMaps, dUseExistingMipMaps, dGenerateMipMaps
-    else
-        options.MipMapType = dGenerateMipMaps;      // dNoMipMaps, dUseExistingMipMaps, dGenerateMipMaps
-
-
-    options.SpecifiedMipMaps = 0;
-    options.bBinaryAlpha = bBinaryAlpha;    // clamp alpha zero or one 
-
-    options.bNormalMap = bNormalMap;      // only renormalize MIP maps
-    options.bDuDvMap = bDuDvMap;      // only renormalize MIP maps
-
-    options.bAlphaBorder = bAlphaBorder;    // make an alpha border
-    options.bBorder = bBorder;         // make a color border
-    options.BorderColor = BorderColor;        // color of border
-
-
-    options.bFadeColor = bFadeColor;               // fade to color over MIP maps
-    options.bFadeAlpha = bFadeAlpha;               // fade to color over MIP maps
-    options.FadeToColor = FadeToColor;        // color to fade to
-    options.FadeAmount = FadeAmount;      // number of MIPs to fade over
-
-
-    options.bDitherColor = bDitherColor;        // enable dithering during 16 bit conversion
-
-	options.TextureType = dTextureType2D;    // regular decal, cube or volume  
-	//dTextureType2D 
-	//dTextureTypeCube 
-	//dTextureTypeImage 
-    options.bForceDXT1FourColors = bForce4;
-
-    options.TextureFormat = localTextureFormat;
-	//  dDXT1, dDXT1a, dDXT3, dDXT5, d4444, 
-	//  d1555, 	d565,	d8888, 	d888, 	d555, 
-
-
-    options.bAlphaBorder = bAlphaBorder;
-    options.bSwapRGB = bSwapRGB;
-    options.bRescaleImageToPower2 = bRescaleImage;
-
-
-    if (bConversion)
-        ConvertToNormalMap(kerneltype, colorcnv, alphaResult, scale, minz, wrap, width, height, raw_data);
-
-    if (bDepthConversion)
-        ConvertToDepthMap(kerneltype, colorcnv, alphaResult, scale, minz, wrap, width, height, raw_data);
-
-
-    nvDXTcompress((unsigned char *)raw_data, width, height, pitch, &options, 4, 0);
-
-
-
-    if (filein)
-        _close(filein);
-
-    _close(fileout);
-
-    delete [] raw_data;
-
-
-    // copy file to finalname_out
-    remove(finalname_out.c_str()); // if it exists
-
-    rename(temp_filename_out.c_str(), finalname_out.c_str());
-
-
-    return 0;
-}
-void WriteDTXnFile(DWORD count, void *buffer)
+void WriteDTXnFile(DWORD count, void *buffer, void * userData)
 {
     _write(fileout, buffer, count);
 
 }
 
 
-void ReadDTXnFile(DWORD count, void *buffer)
+void ReadDTXnFile(DWORD count, void *buffer, void * userData)
 {
-        
+
     _read(filein, buffer, count);
 
 }
 
 
+typedef Vec4f float4;
+
+
+
+
+#include <conio.h>
+
+
+
+int main(int argc, char * argv[])
+{
+    /*
+    float red, green, blue; 
+    float red2, green2, blue2; 
+    unsigned char rgbe[4];
+    unsigned char rgbe2[4];
+
+
+    rgbe[0] = 10;
+    rgbe[1] = 20;
+    rgbe[2] = 30;
+    rgbe[3] = 128;
+
+    rgbe2float(&red, &green, &blue, rgbe);   
+
+
+    //float2rgbe(rgbe2, red, green, blue);
+
+    float2rgbe(rgbe2, red, green, blue);
+
+
+    rgbe2float(&red2, &green2, &blue2, rgbe2);   
+
+
+    exit(0);*/
+
+
+    fprintf(stdout,"%s\n", GetDXTCVersion());
+
+
+
+
+    nvDXT dxt;
+
+    /*int cw = _controlfp( 0, 0 );
+
+    // Set the exception masks off, turn exceptions on
+
+    //cw &=~(EM_OVERFLOW | EM_UNDERFLOW | EM_INEXACT | EM_ZERODIVIDE | EM_DENORMAL);
+    //cw &=~(EM_OVERFLOW | EM_UNDERFLOW | EM_ZERODIVIDE | EM_DENORMAL);
+    cw &=~(EM_OVERFLOW | EM_ZERODIVIDE | EM_DENORMAL);
+
+    // Set the control word
+
+    _controlfp( cw, MCW_EM );*/
+
+#ifdef NVDXTDLL
+    SetReadDTXnFile(ReadDTXnFile);
+    SetWriteDTXnFile(WriteDTXnFile);
+#endif
+
+
+    dxt.specified_file = "";
+
+    if (argc == 1)
+    {
+        usage();
+        return ERROR_BAD_ARG;
+    }
+
+    dxt.output_dirname = ".";
+
+    char cwd[MAX_PATH_NAME];
+    char * startdir;
+    startdir = _getcwd(cwd, MAX_PATH_NAME);
+    dxt.input_dirname = startdir;
+
+    dxt.MIPFilterType = kMIPFilterMitchell;    
+
+
+    HRESULT hr = dxt.process_command_line(argc, argv);
+    if (hr < 0)
+    {
+
+        return ERROR_BAD_ARG;
+    }
+
+
+    if (dxt.bUserSpecifiedOutputDir == true)
+    {
+
+        char cwd[MAX_PATH_NAME];
+        char * t;
+        t = _getcwd(cwd, MAX_PATH_NAME);
+
+
+        int md = _chdir(dxt.output_dirname.c_str());
+
+        _chdir(cwd);
+
+        if (md != 0)
+        {
+            md = _mkdir(dxt.output_dirname.c_str());
+
+            if (md == 0)
+            {
+                fprintf(stdout, "directory %s created\n", dxt.output_dirname.c_str());
+                fflush(stdout);
+            }
+            else if (errno != EEXIST)
+            {
+                dxt.error("problem with output directory %s\n", dxt.output_dirname.c_str());
+                return ERROR_BAD_OUTPUT_DIRECTORY;
+            } 
+            else
+            {
+                fprintf(stdout, "output directory %s\n", dxt.output_dirname.c_str());
+                fflush(stdout);
+            }
+        }
+    }
+
+
+    hr = 0;
+
+
+
+    if (dxt.list)
+    {
+        if (dxt.bVolumeTexture)
+        {
+            dxt.compress_volume_from_list();
+        }
+        else if (dxt.bCubeMap)
+            hr = dxt.compress_cubemap_from_list();
+        else
+            hr = dxt.compress_list();
+    }
+    else if (dxt.bDeep)
+    {
+
+        dxt.compress_recursive(dxt.recursive_dirname.c_str(), hr);
+        //compress_recursive("c:\\");
+    }
+    else
+        hr = dxt.ProcessDirectory();
+
+
+
+    fflush(stdout);
+    fflush(stderr);
+    return hr;
+}
+
+
+
+
+
+
+
+
+
+
+
+#include "sharpen.h"    
+
+void unsharp_region
+(RGBAImage &srcPR,
+ RGBAImage &destPR,
+ int width,
+ int height,
+ int bytes,
+ double radius,
+ double amount,
+ int threshold,
+ int x1,int x2,int y1,int y2);
+
+
+
+
+
 
 /*void ReadDTXnFile (DWORD count, void *buffer)
 {
-    // stubbed, we are not reading files
+// stubbed, we are not reading files
 }*/
 
 
-/////////////////////////////
-       /*
 
-HRESULT MyMIPcallback(void * data, int miplevel, DWORD size)
+
+
+
+HRESULT nvDXT::ReadFileIntoList(const char * filename, StringArray & strArray)
 {
-	const DWORD CountBlock = size/8;
-	for (DWORD iBlock=0; iBlock<CountBlock; iBlock++)
-	{
-		unsigned short*	Colors = (unsigned short*)data;
-		if (Colors[0]>Colors[1])	
-            printf("C0=0x%04X C1=0x%04X|DXT1  ", Colors[0], Colors[1]);
-		else						
-            printf("C0=0x%04X C1=0x%04X|DXT1a ", Colors[0], Colors[1]);
 
-		// R5G6B5
-		printf("C0=(0x%02X, 0x%02X, 0x%02X)   C1=(0x%02x, 0x%02x, 0x%02x)\n",
-			((Colors[0]>>11) & 0x1F) << 3, ((Colors[0]>>5) & 0x3F) << 2, (Colors[0] & 0x1F) << 3 , 
-			((Colors[1]>>11) & 0x1F) << 3, ((Colors[1]>>5) & 0x3F) << 2, (Colors[1] & 0x1F) << 3);
-		((BYTE*&)data) += 8;
-	}
-	return 0;
-}
-
-int main(int argc, char* argv[])
-{
-	const DWORD			Width=2, Height=2;
-	BYTE				Data[Width*Height*3];
-	BYTE				Data4[4*4*3];
-	CompressionOptions	Options;
-	BYTE				Values[] = {0x00,0x10,0x14,0x15,0x20,0x30,0x40,0x80,0xc0};
-	const DWORD			cValue = sizeof(Values)/sizeof(Values[0]);
-	Options.MipMapsInImage	= false;
-	Options.MipMapType		= dNoMipMaps;
-	Options.BinaryAlpha		= false;
-	Options.NormalMap		= false;
-	Options.AlphaBorder		= false;
-	Options.Border			= false;
-	Options.Fade			= false;
-	Options.DitherColor	    = false;
-	Options.TextureType		= dTextureType2D;
-	Options.TextureFormat	= dDXT1;
-	for (DWORD iValue=0; iValue<cValue; iValue++)
-	{
-		printf("0x%02X => ", Values[iValue]);
-		memset(Data, Values[iValue], Width*Height*3);
-		nvDXTcompress(Data, Width, Height, Width*3, &Options, 3, &MyMIPcallback);
-
-
-		memcpy(Data4,		Data,		 2*3);	// texels 0,0 & 0,1
-		memset(Data4+2*3,	0,			 2*3);
-		memcpy(Data4+4*3,	Data+2*3,	 2*3);	// texels 1,0 & 1,1
-		memset(Data4+6*3,	0,			10*3);
-		printf("0x%02Xp=> ", Values[iValue]);
-		nvDXTcompress(Data4, 4, 4, 4*3, &Options, 3, &MyMIPcallback);
-	}
-	return 0;
-}       */
-
-
-
-std::string cube_names[6]; 
-
-void compress_cubemap_from_list()
-{
-    
     FILE *fp = fopen( listfile.c_str(), "r");
-    
+
     if (fp == 0)
     {
-        fprintf(stdout, "Can't open list file <%s>\n", listfile.c_str());
-        return;
+        fprintf(stdout, "Can't open list file '%s'\n", listfile.c_str());
+        return ERROR_CANT_OPEN_LIST_FILE;
     }
-    
-    char buff[1000];
 
-    int i = 0;
-    while(fgets(buff, 1000, fp))
+
+    bool inWhitespace = false;
+    int c;
+    std::string str;
+
+    str.clear();
+
+    while((c = fgetc(fp)) != EOF)
     {      
-        // has a crlf at the end
-        int t = strlen(buff);
-        buff[t - 1] = 0;
 
-        cube_names[i] = buff;
-        i++;
+        switch(c)
+        {
+        case 13:
+        case '\n':
+            if (!inWhitespace)
+            {
+                strArray.push_back(str);
+                str.clear();
+            }
+
+            inWhitespace = true;
+            break;
+
+
+        default:
+            inWhitespace = false;
+            str += c;
+
+        }
+
+
 
     }
+
+    if (!inWhitespace)
+        strArray.push_back(str);
 
     fclose(fp);
-
-    if (i != 6)
-    {
-        fprintf(stdout, "There are not six images in listfile '%s'\n", listfile.c_str());
-        return;
-    }
-
-    compress_cube(TextureFormat);
-
-
-
-}
-
-
-
-HRESULT compress_cube(int localTextureFormat)
-{
-    int width, height; 
-    int pitch;
-    //int planes = 4;
-
-    DWORD * raw_data[6];
-
-
-    char * inputfile = 0;
-    int w1, h1;
-
-    for(int i=0; i<6; i++)
-    {
-        
-        inputfile = const_cast<char *>(cube_names[i].c_str());
-        std::string temp = get_input_filename(inputfile);
-        
-        
-        bool isdds = false;
-        if (find_string(temp, ".dds") != -1)
-            isdds = true; 
-        
-        
-        
-        fprintf(stdout, "%s",inputfile);
-        if (i == 5)
-            fprintf(stdout, " -> ");
-        else
-            fprintf(stdout, ", ");
-
-        fflush(stdout);
-        
-        
-        int image_planes;
-        HRESULT hr = read_image(inputfile, isdds,
-            width, height, pitch, image_planes,
-            raw_data[i]);
-        
-        if (hr != 0)
-            return hr;
-
-        if (width != height)
-        {
-            fprintf(stdout, "Image is not square. Width %d, Height %d\n", width, height);
-            exit(1);
-            
-        }
-        if (i == 0)
-        {
-            h1 = height;
-            w1 = width;
-        }
-        else
-        {
-            if (width != w1 && height != h1)
-            {
-                fprintf(stdout, "Images are not the same size\n");
-                exit(1);
-            }
-        }
-      
-        
-        if ((IsPower2(width) == false) || (IsPower2(height) == false))
-        {
-            // only a warning in uncompressed
-            fprintf(stdout, "Image is not a power of 2 (%d x %d)\n", width, height);
-            exit(1);
-            
-        }
-    }
-        
-        
-      
-    int cube_pitch = width * 6;
-    DWORD *data = new DWORD[height * cube_pitch];
-    
-    for(i=0; i<6; i++)
-    {
-        DWORD *ptr = raw_data[i];
-        
-        for(int y = 0; y<height; y++)
-        {
-            memcpy(&data[y * cube_pitch + i * width], &ptr[y * width],  width * 4);
-            //for(int x = 0; x<width; x++)
-            //{
-            //    data[y * cube_pitch + i * width + x] = *ptr++;
-            //}
-        }
-    }
-    
-    
-    /*{
-        // set to zero
-        memset(data, 0xFF, height * width * 4 * 6);
-        
-        /*int i = 0;
-        for(int y = 0; y<height; y++)
-            for(int x = 0; x<width; x++)
-            {
-                data[y * cube_pitch + i * width + x] = 0xFF00FF00;
-
-            }
-    }*/
-    
-    
-        
-    char * outputfile = cubemap_name;
-
-    fileout = _open( outputfile, _O_WRONLY | _O_BINARY | _O_CREAT,  _S_IWRITE );
-
-    fprintf(stdout, "%s\n", outputfile);
-
-    if (fileout== -1)
-    {
-        fprintf(stdout, "Can't open output file %s\n", outputfile);
-        return 0;
-    }
- 
-
-        
-              
-
-    CompressionOptions options;
-
-    options.bMipMapsInImage = false;  // mip have been loaded in during read
-
-    if (bGenMipMaps == false)
-        options.MipMapType = dNoMipMaps;      // dNoMipMaps, dUseExistingMipMaps, dGenerateMipMaps
-    else
-        options.MipMapType = dGenerateMipMaps;      // dNoMipMaps, dUseExistingMipMaps, dGenerateMipMaps
-    
-    options.bBinaryAlpha = bBinaryAlpha;
-    options.MIPFilterType = mipfilter;
-
-
-    options.bBinaryAlpha = bBinaryAlpha;    // clamp alpha zero or one 
-
-    options.bNormalMap = bNormalMap;      // only renormalize MIP maps
-    options.bDuDvMap = bDuDvMap;      // only renormalize MIP maps
-
-    options.bAlphaBorder = bAlphaBorder;    // make an alpha border
-    options.bBorder = bBorder;         // make a color border
-    tPixel color;
-    color.u = 0;
-    options.BorderColor = BorderColor;        // color of border
-
-
-    options.bFadeColor = bFadeColor;               // fade to color over MIP maps
-    options.bFadeAlpha = bFadeAlpha;
-    options.FadeToColor = FadeToColor;        // color to fade to
-    options.FadeToAlpha = FadeToAlpha;        // color to fade to
-    options.FadeAmount = FadeAmount;      // percentage to fade each time
-
-
-    options.bDitherColor = bDitherColor;        // enable dithering during 16 bit conversion
-
-	options.TextureType = dTextureTypeCube;    // regular decal, cube or volume  
-	//dTextureType2D 
-	//dTextureTypeCube 
-	//dTextureTypeImage 
-
-    options.TextureFormat = localTextureFormat;
-	//  dDXT1, dDXT1a, dDXT3, dDXT5, d4444, 
-	//  d1555, 	d565,	d8888, 	d888, 	d555, 
-
-
-    options.bSwapRGB = bSwapRGB;
-
-
-        
-    if (bConversion)
-        ConvertToNormalMap(kerneltype, colorcnv, alphaResult, scale, minz, wrap, width * 6, height, data);
-
-    nvDXTcompress((unsigned char *)data, width * 6, height, cube_pitch * 4, &options, 4, 0);
-
-
-    if (filein)
-        _close(filein);
-
-    _close(fileout);
-
-    for(i=0; i<6; i++)
-    {
-        delete [] raw_data[i];
-    }
-
     return 0;
 }
 
+HRESULT nvDXT::compress_cubemap_from_list()
+{
+
+
+    HRESULT hr = ReadFileIntoList(listfile.c_str(), cube_names);
+    if (hr < 0)
+        return hr;
+
+
+    if (cube_names.size() != 6)
+    {
+        fprintf(stdout, "There are not six images in listfile '%s'\n", listfile.c_str());
+        return ERROR_BAD_LIST_FILE_CONTENTS;
+    }
+
+    compress_cube();
+
+    return 0;
+
+
+}
+
+
+
+/*
+void ConvertNormalMapToHeight(float scale, float bias, int w, int h, void * vdata) 
+{
+
+DWORD *data = (DWORD *)vdata;
+float *heightX = new float[w * h];
+float *heightY = new float[w * h];
+
+float *hptrX = heightX; 
+float *hptrY = heightY; 
+for ( int y = 0; y < h; y++ )
+{
+for ( int x = 0; x < w; x++ )
+{
+*hptrX++ = 0;
+*hptrY++ = 0;
+}
+}
+
+
+
+for ( int y = 0; y < h; y++ )
+{
+for ( int x = 0; x < w; x++ )
+{
+Vec3 n;
+DWORD a;
+
+ARGBToAlphaAndVector(data[y * w + x], a, n);
+//n.normalize();
+
+
+float pre;
+if ( x == 0)
+pre = 0;
+else
+pre = heightX[y * w + x - 1];
+
+float * dst = &heightX[y * w + x];
+
+if (n.z == 0)
+{
+int t = 1;
+}
+else 
+{
+float slope = n.x / n.z;
+
+*dst = pre + slope;
+}
+}
+}
+
+for ( int x = 0; x < w; x++ )
+{
+
+for ( int y = 0; y < h; y++ )
+{
+Vec3 n;
+DWORD a;
+
+ARGBToAlphaAndVector(data[y * w + x], a, n);
+//n.normalize();
+
+
+float pre;
+if ( y == 0)
+pre = 0;
+else
+pre = heightY[(y-1) * w + x];
+
+float * dst = &heightY[y * w + x];
+
+if (n.z == 0)
+{
+int t = 1; // not chage
+}
+else 
+{
+float slope = n.y / n.z;
+
+*dst = pre + slope;
+}
+}
+}
+
+
+
+hptrX = heightX; 
+hptrY = heightY; 
+for ( int y = 0; y < h; y++ )
+{
+for ( int x = 0; x < w; x++ )
+{
+
+*hptrX = (*hptrX + *hptrY) / 2.0;
+
+*hptrX++;
+*hptrY++;
+}
+
+}
+
+
+
+
+float *hptr = heightX; 
+float _min = *hptr;
+float _max = *hptr;
+
+for ( int y = 0; y < h; y++ )
+{
+for ( int x = 0; x < w; x++ )
+{
+float h = *hptr++;
+
+if (h < _min)
+_min = h; 
+if (h > _max)
+_max = h; 
+}
+
+}
+float Zscale;
+
+if (_max == _min)
+Zscale = 1;
+else
+Zscale = 1./(_max - _min);
+
+
+
+unsigned char *ptr = (unsigned char *)vdata;
+
+for ( int y = 0; y < h; y++ )
+{
+for ( int x = 0; x < w; x++ )
+{
+float h = heightX[y * w + x];
+
+// convert to [0-1]
+h = (h - _min) * Zscale;
+
+h = h * scale + bias;
+
+// convert to color
+h *= 255.0 + 0.5;
+
+int grey = h;
+if (grey > 255)
+grey = 255;
+if (grey < 0)
+grey = 0;
+
+*ptr++ = h;
+*ptr++ = h;
+*ptr++ = h;
+*ptr++ = 0xFF;
+
+}
+}
+
+
+
+
+delete [] heightX;
+delete [] heightY;
+
+}*/
+//////////////////////////////////////////////////////
+
+
+
+void nvDXT::error( LPSTR fmt, ... )
+{ 
+    va_list va;
+
+    va_start( va, fmt );
+    vprintf( fmt, va );
+    va_end( va ); 
+
+    fflush(stdout);
+
+    if (bPauseOnError)
+    {
+        while(!kbhit())
+            ;
+    }
+}
