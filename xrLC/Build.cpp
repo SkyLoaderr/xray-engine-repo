@@ -203,24 +203,30 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 			// load thumbnail
 			LPSTR N			= BT.name;
 			if (strchr(N,'.')) *(strchr(N,'.')) = 0;
+			strlwr			(N);
 			char th_name[256]; strconcat(th_name,"\\\\x-ray\\stalkerdata$\\textures\\",N,".thm");
 			CCompressedStream THM	(th_name,THM_SIGN);
 
 			// analyze thumbnail information
-			R_ASSERT(THM.ReadChunk(THM_CHUNK_TEXTUREPARAM,&BT.THM));
+			R_ASSERT		(THM.ReadChunk(THM_CHUNK_TEXTUREPARAM,&BT.THM));
+			BOOL			bLOD=FALSE;
+			if (N[0]=='l' && N[1]=='o' && N[2]=='d' && N[3]=='\\') bLOD = TRUE;
 
 			// load surface if it has an alpha channel or has "implicit lighting" flag
 			BT.dwWidth	= BT.THM.width;
 			BT.dwHeight	= BT.THM.height;
 			BT.bHasAlpha= BT.THM.HasAlphaChannel();
-			if (BT.bHasAlpha || (BT.THM.flag&STextureParams::flImplicitLighted))	
+			if (!bLOD) 
 			{
-				Msg			("- loading: %s",N);
-				DWORD w=0,	h=0;
-				BT.pSurface = Surface_Load(N,w,h);
-				BT.Vflip	();
-			} else {
-				// Free surface memory
+				if (BT.bHasAlpha || (BT.THM.flag&STextureParams::flImplicitLighted))	
+				{
+					Msg			("- loading: %s",N);
+					DWORD w=0,	h=0;
+					BT.pSurface = Surface_Load(N,w,h);
+					BT.Vflip	();
+				} else {
+					// Free surface memory
+				}
 			}
 
 			// save all the stuff we've created
