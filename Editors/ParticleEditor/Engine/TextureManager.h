@@ -80,6 +80,7 @@ public:
 	CBlender*						_GetBlender			(LPCSTR Name);
 	CBlender* 						_FindBlender		(LPCSTR Name);
 	DWORD							_GetMemoryUsage		();
+	BOOL							_GetDetailTexture	(LPCSTR Name, LPCSTR& T, LPCSTR& M);
 
     BlenderMap&						_GetBlenders		(){return blenders;}
 	

@@ -520,6 +520,7 @@ Shader*	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_cons
 	C.BT				= _GetBlender	(s_shader?s_shader:"null");
 	C.bEditor			= FALSE;
 	C.iLayers			= 1;
+	C.bDetail			= FALSE;
 #ifdef M_BORLAND
     if (!C.BT)			{ ELog.Msg(mtError,"Can't find shader '%s'",s_shader); return 0; }
 	C.bEditor			= TRUE;
@@ -533,14 +534,19 @@ Shader*	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_cons
 	// Compile element
 	C.iLOD				= 0;
 	C.bLighting			= FALSE;
+	C.bDetail			= TRUE;
 	S.lod0				= _CreateElement	(C);
+
 	// Compile element
 	C.iLOD				= 1;
 	C.bLighting			= FALSE;
+	C.bDetail			= FALSE;
 	S.lod1				= _CreateElement	(C);
+
 	// Compile element
 	C.iLOD				= 0;
 	C.bLighting			= TRUE;
+	C.bDetail			= FALSE;
 	S.lighting			= _CreateElement	(C);
 	
 	// Search equal in shaders array
