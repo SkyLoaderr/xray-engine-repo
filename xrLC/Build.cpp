@@ -405,11 +405,6 @@ void CBuild::Run	(string& P)
 	Flex2OGF		();
 
 	FPU::m64r		();
-	Phase			("Building LOD-models...");
-	mem_Compact		();
-	Flex2LOD		();
-
-	FPU::m64r		();
 	Phase			("Building sectors...");
 	mem_Compact		();
 	BuildSectors	();

@@ -107,7 +107,6 @@ public:
 	void	xrPhase_MergeGeometry	();
 
 	void	Flex2OGF				();
-	void	Flex2LOD				();
 	void	BuildSectors			();
 
 	void	SaveLights				(CFS_Base &fs);

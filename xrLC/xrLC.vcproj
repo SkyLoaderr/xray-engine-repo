@@ -403,6 +403,15 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="xrFlex2LOD.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\xrHierrarhy.cpp">
 				<FileConfiguration
 					Name="Release|Win32"
@@ -597,9 +606,6 @@
 			</File>
 			<File
 				RelativePath=".\xrCalcNormals.cpp">
-			</File>
-			<File
-				RelativePath="xrFlex2LOD.cpp">
 			</File>
 			<File
 				RelativePath=".\xrFlex2OGF.cpp">
