@@ -35,7 +35,7 @@ public:
 	}
 };
 
-#define						SHADER_XRLC_HEADER "xrLC shader v0.1"
+#define						SHADER_XRLC_HEADER "shXRLC  "
 class Shader_xrLC_LIB
 {
 	vector<Shader_xrLC>		library;
