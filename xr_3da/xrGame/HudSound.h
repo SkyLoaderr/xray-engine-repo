@@ -8,7 +8,7 @@
 
 struct HUD_SOUND
 {
-	HUD_SOUND() {enable = false;}
+	HUD_SOUND() {m_activeSnd=NULL;enable = false;}
 
 
 	////////////////////////////////////
@@ -42,6 +42,7 @@ struct HUD_SOUND
 		float		delay;	//задержка перед проигрыванием
 		float		volume;	//громкость
 	};
+	SSnd*			m_activeSnd;
 	xr_vector<SSnd> sounds;
 	
 	bool  enable;			//присутствует включен ли звук

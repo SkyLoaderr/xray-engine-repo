@@ -71,11 +71,14 @@ void  HUD_SOUND::LoadSound(LPCSTR section, LPCSTR line,
 }
 void HUD_SOUND::set_position(const Fvector& pos) 
 {
+	if(m_activeSnd&&m_activeSnd->snd.feedback)
+		m_activeSnd->snd.set_position(pos);
+/*
 	xr_vector<SSnd>::iterator it = sounds.begin();
 	for(;it!=sounds.end();++it)
 		if( (*it).snd.feedback )
 			(*it).snd.set_position(pos);
-	
+*/	
 }
 
 
@@ -84,6 +87,8 @@ void HUD_SOUND::DestroySound	(HUD_SOUND& hud_snd)
 	xr_vector<SSnd>::iterator it = hud_snd.sounds.begin();
 	for(;it!=hud_snd.sounds.end();++it)
 		(*it).snd.destroy();
+	
+	m_activeSnd = NULL;
 }
 
 void HUD_SOUND::PlaySound	(HUD_SOUND&		hud_snd,
@@ -92,27 +97,29 @@ void HUD_SOUND::PlaySound	(HUD_SOUND&		hud_snd,
 							bool			hud_mode,
 							bool			looped)
 {
+	m_activeSnd				= NULL;
 	if(!hud_snd.enable)		return;
 	StopSound(hud_snd);
 
 	VERIFY(hud_snd.sounds.size());
-//	VERIFY2					(hud_snd.snd.handle,"Trying to play non-existant or destroyed sound");
 
 	u32 flags = hud_mode?sm_2D:0;
 	if(looped)
 		flags |= sm_Looped;
 
-	SSnd& s = hud_snd.sounds[ Random.randI(hud_snd.sounds.size()) ];
+	
+	m_activeSnd = &hud_snd.sounds[ Random.randI(hud_snd.sounds.size()) ];
 
-	s.snd.play_at_pos	(const_cast<CObject*>(parent),
-							position,
-							flags,
-							s.delay);
-	s.snd.set_volume		(s.volume);
+	m_activeSnd->snd.play_at_pos	(const_cast<CObject*>(parent),
+									position,
+									flags,
+									s.delay);
+	m_activeSnd->snd.set_volume		(s.volume);
 }
 
 void HUD_SOUND::StopSound	(HUD_SOUND& hud_snd)
 {
+	m_activeSnd				= NULL;
 	if(!hud_snd.enable)		return;
 	
 	xr_vector<SSnd>::iterator it = hud_snd.sounds.begin();
@@ -120,4 +127,5 @@ void HUD_SOUND::StopSound	(HUD_SOUND& hud_snd)
 		VERIFY2					((*it).snd.handle,"Trying to stop non-existant or destroyed sound");
 		(*it).snd.stop();
 	}
+	m_activeSnd = NULL;
 }
