@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 #include "xrRender_console.h"
-
+ 
 // Common
 int			ps_r__Supersample			= 1;
 int			ps_r__Anisotropic			= 4;
@@ -57,9 +57,10 @@ int			ps_r2_GI_depth				= 1;				// 1..5
 int			ps_r2_GI_photons			= 16;				// 8..64
 float		ps_r2_GI_clip				= EPS_L;			// EPS
 float		ps_r2_GI_refl				= .9f;				// .9f
-float		ps_r2_ls_depth_scale		= 1.0f;				// 1.00f
-float		ps_r2_ls_depth_bias			= -0.0001f;			// 1.00f
+float		ps_r2_ls_depth_scale		= 1.00001f;			// 1.00001f
+float		ps_r2_ls_depth_bias			= -0.0001f;			// -0.0001f
 float		ps_r2_ls_squality			= 1.0f;				// 1.00f
+float		ps_r2_sun_projection		= 0.3f;				// 0.3f
 
 #ifndef _EDITOR
 #include	"..\xr_ioconsole.h"
