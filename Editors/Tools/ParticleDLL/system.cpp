@@ -3,13 +3,10 @@
 // Copyright 1998 by David K. McAllister.
 //
 // This file implements the API calls that are not particle actions.
+#include "stdafx.h"
 
 #include "general.h"
 
-#include <memory.h>
-
-// XXX
-#include <iostream.h>
 // using namespace std;
 
 // For Windows DLL.

@@ -5,6 +5,7 @@
 // This file implements the action API calls by creating
 // action class instances, which are either executed or
 // added to an action list.
+#include "stdafx.h"
 
 #include "general.h"
 
