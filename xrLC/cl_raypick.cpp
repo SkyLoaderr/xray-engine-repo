@@ -31,7 +31,7 @@ namespace RAPID {
 	IC DWORD& IR(float &x) { return (DWORD&)x; }
 	IC BOOL TestAABB(const Fvector& bMax, const Fvector& rP, const Fvector& rD, Fvector& coord)
 	{
-    #ifdef M_BORLAND
+    #if 1
     	Fbox		BB;
         BB.set		(-bMax.x,-bMax.y,-bMax.z,bMax.x,bMax.y,bMax.z);
         return 		BB.Pick2(rP,rD,coord);
