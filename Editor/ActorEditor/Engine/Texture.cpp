@@ -442,30 +442,36 @@ ENGINE_API IDirect3DTexture8*	TWLoader2D(
 
 _DDS:
 	Log("* FS: Texture: ",fn);
-	D3DXIMAGE_INFO IMG;
+	{
+		D3DXIMAGE_INFO IMG;
+		
+		CStream* S	= Engine.FS.Open	(fn);
+		R_ASSERT	(S);
+		R_CHK(D3DXGetImageInfoFromFileInMemory	(S->Pointer(),S->Length(),&IMG));
+		R_CHK(D3DXCreateTextureFromFileInMemoryEx(
+			HW.pDevice,
+			S->Pointer(),S->Length(),
+			D3DX_DEFAULT,D3DX_DEFAULT,
+			IMG.MipLevels,
+			0,
+			D3DFMT_UNKNOWN,
+			D3DPOOL_MANAGED,
+			D3DX_DEFAULT,
+			D3DX_DEFAULT,
+			0,
+			&IMG,
+			0,
+			&pTexture
+			));
+		
+		dwWidth		= IMG.Width;
+		dwHeight	= IMG.Height;
+		fmt			= IMG.Format;
+		
+		Engine.FS.Close(S);
+		return		pTexture;
+	}
 	
-	R_CHK(D3DXGetImageInfoFromFile(fn,&IMG));
-	R_CHK(D3DXCreateTextureFromFileEx(
-		HW.pDevice,
-		fn,
-		D3DX_DEFAULT,D3DX_DEFAULT,
-		IMG.MipLevels,
-		0,
-		D3DFMT_UNKNOWN,
-		D3DPOOL_MANAGED,
-		D3DX_DEFAULT,
-		D3DX_DEFAULT,
-		0,
-		&IMG,
-		0,
-		&pTexture
-		));
-
-	dwWidth		= IMG.Width;
-	dwHeight	= IMG.Height;
-	fmt			= IMG.Format;
-	return		pTexture;
-
 _TGA:
 	Image.LoadTGA(fn);
 
