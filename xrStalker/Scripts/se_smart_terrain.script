@@ -7,20 +7,35 @@ class "se_smart_terrain"				(cse_alife_smart_zone)
 function se_smart_terrain:update		()
 	log							("se_smart_terrain::update called!")
 	cse_alife_smart_zone.update	(self)
+
+	if level.time() >= self.m_start_hold_time + 30000 then
+		self.monster->move_offline	(self.m_move_offline)
+		self.m_monster				= nil
+	end
 end
 
 function se_smart_terrain:smart_touch	(monster)
 	log							("se_smart_terrain::smart_touch called!")
 	cse_alife_smart_zone.smart_touch	(self,monster)
+	
+	self.m_monster				= monster
+	self.m_start_hold_time		= level.time()
+	self.m_move_offline			= self.monster->move_offline()
+	self.monster->move_offline	(false)
 end
 
 function se_smart_terrain:detect_probability	()
 	log							("se_smart_terrain::detect_probability called!")
-	return 						1.0
+	if self.m_monster ~= nil then
+		return 					0.5
+	else
+		return 					0.0
+	end
 end
 
 function se_smart_terrain:__init		(section) super(section)
 	log							("se_smart_terrain::se_smart_terrain called!")
+	self.m_monster				= nil
 end
 
 function se_smart_terrain:__finalize	()
