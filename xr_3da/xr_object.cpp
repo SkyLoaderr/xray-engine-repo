@@ -123,7 +123,7 @@ void CObject::Load				( CInifile* ini, const char *section )
 	sh_Size						= Radius()/2;
 }
 
-BOOL CObject::Spawn(BOOL bLocal, int server_id, Fvector4& o_pos)
+BOOL CObject::Spawn		(BOOL bLocal, int server_id, Fvector4& o_pos)
 {
 	// XForm
 	Fvector4&			P = o_pos;
@@ -137,7 +137,7 @@ BOOL CObject::Spawn(BOOL bLocal, int server_id, Fvector4& o_pos)
 	net_Ready			= TRUE;
 
 	// Sector detection
-	DetectSector		();
+	Sector_Detect		();
 	return TRUE;
 }
 
