@@ -205,3 +205,8 @@ void CInventoryItemObject::OnRender			()
 	CInventoryItem::OnRender			();
 }
 #endif
+
+void CInventoryItemObject::fill_eye_params	(float &range, float &fov) const
+{
+	CInventoryItem::fill_eye_params		(range,fov);
+}

@@ -240,7 +240,7 @@ protected:
 	float							m_fog_density_factor;
 
 protected:
-			void					update_range_fov		(float &new_range, float &new_fov);
+	virtual	void					update_range_fov		(float &new_range, float &new_fov, float start_range, float start_fov);
 };
 
 #include "custommonster_inline.h"

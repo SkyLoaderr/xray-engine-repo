@@ -445,7 +445,7 @@ void CCustomMonster::eye_pp_s0			( )
 	eye_matrix.c.add						(X.c,m_tEyeShift);
 }
 
-void CCustomMonster::update_range_fov	(float &new_range, float &new_fov)
+void CCustomMonster::update_range_fov	(float &new_range, float &new_fov, float start_range, float start_fov)
 {
 	const float	standard_far_plane			= eye_range;
 
@@ -454,9 +454,9 @@ void CCustomMonster::update_range_fov	(float &new_range, float &new_fov)
 	float	current_far_plane				= g_pGamePersistent->Environment.CurrentEnv.far_plane	;	
 	// 300=standart, 50=super-fog
 
-	new_fov									= eye_fov;
+	new_fov									= start_fov;
 	new_range								= 
-		eye_range
+		start_range
 		*
 		(
 			_min(m_far_plane_factor*current_far_plane,standard_far_plane)
@@ -479,7 +479,7 @@ void CCustomMonster::eye_pp_s1			()
 	++eye_pp_stage;
 
 	float									new_range, new_fov;
-	update_range_fov						(new_range, new_fov);
+	update_range_fov						(new_range, new_fov, eye_range, eye_fov);
 
 	// Standart visibility
 	Device.Statistic.AI_Vis_Query.Begin		();
@@ -667,8 +667,11 @@ void CCustomMonster::OnRender()
 	//		}
 	//	}
 
-	if (psAI_Flags.test(aiFrustum))
-		dbg_draw_frustum(eye_fov,eye_range,1,eye_matrix.c,eye_matrix.k,eye_matrix.j);
+	if (psAI_Flags.test(aiFrustum)) {
+		float			range, fov;
+		update_range_fov(range,fov,eye_range,eye_fov);
+		dbg_draw_frustum(fov,range,1,eye_matrix.c,eye_matrix.k,eye_matrix.j);
+	}
 
 	if (psAI_Flags.test(aiMotion)) 
 	{

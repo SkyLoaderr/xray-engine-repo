@@ -179,9 +179,9 @@ public:
 	virtual bool Attach(PIItem pIItem);
 	virtual bool Detach(const char* item_section_name);
 
-	virtual bool IsGrenadeLauncherAttached();
-	virtual bool IsScopeAttached();
-	virtual bool IsSilencerAttached();
+			bool IsGrenadeLauncherAttached	() const;
+			bool IsScopeAttached			() const;
+			bool IsSilencerAttached			() const;
 
 	virtual bool GrenadeLauncherAttachable();
 	virtual bool ScopeAttachable();
@@ -191,7 +191,6 @@ public:
 	virtual void UpdateAddonsVisibility();
 	//инициализация свойств присоединенных аддонов
 	virtual void InitAddons();
-
 
 	//для отоброажения иконок апгрейдов в интерфейсе
 	int	GetScopeX() {return m_iScopeX;}
@@ -433,6 +432,15 @@ protected:
 public:
 	virtual u32				ef_main_weapon_type	() const;
 	virtual u32				ef_weapon_type		() const;
+
+protected:
+	// This is because when scope is attached we can't ask scope for these params
+	// therefore we should hold them by ourself :-((
+	float					m_addon_affected_holder_range;
+	float					m_addon_affected_holder_fov;
+
+public:
+	virtual	void			fill_eye_params		(float &range, float &fov) const;
 };
 
 #endif // !defined(AFX_WEAPON_H__7C42AD7C_0EBD_4AD1_90DE_2F972BF538B9__INCLUDED_)

@@ -738,6 +738,8 @@ void CInventoryItem::renderable_Render	()
 
 void CInventoryItem::reload		(LPCSTR section)
 {
+	m_affected_holder_range	= READ_IF_EXISTS(pSettings,r_float,section,"affected_holder_range",1.f);
+	m_affected_holder_fov	= READ_IF_EXISTS(pSettings,r_float,section,"affected_holder_fov",1.f);
 }
 
 void CInventoryItem::reinit		()
@@ -918,4 +920,10 @@ DLL_Pure *CInventoryItem::_construct	()
 	m_object	= smart_cast<CPhysicsShellHolder*>(this);
 	VERIFY		(m_object);
 	return		(m_object);
+}
+
+void CInventoryItem::fill_eye_params	(float &range, float &fov) const
+{
+	range		*= m_affected_holder_range;
+	fov			*= m_affected_holder_fov;
 }

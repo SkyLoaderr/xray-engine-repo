@@ -260,6 +260,13 @@ public:
 		return		(*m_object);
 	}
 	virtual void			on_activate_physic_shell() = 0;
+
+protected:
+	float			m_affected_holder_range;
+	float			m_affected_holder_fov;
+
+public:
+	virtual	void			fill_eye_params	(float &range, float &fov) const;
 };
 
 #include "inventory_item_inline.h"

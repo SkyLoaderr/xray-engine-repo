@@ -863,20 +863,22 @@ bool CWeapon::Detach(const char* item_section_name)
 	return inherited::Detach(item_section_name);
 }
 
-bool CWeapon::IsGrenadeLauncherAttached()
+bool CWeapon::IsGrenadeLauncherAttached() const
 {
 	return (CSE_ALifeItemWeapon::eAddonAttachable == m_eGrenadeLauncherStatus &&
 			0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher)) || 
 			CSE_ALifeItemWeapon::eAddonPermanent == m_eGrenadeLauncherStatus;
 }
-bool CWeapon::IsScopeAttached()
+
+bool CWeapon::IsScopeAttached() const
 {
 	return (CSE_ALifeItemWeapon::eAddonAttachable == m_eScopeStatus &&
 			0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope)) || 
 			CSE_ALifeItemWeapon::eAddonPermanent == m_eScopeStatus;
 
 }
-bool CWeapon::IsSilencerAttached()
+
+bool CWeapon::IsSilencerAttached() const
 {
 	return (CSE_ALifeItemWeapon::eAddonAttachable == m_eSilencerStatus &&
 			0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer)) || 
@@ -1044,6 +1046,16 @@ void CWeapon::reload			(LPCSTR section)
 		m_strap_bone1			= pSettings->r_string(section,"strap_bone1");
 	else
 		m_can_be_strapped		= false;
+
+	if (m_eScopeStatus == ALife::eAddonAttachable) {
+		m_addon_affected_holder_range	= READ_IF_EXISTS(pSettings,r_float,m_sScopeName,"affected_holder_range",m_affected_holder_range);
+		m_addon_affected_holder_fov		= READ_IF_EXISTS(pSettings,r_float,m_sScopeName,"affected_holder_fov",m_affected_holder_fov);
+	}
+	else {
+		m_addon_affected_holder_range	= m_affected_holder_range;
+		m_addon_affected_holder_fov		= m_affected_holder_fov;
+	}
+
 
 	{
 		Fvector				pos,ypr;
@@ -1246,4 +1258,14 @@ u32	CWeapon::ef_weapon_type	() const
 bool CWeapon::IsNecessaryItem	    (CInventoryItem* item)
 {
 	return (std::find(m_ammoTypes.begin(), m_ammoTypes.end(), item->object().cNameSect()) != m_ammoTypes.end() );
+}
+
+void CWeapon::fill_eye_params		(float &range, float &fov) const
+{
+	if (!IsScopeAttached()) {
+		inherited::fill_eye_params	(range,fov);
+		return;
+	}
+	range	*= m_addon_affected_holder_range;
+	fov		*= m_addon_affected_holder_fov;
 }

@@ -57,6 +57,7 @@ public:
 	virtual void	reinit					();
 	virtual void	activate_physic_shell	();
 	virtual void	on_activate_physic_shell();
+	virtual	void	fill_eye_params			(float &range, float &fov) const;
 public:
 	////////// network //////////////////////////////////////////////////
 	virtual void	make_Interpolation		();
