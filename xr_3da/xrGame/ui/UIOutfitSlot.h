@@ -32,6 +32,9 @@ public:
 	// Возвращение указателя на текущий костюм. NULL если нет.
 	CUIDragDropItem * GetCurrentOutfit();
 
+	// Для мультиплеера отдельная процедрура назначения иконки персвонажа
+	void	SetMPOutfit();
+
 	typedef enum{UNDRESS_OUTFIT = 6000, OUTFIT_RETURNED_BACK} E_OUTFIT_ACTION;
 
 protected:
