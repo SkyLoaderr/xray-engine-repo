@@ -122,7 +122,9 @@ void CLightmap::Save()
 	static int		lmapNameID = 0; ++lmapNameID;
 
 	Phase			("Saving...");
+
 	// Borders correction
+	Status			("Borders...");
 	for (DWORD _y=0; _y<lmap_size; _y++)
 	{
 		for (DWORD _x=0; _x<lmap_size; _x++)
@@ -136,8 +138,10 @@ void CLightmap::Save()
 		ApplyBorders	(lm,ref);
 		Progress		(1.f - float(ref)/254.f);
 	}
+	Progress			(1.f);
 
 	// Saving			(DXT5.dds)
+	Status			("Compression...");
 	{
 		char	FN[_MAX_PATH];
 		sprintf	(lm.name,"L#%d",lmapNameID						);
