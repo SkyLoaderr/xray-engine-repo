@@ -17,6 +17,25 @@ const float	W_DIST_FADE_SQR	= W_DIST_FADE*W_DIST_FADE;
 const float I_DIST_FADE_SQR	= 1.f/W_DIST_FADE_SQR;
 const int	MAX_TRIS		= 512;
 
+struct SWMSlotFindPredicate {
+	ref_shader	shader;
+						SWMSlotFindPredicate(ref_shader sh):shader(sh){}
+	bool				operator()			(CWallmarksEngine::wm_slot* slot) const
+	{
+		return			(slot->shader == shader);
+	}
+};
+
+CWallmarksEngine::wm_slot* CWallmarksEngine::FindSlot	(const ref_shader shader)
+{
+	WMSVecIt it					= std::find_if(marks.begin(),marks.end(),SWMSlotFindPredicate(shader));
+	return						(it!=marks.end())?*it:0;
+}
+CWallmarksEngine::wm_slot* CWallmarksEngine::AppendSlot	(ref_shader shader)
+{
+	marks.push_back				(xr_new<wm_slot>(shader));
+	return marks.back			();
+}
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -33,8 +52,11 @@ CWallmarksEngine::CWallmarksEngine	()
 CWallmarksEngine::~CWallmarksEngine	()
 {
 	{
-		for (u32 it=0; it<marks.size(); it++)
-			wm_destroy	(marks[it]);
+		for (WMSVecIt p_it=marks.begin(); p_it!=marks.end(); p_it++){
+			for (WMVecIt m_it=(*p_it)->items.begin(); m_it!=(*p_it)->items.end(); m_it++)
+				wm_destroy	(*m_it);
+			xr_delete(*p_it);
+		}
 		marks.clear	();
 	}
 	{
@@ -47,13 +69,12 @@ CWallmarksEngine::~CWallmarksEngine	()
 }
 
 // allocate
-CWallmarksEngine::wallmark*	CWallmarksEngine::wm_allocate		(ref_shader&	S	)
+CWallmarksEngine::wallmark*	CWallmarksEngine::wm_allocate		()
 {
 	wallmark*			W = 0;
 	if (pool.empty())	W = xr_new<wallmark> ();
 	else				{ W = pool.back(); pool.pop_back(); }
 
-	W->shader			= S;
 	W->ttl				= W_TTL;
 	W->verts.clear		();
 	return W;
@@ -66,17 +87,17 @@ void		CWallmarksEngine::wm_destroy		(wallmark*	W	)
 // render
 void		CWallmarksEngine::wm_render			(wallmark*	W, FVF::LIT* &V)
 {
-	float		a	= 1-(W->ttl/W_TTL);
-	int			aC	= iFloor	( a * 255.f);	clamp	(aC,0,255);
-	u32			C	= color_rgba(128,128,128,aC);
+	float		a		= 1-(W->ttl/W_TTL);
+	int			aC		= iFloor	( a * 255.f);	clamp	(aC,0,255);
+	u32			C		= color_rgba(128,128,128,aC);
 
-	FVF::LIT*	S	= &*W->verts.begin	();
-	FVF::LIT*	E	= &*W->verts.end	();
+	FVF::LIT*	S		= &*W->verts.begin	();
+	FVF::LIT*	E		= &*W->verts.end	();
 	for (; S!=E; S++, V++)
 	{
-		V->p.set	(S->p);
-		V->color	= C;
-		V->t.set	(S->t);
+		V->p.set		(S->p);
+		V->color		= C;
+		V->t.set		(S->t);
 	}
 }
 
@@ -201,7 +222,7 @@ void CWallmarksEngine::AddWallmark_internal	(CDB::TRI* pTri, const Fvector* pVer
 	sml_clipper.CreateFromMatrix	(mView,FRUSTUM_P_LRTB);
 
 	// create wallmark
-	wallmark* W			= wm_allocate(hShader);
+	wallmark* W			= wm_allocate();
 	RecurseTri			(0,mView,*W);
 
 	// calc sphere
@@ -216,23 +237,25 @@ void CWallmarksEngine::AddWallmark_internal	(CDB::TRI* pTri, const Fvector* pVer
 	}
 
 	// search if similar wallmark exists
-	xr_vector<wallmark*>::iterator		it	=marks.begin();
-	xr_vector<wallmark*>::iterator		end	=marks.end	();
-	for (; it!=end; it++)
-	{
-		wallmark* wm	= *it;
-		if (wm->shader != W->shader)	continue;
-		if (wm->bounds.P.similar(W->bounds.P,0.02f))
+	wm_slot* slot	= FindSlot(hShader);
+	if (slot){
+		WMVecIt		it	= slot->items.begin	();
+		WMVecIt		end	= slot->items.end	();
+		for (; it!=end; it++)
 		{
-			// replace
-			wm_destroy		(wm);
-			*it				= W;
-			return;
+			wallmark* wm	= *it;
+			if (wm->bounds.P.similar(W->bounds.P,0.02f)){ // replace
+				wm_destroy	(wm);
+				*it			= W;
+				return;
+			}
 		}
+	}else{
+		slot		= AppendSlot(hShader);
 	}
 
 	// no similar - register _new_
-	marks.push_back			(W);
+	slot->items.push_back(W);
 }
 
 void CWallmarksEngine::AddWallmark	(CDB::TRI* pTri, const Fvector* pVerts, const Fvector &contact_point, ref_shader hShader, float sz)
@@ -258,61 +281,57 @@ void CWallmarksEngine::Render()
 
 	Device.Statistic.RenderDUMP_WM.Begin	();
 
-	u32					w_offset= 0;
-	FVF::LIT*			w_verts = (FVF::LIT*)	RCache.Vertex.Lock	(MAX_TRIS*3,hGeom->vb_stride,w_offset);
-	FVF::LIT*			w_start = w_verts;
+	float	ssaCLIP				= r_ssaDISCARD/4;
 
-	ref_shader	w_S		= marks.front()->shader;
-	float	ssaCLIP		= r_ssaDISCARD/4;
-	for (u32 i=0; i<marks.size(); i++)
-	{
-		wallmark* W		= marks	[i];
-		if (RImplementation.ViewBase.testSphere_dirty(W->bounds.P,W->bounds.R)) 
-		{
-			float dst = Device.vCameraPosition.distance_to_sqr(W->bounds.P);
-			float ssa = W->bounds.R * W->bounds.R / dst;
-			if (ssa>=ssaCLIP)	
-			{
-				u32 w_count		= u32(w_verts-w_start);
-				if (((w_count+W->verts.size())>=(MAX_TRIS*3))||(w_S!=W->shader))
-				{
-					if (w_count)	
-					{
-						// Flush stream
-						RCache.Vertex.Unlock	(w_count,hGeom->vb_stride);
-						RCache.set_Shader		(w_S);
-						RCache.set_Geometry		(hGeom);
-						RCache.Render			(D3DPT_TRIANGLELIST,w_offset,w_count/3);
+	for (WMSVecIt slot_it=marks.begin(); slot_it!=marks.end(); slot_it++){
+		u32			w_offset= 0;
+		FVF::LIT*	w_verts = (FVF::LIT*)	RCache.Vertex.Lock	(MAX_TRIS*3,hGeom->vb_stride,w_offset);
+		FVF::LIT*	w_start = w_verts;
+		wm_slot* slot		= *slot_it;	
+		for (WMVecIt w_it=slot->items.begin(); w_it!=slot->items.end(); ){
+			wallmark* W		= *w_it;
+			if (RImplementation.ViewBase.testSphere_dirty(W->bounds.P,W->bounds.R)){
+				float dst	= Device.vCameraPosition.distance_to_sqr(W->bounds.P);
+				float ssa	= W->bounds.R * W->bounds.R / dst;
+				if (ssa>=ssaCLIP){
+					u32 w_count		= u32(w_verts-w_start);
+					if ((w_count+W->verts.size())>=(MAX_TRIS*3)){
+						if (w_count){
+							// Flush stream
+							RCache.Vertex.Unlock	(w_count,hGeom->vb_stride);
+							RCache.set_Shader		(slot->shader);
+							RCache.set_Geometry		(hGeom);
+							RCache.Render			(D3DPT_TRIANGLELIST,w_offset,w_count/3);
 
-						// Restart (re-lock/re-calc)
-						w_verts		= (FVF::LIT*)	RCache.Vertex.Lock	(MAX_TRIS*3,hGeom->vb_stride,w_offset);
-						w_start		= w_verts;
-						w_S			= W->shader;
+							// Restart (re-lock/re-calc)
+							w_verts		= (FVF::LIT*)	RCache.Vertex.Lock	(MAX_TRIS*3,hGeom->vb_stride,w_offset);
+							w_start		= w_verts;
+						}
 					}
-				}
 
-				wm_render	(W,w_verts);
+					wm_render	(W,w_verts);
+				}
+			}
+			W->ttl	-= Device.fTimeDelta;
+			if (W->ttl<=EPS){	
+				wm_destroy		(W);
+				*w_it			= slot->items.back();
+				slot->items.pop_back();
+			}else{
+				w_it++;
 			}
 		}
-		W->ttl -= Device.fTimeDelta;
+		// Flush stream
+		u32 w_count				= u32(w_verts-w_start);
+		RCache.Vertex.Unlock	(w_count,hGeom->vb_stride);
+		if (w_count)			
+		{
+			RCache.set_Shader	(slot->shader);
+			RCache.set_Geometry	(hGeom);
+			RCache.Render		(D3DPT_TRIANGLELIST,w_offset,w_count/3);
+		}
 	}
 
-	// Flush stream
-	u32 w_count				= u32(w_verts-w_start);
-	RCache.Vertex.Unlock	(w_count,hGeom->vb_stride);
-	if (w_count)			
-	{
-		RCache.set_Shader		(w_S);
-		RCache.set_Geometry		(hGeom);
-		RCache.Render			(D3DPT_TRIANGLELIST,w_offset,w_count/3);
-	}
-
-	// Remove last used wallmarks
-	if (marks.front()->ttl<=EPS)	
-	{
-		wm_destroy	(marks.front());
-		marks.erase	(marks.begin());
-	}
 	Device.Statistic.RenderDUMP_WM.End		();
 
 	// Projection
