@@ -548,7 +548,7 @@ CSE_ALifeScriptZone::~CSE_ALifeScriptZone	()
 {
 }
 
-CSE_Shape* CSE_ALifeScriptZone::shape		()
+ISE_Shape* CSE_ALifeScriptZone::shape		()
 {
 	return						(this);
 }

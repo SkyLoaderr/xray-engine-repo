@@ -14,61 +14,6 @@
 #include "xrMessages.h"
 
 ////////////////////////////////////////////////////////////////////////////
-// CSE_Shape
-////////////////////////////////////////////////////////////////////////////
-CSE_Shape::CSE_Shape						()
-{
-}
-
-CSE_Shape::~CSE_Shape						()
-{
-}
-
-void CSE_Shape::cform_read					(NET_Packet	&tNetPacket)
-{
-	shapes.clear				();
-	u8							count;
-	tNetPacket.r_u8				(count);
-	
-	while (count) {
-		shape_def				S;
-		tNetPacket.r_u8			(S.type);
-		switch (S.type) {
-			case 0 :	
-				tNetPacket.r	(&S.data.sphere,sizeof(S.data.sphere));	
-				break;
-			case 1 :	
-				tNetPacket.r_matrix(S.data.box);
-				break;
-		}
-		shapes.push_back		(S);
-		--count;
-	}
-}
-
-void CSE_Shape::cform_write					(NET_Packet	&tNetPacket)
-{
-	tNetPacket.w_u8				(u8(shapes.size()));
-	for (u32 i=0; i<shapes.size(); ++i) {
-		shape_def				&S = shapes[i];
-		tNetPacket.w_u8			(S.type);
-		switch (S.type) {
-			case 0:	
-				tNetPacket.w	(&S.data.sphere,sizeof(S.data.sphere));
-				break;
-			case 1:	
-				tNetPacket.w_matrix	(S.data.box);
-				break;
-		}
-	}
-}
-
-void CSE_Shape::assign_shapes	(CShapeData::shape_def* _shapes, u32 _cnt)
-{
-	shapes.assign	(_cnt,*_shapes);
-}
-
-////////////////////////////////////////////////////////////////////////////
 // CSE_Visual
 ////////////////////////////////////////////////////////////////////////////
 CSE_Visual::CSE_Visual		   	(LPCSTR name)

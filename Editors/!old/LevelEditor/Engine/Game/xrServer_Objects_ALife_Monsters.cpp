@@ -255,7 +255,7 @@ CSE_ALifeCustomZone::~CSE_ALifeCustomZone	()
 {
 }
 
-CSE_Shape* CSE_ALifeCustomZone::shape		()
+ISE_Shape* CSE_ALifeCustomZone::shape		()
 {
 	return						(this);
 }
@@ -1305,11 +1305,9 @@ void CSE_ALifeHumanAbstract::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 		load_data				(m_tpPath,tNetPacket);
 		load_data				(m_baVisitedVertices,tNetPacket);
 		if (m_wVersion > 35) {
-			string256			caKnownCustomers;
-			tNetPacket.r_stringZ(caKnownCustomers);
-			m_caKnownCustomers	= caKnownCustomers;
+			tNetPacket.r_stringZ(m_caKnownCustomers);
 			load_data			(m_tpKnownCustomers,tNetPacket);
-			if (m_wVersion > 68) {
+			if (m_wVersion > 69) {
 				load_data		(m_cpEquipmentPreferences,tNetPacket);
 				load_data		(m_cpMainWeaponPreferences,tNetPacket);
 			}

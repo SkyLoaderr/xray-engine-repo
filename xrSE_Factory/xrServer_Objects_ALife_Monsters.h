@@ -72,7 +72,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeCustomZone,CSE_ALifeDynamicObject,CSE_Shap
 	
 									CSE_ALifeCustomZone		(LPCSTR caSection);
 	virtual							~CSE_ALifeCustomZone	();
-	virtual CSE_Shape*  __stdcall	shape					();
+	virtual ISE_Shape*  __stdcall	shape					();
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeCustomZone)
 #define script_type_list save_type_list(CSE_ALifeCustomZone)

@@ -148,7 +148,7 @@ public:
 	virtual Fvector&	__stdcall	angle			();
 	virtual Flags16&	__stdcall	flags			();
 	virtual CSE_Visual* __stdcall	visual			();
-	virtual CSE_Shape*  __stdcall	shape			();
+	virtual ISE_Shape*  __stdcall	shape			();
 	virtual CSE_Motion* __stdcall	motion			();
 	//
 
@@ -162,6 +162,18 @@ public:
 };
 add_to_type_list(CSE_Abstract)
 #define script_type_list save_type_list(CSE_Abstract)
+
+SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
+public:
+	void							cform_read		(NET_Packet& P);
+	void							cform_write		(NET_Packet& P);
+									CSE_Shape		();
+	virtual							~CSE_Shape		();
+	virtual ISE_Shape*  __stdcall	shape			() = 0;
+	virtual void __stdcall			assign_shapes	(CShapeData::shape_def* shapes, u32 cnt);
+};
+add_to_type_list(CSE_Shape)
+#define script_type_list save_type_list(CSE_Shape)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_Spectator,CSE_Abstract)
 									CSE_Spectator	(LPCSTR caSection);
@@ -232,7 +244,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_Event,CSE_Shape,CSE_Abstract)
 									CSE_Event		(LPCSTR caSection);
 	virtual							~CSE_Event		();
 			void					Actions_clear	();
-	virtual CSE_Shape*  __stdcall	shape			();
+	virtual ISE_Shape*  __stdcall	shape			();
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_Event)
 #define script_type_list save_type_list(CSE_Event)

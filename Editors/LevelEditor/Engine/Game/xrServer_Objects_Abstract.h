@@ -22,17 +22,10 @@
 #pragma warning(push)
 #pragma warning(disable:4005)
 
-SERVER_ENTITY_DECLARE_BEGIN(CSE_Shape,CShapeData)
+class ISE_Shape{
 public:
-	void							cform_read		(NET_Packet& P);
-	void							cform_write		(NET_Packet& P);
-									CSE_Shape		();
-	virtual							~CSE_Shape		();
-	virtual CSE_Shape*  __stdcall	shape			() = 0;
-	void __stdcall					assign_shapes	(CShapeData::shape_def* shapes, u32 cnt);
+	virtual void __stdcall			assign_shapes	(CShapeData::shape_def* shapes, u32 cnt)=0;
 };
-add_to_type_list(CSE_Shape)
-#define script_type_list save_type_list(CSE_Shape)
 
 SERVER_ENTITY_DECLARE_BEGIN0(CSE_Visual)
     void __stdcall					OnChangeVisual	(PropValue* sender);  
@@ -98,8 +91,8 @@ public:
 	virtual Fvector&	__stdcall	position		() = 0;
 	virtual Fvector&	__stdcall	angle			() = 0;
 	virtual Flags16&	__stdcall	flags			() = 0;
+	virtual ISE_Shape*  __stdcall	shape			() = 0;
 	virtual CSE_Visual* __stdcall	visual			() = 0;
-	virtual CSE_Shape*  __stdcall	shape			() = 0;
 	virtual CSE_Motion* __stdcall	motion			() = 0;
 };
 

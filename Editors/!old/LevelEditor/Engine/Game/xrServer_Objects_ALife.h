@@ -214,7 +214,7 @@ add_to_type_list(CSE_ALifePHSkeletonObject)
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeScriptZone,CSE_ALifeDynamicObject,CSE_Shape)
 									CSE_ALifeScriptZone		(LPCSTR caSection);
 	virtual							~CSE_ALifeScriptZone	();
-	virtual CSE_Shape*  __stdcall	shape					();
+	virtual ISE_Shape*  __stdcall	shape					();
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeScriptZone)
 #define script_type_list save_type_list(CSE_ALifeScriptZone)
