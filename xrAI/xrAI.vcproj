@@ -1276,10 +1276,13 @@
 					RelativePath=".\object_broker.h">
 				</File>
 				<File
-					RelativePath=".\object_destroyer.h">
+					RelativePath=".\object_cloner.h">
 				</File>
 				<File
-					RelativePath=".\object_equality_checker.h">
+					RelativePath=".\object_comparer.h">
+				</File>
+				<File
+					RelativePath=".\object_destroyer.h">
 				</File>
 				<File
 					RelativePath=".\object_loader.h">
