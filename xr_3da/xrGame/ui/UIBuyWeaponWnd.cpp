@@ -1629,9 +1629,9 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
 		if (mlRoot == m_mlCurrLevel)
 		{
 			//--------------------- for E3 ---------------------
-			SendMessage(&UIBtnOK, CUIButton::BUTTON_CLICKED, NULL);
+///			SendMessage(&UIBtnOK, CUIButton::BUTTON_CLICKED, NULL);
 			//--------------------------------------------------
-//			SendMessage(&UIBtnCancel, CUIButton::BUTTON_CLICKED, NULL);
+			SendMessage(&UIBtnCancel, CUIButton::BUTTON_CLICKED, NULL);
 			return true;
 		}
 	}
