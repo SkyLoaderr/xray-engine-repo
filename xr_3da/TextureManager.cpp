@@ -248,9 +248,9 @@ Shader	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_const
 	Shader		S;
 	CBlender*	B		= _GetBlender	(s_shader);
 	CBlender_Recorder	Recorder		(&S);
-	B->Compile			(Recorder);
+	B->Compile			(Recorder, L_textures, L_constants, L_matrices);
 
-	// ok
+	// Ok
 	return S;
 }
 

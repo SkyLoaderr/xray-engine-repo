@@ -62,20 +62,20 @@ protected:
 	string64		oTC;
 protected:
 	DWORD		BC			(BOOL v)		{ return v?0xff:0; }
-
+	
 	void		BP_write_c	(CFS_Base& FS,  DWORD ID, LPCSTR name, LPCVOID data, DWORD size );
 	DWORD		BP_read_c   (CStream&  FS);
 	BOOL		c_XForm		();
 public:
 	static		CBlender*	Create			(CLASS_ID cls);
-
+	
 	CBlender_DESC&			getDescription();
 	virtual		LPCSTR		getComment()	= 0;
-
+	
 	virtual		void		Save			(CFS_Base&  FS);
 	virtual		void		Load			(CStream&	FS);
-
-	virtual		void		Compile			(CBlender_Recorder& RS)		= 0;
+	
+	virtual		void		Compile			(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices)		= 0;
 
 	CBlender();
 	virtual ~CBlender();
