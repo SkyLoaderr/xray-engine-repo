@@ -1,7 +1,7 @@
 #pragma once
 
 // resource itself, the base class for all derived resources
-class	xr_resorce	{
+class	ENGINE_API	xr_resorce	{
 public:
 	u32				dwReference;
 
@@ -14,10 +14,10 @@ public:
 template <class T>
 class xr_resorce_ptr
 {
-private:
+protected:
 	typedef xr_resorce_ptr	this_type;
 	T *						p_;
-private:
+protected:
 						// ref-counting
 	void				_inc			()		{ if (0==p_) return;	p_->dwReference++;														}
 	void				_dec			()		{ if (0==p_) return;	p_->dwReference--; if (0==p_->dwReference) { p_->_release_(p_); p_=0; }	}

@@ -7,36 +7,33 @@
 
 #include "Shader.h"
 
+void	STextureList::_release_			(STextureList * ptr)		{	Device.Shader._DeleteTextureList	(ptr);			}
+void	SMatrixList::_release_			(SMatrixList * ptr)			{	Device.Shader._DeleteMatrixList		(ptr);			}
+void	SConstantList::_release_		(SConstantList * ptr)		{	Device.Shader._DeleteConstantList	(ptr);			}
+void	SDeclaration::_release_			(SDeclaration * ptr)		{	Device.Shader._DeleteDecl			(ptr->dcl);		}
+void	SPass::_release_				(SPass * ptr)				{	Device.Shader._DeletePass			(ptr);			}
+void	ShaderElement::_release_		(ShaderElement * ptr)		{	Device.Shader._DeleteElement		(ptr);			}
+void	SGeometry::_release_			(SGeometry * ptr)			{	Device.Shader.DeleteGeom			(ptr);			}
+void	Shader::_release_				(Shader * ptr)				{	Device.Shader.Delete				(ptr);			}
+
 //////////////////////////////////////////////////////////////////////////
 void	ref_shader::create		(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_constants, LPCSTR s_matrices)
 {
-	destroy	();
-	_object	= Device.Shader.Create	(s_shader,s_textures,s_constants,s_matrices);
+	this_type(Device.Shader.Create	(s_shader,s_textures,s_constants,s_matrices)).swap(*this);
 }
 void	ref_shader::create		(IBlender* B, LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_constants, LPCSTR s_matrices)
 {
-	destroy	();
-	_object = Device.Shader.Create_B(B,s_shader,s_textures,s_constants,s_matrices);
-}
-void	ref_shader::destroy		()
-{
-	if (_object)				{	Device.Shader.Delete(_object); _object=NULL; }
+	this_type(Device.Shader.Create_B(B,s_shader,s_textures,s_constants,s_matrices)).swap(*this);
 }
 
 //////////////////////////////////////////////////////////////////////////
 void	ref_geom::create		(u32 FVF , IDirect3DVertexBuffer9* vb, IDirect3DIndexBuffer9* ib)
 {
-	destroy();
-	_object	= Device.Shader.CreateGeom(FVF,vb,ib);
+	this_type(Device.Shader.CreateGeom(FVF,vb,ib)).swap(*this);
 }
 void	ref_geom::create		(D3DVERTEXELEMENT9* decl, IDirect3DVertexBuffer9* vb, IDirect3DIndexBuffer9* ib)
 {
-	destroy();
-	_object	= Device.Shader.CreateGeom(decl,vb,ib);
-}
-void	ref_geom::destroy		()
-{
-	if (_object)				{	Device.Shader.DeleteGeom(_object); _object=NULL; }
+	this_type(Device.Shader.CreateGeom(decl,vb,ib)).swap(*this);
 }
 
 //////////////////////////////////////////////////////////////////////
