@@ -235,11 +235,11 @@ bool MeshExpUtility::SaveAsObject(const char* m_ExportName){
 	NConsole.print( "-------------------------------------------------------" );
 
 	char fname[256]; _splitpath( m_ExportName, 0, 0, fname, 0 );
-	CEditObject* exp_obj = new CEditObject(fname);	
+	CEditableObject* exp_obj = new CEditableObject(fname);	
 
 	std::vector<ExportItem>::iterator it = m_Items.begin();
 	for(;it!=m_Items.end();it++){
-		CEditMesh *submesh = new CEditMesh(exp_obj);
+		CEditableMesh *submesh = new CEditableMesh(exp_obj);
 		if( submesh->Convert(it->pNode) ){
 			// transform
 			Matrix3 mMatrix;
@@ -265,10 +265,12 @@ bool MeshExpUtility::SaveAsObject(const char* m_ExportName){
 			submesh->Transform( m );
 			// flip faces
 			Fvector v; v.crossproduct(s, a);
-			if (v.dotproduct(n)<0.f) submesh->FlipFaces();
-			if( m_ObjectFlipFaces )	submesh->FlipFaces();
+			if(v.dotproduct(n)<0.f) submesh->FlipFaces();
+			if(m_ObjectFlipFaces)	submesh->FlipFaces();
 			submesh->RecomputeBBox();
-			exp_obj->AddMesh(submesh, it->pNode->GetName());
+			// append mesh
+			strcpy(submesh->GetName(),it->pNode->GetName());
+			exp_obj->m_Meshes.push_back(submesh);
 		}else{
 			NConsole.print( "'%s' object can't convert", it->pNode->GetName());
 			delete submesh;

@@ -70,7 +70,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 1
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "UTILITY_EXPORTS" /YX /FD /GZ /c
-# ADD CPP /nologo /G6 /MDd /W3 /Gm /Gi /GX /ZI /Od /D "_DEBUG" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "UTILITY_EXPORTS" /FR /Yu"stdafx.h" /FD /GZ /c
+# ADD CPP /nologo /G6 /MDd /W3 /Gm /Gi /GX /ZI /Od /D "_DEBUG" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "MAX_EXPORT" /FR /Yu"stdafx.h" /FD /GZ /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x809 /d "_DEBUG"
@@ -245,6 +245,10 @@ SOURCE=.\cpuid.h
 SOURCE=.\vector.h
 # End Source File
 # End Group
+# Begin Group "Rapid"
+
+# PROP Default_Filter ""
+# End Group
 # Begin Source File
 
 SOURCE=.\Fmesh.h
@@ -273,22 +277,6 @@ SOURCE=.\lzhuf.h
 
 SOURCE=.\progmesh.h
 # End Source File
-# Begin Source File
-
-SOURCE=.\XRShaderDef.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\xrShaderLib.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\xrShaderLib.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\xrShaderTypes.h
-# End Source File
 # End Group
 # Begin Group "Editor"
 
@@ -303,11 +291,45 @@ SOURCE=.\FileSystem.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\Log.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Log.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\NetDeviceLog.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=.\NetDeviceLog.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\xr_trims.cpp
+
+!IF  "$(CFG)" == "Utility - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "Utility - Win32 Debug"
+
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\xr_trims.h
+
+!IF  "$(CFG)" == "Utility - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "Utility - Win32 Debug"
+
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
 # End Source File
 # End Group
 # End Group
@@ -316,11 +338,23 @@ SOURCE=.\NetDeviceLog.h
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=.\ExportObject\bone.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ExportObject\bone.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\ExportObject\EditMesh.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=.\ExportObject\EditMesh.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ExportObject\EditMeshExportMAX.cpp
 # End Source File
 # Begin Source File
 
@@ -340,11 +374,39 @@ SOURCE=.\ExportObject\EditObject.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\ExportObject\SceneClassList.h
+SOURCE=.\ExportObject\EditObjectExportMAX.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ExportObject\SceneObject.h
+SOURCE=.\ExportObject\EditObjectIO.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ExportObject\EditObjectMotions.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ExportObject\Envelope.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ExportObject\envelope.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ExportObject\interp.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ExportObject\motion.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ExportObject\motion.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ExportObject\SceneClassList.h
 # End Source File
 # End Group
 # Begin Group "Export Skin"

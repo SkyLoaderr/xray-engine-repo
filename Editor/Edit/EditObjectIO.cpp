@@ -6,20 +6,22 @@
 #pragma hdrstop
 
 #include "EditObject.h"
-#include "UI_Main.h"
-#include "Shader.h"
 #include "EditMesh.h"
 #include "bone.h"
 #include "motion.h"
+
+#ifdef _EDITOR
+#include "Shader.h"
 #include "xr_trims.h"
 
 bool CEditableObject::Load(const char* fname){
 	AnsiString ext=ExtractFileExt(fname);
     ext=ext.LowerCase();
-    if 	(ext==".lwo")    		return Import_LWO(fname,false);//(ELog.DlgMsg(mtConfirmation,"Optimize object?")==mrYes)?true:false);
+    if 	(ext==".lwo")    		return Import_LWO(fname,false);
     else if (ext==".object") 	return LoadObject(fname);
 	return false;
 }
+#endif
 
 bool CEditableObject::LoadObject(const char* fname){
     CStream* F;
@@ -30,7 +32,7 @@ bool CEditableObject::LoadObject(const char* fname){
         _DELETE(F);
         F = new CCompressedStream(fname,"OBJECT");
     }
-    CStream* OBJ = F->OpenChunk(CHUNK_OBJECT_BODY);
+    CStream* OBJ = F->OpenChunk(EOBJ_CHUNK_OBJECT_BODY);
     R_ASSERT(OBJ);
     bool bRes = Load(*OBJ);
     OBJ->Close();
@@ -52,7 +54,7 @@ void CEditableObject::SaveObject(const char* fname){
     }
 
     CFS_Memory F;
-    F.open_chunk(CHUNK_OBJECT_BODY);
+    F.open_chunk(EOBJ_CHUNK_OBJECT_BODY);
     Save(F);
     F.close_chunk();
 
@@ -104,7 +106,11 @@ bool CEditableObject::Load(CStream& F){
             R_ASSERT(1<=cnt);
 			F.RstringZ			(buf); (*s_it)->SetTexture(buf);
 			F.RstringZ			(buf); (*s_it)->SetVMap(buf);
+#ifdef _EDITOR
             (*s_it)->SetShader	(sh_name,Device.Shader.Create(sh_name,(*s_it)->_Texture()));
+#else
+            (*s_it)->ED_SetShader(sh_name);
+#endif
             (*s_it)->SetShaderXRLC("default");
         }
 
@@ -284,9 +290,3 @@ COMotion* CEditableObject::LoadOMotion(const char* fname){
 	return 0;
 }
 //------------------------------------------------------------------------------
-bool CEditableObject::Reload()
-{
-	ClearGeometry();
-    return Load(m_LoadName.c_str());
-}
-

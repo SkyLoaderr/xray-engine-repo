@@ -104,56 +104,57 @@ bool CEditableMesh::OptimizeFace(st_Face& face){
 	}
 }
 
-void CEditableMesh::Optimize(){
-	// clear static data
-    for (int x=0; x<MX+1; x++)
-	    for (int y=0; y<MY+1; y++)
-    		for (int z=0; z<MZ+1; z++)
-            	VM[x][y][z].clear();
-	VMscale.set(m_Box.max.x-m_Box.min.x, m_Box.max.y-m_Box.min.y, m_Box.max.z-m_Box.min.z);
-	VMmin.set(m_Box.min.x, m_Box.min.y, m_Box.min.z);
+void CEditableMesh::Optimize(BOOL NoOpt){
+	if (!NoOpt){
+		// clear static data
+		for (int x=0; x<MX+1; x++)
+			for (int y=0; y<MY+1; y++)
+    			for (int z=0; z<MZ+1; z++)
+            		VM[x][y][z].clear();
+		VMscale.set(m_Box.max.x-m_Box.min.x, m_Box.max.y-m_Box.min.y, m_Box.max.z-m_Box.min.z);
+		VMmin.set(m_Box.min.x, m_Box.min.y, m_Box.min.z);
 
-	VMeps.set(VMscale.x/MX/2,VMscale.y/MY/2,VMscale.z/MZ/2);
-	VMeps.x = (VMeps.x<EPS_L)?VMeps.x:EPS_L;
-	VMeps.y = (VMeps.y<EPS_L)?VMeps.y:EPS_L;
-	VMeps.z = (VMeps.z<EPS_L)?VMeps.z:EPS_L;
+		VMeps.set(VMscale.x/MX/2,VMscale.y/MY/2,VMscale.z/MZ/2);
+		VMeps.x = (VMeps.x<EPS_L)?VMeps.x:EPS_L;
+		VMeps.y = (VMeps.y<EPS_L)?VMeps.y:EPS_L;
+		VMeps.z = (VMeps.z<EPS_L)?VMeps.z:EPS_L;
 
-    m_NewPoints.clear();
-    m_NewPoints.reserve(m_Points.size());
+		m_NewPoints.clear();
+		m_NewPoints.reserve(m_Points.size());
 
-    ELog.Msg(mtInformation,"Optimize...");
+		ELog.Msg(mtInformation,"Optimize...");
 
-	INTVec mark_for_del;
-	mark_for_del.clear();
-    for (DWORD k=0; k<m_Faces.size(); k++){
-    	if (!OptimizeFace(m_Faces[k]))
-			mark_for_del.push_back(k);
+		INTVec mark_for_del;
+		mark_for_del.clear();
+		for (DWORD k=0; k<m_Faces.size(); k++){
+    		if (!OptimizeFace(m_Faces[k]))
+				mark_for_del.push_back(k);
+		}
+
+		m_Points.clear();
+		m_Points = m_NewPoints;
+		if (mark_for_del.size()>0){
+			std::sort	(mark_for_del.begin(),mark_for_del.end());
+			std::reverse(mark_for_del.begin(),mark_for_del.end());
+			// delete degenerate faces
+			for (INTIt i_it=mark_for_del.begin(); i_it!=mark_for_del.end(); i_it++)
+				m_Faces.erase(m_Faces.begin()+(*i_it));
+			// delete degenerate faces refs
+			for (INTIt m_d=mark_for_del.begin(); m_d!=mark_for_del.end(); m_d++){
+				for (SurfFacesPairIt plp_it=m_SurfFaces.begin(); plp_it!=m_SurfFaces.end(); plp_it++){
+					INTVec& 	pol_lst = plp_it->second;
+					for (int k=0; k<int(pol_lst.size()); k++){
+						int& f = pol_lst[k];
+						if (f>*m_d){ f--;
+						}else if (f==*m_d){
+							pol_lst.erase(pol_lst.begin()+k);
+							k--;
+						}
+					}
+				}
+			}
+		}
 	}
-
-    m_Points.clear();
-    m_Points = m_NewPoints;
-    if (mark_for_del.size()>0){
-        std::sort	(mark_for_del.begin(),mark_for_del.end());
-        std::reverse(mark_for_del.begin(),mark_for_del.end());
-        // delete degenerate faces
-        for (INTIt i_it=mark_for_del.begin(); i_it!=mark_for_del.end(); i_it++)
-            m_Faces.erase(m_Faces.begin()+(*i_it));
-        // delete degenerate faces refs
-        for (INTIt m_d=mark_for_del.begin(); m_d!=mark_for_del.end(); m_d++){
-            for (SurfFacesPairIt plp_it=m_SurfFaces.begin(); plp_it!=m_SurfFaces.end(); plp_it++){
-                INTVec& 	pol_lst = plp_it->second;
-                for (int k=0; k<int(pol_lst.size()); k++){
-                    int& f = pol_lst[k];
-                    if (f>*m_d){ f--;
-                    }else if (f==*m_d){
-                        pol_lst.erase(pol_lst.begin()+k);
-                        k--;
-                    }
-                }
-            }
-        }
-    }
-
     UpdateAdjacency();
 }
 

@@ -4,7 +4,6 @@
 #ifndef _INCDEF_Object_H_
 #define _INCDEF_Object_H_
 
-#include "CustomObject.h"
 //----------------------------------------------------
 struct 	SRayPickInfo;
 class 	CEditableMesh;
@@ -14,6 +13,8 @@ class 	CSMotion;
 class 	COMotion;
 class 	CCustomMotion;
 class	CBone;
+class	Mtl;
+struct	FSChunkDef;
 
 class CSurface
 {
@@ -49,6 +50,10 @@ public:
     IC void			SetFVF			(DWORD fvf){m_dwFVF=fvf;}
     IC void			SetTexture		(LPCSTR name){m_Texture=name;}
     IC void			SetVMap			(LPCSTR name){m_VMap=name;}
+#ifdef MAX_EXPORT
+	DWORD			mat_id;
+	Mtl*			pMtlMain;
+#endif
 };
 
 DEFINE_VECTOR	(CSurface*,SurfaceVec,SurfaceIt);
@@ -77,6 +82,7 @@ class CEditableObject{
     friend class TUI_ControlSectorAdd;
 	friend class ELibrary;
 	friend class TfrmEditLibrary;
+	friend class MeshExpUtility;
 
 // general
 	AnsiString		m_ClassScript;
@@ -167,7 +173,7 @@ public:
 	void			SetActiveSMotion		(CSMotion* mot);
 	bool 			CheckBoneCompliance		(CSMotion* M);
 
-    virtual void 	ResetAnimation			(bool upd_t=true);
+	void 			ResetAnimation			(bool upd_t=true);
     void			CalculateAnimation		(bool bGenInvMat=false);
 
     // statistics methods
@@ -176,8 +182,7 @@ public:
     int 			GetSurfFaceCount		(const char* surf_name);
 
     // render methods
-//	virtual bool 	IsRender				(Fmatrix& parent);
-	virtual void 	Render					(Fmatrix& parent, int priority, bool strictB2F);
+	void 			Render					(Fmatrix& parent, int priority, bool strictB2F);
 	void 			RenderSelection			(Fmatrix& parent);
 	void 			RenderEdge				(Fmatrix& parent, CEditableMesh* m=0);
 	void 			RenderBones				(const Fmatrix& parent);
@@ -185,7 +190,7 @@ public:
 	void 			RenderSingle			(Fmatrix& parent);
 
     // update methods
-	virtual void 	RTL_Update				(float dT);
+	void 			RTL_Update				(float dT);
 	void 			UpdateBox				();
 	void		    LightenObject			();
 
@@ -219,7 +224,7 @@ public:
     // load/save methods
 	void 			LoadMeshDef				(FSChunkDef *chunk);
 	bool 			Reload					();
-	bool 			Load					(const char* fname);
+//	bool 			Load					(const char* fname);
 	bool 			LoadObject				(const char* fname);
 	void 			SaveObject				(const char* fname);
     CSMotion*		LoadSMotion				(const char* fname);
@@ -243,10 +248,16 @@ public:
     // device dependent routine
 	void 			OnDeviceCreate 			();
 	void 			OnDeviceDestroy			();
+
+#ifdef MAX_EXPORT
+	CSurface*		CreateSurface			(Mtl* M, DWORD m_id);
+	LPCSTR			GenerateSurfaceName		(const char* base_name);
+#endif
 };
 //----------------------------------------------------
 #define EOBJ_CURRENT_VERSION		0x0010
 //----------------------------------------------------
+#define EOBJ_CHUNK_OBJECT_BODY		0x7777
 #define EOBJ_CHUNK_VERSION		  	0x0900
 #define EOBJ_CHUNK_REFERENCE     	0x0902
 #define EOBJ_CHUNK_FLAG           	0x0903

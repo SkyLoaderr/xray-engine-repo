@@ -27,6 +27,7 @@
 
 #include <windows.h>
 
+#include <SYS\utime.h>
 #include <windowsx.h>
 #include <mmsystem.h>
 #include <mmreg.h>
@@ -76,6 +77,8 @@
 #include <deque>
 #include <string>
 
+#undef _MIN
+#undef _MAX
 #define _MIN(a,b)		(a)<(b)?(a):(b)
 #define _MAX(a,b)		(a)>(b)?(a):(b)
 template <class T>
@@ -117,6 +120,7 @@ extern "C" __declspec(dllimport) HRESULT InterpretError(HRESULT hr);
 
 void __fastcall _verify(const char *expr, char *file, int line);
 #define VERIFY(expr) if (!(expr)) _verify(#expr, __FILE__, __LINE__)
+#define VERIFY2(expr, info) if (!(expr)) { char buf[128]; sprintf(buf,"%s, %s",#expr,info); _verify(buf, __FILE__, __LINE__); }
 #define R_ASSERT(a) VERIFY(a)
 
 #define _FREE(x)		{ if(x) { free(x); (x)=NULL; } }
@@ -144,11 +148,17 @@ void __fastcall _verify(const char *expr, char *file, int line);
 #define NO_XR_VERTEX
 //#define NO_XR_COLOR
 #define NODEFAULT R_ASSERT(0)
+
+enum TMsgDlgType { mtWarning, mtError, mtInformation, mtConfirmation, mtCustom };
+enum TMsgDlgBtn { mbYes, mbNo, mbOK, mbCancel, mbAbort, mbRetry, mbIgnore, mbAll, mbNoToAll, mbYesToAll, mbHelp };
+typedef TMsgDlgBtn TMsgDlgButtons[mbHelp];
+
+#define AnsiString string
+
 #include "vector.h"
 #include "fixedvector.h"
 #include "NetDeviceLog.h"
-#include "FS.h"
-
+#include "Log.h"
 
 #define MAX_FOLDER_NAME    255
 #define MAX_OBJ_NAME       64
@@ -168,15 +178,17 @@ void __fastcall _verify(const char *expr, char *file, int line);
 	typedef svector<type,sz> lst;\
 	typedef lst::iterator it;
 
-DEFINE_VECTOR(DWORD,DWORDList,DWORDIt);
-DEFINE_VECTOR(int,INTList,INTIt);
-DEFINE_VECTOR(WORD,WORDList,WORDIt);
-DEFINE_VECTOR(Fplane,PlaneList,PlaneIt);
-DEFINE_VECTOR(Fvector,FvectorList,FvectorIt);
-DEFINE_VECTOR(Fvector2,Fvector2List,Fvector2It);
-DEFINE_VECTOR(bool,BOOLList,BOOLIt);
-DEFINE_VECTOR(float,FloatList,FloatIt);
-DEFINE_VECTOR(string,AStringList,AStringIt);
+DEFINE_VECTOR(DWORD,DWORDVec,DWORDIt);
+DEFINE_VECTOR(int,INTVec,INTIt);
+DEFINE_VECTOR(WORD,WORDVec,WORDIt);
+DEFINE_VECTOR(Fplane,PlaneVec,PlaneIt);
+DEFINE_VECTOR(Fvector,FvectorVec,FvectorIt);
+DEFINE_VECTOR(Fvector2,Fvector2Vec,Fvector2It);
+DEFINE_VECTOR(bool,BOOLVec,BOOLIt);
+DEFINE_VECTOR(float,FloatVec,FloatIt);
+DEFINE_VECTOR(string,AStringVec,AStringIt);
+
+#include "FileSystem.h"
 
 extern ENGINE_API Fmatrix precalc_identity;;
 extern bool g_ErrorMode;
@@ -186,6 +198,20 @@ typedef unsigned __int64	CLASS_ID;
 #define MK_CLSID(a,b,c,d,e,f,g,h) \
 	CLASS_ID(	((CLASS_ID(a)<<CLASS_ID(24))|(CLASS_ID(b)<<CLASS_ID(16))|(CLASS_ID(c)<<CLASS_ID(8))|(CLASS_ID(d)))<<CLASS_ID(32) | \
 				((CLASS_ID(e)<<CLASS_ID(24))|(CLASS_ID(f)<<CLASS_ID(16))|(CLASS_ID(g)<<CLASS_ID(8))|(CLASS_ID(h))) )
+
+struct st_Version{
+    union{
+        struct{
+            int f_age;
+            int res0;
+        };
+        __int64 ver;
+    };
+    st_Version   (){reset();}
+    int size	(){return sizeof(st_Version);}
+    bool operator == (st_Version& v)	{return v.f_age==f_age;}
+    void reset	(){ver=0;}
+};
 
 #endif /*_INCDEF_STDAFX_H_*/
 

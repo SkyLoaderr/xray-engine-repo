@@ -11,41 +11,9 @@
 
 //----------------------------------------------------
 
-NetLog NLog( "objectexp.log" );
 NetDeviceConsole NConsole;
 
 //----------------------------------------------------
-
-NetLog::NetLog( char *_FileName ){
-	VERIFY( _FileName );
-	strcpy( m_FileName, _FileName );
-}
-
-void NetLog::Msg( char *_Format, ... ){
-	
-	char buf[4096];
-	va_list l; 
-	va_start( l, _Format );
-	vsprintf( buf, _Format, l );
-
-#ifdef NLOG_CONSOLE_OUT
-	printf( "\n%s", buf );
-#endif
-
-	strcat( buf, "\r\n" );
-
-	int hf = _open( m_FileName, _O_WRONLY|_O_APPEND|_O_BINARY );
-	if( hf<=0 )
-		hf = _open( m_FileName,
-			_O_WRONLY|_O_CREAT|_O_TRUNC| _O_BINARY,
-			_S_IREAD | _S_IWRITE );
-
-	_write( hf, buf, strlen(buf) );
-	_close( hf );
-}
-
-//----------------------------------------------------
-
 BOOL CALLBACK ConsoleDialogProc( HWND hw, UINT msg, WPARAM wp, LPARAM lp){
 	
 	std::list<NetDeviceConsole::_ConsoleMsg>::iterator _F;
@@ -149,7 +117,7 @@ void NetDeviceConsole::print(const char *_Format, ...){
 	SendMessage	( m_hWindow, LB_SETTOPINDEX, dwCnt-1, 0);
 	LeaveCriticalSection( &m_CSection );
 
-	NLog.Msg(buf.buf);
+	ELog.Msg(mtInformation,buf.buf);
 }
 /*
 bool NetDeviceConsole::in( char *_Buffer ){
@@ -238,45 +206,3 @@ void NetDeviceConsole::ProgressUpdate(float val){
 //----------------------------------------------------
 
 
-void Msg(const char *msg, ... ){
-	char buf[4096];
-	va_list l; 
-	va_start( l, msg );
-	vsprintf( buf, msg, l );
-	NConsole.print(buf);
-}
-
-void Log(const char *msg) {
-	NConsole.print(msg);
-}
-
-void Log(const char *msg, const char *dop) {
-	char buf[1024];
-	if (dop)	sprintf(buf,"%s %s",msg,dop);
-	else		sprintf(buf,"%s",msg);
-	NConsole.print(buf);
-}
-
-void Log(const char *msg, DWORD dop) {
-	char buf[1024];
-	sprintf(buf,"%s %d",msg,dop);
-	NConsole.print(buf);
-}
-
-void Log(const char *msg, int dop) {
-	char buf[1024];
-	sprintf(buf,"%s %d",msg,dop);
-	NConsole.print(buf);
-}
-
-void Log(const char *msg, float dop) {
-	char buf[1024];
-	sprintf(buf,"%s %f",msg,dop);
-	NConsole.print(buf);
-}
-
-void Log(const char *msg, const Fvector &dop) {
-	char buf[1024];
-	sprintf(buf,"%s (%f,%f,%f)",msg,dop.x,dop.y,dop.z);
-	NConsole.print(buf);
-}

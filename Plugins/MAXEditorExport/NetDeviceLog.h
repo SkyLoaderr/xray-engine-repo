@@ -9,14 +9,6 @@
 #define NLOG_CONSOLE_OUT
 // -------
 
-class NetLog{
-protected:
-	char m_FileName[MAX_PATH];
-public:
-	NetLog( char *_FileName );
-	void Msg( char *_Format, ... );
-};
-
 class NetDeviceConsole{
 protected:
 
@@ -65,18 +57,7 @@ public:
 	~NetDeviceConsole();
 };
 
-extern NetLog NLog;
 extern NetDeviceConsole NConsole;
-
-void Log	(const char *msg);
-void Log	(const char *msg);
-void Log	(const char *msg, const char*	dop);
-void Log	(const char *msg, DWORD			dop);
-void Log	(const char *msg, int  			dop);
-void Log	(const char *msg, float			dop);
-void Log	(const char *msg, const Fvector& dop);
-void Msg	(const char *format, ...);
-
 
 #endif /*_INCDEF_NETDEVICELOG_H_*/
 

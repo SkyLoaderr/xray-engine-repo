@@ -24,7 +24,9 @@ void CEditableMesh::Construct(){
 }
 
 void CEditableMesh::Clear(){
+#ifdef _EDITOR
 	ClearRenderBuffers	();
+#endif
 	m_Points.clear 		();
     m_Adjs.clear		();
 	m_Faces.clear		();

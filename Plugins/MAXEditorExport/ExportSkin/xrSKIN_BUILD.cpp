@@ -17,11 +17,8 @@
 #pragma comment(lib, "x:\\xrProgressive.lib")
 
 // shaders
-#include "..\XRShaderDef.h"
-#include "..\XRShaderLib.h"
 //----------------------------------------------------------------------------------------------
-DEFINE_VECTOR(SH_ShaderDef, SHVec, SHIt);
-SHVec Shaders;
+AStringVec Shaders;
 
 HWND m_hSHWindow=0;
 static string m_SelShName="model";
@@ -34,8 +31,8 @@ BOOL CALLBACK ShaderDialogProc(HWND hw, UINT msg, WPARAM wp, LPARAM lp){
 		SetWindowPos(hw,HWND_TOPMOST,0,0,0,0,SWP_NOSIZE|SWP_NOMOVE);
 		m_hSHWindow = hw;
 
-		for (SHIt it=Shaders.begin(); it!=Shaders.end(); it++)
-			SendDlgItemMessage(hw, IDC_SHADERLIST, LB_ADDSTRING, 0, (LPARAM)it->cName);
+		for (AStringIt it=Shaders.begin(); it!=Shaders.end(); it++)
+			SendDlgItemMessage(hw, IDC_SHADERLIST, LB_ADDSTRING, 0, (LPARAM)it->c_str());
 
 		int k = SendDlgItemMessage(hw, IDC_SHADERLIST, LB_FINDSTRING, -1, (LPARAM)m_SelShName.c_str());
 		SendDlgItemMessage(hw, IDC_SHADERLIST, LB_SETCURSEL, k, 0);
@@ -521,7 +518,7 @@ void PARSE		(CExporter* E, Interface *pInterface, const char* fnTOSAVE){
 int startup(CExporter* E, Interface *pInterface, const char* fnTOSAVE )
 {
 	// load shaders
-	shLibrary_Load("x:\\game\\shaders.xr", Shaders);
+//S	shLibrary_Load("x:\\game\\shaders.xr", Shaders);
 
 	PARSE(E, pInterface,fnTOSAVE);
     NConsole.ProgressEnd();

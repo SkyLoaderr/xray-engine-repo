@@ -5,7 +5,6 @@
 #define _INCDEF_EditableMesh_H_
 
 //----------------------------------------------------
-#include "CustomObject.h"
 #ifdef _EDITOR
 	#include "cl_rapid.h"
 #endif
@@ -105,6 +104,7 @@ class CSector;
 #define EMESH_LS_SVERTICES 	0x0008
 
 class CEditableMesh {
+	friend class MeshExpUtility;
 	friend class CEditableObject;
     friend class CSectorItem;
     friend class CSector;
@@ -159,7 +159,7 @@ protected:
 
 	// mesh optimize routine
 	bool 			OptimizeFace			(st_Face& face);
-	void 			Optimize				();
+	void 			Optimize				(BOOL NoOpt);
 	bool 			UpdateAdjacency			();
 public:
 	                CEditableMesh				(CEditableObject* parent){m_Parent=parent;Construct();}
@@ -207,6 +207,15 @@ public:
 
     // debug
     void			DumpAdjacency			();
+
+#ifdef MAX_EXPORT
+	// convert
+    void			FlipFaces				();
+	TriObject*		ExtractTriObject		(INode *node, int &deleteIt);
+	bool			ExtractTexName			(char *dest, Texmap *map);
+	bool			ExtractMaterial			(CSurface *surf, StdMat *smtl);
+	bool			Convert					(INode *node);
+#endif
 };
 //----------------------------------------------------
 #endif /*_INCDEF_EditableMesh_H_*/

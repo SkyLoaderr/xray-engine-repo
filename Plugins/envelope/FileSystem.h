@@ -57,6 +57,7 @@ public:
 			CFileSystem		();
     void 	Init			();
 
+    bool 	Exist			(LPCSTR _FileName, bool bMessage = false);
 	bool 	GetOpenName		(FSPath *initial, char *buffer);
 	bool 	GetSaveName		(FSPath *initial, char *buffer);
 

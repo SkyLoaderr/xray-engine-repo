@@ -58,6 +58,14 @@ void CEditableObject::VerifyMeshNames(){
     }
 }
 
+void CEditableObject::ClearRenderBuffers(){
+#ifdef _EDITOR
+	for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
+    	if (*_M) (*_M)->ClearRenderBuffers();
+    m_LoadState &=~ EOBJECT_LS_RENDERBUFFER;
+#endif
+}
+
 void CEditableObject::GenerateMeshNames(){
 	int idx=0;
     for(EditMeshIt m_def=m_Meshes.begin();m_def!=m_Meshes.end();m_def++,idx++)
@@ -136,44 +144,6 @@ void CEditableObject::UpdateBox(){
     }
 }
 //----------------------------------------------------
-bool CEditableObject::RayPick(float& dist, Fvector& S, Fvector& D, Fmatrix& parent, SRayPickInfo* pinf){
-	bool picked = false;
-
-    for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
-        if( (*m)->RayPick( dist, S, D, parent, pinf ) )
-            picked = true;
-
-	return picked;
-}
-
-#ifdef _LEVEL_EDITOR
-bool CEditableObject::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
-	for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
-		if((*m)->FrustumPick(frustum, parent))	return true;
-	return false;
-}
-
-void CEditableObject::BoxPick(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf){
-    for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
-        (*m)->BoxPick(box, parent, pinf);
-}
-#endif
-
-void CEditableObject::ClearRenderBuffers(){
-	for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
-    	if (*_M) (*_M)->ClearRenderBuffers();
-    m_LoadState &=~ EOBJECT_LS_RENDERBUFFER;
-}
-
-void CEditableObject::UpdateRenderBuffers(){
-	ClearRenderBuffers();
-    EditMeshIt _M=m_Meshes.begin();
-    EditMeshIt _E=m_Meshes.end();
-	for (; _M!=_E; _M++) (*_M)->UpdateRenderBuffers();
-    m_LoadState |= EOBJECT_LS_RENDERBUFFER;
-}
-//------------------------------------------------------------------------------
-
 void CEditableObject::RemoveMesh(CEditableMesh* mesh){
 	EditMeshIt m_it = std::find(m_Meshes.begin(),m_Meshes.end(),mesh);
     VERIFY(m_it!=m_Meshes.end());
@@ -193,5 +163,4 @@ CSurface*	CEditableObject::FindSurfaceByName(const char* surf_name, int* s_id){
     	if (strcmp((*s_it)->_Name(),surf_name)==0){ if (s_id) *s_id=s_it-m_Surfaces.begin(); return *s_it;}
     return 0;
 }
-
 

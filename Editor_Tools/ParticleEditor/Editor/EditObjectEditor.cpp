@@ -3,6 +3,43 @@
 
 #include "EditObject.h"
 
+bool CEditableObject::Reload()
+{
+	ClearGeometry();
+    return Load(m_LoadName.c_str());
+}
+
+bool CEditableObject::RayPick(float& dist, Fvector& S, Fvector& D, Fmatrix& parent, SRayPickInfo* pinf){
+	bool picked = false;
+
+    for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
+        if( (*m)->RayPick( dist, S, D, parent, pinf ) )
+            picked = true;
+
+	return picked;
+}
+
+#ifdef _LEVEL_EDITOR
+bool CEditableObject::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
+	for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
+		if((*m)->FrustumPick(frustum, parent))	return true;
+	return false;
+}
+
+void CEditableObject::BoxPick(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf){
+    for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
+        (*m)->BoxPick(box, parent, pinf);
+}
+#endif
+
+void CEditableObject::UpdateRenderBuffers(){
+	ClearRenderBuffers();
+    EditMeshIt _M=m_Meshes.begin();
+    EditMeshIt _E=m_Meshes.end();
+	for (; _M!=_E; _M++) (*_M)->UpdateRenderBuffers();
+    m_LoadState |= EOBJECT_LS_RENDERBUFFER;
+}
+
 void CEditableObject::Render(Fmatrix& parent, int priority, bool strictB2F){
     if (!(m_LoadState&EOBJECT_LS_RENDERBUFFER)) UpdateRenderBuffers();
 

@@ -236,3 +236,13 @@ void CFileSystem::VerifyPath(LPCSTR path)
 		CreateDirectory( tmp, 0 );
 	}
 }
+
+bool CFileSystem::Exist(LPCSTR _FileName, bool bMessage){
+    int handle	= open(_FileName, O_RDONLY);
+    bool bRes = handle>-1;
+    if (bMessage&&!bRes){
+        ELog.Msg(mtError,"Can't find required file: '%s'",_FileName);
+        return false;
+    };
+    return bRes;
+}

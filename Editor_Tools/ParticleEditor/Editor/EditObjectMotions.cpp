@@ -8,9 +8,11 @@
 
 #include "motion.h"
 #include "bone.h"
+
+#ifdef _EDITOR
 #include "ui_main.h"
 #include "BottomBar.h"
-
+#endif
 //----------------------------------------------------
 class fBoneNameEQ {
 	AnsiString	name;
@@ -32,7 +34,13 @@ void st_AnimParam::Set(CCustomMotion* M){
 }
 void st_AnimParam::Update(float dt){
 	t+=dt;
-    if (t>max_t){ if (fraBottomBar->miObjectLoopedAnimation->Checked) t=min_t; else t=max_t; }
+    if (t>max_t){ 
+#ifdef _EDITOR
+		if (fraBottomBar->miObjectLoopedAnimation->Checked) t=min_t; 
+		else 
+#endif
+			t=max_t; 
+	}
 }
 
 void CEditableObject::RTL_Update( float dT ){
@@ -52,8 +60,6 @@ void CEditableObject::RTL_Update( float dT ){
 void CEditableObject::ResetAnimation(bool upd_t){
 	SetActiveOMotion(0,false);
 	SetActiveSMotion(0);
-///	ELog.DlgMsg(mtError,"TODO: CEditableObject::ResetAnimation");
-///    if (upd_t) UpdateTransform();
 }
 
 //----------------------------------------------------
@@ -62,9 +68,9 @@ void CEditableObject::ResetAnimation(bool upd_t){
 void CEditableObject::SetActiveOMotion(COMotion* mot, bool upd_t){
 	m_ActiveOMotion=mot;
     if (m_ActiveOMotion) m_OMParam.Set(m_ActiveOMotion);
-///	ELog.DlgMsg(mtError,"TODO: CEditableObject::SetActiveOMotion");
-///    if (upd_t) UpdateTransform();
+#ifdef _EDITOR
     UI.RedrawScene();
+#endif
 }
 
 COMotion* CEditableObject::FindOMotionByName	(const char* name, const COMotion* Ignore){
@@ -187,7 +193,9 @@ void CEditableObject::SetActiveSMotion(CSMotion* mot){
     BoneVec& lst = m_Bones;
     for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++) (*b_it)->Reset();
 	CalculateAnimation();
+#ifdef _EDITOR
     UI.RedrawScene();
+#endif
 }
 
 void CEditableObject::RemoveSMotion(const char* name){
@@ -295,18 +303,18 @@ void CEditableObject::GenerateSMotionName(char* buffer, const char* start_name, 
 void CEditableObject::UpdateBoneParenting(){
     // update parenting
     for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
-        BoneIt parent=find_if(m_Bones.begin(),m_Bones.end(),fBoneNameEQ((*b_it)->Parent()));
+        BoneIt parent=std::find_if(m_Bones.begin(),m_Bones.end(),fBoneNameEQ((*b_it)->Parent()));
         (*b_it)->ParentIndex()=(parent==m_Bones.end())?-1:parent-m_Bones.begin();
     }
 }
 
 CBone* CEditableObject::FindBoneByName(const char* name){
-	BoneIt parent = find_if(m_Bones.begin(),m_Bones.end(),fBoneNameEQ(name));
+	BoneIt parent = std::find_if(m_Bones.begin(),m_Bones.end(),fBoneNameEQ(name));
     return (parent==m_Bones.end())?0:*parent;
 }
 
 int	CEditableObject::GetBoneIndexByWMap(const char* wm_name){
-	BoneIt bone = find_if(m_Bones.begin(),m_Bones.end(),fBoneWMNameEQ(wm_name));
+	BoneIt bone = std::find_if(m_Bones.begin(),m_Bones.end(),fBoneWMNameEQ(wm_name));
     return (bone==m_Bones.end())?-1:bone-m_Bones.begin();
 }
 
