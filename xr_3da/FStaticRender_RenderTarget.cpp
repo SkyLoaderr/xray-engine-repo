@@ -15,7 +15,7 @@ CRenderTarget::CRenderTarget()
 
 	param_blur		= 0;
 	param_gray		= 0;
-	param_noise		= 0;
+	param_noise		= 1.f;
 }
 
 BOOL CRenderTarget::Create	()
@@ -222,5 +222,5 @@ void CRenderTarget::End		()
 		}
 	}
 
-	if (param_noise>0.01f)	e_render_noise();
+	if (param_noise>0.01f)	e_render_noise	();
 }
