@@ -15,7 +15,6 @@ CGameObject::CGameObject()
 {
 	AI_NodeID	= 0;
 	AI_Node		= 0;
-	AI_Lighting	= 0;
 	bActive		= FALSE;
 }
 
@@ -38,12 +37,7 @@ BOOL CGameObject::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_
 	}
 	AI_NodeID			= DWORD(node);
 	AI_Node				= Level().AI.Node(AI_NodeID);
-	if (AI_Node)	{
-		AI_Lighting			= float(AI_Node->light);
-		Level().AI.ref_add  (AI_NodeID);
-	} else {
-		AI_Lighting			= 255.f;
-	}
+	if (AI_Node)		Level().AI.ref_add  (AI_NodeID);
 	
 	return	bResult;
 }
@@ -78,14 +72,12 @@ void CGameObject::Sector_Detect	()
 void CGameObject::OnVisible	()
 {
 	CObject::OnVisible		();
-	float	l_f		= Device.fTimeDelta*fLightSmoothFactor;
-	float	l_i		= 1.f-l_f;
-	float&	LL		= AI_Lighting;
-	float	CL		= AI_Node?float(AI_Node->light):255;
-	LL				= l_i*LL + l_f*CL;
 	::Render->set_Transform		(&clTransform);
-	::Render->set_LightLevel	(iFloor(LL));
 	::Render->add_Visual		(Visual());
+}
+float CGameObject::Ambient	()
+{
+	return AI_Node?float(AI_Node->light):255;
 }
 
 CObject::SavedPosition CGameObject::ps_Element(DWORD ID)

@@ -13,12 +13,12 @@ public:
 	// AI connection
 	DWORD								AI_NodeID;
 	NodeCompressed*						AI_Node;
-	float								AI_Lighting;
 	
 	// Methods
 	virtual BOOL			Spawn				(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);
 	virtual void			Sector_Detect		();
 	virtual void			OnVisible			();
+	virtual float			Ambient				();
 
 	// State flags
 	virtual BOOL			net_Relevant		()	{ return net_Local && bActive;	}	// send messages only if active and local

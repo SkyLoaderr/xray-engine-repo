@@ -300,28 +300,19 @@ void CWeaponMagazined::state_MagEmpty(BOOL bHUDView, float dt)
 	}
 }
 
-void CWeaponMagazined::Render(BOOL bHUDView)
+void CWeaponMagazined::Render		(BOOL bHUDView)
 {
 	inherited::Render		(bHUDView);
 	UpdateXForm				(bHUDView);
 	if (bHUDView)
 	{ 
-		// Interpolate lighting
-		float l_f	= Device.fTimeDelta*fLightSmoothFactor;
-		float l_i	= 1.f-l_f;
-		float&	LL	= m_pParent->AI_Lighting;
-		NodeCompressed*	NODE = m_pParent->AI_Node;
-		float	CL	= NODE?float(NODE->light):255;
-		LL			= l_i*LL + l_f*CL; 
-
 		// HUD render
-		if (m_pHUD) Level().HUD()->RenderModel(m_pHUD->Visual(),m_pHUD->Transform(),iFloor(LL));
+		if (m_pHUD) Level().HUD()->RenderModel(m_pHUD->Visual(),m_pHUD->Transform(),0);
 	}
 	else
 	{
 		// Actor render
 		::Render->set_Transform		(&svTransform);
-		::Render->set_LightLevel	(iFloor(m_pParent->AI_Lighting));
 		::Render->add_Visual		(Visual());
 	}
 	if (((eFire==st_current) || (eReload==st_current))&& bFlame) 

@@ -94,7 +94,6 @@ void CHUDManager::Render_Affected()
 		{
 			Model& M = Models[i];
 			::Render->set_Transform		(&M.M);
-			::Render->set_LightLevel	(M.iLightLevel);
 			::Render->add_Visual		(M.V);
 		}
 		
