@@ -142,10 +142,10 @@ bool __fastcall TUI_CustomControl::SelectStart(TShiftState Shift)
     if( bBoxSelection ){
         UI.EnableSelectionRect( true );
         UI.UpdateSelectionRect(UI.m_StartCp,UI.m_CurrentCp);
-        if(obj) obj->Select(Shift.Contains(ssCtrl)?-1:Shift.Contains(ssAlt)?0:1);
+        if(obj) obj->RaySelect(Shift.Contains(ssCtrl)?-1:Shift.Contains(ssAlt)?0:1,UI.m_CurrentRStart,UI.m_CurrentRNorm,false);
         return true;
     } else {
-        if(obj) obj->Select(Shift.Contains(ssCtrl)?-1:Shift.Contains(ssAlt)?0:1);
+        if(obj) obj->RaySelect(Shift.Contains(ssCtrl)?-1:Shift.Contains(ssAlt)?0:1,UI.m_CurrentRStart,UI.m_CurrentRNorm,false);
     }
     return false;
 }

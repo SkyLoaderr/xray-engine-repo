@@ -196,6 +196,8 @@ void ESoundSource::FillProp(LPCSTR pref, PropItemVec& values)
     V->OnChangeEvent			= OnChangeSource;
 	V=PHelper.CreateFloat		(values,FHelper.PrepareKey(pref,"Volume"),		&m_Params.volume,		0.0f,2.f);
     V->OnChangeEvent			= OnChangeSource;
+//	V=PHelper.CreateFlag32		(values,FHelper.PrepareKey(pref,"Looped"),		&m_Flags,				flLooped);
+//    V->OnChangeEvent			= OnChangeSource;
 }
 //----------------------------------------------------
 
