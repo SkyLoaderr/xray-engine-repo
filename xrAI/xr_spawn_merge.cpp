@@ -162,12 +162,12 @@ public:
 			if ((m_tpSpawnPoints[i]->m_tNodeID = m_tpAI_Map->dwfFindCorrespondingNode(m_tpSpawnPoints[i]->o_Position)) == -1) {
 				string4096 S1;
 				char *S = S1;
-				S += sprintf(S,"Can't find a corresponding NODE for the spawn-point %s\n",m_tpSpawnPoints[i]->s_name_replace);
-				S += sprintf(S,"Level ID    : %d\n",m_dwLevelID);
-				S += sprintf(S,"Spawn index : %d\n",i);
-				S += sprintf(S,"Spawn point : [%7.2f][%7.2f][%7.2f]\n",VPUSH(m_tpSpawnPoints[i]->o_Position));
-				S += sprintf(S,"SPAWN POINT IS REMOVED!\n");
-				Msg(S);
+				S += sprintf(S,"SPAWN POINT %s IS REMOVED! (Reason : can't find a corresponding NODE)",m_tpSpawnPoints[i]->s_name_replace);
+//				S += sprintf(S,"Level ID    : %d\n",m_dwLevelID);
+//				S += sprintf(S,"Spawn index : %d\n",i);
+//				S += sprintf(S,"Spawn point : [%7.2f][%7.2f][%7.2f]\n",VPUSH(m_tpSpawnPoints[i]->o_Position));
+//				S += sprintf(S,"\n");
+				Msg(S1);
 				m_tpSpawnPoints.erase(m_tpSpawnPoints.begin() + i--);
 				continue;
 				//R_ASSERT2(false,S1);
