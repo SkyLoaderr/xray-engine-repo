@@ -1,16 +1,16 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_zombie_misc.cpp
+//	Module 		: ai_rat_misc.cpp
 //	Created 	: 23.07.2002
 //  Modified 	: 23.07.2002
 //	Author		: Dmitriy Iassenev
-//	Description : Fire and enemy parameters for monster "Zombie"
+//	Description : Fire and enemy parameters for monster "Rat"
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "ai_zombie.h"
+#include "ai_rat.h"
 #include "..\\..\\xr_weapon_list.h"
 
-void CAI_Zombie::Exec_Action(float dt)
+void CAI_Rat::Exec_Action(float dt)
 {
 	AI::C_Command* C	= &q_action;
 	AI::AIC_Action* L	= (AI::AIC_Action*)C;
@@ -20,13 +20,13 @@ void CAI_Zombie::Exec_Action(float dt)
 			DWORD dwTime = Level().timeServer();
 			
 			if (!m_bActionStarted) {
-				m_dwStartFireAmmo = dwTime;
+				m_dwStartAttackTime = dwTime;
 				m_bActionStarted = true;
 			}
 				
-			if (dwTime - m_dwStartFireAmmo > m_dwHitInterval) {
+			if (dwTime - m_dwStartAttackTime > m_dwHitInterval) {
 				
-				m_dwStartFireAmmo = dwTime;
+				m_dwStartAttackTime = dwTime;
 				
 				Fvector tDirection;
 				tDirection.sub(tSavedEnemy->Position(),this->Position());
@@ -52,7 +52,7 @@ void CAI_Zombie::Exec_Action(float dt)
 		L->setTimeout();
 }
 
-float CAI_Zombie::EnemyHeuristics(CEntity* E)
+float CAI_Rat::EnemyHeuristics(CEntity* E)
 {
 	if (E->g_Team()  == g_Team())	
 		return flt_max;		// don't attack our team
@@ -69,8 +69,8 @@ float CAI_Zombie::EnemyHeuristics(CEntity* E)
 	return  f1*f2*f3;
 }
 
-// when someone hit zombie
-void CAI_Zombie::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
+// when someone hit rat
+void CAI_Rat::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 {
 	// Save event
 	Fvector D;
@@ -96,15 +96,15 @@ void CAI_Zombie::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 	if (iHealth > 0) {
 		/**
 		if (::Random.randI(0,2))
-			PKinematics(pVisual)->PlayFX(tZombieAnimations.tNormal.tTorso.tpDamageLeft);
+			PKinematics(pVisual)->PlayFX(tRatAnimations.tNormal.tTorso.tpDamageLeft);
 		else
-			PKinematics(pVisual)->PlayFX(tZombieAnimations.tNormal.tTorso.tpDamageRight);
+			PKinematics(pVisual)->PlayFX(tRatAnimations.tNormal.tTorso.tpDamageRight);
 		/**/
 	}
 }
 
-// when someone hit zombie
-void CAI_Zombie::SenseSignal(int amount, Fvector& vLocalDir, CEntity* who)
+// when someone hit rat
+void CAI_Rat::SenseSignal(int amount, Fvector& vLocalDir, CEntity* who)
 {
 	// Save event
 	Fvector D;
@@ -113,7 +113,7 @@ void CAI_Zombie::SenseSignal(int amount, Fvector& vLocalDir, CEntity* who)
 	tSenseDir.set(D);
 }
 
-void CAI_Zombie::SelectEnemy(SEnemySelected& S)
+void CAI_Rat::SelectEnemy(SEnemySelected& S)
 {
 	// Initiate process
 	objVisible&	Known	= Level().Teams[g_Team()].KnownEnemys;

@@ -75,7 +75,7 @@ void CAI_Zombie::SetDirectionLook()
 			mk_rotation(tWatchDirection,r_torso_target);
 			r_target.yaw = r_torso_target.yaw;
 			ASSIGN_SPINE_BONE;
-			q_look.o_look_speed=PI_DIV_4;
+			//q_look.o_look_speed=PI_DIV_4;
 		}
 	}
 	//r_target.pitch = 0;
@@ -106,68 +106,13 @@ void CAI_Zombie::SetLessCoverLook(NodeCompressed *tNode, bool bSpine)
 			if (bSpine) {
 				ASSIGN_SPINE_BONE;
 			}
-			q_look.o_look_speed = PI_DIV_4;
+			//q_look.o_look_speed = PI_DIV_4;
 			//r_torso_speed = _FB_look_speed;//(r_torso_target.yaw - r_torso_current.yaw);
 			//r_target.yaw += PI_DIV_6;
 		}
 	}
 	//r_target.pitch = 0;
 	//r_torso_target.pitch = 0;
-}
-
-void CAI_Zombie::SetSmartLook(NodeCompressed *tNode, Fvector &tEnemyDirection)
-{
-	Fvector tLeft;
-	Fvector tRight;
-	Fvector tFront;
-	Fvector tBack;
-	tLeft.set(-1,0,0);
-	tRight.set(1,0,0);
-	tFront.set(0,0,1);
-	tBack.set(0,0,-1);
-
-	tEnemyDirection.normalize();
-	
-	/**
-	float fCover = 0;
-	if ((tEnemyDirection.x < 0) && (tEnemyDirection.z > 0)) {
-		float fAlpha = acosf(tEnemyDirection.dotproduct(tFront));
-		fCover = cosf(fAlpha)*tNode->cover[0] + sinf(fAlpha)*tNode->cover[1];
-	}
-	else 
-		if ((tEnemyDirection.x > 0) && (tEnemyDirection.z > 0)) {
-			float fAlpha = acosf(tEnemyDirection.dotproduct(tFront));
-			fCover = cosf(fAlpha)*tNode->cover[1] + sinf(fAlpha)*tNode->cover[2];
-		}
-		else 
-			if ((tEnemyDirection.x > 0) && (tEnemyDirection.z < 0)) {
-				float fAlpha = acosf(tEnemyDirection.dotproduct(tBack));
-				fCover = cosf(fAlpha)*tNode->cover[3] + sinf(fAlpha)*tNode->cover[2];
-			}
-			else 
-				if ((tEnemyDirection.x < 0) && (tEnemyDirection.z < 0)) {
-					float fAlpha = acosf(tEnemyDirection.dotproduct(tBack));
-					fCover = cosf(fAlpha)*tNode->cover[3] + sinf(fAlpha)*tNode->cover[0];
-				}
-				
-				
-				//Msg("%8.2f",fCover);
-	if (fCover > -1.0f*255.f) {
-					/**/
-	//q_look.setup(AI::AIC_Look::Look, AI::t_Direction, &(tEnemyDirection), 1000);
-	mk_rotation(tEnemyDirection,r_torso_target);
-	r_target.yaw = r_torso_target.yaw;
-	ASSIGN_SPINE_BONE;
-	r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
-	//r_target.pitch *= -1;
-	q_look.o_look_speed=8*_FB_look_speed;
-	/**
-	}
-	else {
-	SetLessCoverLook(tNode);
-	q_look.o_look_speed=8*_FB_look_speed;
-	}
-	/**/
 }
 
 void CAI_Zombie::vfAimAtEnemy()
@@ -181,7 +126,7 @@ void CAI_Zombie::vfAimAtEnemy()
 	r_target.yaw += PI_DIV_6;
 	ASSIGN_SPINE_BONE;
 	//r_torso_target.yaw = r_torso_target.yaw - 2*PI_DIV_6;//EYE_WEAPON_DELTA;
-	q_look.o_look_speed=_FB_look_speed;
+	//q_look.o_look_speed=_FB_look_speed;
 }
 
 static BOOL __fastcall ZombieQualifier(CObject* O, void* P)

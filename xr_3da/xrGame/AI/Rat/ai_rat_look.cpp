@@ -1,16 +1,16 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_zombie_misc.cpp
+//	Module 		: ai_rat_misc.cpp
 //	Created 	: 23.07.2002
 //  Modified 	: 23.07.2002
 //	Author		: Dmitriy Iassenev
-//	Description : Visibility and look for monster "Zombie"
+//	Description : Visibility and look for monster "Rat"
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "ai_zombie.h"
+#include "ai_rat.h"
 #include "..\\..\\xr_weapon_list.h"
 
-bool CAI_Zombie::bfCheckForVisibility(CEntity* tpEntity)
+bool CAI_Rat::bfCheckForVisibility(CEntity* tpEntity)
 {
 	float fResult = 0.f;
 	
@@ -64,7 +64,7 @@ bool CAI_Zombie::bfCheckForVisibility(CEntity* tpEntity)
 	return(fResult >= m_fVisibilityThreshold);
 }
 
-void CAI_Zombie::SetDirectionLook()
+void CAI_Rat::SetDirectionLook()
 {
 	int i = ps_Size();
 	if (i > 1) {
@@ -82,7 +82,7 @@ void CAI_Zombie::SetDirectionLook()
 	//r_torso_target.pitch = 0;
 }
 
-void CAI_Zombie::SetLessCoverLook(NodeCompressed *tNode, bool bSpine)
+void CAI_Rat::SetLessCoverLook(NodeCompressed *tNode, bool bSpine)
 {
 	int i = ps_Size();
 	if (i > 1) {
@@ -115,7 +115,7 @@ void CAI_Zombie::SetLessCoverLook(NodeCompressed *tNode, bool bSpine)
 	//r_torso_target.pitch = 0;
 }
 
-void CAI_Zombie::SetSmartLook(NodeCompressed *tNode, Fvector &tEnemyDirection)
+void CAI_Rat::SetSmartLook(NodeCompressed *tNode, Fvector &tEnemyDirection)
 {
 	Fvector tLeft;
 	Fvector tRight;
@@ -170,7 +170,7 @@ void CAI_Zombie::SetSmartLook(NodeCompressed *tNode, Fvector &tEnemyDirection)
 	/**/
 }
 
-void CAI_Zombie::vfAimAtEnemy()
+void CAI_Rat::vfAimAtEnemy()
 {
 	Fvector	pos1, pos2;
 	Enemy.Enemy->svCenter(pos1);
@@ -184,7 +184,7 @@ void CAI_Zombie::vfAimAtEnemy()
 	q_look.o_look_speed=_FB_look_speed;
 }
 
-static BOOL __fastcall ZombieQualifier(CObject* O, void* P)
+static BOOL __fastcall RatQualifier(CObject* O, void* P)
 {
 	if (O->CLS_ID!=CLSID_ENTITY)			
 		return FALSE;
@@ -192,12 +192,12 @@ static BOOL __fastcall ZombieQualifier(CObject* O, void* P)
 		return TRUE;
 }
 
-objQualifier* CAI_Zombie::GetQualifier	()
+objQualifier* CAI_Rat::GetQualifier	()
 {
-	return(&ZombieQualifier);
+	return(&RatQualifier);
 }
 
-void CAI_Zombie::vfUpdateDynamicObjects()
+void CAI_Rat::vfUpdateDynamicObjects()
 {
 
 }

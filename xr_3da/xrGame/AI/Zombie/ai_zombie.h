@@ -198,7 +198,6 @@ class CAI_Zombie : public CCustomMonster
 		bool bfCheckPath(AI::Path &Path);
 		void SetLessCoverLook(NodeCompressed *tNode, bool bSpine = true);
 		void SetDirectionLook();
-		void SetSmartLook(NodeCompressed *tNode, Fvector &tEnemyDirection);
 		void vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
 		//void vfBuildPathToDestinationPoint(CZombieSelectorAttack *S);
 		void vfBuildPathToDestinationPoint(CZombieSelectorFreeHunting *S);

@@ -1,16 +1,16 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_zombie_animations.cpp
+//	Module 		: ai_rat_animations.cpp
 //	Created 	: 21.06.2002
 //  Modified 	: 21.06.2002
 //	Author		: Dmitriy Iassenev
-//	Description : Animations, Bone transformations and Sounds for monster "Zombie"
+//	Description : Animations, Bone transformations and Sounds for monster "Rat"
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "ai_zombie.h"
+#include "ai_rat.h"
 
 // bones
-void CAI_Zombie::vfAssignBones(CInifile *ini, const char *section)
+void CAI_Rat::vfAssignBones(CInifile *ini, const char *section)
 {
 	int head_bone = PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_head"));
 	PKinematics(pVisual)->LL_GetInstance(head_bone).set_callback(HeadSpinCallback,this);
@@ -19,18 +19,18 @@ void CAI_Zombie::vfAssignBones(CInifile *ini, const char *section)
 	PKinematics(pVisual)->LL_GetInstance(torso_bone).set_callback(SpineSpinCallback,this);
 }
 
-void __stdcall CAI_Zombie::HeadSpinCallback(CBoneInstance* B)
+void __stdcall CAI_Rat::HeadSpinCallback(CBoneInstance* B)
 {
-	CAI_Zombie*		A = dynamic_cast<CAI_Zombie*> (static_cast<CObject*>(B->Callback_Param));
+	CAI_Rat*		A = dynamic_cast<CAI_Rat*> (static_cast<CObject*>(B->Callback_Param));
 	
 	Fmatrix				spin;
 	spin.setXYZ			(A->r_current.yaw - A->r_torso_current.yaw, A->r_current.pitch, 0);
 	B->mTransform.mulB_43(spin);
 }
 
-void __stdcall CAI_Zombie::SpineSpinCallback(CBoneInstance* B)
+void __stdcall CAI_Rat::SpineSpinCallback(CBoneInstance* B)
 {
-	CAI_Zombie*		A = dynamic_cast<CAI_Zombie*> (static_cast<CObject*>(B->Callback_Param));
+	CAI_Rat*		A = dynamic_cast<CAI_Rat*> (static_cast<CObject*>(B->Callback_Param));
 	
 	Fmatrix				spin;
 	spin.setXYZ			(A->r_spine_current.yaw - A->r_torso_current.yaw, A->r_spine_current.pitch, 0);
@@ -38,7 +38,7 @@ void __stdcall CAI_Zombie::SpineSpinCallback(CBoneInstance* B)
 }
 
 // sounds
-void CAI_Zombie::vfLoadSounds()
+void CAI_Rat::vfLoadSounds()
 {
 	pSounds->Create3D(sndHit[0],"actor\\bhit_flesh-1");
 	pSounds->Create3D(sndHit[1],"actor\\bhit_flesh-2");
@@ -55,30 +55,30 @@ void CAI_Zombie::vfLoadSounds()
 }
 
 // animations
-void CAI_Zombie::vfLoadAnimations()
+void CAI_Rat::vfLoadAnimations()
 {
 	CKinematics* tpVisualObject = PKinematics(pVisual);
 	
 	// loading normal animations
-	tZombieAnimations.tNormal.tGlobal.tpaDeath[0] = tpVisualObject->ID_Cycle_Safe("norm_death");
-	tZombieAnimations.tNormal.tGlobal.tpaDeath[1] = tpVisualObject->ID_Cycle_Safe("norm_death_2");
-	tZombieAnimations.tNormal.tGlobal.tpaDeath[2] = tpVisualObject->ID_Cycle_Safe("norm_death_3");
+	tRatAnimations.tNormal.tGlobal.tpaDeath[0] = tpVisualObject->ID_Cycle_Safe("norm_death");
+	tRatAnimations.tNormal.tGlobal.tpaDeath[1] = tpVisualObject->ID_Cycle_Safe("norm_death_2");
+	tRatAnimations.tNormal.tGlobal.tpaDeath[2] = tpVisualObject->ID_Cycle_Safe("norm_death_3");
 	
-	tZombieAnimations.tNormal.tGlobal.tpaAttack[0] = tpVisualObject->ID_Cycle_Safe("attack");
-	tZombieAnimations.tNormal.tGlobal.tpaAttack[1] = tpVisualObject->ID_Cycle_Safe("attack_1");
+	tRatAnimations.tNormal.tGlobal.tpaAttack[0] = tpVisualObject->ID_Cycle_Safe("attack");
+	tRatAnimations.tNormal.tGlobal.tpaAttack[1] = tpVisualObject->ID_Cycle_Safe("attack_1");
 	
-	tZombieAnimations.tNormal.tGlobal.tWalk.Create(tpVisualObject, "norm_walk");
-	tZombieAnimations.tNormal.tGlobal.tpIdle = tpVisualObject->ID_Cycle_Safe("norm_idle");
+	tRatAnimations.tNormal.tGlobal.tWalk.Create(tpVisualObject, "norm_walk");
+	tRatAnimations.tNormal.tGlobal.tpIdle = tpVisualObject->ID_Cycle_Safe("norm_idle");
 	
-	tZombieAnimations.tNormal.tLegs.tpTurn = tpVisualObject->ID_Cycle_Safe("norm_turn");
+	tRatAnimations.tNormal.tLegs.tpTurn = tpVisualObject->ID_Cycle_Safe("norm_turn");
 	
-	tZombieAnimations.tNormal.tGlobal.tpDamageLeft = tpVisualObject->ID_Cycle_Safe("norm_torso_damage_left");
-	tZombieAnimations.tNormal.tGlobal.tpDamageRight = tpVisualObject->ID_Cycle_Safe("norm_torso_damage_right");
+	tRatAnimations.tNormal.tGlobal.tpDamageLeft = tpVisualObject->ID_Cycle_Safe("norm_torso_damage_left");
+	tRatAnimations.tNormal.tGlobal.tpDamageRight = tpVisualObject->ID_Cycle_Safe("norm_torso_damage_right");
 	
-	tpVisualObject->PlayCycle(tZombieAnimations.tNormal.tGlobal.tpIdle);
+	tpVisualObject->PlayCycle(tRatAnimations.tNormal.tGlobal.tpIdle);
 }
 
-void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
+void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
 {
 	CKinematics* tpVisualObject = PKinematics(pVisual);
 	
@@ -89,12 +89,12 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 		switch (m_cBodyState) {
 			case BODY_STATE_STAND : {
 				for (int i=0 ;i<2; i++)
-					if (tZombieAnimations.tNormal.tGlobal.tpaDeath[i] == m_tpCurrentGlobalAnimation) {
+					if (tRatAnimations.tNormal.tGlobal.tpaDeath[i] == m_tpCurrentGlobalAnimation) {
 						tpGlobalAnimation = m_tpCurrentGlobalAnimation;
 						break;
 					}
 				if (!tpGlobalAnimation)
-					tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,2)];
+					tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,2)];
 				break;
 			}
 			case BODY_STATE_CROUCH : {
@@ -107,15 +107,12 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 	}
 	else
 		switch (eCurrentState) {
-			case aiZombieLyingDown : {
-				break;
-			}
 			default : {
 				if (speed<0.2f) {
 					switch (m_cBodyState) {
 						case BODY_STATE_STAND : {
 							if ((fabsf(r_torso_target.yaw - r_torso_current.yaw) > TORSO_ANGLE_DELTA) && (fabsf(PI_MUL_2 - fabsf(r_torso_target.yaw - r_torso_current.yaw)) > TORSO_ANGLE_DELTA))
-								tpLegsAnimation = tZombieAnimations.tNormal.tLegs.tpTurn;
+								tpLegsAnimation = tRatAnimations.tNormal.tLegs.tpTurn;
 							break;
 						}
 						case BODY_STATE_CROUCH : {
@@ -126,17 +123,18 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 						}
 					}
 					switch (eCurrentState) {
-						case aiZombieAttackFire : {
+						/**
+						case aiRatAttackFire : {
 							switch (m_cBodyState) {
 								case BODY_STATE_STAND : {
 									for (int i=0 ;i<2; i++)
-										if (tZombieAnimations.tNormal.tGlobal.tpaAttack[i] == m_tpCurrentGlobalAnimation) {
+										if (tRatAnimations.tNormal.tGlobal.tpaAttack[i] == m_tpCurrentGlobalAnimation) {
 											tpGlobalAnimation = m_tpCurrentGlobalAnimation;
 											break;
 										}
 									
 									if (!tpGlobalAnimation || !m_tpCurrentGlobalBlend || !m_tpCurrentGlobalBlend->playing)
-										tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpaAttack[::Random.randI(0,2)];
+										tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaAttack[::Random.randI(0,2)];
 									break;
 								}
 								case BODY_STATE_CROUCH : {
@@ -148,10 +146,11 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 							}
 							break;
 						}
+						/**/
 						default : {
 							switch (m_cBodyState) {
 								case BODY_STATE_STAND : {
-									tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpIdle;
+									tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpIdle;
 									break;
 								}
 								case BODY_STATE_CROUCH : {
@@ -174,7 +173,7 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 					SAnimState* AState = 0;
 					switch (m_cBodyState) {
 						case BODY_STATE_STAND : {
-							AState = &tZombieAnimations.tNormal.tGlobal.tWalk;
+							AState = &tRatAnimations.tNormal.tGlobal.tWalk;
 							break;
 						}
 						case BODY_STATE_CROUCH : {
@@ -200,17 +199,18 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 							tpGlobalAnimation = AState->back;
 
 					switch (eCurrentState) {
-						case aiZombieAttackFire : {
+						/**
+						case aiRatAttackFire : {
 							switch (m_cBodyState) {
 								case BODY_STATE_STAND : {
 									for (int i=0 ;i<2; i++)
-										if (tZombieAnimations.tNormal.tGlobal.tpaAttack[i] == m_tpCurrentGlobalAnimation) {
+										if (tRatAnimations.tNormal.tGlobal.tpaAttack[i] == m_tpCurrentGlobalAnimation) {
 											tpGlobalAnimation = m_tpCurrentGlobalAnimation;
 											break;
 										}
 									
 									if (!tpGlobalAnimation || !m_tpCurrentGlobalBlend || !m_tpCurrentGlobalBlend->playing)
-										tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpaAttack[::Random.randI(0,2)];
+										tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaAttack[::Random.randI(0,2)];
 									break;
 								}
 								case BODY_STATE_CROUCH : {
@@ -222,6 +222,7 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 							}
 							break;
 						}
+						/**/
 						default : {
 							switch (m_cBodyState) {
 								case BODY_STATE_STAND : {

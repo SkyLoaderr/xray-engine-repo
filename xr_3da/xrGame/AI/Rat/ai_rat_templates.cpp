@@ -1,18 +1,18 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_zombie_templates.cpp
+//	Module 		: ai_rat_templates.cpp
 //	Created 	: 23.07.2002
 //  Modified 	: 23.07.2002
 //	Author		: Dmitriy Iassenev
-//	Description : Templates for monster "Zombie"
+//	Description : Templates for monster "Rat"
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "ai_zombie.h"
-#include "ai_zombie_selectors.h"
+#include "ai_rat.h"
+#include "ai_rat_selectors.h"
 #include "..\\..\\..\\xr_trims.h"
 #include "..\\..\\xr_weapon_list.h"
 
-bool CAI_Zombie::bfCheckPath(AI::Path &Path) {
+bool CAI_Rat::bfCheckPath(AI::Path &Path) {
 	const vector<BYTE> &q_mark = Level().AI.tpfGetNodeMarks();
 	for (int i=1; i<Path.Nodes.size(); i++) 
 		if (q_mark[Path.Nodes[i]])
@@ -20,7 +20,7 @@ bool CAI_Zombie::bfCheckPath(AI::Path &Path) {
 		return(true);
 }
 
-void CAI_Zombie::vfBuildPathToDestinationPoint(CZombieSelectorAttack *S)
+void CAI_Rat::vfBuildPathToDestinationPoint(CRatSelectorAttack *S)
 {
 	// building a path from and to
 	if (S)
@@ -40,7 +40,7 @@ void CAI_Zombie::vfBuildPathToDestinationPoint(CZombieSelectorAttack *S)
 	}
 }
 
-void CAI_Zombie::vfCheckForSavedEnemy()
+void CAI_Rat::vfCheckForSavedEnemy()
 {
 	if (!tSavedEnemy) {
 		tSavedEnemy = Enemy.Enemy;
@@ -56,7 +56,7 @@ void CAI_Zombie::vfCheckForSavedEnemy()
 	}
 }
 
-void CAI_Zombie::vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader)
+void CAI_Rat::vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader)
 {
 	// checking if leader is dead then make myself a leader
 	if (Leader->g_Health() <= 0)
@@ -108,7 +108,7 @@ void CAI_Zombie::vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Lea
 	//	S.taMembers.push_back(S.m_tLeader);
 }
 
-void CAI_Zombie::vfSaveEnemy()
+void CAI_Rat::vfSaveEnemy()
 {
 	tSavedEnemy = Enemy.Enemy;
 	tSavedEnemyPosition = Enemy.Enemy->Position();
@@ -116,7 +116,7 @@ void CAI_Zombie::vfSaveEnemy()
 	dwSavedEnemyNodeID = Enemy.Enemy->AI_NodeID;
 }
 
-void CAI_Zombie::vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader)
+void CAI_Rat::vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader)
 {
 	if ((!m_dwLastRangeSearch) || ((S.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SEARCH_TIME_INTERVAL) && (::Random.randF(0,1) < float(S.m_dwCurTime - m_dwLastRangeSearch)/MAX_TIME_RANGE_SEARCH))) {
 		
@@ -147,7 +147,7 @@ void CAI_Zombie::vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, CE
 	}
 }
 
-void CAI_Zombie::vfSearchForBetterPositionWTime(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader)
+void CAI_Rat::vfSearchForBetterPositionWTime(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader)
 {
 	DWORD dwTimeDifference = S.m_dwCurTime - m_dwLastSuccessfullSearch;
 	m_dwLastRangeSearch = S.m_dwCurTime;
@@ -172,7 +172,7 @@ void CAI_Zombie::vfSearchForBetterPositionWTime(CAISelectorBase &S, CSquad &Squa
 		m_dwLastSuccessfullSearch = S.m_dwCurTime;
 }
 
-void CAI_Zombie::vfSetFire(bool bFire, CGroup &Group)
+void CAI_Rat::vfSetFire(bool bFire, CGroup &Group)
 {
 	if (bFire) {
 		if (!m_bActionStarted)
@@ -186,7 +186,7 @@ void CAI_Zombie::vfSetFire(bool bFire, CGroup &Group)
 	}
 }
 
-void CAI_Zombie::vfSetMovementType(char cBodyState, float fSpeed)
+void CAI_Rat::vfSetMovementType(char cBodyState, float fSpeed)
 {
 	switch (cBodyState) {
 		case BODY_STATE_STAND : {
@@ -211,15 +211,15 @@ void CAI_Zombie::vfSetMovementType(char cBodyState, float fSpeed)
 }
 
 //////////////////////////////////////////////////////////////////////////
-// Insert from old zombie
+// Insert from old rat
 //////////////////////////////////////////////////////////////////////////
 
-IC bool CAI_Zombie::bfInsideSubNode(const Fvector &tCenter, const SSubNode &tpSubNode)
+IC bool CAI_Rat::bfInsideSubNode(const Fvector &tCenter, const SSubNode &tpSubNode)
 {
 	return(((tCenter.x >= tpSubNode.tLeftDown.x) && (tCenter.z >= tpSubNode.tLeftDown.z)) && ((tCenter.x <= tpSubNode.tRightUp.x) && (tCenter.z <= tpSubNode.tRightUp.z)));
 }
 
-IC bool CAI_Zombie::bfInsideSubNode(const Fvector &tCenter, const float fRadius, const SSubNode &tpSubNode)
+IC bool CAI_Rat::bfInsideSubNode(const Fvector &tCenter, const float fRadius, const SSubNode &tpSubNode)
 {
 	float fDist0 = _sqr(tCenter.x - tpSubNode.tLeftDown.x) + _sqr(tCenter.z - tpSubNode.tLeftDown.z);
 	float fDist1 = _sqr(tCenter.x - tpSubNode.tLeftDown.x) + _sqr(tCenter.z - tpSubNode.tRightUp.z);
@@ -228,7 +228,7 @@ IC bool CAI_Zombie::bfInsideSubNode(const Fvector &tCenter, const float fRadius,
 	return(_min(fDist0,_min(fDist1,_min(fDist2,fDist3))) <= (fRadius - 0.5f)*(fRadius - 0.5f) + EPS_L);
 }
 
-IC bool CAI_Zombie::bfInsideNode(const Fvector &tCenter, const NodeCompressed *tpNode)
+IC bool CAI_Rat::bfInsideNode(const Fvector &tCenter, const NodeCompressed *tpNode)
 {
 	/**/
 	Fvector tLeftDown;
@@ -244,7 +244,7 @@ IC bool CAI_Zombie::bfInsideNode(const Fvector &tCenter, const NodeCompressed *t
 	/**/
 }
 
-IC float CAI_Zombie::ffComputeCost(Fvector tLeaderPosition,SSubNode &tCurrentNeighbour)
+IC float CAI_Rat::ffComputeCost(Fvector tLeaderPosition,SSubNode &tCurrentNeighbour)
 {
 	Fvector tCurrentSubNode;
 	tCurrentSubNode.x = (tCurrentNeighbour.tLeftDown.x + tCurrentNeighbour.tRightUp.x)/2.f;
@@ -253,7 +253,7 @@ IC float CAI_Zombie::ffComputeCost(Fvector tLeaderPosition,SSubNode &tCurrentNei
 	return(_sqr(tLeaderPosition.x - tCurrentSubNode.x) + 0*_sqr(tLeaderPosition.y - tCurrentSubNode.y) + _sqr(tLeaderPosition.z - tCurrentSubNode.z));
 }
 
-IC float CAI_Zombie::ffGetY(NodeCompressed &tNode, float X, float Z)
+IC float CAI_Rat::ffGetY(NodeCompressed &tNode, float X, float Z)
 {
 	// unpack plane
 	Fvector	DUP, vNorm, v, v1, P0;
@@ -270,7 +270,7 @@ IC float CAI_Zombie::ffGetY(NodeCompressed &tNode, float X, float Z)
 }
 
 /**/
-IC bool CAI_Zombie::bfNeighbourNode(const SSubNode &tCurrentSubNode, const SSubNode &tMySubNode)
+IC bool CAI_Rat::bfNeighbourNode(const SSubNode &tCurrentSubNode, const SSubNode &tMySubNode)
 {
 	if ((fabs(tCurrentSubNode.tRightUp.x - tMySubNode.tLeftDown.x) < EPS_L) &&
 		(fabs(tCurrentSubNode.tLeftDown.z - tMySubNode.tLeftDown.z) < EPS_L))
@@ -301,7 +301,7 @@ IC bool CAI_Zombie::bfNeighbourNode(const SSubNode &tCurrentSubNode, const SSubN
 }
 
 /**
-IC bool CAI_Zombie::bfNeighbourNode(const SSubNode &tCurrentSubNode, const SSubNode &tMySubNode)
+IC bool CAI_Rat::bfNeighbourNode(const SSubNode &tCurrentSubNode, const SSubNode &tMySubNode)
 {
 	// check if it is left node
 	if ((fabs(tCurrentSubNode.tRightUp.z - tMySubNode.tRightUp.z) < EPS_L) &&
@@ -327,7 +327,7 @@ IC bool CAI_Zombie::bfNeighbourNode(const SSubNode &tCurrentSubNode, const SSubN
 #define MAX_NEIGHBOUR_COUNT 9
 //#define MAX_NEIGHBOUR_COUNT 5
 
-int CAI_Zombie::ifDivideNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition, vector<SSubNode> &tpSubNodes)
+int CAI_Rat::ifDivideNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition, vector<SSubNode> &tpSubNodes)
 {
 	CAI_Space &AI = Level().AI;
 	float fSubNodeSize = AI.GetHeader().size;
@@ -415,7 +415,7 @@ int CAI_Zombie::ifDivideNode(NodeCompressed *tpStartNode, Fvector tCurrentPositi
 	return(iResult);
 }
 
-int CAI_Zombie::ifDivideNearestNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition, vector<SSubNode> &tpSubNodes)
+int CAI_Rat::ifDivideNearestNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition, vector<SSubNode> &tpSubNodes)
 {
 	CAI_Space &AI = Level().AI;
 	float fSubNodeSize = AI.GetHeader().size;
@@ -449,7 +449,7 @@ int CAI_Zombie::ifDivideNearestNode(NodeCompressed *tpStartNode, Fvector tCurren
 	return(iMySubNode);
 }
 
-void CAI_Zombie::GoToPointViaSubnodes(Fvector &tLeaderPosition) 
+void CAI_Rat::GoToPointViaSubnodes(Fvector &tLeaderPosition) 
 {
 	Fvector tCurrentPosition = Position();
 	NodeCompressed* tpCurrentNode = AI_Node;
@@ -516,7 +516,7 @@ void CAI_Zombie::GoToPointViaSubnodes(Fvector &tLeaderPosition)
 						//	bBack = true;
 					}
 
-				CAI_Zombie *tMember = dynamic_cast<CAI_Zombie*>(tpCurrentObject);
+				CAI_Rat *tMember = dynamic_cast<CAI_Rat*>(tpCurrentObject);
 				if (tMember)
 					if (tMember->AI_Path.TravelPath.size() > tMember->AI_Path.TravelStart + 2) {
 						CAI_Space &AI = Level().AI;
