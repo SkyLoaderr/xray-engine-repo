@@ -52,6 +52,7 @@ void CAI_Biting::vfUpdateParameters()
 	I = false;
 
 	SEnemy ve;
+
 	if (GetEnemy(ve)) {
 		VisibleEnemies.insert(ve.obj);
 
@@ -95,8 +96,8 @@ void CAI_Biting::vfUpdateParameters()
 	//------------------------------------
 	// вероятность победы
 	C = D = E = F = G	= false;
-
-	if (bfIsAnyAlive(VisibleEnemies)) {
+	
+	if (bfIsAnyAlive(VisibleEnemies) && ve.obj) {
 		switch (dwfChooseAction(0,m_fAttackSuccessProbability[0],m_fAttackSuccessProbability[1],m_fAttackSuccessProbability[2],m_fAttackSuccessProbability[3],g_Team(),g_Squad(),g_Group(),0,1,2,3,4,this,30.f)) {
 			case 4 : 
 				C = true;

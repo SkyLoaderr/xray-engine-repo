@@ -97,7 +97,7 @@ CGameObject* CActor::pick_Object(u16& element)
 	l_rq.O=NULL;
 	g_pGameLevel->ObjectSpace.RayPick(Device.vCameraPosition, Device.vCameraDirection, 15.f, l_rq);
 	setEnabled(true);
-	element=u16(l_rq.element);
+	if(l_rq.O) element=u16(l_rq.element);
 	return dynamic_cast<CGameObject*>(l_rq.O);
 
 }

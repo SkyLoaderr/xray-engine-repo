@@ -379,6 +379,8 @@ bool CAI_Stalker::bfIfHuman(CEntity *tpEntity)
 {
 	if (!tpEntity)
 		tpEntity = m_tEnemy.Enemy;
+	if (!tpEntity)
+		return(false);
 	switch (tpEntity->SUB_CLS_ID) {
 		case CLSID_OBJECT_ACTOR :
 		case CLSID_AI_SCIENTIST :

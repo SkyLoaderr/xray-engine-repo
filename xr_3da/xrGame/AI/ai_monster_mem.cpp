@@ -262,6 +262,9 @@ void CVisionMemory::CheckValidObjects()
 {
 	ITERATOR_VE Result = remove_if(Enemies.begin(), Enemies.end(), predicate_remove_offline());
 	Enemies.erase   (Result,Enemies.end());
+
+	Result = remove_if(Objects.begin(), Objects.end(), predicate_remove_offline());
+	Objects.erase   (Result,Objects.end());
 }
 
 void CVisionMemory::RemoveOldIgnoreObjects()
