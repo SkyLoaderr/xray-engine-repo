@@ -1,5 +1,5 @@
-#ifndef BLENDER_PARAMS_H
-#define BLENDER_PARAMS_H
+#ifndef xrPROPERTIES_H
+#define xrPROPERTIES_H
 
 #pragma once
 #pragma pack(push,4)
@@ -65,4 +65,4 @@ struct	xrPDEF_TOKEN
 };
 
 #pragma pack(pop)
-#endif
+#endif // xrPROPERTIES_H
