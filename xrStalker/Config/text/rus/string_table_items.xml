@@ -20,4 +20,8 @@
 	<string id="item_quest_case_02">
 		<text>Документы из лагеря военных на НИИ Агропром</text>
 	</string>
+	<string id="item_rad_lom_ak74">
+		<text>Личный автомат сталкера по кличке Лом</text>
+	</string>
+
 </string_table>

@@ -20,12 +20,17 @@
 	</info_portion>
 
 	<info_portion id="rad_find_stalkers_reward_start">
+		<task>rad_find_stalkers</task>
 	</info_portion>
 	<info_portion id="rad_find_stalkers_free_start">
+		<task>rad_find_stalkers</task>
+	</info_portion>
+	<info_portion id="rad_find_stalkers_found">
 	</info_portion>
 	<info_portion id="rad_find_stalkers_done">
 	</info_portion>
 	<info_portion id="rad_find_treasurer_start">
+		<task>rad_find_treasurer</task>
 	</info_portion>
 	<info_portion id="rad_find_treasurer_done">
 	</info_portion>

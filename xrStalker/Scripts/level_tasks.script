@@ -320,6 +320,14 @@ function proceed(actor)
 	then
 		actor:give_info_portion("rad_code_door") 
 	end
+
+	if actor:dont_has_info("rad_find_stalkers_found") and
+	   actor:object("pri_lom_ak74")
+	then
+		actor:give_info_portion("rad_find_stalkers_found")
+		set_task_state(task.completed, "rad_find_stalkers", 1)
+	end
+
 end
 
 function set_task_state(id_state, id_task, id_subtask)
