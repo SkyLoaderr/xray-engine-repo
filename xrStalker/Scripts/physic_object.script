@@ -1,0 +1,23 @@
+function init(obj)
+  local ini  = obj:spawn_ini()
+  if(ini and ini:section_exist("door")) then
+    obj:set_nonscript_usable(false)
+    obj:set_use_callback(physic_object.door_callback)
+    obj:set_tip_text("press E to open the door")
+  end
+end
+
+
+function door_callback(door, actor)
+  local joint  = door:get_physics_shell():get_joint_by_bone_name("door")
+  local angel  = joint:get_axis_angle(0)
+  local low_limits, hi_limits  = 0.0, 0.0
+  low_limits, hi_limits = joint:get_limits(low_limits, hi_limits, 0)
+
+  if(angel - low_limits > hi_limits - angel) then
+    joint:set_max_force_and_velocity(200, -1, 0)
+  else
+        joint:set_max_force_and_velocity(200, 1, 0)
+  end
+end
+
