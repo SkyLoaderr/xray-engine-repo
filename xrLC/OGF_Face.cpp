@@ -121,6 +121,7 @@ void OGF::CreateOccluder()
 
 void OGF::MakeProgressive()
 {
+	return;
 	if (faces.size()>DWORD(g_params.m_SS_DedicateCached)) 
 	{
 //		set_status("CLODing",treeID,faces.size(),vertices.size());
