@@ -209,7 +209,7 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, u32 FVF, BOOL bColors, BO
 	fs.open_chunk	(OGF_ICONTAINER);
 	fs.w_u32		(ID);
 	fs.w_u32		(Start);
-	fs.w_u32		(faces.size()*3);
+	fs.w_u32		((u32)faces.size()*3);
 	fs.close_chunk	();
 	
 	// PMap
@@ -229,7 +229,7 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, u32 FVF, BOOL bColors, BO
 		}
 		{
 			fs.open_chunk	(0x3);
-			fs.w_u32		(pmap_faces.size());
+			fs.w_u32		((u32)pmap_faces.size());
 			fs.w			(&*pmap_faces.begin(),(u32)pmap_faces.size()*sizeof(WORD));
 			fs.close_chunk	();
 		}
@@ -365,13 +365,13 @@ void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, u32 FVF, BOOL bColors, B
 					fs.open_chunk	(OGF_VCONTAINER);
 					fs.w_u32		(ID);
 					fs.w_u32		(Start);
-					fs.w_u32		(strip_verts.size());
+					fs.w_u32		((u32)strip_verts.size());
 					fs.close_chunk	();
 					
 					// Faces
 					fs.open_chunk	(OGF_INDICES);
-					fs.w_u32		(strip_indices.size());
-					fs.w			(&*strip_indices.begin(),strip_indices.size()*sizeof(WORD));
+					fs.w_u32		((u32)strip_indices.size());
+					fs.w			(&*strip_indices.begin(),(u32)strip_indices.size()*sizeof(WORD));
 					fs.close_chunk	();
 				}
 				fs.close_chunk		();

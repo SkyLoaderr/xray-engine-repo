@@ -44,13 +44,13 @@ WORD OGF::_BuildVertex	(OGF_Vertex& V1)
 	} catch (...) { clMsg("* ERROR: OGF::_BuildVertex");	}
 
 	vertices.push_back	(V1);
-	return vertices.size()-1;
+	return (u32)vertices.size()-1;
 }
 
 void OGF::_BuildFace	(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3)
 {
 	OGF_Face F;
-	u32	VertCount = vertices.size();
+	u32	VertCount = (u32)vertices.size();
 	F.v[0]	= _BuildVertex(V1);
 	F.v[1]	= _BuildVertex(V2);
 	F.v[2]	= _BuildVertex(V3);
@@ -143,14 +143,14 @@ void OGF::MakeProgressive()
 		for(itOGF_V iV=vertices.begin();iV!=vertices.end();iV++) {
 			PM_CreateVertex(
 				iV->P.x,iV->P.y,iV->P.z,
-				iV - vertices.begin(),
+				u32(iV - vertices.begin()),
 				(P_UV*)iV->UV.begin()
 				);
 		}
 
 		// Convert
 		PM_Result R;
-		I_Current	= PM_Convert((WORD*)&*faces.begin(),faces.size()*3,&R);
+		I_Current	= PM_Convert((WORD*)&*faces.begin(),(u32)faces.size()*3,&R);
 
 		if (I_Current>=0) 
 		{
@@ -203,8 +203,8 @@ void OGF_Node::Save	(IWriter &fs)
 
 	// Chields
 	fs.open_chunk		(OGF_CHIELDS_L);
-	fs.w_u32			(chields.size());
-	fs.w				(&*chields.begin(),chields.size()*sizeof(u32));
+	fs.w_u32			((u32)chields.size());
+	fs.w				(&*chields.begin(),(u32)chields.size()*sizeof(u32));
 	fs.close_chunk		();
 }
 
@@ -225,8 +225,8 @@ void OGF_LOD::Save		(IWriter &fs)
 
 	// Chields
 	fs.open_chunk		(OGF_CHIELDS_L);
-	fs.w_u32			(chields.size());
-	fs.w				(&*chields.begin(),chields.size()*sizeof(u32));
+	fs.w_u32			((u32)chields.size());
+	fs.w				(&*chields.begin(),(u32)chields.size()*sizeof(u32));
 	fs.close_chunk		();
 
 	// Lod-def

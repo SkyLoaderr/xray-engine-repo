@@ -399,7 +399,7 @@ VOID CDeflector::L_Calculate(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH
 		RemapUV			(0,0,lm.dwWidth,lm.dwHeight,lm.dwWidth,lm.dwHeight,FALSE);
 		Fbox2			bounds;
 		Bounds_Summary	(bounds);
-		H.initialize	(bounds,UVpolys.size());
+		H.initialize	(bounds,(u32)UVpolys.size());
 		for (u32 fid=0; fid<UVpolys.size(); fid++)
 		{
 			UVtri* T	= &(UVpolys[fid]);
@@ -462,7 +462,7 @@ VOID CDeflector::Light(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H)
 		// Register _new layer
 		layers.push_back	(Layer());
 		Layer&	layer_data	= layers.back();
-		layer_data.base_id	= layer - &*pBuild->L_layers.begin();
+		layer_data.base_id	= (u32)(layer - &*pBuild->L_layers.begin());
 		b_texture& lm		= layer_data.lm;
 		lm.dwWidth			= dwWidth;
 		lm.dwHeight			= dwHeight;
