@@ -459,8 +459,7 @@
 						<File
 							RelativePath="AI\Biting\ai_biting_anim.cpp">
 							<FileConfiguration
-								Name="Debug|Win32"
-								ExcludedFromBuild="TRUE">
+								Name="Debug|Win32">
 								<Tool
 									Name="VCCLCompilerTool"/>
 							</FileConfiguration>
@@ -468,8 +467,7 @@
 						<File
 							RelativePath="AI\Biting\ai_biting_anim.h">
 							<FileConfiguration
-								Name="Debug|Win32"
-								ExcludedFromBuild="TRUE">
+								Name="Debug|Win32">
 								<Tool
 									Name="VCCustomBuildTool"/>
 							</FileConfiguration>

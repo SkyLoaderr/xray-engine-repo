@@ -27,22 +27,17 @@ public:
 
 	virtual void			Load			(LPCSTR section);
 
+	// network routines
 	virtual BOOL			net_Spawn		(LPVOID DC);
-//
-//	virtual void  net_Export(NET_Packet& P);
-//	virtual void  net_Import(NET_Packet& P);
-//
-//	virtual void  net_Destroy();
-//
-//	virtual void  Load( LPCSTR section );
-//	//virtual float EnemyHeuristics(CEntity* E);
+	virtual void			net_Destroy		();
+	virtual void			net_Export		(NET_Packet& P);
+	virtual void			net_Import		(NET_Packet& P);
+
+//	virtual float EnemyHeuristics(CEntity* E);
 //	virtual void  SelectEnemy(SEnemySelected& S);
-//
 //	virtual objQualifier* GetQualifier();
-//	//virtual	void  feel_sound_new(CObject* who, int type, const Fvector &Position, float power);
-//	virtual void  Update(u32 dt);
-//	virtual void  UpdateCL();
-//	//virtual void  Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse);
+//	virtual	void  feel_sound_new(CObject* who, int type, const Fvector &Position, float power);
+//	virtual void  Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse);
 
 private:			
 			void			Init			();
@@ -53,4 +48,7 @@ public:
 private:
 	SOUND_VECTOR			m_tpSoundDie;
 	SOUND_VECTOR			m_tpSoundHit;
+	_GRAPH_ID				m_tCurGP;
+	_GRAPH_ID				m_tNextGP;
+	float					m_fGoingSpeed;			
 };

@@ -16,20 +16,22 @@ namespace AI_Biting {
 };
 
 class CBitingAnimations {
-public:
-	typedef CAniCollection<CAniVector,AI_Biting::caGlobalNames> CStateAnimations;
-	CAniCollection<CStateAnimations,AI_Biting::caStateNames>	m_tAnims;
-	CMotionDef		*m_tpCurrentGlobalAnimation;
-	CBlend			*m_tpCurrentGlobalBlend;
-	u8				m_bAnimationIndex;
-	
-					CBitingAnimations()
+protected:
+	CBitingAnimations()
 	{
 		m_tpCurrentGlobalAnimation = 0;
 	};
-	
+
 	virtual	void	Load(CKinematics *tpKinematics)
 	{
 		m_tAnims.Load	(tpKinematics,"");
 	};
+
+protected:
+	typedef CAniCollection<CAniVector,AI_Biting::caGlobalNames> CStateAnimations;
+	CAniCollection<CStateAnimations,AI_Biting::caStateNames>	m_tAnims;
+	u8				m_bAnimationIndex;
+
+public:
+	CMotionDef		*m_tpCurrentGlobalAnimation;
 };

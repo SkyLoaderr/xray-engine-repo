@@ -29,3 +29,17 @@ namespace AI_Biting {
 		0
 	};
 };
+
+static void __stdcall vfPlayCallBack(CBlend* B)
+{
+	CAI_Biting *tpBiting = (CAI_Biting*)B->CallbackParam;
+	tpBiting->m_tpCurrentGlobalAnimation = 0;
+}
+
+void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, float speed )
+{
+	if (!m_tpCurrentGlobalAnimation) {
+		m_tpCurrentGlobalAnimation = m_tAnims.A[0].A[0].A[::Random.randI(m_tAnims.A[0].A[0].A.size())];
+		PKinematics(pVisual)->PlayCycle(m_tpCurrentGlobalAnimation,TRUE,vfPlayCallBack,this);
+	}
+}
