@@ -1,213 +1,5 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <game_dialogs>
-    <dialog id="bar_bar_barmen_jobs">
-        <phrase_list>
-            <phrase id="411">
-                <text>bar_bar_barmen_jobs_411</text>
-                <next>4111</next>
-            </phrase>
-            <phrase id="4111">
-                <text />
-            </phrase>
-            <phrase id="421">
-                <text>bar_bar_barmen_jobs_421</text>
-                <next>4211</next>
-            </phrase>
-            <phrase id="4211">
-                <text />
-            </phrase>
-            <phrase id="5111">
-                <text />
-            </phrase>
-            <phrase id="511">
-                <text>bar_bar_barmen_jobs_511</text>
-                <next>5111</next>
-            </phrase>
-            <phrase id="51">
-                <text>bar_bar_barmen_jobs_51</text>
-                <next>511</next>
-            </phrase>
-            <phrase id="52">
-                <text>bar_bar_barmen_jobs_52</text>
-            </phrase>
-            <phrase id="5">
-                <text>bar_bar_barmen_jobs_5</text>
-                <next>51</next>
-                <next>52</next>
-            </phrase>
-            <phrase id="4">
-                <text>bar_bar_barmen_jobs_4</text>
-                <next>41</next>
-            </phrase>
-            <phrase id="41">
-                <text>bar_bar_barmen_jobs_41</text>
-                <next>411</next>
-                <next>421</next>
-            </phrase>
-            <phrase id="3">
-                <text>bar_bar_barmen_jobs_3</text>
-                <next>31</next>
-            </phrase>
-            <phrase id="31">
-                <text>bar_bar_barmen_jobs_31</text>
-                <next>311</next>
-            </phrase>
-            <phrase id="311">
-                <text>bar_bar_barmen_jobs_311</text>
-                <next>3111</next>
-            </phrase>
-            <phrase id="3111">
-                <text />
-            </phrase>
-            <phrase id="2">
-                <text>bar_bar_barmen_jobs_2</text>
-                <next>3</next>
-                <next>4</next>
-                <next>5</next>
-            </phrase>
-            <phrase id="0">
-                <text>bar_bar_barmen_jobs_0</text>
-                <next>2</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="bar_bar_barmen_job_radar">
-        <phrase_list>
-            <phrase id="0">
-                <text>bar_bar_barmen_job_radar_0</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="bar_bar_barmen_job_documents_to_scientists">
-        <phrase_list>
-            <phrase id="2">
-                <text>bar_bar_barmen_job_documents_to_scientists_2</text>
-                <next>21</next>
-            </phrase>
-            <phrase id="21">
-                <text>bar_bar_barmen_job_documents_to_scientists_21</text>
-                <next>211</next>
-            </phrase>
-            <phrase id="0">
-                <text />
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text />
-                <next>2</next>
-            </phrase>
-            <phrase id="211">
-                <text>bar_bar_barmen_job_documents_to_scientists_211</text>
-                <next>2111</next>
-            </phrase>
-            <phrase id="2111">
-                <text>bar_bar_barmen_job_documents_to_scientists_2111</text>
-                <next>21111</next>
-            </phrase>
-            <phrase id="21111">
-                <text>bar_bar_barmen_job_documents_to_scientists_21111</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="bar_bar_barmen_talk_info">
-        <phrase_list>
-            <phrase id="811111112">
-                <text>bar_bar_barmen_talk_info_811111112</text>
-            </phrase>
-            <phrase id="811111111">
-                <text>bar_bar_barmen_talk_info_811111111</text>
-                <next>811111112</next>
-            </phrase>
-            <phrase id="8111111">
-                <text>bar_bar_barmen_talk_info_8111111</text>
-                <next>81111111</next>
-            </phrase>
-            <phrase id="81111">
-                <text>bar_bar_barmen_talk_info_81111</text>
-                <next>811111</next>
-            </phrase>
-            <phrase id="71">
-                <text>bar_bar_barmen_talk_info_71</text>
-            </phrase>
-            <phrase id="7">
-                <text>bar_bar_barmen_talk_info_7</text>
-                <next>71</next>
-            </phrase>
-            <phrase id="61">
-                <text>bar_bar_barmen_talk_info_61</text>
-            </phrase>
-            <phrase id="6">
-                <text>bar_bar_barmen_talk_info_6</text>
-                <next>61</next>
-            </phrase>
-            <phrase id="111">
-                <text />
-                <next>3</next>
-                <next>4</next>
-                <next>5</next>
-                <next>6</next>
-                <next>7</next>
-                <next>8</next>
-            </phrase>
-            <phrase id="41">
-                <text>bar_bar_barmen_talk_info_41</text>
-            </phrase>
-            <phrase id="31">
-                <text>bar_bar_barmen_talk_info_31</text>
-            </phrase>
-            <phrase id="51">
-                <text>bar_bar_barmen_talk_info_51</text>
-            </phrase>
-            <phrase id="3">
-                <text>bar_bar_barmen_talk_info_3</text>
-                <next>31</next>
-            </phrase>
-            <phrase id="4">
-                <text>bar_bar_barmen_talk_info_4</text>
-                <next>41</next>
-            </phrase>
-            <phrase id="811">
-                <text>bar_bar_barmen_talk_info_811</text>
-                <next>8111</next>
-            </phrase>
-            <phrase id="81111111">
-                <text>bar_bar_barmen_talk_info_81111111</text>
-                <next>811111111</next>
-            </phrase>
-            <phrase id="811111">
-                <text>bar_bar_barmen_talk_info_811111</text>
-                <next>8111111</next>
-            </phrase>
-            <phrase id="8111">
-                <text>bar_bar_barmen_talk_info_8111</text>
-                <next>81111</next>
-            </phrase>
-            <phrase id="8">
-                <text>bar_bar_barmen_talk_info_8</text>
-                <next>81</next>
-            </phrase>
-            <phrase id="1">
-                <text>bar_bar_barmen_talk_info_1</text>
-                <next>11</next>
-            </phrase>
-            <phrase id="5">
-                <text>bar_bar_barmen_talk_info_5</text>
-                <next>51</next>
-            </phrase>
-            <phrase id="81">
-                <text>bar_bar_barmen_talk_info_81</text>
-                <next>811</next>
-            </phrase>
-            <phrase id="0">
-                <text>bar_bar_barmen_talk_info_0</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="11">
-                <text />
-                <next>111</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="bar_zastava_dolg_start">
         <phrase_list>
             <phrase id="0">
@@ -281,63 +73,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="bar_bar_barmen_start">
-        <phrase_list>
-            <phrase id="211">
-                <text>bar_bar_barmen_start_211</text>
-                <next>2111</next>
-            </phrase>
-            <phrase id="21111">
-                <text />
-                <next>1</next>
-            </phrase>
-            <phrase id="22111">
-                <text />
-                <next>1</next>
-            </phrase>
-            <phrase id="2111">
-                <text>bar_bar_barmen_start_2111</text>
-                <next>21111</next>
-            </phrase>
-            <phrase id="2211">
-                <text>bar_bar_barmen_start_2211</text>
-                <next>22111</next>
-            </phrase>
-            <phrase id="0">
-                <text />
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text />
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-            </phrase>
-            <phrase id="21">
-                <text>bar_bar_barmen_start_21</text>
-                <next>211</next>
-            </phrase>
-            <phrase id="2">
-                <text>bar_bar_barmen_start_2</text>
-                <next>21</next>
-                <next>22</next>
-            </phrase>
-            <phrase id="22">
-                <text>bar_bar_barmen_start_22</text>
-                <next>221</next>
-            </phrase>
-            <phrase id="221">
-                <text>bar_bar_barmen_start_221</text>
-                <next>2211</next>
-            </phrase>
-            <phrase id="3">
-                <text>bar_bar_barmen_start_3</text>
-            </phrase>
-            <phrase id="4">
-                <text>bar_bar_barmen_start_4</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="bar_security_dialog">
         <phrase_list>
             <phrase id="1">
@@ -365,41 +100,6 @@
             </phrase>
             <phrase id="2">
                 <text>bar_dolg_veteran_start_2</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="bar_bar_barmen_job_darkvalley">
-        <phrase_list>
-            <phrase id="21">
-                <text>bar_bar_barmen_job_darkvalley_21</text>
-                <next>211</next>
-            </phrase>
-            <phrase id="21111">
-                <text>bar_bar_barmen_job_darkvalley_21111</text>
-                <next>211111</next>
-            </phrase>
-            <phrase id="1">
-                <text></text>
-                <next>2</next>
-            </phrase>
-            <phrase id="2">
-                <text>bar_bar_barmen_job_darkvalley_2</text>
-                <next>21</next>
-            </phrase>
-            <phrase id="211">
-                <text>bar_bar_barmen_job_darkvalley_211</text>
-                <next>2111</next>
-            </phrase>
-            <phrase id="2111">
-                <text>bar_bar_barmen_job_darkvalley_2111</text>
-                <next>21111</next>
-            </phrase>
-            <phrase id="211111">
-                <text>bar_bar_barmen_job_darkvalley_211111</text>
-            </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
             </phrase>
         </phrase_list>
     </dialog>
@@ -1945,11 +1645,11 @@
                 <next>6</next>
             </phrase>
             <phrase id="1">
-                <text></text>
+                <text />
                 <next>2</next>
             </phrase>
             <phrase id="0">
-                <text></text>
+                <text />
                 <next>1</next>
             </phrase>
         </phrase_list>
@@ -2067,6 +1767,322 @@
                 <next>5</next>
                 <next>6</next>
                 <next>7</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_bar_barmen_jobs">
+        <phrase_list>
+            <phrase id="411">
+                <text>bar_bar_barmen_jobs_411</text>
+                <next>4111</next>
+            </phrase>
+            <phrase id="4111">
+                <text></text>
+            </phrase>
+            <phrase id="421">
+                <text>bar_bar_barmen_jobs_421</text>
+                <next>4211</next>
+            </phrase>
+            <phrase id="4211">
+                <text></text>
+            </phrase>
+            <phrase id="5111">
+                <text></text>
+            </phrase>
+            <phrase id="511">
+                <text>bar_bar_barmen_jobs_511</text>
+                <next>5111</next>
+            </phrase>
+            <phrase id="51">
+                <text>bar_bar_barmen_jobs_51</text>
+                <next>511</next>
+            </phrase>
+            <phrase id="52">
+                <text>bar_bar_barmen_jobs_52</text>
+            </phrase>
+            <phrase id="5">
+                <text>bar_bar_barmen_jobs_5</text>
+                <next>51</next>
+                <next>52</next>
+            </phrase>
+            <phrase id="4">
+                <text>bar_bar_barmen_jobs_4</text>
+                <next>41</next>
+            </phrase>
+            <phrase id="41">
+                <text>bar_bar_barmen_jobs_41</text>
+                <next>411</next>
+                <next>421</next>
+            </phrase>
+            <phrase id="3">
+                <text>bar_bar_barmen_jobs_3</text>
+                <next>31</next>
+            </phrase>
+            <phrase id="31">
+                <text>bar_bar_barmen_jobs_31</text>
+                <next>311</next>
+            </phrase>
+            <phrase id="311">
+                <text>bar_bar_barmen_jobs_311</text>
+                <next>3111</next>
+            </phrase>
+            <phrase id="3111">
+                <text></text>
+            </phrase>
+            <phrase id="2">
+                <text>bar_bar_barmen_jobs_2</text>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+            </phrase>
+            <phrase id="0">
+                <text>bar_bar_barmen_jobs_0</text>
+                <next>2</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_bar_barmen_job_radar">
+        <phrase_list>
+            <phrase id="0">
+                <text>bar_bar_barmen_job_radar_0</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_bar_barmen_job_documents_to_scientists">
+        <phrase_list>
+            <phrase id="1">
+                <text></text>
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text>bar_bar_barmen_job_documents_to_scientists_2</text>
+                <next>21</next>
+            </phrase>
+            <phrase id="21">
+                <text>bar_bar_barmen_job_documents_to_scientists_21</text>
+                <next>211</next>
+            </phrase>
+            <phrase id="211">
+                <text>bar_bar_barmen_job_documents_to_scientists_211</text>
+                <next>2111</next>
+            </phrase>
+            <phrase id="21111">
+                <text>bar_bar_barmen_job_documents_to_scientists_21111</text>
+            </phrase>
+            <phrase id="2111">
+                <text>bar_bar_barmen_job_documents_to_scientists_2111</text>
+                <next>21111</next>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_bar_barmen_job_darkvalley">
+        <phrase_list>
+            <phrase id="1">
+                <text></text>
+                <next>2</next>
+            </phrase>
+            <phrase id="21">
+                <text>bar_bar_barmen_job_darkvalley_21</text>
+                <next>211</next>
+            </phrase>
+            <phrase id="211">
+                <text>bar_bar_barmen_job_darkvalley_211</text>
+                <next>2111</next>
+            </phrase>
+            <phrase id="2111">
+                <text>bar_bar_barmen_job_darkvalley_2111</text>
+                <next>21111</next>
+            </phrase>
+            <phrase id="21111">
+                <text>bar_bar_barmen_job_darkvalley_21111</text>
+                <next>211111</next>
+            </phrase>
+            <phrase id="211111">
+                <text>bar_bar_barmen_job_darkvalley_211111</text>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+            </phrase>
+            <phrase id="2">
+                <text>bar_bar_barmen_job_darkvalley_2</text>
+                <next>21</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_bar_barmen_start">
+        <phrase_list>
+            <phrase id="211">
+                <text>bar_bar_barmen_start_211</text>
+                <next>2111</next>
+            </phrase>
+            <phrase id="21111">
+                <text></text>
+                <next>1</next>
+            </phrase>
+            <phrase id="22111">
+                <text></text>
+                <next>1</next>
+            </phrase>
+            <phrase id="2111">
+                <text>bar_bar_barmen_start_2111</text>
+                <next>21111</next>
+            </phrase>
+            <phrase id="2211">
+                <text>bar_bar_barmen_start_2211</text>
+                <next>22111</next>
+            </phrase>
+            <phrase id="221">
+                <text>bar_bar_barmen_start_221</text>
+                <next>2211</next>
+            </phrase>
+            <phrase id="22">
+                <text>bar_bar_barmen_start_22</text>
+                <next>221</next>
+            </phrase>
+            <phrase id="21">
+                <text>bar_bar_barmen_start_21</text>
+                <next>211</next>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+                <next>11</next>
+            </phrase>
+            <phrase id="3">
+                <text>bar_bar_barmen_start_3</text>
+            </phrase>
+            <phrase id="4">
+                <text>bar_bar_barmen_start_4</text>
+            </phrase>
+            <phrase id="11">
+                <text></text>
+                <dont_has_info>agroprom_military_case_have</dont_has_info>
+                <next>3</next>
+                <next>4</next>
+            </phrase>
+            <phrase id="2">
+                <text>bar_bar_barmen_start_2</text>
+                <next>21</next>
+                <next>22</next>
+            </phrase>
+            <phrase id="1">
+                <text></text>
+                <has_info>agroprom_military_case_have</has_info>
+                <next>2</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_bar_barmen_talk_info">
+        <phrase_list>
+            <phrase id="5">
+                <text>bar_bar_barmen_talk_info_5</text>
+                <next>51</next>
+            </phrase>
+            <phrase id="6">
+                <text>bar_bar_barmen_talk_info_6</text>
+                <next>61</next>
+            </phrase>
+            <phrase id="51">
+                <text>bar_bar_barmen_talk_info_51</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="61">
+                <text>bar_bar_barmen_talk_info_61</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="41">
+                <text>bar_bar_barmen_talk_info_41</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="4">
+                <text>bar_bar_barmen_talk_info_4</text>
+                <next>41</next>
+            </phrase>
+            <phrase id="3">
+                <text>bar_bar_barmen_talk_info_3</text>
+                <next>31</next>
+            </phrase>
+            <phrase id="31">
+                <text>bar_bar_barmen_talk_info_31</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="71">
+                <text>bar_bar_barmen_talk_info_71</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="7">
+                <text>bar_bar_barmen_talk_info_7</text>
+                <next>71</next>
+            </phrase>
+            <phrase id="8111">
+                <text>bar_bar_barmen_talk_info_8111</text>
+                <next>81111</next>
+            </phrase>
+            <phrase id="811111">
+                <text>bar_bar_barmen_talk_info_811111</text>
+                <next>8111111</next>
+            </phrase>
+            <phrase id="811111111">
+                <text>bar_bar_barmen_talk_info_811111111</text>
+                <next>811111112</next>
+            </phrase>
+            <phrase id="811111112">
+                <text>bar_bar_barmen_talk_info_811111112</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="81111111">
+                <text>bar_bar_barmen_talk_info_81111111</text>
+                <next>811111111</next>
+            </phrase>
+            <phrase id="8111111">
+                <text>bar_bar_barmen_talk_info_8111111</text>
+                <next>81111111</next>
+            </phrase>
+            <phrase id="81111">
+                <text>bar_bar_barmen_talk_info_81111</text>
+                <next>811111</next>
+            </phrase>
+            <phrase id="811">
+                <text>bar_bar_barmen_talk_info_811</text>
+                <next>8111</next>
+            </phrase>
+            <phrase id="81">
+                <text>bar_bar_barmen_talk_info_81</text>
+                <next>811</next>
+            </phrase>
+            <phrase id="0">
+                <text>bar_bar_barmen_talk_info_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>bar_bar_barmen_talk_info_1</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="11">
+                <text></text>
+                <next>111</next>
+            </phrase>
+            <phrase id="111">
+                <text></text>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+                <next>6</next>
+                <next>7</next>
+                <next>8</next>
+                <next>10</next>
+            </phrase>
+            <phrase id="8">
+                <text>bar_bar_barmen_talk_info_8</text>
+                <next>81</next>
+            </phrase>
+            <phrase id="10">
+                <text>bar_bar_barmen_talk_info_10</text>
             </phrase>
         </phrase_list>
     </dialog>
