@@ -300,9 +300,6 @@
 				Name="ObjectBroker"
 				Filter="">
 				<File
-					RelativePath=".\alife_interfaces.h">
-				</File>
-				<File
 					RelativePath=".\object_broker.h">
 				</File>
 				<File
@@ -313,6 +310,9 @@
 				</File>
 				<File
 					RelativePath=".\object_destroyer.h">
+				</File>
+				<File
+					RelativePath=".\object_interfaces.h">
 				</File>
 				<File
 					RelativePath=".\object_loader.h">
@@ -1025,6 +1025,9 @@
 			<Filter
 				Name="ServerEntities"
 				Filter="">
+				<File
+					RelativePath=".\ShapeData.h">
+				</File>
 				<File
 					RelativePath=".\xrServer_Objects_Abstract.h">
 				</File>
