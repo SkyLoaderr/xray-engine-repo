@@ -46,7 +46,7 @@ void CDeflector::L_Direct	(HASH& H)
 					vector<UVtri*>&	space	= H.query(P.u,P.v);
 					
 					// World space
-					Fvector wP,wN,B;
+					Fvector wP,B;
 					C[J].set	(0,0,0,0);
 					FPU::m64r	();
 					for (UVtri** it=space.begin(); it!=space.end(); it++)
