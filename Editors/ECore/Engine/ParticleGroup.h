@@ -63,7 +63,7 @@ namespace PS
 		Fvector				m_InitialPosition;
 	public:
     	DEFINE_VECTOR(IRender_Visual*,VisualVec,VisualVecIt);
-    	struct SItem{
+    	class SItem{
         	IRender_Visual*	effect;
             VisualVec		children;
             VisualVec		children_stopped;
@@ -71,11 +71,21 @@ namespace PS
         	void			Set				(IRender_Visual* e);
             void			Clear			();
 
+            IC u32			GetVisuals		(xr_vector<IRender_Visual*>& visuals)
+            {
+            	visuals.reserve(children.size()+children_stopped.size()+1);
+                visuals.push_back(effect);
+			    VisualVecIt it;
+                for (it=children.begin(); it!=children.end(); it++) 				visuals.push_back(*it);
+                for (it=children_stopped.begin(); it!=children_stopped.end(); it++)	visuals.push_back(*it);
+                return visuals.size();
+            }
+            
             void			OnDeviceCreate	();
             void			OnDeviceDestroy	();
 
-            void			AppendEmitter	(LPCSTR eff_name);
-            void			RemoveEmitter	(u32 idx);
+            void			AppendChild		(LPCSTR eff_name);
+            void			RemoveChild		(u32 idx);
 
             void 			UpdateParent	(const Fmatrix& m, const Fvector& velocity, BOOL bXFORM);
             void			OnFrame			(u32 u_dt, Fbox& box, bool& bPlaying);

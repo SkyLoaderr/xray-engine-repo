@@ -65,7 +65,7 @@ BOOL CPGDef::Load(IReader& F)
 #endif
     
     return TRUE;
-}
+}                   
 
 void CPGDef::Save(IWriter& F)
 {
@@ -120,11 +120,11 @@ void CParticleGroup::SItem::Clear()
     for (it=children_stopped.begin(); it!=children_stopped.end(); it++)
 	    ::Render->model_Delete(*it);
 }
-void CParticleGroup::SItem::AppendEmitter(LPCSTR eff_name)
+void CParticleGroup::SItem::AppendChild(LPCSTR eff_name)
 {
     children.push_back((CParticleEffect*)RImplementation.model_CreatePE(eff_name));
 }
-void CParticleGroup::SItem::RemoveEmitter(u32 idx)
+void CParticleGroup::SItem::RemoveChild(u32 idx)
 {
 	VERIFY(idx<children.size());
     IRender_Visual*& V 			= children[idx];
