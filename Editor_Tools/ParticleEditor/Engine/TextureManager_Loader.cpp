@@ -5,7 +5,7 @@
 #include "blenders\blender.h"
 
 
-void	CShaderManager::OnDeviceDestroy(void) 
+void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures) 
 {
 	DWORD it;
 
@@ -33,7 +33,7 @@ void	CShaderManager::OnDeviceDestroy(void)
 		_DELETE (lst_textures[it]);
 	}
 	lst_textures.clear	();
-
+	
 	// Matrix List
 	for (it=0; it<lst_matrices.size(); it++)	{
 		if (0!=lst_matrices[it]->dwReference)
@@ -41,7 +41,7 @@ void	CShaderManager::OnDeviceDestroy(void)
 		_DELETE (lst_matrices[it]);
 	}
 	lst_matrices.clear	();
-
+	
 	// Constant List
 	for (it=0; it<lst_constants.size(); it++)	{
 		if (0!=lst_constants[it]->dwReference)
@@ -59,13 +59,15 @@ void	CShaderManager::OnDeviceDestroy(void)
 	
 	//************************************************************************************
 	// Textures
-	for (map<LPSTR,CTexture*,str_pred>::iterator t=textures.begin(); t!=textures.end(); t++)
-	{
-		R_ASSERT	(0==t->second->dwReference);
-		free		(t->first);
-		delete		t->second;
+	if (!bKeepTextures)	{
+		for (map<LPSTR,CTexture*,str_pred>::iterator t=textures.begin(); t!=textures.end(); t++)
+		{
+			R_ASSERT	(0==t->second->dwReference);
+			free		(t->first);
+			delete		t->second;
+		}
+		textures.clear	();
 	}
-	textures.clear	();
 	
 	// Matrices
 	for (map<LPSTR,CMatrix*,str_pred>::iterator m=matrices.begin(); m!=matrices.end(); m++)
@@ -84,21 +86,31 @@ void	CShaderManager::OnDeviceDestroy(void)
 		delete		c->second;
 	}
 	constants.clear	();
+	
+	// Release blenders
+	for (map<LPSTR,CBlender*,str_pred>::iterator b=blenders.begin(); b!=blenders.end(); b++)
+	{
+		free	(b->first);
+		delete	b->second;
+	}
+	blenders.clear	();
 }
 
-void	CShaderManager::OnDeviceCreate	(void)
+void	CShaderManager::OnDeviceCreate	(LPCSTR shName)
 {
 	if (!Device.bReady) return;
 	cache.Invalidate	();
 
-#ifdef M_BORLAND
-	if (!FS.Exist("game\\shaders.xr")) return;
-	CCompressedStream		FS("game\\shaders.xr","shENGINE");
+#ifdef _EDITOR
+	AnsiString sh			= shName;
+    FS.m_GameRoot.Update    (sh);
+	if (!FS.Exist(sh.c_str())) return;
+	CCompressedStream		FS(sh.c_str(),	"shENGINE");
 #else
-	CCompressedStream		FS("shaders.xr","shENGINE");
+	CCompressedStream		FS(shName,		"shENGINE");
 #endif
-	char					name[256];
-
+	char					name	[256];
+	
 	// Load constants
 	{
 		CStream*	fs		= FS.OpenChunk(0);
@@ -110,7 +122,7 @@ void	CShaderManager::OnDeviceCreate	(void)
 		}
 		fs->Close();
 	}
-
+	
 	// Load matrices
 	{
 		CStream*	fs		= FS.OpenChunk(1);
@@ -122,25 +134,13 @@ void	CShaderManager::OnDeviceCreate	(void)
 		}
 		fs->Close();
 	}
-}
-
-void CShaderManager::xrStartUp()
-{
-#ifdef _EDITOR
-	AnsiString sh = "shaders.xr";
-    FS.m_GameRoot.Update(sh);
-	if (!FS.Exist(sh.c_str())) return;
-	CCompressedStream		FS(sh.c_str(),"shENGINE");
-#else
-	CCompressedStream		FS("shaders.xr","shENGINE");
-#endif
 
 	// Load blenders
 	{
 		CStream*	fs		= FS.OpenChunk	(2);
 		CStream*	chunk	= NULL;
 		int			chunk_id= 0;
-
+		
 		while ((chunk=fs->OpenChunk(chunk_id))!=NULL)
 		{
 			CBlender_DESC	desc;
@@ -167,15 +167,10 @@ void CShaderManager::xrStartUp()
 	}
 }
 
+void CShaderManager::xrStartUp()
+{
+}
+
 void CShaderManager::xrShutDown()
 {
-	// Release blenders
-	{
-		for (map<LPSTR,CBlender*,str_pred>::iterator I=blenders.begin(); I!=blenders.end(); I++)
-		{
-			free	(I->first);
-			delete	I->second;
-		}
-		blenders.clear();
-	}
 }

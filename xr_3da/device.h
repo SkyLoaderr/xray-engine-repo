@@ -115,7 +115,7 @@ public:
 	void Create			(void);
 	void Run			(void);
 	void Destroy		(void);
-	void Reset			(BOOL bKeepTextures);
+	void Reset			(LPCSTR shName, BOOL bKeepTextures);
 
 	void Initialize		(void);
 	void ShutDown		(void);

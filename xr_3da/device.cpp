@@ -270,7 +270,7 @@ void CRenderDevice::Create	()
 	_Create			();
 }
 
-void CRenderDevice._Destroy	()
+void CRenderDevice._Destroy		()
 {
 	// before destroy
 	bReady = FALSE;
@@ -295,11 +295,11 @@ void CRenderDevice::Destroy	(void) {
 	HW.DestroyDevice			();
 }
 
-void CRenderDevice::Reset		()
+void CRenderDevice::Reset		(LPCSTR shName, BOOL bKeepTextures)
 {
 	u32 tm_start	= TimerAsync();
-	_Destroy		();
-	_Create			();
+	_Destroy		(bKeepTextures);
+	_Create			(shName);
 	u32 tm_end		= TimerAsync();
 	Msg				("*** RESET [%d ms]",tm_end-tm_start);
 }

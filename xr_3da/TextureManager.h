@@ -106,8 +106,8 @@ public:
 	void	xrStartUp		();
 	void	xrShutDown		();
 
-	void	OnDeviceCreate	(void);
-	void	OnDeviceDestroy	(void);
+	void	OnDeviceCreate	(LPCSTR name);
+	void	OnDeviceDestroy	(BOOL   bKeepTextures);
 	void	OnFrameEnd		();
 
 	// Creation/Destroying
