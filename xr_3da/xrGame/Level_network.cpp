@@ -33,7 +33,7 @@ void CLevel::ClientSend	()
 	//----------- for E3 -----------------------------
 	if (OnClient()) 
 	{
-		if (Game().local_player->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) return;
+		if (!(Game().local_player) || Game().local_player->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) return;
 		if (!CurrentControlEntity()) return;
 		CObject* pObj = CurrentControlEntity();
 		if (pObj->getDestroy() || !pObj->net_Relevant()) return;
