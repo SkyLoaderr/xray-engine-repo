@@ -444,14 +444,14 @@ using namespace luabind;
 ////	lua_settable	(L, table_index);
 ////}
 ////
-//void print_stack(lua_State *L)
-//{
-//	printf("\n");
-//	for (int i=0; lua_type(L, -i-1); i++)
-//		printf("%2d : %s\n",-i-1,lua_typename(L, lua_type(L, -i-1)));
-////	for (int i=0; lua_type(L, i); i++)
-////		printf("%2d : %s\n",i,lua_typename(L, lua_type(L, i)));
-//}
+void print_stack(lua_State *L)
+{
+	printf("\n");
+	for (int i=0; lua_type(L, -i-1); i++)
+		printf("%2d : %s\n",-i-1,lua_typename(L, lua_type(L, -i-1)));
+//	for (int i=0; lua_type(L, i); i++)
+//		printf("%2d : %s\n",i,lua_typename(L, lua_type(L, i)));
+}
 ////
 ////bool create_namespace_table(lua_State *L, LPCSTR N)
 ////{
@@ -486,128 +486,6 @@ using namespace luabind;
 ////	return			(l_bResult);
 ////}
 //
-bool create_namespace_table(lua_State *L, LPCSTR N)
-{
-	lua_pushstring	(L,"_G");
-	lua_gettable	(L,LUA_GLOBALSINDEX);
-	LPSTR			S2 = (char*)xr_malloc((xr_strlen(N) + 1)*sizeof(char)), S = S2;
-	strcpy			(S,N);
-	for (;;) {
-		if (!xr_strlen(S)) {
-			xr_free		(S2);
-			return		(false);
-		}
-		LPSTR			S1 = strchr(S,'.');
-		if (S1)
-			*S1				= 0;
-		lua_pushstring	(L,S);
-		lua_gettable	(L,-2);
-		if (lua_isnil(L,-1)) {
-			lua_pop			(L,1);
-			lua_newtable	(L);
-			lua_pushstring	(L,S);
-			lua_pushvalue	(L,-2);
-			lua_settable	(L,-4);
-		}
-		else
-			if (!lua_istable(L,-1)) {
-				xr_free			(S2);
-				lua_pop			(L,2);
-				printf			(" Error : the namespace name is already being used by the non-table object!\n");
-				return			(false);
-			}
-		lua_remove		(L,-2);
-		if (S1)
-			S			= ++S1;
-		else
-			break;
-	}
-	xr_free			(S2);
-	return			(true);
-}
-
-void copy_globals(lua_State *L)
-{
-	lua_newtable	(L);
-	lua_pushstring	(L,"_G");
-	lua_gettable	(L,LUA_GLOBALSINDEX);
-	lua_pushnil		(L);
-	while (lua_next(L, -2) != 0) {
-		lua_pushvalue	(L,-2);
-		lua_pushvalue	(L,-2);
-		lua_settable	(L,-6);
-		lua_pop			(L, 1);
-	}
-}
-
-bool do_file(lua_State *L, LPCSTR S, bool bCall)
-{
-	if (luaL_loadfile(L,S)) {
-		printf			("\n");
-		for (int i=0; ; i++)
-			if (lua_isstring(L,i))
-				printf	(" %s\n",lua_tostring(L,i));
-			else
-				break;
-		lua_pop			(L,i + 4);
-		return			(false);
-	}
-
-	if (bCall)
-		lua_call		(L,0,0);
-	else
-		lua_insert		(L,-4);
-
-	return			(true);
-}
-
-void set_namespace(lua_State *L)
-{
-	lua_pushnil		(L);
-	while (lua_next(L, -2) != 0) {
-		lua_pushvalue	(L,-2);
-		lua_gettable	(L,-5);
-		if (lua_isnil(L,-1)) {
-			lua_pop			(L,1);
-			lua_pushvalue	(L,-2);
-			lua_pushvalue	(L,-2);
-			lua_pushvalue	(L,-2);
-			lua_pushnil		(L);
-			lua_settable	(L,-7);
-			lua_settable	(L,-7);
-		}
-		else {
-			lua_pop			(L,1);
-			lua_pushvalue	(L,-2);
-			lua_gettable	(L,-4);
-			if (!lua_equal(L,-1,-2)) {
-				lua_pushvalue	(L,-3);
-				lua_pushvalue	(L,-2);
-				lua_pushvalue	(L,-2);
-				lua_pushvalue	(L,-5);
-				lua_settable	(L,-8);
-				lua_settable	(L,-8);
-			}
-			lua_pop			(L,1);
-		}
-		lua_pushvalue	(L,-2);
-		lua_pushnil		(L);
-		lua_settable	(L,-6);
-		lua_pop			(L, 1);
-	}
-	lua_pop			(L,3);
-}
-
-bool load_file_into_namespace(lua_State *L, LPCSTR S, LPCSTR N, bool bCall = true)
-{
-	if (!create_namespace_table(L,N))
-		return		(false);
-	copy_globals	(L);
-	if (!do_file(L,S,bCall))
-		return		(false);
-	set_namespace	(L);
-	return			(true);
-}
 //
 ////typedef BOOL test_type;
 ////
@@ -1365,6 +1243,140 @@ struct SSS {
 ////	X.X			= &X;
 //	return		(0);
 
+bool create_namespace_table(lua_State *L, LPCSTR N)
+{
+	lua_pushstring	(L,"_G");
+	lua_gettable	(L,LUA_GLOBALSINDEX);
+	LPSTR			S2 = (char*)xr_malloc((xr_strlen(N) + 1)*sizeof(char)), S = S2;
+	strcpy			(S,N);
+	for (;;) {
+		if (!xr_strlen(S)) {
+			xr_free		(S2);
+			return		(false);
+		}
+		LPSTR			S1 = strchr(S,'.');
+		if (S1)
+			*S1				= 0;
+		lua_pushstring	(L,S);
+		lua_gettable	(L,-2);
+		if (lua_isnil(L,-1)) {
+			lua_pop			(L,1);
+			lua_newtable	(L);
+			lua_pushstring	(L,S);
+			lua_pushvalue	(L,-2);
+			lua_settable	(L,-4);
+		}
+		else
+			if (!lua_istable(L,-1)) {
+				xr_free			(S2);
+				lua_pop			(L,2);
+				printf			(" Error : the namespace name is already being used by the non-table object!\n");
+				return			(false);
+			}
+		lua_remove		(L,-2);
+		if (S1)
+			S			= ++S1;
+		else
+			break;
+	}
+	xr_free			(S2);
+	return			(true);
+}
+
+void copy_globals(lua_State *L)
+{
+	lua_newtable	(L);
+	lua_pushstring	(L,"_G");
+	lua_gettable	(L,LUA_GLOBALSINDEX);
+	lua_pushnil		(L);
+	while (lua_next(L, -2) != 0) {
+		lua_pushvalue	(L,-2);
+		lua_pushvalue	(L,-2);
+		lua_settable	(L,-6);
+		lua_pop			(L, 1);
+	}
+}
+
+bool do_file(lua_State *L, LPCSTR N, LPCSTR S, bool bCall)
+{
+	LPSTR				SS = (LPSTR)malloc(4096);
+	string256			S1;
+	sprintf				(SS,"local this = %s\n",N);
+	strcpy				(S1,"@");
+	strcat				(S1,S);
+	FILE				*f = fopen(S,"rt");
+	int					ii = strlen(SS);
+	fread				(SS + strlen(SS),1,90,f);
+	fclose				(f);
+
+	if (luaL_loadbuffer		(L,SS,ii + 90,S1)) {
+		free			(SS);
+		printf			("\n");
+		for (int i=0; ; i++)
+			if (lua_isstring(L,i))
+				printf	(" %s\n",lua_tostring(L,i));
+			else
+				break;
+		lua_pop			(L,i + 4);
+		return			(false);
+	}
+
+	if (bCall)
+		lua_call		(L,0,0);
+	else
+		lua_insert		(L,-4);
+
+	return			(true);
+}
+
+void set_namespace(lua_State *L)
+{
+	lua_pushnil		(L);
+	while (lua_next(L, -2) != 0) {
+		lua_pushvalue	(L,-2);
+		lua_gettable	(L,-5);
+		if (lua_isnil(L,-1)) {
+			lua_pop			(L,1);
+			lua_pushvalue	(L,-2);
+			lua_pushvalue	(L,-2);
+			lua_pushvalue	(L,-2);
+			lua_pushnil		(L);
+			lua_settable	(L,-7);
+			lua_settable	(L,-7);
+		}
+		else {
+			lua_pop			(L,1);
+			lua_pushvalue	(L,-2);
+			lua_gettable	(L,-4);
+			if (!lua_equal(L,-1,-2)) {
+				lua_pushvalue	(L,-3);
+				lua_pushvalue	(L,-2);
+				lua_pushvalue	(L,-2);
+				lua_pushvalue	(L,-5);
+				lua_settable	(L,-8);
+				lua_settable	(L,-8);
+			}
+			lua_pop			(L,1);
+		}
+		lua_pushvalue	(L,-2);
+		lua_pushnil		(L);
+		lua_settable	(L,-6);
+		lua_pop			(L, 1);
+	}
+	lua_pop			(L,3);
+}
+
+bool load_file_into_namespace(lua_State *L, LPCSTR S, LPCSTR N, bool bCall = true)
+{
+	if (!create_namespace_table(L,N))
+		return		(false);
+	copy_globals	(L);
+	if (!do_file(L,N,S,bCall))
+		return		(false);
+	set_namespace	(L);
+	return			(true);
+}
+
 lua_State		*L = 0;
 
 luabind::object return_this(LPCSTR namespace_name)
@@ -1387,7 +1399,24 @@ luabind::object return_this(LPCSTR namespace_name)
 
 luabind::object lua_this()
 {
-	return			(return_this("test_this._1._2._3"));
+	lua_Debug	l_tDebugInfo;
+	int			i;
+	const char	*name;
+
+	lua_getstack(L,1,&l_tDebugInfo);
+	lua_getinfo	(L,"nSlu",&l_tDebugInfo);
+	
+//	printf			("  Event			: %d",cafEventToString(l_tDebugInfo.event));
+	printf			("  Name			: %s\n",l_tDebugInfo.name);
+	printf			("  Name what		: %s\n",l_tDebugInfo.namewhat);
+	printf			("  What			: %s\n",l_tDebugInfo.what);
+	printf			("  Source			: %s\n",l_tDebugInfo.source);
+	printf			("  Source (short)	: %s\n",l_tDebugInfo.short_src);
+	printf			("  Current line	: %d\n",l_tDebugInfo.currentline);
+	printf			("  Nups			: %d\n",l_tDebugInfo.nups);
+	printf			("  Line defined	: %d\n",l_tDebugInfo.linedefined);
+	
+	return		(return_this(""));
 }
 
 int __cdecl main(int argc, char* argv[])
@@ -1411,23 +1440,20 @@ int __cdecl main(int argc, char* argv[])
 	luaopen_string	(L);
 	luaopen_math	(L);
 	luaopen_table	(L);
+	luaopen_debug	(L);
 
-	lua_pop			(L,4);
-
-	module(L)
-	[
-		def("this",	&lua_this)
-	];
+	lua_settop		(L,0);
 
 	open			(L);
+
+	function		(L,"this",lua_this);
 
 	for (int i=1; i<argc; i++) {
 		string256	l_caScriptName;
 		strconcat	(l_caScriptName,"s:\\gamedata\\scripts\\","test_this._1._2._3",".script");
 		printf		("File %s : ",l_caScriptName);
-//		print_stack	(L);
 		bool		b = load_file_into_namespace(L,l_caScriptName,xr_strlen(argv[i]) ? argv[i] : "_G",true);
-//		print_stack	(L);
+		print_stack	(L);
 		lua_dostring	(L,"test_this._1._2._3.main()");
 		if (xr_strlen(SSS)) {
 			printf		("\n%s\n",SSS);
@@ -1436,28 +1462,6 @@ int __cdecl main(int argc, char* argv[])
 		else
 			if (b)
 				printf	("0 syntax errors\n");
-/**
-LUA_TNIL			0
-LUA_TBOOLEAN		1
-LUA_TLIGHTUSERDATA	2
-LUA_TNUMBER			3
-LUA_TSTRING			4
-LUA_TTABLE			5
-LUA_TFUNCTION		6
-LUA_TUSERDATA		7
-LUA_TTHREAD			8
-/**/		
-//		vfPrintTable(L,argv[1]);
-//		lua_pushstring(L,"test");
-//		print_stack	(L);
-//		printf		("%s\n",object_presented(L,argv[1],"main",LUA_TFUNCTION)  ? "true" : "false");
-//		print_stack	(L);
-//		printf		("%s\n",object_presented(L,argv[1],"main",LUA_TUSERDATA)  ? "true" : "false");
-//		print_stack	(L);
-//		printf		("%s\n",object_presented(L,argv[1],"_main",LUA_TFUNCTION) ? "true" : "false");
-//		print_stack	(L);
-//		printf		("%s\n",object_presented(L,argv[1],"Main",LUA_TFUNCTION)  ? "true" : "false");
-//		print_stack	(L);
 	}
 
 	lua_close		(L);
