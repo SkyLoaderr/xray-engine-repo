@@ -56,8 +56,6 @@ function action_walk:initialize()
 	self.move_mgr:initialize( self.object )
 
 	self.state = nil
-
-	printf( "[FACTORY BANDIT %s] initialized", self.object:name() )
 end
 
 function action_walk:execute()
