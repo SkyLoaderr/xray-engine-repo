@@ -48,6 +48,8 @@ BOOL	g_NeedReboot;
 prototype 				CreateUninstallShortcut		(); 
 prototype 				ClearFolder					(byval string);
 prototype BOOL 			CheckAdminRights			();
+prototype				CleanupTargetFolder			();
+prototype				StopClientUpdater			();
 // SQL server management function
 prototype 				StartServer					();
 prototype 				StopServer					();
@@ -165,7 +167,21 @@ begin
     return res;
 end;
 //---------------------------------------------------------------------------
-            
+function StopClientUpdater()
+begin
+	LaunchAppAndWait 		(TARGETDIR^"ClientUpdate.exe" , " /r", WAIT);
+end;
+//---------------------------------------------------------------------------
+function CleanupTargetFolder()
+begin
+	// remove registry keys
+	RegDBSetDefaultRoot		(HKEY_LOCAL_MACHINE);
+	RegDBDeleteKey 			("Software\\KASClient");
+	// remove folder
+    ClearFolder				(TARGETDIR);
+end;
+//---------------------------------------------------------------------------                                                                        
+
 //---------------------------------------------------------------------------                                                                        
 // InstallShield Events
 //---------------------------------------------------------------------------                                                                        
@@ -328,9 +344,10 @@ Dlg_SdStartCopy:
 	endif; 
                            
 	// clear target folders 
-	StopServer	();
-    ClearFolder	(TARGETDIR);
-    ClearFolder	(MSDE_INSTANCE_FOLDER);
+	StopServer			();
+	StopClientUpdater	();
+	ClearFolder			(TARGETDIR);
+    ClearFolder			(MSDE_INSTANCE_FOLDER);
 
     return 0;
 end;
@@ -356,12 +373,10 @@ Dlg_Start:
     nType = REMOVEALL;
 
 	// Show Uninstall Confirmation Dialog
-    if ( nType = REMOVEALL ) then
-		nResult = MessageBox( @IDS_ASK_REMOVE_ALL, MB_YESNO );
-		if (nResult != IDYES ) then
-            // In REMOVEONLY mode, abort the setup.
-            abort;
-		endif;
+	nResult = MessageBox( @IDS_ASK_REMOVE_ALL, MB_YESNO );
+	if (nResult != IDYES ) then
+        // In REMOVEONLY mode, abort the setup.
+        abort;
 	endif;
 
 	// check admin rights
@@ -370,6 +385,9 @@ Dlg_Start:
 Dlg_ObjDialogs:
     nResult = ShowObjWizardPages( nResult );
     if ( ( nResult = BACK ) ) goto Dlg_Start;
+
+	// cleanup
+	CleanupTargetFolder	();
 
 	// Ensure that all previously installed features are removed
 	// for media that supports updating.
@@ -383,7 +401,7 @@ Dlg_ObjDialogs:
 end;
 //---------------------------------------------------------------------------
 function MSDE_2000_Installed()
-	number 	nResult,nRootKey;
+	number 	nResult;
 	BOOL 	bRes;
 	string 	sTmp,db_files,sInsertSQL,sServerName;
 	string 	sPrimReg,sSecReg,sVersion,sBuild,sLastUpdate;
@@ -426,33 +444,33 @@ begin
 		        goto label_end;
 		    endif;
 
-		    SetStatusWindow (40, @IDSL_PROGRESS_CONNECT_DB+"'KAS'");
+		    SetStatusWindow (40, @IDSL_PROGRESS_CONNECT_DB+" 'KAS'");
 		    db_files = "["+TARGETDIR^"DATA\\KAS_Data.MDF] "+"["+TARGETDIR^"DATA\\KAS_Log.LDF]";
 		    bRes = SQL_CONFIG.attachDatabase(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,"KAS",db_files);
 		    if(bRes != 0) then
-		        MessageBox (@IDSL_ERROR_CONNECT_DB+"'KAS'", SEVERE);
+		        MessageBox (@IDSL_ERROR_CONNECT_DB+" 'KAS'", SEVERE);
 		        bRes	= FALSE;
 		        goto label_end; 
 		    else
 		    	bRes=TRUE;
 		    endif;
 		
-		    SetStatusWindow (50, @IDSL_PROGRESS_CONNECT_DB+"'client_repl'");
+		    SetStatusWindow (50, @IDSL_PROGRESS_CONNECT_DB+" 'client_repl'");
 		    db_files = "["+TARGETDIR^"DATA\\client_repl_Data.MDF] "+"["+TARGETDIR^"DATA\\client_repl_Log.LDF]";
 		    bRes = SQL_CONFIG.attachDatabase(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,"client_repl",db_files);
 		    if(bRes != 0) then
-		        MessageBox (@IDSL_ERROR_CONNECT_DB+"'client_repl'", SEVERE);
+		        MessageBox (@IDSL_ERROR_CONNECT_DB+" 'client_repl'", SEVERE);
 		        bRes	= FALSE;
 		        goto label_end;
 		    else
 		    	bRes=TRUE;
 		    endif;
 		
-		    SetStatusWindow (60, @IDSL_PROGRESS_CONNECT_DB+"'searchdb'");
+		    SetStatusWindow (60, @IDSL_PROGRESS_CONNECT_DB+" 'searchdb'");
 		    db_files = "["+TARGETDIR^"DATA\\searchdb_Data.MDF] "+"["+TARGETDIR^"DATA\\searchdb_Log.LDF]";
 		    bRes = SQL_CONFIG.attachDatabase(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,"searchdb",db_files);
 		    if(bRes != 0) then
-		        MessageBox (@IDSL_ERROR_CONNECT_DB+"'searchdb'", SEVERE);
+		        MessageBox (@IDSL_ERROR_CONNECT_DB+" 'searchdb'", SEVERE);
 		        bRes	= FALSE;
 		        goto label_end;
 		    else
@@ -466,7 +484,7 @@ begin
 		    								"master",
 		    								"EXEC sp_addextendedproc xp_check, '"+SQL_STORED_PROC_DLL_+"'");
 		    if(bRes != 0) then
-		        MessageBox (@IDSL_ERROR_REGISTER_SP+"'xp_check'", SEVERE);
+		        MessageBox (@IDSL_ERROR_REGISTER_SP+" 'xp_check'", SEVERE);
 		        bRes	= FALSE;
 		        goto label_end;
 		    else
@@ -501,8 +519,7 @@ begin
 		
 		    SetStatusWindow (95, @IDSL_PROGRESS_ADD_REGISTRY);
 			// insert registry keys
-			nRootKey 				= HKEY_LOCAL_MACHINE;
-			RegDBSetDefaultRoot		(nRootKey);
+			RegDBSetDefaultRoot		(HKEY_LOCAL_MACHINE);
 			if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", INI_VERSIONDB_ID, REGDB_STRING, sVersion,-1) < 0) then
 			    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
 			endif;
@@ -533,17 +550,18 @@ label_end:
 		if (bRes=TRUE) then
 			g_NeedReboot = TRUE;
 		endif;
-	    
-	    // if error found -> abort instalation          
-	    if (bRes=FALSE) then abort; endif;
+	else
+        MessageBox (@IDSL_ERROR_MSDE_INSTALL_FAILED, SEVERE);
+		bRes=FALSE;	    
 	endif;
+    // if error found -> abort instalation          
+    if (bRes=FALSE) then abort; endif;
 end;
 //---------------------------------------------------------------------------
 function MSDE_2000_UnInstalled()
 begin
-    StopServer	();
-    ClearFolder	(MSDE_INSTANCE_FOLDER);
-//	ClearFolder	(TARGETDIR);
+    StopServer			();
+    ClearFolder			(MSDE_INSTANCE_FOLDER);
 end;
 //---------------------------------------------------------------------------
 // OnUninstall
@@ -553,7 +571,7 @@ end;
 //---------------------------------------------------------------------------
 function OnUninstall()
 string szIgnore, szMsg;
-number nResult, nRootKey;
+number nResult;
 BOOL bOpt1, bOpt2;
 begin
 
@@ -585,10 +603,9 @@ begin
     // Disable Status
 	Disable( STATUSEX );
 
-	// remove registry keys
-	nRootKey 				= HKEY_LOCAL_MACHINE;
-	RegDBSetDefaultRoot		(nRootKey);
-	RegDBDeleteKey 			("Software\\KASClient");
+	// cleanup
+	StopClientUpdater	();
+	CleanupTargetFolder	();
 
     // Show final dialog.
     if ( BATCH_INSTALL ) then
@@ -606,14 +623,12 @@ function OnFirstUIAfter()
 
 	BOOL	mdac_found, mdac_need_install;
     string 	mdac_ver;
-    number 	nRootKey; 
 	NUMBER 	nvType, nvSize, nLocation;
 begin
 	// launch MuDAC setup	
-	nRootKey 				= HKEY_LOCAL_MACHINE;
 	mdac_found				= FALSE;
 	mdac_need_install		= TRUE;
-	RegDBSetDefaultRoot		(nRootKey);
+	RegDBSetDefaultRoot		(HKEY_LOCAL_MACHINE);
 	if (RegDBGetKeyValueEx("Software\\Microsoft\\dataAccess","FullInstallVer",nvType,mdac_ver,nvSize) = 0) then
 		nLocation			= StrFind(mdac_ver,"2.8");
 		if (nLocation=0)	then  mdac_found=TRUE; endif;
@@ -660,3 +675,45 @@ begin
     //}}IS_SCRIPT_TAG(Dlg_SdDinishEx)	
 end;
 //---------------------------------------------------------------------------
+// OnMaintUIAfter
+//
+// The OnMaintUIAfter event called by OnShowUI after the file transfer
+// of the setup when the setup is running in maintenance mode. By default
+// this event displays UI that informs the end user that the maintenance setup
+// has been completed successfully.
+//
+// Note: This event will not be called automatically in a
+// program...endprogram style setup.
+//---------------------------------------------------------------------------
+function OnMaintUIAfter()
+    STRING szTitle, szMsg1, szMsg2, szOpt1, szOpt2;
+    NUMBER bvOpt1, bvOpt2;
+begin
+	// cleanup
+	StopClientUpdater	();
+	CleanupTargetFolder	();
+
+    ShowObjWizardPages(NEXT);
+    
+    // Added - Version 9.5 - Use appropriate strings for complete
+    // uninstall.
+    if( REMOVEALLMODE ) then
+        szTitle = SdLoadString(IFX_SDFINISH_REMOVE_TITLE);
+        szMsg1 = SdLoadString(IFX_SDFINISH_REMOVE_MSG1);
+    else
+        szTitle = SdLoadString(IFX_SDFINISH_MAINT_TITLE);    
+        szMsg1  = SdLoadString(IFX_SDFINISH_MAINT_MSG1);
+    endif;
+
+	szMsg2 = "";    
+    szOpt1 = "";
+    szOpt2 = "";
+	bvOpt1   = FALSE;
+    bvOpt2   = FALSE;    
+
+    if ( BATCH_INSTALL ) then
+    	SdFinishReboot ( szTitle , szMsg1 , SYS_BOOTMACHINE , szMsg2 , 0 );
+    else    
+       	SdFinish ( szTitle , szMsg1 , szMsg2 , szOpt1 , szOpt2 , bvOpt1 , bvOpt2 );
+    endif;
+end;
