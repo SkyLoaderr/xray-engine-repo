@@ -117,9 +117,6 @@ void CAI_Zomby::Death()
 	// removing from group
 	//Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()].Member_Remove(this);
 
-	bActive = false;
-	bEnabled = false;
-	
 	Fvector	dir;
 	AI_Path.Direction(dir);
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
@@ -844,10 +841,12 @@ void CAI_Zomby::Attack()
 			/**/
 			else {
 				/**/
+				/**/
 				tSavedEnemy = Enemy.Enemy;
 				tSavedEnemyPosition = Enemy.Enemy->Position();
 				tpSavedEnemyNode = Enemy.Enemy->AI_Node;
 				dwSavedEnemyNodeID = Enemy.Enemy->AI_NodeID;
+				/**/
 				if ((dwSavedEnemyNodeID != AI_Path.DestNode) || (!bBuildPathToLostEnemy)) {
 					bBuildPathToLostEnemy = true;
 					// determining the team
@@ -908,11 +907,14 @@ void CAI_Zomby::Attack()
 						m_bMobility = false;
 					}
 				}
+				/**
 				q_look.setup(
 					AI::AIC_Look::Look, 
 					AI::t_Object, 
 					&Enemy,
 					1000);
+				/**/
+				SetDirectionLook(AI_Node);
 				q_look.o_look_speed=_FB_look_speed;
 
 				q_action.setup(AI::AIC_Action::AttackEnd);
@@ -941,6 +943,9 @@ void CAI_Zomby::Die()
 	AI_Path.Direction(dir);
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
 
+	bActive = false;
+	bEnabled = false;
+	
 	bStopThinking = true;
 }
 

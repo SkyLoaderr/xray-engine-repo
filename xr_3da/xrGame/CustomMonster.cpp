@@ -293,8 +293,7 @@ void CCustomMonster::Update	( DWORD DT )
 		Think();
 		
 		// Look and action streams
-		if (iHealth>0)		
-		{
+		if (iHealth>0) {
 			Exec_Look		(dt);
 			Exec_Movement	(dt);
 			Exec_Visibility	(dt);
@@ -306,6 +305,16 @@ void CCustomMonster::Update	( DWORD DT )
 			uNext.p_pos			= vPosition;
 			NET.push_back		(uNext);
 		}
+		else
+			if (bfExecMovement()) {
+				Exec_Movement(dt);
+				net_update			uNext;
+				uNext.dwTimeStamp	= Level().timeServer();
+				uNext.o_model		= r_current.yaw;
+				uNext.o_torso		= r_current;
+				uNext.p_pos			= vPosition;
+				NET.push_back		(uNext);
+			}
 		Exec_Action	(dt);
 	}
 

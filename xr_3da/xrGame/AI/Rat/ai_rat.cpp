@@ -11,6 +11,7 @@
 #include "..\\..\\..\\3dsound.h"
 #include "ai_rat.h"
 #include "ai_rat_selectors.h"
+#include "..\\..\\hudmanager.h"
 
 //#define WRITE_LOG
 
@@ -29,7 +30,7 @@ CAI_Rat::CAI_Rat()
 	eCurrentState = aiRatFollowMe;
 	m_bMobility = true;
 	m_bAttackStarted = false;
-	m_bAttackFinished = false;
+	m_bAttackFinished = true;
 	m_bAttackGravitation = false;
 	m_tpEnemyBeingAttacked = 0;
 	m_dwLastUpdate = 0;
@@ -98,6 +99,70 @@ void CAI_Rat::Load(CInifile* ini, const char* section)
 	//PKinematics(pVisual)->LL_GetInstance(spine_bone).set_callback(SpinCallback,this);
 }
 
+BOOL CAI_Rat::Hit(int perc, Fvector &dir, CEntity* who) 
+{
+	if (who->Local()) {
+		// *** we are REMOTE/LOCAL, attacker is LOCAL
+		// send, update
+		// *** signal to everyone
+		NET_Packet	P;
+		P.w_begin	(M_FIRE_HIT);
+		P.w_u16		(u16(net_ID));
+		P.w_u16		(u16(who->net_ID));
+		P.w_u8		(perc	);
+		P.w_dir		(dir	);
+		Level().Send(P,net_flags(TRUE));
+	} 
+	else {
+		// *** we are REMOTE/LOCAL, attacker is REMOTE
+		// update
+	}
+	
+	// *** process hit calculations
+	// Calc impulse
+	Fvector vLocalDir;
+	float m = dir.magnitude();
+	R_ASSERT(m>EPS);
+	
+	float amount			=	2*float(perc)/Movement.GetMass();
+	dir.y					+=	0.1f;
+	Fvector I; I.direct		(Movement.vExternalImpulse,dir,amount/m);
+	Movement.vExternalImpulse.add(I);
+	
+	// convert impulse into local coordinate system
+	Fmatrix mInvXForm;
+	mInvXForm.invert		(svTransform);
+	mInvXForm.transform_dir	(vLocalDir,dir);
+	vLocalDir.invert		();
+	
+	// Calc HitAmount
+	int iHitAmount, iOldHealth=iHealth;
+	if (iArmor)
+	{
+		iHealth		-=	(iMAX_Armor-iArmor)/iMAX_Armor*perc;
+		iHitAmount	=	(perc*9)/10;
+		iArmor		-=	iHitAmount;
+	} else {
+		iHitAmount	=	perc;
+		iHealth		-=	iHitAmount;
+	}
+	
+	// Update state and play sounds, etc
+	if (iHealth<=0 && iOldHealth>0)
+	{ 
+		if (who!=this)	Level().HUD()->outMessage(0xffffffff,cName(),"Killed by '%s'...",who->cName());
+		else			Level().HUD()->outMessage(0xffffffff,cName(),"Crashed...");
+		HitSignal		(iHitAmount,vLocalDir,who);
+		//Die				();
+		return FALSE;
+	}
+	else
+	{
+		HitSignal		(iHitAmount,vLocalDir,who);
+		return FALSE;
+	}
+}
+
 // when someone hit rat
 void CAI_Rat::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 {
@@ -133,19 +198,6 @@ void CAI_Rat::Death()
 	q_action.setup(AI::AIC_Action::FireEnd);
 	eCurrentState = aiRatDie;
 
-	/**
-	Fvector tAcceleration;
-	tAcceleration.sub(m_tpEnemyBeingAttacked->Position(),Position());
-	vfNormalizeSafe(tAcceleration);
-	tAcceleration.mul(5);
-	Movement.SetPosition(vPosition);
-	Movement.Calculate	(tAcceleration,0,0,0.01f,false);
-	Movement.GetPosition(vPosition);
-	UpdateTransform	();
-	/**/
-	bActive = false;
-	bEnabled = false;
-	
 	Fvector	dir;
 	AI_Path.Direction(dir);
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
@@ -562,6 +614,11 @@ void CAI_Rat::FollowLeader(Fvector &tLeaderPosition, const float fMinDistance, c
 				CObject* tpCurrentObject = (*tppObjectIterator)->Owner();
 				if ((tpCurrentObject == this) || (tpCurrentObject == m_tpEnemyBeingAttacked))
 					continue;
+
+				CCustomMonster* M = dynamic_cast<CCustomMonster*>(tpCurrentObject);
+				if ((M) && (M->g_Health() < 0))
+					continue;
+
 				float fRadius = tpCurrentObject->Radius();
 				tpCurrentObject->clCenter(tCenter);
 				
@@ -727,6 +784,7 @@ void CAI_Rat::InFlight()
 		// checking flag to stop processing more states
 		m_fCurSpeed = m_fMaxSpeed;
 		bStopThinking = true;
+		SelectAnimation(clTransform.k,tWatchDirection,AI_Path.fSpeed);
 		return;
 	}
 	else {
@@ -841,13 +899,33 @@ void CAI_Rat::Defend()
 
 void CAI_Rat::Die()
 {
-	q_look.setup(0,AI::t_None,0,0	);
-	q_action.setup(AI::AIC_Action::FireEnd);
-	AI_Path.TravelPath.clear();
-	
 	Fvector	dir;
 	AI_Path.Direction(dir);
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
+
+	if (!m_bAttackFinished)
+		return;
+
+	q_look.setup(0,AI::t_None,0,0	);
+	q_action.setup(AI::AIC_Action::AttackEnd);
+	AI_Path.TravelPath.clear();
+	
+	bActive = false;
+	bEnabled = false;
+
+	Fvector tPosition = Position();
+	float fY = ffGetY(*AI_Node,tPosition.x,tPosition.z);
+	if (tPosition.y - fY > 0.01f) {
+		Fvector tAcceleration;
+		tAcceleration.sub(m_tpEnemyBeingAttacked->Position(),Position());
+		vfNormalizeSafe(tAcceleration);
+		tAcceleration.mul(5);
+		Movement.SetPosition(vPosition);
+		Movement.Calculate	(tAcceleration,0,0,0.01f,false);
+		Movement.GetPosition(vPosition);
+	}
+	else {
+	}
 
 	bStopThinking = true;
 }
@@ -1539,7 +1617,7 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 	//R_ASSERT(fsimilar(_move.magnitude(),1));
 
 	CMotionDef*	S=0;
-	if (iHealth<=0) {
+	if ((iHealth<=0)){// && ((!m_bAttackStarted) || (m_bAttackFinished))) {
 		for (int i=0 ;i<2; i++)
 			if (m_tpaDeathAnimations[i] == m_current) {
 				S = m_current;
@@ -1667,13 +1745,17 @@ void CAI_Rat::Exec_Movement	( float dt )
 				m_bAttackGravitation = false;
 			}
 			else {
-				Fvector tAcceleration;
-				tAcceleration.sub(m_tpEnemyBeingAttacked->Position(),Position());
-				vfNormalizeSafe(tAcceleration);
-				tAcceleration.mul(5);
-				Movement.SetPosition(vPosition);
-				Movement.Calculate	(tAcceleration,0,0,dt,false);
-				Movement.GetPosition(vPosition);
+				Fvector tPosition = Position();
+				float fY = ffGetY(*AI_Node,tPosition.x,tPosition.z);
+				if (tPosition.y - fY > 0.01f) {
+					Fvector tAcceleration;
+					tAcceleration.sub(m_tpEnemyBeingAttacked->Position(),Position());
+					vfNormalizeSafe(tAcceleration);
+					tAcceleration.mul(5);
+					Movement.SetPosition(vPosition);
+					Movement.Calculate	(tAcceleration,0,0,dt,false);
+					Movement.GetPosition(vPosition);
+				}
 			}
 			UpdateTransform	();
 		}

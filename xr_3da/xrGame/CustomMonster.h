@@ -151,6 +151,7 @@ public:
 
 	// HUD
 	virtual void		OnHUDDraw				(CCustomHUD* hud);
+ IC virtual bool		bfExecMovement			(){return(false);};
 };
 
 namespace AI{

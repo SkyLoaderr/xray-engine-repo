@@ -137,11 +137,13 @@ class CAI_Rat : public CCustomMonster
 		virtual void  SelectEnemy(SEnemySelected& S);
 				void  FollowLeader(Fvector &tLeaderPosition, const float fMinDistance = 0.f, const float fMaxDistance = 0.f);
 
+		virtual	BOOL  Hit						(int iLost, Fvector &dir, CEntity* who);	// TRUE if died
 		virtual void  net_Export				(NET_Packet* P);				// export to server
 		virtual void  net_Import				(NET_Packet* P);				// import from server
 		virtual void  SelectAnimation			( const Fvector& _view, const Fvector& _move, float speed );
 		virtual void  Exec_Action				( float dt );
 		virtual void  Exec_Movement				( float dt );
+	 IC virtual bool  bfExecMovement			(){return(m_bAttackStarted && (!m_bAttackFinished));};
 		static  void __stdcall SpinCallback(CBoneInstance* B);
 };
 		
