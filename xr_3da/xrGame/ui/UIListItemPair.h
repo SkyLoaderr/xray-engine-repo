@@ -20,7 +20,7 @@ public:
 	// construction/destruction
 	CUIListItemPair();
 	virtual ~CUIListItemPair();
-	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData);
+//	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData);
 	virtual void SetHighlightText(bool Highlight); 
 	virtual void SetText(LPCSTR file_name, LPCSTR data_time);
 	       void SetTextFileName(LPCSTR file_name);
@@ -33,8 +33,10 @@ public:
 			void SetBorder(int iBorder);
 	virtual LPCSTR GetText();
 
-protected:
 	virtual void Draw();
+
+protected:
+	
 
 	CUIListItem m_staticFileName;
 	CUIListItem m_staticDateTime;

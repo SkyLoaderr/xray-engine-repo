@@ -14,9 +14,10 @@
 
 CUI3tButton::CUI3tButton(){
 	this->m_psiCurrentState = NULL;
-	this->m_bUseDisabledTextColor = false;
 	this->m_bTextureEnable = false;
-	this->m_dwEnabledTextColor = 0xFFFFFFFF;
+	this->m_bUseDisabledTextColor = true;
+	this->m_dwDisabledTextColor = 0xFFAAAAAA;
+	this->m_dwEnabledTextColor  = 0xFFFFFFFF;
 }
 
 CUI3tButton::~CUI3tButton(){
@@ -170,7 +171,7 @@ void CUI3tButton::Draw(){
 		if (this->m_bUseDisabledTextColor && !this->m_bIsEnabled)
 		{
 			R_ASSERT2(m_dwDisabledTextColor,"UITabButton::Draw() - m_dwDisabledTextColor == NULL");
-            GetFont()->SetColor(m_dwFontColor);
+            GetFont()->SetColor(m_dwDisabledTextColor);
 		}
 		else
 			GetFont()->SetColor(this->m_dwEnabledTextColor);

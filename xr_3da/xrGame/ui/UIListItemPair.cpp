@@ -22,6 +22,7 @@ CUIListItemPair::CUIListItemPair(){
 	// set textures
 	this->InitTexture("ui\\hud_map_point");
 	this->SetStretchTexture(true);
+	this->m_dwSelectionColor = color_argb(200, 95, 82, 74);
 	this->SetColor(color_argb(0, 0, 0, 0));
 
 	// attach all children
@@ -53,19 +54,19 @@ CUIListItemPair::~CUIListItemPair(){
 
 //-------------------------------------------------
 
-void CUIListItemPair::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){		
-	switch (msg)
-	{
-	case LIST_ITEM_SELECT:
-		this->SetColor(color_argb(255, 0, 0, 255));	
-		this->Draw();
-		break;
-	case LIST_ITEM_UNSELECT:
-		this->SetColor(color_argb(0, 0, 0, 0));
-		this->Draw();
-		break;
-	}
-}
+//void CUIListItemPair::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){		
+//	switch (msg)
+//	{
+//	case LIST_ITEM_SELECT:
+//		this->SetColor(color_argb(255, 0, 0, 255));	
+//		this->Draw();
+//		break;
+//	case LIST_ITEM_UNSELECT:
+//		this->SetColor(color_argb(0, 0, 0, 0));
+//		this->Draw();
+//		break;
+//	}
+//}
 
 //-------------------------------------------------
 
