@@ -8,6 +8,9 @@
 #include "xr_creator.h"
 #include "frustum.h"
 
+const DWORD MAX_POLYGONS=1024;
+const float MAX_DISTANCE=50.f;
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -112,9 +115,25 @@ void CLightPPA::Render(Flight& D3D, CList<PPA_Vertex>&	vlist)
 			vert2.P.set		(vert3.P);
 		}
 	}
-	
+}
+
+void CLightPPA_Manager::Initialize()
+{
+	VS = Device.Streams.Create	(D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX2, MAX_POLYGONS*3);
+}
+void CLightPPA_Manager::Render()
+{
+	for (DWORD L=0; L<container.size(); L++)
+	{
+		CLightPPA&	PPL = *container[L];
+		float	alpha	= Device.vCameraPosition.distance_to(PPL.sphere.P)/MAX_DISTANCE;
+		if (alpha>=1)	continue;
+
+
+	}
+
 	// Create D3D unattenuated light
-	D3D.diffuse.set		(color);
-	D3D.position.set	(sphere.P);
-	D3D.range			= sphere.R;
+	// D3D.diffuse.set		(color);
+	// D3D.position.set	(sphere.P);
+	// D3D.range			= sphere.R;
 }

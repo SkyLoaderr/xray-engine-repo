@@ -15,9 +15,12 @@ struct ENGINE_API	PPA_Vertex
 	float			u0,v0;
 	float			u1,v1;
 };
+typedef CList<PPA_Vertex>	PPA_VB;
+
 
 class ENGINE_API	CLightPPA  
 {
+public:
 	Fsphere			sphere;
 	Fcolor			color;
 public:
@@ -28,7 +31,19 @@ public:
 	IC void			SetRange		(float R)		{ sphere.R = R;		}
 	IC void			SetColor		(Fcolor& C)		{ color.set(C);		}
 
-	void			Render			(Flight& D3D, CList<PPA_Vertex>& vlist);
+	void			Render			(PPA_VB& vlist);
+};
+
+class ENGINE_API	CLightPPA_Manager
+{
+	svector<CLightPPA*,128>			container;
+	PPA_VB							storage;
+	CVertexStream*					VS;
+public:
+	void			Initialize		();
+
+	IC void			Add				(CLightPPA* L)	{ container.push_back(L);	}
+	void			Render			();
 };
 
 #endif // !defined(AFX_LIGHTPPA_H__E5B97AC9_84A6_4773_9FEF_3BC5D1CEF8B6__INCLUDED_)
