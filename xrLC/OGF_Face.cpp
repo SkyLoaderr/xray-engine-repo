@@ -19,6 +19,8 @@ BOOL OGF_Vertex::similar(OGF* ogf, OGF_Vertex& V)
 {
 	if (!P.similar(V.P)) return FALSE;
 	if (!N.similar(V.N)) return FALSE;
+	
+	R_ASSERT(UV.size()==V.UV.size());
 	for (DWORD i=0; i<V.UV.size(); i++) {
 		OGF_Texture *T = ogf->textures.begin()+i;
 		b_texture	*B = T->pSurface;
