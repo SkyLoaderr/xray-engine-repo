@@ -53,13 +53,13 @@ function main ()
     action (stalker3, object (torch, object.deactivate), cond (cond.time_end, 100))
     action (stalker3, object (weapon, object.deactivate), cond (cond.time_end, 1000))
     action (stalker3, anim ("stalker_3_2"), cond (cond.time_end, 100000000))
-    action (stalker1, anim ("stalker_2_1"), cond (cond.time_end, 100000000))
+    action (stalker1, anim ("stalker_1_2"), cond (cond.time_end, 100000000))
 
     --phrase 1		--если бы не ночь...
-    action (stalker2, anim ("stalker_1_s_1"), sound ("scripts\\Rolik\\Stalker2_1", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false), cond (cond.anim_end))   
+    action (stalker2, anim ("stalker_2_s_1"), sound ("scripts\\Rolik\\Stalker2_1", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false), cond (cond.anim_end))   
     while stalker2:action () do wait () end
     reset_action (stalker2, military2_1.script_name ())
-    action (stalker2, anim ("stalker_1_2"), cond (cond.time_end, 100000000))
+    action (stalker2, anim ("stalker_2_1"), cond (cond.time_end, 100000000))
     wait (1000)
 
 	--phrase 2		--пока вы добивали охрану...
@@ -71,26 +71,35 @@ function main ()
     wait (1500)
 
     --phrase 3		--наконец он у нас...
-    sound1_1:play_at_pos (stalker1, stalker1:position (), 0)
-    while sound1_1:playing () do wait () end
+	reset_action (stalker1, military2_1.script_name ())
+    action (stalker1, anim ("stalker_1_s_1"), sound ("scripts\\Rolik\\Stalker1_1", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false), cond (cond.anim_end))
+	while stalker1:action () do wait () end
+	reset_action (stalker1, military2_1.script_name ())
+    action (stalker1, anim ("stalker_1_2"), cond (cond.time_end, 100000000))
     wait (3000)
 
     --phrase 4		--надо быстро добраться до военной базы
-    sound1_2:play_at_pos (stalker1, stalker1:position (), 0)
-    while sound1_2:playing () do wait () end
+	reset_action (stalker1, military2_1.script_name ())
+    action (stalker1, anim ("stalker_1_s_2"), sound ("scripts\\Rolik\\Stalker1_2", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false), cond (cond.anim_end))
+	while stalker1:action () do wait () end
+	reset_action (stalker1, military2_1.script_name ())
+    action (stalker1, anim ("stalker_1_2"), cond (cond.time_end, 100000000))
     wait (1500)
 
     --phrase 5		--предлагаю кому-то остаться
 	reset_action (stalker2, military2_1.script_name ())
-	action (stalker2, anim ("stalker_1_s_2"), sound ("scripts\\Rolik\\Stalker2_2", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false), cond (cond.anim_end))
+	action (stalker2, anim ("stalker_2_s_2"), sound ("scripts\\Rolik\\Stalker2_2", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false), cond (cond.anim_end))
 	while stalker2:action () do wait () end
 	reset_action (stalker2, military2_1.script_name ())
-	action (stalker2, anim ("stalker_1_2"), cond (cond.anim_end))
+	action (stalker2, anim ("stalker_2_1"), cond (cond.anim_end))
     wait (5000)
 
     --phrase 6		--здесь кто-то есть
-    sound1_3:play_at_pos (stalker1, stalker1:position (), 0)
-    while sound1_3:playing () do wait () end
+	reset_action (stalker1, military2_1.script_name ())
+	action (stalker1, anim ("stalker_1_s_3"), sound ("scripts\\Rolik\\Stalker1_3", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false), cond (cond.anim_end))
+	while stalker1:action () do wait () end
+	reset_action (stalker1, military2_1.script_name ())
+	action (stalker2, anim ("stalker_1_2"), cond (cond.anim_end))
     wait (1000)
 
     --test
