@@ -279,7 +279,7 @@ function pda_callback(recepient, who, msg_type)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function hear_callback(self, who, sound_type, sound_position, sound_power)
-    printf("SOUNDCHECK %s, %f", who:name(), sound_power)
+    ----printf("SOUNDCHECK %s, %f", who:name(), sound_power)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function AddToMotivator(npc)
