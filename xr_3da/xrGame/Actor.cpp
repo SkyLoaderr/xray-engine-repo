@@ -315,7 +315,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	xrSE_Actor*			E	= (xrSE_Actor*)DC;
 
 	// Dima : 24.02.2003
-	cNameVisual_set			(E->visual_name);
+	cNameVisual_set			(E->get_visual());
 
 	//
 	r_model_yaw				= E->o_Angle.y;

@@ -48,7 +48,6 @@ public:
 
 class xrSE_Visualed
 {
-public:
 	string64						visual_name;
 public:
 #ifdef _EDITOR
@@ -71,6 +70,7 @@ public:
 	void							visual_write		(NET_Packet& P);
 
     void							set_visual			(LPCSTR name);
+	LPCSTR							get_visual			() {return visual_name;};
     
 #ifdef _EDITOR
     void 							FillProp			(LPCSTR pref, PropItemVec& values);

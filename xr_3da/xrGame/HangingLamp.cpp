@@ -33,7 +33,7 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 {
 	xrSE_HangingLamp* lamp	= (xrSE_HangingLamp*)(DC);
 	R_ASSERT				(lamp);
-	cNameVisual_set			(lamp->visual_name);
+	cNameVisual_set			(lamp->get_visual());
 	inherited::net_Spawn	(DC);
 	Fcolor					clr;
 

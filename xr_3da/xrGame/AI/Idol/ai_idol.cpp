@@ -31,7 +31,7 @@ BOOL CAI_Idol::net_Spawn			(LPVOID DC)
 {
 	xrSE_Idol						*tpIdol = (xrSE_Idol*)(DC);
 	R_ASSERT						(tpIdol);
-	cNameVisual_set					(tpIdol->visual_name);
+	cNameVisual_set					(tpIdol->get_visual());
 	
 	if (!inherited::net_Spawn(DC))	return FALSE;
 	

@@ -171,7 +171,7 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	//////////////////////////////////////////////////////////////////////////
 	xrSE_Rat						*tpSE_Rat = (xrSE_Rat *)DC;
 	// model
-	cNameVisual_set					(tpSE_Rat->visual_name);
+	cNameVisual_set					(tpSE_Rat->get_visual());
 	if (!inherited::net_Spawn(DC))
 		return(FALSE);
 	// personal characteristics

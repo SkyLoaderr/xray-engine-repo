@@ -36,7 +36,7 @@ BOOL CTorch::net_Spawn(LPVOID DC)
 {
 	xrSE_DeviceTorch* torch	= (xrSE_DeviceTorch*)(DC);
 	R_ASSERT				(torch);
-	cNameVisual_set			(torch->visual_name);
+	cNameVisual_set			(torch->get_visual());
 	inherited::net_Spawn	(DC);
 
 	R_ASSERT(!cfModel);

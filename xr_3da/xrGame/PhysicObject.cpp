@@ -13,7 +13,7 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 {
 	xrSE_PhysicObject* po	= (xrSE_PhysicObject*)(DC);
 	R_ASSERT				(po);
-	cNameVisual_set			(po->visual_name);
+	cNameVisual_set			(po->get_visual());
 	inherited::net_Spawn	(DC);
 
 	m_type = EPOType(po->type);

@@ -135,7 +135,7 @@ BOOL CAI_Dog::net_Spawn	(LPVOID DC)
 	//////////////////////////////////////////////////////////////////////////
 	xrSE_Dog *tpSE_Dog = (xrSE_Dog *)DC;
 	// model
-	cNameVisual_set					(tpSE_Dog->visual_name);
+	cNameVisual_set					(tpSE_Dog->get_visual());
 	// personal characteristics
 	r_torso_current.yaw				= r_torso_target.yaw	= -tpSE_Dog->o_Angle.y;
 	r_torso_current.pitch			= r_torso_target.pitch	= 0;

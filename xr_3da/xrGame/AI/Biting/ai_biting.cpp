@@ -159,7 +159,7 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 
 	xrSE_Biting						*l_tpSE_Biting = (xrSE_Biting*)DC;
 	
-	cNameVisual_set					(l_tpSE_Biting->visual_name);
+	cNameVisual_set					(l_tpSE_Biting->get_visual());
 	
 	m_tNextGP						= m_tCurGP = getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
 	
