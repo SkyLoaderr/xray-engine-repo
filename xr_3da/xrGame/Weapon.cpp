@@ -552,6 +552,15 @@ void CWeapon::shedule_Update	(u32 dT)
 	// Queue shrink
 //	u32	dwTimeCL		= Level().timeServer()-NET_Latency;
 //	while ((NET.size()>2) && (NET[1].dwTimeStamp<dwTimeCL)) NET.pop_front();
+	if (!H_Parent() && Game().type != GAME_SINGLE)
+	{
+		Fvector vPos;
+		vPos.set(Position());
+		vPos.y += 100.0f;
+		Level().Tracers.Add	(Position(), vPos, 300.0f, 0.75f, 1.0f, 0.07f);
+	};
+
+	
 
 	// Inherited
 	inherited::shedule_Update	(dT);
@@ -612,6 +621,7 @@ void CWeapon::UpdateCL		()
 	if(m_pFlameParticles2) UpdateFlameParticles2();
 
 	make_Interpolation();
+
 }
 
 
