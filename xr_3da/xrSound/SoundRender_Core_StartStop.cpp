@@ -4,6 +4,7 @@
 #include "SoundRender_Core.h"
 #include "SoundRender_Emitter.h"
 #include "SoundRender_Target.h"
+#include "SoundRender_Source.h"
 
 void	CSoundRender_Core::i_start		(CSoundRender_Emitter* E)
 {
