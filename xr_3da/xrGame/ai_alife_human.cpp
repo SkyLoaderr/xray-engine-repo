@@ -153,31 +153,94 @@ void CSE_ALifeHumanAbstract::vfChooseHumanTask()
 	}
 }
 
-void CSE_ALifeSimulator::vfCommunicateWithCustomer(CSE_ALifeHumanAbstract *tpALifeHumanAbstract, CSE_ALifeTraderAbstract *tpTraderAbstract)
+u16	CSE_ALifeHumanAbstract::get_available_ammo_count(CSE_ALifeItemWeapon *tpALifeItemWeapon)
 {
-	// update items
-	if (tpfGetTaskByID(tpALifeHumanAbstract->m_dwCurTaskID,true)) {
-		OBJECT_IT								I;
-		if (tpALifeHumanAbstract->bfCheckIfTaskCompleted(I)) {
-			D_OBJECT_PAIR_IT						J = m_tObjectRegistry.find(*I);
-			R_ASSERT2							(J != m_tObjectRegistry.end(), "Specified object hasn't been found in the Object registry!");
-			CSE_ALifeItem						*tpALifeItem = dynamic_cast<CSE_ALifeItem *>((*J).second);
-			if (tpTraderAbstract->m_dwMoney >= tpALifeItem->m_dwCost) {
-				// changing item parent
-				tpTraderAbstract->children.push_back(*I);
-				tpALifeHumanAbstract->children.erase(I);
-				tpALifeItem->ID_Parent			= tpTraderAbstract->ID;
-				// changing cumulative mass
-				tpTraderAbstract->m_fCumulativeItemMass += tpALifeItem->m_fMass;
-				tpALifeHumanAbstract->m_fCumulativeItemMass -= tpALifeItem->m_fMass;
-				// paying/receiving money
-				tpTraderAbstract->m_dwMoney		-= tpALifeItem->m_dwCost;
-				tpALifeHumanAbstract->m_dwMoney += tpALifeItem->m_dwCost;
+	u32							l_dwResult = 0;
+	OBJECT_IT					I = children.begin();
+	OBJECT_IT					E = children.end();
+	for ( ; I != E; I++) {
+		CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = dynamic_cast<CSE_ALifeItemAmmo*>(m_tpALife->tpfGetObjectByID(*I));
+		if (l_tpALifeItemAmmo && strstr(tpALifeItemWeapon->m_caAmmoSections,l_tpALifeItemAmmo->s_name))
+			l_dwResult			+= l_tpALifeItemAmmo->a_elapsed;
+	}
+	return						(u16(l_dwResult));
+}
+
+CSE_ALifeItemWeapon	*CSE_ALifeHumanAbstract::tpfGetBestWeapon(EHitType &tHitType, float &fHitPower)
+{
+	fHitPower					= 0.f;
+	CSE_ALifeItemWeapon			*l_tpBestWeapon = 0;
+	u32							l_dwBestWeapon = u32(-1);
+	OBJECT_IT					I = children.begin();
+	OBJECT_IT					E = children.end();
+	for ( ; I != E; I++) {
+		CSE_ALifeItemWeapon		*l_tpALifeItemWeapon = dynamic_cast<CSE_ALifeItemWeapon*>(m_tpALife->tpfGetObjectByID(*I));
+		if (!l_tpALifeItemWeapon)
+			continue;
+
+		l_tpALifeItemWeapon->m_dwAmmoAvailable = get_available_ammo_count(l_tpALifeItemWeapon);
+		if (l_tpALifeItemWeapon->m_dwAmmoAvailable) {
+			u32					l_dwCurrentBestWeapon = u32(-1); 
+			switch (l_tpALifeItemWeapon->m_tClassID) {
+				case CLSID_OBJECT_W_RPG7:
+				case CLSID_OBJECT_W_M134: {
+					l_dwCurrentBestWeapon = 9;
+					break;
+				}
+				case CLSID_OBJECT_W_FN2000:
+				case CLSID_OBJECT_W_SVD:
+				case CLSID_OBJECT_W_SVU:
+				case CLSID_OBJECT_W_VINTOREZ: {
+					l_dwCurrentBestWeapon = 8;
+					break;
+				}
+				case CLSID_OBJECT_W_SHOTGUN:
+				case CLSID_OBJECT_W_AK74:
+				case CLSID_OBJECT_W_VAL:
+				case CLSID_OBJECT_W_LR300:		{
+					l_dwCurrentBestWeapon = 6;
+					break;
+				}
+				case CLSID_OBJECT_W_HPSA:		
+				case CLSID_OBJECT_W_PM:			
+				case CLSID_OBJECT_W_FORT:		
+				case CLSID_OBJECT_W_WALTHER:	
+				case CLSID_OBJECT_W_USP45:		{
+					l_dwCurrentBestWeapon = 5;
+					break;
+				}
+				default						: NODEFAULT;
+			}
+			if (l_dwCurrentBestWeapon > l_dwBestWeapon) {
+				l_dwBestWeapon = l_dwCurrentBestWeapon;
+				l_tpBestWeapon = l_tpALifeItemWeapon;
 			}
 		}
 	}
+	if (l_tpBestWeapon) {
+		fHitPower				= l_tpBestWeapon->m_fHitPower;
+		tHitType				= l_tpBestWeapon->m_tHitType;
+	}
+	return						(l_tpBestWeapon);
+}
+
+bool CSE_ALifeHumanAbstract::bfPerformAttack()
+{
+#pragma todo("Knife and some other weapons need no ammo!")
+	R_ASSERT2					(m_tpCurrentBestWeapon->m_dwAmmoAvailable,"No ammo for the selected weapon!");
+	m_tpCurrentBestWeapon->m_dwAmmoAvailable--;
+	if (m_tpCurrentBestWeapon->m_dwAmmoAvailable)
+		return					(true);
 	
-	// update events
-	
-	// update tasks
+	for (int i=0, n = children.size() ; i<n; i++) {
+		CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = dynamic_cast<CSE_ALifeItemAmmo*>(m_tpALife->tpfGetObjectByID(children[i]));
+		if (l_tpALifeItemAmmo && strstr(m_tpCurrentBestWeapon->m_caAmmoSections,l_tpALifeItemAmmo->s_name) && l_tpALifeItemAmmo->a_elapsed) {
+			m_tpALife->vfReleaseObject(l_tpALifeItemAmmo,true);
+			children.erase		(children.begin() + i);
+			i--;
+			n--;
+		}
+	}
+	m_tpCurrentBestWeapon		= 0;
+	return						(false);
 }

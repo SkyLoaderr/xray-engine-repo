@@ -85,16 +85,22 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 	float							m_fMaxHealthValue;
 	float							m_fRetreatThreshold;
 	float							m_fEyeRange;
+	float							m_fHitPower;
+	EHitType						m_tHitType;
+	svector<float,eHitTypeMax>		m_fpImmunityFactors;
+	CSE_ALifeItemWeapon				*m_tpCurrentBestWeapon;
 	
-									CSE_ALifeMonsterAbstract(LPCSTR caSection);
-	IC		float					g_MaxHealth				()										{ return m_fMaxHealthValue;	}
+									CSE_ALifeMonsterAbstract(LPCSTR					caSection);
+	IC		float					g_MaxHealth				()											{ return m_fMaxHealthValue;	}
 #ifdef _EDITOR
-	virtual	void					Update					(CSE_ALifeSimulator *tpALifeSimulator)	{};
+	virtual	void					Update					(CSE_ALifeSimulator		*tpALifeSimulator)	{};
 #else
 #ifdef AI_COMPILER
-	virtual	void					Update					(CSE_ALifeSimulator *tpALifeSimulator)	{};
+	virtual	void					Update					(CSE_ALifeSimulator		*tpALifeSimulator)	{};
 #else
-	virtual	void					Update					(CSE_ALifeSimulator *tpALifeSimulator);
+	virtual	void					Update					(CSE_ALifeSimulator		*tpALifeSimulator);
+	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(EHitType				&tHitType,			float &fHitPower);
+	virtual bool					bfPerformAttack			()											{return(true);};
 #endif
 #endif
 SERVER_ENTITY_DECLARE_END
@@ -182,11 +188,11 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 	CSE_ALifeSimulator				*m_tpALife;
 
 
-									CSE_ALifeHumanAbstract	(LPCSTR caSection);
+									CSE_ALifeHumanAbstract	(LPCSTR					caSection);
 	virtual							~CSE_ALifeHumanAbstract	();
 #ifndef _EDITOR
 #ifndef AI_COMPILER
-	virtual	void					Update					(CSE_ALifeSimulator	*tpALife);
+	virtual	void					Update					(CSE_ALifeSimulator		*tpALife);
 			// FSM
 			void					vfChooseTask			();
 			void					vfHealthCare			();
@@ -200,8 +206,8 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 			// FSM miscellanious
 			void					vfChooseHumanTask		();
 			bool					bfHealthIsGood			();
-			bool					bfItemCanTreat			(CSE_ALifeItem *tpALifeItem);
-			void					vfUseItem				(CSE_ALifeItem *tpALifeItem);
+			bool					bfItemCanTreat			(CSE_ALifeItem			*tpALifeItem);
+			void					vfUseItem				(CSE_ALifeItem			*tpALifeItem);
 			bool					bfCanTreat				();
 			bool					bfEnoughMoneyToTreat	();
 			bool					bfEnoughTimeToTreat		();
@@ -209,12 +215,15 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 			bool					bfDistanceToTraderIsDanger();
 			bool					bfEnoughMoneyToEquip	();
 			// miscellanious
-			bool					bfCheckIfTaskCompleted	(OBJECT_IT		&I);
+			bool					bfCheckIfTaskCompleted	(OBJECT_IT				&I);
 			bool					bfCheckIfTaskCompleted	();
 			bool					bfProcessItems			();
 			void					vfCheckForDeletedEvents	();
 			bool					bfChooseNextRoutePoint	();
-			void					vfSetCurrentTask		(_TASK_ID		&tTaskID);
+			void					vfSetCurrentTask		(_TASK_ID				&tTaskID);
+	u16								get_available_ammo_count(CSE_ALifeItemWeapon	*tpALifeItemWeapon);
+	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(EHitType				&tHitType,			float &fHitPower);
+	virtual bool					bfPerformAttack			();
 #endif
 #endif
 SERVER_ENTITY_DECLARE_END

@@ -309,6 +309,24 @@ CSE_ALifeMonsterAbstract::CSE_ALifeMonsterAbstract(LPCSTR caSection)	: CSE_ALife
 	m_fDistanceToPoint			= 0.0f;
 	m_tpaTerrain.clear			();
 	m_fMaxHealthValue	 		= pSettings->r_float	(caSection,"MaxHealthValue");
+	if (pSettings->line_exist(caSection,"hit_power")) {
+		m_fHitPower				= pSettings->r_float(caSection,"hit_power");
+		m_tHitType				= g_tfString2HitType(pSettings->r_string(caSection,"hit_type"));
+	}
+	else {
+		m_fHitPower				= 0;
+		m_tHitType				= eHitTypeMax;
+	}
+
+	{
+		string64					S;
+		m_fpImmunityFactors.resize	(eHitTypeMax);
+		svector<float,eHitTypeMax>::iterator	B = m_fpImmunityFactors.begin(), I = B;
+		svector<float,eHitTypeMax>::iterator	E = m_fpImmunityFactors.end();
+		for ( ; I != E; I++)
+			*I						= pSettings->r_float(caSection,strcat(strcpy(S,g_cafHitType2String(EHitType(I - B))),"_immunity"));
+	}
+
 	if (pSettings->line_exist(caSection,"retreat_threshold"))
 		m_fRetreatThreshold		= pSettings->r_float(caSection,"retreat_threshold");
 	else

@@ -35,6 +35,7 @@ class CSE_ALifeSimulator :
 	bool							m_bFirstUpdate;
 	u32								m_dwMaxCombatIterationCount;
 	MONSTER_P_VECTOR				m_tpaCombatGroups[2];
+	CSE_ALifeMonsterAbstract		*m_tpaCombatMonsters[2];
 	
 	// temporary buffer for purchased by the particular trader artefacts
 	ITEM_COUNT_MAP					m_tpTraderItems;

@@ -119,28 +119,8 @@ CSE_ALifeItemWeapon::CSE_ALifeItemWeapon	(LPCSTR caSection) : CSE_ALifeItem(caSe
 	a_elapsed					= 0;
 	state						= 0;
 	m_fHitPower					= pSettings->r_float(caSection,"hit_power");
-	
-	LPCSTR						l_caHitType = pSettings->r_string(caSection,"hit_type");
-	if (!stricmp(l_caHitType,"burn"))
-		m_tHitType				= eHitTypeBurn;
-	else
-	if (!stricmp(l_caHitType,"shock"))
-		m_tHitType				= eHitTypeShock;
-	else
-	if (!stricmp(l_caHitType,"strike"))
-		m_tHitType				= eHitTypeStrike;
-	else
-	if (!stricmp(l_caHitType,"wound"))
-		m_tHitType				= eHitTypeWound;
-	else
-	if (!stricmp(l_caHitType,"radiation"))
-		m_tHitType				= eHitTypeRadiation;
-	else
-	if (!stricmp(l_caHitType,"telepatic"))
-		m_tHitType				= eHitTypeTelepatic;
-	else
-		R_ASSERT2				(false,"Unsupported hit type!");
-
+	m_tHitType					= g_tfString2HitType(pSettings->r_string(caSection,"hit_type"));
+	m_caAmmoSections			= pSettings->r_string(caSection,"ammo_class");
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
         set_visual				(pSettings->r_string(caSection,"visual"));
 }

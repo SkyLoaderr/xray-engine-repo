@@ -92,3 +92,10 @@ void CSE_ALifeMonsterAbstract::Update		(CSE_ALifeSimulator *tpALife)
 	while (bContinue && (tpALife->m_tpActor->o_Position.distance_to(o_Position) > tpALife->m_fOnlineDistance));
 	m_tTimeID					= tpALife->tfGetGameTime();
 }
+
+CSE_ALifeItemWeapon	*CSE_ALifeMonsterAbstract::tpfGetBestWeapon(EHitType &tHitType, float &fHitPower)
+{
+	fHitPower					= m_fHitPower;
+	tHitType					= m_tHitType;
+	return						(0);
+}

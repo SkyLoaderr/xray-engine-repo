@@ -151,13 +151,11 @@ float CPersonalCreatureTypeFunction::ffGetValue()
 
 float CPersonalWeaponTypeFunction::ffGetTheBestWeapon() 
 {
-#pragma todo("Implement weapon type function for ALife monsters")
 	u32 dwBestWeapon = 0;
 	CInventoryOwner *tpInventoryOwner = dynamic_cast<CInventoryOwner*>(getAI().m_tpCurrentMember);
 	if (tpInventoryOwner) {
 		xr_vector<CInventorySlot>::iterator I = tpInventoryOwner->m_inventory.m_slots.begin();
 		xr_vector<CInventorySlot>::iterator E = tpInventoryOwner->m_inventory.m_slots.end();
-		//		u32 best_slot = (u32)(-1);
 		for ( ; I != E; I++)
 			if ((*I).m_pIItem) {
 				CWeapon *tpCustomWeapon = dynamic_cast<CWeapon*>((*I).m_pIItem);
@@ -168,21 +166,21 @@ float CPersonalWeaponTypeFunction::ffGetTheBestWeapon()
 						case CLSID_OBJECT_W_M134: {
 							dwCurrentBestWeapon = 9;
 							break;
-												  }
+						}
 						case CLSID_OBJECT_W_FN2000:
 						case CLSID_OBJECT_W_SVD:
 						case CLSID_OBJECT_W_SVU:
 						case CLSID_OBJECT_W_VINTOREZ: {
 							dwCurrentBestWeapon = 8;
 							break;
-													  }
+						}
 						case CLSID_OBJECT_W_SHOTGUN:
 						case CLSID_OBJECT_W_AK74:
 						case CLSID_OBJECT_W_VAL:
 						case CLSID_OBJECT_W_LR300:		{
 							dwCurrentBestWeapon = 6;
 							break;
-														}
+						}
 						case CLSID_OBJECT_W_HPSA:		
 						case CLSID_OBJECT_W_PM:			
 						case CLSID_OBJECT_W_FORT:		
@@ -190,11 +188,11 @@ float CPersonalWeaponTypeFunction::ffGetTheBestWeapon()
 						case CLSID_OBJECT_W_USP45:		{
 							dwCurrentBestWeapon = 5;
 							break;
-														}
+						}
 						default						: {
 							dwCurrentBestWeapon = 0;
 							break;
-													  }
+						}
 					}
 					if (dwCurrentBestWeapon > dwBestWeapon)
 						dwBestWeapon = dwCurrentBestWeapon;

@@ -20,6 +20,7 @@ void CSE_ALifeSimulator::vfFillCombatGroup(CSE_ALifeMonsterAbstract *tpALifeMons
 			CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(tpfGetObjectByID(*I));
 			R_ASSERT2		(l_tpALifeMonsterAbstract,"Invalid group member!");
 			tpGroupVector.push_back(l_tpALifeMonsterAbstract);
+			l_tpALifeMonsterAbstract->m_tpCurrentBestWeapon = 0;
 		}
 	}
 }
@@ -95,23 +96,56 @@ bool CSE_ALifeSimulator::bfCheckIfRetreated(int iCombatGroupIndex)
 
 void CSE_ALifeSimulator::vfPerformAttackAction(int iCombatGroupIndex)
 {
-	MONSTER_P_VECTOR	&l_tCombatGroup = m_tpaCombatGroups[iCombatGroupIndex];
-	MONSTER_P_IT		I = l_tCombatGroup.begin();
-	MONSTER_P_IT		E = l_tCombatGroup.end();
+	MONSTER_P_VECTOR		&l_tCombatGroup = m_tpaCombatGroups[iCombatGroupIndex];
+	MONSTER_P_IT			I = l_tCombatGroup.begin();
+	MONSTER_P_IT			E = l_tCombatGroup.end();
 	for ( ; I != E; I++) {
+		EHitType			l_tHitType = eHitTypeMax;
+		float				l_fHitPower = 0.f;
+		if (!(*I)->m_tpCurrentBestWeapon) {
+			CSE_ALifeItemWeapon	*l_tpALifeItemWeapon = (*I)->tpfGetBestWeapon(l_tHitType,l_fHitPower);
+			if (!l_tpALifeItemWeapon && (l_fHitPower <= EPS_L))
+				break;
+		}
+		
 		getAI().m_tpCurrentALifeMember = *I;
 		for (int i=0, n=iFloor(getAI().m_pfWeaponAttackTimes->ffGetValue()); i<n; i++) {
 			if (randI(100) < (int)getAI().m_pfWeaponSuccessProbability->dwfGetDiscreteValue(100)) {
-				CSE_ALifeItemWeapon	*l_tpALifeItemWeapon = 0;//tpfGetBestWeapon(*I);
-				if (!l_tpALifeItemWeapon)
-					break;
 				// choose random enemy group member and perform hit with random power
-				int		l_iVictimIndex = randI(m_tpaCombatGroups[iCombatGroupIndex ^ 1].size());
-				m_tpaCombatGroups[iCombatGroupIndex ^ 1][l_iVictimIndex]->fHealth -= randF(l_tpALifeItemWeapon->m_fHitPower*0.5f,l_tpALifeItemWeapon->m_fHitPower*1.5f);
+				// multiplied by immunity factor
+				CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract = m_tpaCombatGroups[iCombatGroupIndex ^ 1][randI(m_tpaCombatGroups[iCombatGroupIndex ^ 1].size())];
+				l_tpALifeMonsterAbstract->fHealth -= l_tpALifeMonsterAbstract->m_fpImmunityFactors[l_tHitType]*randF(l_fHitPower*0.5f,l_fHitPower*1.5f);
+				
 				// check if victim became dead
-				if (m_tpaCombatGroups[iCombatGroupIndex ^ 1][l_iVictimIndex]->fHealth <= 0) {
-					
+				if (l_tpALifeMonsterAbstract->fHealth <= 0) {
+					l_tpALifeMonsterAbstract->fHealth			= 0.f;
+					CSE_ALifeAbstractGroup	*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(m_tpaCombatMonsters[iCombatGroupIndex ^ 1]);
+					if (l_tpALifeAbstractGroup) {
+						l_tpALifeMonsterAbstract->m_bDirectControl	= true;
+						bool				bOk = false;
+						OBJECT_IT			II = l_tpALifeAbstractGroup->m_tpMembers.begin();
+						OBJECT_IT			EE = l_tpALifeAbstractGroup->m_tpMembers.end();
+						for ( ; II != EE; II++)
+							if (*II == l_tpALifeMonsterAbstract->ID) {
+								bOk = true;
+								l_tpALifeAbstractGroup->m_tpMembers.erase(II);
+							}
+						R_ASSERT2			(bOk,"Cannot find specified group member");
+						vfUpdateDynamicData	(l_tpALifeMonsterAbstract);
+					}
+
+					_GRAPH_ID									l_tGraphID = m_tpaCombatMonsters[0]->m_tGraphID;
+					SLevelPoint*								l_tpaLevelPoints = (SLevelPoint*)(((u8*)getAI().m_tpaGraph) + getAI().m_tpaGraph[l_tGraphID].dwPointOffset);
+					u32											l_dwDeathpointIndex = randI(getAI().m_tpaGraph[l_tGraphID].tDeathPointCount);
+					l_tpALifeMonsterAbstract->m_tGraphID		= l_tGraphID;
+					l_tpALifeMonsterAbstract->o_Position		= l_tpaLevelPoints[l_dwDeathpointIndex].tPoint;
+					l_tpALifeMonsterAbstract->m_tNodeID			= l_tpaLevelPoints[l_dwDeathpointIndex].tNodeID;
+					l_tpALifeMonsterAbstract->m_fDistance		= l_tpaLevelPoints[l_dwDeathpointIndex].fDistance;
 				}
+				
+				// perform attack (if we use a weapon we should delete ammo we used)
+				if (!(*I)->bfPerformAttack())
+					break;
 			}
 		}
 	}
