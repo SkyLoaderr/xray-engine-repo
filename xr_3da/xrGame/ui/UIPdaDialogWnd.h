@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "..\inventory.h"
+#include "../inventory.h"
 
 #include "UIStatic.h"
 #include "UIButton.h"

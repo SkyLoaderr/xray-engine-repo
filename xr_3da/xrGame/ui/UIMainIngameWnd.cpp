@@ -8,15 +8,15 @@
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
 
-#include "..\\Entity.h"
-#include "..\\actor.h"
-#include "..\\xr_weapon_list.h"
-#include "..\\HUDManager.h"
+#include "../Entity.h"
+#include "../actor.h"
+#include "../weapon.h"
+#include "../HUDManager.h"
 /*
-#include "..\\Group.h"
+#include "../Group.h"
 */
 
-#include "..\\UIStaticItem.h"
+#include "../UIStaticItem.h"
 
 
 

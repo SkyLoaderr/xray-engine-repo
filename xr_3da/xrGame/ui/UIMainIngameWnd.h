@@ -14,8 +14,8 @@
 
 
 
-#include "..\\UIZoneMap.h"
-#include "..\\UIWeapon.h"
+#include "../UIZoneMap.h"
+#include "../UIWeapon.h"
 
 
 

@@ -6,9 +6,9 @@
 #include "stdafx.h"
 #include "UIMapBackground.h"
 
-#include "..\\actor.h"
-#include "..\\level.h"
-#include "..\\levelFogOfWar.h"
+#include "../actor.h"
+#include "../level.h"
+#include "../levelFogOfWar.h"
 
 
 //размер просматриваемого в текущей момент
@@ -174,9 +174,9 @@ void CUIMapBackground::DrawFogOfWar()
 
 	int i = 0, j = 0;
 
-	for(i=cell_left_top_pos.y; i<=cell_right_bottom_pos.y; i++)
+	for(i=cell_left_top_pos.y; i<=cell_right_bottom_pos.y; ++i)
 	{
-		for(j=cell_left_top_pos.x; j<=cell_right_bottom_pos.x; j++)
+		for(j=cell_left_top_pos.x; j<=cell_right_bottom_pos.x; ++j)
 		{
 			DrawFogOfWarCell(j, i);
 		}
@@ -365,7 +365,7 @@ void CUIMapBackground::UpdateMapSpots()
 	//разместить на карте объекты
 	Ivector2 pos;
 	
-	for(u32 i = 0; i<m_vMapSpots.size(); i++)
+	for(u32 i = 0; i<m_vMapSpots.size(); ++i)
 	{
 		if(m_vMapSpots[i]->m_pObject)
 		{

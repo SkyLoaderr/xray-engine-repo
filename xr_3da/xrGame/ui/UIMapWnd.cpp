@@ -8,10 +8,10 @@
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
 
-#include "..\\HUDManager.h"
+#include "../HUDManager.h"
 
-#include "..\\actor.h"
-#include "..\\level.h"
+#include "../actor.h"
+#include "../level.h"
 
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
@@ -53,7 +53,7 @@ void CUIMapWnd::Show()
 }
 void CUIMapWnd::RemoveAllSpots()
 {
-	for(u32 i=0; i<UIMapBackground.m_vMapSpots.size(); i++)
+	for(u32 i=0; i<UIMapBackground.m_vMapSpots.size(); ++i)
 	{	
 		UIMapBackground.m_vMapSpots[i]->GetParent()->DetachChild(UIMapBackground.m_vMapSpots[i]);
 		xr_delete(UIMapBackground.m_vMapSpots[i]);
@@ -130,11 +130,11 @@ void CUIMapWnd::InitMap()
 	int left = UIMapBackground.GetWndRect().left;
 	int top = UIMapBackground.GetWndRect().top;
 
-	for (u32 i=0; i<Team.Squads.size(); i++){
+	for (u32 i=0; i<Team.Squads.size(); ++i){
 			CSquad& S = Team.Squads[i];
-			for (u32 j=0; j<S.Groups.size(); j++){
+			for (u32 j=0; j<S.Groups.size(); ++j){
 				CGroup& G = S.Groups[j];
-				for (u32 k=0; k<G.Members.size(); k++){
+				for (u32 k=0; k<G.Members.size(); ++k){
 					if (G.Members[k]->IsVisibleForHUD())
 					{
 					

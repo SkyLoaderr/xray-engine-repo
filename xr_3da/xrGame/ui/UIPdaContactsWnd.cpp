@@ -4,8 +4,8 @@
 #include "stdafx.h"
 #include "UIPdaWnd.h"
 
-#include "..\\Pda.h"
-#include "..\\HUDManager.h"
+#include "../Pda.h"
+#include "../HUDManager.h"
 
 
 CUIPdaContactsWnd::CUIPdaContactsWnd()

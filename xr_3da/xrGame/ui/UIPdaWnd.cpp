@@ -5,13 +5,13 @@
 
 #include "stdafx.h"
 #include "UIPdaWnd.h"
-#include "..\\Pda.h"
+#include "../Pda.h"
 
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
 
 
-#include "..\\HUDManager.h"
+#include "../HUDManager.h"
 
 
 #define YES_MSG "Yes"
@@ -182,7 +182,7 @@ void CUIPdaWnd::InitPdaContacts()
 	UIPdaContactsWnd.UIListWnd.RemoveAll();
 
 	PDA_LIST_it it;
-	for(it = m_pPda->m_PDAList.begin(); it!=m_pPda->m_PDAList.end(); it++)
+	for(it = m_pPda->m_PDAList.begin(); m_pPda->m_PDAList.end() != it; ++it)
 	{
 		CObject* pObject =  Level().Objects.net_Find((*it)->GetOriginalOwnerID());
 		UIPdaContactsWnd.UIListWnd.AddItem((char*)pObject->cName(), pObject);
@@ -197,7 +197,7 @@ void CUIPdaWnd::UpdatePdaContacts()
 	PDA_LIST_it it;	
 
 	//удалить из списка все PDA ушедшие из зоны дос€гаемости
-	for(it = m_pPda->m_DeletedPDAList.begin(); it!=m_pPda->m_DeletedPDAList.end(); it++)
+	for(it = m_pPda->m_DeletedPDAList.begin(); m_pPda->m_DeletedPDAList.end() != it; ++it)
 	{	
 		//CObject* pObject =  Level().Objects.net_Find((*it)->GetOriginalOwnerID());
 		//UIPdaContactsWnd.UIListWnd.RemoveItem(UIPdaContactsWnd.UIListWnd.FindItem(pObject));
@@ -211,7 +211,7 @@ void CUIPdaWnd::UpdatePdaContacts()
 	}
 
 	//добавить новые
-	for(it = m_pPda->m_NewPDAList.begin(); it!=m_pPda->m_NewPDAList.end(); it++)
+	for(it = m_pPda->m_NewPDAList.begin(); m_pPda->m_NewPDAList.end() != it; ++it)
 	{	
 		CObject* pObject =  Level().Objects.net_Find((*it)->GetOriginalOwnerID());
 		//только если объекта еще нет в списке
@@ -269,8 +269,8 @@ void CUIPdaWnd::UpdateMessageLog()
 	if(m_pPda->m_mapPdaLog.find(id_pda_contact) == m_pPda->m_mapPdaLog.end()) return;
 
 	for(CPda::PDA_MESSAGE_LIST_it it = m_pPda->m_mapPdaLog[id_pda_contact].begin();
-							      it!= m_pPda->m_mapPdaLog[id_pda_contact].end();
-							      it++)
+							      m_pPda->m_mapPdaLog[id_pda_contact].end() != it;
+							      ++it)
 	{
 		switch((*it).msg)
 		{

@@ -131,7 +131,7 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 
 	// render enemy
 	/*
-	for (u32 i=0; i<Team.KnownEnemys.size(); i++){
+	for (u32 i=0; i<Team.KnownEnemys.size(); ++i){
 		CEntity* E = dynamic_cast<CEntity*>(Team.KnownEnemys[i].key);
 		if (E->IsVisibleForHUD()){
 			ConvertToLocal(LM,E->Position(),P);
@@ -152,11 +152,11 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 	}
 	if (bRender)
 	{
-		for (u32 i=0; i<Team.Squads.size(); i++){
+		for (u32 i=0; i<Team.Squads.size(); ++i){
 			CSquad& S = Team.Squads[i];
-			for (u32 j=0; j<S.Groups.size(); j++){
+			for (u32 j=0; j<S.Groups.size(); ++j){
 				CGroup& G = S.Groups[j];
-				for (u32 k=0; k<G.Members.size(); k++){
+				for (u32 k=0; k<G.Members.size(); ++k){
 					if (G.Members[k]->IsVisibleForHUD()){
 						ConvertToLocal(LM,G.Members[k]->Position(),P);
 						EntityOut(G.Members[k]->Position().y-Actor->Position().y,COLOR_FRIEND,P);
@@ -164,7 +164,7 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 				}
 			}
 		}
-		for(u32 i=0; i<Game().targets.size(); i++) {
+		for(u32 i=0; i<Game().targets.size(); ++i) {
 			// draw artifacts
 			CObject* T = dynamic_cast<CTargetCS*>(Game().targets[i]);
 			if (T){
