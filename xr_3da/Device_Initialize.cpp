@@ -47,10 +47,10 @@ void CRenderDevice::Initialize()
 	else										HW.Caps.bForceMultipass		= FALSE;
 	if (strstr(lpCmdLine,"-emu_fog")!=NULL)		HW.Caps.bForceVertexFog		= TRUE;
 	else										HW.Caps.bForceVertexFog		= FALSE;
-	if (strstr(lpCmdLine,"-nogpu")!=NULL)		HW.Caps.bForceSWTransform	= TRUE;
-	else										HW.Caps.bForceSWTransform	= FALSE;
-	if (strstr(lpCmdLine,"-dxt3")!=NULL)		HW.Caps.bForceDXT3			= TRUE;
-	else										HW.Caps.bForceDXT3			= FALSE;
+	if (strstr(lpCmdLine,"-gpu_sw")!=NULL)		HW.Caps.bForceGPU_SW		= TRUE;
+	else										HW.Caps.bForceGPU_SW		= FALSE;
+	if (strstr(lpCmdLine,"-gpu_nopure")!=NULL)	HW.Caps.bForceGPU_NonPure	= TRUE;
+	else										HW.Caps.bForceGPU_NonPure	= FALSE;
 	if (strstr(lpCmdLine,"-overdraw")!=NULL)	HW.Caps.bShowOverdraw		= TRUE;
 	else										HW.Caps.bShowOverdraw		= FALSE;
 
