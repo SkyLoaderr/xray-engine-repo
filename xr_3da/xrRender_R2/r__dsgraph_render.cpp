@@ -441,11 +441,9 @@ void	R_dsgraph_structure::r_dsgraph_render_emissive	()
 // strict-sorted render
 void	R_dsgraph_structure::r_dsgraph_render_distort	()
 {
-#if	RENDER==R_R2
 	// Sorted (back to front)
 	mapDistort.traverseRL	(sorted_L1);
 	mapDistort.clear		();
-#endif
 }
 
 //////////////////////////////////////////////////////////////////////////
