@@ -799,31 +799,23 @@
 					RelativePath=".\FBasicVisual.h">
 				</File>
 				<File
+					RelativePath=".\FHierrarhyVisual.cpp">
+				</File>
+				<File
+					RelativePath=".\FHierrarhyVisual.h">
+				</File>
+				<File
 					RelativePath=".\fmesh.cpp">
 				</File>
 				<File
 					RelativePath=".\Fmesh.h">
 				</File>
-				<Filter
-					Name="Hierrarhy"
-					Filter="">
-					<File
-						RelativePath=".\FHierrarhyVisual.cpp">
-					</File>
-					<File
-						RelativePath=".\FHierrarhyVisual.h">
-					</File>
-				</Filter>
-				<Filter
-					Name="Particles"
-					Filter="">
-					<File
-						RelativePath=".\ParticleCustom.cpp">
-					</File>
-					<File
-						RelativePath=".\ParticleCustom.h">
-					</File>
-				</Filter>
+				<File
+					RelativePath=".\ParticleCustom.cpp">
+				</File>
+				<File
+					RelativePath=".\ParticleCustom.h">
+				</File>
 				<Filter
 					Name="Skeleton"
 					Filter="">
@@ -868,16 +860,6 @@
 					</File>
 					<File
 						RelativePath=".\SkeletonX.h">
-					</File>
-				</Filter>
-				<Filter
-					Name="LOD BB"
-					Filter="">
-					<File
-						RelativePath="FLOD.cpp">
-					</File>
-					<File
-						RelativePath="FLOD.h">
 					</File>
 				</Filter>
 			</Filter>
