@@ -173,7 +173,7 @@ void CPhysicObject::CreateSkeleton(CSE_ALifeObjectPhysic* po)
 
 	m_pPhysicsShell->set_PhysicsRefObject(this);
 	m_pPhysicsShell->mXFORM.set(XFORM());
-	m_pPhysicsShell->Activate(true,!!po->flags.and(CSE_ALifeObjectPhysic::flActive).get());
+	m_pPhysicsShell->Activate(true,!po->flags.and(CSE_ALifeObjectPhysic::flActive).get());//,
 	//m_pPhysicsShell->SmoothElementsInertia(0.3f);
 	m_pPhysicsShell->SetAirResistance();//0.0014f,1.5f
 	if(fixed_element)
