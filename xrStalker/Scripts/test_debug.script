@@ -1,0 +1,7 @@
+function main()
+	local foo = nil
+	
+	printf("test")
+	
+	foo:printf("Hello")
+end
