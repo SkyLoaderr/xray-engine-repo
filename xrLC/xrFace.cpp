@@ -74,6 +74,7 @@ Shader_xrLC&	Face::Shader()
 	return *(pBuild->shaders.Get(shader_id));
 }
 
+#define VPUSH(a) a.x,a.y,a.z
 void	Face::Failure		()
 {
 	dwInvalidFaces			++;
@@ -119,7 +120,6 @@ void	Face::CalcNormal	()
 	}
 };
 
-#define VPUSH(a) a.x,a.y,a.z
 void	Face::CalcNormal2	()
 {
 	FPU::m64r		();
