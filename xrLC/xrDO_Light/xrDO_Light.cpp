@@ -44,9 +44,6 @@ void Startup(LPSTR     lpCmdLine)
 	_beginthread		(logThread,	0,0);
 	Sleep				(150);
 	
-	// Faster FPU 
-	InitMath			();
-
 	// Load project
 	name[0]=0; sscanf	(strstr(cmd,"-f")+2,"%s",name);
 	string prjName = "gamedata\\levels\\"+string(name)+"\\";
@@ -72,22 +69,8 @@ int APIENTRY WinMain(HINSTANCE hInstance,
                      int       nCmdShow)
 {
 	// Initialize debugging
-	Debug.Start		();
-
-#ifndef _DEBUG
-	__try
-	{
-#endif
-		Startup		(lpCmdLine);
-#ifndef _DEBUG
-	}
-	__except(Debug.LogStack(GetExceptionInformation()))
-	{
-		MessageBox(0,"Access violation occured. See ENGINE.LOG for details.","Error",MB_OK|MB_ICONSTOP);
-	}
-#endif
-	
-	Debug.Stop		();
+	Core._initialize("xrDO");
+	Startup			(lpCmdLine);
 	
 	return 0;
 }
