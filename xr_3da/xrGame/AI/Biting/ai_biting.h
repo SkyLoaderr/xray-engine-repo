@@ -15,7 +15,7 @@
 #include "..\\ai_monster_mem.h"
 
 // logging
-//#define SILENCE
+#define SILENCE
 
 #undef	WRITE_TO_LOG
 #ifdef SILENCE
