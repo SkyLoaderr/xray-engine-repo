@@ -61,10 +61,10 @@ end
 
 function action_alive:initialize()
 	action_base.initialize	(self)
-	self.object:set_node_evaluator		(0)
-	self.object:set_path_evaluator		(0)
-	self.object:set_desired_position	(0)
-	self.object:set_desired_direction	(0)
+	self.object:set_node_evaluator		(nil)
+	self.object:set_path_evaluator		(nil)
+	self.object:set_desired_position	(nil)
+	self.object:set_desired_direction	(nil)
 end
 
 function action_alive:execute()
