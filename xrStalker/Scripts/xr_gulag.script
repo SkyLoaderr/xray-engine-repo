@@ -197,7 +197,7 @@ function fract:loadJob(name) -- загружает список заданий
 			object = nil,
 			begin = nil, 
 			idle = 0,	-- раз в какое время запускается работа
-			prior = 9,
+			prior = 1,
 			state = { 0 }, -- в каких состояниях это задание существует
 			running = false,
 			search_light = nil,
@@ -208,7 +208,7 @@ function fract:loadJob(name) -- загружает список заданий
 			object = nil,
 			begin = nil, 
 			idle = 0,	-- раз в какое время запускается работа
-			prior = 9,
+			prior = 1,
 			state = { 0 }, -- в каких состояниях это задание существует
 			running = false,
 			search_light = nil,
@@ -219,7 +219,7 @@ function fract:loadJob(name) -- загружает список заданий
 			object = nil,
 			begin = nil, 
 			idle = 0,	-- раз в какое время запускается работа
-			prior = 9,
+			prior = 1,
 			state = { 0 }, -- в каких состояниях это задание существует
 			running = false,
 			search_light = nil,
@@ -230,7 +230,7 @@ function fract:loadJob(name) -- загружает список заданий
 			object = nil,
 			begin = nil, 
 			idle = 0,	-- раз в какое время запускается работа
-			prior = 9,
+			prior = 1,
 			state = { 0 }, -- в каких состояниях это задание существует
 			running = false,
 			search_light = nil,
@@ -241,7 +241,7 @@ function fract:loadJob(name) -- загружает список заданий
 			object = nil,
 			begin = nil, 
 			idle = 0,	-- раз в какое время запускается работа
-			prior = 9,
+			prior = 1,
 			state = { 0 }, -- в каких состояниях это задание существует
 			running = false,
 			search_light = nil,
@@ -252,7 +252,7 @@ function fract:loadJob(name) -- загружает список заданий
 			object = nil,
 			begin = nil, 
 			idle = 0,	-- раз в какое время запускается работа
-			prior = 9,
+			prior = 1,
 			state = { 0 }, -- в каких состояниях это задание существует
 			running = false,
 			search_light = nil,
