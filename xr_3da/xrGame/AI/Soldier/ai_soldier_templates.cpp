@@ -148,6 +148,9 @@ void CAI_Soldier::vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, C
 		if (AI_Path.Nodes.size() <= 2)
 			AI_Path.bNeedRebuild = TRUE;
 		
+		if (AI_Path.TravelPath.size() - 1 <= AI_Path.TravelStart)
+			AI_Path.bNeedRebuild = TRUE;
+		
 		if (AI_Path.bNeedRebuild)
 			m_dwLastSuccessfullSearch = S.m_dwCurTime;
 	}

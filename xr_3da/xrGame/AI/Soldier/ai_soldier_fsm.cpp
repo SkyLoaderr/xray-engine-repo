@@ -79,7 +79,7 @@ void CAI_Soldier::OnAttackAlone()
 	
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfActionOrFightTypeChanged());
 
-	if (bfFireEnemy(Enemy.Enemy))
+	if ((Enemy.Enemy && bfFireEnemy(Enemy.Enemy)) || (tSavedEnemy && bfFireEnemy(tSavedEnemy)))
 		SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierAttackAloneFire)
 	else
 		SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierAttackAloneNonFire)
@@ -91,7 +91,7 @@ void CAI_Soldier::OnDefendAlone()
 	
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfActionOrFightTypeChanged());
 
-	if (bfFireEnemy(Enemy.Enemy))
+	if ((Enemy.Enemy && bfFireEnemy(Enemy.Enemy)) || (tSavedEnemy && bfFireEnemy(tSavedEnemy)))
 		SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierDefendAloneFire)
 	else
 		SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierDefendAloneNonFire)
@@ -103,7 +103,7 @@ void CAI_Soldier::OnPursuitAlone()
 	
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfActionOrFightTypeChanged());
 
-	if (bfFireEnemy(Enemy.Enemy))
+	if ((Enemy.Enemy && bfFireEnemy(Enemy.Enemy)) || (tSavedEnemy && bfFireEnemy(tSavedEnemy)))
 		SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierPursuitAloneFire)
 	else
 		SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierPursuitAloneNonFire)
@@ -115,7 +115,7 @@ void CAI_Soldier::OnFindAlone()
 	
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfActionOrFightTypeChanged());
 
-	if (bfFireEnemy(Enemy.Enemy))
+	if ((Enemy.Enemy && bfFireEnemy(Enemy.Enemy)) || (tSavedEnemy && bfFireEnemy(tSavedEnemy)))
 		SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierFindAloneFire)
 	else
 		SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierFindAloneNonFire)
@@ -283,10 +283,10 @@ void CAI_Soldier::OnRetreatAloneFire()
 	if (AI_Path.bNeedRebuild)
 		vfBuildPathToDestinationPoint(0);
 	else
-		if (AI_Path.TravelPath.empty() || (AI_Path.TravelPath.size()/2 < AI_Path.TravelStart))
+		//if (AI_Path.TravelPath.empty() || (AI_Path.TravelPath.size()/2 < AI_Path.TravelStart))
 			vfSearchForBetterPosition(SelectorRetreat,Squad,Leader);
 
-	if (bfTooBigDistance(tSavedEnemyPosition,15.f) || !Enemy.Enemy || ((Enemy.Enemy) && !Enemy.bVisible) || bfCheckHistoryForState(aiSoldierHurtAlone,10000))
+	if (bfTooBigDistance(tSavedEnemyPosition,15.f) || !Enemy.Enemy || ((Enemy.Enemy) && !Enemy.bVisible) || bfCheckHistoryForState(aiSoldierHurtAlone,10000) || bfCheckHistoryForState(aiSoldierAttackAlone,10000))
 		if (AI_Path.fSpeed < EPS_L)
 			SetLessCoverLook(AI_Node);
 		else
