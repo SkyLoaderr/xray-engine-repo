@@ -16,7 +16,7 @@ public:
 private:
 	struct String
 	{
-		string256	string;
+		string128	string;
 		float		x,y;
 		float		size;
 		u32			c;
