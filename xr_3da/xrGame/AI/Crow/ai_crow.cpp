@@ -159,7 +159,10 @@ void CAI_Crow::switch2_DeathFall()
 }
 void CAI_Crow::shedule_Update(u32 DT)
 {
+	spatial.type &=~STYPE_VISIBLEFORAI;
+
 	inherited::shedule_Update(DT);
+
 	UpdatePhysicsShell();
 	if (st_target!=st_current){
 		switch(st_target){

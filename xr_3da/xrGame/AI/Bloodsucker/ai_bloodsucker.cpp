@@ -128,6 +128,7 @@ void CAI_Bloodsucker::UpdateCL()
 	if (NewVis != PrevVis) setVisible(NewVis);
 
 	//----------------------------------------------------------------
+	/*
 	float ty,cy;
 
 	cy = r_torso_current.yaw;
@@ -135,13 +136,12 @@ void CAI_Bloodsucker::UpdateCL()
 
 	HUD().pFontSmall->OutSet (300,420);	
 	HUD().pFontSmall->OutNext("CY = [%f]   TY = [%f]", rad2deg(cy),rad2deg(ty));
+	*/
 	//----------------------------------------------------------------
-
 }
 
 void CAI_Bloodsucker::StateSelector()
 {
-
 	VisionElem ve;
 
 	if (C && H && I)			SetState(statePanic);
