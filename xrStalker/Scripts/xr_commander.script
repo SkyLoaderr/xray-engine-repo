@@ -3,11 +3,11 @@
 „угай —аша
 
 —делать:
-    - подставить насто€щие звуки
-    - звуки во сне
+    - оттестить звуки во сне
     - водка (ƒима)
     - при сне и водке смотреть не на точку, а в направлении
     - переделать звуки под set_sound
+    - звуки внутренней тревоги
 --------------------------------------------------------------------------------------------------------------------]]
 
 local prop_commander = xr_evaluators_id.commander_commander
@@ -314,7 +314,7 @@ function action_commander:exec_look_box()
         if self.time_end then
             if self.time_end <= device():time_global() then
                 if not self.object:see( self.box ) then
-                    printf( "ящик украли! “ревога!!!" )
+                    printf( "[commander] : ящик украли! “ревога!!!" )
                     
                     self.object:set_sound_mask( -1 )
                     self.object:set_sound_mask( 0 )
@@ -324,8 +324,10 @@ function action_commander:exec_look_box()
                     else
                         self.object:play_sound( snd_lost_box, 1, 0 )
                     end
+
+                    xr_gulag.setFractionState( "blockpost", 2 )
                 else
-                    printf( "ящик на месте" )
+                    printf( "[commander] : ящик на месте" )
                     self:add_inside_animations( 2 )
                 end
 
@@ -618,13 +620,13 @@ function action_commander:exec_drink_vodka()
                     if self.vodka_active then
                         self.object:set_item( object.deactivate, self.object:object( "vodka" ) )
                         self.vodka_active = false
-                        printf( "”Ѕ»–јё ¬ќƒ ”" )
+                        printf( "[commander] : ”Ѕ»–јё ¬ќƒ ”" )
                     end
                 elseif dt < 20000 then
                     if not self.vodka_active then
                         self.object:set_item( object.use, self.object:object( "vodka" ) )
                         self.vodka_active = true
-                        printf( "Ќј„»Ќјё ѕ»“№" )
+                        printf( "[commander] : Ќј„»Ќјё ѕ»“№" )
                     end
                 end
                 
@@ -633,7 +635,7 @@ function action_commander:exec_drink_vodka()
                 self.object:set_sight( look.point, self.a.way:point( self.a.way:index( "mattress_dir" ) ):add( vector():set( 0, 0.5, 0 ) ), 0 )
 
                 if xr_state.change_state( self.object, 2 ) then 
-                    printf( "Ќј„»Ќјё —јƒ»“№—я" )
+                    printf( "[commander] : Ќј„»Ќјё —јƒ»“№—я" )
                 else
                     if day_time() > 14 * h2ms then
                         self.drunk = true
@@ -643,7 +645,7 @@ function action_commander:exec_drink_vodka()
                     self.time_end = device():time_global() + 20000
                     self.vodka_active = false
                     
-                    printf( "—≈Ћ" )
+                    printf( "[commander] : —≈Ћ" )
                 end
             end
         else
