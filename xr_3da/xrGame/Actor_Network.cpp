@@ -16,13 +16,10 @@
 
 #include "PHWorld.h"
 
-
-
-static u32 g_dwStartTime = 0;
-static u32 g_dwLastUpdateTime;
-static u32 g_dwNumUpdates = 0;
-float g_fNumUpdates = 0;
-
+static u32	g_dwStartTime		= 0;
+static u32	g_dwLastUpdateTime	;
+static u32	g_dwNumUpdates		= 0;
+float		g_fNumUpdates		= 0;
 
 //--------------------------------------------------------------------
 void CActor::net_Export	(NET_Packet& P)					// export to server
@@ -57,11 +54,11 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 	P.w_u8				(u8(inventory().GetActiveSlot()));
 
 	/////////////////////////////////////////////////
-	u16 NumItems = PHGetSyncItemsNumber();
+	u16 NumItems		= PHGetSyncItemsNumber();
 	if (H_Parent() || GameID() == 1) NumItems = 0;
 
 	P.w_u16				(NumItems);
-	if (!NumItems) return;
+	if (!NumItems)		return;
 
 	SPHNetState	State;
 	State.enabled = false;
@@ -100,7 +97,7 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 	P.w_u32					( Time1 );
 }
 
-float g_fMaxDesyncLen = 1.0f;
+float g_fMaxDesyncLen		= 1.0f;
 
 void		CActor::net_Import_Base				( NET_Packet& P)
 {

@@ -503,8 +503,6 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 				m_pPhysicsShell->applyHit(m_saved_position,m_saved_dir,m_saved_impulse*1.5f,m_saved_element,m_saved_hit_type);
 				m_saved_impulse=0.f;
 			}
-
-
 			if(m_pPhysicsShell)
 			{
 				XFORM().set	(m_pPhysicsShell->mXFORM);
@@ -547,11 +545,10 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 
 	m_PhysicMovementControl->Calculate			(_accel,0,jump,dt,false);
 	m_PhysicMovementControl->GetPosition		(Position());
-	m_PhysicMovementControl->bSleep=false;
+	m_PhysicMovementControl->bSleep				=false;
 	///////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////Update m_PhysicMovementControl///////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////
-
 	//m_PhysicMovementControl->SetEnvironment(m_PhysicMovementControl->Environment(),m_PhysicMovementControl->OldEnvironment());//peOnGround,peAtWall,peInAir
 	//m_PhysicMovementControl->SetPosition		(Position());
 	//Fvector velocity=m_PhysicMovementControl->GetVelocity();
@@ -559,8 +556,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 	//m_PhysicMovementControl->gcontact_Was=m_PhysicMovementControl->gcontact_Was;
 	//m_PhysicMovementControl->SetContactSpeed(m_PhysicMovementControl->GetContactSpeed());
 	//velocity.y=0.f;
-	//	m_PhysicMovementControl->SetActualVelocity(velocity.magnitude());
-
+	//m_PhysicMovementControl->SetActualVelocity(velocity.magnitude());
 	//m_PhysicMovementControl->gcontact_HealthLost=m_PhysicMovementControl->gcontact_HealthLost;
 	//m_PhysicMovementControl->gcontact_Power=m_PhysicMovementControl->gcontact_Power;
 
@@ -582,14 +578,12 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 	}
 	*/	
 
-
 	{
 		//		SGameMtlPair* pair	= GMLib.GetMaterialPair(0,1); R_ASSERT(pair);
 		//		::Sound->play_at_pos	(pair->HitSounds[0],this,Position());
 		//		::Sound->play_at_pos						(sndLanding,this,Position());
 
 		if (Local()) {
-
 			if (m_PhysicMovementControl->gcontact_Was) 
 				g_pGameLevel->Cameras.AddEffector		(xr_new<CEffectorFall> (m_PhysicMovementControl->gcontact_Power));
 			Fvector D; D.set					(0,1,0);
@@ -625,7 +619,7 @@ void CActor::UpdateCL()
 		//if(m_PhysicMovementControl->CharacterExist())
 		//			m_PhysicMovementControl->InterpolatePosition(Position());
 		//обновить информацию о предметах лежащих рядом с актером
-		PickupModeUpdate();	
+		PickupModeUpdate	();	
 
 		float				k =	(mstate_real&mcCrouch)?0.75f:1.f;
 		float				tm = isAccelerated(mstate_real)?(PI/(k*10.f)):(PI/(k*7.f));
@@ -767,7 +761,6 @@ void CActor::shedule_Update	(u32 DT)
 			g_Physics					(NET_Last.p_accel,Jump,dt	);
 			g_cl_ValidateMState			(dt,mstate_wishful);
 			g_SetAnimation				(NET_Last.mstate);
-
 
 			if (NET_Last.mstate & mcCrouch)
 				m_PhysicMovementControl->ActivateBox(1, true);
