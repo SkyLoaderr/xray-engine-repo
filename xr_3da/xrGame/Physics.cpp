@@ -203,10 +203,10 @@ void CPHWorld::OnFrame()
 
 //////////////////////////////////////////////////////////////////////////////
 //static dReal frame_time=0.f;
+static u32 start_time=0;
 void CPHWorld::Step()
 {
-	
-	u32 start_time=Device.dwTimeGlobal;
+//	u32 start_time=Device.dwTimeGlobal;
 	xr_list<CPHObject*>::iterator iter;
 
 	++disable_count;		
@@ -250,7 +250,11 @@ void CPHWorld::Step()
 	ContactFeedBacks.empty();
 	ContactEffectors.empty();
 	Device.Statistic.ph_core.End		();
-	if(physics_step_time_callback) physics_step_time_callback(start_time,start_time+u32(fixed_step*1000));	
+	if(physics_step_time_callback) 
+	{
+		physics_step_time_callback(start_time,start_time+u32(fixed_step*1000));	
+		start_time += u32(fixed_step*1000);
+	};
 
 
 	//	for(iter=m_objects.begin();m_objects.end()!=iter;++iter)
@@ -304,10 +308,8 @@ void CPHWorld::FrameStep(dReal step)
 	m_delay+=(it_number-m_reduce_delay-1);
 	*/
 	//for(UINT i=0;i<(m_reduce_delay+1);++i)
+	start_time = Device.dwTimeGlobal;// - u32(m_frame_time*1000);
 	for(UINT i=0; i<it_number;++i)	Step();
-
-
-
 }
 
 void CPHWorld::Freeze()
