@@ -106,7 +106,7 @@ public:
 		CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>(tpALifeDynamicObject);
 		if (tpALifeItem) {
 			if (!tpALifeItem->m_bAttached)
-				m_tpGraphObjects[tpALifeDynamicObject->m_tGraphID].tpObjects.push_back(tpALifeDynamicObject);
+				m_tpGraphObjects[tpALifeItem->m_tGraphID].tpObjects.push_back(tpALifeItem);
 			return;
 		}
 		m_tpGraphObjects[tpALifeDynamicObject->m_tGraphID].tpObjects.push_back(tpALifeDynamicObject);
@@ -129,10 +129,36 @@ public:
 	
 	IC void vfUpdateDynamicData()
 	{
-		OBJECT_PAIR_IT			I = m_tObjectRegistry.m_tppMap.begin();
-		OBJECT_PAIR_IT			E = m_tObjectRegistry.m_tppMap.end();
-		for ( ; I != E; I++)
-			vfUpdateDynamicData((*I).second);
+		m_tpLocationOwners.resize	(Level().AI.GraphHeader().dwVertexCount);
+		{
+			ALIFE_MONSTER_P_VECTOR_IT	I = m_tpLocationOwners.begin();
+			ALIFE_MONSTER_P_VECTOR_IT	E = m_tpLocationOwners.end();
+			for ( ; I != E; I++)
+				(*I).clear();
+		}
+		m_tpGraphObjects.resize		(Level().AI.GraphHeader().dwVertexCount);
+		{
+			GRAPH_POINT_IT				I = m_tpGraphObjects.begin();
+			GRAPH_POINT_IT				E = m_tpGraphObjects.end();
+			for ( ; I != E; I++) {
+				(*I).tpObjects.clear();
+				(*I).tpEvents.clear();
+			}
+		}
+		m_tpScheduledObjects.clear	();
+		m_tpTraders.clear			();
+		{
+			OBJECT_PAIR_IT				I = m_tObjectRegistry.m_tppMap.begin();
+			OBJECT_PAIR_IT				E = m_tObjectRegistry.m_tppMap.end();
+			for ( ; I != E; I++)
+				vfUpdateDynamicData((*I).second);
+		}
+		{
+			EVENT_PAIR_IT	I = m_tEventRegistry.m_tpMap.begin();
+			EVENT_PAIR_IT	E = m_tEventRegistry.m_tpMap.end();
+			for ( ; I != E; I++)
+				m_tpGraphObjects[(*I).second.tGraphID].tpEvents.push_back(&((*I).second));
+		}
 	}
 
 	IC void vfCreateNewDynamicObject(SPAWN_IT I, bool bUpdateDynamicData = false)
