@@ -504,6 +504,94 @@
 								RelativePath=".\stalker_property_evaluators_inline.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="setup_action"
+							Filter="">
+							<File
+								RelativePath=".\setup_action.cpp">
+							</File>
+							<File
+								RelativePath=".\setup_action.h">
+							</File>
+							<File
+								RelativePath=".\setup_action_inline.h">
+							</File>
+							<Filter
+								Name="animation_action"
+								Filter="">
+								<File
+									RelativePath=".\animation_action.cpp">
+								</File>
+								<File
+									RelativePath=".\animation_action.h">
+								</File>
+								<File
+									RelativePath=".\animation_action_inline.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="control_action"
+								Filter="">
+								<File
+									RelativePath=".\control_action.h">
+								</File>
+								<File
+									RelativePath=".\control_action_inline.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="movement_action"
+								Filter="">
+								<File
+									RelativePath=".\movement_action.cpp">
+								</File>
+								<File
+									RelativePath=".\movement_action.h">
+								</File>
+								<File
+									RelativePath=".\movement_action_inline.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="object_action"
+								Filter="">
+								<File
+									RelativePath=".\object_action.cpp">
+								</File>
+								<File
+									RelativePath=".\object_action.h">
+								</File>
+								<File
+									RelativePath=".\object_action_inline.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="sight_action"
+								Filter="">
+								<File
+									RelativePath=".\sight_action.cpp">
+								</File>
+								<File
+									RelativePath=".\sight_action.h">
+								</File>
+								<File
+									RelativePath=".\sight_action_inline.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="sound_action"
+								Filter="">
+								<File
+									RelativePath=".\sound_action.cpp">
+								</File>
+								<File
+									RelativePath=".\sound_action.h">
+								</File>
+								<File
+									RelativePath=".\sound_action_inline.h">
+								</File>
+							</Filter>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="StateManagement"
@@ -1229,16 +1317,13 @@
 						RelativePath=".\sight_manager_space.h">
 					</File>
 					<Filter
-						Name="actions"
+						Name="sight_control_action"
 						Filter="">
 						<File
-							RelativePath=".\sight_action.cpp">
+							RelativePath=".\sight_control_action.h">
 						</File>
 						<File
-							RelativePath=".\sight_action.h">
-						</File>
-						<File
-							RelativePath=".\sight_action_inline.h">
+							RelativePath=".\sight_control_action_inline.h">
 						</File>
 					</Filter>
 				</Filter>

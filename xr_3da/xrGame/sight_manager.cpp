@@ -30,11 +30,7 @@ void CSightManager::Load			(LPCSTR section)
 
 void CSightManager::reinit			(CAI_Stalker *object)
 {
-	VERIFY						(object);
-	clear						();
-	m_current_action			= 0;
-	m_object					= object;
-	m_actuality					= false;
+	inherited::reinit			(object);
 }
 
 void CSightManager::SetPointLookAngles(const Fvector &tPosition, float &yaw, float &pitch)
@@ -202,77 +198,22 @@ void CSightManager::Exec_Look(float dt)
 	VERIFY					(_valid(m_object->m_body.target.pitch));
 }
 
-void CSightManager::select_action	()
+void CSightManager::setup		(const SightManager::ESightType &sight_type, const Fvector *vector3d, u32 interval)
 {
-	if (!m_actuality || m_current_action->completed()) {
-		m_actuality			= true;
-		if (m_actions.size() == 1) {
-			m_current_action = m_actions.back();
-			m_current_action->initialize();
-			return;
-		}
-		
-		float				m_total_weight = 0.f;
-		xr_vector<CSightAction*>::const_iterator	I = m_actions.begin();
-		xr_vector<CSightAction*>::const_iterator	E = m_actions.end();
-		for ( ; I != E; ++I)
-			if (*I != m_current_action)
-				m_total_weight += (*I)->weight();
-		VERIFY				(!fis_zero(m_total_weight));
-		
-		float				m_random = ::Random.randF(m_total_weight);
-		m_total_weight		= 0.f;
-		I					= m_actions.begin();
-		for ( ; I != E; ++I) {
-			if (*I != m_current_action)
-				m_total_weight += (*I)->weight();
-			if (m_total_weight > m_random) {
-				if (m_current_action)
-					m_current_action->finalize();
-				m_current_action = *I;
-				m_current_action->initialize();
-				break;
-			}
-		}
-	}
+	setup					(CSightAction(sight_type,vector3d));
 }
 
-void CSightManager::update		(u32 time_delta)
+void CSightManager::setup	(const CSightAction &sight_action)
 {
-	select_action	();
-	
-	m_current_action->execute();
-	
-	if ((m_object->speed() < EPS_L) && (angle_difference(m_object->m_body.target.yaw,m_object->m_head.target.yaw) > PI_DIV_2))
-		m_object->m_body.target.yaw = m_object->m_head.target.yaw;
+	if (m_actions.size() > 1)
+		clear			();
+	if (!m_actions.empty() && (*(*m_actions.begin()).second == sight_action))
+		return;
+	clear				();
+	add_action			(0,xr_new<CSightControlAction>(1.f,u32(-1),sight_action));
 }
 
-void CSightManager::update		(const SightManager::ESightType &sight_type, const Fvector *vector3d, u32 interval)
+void CSightManager::update	(u32 time_delta)
 {
-	if (m_actions.size() > 2)
-		clear				();
-
-	if (!m_actions.empty())
-		if ((m_actions.front()->sight_type() != sight_type) && 
-			((sight_type != SightManager::eSightTypeFirePosition) || 
-			(m_actions.front()->sight_type() != SightManager::eSightTypePosition) || 
-			!m_actions.front()->use_torso_look())
-			)
-			clear();
-		else
-			if (vector3d)
-				if (!m_actions.front()->vector3d().similar(*vector3d))
-					clear();
-				else
-					return;
-			else
-				return;
-
-	if (vector3d)
-		if (sight_type == SightManager::eSightTypeFirePosition)
-			add_action	(xr_new<CSightAction>(SightManager::eSightTypePosition,*vector3d,true));
-		else
-			add_action	(xr_new<CSightAction>(sight_type,*vector3d,false));
-	else
-		add_action		(xr_new<CSightAction>(sight_type));
+	inherited::update	(time_delta);
 }

@@ -102,8 +102,6 @@ void CStalkerActionGatherItems::execute		()
 		return;
 
 	m_object->set_level_dest_vertex	(m_object->item()->level_vertex_id());
-	
-	m_object->set_level_dest_vertex	(m_object->level_vertex_id());
 	m_object->set_node_evaluator	(0);
 	m_object->set_path_evaluator	(0);
 	m_object->set_desired_position	(&m_object->item()->Position());
@@ -114,7 +112,7 @@ void CStalkerActionGatherItems::execute		()
 	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateDanger);
 
-	m_object->CSightManager::update				(SightManager::eSightTypePosition,&m_object->item()->Position());
+	m_object->setup					(SightManager::eSightTypePosition,&m_object->item()->Position());
 #ifdef OLD_OBJECT_HANDLER
 	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
 #else
@@ -161,9 +159,9 @@ void CStalkerActionKillEnemy::execute		()
 #else
 		m_object->CObjectHandlerGOAP::set_goal	(eObjectActionFire1,m_object->best_weapon());
 #endif
-		Fvector									position;
-		m_object->enemy()->Center				(position);
-		m_object->CSightManager::update			(SightManager::eSightTypeFirePosition,&position);
+		Fvector						position;
+		m_object->enemy()->Center	(position);
+		m_object->setup				(SightManager::eSightTypeFirePosition,&position);
 	}
 	else {
 		if (!dynamic_cast<CMissile*>(m_object->best_weapon()))
@@ -175,7 +173,7 @@ void CStalkerActionKillEnemy::execute		()
 		
 		Fvector			direction;
 		direction.sub	(mem_object.m_object_params.m_position,m_object->Position());
-		m_object->CSightManager::update				(SightManager::eSightTypeDirection,&direction);
+		m_object->setup	(SightManager::eSightTypeDirection,&direction);
 	}
 
 	if (m_object->visible(m_object->enemy()) && (m_object->Position().distance_to(m_object->enemy()->Position()) < 10.f)) {
@@ -388,7 +386,7 @@ void CStalkerActionGetEnemySeen::execute	()
 
 	Fvector							direction;
 	direction.sub					(mem_object.m_object_params.m_position,m_object->Position());
-	m_object->CSightManager::update	(SightManager::eSightTypeDirection,&direction);
+	m_object->setup					(SightManager::eSightTypeDirection,&direction);
 
 	if (!dynamic_cast<CMissile*>(m_object->best_weapon()))
 #ifdef OLD_OBJECT_HANDLER
@@ -412,8 +410,8 @@ void CStalkerActionGetItemToKill::initialize	()
 	inherited::initialize	();
 	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
 	m_object->CSightManager::clear();
-	m_object->CSightManager::add_action(xr_new<CSightAction>(SightManager::eSightTypePosition,m_object->m_best_found_item_to_kill->Position(),false,2000,1.f));
-	m_object->CSightManager::add_action(xr_new<CSightAction>(SightManager::eSightTypePosition,m_object->enemy()->Position(),false,2000,1.f));
+	m_object->CSightManager::add_action(eSightActionTypeWatchItem,xr_new<CSightControlAction>(1.f,2000,CSightAction(SightManager::eSightTypePosition,m_object->m_best_found_item_to_kill->Position(),false)));
+	m_object->CSightManager::add_action(eSightActionTypeWatchEnemy,xr_new<CSightControlAction>(1.f,2000,CSightAction(SightManager::eSightTypePosition,m_object->enemy()->Position(),false)));
 }
 
 void CStalkerActionGetItemToKill::finalize	()
@@ -439,8 +437,8 @@ void CStalkerActionGetItemToKill::execute	()
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateDanger);
-//	m_object->CSightManager::update	(SightManager::eSightTypePosition,&m_object->m_best_found_item_to_kill->Position());
-//	m_object->CSightManager::update	(SightManager::eSightTypeSearch);
+//	m_object->setup					(SightManager::eSightTypePosition,&m_object->m_best_found_item_to_kill->Position());
+//	m_object->setup					(SightManager::eSightTypeSearch);
 
 #ifdef OLD_OBJECT_HANDLER
 	m_object->set_dest_state		(eObjectActionNoItems);

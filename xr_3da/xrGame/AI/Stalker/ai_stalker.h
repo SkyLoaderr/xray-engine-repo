@@ -15,6 +15,8 @@
 #include "../../stalker_movement_manager.h"
 #include "../../sight_manager.h"
 #include "../../script_binder.h"
+#include "../../setup_manager.h"
+#include "../../setup_action.h"
 #include "ai_stalker_animations.h"
 #include "ai_stalker_space.h"
 
@@ -57,10 +59,12 @@ class CAI_Stalker :
 #else
 	public CMotivationActionManagerStalker,
 #endif
-	public CScriptBinder
+	public CScriptBinder,
+	public CSetupManager<CSetupAction,CAI_Stalker,u32>
 {
 private:
-	typedef CCustomMonster		inherited;
+	typedef CCustomMonster								inherited;
+	typedef CSetupManager<CSetupAction,CAI_Stalker,u32>	CSSetupManager;
 	
 	u32							m_dwParticularState;
 	ALife::ETaskState			m_tTaskState;

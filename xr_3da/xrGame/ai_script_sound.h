@@ -19,7 +19,7 @@ class CLuaSound {
 	ref_sound				*m_tpSound;
 	ref_str					m_caSoundToPlay;
 
-	friend class CSoundAction;
+	friend class CScriptSoundAction;
 public:
 
 								CLuaSound		(LPCSTR caSoundName, ESoundTypes sound_type = SOUND_TYPE_NO_SOUND)

@@ -66,10 +66,10 @@ bool CAI_Stalker::bfAssignMovement(CEntityAction *tpEntityAction)
 	if (!inherited::bfAssignMovement(tpEntityAction))
 		return		(false);
 	
-	CMovementAction	&l_tMovementAction	= tpEntityAction->m_tMovementAction;
-	CWatchAction	&l_tWatchAction		= tpEntityAction->m_tWatchAction;
-	CAnimationAction&l_tAnimationAction	= tpEntityAction->m_tAnimationAction;
-	CObjectAction	&l_tObjectAction	= tpEntityAction->m_tObjectAction;
+	CScriptMovementAction	&l_tMovementAction	= tpEntityAction->m_tMovementAction;
+	CScriptWatchAction		&l_tWatchAction		= tpEntityAction->m_tWatchAction;
+	CScriptAnimationAction	&l_tAnimationAction	= tpEntityAction->m_tAnimationAction;
+	CScriptObjectAction		&l_tObjectAction	= tpEntityAction->m_tObjectAction;
 
 #ifdef OLD_OBJECT_HANDLER
 	CObjectHandler::set_dest_state	(l_tObjectAction.m_tGoalType);
@@ -81,7 +81,7 @@ bool CAI_Stalker::bfAssignMovement(CEntityAction *tpEntityAction)
 	set_body_state					(l_tMovementAction.m_tBodyState);
 	set_movement_type				(l_tMovementAction.m_tMovementType);
 	set_mental_state				(l_tAnimationAction.m_tMentalState);
-	CSightManager::update			(l_tWatchAction.m_tWatchType,&l_tWatchAction.m_tWatchVector,0);
+	setup							(l_tWatchAction.m_tWatchType,&l_tWatchAction.m_tWatchVector,0);
 	CStalkerMovementManager::update	(Device.dwTimeDelta);
 	CSightManager::update			(Device.dwTimeDelta);
 
@@ -93,12 +93,12 @@ bool CAI_Stalker::bfAssignWatch(CEntityAction *tpEntityAction)
 	if (!inherited::bfAssignWatch(tpEntityAction))
 		return		(false);
 	
-	CWatchAction	&l_tWatchAction = tpEntityAction->m_tWatchAction;
+	CScriptWatchAction	&l_tWatchAction = tpEntityAction->m_tWatchAction;
 
 //	float			&yaw = m_head.target.yaw, &pitch = m_head.target.pitch;
 
 	switch (l_tWatchAction.m_tGoalType) {
-		case CWatchAction::eGoalTypeObject : {
+		case CScriptWatchAction::eGoalTypeObject : {
 			if (!xr_strlen(l_tWatchAction.m_bone_to_watch))
 				l_tWatchAction.m_tpObjectToWatch->Center(l_tWatchAction.m_tWatchVector);
 			else {
@@ -110,17 +110,17 @@ bool CAI_Stalker::bfAssignWatch(CEntityAction *tpEntityAction)
 
 				l_tWatchAction.m_tWatchVector	= l_tMatrix.c;
 			}
-			CSightManager::update(l_tWatchAction.m_tWatchType,&l_tWatchAction.m_tWatchVector);
+			setup(l_tWatchAction.m_tWatchType,&l_tWatchAction.m_tWatchVector);
 			break;
 		}
-		case CWatchAction::eGoalTypeDirection : {
-			CSightManager::update(l_tWatchAction.m_tWatchType,&l_tWatchAction.m_tWatchVector);
+		case CScriptWatchAction::eGoalTypeDirection : {
+			setup(l_tWatchAction.m_tWatchType,&l_tWatchAction.m_tWatchVector);
 			break;
 		}
-		case CWatchAction::eGoalTypeWatchType : {
+		case CScriptWatchAction::eGoalTypeWatchType : {
 			break;
 		}
-		case CWatchAction::eGoalTypeCurrent : {
+		case CScriptWatchAction::eGoalTypeCurrent : {
 			l_tWatchAction.m_tWatchType	= SightManager::eSightTypeCurrentDirection;
 			l_tWatchAction.m_bCompleted = true;
 			return						(false);
@@ -128,7 +128,7 @@ bool CAI_Stalker::bfAssignWatch(CEntityAction *tpEntityAction)
 		default : NODEFAULT;
 	}
 
-	if ((CWatchAction::eGoalTypeWatchType != l_tWatchAction.m_tGoalType) && (angle_difference(m_head.target.yaw,m_head.current.yaw) < EPS_L) && (angle_difference(m_head.target.pitch,m_head.current.pitch) < EPS_L))
+	if ((CScriptWatchAction::eGoalTypeWatchType != l_tWatchAction.m_tGoalType) && (angle_difference(m_head.target.yaw,m_head.current.yaw) < EPS_L) && (angle_difference(m_head.target.pitch,m_head.current.pitch) < EPS_L))
 		l_tWatchAction.m_bCompleted = true;
 	else
 		l_tWatchAction.m_bCompleted = false;
@@ -138,7 +138,7 @@ bool CAI_Stalker::bfAssignWatch(CEntityAction *tpEntityAction)
 
 bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 {
-	CObjectAction	&l_tObjectAction	= tpEntityAction->m_tObjectAction;
+	CScriptObjectAction	&l_tObjectAction	= tpEntityAction->m_tObjectAction;
 	CInventoryItem	*l_tpInventoryItem	= dynamic_cast<CInventoryItem*>(l_tObjectAction.m_tpObject);
 
 	if (!inherited::bfAssignObject(tpEntityAction) || !l_tObjectAction.m_tpObject || !l_tpInventoryItem) {

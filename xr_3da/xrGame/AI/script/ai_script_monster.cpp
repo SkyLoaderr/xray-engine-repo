@@ -227,7 +227,7 @@ void __stdcall ActionCallback(CKinematics *tpKinematics)
 
 void CScriptMonster::vfUpdateParticles()
 {
-	CParticleAction	&l_tParticleAction = GetCurrentAction()->m_tParticleAction;
+	CScriptParticleAction	&l_tParticleAction = GetCurrentAction()->m_tParticleAction;
 	if (xr_strlen(l_tParticleAction.m_caBoneName)) {
 		CParticlesObject	*l_tpParticlesObject = l_tParticleAction.m_tpParticleSystem;
 		l_tpParticlesObject->UpdateParent(GetUpdatedMatrix(l_tParticleAction.m_caBoneName,l_tParticleAction.m_tParticlePosition,l_tParticleAction.m_tParticleAngles),l_tParticleAction.m_tParticleVelocity);
@@ -236,7 +236,7 @@ void CScriptMonster::vfUpdateParticles()
 
 void CScriptMonster::vfUpdateSounds()
 {
-	CSoundAction	&l_tSoundAction = GetCurrentAction()->m_tSoundAction;
+	CScriptSoundAction	&l_tSoundAction = GetCurrentAction()->m_tSoundAction;
 	if (xr_strlen(l_tSoundAction.m_caBoneName) && m_current_sound && m_current_sound->feedback)
 		m_current_sound->feedback->set_position(GetUpdatedMatrix(l_tSoundAction.m_caBoneName,l_tSoundAction.m_tSoundPosition,Fvector().set(0,0,0)).c);
 }
@@ -377,7 +377,7 @@ const Fmatrix CScriptMonster::GetUpdatedMatrix(ref_str caBoneName, const Fvector
 
 bool CScriptMonster::bfAssignSound(CEntityAction *tpEntityAction)
 {
-	CSoundAction	&l_tSoundAction = tpEntityAction->m_tSoundAction;
+	CScriptSoundAction	&l_tSoundAction = tpEntityAction->m_tSoundAction;
 	if (l_tSoundAction.m_bCompleted)
 		return		(false);
 	if (m_current_sound) {
@@ -407,7 +407,7 @@ bool CScriptMonster::bfAssignSound(CEntityAction *tpEntityAction)
 
 bool CScriptMonster::bfAssignParticles(CEntityAction *tpEntityAction)
 {
-	CParticleAction	&l_tParticleAction = tpEntityAction->m_tParticleAction;
+	CScriptParticleAction	&l_tParticleAction = tpEntityAction->m_tParticleAction;
 	if (l_tParticleAction.m_bCompleted)
 		return		(false);
 	if (l_tParticleAction.m_tpParticleSystem) {
@@ -436,7 +436,7 @@ bool CScriptMonster::bfAssignObject(CEntityAction *tpEntityAction)
 
 bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 {
-	CMovementAction	&l_tMovementAction	= tpEntityAction->m_tMovementAction;
+	CScriptMovementAction	&l_tMovementAction	= tpEntityAction->m_tMovementAction;
 	
 	if (l_tMovementAction.m_bCompleted)
 		return		(false);
@@ -450,7 +450,7 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 	CMovementManager		*l_tpMovementManager = dynamic_cast<CMovementManager*>(this);
 
 	switch (l_tMovementAction.m_tGoalType) {
-		case CMovementAction::eGoalTypeObject : {
+		case CScriptMovementAction::eGoalTypeObject : {
 			CGameObject		*l_tpGameObject = dynamic_cast<CGameObject*>(l_tMovementAction.m_tpObjectToGo);
 			R_ASSERT		(l_tpGameObject);
 			l_tpMovementManager->set_path_type(CMovementManager::ePathTypeLevelPath);
@@ -459,7 +459,7 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 			l_tpMovementManager->set_level_dest_vertex(l_tpGameObject->level_vertex_id());
 			break;
 		}
-		case CMovementAction::eGoalTypePatrolPath : {
+		case CScriptMovementAction::eGoalTypePatrolPath : {
 			l_tpMovementManager->set_path_type	(CMovementManager::ePathTypePatrolPath);
 			l_tpMovementManager->set_path		(l_tMovementAction.m_path,l_tMovementAction.m_path_name);
 			l_tpMovementManager->set_start_type	(l_tMovementAction.m_tPatrolPathStart);
@@ -467,7 +467,7 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 			l_tpMovementManager->set_random		(l_tMovementAction.m_bRandom);
 			break;
 		}
-		case CMovementAction::eGoalTypePathPosition : {
+		case CScriptMovementAction::eGoalTypePathPosition : {
 			l_tpMovementManager->set_path_type(CMovementManager::ePathTypeLevelPath);
 			l_tpMovementManager->set_dest_position(l_tMovementAction.m_tDestinationPosition);
 			
@@ -486,7 +486,7 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 			l_tpMovementManager->CLevelLocationSelector::set_evaluator(0);
 			break;
 		}
-		case CMovementAction::eGoalTypeNoPathPosition : {
+		case CScriptMovementAction::eGoalTypeNoPathPosition : {
 			if (l_tpMovementManager) {
 				l_tpMovementManager->set_path_type(CMovementManager::ePathTypeLevelPath);
 				if (l_tpMovementManager->CDetailPathManager::path().empty() || (l_tpMovementManager->CDetailPathManager::path()[l_tpMovementManager->CDetailPathManager::path().size() - 1].position.distance_to(l_tMovementAction.m_tDestinationPosition) > .1f)) {

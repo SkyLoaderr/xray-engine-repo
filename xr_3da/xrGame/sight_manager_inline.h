@@ -12,7 +12,6 @@ IC	void CSightManager::GetDirectionAnglesByPrevPositions(float &yaw, float &pitc
 {
 	CObject					*object = dynamic_cast<CObject*>(this);
 	VERIFY					(object);
-	// yaw					= pitch = 0;
 	Fvector					tDirection;
 	int						i = object->ps_Size	();
 
@@ -36,32 +35,8 @@ IC	void CSightManager::GetDirectionAngles				(float &yaw, float &pitch)
 
 IC	bool CSightManager::use_torso_look	() const
 {
-	if (m_current_action)
+	if (!m_actions.empty())
 		return				(current_action().use_torso_look());
 	else
 		return				(true);
-}
-
-IC	void CSightManager::clear		()
-{
-	m_actuality				= false;
-	xr_vector<CSightAction*>::iterator	I = m_actions.begin();
-	xr_vector<CSightAction*>::iterator	E = m_actions.end();
-	for ( ; I != E; ++I)
-		xr_delete			(*I);
-
-	m_actions.clear			();
-}
-
-IC	CSightAction &CSightManager::current_action	() const
-{
-	VERIFY					(m_current_action);
-	return					(*m_current_action);
-}
-
-IC	void CSightManager::add_action	(CSightAction *action)
-{
-	action->set_object		(m_object);
-	m_actions.push_back		(action);
-	m_actuality				= false;
 }

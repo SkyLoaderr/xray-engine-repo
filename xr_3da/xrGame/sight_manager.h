@@ -9,16 +9,14 @@
 #pragma once
 
 #include "level_graph.h"
-#include "sight_action.h"
+#include "setup_manager.h"
+#include "sight_control_action.h"
 
 class CAI_Stalker;
 
-class CSightManager {
-protected:
-	xr_vector<CSightAction*>	m_actions;
-	CSightAction				*m_current_action;
-	CAI_Stalker					*m_object;
-	bool						m_actuality;
+class CSightManager : public CSetupManager<CSightControlAction,CAI_Stalker,u32> {
+public:
+	typedef CSetupManager<CSightControlAction,CAI_Stalker,u32> inherited;
 
 public:
 					CSightManager						();
@@ -36,14 +34,10 @@ public:
 			void	vfValidateAngleDependency			(float x1, float &x2, float x3);
 	IC		void	GetDirectionAnglesByPrevPositions	(float &yaw, float &pitch);
 	IC		void	GetDirectionAngles					(float &yaw, float &pitch);
-
-			void	update								(u32 time_delta);
 	IC		bool	use_torso_look						() const;
-	IC		CSightAction &current_action				() const;
-	IC		void	clear								();
-	IC		void	add_action							(CSightAction *action);
-			void	select_action						();
-			void	update								(const SightManager::ESightType &sight_type, const Fvector *vector3d = 0, u32 interval = u32(-1));
+			void	setup								(const SightManager::ESightType &sight_type, const Fvector *vector3d = 0, u32 interval = u32(-1));
+			void	setup								(const CSightAction &sight_action);
+	virtual void	update								(u32 time_delta);
 };
 
 #include "sight_manager_inline.h"

@@ -30,15 +30,15 @@ bool CCar::bfAssignMovement(CEntityAction *tpEntityAction)
 
 	u32		l_tInput = tpEntityAction->m_tMovementAction.m_tInputKeys;
 
-	vfProcessInputKey(kFWD		,	!!(l_tInput & CMovementAction::eInputKeyForward		));
-	vfProcessInputKey(kBACK		,	!!(l_tInput & CMovementAction::eInputKeyBack		));
-	vfProcessInputKey(kL_STRAFE	,	!!(l_tInput & CMovementAction::eInputKeyLeft		));
-	vfProcessInputKey(kR_STRAFE	,	!!(l_tInput & CMovementAction::eInputKeyRight		));
-	vfProcessInputKey(kACCEL	,	!!(l_tInput & CMovementAction::eInputKeyShiftUp		));
-	vfProcessInputKey(kCROUCH	,	!!(l_tInput & CMovementAction::eInputKeyShiftDown	));
-	vfProcessInputKey(kJUMP		,	!!(l_tInput & CMovementAction::eInputKeyBreaks		));
-	if (!!(l_tInput & CMovementAction::eInputKeyEngineOn))	StartEngine();
-	if (!!(l_tInput & CMovementAction::eInputKeyEngineOff)) StopEngine();
+	vfProcessInputKey(kFWD		,	!!(l_tInput & CScriptMovementAction::eInputKeyForward		));
+	vfProcessInputKey(kBACK		,	!!(l_tInput & CScriptMovementAction::eInputKeyBack		));
+	vfProcessInputKey(kL_STRAFE	,	!!(l_tInput & CScriptMovementAction::eInputKeyLeft		));
+	vfProcessInputKey(kR_STRAFE	,	!!(l_tInput & CScriptMovementAction::eInputKeyRight		));
+	vfProcessInputKey(kACCEL	,	!!(l_tInput & CScriptMovementAction::eInputKeyShiftUp		));
+	vfProcessInputKey(kCROUCH	,	!!(l_tInput & CScriptMovementAction::eInputKeyShiftDown	));
+	vfProcessInputKey(kJUMP		,	!!(l_tInput & CScriptMovementAction::eInputKeyBreaks		));
+	if (!!(l_tInput & CScriptMovementAction::eInputKeyEngineOn))	StartEngine();
+	if (!!(l_tInput & CScriptMovementAction::eInputKeyEngineOff)) StopEngine();
 
 	if (_abs(tpEntityAction->m_tMovementAction.m_fSpeed) > EPS_L)
 		m_max_rpm = _abs(tpEntityAction->m_tMovementAction.m_fSpeed*m_current_gear_ratio);
@@ -48,7 +48,7 @@ bool CCar::bfAssignMovement(CEntityAction *tpEntityAction)
 
 bool CCar::bfAssignObject(CEntityAction *tpEntityAction)
 {
-	CObjectAction	&l_tObjectAction = tpEntityAction->m_tObjectAction;
+	CScriptObjectAction	&l_tObjectAction = tpEntityAction->m_tObjectAction;
 	if (l_tObjectAction.m_bCompleted || !xr_strlen(l_tObjectAction.m_caBoneName))
 		return((l_tObjectAction.m_bCompleted = true) == false);
 

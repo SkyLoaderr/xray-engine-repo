@@ -10,7 +10,7 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 	if (!inherited::bfAssignMovement(tpEntityAction))
 		return		(false);
 
-	CMovementAction	&l_tMovementAction	= tpEntityAction->m_tMovementAction;
+	CScriptMovementAction	&l_tMovementAction	= tpEntityAction->m_tMovementAction;
 	// translate script.action into MotionMan.action
 	switch (l_tMovementAction.m_tMoveAction) {
 	case eMA_WalkFwd:	MotionMan.m_tAction = ACT_WALK_FWD;		break;
@@ -33,7 +33,7 @@ bool CAI_Biting::bfAssignObject(CEntityAction *tpEntityAction)
 	if (!inherited::bfAssignObject(tpEntityAction))
 		return	(false);
 
-//	CObjectAction	&l_tObjectAction = tpEntityAction->m_tObjectAction;
+//	CScriptObjectAction	&l_tObjectAction = tpEntityAction->m_tObjectAction;
 //	if (!l_tObjectAction.m_tpObject)
 //		return	(false == (l_tObjectAction.m_bCompleted = true));
 //
@@ -59,7 +59,7 @@ bool CAI_Biting::bfAssignWatch(CEntityAction *tpEntityAction)
 	if (!inherited::bfAssignWatch(tpEntityAction))
 		return		(false);
 	
-	CWatchAction	&l_tWatchAction = tpEntityAction->m_tWatchAction;
+	CScriptWatchAction	&l_tWatchAction = tpEntityAction->m_tWatchAction;
 
 	Fvector new_pos;
 	switch (l_tWatchAction.m_tWatchType) {
@@ -85,7 +85,7 @@ bool CAI_Biting::bfAssignAnimation(CEntityAction *tpEntityAction)
 	if (!inherited::bfAssignAnimation(tpEntityAction))
 		return			(false);
 
-	CAnimationAction	&l_tAnimAction	= tpEntityAction->m_tAnimationAction;
+	CScriptAnimationAction	&l_tAnimAction	= tpEntityAction->m_tAnimationAction;
 	// translate animation.action into MotionMan.action
 	switch (l_tAnimAction.m_tAnimAction) {
 	case eAA_StandIdle:		MotionMan.m_tAction = ACT_STAND_IDLE;	break;

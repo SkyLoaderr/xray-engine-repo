@@ -395,7 +395,7 @@ void CScriptEngine::export_actions()
 			.def("nearest",						(u32			(CPatrolPathParams::*)(const Fvector &) const)	(CPatrolPathParams::point))
 			.def("flag",						&CPatrolPathParams::flag),
 
-		class_<CMovementAction>("move")
+		class_<CScriptMovementAction>("move")
 			.enum_("body")
 			[
 				value("crouch",					int(MonsterSpace::eBodyStateCrouch)),
@@ -417,16 +417,16 @@ void CScriptEngine::export_actions()
 			]
 			.enum_("input")
 			[
-				value("none",					int(CMovementAction::eInputKeyNone)),
-				value("fwd",					int(CMovementAction::eInputKeyForward)),
-				value("back",					int(CMovementAction::eInputKeyBack)),
-				value("left",					int(CMovementAction::eInputKeyLeft)),
-				value("right",					int(CMovementAction::eInputKeyRight)),
-				value("up",						int(CMovementAction::eInputKeyShiftUp)),
-				value("down",					int(CMovementAction::eInputKeyShiftDown)),
-				value("break",					int(CMovementAction::eInputKeyBreaks)),
-				value("on",						int(CMovementAction::eInputKeyEngineOn)),
-				value("off",					int(CMovementAction::eInputKeyEngineOff))
+				value("none",					int(CScriptMovementAction::eInputKeyNone)),
+				value("fwd",					int(CScriptMovementAction::eInputKeyForward)),
+				value("back",					int(CScriptMovementAction::eInputKeyBack)),
+				value("left",					int(CScriptMovementAction::eInputKeyLeft)),
+				value("right",					int(CScriptMovementAction::eInputKeyRight)),
+				value("up",						int(CScriptMovementAction::eInputKeyShiftUp)),
+				value("down",					int(CScriptMovementAction::eInputKeyShiftDown)),
+				value("break",					int(CScriptMovementAction::eInputKeyBreaks)),
+				value("on",						int(CScriptMovementAction::eInputKeyEngineOn)),
+				value("off",					int(CScriptMovementAction::eInputKeyEngineOff))
 			]
 			.enum_("monster")
 			[
@@ -445,8 +445,8 @@ void CScriptEngine::export_actions()
 			]
 
 			.def(								constructor<>())
-			.def(								constructor<const CMovementAction::EInputKeys>())
-			.def(								constructor<const CMovementAction::EInputKeys, float>())
+			.def(								constructor<const CScriptMovementAction::EInputKeys>())
+			.def(								constructor<const CScriptMovementAction::EInputKeys, float>())
 			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,CDetailPathManager::EDetailPathType,CLuaGameObject*>())
 			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,CDetailPathManager::EDetailPathType,CLuaGameObject*,float>())
 			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,CDetailPathManager::EDetailPathType,const CPatrolPathParams &>())
@@ -464,17 +464,17 @@ void CScriptEngine::export_actions()
 			.def(								constructor<MonsterSpace::EScriptMonsterMoveAction,CLuaGameObject*>())
 
 
-			.def("body",						&CMovementAction::SetBodyState)
-			.def("move",						&CMovementAction::SetMovementType)
-			.def("path",						&CMovementAction::SetPathType)
-			.def("object",						&CMovementAction::SetObjectToGo)
-			.def("patrol",						&CMovementAction::SetPatrolPath)
-			.def("position",					&CMovementAction::SetPosition)
-			.def("input",						&CMovementAction::SetInputKeys)
-			.def("completed",					(bool (CMovementAction::*)())(CMovementAction::completed)),
+			.def("body",						&CScriptMovementAction::SetBodyState)
+			.def("move",						&CScriptMovementAction::SetMovementType)
+			.def("path",						&CScriptMovementAction::SetPathType)
+			.def("object",						&CScriptMovementAction::SetObjectToGo)
+			.def("patrol",						&CScriptMovementAction::SetPatrolPath)
+			.def("position",					&CScriptMovementAction::SetPosition)
+			.def("input",						&CScriptMovementAction::SetInputKeys)
+			.def("completed",					(bool (CScriptMovementAction::*)())(CScriptMovementAction::completed)),
 
 
-		class_<CWatchAction>("look")
+		class_<CScriptWatchAction>("look")
 			.enum_("look")
 			[
 				value("path_dir",				int(SightManager::eSightTypePathDirection)),
@@ -495,13 +495,13 @@ void CScriptEngine::export_actions()
 			.def(								constructor<const Fvector &,float,float>())
 			.def(								constructor<CLuaGameObject*,float,float>())
 
-			.def("object",						&CWatchAction::SetWatchObject)		// time
-			.def("direct",						&CWatchAction::SetWatchDirection)		// time
-			.def("type",						&CWatchAction::SetWatchType)
-			.def("bone",						&CWatchAction::SetWatchBone)
-			.def("completed",					(bool (CWatchAction::*)())(CWatchAction::completed)),
+			.def("object",						&CScriptWatchAction::SetWatchObject)		// time
+			.def("direct",						&CScriptWatchAction::SetWatchDirection)		// time
+			.def("type",						&CScriptWatchAction::SetWatchType)
+			.def("bone",						&CScriptWatchAction::SetWatchBone)
+			.def("completed",					(bool (CScriptWatchAction::*)())(CScriptWatchAction::completed)),
 
-		class_<CAnimationAction>("anim")
+		class_<CScriptAnimationAction>("anim")
 			.enum_("type")
 			[
 				value("free",					int(MonsterSpace::eMentalStateFree)),
@@ -531,11 +531,11 @@ void CScriptEngine::export_actions()
 			// Monster specific
 			.def(								constructor<MonsterSpace::EScriptMonsterAnimAction, int>())
 			
-			.def("anim",						&CAnimationAction::SetAnimation)
-			.def("type",						&CAnimationAction::SetMentalState)
-			.def("completed",					(bool (CAnimationAction::*)())(CAnimationAction::completed)),
+			.def("anim",						&CScriptAnimationAction::SetAnimation)
+			.def("type",						&CScriptAnimationAction::SetMentalState)
+			.def("completed",					(bool (CScriptAnimationAction::*)())(CScriptAnimationAction::completed)),
 
-		class_<CSoundAction>("sound")
+		class_<CScriptSoundAction>("sound")
 			.def(								constructor<>())
 			.def(								constructor<LPCSTR,LPCSTR>())
 			.def(								constructor<LPCSTR,LPCSTR,const Fvector &>())
@@ -550,13 +550,13 @@ void CScriptEngine::export_actions()
 			.def(								constructor<CLuaSound&,const Fvector &>())
 			.def(								constructor<CLuaSound&,const Fvector &,const Fvector &>())
 			.def(								constructor<CLuaSound&,const Fvector &,const Fvector &,bool>())
-			.def("set_sound",					(void (CSoundAction::*)(LPCSTR))(CSoundAction::SetSound))
-			.def("set_sound",					(void (CSoundAction::*)(const CLuaSound &))(CSoundAction::SetSound))
-			.def("set_sound_type",				&CSoundAction::SetSoundType)
-			.def("set_bone",					&CSoundAction::SetBone)
-			.def("set_position",				&CSoundAction::SetPosition)
-			.def("set_angles",					&CSoundAction::SetAngles)
-			.def("completed",					(bool (CSoundAction::*)())(CSoundAction::completed)),
+			.def("set_sound",					(void (CScriptSoundAction::*)(LPCSTR))(CScriptSoundAction::SetSound))
+			.def("set_sound",					(void (CScriptSoundAction::*)(const CLuaSound &))(CScriptSoundAction::SetSound))
+			.def("set_sound_type",				&CScriptSoundAction::SetSoundType)
+			.def("set_bone",					&CScriptSoundAction::SetBone)
+			.def("set_position",				&CScriptSoundAction::SetPosition)
+			.def("set_angles",					&CScriptSoundAction::SetAngles)
+			.def("completed",					(bool (CScriptSoundAction::*)())(CScriptSoundAction::completed)),
 
 		class_<CParticleParams>("particle_params")
 			.def(								constructor<>())
@@ -564,21 +564,21 @@ void CScriptEngine::export_actions()
 			.def(								constructor<const Fvector &,const Fvector &>())
 			.def(								constructor<const Fvector &,const Fvector &,const Fvector &>()),
 
-		class_<CParticleAction>("particle")
+		class_<CScriptParticleAction>("particle")
 			.def(								constructor<>())
 			.def(								constructor<LPCSTR,LPCSTR>())
 			.def(								constructor<LPCSTR,LPCSTR,const CParticleParams &>())
 			.def(								constructor<LPCSTR,LPCSTR,const CParticleParams &, bool>())
 			.def(								constructor<LPCSTR,const CParticleParams &>())
 			.def(								constructor<LPCSTR,const CParticleParams &, bool>())
-			.def("set_particle",				&CParticleAction::SetParticle)
-			.def("set_bone",					&CParticleAction::SetBone)
-			.def("set_position",				&CParticleAction::SetPosition)
-			.def("set_angles",					&CParticleAction::SetAngles)
-			.def("set_velocity",				&CParticleAction::SetVelocity)
-			.def("completed",					(bool (CParticleAction::*)())(CParticleAction::completed)),
+			.def("set_particle",				&CScriptParticleAction::SetParticle)
+			.def("set_bone",					&CScriptParticleAction::SetBone)
+			.def("set_position",				&CScriptParticleAction::SetPosition)
+			.def("set_angles",					&CScriptParticleAction::SetAngles)
+			.def("set_velocity",				&CScriptParticleAction::SetVelocity)
+			.def("completed",					(bool (CScriptParticleAction::*)())(CScriptParticleAction::completed)),
 
-		class_<CObjectAction>("object")
+		class_<CScriptObjectAction>("object")
 			.enum_("state")
 			[
 				value("idle",					int(MonsterSpace::eObjectActionIdle)),
@@ -608,10 +608,10 @@ void CScriptEngine::export_actions()
 			.def(								constructor<CLuaGameObject*,MonsterSpace::EObjectAction,u32>())
 			.def(								constructor<MonsterSpace::EObjectAction>())
 			.def(								constructor<LPCSTR,MonsterSpace::EObjectAction>())
-			.def("action",						&CObjectAction::SetObjectAction)
-			.def("object",						(void (CObjectAction::*)(LPCSTR))(CObjectAction::SetObject))
-			.def("object",						(void (CObjectAction::*)(CLuaGameObject*))(CObjectAction::SetObject))
-			.def("completed",					(bool (CObjectAction::*)())(CObjectAction::completed)),
+			.def("action",						&CScriptObjectAction::SetObjectAction)
+			.def("object",						(void (CScriptObjectAction::*)(LPCSTR))(CScriptObjectAction::SetObject))
+			.def("object",						(void (CScriptObjectAction::*)(CLuaGameObject*))(CScriptObjectAction::SetObject))
+			.def("completed",					(bool (CScriptObjectAction::*)())(CScriptObjectAction::completed)),
 			
 		class_<CActionCondition>("cond")
 			.enum_("cond")
@@ -631,12 +631,12 @@ void CScriptEngine::export_actions()
 		class_<CEntityAction>("entity_action")
 			.def(								constructor<>())
 			.def(								constructor<const CEntityAction *>())
-			.def("set_action",					(void (CEntityAction::*)(const CMovementAction	&tMovementAction))	(CEntityAction::SetAction))
-			.def("set_action",					(void (CEntityAction::*)(const CWatchAction		&tWatchAction))		(CEntityAction::SetAction))
-			.def("set_action",					(void (CEntityAction::*)(const CAnimationAction &tAnimationAction))	(CEntityAction::SetAction))
-			.def("set_action",					(void (CEntityAction::*)(const CSoundAction		&tSoundAction))		(CEntityAction::SetAction))
-			.def("set_action",					(void (CEntityAction::*)(const CParticleAction	&tParticleAction))	(CEntityAction::SetAction))
-			.def("set_action",					(void (CEntityAction::*)(const CObjectAction	&tObjectAction))	(CEntityAction::SetAction))
+			.def("set_action",					(void (CEntityAction::*)(const CScriptMovementAction	&tMovementAction))	(CEntityAction::SetAction))
+			.def("set_action",					(void (CEntityAction::*)(const CScriptWatchAction		&tWatchAction))		(CEntityAction::SetAction))
+			.def("set_action",					(void (CEntityAction::*)(const CScriptAnimationAction &tAnimationAction))	(CEntityAction::SetAction))
+			.def("set_action",					(void (CEntityAction::*)(const CScriptSoundAction		&tSoundAction))		(CEntityAction::SetAction))
+			.def("set_action",					(void (CEntityAction::*)(const CScriptParticleAction	&tParticleAction))	(CEntityAction::SetAction))
+			.def("set_action",					(void (CEntityAction::*)(const CScriptObjectAction	&tObjectAction))	(CEntityAction::SetAction))
 			.def("set_action",					(void (CEntityAction::*)(const CActionCondition &tActionCondition))	(CEntityAction::SetAction))
 			.def("set_action",					(void (CEntityAction::*)(const CMonsterAction	&tMonsterAction))	(CEntityAction::SetAction))
 			.def("move",						&CEntityAction::CheckIfMovementCompleted)

@@ -63,4 +63,10 @@ namespace StalkerDecisionSpace {
 		eWorldOperatorScript,
 		eWorldOperatorDummy			= u32(-1),
 	};
+
+	enum ESightActionType {
+		eSightActionTypeWatchItem	= u32(0),
+		eSightActionTypeWatchEnemy,
+		eSightActionTypeDummy		= u32(-1),
+	};
 };

@@ -78,7 +78,7 @@ void CStateCover::execute			()
 	mem_object.m_object_params.m_position		= m_object->enemy()->Position();
 	Fvector										direction;
 	direction.sub								(mem_object.m_object_params.m_position,m_object->Position());
-	m_object->CSightManager::update				(SightManager::eSightTypeDirection,&direction);
+	m_object->setup								(SightManager::eSightTypeDirection,&direction);
 
 	ai().cover_manager().covers().nearest		(m_object->Position(),30.f,m_nearest);
 	float										best_value = flt_max;

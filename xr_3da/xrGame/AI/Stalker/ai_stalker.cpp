@@ -61,6 +61,7 @@ void CAI_Stalker::reinit			()
 	CMotivationActionManagerStalker::reinit(this,false);
 #endif
 	CScriptBinder::reinit			();
+	CSSetupManager::reinit			(this);
 
 	m_pPhysics_support->in_Init		();
 	

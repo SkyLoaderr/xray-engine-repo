@@ -58,7 +58,7 @@ void CStateWatchOver::execute			()
 {
 	Fvector							direction;
 	direction.setHP					(m_start_yaw,0);
-	m_object->CSightManager::update	(SightManager::eSightTypeDirection,&direction);
+	m_object->setup					(SightManager::eSightTypeDirection,&direction);
 	
 	m_object->set_path_type			(CMovementManager::ePathTypeNoPath);
 	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);

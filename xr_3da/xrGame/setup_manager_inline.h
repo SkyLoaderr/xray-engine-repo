@@ -72,7 +72,7 @@ IC	void CSSetupManager::clear						()
 	xr_map<_action_id_type,_action_type*>::iterator	I = m_actions.begin();
 	xr_map<_action_id_type,_action_type*>::iterator	E = m_actions.end();
 	for ( ; I != E; ++I)
-		xr_delete			(*I);
+		xr_delete			((*I).second);
 
 	m_actions.clear			();
 }
@@ -111,16 +111,18 @@ IC	void CSSetupManager::select_action				()
 		xr_map<_action_id_type,_action_type*>::const_iterator	I = m_actions.begin();
 		xr_map<_action_id_type,_action_type*>::const_iterator	E = m_actions.end();
 		for ( ; I != E; ++I)
-			if ((*I).first != m_current_action_id)
-				m_total_weight += (*I)->weight();
+			if (((*I).first != m_current_action_id) && (*I).second->applicable())
+				m_total_weight += (*I).second->weight();
 		VERIFY				(!fis_zero(m_total_weight));
 
 		float				m_random = ::Random.randF(m_total_weight);
 		m_total_weight		= 0.f;
 		I					= m_actions.begin();
 		for ( ; I != E; ++I) {
-			if ((*I).first != m_current_action_id)
-				m_total_weight += (*I)->weight();
+			if (((*I).first != m_current_action_id) && (*I).second->applicable())
+				m_total_weight += (*I).second->weight();
+			else
+				continue;
 			if (m_total_weight > m_random) {
 				if (m_actions.find(m_current_action_id) != m_actions.end())
 					current_action().finalize();

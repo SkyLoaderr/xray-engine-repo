@@ -117,7 +117,7 @@ CLuaGameObject *CLuaGameObject::GetMedikit() const
 	return			(medikit ? medikit->lua_game_object() : 0);
 }
 
-void CMovementAction::SetObjectToGo(CLuaGameObject *tpObjectToGo)
+void CScriptMovementAction::SetObjectToGo(CLuaGameObject *tpObjectToGo)
 {
 	if (tpObjectToGo)
 		m_tpObjectToGo	= tpObjectToGo->operator CObject*();
@@ -127,7 +127,7 @@ void CMovementAction::SetObjectToGo(CLuaGameObject *tpObjectToGo)
 	m_bCompleted		= false;
 }
 
-void CWatchAction::SetWatchObject(CLuaGameObject *tpObjectToWatch)
+void CScriptWatchAction::SetWatchObject(CLuaGameObject *tpObjectToWatch)
 {
 	m_tpObjectToWatch	= tpObjectToWatch->operator CObject*();
 	m_tGoalType			= eGoalTypeObject;
@@ -139,12 +139,12 @@ void CMonsterAction::SetObject(CLuaGameObject *tObj)
 	m_tObject	= tObj->operator CObject*();
 }
 
-CParticleAction::~CParticleAction()
+CScriptParticleAction::~CScriptParticleAction()
 {
 	//xr_delete			(m_tpParticleSystem);
 }
 
-void CParticleAction::SetParticle(LPCSTR caParticleToRun, bool bAutoRemove)
+void CScriptParticleAction::SetParticle(LPCSTR caParticleToRun, bool bAutoRemove)
 {
 	m_caParticleToRun	= caParticleToRun;
 	m_tGoalType			= eGoalTypeParticleAttached;
@@ -153,7 +153,7 @@ void CParticleAction::SetParticle(LPCSTR caParticleToRun, bool bAutoRemove)
 	m_bCompleted		= false;
 }
 
-void CObjectAction::SetObject(CLuaGameObject *tpLuaGameObject)
+void CScriptObjectAction::SetObject(CLuaGameObject *tpLuaGameObject)
 {
 	m_tpObject			= tpLuaGameObject->operator CObject*();
 	m_bCompleted		= false;
@@ -350,7 +350,7 @@ void CLuaGameObject::set_sight		(SightManager::ESightType tLookType, const Fvect
 	if (!sight_manager)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSightManager : cannot access class member set_sight!");
 	else
-		sight_manager->update	(tLookType,tPointToLook,dwLookOverDelay);
+		sight_manager->setup	(tLookType,tPointToLook,dwLookOverDelay);
 }
 
 u32 CLuaGameObject::GetRank		()

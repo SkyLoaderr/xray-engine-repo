@@ -99,7 +99,7 @@ public:
 
 class CLuaGameObject;
 
-class CMovementAction : public CAbstractAction {
+class CScriptMovementAction : public CAbstractAction {
 public:
 	enum EGoalType {
 		eGoalTypeObject = u32(0),
@@ -143,7 +143,7 @@ public:
 	MonsterSpace::EScriptMonsterSpeedParam		m_tSpeedParam;
 	
 
-							CMovementAction		()
+							CScriptMovementAction		()
 	{
 		SetInputKeys		(eInputKeyNone);
 		SetBodyState		(MonsterSpace::eBodyStateStand);
@@ -159,7 +159,7 @@ public:
 		m_tGoalType			= eGoalTypeDummy;
 	}
 
-							CMovementAction		(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, CDetailPathManager::EDetailPathType tPathType, CLuaGameObject *tpObjectToGo, float fSpeed = 0.f)
+							CScriptMovementAction		(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, CDetailPathManager::EDetailPathType tPathType, CLuaGameObject *tpObjectToGo, float fSpeed = 0.f)
 	{
 		SetBodyState		(tBodyState);
 		SetMovementType		(tMovementType);
@@ -168,7 +168,7 @@ public:
 		SetSpeed			(fSpeed);
 	}
 
-							CMovementAction		(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, CDetailPathManager::EDetailPathType tPathType, const CPatrolPathParams &tPatrolPathParams, float fSpeed = 0.f)
+							CScriptMovementAction		(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, CDetailPathManager::EDetailPathType tPathType, const CPatrolPathParams &tPatrolPathParams, float fSpeed = 0.f)
 	{
 		SetBodyState		(tBodyState);
 		SetMovementType		(tMovementType);
@@ -180,7 +180,7 @@ public:
 		SetSpeed			(fSpeed);
 	}
 
-							CMovementAction		(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, CDetailPathManager::EDetailPathType tPathType, const Fvector &tPosition, float fSpeed = 0.f)
+							CScriptMovementAction		(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, CDetailPathManager::EDetailPathType tPathType, const Fvector &tPosition, float fSpeed = 0.f)
 	{
 		SetBodyState		(tBodyState);
 		SetMovementType		(tMovementType);
@@ -189,7 +189,7 @@ public:
 		SetSpeed			(fSpeed);
 	}
 
-							CMovementAction		(const Fvector &tPosition, float fSpeed)
+							CScriptMovementAction		(const Fvector &tPosition, float fSpeed)
 	{
 		SetBodyState		(MonsterSpace::eBodyStateStand);
 		SetMovementType		(MonsterSpace::eMovementTypeStand);
@@ -199,7 +199,7 @@ public:
 		m_tGoalType			= eGoalTypeNoPathPosition;
 	}
 
-							CMovementAction		(const EInputKeys tInputKeys, float fSpeed = 0.f)
+							CScriptMovementAction		(const EInputKeys tInputKeys, float fSpeed = 0.f)
 	{
 		SetInputKeys		(tInputKeys);
 		SetSpeed			(fSpeed);
@@ -208,13 +208,13 @@ public:
 	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------						
 	// Monsters
 	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-							CMovementAction		(MonsterSpace::EScriptMonsterMoveAction tAct, const Fvector &tPosition, MonsterSpace::EScriptMonsterSpeedParam speed_param = MonsterSpace::eSP_Default)
+							CScriptMovementAction		(MonsterSpace::EScriptMonsterMoveAction tAct, const Fvector &tPosition, MonsterSpace::EScriptMonsterSpeedParam speed_param = MonsterSpace::eSP_Default)
 	{																																			
 		m_tMoveAction		= tAct;
 		SetPosition			(tPosition);																										
 		m_tSpeedParam		= speed_param;																											
 	}																																			
-							CMovementAction		(MonsterSpace::EScriptMonsterMoveAction tAct, const CPatrolPathParams &tPatrolPathParams, MonsterSpace::EScriptMonsterSpeedParam speed_param = MonsterSpace::eSP_Default)
+							CScriptMovementAction		(MonsterSpace::EScriptMonsterMoveAction tAct, const CPatrolPathParams &tPatrolPathParams, MonsterSpace::EScriptMonsterSpeedParam speed_param = MonsterSpace::eSP_Default)
 	{																																			
 		m_tMoveAction		= tAct;
 		SetPatrolPath		(tPatrolPathParams.m_path,tPatrolPathParams.m_path_name);															
@@ -223,7 +223,7 @@ public:
 		SetPatrolRandom		(tPatrolPathParams.m_bRandom);																						
 		m_tSpeedParam		= speed_param;
 	}																																			
-							CMovementAction		(MonsterSpace::EScriptMonsterMoveAction tAct, CLuaGameObject *tpObjectToGo, MonsterSpace::EScriptMonsterSpeedParam speed_param = MonsterSpace::eSP_Default)
+							CScriptMovementAction		(MonsterSpace::EScriptMonsterMoveAction tAct, CLuaGameObject *tpObjectToGo, MonsterSpace::EScriptMonsterSpeedParam speed_param = MonsterSpace::eSP_Default)
 	{
 		m_tMoveAction		= tAct;
 		SetObjectToGo		(tpObjectToGo);
@@ -303,7 +303,7 @@ public:
 	}
 };
 
-class CWatchAction : public CAbstractAction {
+class CScriptWatchAction : public CAbstractAction {
 public:
 	enum EGoalType {
 		eGoalTypeObject = u32(0),
@@ -324,7 +324,7 @@ public:
 	float								vel_bone_y;
 
 
-							CWatchAction		()
+							CScriptWatchAction		()
 	{
 		m_tpObjectToWatch	= 0;
 		m_tWatchType		= SightManager::eSightTypeCurrentDirection;
@@ -332,19 +332,19 @@ public:
 		m_tGoalType			= eGoalTypeCurrent;
 	}
 
-							CWatchAction		(SightManager::ESightType tWatchType)
+							CScriptWatchAction		(SightManager::ESightType tWatchType)
 	{
 		SetWatchType		(tWatchType);
 		m_tGoalType			= eGoalTypeWatchType;
 	}
 
-							CWatchAction		(SightManager::ESightType tWatchType, const Fvector &tDirection)
+							CScriptWatchAction		(SightManager::ESightType tWatchType, const Fvector &tDirection)
 	{
 		SetWatchDirection	(tDirection);
 		SetWatchType		(tWatchType);
 	}
 
-							CWatchAction		(SightManager::ESightType tWatchType, CLuaGameObject *tpObjectToWatch, LPCSTR bone_to_watch = "")
+							CScriptWatchAction		(SightManager::ESightType tWatchType, CLuaGameObject *tpObjectToWatch, LPCSTR bone_to_watch = "")
 	{
 		SetWatchType		(tWatchType);
 		SetWatchObject		(tpObjectToWatch);
@@ -352,7 +352,7 @@ public:
 	}
 
 	// Searchlight look ///////////////////////////////////////////////
-							CWatchAction		(const Fvector &tTarget, float vel1, float vel2)
+							CScriptWatchAction		(const Fvector &tTarget, float vel1, float vel2)
 	{
 		m_tpObjectToWatch	= 0;
 		m_tTargetPoint		= tTarget;
@@ -361,7 +361,7 @@ public:
 		m_bCompleted		= false;
 	}
 
-							CWatchAction		(CLuaGameObject *tpObjectToWatch, float vel1, float vel2)
+							CScriptWatchAction		(CLuaGameObject *tpObjectToWatch, float vel1, float vel2)
 	{
 		SetWatchObject		(tpObjectToWatch);
 		vel_bone_x			= vel1;
@@ -398,7 +398,7 @@ public:
 	}
 };
 
-class CAnimationAction : public CAbstractAction {
+class CScriptAnimationAction : public CAbstractAction {
 public:
 	enum EGoalType {
 		eGoalTypeAnimation = u32(0),
@@ -414,7 +414,7 @@ public:
 	int										anim_index;
 
 
-							CAnimationAction	()
+							CScriptAnimationAction	()
 	{
 		m_tMentalState		= MonsterSpace::eMentalStateDanger;
 		m_tGoalType			= eGoalTypeMental;
@@ -423,13 +423,13 @@ public:
 		m_tAnimAction		= MonsterSpace::eAA_NoAction;
 	}
 
-							CAnimationAction	(LPCSTR caAnimationToPlay, bool use_single_hand = false)
+							CScriptAnimationAction	(LPCSTR caAnimationToPlay, bool use_single_hand = false)
 	{
 		SetAnimation		(caAnimationToPlay);
 		m_bHandUsage		= !use_single_hand;
 	}
 
-							CAnimationAction	(MonsterSpace::EMentalState tMentalState)
+							CScriptAnimationAction	(MonsterSpace::EMentalState tMentalState)
 	{
 		SetMentalState		(tMentalState);
 	}
@@ -437,7 +437,7 @@ public:
 	// -------------------------------------------------------------------------------------------------
 	// Monster
 	// -------------------------------------------------------------------------------------------------
-							CAnimationAction	(MonsterSpace::EScriptMonsterAnimAction tAnimAction, int index)
+							CScriptAnimationAction	(MonsterSpace::EScriptMonsterAnimAction tAnimAction, int index)
 	{
 		m_tAnimAction		= tAnimAction;
 		m_bCompleted		= false;
@@ -467,7 +467,7 @@ public:
 	}
 };
 
-class CSoundAction : public CAbstractAction {
+class CScriptSoundAction : public CAbstractAction {
 public:
 	enum EGoalType {
 		eGoalTypeSoundAttached = u32(0),
@@ -483,7 +483,7 @@ public:
 	Fvector							m_tSoundAngles;
 	ESoundTypes						m_sound_type;
 
-							CSoundAction		()
+							CScriptSoundAction		()
 	{
 		m_caSoundToPlay		= "";
 		m_caBoneName		= "";
@@ -495,7 +495,7 @@ public:
 		m_tSoundAngles.set	(0,0,0);
 	}
 
-							CSoundAction		(LPCSTR caSoundToPlay, LPCSTR caBoneName, const Fvector &tPositionOffset = Fvector().set(0,0,0), const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bLooped = false, ESoundTypes sound_type = SOUND_TYPE_NO_SOUND)
+							CScriptSoundAction		(LPCSTR caSoundToPlay, LPCSTR caBoneName, const Fvector &tPositionOffset = Fvector().set(0,0,0), const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bLooped = false, ESoundTypes sound_type = SOUND_TYPE_NO_SOUND)
 	{
 		m_bLooped			= bLooped;
 		SetBone				(caBoneName);
@@ -505,7 +505,7 @@ public:
 		SetSoundType		(sound_type);
 	}
 
-							CSoundAction		(LPCSTR caSoundToPlay, const Fvector &tPosition, const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bLooped = false, ESoundTypes sound_type = SOUND_TYPE_NO_SOUND)
+							CScriptSoundAction		(LPCSTR caSoundToPlay, const Fvector &tPosition, const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bLooped = false, ESoundTypes sound_type = SOUND_TYPE_NO_SOUND)
 	{
 		m_bLooped			= bLooped;
 		SetSound			(caSoundToPlay);
@@ -514,7 +514,7 @@ public:
 		SetSoundType		(sound_type);
 	}
 
-							CSoundAction		(CLuaSound &sound, LPCSTR caBoneName, const Fvector &tPositionOffset = Fvector().set(0,0,0), const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bLooped = false, ESoundTypes sound_type = SOUND_TYPE_NO_SOUND)
+							CScriptSoundAction		(CLuaSound &sound, LPCSTR caBoneName, const Fvector &tPositionOffset = Fvector().set(0,0,0), const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bLooped = false, ESoundTypes sound_type = SOUND_TYPE_NO_SOUND)
 	{
 		m_bLooped			= bLooped;
 		SetBone				(caBoneName);
@@ -524,7 +524,7 @@ public:
 		SetSoundType		(sound_type);
 	}
 
-							CSoundAction		(CLuaSound &sound, const Fvector &tPosition, const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bLooped = false, ESoundTypes sound_type = SOUND_TYPE_NO_SOUND)
+							CScriptSoundAction		(CLuaSound &sound, const Fvector &tPosition, const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bLooped = false, ESoundTypes sound_type = SOUND_TYPE_NO_SOUND)
 	{
 		m_bLooped			= bLooped;
 		SetSound			(sound);
@@ -533,7 +533,7 @@ public:
 		SetSoundType		(sound_type);
 	}
 
-	virtual					~CSoundAction		()
+	virtual					~CScriptSoundAction		()
 	{
 	}
 
@@ -615,7 +615,7 @@ public:
 	}
 };
 
-class CParticleAction : public CAbstractAction {
+class CScriptParticleAction : public CAbstractAction {
 public:
 	enum EGoalType {
 		eGoalTypeParticleAttached = u32(0),
@@ -632,7 +632,7 @@ public:
 	Fvector							m_tParticleVelocity;
 	bool							m_bAutoRemove;
 
-							CParticleAction		()
+							CScriptParticleAction		()
 	{
 		m_caParticleToRun	= "";
 		m_caBoneName		= "";
@@ -646,7 +646,7 @@ public:
 		m_bAutoRemove		= true;
 	}
 
-							CParticleAction		(LPCSTR caPartcileToRun, LPCSTR caBoneName, const CParticleParams &tParticleParams = CParticleParams(), bool bAutoRemove = false)
+							CScriptParticleAction		(LPCSTR caPartcileToRun, LPCSTR caBoneName, const CParticleParams &tParticleParams = CParticleParams(), bool bAutoRemove = false)
 	{
 		SetBone				(caBoneName);
 		SetPosition			(tParticleParams.m_tParticlePosition);
@@ -655,7 +655,7 @@ public:
 		SetParticle			(caPartcileToRun,bAutoRemove);
 	}
 
-							CParticleAction		(LPCSTR caPartcileToRun, const CParticleParams &tParticleParams = CParticleParams(), bool bAutoRemove = false)
+							CScriptParticleAction		(LPCSTR caPartcileToRun, const CParticleParams &tParticleParams = CParticleParams(), bool bAutoRemove = false)
 	{
 		SetParticle			(caPartcileToRun,bAutoRemove);
 		SetPosition			(tParticleParams.m_tParticlePosition);
@@ -663,7 +663,7 @@ public:
 		SetVelocity			(tParticleParams.m_tParticleVelocity);
 	}
 
-	virtual					~CParticleAction	();
+	virtual					~CScriptParticleAction	();
 
 			void			SetParticle			(LPCSTR caParticleToRun, bool bAutoRemove);
 			
@@ -701,34 +701,34 @@ public:
 	}
 };
 
-class CObjectAction : public CAbstractAction {
+class CScriptObjectAction : public CAbstractAction {
 public:
 	CObject							*m_tpObject;
 	MonsterSpace::EObjectAction		m_tGoalType;
 	u32								m_dwQueueSize;
 	ref_str							m_caBoneName;
 
-							CObjectAction		()
+							CScriptObjectAction	()
 	{
 		m_tpObject			= 0;
 		m_tGoalType			= MonsterSpace::eObjectActionIdle;
 		m_bCompleted		= false;
 	}
 
-							CObjectAction		(CLuaGameObject *tpLuaGameObject, MonsterSpace::EObjectAction tObjectActionType, u32 dwQueueSize = u32(-1))
+							CScriptObjectAction	(CLuaGameObject *tpLuaGameObject, MonsterSpace::EObjectAction tObjectActionType, u32 dwQueueSize = u32(-1))
 	{
 		SetObject			(tpLuaGameObject);
 		SetObjectAction		(tObjectActionType);
 		SetQueueSize		(dwQueueSize);
 	}
 
-							CObjectAction		(LPCSTR caBoneName, MonsterSpace::EObjectAction tObjectActionType)
+							CScriptObjectAction	(LPCSTR caBoneName, MonsterSpace::EObjectAction tObjectActionType)
 	{
 		SetObject			(caBoneName);
 		SetObjectAction		(tObjectActionType);
 	}
 
-							CObjectAction		(MonsterSpace::EObjectAction tObjectActionType)
+							CScriptObjectAction	(MonsterSpace::EObjectAction tObjectActionType)
 	{
 		SetObjectAction		(tObjectActionType);
 	}
@@ -826,12 +826,12 @@ public:
 
 class CEntityAction {
 public:
-	CMovementAction					m_tMovementAction;
-	CWatchAction					m_tWatchAction;
-	CAnimationAction				m_tAnimationAction;
-	CSoundAction					m_tSoundAction;
-	CParticleAction					m_tParticleAction;
-	CObjectAction					m_tObjectAction;
+	CScriptMovementAction			m_tMovementAction;
+	CScriptWatchAction				m_tWatchAction;
+	CScriptAnimationAction			m_tAnimationAction;
+	CScriptSoundAction				m_tSoundAction;
+	CScriptParticleAction			m_tParticleAction;
+	CScriptObjectAction				m_tObjectAction;
 	CActionCondition				m_tActionCondition;
 	CMonsterAction					m_tMonsterAction;
 
@@ -857,32 +857,32 @@ public:
 		tt					= t;
 	}
 
-	IC		void			SetAction(const CMovementAction &tMovementAction)
+	IC		void			SetAction(const CScriptMovementAction &tMovementAction)
 	{
 		SetAction			(tMovementAction,m_tMovementAction);
 	}
 
-	IC		void			SetAction(const CWatchAction &tWatchAction)
+	IC		void			SetAction(const CScriptWatchAction &tWatchAction)
 	{
 		SetAction			(tWatchAction,m_tWatchAction);
 	}
 
-	IC		void			SetAction(const CAnimationAction &tAnimationAction)
+	IC		void			SetAction(const CScriptAnimationAction &tAnimationAction)
 	{
 		SetAction			(tAnimationAction,m_tAnimationAction);
 	}
 
-	IC		void			SetAction(const CSoundAction &tSoundAction)
+	IC		void			SetAction(const CScriptSoundAction &tSoundAction)
 	{
 		SetAction			(tSoundAction,m_tSoundAction);
 	}
 
-	IC		void			SetAction(const CParticleAction &tParticleAction)
+	IC		void			SetAction(const CScriptParticleAction &tParticleAction)
 	{
 		SetAction			(tParticleAction,m_tParticleAction);
 	}
 
-	IC		void			SetAction(const CObjectAction &tObjectAction)
+	IC		void			SetAction(const CScriptObjectAction &tObjectAction)
 	{
 		SetAction			(tObjectAction,m_tObjectAction);
 	}
@@ -990,27 +990,27 @@ public:
 		m_tActionCondition.initialize	();
 	}
 
-			const CMovementAction	&move()
+			const CScriptMovementAction	&move()
 	{
 		return				(m_tMovementAction);
 	}
 	
-			const CWatchAction		&look()
+			const CScriptWatchAction		&look()
 	{
 		return				(m_tWatchAction);
 	}
 	
-			const CAnimationAction	&anim()
+			const CScriptAnimationAction	&anim()
 	{
 		return				(m_tAnimationAction);
 	}
 	
-			const CParticleAction	&particle()
+			const CScriptParticleAction	&particle()
 	{
 		return				(m_tParticleAction);
 	}
 	
-			const CObjectAction	&object()
+			const CScriptObjectAction	&object()
 	{
 		return				(m_tObjectAction);
 	}

@@ -175,7 +175,7 @@ bool CProjector::bfAssignWatch(CEntityAction *tpEntityAction)
 	if (!inherited::bfAssignWatch(tpEntityAction))
 		return		(false);
 	
-	CWatchAction	&l_tWatchAction = tpEntityAction->m_tWatchAction;
+	CScriptWatchAction	&l_tWatchAction = tpEntityAction->m_tWatchAction;
 	
 	(!l_tWatchAction.m_tpObjectToWatch) ?	SetTarget(l_tWatchAction.m_tTargetPoint) : 
 											SetTarget(l_tWatchAction.m_tpObjectToWatch->Position());
@@ -195,7 +195,7 @@ bool CProjector::bfAssignObject(CEntityAction *tpEntityAction)
 	if (!inherited::bfAssignObject(tpEntityAction))
 		return	(false);
 
-	CObjectAction	&l_tObjectAction = tpEntityAction->m_tObjectAction;
+	CScriptObjectAction	&l_tObjectAction = tpEntityAction->m_tObjectAction;
 
 	if (l_tObjectAction.m_tGoalType == MonsterSpace::eObjectActionTurnOn)			TurnOn	();
 	else if (l_tObjectAction.m_tGoalType == MonsterSpace::eObjectActionTurnOff)		TurnOff	();
