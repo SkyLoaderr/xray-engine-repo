@@ -34,12 +34,13 @@ namespace AI {
 			if (end!=seen.end()) seen.resize(end-seen.begin());
 		}
 		objSET diff;
+
+		// B-A = objects, that become visible
 		if (!seen.empty()) 
 		{
 			objSET::iterator E = remove(seen.begin(),seen.end(),parent);
 			seen.resize(E-seen.begin());
 			
-			// B-A = objects, that become visible
 			{
 				objSET::iterator	E = set_difference(
 					seen.begin(), seen.end(),
@@ -50,8 +51,9 @@ namespace AI {
 					o_new(diff[i]);
 			}
 		}
-		if (!query.empty()) 
+
 		// A-B = objects, that are invisible
+		if (!query.empty()) 
 		{
 			objSET::iterator	E = set_difference(
 				query.begin(),query.end(),
@@ -61,6 +63,8 @@ namespace AI {
 			for (DWORD i=0; i<diff.size(); i++)
 				o_delete(diff[i]);
 		}
+
+
 		query = seen;
 		vector<Item>::iterator I=track.begin(),E=track.end();
 		for (; I!=E; I++)

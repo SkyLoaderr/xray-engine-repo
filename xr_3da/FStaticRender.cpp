@@ -86,6 +86,8 @@ IC		void		gm_SetAmbient		(DWORD C)
 
 IC		void		gm_SetAmbientLevel	(DWORD C)
 {
+	return;
+
 	DWORD Camb		= (C*3)/4;
 	gm_SetAmbient	(D3DCOLOR_XRGB(Camb,Camb,Camb));
 	DWORD Clevel	= (C*4)/3;

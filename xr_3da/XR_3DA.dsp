@@ -2607,6 +2607,10 @@ SOURCE=.\LightShadows.cpp
 SOURCE=.\LightShadows.h
 # End Source File
 # End Group
+# Begin Group "LightTrack"
+
+# PROP Default_Filter ""
+# End Group
 # End Group
 # Begin Group "Glows manager"
 
