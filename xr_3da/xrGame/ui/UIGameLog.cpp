@@ -78,6 +78,7 @@ void CUIGameLog::Init()
 	// Chat log
 	AttachChild(&UILogList);
 	xml_init.InitListWnd(uiXml, "game_log_list", 0, &UILogList);
+	UILogList.EnableScrollBar(false);
 }
 
 void CUIGameLog::Draw(){
