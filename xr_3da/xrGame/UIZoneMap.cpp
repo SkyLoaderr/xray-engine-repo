@@ -128,15 +128,23 @@ void CUIZoneMap::Init()
 }
 //--------------------------------------------------------------------
 
-void CUIZoneMap::ConvertToLocal	(const Fmatrix& LM, const Fvector& src, Ivector2& dest, int border_radius,  bool& on_border)
+void CUIZoneMap::ConvertToLocalWithoutTransform(const Fmatrix& LM, const Fvector& src, Fvector2 &Pt)
 {
 	float k = map_radius/VIEW_DISTANCE;
-	
+
 	Fvector p;
-	Fvector2 Pt;
 	LM.transform_tiny(p,src);
 	p.mul(k);
 	Pt.set(p.x,p.z);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+
+void CUIZoneMap::ConvertToLocal	(const Fmatrix& LM, const Fvector& src, Ivector2& dest, int border_radius,  bool& on_border)
+{
+	Fvector2 Pt;
+	ConvertToLocalWithoutTransform(LM, src, Pt);
 	/*float r=Pt.magnitude();
 	if (r>map_radius) Pt.mul((float)map_radius/r);*/
 	
@@ -262,6 +270,34 @@ void CUIZoneMap::UpdateRadar(CActor* pActor)
 				float arrowHeading = 0;
 				int x_shift = 0;
 				int y_shift = 0;
+
+				Fvector2 Pt;
+				ConvertToLocalWithoutTransform(LM, src, Pt);
+				Pt.x = map_center.x + Pt.x;
+				Pt.y = map_center.y - Pt.y;
+
+				// Определям на какой из сторон квадрата миникарты лежит проекция точки
+                float	directionK			= atan((map_center.y - Pt.y) / (map_center.x - Pt.x));
+
+				// Исходя из того, что к - это тангенс угла наклона прямой относительно оси Х,
+				// вычисляем какие стороны миникарты (вертикальные или горизонтальные) являются ограничителями для
+				// хода стрелки
+				bool	bVerticalClipLine	= ((directionK >= -PI_DIV_4) && (directionK < PI_DIV_4)) || (directionK <= -3 * PI_DIV_4) || (directionK > 3 * PI_DIV_4);
+
+//				int		modifiedMapRadius	= map_radius - MAP_ARROW_WIDTH/2;
+
+				// Определяем координаты стрелочки
+				if (!bVerticalClipLine)
+				{
+					P.x = static_cast<int>((P.y - map_center.y) * (Pt.x - map_center.x) / (Pt.y - map_center.y) + map_center.x);
+				}
+				else
+				{
+					P.y = static_cast<int>((P.x - map_center.x) * (Pt.y - map_center.y) / (Pt.x - map_center.x) + map_center.y);
+				}
+				
+				// Находим точку пересечения прямой - направлением на цель, и соответствующей стороны
+				// квадрата карты
 
 				if (P.y == map_center.y)
 				{

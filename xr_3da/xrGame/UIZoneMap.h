@@ -32,6 +32,7 @@ class CUIZoneMap
 
 	void			EntityOut		(float diff, u32 color, const Ivector2& pt);
 	void			ConvertToLocal	(const Fmatrix& LM, const Fvector& src, Ivector2& dest, int border_radius, bool& on_border);
+	void			ConvertToLocalWithoutTransform(const Fmatrix& LM, const Fvector& src, Fvector2 &Pt);
 public:
 					CUIZoneMap		();
 	virtual			~CUIZoneMap		();
