@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<encyclopedia>
+    <!-- LIST OF ENCYCLOPEDIA ENTRIES -->
+    <article id="mutant_flash_general" name="Flesh" group="Mutants/Flesh/General">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_mutant_flesh_desc</text>
+    </article>
+</encyclopedia>
+
