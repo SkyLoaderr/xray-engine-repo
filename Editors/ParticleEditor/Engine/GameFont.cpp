@@ -116,7 +116,7 @@ void CGameFont::OnRender()
 		FVF::TL* start	= v;
 
 		// fill vertices
-		u32 last=i+count;
+		u32 last		= i+count;
 		for (; i<last; i++) {
 			String		&PS	= strings[i];
 			int			len	= xr_strlen(PS.string);
@@ -129,8 +129,8 @@ void CGameFont::OnRender()
 
 				switch(PS.align)
 				{
-				case alCenter:	X-=SizeOf(PS.string,PS.size)*.5f;	break;
-				case alRight:	X-=SizeOf(PS.string,PS.size);		break;
+				case alCenter:	X-=SizeOf(*PS.string,PS.size)*.5f;	break;
+				case alRight:	X-=SizeOf(*PS.string,PS.size);		break;
 				}
 
 				u32	clr,clr2;
@@ -175,7 +175,7 @@ void CGameFont::OnRender()
 	strings.clear();
 }
 
-void CGameFont::Add(float _x, float _y, char *s, u32 _c, float _size)
+void CGameFont::Add(float _x, float _y, LPCSTR s, u32 _c, float _size)
 {
 	VERIFY(xr_strlen(s)<127);
 	String rs;
@@ -187,7 +187,8 @@ void CGameFont::Add(float _x, float _y, char *s, u32 _c, float _size)
 	strcpy((char *) &(strings[strings.size()-1].string),s);
 }
 
-void __cdecl CGameFont::Out(float _x, float _y, char *fmt,...)
+static string2048 s_tmp;
+void __cdecl CGameFont::Out(float _x, float _y, LPCSTR fmt,...)
 {
 	String rs;
 	rs.x=_x;
@@ -198,14 +199,15 @@ void __cdecl CGameFont::Out(float _x, float _y, char *fmt,...)
 
 	va_list p;
 	va_start(p,fmt);
-	vsprintf(rs.string,fmt,p);
-	VERIFY(xr_strlen(rs.string)<127);
+
+	int vs_sz = vsprintf(s_tmp,fmt,p); VERIFY(vs_sz<sizeof(s_tmp));
+	rs.string = s_tmp;
 	va_end(p);
 
 	strings.push_back(rs);
 }
 
-void __cdecl CGameFont::OutNext(char *fmt,...)
+void __cdecl CGameFont::OutNext(LPCSTR fmt,...)
 {
 	String rs;
 	rs.x=fCurrentX;
@@ -216,15 +218,15 @@ void __cdecl CGameFont::OutNext(char *fmt,...)
 
 	va_list p;
 	va_start(p,fmt);
-	vsprintf(rs.string,fmt,p);
-	VERIFY(xr_strlen(rs.string)<255);
+	int vs_sz = vsprintf(s_tmp,fmt,p); VERIFY(vs_sz<sizeof(s_tmp));
+	rs.string = s_tmp;
 	va_end(p);
 
 	strings.push_back(rs);
 	OutSkip(1);
 }
 
-void __cdecl CGameFont::OutPrev(char *fmt,...)
+void __cdecl CGameFont::OutPrev(LPCSTR fmt,...)
 {
 	String rs;
 	rs.x=fCurrentX;
@@ -235,8 +237,8 @@ void __cdecl CGameFont::OutPrev(char *fmt,...)
 
 	va_list p;
 	va_start(p,fmt);
-	vsprintf(rs.string,fmt,p);
-	VERIFY(xr_strlen(rs.string)<127);
+	int vs_sz = vsprintf(s_tmp,fmt,p); VERIFY(vs_sz<sizeof(s_tmp));
+	rs.string = s_tmp;
 	va_end(p);
 
 	strings.push_back(rs);
@@ -248,7 +250,7 @@ void CGameFont::OutSkip(float val)
 	fCurrentY += val*CurrentHeight();
 }
 
-float CGameFont::SizeOf(char *s,float size)
+float CGameFont::SizeOf(LPCSTR s,float size)
 {
 	if (uFlags&fsValid){
 		int		len			= xr_strlen(s);

@@ -16,7 +16,7 @@ public:
 private:
 	struct String
 	{
-		string256	string;
+		ref_str		string;
 		float		x,y;
 		float		size;
 		u32			c;
@@ -66,14 +66,14 @@ public:
 	IC void					SetInterval		(float x, float y) {vInterval.set(x,y);};
 	IC void					SetInterval		(const Fvector2& v) {vInterval.set(v);};
 	IC void					SetAligment		(EAligment aligment){ eCurrentAlignment=aligment; }
-	IC void					Add				(float _x, float _y, char *s, u32 _c=0xffffffff, float _size=0.01f);
-	float					SizeOf			(char *s, float size);
-	IC float				SizeOf			(char *s){return SizeOf(s,fCurrentSize);}
+	IC void					Add				(float _x, float _y, LPCSTR s, u32 _c=0xffffffff, float _size=0.01f);
+	float					SizeOf			(LPCSTR s, float size);
+	IC float				SizeOf			(LPCSTR s){return SizeOf(s,fCurrentSize);}
 	IC float				CurrentHeight	(){return fCurrentSize*vInterval.y*((uFlags&fsDeviceIndependent)?2.f:1.f);}
 	void					OutSet			(float x, float y)	{fCurrentX=x; fCurrentY=y;}
-	void __cdecl            OutNext			(char *fmt, ...);
-	void __cdecl            OutPrev			(char *fmt, ...);
-	void __cdecl 			Out				(float _x, float _y, char *fmt, ...);
+	void __cdecl            OutNext			(LPCSTR fmt, ...);
+	void __cdecl            OutPrev			(LPCSTR fmt, ...);
+	void __cdecl 			Out				(float _x, float _y, LPCSTR fmt, ...);
 	void					OutSkip			(float val=1.f);
 
 	virtual void			OnRender		();
