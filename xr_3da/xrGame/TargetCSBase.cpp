@@ -33,3 +33,9 @@ void CTargetCSBase::OnDeviceCreate()
 	pCreator->ObjectSpace.Object_Register		(this);
 	cfModel->OnMove								();
 }
+
+void						feel_touch_new			(CObject* O) {
+}
+
+void						feel_touch_delete		(CObject* O) {
+}
