@@ -125,7 +125,7 @@
 
 	<info_portion id="bar_kill_svoboda_ambush_start"></info_portion>
 	<info_portion id="bar_kill_svoboda_ambush_killed"></info_portion>
-	<info_portion id="bar_kill_svoboda_done"></info_portion>
+	<info_portion id="bar_kill_svoboda_ambush_done"></info_portion>
 
 	<info_portion id="bar_kill_svoboda_leader_start"></info_portion>
 	<info_portion id="mil_kill_svoboda_leader_killed"></info_portion>
