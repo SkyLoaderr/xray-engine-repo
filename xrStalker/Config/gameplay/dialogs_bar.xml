@@ -3215,22 +3215,9 @@
         <dont_has_info>bar_bar_drunk_dolg_quest_start</dont_has_info>
         <dont_has_info>bar_bar_drunk_dolg_quest_finish</dont_has_info>
         <phrase_list>
-            <phrase id="1">
-                <text>bar_bar_drunk_dolg_quest_start_1</text>
-                <next>11</next>
-                <next>12</next>
-            </phrase>
             <phrase id="12">
                 <text>bar_bar_drunk_dolg_quest_start_12</text>
                 <next>121</next>
-            </phrase>
-            <phrase id="11">
-                <text>bar_bar_drunk_dolg_quest_start_11</text>
-                <give_info>bar_bar_drunk_dolg_quest_start</give_info>
-                <next>111</next>
-            </phrase>
-            <phrase id="111">
-                <text>bar_bar_drunk_dolg_quest_start_111</text>
             </phrase>
             <phrase id="121">
                 <text>bar_bar_drunk_dolg_quest_start_121</text>
@@ -3238,6 +3225,19 @@
             <phrase id="0">
                 <text>bar_bar_drunk_dolg_quest_start_0</text>
                 <next>1</next>
+            </phrase>
+            <phrase id="111">
+                <text>bar_bar_drunk_dolg_quest_start_111</text>
+            </phrase>
+            <phrase id="11">
+                <text>bar_bar_drunk_dolg_quest_start_11</text>
+                <give_info>bar_bar_drunk_dolg_quest_start</give_info>
+                <next>111</next>
+            </phrase>
+            <phrase id="1">
+                <text>bar_bar_drunk_dolg_quest_start_1</text>
+                <next>11</next>
+                <next>12</next>
             </phrase>
         </phrase_list>
     </dialog>
