@@ -15,7 +15,7 @@
 #include "sh_constant.h"
 #include "sh_rt.h"
 
-typedef svector<string64,4>	sh_list;
+typedef svector<string64,8>	sh_list;
 
 class	ENGINE_API			CBlender_Compile;
 class	ENGINE_API			IBlender;

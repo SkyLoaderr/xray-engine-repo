@@ -230,14 +230,13 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 	u32								m_dwCurTaskLocation;
 	u32								m_dwCurTaskID;
 	float							m_fSearchSpeed;
-	string128						m_caKnownCustomers;
+	ref_str							m_caKnownCustomers;
 	OBJECT_VECTOR					m_tpKnownCustomers;
 	svector<char,5>					m_cpEquipmentPreferences;
 	svector<char,4>					m_cpMainWeaponPreferences;
 	u32								m_dwTotalMoney;
 	float							m_fGoingSuccessProbability;
 	float							m_fSearchSuccessProbability;
-
 
 									CSE_ALifeHumanAbstract	(LPCSTR					caSection);
 	virtual							~CSE_ALifeHumanAbstract	();
