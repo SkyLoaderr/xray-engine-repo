@@ -250,6 +250,11 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	return					TRUE;
 }
 
+void CActor::net_Relcase	(CObject* O)
+{
+	Msg		("---- RELCASE ---- %s, ID=%d",O->cName(),O->ID());
+}
+
 void CActor::Hit		(float iLost, Fvector &dir, CObject* who)
 {
 	if (g_Alive()<=0) return;

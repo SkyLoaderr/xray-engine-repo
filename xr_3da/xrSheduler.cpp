@@ -183,7 +183,7 @@ void CSheduler::Update				()
 	for (u32 it=0; it<ItemsRT.size(); it++)
 	{
 		Item&	T					= ItemsRT[it];
-		u32	Elapsed				= dwTime-T.dwTimeOfLastExecute;
+		u32	Elapsed					= dwTime-T.dwTimeOfLastExecute;
 		if (T.Object->Ready())		T.Object->Update(Elapsed);
 		T.dwTimeOfLastExecute		= dwTime;
 	}

@@ -15,6 +15,7 @@ void xrServer::SLS_Clear	()
 		P.w_u32				(Device.dwTimeGlobal);
 		P.w_u16				(GE_DESTROY);
 		P.w_u16				(E->ID);
+		Msg					("*** SERVER-destroy: %s, ID=%d",E->s_name, E->ID);
 
 		SendBroadcast		(0xffffffff,P,mode);
 		entities.erase		(E->ID);
