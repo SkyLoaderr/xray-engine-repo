@@ -1,5 +1,17 @@
 #pragma once
 
+// logging
+//#define SILENCE
+
+#undef	WRITE_TO_LOG
+#ifdef SILENCE
+#define WRITE_TO_LOG(s) ;
+#else
+#define WRITE_TO_LOG(s) {\
+	Msg("%s",s);\
+}
+#endif
+
 // Singleton template definition 
 template <class T> class IShared {
 	static T*	_self;
@@ -10,7 +22,11 @@ public:
 			virtual	~IShared()	{_self=NULL;}
 public:
 	static T*		Instance() {
-		if(!_self) _self=xr_new<T>(); 
+		if(!_self) {
+			_self=xr_new<T>(); 
+
+			WRITE_TO_LOG("__DEEP SHARE::Creating Instance...");
+		} else WRITE_TO_LOG("__DEEP SHARE::Instance already created, just return pointer");
 		_refcount++;
 		return _self;
 	}
@@ -18,7 +34,9 @@ public:
 		if(--_refcount==0) {
 			IShared<T> *ptr = this;
 			xr_delete(ptr);
-		}
+
+			WRITE_TO_LOG("__DEEP SHARE:: Sub reference && Delete instance");
+		} else WRITE_TO_LOG("__DEEP SHARE::Sub reference, do not delete instance");
 	}
 };
 
@@ -52,7 +70,11 @@ template<class T_shared> T_shared *CSharedObj<T_shared>::get_shared(CLASS_ID id)
 	if (shared_it == _shared_tab.end()) {
 		_data		= xr_new<T_shared>();
 		_shared_tab.insert(mk_pair(id, _data));
-	} else _data = shared_it->second;
+		Msg("__DEEP SHARE::Create data object with CLS_ID = %u", id);
+	} else {
+		_data = shared_it->second;
+		WRITE_TO_LOG("__DEEP SHARE::Do not create data object just return pointer");
+	}
 
 	return _data;
 }
@@ -62,7 +84,12 @@ class CSharedResource {
 public:
 			CSharedResource	() {loaded = false;}
 
-	bool	IsLoaded		() {return loaded;}
+	bool	IsLoaded		() {
+		if (loaded) {WRITE_TO_LOG("__DEEP SHARE::Data already loaded,  do not load!!!");}
+		else {WRITE_TO_LOG("__DEEP SHARE::Load Data");}
+
+		return loaded;
+	}
 	void	SetLoad			(bool l = true) {loaded = l;}
 };
 

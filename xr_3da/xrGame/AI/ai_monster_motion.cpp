@@ -185,6 +185,7 @@ void CMotionManager::AddReplacedAnim(bool *b_flag, EMotionAnim pmt_cur_anim, EMo
 // загрузка анимаций из модели начинающиеся с pmt_name в вектор pMotionVect
 void CMotionManager::Load(LPCTSTR pmt_name, ANIM_VECTOR	*pMotionVect)
 {
+	
 	string256	S1, S2; 
 	CMotionDef	*tpMotionDef;
 	for (int i=0; ; i++) {
@@ -226,9 +227,6 @@ bool CMotionManager::PrepareAnimation()
 
 	// установить параметры атаки
 	AA_SwitchAnimation(cur_anim, index);
-
-	// todo: find out the reason quick animation changes
-//	WRITE_TO_LOG("ANIM_SELECT: anim = [%s] index= [%i] Time = [%i]",*anim_it->second.target_name, index, pMonster->m_dwCurrentTime);
 
 	return true;
 }
