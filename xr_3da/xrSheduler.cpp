@@ -5,27 +5,16 @@
 float			psShedulerCurrent		= 10.f	;
 float			psShedulerTarget		= 10.f	;
 const	float	psShedulerReaction		= 0.1f	;
-/*
-LPVOID 		fiber_main				= 0;
-LPVOID		fiber_thread			= 0;
-*/
 
 //-------------------------------------------------------------------------------------
-/*
-VOID CALLBACK t_process			(LPVOID p)
-{
-	Engine.Sheduler.Process		();
-}
-*/
 void CSheduler::Initialize		()
 {
-//	fiber_main			= ConvertThreadToFiber	(0);
-//	fiber_thread		= CreateFiber			(0,t_process,0);
-//	fibered				= FALSE;
 }
 
 void CSheduler::Destroy			()
 {
+	internal_Registration		();
+
 	for (u32 it=0; it<Items.size(); it++)
 	{
 		if (0==Items[it].Object)	
@@ -51,11 +40,20 @@ void CSheduler::Destroy			()
 		Debug.fatal		("Sheduler work-list is not empty\n%s",_objects);
 	}
 #endif
-
-//	DeleteFiber			(fiber_thread);
 }
 
-void CSheduler::Register		(ISheduled* O, BOOL RT)
+void	CSheduler::internal_Registration()
+{
+	for (u32 it=0; it<Registration.size(); it++)
+	{
+		ItemReg&	R	= Registration	[it];
+		if (R.OP)	internal_Register	(R.Object,R.RT);
+		else		internal_Unregister	(R.Object);
+	}
+	Registration.clear	();
+}
+
+void CSheduler::internal_Register	(ISheduled* O, BOOL RT)
 {
 	VERIFY	(!O->shedule.b_locked)	;
 	if (RT)
@@ -81,7 +79,7 @@ void CSheduler::Register		(ISheduled* O, BOOL RT)
 	}
 }
 
-void CSheduler::Unregister		(ISheduled* O)
+void CSheduler::internal_Unregister	(ISheduled* O)
 {
 	VERIFY	(!O->shedule.b_locked)	;
 	if (O->shedule.b_RT)
@@ -104,7 +102,24 @@ void CSheduler::Unregister		(ISheduled* O)
 	}
 }
 
-void CSheduler::EnsureOrder	(ISheduled* Before, ISheduled* After)
+void	CSheduler::Register		(ISheduled* A, BOOL RT				)
+{
+	ItemReg		R;
+	R.OP		= TRUE		;
+	R.RT		= RT		;
+	R.Object	= A			;
+	Registration.push_back	(R);
+}
+void	CSheduler::Unregister	(ISheduled* A						)
+{
+	ItemReg		R;
+	R.OP		= FALSE		;
+	R.RT		= FALSE		;
+	R.Object	= A			;
+	Registration.push_back	(R);
+}
+
+void CSheduler::EnsureOrder		(ISheduled* Before, ISheduled* After)
 {
 	VERIFY(Before->shedule.b_RT && After->shedule.b_RT);
 
@@ -134,6 +149,8 @@ void CSheduler::Pop					()
 
 void CSheduler::ProcessStep			()
 {
+	internal_Registration			();
+
 	// Normal priority
 	u32		dwTime					= Device.dwTimeGlobal;
 	CTimer							eTimer;
