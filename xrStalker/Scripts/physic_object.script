@@ -85,8 +85,8 @@ function door_binder:door_callback(door, actor)
 	end
 end
 
-class "handing_lamp_binding"(object_binder)
-function handing_lamp_binding:__init(obj) super(obj)
+class "handing_lamp_binder" (object_binder)
+function handing_lamp_binder:__init(obj) super(obj)
 	printf("Binding lamp")
 	self.type		= "low"
 	self.time		= 0
@@ -96,7 +96,7 @@ function handing_lamp_binding:__init(obj) super(obj)
 	self.joint	= nil
 end
 
-function handing_lamp_binding:reload(section)
+function handing_lamp_binder:reload(section)
 	object_binder.reloda(self, section)
 	
 	//'Читаем данные из кастом даты. Если неправильные данные, то ставим type = "low"
@@ -117,7 +117,7 @@ function handing_lamp_binding:reload(section)
 	self.joint		= nil
 end
 
-function handing_lamp_binding:update(delta)
+function handing_lamp_binder:update(delta)
 	object_binder.update(self, delta)
 	printf("update")
 	if(self.joint == nil) then
