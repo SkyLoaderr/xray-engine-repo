@@ -72,6 +72,12 @@ function actor_binder:sleep_callback()
 	self.delayed_sleep_callback_start_tm = device():time_global() + 1500
 end
 ----------------------------------------------------------------------------------------------------------------------
+local drop_location = nil
+function drop_item(item, who)
+	printf("_bp: drop_item")
+	who:drop_item(item, drop_location)
+end
+
 function actor_binder:delayed_sleep_callback()
 	self.delayed_sleep_callback_start_tm = nil
 
@@ -79,10 +85,19 @@ function actor_binder:delayed_sleep_callback()
 	if self.st.punch and self.st.punch.enabled then
 		self.object:set_actor_position(self.st.punch.dest_walk)
 		self.object:set_actor_direction(self.st.punch.dest_look.y)
+		
+		if self.st.punch.dump_inventory_pos then
+			printf("_bp: dump_inventory_pos")
+			drop_location = self.st.punch.dump_inventory_pos
+			self.object:inventory_for_each(dump_item)
+			self.st.punch.dump_inventory_pos = nil
+		end
+		
 		if self.st.punch.disable_input_tm then
 			printf("_bp: disable_input")
 			level.disable_input()
 			self.st.enable_input_tm = device():time_global() + self.st.punch.disable_input_tm
+			self.st.punch.disable_input_tm = nil
 		end
 
 		if self.st.punch.info then
