@@ -4,4 +4,8 @@
     <info_portion id="info_zone_danger">
         <text>tips_zone_danger</text>
     </info_portion>
+
+    <info_portion id="info_stalker_danger">
+        <text>tips_stalker_danger</text>
+    </info_portion>
 </game_information_portions>
