@@ -73,6 +73,31 @@ public		:
 	{	strcpy(I,"'on/off' or '1/0'"); }
 };
 
+class ENGINE_API	CCC_ToggleMask : public IConsole_Command
+{
+protected	:
+	Flags32*	value;
+	u32			mask;
+public		:
+	CCC_ToggleMask(LPCSTR N, Flags32* V, u32 M) :
+	  IConsole_Command(N),
+	  value(V),
+	  mask(M)
+	{bEmptyArgsHandled=TRUE;};
+	  const BOOL GetValue()const{ return value->test(mask); }
+	virtual void	Execute	(LPCSTR args)
+	{
+		value->set(mask,!GetValue());
+		TStatus S;
+		strconcat(S,cName," is ", value->test(mask)?"on":"off");
+		Log(S);
+	}
+	virtual void	Status	(TStatus& S)
+	{	strcpy(S,value->test(mask)?"on":"off"); }
+	virtual void	Info	(TInfo& I)
+	{	strcpy(I,"'on/off' or '1/0'"); }
+};
+
 class ENGINE_API	CCC_Token : public IConsole_Command
 {
 protected	:
