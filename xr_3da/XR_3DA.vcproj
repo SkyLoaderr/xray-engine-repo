@@ -1174,9 +1174,6 @@
 			Name="Engine"
 			Filter="">
 			<File
-				RelativePath=".\FTimer.h">
-			</File>
-			<File
 				RelativePath=".\Properties.h">
 			</File>
 			<File
