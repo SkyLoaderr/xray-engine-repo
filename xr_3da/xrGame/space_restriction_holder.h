@@ -28,7 +28,7 @@ public:
 
 private:
 	xr_vector<ref_str>				m_temp;
-	string256						m_temp_string;
+	string4096						m_temp_string;
 	RESTRICTIONS					m_restrictions;
 	ref_str							m_default_out_restrictions;
 	ref_str							m_default_in_restrictions;

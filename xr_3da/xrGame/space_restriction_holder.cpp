@@ -54,8 +54,14 @@ void CSpaceRestrictionHolder::register_restrictor				(CSpaceRestrictor *space_re
 			else
 				NODEFAULT;
 		temp1				= *temp;
-		strconcat			(m_temp_string,**temp,*space_restrictors);
+		
+		if (xr_strlen(*temp) && xr_strlen(space_restrictors))
+			strconcat		(m_temp_string,**temp,",",*space_restrictors);
+		else
+			strconcat		(m_temp_string,**temp,*space_restrictors);
+
 		*temp				= normalize_string(m_temp_string);
+		
 		if (xr_strcmp(*temp,temp1))
 			on_default_restrictions_changed	(restrictor_type,temp1,*temp);
 	}
