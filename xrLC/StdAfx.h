@@ -11,7 +11,7 @@
 #include <xrCore.h>
 
 #include <commctrl.h>
-#include <d3dx8.h>
+#include <d3dx9.h>
 #include <io.h>
 #include <fcntl.h>
 #include <sys\stat.h>
