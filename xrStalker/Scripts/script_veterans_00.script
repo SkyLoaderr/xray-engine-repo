@@ -142,8 +142,6 @@ function main()
 			wait(3000)			
 		end
 
-
-
 	while stalker_veteran01:action() and stalker_veteran02:action() do
 		if stalker_veteran01:see(actor) or stalker_veteran02:see(actor) and distance_between(stalker_veteran01,actor) > 5 then
 			printf("script 2!")
@@ -169,9 +167,12 @@ function main()
 			)
 			prof_stoyat_pristrelu:play_at_pos		(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(7000)			
+
+		if stalker_veteran01:see(actor) or stalker_veteran02:see(actor) and distance_between(stalker_veteran01,actor) > 5 then
 			prof_padla_podslushivala:play_at_pos	(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(4000)			
-
+		
+		end
 			rainbow_tak_i_znal_ktoto_pryatalsya2:play_at_pos		(stalker_veteran02,stalker_veteran02:position(),0);
 			wait(4000)			
 
