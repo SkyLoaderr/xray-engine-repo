@@ -444,13 +444,13 @@ void	CRender::Render		()
 			mapMatrix.traverseANY	(matrix_L1);
 			mapMatrix.clear			();
 
-			CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d()));
+			CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,Fidentity.d3d()));
 			Wallmarks.Render		();		// Wallmarks has priority as normal geometry
 
-			CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d()));
+			CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,Fidentity.d3d()));
 			L_Dynamic.Render		();		// L_DB has priority the same as normal geom
 
-			CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d()));
+			CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,Fidentity.d3d()));
 			Details.Render			(Device.vCameraPosition);
 		}
 	}
