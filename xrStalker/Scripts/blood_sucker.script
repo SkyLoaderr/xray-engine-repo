@@ -557,6 +557,8 @@ end
 
 function CStateAmbush:initialize()
     reset_action(self.npc, this.script_name())
+    self.npc:set_manual_invisiblity(true)
+    self.npc:set_invisible(false)
 end
 
 function CStateAmbush:execute()
@@ -564,9 +566,6 @@ function CStateAmbush:execute()
 		if(self.npc:level_vertex_id() ~= self.ambush_way:level_vertex_id(0)) then
         	action(self.npc, move(move.walk_fwd, self.ambush_way:point(0)), sound(sound.idle), cond(cond.move_end))
         else
-	        self.npc:set_manual_invisibility(true)
-	        self.npc:set_invisible(false)
-
         	action(self.npc, look(look.point, self.ambush_way:point(1)), anim(anim.turn, 0), sound(sound.attack), cond(cond.look_end))
             action(self.npc, anim(anim.stand_idle, 0), sound(sound.attack), cond(cond.time_end, 50000))
         end
@@ -636,7 +635,7 @@ function CBloodsuckerBox:execute()
         self.enter			 = false
 //    	self.npc:set_invisible(false)
 		reset_action(self.npc, this.script_name())
-        action(self.npc, anim(anim.look_around, 0), sound(sound.attack), cond(cond.time_end, 9000))
+        action(self.npc, anim(anim.look_around, 0), sound(sound.idle), cond(cond.time_end, 9000))
 //        self.npc:set_manual_invisibility(false)
     end
 
