@@ -30,7 +30,7 @@
 			<level>l01_escape</level>
 			<object>003</object>
 			<text>Торговец.</text>
-			<icon name="Торговец" x="6" y="0" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+			<icon name="Торговец" big_icon="1" x="6" y="0" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 		</location>	
 		<disable>tutorial_artefact_start</disable>
 	</info_portion>
@@ -44,7 +44,7 @@
 		<location>
 			<level>l01_escape</level>
 			<object>004</object>
-			<icon name="Раненый" x="7" y="2" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+			<icon name="Раненый" big_icon="1" x="7" y="2" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 		</location>	
 		<task>tutorial_help_wounded</task>
 	</info_portion>
@@ -67,63 +67,63 @@
 			<level>l01_escape</level>
 			<x>199</x>
 			<y>74</y>
-			<icon name="Аномалия" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
+			<icon name="Аномалия" big_icon="1" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
 			<text>Скопление аномалий</text>
 		</location>	
 		<location>
 			<level>l01_escape</level>
 			<x>223</x>
 			<y>82</y>
-			<icon name="Аномалия" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
+			<icon name="Аномалия" big_icon="1" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
 			<text>Скопление аномалий</text>
 		</location>	
 		<location>
 			<level>l01_escape</level>
 			<x>227</x>
 			<y>100</y>
-			<icon name="Аномалия" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
+			<icon name="Аномалия" big_icon="1" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
 			<text>Скопление аномалий</text>
 		</location>	
 		<location>
 			<level>l01_escape</level>
 			<x>188</x>
 			<y>64</y>
-			<icon name="Аномалия" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
+			<icon name="Аномалия" big_icon="1" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
 			<text>Скопление аномалий</text>
 		</location>	
 		<location>
 			<level>l01_escape</level>
 			<x>208</x>
 			<y>106</y>
-			<icon name="Аномалия" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
+			<icon name="Аномалия" big_icon="1" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
 			<text>Скопление аномалий</text>
 		</location>	
 		<location>
 			<level>l01_escape</level>
 			<x>193</x>
 			<y>124</y>
-			<icon name="Аномалия" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
+			<icon name="Аномалия" big_icon="1" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
 			<text>Скопление аномалий</text>
 		</location>	
 		<location>
 			<level>l01_escape</level>
 			<x>185</x>
 			<y>110</y>
-			<icon name="Аномалия" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
+			<icon name="Аномалия" big_icon="1" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
 			<text>Скопление аномалий</text>
 		</location>	
 		<location>
 			<level>l01_escape</level>
 			<x>183</x>
 			<y>96</y>
-			<icon name="Аномалия" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
+			<icon name="Аномалия" big_icon="1" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
 			<text>Скопление аномалий</text>
 		</location>	
 		<location>
 			<level>l01_escape</level>
 			<x>181</x>
 			<y>78</y>
-			<icon name="Аномалия" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
+			<icon name="Аномалия" big_icon="1" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
 			<text>Скопление аномалий</text>
 		</location>	
 		<task>esc_trader_need_electra_artefact</task>
@@ -146,7 +146,7 @@
 		<location>
 			<level>l01_escape</level>
 			<object>005</object>
-			<icon name="Сталкер" x="7" y="2" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+			<icon name="Сталкер" big_icon="1" x="7" y="2" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 			<text>Вернувшийся из рейда сталкер.</text>
 		</location>
 		<task>esc_help_wounded_from_raid</task>		
@@ -163,7 +163,7 @@
 		<location>
 			<level>l01_escape</level>
 			<object>000</object>
-			<icon name="Ящик" x="5" y="1" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+			<icon name="Ящик" big_icon="1" x="5" y="1" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 			<text>Украсть ящик с блокпоста</text>
 		</location>
 		<task>esc_blockpost_case_to_trader</task>
@@ -172,7 +172,7 @@
 		<location>
 			<level>l01_escape</level>
 			<object>003</object>
-			<icon name="Торговец" x="6" y="0" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+			<icon name="Торговец" big_icon="1" x="6" y="0" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 			<text>Принеси ящик торговцу.</text>
 		</location>
 		<disable>escape_blockpost_case</disable>
@@ -187,7 +187,7 @@
 		<location>
 			<level>l01_escape</level>
 			<object>007</object>
-			<icon name="Динамит" x="3" y="6" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+			<icon name="Динамит" big_icon="1" x="3" y="6" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 			<text>Достать динамит для Волка.</text>
 		</location>
 		<task>esc_dinamit_to_volk</task>
@@ -197,7 +197,7 @@
 			<level>l01_escape</level>
 			<x>10</x>
 			<y>-26</y>
-			<icon name="" x="0" y="0" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+			<icon name="" big_icon="1" x="0" y="0" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 			<text>Встретиться с ребятами Волка.</text>
 		</location>
 	</info_portion>
@@ -205,7 +205,7 @@
 		<location>
 			<level>l01_escape</level>
 			<object>006</object>
-			<icon name="Волк" x="1" y="0" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+			<icon name="Волк" big_icon="1" x="1" y="0" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 			<text>Принести динамит для Волку.</text>
 		</location>
 		<disable>escape_dynamite_start</disable>
