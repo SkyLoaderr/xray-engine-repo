@@ -464,7 +464,7 @@ IC	bool	cmp_textures_lexN	(SceneGraph::mapNormalTextures::TNode* N1, SceneGraph:
 {	
 	STextureList*	t1			= N1->key;
 	STextureList*	t2			= N2->key;
-	return lexicographical_compare(t1->begin(),t1->end(),t2->begin(),t2->end());
+	return std::lexicographical_compare(t1->begin(),t1->end(),t2->begin(),t2->end());
 }
 IC	bool	cmp_textures_ssa	(SceneGraph::mapNormalTextures::TNode* N1, SceneGraph::mapNormalTextures::TNode* N2)
 {	
