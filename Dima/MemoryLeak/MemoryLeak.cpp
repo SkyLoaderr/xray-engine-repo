@@ -1,6 +1,3 @@
-// MemoryLeak.cpp : Defines the entry point for the console application.
-//
-
 #include "stdafx.h"
 #include "image.h"
 #include <functional>
@@ -11,6 +8,10 @@
 
 extern void Surface_Init();
 
+struct SPair {
+	u32				pair[2];
+};
+
 struct SCover {
 	u8				cover[4];
 };
@@ -19,7 +20,6 @@ struct SCoverCluster : public SCover {
 	u32				acc_cover[4];
 	u32				sort_cover;
 	u32				m_magnitude;
-	float			m_sqrt_magnitude;
 	u32				item_count;
 	SCoverCluster	*cluster;
 
@@ -47,7 +47,6 @@ struct SCoverCluster : public SCover {
 	IC void set_magnitude()
 	{
 		m_magnitude			= _sqr((u32)cover[0]) + _sqr((u32)cover[1]) + _sqr((u32)cover[2]) + _sqr((u32)cover[3]);
-		m_sqrt_magnitude	= _sqrt(float(m_magnitude));
 	}
 
 	IC void	compress(const u32 &node)
@@ -81,9 +80,9 @@ struct SCoverCluster : public SCover {
 		return		(m_magnitude);
 	}
 
-	IC float magnitude_sqrt() const
+	IC bool valid() const
 	{
-		return		(m_sqrt_magnitude);
+		return		(cluster == this);
 	}
 };
 
@@ -101,6 +100,23 @@ struct cover_predicate_equal {
 	}
 };
 
+struct non_valid_predicate {
+	IC bool operator()(const SCoverCluster *node) const
+	{
+		return		(!node->valid());
+	}
+};
+
+struct item_count_predicate {
+	const xr_vector<SCoverCluster*>	*clusters;
+	item_count_predicate(const xr_vector<SCoverCluster*> &_clusters) {clusters = &_clusters;}
+
+	IC bool operator()(const SPair &node1, const SPair &node2) const
+	{
+		return		((*clusters)[node1.pair[0]]->item_count + (*clusters)[node1.pair[1]]->item_count < (*clusters)[node2.pair[0]]->item_count + (*clusters)[node2.pair[1]]->item_count);
+	}
+};
+
 struct cover_predicate_magnitude {
 	IC bool operator()(const SCoverCluster *node1, const SCoverCluster *node2) const
 	{
@@ -109,7 +125,7 @@ struct cover_predicate_magnitude {
 
 	IC bool operator()(const u32 dwValue, const SCoverCluster *node2) const
 	{
-		return		(dwValue <= node2->magnitude());
+		return		(dwValue < node2->magnitude());
 	}
 
 	IC bool operator()(const SCoverCluster *node2, const u32 dwValue) const
@@ -146,9 +162,11 @@ IC float compute_percents(u64 n, u64 i, u64 k)
 void xrPalettizeCovers(u32 *data, u32 N)
 {
 	xr_vector<SCoverCluster*>	clusters;
+	xr_vector<SCoverCluster*>	temp;
 	SCoverCluster				*memory_block = (SCoverCluster*)xr_malloc(N*sizeof(SCoverCluster));
 
 	clusters.resize				(N);
+	temp.resize					(N);
 
 	// convert cover values and init clusters
 	{
@@ -181,68 +199,128 @@ void xrPalettizeCovers(u32 *data, u32 N)
 	sort					(clusters.begin(),clusters.end(),cover_predicate_magnitude());
 	printf					("completed!\n");
 	// clasterizing covers
-	u32						best_pair[2];
+	xr_vector<SPair>		best_pair;
+	best_pair.reserve		(clusters.size());
 	u32						best_distance;
 	u64						iterations = compute_formula(clusters.size(),256);
 	u64						portion = iterations/100;
 	u64						accumulator = 0;
 	printf					("\t\tIteration : %5.2f%",0.f);
-	for (int ii=0, nn = clusters.size(); clusters.size() > 256; ++ii) {
+	for (int ii=0, nn = clusters.size(); clusters.size() > 256; ) {
 		if (accumulator >= portion) {
 			for (int j=0; j<32; j++)
 				printf		("\b \b");
 			printf			("\t\tIteration : %5.2f%",100.f*compute_percents(nn,nn - ii,256));
 			accumulator		= 0;
 		}
-		accumulator			+= square(nn - ii);
 		// choosing the nearest pair
-		best_pair[0]		= 0;
-		best_pair[1]		= 1;
+		best_pair.resize	(1);
+		best_pair[0].pair[0]= 0;
+		best_pair[0].pair[1]= 1;
 		best_distance		= clusters[0]->distance(*clusters[1]);
-		float				best_distance_sqrt = _sqrt((float)best_distance);
-		if (best_distance) {
-			xr_vector<SCoverCluster*>::const_iterator		b = clusters.begin(), i = b, j, k;
-			xr_vector<SCoverCluster*>::const_iterator		e = clusters.end();
-			for ( ; i != e; ++i) {
-				u32			max_magnitude = iFloor(_sqr((*i)->magnitude_sqrt() + best_distance_sqrt));
-				k			= upper_bound(i,e,max_magnitude,cover_predicate_magnitude());
-				R_ASSERT	(k != i);
-				for (j = i + 1 ; j != k; ++j) {
-					u32	distance = (*i)->distance(**j);
-					if (distance < best_distance) {
-						best_pair[0]	= u32(i - b);
-						best_pair[1]	= u32(j - b);
-						best_distance	= distance;
-						if (!best_distance) {
-							i = b + clusters.size() - 1;
-							break;
-						}
-						best_distance_sqrt	= _sqrt((float)best_distance);
-						max_magnitude		= iFloor(_sqr((*i)->magnitude_sqrt() + best_distance_sqrt));
-						k					= upper_bound(i,k,max_magnitude,cover_predicate_magnitude());
-						if (j == k)
-							break;
-					}
+		xr_vector<SCoverCluster*>::const_iterator		b = clusters.begin(), i = b, j, k;
+		xr_vector<SCoverCluster*>::const_iterator		e = clusters.end();
+		for ( ; i != e; ++i) {
+			u32			max_magnitude = iFloor(_sqr(_sqrt((float)(*i)->magnitude()) + _sqrt((float)best_distance)) + .5f);
+			k			= upper_bound(i,e,max_magnitude,cover_predicate_magnitude());
+			if (k == i)
+				continue;
+			for (j = i + 1 ; j != k; ++j) {
+				u32	distance = (*i)->distance(**j);
+				if (distance < best_distance) {
+					best_pair.resize		(1);
+					best_pair[0].pair[0]	= u32(i - b);
+					best_pair[0].pair[1]	= u32(j - b);
+					best_distance			= distance;
+					max_magnitude	= iFloor(_sqr(_sqrt((float)(*i)->magnitude()) + _sqrt((float)best_distance)) + .5f);
+					k				= upper_bound(i,k,max_magnitude,cover_predicate_magnitude());
+					if ((j == k) || (k == i))
+						break;
 				}
+				else
+					if (distance == best_distance) {
+						SPair	t;
+						t.pair[0] = u32(i - b);
+						t.pair[1] = u32(j - b);
+						best_pair.push_back(t);
+					}
 			}
-		}
-		else {
-			clusters[0]->merge	(*clusters[1]);
-			clusters.erase	(clusters.begin() + 1);
-			continue;
+			if (!best_distance)
+				i = k;
 		}
 
 		// merging the pair
-		xr_vector<SCoverCluster*>::iterator	ee = clusters.begin() + best_pair[0];
-		
-		(*ee)->merge		(*clusters[best_pair[1]]);
-		SCoverCluster		*t = *ee;
-		u32					magnitude = t->magnitude();
-		
-		clusters.erase		(clusters.begin() + best_pair[1]);
-		clusters.erase		(clusters.begin() + best_pair[0]);
-		ee					= lower_bound(clusters.begin(),clusters.end(),magnitude,cover_predicate_magnitude());
-		clusters.insert		(ee,t);
+		temp.clear			();
+		temp.reserve		(best_pair.size());
+		if (clusters.size() - best_pair.size() < 256) {
+			u32				N = clusters.size() - 256;
+			sort			(best_pair.begin(),best_pair.end(),item_count_predicate(clusters));
+			if (!best_distance) {
+				xr_vector<SPair>::iterator	I = best_pair.begin(), B = I;
+				xr_vector<SPair>::iterator	E = best_pair.end();
+				for (u32 i=0; I != E; ++I)
+					if (clusters[(*I).pair[0]]->valid() || !clusters[(*I).pair[0]]->cluster) {
+						clusters[(*I).pair[0]]->merge(*clusters[(*I).pair[1]]);
+						if (clusters[(*I).pair[0]]->cluster) {
+							clusters[(*I).pair[0]]->cluster = 0;
+							temp.push_back	(clusters[(*I).pair[0]]);
+						}
+						if (++i >= N)
+							break;
+					}
+			}
+			else {
+				xr_vector<SPair>::iterator	I = best_pair.begin(), B = I;
+				xr_vector<SPair>::iterator	E = best_pair.end();
+				for (u32 i=0; I != E; ++I)
+					if (clusters[(*I).pair[0]]->valid() && clusters[(*I).pair[1]]->valid()) {
+						clusters[(*I).pair[0]]->merge(*clusters[(*I).pair[1]]);
+						clusters[(*I).pair[0]]->cluster = 0;
+						temp.push_back	(clusters[(*I).pair[0]]);
+						if (++i >= N)
+							break;
+					}
+			}
+		}
+		else {
+			if (!best_distance) {
+				xr_vector<SPair>::iterator	I = best_pair.begin(), B = I;
+				xr_vector<SPair>::iterator	E = best_pair.end();
+				for ( ; I != E; ++I)
+					if (clusters[(*I).pair[0]]->valid() || !clusters[(*I).pair[0]]->cluster) {
+						clusters[(*I).pair[0]]->merge(*clusters[(*I).pair[1]]);
+						if (clusters[(*I).pair[0]]->cluster) {
+							clusters[(*I).pair[0]]->cluster = 0;
+							temp.push_back	(clusters[(*I).pair[0]]);
+						}
+					}
+			}
+			else {
+				xr_vector<SPair>::iterator	I = best_pair.begin(), B = I;
+				xr_vector<SPair>::iterator	E = best_pair.end();
+				for ( ; I != E; ++I)
+					if (clusters[(*I).pair[0]]->valid() && clusters[(*I).pair[1]]->valid()) {
+						clusters[(*I).pair[0]]->merge(*clusters[(*I).pair[1]]);
+						clusters[(*I).pair[0]]->cluster = 0;
+						temp.push_back	(clusters[(*I).pair[0]]);
+					}
+			}
+		}
+
+		clusters.erase		(remove_if(clusters.begin(),clusters.end(),non_valid_predicate()),clusters.end());
+		{
+			xr_vector<SCoverCluster*>::iterator	I = temp.begin(), J;
+			xr_vector<SCoverCluster*>::iterator	E = temp.end();
+			for ( ; I != E; ++I) {
+				(*I)->cluster	= *I;
+				u32			magnitude = (*I)->magnitude();
+				J			= lower_bound(clusters.begin(),clusters.end(),magnitude,cover_predicate_magnitude());
+				clusters.insert	(J,*I);
+			}
+		}
+
+		accumulator			+= compute_formula(nn - ii,256) - compute_formula(nn - ii - temp.size(),256);
+		ii					+= temp.size();
 	}
 	
 	for (int j=0; j<32; j++)
@@ -259,7 +337,7 @@ void xrPalettizeCovers(u32 *data, u32 N)
 	SCoverCluster			*I = memory_block, *J = I;
 	SCoverCluster			*E = memory_block + N;
 	for ( ; I != E; ++I, J = I, ++i) {
-		for (; J->cluster != J; J = J->cluster);
+		for (; !J->valid(); J = J->cluster);
 		*i					= I->sort_cover = J->sort_cover;
 		I->cluster			= I;
 	}
@@ -300,4 +378,3 @@ int __cdecl _tmain(int argc, _TCHAR* argv[])
 	printf				("completed!\n");
 	return				(0);
 }
-
