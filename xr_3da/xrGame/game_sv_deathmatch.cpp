@@ -180,7 +180,10 @@ void game_sv_Deathmatch::OnPlayerDisconnect		(u32 id_who)
 	__super::OnPlayerDisconnect	(id_who);
 
 	LPCSTR	Name = NULL;
+
 	Name = get_name_id(id_who);
+	Name = get_option_s(Name,"name",Name);
+
 
 	xrServer*	S					=	Level().Server;
 	
