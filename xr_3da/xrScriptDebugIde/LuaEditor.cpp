@@ -616,7 +616,17 @@ void CLuaEditor::setupLexer_ex()
   SetAStyle(SCE_LUA_PREPROCESSOR, RGB(0x80, 0, 0));
   SetAStyle(SCE_LUA_OPERATOR, RGB(0x80, 0x80, 0));
    Sci(SCI_SETTABWIDTH,4,0);
-   Sci(SCI_SETUSETABS,0,0);
+   Sci(SCI_SETUSETABS,1,0);
+   Sci(SCI_SETTABINDENTS,7,0);
+   Sci(SCI_SETINDENT,4,0);
+
+   
+   
+
+   
+
+
+
 
 /*  SetAStyle(SCE_C_DEFAULT, RGB(0, 0, 0));
   SetAStyle(SCE_C_COMMENT, RGB(0, 0x80, 0));
