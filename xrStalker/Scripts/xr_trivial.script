@@ -1,7 +1,7 @@
 local time_walk 	= 60000
 local time_rest 	= 20000
 
-local time_to_speak = 10000     --Через какое время примерно зомби произносит фразы
+local time_to_speak = 20000     --Через какое время примерно зомби произносит фразы
 
 local walk_speak	= xr_sounds_id.zombe_walk_speak
 local stand_speak   = xr_sounds_id.zombe_stand_speak
