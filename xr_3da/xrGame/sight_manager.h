@@ -21,8 +21,9 @@ class CSightManager : public CSetupManager<CSightControlAction,CAI_Stalker,u32> 
 public:
 	typedef CSetupManager<CSightControlAction,CAI_Stalker,u32> inherited;
 
-protected:
+private:
 	bool			m_enabled;
+	bool			m_turning_in_place;
 
 public:
 					CSightManager						(CAI_Stalker *object);

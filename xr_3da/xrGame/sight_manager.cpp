@@ -20,6 +20,7 @@ CSightManager::CSightManager		(CAI_Stalker *object) :
 	inherited					(object)
 {
 	m_enabled					= true;
+	m_turning_in_place			= false;
 }
 
 CSightManager::~CSightManager		()
@@ -34,6 +35,7 @@ void CSightManager::reinit			()
 {
 	inherited::reinit			();
 	m_enabled					= true;
+	m_turning_in_place			= false;
 }
 
 void CSightManager::SetPointLookAngles(const Fvector &tPosition, float &yaw, float &pitch, const CGameObject *object)
@@ -239,16 +241,32 @@ void CSightManager::setup			(const CSightAction &sight_action)
 
 void CSightManager::update			()
 {
-	if (enabled())
-		inherited::update	();
-	
-//	if (m_object->turn_in_place())
-//		object().movement().m_body.target.yaw		= object().movement().m_head.current.yaw;
-//	else
-//		if (object().movement().speed() < EPS_L) {
-//			if (angle_difference(object().movement().m_body.target.yaw,object().movement().m_head.target.yaw) > PI_DIV_6)
-//				object().movement().m_body.target.yaw = object().movement().m_head.current.yaw;
-//		}
+	if (enabled()) {
+		if (fis_zero(object().movement().speed())) {
+			if (!m_turning_in_place) {
+				if (angle_difference(object().movement().m_body.current.yaw,object().movement().m_head.current.yaw) > (left_angle(-object().movement().m_head.current.yaw,-object().movement().m_body.current.yaw) ? PI_DIV_2 : PI_DIV_3)) {
+					m_turning_in_place	= true;
+					object().movement().m_body.target.yaw	= object().movement().m_head.current.yaw;
+				}
+				else {
+					object().movement().m_body.target.yaw	= object().movement().m_body.current.yaw;
+				}
+			}
+			else {
+				if (angle_difference(object().movement().m_body.current.yaw,object().movement().m_head.current.yaw) > EPS_L) {
+					object().movement().m_body.target.yaw	= object().movement().m_head.current.yaw;
+				}
+				else {
+					m_turning_in_place	= false;
+					object().movement().m_body.target.yaw	= object().movement().m_body.current.yaw;
+				}
+			}
+		}
+		else
+			m_turning_in_place			= false;
+
+		inherited::update				();
+	}
 }
 
 void CSightManager::GetDirectionAngles				(float &yaw, float &pitch)

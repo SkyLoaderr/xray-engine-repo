@@ -336,11 +336,6 @@ void CStalkerMovementManager::parse_velocity_mask	()
 
 	object().sight().enable		(true);
 
-	if (fis_zero(speed())) {
-		if (angle_difference(m_body.current.yaw,m_head.current.yaw) > (left_angle(-m_head.current.yaw,-m_body.current.yaw) ? PI_DIV_6 : PI_DIV_3))
-			m_body.target.yaw	= m_head.current.yaw;
-	}
-
 	if ((movement_type() == eMovementTypeStand) || path().empty() || (path().size() <= detail().curr_travel_point_index())) {
 		object().m_fCurSpeed	= 0;
 		if (mental_state() != eMentalStateDanger)
