@@ -5,17 +5,6 @@
 
 xr_set<CArtifact*> CArtifact::m_all;
 
-CArtifact::CArtifact(void) {
-	shedule.t_min = 20;
-	shedule.t_max = 50;
-	m_jumpHeight = 0;
-	m_energy = 1.f;
-}
-
-CArtifact::~CArtifact(void) {
-	SoundDestroy(m_detectorSound);
-}
-
 #define CHOOSE_MAX(x,inst_x,y,inst_y,z,inst_z)\
 	if(x>y)\
 		if(x>z){inst_x;}\
@@ -24,7 +13,22 @@ CArtifact::~CArtifact(void) {
 		if(y>z){inst_y;}\
 		else{inst_z;}
 
-void CArtifact::Load(LPCSTR section) {
+
+
+CArtifact::CArtifact(void) 
+{
+	shedule.t_min = 20;
+	shedule.t_max = 50;
+}
+
+
+CArtifact::~CArtifact(void) 
+{
+	SoundDestroy(m_detectorSound);
+}
+
+void CArtifact::Load(LPCSTR section) 
+{
 	// verify class
 	LPCSTR Class = pSettings->r_string(section,"class");
 	CLASS_ID load_cls = TEXT2CLSID(Class);
@@ -32,15 +36,14 @@ void CArtifact::Load(LPCSTR section) {
 
 	inherited::Load(section);
 
-	m_detectorDist = pSettings->r_float(section,"detector_dist");
 	LPCSTR m_detectorSoundName = pSettings->r_string(section,"detector_sound");
 	SoundCreate(m_detectorSound, m_detectorSoundName);
 
-	if(pSettings->line_exist(section, "jump_height")) m_jumpHeight = pSettings->r_float(section,"jump_height");
-	m_energy = pSettings->r_float(section,"energy");
+	m_fDetectionDist = pSettings->r_float(section,"detector_dist");
 }
 
-BOOL CArtifact::net_Spawn(LPVOID DC) {
+BOOL CArtifact::net_Spawn(LPVOID DC) 
+{
 	m_all.insert(this);
 	inherited::net_Spawn(DC);
 	setVisible					(true);
@@ -94,21 +97,24 @@ BOOL CArtifact::net_Spawn(LPVOID DC) {
 	return TRUE;
 }
 
-void CArtifact::net_Destroy() {
+void CArtifact::net_Destroy() 
+{
 	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
 	xr_delete(m_pPhysicsShell);
 	m_all.erase(this);
 	inherited::net_Destroy();
 }
 
-void CArtifact::OnH_A_Chield() {
+void CArtifact::OnH_A_Chield() 
+{
 	inherited::OnH_A_Chield		();
 	setVisible					(false);
 	setEnabled					(false);
 	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
 }
 
-void CArtifact::OnH_B_Independent() {
+void CArtifact::OnH_B_Independent() 
+{
 	inherited::OnH_B_Independent();
 	setVisible					(true);
 	setEnabled					(true);
@@ -116,7 +122,9 @@ void CArtifact::OnH_B_Independent() {
 	R_ASSERT		(E);
 	XFORM().set(E->XFORM());
 	Position().set(XFORM().c);
-	if(m_pPhysicsShell) {
+	
+	if(m_pPhysicsShell) 
+	{
 		Fmatrix trans;
 		Level().Cameras.unaffected_Matrix(trans);
 		Fvector l_fw; l_fw.set(trans.k);// l_fw.mul(2.f);
@@ -143,28 +151,16 @@ void CArtifact::OnH_B_Independent() {
 	}
 }
 
-void CArtifact::UpdateCL() {
+void CArtifact::UpdateCL() 
+{
 	inherited::UpdateCL();
-	if(getVisible() && m_pPhysicsShell) {
-		m_pPhysicsShell->Update	();
-		XFORM().set			(m_pPhysicsShell->mXFORM);
-		Position().set(m_pPhysicsShell->mXFORM.c);
-		if(m_jumpHeight) {
-			Fvector l_dir; l_dir.set(0, -1.f, 0);
-			Collide::ray_query RQ;
-			setEnabled(false);
-			if(Level().ObjectSpace.RayPick(Position(), l_dir, m_jumpHeight, RQ)) {
-				l_dir.y = 1.f; m_pPhysicsShell->applyImpulse(l_dir, 30.f * Device.fTimeDelta * m_pPhysicsShell->getMass());
-			}
-			setEnabled(true);
-		}
-	} else if(H_Parent()) XFORM().set(H_Parent()->XFORM());
 }
 
 void CArtifact::shedule_Update	(u32 dt) 
 {
 	inherited::shedule_Update(dt);
-	if(getVisible() && m_pPhysicsShell) {
+	if(getVisible() && m_pPhysicsShell) 
+	{
 		//float l_force = 100.f;
 		//Fvector l_dir; l_dir.set(0, 1.f, 0);
 		//if(Position().y < 1.f) {
@@ -173,7 +169,8 @@ void CArtifact::shedule_Update	(u32 dt)
 	}
 }
 
-void CArtifact::renderable_Render() {
+void CArtifact::renderable_Render() 
+{
 	//if(m_pHUD && H_Parent() && dynamic_cast<CActor*>(H_Parent())) {
 	//	Fmatrix trans;
 	//	Level().Cameras.affected_Matrix(trans);
@@ -186,21 +183,25 @@ void CArtifact::renderable_Render() {
 	//	} else {
 	//	}
 	//}
-	if(getVisible() && !H_Parent()) {
+	if(getVisible() && !H_Parent()) 
+	{
 		::Render->set_Transform		(&XFORM());
 		::Render->add_Visual		(Visual());
 	}
 }
 
-void CArtifact::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq) {
+void CArtifact::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq) 
+{
 	string256 temp;
-	if (FS.exist(temp,"$game_sounds$",s_name)) {
+	if (FS.exist(temp,"$game_sounds$",s_name)) 
+	{
 		Sound->create(dest,TRUE,s_name,iType);
 		return;
 	}
 	Debug.fatal	("Can't find ref_sound '%s'",s_name,cName());
 }
 
-void CArtifact::SoundDestroy(ref_sound& dest) {
+void CArtifact::SoundDestroy(ref_sound& dest) 
+{
 	::Sound->destroy			(dest);
 }

@@ -1420,6 +1420,16 @@
 								RelativePath="MercuryBall.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="GraviArtifact"
+							Filter="">
+							<File
+								RelativePath=".\GraviArtifact.cpp">
+							</File>
+							<File
+								RelativePath=".\GraviArtifact.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Devices"
@@ -2992,6 +3002,9 @@
 			RelativePath=".\future.txt">
 		</File>
 		<File
+			RelativePath=".\monsters.ltx">
+		</File>
+		<File
 			RelativePath=".\notes.txt">
 		</File>
 		<File
@@ -3023,6 +3036,9 @@
 		</File>
 		<File
 			RelativePath=".\todo.txt">
+		</File>
+		<File
+			RelativePath=".\weapons.ltx">
 		</File>
 	</Files>
 	<Globals>

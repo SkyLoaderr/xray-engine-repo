@@ -176,6 +176,7 @@ void CCustomDetector::shedule_Update(u32 dt)
 	//////////////////////////////////
 	//Звуки обнаружения артефактов
 	//////////////////////////////////
+/*	
 	xr_set<CArtifact*>::iterator l_it2;
 	for(l_it2 = CArtifact::m_all.begin(); l_it2 != CArtifact::m_all.end(); l_it2++) 
 	{
@@ -193,6 +194,7 @@ void CCustomDetector::shedule_Update(u32 dt)
 			}
 		} else if(l_af.m_detectorSound.feedback) l_af.m_detectorSound.stop();
 	}
+*/
 }
 
 void CCustomDetector::UpdateCL() 

@@ -132,6 +132,9 @@ void CAI_Stalker::Die				()
 	S.feedback->set_volume			(1.f);
 	inherited::Die					();
 	m_bHammerIsClutched				= !::Random.randI(0,2);
+
+	//запретить использование слотов в инвенторе
+	m_inventory.m_bSlotsUseful = false;
 //#ifdef DEBUG
 //	Msg								("Death position : [%f][%f][%f]",VPUSH(Position()));
 //#endif

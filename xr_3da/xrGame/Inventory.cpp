@@ -657,7 +657,8 @@ bool CInventory::Take(CGameObject *pObj, bool bNotActivate)
 	{
 		if(l_pIItem->m_slot < 0xffffffff) 
 		{
-			if(m_slots[l_pIItem->m_slot].m_pIItem->Attach(l_pIItem))
+			if(m_slots[l_pIItem->m_slot].m_pIItem &&
+			   m_slots[l_pIItem->m_slot].m_pIItem->Attach(l_pIItem))
 			{
 				m_ruck.erase(std::find(m_ruck.begin(), m_ruck.end(), l_pIItem));
 				return true;
@@ -741,7 +742,9 @@ void CInventory::ClearAll()
 
 bool CInventory::Slot(PIItem pIItem) 
 {
-	if(m_bSlotsUseful && pIItem->m_slot < m_slots.size()) 
+	if(!m_bSlotsUseful) return false;
+
+	if(pIItem->m_slot < m_slots.size()) 
 	{
 		//if(m_slots[pIItem->m_slot].m_pIItem && !Belt(m_slots[pIItem->m_slot].m_pIItem)) Ruck(m_slots[pIItem->m_slot].m_pIItem);
 		if(!m_slots[pIItem->m_slot].m_pIItem) 

@@ -1,10 +1,10 @@
 #pragma once
 #include "inventory.h"
 
-class CArtifact :
-	public CInventoryItem
+class CArtifact : public CInventoryItem
 {
-typedef	CInventoryItem	inherited;
+private:
+	typedef	CInventoryItem	inherited;
 public:
 	CArtifact(void);
 	virtual ~CArtifact(void);
@@ -21,10 +21,15 @@ public:
 	void SoundCreate(ref_sound& dest, LPCSTR name, int iType=0, BOOL bCtrlFreq=FALSE);
 	void SoundDestroy(ref_sound& dest);
 
-	float m_detectorDist;
+	float GetDetectionDist() {return m_fDetectionDist;}
+
+protected:
+	//расстояние обнаружения артифакта детектором
+	float m_fDetectionDist;
+	
+	//звуки
 	LPCSTR m_detectorSoundName;
 	ref_sound m_detectorSound;
-	float m_jumpHeight, m_energy;
-
+	
 	static xr_set<CArtifact*> m_all;
 };
