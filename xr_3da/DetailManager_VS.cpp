@@ -4,7 +4,7 @@
 #include "detailmanager.h"
 
 const int			quant	= 16384;
-const int			c_hdr	= 14;
+const int			c_hdr	= 12;
 const int			c_base	= c_hdr;
 const int			c_size	= 4;
 
@@ -198,10 +198,10 @@ void	CDetailManager::hw_Render_dump	(R_constant* x_array, u32 var_id, u32 lod_id
 				// Build matrix ( 3x4 matrix, last row - color )
 				u32 base				= dwBatch*4;
 				Fmatrix& M				= Instance.mRotY;
-				RCache.set_ca			(x_array,		base+0,		M._11*scale,	M._12*scale,	M._13*scale,	C);
-				RCache.set_ca			(x_array,		base+1,		M._21*scale,	M._22*scale,	M._23*scale,	C);
-				RCache.set_ca			(x_array,		base+2,		M._31*scale,	M._32*scale,	M._33*scale,	C);
-				RCache.set_ca			(x_array,		base+3,		M._41,			M._42,			M._43,			1.f);
+				RCache.set_ca			(x_array,		base+0,		M._11*scale,	M._21*scale,	M._31*scale,	M._41	);
+				RCache.set_ca			(x_array,		base+1,		M._12*scale,	M._22*scale,	M._32*scale,	M._42	);
+				RCache.set_ca			(x_array,		base+2,		M._13*scale,	M._23*scale,	M._33*scale,	M._43	);
+				RCache.set_ca			(x_array,		base+3,		C,				C,				C,				1.f		);
 
 				dwBatch	++;
 				if (dwBatch == hw_BatchSize)	

@@ -78,7 +78,7 @@ void		CDetailManager::cache_Decompress(Slot* S)
 	// Prepare to selection
 	float		density		= psDetailDensity;
 	float		jitter		= density/1.7f;
-	u32		d_size		= iCeil	(dm_slot_size/density);
+	u32			d_size		= iCeil	(dm_slot_size/density);
 	svector<int,dm_obj_in_slot>		selected;
 
 	CRandom				r_selection	(0x12071980^::Random.randI(32760));
