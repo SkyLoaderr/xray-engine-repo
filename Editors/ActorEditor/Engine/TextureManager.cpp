@@ -207,15 +207,28 @@ SPS*	CShaderManager::_CreatePS			(LPCSTR name)
 			return _ps;
 		}
 
+		// Open file
+		string64					cname;
+		FS.update_path				(cname,	"$game_shaders$", strconcat(cname,name,".ps"));
+		IReader*					fs			= FS.r_open(cname);
+
+		// Select target
+		LPCSTR						c_target	= "ps_2_0";
+		LPCSTR						c_entry		= "main";
+		LPSTR						text		= LPCSTR(fs->pointer());
+		u32							text_size	= fs->length();
+		text[text_size-1]						= 0;
+		if (strstr(text,"main_ps_1_1"))			{ c_target = "ps_1_1"; c_entry = "main_ps_1_1";	}
+		if (strstr(text,"main_ps_1_2"))			{ c_target = "ps_1_2"; c_entry = "main_ps_1_2";	}
+		if (strstr(text,"main_ps_1_3"))			{ c_target = "ps_1_3"; c_entry = "main_ps_1_3";	}
+		if (strstr(text,"main_ps_1_4"))			{ c_target = "ps_1_4"; c_entry = "main_ps_1_4";	}
+
+		// Compile
 		LPD3DXBUFFER				pShaderBuf	= NULL;
 		LPD3DXBUFFER				pErrorBuf	= NULL;
 		LPD3DXSHADER_CONSTANTTABLE	pConstants	= NULL;
 		HRESULT						_hr			= S_OK;
-		string64					cname;
-		FS.update_path				(cname,	"$game_shaders$", strconcat(cname,name,".ps"));
-		// pixel
-		IReader*					fs			= FS.r_open(cname);
-		_hr = D3DXCompileShader		(LPCSTR(fs->pointer()),fs->length(), NULL, NULL, "main", "ps_2_0", D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
+		_hr = D3DXCompileShader		(text,text_size, NULL, NULL, c_entry, c_target, D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
 		FS.r_close					(fs);
 		if (SUCCEEDED(_hr))
 		{
