@@ -176,7 +176,7 @@ void CWallmarksEngine::Render()
 	// Projection and xform
 	float _43 = Device.mProject._43;
 	Device.mProject._43 -= 0.001f; 
-	CHK_DX(HW.pDevice->SetTransform	 ( D3DTS_WORLD,			precalc_identity.d3d() ));
+	CHK_DX(HW.pDevice->SetTransform	 ( D3DTS_WORLD,			Fidentity.d3d() ));
 	CHK_DX(HW.pDevice->SetTransform	 ( D3DTS_PROJECTION,	Device.mProject.d3d() ));
 
 	if (!marks.empty()) 

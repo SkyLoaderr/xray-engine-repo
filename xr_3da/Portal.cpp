@@ -44,12 +44,12 @@ void drawPoly(sPoly &P, CPortal* Portal)
 	Center.add(P[0],P[1]);
 	for (DWORD i=2; i<P.size(); i++)
 	{
-		Device.Primitive.dbg_DrawTRI(precalc_identity,P[0],P[i-1],P[i],C);
+		Device.Primitive.dbg_DrawTRI(Fidentity,P[0],P[i-1],P[i],C);
 		Center.add(P[i]);
 	}
 	Center.div(float(P.size()));
 	End.direct(Center,PL.n,.5f);
-	Device.Primitive.dbg_DrawLINE(precalc_identity,Center,End,0xffffffff);
+	Device.Primitive.dbg_DrawLINE(Fidentity,Center,End,0xffffffff);
 	HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_CCW);
 }
 

@@ -317,7 +317,7 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares)
 	}
 	
 	P.VB_Unlock	();
-	CHK_DX		(HW.pDevice->SetTransform(D3DTS_WORLD, precalc_identity.d3d()));
+	CHK_DX		(HW.pDevice->SetTransform(D3DTS_WORLD, Fidentity.d3d()));
 	
 	for (DWORD i=0; i<rlist.size(); i++)
 	{

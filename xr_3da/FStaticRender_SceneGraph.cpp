@@ -69,7 +69,7 @@ void CRender::InsertSG_Static(CVisual *pVisual)
 		if (sh->Flags.bStrictB2F) {
 			SceneGraph::mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
 			N->val.pVisual			= pVisual;
-			N->val.Matrix			= precalc_identity;
+			N->val.Matrix			= Fidentity;
 			N->val.vCenter.set		(pVisual->bv_Position);
 		} else {
 			for (DWORD pass_id=0; pass_id<sh->Passes.size(); pass_id++)
