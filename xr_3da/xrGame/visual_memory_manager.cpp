@@ -50,6 +50,7 @@ void CVisualMemoryManager::Load					(LPCSTR section)
 	CGameObject::Load			(section);
 	
 	m_max_object_count			= pSettings->r_s32(section,"DynamicObjectsCount");
+	m_transparency_threshold	= pSettings->r_float(section,"transparency_threshold");
 	m_monster					= dynamic_cast<CCustomMonster*>(this);
 	m_stalker					= dynamic_cast<CAI_Stalker*>(this);
 
@@ -66,7 +67,6 @@ void CVisualMemoryManager::Load					(LPCSTR section)
 	m_time_quant						= pSettings->r_float(section,"time_quant");
 	m_decrease_value					= pSettings->r_float(section,"decrease_value");
 	m_velocity_factor					= pSettings->r_float(section,"velocity_factor");
-	m_transparency_threshold			= pSettings->r_float(section,"transparency_threshold");
 }
 
 void CVisualMemoryManager::reinit					()
