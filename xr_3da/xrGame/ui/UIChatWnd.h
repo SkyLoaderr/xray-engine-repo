@@ -19,6 +19,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 class CUIChatLog;
+class game_cl_GameState;
 
 extern const char * const	CHAT_MP_WND_XML;
 extern const int			fadeDelay;
@@ -40,6 +41,7 @@ public:
 	void				SetEditBoxPrefix	(const ref_str &prefix);
 	void				TeamChat			() { sendNextMessageToTeam = true; }
 	void				AllChat				() { sendNextMessageToTeam = false; }
+	void				SetOwner			(game_cl_GameState *pO) { pOwner = pO; }
 
 	CUIEditBox			UIEditBox;
 
@@ -48,6 +50,7 @@ protected:
 	CUIStatic			UIPrefix;
 	ref_str				m_AuthorName;
 	bool				sendNextMessageToTeam;
+	game_cl_GameState	*pOwner;
 };
 
 //////////////////////////////////////////////////////////////////////////

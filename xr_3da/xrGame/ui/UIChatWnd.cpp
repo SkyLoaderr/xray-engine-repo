@@ -24,7 +24,8 @@ const int			fadeDelay		= 5000;
 
 CUIChatWnd::CUIChatWnd(CUIChatLog *pList)
 	:	pUILogList				(pList),
-		sendNextMessageToTeam	(false)
+		sendNextMessageToTeam	(false),
+		pOwner					(NULL)
 {
 	R_ASSERT(pUILogList);
 }
@@ -100,6 +101,8 @@ void CUIChatWnd::SetKeyboardCapture(CUIWindow* pChildWindow, bool capture_status
 			Say(phrase);
 			sendNextMessageToTeam ? Game().ChatSayTeam(phrase) : Game().ChatSayAll(phrase);
 			UIEditBox.SetText("");
+			if (pOwner)
+				pOwner->OnKeyboardPress(kCHAT);
 		}
 	}
 

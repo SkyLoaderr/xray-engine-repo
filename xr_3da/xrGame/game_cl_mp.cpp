@@ -27,6 +27,7 @@ CUIGameCustom*		game_cl_mp::createGameUI			()
 	pChatLog->Init();
 	pChatWnd = xr_new<CUIChatWnd>(pChatLog);
 	pChatWnd->Init();
+	pChatWnd->SetOwner(this);
 	return NULL;
 };
 
