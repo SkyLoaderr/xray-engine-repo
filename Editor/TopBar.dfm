@@ -1,8 +1,8 @@
 object fraTopBar: TfraTopBar
   Left = 0
   Top = 0
-  Width = 443
-  Height = 277
+  Width = 686
+  Height = 18
   HorzScrollBar.Visible = False
   VertScrollBar.Visible = False
   Align = alClient
@@ -19,7 +19,7 @@ object fraTopBar: TfraTopBar
     Left = 0
     Top = 0
     Width = 51
-    Height = 277
+    Height = 18
     Align = alLeft
     BevelOuter = bvNone
     ParentShowHint = False
@@ -174,7 +174,7 @@ object fraTopBar: TfraTopBar
     Left = 51
     Top = 0
     Width = 127
-    Height = 277
+    Height = 18
     Align = alLeft
     BevelOuter = bvNone
     ParentShowHint = False
@@ -551,7 +551,7 @@ object fraTopBar: TfraTopBar
     Left = 282
     Top = 0
     Width = 179
-    Height = 277
+    Height = 18
     Align = alLeft
     BevelOuter = bvNone
     ParentShowHint = False
@@ -1084,7 +1084,7 @@ object fraTopBar: TfraTopBar
     Left = 178
     Top = 0
     Width = 104
-    Height = 277
+    Height = 18
     Align = alLeft
     BevelOuter = bvNone
     ParentShowHint = False
@@ -1384,7 +1384,7 @@ object fraTopBar: TfraTopBar
     Left = 502
     Top = 0
     Width = 159
-    Height = 277
+    Height = 18
     Align = alLeft
     BevelOuter = bvNone
     ParentShowHint = False
@@ -1599,7 +1599,7 @@ object fraTopBar: TfraTopBar
     Left = 461
     Top = 0
     Width = 41
-    Height = 277
+    Height = 18
     Align = alLeft
     BevelOuter = bvNone
     ParentShowHint = False

@@ -81,7 +81,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 		break;
 
 	case COMMAND_ZOOM_EXTENTS:
-		Tools.ZoomObject();
+		Tools.ZoomObject(p1);
     	break;
     case COMMAND_RENDER_FOCUS:
 		if (frmMain->Visible&&m_bReady)
@@ -125,6 +125,9 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     case COMMAND_CHECK_MODIFIED:
     	bRes = Tools.IsModified();
 		break;
+    case COMMAND_CHANGE_ACTION:
+    	Tools.ChangeAction(p1);
+    	break;
  	default:
 		ELog.DlgMsg( mtError, "Warning: Undefined command: %04d", _Command );
         bRes = false;

@@ -99,9 +99,9 @@ void CParticleTools::Update(){
     	m_EditObject->RTL_Update(Device.fTimeDelta);
 }
 
-void CParticleTools::ZoomObject(){
+void CParticleTools::ZoomObject(BOOL bObjectOnly){
 	VERIFY(m_bReady);
-    if (m_EditObject){
+    if (bObjectOnly&&m_EditObject){
         Device.m_Camera.ZoomExtents(m_EditObject->GetBox());
 	}else{
     	if (m_TestObject){
@@ -161,7 +161,7 @@ void CParticleTools::SelectPreviewObject(int p){
     m_EditObject = Lib.CreateEditObject(fn);
     if (!m_EditObject)
         ELog.DlgMsg(mtError,"Object '%s' can't find in object library.",fn);
-	ZoomObject();
+	ZoomObject(TRUE);
     UI.RedrawScene();
 }
 
@@ -313,4 +313,22 @@ void CParticleTools::OnShowHint(AStringVec& SS)
 {
 }
 
+void CParticleTools::ChangeAction(EAction action)
+{
+//
+}
+
+bool __fastcall CParticleTools::MouseStart(TShiftState Shift)
+{
+	return false;
+}
+
+bool __fastcall CParticleTools::MouseEnd(TShiftState Shift)
+{
+	return false;
+}
+
+void __fastcall CParticleTools::MouseMove(TShiftState Shift)
+{
+}
 

@@ -10,6 +10,22 @@ class SDef;
 class TfrmPropertiesPSDef;
 class CEditableObject;
 
+enum EAction{
+    eaSelect=0,
+    eaAdd,
+    eaMove,
+    eaRotate,
+    eaScale,
+    eaMaxActions
+};
+
+enum EAxis{
+    eAxisX=0,
+	eAxisY,
+    eAxisZ,
+    eAxisZX
+};
+
 class CParticleTools: public pureDeviceCreate, public pureDeviceDestroy
 {
 	CEditableObject*	m_EditObject;
@@ -19,6 +35,8 @@ class CParticleTools: public pureDeviceCreate, public pureDeviceDestroy
     bool				m_bModified;
 	TfrmPropertiesPSDef*m_PSProps;
     bool				m_bReady;
+
+    EAction				m_Action;
 public:
 						CParticleTools		();
     virtual 			~CParticleTools		();
@@ -33,7 +51,8 @@ public:
     bool				IsModified			(){return m_bModified;}
     void				Modified			();
 
-    void				ZoomObject			();
+    void				ZoomObject			(BOOL bObjectOnly);
+    void				ChangeAction		(EAction action);
 
     PS::SDef*			AppendPS			(LPCSTR folder_name, PS::SDef* src);
     void				RemovePS			(LPCSTR name);
@@ -63,9 +82,9 @@ public:
 
     void				OnShowHint			(AStringVec& SS);
 
-    bool __fastcall 	MouseStart  		(TShiftState Shift){return false;}
-    bool __fastcall 	MouseEnd    		(TShiftState Shift){return false;}
-    void __fastcall 	MouseMove   		(TShiftState Shift){;}
+    bool __fastcall 	MouseStart  		(TShiftState Shift)
+    bool __fastcall 	MouseEnd    		(TShiftState Shift)
+    void __fastcall 	MouseMove   		(TShiftState Shift)
 	bool __fastcall 	HiddenMode  		(){return false;}
     bool __fastcall 	KeyDown     		(WORD Key, TShiftState Shift){return false;}
     bool __fastcall 	KeyUp       		(WORD Key, TShiftState Shift){return false;}
