@@ -133,9 +133,10 @@ void CUICursor::MoveBy(int dx, int dy)
 	vDelta.x = (float)m_fSensitivity*dx/(float)UI_BASE_WIDTH;
 	vDelta.y = (float)m_fSensitivity*dy/(float)UI_BASE_HEIGHT;
 
- 	vPos.x += vDelta.x;
-	vPos.y += vDelta.y;
-
+	if(!bHoldMode){
+		vPos.x += vDelta.x;
+		vPos.y += vDelta.y;
+	}
 	clamp(vPos.x, -1.f, 1.f);
 	clamp(vPos.y, -1.f, 1.f);
 }

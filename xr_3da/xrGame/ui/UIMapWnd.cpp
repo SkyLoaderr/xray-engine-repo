@@ -207,6 +207,7 @@ void CUIMapWnd::Show(bool status)
 //		SetLocalMap						(Level().name());
 	}else{
 		GetUICursor()->HoldMode(false);
+		m_flags.set(lmMouseHold,FALSE)
 	}
 
 	inherited::Show(status);
@@ -229,7 +230,7 @@ void CUIMapWnd::OnMouse(int x, int y, EUIMessages mouse_action)
 	inherited::OnMouse(x,y,mouse_action);
 
 	
-	if(m_activeLevelMap && CursorOverWindow() ){
+	if(m_activeLevelMap && GetAbsoluteRect().in(x,y) ){
 		switch (mouse_action){
 			case WINDOW_MOUSE_MOVE:
 				if(m_flags.test(lmMouseHold)){
