@@ -512,6 +512,9 @@ bool CLevelGraph::create_straight_PTN_path(u32 start_vertex_id, const Fvector2 &
 				cur_sqr			= dist;
 
 				Fvector2		next1, next2;
+#ifdef DEBUG
+				next1			= next2 = Fvector2().set(0.f,0.f);
+#endif
 				Fvector			tIntersectPoint;
 
 				switch (I) {
