@@ -378,5 +378,35 @@
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
+
+
+<!---------------------------SVOBODA CRAZY STALKER----------------------->
+	<specific_character id="svoboda_zombi_stalker" team_default = "1">
+		<name>Сумасшедший cталкер группировки "Свобода"</name>
+		<icon x="12" y="0"></icon>
+		<map_icon x="5" y="0"></map_icon>
+		<bio>Сталкер группировки "Свобода". Детальная информация отсутствует.</bio>
+
+		
+		<class>Svoboda_zombi_stalker</class>
+		<community>bandit</community>
+
+		
+		<rank>40</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\stalker_zombi\stalker_zombie5</visual>
+		<supplies>
+			[spawn] \n
+			wpn_beretta \n
+			ammo_9x19_pbp = 1 \n			
+			wpn_ak74 = 1, 1, 1, 0 \n
+			ammo_5.45x39_ap = 1 \n		
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
 	
 </xml>
