@@ -7,7 +7,7 @@ function main ()
 	action (niva, object ("left_light", object.activate), cond (cond.time_end, 1000))
 	action (niva, object ("right_light", object.activate), cond (cond.time_end, 1000))
 
-    wait (10000)
+    wait (30000)
 
     action (niva, move (move.on + move.up + move.fwd, 20.1), object ("right_light", object.activate),
             object ("left_light", object.activate), cond (cond.time_end, 8200))
