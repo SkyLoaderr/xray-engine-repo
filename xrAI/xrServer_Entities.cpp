@@ -1627,22 +1627,22 @@ xrServerEntity*	F_entity_Create		(LPCSTR caSection)
 	CLASS_ID cls = pSettings->r_clsid(caSection,"class");
 
 	switch (cls){
-	case CLSID_OBJECT_ACTOR:		return xr_new<xrSE_Actor>			(caSection);
+	case CLSID_OBJECT_ACTOR:		return xr_new<xrSE_Actor>			(caSection);          	// Visualed
 	case CLSID_OBJECT_DUMMY:		return xr_new<xrSE_Dummy>			(caSection);
-	case CLSID_OBJECT_HLAMP:		return xr_new<xrSE_HangingLamp>		(caSection);
-	case CLSID_AI_GRAPH:			return xr_new<xrGraphPoint>			(caSection);
-	case CLSID_AI_CROW:				return xr_new<xrSE_Crow>			(caSection);
-	case CLSID_AI_RAT:				return xr_new<xrSE_Rat>				(caSection);
-	case CLSID_AI_RAT_GROUP:		return xr_new<CALifeGroupTemplate<xrSE_Rat> >(caSection);
+	case CLSID_OBJECT_HLAMP:		return xr_new<xrSE_HangingLamp>		(caSection);            // Visualed
+	case CLSID_AI_GRAPH:			return xr_new<xrGraphPoint>			(caSection);			
+	case CLSID_AI_CROW:				return xr_new<xrSE_Crow>			(caSection);            // Visualed
+	case CLSID_AI_RAT:				return xr_new<xrSE_Rat>				(caSection);			// Visualed
+	case CLSID_AI_RAT_GROUP:		return xr_new<CALifeGroupTemplate<xrSE_Rat> >(caSection);	
 	case CLSID_AI_FLESH:			return xr_new<xrSE_Biting>			(caSection);
 	case CLSID_AI_FLESH_GROUP:		return xr_new<CALifeGroupTemplate<xrSE_Biting> >(caSection);
-	case CLSID_AI_ZOMBIE:			return xr_new<xrSE_Zombie>			(caSection);
-	case CLSID_AI_DOG:				return xr_new<xrSE_Dog>				(caSection);
-	case CLSID_AI_SOLDIER:			return xr_new<xrSE_Enemy>			(caSection);
-	case CLSID_AI_STALKER:			return xr_new<xrSE_Human>			(caSection);
-	case CLSID_AI_IDOL:				return xr_new<xrSE_Idol>			(caSection);
+	case CLSID_AI_ZOMBIE:			return xr_new<xrSE_Zombie>			(caSection);            // Visualed
+	case CLSID_AI_DOG:				return xr_new<xrSE_Dog>				(caSection);			// Visualed
+	case CLSID_AI_SOLDIER:			return xr_new<xrSE_Enemy>			(caSection);           	// Visualed
+	case CLSID_AI_STALKER:			return xr_new<xrSE_Human>			(caSection);			// Visualed
+	case CLSID_AI_IDOL:				return xr_new<xrSE_Idol>			(caSection);			// Visualed
 	case CLSID_EVENT:				return xr_new<xrSE_Event>			(caSection);
-	case CLSID_CAR_NIVA:			return xr_new<xrSE_Car>				(caSection);
+	case CLSID_CAR_NIVA:			return xr_new<xrSE_Car>				(caSection);			// Visualed
 	case CLSID_SPECTATOR:			return xr_new<xrSE_Spectator>		(caSection);
 
 	// Artifacts
@@ -1656,19 +1656,26 @@ xrServerEntity*	F_entity_Create		(LPCSTR caSection)
 	// Detectors
 	case CLSID_DETECTOR_SIMPLE:		return xr_new<xrSE_Detector>		(caSection);
 
-	case CLSID_OBJECT_W_M134:		return xr_new<xrSE_Weapon>			(caSection);
-	case CLSID_OBJECT_W_FN2000:		return xr_new<xrSE_Weapon>			(caSection);
-	case CLSID_OBJECT_W_AK74:		return xr_new<xrSE_Weapon>			(caSection);
-	case CLSID_OBJECT_W_LR300:		return xr_new<xrSE_Weapon>			(caSection);
-	case CLSID_OBJECT_W_HPSA:		return xr_new<xrSE_Weapon>			(caSection);
-	case CLSID_OBJECT_W_PM:			return xr_new<xrSE_Weapon>			(caSection);
-	case CLSID_OBJECT_A_PM:			return xr_new<xrSE_WeaponAmmo>		(caSection);
-	case CLSID_OBJECT_W_FORT:		return xr_new<xrSE_Weapon>			(caSection);
-	case CLSID_OBJECT_W_BINOCULAR:	return xr_new<xrSE_Weapon>			(caSection);
-	case CLSID_OBJECT_W_SHOTGUN:	return xr_new<xrSE_Weapon>			(caSection);
-	case CLSID_OBJECT_W_SVD:		return xr_new<xrSE_Weapon>			(caSection);
-	case CLSID_OBJECT_W_SVU:		return xr_new<xrSE_Weapon>			(caSection);
-	case CLSID_OBJECT_W_RPG7:		return xr_new<xrSE_Weapon>			(caSection);
+	case CLSID_OBJECT_W_M134:					
+	case CLSID_OBJECT_W_FN2000:		
+	case CLSID_OBJECT_W_AK74:		
+	case CLSID_OBJECT_W_LR300:		
+	case CLSID_OBJECT_W_HPSA:		
+	case CLSID_OBJECT_W_PM:			
+	case CLSID_OBJECT_W_VAL:		
+	case CLSID_OBJECT_W_VINTOREZ:	
+	case CLSID_OBJECT_W_WALTHER:	
+	case CLSID_OBJECT_W_USP45:		
+	case CLSID_OBJECT_W_GROZA:		
+	case CLSID_OBJECT_W_FORT:		
+	case CLSID_OBJECT_W_BINOCULAR:	
+	case CLSID_OBJECT_W_SHOTGUN:	
+	case CLSID_OBJECT_W_SVD:		
+	case CLSID_OBJECT_W_SVU:		
+	case CLSID_OBJECT_W_RPG7:		return xr_new<xrSE_Weapon>			(caSection);  			// Visualed
+	case CLSID_OBJECT_A_PM:			return xr_new<xrSE_WeaponAmmo>		(caSection);  			// Visualed
+	case CLSID_OBJECT_G_RPG7:		return xr_new<xrSE_TempObject>		(caSection);
+
 	case CLSID_OBJECT_HEALTH:		return xr_new<xrSE_Health>			(caSection);
 	case CLSID_TARGET_ASSAULT:		return xr_new<xrSE_Target_Assault>	(caSection);
 	case CLSID_TARGET_CS_BASE:		return xr_new<xrSE_Target_CSBase>	(caSection);
@@ -1676,15 +1683,9 @@ xrServerEntity*	F_entity_Create		(LPCSTR caSection)
 	case CLSID_TARGET_CS_CASK:		return xr_new<xrSE_Target_CSCask>	(caSection);
 	case CLSID_IITEM_BOLT:			return xr_new<CALifeDynamicObject>	(caSection);
 	case CLSID_GRENADE_F1:			return xr_new<CALifeItem>			(caSection);
-	case CLSID_OBJECT_G_RPG7:		return xr_new<xrSE_TempObject>		(caSection);
 	case CLSID_GRENADE_RGD5:		return xr_new<CALifeItem>			(caSection);
-	case CLSID_DEVICE_TORCH:		return xr_new<xrSE_DeviceTorch>		(caSection);
-	case CLSID_OBJECT_W_VAL:		return xr_new<xrSE_Weapon>			(caSection);
-	case CLSID_OBJECT_W_VINTOREZ:	return xr_new<xrSE_Weapon>			(caSection);
-	case CLSID_OBJECT_W_WALTHER:	return xr_new<xrSE_Weapon>			(caSection);
-	case CLSID_OBJECT_W_USP45:		return xr_new<xrSE_Weapon>			(caSection);
-	case CLSID_OBJECT_W_GROZA:		return xr_new<xrSE_Weapon>			(caSection);
-    case CLSID_OBJECT_PHYSIC:		return xr_new<xrSE_PhysicObject>	(caSection);
+	case CLSID_DEVICE_TORCH:		return xr_new<xrSE_DeviceTorch>		(caSection);			// Visualed
+    case CLSID_OBJECT_PHYSIC:		return xr_new<xrSE_PhysicObject>	(caSection);            // Visualed
     default: NODEFAULT;
 	}
 	return 0;
