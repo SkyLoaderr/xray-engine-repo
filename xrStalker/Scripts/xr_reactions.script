@@ -198,7 +198,6 @@ function action_wait:execute ()
 		else
 			self.finish = false
 		end
-
 		-- если мы можем классифицировать объект, то нужно пометить его как обработанный и выйти
 		if self.a.isVisual and self.a.isVisual >= 1 then
 			self.finish = true
@@ -214,6 +213,7 @@ function action_wait:execute ()
 				self.finish = false
 			end
 		end
+
 	end
 
 	action_base.execute (self)
@@ -224,7 +224,6 @@ function action_wait:finalize ()
 		-- реплики что мы что-то враждебное
 		self.a.id = nil
 	end
-	
 	self.object:clear_animations()
 	action_base.finalize (self)
 end
