@@ -95,7 +95,10 @@ void CAI_Stalker::BackCover(bool bFire)
 			}
 			break;
 		}
-		default : NODEFAULT;
+		default : {
+			m_tActionState			= eActionStateWatchGo;
+			break;
+		}
 	}
 }
 
