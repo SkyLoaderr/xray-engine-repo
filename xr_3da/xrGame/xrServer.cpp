@@ -165,8 +165,8 @@ DWORD xrServer::OnMessage(NET_Packet& P, DPNID sender)	// Non-Zero means broadca
 			entities.push_back	(E);
 
 			// log
-			Level().HUD()->outMessage(0xffffffff,"SERVER","Spawning '%s'(%d,%d,%d) as #%d, on '%s'",
-				E->s_name,s_team,s_squad,s_group,E->ID,CL->Name);
+//			Level().HUD()->outMessage(0xffffffff,"SERVER","Spawning '%s'(%d,%d,%d) as #%d, on '%s'",
+//				E->s_name,s_team,s_squad,s_group,E->ID,CL->Name);
 
 			// create packet and broadcast packet to everybody
 			NET_Packet			Packet;
@@ -185,7 +185,7 @@ DWORD xrServer::OnMessage(NET_Packet& P, DPNID sender)	// Non-Zero means broadca
 
 void xrServer::OnCL_Connected		(IClient* CL)
 {
-	Level().HUD()->outMessage(0xffffffff,"SERVER","Player '%s' connected",CL->Name);
+//	Level().HUD()->outMessage(0xffffffff,"SERVER","Player '%s' connected",CL->Name);
 	
 	// Replicate current entities on to this client
 	NET_Packet		P;
@@ -205,5 +205,5 @@ void xrServer::OnCL_Connected		(IClient* CL)
 
 void xrServer::OnCL_Disconnected	(IClient* CL)
 {
-	Level().HUD()->outMessage(0xffffffff,"SERVER","Player '%s' disconnected",CL->Name);
+//	Level().HUD()->outMessage(0xffffffff,"SERVER","Player '%s' disconnected",CL->Name);
 }
