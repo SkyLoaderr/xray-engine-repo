@@ -99,6 +99,10 @@ public:
 	bool Eat(PIItem pIItem);								
 
 	u32 GetActiveSlot() const {return m_iActiveSlot;}
+	
+	void SetPrevActiveSlot(u32 ActiveSlot)  {m_iPrevActiveSlot = ActiveSlot;}
+	u32 GetPrevActiveSlot() const {return m_iPrevActiveSlot;}
+
 	void SetActiveSlot (u32 ActiveSlot) { m_iActiveSlot = m_iNextActiveSlot = ActiveSlot; }
 
 	bool IsSlotsUseful() {return m_bSlotsUseful;}	 
@@ -147,6 +151,7 @@ protected:
     //значения совпадают в обычном состоянии (нет смены слотов)
 	u32 m_iActiveSlot;
 	u32 m_iNextActiveSlot;
+	u32 m_iPrevActiveSlot;
 
 	CInventoryOwner *m_pOwner;
 

@@ -278,9 +278,9 @@ void CInventoryItem::OnEvent (NET_Packet& P, u16 type)
 			CActor* pActor = dynamic_cast<CActor*>(H_Parent());
 			if (pActor && pActor->inventory().ActiveItem() == this)
 			{
-				u32 CurrentActiveSlot = pActor->inventory().GetActiveSlot();
+				pActor->inventory().SetPrevActiveSlot(pActor->inventory().GetActiveSlot());
 				pActor->inventory().Activate(NO_ACTIVE_SLOT);
-				pActor->inventory().Activate(CurrentActiveSlot);
+				
 			}
 		}break;
 	case GE_ADDON_DETACH:
@@ -291,9 +291,8 @@ void CInventoryItem::OnEvent (NET_Packet& P, u16 type)
 			CActor* pActor = dynamic_cast<CActor*>(H_Parent());
 			if (pActor && pActor->inventory().ActiveItem() == this)
 			{
-				u32 CurrentActiveSlot = pActor->inventory().GetActiveSlot();
+				pActor->inventory().SetPrevActiveSlot(pActor->inventory().GetActiveSlot());
 				pActor->inventory().Activate(NO_ACTIVE_SLOT);
-				pActor->inventory().Activate(CurrentActiveSlot);
 			};
 		}break;	
 	}

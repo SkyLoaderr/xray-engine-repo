@@ -144,5 +144,22 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				}break;
 			}
 		}break;
+	case GEG_PLAYER_INVENTORYMENU_OPEN:
+		{
+			if (OnServer())
+			{
+			};
+		}break;
+	case GEG_PLAYER_INVENTORYMENU_CLOSE:
+		{
+			if (OnServer())
+			{
+				if(inventory().GetPrevActiveSlot() != NO_ACTIVE_SLOT && 
+					inventory().m_slots[inventory().GetPrevActiveSlot()].m_pIItem)
+				{
+					inventory().Activate(inventory().GetPrevActiveSlot());
+				}
+			};
+		}break;
 	}
 }

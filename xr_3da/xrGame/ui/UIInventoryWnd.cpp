@@ -906,6 +906,16 @@ void CUIInventoryWnd::Show()
 */
 	InitInventory();
 	inherited::Show();
+
+	if (OnClient())
+	{
+		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+		if(!pActor) return;
+
+		NET_Packet	P;
+		pActor->u_EventGen(P, GEG_PLAYER_INVENTORYMENU_OPEN, pActor->ID());
+		pActor->u_EventSend(P);
+	}
 }
 
 void CUIInventoryWnd::Hide()
@@ -918,9 +928,17 @@ void CUIInventoryWnd::Hide()
 		pActor->inventory().Activate(m_iCurrentActiveSlot);
 		m_iCurrentActiveSlot = NO_ACTIVE_SLOT;
 	}
-
-
 	inherited::Hide();
+
+	if (OnClient())
+	{
+		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+		if(!pActor) return;
+
+		NET_Packet	P;
+		pActor->u_EventGen(P, GEG_PLAYER_INVENTORYMENU_CLOSE, pActor->ID());
+		pActor->u_EventSend(P);
+	}
 }
 
 

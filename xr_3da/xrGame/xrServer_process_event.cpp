@@ -295,13 +295,16 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 	case GEG_PLAYER_ITEM2SLOT:
 	case GEG_PLAYER_ITEM2BELT:
 	case GEG_PLAYER_ITEM2RUCK:
+
+	case GEG_PLAYER_INVENTORYMENU_OPEN:
+	case GEG_PLAYER_INVENTORYMENU_CLOSE:
 		{
 			SendBroadcast		(sender,P,MODE);
 		}break;
 	case GEG_PLAYER_ITEMDROP:
 		{
 			SendTo(SV_Client->ID, P, net_flags(TRUE, TRUE));
-		}break;
+		}break;		
 	default:
 		R_ASSERT2	(0,"Game Event not implemented!!!");
 		break;
