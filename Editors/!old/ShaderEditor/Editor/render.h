@@ -86,7 +86,7 @@ public:
 	virtual void			rmFar					();
 	virtual void			rmNormal				();
 
-    virtual LPCSTR			getShaderPath			(){return "XR1\\";}
+    virtual LPCSTR			getShaderPath			(){return "R1\\";}
 
 	virtual HRESULT			CompileShader			(
 		LPCSTR          	pSrcData,
