@@ -52,17 +52,8 @@ private:
 	xr_vector<CVisibleObject>		*m_objects;
 	CCustomMonster					*m_monster;
 	CAI_Stalker						*m_stalker;
-	// visibility constants
-	u32								m_dwMovementIdleTime;
-	float							m_fMaxInvisibleSpeed;
-	float							m_fMaxViewableSpeed;
-	float							m_fMovementSpeedWeight;
-	float							m_fDistanceWeight;
-	float							m_fSpeedWeight;
-	float							m_fVisibilityThreshold;
-	float							m_fLateralMultiplier;
-	float							m_fShadowWeight;
-	//
+	xr_vector<CNotYetVisibleObject>	m_not_yet_visible_objects;
+	// visibility parameters
 	float							m_min_view_distance_danger;
 	float							m_max_view_distance_danger;
 	float							m_min_view_distance_free;
@@ -73,6 +64,7 @@ protected:
 			void	add_visible_object				(const CObject *object);
 			void	add_visible_object				(const CVisibleObject visible_object);
 	virtual	void	update							();
+			float	object_visible_distance			(const CGameObject *game_object, float &object_distance) const;
 
 public:
 					CVisualMemoryManager			();

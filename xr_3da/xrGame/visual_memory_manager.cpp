@@ -34,17 +34,7 @@ void CVisualMemoryManager::Init					()
 void CVisualMemoryManager::Load					(LPCSTR section)
 {
 	CGameObject::Load			(section);
-	// visibility
-//	m_dwMovementIdleTime		= pSettings->r_s32(section,"MovementIdleTime");
-//	m_fMaxInvisibleSpeed		= pSettings->r_float(section,"MaxInvisibleSpeed");
-//	m_fMaxViewableSpeed			= pSettings->r_float(section,"MaxViewableSpeed");
-//	m_fMovementSpeedWeight		= pSettings->r_float(section,"MovementSpeedWeight");
-//	m_fDistanceWeight			= pSettings->r_float(section,"DistanceWeight");
-//	m_fSpeedWeight				= pSettings->r_float(section,"SpeedWeight");
-//	m_fVisibilityThreshold		= pSettings->r_float(section,"VisibilityThreshold");
-//	m_fLateralMultiplier		= pSettings->r_float(section,"LateralMultiplier");
-//	m_fShadowWeight				= pSettings->r_float(section,"ShadowWeight");
-
+	
 	m_max_object_count			= pSettings->r_s32(section,"DynamicObjectsCount");
 	m_monster					= dynamic_cast<CCustomMonster*>(this);
 	m_stalker					= dynamic_cast<CAI_Stalker*>(this);
@@ -61,25 +51,22 @@ void CVisualMemoryManager::Load					(LPCSTR section)
 void CVisualMemoryManager::reinit					()
 {
 	CGameObject::reinit			();
+	
 	m_objects					= 0;
+	
 	m_visible_objects.clear		();
 	m_visible_objects.reserve	(100);
+	
+	m_not_yet_visible_objects.clear();
+	m_not_yet_visible_objects.reserve(100);
 }
 
 void CVisualMemoryManager::reload				(LPCSTR section)
 {
 }
 
-bool CVisualMemoryManager::visible				(const CGameObject *game_object) const
+float CVisualMemoryManager::object_visible_distance(const CGameObject *game_object, float &object_distance) const
 {
-	VERIFY								(game_object);
-	
-	if (game_object->getDestroy())
-		return							(false);
-
-	if (!m_stalker)
-		return							(true);
-
 	Fvector								eye_position = Fvector().set(0.f,0.f,0.f), temp, eye_direction;
 	Fmatrix								&eye_matrix = PKinematics(m_monster->Visual())->LL_GetTransform(u16(m_stalker->eye_bone));
 
@@ -89,7 +76,7 @@ bool CVisualMemoryManager::visible				(const CGameObject *game_object) const
 	
 	Fvector								object_direction;
 	game_object->Center					(object_direction);
-	float								object_distance = object_direction.distance_to(eye_position);
+	object_distance						= object_direction.distance_to(eye_position);
 	object_direction.sub				(eye_position);
 	object_direction.normalize_safe		();
 	float								fov = deg2rad(m_stalker->eye_fov)*.5f;
@@ -109,20 +96,36 @@ bool CVisualMemoryManager::visible				(const CGameObject *game_object) const
 	}
 
 	float								distance = (1.f - alpha/fov)*(max_view_distance - min_view_distance) + min_view_distance;
+
+	return								(distance);
+}
+
+bool CVisualMemoryManager::visible				(const CGameObject *game_object) const
+{
+	VERIFY		(game_object);
+	
+	if (game_object->getDestroy())
+		return	(false);
+
+	if (!m_stalker)
+		return	(true);
+
+	float		object_distance, distance = object_visible_distance(game_object,object_distance);
+
 	if (distance < object_distance) {
 #ifdef VISIBILITY_TEST
 		if (dynamic_cast<const CActor*>(game_object))
-			Msg							("Object %s IS NOT visible",*game_object->cName());
+			Msg	("Object %s IS NOT visible",*game_object->cName());
 #endif
-		return							(false);
+		return	(false);
 	}
 	
 #ifdef VISIBILITY_TEST
 	if (dynamic_cast<const CActor*>(game_object))
-		Msg								("Object %s IS visible",*game_object->cName());
+		Msg		("Object %s IS visible",*game_object->cName());
 #endif
 
-	return								(true);
+	return		(true);
 }
 
 void CVisualMemoryManager::add_visible_object	(const CObject *object)

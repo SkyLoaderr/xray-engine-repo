@@ -47,9 +47,11 @@ void CSoundMemoryManager::reinit				()
 void CSoundMemoryManager::reload				(LPCSTR section)
 {
 	m_min_sound_threshold	= 0.05f;
+	m_self_sound_factor		= 0.f;
 	if (!pSettings->line_exist(section,"sound_threshold"))
-		return;
-	m_min_sound_threshold	= pSettings->r_float(section,"sound_threshold");
+		m_min_sound_threshold	= pSettings->r_float(section,"sound_threshold");
+	if (!pSettings->line_exist(section,"self_sound_factor"))
+		m_self_sound_factor		= pSettings->r_float(section,"self_sound_factor");
 }
 
 #define SILENCE
@@ -85,7 +87,7 @@ void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, const 
 			hit_memory_manager->add_hit_object(_entity_alive);
 	}
 	
-	if (sound_power >= m_sound_threshold)
+	if (sound_power >= m_self_sound_factor*m_sound_threshold)
 		add_sound_object	(object,sound_type,position,sound_power);
 
 	m_last_sound_time		= Level().timeServer();

@@ -16,6 +16,12 @@ class CEntityAlive;
 class CGameObject;
 
 namespace MemorySpace {
+
+	struct CNotYetVisibleObject {
+		CGameObject					*m_object;
+		float						m_value;
+	};
+
 	struct SObjectParams {
 		u32							m_level_vertex_id;
 		Fvector						m_position;

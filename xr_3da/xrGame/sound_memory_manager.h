@@ -25,6 +25,7 @@ private:
 	float					m_decrease_factor;
 	float					m_min_sound_threshold;
 	float					m_sound_threshold;
+	float					m_self_sound_factor;
 
 	// selected sound
 	const CSoundObject		*m_selected_sound;
