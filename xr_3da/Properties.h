@@ -15,8 +15,8 @@ enum	xrProperties
 {
 	xrPID_MARKER	= 0,
 	xrPID_MATRIX,		// really only name(stringZ) is written into stream
-	xrPID_CONSTANT,	// really only name(stringZ) is written into stream
-	xrPID_TEXTURE,	// really only name(stringZ) is written into stream
+	xrPID_CONSTANT,		// really only name(stringZ) is written into stream
+	xrPID_TEXTURE,		// really only name(stringZ) is written into stream
 	xrPID_INTEGER,
 	xrPID_FLOAT,
 	xrPID_BOOL,
