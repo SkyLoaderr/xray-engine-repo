@@ -416,7 +416,6 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 			Me->Hit	(Me->Movement.gcontact_HealthLost,d,Me,0,p_dest,0);
 		}
 #endif
-		Me->UpdateTransform	();
 		return;
 	}
 	//Msg("TP %d",TravelPath.size());
@@ -501,7 +500,6 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 	}
 #endif
 	//Msg("After  : [%f][%f][%f]",VPUSH(p_dest));
-	Me->UpdateTransform	();
 	float	real_motion	= motion.magnitude() + dist_save-dist;
 	float	real_speed	= real_motion/dt;
 	fSpeed				= 0.5f*fSpeed + 0.5f*real_speed;

@@ -40,8 +40,8 @@ void CDemoActor::Update(u32 DT)
 		animator->OnMove();
 		if (animator->IsMotionActive()) {
 			mRotate.set		(animator->GetRotate());
-			vPosition.set	(animator->GetPosition());
-			vPosition.add	(start_position);
+			Position().set	(animator->GetPosition());
+			Position().add	(start_position);
 			UpdateTransform	();
 		} else {
 			// animation stops
@@ -72,6 +72,6 @@ void CDemoActor::StopDemo(){
 }
 
 void CDemoActor::g_fireParams(Fvector& P, Fvector& D){
-	P.set			(vPosition);
+	P.set			(Position());
 	D.set			(mRotate.k);
 }

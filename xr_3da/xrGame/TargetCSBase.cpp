@@ -23,13 +23,12 @@ BOOL CTargetCSBase::net_Spawn		(LPVOID DC)
 		Game().targets.push_back	(this);
 
 		CCF_Shape*	shape			= xr_new<CCF_Shape>	(this);
-		cfModel						= shape;
+		collidable.model			= shape;
 		Fsphere S;	S.P.set			(0,0,0); S.R = radius;
 		shape->add_sphere			(S);
-
-		shape->ComputeBounds						();
+		shape->ComputeBounds		();
 		g_pGameLevel->ObjectSpace.Object_Register		(this);
-		cfModel->OnMove								();
+		CFORM()->OnMove				();
 	}
 
 	return res;
@@ -51,9 +50,9 @@ void CTargetCSBase::feel_touch_new			(CObject* O) {
 void CTargetCSBase::feel_touch_delete		(CObject* O) {
 }
 
-void CTargetCSBase::Update(u32 dt)
+void CTargetCSBase::shedule_Update			(u32 dt)
 {
-	inherited::Update	(dt);
+	inherited::shedule_Update	(dt);
 
-	feel_touch_update	(vPosition,radius);
+	feel_touch_update			(Position(),radius);
 }

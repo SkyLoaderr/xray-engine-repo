@@ -109,7 +109,7 @@ void CCustomMonster::Load		(LPCSTR section)
 	*/
 	////////
 
-	vPosition.y			+= EPS_L;
+	Position().y			+= EPS_L;
 	
 	m_current			= 0;
 
@@ -185,7 +185,7 @@ void CCustomMonster::SelectAnimation(const Fvector& _view, const Fvector& _move,
 	}
 	if (S!=m_current){ 
 		m_current = S;
-		if (S) PKinematics(pVisual)->PlayCycle(S);
+		if (S) PKinematics(Visual())->PlayCycle(S);
 	}
 }
 
@@ -278,7 +278,7 @@ void CCustomMonster::Update	( u32 DT )
 			uNext.dwTimeStamp		= Level().timeServer();
 			uNext.o_model			= r_torso_current.yaw;
 			uNext.o_torso			= r_torso_current;
-			uNext.p_pos				= vPosition;
+			uNext.p_pos				= Position();
 			uNext.fHealth			= fHealth;
 			NET.push_back			(uNext);
 		}
@@ -292,7 +292,7 @@ void CCustomMonster::Update	( u32 DT )
 				uNext.dwTimeStamp	= Level().timeServer();
 				uNext.o_model		= r_torso_current.yaw;
 				uNext.o_torso		= r_torso_current;
-				uNext.p_pos			= vPosition;
+				uNext.p_pos			= Position();
 				uNext.fHealth		= fHealth;
 				NET.push_back		(uNext);
 			}
@@ -301,7 +301,7 @@ void CCustomMonster::Update	( u32 DT )
 				uNext.dwTimeStamp	= Level().timeServer();
 				uNext.o_model		= r_torso_current.yaw;
 				uNext.o_torso		= r_torso_current;
-				uNext.p_pos			= vPosition;
+				uNext.p_pos			= Position();
 				uNext.fHealth		= fHealth;
 				NET.push_back		(uNext);
 			}
@@ -364,7 +364,7 @@ void CCustomMonster::UpdateCL	()
 				
 				Fvector					dir;
 				AI_Path.Direction		(dir);
-				SelectAnimation			(clTransform.k,dir,AI_Path.fSpeed);
+				SelectAnimation			(XFORM().k,dir,AI_Path.fSpeed);
 				
 				// Signal, that last time we used interpolation
 				NET_WasExtrapolating	= TRUE;
@@ -392,7 +392,7 @@ void CCustomMonster::UpdateCL	()
 				
 				Fvector					dir;
 				AI_Path.Direction		(dir);
-				SelectAnimation			(clTransform.k,dir,AI_Path.fSpeed);
+				SelectAnimation			(XFORM().k,dir,AI_Path.fSpeed);
 				
 				// Signal, that last time we used interpolation
 				NET_WasInterpolating	= TRUE;
@@ -402,13 +402,13 @@ void CCustomMonster::UpdateCL	()
 
 	// Use interpolated/last state
 	// mTransformCL	= mTransform;
-	clTransform.rotateY			(NET_Last.o_model);
-	clTransform.translate_over	(NET_Last.p_pos);
+	XFORM().rotateY			(NET_Last.o_model);
+	XFORM().translate_over	(NET_Last.p_pos);
 
 	if (Remote())		{
-		svTransform.rotateY			(N.o_model);
-		svTransform.translate_over	(N.p_pos);
-		vPosition.set				(NET_Last.p_pos);
+		XFORM().rotateY			(N.o_model);
+		XFORM().translate_over	(N.p_pos);
+		Position().set				(NET_Last.p_pos);
 
 	}
 }
@@ -451,7 +451,7 @@ void CCustomMonster::eye_pp_s0			( )
 	CKinematics* V							= PKinematics(Visual());
 	V->Calculate							();
 	Fmatrix&	mEye						= V->LL_GetTransform(eye_bone);
-	Fmatrix		X;							X.mul_43	(svTransform,mEye);
+	Fmatrix		X;							X.mul_43	(XFORM(),mEye);
 	eye_matrix.setHPB						(-r_current.yaw,-r_current.pitch,0);
 //	eye_matrix.c.set						(X.c);
 	eye_matrix.c.add						(X.c,m_tEyeShift);
@@ -465,14 +465,10 @@ void CCustomMonster::eye_pp_s1			( )
 	// Standart visibility
 	Device.Statistic.AI_Vis_Query.Begin		();
 	Fmatrix									mProject,mFull,mView;
-	CFrustum								Frustum;
 	mView.build_camera_dir					(eye_matrix.c,eye_matrix.k,eye_matrix.j);
 	mProject.build_projection				(deg2rad(eye_fov),1,0.1f,eye_range);
 	mFull.mul								(mProject,mView);
-	Frustum.CreateFromMatrix				(mFull,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
-	eye_pp_seen.clear						();
-	IRender_Sector* S						= Sector();
-	if (S)	S->get_objects					(Frustum,eye_matrix.c,mFull,eye_pp_seen,GetQualifier(),&id_Team);
+	feel_vision_query						(mFull,eye_matrix.c,GetQualifier(),&id_Team);
 	Device.Statistic.AI_Vis_Query.End		();
 }
 
@@ -617,7 +613,7 @@ void CCustomMonster::OnRender()
 	{
 		Movement.dbg_Draw();
 	}
-	if (bDebug) PKinematics(pVisual)->DebugRender(clTransform);
+	if (bDebug) PKinematics(Visual())->DebugRender(XFORM());
 }
 #endif
 
@@ -643,10 +639,10 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 	r_torso_current.yaw		= r_torso_target.yaw	= -E->o_Angle.y;
 	r_torso_current.pitch	= r_torso_target.pitch	= 0;
 
-	R_ASSERT				(pVisual->Type==MT_SKELETON);
+	R_ASSERT				(Visual()->Type==MT_SKELETON);
 
 	// Eyes
-	eye_bone				= PKinematics(pVisual)->LL_BoneID(pSettings->r_string(cNameSect(),"bone_head"));
+	eye_bone				= PKinematics(Visual())->LL_BoneID(pSettings->r_string(cNameSect(),"bone_head"));
 
 	// weapons
 	if (Local())	
@@ -656,7 +652,7 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 		N.o_model				= E->o_Angle.y;
 		N.o_torso.yaw			= E->o_Angle.y;
 		N.o_torso.pitch			= 0;
-		N.p_pos.set				(vPosition);
+		N.p_pos.set				(Position());
 		NET.push_back			(N);
 
 		N.dwTimeStamp			+= NET_Latency;

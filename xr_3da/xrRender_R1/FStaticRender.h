@@ -41,7 +41,7 @@ public:
 	xr_vector<SceneGraph::mapNormalVB::TNode*>				lstVB;
 	xr_vector<SceneGraph::mapNormalMatrices::TNode*>		lstMatrices;
 	xr_vector<SceneGraph::_LodItem>							lstLODs;
-	xr_vector<IVisual*>										lstVisuals;
+	xr_vector<IRender_Visual*>										lstVisuals;
 
 	SGeometry*												hGeomPatches;
 
@@ -58,7 +58,7 @@ public:
 	xr_vector<VertexDeclarator>								DCL;
 	xr_vector<IDirect3DVertexBuffer9*>							VB;
 	xr_vector<IDirect3DIndexBuffer9*>							IB;
-	xr_vector<IVisual*>										Visuals;
+	xr_vector<IRender_Visual*>										Visuals;
 	CPSLibrary												PSystems;
 
 	CLightDB_Static											L_DB;
@@ -83,12 +83,12 @@ private:
 	void							LoadSectors				(IReader	*fs);
 	void							LoadTrees				(IReader	*fs);
 
-	BOOL							add_Dynamic				(IVisual	*pVisual, u32 planes);	// normal processing
-	void							add_Static				(IVisual	*pVisual, u32 planes);
-	void							add_leafs_Dynamic		(IVisual	*pVisual);					// if detected node's full visibility
-	void							add_leafs_Static		(IVisual	*pVisual);					// if detected node's full visibility
-	void							InsertSG_Dynamic		(IVisual	*pVisual, Fvector& Center);
-	void							InsertSG_Static			(IVisual	*pVisual);
+	BOOL							add_Dynamic				(IRender_Visual	*pVisual, u32 planes);	// normal processing
+	void							add_Static				(IRender_Visual	*pVisual, u32 planes);
+	void							add_leafs_Dynamic		(IRender_Visual	*pVisual);					// if detected node's full visibility
+	void							add_leafs_Static		(IRender_Visual	*pVisual);					// if detected node's full visibility
+	void							InsertSG_Dynamic		(IRender_Visual	*pVisual, Fvector& Center);
+	void							InsertSG_Static			(IRender_Visual	*pVisual);
 
 	void							flush_Patches			();
 	void							flush_Models			();
@@ -106,7 +106,7 @@ public:
 	virtual IRender_Portal*			getPortal				(int id);
 	virtual IRender_Sector*			getSector				(int id);
 	virtual IRender_Sector*			getSectorActive			();
-	virtual IVisual*				getVisual				(int id);
+	virtual IRender_Visual*				getVisual				(int id);
 	virtual D3DVERTEXELEMENT9*		getVB_Format			(int id);
 	virtual IDirect3DVertexBuffer9*	getVB					(int id);
 	virtual IDirect3DIndexBuffer9*	getIB					(int id);
@@ -116,16 +116,16 @@ public:
 	// Main 
 	virtual void					flush					();
 	virtual void					set_Object				(CObject*	O	);
-	virtual void					add_Visual				(IVisual*	V	);			// add visual leaf (no culling performed at all)
-	virtual void					add_Geometry			(IVisual*	V	);			// add visual(s)	(all culling performed)
+	virtual void					add_Visual				(IRender_Visual*	V	);			// add visual leaf (no culling performed at all)
+	virtual void					add_Geometry			(IRender_Visual*	V	);			// add visual(s)	(all culling performed)
 	virtual void					add_Lights				(xr_vector<WORD> &V);
 	virtual void					add_Glows				(xr_vector<WORD> &V);
 	virtual void					add_Patch				(Shader* S, const Fvector& P1, float s, float a, BOOL bNearer);
 	virtual void					add_Wallmark			(Shader* S, const Fvector& P, float s, CDB::TRI* T);
 	
 	//
-	virtual CBlender*				blender_create			(CLASS_ID cls);
-	virtual void					blender_destroy			(CBlender* &);
+	virtual IBlender*				blender_create			(CLASS_ID cls);
+	virtual void					blender_destroy			(IBlender* &);
 
 	//
 	virtual IRender_ObjectSpecific*	ros_create				(CObject* parent);
@@ -134,16 +134,15 @@ public:
 	// Lighting
 	virtual IRender_Light*			light_create			();
 	virtual void					light_destroy			(IRender_Light* &);
-	virtual void					L_select				(Fvector &pos, float fRadius, xr_vector<xrLIGHT*>&	dest);
 	
 	// Models
-	virtual IVisual*				model_CreatePS			(LPCSTR name, PS::SEmitter* E);
-	virtual IVisual*				model_CreatePG			(LPCSTR name);
+	virtual IRender_Visual*				model_CreatePS			(LPCSTR name, PS::SEmitter* E);
+	virtual IRender_Visual*				model_CreatePG			(LPCSTR name);
 	virtual IRender_DetailModel*	model_CreateDM			(IReader*	F);
-	virtual IVisual*				model_Create			(LPCSTR name);
-	virtual IVisual*				model_Create			(LPCSTR name, IReader* data);
-	virtual IVisual*				model_Duplicate			(IVisual*	V);
-	virtual void					model_Delete			(IVisual* &	V);
+	virtual IRender_Visual*				model_Create			(LPCSTR name);
+	virtual IRender_Visual*				model_Create			(LPCSTR name, IReader* data);
+	virtual IRender_Visual*				model_Duplicate			(IRender_Visual*	V);
+	virtual void					model_Delete			(IRender_Visual* &	V);
 	virtual void 					model_Delete			(IRender_DetailModel* & F);
 	
 	// Occlusion culling

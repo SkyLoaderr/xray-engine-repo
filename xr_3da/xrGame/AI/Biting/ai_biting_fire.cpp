@@ -120,7 +120,7 @@ void CAI_Biting::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 e
 			return;
 		if (Random.randI(2))
 			return;
-		::Sound->play_at_pos		(S,this,vPosition);
+		::Sound->play_at_pos		(S,this,Position());
 	}
 	
 	if (g_Health() - amount <= 0) {
@@ -159,7 +159,7 @@ float CAI_Biting::CorpHeuristics(CEntity* E)
 			(tpEntityAlive->m_fFood > 0) && (m_bEatMemberCorpses || (E->g_Team() != g_Team())) && 
 			(m_bCannibalism || (E->SUB_CLS_ID != SUB_CLS_ID)))
 
-			return (tpEntityAlive->m_fFood*tpEntityAlive->m_fFood)*vPosition.distance_to(E->Position());
+			return (tpEntityAlive->m_fFood*tpEntityAlive->m_fFood)*Position().distance_to(E->Position());
 		else
 			return flt_max;
 	}

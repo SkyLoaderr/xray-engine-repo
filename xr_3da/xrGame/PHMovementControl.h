@@ -8,18 +8,16 @@ class CPHAICharacter;
 class CPHSimpleCharacter;
 
 class CPHMovementControl 
-
 {
-
 public:
-	
-		enum EEnvironment
+
+	enum EEnvironment
 	{
 		peOnGround,
 		peAtWall,
 		peInAir
 	};
-		enum CharacterType
+	enum CharacterType
 	{
 		actor,
 		ai_stalker
@@ -37,7 +35,7 @@ private:
 	EEnvironment		eEnvironment;
 	Fbox				aabb;
 	Fbox				boxes	[4];
-	Fvector				vFootCenter;			// задаются относительно vPosition
+	Fvector				vFootCenter;			// задаются относительно Position()
 	Fvector				vFootExt;				//
 
 	float				fAirFriction;
@@ -59,7 +57,6 @@ private:
 	float				fLastUpdateTime;
 	Fvector				vLastUpdatePosition;
 public:
-//	void				DBG_Render			(){m_character->OnRender();}
 	Fvector				vExternalImpulse;
 	BOOL				bSleep;
 
@@ -71,17 +68,17 @@ public:
 	void				DeleteCharacterObject();
 
 	void				CreateCharacter()		{	
-													dVector3 size={aabb.x2-aabb.x1,aabb.y2-aabb.y1,aabb.z2-aabb.z1};
-													m_character->Create(size);
-												}
+		dVector3 size={aabb.x2-aabb.x1,aabb.y2-aabb.y1,aabb.z2-aabb.z1};
+		m_character->Create(size);
+	}
 	void				DestroyCharacter(){m_character->Destroy();
-											//xr_delete<CPHSimpleCharacter>(m_character);
-																	}
+	//xr_delete<CPHSimpleCharacter>(m_character);
+	}
 	void				Load					(LPCSTR section);
 #ifdef DEBUG
 	void				dbg_Draw(){
-										if(m_character)
-										m_character->OnRender();
+		if(m_character)
+			m_character->OnRender();
 	};
 #endif
 
@@ -105,15 +102,15 @@ public:
 	void				CalcMaximumVelocity	(Fvector& dest, Fvector& accel, float friction){};
 	void				CalcMaximumVelocity	(float& dest, float accel, float friction){};
 
-	void				ActivateBox		(DWORD id)	{ aabb.set(boxes[id]);
-													
-														m_character->Destroy();
-														CreateCharacter();	
-														m_character->SetPosition(vPosition);	
-													}
+	void				ActivateBox		(DWORD id)	{ 
+		aabb.set				(boxes[id]);
+		m_character->Destroy	();
+		CreateCharacter			();	
+		m_character->SetPosition(vPosition);	
+	}
 
-	EEnvironment	Environment		( )			{ return eEnvironment; }
-	EEnvironment	OldEnvironment		( )		{ return eOldEnvironment; }
+	EEnvironment		Environment		( )			{ return eEnvironment; }
+	EEnvironment		OldEnvironment	( )			{ return eOldEnvironment; }
 	const Fbox&			Box				( )			{ return aabb; }
 	const Fbox*			Boxes			( )			{return boxes;}
 	const Fvector&		FootExtent		( )			{return vFootExt;}
@@ -122,9 +119,9 @@ public:
 	void				SetParent		(CObject* P){ pObject = P; }
 
 	void				SetMass			(float M)	{ fMass = M;
-													if(m_character)
-													  m_character->SetMas(fMass);
-													}
+	if(m_character)
+		m_character->SetMas(fMass);
+	}
 	float				GetMass			()			{ return fMass;	}
 
 	void				SetFoots		(Fvector& C, Fvector &E)
@@ -145,8 +142,9 @@ public:
 	{ m_character->GetPosition(P);}
 
 
-	void				GetBoundingSphere(Fvector &P, float &R)
+	void				GetBoundingSphere		(Fvector &P, float &R)
 	{
+#pragma todo("Oles to Slipch: Possible incorrect sphere, 'vPosition' points to bottom of character???")
 		P.set			(vPosition);
 		R =				aabb.getradius();
 	}
@@ -154,7 +152,7 @@ public:
 	bool				IsCharacterEnabled		()																		{return m_character->IsEnabled();}
 	void				Calculate				(Fvector& vAccel, float ang_speed, float jump, float dt, bool bLight);
 	void				Calculate				(const Fvector& desired_pos,float velocity,float dt);
-//	void				Move					(Fvector& Dest, Fvector& Motion, BOOL bDynamic=FALSE){};
+	//	void				Move					(Fvector& Dest, Fvector& Motion, BOOL bDynamic=FALSE){};
 	void				SetApplyGravity			(BOOL flag)																{ bIsAffectedByGravity=flag; }
 	void				GetDeathPosition		(Fvector& pos)															{ m_character->DeathPosition(pos);}
 	void				SetEnvironment			( int enviroment,int old_enviroment);

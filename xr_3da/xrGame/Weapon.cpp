@@ -73,7 +73,6 @@ CWeapon::~CWeapon		()
 	::Render->light_destroy	(light_render);
 
 	xr_free				(m_WpnName);
-	xr_delete			(pVisual);
 	xr_delete			(m_pHUD);
 	xr_delete			(m_pPhysicsShell);
 	xr_free				(pstrWallmark);
@@ -204,7 +203,7 @@ void CWeapon::UpdateXForm	()
 		R.crossproduct	(mR.j,D);		R.normalize_safe();
 		N.crossproduct	(D,R);			N.normalize_safe();
 		mRes.set		(R,N,D,mR.c);
-		mRes.mulA_43	(E->clXFORM());
+		mRes.mulA_43	(E->XFORM());
 		UpdatePosition	(mRes);
 
 		//
@@ -248,7 +247,7 @@ void CWeapon::UpdateFP		()
 			parent.transform_dir	(vLastFD);
 		} else {
 			// 3rd person or no parent
-			Fmatrix& parent			= svTransform;
+			Fmatrix& parent			= XFORM();
 			Fvector& fp				= vFirePoint;
 			Fvector& sp				= vShellPoint;
 			parent.transform_tiny	(vLastFP,fp);
@@ -404,7 +403,7 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 		R_ASSERT							(m_pPhysicsShell);
 		m_pPhysicsShell->add_Element		(E);
 		m_pPhysicsShell->setDensity			(500.f);//400 - плотность т.е. - масса 1 м^3!
-		m_pPhysicsShell->Activate			(svXFORM(),0,svXFORM());
+		m_pPhysicsShell->Activate			(XFORM(),0,XFORM());
 		m_pPhysicsShell->mDesired.identity	();
 		m_pPhysicsShell->fDesiredStrength	= 0.f;
 	}
@@ -435,10 +434,10 @@ void CWeapon::net_Export	(NET_Packet& P)
 	P.w_u16					(u16(0/*iAmmoCurrent*/));
 	P.w_u16					(u16(0/*iAmmoElapsed*/));
 
-	P.w_vec3				(svTransform.c);
+	P.w_vec3				(XFORM().c);
 
 	float					_x,_y,_z;
-	svTransform.getHPB		(_y,_x,_z);
+	XFORM().getHPB		(_y,_x,_z);
 	P.w_angle8				(_x);
 	P.w_angle8				(_y);
 	P.w_angle8				(_z);
@@ -466,14 +465,14 @@ void CWeapon::net_Import	(NET_Packet& P)
 	}
 }
 
-void CWeapon::Update		(u32 dT)
+void CWeapon::shedule_Update	(u32 dT)
 {
 	// Queue shrink
 	u32	dwTimeCL		= Level().timeServer()-NET_Latency;
 	while ((NET.size()>2) && (NET[1].dwTimeStamp<dwTimeCL)) NET.pop_front();
 
 	// Inherited
-	inherited::Update		(dT);
+	inherited::shedule_Update	(dT);
 }
 
 void CWeapon::OnH_B_Independent	()
@@ -484,16 +483,16 @@ void CWeapon::OnH_B_Independent	()
 	CWeapon::FireEnd();
 	hud_mode					= FALSE;
 	UpdateXForm					();
-//	if (m_pPhysicsShell)		m_pPhysicsShell->Activate	(svXFORM(),0,svXFORM());
+//	if (m_pPhysicsShell)		m_pPhysicsShell->Activate	(XFORM(),0,XFORM());
 	if(m_pPhysicsShell) {
-		Fvector l_fw; l_fw.set(svTransform.k); l_fw.mul(2.f);
-		Fvector l_up; l_up.set(svTransform.j); l_up.mul(2.f);
+		Fvector l_fw; l_fw.set(XFORM().k); l_fw.mul(2.f);
+		Fvector l_up; l_up.set(XFORM().j); l_up.mul(2.f);
 		Fmatrix l_p1, l_p2;
-		l_p1.set(svTransform);
-		l_p2.set(svTransform); l_fw.mul(2.f); l_p2.c.add(l_fw);
+		l_p1.set(XFORM());
+		l_p2.set(XFORM()); l_fw.mul(2.f); l_p2.c.add(l_fw);
 		m_pPhysicsShell->Activate(l_p1, 0, l_p2);
-		svTransform.set(l_p1);
-		vPosition.set(svTransform.c);
+		XFORM().set(l_p1);
+		Position().set(XFORM().c);
 	}
 }
 
@@ -610,9 +609,9 @@ void CWeapon::UpdateCL		()
 	if (0==H_Parent() && m_pPhysicsShell)		
 	{
 		m_pPhysicsShell->Update	();
-		clTransform.set			(m_pPhysicsShell->mXFORM);
-		svTransform.set			(m_pPhysicsShell->mXFORM);
-		vPosition.set			(svTransform.c);
+		XFORM().set			(m_pPhysicsShell->mXFORM);
+		XFORM().set			(m_pPhysicsShell->mXFORM);
+		Position().set			(XFORM().c);
 	}
 }
 
@@ -633,7 +632,7 @@ void CWeapon::SwitchState(u32 S)
 	}
 }
 
-void CWeapon::OnVisible		()
+void CWeapon::renderable_Render		()
 {
 	if (light_time>0) 
 	{
@@ -658,8 +657,8 @@ void CWeapon::SetDefaults()
 
 void CWeapon::UpdatePosition(const Fmatrix& trans)
 {
-	vPosition.set	(trans.c);
-	svTransform.mul	(trans,m_Offset);
+	Position().set	(trans.c);
+	XFORM().mul	(trans,m_Offset);
 }
 
 void CWeapon::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R) 
@@ -730,7 +729,7 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 				// object-space
 				Fvector p_in_object_space,position_in_bone_space;
 				Fmatrix m_inv;
-				m_inv.invert(RQ.O->clXFORM());
+				m_inv.invert(RQ.O->XFORM());
 				m_inv.transform_tiny(p_in_object_space, end_point);
 
 				// bone-space
@@ -922,7 +921,7 @@ void CWeapon::SpawnAmmo(u32 boxCurr, LPCSTR ammoSect) {
 	D->ID = 0xffff;
 	D->ID_Parent = (u16)H_Parent()->ID();
 	D->ID_Phantom = 0xffff;
-	D->s_flags.set(M_SPAWN_OBJECT_ACTIVE|M_SPAWN_OBJECT_LOCAL);
+	D->s_flags.set(M_SPAWN_OBJECT_LOCAL);
 	D->RespawnTime = 0;
 	// Send
 	if(boxCurr == 0xffffffff) boxCurr = l_pA->m_boxSize;

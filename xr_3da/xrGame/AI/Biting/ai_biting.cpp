@@ -251,13 +251,13 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	m_tNextGP						= m_tCurGP = getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
 	
 	// loading animations
-	CBitingAnimations::Load			(PKinematics(pVisual));
+	CBitingAnimations::Load			(PKinematics(Visual()));
 
 #ifndef NO_PHYSICS_IN_AI_MOVE
 	Movement.CreateCharacter();
 	Movement.SetPhysicsRefObject(this);
 #endif
-	Movement.SetPosition	(vPosition);
+	Movement.SetPosition	(Position());
 	Movement.SetVelocity	(0,0,0);
 
 	return(TRUE);
@@ -288,9 +288,9 @@ void CAI_Biting::net_Export(NET_Packet& P)
 	P.w						(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
 	P.w						(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
 	float					f1;
-	f1						= vPosition.distance_to		(getAI().m_tpaGraph[m_tCurGP].tLocalPoint);
+	f1						= Position().distance_to		(getAI().m_tpaGraph[m_tCurGP].tLocalPoint);
 	P.w						(&f1,						sizeof(f1));
-	f1						= vPosition.distance_to		(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
+	f1						= Position().distance_to		(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
 	P.w						(&f1,						sizeof(f1));
 }
 
@@ -322,7 +322,7 @@ void CAI_Biting::net_Import(NET_Packet& P)
 
 void CAI_Biting::Exec_Movement		(float dt)
 {
-	AI_Path.Calculate				(this,vPosition,vPosition,m_fCurSpeed,dt);
+	AI_Path.Calculate				(this,Position(),Position(),m_fCurSpeed,dt);
 }
 
 

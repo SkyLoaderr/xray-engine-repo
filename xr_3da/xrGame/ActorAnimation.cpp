@@ -109,9 +109,9 @@ void CActor::SActorMotions::Create(CKinematics* V)
 void CActor::steer_Vehicle(float angle)
 {
 if(!m_vehicle)		return;
-if(angle==0.f) 		PKinematics	(pVisual)->PlayCycle(m_anims.m_steering_torso_idle);
-else if(angle>0.f)	PKinematics	(pVisual)->PlayCycle(m_anims.m_steering_torso_right);
-else				PKinematics	(pVisual)->PlayCycle(m_anims.m_steering_torso_left);
+if(angle==0.f) 		PKinematics	(Visual())->PlayCycle(m_anims.m_steering_torso_idle);
+else if(angle>0.f)	PKinematics	(Visual())->PlayCycle(m_anims.m_steering_torso_right);
+else				PKinematics	(Visual())->PlayCycle(m_anims.m_steering_torso_left);
 }
 void CActor::g_SetAnimation( u32 mstate_rl )
 {
@@ -170,12 +170,12 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		
 		// есть анимация для всего - запустим / иначе запустим анимацию по частям
 		if (m_current_torso!=M_torso){
-			if (m_bAnimTorsoPlayed)		PKinematics	(pVisual)->PlayCycle(M_torso,TRUE,AnimTorsoPlayCallBack,this);
-			else						PKinematics	(pVisual)->PlayCycle(M_torso);
+			if (m_bAnimTorsoPlayed)		PKinematics	(Visual())->PlayCycle(M_torso,TRUE,AnimTorsoPlayCallBack,this);
+			else						PKinematics	(Visual())->PlayCycle(M_torso);
 			m_current_torso=M_torso;
 		}
 		if (m_current_legs!=M_legs){
-			m_current_legs_blend = PKinematics(pVisual)->PlayCycle(M_legs);
+			m_current_legs_blend = PKinematics(Visual())->PlayCycle(M_legs);
 			m_current_legs=M_legs;
 		}
 	}else{
@@ -186,20 +186,20 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 			mstate_real			= 0;
 			m_current_legs		= 0;
 			m_current_torso		= 0;
-			//PKinematics	(pVisual)->PlayCycle(ST->death,false);
+			//PKinematics	(Visual())->PlayCycle(ST->death,false);
 			//ST=&m_crouch;
 		
-			//PKinematics	(pVisual)->PlayCycle(ST->death,false);
-			//PKinematics	(pVisual)->PlayCycle(ST->death);
+			//PKinematics	(Visual())->PlayCycle(ST->death,false);
+			//PKinematics	(Visual())->PlayCycle(ST->death);
 			///////////////////////////
-			//Render->model_Delete			(pVisual);
-			//pVisual = Render->model_Create  ("box_bone");
-			//xr_delete                       (cfModel);
-			//cfModel = xr_new<CCF_Skeleton> (this);
-			//cfModel->OnMove();
-			//PKinematics	(pVisual)->PlayCycle("x90",false);
+			//Render->model_Delete			(Visual());
+			//Visual() = Render->model_Create  ("box_bone");
+			//xr_delete                       (CFORM());
+			//CFORM() = xr_new<CCF_Skeleton> (this);
+			//CFORM()->OnMove();
+			//PKinematics	(Visual())->PlayCycle("x90",false);
 			////////////////////
-			PKinematics(pVisual)->PlayCycle(m_anims.m_dead_stop);
+			PKinematics(Visual())->PlayCycle(m_anims.m_dead_stop);
 		}
 	}
 #ifdef _DEBUG

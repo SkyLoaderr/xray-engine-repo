@@ -19,17 +19,17 @@ CBlender_ShTex::~CBlender_ShTex()
 
 void	CBlender_ShTex::Save	( IWriter& fs	)
 {
-	CBlender::Save	(fs);
+	IBlender::Save	(fs);
 }
 
 void	CBlender_ShTex::Load	( IReader& fs, WORD version	)
 {
-	CBlender::Load	(fs,version);
+	IBlender::Load	(fs,version);
 }
 
 void CBlender_ShTex::Compile	(CBlender_Compile& C)
 {
-	CBlender::Compile		(C);
+	IBlender::Compile		(C);
 	C.PassBegin		();
 	{
 		C.PassSET_ZB		(FALSE, FALSE);

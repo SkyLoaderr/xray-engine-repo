@@ -55,10 +55,10 @@ void CTargetCSCask::OnEvent(NET_Packet& P, u16 type)
 	}
 }
 
-void CTargetCSCask::OnVisible() {
-	inherited::OnVisible();
+void CTargetCSCask::renderable_Render() {
+	inherited::renderable_Render();
 	xr_list<CTargetCS*>::iterator l_it = m_targets.begin();
-	while(l_it != m_targets.end()) { (*l_it)->OnVisible(); l_it++; }
+	while(l_it != m_targets.end()) { (*l_it)->renderable_Render(); l_it++; }
 }
 
 void CTargetCSCask::Load	(LPCSTR section)

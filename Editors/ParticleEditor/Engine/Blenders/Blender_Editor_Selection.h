@@ -2,7 +2,7 @@
 #define BLENDER_EDITOR_SELECTION_H
 #pragma once
 
-class CBlender_Editor_Selection : public CBlender  
+class CBlender_Editor_Selection : public IBlender  
 {
 	string64	oT_Factor;
 public:

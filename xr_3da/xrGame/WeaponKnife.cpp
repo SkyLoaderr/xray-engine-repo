@@ -29,9 +29,9 @@ void CWeaponKnife::Load	(LPCSTR section)
 	animGet				(mhud_attack2,	"shoot2");	
 }
 
-void CWeaponKnife::OnVisible	()
+void CWeaponKnife::renderable_Render()
 {
-	inherited::OnVisible			();
+	inherited::renderable_Render	();
 	UpdateXForm						();
 	if (hud_mode && m_pHUD)
 	{ 
@@ -42,7 +42,7 @@ void CWeaponKnife::OnVisible	()
 	else
 	{
 		// Actor render
-		::Render->set_Transform		(&svTransform);
+		::Render->set_Transform		(&XFORM());
 		::Render->add_Visual		(Visual());
 	}
 }

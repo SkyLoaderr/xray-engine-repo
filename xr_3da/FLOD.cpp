@@ -27,7 +27,7 @@ void FLOD::Load			(LPCSTR N, IReader *data, u32 dwFlags)
 	// VS
 	hGeom				= Device.Shader.CreateGeom	(D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1, RCache.Vertex.Buffer(), RCache.QuadIB);
 }
-void FLOD::Copy			(IVisual *pFrom	)
+void FLOD::Copy			(IRender_Visual *pFrom	)
 {
 	inherited::Copy		(pFrom);
 

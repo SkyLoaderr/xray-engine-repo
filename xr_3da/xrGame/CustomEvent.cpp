@@ -33,7 +33,7 @@ void CCustomEvent::Load			(LPCSTR section)
 	// Geometry and transform
 	/*
 	Fvector dir,norm;
-	vPosition					= ini->r_fvector3(section,"position");
+	Position()					= ini->r_fvector3(section,"position");
 	vScale						= ini->r_fvector3(section,"scale");
 	dir							= ini->r_fvector3(section,"direction");
 	norm						= ini->r_fvector3(section,"normal");
@@ -43,7 +43,6 @@ void CCustomEvent::Load			(LPCSTR section)
 	
 	// General stuff
 	pVisualName					= NULL;
-	pVisual						= NULL;
 	setVisible					(FALSE);
 	
 	// Sheduler
@@ -88,7 +87,7 @@ BOOL CCustomEvent::net_Spawn	( LPVOID DC )
 	// Read CFORM
 	{
 		CCF_Shape*	shape			= xr_new<CCF_Shape>	(this);
-		cfModel						= shape;
+		CFORM()						= shape;
 		u8 count;	P.r_u8			(count);
 		while (count)	{
 			u8 type; P.r_u8	(type);
@@ -112,7 +111,7 @@ BOOL CCustomEvent::net_Spawn	( LPVOID DC )
 		}
 		shape->ComputeBounds		();
 		g_pGameLevel->ObjectSpace.Object_Register		(this);
-		cfModel->OnMove				();
+		CFORM()->OnMove				();
 	}
 	
 	// Read actions
@@ -192,6 +191,6 @@ void CCustomEvent::OnRender()
 	if (!bDebug)	return;
 
 	Fvector H1; H1.set(0.5f,0.5f,0.5f);
-	RCache.dbg_DrawOBB(svTransform,H1,D3DCOLOR_XRGB(255,255,255));
+	RCache.dbg_DrawOBB(XFORM(),H1,D3DCOLOR_XRGB(255,255,255));
 }
 #endif

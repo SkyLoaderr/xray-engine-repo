@@ -3,7 +3,7 @@
 #pragma once
 
 // refs
-class ENGINE_API IVisual;
+class ENGINE_API IRender_Visual;
 namespace PS	{ 
 	struct ENGINE_API SDef_RT;
 	struct ENGINE_API SEmitter; 
@@ -23,12 +23,12 @@ private:
 	struct ModelDef
 	{
 		string128		name;
-		IVisual*		model;
+		IRender_Visual*		model;
 	};
 
-	typedef xr_multimap<LPCSTR,IVisual*,str_pred>	POOL;
+	typedef xr_multimap<LPCSTR,IRender_Visual*,str_pred>	POOL;
 	typedef POOL::iterator							POOL_IT;
-	typedef xr_map<IVisual*,LPCSTR>					REGISTRY;
+	typedef xr_map<IRender_Visual*,LPCSTR>					REGISTRY;
 	typedef REGISTRY::iterator						REGISTRY_IT;
 private:
 	xr_vector<ModelDef>	Models;				// Reference / Base
@@ -37,18 +37,18 @@ private:
 
 	void				Destroy	();
 public:
-	IVisual*			Instance_Create		(u32 Type);
-	IVisual*			Instance_Duplicate	(IVisual* V);
-	IVisual*			Instance_Load		(LPCSTR N);
-	IVisual*			Instance_Load		(LPCSTR N, IReader* data);
-	void				Instance_Register	(LPCSTR N, IVisual* V);
-	IVisual*			Instance_Find		(LPCSTR N);
+	IRender_Visual*			Instance_Create		(u32 Type);
+	IRender_Visual*			Instance_Duplicate	(IRender_Visual* V);
+	IRender_Visual*			Instance_Load		(LPCSTR N);
+	IRender_Visual*			Instance_Load		(LPCSTR N, IReader* data);
+	void				Instance_Register	(LPCSTR N, IRender_Visual* V);
+	IRender_Visual*			Instance_Find		(LPCSTR N);
 
-	IVisual*			CreatePS			(PS::SDef* source, PS::SEmitter* E);
-	IVisual*			CreatePG			(PS::CPGDef* source);
-	IVisual*			Create				(LPCSTR name);
-	IVisual*			Create				(LPCSTR name, IReader* data);
-	void				Delete				(IVisual* &V);
+	IRender_Visual*			CreatePS			(PS::SDef* source, PS::SEmitter* E);
+	IRender_Visual*			CreatePG			(PS::CPGDef* source);
+	IRender_Visual*			Create				(LPCSTR name);
+	IRender_Visual*			Create				(LPCSTR name, IReader* data);
+	void				Delete				(IRender_Visual* &V);
 
 	CModelPool			();
 	virtual ~CModelPool	();

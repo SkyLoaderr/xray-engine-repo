@@ -6,7 +6,7 @@
 #define AFX_BLENDERDEFAULT_H__C12F64EE_43E7_4483_9AC3_29272E0401E7__INCLUDED_BmmD2
 #pragma once
 
-class CBlender_B : public CBlender  
+class CBlender_B : public IBlender  
 {
 public:
 	virtual		LPCSTR		getComment()	{ return "LEVEL: Implicit";	}

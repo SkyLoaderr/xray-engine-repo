@@ -8,7 +8,7 @@
 
 #include "..\\render.h"
 
-class CEffect_Rain		: public CEventBase, public pureDeviceDestroy, public pureDeviceCreate
+class CEffect_Rain		: public IEventReceiver, public pureDeviceDestroy, public pureDeviceCreate
 {
 private:
 	struct	Item

@@ -18,8 +18,8 @@ void CCustomDoor::Load			(LPCSTR section)
 {
 	inherited::Load				(section);
 
-	R_ASSERT	(pVisual->Type==MT_SKELETON);
-	PKinematics(pVisual)->PlayCycle("close");
+	R_ASSERT	(Visual()->Type==MT_SKELETON);
+	PKinematics(Visual())->PlayCycle("close");
 
 	if (pSettings->line_exist(section,"sound"))
 	{
@@ -29,21 +29,21 @@ void CCustomDoor::Load			(LPCSTR section)
 }
 
 void CCustomDoor::Open(){
-	PKinematics(pVisual)->PlayCycle("open");
+	PKinematics(Visual())->PlayCycle("open");
 	const Fsphere& S = CFORM()->getSphere();
 	::Sound->play_at_pos(sndOpenClose,this,S.P);
 }
 
 void CCustomDoor::Close(){
-	PKinematics(pVisual)->PlayCycle("close");
+	PKinematics(Visual())->PlayCycle("close");
 	const Fsphere& S = CFORM()->getSphere();
 	::Sound->play_at_pos(sndOpenClose,this,S.P);
 }
 
 void CCustomDoor::OnMove()
 {
-//	PKinematics(pVisual)->Calculate();
-//	PKinematics(pVisual)->Update();
+//	PKinematics(Visual())->Calculate();
+//	PKinematics(Visual())->Update();
 	switch (state){
 	case edsOpen:		break;
 	case edsClose:		break;

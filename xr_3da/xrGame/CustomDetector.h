@@ -12,23 +12,23 @@ public:
 	CCustomDetector(void);
 	virtual ~CCustomDetector(void);
 
-	virtual BOOL net_Spawn(LPVOID DC);
-	virtual void Load(LPCSTR section);
-	virtual void net_Destroy();
+	virtual BOOL net_Spawn			(LPVOID DC);
+	virtual void Load				(LPCSTR section);
+	virtual void net_Destroy		();
 
-	virtual void OnH_A_Chield();
-	virtual void OnH_B_Independent();
+	virtual void OnH_A_Chield		();
+	virtual void OnH_B_Independent	();
 
-	virtual void Update(u32 dt);
-	virtual void UpdateCL();
-	virtual void OnVisible();
+	virtual void shedule_Update		(u32 dt);
+	virtual void UpdateCL			();
+	virtual void renderable_Render	();
 
-	virtual void feel_touch_new(CObject* O);
-	virtual void feel_touch_delete(CObject* O);
-	virtual BOOL feel_touch_contact(CObject* O);
+	virtual void feel_touch_new		(CObject* O);
+	virtual void feel_touch_delete	(CObject* O);
+	virtual BOOL feel_touch_contact	(CObject* O);
 
-	void SoundCreate(sound& dest, LPCSTR name, int iType=0, BOOL bCtrlFreq=FALSE);
-	void SoundDestroy(sound& dest);
+	void SoundCreate				(sound& dest, LPCSTR name, int iType=0, BOOL bCtrlFreq=FALSE);
+	void SoundDestroy				(sound& dest);
 
 	FLOAT m_radius, m_buzzer_radius;
 	xr_list<CCustomZone*>		m_zones;

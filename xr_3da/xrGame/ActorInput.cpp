@@ -5,7 +5,7 @@
 #include "trade.h"
 #include "..\CameraBase.h"
 
-void CActor::OnKeyboardPress(int cmd)
+void CActor::IR_OnKeyboardPress(int cmd)
 {
 	if (Remote())												return;
 
@@ -34,7 +34,7 @@ void CActor::OnKeyboardPress(int cmd)
 
 	if(m_vehicle)
 	{
-		m_vehicle->OnKeyboardPress(cmd);
+		m_vehicle->IR_OnKeyboardPress(cmd);
 		return;
 	}
 
@@ -91,7 +91,7 @@ void CActor::OnKeyboardPress(int cmd)
 	}
 }
 
-void CActor::OnKeyboardRelease(int cmd)
+void CActor::IR_OnKeyboardRelease(int cmd)
 {
 	if (Remote())		return;
 
@@ -101,7 +101,7 @@ void CActor::OnKeyboardRelease(int cmd)
 
 		if(m_vehicle)
 		{
-			m_vehicle->OnKeyboardRelease(cmd);
+			m_vehicle->IR_OnKeyboardRelease(cmd);
 			return;
 		}
 
@@ -124,13 +124,13 @@ void CActor::OnKeyboardRelease(int cmd)
 	}
 }
 
-void CActor::OnKeyboardHold(int cmd)
+void CActor::IR_OnKeyboardHold(int cmd)
 {
 	if (Remote() || !g_Alive())		return;
 
 	if(m_vehicle)
 	{
-		m_vehicle->OnKeyboardHold(cmd);
+		m_vehicle->IR_OnKeyboardHold(cmd);
 		return;
 	}
 
@@ -147,7 +147,7 @@ void CActor::OnKeyboardHold(int cmd)
 	}
 }
 
-void CActor::OnMouseMove(int dx, int dy)
+void CActor::IR_OnMouseMove(int dx, int dy)
 {
 	if (Remote())	return;
 

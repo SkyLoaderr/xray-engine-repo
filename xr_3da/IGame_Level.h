@@ -1,6 +1,6 @@
 #pragma once
 
-#include "fcontroller.h"
+#include "iinputreceiver.h"
 #include "CameraManager.h"
 #include "xr_object_list.h"
 #include "xr_area.h"
@@ -13,10 +13,10 @@ class ENGINE_API CEnvironment;
 //-----------------------------------------------------------------------------------------------------------
 class ENGINE_API	IGame_Level		: 
 	public DLL_Pure,
-	public CController,
+	public IInputReceiver,
 	public pureRender,
 	public pureFrame,
-	public CEventBase
+	public IEventReceiver
 {
 public:
 	// Loader

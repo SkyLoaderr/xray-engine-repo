@@ -88,7 +88,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	if (E->s_name_replace[0])		cName_set		(E->s_name_replace);
 
 	// XForm
-	vPosition.set					(E->o_Position);
+	Position().set					(E->o_Position);
 	mRotate.setXYZ					(E->o_Angle);
 	UpdateTransform					();
 
@@ -105,13 +105,13 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	{
 		CAI_Space&	AI		= getAI();
 		R_ASSERT			(AI.bfCheckIfGraphLoaded());
-		//Msg					("G2L : %f",getAI().m_tpaGraph[a_obj->m_tGraphID].tLocalPoint.distance_to(vPosition));
-//		AI_NodeID			=	AI.q_Node	(getAI().m_tpaGraph[a_obj->m_tGraphID].tNodeID,vPosition);
-//		Msg					("G2L : %f",getAI().tfGetNodeCenter(a_obj->m_tNodeID).distance_to(vPosition));
+		//Msg					("G2L : %f",getAI().m_tpaGraph[a_obj->m_tGraphID].tLocalPoint.distance_to(Position()));
+//		AI_NodeID			=	AI.q_Node	(getAI().m_tpaGraph[a_obj->m_tGraphID].tNodeID,Position());
+//		Msg					("G2L : %f",getAI().tfGetNodeCenter(a_obj->m_tNodeID).distance_to(Position()));
 		if (a_obj->m_tNodeID < getAI().Header().count)
-			AI_NodeID			=	AI.q_Node	(a_obj->m_tNodeID,vPosition);
+			AI_NodeID			=	AI.q_Node	(a_obj->m_tNodeID,Position());
 		else
-			AI_NodeID			=	AI.q_LoadSearch(vPosition);
+			AI_NodeID			=	AI.q_LoadSearch(Position());
 		
 		if (!AI_NodeID || (AI_NodeID == u32(-1))) {
 			Msg("! GameObject::NET_Spawn : Corresponding node hasn't been found for object %s",cName());
@@ -125,7 +125,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	}
 	else 
 	{
-		Fvector				nPos	= vPosition;
+		Fvector				nPos	= Position();
 		int node					= getAI().q_LoadSearch(nPos);
 
 		if (node<0)			{
@@ -161,13 +161,13 @@ void CGameObject::Sector_Detect	()
 		// Sector_Move	(O->Sector());
 	} else {
 		// We was moved - so find _new AI-Node
-		if ((AI_Node) && (pVisual)) {
-			Fvector		Pos	= pVisual->vis.sphere.P;		  
-			Pos.add		(vPosition);
+		if ((AI_Node) && (Visual())) {
+			Fvector		Pos	= Visual()->vis.sphere.P;		  
+			Pos.add		(Position());
 			CAI_Space&	AI = getAI();
 
 			AI.ref_dec  (AI_NodeID);
-			AI_NodeID	= AI.q_Node	(AI_NodeID,vPosition);
+			AI_NodeID	= AI.q_Node	(AI_NodeID,Position());
 			
 			if (!AI_NodeID)
 				Msg("! GameObject::Sector_Detect : Corresponding node hasn't been found for monster %s",cName());
@@ -181,10 +181,10 @@ void CGameObject::Sector_Detect	()
 	}
 }
 
-void CGameObject::OnVisible	()
+void CGameObject::renderable_Render	()
 {
-	inherited::OnVisible			();
-	::Render->set_Transform		(&clTransform);
+	inherited::renderable_Render			();
+	::Render->set_Transform		(&XFORM());
 	::Render->add_Visual		(Visual());
 }
 
@@ -226,7 +226,7 @@ void CGameObject::Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector p
 
 f32 CGameObject::ExplosionEffect(const Fvector &expl_centre, const f32 expl_radius, xr_list<s16> &elements, xr_list<Fvector> &bs_positions) {
 	Collide::ray_query RQ;
-	Fvector l_pos; clCenter(l_pos);
+	Fvector l_pos; Center(l_pos);
 	Fvector l_dir; l_dir.sub(l_pos, expl_centre); l_dir.normalize();
 	if(!Level().ObjectSpace.RayPick(expl_centre, l_dir, expl_radius, RQ)) return 0;
 	if(RQ.O != this) return 0;

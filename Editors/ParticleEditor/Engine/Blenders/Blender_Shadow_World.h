@@ -2,7 +2,7 @@
 #define BLENDER_SHADOW_WORLD_H
 #pragma once
 
-class CBlender_ShWorld : public CBlender  
+class CBlender_ShWorld : public IBlender  
 {
 public:
 	virtual		LPCSTR		getComment()	{ return "INTERNAL: shadow projecting";	}

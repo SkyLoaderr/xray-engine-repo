@@ -26,7 +26,7 @@ public:
 	virtual void	OnH_B_Independent	();
 
 	virtual void	UpdateCL			();
-	virtual void	OnVisible			();
+	virtual void	renderable_Render			();
 
 	void			Switch				();
 };

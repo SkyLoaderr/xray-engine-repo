@@ -114,7 +114,7 @@ void CCustomMonster::Exec_Look		( float dt )
 
 void CCustomMonster::Exec_Movement	( float dt )
 {
-	AI_Path.Calculate				(this,vPosition,vPosition,m_fCurSpeed,dt);
+	AI_Path.Calculate				(this,Position(),Position(),m_fCurSpeed,dt);
 
 	//
 	Engine.Sheduler.Slice			();

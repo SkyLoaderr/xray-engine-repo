@@ -25,7 +25,7 @@ CBlender_Model_EbB::~CBlender_Model_EbB	()
 
 void	CBlender_Model_EbB::Save(	IWriter& fs )
 {
-	CBlender::Save	(fs);
+	IBlender::Save	(fs);
 	xrPWRITE_MARKER	(fs,"Environment map");
 	xrPWRITE_PROP	(fs,"Name",				xrPID_TEXTURE,	oT2_Name);
 	xrPWRITE_PROP	(fs,"Transform",		xrPID_MATRIX,	oT2_xform);
@@ -33,7 +33,7 @@ void	CBlender_Model_EbB::Save(	IWriter& fs )
 
 void	CBlender_Model_EbB::Load(	IReader& fs, WORD version )
 {
-	CBlender::Load	(fs,version);
+	IBlender::Load	(fs,version);
 	xrPREAD_MARKER	(fs);
 	xrPREAD_PROP	(fs,xrPID_TEXTURE,	oT2_Name);
 	xrPREAD_PROP	(fs,xrPID_MATRIX,	oT2_xform);
@@ -41,7 +41,7 @@ void	CBlender_Model_EbB::Load(	IReader& fs, WORD version )
 
 void	CBlender_Model_EbB::Compile(CBlender_Compile& C)
 {
-	CBlender::Compile		(C);
+	IBlender::Compile		(C);
 	if (C.bEditor)	{
 		C.PassBegin		();
 		{

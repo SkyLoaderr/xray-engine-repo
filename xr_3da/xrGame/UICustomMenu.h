@@ -94,9 +94,9 @@ public:
 	virtual void		Render				()=0;
 	virtual void		OnFrame				()=0;
 
-	virtual bool		OnKeyboardPress		(int dik)=0;
-	virtual bool		OnKeyboardRelease	(int dik)=0;
-	virtual bool		OnMouseMove			(int dx, int dy)=0;
+	virtual bool		IR_OnKeyboardPress		(int dik)=0;
+	virtual bool		IR_OnKeyboardRelease	(int dik)=0;
+	virtual bool		IR_OnMouseMove			(int dx, int dy)=0;
 
 	void				Show				(){bVisible=TRUE; menu_active=menu_root;}
 	void				Hide				(){bVisible=FALSE;}

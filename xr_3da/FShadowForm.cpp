@@ -29,7 +29,7 @@ FShadowForm::~FShadowForm()
 
 void FShadowForm::Load(IReader *data)
 {
-	IVisual::Load(data);
+	IRender_Visual::Load(data);
 
 	// read vertices
 	if (data->find_chunk(OGF_VERTICES)) {
@@ -105,7 +105,7 @@ void FShadowForm::MakeShadowVolume( Fvector& vLDir, Fmatrix &matWorld )
     // make object near origin though, so look at one of the verticess). Don't
     // care what direction is view up _vector (y).
     Fvector at,from,up;
-	at.set		(vPosition);
+	at.set		(Position());
 	from.mad	(at,vL,-fRadius*2);
 
 	Fvector	right, y;

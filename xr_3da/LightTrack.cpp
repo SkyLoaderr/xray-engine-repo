@@ -55,7 +55,7 @@ void	CLightDB_Static::Track	(CObject* O)
 	CLightTrack& dest	= *pROS;
 	if					(dest.dwFrame==Device.dwFrame)	return;
 	dest.dwFrame		= Device.dwFrame;
-	O->clCenter			(pos);
+	O->Center			(pos);
 	fRadius				= O->Radius();
 	
 	// Process ambient lighting

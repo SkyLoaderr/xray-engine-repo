@@ -7,7 +7,7 @@ class ENGINE_API CGameFont;
 // definition
 class ENGINE_API CApplication	:
 	public pureFrame,
-	public CEventBase
+	public IEventReceiver
 {
 	// levels
 	struct					sLevelInfo

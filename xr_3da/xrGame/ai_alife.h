@@ -22,7 +22,7 @@ class CSE_ALifeSimulator :
 	public CSE_ALifeScheduleRegistry,
 	public CSE_ALifeAnomalyRegistry,
 	public CSE_ALifeOrganizationRegistry,
-	public CSheduled,
+	public ISheduled,
 	public CRandom 
 {
 private:
@@ -85,9 +85,9 @@ public:
 									CSE_ALifeSimulator			(xrServer					*tpServer);
 	virtual							~CSE_ALifeSimulator			();
 	virtual float					shedule_Scale				();
-	virtual BOOL					Ready						();
+	virtual void					shedule_Update				(u32 dt);	
+	virtual BOOL					shedule_Ready				();
 	virtual LPCSTR					cName						();
-	virtual void					Update						(u32 dt);	
 	virtual void					Load						(LPCSTR						caSaveName = SAVE_NAME);
 			void					Save						(LPCSTR						caSaveName = SAVE_NAME);
 			void					Generate					();

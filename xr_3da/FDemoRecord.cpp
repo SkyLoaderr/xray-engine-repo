@@ -29,8 +29,8 @@ CDemoRecord::CDemoRecord(const char *name,float life_time) : CEffector(cefDemo,l
 	file	= FS.w_open	(name);
 	if (file) 
 	{
-		iCapture();	// capture input
-		m_Camera.invert(Device.mView);
+		IR_Capture		();	// capture input
+		m_Camera.invert	(Device.mView);
 
 		// parse yaw
 		Fvector& dir	= m_Camera.k;
@@ -61,7 +61,7 @@ CDemoRecord::CDemoRecord(const char *name,float life_time) : CEffector(cefDemo,l
 CDemoRecord::~CDemoRecord()
 {
 	if (file) {
-		iRelease	();	// release input
+		IR_Release	();	// release input
 		FS.w_close	(file);
 	}
 }
@@ -150,9 +150,9 @@ BOOL CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N, float& fFov, float
 		m_vAngularVelocity.lerp	(m_vAngularVelocity,m_vR,0.3f);
 
 		float acc = 1.f, acc_angle = 1.f;
-		if (Console.iGetKeyState(DIK_LSHIFT)){ acc=.025f; acc_angle=.025f;}
-		else if (Console.iGetKeyState(DIK_LALT)) acc=4.0;
-		else if (Console.iGetKeyState(DIK_LCONTROL)) acc=10.0;
+		if (Console.IR_GetKeyState(DIK_LSHIFT)){ acc=.025f; acc_angle=.025f;}
+		else if (Console.IR_GetKeyState(DIK_LALT)) acc=4.0;
+		else if (Console.IR_GetKeyState(DIK_LCONTROL)) acc=10.0;
 		m_vT.mul				(m_vVelocity, Device.fTimeDelta * g_fSpeed * acc);
 		m_vR.mul				(m_vAngularVelocity, Device.fTimeDelta * g_fAngularSpeed * acc_angle);
 
@@ -194,7 +194,7 @@ BOOL CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N, float& fFov, float
 	return TRUE;
 }
 
-void CDemoRecord::OnKeyboardPress	(int dik)
+void CDemoRecord::IR_OnKeyboardPress	(int dik)
 {
 	if (dik == DIK_SPACE)	RecordKey();
 	if (dik == DIK_BACK)	MakeCubemap();
@@ -209,7 +209,7 @@ void CDemoRecord::OnKeyboardPress	(int dik)
 	}
 }
 
-void CDemoRecord::OnKeyboardHold	(int dik)
+void CDemoRecord::IR_OnKeyboardHold	(int dik)
 {
 	switch(dik){
 	case DIK_A:
@@ -232,7 +232,7 @@ void CDemoRecord::OnKeyboardHold	(int dik)
 	}
 }
 
-void CDemoRecord::OnMouseMove		(int dx, int dy)
+void CDemoRecord::IR_OnMouseMove		(int dx, int dy)
 {
 	float scale			= .5f;//psMouseSens;
 	if (dx||dy){
@@ -241,7 +241,7 @@ void CDemoRecord::OnMouseMove		(int dx, int dy)
 	}
 }
 
-void CDemoRecord::OnMouseHold		(int btn)
+void CDemoRecord::IR_OnMouseHold		(int btn)
 {
 	switch (btn){
 	case 0:			m_vT.z += 1.0f; break; // Move Backward

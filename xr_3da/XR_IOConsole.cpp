@@ -250,12 +250,12 @@ void CConsole::OnPressKey(int dik, BOOL bHold)
 	rep_time	= 0;
 }
 
-void CConsole::OnKeyboardPress(int dik)
+void CConsole::IR_OnKeyboardPress(int dik)
 {
 	OnPressKey(dik);
 }
 
-void CConsole::OnKeyboardRelease(int dik)
+void CConsole::IR_OnKeyboardRelease(int dik)
 {
 	fAccel		= 1.0f;
 	rep_time	= 0;
@@ -268,7 +268,7 @@ void CConsole::OnKeyboardRelease(int dik)
 	}
 }
 
-void CConsole::OnKeyboardHold(int dik)
+void CConsole::IR_OnKeyboardHold(int dik)
 {
 	float fRep	= rep_time;
 	if (bRepeat) { OnPressKey(dik, true); bRepeat=false; }
@@ -342,16 +342,16 @@ outloop:
 	editor[0]=0;
 }
 
-void CConsole::Show()
+void CConsole::Show			()
 {
-	if (bVisible) return;
-	bVisible = true;
+	if (bVisible)			return;
+	bVisible				= true;
 
-	editor[0]       = 0;
-	rep_time		= 0;
-	fAccel			= 1.0f;
+	editor[0]				= 0;
+	rep_time				= 0;
+	fAccel					= 1.0f;
 
-	iCapture				( );
+	IR_Capture				( );
 	Device.seqRender.Add	(this, REG_PRIORITY_NORMAL-5);
 	Device.seqFrame.Add		(this);
 }
@@ -363,7 +363,7 @@ void CConsole::Hide()
 
 	Device.seqFrame.Remove	(this);
 	Device.seqRender.Remove	(this);
-	iRelease				( );
+	IR_Release				( );
 }
 
 void CConsole::SelectCommand()

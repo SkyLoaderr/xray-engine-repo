@@ -23,7 +23,7 @@ private:
 		LPCSTR M;
 	};
 public:
-	DEFINE_MAP_PRED(LPSTR,CBlender*,	map_Blender,	map_BlenderIt,		str_pred);
+	DEFINE_MAP_PRED(LPSTR,IBlender*,	map_Blender,	map_BlenderIt,		str_pred);
 	DEFINE_MAP_PRED(LPSTR,CTexture*,	map_Texture,	map_TextureIt,		str_pred);
 	DEFINE_MAP_PRED(LPSTR,CMatrix*,		map_Matrix,		map_MatrixIt,		str_pred);
 	DEFINE_MAP_PRED(LPSTR,CConstant*,	map_Constant,	map_ConstantIt,		str_pred);
@@ -64,8 +64,8 @@ private:
 public:
 	// Miscelaneous
 	void							_ParseList			(sh_list& dest, LPCSTR names);
-	CBlender*						_GetBlender			(LPCSTR Name);
-	CBlender* 						_FindBlender		(LPCSTR Name);
+	IBlender*						_GetBlender			(LPCSTR Name);
+	IBlender* 						_FindBlender		(LPCSTR Name);
 	void							_GetMemoryUsage		(u32& m_base, u32& c_base, u32& m_lmaps, u32& c_lmaps);
 	BOOL							_GetDetailTexture	(LPCSTR Name, LPCSTR& T, LPCSTR& M);
 
@@ -80,7 +80,7 @@ public:
 	void							DBG_VerifyGeoms		();
 
 	// Editor cooperation
-	void							ED_UpdateBlender	(LPCSTR Name, CBlender*		data);
+	void							ED_UpdateBlender	(LPCSTR Name, IBlender*		data);
 	void							ED_UpdateMatrix		(LPCSTR Name, CMatrix*		data);
 	void							ED_UpdateConstant	(LPCSTR Name, CConstant*	data);
 #ifdef _EDITOR
@@ -147,7 +147,7 @@ public:
 
 	// Creation/Destroying
 	Shader*			Create				(LPCSTR s_shader=0, LPCSTR s_textures=0, LPCSTR s_constants=0, LPCSTR s_matrices=0);
-	Shader*			Create_B			(CBlender*	B,	LPCSTR s_shader=0, LPCSTR s_textures=0, LPCSTR s_constants=0, LPCSTR s_matrices=0);
+	Shader*			Create_B			(IBlender*	B,	LPCSTR s_shader=0, LPCSTR s_textures=0, LPCSTR s_constants=0, LPCSTR s_matrices=0);
 	void			Delete				(Shader*	&S);
 
 	SGeometry*		CreateGeom			(D3DVERTEXELEMENT9* decl, IDirect3DVertexBuffer9* vb, IDirect3DIndexBuffer9* ib);

@@ -44,7 +44,7 @@ void CActor::create_Skeleton(){
 	m6._21=1.f;
 
 	//create shell
-	CKinematics* M		= PKinematics(pVisual);			VERIFY(M);
+	CKinematics* M		= PKinematics(Visual());			VERIFY(M);
 	m_phSkeleton		= P_create_Shell();
 	m_phSkeleton->set_Kinematics(M);
 	CPhysicsJoint*		joint;
@@ -422,7 +422,7 @@ void CActor::create_Skeleton(){
 	//set shell start position
 	Fmatrix m;
 	m.set(mRotate);
-	m.c.set(vPosition);
+	m.c.set(Position());
 	//ph_Movement.GetDeathPosition(m.c);
 	//m.c.y-=0.4f;
 	m_phSkeleton->mXFORM.set(m);
@@ -487,7 +487,7 @@ void CActor::create_Skeleton1(){
 
 
 	//create shell
-	CKinematics* M		= PKinematics(pVisual);			VERIFY(M);
+	CKinematics* M		= PKinematics(Visual());			VERIFY(M);
 	m_phSkeleton		= P_create_Shell();
 	CPhysicsJoint*		joint;
 	//get bone instance

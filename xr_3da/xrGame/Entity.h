@@ -53,7 +53,7 @@ public:
 	virtual BOOL			net_Spawn			(LPVOID DC);
 	virtual void			net_Destroy			();
 	virtual void			Update				(u32 dt);	
-	virtual void			OnVisible			();
+	virtual void			renderable_Render			();
 
 	bool					IsFocused			()const	{ return ((const CEntity*)g_pGameLevel->CurrentEntity()==this);		}
 	bool					IsMyCamera			()const	{ return ((const CEntity*)g_pGameLevel->CurrentViewEntity()==this);	}

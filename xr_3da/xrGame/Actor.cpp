@@ -82,7 +82,7 @@ CActor::CActor() : CEntityAlive()
 	r_model_yaw				= 0;
 	r_model_yaw_delta		= 0;
 	r_model_yaw_dest		= 0;
-	
+
 	m_fTimeToStep			= 0;
 	bStep					= FALSE;
 
@@ -106,7 +106,7 @@ CActor::CActor() : CEntityAlive()
 #ifdef DEBUG
 	Device.seqRender.Add(this,REG_PRIORITY_LOW);
 #endif
-	
+
 	m_trade = xr_new<CTrade>(this);
 }
 
@@ -137,9 +137,9 @@ void CActor::Load		(LPCSTR section )
 {
 	Msg("Loading actor: %s",section);
 	inherited::Load		(section);
-	
 
-		// Movement: General
+
+	// Movement: General
 	//Movement.SetParent		(this);
 	Fbox	bb;
 
@@ -170,7 +170,7 @@ void CActor::Load		(LPCSTR section )
 
 
 	// Movement: Frictions
-	
+
 	float af, gf, wf;
 	af					= pSettings->r_float	(section,"ph_friction_air"	);
 	gf					= pSettings->r_float	(section,"ph_friction_ground");
@@ -246,7 +246,7 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 
 	P.w_u32				(Level().timeServer());
 	P.w_u8				(flags);
-	P.w_vec3			(vPosition);
+	P.w_vec3			(Position());
 	P.w_angle8			(r_model_yaw);
 	P.w_angle8			(r_torso.yaw);
 	P.w_angle8			(r_torso.pitch);
@@ -274,12 +274,12 @@ void CActor::net_Import		(NET_Packet& P)					// import from server
 
 	u8					flags;
 	u16					tmp;
-	
+
 	P.r_float_q16		(fHealth,-1000,1000);
 
 	float				fDummy;
 	u32					dwDummy;
-	
+
 	P.r_u32				(N.dwTimeStamp	);
 	P.r_u8				(flags			);
 	P.r_vec3			(N.p_pos		);
@@ -317,7 +317,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	ph_Movement.CreateCharacter();
 	ph_Movement.SetPhysicsRefObject(this);
 	ph_Movement.SetPLastMaterial(&last_gmtl_id);
-	ph_Movement.SetPosition	(vPosition);
+	ph_Movement.SetPosition	(Position());
 	ph_Movement.SetVelocity	(0,0,0);
 
 	CSE_Abstract			*e	= (CSE_Abstract*)(DC);
@@ -329,7 +329,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	//
 	r_model_yaw				= E->o_Angle.y;
 	cam_Active()->Set		(E->o_Angle.y,0,0);		// set's camera orientation
-	
+
 	// *** movement state - respawn
 	mstate_wishful			= 0;
 	mstate_real				= 0;
@@ -338,15 +338,14 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	// *** weapons
 	//if (Local()) 			Weapons->ActivateWeaponID	(0);
 	//if(Local()) m_inventory.Activate(1);
-	
+
 	NET_SavedAccel.set		(0,0,0);
 	NET_WasInterpolating	= TRUE;
 
 	setEnabled				(E->s_flags.is(M_SPAWN_OBJECT_LOCAL));
-	setActive				(TRUE);
 
 	patch_frame				= 0;
-	patch_position.set		(vPosition);
+	patch_position.set		(Position());
 
 	Engine.Sheduler.Unregister	(this);
 	Engine.Sheduler.Register	(this,TRUE);
@@ -361,7 +360,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	m_tRank		= pTA->m_tRank;
 
 
-// @@@: WT - !!!ВРЕМЕННО!!! - спавним каждому актеру детектор
+	// @@@: WT - !!!ВРЕМЕННО!!! - спавним каждому актеру детектор
 	if(Local()) for(u32 i = 0; i < 1; i++) {
 		// Create
 		//CSE_Abstract*		D	= F_entity_Create("detector_simple");
@@ -376,8 +375,8 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 		D->ID				=	0xffff;
 		D->ID_Parent		=	E->ID;
 		D->ID_Phantom		=	0xffff;
-		D->o_Position		=	vPosition;
-		D->s_flags.set		(M_SPAWN_OBJECT_ACTIVE | M_SPAWN_OBJECT_LOCAL);
+		D->o_Position		=	Position();
+		D->s_flags.set		(M_SPAWN_OBJECT_LOCAL);
 		D->RespawnTime		=	0;
 		// Send
 		NET_Packet			P;
@@ -386,10 +385,10 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 		// Destroy
 		F_entity_Destroy	(D);
 	}
-// @@@: WT
+	// @@@: WT
 
 	// take index spine bone
-	CKinematics* V		= PKinematics(pVisual);
+	CKinematics* V		= PKinematics(Visual());
 	R_ASSERT			(V);
 	int spine_bone		= V->LL_BoneID("bip01_spine1");
 	int shoulder_bone	= V->LL_BoneID("bip01_spine2");
@@ -422,7 +421,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	}
 
 	//. temporary
-//	Level().Cameras.AddEffector(xr_new<CEffectorPPHit>	());
+	//	Level().Cameras.AddEffector(xr_new<CEffectorPPHit>	());
 
 	return					TRUE;
 }
@@ -453,8 +452,8 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element, float i
 	position_in_bone_space.set(0.f,0.f,0.f);
 	if(g_pGameLevel->CurrentEntity() == this) {
 		Fvector l_d; l_d.set(dir); l_d.normalize();
-		Level().Cameras.AddEffector(xr_new<CEffectorPPHit>(svTransform.i.dotproduct(l_d), svTransform.j.dotproduct(l_d), .5f, .003f*iLost));
-		Level().Cameras.AddEffector(xr_new<CEffectorHit>(svTransform.i.dotproduct(l_d), svTransform.j.dotproduct(l_d), .8f, .003f*iLost));
+		Level().Cameras.AddEffector(xr_new<CEffectorPPHit>(XFORM().i.dotproduct(l_d), XFORM().j.dotproduct(l_d), .5f, .003f*iLost));
+		Level().Cameras.AddEffector(xr_new<CEffectorHit>(XFORM().i.dotproduct(l_d), XFORM().j.dotproduct(l_d), .8f, .003f*iLost));
 	}
 	switch (GameID())
 	{
@@ -482,7 +481,7 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 	}
 	else if(m_phSkeleton) 
 		m_phSkeleton->applyImpulseTrace(position_in_bone_space,dir,impulse,element);
-		//m_phSkeleton->applyImpulseTrace(position_in_bone_space,dir,impulse);
+	//m_phSkeleton->applyImpulseTrace(position_in_bone_space,dir,impulse);
 	else{
 		m_saved_dir.set(dir);
 		m_saved_impulse=impulse*skel_fatal_impulse_factor;
@@ -494,8 +493,8 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 
 	if(g_pGameLevel->CurrentEntity() == this) {
 		Fvector l_d; l_d.set(dir); l_d.normalize();
-		Level().Cameras.AddEffector(xr_new<CEffectorPPHit>(svTransform.i.dotproduct(l_d), svTransform.j.dotproduct(l_d), .5f, .003f*iLost));
-		Level().Cameras.AddEffector(xr_new<CEffectorHit>(svTransform.i.dotproduct(l_d), svTransform.j.dotproduct(l_d), .8f, .003f*iLost));
+		Level().Cameras.AddEffector(xr_new<CEffectorPPHit>(XFORM().i.dotproduct(l_d), XFORM().j.dotproduct(l_d), .5f, .003f*iLost));
+		Level().Cameras.AddEffector(xr_new<CEffectorHit>(XFORM().i.dotproduct(l_d), XFORM().j.dotproduct(l_d), .8f, .003f*iLost));
 	}
 
 	switch (GameID())
@@ -520,7 +519,7 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who, s16 element
 		if (S.feedback) return;
 
 		// Play hit-sound
-		::Sound->play_at_pos	(S,this,vPosition);
+		::Sound->play_at_pos	(S,this,Position());
 
 		// hit marker
 		if (Local() && (who!=this))	
@@ -545,11 +544,11 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who, s16 element
 
 		// check damage bone
 		Fvector D;
-		svTransform.transform_dir(D,vLocalDir);
+		XFORM().transform_dir(D,vLocalDir);
 
 		float	yaw, pitch;
 		D.getHP(yaw,pitch);
-		CKinematics *tpKinematics = PKinematics(pVisual);
+		CKinematics *tpKinematics = PKinematics(Visual());
 #pragma todo("forward-back bone impulse direction has been determined incorrectly!")
 		CMotionDef *tpMotionDef = m_anims.m_normal.m_damage[iFloor(tpKinematics->LL_GetInstance(element).get_param(1) + (getAI().bfTooSmallAngle(r_model_yaw + r_model_yaw_delta,yaw,PI_DIV_2) ? 0 : 1))];
 		float power_factor = perc/100.f; clamp(power_factor,0.f,1.f);
@@ -565,12 +564,12 @@ void CActor::Die	( )
 	// @@@ WT
 	m_inventory.DropAll();
 	// Play sound
-	::Sound->play_at_pos		(sndDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
+	::Sound->play_at_pos		(sndDie[Random.randI(SND_DIE_COUNT)],this,Position());
 	cam_Set					(eacFreeLook);
 	g_fireEnd				();
 	mstate_wishful	&=		~mcAnyMove;
 	mstate_real		&=		~mcAnyMove;
-	ph_Movement.GetDeathPosition(vPosition);
+	ph_Movement.GetDeathPosition(Position());
 	ph_Movement.DestroyCharacter();
 	create_Skeleton();
 }
@@ -580,35 +579,34 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 	if (!g_Alive())	{
 
 		if(m_phSkeleton)
-		if(m_phSkeleton->bActive && m_saved_impulse!=0.f)
-		{
-			m_phSkeleton->applyImpulseTrace(m_saved_position,m_saved_dir,m_saved_impulse*1.5f,m_saved_element);
-			m_saved_impulse=0.f;
-		}
-		
-
-		if(m_phSkeleton){
-			mRotate.set(m_phSkeleton->mXFORM);
-			mRotate.c.set(0,0,0);
-			vPosition.set(m_phSkeleton->mXFORM.c);
-			if(skel_ddelay==0)
+			if(m_phSkeleton->bActive && m_saved_impulse!=0.f)
 			{
-			m_phSkeleton->set_JointResistance(5.f*hinge_force_factor1);
-			m_phSkeleton->Enable();
+				m_phSkeleton->applyImpulseTrace(m_saved_position,m_saved_dir,m_saved_impulse*1.5f,m_saved_element);
+				m_saved_impulse=0.f;
 			}
-			skel_ddelay--;
-		}
-		else
-		{if(bDeathInit)
-		{
-			//create_Skeleton();
-		//	create_Skeleton1();
-			bDeathInit=false;
-			return;
-		}
+
+
+			if(m_phSkeleton)
+			{
+				XFORM().set	(m_phSkeleton->mXFORM);
+				if(skel_ddelay==0)
+				{
+					m_phSkeleton->set_JointResistance(5.f*hinge_force_factor1);
+					m_phSkeleton->Enable();
+				}
+				skel_ddelay--;
+			}
+			else
+			{if(bDeathInit)
+			{
+				//create_Skeleton();
+				//	create_Skeleton1();
+				bDeathInit=false;
+				return;
+			}
 			bDeathInit=true;
-		}
-		return;
+			}
+			return;
 	}
 
 	if (patch_frame<patch_frames)	return;
@@ -622,66 +620,66 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 
 	// Calculate physics
 
-	//ph_Movement.SetPosition		(vPosition);
+	//ph_Movement.SetPosition		(Position());
 	//ph_Movement.Calculate		(accel,0,jump,dt,false);
-	//ph_Movement.GetPosition		(vPosition);
+	//ph_Movement.GetPosition		(Position());
 	//Fvector vAccel;
 	//ph_Movement.vExternalImpulse.div(dt);
-	
-	//ph_Movement.SetPosition		(vPosition);
+
+	//ph_Movement.SetPosition		(Position());
 
 	ph_Movement.Calculate			(_accel,0,jump,dt,false);
-	ph_Movement.GetPosition		(vPosition);
+	ph_Movement.GetPosition		(Position());
 	ph_Movement.bSleep=false;
 	///////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////Update ph_Movement///////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////
-	
+
 	//ph_Movement.SetEnvironment(ph_Movement.Environment(),ph_Movement.OldEnvironment());//peOnGround,peAtWall,peInAir
-	//ph_Movement.SetPosition		(vPosition);
+	//ph_Movement.SetPosition		(Position());
 	//Fvector velocity=ph_Movement.GetVelocity();
 	//ph_Movement.SetVelocity(velocity);
 	//ph_Movement.gcontact_Was=ph_Movement.gcontact_Was;
 	//ph_Movement.SetContactSpeed(ph_Movement.GetContactSpeed());
 	//velocity.y=0.f;
-//	ph_Movement.SetActualVelocity(velocity.magnitude());
+	//	ph_Movement.SetActualVelocity(velocity.magnitude());
 
 	//ph_Movement.gcontact_HealthLost=ph_Movement.gcontact_HealthLost;
 	//ph_Movement.gcontact_Power=ph_Movement.gcontact_Power;
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////
-/*
+	/*
 	if (ph_Movement.gcontact_Was) 
 	{
-		Fvector correctV					= ph_Movement.GetVelocity	();
-		correctV.x							*= 0.1f;
-		correctV.z							*= 0.1f;
-		ph_Movement.SetVelocity				(correctV);
+	Fvector correctV					= ph_Movement.GetVelocity	();
+	correctV.x							*= 0.1f;
+	correctV.z							*= 0.1f;
+	ph_Movement.SetVelocity				(correctV);
 
-		if (Local()) {
-			g_pGameLevel->Cameras.AddEffector		(xr_new<CEffectorFall> (ph_Movement.gcontact_Power));
-			Fvector D; D.set					(0,1,0);
-			if (ph_Movement.gcontact_HealthLost)	Hit	(1.5f * ph_Movement.gcontact_HealthLost,D,this,-1);
-		}
+	if (Local()) {
+	g_pGameLevel->Cameras.AddEffector		(xr_new<CEffectorFall> (ph_Movement.gcontact_Power));
+	Fvector D; D.set					(0,1,0);
+	if (ph_Movement.gcontact_HealthLost)	Hit	(1.5f * ph_Movement.gcontact_HealthLost,D,this,-1);
 	}
-*/	
+	}
+	*/	
 
 
 	{
-//		SGameMtlPair* pair	= GMLib.GetMaterialPair(0,1); R_ASSERT(pair);
-//		::Sound->play_at_pos	(pair->HitSounds[0],this,Position());
-//		::Sound->play_at_pos						(sndLanding,this,Position());
+		//		SGameMtlPair* pair	= GMLib.GetMaterialPair(0,1); R_ASSERT(pair);
+		//		::Sound->play_at_pos	(pair->HitSounds[0],this,Position());
+		//		::Sound->play_at_pos						(sndLanding,this,Position());
 
 		if (Local()) {
-			
+
 			if (ph_Movement.gcontact_Was) 
 				g_pGameLevel->Cameras.AddEffector		(xr_new<CEffectorFall> (ph_Movement.gcontact_Power));
 			Fvector D; D.set					(0,1,0);
 			if (ph_Movement.gcontact_HealthLost)	{
 				Hit	(ph_Movement.gcontact_HealthLost,D,this,s16(6 + 2*::Random.randI(0,2)),0);
 				if(g_Alive()<=0)
-					ph_Movement.GetDeathPosition(vPosition);
+					ph_Movement.GetDeathPosition(Position());
 			}
 		}
 	}	
@@ -727,7 +725,7 @@ void CActor::ZoneEffect	(float z_amount)
 
 	// Sounds
 	Fvector				P;
-	clCenter			(P);
+	Center				(P);
 	if (0==sndZoneHeart.feedback)		::Sound->play_at_pos	(sndZoneHeart,		this,Position(),true);
 	sndZoneHeart.set_volume				(z_amount);
 	sndZoneHeart.set_position			(P);
@@ -736,66 +734,64 @@ void CActor::ZoneEffect	(float z_amount)
 void CActor::UpdateCL()
 {
 	inherited::UpdateCL();
-if(m_vehicle)
-{
-	m_vehicle->UpdateCL();
-	return;
-}
-	if (!g_Alive())			
-	
-		if(m_phSkeleton){
-			mRotate.set(m_phSkeleton->mXFORM);
-			mRotate.c.set(0,0,0);
-			vPosition.set(m_phSkeleton->mXFORM.c);
-			UpdateTransform();
-			}
-	// Analyze Die-State
-	/*
-	if (!g_Alive())			
+	if(m_vehicle)
 	{
+		m_vehicle->UpdateCL();
+		return;
+	}
+	if (!g_Alive())			
+
+		if(m_phSkeleton)
+		{
+			XFORM().set(m_phSkeleton->mXFORM);
+		}
+		// Analyze Die-State
+		/*
+		if (!g_Alive())			
+		{
 		float dt			=	Device.fTimeDelta;
 		setEnabled	(FALSE);
 		if (die_hide>0)		
 		{
-			die_hide			-=	.01f*dt;
-			if (die_hide>0)		{
-				Fmatrix					mScale,mTranslate;
-				float	down			= (1.f-die_hide)/10.f;
-				vScale.set				(1,die_hide,1);
-				mScale.scale			(vScale);
-				mTranslate.translate	(vPosition.x,vPosition.y-down,vPosition.z);
-				clTransform.mul_43		(mTranslate,mRotate);
-				clTransform.mulB_43		(mScale);
-			}
-			else if (Local()) 
-			{
-				// Request destroy
-				NET_Packet			P;
-				u_EventGen			(P,GE_DESTROY,ID());
-				u_EventSend			(P);
-			}
+		die_hide			-=	.01f*dt;
+		if (die_hide>0)		{
+		Fmatrix					mScale,mTranslate;
+		float	down			= (1.f-die_hide)/10.f;
+		vScale.set				(1,die_hide,1);
+		mScale.scale			(vScale);
+		mTranslate.translate	(Position().x,Position().y-down,Position().z);
+		XFORM().mul_43		(mTranslate,mRotate);
+		XFORM().mulB_43		(mScale);
 		}
-	}
-	*/
+		else if (Local()) 
+		{
+		// Request destroy
+		NET_Packet			P;
+		u_EventGen			(P,GE_DESTROY,ID());
+		u_EventSend			(P);
+		}
+		}
+		}
+		*/
 }
 
-void CActor::Update	(u32 DT)
+void CActor::shedule_Update	(u32 DT)
 {
 	if(m_vehicle)
 	{
-	m_vehicle->Update(DT);
-	//inherited::Update		(DT);
-	
-	return;
+		m_vehicle->Update(DT);
+		//inherited::Update		(DT);
+
+		return;
 	}
 	if (!getEnabled())	return;
 	if (!Ready())		return;
 
 	// patch
 	if (patch_frame<patch_frames)	{
-		vPosition.set		(patch_position);
+		Position().set		(patch_position);
 		if(!m_phSkeleton)
-		ph_Movement.SetPosition(patch_position);
+			ph_Movement.SetPosition(patch_position);
 		patch_frame			+= 1;
 	}
 	cam_shift				= 0.f;
@@ -829,7 +825,7 @@ void CActor::Update	(u32 DT)
 		// Check for game-contacts
 		Fvector C; float R;		ph_Movement.GetBoundingSphere	(C,R);
 		feel_touch_update		(C,R);
-		
+
 		// Dropping
 		if (b_DropActivated)	{
 			f_DropPower			+= dt*0.1f;
@@ -854,11 +850,9 @@ void CActor::Update	(u32 DT)
 				// Setup last known data
 				ph_Movement.SetVelocity	(NET_Last.p_velocity);
 				ph_Movement.SetVelocity	(NET_Last.p_velocity);
-				vPosition.set			(NET_Last.p_pos);
+				Position().set			(NET_Last.p_pos);
 				if(!m_phSkeleton)
-				ph_Movement.SetPosition(NET_Last.p_pos);
-				
-				UpdateTransform			();
+					ph_Movement.SetPosition	(NET_Last.p_pos);
 			}
 
 			g_sv_Orientate				(NET_Last.mstate,dt			);
@@ -877,7 +871,7 @@ void CActor::Update	(u32 DT)
 			if (select>=0)	
 			{
 				if (select>0)	NET.erase(NET.begin(),NET.begin()+select);
-				
+
 				// Interpolate state
 				net_update&	A	= NET[0];
 				net_update&	B	= NET[1];
@@ -885,15 +879,15 @@ void CActor::Update	(u32 DT)
 				u32	d2		= B.dwTimeStamp - A.dwTimeStamp;
 				float	factor	= (float(d1)/float(d2));
 				NET_Last.lerp	(A,B,factor);
-				
+
 				// Use interpolated state
 				g_sv_Orientate	(NET_Last.mstate,dt);
 				g_Orientate		(NET_Last.mstate,dt);
-				vPosition.set	(NET_Last.p_pos);		// physics :)
+				Position().set	(NET_Last.p_pos);		// physics :)
 				if(!m_phSkeleton)
-				ph_Movement.SetPosition(NET_Last.p_pos);
+					ph_Movement.SetPosition(NET_Last.p_pos);
 				g_SetAnimation	(NET_Last.mstate);
-				
+
 				// Change weapon if needed
 				//if (Weapons->ActiveWeaponID()!=NET_Last.weapon)
 				//{
@@ -910,9 +904,8 @@ void CActor::Update	(u32 DT)
 	}
 
 	// generic stuff
-	UpdateTransform			();
-	inherited::Update		(DT);
-	
+	inherited::shedule_Update	(DT);
+
 	if (IsMyCamera())		{
 		if (!pCamBobbing){ 
 			pCamBobbing = xr_new<CEffectorBobbing>	();
@@ -974,13 +967,13 @@ void CActor::Update	(u32 DT)
 	m_inventory.Update(DT);
 }
 
-void CActor::OnVisible	()
+void CActor::renderable_Render	()
 {
-	inherited::OnVisible	();
+	inherited::renderable_Render	();
 
 	//CWeapon* W				= Weapons->ActiveWeapon();
-	//CWeapon *W = dynamic_cast<CWeapon*>(m_inventory.ActiveItem()); if(W) W->OnVisible();
-	if(m_inventory.ActiveItem()&&!m_vehicle) m_inventory.ActiveItem()->OnVisible();
+	//CWeapon *W = dynamic_cast<CWeapon*>(m_inventory.ActiveItem()); if(W) W->renderable_Render();
+	if(m_inventory.ActiveItem()&&!m_vehicle) m_inventory.ActiveItem()->renderable_Render();
 }
 
 void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
@@ -994,17 +987,17 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 			// can we change size to "bbStandBox"
 			Fvector				start_pos;
 			//bbStandBox.getcenter(start_pos);
-			start_pos.add		(vPosition);
-			//if (!g_pGameLevel->ObjectSpace.EllipsoidCollide(cfModel,svTransform,start_pos,bbStandBox))
+			start_pos.add		(Position());
+			//if (!g_pGameLevel->ObjectSpace.EllipsoidCollide(CFORM(),XFORM(),start_pos,bbStandBox))
 			Fbox stand_box=ph_Movement.Boxes()[0];
 			stand_box.y1+=ph_Movement.FootExtent().y;
 			ph_Movement.GetPosition(start_pos);
 			start_pos.y+=(
-						//-(ph_Movement.Box().y2-ph_Movement.Box().y1)+
-						(ph_Movement.Boxes()[0].y2-ph_Movement.Boxes()[0].y1)
-						)/2.f;
+				//-(ph_Movement.Box().y2-ph_Movement.Box().y1)+
+				(ph_Movement.Boxes()[0].y2-ph_Movement.Boxes()[0].y1)
+				)/2.f;
 			start_pos.y+=ph_Movement.FootExtent().y/2.f;
-			if (!g_pGameLevel->ObjectSpace.EllipsoidCollide(cfModel,svTransform,start_pos,stand_box))
+			if (!g_pGameLevel->ObjectSpace.EllipsoidCollide(CFORM(),XFORM(),start_pos,stand_box))
 			{
 				mstate_real &= ~mcCrouch;
 				ph_Movement.ActivateBox	(0);
@@ -1081,7 +1074,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 	{
 		// jump
 		m_fJumpTime				-=	dt;
-		
+
 		if (((mstate_real&mcJump)==0) && (mstate_wf&mcJump) && (m_fJumpTime<=0.f) && !m_bJumpKeyPressed)
 		{
 			mstate_real			|=	mcJump;
@@ -1089,11 +1082,11 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 			Jump				= m_fJumpSpeed;
 			m_fJumpTime			= s_fJumpTime;
 		}
-		
+
 		/*
 		if(m_bJumpKeyPressed)
-				Jump				= m_fJumpSpeed;
-			*/
+		Jump				= m_fJumpSpeed;
+		*/
 		// crouch
 		if ((0==(mstate_real&mcCrouch))&&(mstate_wf&mcCrouch))
 		{
@@ -1102,17 +1095,17 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 			ph_Movement.ActivateBox(1);
 			//ph_Movement.ActivateBox(1);
 		}
-		
+
 		// mask input into "real" state
 		u32 move	= mcAnyMove|mcAccel;
 		mstate_real &= (~move);
 		mstate_real |= (mstate_wf & move);
-		
+
 		// check player move state
 		if (mstate_real&mcAnyMove)
 		{
 			BOOL	bAccelerated		= isAccelerated(mstate_real);
-			
+
 			// update player accel
 			if (mstate_real&mcFwd)		vControlAccel.z +=  1;
 			if (mstate_real&mcBack)		vControlAccel.z += -1;
@@ -1122,7 +1115,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 			// correct "mstate_real" if opposite keys pressed
 			if (_abs(vControlAccel.z)<EPS)	mstate_real &= ~(mcFwd+mcBack		);
 			if (_abs(vControlAccel.x)<EPS)	mstate_real &= ~(mcLStrafe+mcRStrafe);
-			
+
 			// normalize and analyze crouch and run
 			float	scale				= vControlAccel.magnitude();
 			if (scale>EPS)	{
@@ -1131,11 +1124,11 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 				if (mstate_real&mcCrouch)	scale *= m_fCrouchFactor;
 				vControlAccel.mul			(scale);
 			}else{
-//				mstate_real	&= ~mcAnyMove;
+				//				mstate_real	&= ~mcAnyMove;
 			}
 		}
 	}else{
-//		mstate_real			&=~ mcAnyMove;
+		//		mstate_real			&=~ mcAnyMove;
 	}
 
 	// transform local dir to world dir
@@ -1165,12 +1158,15 @@ void CActor::g_Orientate	(u32 mstate_rl, float dt)
 		calc_yaw = -PI_DIV_2+EPS_L; 
 		break;
 	}
-	
+
 	// lerp angle for "effect" and capture torso data from camera
 	angle_lerp		(r_model_yaw_delta,calc_yaw,PI_MUL_4,dt);
 
 	// build matrix
-	mRotate.rotateY		(-(r_model_yaw + r_model_yaw_delta));
+	Fmatrix mXFORM;
+	mXFORM.rotateY	(-(r_model_yaw + r_model_yaw_delta));
+	mXFORM.c.set	(Position());
+	XFORM().set		(mXFORM);
 }
 
 // ****************************** Update actor orientation according to camera orientation
@@ -1289,18 +1285,18 @@ void CActor::Statistic		()
 void CActor::OnHUDDraw	(CCustomHUD* hud)
 {
 	//CWeapon* W			= Weapons->ActiveWeapon();
-	//if (W)				W->OnVisible		();
-	//CWeapon *W = dynamic_cast<CWeapon*>(m_inventory.ActiveItem()); if(W) W->OnVisible();
+	//if (W)				W->renderable_Render		();
+	//CWeapon *W = dynamic_cast<CWeapon*>(m_inventory.ActiveItem()); if(W) W->renderable_Render();
 
 	if(m_inventory.ActiveItem()&&!m_vehicle)
-								m_inventory.ActiveItem()->OnVisible();
+		m_inventory.ActiveItem()->renderable_Render();
 
 
 #ifdef _DEBUG
 	string128 buf;
 	HUD().pFontSmall->SetColor(0xffffffff);
 	HUD().pFontSmall->OutSet	(120,530);
-	HUD().pFontSmall->OutNext("Position:      [%3.2f, %3.2f, %3.2f]",VPUSH(vPosition));
+	HUD().pFontSmall->OutNext("Position:      [%3.2f, %3.2f, %3.2f]",VPUSH(Position()));
 	HUD().pFontSmall->OutNext("Velocity:      [%3.2f, %3.2f, %3.2f]",VPUSH(ph_Movement.GetVelocity()));
 	HUD().pFontSmall->OutNext("Vel Magnitude: [%3.2f]",ph_Movement.GetVelocityMagnitude());
 	HUD().pFontSmall->OutNext("Vel Actual:    [%3.2f]",ph_Movement.GetVelocityActual());
@@ -1316,7 +1312,7 @@ void CActor::OnHUDDraw	(CCustomHUD* hud)
 
 float CActor::HitScale	(int element)
 {
-	CKinematics* V		= PKinematics(pVisual);			VERIFY(V);
+	CKinematics* V		= PKinematics(Visual());			VERIFY(V);
 	float scale			= fis_zero(V->LL_GetInstance(element).get_param(0))?1.f:V->LL_GetInstance(element).get_param(0);
 	return hit_factor*scale;
 }
@@ -1329,28 +1325,23 @@ void CActor::SetPhPosition(const Fmatrix &pos)
 
 void CActor::ForceTransform(const Fmatrix& m)
 {
-	if(g_Alive()<=0) return;
-	mRotate.set(m);
-	mRotate.c.set(0,0,0);
-	vPosition.set(m.c);
-	UpdateTransform();
-	ph_Movement.EnableCharacter();
-	ph_Movement.SetPosition(m.c);
-
+	if(g_Alive()<=0)			return;
+	XFORM().set					(m);
+	ph_Movement.EnableCharacter	();
+	ph_Movement.SetPosition		(m.c);
 }
-
 
 #ifdef DEBUG
 void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvector &D, Fvector &U);
 void CActor::OnRender	()
 {
 	if (!bDebug)				return;
-	
+
 	ph_Movement.dbg_Draw			();
 	//if(g_Alive()>0)
 	ph_Movement.dbg_Draw();
 	//CCameraBase* C				= cameras	[cam_active];
-	//dbg_draw_frustum			(C->f_fov, 230.f, 1.f, C->vPosition, C->vDirection, C->vNormal);
+	//dbg_draw_frustum			(C->f_fov, 230.f, 1.f, C->Position(), C->vDirection, C->vNormal);
 }
 #endif
 
@@ -1360,6 +1351,6 @@ float CActor::Radius()const
 	float R		= inherited::Radius();
 	CWeapon* W	= dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
 	if (W) R	+= W->Radius();
-//	if (HUDview()) R *= 1.f/psHUD_FOV;
+	//	if (HUDview()) R *= 1.f/psHUD_FOV;
 	return R;
 }

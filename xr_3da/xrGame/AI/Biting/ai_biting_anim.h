@@ -19,7 +19,7 @@ namespace AI_Biting {
 
 #define FORCE_ANIMATION_SELECT() {\
 	m_tpCurrentGlobalAnimation = 0; \
-	SelectAnimation(clTransform.k,mRotate.k,0);\
+	SelectAnimation(XFORM().k,mRotate.k,0);\
 }
 
 

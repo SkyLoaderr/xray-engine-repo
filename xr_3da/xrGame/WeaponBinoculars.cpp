@@ -77,9 +77,9 @@ void CWeaponBinoculars::Load	(LPCSTR section)
 	animGet				(mhud_hide,		"holster");
 }
 
-void CWeaponBinoculars::OnVisible	()
+void CWeaponBinoculars::renderable_Render	()
 {
-	inherited::OnVisible			();
+	inherited::renderable_Render			();
 	UpdateXForm						();
 	if (hud_mode && m_pHUD)
 	{ 
@@ -90,7 +90,7 @@ void CWeaponBinoculars::OnVisible	()
 	else
 	{
 		// Actor render
-		::Render->set_Transform		(&svTransform);
+		::Render->set_Transform		(&XFORM());
 		::Render->add_Visual		(Visual());
 	}
 }

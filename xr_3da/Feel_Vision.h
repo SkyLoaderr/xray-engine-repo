@@ -16,7 +16,9 @@ namespace Feel
 	class ENGINE_API Vision
 	{
 	private:
-		objSET						query;
+		xr_vector<CObject*>			seen;
+		xr_vector<CObject*>			query;
+		xr_vector<CObject*>			diff;
 
 		void						o_new	(CObject* E);
 		void						o_delete(CObject* E);
@@ -33,12 +35,9 @@ namespace Feel
 		};
 		xr_vector<feel_visible_Item>	feel_visible;
 	public:
-		void						feel_vision_update	(objSET& seen, CObject* parent, Fvector& P, float dt);
-		void						feel_vision_get		(objSET& R)
-		{
-			R.clear		();
-			xr_vector<feel_visible_Item>::iterator I=feel_visible.begin(),E=feel_visible.end();
-			for (; I!=E; I++)	if (positive(I->fuzzy)) R.push_back(I->O);
-		}
+		void						feel_vision_query		(Fmatrix& mFull,	Fvector& P);
+		void						feel_vision_update		(CObject* parent,	Fvector& P, float dt);
+		void						feel_vision_get			(xr_vector<CObject*>& R);
+		virtual		BOOL			feel_vision_isRelevant	(CObject* O)					= 0;
 	};
 };

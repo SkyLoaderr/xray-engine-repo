@@ -22,7 +22,7 @@ public:
 
 public:
 	CSimulator			RS;
-	CBlender*			BT;
+	IBlender*			BT;
 	ShaderElement*		SH;
 
 private:

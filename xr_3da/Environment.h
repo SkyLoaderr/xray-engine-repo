@@ -6,7 +6,7 @@
 #define AFX_ENVIRONMENT_H__155A6D9E_2ECC_4DCC_80B2_27CD3F070B41__INCLUDED_
 
 class ENGINE_API CSun;
-class ENGINE_API IVisual;
+class ENGINE_API IRender_Visual;
 class ENGINE_API CInifile;
 class ENGINE_API CSoundStream;
 
@@ -55,7 +55,7 @@ public:
 	}
 
 	// Skydome
-	IVisual*		pSkydome;
+	IRender_Visual*		pSkydome;
 public:
 					CEnvironment		();
 					~CEnvironment		();

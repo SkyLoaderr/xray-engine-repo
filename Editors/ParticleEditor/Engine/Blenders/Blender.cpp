@@ -1,4 +1,4 @@
-// Blender.cpp: implementation of the CBlender class.
+// Blender.cpp: implementation of the IBlender class.
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -32,7 +32,7 @@ void CBlender_DESC::Setup	(LPCSTR N)
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CBlender::CBlender()
+IBlender::IBlender()
 {
 	oPriority.min	= 0;
 	oPriority.max	= 3;
@@ -41,12 +41,12 @@ CBlender::CBlender()
 	strcpy			(oT_xform,	"$null");
 }
 
-CBlender::~CBlender()
+IBlender::~IBlender()
 {
 
 }
 
-void	CBlender::Save(IWriter& fs )
+void	IBlender::Save(IWriter& fs )
 {
 	fs.w			(&description,sizeof(description));
 	xrPWRITE_MARKER (fs,"General");
@@ -57,7 +57,7 @@ void	CBlender::Save(IWriter& fs )
 	xrPWRITE_PROP	(fs,"Transform",		xrPID_MATRIX,	oT_xform);
 }
 
-void	CBlender::Load(	IReader& fs, WORD version )
+void	IBlender::Load(	IReader& fs, WORD version )
 {
 	// Read desc and doesn't change version
 	WORD	V		= description.version;
@@ -73,7 +73,7 @@ void	CBlender::Load(	IReader& fs, WORD version )
 	xrPREAD_PROP	(fs,xrPID_MATRIX,	oT_xform);
 }
 
-void	CBlender::Compile(CBlender_Compile& C)
+void	IBlender::Compile(CBlender_Compile& C)
 {
 	if (C.bEditor)	C.SetParams	(oPriority.value,oStrictSorting.value?true:false,true,	false);
 	else			C.SetParams	(oPriority.value,oStrictSorting.value?true:false,false,	false);

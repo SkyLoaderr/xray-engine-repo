@@ -40,9 +40,9 @@ BOOL CTorch::net_Spawn(LPVOID DC)
 	cNameVisual_set			(torch->get_visual());
 	inherited::net_Spawn	(DC);
 
-	R_ASSERT(!cfModel);
-	if (PKinematics(pVisual))	cfModel	= xr_new<CCF_Skeleton>	(this);
-	else						cfModel	= xr_new<CCF_Rigid>		(this);
+	R_ASSERT(!CFORM());
+	if (PKinematics(Visual()))	collidable.model	= xr_new<CCF_Skeleton>	(this);
+	else						collidable.model	= xr_new<CCF_Rigid>		(this);
 
 	// set bone id
 	Fcolor					clr;
@@ -54,7 +54,7 @@ BOOL CTorch::net_Spawn(LPVOID DC)
 	light_render->set_cone	(torch->spot_cone_angle);
 	light_render->set_texture(torch->spot_texture[0]?torch->spot_texture:0);
 
-	R_ASSERT				(pVisual);
+	R_ASSERT				(Visual());
 	lanim					= LALib.FindItem(torch->animator);
 
 	if (0==m_pPhysicsShell) {
@@ -66,7 +66,7 @@ BOOL CTorch::net_Spawn(LPVOID DC)
 		m_pPhysicsShell = P_create_Shell(); R_ASSERT(m_pPhysicsShell);
 		m_pPhysicsShell->add_Element(E);
 		m_pPhysicsShell->setDensity(2000.f);
-		if(!H_Parent())m_pPhysicsShell->Activate(svXFORM(),0,svXFORM());
+		if(!H_Parent())m_pPhysicsShell->Activate(XFORM(),0,XFORM());
 		m_pPhysicsShell->mDesired.identity();
 		m_pPhysicsShell->fDesiredStrength = 0.f;
 	}
@@ -89,9 +89,9 @@ void CTorch::OnH_A_Chield()
 	inherited::OnH_A_Chield	();
 	setVisible				(false);
 	setEnabled				(false);
-	H_Root()->clCenter		(vPosition);
-	svTransform.c.set		(vPosition);
-	m_focus.set				(vPosition);
+	H_Root()->Center		(Position());
+	XFORM().c.set		(Position());
+	m_focus.set				(Position());
 	if(m_pPhysicsShell)		m_pPhysicsShell->Deactivate();
 }
 
@@ -101,19 +101,19 @@ void CTorch::OnH_B_Independent()
 	setVisible(true);
 	setEnabled(true);
 	CObject* E = dynamic_cast<CObject*>(H_Parent()); R_ASSERT(E);
-	svTransform.set(E->clXFORM());
-	vPosition.set(svTransform.c);
+	XFORM().set(E->XFORM());
+	Position().set(XFORM().c);
 	if(m_pPhysicsShell) {
 		Fmatrix trans;
 		Level().Cameras.unaffected_Matrix(trans);
 		Fvector l_fw; l_fw.set(trans.k);
-		Fvector l_up; l_up.set(svTransform.j); l_up.mul(2.f);
+		Fvector l_up; l_up.set(XFORM().j); l_up.mul(2.f);
 		Fmatrix l_p1, l_p2;
-		l_p1.set(svTransform); l_p1.c.add(l_up); l_up.mul(1.2f); 
-		l_p2.set(svTransform); l_p2.c.add(l_up); l_fw.mul(3.f); l_p2.c.add(l_fw);
+		l_p1.set(XFORM()); l_p1.c.add(l_up); l_up.mul(1.2f); 
+		l_p2.set(XFORM()); l_p2.c.add(l_up); l_fw.mul(3.f); l_p2.c.add(l_fw);
 		m_pPhysicsShell->Activate(l_p1, 0, l_p2);
-		svTransform.set(l_p1);
-		vPosition.set(svTransform.c);
+		XFORM().set(l_p1);
+		Position().set(XFORM().c);
 	}
 	time2hide				= TIME_2_HIDE;
 }
@@ -123,11 +123,11 @@ void CTorch::UpdateCL()
 	inherited::UpdateCL();
 	if(getVisible() && m_pPhysicsShell) {
 		m_pPhysicsShell->Update	();
-		svTransform.set			(m_pPhysicsShell->mXFORM);
-		vPosition.set			(svTransform.c);
+		XFORM().set				(m_pPhysicsShell->mXFORM);
+		Position().set			(XFORM().c);
 		if (light_render->get_active()){
-			light_render->set_direction	(svTransform.k);
-			light_render->set_position	(svTransform.c);
+			light_render->set_direction	(XFORM().k);
+			light_render->set_position	(XFORM().c);
 			time2hide			-= Device.fTimeDelta;
 			if (time2hide<0)	light_render->set_active(false);
 		}
@@ -139,9 +139,9 @@ void CTorch::UpdateCL()
 		Fvector l_end, l_up; 
 		if(Level().ObjectSpace.RayPick(l_p, l_d, 50.f, RQ)) {
 			l_end.mad(l_p, l_d, RQ.range); l_up.set(0, 1.f, 0);
-			svTransform.k.sub(l_end, l_p); svTransform.k.normalize();
-			svTransform.i.crossproduct(l_up, svTransform.k); svTransform.i.normalize();
-			svTransform.j.crossproduct(svTransform.k, svTransform.i);
+			XFORM().k.sub(l_end, l_p); XFORM().k.normalize();
+			XFORM().i.crossproduct(l_up, XFORM().k); XFORM().i.normalize();
+			XFORM().j.crossproduct(XFORM().k, XFORM().i);
 		}
 		m_focus.inertion(l_end,1-Device.fTimeDelta*4);
 
@@ -151,8 +151,8 @@ void CTorch::UpdateCL()
 		_D.sub		(m_focus,_P);
 		_D.normalize();
 		H_Parent()->setEnabled		(true);
-		light_render->set_direction	(_D);	//clXFORM().k); // l_d
-		light_render->set_position	(_P);	//clXFORM().c); // l_p
+		light_render->set_direction	(_D);	//XFORM().k); // l_d
+		light_render->set_position	(_P);	//XFORM().c); // l_p
 	}
 	// update light source
 	if (light_render->get_active()){
@@ -168,13 +168,13 @@ void CTorch::UpdateCL()
 	}
 }
 
-void CTorch::OnVisible() 
+void CTorch::renderable_Render() 
 {
 	if(getVisible() && !H_Parent()) {
-		::Render->set_Transform		(&clTransform);
+		::Render->set_Transform		(&XFORM());
 		::Render->add_Visual		(Visual());
 	} else {
-		light_render->set_direction	(clTransform.k);
-		light_render->set_position	(clTransform.c);
+		light_render->set_direction	(XFORM().k);
+		light_render->set_position	(XFORM().c);
 	}
 }

@@ -4,7 +4,7 @@
 #include "..\CameraBase.h"
 
 
-void CFlyer::OnKeyboardPress(int cmd){
+void CFlyer::IR_OnKeyboardPress(int cmd){
 	if (eState==fsDead) return;
 	switch(cmd){
 	case kACCEL:	new_mstate |= mcAccel;		break;
@@ -23,7 +23,7 @@ void CFlyer::OnKeyboardPress(int cmd){
 	}
 }
 
-void CFlyer::OnKeyboardRelease(int cmd){
+void CFlyer::IR_OnKeyboardRelease(int cmd){
 	switch(cmd){
 	case kACCEL:	new_mstate &=~mcAccel;		break;
 	case kR_STRAFE:	new_mstate &=~mcRStrafe;	break;
@@ -38,7 +38,7 @@ void CFlyer::OnKeyboardRelease(int cmd){
 	}
 }
 
-void CFlyer::OnKeyboardHold(int cmd){
+void CFlyer::IR_OnKeyboardHold(int cmd){
 	if (eState==fsDead) return;
 	switch(cmd){
 	case kCAM_ZOOM_IN: 
@@ -56,7 +56,7 @@ void CFlyer::OnKeyboardHold(int cmd){
 	}
 }
 
-void CFlyer::OnMouseMove(int dx, int dy)
+void CFlyer::IR_OnMouseMove(int dx, int dy)
 {
 	float scale		= psMouseSens * psMouseSensScale/50.f;
 	if (cam_active!=efcLookAt)

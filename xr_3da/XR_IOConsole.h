@@ -6,14 +6,14 @@
 #define AFX_XR_IOCONSOLE_H__ADEEFD61_7731_11D3_83D8_00C02610C34E__INCLUDED_
 #pragma once
 
-#include "fcontroller.h"
+#include "iinputreceiver.h"
 
 //refs
 class ENGINE_API CGameFont;
 class ENGINE_API CConsoleCommand;
 
 class ENGINE_API CConsole  :
-	public CController,
+	public IInputReceiver,
 	public pureRender,
 	public pureFrame
 {
@@ -68,9 +68,9 @@ public:
 
 	// keyboard
 	void			OnPressKey			(int dik, BOOL bHold=false);
-	virtual void	OnKeyboardPress		(int dik);
-	virtual void	OnKeyboardHold		(int dik);
-	virtual void	OnKeyboardRelease	(int dik);
+	virtual void	IR_OnKeyboardPress		(int dik);
+	virtual void	IR_OnKeyboardHold		(int dik);
+	virtual void	IR_OnKeyboardRelease	(int dik);
 
 	// render & onmove
 	virtual void	OnRender			(void);

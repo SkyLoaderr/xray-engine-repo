@@ -22,17 +22,17 @@ CBlender_Screen_GRAY::~CBlender_Screen_GRAY()
 
 void	CBlender_Screen_GRAY::Save	( IWriter& fs	)
 {
-	CBlender::Save	(fs);
+	IBlender::Save	(fs);
 }
 
 void	CBlender_Screen_GRAY::Load	( IReader& fs, WORD version	)
 {
-	CBlender::Load	(fs,version);
+	IBlender::Load	(fs,version);
 }
 
 void	CBlender_Screen_GRAY::Compile	(CBlender_Compile& C)
 {
-	CBlender::Compile		(C);
+	IBlender::Compile		(C);
 	C.PassBegin		();
 	{
 		C.PassSET_ZB			(FALSE,FALSE);

@@ -73,7 +73,7 @@ struct clQueryCollision
 	}
 };
 
-class ENGINE_API	CCFModel
+class ENGINE_API	ICollisionForm
 {
 	friend class	CObjectSpace;
 protected:
@@ -95,11 +95,10 @@ protected:
 	Fsphere			bv_sphere;		// (Local) Sphere 
 public:
 
-					CCFModel		( CObject* _owner );
-	virtual			~CCFModel		( );
+					ICollisionForm		( CObject* _owner );
+	virtual			~ICollisionForm		( );
 
-	virtual BOOL	_clRayTest		( RayQuery& Q) = 0;
-	virtual BOOL	_svRayTest		( RayQuery& Q) = 0;
+	virtual BOOL	_RayTest		( RayQuery& Q) = 0;
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags) = 0;
 
 	IC CObject*		Owner			( )	const				{ return owner;}
@@ -114,15 +113,14 @@ public:
 	void			OnMove			( );
 };
 
-class ENGINE_API	CCF_Polygonal : public CCFModel
+class ENGINE_API	CCF_Polygonal : public ICollisionForm
 {
 private:
 	CDB::MODEL		model;
 public:
 					CCF_Polygonal	( CObject* _owner );
 
-	virtual BOOL	_clRayTest		( RayQuery& Q);
-	virtual BOOL	_svRayTest		( RayQuery& Q);
+	virtual BOOL	_RayTest		( RayQuery& Q);
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 
 	BOOL			LoadModel		( CInifile* ini, const char *section );
@@ -139,7 +137,7 @@ struct CCF_OBB
 	Fobb		OBB;
 };
 
-class ENGINE_API	CCF_Skeleton : public CCFModel
+class ENGINE_API	CCF_Skeleton : public ICollisionForm
 {
 private:
 	Fbox			base_box;
@@ -153,12 +151,11 @@ private:
 public:
 					CCF_Skeleton	( CObject* _owner );
 
-	virtual BOOL	_clRayTest		( RayQuery& Q );
-	virtual BOOL	_svRayTest		( RayQuery& Q );
+	virtual BOOL	_RayTest		( RayQuery& Q );
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 };
 
-class ENGINE_API	CCF_Rigid : public CCFModel
+class ENGINE_API	CCF_Rigid : public ICollisionForm
 {
 private:
 	Fbox			base_box;
@@ -173,26 +170,24 @@ private:
 public:
 					CCF_Rigid		( CObject* _owner );
 
-	virtual BOOL	_clRayTest		( RayQuery& Q );
-	virtual BOOL	_svRayTest		( RayQuery& Q );
+	virtual BOOL	_RayTest		( RayQuery& Q );
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 };
 
-class ENGINE_API	CCF_EventBox : public CCFModel
+class ENGINE_API	CCF_EventBox : public ICollisionForm
 {
 private:
 	Fplane			Planes[6];
 public:
 					CCF_EventBox	( CObject* _owner );
 
-	virtual BOOL	_clRayTest		( RayQuery& Q);
-	virtual BOOL	_svRayTest		( RayQuery& Q);
+	virtual BOOL	_RayTest		( RayQuery& Q);
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 
 	BOOL			Contact			( CObject* O );
 };
 
-class ENGINE_API	CCF_Shape	: public CCFModel
+class ENGINE_API	CCF_Shape	: public ICollisionForm
 {
 public:
 	union shape_data
@@ -209,8 +204,7 @@ public:
 public:
 					CCF_Shape		( CObject* _owner );
 
-	virtual BOOL	_clRayTest		( RayQuery& Q);
-	virtual BOOL	_svRayTest		( RayQuery& Q);
+	virtual BOOL	_RayTest		( RayQuery& Q);
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 
 	void			add_sphere		( Fsphere& S	);

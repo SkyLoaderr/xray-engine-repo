@@ -38,13 +38,13 @@ public:
 	CWeaponKnife(); 
 	virtual			~CWeaponKnife();
 
-	void			Load			(LPCSTR section);
-	virtual	void	UpdateCL		();
-	virtual	void	OnVisible		();
+	void			Load				(LPCSTR section);
+	virtual	void	UpdateCL			();
+	virtual	void	renderable_Render	();
 
-	virtual void	Hide			();
-	virtual void	Show			();
-	virtual BOOL	HasOpticalAim	()		{ return FALSE; }
+	virtual void	Hide				();
+	virtual void	Show				();
+	virtual BOOL	HasOpticalAim		()		{ return FALSE; }
 	virtual void	Fire2Start			();
 	virtual void	Fire2End			();
 	virtual void	FireStart			();
@@ -52,5 +52,5 @@ public:
 
 
 	virtual const char* Name();
-	virtual bool Action(s32 cmd, u32 flags);
+	virtual bool Action	(s32 cmd, u32 flags);
 };

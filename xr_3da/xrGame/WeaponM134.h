@@ -85,7 +85,7 @@ public:
 	virtual void	Show			();
 
 	virtual	void	Update			(u32	dT		);
-	virtual	void	OnVisible		();
+	virtual	void	renderable_Render		();
 };
 
 #endif //__XR_WEAPON_M134_H__

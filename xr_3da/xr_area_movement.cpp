@@ -179,7 +179,7 @@ IC BOOL CheckPointInIdentitySphere(const Fvector& point)
 	return (point.square_magnitude() <= 1);
 }
 
-BOOL CObjectSpace::EllipsoidCollide( CCFModel *object, const Fmatrix& T, const Fvector& center_pos, const Fbox& bounding_box ){
+BOOL CObjectSpace::EllipsoidCollide( ICollisionForm *object, const Fmatrix& T, const Fvector& center_pos, const Fbox& bounding_box ){
 	Fvector vRadius;
 	bounding_box.getradius(vRadius);
 

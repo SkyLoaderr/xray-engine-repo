@@ -576,12 +576,12 @@ void	CShaderManager::ED_UpdateConstant	(LPCSTR Name, CConstant* data)
 	C->dwReference	= ref-1;
 }
 //--------------------------------------------------------------------------------------------------------------
-CBlender* CShaderManager::_GetBlender		(LPCSTR Name)
+IBlender* CShaderManager::_GetBlender		(LPCSTR Name)
 {
 	R_ASSERT(Name && Name[0]);
 
 	LPSTR N = LPSTR(Name);
-	xr_map<LPSTR,CBlender*,str_pred>::iterator I = m_blenders.find	(N);
+	xr_map<LPSTR,IBlender*,str_pred>::iterator I = m_blenders.find	(N);
 #ifdef _EDITOR
 	if (I==m_blenders.end())	return 0;
 #else
@@ -590,20 +590,20 @@ CBlender* CShaderManager::_GetBlender		(LPCSTR Name)
 	else					return I->second;
 }
 
-CBlender* CShaderManager::_FindBlender		(LPCSTR Name)
+IBlender* CShaderManager::_FindBlender		(LPCSTR Name)
 {
 	if (!(Name && Name[0])) return 0;
 
 	LPSTR N = LPSTR(Name);
-	xr_map<LPSTR,CBlender*,str_pred>::iterator I = m_blenders.find	(N);
+	xr_map<LPSTR,IBlender*,str_pred>::iterator I = m_blenders.find	(N);
 	if (I==m_blenders.end())	return 0;
 	else						return I->second;
 }
 
-void	CShaderManager::ED_UpdateBlender	(LPCSTR Name, CBlender* data)
+void	CShaderManager::ED_UpdateBlender	(LPCSTR Name, IBlender* data)
 {
 	LPSTR N = LPSTR(Name);
-	xr_map<LPSTR,CBlender*,str_pred>::iterator I = m_blenders.find	(N);
+	xr_map<LPSTR,IBlender*,str_pred>::iterator I = m_blenders.find	(N);
 	if (I!=m_blenders.end())	{
 		R_ASSERT	(data->getDescription().CLS == I->second->getDescription().CLS);
 		xr_delete	(I->second);
@@ -801,7 +801,7 @@ Shader*	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_cons
 	return N;
 }
 
-Shader*	CShaderManager::Create_B	(CBlender* B, LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_constants, LPCSTR s_matrices)
+Shader*	CShaderManager::Create_B	(IBlender* B, LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_constants, LPCSTR s_matrices)
 {
 	CBlender_Compile	C;
 	Shader				S;

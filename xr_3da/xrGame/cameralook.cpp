@@ -31,7 +31,7 @@ CCameraLook::~CCameraLook()
 
 void CCameraLook::Update(Fvector& point, Fvector& noise_dangle)
 {
-	vPosition.set		(point);
+	Position().set		(point);
 	Fmatrix mR;
 	mR.setHPB			(-yaw,-pitch,-roll);
 
@@ -39,8 +39,8 @@ void CCameraLook::Update(Fvector& point, Fvector& noise_dangle)
 	vNormal.set			(mR.j);
 
 	if (bRelativeLink){
-		parent->clXFORM().transform_dir(vDirection);
-		parent->clXFORM().transform_dir(vNormal);
+		parent->XFORM().transform_dir(vDirection);
+		parent->XFORM().transform_dir(vNormal);
 	}
 
 	Fvector				vDir;
@@ -56,8 +56,8 @@ void CCameraLook::Update(Fvector& point, Fvector& noise_dangle)
 	float d				= psCamSlideInert*prev_d+(1.f-psCamSlideInert)*(R.range-covariance);
 	prev_d = d;
 	
-	vPosition.mul		(vDirection,-d-VIEWPORT_NEAR);
-	vPosition.add		(point);
+	Position().mul		(vDirection,-d-VIEWPORT_NEAR);
+	Position().add		(point);
 }
 
 void CCameraLook::Move( int cmd, float val )
@@ -80,7 +80,7 @@ void CCameraLook::OnActivate( CCameraBase* old_cam )
 	if (old_cam&&(bRelativeLink==old_cam->bRelativeLink))
 	{
 		yaw				= old_cam->yaw;
-		vPosition.set	(old_cam->vPosition);
+		Position().set	(old_cam->Position());
 	}
 	if (yaw>PI_MUL_2) yaw-=PI_MUL_2;
 	if (yaw<-PI_MUL_2)yaw+=PI_MUL_2;

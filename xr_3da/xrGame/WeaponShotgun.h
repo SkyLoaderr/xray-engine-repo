@@ -19,7 +19,7 @@ public:
 	virtual void	switch2_Fire	();
 	virtual void	switch2_Fire2	();
 	virtual void			OnDrawFlame			();
-	virtual	void	OnVisible		();
+	virtual	void	renderable_Render		();
 	virtual BOOL			FireTrace2			(const Fvector& P, const Fvector& Peff,	Fvector& D);
 	virtual bool Action(s32 cmd, u32 flags);
 

@@ -47,7 +47,7 @@ void CUIBuyMenu::Render	()
 {
 }
 //--------------------------------------------------------------------
-bool CUIBuyMenu::OnKeyboardPress(int dik)
+bool CUIBuyMenu::IR_OnKeyboardPress(int dik)
 {
 	int id = -1;
 	switch (dik){

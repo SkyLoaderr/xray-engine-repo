@@ -20,19 +20,19 @@ CBlender_Editor_Selection::~CBlender_Editor_Selection()
 
 void	CBlender_Editor_Selection::Save	( IWriter& fs	)
 {
-	CBlender::Save	(fs);
+	IBlender::Save	(fs);
 	xrPWRITE_PROP	(fs,"TFactor",	xrPID_CONSTANT, oT_Factor);
 }
 
 void	CBlender_Editor_Selection::Load	( IReader& fs, WORD version	)
 {
-	CBlender::Load	(fs,version);
+	IBlender::Load	(fs,version);
 	xrPREAD_PROP	(fs,xrPID_CONSTANT,	oT_Factor);
 }
 
 void	CBlender_Editor_Selection::Compile	(CBlender_Compile& C)
 {
-	CBlender::Compile		(C);	
+	IBlender::Compile		(C);	
 	C.PassBegin		();
 	{
 		C.PassSET_ZB		(TRUE,FALSE);

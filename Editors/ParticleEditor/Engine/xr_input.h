@@ -1,13 +1,13 @@
-// exxZERO Time Stamp AddIn. Document modified at : Thursday, March 07, 2002 14:49:48 , by user : Oles , from computer : OLES
 #ifndef __XR_INPUT__
 #define __XR_INPUT__
 
-class	ENGINE_API				CController;
+#define DIRECTINPUT_VERSION 0x0700
+#include <dinput.h>
+
+class	ENGINE_API				IInputReceiver;
 
 //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-//------------------------------------------------------------------
 //описание класса
-//------------------------------------------------------------------
 const int mouse_device_key		= 1;
 const int keyboard_device_key	= 2;
 const int all_device_key		= mouse_device_key | keyboard_device_key;
@@ -36,7 +36,7 @@ public:
 		DIDEVCAPS					capabilities;
 		DIDEVICEINSTANCE			deviceInfo;
 		DIDEVICEOBJECTINSTANCE		objectInfo;
-		u32						mouse_dt;
+		u32							mouse_dt;
 	};
 	struct sxr_key
 	{
@@ -49,8 +49,8 @@ private:
 	LPDIRECTINPUTDEVICE7		pMouse;			// The DIDevice7 interface
 	LPDIRECTINPUTDEVICE7		pKeyboard;		// The DIDevice7 interface
 	//----------------------
-	u32						timeStamp	[COUNT_MOUSE_AXIS];
-	u32						timeSave	[COUNT_MOUSE_AXIS];
+	u32							timeStamp	[COUNT_MOUSE_AXIS];
+	u32							timeSave	[COUNT_MOUSE_AXIS];
 	int 						offs		[COUNT_MOUSE_AXIS];
 	BOOL						mouseState	[COUNT_MOUSE_BUTTONS];
 
@@ -61,7 +61,7 @@ private:
 													const DIDATAFORMAT* pdidDataFormat, u32 dwFlags,
 													u32 buf_size );
 
-	xr_stack<CController*>		cbStack;
+	xr_stack<IInputReceiver*>	cbStack;
 
 	void						MouseUpdate					( );
 	void						KeyUpdate					( );
@@ -69,14 +69,14 @@ private:
 public:
 	sxr_mouse					mouse_property;
 	sxr_key						key_property;
-	u32						dwCurTime;
+	u32							dwCurTime;
 
 	void						SetAllAcquire				( BOOL bAcquire = TRUE );
 	void						SetMouseAcquire				( BOOL bAcquire );
 	void						SetKBDAcquire				( BOOL bAcquire );
 
-	void						iCapture					( CController *pc );
-	void						iRelease					( CController *pc );
+	void						iCapture					( IInputReceiver *pc );
+	void						iRelease					( IInputReceiver *pc );
 	BOOL						iGetAsyncKeyState			( int dik );
 	BOOL						iGetAsyncBtnState			( int btn );
 	void						iGetLastMouseDelta			( Ivector2& p )	{ p.set(offs[0],offs[1]); }
@@ -89,7 +89,6 @@ public:
 	virtual void				OnAppDeactivate				(void);
 };
 
-extern ENGINE_API CInput *pInput;
+extern ENGINE_API CInput *		pInput;
 
 #endif //__XR_INPUT__
-

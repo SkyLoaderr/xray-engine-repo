@@ -33,7 +33,7 @@ CBlender_Screen_SET::~CBlender_Screen_SET()
 
 void	CBlender_Screen_SET::Save	( IWriter& fs	)
 {
-	CBlender::Save	(fs);
+	IBlender::Save	(fs);
 
 	// Blend mode
 	xrP_TOKEN::Item	I;
@@ -59,7 +59,7 @@ void	CBlender_Screen_SET::Save	( IWriter& fs	)
 
 void	CBlender_Screen_SET::Load	( IReader& fs, WORD version)
 {
-	CBlender::Load		(fs,version);
+	IBlender::Load		(fs,version);
 
 	switch (version)	{
 	case 2:
@@ -93,7 +93,7 @@ void	CBlender_Screen_SET::Load	( IReader& fs, WORD version)
 
 void	CBlender_Screen_SET::Compile	(CBlender_Compile& C)
 {
-	CBlender::Compile		(C);
+	IBlender::Compile		(C);
 	C.PassBegin		();
 	{
 		C.PassSET_ZB		(oZTest.value,oZWrite.value);

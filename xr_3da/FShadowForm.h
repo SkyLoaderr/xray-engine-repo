@@ -26,7 +26,7 @@ struct COLORVERTEX {
 };
 #pragma pack(pop)
 
-class FShadowForm : public IVisual
+class FShadowForm : public IRender_Visual
 {
 	// Data
 	LPDIRECT3DVERTEXBUFFER7	pVB;

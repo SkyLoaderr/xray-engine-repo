@@ -8,12 +8,12 @@
 #pragma once
 
 #include "CameraBase.h"
-#include "fcontroller.h"
+#include "iinputreceiver.h"
 
 class ENGINE_API CCameraDebug :
 	public CCameraBase,
 	public pureRender,
-	public CController
+	public IInputReceiver
 {
 	D3DXMATRIX      g_matPosition;
     D3DXVECTOR3		g_vecVelocity;
@@ -26,7 +26,7 @@ public:
 	virtual	void	OnCameraActivate	( CCameraBase* old_cam );
 	virtual	void	OnCameraDeactivate	( );
 	virtual void	OnRender			( );
-	virtual void	OnKeyboardPress		(int dik);
+	virtual void	IR_OnKeyboardPress		(int dik);
 
 	CCameraDebug();
 	virtual ~CCameraDebug();

@@ -32,7 +32,7 @@ public:
 	//virtual void net_Import(NET_Packet& P);
 	//virtual void Update(u32 dt);
 	virtual void UpdateCL();
-	virtual void OnVisible();
+	virtual void renderable_Render();
 	virtual void OnH_B_Chield();
 	virtual void OnH_B_Independent();
 	virtual void OnAnimationEnd();

@@ -24,7 +24,7 @@ void CBolt::OnH_A_Chield() {
 		D->ID				=	0xffff;
 		D->ID_Parent		=	(u16)ID();
 		D->ID_Phantom		=	0xffff;
-		D->s_flags.set		(M_SPAWN_OBJECT_ACTIVE | M_SPAWN_OBJECT_LOCAL);
+		D->s_flags.set		(M_SPAWN_OBJECT_LOCAL);
 		D->RespawnTime		=	0;
 		// Send
 		NET_Packet			P;
@@ -97,7 +97,7 @@ void CBolt::Throw() {
 			D->ID				=	0xffff;
 			D->ID_Parent		=	(u16)/*H_Parent()->*/ID();
 			D->ID_Phantom		=	0xffff;
-			D->s_flags.set		(M_SPAWN_OBJECT_ACTIVE | M_SPAWN_OBJECT_LOCAL);
+			D->s_flags.set		(M_SPAWN_OBJECT_LOCAL);
 			D->RespawnTime		=	0;
 			// Send
 			NET_Packet			P;

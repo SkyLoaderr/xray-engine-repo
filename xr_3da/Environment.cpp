@@ -183,8 +183,6 @@ void CEnvironment::OnFrame()
 		// update suns
 		for(u32 i=0; i<Suns.size(); i++) Suns[i]->Update();
 	}
-
-//	if (pWeather) ((CPSObject*)pWeather)->Update();
 }
 
 void CEnvironment::SetGradient(float b)
@@ -206,12 +204,12 @@ void CEnvironment::RenderFirst()
 		case MT_HIERRARHY:
 			{
 				FHierrarhyVisual* pV	= (FHierrarhyVisual*)pSkydome;
-				xr_vector<IVisual*>::iterator I,E;
+				xr_vector<IRender_Visual*>::iterator I,E;
 				I = pV->children.begin	();
 				E = pV->children.end	();
 				for (; I!=E; I++)		
 				{
-					IVisual* V				= *I;
+					IRender_Visual* V				= *I;
 					RCache.set_Shader		(V->hShader);
 					V->Render				(1.f);
 				}

@@ -11,7 +11,7 @@ using namespace PS;
 
 #pragma comment(lib,"x:\\ParticleDLL.lib")
 
-void CParticleGroup::Copy(IVisual* pFrom)
+void CParticleGroup::Copy(IRender_Visual* pFrom)
 {
 	Debug.fatal("Can't duplicate particle system - NOT IMPLEMENTED");
 }

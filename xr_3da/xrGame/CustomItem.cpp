@@ -36,7 +36,6 @@ void	CCustomItem::SetState(EItemState e)
 	switch(state){
 	case esShowing:
 		vScale.set			(SC,SC,SC);
-		UpdateTransform		();
 		setVisible			(true);
 		fStateTime			= SHOWING_TIME; 
 		break;
@@ -44,9 +43,8 @@ void	CCustomItem::SetState(EItemState e)
 		setVisible			(true);
 		break;
 	case esHidding:	
-		::Sound->play_at_pos	(sndTake,this,vPosition);
+		::Sound->play_at_pos	(sndTake,this,Position());
 		vScale.set			(SM,SM,SM);
-		UpdateTransform		();
 		setVisible			(true);
 		fStateTime			= HIDDING_TIME; 
 		break;
@@ -63,7 +61,7 @@ void	CCustomItem::Load	(LPCSTR section)
 	
 	clsid_target	= TEXT2CLSID(pSettings->r_string(section, "target"));
 	iValue			= pSettings->r_s32(section, "value");
-	start_pos.set	(vPosition);
+	start_pos.set	(Position());
 	::Sound->create	(sndTake, TRUE, pSettings->r_string(section, "snd_take"));
 }
 
@@ -71,12 +69,15 @@ void	CCustomItem::OnMove()
 {
 	Fvector	vScale;
 
-	fTime+=Device.fTimeDelta*2.5f; //*.1f;
-	vPosition.y	= start_pos.y +	_sin(fTime)*.1f;
+	fTime			+=	Device.fTimeDelta*2.5f; //*.1f;
+	Position().y	=	start_pos.y +	_sin(fTime)*.1f;
 	Fvector	D,N;
-	D.set(-_sin(fTime),0.f,-_cos(fTime));
-	N.set(0,1,0);
-	mRotate.rotation(D,N);
+	Fmatrix	mXFORM;
+	D.set			(-_sin(fTime),0.f,-_cos(fTime));
+	N.set			(0,1,0);
+	mXFORM.rotation	(D,N);
+	mXFORM.c.set	(Position());
+	XFORM().set		(mXFORM);
 
 	switch(state){
 	case esShowing:
@@ -84,19 +85,16 @@ void	CCustomItem::OnMove()
 			fStateTime -= Device.fTimeDelta;
 			float   fS = 1.f-(fStateTime/SHOWING_TIME);
 			vScale.set(fS,fS,fS);
-			UpdateTransform();
 			if (fStateTime<=0.f) SetState(esShow);
 		}
 		break;
 	case esShow:	
-		UpdateTransform	();
 		break;
 	case esHidding:	
 		{
 			fStateTime -= Device.fTimeDelta;
 			float   fS = fStateTime/HIDDING_TIME;
 			vScale.set(fS,fS,fS);
-			UpdateTransform();
 			if (fStateTime<=0.f) SetState(esHide);
 		}
 		break;

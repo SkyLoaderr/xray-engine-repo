@@ -70,7 +70,7 @@ BOOL CWeaponAmmo::net_Spawn(LPVOID DC) {
 		m_pPhysicsShell = P_create_Shell(); R_ASSERT(m_pPhysicsShell);
 		m_pPhysicsShell->add_Element(E);
 		m_pPhysicsShell->setDensity(2000.f);
-		if(!H_Parent())m_pPhysicsShell->Activate(svXFORM(),0,svXFORM());
+		if(!H_Parent())m_pPhysicsShell->Activate(XFORM(),0,XFORM());
 		m_pPhysicsShell->mDesired.identity();
 		m_pPhysicsShell->fDesiredStrength = 0.f;
 	}
@@ -102,19 +102,19 @@ void CWeaponAmmo::OnH_B_Independent() {
 	setVisible(true);
 	setEnabled(true);
 	CObject* E = dynamic_cast<CObject*>(H_Parent()); R_ASSERT(E);
-	svTransform.set(E->clXFORM());
-	vPosition.set(svTransform.c);
+	XFORM().set(E->XFORM());
+	Position().set(XFORM().c);
 	if(m_pPhysicsShell) {
 		Fmatrix trans;
 		Level().Cameras.unaffected_Matrix(trans);
 		Fvector l_fw; l_fw.set(trans.k);
-		Fvector l_up; l_up.set(svTransform.j); l_up.mul(2.f);
+		Fvector l_up; l_up.set(XFORM().j); l_up.mul(2.f);
 		Fmatrix l_p1, l_p2;
-		l_p1.set(svTransform); l_p1.c.add(l_up); l_up.mul(1.2f); 
-		l_p2.set(svTransform); l_p2.c.add(l_up); l_fw.mul(3.f); l_p2.c.add(l_fw);
+		l_p1.set(XFORM()); l_p1.c.add(l_up); l_up.mul(1.2f); 
+		l_p2.set(XFORM()); l_p2.c.add(l_up); l_fw.mul(3.f); l_p2.c.add(l_fw);
 		m_pPhysicsShell->Activate(l_p1, 0, l_p2);
-		svTransform.set(l_p1);
-		vPosition.set(svTransform.c);
+		XFORM().set(l_p1);
+		Position().set(XFORM().c);
 	}
 }
 
@@ -172,9 +172,9 @@ bool CWeaponAmmo::Get(CCartridge &cartridge) {
 	return true;
 }
 
-void CWeaponAmmo::OnVisible() {
+void CWeaponAmmo::renderable_Render() {
 	if(getVisible() && !H_Parent()) {
-		::Render->set_Transform		(&clTransform);
+		::Render->set_Transform		(&XFORM());
 		::Render->add_Visual		(Visual());
 	}
 }
@@ -183,8 +183,8 @@ void CWeaponAmmo::UpdateCL() {
 	inherited::UpdateCL();
 	if(getVisible() && m_pPhysicsShell) {
 		m_pPhysicsShell->Update	();
-		svTransform.set			(m_pPhysicsShell->mXFORM);
-		vPosition.set			(svTransform.c);
+		XFORM().set			(m_pPhysicsShell->mXFORM);
+		Position().set			(XFORM().c);
 	}
 }
 

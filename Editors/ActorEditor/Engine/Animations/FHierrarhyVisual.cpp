@@ -15,7 +15,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-FHierrarhyVisual::FHierrarhyVisual()  : IVisual()
+FHierrarhyVisual::FHierrarhyVisual()  : IRender_Visual()
 {
 	bDontDelete	= FALSE;
 }
@@ -35,7 +35,7 @@ FHierrarhyVisual::~FHierrarhyVisual()
 
 void FHierrarhyVisual::Load(const char* N, IReader *data, u32 dwFlags)
 {
-	IVisual::Load(N,data,dwFlags);
+	IRender_Visual::Load(N,data,dwFlags);
 	if (data->find_chunk(OGF_CHIELDS_L)) 
 	{
 		// From Link
@@ -102,9 +102,9 @@ void FHierrarhyVisual::Load(const char* N, IReader *data, u32 dwFlags)
 	}
 }
 
-void	FHierrarhyVisual::Copy(IVisual *pSrc)
+void	FHierrarhyVisual::Copy(IRender_Visual *pSrc)
 {
-	IVisual::Copy	(pSrc);
+	IRender_Visual::Copy	(pSrc);
 
 	FHierrarhyVisual	*pFrom = (FHierrarhyVisual *)pSrc;
 
@@ -112,9 +112,9 @@ void	FHierrarhyVisual::Copy(IVisual *pSrc)
 	children.reserve(pFrom->children.size());
 	for (u32 i=0; i<pFrom->children.size(); i++) {
 #ifdef _EDITOR
-		IVisual *p = ::Device.Models.Instance_Duplicate(pFrom->children[i]);
+		IRender_Visual *p = ::Device.Models.Instance_Duplicate(pFrom->children[i]);
 #else
-		IVisual *p = ::Render->model_Duplicate	(pFrom->children[i]);
+		IRender_Visual *p = ::Render->model_Duplicate	(pFrom->children[i]);
 #endif
 		children.push_back(p);
 	}

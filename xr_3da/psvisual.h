@@ -6,7 +6,7 @@
 
 #define MAX_PARTICLES	1024
 
-class ENGINE_API CPSVisual: public IVisual
+class ENGINE_API CPSVisual: public IRender_Visual
 {
 protected:
 	PS::Particles	  	m_Particles;
@@ -20,7 +20,7 @@ public:
 	// Visual
 	u32					RenderTO		(FVF::TL* V);
 	virtual void		Render			(float LOD);
-	virtual void		Copy			(IVisual* pFrom);
+	virtual void		Copy			(IRender_Visual* pFrom);
 
 	// Functionality
 	void				Update			(u32 dt);

@@ -1,4 +1,4 @@
-// Blender.h: interface for the CBlender class.
+// Blender.h: interface for the IBlender class.
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -30,7 +30,7 @@ public:
 	void						Setup	(LPCSTR N);
 };
 
-class ENGINE_API CBlender	: public CPropertyBase
+class ENGINE_API IBlender	: public CPropertyBase
 {
 	friend class				CBlender_Compile;
 protected:
@@ -43,9 +43,9 @@ protected:
 	u32							BC				(BOOL v)		{ return v?0xff:0; }
 	BOOL						c_XForm			();
 public:
-	static			CBlender*	Create			(CLASS_ID cls);
-	static			void		Destroy			(CBlender*& B);
-	static			void		CreatePalette	(xr_vector<CBlender*> & palette);
+	static			IBlender*	Create			(CLASS_ID cls);
+	static			void		Destroy			(IBlender*& B);
+	static			void		CreatePalette	(xr_vector<IBlender*> & palette);
 	
 	CBlender_DESC&				getDescription	()	{return description;}
 	virtual 		LPCSTR		getName			()	{return description.cName;}
@@ -59,8 +59,8 @@ public:
 	
 	virtual			void		Compile			(CBlender_Compile& C);
 
-	CBlender();
-	virtual ~CBlender();
+	IBlender();
+	virtual ~IBlender();
 };
 #pragma pack(push,4)
 

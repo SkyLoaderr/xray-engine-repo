@@ -9,7 +9,7 @@ public:
 	virtual ~CTargetCSCask(void);
 	virtual void OnEvent		(NET_Packet& P, u16 type);
 	virtual void Load			(LPCSTR section);
-	virtual void OnVisible		();
+	virtual void renderable_Render		();
 
 	xr_list<CTargetCS*>			m_targets;
 };

@@ -24,7 +24,7 @@ void CSkeletonX::_Copy(CSkeletonX *B)
 	Vertices2W			= B->Vertices2W;
 	cache_DiscardID		= 0xffffffff;
 }
-void CSkeletonX_PM::Copy(IVisual *V) 
+void CSkeletonX_PM::Copy(IRender_Visual *V) 
 {
 	Fvisual::Copy		(V);
 	pm_copy				(V);
@@ -44,7 +44,7 @@ void CSkeletonX_PM::Copy(IVisual *V)
 	Memory.mem_copy		(bytes, indices, dwCount*2);
 	pIndices->Unlock	();
 }
-void CSkeletonX_ST::Copy(IVisual *P) 
+void CSkeletonX_ST::Copy(IRender_Visual *P) 
 {
 	inherited::Copy		(P);
 	CSkeletonX_ST *X	= (CSkeletonX_ST*)P;

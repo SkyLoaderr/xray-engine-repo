@@ -26,7 +26,7 @@ CBlender_LaEmB::~CBlender_LaEmB	()
 
 void	CBlender_LaEmB::Save(	IWriter& fs )
 {
-	CBlender::Save	(fs);
+	IBlender::Save	(fs);
 	xrPWRITE_MARKER	(fs,"Environment map");
 	xrPWRITE_PROP	(fs,"Name",				xrPID_TEXTURE,	oT2_Name);
 	xrPWRITE_PROP	(fs,"Transform",		xrPID_MATRIX,	oT2_xform);
@@ -35,7 +35,7 @@ void	CBlender_LaEmB::Save(	IWriter& fs )
 
 void	CBlender_LaEmB::Load(	IReader& fs, WORD version )
 {
-	CBlender::Load	(fs,version);
+	IBlender::Load	(fs,version);
 	xrPREAD_MARKER	(fs);
 	xrPREAD_PROP	(fs,xrPID_TEXTURE,	oT2_Name);
 	xrPREAD_PROP	(fs,xrPID_MATRIX,	oT2_xform);
@@ -44,7 +44,7 @@ void	CBlender_LaEmB::Load(	IReader& fs, WORD version )
 
 void	CBlender_LaEmB::Compile(CBlender_Compile& C)
 {
-	CBlender::Compile		(C);
+	IBlender::Compile		(C);
 
 	BOOL bConstant			= (0!=stricmp(oT2_const,"$null"));
 	if (C.bEditor)	{

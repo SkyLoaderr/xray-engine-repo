@@ -33,7 +33,7 @@ void __stdcall _sound_event	(sound* S, float range)
 
 			// Energy and signal
 			Fvector				Oc;
-			O->clCenter			(Oc);
+			O->Center			(Oc);
 			float D				= p->position.distance_to(Oc);
 			float A				= p->min_distance/(psSoundRolloff*D);					// (Dmin*V)/(R*D) 
 			clamp				(A,0.f,1.f);
@@ -69,7 +69,7 @@ IC void CObjectSpace::Object_Register		( CObject *O )
 	R_ASSERT			(O);
 	
 	Irect				rect;
-	CCFModel*			M = O->CFORM();
+	ICollisionForm*			M = O->CFORM();
 	R_ASSERT			(M);
 
 	GetRect				(M, rect);
@@ -84,7 +84,7 @@ IC void CObjectSpace::Object_Register		( CObject *O )
 IC void CObjectSpace::Object_Move			( CObject *O ) 
 {
 	VERIFY		(O);
-	CCFModel*	M = O->CFORM();
+	ICollisionForm*	M = O->CFORM();
 
 	Irect&		r0	= M->rect_last;
 	Irect		r1;
@@ -109,7 +109,7 @@ IC void CObjectSpace::Object_Move			( CObject *O )
 IC void CObjectSpace::Object_Unregister		( CObject *O )
 {
 	R_ASSERT	(O);
-	CCFModel*	M = O->CFORM();
+	ICollisionForm*	M = O->CFORM();
 	if (M){
 		Irect&	r0 = M->rect_last;
 
@@ -134,7 +134,7 @@ IC int	CObjectSpace::GetNearest ( const Fvector &point, float range )
 	Fsphere				Q; Q.set(point,range);
 
 	CObject*			t_object;
-	CCFModel*			t_model;
+	ICollisionForm*			t_model;
 	int 				ix, iz;
 	for (ix=rect.x1;ix<=rect.x2;ix++)
 		for (iz=rect.y1;iz<=rect.y2;iz++)
@@ -145,7 +145,7 @@ IC int	CObjectSpace::GetNearest ( const Fvector &point, float range )
 				if (t_model->dwQueryID!=dwQueryID) {
 					t_model->dwQueryID=dwQueryID;
 					Fsphere	mS;
-					t_object->clXFORM().transform_tiny	(mS.P,t_model->getSphere().P);
+					t_object->XFORM().transform_tiny	(mS.P,t_model->getSphere().P);
 					mS.R								= t_model->getRadius();
 					if (Q.intersect(mS)) 
 						q_nearest.push_back(t_object);
@@ -154,10 +154,10 @@ IC int	CObjectSpace::GetNearest ( const Fvector &point, float range )
 	return q_nearest.size();
 }
 //----------------------------------------------------------------------
-IC int   CObjectSpace::GetNearest( CCFModel* obj, float range ){
+IC int   CObjectSpace::GetNearest( ICollisionForm* obj, float range ){
 	obj->Enable 		( false ); // self exclude from test
 	Fvector				P;
-	obj->Owner()->clXFORM().transform_tiny(P,obj->getSphere().P);
+	obj->Owner()->XFORM().transform_tiny(P,obj->getSphere().P);
 	int res				= GetNearest( P, range + obj->getRadius() );
 	obj->EnableRollback	( );
 	return				res;
@@ -170,11 +170,11 @@ IC void CObjectSpace::GetRect	( const Fvector &center, Irect &rect, float range 
 	rect.y2	= TransZ(center.z + range);
 }
 //----------------------------------------------------------------------
-IC void CObjectSpace::GetRect	( const CCFModel *obj, Irect &rect ){
+IC void CObjectSpace::GetRect	( const ICollisionForm *obj, Irect &rect ){
 	VERIFY				( obj );
 	VERIFY				( obj->owner );
 	Fbox				bb;
-	bb.xform			(obj->bv_box,obj->Owner()->svXFORM());
+	bb.xform			(obj->bv_box,obj->Owner()->XFORM());
 	rect.x1				= TransX(bb.min.x);
 	rect.y1				= TransZ(bb.min.z);
 	rect.x2				= TransX(bb.max.x);

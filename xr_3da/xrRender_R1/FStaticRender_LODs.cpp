@@ -21,7 +21,7 @@ void CRender::flush_LODs()
 	if (lstLODs.empty())		return;
 
 	// *** Fill VB and generate groups
-	IVisual*					firstV		= lstLODs[0].pVisual;
+	IRender_Visual*					firstV		= lstLODs[0].pVisual;
 	Shader*						cur_S		= firstV->hShader;
 	int							cur_count	= 0;
 	u32							vOffset;

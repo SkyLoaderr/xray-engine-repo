@@ -346,13 +346,13 @@ public:
 	void						DebugRender		(Fmatrix& XFORM);
 
 	// General "Visual" stuff
-	virtual void				Copy			(IVisual *pFrom);
+	virtual void				Copy			(IRender_Visual *pFrom);
 	virtual void				Load			(const char* N, IReader *data, u32 dwFlags);
 	virtual void				Release			();
 	virtual void				Spawn			();
 	virtual						~CKinematics	();
 };
-IC CKinematics* PKinematics		(IVisual* V) { return dynamic_cast<CKinematics*>(V); }
+IC CKinematics* PKinematics		(IRender_Visual* V) { return dynamic_cast<CKinematics*>(V); }
 
 
 #endif // BodyInstanceH

@@ -41,7 +41,7 @@ void CUIChangeTeamMenu::Render	()
 {
 }
 //--------------------------------------------------------------------
-bool CUIChangeTeamMenu::OnKeyboardPress(int dik)
+bool CUIChangeTeamMenu::IR_OnKeyboardPress(int dik)
 {
 	int id = -1;
 	switch (dik){

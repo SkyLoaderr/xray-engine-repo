@@ -1,36 +1,16 @@
 #pragma once
 
-class	ENGINE_API	CSheduled
-{
-public:
-	struct {
-		u32		t_min		:	14;		// minimal bound of update time (sample: 20ms)
-		u32		t_max		:	14;		// maximal bound of update time (sample: 200ms)
-		u32		b_RT		:	1;
-		u32		b_locked	:	1;
-	}	shedule;
+#include "ISheduled.h"
 
-	CSheduled			();
-	virtual ~CSheduled	();
-
-	void								shedule_Register	();
-	void								shedule_Unregister	();
-
-	virtual float						shedule_Scale		()			= 0;
-	virtual void						Update				(u32 dt)	{};
-	virtual BOOL						Ready				()			= 0; 
-	virtual LPCSTR						cName				()			{ return "UNKNOWN"; }; 
-};
-
-class	ENGINE_API CSheduler
+class	ENGINE_API	CSheduler
 {
 private:
 	struct Item
 	{
-		u32		dwTimeForExecute;
-		u32		dwTimeOfLastExecute;
-		CSheduled*	Object;
-		u32		dwPadding;				// for align-issues
+		u32			dwTimeForExecute;
+		u32			dwTimeOfLastExecute;
+		ISheduled*	Object;
+		u32			dwPadding;				// for align-issues
 
 		IC bool		operator < (Item& I)
 		{	return dwTimeForExecute > I.dwTimeForExecute; }
@@ -61,9 +41,9 @@ public:
 			Switch();
 	}
 
-	void			Register	(CSheduled* A, BOOL RT=FALSE );
-	void			Unregister	(CSheduled* A	);
-	void			EnsureOrder	(CSheduled* Before, CSheduled* After);
+	void			Register	(ISheduled* A, BOOL RT=FALSE );
+	void			Unregister	(ISheduled* A	);
+	void			EnsureOrder	(ISheduled* Before, ISheduled* After);
 
 	void			Initialize	();
 	void			Destroy		();

@@ -12,10 +12,10 @@ void CRender::RenderBox			(IRender_Sector* _S, Fbox& BB, int sh)
 	
 	for (u32 test=0; test<lstVisuals.size(); test++)
 	{
-		IVisual*	V		= 	lstVisuals[test];
+		IRender_Visual*	V		= 	lstVisuals[test];
 		
 		// Visual is 100% visible - simply add it
-		xr_vector<IVisual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
+		xr_vector<IRender_Visual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
 		
 		switch (V->Type) {
 		case MT_HIERRARHY:
@@ -25,7 +25,7 @@ void CRender::RenderBox			(IRender_Sector* _S, Fbox& BB, int sh)
 				I = pV->children.begin	();
 				E = pV->children.end		();
 				for (; I!=E; I++)		{
-					IVisual* T			= *I;
+					IRender_Visual* T			= *I;
 					if (BB.intersect(T->vis.box))	lstVisuals.push_back(T);
 				}
 			}
@@ -38,7 +38,7 @@ void CRender::RenderBox			(IRender_Sector* _S, Fbox& BB, int sh)
 				I = pV->children.begin	();
 				E = pV->children.end		();
 				for (; I!=E; I++)		{
-					IVisual* T			= *I;
+					IRender_Visual* T			= *I;
 					if (BB.intersect(T->vis.box))	lstVisuals.push_back(T);
 				}
 			}

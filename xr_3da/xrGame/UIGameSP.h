@@ -12,8 +12,8 @@ public:
 	virtual void		Render				(){}
 	virtual void		OnFrame				();
 
-	virtual bool		OnKeyboardPress		(int dik);
-	virtual bool		OnKeyboardRelease	(int dik);
+	virtual bool		IR_OnKeyboardPress		(int dik);
+	virtual bool		IR_OnKeyboardRelease	(int dik);
 
 	CUIInventory		InventoryMenu;
 };

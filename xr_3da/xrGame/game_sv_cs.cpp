@@ -66,7 +66,7 @@ void game_sv_CS::SaveDefaultWeapon(CMemoryWriter &store) {		//@@@ WT: Это надо п
 			W_prim = dynamic_cast<CSE_ALifeItemWeapon*>(spawn_begin(prim));
 			if(W_prim) {
 				strcpy(W_prim->s_name_replace,prim);
-				W_prim->s_flags.set(M_SPAWN_OBJECT_ACTIVE|M_SPAWN_OBJECT_LOCAL);
+				W_prim->s_flags.set(M_SPAWN_OBJECT_LOCAL);
 				W_prim->ID_Parent = 0;
 				W_prim->ID = 0xffff;
 				W_prim->a_elapsed = W_prim->get_ammo_magsize();
@@ -78,7 +78,7 @@ void game_sv_CS::SaveDefaultWeapon(CMemoryWriter &store) {		//@@@ WT: Это надо п
 			W_pistol = dynamic_cast<CSE_ALifeItemWeapon*>(spawn_begin(pistol));
 			if(W_pistol) {
 				strcpy(W_pistol->s_name_replace,pistol);
-				W_pistol->s_flags.set(M_SPAWN_OBJECT_ACTIVE|M_SPAWN_OBJECT_LOCAL);
+				W_pistol->s_flags.set(M_SPAWN_OBJECT_LOCAL);
 				W_pistol->ID_Parent = 0;
 				W_pistol->ID = 0xffff;
 				W_pistol->a_elapsed = W_pistol->get_ammo_magsize();
@@ -119,7 +119,7 @@ void game_sv_CS::SpawnArtifacts() {
 	for(s32 i = 0; i < 3; i++) {
 		CSE_Abstract*		E	=	spawn_begin	("m_target_cs");								// create SE
 		CSE_Target_CS*	A		=	(CSE_Target_CS*) E;					
-		A->s_flags.set			(M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL);				// flags
+		A->s_flags.set			(M_SPAWN_OBJECT_LOCAL);				// flags
 		RPoint&				r	= rp[i];
 		A->o_Position.set	(r.P);
 		A->o_Angle.set		(r.A);
@@ -141,7 +141,7 @@ void game_sv_CS::SpawnPlayer(u32 it, CMemoryWriter &weapon) {
 		A->s_team = u8(l_pPS->team);
 	}
 	strcpy(E->s_name_replace,get_option_s(options,"name","Player"));
-	E->s_flags.set(M_SPAWN_OBJECT_ACTIVE|M_SPAWN_OBJECT_LOCAL|M_SPAWN_OBJECT_ASPLAYER);
+	E->s_flags.set(M_SPAWN_OBJECT_LOCAL|M_SPAWN_OBJECT_ASPLAYER);
 	xr_vector<RPoint> &rp = rpoints[l_pPS->team];
 	RPoint &r = rp[it%rp.size()];
 	E->o_Position.set(r.P);
@@ -249,7 +249,7 @@ void game_sv_CS::OnRoundStart() {
 //				W_prim = dynamic_cast<CSE_ALifeItemWeapon*>(spawn_begin(prim));
 //				if(W_prim) {
 //					strcpy(W_prim->s_name_replace,prim);
-//					W_prim->s_flags = M_SPAWN_OBJECT_ACTIVE|M_SPAWN_OBJECT_LOCAL;
+//					W_prim->s_flags = M_SPAWN_OBJECT_LOCAL;
 //					W_prim->ID_Parent = 0;
 //					W_prim->ID = 0xffff;
 //					W_prim->a_elapsed = W_prim->get_ammo_magsize();
@@ -260,7 +260,7 @@ void game_sv_CS::OnRoundStart() {
 //				W_pistol = dynamic_cast<CSE_ALifeItemWeapon*>(spawn_begin(pistol));
 //				if(W_pistol) {
 //					strcpy(W_pistol->s_name_replace,pistol);
-//					W_pistol->s_flags = M_SPAWN_OBJECT_ACTIVE|M_SPAWN_OBJECT_LOCAL;
+//					W_pistol->s_flags = M_SPAWN_OBJECT_LOCAL;
 //					W_pistol->ID_Parent = 0;
 //					W_pistol->ID = 0xffff;
 //					W_pistol->a_elapsed = W_pistol->get_ammo_magsize();
@@ -323,7 +323,7 @@ void game_sv_CS::OnRoundStart() {
 //	for(s32 i = 0; i < 3; i++) {
 //		CSE_Abstract*		E	=	spawn_begin	("m_target_cs");									// create SE
 //		CSE_Target_CS*	A		=	(CSE_Target_CS*) E;					
-//		A->s_flags				=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL;				// flags
+//		A->s_flags				=	M_SPAWN_OBJECT_LOCAL;				// flags
 //		RPoint&				r	= rp[i];
 //		A->o_Position.set	(r.P);
 //		A->o_Angle.set		(r.A);
@@ -345,7 +345,7 @@ void game_sv_CS::OnRoundStart() {
 //		CSE_ALifeCreatureActor*	A			=	(CSE_ALifeCreatureActor*) E;					
 //		strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
 //		A->s_team				=	u8(ps->team);															// team
-//		A->s_flags				=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER;// flags
+//		A->s_flags				=	M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER;// flags
 //		assign_RP				(A);
 //		spawn_end				(A,get_it_2_id(it));
 //
@@ -449,7 +449,7 @@ void	game_sv_CS::OnPlayerKillPlayer	(u32 id_killer, u32 id_killed)
 	// spectator
 	CSE_Spectator*		A			=	(CSE_Spectator*)spawn_begin	("spectator");															// create SE
 	strcpy							(A->s_name_replace,get_option_s(get_name_id(id_killed),"name","Player"));					// name
-	A->s_flags.set					(M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);					// flags
+	A->s_flags.set					(M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);					// flags
 	A->o_Position					=	S->ID_to_entity(get_id_2_eid(id_killed))->o_Position;
 	spawn_end						(A,id_killed);
 }
@@ -701,7 +701,7 @@ void game_sv_CS::OnPlayerConnect	(u32 id_who)
 	// Spawn "actor"
 	CSE_Spectator*		A	=	(CSE_Spectator*)spawn_begin	("spectator");															// create SE
 	strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
-	A->s_flags.set			(M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);	// flags
+	A->s_flags.set			(M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);	// flags
 	assign_RP				(A);
 	spawn_end				(A,id_who);
 
@@ -718,7 +718,7 @@ void game_sv_CS::OnPlayerConnect	(u32 id_who)
 			W_prim = dynamic_cast<CSE_ALifeItemWeapon*>(spawn_begin(prim));
 			if(W_prim) {
 				strcpy(W_prim->s_name_replace,prim);
-				W_prim->s_flags = M_SPAWN_OBJECT_ACTIVE|M_SPAWN_OBJECT_LOCAL;
+				W_prim->s_flags = M_SPAWN_OBJECT_LOCAL;
 				//W_prim->ID_Parent = A->owner->ID;
 				W_prim->a_elapsed = W_prim->get_ammo_magsize();
 				W_prim->a_current = u16(prim_ammo) * W_prim->a_elapsed;
@@ -734,7 +734,7 @@ void game_sv_CS::OnPlayerConnect	(u32 id_who)
 			W_pistol = dynamic_cast<CSE_ALifeItemWeapon*>(spawn_begin(pistol));
 			if(W_pistol) {
 				strcpy(W_pistol->s_name_replace,pistol);
-				W_pistol->s_flags = M_SPAWN_OBJECT_ACTIVE|M_SPAWN_OBJECT_LOCAL;
+				W_pistol->s_flags = M_SPAWN_OBJECT_LOCAL;
 				W_pistol->a_elapsed = W_pistol->get_ammo_magsize();
 				W_pistol->a_current = u16(pistol_ammo) * W_pistol->a_elapsed;
 				NET_Packet						P;
@@ -810,7 +810,7 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u16 eid_who, LPCSTR what)
 		// initialize spawn
 		CSE_Abstract*		E	=	spawn_begin	(name);														// create SE
 		strcpy					(E->s_name_replace,name);													// name
-		E->s_flags.set			(M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL);							// flags
+		E->s_flags.set			(M_SPAWN_OBJECT_LOCAL);							// flags
 		E->ID_Parent			=	u16(eid_who);
 
 		// check if has same-slot-weapon(s)

@@ -11,8 +11,8 @@ public:
 	bool Visible() { return m_active; }
 
 	virtual void OnFrame();
-	virtual bool OnKeyboardPress(int dik);
-	virtual bool OnKeyboardRelease(int dik);
+	virtual bool IR_OnKeyboardPress(int dik);
+	virtual bool IR_OnKeyboardRelease(int dik);
 
 	bool m_active, m_shift, m_deleteNext;
 	f32 m_rowOffs, m_rowSkip, m_colOffs[3];

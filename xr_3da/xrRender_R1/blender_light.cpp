@@ -23,17 +23,17 @@ CBlender_LIGHT::~CBlender_LIGHT()
 
 void	CBlender_LIGHT::Save	( IWriter& fs	)
 {
-	CBlender::Save	(fs);
+	IBlender::Save	(fs);
 }
 
 void	CBlender_LIGHT::Load	( IReader& fs, WORD version	)
 {
-	CBlender::Load	(fs,version);
+	IBlender::Load	(fs,version);
 }
 
 void CBlender_LIGHT::Compile	(CBlender_Compile& C)
 {
-	CBlender::Compile		(C);
+	IBlender::Compile		(C);
 	C.PassBegin		();
 	{
 		C.PassSET_ZB		(TRUE, FALSE);

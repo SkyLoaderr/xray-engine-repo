@@ -14,14 +14,14 @@ void CObject::StatusBegin	()
 {
 	Fvector		T;
 	Fvector4	S;
-	
-	T.set	(vPosition); T.y+=(Radius()*2);
+
+	Center							(T);
 	Device.mFullTransform.transform	(S,T);
 }
 
 void CObject::cName_set			(LPCSTR N)
 { 
-	xr_free					(NameObject);
+	xr_free							(NameObject);
 	if (N)	NameObject=xr_strdup	(N); 
 }
 void CObject::cNameSect_set		(LPCSTR N)
@@ -37,22 +37,21 @@ void CObject::cNameVisual_set	(LPCSTR N)
 
 	// replace model
 	xr_free					(NameVisual);
-	::Render->model_Delete	(pVisual);
+	::Render->model_Delete	(renderable.visual);
 	if (N) 
 	{
 		NameVisual=xr_strdup	(N); 
-		if (NameVisual[0]) pVisual	= Render->model_Create	(NameVisual);
+		if (NameVisual[0]) renderable.visual	= Render->model_Create	(NameVisual);
 	}
 }
 void CObject::setEnabled		(BOOL _enabled)
 {
 	FLAGS.bEnabled = _enabled?1:0;	
-	if (cfModel) cfModel->Enable(_enabled); 
+	if (collidable.model) collidable.model->Enable(_enabled); 
 }
-void	CObject::svCenter			(Fvector& C)	const	{ VERIFY(pVisual); svTransform.transform_tiny(C,pVisual->vis.sphere.P);	}
-void	CObject::clCenter			(Fvector& C)	const	{ VERIFY(pVisual); clTransform.transform_tiny(C,pVisual->vis.sphere.P);	}
-float	CObject::Radius				()				const	{ VERIFY(pVisual); return pVisual->vis.sphere.R;						}
-const Fbox&	CObject::BoundingBox	()				const	{ VERIFY(pVisual); return pVisual->vis.box;								}
+void	CObject::Center				(Fvector& C)	const	{ VERIFY(renderable.visual); renderable.xform.transform_tiny(C,renderable.visual->vis.sphere.P);	}
+float	CObject::Radius					()				const	{ VERIFY(renderable.visual); return renderable.visual->vis.sphere.R;								}
+const	Fbox&	CObject::BoundingBox	()				const	{ VERIFY(renderable.visual); return renderable.visual->vis.box;								}
 
 //----------------------------------------------------------------------
 // Class	: CXR_Object
@@ -61,41 +60,20 @@ const Fbox&	CObject::BoundingBox	()				const	{ VERIFY(pVisual); return pVisual->
 CObject::CObject		( )
 {
 	// Transform
-	vPosition.set				(0,0,0);
-	mRotate.identity			();
-	svTransform.identity		();
-	clTransform.identity		();
-
-	cfModel						= NULL;
-	pVisual						= NULL;
-
 	FLAGS.storage				= 0;
 
-	pSector						= 0;
-	pROS						= NULL;
-
-	Parent						= 0;
+	Parent						= NULL;
 
 	NameObject					= NULL;
 	NameSection					= NULL;
 	NameVisual					= NULL;
 }
 
-CObject::~CObject( )
+CObject::~CObject				( )
 {
-	Sector_Move					( 0 );
-	::Render->ros_destroy		( pROS	);
-	xr_delete					( cfModel		);
-
 	cNameVisual_set				( 0 );
 	cName_set					( 0 );
 	cNameSect_set				( 0 );
-}
-
-void CObject::UpdateTransform( )
-{
-	svTransform.set				(mRotate);
-	svTransform.translate_over	(vPosition);
 }
 
 void CObject::Load				(LPCSTR section )
@@ -105,39 +83,30 @@ void CObject::Load				(LPCSTR section )
 	cName_set					(section);
 	cNameSect_set				(section);
 	
-	// Geometry and transform
-	vPosition.set				(0,0,0);
-	mRotate.identity			();
-	UpdateTransform				();
-
 	// Visual and light-track
 	if (pSettings->line_exist(section,"visual")) 
 		cNameVisual_set	(pSettings->r_string(section,"visual"));
-	pROS						= ::Render->ros_create(this);
 	setVisible					(false);
 }
 
 BOOL CObject::net_Spawn			(LPVOID data)
 {
-	Sector_Detect				();
-
-	if (0==cfModel) 
+	if (0==collidable.model) 
 	{
 		if (pSettings->line_exist(cNameSect(),"cform")) {
-			LPCSTR cf			= pSettings->r_string(cNameSect(), "cform");
+			LPCSTR cf			= pSettings->r_string	(cNameSect(), "cform");
 
-			if (strcmp(cf,"skeleton")==0) cfModel	= xr_new<CCF_Skeleton>	(this);
+			if (strcmp(cf,"skeleton")==0) collidable.model	= xr_new<CCF_Skeleton>	(this);
 			else {
-				if (strcmp(cf,"rigid")==0)cfModel	= xr_new<CCF_Rigid>		(this);
+				if (strcmp(cf,"rigid")==0)collidable.model	= xr_new<CCF_Rigid>		(this);
 				else{
-					cfModel							= xr_new<CCF_Polygonal> (this);
-					((CCF_Polygonal*)(cfModel))->LoadModel(pSettings, cNameSect());
+					collidable.model						= xr_new<CCF_Polygonal> (this);
+					((CCF_Polygonal*)(collidable.model))->LoadModel(pSettings, cNameSect());
 				}
 			}
-			g_pGameLevel->ObjectSpace.Object_Register	(this);
-			cfModel->OnMove		();
 		}
 	}
+	spatial_move	();
 
 	return TRUE;
 }
@@ -148,12 +117,11 @@ void CObject::net_Destroy		()
 }
 
 // Updates
-void CObject::UpdateCL	()
+void CObject::UpdateCL			()
 {
-	clTransform.set(svTransform);
 }
 
-void CObject::Update	( u32 T )
+void CObject::shedule_Update	( u32 T )
 {
 	BOOL	bUpdate=FALSE;
 	if (PositionStack.empty())
@@ -162,12 +130,12 @@ void CObject::Update	( u32 T )
 		bUpdate							= TRUE;
 		PositionStack.push_back			(SavedPosition());
 		PositionStack.back().dwTime		= Device.dwTimeGlobal;
-		PositionStack.back().vPosition	= vPosition;
+		PositionStack.back().vPosition	= Position();
 	} else {
-		if (PositionStack.back().vPosition.similar(vPosition,0.005f))
+		if (PositionStack.back().vPosition.similar(Position(),0.005f))
 		{
 			// Just update time
-			PositionStack.back().dwTime	= Device.dwTimeGlobal;
+			PositionStack.back().dwTime		= Device.dwTimeGlobal;
 		} else {
 			// Register _new_ record
 			bUpdate							= TRUE;
@@ -179,18 +147,21 @@ void CObject::Update	( u32 T )
 				PositionStack[2]				= PositionStack[3];
 			}
 			PositionStack.back().dwTime		= Device.dwTimeGlobal;
-			PositionStack.back().vPosition	= vPosition;
+			PositionStack.back().vPosition	= Position();
 		}
 	}
 
 	if (bUpdate)
-	{
-		// sector
-		Sector_Detect	();
-
-		// cfmodel 
-		if (cfModel && (0==H_Parent()))		cfModel->OnMove	();
+	{	
+		spatial_move	();
 	}
+}
+
+void	CObject::spatial_move()
+{
+	Center					(spatial.center);
+	spatial.radius			= Radius();
+	ISpatial::spatial_move	();
 }
 
 CObject::SavedPosition CObject::ps_Element(u32 ID)
@@ -199,44 +170,8 @@ CObject::SavedPosition CObject::ps_Element(u32 ID)
 	return PositionStack[ID];
 }
 
-void CObject::OnVisible	()
+void CObject::renderable_Render	()
 {
-}
-
-void CObject::Sector_Detect	()
-{
-	// Detect sector
-	IRender_Sector*	P = 0;
-	
-	if (pVisual)	{
-		Fvector		Pos;
-		pVisual->vis.box.getcenter(Pos);
-		Pos.add		(vPosition);
-		Pos.y		=	_max(Pos.y,vPosition.y);
-		Pos.y		+=	EPS_L;
-		P			=	::Render->detectSector(Pos);
-		if (P)		Sector_Move	(P);
-	}
-}
-
-void CObject::Sector_Move	(IRender_Sector* P)
-{
-	// Update
-	if (P!=pSector) {
-		if (pSector)	pSector->objectRemove	(this);
-		pSector			= P;
-		if (P)			pSector->objectAdd		(this);
-	}
-}
-
-void CObject::OnActivate	()
-{
-	setActive	(TRUE);
-}
-
-void CObject::OnDeactivate	()
-{
-	setActive	(FALSE);
 }
 
 CObject* CObject::H_SetParent	(CObject* O)
@@ -256,19 +191,12 @@ CObject* CObject::H_SetParent	(CObject* O)
 
 void CObject::OnH_A_Chield		()
 {
-	// Become chield
-	g_pGameLevel->ObjectSpace.Object_Unregister	(this);
-	Sector_Move								(0);
 }
 void CObject::OnH_B_Chield		()
 {
 }
-
 void CObject::OnH_A_Independent	()
 {
-	// Become independent
-	g_pGameLevel->ObjectSpace.Object_Register	(this);
-	Sector_Detect							();
 }
 void CObject::OnH_B_Independent	()
 {

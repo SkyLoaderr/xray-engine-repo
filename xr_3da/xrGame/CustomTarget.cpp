@@ -30,9 +30,9 @@ void CCustomTarget::net_Import			(NET_Packet& P)		// import from server
 {
 	inherited::net_Import(P);
 }
-void CCustomTarget::Update				(u32 dt)
+void CCustomTarget::shedule_Update(u32 dt)
 {
-	inherited::Update(dt);
+	inherited::shedule_Update(dt);
 }
 void CCustomTarget::UpdateCL			()
 {

@@ -96,7 +96,7 @@ void CWeaponProtecta::UpdateXForm	()
 			R.crossproduct	(mR.j,D);	R.normalize_safe();
 			N.crossproduct	(D,R);	N.normalize_safe();
 			mRes.set		(R,N,D,mR.c);
-			mRes.mul2		(m_pParent->clTransform);
+			mRes.mul2		(m_pParent->XFORM());
 			UpdatePosition	(mRes);
 		}
 	}
@@ -115,7 +115,7 @@ void CWeaponProtecta::UpdateFP(BOOL bHUDView)
 		// fire point&direction
 		UpdateXForm				(bHUDView);
 		Fmatrix& fire_mat		= bHUDView?V->LL_GetTransform(m_pHUD->iFireBone):precalc_identity;
-		Fmatrix& parent			= bHUDView?m_pHUD->Transform():clTransform;
+		Fmatrix& parent			= bHUDView?m_pHUD->Transform():XFORM();
 		Fvector& fp				= bHUDView?m_pHUD->vFirePoint:vFirePoint;
 		fire_mat.transform_tiny	(vLastFP,fp);
 		parent.transform_tiny	(vLastFP);
@@ -214,7 +214,7 @@ void CWeaponProtecta::Render(BOOL bHUDView)
 	else
 	{
 		// Actor render
-		::Render.set_Transform		(&svTransform);
+		::Render.set_Transform		(&XFORM());
 		::Render.set_LightLevel		(iFloor(m_pParent->AI_Lighting));
 		::Render.add_leafs_Dynamic	(Visual());
 

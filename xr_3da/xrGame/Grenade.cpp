@@ -118,7 +118,7 @@ void CGrenade::OnH_A_Chield() {
 		D->ID				=	0xffff;
 		D->ID_Parent		=	(u16)ID();
 		D->ID_Phantom		=	0xffff;
-		D->s_flags.set		(M_SPAWN_OBJECT_ACTIVE | M_SPAWN_OBJECT_LOCAL);
+		D->s_flags.set		(M_SPAWN_OBJECT_LOCAL);
 		D->RespawnTime		=	0;
 		// Send
 		NET_Packet			P;
@@ -137,7 +137,7 @@ void CGrenade::OnH_B_Independent() {
 
 u32 CGrenade::State(u32 state) {
 	if(state == MS_THREATEN) {
-		Sound->play_at_pos(sndCheckout, 0, vPosition, false);
+		Sound->play_at_pos(sndCheckout, 0, Position(), false);
 	}
 	return inherited::State(state);
 }
@@ -175,16 +175,16 @@ void CGrenade::Destroy() {
 
 void CGrenade::Explode() {
 	setVisible(false);
-	Sound->play_at_pos(sndExplode, 0, vPosition, false);
+	Sound->play_at_pos(sndExplode, 0, Position(), false);
 	Fvector l_dir; f32 l_dst;
 	m_blasted.clear();
-	feel_touch_update(vPosition, m_blastR);
+	feel_touch_update(Position(), m_blastR);
 	xr_list<s16>		l_elsemnts;
 	xr_list<Fvector>	l_bs_positions;
 	while(m_blasted.size()) {
 		CGameObject *l_pGO = *m_blasted.begin();
-		Fvector l_goPos; if(l_pGO->Visual()) l_pGO->clCenter(l_goPos); else l_goPos.set(l_pGO->Position());
-		l_dir.sub(l_goPos, vPosition); l_dst = l_dir.magnitude(); l_dir.div(l_dst); l_dir.y += .2f;
+		Fvector l_goPos; if(l_pGO->Visual()) l_pGO->Center(l_goPos); else l_goPos.set(l_pGO->Position());
+		l_dir.sub(l_goPos, Position()); l_dst = l_dir.magnitude(); l_dir.div(l_dst); l_dir.y += .2f;
 		f32 l_S = (l_pGO->Visual()?l_pGO->Radius()*l_pGO->Radius():0);
 		if(l_pGO->Visual()) {
 			const Fbox &l_b1 = l_pGO->BoundingBox(); Fbox l_b2; l_b2.invalidate();
@@ -196,7 +196,7 @@ void CGrenade::Explode() {
 		f32 l_impuls = m_blast * (1.f - (l_dst/m_blastR)*(l_dst/m_blastR)) * l_S;
 		if(l_impuls > .001f) {
 			setEnabled(false);
-			l_impuls *= l_pGO->ExplosionEffect(vPosition, m_blastR, l_elsemnts, l_bs_positions);
+			l_impuls *= l_pGO->ExplosionEffect(Position(), m_blastR, l_elsemnts, l_bs_positions);
 			setEnabled(true);
 		}
 		if(l_impuls > .001f) while(l_elsemnts.size()) {
@@ -220,8 +220,8 @@ void CGrenade::Explode() {
 	setEnabled(false);
 	for(s32 i = 0; i < m_frags; i++) {
 		l_dir.set(::Random.randF(-.5f,.5f), ::Random.randF(-.5f,.5f), ::Random.randF(-.5f,.5f)); l_dir.normalize();
-		if(Level().ObjectSpace.RayPick(vPosition, l_dir, m_fragsR, RQ)) {
-			Fvector l_end, l_bs_pos; l_end.mad(vPosition,l_dir,RQ.range); l_bs_pos.set(0, 0, 0);
+		if(Level().ObjectSpace.RayPick(Position(), l_dir, m_fragsR, RQ)) {
+			Fvector l_end, l_bs_pos; l_end.mad(Position(),l_dir,RQ.range); l_bs_pos.set(0, 0, 0);
 			if(RQ.O) {
 				f32 l_hit = m_fragHit * (1.f - (RQ.range/m_fragsR)*(RQ.range/m_fragsR));
 				CEntity* E = dynamic_cast<CEntity*>(RQ.O);
@@ -241,9 +241,9 @@ void CGrenade::Explode() {
 	}
 	CPGObject* pStaticPG; s32 l_c = (s32)m_effects.size();
 	for(s32 i = 0; i < l_c; i++) {
-		pStaticPG = xr_new<CPGObject>(m_effects[i],Sector()); pStaticPG->play_at_pos(vPosition);
+		pStaticPG = xr_new<CPGObject>(m_effects[i],Sector()); pStaticPG->play_at_pos(Position());
 	}
-	m_pLight->set_position(vPosition); m_pLight->set_active(true);
+	m_pLight->set_position(Position()); m_pLight->set_active(true);
 	setEnabled(true);
 }
 

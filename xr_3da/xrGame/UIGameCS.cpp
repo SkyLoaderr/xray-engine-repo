@@ -135,20 +135,20 @@ void CUIGameCS::Render()
 }
 //--------------------------------------------------------------------
 
-bool CUIGameCS::OnKeyboardPress(int dik)
+bool CUIGameCS::IR_OnKeyboardPress(int dik)
 {
 	switch (Game().phase){
 	case GAME_PHASE_PENDING: 
-		if (CTMenu.Visible()&&CTMenu.OnKeyboardPress(dik))		return true;
+		if (CTMenu.Visible()&&CTMenu.IR_OnKeyboardPress(dik))		return true;
 		// switch pressed keys
 		switch (dik){
 		case DIK_M:		BuyMenu.Hide(); CTMenu.Show();	return true;
 		}
 		break;
 	case GAME_PHASE_INPROGRESS:
-		if (BuyMenu.Visible()&&BuyMenu.OnKeyboardPress(dik))	return true;
-		if (CTMenu.Visible()&&CTMenu.OnKeyboardPress(dik))		return true;
-		if (InventoryMenu.Visible()&&InventoryMenu.OnKeyboardPress(dik))		return true;
+		if (BuyMenu.Visible()&&BuyMenu.IR_OnKeyboardPress(dik))	return true;
+		if (CTMenu.Visible()&&CTMenu.IR_OnKeyboardPress(dik))		return true;
+		if (InventoryMenu.Visible()&&InventoryMenu.IR_OnKeyboardPress(dik))		return true;
 		// switch pressed keys
 		switch (dik){
 		case DIK_M:		CTMenu.Show(); BuyMenu.Hide(); InventoryMenu.Hide(); return true;
@@ -161,12 +161,12 @@ bool CUIGameCS::OnKeyboardPress(int dik)
 }
 //--------------------------------------------------------------------
 
-bool CUIGameCS::OnKeyboardRelease(int dik)
+bool CUIGameCS::IR_OnKeyboardRelease(int dik)
 {
 	if (Game().phase==GAME_PHASE_INPROGRESS){
-		if (BuyMenu.Visible()&&BuyMenu.OnKeyboardRelease(dik))	return true;
-		if (CTMenu.Visible()&&CTMenu.OnKeyboardRelease(dik))	return true;
-		if (InventoryMenu.Visible()&&InventoryMenu.OnKeyboardRelease(dik))		return true;
+		if (BuyMenu.Visible()&&BuyMenu.IR_OnKeyboardRelease(dik))	return true;
+		if (CTMenu.Visible()&&CTMenu.IR_OnKeyboardRelease(dik))	return true;
+		if (InventoryMenu.Visible()&&InventoryMenu.IR_OnKeyboardRelease(dik))		return true;
 		// switch pressed keys
 		switch (dik){
 		case DIK_TAB:	SetFlag		(flShowFragList,FALSE);	return true;

@@ -39,7 +39,7 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 	Fcolor					clr;
 
 	// set bone id
-	light_bone_idx			= lamp->spot_bone[0]?PKinematics(pVisual)->LL_BoneID(lamp->spot_bone):-1;
+	light_bone_idx			= lamp->spot_bone[0]?PKinematics(Visual())->LL_BoneID(lamp->spot_bone):-1;
 	clr.set					(lamp->color); clr.a = 1.f;
 	clr.mul_rgb				(lamp->spot_brightness);
 	fBrightness				= lamp->spot_brightness;
@@ -49,9 +49,9 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 	light_render->set_texture(lamp->spot_texture[0]?lamp->spot_texture:0);
 	light_render->set_active(true);
 
-	R_ASSERT				(pVisual&&PKinematics(pVisual));
-	PKinematics(pVisual)->PlayCycle("idle");
-	PKinematics(pVisual)->Calculate();
+	R_ASSERT				(Visual()&&PKinematics(Visual()));
+	PKinematics(Visual())->PlayCycle("idle");
+	PKinematics(Visual())->Calculate();
 	lanim					= LALib.FindItem(lamp->color_animator);
 
 	if (lamp->flags.is(CSE_ALifeObjectHangingLamp::flPhysic))		CreateBody(lamp->mass);
@@ -62,28 +62,24 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 	return TRUE;
 }
 
-void CHangingLamp::Update	(u32 dt)
+void CHangingLamp::shedule_Update	(u32 dt)
 {
-	inherited::Update		(dt);
+	inherited::shedule_Update		(dt);
 }
 
 void CHangingLamp::UpdateCL	()
 {
 	inherited::UpdateCL		();
-	if(m_pPhysicsShell){
-		mRotate.i.set(m_pPhysicsShell->mXFORM.i);
-		mRotate.j.set(m_pPhysicsShell->mXFORM.j);
-		mRotate.k.set(m_pPhysicsShell->mXFORM.k);
-		vPosition.set(m_pPhysicsShell->mXFORM.c);
-		UpdateTransform();
-	}
+	if(m_pPhysicsShell)
+		renderable.xform.set	(m_pPhysicsShell->mXFORM);
+
 	if (Alive()&&light_render->get_active()){
 		Fmatrix xf;
 		if (light_bone_idx>=0){
-			Fmatrix& M = PKinematics(pVisual)->LL_GetTransform(light_bone_idx);
-			xf.mul		(clXFORM(),M);
+			Fmatrix& M = PKinematics(Visual())->LL_GetTransform(light_bone_idx);
+			xf.mul		(XFORM(),M);
 		} else {
-			xf.set		(clXFORM());
+			xf.set		(XFORM());
 		}
 
 		light_render->set_direction	(xf.k);
@@ -106,9 +102,9 @@ void CHangingLamp::UpdateCL	()
 	}
 }
 
-void CHangingLamp::OnVisible()
+void CHangingLamp::renderable_Render()
 {
-	inherited::OnVisible	();
+	inherited::renderable_Render	();
 }
 
 void CHangingLamp::Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse)
@@ -124,7 +120,7 @@ void CHangingLamp::Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector 
 
 void CHangingLamp::AddElement(CPhysicsElement* root_e, int id)
 {
-	CKinematics* K		= PKinematics(pVisual);
+	CKinematics* K		= PKinematics(Visual());
 
 	CPhysicsElement* E	= P_create_Element();
 	CBoneInstance& B	= K->LL_GetInstance(id);
@@ -163,9 +159,9 @@ void CHangingLamp::AddElement(CPhysicsElement* root_e, int id)
 void CHangingLamp::CreateBody(float mass)
 {
 	m_pPhysicsShell		= P_create_Shell();
-	m_pPhysicsShell->set_Kinematics(PKinematics(pVisual));
-	AddElement			(0,PKinematics(pVisual)->LL_BoneRoot());
-	m_pPhysicsShell->mXFORM.set(svTransform);
+	m_pPhysicsShell->set_Kinematics(PKinematics(Visual()));
+	AddElement			(0,PKinematics(Visual())->LL_BoneRoot());
+	m_pPhysicsShell->mXFORM.set(renderable.xform);
 	m_pPhysicsShell->SetAirResistance(0.001f, 0.02f);
 	m_pPhysicsShell->setMass(mass);
 	m_pPhysicsShell->SmoothElementsInertia(0.2f);

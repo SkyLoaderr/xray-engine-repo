@@ -47,11 +47,11 @@ void CCameraFirstEye::Update(Fvector& point, Fvector& noise_dangle)
 	vNormal.set		(mR.j);
 
 	if (bRelativeLink)	{
-		parent->clXFORM().transform_dir	(vDirection);
-		parent->clXFORM().transform_dir	(vNormal);
+		parent->XFORM().transform_dir	(vDirection);
+		parent->XFORM().transform_dir	(vNormal);
 	}
 
-	vPosition.set		(point);
+	Position().set		(point);
 }
 
 void CCameraFirstEye::Move( int cmd, float val )

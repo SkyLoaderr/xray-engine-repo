@@ -121,14 +121,14 @@ public:
 	virtual void				OnRender				( );
 
 	// Input
-	virtual	void				OnKeyboardPress			( int btn );
-	virtual void				OnKeyboardRelease		( int btn );
-	virtual void				OnKeyboardHold			( int btn );
-	virtual void				OnMousePress			( int btn );
-	virtual void				OnMouseRelease			( int btn );
-	virtual void				OnMouseHold				( int btn );
-	virtual void				OnMouseMove				( int, int);
-	virtual void				OnMouseStop				( int, int);
+	virtual	void				IR_OnKeyboardPress			( int btn );
+	virtual void				IR_OnKeyboardRelease		( int btn );
+	virtual void				IR_OnKeyboardHold			( int btn );
+	virtual void				IR_OnMousePress			( int btn );
+	virtual void				IR_OnMouseRelease			( int btn );
+	virtual void				IR_OnMouseHold				( int btn );
+	virtual void				IR_OnMouseMove				( int, int);
+	virtual void				IR_OnMouseStop				( int, int);
 
 	// Misc
 	CTeam&						get_team				(int ID)

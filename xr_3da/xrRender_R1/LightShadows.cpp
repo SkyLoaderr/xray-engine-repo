@@ -86,7 +86,7 @@ void CLightShadows::set_object	(CObject* O)
 		if (!O->ShadowGenerate())	return;
 
 		Fvector		C;
-		O->clCenter	(C);
+		O->Center	(C);
 		float		D = C.distance_to(Device.vCameraPosition)+O->Radius();
 		if (D < S_distance)		current	= O;
 		else					current = 0;
@@ -247,7 +247,7 @@ void CLightShadows::calculate	()
 			for (u32 n_it=0; n_it<C.nodes.size(); n_it++)
 			{
 				NODE& N			=	C.nodes[n_it];
-				IVisual *V		=	N.val.pVisual;
+				IRender_Visual *V		=	N.val.pVisual;
 				RCache.set_xform_world	(N.val.Matrix);
 				V->Render				(-1.0f);
 			}

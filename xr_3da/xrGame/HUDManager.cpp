@@ -113,7 +113,7 @@ void CHUDManager::Render_First()
 	// only shadow 
 	::Render->set_Invisible			(TRUE);
 	::Render->set_Object			(O->H_Root());
-	O->OnVisible					();
+	O->renderable_Render					();
 	::Render->set_Invisible			(FALSE);
 }
 

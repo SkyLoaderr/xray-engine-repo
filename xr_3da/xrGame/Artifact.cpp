@@ -82,7 +82,7 @@ BOOL CArtifact::net_Spawn(LPVOID DC) {
 		R_ASSERT							(m_pPhysicsShell);
 		m_pPhysicsShell->add_Element		(E);
 		m_pPhysicsShell->setDensity			(2000.f);
-		m_pPhysicsShell->Activate			(svXFORM(),0,svXFORM(),true);
+		m_pPhysicsShell->Activate			(XFORM(),0,XFORM(),true);
 		m_pPhysicsShell->mDesired.identity	();
 		m_pPhysicsShell->fDesiredStrength	= 0.f;
 		m_pPhysicsShell->SetAirResistance();
@@ -110,16 +110,16 @@ void CArtifact::OnH_B_Independent() {
 	setEnabled					(true);
 	CObject*	E		= dynamic_cast<CObject*>(H_Parent());
 	R_ASSERT		(E);
-	svTransform.set(E->clXFORM());
-	vPosition.set(svTransform.c);
+	XFORM().set(E->XFORM());
+	Position().set(XFORM().c);
 	if(m_pPhysicsShell) {
 		Fmatrix trans;
 		Level().Cameras.unaffected_Matrix(trans);
 		Fvector l_fw; l_fw.set(trans.k);// l_fw.mul(2.f);
-		Fvector l_up; l_up.set(svTransform.j); l_up.mul(2.f);
+		Fvector l_up; l_up.set(XFORM().j); l_up.mul(2.f);
 		Fmatrix l_p1, l_p2;
-		l_p1.set(svTransform); l_p1.c.add(l_up); l_up.mul(1.2f); //l_p1.c.add(l_fw);
-		l_p2.set(svTransform); l_p2.c.add(l_up); /*l_fw.mul(1.f+m_force);*/ l_p2.c.add(l_fw);
+		l_p1.set(XFORM()); l_p1.c.add(l_up); l_up.mul(1.2f); //l_p1.c.add(l_fw);
+		l_p2.set(XFORM()); l_p2.c.add(l_up); /*l_fw.mul(1.f+m_force);*/ l_p2.c.add(l_fw);
 		//Log("aaa",l_p1.c);
 		//Log("bbb",l_p2.c);
 		//m_pPhysicsShell->Activate(l_p1, 0, l_p2);
@@ -134,8 +134,8 @@ void CArtifact::OnH_B_Independent() {
 		//a_vel.set(::Random.randF(ri*2.f*M_PI,ri*3.f*M_PI),::Random.randF(ri*2.f*M_PI,ri*3.f*M_PI),::Random.randF(ri*2.f*M_PI,ri*3.f*M_PI));
 
 		m_pPhysicsShell->Activate(l_p1, l_vel, a_vel);
-		svTransform.set(l_p1);
-		vPosition.set(svTransform.c);
+		XFORM().set(l_p1);
+		Position().set(XFORM().c);
 	}
 }
 
@@ -143,32 +143,33 @@ void CArtifact::UpdateCL() {
 	inherited::UpdateCL();
 	if(getVisible() && m_pPhysicsShell) {
 		m_pPhysicsShell->Update	();
-		svTransform.set			(m_pPhysicsShell->mXFORM);
-		vPosition.set(m_pPhysicsShell->mXFORM.c);
+		XFORM().set			(m_pPhysicsShell->mXFORM);
+		Position().set(m_pPhysicsShell->mXFORM.c);
 		if(m_jumpHeight) {
 			Fvector l_dir; l_dir.set(0, -1.f, 0);
 			Collide::ray_query RQ;
 			setEnabled(false);
-			if(Level().ObjectSpace.RayPick(vPosition, l_dir, m_jumpHeight, RQ)) {
+			if(Level().ObjectSpace.RayPick(Position(), l_dir, m_jumpHeight, RQ)) {
 				l_dir.y = 1.f; m_pPhysicsShell->applyImpulse(l_dir, 30.f * Device.fTimeDelta * m_pPhysicsShell->getMass());
 			}
 			setEnabled(true);
 		}
-	} else if(H_Parent()) svTransform.set(H_Parent()->clXFORM());
+	} else if(H_Parent()) XFORM().set(H_Parent()->XFORM());
 }
 
-void CArtifact::Update(u32 dt) {
-	inherited::Update(dt);
+void CArtifact::shedule_Update	(u32 dt) 
+{
+	inherited::shedule_Update(dt);
 	if(getVisible() && m_pPhysicsShell) {
 		//float l_force = 100.f;
 		//Fvector l_dir; l_dir.set(0, 1.f, 0);
-		//if(vPosition.y < 1.f) {
+		//if(Position().y < 1.f) {
 		//	m_pPhysicsShell->applyImpulse(l_dir, .05f * dt * m_pPhysicsShell->getMass());
 		//}
 	}
 }
 
-void CArtifact::OnVisible() {
+void CArtifact::renderable_Render() {
 	//if(m_pHUD && H_Parent() && dynamic_cast<CActor*>(H_Parent())) {
 	//	Fmatrix trans;
 	//	Level().Cameras.affected_Matrix(trans);
@@ -182,7 +183,7 @@ void CArtifact::OnVisible() {
 	//	}
 	//}
 	if(getVisible() && !H_Parent()) {
-		::Render->set_Transform		(&clTransform);
+		::Render->set_Transform		(&XFORM());
 		::Render->add_Visual		(Visual());
 	}
 }

@@ -10,9 +10,9 @@
 #include "ai_alife.h"
 #include "a_star.h"
 
-void CSE_ALifeSimulator::Update			(u32 dt)
+void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 {
-	CSheduled::Update					(dt);
+	ISheduled::shedule_Update	(dt);
 	
 	if (!m_bLoaded)
 		return;

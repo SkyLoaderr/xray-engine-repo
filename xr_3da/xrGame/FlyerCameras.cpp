@@ -10,7 +10,7 @@ void CFlyer::UpdateCamera()
 	Fvector						R;
 	Movement.Box().getsize		(R);
 	point.set					(0.f,R.y*0.55f,0.9f);
-	svTransform.transform_tiny	(point);
+	XFORM().transform_tiny	(point);
 
 	dangle.set(0,0,0);
 	switch (cam_active){

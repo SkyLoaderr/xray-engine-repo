@@ -24,12 +24,12 @@ CBlender_B::~CBlender_B	()
 
 void	CBlender_B::Save		(IWriter& fs )
 {
-	CBlender::Save	(fs);
+	IBlender::Save	(fs);
 }
 
 void	CBlender_B::Load		(IReader& fs, WORD version )
 {
-	CBlender::Load	(fs,version);
+	IBlender::Load	(fs,version);
 
 	string64		skip;
 	switch(version) {
@@ -47,7 +47,7 @@ void	CBlender_B::Load		(IReader& fs, WORD version )
 
 void	CBlender_B::Compile	(CBlender_Compile& C)
 {
-	CBlender::Compile		(C);
+	IBlender::Compile		(C);
 	if (C.bEditor)	{
 		C.PassBegin		();
 		{

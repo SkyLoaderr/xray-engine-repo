@@ -2,7 +2,7 @@
 #define __XR_CUSTOMHUD_H__
 #pragma once
 
-#include "fcontroller.h"
+#include "iinputreceiver.h"
 
 ENGINE_API extern Flags32		psHUD_Flags;
 #define HUD_CROSSHAIR			(1<<0)
@@ -11,12 +11,12 @@ ENGINE_API extern Flags32		psHUD_Flags;
 #define HUD_INFO				(1<<3)
 #define HUD_DRAW				(1<<4)
 
-class ENGINE_API IVisual;
+class ENGINE_API IRender_Visual;
 class CUI;
 
 class ENGINE_API CCustomHUD:
 	public DLL_Pure,
-	public CEventBase	
+	public IEventReceiver	
 {
 public:
 					CCustomHUD				();

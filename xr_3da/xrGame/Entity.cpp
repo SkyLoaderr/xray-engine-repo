@@ -61,7 +61,7 @@ void CEntity::Hit			(float perc, Fvector &dir, CObject* who, s16 element,Fvector
 	
 	// convert impulse into local coordinate system
 	Fmatrix					mInvXForm;
-	mInvXForm.invert		(clTransform);
+	mInvXForm.invert		(XFORM());
 	mInvXForm.transform_dir	(vLocalDir,dir);
 	vLocalDir.invert		();
 
@@ -192,9 +192,9 @@ void CEntity::net_Destroy	()
 	inherited::net_Destroy	();
 }
 
-void CEntity::OnVisible()
+void CEntity::renderable_Render()
 {
-	inherited::OnVisible		();
+	inherited::renderable_Render		();
 }
 
 void CEntity::Update	(u32 dt)
@@ -256,7 +256,7 @@ BOOL CEntityAlive::net_Spawn	(LPVOID DC)
 {
 	inherited::net_Spawn	(DC);
 
-	//Movement.SetPosition	(vPosition);
+	//Movement.SetPosition	(Position());
 	//Movement.SetVelocity	(0,0,0);
 	return					TRUE;
 }

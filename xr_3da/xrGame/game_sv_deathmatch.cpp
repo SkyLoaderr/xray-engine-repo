@@ -28,7 +28,7 @@ void	game_sv_Deathmatch::OnRoundStart			()
 		CSE_ALifeCreatureActor				*A		=	dynamic_cast<CSE_ALifeCreatureActor*>(E);
 		strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
 		A->s_team				=	u8(0);																	// no-team
-		A->s_flags.set			(M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);	// flags
+		A->s_flags.set			(M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);	// flags
 		assign_RP				(A);
 		spawn_end				(A,get_it_2_id(it));
 	}
@@ -166,7 +166,7 @@ void game_sv_Deathmatch::OnPlayerConnect	(u32 id_who)
 	CSE_ALifeCreatureActor				*A	=	dynamic_cast<CSE_ALifeCreatureActor*>(E);
 	strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
 	A->s_team				=	u8(0);																	// no-team
-	A->s_flags.set			(M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);	// flags
+	A->s_flags.set			(M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);	// flags
 	assign_RP				(A);
 	spawn_end				(A,id_who);
 }

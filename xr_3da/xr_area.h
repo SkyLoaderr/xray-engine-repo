@@ -9,7 +9,7 @@ const float CL_SLOT_SIZE		= 16.f;
 const float CL_INV_SLOT_SIZE	= 1.f/CL_SLOT_SIZE;
 
 // refs
-class ENGINE_API CCFModel;
+class ENGINE_API ICollisionForm;
 class ENGINE_API CObject;
 
 //-----------------------------------------------------------------------------------------------------------
@@ -23,7 +23,7 @@ class ENGINE_API CObject;
 class	ENGINE_API			CObjectSpace
 {
 private:
-	friend class					CCFModel;
+	friend class					ICollisionForm;
 private:
 	// Debug
 	Shader*							sh_debug;
@@ -42,7 +42,7 @@ private:
 	Fvector							Static_Shift;
 
 	void							GetRect			( const Fvector &center, Irect &rect, float range );
-	void							GetRect			( const CCFModel *obj, Irect &rect );
+	void							GetRect			( const ICollisionForm *obj, Irect &rect );
 
 	BOOL							TestRaySlot		(int x, int z, const Fvector2& start, const Fvector2& dir);
 	void							CaptureSlots	(const Fvector& start, const Fvector& dir, float range);
@@ -85,9 +85,9 @@ public:
 	// General collision query
 	void							BoxQuery			( const Fbox& B, const Fmatrix& M, u32 flags=clGET_TRIS|clGET_BOXES|clQUERY_STATIC|clQUERY_DYNAMIC);
 
-	BOOL							EllipsoidCollide	( CCFModel *object, const Fmatrix& T, const Fvector& center_pos, const Fbox& bb);
+	BOOL							EllipsoidCollide	( ICollisionForm *object, const Fmatrix& T, const Fvector& center_pos, const Fbox& bb);
 
-	int								GetNearest			( CCFModel *obj, float range );
+	int								GetNearest			( ICollisionForm *obj, float range );
 	int								GetNearest			( const Fvector &point, float range );
 
 	CDB::TRI*						GetStaticTris		() { return Static.get_tris();  }

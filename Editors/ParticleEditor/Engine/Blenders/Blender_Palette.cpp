@@ -5,7 +5,7 @@
 
 //////////////////////////////////////////////////////////////////////
 #include "blender_clsid.h"
-IC bool		p_sort			(CBlender* A, CBlender* B)
+IC bool		p_sort			(IBlender* A, IBlender* B)
 {
 	return stricmp(A->getComment(),B->getComment())<0;
 }
@@ -16,7 +16,7 @@ IC bool		p_sort			(CBlender* A, CBlender* B)
 	#define TYPES_EQUAL(A,B) (typeid(A).raw_name() == typeid(B).raw_name())
 #endif
 
-void		CBlender::CreatePalette(xr_vector<CBlender*> &palette)
+void		IBlender::CreatePalette(xr_vector<IBlender*> &palette)
 {
 	// Create palette itself
 	R_ASSERT(palette.empty());
@@ -45,10 +45,10 @@ void		CBlender::CreatePalette(xr_vector<CBlender*> &palette)
 	// Remove duplicated classes (some of them are really the same in different renderers)
 	for (u32 i=0; i<palette.size(); i++)
 	{
-		CBlender* A		= palette[i];
+		IBlender* A		= palette[i];
 		for (u32 j=i+1; j<palette.size(); j++)
 		{
-			CBlender* B		= palette[j];
+			IBlender* B		= palette[j];
 			if (TYPES_EQUAL(*A,*B))
 			{
 				xr_delete(palette[j]);
@@ -64,11 +64,11 @@ void		CBlender::CreatePalette(xr_vector<CBlender*> &palette)
 #ifndef _EDITOR
 // Engine
 #include "..\render.h"
-CBlender*	CBlender::Create	(CLASS_ID cls)
+IBlender*	IBlender::Create	(CLASS_ID cls)
 {
 	return ::Render->blender_create	(cls);
 }
-void		CBlender::Destroy	(CBlender*& B)
+void		IBlender::Destroy	(IBlender*& B)
 {
 	::Render->blender_destroy		(B);
 }
@@ -97,7 +97,7 @@ void		CBlender::Destroy	(CBlender*& B)
 #include "blender_detail_still.h"
 #include "blender_tree.h"
 
-CBlender*	CBlender::Create	(CLASS_ID cls)
+IBlender*	IBlender::Create	(CLASS_ID cls)
 {	
 	switch (cls)
 	{
@@ -125,7 +125,7 @@ CBlender*	CBlender::Create	(CLASS_ID cls)
 	}
 	return 0;
 }
-void		CBlender::Destroy	(CBlender*& B)
+void		IBlender::Destroy	(IBlender*& B)
 {
 	xr_delete	(B);
 }

@@ -74,7 +74,7 @@ void CSpectator::Update	(u32 DT)
 	if (!Ready())		return;
 }
 
-void CSpectator::OnKeyboardPress(int cmd)
+void CSpectator::IR_OnKeyboardPress(int cmd)
 {
 	if (Remote())												return;
 
@@ -96,11 +96,11 @@ void CSpectator::OnKeyboardPress(int cmd)
 	}
 }
 
-void CSpectator::OnKeyboardRelease(int cmd)
+void CSpectator::IR_OnKeyboardRelease(int cmd)
 {
 }
 
-void CSpectator::OnKeyboardHold(int cmd)
+void CSpectator::IR_OnKeyboardHold(int cmd)
 {
 	if (Remote())		return;
 
@@ -133,11 +133,11 @@ void CSpectator::OnKeyboardHold(int cmd)
 			vmove.mad( right, -4.f*Device.fTimeDelta );
 			}break;
 		}
-		svTransform.c.add( vmove );
+		XFORM().c.add( vmove );
 	}
 }
 
-void CSpectator::OnMouseMove(int dx, int dy)
+void CSpectator::IR_OnMouseMove(int dx, int dy)
 {
 	if (Remote())	return;
 
@@ -167,7 +167,7 @@ void CSpectator::cam_Update	(CActor* A)
 	HUD().pFontDI->SetSize			(0.03f);
 	HUD().pFontDI->SetAligment		(CGameFont::alCenter);
 	if (A){
-		const Fmatrix& M			= A->clXFORM();
+		const Fmatrix& M			= A->XFORM();
 		CCameraBase* cam			= cameras[cam_active];
 		switch(cam_active) {
 		case eacFirstEye:{
@@ -195,7 +195,7 @@ void CSpectator::cam_Update	(CActor* A)
 	}else{
 		Fvector point, dangle;
 		point.set					(0.f,1.6f,0.f);
-		svTransform.transform_tiny	(point);
+		XFORM().transform_tiny	(point);
 
 		// apply shift
 		dangle.set					(0,0,0);

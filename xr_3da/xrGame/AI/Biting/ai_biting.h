@@ -128,7 +128,6 @@ public:
 
 //	virtual float EnemyHeuristics(CEntity* E);
 	
-//	virtual objQualifier* GetQualifier();
 //	virtual	void  feel_sound_new(CObject* who, int type, const Fvector &Position, float power);
 //	virtual void  Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse);
 
@@ -185,10 +184,6 @@ public:
 
 	virtual void			feel_sound_new					(CObject* who, int eType, const Fvector &Position, float power);
 	virtual	void			feel_touch_new					(CObject* O);
-
-	virtual objQualifier*	GetQualifier					();
-
-
 
 	CAnim					AnimEx;
 	bool					m_bActionFinished;
@@ -269,7 +264,7 @@ private:
 
 	//////////////////////////////////////////////////////////////////////////
 	// FSM
-	objSET					m_tpaVisibleObjects;	// массив видимых объектов
+	xr_vector<CObject*>		m_tpaVisibleObjects;	// массив видимых объектов
 
 	// Sound
 	SSimpleSound			m_tLastSound;

@@ -24,13 +24,13 @@ CBlender_Tree::~CBlender_Tree()
 
 void	CBlender_Tree::Save		(IWriter& fs )
 {
-	CBlender::Save		(fs);
+	IBlender::Save		(fs);
 	xrPWRITE_PROP		(fs,"Alpha-blend",	xrPID_BOOL,		oBlend);
 }
 
 void	CBlender_Tree::Load		(IReader& fs, WORD version )
 {
-	CBlender::Load		(fs,version);
+	IBlender::Load		(fs,version);
 	xrPREAD_PROP		(fs,xrPID_BOOL,		oBlend);
 }
 
@@ -40,7 +40,7 @@ void	CBlender_Tree::Load		(IReader& fs, WORD version )
 //////////////////////////////////////////////////////////////////////////
 void	CBlender_Tree::Compile	(CBlender_Compile& C)
 {
-	CBlender::Compile	(C);
+	IBlender::Compile	(C);
 	
 	if (C.bEditor)
 	{
@@ -122,7 +122,7 @@ static cl_chpos	binder_chpos;
 
 void	CBlender_Tree::Compile	(CBlender_Compile& C)
 {
-	CBlender::Compile	(C);
+	IBlender::Compile	(C);
 
 	//*************** codepath is the same, only shaders differ
 	switch (C.iElement)

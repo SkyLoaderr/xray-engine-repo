@@ -6,7 +6,7 @@
 #define AFX_BLENDER_DEFAULT_AREF_H__E17F011F_C371_4464_B75A_01D68F55FC4E__INCLUDED_
 #pragma once
 
-class CBlender_default_aref : public CBlender  
+class CBlender_default_aref : public IBlender  
 {
 public:
 	xrP_Integer	oAREF;

@@ -35,10 +35,10 @@ public:
 		for (; _it!=_end; _it++)
 		{
 			ISpatial*		S	= *_it;
-			if (0==(S->spatial_type&mask))	continue;
+			if (0==(S->spatial.type&mask))	continue;
 
-			Fvector&		sC	= S->spatial_center;
-			float			sR	= S->spatial_radius;
+			Fvector&		sC	= S->spatial.center;
+			float			sR	= S->spatial.radius;
 
 			Fvector Q;			Q.sub(sC,start);
 			float	c_sqr		= Q.square_magnitude();
@@ -48,7 +48,7 @@ public:
 			{
 				// sphere intersected (assume object intersects too)
 				if (b_nearest && d<range)		{ range=d; range2=d*d; }
-				SpatialSpace->q_result.push_back(S);
+				g_SpatialSpace.q_result.push_back(S);
 				if (b_first)					return;
 			}
 		}
@@ -60,7 +60,7 @@ public:
 			if (0==N->children[octant])		continue;
 			Fvector		c_center;			c_center.mad	(n_center,c_spatial_offset[octant],n_radius/4.f);
 			walk							(N->children[octant],c_center,c_radius);
-			if (b_first && !SpatialSpace->q_result.empty())	return;
+			if (b_first && !g_SpatialSpace.q_result.empty())	return;
 		}
 	}
 };

@@ -327,14 +327,14 @@ public:
 	
 	SRotation							Orientation()		{ return r_torso; };
 
-	virtual void						OnMouseMove			(int x, int y);
-	virtual void						OnKeyboardPress		(int dik);
-	virtual void						OnKeyboardRelease	(int dik);
-	virtual void						OnKeyboardHold		(int dik);
+	virtual void						IR_OnMouseMove		(int x, int y);
+	virtual void						IR_OnKeyboardPress	(int dik);
+	virtual void						IR_OnKeyboardRelease(int dik);
+	virtual void						IR_OnKeyboardHold	(int dik);
 
-	virtual void						Update				( u32 T ); 
+	virtual void						shedule_Update		( u32 T ); 
+	virtual void						renderable_Render	( );
 	virtual void						UpdateCL			( );
-	virtual void						OnVisible			( );
 	virtual void						OnEvent				( NET_Packet& P, u16 type		);
 	virtual void						ForceTransform		(const Fmatrix &m);
 	void								ZoneEffect			(float z_amount);

@@ -145,7 +145,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 	for (map_BlenderIt b=m_blenders.begin(); b!=m_blenders.end(); b++)
 	{
 		xr_free				((char*)b->first);
-		CBlender::Destroy	(b->second);
+		IBlender::Destroy	(b->second);
 	}
 	m_blenders.clear	();
 
@@ -206,7 +206,7 @@ void	CShaderManager::OnDeviceCreate	(IReader* F)
 		{
 			CBlender_DESC	desc;
 			chunk->r		(&desc,sizeof(desc));
-			CBlender*		B = CBlender::Create(desc.CLS);
+			IBlender*		B = IBlender::Create(desc.CLS);
 			if	(0==B)
 			{
 				Msg				("! Renderer doesn't support blender '%s'",desc.cName);

@@ -2,10 +2,10 @@
 #pragma hdrstop
 
 #include "xr_input.h"
-#include "fcontroller.h"
+#include "IInputReceiver.h"
 
 CInput *	pInput	= NULL;
-CController dummyController;
+IInputReceiver		dummyController;
 
 ENGINE_API float	psMouseSens			= 1.f;
 ENGINE_API float	psMouseSensScale	= 1.f;
@@ -154,11 +154,11 @@ void CInput::KeyUpdate	( )
 	for (u32 i = 0; i < dwElements; i++){
 		key					= od[i].dwOfs;
 		KBState[key]		= od[i].dwData & 0x80;
-		if ( KBState[key])	cbStack.top()->OnKeyboardPress		( key );
-		if (!KBState[key])	cbStack.top()->OnKeyboardRelease	( key );
+		if ( KBState[key])	cbStack.top()->IR_OnKeyboardPress	( key );
+		if (!KBState[key])	cbStack.top()->IR_OnKeyboardRelease	( key );
 	}
 	for ( i = 0; i < COUNT_KB_BUTTONS; i++ )
-		if (KBState[i]) cbStack.top()->OnKeyboardHold( i );
+		if (KBState[i]) cbStack.top()->IR_OnKeyboardHold( i );
 }
 
 BOOL CInput::iGetAsyncKeyState( int dik )
@@ -193,29 +193,29 @@ void CInput::MouseUpdate( )
 		case DIMOFS_X:	offs[0]	+= od[i].dwData; timeStamp[0] = od[i].dwTimeStamp;	break;
 		case DIMOFS_Y:	offs[1]	+= od[i].dwData; timeStamp[1] = od[i].dwTimeStamp;	break;
 		case DIMOFS_BUTTON0:
-			if ( od[i].dwData & 0x80 )	{ mouseState[0] = TRUE;				cbStack.top()->OnMousePress(0);		}
-			if ( !(od[i].dwData & 0x80)){ mouseState[0] = FALSE;			cbStack.top()->OnMouseRelease(0);	}
+			if ( od[i].dwData & 0x80 )	{ mouseState[0] = TRUE;				cbStack.top()->IR_OnMousePress(0);		}
+			if ( !(od[i].dwData & 0x80)){ mouseState[0] = FALSE;			cbStack.top()->IR_OnMouseRelease(0);	}
 			break;
 		case DIMOFS_BUTTON1:
-			if ( od[i].dwData & 0x80 )	{ mouseState[1] = TRUE;				cbStack.top()->OnMousePress(1);		}
-			if ( !(od[i].dwData & 0x80)){ mouseState[1] = FALSE;			cbStack.top()->OnMouseRelease(1);	}
+			if ( od[i].dwData & 0x80 )	{ mouseState[1] = TRUE;				cbStack.top()->IR_OnMousePress(1);		}
+			if ( !(od[i].dwData & 0x80)){ mouseState[1] = FALSE;			cbStack.top()->IR_OnMouseRelease(1);	}
 			break;
 		}
 	}
 
-	if (mouseState[0]) 		cbStack.top()->OnMouseHold(0);
-	if (mouseState[1])		cbStack.top()->OnMouseHold(1);
+	if (mouseState[0]) 		cbStack.top()->IR_OnMouseHold(0);
+	if (mouseState[1])		cbStack.top()->IR_OnMouseHold(1);
 
 	if ( dwElements ){
-		if (offs[0] || offs[1]) cbStack.top()->OnMouseMove( offs[0], offs[1] );
+		if (offs[0] || offs[1]) cbStack.top()->IR_OnMouseMove( offs[0], offs[1] );
 	} else {
-		if (timeStamp[1] && ((dwCurTime-timeStamp[1])>=mouse_property.mouse_dt))	cbStack.top()->OnMouseStop(DIMOFS_Y, timeStamp[1] = 0);
-		if (timeStamp[0] && ((dwCurTime-timeStamp[0])>=mouse_property.mouse_dt))	cbStack.top()->OnMouseStop(DIMOFS_X, timeStamp[0] = 0);
+		if (timeStamp[1] && ((dwCurTime-timeStamp[1])>=mouse_property.mouse_dt))	cbStack.top()->IR_OnMouseStop(DIMOFS_Y, timeStamp[1] = 0);
+		if (timeStamp[0] && ((dwCurTime-timeStamp[0])>=mouse_property.mouse_dt))	cbStack.top()->IR_OnMouseStop(DIMOFS_X, timeStamp[0] = 0);
 	}
 }
 
 //-------------------------------------------------------
-void CInput::iCapture(CController *p)
+void CInput::iCapture(IInputReceiver *p)
 {
 	VERIFY(p);
 	if (pMouse) 	MouseUpdate();
@@ -223,9 +223,9 @@ void CInput::iCapture(CController *p)
 
     // change focus
 	if (!cbStack.empty())
-		cbStack.top()->OnInputDeactivate();
+		cbStack.top()->IR_OnDeactivate();
 	cbStack.push(p);
-	cbStack.top()->OnInputActivate();
+	cbStack.top()->IR_OnActivate();
 
 	// prepare for _new_ controller
 	ZeroMemory			( timeStamp,	sizeof(timeStamp) );
@@ -233,13 +233,13 @@ void CInput::iCapture(CController *p)
 	ZeroMemory			( offs,			sizeof(offs) );
 }
 
-void CInput::iRelease(CController *p)
+void CInput::iRelease(IInputReceiver *p)
 {
 	if (p == cbStack.top())
 	{
-		cbStack.top()->OnInputDeactivate();
+		cbStack.top()->IR_OnDeactivate();
 		cbStack.pop();
-		cbStack.top()->OnInputActivate();
+		cbStack.top()->IR_OnActivate();
 	}
 }
 

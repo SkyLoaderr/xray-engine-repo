@@ -22,15 +22,15 @@ CBlender_default::~CBlender_default	()
 }
 void	CBlender_default::Save(	IWriter& fs )
 {
-	CBlender::Save	(fs);
+	IBlender::Save	(fs);
 }
 void	CBlender_default::Load(	IReader& fs, WORD version )
 {
-	CBlender::Load	(fs,version);
+	IBlender::Load	(fs,version);
 }
 void	CBlender_default::Compile(CBlender_Compile& C)
 {
-	CBlender::Compile		(C);
+	IBlender::Compile		(C);
 	if (C.bEditor)	{
 		C.PassBegin		();
 		{

@@ -100,7 +100,7 @@ void CUIInventory::OnFrame() {
 	}
 }
 
-bool CUIInventory::OnKeyboardPress(int dik) {
+bool CUIInventory::IR_OnKeyboardPress(int dik) {
 	if(m_active){
 		CActor *l_pA = dynamic_cast<CActor*>(Level().CurrentEntity());
 		if(l_pA) {
@@ -160,7 +160,7 @@ bool CUIInventory::OnKeyboardPress(int dik) {
 	return false;
 }
 
-bool CUIInventory::OnKeyboardRelease(int dik) {
+bool CUIInventory::IR_OnKeyboardRelease(int dik) {
 	if(m_active){
 		CActor *l_pA = dynamic_cast<CActor*>(Level().CurrentEntity());
 		if(l_pA) {

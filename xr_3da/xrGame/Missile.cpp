@@ -81,7 +81,7 @@ BOOL CMissile::net_Spawn(LPVOID DC) {
 		R_ASSERT							(m_pPhysicsShell);
 		m_pPhysicsShell->add_Element		(E);
 		m_pPhysicsShell->setDensity			(2000.f);
-		m_pPhysicsShell->Activate			(svXFORM(),0,svXFORM(),true);
+		m_pPhysicsShell->Activate			(XFORM(),0,XFORM(),true);
 		m_pPhysicsShell->mDesired.identity	();
 		m_pPhysicsShell->fDesiredStrength	= 0.f;
 		m_pPhysicsShell->SetAirResistance();
@@ -126,16 +126,16 @@ void CMissile::OnH_B_Independent() {
 	setEnabled					(true);
 	CObject*	E		= dynamic_cast<CObject*>(H_Parent());
 	R_ASSERT		(E);
-	svTransform.set(E->clXFORM());
-	vPosition.set(svTransform.c);
+	XFORM().set(E->XFORM());
+	Position().set(XFORM().c);
 	if(m_pPhysicsShell) {
 		Fmatrix trans;
 		Level().Cameras.unaffected_Matrix(trans);
 		Fvector l_fw; l_fw.set(trans.k);// l_fw.mul(2.f);
-		Fvector l_up; l_up.set(svTransform.j); l_up.mul(2.f);
+		Fvector l_up; l_up.set(XFORM().j); l_up.mul(2.f);
 		Fmatrix l_p1, l_p2;
-		l_p1.set(svTransform); l_p1.c.add(l_up); l_up.mul(1.2f); //l_p1.c.add(l_fw);
-		l_p2.set(svTransform); l_p2.c.add(l_up); l_fw.mul(1.f+m_force); l_p2.c.add(l_fw);
+		l_p1.set(XFORM()); l_p1.c.add(l_up); l_up.mul(1.2f); //l_p1.c.add(l_fw);
+		l_p2.set(XFORM()); l_p2.c.add(l_up); l_fw.mul(1.f+m_force); l_p2.c.add(l_fw);
 		//Log("aaa",l_p1.c);
 		//Log("bbb",l_p2.c);
 		//m_pPhysicsShell->Activate(l_p1, 0, l_p2);
@@ -150,8 +150,8 @@ void CMissile::OnH_B_Independent() {
 		//a_vel.set(::Random.randF(ri*2.f*M_PI,ri*3.f*M_PI),::Random.randF(ri*2.f*M_PI,ri*3.f*M_PI),::Random.randF(ri*2.f*M_PI,ri*3.f*M_PI));
 
 		m_pPhysicsShell->Activate(l_p1, l_vel, a_vel);
-		svTransform.set(l_p1);
-		vPosition.set(svTransform.c);
+		XFORM().set(l_p1);
+		Position().set(XFORM().c);
 	}
 }
 
@@ -176,9 +176,9 @@ void CMissile::UpdateCL() {
 		}
 		if(m_destroyTime < 0xffffffff) m_destroyTime -= Device.dwTimeDelta;
 		m_pPhysicsShell->Update	();
-		svTransform.set			(m_pPhysicsShell->mXFORM);
-		vPosition.set(m_pPhysicsShell->mXFORM.c);
-	} else if(H_Parent()) svTransform.set(H_Parent()->clXFORM());
+		XFORM().set			(m_pPhysicsShell->mXFORM);
+		Position().set(m_pPhysicsShell->mXFORM.c);
+	} else if(H_Parent()) XFORM().set(H_Parent()->XFORM());
 }
 
 u32 CMissile::State() {
@@ -225,7 +225,7 @@ u32 CMissile::State(u32 state) {
 	return State();
 }
 
-void CMissile::OnVisible() {
+void CMissile::renderable_Render() {
 	if(m_pHUD && H_Parent() && dynamic_cast<CActor*>(H_Parent())) {
 		Fmatrix trans;
 		Level().Cameras.affected_Matrix(trans);
@@ -239,7 +239,7 @@ void CMissile::OnVisible() {
 		}
 	}
 	if(getVisible() && !H_Parent()) {
-		::Render->set_Transform		(&clTransform);
+		::Render->set_Transform		(&XFORM());
 		::Render->add_Visual		(Visual());
 	}
 }

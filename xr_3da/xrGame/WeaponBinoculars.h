@@ -47,7 +47,7 @@ public:
 
 	void			Load			(LPCSTR section);
 	virtual	void	UpdateCL		();
-	virtual	void	OnVisible		();
+	virtual	void	renderable_Render		();
 
 	virtual void	Hide			();
 	virtual void	Show			();

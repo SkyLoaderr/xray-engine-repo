@@ -25,7 +25,7 @@ CBlender_BmmD::~CBlender_BmmD	()
 
 void	CBlender_BmmD::Save		(IWriter& fs )
 {
-	CBlender::Save	(fs);
+	IBlender::Save	(fs);
 	xrPWRITE_MARKER	(fs,"Detail map");
 	xrPWRITE_PROP	(fs,"Name",				xrPID_TEXTURE,	oT2_Name);
 	xrPWRITE_PROP	(fs,"Transform",		xrPID_MATRIX,	oT2_xform);
@@ -33,7 +33,7 @@ void	CBlender_BmmD::Save		(IWriter& fs )
 
 void	CBlender_BmmD::Load		(IReader& fs, WORD version )
 {
-	CBlender::Load	(fs,version);
+	IBlender::Load	(fs,version);
 	xrPREAD_MARKER	(fs);
 	xrPREAD_PROP	(fs,xrPID_TEXTURE,	oT2_Name);
 	xrPREAD_PROP	(fs,xrPID_MATRIX,	oT2_xform);
@@ -41,7 +41,7 @@ void	CBlender_BmmD::Load		(IReader& fs, WORD version )
 
 void	CBlender_BmmD::Compile	(CBlender_Compile& C)
 {
-	CBlender::Compile		(C);
+	IBlender::Compile		(C);
 	if (C.bEditor)	{
 		C.PassBegin		();
 		{

@@ -50,7 +50,7 @@ void IGame_Level::net_Stop			()
 {
 	// Destroy all objects
 	Objects.Unload				( );
-	iRelease					( );
+	IR_Release					( );
 
 	bReady						= false;
 }
@@ -152,7 +152,7 @@ BOOL IGame_Level::Load				(u32 dwNum)
 	// Done
 	pApp->LoadTitle				("Syncronizing...");
 	bReady						= true;
-	iCapture					( );
+	IR_Capture					( );
 	Device.seqRender.Add		(this);
 	Device.seqFrame.Add			(this);
 

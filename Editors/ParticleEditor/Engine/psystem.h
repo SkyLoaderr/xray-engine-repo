@@ -15,138 +15,44 @@
 #endif
 
 // Actually this must be < sqrt(MAXFLOAT) since we store this value squared.
-#define P_MAXFLOAT 1.0e16f
+#define P_MAXFLOAT	1.0e16f
 
 #ifdef MAXINT
-#define P_MAXINT MAXINT
+#define P_MAXINT	MAXINT
 #else
-#define P_MAXINT 0x7fffffff
+#define P_MAXINT	0x7fffffff
 #endif
 
-#define P_EPS 1e-3f
+#define P_EPS		1e-3f
 
 #ifndef M_PI
-#define M_PI 3.1415926535897932384626433f
+#define M_PI		3.1415926535897932384626433f
 #endif
 
 #define drand48() (((float) rand())/((float) RAND_MAX))
 #define srand48(x) srand(x)
 
-namespace PAPI{
-	class pVector
+namespace PAPI
+{
+	class pVector	: public Fvector
 	{
 	public:
-		float x, y, z;
-
-		IC Fvector& xr(){return *(Fvector*)this;}
-		IC const Fvector& xr() const {return *(Fvector*)this;}
-
-		IC pVector(float ax, float ay, float az) : x(ax), y(ay), z(az){}
-
-		IC pVector() {}
-
-		IC float length() const
-		{
-			return _sqrt(x*x+y*y+z*z);
-		}
-
-		IC float length2() const
-		{
-			return (x*x+y*y+z*z);
-		}
-
-		IC float normalize()
-		{
-			float onel = 1.0f / _sqrt(x*x+y*y+z*z);
-			x *= onel;
-			y *= onel;
-			z *= onel;
-
-			return onel;
-		}
-
-		IC float operator*(const pVector &a) const
-		{
-			return x*a.x + y*a.y + z*a.z;
-		}
-
-		IC pVector operator*(const float s) const
-		{
-			return pVector(x*s, y*s, z*s);
-		}
-
-		IC pVector operator/(const float s) const
-		{
-			float invs = 1.0f / s;
-			return pVector(x*invs, y*invs, z*invs);
-		}
-
-		IC pVector operator+(const pVector& a) const
-		{
-			return pVector(x+a.x, y+a.y, z+a.z);
-		}
-
-		IC pVector operator-(const pVector& a) const
-		{
-			return pVector(x-a.x, y-a.y, z-a.z);
-		}
-
-		IC pVector operator-()
-		{
-			x = -x;
-			y = -y;
-			z = -z;
-			return *this;
-		}
-
-		IC pVector& operator+=(const pVector& a)
-		{
-			x += a.x;
-			y += a.y;
-			z += a.z;
-			return *this;
-		}
-
-		IC pVector& operator-=(const pVector& a)
-		{
-			x -= a.x;
-			y -= a.y;
-			z -= a.z;
-			return *this;
-		}
-
-		IC pVector& operator*=(const float a)
-		{
-			x *= a;
-			y *= a;
-			z *= a;
-			return *this;
-		}
-
-		IC pVector& operator/=(const float a)
-		{
-			float b = 1.0f / a;
-			x *= b;
-			y *= b;
-			z *= b;
-			return *this;
-		}
-
-		IC pVector& operator=(const pVector& a)
-		{
-			x = a.x;
-			y = a.y;
-			z = a.z;
-			return *this;
-		}
-
-		IC pVector operator^(const pVector& b) const
-		{
-			return pVector(
-				y*b.z-z*b.y,
-				z*b.x-x*b.z,
-				x*b.y-y*b.x);
-		}
+		IC pVector	(float ax, float ay, float az)		{ set(ax,ay,az);								}
+		IC pVector	()									{}
+		IC float length() const							{	return _sqrt(x*x+y*y+z*z);					}
+		IC float length2() const						{	return (x*x+y*y+z*z);						}
+		IC float operator*(const pVector &a) const		{	return x*a.x + y*a.y + z*a.z;				}
+		IC pVector operator*(const float s) const		{	return pVector(x*s, y*s, z*s);				}
+		IC pVector operator/(const float s) const		{	float invs = 1.0f / s;	return pVector(x*invs, y*invs, z*invs);	}
+		IC pVector operator+(const pVector& a) const	{	return pVector(x+a.x, y+a.y, z+a.z);		}
+		IC pVector operator-(const pVector& a) const	{	return pVector(x-a.x, y-a.y, z-a.z);		}
+		IC pVector operator-()							{	x = -x;	y = -y;	z = -z;	return *this;		}
+		IC pVector& operator+=(const pVector& a)		{	x += a.x;y += a.y;z += a.z;	return *this;	}
+		IC pVector& operator-=(const pVector& a)		{	x -= a.x;y -= a.y;z -= a.z;	return *this;	}
+		IC pVector& operator*=(const float a)			{	x *= a;	y *= a;	z *= a;	return *this;		}
+		IC pVector& operator/=(const float a)			{	float b = 1.0f / a;	x *= b;	y *= b;	z *= b;	return *this;		}
+		IC pVector& operator=(const pVector& a)			{	x = a.x;y = a.y;z = a.z;return *this;		}
+		IC pVector operator^(const pVector& b) const	{	return pVector(y*b.z-z*b.y,z*b.x-x*b.z,x*b.y-y*b.x);		}
 	};
 
 	// refs
@@ -219,17 +125,17 @@ namespace PAPI{
 	// Type codes for domains
 	PARTICLEDLL_API enum PDomainEnum
 	{
-		PDPoint = 0, // Single point
-		PDLine = 1, // Line segment
-		PDTriangle = 2, // Triangle
-		PDPlane = 3, // Arbitrarily-oriented plane
-		PDBox = 4, // Axis-aligned box
-		PDSphere = 5, // Sphere
-		PDCylinder = 6, // Cylinder
-		PDCone = 7, // Cone
-		PDBlob = 8, // Gaussian blob
-		PDDisc = 9, // Arbitrarily-oriented disc
-		PDRectangle = 10, // Rhombus-shaped planar region
+		PDPoint = 0,		// Single point
+		PDLine = 1,			// Line segment
+		PDTriangle = 2,		// Triangle
+		PDPlane = 3,		// Arbitrarily-oriented plane
+		PDBox = 4,			// Axis-aligned box
+		PDSphere = 5,		// Sphere
+		PDCylinder = 6,		// Cylinder
+		PDCone = 7,			// Cone
+		PDBlob = 8,			// Gaussian blob
+		PDDisc = 9,			// Arbitrarily-oriented disc
+		PDRectangle = 10,	// Rhombus-shaped planar region
 		domain_enum_force_dword = DWORD(-1)
 	};
 
@@ -845,4 +751,5 @@ namespace PAPI{
 		float magnitude = 1.0f, float epsilon = P_EPS,
 		float max_radius = P_MAXFLOAT, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);
 }
+
 #endif //PSystemH

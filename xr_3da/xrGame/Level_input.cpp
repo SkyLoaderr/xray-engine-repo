@@ -77,34 +77,35 @@ void CLevel::OnKeyboardPress(int key)
 	}
 }
 
-void CLevel::OnKeyboardRelease(int key)
+void CLevel::IR_OnKeyboardRelease(int key)
 {
 //	if (pHUD->IsUIActive()) 
-	if (pHUD->GetUI()->OnKeyboardRelease(key)) return;
+	if (pHUD->GetUI()->IR_OnKeyboardRelease(key)) return;
 
-	if (CurrentEntity())	CurrentEntity()->OnKeyboardRelease(key_binding[key]);
+	if (CurrentEntity())	CurrentEntity()->IR_OnKeyboardRelease(key_binding[key]);
 }
 
-void CLevel::OnKeyboardHold(int key)
+void CLevel::IR_OnKeyboardHold(int key)
 {
-	if (CurrentEntity())	CurrentEntity()->OnKeyboardHold(key_binding[key]);
+	if (CurrentEntity())	CurrentEntity()->IR_OnKeyboardHold(key_binding[key]);
 }
 
 static int mouse_button_2_key []	=	{MOUSE_1,MOUSE_2,MOUSE_3};
 
-void CLevel::OnMousePress(int btn)
+void CLevel::IR_OnMousePress(int btn)
 {	OnKeyboardPress(mouse_button_2_key[btn]);}
-void CLevel::OnMouseRelease(int btn)
-{	OnKeyboardRelease(mouse_button_2_key[btn]);}
-void CLevel::OnMouseHold(int btn)
-{	OnKeyboardHold(mouse_button_2_key[btn]);}
-void CLevel::OnMouseMove( int dx, int dy )
+void CLevel::IR_OnMouseRelease(int btn)
+{	IR_OnKeyboardRelease(mouse_button_2_key[btn]);}
+void CLevel::IR_OnMouseHold(int btn)
+{	IR_OnKeyboardHold(mouse_button_2_key[btn]);}
+void CLevel::IR_OnMouseMove( int dx, int dy )
 {
-	if (pHUD->GetUI()->OnMouseMove(dx,dy)) return;
-	if (CurrentEntity())	CurrentEntity()->OnMouseMove(dx,dy);
+	if (pHUD->GetUI()->IR_OnMouseMove(dx,dy)) return;
+	if (CurrentEntity())	CurrentEntity()->IR_OnMouseMove(dx,dy);
 }
 
-void CLevel::OnMouseStop( int axis, int value)
+void CLevel::IR_OnMouseStop( int axis, int value)
 {
 }
 
+IR_OnKeyboardPressIR_OnKeyboardPressIR_OnKeyboardPress

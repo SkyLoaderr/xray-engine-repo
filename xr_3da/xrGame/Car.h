@@ -82,7 +82,7 @@ public:
 	virtual BOOL			net_Spawn			( LPVOID DC );
 	virtual void			Update				( u32 T ); 
 	virtual void			UpdateCL			( ); 
-	virtual void			OnVisible			( ); 
+	virtual void			renderable_Render			( ); 
 	
 	// Network
 	virtual void			net_Export			(NET_Packet& P);				// export to server
@@ -90,10 +90,10 @@ public:
 	virtual BOOL			net_Relevant		()	{ return getLocal(); };		// relevant for export to server
 
 	// Input
-	virtual void			OnMouseMove			(int x, int y);
-	virtual void			OnKeyboardPress		(int dik);
-	virtual void			OnKeyboardRelease	(int dik);
-	virtual void			OnKeyboardHold		(int dik);
+	virtual void			IR_OnMouseMove			(int x, int y);
+	virtual void			IR_OnKeyboardPress		(int dik);
+	virtual void			IR_OnKeyboardRelease	(int dik);
+	virtual void			IR_OnKeyboardHold		(int dik);
 
 	// Hits
 	virtual void			HitSignal			(float HitAmount,	Fvector& local_dir, CObject* who, s16 element)	{};

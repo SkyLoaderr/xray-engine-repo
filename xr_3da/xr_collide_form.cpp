@@ -15,7 +15,7 @@ using namespace	Collide;
 // Class	: CXR_CFObject
 // Purpose	: stores collision form
 //----------------------------------------------------------------------
-CCFModel::CCFModel( CObject* _owner )
+ICollisionForm::ICollisionForm( CObject* _owner )
 {
 	owner				= _owner;
 	bv_sphere.identity	( );
@@ -23,12 +23,12 @@ CCFModel::CCFModel( CObject* _owner )
 	enabled_prev=enabled= true;
 }
 
-CCFModel::~CCFModel( )
+ICollisionForm::~ICollisionForm( )
 {
 	if	(g_pGameLevel)	g_pGameLevel->ObjectSpace.Object_Unregister(owner);
 }
 
-void CCFModel::OnMove( )
+void ICollisionForm::OnMove( )
 {
 	if	(g_pGameLevel)	
 	{
@@ -38,7 +38,7 @@ void CCFModel::OnMove( )
 }
 
 //----------------------------------------------------------------------------------
-CCF_Polygonal::CCF_Polygonal(CObject* O) : CCFModel(O)
+CCF_Polygonal::CCF_Polygonal(CObject* O) : ICollisionForm(O)
 {
 }
 
@@ -72,40 +72,15 @@ BOOL CCF_Polygonal::LoadModel( CInifile* ini, const char *section )
 	return				TRUE;
 }
 
-BOOL CCF_Polygonal::_clRayTest( RayQuery& Q)
+BOOL CCF_Polygonal::_RayTest( RayQuery& Q)
 {
 	// Convert ray into local model space
 	Fvector dS, dD;
 	Fmatrix temp; 
-	temp.invert			(owner->clXFORM());
+	temp.invert			(owner->XFORM());
 	temp.transform_tiny	(dS,Q.start);
 	temp.transform_dir	(dD,Q.dir);
 
-	// 
-	if (!bv_sphere.intersect(dS,dD))	return FALSE;
-
-	// Query
-	XRC.ray_query		(&model,dS,dD,Q.range);
-	if (XRC.r_count()) 	{
-		CDB::RESULT* R	= XRC.r_begin();
-		if (R->range < Q.range) {
-			Q.range		= R->range;
-			Q.element	= R->id;
-			return TRUE;
-		}
-	}
-	return FALSE;
-}
-
-BOOL CCF_Polygonal::_svRayTest( RayQuery& Q)
-{
-	// Convert ray into local model space
-	Fvector dS, dD;
-	Fmatrix temp; 
-	temp.invert			(owner->svXFORM());
-	temp.transform_tiny	(dS,Q.start);
-	temp.transform_dir	(dD,Q.dir);
-	
 	// 
 	if (!bv_sphere.intersect(dS,dD))	return FALSE;
 
@@ -128,10 +103,10 @@ void CCF_Polygonal::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
 	{
 		// Return only top level
 		clQueryCollision& Q = g_pGameLevel->ObjectSpace.q_result;
-		Q.AddBox			(owner->svXFORM(),bv_box);
+		Q.AddBox			(owner->XFORM(),bv_box);
 	} else {
 		// XForm box
-		const Fmatrix&	T = owner->svXFORM();
+		const Fmatrix&	T = owner->XFORM();
 		Fmatrix			w2m,b2m;
 		w2m.invert		(T);
 		b2m.mul_43		(w2m,M);
@@ -182,7 +157,7 @@ IC BOOL RAYvsOBB(CCF_OBB &B, Fvector &S, Fvector &D, float &R)
 	return false;
 }
 
-CCF_Skeleton::CCF_Skeleton(CObject* O) : CCFModel(O)
+CCF_Skeleton::CCF_Skeleton(CObject* O) : ICollisionForm(O)
 {
 	CKinematics* K	= PKinematics(O->Visual());
 	model.resize	(K->LL_BoneCount());
@@ -198,7 +173,7 @@ void CCF_Skeleton::BuildState()
 	CKinematics* K	= PKinematics(owner->Visual());
 	K->Calculate	();
 	
-	const Fmatrix &L2W	= owner->clXFORM();
+	const Fmatrix &L2W	= owner->XFORM();
 	Fmatrix Mbox,T,TW;
 	for (u32 i=0; i<model.size(); i++)
 	{
@@ -219,7 +194,7 @@ void CCF_Skeleton::BuildState()
 void CCF_Skeleton::BuildTopLevel()
 {
 	dwFrameTL			= Device.dwFrame;
-	IVisual* K			= owner->Visual();
+	IRender_Visual* K			= owner->Visual();
 	Fbox& B				= K->vis.box;
 	bv_box.min.average	(B.min);
 	bv_box.max.average	(B.max);
@@ -229,14 +204,14 @@ void CCF_Skeleton::BuildTopLevel()
 	bv_sphere.R			*= 0.5f;
 }
 
-BOOL CCF_Skeleton::_svRayTest( RayQuery& Q)
+BOOL CCF_Skeleton::_RayTest( RayQuery& Q)
 {
 	if (dwFrameTL!=Device.dwFrame)			BuildTopLevel();
 
 	// Convert ray into local model space
 	Fvector dS, dD;
 	Fmatrix temp; 
-	temp.invert			(owner->svXFORM());
+	temp.invert			(owner->XFORM());
 	temp.transform_tiny	(dS,Q.start);
 	temp.transform_dir	(dD,Q.dir);
 
@@ -256,11 +231,6 @@ BOOL CCF_Skeleton::_svRayTest( RayQuery& Q)
 	}
 	return bHIT;
 }
-BOOL CCF_Skeleton::_clRayTest( RayQuery& Q)
-{
-#pragma todo("CCF_Skeleton::_clRayTest")
-	return _svRayTest(Q);
-}
 
 void CCF_Skeleton::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
 {
@@ -269,7 +239,7 @@ void CCF_Skeleton::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
 		if (dwFrameTL!=Device.dwFrame) BuildTopLevel();
 		// Return only top level
 		clQueryCollision& Q = g_pGameLevel->ObjectSpace.q_result;
-		Q.AddBox			(owner->svXFORM(),bv_box);
+		Q.AddBox			(owner->XFORM(),bv_box);
 	} else { 
 		if (dwFrame!=Device.dwFrame) BuildState();
 
@@ -283,10 +253,11 @@ void CCF_Skeleton::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
 		}
 	}
 }
+
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
-CCF_Rigid::CCF_Rigid(CObject* O) : CCFModel(O)
+CCF_Rigid::CCF_Rigid(CObject* O) : ICollisionForm(O)
 {
 	FHierrarhyVisual* pH= dynamic_cast<FHierrarhyVisual*>(O->Visual());
 	if (pH){
@@ -309,7 +280,7 @@ CCF_Rigid::CCF_Rigid(CObject* O) : CCFModel(O)
 
 void CCF_Rigid::UpdateModel(CCF_OBB& m, Fbox& box)
 {
-	const Fmatrix &L2W	= owner->clXFORM();
+	const Fmatrix &L2W	= owner->XFORM();
 
 	Fobb			B;
 	Fvector			c;
@@ -342,7 +313,7 @@ void CCF_Rigid::BuildState()
 void CCF_Rigid::BuildTopLevel()
 {
 	dwFrameTL			= Device.dwFrame;
-	IVisual* K			= owner->Visual();
+	IRender_Visual* K			= owner->Visual();
 	Fbox& B				= K->vis.box;
 	bv_box.min.average	(B.min);
 	bv_box.max.average	(B.max);
@@ -352,14 +323,14 @@ void CCF_Rigid::BuildTopLevel()
 	bv_sphere.R			*= 0.5f;
 }
 
-BOOL CCF_Rigid::_svRayTest( RayQuery& Q)
+BOOL CCF_Rigid::_RayTest( RayQuery& Q)
 {
 	if (dwFrameTL!=Device.dwFrame)			BuildTopLevel();
 
 	// Convert ray into local model space
 	Fvector dS, dD;
 	Fmatrix temp; 
-	temp.invert			(owner->svXFORM());
+	temp.invert			(owner->XFORM());
 	temp.transform_tiny	(dS,Q.start);
 	temp.transform_dir	(dD,Q.dir);
 
@@ -379,11 +350,6 @@ BOOL CCF_Rigid::_svRayTest( RayQuery& Q)
 	}
 	return bHIT;
 }
-BOOL CCF_Rigid::_clRayTest( RayQuery& Q)
-{
-#pragma todo("CCF_Rigid::_clRayTest")
-	return _svRayTest(Q);
-}
 
 void CCF_Rigid::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
 {
@@ -392,7 +358,7 @@ void CCF_Rigid::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
 		if (dwFrameTL!=Device.dwFrame) BuildTopLevel();
 		// Return only top level
 		clQueryCollision& Q = g_pGameLevel->ObjectSpace.q_result;
-		Q.AddBox			(owner->svXFORM(),bv_box);
+		Q.AddBox			(owner->XFORM(),bv_box);
 	} else { 
 		if (dwFrame!=Device.dwFrame) BuildState();
 
@@ -410,7 +376,7 @@ void CCF_Rigid::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
 
-CCF_EventBox::CCF_EventBox( CObject* O ) : CCFModel(O)
+CCF_EventBox::CCF_EventBox( CObject* O ) : ICollisionForm(O)
 {
 	Fvector A[8],B[8];
 	A[0].set( -1, -1, -1);
@@ -422,7 +388,7 @@ CCF_EventBox::CCF_EventBox( CObject* O ) : CCFModel(O)
 	A[6].set( +1, -1, +1);
 	A[7].set( +1, -1, -1);
 
-	const Fmatrix& T = O->svXFORM();
+	const Fmatrix& T = O->XFORM();
 	for (int i=0; i<8; i++) {
 		A[i].mul(.5f);
 		T.transform_tiny(B[i],A[i]);
@@ -442,37 +408,32 @@ CCF_EventBox::CCF_EventBox( CObject* O ) : CCFModel(O)
 
 BOOL CCF_EventBox::Contact(CObject* O)
 {
-	IVisual*	V		= O->Visual();
+	IRender_Visual*	V		= O->Visual();
 	Fvector&		P	= V->vis.sphere.P;
 	float			R	= V->vis.sphere.R;
 	
 	Fvector			PT;
-	O->svXFORM().transform_tiny(PT,P);
+	O->XFORM().transform_tiny(PT,P);
 	
 	for (int i=0; i<6; i++) {
 		if (Planes[i].classify(PT)>R) return FALSE;
 	}
 	return TRUE;
 }
-BOOL CCF_EventBox::_svRayTest(RayQuery& Q)
-{	return FALSE; }
-BOOL CCF_EventBox::_clRayTest(RayQuery& Q)
+BOOL CCF_EventBox::_RayTest(RayQuery& Q)
 {	return FALSE; }
 void CCF_EventBox::_BoxQuery(const Fbox& B, const Fmatrix& M, u32 flags)
 {   return; }
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
-CCF_Shape::CCF_Shape(CObject* _owner) : CCFModel(_owner)
+CCF_Shape::CCF_Shape(CObject* _owner) : ICollisionForm(_owner)
 {
 }
-BOOL CCF_Shape::_svRayTest(RayQuery& Q)
-{	return TRUE; }
-BOOL CCF_Shape::_clRayTest(RayQuery& Q)
+BOOL CCF_Shape::_RayTest(RayQuery& Q)
 {	return FALSE; }
 void CCF_Shape::_BoxQuery(const Fbox& B, const Fmatrix& M, u32 flags)
 {   return; }
-
 
 void CCF_Shape::add_sphere	(Fsphere& S )
 {
@@ -530,15 +491,15 @@ BOOL CCF_Shape::Contact		( CObject* O )
 	// Build object-sphere in World-Space
 	Fsphere			S;
 	if (O->Visual()){
-		O->clCenter		(S.P);
+		O->Center		(S.P);
 		S.R				= O->Radius();
 	}else if (O->CFORM()){
 		S = O->CFORM()->getSphere();
-		O->clXFORM().transform_tiny(S.P);
+		O->XFORM().transform_tiny(S.P);
 	}else return FALSE;
 	
 	// Get our matrix
-	const Fmatrix& XF	= Owner()->svXFORM();
+	const Fmatrix& XF	= Owner()->XFORM();
 	
 	// Iterate
 	for (u32 el=0; el<shapes.size(); el++)

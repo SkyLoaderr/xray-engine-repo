@@ -28,7 +28,7 @@ float CSE_ALifeSimulator::shedule_Scale()
 	return(.5f); // (schedule_min + schedule_max)*0.5f
 }
 
-BOOL CSE_ALifeSimulator::Ready()
+BOOL CSE_ALifeSimulator::shedule_Ready()
 {
 	return(TRUE);
 }

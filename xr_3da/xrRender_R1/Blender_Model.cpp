@@ -20,17 +20,17 @@ CBlender_Model::~CBlender_Model()
 
 void	CBlender_Model::Save	( IWriter& fs	)
 {
-	CBlender::Save	(fs);
+	IBlender::Save	(fs);
 }
 
 void	CBlender_Model::Load	( IReader& fs, WORD version)
 {
-	CBlender::Load		(fs,version);
+	IBlender::Load		(fs,version);
 }
 
 void	CBlender_Model::Compile	(CBlender_Compile& C)
 {
-	CBlender::Compile		(C);
+	IBlender::Compile		(C);
 	if (C.bEditor)
 	{
 		C.PassBegin		();

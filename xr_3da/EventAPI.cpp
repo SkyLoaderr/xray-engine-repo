@@ -11,7 +11,7 @@ class ENGINE_API CEvent
 	friend class CEventAPI;
 private:
 	char*						Name;
-	xr_vector<CEventBase*>		Handlers;
+	xr_vector<IEventReceiver*>		Handlers;
 	u32							dwRefCount;
 public:
 	CEvent	(const char* S);
@@ -25,14 +25,14 @@ public:
 	BOOL	Equal(CEvent& E)
 	{ return stricmp(Name,E.Name)==0; }
 
-	void	Attach(CEventBase* H)
+	void	Attach(IEventReceiver* H)
 	{
 		if (std::find(Handlers.begin(),Handlers.end(),H)==Handlers.end())
 			Handlers.push_back(H);
 	}
-	void	Detach(CEventBase* H)
+	void	Detach(IEventReceiver* H)
 	{
-		xr_vector<CEventBase*>::iterator I = std::find(Handlers.begin(),Handlers.end(),H);
+		xr_vector<IEventReceiver*>::iterator I = std::find(Handlers.begin(),Handlers.end(),H);
 		if (I!=Handlers.end())
 			Handlers.erase(I);
 	}
@@ -96,7 +96,7 @@ void	CEventAPI::Destroy(EVENT& E)
 	CS.Leave	();
 }
 
-EVENT	CEventAPI::Handler_Attach(const char* N, CEventBase* H)
+EVENT	CEventAPI::Handler_Attach(const char* N, IEventReceiver* H)
 {
 	CS.Enter	();
 	EVENT	E = Create(N);
@@ -105,7 +105,7 @@ EVENT	CEventAPI::Handler_Attach(const char* N, CEventBase* H)
 	return E;
 }
 
-void	CEventAPI::Handler_Detach(EVENT& E, CEventBase* H)
+void	CEventAPI::Handler_Detach(EVENT& E, IEventReceiver* H)
 {
 	CS.Enter	();
 	E->Detach	(H);

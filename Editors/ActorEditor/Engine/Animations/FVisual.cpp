@@ -19,7 +19,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-Fvisual::Fvisual()  : IVisual()
+Fvisual::Fvisual()  : IRender_Visual()
 {
 	pVertices			= 0;
 	pIndices			= 0;
@@ -31,14 +31,14 @@ Fvisual::~Fvisual()
 
 void Fvisual::Release	()
 {
-	IVisual::Release	();
+	IRender_Visual::Release	();
 	_RELEASE			(pVertices);
 	_RELEASE			(pIndices);
 }
 
 void Fvisual::Load		(const char* N, IReader *data, u32 dwFlags)
 {
-	IVisual::Load		(N,data,dwFlags);
+	IRender_Visual::Load		(N,data,dwFlags);
 
 	D3DVERTEXELEMENT9	dcl		[MAX_FVF_DECL_SIZE];
 	D3DVERTEXELEMENT9*	vFormat	= 0;
@@ -113,9 +113,9 @@ void Fvisual::Render	(float LOD)
 }
 
 #define PCOPY(a)	a = pFrom->a
-void	Fvisual::Copy			(IVisual *pSrc)
+void	Fvisual::Copy			(IRender_Visual *pSrc)
 {
-	IVisual::Copy				(pSrc);
+	IRender_Visual::Copy				(pSrc);
 
 	Fvisual	*pFrom				= dynamic_cast<Fvisual*> (pSrc);
 	

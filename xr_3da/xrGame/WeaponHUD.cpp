@@ -16,7 +16,6 @@ CWeaponHUD::CWeaponHUD()
 	mTransform.identity			();
 	m_Offset.identity			();
 	pVisualName					= 0;
-	pVisual						= 0;
 	iFireBone					= -1;
 }
 

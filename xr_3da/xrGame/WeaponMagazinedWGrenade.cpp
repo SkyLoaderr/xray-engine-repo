@@ -141,21 +141,21 @@ void CWeaponFakeGrenade::Explode(const Fvector &pos, const Fvector &normal)
 	m_state			= stExplode;
 	m_explodeTime	= EXPLODE_TIME;
 	m_flashTime		= FLASH_TIME;
-	vPosition.set(pos);
+	Position().set(pos);
 	setVisible(false);
 	//list<CPGObject*>::iterator l_it;
 	//for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->Stop();
-	Sound->play_at_pos(sndExplode, 0, vPosition, false);
+	Sound->play_at_pos(sndExplode, 0, Position(), false);
 	Fvector l_dir; f32 l_dst;
 	m_blasted.clear();
 	feel_touch.clear();
-	feel_touch_update(vPosition, m_blastR);
+	feel_touch_update(Position(), m_blastR);
 	xr_list<s16> l_elsemnts;
 	xr_list<Fvector> l_bs_positions;
 	while(m_blasted.size()) {
 		CGameObject *l_pGO = *m_blasted.begin();
-		Fvector l_goPos; if(l_pGO->Visual()) l_pGO->clCenter(l_goPos); else l_goPos.set(l_pGO->Position());
-		l_dir.sub(l_goPos, vPosition); l_dst = l_dir.magnitude(); l_dir.div(l_dst); 
+		Fvector l_goPos; if(l_pGO->Visual()) l_pGO->Center(l_goPos); else l_goPos.set(l_pGO->Position());
+		l_dir.sub(l_goPos, Position()); l_dst = l_dir.magnitude(); l_dir.div(l_dst); 
 		f32 l_S = (l_pGO->Visual()?l_pGO->Radius()*l_pGO->Radius():0);
 		if(l_pGO->Visual()) {
 			const Fbox &l_b1 = l_pGO->BoundingBox(); Fbox l_b2; l_b2.invalidate();
@@ -167,7 +167,7 @@ void CWeaponFakeGrenade::Explode(const Fvector &pos, const Fvector &normal)
 		f32 l_impuls = m_blast * (1.f - (l_dst/m_blastR)*(l_dst/m_blastR)) * l_S;
 		if(l_impuls > .001f) {
 			setEnabled(false);
-			l_impuls *= l_pGO->ExplosionEffect(vPosition, m_blastR, l_elsemnts, l_bs_positions);
+			l_impuls *= l_pGO->ExplosionEffect(Position(), m_blastR, l_elsemnts, l_bs_positions);
 			setEnabled(true);
 		}
 		if(l_impuls > .001f) while(l_elsemnts.size()) {
@@ -192,8 +192,8 @@ void CWeaponFakeGrenade::Explode(const Fvector &pos, const Fvector &normal)
 	setEnabled(false);
 	for(s32 i = 0; i < m_frags; i++) {
 		l_dir.set(::Random.randF(-.5f,.5f), ::Random.randF(-.5f,.5f), ::Random.randF(-.5f,.5f)); l_dir.normalize();
-		if(Level().ObjectSpace.RayPick(vPosition, l_dir, m_fragsR, RQ)) {
-			Fvector l_end, l_bs_pos; l_end.mad(vPosition,l_dir,RQ.range); l_bs_pos.set(0, 0, 0);
+		if(Level().ObjectSpace.RayPick(Position(), l_dir, m_fragsR, RQ)) {
+			Fvector l_end, l_bs_pos; l_end.mad(Position(),l_dir,RQ.range); l_bs_pos.set(0, 0, 0);
 			if(RQ.O) {
 				f32 l_hit = m_fragHit * (1.f - (RQ.range/m_fragsR)*(RQ.range/m_fragsR));
 				CEntity* E = dynamic_cast<CEntity*>(RQ.O);
@@ -220,7 +220,7 @@ void CWeaponFakeGrenade::Explode(const Fvector &pos, const Fvector &normal)
 	}
 	m_curColor.set(m_lightColor);
 	m_pLight->set_color(m_curColor);
-	m_pLight->set_position(vPosition); 
+	m_pLight->set_position(Position()); 
 	m_pLight->set_active(true);
 	setEnabled(true);
 	m_pOwner = NULL;
@@ -286,7 +286,7 @@ BOOL CWeaponFakeGrenade::net_Spawn(LPVOID DC)
 		m_pPhysicsShell->add_Element		(E);
 		//m_pPhysicsShell->setDensity			(8000.f);
 		m_pPhysicsShell->setMass			(m_mass);
-		//m_pPhysicsShell->Activate			(svXFORM(),0,svXFORM());
+		//m_pPhysicsShell->Activate			(XFORM(),0,XFORM());
 		m_pPhysicsShell->Activate			();
 		m_pPhysicsShell->mDesired.identity	();
 		m_pPhysicsShell->fDesiredStrength	= 0.f;
@@ -363,17 +363,17 @@ void CWeaponFakeGrenade::OnH_B_Independent() {
 	setEnabled					(true);
 	CObject*	E		= dynamic_cast<CObject*>(H_Parent());
 	R_ASSERT		(E);
-	svTransform.set(E->clXFORM());
-	vPosition.set(svTransform.c);
+	XFORM().set(E->XFORM());
+	Position().set(XFORM().c);
 	if(m_pPhysicsShell) {
 		Fmatrix trans;
 		Level().Cameras.unaffected_Matrix(trans);
 		CWeaponMagazinedWGrenade *l_pW = dynamic_cast<CWeaponMagazinedWGrenade*>(E);
-		Fmatrix l_p1, l_r; l_r.rotateY(M_PI*2.f); l_p1.mul(l_pW->GetHUDmode()?trans:svTransform, l_r); l_p1.c.set(*l_pW->m_pGrenadePoint);
+		Fmatrix l_p1, l_r; l_r.rotateY(M_PI*2.f); l_p1.mul(l_pW->GetHUDmode()?trans:XFORM(), l_r); l_p1.c.set(*l_pW->m_pGrenadePoint);
 		Fvector a_vel; a_vel.set(0, 0, 0);
 		m_pPhysicsShell->Activate(l_p1, m_vel, a_vel);
-		svTransform.set(m_pPhysicsShell->mXFORM);
-		vPosition.set(m_pPhysicsShell->mXFORM.c);
+		XFORM().set(m_pPhysicsShell->mXFORM);
+		Position().set(m_pPhysicsShell->mXFORM.c);
 		m_pPhysicsShell->set_PhysicsRefObject(this);
 		m_pPhysicsShell->set_ObjectContactCallback(ObjectContactCallback);
 		m_pPhysicsShell->set_ContactCallback(NULL);
@@ -382,7 +382,7 @@ void CWeaponFakeGrenade::OnH_B_Independent() {
 		m_engineTime	= ENGINE_TIME;
 
 		//CPGObject* pStaticPG; s32 l_c = m_trailEffects.size();
-		//Fmatrix l_m; l_m.set(svTransform);// GetBasis(normal, l_m.k, l_m.i);
+		//Fmatrix l_m; l_m.set(XFORM());// GetBasis(normal, l_m.k, l_m.i);
 		//for(s32 i = 0; i < l_c; i++) {
 		//	pStaticPG = xr_new<CPGObject>(m_trailEffects[i],Sector(),false);
 		//	pStaticPG->SetTransform(l_m);
@@ -423,8 +423,8 @@ void CWeaponFakeGrenade::UpdateCL() {
 	case stEngine:
 		if(getVisible() && m_pPhysicsShell) {
 			m_pPhysicsShell->Update	();
-			svTransform.set	(m_pPhysicsShell->mXFORM);
-			vPosition.set	(m_pPhysicsShell->mXFORM.c);
+			XFORM().set	(m_pPhysicsShell->mXFORM);
+			Position().set	(m_pPhysicsShell->mXFORM.c);
 			if(m_engineTime <= 0) {
 				m_state		= stFlying;
 				// остановить двигатель
@@ -433,7 +433,7 @@ void CWeaponFakeGrenade::UpdateCL() {
 			}else{
 				// двигатель все еще работает
 				m_engineTime -= Device.dwTimeDelta;
-				Fvector l_pos, l_dir;; l_pos.set(0, 0, 3.f); l_dir.set(svTransform.k); l_dir.normalize();
+				Fvector l_pos, l_dir;; l_pos.set(0, 0, 3.f); l_dir.set(XFORM().k); l_dir.normalize();
 				float l_force = m_engine_f * Device.dwTimeDelta / 1000.f;
 				//m_pPhysicsShell->applyImpulseTrace(l_pos, l_dir, l_force);
 				l_dir.set(0, 1.f, 0);
@@ -443,15 +443,15 @@ void CWeaponFakeGrenade::UpdateCL() {
 				Fvector vel;
 				m_pPhysicsShell->get_LinearVel(vel);
 				// обновить эффекты
-				//for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->UpdateParent(svTransform,vel);
+				//for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->UpdateParent(XFORM(),vel);
 			}
 		}
 		break;
 	case stFlying:
 		if(getVisible() && m_pPhysicsShell) {
 			m_pPhysicsShell->Update	();
-			svTransform.set	(m_pPhysicsShell->mXFORM);
-			vPosition.set	(m_pPhysicsShell->mXFORM.c);
+			XFORM().set	(m_pPhysicsShell->mXFORM);
+			Position().set	(m_pPhysicsShell->mXFORM.c);
 		}
 		break;
 	}
@@ -546,7 +546,7 @@ BOOL CWeaponMagazinedWGrenade::net_Spawn(LPVOID DC) {
 		D->ID				=	0xffff;
 		D->ID_Parent		=	(u16)ID();
 		D->ID_Phantom		=	0xffff;
-		D->s_flags.set		(M_SPAWN_OBJECT_ACTIVE | M_SPAWN_OBJECT_LOCAL);
+		D->s_flags.set		(M_SPAWN_OBJECT_LOCAL);
 		D->RespawnTime		=	0;
 		// Send
 		NET_Packet			P;
@@ -583,8 +583,9 @@ void CWeaponMagazinedWGrenade::OnShot		()
 		}
 		CPGObject* pStaticPG;/* s32 l_c = m_effects.size();*/
 		pStaticPG = xr_new<CPGObject>("weapons\\generic_shoot",Sector());
-		Fmatrix l_pos; l_pos.set(svTransform); l_pos.c.set(vLastFP);
-		Fvector l_vel; l_vel.sub(vPosition,ps_Element(0).vPosition); l_vel.div((Device.dwTimeGlobal-ps_Element(0).dwTime)/1000.f);
+		Fmatrix l_pos; l_pos.set(XFORM()); l_pos.c.set(vLastFP);
+#pragma todo("Oles to Vitya: 'ps_Element(0).dwTime' in game time, not in global time")
+		Fvector l_vel; l_vel.sub(Position(),ps_Element(0).vPosition); l_vel.div((Device.dwTimeGlobal-ps_Element(0).dwTime)/1000.f);
 		pStaticPG->UpdateParent(l_pos, l_vel); pStaticPG->Play();
 	} else inherited::OnShot();
 	//// Sound
@@ -610,8 +611,8 @@ void CWeaponMagazinedWGrenade::OnShot		()
 
 	//CPGObject* pStaticPG;/* s32 l_c = m_effects.size();*/
 	//pStaticPG = xr_new<CPGObject>("weapons\\generic_shoot",Sector());
-	//Fmatrix l_pos; l_pos.set(svTransform); l_pos.c.set(vLastFP);
-	//Fvector l_vel; l_vel.sub(vPosition,ps_Element(0).vPosition); l_vel.div((Device.dwTimeGlobal-ps_Element(0).dwTime)/1000.f);
+	//Fmatrix l_pos; l_pos.set(XFORM()); l_pos.c.set(vLastFP);
+	//Fvector l_vel; l_vel.sub(Position(),ps_Element(0).Position()); l_vel.div((Device.dwTimeGlobal-ps_Element(0).dwTime)/1000.f);
 	//pStaticPG->UpdateParent(l_pos, l_vel); pStaticPG->Play();
 	////pStaticPG->SetTransform(l_pos); pStaticPG->Play();
 }
@@ -724,7 +725,7 @@ void CWeaponMagazinedWGrenade::ReloadMagazine() {
 		D->ID				=	0xffff;
 		D->ID_Parent		=	(u16)ID();
 		D->ID_Phantom		=	0xffff;
-		D->s_flags.set		(M_SPAWN_OBJECT_ACTIVE | M_SPAWN_OBJECT_LOCAL);
+		D->s_flags.set		(M_SPAWN_OBJECT_LOCAL);
 		D->RespawnTime		=	0;
 		// Send
 		NET_Packet			P;

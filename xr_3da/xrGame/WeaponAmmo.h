@@ -29,7 +29,7 @@ public:
 	virtual void OnH_B_Chield();
 	virtual void OnH_B_Independent();
 	virtual void UpdateCL();
-	virtual void OnVisible();
+	virtual void renderable_Render();
 
 	virtual const char* Name();
 	virtual const char* NameShort();

@@ -176,7 +176,7 @@ void CPGDef::Save(IWriter& F)
 //------------------------------------------------------------------------------
 // class CParticleGroup
 //------------------------------------------------------------------------------
-CParticleGroup::CParticleGroup():IVisual()
+CParticleGroup::CParticleGroup():IRender_Visual()
 {
 	m_HandleGroup 		= pGenParticleGroups(1, 1);
     m_HandleActionList	= pGenActionLists();

@@ -29,7 +29,7 @@ BOOL CObjectSpace::nl_append(int x, int z, const Fvector2& O, const Fvector2& D)
 			for(u32 I=0; I<S.lst.size(); I++) 
 			{
 				CObject*	O	= S.lst[I];
-				CCFModel*	M	= O->CFORM();
+				ICollisionForm*	M	= O->CFORM();
 				if(M->GetEnable() && M->dwQueryID!=dwQueryID){
 					M->dwQueryID=dwQueryID;
 					q_nearest.push_back(O);
@@ -112,7 +112,7 @@ BOOL CObjectSpace::RayTest	( const Fvector &start, const Fvector &dir, float ran
 	VERIFY(_abs(dir.magnitude()-1)<EPS);
 
 	XRC.ray_options			(CDB::OPT_ONLYFIRST);
-	CCFModel::RayQuery		Q;
+	ICollisionForm::RayQuery		Q;
 	Q.start = start; Q.dir = dir; Q.range=range; Q.element=0;
 	if (bDynamic) 
 	{
@@ -127,7 +127,7 @@ BOOL CObjectSpace::RayTest	( const Fvector &start, const Fvector &dir, float ran
 			CObject*	O = *nl_idx;
 
 			if (O->getVisible()) 
-				if (O->CFORM()->_svRayTest(Q))	return TRUE;
+				if (O->CFORM()->_RayTest(Q))	return TRUE;
 		}
 	}
 	
@@ -163,7 +163,7 @@ BOOL CObjectSpace::RayPick( const Fvector &start, const Fvector &dir, float rang
 {
 	dwQueryID++;
 
-	CCFModel::RayQuery	Q;
+	ICollisionForm::RayQuery	Q;
 	Q.start = start; Q.dir = dir; Q.range=range; Q.element=0;
 	R.O		= 0; R.range = range; R.element = -1;
 
@@ -187,10 +187,10 @@ BOOL CObjectSpace::RayPick( const Fvector &start, const Fvector &dir, float rang
 	// Iterate on objects
 	for ( NL_IT nl_idx=q_nearest.begin(); nl_idx!=q_nearest.end(); nl_idx++ )
 	{
-		CCFModel&	M = *(*nl_idx)->CFORM();
+		ICollisionForm&	M = *(*nl_idx)->CFORM();
 		
 		u32 C = D3DCOLOR_XRGB(64,64,64);
-		if (M._svRayTest(Q)) {
+		if (M._RayTest(Q)) {
 			C	= D3DCOLOR_XRGB(128,128,196);
 			if (Q.range<R.range) {
 				R.O			= M.owner;
@@ -201,7 +201,7 @@ BOOL CObjectSpace::RayPick( const Fvector &start, const Fvector &dir, float rang
 		if (bDebug) 
 		{
 			Fsphere	S	= M.getSphere();
-			M.Owner()->clXFORM().transform_tiny(S.P);
+			M.Owner()->XFORM().transform_tiny(S.P);
 			dbg_S.push_back(mk_pair(S,C));
 		}
 	}
@@ -232,13 +232,13 @@ BOOL  CObjectSpace::RayPickW( const Fvector &start, const Fvector &dir, float ra
 	
 	// Iterate on objects
 	XRC.RayMode			(RAY_ONLYNEAREST|RAY_CULL);
-	CCFModel::RayQuery	Q;
+	ICollisionForm::RayQuery	Q;
 	Q.start = start; Q.dir = dir; Q.range=range; Q.element=0;
 	R.O = 0; R.range = range; R.element = -1;
 	
 	for ( NL_IT nl_idx=nearest_list.begin(); nl_idx!=nearest_list.end(); nl_idx++ )
 	{
-		CCFModel&	M = *(*nl_idx);
+		ICollisionForm&	M = *(*nl_idx);
 		
 		Fvector C; float _R; M.GetSphere	(C,_R);
 		if (!CDB::IntersectRaySphere(start,dir,C,_R+width)) continue;
@@ -253,7 +253,7 @@ BOOL  CObjectSpace::RayPickW( const Fvector &start, const Fvector &dir, float ra
 	}
 	
 	Fvector				box_center,box_radius;
-	CCFModel*			result	= NULL;
+	ICollisionForm*			result	= NULL;
 	int					id		= 0;
 	
 	// set bbox params

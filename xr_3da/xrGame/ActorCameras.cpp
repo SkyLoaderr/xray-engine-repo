@@ -23,7 +23,7 @@ void CActor::cam_Update(float dt, float fFOV)
 	Fvector						R;
 	ph_Movement.Box().getsize		(R);
 	point.set					(0.f,.91f*R.y,0.f);
-	svTransform.transform_tiny	(point);
+	XFORM().transform_tiny	(point);
 
 	// soft crouch
 	float dS = point.y-fPrevCamPos;

@@ -2,7 +2,7 @@
 
 #include "FixedMap.h"
 
-class ENGINE_API		IVisual;
+class ENGINE_API		IRender_Visual;
 class ENGINE_API		CObject;
 
 namespace SceneGraph
@@ -10,7 +10,7 @@ namespace SceneGraph
 	// Low level
 	struct _MatrixItem	{
 		CObject*		pObject;
-		IVisual*		pVisual;
+		IRender_Visual*		pVisual;
 		Fmatrix			Matrix;				// matrix (copy)
 		Fvector			vCenter;
 		float			lod;
@@ -24,14 +24,14 @@ namespace SceneGraph
 	};
 	struct _LodItem		{
 		float			ssa;
-		IVisual*		pVisual;
+		IRender_Visual*		pVisual;
 	};
 
 	// Higher level	- NORMAL
 	struct mapNormalDirect
 	{
-		FixedMAP<float,IVisual*>	sorted;
-		xr_vector<IVisual*>			unsorted;
+		FixedMAP<float,IRender_Visual*>	sorted;
+		xr_vector<IRender_Visual*>			unsorted;
 	};
 	struct mapNormalItems		: public	mapNormalDirect											{	float	ssa;	};
 	struct mapNormalMatrices	: public	FixedMAP<SMatrixList*,mapNormalItems>					{	float	ssa;	};

@@ -27,14 +27,14 @@ public:
 		for (; _it!=_end; _it++)
 		{
 			ISpatial*		S	= *_it;
-			if (0==(S->spatial_type&mask))	continue;
+			if (0==(S->spatial.type&mask))	continue;
 
-			Fvector&		sC		= S->spatial_center;
-			float			sR		= S->spatial_radius;
+			Fvector&		sC		= S->spatial.center;
+			float			sR		= S->spatial.radius;
 			u32				tmask	= fmask;
 			if (fcvNone==F->testSphere(sC,sR,tmask))	continue;
 
-			SpatialSpace->q_result.push_back(S);
+			g_SpatialSpace.q_result.push_back(S);
 		}
 
 		// recurse

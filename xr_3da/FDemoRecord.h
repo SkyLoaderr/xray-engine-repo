@@ -7,12 +7,12 @@
 
 #pragma once
 
-#include "fcontroller.h"
+#include "iinputreceiver.h"
 #include "effector.h"
 
 class ENGINE_API CDemoRecord :
 	public CEffector,
-	public CController
+	public IInputReceiver
 {
 private:
 	int			iCount;
@@ -38,10 +38,10 @@ public:
 				CDemoRecord				(const char *name, float life_time=60*60*1000);
 	virtual		~CDemoRecord();
 
-	virtual void OnKeyboardPress		(int dik);
-	virtual void OnKeyboardHold			(int dik);
-	virtual void OnMouseMove			(int dx, int dy);
-	virtual void OnMouseHold			(int btn);
+	virtual void IR_OnKeyboardPress		(int dik);
+	virtual void IR_OnKeyboardHold			(int dik);
+	virtual void IR_OnMouseMove			(int dx, int dy);
+	virtual void IR_OnMouseHold			(int btn);
 	
 	virtual	BOOL Process				(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect);
 };

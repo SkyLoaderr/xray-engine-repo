@@ -1,4 +1,4 @@
-// IVisual.cpp: implementation of the IVisual class.
+// IRender_Visual.cpp: implementation of the IRender_Visual class.
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -15,7 +15,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-IVisual::IVisual		()
+IRender_Visual::IRender_Visual		()
 {
 	Type				= 0;
 	hShader				= 0;
@@ -24,11 +24,11 @@ IVisual::IVisual		()
 	vis.clear			();
 }
 
-IVisual::~IVisual		()
+IRender_Visual::~IRender_Visual		()
 {
 }
 
-void IVisual::Release	()
+void IRender_Visual::Release	()
 {
 	Device.Shader.Delete		(hShader);
 	Device.Shader.DeleteGeom	(hGeom	);
@@ -36,7 +36,7 @@ void IVisual::Release	()
 
 CStatTimer				tscreate;
 
-void IVisual::Load		(const char* N, IReader *data, u32 dwFlags)
+void IRender_Visual::Load		(const char* N, IReader *data, u32 dwFlags)
 {
 	// header
 	VERIFY(data);
@@ -92,7 +92,7 @@ void IVisual::Load		(const char* N, IReader *data, u32 dwFlags)
 }
 
 #define PCOPY(a)	a = pFrom->a
-void	IVisual::Copy(IVisual *pFrom)
+void	IRender_Visual::Copy(IRender_Visual *pFrom)
 {
 	PCOPY(Type);
 	PCOPY(hShader);

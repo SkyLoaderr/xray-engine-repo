@@ -15,12 +15,13 @@ CCustomZone::CCustomZone(void) {
 
 CCustomZone::~CCustomZone(void) {}
 
-BOOL CCustomZone::net_Spawn(LPVOID DC) {
+BOOL CCustomZone::net_Spawn(LPVOID DC) 
+{
 	BOOL res = inherited::net_Spawn(DC);
 
 	if(res) {
-		CCF_Shape *l_pShape = xr_new<CCF_Shape>(this);
-		cfModel = l_pShape;
+		CCF_Shape *l_pShape			= xr_new<CCF_Shape>(this);
+		collidable.model			= l_pShape;
 		CSE_Abstract			*e	= (CSE_Abstract*)(DC);
 		CSE_ALifeAnomalousZone				*Z	= dynamic_cast<CSE_ALifeAnomalousZone*>(e);
 		for (u32 i=0; i < Z->shapes.size(); i++) {
@@ -31,21 +32,21 @@ BOOL CCustomZone::net_Spawn(LPVOID DC) {
 			}
 		}
 
-		l_pShape->ComputeBounds();
-		g_pGameLevel->ObjectSpace.Object_Register(this);
-		cfModel->OnMove();
+		l_pShape->ComputeBounds						();
+		g_pGameLevel->ObjectSpace.Object_Register	(this);
+		CFORM()->OnMove								();
 		m_maxPower = Z->m_maxPower;
 		m_attn = Z->m_attn;
 		m_period = Z->m_period;
 
-		Fvector P; clXFORM().transform_tiny(P,cfModel->getSphere().P);
-		Sound->play_at_pos(m_ambient,this, vPosition, true);
+		Fvector P; XFORM().transform_tiny			(P,CFORM()->getSphere().P);
+		Sound->play_at_pos							(m_ambient,this, Position(), true);
 
 //		setVisible(true);
 		setEnabled(true);
 
 		CPGObject* pStaticPG; s32 l_c = (int)m_effects.size();
-		Fmatrix l_m; l_m.set(svTransform);//l_m.j.set(normal); GetBasis(normal, l_m.k, l_m.i);
+		Fmatrix l_m; l_m.set(renderable.xform);
 		for(s32 i = 0; i < l_c; i++) {
 			Fvector c; c.set(l_m.c.x,l_m.c.y+EPS,l_m.c.z);
 			IRender_Sector *l_pRS = ::Render->detectSector(c);
@@ -104,9 +105,9 @@ void CCustomZone::UpdateCL() {
 	//u32 dt = Device.dwTimeDelta;
 	inherited::UpdateCL();
 
-	const Fsphere& s		= cfModel->getSphere();
+	const Fsphere& s		= CFORM()->getSphere();
 	Fvector					P;
-	clXFORM().transform_tiny(P,s.P);
+	XFORM().transform_tiny(P,s.P);
 	//feel_touch.clear(); m_inZone.clear();
 	feel_touch_update		(P,s.R);
 
@@ -135,11 +136,11 @@ void CCustomZone::feel_touch_delete(CObject* O) {
 BOOL CCustomZone::feel_touch_contact(CObject* O) {
 	if(O == this) return false;
 	if(!O->Local() || !((CGameObject*)O)->IsVisibleForZones()) return false;
-	return ((CCF_Shape*)cfModel)->Contact(O);
+	return ((CCF_Shape*)CFORM())->Contact(O);
 }
 
 f32 CCustomZone::Power(f32 dist) {
-	f32 l_r = cfModel->getRadius();
+	f32 l_r = CFORM()->getRadius();
 //	return l_r < dist ? 0 : m_maxPower * (1.f - m_attn*dist/l_r);
 	f32 l_pow = l_r < dist ? 0 : m_maxPower * (1.f - m_attn*(dist/l_r)*(dist/l_r));
 	return l_pow < 0 ? 0 : l_pow;
@@ -164,7 +165,7 @@ void CCustomZone::OnRender() {
 	RCache.OnFrameEnd();
 	Fvector l_half; l_half.set(.5f, .5f, .5f);
 	Fmatrix l_ball, l_box;
-	xr_vector<CCF_Shape::shape_def> &l_shapes = ((CCF_Shape*)cfModel)->Shapes();
+	xr_vector<CCF_Shape::shape_def> &l_shapes = ((CCF_Shape*)CFORM())->Shapes();
 	xr_vector<CCF_Shape::shape_def>::iterator l_pShape;
 	for(l_pShape = l_shapes.begin(); l_pShape != l_shapes.end(); l_pShape++) {
 		switch(l_pShape->type) {
@@ -172,14 +173,14 @@ void CCustomZone::OnRender() {
 				Fsphere &l_sphere = l_pShape->data.sphere;
 				l_ball.scale(l_sphere.R, l_sphere.R, l_sphere.R);
 				//l_ball.scale(1.f, 1.f, 1.f);
-				Fvector l_p; clTransform.transform(l_p, l_sphere.P);
+				Fvector l_p; XFORM().transform(l_p, l_sphere.P);
 				l_ball.translate_add(l_p);
-				//l_ball.mul(clTransform, l_ball);
-				//l_ball.mul(l_ball, clTransform);
+				//l_ball.mul(XFORM(), l_ball);
+				//l_ball.mul(l_ball, XFORM());
 				RCache.dbg_DrawEllipse(l_ball, D3DCOLOR_XRGB(0,255,255));
 			} break;
 			case 1 : {
-				l_box.mul(clTransform, l_pShape->data.box);
+				l_box.mul(XFORM(), l_pShape->data.box);
 				RCache.dbg_DrawOBB(l_box, l_half, D3DCOLOR_XRGB(0,255,255));
 			} break;
 		}

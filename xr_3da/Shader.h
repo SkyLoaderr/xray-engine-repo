@@ -12,7 +12,7 @@
 typedef svector<string64,8>			sh_list;
 
 class	ENGINE_API	CBlender_Compile;
-class	ENGINE_API	CBlender;
+class	ENGINE_API	IBlender;
 class	ENGINE_API	CTexture;
 class	ENGINE_API	CMatrix;
 class	ENGINE_API	CConstant;

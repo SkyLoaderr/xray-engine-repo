@@ -66,7 +66,7 @@ void CFlyer::Load(LPCSTR section)
 	inherited::Load(ini,section);
 
 	Fbox aabb;
-	aabb.set				(cfModel->GetBBox());
+	aabb.set				(CFORM()->GetBBox());
 //	Movement.SetBox			(aabb);
 	Fvector vfC,vfE;
 	vfE.set					(1.f,.25f,1.f);
@@ -74,8 +74,8 @@ void CFlyer::Load(LPCSTR section)
 	Movement.SetFoots		(vfC,vfE);
 	Movement.CalcMaximumVelocity(mMaxAirVelocity,FLY_ACCEL*RUN_COEF,FRICTION_AIR);
 	Movement.CalcMaximumVelocity(mMaxYawVelocity,YAW_ACCEL*RUN_COEF,FRICTION_AIR);
-//	R_ASSERT	(pVisual->Type==MT_SKELETON);
-//	PKinematics	(pVisual)->PlayCycle("work");
+//	R_ASSERT	(Visual()->Type==MT_SKELETON);
+//	PKinematics	(Visual())->PlayCycle("work");
 }
 
 void CFlyer::UpdateState(){
@@ -170,9 +170,9 @@ void CFlyer::Update(u32 DT)
 	// movement
 	mRotate.transform_dir(accel, vControlAccel);
 
-	Movement.SetPosition(vPosition);
+	Movement.SetPosition(Position());
 	Movement.Calculate	(accel,mYawVelocity,0,dt,false);
-	Movement.GetPosition(vPosition);
+	Movement.GetPosition(Position());
 
 //---------------------------------------------------------
 // рассчитаем крен
@@ -230,7 +230,7 @@ void CFlyer::Update(u32 DT)
 	// test nearest object
 //	Fvector C; float R;
 //	Movement.GetBoundingSphere(C,R);
-//	g_pGameLevel->ObjectSpace.TestNearestObject(cfModel, C, R);
+//	g_pGameLevel->ObjectSpace.TestNearestObject(CFORM(), C, R);
 
 	// check state
 	UpdateState			();
@@ -248,7 +248,7 @@ void CFlyer::Update(u32 DT)
 
 
 	UpdateTransform		();
-//	PKinematics(pVisual)->Update();
+//	PKinematics(Visual())->Update();
 
 	inherited::Update	(DT);
 
@@ -257,7 +257,7 @@ void CFlyer::Update(u32 DT)
 
 	// HUD update
 
-//	pApp->pFont->Out(-1,0.88f,"Fly P: %.3f, %.3f, %.3f",vPosition.x,vPosition.y,vPosition.z);
+//	pApp->pFont->Out(-1,0.88f,"Fly P: %.3f, %.3f, %.3f",Position().x,Position().y,Position().z);
 //	pApp->pFont->Out(-1,0.93f,"Fly D: %.3f, %.3f, %.3f",mRotate.k.x,mRotate.k.y,mRotate.k.z);
 }
 

@@ -16,9 +16,9 @@
 #include "..\flod.h"
 #include "ftreevisual.h"
 
-IVisual*	CModelPool::Instance_Create(u32 type)
+IRender_Visual*	CModelPool::Instance_Create(u32 type)
 {
-	IVisual *V = NULL;
+	IRender_Visual *V = NULL;
 
 	// Check types
 	switch (type) {
@@ -64,18 +64,18 @@ IVisual*	CModelPool::Instance_Create(u32 type)
 	return		V;
 }
 
-IVisual*	CModelPool::Instance_Duplicate	(IVisual* V)
+IRender_Visual*	CModelPool::Instance_Duplicate	(IRender_Visual* V)
 {
 	R_ASSERT(V);
-	IVisual* N		= Instance_Create(V->Type);
+	IRender_Visual* N		= Instance_Create(V->Type);
 	N->Copy			(V);
 	N->Spawn		();
 	return N;
 }
 
-IVisual*	CModelPool::Instance_Load		(const char* N)
+IRender_Visual*	CModelPool::Instance_Load		(const char* N)
 {
-	IVisual	*V;
+	IRender_Visual	*V;
 	string256		fn;
 	string256		name;
 
@@ -107,9 +107,9 @@ IVisual*	CModelPool::Instance_Load		(const char* N)
 	return V;
 }
 
-IVisual*	CModelPool::Instance_Load(LPCSTR name, IReader* data)
+IRender_Visual*	CModelPool::Instance_Load(LPCSTR name, IReader* data)
 {
-	IVisual	*V;
+	IRender_Visual	*V;
 	
 	// Actual loading
 	ogf_header			H;
@@ -122,7 +122,7 @@ IVisual*	CModelPool::Instance_Load(LPCSTR name, IReader* data)
 	return V;
 }
 
-void		CModelPool::Instance_Register(LPCSTR N, IVisual* V)
+void		CModelPool::Instance_Register(LPCSTR N, IRender_Visual* V)
 {
 	// Registration
 	ModelDef			M;
@@ -167,9 +167,9 @@ CModelPool::~CModelPool()
 	Destroy	();
 }
 
-IVisual* CModelPool::Instance_Find(LPCSTR N)
+IRender_Visual* CModelPool::Instance_Find(LPCSTR N)
 {
-	IVisual*				Model=0;
+	IRender_Visual*				Model=0;
 	xr_vector<ModelDef>::iterator	I;
 	for (I=Models.begin(); I!=Models.end(); I++)
 	{
@@ -181,12 +181,12 @@ IVisual* CModelPool::Instance_Find(LPCSTR N)
 	return Model;
 }
 
-IVisual* CModelPool::Create(const char* name)
+IRender_Visual* CModelPool::Create(const char* name)
 {
 	// Msg					("-CREATE %s",name);
 	string128 low_name;		R_ASSERT(strlen(name)<128);
 	strcpy(low_name,name);	strlwr(low_name);
-	IVisual* Model			= NULL;
+	IRender_Visual* Model			= NULL;
 
 	// 0. Search POOL
 	POOL_IT	it			=	Pool.find	(low_name);
@@ -198,7 +198,7 @@ IVisual* CModelPool::Create(const char* name)
 		Pool.erase			(it);
 	} else {
 		// 1. Search for already loaded model (reference, base model)
-		IVisual* Base		= Instance_Find		(low_name);
+		IRender_Visual* Base		= Instance_Find		(low_name);
 
 		if (0!=Base) 
 		{
@@ -215,13 +215,13 @@ IVisual* CModelPool::Create(const char* name)
 	return	Model;
 }
 
-IVisual* CModelPool::Create(LPCSTR name, IReader* data)
+IRender_Visual* CModelPool::Create(LPCSTR name, IReader* data)
 {
 	string128 low_name;		R_ASSERT(strlen(name)<128);
 	strcpy(low_name,name);	strlwr(low_name);
 
 	// 1. Search for already loaded model
-	IVisual* Model			= Instance_Find(low_name);
+	IRender_Visual* Model			= Instance_Find(low_name);
 
 	// 2. If found - return reference
 	if (0!=Model)			return Instance_Duplicate(Model);
@@ -230,7 +230,7 @@ IVisual* CModelPool::Create(LPCSTR name, IReader* data)
 	return					Instance_Duplicate(Instance_Load(name,data));
 }
 
-void	CModelPool::Delete(IVisual* &V)
+void	CModelPool::Delete(IRender_Visual* &V)
 {
 	REGISTRY_IT	it		= Registry.find	(V);
 	if (it!=Registry.end())
@@ -244,14 +244,14 @@ void	CModelPool::Delete(IVisual* &V)
 	V	=	NULL;
 }
 
-IVisual* CModelPool::CreatePS	(PS::SDef* source, PS::SEmitter* E)
+IRender_Visual* CModelPool::CreatePS	(PS::SDef* source, PS::SEmitter* E)
 {
 	CPSVisual* V	= (CPSVisual*)Instance_Create(MT_PARTICLE_SYSTEM);
 	V->Compile		(source,E);
 	return V;
 }
 
-IVisual* CModelPool::CreatePG	(PS::CPGDef* source)
+IRender_Visual* CModelPool::CreatePG	(PS::CPGDef* source)
 {
 	PS::CParticleGroup* V	= (PS::CParticleGroup*)Instance_Create(MT_PARTICLE_GROUP);
 	V->Compile		(source);

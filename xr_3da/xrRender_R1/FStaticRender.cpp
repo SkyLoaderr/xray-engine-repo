@@ -16,10 +16,10 @@ CRender										RImplementation;
 // Implementation
 IRender_ObjectSpecific*	CRender::ros_create				(CObject* parent)				{ return xr_new<CLightTrack>();			}
 void					CRender::ros_destroy			(IRender_ObjectSpecific* &p)	{ xr_delete(p);							}
-IVisual*				CRender::model_Create			(LPCSTR name)					{ return Models.Create(name);			}
-IVisual*				CRender::model_Create			(LPCSTR name, IReader* data)	{ return Models.Create(name,data);		}
-IVisual*				CRender::model_Duplicate		(IVisual* V)					{ return Models.Instance_Duplicate(V);	}
-void					CRender::model_Delete			(IVisual* &V)					{ Models.Delete(V);						}
+IRender_Visual*			CRender::model_Create			(LPCSTR name)					{ return Models.Create(name);			}
+IRender_Visual*			CRender::model_Create			(LPCSTR name, IReader* data)	{ return Models.Create(name,data);		}
+IRender_Visual*			CRender::model_Duplicate		(IRender_Visual* V)					{ return Models.Instance_Duplicate(V);	}
+void					CRender::model_Delete			(IRender_Visual* &V)					{ Models.Delete(V);						}
 IRender_DetailModel*	CRender::model_CreateDM			(IReader*	F)
 {
 	CDetail*	D		= xr_new<CDetail> ();
@@ -36,13 +36,13 @@ void					CRender::model_Delete			(IRender_DetailModel* & F)
 		F				= NULL;
 	}
 }
-IVisual*				CRender::model_CreatePS			(LPCSTR name, PS::SEmitter* E)	
+IRender_Visual*				CRender::model_CreatePS			(LPCSTR name, PS::SEmitter* E)	
 { 
 	PS::SDef*	source		= PSystems.FindPS	(name);
 	VERIFY					(source);
 	return Models.CreatePS	(source,E);
 }
-IVisual*				CRender::model_CreatePG			(LPCSTR name)	
+IRender_Visual*				CRender::model_CreatePG			(LPCSTR name)	
 { 
 	PS::CPGDef*	source		= PSystems.FindPG	(name);
 	VERIFY					(source);
@@ -53,7 +53,7 @@ int						CRender::getVisualsCount		()					{ return Visuals.size();								}
 IRender_Portal*			CRender::getPortal				(int id)			{ VERIFY(id<int(Portals.size()));	return Portals[id];	}
 IRender_Sector*			CRender::getSector				(int id)			{ VERIFY(id<int(Sectors.size()));	return Sectors[id];	}
 IRender_Sector*			CRender::getSectorActive		()					{ return pLastSector;									}
-IVisual*				CRender::getVisual				(int id)			{ VERIFY(id<int(Visuals.size()));	return Visuals[id];	}
+IRender_Visual*			CRender::getVisual				(int id)			{ VERIFY(id<int(Visuals.size()));	return Visuals[id];	}
 D3DVERTEXELEMENT9*		CRender::getVB_Format			(int id)			{ VERIFY(id<int(DCL.size()));		return DCL[id].begin();	}
 IDirect3DVertexBuffer9*	CRender::getVB					(int id)			{ VERIFY(id<int(VB.size()));		return VB[id];		}
 IDirect3DIndexBuffer9*	CRender::getIB					(int id)			{ VERIFY(id<int(IB.size()));		return IB[id];		}
@@ -61,8 +61,6 @@ IRender_Target*			CRender::getTarget				()					{ return &Target;										}
 
 IRender_Light*			CRender::light_create			()					{ return L_Dynamic.Create();							}
 void					CRender::light_destroy			(IRender_Light* &L)	{ if (L) { L_Dynamic.Destroy((CLightPPA*)L); L=0; }		}
-void					CRender::L_select				(Fvector &pos, float fRadius, xr_vector<xrLIGHT*>& dest)
-{	L_DB.Select	(pos,fRadius,dest);		}
 
 void					CRender::flush					()					{ flush_Models();									}
 			
@@ -70,8 +68,8 @@ BOOL					CRender::occ_visible			(vis_data& P)		{ return HOM.visible(P);							}
 BOOL					CRender::occ_visible			(sPoly& P)			{ return HOM.visible(P);							}
 BOOL					CRender::occ_visible			(Fbox& P)			{ return HOM.visible(P);							}
 			
-void					CRender::add_Visual				(IVisual*		V )	{ add_leafs_Dynamic(V);								}
-void					CRender::add_Geometry			(IVisual*		V )	{ add_Static(V,View->getMask());					}
+void					CRender::add_Visual				(IRender_Visual*		V )	{ add_leafs_Dynamic(V);								}
+void					CRender::add_Geometry			(IRender_Visual*		V )	{ add_Static(V,View->getMask());					}
 void					CRender::add_Lights				(xr_vector<WORD> &	V )	{ L_DB.add_sector_lights(V);						}
 void					CRender::add_Glows				(xr_vector<WORD> &	V )	{ Glows.add(V);										}
 void					CRender::add_Patch				(Shader* S, const Fvector& P1, float s, float a, BOOL bNearer)
@@ -90,7 +88,7 @@ void		CRender::add_Wallmark		(Shader* S, const Fvector& P, float s, CDB::TRI* T)
 }
 void		CRender::set_Object			(CObject*		O )	
 { 
-	val_pObject				= O;	// NULL is OK, trust me :)
+	val_pObject				= O;		// NULL is OK, trust me :)
 	L_Shadows.set_object	(O);
 	L_Projector.set_object	(O);
 	L_DB.Track				(O);
@@ -250,16 +248,80 @@ void CRender::Calculate()
 		}
 	}
 
-	// Calculate sector(s) and their objects
-	marker++;
-	calc_DetailTexturing					();
-	set_Object								(0);
-	if (0!=pLastSector)	pLastSector->Render_prepare(ViewBase);
-	g_pGameLevel->pHUD->Render_First			();	
-	if (0!=pLastSector) pLastSector->Render	(ViewBase);
-	g_pGameLevel->pHUD->Render_Last				();	
-	L_Shadows.calculate						();
-	L_Projector.calculate					();
+	// Main process
+	marker	++;
+	if (pLastSector)
+	{
+		// Traverse sector/portal structure
+		PortalTraverser.traverse	
+			(
+				pLastSector,
+				ViewBase,
+				Device.vCameraPosition,
+				Device.mFullTransform,
+				CPortalTraverser::VQ_HOM + CPortalTraverser::VQ_SSA
+			);
+
+		// Determine visibility for static geometry hierrarhy
+		for (u32 s_it=0; s_it<PortalTraverser.r_sectors.size(); s_it++)
+		{
+			CSector*	sector	= PortalTraverser.r_sectors[s_it];
+			IRender_Visual*	root	= sector->root();
+			for (u32 v_it=0; v_it<sector->r_frustums.size(); v_it++)
+			{
+				set_Frustum			(&(sector->r_frustums[v_it]));
+				add_Geometry		(root);
+			}
+		}
+
+		// Traverse object database
+		g_SpatialSpace.q_frustum
+			(
+				ISpatial_DB::O_ORDERED,
+				STYPE_RENDERABLE + STYPE_LIGHTSOURCE,
+				ViewBase
+			);
+
+		// Determine visibility for dynamic part of scene
+		for (u32 o_it=0; o_it<g_SpatialSpace.q_result.size(); o_it++)
+		{
+			ISpatial*	spatial		= g_SpatialSpace.q_result[o_it];
+			CSector*	sector		= (CSector*)spatial->spatial.sector;
+			if	(0==sector)										continue;	// disassociated from S/P structure
+			if	(PortalTraverser.i_marker != sector->r_marker)	continue;	// inactive (untouched) sector
+			for (u32 v_it=0; v_it<sector->r_frustums.size(); v_it++)
+			{
+				CFrustum&	view	= sector->r_frustums[v_it];
+				if (view.testSphere_dirty(spatial->spatial_center,spatial->spatial_radius))
+				{
+					// visible: check if it is "renderable" or "lightsource"
+					if (spatial->spatial_type & STYPE_RENDERABLE)
+					{
+						// renderable
+						???????????????
+					} else {
+						// lightsource
+						???????????????
+					}
+				}
+			}
+		}
+
+		// Calculate sector(s) and their objects
+		calc_DetailTexturing								();
+		set_Object											(0);
+		g_pGameLevel->pHUD->Render_First					();	
+		if (0!=pLastSector) pLastSector->Render				(ViewBase);
+		g_pGameLevel->pHUD->Render_Last						();	
+		L_Shadows.calculate									();
+		L_Projector.calculate								();
+	}
+	else 
+	{
+		set_Object											(0);
+		g_pGameLevel->pHUD->Render_First					();	
+		g_pGameLevel->pHUD->Render_Last						();	
+	}
 
 	// End calc
 	Device.Statistic.RenderCALC.End	();
@@ -274,9 +336,9 @@ IC float calcLOD	(float fDistSq, float R)
 }
 
 // NORMAL
-void __fastcall normal_L2(FixedMAP<float,IVisual*>::TNode *N)
+void __fastcall normal_L2(FixedMAP<float,IRender_Visual*>::TNode *N)
 {
-	IVisual *V = N->val;
+	IRender_Visual *V = N->val;
 	V->Render(calcLOD(N->key,V->vis.sphere.R));
 }
 
@@ -290,11 +352,11 @@ void __fastcall mapNormal_Render	(SceneGraph::mapNormalItems& N)
 		N.sorted.clear			();
 		
 		// DIRECT:UNSORTED
-		xr_vector<IVisual*>&	L			= N.unsorted;
-		IVisual **I=&*L.begin(), **E = &*L.end();
+		xr_vector<IRender_Visual*>&	L			= N.unsorted;
+		IRender_Visual **I=&*L.begin(), **E = &*L.end();
 		for (; I!=E; I++)
 		{
-			IVisual *V = *I;
+			IRender_Visual *V = *I;
 			V->Render	(0);	// zero lod 'cause it is too small onscreen
 		}
 		L.clear	();
@@ -304,7 +366,7 @@ void __fastcall mapNormal_Render	(SceneGraph::mapNormalItems& N)
 // MATRIX
 void __fastcall matrix_L2	(SceneGraph::mapMatrixItem::TNode *N)
 {
-	IVisual *V				= N->val.pVisual;
+	IRender_Visual *V				= N->val.pVisual;
 	RCache.set_xform_world	(N->val.Matrix);
 	gm_SetLighting			(N->val.pObject);
 	V->Render				(calcLOD(N->key,V->vis.sphere.R));
@@ -320,7 +382,7 @@ void __fastcall matrix_L1	(SceneGraph::mapMatrix_Node *N)
 // ALPHA
 void __fastcall sorted_L1	(SceneGraph::mapSorted_Node *N)
 {
-	IVisual *V = N->val.pVisual;
+	IRender_Visual *V = N->val.pVisual;
 	RCache.set_Shader		(V->hShader);
 	RCache.set_xform_world	(N->val.Matrix);
 	gm_SetLighting			(N->val.pObject);

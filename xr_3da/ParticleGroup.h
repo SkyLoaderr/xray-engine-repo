@@ -107,7 +107,7 @@ public:
 #endif
 };
 
-class ENGINE_API CParticleGroup: public IVisual
+class ENGINE_API CParticleGroup: public IRender_Visual
 {
 	friend class PFunction;
 protected:
@@ -138,7 +138,7 @@ public:
 
 	u32					RenderTO			(FVF::TL* V);
 	virtual void		Render				(float LOD);
-	virtual void		Copy				(IVisual* pFrom);
+	virtual void		Copy				(IRender_Visual* pFrom);
 
     void 				OnDeviceCreate		();
     void 				OnDeviceDestroy		();

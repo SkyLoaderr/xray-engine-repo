@@ -8,7 +8,7 @@
 
 #include "fbasicvisual.h"
 
-class ENGINE_API FCached  : public IVisual
+class ENGINE_API FCached  : public IRender_Visual
 {
 public:
 	LPVOID			pVertices;
@@ -18,7 +18,7 @@ public:
 
 	virtual void	Load	(const char* N, IReader *data, u32 dwFlags);
 	virtual void	Release	();						// Shared memory release
-	virtual void	Copy	(IVisual* from);
+	virtual void	Copy	(IRender_Visual* from);
 
 	FCached();
 	virtual ~FCached();

@@ -20,27 +20,27 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 	m_type = EPOType(po->type);
 	m_mass = po->mass;
 
-	xr_delete(cfModel);
+	xr_delete(CFORM());
 	switch(m_type) {
-		case epotBox:			cfModel = xr_new<CCF_Rigid>(this);		break;
+		case epotBox:			CFORM() = xr_new<CCF_Rigid>(this);		break;
 		case epotFixedChain:	
-		case epotSkeleton:		cfModel = xr_new<CCF_Skeleton>(this);	break;
+		case epotSkeleton:		CFORM() = xr_new<CCF_Skeleton>(this);	break;
 		default: NODEFAULT; 
 	}
 	g_pGameLevel->ObjectSpace.Object_Register(this);
-	cfModel->OnMove();
+	CFORM()->OnMove();
 
 	switch(m_type) {
 		case epotBox:				break;
 		case epotFixedChain:
-			R_ASSERT				(pVisual&&PKinematics(pVisual));
-			PKinematics(pVisual)->PlayCycle("idle");
-			PKinematics(pVisual)->Calculate();
+			R_ASSERT				(Visual()&&PKinematics(Visual()));
+			PKinematics(Visual())->PlayCycle("idle");
+			PKinematics(Visual())->Calculate();
 			break;
 		case epotSkeleton:
-			R_ASSERT				(pVisual&&PKinematics(pVisual));
-			PKinematics(pVisual)->PlayCycle("idle");
-			PKinematics(pVisual)->Calculate();
+			R_ASSERT				(Visual()&&PKinematics(Visual()));
+			PKinematics(Visual())->PlayCycle("idle");
+			PKinematics(Visual())->Calculate();
 			break;
 		default: NODEFAULT; 
 	}
@@ -62,14 +62,14 @@ void CPhysicObject::UpdateCL	()
 		mRotate.i.set(m_pPhysicsShell->mXFORM.i);
 		mRotate.j.set(m_pPhysicsShell->mXFORM.j);
 		mRotate.k.set(m_pPhysicsShell->mXFORM.k);
-		vPosition.set(m_pPhysicsShell->mXFORM.c);
+		Position().set(m_pPhysicsShell->mXFORM.c);
 		UpdateTransform();
 	}
 }
 
 void CPhysicObject::AddElement(CPhysicsElement* root_e, int id)
 {
-	CKinematics* K		= PKinematics(pVisual);
+	CKinematics* K		= PKinematics(Visual());
 
 	CPhysicsElement* E	= P_create_Element();
 	CBoneInstance& B	= K->LL_GetInstance(id);
@@ -115,15 +115,15 @@ void CPhysicObject::CreateBody(LPCSTR fixed_bone) {
 			m_pPhysicsShell->add_Element(E);
 			m_pPhysicsShell->setMass(m_mass);
 			if(!H_Parent())
-				m_pPhysicsShell->Activate(svXFORM(),0,svXFORM());
+				m_pPhysicsShell->Activate(XFORM(),0,XFORM());
 			m_pPhysicsShell->mDesired.identity();
 			m_pPhysicsShell->fDesiredStrength = 0.f;
 		} break;
 		case epotFixedChain : 
 		case epotFreeChain  :
 			{
-			m_pPhysicsShell->set_Kinematics(PKinematics(pVisual));
-			AddElement(0,PKinematics(pVisual)->LL_BoneRoot());
+			m_pPhysicsShell->set_Kinematics(PKinematics(Visual()));
+			AddElement(0,PKinematics(Visual())->LL_BoneRoot());
 			m_pPhysicsShell->setMass1(m_mass);
 		} break;
 		case   epotSkeleton: CreateSkeleton(fixed_bone); break;
@@ -132,7 +132,7 @@ void CPhysicObject::CreateBody(LPCSTR fixed_bone) {
 		} break;
 	
 	}
-	m_pPhysicsShell->mXFORM.set(svTransform);
+	m_pPhysicsShell->mXFORM.set(XFORM());
 	m_pPhysicsShell->SetAirResistance(0.001f, 0.02f);
 	//m_pPhysicsShell->SetAirResistance(0.002f, 0.3f);
 }
@@ -157,11 +157,11 @@ void CPhysicObject::Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector
 
 void CPhysicObject::CreateSkeleton(LPCSTR fixed_bone)
 {
-	if (!pVisual) return;
+	if (!Visual()) return;
 	m_pPhysicsShell		= P_create_Shell();
-	m_pPhysicsShell->build_FromKinematics(PKinematics(pVisual));
+	m_pPhysicsShell->build_FromKinematics(PKinematics(Visual()));
 /*
-	int iFBone = PKinematics(pVisual)->LL_BoneID(fixed_bone);
+	int iFBone = PKinematics(Visual())->LL_BoneID(fixed_bone);
 
 	Fmatrix ident;
 	float density=100.f;
@@ -205,7 +205,7 @@ void CPhysicObject::CreateSkeleton(LPCSTR fixed_bone)
 	m6._21=1.f;
 
 	//create shell
-	CKinematics* M		= PKinematics(pVisual);			VERIFY(M);
+	CKinematics* M		= PKinematics(Visual());			VERIFY(M);
 	m_pPhysicsShell		= P_create_Shell();
 	m_pPhysicsShell->set_Kinematics(M);
 	CPhysicsJoint*		joint;
@@ -700,7 +700,7 @@ void CPhysicObject::CreateSkeleton(LPCSTR fixed_bone)
 	Fmatrix m;
 	m.set(mRotate);
 
-	m.c.set(vPosition);
+	m.c.set(Position());
 	//Movement.GetDeathPosition(m.c);
 	//m.c.y-=0.4f;
 	//m_pPhysicsShell->setMass1(1000.f);

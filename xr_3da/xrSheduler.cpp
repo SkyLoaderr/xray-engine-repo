@@ -6,29 +6,6 @@ int						psSheduler		= 3000;
 LPVOID 					fiber_main		= 0;
 LPVOID					fiber_thread	= 0;
 
-CSheduled::CSheduled	()	
-{
-	shedule.t_min		= 20;
-	shedule.t_max		= 1000;
-	shedule.b_locked	= FALSE;
-	shedule_Register	();
-}
-
-CSheduled::~CSheduled	()
-{
-	shedule_Unregister	();
-}
-
-void	CSheduled::shedule_Register			()
-{
-	Engine.Sheduler.Register	(this);
-}
-
-void	CSheduled::shedule_Unregister		()
-{
-	Engine.Sheduler.Unregister	(this);
-}
-
 //-------------------------------------------------------------------------------------
 VOID CALLBACK t_process			(LPVOID p)
 {
@@ -48,7 +25,7 @@ void CSheduler::Destroy			()
 	DeleteFiber			(fiber_thread);
 }
 
-void CSheduler::Register		(CSheduled* O, BOOL RT)
+void CSheduler::Register		(ISheduled* O, BOOL RT)
 {
 	if (RT)
 	{
@@ -73,7 +50,7 @@ void CSheduler::Register		(CSheduled* O, BOOL RT)
 	}
 }
 
-void CSheduler::Unregister		(CSheduled* O)
+void CSheduler::Unregister		(ISheduled* O)
 {
 	if (O->shedule.b_RT)
 	{
@@ -95,7 +72,7 @@ void CSheduler::Unregister		(CSheduled* O)
 	}
 }
 
-void CSheduler::EnsureOrder	(CSheduled* Before, CSheduled* After)
+void CSheduler::EnsureOrder	(ISheduled* Before, ISheduled* After)
 {
 	VERIFY(Before->shedule.b_RT && After->shedule.b_RT);
 
@@ -153,9 +130,9 @@ void CSheduler::ProcessStep			()
 		Push						(TNext);
 
 		// Real update call
-		if (T.Object->Ready())		{
+		if (T.Object->shedule_Ready())		{
 			T.Object->shedule.b_locked	= TRUE;
-			T.Object->Update			(Elapsed);
+			T.Object->shedule_Update	(Elapsed);
 			T.Object->shedule.b_locked	= FALSE;
 		}
 
@@ -180,10 +157,10 @@ void CSheduler::Update				()
 	// Realtime priority
 	for (u32 it=0; it<ItemsRT.size(); it++)
 	{
-		Item&	T					= ItemsRT[it];
-		u32	Elapsed					= dwTime-T.dwTimeOfLastExecute;
-		if (T.Object->Ready())		T.Object->Update(Elapsed);
-		T.dwTimeOfLastExecute		= dwTime;
+		Item&	T						= ItemsRT[it];
+		u32	Elapsed						= dwTime-T.dwTimeOfLastExecute;
+		if (T.Object->shedule_Ready())	T.Object->shedule_Update(Elapsed);
+		T.dwTimeOfLastExecute			= dwTime;
 	}
 
 	// Normal (sheduled)

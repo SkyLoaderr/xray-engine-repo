@@ -14,7 +14,7 @@ namespace Feel {
 		I.Cache.verts[0].set	(0,0,0);
 		I.Cache.verts[1].set	(0,0,0);
 		I.Cache.verts[2].set	(0,0,0);
-		I.fuzzy					= 0.f;
+		I.fuzzy					= -EPS_S;
 		I.cp_LP.set				(0,0,0);
 	}
 	void	Vision::o_delete	(CObject* O)
@@ -26,24 +26,54 @@ namespace Feel {
 				return;
 			}
 	}
-	void	Vision::feel_vision_update	(objSET& seen, CObject* parent, Fvector& P, float dt)
+
+	void	Vision::feel_vision_get		(xr_vector<CObject*>& R)
 	{
+		R.clear		();
+		xr_vector<feel_visible_Item>::iterator I=feel_visible.begin(),E=feel_visible.end();
+		for (; I!=E; I++)	if (positive(I->fuzzy)) R.push_back(I->O);
+	}
+
+	void	Vision::feel_vision_query	(Fmatrix& mFull, Fvector& P)
+	{
+		CFrustum								Frustum;
+		Frustum.CreateFromMatrix				(mFull,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
+
+		// Traverse object database
+		g_SpatialSpace.q_frustum
+			(
+			0,
+			STYPE_VISIBLEFORAI,
+			Frustum
+			);
+
+		// Determine visibility for dynamic part of scene
+		seen.clear								();
+		for (u32 o_it=0; o_it<g_SpatialSpace.q_result.size(); o_it++)
+		{
+			ISpatial*	spatial								= g_SpatialSpace.q_result[o_it];
+			CObject*	object								= dynamic_cast<CObject*>(spatial);
+			if (object && feel_vision_isRelevant(object))	seen.push_back(object);
+		}
 		if (seen.size()>1) 
 		{
-			std::sort		(seen.begin(),seen.end());
-			CObject** end = std::unique	(seen.begin(),seen.end());
-			if (end!=seen.end()) seen.resize(end-seen.begin());
+			std::sort							(seen.begin(),seen.end());
+			xr_vector<CObject*>::iterator end	= std::unique	(seen.begin(),seen.end());
+			if (end!=seen.end()) seen.erase		(end,seen.end());
 		}
-		objSET diff;
+	}
 
+	void	Vision::feel_vision_update	(CObject* parent, Fvector& P, float dt)
+	{
 		// B-A = objects, that become visible
 		if (!seen.empty()) 
 		{
-			objSET::iterator E = std::remove(seen.begin(),seen.end(),parent);
-			seen.resize(E-seen.begin());
+			xr_vector<CObject*>::iterator E		= std::remove(seen.begin(),seen.end(),parent);
+			seen.resize			(E-seen.begin());
 
 			{
-				objSET::iterator	E = std::set_difference(
+				diff.resize	(_max(seen.size(),query.size()));
+				xr_vector<CObject*>::iterator	E = std::set_difference(
 					seen.begin(), seen.end(),
 					query.begin(),query.end(),
 					diff.begin() );
@@ -56,7 +86,8 @@ namespace Feel {
 		// A-B = objects, that are invisible
 		if (!query.empty()) 
 		{
-			objSET::iterator	E = std::set_difference(
+			diff.resize	(_max(seen.size(),query.size()));
+			xr_vector<CObject*>::iterator	E = std::set_difference(
 				query.begin(),query.end(),
 				seen.begin(), seen.end(),
 				diff.begin() );
@@ -66,7 +97,7 @@ namespace Feel {
 		}
 
 		// Copy results and perform traces
-		Memory.mem_copy		(&query,&seen,sizeof(query));
+		query				= seen;
 		o_trace				(P,dt);
 	}
 	void Vision::o_trace(Fvector& P, float dt)
@@ -87,7 +118,7 @@ namespace Feel {
 			Fvector				OP;
 			Fmatrix				mE;
 			const Fbox&			B = I->O->CFORM()->getBBox();
-			const Fmatrix&		M = I->O->svXFORM();
+			const Fmatrix&		M = I->O->XFORM();
 
 			// Build OBB + Ellipse and X-form point
 			Fvector				c,r;

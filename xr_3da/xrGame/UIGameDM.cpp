@@ -49,7 +49,7 @@ void CUIGameDM::Render()
 }
 //--------------------------------------------------------------------
 
-bool CUIGameDM::OnKeyboardPress(int dik)
+bool CUIGameDM::IR_OnKeyboardPress(int dik)
 {
 	if (Game().phase==GAME_PHASE_INPROGRESS){
 		// switch pressed keys
@@ -61,7 +61,7 @@ bool CUIGameDM::OnKeyboardPress(int dik)
 }
 //--------------------------------------------------------------------
 
-bool CUIGameDM::OnKeyboardRelease(int dik)
+bool CUIGameDM::IR_OnKeyboardRelease(int dik)
 {
 	if (Game().phase==GAME_PHASE_INPROGRESS){
 		// switch pressed keys

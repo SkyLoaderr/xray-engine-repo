@@ -24,7 +24,7 @@ public:
 	virtual void		Render				()=0;
 	virtual void		OnFrame				()=0;
 
-	virtual bool		OnKeyboardPress		(int dik)=0;
-	virtual bool		OnKeyboardRelease	(int dik)=0;
+	virtual bool		IR_OnKeyboardPress		(int dik)=0;
+	virtual bool		IR_OnKeyboardRelease	(int dik)=0;
 };
 #endif // __XR_UIGAMECUSTOM_H__

@@ -2,7 +2,7 @@
 //  or project specific include files that are used frequently, but
 //      are changed infrequently
 //
-// 5th generation by Oles.
+// 15th generation by Oles.
 
 #if !defined(AFX_STDAFX_H__A9DB83DB_A9FD_11D0_BFD1_444553540000__INCLUDED_)
 #define AFX_STDAFX_H__A9DB83DB_A9FD_11D0_BFD1_444553540000__INCLUDED_
@@ -11,10 +11,8 @@
 
 #include <xrCore.h>
 
-#define DIRECTINPUT_VERSION 0x0700
 #pragma warning(disable:4995)
 #include <d3d9.h>
-#include <dinput.h>
 #include <dplay8.h>
 #pragma warning(default:4995)
 
@@ -47,7 +45,6 @@
 #include "sound.h"
 
 // TODO: reference additional headers your program requires here
-
 #pragma comment( lib, "x:\\xrCore.lib"	)
 #pragma comment( lib, "x:\\xrCDB.lib"	)
 #pragma comment( lib, "x:\\xrSound.lib"	)

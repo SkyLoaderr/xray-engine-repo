@@ -22,7 +22,7 @@ FDetailPatch::~FDetailPatch()
 
 void FDetailPatch::Load(const char* N, IReader* fs, u32 dwFlags)
 {
-	IVisual::Load(N,fs,dwFlags);
+	IRender_Visual::Load(N,fs,dwFlags);
 
 	u32 size		= fs->find_chunk(OGF_DPATCH);	
 	R_ASSERT		(size && (size%sizeof(DPatch) == 0));

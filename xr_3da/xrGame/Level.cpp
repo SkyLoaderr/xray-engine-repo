@@ -225,7 +225,7 @@ void CLevel::OnEvent(EVENT E, u64 P1, u64 P2)
 	if (E==eEntitySpawn)	{
 		char	Name[128];	Name[0]=0;
 		sscanf	(LPCSTR(P1),"%s", Name);
-		Level().g_cl_Spawn	(Name,0xff,M_SPAWN_OBJECT_ACTIVE | M_SPAWN_OBJECT_LOCAL);
+		Level().g_cl_Spawn	(Name,0xff, M_SPAWN_OBJECT_LOCAL);
 	} else if (E==eChangeRP && P1) {
 	} else if (E==eDemoPlay && P1) {
 		char* name = (char*)P1;

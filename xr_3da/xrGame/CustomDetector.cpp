@@ -25,18 +25,18 @@ BOOL CCustomDetector::net_Spawn(LPVOID DC) {
 		m_pPhysicsShell = P_create_Shell(); R_ASSERT(m_pPhysicsShell);
 		m_pPhysicsShell->add_Element(E);
 		m_pPhysicsShell->setDensity(2000.f);
-		if(!H_Parent())m_pPhysicsShell->Activate(svXFORM(),0,svXFORM());
+		if(!H_Parent())m_pPhysicsShell->Activate(XFORM(),0,XFORM());
 		m_pPhysicsShell->mDesired.identity();
 		m_pPhysicsShell->fDesiredStrength = 0.f;
 	}
 //	CCF_Shape*	shape			= xr_new<CCF_Shape>	(this);
-//	cfModel						= shape;
+//	CFORM()						= shape;
 //	Fsphere S;	S.P.set			(0,1.f,0); S.R = m_buzzer_radius;
 //	shape->add_sphere			(S);
 //	shape->ComputeBounds						();
 //#pragma todo("@@@ WT: Check if detector will work w/o registration.")
 //	g_pGameLevel->ObjectSpace.Object_Register		(this);
-//	cfModel->OnMove								();
+//	CFORM()->OnMove								();
 
 	setVisible(true);
 	setEnabled(true);
@@ -86,17 +86,16 @@ void CCustomDetector::net_Destroy() {
 	for(l_it = m_sounds.begin(); l_it != m_sounds.end(); l_it++) SoundDestroy(*l_it->second);
 }
 
-void CCustomDetector::Update(u32 dt) {
-	inherited::Update	(dt);
+void CCustomDetector::shedule_Update(u32 dt) {
+	inherited::shedule_Update	(dt);
 
 	if(!H_Parent()) return;
 
-	vPosition.set(H_Parent()->Position());
-	UpdateTransform();
+	Position().set(H_Parent()->Position());
 
-	//const Fsphere& s		= cfModel->getSphere();
+	//const Fsphere& s		= CFORM()->getSphere();
 	Fvector					P; P.set(H_Parent()->Position());
-	//H_Parent()->clXFORM().transform_tiny(P,P);
+	//H_Parent()->XFORM().transform_tiny(P,P);
 	feel_touch_update		(P,m_radius);
 
 	if(H_Parent()) {
@@ -106,7 +105,7 @@ void CCustomDetector::Update(u32 dt) {
 		for(l_it = m_zones.begin(); l_it != m_zones.end(); l_it++) {
 			CCustomZone *l_pZ = *l_it;
 			u32 &l_time = m_times[l_pZ];
-			//Fvector ZP; ZP.set(0,0,0); l_pZ->clXFORM().transform_tiny(ZP,ZP);
+			//Fvector ZP; ZP.set(0,0,0); l_pZ->XFORM().transform_tiny(ZP,ZP);
 			f32 l_dst = P.distance_to(l_pZ->Position()); if(l_dst > m_radius) l_dst -= m_radius; else l_dst = 0;
 			f32 l_relPow = l_pZ->Power(l_dst) / l_pZ->m_maxPower;
 			if(l_relPow > 0 && l_pZ->feel_touch_contact(this)) l_buzzer = true;
@@ -152,15 +151,15 @@ void CCustomDetector::UpdateCL() {
 	/*
 	f32 l_zonePow = 0;
 	xr_list<CCustomZone*>::iterator l_it;
-	for(l_it = m_zones.begin(); l_it != m_zones.end(); l_it++) l_zonePow = _max(l_zonePow, (*l_it)->Power((*l_it)->Position().distance_to(vPosition)));
+	for(l_it = m_zones.begin(); l_it != m_zones.end(); l_it++) l_zonePow = _max(l_zonePow, (*l_it)->Power((*l_it)->Position().distance_to(Position())));
 	CGameFont* H		= HUD().pFontMedium;
 	H->SetColor			(0xf0ffffff); 
 	H->Out				(550,500,"Anomaly force: %.0f", l_zonePow);
 	*/
 	if(getVisible() && m_pPhysicsShell) {
 		m_pPhysicsShell->Update	();
-		svTransform.set			(m_pPhysicsShell->mXFORM);
-		vPosition.set			(svTransform.c);
+		XFORM().set			(m_pPhysicsShell->mXFORM);
+		Position().set			(XFORM().c);
 	}
 }
 
@@ -220,14 +219,14 @@ void CCustomDetector::OnRender() {
 	RCache.OnFrameEnd();
 	Fmatrix l_ball;
 	l_ball.scale(m_buzzer_radius, m_buzzer_radius, m_buzzer_radius);
-	Fvector l_p; l_p.set(0, 1.f, 0); clTransform.transform(l_p, l_p);
+	Fvector l_p; l_p.set(0, 1.f, 0); XFORM().transform(l_p, l_p);
 	l_ball.translate_add(l_p);
 	RCache.dbg_DrawEllipse(l_ball, D3DCOLOR_XRGB(255,0,255));
 }
 
-void CCustomDetector::OnVisible() {
+void CCustomDetector::renderable_Render() {
 	if(getVisible() && !H_Parent()) {
-		::Render->set_Transform		(&clTransform);
+		::Render->set_Transform		(&XFORM());
 		::Render->add_Visual		(Visual());
 	}
 }

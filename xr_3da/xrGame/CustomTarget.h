@@ -11,7 +11,7 @@ public:
 	virtual void			net_Destroy			();
 	virtual void			net_Export			(NET_Packet& P);	// export to server
 	virtual void			net_Import			(NET_Packet& P);	// import from server
-	virtual void			Update				(u32 dt);
+	virtual void			shedule_Update		(u32 dt);
 	virtual void			UpdateCL			();
 	virtual void			OnH_A_Chield		();
 	virtual void			OnH_B_Independent	();

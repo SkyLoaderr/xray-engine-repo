@@ -6,7 +6,7 @@
 #define AFX_BLENDER_VERTEX_AREF_H__07141B30_A968_407E_86F8_D12702FE0B9B__INCLUDED_
 #pragma once
 
-class CBlender_Vertex_aref : public CBlender  
+class CBlender_Vertex_aref : public IBlender  
 {
 public:
 	xrP_Integer	oAREF;

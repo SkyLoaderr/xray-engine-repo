@@ -1,12 +1,14 @@
 #ifndef __XR_OBJECT_H__
 #define __XR_OBJECT_H__
 
-#include "fcontroller.h"
-#include "xrSheduler.h"
+#include "ispatial.h"
+#include "isheduled.h"
+#include "iinputreceiver.h"
+#include "irenderable.h"
+#include "icollidable.h"
 
 // refs
-class	ENGINE_API IVisual;
-class	ENGINE_API CCFModel;
+class	ENGINE_API IRender_Visual;
 class	ENGINE_API IRender_Sector;
 class	ENGINE_API IRender_ObjectSpecific;
 class	ENGINE_API CCustomHUD;
@@ -18,10 +20,13 @@ struct	ENGINE_API NodeCompressed;
 //-----------------------------------------------------------------------------------------------------------
 #pragma pack(push,4)
 class	ENGINE_API						CObject :	
-	public CEventBase,
-	public CSheduled,
-	public DLL_Pure, 
-	public CController
+	public DLL_Pure,
+	public ISpatial,
+	public ISheduled,
+	public IInputReceiver,
+	public IRenderable,
+	public ICollidable,
+	public IEventReceiver
 {
 public:
 	struct SavedPosition
@@ -35,7 +40,6 @@ public:
 		{
 			u32	bEnabled		:	1;
 			u32	bVisible		:	1;
-			u32	bActive			:	1;
 			u32	bDestroy		:	1;
 			u32	net_Local		:	1;
 			u32	net_Ready		:	1;
@@ -50,29 +54,15 @@ private:
 	LPSTR								NameObject;
 	LPSTR								NameSection;
 	LPSTR								NameVisual;
-
-	// Visibility detection
-	IRender_Sector*						pSector;
-	IRender_ObjectSpecific*				pROS;
 protected:
-	// Geometric (transformation)
-	Fvector								vPosition;
-	Fmatrix								mRotate;
-	CCFModel*							cfModel;
-	svector<SavedPosition,4>			PositionStack;
-	
-	// Model
-	IVisual*							pVisual;
-
-	// Information and status
-	void								StatusBegin			();
-
-	// Geometry xform
-	Fmatrix								svTransform;
-	Fmatrix								clTransform;
-
 	// Parentness
 	CObject*							Parent;
+
+	// Geometric (transformation)
+	svector<SavedPosition,4>			PositionStack;
+	
+	// Information and status
+	void								StatusBegin			();
 public:
 	u32									dwFrame_UpdateCL;
 
@@ -90,34 +80,32 @@ public:
 	virtual CObject*					H_SetParent			(CObject* O);
 
 	// Geometry xform
-	void								UpdateTransform		(void);
-	void								svCenter			(Fvector& C) const;
-	void								clCenter			(Fvector& C) const;
-	IC const Fmatrix&					svXFORM				()			 const	{ return svTransform;		}
-	IC const Fmatrix&					clXFORM				()			 const	{ return clTransform;		}
+	void								Center				(Fvector& C) const;
+	IC const Fmatrix&					XFORM				()			 const	{ return renderable.xform;			}
+	IC Fmatrix&							XFORM				()					{ return renderable.xform;			}
+	virtual void						spatial_move		();
 
-	IC Fvector&							Direction			() 					{ return mRotate.k;			}
-	IC Fmatrix&							Rotation			()					{ return mRotate;			}
-	virtual float						Radius				() const;
-	virtual Fvector&					Position			() 					{ return vPosition;			}
-	virtual const Fbox&					BoundingBox			() const;
+	IC Fvector&							Direction			() 					{ return renderable.xform.k;		}
+	IC Fvector&							Position			() 					{ return renderable.xform.c;		}
+	virtual float						Radius				()			const;
+	virtual const Fbox&					BoundingBox			()			const;
 	
-	IC IRender_Sector*					Sector				()					{ return H_Root()->pSector;	}
-	IC IRender_ObjectSpecific*			ROS					()					{ return pROS;				}
-	virtual float						Ambient				()					{ return 0.f;		 		}
-	virtual BOOL						ShadowGenerate		()					{ return TRUE;				}
-	virtual BOOL						ShadowReceive		()					{ return TRUE;				}
+	IC IRender_Sector*					Sector				()					{ return H_Root()->spatial.sector;	}
+	IC IRender_ObjectSpecific*			ROS					()					{ return renderable.ROS;			}
+	virtual float						Ambient				()					{ return 0.f;		 				}
+	virtual BOOL						ShadowGenerate		()					{ return TRUE;						}
+	virtual BOOL						ShadowReceive		()					{ return TRUE;						}
 
 	// SLS
 	virtual void						SLS_Save			(IWriter& fs)		{};
 	virtual void						SLS_Load			(IReader& fs)		{};
 	
 	// Accessors
-	IC IVisual*							Visual				()					{ return pVisual;			}
-	IC CCFModel*						CFORM				() const			{ return cfModel;			}
+	IC IRender_Visual*					Visual				()					{ return renderable.visual;			}
+	IC ICollisionForm*					CFORM				() const			{ return collidable.model;			}
 
 	// Name management
-	virtual LPCSTR						cName				()					{ return NameObject;		}
+	IC LPCSTR							cName				()					{ return NameObject;		}
 	void								cName_set			(LPCSTR N);
 	IC LPCSTR							cNameSect			()					{ return NameSection;		}
 	void								cNameSect_set		(LPCSTR N);
@@ -129,8 +117,6 @@ public:
 	IC BOOL								getVisible			()					{ return FLAGS.bVisible;			}
 	void								setEnabled			(BOOL _enabled);
 	IC BOOL								getEnabled			()					{ return FLAGS.bEnabled;			}
-	IC void								setActive			(BOOL _active)		{ FLAGS.bActive  = _active?1:0;		}
-	IC BOOL								getActive			()					{ return FLAGS.bActive;				}
 	IC void								setDestroy			(BOOL _destroy)		{ FLAGS.bDestroy = _destroy?1:0;	}
 	IC BOOL								getDestroy			()					{ return FLAGS.bDestroy;			}
 	IC void								setLocal			(BOOL _local)		{ FLAGS.net_Local = _local?1:0;		}
@@ -143,12 +129,11 @@ public:
 	virtual								~CObject			();
 
 	virtual void						Load				(LPCSTR section);
-	virtual void						Sector_Detect		();
-	virtual void						Sector_Move			(IRender_Sector* P);
 	
 	// Update
-	virtual void						OnVisible			(void);								// returns lighting level
-	virtual void						Update				(u32 dt);							// Called by sheduler
+	virtual void						shedule_Update		(u32 dt);							// Called by sheduler
+	virtual void						renderable_Render	();
+
 	virtual void						UpdateCL			();									// Called each frame, so no need for dt
 	virtual BOOL						net_Spawn			(LPVOID data);
 	virtual void						net_Destroy			();
@@ -162,13 +147,12 @@ public:
 	// Position stack
 	IC u32								ps_Size				()				{ return PositionStack.size(); }
 	virtual	SavedPosition				ps_Element			(u32 ID);
+	virtual void						ForceTransform		(const Fmatrix& m)	{};
 
 	// HUD
 	virtual void						OnHUDDraw			(CCustomHUD* hud)	{};
 
 	// Active/non active
-	virtual void						OnActivate			();
-	virtual void						OnDeactivate		();
 	virtual void						OnH_B_Chield		();		// before
 	virtual void						OnH_B_Independent	();
 	virtual void						OnH_A_Chield		();		// after
@@ -176,9 +160,8 @@ public:
 	
 	// Device dependance
 	virtual void						OnEvent				(EVENT E, u64 P1, u64 P2) {};
-
-	virtual void						ForceTransform		(const Fmatrix& m)	{};
 };
+
 #pragma pack(pop)
 
 #endif //__XR_OBJECT_H__

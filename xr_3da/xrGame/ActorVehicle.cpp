@@ -18,7 +18,7 @@ void CActor::attach_Vehicle(CCar* vehicle)
 		return;
 	}
 	// temp play animation
-	CKinematics* V		= PKinematics(pVisual);
+	CKinematics* V		= PKinematics(Visual());
 	R_ASSERT			(V);
 	V->PlayCycle(m_anims.m_steering_legs_idle);
 	V->PlayCycle(m_anims.m_steering_torso_idle);
@@ -39,9 +39,9 @@ void CActor::detach_Vehicle()
 	if(!m_vehicle) return;
 	//m_vehicle->detach_Actor();//calling by detach_Actor()
 	ph_Movement.CreateCharacter();
-	ph_Movement.SetPosition(vPosition);
+	ph_Movement.SetPosition(Position());
 	m_vehicle=NULL;
-	CKinematics* V		= PKinematics(pVisual);
+	CKinematics* V		= PKinematics(Visual());
 	R_ASSERT			(V);
 	int spine_bone		= V->LL_BoneID("bip01_spine1");
 	int shoulder_bone	= V->LL_BoneID("bip01_spine2");

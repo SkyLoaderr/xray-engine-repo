@@ -116,8 +116,8 @@ void CWeaponM134::Load	(LPCSTR section)
 	dwServoMaxFreq	= pSettings->r_s32(section,"servo_max_freq");
 	dwServoMinFreq	= pSettings->r_s32(section,"servo_min_freq");
 	
-	// PKinematics(pVisual)->PlayCycle("idle");
-	PKinematics(pVisual)->LL_GetInstance(iWpnRotBone).set_callback			(RotateCallback_norm,this);
+	// PKinematics(Visual())->PlayCycle("idle");
+	PKinematics(Visual())->LL_GetInstance(iWpnRotBone).set_callback			(RotateCallback_norm,this);
 	PKinematics(m_pHUD->Visual())->LL_GetInstance(iHUDRotBone).set_callback	(RotateCallback_hud,this);
 
 	mhud_idle		= m_pHUD->animGet("idle");	
@@ -179,7 +179,7 @@ void CWeaponM134::UpdateXForm	()
 		R.crossproduct	(mR.j,D);		R.normalize_safe();
 		N.crossproduct	(D,R);			N.normalize_safe();
 		mRes.set		(R,N,D,mR.c);
-		mRes.mulA		(H_Parent()->clXFORM());
+		mRes.mulA		(H_Parent()->XFORM());
 		UpdatePosition	(mRes);
 
 		// 
@@ -207,7 +207,7 @@ void CWeaponM134::UpdateFP	()
 		// fire point&direction
 		UpdateXForm				();
 		Fmatrix& fire_mat		= V->LL_GetTransform(hud_mode?m_pHUD->iFireBone:iFireBone);
-		Fmatrix& parent			= hud_mode?m_pHUD->Transform():svTransform;
+		Fmatrix& parent			= hud_mode?m_pHUD->Transform():XFORM();
 		Fvector& fp				= hud_mode?m_pHUD->vFirePoint:vFirePoint;
 		Fvector& sp				= hud_mode?m_pHUD->vShellPoint:vShellPoint;
 		fire_mat.transform_tiny	(vLastFP,fp);
@@ -334,9 +334,9 @@ void CWeaponM134::Update	(u32 T)
 #endif
 }
 
-void CWeaponM134::OnVisible	()
+void CWeaponM134::renderable_Render	()
 {
-	inherited::OnVisible	();
+	inherited::renderable_Render	();
 	UpdateXForm				();
 	if (hud_mode && m_pHUD)
 	{ 
@@ -347,7 +347,7 @@ void CWeaponM134::OnVisible	()
 	else
 	{
 		// Actor render
-		::Render->set_Transform		(&svTransform);
+		::Render->set_Transform		(&XFORM());
 		::Render->add_Visual		(Visual());
 	}
 	if (st_current==eM134Fire) 

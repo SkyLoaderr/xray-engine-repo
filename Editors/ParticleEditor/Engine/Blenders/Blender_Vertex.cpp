@@ -23,17 +23,17 @@ CBlender_Vertex::~CBlender_Vertex()
 
 void	CBlender_Vertex::Save	( IWriter& fs	)
 {
-	CBlender::Save	(fs);
+	IBlender::Save	(fs);
 }
 
 void	CBlender_Vertex::Load	( IReader& fs, WORD version	)
 {
-	CBlender::Load	(fs,version);
+	IBlender::Load	(fs,version);
 }
 
 void CBlender_Vertex::Compile	(CBlender_Compile& C)
 {
-	CBlender::Compile		(C);
+	IBlender::Compile		(C);
 
 	if (C.bEditor)
 	{

@@ -2,7 +2,7 @@
 #define BLENDER_SHADOW_TEX_H
 #pragma once
 
-class CBlender_ShTex : public CBlender  
+class CBlender_ShTex : public IBlender  
 {
 public:
 	virtual		LPCSTR		getComment()	{ return "INTERNAL: shadow rendering";	}

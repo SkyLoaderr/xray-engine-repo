@@ -6,11 +6,12 @@
 #include "Physics.h"
 #include "PHAICharacter.h"
 #include "PHActorCharacter.h"
+
 #define GROUND_FRICTION	10.0f
 #define AIR_FRICTION	0.01f
 #define WALL_FRICTION	3.0f
 //#define AIR_RESIST		0.001f
- 
+
 #define def_X_SIZE_2	0.35f
 #define def_Y_SIZE_2	0.8f
 #define def_Z_SIZE_2	0.35f
@@ -19,7 +20,7 @@ CPHMovementControl::CPHMovementControl(void)
 {
 	//m_character->Create();
 
-		pObject	=			NULL;
+	pObject	=			NULL;
 	eOldEnvironment =	peInAir;
 	eEnvironment =		peInAir;
 	aabb.set			(-def_X_SIZE_2,0,-def_Z_SIZE_2, def_X_SIZE_2, def_Y_SIZE_2*2, def_Z_SIZE_2);
@@ -48,7 +49,7 @@ CPHMovementControl::CPHMovementControl(void)
 CPHMovementControl::~CPHMovementControl(void)
 {
 	if(m_character)
-	m_character->Destroy();
+		m_character->Destroy();
 	DeleteCharacterObject();
 }
 
@@ -56,16 +57,16 @@ CPHMovementControl::~CPHMovementControl(void)
 //static bool bFirst=true;
 
 void CPHMovementControl::Calculate(Fvector& vAccel,float ang_speed,float jump,float dt,bool bLight){
-	
-   m_character->IPosition(vPosition);
+
+	m_character->IPosition(vPosition);
 
 	vAccel.y=jump;
 	m_character->SetMaximumVelocity(vAccel.magnitude()/10.f);
 	m_character->SetAcceleration(vAccel);
-	
 
-  m_character->GetVelocity(vVelocity); 
- fActualVelocity=vVelocity.magnitude();
+
+	m_character->GetVelocity(vVelocity); 
+	fActualVelocity=vVelocity.magnitude();
 	gcontact_Was=m_character->ContactWas();
 	fContactSpeed=0.f;
 	//if(gcontact_Was)
@@ -74,26 +75,24 @@ void CPHMovementControl::Calculate(Fvector& vAccel,float ang_speed,float jump,fl
 		//m_character->ContactVelocity()=0.f;
 		gcontact_Power				= fContactSpeed/fMaxCrashSpeed;
 
-			gcontact_HealthLost			= 0;
-			if (fContactSpeed>fMinCrashSpeed) 
-			{
-				//float k=10000.f/(B-A);
-				//float dh=_sqrt((dv-A)*k);
-				gcontact_HealthLost = 
-					(100*(fContactSpeed-fMinCrashSpeed))/(fMaxCrashSpeed-fMinCrashSpeed);
-			}
+		gcontact_HealthLost			= 0;
+		if (fContactSpeed>fMinCrashSpeed) 
+		{
+			//float k=10000.f/(B-A);
+			//float dh=_sqrt((dv-A)*k);
+			gcontact_HealthLost = 
+				(100*(fContactSpeed-fMinCrashSpeed))/(fMaxCrashSpeed-fMinCrashSpeed);
+		}
 	}
 	CheckEnvironment(vPosition);
 	bSleep=false;
-	
-	
 }
 
 void CPHMovementControl::Calculate(const Fvector& desired_pos,float velocity,float dt){
 
 	m_character->IPosition(vPosition);
-	
-	
+
+
 	m_character->SetDesiredPosition(desired_pos);
 	m_character->BringToDesired(dt,velocity);
 
@@ -165,28 +164,28 @@ void CPHMovementControl::Load					(LPCSTR section){
 }
 
 void CPHMovementControl::CheckEnvironment(const Fvector &V){
-eOldEnvironment=eEnvironment;
-switch (m_character->CheckInvironment()){
+	eOldEnvironment=eEnvironment;
+	switch (m_character->CheckInvironment()){
 case peOnGround : eEnvironment=peOnGround;break;
 case peInAir :		eEnvironment=peInAir		;break;
 case peAtWall : eEnvironment=peAtWall		;break;
-}
+	}
 }
 
 
 void	CPHMovementControl::SetEnvironment( int enviroment,int old_enviroment){
 	switch(enviroment){
 	case 0: eEnvironment=peOnGround;
-	break;
+		break;
 	case 1: eEnvironment=peAtWall;
-	break;
+		break;
 	case 2: eEnvironment=peInAir;
 	}
 	switch(old_enviroment){
 	case 0: eOldEnvironment=peOnGround;
-	break;
+		break;
 	case 1: eOldEnvironment=peAtWall;
-	break;
+		break;
 	case 2: eOldEnvironment=peInAir;
 	}
 }
@@ -198,8 +197,8 @@ void	CPHMovementControl::AllocateCharacterObject(CharacterType type)
 	case actor:			m_character = xr_new<CPHActorCharacter>	();break;
 	case ai_stalker:	m_character = xr_new<CPHAICharacter>	();break;
 	}
-m_character->SetMas(fMass);
-m_character->SetPosition(vPosition);
+	m_character->SetMas(fMass);
+	m_character->SetPosition(vPosition);
 }
 
 void	CPHMovementControl::DeleteCharacterObject()

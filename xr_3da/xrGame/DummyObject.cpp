@@ -37,9 +37,9 @@ void CDummyObject::Load		(LPCSTR section)
 	if (pSettings->line_exist(section,"motions")){
 		style			|= esAnimated;
 	}
-	if (pVisual->Type==MT_SKELETON){
+	if (Visual()->Type==MT_SKELETON){
 		style			|= esSkeleton;
-		PKinematics(pVisual)->PlayCycle	("idle");
+		PKinematics(Visual())->PlayCycle	("idle");
 	}
 	if (pSettings->line_exist(section,"sound"))
 	{
@@ -60,9 +60,7 @@ BOOL CDummyObject::net_Spawn(LPVOID DC)
 	// 
 	setVisible				(TRUE);
 
-	UpdateTransform			();
-	clTransform.set			(svTransform);
-	relation.set			(svTransform);
+	relation.set			(XFORM());
 
 	style					= E->s_style;
 	if (style&esAnimated)		{
@@ -110,7 +108,7 @@ BOOL CDummyObject::net_Spawn(LPVOID DC)
 		R_ASSERT							(m_pPhysicsShell);
 		m_pPhysicsShell->add_Element		(E);
 		m_pPhysicsShell->setDensity			(200.f);
-		m_pPhysicsShell->Activate			(svXFORM(),0,svXFORM(),true);
+		m_pPhysicsShell->Activate			(XFORM(),0,XFORM(),true);
 		m_pPhysicsShell->mDesired.identity	();
 		m_pPhysicsShell->fDesiredStrength	= 0.f;
 	}
@@ -131,21 +129,21 @@ void CDummyObject::UpdateCL		()
 	{
 		s_animator->OnMove		();
 		mRotate.set				(s_animator->GetRotate());
-		vPosition.set			(s_animator->GetPosition());
+		Position().set			(s_animator->GetPosition());
 		UpdateTransform			();
 		if (style&esRelativePosition){
 			R_ASSERT2(0,"CDummyObject: Relative position error.");
-			svTransform.mulB_43	(relation);
+			XFORM().mulB_43	(relation);
 		}
 	} else {
 		if (m_pPhysicsShell)		
 		{
 			m_pPhysicsShell->Update	();
-			svTransform.set			(m_pPhysicsShell->mXFORM);
-			vPosition.set			(svTransform.c);
+			XFORM().set			(m_pPhysicsShell->mXFORM);
+			Position().set			(XFORM().c);
 		}
 	}
-	clTransform.set				(svTransform);
+	XFORM().set				(XFORM());
 
 	if (s_particles)			
 	{
@@ -158,8 +156,8 @@ void CDummyObject::UpdateCL		()
 	}
 }
 
-void CDummyObject::OnVisible	()
+void CDummyObject::renderable_Render	()
 {
-	inherited::OnVisible();
+	inherited::renderable_Render();
 	if (s_particles)	::Render->add_Visual(s_particles);
 }

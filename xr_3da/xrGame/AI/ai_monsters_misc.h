@@ -28,7 +28,7 @@ class CBaseFunction;
 
 #ifdef WRITE_LOG
 	#define WRITE_TO_LOG(S) {\
-		Msg("%s,%s,%d,p[%.2f,%.2f,%.2f],%.2f,h[%.2f,%.2f],t[%.2f,%.2f]",cName(),S,Level().timeServer(),vPosition.x,vPosition.y,vPosition.z,m_fCurSpeed,r_current.yaw,r_target.yaw,r_torso_current.yaw,r_torso_target.yaw);\
+		Msg("%s,%s,%d,p[%.2f,%.2f,%.2f],%.2f,h[%.2f,%.2f],t[%.2f,%.2f]",cName(),S,Level().timeServer(),Position().x,Position().y,Position().z,m_fCurSpeed,r_current.yaw,r_target.yaw,r_torso_current.yaw,r_torso_target.yaw);\
 		vfUpdateDynamicObjects();\
 		m_bStopThinking = true;\
 	}

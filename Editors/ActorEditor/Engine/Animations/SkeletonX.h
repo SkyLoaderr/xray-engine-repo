@@ -73,7 +73,7 @@ private:
 public:
 	virtual void			Render			(float LOD);
 	virtual void			Load			(const char* N, IReader *data, u32 dwFlags);
-	virtual void			Copy			(IVisual *pFrom);
+	virtual void			Copy			(IRender_Visual *pFrom);
 	virtual void			Release			();
 };
 
@@ -87,7 +87,7 @@ public:
 	
 	virtual void			Render			(float LOD);
 	virtual void			Load			(const char* N, IReader *data, u32 dwFlags);
-	virtual void			Copy			(IVisual *pFrom);
+	virtual void			Copy			(IRender_Visual *pFrom);
 	virtual void			Release			();
 };
 

@@ -163,24 +163,24 @@ void	CCar::cam_Update			(float dt)
 	Da.set							(0,0,0);
 	if(m_owner)	m_owner->setEnabled(false);
 	float yaw_dest,pitch_dest,bank_dest;
-	clXFORM().getHPB				(yaw_dest,pitch_dest,bank_dest);
+	XFORM().getHPB				(yaw_dest,pitch_dest,bank_dest);
 
 	switch(active_camera->tag) {
 	case ectFirst:
 		angle_lerp					(active_camera->yaw,	-yaw_dest+m_vCamDeltaHP.x,		PI_DIV_2,dt);
 		angle_lerp					(active_camera->pitch,	-pitch_dest+m_vCamDeltaHP.y,	PI_DIV_2,dt);
 		P.set						(-0.5f,1.5f,-.05f);
-		clXFORM().transform_tiny	(P);
+		XFORM().transform_tiny	(P);
 		m_vCamDeltaHP.x				= m_vCamDeltaHP.x*(1-PI*dt)+((active_camera->lim_yaw.y+active_camera->lim_yaw.x)/2.f)*PI*dt;
 		break;
 	case ectChase:
 		angle_lerp					(active_camera->yaw,	-(yaw_dest+m_vCamDeltaHP.x),	PI_DIV_4,dt);
 		angle_lerp					(active_camera->pitch,	-pitch_dest+m_vCamDeltaHP.y,	PI_DIV_4,dt);
-		clCenter					(P);
+		Center					(P);
 		m_vCamDeltaHP.x				= m_vCamDeltaHP.x*(1-PI*dt)+((active_camera->lim_yaw.y+active_camera->lim_yaw.x)/2.f)*PI*dt;
 		break;
 	case ectFree:
-		clCenter					(P);
+		Center					(P);
 		break;
 	}
 
@@ -217,13 +217,13 @@ BOOL	CCar::net_Spawn				(LPVOID DC)
 
 	setVisible						(TRUE);
 
-	Sound->play_at_pos				(snd_engine,this,vPosition,true);
+	Sound->play_at_pos				(snd_engine,this,Position(),true);
 	ActivateJeep();
 	//
 	m_pExhaustPG1					= xr_new<CPGObject>			("vehiclefx\\exhaust_1",Sector(),false);
 	m_pExhaustPG2					= xr_new<CPGObject>			("vehiclefx\\exhaust_1",Sector(),false);
-	m_pExhaustPG1->SetTransform		(clTransform);
-	m_pExhaustPG2->SetTransform		(clTransform);
+	m_pExhaustPG1->SetTransform		(XFORM());
+	m_pExhaustPG2->SetTransform		(XFORM());
 
 
 	return R;
@@ -233,7 +233,7 @@ void	CCar::Update				( u32 T )
 {
 	inherited::Update				(T);
 
-	//vPosition.set	(m_jeep.DynamicData.BoneTransform.c);
+	//Position().set	(m_jeep.DynamicData.BoneTransform.c);
 
 	Fmatrix mY;
 	mY.rotateY		(deg2rad(90.f));
@@ -243,40 +243,29 @@ void	CCar::Update				( u32 T )
 	/////////////////
 	//mRotate.mul		(m_jeep.DynamicData.BoneTransform,mY);
 
-	//svTransform.mul	(m_jeep.DynamicData.BoneTransform,mY);
-	svTransform.mul	(b_t,mY);
-	mRotate.set		(svTransform);
-	mRotate.c.set	(0,0,0);
-	vPosition.set	(svTransform.c);
-	UpdateTransform					();
-	if(m_owner)
-	{
-		Fmatrix glob_driver_pos;
-		glob_driver_pos.mul(svTransform,fmPosDriver);
-		m_owner->Position().set(glob_driver_pos.c);
-		m_owner->Rotation().set(glob_driver_pos);
-		m_owner->Rotation().c.set(0,0,0);
-		m_owner->UpdateTransform();
-		//if(m_owner->IsMyCamera()) cam_Update	(Device.fTimeDelta);
-	}
+	//XFORM().mul	(m_jeep.DynamicData.BoneTransform,mY);
+	XFORM().mul		(b_t,mY);
+	if	(m_owner)
+		m_owner->XFORM().mul	(XFORM(),fmPosDriver);
 }
 
 void	CCar::UpdateCL				( )
 {
 	// Transform
-	Fmatrix mY;
+	Fmatrix				mY;
 	mY.rotateY			(deg2rad(90.f));
+
 	/////////////
 	Fmatrix b_t;
 	m_jeep.DynamicData.InterpolateTransform(b_t);
 	/////////////////
-	//clTransform.mul		(m_jeep.DynamicData.BoneTransform,mY);
-	clTransform.mul		(b_t,mY);
+	//XFORM().mul		(m_jeep.DynamicData.BoneTransform,mY);
+	XFORM().mul		(b_t,mY);
 
 	Fvector lin_vel=m_jeep.GetVelocity	();
 	// Sound
 	Fvector		C,V;
-	clCenter	(C);
+	Center	(C);
 	V.set		(lin_vel);
 	float		velocity						= V.magnitude();
 	float		scale							= 0.5f+velocity/20.f; clamp(scale,0.5f,1.f);
@@ -290,12 +279,7 @@ void	CCar::UpdateCL				( )
 		cam_Update	(Device.fTimeDelta);
 	if(m_owner)
 	{
-		Fmatrix glob_driver_pos;
-		glob_driver_pos.mul(clTransform,fmPosDriver);
-		m_owner->Position().set(glob_driver_pos.c);
-		m_owner->Rotation().set(glob_driver_pos);
-		m_owner->Rotation().c.set(0,0,0);
-		m_owner->UpdateTransform();
+		m_owner->XFORM().mul	(XFORM(),fmPosDriver);
 		if(m_owner->IsMyCamera()) 
 			cam_Update	(Device.fTimeDelta);
 	}
@@ -305,25 +289,25 @@ void	CCar::UpdateCL				( )
 	lin_vel=m_jeep.GetVelocity();
 	ang_vel=m_jeep.GetAngularVelocity();
 
-	exhast_local.set(PKinematics(pVisual)->LL_GetTransform(m_exhaust_ids[0]));
-	exhast.mul(clTransform,exhast_local);
+	exhast_local.set	(PKinematics(Visual())->LL_GetTransform(m_exhaust_ids[0]));
+	exhast.mul			(XFORM(),exhast_local);
 	res_vel.crossproduct(ang_vel,exhast_local.c);
 
 	res_vel.add(lin_vel);
 	m_pExhaustPG1->UpdateParent(exhast,res_vel);
 
 
-	exhast_local.set(PKinematics(pVisual)->LL_GetTransform(m_exhaust_ids[1]));
-	exhast.mul(clTransform,exhast_local);
+	exhast_local.set(PKinematics(Visual())->LL_GetTransform(m_exhaust_ids[1]));
+	exhast.mul(XFORM(),exhast_local);
 	res_vel.crossproduct(ang_vel,exhast_local.c);
 	res_vel.add(lin_vel);
 
 	m_pExhaustPG2->UpdateParent(exhast,res_vel);
 }
 
-void	CCar::OnVisible				( )
+void	CCar::renderable_Render				( )
 {
-	inherited::OnVisible			();
+	inherited::renderable_Render			();
 }
 
 void	CCar::net_Export			(NET_Packet& P)
@@ -334,12 +318,12 @@ void	CCar::net_Import			(NET_Packet& P)
 {
 }
 
-void	CCar::OnMouseMove			(int x, int y)
+void	CCar::IR_OnMouseMove			(int x, int y)
 {
 	if (Remote())					return;
 }
 
-void	CCar::OnKeyboardPress		(int cmd)
+void	CCar::IR_OnKeyboardPress		(int cmd)
 {
 	if (Remote())					return;
 
@@ -379,7 +363,7 @@ void	CCar::OnKeyboardPress		(int cmd)
 
 }
 
-void	CCar::OnKeyboardRelease		(int cmd)
+void	CCar::IR_OnKeyboardRelease		(int cmd)
 {
 	if (Remote())					return;
 	switch (cmd)	
@@ -410,12 +394,12 @@ void	CCar::OnCameraChange		(int type)
 	if (!active_camera||active_camera->tag!=type){
 		active_camera	= camera[type];
 		float Y,P,R;
-		clXFORM().getHPB			(Y,P,R);
+		XFORM().getHPB			(Y,P,R);
 		active_camera->yaw			= -Y;
 		m_vCamDeltaHP.y	= active_camera->pitch;
 	}
 }
-void	CCar::OnKeyboardHold		(int cmd)
+void	CCar::IR_OnKeyboardHold		(int cmd)
 {
 	if (Remote())					return;
 
@@ -452,7 +436,7 @@ void	CCar::OnHUDDraw				(CCustomHUD* hud)
 #ifdef DEBUG
 	HUD().pFontSmall->SetColor		(0xffffffff);
 	HUD().pFontSmall->OutSet		(120,530);
-	HUD().pFontSmall->OutNext		("Position:      [%3.2f, %3.2f, %3.2f]",VPUSH(vPosition));
+	HUD().pFontSmall->OutNext		("Position:      [%3.2f, %3.2f, %3.2f]",VPUSH(Position()));
 	HUD().pFontSmall->OutNext		("Velocity:      [%3.2f]",m_jeep.GetVelocity().magnitude());
 #endif
 }
@@ -497,7 +481,7 @@ bool CCar::attach_Actor(CActor* actor)
 
 
 	//////////////////////////////////////////////////////////////////////////
-	CKinematics* M		= PKinematics(pVisual);			VERIFY(M);
+	CKinematics* M		= PKinematics(Visual());			VERIFY(M);
 	int id=M->LL_BoneID("pos_driver");
 	CBoneInstance& instance=M->LL_GetInstance				(id);
 	/////////////////////////////////////////////////////////////////////////
@@ -511,7 +495,7 @@ void CCar::ActivateJeep()
 	m_jeep.Create	(ph_world->GetSpace(),phWorld);
 	m_jeep.SetPhRefObject(this);
 	ph_world->AddObject((CPHObject*)this);
-	m_jeep.SetPosition				(vPosition);
+	m_jeep.SetPosition				(Position());
 	m_jeep.DriveVelocity			=car_drive_speed;
 	dMatrix3						Rot;
 	Fmatrix							ry,mr;
@@ -524,7 +508,7 @@ void CCar::ActivateJeep()
 	PHDynamicData::FMX33toDMX		(m33,Rot);
 	m_jeep.SetRotation				(Rot);
 
-	CKinematics*	M				= PKinematics(pVisual);
+	CKinematics*	M				= PKinematics(Visual());
 	R_ASSERT						(M);
 	M->PlayCycle					("idle");
 	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_frontl")).set_callback	(cb_WheelFL,this);
@@ -542,7 +526,7 @@ void CCar::ActivateJeep()
 	//IRender_Sector* S=0;
 
 
-	///clTransform.set					( m_jeep.DynamicData.BoneTransform	);
+	///XFORM().set					( m_jeep.DynamicData.BoneTransform	);
 }
 
 bool CCar::is_Door(int id)
@@ -601,7 +585,7 @@ void CCar::CreateShell()
 
 	CPhysicsElement* E,*R;
 	int id;
-	CKinematics* M		= PKinematics(pVisual);			VERIFY(M);
+	CKinematics* M		= PKinematics(Visual());			VERIFY(M);
 	m_pPhysicsShell->set_Kinematics(M);
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
@@ -688,9 +672,9 @@ void CCar::CreateShell()
 
 		//	dJointSetHinge2Param(Joints[i], dParamVel2, 0.f);
 		//	dJointSetHinge2Param(Joints[i], dParamFMax2, 500.f);
-	//	dReal k_p=20000000.f;//20000.f;
-	//	dReal k_d=10.f;//1000.f;
-	//	dReal h=0.02222f;
+		//	dReal k_p=20000000.f;//20000.f;
+		//	dReal k_d=10.f;//1000.f;
+		//	dReal h=0.02222f;
 
 
 		//	dJointSetHinge2Param(Joints[i], dParamSuspensionERP, h*k_p / (h*k_p + k_d));

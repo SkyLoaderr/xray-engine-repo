@@ -33,7 +33,7 @@ private:
 		}
 	}
 public:
-	void	add_sector_lights	(xr_vector<WORD> &L);
+	void	add_light			(WORD L);
 
 	void	UnselectAll			(void);			// Disables all lights
 

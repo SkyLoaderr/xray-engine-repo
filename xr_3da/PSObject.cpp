@@ -8,36 +8,26 @@
 #include "PSVisual.h"
 #include "render.h"
 
-CPSObject::CPSObject(LPCSTR ps_name, IRender_Sector* S, BOOL bAutoRemove)
+CPSObject::CPSObject	(LPCSTR ps_name, IRender_Sector* S, BOOL bAutoRemove)
 {
-	m_bAutoRemove	= bAutoRemove;
+	m_bAutoRemove		= bAutoRemove;
 
 	// create visual
-	m_pVisual		= Render->model_CreatePS(ps_name,&m_Emitter);
-	VERIFY			(m_pVisual);
+	renderable.visual	= Render->model_CreatePS	(ps_name,&m_Emitter);
+	VERIFY				(renderable.visual);
 
 	// registry
-	m_pCurSector	= S;
-	if (S) m_pCurSector->tempAdd(this);
+	spatial.sector		= S;
 }
 
 //----------------------------------------------------
-CPSObject::~CPSObject()
+CPSObject::~CPSObject	()
 {
 }
 
-//----------------------------------------------------
-void CPSObject::UpdateSector(IRender_Sector* sect)
+void CPSObject::shedule_Update		(u32 dt)
 {
-	if (sect == m_pCurSector)	return;
-	if (m_pCurSector) m_pCurSector->tempRemove	(this);
-	m_pCurSector	= sect;
-	if (m_pCurSector) m_pCurSector->tempAdd		(this);
-}
-
-void CPSObject::Update(u32 dt)
-{
-	CPSVisual* V	= (CPSVisual*)m_pVisual;
+	CPSVisual* V	= (CPSVisual*)	renderable.visual;
 	V->Update		(dt);
 	if (m_Emitter.m_Flags.is(PS_EM_PLAY_ONCE))
 	{
@@ -45,14 +35,20 @@ void CPSObject::Update(u32 dt)
 	}
 }
 
-void CPSObject::play_at_pos(const Fvector& pos)
+void CPSObject::play_at_pos			(const Fvector& pos)
 {
 	m_Emitter.m_Position.set(pos);
 	m_Emitter.Play			();
 }
 
-void CPSObject::Stop()
+void CPSObject::Stop				()
 {
-	m_iLifeTime		= -1;
-	((CPSVisual*)m_pVisual)->Stop();
+	m_iLifeTime				= -1;
+	((CPSVisual*)renderable.visual)->Stop();
+}
+
+void CPSObject::renderable_Render	()
+{
+	::Render->set_Transform			(&Fidentity);
+	::Render->add_Visual			(renderable.visual);
 }

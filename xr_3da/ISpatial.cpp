@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "ispatial.h"
 
-ISpatial_DB*	SpatialSpace		= NULL;
+ISpatial_DB					g_SpatialSpace;
 
 Fvector	c_spatial_offset	[8]	= 
 {
@@ -18,12 +18,12 @@ Fvector	c_spatial_offset	[8]	=
 //////////////////////////////////////////////////////////////////////////
 ISpatial::ISpatial(void)
 {
-	spatial_center.set		(0,0,0);
-	spatial_radius			= 0;
-	spatial_node_center.set	(0,0,0);
-	spatial_node_radius		= 0;
-	spatial_node_ptr		= NULL;
-	spatial_sector			= NULL;
+	spatial.center.set		(0,0,0);
+	spatial.radius			= 0;
+	spatial.node_center.set	(0,0,0);
+	spatial.node_radius		= 0;
+	spatial.node_ptr		= NULL;
+	spatial.sector			= NULL;
 }
 
 ISpatial::~ISpatial(void)
@@ -32,13 +32,13 @@ ISpatial::~ISpatial(void)
 
 BOOL	ISpatial::spatial_inside()
 {
-	float	dr	= - spatial_node_radius + spatial_radius;
-	if (spatial_center.x < spatial_node_center.x - dr)	return FALSE;
-	if (spatial_center.x > spatial_node_center.x + dr)	return FALSE;
-	if (spatial_center.y < spatial_node_center.y - dr)	return FALSE;
-	if (spatial_center.y > spatial_node_center.y + dr)	return FALSE;
-	if (spatial_center.z < spatial_node_center.z - dr)	return FALSE;
-	if (spatial_center.z > spatial_node_center.z + dr)	return FALSE;
+	float	dr	= - spatial.node_radius + spatial.radius;
+	if (spatial.center.x < spatial.node_center.x - dr)	return FALSE;
+	if (spatial.center.x > spatial.node_center.x + dr)	return FALSE;
+	if (spatial.center.y < spatial.node_center.y - dr)	return FALSE;
+	if (spatial.center.y > spatial.node_center.y + dr)	return FALSE;
+	if (spatial.center.z < spatial.node_center.z - dr)	return FALSE;
+	if (spatial.center.z > spatial.node_center.z + dr)	return FALSE;
 	return TRUE;
 }
 
@@ -46,10 +46,10 @@ void	ISpatial::spatial_move	()
 {
 	//*** somehow it was determined that object has been moved
 	//*** check if we are supposed to correct it's spatial location
-	VERIFY		(spatial_node_ptr);
+	VERIFY		(spatial.node_ptr);
 	if			(spatial_inside())	return;		// ???
-	SpatialSpace->remove(this);
-	SpatialSpace->insert(this);
+	g_SpatialSpace.remove	(this);
+	g_SpatialSpace.insert	(this);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -62,13 +62,13 @@ void			ISpatial_NODE::_init			(ISpatial_NODE* _parent)
 
 void			ISpatial_NODE::_insert			(ISpatial* S)			
 {	
-	S->spatial_node_ptr	= this;
+	S->spatial.node_ptr	= this;
 	items.push_back		(S);										
 }
 
 void			ISpatial_NODE::_remove			(ISpatial* S)			
 {	
-	S->spatial_node_ptr	= NULL;
+	S->spatial.node_ptr	= NULL;
 	items.erase			(std::find(items.begin(),items.end(),S));	
 }
 
@@ -112,18 +112,18 @@ void			ISpatial_DB::_insert	(ISpatial_NODE* N, Fvector& n_center, float n_radius
 	{
 		// this is leaf node
 		N->_insert									(rt_insert_object);
-		rt_insert_object->spatial_node_center.set	(n_center);
-		rt_insert_object->spatial_node_radius		= n_radius;
+		rt_insert_object->spatial.node_center.set	(n_center);
+		rt_insert_object->spatial.node_radius		= n_radius;
 		return;
 	}
 
 	// we have to check if it can be putted further down
-	float	s_bounds	= rt_insert_object->spatial_radius;		// spatial bounds
+	float	s_bounds	= rt_insert_object->spatial.radius;		// spatial bounds
 	float	c_bounds	= n_radius/2;	// children bounds
 	if (s_bounds<=c_bounds)
 	{
 		// object can be pushed further down - select "octant", calc node position
-		Fvector&	s_center			=	rt_insert_object->spatial_center;
+		Fvector&	s_center			=	rt_insert_object->spatial.center;
 		u32			octant				=	_octant(s_center.x<n_center.x?0:1,s_center.y<n_center.y?0:1,s_center.z<n_center.z?0:1);
 		Fvector		c_center;			c_center.mad	(n_center,c_spatial_offset[octant],n_radius/4.f);
 		if (0==N->children[octant])		{
@@ -136,8 +136,8 @@ void			ISpatial_DB::_insert	(ISpatial_NODE* N, Fvector& n_center, float n_radius
 	{
 		// we have to "own" this object (potentially it can be putted down sometimes...)
 		N->_insert									(rt_insert_object);
-		rt_insert_object->spatial_node_center.set	(n_center);
-		rt_insert_object->spatial_node_radius		= n_radius;
+		rt_insert_object->spatial.node_center.set	(n_center);
+		rt_insert_object->spatial.node_radius		= n_radius;
 	}
 }
 
@@ -172,7 +172,7 @@ void			ISpatial_DB::_remove	(ISpatial_NODE* N, ISpatial_NODE* N_sub)
 void			ISpatial_DB::remove		(ISpatial* S)
 {
 	stat_remove.Begin	();
-	ISpatial_NODE* N	= S->spatial_node_ptr;
+	ISpatial_NODE* N	= S->spatial.node_ptr;
 	N->_remove			(S);
 
 	// Recurse

@@ -16,7 +16,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-FProgressive::FProgressive	() : IVisual()
+FProgressive::FProgressive	() : IRender_Visual()
 {
 
 }
@@ -28,7 +28,7 @@ FProgressive::~FProgressive	()
 
 void FProgressive::Release	()
 {
-	IVisual::Release	();
+	IRender_Visual::Release	();
 
 	for (u32 I=0; I<LODs.size(); I++)
 		LODs[I].P.Release();
@@ -36,7 +36,7 @@ void FProgressive::Release	()
 
 void FProgressive::Load		(const char* N, IReader *data, u32 dwFlags)
 {
-	IVisual::Load(N,data,dwFlags);
+	IRender_Visual::Load(N,data,dwFlags);
 	
 	LODs.reserve(8);
 	IReader*	lods = data->open_chunk	(OGF_P_LODS);
@@ -102,9 +102,9 @@ void FProgressive::Render		(float LOD)
 }
 
 #define PCOPY(a)	a = pFrom->a
-void	FProgressive::Copy		(IVisual *pSrc)
+void	FProgressive::Copy		(IRender_Visual *pSrc)
 {
-	IVisual::Copy(pSrc);
+	IRender_Visual::Copy(pSrc);
 
 	FProgressive	*pFrom = (FProgressive *)pSrc;
 	PCOPY(LODs);

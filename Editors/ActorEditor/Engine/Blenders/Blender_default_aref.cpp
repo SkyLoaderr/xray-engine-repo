@@ -28,14 +28,14 @@ CBlender_default_aref::~CBlender_default_aref()
 
 void	CBlender_default_aref::Save(IWriter& fs)
 {
-	CBlender::Save	(fs);
+	IBlender::Save	(fs);
 	xrPWRITE_PROP	(fs,"Alpha ref",	xrPID_INTEGER,	oAREF);
 	xrPWRITE_PROP	(fs,"Alpha-blend",	xrPID_BOOL,		oBlend);
 }
 
 void	CBlender_default_aref::Load(	IReader& fs , WORD version)
 {
-	CBlender::Load	(fs,version);
+	IBlender::Load	(fs,version);
 
 	switch (version)	
 	{
@@ -53,7 +53,7 @@ void	CBlender_default_aref::Load(	IReader& fs , WORD version)
 
 void CBlender_default_aref::Compile(CBlender_Compile& C)
 {
-	CBlender::Compile		(C);
+	IBlender::Compile		(C);
 	if (C.bEditor)	{
 		C.PassBegin		();
 		{

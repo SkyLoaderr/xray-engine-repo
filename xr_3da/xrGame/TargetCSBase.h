@@ -17,7 +17,7 @@ public:
 	virtual BOOL		net_Spawn			(LPVOID DC);
 	virtual void		net_Destroy			();
 
-	virtual void		Update				(u32 dt);
+	virtual void		shedule_Update		(u32 dt);
 	virtual void		feel_touch_new		(CObject* O);
 	virtual void		feel_touch_delete	(CObject* O);
 

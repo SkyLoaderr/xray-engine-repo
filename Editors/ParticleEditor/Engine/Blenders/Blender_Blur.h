@@ -2,7 +2,7 @@
 #define BLENDER_BLUR_H
 #pragma once
 
-class CBlender_Blur : public CBlender  
+class CBlender_Blur : public IBlender  
 {
 public:
 	virtual		LPCSTR		getComment()	{ return "INTERNAL: blur";	}

@@ -88,7 +88,7 @@ public:
 	virtual void	Show			();
 
 	virtual	void	UpdateCL		();
-	virtual	void	OnVisible		();
+	virtual	void	renderable_Render		();
 
 	virtual void	net_Destroy		();
 

@@ -112,12 +112,13 @@ void CWeaponShotgun::OnShotBoth()
 
 	CPGObject* pStaticPG;/* s32 l_c = m_effects.size();*/
 	pStaticPG = xr_new<CPGObject>("weapons\\generic_shoot",Sector());
-	Fmatrix l_pos; l_pos.set(svTransform); l_pos.c.set(vLastFP);
-	Fvector l_vel; l_vel.sub(vPosition,ps_Element(0).vPosition); l_vel.div((Device.dwTimeGlobal-ps_Element(0).dwTime)/1000.f);
+	Fmatrix l_pos; l_pos.set(XFORM()); l_pos.c.set(vLastFP);
+#pragma todo("Oles to Vitya: 'ps_Element(0).dwTime' in game time, not in global time")
+	Fvector l_vel; l_vel.sub(Position(),ps_Element(0).vPosition); l_vel.div	((Device.dwTimeGlobal-ps_Element(0).dwTime)/1000.f);
 	pStaticPG->UpdateParent(l_pos, l_vel); pStaticPG->Play();
 	//pStaticPG->SetTransform(l_pos); pStaticPG->Play();
 	//pStaticPG = xr_new<CPGObject>("weapons\\generic_shoot",Sector());
-	//l_pos.set(svTransform); l_pos.c.set(vLastFP); l_pos.c.y += .01;
+	//l_pos.set(XFORM()); l_pos.c.set(vLastFP); l_pos.c.y += .01;
 	//pStaticPG->UpdateParent(l_pos); pStaticPG->Play();
 }
 
@@ -207,9 +208,9 @@ void CWeaponShotgun::OnDrawFlame	()
 }
 
 
-void CWeaponShotgun::OnVisible	()
+void CWeaponShotgun::renderable_Render	()
 {
-	inherited::OnVisible	();
+	inherited::renderable_Render	();
 	if(STATE == eFire2) OnDrawFlame();
 }
 
@@ -254,7 +255,7 @@ BOOL CWeaponShotgun::FireTrace2		(const Fvector& P, const Fvector& Peff, Fvector
 				// object-space
 				Fvector p_in_object_space,position_in_bone_space;
 				Fmatrix m_inv;
-				m_inv.invert			(RQ.O->clXFORM());
+				m_inv.invert			(RQ.O->XFORM());
 				m_inv.transform_tiny	(p_in_object_space, end_point);
 
 				// bone-space

@@ -73,13 +73,13 @@ void CCameraDebug::OnMove()
 
 //	if(g_matPosition.m31 < 1.0f)    g_matPosition.m31 = 1.0f;
 
-	vPosition.set	( g_matPosition._41, g_matPosition._42, g_matPosition._43 );
+	Position().set	( g_matPosition._41, g_matPosition._42, g_matPosition._43 );
 	vDirection.set	( g_matPosition._31, g_matPosition._32, g_matPosition._33 );
 	vNormal.set		( g_matPosition._21, g_matPosition._22, g_matPosition._23 );
 
 	/*
 	// Export saved data to camera managers
-	vPosition.set	( savedP );
+	Position().set	( savedP );
 	vDirection.set	( savedD );
 	vNormal.set		( savedN );
 	*/
@@ -95,13 +95,13 @@ void CCameraDebug::OnCameraActivate(CCameraBase* old_cam)
 	savedDF.set				(psDeviceFlags);
 	psDeviceFlags.set		(rsClearBB,TRUE);
 	Device.seqRender.Add	(this,REG_PRIORITY_HIGH+1111);
-	iCapture				();
+	IR_Capture				();
 	bDebug					= TRUE;
 }
 void CCameraDebug::OnCameraDeactivate()
 {
 	bDebug					= FALSE;
-	iRelease				();
+	IR_Release				();
 	Device.seqRender.Remove	(this);
 
 	psDeviceFlags.set		(savedDF);
@@ -115,7 +115,7 @@ void CCameraDebug::OnRender()
 //	Device.Frustum.DrawFrustum();
 }
 
-void CCameraDebug::OnKeyboardPress(int dik)
+void CCameraDebug::IR_OnKeyboardPress(int dik)
 {
 //	switch (dik)
 //	{

@@ -99,7 +99,6 @@ public:
 
 	u32					eye_pp_stage;
 	u32					eye_pp_timestamp;
-	objSET				eye_pp_seen;
 	Fvector				m_tEyeShift;
 	BOOL				NET_WasExtrapolating;
 
@@ -282,8 +281,6 @@ public:
 	IC  CGroup *getGroup() {return(&(Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()]));};
 
 public:
-	//typedef BOOL (*QualifierFunction)(CObject*, void*);
-	virtual objQualifier*	GetQualifier		();
 	virtual	float			ffGetFov			(){return eye_fov;}	
 	virtual	float			ffGetRange			(){return eye_range;}
 	virtual	void			feel_touch_new		(CObject* O);

@@ -191,7 +191,7 @@ bool CUI::OnKeyboardPress(int dik)
 	}
 /**/
 
-	if (pUIGame&&pUIGame->OnKeyboardPress(dik)) 
+	if (pUIGame && pUIGame->IR_OnKeyboardPress(dik)) 
 	{
 		return true;
 	}
@@ -199,7 +199,7 @@ bool CUI::OnKeyboardPress(int dik)
 }
 //--------------------------------------------------------------------
 
-bool CUI::OnKeyboardRelease(int dik)
+bool CUI::IR_OnKeyboardRelease(int dik)
 {
 /**
 	if(dik==MOUSE_1)
@@ -210,7 +210,7 @@ bool CUI::OnKeyboardRelease(int dik)
 	}
 /**/
 
-	if (pUIGame&&pUIGame->OnKeyboardRelease(dik)) 
+	if (pUIGame&&pUIGame->IR_OnKeyboardRelease(dik)) 
 	{
 		return true;
 	}
@@ -218,7 +218,7 @@ bool CUI::OnKeyboardRelease(int dik)
 }
 //--------------------------------------------------------------------
 
-bool CUI::OnMouseMove(int dx,int dy)
+bool CUI::IR_OnMouseMove(int dx,int dy)
 {
 	if (UICursor.IsVisible())
 	{ 

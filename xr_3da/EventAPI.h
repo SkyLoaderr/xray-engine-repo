@@ -6,7 +6,7 @@ class ENGINE_API	CEvent;
 typedef CEvent*		EVENT;
 
 //---------------------------------------------------------------------
-class ENGINE_API	CEventBase
+class ENGINE_API	IEventReceiver
 {
 public:
 	virtual void	OnEvent(EVENT E, u64 P1, u64 P2) = 0;
@@ -28,8 +28,8 @@ public:
 	EVENT	Create			(const char* N);
 	void	Destroy			(EVENT& E);
 
-	EVENT	Handler_Attach	(const char* N, CEventBase* H);
-	void	Handler_Detach	(EVENT& E, CEventBase* H);
+	EVENT	Handler_Attach	(const char* N, IEventReceiver* H);
+	void	Handler_Detach	(EVENT& E, IEventReceiver* H);
 
 	void	Signal			(EVENT	E, u64 P1=0, u64 P2=0);
 	void	Signal			(LPCSTR E, u64 P1=0, u64 P2=0);
