@@ -1,0 +1,59 @@
+--
+-- Передача персонажу информации
+--
+function GiveInfo(obj, info_number)
+
+	local result = obj:give_info_portion(info_number)
+	while not result do
+		wait()
+		result = obj:give_info_portion(info_number)
+	end
+end 
+
+function artifact_merge(merger)
+	log	("artifact merge in actor01!")
+
+--	merger:destroy_mercury_ball(2)
+
+	if merger:get_mercury_ball_num()>=2 and 
+	   merger:get_black_drops_num()==0  then
+			merger:destroy_mercury_ball(2)
+			merger:spawn_gravi()
+	end 
+
+--	if merger:get_mercury_ball_num()>=1 and 
+--	   merger:get_black_drops_num()>=2  then
+--			merger:destroy_mercury_ball(1)
+--			merger:destroy_black_drops(2)
+--			merger:spawn_gravi()
+--	end 
+	
+
+--	if merger:get_mercury_ball_num()>=2 and 
+--	   merger:get_black_drops_num()>=1  then
+--
+--				merger:destroy_mercury_ball(2)
+--				merger:destroy_black_drops(1)
+--				merger:spawn_needles()
+--	end 
+
+
+end
+
+
+
+function main()
+
+	log	("script don't want to work!")
+	printf	("%s",actor01.script_name())
+	local 	actor = get_actor()
+
+	actor01.GiveInfo(actor, 1)	
+
+	level.set_artifact_merge(actor01.artifact_merge)
+
+	while true do
+		wait()
+	end
+
+end
