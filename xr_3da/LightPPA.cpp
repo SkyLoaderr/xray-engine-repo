@@ -25,6 +25,15 @@ CLightPPA::~CLightPPA()
 
 }
 
+IC void mk_vertex	(PPA_Vertex& D, Fvector& P, Fvector& C)
+{
+	D.P.set	(P);
+	D.u0	= P.x-C.x+.5f; 
+	D.v0	= P.z-C.z+.5f;
+	D.u1	= P.y-C.y+.5f;
+	D.v1	=.5f;
+}
+
 void CLightPPA::Render(CList<PPA_Vertex>&	vlist)
 {
 	VERIFY	(pCreator);
@@ -102,15 +111,12 @@ void CLightPPA::Render(CList<PPA_Vertex>&	vlist)
 		// Triangulation
 		PPA_Vertex		vert1,vert2,vert3;
 		Fvector			uv;
-		vert1.P.set		((*P)[0]);	vert1.N.set(N);	invXForm.transform_tiny(uv,vert1.P); vert1.u0=uv.x+.5f; vert1.v0=uv.y+.5f; vert1.u1=uv.z+.5f; vert1.v1=.5f;
-		vert2.P.set		((*P)[1]);	vert2.N.set(N);	invXForm.transform_tiny(uv,vert2.P); vert2.u0=uv.x+.5f; vert2.v0=uv.y+.5f; vert2.u1=uv.z+.5f; vert2.v1=.5f;
+		vert1.N.set(N);	mk_vertex(vert1,(*P)[0],sphere.P);
+		vert2.N.set(N);	mk_vertex(vert2,(*P)[1],sphere.P);
 		vert3.N.set		(N);
 		for (DWORD i=2; i<P->size(); i++)
 		{
-			vert3.P.set		((*P)[i]);
-			invXForm.transform_tiny(uv,vert1.P); 
-			vert3.u0=uv.x+.5f; vert3.v0=uv.y+.5f; 
-			vert3.u1=uv.z+.5f; vert3.v1=.5f;			
+			mk_vertex		(vert3,(*P)[i],sphere.P);
 			vlist.push_back	(vert1);
 			vlist.push_back	(vert2);
 			vlist.push_back	(vert3);
