@@ -1,7 +1,7 @@
 ----------------------------------------------------------------------------------------------------------------------
---	Схема кемпер. Чудак с бальшой пушкой ходит и отстреливает живность.
---	автор: Диденко Руслан (Stohe)
---	TODO: 
+--'	Схема кемпер. Чудак с бальшой пушкой ходит и отстреливает живность.
+--'	автор: Диденко Руслан (Stohe)
+--'	TODO: 
 ----------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------
 -- EVALUATORS
@@ -12,7 +12,7 @@ function evaluator_end:__init(storage) super()
 	self.a = storage
 end
 function evaluator_end:evaluate()
-	return self.a.enabled == false
+	return not xr_logic.is_active(self.object, self.a)
 end
 --' Обычный комбат или кемперский
 class "evaluator_close_combat" (property_evaluator)
@@ -45,10 +45,10 @@ function action_patrol:initialize()
 	xr_state.change_state(self.object, 0)
 	if xr_state.finish_state(self.object) == true then
 		self.init = true
-		self:reset()
+		self:reset_scheme()
 	end	
 end
-function action_patrol:reset()
+function action_patrol:reset_scheme()
 	self.move_mgr:initialize(self.object)
 	self.move_mgr:reset(self.a.path_walk, 
 					utils.path_parse_waypoints(self.a.path_walk),
@@ -121,9 +121,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 -- BINDER
 ----------------------------------------------------------------------------------------------------------------------
-function add_to_binder(object, char_ini)
-    if char_ini == nil or char_ini:section_exist ("camper") == true then
-  		
+function add_to_binder(object, ini, scheme, section, storage)
   		local operators	= {}
 	  	local properties  = {}
 		
@@ -154,56 +152,15 @@ function add_to_binder(object, char_ini)
 		action:add_precondition		(world_property(properties["end"],			true))
 
 		action = manager:action     (stalker_ids.action_combat_planner)
-		action:add_precondition     (world_property(properties["close_combat"],	true))
-    		
-		if char_ini ~= nil then 
-			xr_camper.set_camper(object) 			
-		end
-	end
+		action:add_precondition     (world_property(properties["close_combat"],	true))   		
 end
 
-function set_camper(object, enabled, path_walk, path_look, radius)
-	local char_ini = object:spawn_ini()
-	local st = xr_motivator.storage[object:id()].camper
+function set_scheme(npc, ini, scheme, section, gulag_name)
+	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
+	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)		
 
-	if enabled == nil then
-       		if char_ini:section_exist("camper") == true and char_ini:line_exist("camper", "enabled") == true then
-				st.enabled = char_ini:r_bool("camper", "enabled")
-			else
-				st.enabled = false
-	        end
-	else
-		st.enabled = enabled
-	end		
-
-	if path_walk == nil then
-       		if char_ini:section_exist("camper") == true and char_ini:line_exist("camper", "path_walk") == true then
-				st.path_walk = char_ini:r_string("camper", "path_walk")
-			else
-				st.enabled = false
-	        end
-	else
-		st.path_walk = path_walk
-	end		
-
-	if path_look == nil then
-       		if char_ini:section_exist("camper") == true and char_ini:line_exist("camper", "path_look") == true then
-				st.path_look = char_ini:r_string("camper", "path_look")
-			else
-				st.enabled = false
-	        end
-	else
-		st.path_look = path_look
-	end		
-
-	if radius == nil then
-       		if char_ini:section_exist("camper") == true and char_ini:line_exist("camper", "radius") == true then
-				st.radius = char_ini:r_string("camper", "radius")
-	        end
-	else
-		st.radius = radius
-	end		
-	
-	xr_motivator.checkStorage(object)	
+	st.path_walk = utils.cfg_get_string(ini, section, "path_walk", npc, true,  gulag_name)
+	st.path_look = utils.cfg_get_string(ini, section, "path_look", npc, true,  gulag_name)
+	st.radius	 = utils.cfg_get_string(ini, section, "radius", npc, false,  gulag_name)
+	if st.radius == nil then st.radius = 20 end
 end
-
