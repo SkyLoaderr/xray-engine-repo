@@ -44,6 +44,7 @@ sidor_act_sos           = sidor_actions + 110
 sidor_act_ptr           = sidor_actions + 120  
 sidor_act_yantar        = sidor_actions + 200
 sidor_act_secret_lab    = sidor_actions + 220
+sidor_attendant_act     = sidor_actions + 230
 
 -- chugai
 chugai_actions                      = sidor_actions  + 1024
