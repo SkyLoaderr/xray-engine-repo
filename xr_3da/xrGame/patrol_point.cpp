@@ -20,7 +20,7 @@ CPatrolPoint::CPatrolPoint				()
 
 IC	void CPatrolPoint::correct_position	()
 {
-	if (!ai().get_level_graph())
+	if (!ai().get_level_graph() || !ai().level_graph().valid_vertex_position(position()))
 		return;
 
 	if (!ai().level_graph().inside(level_vertex_id(),position()))
