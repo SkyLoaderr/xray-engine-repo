@@ -16,6 +16,13 @@ end
 function evaluator_contact:evaluate()
 	if self.a.enabled == false then return false end
 
+	local overrides = xr_logic.generic_scheme_overrides(self.object)
+	if overrides ~= nil and
+		overrides.meet_enabled ~= true
+	then
+		return false
+	end
+
 	local actor = level.actor()
 
 	if actor then
