@@ -107,7 +107,7 @@ void CAI_Space::Load(LPCSTR name)
 	u32 S1					= (MAX_NODES + 1)*sizeof(SNode);
 	m_tpHeap				= (SNode *)xr_malloc(S1);
 	ZeroMemory				(m_tpHeap,S1);
-	u32 S2					= m_header.count*sizeof(SIndexNode);
+	u32 S2					= max(m_header.count,m_tGraphHeader.dwVertexCount + 1)*sizeof(SIndexNode);
 	m_tpIndexes				= (SIndexNode *)xr_malloc(S2);
 	ZeroMemory				(m_tpIndexes,S2);
 	Msg						("* AI path-finding structures: %d K",(S1 + S2)/(1024));
@@ -119,48 +119,60 @@ void CAI_Space::Load(LPCSTR name)
 //	for (int i=0; i<(int)tpPath.size(); i++)
 //		Msg("* %d",tpPath[i]);
 
-//	vector<u32>		tpPath1;
+//	AI::Path		tPath;
+//	//vector<u32>		tpPath1;
 //	vector<u32>		tpPath2;
 //	float			fDistance;
-//	//m_tpMapPath		= new CAStarSearch<CAIMapShortestPathNode>(MAX_NODES);
 //	vfLoadSearch();
-//	vfFindTheXestPath(77,2103,tpPath1);
+//	//vfFindTheXestPath(77,2103,tpPath1);
+//	vfFindTheXestPath(77,2103,tPath);
 //	SetPriorityClass	(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
 //	SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
 //	Sleep				(1);
 //	u64 t1 = CPU::GetCycleCount();
 //	{
 //	for (int i=0; i<10000; i++)
-//		vfFindTheXestPath(77,2103,tpPath1);
+//		//vfFindTheXestPath(77,2103,tpPath1);
+//		vfFindTheXestPath(77,2103,tPath);
 //	}
 //	u64 t2 = CPU::GetCycleCount();
 //	SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
 //	SetPriorityClass	(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
 //	t2 -= t1;
 //	vfUnloadSearch();
-//	SAIMapData tData;
+//	SAIMapDataL tData;
 //	tData.dwFinishNode = 2103;
 //	tData.tpAI_Space = this;
-//	m_tpMapPath.vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,tData,77,2103,1000.f,fDistance,tpPath2);
+//	tData.fLight		= DEFAULT_LIGHT_WEIGHT;
+//	tData.fCover		= DEFAULT_COVER_WEIGHT;
+//	tData.fDistance		= DEFAULT_DISTANCE_WEIGHT;
+//	m_tpLCDPath.vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,tData,77,2103,1000.f,fDistance,tpPath2);
 //	SetPriorityClass	(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
 //	SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
 //	Sleep				(1);
 //	u64 t1x = CPU::GetCycleCount();
 //	{
 //	for (int i=0; i<10000; i++)
-//		m_tpMapPath.vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,tData,77,2103,1000.f,fDistance,tpPath2);
+//		m_tpLCDPath.vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,tData,77,2103,1000.f,fDistance,tpPath2);
 //	}
 //	u64 t2x = CPU::GetCycleCount();
 //	SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
 //	SetPriorityClass	(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
 //	t2x -= t1x;
+////	Msg("A star times : %11I64u -> %11I64u",t2, t2x);
+////	if (tpPath1.size() != tpPath2.size())
+////		Msg("different sizes!");
+////	else
+////		for (int i=0; i<(int)tpPath1.size(); i++)
+////			if (tpPath1[i] != tpPath2[i])
+////				Msg("%d : %d -> %d",i,tpPath1[i],tpPath2[i]);
 //	Msg("A star times : %11I64u -> %11I64u",t2, t2x);
-//	if (tpPath1.size() != tpPath2.size())
+//	if (tPath.Nodes.size() != tpPath2.size())
 //		Msg("different sizes!");
 //	else
-//		for (int i=0; i<(int)tpPath1.size(); i++)
-//			if (tpPath1[i] != tpPath2[i])
-//				Msg("%d : %d -> %d",i,tpPath1[i],tpPath2[i]);
+//		for (int i=0; i<(int)tpPath2.size(); i++)
+//			if (tPath.Nodes[i] != tpPath2[i])
+//				Msg("%d : %d -> %d",i,tPath.Nodes[i],tpPath2[i]);
 //
 }
 
@@ -342,25 +354,9 @@ int	CAI_Space::q_LoadSearch(const Fvector& pos)
 // CAIMapTemplateNode
 //////////////////////////////////////////////////////////////////////////
 
-IC void CAIMapTemplateNode::begin(u32 dwNode, CAIMapTemplateNode::iterator &tIterator, CAIMapTemplateNode::iterator &tEnd)
-{
-	tEnd = (tIterator = (NodeLink *)((BYTE *)tData.tpAI_Space->Node(dwNode) + sizeof(NodeCompressed))) + tData.tpAI_Space->Node(dwNode)->links;
-}
-
-IC u32 CAIMapTemplateNode::get_value(CAIMapTemplateNode::iterator &tIterator)
-{
-	return(tData.tpAI_Space->UnpackLink(*tIterator));
-}
-
 //////////////////////////////////////////////////////////////////////////
 // CAIGraphTemplateNode
 //////////////////////////////////////////////////////////////////////////
-
-IC void CAIGraphTemplateNode::begin(u32 dwNode, CAIGraphTemplateNode::iterator &tIterator, CAIGraphTemplateNode::iterator &tEnd)
-{
-	tIterator = (AI::SGraphEdge *)((BYTE *)tData.tpAI_Space->m_tpaGraph + tData.tpAI_Space->m_tpaGraph[dwNode].dwEdgeOffset);
-	tEnd = tIterator + tData.tpAI_Space->m_tpaGraph[dwNode].dwNeighbourCount;
-}
 
 //////////////////////////////////////////////////////////////////////////
 // CAIMapShortestPathNode
@@ -374,6 +370,16 @@ CAIMapShortestPathNode::CAIMapShortestPathNode(SAIMapData &tAIMapData)
 	x3						= (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
 	y3						= (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
 	z3						= (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
+}
+
+IC void CAIMapShortestPathNode::begin(u32 dwNode, CAIMapTemplateNode::iterator &tIterator, CAIMapTemplateNode::iterator &tEnd)
+{
+	tEnd = (tIterator = (NodeLink *)((BYTE *)tData.tpAI_Space->Node(dwNode) + sizeof(NodeCompressed))) + tData.tpAI_Space->Node(dwNode)->links;
+}
+
+IC u32 CAIMapShortestPathNode::get_value(CAIMapTemplateNode::iterator &tIterator)
+{
+	return(tData.tpAI_Space->UnpackLink(*tIterator));
 }
 
 IC float CAIMapShortestPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
@@ -433,6 +439,16 @@ CAIMapLCDPathNode::CAIMapLCDPathNode(SAIMapDataL &tAIMapData)
 	float fCover			= 1/(EPS_L + (float)(tNode1.cover[0])/255.f + (float)(tNode1.cover[1])/255.f + (float)(tNode1.cover[2])/255.f  + (float)(tNode1.cover[3])/255.f);
 	float fLight			= (float)(tNode1.light)/255.f;
 	m_fSum					= fCover + fLight;
+}
+
+IC void CAIMapLCDPathNode::begin(u32 dwNode, CAIMapTemplateNode::iterator &tIterator, CAIMapTemplateNode::iterator &tEnd)
+{
+	tEnd = (tIterator = (NodeLink *)((BYTE *)tData.tpAI_Space->Node(dwNode) + sizeof(NodeCompressed))) + tData.tpAI_Space->Node(dwNode)->links;
+}
+
+IC u32 CAIMapLCDPathNode::get_value(CAIMapTemplateNode::iterator &tIterator)
+{
+	return(tData.tpAI_Space->UnpackLink(*tIterator));
 }
 
 IC float CAIMapLCDPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
@@ -508,6 +524,16 @@ CAIMapEnemyPathNode::CAIMapEnemyPathNode(SAIMapDataE &tAIMapData)
 	m_fSum					= fCover + fLight + tData.fEnemyView*(_sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x4 - x1) + _sqr(z4 - z1)) + tData.tpAI_Space->m_fYSize2*_sqr(y4 - y1))) - tData.fEnemyDistance);
 }
 
+IC void CAIMapEnemyPathNode::begin(u32 dwNode, CAIMapTemplateNode::iterator &tIterator, CAIMapTemplateNode::iterator &tEnd)
+{
+	tEnd = (tIterator = (NodeLink *)((BYTE *)tData.tpAI_Space->Node(dwNode) + sizeof(NodeCompressed))) + tData.tpAI_Space->Node(dwNode)->links;
+}
+
+IC u32 CAIMapEnemyPathNode::get_value(CAIMapTemplateNode::iterator &tIterator)
+{
+	return(tData.tpAI_Space->UnpackLink(*tIterator));
+}
+
 IC float CAIMapEnemyPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
 {
 	if (m_dwLastBestNode != dwStartNode) {
@@ -575,6 +601,12 @@ CAIGraphShortestPathNode::CAIGraphShortestPathNode(SAIMapData &tAIMapData)
 {
 	tData = tAIMapData;
 	m_dwLastBestNode = u32(-1);
+}
+
+IC void CAIGraphShortestPathNode::begin(u32 dwNode, CAIGraphTemplateNode::iterator &tIterator, CAIGraphTemplateNode::iterator &tEnd)
+{
+	tIterator = (AI::SGraphEdge *)((BYTE *)tData.tpAI_Space->m_tpaGraph + tData.tpAI_Space->m_tpaGraph[dwNode].dwEdgeOffset);
+	tEnd = tIterator + tData.tpAI_Space->m_tpaGraph[dwNode].dwNeighbourCount;
 }
 
 IC float CAIGraphShortestPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode)

@@ -99,9 +99,7 @@ public:
 	float		z3;
 	u32			m_dwLastBestNode;
 	typedef		NodeLink* iterator;
-	IC void		begin				(u32 dwNode, iterator &tStart, iterator &tEnd);
-	IC u32		get_value			(iterator &tIterator);
-	IC bool		bfCheckIfAccessible	(u32 dwNode)
+	IC bool		bfCheckIfAccessible		(u32 dwNode)
 	{
 		return(true);
 	}
@@ -109,10 +107,8 @@ public:
 
 class CAIGraphTemplateNode {
 public:
-	SAIMapData	tData;
 	u32			m_dwLastBestNode;
 	typedef		AI::SGraphEdge* iterator;
-	IC void		begin					(u32 dwNode, iterator &tStart, iterator &tEnd);
 	IC u32		get_value				(iterator &tIterator)
 	{
 		return(tIterator->dwVertexNumber);
@@ -125,7 +121,10 @@ public:
 
 class CAIMapShortestPathNode : public CAIMapTemplateNode {
 public:
+	SAIMapData	tData;
 				CAIMapShortestPathNode	(SAIMapData &tAIMapData);
+	IC void		begin					(u32 dwNode, iterator &tStart, iterator &tEnd);
+	IC u32		get_value				(iterator &tIterator);
 	IC float	ffEvaluate				(u32 dwStartNode, u32 dwFinishNode);
 	IC float	ffAnticipate			(u32 dwStartNode);
 	IC float	ffAnticipate			();
@@ -136,6 +135,8 @@ public:
 	SAIMapDataL	tData;
 	float		m_fSum;
 				CAIMapLCDPathNode		(SAIMapDataL &tAIMapData);
+	IC void		begin					(u32 dwNode, iterator &tStart, iterator &tEnd);
+	IC u32		get_value				(iterator &tIterator);
 	IC float	ffEvaluate				(u32 dwStartNode, u32 dwFinishNode);
 	IC float	ffAnticipate			(u32 dwStartNode);
 	IC float	ffAnticipate			();
@@ -149,6 +150,8 @@ public:
 	SAIMapDataE	tData;
 	float		m_fSum;
 				CAIMapEnemyPathNode		(SAIMapDataE &tAIMapData);
+	IC void		begin					(u32 dwNode, iterator &tStart, iterator &tEnd);
+	IC u32		get_value				(iterator &tIterator);
 	IC float	ffEvaluate				(u32 dwStartNode, u32 dwFinishNode);
 	IC float	ffAnticipate			(u32 dwStartNode);
 	IC float	ffAnticipate			();
@@ -156,7 +159,9 @@ public:
 
 class CAIGraphShortestPathNode : public CAIGraphTemplateNode {
 public:
+	SAIMapData	tData;
 				CAIGraphShortestPathNode(SAIMapData &tAIMapData);
+	IC void		begin					(u32 dwNode, iterator &tStart, iterator &tEnd);
 	IC float	ffEvaluate				(u32 dwStartNode, u32 dwFinishNode);
 	IC float	ffAnticipate			(u32 dwStartNode);
 	IC float	ffAnticipate			();
@@ -203,8 +208,8 @@ public:
 	u32										m_dwAStarStaticCounter;
 	float									m_fSize,m_fYSize,m_fSize2,m_fYSize2;
 	CAStarSearch<CAIMapShortestPathNode,SAIMapData>		m_tpMapPath;
-	CAStarSearch<CAIMapLCDPathNode,SAIMapData>			m_tpLCDPath;
-	CAStarSearch<CAIMapEnemyPathNode,SAIMapData>		m_tpEnemyPath;
+	CAStarSearch<CAIMapLCDPathNode,SAIMapDataL>			m_tpLCDPath;
+	CAStarSearch<CAIMapEnemyPathNode,SAIMapDataE>		m_tpEnemyPath;
 	CAStarSearch<CAIGraphShortestPathNode,SAIMapData>	m_tpGraphPath;
 //	// yet another A* search
 	#define DEFAULT_LIGHT_WEIGHT		  5.f 
