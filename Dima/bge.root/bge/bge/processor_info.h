@@ -37,14 +37,17 @@ private:
     int		m_stepping;								// Processor revision number
     int		m_feature;								// processor Feature ( same as return value).
     int		m_os_support;							// does OS Support the feature
+	bool	m_detected;
 
 protected:
-	u32		cpu_id			();
-	u32		fill			();
-	void	get_OS_support	(u32 feature, u32 &result);
-	void	cpu_name		(u32 family, u32 model, LPCSTR vendor_name, LPSTR model_name);
+			u32		cpu_id			();
+			void	fill			();
+			void	get_OS_support	(u32 feature, u32 &result);
+			void	cpu_name		(u32 family, u32 model, LPCSTR vendor_name, LPSTR model_name);
 
 public:
-			CProcessorInfo	();
+	IC		bool	detected		();
+	IC				CProcessorInfo	();
 };
 
+#include "processor_info_inline.h"

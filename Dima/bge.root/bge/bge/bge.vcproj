@@ -211,14 +211,22 @@
 						RelativePath=".\cpu.h"
 						>
 					</File>
-					<File
-						RelativePath=".\processor_info.cpp"
+					<Filter
+						Name="processor_info"
 						>
-					</File>
-					<File
-						RelativePath=".\processor_info.h"
-						>
-					</File>
+						<File
+							RelativePath=".\processor_info.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\processor_info.h"
+							>
+						</File>
+						<File
+							RelativePath=".\processor_info_inline.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="video"
@@ -443,18 +451,6 @@
 				<Filter
 					Name="output"
 					>
-				</Filter>
-				<Filter
-					Name="log"
-					>
-					<File
-						RelativePath=".\log.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\log.h"
-						>
-					</File>
 				</Filter>
 			</Filter>
 		</Filter>

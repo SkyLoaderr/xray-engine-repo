@@ -276,8 +276,9 @@ void CProcessorInfo::cpu_name(u32 family, u32 model, LPCSTR vendor_name, LPSTR m
 				}
 }
 
-u32 CProcessorInfo::fill	()
+void CProcessorInfo::fill	()
 {
+	m_detected		= false;
     u32				standard = 0;
     u32				feature = 0;
     u32				max = 0;
@@ -285,8 +286,8 @@ u32 CProcessorInfo::fill	()
     u32				features = 0;
     u32				OS_support = 0;
     
-    if (!cpu_id())
-        return		(0);
+	if (!cpu_id())
+        return;
 
 	union {
 		char		buffer[12+1];
@@ -350,7 +351,6 @@ notamd:
 
 	_mm_empty	();
 
-    memset					(this, 0, sizeof(*this));
     m_os_support			= OS_support;
     m_feature				= features;
     m_family				= (standard >> 8) & 0xF;	// retriving family
@@ -360,10 +360,5 @@ notamd:
     strcpy					(m_vendor_name, identifier.buffer);
     cpu_name				(m_family, m_model, m_vendor_name, m_model_name);
 
-   return					(feature);
-}
-
-CProcessorInfo::CProcessorInfo	()
-{
-	fill					();
+	m_detected				= true;
 }
