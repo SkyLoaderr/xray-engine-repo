@@ -111,7 +111,7 @@ public:
 	virtual		void		ApplyForce							(const Fvector& force);
 	virtual		void		ApplyForce							(const Fvector& dir,float force);
 	virtual		void		ApplyForce							(float x,float y, float z);
-	virtual		void		SetMaximumVelocity					(dReal vel)			{m_max_velocity=vel; }
+	virtual		void		SetMaximumVelocity					(dReal vel)			{m_max_velocity=vel;}
 	virtual		void		SetJupmUpVelocity					(dReal velocity)	{jump_up_velocity=velocity;}
 	virtual		bool		JumpState							()					{
 																					return b_jumping||b_jump;

@@ -323,22 +323,7 @@ void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 	b_on_object=false;
 
 	m_contact_count=0;
-	//limit velocity
-	dReal l_limit;
-	if(is_control&&!b_lose_control) 
-		l_limit = m_max_velocity;
-	else			
-		l_limit=10.f/fixed_step;
 
-	dReal mag;
-	const dReal* vel = dBodyGetLinearVel(m_body);
-	if(!dV_valid(vel))
-		dBodySetLinearVel(m_body,0.f,0.f,0.f);
-	mag=_sqrt(vel[0]*vel[0]+vel[1]*vel[1]+vel[2]*vel[2]);//
-	if(mag>l_limit){
-		dReal f=mag/l_limit;
-		dBodySetLinearVel(m_body,vel[0]/f,vel[1]/f,vel[2]/f);///f
-	}
 
 
 
@@ -359,6 +344,7 @@ void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 	dRSetIdentity (R);
 	dBodySetAngularVel(m_body,0.f,0.f,0.f);
 	dBodySetRotation(m_body,R);
+
 
 	m_body_interpolation.UpdatePositions();
 }
@@ -495,6 +481,23 @@ void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 
 
 	ApplyAcceleration();
+	
+	//limit velocity
+	dReal l_limit;
+	if(is_control&&!b_lose_control) 
+		l_limit = m_max_velocity;
+	else			
+		l_limit=10.f/fixed_step;
+
+	dReal mag;
+	const dReal* vel = dBodyGetLinearVel(m_body);
+	if(!dV_valid(vel))
+		dBodySetLinearVel(m_body,0.f,0.f,0.f);
+	mag=_sqrt(vel[0]*vel[0]+vel[1]*vel[1]+vel[2]*vel[2]);//
+	if(mag>l_limit){
+		dReal f=mag/l_limit;
+		dBodySetLinearVel(m_body,vel[0]/f,vel[1]/f,vel[2]/f);///f
+	}
 
 	dReal* chVel=const_cast<dReal*>(dBodyGetLinearVel(m_body));
 	//if(b_jump)
