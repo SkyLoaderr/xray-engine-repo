@@ -165,7 +165,7 @@ void	timestamp	(string64& dest)
 	_strdate	( temp );
 	for (it=0; it<strlen(temp); it++)
 		if ('/'==temp[it]) temp[it]='-';
-	strconcat	( dest, temp, "__" );
+	strconcat	( dest, temp, "_" );
 
 	// time
 	_strtime	( temp );
@@ -217,6 +217,8 @@ LONG UnhandledFilter	( struct _EXCEPTION_POINTERS *pExceptionInfo )
 			strcpy		( szDumpPath, "logs\\"				);
 			strcat		( szDumpPath, Core.ApplicationName	);
 			strcat		( szDumpPath, "_"					);
+			strcat		( szDumpPath, Core.UserName			);
+			strcat		( szDumpPath, "_"					);
 			strcat		( szDumpPath, t_stemp				);
 			strcat		( szDumpPath, ".mdmp"				);
 
@@ -232,7 +234,7 @@ LONG UnhandledFilter	( struct _EXCEPTION_POINTERS *pExceptionInfo )
 				ExInfo.ClientPointers		= NULL;
 
 				// write the dump
-				MINIDUMP_TYPE	dump_flags	= MINIDUMP_TYPE(MiniDumpNormal /*| MiniDumpWithDataSegs | MiniDumpWithFullMemory | MiniDumpWithHandleData | MiniDumpFilterMemory | MiniDumpScanMemory*/ );
+				MINIDUMP_TYPE	dump_flags	= MINIDUMP_TYPE(MiniDumpNormal | MiniDumpWithDataSegs | MiniDumpWithFullMemory | MiniDumpFilterMemory | MiniDumpScanMemory );
 
 				BOOL bOK = pDump( GetCurrentProcess(), GetCurrentProcessId(), hFile, dump_flags, &ExInfo, NULL, NULL );
 				if (bOK)
