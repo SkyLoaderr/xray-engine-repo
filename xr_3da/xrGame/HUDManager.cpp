@@ -87,8 +87,7 @@ void CHUDManager::Render_Affected()
 			aspect, VIEWPORT_NEAR, 
 			pCreator->Environment.Current.Far);
 		Device.mFullTransform.mul(Device.mProject, Device.mView);
-		
-		HW.pDevice->SetTransform(D3DTS_PROJECTION, Device.mProject.d3d());
+		Device.set_xform_project(Device.mProject);
 		
 		// Sort shaders 
 		for (DWORD i=0; i<Models.size(); i++) 
@@ -106,7 +105,7 @@ void CHUDManager::Render_Affected()
 		
 		Device.mProject			= Pold;
 		Device.mFullTransform	= FTold;
-		HW.pDevice->SetTransform(D3DTS_PROJECTION, Device.mProject.d3d());
+		Device.set_xform_project(Device.mProject);
 	}
 	Models.clear	();
 }

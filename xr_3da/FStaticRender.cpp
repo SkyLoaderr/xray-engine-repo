@@ -239,11 +239,11 @@ void __fastcall mapNormal_Render	(SceneGraph::mapNormalItems& N)
 void __fastcall matrix_L2(SceneGraph::mapMatrixItem::TNode *N)
 {
 	CVisual *V = N->val.pVisual;
-	CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,(D3DMATRIX*)N->val.Matrix.d3d()));
 	::Render_Implementation.L_DB.Select(N->val.vCenter,V->bv_Radius);
-	gm_SetAmbientLevel	(N->val.iLighting);
-	gm_SetNearer		(N->val.nearer);
-	V->Render			(calcLOD(N->key,V->bv_Radius));
+	Device.set_xform_world	(N->val.Matrix);
+	gm_SetAmbientLevel		(N->val.iLighting);
+	gm_SetNearer			(N->val.nearer);
+	V->Render				(calcLOD(N->key,V->bv_Radius));
 }
 
 void __fastcall matrix_L1(SceneGraph::mapMatrix_Node *N)
@@ -257,12 +257,12 @@ void __fastcall matrix_L1(SceneGraph::mapMatrix_Node *N)
 void __fastcall sorted_L1(SceneGraph::mapSorted_Node *N)
 {
 	CVisual *V = N->val.pVisual;
-	Device.Shader.set_Shader		(V->hShader);
-	CHK_DX(HW.pDevice->SetTransform	(D3DTS_WORLD,N->val.Matrix.d3d()));
 	::Render_Implementation.L_DB.Select			(N->val.vCenter,V->bv_Radius);
-	gm_SetAmbientLevel	(N->val.iLighting);
-	gm_SetNearer		(N->val.nearer);
-	V->Render			(calcLOD(N->key,V->bv_Radius));
+	Device.Shader.set_Shader(V->hShader);
+	Device.set_xform_world	(N->val.Matrix);
+	gm_SetAmbientLevel		(N->val.iLighting);
+	gm_SetNearer			(N->val.nearer);
+	V->Render				(calcLOD(N->key,V->bv_Radius));
 }
 
 void CRender::flush_Models	()
@@ -377,7 +377,7 @@ void	CRender::Render		()
 	
 	// NORMAL			*** mostly the main level
 	// Perform sorting based on ScreenSpaceArea
-	CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,Fidentity.d3d()));
+	Device.set_xform_world	(Fidentity);
 
 	// Sorting by SSA
 	for (DWORD pr=0; pr<4; pr++)
@@ -444,13 +444,13 @@ void	CRender::Render		()
 			mapMatrix.traverseANY	(matrix_L1);
 			mapMatrix.clear			();
 
-			CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,Fidentity.d3d()));
+			Device.set_xform_world	(Fidentity);
 			Wallmarks.Render		();		// Wallmarks has priority as normal geometry
 
-			CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,Fidentity.d3d()));
+			Device.set_xform_world	(Fidentity);
 			L_Dynamic.Render		();		// L_DB has priority the same as normal geom
 
-			CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,Fidentity.d3d()));
+			Device.set_xform_world	(Fidentity);
 			Details.Render			(Device.vCameraPosition);
 		}
 	}

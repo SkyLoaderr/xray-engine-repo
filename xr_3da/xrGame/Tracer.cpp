@@ -110,7 +110,7 @@ void	CTracer::Render	()
 	VS->Unlock				(vCount);
 	
 	if (vCount)	{
-		HW.pDevice->SetTransform	(D3DTS_WORLD, Fidentity.d3d());
+		Device.set_xform_world		(Fidentity);
 		HW.pDevice->SetRenderState	(D3DRS_CULLMODE,D3DCULL_NONE);
 		Device.Shader.set_Shader	(sh_Tracer);
 		Device.Primitive.Draw		(VS,vCount,vCount/2,vOffset,Device.Streams_QuadIB);

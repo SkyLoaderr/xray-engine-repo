@@ -76,7 +76,7 @@ void CDraw::dbg_DrawOBB	(Fmatrix& T, Fvector& half_dim, DWORD C)
 	static WORD		aabb_id[12*2] = {
 		0,1,  1,2,  2,3,  3,0,  4,5,  5,6,  6,7,  7,4,  1,5,  2,6,  3,7,  0,4
 	};
-	HW.pDevice->SetTransform(D3DTS_WORLD, mL2W_Transform.d3d());
+	Device.set_xform_world	(mL2W_Transform);
 	dbg_Draw(D3DPT_LINELIST,aabb,8,aabb_id,12);
 }
 void CDraw::dbg_DrawTRI	(Fmatrix& T, Fvector& p1, Fvector& p2, Fvector& p3, DWORD C)
@@ -86,7 +86,7 @@ void CDraw::dbg_DrawTRI	(Fmatrix& T, Fvector& p1, Fvector& p2, Fvector& p3, DWOR
 	tri[1].p = p2; tri[1].color = C;
 	tri[2].p = p3; tri[2].color = C;
 
-	HW.pDevice->SetTransform(D3DTS_WORLD, T.d3d());
+	Device.set_xform_world	(T);
 	dbg_Draw(D3DPT_TRIANGLESTRIP,tri,1);
 }
 void CDraw::dbg_DrawLINE(Fmatrix& T, Fvector& p1, Fvector& p2, DWORD C)
@@ -95,7 +95,7 @@ void CDraw::dbg_DrawLINE(Fmatrix& T, Fvector& p1, Fvector& p2, DWORD C)
 	line[0].p = p1; line[0].color = C;
 	line[1].p = p2; line[1].color = C;
 
-	HW.pDevice->SetTransform(D3DTS_WORLD, T.d3d());
+	Device.set_xform_world	(T);
 	dbg_Draw(D3DPT_LINELIST,line,1);
 }
 void CDraw::dbg_DrawEllipse(Fmatrix& T, DWORD C)
@@ -177,7 +177,7 @@ void CDraw::dbg_DrawEllipse(Fmatrix& T, DWORD C)
 		verts[i].set(gVertices[k],gVertices[k+1],gVertices[k+2],C);
 	}
 
-	HW.pDevice->SetTransform(D3DTS_WORLD, T.d3d());
+	Device.set_xform_world	(T);
 	HW.pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 	dbg_Draw(D3DPT_TRIANGLELIST,verts,vcnt,gFaces,224);
 	HW.pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);

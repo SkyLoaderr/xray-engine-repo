@@ -113,7 +113,7 @@ void CLightPPA_Manager::Render()
 	// Projection
 	float _43 = Device.mProject._43;
 	Device.mProject._43 -= 0.001f; 
-	CHK_DX(HW.pDevice->SetTransform	 ( D3DTS_PROJECTION,	Device.mProject.d3d() ));
+	Device.set_xform_project	(Device.mProject);
 
 	Device.Shader.set_Shader	(SH);
 	for (DWORD L=0; L<container.size(); L++)
@@ -139,5 +139,5 @@ void CLightPPA_Manager::Render()
 
 	// Projection
 	Device.mProject._43 = _43;
-	CHK_DX(HW.pDevice->SetTransform	 ( D3DTS_PROJECTION,Device.mProject.d3d() ));
+	Device.set_xform_project	(Device.mProject);
 }

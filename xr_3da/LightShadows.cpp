@@ -109,7 +109,7 @@ void CLightShadows::calculate	()
 			float		p_near	=	p_dist-p_R-EPS_L;	if (p_near<EPS_L)			p_near	= EPS_L;
 			float		p_far	=	L->range;			if (p_far<(p_near+EPS_L))	p_far	= p_near+EPS_L;
 			mProject.build_projection_HAT	(p_hat,p_asp,p_near,p_far);
-			CHK_DX					(HW.pDevice->SetTransform(D3DTS_PROJECTION,mProject.d3d()));
+			Device.set_xform_project		(mProject);
 			
 			// calculate view-matrix
 			Fmatrix		mView;
@@ -120,7 +120,7 @@ void CLightShadows::calculate	()
 			v_R.crossproduct		(v_N,v_D);
 			v_N.crossproduct		(v_D,v_R);
 			mView.build_camera		(L->position,C.C,v_N);
-			CHK_DX					(HW.pDevice->SetTransform(D3DTS_VIEW,mView.d3d()));
+			Device.set_xform_view	(mView);
 			
 			// combine and build frustum
 			Fmatrix		mCombine;
@@ -139,8 +139,8 @@ void CLightShadows::calculate	()
 			{
 				NODE& N			=	C.nodes[n_it];
 				CVisual *V		=	N.val.pVisual;
-				CHK_DX				(HW.pDevice->SetTransform(D3DTS_WORLD,N.val.Matrix.d3d()));
-				V->Render			(.5f);
+				Device.set_xform_world	(N.val.Matrix);
+				V->Render				(.7f);
 			}
 
 			// increment slot

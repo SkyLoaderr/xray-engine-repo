@@ -71,7 +71,7 @@ void CObjectSpace::_render()
 ///------------------------------------------
 //	HW.pDevice->SetRenderState( D3DRENDERSTATE_CULLMODE, D3DCULL_NONE );
 //	HW.pDevice->SetRenderState( D3DRENDERSTATE_FILLMODE, D3DFILL_WIREFRAME );
-	HW.pDevice->SetTransform( D3DTRANSFORMSTATE_WORLD, precalc_identity.d3d() );
+	Device.set_xform_world		(Fidentity);
 
 	Device.SetMode(vZTest|vZWrite|vAlpha);
 	Device.Texture.Set(0);

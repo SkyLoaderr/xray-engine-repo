@@ -106,8 +106,8 @@ void CCameraDebug::OnCameraDeactivate()
 void CCameraDebug::OnRender()
 {
 	Fmatrix mView;
-	mView.invert(*((Fmatrix *)&g_matPosition));
-	HW.pDevice->SetTransform(D3DTS_VIEW,mView.d3d());
+	mView.invert			(*((Fmatrix *)&g_matPosition));
+	Device.set_xform_view	(mView);
 //	Device.Frustum.DrawFrustum();
 }
 

@@ -176,8 +176,8 @@ void CWallmarksEngine::Render()
 	// Projection and xform
 	float _43 = Device.mProject._43;
 	Device.mProject._43 -= 0.001f; 
-	CHK_DX(HW.pDevice->SetTransform	 ( D3DTS_WORLD,			Fidentity.d3d() ));
-	CHK_DX(HW.pDevice->SetTransform	 ( D3DTS_PROJECTION,	Device.mProject.d3d() ));
+	Device.set_xform_world	(Fidentity);
+	Device.set_xform_project(Device.mProject);
 
 	if (!marks.empty()) 
 	{
@@ -330,7 +330,7 @@ void CWallmarksEngine::Render()
 	
 	// Projection
 	Device.mProject._43 = _43;
-	CHK_DX(HW.pDevice->SetTransform	 ( D3DTS_PROJECTION,Device.mProject.d3d() ));
+	Device.set_xform_project	(Device.mProject);
 }
 
 void CWallmarksEngine::AddShadow(CObject* E)

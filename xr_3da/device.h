@@ -82,10 +82,10 @@ public:
 	Fmatrix									mProject;
 	Fmatrix									mFullTransform;
 	float									fFOV;
-	IC void									set_xform	(DWORD ID, const Fmatrix& M);
-	IC void									set_xform_W	(const Fmatrix& M)	{ set_xform(D3DTS_WORLD,M);			}
-	IC void									set_xform_V	(const Fmatrix& M)	{ set_xform(D3DTS_VIEW,M);			}
-	IC void									set_xform_P	(const Fmatrix& M)	{ set_xform(D3DTS_PROJECTION,M);	}
+	IC void									set_xform			(DWORD ID, const Fmatrix& M);
+	IC void									set_xform_world		(const Fmatrix& M)	{ set_xform(D3DTS_WORLD,M);			}
+	IC void									set_xform_view		(const Fmatrix& M)	{ set_xform(D3DTS_VIEW,M);			}
+	IC void									set_xform_project	(const Fmatrix& M)	{ set_xform(D3DTS_PROJECTION,M);	}
 	
 	CRenderDevice() {
 	    m_hWnd              = NULL;

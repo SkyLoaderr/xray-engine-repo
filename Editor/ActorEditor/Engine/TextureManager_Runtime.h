@@ -53,7 +53,7 @@ IC void CShaderManager::set_Matrices	(SMatrixList* M)
 				if (mat && cache.matrices[it]!=mat)	{
 					cache.matrices[it]=mat;
 					mat->Calculate	();
-					CHK_DX(HW.pDevice->SetTransform(D3DTRANSFORMSTATETYPE(D3DTS_TEXTURE0+it),mat->xform.d3d()));
+					Device.set_xform	(D3DTS_TEXTURE0+it,mat->xform);
 					Device.Statistic.dwShader_Matrices++;
 				}
 			}

@@ -109,8 +109,8 @@ void FShadowForm::MakeShadowVolume( Fvector& vLDir, Fmatrix &matWorld )
     // make object near origin though, so look at one of the verticess). Don't
     // care what direction is view up vector (y).
     Fvector at,from,up;
-	at.set	(vPosition);
-	from.mad(at,vL,-fRadius*2);
+	at.set		(vPosition);
+	from.mad	(at,vL,-fRadius*2);
 
 	Fvector	right, y;
 	y.set(0,1,0);
@@ -118,8 +118,8 @@ void FShadowForm::MakeShadowVolume( Fvector& vLDir, Fmatrix &matWorld )
 	up.crossproduct(vL,right);
 	up.normalize();
 
-    matNewView.build_camera(from, at, up);
-    HW.pDevice->SetTransform( D3DTRANSFORMSTATE_VIEW,       matNewView.d3d() );
+    matNewView.build_camera	(from, at, up	);
+    Device.set_xform_view	(matNewView		);
 
     // Do the planar projection
     pProjected->ProcessVertices( D3DVOP_TRANSFORM, 0, dwNumVertices, pVB, 0, HW.pDevice, 0 );

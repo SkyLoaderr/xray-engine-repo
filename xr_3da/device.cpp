@@ -382,9 +382,9 @@ void CRenderDevice::Run()
 				FrameMove();
 
 				// Render
-				CHK_DX(HW.pDevice->SetTransform(D3DTS_PROJECTION, mProject.d3d()));
-				CHK_DX(HW.pDevice->SetTransform(D3DTS_VIEW, mView.d3d()));
-				mFullTransform.mul	( mProject,mView				);
+				mFullTransform.mul			( mProject,mView	);
+				Device.set_xform_view		( mView				);
+				Device.set_xform_project	( mProject			);
 
 				// *** Render
 

@@ -216,7 +216,7 @@ void CEnvironment::RenderFirst()
 	if (pSkydome) {
 		Fmatrix						mSky;
 		mSky.translate				(Device.vCameraPosition);
-		HW.pDevice->SetTransform	(D3DTS_WORLD,mSky.d3d());
+		Device.set_xform_world		(mSky);
 
 		switch (pSkydome->Type)
 		{
