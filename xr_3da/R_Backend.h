@@ -50,6 +50,7 @@ private:
 	u32								stencil_fail;
 	u32								stencil_pass;
 	u32								stencil_zfail;
+	u32								colorwrite_mask;
 
 	// Lists
 	STextureList*					T;
@@ -151,6 +152,7 @@ public:
 	IC  void						set_Geometry		(SGeometry* _geom);
 	IC  void						set_Geometry		(ref_geom& _geom)					{	set_Geometry(&*_geom);		}
 	IC  void						set_Stencil			(u32 _enable, u32 _func=D3DCMP_ALWAYS, u32 _ref=0x00, u32 _mask=0x00, u32 _writemask=0x00, u32 _fail=D3DSTENCILOP_KEEP, u32 _pass=D3DSTENCILOP_KEEP, u32 _zfail=D3DSTENCILOP_KEEP);
+	IC  void						set_ColorWriteEnable(u32 _mask = D3DCOLORWRITEENABLE_RED | D3DCOLORWRITEENABLE_GREEN | D3DCOLORWRITEENABLE_BLUE | D3DCOLORWRITEENABLE_ALPHA);
 
 	// constants
 	IC	R_constant*					get_c				(LPCSTR n)															{ if (ctable)	return ctable->get(n);else return 0;}

@@ -241,5 +241,9 @@ IC void CBackend::set_Stencil			(u32 _enable, u32 _func, u32 _ref, u32 _mask, u3
 	if (stencil_pass		!= _pass)		{ stencil_pass=_pass;			CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILPASS,		_pass				)); }
 	if (stencil_zfail		!= _zfail)		{ stencil_zfail=_zfail;			CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILZFAIL,		_zfail				)); }
 }
+IC void	CBackend::set_ColorWriteEnable	(u32 _mask )
+{
+	if (colorwrite_mask		!= _mask)		{ colorwrite_mask=_mask;		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE,	_mask				));	}
+}
 
 #endif
