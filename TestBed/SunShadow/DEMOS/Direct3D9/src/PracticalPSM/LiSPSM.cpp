@@ -17,9 +17,6 @@
 
 #include "common.h"
 
-// misc. functions necessary to run the program, but not critical to the algorithm...
-// #include "FrameWork.inc"
-// #include "Helpers.inc"
 //////////////////////////////////////////////////////////////////////////
 typedef		D3DXVECTOR3 vector3;
 typedef		D3DXVECTOR4 vector4;
@@ -35,6 +32,18 @@ vector3	xform			(const vector3& v, const matrix& m)
 	float	w = v.x*m._14 + v.y*m._24 + v.z*m._34 + m._44;
 //	assert	(w>0);
 	return	vector3(x/w,y/w,z/w);	// RVO
+}
+bool	xformv			(vector3&	dest, const vector3& v, const matrix& m)
+{
+	float	x = v.x*m._11 + v.y*m._21 + v.z*m._31 + m._41;
+	float	y = v.x*m._12 + v.y*m._22 + v.z*m._32 + m._42;
+	float	z = v.x*m._13 + v.y*m._23 + v.z*m._33 + m._43;
+	float	w = v.x*m._14 + v.y*m._24 + v.z*m._34 + m._44;
+	if (w<=0)	return		false;
+	else	{
+		dest	= vector3	(x/w,y/w,z/w);	
+		return	true;
+	}
 }
 void	xform_array		(vector3* dst, const vector3* src, const matrix& m, int count)
 {
@@ -53,6 +62,22 @@ void	calc_xaabb		(vector3& min, vector3 &max, const vector3* ps, const matrix& m
 		}
 	}
 }
+void	calc_xaabbv		(vector3& min, vector3 &max, const vector3* ps, const matrix& m, size_t count) 
+{
+	min = vector3	(FLT_MAX,FLT_MAX,FLT_MAX);
+	max = vector3	(FLT_MIN,FLT_MIN,FLT_MIN);
+	for (size_t i=0; i<count; i++)
+	{
+		vector3			p;
+		if (!xformv(p,ps[i],m))		continue;
+		for (int j=0; j<3; j++)
+		{
+			if (p[j]<min[j])		min[j]=p[j];
+			else if (p[j]>max[j])	max[j]=p[j];
+		}
+	}
+}
+
 // refit to unit cube (in D3D way :)
 // this operation calculates a scale translate matrix that
 // maps the two extreme points min and max into (-1,-1,0) and (1,1,1)
@@ -378,7 +403,7 @@ void CPracticalPSM::BuildLIPSMProjectionMatrix	()
 		// refit to unit cube (in D3D way :)
 		// this operation calculates a scale translate matrix that
 		// maps the two extreme points min and max into (-1,-1,0) and (1,1,1)
-		calc_xaabb				(min,max, &*points.begin(),	lispsm,points.size());
+		calc_xaabbv				(min,max, &*points.begin(),	lispsm,points.size());
 		D3DXMatrixMultiply		(&lispsm, &lispsm, &calc_refit(min,max));	// ligthProjection = scaleTranslate*lispMtx
 	}
 
