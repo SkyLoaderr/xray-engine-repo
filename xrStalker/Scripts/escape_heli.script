@@ -245,6 +245,8 @@ function update()
 --			actor:give_info_portion( "tutorial_wounded_start" )
 --			news_manager.send_news( actor, "tutorial_trader_look_vagon" )
 
+			actor:give_info_portion( "tutorial_wounded_must_spawn" )
+
 			-- отправить вертолёт патрулировать уровень
 			heli_mgr:set_path( "heli_path_patrol" )
 			heli_mgr.not_die = false
