@@ -236,10 +236,10 @@ function save_dialog:OnButton_ok_clicked()
 	
 	-- Get file name
 	local edit_box = self:GetEditBox("edit_filename")
-	local new_save = edit_box:GetText()
+	self.new_save = edit_box:GetText()
 	
 	// check for empty name
-	if string.len(new_save) == 0 then
+	if string.len(self.new_save) == 0 then
 		message_box:SetStyle(CUIMessageBox.STYLE_OK)		
 		message_box:SetText("The file name is empty. Please enter valid name!")
 		message_box:Show()
@@ -249,7 +249,7 @@ function save_dialog:OnButton_ok_clicked()
 	// check for match name
 	local f = getFS()
 	local flist = f:file_list_open("$game_saves$",FS.FS_ListFiles)
-	local file_struct = f:exist("$game_saves$", new_save .. ".sav" )
+	local file_struct = f:exist("$game_saves$", self.new_save .. ".sav" )
 
 	if file_struct ~= nil then
 		message_box:SetStyle(CUIMessageBox.STYLE_YES_NO)
