@@ -328,7 +328,7 @@ void CWeaponRPG7Grenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd,
 	} else {
 		R_ASSERT(R.element >= 0);
 		::Render->add_Wallmark	(
-			hWallmark,
+			hWallmark(),
 			vEnd,
 			fWallmarkSize,
 			g_pGameLevel->ObjectSpace.GetStaticTris()+R.element/**/);
