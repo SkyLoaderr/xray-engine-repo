@@ -38,66 +38,70 @@ CMapLocation::~CMapLocation()
 
 }
 
+CUIXml	g_uiSpotXml;
+bool	g_uiSpotXmlInited = false;
 void CMapLocation::LoadSpot(LPCSTR type)
 {
-	CUIXml uiXml;
-	bool xml_result			= uiXml.Init(CONFIG_PATH, UI_PATH, "map_spots.xml");
-	R_ASSERT3(xml_result, "xml file not found", "map_spots.xml");
+	if(!g_uiSpotXmlInited){
+		bool xml_result			= g_uiSpotXml.Init(CONFIG_PATH, UI_PATH, "map_spots.xml");
+		R_ASSERT3(xml_result, "xml file not found", "map_spots.xml");
+		g_uiSpotXmlInited = true;
+	}
 
 	XML_NODE* node = NULL;
 	string512 path_base, path;
 //	strconcat(path_base,"map_spots:",type);
 	strcpy(path_base,type);
-	R_ASSERT3(uiXml.NavigateToNode(path_base,0), "XML node not found in file map_spots.xml", path_base);
-	LPCSTR s = uiXml.ReadAttrib(path_base, 0, "hint", "no hint");
+	R_ASSERT3(g_uiSpotXml.NavigateToNode(path_base,0), "XML node not found in file map_spots.xml", path_base);
+	LPCSTR s = g_uiSpotXml.ReadAttrib(path_base, 0, "hint", "no hint");
 	SetHint(s);
 	
-	s = uiXml.ReadAttrib(path_base, 0, "store", NULL);
+	s = g_uiSpotXml.ReadAttrib(path_base, 0, "store", NULL);
 	if(s)
 		m_flags.set( eSerailizable, TRUE);
 
-	s = uiXml.ReadAttrib(path_base, 0, "no_offline", NULL);
+	s = g_uiSpotXml.ReadAttrib(path_base, 0, "no_offline", NULL);
 	if(s)
 		m_flags.set( eHideInOffline, TRUE);
 
-	int ttl = uiXml.ReadAttribInt(path_base, 0, "ttl", 0);
+	int ttl = g_uiSpotXml.ReadAttribInt(path_base, 0, "ttl", 0);
 	if(ttl>0){
 		m_flags.set( eTTL, TRUE);
 		m_actual_time = Device.dwTimeGlobal+ttl*1000;
 	}
 
-	s = uiXml.ReadAttrib(path_base, 0, "pos_to_actor", NULL);
+	s = g_uiSpotXml.ReadAttrib(path_base, 0, "pos_to_actor", NULL);
 	if(s)
 		m_flags.set( ePosToActor, TRUE);
 
 
 	strconcat(path,path_base,":level_map");
-	node = uiXml.NavigateToNode(path,0);
+	node = g_uiSpotXml.NavigateToNode(path,0);
 	if(node){
-		LPCSTR str = uiXml.ReadAttrib(path, 0, "spot", "");
+		LPCSTR str = g_uiSpotXml.ReadAttrib(path, 0, "spot", "");
 		if( xr_strlen(str) ){
 			m_level_spot = xr_new<CMapSpot>(this);
-			m_level_spot->Load(&uiXml,str);
+			m_level_spot->Load(&g_uiSpotXml,str);
 		};
-		str = uiXml.ReadAttrib(path, 0, "pointer", "");
+		str = g_uiSpotXml.ReadAttrib(path, 0, "pointer", "");
 		if( xr_strlen(str) ){
 			m_level_spot_pointer = xr_new<CMapSpotPointer>(this);
-			m_level_spot_pointer->Load(&uiXml,str);
+			m_level_spot_pointer->Load(&g_uiSpotXml,str);
 		};
 	};
 
 	strconcat(path,path_base,":mini_map");
-	node = uiXml.NavigateToNode(path,0);
+	node = g_uiSpotXml.NavigateToNode(path,0);
 	if(node){
-		LPCSTR str = uiXml.ReadAttrib(path, 0, "spot", "");
+		LPCSTR str = g_uiSpotXml.ReadAttrib(path, 0, "spot", "");
 		if( xr_strlen(str) ){
 			m_minimap_spot = xr_new<CMiniMapSpot>(this);
-			m_minimap_spot->Load(&uiXml,str);
+			m_minimap_spot->Load(&g_uiSpotXml,str);
 		};
-		str = uiXml.ReadAttrib(path, 0, "pointer", "");
+		str = g_uiSpotXml.ReadAttrib(path, 0, "pointer", "");
 		if( xr_strlen(str) ){
 			m_minimap_spot_pointer = xr_new<CMapSpotPointer>(this);
-			m_minimap_spot_pointer->Load(&uiXml,str);
+			m_minimap_spot_pointer->Load(&g_uiSpotXml,str);
 		};
 	};
 }

@@ -1,4 +1,4 @@
-m_fItemsScale// UIDragDropList.cpp: список элементов Drag&Drop
+// UIDragDropList.cpp: список элементов Drag&Drop
 //
 //////////////////////////////////////////////////////////////////////
 
