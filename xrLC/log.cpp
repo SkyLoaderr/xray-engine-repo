@@ -11,12 +11,13 @@ volatile BOOL			bClose = FALSE;
 
 static char				status	[1024	]="";
 static char				phase	[256	]="";
-static float			progress = 0.0f;
+static float			progress		= 0.0f;
 static vector<string>	strings;
-static DWORD			phase_start_time=0;
+static DWORD			phase_start_time= 0;
 static BOOL				bStatusChange	= FALSE;
 static BOOL				bPhaseChange	= FALSE;
-static DWORD			phase_total_time=0;
+static DWORD			phase_total_time= 0;
+static BOOL				bHighPriority	= FALSE;
 
 static HWND hwLog		= 0;
 static HWND hwProgress	= 0;
@@ -41,6 +42,11 @@ static BOOL CALLBACK logDlgProc( HWND hw, UINT msg, WPARAM wp, LPARAM lp )
 			{
 				ExitProcess	(0);
 				bClose = TRUE;
+			}
+			break;
+		case WM_KEYDOWN:
+			{
+				if (wp==VK_F1)	bHighPriority = TRUE;
 			}
 			break;
 		default:
@@ -182,7 +188,7 @@ void __cdecl logThread(void *dummy)
 	float	PrSave	= 0;
 	while (TRUE)
 	{
-		SetPriorityClass	(GetCurrentProcess(),IDLE_PRIORITY_CLASS);
+		SetPriorityClass	(GetCurrentProcess(),bHighPriority?NORMAL_PRIORITY_CLASS:IDLE_PRIORITY_CLASS);
 		
 		// transfer data
 		while (!csLog.TryEnter())	{
