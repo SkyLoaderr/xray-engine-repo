@@ -20,7 +20,7 @@ private:
 	typedef	SceneGraph::mapMatrixItem::TNode	NODE;		
 	struct	caster
 	{
-		CObject*			O;
+		IRenderable*		O;
 		Fvector				C;
 		float				D;
 		svector<NODE,32>	nodes;
@@ -38,7 +38,7 @@ private:
 		Fvector				N;
 	};
 private:
-	CObject*				current;
+	IRenderable*			current;
 	xr_vector<caster>		casters;
 	xr_vector<shadow>		shadows;
 	xr_vector<tess_tri>		tess;

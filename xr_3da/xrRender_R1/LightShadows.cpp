@@ -78,16 +78,16 @@ void CLightShadows::OnDeviceDestroy	()
 	Device.Shader._DeleteRT					(RT			);
 }
 
-void CLightShadows::set_object	(CObject* O)
+void CLightShadows::set_object	(IRenderable* O)
 {
 	if (0==O)	current		= 0;
 	else 
 	{
-		if (!O->ShadowGenerate())	return;
+		if (!O->renderable_ShadowGenerate())	return;
 
-		Fvector		C;
-		O->Center	(C);
-		float		D = C.distance_to(Device.vCameraPosition)+O->Radius();
+		Fvector		C;	O->renderable.xform.transform_tiny		(C,O->renderable.visual->vis.sphere.P);
+		float		R	= O->renderable.visual->vis.sphere.R;
+		float		D = C.distance_to(Device.vCameraPosition)+R;
 		if (D < S_distance)		current	= O;
 		else					current = 0;
 		
@@ -167,7 +167,7 @@ void CLightShadows::calculate	()
 		if (C.nodes.empty())	continue;
 		
 		// Select lights and calc importance
-		CLightTrack* LT			= (CLightTrack*)C.O->ROS();
+		CLightTrack* LT			= (CLightTrack*)C.O->renderable.ROS;
 		xr_vector<CLightTrack::Light>& lights = LT->lights;
 		
 		// iterate on lights
@@ -195,7 +195,7 @@ void CLightShadows::calculate	()
 				Lrange		= 120;
 			} else {
 				float		_dist	=	C.C.distance_to(Lpos);
-				float		_R		=	C.O->Radius()+0.1f;
+				float		_R		=	C.O->renderable.visual->vis.sphere.R+0.1f;
 				if (_dist<_R)		
 				{
 					Fvector			Ldir;
@@ -208,7 +208,7 @@ void CLightShadows::calculate	()
 			// calculate projection-matrix
 			Fmatrix		mProject,mProjectR;
 			float		p_dist	=	C.C.distance_to(Lpos);
-			float		p_R		=	C.O->Radius();
+			float		p_R		=	C.O->renderable.visual->vis.sphere.R;
 			float		p_hat	=	p_R/p_dist;
 			float		p_asp	=	1.f;
 			float		p_near	=	p_dist-p_R-eps;									

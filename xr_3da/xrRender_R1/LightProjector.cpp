@@ -58,17 +58,17 @@ void CLightProjector::OnDeviceDestroy	()
 	// 
 	Device.Shader.Delete					(sh_BlurRT	);
 	Device.Shader.Delete					(sh_BlurTR	);
-	Device.Shader.DeleteGeom					(geom_Screen	);
+	Device.Shader.DeleteGeom				(geom_Screen);
 	Device.Shader._DeleteRT					(RT_temp	);
 	Device.Shader._DeleteRT					(RT			);
 }
 
-void CLightProjector::set_object	(CObject* O)
+void CLightProjector::set_object	(IRenderable* O)
 {
 	if ((0==O) || (receivers.size()>=P_o_count))	current		= 0;
 	else 
 	{
-		if (!O->ShadowReceive())	return;
+		if (!O->renderable_ShadowReceive())	return;
 
 		Fvector		C;
 		O->Center	(C);

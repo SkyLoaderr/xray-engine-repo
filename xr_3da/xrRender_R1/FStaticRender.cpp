@@ -189,6 +189,13 @@ extern float		r_ssaLOD_A;
 extern float		r_ssaLOD_B;
 extern float		r_ssaHZBvsTEX;
 
+IC bool				pred_sp_sort	(ISpatial* _1, ISpatial* _2)
+{
+	float	d1		= _1->spatial.center.distance_to_sqr(Device.vCameraPosition);
+	float	d2		= _2->spatial.center.distance_to_sqr(Device.vCameraPosition);
+	return	d1<d2;
+}
+
 void CRender::Calculate()
 {
 	Device.Statistic.RenderCALC.Begin();
@@ -279,6 +286,9 @@ void CRender::Calculate()
 				STYPE_RENDERABLE + STYPE_LIGHTSOURCE,
 				ViewBase
 			);
+
+		// Exact sorting order (front-to-back)
+		std::sort	(g_SpatialSpace.q_result.begin(),g_SpatialSpace.q_result.end(),pred_sp_sort);
 
 		// Determine visibility for dynamic part of scene
 		set_Object							(0);

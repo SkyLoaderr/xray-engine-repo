@@ -39,7 +39,7 @@ public:
 
 	void	Select				(Fvector &pos, float fRadius, xr_vector<xrLIGHT*>&	dest);
 	void	Select				(Fvector &pos, float fRadius);
-	void	Track				(CObject* O);
+	void	Track				(IRenderable* O);
 
 	void	Load				(IReader* fs);
 	void	Unload				(void);
