@@ -45,9 +45,14 @@ CAI_Rat::CAI_Rat()
 
 CAI_Rat::~CAI_Rat()
 {
-	for (int i=0; i<SND_HIT_COUNT; i++) pSounds->Delete(m_tpaSoundHit[i]);
-	for (i=0; i<SND_DIE_COUNT; i++) pSounds->Delete(m_tpaSoundDie[i]);
-	for (i=0; i<SND_VOICE_COUNT; i++) pSounds->Delete(m_tpaSoundVoice[i]);
+	for (int i=0; i<SND_HIT_COUNT; i++) 
+		pSounds->Delete(m_tpaSoundHit[i]);
+
+	for (i=0; i<SND_DIE_COUNT; i++) 
+		pSounds->Delete(m_tpaSoundDie[i]);
+
+	for (i=0; i<SND_VOICE_COUNT; i++) 
+		pSounds->Delete(m_tpaSoundVoice[i]);
 }
 
 void CAI_Rat::Death()

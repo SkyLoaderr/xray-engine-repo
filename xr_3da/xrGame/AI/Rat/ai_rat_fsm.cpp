@@ -100,6 +100,7 @@ void CAI_Rat::Turn()
 
 	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiRatDie)
 
+	m_tHPB.x = -r_torso_current.yaw;
 	CHECK_IF_GO_TO_PREV_STATE(Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw, PI_DIV_6))
 	
 	INIT_SQUAD_AND_LEADER
@@ -136,7 +137,7 @@ void CAI_Rat::FreeHunting()
 			m_dwLostEnemyTime = Level().timeServer();
 			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun);
 		}
-		if (m_tLastSound.eSoundType != SOUND_TYPE_NO_SOUND) {
+		if ((m_tLastSound.eSoundType != SOUND_TYPE_NO_SOUND) && ((m_tLastSound.tpEntity->g_Team() != g_Team()) || ((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING))) {
 			m_dwLastRangeSearch = Level().timeServer();
 			Fvector tTemp;
 			tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
@@ -360,10 +361,11 @@ void CAI_Rat::AttackRun()
 	
 	m_tGoalDir.set			(m_Enemy.Enemy->Position());
 	m_fASpeed				= .3f;
-	m_tSpawnPosition.set	(m_Enemy.Enemy->Position());
-	m_tVarGoal.set			(0,0,0);
-	m_fGoalChangeDelta		= 3.f;
-
+	//m_tSpawnPosition.set	(m_Enemy.Enemy->Position());
+	//m_tVarGoal.set			(0,0,0);
+	//m_fGoalChangeDelta		= 0.f;
+	//vfChangeGoal();
+	
 	vfSaveEnemy();
 
 	vfUpdateTime(m_fTimeUpdateDelta);
@@ -373,7 +375,7 @@ void CAI_Rat::AttackRun()
 		r_torso_target.pitch = 0;
 	}
 	else {
-		vfComputeNewPosition();
+		vfComputeNextDirectionPosition();
 		SetDirectionLook();
 	}
 	
@@ -414,7 +416,7 @@ void CAI_Rat::Retreat()
 		m_tSafeSpawnPosition.add(vPosition,tTemp);
 	}
 	else
-		if ((Level().timeServer() - m_dwLostEnemyTime > RETREAT_TIME) && ((m_tLastSound.dwTime > m_dwLastUpdateTime) || (m_tLastSound.tpEntity->g_Team() == g_Team() || (m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) != SOUND_TYPE_WEAPON_SHOOTING))) {
+		if ((Level().timeServer() - m_dwLostEnemyTime > RETREAT_TIME) && ((m_tLastSound.dwTime > m_dwLastUpdateTime) || (m_tLastSound.tpEntity && ((m_tLastSound.tpEntity->g_Team() == g_Team()) || ((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) != SOUND_TYPE_WEAPON_SHOOTING))))) {
 			m_tSafeSpawnPosition.set(Level().Teams[g_Team()].Squads[g_Squad()].Leader->Position());
 			GO_TO_PREV_STATE;
 		}
@@ -431,7 +433,7 @@ void CAI_Rat::Retreat()
 		m_fASpeed = .1f;
 		m_fGoalChangeDelta		= 10.f;
 		vfUpdateTime(m_fTimeUpdateDelta);
-		vfComputeNewPosition();
+		//vfComputeNewPosition();
 	}
 	else {
 		if (m_fSpeed < EPS_L)

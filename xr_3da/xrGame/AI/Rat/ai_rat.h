@@ -14,16 +14,17 @@
 
 namespace NAI_Rat_Constants
 {
-	const float TORSO_ANGLE_DELTA		= EPS_L;
-	const float ATTACK_DISTANCE			= .5f;
-	const float ATTACK_ANGLE			= PI_DIV_6;
-	const DWORD LOST_MEMORY_TIME		= 30000;
-	const DWORD UNDER_FIRE_TIME			= 10000;
-	const float UNDER_FIRE_DISTANCE		= 20.f;
-	const DWORD RETREAT_TIME			= 10000;
-	const float RETREAT_DISTANCE		= 20.f;
-	const float MIN_PROBABILITY			= 0.5f;
-	const DWORD ACTION_REFRESH_RATE		= 1000;
+	const float TORSO_ANGLE_DELTA				= EPS_L;
+	const float ATTACK_DISTANCE					= .5f;
+	const float ATTACK_ANGLE					= PI_DIV_6;
+	const DWORD LOST_MEMORY_TIME				= 20000;
+	const DWORD UNDER_FIRE_TIME					= 10000;
+	const float UNDER_FIRE_DISTANCE				= 20.f;
+	const DWORD RETREAT_TIME					= 10000;
+	const float RETREAT_DISTANCE				= 20.f;
+	const float MIN_PROBABILITY					= 0.5f;
+	const DWORD ACTION_REFRESH_RATE				= 1000;
+	const float ATTACK_STRAIGHT_RUN_DISTANCE	= 10.f;
 };
 
 class CAI_Rat : public CCustomMonster  
@@ -213,6 +214,7 @@ class CAI_Rat : public CCustomMonster
 		//////////////////////////
 		// MISCELLANIOUS FUNCTIONS
 		//////////////////////////
+		void	vfComputeNextDirectionPosition();
 		void	vfAddMorale(float fValue, float fRadius);
 		void	vfUpdateMorale();
 		void	vfComputeNewPosition();
