@@ -5,6 +5,10 @@
 
 #ifndef __BORLANDC__
 
+#ifndef		DEBUG
+#define		debug_mode 0
+#endif
+
 MEMPOOL		mem_pools			[mem_pools_count];
 
 // MSVC
