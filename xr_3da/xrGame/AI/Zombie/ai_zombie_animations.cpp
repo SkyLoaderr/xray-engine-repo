@@ -119,7 +119,7 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 		}
 	}
 	else
-		if (speed<0.2f) {
+		if (speed<0.1f) {
 			switch (eCurrentState) {
 				case aiZombieAttackFire : {
 					switch (m_cBodyState) {
@@ -132,7 +132,7 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 								}
 							
 							if (!tpGlobalAnimation || !m_tpCurrentGlobalBlend || !m_tpCurrentGlobalBlend->playing)
-								tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpaAttack[::Random.randI(0,3)];
+								tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpaAttack[::Random.randI(2,3)];
 							break;
 						}
 						case BODY_STATE_CROUCH : {

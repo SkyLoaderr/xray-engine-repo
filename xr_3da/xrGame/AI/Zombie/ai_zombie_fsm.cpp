@@ -14,6 +14,8 @@
 #include "..\\..\\hudmanager.h"
 #include "..\\..\\..\\xr_trims.h"
 
+#define ATTACK_DISTANCE 2.f
+
 void CAI_Zombie::Die()
 {
 	WRITE_TO_LOG("Dying...");
@@ -93,7 +95,7 @@ void CAI_Zombie::FreeHunting()
 			else {
 				Fvector tDistance;
 				tDistance.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
-				if (tDistance.magnitude() < .01f)
+				if (tDistance.magnitude() < .05f)
 					SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
 				else
 					SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
@@ -150,7 +152,7 @@ void CAI_Zombie::AttackFire()
 		GO_TO_NEW_STATE(aiZombiePursuit);
 	}
 		
-	CHECK_IF_GO_TO_NEW_STATE((Enemy.Enemy->Position().distance_to(vPosition) > 2.f),aiZombieAttackRun)
+	CHECK_IF_GO_TO_NEW_STATE((Enemy.Enemy->Position().distance_to(vPosition) > ATTACK_DISTANCE),aiZombieAttackRun)
 
 	Fvector tTemp;
 	tTemp.sub(Enemy.Enemy->Position(),vPosition);
@@ -165,7 +167,7 @@ void CAI_Zombie::AttackFire()
 	Fvector tDistance;
 	tDistance.sub(Position(),Enemy.Enemy->Position());
 
-	AI_Path.TravelPath.clear();
+	GoToPointViaSubnodes(Enemy.Enemy->Position());
 	
 	vfSaveEnemy();
 
@@ -175,7 +177,7 @@ void CAI_Zombie::AttackFire()
 
 	vfSetFire(true,Group);
 
-	vfSetMovementType(m_cBodyState,0);
+	vfSetMovementType(m_cBodyState,2*m_fMaxSpeed);
 }
 
 void CAI_Zombie::AttackRun()
@@ -206,13 +208,13 @@ void CAI_Zombie::AttackRun()
 	SRotation sTemp;
 	mk_rotation(tTemp,sTemp);
 
-	CHECK_IF_GO_TO_NEW_STATE((fabsf(r_torso_current.yaw - sTemp.yaw) < 2*PI_DIV_6) && (tDistance.magnitude() <= 2.f),aiZombieAttackFire);
+	CHECK_IF_GO_TO_NEW_STATE((fabsf(r_torso_current.yaw - sTemp.yaw) < 2*PI_DIV_6) && (tDistance.magnitude() <= ATTACK_DISTANCE),aiZombieAttackFire);
 
 	INIT_SQUAD_AND_LEADER;
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE(!((fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI_DIV_6) || ((fabsf(fabsf(r_torso_target.yaw - r_torso_current.yaw) - PI_MUL_2) < PI_DIV_6))),aiZombieTurnOver)
-
 	GoToPointViaSubnodes(Enemy.Enemy->Position());
+	
+	vfSaveEnemy();
 	
 	vfAimAtEnemy();
 	
@@ -220,7 +222,10 @@ void CAI_Zombie::AttackRun()
 	
 	vfSetFire(false,Group);
 
-	vfSetMovementType(m_cBodyState,m_fMaxSpeed);
+	if (vPosition.distance_to(tSavedEnemyPosition) < 2.5f)
+		vfSetMovementType(m_cBodyState,2.f*m_fMaxSpeed);
+	else
+		vfSetMovementType(m_cBodyState,m_fMaxSpeed);
 }
 
 void CAI_Zombie::TurnOver()
@@ -249,9 +254,9 @@ void CAI_Zombie::TurnOver()
 	
 	vfSetMovementType(m_cBodyState,m_fCurSpeed);
 
-	r_torso_speed = PI_DIV_2/1;
-	r_spine_speed = PI_DIV_2/1;
-	q_look.o_look_speed = PI_DIV_2/1;
+	//r_torso_speed = PI_DIV_2/1;
+	//r_spine_speed = PI_DIV_2/1;
+	//q_look.o_look_speed = PI_DIV_2/1;
 }
 
 void CAI_Zombie::UnderFire()
