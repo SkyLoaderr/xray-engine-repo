@@ -1,3 +1,6 @@
+#ifndef _PRIMITIVER_RUNTIME_H_
+#define _PRIMITIVER_RUNTIME_H_
+
 #pragma once
 
 // The most used wrappers --- recomendation DON'T USE AT ALL :)
@@ -36,3 +39,4 @@ IC void CDraw::DrawSubset	(CPrimitive& P, DWORD dwStartVertex,DWORD dwNumVerts, 
 	Render		(D3DPT_TRIANGLELIST,dwStartVertex,dwNumVerts,dwStartIndex,dwNumPrimitives);
 	UPDATEC		(dwNumVerts,dwNumPrimitives,1);
 }
+#endif
