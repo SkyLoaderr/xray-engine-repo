@@ -3,14 +3,18 @@
 // r3xx code-path (MRT)
 #define	r2_RT_depth			"$user$depth"			// MRT
 #define	r2_RT_P				"$user$position"		// MRT
-#define	r2_RT_N_H			"$user$normal_hemi"		// MRT
+#define	r2_RT_N				"$user$normal"			// MRT
 #define	r2_RT_D_G			"$user$color_gloss"		// MRT
 
 // other
-#define	r2_RT_accum			"$user$accum"			// ---
-#define	r2_RT_generic		"$user$generic"			// ---
+#define	r2_RT_accum			"$user$accum"			// ---	16 bit fp or 8 bit
+
+#define	r2_RT_generic0		"$user$generic0"		// ---
+#define	r2_RT_generic1		"$user$generic0"		// ---
+
 #define	r2_RT_bloom1		"$user$bloom1"			// ---
 #define	r2_RT_bloom2		"$user$bloom2"			// ---
+
 #define	r2_RT_smap_d_surf	"$user$smap_d_surf"		// ---	directional
 #define	r2_RT_smap_d_depth	"$user$smap_d_depth"	// ---	directional
 #define	r2_RT_smap_p		"$user$smap_p"			// ---	point
@@ -36,5 +40,8 @@ const u32					TEX_material_LdotH	= 256;	// specular,	Y
 const u32					TEX_ds2_fade_size	= 256;
 const u32					TEX_float2rgb		= 256;
 const u32					TEX_NCM				= 512;
+
+const u32					BLOOM_size_X		= 256;
+const u32					BLOOM_size_Y		= 256;
 
 const u32					occq_size			= 128;

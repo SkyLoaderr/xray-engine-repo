@@ -137,7 +137,7 @@ void	CRenderTarget::OnDeviceCreate	()
 	{
 		u32	w=Device.dwWidth, h=Device.dwHeight;
 		rt_Position.create			(r2_RT_P,		w,h,D3DFMT_A16B16G16R16F);
-		rt_Normal.create			(r2_RT_N_H,		w,h,D3DFMT_A16B16G16R16F);
+		rt_Normal.create			(r2_RT_N,		w,h,D3DFMT_A16B16G16R16F);
 		rt_Color.create				(r2_RT_D_G,		w,h,D3DFMT_A16B16G16R16F);
 		rt_Accumulator.create		(r2_RT_accum,	w,h,D3DFMT_A16B16G16R16F);
 	}
@@ -146,10 +146,11 @@ void	CRenderTarget::OnDeviceCreate	()
 		u32	w=Device.dwWidth, h=Device.dwHeight;
 		rt_Depth.create				(r2_RT_depth,	w,h,D3DFMT_R32F			);
 		rt_Position.create			(r2_RT_P,		w,h,D3DFMT_A16B16G16R16F);
-		rt_Normal.create			(r2_RT_N_H,		w,h,D3DFMT_A16B16G16R16F);
+		rt_Normal.create			(r2_RT_N,		w,h,D3DFMT_A16B16G16R16F);
 		rt_Color.create				(r2_RT_D_G,		w,h,D3DFMT_A8R8G8B8		);
 		rt_Accumulator.create		(r2_RT_accum,	w,h,D3DFMT_A8R8G8B8		);
-		rt_Generic.create			(r2_RT_generic,	w,h,D3DFMT_A8R8G8B8		);
+		rt_Generic_0.create			(r2_RT_generic0,w,h,D3DFMT_A8R8G8B8		);
+		rt_Generic_1.create			(r2_RT_generic1,w,h,D3DFMT_A8R8G8B8		);
 	}
 
 	// OCCLUSION
@@ -221,11 +222,11 @@ void	CRenderTarget::OnDeviceCreate	()
 
 	// BLOOM
 	{
-		u32	w=Device.dwWidth/2, h=Device.dwHeight/2;
+		u32	w=BLOOM_size_X, h=BLOOM_size_Y;
 		u32 fvf_build				= D3DFVF_XYZRHW|D3DFVF_TEX4|D3DFVF_TEXCOORDSIZE2(0)|D3DFVF_TEXCOORDSIZE2(1)|D3DFVF_TEXCOORDSIZE2(2)|D3DFVF_TEXCOORDSIZE2(3);
 		u32 fvf_filter				= (u32)D3DFVF_XYZRHW|D3DFVF_TEX8|D3DFVF_TEXCOORDSIZE4(0)|D3DFVF_TEXCOORDSIZE4(1)|D3DFVF_TEXCOORDSIZE4(2)|D3DFVF_TEXCOORDSIZE4(3)|D3DFVF_TEXCOORDSIZE4(4)|D3DFVF_TEXCOORDSIZE4(5)|D3DFVF_TEXCOORDSIZE4(6)|D3DFVF_TEXCOORDSIZE4(7);
-		rt_Bloom_1.create			(r2_RT_bloom1,	w,h,D3DFMT_A8R8G8B8);
-		rt_Bloom_2.create			(r2_RT_bloom2,	w,h,D3DFMT_A8R8G8B8);
+		rt_Bloom_1.create			(r2_RT_bloom1,	w,h,	D3DFMT_X8R8G8B8);
+		rt_Bloom_2.create			(r2_RT_bloom2,	w,h,	D3DFMT_X8R8G8B8);
 		g_bloom_build.create		(fvf_build,		RCache.Vertex.Buffer(), RCache.QuadIB);
 		g_bloom_filter.create		(fvf_filter,	RCache.Vertex.Buffer(), RCache.QuadIB);
 		s_bloom_dbg_1.create		("effects\\screen_set",		r2_RT_bloom1);
