@@ -154,12 +154,6 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 			}
 			tTemp.normalize();
 
-//			if (tTemp.magnitude() < .1f) {
-//				j--;
-//				continue;
-//			}
-
-
 			if (I == 1)
 				tTemp.set(tTemp.z,0,-tTemp.x);
 			else
@@ -167,24 +161,6 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 			
 			tpaVector1[j].add(tTemp);
 
-//			if ((j > 1) && (tpaVector1[j].distance_to(tpaVector1[j - 2]) <= fHalfSubnodeSize + tpaVector1[j - 1].distance_to(tpaVector1[j - 2]))) {
-//				Fvector tPrevious = tpaVector1[j - 2];
-//				Fvector tCurrent = tpaVector1[j - 1];
-//				Fvector tNext = tpaVector1[j];
-//				Fvector tTemp1, tTemp2;
-//				tTemp1.sub(tCurrent,tPrevious);
-//				tTemp2.sub(tNext,tCurrent);
-//				tTemp1.normalize_safe();
-//				tTemp1.y = tTemp2.y = 0;
-//				tTemp2.normalize_safe();
-//				float fAlpha = tTemp1.dotproduct(tTemp2);
-//				clamp(fAlpha, -.99999f, +.99999f);
-//				if ((acosf(fAlpha) < PI_DIV_8*.375f) || (acosf(fAlpha) > 2*PI_DIV_8*.375f)) {
-//					j--;
-//					continue;
-//				}
-//			}
-			
 			for (int m=k; (k < (int)tpaNodes.size()) && (!AI.bfInsideNode(AI.Node(tpaNodes[k]),tpaVector0[i])); k++) ;
 
 			if (k >= (int)tpaNodes.size()) {
@@ -238,10 +214,6 @@ BOOL CLevel::Load_GameSpecific_Before()
 				R_ASSERT(OBJ->FindChunk(WAYOBJECT_CHUNK_NAME));
 				OBJ->RstringZ(sName);
 
-//				u32 dwType;
-//				R_ASSERT(OBJ->FindChunk(WAYOBJECT_CHUNK_TYPE));
-//				dwType = OBJ->Rdword();
-//
 				R_ASSERT(OBJ->FindChunk(WAYOBJECT_CHUNK_POINTS));
 				u32 dwCount = OBJ->Rword();
 				tPatrolPath.tpaWayPoints.resize(dwCount);
@@ -261,33 +233,6 @@ BOOL CLevel::Load_GameSpecific_Before()
 
 				OBJ->Close();
 
-//				switch (dwType) {
-//					case wtPatrolPath : {
-//						// sorting links
-//						bool bOk;
-//						do {
-//							bOk = true;
-//							for ( i=1; i<(int)dwCountL; i++)
-//								if ((tPatrolPath.tpaWayLinks[i - 1].wFrom > tPatrolPath.tpaWayLinks[i].wFrom) || ((tPatrolPath.tpaWayLinks[i - 1].wFrom == tPatrolPath.tpaWayLinks[i].wFrom) && (tPatrolPath.tpaWayLinks[i - 1].wTo > tPatrolPath.tpaWayLinks[i].wTo))) {
-//									WORD wTemp = tPatrolPath.tpaWayLinks[i - 1].wFrom;
-//									tPatrolPath.tpaWayLinks[i - 1].wFrom = tPatrolPath.tpaWayLinks[i].wFrom;
-//									tPatrolPath.tpaWayLinks[i].wFrom = wTemp;
-//									wTemp = tPatrolPath.tpaWayLinks[i - 1].wTo;
-//									tPatrolPath.tpaWayLinks[i - 1].wTo = tPatrolPath.tpaWayLinks[i].wTo;
-//									tPatrolPath.tpaWayLinks[i].wTo = wTemp;
-//									bOk = false;
-//								}
-//						}
-//						while (!bOk);
-//
-//						m_PatrolPaths[sName] = tPatrolPath;
-//						
-//						vfCreateAllPossiblePaths(sName, m_PatrolPaths[sName]);
-//						break;
-//					}
-//					default :
-//						THROW;
-//				}
 				// sorting links
 				bool bOk;
 				do {

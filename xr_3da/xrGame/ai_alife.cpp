@@ -60,7 +60,7 @@ void CAI_ALife::Load()
 	FILE_NAME					caFileName;
 	R_ASSERT					(Engine.FS.Exist(caFileName, ::Path.GameData, "game.spawn"));
 	tpStream					= Engine.FS.Open(caFileName);
-	//CALifeSpawnRegistry::Load	(*tpStream);
+	CALifeSpawnRegistry::Load	(*tpStream);
 	Engine.FS.Close				(tpStream);
 	return;
 
