@@ -705,7 +705,18 @@ function fract:loadJob(name)
 			patrol_path = "mili_kamp_patrol"}
 		table.insert(self.Job, t)			
 
-		
+		t = { name = "sniper",
+			object = nil,
+			begin = nil, 
+			idle = 0,
+			prior = 7,
+			state = { 0 },
+			group = 0,
+			rest_path = "mili_sniper_rest_way",
+			camper_path = "mili_sniper_camper_way",
+			point_path = "mili_sniper_point_way"}
+		table.insert(self.Job, t)			
+
 	end
 end
 function fract:setJob(npc, job) 
@@ -744,6 +755,13 @@ function fract:setJob(npc, job)
 		job.begin = game.time()
 			xr_kamp.set_kamp(npc, true, job.center_point, job.patrol_path)
 	end
+	if job.name == "sniper" then
+		job.object = npc
+		job.begin = game.time()
+			xr_sniper.set_sniper(npc, true, job.rest_path, job.camper_path, job.point_path)
+	end
+
+	
 	
 	if job.group ~= nil then
 		job.object:change_team(job.object:team(), job.object:squad(), job.group)
