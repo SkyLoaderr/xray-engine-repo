@@ -96,7 +96,7 @@ void CPHWorld::Create()
 #ifdef ODE_SLOW_SOLVER
 #else
 	dWorldSetAutoEnableDepthSF1(phWorld, 100000000);
-	dWorldSetContactSurfaceLayer(phWorld,0.f);
+	///dWorldSetContactSurfaceLayer(phWorld,0.f);
 	//phWorld->contactp.min_depth =0.f;
 
 #endif
