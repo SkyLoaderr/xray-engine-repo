@@ -101,7 +101,8 @@ namespace PAPI{
 		action_enum_force_dword = u32(-1)
 	};
     class ParticleAction;
-    class PARTICLES_API IParticleManager{
+
+    class IParticleManager{
     public:
 		    						IParticleManager	(){}
         virtual						~IParticleManager	(){}
@@ -133,6 +134,5 @@ namespace PAPI{
     };
 
     PARTICLES_API IParticleManager* ParticleManager		();
-    PARTICLES_API int Counter		();
 };
 #endif //PSystemH
