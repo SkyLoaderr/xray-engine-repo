@@ -17,11 +17,11 @@
     <info_portion id="escape_factory_bandits_dead">
     </info_portion>
     
-<!--    <info_portion id="escape_need_blockpost_case">
+	<info_portion id="escape_need_blockpost_case">
         <location>
             <level></level>
             <object>000</object>
-			<icon name="Case" x="5" y="1" width="1" height="1" r="0" g="50" b="255"></icon>
+			<icon name="Ящик" x="5" y="1" width="1" height="1" r="0" g="50" b="255"></icon>
             <text>Украсть ящик с блокпоста</text>
         </location>
         <task>escape_blockpost_case</task>
@@ -30,15 +30,35 @@
     <info_portion id="escape_have_blockpost_case">
         <disable>escape_need_blockpost_case</disable>
     </info_portion>
-    -->
 
     <info_portion id="escape_trader_need_artefact">
         <location>
             <level></level>
-            <x>-100</x>
-            <y>-100</y>
-			<icon name="Аномалия" x="5" y="1" width="1" height="1" r="0" g="50" b="255" marker="1"></icon>
-            <text>Предполагаемое место появления артефакта "Ночная звезда".</text>
+            <x>163</x>
+            <y>72</y>
+			<icon name="Аномалия" x="6" y="1" width="1" height="1" r="30" g="255" b="30" marker="0"></icon>
+            <text>Предполагаемое место артефакта.</text>
+        </location>
+        <location>
+            <level></level>
+            <x>208</x>
+            <y>108</y>
+			<icon name="Аномалия" x="6" y="1" width="1" height="1" r="30" g="255" b="30" marker="0"></icon>
+            <text>Предполагаемое место артефакта.</text>
+        </location>
+        <location>
+            <level></level>
+            <x>221</x>
+            <y>154</y>
+			<icon name="Аномалия" x="6" y="1" width="1" height="1" r="30" g="255" b="30" marker="1"></icon>
+            <text>Предполагаемое место артефакта.</text>
+        </location>
+        <location>
+            <level></level>
+            <x>186</x>
+            <y>159</y>
+			<icon name="Аномалия" x="6" y="1" width="1" height="1" r="30" g="255" b="30" marker="0"></icon>
+            <text>Предполагаемое место артефакта.</text>
         </location>
         <task>escape_trader_need_artefact</task>
 		<dialog>escape_trader_done_artefact</dialog>

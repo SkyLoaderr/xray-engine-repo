@@ -2,13 +2,18 @@
 
 <game_tasks_data>
 
-<!--	<game_task id="escape_blockpost_case">
+	<game_task id="escape_blockpost_case">
 		<title>escape_steal_blockpost_case</title>
 		<objective>
 			<text>escape_steal_blockpost_case</text>
 		</objective>
+		<objective>
+			<text>Украсть ящик с блокпоста.</text>
+		</objective>
+		<objective>
+			<text>Принести ящик торговцу.</text>
+		</objective>
 	</game_task>
--->
 
 	<game_task id="escape_novice_need_weapon">
 		<title>escape_novice_need_gun</title>
@@ -33,7 +38,14 @@
 	<game_task id="escape_trader_need_artefact">
 		<title>Торговцу нужен особый артефакт</title>
 		<objective>
-			<text>Найдите "Ночную звезду" и принесите торговцу.</text>
+			<text>Торговец разыскивает особо редкий артефакт "Ночная звезда". Найдите его
+			и принесите торговцу. Взамен торговец обещал разузнать о Стрелке.</text>
+		</objective>
+		<objective>
+			<text>Найдите "Ночную звезду".</text>
+		</objective>
+		<objective>
+			<text>Принесите "Ночную звезду" торговцу.</text>
 		</objective>
 	</game_task>
 	
