@@ -677,11 +677,40 @@ function random_choice_weighted( a )
     end
 end
 
-
+-- проверяет, есть ли объект в онлайне
 function is_object_online (object_id)
     local sim = alife ()
     if sim == nil then return true end
     local obj = sim:object (object_id)
     if obj == nil then return false end
 	return obj.online
+end
+
+-- проверяет оружие ли это (передавать clsid)
+function isWeapon(id)
+	if id == clsid.wpn_vintorez then return true
+	elseif id == clsid.wpn_fn2000 then return true
+	elseif id == clsid.wpn_ak74 then return true
+	elseif id == clsid.wpn_lr300 then return true
+	elseif id == clsid.wpn_hpsa then return true
+	elseif id == clsid.wpn_pm then return true
+	elseif id == clsid.wpn_fort then return true
+	elseif id == clsid.wpn_binocular then return true
+	elseif id == clsid.wpn_shotgun then return true
+	elseif id == clsid.wpn_svd then return true
+	elseif id == clsid.wpn_svu then return true
+	elseif id == clsid.wpn_rpg7 then return true
+	elseif id == clsid.wpn_val then return true
+	elseif id == clsid.wpn_vintorez then return true
+	elseif id == clsid.wpn_walther then return true
+	elseif id == clsid.wpn_usp45 then return true
+	elseif id == clsid.wpn_groza then return true
+	elseif id == clsid.wpn_knife then return true
+	elseif id == clsid.wpn_grenade_launcher then return true
+	elseif id == clsid.obj_explosive then return true
+	elseif id == clsid.wpn_grenade_f1 then return true
+	elseif id == clsid.wpn_grenade_rpg7 then return true
+	elseif id == clsid.wpn_grenade_rgd5 then return true
+	elseif id == clsid.wpn_grenade_fake then return true
+        else return false end
 end
