@@ -72,6 +72,7 @@ void CAI_Rat::Die()
 	vfRemoveStandingMember();
 	Group.m_dwAliveCount--;
 	eCurrentState = aiRatDie;
+	m_dwDeathTime = Level().timeServer();
 }
 
 void CAI_Rat::OnDeviceCreate()

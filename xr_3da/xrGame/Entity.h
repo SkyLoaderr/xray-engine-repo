@@ -100,6 +100,7 @@ public:
 	CMovementControl		Movement;
 	EVENT					m_tpEventSay;
 	bool					m_bMobility;
+	u32						m_dwDeathTime;
 public:
 	// General
 	CEntityAlive			();

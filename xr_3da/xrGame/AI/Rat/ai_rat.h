@@ -191,6 +191,11 @@ class CAI_Rat : public CCustomMonster
 		float				m_fWallMaxTurnValue;
 		float				m_fSoundThreshold;
 
+		// eat troops
+		bool				m_bEatMembers;
+		bool				m_bCannibalism;
+		u32					m_dwEatCorpInterval;
+
 		//////////////////////////
 		// INLINE FUNCTIONS
 		//////////////////////////

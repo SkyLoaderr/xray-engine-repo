@@ -76,8 +76,13 @@ float CAI_Rat::EnemyHeuristics(CEntity* E)
 	if (E->g_Team()  == g_Team())	
 		return flt_max;		// don't attack our team
 	
-	if (!E->g_Alive())					
-		return flt_max - 2;		// don't attack dead enemiyes
+	if (!E->g_Alive()) {
+		CEntityAlive *tpEntityAlive = dynamic_cast<CEntityAlive *>(E);
+		if (tpEntityAlive && (Level().timeServer() - tpEntityAlive->m_dwDeathTime < m_dwEatCorpInterval) && (m_bEatMembers || (E->g_Team() != g_Team())) && (m_bCannibalism || (E->SUB_CLS_ID != SUB_CLS_ID)))
+			return flt_max - 2;
+		else
+			return flt_max;
+	}
 	
 	float	g_strength = E->g_Armor()+E->g_Health();
 	
