@@ -8,7 +8,7 @@
 
 #include "fbasicvisual.h"
 
-class ENGINE_API Fvisual		: public IRender_Visual
+class	Fvisual		: public IRender_Visual
 {
 public:
 	struct _mesh	

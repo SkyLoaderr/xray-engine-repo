@@ -602,6 +602,12 @@
 				Name="Visuals"
 				Filter="">
 				<File
+					RelativePath=".\FLOD.cpp">
+				</File>
+				<File
+					RelativePath=".\FLOD.h">
+				</File>
+				<File
 					RelativePath=".\FProgressive.cpp">
 				</File>
 				<File
