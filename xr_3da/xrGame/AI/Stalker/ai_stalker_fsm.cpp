@@ -12,12 +12,13 @@
 #include "..\\..\\hudmanager.h"
 
 /**
+	Msg("Path state : %s",(m_tPathState == ePathStateSearchNode) ? "Searching for the node" : (m_tPathState == ePathStateBuildNodePath) ? "Building path" : (m_tPathState == ePathStateBuildTravelLine) ? "Building travel line" : "Dodging travel line");\
+	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
 /**/
 
 #undef	WRITE_TO_LOG
 #define WRITE_TO_LOG(s) {\
-	Msg("Path state : %s",(m_tPathState == ePathStateSearchNode) ? "Searching for the node" : (m_tPathState == ePathStateBuildNodePath) ? "Building path" : (m_tPathState == ePathStateBuildTravelLine) ? "Building travel line" : "Dodging travel line");\
-	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
+	Msg("Monster %s : \n* State : %s",cName(),s);\
 	m_bStopThinking = true;\
 }
 
@@ -407,13 +408,13 @@ void CAI_Stalker::Think()
 	m_dwUpdateCount++;
 	m_ePreviousState		= m_eCurrentState;
 
-	Msg("%s : [A=%d][B=%d][C=%d][D=%d][E=%d][F=%d][G=%d][H=%d][I=%d][J=%d][K=%d][L=%d][M=%d]",cName(),A,B,C,D,E,F,G,H,I,J,K,L,M);
+	if (g_Alive())
+		Msg("%s : [A=%d][B=%d][C=%d][D=%d][E=%d][F=%d][G=%d][H=%d][I=%d][J=%d][K=%d][L=%d][M=%d]",cName(),A,B,C,D,E,F,G,H,I,J,K,L,M);
 	
 	Fvector					tPoint;
 
 	m_bStateChanged = K != _K;
 	if (!g_Alive()) {
-		WRITE_TO_LOG		("Death");
 		Death				();
 	}
 	else 
@@ -478,7 +479,6 @@ void CAI_Stalker::Think()
 	if (D && H && I) {
 		m_dwRandomFactor	= 50;
 		BackCover	(true);
-//		ForwardCover();
 	} else
 	if (D && H && !I) {
 		Hide		();
@@ -486,7 +486,6 @@ void CAI_Stalker::Think()
 	if (D && !H && I) {
 		m_dwRandomFactor	= 50;
 		BackCover	(false);
-//		ForwardCover();
 	} else
 	if (D && !H && !I) {
 		Hide	();
