@@ -576,13 +576,13 @@ void CKinematics::Copy(IRender_Visual *P)
 		CSkeletonX*		B = NULL;
 		switch (V->Type)
 		{
-		case MT_SKELETON_PART:
+		case MT_SKELETON_GEOMDEF_PM:
 			{
 				CSkeletonX_PM*	X = (CSkeletonX_PM*)V;
 				B = (CSkeletonX*)X;
 			}
 			break;
-		case MT_SKELETON_PART_STRIPPED:
+		case MT_SKELETON_GEOMDEF_ST:
 			{
 				CSkeletonX_ST*	X = (CSkeletonX_ST*)V;
 				B = (CSkeletonX*)X;
