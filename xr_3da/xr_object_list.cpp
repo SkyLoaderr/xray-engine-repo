@@ -119,6 +119,13 @@ void CObjectList::net_Export	(NET_Packet* _Packet)
 			Packet.w_chunk_open8	(position);
 			P->net_Export			(Packet);
 			Packet.w_chunk_close8	(position);
+#ifdef DEBUG
+			if (psNET_Flags.test(0x1))	{
+				u32			_size	= Packet.w_tell()-position;
+				string32	_cls;	CLSID2TEXT	(P->SUB_CLS_ID,_cls);	_cls[8]=0;
+				Msg		("* import[%2d] [%s]-[%s]-[%s]",_size,*P->cName(),*P->cNameSect(),_cls);
+			}
+#endif
 		}
 	}
 }
@@ -130,7 +137,15 @@ void CObjectList::net_Import		(NET_Packet* Packet)
 		u16 ID;		Packet->r_u16	(ID);
 		u8  size;	Packet->r_u8	(size);
 		CObject* P  = net_Find		(u32(ID));
-		if (P)	P->net_Import		(*Packet);
+		if (P)	{ 
+			P->net_Import		(*Packet);
+#ifdef DEBUG
+			if (psNET_Flags.test(0x1))	{
+				string32	_cls;	CLSID2TEXT	(P->SUB_CLS_ID,_cls);	_cls[8]=0;
+				Msg		("* export[%2d] [%s]-[%s]-[%s]",u32(size),*P->cName(),*P->cNameSect(),_cls);
+			}
+#endif
+		}
 		else	Packet->r_advance	(size);
 	}
 }

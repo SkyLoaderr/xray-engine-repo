@@ -290,11 +290,11 @@ extern int			psNET_ServerUpdate;
 extern int			psNET_ServerPending;
 extern char			psNET_Name[32];
 extern int			psNET_Port;
+extern Flags32		psNET_Flags;
 extern int			psSheduler;
 extern float		psShedulerLoadBalance;
 extern Flags32		psEnvFlags;
 extern float		rsDT_Range;
-
 
 void CCC_Register()
 {
@@ -351,6 +351,7 @@ void CCC_Register()
 	CMD4(CCC_Integer,	"net_sv_pending_lim",	&psNET_ServerPending,0,		10	);
 	CMD4(CCC_Integer,	"net_port",				&psNET_Port,		5400,	5500);
 	CMD3(CCC_String,	"net_name",				psNET_Name,			32			);
+	CMD3(CCC_Mask,		"net_dump_size",		&psNET_Flags,		0x1			);
 
 	// Texture manager	
 	CMD4(CCC_Integer,	"texture_lod",			&psTextureLOD,		0,			4	);

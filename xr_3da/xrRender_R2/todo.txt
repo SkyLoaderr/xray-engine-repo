@@ -29,27 +29,36 @@ R1:
 	* per-pixel displacement + secondary channel					-	~1week / ps2.0 / ps1.3 (1 day + 1 day) 
 	* wallmarks on dynamic objects		(?)							-	~1week
 	* SlidingWindow VIPM / screen-error	(???)						-	3 day (max)
+	* ShadowCast cache (:BUG:)
 
 R2:
-	* work out tonemapping				(?)							-	
+	* work out tonemapping				(?)							-	?
 	* work out blooming					(again)						-\  3 days	
 	* work out skybox					(again)						-/
-	* work out hemisphere				(again)						-	
-	* work out ordinary rendering + transparency					- 
-	* sRGB convert diffuse				(???)						- 
-	* transluency						(again + experiment)		- 
-	* reverse culling for spot/point with initial clears - should avoid most biasing (?)
-	* 4*32bit	RT(s) / emissive									- 
-	* perspective shadow maps and all that stuff Gary talks about	-
-	* wallmarks :)	(?)												- 
-	* surface material:								
+	* work out hemisphere				(again)						-	1 day (?)
+	* work out ordinary rendering + transparency					-	1 day (?)
+	* sRGB convert diffuse				(???)						-	?
+	* transluency						(again + experiment)		-	1day - 1week
+	* reverse culling for spot/point with initial clears - should avoid most biasing (?)	- 1day - but can just not work :)
+	* 4*32bit	RT(s) / emissive									-	1day + emissive shaders (as need them)
+	* perspective shadow maps and all that stuff Gary talks about	-	1month...1year
+	* wallmarks :)	(?)												-	?
+	* surface material:
 		- emmisive map
 		- detail-bump map
-		- anisotropic materials
-		- material	definition
-	* SlidingWindow VIPM / screen-error	(???)						-	
-
+		- anisotropic materials										-	1 day
+		- material	definition										-	(blin-bump-low-spec, 1=blin-bump-high-spec, 2=anisotroptic-low, 3=anisotroptic-high) / ()
+	* SlidingWindow VIPM / screen-error	(???)						-	3 day (max) / R1
+	* IRender_Light	-> save/load ->		R2 / shadow-no-shadow		-	1 day me	/ 1 day sanya
 ----------------------------
+	surface:
+		diffuse texture			/ diffuse detail (???)
+		height map [rgb](5cm)	/ detail heightmap
+		gloss map  [a]	(0..1)	/ 
+		emisssive				/ 1 scalar / 1 koeff					-	none
+		material-id				/ 1 scalar
+		transluency				/ ???
+
 I think I understand it. Maybe I can help myself (and others) understand it better if I try to explain it.
 I assume you know how the normal mapping works. The question is: how is the offset computed?
 

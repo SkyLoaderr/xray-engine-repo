@@ -84,6 +84,7 @@ public:
 } net_DeltaArray;
 
 //-------
+ENGINE_API Flags32	psNET_Flags			= {0};
 ENGINE_API int		psNET_ClientUpdate	= 30;		// FPS
 ENGINE_API int		psNET_ClientPending	= 2;
 ENGINE_API char		psNET_Name[32]		= "Player";
