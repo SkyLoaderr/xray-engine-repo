@@ -41,6 +41,11 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			game->OnPlayerChangeTeam(l_pC->ID, l_team);
 		}
 		break;
+	case GEG_PLAYER_KILL:
+		{
+			xrClientData *l_pC = ID_to_client(sender);
+			game->OnPlayerWantsDie(l_pC->ID);
+		}break;
 	case GEG_PLAYER_READY:
 		{
 			CSE_Abstract*		E			= game->get_entity_from_eid	(destination);

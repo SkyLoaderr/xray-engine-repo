@@ -89,30 +89,7 @@ public:
 		u32 l_team = 2;
 		sscanf(args, "%d", &l_team);
 		CObject *l_pObj = Level().CurrentEntity();
-		/*
-		CActor *l_pActor = dynamic_cast<CActor*>(l_pObj);
-		if(l_pActor) {
-			if(l_pActor->g_Team() == s32(l_team)) return;
-			Fvector l_dir; l_dir.set(0, -1.f, 0);
-			Fvector position_in_bone_space;
-			position_in_bone_space.set(0.f,0.f,0.f);
-				NET_Packet		P;
-				l_pActor->u_EventGen		(P,GE_HIT,l_pActor->ID());
-				P.w_u16			(u16(l_pActor->ID()));
-				P.w_dir			(l_dir);
-				P.w_float		(10000.f);
-				P.w_s16			((s16)0);
-				P.w_vec3		(position_in_bone_space);
-				P.w_float		(.0f);
-				P.w_u16			(ALife::eHitTypeWound);	//hit type
-				l_pActor->u_EventSend		(P);
-				//NET_Packet		P;
-				//l_pActor->u_EventGen		(P,GE_DIE,l_pActor->ID()	);
-				//P.w_u16			(u16(l_pActor->ID())	);
-				//P.w_u32			(0);
-				//l_pActor->u_EventSend		(P);
-		}
-		*/
+	
 		CGameObject *l_pPlayer = dynamic_cast<CGameObject*>(l_pObj);
 		if(l_pPlayer) {
 			NET_Packet		P;
@@ -121,6 +98,28 @@ public:
 			P.w_s16			(s16(l_team));
 			P.w_s16			((s16)0);
 			//P.w_u32			(0);
+			l_pPlayer->u_EventSend		(P);
+		}
+	}
+	virtual void	Info	(TInfo& I)		
+	{
+		strcpy(I,"change team"); 
+	}
+};
+
+class CCC_Kill : public CConsoleCommand {
+public:
+	CCC_Kill(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR args) {
+		CObject *l_pObj = Level().CurrentEntity();
+		CActor *l_pPlayer = dynamic_cast<CActor*>(l_pObj);
+		if(l_pPlayer) {
+			NET_Packet		P;
+			l_pPlayer->u_EventGen		(P,GEG_PLAYER_KILL,l_pPlayer->ID()	);
+			P.w_u16			(u16(l_pPlayer->ID())	);
+//			P.w_s16			(s16(l_team));
+//			P.w_s16			((s16)0);
+//			P.w_u32			(0);
 			l_pPlayer->u_EventSend		(P);
 		}
 	}
@@ -811,6 +810,7 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 		CMD1(CCC_Restart,			"g_restart"				);
 		CMD1(CCC_Money,				"g_money"				);
 		CMD1(CCC_Team,				"g_change_team"			);
+		CMD1(CCC_Kill,				"g_kill"				);
 		
 		// alife
 		CMD1(CCC_ALifePath,			"al_path"				);		// build path

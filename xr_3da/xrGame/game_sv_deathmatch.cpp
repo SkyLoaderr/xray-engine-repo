@@ -397,3 +397,8 @@ void	game_sv_Deathmatch::KillPlayer				(u32 id_who)
 //	u_EventSend(P);
 //	Level().uEvent
 };
+
+void	game_sv_Deathmatch::OnPlayerWantsDie		(u32 id_who)
+{
+	KillPlayer(id_who);
+};

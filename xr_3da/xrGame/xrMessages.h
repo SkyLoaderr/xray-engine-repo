@@ -52,6 +52,7 @@ enum {
 	GEG_SIGNAL,
 	GEG_PLAYER_READY,
 	GEG_PLAYER_CHANGE_TEAM,
+	GEG_PLAYER_KILL,			//player wants to die
 
 	GE_FORCEDWORD				= u32(-1)
 };
