@@ -69,7 +69,7 @@ void SGameMtlPair::Load(CStream& fs)
     mtl1				= fs.Rdword();
     ID					= fs.Rdword();
     ID_parent			= fs.Rdword();
-    OwnProps.m_Flags	= fs.Rdword();
+    OwnProps.set		(fs.Rdword());
 
     R_ASSERT(fs.FindChunk(GAMEMTLPAIR_CHUNK_FLOTATION));
     fFlotation			= fs.Rfloat();
