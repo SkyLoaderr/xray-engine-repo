@@ -219,7 +219,6 @@ int CLuaView::OnSci(SCNotification* pNotify)
 				ToggleBreakPoint(nLine);
 			}break;
 
-//		case SCI_SETSAVEPOINT:
 		case SCN_SAVEPOINTREACHED:
 			GetDocument()->SetModifiedFlag(FALSE);
 		break;
@@ -830,22 +829,6 @@ void CLuaView::OnBreakPointList()
 		GetEditor()->Sci(SCI_USERLISTSHOW, eBreakPointList, (int)buff.GetBuffer());
 
 	return;
-/*
-	CMenu mnu;
-	mnu.CreatePopupMenu();
-	GetEditor()->createBreakPointList(mnu);
-
-	RECT rct;
-	GetWindowRect(&rct);
-	rct.left += GetEditor()->PointXFromPosition( GetEditor()->GetSelectionEnd() );
-	rct.top  += GetEditor()->PointYFromPosition( GetEditor()->GetSelectionEnd() );
-
-	::SetForegroundWindow(m_hWnd);	
-	int idx = mnu.TrackPopupMenuEx(TPM_RETURNCMD, rct.left, rct.top, this, NULL); 
-	if( 0 != idx ){
-		GetEditor()->GotoLine(idx);
-	}
-*/	
 }
 
 void CLuaView::OnActivateView(  BOOL bActivate,  CView* pActivateView,  CView* pDeactiveView )
