@@ -169,12 +169,7 @@ void CDetailManager::Unload		()
 }
 
 extern float g_fSCREEN;
-IC	float	CalcSSA(float& distSQ, Fvector& C, FBasicVisual* V)
-{
-	float R	= V->bv_Radius;
-	distSQ	= Device.vCameraPosition.distance_to_sqr(C);
-	return	g_fSCREEN*R*R/distSQ;
-}
+extern float ssaLIMIT;
 
 void CDetailManager::Render		(Fvector& EYE)
 {
@@ -226,8 +221,10 @@ void CDetailManager::Render		(Fvector& EYE)
 								float	scale	= Item.scale*(1-alpha);
 								float	radius	= R*scale;
 								
+								if (g_fSCREEN*radius*radius/dist_sq < ssaLIMIT) continue;
+
 								Item.scale_calculated = scale;
-								vis.push_back(siIT);
+								vis.push_back	(siIT);
 							}
 						}
 					}
