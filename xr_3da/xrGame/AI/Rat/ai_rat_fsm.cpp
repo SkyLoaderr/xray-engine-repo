@@ -10,8 +10,8 @@
 #include "ai_rat.h"
 #include "..\\ai_monsters_misc.h"
 
-#define WRITE_TO_LOG(s) bStopThinking = true;
-/**
+//#define WRITE_TO_LOG(s) bStopThinking = true;
+/**/
 #define WRITE_TO_LOG(s) {\
 	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
 	if (!feel_visible.size())\
@@ -788,9 +788,10 @@ void CAI_Rat::EatCorpse()
 	SRotation sTemp;
 	mk_rotation(tTemp,sTemp);
 
-	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay || !feel_touch.size()) {
+	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
 		m_fSpeed = .1f;
-		if (m_bNoWay || !feel_touch.size()) {
+		if (m_bNoWay) {
+			//m_fSpeed = 0;
 			float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
 			r_torso_target.yaw = r_torso_current.yaw + fAngle;
 			r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
@@ -807,7 +808,7 @@ void CAI_Rat::EatCorpse()
 	m_Enemy.Enemy->clCenter(tTemp);
 	//tTemp = m_Enemy.Enemy->Position();
 	if (tTemp.distance_to(vPosition) <= m_fAttackDistance) {
-		m_fSpeed = m_fSafeSpeed = 0.f;
+		m_fSpeed = 0;
 		if (Level().AI.bfTooSmallAngle(r_torso_target.yaw, sTemp.yaw,m_fAttackAngle)) {
 			if (Level().timeServer() - m_dwLastRangeSearch > m_dwHitInterval) {
 				m_dwLastRangeSearch = Level().timeServer();
