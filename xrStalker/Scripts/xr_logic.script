@@ -130,6 +130,8 @@ function generic_scheme_overrides(npc)
 	
 --]]
 
+module("xr_hit")
+
 function gulag_activate(npc, ini, section, gulag_name, death, combat, actor_dialogs, trade, hit)
 	if npc == nil then
 		utils.abort("gulag_activate: npc is nil")
