@@ -49,8 +49,10 @@ u32 	ExecCommand		(const xr_shortcut& val)
 {
 	SECommand::SESubCommand* CMD = FindCommandByShortcut(val);
     u32 res 			= false;
-    if (CMD)
+    if (CMD){
 	    CMD->parent->command(CMD->index,0,res);
+    	res				= true;
+    }
     return res;
 }
 u32 	ExecCommand		(u32 cmd, u32 p1, u32 p2)
@@ -76,12 +78,33 @@ void	RegisterCommand (u32 cmd, SECommand* cmd_impl)
     }
     CMD	   			= cmd_impl;
 }
-BOOL	LoadCommands(LPCSTR fname)
+BOOL	LoadShortcuts(CInifile* ini)
 {
+    for (u32 cmd_idx=0; cmd_idx<ECommands.size(); cmd_idx++){
+    	SECommand*& CMD		= ECommands[cmd_idx];
+        if (CMD&&CMD->editable){
+		    for (u32 sub_cmd_idx=0; sub_cmd_idx<CMD->sub_commands.size(); sub_cmd_idx++){
+            	SECommand::SESubCommand*& SUB_CMD = CMD->sub_commands[sub_cmd_idx];
+                string128 nm; 	sprintf(nm,"%s.%s",CMD->Name(),SUB_CMD->Desc());
+                if (ini->line_exist("shortcuts",nm))
+                	SUB_CMD->shortcut.hotkey=ini->r_u16("shortcuts",nm);
+            }
+        }
+    }
 	return TRUE;
 }
-BOOL	SaveCommands(LPCSTR fname)
+BOOL	SaveShortcuts(CInifile* ini)
 {
+    for (u32 cmd_idx=0; cmd_idx<ECommands.size(); cmd_idx++){
+    	SECommand*& CMD		= ECommands[cmd_idx];
+        if (CMD&&CMD->editable){
+		    for (u32 sub_cmd_idx=0; sub_cmd_idx<CMD->sub_commands.size(); sub_cmd_idx++){
+            	SECommand::SESubCommand*& SUB_CMD = CMD->sub_commands[sub_cmd_idx];
+                string128 nm; 	sprintf(nm,"%s.%s",CMD->Name(),SUB_CMD->Desc());
+                ini->w_u16		("shortcuts",nm,SUB_CMD->shortcut.hotkey);
+            }
+        }
+    }
 	return TRUE;
 }
 void	ClearCommands()

@@ -107,6 +107,8 @@ ECORE_API void					    RegisterCommand 		(u32 cmd_type, SECommand* cmd_impl);
 ECORE_API void					    EnableReceiveCommands	();
 ECORE_API ECommandVec&  		    GetEditorCommands		();
 ECORE_API SECommand::SESubCommand* 	FindCommandByShortcut	(const xr_shortcut& val);
+ECORE_API BOOL						LoadShortcuts			(CInifile* ini);
+ECORE_API BOOL						SaveShortcuts			(CInifile* ini);
 
 #define BIND_CMD_EVENT_S(a) 							TECommandEvent().bind(a)
 #define BIND_CMD_EVENT_C(a,b)							TECommandEvent().bind(a,&b)
