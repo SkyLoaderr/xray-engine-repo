@@ -7,7 +7,6 @@
 
 #include "EditMesh.h"
 #include "EditObject.h"
-#include "ui_main.h"
 //----------------------------------------------------
 void CEditableMesh::Transform(const Fmatrix& parent){
 	// transform position
@@ -19,26 +18,12 @@ void CEditableMesh::Transform(const Fmatrix& parent){
     UnloadFNormals();
     UnloadPNormals();
     UnloadCForm();
-/*
-    R_ASSERT(m_LoadState&EMESH_LS_FNORMALS);
-    R_ASSERT(m_LoadState&EMESH_LS_PNORMALS);
-    VERIFY(m_FNormals.size());
-    VERIFY(m_PNormals.size());
-    int fn_cnt = m_FNormals.size();
-    for (int fn_i=0; fn_i<fn_cnt; fn_i){
-    	parent.transform_dir(m_FNormals[fn_i]);
-        parent.transform_dir(m_PNormals[fn_i*3+0]);
-        parent.transform_dir(m_PNormals[fn_i*3+1]);
-        parent.transform_dir(m_PNormals[fn_i*3+2]);
-    }
-    // recomended regenerate CForm
-*/
 }
 //----------------------------------------------------
 
 bool CEditableMesh::UpdateAdjacency(){
 	if (m_Faces.empty()) return false;
-    UI.SetStatus("Update Adjacency:");
+    ELog.Msg(mtInformation,"Update Adjacency...");
     m_Adjs.clear();
     m_Adjs.resize(m_Points.size());
 	for (FaceIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++)
@@ -136,7 +121,7 @@ void CEditableMesh::Optimize(){
     m_NewPoints.clear();
     m_NewPoints.reserve(m_Points.size());
 
-    UI.SetStatus("Optimize...");
+    ELog.Msg(mtInformation,"Optimize...");
 
 	INTVec mark_for_del;
 	mark_for_del.clear();
