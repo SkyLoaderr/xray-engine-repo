@@ -626,6 +626,12 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 		E->s_flags.set(M_SPAWN_OBJECT_LOCAL, TRUE);
 	};
 
+	// motions
+	m_current_legs_blend		= 0;
+	m_current_jump_blend		= 0;
+	m_current_legs.invalidate	();
+	m_current_torso.invalidate	();
+	m_current_head.invalidate	();
 	//-------------------------------------
 	// инициализация реестров, используемых актером
 	contacts_registry->registry().init(ID());

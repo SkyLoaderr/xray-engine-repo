@@ -342,12 +342,6 @@ void CActor::Load	(LPCSTR section )
 
 	cam_Set					(eacFirstEye);
 
-	// motions
-	m_current_legs_blend		= 0;
-	m_current_jump_blend		= 0;
-	m_current_legs.invalidate	();
-	m_current_torso.invalidate	();
-	m_current_head.invalidate	();
 	// sheduler
 	shedule.t_min				= shedule.t_max = 1;
 
