@@ -55,7 +55,7 @@ void CAI_Zombie::vfLoadSounds()
 
 void CAI_Zombie::vfLoadAnimations()
 {
-	CKinematics* tpVisualObject = PKinematics(Visual());
+	CSkeletonAnimated* tpVisualObject = PSkeletonAnimated(Visual());
 	
 	// loading normal animations
 	m_tZombieAnimations.tNormal.tGlobal.tpaDeath[0]  = tpVisualObject->ID_Cycle("norm_death_0");
@@ -99,7 +99,7 @@ void CAI_Zombie::vfLoadAnimations()
 
 void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
 {
-	CKinematics* tpVisualObject = PKinematics(Visual());
+	CSkeletonAnimated* tpVisualObject = PSkeletonAnimated(Visual());
 	CMotionDef*	tpGlobalAnimation = 0;
 
 	if (!g_Alive()) {

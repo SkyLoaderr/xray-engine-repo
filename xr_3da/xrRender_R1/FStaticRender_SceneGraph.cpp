@@ -2,7 +2,7 @@
 #include "stdafx.h"
 
 #include "..\fhierrarhyvisual.h"
-#include "..\bodyinstance.h"
+#include "..\SkeletonCustom.h"
 #include "..\fmesh.h"
 #include "..\fcached.h"
 #include "..\flod.h"
@@ -154,7 +154,8 @@ void CRender::add_leafs_Dynamic(IRender_Visual *pVisual)
 			for (; I!=E; I++)	add_leafs_Dynamic	(*I);
 		}
 		return;
-	case MT_SKELETON:
+	case MT_SKELETON_ANIM:
+	case MT_SKELETON_RIGID:
 		{
 			// Add all children, doesn't perform any tests
 			CKinematics * pV = (CKinematics*)pVisual;
@@ -202,7 +203,8 @@ void CRender::add_leafs_Static(IRender_Visual *pVisual)
 			for (; I!=E; I++)	add_leafs_Static (*I);
 		}
 		return;
-	case MT_SKELETON:
+	case MT_SKELETON_ANIM:
+	case MT_SKELETON_RIGID:
 		{
 			// Add all children, doesn't perform any tests
 			CKinematics * pV = (CKinematics*)pVisual;
@@ -284,7 +286,8 @@ BOOL CRender::add_Dynamic(IRender_Visual *pVisual, u32 planes)
 			}
 		}
 		break;
-	case MT_SKELETON:
+	case MT_SKELETON_ANIM:
+	case MT_SKELETON_RIGID:
 		{
 			// Add all children, doesn't perform any tests
 			CKinematics * pV		= (CKinematics*)pVisual;
@@ -352,7 +355,8 @@ void CRender::add_Static(IRender_Visual *pVisual, u32 planes)
 			}
 		}
 		break;
-	case MT_SKELETON:
+	case MT_SKELETON_ANIM:
+	case MT_SKELETON_RIGID:
 		{
 			// Add all children, doesn't perform any tests
 			CKinematics * pV	= (CKinematics*)pVisual;

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "..\fhierrarhyvisual.h"
-#include "..\bodyinstance.h"
+#include "..\SkeletonCustom.h"
 #include "..\fmesh.h"
 
 void CRender::RenderBox			(IRender_Sector* _S, Fbox& BB, int sh)
@@ -29,7 +29,8 @@ void CRender::RenderBox			(IRender_Sector* _S, Fbox& BB, int sh)
 				}
 			}
 			break;
-		case MT_SKELETON:
+			case MT_SKELETON_ANIM:
+			case MT_SKELETON_RIGID:
 			{
 				// Add all children
 				CKinematics * pV = (CKinematics*)V;

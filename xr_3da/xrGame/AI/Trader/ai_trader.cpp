@@ -59,7 +59,7 @@ BOOL CAI_Trader::net_Spawn			(LPVOID DC)
 	//r_torso_current.yaw			= r_torso_target.yaw	= -tpTrader->o_Angle.y;
 	//r_torso_current.pitch			= r_torso_target.pitch	= 0;
 	
-	m_tAnimation					= PKinematics(Visual())->ID_Cycle("trade");
+	m_tAnimation					= PSkeletonAnimated(Visual())->ID_Cycle("trade");
 
 	setVisible						(TRUE);
 	setEnabled						(TRUE);
@@ -97,8 +97,8 @@ void CAI_Trader::SelectAnimation		(const Fvector& _view, const Fvector& _move, f
 {
 	if (g_Alive()) 
 		if (!m_bPlaying) {
-				PKinematics(Visual())->PlayCycle	(m_tAnimation,TRUE,AnimCallback,this);
-				m_bPlaying	= true;
+			PSkeletonAnimated(Visual())->PlayCycle	(m_tAnimation,TRUE,AnimCallback,this);
+			m_bPlaying	= true;
 		}
 }
 
@@ -237,7 +237,7 @@ void TraderScriptCallBack(CBlend* B)
 bool CAI_Trader::bfScriptAnimation()
 {
 	if (GetScriptControl() && GetCurrentAction() && !GetCurrentAction()->m_tAnimationAction.m_bCompleted && xr_strlen(GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay)) {
-		CKinematics			&tVisualObject = *(PKinematics(Visual()));
+		CSkeletonAnimated	&tVisualObject = *(PSkeletonAnimated(Visual()));
 		CMotionDef			*l_tpMotionDef = tVisualObject.ID_Cycle_Safe(*GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
 		if (m_tpScriptAnimation != l_tpMotionDef)
 			tVisualObject.PlayCycle(m_tpScriptAnimation = l_tpMotionDef,TRUE,TraderScriptCallBack,this);
