@@ -18,7 +18,6 @@ class ImplicitDeflector
 public:
 	b_BuildTexture*			texture;
 	lm_layer				lmap;
-	lm_layer				temp;
 	vecFace					faces;
 	
 	ImplicitDeflector() : texture(0)
@@ -32,26 +31,18 @@ public:
 	void			Allocate	()
 	{
 		lmap.create	(Width(),Height());
-		temp.create	(Width(),Height());
 	}
 	void			Deallocate	()
 	{
-		temp.destroy();
 		lmap.destroy();
 	}
 	
 	u32		Width()	{ return texture->dwWidth; }
 	u32		Height(){ return texture->dwHeight; }
 	
-	u32&	Texel	(u32 x, u32 y)	
-	{ 
-		return texture->pSurface[y*Width()+x];
-	}
-	
-	base_color& Lumel(u32 x, u32 y)	
-	{ 
-		return lmap[y*Width()+x];
-	}
+	u32&		Texel	(u32 x, u32 y)			{ return texture->pSurface[y*Width()+x]; }
+	base_color& Lumel	(u32 x, u32 y)			{ return lmap.surface[y*Width()+x];	}
+	u8&			Marker	(u32 x, u32 y)			{ return lmap.marker [y*Width()+x];	}
 	
 	void	Bounds	(u32 ID, Fbox2& dest)
 	{
@@ -155,14 +146,10 @@ public:
 				if (Fcount) {
 					// Calculate lighting amount
 					C.scale				(Fcount);
-					
-					base_color& L	= defl.Lumel(U,V);
-					L.color.x			= Lumel.r;
-					L.color.y			= Lumel.g;
-					L.color.z			= Lumel.b;
-					L.marker			= 255;
+					defl.Lumel(U,V)		= C;
+					defl.Marker(U,V)	= 255;
 				} else {
-					defl.Lumel	(U,V).marker=0;
+					defl.Marker	(U,V)	= 0;
 				}
 			}
 			thProgress	= float(V - y_start) / float(y_end-y_start);
@@ -226,14 +213,14 @@ void CBuild::ImplicitLighting()
 
 		// Start threads
 		CThreadManager			tmanager;
-		u32	stride			= defl.Height()/NUM_THREADS;
+		u32	stride				= defl.Height()/NUM_THREADS;
 		for (u32 thID=0; thID<NUM_THREADS; thID++)
 			tmanager.start		(xr_new<ImplicitThread> (thID,&defl,thID*stride,thID*stride+stride));
 		tmanager.wait			();
 
 		// Expand
 		Status	("Processing lightmap...");
-		for (u32 ref=254; ref>0; ref--)	if (!defl.ApplyBorders(ref)) break;
+		for (u32 ref=254; ref>0; ref--)	if (!ApplyBorders(defl.lmap,ref)) break;
 
 		Status	("Mixing lighting with texture...");
 		u32*	markup = (u32*)(xr_malloc(defl.Height()*defl.Width()*4));
