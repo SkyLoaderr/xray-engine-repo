@@ -224,37 +224,6 @@ void CLevel::IR_OnKeyboardPress(int key)
 		}
 		break;
 	}
-
-
-//////////////////////////////////////////////////////////////////////////
-//	TEST	
-//////////////////////////////////////////////////////////////////////////
-#ifdef DEBUG
-	
-	CObject			*obj		= Level().Objects.FindObjectByName("monster");
-	if (obj) {
-		CAI_Bloodsucker		*monster	= dynamic_cast<CAI_Bloodsucker *>(obj);
-
-		if (monster) {
-			switch (key) {
-			case DIK_1:
-				monster->set_manual_switch(true);
-				break;
-			case DIK_2:
-				monster->set_manual_switch(false);
-				break;
-			case DIK_9:
-				monster->manual_activate();
-				break;
-			case DIK_0:
-				monster->manual_deactivate();
-				break;
-			}
-		}
-	}
-
-#endif
-
 }
 
 void CLevel::IR_OnKeyboardRelease(int key)
