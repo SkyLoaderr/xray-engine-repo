@@ -7,6 +7,7 @@
 #include "fdemoplay.h"
 #include "xr_ioconsole.h"
 #include "motion.h"
+#include "Render.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -19,7 +20,7 @@ CDemoPlay::CDemoPlay(const char *name, float ms, u32 cycles, float life_time) : 
 	if(g_bBenchmark)	Console->Execute	("hud_draw 0");
 
 	fSpeed				= ms;
-	dwCyclesLeft		= cycles;
+	dwCyclesLeft		= cycles?1:cycles;
 
 	m_pMotion			= 0;
 	m_MParam			= 0;
@@ -194,8 +195,8 @@ BOOL CDemoPlay::Process(Fvector &P, Fvector &D, Fvector &N, float& fFov, float& 
 		
 		if (frame>=m_count)
 		{
-			if (0==dwCyclesLeft)	return FALSE;
 			dwCyclesLeft			--	;
+			if (0==dwCyclesLeft)	return FALSE;
 			fStartTime				= 0	;
 			// just continue
 			// stat_Stop			();
