@@ -141,8 +141,8 @@ function loadJob(sj, gname, type)
 			prior = 6, state = {1},
 			squad = 0, group = 0,
 			in_rest = "", out_rest = gname.."_zone",
-			path_walk = gname.."_alarm_walk",
-			path_look = gname.."_alarm_look" }
+			path_walk = gname.."_alarm_center_walk",
+			path_look = gname.."_alarm_center_look" }
 		table.insert(sj, t)			
 	end
 end
