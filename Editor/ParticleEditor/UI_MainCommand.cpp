@@ -31,7 +31,10 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 		//----------------
         if (UI.OnCreate()){
             PSLib.OnCreate	();
-            Tools.OnCreate	();
+            if (!Tools.OnCreate()){
+                bRes=false;
+            	break;
+            }
             Lib.OnCreate	();
 
 		    Command			(COMMAND_CLEAR);

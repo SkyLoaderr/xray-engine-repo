@@ -56,13 +56,13 @@ bool CShaderTools::OnCreate(){
 	AnsiString sh_fn = "shaders.xr"; FS.m_GameRoot.Update(sh_fn);
     string256 locker="";
 	if (FS.IsFileLocking(0,sh_fn.c_str(),false,locker)){
-		ELog.DlgMsg(mtError,"Access denied. Shaders currently locked by user '%s'.\nEditor aborted.",locker);
+		ELog.DlgMsg(mtError,"Access denied. File '%s' currently locked by user '%s'.\nEditor aborted.",sh_fn.c_str(),locker);
     	return false;
     }
 	// shader test locking
 	AnsiString lc_fn = "shaders_xrlc.xr"; FS.m_GameRoot.Update(lc_fn);
 	if (FS.IsFileLocking(0,lc_fn.c_str(),false,locker)){
-		ELog.DlgMsg(mtError,"Access denied. Compiler shaders currently locked by user '%s'.\nEditor aborted.",locker);
+		ELog.DlgMsg(mtError,"Access denied. File '%s' currently locked by user '%s'.\nEditor aborted.",lc_fn.c_str(),locker);
     	return false;
     }
 	//
@@ -73,6 +73,8 @@ bool CShaderTools::OnCreate(){
 	// lock
     FS.LockFile(0,sh_fn.c_str());
     FS.LockFile(0,lc_fn.c_str());
+
+    return true;
 }
 
 void CShaderTools::OnDestroy(){

@@ -37,7 +37,15 @@ CParticleTools::~CParticleTools()
 }
 //---------------------------------------------------------------------------
 
-void CParticleTools::OnCreate(){
+bool CParticleTools::OnCreate(){
+	// shader test locking
+	AnsiString fn = "particles.xr"; FS.m_GameRoot.Update(fn);
+    string256 locker="";
+	if (FS.IsFileLocking(0,fn.c_str(),false,locker)){
+		ELog.DlgMsg(mtError,"Access denied. File '%s' currently locked by user '%s'.\nEditor aborted.",fn.c_str(),locker);
+    	return false;
+    }
+
     Device.seqDevCreate.Add(this);
     Device.seqDevDestroy.Add(this);
     m_PSProps = new TfrmPropertiesPSDef(fraLeftBar->paPSProps);
@@ -51,11 +59,18 @@ void CParticleTools::OnCreate(){
     Load();
 	m_PSProps->SetCurrent(0);
     ChangeAction(eaSelect);
+
+	// lock
+    FS.LockFile(0,fn.c_str());
+    return true;
 }
 
 void CParticleTools::OnDestroy(){
 	VERIFY(m_bReady);
     m_bReady			= false;
+	// unlock
+    FS.UnlockFile(&FS.m_GameRoot,"particles.xr");
+
 	Lib.RemoveEditObject(m_EditObject);
 	_DELETE(m_TestObject);
     m_LibPS				= 0;
@@ -188,7 +203,9 @@ void CParticleTools::Save()
 	VERIFY(m_bReady);
     ApplyChanges();
 	m_bModified = false;
+    FS.UnlockFile(&FS.m_GameRoot,"particles.xr",false);
 	PSLib.Save();
+    FS.LockFile(&FS.m_GameRoot,"particles.xr",false);
 }
 
 void CParticleTools::Reload()

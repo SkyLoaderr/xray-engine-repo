@@ -55,7 +55,7 @@ public:
     void				Render				();
     void				Update				();
 
-    void				OnCreate			();
+    bool				OnCreate			();
     void				OnDestroy			();
 
     bool				IfModified			();
