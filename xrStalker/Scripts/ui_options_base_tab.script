@@ -29,6 +29,12 @@ function options_base_tab:InitControls(caption, x_pos, y_pos)
 	
 	-- rect of tab
 	self.main_rect = {x = 0, y = 0, width = 300, height = 300}
+	if x_pos ~= nil then
+		self.main_rect.x = x_pos
+	end
+	if y_pos ~= nil then
+		self.main_rect.y = y_pos
+	end
 	-----------------------------------------------------------------
 	self.left_align_x   = self.indent
 	self.right_align_x  = self.main_rect.width - self.indent
@@ -40,12 +46,7 @@ function options_base_tab:InitControls(caption, x_pos, y_pos)
 					  y = 0, 
 					  width = 135, 
 					  height = 40 }
-	if x_pos ~= nil then
-		self.btn_rect.x = x_pos
-	end
-	if y_pos ~= nil then
-		self.btn_rect.y = y_pos
-	end
+	
 	
 	self.btn_rect.x = (self.main_rect.width - self.btn_rect.width)/2	
 	-- INIT DATA>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
