@@ -1,5 +1,5 @@
 #include "stdafx.h" 
-#include "../dCylinder/dCylinder.h"
+#include "dCylinder/dCylinder.h"
 dCollideCylRay(dxGeom *o1, dxGeom *o2, int flags,dContactGeom *contact, int skip);
 //#pragma warning(disable:4995)
 //#pragma warning(disable:4267)
@@ -9,7 +9,7 @@ dCollideCylRay(dxGeom *o1, dxGeom *o2, int flags,dContactGeom *contact, int skip
 
 #pragma warning(disable:4995)
 #pragma warning(disable:4267)
-#include "../ode/src/collision_std.h"
+#include "ode/src/collision_std.h"
 #pragma warning(default:4995)
 #pragma warning(default:4267)
 struct dxRayMotions
