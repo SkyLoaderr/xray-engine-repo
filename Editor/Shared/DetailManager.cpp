@@ -336,7 +336,7 @@ void CDetailManager::Render		(Fvector& EYE)
 					mXform.mul_43			(Instance.mRotY,mScale);
 					mXform.translate_over	(Instance.P);
 				}
-				Object.Transfer			(mXform, vDest, Instance.C,iDest,iOffset);
+				Object.Transfer			(mXform, vDest, Instance.C, iDest, iOffset);
 				vDest					+=	vCount_Object;
 				iDest					+=	iCount_Object;
 				iOffset					+=	vCount_Object;
