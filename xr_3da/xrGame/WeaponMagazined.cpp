@@ -562,6 +562,7 @@ void CWeaponMagazined::OnAnimationEnd()
 		case eHiding:	SwitchState(eHidden);   break;	// End of Hide
 		case eShowing:	SwitchState(eIdle);		break;	// End of Show
 		case eIdle:		switch2_Idle();			break;  // Keep showing idle
+
 	}
 }
 void CWeaponMagazined::switch2_Idle	()

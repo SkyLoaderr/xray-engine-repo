@@ -681,9 +681,9 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 				if(IsPending()) return false;
 
 
-	            if(flags&CMD_START) 
+				if(flags&CMD_START) {
 					FireStart();
-				else 
+				}else 
 					FireEnd();
 			} 
 			return true;
