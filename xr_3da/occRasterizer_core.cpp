@@ -218,7 +218,7 @@ IC void i_section	(int Sect, BOOL bMiddle)
 		
 		// check 'endY' for out-of-triangle 
 		int test = maxPixel(currentC[1]);
-		if (endY>=test) endY --;
+		if (endY   >=test) endY --;
 		if (startY > endY) return;
 
 		// Find the edge differences
@@ -233,7 +233,7 @@ IC void i_section	(int Sect, BOOL bMiddle)
 		
 		// check 'startY' for out-of-triangle 
 		int test = minPixel(currentA[1]);
-		if (startY<test) startY ++;
+		if (startY < test) startY ++;
 		if (startY > endY) return;
 
 		// Find the edge differences
