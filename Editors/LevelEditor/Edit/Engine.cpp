@@ -6,7 +6,6 @@
 #pragma hdrstop
 
 #include "Engine.h"
-#include "xr_ini.h"
 
 xrDispatchTable	PSGP;
 CEngine	Engine;

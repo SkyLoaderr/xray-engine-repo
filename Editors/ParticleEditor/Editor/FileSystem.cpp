@@ -5,8 +5,6 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "xr_trims.h"
-#include "xr_ini.h"
 #include "cderr.h"
 
 //----------------------------------------------------
@@ -508,7 +506,7 @@ void CFileSystem::WriteAccessLog(LPSTR fn, LPSTR start_msg)
 void CFileSystem::RegisterAccess(LPSTR fn, LPSTR start_msg, bool bLog)
 {
     CInifile*	ini = CInifile::Create(m_LastAccessFN,false);
-	ini->WriteString("last_access",fn,Core.CompName);
+	ini->w_string("last_access",fn,Core.CompName);
     CInifile::Destroy(ini);
     if (bLog) 	WriteAccessLog(fn,start_msg);
 }
@@ -570,7 +568,7 @@ LPCSTR CFileSystem::GetLockOwner(FSPath *initial, LPSTR fname)
 
     CInifile*	ini = CInifile::Create(m_LastAccessFN,true);
 	static string256 comp;
-    strcpy(comp,ini->LineExists("last_access",fn)?ini->ReadSTRING("last_access",fn):"unknown");
+    strcpy(comp,ini->line_exist("last_access",fn)?ini->r_string("last_access",fn):"unknown");
     CInifile::Destroy(ini);
 
 	return comp;

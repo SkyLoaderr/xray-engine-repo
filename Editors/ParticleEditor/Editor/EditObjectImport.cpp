@@ -11,7 +11,6 @@
 #include "EditMesh.h"
 //#include "Texture.h"
 //#include "Shader.h"
-#include "xr_trims.h"
 
 extern "C" {
 #include "lwo2.h"

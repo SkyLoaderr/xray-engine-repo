@@ -7,7 +7,6 @@
 
 #include "BodyInstance.h"
 #include "fmesh.h"
-#include "xr_ini.h"
 #include "motion.h"
 
 int			psSkeletonUpdate	= 32;
@@ -31,17 +30,17 @@ void CMotionDef::Load(CKinematics* P, CInifile* INI, LPCSTR  section, BOOL bCycl
 	int	b = -1;
 	if (bCycle)	{
 		// partition
-		LPCSTR  B	= INI->ReadSTRING	(section,"part");
+		LPCSTR  B	= INI->r_string	(section,"part");
 		b			= P->LL_PartID		(B);
 	} else {
 		// bone
-		LPCSTR  B	= INI->ReadSTRING	(section,"bone");
+		LPCSTR  B	= INI->r_string	(section,"bone");
 		b			= P->LL_BoneID		(B); 
 		if (b<0) b	= P->LL_BoneRoot	();
 	}
 
 	// motion
-	LPCSTR  M = INI->ReadSTRING	(section,"motion");
+	LPCSTR  M = INI->r_string	(section,"motion");
 	_strlwr((char*)M);
 	int		m = P->LL_MotionID(M);
 	if (m<0) Debug.fatal("Can't find motion '%s'",M);
@@ -50,11 +49,11 @@ void CMotionDef::Load(CKinematics* P, CInifile* INI, LPCSTR  section, BOOL bCycl
 	// params
 	bone_or_part= short	(b);
 	motion		= WORD	(m);
-	speed		= Quantize(INI->ReadFLOAT(section,"speed"));
-	power		= Quantize(INI->ReadFLOAT(section,"power"));
-	accrue		= Quantize(INI->ReadFLOAT(section,"accrue"));
-	falloff		= Quantize(INI->ReadFLOAT(section,"falloff"));
-	flags		= (INI->ReadBOOL(section,"stop@end")?esmStopAtEnd:0);
+	speed		= Quantize(INI->r_float(section,"speed"));
+	power		= Quantize(INI->r_float(section,"power"));
+	accrue		= Quantize(INI->r_float(section,"accrue"));
+	falloff		= Quantize(INI->r_float(section,"falloff"));
+	flags		= (INI->r_bool(section,"stop@end")?esmStopAtEnd:0);
 
 	if (bCycle && (falloff>=accrue)) falloff = accrue-1;
 }
@@ -691,7 +690,7 @@ void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
             CInifile::SectIt I;
 
             // partitions
-            CInifile::Sect& S = DEF.ReadSection("partition");
+            CInifile::Sect& S = DEF.r_section("partition");
             int pid = 0;
             for (I=S.begin(); I!=S.end(); I++,pid++)
             {
@@ -699,7 +698,7 @@ void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
                 CPartDef&	PART		= (*partition)[pid];
                 LPSTR	N				= _strlwr(xr_strdup(I->first));
                 PART.Name				= N;
-                CInifile::Sect&		P	= DEF.ReadSection(N);
+                CInifile::Sect&		P	= DEF.r_section(N);
                 CInifile::SectIt	B	= P.begin();
                 for (; B!=P.end(); B++)
                 {
@@ -711,7 +710,7 @@ void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 
             // cycles
             {
-                CInifile::Sect& S = DEF.ReadSection("cycle");
+                CInifile::Sect& S = DEF.r_section("cycle");
                 for (I=S.begin(); I!=S.end(); I++)
                 {
                     CMotionDef	D;
@@ -722,7 +721,7 @@ void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 
             // FXes
             {
-                CInifile::Sect& F = DEF.ReadSection("fx");
+                CInifile::Sect& F = DEF.r_section("fx");
                 for (I=F.begin(); I!=F.end(); I++)
                 {
                     CMotionDef	D;

@@ -2,7 +2,6 @@
 #pragma hdrstop
 
 #include "blenders\blender.h"
-#include "xr_ini.h"
 
 
 void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
@@ -235,8 +234,8 @@ void	CShaderManager::OnDeviceCreate	(IReader* FS)
 	if (Engine.FS.Exist(Iname))
 	{
 		CInifile	ini		(Iname);
-        if (ini.SectionExists("association")){
-            CInifile::Sect& 	data = ini.ReadSection("association");
+        if (ini.section_exist("association")){
+            CInifile::Sect& 	data = ini.r_section("association");
             for (CInifile::SectIt I=data.begin(); I!=data.end(); I++)
             {
                 texture_detail	D;

@@ -7,7 +7,6 @@
 #include "shader.h"
 #include "shader_xrlc.h"
 #include "texture.h"
-#include "xr_trims.h"
 #include "Library.h"
 #include "EditObject.h"
 #include "LevelGameDef.h"
@@ -16,7 +15,6 @@
 #include "LightAnimLibrary.h"
 #include "ImageManager.h"
 #include "SoundManager.h"
-#include "xr_ini.h"
 #include "ui_main.h"
 #include "PSLibrary.h"
 #include "GameMtlLib.h"
@@ -109,10 +107,10 @@ void __fastcall TfrmChoseItem::FillEntity()
     form->Caption					= "Select Entity";
     AppendItem						(AIPOINT_CHOOSE_NAME);
     AppendItem						(RPOINT_CHOOSE_NAME);
-    CInifile::Root& data 			= pSettings->Sections();
+    CInifile::Root& data 			= pSettings->sections();
     for (CInifile::RootIt it=data.begin(); it!=data.end(); it++){
     	LPCSTR val;
-    	if (it->LineExists("$spawn",&val))
+    	if (it->line_exist("$spawn",&val))
 			if (CInifile::IsBOOL(val))	AppendItem(it->Name);
     }
 }
@@ -443,12 +441,13 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
         if (Mode==smTexture){
 	        AnsiString nm;
         	FHelper.MakeName		(Item,0,nm,false);
-    	    m_Thm 					= xr_new<EImageThumbnail>(nm.c_str(),EImageThumbnail::EITTexture);
-	        if (!m_Thm->Valid())	pbImage->Repaint();
+            if (nm!=NONE_CAPTION)	m_Thm	= xr_new<EImageThumbnail>(nm.c_str(),EImageThumbnail::EITTexture);
+	        if (!m_Thm||!m_Thm->Valid()) pbImage->Repaint();
             else	 				pbImagePaint(Sender);
 	        lbItemName->Caption 	= "\""+ChangeFileExt(Item->Text,"")+"\"";
     	    lbFileName->Caption 	= "\""+Item->Text+"\"";
-			AnsiString temp; 		temp.sprintf("%d x %d x %s",m_Thm->_Width(),m_Thm->_Height(),m_Thm->_Alpha()?"32b":"24b");
+            AnsiString temp; 		
+            if (m_Thm) temp.sprintf	("%d x %d x %s",m_Thm->_Width(),m_Thm->_Height(),m_Thm->_Alpha()?"32b":"24b");
             lbInfo->Caption			= temp;
         }else if (Mode==smObject){
 	        AnsiString nm,fn;

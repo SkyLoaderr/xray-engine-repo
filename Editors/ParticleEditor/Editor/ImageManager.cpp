@@ -9,7 +9,6 @@
 #include "Image.h"
 #include "ui_main.h"
 #include "EditObject.h"
-#include "xr_ini.h"
 CImageManager ImageManager;
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -251,9 +250,9 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
                 if (FMT.flags.is(STextureParams::flHasDetailTexture)){
                     AnsiString det;                          
                     det.sprintf("%s, %f",FMT.detail_name,FMT.detail_scale);
-                    ltx_ini->WriteString("association", base_name, det.c_str());
+                    ltx_ini->w_string("association", base_name, det.c_str());
                 }else{
-                    ltx_ini->RemoveLine("association", base_name);
+                    ltx_ini->remove_line("association", base_name);
                 }
             }else{
 		    	ELog.DlgMsg(mtError,"Can't make game texture '%s'.\nInvalid size (%dx%d).",fn.c_str(),w,h);
@@ -609,7 +608,7 @@ BOOL CImageManager::RemoveTexture(LPCSTR fname)
         AnsiString ltx_nm 			= "textures.ltx";
         Engine.FS.m_GameTextures.Update(ltx_nm);
         CInifile* ltx_ini 			= xr_new<CInifile>(ltx_nm.c_str(), FALSE, TRUE, TRUE);
-		ltx_ini->RemoveLine			("association", base_name.c_str());
+		ltx_ini->remove_line		("association", base_name.c_str());
         xr_delete					(ltx_ini);
         return TRUE;
     }

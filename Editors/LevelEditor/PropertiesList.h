@@ -36,6 +36,8 @@ __published:	// IDE-managed Components
 	TMenuItem *ExpandAll1;
 	TMenuItem *N1;
 	TMenuItem *CollapseAll1;
+	TMenuItem *N2;
+	TMenuItem *miDrawThumbnails;
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall tvPropertiesClick(TObject *Sender);
 	void __fastcall tvPropertiesItemDraw(TObject *Sender, TElTreeItem *Item,
@@ -62,6 +64,7 @@ __published:	// IDE-managed Components
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
 	void __fastcall CollapseAll1Click(TObject *Sender);
 	void __fastcall ExpandAll1Click(TObject *Sender);
+	void __fastcall miDrawThumbnailsClick(TObject *Sender);
 private:	// User declarations
     void __fastcall PMItemClick		(TObject *Sender);
 	void __fastcall WaveFormClick	(TElTreeItem* item);
@@ -102,6 +105,8 @@ private:	// User declarations
     void 				ApplyEditControl();
     void 				CancelEditControl();
 
+	void 				OutBOOL(BOOL val, TCanvas* Surface, const TRect& R);
+	void 				OutText(LPCSTR text, TCanvas* Surface, TRect R, TGraphic* g=0, bool bArrow=false);
 public:		// User declarations
 	__fastcall TProperties		        	(TComponent* Owner);
 	static TProperties* CreateForm			(TWinControl* parent=0, TAlign align=alNone, TOnModifiedEvent modif=0, TOnItemFocused focused=0, TOnCloseEvent close=0);
@@ -113,7 +118,7 @@ public:		// User declarations
     void __fastcall ClearProperties			();
     bool __fastcall IsModified				(){return bModified;}
     void __fastcall ResetModified			(){bModified = false;}
-    void __fastcall RefreshForm				(){tvProperties->Repaint();}
+    void __fastcall RefreshForm				();
 
     void __fastcall AssignItems				(PropItemVec& values, bool full_expand, const AnsiString& title="Properties");
     void __fastcall ResetItems				();
@@ -134,15 +139,17 @@ public:		// User declarations
     	tvProperties->HeaderSections->Item[0]->Width=c0;
 	    tvProperties->HeaderSections->Item[1]->Width=c1;
 	}
-    void __fastcall SaveColumnWidth			(TFormStorage* fs)
+    void __fastcall SaveParams			(TFormStorage* fs)
     {
 		fs->WriteInteger(AnsiString().sprintf("%s_column0_width",Name.c_str()),tvProperties->HeaderSections->Item[0]->Width);
 		fs->WriteInteger(AnsiString().sprintf("%s_column1_width",Name.c_str()),tvProperties->HeaderSections->Item[1]->Width);
+		fs->WriteInteger(AnsiString().sprintf("%s_draw_thm",Name.c_str()),miDrawThumbnails->Checked);
     }
-    void __fastcall RestoreColumnWidth		(TFormStorage* fs)
+    void __fastcall RestoreParams		(TFormStorage* fs)
     {
-		tvProperties->HeaderSections->Item[0]->Width = fs->ReadInteger(AnsiString().sprintf("%s_column0_width",Name.c_str()),tvProperties->HeaderSections->Item[0]->Width);
-		tvProperties->HeaderSections->Item[1]->Width = fs->ReadInteger(AnsiString().sprintf("%s_column1_width",Name.c_str()),tvProperties->HeaderSections->Item[1]->Width);
+		tvProperties->HeaderSections->Item[0]->Width 	= fs->ReadInteger(AnsiString().sprintf("%s_column0_width",Name.c_str()),tvProperties->HeaderSections->Item[0]->Width);
+		tvProperties->HeaderSections->Item[1]->Width 	= fs->ReadInteger(AnsiString().sprintf("%s_column1_width",Name.c_str()),tvProperties->HeaderSections->Item[1]->Width);
+        miDrawThumbnails->Checked						= fs->ReadInteger(AnsiString().sprintf("%s_draw_thm",Name.c_str()),false);
     }
 
     void 			IsUpdating				(bool bVal)

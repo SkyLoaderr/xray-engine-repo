@@ -6,19 +6,20 @@
 
 //---------------------------------------------------------------------------
 class CPropHelper{
-	IC PropItem*		CreateItem		(PropItemVec& items, LPCSTR key, EPropType type)
+	IC PropItem*		CreateItem		(PropItemVec& items, LPCSTR key, EPropType type, u32 item_flags=0)
     {
     	PropItem* item	= FindItem(items,key,type);
         if (!item){
         	item		= xr_new<PropItem>	(type);
             item->SetName(key);
+	        item->m_Flags.set(item_flags,TRUE);
             items.push_back(item);
         }
         return			item;
     }
-    IC PropValue*		AppendValue		(PropItemVec& items, LPCSTR key, PropValue* val, EPropType type)
+    IC PropValue*		AppendValue		(PropItemVec& items, LPCSTR key, PropValue* val, EPropType type, u32 item_flags=0)
     {
-    	PropItem* item	= CreateItem(items,key,type);
+    	PropItem* item	= CreateItem(items,key,type,item_flags);
         val->m_Owner	= item;
         item->AppendValue(val);
         return val;
@@ -198,11 +199,11 @@ public:
     }
 	IC TextValue* 	   	CreateTexture	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
     {
-    	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_TEXTURE);
+    	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_TEXTURE,PropItem::flDrawThumbnail);
     }
 	IC TextValue* 	  	CreateTexture2	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
     {
-    	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_TEXTURE2);
+    	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_TEXTURE2,PropItem::flDrawThumbnail);
     }
 	IC ATextValue* 		CreateAEShader	(PropItemVec& items, LPCSTR key, AnsiString* val)
     {
@@ -218,7 +219,7 @@ public:
     }
 	IC ATextValue* 		CreateATexture	(PropItemVec& items, LPCSTR key, AnsiString* val)
     {
-    	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_TEXTURE);
+    	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_TEXTURE,PropItem::flDrawThumbnail);
     }
 	IC TextValue*	 	CreateLightAnim	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
     {
@@ -264,7 +265,9 @@ public:
     {
     	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_GAMEMTL);
     }
+	void 				DrawThumbnail	(TCanvas *Surface, TRect &R, LPCSTR fname);
 };
+//---------------------------------------------------------------------------
 extern CPropHelper PHelper;
 //---------------------------------------------------------------------------
 #endif

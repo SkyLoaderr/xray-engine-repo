@@ -2,7 +2,6 @@
 #pragma hdrstop
 
 #include "FolderLib.h"
-#include "xr_trims.h"
 #include "PropertiesListHelper.h"
 
 //---------------------------------------------------------------------------

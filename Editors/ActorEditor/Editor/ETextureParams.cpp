@@ -2,7 +2,6 @@
 #pragma hdrstop
 
 #include "ETextureParams.h"
-#include "xr_tokens.h"
 
 xr_token					tparam_token							[ ]={
 	{ "Box",				STextureParams::dMIPFilterBox				},

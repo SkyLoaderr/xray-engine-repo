@@ -15,7 +15,7 @@ public:
 	{
 		GetCursorPos((LPPOINT)&p);
 	}
-	IC void	iGetMousePosReal			(HWND hwnd, Ivector2 &p)
+	IC void	iGetMousePosReal			(HANDLE hwnd, Ivector2 &p)
 	{
 		iGetMousePosScreen(p);
 		if (hwnd) ScreenToClient(hwnd,(LPPOINT)&p);

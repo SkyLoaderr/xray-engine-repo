@@ -4,7 +4,6 @@
 #include "sh_texture.h"
 #include "texture.h"
 #include "xr_avi.h"
-#include "xr_trims.h"
 
 #define		PRIORITY_HIGH	12
 #define		PRIORITY_NORMAL	8

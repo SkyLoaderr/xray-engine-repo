@@ -8,9 +8,7 @@
 #include "ImageManager.h"
 #include "PropertiesList.h"
 #include "FolderLib.h"
-#include "xr_tokens.h"
 #include "ui_main.h"
-#include "xr_ini.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ElTree"
@@ -286,13 +284,13 @@ void __fastcall TfrmImageLib::tvItemsKeyPress(TObject *Sender, char &Key)
 
 void __fastcall TfrmImageLib::fsStorageRestorePlacement(TObject *Sender)
 {
-	ImageProps->RestoreColumnWidth(fsStorage);
+	ImageProps->RestoreParams(fsStorage);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmImageLib::fsStorageSavePlacement(TObject *Sender)
 {
-	ImageProps->SaveColumnWidth(fsStorage);
+	ImageProps->SaveParams(fsStorage);
 }
 //---------------------------------------------------------------------------
 
@@ -363,7 +361,7 @@ void __fastcall TfrmImageLib::ebExportAssociationClick(TObject *Sender)
             det.sprintf("%s, %f",m_Thm->_Format().detail_name,m_Thm->_Format().detail_scale);
             strcpy(src,it->first.c_str());
 	    	if (strext(src)) *strext(src)=0;
-	    	ini->WriteString("association", src, det.c_str());
+	    	ini->w_string("association", src, det.c_str());
         }
         xr_delete(m_Thm);
 		if (UI.NeedAbort()){ bRes=false; break; }

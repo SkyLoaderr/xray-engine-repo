@@ -7,9 +7,7 @@
 #include "main.h"
 #include "xr_input.h"
 #include "UI_Tools.h"
-#include "xr_trims.h"
 #include "bottombar.h"
-#include "xr_ini.h"
 #ifdef _LEVEL_EDITOR
  	#include "cursor3d.h"
 #endif

@@ -8,7 +8,6 @@
 #include "bone.h"
 #include "ExportSkeleton.h"
 #include "ExportObjectOGF.h"
-#include "xr_trims.h"
 #include "d3dutils.h"
 #include "ui_main.h"
 #include "render.h"
@@ -347,11 +346,11 @@ void CEditableObject::FillPropSurf(LPCSTR pref, PropItemVec& items)
         AnsiString nm 			= AnsiString(pref)+AnsiString("Surfaces\\")+SURF->_Name();
         AnsiString f_cnt		= GetSurfFaceCount(SURF->_Name());
         PropValue* V=0;
-		V=PHelper.CreateATexture(items, AnsiString(nm+"\\Texture").c_str(), 	&SURF->m_Texture);					V->OnChangeEvent = OnChangeShader;
-        V=PHelper.CreateAEShader(items, AnsiString(nm+"\\Shader").c_str(), 		&SURF->m_ShaderName);				V->OnChangeEvent = OnChangeShader;
+		V=PHelper.CreateATexture(items, AnsiString(nm+"\\Texture").c_str(), 	&SURF->m_Texture);					V->SetEvents(0,0,OnChangeShader);
+        V=PHelper.CreateAEShader(items, AnsiString(nm+"\\Shader").c_str(), 		&SURF->m_ShaderName);				V->SetEvents(0,0,OnChangeShader);
         PHelper.CreateACShader	(items, AnsiString(nm+"\\Compile").c_str(), 	&SURF->m_ShaderXRLCName);
-        V=PHelper.CreateAGameMtl(items, AnsiString(nm+"\\Game Mtl").c_str(),	&SURF->m_GameMtlName);				V->OnChangeEvent = SURF->OnChangeGameMtl;
-        V=PHelper.CreateFlag32	(items, AnsiString(nm+"\\2 Sided").c_str(), 	&SURF->m_Flags, CSurface::sf2Sided);V->OnChangeEvent = OnChangeShader;
+        V=PHelper.CreateAGameMtl(items, AnsiString(nm+"\\Game Mtl").c_str(),	&SURF->m_GameMtlName);				V->SetEvents(0,0,SURF->OnChangeGameMtl);
+        V=PHelper.CreateFlag32	(items, AnsiString(nm+"\\2 Sided").c_str(), 	&SURF->m_Flags, CSurface::sf2Sided);V->SetEvents(0,0,OnChangeShader);
         PHelper.CreateCaption	(items, AnsiString(nm+"\\Face count").c_str(),  f_cnt.c_str());
     }
 }
@@ -365,13 +364,11 @@ void CEditableObject::FillBasicProps(LPCSTR pref, PropItemVec& items)
     PHelper.CreateFlag32	(items,	PHelper.PrepareKey(pref,"Flags\\HOM"),			&m_Flags,		CEditableObject::eoHOM);
     PHelper.CreateFlag32	(items,	PHelper.PrepareKey(pref,"Flags\\Use LOD"),		&m_Flags,		CEditableObject::eoUsingLOD);
     PHelper.CreateFlag32	(items,	PHelper.PrepareKey(pref,"Flags\\Multiple Usage"),&m_Flags,		CEditableObject::eoMultipleUsage);
-    V=PHelper.CreateVector	(items, PHelper.PrepareKey(pref,"Transform\\Position"),	&t_vPosition,	-10000,	10000,0.01,2); 	V->OnChangeEvent = OnChangeTransform;
+    V=PHelper.CreateVector	(items, PHelper.PrepareKey(pref,"Transform\\Position"),	&t_vPosition,	-10000,	10000,0.01,2); 	V->SetEvents(0,0,OnChangeTransform);
     V=PHelper.CreateVector	(items, PHelper.PrepareKey(pref,"Transform\\Rotation"),	&t_vRotate, 	-10000,	10000,0.1,1);
-    V->OnAfterEditEvent		= PHelper.FvectorRDOnAfterEdit;
-    V->OnBeforeEditEvent	= PHelper.FvectorRDOnBeforeEdit;
-    V->Owner()->OnDrawEvent	= PHelper.FvectorRDOnDraw;
-    V->OnChangeEvent		= OnChangeTransform;
-    V=PHelper.CreateVector	(items, PHelper.PrepareKey(pref,"Transform\\Scale"),	&t_vScale, 		0.01,	10000,0.01,2);	V->OnChangeEvent = OnChangeTransform;
+    V->SetEvents			(PHelper.FvectorRDOnAfterEdit,PHelper.FvectorRDOnBeforeEdit,OnChangeTransform);
+    V->Owner()->SetEvents	(PHelper.FvectorRDOnDraw);
+    V=PHelper.CreateVector	(items, PHelper.PrepareKey(pref,"Transform\\Scale"),	&t_vScale, 		0.01,	10000,0.01,2);	V->SetEvents(0,0,OnChangeTransform);
 
     FillSummaryProps		(pref,items);
 }

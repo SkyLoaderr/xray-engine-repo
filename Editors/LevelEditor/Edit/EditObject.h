@@ -101,7 +101,7 @@ public:
     IC void 		SetShaderXRLC	(LPCSTR name){m_ShaderXRLCName=name;}
     IC void			SetGameMtl		(LPCSTR name){m_GameMtlName=name;m_Flags.set(sfValidGameMtlID,FALSE);}
     IC void			SetFVF			(u32 fvf){m_dwFVF=fvf;}
-    IC void			SetTexture		(LPCSTR name){m_Texture=name;}
+    IC void			SetTexture		(LPCSTR name){string256 buf; strcpy(buf,name); if(strext(buf)) *strext(buf)=0; m_Texture=buf;}
     IC void			SetVMap			(LPCSTR name){m_VMap=name;}
 #ifdef _EDITOR
 	void __fastcall OnChangeGameMtl	(PropValue* sender)
@@ -116,7 +116,11 @@ public:
         }
         return m_GameMtlID;
     }
-    IC void			OnDeviceCreate	(){ m_Shader = Device.Shader.Create(m_ShaderName.c_str(),m_Texture.c_str()); }
+    IC void			OnDeviceCreate	()
+    { 
+    	if (m_ShaderName.Length()&&m_Texture.Length()) 	m_Shader = Device.Shader.Create(m_ShaderName.c_str(),m_Texture.c_str()); 
+        else                                       		m_Shader = Device.Shader.Create("editor\\wire");
+    }
     IC void			OnDeviceDestroy	(){Device.Shader.Delete(m_Shader);}
 #endif
 };

@@ -11,10 +11,8 @@
 #include "motion.h"
 
 #ifdef _EDITOR
- #include "xr_ini.h"
  #include "exportskeleton.h"
  #include "Shader.h"
- #include "xr_trims.h"
 
 bool CEditableObject::Load(const char* fname){
 	AnsiString ext=ExtractFileExt(fname);

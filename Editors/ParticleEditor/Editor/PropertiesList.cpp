@@ -12,14 +12,12 @@
 #include <ElTools.hpp>
 
 #include "main.h"
-#include "xr_tokens.h"
 #include "ShaderFunction.h"
 #include "ColorPicker.h"
 #include "ChoseForm.h"
 #include "FolderLib.h"
 #include "NumericVector.h"
 #include "TextForm.h"
-#include "xr_trims.h"
 #include "ui_main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -253,6 +251,12 @@ void __fastcall TProperties::AssignItems(PropItemVec& items, bool full_expand, c
         prop->item->CheckBoxEnabled = prop->m_Flags.is(PropItem::flShowCB);
         prop->item->ShowCheckBox 	= prop->m_Flags.is(PropItem::flShowCB);
         prop->item->CheckBoxState 	= (TCheckBoxState)prop->m_Flags.is(PropItem::flCBChecked);
+        // set flags
+        if (prop->m_Flags.is(PropItem::flDrawThumbnail)){ 
+        	prop->item->Height 		= 64;
+			prop->item->OwnerHeight	= !miDrawThumbnails->Checked;
+        }
+        // set style
         TElCellStyle* CS    = prop->item->AddStyle();
         CS->OwnerProps 		= true;
         CS->CellType 		= sftUndef;
@@ -288,6 +292,35 @@ void __fastcall TProperties::tvPropertiesClick(TObject *Sender)
     	tvProperties->EditItem(Item, HC);
 }
 //---------------------------------------------------------------------------
+
+void TProperties::OutBOOL(BOOL val, TCanvas* Surface, const TRect& R)
+{
+    Surface->CopyMode 	= cmSrcAnd;//cmSrcErase;
+    if (val)			Surface->Draw(R.Left,R.Top+3,m_BMCheck);
+    else 				Surface->Draw(R.Left,R.Top+3,m_BMDot);
+}
+
+void TProperties::OutText(LPCSTR text, TCanvas* Surface, TRect R, TGraphic* g, bool bArrow)
+{
+	if (g||bArrow){
+	    R.Right	-=	12;
+    	R.Left 	+= 	1;
+    }else{
+        R.Right-= 1;
+        R.Left += 1;
+    }
+    DrawText	(Surface->Handle, text, -1, &R, DT_LEFT | DT_SINGLELINE);
+    if (g){
+	    R.Left 	= 	R.Right;
+    	Surface->CopyMode = cmSrcAnd;
+	    Surface->Draw(R.Left+1,R.Top+5,g);
+    }else if (bArrow){
+        R.Left 	= 	R.Right;
+        R.Right += 	10;
+        DrawArrow	(Surface, eadDown, R, clWindowText, true);
+    }
+}
+
 void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
       TElTreeItem *Item, TCanvas *Surface, TRect &R, int SectionIndex)
 {
@@ -303,11 +336,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             Surface->Font->Color 	= clSilver;
             Surface->Font->Style 	= TFontStyles()<< fsBold;
         }
-
-        if (pbExtBtn->Tag==(int)prop)
-        	if (!pbExtBtn->Visible)
-            	ShowExtBtn(R);
-
+		// out caption mixed 
         if (prop->m_Flags.is(PropItem::flMixed)){
             TColor C 		= Surface->Brush->Color;
             TBrushStyle S 	= Surface->Brush->Style;
@@ -360,28 +389,29 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             }break;
             case PROP_FLAG8:{
                 Flag8Value* V		= dynamic_cast<Flag8Value*>(prop->GetFrontValue()); R_ASSERT(V);
-                Surface->CopyMode 	= cmSrcAnd;//cmSrcErase;
-                if (V->GetValueEx())Surface->Draw(R.Left,R.Top+3,m_BMCheck);
-                else 				Surface->Draw(R.Left,R.Top+3,m_BMDot);
+            	OutBOOL				(V->GetValueEx(),Surface,R);
             }break;
             case PROP_FLAG16:{
                 Flag16Value* V		= dynamic_cast<Flag16Value*>(prop->GetFrontValue()); R_ASSERT(V);
-                Surface->CopyMode 	= cmSrcAnd;//cmSrcErase;
-                if (V->GetValueEx())Surface->Draw(R.Left,R.Top+3,m_BMCheck);
-                else 				Surface->Draw(R.Left,R.Top+3,m_BMDot);
+            	OutBOOL				(V->GetValueEx(),Surface,R);
             }break;
             case PROP_FLAG32:{
                 Flag32Value* V		= dynamic_cast<Flag32Value*>(prop->GetFrontValue()); R_ASSERT(V);
-                Surface->CopyMode 	= cmSrcAnd;//cmSrcErase;
-                if (V->GetValueEx())Surface->Draw(R.Left,R.Top+3,m_BMCheck);
-                else 				Surface->Draw(R.Left,R.Top+3,m_BMDot);
+            	OutBOOL				(V->GetValueEx(),Surface,R);
             }break;
             case PROP_BOOLEAN:{
-                Surface->CopyMode = cmSrcAnd;//cmSrcErase;
                 BOOLValue* V		= dynamic_cast<BOOLValue*>(prop->GetFrontValue()); R_ASSERT(V);
-                if (V->GetValue()) 	Surface->Draw(R.Left,R.Top+3,m_BMCheck);
-                else			   	Surface->Draw(R.Left,R.Top+3,m_BMDot);
+            	OutBOOL				(V->GetValue(),Surface,R);
             }break;
+            case PROP_TEXTURE:
+            case PROP_TEXTURE2:
+            case PROP_A_TEXTURE:
+                OutText(prop->GetText(),Surface,R,m_BMEllipsis);
+            	if (miDrawThumbnails->Checked){ 
+                    R.top+=tvProperties->ItemIndent;
+                    PHelper.DrawThumbnail	(Surface,R,prop->GetText());
+                }
+            break;
             case PROP_WAVE:
             case PROP_LIBPS:
             case PROP_LIBSOUND:
@@ -389,49 +419,31 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             case PROP_LIBOBJECT:
             case PROP_GAMEOBJECT:
             case PROP_ENTITY:
-            case PROP_TEXTURE:
-            case PROP_TEXTURE2:
 			case PROP_GAMEMTL:
             case PROP_A_LIBOBJECT:
             case PROP_A_GAMEMTL:
             case PROP_A_LIBPS:
             case PROP_A_LIBSOUND:
-            case PROP_A_TEXTURE:
             case PROP_A_ESHADER:
             case PROP_A_CSHADER:
             case PROP_ESHADER:
             case PROP_CSHADER:
-                R.Right	-=	12;
-                R.Left 	+= 	1;
-                DrawText	(Surface->Handle, prop->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
-                R.Left 	= 	R.Right;
-                Surface->CopyMode = cmSrcAnd;
-                Surface->Draw(R.Left+1,R.Top+5,m_BMEllipsis);
+                OutText(prop->GetText(),Surface,R,m_BMEllipsis);
             break;
             case PROP_TOKEN:
             case PROP_TOKEN2:
             case PROP_TOKEN3:
             case PROP_TOKEN4:
             case PROP_LIST:
-                R.Right	-=	12;
-                R.Left 	+= 	1;
-                DrawText	(Surface->Handle, prop->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
-                R.Left 	= 	R.Right;
-                R.Right += 	10;
-                DrawArrow	(Surface, eadDown, R, clWindowText, true);
+                OutText(prop->GetText(),Surface,R,m_BMEllipsis,true);
             break;
             case PROP_A_TEXT:
             case PROP_TEXT:
-                if (edText->Tag!=(int)Item){
-                    R.Right-= 1;
-                    R.Left += 1;
-                    DrawText(Surface->Handle, prop->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
-                }
+                if (edText->Tag!=(int)Item)
+	                OutText(prop->GetText(),Surface,R);
             break;
             case PROP_VECTOR:
-                R.Right-= 1;
-                R.Left += 1;
-                DrawText(Surface->Handle, prop->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
+                OutText(prop->GetText(),Surface,R);
             break;
             case PROP_U8:
             case PROP_U16:
@@ -440,25 +452,10 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             case PROP_S16:
             case PROP_S32:
             case PROP_FLOAT:
-                if (seNumber->Tag!=(int)Item){
-                    R.Right-= 1;
-                    R.Left += 1;
-                    DrawText(Surface->Handle, prop->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
-                }
+                if (seNumber->Tag!=(int)Item)
+	                OutText(prop->GetText(),Surface,R);
             break;
 	        };
-            // draw btn border
-/*	        if (prop->m_Flags.is(PropItem::flDrawBtnBorder)){
-            	src_rect.left+=1;
-            	src_rect.top+=1;
-            	src_rect.right-=1;
-            	src_rect.bottom-=1;
-	            Surface->Brush->Style = bsSolid;
-    	        Surface->Brush->Color = Item->Selected?(TColor)0x00A0A0A0:(TColor)0x008E8E8E;
-                DrawEdge(Canvas->Handle,&src_rect,BDR_RAISEDINNER,BF_MIDDLE);
-//	            Surface->FillRect(src_rect);
-            }
-*/
         }
         // show LW edit
         if (!prop->m_Flags.is(PropItem::flDisabled)){
@@ -477,6 +474,8 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 if (seNumber->Tag==(int)Item) if (!seNumber->Visible) ShowLWNumber(R);
             break;
             };
+            // show ext button (if needed)
+            if ((pbExtBtn->Tag==(int)prop)&&(!pbExtBtn->Visible)) ShowExtBtn(R);
         }
   	}
 }
@@ -1296,13 +1295,13 @@ void __fastcall TProperties::pbExtBtnClick(TObject *Sender)
 
 void __fastcall TProperties::fsStorageRestorePlacement(TObject *Sender)
 {
-    RestoreColumnWidth(fsStorage);
+    RestoreParams(fsStorage);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TProperties::fsStorageSavePlacement(TObject *Sender)
 {
-	SaveColumnWidth(fsStorage);
+	SaveParams(fsStorage);
 }
 //---------------------------------------------------------------------------
 
@@ -1317,4 +1316,20 @@ void __fastcall TProperties::CollapseAll1Click(TObject *Sender)
 	tvProperties->FullCollapse();
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TProperties::miDrawThumbnailsClick(TObject *Sender)
+{
+	RefreshForm();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TProperties::RefreshForm()
+{
+    for (PropItemIt it=m_Items.begin(); it!=m_Items.end(); it++){
+    	PropItem* prop = *it;
+    	if (prop->m_Flags.is(PropItem::flDrawThumbnail)) 
+        	prop->item->OwnerHeight = !miDrawThumbnails->Checked;
+    }
+	tvProperties->Repaint();
+}
 

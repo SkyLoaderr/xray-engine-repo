@@ -2,7 +2,6 @@
 #pragma hdrstop
 
 #include "GameFont.h"
-#include "xr_ini.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -10,11 +9,11 @@
 #define MAX_CHARS	1024
 CGameFont::CGameFont(LPCSTR section, u32 flags)
 {
-	Initialize	(pSettings->ReadSTRING(section,"shader"),pSettings->ReadSTRING(section,"texture"),flags);
-	if (pSettings->LineExists(section,"size"))
-		SetSize(pSettings->ReadFLOAT(section,"size"));
-	if (pSettings->LineExists(section,"interval"))
-		SetInterval(pSettings->ReadVECTOR2(section,"interval"));
+	Initialize	(pSettings->r_string(section,"shader"),pSettings->r_string(section,"texture"),flags);
+	if (pSettings->line_exist(section,"size"))
+		SetSize(pSettings->r_float(section,"size"));
+	if (pSettings->line_exist(section,"interval"))
+		SetInterval(pSettings->r_fvector2(section,"interval"));
 }
 CGameFont::CGameFont(LPCSTR shader, LPCSTR texture, u32 flags)
 {
@@ -40,27 +39,27 @@ void CGameFont::Initialize		(LPCSTR cShader, LPCSTR cTexture, u32 flags)
 	R_ASSERT2(Engine.FS.Exist(fn,Path.Textures,buf,".ini"),fn);
 #endif
 	CInifile* ini				= CInifile::Create(fn);
-	if (ini->SectionExists("symbol_coords")){
+	if (ini->section_exist("symbol_coords")){
 		for (int i=0; i<256; i++){
 			sprintf					(buf,"%03d",i);
-			Fvector v				= ini->ReadVECTOR("symbol_coords",buf);
+			Fvector v				= ini->r_fvector3("symbol_coords",buf);
 			TCMap[i].set			(v.x,v.y,v[2]-v[0]);
 		}
-		fHeight						= ini->ReadFLOAT("symbol_coords","height");
+		fHeight						= ini->r_float("symbol_coords","height");
 	}else{
-		if (ini->SectionExists("char widths")){
-			fHeight					= ini->ReadFLOAT("char widths","height");
+		if (ini->section_exist("char widths")){
+			fHeight					= ini->r_float("char widths","height");
 			const int cpl			= 16;
 			for (int i=0; i<256; i++){
 				sprintf				(buf,"%d",i);
-				float w				= ini->ReadFLOAT("char widths",buf);
+				float w				= ini->r_float("char widths",buf);
 				TCMap[i].set		((i%cpl)*fHeight,(i/cpl)*fHeight,w);
 			}
 		}else{
-			R_ASSERT(ini->SectionExists("font_size"));
-			fHeight					= ini->ReadFLOAT("font_size","height");
-			float width				= ini->ReadFLOAT("font_size","width");
-			const int cpl			= ini->ReadINT	("font_size","cpl");
+			R_ASSERT(ini->section_exist("font_size"));
+			fHeight					= ini->r_float("font_size","height");
+			float width				= ini->r_float("font_size","width");
+			const int cpl			= ini->r_s32	("font_size","cpl");
 			for (int i=0; i<256; i++)
 				TCMap[i].set			((i%cpl)*width,(i/cpl)*fHeight,width);
 		}

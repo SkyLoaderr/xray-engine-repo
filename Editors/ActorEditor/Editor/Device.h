@@ -46,14 +46,14 @@ public:
     float 					m_ScreenQuality;
 
 	u32 					dwFillMode;
-    u32					dwShadeMode;
+    u32						dwShadeMode;
 public:
-    HANDLE 					m_hWnd;
-    HANDLE 					m_hRenderWnd;
+    HWND 					m_hWnd;
+    HWND 					m_hRenderWnd;
 
-    IC void					SetHandle(HANDLE main_hwnd, HANDLE render_hwnd){m_hWnd=main_hwnd; m_hRenderWnd=render_hwnd;}
+    IC void					SetHandle(HWND main_hwnd, HWND render_hwnd){m_hWnd=main_hwnd; m_hRenderWnd=render_hwnd;}
 
-	u32					dwFrame;
+	u32						dwFrame;
 
 	BOOL					bReady;
 	BOOL					bActive;

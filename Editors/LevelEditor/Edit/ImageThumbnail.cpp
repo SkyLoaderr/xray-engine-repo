@@ -4,7 +4,6 @@
 #include "ImageThumbnail.h"
 #include "ImageManager.h"
 #include "xrImage_Resampler.h"
-#include "xr_tokens.h"
 
 //----------------------------------------------------
 bool DrawThumbnail(HDC hdc, U32Vec& data, int offs_x, int offs_y, int dest_w, int dest_h, int src_w, int src_h)
@@ -293,6 +292,24 @@ void EImageThumbnail::FillProp(PropItemVec& items)
     }
 }
 
+void EImageThumbnail::Draw(TCanvas* pCanvas, const TRect& R, bool bStretch)
+{
+	if (IsTexture()){
+        TRect r = R; r.left += 1; r.top += 1;
+        float w, h;
+        w = _Width();
+        h = _Height();
+        if (w!=h)	pCanvas->FillRect(R);
+        if (w>h){   r.right = R.left + R.Width()-1; 	r.bottom = R.top + h/w*R.Height()-1;
+        }else{      r.right = R.left + w/h*R.Width()-1; r.bottom = R.top + R.Height()-1;}
+        DrawThumbnail(pCanvas->Handle,m_Pixels,r.left,r.top,r.Width(),r.Height(),THUMB_WIDTH,THUMB_HEIGHT);
+    }else{
+        TRect r = R; r.left += 1; r.top += 1;
+        r.right -= 1; r.bottom -= 1;
+        DrawThumbnail(pCanvas->Handle,m_Pixels,r.left,r.top,r.Width(),r.Height(),THUMB_WIDTH,THUMB_HEIGHT);
+    }
+}
+
 void EImageThumbnail::Draw(TPanel* panel, TPaintBox* pbox, bool bStretch)
 {
 	if (IsTexture()){
@@ -315,4 +332,5 @@ void EImageThumbnail::Draw(TPanel* panel, TPaintBox* pbox, bool bStretch)
         ReleaseDC	(panel->Handle,hdc);
     }
 }
+
 

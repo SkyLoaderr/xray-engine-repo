@@ -35,6 +35,7 @@ public:
     IC u32			_Height			(){R_ASSERT(IsTexture()); return m_TexParams.height;}
     IC u32			_Alpha			(){R_ASSERT(IsTexture()); return m_TexParams.HasAlphaChannel();}
 	void 			CreateFromData	(u32* p, u32 w, u32 h);
+	void 			Draw			(TCanvas* pCanvas, const TRect& R, bool bStretch);
 	void 			Draw			(TPanel* panel, TPaintBox* pbox, bool bStretch);
     void			VFlip			();
     // thumbnail public routines

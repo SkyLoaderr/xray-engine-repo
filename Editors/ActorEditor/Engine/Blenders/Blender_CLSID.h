@@ -2,8 +2,6 @@
 #define BLENDER_CLSID_H
 #pragma once
 
-#include	"..\clsid.h"
-
 // Main blenders for level
 #define		B_DEFAULT		MK_CLSID('L','M',' ',' ',' ',' ',' ',' ')
 #define		B_DEFAULT_AREF	MK_CLSID('L','M','_','A','R','E','F',' ')

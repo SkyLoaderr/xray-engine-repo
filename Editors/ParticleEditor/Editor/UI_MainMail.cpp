@@ -3,7 +3,6 @@
 #pragma hdrstop
 
 #include "ui_main.h"
-#include "xr_trims.h"
 //---------------------------------------------------------------------------
 
 void TUI::CreateMailslot()

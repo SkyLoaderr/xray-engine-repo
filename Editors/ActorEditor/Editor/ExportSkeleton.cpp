@@ -11,7 +11,6 @@
 #include "std_classes.h"
 #include "bone.h"
 #include "motion.h"
-#include "xr_ini.h"
 #include "MgcCont3DMinBox.h"
 #include "ui_main.h"
 
