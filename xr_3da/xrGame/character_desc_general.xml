@@ -50,7 +50,7 @@
 		<rank>40</rank>
 		<reputation>60</reputation>
 		
-		<visual>stalker_bandit_1</visual>
+		<visual>actors\bandit\stalker_bandit_1</visual>
 		<supplies>
 		[spawn]
 		wpn_svu
