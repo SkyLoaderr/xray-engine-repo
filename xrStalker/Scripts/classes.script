@@ -285,54 +285,6 @@ function NPC:is_looking()
 	return self.last_action == self.action_looking and self.npc:get_script() and self.npc:action()
 end
 
-function NPC:shoot_then_reload_actions(whom)
-	self.npc:set_queue_size(1)
-	action(self.npc,
-	       look(look.fire_point, whom),
-	       anim(anim.danger),
-	       object(self.wpn, object.fire1),
-	       cond(cond.move_end)
-	)
-	if true then return end
-	
-	for i = 1, 30 do
-		action(self.npc,
-		       move(move.act_run, move.line, patrol("way_attack_point")),
-                       anim(anim.danger),
-		       cond(cond.move_end, time_infinite)
-		)
-		action(self.npc,
-		       look(look.fire_point, whom),
-                       anim(anim.danger),
-		       object(self.wpn, object.fire1),
-		       cond(cond.time_end, 3000)
-		)
-		--printf("_bp: ammo=%d", self.wpn:get_ammo_in_magazine(self.wpn))
-		action(self.npc,
-		       move(move.act_walk_bkwd, move.line, patrol("way_reload_point")),
-                       anim(anim.danger),
-		       cond(cond.move_end, time_infinite)
-		)
-		
-		--[[
-		action(self.npc,
-		       --look(look.fire_point, whom),
-		       --anim(anim.danger),
-		       object(self.wpn, object.reload),
-		       cond(cond.time_end, 2000)
-		)
-		--]]
-		
-		--[[
-		action(self.npc,
-		       look(look.fire_point, whom),
-		       anim(anim.danger),
-		       cond(cond.time_end, 2000)
-		)
-		--]]
-	end
-end
-
 function NPC:shoot(whom)
 	debug_log(self.script_name, 'NPC:shoot')
 	-- ¬сегда отключать looking и talking при начале shooting
@@ -344,15 +296,19 @@ function NPC:shoot(whom)
 		self.npc:script(true, self.script_name)
 	end
 
-	self:shoot_then_reload_actions(whom)
-	--[[
+	self.npc:set_queue_size(1)
+
 	action(self.npc,
 	       look(look.fire_point, whom),
 	       anim(anim.danger),
 	       object(self.wpn, object.fire1),
-	       cond(cond.time_end, time_infinite)
+	       move(move.standing, move.run, move.line, patrol("way_attack_point")),
+	       --move(move.standing, move.stand, move.line, actor), -- бага, с этой строкой крутитс€ нормально!
+	       --cond(cond.move_end, time_infinite)
+	       cond(cond.time_end, time_infinite) -- не крутитс€!!!
+	       --cond(cond.time_end, 300)
 	)
-	--]]
+
 	self.last_action = self.action_shooting
 end
 
