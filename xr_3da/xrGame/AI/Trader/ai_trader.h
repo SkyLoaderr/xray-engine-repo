@@ -10,17 +10,17 @@
 
 #include "../../CustomMonster.h"
 #include "../../inventoryowner.h"
-#include "../../script_space.h"
 #include "../script/ai_script_monster.h"
 #include "../script/ai_script_monster.h"
 #include "../ai_monster_bones.h"
+#include "../../ai_script_callback.h"
 
 class CInventoryItem;
 
 class CAI_Trader : public CEntityAlive, public CInventoryOwner, public CScriptMonster {
-	SMemberCallback	m_tpOnStart;
-	SMemberCallback	m_tpOnStop;
-	SMemberCallback	m_tpOnTrade;
+	CScriptCallback		m_OnStartCallback;
+	CScriptCallback		m_OnStopCallback;
+	CScriptCallback		m_OnTradeCallback;
 
 public:
 	typedef CEntityAlive inherited;
@@ -78,7 +78,6 @@ public:
 
 	static	void __stdcall	BoneCallback			(CBoneInstance *B);
 			void			LookAtActor				(CBoneInstance *B);
-
 
 			void			set_callback			(const luabind::functor<void> &lua_function, bool bOnStart);
 			void			set_callback			(const luabind::object &lua_object, LPCSTR method, bool bOnStart);

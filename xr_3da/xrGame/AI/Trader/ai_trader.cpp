@@ -21,23 +21,10 @@ CAI_Trader::CAI_Trader()
 
 	InitTrade();
 	Init();
-
-	m_tpOnStart.m_lua_function	= 0;
-	m_tpOnStart.m_lua_object	= 0;
-	m_tpOnStop.m_lua_function	= 0;
-	m_tpOnStop.m_lua_object		= 0;
-	m_tpOnTrade.m_lua_function	= 0;
-	m_tpOnTrade.m_lua_object	= 0;
 } 
 
 CAI_Trader::~CAI_Trader()
 {
-	xr_delete					(m_tpOnStart.m_lua_function);
-	xr_delete					(m_tpOnStart.m_lua_object);
-	xr_delete					(m_tpOnStop.m_lua_function);
-	xr_delete					(m_tpOnStop.m_lua_object);
-	xr_delete					(m_tpOnTrade.m_lua_function);
-	xr_delete					(m_tpOnTrade.m_lua_object);
 }
 
 void CAI_Trader::Load(LPCSTR section)
@@ -60,6 +47,26 @@ void CAI_Trader::Init()
 {
 	inherited::Init();
 }
+
+void CAI_Trader::reinit	()
+{
+	CEntityAlive::reinit	();
+	CInventoryOwner::reinit	();
+	CScriptMonster::reinit	();
+
+	m_OnStartCallback.clear ();
+	m_OnStopCallback.clear	();
+	m_OnTradeCallback.clear ();
+
+}
+
+void CAI_Trader::reload	(LPCSTR section)
+{
+	CEntityAlive::reload	(section);
+	CInventoryOwner::reload	(section);
+	CScriptMonster::reload	(section);
+}
+
 
 void __stdcall CAI_Trader::BoneCallback(CBoneInstance *B)
 {
@@ -299,95 +306,59 @@ BOOL CAI_Trader::UsedAI_Locations()
 	return					(TRUE);
 }
 
-void CAI_Trader::reinit	()
-{
-	CEntityAlive::reinit	();
-	CInventoryOwner::reinit	();
-	CScriptMonster::reinit	();
-
-	xr_delete					(m_tpOnStart.m_lua_function);
-	xr_delete					(m_tpOnStart.m_lua_object);
-	xr_delete					(m_tpOnStop.m_lua_function);
-	xr_delete					(m_tpOnStop.m_lua_object);
-	xr_delete					(m_tpOnTrade.m_lua_function);
-	xr_delete					(m_tpOnTrade.m_lua_object);
-}
-
-void CAI_Trader::reload	(LPCSTR section)
-{
-	CEntityAlive::reload	(section);
-	CInventoryOwner::reload	(section);
-	CScriptMonster::reload	(section);
-}
-
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+// Trade callbacks
+///////////////////////////////////////////////////////////////////////////////////////////////
 void CAI_Trader::set_callback(const luabind::functor<void> &lua_function, bool bOnStart)
 {
-	SMemberCallback	 &callback = bOnStart ? m_tpOnStart : m_tpOnStop;
-	xr_delete					(callback.m_lua_function);
-	callback.m_lua_function		= xr_new<luabind::functor<void> >(lua_function);
+	CScriptCallback	 &callback = bOnStart ? m_OnStartCallback : m_OnStopCallback;
+	callback.set(lua_function);
 }
 
 void CAI_Trader::set_callback(const luabind::object &lua_object, LPCSTR method, bool bOnStart)
 {
-	SMemberCallback				&callback = bOnStart ? m_tpOnStart : m_tpOnStop;
-	xr_delete					(callback.m_lua_object);
-	callback.m_lua_object		= xr_new<luabind::object>(lua_object);
-	callback.m_method_name		= method;
+	CScriptCallback	&callback = bOnStart ? m_OnStartCallback : m_OnStopCallback;
+	callback.set(lua_object,method);
 }
 
 void CAI_Trader::clear_callback(bool bOnStart)
 {
-	SMemberCallback				&callback = bOnStart ? m_tpOnStart : m_tpOnStop;
-	xr_delete					(callback.m_lua_function);
-	xr_delete					(callback.m_lua_object);
+	CScriptCallback	&callback = bOnStart ? m_OnStartCallback : m_OnStopCallback;
+	callback.clear	();
 }
 
 void CAI_Trader::OnStartTrade()
 {
-	if (m_tpOnStart.m_lua_function) (*m_tpOnStart.m_lua_function)();
-	if (m_tpOnStart.m_lua_object)
-		luabind::call_member<void>(*m_tpOnStart.m_lua_object,*m_tpOnStart.m_method_name);
+	m_OnStartCallback.callback();
 }
 
 void CAI_Trader::OnStopTrade()
 {
-	if (m_tpOnStop.m_lua_function) (*m_tpOnStop.m_lua_function)();
-	if (m_tpOnStop.m_lua_object)
-		luabind::call_member<void>(*m_tpOnStop.m_lua_object,*m_tpOnStop.m_method_name);
+	m_OnStopCallback.callback();
 }
 
 void CAI_Trader::set_trade_callback(const luabind::functor<void> &lua_function)
 {
-	SMemberCallback	 &callback = m_tpOnTrade;
-	xr_delete		(callback.m_lua_function);
-
-	callback.m_lua_function		= xr_new<luabind::functor<void> >(lua_function);
+	m_OnTradeCallback.set(lua_function);
 }
 
 void CAI_Trader::set_trade_callback(const luabind::object &lua_object, LPCSTR method)
 {
-	SMemberCallback				&callback = m_tpOnTrade;
-	xr_delete					(callback.m_lua_object);
-
-	callback.m_lua_object		= xr_new<luabind::object>(lua_object);
-	callback.m_method_name		= method;
+	m_OnTradeCallback.set(lua_object,method);
 }
 
 void CAI_Trader::clear_trade_callback()
 {
-	SMemberCallback				&callback = m_tpOnTrade;
-	xr_delete					(callback.m_lua_function);
-	xr_delete					(callback.m_lua_object);
+	m_OnTradeCallback.clear();
 }
 
 void CAI_Trader::OnTradeAction(CGameObject *O, bool bSell)
 {
 	if (!O) return;
-
-	if (m_tpOnTrade.m_lua_function)	(*m_tpOnTrade.m_lua_function)(O->lua_game_object(), bSell);
-	if (m_tpOnTrade.m_lua_object)	luabind::call_member<void>(*m_tpOnTrade.m_lua_object,*m_tpOnTrade.m_method_name,O->lua_game_object(), bSell);
+	SCRIPT_CALLBACK_EXECUTE_2(m_OnTradeCallback,O->lua_game_object(), bSell);
 }
+////////////////////////////////////////////////////////////////////////////////////////////
+
 
 bool CAI_Trader::can_attach				(const CInventoryItem *inventory_item) const
 {

@@ -10,7 +10,7 @@
 
 #include "../../GameObject.h"
 #include "../../visual_memory_manager.h"
-#include "../../script_space.h"
+#include "../../ai_script_callback.h"
 
 class CEntityAction;
 
@@ -35,9 +35,9 @@ protected:
 public:
 	CMotionDef					*m_tpScriptAnimation;
 protected:
-	SMemberCallback				m_tpCallbacks[eActionTypeCount];
-	SMemberCallback				m_tSoundCallback;
-	SMemberCallback				m_tHitCallback;
+	CScriptCallback				m_tpCallbacks[eActionTypeCount];
+	CScriptCallback				m_tSoundCallback;
+	CScriptCallback				m_tHitCallback;
 	ref_sound					*m_current_sound;
 public:
 								CScriptMonster			();

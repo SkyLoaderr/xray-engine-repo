@@ -3025,6 +3025,9 @@
 						RelativePath=".\ai_script_bind.h">
 					</File>
 					<File
+						RelativePath=".\ai_script_callback.h">
+					</File>
+					<File
 						RelativePath=".\ai_script_classes.cpp">
 					</File>
 					<File
