@@ -103,6 +103,7 @@ public:
 				*dwContainerID	= ID;
 				*dwStart		= data[ID].size();
 				data[ID].insert	(data[ID].end(),begin,end);
+				return;
 			}
 		}
 
