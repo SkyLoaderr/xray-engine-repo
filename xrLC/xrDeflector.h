@@ -45,14 +45,12 @@ public:
 	lm_layer					layer;
 	Fsphere						Sphere;
 	
-	//u32						dwWidth;
-	//u32						dwHeight;
 	BOOL						bMerged;
 public:
 	CDeflector					();
 	~CDeflector					();
-		
-	void	OA_SetNormal		(Fvector &_N )	{ N.set(_N); N.normalize(); }
+
+	void	OA_SetNormal		(Fvector &_N )	{ normal.set(_N); normal.normalize(); VERIFY(_valid(normal)); }
 	BOOL	OA_Place			(Face *owner);
 	void	OA_Place			(vecFace& lst);
 	void	OA_Export			();

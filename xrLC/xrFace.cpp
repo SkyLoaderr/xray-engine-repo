@@ -163,7 +163,8 @@ void	Face::Failure		()
 void	Face::Verify		()
 {
 	// 1st :: area
-	if	(CalcArea()<EPS)	{ Failure(); return; }
+	float	_a	= CalcArea();
+	if		(!_valid(_a) || (_a<EPS))		{ Failure(); return; }
 
 	// 2nd :: TC0
 	Fvector2*	tc			= getTC0();
@@ -172,10 +173,11 @@ void	Face::Verify		()
 	float	e1				= tc[1].distance_to(tc[2]);
 	float	e2				= tc[2].distance_to(tc[0]);
 	float	p				= e0+e1+e2;
-	if		(p<eps)			{ Failure(); return; }
+	if		(!_valid(_a) || (p<eps))		{ Failure(); return; }
 
 	// 3rd :: possibility to calc normal
 	CalcNormal				();
+	if (!_valid(N))			{ Failure(); return; }
 }
 
 void	Face::CalcNormal	()
@@ -193,7 +195,7 @@ void	Face::CalcNormal	()
 	{
 		CalcNormal2	();
 	} else {
-		N.div(mag);
+		N.div		(mag);
 	}
 };
 
