@@ -7,11 +7,15 @@
 #include "level.h"
 #include "HudManager.h"
 #include "script_game_object.h"
+#include "../LightAnimLibrary.h"
 
 CHelicopter::CHelicopter()
 {
 	init();
-	m_pParticle = NULL;
+	m_pParticle		= NULL;
+	m_light_render	= NULL;
+	m_lanim			= NULL;
+
 }
 
 CHelicopter::~CHelicopter()
@@ -199,6 +203,21 @@ void CHelicopter::Load(LPCSTR section)
 	
 	ref_str expl_snd					= pSettings->r_string	(section,"explode_sound");
 	m_explodeSound.create(TRUE,*expl_snd);
+
+
+//lighting
+	m_light_render			= ::Render->light_create();
+	m_light_render->set_shadow  (false);
+	m_light_render->set_type	(IRender_Light::POINT);
+	m_light_render->set_range	(pSettings->r_float(section,"light_range"));
+	m_light_brightness = pSettings->r_float(section,"light_brightness");
+	Fcolor clr = pSettings->r_fcolor(section,"light_color");
+	clr.a = 1.f;
+	clr.mul_rgb				    (m_light_brightness);
+	m_light_render->set_color	(clr);
+	ref_str l_anim = pSettings->r_string	(section,"light_color_animmator");
+	m_lanim					= LALib.FindItem(*l_anim);
+
 }
 
 void CHelicopter::reload(LPCSTR section)
@@ -234,7 +253,7 @@ BOOL CHelicopter::net_Spawn(LPVOID	DC)
 	m_right_rocket_bone			= K->LL_BoneID	(pUserData->r_string("helicopter_definition","right_rocket_bone"));
 
 	m_smoke_bone 			= K->LL_BoneID	(pUserData->r_string("helicopter_definition","smoke_bone"));
-
+	m_light_bone 			= K->LL_BoneID	(pUserData->r_string("helicopter_definition","light_bone"));
 	LPCSTR s = pUserData->r_string("helicopter_definition","hit_section");
 
 	if( pUserData->section_exist(s) ){
@@ -325,7 +344,8 @@ void CHelicopter::net_Destroy()
 	m_engineSound.stop();
 //	m_pParticle->Stop();
 	xr_delete(m_pParticle);
-	m_pParticle = NULL;
+	::Render->light_destroy	(m_light_render);
+
 }
 
 void	CHelicopter::SpawnInitPhysics	(CSE_Abstract	*D)	
@@ -837,14 +857,37 @@ void CHelicopter::PrepareDie ()
 
 void CHelicopter::UpdateHeliParticles	()
 {
-	if (!m_pParticle)return;
-	Fvector vel;
+	if (m_pParticle){
+		
+		Fvector vel;
 
-	Fvector last_pos = PositionStack.back().vPosition;
-	vel.sub(Position(), last_pos);
-	vel.mul(5.0f);
+		Fvector last_pos = PositionStack.back().vPosition;
+		vel.sub(Position(), last_pos);
+		vel.mul(5.0f);
 
-	m_pParticle->UpdateParent(m_particleXFORM, vel );
+		m_pParticle->UpdateParent(m_particleXFORM, vel );
+	}
+//lighting
+	if(m_light_render->get_active()){
+		Fmatrix xf;
+		Fmatrix& M = PKinematics(Visual())->LL_GetTransform(u16(m_light_bone));
+		xf.mul		(XFORM(),M);
+		VERIFY(!fis_zero(DET(xf)));
+
+		m_light_render->set_rotation	(xf.k,xf.i);
+		m_light_render->set_position	(xf.c);
+
+		if (m_lanim)
+		{
+			int frame;
+			u32 clr					= m_lanim->CalculateBGR(Device.fTimeGlobal,frame); // возвращает в формате BGR
+			Fcolor					fclr;
+			fclr.set				((float)color_get_B(clr),(float)color_get_G(clr),(float)color_get_R(clr),1.f);
+			fclr.mul_rgb			(m_light_brightness/255.f);
+			m_light_render->set_color	(fclr);
+		}
+
+	}
 }
 void CHelicopter::Explode ()
 {
@@ -873,4 +916,10 @@ float CHelicopter::GetfHealth() const
 float CHelicopter::SetfHealth(float value) {
 	CEntity::SetfHealth(value);
 	return value;
+}
+
+void CHelicopter::TurnLighting(bool bOn)
+{
+	m_light_render->set_active						(bOn);
+
 }

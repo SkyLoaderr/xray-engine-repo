@@ -9,7 +9,7 @@
 
 #include "script_export_space.h"
 class CScriptGameObject;
-
+class CLAItem;
 struct SHeliShared{
 	CObject*						m_destEnemy;
 	Fvector							m_destEnemyPos; //lastEnemyPos
@@ -125,6 +125,10 @@ protected:
 
 	ref_sound						m_engineSound;
 	ref_sound						m_explodeSound;
+	IRender_Light*					m_light_render;
+	CLAItem*						m_lanim;
+	u16								m_light_bone;
+	float							m_light_brightness;
 
 	CHelicopterMovManager			m_movMngr;
 
@@ -258,7 +262,7 @@ public:
 
 	virtual float GetfHealth() const;
 	virtual float SetfHealth(float value);
-
+			void   TurnLighting(bool bOn);
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CHelicopter)
