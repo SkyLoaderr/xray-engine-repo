@@ -50,7 +50,9 @@ void CMotivationActionManagerStalker::reinit			(CAI_Stalker *object, bool clear_
 {
 	inherited::reinit		(object,clear_all);
 
+	m_storage.clear			();
 	m_storage.set_property	(eWorldPropertyDead,false);
+	m_storage.set_property	(eWorldPropertyEnemyAimed,false);
 
 #ifdef LOG_ACTION
 	if (psAI_Flags.test(aiGOAP))
@@ -124,6 +126,7 @@ void CMotivationActionManagerStalker::add_evaluators		()
 	add_evaluator			(eWorldPropertyFoundAmmo		,xr_new<CStalkerPropertyEvaluatorFoundAmmo>			());
 	add_evaluator			(eWorldPropertyReadyToKill		,xr_new<CStalkerPropertyEvaluatorReadyToKill>		());
 	add_evaluator			(eWorldPropertyKillDistance		,xr_new<CStalkerPropertyEvaluatorKillDistance>		());
+	add_evaluator			(eWorldPropertyEnemyAimed		,xr_new<CStalkerPropertyEvaluatorMember>			(&m_storage,eWorldPropertyEnemyAimed,true,true));
 }
 
 void CMotivationActionManagerStalker::add_actions			()
@@ -252,8 +255,20 @@ void CMotivationActionManagerStalker::add_actions			()
 	add_condition			(action,eWorldPropertyReadyToKill,	true);
 	add_condition			(action,eWorldPropertyItemToKill,	true);
 	add_condition			(action,eWorldPropertyItemCanKill,	true);
+	add_condition			(action,eWorldPropertyEnemyAimed,	true);
 	add_effect				(action,eWorldPropertyEnemy,		false);
 	add_operator			(eWorldOperatorKillEnemyAggressive,	action);
+
+	action					= xr_new<CStalkerActionAimEnemy>	(m_object,"aim_enemy");
+	add_condition			(action,eWorldPropertyAlive,		true);
+	add_condition			(action,eWorldPropertyEnemy,		true);
+	add_condition			(action,eWorldPropertySeeEnemy,		true);
+	add_condition			(action,eWorldPropertyKillDistance,	true);
+	add_condition			(action,eWorldPropertyReadyToKill,	true);
+	add_condition			(action,eWorldPropertyItemToKill,	true);
+	add_condition			(action,eWorldPropertyItemCanKill,	true);
+	add_effect				(action,eWorldPropertyEnemyAimed,	true);
+	add_operator			(eWorldOperatorAimEnemy,			action);
 
 	action					= xr_new<CStalkerActionGetReadyToKillModerate>(m_object,"get_ready_to_kill_moderate");
 	add_condition			(action,eWorldPropertyAlive,		true);

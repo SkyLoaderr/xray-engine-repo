@@ -228,6 +228,9 @@ class CStalkerActionKillEnemyAggressive : public CStalkerActionBase {
 protected:
 	typedef CStalkerActionBase inherited;
 
+protected:
+	bool				m_fire_crouch;
+
 public:
 						CStalkerActionKillEnemyAggressive(CAI_Stalker *object, LPCSTR action_name = "");
 	virtual void		initialize					();
@@ -314,6 +317,21 @@ public:
 	virtual void		execute						();
 	virtual void		finalize					();
 	virtual _edge_value_type	weight				(const CSConditionState &condition0, const CSConditionState &condition1) const;
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionAimEnemy
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerActionAimEnemy : public CStalkerActionBase {
+protected:
+	typedef CStalkerActionBase inherited;
+
+public:
+						CStalkerActionAimEnemy		(CAI_Stalker *object, LPCSTR action_name = "");
+	virtual void		initialize					();
+	virtual void		execute						();
+	virtual void		finalize					();
 };
 
 #include "stalker_actions_inline.h"

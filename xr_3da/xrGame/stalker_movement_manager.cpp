@@ -58,7 +58,7 @@ void CStalkerMovementManager::Load					(LPCSTR section)
 	m_movement_params.insert		(std::make_pair(eMovementParameterRunFreePositive						,STravelParams(m_fRunFreeFactor						,PI_DIV_8/2	,cf*PI_DIV_8/2	)));
 	m_movement_params.insert		(std::make_pair(eMovementParameterWalkDangerStandPositive				,STravelParams(m_fWalkFactor						,100*PI		,cf*PI			)));
 	m_movement_params.insert		(std::make_pair(eMovementParameterWalkDangerCrouchPositive				,STravelParams(m_fWalkFactor*m_fCrouchFactor		,3*PI_DIV_2	,cf*3*PI_DIV_2	)));
-	m_movement_params.insert		(std::make_pair(eMovementParameterRunDangerStandPositive				,STravelParams(m_fRunFactor							,PI_DIV_2	,cf*PI_DIV_2	)));
+	m_movement_params.insert		(std::make_pair(eMovementParameterRunDangerStandPositive				,STravelParams(m_fRunFactor							,100*PI		,cf*PI_DIV_2	)));
 	m_movement_params.insert		(std::make_pair(eMovementParameterRunDangerCrouchPositive				,STravelParams(m_fRunFactor*m_fCrouchFactor			,PI			,cf*PI			)));
 	m_movement_params.insert		(std::make_pair(eMovementParameterRunPanicStandPositive					,STravelParams(m_fPanicFactor						,PI_DIV_8/2	,cf*PI_DIV_8/2	)));
 																																											
