@@ -143,10 +143,10 @@ public:
 	//CPHJeep Jeep;
 	unsigned int disable_count;
 	//vector<CPHElement*> elements;
-	CPHWorld(){disable_count=0;frame_time=0.f;m_steps_num=0;m_start_time=Device.fTimeGlobal;m_frame_sum=0.f;
+	CPHWorld(){disable_count=0;frame_time=0.f;m_steps_num=0;m_frame_sum=0.f;
 	m_delay=0; m_previous_delay=0;m_reduce_delay=0;m_update_delay_count=0;}
 	~CPHWorld(){};
-	double Time(){return m_start_time+m_steps_num*fixed_step;}
+	//double Time(){return m_start_time+m_steps_num*fixed_step;}
 	dSpaceID GetSpace(){return Space;};
 	//	dWorldID GetWorld(){return phWorld;};
 	void Create();
@@ -193,40 +193,40 @@ class CPHElement:  public CPhysicsElement {
 	bool					bActive;
 	bool					bActivating;
 	float					m_start_time;
-	float m_volume;
-	Fvector m_mass_center;
-	u32	  ul_material;
-	dMass m_mass;
-	dSpaceID m_space;
-	dBodyID m_body;
-	dGeomID m_group;
-	Fmatrix m_m0,m_m2;
-	Fmatrix fixed_position;
+	float					m_volume;
+	Fvector					m_mass_center;
+	u32						ul_material;
+	dMass					m_mass;
+	dSpaceID				m_space;
+	dBodyID					m_body;
+	dGeomID					m_group;
 ///////////////////////////////
 
-	CPHElement* m_parent_element;
-	CPHShell*   m_shell;
-	CPHInterpolation m_body_interpolation;
+	CPHElement				*m_parent_element;
+	CPHShell				*m_shell;
+	CPHInterpolation		m_body_interpolation;
 
 
 /////disable///////////////////////
 //dVector3 mean_w;
 //dVector3 mean_v;
-dVector3 m_safe_position;
-dVector3 m_safe_velocity;
-dVector3 previous_p;
-dMatrix3 previous_r;
-dVector3 previous_p1;
-dMatrix3 previous_r1;
+dVector3					m_safe_position;
+dVector3					m_safe_velocity;
+dVector3					previous_p;
+dMatrix3					previous_r;
+dVector3					previous_p1;
+dMatrix3					previous_r1;
 //dVector3 previous_f;
 //dVector3 previous_t;
-dReal previous_dev;
-dReal previous_v;
-u32 dis_count_f;
-u32 dis_count_f1;
-dReal k_w;
-dReal k_l;//1.8f;
-bool attached;
+dReal						previous_dev;
+dReal						previous_v;
+UINT						dis_count_f;
+UINT						dis_count_f1;
+dReal						k_w;
+dReal						k_l;//1.8f;
+bool						attached;
+bool						b_contacts_saved;
+dJointGroupID				m_saved_contacts;			
 public:
 
 /////////////////////////////////////////////////////////////////////////////
@@ -237,8 +237,10 @@ private:
 	void			create_Box					(Fobb&		V);
 	void			calculate_it_data			(const Fvector& mc,float mass);
 	void			calculate_it_data_use_density(const Fvector& mc,float density);
-	void			Disable						();
+	void			Disabling						();
 public:
+	void					Disable					();
+	void					ReEnable				();
 	void					DynamicAttach			(CPHElement * E);
 	virtual void			SetAirResistance		(dReal linear=0.0002f, dReal angular=0.05f) {
 													k_w= angular;
@@ -318,6 +320,8 @@ Fmatrix zero_transform;
 float erp;
 float cfm;
 eVs   vs;
+float force;
+float velocity;
 Fvector direction;
 IC void set_limits(float h, float l) {high=h; low=l;}
 IC void set_direction(const Fvector& v){direction.set(v);}
@@ -333,6 +337,8 @@ SPHAxis(){
 	cfm=0.000001f;
 	direction.set(0,0,1);
 	vs=vs_first;
+	force=5.f;
+	velocity=0.f;
 	}
 };
 vector<SPHAxis> axes;
@@ -368,6 +374,8 @@ void CreateFullControl();
 	virtual void SetAxis					(const float x,const float y,const float z,const int axis_num);
 	virtual void SetAxisVsFirstElement		(const float x,const float y,const float z,const int axis_num);
 	virtual void SetAxisVsSecondElement		(const float x,const float y,const float z,const int axis_num);
+
+	virtual void SetForceAndVelocity		(const float force,const float velocity=0.f,const int axis_num=-1);
 public:
 	CPHJoint(CPhysicsJoint::enumType type ,CPhysicsElement* first,CPhysicsElement* second);
 	virtual ~CPHJoint(){
@@ -388,8 +396,6 @@ class CPHShell: public CPhysicsShell,public CPHObject {
 	vector<CPHElement*> elements;
 	vector<CPHJoint*>	joints;
 	dSpaceID			m_space;
-	Fmatrix m_m2;
-	Fmatrix m_m0;
 	bool bActivating;
 
 list<CPHObject*>::iterator m_ident;

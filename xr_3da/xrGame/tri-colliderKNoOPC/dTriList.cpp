@@ -23,7 +23,7 @@ dcTriListCollider* GetData(dxGeom* TriList){
 
 
 inline bool ValidateCollision(dxGeom* o1, dxGeom* o2){
-
+//return true;
 	dxBody* b1 = dGeomGetBody(o1);
 
 	dxBody* b2 = dGeomGetBody(o2);

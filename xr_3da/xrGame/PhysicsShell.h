@@ -89,6 +89,8 @@ public:
 	virtual void SetLimitsVsFirstElement	(const float low,const float high,const int axis_num)=0;
 	virtual void SetLimitsVsSecondElement	(const float low,const float high,const int axis_num)=0;
 
+	virtual void SetForceAndVelocity		(const float force,const float velocity=0.f,const int axis_num=-1)=0;
+
 };
 
 // ABSTRACT: 
