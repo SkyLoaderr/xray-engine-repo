@@ -43,7 +43,8 @@ IC		void		gm_SetAmbient	(DWORD C)
 IC		void		gm_SetAmbientLevel(DWORD C)
 {
 	DWORD C2 = C/2;
-	gm_SetAmbient	(D3DCOLOR_XRGB(C2,C2,C2));
+//	gm_SetAmbient	(D3DCOLOR_XRGB(C2,C2,C2));
+	gm_SetLevel		(C);
 }
 
 // Textures
