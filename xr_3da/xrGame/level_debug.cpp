@@ -4,6 +4,8 @@
 #include "level.h"
 #include "HUDManager.h"
 
+#ifdef DEBUG
+
 CLevelDebug::CLevelDebug()
 {
 
@@ -39,26 +41,30 @@ CLevelDebug::CObjectInfo &CLevelDebug::object_info(CObject *obj, LPCSTR class_na
 	}
 }
 
-CLevelDebug::CTextInfo &CLevelDebug::text(LPCSTR class_name)
+CLevelDebug::CTextInfo &CLevelDebug::text(void *class_ptr, LPCSTR class_name)
 {
-	TEXT_INFO_MAP_IT it = m_text_info.find(class_name);
+	SKey key(class_ptr, class_name);
+
+	TEXT_INFO_MAP_IT it = m_text_info.find(key);
 	if (it != m_text_info.end()) {
 		return (*it->second);
 	} else {
 		CTextInfo *new_info = xr_new<CTextInfo>();
-		m_text_info.insert(mk_pair(class_name, new_info));
+		m_text_info.insert(mk_pair(key, new_info));
 		return (*(new_info));
 	}
 }
 
-CLevelDebug::CLevelInfo &CLevelDebug::level_info(LPCSTR class_name)
+CLevelDebug::CLevelInfo &CLevelDebug::level_info(void *class_ptr, LPCSTR class_name)
 {
-	LEVEL_INFO_MAP_IT it = m_level_info.find(class_name);
+	SKey key(class_ptr, class_name);
+
+	LEVEL_INFO_MAP_IT it = m_level_info.find(key);
 	if (it != m_level_info.end()) {
 		return (*it->second);
 	} else {
 		CLevelInfo *new_info = xr_new<CLevelInfo>();
-		m_level_info.insert(mk_pair(class_name, new_info));
+		m_level_info.insert(mk_pair(key, new_info));
 		return (*(new_info));
 	}
 }
@@ -227,7 +233,7 @@ void CLevelDebug::CLevelInfo::add_item(const Fvector &pos, float radius, u32 col
 
 struct DrawLevelPredicate {
 	void operator() (CLevelDebug::SLevelItem s) {
-#ifdef DEBUG
+
 		if (s.ptype == CLevelDebug::SLevelItem::ePoint) {
 			RCache.dbg_DrawAABB(s.position1,0.35f,0.35f,0.35f,s.color);
 
@@ -242,14 +248,13 @@ struct DrawLevelPredicate {
 		} else if (s.ptype == CLevelDebug::SLevelItem::eBox) {
 			RCache.dbg_DrawAABB(s.position1,s.radius,s.radius,s.radius,s.color);
 		}
-#endif	
 	}
 };
 
 void CLevelDebug::CLevelInfo::draw_info()
 {
-#ifdef DEBUG
 	DrawLevelPredicate	pred;
 	process				(pred);	
-#endif
 }
+
+#endif

@@ -1,5 +1,7 @@
 #pragma once
 
+#ifdef DEBUG
+
 class CLevelDebug {
 public:
 
@@ -32,7 +34,6 @@ public:
 		};
 	
 	public:
-#ifdef	DEBUG
 		IC	void	add_item		(T data) {
 			m_data.push_back	(data);	
 			std::sort			(m_data.begin(), m_data.end(), sort_id_pred());
@@ -58,15 +59,6 @@ public:
 				process_pred(*it);
 			}
 		}
-#else
-		IC	void	add_item		(T data)			{};
-		IC	void	remove_item		(LPCSTR text)		{};
-		IC	void	remove_item		(u32 id)			{};
-		IC	void	clear			()					{};
-
-		template<class T>
-		IC	void	process			(T &process_pred)	{};
-#endif
 	};
 
 	//////////////////////////////////////////////////////////////////////////
@@ -189,12 +181,12 @@ public:
 
 	template<class T>
 	CTextInfo &text(T typed_class) {
-		return text(typeid((*typed_class)).name());	
+		return text(typed_class, typeid((*typed_class)).name());	
 	}
 
 	template<class T>
 	CLevelInfo &level_info(T typed_class) {
-		return level_info(typeid((*typed_class)).name());	
+		return level_info(typed_class, typeid((*typed_class)).name());	
 	}
 
 
@@ -206,19 +198,31 @@ private:
 	void		free_mem			();
 	
 	CObjectInfo &object_info		(CObject *obj, LPCSTR class_name);
-	CTextInfo	&text				(LPCSTR class_name);
-	CLevelInfo	&level_info			(LPCSTR class_name);
+	CTextInfo	&text				(void *class_ptr, LPCSTR class_name);
+	CLevelInfo	&level_info			(void *class_ptr, LPCSTR class_name);
 
 private:
 	
+	struct SKey {
+		void	*class_ptr;
+		LPCSTR	class_name;
+
+				SKey		(void *ptr, LPCSTR name) {class_ptr = ptr; class_name = name;}
+
+		bool	operator <	(const SKey &val) const {
+			return (class_ptr < val.class_ptr);
+		}
+
+	};
 
 	DEFINE_MAP			(LPCSTR,	CObjectInfo*,	CLASS_INFO_MAP,		CLASS_INFO_MAP_IT);	
 	DEFINE_MAP			(CObject*,	CLASS_INFO_MAP,	OBJECT_INFO_MAP,	OBJECT_INFO_MAP_IT);
-	DEFINE_MAP			(LPCSTR,	CTextInfo*,		TEXT_INFO_MAP,		TEXT_INFO_MAP_IT);
-	DEFINE_MAP			(LPCSTR,	CLevelInfo*,	LEVEL_INFO_MAP,		LEVEL_INFO_MAP_IT);
+	DEFINE_MAP			(SKey,		CTextInfo*,		TEXT_INFO_MAP,		TEXT_INFO_MAP_IT);
+	DEFINE_MAP			(SKey,		CLevelInfo*,	LEVEL_INFO_MAP,		LEVEL_INFO_MAP_IT);
 	
 	OBJECT_INFO_MAP		m_objects_info;
 	TEXT_INFO_MAP		m_text_info;
 	LEVEL_INFO_MAP		m_level_info;
 };
 
+#endif
