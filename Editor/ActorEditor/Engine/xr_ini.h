@@ -21,7 +21,7 @@ public:
 
 		Item() : first(0), second(0), comment(0) {};
 	};
-	typedef vector<Item>		Items;
+	typedef std::vector<Item>	Items;
 	typedef Items::iterator		SectIt;
 	struct	Sect {
 		LPSTR			Name;
@@ -32,15 +32,15 @@ public:
 		IC int			size()	{ return Data.size();	}
 		IC void			clear()	{ Data.clear();			}
 	};
-	typedef	vector<Sect>		Root;
+	typedef	std::vector<Sect>	Root;
 	typedef Root::iterator		RootIt;
 
-	struct sect_pred : public binary_function<Sect&, Sect&, bool> 
+	struct sect_pred : public std::binary_function<Sect&, Sect&, bool> 
 	{	
 		IC bool operator() (const Sect& x, const Sect& y) const
 		{	return strcmp(x.Name,y.Name)<0;	}
 	};
-	struct item_pred : public binary_function<Item&, Item&, bool> 
+	struct item_pred : public std::binary_function<Item&, Item&, bool> 
 	{	
 		IC bool operator() (const Item& x, const Item& y) const
 		{	

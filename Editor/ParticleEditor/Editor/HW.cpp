@@ -135,7 +135,7 @@ void CHW::CreateDevice		(HWND m_hWnd,DWORD &dwWidth,DWORD &dwHeight)
 
 DWORD CHW::selectGPU ()
 {
-	if (Caps.bForceSWTransform) return D3DCREATE_SOFTWARE_VERTEXPROCESSING;
+	if (Caps.bForceGPU_SW) return D3DCREATE_SOFTWARE_VERTEXPROCESSING;
 
 	D3DCAPS8	caps;
 	pD3D->GetDeviceCaps(D3DADAPTER_DEFAULT,D3DDEVTYPE_HAL,&caps);

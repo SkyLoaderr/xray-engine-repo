@@ -94,7 +94,7 @@ CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly)
 			_FREE(comment);
 			if (Current.Name && Current.Name[0]) 
 			{
-				RootIt I		= lower_bound(DATA.begin(),DATA.end(),Current,sect_pred());
+				RootIt I		= std::lower_bound(DATA.begin(),DATA.end(),Current,sect_pred());
 				DATA.insert		(I,Current);
 				Current.clear	();
 			}
@@ -122,7 +122,7 @@ CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly)
 				if (bReadOnly) {
 					if (I.first) {
 						_FREE(I.comment);
-						SectIt	it	= lower_bound(Current.begin(),Current.end(),I,item_pred());
+						SectIt	it	= std::lower_bound(Current.begin(),Current.end(),I,item_pred());
 						Current.Data.insert(it,I);
 					} else {
 						_FREE(I.second);
@@ -130,7 +130,7 @@ CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly)
 					}
 				} else {
 					if (I.first || I.second || I.comment) {
-						SectIt	it	= lower_bound(Current.begin(),Current.end(),I,item_pred());
+						SectIt	it	= std::lower_bound(Current.begin(),Current.end(),I,item_pred());
 						Current.Data.insert(it,I);
 					}
 				}
@@ -139,7 +139,7 @@ CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly)
 	}
 	if (Current.Name && Current.Name[0]) 
 	{
-		RootIt I		= lower_bound(DATA.begin(),DATA.end(),Current,sect_pred());
+		RootIt I		= std::lower_bound(DATA.begin(),DATA.end(),Current,sect_pred());
 		DATA.insert		(I,Current);
 		Current.clear	();
 	}
@@ -208,7 +208,7 @@ CInifile::~CInifile( )
 
 BOOL	CInifile::SectionExists( LPCSTR S )
 {
-	Sect Test; Test.Name = (char*)S; RootIt I = lower_bound(DATA.begin(),DATA.end(),Test,sect_pred());
+	Sect Test; Test.Name = (char*)S; RootIt I = std::lower_bound(DATA.begin(),DATA.end(),Test,sect_pred());
 	return (I!=DATA.end() && strcmp(I->Name,S)==0);
 }
 
@@ -216,7 +216,7 @@ BOOL	CInifile::LineExists( LPCSTR S, LPCSTR L )
 {
 	if (!SectionExists(S)) return FALSE;
 	Sect&	I = ReadSection(S);
-	Item Test; Test.first=(char*)L; SectIt A = lower_bound(I.begin(),I.end(),Test,item_pred());
+	Item Test; Test.first=(char*)L; SectIt A = std::lower_bound(I.begin(),I.end(),Test,item_pred());
 	return (A!=I.end() && strcmp(A->first,L)==0);
 }
  
@@ -232,7 +232,7 @@ DWORD	CInifile::LineCount	(LPCSTR Sname)
 CInifile::Sect& CInifile::ReadSection( LPCSTR S )
 {
 	char	section[256]; strcpy(section,S); strlwr(section);
-	Sect Test; Test.Name = section; RootIt I = lower_bound(DATA.begin(),DATA.end(),Test,sect_pred());
+	Sect Test; Test.Name = section; RootIt I = std::lower_bound(DATA.begin(),DATA.end(),Test,sect_pred());
 #ifdef ENGINE_BUILD
 	if (I!=DATA.end() && strcmp(I->Name,section)==0)	return *I;
 	else												Device.Fatal("Can't open section '%s'",S);
@@ -250,7 +250,7 @@ CInifile::Sect& CInifile::ReadSection( LPCSTR S )
 LPCSTR	CInifile::ReadSTRING(LPCSTR S, LPCSTR L )
 {
 	Sect&	I = ReadSection(S);
-	Item Test; Test.first=(char*)L; SectIt	A = lower_bound(I.begin(),I.end(),Test,item_pred());
+	Item Test; Test.first=(char*)L; SectIt	A = std::lower_bound(I.begin(),I.end(),Test,item_pred());
 #ifdef ENGINE_BUILD
 	if (A!=I.end() && strcmp(A->first,L)==0)	return A->second;
 	else										Device.Fatal("Can't find variable '%s'",L);
@@ -346,7 +346,7 @@ void	CInifile::WriteString	( LPCSTR S, LPCSTR L, LPCSTR			V, LPCSTR comment)
 		// create new section
 		Sect			NEW;
 		NEW.Name		= strdup(sect);
-		RootIt I		= lower_bound(DATA.begin(),DATA.end(),NEW,sect_pred());
+		RootIt I		= std::lower_bound(DATA.begin(),DATA.end(),NEW,sect_pred());
 		DATA.insert		(I,NEW);
 	}
 
@@ -360,7 +360,7 @@ void	CInifile::WriteString	( LPCSTR S, LPCSTR L, LPCSTR			V, LPCSTR comment)
 	I.first			= (line[0]?strdup(line):0);
 	I.second		= (value[0]?strdup(value):0);
 	I.comment		= (comment?strdup(comment):0);
-	SectIt	it		= lower_bound(data.begin(),data.end(),I,item_pred());
+	SectIt	it		= std::lower_bound(data.begin(),data.end(),I,item_pred());
 
     if (it != data.end()) {
 	    // Check for "first" matching

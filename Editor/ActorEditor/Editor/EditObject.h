@@ -51,8 +51,10 @@ public:
     IC void			SetFVF			(DWORD fvf){m_dwFVF=fvf;}
     IC void			SetTexture		(LPCSTR name){m_Texture=name;}
     IC void			SetVMap			(LPCSTR name){m_VMap=name;}
+#ifdef _EDITOR
     IC void			CreateShader	(){m_Shader=Device.Shader.Create(m_ShaderName.c_str(),m_Texture.c_str());}
     IC void			DeleteShader	(){ if (m_Shader) Device.Shader.Delete(m_Shader); m_Shader=0; }
+#endif
 #ifdef _MAX_EXPORT
 	DWORD			mat_id;
 	Mtl*			pMtlMain;
