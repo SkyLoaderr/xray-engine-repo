@@ -106,8 +106,8 @@ void CLightShadows::calculate	()
 			float		p_R		=	C.O->Radius();
 			float		p_hat	=	p_R/p_dist;
 			float		p_asp	=	1.f;
-			float		p_near	=	p_dist-p_R-EPS_L; if (p_near<EPS_L)	p_near=EPS_L;
-			float		p_far	=	p_dist+p_R+EPS_L;
+			float		p_near	=	p_dist-p_R-EPS_L;	if (p_near<EPS_L)			p_near	= EPS_L;
+			float		p_far	=	L->range;			if (p_far<(p_near+EPS_L))	p_far	= p_near+EPS_L;
 			mProject.build_projection_HAT	(p_hat,p_asp,p_near,p_far);
 			CHK_DX					(HW.pDevice->SetTransform(D3DTS_PROJECTION,mProject.d3d()));
 			
@@ -126,7 +126,7 @@ void CLightShadows::calculate	()
 			Fmatrix		mCombine;
 			mCombine.mul			(mProject,mView);
 			CFrustum	F;
-			F.CreateFromMatrix		(mCombine,FRUSTUM_P_LRTB+FRUSTUM_P_NEAR);
+			F.CreateFromMatrix		(mCombine,FRUSTUM_P_ALL);
 
 			// Select slot and set viewport
 			int		s_x			=	slot_id%slot_line;

@@ -587,7 +587,7 @@ void CActor::g_cl_CheckControls(DWORD mstate_wf, Fvector &vControlAccel, float &
 
 	// transform local dir to world dir
 	Fmatrix				mOrient;
-	mOrient.rotateY		(r_model_yaw);
+	mOrient.rotateY		(-r_model_yaw);
 	mOrient.transform_dir(vControlAccel);
 }
 
@@ -609,7 +609,7 @@ void CActor::g_Orientate	(DWORD mstate_rl, float dt)
 	u_lerp_angle		(r_model_yaw_delta,calc_yaw,PI_MUL_2,dt);
 
 	// build matrix
-	mRotate.rotateY		(r_model_yaw + r_model_yaw_delta);
+	mRotate.rotateY		(-(r_model_yaw + r_model_yaw_delta));
 }
 
 // ****************************** Update actor orientation according to camera orientation

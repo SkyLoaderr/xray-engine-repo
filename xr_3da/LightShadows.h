@@ -24,9 +24,15 @@ private:
 		float				D;
 		svector<NODE,32>	nodes;
 	};
+	struct	shadow 
+	{
+		int					slot;
+		Fmatrix				mXFORM;
+	};
 private:
 	CObject*				current;
 	vector<caster>			casters;
+	vector<shadow>			shadows;
 	vector<int>				id;
 	vector<xrLIGHT*>		lights;
 	CRT*					RT;

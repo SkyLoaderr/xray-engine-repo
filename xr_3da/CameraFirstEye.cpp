@@ -36,7 +36,7 @@ void CCameraFirstEye::Update(Fvector& point, Fvector& noise_dangle)
 	Fmatrix			mR, R;
 	Fmatrix			rX, rY, rZ;
 	rX.rotateX		(noise_dangle.x);
-	rY.rotateY		(noise_dangle.y);
+	rY.rotateY		(-noise_dangle.y);
 	rZ.rotateZ		(noise_dangle.z);
 	R.mul_43		(rY,rX);
 	R.mul_43		(rZ);

@@ -65,9 +65,9 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 	Fvector2 P;
 
 	Fmatrix LM;
-	LM.rotateY(heading);
-	LM.translate_over(Actor->Position());
-	LM.invert();
+	LM.rotateY			(-heading);
+	LM.translate_over	(Actor->Position());
+	LM.invert			();
 
 	// draw self
 	ConvertToLocal	(LM,Actor->Position(),P);

@@ -383,11 +383,11 @@ void CCustomMonster::UpdateCL	()
 
 	// Use interpolated/last state
 	// mTransformCL	= mTransform;
-	clTransform.rotateY			(1* -NET_Last.o_model);
+	clTransform.rotateY			(NET_Last.o_model);
 	clTransform.translate_over	(NET_Last.p_pos);
 
 	if (Remote())		{
-		svTransform.rotateY			(1* -N.o_model);
+		svTransform.rotateY			(N.o_model);
 		svTransform.translate_over	(N.p_pos);
 		vPosition.set				(NET_Last.p_pos);
 	}

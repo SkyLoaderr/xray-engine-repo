@@ -21,7 +21,7 @@ void __stdcall CWeaponM134::RotateCallback_norm(CBoneInstance* B)
 
 	switch (W->bRotAxisWpn){
 	case 0: spin.rotateX	(-W->fRotateAngle); break;
-	case 1: spin.rotateY	(-W->fRotateAngle); break;
+	case 1: spin.rotateY	(W->fRotateAngle);	break;
 	case 2: spin.rotateZ	(-W->fRotateAngle); break;
 	default: NODEFAULT;
 	}
