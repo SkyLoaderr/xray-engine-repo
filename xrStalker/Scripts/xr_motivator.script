@@ -155,6 +155,21 @@ if false then
 	end
 end
 
+--' Проверка врагов
+if false then 
+	local be = self.object:best_enemy()
+	if be ~= nil then
+		printf("ENEMYCHECK: %s[%s, %s, %s] -> %s[%s, %s, %s]", self.object:name(),
+															self.object:team(),
+															self.object:squad(),
+															self.object:group(),
+														be:name(), 
+															be:team(), 
+															be:squad(), 
+															be:group())
+	end
+end
+
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:reload (section)
@@ -168,12 +183,25 @@ function pda_callback(recepient, who, msg_type)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function hear_callback(self, who, sound_type, sound_position, sound_power)
-	--if who:id() ~= self:id() then
-	--	printf("SOUNDCHECK %s, %f, dist: %d m.", who:name(), sound_power, self:position():distance_to(who:position()))
-	--end
+	function relation(object, victim)
+		if object:relation(victim) == game_object.enemy then
+			return "enemy"
+		end
+		if object:relation(victim) == game_object.friend then
+			return "friend"
+		end
+		if object:relation(victim) == game_object.neutral then
+			return "neutral"
+		end
+		return "none"
+	end
+	
+	if who:id() ~= self:id() then
+		--printf("SOUNDCHECK %s to %s [%s], %f, dist: %d m.", self:name(), who:name(), relation(self, who), sound_power, self:position():distance_to(who:position()))
+	end
 end
 ----------------------------------------------------------------------------------------------------------------------
-function AddToMotivator(npc)
+	function AddToMotivator(npc)
     npc:bind_object(this.motivator_binder(npc))
 end
 ----------------------------------------------------------------------------------------------------------------------
