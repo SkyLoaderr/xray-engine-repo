@@ -60,16 +60,16 @@ SV_SPAWN
 
 M_SPAWN
 {	
-	char		Name_section[];
-	char		Name_replace[];
+	stringZ		Name_section;	// section in SYSTEM.LTX
+	stringZ		Name_replace;	// Name of EDITOR's object, user can change this
 
-	u8			g_team;
-	u8			g_squad;
-	u8			g_group;
+	u8			g_team;			// user defined
+	u8			g_squad;		// user defined
+	u8			g_group;		// user defined
 
-	u8			o_Point;	// 0xFF = AutoSelect, 0xFE = UseSupplied
-	Fvector		o_Position;
-	Fvector		o_Angle;
+	u8			o_Point;		// [0..0xFD] = NumberOfRespawnPoint 0xFF = AutoSelect, 0xFE = UseSupplied
+	vec3		o_Position;
+	vec3		o_Angle;
 
 	u16			server_id;
 	u8			local;
@@ -104,6 +104,12 @@ M_SPAWN
 			}
 			...
 		}
+	}
+	zone
+	{
+		cform {
+		}
+
 	}
 };
 
