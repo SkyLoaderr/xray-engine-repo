@@ -21,6 +21,7 @@
 			wpn_groza \n
 			ammo_9x39_sp5 = 2 \n
 			ammo_vog-25p = 2 \n
+			device_torch \n
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -50,6 +51,7 @@
 			ammo_9x18_pmm = 1 \n
 			wpn_bm16 \n
 			ammo_12x76_zhekan = 1 \n
+			device_torch \n
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -79,6 +81,7 @@
 			ammo_9x18_pmm = 1 \n
 			wpn_mp5 \n
 			ammo_9x19_pbp = 1 \n
+			device_torch \n
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -108,6 +111,7 @@
 			ammo_9x18_pbp = 1 \n
 			wpn_vintorez \n
 			ammo_9x39_ap = 1 \n
+			device_torch \n
 		</supplies>
 				
 		<start_dialog>hello_dialog</start_dialog>
@@ -137,6 +141,7 @@
 			ammo_9x18_pbp = 1 \n
 			wpn_svu \n
 			ammo_7.62x54_ap = 1 \n
+			device_torch \n
 		</supplies>
 				
 		<start_dialog>hello_dialog</start_dialog>
@@ -166,6 +171,7 @@
 			ammo_9x18_pbp = 1 \n
 			wpn_svu \n
 			ammo_7.62x54_7h14 = 1 \n
+			device_torch \n
 		</supplies>
 				
 		<start_dialog>hello_dialog</start_dialog>
@@ -195,6 +201,7 @@
 			ammo_11.43x23_hydro = 1 \n
 			wpn_spas12 \n
 			ammo_12x76_dart	= 1 \n
+			device_torch \n
 		</supplies>		
 			
 		<start_dialog>hello_dialog</start_dialog>
@@ -225,6 +232,7 @@
 			ammo_9x39_pab9 = 1 \n
 			ammo_9x39_sp5 = 1 \n
 			ammo_vog-25 = 2 \n
+			device_torch \n
 		</supplies>		
 			
 		<start_dialog>hello_dialog</start_dialog>
@@ -255,6 +263,7 @@
 			ammo_9x39_ap = 1 \n
 			ammo_9x39_sp5 = 1 \n
 			ammo_vog-25p = 2 \n
+			device_torch \n
 		</supplies>		
 			
 		<start_dialog>hello_dialog</start_dialog>
@@ -283,6 +292,7 @@
 			ammo_9x19_pbp = 1 \n
 			wpn_val \n
 			ammo_9x39_sp5 = 1 \n
+			device_torch \n
 		</supplies>		
 			
 		<start_dialog>hello_dialog</start_dialog>
@@ -311,6 +321,7 @@
 			ammo_9x18_pbp = 1 \n
 			wpn_vintorez \n
 			ammo_9x39_sp5 = 1 \n
+			device_torch \n
 		</supplies>		
 			
 		<start_dialog>hello_dialog</start_dialog>
@@ -340,6 +351,7 @@
 			ammo_9x19_pbp = 1 \n			
 			wpn_val \n
 			ammo_9x39_sp5 = 1 \n
+			device_torch \n
 		</supplies>			
 		
 		<start_dialog>hello_dialog</start_dialog>
@@ -369,6 +381,7 @@
 			wpn_groza \n
 			ammo_9x39_sp5 = 2 \n
 			ammo_vog-25p = 2 \n
+			device_torch \n
 		</supplies>	
 				
 		<start_dialog>hello_dialog</start_dialog>
