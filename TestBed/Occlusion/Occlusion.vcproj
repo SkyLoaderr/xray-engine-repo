@@ -19,8 +19,7 @@
 			ConfigurationType="1"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2"
-			CompilerName="Microsoft">
+			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
@@ -75,8 +74,7 @@
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
 			CharacterSet="2"
-			WholeProgramOptimization="TRUE"
-			CompilerName="Intel">
+			WholeProgramOptimization="TRUE">
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/Qvc7 /Qwp_ipo /O3 /QxiM "
@@ -139,81 +137,119 @@
 			Name="XRCore"
 			Filter="">
 			<File
-				RelativePath=".\FixedVector.h"/>
+				RelativePath=".\FixedVector.h">
+			</File>
 			<File
-				RelativePath=".\_Faabb.h"/>
+				RelativePath=".\_Faabb.h">
+			</File>
 			<File
-				RelativePath=".\_bitwise.h"/>
+				RelativePath=".\_bitwise.h">
+			</File>
 			<File
-				RelativePath=".\_color.h"/>
+				RelativePath=".\_color.h">
+			</File>
 			<File
-				RelativePath=".\_compressed_normal.cpp"/>
+				RelativePath=".\_compressed_normal.cpp">
+			</File>
 			<File
-				RelativePath=".\_compressed_normal.h"/>
+				RelativePath=".\_compressed_normal.h">
+			</File>
 			<File
-				RelativePath=".\_d3d_extensions.h"/>
+				RelativePath=".\_d3d_extensions.h">
+			</File>
 			<File
-				RelativePath=".\_fbox.h"/>
+				RelativePath=".\_fbox.h">
+			</File>
 			<File
-				RelativePath=".\_fbox2.h"/>
+				RelativePath=".\_fbox2.h">
+			</File>
 			<File
-				RelativePath=".\_fpoint.h"/>
+				RelativePath=".\_fpoint.h">
+			</File>
 			<File
-				RelativePath=".\_frect.h"/>
+				RelativePath=".\_frect.h">
+			</File>
 			<File
-				RelativePath=".\_intersection_quad.h"/>
+				RelativePath=".\_intersection_quad.h">
+			</File>
 			<File
-				RelativePath=".\_ipoint.h"/>
+				RelativePath=".\_ipoint.h">
+			</File>
 			<File
-				RelativePath=".\_irect.h"/>
+				RelativePath=".\_irect.h">
+			</File>
 			<File
-				RelativePath=".\_l_vertex.h"/>
+				RelativePath=".\_l_vertex.h">
+			</File>
 			<File
-				RelativePath=".\_lit_vertex.h"/>
+				RelativePath=".\_lit_vertex.h">
+			</File>
 			<File
-				RelativePath=".\_math.cpp"/>
+				RelativePath=".\_math.cpp">
+			</File>
 			<File
-				RelativePath=".\_math.h"/>
+				RelativePath=".\_math.h">
+			</File>
 			<File
-				RelativePath=".\_matrix.h"/>
+				RelativePath=".\_matrix.h">
+			</File>
 			<File
-				RelativePath=".\_matrix33.h"/>
+				RelativePath=".\_matrix33.h">
+			</File>
 			<File
-				RelativePath=".\_obb.h"/>
+				RelativePath=".\_obb.h">
+			</File>
 			<File
-				RelativePath=".\_plane.h"/>
+				RelativePath=".\_plane.h">
+			</File>
 			<File
-				RelativePath=".\_quaternion.cpp"/>
+				RelativePath=".\_quaternion.cpp">
+			</File>
 			<File
-				RelativePath=".\_quaternion.h"/>
+				RelativePath=".\_quaternion.h">
+			</File>
 			<File
-				RelativePath=".\_random.h"/>
+				RelativePath=".\_random.h">
+			</File>
 			<File
-				RelativePath=".\_sphere.cpp"/>
+				RelativePath=".\_sphere.cpp">
+			</File>
 			<File
-				RelativePath=".\_sphere.h"/>
+				RelativePath=".\_sphere.h">
+			</File>
 			<File
-				RelativePath=".\_std_extensions.h"/>
+				RelativePath=".\_std_extensions.h">
+			</File>
 			<File
-				RelativePath=".\_stl_extensions.h"/>
+				RelativePath=".\_stl_extensions.h">
+			</File>
 			<File
-				RelativePath=".\_tl_vertex.h"/>
+				RelativePath=".\_tl_vertex.h">
+			</File>
 			<File
-				RelativePath=".\_types.h"/>
+				RelativePath=".\_types.h">
+			</File>
 			<File
-				RelativePath=".\_vector2.h"/>
+				RelativePath=".\_vector2.h">
+			</File>
 			<File
-				RelativePath=".\_vector3d.h"/>
+				RelativePath=".\_vector3d.h">
+			</File>
 			<File
-				RelativePath=".\_vector4.h"/>
+				RelativePath=".\_vector4.h">
+			</File>
 			<File
-				RelativePath=".\_vertex.h"/>
+				RelativePath=".\_vertex.h">
+			</File>
 			<File
-				RelativePath=".\cpuid.cpp"/>
+				RelativePath=".\cpuid.cpp">
+			</File>
 			<File
-				RelativePath=".\cpuid.h"/>
+				RelativePath=".\cpuid.h">
+			</File>
 			<File
-				RelativePath=".\vector.h"/>
+				RelativePath=".\vector.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="Test"
@@ -243,7 +279,8 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\StdAfx.h"/>
+				RelativePath=".\StdAfx.h">
+			</File>
 			<File
 				RelativePath=".\occRasterizer.cpp">
 				<FileConfiguration
@@ -260,7 +297,8 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\occRasterizer.h"/>
+				RelativePath=".\occRasterizer.h">
+			</File>
 			<File
 				RelativePath=".\occRasterizer_core.cpp">
 				<FileConfiguration
@@ -270,9 +308,14 @@
 						AssemblerOutput="4"/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath="threads.cpp">
+			</File>
 		</Filter>
 		<File
-			RelativePath=".\FTimer.h"/>
+			RelativePath=".\FTimer.h">
+		</File>
 	</Files>
-	<Globals/>
+	<Globals>
+	</Globals>
 </VisualStudioProject>
