@@ -144,7 +144,7 @@ void CAI_Idol::feel_touch_new				(CObject* O)
 	CBolt				*E	= dynamic_cast<CBolt*>			(O);
 
 	if (I && !E) {
-		Msg("Taking item %s!",I->cName());
+		Msg("Taking item %s!",*I->cName());
 		NET_Packet		P;
 		u_EventGen		(P,GE_OWNERSHIP_TAKE,ID());
 		P.w_u16			(u16(I->ID()));

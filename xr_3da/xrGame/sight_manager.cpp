@@ -171,7 +171,7 @@ void CSightManager::Exec_Look(float dt)
 
 	// validating angles
 	//#ifdef DEBUG
-	//	Msg						("StalkerA (%d, %s) t=%f, c=%f, tt=%f, tc=%f",Level().timeServer(),cName(),stalker->m_head.target.yaw,stalker->m_head.current.yaw,stalker->m_body.target.yaw,stalker->m_body.current.yaw);
+	//	Msg						("StalkerA (%d, %s) t=%f, c=%f, tt=%f, tc=%f",Level().timeServer(),*cName(),stalker->m_head.target.yaw,stalker->m_head.current.yaw,stalker->m_body.target.yaw,stalker->m_body.current.yaw);
 	VERIFY					(_valid(stalker->m_head.current.yaw));
 	VERIFY					(_valid(stalker->m_head.current.pitch));
 	VERIFY					(_valid(stalker->m_head.target.yaw));

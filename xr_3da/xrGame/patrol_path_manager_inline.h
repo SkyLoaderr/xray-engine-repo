@@ -68,17 +68,20 @@ IC	void CPatrolPathManager::set_path	(const CLevel::SPath *path, ref_str path_na
 	m_path					= path;
 	m_path_name				= path_name;
 	m_actuality				= false;
+	m_completed				= false;
 }
 
 IC	void CPatrolPathManager::set_start_type	(const EPatrolStartType patrol_start_type)
 {
 	m_actuality				= m_actuality && (m_start_type == patrol_start_type);
+	m_completed				= m_completed && m_actuality;
 	m_start_type			= patrol_start_type;
 }
 
 IC	void CPatrolPathManager::set_route_type		(const EPatrolRouteType patrol_route_type)
 {
 	m_actuality				= m_actuality && (m_route_type == patrol_route_type);
+	m_completed				= m_completed && m_actuality;
 	m_route_type			= patrol_route_type;
 }
 
@@ -95,4 +98,5 @@ IC	void CPatrolPathManager::set_callback(const CScriptMonster::SMemberCallback &
 IC	void CPatrolPathManager::make_inactual	()
 {
 	m_actuality				= false;
+	m_completed				= false;
 }

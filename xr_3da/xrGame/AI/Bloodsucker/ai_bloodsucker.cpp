@@ -506,8 +506,8 @@ void CAI_Bloodsucker::SquadDebug()
 	HUD().pFontMedium->SetColor(0xff9999bb);
 	HUD().pFontMedium->OutSet(x,y);
 	
-	if (bThisIsLeader) HUD().pFontMedium->OutNext("L:%s", cName());
-	else HUD().pFontMedium->OutNext("%s", cName());
+	if (bThisIsLeader) HUD().pFontMedium->OutNext("L:%s", *cName());
+	else HUD().pFontMedium->OutNext("%s", *cName());
 
 	// Show task
 	HUD().pFontMedium->SetColor(0xffffff33);

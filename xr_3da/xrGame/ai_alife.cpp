@@ -66,9 +66,9 @@ BOOL CSE_ALifeSimulator::shedule_Ready()
 	return(TRUE);
 }
 
-LPCSTR CSE_ALifeSimulator::cName()
+ref_str CSE_ALifeSimulator::cName()
 {
-	return("Simulator");
+	return		(ref_str("Simulator"));
 }; 
 
 void CSE_ALifeSimulator::vfUpdateDynamicData(CSE_ALifeDynamicObject *tpALifeDynamicObject)

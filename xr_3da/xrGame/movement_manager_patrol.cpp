@@ -18,11 +18,13 @@ void CMovementManager::process_patrol_path()
 				CPatrolPathManager::select_point(Position(),CLevelPathManager::m_dest_vertex_id);
 				if (CPatrolPathManager::failed())
 					break;
+
 				if (CPatrolPathManager::completed()) {
 					m_path_state	= ePathStatePathCompleted;
 					break;
-				}else
-					m_path_state	= ePathStateBuildLevelPath;
+				}
+
+				m_path_state		= ePathStateBuildLevelPath;
 				if (time_over())
 					break;
 			}

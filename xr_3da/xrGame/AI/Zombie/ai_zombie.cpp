@@ -72,7 +72,7 @@ void CAI_Zombie::Die()
 	vfRemoveActiveMember();
 	--(Group.m_dwAliveCount);
 	m_eCurrentState = aiZombieDie;
-//	Msg("%s : Death signal %d",cName(),Level().timeServer());
+//	Msg("%s : Death signal %d",*cName(),Level().timeServer());
 }
 
 void CAI_Zombie::Load(LPCSTR section)

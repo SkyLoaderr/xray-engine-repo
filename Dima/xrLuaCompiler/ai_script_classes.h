@@ -97,7 +97,7 @@ public:
 	{
 		CEntity				*l_tpEntity = dynamic_cast<CEntity*>(m_tpGameObject);
 		if (!l_tpEntity) {
-			LuaOut			(Lua::eLuaMessageTypeError,"%s cannot access class member Kill!",m_tpGameObject->cName());
+			LuaOut			(Lua::eLuaMessageTypeError,"%s cannot access class member Kill!",*m_tpGameObject->cName());
 			return;
 		}
 		l_tpEntity->KillEntity	(who ? who->m_tpGameObject : 0);
@@ -133,13 +133,13 @@ public:
 	{
 		CEntityAlive		*l_tpEntityAlive1 = dynamic_cast<CEntityAlive*>(m_tpGameObject);
 		if (!l_tpEntityAlive1) {
-			LuaOut			(Lua::eLuaMessageTypeError,"%s cannot access class member!",m_tpGameObject->cName());
+			LuaOut			(Lua::eLuaMessageTypeError,"%s cannot access class member!",*m_tpGameObject->cName());
 			return;
 		}
 		
 		CEntityAlive		*l_tpEntityAlive2 = dynamic_cast<CEntityAlive*>(who->m_tpGameObject);
 		if (!l_tpEntityAlive2) {
-			LuaOut			(Lua::eLuaMessageTypeError,"%s cannot access class member!",who->m_tpGameObject->cName());
+			LuaOut			(Lua::eLuaMessageTypeError,"%s cannot access class member!",*who->m_tpGameObject->cName());
 			return;
 		}
 		

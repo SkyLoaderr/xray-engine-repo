@@ -139,8 +139,8 @@ void Script::vfExportLevel(CLuaVirtualMachine *tpLuaVirtualMachine)
 	[
 		// declarations
 		def("cameras",						get_camera_manager),
-		def("object",							get_object_by_name, adopt(return_value)),
-		def("actor",							tpfGetActor, adopt(return_value)),
+		def("object",							get_object_by_name),
+		def("actor",							tpfGetActor),
 		//def("set_artifact_merge",				SetArtifactMergeFunctor),
 		def("get_weather",					get_weather),
 		def("set_weather",					set_weather),

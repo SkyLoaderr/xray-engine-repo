@@ -317,8 +317,8 @@ void CStalkerAnimations::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 		}
 
 	
-//	Msg			("[%s] Current weapon slot   : %d",cName(),dwCurrentAniSlot);
-//	Msg			("[%s] Current movement type : %d",cName(),stalker->movement_type());
+//	Msg			("[%s] Current weapon slot   : %d",*cName(),dwCurrentAniSlot);
+//	Msg			("[%s] Current movement type : %d",*cName(),stalker->movement_type());
 
 	EBodyState l_tBodyState = (eBodyStateStand == stalker->body_state()) && stalker->IsLimping() ? eBodyStateStandDamaged : stalker->body_state();
 	if (stalker->inventory().ActiveItem()) {

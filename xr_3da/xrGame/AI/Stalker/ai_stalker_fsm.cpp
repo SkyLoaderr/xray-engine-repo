@@ -18,7 +18,7 @@
 #define AI_BEST
 /**
 	Msg("Speed      : %7.3f",m_fCurSpeed);\
-	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
+	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",*cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
 	Msg("Path state : %s",(m_tPathState == ePathStateSearchNode) ? "Searching for the vertex" : (m_tPathState == ePathStateBuildNodePath) ? "Building path" : (m_tPathState == ePathStateBuildTravelLine) ? "Building travel line" : "Dodging travel line");\
 /**/
 
@@ -170,7 +170,7 @@ void CAI_Stalker::Camp(bool /**bWeapon/**/)
 //	if (Position().distance_to((*I).m_self_params.m_position) > .1f) {
 //		set_level_dest_vertex((*I).m_self_params.m_level_vertex_id);
 //		if (!ai().level_graph().valid_vertex_id(level_dest_vertex_id())) {
-//			Msg("! Object %s is in invalid vertex",(*I).m_object ? (*I).m_object->cName() : "world");
+//			Msg("! Object %s is in invalid vertex",(*I).m_object ? *(*I).m_object->cName() : "world");
 //		}
 ////		vfSetParameters			(0,&(m_tpaDynamicObjects[iIndex].tMySavedPosition),false,eObjectActionIdle,ePathTypeStraight,eBodyStateCrouch,eMovementTypeWalk,eMentalStateDanger,eLookTypeFirePoint,m_tpaDynamicObjects[iIndex].tSavedPosition);
 //		Fvector					position = (*I).m_self_params.m_position;
@@ -516,7 +516,7 @@ void CAI_Stalker::SearchEnemy()
 //			OUT_TEXT("Last enemy position");
 //			m_level_dest_vertex_id	= m_dwSavedEnemyNodeID;
 //			if (int(m_level_dest_vertex_id) <= 0) {
-//				Msg("! Invalid Saved m_object vertex in Search m_object (%s)",m_tSavedEnemy ? m_tSavedEnemy->cName() : "world");
+//				Msg("! Invalid Saved m_object vertex in Search m_object (%s)",m_tSavedEnemy ? *m_tSavedEnemy->cName() : "world");
 //				m_tSavedEnemy = 0;
 //				m_dwInertion = 0;
 //				return;
@@ -565,7 +565,7 @@ void CAI_Stalker::SearchEnemy()
 //						tPoint.y			+= 1.5f;
 //						m_level_dest_vertex_id	= m_dwSavedEnemyNodeID;
 //						if (!m_level_dest_vertex_id) {
-//							Msg("! Invalid Saved m_object vertex in Search m_object 2 (%s)",m_tSavedEnemy ? m_tSavedEnemy->cName() : "world");
+//							Msg("! Invalid Saved m_object vertex in Search m_object 2 (%s)",m_tSavedEnemy ? *m_tSavedEnemy->cName() : "world");
 //							m_tSavedEnemy = 0;
 //							m_dwInertion = 0;
 //							return;
@@ -610,7 +610,7 @@ void CAI_Stalker::SearchEnemy()
 //					Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwSearched = 1;
 //					m_level_dest_vertex_id = Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID;
 //					if (!m_level_dest_vertex_id) {
-//						Msg("! Invalid Saved m_object vertex in Search m_object 3 (%s)",m_tSavedEnemy ? m_tSavedEnemy->cName() : "world");
+//						Msg("! Invalid Saved m_object vertex in Search m_object 3 (%s)",m_tSavedEnemy ? *m_tSavedEnemy->cName() : "world");
 //					}
 //					m_tPathState = ePathStateBuildNodePath;
 //				}
@@ -640,7 +640,7 @@ void CAI_Stalker::SearchEnemy()
 //					if ((ai().level_graph().check_position_in_direction(level_vertex_id(),Position(),ai().level_graph().vertex_position(Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID)) == -1) && (ai().u_SqrDistance2Node(Position(),ai().level_graph().vertex(Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID)) < .35f)) {
 //						m_level_dest_vertex_id	= Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID;
 //						if (!m_level_dest_vertex_id) {
-//							Msg("! Invalid Saved m_object vertex in Search m_object 4 (%s)",m_tSavedEnemy ? m_tSavedEnemy->cName() : "world");
+//							Msg("! Invalid Saved m_object vertex in Search m_object 4 (%s)",m_tSavedEnemy ? *m_tSavedEnemy->cName() : "world");
 //						}
 //						vfSetParameters		(0,0,false,eObjectActionIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eMentalStateDanger,eLookTypeSearch);
 //					}
@@ -649,7 +649,7 @@ void CAI_Stalker::SearchEnemy()
 //						tPoint.y			+= 1.5f;
 //						m_level_dest_vertex_id	= Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID;
 //						if (!m_level_dest_vertex_id) {
-//							Msg("! Invalid Saved m_object vertex in Search m_object 5 (%s)",m_tSavedEnemy ? m_tSavedEnemy->cName() : "world");
+//							Msg("! Invalid Saved m_object vertex in Search m_object 5 (%s)",m_tSavedEnemy ? *m_tSavedEnemy->cName() : "world");
 //						}
 //						vfSetParameters		(0,0,false,eObjectActionIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eMentalStateDanger,eLookTypePoint,tPoint);
 //					}
@@ -898,7 +898,7 @@ void CAI_Stalker::TakeItems()
 //	tpItemToTake->Center(tPoint);
 //	set_level_dest_vertex	(tpItemToTake->level_vertex_id());
 //	if (!level_dest_vertex_id()) {
-//		Msg("! Invalid item vertex %s",tpItemToTake->cName());
+//		Msg("! Invalid item vertex %s",*tpItemToTake->cName());
 //	}
 //	if (ai().level_graph().inside(ai().level_graph().vertex(level_dest_vertex_id()),tPoint))
 //		tPoint.y			= ai().level_graph().vertex_plane_y(*ai().level_graph().vertex(level_dest_vertex_id()),tPoint.x,tPoint.z);
@@ -975,7 +975,7 @@ void CAI_Stalker::Think()
 //
 //#ifndef SILENCE
 //	if (g_Alive())
-//		Msg("%s : [S=%d][A=%d][B=%d][C=%d][D=%d][E=%d][F=%d][G=%d][H=%d][I=%d][J=%d][K=%d][L=%d][M=%d]",cName(),m_bStateChanged ? 1 : 0,A,B,C,D,E,F,G,H,I,J,K,L,M);
+//		Msg("%s : [S=%d][A=%d][B=%d][C=%d][D=%d][E=%d][F=%d][G=%d][H=%d][I=%d][J=%d][K=%d][L=%d][M=%d]",*cName(),m_bStateChanged ? 1 : 0,A,B,C,D,E,F,G,H,I,J,K,L,M);
 //#endif
 //	
 //	if (!g_Alive()) {

@@ -87,7 +87,7 @@ void CArtifact::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL bCtr
 		Sound->create(dest,TRUE,s_name,iType);
 		return;
 	}
-	Debug.fatal	("Can't find ref_sound '%s'",s_name,cName());
+	Debug.fatal	("Can't find ref_sound '%s'",s_name,*cName());
 }
 
 void CArtifact::SoundDestroy(ref_sound& dest) 

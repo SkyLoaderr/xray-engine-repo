@@ -155,7 +155,7 @@ public:
 	virtual float					shedule_Scale				();
 	virtual void					shedule_Update				(u32 dt);	
 	virtual BOOL					shedule_Ready				();
-	virtual LPCSTR					cName						();
+	virtual ref_str					cName						();
 	// game interface
 	virtual void					Load						(LPCSTR						caSaveName);
 			void					Save						(LPCSTR						caSaveName);

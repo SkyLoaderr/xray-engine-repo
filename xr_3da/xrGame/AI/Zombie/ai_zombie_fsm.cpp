@@ -14,20 +14,20 @@
 #define WRITE_TO_LOG(s) m_bStopThinking = true;
 /**
 #define WRITE_TO_LOG(s) {\
-	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
+	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",*cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
 	if (!feel_visible.size())\
 		Msg("* No objects in frustum",feel_visible.size());\
 	else {\
 		Msg("* Objects in frustum (%d) :",feel_visible.size());\
 		for (int i=0; i<(int)feel_visible.size(); ++i)\
-			Msg("*   %s",feel_visible[i].O->cName());\
+			Msg("*   %s",*feel_visible[i].O->cName());\
 		feel_vision_get(m_tpaVisibleObjects);\
 		if (!m_tpaVisibleObjects.size())\
 			Msg("* No visible objects");\
 		else {\
 			Msg("* Visible objects (%d) :",m_tpaVisibleObjects.size());\
 			for (int i=0; i<(int)m_tpaVisibleObjects.size(); ++i)\
-				Msg("*   %s (distance %7.2fm)",m_tpaVisibleObjects[i]->cName(),Position().distance_to(m_tpaVisibleObjects[i]->Position()));\
+				Msg("*   %s (distance %7.2fm)",*m_tpaVisibleObjects[i]->cName(),Position().distance_to(m_tpaVisibleObjects[i]->Position()));\
 		}\
 	}\
 	m_bStopThinking = true;\

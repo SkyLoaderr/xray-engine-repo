@@ -35,7 +35,7 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 			CObject* O	= Level().Objects.net_Find	(id);
 
 #ifndef SILENCE
-			Msg("Trying to take - %s (%d)", O->cName(),O->ID());
+			Msg("Trying to take - %s (%d)", *O->cName(),O->ID());
 #endif
 			if (32 == O->ID()) {
 				O = O;
@@ -46,19 +46,19 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 					CObjectHandler::set_dest_state(eObjectActionIdle,dynamic_cast<CGameObject*>(O));
 
 #ifndef SILENCE
-				Msg("TAKE - %s (%d)", O->cName(),O->ID());
+				Msg("TAKE - %s (%d)", *O->cName(),O->ID());
 #endif
 			}
 			else {
 				DropItemSendMessage(O);
 #ifndef SILENCE
-				Msg("TAKE - can't take! - Dropping for valid server information %s (%d)", O->cName(),O->ID());
+				Msg("TAKE - can't take! - Dropping for valid server information %s (%d)", *O->cName(),O->ID());
 #endif
 			}
 			break;
 		}
 		case GE_OWNERSHIP_REJECT : {
-			// Log			("CActor::OnEvent - REJECT - : ", cName());
+			// Log			("CActor::OnEvent - REJECT - : ", *cName());
 			P.r_u16		(id);
 			CObject		*O = Level().Objects.net_Find(id);
 			
@@ -81,7 +81,7 @@ void CAI_Stalker::feel_touch_new				(CObject* O)
 
 	if (I && I->Useful()) {
 #ifndef SILENCE
-		Msg("Taking item %s (%d)!",I->cName(),I->ID());
+		Msg("Taking item %s (%d)!",*I->cName(),I->ID());
 #endif
 		NET_Packet		P;
 		u_EventGen		(P,GE_OWNERSHIP_TAKE,ID());

@@ -87,7 +87,7 @@ bool CInventory::Take(CGameObject *pObj, bool bNotActivate)
 	
 	if(m_all.find(pIItem) != m_all.end()) 
 	{
-		Debug.fatal("Item already exist in inventory: %s(%s)",pObj->cName(),pObj->cNameSect());
+		Debug.fatal("Item already exist in inventory: %s(%s)",*pObj->cName(),pObj->cNameSect());
 	}
 
 	if(!pIItem || !pIItem->Useful() || 
@@ -748,7 +748,7 @@ CInventoryItem	*CInventory::GetItemFromInventory(LPCSTR caItemName)
 	for(PSPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it)
 		if (!xr_strcmp((*l_it)->cName(),caItemName))
 			return	(*l_it);
-	LuaOut	(Lua::eLuaMessageTypeError,"Object with name %s is not found in the %s inventory!",caItemName,dynamic_cast<CGameObject*>(m_pOwner)->cName());
+	LuaOut	(Lua::eLuaMessageTypeError,"Object with name %s is not found in the %s inventory!",caItemName,*dynamic_cast<CGameObject*>(m_pOwner)->cName());
 	return	(0);
 }
 

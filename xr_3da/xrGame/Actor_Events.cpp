@@ -28,7 +28,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 	case GE_TRADE_BUY:
 	case GE_OWNERSHIP_TAKE:
 		{
-			// Log("CActor::OnEvent - TAKE - ", cName());
+			// Log("CActor::OnEvent - TAKE - ", *cName());
 			P.r_u16		(id);
 			CObject* O	= Level().Objects.net_Find	(id);
 
@@ -79,7 +79,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 	case GE_TRADE_SELL:
 	case GE_OWNERSHIP_REJECT:
 		{
-			// Log			("CActor::OnEvent - REJECT - : ", cName());
+			// Log			("CActor::OnEvent - REJECT - : ", *cName());
 
 			P.r_u16		(id);
 			CObject* O	= Level().Objects.net_Find	(id);

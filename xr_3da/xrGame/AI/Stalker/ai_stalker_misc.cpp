@@ -111,7 +111,7 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 //		if (((!A && _A) || (!B && _B)) && (!m_sounds[m_sound_index].tpEntity || m_sounds[m_sound_index].tpEntity->g_Alive()) && (Level().timeServer() - m_sounds[m_sound_index].dwTime < m_dwInertion) && (m_sounds[m_sound_index].dwNodeID < ai().level_graph().header().vertex_count())) {
 ////		if ((!m_sounds[m_sound_index].tpEntity || m_sounds[m_sound_index].tpEntity->g_Alive()) && (Level().timeServer() - m_sounds[m_sound_index].dwTime < m_dwInertion)) {
 //#ifndef SILENCE
-//			Msg("Inertion sound from %s",m_sounds[m_sound_index].tpEntity ? m_sounds[m_sound_index].tpEntity->cName() : "world");
+//			Msg("Inertion sound from %s",m_sounds[m_sound_index].tpEntity ? *m_sounds[m_sound_index].tpEntity->cName() : "world");
 //#endif
 //			A = _A;
 //			B = _B;

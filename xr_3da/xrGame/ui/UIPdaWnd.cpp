@@ -263,7 +263,7 @@ void CUIPdaWnd::InitPdaDialog()
 
 	//что за глюк?! херит память если выводить m_pContactObject->cName()
 
-//	sprintf(UIPdaDialogWnd.m_sContactName, "%s", m_pContactObject->cName());
+//	sprintf(UIPdaDialogWnd.m_sContactName, "%s", *m_pContactObject->cName());
 //	UIPdaDialogWnd.UIStaticContactName.SetText(UIPdaDialogWnd.m_sContactName);
 
 	m_pInvOwner  = dynamic_cast<CInventoryOwner*>(Level().CurrentEntity());;

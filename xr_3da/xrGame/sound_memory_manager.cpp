@@ -56,7 +56,7 @@ void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, const 
 	CObject					*self = dynamic_cast<CObject*>(this);
 	VERIFY					(self);
 #ifndef SILENCE
-	Msg						("%s (%d) - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",self->cName(),Level().timeServer(),sound_type,object ? object->cName() : "world",Level().timeServer(),position.x,position.y,position.z,sound_power);
+	Msg						("%s (%d) - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",*self->cName(),Level().timeServer(),sound_type,object ? object->cName() : "world",Level().timeServer(),position.x,position.y,position.z,sound_power);
 #endif
 
 	CScriptMonster			*script_monster = dynamic_cast<CScriptMonster*>(self);
@@ -135,7 +135,7 @@ void CSoundMemoryManager::add_sound_object(const CObject *object, int sound_type
 		return;
 
 #ifndef SILENCE
-	Msg							("* %s - ref_sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",self->cName(),sound_type,object ? object->cName() : "world",Level().timeServer(),position.x,position.y,position.z,sound_power);
+	Msg							("* %s - ref_sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",*self->cName(),sound_type,object ? object->cName() : "world",Level().timeServer(),position.x,position.y,position.z,sound_power);
 #endif
 
 	xr_vector<CSoundObject>::iterator	J = std::find(m_sounds->begin(),m_sounds->end(),object_id(object));

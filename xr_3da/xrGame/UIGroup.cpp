@@ -66,7 +66,7 @@ void CUIGroup::Render(CGroup& G, int idx, int grp_index, bool bSelected)
 			list_item_health.Render		();
 			list_item_ammo.Render		();
 			// out name
-			HUD().pFontSmall->Out		(float(offset+11),Y,"%6.6s",E->cName());
+			HUD().pFontSmall->Out		(float(offset+11),Y,"%6.6s",*E->cName());
 			++item_cnt;
 		}
 	}

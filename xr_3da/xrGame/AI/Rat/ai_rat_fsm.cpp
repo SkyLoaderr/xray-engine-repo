@@ -16,13 +16,13 @@
 #define WRITE_TO_LOG(s) m_bStopThinking = true;
 /**
 #define WRITE_TO_LOG(s) {\
-	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
+	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",*cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
 	if (!visible_objects().size())\
 		Msg("* No objects in frustum",visible_objects().size());\
 	else {\
 		Msg("* Objects in frustum (%d) :",visible_objects().size());\
 		for (int i=0; i<(int)visible_objects().size(); ++i)\
-			Msg("*   %s",visible_objects()[i]->cName());\
+			Msg("*   %s",*visible_objects()[i]->cName());\
 	}\
 	m_bStopThinking = true;\
 }

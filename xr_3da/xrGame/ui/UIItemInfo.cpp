@@ -55,7 +55,7 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem)
 	if(pInvItem)
 	{
 		string256 str;
-		sprintf(str, "name: %s", pInvItem->cName());
+		sprintf(str, "name: %s", *pInvItem->cName());
 		UIName.SetText(str);
 
 		sprintf(str, "weight: %3.2f", pInvItem->Weight());

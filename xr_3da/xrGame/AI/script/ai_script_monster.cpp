@@ -114,9 +114,9 @@ void CScriptMonster::SetScriptControl(const bool bScriptControl, ref_str caScipt
 	m_caScriptName		= caSciptName;
 #ifdef DEBUG
 	if (bScriptControl)
-		LuaOut			(Lua::eLuaMessageTypeInfo,"Script %s set object %s under its control",*caSciptName,cName());
+		LuaOut			(Lua::eLuaMessageTypeInfo,"Script %s set object %s under its control",*caSciptName,*cName());
 	else
-		LuaOut			(Lua::eLuaMessageTypeInfo,"Script %s freed object %s from its control",*caSciptName,cName());
+		LuaOut			(Lua::eLuaMessageTypeInfo,"Script %s freed object %s from its control",*caSciptName,*cName());
 #endif
 	if (!bScriptControl)
 		ResetScriptData(this);
@@ -174,7 +174,7 @@ void CScriptMonster::UseObject(const CObject * /**tpObject/**/)
 void CScriptMonster::AddAction(const CEntityAction *tpEntityAction, bool bHighPriority)
 {
 #ifdef _DEBUG
-//	if (!xr_strcmp("m_stalker_wounded",cName())) {
+//	if (!xr_strcmp("m_stalker_wounded",*cName())) {
 //		Msg				("%6d Adding action : %s",Level().timeServer(),*tpEntityAction->m_tAnimationAction.m_caAnimationToPlay);
 //	}
 #endif
@@ -194,14 +194,14 @@ void CScriptMonster::AddAction(const CEntityAction *tpEntityAction, bool bHighPr
 		ProcessScripts	();
 
 #ifdef _DEBUG
-//	if (!xr_strcmp("m_stalker_wounded",cName()))
+//	if (!xr_strcmp("m_stalker_wounded",*cName()))
 //		Msg					("\n%6d Action queue",Level().timeServer());
 //	xr_deque<CEntityAction*>::const_iterator	I = m_tpActionQueue.begin();
 //	xr_deque<CEntityAction*>::const_iterator	E = m_tpActionQueue.end();
 //	for ( ; I != E; ++I)
-//		if (!xr_strcmp("m_stalker_wounded",cName()))
+//		if (!xr_strcmp("m_stalker_wounded",*cName()))
 //			Msg				("%6d Action : %s",Level().timeServer(),*(*I)->m_tAnimationAction.m_caAnimationToPlay);
-//	if (!xr_strcmp("m_stalker_wounded",cName()))
+//	if (!xr_strcmp("m_stalker_wounded",*cName()))
 //		Msg					("\n");
 #endif
 }
@@ -259,7 +259,7 @@ void CScriptMonster::ProcessScripts()
 		l_tpEntityAction= m_tpActionQueue.front();
 		R_ASSERT	(l_tpEntityAction);
 #ifdef _DEBUG
-//		if (!xr_strcmp("m_stalker_wounded",cName()))
+//		if (!xr_strcmp("m_stalker_wounded",*cName()))
 //			Msg			("%6d Processing action : %s",Level().timeServer(),*l_tpEntityAction->m_tAnimationAction.m_caAnimationToPlay);
 #endif
 		
@@ -272,7 +272,7 @@ void CScriptMonster::ProcessScripts()
 			break;
 
 #ifdef _DEBUG
-//		if (!xr_strcmp("m_stalker_wounded",cName()))
+//		if (!xr_strcmp("m_stalker_wounded",*cName()))
 //			Msg			("%6d Action completed : %s",Level().timeServer(),*l_tpEntityAction->m_tAnimationAction.m_caAnimationToPlay);
 #endif
 
@@ -285,7 +285,7 @@ void CScriptMonster::ProcessScripts()
 	if (m_tpActionQueue.empty()) {
 #ifdef DEBUG
 		if (empty_queue)
-			LuaOut	(Lua::eLuaMessageTypeInfo,"Object %s has an empty script queue!",cName());
+			LuaOut	(Lua::eLuaMessageTypeInfo,"Object %s has an empty script queue!",*cName());
 #endif
 		return;
 	}
@@ -439,7 +439,7 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 			CGameObject		*l_tpGameObject = dynamic_cast<CGameObject*>(l_tMovementAction.m_tpObjectToGo);
 			R_ASSERT		(l_tpGameObject);
 			l_tpMovementManager->set_path_type(CMovementManager::ePathTypeLevelPath);
-			// Msg			("%6d Object %s, position [%f][%f][%f]",Level().timeServer(),l_tpGameObject->cName(),VPUSH(l_tpGameObject->Position()));
+			// Msg			("%6d Object %s, position [%f][%f][%f]",Level().timeServer(),*l_tpGameObject->cName(),VPUSH(l_tpGameObject->Position()));
 			l_tpMovementManager->set_dest_position(l_tpGameObject->Position());
 			l_tpMovementManager->set_level_dest_vertex(l_tpGameObject->level_vertex_id());
 			break;
@@ -462,7 +462,7 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 				vertex_id		= ai().level_graph().vertex(vertex_id,l_tMovementAction.m_tDestinationPosition);
 //				u64				stop = CPU::GetCycleCount();
 #ifdef _DEBUG
-//				Msg				("%6d Searching for node for script object %s (%.5f seconds)",Level().timeServer(),cName(),float(s64(stop - start))*CPU::cycles2seconds);
+//				Msg				("%6d Searching for node for script object %s (%.5f seconds)",Level().timeServer(),*cName(),float(s64(stop - start))*CPU::cycles2seconds);
 #endif
 			}
 			VERIFY				(ai().level_graph().valid_vertex_id(vertex_id));
@@ -634,7 +634,7 @@ void ScriptCallBack(CBlend* B)
 		if (!l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_bCompleted)
 			l_tpScriptMonster->callback(CScriptMonster::eActionTypeAnimation);
 #ifdef _DEBUG
-//		if (!xr_strcmp("m_stalker_wounded",l_tpScriptMonster->cName()))
+//		if (!xr_strcmp("m_stalker_wounded",*l_tpScriptMonster->cName()))
 //			Msg			("Completed %s",*l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
 #endif
 		l_tpScriptMonster->m_tpScriptAnimation = 0;
@@ -656,7 +656,7 @@ bool CScriptMonster::bfScriptAnimation()
 		xr_strlen(GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay)) {
 
 #ifdef _DEBUG
-//			if (!xr_strcmp("m_stalker_wounded",cName()))
+//			if (!xr_strcmp("m_stalker_wounded",*cName()))
 //				Msg				("%6d Playing animation : %s",Level().timeServer(),*GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
 #endif
 			if (m_tpScriptAnimation != m_tpNextAnimation)

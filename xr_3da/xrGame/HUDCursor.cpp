@@ -94,7 +94,7 @@ void CHUDCursor::Render()
 				if (fuzzyShowInfo>0.5f)
 				{
 					F->SetColor	(subst_alpha(C,u8(iFloor(255.f*(fuzzyShowInfo-0.5f)*2.f))));
-					F->OutNext	("%s",RQ.O->cName());
+					F->OutNext	("%s",*RQ.O->cName());
 				}
 				fuzzyShowInfo += SHOW_INFO_SPEED*Device.fTimeDelta;
 			}
