@@ -1,0 +1,326 @@
+module ("xr_actions_id")
+module ("xr_evaluators_id")
+
+--property
+local wounded_property          =   xr_evaluators_id.sidor_wounded_base
+local see_mutant_property       =   wounded_property + 1
+local see_stalker_property      =   wounded_property + 2
+local see_enemy_property        =   wounded_property + 3
+local is_sit_down_property      =   wounded_property + 4
+--actions
+local act_move_to_cover         =   xr_actions_id.sidor_act_wounded_base  +   0
+local act_see_friend            =   act_move_to_cover       +   1
+local act_see_mutant            =   act_move_to_cover       +   2
+local act_see_enemy             =   act_move_to_cover       +   3
+local act_sit_down              =   act_move_to_cover       +   4
+
+
+
+--waunded_idle_0
+--waunded_opasno_0
+--waunded_pomosh_0
+--waunded_ruka_0
+--waunded_sitdawn_0
+--waunded_stand_up_0
+--waunded_walk_dmg_0
+------------------------------------------------------------------------------------------
+-- Property's
+------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------------
+class "sit_down_evaluator" (property_evaluator)
+------------
+function sit_down_evaluator:__init () super ()
+    self.enable = false
+end
+------------
+function sit_down_evaluator:__evaluate () 
+    return self.enable
+end    
+------------------------------------------------------------------------------------------
+
+
+
+------------------------------------------------------------------------------------------
+class "wounded_evaluator" (property_evaluator)
+------------
+function wounded_evaluator:__init () super ()
+end
+------------
+function wounded_evaluator:evaluate ()
+    if self.object.health < 0.25 then return true end
+    return false
+end
+------------------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------------------
+class "see_mutant_evaluator" (property_evaluator)
+------------
+function see_mutant_evaluator:__init () super ()
+end
+------------
+function see_mutant_evaluator:evaluate ()
+    local enemy = self.object:best_enemy ()
+    if enemy == nil then return false end
+    local id = enemy:clsid ()
+    if id == AI_RAT  or
+       id == AI_RAT_G or
+       id == AI_RAT_W or
+       id == AI_ZOM or
+       id == AI_ZOM_H or
+       id == AI_POLTR or
+       id == AI_FLESH or
+       id == AI_FLE_G or 
+       id == AI_DWARF or
+       id == AI_CONTR or
+       id == AI_BLOOD or
+       id == AI_BURER or
+       id == AI_GIANT or 
+       id == AI_HIMER or
+       id == AI_FRACT or 
+       id == AI_DOG_B or            
+       id == AI_DOG_R or 
+       id == AI_BOAR 
+       then return true
+    end       
+        
+    return false
+end
+------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------------
+class "see_stalker_evaluator" (property_evaluator)
+------------
+function see_stalker_evaluator:__init () super ()
+end
+------------
+function see_stalker_evaluator:evaluate ()
+    local stalker = self.object:see ("m_stalker_e")
+    if stalker == nil then return false end
+    return true    
+end
+------------------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------------------
+class "see_enemy_evaluator" (property_evaluator)
+------------
+function see_enemy_evaluator:__init () super ()
+end
+------------
+function see_enemy_evaluator:evaluate ()
+    --local stalker = self.object:see ("m_stalker_e")
+    --if stalker == nil then return false end
+    --local enemy = self.object:best_enemy ()
+    --if enemy == nil then return false end
+    --if enemy:id () == stalker:id () then return true end
+    return false
+end
+------------------------------------------------------------------------------------------
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+-- Actions
+------------------------------------------------------------------------------------------
+
+
+
+------------------------------------------------------------------------------------------
+class "action_see_friend" (action_base)
+------------
+function action_see_friend:__init (name) super (nil, name)
+end
+------------
+function action_see_friend:initialize ()
+    action_base.initialize (self)
+    self.object:set_mental_state            (anim.free)
+    self.object:set_movement_type           (move.stand)
+end
+------------
+function action_see_friend:execute ()
+    action_base.execute (self)
+    if self.object:animation_count ()  < 2 then
+       self.object:add_animation ("stalker_1_2", false)
+    end
+end
+------------
+function action_see_friend:finalize ()
+    action_base.finalize (self)
+end
+------------------------------------------------------------------------------------------
+
+
+
+------------------------------------------------------------------------------------------
+class "action_see_mutant" (action_base)
+------------
+function action_see_mutant:__init (name) super (nil, name)
+end
+------------
+function action_see_mutant:initialize ()
+    action_base.initialize (self)
+    self.object:set_mental_state            (anim.free)
+    self.object:set_movement_type           (move.stand)
+    self.object:add_animation               ("waunded_opasno_0", false)
+end
+------------
+function action_see_mutant:execute ()
+    action_base.execute (self)
+    if self.object:animation_count ()  < 2 then
+       self.object:add_animation ("waunded_opasno_0", false)
+    end
+end
+------------
+function action_see_mutant:finalize ()
+    action_base.finalize (self)
+end
+------------------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------------------
+class "action_see_enemy" (action_base)
+------------
+function action_see_enemy:__init (name) super (nil, name)
+end
+------------
+function action_see_enemy:initialize ()
+    action_base.initialize (self)
+    self.object:set_sound_mask (-1)
+    self.object:set_mental_state            (anim.free)
+    self.object:set_movement_type           (move.stand)
+end
+------------
+function action_see_enemy:execute ()
+    action_base.execute (self)
+    if self.object:animation_count ()  < 2 then
+       self.object:add_animation ("stalker_1_1", false)
+    end
+end
+------------
+function action_see_enemy:finalize ()
+    action_base.finalize (self)
+end
+------------------------------------------------------------------------------------------
+
+
+
+------------------------------------------------------------------------------------------
+class "action_sit_down" (action_base)
+------------
+function action_sit_down:__init (name) super (nil, name)
+end
+------------
+function action_sit_down:initialize ()
+    action_base.initialize (self)
+    self.object:set_sound_mask              (0)
+    self.object:set_mental_state            (anim.free)
+    self.object:set_movement_type           (move.stand)
+    self.object:add_animation               ("waunded_sitdawn_0", false)
+    self.object:add_animation               ("waunded_idle_0", false)
+end
+------------
+function action_sit_down:execute ()
+    action_base.execute (self)
+    if self.object:animation_count () == 1 then
+       self.object:add_animation ("waunded_idle_0", false)
+       local eva = self.object:motivation_action_manager ():evaluator (is_sit_down_property)
+       eva.enabled = true
+    end
+end
+------------
+function action_sit_down:finalize ()
+    action_base.finalize (self)
+end
+------------------------------------------------------------------------------------------
+
+
+
+function SetScheme (object)
+    local manager = object:motivation_action_manager ()
+    manager:add_evaluator (wounded_property,        this.wounded_evaluator      ())
+    manager:add_evaluator (see_mutant_property,     this.see_mutant_evaluator   ())
+    manager:add_evaluator (see_stalker_property,    this.see_stalker_evaluator  ())
+    manager:add_evaluator (see_enemy_property,      this.see_enemy_evaluator    ())
+    manager:add_evaluator (is_sit_down_property,    this.sit_down_evaluator     ())
+
+
+    local action = this.action_sit_down ("action_sit_down")
+    action:add_precondition (world_property (is_sit_down_property,  false))
+    action:add_precondition (world_property (wounded_property,      true))
+    action:add_precondition (world_property (stalker_ids.property_alive, true))
+    action:add_effect       (world_property (is_sit_down_property,  true))
+    manager:add_action      (act_sit_down, action)
+    
+    action = this.action_see_friend ("action_see_friend")
+    action:add_precondition (world_property (is_sit_down_property,  true))
+    action:add_precondition (world_property (see_stalker_property,  true))
+    action:add_precondition (world_property (wounded_property,      true))
+    action:add_precondition (world_property (stalker_ids.property_alive, true))
+    action:add_effect       (world_property (wounded_property,      false))
+    manager:add_action      (act_see_friend,        action)
+    
+    action = this.action_see_mutant ("action_see_mutant")
+    action:add_precondition (world_property (is_sit_down_property,  true))
+    action:add_precondition (world_property (wounded_property,      true))
+    action:add_precondition (world_property (see_mutant_property,   true))
+    action:add_precondition (world_property (see_stalker_property,  true))
+    action:add_precondition (world_property (stalker_ids.property_alive, true))
+    action:add_effect       (world_property (wounded_property,      false))
+    manager:add_action      (act_see_mutant,        action)
+    
+    action = this.action_see_enemy  ("action_see_enemy")
+    action:add_precondition (world_property (is_sit_down_property,  true))
+    action:add_precondition (world_property (wounded_property,      true))
+    action:add_precondition (world_property (see_enemy_property,    true))
+    action:add_precondition (world_property (stalker_ids.property_alive, true))
+    action:add_precondition (world_property (see_stalker_property,  true))
+    action:add_effect       (world_property (wounded_property,      false))
+    manager:add_action      (act_see_enemy,         action)
+    
+    action = manager:action (stalker_ids.action_free_no_alife)
+    action:add_precondition (world_property (wounded_property,  false))
+    --action = manager:action (stalker_ids.action_free_alife)
+    --action:add_precondition (world_property (wounded_property,  false))
+    
+    printf ("Add wounded scheme")
+end
+
+
+
+class "wounded_binder" (object_binder)
+----------------------------------------------------------------------------------------------------------------------
+function wounded_binder:__init (obj) super(obj)
+end
+----------------------------------------------------------------------------------------------------------------------
+function wounded_binder:reinit ()
+    object_binder.reinit (self)
+end
+----------------------------------------------------------------------------------------------------------------------
+function wounded_binder:reload (section)
+    object_binder.reload  (self, section)
+    this.SetScheme (self.object)
+
+end
+----------------------------------------------------------------------------------------------------------------------
+function wounded_binder:net_spawn  (server_object)
+  if (object_binder.net_spawn(self,server_object) == false) then
+     return false
+  end
+  return true
+end
+----------------------------------------------------------------------------------------------------------------------
+function wounded_binder:net_destroy  ()
+  object_binder.net_destroy  (self)
+end
+----------------------------------------------------------------------------------------------------------------------
+
+
+function SetWounded (npc)
+    npc:bind_object  (this.wounded_binder (npc))
+end
+
