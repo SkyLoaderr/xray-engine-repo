@@ -185,26 +185,105 @@ void export2lua		(lua_State *tpLuaVirtualMachine)
 	function		(tpLuaVirtualMachine,"log",(void (*)(LPCSTR))(Log));
 }
 
+void vfCreateTable(lua_State *luaVM, LPCSTR S1)
+{
+	lua_pushstring	(luaVM, S1);
+	lua_gettable	(luaVM, LUA_GLOBALSINDEX);  /* check whether lib already exists */
+	if (lua_isnil(luaVM, -1)) {  /* no? */
+		lua_pop		(luaVM, 1);
+		lua_newtable(luaVM);  /* create it */
+		lua_pushstring(luaVM, S1);
+		lua_pushvalue(luaVM, -2);
+		lua_settable(luaVM, LUA_GLOBALSINDEX);  /* register it with given name */
+//		lua_pushstring	(luaVM, S1);
+//		lua_gettable	(luaVM, LUA_GLOBALSINDEX);  /* check whether lib already exists */
+//		lua_replace(luaVM, LUA_GLOBALSINDEX);
+	}
+	lua_insert		(luaVM, -1);  /* move library table to below upvalues */
+	lua_pop			(luaVM, 0);  /* remove upvalues */
+}
+
+void vfTransferTable(lua_State *luaVM, LPCSTR S)
+{
+	lua_pushstring	(luaVM, "math");
+	lua_gettable	(luaVM, LUA_GLOBALSINDEX);  /* check whether lib already exists */
+	if (lua_isnil(luaVM,-1))
+		return;
+	lua_pushstring	(luaVM, "format");
+	lua_pushstring	(luaVM, "string");
+	lua_gettable	(luaVM, LUA_GLOBALSINDEX);  /* check whether lib already exists */
+	if (lua_isnil(luaVM,-1))
+		return;
+	lua_settable	(luaVM,2);
+//	lua_pushnil		(luaVM);  /* first key */
+//	for (int i=0; ; i++) {
+//		if (!lua_next(luaVM, -i-2))
+//			break;
+//		printf("%s - %s\n",lua_typename(luaVM, lua_type(luaVM, -2)), lua_typename(luaVM, lua_type(luaVM, -1)));
+////		lua_pushvalue(luaVM,-1);
+////		lua_pushvalue(luaVM,-3);
+//		//lua_insert	();
+////		lua_settable(luaVM,-6);
+//	}
+//	for (int j; j<i; j++)
+//		lua_settable(luaVM,-6);
+}
+
 // main
 int __cdecl _tmain(int argc, _TCHAR* argv[])
 {
-	lua_State*	luaVM	= lua_open();
-	if (NULL == luaVM)	{ printf("Error Initializing lua\n"); return -1; }
+//	lua_State*	luaVM	= lua_open();
+//	if (NULL == luaVM)	{ printf("Error Initializing lua\n"); return -1; }
 
 	// initialize lua standard library functions 
-	luaopen_base	(luaVM); 
+
+	// export fvector
+	lua_State* luaVM = lua_open();
+
+//	luaopen_base	(luaVM);
+//	luaopen_table	(luaVM);
+//	luaopen_io		(luaVM);
+//	luaopen_string	(luaVM);
+//	luaopen_math	(luaVM);
+//	luaopen_debug	(luaVM);
+
+	open			(luaVM);
+	function (luaVM,"log",(void (*)(LPCSTR))(Log));
+
+	luaopen_base	(luaVM);
 	luaopen_table	(luaVM);
 	luaopen_io		(luaVM);
 	luaopen_string	(luaVM);
 	luaopen_math	(luaVM);
 	luaopen_debug	(luaVM);
 
-	// export fvector
-	export2lua		(luaVM);
+	if (luaL_loadfile(luaVM, "x:\\extension.lua"))
+		lua_error	(luaVM);
+
+	lua_newtable	(luaVM);
+
+	lua_pushstring	(luaVM, "core");
+	lua_pushvalue	(luaVM, -2);
+	lua_settable	(luaVM, LUA_GLOBALSINDEX); /* register it with given name */
+
+	lua_setfenv		(luaVM, -2);
+
+	lua_call		(luaVM, 0, 0);
+
+	lua_dofile		(luaVM, "x:\\test1.lua");
+
+//	luaopen_string	(luaVM);
+
+//	lua_setfenv(luaVM, 0);
+//	lua_dofile		(luaVM, "x:\\extension.lua");
+//	lua_setfenv		(luaVM,-2);
+//	vfTransferTable	(luaVM,"core");
 
 	// do some stuff
-	lua_dofile		(luaVM, "x:\\extension.lua");
-	lua_dofile		(luaVM, "x:\\test1.lua");
+//	lua_pushstring	(luaVM, "core");
+//	lua_gettable	(luaVM, LUA_GLOBALSINDEX);  /* check whether lib already exists */
+//	lua_replace		(luaVM, LUA_GLOBALSINDEX);
+//	lua_dofile		(luaVM, "x:\\test1.lua");
 
 	// close lua
 	lua_close		(luaVM);
