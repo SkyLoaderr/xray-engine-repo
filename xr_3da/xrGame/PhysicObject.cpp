@@ -55,8 +55,8 @@ void CPhysicObject::SaveNetState(NET_Packet& P)
 		if(p.z>max.z)max.z=p.z;
 	}
 
-	min.sub(EPS_S);
-	max.add(EPS_S);
+	min.sub(2.f*EPS_S);
+	max.add(2.f*EPS_S);
 	P.w_vec3(min);
 	P.w_vec3(max);
 
