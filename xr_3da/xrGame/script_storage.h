@@ -10,13 +10,13 @@
 
 #include "script_space.h"
 #include "script_storage_space.h"
+#include "script_stack_tracker.h"
 
 using namespace ScriptStorage;
 
-class CScriptStorage {
+class CScriptStorage : public CScriptStackTracker {
 protected:
 	CMemoryWriter				m_output;
-	lua_State					*m_virtual_machine;
 
 protected:
 			bool				create_namespace			(LPCSTR	caNamespaceName);
@@ -38,7 +38,6 @@ public:
 			bool				object						(LPCSTR	caIdentifier,		int		type);
 			bool				object						(LPCSTR	caNamespaceName,	LPCSTR	caIdentifier,		int		type);
 			luabind::object		name_space					(LPCSTR	namespace_name);
-	IC		CLuaVirtualMachine	*lua						();
 			void				flush_log					();
 			void				print_stack					(CLuaVirtualMachine *L);
 			void				print_table					(CLuaVirtualMachine *L, LPCSTR S, bool bRecursive = false);

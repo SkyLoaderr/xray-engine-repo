@@ -8,7 +8,3 @@
 
 #pragma once
 
-IC	CLuaVirtualMachine *CScriptStorage::lua	()
-{
-	return				(m_virtual_machine);
-}

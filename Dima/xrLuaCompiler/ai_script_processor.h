@@ -24,6 +24,7 @@ protected:
 protected:
 			void		run_scripts					();
 			void		run_strings					();
+			void		remove_thread				(CScript *script);
 
 public:
 						CScriptProcessor			(LPCSTR					caCaption, LPCSTR caScriptString);

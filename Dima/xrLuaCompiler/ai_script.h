@@ -9,14 +9,16 @@
 #pragma once
 
 #include "script_space.h"
+#include "script_stack_tracker.h"
 
-class CScript {
-	CLuaVirtualMachine	*m_tpLuaThread;
-	LPSTR				m_script_name;
+class CScript : public CScriptStackTracker {
+protected:
+	LPSTR	m_script_name;
+
 public:
-	bool				m_bActive;
+	bool	m_bActive;
 
-						CScript						(LPCSTR caNamespaceName);
-	virtual				~CScript					();
-			bool		Update						();
+					CScript		(LPCSTR caNamespaceName);
+	virtual			~CScript	();
+			bool	Update		();
 };

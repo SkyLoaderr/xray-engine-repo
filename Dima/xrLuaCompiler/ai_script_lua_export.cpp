@@ -21,7 +21,6 @@
 //#include "luabind/iterator_policy.hpp"
 #include "script_engine.h"
 
-
 using namespace luabind;
 
 extern CLuaGameObject	*tpfGetActor();
@@ -34,47 +33,6 @@ void LuaLog(LPCSTR caMessage)
 double get_time()
 {
 	return((double)Level().GetGameTime());
-}
-
-int CScriptEngine::lua_panic(CLuaVirtualMachine *L)
-{
-	script_log		(eLuaMessageTypeError,"PANIC");
-	if (!print_output(L,"unknown script"))
-		print_error(L,LUA_ERRRUN);
-	return			(0);
-}
-
-void CScriptEngine::lua_hook_call(CLuaVirtualMachine *L, lua_Debug *tpLuaDebug)
-{
-	return;
-//	lua_getinfo(lua(),"nSlu",tpLuaDebug);
-//	ScriptStorage::ELuaMessageType	l_tLuaMessageType = ScriptStorage::eLuaMessageTypeError;
-//	LPCSTR	S = "";
-//	switch (tpLuaDebug->event) {
-//		case LUA_HOOKCALL		: {
-//			l_tLuaMessageType = ScriptStorage::eLuaMessageTypeHookCall;
-//			break;
-//		}
-//		case LUA_HOOKRET		: {
-//			l_tLuaMessageType = ScriptStorage::eLuaMessageTypeHookReturn;
-//			break;
-//		}
-//		case LUA_HOOKLINE		: {
-//			l_tLuaMessageType = ScriptStorage::eLuaMessageTypeHookLine;
-//			break;
-//		}
-//		case LUA_HOOKCOUNT		: {
-//			l_tLuaMessageType = ScriptStorage::eLuaMessageTypeHookCount;
-//			break;
-//		}
-//		case LUA_HOOKTAILRET	: {
-//			l_tLuaMessageType = ScriptStorage::eLuaMessageTypeHookTailReturn;
-//			break;
-//		}
-//		default					: NODEFAULT;
-//	}
-//
-//	ai().script_engine().script_log		(l_tLuaMessageType,tpLuaDebug->event == LUA_HOOKLINE ? "%s%s : %s %s %s (current line %d)" : "%s%s : %s %s %s",S,tpLuaDebug->short_src,tpLuaDebug->what,tpLuaDebug->namewhat,tpLuaDebug->name ? tpLuaDebug->name : "",tpLuaDebug->currentline);
 }
 
 void LoadScriptModule(LPCSTR script_name)
@@ -92,7 +50,10 @@ void FlushLogs()
 
 void verify_if_thread_is_running()
 {
-	VERIFY2			(xr_strlen(ai().script_engine().current_thread()),"coroutine.yield() is called outside the LUA thread!");
+	if (!ai().script_engine().current_thread()) {
+		ai().script_engine().script_stack_tracker().print_error(ai().script_engine().lua());
+		VERIFY2		(ai().script_engine().current_thread(),"coroutine.yield() is called outside the LUA thread!");
+	}
 }
 
 void CScriptEngine::export_globals()

@@ -23,17 +23,22 @@ CScriptProcessor *CScriptEngine::script_processor	(LPCSTR processor_name) const
 	return									(0);
 }
 
-IC	void CScriptEngine::set_current_thread			(LPCSTR thread_name)
+IC	void CScriptEngine::set_current_thread			(CScriptStackTracker *new_thread)
 {
 #ifdef DEBUG
-	int										i1 = xr_strlen(m_thread_name);
-	int										i2 = xr_strlen(thread_name);
-	VERIFY									((!i1 && i2) || (i1 && !i2));
+	VERIFY									((!m_current_thread && new_thread) || (m_current_thread && !new_thread));
 #endif
-	m_thread_name							= thread_name;
+	m_current_thread						= new_thread;
 }
 
-IC	LPCSTR CScriptEngine::current_thread			() const
+IC	CScriptStackTracker *CScriptEngine::current_thread			()
 {
-	return									(m_thread_name);
+	return									(m_current_thread);
+}
+
+IC	CScriptStackTracker	&CScriptEngine::script_stack_tracker	()
+{
+	if (!current_thread())
+		return								(*this);
+	return									(*current_thread());
 }

@@ -13,7 +13,7 @@
 CScriptEngine::CScriptEngine	()
 {
 	lua_setgcthreshold		(lua(),64*1024);
-	m_thread_name			= "";
+	m_current_thread		= 0;
 	m_stack_level			= 0;
 }
 
@@ -29,14 +29,29 @@ void CScriptEngine::unload				()
 	lua_settop				(lua(),m_stack_level);
 }
 
+int CScriptEngine::lua_panic(CLuaVirtualMachine *L)
+{
+	script_log		(eLuaMessageTypeError,"PANIC");
+	if (!print_output(L,"unknown script"))
+		print_error(L,LUA_ERRRUN);
+	return			(0);
+}
+
+void CScriptEngine::lua_hook_call(CLuaVirtualMachine *L, lua_Debug *tpLuaDebug)
+{
+	ai().script_engine().script_stack_tracker().script_hook(L,tpLuaDebug);
+}
+
 void CScriptEngine::lua_error(CLuaVirtualMachine *L)
 {
+	print_error				(L,LUA_ERRRUN);
 	Debug.fatal				("LUA error: %s",lua_tostring(L,-1));
 }
 
 void CScriptEngine::lua_cast_failed(CLuaVirtualMachine *L, LUABIND_TYPE_INFO info)
 {
-	print_output			(L,ai().script_engine().current_thread(),0);
+//	print_output			(L,ai().script_engine().current_thread(),0);
+	print_error				(L,LUA_ERRRUN);
 	Debug.fatal				("LUA error: cannot cast lua value to %s",info->name());
 }
 
@@ -68,14 +83,11 @@ void CScriptEngine::export()
 	script_register				(lua());
 
 #ifdef DEBUG
-	lua_sethook					(lua(),CScriptEngine::lua_hook_call,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
+	lua_sethook					(lua(),CScriptEngine::lua_hook_call,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE,	0);
 #endif
 
-//	print_table					(lua(),"_G");
-//	print_stack					(lua());
 	load_common_scripts			();
 	m_stack_level				= lua_gettop(lua());
-//	print_table					(lua(),"_G");
 }
 
 bool CScriptEngine::load_file(LPCSTR caScriptName, bool bCall)
