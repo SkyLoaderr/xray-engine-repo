@@ -39,7 +39,7 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 	if (SSA<=r_ssaDISCARD)		return;
 
 	// Select shader
-	ShaderElement*	sh		=	rimp_select_sh_dynamic	(pVisual,distSQ);
+	ShaderElement*	sh		=	RImplementation.rimp_select_sh_dynamic	(pVisual,distSQ);
 	if (0==sh)								return;
 	if (!pmask[sh->Flags.iPriority/2])		return;
 
@@ -123,7 +123,7 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 	if (SSA<=r_ssaDISCARD)		return;
 
 	// Select shader
-	ShaderElement*		sh		= rimp_select_sh_static(pVisual,distSQ);
+	ShaderElement*		sh		= RImplementation.rimp_select_sh_static(pVisual,distSQ);
 	if (0==sh)								return;
 	if (!pmask[sh->Flags.iPriority/2])		return;
 
