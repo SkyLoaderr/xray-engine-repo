@@ -69,6 +69,7 @@ void	CBlender_Compile::PassEnd			()
 	SVS* vs					= Device.Shader._CreateVS			(pass_vs);
 	ctable.merge			(&ps->constants);
 	ctable.merge			(&vs->constants);
+	SetMapping				();
 
 	SPass					P;
 	P.ps					= ps->ps;

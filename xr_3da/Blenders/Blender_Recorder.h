@@ -43,6 +43,7 @@ public:
 	CSimulator&			R()					{ return RS; }
 	
 	void				SetParams			(int iPriority, bool bStrictB2F, bool bLighting, bool bPixelShader);
+	void				SetMapping			();
 
 	// R1-compiler
 	void				PassBegin			();
