@@ -47,7 +47,6 @@ public:
 public:
 	
 	CTrade(CInventoryOwner	*p_io);
-#pragma todo("Dima to Jim : check if you need here a non-virtual destructor!")
 	~CTrade();
 
 	

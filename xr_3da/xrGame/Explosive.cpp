@@ -92,11 +92,11 @@ void CExplosive::Load(LPCSTR section)
 	{
 		if(*l_effectsSTR == ',') 
 		{
-			*l_effectsSTR = 0; l_effectsSTR++;
-			while(*l_effectsSTR == ' ' || *l_effectsSTR == '\t') l_effectsSTR++;
+			*l_effectsSTR = 0; ++l_effectsSTR;
+			while(*l_effectsSTR == ' ' || *l_effectsSTR == '\t') ++l_effectsSTR;
 			m_effects.push_back(l_effectsSTR);
 		}
-		l_effectsSTR++;
+		++l_effectsSTR;
 	}
 
 	sscanf(pSettings->r_string(section,"light_color"), "%f,%f,%f", &m_lightColor.r, &m_lightColor.g, &m_lightColor.b);
@@ -163,7 +163,7 @@ void CExplosive::Explode()
 			l_m.k.set(l_dir); 
 			GetBasis(l_m.k, l_m.i, l_m.j);
 			
-			for(int i = 0; i < 8; i++) 
+			for(int i = 0; i < 8; ++i) 
 			{ 
 				Fvector l_v; 
 				l_b1.getpoint(i, l_v); 
@@ -210,7 +210,7 @@ void CExplosive::Explode()
 	
 	
 	//осколки
-	for(s32 i = 0; i < m_frags; i++) 
+	for(s32 i = 0; i < m_frags; ++i) 
 	{
 		l_dir.set(::Random.randF(-.5f,.5f), 
 				  ::Random.randF(-.5f,.5f), 
@@ -245,7 +245,7 @@ void CExplosive::Explode()
 	
 	CParticlesObject* pStaticPG; s32 l_c = (s32)m_effects.size();
 
-	for(s32 i = 0; i < l_c; i++) 
+	for(s32 i = 0; i < l_c; ++i) 
 	{
 		pStaticPG = xr_new<CParticlesObject>(*m_effects[i],Sector()); pStaticPG->play_at_pos(Position());
 	}
@@ -313,7 +313,7 @@ void CExplosive::FragWallmark	(const Fvector& vDir, const Fvector &vEnd, Collide
 void CExplosive::feel_touch_new(CObject* O) 
 {
 	CGameObject *pGameObject = dynamic_cast<CGameObject*>(O);
-	if(pGameObject && pGameObject != this) m_blasted.push_back(pGameObject);
+	if(pGameObject && this != pGameObject) m_blasted.push_back(pGameObject);
 }
 
 /*
