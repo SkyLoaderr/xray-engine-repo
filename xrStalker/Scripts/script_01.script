@@ -102,7 +102,7 @@ function main()
 				sound	("scripts\\alarm\\prover","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 				look	(look.fire_point, actor),
 				anim	(anim.danger),
-				cond	(cond.time_end, 5000)
+				cond	(cond.time_end, 10000)
 				)
 		wait(2000)
 			action(
@@ -110,7 +110,7 @@ function main()
 			  	move	(move.standing, move.walk,move.line,patrol("way0000")),
 --				sound	("scripts\\idle\\movie_footsteps","bip01_l_foot",vector():set(0,0,0),vector():set(0,0,0),true),
 				anim	(anim.danger),
-				cond	(cond.time_end, 30000)
+				cond	(cond.time_end, 50000)
 				)
 			wait(30000)			
 			action(
