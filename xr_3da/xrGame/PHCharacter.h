@@ -1,7 +1,7 @@
 #pragma once
 #include "PHObject.h"
 #include "PHInterpolation.h"
-
+class CPhysicsRefObject;
  static enum EEnvironment
 			{
 				peOnGround,
@@ -20,6 +20,7 @@ protected:
 list<CPHObject*>::iterator m_ident;
 CPHInterpolation m_body_interpolation;
 dBodyID m_body;
+CPhysicsRefObject* m_phys_ref_object;
 ////////////////////////// geometry
 dBodyID m_wheel_body;
 dGeomID m_geom_shell;
@@ -150,6 +151,7 @@ virtual		Fvector		GetVelocity							(void)			=0	;
 virtual		void		SetVelocity							(Fvector vel)	=0	;
 virtual		Fvector		GetPosition							(void)			=0	;
 virtual		void		SetMas								(dReal mass)	=0	;
+virtual		void		SetPhysicsRefObject					(CPhysicsRefObject* ref_object)=0;
 
 			CPHCharacter									(void)				;
 virtual		~CPHCharacter									(void)				;
@@ -177,6 +179,7 @@ virtual		void		SetVelocity							(Fvector vel)		;
 virtual		Fvector		GetPosition							(void)				;
 virtual		void		SetMas								(dReal mass)		;
 virtual		bool		TryPosition							(Fvector pos)		;
+virtual		void		SetPhysicsRefObject					(CPhysicsRefObject* ref_object);
 private:
 			void		ApplyAcceleration					()					;
 			bool		ValidateWalkOn						()					;
@@ -205,6 +208,7 @@ virtual		void		SetVelocity							(Fvector vel)	{}	;
 virtual		Fvector		GetPosition							(void)			{}	;
 virtual		void		SetMas								(dReal mass)		;
 virtual		bool		TryPosition							(Fvector pos)	{}	;
+virtual		void		SetPhysicsRefObject					(CPhysicsRefObject* ref_object){};
 };
 
 

@@ -26,7 +26,6 @@ private:
 	BOOL				bIsAffectedByGravity;
 	//------------------------------
 	CObject*			pObject;
-
 	EEnvironment		eOldEnvironment;
 	EEnvironment		eEnvironment;
 	Fbox				aabb;
@@ -87,6 +86,7 @@ public:
 	float				GetContactSpeed	()			{ return fContactSpeed; }
 	void				SetVelocity		(float x, float y, float z)	{vVelocity.set(x,y,z);m_character->SetVelocity(vVelocity);}
 	void				SetVelocity		(const Fvector& v)	{vVelocity.set(v);m_character->SetVelocity(vVelocity);}
+	void				SetPhysicsRefObject(CPhysicsRefObject* ref_object){m_character->SetPhysicsRefObject(ref_object);};
 
 	void				CalcMaximumVelocity	(Fvector& dest, Fvector& accel, float friction){};
 	void				CalcMaximumVelocity	(float& dest, float accel, float friction){};

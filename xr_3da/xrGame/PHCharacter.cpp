@@ -23,6 +23,7 @@ void dBodyAngAccelFromTorqu(const dBodyID body, dReal* ang_accel, const dReal* t
 
 CPHCharacter::CPHCharacter(void)
 {
+m_phys_ref_object=NULL;
 p_lastMaterial=&lastMaterial;
 b_on_object=false;
 b_climb=false;
@@ -136,6 +137,15 @@ m_geom_shell=dCreateCylinder(0,m_radius/k,m_cyl_hight+doun);
 m_cap=dCreateSphere(0,m_radius+m_radius/30.f);
 m_wheel=dCreateSphere(0,m_radius);
 m_hat=dCreateSphere(0,m_radius/k);
+
+if(m_phys_ref_object)
+{
+	dGeomUserDataSetPhysicsRefObject(m_geom_shell,m_phys_ref_object);
+	dGeomUserDataSetPhysicsRefObject(m_cap,m_phys_ref_object);
+	dGeomUserDataSetPhysicsRefObject(m_wheel,m_phys_ref_object);
+	dGeomUserDataSetPhysicsRefObject(m_hat,m_phys_ref_object);
+}
+
 m_cap_transform=dCreateGeomTransform(0);
 m_shell_transform=dCreateGeomTransform(0);
 m_hat_transform=dCreateGeomTransform(0);
@@ -1005,7 +1015,17 @@ EEnvironment	 CPHSimpleCharacter::CheckInvironment(){
 
 
 
-
+void CPHSimpleCharacter::SetPhysicsRefObject					(CPhysicsRefObject* ref_object)
+{
+m_phys_ref_object=ref_object;
+if(b_exist)
+{
+	dGeomUserDataSetPhysicsRefObject(m_geom_shell,ref_object);
+	dGeomUserDataSetPhysicsRefObject(m_cap,ref_object);
+	dGeomUserDataSetPhysicsRefObject(m_wheel,ref_object);
+	dGeomUserDataSetPhysicsRefObject(m_hat,ref_object);
+}
+}
 
 //////////////////////////////////////////////////////////////////////////
 /////////////////////CPHWheeledCharacter//////////////////////////////////

@@ -32,13 +32,14 @@ struct Triangle
 
 typedef  void __stdcall ContactCallbackFun		(CDB::TRI* T,		dContactGeom* c);
 typedef	 void __stdcall ObjectContactCallbackFun(bool& do_colide,	dContact& c);
-
+class CPhysicsRefObject;
 struct dxGeomUserData
 {
 	dVector3	last_pos;
 	bool		pushing_neg,pushing_b_neg;
 	Triangle	neg_tri,b_neg_tri;
 	CPHObject*	ph_object;
+	CPhysicsRefObject* ph_ref_object;
 	u32			material;
 	u32			tri_material;
 	ContactCallbackFun* callback;
@@ -68,6 +69,7 @@ IC void dGeomCreateUserData(dxGeom* geom)
 	((dxGeomUserData*)dGeomGetData(geom))->tri_material=0;
 	((dxGeomUserData*)dGeomGetData(geom))->callback=NULL;
 	((dxGeomUserData*)dGeomGetData(geom))->object_callback=NULL;
+	((dxGeomUserData*)dGeomGetData(geom))->ph_ref_object=NULL;
 	//((dxGeomUserData*)dGeomGetData(geom))->ContactsParameters::mu=1.f;
 	//((dxGeomUserData*)dGeomGetData(geom))->ContactsParameters::damping=1.f;
 	//((dxGeomUserData*)dGeomGetData(geom))->ContactsParameters::spring=1.f;
@@ -92,6 +94,11 @@ IC dxGeomUserData* dGeomGetUserData(dxGeom* geom)
 IC void dGeomUserDataSetPhObject(dxGeom* geom,CPHObject* phObject)
 {
 	((dxGeomUserData*)dGeomGetData(geom))->ph_object=phObject;
+}
+
+IC void dGeomUserDataSetPhysicsRefObject(dxGeom* geom,CPhysicsRefObject* phRefObject)
+{
+	((dxGeomUserData*)dGeomGetData(geom))->ph_ref_object=phRefObject;
 }
 
 IC void dGeomUserDataSetContactCallback(dxGeom* geom,ContactCallbackFun* callback)

@@ -1411,6 +1411,12 @@ void		CPHElement::Start(){
 	//mXFORM.set(m0);
 	build(m_space);
 	RunSimulation();
+	if(m_phys_ref_object)
+	{
+		vector<dGeomID>::iterator i;
+		for(i=m_geoms.begin();i!=m_geoms.end();i++)
+			dGeomUserDataSetPhysicsRefObject(*i,m_phys_ref_object);
+	}
 	//dBodySetPosition(m_body,m_m0.c.x,m_m0.c.y,m_m0.c.z);
 	//Fmatrix33 m33;
 	//m33.set(m_m0);
@@ -3069,6 +3075,28 @@ if(!bActive)
 	}
 }
 
+void CPHElement::set_PhysicsRefObject(CPhysicsRefObject* ref_object)
+{
+	m_phys_ref_object=ref_object;
+	if(!bActive)
+	{
+		return;
+	}
+	vector<dGeomID>::iterator i;
+	for(i=m_geoms.begin();i!=m_geoms.end();i++)
+	{
+		dGeomUserDataSetPhysicsRefObject(*i,ref_object);
+	}
+}
+
+void CPHShell::set_PhysicsRefObject	 (CPhysicsRefObject* ref_object)
+{
+	vector<CPHElement*>::iterator i;
+	for(i=elements.begin();i!=elements.end();i++)
+	{
+		(*i)->set_PhysicsRefObject(ref_object);
+	}
+}
 
 void CPHElement::set_ObjectContactCallback(ObjectContactCallbackFun* callback)
 {
@@ -3082,6 +3110,7 @@ void CPHElement::set_ObjectContactCallback(ObjectContactCallbackFun* callback)
 		dGeomUserDataSetObjectContactCallback(*i,callback);
 	}
 }
+
 
 void CPHShell::set_ContactCallback(ContactCallbackFun* callback)
 {

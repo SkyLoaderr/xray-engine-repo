@@ -4,6 +4,9 @@ typedef void __stdcall BoneCallbackFun(CBoneInstance* B);
 typedef  void __stdcall ContactCallbackFun(CDB::TRI* T,dContactGeom* c);
 typedef	 void __stdcall ObjectContactCallbackFun(bool& do_colide,dContact& c);
 struct Fcylinder;
+class CPhysicsRefObject
+{
+};
 // ABSTRACT:
 class	CPhysicsBase
 {
@@ -26,6 +29,7 @@ public:
 	virtual void			SetAirResistance		(dReal linear=0.0002f, dReal angular=0.05f) = 0;
 	virtual void			set_ContactCallback		(ContactCallbackFun* callback)				= 0;
 	virtual void			set_ObjectContactCallback(ObjectContactCallbackFun* callback)		= 0;
+	virtual void			set_PhysicsRefObject	 (CPhysicsRefObject* ref_object)			= 0;
 	
 	virtual ~CPhysicsBase	()																	{};
 };

@@ -210,6 +210,7 @@ class CPHElement:  public CPhysicsElement {
 	dSpaceID				m_space;
 	dBodyID					m_body;
 	dGeomID					m_group;
+	CPhysicsRefObject*		m_phys_ref_object;
 ///////////////////////////////
 	vector<CPHElement*>		m_attached_elements;
 	CPHElement				*m_parent_element;
@@ -276,6 +277,7 @@ public:
 	virtual void			set_ContactCallback		(ContactCallbackFun* callback);
 
 	virtual void			set_ObjectContactCallback(ObjectContactCallbackFun* callback);
+	virtual void			set_PhysicsRefObject	 (CPhysicsRefObject* ref_object);
 
 	void			SetShell						(CPHShell* p){m_shell=p;}
 	void			SetPhObjectInGeomData			(CPHObject* O);
@@ -321,6 +323,7 @@ public:
 		m_parent_element=NULL;
 		m_shell=NULL;
 		m_group=NULL;
+		m_phys_ref_object=NULL;
 		ul_material=GMLib.GetMaterialIdx("objects\\box_default");
 		k_w=0.05f;
 		k_l=0.0002f;//1.8f;
@@ -501,7 +504,9 @@ public:
 															(*i)->SetForceAndVelocity(force);
 														}
 	virtual void			set_ContactCallback		(ContactCallbackFun* callback)				;
-		virtual void		set_ObjectContactCallback(ObjectContactCallbackFun* callback);
+	virtual void			set_ObjectContactCallback(ObjectContactCallbackFun* callback);
+	virtual void			set_PhysicsRefObject	 (CPhysicsRefObject* ref_object);
+
 	virtual void			Enable					();
 
 	virtual	void PhDataUpdate(dReal step);

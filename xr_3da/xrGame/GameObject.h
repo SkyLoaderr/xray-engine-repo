@@ -6,8 +6,10 @@
 #define AFX_GAMEOBJECT_H__3DA72D03_C759_4688_AEBB_89FA812AA873__INCLUDED_
 #pragma once
 
-class CPhysicsShell;
-class CGameObject : public CObject  
+#include "PhysicsShell.h"
+class CGameObject : 
+	public CObject, 
+	public CPhysicsRefObject
 	/******* Oles
 #ifdef DEBUG
 	, public pureRender

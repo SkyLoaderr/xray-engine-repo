@@ -16,6 +16,7 @@
 CPHMovementControl::CPHMovementControl(void)
 {
 	//m_character->Create();
+
 		pObject	=			NULL;
 	eOldEnvironment =	peInAir;
 	eEnvironment =		peInAir;

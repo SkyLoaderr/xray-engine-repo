@@ -289,6 +289,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 {
 	if (!inherited::net_Spawn(DC))	return FALSE;
 	ph_Movement.CreateCharacter();
+	ph_Movement.SetPhysicsRefObject(this);
 	ph_Movement.SetPLastMaterial(&last_gmtl_id);
 	ph_Movement.SetPosition	(vPosition);
 	ph_Movement.SetVelocity	(0,0,0);
