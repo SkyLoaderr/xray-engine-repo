@@ -4,7 +4,7 @@
 #include "xr_object.h"
 #include "PS_Instance.h"
 
-ISpatial_DB*				g_SpatialSpace	= NULL;
+ENGINE_API ISpatial_DB*		g_SpatialSpace	= NULL;
 
 Fvector	c_spatial_offset	[8]	= 
 {

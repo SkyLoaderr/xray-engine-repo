@@ -48,9 +48,9 @@ public:
 			if (d > 0)
 			{
 				// sphere intersected (assume object intersects too)
-				if (b_nearest && d<range)		{ range=d; range2=d*d; }
-				g_SpatialSpace.q_result.push_back(S);
-				if (b_first)					return;
+				if (b_nearest && d<range)			{ range=d; range2=d*d; }
+				g_SpatialSpace->q_result.push_back	(S);
+				if (b_first)						return;
 			}
 		}
 
@@ -61,7 +61,7 @@ public:
 			if (0==N->children[octant])	continue;
 			Fvector		c_C;			c_C.mad	(n_C,c_spatial_offset[octant],c_R);
 			walk						(N->children[octant],c_C,c_R);
-			if (b_first && !g_SpatialSpace.q_result.empty())	return;
+			if (b_first && !g_SpatialSpace->q_result.empty())	return;
 		}
 	}
 };
