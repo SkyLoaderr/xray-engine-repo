@@ -149,6 +149,7 @@ void ELibrary::RemoveEditObject(CEditableObject*& object)
 	if (object){
 	    object->m_RefCount--;
     	R_ASSERT(object->m_RefCount>=0);
+        object=0;
 //S если нужно то удалить физически
 	}
 }
