@@ -131,6 +131,7 @@ void			ISpatial_DB::initialize(Fbox& BB)
 	rt_insert_object		= NULL;
 	m_root					= _node_create();
 	m_root->_init			(NULL);
+	lock					= FALSE;
 }
 ISpatial_NODE*	ISpatial_DB::_node_create		()
 {
@@ -145,7 +146,8 @@ ISpatial_NODE*	ISpatial_DB::_node_create		()
 }
 void			ISpatial_DB::_node_destroy(ISpatial_NODE* &P)
 {
-	stat_nodes	--;
+	VERIFY						(P->_empty());
+	stat_nodes					--;
 	allocator_pool.push_back	(P);
 	P							= NULL;
 }
@@ -201,6 +203,10 @@ void			ISpatial_DB::_insert	(ISpatial_NODE* N, Fvector& n_C, float n_R)
 BOOL			f_valid					(float f)		{	return _finite(f) && !_isnan(f);	}
 void			ISpatial_DB::insert		(ISpatial* S)
 {
+	VERIFY		(!lock);
+	lock		= TRUE;
+	VERIFY		(verify());
+
 	stat_insert.Begin	();
 	VERIFY				(f_valid(S->spatial.radius) && f_valid(S->spatial.center.x) && f_valid(S->spatial.center.y) && f_valid(S->spatial.center.z) );
 	if (verify_sp(S,m_center,m_bounds))
@@ -219,6 +225,7 @@ void			ISpatial_DB::insert		(ISpatial* S)
 	stat_insert.End		();
 
 	VERIFY		(verify());
+	lock		= FALSE;
 }
 
 void			ISpatial_DB::_remove	(ISpatial_NODE* N, ISpatial_NODE* N_sub)
@@ -226,6 +233,7 @@ void			ISpatial_DB::_remove	(ISpatial_NODE* N, ISpatial_NODE* N_sub)
 	if (0==N)							return;
 
 	//*** we are assured that node contains N_sub and this subnode is empty
+	VERIFY		(verify());
 	u32 octant	= u32(-1);
 	if (N_sub==N->children[0])			octant = 0;
 	else if (N_sub==N->children[1])		octant = 1;
@@ -235,21 +243,50 @@ void			ISpatial_DB::_remove	(ISpatial_NODE* N, ISpatial_NODE* N_sub)
 	else if (N_sub==N->children[5])		octant = 5;
 	else if (N_sub==N->children[6])		octant = 6;
 	else if (N_sub==N->children[7])		octant = 7;
+	VERIFY								(octant<8);
+	VERIFY		(verify());
+	VERIFY		(N_sub==N->children[octant]);
+	for (u32 chk=0; chk<8; chk++)	if		(0!=N_sub->children[chk])	{ _asm	int 3;
+		N_sub->_empty();
+	}
+	VERIFY		(N_sub->_empty());
+	VERIFY		(N_sub->items.empty());
+	for (u32 chk=0; chk<8; chk++)	if		(0!=N_sub->children[chk])	{ _asm	int 3;
+		N_sub->_empty();
+	}
+	VERIFY		(0==N_sub->children[0]);
+	VERIFY		(0==N_sub->children[1]);
+	VERIFY		(0==N_sub->children[2]);
+	VERIFY		(0==N_sub->children[3]);
+	VERIFY		(0==N_sub->children[4]);
+	VERIFY		(0==N_sub->children[5]);
+	VERIFY		(0==N_sub->children[6]);
+	VERIFY		(0==N_sub->children[7]);
 	_node_destroy						(N->children[octant]);
+	VERIFY		(0==N->children[octant]);
+	VERIFY		(verify());
 
 	// Recurse
+	VERIFY		(verify());
 	if (N->_empty())					_remove(N->parent,N);
+	VERIFY		(verify());
 }
 
 void			ISpatial_DB::remove		(ISpatial* S)
 {
+	VERIFY		(!lock);
+	lock		= TRUE;
+	VERIFY		(verify());
+
 	stat_remove.Begin	();
 	ISpatial_NODE* N	= S->spatial.node_ptr;
 	N->_remove			(S);
 
 	// Recurse
+	VERIFY		(verify());
 	if (N->_empty())					_remove(N->parent,N);
 	stat_remove.End		();
 
 	VERIFY		(verify());
+	lock		= FALSE;
 }

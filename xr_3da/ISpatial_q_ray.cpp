@@ -79,4 +79,6 @@ void	ISpatial_DB::q_ray	(u32 _o, u32 _mask, const Fvector&	_start,  const Fvecto
 		if (_o & O_ONLYNEAREST)		{ walker<false,true>	W(_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
 		else						{ walker<false,false>	W(_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
 	}
+
+	VERIFY			(verify());
 }

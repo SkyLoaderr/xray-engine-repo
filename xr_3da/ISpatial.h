@@ -88,12 +88,13 @@ public:
 	void						_insert			(ISpatial*		_S);
 	BOOL						_empty			()						
 	{
-		return items.empty() && 
-			0!=(
+		return items.empty() && (
+			0==(
 				ptrt(children[0])|ptrt(children[1])|
 				ptrt(children[2])|ptrt(children[3])|
 				ptrt(children[4])|ptrt(children[5])|
 				ptrt(children[6])|ptrt(children[7])
+				)
 			);	
 	}
 };
@@ -114,6 +115,7 @@ public:
 	u32								stat_objects;
 	CStatTimer						stat_insert;
 	CStatTimer						stat_remove;
+	BOOL							lock;
 private:
 	IC u32							_octant			(u32 x, u32 y, u32 z)			{	return z*4 + y*2 + x;	}
 	IC u32							_octant			(Fvector& base, Fvector& rel)

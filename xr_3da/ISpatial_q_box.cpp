@@ -62,6 +62,8 @@ void	ISpatial_DB::q_box			(u32 _o, u32 _mask, const Fvector& _center, const Fvec
 	q_result.clear	();
 	if (_o & O_ONLYFIRST)			{ walker<true>	W(_mask,_center,_size);	W.walk(m_root,m_center,m_bounds); } 
 	else							{ walker<false>	W(_mask,_center,_size);	W.walk(m_root,m_center,m_bounds); } 
+
+	VERIFY							(verify());
 }
 
 void	ISpatial_DB::q_sphere		(u32 _o, u32 _mask, const Fvector& _center, const float _radius)
