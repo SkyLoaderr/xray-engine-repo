@@ -111,7 +111,7 @@ void CWeaponAmmo::OnH_B_Independent()
 	if(!Useful()) {
 		NET_Packet P;
 		u_EventGen(P,GE_DESTROY,ID());
-		u_EventSend(P);
+		if(Local()) u_EventSend(P);
 		return;
 	}
 	setVisible(true);
