@@ -141,8 +141,12 @@ void bonesManipulation::Update(u32 time)
 			bones_were_turned = true;
 		}
 
-		HUD().pFontSmall->OutSet (300,400);
-		HUD().pFontSmall->OutNext("BoneX : CY = [%f]  TY = [%f] RS = [%f]", m_Bones[i].axis[0].cur_yaw, m_Bones[i].axis[0].target_yaw, m_Bones[i].axis[0].r_speed);
+//		HUD().pFontSmall->OutSet (300,400);
+//		HUD().pFontSmall->OutNext("BoneX : CY = [%f]  TY = [%f] RS = [%f]", m_Bones[i].axis[0].cur_yaw, m_Bones[i].axis[0].target_yaw, m_Bones[i].axis[0].r_speed);
+//
+//		HUD().pFontSmall->OutSet (300,500);
+//		HUD().pFontSmall->OutNext("DayTime = [%i]    time = [%i]", Level().GetDayTime(), Level().GetGameTime());
+
 
 	}
 	

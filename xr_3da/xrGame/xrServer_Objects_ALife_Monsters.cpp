@@ -927,41 +927,6 @@ void CSE_ALifeMonsterBiting::FillProp	(LPCSTR pref, PropItemVec& values)
 #endif
 
 //////////////////////////////////////////////////////////////////////////
-// CSE_ALifeMonsterChimera
-//////////////////////////////////////////////////////////////////////////
-CSE_ALifeMonsterChimera::CSE_ALifeMonsterChimera	(LPCSTR caSection) : CSE_ALifeMonsterAbstract(caSection), CSE_Abstract(caSection)
-{
-	set_visual					(pSettings->r_string(caSection,"visual"));
-}
-
-void CSE_ALifeMonsterChimera::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
-{
-	inherited::STATE_Read		(tNetPacket,size);
-}
-
-void CSE_ALifeMonsterChimera::STATE_Write	(NET_Packet	&tNetPacket)
-{
-	inherited::STATE_Write		(tNetPacket);
-}
-
-void CSE_ALifeMonsterChimera::UPDATE_Read	(NET_Packet	&tNetPacket)
-{
-	inherited::UPDATE_Read		(tNetPacket);
-}
-
-void CSE_ALifeMonsterChimera::UPDATE_Write	(NET_Packet	&tNetPacket)
-{
-	inherited::UPDATE_Write		(tNetPacket);
-}
-
-#ifdef _EDITOR
-void CSE_ALifeMonsterChimera::FillProp	(LPCSTR pref, PropItemVec& values)
-{
-	inherited::FillProp			(pref,values);
-}
-#endif
-
-//////////////////////////////////////////////////////////////////////////
 // CSE_ALifeHumanAbstract
 //////////////////////////////////////////////////////////////////////////
 CSE_ALifeHumanAbstract::CSE_ALifeHumanAbstract(LPCSTR caSection) : CSE_ALifeTraderAbstract(caSection), CSE_ALifeMonsterAbstract(caSection), CSE_Abstract(caSection)

@@ -26,9 +26,17 @@ public:
 
 	// Flesh-specific FSM
 	CBloodsuckerRest	*stateRest;
+	CBloodsuckerEat		*stateEat;
+
 	friend	class		CBloodsuckerRest;
+	friend	class		CBloodsuckerEat;
 
 	bonesManipulation	Bones;
+
+	bool				flagVisibility;					// true - если видим
+	TTime				timeStartVisChanged;			// время начала изменение видимости монстра
+	TTime				timeInvisible;					// время нахождения в состоянии невидимости
+	
 };
 
 

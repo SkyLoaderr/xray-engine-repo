@@ -123,9 +123,11 @@ void CVisionMemory::Init(TTime mem_time)
 {
 	Deinit();
 
-	MemoryTimeDefault	= MemoryTime = mem_time;
+	timeMemoryDefault	= timeMemory = mem_time;
+	timeLastUpdateIgnoreObjects = 0;
+
 	Selected.obj		= 0;
-	
+
 	pMonster = dynamic_cast<CCustomMonster *>(this);
 	if (!pMonster) R_ASSERT("Cannot dynamic_cast from CVisionMemory to CCustomMonster!");
 }
@@ -133,7 +135,6 @@ void CVisionMemory::Deinit()
 {
 	Objects.clear	(); 
 	Enemies.clear	();
-	Saved.obj		= 0;
 	Selected.obj	= 0;
 }
 
@@ -142,7 +143,7 @@ void CVisionMemory::Deinit()
 // Заполняет массивы Objects и Enemies
 void CVisionMemory::UpdateVision(TTime dt) 
 {
-	CurrentTime	= dt;
+	timeCurrent	= dt;
 
 	// получить список видимых объектов
 	VisionElem ve;
@@ -152,31 +153,23 @@ void CVisionMemory::UpdateVision(TTime dt)
 		CEntityAlive *pE = dynamic_cast<CEntityAlive *>(VisibleEnemies[i].key);
 		if (!pE) R_ASSERT("Visible object is not of class CEntityAlive. Check feel_vision_isRelevant!");
 
-		ve.Set(pE,CurrentTime);
+		ve.Set(pE,timeCurrent);
  
 		if (!pE->g_Alive()) AddObject(ve);
 		else AddEnemy(ve);
 	}
 
-	// удалить старые объекты
-	for (u32 i = 0; i<Objects.size(); i++){
-		if (Objects[i].time < CurrentTime - MemoryTime){
-			Objects[i] = Objects.back();
-			Objects.pop_back();
-		}
-	}
-	// удалить старых врагов и тех, расстояние до которых > 30м
-	for (i = 0; i<Enemies.size(); i++){
-		if ((Enemies[i].time + MemoryTime < CurrentTime) || (!Enemies[i].obj->g_Alive()) || 
-			((Enemies[i].obj->Position().distance_to(pMonster->Position()) > 30) && (Enemies[i].time != CurrentTime))){
-			Enemies[i] = Enemies.back();
-			Enemies.pop_back();
-		}
-	}
-
 	// удаление объектов, перешедших в оффлайн
 	CheckValidObjects();
 
+	// удалить 'старые' объекты и враги
+	RemoveOldElems();
+
+	// Удалить старые игнор-объекты
+	RemoveOldIgnoreObjects();
+	// удалить все объекты которые также занесены в массив игнорируемых объектов
+	UpdateWithIgnoreObjects();
+	
 	// обновить Selected
 	if (IsEnemy()) SelectEnemy();
 	else if (IsObject()) SelectCorpse();
@@ -184,10 +177,9 @@ void CVisionMemory::UpdateVision(TTime dt)
 	
 }
  
-
 void CVisionMemory::AddObject(const VisionElem &ve)
 {
-	xr_vector<VisionElem>::iterator res;
+	ITERATOR_VE res;
 
 	res = std::find(Objects.begin(), Objects.end(), ve);
 	if (res == Objects.end()) Objects.push_back(ve);
@@ -197,17 +189,13 @@ void CVisionMemory::AddObject(const VisionElem &ve)
 
 void CVisionMemory::AddEnemy(const VisionElem &ve)
 {
-	xr_vector<VisionElem>::iterator res;
+	ITERATOR_VE res;
 
 	res = std::find(Enemies.begin(), Enemies.end(), ve);
 	if (res == Enemies.end()) Enemies.push_back(ve);
 	else *res = ve;
 
-	if (ve.obj == Selected.obj) {
-		Selected = ve;
-		SaveEnemy();
-	}
-
+	if (ve.obj == Selected.obj) Selected = ve;
 }
 
 
@@ -218,16 +206,16 @@ void CVisionMemory::SelectEnemy()
 		if (!Selected.obj->g_Alive()) Selected.obj = 0;
 
 		// Выбранный враг давно исчез из поля зрения?
-		if (Selected.time + MemoryTime < CurrentTime) Selected.obj = 0;
+		if (Selected.time + timeMemory < timeCurrent) Selected.obj = 0;
 
 		// пришло время перевыбора врага
-		if (Selected.time + TIME_TO_RESELECT_ENEMY < CurrentTime) Selected.obj = 0;
+		if (Selected.time + TIME_TO_RESELECT_ENEMY < timeCurrent) Selected.obj = 0;
 	}
 
 	// Необходимо выбрать другого врага?
 	if (!Selected.obj) {
-		Selected = GetNearestObject();
-		Selected.time = CurrentTime;
+		Selected = GetNearestObject(ENEMY);
+		Selected.time = timeCurrent;
 	}
 }
 
@@ -238,10 +226,8 @@ void CVisionMemory::SelectCorpse()
 
 bool CVisionMemory::Get(VisionElem &ve)
 {
-	if (!Selected.obj) {
-		ve = Saved;
-		return false;
-	} else ve = Selected;
+	if (!Selected.obj) return false;
+	else ve = Selected;
 	return true;
 }
 
@@ -254,14 +240,14 @@ VisionElem &CVisionMemory::GetNearestObject(EObjectType obj_type)
 	float		cur_val;
 	int			index = 0;		// Индекс ближайшего объекта в массиве объектов 
 
-	xr_vector<VisionElem> *ObjectsVector = 0;
+	VECTOR_VE *ObjectsVector = 0;
 	if (obj_type == ENEMY) ObjectsVector = &Enemies;
 	else ObjectsVector = &Objects;
 	
-	optimal_val = 1000 * pMonster->Position().distance_to((*ObjectsVector)[index].position) * (CurrentTime - (*ObjectsVector)[index].time + 1);
+	optimal_val = 1000 * pMonster->Position().distance_to((*ObjectsVector)[index].position) * (timeCurrent - (*ObjectsVector)[index].time + 1);
 
 	for (u32 i=1; i < ObjectsVector->size(); i++) {
-		cur_val = 1000 * pMonster->Position().distance_to((*ObjectsVector)[i].position) * (CurrentTime - (*ObjectsVector)[i].time + 1);
+		cur_val = 1000 * pMonster->Position().distance_to((*ObjectsVector)[i].position) * (timeCurrent - (*ObjectsVector)[i].time + 1);
 
 		if ( cur_val < optimal_val){
 			optimal_val = cur_val;
@@ -271,13 +257,54 @@ VisionElem &CVisionMemory::GetNearestObject(EObjectType obj_type)
 	return (*ObjectsVector)[index];
 }
 
+void CVisionMemory::RemoveOldElems()
+{
+	// удалить 'старые' объекты
+	ITERATOR_VE I = remove_if(Objects.begin(), Objects.end(), predicate_remove_old_objects(timeCurrent - timeMemory));
+	Objects.erase(I,Objects.end());
+	
+	// удалить 'старых' врагов и тех, расстояние до которых > 30м и др.
+	I = remove_if(Enemies.begin(), Enemies.end(), predicate_remove_old_enemies(timeCurrent,timeMemory,pMonster->Position()));
+	Enemies.erase(I,Enemies.end());
+}
+
 void CVisionMemory::CheckValidObjects()
 {
-	xr_vector<VisionElem>::iterator Result = std::remove_if(Enemies.begin(), Enemies.end(), remove_visual_pred());
+	ITERATOR_VE Result = remove_if(Enemies.begin(), Enemies.end(), predicate_remove_offline());
 	Enemies.erase   (Result,Enemies.end());
+}
+
+void CVisionMemory::RemoveOldIgnoreObjects()
+{
+	if ((timeLastUpdateIgnoreObjects + TIME_TO_UPDATE_IGNORE_OBJECTS) > timeCurrent) return;
+
+	// удалить 'старые' объекты
+	ITERATOR_VE I = remove_if(IgnoreObjects.begin(), IgnoreObjects.end(), predicate_remove_old_objects(timeCurrent - timeMemory));
+	IgnoreObjects.erase(I,IgnoreObjects.end());
+
+	timeLastUpdateIgnoreObjects = timeCurrent;
+}
+
+void CVisionMemory::UpdateWithIgnoreObjects()
+{
+	for (ITERATOR_VE IT = IgnoreObjects.begin(); IT !=  IgnoreObjects.end(); IT++)	{
+		ITERATOR_VE I = remove_if(Objects.begin(), Objects.end(), predicate_remove_ignore_objects(IT->obj));
+		Objects.erase(I,Objects.end());
+
+		I = remove_if(Enemies.begin(), Enemies.end(), predicate_remove_ignore_objects(IT->obj));
+		Enemies.erase(I,Enemies.end());
+	}
+}
+
+void CVisionMemory::AddIgnoreObject(CEntity *pObj)
+{
+	VisionElem ve;
+	ve.Set(pObj, timeCurrent);
 	
-	Result = std::remove_if(Objects.begin(), Objects.end(), remove_visual_pred());
-	Objects.erase	(Result,Objects.end());
+	ITERATOR_VE res;
+	res = std::find(IgnoreObjects.begin(), IgnoreObjects.end(), ve);
+	if (res == IgnoreObjects.end()) IgnoreObjects.push_back(ve);
+	else *res = ve;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////

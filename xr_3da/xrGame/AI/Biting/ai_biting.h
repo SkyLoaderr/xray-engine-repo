@@ -147,6 +147,8 @@ public:
 	bool					A,B,C,D,E,F,G,H,I,J,K,L,M;
 
 	// Combat flags 
+#pragma	todo("Jim to Jim: pack flags")
+
 	bool					flagEnemyDie;
 	bool					flagEnemyLostSight;
 	bool					flagEnemyGoCloser;

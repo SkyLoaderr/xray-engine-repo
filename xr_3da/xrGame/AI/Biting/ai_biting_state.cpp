@@ -419,7 +419,6 @@ void CBitingHide::Init()
 	inherited::Init();
 
 	if (!pMonster->GetEnemy(m_tEnemy)) R_ASSERT(false);
-	pMonster->SaveEnemy();
 
 	SetInertia(20000);
 	pMonster->SetMemoryTime(20000);
@@ -480,7 +479,6 @@ void CBitingDetour::Init()
 	inherited::Init();
 
 	if (!pMonster->GetEnemy(m_tEnemy)) R_ASSERT(false);
-	pMonster->SaveEnemy();
 
 	SetInertia(15000);
 	pMonster->SetMemoryTime(15000);

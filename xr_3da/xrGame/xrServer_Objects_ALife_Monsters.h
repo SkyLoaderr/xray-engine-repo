@@ -190,10 +190,6 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeMonsterBiting,CSE_ALifeMonsterAbstract)
 									CSE_ALifeMonsterBiting	(LPCSTR caSection);				// constructor for variable initialization
 SERVER_ENTITY_DECLARE_END
 
-//-- server object for chimera --
-SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeMonsterChimera,CSE_ALifeMonsterAbstract)
-									CSE_ALifeMonsterChimera	(LPCSTR caSection);				// constructor for variable initialization
-SERVER_ENTITY_DECLARE_END
 //-------------------------------
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_ALifeMonsterAbstract)

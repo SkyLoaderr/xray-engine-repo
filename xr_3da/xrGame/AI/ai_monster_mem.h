@@ -6,7 +6,8 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //*********************************************************************************************************
 
-#define TIME_TO_RESELECT_ENEMY	3000
+#define TIME_TO_RESELECT_ENEMY			3000
+#define TIME_TO_UPDATE_IGNORE_OBJECTS	3000
 
 #define DEFINE_THIS_CLASS_AS_POLYMORPHIC() virtual void __VirtualFunctionThatMakesClassPolymorphic() {}
 
@@ -125,13 +126,50 @@ typedef struct tagVisionElem
 	bool operator == (const tagVisionElem &ve) {
 		return (obj == ve.obj);
 	}
+
 } VisionElem;
 
 
-// удаление объектов, перешедших в оффлайн
-struct remove_visual_pred : public std::unary_function<VisionElem, bool>
-{
-	bool operator()(const VisionElem &x){ return (x.obj && x.obj->getDestroy()); }
+// предикат удаления 'старых' объектов
+struct predicate_remove_old_objects {
+
+	TTime new_time;
+	predicate_remove_old_objects(TTime time) { new_time = time; }
+	bool operator() (const VisionElem &x) { return (x.time < new_time); }
+
+};
+
+// предикат удаления 'старых' врагов
+struct predicate_remove_old_enemies {
+
+	TTime	cur_time;
+	TTime	mem_time;
+	Fvector monster_pos;
+	predicate_remove_old_enemies(TTime c_time, TTime m_time, Fvector m_pos) { 
+		cur_time = c_time;	mem_time = m_time;	monster_pos = m_pos;
+	}
+	bool operator() (const VisionElem &x) { 
+		return ((x.time + mem_time < cur_time) || (!x.obj) || (!x.obj->g_Alive()) || 
+			    ((x.obj->Position().distance_to(monster_pos) > 30) && (x.time != cur_time))); 
+	}
+};
+
+
+// предикат удаления 'старых' врагов
+struct predicate_remove_ignore_objects {
+	CEntity *pObj;
+
+	predicate_remove_ignore_objects(CEntity *p) { pObj = p; }
+	
+	bool operator() (const VisionElem &x) { 
+		return (pObj == x.obj); 
+	}
+};
+
+
+// предикат удаления старых объектов, перешедших в оффлайн
+struct predicate_remove_offline {
+	bool operator() (const VisionElem &x) { return (x.obj && x.obj->getDestroy()); }
 };
 
 
@@ -139,33 +177,36 @@ struct remove_visual_pred : public std::unary_function<VisionElem, bool>
 // CVisionMemory class
 class CVisionMemory
 {
-	TTime					MemoryTimeDefault;
-	TTime					MemoryTime;				// время хранения визуальных объектов
-	TTime					CurrentTime;			// текущее время
+	TTime					timeMemoryDefault;
+	TTime					timeMemory;				// время хранения визуальных объектов
+	TTime					timeCurrent;			// текущее время
 	
-	xr_vector<VisionElem>	Objects;
-	xr_vector<VisionElem>	Enemies;
+	DEFINE_VECTOR			(VisionElem, VECTOR_VE, ITERATOR_VE);
+
+	VECTOR_VE				Objects;
+	VECTOR_VE				Enemies;
 
 	VisionElem				Selected;
-	VisionElem				Saved;
-
 	enum EObjectType {ENEMY, OBJECT};
 
 	CCustomMonster			*pMonster;
-
+	
+	VECTOR_VE				IgnoreObjects;
+	TTime					timeLastUpdateIgnoreObjects;
+		
 public:
 	IC	bool		IsEnemy			() {return (!Enemies.empty());}	 
 	IC	bool		IsObject		() {return (!Objects.empty());}	 
 
 	IC	bool		GetEnemy		(VisionElem &ve) {return Get(ve);} 	
 	IC	bool		GetCorpse		(VisionElem &ve) {return Get(ve);}
+	
 	IC	void		AddCorpse		(const VisionElem &ve) {AddObject(ve);}
 
-	IC	void		SaveEnemy		() {if (Selected.obj) Saved = Selected;}
+	IC	void		SetMemoryTime	(TTime t) {timeMemory = t;}
+	IC	void		SetMemoryTimeDef() {timeMemory = timeMemoryDefault;}
 
-	IC	void		SetMemoryTime	(TTime t) {MemoryTime = t;}
-	IC	void		SetMemoryTimeDef() {MemoryTime = MemoryTimeDefault;}
-
+		void		AddIgnoreObject	(CEntity *pObj);
 protected:
 		void		Init			(TTime mem_time);
 		void		Deinit			();
@@ -176,18 +217,27 @@ protected:
 		DEFINE_THIS_CLASS_AS_POLYMORPHIC();
 
 private:
-		void		AddObject(const VisionElem &ve);
-		void		AddEnemy(const VisionElem &ve);
+		void		AddObject		(const VisionElem &ve);
+		void		AddEnemy		(const VisionElem &ve);
 	
-		bool		Get(VisionElem &ve);
+		bool		Get				(VisionElem &ve);
 
-		void		SelectEnemy();
-		void		SelectCorpse();
+		void		SelectEnemy		();
+		void		SelectCorpse	();
 
 		VisionElem	&GetNearestObject(EObjectType obj_type = ENEMY);
-
+		
+		// удалить 'старые' объекты и врагов
+		void		RemoveOldElems	();
+		
 		// удалить объекты которые не прошли тест на getDestroyed(), т.е. ушли в оффлайн
-		void CheckValidObjects();
+		void		CheckValidObjects();
+
+		// удаление старых игнор-объектов 
+		void		RemoveOldIgnoreObjects();
+		
+		// удалить все объекты которые также занесены в массив игнорируемых объектов
+		void		UpdateWithIgnoreObjects();		
 };
 
 //---------------------------------------------------------------------------------------------------------

@@ -201,6 +201,13 @@ public:
 	{
 		return(this->Server->game->GetGameTime());
 	}
+
+	// by Jim
+	// gets current daytime [0..23]
+	IC u8 GetDayTime() { 
+		return ((u8) ((GetGameTime() / 3600000) % 24 )); 
+	}
+
 };
 
 IC CLevel&				Level()		{ return *((CLevel*) g_pGameLevel);			}

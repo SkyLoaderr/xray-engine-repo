@@ -174,7 +174,7 @@ protected:
 	bool			m_bLocked;							//!< Состояние заблокировано
 
 	TTime			m_dwInertia;						//!< Инерция
-
+	
 public:
 						IState			();
 
