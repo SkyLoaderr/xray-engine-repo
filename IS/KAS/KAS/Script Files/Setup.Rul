@@ -23,12 +23,13 @@ string 	g_sSerial;
 // Definition
 //---------------------------------------------------------------------------
 #define DEF_FOLDER 				"KAC"
-#define MSDE_INSTANCE_NAME	 	"kas_sql_srv"
-#define MSDE_INSTANCE_FOLDER	PROGRAMFILES^"Microsoft SQL Server\\Mssql$"+MSDE_INSTANCE_NAME+"\\"
+#define MSDE_INSTANCE_NAME	 	"KAS_SQL_SRV"
+#define MSDE_INSTANCE_SERVICE 	"MSSQL$"+MSDE_INSTANCE_NAME
+#define MSDE_INSTANCE_FOLDER	PROGRAMFILES^"Microsoft SQL Server\\"+MSDE_INSTANCE_SERVICE+"\\"
 
 #define MSDE_SERVER_CMD			"\""+PROGRAMFILES^"Microsoft SQL Server\\80\\Tools\\Binn\\scm.exe"+"\""
-#define MSDE_START_SERVER_PAR	" -Action 1 -Silent 1 -Service mssql$kas_sql_srv"
-#define MSDE_STOP_SERVER_PAR	" -Action 6 -Silent 1 -Service mssql$kas_sql_srv"
+#define MSDE_START_SERVER_PAR	" -Action 1 -Silent 1 -Service "+MSDE_INSTANCE_SERVICE
+#define MSDE_STOP_SERVER_PAR	" -Action 6 -Silent 1 -Service "+MSDE_INSTANCE_SERVICE
                    
 #define DLL_FILE  				TARGETDIR^"SQL_CONFIG.dll"
 #define SQL_USER_NAME_ 			"sa"
@@ -73,6 +74,7 @@ prototype CDECL BOOL 	SQL_CONFIG.runSQLString		(byval string, byval string, byva
 prototype CDECL BOOL 	SQL_CONFIG.detachDatabase	(byval string, byval string, byval string, byval string);
 // export events for IS
 export prototype 		MSDE_2000_UnInstalled		();
+export prototype 		MSDE_2000_UnInstalling		();
 
 //---------------------------------------------------------------------------
 // User defined function
@@ -205,20 +207,19 @@ begin
 	    
 	    SQL_CONFIG.initLibrary();
 	                      
-	    // Enable the progress bar.
-	    Enable			(STATUS);
+	    // Show Status
+		SetStatusWindow	( 0, "" );
+		Enable			( STATUSEX );
+		StatusUpdate	( ON, 100 );
 
-		PlaceWindow		(STATUS,0,0,CENTERED);	                      
-    
-	    // Set the limit of the progress bar to 99% completion.
-	    StatusUpdate 	(ON, 99);
+		PlaceWindow		(STATUSEX,100,100,CENTERED);	                      
     
 	    // Display a message; do not change the progress bar.
 	    SetStatusWindow (-1, @IDSL_PROGRESS_SETUP_SERVER);
     
 	    SetStatusWindow (10, @IDSL_PROGRESS_START_SERVER);
 	    StartServer		();
-	    
+	       
 	    SetStatusWindow (20, @IDSL_PROGRESS_CHECK_CONNECTION);
 		bRes 			= SQL_CONFIG.testConnection(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_);
 		if (bRes = 0) then 
@@ -323,7 +324,7 @@ begin
 label_end:
 	    // Set the progress bar to 100% and displays a message.
 	    SetStatusWindow (100, @IDSL_PROGRESS_END);
-	    Disable			(STATUS);
+	    Disable			(STATUSEX);
 	
 	    SQL_CONFIG.deInitLibrary();
 	
@@ -585,9 +586,12 @@ Dlg_ObjDialogs:
 end;
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
-function MSDE_2000_UnInstalled()
+function MSDE_2000_UnInstalling()
 begin
     StopServer			();
+end;
+function MSDE_2000_UnInstalled()
+begin
     ClearFolder			(MSDE_INSTANCE_FOLDER);
 end;
 //---------------------------------------------------------------------------
@@ -656,8 +660,8 @@ begin
 	endif;
            
 	// create uninstall shortcut
-	CreateUninstallShortcut();
-         
+	CreateUninstallShortcut			();
+	                 
     // set folder everyone access
     SetTargetFolderAccess();
         
@@ -677,18 +681,20 @@ begin
 	// only set this to true if you have at least the ISUS Professional Edition.
 	bShowUpdateServiceDlg = FALSE;
 
-	// configure server
+	// configure server           
 	if (FeatureIsItemSelected(MEDIA,"MSDE")) then
 		ConfigureServer();
 	endif;
          
 	// Delete ServiceManager icon
     DeleteFolderIcon(FOLDER_STARTUP, "Service Manager");
-         
+
     //{{IS_SCRIPT_TAG(Dlg_SdDinishEx)	
     if ( BATCH_INSTALL ) then
     	SdFinishReboot ( szTitle , szMsg1 , SYS_BOOTMACHINE , szMsg2 , 0 );
     else   
+    	// configure
+//		if (FeatureIsItemSelected(MEDIA,"MSDE")) then ConfigureServer(); endif;
 		// finish
 		SdFinish ( szTitle , szMsg1 , szMsg2 , szOpt1 , szOpt2 , bvOpt1 , bvOpt2 );
     endif;
@@ -737,4 +743,19 @@ begin
        	SdFinish ( szTitle , szMsg1 , szMsg2 , szOpt1 , szOpt2 , bvOpt1 , bvOpt2 );
     endif;
 end;
-
+//---------------------------------------------------------------------------
+// OnRebooted
+//
+// The OnRebooted event is called when the setup is run automatically after
+// rebooting the system. This is the only event that will be called in this
+// case.
+//---------------------------------------------------------------------------
+function OnRebooted()
+begin
+/*
+	// configure server           
+	if (FeatureIsItemSelected(MEDIA,"MSDE")) then
+		ConfigureServer();
+	endif;
+*/
+end;
