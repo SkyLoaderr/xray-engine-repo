@@ -63,7 +63,7 @@ void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 			// Generate ownership-event
 			NET_Packet			GEN;
 			GEN.w_begin			(M_EVENT);
-			GEN.w_u32			(Level().timeServer()-NET_Latency);
+			GEN.w_u32			(Level().timeServer());//-NET_Latency);
 			GEN.w_u16			(GE_OWNERSHIP_TAKE);
 			GEN.w_u16			(E->ID_Parent);
 			GEN.w_u16			(u16(O->ID()));

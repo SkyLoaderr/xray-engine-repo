@@ -110,10 +110,11 @@ bool CInventory::FreeBeltRoom()
 bool CInventory::Take(CGameObject *pObj, bool bNotActivate)
 {
 	CInventoryItem *pIItem = dynamic_cast<CInventoryItem*>(pObj);
+	//Msg("Takin %s", *(pObj->cName()));
 	
 	if(m_all.find(pIItem) != m_all.end()) 
 	{
-		Debug.fatal("Item already exist in inventory: %s(%s)",*pObj->cName(),pObj->cNameSect());
+		Debug.fatal("Item already exist in inventory: %s(%s)",*pObj->cName(),*pObj->cNameSect());
 	}
 
 	if(!pIItem || !pIItem->Useful() || 
@@ -222,12 +223,12 @@ void CInventory::ClearAll()
 bool CInventory::Slot(PIItem pIItem, bool bNotActivate) 
 {
 	VERIFY(pIItem);
-	Msg("put item %s in inventory slot %d", pIItem->cName(), pIItem->GetSlot());
+	//Msg("put item %s in inventory slot %d", *pIItem->cName(), pIItem->GetSlot());
 
 	if(!m_bSlotsUseful)
 	{
 #ifdef _DEBUG
-		Msg("slot not useful");
+		//Msg("slot not useful");
 #endif
 		return false;
 	}
@@ -251,10 +252,10 @@ bool CInventory::Slot(PIItem pIItem, bool bNotActivate)
 	else
 	{
 #ifdef _DEBUG
-		if(pIItem->GetSlot() == NO_ACTIVE_SLOT)
-			Msg("item has not slot to put in");
-		else
-			Msg("item %s already in slot ",m_slots[pIItem->GetSlot()].m_pIItem->cName());
+//		if(pIItem->GetSlot() == NO_ACTIVE_SLOT)
+			//Msg("item has not slot to put in");
+//		else
+			//Msg("item %s already in slot ",*(m_slots[pIItem->GetSlot()].m_pIItem->cName()));
 #endif
 		return false;
 	}
@@ -327,15 +328,15 @@ bool CInventory::Activate(u32 slot)
 
 
 #ifdef _DEBUG
-	Msg("slot: %d active slot: %d next_active: %d", slot, m_iActiveSlot, m_iNextActiveSlot);
-	if(slot != NO_ACTIVE_SLOT && m_slots[slot].m_pIItem)
-		Msg("activating %s item", m_slots[slot].m_pIItem->cName());
+	//Msg("slot: %d active slot: %d next_active: %d", slot, m_iActiveSlot, m_iNextActiveSlot);
+//	if(slot != NO_ACTIVE_SLOT && m_slots[slot].m_pIItem)
+//		Msg("activating %s item", m_slots[slot].m_pIItem->cName());
 #endif
 
 	if(slot != NO_ACTIVE_SLOT && !m_slots[slot].m_bCanBeActivated) 
 	{
 #ifdef _DEBUG
-		Msg("slot %d, cant be activaterd", slot);
+		//Msg("slot %d, cant be activaterd", slot);
 #endif
 		return false;
 	}
@@ -347,7 +348,7 @@ bool CInventory::Activate(u32 slot)
 		m_slots[m_iActiveSlot].m_pIItem->IsHiding()))
 	{
 #ifdef _DEBUG
-		Msg("m_iActiveSlot == slot || (m_iNextActiveSlot == slot &&	m_iActiveSlot != NO_ACTIVE_SLOT &&	m_slots[m_iActiveSlot].m_pIItem &&	m_slots[m_iActiveSlot].m_pIItem->IsHiding())");
+		//Msg("m_iActiveSlot == slot || (m_iNextActiveSlot == slot &&	m_iActiveSlot != NO_ACTIVE_SLOT &&	m_slots[m_iActiveSlot].m_pIItem &&	m_slots[m_iActiveSlot].m_pIItem->IsHiding())");
 #endif
 
 		return false;
@@ -364,7 +365,7 @@ bool CInventory::Activate(u32 slot)
 		else 
 		{
 #ifdef _DEBUG
-			Msg("m_slots[slot].m_pIItem == NULL");
+			//Msg("m_slots[slot].m_pIItem == NULL");
 #endif
 			return false;
 		}
@@ -380,7 +381,7 @@ bool CInventory::Activate(u32 slot)
 	}
 
 #ifdef _DEBUG
-	Msg("Why where are here???");
+	//Msg("Why where are here???");
 #endif
 
 	return false;
