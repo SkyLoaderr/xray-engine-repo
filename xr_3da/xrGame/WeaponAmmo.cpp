@@ -190,7 +190,7 @@ bool CWeaponAmmo::Get(CCartridge &cartridge)
 	cartridge.m_tracer = m_tracer;
 	cartridge.m_buckShot = m_buckShot;
 	cartridge.m_impair = m_impair;
-	m_boxCurr--;
+	--m_boxCurr;
 	return true;
 }
 

@@ -201,7 +201,7 @@ public:
 	virtual void			OnZoomIn			()			{};
 	virtual void			OnZoomOut			()			{};
 	virtual void			OnDrawFlame			();
-	virtual void			OnStateSwitch		(u32 S)		{};
+	virtual void			OnStateSwitch		(u32 /**S/**/)		{};
 
 public:
 							CWeapon				(LPCSTR name);

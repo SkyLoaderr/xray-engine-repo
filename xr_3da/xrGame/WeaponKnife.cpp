@@ -2,7 +2,6 @@
 
 #include "WeaponKnife.h"
 #include "WeaponHUD.h"
-#include "xr_weapon_list.h"
 #include "Entity.h"
 #include "Actor.h"
 
@@ -154,7 +153,7 @@ void CWeaponKnife::OnAnimationEnd()
 	}
 }
 
-void CWeaponKnife::state_Attacking	(float dt)
+void CWeaponKnife::state_Attacking	(float /**dt/**/)
 {
 }
 
