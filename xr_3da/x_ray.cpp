@@ -261,7 +261,7 @@ void CApplication::LoadBegin()
 {
 	ll_dwReference++;
 	if (1==ll_dwReference) {
-		ll_hVS		= Device.Streams._CreateVS	(FVF::F_TL);
+		ll_hVS		= Device.Shader._CreateVS	(FVF::F_TL);
 		ll_hLogo	= Device.Shader.Create		("font","ui\\logo",false);
 	}
 }

@@ -51,7 +51,7 @@ protected:
 	DWORD					cache_vOffset;
 	
 	void					_Copy			(CSkeletonX *V);
-	void					_Render			(DWORD vCount, DWORD pCount, IDirect3DIndexBuffer8* IB);
+	void					_Render			(CVS* hVS, DWORD vCount, DWORD pCount, IDirect3DIndexBuffer8* IB);
 	void					_Release		();
 	void					_Load			(const char* N, CStream *data, DWORD& dwVertCount);
 public:

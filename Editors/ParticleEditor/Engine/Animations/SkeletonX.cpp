@@ -20,7 +20,6 @@
 void CSkeletonX::_Copy(CSkeletonX *B)
 {
 	Parent				= NULL;
-	Stream				= B->Stream;
 	Vertices			= B->Vertices;
 	cache_DiscardID		= 0xffffffff;
 }
@@ -54,20 +53,21 @@ void CSkeletonX_ST::Copy(CVisual *P)
 void CSkeletonX_PM::Render	(float LOD) 
 {
 	SetLOD		(LOD);
-	_Render		(V_Current,I_Current/3,pIndices);
+	_Render		(hVS,V_Current,I_Current/3,pIndices);
 }
 void CSkeletonX_ST::Render	(float LOD) 
 {
-	_Render		(vCount,dwPrimitives,pIndices);
+	_Render		(hVS,vCount,dwPrimitives,pIndices);
 }
-void CSkeletonX::_Render	(DWORD vCount, DWORD pCount, IDirect3DIndexBuffer8* IB)
+void CSkeletonX::_Render	(CVS* hVS, DWORD vCount, DWORD pCount, IDirect3DIndexBuffer8* IB)
 {
 	DWORD vOffset			= cache_vOffset;
 
-	if (cache_DiscardID!=Stream->getDiscard() || vCount>=cache_vCount )
+	_VertexStream&	_VS		= Device.Streams.Vertex;
+	if (cache_DiscardID!=_VS.DiscardID() || vCount>=cache_vCount )
 	{
-		vertRender*	Dest	= (vertRender*)Stream->Lock(vCount,vOffset);
-		cache_DiscardID		= Stream->getDiscard();
+		vertRender*	Dest	= (vertRender*)_VS.Lock(vCount,hVS->dwStride,vOffset);
+		cache_DiscardID		= _VS.DiscardID();
 		cache_vCount		= vCount;
 		cache_vOffset		= vOffset;
 		
@@ -79,10 +79,13 @@ void CSkeletonX::_Render	(DWORD vCount, DWORD pCount, IDirect3DIndexBuffer8* IB)
 			Parent->bone_instances						// bones
 			);
 		Device.Statistic.RenderDUMP_SKIN.End	();
-		Stream->Unlock			(vCount);
+		_VS.Unlock			(vCount,hVS->dwStride);
 	}
 
-	Device.Primitive.Draw	(Stream,vCount,pCount,vOffset,IB);
+	Device.Primitive.setVertices	(hVS->dwHandle,hVS->dwStride,_VS.Buffer());
+	Device.Primitive.setIndices		(vOffset,IB);;
+	Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount,0,pCount);
+	UPDATEC							(vCount,pCount,1);
 }
 //////////////////////////////////////////////////////////////////////
 void CSkeletonX::_Release()
@@ -110,17 +113,15 @@ void CSkeletonX::_Load(const char* N, CStream *data, DWORD& dwVertCount)
 	dwVertType	= data->Rdword(); R_ASSERT(dwVertType==0x12071980);
 	dwVertCount	= data->Rdword();
 	
-	Vertices = new vertBoned1W[dwVertCount];
-	data->Read(Vertices,dwVertCount*sizeof(vertBoned1W));
-
-	// Create stream
-	Stream = Device.Streams.Create(vertRenderFVF,dwVertCount);
+	Vertices	 = new vertBoned1W[dwVertCount];
+	data->Read	(Vertices,dwVertCount*sizeof(vertBoned1W));
 }
 
 void CSkeletonX_PM::Load(const char* N, CStream *data, DWORD dwFlags) 
 {
 	_Load				(N,data,vCount);
 	inherited::Load		(N, data, dwFlags|VLOAD_NOVERTICES|VLOAD_NOINDICES);
+	hVS					= Device.Shader._CreateVS	(vertRenderFVF);
 
 	// Load indices with replication in mind
 	R_ASSERT			(data->FindChunk(OGF_INDICES));
@@ -145,4 +146,5 @@ void CSkeletonX_ST::Load(const char* N, CStream *data, DWORD dwFlags)
 {
 	_Load				(N,data,vCount);
 	inherited::Load		(N, data, dwFlags|VLOAD_NOVERTICES);
+	hVS					= Device.Shader._CreateVS	(vertRenderFVF);
 }
