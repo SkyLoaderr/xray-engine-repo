@@ -167,7 +167,6 @@ void CObjectFactory::register_classes	()
 	add<game_sv_Deathmatch>										(CLSID_SV_GAME_DEATHMATCH		,"game_sv_deathmatch");
 	add<game_sv_TeamDeathmatch>									(CLSID_SV_GAME_TEAMDEATHMATCH	,"game_sv_team_deathmatch");
 	add<game_sv_ArtefactHunt>									(CLSID_SV_GAME_ARTEFACTHUNT		,"game_sv_artefact_hunt");
-//	add<game_sv_CS>												(CLSID_GAME_CS					,"game_cs");
 	//Client Game type
 	add<game_cl_Single>											(CLSID_CL_GAME_SINGLE			,"game_cl_single");
 	add<game_cl_Deathmatch>										(CLSID_CL_GAME_DEATHMATCH		,"game_cl_deathmatch");
