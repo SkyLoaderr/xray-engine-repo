@@ -55,19 +55,20 @@ void CWeaponShotgun::Fire2Start () {
 			if (STATE==eShowing)		return;
 			if (STATE==eHiding)			return;
 
-			if (!iAmmoElapsed && iAmmoCurrent)	
+			if (!iAmmoElapsed)	
+			//if (!m_pAmmo || !m_pAmmo->m_magCurr)	
 			{
 				CWeapon::FireStart	();
 				SwitchState			(eMagEmpty);
 			}
-			else							
+			else					
 			{
 				CWeapon::FireStart	();
 				SwitchState			((iAmmoElapsed < iMagazineSize)?eFire:eFire2);
 			}
 		}
 	}else{
-		if (!iAmmoElapsed && !iAmmoCurrent)	
+		if (!iAmmoElapsed)	
 			SwitchState			(eMagEmpty);
 	}
 }
@@ -77,9 +78,9 @@ void CWeaponShotgun::Fire2End () {
 	if (IsWorking())
 	{
 		CWeapon::FireEnd	();
-		if (iAmmoCurrent && !iAmmoElapsed)	TryReload	();
-		else								SwitchState (eIdle);
 	}
+	if (!iAmmoElapsed)	TryReload	();
+	else								SwitchState (eIdle);
 }
 
 
@@ -202,7 +203,7 @@ void CWeaponShotgun::OnVisible	()
 }
 
 
-BOOL CWeaponShotgun::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
+BOOL CWeaponShotgun::FireTrace2		(const Fvector& P, const Fvector& Peff, Fvector& D)
 {
 	BOOL bResult = 0;
 	int grape_shot = 5;
@@ -234,7 +235,7 @@ BOOL CWeaponShotgun::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector&
 				float power		=	float(iHitPower);
 				float scale		=	1-(RQ.range/fireDistance);	clamp(scale,0.f,1.f);
 				power			*=	_sqrt(scale);
-				float impulse	=	fHitImpulseScale*power;
+				float impulse	=	fHitImpulse;
 				CEntity* E		=	dynamic_cast<CEntity*>(RQ.O);
 				//CGameObject* GO	=	dynamic_cast<CGameObject*>(RQ.O);
 				if (E) power	*=	E->HitScale(RQ.element);
@@ -278,15 +279,30 @@ BOOL CWeaponShotgun::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector&
 	// light
 	Light_Start			();
 	
+	//// Ammo
+	//if (Local()) 
+	//{
+	//	////iAmmoElapsed	--;
+	//	if (/*iAmmoElapsed==*/0) 
+	//	{
+	//		OnMagazineEmpty	();
+	//	}
+	//}
 	// Ammo
-	if (Local()) 
-	{
-		iAmmoElapsed	--;
-		if (iAmmoElapsed==0) 
-		{
-			OnMagazineEmpty	();
-		}
+	if(Local()) {
+		if (!(--iAmmoElapsed)) OnMagazineEmpty();
 	}
 	
 	return				bResult;
+}
+
+bool CWeaponShotgun::Action(s32 cmd, u32 flags) {
+	if(inherited::Action(cmd, flags)) return true;
+	switch(cmd) {
+		case kWPN_ZOOM : {
+			if(flags&CMD_START) Fire2Start();
+			else Fire2End();
+		} return true;
+	}
+	return false;
 }

@@ -30,7 +30,10 @@ void CWeaponBinoculars::Load	(LPCSTR section)
 	CLASS_ID load_cls	= TEXT2CLSID(Class);
 	R_ASSERT(load_cls==SUB_CLS_ID);
 
-	CGameObject::Load	(section);
+	//CGameObject::Load	(section);
+	CInventoryItem::Load	(section);
+
+	m_slot = pSettings->r_s32(section,"slot");
 
 	Fvector				pos,ypr;
 	pos					= pSettings->r_fvector3(section,"position");
@@ -262,4 +265,19 @@ void CWeaponBinoculars::Fire2End () {
 	inherited::Fire2End();
 	OnZoomOut();
 	fZoomFactor = DEFAULT_FOV;
+}
+
+const char* CWeaponBinoculars::Name() {
+	return CInventoryItem::Name();
+}
+
+bool CWeaponBinoculars::Action(s32 cmd, u32 flags) {
+	if(inherited::Action(cmd, flags)) return true;
+	switch(cmd) {
+		case kWPN_ZOOM : {
+			if(flags&CMD_START) Fire2Start();
+			else Fire2End();
+		} return true;
+	}
+	return false;
 }

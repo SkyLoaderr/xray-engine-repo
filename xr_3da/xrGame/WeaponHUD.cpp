@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "WeaponHUD.h"
 #include "Weapon.h"
+#include "inventory.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -67,11 +68,12 @@ CMotionDef* CWeaponHUD::animGet		(LPCSTR name)
 
 static void __stdcall animCallback	(CBlend* B)
 {
-	CWeapon* W			= (CWeapon*)B->CallbackParam;
-	W->OnAnimationEnd	();
+	//CWeapon* W			= (CWeapon*)B->CallbackParam;
+	//W->OnAnimationEnd	();
+	PIItem(B->CallbackParam)->OnAnimationEnd();
 }
 
-void CWeaponHUD::animPlay			(CMotionDef* M,	BOOL bMixIn, CWeapon* W)
+void CWeaponHUD::animPlay			(CMotionDef* M,	BOOL bMixIn, CInventoryItem* W)
 {
 	PKinematics(pVisual)->Update			();
 	if (W)	PKinematics(pVisual)->PlayCycle	(M,bMixIn,animCallback,W);

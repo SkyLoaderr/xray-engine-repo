@@ -69,7 +69,7 @@ CActor::CActor() : CEntityAlive()
 	pCamBobbing				= 0;
 
 	// 
-	Weapons					= 0;
+	//Weapons					= 0;
 
 	r_torso.yaw				= 0;
 	r_torso.pitch			= 0;
@@ -99,7 +99,7 @@ CActor::CActor() : CEntityAlive()
 
 CActor::~CActor()
 {
-	xr_delete(Weapons);
+	//xr_delete(Weapons);
 	for (int i=0; i<eacMaxCam; i++) xr_delete(cameras[i]);
 
 	// sounds 2D
@@ -183,7 +183,7 @@ void CActor::Load		(LPCSTR section )
 	skel_fatal_impulse_factor=pSettings->r_float(section,"ph_skel_fatal_impulse_factor");
 	ph_Movement.SetJumpUpVelocity(m_fJumpSpeed);
 
-	Weapons				= xr_new<CWeaponList> (this);
+	//Weapons				= xr_new<CWeaponList> (this);
 
 	// sounds
 	char buf[256];
@@ -225,7 +225,7 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 {
 	// export 
 	R_ASSERT			(Local());
-	VERIFY				(Weapons);
+	//VERIFY				(Weapons);
 
 	u8					flags=0;
 	CGameObject::net_Export(P);
@@ -241,7 +241,7 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 	P.w_float_q16		(fHealth,-1000,1000);
 	P.w_float_q16		(fArmor,-1000,1000);
 
-	int w_id = Weapons->ActiveWeaponID	();
+	int w_id = -1;//Weapons->ActiveWeaponID	();
 	if (w_id<0)			P.w_u8(0xff);
 	else				P.w_u8(u8(w_id&0xff));
 }
@@ -305,7 +305,8 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	m_bJumpKeyPressed		= FALSE;
 
 	// *** weapons
-	if (Local()) 			Weapons->ActivateWeaponID	(0);
+	//if (Local()) 			Weapons->ActivateWeaponID	(0);
+	//if(Local()) m_inventory.Activate(1);
 	
 	NET_SavedAccel.set		(0,0,0);
 	NET_WasInterpolating	= TRUE;
@@ -326,16 +327,17 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 
 
 // @@@: WT - !!!ВРЕМЕННО!!! - спавним каждому актеру детектор
-	if(Local()) {
+	if(Local()) for(u32 i = 0; i < 2; i++) {
 		// Create
-		xrServerEntity*		D	= F_entity_Create("detector_simple");
+		//xrServerEntity*		D	= F_entity_Create("detector_simple");
+		xrServerEntity*		D	= F_entity_Create("bolt");
 		R_ASSERT			(D);
 		// Fill
-		strcpy				(D->s_name,"detector_simple");
+		strcpy				(D->s_name,"bolt");
 		strcpy				(D->s_name_replace,"");
 		D->s_gameid			=	u8(GameID());
 		D->s_RP				=	0xff;
-		D->ID				=	0xfffd;
+		D->ID				=	0xfffd - i;
 		D->ID_Parent		=	E->ID;
 		D->ID_Phantom		=	0xffff;
 		D->s_flags.set		(M_SPAWN_OBJECT_ACTIVE | M_SPAWN_OBJECT_LOCAL);
@@ -363,7 +365,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	m_crouch.Create		(V,"cr");
 	m_climb.Create		(V,"cr");
 	//
-	Weapons->Init		("bip01_r_hand","bip01_l_finger1");
+	//Weapons->Init		("bip01_r_hand","bip01_l_finger1");
 
 	// load damage params
 	if (pSettings->line_exist(cNameSect(),"damage"))
@@ -814,10 +816,10 @@ void CActor::Update	(u32 DT)
 				g_SetAnimation	(NET_Last.mstate);
 				
 				// Change weapon if needed
-				if (Weapons->ActiveWeaponID()!=NET_Last.weapon)
-				{
-					Weapons->ActivateWeaponID(NET_Last.weapon);
-				}
+				//if (Weapons->ActiveWeaponID()!=NET_Last.weapon)
+				//{
+				//	Weapons->ActivateWeaponID(NET_Last.weapon);
+				//}
 
 				// Signal, that last time we used interpolation
 				NET_WasInterpolating	= TRUE;
@@ -838,14 +840,19 @@ void CActor::Update	(u32 DT)
 			Level().Cameras.AddEffector			(pCamBobbing);
 		}
 		pCamBobbing->SetState					(mstate_real);
-		cam_Update								(dt,Weapons->getZoomFactor());
+		//cam_Update								(dt,Weapons->getZoomFactor());
+		CWeapon *l_pW = dynamic_cast<CWeapon*>(m_inventory.m_activeSlot < 0xffffff ? m_inventory.m_slots[m_inventory.m_activeSlot].m_pIItem : NULL);
+		cam_Update(dt,l_pW?l_pW->GetZoomFactor():DEFAULT_FOV);
 	} else {
 		if (pCamBobbing)						{Level().Cameras.RemoveEffector(cefBobbing); pCamBobbing=0;}
 	}
 
 	setVisible				(!HUDview	());
 
-	Weapons->Update			(dt,HUDview());
+	//Weapons->Update			(dt,HUDview());
+	if(m_inventory.ActiveItem()) m_inventory.ActiveItem()->m_showHUD = !!HUDview();
+	CWeapon *l_pW = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
+	if(l_pW) l_pW->SetHUDmode(HUDview());
 
 	R_ASSERT(last_gmtl_id!=GAMEMTL_NONE);
 	SGameMtlPair* mtl_pair		= GMLib.GetMaterialPair(self_gmtl_id,last_gmtl_id);
@@ -882,14 +889,17 @@ void CActor::Update	(u32 DT)
 		sndLanding.clone	(mtl_pair->HitSounds[0]);
 		::Sound->play_at_pos	(sndLanding,this,s_pos);
 	}
+
+	m_inventory.Update(DT);
 }
 
 void CActor::OnVisible	()
 {
 	inherited::OnVisible	();
 
-	CWeapon* W				= Weapons->ActiveWeapon();
-	if (W)					W->OnVisible		();
+	//CWeapon* W				= Weapons->ActiveWeapon();
+	//CWeapon *W = dynamic_cast<CWeapon*>(m_inventory.ActiveItem()); if(W) W->OnVisible();
+	if(m_inventory.ActiveItem()) m_inventory.ActiveItem()->OnVisible();
 }
 
 void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
@@ -1126,30 +1136,30 @@ void CActor::g_fireParams	(Fvector &fire_pos, Fvector &fire_dir)
 		{
 			fire_pos = Device.vCameraPosition;
 			fire_dir = Device.vCameraDirection;
-		} else Weapons->GetFireParams(fire_pos, fire_dir);
+		} //else Weapons->GetFireParams(fire_pos, fire_dir);
 	} else {
-		Weapons->GetFireParams(fire_pos, fire_dir);
+		//Weapons->GetFireParams(fire_pos, fire_dir);
 	}
 }
 
 void CActor::g_fireStart	( )
 {
-	Weapons->FireStart		( );
+	//Weapons->FireStart		( );
 }
 
 void CActor::g_fireEnd	( )
 {
-	Weapons->FireEnd	( );
+	//Weapons->FireEnd	( );
 }
 
 void CActor::g_fire2Start	( )
 {
-	Weapons->Fire2Start		( );
+	//Weapons->Fire2Start		( );
 }
 
 void CActor::g_fire2End	( )
 {
-	Weapons->Fire2End	( );
+	//Weapons->Fire2End	( );
 }
 
 void CActor::g_PerformDrop	( )
@@ -1167,10 +1177,9 @@ void CActor::g_PerformDrop	( )
 		m_pArtifact				= 0;
 	} else {
 		//
-		CObject*		O		= Weapons->ActiveWeapon();
+		CObject*		O		= m_inventory.ActiveItem();//Weapons->ActiveWeapon();
 		if (0==O)				return;
 
-		// We doesn't have similar weapon - pick up it
 		NET_Packet				P;
 		u_EventGen				(P,GE_OWNERSHIP_REJECT,ID());
 		P.w_u16					(u16(O->ID()));
@@ -1180,9 +1189,13 @@ void CActor::g_PerformDrop	( )
 
 void CActor::g_WeaponBones	(int& L, int& R)
 {
-	VERIFY	(Weapons);
-	L		=	Weapons->m_iACTboneL;
-	R		=	Weapons->m_iACTboneR;
+	CKinematics* V	= PKinematics(Visual());
+	R = V->LL_BoneID("bip01_r_hand");
+	L = V->LL_BoneID("bip01_l_finger1");
+
+	////VERIFY	(Weapons);
+	//L		=	0;//Weapons->m_iACTboneL;
+	//R		=	0;//Weapons->m_iACTboneR;
 }
 
 void CActor::Statistic		()
@@ -1192,8 +1205,11 @@ void CActor::Statistic		()
 // HUD
 void CActor::OnHUDDraw	(CCustomHUD* hud)
 {
-	CWeapon* W			= Weapons->ActiveWeapon();
-	if (W)				W->OnVisible		();
+	//CWeapon* W			= Weapons->ActiveWeapon();
+	//if (W)				W->OnVisible		();
+	//CWeapon *W = dynamic_cast<CWeapon*>(m_inventory.ActiveItem()); if(W) W->OnVisible();
+	if(m_inventory.ActiveItem()) m_inventory.ActiveItem()->OnVisible();
+
 
 #ifdef _DEBUG
 	string128 buf;

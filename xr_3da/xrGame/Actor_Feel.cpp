@@ -10,6 +10,8 @@
 
 void CActor::feel_touch_new				(CObject* O)
 {
+	return; // Теперь игрок не будет подбирать все на что наступает
+
 	if (!g_Alive())		return;
 	if (Remote())		return;
 

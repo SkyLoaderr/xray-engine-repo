@@ -7,6 +7,8 @@
 //////////////////////////////////////////////////////////////////////
 CWeaponPM::CWeaponPM() : CWeaponPistol("PM")
 {
+	m_weight = .5f;
+	m_slot = 1;
 }
 
 CWeaponPM::~CWeaponPM()

@@ -17,6 +17,9 @@ public:
 	virtual void	Load			(LPCSTR section);
 	virtual void			Fire2Start			();
 	virtual void			Fire2End			();
+
+	virtual bool Action(s32 cmd, u32 flags);
+
 };
 
 #endif //__XR_WEAPON_FN2000_H__

@@ -99,8 +99,17 @@ void game_sv_CS::SaveDefaultWeapon(CMemoryWriter &store) {		//@@@ WT: Это надо п
 			W_pistol->Spawn_Write(l_packet, true);
 			l_mem.open_chunk(l_chunk); l_mem.w(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
 		}
-		if(W_prim) F_entity_Destroy(W_prim);
-		if(W_pistol) F_entity_Destroy(W_pistol);
+		//////////////////////////////////////////////////////////////////////////
+		// это полный АБЗАЦ!!! Я не знаю, почему не работает закомментированный код :-(
+		//////////////////////////////////////////////////////////////////////////
+		// if(W_prim) F_entity_Destroy(W_prim);
+		// if(W_pistol) F_entity_Destroy(W_pistol);
+		//////////////////////////////////////////////////////////////////////////
+		// конец полного АБЗАЦА (Дима)
+		//////////////////////////////////////////////////////////////////////////
+		xrServerEntity *A;
+		if(W_prim) F_entity_Destroy(/*A = */*(xrServerEntity**)&W_prim);
+		if(W_pistol) F_entity_Destroy(A = W_pistol);
 	}
 }
 
@@ -128,7 +137,7 @@ void game_sv_CS::SpawnPlayer(u32 it, CMemoryWriter &weapon) {
 		l_pPS->flags |= GAME_PLAYER_FLAG_VERY_VERY_DEAD;
 		E = spawn_begin("spectator");
 	} else {
-		E = spawn_begin(l_pPS->team?"actor_cs_2":"actor_cs_1");
+		E = spawn_begin("actor"/*l_pPS->team?"actor_cs_2":"actor_cs_1"*/);
 		xrSE_Actor *A = (xrSE_Actor*)E;					
 		A->s_team = u8(l_pPS->team);
 	}
@@ -502,11 +511,11 @@ BOOL	game_sv_CS::OnTouch			(u16 eid_who, u16 eid_what)
 				if (0==Et)				continue;
 				xrSE_Weapon*		T	= dynamic_cast<xrSE_Weapon*>	(Et);
 				if (0==T)				continue;
-				if (slot == T->get_slot())	
-				{
-					// We've found same slot occupied - disallow ownership
-					return FALSE;
-				}
+				//if (slot == T->get_slot())	
+				//{
+				//	// We've found same slot occupied - disallow ownership
+				//	return FALSE;
+				//}
 			}
 
 			// Weapon slot empty - ownership OK
@@ -764,7 +773,7 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u16 eid_who, LPCSTR what)
 			if (0==Et)				continue;
 			xrSE_Weapon*		T	= dynamic_cast<xrSE_Weapon*>	(Et);
 			if (0==T)				continue;
-			if (slot == T->get_slot())	
+			if (true || slot == T->get_slot())	
 			{
 				// We've found this slot - buy something :) |  491 05 36 - Andy
 
@@ -824,15 +833,15 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u16 eid_who, LPCSTR what)
 				if (0==Et)				continue;
 				xrSE_Weapon*		T	= dynamic_cast<xrSE_Weapon*>	(Et);
 				if (0==T)				continue;
-				if (slot == T->get_slot())	
-				{
-					// We've found same slot occupied - don't buy anything
-					F_entity_Destroy	(E);
-					return;
+				//if (slot == T->get_slot())	
+				//{
+				//	// We've found same slot occupied - don't buy anything
+				//	F_entity_Destroy	(E);
+				//	return;
 
-					// Выбрасываем старое
-					//S->Perform_reject				(T,S->ID_to_entity(eid_who));
-				}
+				//	// Выбрасываем старое
+				//	//S->Perform_reject				(T,S->ID_to_entity(eid_who));
+				//}
 			}
 			W->a_current = 0;
 			W->a_elapsed = W->get_ammo_magsize();

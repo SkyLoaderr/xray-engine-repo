@@ -11,6 +11,7 @@
 #include "..\feel_touch.h"
 #include "PHMovementControl.h"
 #include "PhysicsShell.h"
+#include "inventory.h"
 // refs
 class ENGINE_API CCameraBase;
 class ENGINE_API CBoneInstance;
@@ -23,7 +24,8 @@ class CTargetCS;
 
 class CActor: 
 	public CEntityAlive, 
-	public Feel::Touch
+	public Feel::Touch,
+	public CInventoryOwner
 {
 private:
 	typedef CEntityAlive	inherited;
@@ -59,7 +61,7 @@ public:
 	};
 protected:
 	// Weapons and Items
-	CWeaponList*			Weapons;
+	//CWeaponList*			Weapons;
 	CTargetCS*				m_pArtifact;
 
 	// Death
@@ -259,7 +261,7 @@ public:
 	virtual	float						ffGetRange			()			{ return 500.f;		}
 
 	// misc
-	virtual CWeaponList*				GetItemList			(){return Weapons;}
+	//virtual CWeaponList*				GetItemList			(){return Weapons;}
 
 	// Fire control
 	virtual void						g_fireParams		(Fvector& P, Fvector& D);
@@ -294,7 +296,7 @@ public:
 	void								SetPhPosition		(const Fmatrix& pos);
 	// HUD
 	virtual void						OnHUDDraw			(CCustomHUD* hud);
-	CWeaponList*						tpfGetWeapons		()	{return Weapons;}
+	//CWeaponList*						tpfGetWeapons		()	{return Weapons;}
 
 #ifdef DEBUG
 	virtual void						OnRender			();

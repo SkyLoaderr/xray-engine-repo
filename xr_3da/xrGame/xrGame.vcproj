@@ -820,10 +820,22 @@
 							Name="Custom Weapon"
 							Filter="">
 							<File
+								RelativePath="Missile.cpp">
+							</File>
+							<File
+								RelativePath="Missile.h">
+							</File>
+							<File
 								RelativePath=".\Weapon.cpp">
 							</File>
 							<File
 								RelativePath=".\Weapon.h">
+							</File>
+							<File
+								RelativePath="WeaponAmmo.cpp">
+							</File>
+							<File
+								RelativePath="WeaponAmmo.h">
 							</File>
 							<File
 								RelativePath=".\WeaponAutoRifle.cpp">
@@ -1080,6 +1092,16 @@
 								RelativePath="WeaponSVU.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="Bolt"
+							Filter="">
+							<File
+								RelativePath="Bolt.cpp">
+							</File>
+							<File
+								RelativePath="Bolt.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Target"
@@ -1300,6 +1322,16 @@
 						Filter="">
 					</Filter>
 				</Filter>
+				<Filter
+					Name="Inventory"
+					Filter="">
+					<File
+						RelativePath="Inventory.cpp">
+					</File>
+					<File
+						RelativePath="Inventory.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Game Materials"
@@ -1491,6 +1523,22 @@
 					</File>
 					<File
 						RelativePath="UICHTMenu.h">
+					</File>
+					<File
+						RelativePath="UIInventory.cpp">
+					</File>
+					<File
+						RelativePath="UIInventory.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="Single"
+					Filter="">
+					<File
+						RelativePath="UIGameSP.cpp">
+					</File>
+					<File
+						RelativePath="UIGameSP.h">
 					</File>
 				</Filter>
 			</Filter>

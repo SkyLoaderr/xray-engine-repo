@@ -88,6 +88,12 @@ xrSE_DECLARE_BEGIN(xrSE_Weapon,CALifeDynamicObject)
 	u16						get_ammo_magsize();
 xrSE_DECLARE_END
 
+//***** WeaponAmmo
+xrSE_DECLARE_BEGIN(xrSE_WeaponAmmo,CALifeObject)
+	xrSE_WeaponAmmo();
+	u16 a_elapsed, m_boxSize;
+xrSE_DECLARE_END
+
 //***** Teamed
 xrSE_DECLARE_BEGIN(xrSE_Teamed,CALifeDynamicObject)
 	u8						s_team;

@@ -73,73 +73,115 @@ void CWeaponMagazined::Load	(LPCSTR section)
 
 void CWeaponMagazined::FireStart		()
 {
-	if (IsValid())
-	{
-		if (!IsWorking())
-		{
-			if (STATE==eReload)			return;
-			if (STATE==eShowing)		return;
-			if (STATE==eHiding)			return;
+	if(IsValid()) {
+		if(!IsWorking()) {
+			if(STATE==eReload) return;
+			if(STATE==eShowing) return;
+			if(STATE==eHiding) return;
 
-			if (!iAmmoElapsed && iAmmoCurrent)	
-			{
-				CWeapon::FireStart	();
-				SwitchState			(eMagEmpty);
-			}
-			else							
-			{
-				CWeapon::FireStart	();
-				SwitchState			(eFire);
+			if (!iAmmoElapsed) {
+				CWeapon::FireStart();
+				SwitchState(eMagEmpty);
+			} else {
+				CWeapon::FireStart();
+				SwitchState(eFire);
 			}
 		}
-	}else{
-		if (!iAmmoElapsed && !iAmmoCurrent)	
-			SwitchState			(eMagEmpty);
+	} else {
+		//if (1/*!iAmmoElapsed && !iAmmoCurrent*/)	
+		//	SwitchState			(eMagEmpty);
 	}
 }
 
-void CWeaponMagazined::FireEnd			()
-{
-	if (IsWorking())
-	{
-		CWeapon::FireEnd	();
-		if (iAmmoCurrent && !iAmmoElapsed)	TryReload	();
-		else								SwitchState (eIdle);
+void CWeaponMagazined::FireEnd() {
+	if(IsWorking()) {
+		CWeapon::FireEnd();
+	}
+	if(!iAmmoElapsed) TryReload();
+	else SwitchState(eIdle);
+}
+
+void CWeaponMagazined::Reload() {
+	TryReload();
+}
+
+void CWeaponMagazined::TryReload() {
+	if(m_pInventory) {
+		m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(m_ammoTypes[m_ammoType]));
+		if(m_pAmmo) {
+			SwitchState(eReload); return;
+		} else for(u32 i = 0; i < m_ammoTypes.size(); i++) {
+			m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(m_ammoTypes[i]));
+			if(m_pAmmo) { m_ammoType = i; SwitchState(eReload); return; }
+		}
+	}
+	SwitchState(eIdle);
+
+	////if(m_pInventory) for(PPIItem l_ppIItem = m_pInventory->m_belt.begin(); l_ppIItem != m_pInventory->m_belt.end(); l_ppIItem++) {
+	////	//for(u32 i = 0; i < m_ammoTypes.size(); i++) if(!strcmp((*l_ppIItem)->cName(), m_ammoTypes[i])) {
+	////	if(!strcmp((*l_ppIItem)->cName(), m_ammoTypes[m_ammoType])) {
+	////		SwitchState(eReload);
+	////		return;
+	////	}
+	////}
+	////SwitchState(eIdle);
+	//if(m_pAmmo && m_pAmmo->CanReload()) SwitchState(eReload);
+	//else SwitchState(eIdle);
+}
+
+void CWeaponMagazined::OnMagazineEmpty() {
+	SwitchState(eMagEmpty);
+}
+
+void CWeaponMagazined::UnloadMagazine() {
+	map<LPCSTR, u16> l_ammo;
+	while(m_magazine.size()) {
+		CCartridge &l_cartridge = m_magazine.top();
+		map<LPCSTR, u16>::iterator l_it;
+		for(l_it = l_ammo.begin(); l_it != l_ammo.end(); l_it++) if(!strcmp(l_cartridge.m_ammoSect, l_it->first)) { l_it->second++; break; }
+		if(l_it == l_ammo.end()) l_ammo[l_cartridge.m_ammoSect] = 1;
+		m_magazine.pop(); iAmmoElapsed--;
+	}
+	map<LPCSTR, u16>::iterator l_it;
+	for(l_it = l_ammo.begin(); l_it != l_ammo.end(); l_it++) {
+		CWeaponAmmo *l_pA = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(l_it->first));
+		if(l_pA) {
+			u16 l_free = l_pA->m_boxSize - l_pA->m_boxCurr;
+			l_pA->m_boxCurr = l_pA->m_boxCurr + (l_free < l_it->second ? l_free : l_it->second);
+			l_it->second = l_it->second - (l_free < l_it->second ? l_free : l_it->second);
+		}
+		if(l_it->second) SpawnAmmo(l_it->second, l_it->first);
 	}
 }
 
-void CWeaponMagazined::Reload			()
-{
-	TryReload			();
-}
-
-void CWeaponMagazined::TryReload		()
-{
-	if (iAmmoCurrent && (iAmmoElapsed<iMagazineSize))	SwitchState(eReload);
-	else												SwitchState(eIdle);
-}
-
-void CWeaponMagazined::OnMagazineEmpty	()
-{
-	SwitchState			(eMagEmpty);
-}
-
-void CWeaponMagazined::ReloadMagazine	()
-{
-	SwitchState			(eIdle);
-	if (iAmmoCurrent>=iMagazineSize)	
-	{
-		iAmmoCurrent += iAmmoElapsed; 
-		iAmmoElapsed =	iMagazineSize; 
-		iAmmoCurrent -= iMagazineSize;	
+void CWeaponMagazined::ReloadMagazine() {
+	SwitchState(eIdle);
+	static l_lockType = false;
+	if(!l_lockType) m_ammoName = NULL;
+	if(m_pInventory) {
+		m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(m_ammoTypes[m_ammoType]));
+		if(!m_pAmmo && !l_lockType) for(u32 i = 0; i < m_ammoTypes.size(); i++) {
+			m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(m_ammoTypes[i]));
+			if(m_pAmmo) { m_ammoType = i; break; }
+		}
 	}
-	else
-	{ 
-		iAmmoElapsed = iAmmoCurrent+iAmmoElapsed;
-		if (iAmmoElapsed>iMagazineSize)	{
-			iAmmoCurrent =	iAmmoElapsed-iMagazineSize;
-			iAmmoElapsed = iMagazineSize;
-		} else iAmmoCurrent =  0;
+	if(!l_lockType && m_magazine.size() && (!m_pAmmo || strcmp(m_pAmmo->cName(), m_magazine.top().m_ammoSect))) UnloadMagazine();
+	if(m_pAmmo) {
+		CCartridge l_cartridge;
+		while(iAmmoElapsed < iMagazineSize && m_pAmmo->Get(l_cartridge)) {
+			iAmmoElapsed++;
+			m_magazine.push(l_cartridge);
+		}
+		m_ammoName = m_pAmmo->m_nameShort;
+		if(!m_pAmmo->m_boxCurr) m_pAmmo->Drop();
+		//	NET_Packet				P;
+		//	u_EventGen				(P,GE_OWNERSHIP_REJECT,H_Parent()->ID());
+		//	P.w_u16					(u16(m_pAmmo->ID()));
+		//	u_EventSend				(P);
+		//	//m_pInventory->Drop(m_pAmmo);
+		//	m_pAmmo = NULL;
+		//}
+		if(iMagazineSize > iAmmoElapsed) { l_lockType = true; ReloadMagazine(); l_lockType = false; }
 	}
 }
 
@@ -221,7 +263,7 @@ void CWeaponMagazined::state_Fire	(float dt)
 {
 	UpdateFP				();
 	fTime					-=dt;
-	Fvector					p1, d;
+	Fvector					p1, d; p1.set(vLastFP); d.set(vLastFD);
 	if(H_Parent()) dynamic_cast<CEntity*>	(H_Parent())->g_fireParams	(p1,d);
 	else return;
 	
@@ -270,7 +312,7 @@ void CWeaponMagazined::OnVisible	()
 void CWeaponMagazined::SetDefaults	()
 {
 	CWeapon::SetDefaults		();
-	iAmmoElapsed				= 0;
+	////iAmmoElapsed				= 0;
 }
 
 void CWeaponMagazined::Hide		()
@@ -406,7 +448,7 @@ void CWeaponMagazined::switch2_Reload()
 }
 void CWeaponMagazined::switch2_Hiding()
 {
-	FireEnd					();
+	CWeapon::FireEnd					();
 	bPending				= TRUE;
 	Sound->play_at_pos		(sndHide,H_Root(),vLastFP);
 	m_pHUD->animPlay		(mhud_hide[Random.randI(mhud_hide.size())],TRUE,this);
@@ -421,4 +463,14 @@ void CWeaponMagazined::switch2_Showing()
 	setVisible				(TRUE);
 	Sound->play_at_pos		(sndShow,H_Root(),vLastFP);
 	m_pHUD->animPlay		(mhud_show[Random.randI(mhud_show.size())],FALSE,this);
+}
+
+bool CWeaponMagazined::Action(s32 cmd, u32 flags) {
+	if(inherited::Action(cmd, flags)) return true;
+	switch(cmd) {
+		case kWPN_RELOAD : {
+			if(flags&CMD_START) TryReload();//if(m_pAmmo && m_pAmmo->CanReload()) m_pAmmo->Reload();
+		} return true;
+	}
+	return false;
 }

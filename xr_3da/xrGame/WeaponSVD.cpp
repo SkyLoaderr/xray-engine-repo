@@ -25,3 +25,14 @@ void CWeaponSVD::Fire2End () {
 	OnZoomOut();
 	fZoomFactor = DEFAULT_FOV;
 }
+
+bool CWeaponSVD::Action(s32 cmd, u32 flags) {
+	if(inherited::Action(cmd, flags)) return true;
+	switch(cmd) {
+		case kWPN_ZOOM : {
+			if(flags&CMD_START) Fire2Start();
+			else Fire2End();
+		} return true;
+	}
+	return false;
+}

@@ -32,20 +32,20 @@ BOOL	game_sv_Single::OnTouch			(u16 eid_who, u16 eid_what)
 		if (W) 
 		{
 			// Weapon
-			vector<u16>&	C			=	A->children;
-			u8 slot						=	W->get_slot	();
-			for (u32 it=0; it<C.size(); it++)
-			{
-				xrServerEntity*		Et	= get_entity_from_eid			(C[it]);
-				if (0==Et)				continue;
-				xrSE_Weapon*		T	= dynamic_cast<xrSE_Weapon*>	(Et);
-				if (0==T)				continue;
-				if (slot == T->get_slot())	
-				{
-					// We've found same slot occupied - disallow ownership
-					return FALSE;
-				}
-			}
+			//vector<u16>&	C			=	A->children;
+			//u8 slot						=	W->get_slot	();
+			//for (u32 it=0; it<C.size(); it++)
+			//{
+			//	xrServerEntity*		Et	= get_entity_from_eid			(C[it]);
+			//	if (0==Et)				continue;
+			//	xrSE_Weapon*		T	= dynamic_cast<xrSE_Weapon*>	(Et);
+			//	if (0==T)				continue;
+			//	if (slot == T->get_slot())	
+			//	{
+			//		// We've found same slot occupied - disallow ownership
+			//		return FALSE;
+			//	}
+			//}
 
 			// Weapon slot empty - ownership OK
 			return TRUE;
@@ -81,7 +81,7 @@ BOOL	game_sv_Single::OnTouch			(u16 eid_who, u16 eid_what)
 	}
 
 	// We don't know what the hell is it, so disallow ownership just for safety 
-	return FALSE;
+	return TRUE;
 }
 
 BOOL	game_sv_Single::OnDetach		(u16 eid_who, u16 eid_what)

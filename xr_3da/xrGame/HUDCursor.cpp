@@ -10,6 +10,8 @@
 #include "..\CustomHUD.h"
 #include "Entity.h"
 
+#include "inventory.h"
+
 #define C_ON_ENEMY	D3DCOLOR_XRGB(0xff,0,0)
 #define C_DEFAULT	D3DCOLOR_XRGB(0xff,0xff,0xff)
 #define C_SIZE		0.025f
@@ -110,6 +112,16 @@ void CHUDCursor::Render()
 				}
 				fuzzyShowInfo += SHOW_INFO_SPEED*Device.fTimeDelta;
 			}
+			// @@@ WT
+			PIItem	l_pI = dynamic_cast<PIItem>(RQ.O);
+			if (l_pI){
+				if (fuzzyShowInfo>0.5f){
+					F->SetColor	(subst_alpha(C,u8(iFloor(255.f*(fuzzyShowInfo-0.5f)*2.f))));
+					F->OutNext	("%s",l_pI->NameComplex());
+				}
+				fuzzyShowInfo += SHOW_INFO_SPEED*Device.fTimeDelta;
+			}
+			//
 		}else{
 			fuzzyShowInfo -= HIDE_INFO_SPEED*Device.fTimeDelta;
 		}

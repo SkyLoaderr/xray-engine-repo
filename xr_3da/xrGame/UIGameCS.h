@@ -8,11 +8,13 @@
 #include "UICSFragList.h"
 #include "UICSPlayerList.h"
 #include "UIIcon.h"
+#include "UIInventory.h"
 
 // refs
 class CUICustomMenuItem;
 
-class CUIGameCS: public CUIGameCustom{
+class CUIGameCS: public CUIGameCustom {
+	CUIInventory		InventoryMenu;
 	CUIBuyMenu			BuyMenu;
 	CUIChangeTeamMenu	CTMenu;
 	CUICSFragList		FragList;

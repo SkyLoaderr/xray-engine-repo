@@ -1,13 +1,13 @@
 #pragma once
-#include "gameobject.h"
+#include "inventory.h"
 #include "..\feel_touch.h"
 #include "customzone.h"
 
 class CCustomDetector :
-	public CGameObject,
+	public CInventoryItem,
 	public Feel::Touch
 {
-typedef	CGameObject	inherited;
+typedef	CInventoryItem	inherited;
 public:
 	CCustomDetector(void);
 	virtual ~CCustomDetector(void);

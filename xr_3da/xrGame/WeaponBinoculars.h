@@ -55,6 +55,9 @@ public:
 	virtual float	GetZoomFactor	();
 	virtual void			Fire2Start			();
 	virtual void			Fire2End			();
+
+	virtual const char* Name();
+	virtual bool Action(s32 cmd, u32 flags);
 };
 
 #endif //__XR_WEAPON_BINOCULAR_H__

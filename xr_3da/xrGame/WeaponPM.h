@@ -12,6 +12,7 @@ protected:
 public:
 					CWeaponPM			();
 	virtual			~CWeaponPM		();
+
 };
 
 #endif //__XR_WEAPON_PM_H__

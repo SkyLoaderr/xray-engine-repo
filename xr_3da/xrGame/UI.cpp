@@ -6,8 +6,10 @@
 #include "HUDManager.h"
 #include "Group.h"
 #include "xr_weapon_list.h"
+#include "UIGameSP.h"
 #include "UIGameCS.h"
 #include "UIGameDM.h"
+#include "actor.h"
 
 #define MSGS_OFFS 510
 
@@ -39,6 +41,7 @@ void CUI::Load()
 {
 	switch (GameID())
 	{
+	case GAME_SINGLE:		pUIGame = xr_new<CUIGameSP> (this);	break;
 	case GAME_CS:			pUIGame = xr_new<CUIGameCS> (this);	break;
 	case GAME_ASSAULT:											break;
 	case GAME_DEATHMATCH:	pUIGame = xr_new<CUIGameDM> (this);	break;
@@ -71,8 +74,12 @@ void CUI::OnFrame()
 		// health&armor
 		UIHealth.Out(m_Actor->g_Health(),m_Actor->g_Armor());
 		// weapon
-		CWeaponList* wpns = m_Actor->GetItemList();
-		if (wpns) UIWeapon.Out(wpns->ActiveWeapon());
+		//CWeaponList* wpns = m_Actor->GetItemList();
+		//if (wpns) UIWeapon.Out(wpns->ActiveWeapon());
+		CActor *l_pA = dynamic_cast<CActor*>(m_Actor);
+		if(l_pA && (l_pA->m_inventory.m_activeSlot < l_pA->m_inventory.m_slots.size())) {
+			UIWeapon.Out(dynamic_cast<CWeapon*>(l_pA->m_inventory.m_slots[l_pA->m_inventory.m_activeSlot].m_pIItem));
+		} else UIWeapon.Out(NULL);
 	}
 	// out GAME-style depend information
 	if (pUIGame) pUIGame->OnFrame	();

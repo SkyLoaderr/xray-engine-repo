@@ -3,6 +3,7 @@
 
 CSimpleDetector::CSimpleDetector(void)
 {
+	m_weight = .5f;
 }
 
 CSimpleDetector::~CSimpleDetector(void)

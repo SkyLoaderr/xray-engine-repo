@@ -78,7 +78,7 @@ void CWeaponPistol::OnShot		()
 	}
 	
 	// Animation
-	if(iAmmoElapsed > 1) m_pHUD->animPlay			(mhud_shots[Random.randI(mhud_shots.size())],FALSE);
+	if(/*m_pAmmo->m_magCurr*/iAmmoElapsed > 1) m_pHUD->animPlay			(mhud_shots[Random.randI(mhud_shots.size())],FALSE);
 	else { m_pHUD->animPlay			(mhud_shot_l[Random.randI(mhud_shot_l.size())],FALSE); m_opened = true; }
 	
 	// Flames

@@ -64,7 +64,7 @@
 #define CLSID_OBJECT_A_AK74			MK_CLSID('A','_','A','K','7','4',' ',' ')
 #define CLSID_OBJECT_A_LR300		MK_CLSID('A','_','L','R','3','0','0',' ')
 #define CLSID_OBJECT_A_HPSA			MK_CLSID('A','_','H','P','S','A',' ',' ')
-#define CLSID_OBJECT_A_PM			MK_CLSID('A','_','P','M',' ',' ',' ',' ')
+#define CLSID_OBJECT_A_PM			MK_CLSID('A','M','M','O',' ',' ',' ',' ')
 #define CLSID_OBJECT_A_FORT			MK_CLSID('A','_','F','O','R','T',' ',' ')
 
 // Modifiers
@@ -93,3 +93,5 @@
 // Detectors
 #define CLSID_DETECTOR_SIMPLE		MK_CLSID('D','_','S','I','M','D','E','T')
 
+// Inventory items
+#define CLSID_IITEM_BOLT			MK_CLSID('I','I','_','B','O','L','T',' ')

@@ -77,6 +77,8 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 {
 	inherited::net_Spawn			(DC);
 
+	setDestroy	(FALSE);	// @@@ WT
+
 	xrServerEntity*		E			= (xrServerEntity*)DC;
 	R_ASSERT						(E);
 

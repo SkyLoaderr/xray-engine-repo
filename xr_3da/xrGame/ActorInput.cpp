@@ -22,7 +22,7 @@ void CActor::OnKeyboardPress(int cmd)
 		return;
 	}
 	if (!g_Alive())												return;
-
+	if(m_inventory.Action(cmd, CMD_START)) return;
 	switch(cmd){
 	case kACCEL:	mstate_wishful |= mcAccel;					break;
 	case kR_STRAFE:	mstate_wishful |= mcRStrafe;				break;
@@ -48,13 +48,13 @@ void CActor::OnKeyboardPress(int cmd)
 	case kWPN_7:	
 	case kWPN_8:	
 	case kWPN_9:	
-		Weapons->ActivateWeaponID	(cmd-kWPN_1);			
+		//Weapons->ActivateWeaponID	(cmd-kWPN_1);			
 		break;
 	case kBINOCULARS:
-		Weapons->ActivateWeaponID	(Weapons->WeaponCount()-1);
+		//Weapons->ActivateWeaponID	(Weapons->WeaponCount()-1);
 		break;
 	case kWPN_RELOAD:
-		Weapons->Reload			();
+		//Weapons->Reload			();
 		break;
 	case kUSE:
 		break;
@@ -71,6 +71,7 @@ void CActor::OnKeyboardRelease(int cmd)
 
 	if (g_Alive())	
 	{
+		if(m_inventory.Action(cmd, CMD_STOP)) return;
 		switch(cmd)
 		{
 		case kACCEL:	mstate_wishful &=~mcAccel;		break;

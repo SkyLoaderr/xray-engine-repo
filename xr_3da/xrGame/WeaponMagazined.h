@@ -69,6 +69,7 @@ protected:
 	void			TryReload		();
 protected:
 	virtual void	ReloadMagazine	();
+	virtual void	UnloadMagazine	();
 
 	virtual void	state_Fire		(float dt);
 	virtual void	state_MagEmpty	(float dt);
@@ -90,6 +91,11 @@ public:
 	virtual	void	OnVisible		();
 
 	virtual void	net_Destroy		();
+
+
+
+	virtual bool Action(s32 cmd, u32 flags);
+
 };
 
 #endif //__XR_WEAPON_MAG_H__

@@ -7,19 +7,20 @@
 #pragma once
 
 #include "..\lightPPA.h"
-#include "GameObject.h"
+//#include "GameObject.h"
 #include "PhysicsShell.h"
+#include "weaponammo.h"
 
 // refs
 class CEntity;
 class CWeaponHUD;
 class ENGINE_API CMotionDef;
 
-class CWeapon : public CGameObject
+class CWeapon : public CInventoryItem//CGameObject
 {
 	friend class CWeaponList;
 private:
-	typedef CGameObject		inherited;
+	typedef CInventoryItem		inherited;
 public:
 	enum					{ MAX_ANIM_COUNT = 8 };
 	typedef					svector<CMotionDef*,MAX_ANIM_COUNT>		MotionSVec;
@@ -60,14 +61,15 @@ protected:
 	Shader*					hUIIcon;
 	float					fWallmarkSize;
 									
-	int						iAmmoLimit;			// maximum ammo we can have
-	int						iAmmoCurrent;		// ammo we have now
+	////int						iAmmoLimit;			// maximum ammo we can have
+	////int						iAmmoCurrent;		// ammo we have now
 	int						iAmmoElapsed;		// ammo in magazine, currently
 	int						iMagazineSize;		// size (in bullets) of magazine
+	int						iBuckShot;
 							
 	float					fTimeToFire;
 	int						iHitPower;
-	float					fHitImpulseScale;
+	float					fHitImpulse;
 
 	Fvector					vLastFP, vLastFD, vLastSP;
 							
@@ -174,7 +176,7 @@ public:
 
 	// logic & effects
 	virtual void			SetDefaults			();
-	virtual void			Ammo_add			(int iValue)	{ iAmmoCurrent+=iValue;	}
+	virtual void			Ammo_add			(int iValue);
 	virtual int				Ammo_eject			();
 	virtual void			FireStart			()				{ bWorking=true;	}
 	virtual void			FireEnd				()				{ bWorking=false;	}
@@ -186,7 +188,7 @@ public:
 	virtual void			Show				()				= 0;
 
 	IC BOOL					IsWorking			()				{	return bWorking;							}
-	IC BOOL					IsValid				()				{	return iAmmoCurrent || iAmmoElapsed;		}
+	IC BOOL					IsValid				()				{	return iAmmoElapsed;						}
 	IC BOOL					IsVisible			()				{	return getVisible();						}	// Weapon change occur only after visibility change
 	IC BOOL					IsUpdating			()				{	return bWorking || bPending || getVisible();}	// Does weapon need's update?
 	IC EHandDependence		HandDependence		()				{	return eHandDependence;}
@@ -195,18 +197,41 @@ public:
 
 	float					GetPrecision		();
 	IC LPCSTR				GetName				()				{	return m_WpnName;							}
-	IC int					GetAmmoElapsed		()				{	return iAmmoElapsed;						}
-	IC int					GetAmmoLimit		()				{	return iAmmoLimit;							}
-	IC int					GetAmmoCurrent		()				{	return iAmmoCurrent;						}
+	IC int					GetAmmoElapsed		()				{	return m_magazine.size()/*iAmmoElapsed*/;						}
 	IC int					GetAmmoMagSize		()				{	return iMagazineSize;						}
+
+	// @@@ WT: Subject to delete
+	IC int					GetAmmoLimit		()				{	return 0/*iAmmoLimit*/;						}
+	IC int					GetAmmoCurrent		()				{	return /*m_pAmmo?m_pAmmo->m_boxSize:*/0;	}
+	//
+
 	IC Shader*				GetUIIcon			()				{	return hUIIcon;								}
 	IC void					SetHUDmode			(BOOL H)		{	hud_mode = H;								}
 	IC int					GetSlot				()				{	return iSlotBinding;						}
 
 	virtual void			OnEvent				(NET_Packet& P, u16 type);
-	//virtual	void			Hit					(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse){
-	//																														m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,P);
-	//																														}
+
+	// Inventory
+	virtual bool Activate();
+	virtual void Deactivate();
+	virtual bool Action(s32 cmd, u32 flags);
+	virtual bool Attach(PIItem pIItem, bool force = false);
+	virtual bool Detach(PIItem pIItem, bool force = true);
+	virtual const char* Name();
+
+	void SpawnAmmo(u32 boxCurr = 0xffffffff, LPCSTR ammoSect = NULL);
+
+	CWeaponAmmo *m_pAmmo;
+	//LPCSTR m_ammoSect;
+	char m_tmpName[255], m_ammoSect[255];
+	vector<LPCSTR> m_ammoTypes;
+	u32 m_ammoType;
+	LPCSTR m_ammoName;
+	//
+
+	// Multy ammo support
+	stack<CCartridge> m_magazine;
+	//
 };
 
 #endif // !defined(AFX_WEAPON_H__7C42AD7C_0EBD_4AD1_90DE_2F972BF538B9__INCLUDED_)

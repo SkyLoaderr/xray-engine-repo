@@ -1,0 +1,256 @@
+#include "stdafx.h"
+#include "missile.h"
+#include "WeaponHUD.h"
+#include "PhysicsShell.h"
+#include "effectorshot.h"
+
+CMissile::CMissile(void) {
+	m_state = MS_HIDDEN;
+	m_pHUD = xr_new<CWeaponHUD>();
+	m_throw = false;
+	m_force = 0;
+	m_minForce = 20.f;
+	m_maxForce = 200.f;
+	m_forceGrowSpeed = 50.f;
+	m_destroyTime = 0xffffffff;
+	m_stateTime = 0;
+}
+
+CMissile::~CMissile(void) {
+	xr_delete(m_pHUD);
+}
+
+void CMissile::Load(LPCSTR section) {
+	inherited::Load(section);
+	LPCSTR hud_sect = pSettings->r_string(section,"hud");
+	m_pHUD->Load(hud_sect);
+	m_minForce = pSettings->r_float(section,"force_min");
+	m_maxForce = pSettings->r_float(section,"force_max");
+	m_forceGrowSpeed = pSettings->r_float(section,"force_grow_speed");
+}
+
+BOOL CMissile::net_Spawn(LPVOID DC) {
+	R_ASSERT(!m_pInventory);
+	CKinematics* V = PKinematics(Visual());
+	if(V) V->PlayCycle("idle");
+
+	if (0==m_pPhysicsShell)
+	{
+		// Physics (Box)
+		Fobb								obb;
+		Visual()->vis.box.get_CD			(obb.m_translate,obb.m_halfsize);
+		obb.m_rotate.identity				();
+
+		// Physics (Elements)
+		CPhysicsElement* E					= P_create_Element	();
+		R_ASSERT							(E);
+		E->add_Box							(obb);
+
+		// Physics (Shell)
+		m_pPhysicsShell						= P_create_Shell	();
+		R_ASSERT							(m_pPhysicsShell);
+		m_pPhysicsShell->add_Element		(E);
+		m_pPhysicsShell->setMass			(2000.f);
+		m_pPhysicsShell->Activate			(svXFORM(),0,svXFORM());
+		m_pPhysicsShell->mDesired.identity	();
+		m_pPhysicsShell->fDesiredStrength	= 0.f;
+	}
+	return inherited::net_Spawn(DC);
+}
+
+void CMissile::net_Destroy() {
+	//R_ASSERT(!m_pInventory);
+	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
+	xr_delete(m_pPhysicsShell);
+	inherited::net_Destroy();
+}
+
+//void CMissile::OnDeviceCreate() {
+//	inherited::OnDeviceCreate();
+//}
+//
+//void CMissile::OnDeviceDestroy() {
+//	inherited::OnDeviceDestroy	();
+//	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
+//	xr_delete					(m_pPhysicsShell);
+//}
+
+void CMissile::OnH_B_Chield() {
+	inherited::OnH_B_Chield		();
+	setVisible					(false);
+	setEnabled					(false);
+	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
+}
+
+void CMissile::OnH_B_Independent() {
+	inherited::OnH_B_Independent();
+	xr_delete(m_pHUD);
+	setVisible					(true);
+	setEnabled					(true);
+	CObject*	E		= dynamic_cast<CObject*>(H_Parent());
+	R_ASSERT		(E);
+	svTransform.set(E->clXFORM());
+	vPosition.set(svTransform.c);
+	if(m_pPhysicsShell) {
+		Fmatrix trans;
+		Level().Cameras.unaffected_Matrix(trans);
+		Fvector l_fw; l_fw.set(trans.k);// l_fw.mul(2.f);
+		Fvector l_up; l_up.set(svTransform.j); l_up.mul(2.f);
+		Fmatrix l_p1, l_p2;
+		l_p1.set(svTransform); l_p1.c.add(l_up); l_up.mul(1.2f); //l_p1.c.add(l_fw);
+		l_p2.set(svTransform); l_p2.c.add(l_up); l_fw.mul(m_force); l_p2.c.add(l_fw);
+		//Log("aaa",l_p1.c);
+		//Log("bbb",l_p2.c);
+		m_pPhysicsShell->Activate(l_p1, 0, l_p2);
+		svTransform.set(l_p1);
+		vPosition.set(svTransform.c);
+	}
+}
+
+void CMissile::UpdateCL() {
+	inherited::UpdateCL();
+	if(m_pHUD && m_showHUD) {}
+	m_stateTime += Device.dwTimeDelta;
+	if(State() == MS_IDLE && m_stateTime > 10000) State(MS_PLAYING);
+	if(State() == MS_READY) {
+		if(m_throw) State(MS_THROW);
+		else {
+			m_force += (m_forceGrowSpeed * Device.dwTimeDelta) * .001f;
+			if(m_force > m_maxForce) m_force = m_maxForce;
+		}
+	}
+	if(getVisible() && m_destroyTime < 0xffffffff && m_pPhysicsShell) {
+		if(m_destroyTime < Device.dwTimeDelta) {
+			m_destroyTime = 0xffffffff;
+			R_ASSERT(!m_pInventory);
+			NET_Packet			P;
+			u_EventGen			(P,GE_DESTROY,ID());
+			u_EventSend			(P);
+			return;
+		}
+		m_destroyTime -= Device.dwTimeDelta;
+		m_pPhysicsShell->Update	();
+		svTransform.set			(m_pPhysicsShell->mXFORM);
+		vPosition.set			(svTransform.c);
+	}
+}
+
+u32 CMissile::State() {
+	return m_state;
+}
+
+u32 CMissile::State(u32 state) {
+	m_state = state;
+	m_stateTime = 0;
+	switch(State()) {
+		case MS_SHOWING : {
+			m_pHUD->animPlay(m_pHUD->animGet("draw"), true, this);
+		} break;
+		case MS_IDLE : {
+			setVisible(true);
+			setEnabled(true);
+			m_pHUD->animPlay(m_pHUD->animGet("idle_0"));
+		} break;
+		case MS_HIDING : {
+			m_pHUD->animPlay(m_pHUD->animGet("holster_0"), true, this);
+		} break;
+		case MS_HIDDEN : {
+			setVisible(false);
+			setEnabled(false);
+		} break;
+		case MS_THREATEN : {
+			m_force = m_minForce;
+			m_pHUD->animPlay(m_pHUD->animGet("attack_0_begin"), true, this);
+		} break;
+		case MS_READY : {
+			m_pHUD->animPlay(m_pHUD->animGet("attack_0_idle"), true, this);
+		} break;
+		case MS_THROW : {
+			m_throw = false;
+			m_pHUD->animPlay(m_pHUD->animGet("attack_0_act"), true, this);
+		} break;
+		case MS_END : {
+			m_pHUD->animPlay(m_pHUD->animGet("attack_0_end"), true, this);
+		} break;
+		case MS_PLAYING : {
+			m_pHUD->animPlay(m_pHUD->animGet("idle_01"), true, this);
+		} break;
+	}
+	return State();
+}
+
+void CMissile::OnVisible() {
+	if(m_pHUD) {
+		Fmatrix trans;
+		Level().Cameras.affected_Matrix(trans);
+		m_pHUD->UpdatePosition(trans);
+
+		PKinematics(m_pHUD->Visual())->Update();
+		if(m_showHUD) {
+			::Render->set_Transform		(&m_pHUD->Transform());
+			::Render->add_Visual		(m_pHUD->Visual());
+		} else {
+		}
+	}
+	if(getVisible() && !H_Parent()) {
+		::Render->set_Transform		(&clTransform);
+		::Render->add_Visual		(Visual());
+	}
+}
+
+void CMissile::Show() {
+	State(MS_SHOWING);
+}
+
+void CMissile::Hide() {
+	State(MS_HIDING);
+}
+
+void CMissile::Throw() {
+	//// Camera
+	//if (m_showHUD) {
+	//	CEffectorShot* S		= dynamic_cast<CEffectorShot*>	(Level().Cameras.GetEffector(cefShot)); 
+	//	if (!S)	S				= (CEffectorShot*)Level().Cameras.AddEffector(xr_new<CEffectorShot>(1.f,5.5f));
+	//	R_ASSERT				(S);
+	//	S->Shot					(.1f);
+	//}
+}
+
+void CMissile::OnAnimationEnd() {
+	switch(State()) {
+		case MS_HIDING : {
+			State(MS_HIDDEN);
+		} break;
+		case MS_SHOWING : {
+			State(MS_IDLE);
+		} break;
+		case MS_THREATEN : {
+			State(MS_READY);
+		} break;
+		case MS_THROW : {
+			Throw();
+			State(MS_END);
+		} break;
+		case MS_END : {
+			State(MS_SHOWING);
+		} break;
+		case MS_PLAYING : {
+			State(MS_IDLE);
+		} break;
+	}
+}
+
+bool CMissile::Action(s32 cmd, u32 flags) {
+	if(inherited::Action(cmd, flags)) return true;
+	switch(cmd) {
+		case kWPN_FIRE : {
+			if(flags&CMD_START) {
+				 m_throw = false;
+				if(State() == MS_IDLE) State(MS_THREATEN);
+			} else if(State() == MS_READY || State() == MS_THREATEN) {
+				m_throw = true; State(MS_THROW);
+			}
+		} return true;
+	}
+	return false;
+}

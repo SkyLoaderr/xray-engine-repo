@@ -106,7 +106,7 @@ void CCustomZone::feel_touch_delete(CObject* O) {
 }
 
 BOOL CCustomZone::feel_touch_contact(CObject* O) {
-	if(!O->Local() || !((CGameObject*)O)->IsVisibleForZones()) return false;
+	if(O == this || !O->Local() || !((CGameObject*)O)->IsVisibleForZones()) return false;
 	return ((CCF_Shape*)cfModel)->Contact(O);
 }
 
