@@ -64,17 +64,11 @@ ENGINE_API void *FileDownload(const char *fn, DWORD *pdwSize)
 	DWORD	size;
 	void*	buf;
 
-#ifdef M_BORLAND
-	hFile	= open(fn,O_RDONLY|O_BINARY);
-	ELog.Msg(mtInformation,"* FS: Download %s",fn);
-	R_ASSERT(hFile>0);
-	size	= filelength(hFile);
-#else
 	hFile	= _open(fn,O_RDONLY|O_BINARY|O_SEQUENTIAL);
 	Log("* FS: Download ",fn);
 	R_ASSERT(hFile>0);
 	size	= _filelength(hFile);
-#endif
+
 	buf		= malloc(size);
 	_read	(hFile,buf,size);
 	_close	(hFile);
@@ -90,11 +84,8 @@ ENGINE_API void		FileCompress	(const char *fn, const char* sign, void* data, DWO
 {
 	MARK M; mk_mark(M,sign);
 
-#ifdef M_BORLAND
-	int H	= open(fn,O_BINARY|O_CREAT|O_WRONLY|O_TRUNC,S_IREAD|S_IWRITE);
-#else
 	int H	= _open(fn,O_BINARY|O_CREAT|O_WRONLY|O_TRUNC,S_IREAD|S_IWRITE);
-#endif
+
 	_write	(H,&M,8);
 	_writeLZ(H,data,size);
 	_close	(H);
