@@ -97,14 +97,16 @@ void Scan1Line(unsigned char *Color, float *Depth, const int W, const int H,
 	// compute the scanline
 	for (; initX<=finalX; initX++) 
 	{
-		if (Z<(Depth[i])) { // update Z buffer, RGB
-			Color[ci] = cur_color[0];
+		if (Z<(Depth[i])) 
+		{	
+			// update Z buffer, RGB
+			Color[ci]	= cur_color[0];
 			Color[ci+1] = cur_color[1];
 			Color[ci+2] = cur_color[2];
-			Depth[i] = Z;
+			Depth[i]	= Z;
 		}
-		ci+=3; i++;
-		Z += dZ;
+		ci	+=	3;	i++;
+		Z	+=	dZ;
 	}
 }
 
