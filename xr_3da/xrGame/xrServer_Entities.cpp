@@ -10,7 +10,11 @@
 	#include "xr_tokens.h"
 	#include "xr_trims.h"
 #else
-	#include "..\\xr_trims.h"
+	#ifdef AI_COMPILER
+		#include "xr_trims.h"
+	#else
+		#include "..\\xr_trims.h"
+	#endif
 #endif
 
 xrSE_Weapon::xrSE_Weapon()

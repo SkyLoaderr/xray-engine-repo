@@ -316,22 +316,6 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="FS"
-				Filter="">
-				<File
-					RelativePath=".\FS.cpp">
-				</File>
-				<File
-					RelativePath=".\FS.h">
-				</File>
-				<File
-					RelativePath=".\LzHuf.cpp">
-				</File>
-				<File
-					RelativePath=".\lzhuf.h">
-				</File>
-			</Filter>
-			<Filter
 				Name="Ini"
 				Filter="">
 				<File
