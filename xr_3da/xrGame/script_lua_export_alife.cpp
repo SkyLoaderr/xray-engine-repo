@@ -21,18 +21,6 @@ CALifeSimulator *alife			()
 	return			(const_cast<CALifeSimulator*>(ai().get_alife()));
 }
 
-//ALife::_OBJECT_ID	abstract_id(const CSE_Abstract *abstract)
-ALife::_OBJECT_ID	abstract_id(const CSE_ALifeObject *abstract)
-{
-	return			(abstract->ID);
-}
-
-//ALife::_OBJECT_ID	abstract_parent_id(const CSE_Abstract *abstract)
-ALife::_OBJECT_ID	abstract_parent_id(const CSE_ALifeObject *abstract)
-{
-	return			(abstract->ID_Parent);
-}
-
 CSE_ALifeDynamicObject *alife_object		(const CALifeSimulator *self, ALife::_OBJECT_ID id)
 {
 	VERIFY			(self);

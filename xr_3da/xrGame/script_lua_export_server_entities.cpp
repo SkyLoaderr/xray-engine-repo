@@ -15,6 +15,18 @@
 
 using namespace luabind;
 
+//ALife::_OBJECT_ID	abstract_id(const CSE_Abstract *abstract)
+ALife::_OBJECT_ID	abstract_id(const CSE_ALifeObject *abstract)
+{
+	return			(abstract->ID);
+}
+
+//ALife::_OBJECT_ID	abstract_parent_id(const CSE_Abstract *abstract)
+ALife::_OBJECT_ID	abstract_parent_id(const CSE_ALifeObject *abstract)
+{
+	return			(abstract->ID_Parent);
+}
+
 void CScriptEngine::export_server_entities()
 {
 	module(lua())
