@@ -20,7 +20,7 @@ public:
 		// box
 		float	n_vR	=		2*n_R;
 		Fbox	BB;		BB.set	(n_C.x-n_vR, n_C.y-n_vR, n_C.z-n_vR, n_C.x+n_vR, n_C.y+n_vR, n_C.z+n_vR);
-		if		(fcvNone==F->testAABB(BB.min,BB.max,fmask))	return;
+		if		(fcvNone==F->testAABB(BB.data(),fmask))	return;
 
 		// test items
 		xr_vector<ISpatial*>::iterator _it	=	N->items.begin	();

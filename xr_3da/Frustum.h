@@ -63,8 +63,8 @@ public:
 
 	EFC_Visible		testSphere			(Fvector& c, float r, u32& test_mask) const;
 	BOOL			testSphere_dirty	(Fvector& c, float r) const;
-	EFC_Visible		testAABB			(float* mM, u32& test_mask) const;
-	EFC_Visible		testSAABB			(Fvector& c, float r, float* mM, u32& test_mask) const;
+	EFC_Visible		testAABB			(const float* mM, u32& test_mask) const;
+	EFC_Visible		testSAABB			(Fvector& c, float r, const float* mM, u32& test_mask) const;
 	BOOL			testPolyInside_dirty(Fvector* p, int count) const;
 
 	IC BOOL			testPolyInside		(sPoly& src)const
