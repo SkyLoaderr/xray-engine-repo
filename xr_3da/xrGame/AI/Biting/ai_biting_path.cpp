@@ -62,7 +62,11 @@ void CAI_Biting::Path_GetAwayFromPoint(const CEntity *pE, Fvector position, floa
 	m_tSelectorGetAway->m_fOptEnemyDistance = m_tSelectorGetAway->m_fMaxEnemyDistance;
 
 	CLevelLocationSelector::set_evaluator(m_tSelectorGetAway);
+
+	LOG_EX2("GA_SEL:EnemyPos=[%f,%f,%f] enemy_dist=[min=%f][max=%f]", *"*/ VPUSH(m_tSelectorGetAway->m_tEnemyPosition), m_tSelectorGetAway->m_fMinEnemyDistance, m_tSelectorGetAway->m_fMaxEnemyDistance/*"*);
+	LOG_EX2("My Pos =[%f,%f,%f]", *"*/ VPUSH(Position()) /*"*);
 }
+
 
 void CAI_Biting::Path_CoverFromPoint(const CEntity *pE, Fvector position)
 {

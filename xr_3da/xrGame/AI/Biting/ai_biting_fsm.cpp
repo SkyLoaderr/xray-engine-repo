@@ -37,6 +37,8 @@ void CAI_Biting::Think()
 	CDetailPathManager::set_path_type		(eDetailPathTypeSmooth);
 	CDetailPathManager::set_try_min_time	(true);
 	update_path								();
+	
+
 
 	PreprocessAction						();
 	MotionMan.ProcessAction					();

@@ -90,7 +90,7 @@ void CBitingPanic::Run()
 	}
 	
 	pMonster->SetPathParams(pMonster->level_vertex_id(), pMonster->Position()); 
-	pMonster->Path_GetAwayFromPoint(m_tEnemy.obj,m_tEnemy.position, 30);	
+	//pMonster->Path_GetAwayFromPoint(m_tEnemy.obj,m_tEnemy.position, 30);	
 
 	prev_pos = cur_pos;
 }

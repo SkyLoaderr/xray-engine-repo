@@ -115,24 +115,6 @@ void CBitingEat::Run()
 		DO_IN_TIME_INTERVAL_END();
 		
 		
-		LOG_EX("--------------------------------------------------------------------"); 
-		LOG_EX2("Nodes = [%u]", *"*/ pMonster->CDetailPathManager::path().size() /*"*);
-
-		for (u32 i = 0; i < pMonster->CDetailPathManager::path().size(); i++) {
-
-			Fvector Dir;
-			float h,p;
-			
-			if (i>0 && i< pMonster->CDetailPathManager::path().size()-1) {
-				Dir.sub(pMonster->CDetailPathManager::path()[i+1].position,pMonster->CDetailPathManager::path()[i].position);
-				Dir.getHP(h,p);
-				LOG_EX2("[%u] Node ID=%u, NodePos = [%f,%f,%f] H = [%f]", *"*/ i, pMonster->CDetailPathManager::path()[i].vertex_id,  VPUSH(pMonster->CDetailPathManager::path()[i].position), h/*"*);
-			} else {
-				LOG_EX2("[%u] Node ID=%u, NodePos = [%f,%f,%f] ", *"*/ i, pMonster->CDetailPathManager::path()[i].vertex_id,  VPUSH(pMonster->CDetailPathManager::path()[i].position)/*"*);
-			}
-
-		}
-
 		pMonster->HDebug->L_Add(approach_pos,D3DCOLOR_XRGB(255,0,128));
 
 		if (cur_dist < DIST_SLOW_APPROACH_TO_CORPSE) m_tAction = ACTION_CORPSE_APPROACH_WALK;
@@ -268,7 +250,7 @@ void CBitingEat::Run()
 		
 		if (IS_NEED_REBUILD()) {
 			pMonster->SetPathParams(pMonster->level_vertex_id(),pMonster->Position()); 
-			pMonster->Path_GetAwayFromPoint(pCorpse, pCorpse->Position(), 10);
+			pMonster->Path_GetAwayFromPoint(pCorpse, pCorpse->Position(), 100);
 		}	
 
 		// если не может тащить
