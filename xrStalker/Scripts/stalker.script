@@ -10,33 +10,18 @@ lasttime	= 0
 class "actor_binder" (object_binder)
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:__init (obj) super(obj)
+	self.bCheckStart = false
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:net_spawn(data)
+	
+	self.bCheckStart = true
+
 	if object_binder.net_spawn(self,data) == false then
 		return false
-	else
+	end
 	
-	if self.object:dont_has_info("storyline_actor_start") and
-	   (
-	    level.name() == "l01_escape" or
-	    level.name() == "stohe_selo" or
-	    level.name() == "zmey_selo1" or
-	    level.name() == "zmey_selo2"
-	   )
-	then
-		printf("SET DEFAULT INFOS")
-		self.object:give_info_portion("encyclopedy")
-		self.object:give_info_portion("storyline_actor_start")
-		self.object:give_info_portion("esc_map_locations")
-		self.object:give_info_portion("level_changer_icons")
-		
-		local console = get_console()
-		console:execute("run_script avi_start")
-		
-	end			
-		return true
-	end    
+	return true
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:reinit()
@@ -60,6 +45,23 @@ end
 
 	--' ׁ‏זוע
 	level_tasks.proceed(self.object)
+
+	if  self.bCheckStart and
+		self.object:dont_has_info("storyline_actor_start") and
+		(level.name() == "l01_escape" or level.name() == "stohe_selo")	then
+			
+		printf("SET DEFAULT INFOS")
+		self.object:give_info_portion("encyclopedy")
+		self.object:give_info_portion("storyline_actor_start")
+		self.object:give_info_portion("esc_map_locations")
+		self.object:give_info_portion("level_changer_icons")
+		
+		local console = get_console()
+		console:execute("run_script avi_start")
+		
+		self.bCheckStart = false
+	end			
+
 
 end
 ----------------------------------------------------------------------------------------------------------------------
