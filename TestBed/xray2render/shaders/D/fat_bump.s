@@ -12,9 +12,9 @@ struct 	v2p_out
   float4 HPos: 		POSITION;	// Clip-space position 	(for rasterization)
   float4 Pe: 		TEXCOORD0;	// Eye-space position 	(for lighting)
   float4 Tex0: 		TEXCOORD1;	// Texture coordinates 	(for sampling diffuse+normal map)
-  float4 M1:		TEXCOORD2;	// nmap 2 eye - 1
-  float4 M2:		TEXCOORD3;	// nmap 2 eye - 2
-  float4 M3:		TEXCOORD4;	// nmap 2 eye - 3
+  float3 M1:		TEXCOORD2;	// nmap 2 eye - 1
+  float3 M2:		TEXCOORD3;	// nmap 2 eye - 2
+  float3 M3:		TEXCOORD4;	// nmap 2 eye - 3
 };
 
 struct 	v2p_in
@@ -61,9 +61,9 @@ v2p_out v_main	( a2v  	IN )
 							);
   
 	// Feed this transform to pixel shader
-	OUT.M1 			= float4(xform[0].x,xform[0].y,xform[0].z,0);
-	OUT.M2 			= float4(xform[1].x,xform[1].y,xform[1].z,0);
-	OUT.M3 			= float4(xform[2].x,xform[2].y,xform[2].z,0);
+	OUT.M1 			= xform[0]; //float4(xform[0].x,xform[0].y,xform[0].z,0);
+	OUT.M2 			= xform[1]; //float4(xform[1].x,xform[1].y,xform[1].z,0);
+	OUT.M3 			= xform[2]; //float4(xform[2].x,xform[2].y,xform[2].z,0);
 
 	return OUT;
 }
