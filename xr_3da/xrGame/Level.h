@@ -62,7 +62,6 @@ public:
 	CAI_Space					AI;
 	vector<CTeam>				Teams;
 	CTracer						Tracers;
-	CHeightMap					HeightMap;
 	CEffect_Rain				eff_Rain;
 
 	// Starting/Loading
