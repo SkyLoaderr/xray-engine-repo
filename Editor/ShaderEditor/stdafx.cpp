@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-bool g_ErrorMode=false;
-
 LPCSTR InterpretError(HRESULT hr){
 	static char errStr[1024];
     D3DXGetErrorString(hr, errStr, 1024 );

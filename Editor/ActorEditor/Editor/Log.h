@@ -20,6 +20,7 @@ public:
 };
 
 extern CLog ELog;
+extern bool g_ErrorMode;
 
 #ifdef _EDITOR
     void ENGINE_API __cdecl Msg	(LPCSTR format, ...);

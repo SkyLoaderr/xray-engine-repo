@@ -400,7 +400,7 @@ bool EScene::LoadSelection( const char *_FileName ){
             GenObjectName(obj->ClassID(),buf);
             strcpy(obj->GetName(),buf);
 			AddObject(obj, false);
-			obj->Select(true);
+			obj->Select(false);
             // group utils
             if (obj->IsInGroup()){
             	int idx = obj->GetGroupIndex();

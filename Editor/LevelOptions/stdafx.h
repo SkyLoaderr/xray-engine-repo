@@ -208,7 +208,6 @@ typedef char		sh_name[64];
 
 extern ENGINE_API Fmatrix precalc_identity;;
 extern ENGINE_API Fbox box_identity;
-extern bool g_ErrorMode;
 
 struct st_Version{
     union{

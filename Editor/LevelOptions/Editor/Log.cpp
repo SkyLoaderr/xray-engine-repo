@@ -13,6 +13,8 @@
 #endif
 //----------------------------------------------------
 
+bool g_ErrorMode=false;
+
 CLog ELog;
 void Log	(const char *msg){ ELog.Msg(mtInformation,msg); }
 void Log	(const char *msg, const char*	dop){ ELog.Msg(mtInformation,"%s%s",msg,dop); }
