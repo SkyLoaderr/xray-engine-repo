@@ -34,6 +34,9 @@ public:
 	void				Begin				();
 	void				End					();
 
-	void				set_blur			(float f)		{ param_blur=f; }
-	void				set_gray			(float f)		{ param_gray=f; }
+	virtual void		set_blur			(float f)		{ param_blur=f;		}
+	virtual void		set_gray			(float f)		{ param_gray=f;		}
+
+	virtual DWORD		get_width			()				{ return rtWidth;	}
+	virtual DWORD		get_height			()				{ return rtHeight;	}
 };

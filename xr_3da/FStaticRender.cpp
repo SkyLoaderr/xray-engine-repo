@@ -176,9 +176,10 @@ void CRender::Calculate()
 	Device.Statistic.RenderCALC.Begin();
 
 	// Transfer to global space to avoid deep pointer access
+	CRender_target* T				=	getTarget	();
 	g_fFarSq						=	75.f;
 	g_fFarSq						*=	g_fFarSq;
-	g_fSCREEN						=	float(Device.dwWidth*Device.dwHeight);
+	g_fSCREEN						=	float(T->get_width()*T->get_height());
 	g_fLOD							=	QualityControl.fGeometryLOD*g_fLOD_scale;
 	r_ssaDISCARD					=	(ssaDISCARD*ssaDISCARD)/g_fSCREEN;
 	r_ssaDONTSORT					=	(ssaDONTSORT*ssaDONTSORT)/g_fSCREEN;
@@ -203,7 +204,7 @@ void CRender::Calculate()
 	gm_SetAmbient					(0);
 	gm_SetNearer					(FALSE);
 	gm_SetLighting					(0);
-		
+	
 	// Detect camera-sector
 	if (!vLastCameraPos.similar(Device.vCameraPosition,EPS_S)) 
 	{
@@ -397,18 +398,21 @@ void CRender::flush_Patches	()
 
 void	CRender::rmNear		()
 {
-	D3DVIEWPORT8 VP = {0,0,Device.dwWidth,Device.dwHeight,0,0.02f };
-	CHK_DX(HW.pDevice->SetViewport(&VP));
+	CRender_target* T	=	getTarget	();
+	D3DVIEWPORT8 VP		=	{0,0,T->get_width(),T->get_height(),0,0.02f };
+	CHK_DX				(HW.pDevice->SetViewport(&VP));
 }
 void	CRender::rmFar		()
 {
-	D3DVIEWPORT8 VP = {0,0,Device.dwWidth,Device.dwHeight,0.99999f,1.f };
-	CHK_DX(HW.pDevice->SetViewport(&VP));
+	CRender_target* T	=	getTarget	();
+	D3DVIEWPORT8 VP		=	{0,0,T->get_width(),T->get_height(),0.99999f,1.f };
+	CHK_DX				(HW.pDevice->SetViewport(&VP));
 }
 void	CRender::rmNormal	()
 {
-	D3DVIEWPORT8 VP = {0,0,Device.dwWidth,Device.dwHeight,0,1.f };
-	CHK_DX(HW.pDevice->SetViewport(&VP));
+	CRender_target* T	=	getTarget	();
+	D3DVIEWPORT8 VP		= {0,0,T->get_width(),T->get_height(),0,1.f };
+	CHK_DX				(HW.pDevice->SetViewport(&VP));
 }
 
 IC	bool	cmp_codes			(SceneGraph::mapNormalCodes::TNode* N1, SceneGraph::mapNormalCodes::TNode* N2)

@@ -19,8 +19,6 @@ CRenderTarget::CRenderTarget()
 
 BOOL CRenderTarget::Create	()
 {
-	if (0==psSupersample)	return FALSE;
-
 	// Select mode to operate in
 	switch (psSupersample)
 	{
@@ -28,7 +26,7 @@ BOOL CRenderTarget::Create	()
 	case	2:		rtWidth = iFloor(1.414f*Device.dwWidth);	rtHeight=iFloor(1.414f*Device.dwHeight);	break;
 	case	3:		rtWidth = iFloor(1.732f*Device.dwWidth);	rtHeight=iFloor(1.732f*Device.dwHeight);	break;
 	case	4:		rtWidth = 2*Device.dwWidth;					rtHeight=2*Device.dwHeight;					break;
-	default:		return FALSE;
+	default:		rtWidth	= Device.dwWidth;					rtHeight=Device.dwHeight;					return FALSE;
 	}
 	while (rtWidth%2)	rtWidth--;
 	while (rtHeight%2)	rtHeight--;
@@ -67,7 +65,6 @@ void CRenderTarget::OnDeviceDestroy	()
 	Device.Shader._DeleteVS		(pVS);
 }
 
-
 BOOL CRenderTarget::Perform	()
 {
 	return Available() && ( NeedPostProcess() || (psSupersample>1));
@@ -82,7 +79,13 @@ void CRenderTarget::Begin	()
 	} else {
 		// Our 
 		Device.Shader.set_RT	(RT->pRT,ZB);
-		if (psDeviceFlags&rsClearBB) CHK_DX(HW.pDevice->Clear(0,0,D3DCLEAR_TARGET,D3DCOLOR_XRGB(0,255,0),1,0));
+		CHK_DX(HW.pDevice->Clear(
+			0,0,
+			D3DCLEAR_ZBUFFER|
+			((psDeviceFlags&rsClearBB)?D3DCLEAR_TARGET:0)|
+			(HW.Caps.bStencil?D3DCLEAR_STENCIL:0),
+			D3DCOLOR_XRGB(0,255,0),1,0
+			));
 	}
 }
 
@@ -90,7 +93,7 @@ void CRenderTarget::End		()
 {
 	Device.Shader.set_RT		(HW.pBaseRT,HW.pBaseZB);
 	
-	if (!Perform())	return;
+	if (!Perform())		return;
 	
 	// Draw full-screen quad textured with our scene image
 	DWORD	Offset;

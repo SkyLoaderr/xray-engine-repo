@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "fmesh.h"
+#include "render.h"
 #include "PSVisual.h"
 #include "PSRuntime.h"
 #include "PSLibrary.h"
@@ -101,12 +101,12 @@ void CPSVisual::Update(DWORD dt)
 }
 
 //----------------------------------------------------
-IC void FillSprite(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float radius, DWORD clr, float angle, float scale)
+IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float radius, DWORD clr, float angle, float scale)
 {
 	FVF::TL			PT;
 
 	PT.transform	(pos, M);
-	float sz		= scale * Device.dwWidth * radius / PT.p.w;
+	float sz		= scale * radius / PT.p.w;
 	// 'Cause D3D clipping have to clip Four points
 	// We can help him :)
 
@@ -173,18 +173,18 @@ void CPSVisual::Render		(float LOD)
  
 DWORD CPSVisual::RenderTO	(FVF::TL* dest)
 {
-	float fTime			= Device.fTimeGlobal;
+	float fTime					= Device.fTimeGlobal;
 	
 	// build transform matrix
 	Fmatrix mSpriteTransform	= Device.mFullTransform;
-	float	fov_scale			= 1/(Device.fFOV/90.f);
+	float	fov_scale			= float(::Render->getTarget()->get_width()) / (Device.fFOV/90.f);
 	
-    int 	mb_samples 	= 1;
-    float 	mb_step 	= 0;
+    int 	mb_samples 			= 1;
+    float 	mb_step 			= 0;
 	
-	Fvector2 lt,rb;
-    lt.set	(0.f,0.f);
-	rb.set	(1.f,1.f);
+	Fvector2	lt,rb;
+    lt.set		(0.f,0.f);
+	rb.set		(1.f,1.f);
 	
 	// actual rendering
 	bv_BBox.invalidate	();
@@ -218,7 +218,7 @@ DWORD CPSVisual::RenderTO	(FVF::TL* dest)
 			
             Fvector Pos;
             
-            PS::SimulatePosition(Pos,&*P,T,k);		// this moves the particle using the last known velocity and the time that has passed
+            PS::SimulatePosition(Pos,&*P,T,k);			// this moves the particle using the last known velocity and the time that has passed
 			bv_BBox.modify		(Pos);
             PS::SimulateColor	(C,&*P,k,k_inv,mb_v);	// adjust current Color from calculated Deltas and time elapsed.
             PS::SimulateSize	(sz,&*P,k,k_inv);		// adjust current Size & Angle
@@ -237,9 +237,9 @@ DWORD CPSVisual::RenderTO	(FVF::TL* dest)
 					int frame;
 					if (m_Definition->m_dwFlag&PS_FRAME_ANIMATE)PS::SimulateAnimation(frame,m_Definition,&*P,T);
 					else										frame = P->m_iAnimStartFrame;
-					m_Definition->m_Animation.CalculateTC(frame,lt,rb);
+					m_Definition->m_Animation.CalculateTC	(frame,lt,rb);
 				}
-				FillSprite(pv,mSpriteTransform,Pos,lt,rb,sz*.5f,C,D,fov_scale);
+				FillSprite	(pv,mSpriteTransform,Pos,lt,rb,sz*.5f,C,D,fov_scale);
 			}else{
 				PS::SimulateAngle	(angle,&*P,T,k,k_inv);
 				

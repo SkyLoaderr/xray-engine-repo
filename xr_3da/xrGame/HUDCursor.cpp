@@ -104,7 +104,7 @@ void CHUDCursor::Render()
 	// actual rendering
 	DWORD			vOffset;
 	FVF::TL*	pv	= (FVF::TL*)Device.Streams.Vertex.Lock(4,hVS->dwStride,vOffset);
-	float			size= Device.dwWidth * di_size;
+	float			size= float(::Render->getTarget()->get_width()) * di_size;
 	
 	// Convert to screen coords
 	float cx        = Device._x2real(PT.p.x);

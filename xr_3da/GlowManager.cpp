@@ -142,7 +142,7 @@ void CGlowManager::Render()
 	if (!Selected_Count) return;
 
 	Device.Statistic.RenderDUMP_Glows.Begin();
-	float	fov_scale	= 1/(Device.fFOV/90.f);
+	float	fov_scale	= float(::Render->getTarget()->get_width()) / (Device.fFOV/90.f);
 	{
 		// 1. Test some number of glows
 		Fvector &start	= Device.vCameraPosition;

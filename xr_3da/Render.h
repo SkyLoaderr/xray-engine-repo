@@ -24,6 +24,8 @@ class	ENGINE_API	CRender_target
 public:
 	virtual	void					set_blur	(float f)	= 0;
 	virtual	void					set_gray	(float f)	= 0;
+	virtual DWORD					get_width	()			= 0;
+	virtual DWORD					get_height	()			= 0;
 };
 
 // definition (Renderer)
