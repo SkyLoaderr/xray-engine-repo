@@ -48,21 +48,22 @@ void CStalkerALifePlanner::reload			(LPCSTR section)
 
 void CStalkerALifePlanner::add_evaluators	()
 {
-	add_evaluator			(eWorldPropertyPuzzleSolved		,xr_new<CStalkerPropertyEvaluatorConst>				(false));
-	add_evaluator			(eWorldPropertyALife			,xr_new<CStalkerPropertyEvaluatorALife>				());
-	add_evaluator			(eWorldPropertyItems			,xr_new<CStalkerPropertyEvaluatorItems>				());
+	add_evaluator			(eWorldPropertyPuzzleSolved			,xr_new<CStalkerPropertyEvaluatorConst>					(false));
+	add_evaluator			(eWorldPropertyItems				,xr_new<CStalkerPropertyEvaluatorItems>					());
+	add_evaluator			(eWorldPropertyALife				,xr_new<CStalkerPropertyEvaluatorALife>					());
+	add_evaluator			(eWorldPropertyReachedTaskLocation	,xr_new<CStalkerPropertyEvaluatorReachedTaskLocation>	());
+	add_evaluator			(eWorldPropertyTaskCompleted		,xr_new<CStalkerPropertyEvaluatorTaskAccomplished>		());
+	add_evaluator			(eWorldPropertyCustomerSatisfied	,xr_new<CStalkerPropertyEvaluatorCustomerSatisfied>		());
 }
 
 void CStalkerALifePlanner::add_actions		()
 {
 	CStalkerActionBase		*action;
 
-	action					= xr_new<CStalkerActionFreeALife>	(m_object,"free_alife");
-	add_condition			(action,eWorldPropertyALife,		true);
-	add_condition			(action,eWorldPropertyItems,		false);
-	add_condition			(action,eWorldPropertyPuzzleSolved,	false);
-	add_effect				(action,eWorldPropertyPuzzleSolved,	true);
-	add_operator			(eWorldOperatorFreeALife,			action);
+	action					= xr_new<CStalkerActionGatherItems>	(m_object,"gather_items");
+	add_condition			(action,eWorldPropertyItems,		true);
+	add_effect				(action,eWorldPropertyItems,		false);
+	add_operator			(eWorldOperatorGatherItems,			action);
 
 	action					= xr_new<CStalkerActionFreeNoALife>	(m_object,"free_no_alife");
 	add_condition			(action,eWorldPropertyALife,		false);
@@ -71,8 +72,35 @@ void CStalkerALifePlanner::add_actions		()
 	add_effect				(action,eWorldPropertyPuzzleSolved,	true);
 	add_operator			(eWorldOperatorFreeNoALife,			action);
 
-	action					= xr_new<CStalkerActionGatherItems>	(m_object,"gather_items");
-	add_condition			(action,eWorldPropertyItems,		true);
-	add_effect				(action,eWorldPropertyItems,		false);
-	add_operator			(eWorldOperatorGatherItems,			action);
+	action					= xr_new<CStalkerActionFreeALife>	(m_object,"free_alife");
+	add_condition			(action,eWorldPropertyALife,		true);
+	add_condition			(action,eWorldPropertyItems,		false);
+	add_condition			(action,eWorldPropertyPuzzleSolved,	false);
+	add_condition			(action,eWorldPropertyTaskCompleted,true);
+	add_effect				(action,eWorldPropertyPuzzleSolved,	true);
+	add_operator			(eWorldOperatorFreeALife,			action);
+
+	action					= xr_new<CStalkerActionReachTaskLocation>	(m_object,"reach_task_location");
+	add_condition			(action,eWorldPropertyALife,		true);
+	add_condition			(action,eWorldPropertyItems,		false);
+	add_condition			(action,eWorldPropertyReachedTaskLocation,	false);
+	add_effect				(action,eWorldPropertyReachedTaskLocation,	true);
+	add_operator			(eWorldOperatorReachTaskLocation,	action);
+
+	action					= xr_new<CStalkerActionAccomplishTask>	(m_object,"accomplish_task");
+	add_condition			(action,eWorldPropertyALife,		true);
+	add_condition			(action,eWorldPropertyItems,		false);
+	add_condition			(action,eWorldPropertyReachedTaskLocation,	true);
+	add_condition			(action,eWorldPropertyTaskCompleted,false);
+	add_effect				(action,eWorldPropertyTaskCompleted,true);
+	add_operator			(eWorldOperatorAccomplishTask,		action);
+
+	action					= xr_new<CStalkerActionFollowCustomer>	(m_object,"go_to_customer");
+	add_condition			(action,eWorldPropertyALife,		true);
+	add_condition			(action,eWorldPropertyItems,		false);
+	add_condition			(action,eWorldPropertyReachedTaskLocation,	true);
+	add_condition			(action,eWorldPropertyTaskCompleted,true);
+	add_condition			(action,eWorldPropertyCustomerSatisfied,false);
+	add_effect				(action,eWorldPropertyCustomerSatisfied,true);
+	add_operator			(eWorldOperatorFollowCustomer,		action);
 }

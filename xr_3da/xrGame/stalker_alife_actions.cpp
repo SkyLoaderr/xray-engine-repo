@@ -76,11 +76,6 @@ CStalkerActionFreeNoALife::CStalkerActionFreeNoALife	(CAI_Stalker *object, LPCST
 void CStalkerActionFreeNoALife::initialize	()
 {
 	inherited::initialize			();
-	m_stop_weapon_handling_time		= Level().timeServer();
-
-	if (m_object->inventory().ActiveItem() && m_object->best_weapon() && (m_object->inventory().ActiveItem()->ID() == m_object->best_weapon()->ID()))
-		m_stop_weapon_handling_time	+= ::Random.randI(120000,180000);
-
 #ifndef STALKER_DEBUG_MODE
 	m_object->set_node_evaluator	(0);
 	m_object->set_path_evaluator	(0);
@@ -211,6 +206,127 @@ void CStalkerActionFreeALife::finalize	()
 }
 
 void CStalkerActionFreeALife::execute		()
+{
+	inherited::execute				();
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionReachTaskLocation
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerActionReachTaskLocation::CStalkerActionReachTaskLocation	(CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(object,action_name)
+{
+}
+
+void CStalkerActionReachTaskLocation::initialize	()
+{
+	inherited::initialize			();
+	m_object->set_node_evaluator	(0);
+	m_object->set_path_evaluator	(0);
+	m_object->set_desired_position	(0);
+	m_object->set_desired_direction	(0);
+	m_object->set_path_type			(MovementManager::ePathTypeGamePath);
+	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
+	m_object->set_body_state		(eBodyStateStand);
+	m_object->set_movement_type		(eMovementTypeWalk);
+	m_object->set_mental_state		(eMentalStateFree);
+	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypeCover,false,true));
+}
+
+void CStalkerActionReachTaskLocation::finalize	()
+{
+	inherited::finalize				();
+
+	if (!m_object->g_Alive())
+		return;
+
+	m_object->set_sound_mask		(u32(eStalkerSoundMaskNoHumming));
+	m_object->set_sound_mask		(0);
+}
+
+void CStalkerActionReachTaskLocation::execute		()
+{
+	inherited::execute				();
+	m_object->set_game_dest_vertex	(76);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionAccomplishTask
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerActionAccomplishTask::CStalkerActionAccomplishTask	(CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(object,action_name)
+{
+}
+
+void CStalkerActionAccomplishTask::initialize	()
+{
+	inherited::initialize			();
+	m_object->set_node_evaluator	(0);
+	m_object->set_path_evaluator	(0);
+	m_object->set_desired_position	(0);
+	m_object->set_desired_direction	(0);
+	m_object->set_path_type			(MovementManager::ePathTypeGamePath);
+	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
+	m_object->set_body_state		(eBodyStateStand);
+	m_object->set_movement_type		(eMovementTypeWalk);
+	m_object->set_mental_state		(eMentalStateFree);
+	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypeCover,false,true));
+}
+
+void CStalkerActionAccomplishTask::finalize	()
+{
+	inherited::finalize				();
+
+	if (!m_object->g_Alive())
+		return;
+
+	m_object->set_sound_mask		(u32(eStalkerSoundMaskNoHumming));
+	m_object->set_sound_mask		(0);
+}
+
+void CStalkerActionAccomplishTask::execute		()
+{
+	inherited::execute				();
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionFollowCustomer
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerActionFollowCustomer::CStalkerActionFollowCustomer	(CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(object,action_name)
+{
+}
+
+void CStalkerActionFollowCustomer::initialize	()
+{
+	inherited::initialize			();
+	m_object->set_node_evaluator	(0);
+	m_object->set_path_evaluator	(0);
+	m_object->set_desired_position	(0);
+	m_object->set_desired_direction	(0);
+	m_object->set_path_type			(MovementManager::ePathTypeGamePath);
+	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
+	m_object->set_body_state		(eBodyStateStand);
+	m_object->set_movement_type		(eMovementTypeWalk);
+	m_object->set_mental_state		(eMentalStateFree);
+	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypeCover,false,true));
+}
+
+void CStalkerActionFollowCustomer::finalize	()
+{
+	inherited::finalize				();
+
+	if (!m_object->g_Alive())
+		return;
+
+	m_object->set_sound_mask		(u32(eStalkerSoundMaskNoHumming));
+	m_object->set_sound_mask		(0);
+}
+
+void CStalkerActionFollowCustomer::execute		()
 {
 	inherited::execute				();
 }

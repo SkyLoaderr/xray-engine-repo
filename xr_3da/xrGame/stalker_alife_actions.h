@@ -61,3 +61,47 @@ public:
 	virtual void		finalize					();
 };
 
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionReachTaskLocation
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerActionReachTaskLocation : public CStalkerActionBase {
+protected:
+	typedef CStalkerActionBase inherited;
+
+public:
+						CStalkerActionReachTaskLocation	(CAI_Stalker *object, LPCSTR action_name = "");
+	virtual void		initialize					();
+	virtual void		execute						();
+	virtual void		finalize					();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionAccomplishTask
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerActionAccomplishTask : public CStalkerActionBase {
+protected:
+	typedef CStalkerActionBase inherited;
+
+public:
+						CStalkerActionAccomplishTask(CAI_Stalker *object, LPCSTR action_name = "");
+	virtual void		initialize					();
+	virtual void		execute						();
+	virtual void		finalize					();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionFollowCustomer
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerActionFollowCustomer : public CStalkerActionBase {
+protected:
+	typedef CStalkerActionBase inherited;
+
+public:
+						CStalkerActionFollowCustomer(CAI_Stalker *object, LPCSTR action_name = "");
+	virtual void		initialize					();
+	virtual void		execute						();
+	virtual void		finalize					();
+};

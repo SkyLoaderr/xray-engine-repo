@@ -73,7 +73,3 @@ CSE_ALifeDynamicObject *CSE_ALifeSmartZone::tpfGetBestDetector	()
 	VERIFY2						(false,"This function shouldn't be called");
 	return						(0);
 }
-
-void CSE_ALifeSmartZone::smart_touch						(CSE_ALifeMonsterAbstract *monster)
-{
-}

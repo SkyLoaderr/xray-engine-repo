@@ -190,4 +190,40 @@ public:
 	virtual _value_type	evaluate							();
 };
 
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorReachedTaskLocation
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerPropertyEvaluatorReachedTaskLocation : public CStalkerPropertyEvaluator {
+protected:
+	typedef CStalkerPropertyEvaluator inherited;
+
+public:
+	virtual _value_type	evaluate							();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorTaskAccomplished
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerPropertyEvaluatorTaskAccomplished : public CStalkerPropertyEvaluator {
+protected:
+	typedef CStalkerPropertyEvaluator inherited;
+
+public:
+	virtual _value_type	evaluate							();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorCustomerSatisfied
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerPropertyEvaluatorCustomerSatisfied : public CStalkerPropertyEvaluator {
+protected:
+	typedef CStalkerPropertyEvaluator inherited;
+
+public:
+	virtual _value_type	evaluate							();
+};
+
 #include "stalker_property_evaluators_inline.h"
