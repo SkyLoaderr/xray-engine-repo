@@ -72,6 +72,7 @@ function give_blockpost_case(first_speaker, second_speaker)
 	local case = first_speaker:object("quest_case_01")
 	first_speaker:transfer_item (case, second_speaker)
 	second_speaker:transfer_money (500, first_speaker)
+	first_speaker:set_task_state(task.completed, "escape_blockpost_case", 2)		
 	first_speaker:set_task_state(task.completed, "escape_blockpost_case", 0)
 end
 
@@ -83,6 +84,7 @@ function give_artefact_nightstar(first_speaker, second_speaker)
 	local artefact = first_speaker:object("af_night_star")
 	first_speaker:transfer_item (artefact, second_speaker)
 	second_speaker:transfer_money (800, first_speaker)
+	first_speaker:set_task_state(task.completed, "escape_trader_need_artefact", 2)	
 	first_speaker:set_task_state(task.completed, "escape_trader_need_artefact", 0)
 end
 function trader_need_artefact(first_speaker, second_speaker)

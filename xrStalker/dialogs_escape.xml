@@ -89,45 +89,6 @@
 	</phrase_list>
     </dialog>
 
-<!--
-    <dialog id="escape_trader_jobs">
-	<phrase_list>
-	    	<phrase id="0">
-			<text>Какая у тебя есть работа?</text>
-			<next>2</next>
-		</phrase>
-		<phrase id="2">
-			<text>Все как обычно. Прежде всего мне нужны артефакты. Плачу обычную цену, ни больше, ни меньше.\n Ну и иногда мне нужны "особые" люди для "особой" работы.</text>
-			<next>3</next>
-			<next>4</next>
-		</phrase>
-		<phrase id="3">
-			<text>Действительно, все как обычно. Ладно - если что-то найду, постараюсь не забыть принести.</text>
-			<next>15</next>
-		</phrase>
-		<phrase id="4">
-			<text>А может у тебя найдется "особая" работа для "особого" человека?</text>
-			<next>5</next>
-			<next>12</next>
-			<next>13</next>
-		</phrase>
-		<phrase id="9">
-			<text>Ну и хам же ты. Немудрено, что тебя даже на том свете не приняли.</text>
-		</phrase>
-		<phrase id="12">
-	        <precondition>escape_dialog.trader_dont_has_job</precondition>
-			<text>Не, пока ничего нету.</text>
-		</phrase>
-		<phrase id="13">
-	        <precondition>escape_dialog.trader_alredy_give_job</precondition>
-			<text>Кажется ты уже что-то обещал мне сделать, и еще не сделал. Пока не сделаешь - никаких новых заданий.</text>
-		</phrase>
-		<phrase id="15">
-			<text>Ну вот и ладненько. Что нибудь еще?</text>
-		</phrase>
-	</phrase_list>
-    </dialog>
--->
     <dialog id="escape_trader_done_artefact">
     <precondition>escape_dialog.have_artefact_nightstar</precondition>
 	<phrase_list>

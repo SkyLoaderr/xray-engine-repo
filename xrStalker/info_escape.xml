@@ -21,14 +21,18 @@
         <location>
             <level></level>
             <object>000</object>
-			<icon name="Ящик" x="5" y="1" width="1" height="1" r="50" g="255" b="50" marker="0"></icon>
+			<icon name="Ящик" x="5" y="1" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
             <text>Украсть ящик с блокпоста</text>
         </location>
         <task>escape_blockpost_case</task>
-		<dialog>escape_trader_done_blockpost_box</dialog>
     </info_portion>
+    <info_portion id="escape_take_blockpost_case">
+        <disable>escape_need_blockpost_case</disable>
+        <dialog>escape_trader_done_blockpost_box</dialog>
+    </info_portion>   
     <info_portion id="escape_have_blockpost_case">
         <disable>escape_need_blockpost_case</disable>
+        <disable>escape_take_blockpost_case</disable>
     </info_portion>
 
     <info_portion id="escape_trader_need_artefact">
@@ -36,34 +40,44 @@
             <level></level>
             <x>163</x>
             <y>72</y>
-			<icon name="Аномалия" x="6" y="1" width="1" height="1" r="50" g="255" b="50" marker="0"></icon>
+			<icon name="Аномалия" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
             <text>Предполагаемое место артефакта.</text>
         </location>
         <location>
             <level></level>
             <x>208</x>
             <y>108</y>
-			<icon name="Аномалия" x="6" y="1" width="1" height="1" r="50" g="255" b="50" marker="0"></icon>
+			<icon name="Аномалия" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
             <text>Предполагаемое место артефакта.</text>
         </location>
         <location>
             <level></level>
             <x>221</x>
             <y>154</y>
-			<icon name="Аномалия" x="6" y="1" width="1" height="1" r="50" g="255" b="50" marker="1"></icon>
+			<icon name="Аномалия" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
             <text>Предполагаемое место артефакта.</text>
         </location>
         <location>
             <level></level>
             <x>186</x>
             <y>159</y>
-			<icon name="Аномалия" x="6" y="1" width="1" height="1" r="50" g="255" b="50" marker="0"></icon>
+			<icon name="Аномалия" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
             <text>Предполагаемое место артефакта.</text>
         </location>
         <task>escape_trader_need_artefact</task>
-		<dialog>escape_trader_done_artefact</dialog>
+    </info_portion>
+    <info_portion id="escape_trader_find_artefact">
+        <location>
+            <level></level>
+            <object>003</object>            
+			<icon name="Торговец" x="6" y="0" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+            <text>Принеси артефакт торговцу.</text>
+        </location>   
+        <disable>escape_trader_need_artefact</disable>
+		<dialog>escape_trader_done_artefact</dialog>        
     </info_portion>
     <info_portion id="escape_trader_have_artefact">
+        <disable>escape_trader_find_artefact</disable>
         <disable>escape_trader_need_artefact</disable>
     </info_portion>
     

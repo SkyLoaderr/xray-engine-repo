@@ -1,3 +1,30 @@
+actor = nil
+
 function main()
-	wait()
+	while true do
+	
+		if actor == nil then
+			actor = level.actor()
+		end
+       	
+       	if actor ~= nil then
+       		if actor:has_info("escape_trader_need_artefact") and
+       		   actor:object("af_night_star") ~= nil
+       		then
+       			actor:give_info_portion("escape_trader_find_artefact")
+				actor:set_task_state(task.completed, "escape_trader_need_artefact", 1)
+       		end       	
+       	end
+
+       	if actor ~= nil then
+       		if actor:has_info("escape_need_blockpost_case") and
+       		   actor:object("quest_case_01") ~= nil
+       		then
+       			actor:give_info_portion("escape_take_blockpost_case")
+				actor:set_task_state(task.completed, "escape_blockpost_case", 1)
+       		end       	
+       	end
+
+		wait()
+	end
 end
