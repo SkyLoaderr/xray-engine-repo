@@ -135,8 +135,8 @@ function main()
 	event:clear_callback(true)
 	event:clear_callback(false)
 
-	stalker1:script	(false, script_01.script_name())
-	stalker2:script	(false, script_01.script_name())
+	stalker1:script	(false, this.script_name())
+	stalker2:script	(false, this.script_name())
 
 end
 
