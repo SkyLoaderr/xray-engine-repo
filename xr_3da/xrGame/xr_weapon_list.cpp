@@ -138,6 +138,11 @@ void CWeaponList::Zoom(BOOL bZoom)
 		m_bZoomed	= FALSE;
 	}
 }
+void CWeaponList::Reload()
+{
+	CWeapon*	W = ActiveWeapon();
+	if (W)		W->Reload		();
+}
 
 CWeapon* CWeaponList::LoadOne( CLASS_ID cls )
 {
