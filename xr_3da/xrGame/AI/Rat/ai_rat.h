@@ -222,13 +222,12 @@ class CAI_Rat : public CCustomMonster
 					break;
 				}
 			}
-			m_fSpeed = m_fMaxSpeed;
 			m_fSafeSpeed = m_fSpeed;
 		};
 
 		IC void vfUpdateTime(float fTimeDelta)
 		{
-			m_fGoalChangeTime -= fTimeDelta;
+			m_fGoalChangeTime -= fTimeDelta > .1f ? .1f : fTimeDelta;
 		};		
 		
 		void vfComputeNewPosition();

@@ -55,7 +55,7 @@ void CAI_Rat::Turn()
 
 	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiRatDie)
 
-	CHECK_IF_GO_TO_PREV_STATE(Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw, EPS_L))
+	CHECK_IF_GO_TO_PREV_STATE(Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw, PI_DIV_6))
 	
 	INIT_SQUAD_AND_LEADER
 	
@@ -115,7 +115,9 @@ void CAI_Rat::AttackRun()
 	
 	SelectEnemy(Enemy);
 	
-	CHECK_IF_GO_TO_PREV_STATE(!(Enemy.Enemy) || !Enemy.Enemy->g_Alive())
+	if (!(Enemy.Enemy) && tSavedEnemy && (tSavedEnemy->Position().distance_to(vPosition) < ffGetRange()))
+		Enemy.Enemy = tSavedEnemy;
+	CHECK_IF_GO_TO_PREV_STATE(!Enemy.Enemy || !Enemy.Enemy->g_Alive())
 		
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 
@@ -134,20 +136,25 @@ void CAI_Rat::AttackRun()
 
 	INIT_SQUAD_AND_LEADER;
 	
-	//GoToPointViaSubnodes(Enemy.Enemy->Position());
+//	GoToPointViaSubnodes(Enemy.Enemy->Position());
 	
-	m_tSpawnPosition.set	(Enemy.Enemy->Position());
 	m_tGoalDir.set			(Enemy.Enemy->Position());
+	m_fASpeed				= .3f;
+	m_tSpawnPosition.set	(Enemy.Enemy->Position());
 	m_tVarGoal.set			(0,0,0);
 	m_fGoalChangeDelta		= .5f;
 	m_fSpeed				= m_fCurSpeed = m_fMaxSpeed;
-	m_fASpeed				= .4f;
 	//vfChangeGoal();
 
-	if (Enemy.Enemy->Position().distance_to(vPosition) <= ATTACK_DISTANCE)
+	vfSaveEnemy();
+
+	vfUpdateTime(m_fTimeUpdateDelta);
+
+	if (Enemy.Enemy->Position().distance_to(vPosition) <= ATTACK_DISTANCE) {
 		vfAimAtEnemy();
+		r_torso_target.pitch = 0;
+	}
 	else {
-		vfUpdateTime(m_fTimeUpdateDelta);
 		vfComputeNewPosition();
 		SetDirectionLook();
 	}
@@ -172,11 +179,11 @@ void CAI_Rat::FreeHunting()
 		SWITCH_TO_NEW_STATE(aiRatAttackFire)
 	}
 
-	//m_tSpawnPosition.set(m_tSafeSpawnPosition);
+	m_tSpawnPosition.set(m_tSafeSpawnPosition);
+	m_fGoalChangeDelta		= 10.f;
+	m_tVarGoal.set			(10.0,0.0,20.0);
+	m_fASpeed				= .2f;
 	
-	//m_fGoalChangeDelta		= 10.f;
-	//m_tVarGoal.set			(10.0,0.0,20.0);
-	//m_fASpeed				= .2f;
 	if (bfCheckIfGoalChanged())
 		vfChooseNewSpeed();
 
