@@ -152,13 +152,12 @@ void CAI_Rat::Load(LPCSTR section)
 
 BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 {
-	if (!inherited::net_Spawn(DC))
-		return(FALSE);
-	
 	//////////////////////////////////////////////////////////////////////////
 	xrSE_Rat						*tpSE_Rat = (xrSE_Rat *)DC;
 	// model
 	cNameVisual_set					(tpSE_Rat->caModel);
+	if (!inherited::net_Spawn(DC))
+		return(FALSE);
 	// personal characteristics
 	eye_fov							= tpSE_Rat->fEyeFov;
 	eye_range						= tpSE_Rat->fEyeRange;
