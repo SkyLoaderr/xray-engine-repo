@@ -43,58 +43,58 @@ public:
 	CUIXml();
 	virtual ~CUIXml();
 
-	bool Init(LPCSTR path, const char* xml_filename);
+	bool Init(LPCSTR path, LPCSTR  xml_filename);
 	
 	
 	//чтение элементов
-	char* Read(const char *path, int index,  const char*  default_str_val = "" );
-	char* Read(XML_NODE* start_node, const char *path, int index,  const char*  default_str_val = "" );
-	char* Read(XML_NODE* node,  const char*  default_str_val);
+	LPCSTR Read(LPCSTR path, int index,  LPCSTR   default_str_val = "" );
+	LPCSTR Read(XML_NODE* start_node, LPCSTR path, int index,  LPCSTR   default_str_val = "" );
+	LPCSTR Read(XML_NODE* node,  LPCSTR   default_str_val);
 	
-	int   ReadInt(const char *path, int index,  int default_int_val = 0);
-	int   ReadInt(XML_NODE* start_node,  const char *path, int index,  int default_int_val = 0);
+	int   ReadInt(LPCSTR path, int index,  int default_int_val = 0);
+	int   ReadInt(XML_NODE* start_node,  LPCSTR path, int index,  int default_int_val = 0);
 	int   ReadInt(XML_NODE* node,  int default_int_val);
 
 
-	char* ReadAttrib(const char *path,  int index, 
-						const char *attrib, const char*  default_str_val = "");
-	char* ReadAttrib(XML_NODE* start_node, const char *path,  int index, 
-						const char *attrib, const char*  default_str_val = "");
-	char* ReadAttrib(XML_NODE* node,
-						const char *attrib, const char*  default_str_val);
+	LPCSTR ReadAttrib(LPCSTR path,  int index, 
+						LPCSTR attrib, LPCSTR default_str_val = "");
+	LPCSTR ReadAttrib(XML_NODE* start_node, LPCSTR path,  int index, 
+						LPCSTR attrib, LPCSTR default_str_val = "");
+	LPCSTR ReadAttrib(XML_NODE* node,
+						LPCSTR attrib, LPCSTR default_str_val);
 
-	int   ReadAttribInt(const char *path, int index,  
-							const char *attrib, int default_int_val = 0);
-	int   ReadAttribInt(XML_NODE* start_node, const char *path, int index,  
-							const char *attrib, int default_int_val = 0);
+	int   ReadAttribInt(LPCSTR path, int index,  
+							LPCSTR attrib, int default_int_val = 0);
+	int   ReadAttribInt(XML_NODE* start_node, LPCSTR path, int index,  
+							LPCSTR attrib, int default_int_val = 0);
 	int   ReadAttribInt(XML_NODE* node,
-							const char *attrib, int default_int_val);
+							LPCSTR attrib, int default_int_val);
 
 	//нахождение элемента по содержимому 
 	//по параметру
-	XML_NODE* SearchForAttribute(const char *path, int index, 
-								 const char *tag_name,
-								 const char *attrib, 
-								 const char *attrib_value_pattern);
+	XML_NODE* SearchForAttribute(LPCSTR path, int index, 
+								 LPCSTR tag_name,
+								 LPCSTR attrib, 
+								 LPCSTR attrib_value_pattern);
 
 	XML_NODE* SearchForAttribute(XML_NODE* start_node, 
-								 const char *tag_name,
-								 const char *attrib, 
-								 const char *attrib_value_pattern);
+								 LPCSTR tag_name,
+								 LPCSTR attrib, 
+								 LPCSTR attrib_value_pattern);
 
 	//возвращает количество узлов с заданым именем
-	int GetNodesNum(const char *path, int index, const char* tag_name);
-	int GetNodesNum(XML_NODE* node, const char* tag_name);
+	int GetNodesNum(LPCSTR path, int index, LPCSTR tag_name);
+	int GetNodesNum(XML_NODE* node, LPCSTR  tag_name);
 	
 	
 	//переместиться по XML дереву 
 	//путь задается в форме PARENT:CHILD:CHIDLS_CHILD
 	//node_index - номер, если узлов с одним именем несколько
-	XML_NODE* NavigateToNode(const char* path, int node_index = 0);
+	XML_NODE* NavigateToNode(LPCSTR  path, int node_index = 0);
 	XML_NODE* NavigateToNode(XML_NODE* start_node, 
-							 const char* path, int node_index = 0);
-	XML_NODE* NavigateToNodeWithAttribute(const char *tag_name,
-										  const char *attrib_name, const char *attrib_value);
+							 LPCSTR  path, int node_index = 0);
+	XML_NODE* NavigateToNodeWithAttribute(LPCSTR tag_name,
+										  LPCSTR attrib_name, LPCSTR attrib_value);
 
 	void		SetLocalRoot(XML_NODE* pLocalRoot)			{m_pLocalRoot = pLocalRoot;}
 	XML_NODE*	GetLocalRoot()								{return m_pLocalRoot;}
@@ -104,9 +104,6 @@ public:
 protected:
 	XML_NODE m_root;
 	XML_NODE* m_pLocalRoot;
-
-	//буфферная строка
-	char* buf_str;	
 };
 
 #endif //xrXMLParserH

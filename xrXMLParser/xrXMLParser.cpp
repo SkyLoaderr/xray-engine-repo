@@ -38,7 +38,7 @@ XRXMLPARSER_API CUIXml::~CUIXml()
 
 
 //инициализация и загрузка XML файла
-bool CUIXml::Init(LPCSTR path, const char* xml_filename)
+bool CUIXml::Init(LPCSTR path, LPCSTR  xml_filename)
 {
 	//if(!m_root.LoadXmlFile(xml_filename))
 	//	return false;
@@ -49,7 +49,7 @@ bool CUIXml::Init(LPCSTR path, const char* xml_filename)
 	CMemoryWriter W;
 	W.w(F->pointer(),F->length());
 	W.w_stringZ("");
-	if(!m_root.LoadXml((const char*)W.pointer()))
+	if(!m_root.LoadXml((LPCSTR )W.pointer()))
 		return false;
 		
 	F->close();
@@ -60,7 +60,7 @@ bool CUIXml::Init(LPCSTR path, const char* xml_filename)
 }
 
 XML_NODE* CUIXml::NavigateToNode(XML_NODE* start_node, 
-								 const char* path, 
+								 LPCSTR  path, 
 								 int node_index)
 {
 	XML_NODE*	node			= NULL;
@@ -96,12 +96,12 @@ XML_NODE* CUIXml::NavigateToNode(XML_NODE* start_node,
 	return node;
 }
 
-XML_NODE* CUIXml::NavigateToNode(const char* path, int node_index)
+XML_NODE* CUIXml::NavigateToNode(LPCSTR  path, int node_index)
 {
 	return NavigateToNode(GetLocalRoot()?GetLocalRoot():GetRoot(), path, node_index);
 }
 
-XML_NODE* CUIXml::NavigateToNodeWithAttribute(const char *tag_name, const char *attrib_name, const char *attrib_value)
+XML_NODE* CUIXml::NavigateToNodeWithAttribute(LPCSTR tag_name, LPCSTR attrib_name, LPCSTR attrib_value)
 {
 
 	XML_NODE	*root		= GetLocalRoot() ? GetLocalRoot() : GetRoot();
@@ -109,7 +109,7 @@ XML_NODE* CUIXml::NavigateToNodeWithAttribute(const char *tag_name, const char *
 
 	for (int i = 0; i < tabsCount; ++i)
 	{
-		if (xr_strcmp(ReadAttrib(root, attrib_name, ""), attrib_value) == 0)
+		if (xr_strcmp(ReadAttrib(root, tag_name, i, attrib_name, ""), attrib_value) == 0)
 		{
 			return NavigateToNode(root, tag_name, i);
 		}
@@ -119,38 +119,38 @@ XML_NODE* CUIXml::NavigateToNodeWithAttribute(const char *tag_name, const char *
 }
 
 
-char* CUIXml::Read(const char *path, int index, const char*  default_str_val)
+LPCSTR CUIXml::Read(LPCSTR path, int index, LPCSTR   default_str_val)
 {
 	XML_NODE* node = NavigateToNode(path, index);
-	char* result = Read(node,  default_str_val);
+	LPCSTR result = Read(node,  default_str_val);
 	delete	(node);
 	return	result;
 }
 
 
 
-char* CUIXml::Read(XML_NODE* start_node,  const char *path, int index, const char*  default_str_val)
+LPCSTR CUIXml::Read(XML_NODE* start_node,  LPCSTR path, int index, LPCSTR   default_str_val)
 {
 	XML_NODE* node = NavigateToNode(start_node, path, index);
-	char* result = Read(node,  default_str_val);
+	LPCSTR result = Read(node,  default_str_val);
 	delete	(node);
 	return	result;
 }
 
 
-char* CUIXml::Read(XML_NODE* node,  const char*  default_str_val)
+LPCSTR CUIXml::Read(XML_NODE* node,  LPCSTR   default_str_val)
 {
 	if(node == NULL)
-		return (char*)default_str_val;
+		return default_str_val;
 	else
-		return (char*)node->get_Content();
+		return node->get_Content();
 }
 
 
 
 int CUIXml::ReadInt(XML_NODE* node, int default_int_val)
 {
-	char* result_str = Read(node, NULL ); 
+	LPCSTR result_str = Read(node, NULL ); 
 
 	if(result_str==NULL)
 	{
@@ -159,18 +159,18 @@ int CUIXml::ReadInt(XML_NODE* node, int default_int_val)
 
 	return atoi(result_str);
 }
-int CUIXml::ReadInt(const char *path, int index, int default_int_val)
+int CUIXml::ReadInt(LPCSTR path, int index, int default_int_val)
 {
-	char* result_str = Read(path, index, NULL ); 
+	LPCSTR result_str = Read(path, index, NULL ); 
 	if(result_str==NULL)
 	{
 		return default_int_val;
 	}
 	return atoi(result_str);
 }
-int CUIXml::ReadInt(XML_NODE* start_node, const char *path, int index, int default_int_val)
+int CUIXml::ReadInt(XML_NODE* start_node, LPCSTR path, int index, int default_int_val)
 {
-	char* result_str = Read(start_node, path, index, NULL ); 
+	LPCSTR result_str = Read(start_node, path, index, NULL ); 
 	if(result_str==NULL)
 	{
 		return default_int_val;
@@ -180,52 +180,52 @@ int CUIXml::ReadInt(XML_NODE* start_node, const char *path, int index, int defau
 
 
 
-char* CUIXml::ReadAttrib(XML_NODE* start_node, const char *path,  int index, 
-					const char *attrib, const char*  default_str_val)
+LPCSTR CUIXml::ReadAttrib(XML_NODE* start_node, LPCSTR path,  int index, 
+					LPCSTR attrib, LPCSTR   default_str_val)
 {
 	XML_NODE* node = NavigateToNode(start_node, path, index);
-	char* result = ReadAttrib(node, attrib, default_str_val);
+	LPCSTR result = ReadAttrib(node, attrib, default_str_val);
 	delete	(node);
 
 	return	result;
 }
 
 
-char* CUIXml::ReadAttrib(const char *path,  int index, 
-					const char *attrib, const char*  default_str_val)
+LPCSTR CUIXml::ReadAttrib(LPCSTR path,  int index, 
+					LPCSTR attrib, LPCSTR   default_str_val)
 {
 	XML_NODE* node = NavigateToNode(path, index);
-	char* result = ReadAttrib(node, attrib, default_str_val);
+	LPCSTR result = ReadAttrib(node, attrib, default_str_val);
 	delete	(node);
 	return	result;
 }
-char* CUIXml::ReadAttrib(XML_NODE* node, const char *attrib, const char*  default_str_val)
+LPCSTR CUIXml::ReadAttrib(XML_NODE* node, LPCSTR attrib, LPCSTR   default_str_val)
 {
 	if(node == NULL)
-		return (char*)default_str_val;
+		return default_str_val;
 	else
 	{
 		CkString str;
-		char* result_str;
+		LPCSTR result_str;
 
 		bool result = node->GetAttrValue(attrib, str); 
 		
 		if(result)
 		{
-			result_str = str.extractString(NULL);
+			result_str = str.getString();
 			return result_str;
 		}
 		else
 		{
-			return (char*)default_str_val;
+			return default_str_val;
 		}
 	}
 }
 
 
-int CUIXml::ReadAttribInt(XML_NODE* node, const char *attrib, int default_int_val)
+int CUIXml::ReadAttribInt(XML_NODE* node, LPCSTR attrib, int default_int_val)
 {
-	char* result_str = ReadAttrib(node, attrib, NULL); 
+	LPCSTR result_str = ReadAttrib(node, attrib, NULL); 
 
 	if(result_str==NULL)
 	{
@@ -234,24 +234,10 @@ int CUIXml::ReadAttribInt(XML_NODE* node, const char *attrib, int default_int_va
 	return atoi(result_str);
 }
 
-int CUIXml::ReadAttribInt(const char *path, int index,  
-					const char *attrib, int default_int_val)
+int CUIXml::ReadAttribInt(LPCSTR path, int index,  
+					LPCSTR attrib, int default_int_val)
 {
-	char* result_str = ReadAttrib(path, index, attrib, NULL); 
-
-	if(result_str==NULL)
-	{
-		return default_int_val;
-	}
-
-	return atoi(result_str);
-}
-
-
-int CUIXml::ReadAttribInt(XML_NODE* start_node, const char *path, int index,  
-					const char *attrib, int default_int_val)
-{
-	char* result_str = ReadAttrib(start_node, path, index, attrib, NULL); 
+	LPCSTR result_str = ReadAttrib(path, index, attrib, NULL); 
 
 	if(result_str==NULL)
 	{
@@ -261,7 +247,21 @@ int CUIXml::ReadAttribInt(XML_NODE* start_node, const char *path, int index,
 	return atoi(result_str);
 }
 
-int CUIXml::GetNodesNum(const char *path, int index, const char* tag_name)
+
+int CUIXml::ReadAttribInt(XML_NODE* start_node, LPCSTR path, int index,  
+					LPCSTR attrib, int default_int_val)
+{
+	LPCSTR result_str = ReadAttrib(start_node, path, index, attrib, NULL); 
+
+	if(result_str==NULL)
+	{
+		return default_int_val;
+	}
+
+	return atoi(result_str);
+}
+
+int CUIXml::GetNodesNum(LPCSTR path, int index, LPCSTR  tag_name)
 {
 	XML_NODE* node = NULL;
 	
@@ -280,17 +280,17 @@ int CUIXml::GetNodesNum(const char *path, int index, const char* tag_name)
 	return result;
 }
 
-int CUIXml::GetNodesNum(XML_NODE* node, const char* tag_name)
+int CUIXml::GetNodesNum(XML_NODE* node, LPCSTR  tag_name)
 {
 	if(node == NULL) return 0;
 	return node->NumChildrenHavingTag(tag_name);
 }
 
 //нахождение элемнета по его атрибуту
-XML_NODE* CUIXml::SearchForAttribute(const char *path, int index, 
-									 const char *tag_name, 	
-									 const char *attrib, 
-									 const char *attrib_value_pattern)
+XML_NODE* CUIXml::SearchForAttribute(LPCSTR path, int index, 
+									 LPCSTR tag_name, 	
+									 LPCSTR attrib, 
+									 LPCSTR attrib_value_pattern)
 
 {
 	XML_NODE* start_node = NavigateToNode(path, index);
@@ -300,9 +300,9 @@ XML_NODE* CUIXml::SearchForAttribute(const char *path, int index,
 }
 
 XML_NODE* CUIXml::SearchForAttribute(XML_NODE* start_node, 
-									const char *tag_name,
-									const char *attrib, 
-									const char *attrib_value_pattern)
+									LPCSTR tag_name,
+									LPCSTR attrib, 
+									LPCSTR attrib_value_pattern)
 {
 	return m_root.SearchForAttribute(start_node, tag_name, 
 									 attrib, attrib_value_pattern);
