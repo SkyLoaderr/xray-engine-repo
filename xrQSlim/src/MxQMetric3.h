@@ -106,11 +106,6 @@ public:
 */
 };
 
-
-//.inline ostream& operator<<(ostream& out, MxQuadric3& Q) {return Q.write(out);}
-//.inline istream& operator>>(istream& in, MxQuadric3& Q) { return Q.read(in); }
-
-
 ////////////////////////////////////////////////////////////////////////
 //
 // Quadric visualization routines
