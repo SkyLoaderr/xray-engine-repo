@@ -6,7 +6,7 @@
 		+ TODO: Rolloff
 		+ TODO: Apply effects volume
 		+ TODO: Culling			(by volume and attenuation)
-		. TODO: Occlusion		(identity sphere, with probability)
+		+ TODO: Occlusion		(identity sphere, with probability)
 
 	/ OPTIMIZATION
 		. TODO: Batch culling
