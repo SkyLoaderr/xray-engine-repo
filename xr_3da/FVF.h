@@ -3,8 +3,8 @@
 #pragma once
 
 //-----------------------------------------------------------------------------
-namespace FVF {
 #pragma pack(push,4)
+namespace FVF {
 	struct L {
 		Fvector		p;
 		DWORD		color;
@@ -36,15 +36,17 @@ namespace FVF {
 	struct TL {
 		Fvector4	p;
 		DWORD		color;
-		float		tu,tv;
+		Fvector2	uv;
 		IC void	set	(const TL& src)
 		{	*this = src; };
+		IC void	set	(float x, float y, DWORD c, Fvector2& t)
+		{	set	(x,y,.0001f,.9999f,c,t.x,t.y); };
 		IC void	set	(float x, float y, DWORD c, float u, float v)
 		{	set	(x,y,.0001f,.9999f,c,u,v); };
 		IC void	set	(int x, int y, DWORD c, float u, float v)
 		{	set	(float(x),float(y),.0001f,.9999f,c,u,v); };
 		IC void	set	(float x, float y, float z, float w, DWORD c, float u, float v)
-		{	p.set	(x,y,z,w); color = c;	tu=u; tv=v;	};
+		{	p.set	(x,y,z,w); color = c;	uv.x=u; uv.y=v;	};
 		IC void transform(const Fvector &v,const Fmatrix &matSet)
 		{
 			// Transform it through the matrix set. Takes in mean projection.
@@ -58,7 +60,38 @@ namespace FVF {
 		};
 	};
 	const DWORD F_TL	= D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX1;
-#pragma pack(pop)
+
+	struct TL2uv {
+		Fvector4	p;
+		DWORD		color;
+		Fvector2	uv[2];
+		IC void	set	(const TL2uv& src)
+		{	*this = src; };
+		IC void	set	(float x, float y, DWORD c, Fvector2& t0, Fvector2& t1)
+		{	set	(x,y,.0001f,.9999f,c,t0.x,t0.y,t1.x,t1.y);	};
+		IC void	set	(float x, float y, float z, float w, DWORD c, Fvector2& t0, Fvector2& t1)
+		{	set	(x,y,z,w,c,t0.x,t0.y,t1.x,t1.y);			};
+		IC void	set	(float x, float y, DWORD c, float u, float v, float u2, float v2)
+		{	set	(x,y,.0001f,.9999f,c,u,v,u2,v2); };
+		IC void	set	(int x, int y, DWORD c, float u, float v, float u2, float v2)
+		{	set	(float(x),float(y),.0001f,.9999f,c,u,v,u2,v2); };
+		IC void	set	(float x, float y, float z, float w, DWORD c, float u, float v, float u2, float v2)
+		{	p.set	(x,y,z,w); color = c; uv[0].x=u; uv[0].y=v;	uv[1].x=u2; uv[1].y=v2;	};
+		IC void transform(const Fvector &v,const Fmatrix &matSet)
+		{
+			// Transform it through the matrix set. Takes in mean projection.
+			// Finally, scale the vertices to screen coords.
+			// Note 1: device coords range from -1 to +1 in the viewport.
+			// Note 2: the p.z-coordinate will be used in the z-buffer.
+			p.w =   matSet._14*v.x + matSet._24*v.y + matSet._34*v.z + matSet._44;
+			p.x	=  (matSet._11*v.x + matSet._21*v.y + matSet._31*v.z + matSet._41)/p.w;
+			p.y	= -(matSet._12*v.x + matSet._22*v.y + matSet._32*v.z + matSet._42)/p.w;
+			p.z	=  (matSet._13*v.x + matSet._23*v.y + matSet._33*v.z + matSet._43)/p.w;
+		};
+	};
+	const DWORD F_TL2uv	= D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX2;
 };
+#pragma pack(pop)
+
 //-----------------------------------------------------------------------------
 #endif
