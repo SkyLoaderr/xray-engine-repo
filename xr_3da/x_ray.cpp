@@ -79,6 +79,13 @@ void Startup()
 	Engine.Destroy				( );
 }
 
+WORD getFPUsw() 
+{
+	WORD SW;
+	__asm fstcw SW;
+	return SW;
+}
+
 int APIENTRY WinMain(HINSTANCE hInstance,
                      HINSTANCE hPrevInstance,
                      char *    lpCmdLine,
@@ -87,8 +94,9 @@ int APIENTRY WinMain(HINSTANCE hInstance,
     // Init COM so we can use CoCreateInstance
     CoInitializeEx			(NULL, COINIT_MULTITHREADED);
 	Core._initialize		("xray");
-	WORD sw					= CPU::getC
+	WORD sw					= getFPUsw();
 	FPU::m24r				();
+	WORD sw2				= getFPUsw();
 
 	// mmgrInitialize	(0);
 
