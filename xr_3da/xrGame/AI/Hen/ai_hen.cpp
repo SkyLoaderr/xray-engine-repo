@@ -567,13 +567,11 @@ void CAI_Hen::FollowMe()
 							if (AI_Path.Nodes.size() > 2) {
 							// if path is long enough then build travel line
 								AI_Path.BuildTravelLine(Position());
-								Msg("Path found %6d nodes\n",AI_Path.Nodes.size());
 							}
 							else {
 							// if path is too short then clear it (patch for ExecMove)
 								AI_Path.TravelPath.clear();
-								//AI_Path.bNeedRebuild = FALSE;
-								Msg("Path too short!\n");
+								AI_Path.bNeedRebuild = FALSE;
 							}
 						} 
 						else {
@@ -587,13 +585,11 @@ void CAI_Hen::FollowMe()
 							if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))) {
 								// if old cost minus new cost is a little then hen is too lazy
 								// to move there
-								Msg("Better node found %6d %6d\n",S.BestNode,AI_Path.DestNode);
 								AI_Path.DestNode		= S.BestNode;
 								AI_Path.bNeedRebuild	= TRUE;
 							}
 							else { 
 								// search hasn't found a better node we have to look around
-								Msg("No better node found %6d %6d\n",S.BestNode,AI_Path.DestNode);
 								bWatch = true;
 							}
 							
