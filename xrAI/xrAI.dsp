@@ -435,6 +435,14 @@ SOURCE=.\xrShaderTypes.h
 
 SOURCE=.\xrSyncronize.h
 # End Source File
+# Begin Source File
+
+SOURCE=.\xrThread.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\xrThread.h
+# End Source File
 # End Group
 # Begin Group "Compiler"
 

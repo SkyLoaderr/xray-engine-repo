@@ -4,10 +4,12 @@
 #include "cl_defs.h"
 #include "cl_intersect.h"
 
+#include "xrThread.h"
+
 // -------------------------------- Ray pick
 typedef Fvector	RayCache[3];
 
-IC bool RayPick(Fvector& P, Fvector& D, float r, RayCache& C)
+IC bool RayPick(XRCollide* DB, Fvector& P, Fvector& D, float r, RayCache& C)
 {
 	// 1. Check cached polygon
 	float _u,_v,range;
@@ -17,12 +19,12 @@ IC bool RayPick(Fvector& P, Fvector& D, float r, RayCache& C)
 	}
 
 	// 2. Polygon doesn't pick - real database query
-	XRC.RayPick(0,&Level,P,D,r);
-	if (0==XRC.GetRayContactCount()) {
+	DB->RayPick(0,&Level,P,D,r);
+	if (0==DB->GetRayContactCount()) {
 		return false;
 	} else {
 		// cache polygon
-		RAPID::raypick_info&	rpinf	= XRC.RayContact[0];
+		RAPID::raypick_info&	rpinf	= DB->RayContact[0];
 		C[0].set	(rpinf.p[0]);
 		C[1].set	(rpinf.p[1]);
 		C[2].set	(rpinf.p[2]);
@@ -136,127 +138,143 @@ c_line:
 
 
 // volumetric query
-DEF_VECTOR	(Nearest,DWORD);
+DEF_VECTOR		(Nearest,DWORD);
 
-Nearest		q_List;
-Marks		q_Marks;
-Fvector		q_Base;
-
-IC void	Query	(DWORD ID)
+struct			Query
 {
-	if (ID==InvalidNode)	return;
-	if (ID>=q_Marks.size())	return;
-	if (q_Marks[ID])		return;
-
-	q_Marks[ID]	= true;
-	Node&	N	= g_nodes[ID];
-	if (q_Base.distance_to_sqr(N.Pos)>cover_sqr_dist)	return;
-
-	// ok
-	q_List.push_back	(ID);
-
-	Query	(N.n1);
-	Query	(N.n2);
-	Query	(N.n3);
-	Query	(N.n4);
-}
-
+	Nearest		q_List;
+	Marks		q_Marks;
+	Fvector		q_Base;
+	
+	IC void		Perform	(DWORD ID)
+	{
+		if (ID==InvalidNode)		return;
+		if (ID>=q_Marks.size())		return;
+		if (q_Marks[ID])			return;
+		
+		q_Marks[ID]	= true;
+		Node&	N	= g_nodes[ID];
+		if (q_Base.distance_to_sqr(N.Pos)>cover_sqr_dist)	return;
+		
+		// ok
+		q_List.push_back	(ID);
+		
+		Query	(N.n1);
+		Query	(N.n2);
+		Query	(N.n3);
+		Query	(N.n4);
+	}
+};
 struct	RC { RayCache	C; };
 
-void	xrCover()
+class	CoverThread : public CThread
 {
-	FPU::m24r	();
-	XRC.RayMode	(RAY_ONLYFIRST|RAY_CULL);
-
-	vector<RC>		cache;
+	DWORD	Nstart, Nend;
+public:
+	CoverThread			(DWORD ID, DWORD _start, DWORD _end) : CThread(ID)
 	{
-		RC			rc;	
-		rc.C[0].set	(0,0,0); 
-		rc.C[1].set	(0,0,0); 
-		rc.C[2].set	(0,0,0);
-		
-		cache.assign	(g_nodes.size()*2,rc);
+		Nstart	= _start;
+		Nend	= _end;
+		Start	();
 	}
+	virtual void		Execute()
+	{
+		XRCollide		DB;
+		DB.RayMode		(RAY_ONLYFIRST|RAY_CULL);
+		
+		vector<RC>		cache;
+		{
+			RC				rc;	
+			rc.C[0].set		(0,0,0); 
+			rc.C[1].set		(0,0,0); 
+			rc.C[2].set		(0,0,0);
+			
+			cache.assign	(g_nodes.size()*2,rc);
+		}
 
+		Query			Q;
+		for (DWORD N=Nstart; N<Nend; N++)
+		{
+			FPU::m24r	();
+			
+			// initialize process
+			thProgress	= float(N-Nstart)/float(Nend-Nstart);
+			Node&		BaseNode= g_nodes[N];
+			Fvector&	BasePos	= BaseNode.Pos;
+			Fvector		TestPos = BasePos; TestPos.y+=cover_height;
+			
+			DWORD	c_total	[8]	= {0,0,0,0,0,0,0,0};
+			DWORD	c_passed[8]	= {0,0,0,0,0,0,0,0};
+			
+			// perform volumetric query
+			Q.q_Marks.assign(g_nodes.size()+2,false);
+			Q.q_List.clear	();
+			Q.q_List.reserve(4096);
+			Q.q_Base.set	(BasePos);
+			Q.Perform		(N);
+			
+			// main cycle: trace rays and compute counts
+			for (Nearest_it it=Q.q_List.begin()+1; it!=Q.q_List.end();  it++)
+			{
+				// calc dir & range
+				DWORD		ID	= *it;
+				R_ASSERT	(ID<g_nodes.size());
+				Node&		N	= g_nodes[ID];
+				Fvector&	Pos = N.Pos;
+				Fvector		Dir;
+				Dir.sub		(Pos,BasePos);
+				float		range		= Dir.magnitude();
+				Dir.div		(range);
+				
+				// raytrace
+				int			sector		=	calcSphereSector(Dir);
+				c_total		[sector]	+=	1;
+				c_passed	[sector]	+=	(RayPick(&DB, TestPos, Dir, range, cache[ID].C)?0:1);
+			}
+			
+			// analyze probabilities
+			float	value	[8];
+			for (int dirs=0; dirs<8; dirs++) 
+			{
+				R_ASSERT(c_passed[dirs]<=c_total[dirs]);
+				if (c_total[dirs]==0)	value[dirs] = 0;
+				else					value[dirs]	= float(c_passed[dirs])/float(c_total[dirs]);
+				clamp(value[dirs],0.f,1.f);
+			}
+			
+			BaseNode.cover	[0]	= (value[2]+value[3]+value[4]+value[5])/4.f; clamp(BaseNode.cover[0],0.f,1.f);	// left
+			BaseNode.cover	[1]	= (value[0]+value[1]+value[2]+value[3])/4.f; clamp(BaseNode.cover[1],0.f,1.f);	// forward
+			BaseNode.cover	[2]	= (value[6]+value[7]+value[0]+value[1])/4.f; clamp(BaseNode.cover[2],0.f,1.f);	// right
+			BaseNode.cover	[3]	= (value[4]+value[5]+value[6]+value[7])/4.f; clamp(BaseNode.cover[3],0.f,1.f);	// back
+		}
+	}
+};
+
+void	xrCover	()
+{
 	Status("Calculating...");
 	DWORD	start_time = timeGetTime();
-	for (DWORD N=0; N<g_nodes.size(); N++)
-	{
-		FPU::m24r();
-
-		// initialize process
-		Progress	(float(N)/float(g_nodes.size()));
-		Node&		BaseNode= g_nodes[N];
-		Fvector&	BasePos	= BaseNode.Pos;
-		Fvector		TestPos = BasePos; TestPos.y+=cover_height;
-
-		DWORD	c_total	[8]	= {0,0,0,0,0,0,0,0};
-		DWORD	c_passed[8]	= {0,0,0,0,0,0,0,0};
-
-		// perform volumetric query
-		q_Marks.assign	(g_nodes.size()+2,false);
-		q_List.clear	();
-		q_List.reserve	(4096);
-		q_Base.set		(BasePos);
-		Query			(N);
-
-		// main cycle: trace rays and compute counts
-		for (Nearest_it it=q_List.begin()+1; it!=q_List.end();  it++)
-		{
-			// calc dir & range
-			DWORD		ID	= *it;
-			R_ASSERT	(ID<g_nodes.size());
-			Node&		N	= g_nodes[ID];
-			Fvector&	Pos = N.Pos;
-			Fvector		Dir;
-			Dir.sub		(Pos,BasePos);
-			float		range		= Dir.magnitude();
-			Dir.div		(range);
-
-			// raytrace
-			int			sector		=	calcSphereSector(Dir);
-			c_total		[sector]	+=	1;
-			c_passed	[sector]	+=	(RayPick(TestPos,Dir,range,cache[ID].C)?0:1);
-		}
-
-		// analyze probabilities
-		float	value	[8];
-		for (int dirs=0; dirs<8; dirs++) {
-			R_ASSERT(c_passed[dirs]<=c_total[dirs]);
-			if (c_total[dirs]==0)	value[dirs] = 0;
-			else					value[dirs]	= float(c_passed[dirs])/float(c_total[dirs]);
-			clamp(value[dirs],0.f,1.f);
-		}
-
-		BaseNode.cover	[0]	= (value[2]+value[3]+value[4]+value[5])/4.f; clamp(BaseNode.cover[0],0.f,1.f);	// left
-		BaseNode.cover	[1]	= (value[0]+value[1]+value[2]+value[3])/4.f; clamp(BaseNode.cover[1],0.f,1.f);	// forward
-		BaseNode.cover	[2]	= (value[6]+value[7]+value[0]+value[1])/4.f; clamp(BaseNode.cover[2],0.f,1.f);	// right
-		BaseNode.cover	[3]	= (value[4]+value[5]+value[6]+value[7])/4.f; clamp(BaseNode.cover[3],0.f,1.f);	// back
-	}
 	Msg("%d seconds elapsed.",(timeGetTime()-start_time)/1000);
 
 	Status	("Smoothing coverage mask...");
-//	for (int it=0; it<3; it++) {
-		Nodes	Old = g_nodes;
-		for (N=0; N<g_nodes.size(); N++)
+	Nodes	Old = g_nodes;
+	for (N=0; N<g_nodes.size(); N++)
+	{
+		Node&	Base		= Old[N];
+		Node&	Dest		= g_nodes[N];
+		
+		for (int dir=0; dir<4; dir++)
 		{
-			Node&	Base		= Old[N];
-			Node&	Dest		= g_nodes[N];
+			float val		= 2*Base.cover[dir];
+			float cnt		= 2;
 			
-			for (int dir=0; dir<4; dir++)
-			{
-				float val		= 2*Base.cover[dir];
-				float cnt		= 2;
-
-				for (int nid=0; nid<4; nid++) {
-					if (Base.n[nid]!=InvalidNode) {
-						val		+=  Old[Base.n[nid]].cover[dir];
-						cnt		+=	1.f;
-					}
+			for (int nid=0; nid<4; nid++) {
+				if (Base.n[nid]!=InvalidNode) {
+					val		+=  Old[Base.n[nid]].cover[dir];
+					cnt		+=	1.f;
 				}
-				Dest.cover[dir]	=  val/cnt;
 			}
+			Dest.cover[dir]	=  val/cnt;
 		}
-//		Progress(float(it+1)/3.f);
-//	}
+	}
 }
