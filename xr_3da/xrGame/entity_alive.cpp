@@ -355,8 +355,7 @@ void CEntityAlive::StartFireParticles(CWound* pWound)
 void CEntityAlive::UpdateFireParticles()
 {
 	for(WOUND_LIST_it it = m_ParticlesWoundList.begin();
-					  it != m_ParticlesWoundList.end();
-					  it++)
+					  it != m_ParticlesWoundList.end();)
 	{
 		CWound* pWound = *it;
 		WOUND_LIST_it cur_it = it;
@@ -367,6 +366,8 @@ void CEntityAlive::UpdateFireParticles()
 		{
 			CParticlesPlayer::AutoStopParticles(pWound->GetParticleName(), pWound->GetParticleBoneNum());
 			it = m_ParticlesWoundList.erase(cur_it);
+			continue;
 		}
+		it++;
 	}
 }
