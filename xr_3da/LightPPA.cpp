@@ -119,7 +119,8 @@ void CLightPPA::Render(CList<PPA_Vertex>&	vlist)
 
 void CLightPPA_Manager::Initialize()
 {
-	VS = Device.Streams.Create	(D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX2, MAX_POLYGONS*3);
+	SH	= Device.Shader.Create	("$light");
+	VS	= Device.Streams.Create	(D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX2, MAX_POLYGONS*3);
 }
 
 void CLightPPA_Manager::Render()
@@ -128,14 +129,29 @@ void CLightPPA_Manager::Render()
 	{
 		CLightPPA&	PPL = *container[L];
 		float	alpha	= Device.vCameraPosition.distance_to(PPL.sphere.P)/MAX_DISTANCE;
-		if (alpha>=1)	continue;
 
-		if (!::Render.ViewBase.testSphereDirty(PPL.sphere.P,PPL.sphere.R))	continue;
-		
+		// Culling
+		if (alpha>=1)	continue;
+		if (!::Render.ViewBase.testSphereDirty (PPL.sphere.P,PPL.sphere.R))	continue;
+
+		// Calculations
+		PPL.Render	(storage);
+
+		// Lock and copy
+		DWORD	vOffset;
+		DWORD	vCount	= storage.size	();
+		void*	VB		= VS->Lock		(vCount,vOffset);
+		CopyMemory	(VB,storage.begin(),vCount*sizeof(PPA_Vertex));
+		VS->Unlock	(vCount);
+
+		// Rendering
+		Device.Shader.Set		(SH);
+		Device.Primitive.Draw	(VS,vCount/3,vOffset);
 	}
+	container.clear	();
 
 	// Create D3D unattenuated light
 	// D3D.diffuse.set		(color);
-	// D3D.position.set	(sphere.P);
+	// D3D.position.set		(sphere.P);
 	// D3D.range			= sphere.R;
 }

@@ -38,9 +38,12 @@ class ENGINE_API	CLightPPA_Manager
 {
 	svector<CLightPPA*,128>			container;
 	PPA_VB							storage;
+	
+	Shader*							SH;
 	CVertexStream*					VS;
 public:
 	void			Initialize		();
+	void			Destroy			();
 
 	IC void			Add				(CLightPPA* L)	{ container.push_back(L);	}
 	void			Render			();
