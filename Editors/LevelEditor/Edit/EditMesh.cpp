@@ -126,7 +126,7 @@ void CEditableMesh::GeneratePNormals()
 */
     m_PNormals.resize	(m_Faces.size()*3);
 	// vertex normals
-    float m_fSoftAngle = cosf(deg2rad(89.f));
+    float m_fSoftAngle = _cos(deg2rad(89.f));
     for (u32 f_i=0; f_i<m_Faces.size(); f_i++ ){
 		Fvector& FN 	= m_FNormals[f_i];
         for (int k=0; k<3; k++){

@@ -5,29 +5,36 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "Log.h"
+#include "ELog.h"
 #ifdef _EDITOR
 	#include "LogForm.h"
 	#include "splash.h"
 	#include "ui_main.h"
+	void ELogCallback(LPCSTR string)
+	{
+		TfrmLog::AddMessage(mtInformation,AnsiString(string));
+	}
 #endif
 #ifdef _LW_PLUGIN
 	#include <lwhost.h>
 	extern "C" LWMessageFuncs	*g_msg;
+	void ELogCallback(LPCSTR string)
+	{
+//		g_msg->info(string,0);
+	}
 #endif
 #ifdef _MAX_EXPORT
 	#include "NetDeviceLog.h"
+	void ELogCallback(LPCSTR string)
+	{
+//		MessageBox(0,buf,"Information",	MB_OK|MB_ICONINFORMATION);
+	}
 #endif
 //----------------------------------------------------
 
 CLog ELog;
 //----------------------------------------------------
 
-void ELogCallback(LPCSTR string)
-{
-    TfrmLog::AddMessage(mtInformation,AnsiString(string));
-}
-//----------------------------------------------------
 int CLog::DlgMsg (TMsgDlgType mt, TMsgDlgButtons btn, LPCSTR _Format, ...)
 {
     in_use = true;
@@ -66,7 +73,6 @@ int CLog::DlgMsg (TMsgDlgType mt, TMsgDlgButtons btn, LPCSTR _Format, ...)
 #endif
 
     Msg(mt, buf);
-	strcat( buf, "\r\n" );
 
     in_use = false;
 

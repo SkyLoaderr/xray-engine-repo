@@ -161,7 +161,9 @@ class CEditableObject{
 	friend class TfrmEditLibrary;
 	friend class MeshExpUtility;
 
+#ifdef _LEVEL_EDITOR
     IVisual* 		m_Visual;
+#endif
 // general
 	AnsiString		m_ClassScript;
 
@@ -312,9 +314,9 @@ public:
 
     // pick methods
 	bool 			RayPick					(float& dist, const Fvector& S, const Fvector& D, const Fmatrix& inv_parent, SRayPickInfo* pinf=0);
+#ifdef _LEVEL_EDITOR
 	void 			RayQuery				(const Fmatrix& parent, const Fmatrix& inv_parent, SPickQuery& pinf);
 	void 			BoxQuery				(const Fmatrix& parent, const Fmatrix& inv_parent, SPickQuery& pinf);
-#ifdef _LEVEL_EDITOR
     bool 			BoxPick					(CSceneObject* obj, const Fbox& box, const Fmatrix& inv_parent, SBoxPickInfoVec& pinf);
 	bool 			FrustumPick				(const CFrustum& frustum, const Fmatrix& parent);
     bool 			SpherePick				(const Fvector& center, float radius, const Fmatrix& parent);
