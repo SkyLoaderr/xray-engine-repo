@@ -70,6 +70,8 @@ bool b_jumping;
 bool b_climb;
 bool b_pure_climb;
 bool b_at_wall;
+bool was_control;
+bool b_stop_control;
 UINT m_contact_count;
 dReal m_radius;
 dReal m_cyl_hight;
