@@ -97,7 +97,7 @@ void CAI_Rat::Load(LPCSTR section)
 	m_fHitPower			= (float)pSettings->ReadINT(section,"HitPower");
 	m_dwHitInterval		= pSettings->ReadINT(section,"HitInterval");
 	m_fSpeed			= m_fCurSpeed;
-
+	m_fAttackSpeed		= pSettings->ReadFLOAT(section,"attack_speed");
 
 	// morale
 	m_fMoraleNormalValue			= m_fMorale;

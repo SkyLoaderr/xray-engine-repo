@@ -42,6 +42,7 @@ void CAI_Rat::vfLoadAnimations()
 	m_tRatAnimations.tNormal.tGlobal.tWalk.Create(tpVisualObject, "norm_walk");
 	
 	m_tRatAnimations.tNormal.tGlobal.tRun.Create(tpVisualObject, "norm_run");
+	m_tRatAnimations.tNormal.tGlobal.tRunAttack = tpVisualObject->ID_Cycle("norm_run_fwd_1");
 	
 	tpVisualObject->PlayCycle(m_tRatAnimations.tNormal.tGlobal.tpaIdle[0]);
 }
@@ -90,10 +91,13 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 							tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaIdle[0];
 					}
 					else
-						if (_abs(m_fSpeed - m_fMaxSpeed) < EPS_L) 
-							tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tRun.fwd;
+						if (_abs(m_fSpeed - m_fAttackSpeed) < EPS_L)
+							tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tRunAttack;
 						else
-							tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tWalk.fwd;
+							if (_abs(m_fSpeed - m_fMaxSpeed) < EPS_L)
+								tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tRun.fwd;
+							else
+								tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tWalk.fwd;
 			else
 				if (PI_MUL_2 - _abs(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
 					if (r_torso_target.yaw > r_torso_current.yaw)
@@ -108,10 +112,13 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 							tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaIdle[0];
 					}
 					else
-						if (_abs(m_fSpeed - m_fMaxSpeed) < EPS_L) 
-							tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tRun.fwd;
+						if (_abs(m_fSpeed - m_fAttackSpeed) < EPS_L)
+							tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tRunAttack;
 						else
-							tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tWalk.fwd;
+							if (_abs(m_fSpeed - m_fMaxSpeed) < EPS_L)
+								tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tRun.fwd;
+							else
+								tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tWalk.fwd;
 	
 	if (tpGlobalAnimation != m_tpCurrentGlobalAnimation) { 
 		m_tpCurrentGlobalAnimation = tpGlobalAnimation;

@@ -432,7 +432,7 @@ void CAI_Rat::AttackRun()
 	if ((!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8)) || m_bNoWay)
 		m_fSpeed = EPS_S;
 	else 
-		m_fSafeSpeed = m_fSpeed = m_fMaxSpeed;
+		m_fSafeSpeed = m_fSpeed = m_fAttackSpeed;
 
 }
 

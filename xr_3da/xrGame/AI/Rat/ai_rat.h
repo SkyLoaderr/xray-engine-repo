@@ -55,11 +55,12 @@ class CAI_Rat : public CCustomMonster
 		typedef	CCustomMonster inherited;
 
 		typedef struct tagSNormalGlobalAnimations{
-			CMotionDef* tpaDeath[2];
-			CMotionDef* tpaAttack[3];
-			CMotionDef* tpaIdle[2];
+			CMotionDef *tpaDeath[2];
+			CMotionDef *tpaAttack[3];
+			CMotionDef *tpaIdle[2];
 			SAnimState  tWalk;
 			SAnimState  tRun;
+			CMotionDef *tRunAttack;
 			CMotionDef *tpTurnLeft;
 			CMotionDef *tpTurnRight;
 		}SNormalGlobalAnimations;
@@ -99,7 +100,7 @@ class CAI_Rat : public CCustomMonster
 		bool				m_bActionStarted;
 		bool				m_bFiring;
 		DWORD				m_dwStartAttackTime;
-
+		float				m_fAttackSpeed;
 		// HIT
 		DWORD				m_dwHitTime;
 		Fvector				m_tHitDir;
