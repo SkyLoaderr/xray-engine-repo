@@ -44,7 +44,7 @@ function Defender:__init (npc, patrol_way, script_name, monsters, available)
 	self.setdown = false
 	self.pre_state = true
 	self.enemy = nil
-	self.waiting = 0
+	self.waiting = 1
 	self.available = available
 	self.attacker = nil					-- монстр, который атакует сталкера. Если не nil, то сталкер свободен :)
 	self.weapon = self.npc:active_item ()
