@@ -131,8 +131,6 @@ void CSE_ALifeSimulator::vfSwitchObjectOffline(CSE_ALifeDynamicObject *tpALifeDy
 void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 {
 	if ((I->m_bOnline || (I->m_tNodeID < 0) || (I->m_tNodeID >= getAI().Header().count)) && (I->ID_Parent == 0xffff)) {
-//		u32 dwLastNodeID = (u32)I->m_tNodeID;
-//		u64 qwStart = CPU::GetCycleCount();
 		if (!getAI().bfInsideNode(getAI().Node(I->m_tNodeID),I->o_Position)) {
 			I->m_tNodeID = getAI().q_Node(I->m_tNodeID,I->o_Position);
 			_GRAPH_ID tGraphID = getAI().m_tpaCrossTable[I->m_tNodeID].tGraphIndex;
@@ -140,11 +138,7 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 				vfChangeObjectGraphPoint(I,I->m_tGraphID,tGraphID);
 			I->m_fDistance = getAI().m_tpaCrossTable[I->m_tNodeID].fDistance;
 		}
-//		u64 qwFinish = CPU::GetCycleCount();
-//.		Msg("* ALife : synchronizing (%f sec) for object %s : %d -> %d",(qwFinish - qwStart)*CPU::cycles2microsec/1000000.f,I->s_name_replace,dwLastNodeID,I->m_tNodeID);
 	}
-//.	if ((I->m_tNodeID < 0) || (I->m_tNodeID >= getAI().Header().count))
-//.		Msg("! ALife : Corresponding node hasn't been found for object %s",I->s_name_replace);
 	if (I->m_bOnline)
 		if (I->ID_Parent == 0xffff) {
 			if (I->m_dwLastSwitchTime) {
@@ -243,4 +237,37 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 				break;
 			}
 	}
+}
+
+// switch object offline an check if it is a group of monsters then separate dead monsters from the group
+void CSE_ALifeSimulator::vfFurlObjectOffline(CSE_ALifeDynamicObject *I)
+{
+	if (I->m_bOnline)
+		if (I->ID_Parent == 0xffff) {
+			CSE_ALifeAbstractGroup *tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(I);
+			if (tpALifeAbstractGroup)
+				for (u32 i=0, N = (u32)tpALifeAbstractGroup->m_tpMembers.size(); i<N; i++) {
+					OBJECT_PAIR_IT			J = m_tObjectRegistry.find(tpALifeAbstractGroup->m_tpMembers[i]);
+					VERIFY					(J != m_tObjectRegistry.end());
+					CSE_ALifeMonsterAbstract	*tpEnemy = dynamic_cast<CSE_ALifeMonsterAbstract*>((*J).second);
+					if (tpEnemy && tpEnemy->fHealth <= 0) {
+						(*J).second->m_bDirectControl	= true;
+						(*J).second->m_bOnline			= true;
+						tpALifeAbstractGroup->m_tpMembers.erase(tpALifeAbstractGroup->m_tpMembers.begin() + i);
+						vfUpdateDynamicData((*J).second);
+						i--;
+						N--;
+						continue;
+					}
+				}
+			vfSwitchObjectOffline(I);
+		}
+		else {
+			OBJECT_PAIR_IT		J = m_tObjectRegistry.find(I->ID_Parent);
+			VERIFY				(J != m_tObjectRegistry.end());
+			if (!(*J).second->m_bOnline) {
+				VERIFY			(false);
+				vfSwitchObjectOffline(I);
+			}
+		}
 }

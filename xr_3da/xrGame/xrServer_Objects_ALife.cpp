@@ -320,6 +320,7 @@ void CSE_ALifeObject::STATE_Write			(NET_Packet &tNetPacket)
 	tNetPacket.w_float			(m_fDistance);
 	tNetPacket.w_u32			(m_bDirectControl);
 	tNetPacket.w_u32			(m_tNodeID);
+	tNetPacket.w				(&m_tSpawnID,	sizeof(m_tSpawnID));
 }
 
 void CSE_ALifeObject::STATE_Read			(NET_Packet &tNetPacket, u16 size)
@@ -342,6 +343,8 @@ void CSE_ALifeObject::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 	}
 	if (m_wVersion >= 8)
 		tNetPacket.r_u32		(m_tNodeID);
+	if (m_wVersion > 22)
+		tNetPacket.r			(&m_tSpawnID,	sizeof(m_tSpawnID));
 }
 
 void CSE_ALifeObject::UPDATE_Write			(NET_Packet &tNetPacket)

@@ -35,7 +35,7 @@ private:
 	TASK_VECTOR						m_tpBufferTaskIDs;
 	xrServer						*m_tpServer;
 
-	//temporary buffer
+	// temporary buffer for object being switched offline children
 	OBJECT_VECTOR					m_tpChildren;
 
 	// comnmon
@@ -55,7 +55,7 @@ private:
 	void							vfUpdateCreatures			();
 	// after surge
 	CSE_ALifeTrader *				tpfGetNearestSuitableTrader	(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
-	void							vfCommunicateWithTrader		(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract, CSE_ALifeTrader *tpTrader);
+	void							vfCommunicateWithTrader		(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,	CSE_ALifeTrader *tpTrader);
 	void							vfUpdateMonster				(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
 	void							vfUpdateHuman				(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
 	bool							bfProcessItems				(CSE_Abstract				&CSE_Abstract,			_GRAPH_ID		tGraphID, float fMaxItemMass, float fProbability);
@@ -82,6 +82,7 @@ public:
 			void					vfSwitchObjectOnline		(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
 			void					vfSwitchObjectOffline		(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
 			void					ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
+			void					vfFurlObjectOffline			(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
 			void					vfReleaseObject				(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
 			void					vfNewGame					();
 			void					vfRemoveObject				(CSE_Abstract				*tpSE_Abstract);

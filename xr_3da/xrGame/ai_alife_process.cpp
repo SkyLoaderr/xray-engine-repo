@@ -10,7 +10,7 @@
 #include "ai_alife.h"
 #include "a_star.h"
 
-void CSE_ALifeSimulator::Update(u32 dt)
+void CSE_ALifeSimulator::Update			(u32 dt)
 {
 	CSheduled::Update					(dt);
 	
@@ -32,18 +32,28 @@ void CSE_ALifeSimulator::Update(u32 dt)
 			vfBallanceCreatures			();
 			vfUpdateCreatures			();
 			Save						();
-			m_tTimeAfterSurge			= 0;
+			m_tLastSurgeTime			= tfGetGameTime();
+			m_tNextSurgeTime			= m_tLastSurgeTime + 7*24*3600*1000; // a week in milliseconds
 			m_tZoneState				= eZoneStateAfterSurge;
 			break;
 		}
 		case eZoneStateAfterSurge : {
-			u64								qwStartTime	= CPU::GetCycleCount();
+			if (tfGetGameTime() > m_tNextSurgeTime) {
+				m_tZoneState			= eZoneStateSurge;
+				ALIFE_ENTITY_P_IT		B = m_tpCurrentLevel->begin();
+				ALIFE_ENTITY_P_IT		E = m_tpCurrentLevel->end();
+				ALIFE_ENTITY_P_IT		I;
+				for (I = B ; I != E; I++)
+					vfFurlObjectOffline(*I);
+				return;
+			}
+			u64							qwStartTime	= CPU::GetCycleCount();
 
 			// processing online/offline switches
-			VERIFY							(m_tpCurrentLevel);
-			ALIFE_ENTITY_P_IT				B = m_tpCurrentLevel->begin();
-			ALIFE_ENTITY_P_IT				M = B + m_dwObjectsBeingSwitched, I;
-			ALIFE_ENTITY_P_IT				E = m_tpCurrentLevel->end();
+			VERIFY						(m_tpCurrentLevel);
+			ALIFE_ENTITY_P_IT			B = m_tpCurrentLevel->begin();
+			ALIFE_ENTITY_P_IT			M = B + m_dwObjectsBeingSwitched, I;
+			ALIFE_ENTITY_P_IT			E = m_tpCurrentLevel->end();
 			int i=1;
 			for (I = M ; I != E; I++, i++) {
 				ProcessOnlineOfflineSwitches(*I);
@@ -67,20 +77,20 @@ void CSE_ALifeSimulator::Update(u32 dt)
 				return;
 			}
 			
-			u64								qwMaxProcessTime = m_qwMaxProcessTime - qwStartTime;
-			qwStartTime						= CPU::GetCycleCount();
+			u64							qwMaxProcessTime = m_qwMaxProcessTime - qwStartTime;
+			qwStartTime					= CPU::GetCycleCount();
 			
 			// updating objects being scheduled
 //.			Msg("Enough time (0) !");
 			if (m_tpScheduledObjects.size()) {
-				ALIFE_MONSTER_P_IT			B = m_tpScheduledObjects.begin();
-				ALIFE_MONSTER_P_IT			M = B + m_dwObjectsBeingProcessed, I;
-				ALIFE_MONSTER_P_IT			E = m_tpScheduledObjects.end();
+				ALIFE_MONSTER_P_IT		B = m_tpScheduledObjects.begin();
+				ALIFE_MONSTER_P_IT		M = B + m_dwObjectsBeingProcessed, I;
+				ALIFE_MONSTER_P_IT		E = m_tpScheduledObjects.end();
 				int i=1;
 				for (I = M ; I != E; I++, i++) {
 					if ((*I)->m_bOnline)
 						continue;
-					vfProcessNPC			(*I);
+					vfProcessNPC		(*I);
 					if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= qwMaxProcessTime) {
 						m_dwObjectsBeingProcessed = (u32)(I - B + 1);
 						return;
@@ -89,7 +99,7 @@ void CSE_ALifeSimulator::Update(u32 dt)
 				for (I = B; I != M; I++, i++) {
 					if ((*I)->m_bOnline)
 						continue;
-					vfProcessNPC			(*I);
+					vfProcessNPC		(*I);
 					if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= qwMaxProcessTime) {
 						m_dwObjectsBeingProcessed = (u32)(I - B + 1);
 						return;

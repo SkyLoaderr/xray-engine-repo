@@ -79,6 +79,7 @@ public:
 	_CLASS_ID						m_tClassID;
 	_OBJECT_ID						m_tObjectID;
 	_GRAPH_ID						m_tGraphID;
+	_SPAWN_ID						m_tSpawnID;
 	float							m_fDistance;
 	bool							m_bOnline;
 	u8								m_ucProbability;

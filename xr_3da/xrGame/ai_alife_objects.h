@@ -17,7 +17,8 @@
 class CSE_ALifeGameTime : public IPureALifeLSObject {
 public:
 	_TIME_ID						m_tGameTime;
-	_TIME_ID						m_tTimeAfterSurge;
+	_TIME_ID						m_tLastSurgeTime;
+	_TIME_ID						m_tNextSurgeTime;
 	u32								m_dwStartTime;
 	float							m_fTimeFactor;
 
@@ -27,7 +28,7 @@ public:
 		m_dwStartTime				= Device.dwTimeGlobal;
 		tMemoryStream.open_chunk	(GAME_TIME_CHUNK_DATA);
 		tMemoryStream.w				(&m_tGameTime,		sizeof(m_tGameTime));
-		tMemoryStream.w				(&m_tTimeAfterSurge,sizeof(m_tTimeAfterSurge));
+		tMemoryStream.w				(&m_tLastSurgeTime,	sizeof(m_tLastSurgeTime));
 		tMemoryStream.w_float		(m_fTimeFactor);
 		tMemoryStream.close_chunk	();
 	};
@@ -36,7 +37,7 @@ public:
 	{
 		R_ASSERT2					(tFileStream.find_chunk(GAME_TIME_CHUNK_DATA),"Can't find chunk GAME_TIME_CHUNK_DATA!");
 		tFileStream.r				(&m_tGameTime,		sizeof(m_tGameTime));
-		tFileStream.r				(&m_tTimeAfterSurge,sizeof(m_tTimeAfterSurge));
+		tFileStream.r				(&m_tLastSurgeTime,	sizeof(m_tLastSurgeTime));
 		m_fTimeFactor				= tFileStream.r_float();
 		m_dwStartTime				= Device.dwTimeGlobal;
 	};
