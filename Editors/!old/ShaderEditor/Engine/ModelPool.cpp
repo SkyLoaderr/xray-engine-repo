@@ -126,7 +126,7 @@ IRender_Visual*	CModelPool::Instance_Load		(const char* N)
 	ogf_header			H;
 	data->r_chunk_safe	(OGF_HEADER,&H,sizeof(H));
 	V = Instance_Create (H.type);
-	V->Load				(fn,data,0);
+	V->Load				(N,data,0);
 	FS.r_close			(data);
 	g_pGamePersistent->RegisterModel(V);
 
@@ -263,18 +263,9 @@ IRender_Visual* CModelPool::CreateChild(LPCSTR name, IReader* data)
 	if (strext(low_name))	*strext(low_name) = 0;
 
 	// 1. Search for already loaded model
-	IRender_Visual* Model	= Instance_Find(low_name);
-
-	if (0!=Model){	
-		// 2. If found - return reference
-    	Model 				= Instance_Duplicate(Model);
-    }else{
-        // 3. If not found
-        Model 				= Instance_Duplicate(Instance_Load(name,data));
-    }
-
-    Registry.insert			(mk_pair(Model,xr_strdup(low_name)));
-    return Model;
+	IRender_Visual* Base	= Instance_Find(low_name);
+	if (0==Base) Base	 	= Instance_Load(name,data);
+    return					Instance_Duplicate(Base);
 }
 
 void	CModelPool::Delete	(IRender_Visual* &V, BOOL bDiscard)
