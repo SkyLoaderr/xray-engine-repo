@@ -47,6 +47,8 @@ CEvent::CEvent(const char* S)
 	Name=xr_strdup(S); 
 	_strupr(Name);
 	dwRefCount=1; 
+
+	msCreate	("game");
 }
 CEvent::~CEvent()
 {	_FREE(Name); }
@@ -64,8 +66,6 @@ void CEventAPI::Dump()
 
 EVENT	CEventAPI::Create(const char* N)
 {
-	msCreate	("game");
-
 	CS.Enter	();
 	CEvent	E	(N);
 	for (vector<CEvent*>::iterator I=Events.begin(); I!=Events.end(); I++)
