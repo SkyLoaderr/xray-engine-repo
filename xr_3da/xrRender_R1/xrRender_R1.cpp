@@ -14,7 +14,6 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_ATTACH:
-		::Device.Resources->SetHLSL_path	("R1\\");
 		::Render							= &RImplementation;
 		xrRender_initconsole				();
 		break;

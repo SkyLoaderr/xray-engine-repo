@@ -90,7 +90,7 @@ void	CBlender_Tree::Compile	(CBlender_Compile& C)
 				// Stage1 - Base texture
 				C.StageBegin		();
 				C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,	D3DTA_DIFFUSE);
-				C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,	D3DTA_DIFFUSE);
+				C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
 				C.StageSET_TMC		(oT_Name,"$null","$null",0);
 				C.StageEnd			();
 			}

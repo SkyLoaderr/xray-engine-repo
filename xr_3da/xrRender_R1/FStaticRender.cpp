@@ -17,8 +17,9 @@ CRender													RImplementation;
 //////////////////////////////////////////////////////////////////////////
 void					CRender::create					()
 {
-	Models				= xr_new<CModelPool>			();
-	L_Dynamic			= xr_new<CLightPPA_Manager>		();
+	::Device.Resources->SetHLSL_path("R1\\");
+	Models						= xr_new<CModelPool>			();
+	L_Dynamic					= xr_new<CLightPPA_Manager>		();
 
 	PSLibrary.OnCreate			();
 	PSLibrary.OnDeviceCreate	();
