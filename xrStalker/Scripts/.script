@@ -736,6 +736,7 @@ function get_clsid(npc)
     if npc == nil then return nil end
 
     if is_object_online(npc:id()) then
+        printf("____get clsid()_____")
         return npc:clsid()
     else
         return nil
@@ -924,7 +925,7 @@ end
 
 --возвращает произвольную точку пути у которой установлен бит
 function point_with_bit_id(patrol_path, bit, old_point)        -- old_point - индекс точки, которую не надо выбирать,
-  	local points = {}                                          -- параметр не обязательный( например текущей точки )
+    local points = {}                                          -- параметр не обязательный( например текущей точки )
 
     for i = 0, patrol_path:count()-1 do
       --Добовляем в таблицу точки с нужным битом
@@ -971,24 +972,24 @@ end
 
 -- Рекурсивная распечатка таблицы
 function print_table(table, subs)
-	local sub
-	if subs ~= nil then 
-		sub = subs 
-	else
-		sub = ""
-	end     
-	for k,v in table do
-		if type(v) == "table" then
-			printf(sub.."%s:", k)
-			print_table(v, sub.."    ")
-		elseif type(v) == "function" then
-			printf(sub.."%s:function", k)
-		else
-			if v ~= nil then
-				printf(sub.."%s:%s", k,v)
-			else
-				printf(sub.."%s:nil", k,v)
-			end
-		end
-	end
+  local sub
+  if subs ~= nil then
+    sub = subs
+  else
+    sub = ""
+  end
+  for k,v in table do
+    if type(v) == "table" then
+      printf(sub.."%s:", k)
+      print_table(v, sub.."    ")
+    elseif type(v) == "function" then
+      printf(sub.."%s:function", k)
+    else
+      if v ~= nil then
+        printf(sub.."%s:%s", k,v)
+      else
+        printf(sub.."%s:nil", k,v)
+      end
+    end
+  end
 end
