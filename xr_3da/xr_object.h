@@ -116,13 +116,13 @@ public:
 	IC LPCSTR							cNameSect			()					{ return NameSection;		}
 	void								cNameSect_set		(LPCSTR N);
 	
-	// Visible property
+	// Properties
 	IC void								setVisible			(BOOL _visible)		{ bVisible = _visible;		}
 	IC BOOL								getVisible			()					{ return bVisible;			}
-
-	// Enabled property
 	void								setEnabled			(BOOL _enabled);
 	IC BOOL								getEnabled			()					{ return bEnabled;			}
+	IC void								setActive			(BOOL _active)		{ bActive  = _active;		}
+	IC BOOL								getActive			()					{ return bActive;			}
 
 	//---------------------------------------------------------------------
 										CObject				();
