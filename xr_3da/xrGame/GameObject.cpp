@@ -246,6 +246,9 @@ void CGameObject::spawn_supplies()
 	if (!spawn_ini() || ai().get_alife())
 		return;
 
+	if (!spawn_ini()->section_exist("spawn"))
+		return;
+
 	LPCSTR					N,V;
 	for (u32 k = 0, j; spawn_ini()->r_line("spawn",k,&N,&V); k++) {
 		VERIFY				(xr_strlen(N));

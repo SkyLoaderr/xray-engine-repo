@@ -27,6 +27,9 @@ void CSE_ALifeObject::spawn_supplies		()
 		);
 #pragma warning(pop)
 
+	if (!ini.section_exist("spawn"))
+		return;
+
 	LPCSTR					N,V;
 	for (u32 k = 0, j; ini.r_line("spawn",k,&N,&V); k++) {
 		VERIFY				(xr_strlen(N));
