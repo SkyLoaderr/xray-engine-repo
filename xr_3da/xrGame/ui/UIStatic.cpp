@@ -844,7 +844,7 @@ void CUIStatic::OnMouse(int x, int y, EUIMessages mouse_action)
 	}
 
 	
-	if(m_bCursorOverWindow != m_bCursorOverWindow)
+	if(m_bCursorOverWindow != cursor_on_window)
 	{
 		if(cursor_on_window)
             OnFocusReceive();			

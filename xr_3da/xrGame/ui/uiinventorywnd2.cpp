@@ -90,14 +90,16 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 		if(m_pInv->m_slots[PISTOL_SLOT].m_pIItem != NULL &&
 		   m_pInv->m_slots[PISTOL_SLOT].m_pIItem->CanAttach(pScope))
 		 {
-			 UIPropertiesBox.AddItem("Attach scope to pistol",  NULL, INVENTORY_ATTACH_ADDON);
-			 m_pItemToUpgrade = m_pInv->m_slots[PISTOL_SLOT].m_pIItem;
+			PIItem tgt = m_pInv->m_slots[PISTOL_SLOT].m_pIItem;
+			 UIPropertiesBox.AddItem("Attach scope to pistol",  (void*)tgt, INVENTORY_ATTACH_ADDON);
+//			 m_pItemToUpgrade = m_pInv->m_slots[PISTOL_SLOT].m_pIItem;
 		 }
 		 if(m_pInv->m_slots[RIFLE_SLOT].m_pIItem != NULL &&
 			m_pInv->m_slots[RIFLE_SLOT].m_pIItem->CanAttach(pScope))
 		 {
-			 UIPropertiesBox.AddItem("Attach scope to rifle",  NULL, INVENTORY_ATTACH_ADDON);
-			 m_pItemToUpgrade = m_pInv->m_slots[RIFLE_SLOT].m_pIItem;
+			PIItem tgt = m_pInv->m_slots[RIFLE_SLOT].m_pIItem;
+			 UIPropertiesBox.AddItem("Attach scope to rifle",  (void*)tgt, INVENTORY_ATTACH_ADDON);
+//			 m_pItemToUpgrade = m_pInv->m_slots[RIFLE_SLOT].m_pIItem;
 		 }
 	}
 	else if(pSilencer)
@@ -105,14 +107,16 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 		 if(m_pInv->m_slots[PISTOL_SLOT].m_pIItem != NULL &&
 		   m_pInv->m_slots[PISTOL_SLOT].m_pIItem->CanAttach(pSilencer))
 		 {
-			 UIPropertiesBox.AddItem("Attach silencer to pistol",  NULL, INVENTORY_ATTACH_ADDON);
+			PIItem tgt = m_pInv->m_slots[PISTOL_SLOT].m_pIItem;
+			 UIPropertiesBox.AddItem("Attach silencer to pistol",  (void*)tgt, INVENTORY_ATTACH_ADDON);
 			 m_pItemToUpgrade = m_pInv->m_slots[PISTOL_SLOT].m_pIItem;
 		 }
 		 if(m_pInv->m_slots[RIFLE_SLOT].m_pIItem != NULL &&
 			m_pInv->m_slots[RIFLE_SLOT].m_pIItem->CanAttach(pSilencer))
 		 {
-			 UIPropertiesBox.AddItem("Attach silencer to rifle",  NULL, INVENTORY_ATTACH_ADDON);
-			 m_pItemToUpgrade = m_pInv->m_slots[RIFLE_SLOT].m_pIItem;
+			PIItem tgt = m_pInv->m_slots[RIFLE_SLOT].m_pIItem;
+			 UIPropertiesBox.AddItem("Attach silencer to rifle",  (void*)tgt, INVENTORY_ATTACH_ADDON);
+//			 m_pItemToUpgrade = m_pInv->m_slots[RIFLE_SLOT].m_pIItem;
 		 }
 	}
 	else if(pGrenadeLauncher)
@@ -120,8 +124,9 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 		 if(m_pInv->m_slots[RIFLE_SLOT].m_pIItem != NULL &&
 			m_pInv->m_slots[RIFLE_SLOT].m_pIItem->CanAttach(pGrenadeLauncher))
 		 {
-			 UIPropertiesBox.AddItem("Attach grenade launcher to rifle",  NULL, INVENTORY_ATTACH_ADDON);
-			 m_pItemToUpgrade = m_pInv->m_slots[RIFLE_SLOT].m_pIItem;
+			PIItem tgt = m_pInv->m_slots[RIFLE_SLOT].m_pIItem;
+			 UIPropertiesBox.AddItem("Attach grenade launcher to rifle",  (void*)tgt, INVENTORY_ATTACH_ADDON);
+//			 m_pItemToUpgrade = m_pInv->m_slots[RIFLE_SLOT].m_pIItem;
 		 }
 
 	}
@@ -288,9 +293,10 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			case INVENTORY_ARTEFACT_MERGER_DEACTIVATE:
 				StopArtefactMerger();
 				break;
-			case INVENTORY_ATTACH_ADDON:
-				AttachAddon();
-				break;
+			case INVENTORY_ATTACH_ADDON:{
+					m_pItemToUpgrade = (PIItem)pData;
+					AttachAddon();
+				}break;
 			case INVENTORY_DETACH_SCOPE_ADDON:
 				DetachAddon(*(smart_cast<CWeapon*>(m_pCurrentItem))->GetScopeName());
 				break;

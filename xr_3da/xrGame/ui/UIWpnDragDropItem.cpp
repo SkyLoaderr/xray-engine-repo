@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "UIWpnDragDropItem.h"
 #include "UIInventoryUtilities.h"
+#include "../HUDManager.h"
 
 
 //////////////////////////////////////////////////////////////////////
@@ -29,6 +30,8 @@ void CUIWpnDragDropItem::Draw()
 
 	Irect rect = GetAbsoluteRect();
 
+	if (m_bInFloat) 
+		UI()->PushScissor(UI()->ScreenRect(),true);
 
 
 	//отцентрировать родительскую иконку по центру ее окна
@@ -40,6 +43,7 @@ void CUIWpnDragDropItem::Draw()
 	{
 		m_UIStaticScope.SetPos(rect.left + right_offset + iFloor(0.5f+(float)m_pWeapon->GetScopeX()*GetTextureScaleX()),
 			                   rect.top + down_offset + iFloor(0.5f+(float)m_pWeapon->GetScopeY()*GetTextureScaleY()));
+
 		if(m_bClipper) TextureClipper(right_offset + iFloor(0.5f+(float)m_pWeapon->GetScopeX()*GetTextureScaleX()),
 									  down_offset + iFloor(0.5f+(float)m_pWeapon->GetScopeY()*GetTextureScaleY()),
 									  NULL, m_UIStaticScope);
@@ -50,6 +54,7 @@ void CUIWpnDragDropItem::Draw()
 		m_UIStaticSilencer.SetPos(rect.left + right_offset + iFloor(0.5f+(float)m_pWeapon->GetSilencerX()*GetTextureScaleX()),
 								  rect.top + down_offset + iFloor(0.5f+(float)m_pWeapon->GetSilencerY()*GetTextureScaleY()));
 
+//		m_UIStaticItem.SetRect(0, 0, rect.width(), rect.height());
 		if(m_bClipper) TextureClipper(right_offset + iFloor(0.5f+(float)m_pWeapon->GetSilencerX()*GetTextureScaleX()),
 									  down_offset +  iFloor(0.5f+(float)m_pWeapon->GetSilencerY()*GetTextureScaleY()), 
 									  NULL, m_UIStaticSilencer);
@@ -60,12 +65,17 @@ void CUIWpnDragDropItem::Draw()
 	{
 		m_UIStaticGrenadeLauncher.SetPos(rect.left + right_offset + iFloor(0.5f+(float)m_pWeapon->GetGrenadeLauncherX()*GetTextureScaleX()),
 										 rect.top + down_offset + iFloor(0.5f+(float)m_pWeapon->GetGrenadeLauncherY()*GetTextureScaleY()));
+
 		if(m_bClipper) TextureClipper(right_offset + iFloor(0.5f+(float)m_pWeapon->GetGrenadeLauncherX()*GetTextureScaleX()),
 									  down_offset +  iFloor(0.5f+(float)m_pWeapon->GetGrenadeLauncherY()*GetTextureScaleY()), 
 									  NULL, m_UIStaticGrenadeLauncher);
 		m_UIStaticGrenadeLauncher.Render();
 
 	}
+
+	if (m_bInFloat) 
+		UI()->PopScissor();
+
 }
 
 void CUIWpnDragDropItem::SetData(void* pData)
