@@ -452,6 +452,9 @@ void	CRender::Render		()
 
 			Device.set_xform_world	(Fidentity);
 			Details.Render			(Device.vCameraPosition);
+
+			Device.set_xform_world	(Fidentity);
+			L_Shadows.render		();
 		}
 	}
 	

@@ -149,10 +149,14 @@ void CLightShadows::calculate	()
 			slot_id	++;
 		}
 	}
+	casters.clear	();
 }
 
 void CLightShadows::render	()
 {
+	/*
 	CFrustum	F;
 	F.CreateFromMatrix		(mCombine,FRUSTUM_P_ALL);
+	*/
+	shadows.clear	();
 }
