@@ -6568,6 +6568,16 @@
 						RelativePath=".\StatGraph.h">
 					</File>
 				</Filter>
+				<Filter
+					Name="StringTable"
+					Filter="">
+					<File
+						RelativePath=".\string_table.cpp">
+					</File>
+					<File
+						RelativePath=".\string_table.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Server"
@@ -8279,13 +8289,7 @@
 				RelativePath=".\dialogs.xml">
 			</File>
 			<File
-				RelativePath=".\info_portions old.xml">
-			</File>
-			<File
 				RelativePath=".\info_portions.xml">
-			</File>
-			<File
-				RelativePath=".\info_portions1.xml">
 			</File>
 			<File
 				RelativePath=".\ingame_msglog_mp.xml">
@@ -8358,6 +8362,12 @@
 			</File>
 			<File
 				RelativePath=".\stats.xml">
+			</File>
+			<File
+				RelativePath=".\string_table_general.xml">
+			</File>
+			<File
+				RelativePath=".\string_table_items.xml">
 			</File>
 			<File
 				RelativePath=".\talk.xml">
