@@ -13,7 +13,7 @@ IC void minmax(float &mn, float &mx) { if (mn > mx) swap(mn,mx); }
 
 void __stdcall _sound_event	(sound* S, float range)
 {
-	if (S->feedback){
+	if (S&&S->feedback){
 		const CSound_params*	p	= S->feedback->get_params();
 		VERIFY					(p);
 
