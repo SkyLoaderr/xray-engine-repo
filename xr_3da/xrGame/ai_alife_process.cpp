@@ -133,12 +133,8 @@ void CAI_ALife::vfUpdateHuman(CALifeHuman *tpALifeHuman)
 					switch (tpALifeHuman->m_tCurTask.m_tTaskType) {
 						case eTaskTypeSearchForItemCG :
 						case eTaskTypeSearchForItemOG : {
-							if ((tpALifeHuman->m_dwCurNode + 1>= (tpALifeHuman->m_tpaVertices.size())) && (tpALifeHuman->m_tGraphID == tpALifeHuman->m_tNextGraphID)) {
-								tpALifeHuman->m_tpaVertices.clear();
-								tpALifeHuman->m_dwCurNode = u32(-1);
-								vfCommunicateWithTrader(tpALifeHuman,tpfGetNearestSuitableTrader(tpALifeHuman));
+							if ((tpALifeHuman->m_dwCurNode + 1>= (tpALifeHuman->m_tpaVertices.size())) && (tpALifeHuman->m_tGraphID == tpALifeHuman->m_tNextGraphID))
 								tpALifeHuman->m_tTaskState = eTaskStateChooseTask;
-							}
 							break;
 						}
 						case eTaskTypeSearchForItemCL :
@@ -170,12 +166,8 @@ void CAI_ALife::vfUpdateHuman(CALifeHuman *tpALifeHuman)
 					switch (tpALifeHuman->m_tCurTask.m_tTaskType) {
 						case eTaskTypeSearchForItemCG :
 						case eTaskTypeSearchForItemOG : {
-							if ((tpALifeHuman->m_dwCurNode + 1>= (tpALifeHuman->m_tpaVertices.size())) && (tpALifeHuman->m_tGraphID == tpALifeHuman->m_tNextGraphID)) {
-								tpALifeHuman->m_tpaVertices.clear();
-								tpALifeHuman->m_dwCurNode = u32(-1);
-								vfCommunicateWithTrader(tpALifeHuman,tpfGetNearestSuitableTrader(tpALifeHuman));
+							if ((tpALifeHuman->m_dwCurNode + 1>= (tpALifeHuman->m_tpaVertices.size())) && (tpALifeHuman->m_tGraphID == tpALifeHuman->m_tNextGraphID))
 								tpALifeHuman->m_tTaskState = eTaskStateChooseTask;
-							}
 							break;
 						}
 						case eTaskTypeSearchForItemCL :

@@ -165,7 +165,7 @@ bool CAI_ALife::bfCheckForItems(CALifeHumanAbstract	*tpALifeHumanAbstract)
 {
 	CALifeHuman *tpALifeHuman = dynamic_cast<CALifeHuman *>(tpALifeHumanAbstract);
 	if (tpALifeHuman)
-		return(bfProcessItems(*tpALifeHuman,tpALifeHuman->m_tGraphID,tpALifeHuman->m_fMaxItemMass));
+		return(bfProcessItems(*tpALifeHuman,tpALifeHuman->m_tGraphID,tpALifeHuman->m_fMaxItemMass,tpALifeHuman->m_tTaskState == eTaskStateSearching ? .25f : .05f));
 	else {
 		CALifeHumanGroup *tpALifeHumanGroup = dynamic_cast<CALifeHumanGroup *>(tpALifeHumanAbstract);
 		VERIFY(tpALifeHumanGroup);
@@ -173,7 +173,7 @@ bool CAI_ALife::bfCheckForItems(CALifeHumanAbstract	*tpALifeHumanAbstract)
 		HUMAN_PARAMS_P_IT	E = tpALifeHumanGroup->m_tpMembers.end();
 		bool bOk = false;
 		for ( ; I != E; I++)
-			bOk = bOk || bfProcessItems(*(*I),tpALifeHumanGroup->m_tGraphID,tpALifeHumanGroup->m_fMaxItemMass);
+			bOk = bOk || bfProcessItems(*(*I),tpALifeHumanGroup->m_tGraphID,tpALifeHumanGroup->m_fMaxItemMass,tpALifeHumanGroup->m_tTaskState == eTaskStateSearching ? .75f : .1f);
 		return(bOk);
 	}
 }
@@ -199,7 +199,7 @@ void CAI_ALife::vfDetachItem(CALifeHumanParams &tHumanParams, CALifeItem *tpALif
 	tHumanParams.m_fCumulativeItemMass -= tpALifeItem->m_fMass;
 }
 
-bool CAI_ALife::bfProcessItems(CALifeHumanParams &tHumanParams, _GRAPH_ID tGraphID, float fMaxItemMass)
+bool CAI_ALife::bfProcessItems(CALifeHumanParams &tHumanParams, _GRAPH_ID tGraphID, float fMaxItemMass, float fProbability)
 {
 	DYNAMIC_OBJECT_P_IT		I = m_tpGraphObjects[tGraphID].tpObjects.begin();
 	DYNAMIC_OBJECT_P_IT		E  = m_tpGraphObjects[tGraphID].tpObjects.end();
@@ -212,8 +212,10 @@ bool CAI_ALife::bfProcessItems(CALifeHumanParams &tHumanParams, _GRAPH_ID tGraph
 		if (tpALifeItem) {
 			// adding new item to the item list
 			if (tHumanParams.m_fCumulativeItemMass + tpALifeItem->m_fMass < fMaxItemMass) {
-				vfAttachItem(tHumanParams,tpALifeItem,tGraphID);
-				return(true);
+				if (randF(1.0f) < fProbability) {
+					vfAttachItem(tHumanParams,tpALifeItem,tGraphID);
+					return(true);
+				}
 			}
 			else {
 				sort(tHumanParams.m_tpItemIDs.begin(),tHumanParams.m_tpItemIDs.end(),CSortItemPredicate(m_tObjectRegistry));

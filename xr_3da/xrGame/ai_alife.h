@@ -28,7 +28,9 @@ class CAI_ALife :
 	public CALifeObjectRegistry, 
 	public CALifeEventRegistry, 
 	public CALifeTaskRegistry, 
-	public CSheduled {
+	public CSheduled,
+	public CRandom
+{
 public:
 	u32								m_dwObjectsBeingProcessed;
 	u64								m_qwMaxProcessTime;
@@ -263,7 +265,7 @@ public:
 	void							vfUpdateMonster			(CALifeMonsterAbstract	*tpALifeMonsterAbstract);
 	void							vfUpdateHumanGroup		(CALifeHumanGroup		*tpALifeHumanGroup);
 	void							vfUpdateHuman			(CALifeHuman			*tpALifeHuman);
-	bool							bfProcessItems			(CALifeHumanParams		&tHumanParams, _GRAPH_ID tGraphID, float fMaxItemMass);
+	bool							bfProcessItems			(CALifeHumanParams		&tHumanParams, _GRAPH_ID tGraphID, float fMaxItemMass, float fProbability);
 	bool							bfCheckForItems			(CALifeHumanAbstract	*tpALifeHumanAbstract);
 	void							vfCheckForDeletedEvents	(CALifeHumanAbstract	*tpALifeHumanAbstract);
 	void							vfCheckForTheBattle		(CALifeMonsterAbstract	*tpALifeMonsterAbstract);
