@@ -9,6 +9,9 @@ private:
 	DWORD				rtWidth;
 	DWORD				rtHeight;
 
+	DWORD				curWidth;
+	DWORD				curHeight;
+
 	CRT*				RT;
 	IDirect3DSurface8*	ZB;
 
@@ -37,6 +40,6 @@ public:
 	virtual void		set_blur			(float f)		{ param_blur=f;		}
 	virtual void		set_gray			(float f)		{ param_gray=f;		}
 
-	virtual DWORD		get_width			()				{ return rtWidth;	}
-	virtual DWORD		get_height			()				{ return rtHeight;	}
+	virtual DWORD		get_width			()				{ return curWidth;	}
+	virtual DWORD		get_height			()				{ return curHeight;	}
 };

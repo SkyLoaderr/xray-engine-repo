@@ -65,33 +65,33 @@ void CRenderTarget::OnDeviceDestroy	()
 	Device.Shader._DeleteVS		(pVS);
 }
 
-BOOL CRenderTarget::Perform	()
+BOOL CRenderTarget::Perform		()
 {
 	return Available() && ( NeedPostProcess() || (psSupersample>1));
 }
 
-void CRenderTarget::Begin	()
+void CRenderTarget::Begin		()
 {
 	if (!Perform())	
 	{
 		// Base RT
 		Device.Shader.set_RT	(HW.pBaseRT,HW.pBaseZB);
+		curWidth				= Device.dwWidth;
+		curHeight				= Device.dwHeight;
 	} else {
 		// Our 
 		Device.Shader.set_RT	(RT->pRT,ZB);
-		CHK_DX(HW.pDevice->Clear(
-			0,0,
-			D3DCLEAR_ZBUFFER|
-			((psDeviceFlags&rsClearBB)?D3DCLEAR_TARGET:0)|
-			(HW.Caps.bStencil?D3DCLEAR_STENCIL:0),
-			D3DCOLOR_XRGB(0,255,0),1,0
-			));
+		curWidth				= rtWidth;
+		curHeight				= rtHeight;
 	}
+	Device.Clear				();
 }
 
 void CRenderTarget::End		()
 {
 	Device.Shader.set_RT		(HW.pBaseRT,HW.pBaseZB);
+	curWidth					= Device.dwWidth;
+	curHeight					= Device.dwHeight;
 	
 	if (!Perform())		return;
 	

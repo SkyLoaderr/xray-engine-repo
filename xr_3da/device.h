@@ -94,6 +94,7 @@ public:
 
 	// Scene control
 	void Begin			(void);
+	void Clear			(void);
 	void End			(void);
 	void FrameMove		(void);
 	
