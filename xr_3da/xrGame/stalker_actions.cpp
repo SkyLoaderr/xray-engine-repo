@@ -426,35 +426,22 @@ void CStalkerActionGetItemToKill::execute	()
 	if (!m_object->m_best_found_item_to_kill)
 		return;
 
-//	m_object->set_level_dest_vertex	(m_object->m_best_found_item_to_kill->level_vertex_id());
-//	m_object->set_node_evaluator	(0);
-//	m_object->set_path_evaluator	(0);
-//	m_object->set_desired_position	(&m_object->m_best_found_item_to_kill->Position());
-//	m_object->set_desired_direction	(0);
-//	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
-//	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
-//	m_object->set_body_state		(eBodyStateStand);
-//	m_object->set_movement_type		(eMovementTypeWalk);
-//	m_object->set_mental_state		(eMentalStateDanger);
-
+	m_object->set_level_dest_vertex	(m_object->m_best_found_item_to_kill->level_vertex_id());
 	m_object->set_node_evaluator	(0);
 	m_object->set_path_evaluator	(0);
-	m_object->set_desired_position	(0);
+	m_object->set_desired_position	(&m_object->m_best_found_item_to_kill->Position());
 	m_object->set_desired_direction	(0);
-	
-	m_object->set_path				("way0000",CMovementManager::ePatrolStartTypeNearest,CMovementManager::ePatrolRouteTypeContinue,true);
-	m_object->set_path_type			(CMovementManager::ePathTypePatrolPath);
-
+	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
 	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateDanger);
+	m_object->CSightManager::update	(eLookTypePoint,&m_object->m_best_found_item_to_kill->Position());
 
-	m_object->CSightManager::update				(eLookTypePoint,&m_object->m_best_found_item_to_kill->Position());
 #ifdef OLD_OBJECT_HANDLER
-	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
+	m_object->set_dest_state		(eObjectActionNoItems);
 #else
-	m_object->CObjectHandlerGOAP::set_goal		(eObjectActionIdle);
+	m_object->set_goal				(eObjectActionIdle);
 #endif
 }
 
