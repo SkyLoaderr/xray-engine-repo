@@ -150,31 +150,6 @@ void CBitingAttack::Run()
 
 	// Проверить, достижим ли противник
 	if (pMonster->ObjectNotReachable(m_tEnemy.obj) && (m_tAction != ACTION_ATTACK_MELEE)) m_tAction = ACTION_ENEMY_POSITION_APPROACH;
-		
-
-		
-//		// Try to find best node nearest to the point
-//		xr_vector<u32> nodes;
-//		ai().graph_engine().search( ai().level_graph(), m_tEnemy.obj->level_vertex_id(), m_tEnemy.obj->level_vertex_id(), &nodes, CGraphEngine::CFlooder(m_fDistMax-0.5f));
-//		if (nodes.empty()) m_tAction = ACTION_WALK_ANGRY_AROUND;
-//		else {
-//			u32 nearest_node_id = u32(-1);
-//			float dist_nearest = flt_max;
-//
-//			for (u32 i=0; i<nodes.size(); i++) {
-//				float cur_dist = ai().level_graph().vertex_position(nodes[i]).distance_to(m_tEnemy.obj->Position());
-//				if (cur_dist < dist_nearest) {
-//					dist_nearest	= cur_dist;
-//					nearest_node_id = nodes[i];
-//				}
-//			}
-//
-//			R_ASSERT(nearest_node_id != u32(-1));
-//
-//			m_tAction = ACTION_WALK_AWAY;
-//			pMonster->MoveToTarget(ai().level_graph().vertex_position(nearest_node_id), nearest_node_id);
-//			
-//		}
 
 	if (m_tAction != ACTION_ATTACK_MELEE) bEnableBackAttack = true;
 

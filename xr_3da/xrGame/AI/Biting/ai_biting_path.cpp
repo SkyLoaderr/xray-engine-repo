@@ -84,6 +84,7 @@ void CAI_Biting::Path_ApproachPoint(const CEntity *pE, Fvector position)
 	} else {
 		vfInitSelector(*m_tSelectorApproach, true);
 		m_tSelectorApproach->m_tEnemyPosition = position;
+		m_tSelectorApproach->m_tEnemy		  = 0;		
 	}
 
 	CLevelLocationSelector::set_evaluator(m_tSelectorApproach);
