@@ -23,7 +23,6 @@ CCustomZone::CCustomZone(void)
 
 	m_pLocalActor = NULL;
 
-
 	m_pIdleParticles = NULL;
 
 	m_sIdleParticles = NULL;
@@ -232,7 +231,7 @@ void CCustomZone::feel_touch_new(CObject* O)
 {
 	if(bDebug) HUD().outMessage(0xffffffff,O->cName(),"entering a zone.");
 	m_inZone.insert(O);
-	if(dynamic_cast<CActor*>(O) && O == Level().CurrentEntity()) 
+	if(dynamic_cast<CActor*>(O) && O == Level().CurrentEntity())
 					m_pLocalActor = dynamic_cast<CActor*>(O);
 
 	CGameObject* pGameObject =dynamic_cast<CGameObject*>(O);

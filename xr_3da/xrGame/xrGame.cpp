@@ -36,6 +36,12 @@
 #include "ai_script_processor.h"
 #include "attachable_item.h"
 
+#include "customzone.h"
+#include "mosquitobald.h"
+#include "mincer.h"
+#include "radioactivezone.h"
+
+
 ENGINE_API extern float		psHUD_FOV;
 extern	float				psSqueezeVelocity;
 extern	int					phFPS;
@@ -726,6 +732,47 @@ public:
 	}
 };
 
+class CCC_PostprocessTest : public CConsoleCommand {
+public:
+	CCC_PostprocessTest(LPCSTR N) : CConsoleCommand(N)  { };
+	
+	virtual void Execute(LPCSTR args) {
+		
+		string128 param1, param2, param3;
+		_GetItem(args,0,param1,' ');
+		_GetItem(args,1,param2,' ');
+		_GetItem(args,2,param3,' ');
+		
+		CObject			*obj = Level().Objects.FindObjectByName(param1);
+		CMosquitoBald	*p_zone = dynamic_cast<CMosquitoBald *>(obj);
+		if (!p_zone) return;
+		
+		u32 type = 0;
+		if (xr_strcmp(param2, "d_v")) type = 0;
+		else if (xr_strcmp(param2,"d_h")) type = 1;
+		else if (xr_strcmp(param2,"n_i")) type = 2;
+		else if (xr_strcmp(param2,"n_g")) type = 3;
+		else if (xr_strcmp(param2,"n_f")) type = 4;
+		else if (xr_strcmp(param2,"blur")) type = 5;
+		else if (xr_strcmp(param2,"gray")) type = 6;
+		else if (xr_strcmp(param2,"cb_r")) type = 7;
+		else if (xr_strcmp(param2,"cb_g")) type = 8;
+		else if (xr_strcmp(param2,"cb_b")) type = 9;
+		else if (xr_strcmp(param2,"cg_r")) type = 10;
+		else if (xr_strcmp(param2,"cg_g")) type = 11;
+		else if (xr_strcmp(param2,"cg_b")) type = 12;
+		else if (xr_strcmp(param2,"ca_r")) type = 13;
+		else if (xr_strcmp(param2,"ca_g")) type = 14;
+		else if (xr_strcmp(param2,"ca_b")) type = 15;
+		else if (xr_strcmp(param2,"d_min")) type = 16;
+		else if (xr_strcmp(param2,"d_max")) type = 17;
+		else return;
+
+		float value;
+		sscanf(param3 ,"%f",&value);
+		p_zone->m_effector.SetParam(type,value);
+	}
+};
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -801,7 +848,9 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 		CMD1(CCC_Script,			"run_script");
 
 		// Trader
-		CMD1(CCC_Trader,			"trade");		
+		CMD1(CCC_Trader,			"trade");
+		
+		CMD1(CCC_PostprocessTest,	"pp_test");
 
 		// Physics
 		CMD4(CCC_Integer,			"ph_fps",				&phFPS,			10,		100);
@@ -901,10 +950,6 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 #include "RustyHairArtifact.h"
 #include "GalantineArtifact.h"
 
-#include "customzone.h"
-#include "mosquitobald.h"
-#include "mincer.h"
-#include "radioactivezone.h"
 #include "level_changer.h"
 
 #include "simpledetector.h"

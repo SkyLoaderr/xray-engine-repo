@@ -1,5 +1,6 @@
 #pragma once
 #include "customzone.h"
+#include "zone_effector.h"
 
 class CMosquitoBald : public CCustomZone
 {
@@ -17,4 +18,6 @@ public:
 	u32 m_pp_time;
 	SZonePPInfo m_pp;
 	ref_str m_pHitEffect;
+
+	CZoneEffector	m_effector;
 };

@@ -31,50 +31,55 @@ void CMosquitoBald::Load(LPCSTR section)
 	sscanf(pSettings->r_string(l_PP,"noise_color"), "%d,%d,%d,%d", &m_pp.r, &m_pp.g, &m_pp.b, &m_pp.a);
 
 	m_pHitEffect = pSettings->r_string(section,"hit_effect");
+
+	
+	m_effector.Load(pSettings->r_string(section,"postprocess_new"));
 }
 
 
 //void CMosquitoBald::Update(u32 dt) {
 void CMosquitoBald::UpdateCL() 
 {
-	u32 dt =Device.dwTimeDelta;
+//	u32 dt =Device.dwTimeDelta;
+//	if(m_pLocalActor && m_pLocalActor->g_Alive()) 
+//	{
+//		IRender_Target*		T	= ::Render->getTarget();
+//		f32 l_h = m_pp_time < g_pp_fade ? m_pp.duality_h * ((f32)m_pp_time / g_pp_fade) : m_pp.duality_h;
+//		f32 l_v = m_pp_time < g_pp_fade ? m_pp.duality_v * ((f32)m_pp_time / g_pp_fade) : m_pp.duality_v;
+//		T->set_duality_h		(l_h*_sin(1.f*Device.fTimeGlobal));
+//		T->set_duality_v		(l_v*_cos(1.1f*Device.fTimeGlobal));
+//		//T->set_duality_h		(.0f);
+//		//T->set_duality_v		(.0f);
+//		T->set_blur				(m_pp_time < g_pp_fade ? m_pp.blur * ((f32)m_pp_time / g_pp_fade) : m_pp.blur);
+//		//T->set_blur				(1.f);
+//		T->set_gray				(m_pp_time < g_pp_fade ? m_pp.gray * ((f32)m_pp_time / g_pp_fade) : m_pp.gray);
+//		T->set_noise			(m_pp_time < g_pp_fade ? m_pp.noise * ((f32)m_pp_time / g_pp_fade) : m_pp.noise);
+//		//T->set_noise			(m_pp.noise);
+//		T->set_noise_scale		(m_pp.noise_scale);
+//		T->set_color_base		(color_rgba(m_pp.r,m_pp.g,m_pp.b,m_pp.a));
+//		T->set_noise_fps		(10.f);
+//		m_pp_time += dt;
+//	} 
+//	else if(m_pp_time>0) 
+//	{
+//		if(m_pp_time > g_pp_fade) m_pp_time = (u32)g_pp_fade;
+//		m_pp_time = m_pp_time < dt ? 0 : m_pp_time - dt;
+//		IRender_Target*		T	= ::Render->getTarget();
+//		f32 l_h = m_pp_time < g_pp_fade ? m_pp.duality_h * ((f32)m_pp_time / g_pp_fade) : m_pp.duality_h;
+//		f32 l_v = m_pp_time < g_pp_fade ? m_pp.duality_v * ((f32)m_pp_time / g_pp_fade) : m_pp.duality_v;
+//		T->set_duality_h		(l_h*_sin(1.f*Device.fTimeGlobal));
+//		T->set_duality_v		(l_v*_cos(1.1f*Device.fTimeGlobal));
+//		T->set_blur				(m_pp_time < g_pp_fade ? m_pp.blur * ((f32)m_pp_time / g_pp_fade) : m_pp.blur);
+//		T->set_gray				(m_pp_time < g_pp_fade ? m_pp.gray * ((f32)m_pp_time / g_pp_fade) : m_pp.gray);
+//		T->set_noise			(m_pp_time < g_pp_fade ? m_pp.noise * ((f32)m_pp_time / g_pp_fade) : m_pp.noise);
+//		//T->set_noise			(m_pp.noise);
+//		T->set_noise_scale		(m_pp.noise_scale);
+//		T->set_color_base		(color_rgba(m_pp.r,m_pp.g,m_pp.b,m_pp.a));
+//		T->set_noise_fps		(10.f);
+//	}
+	
+	m_effector.Update(Level().CurrentEntity()->Position().distance_to(Position()));
 
-	if(m_pLocalActor && m_pLocalActor->g_Alive()) 
-	{
-		IRender_Target*		T	= ::Render->getTarget();
-		f32 l_h = m_pp_time < g_pp_fade ? m_pp.duality_h * ((f32)m_pp_time / g_pp_fade) : m_pp.duality_h;
-		f32 l_v = m_pp_time < g_pp_fade ? m_pp.duality_v * ((f32)m_pp_time / g_pp_fade) : m_pp.duality_v;
-		T->set_duality_h		(l_h*_sin(1.f*Device.fTimeGlobal));
-		T->set_duality_v		(l_v*_cos(1.1f*Device.fTimeGlobal));
-		//T->set_duality_h		(.0f);
-		//T->set_duality_v		(.0f);
-		T->set_blur				(m_pp_time < g_pp_fade ? m_pp.blur * ((f32)m_pp_time / g_pp_fade) : m_pp.blur);
-		//T->set_blur				(1.f);
-		T->set_gray				(m_pp_time < g_pp_fade ? m_pp.gray * ((f32)m_pp_time / g_pp_fade) : m_pp.gray);
-		T->set_noise			(m_pp_time < g_pp_fade ? m_pp.noise * ((f32)m_pp_time / g_pp_fade) : m_pp.noise);
-		//T->set_noise			(m_pp.noise);
-		T->set_noise_scale		(m_pp.noise_scale);
-		T->set_color_base		(color_rgba(m_pp.r,m_pp.g,m_pp.b,m_pp.a));
-		T->set_noise_fps		(10.f);
-		m_pp_time += dt;
-	} 
-	else if(m_pp_time>0) 
-	{
-		if(m_pp_time > g_pp_fade) m_pp_time = (u32)g_pp_fade;
-		m_pp_time = m_pp_time < dt ? 0 : m_pp_time - dt;
-		IRender_Target*		T	= ::Render->getTarget();
-		f32 l_h = m_pp_time < g_pp_fade ? m_pp.duality_h * ((f32)m_pp_time / g_pp_fade) : m_pp.duality_h;
-		f32 l_v = m_pp_time < g_pp_fade ? m_pp.duality_v * ((f32)m_pp_time / g_pp_fade) : m_pp.duality_v;
-		T->set_duality_h		(l_h*_sin(1.f*Device.fTimeGlobal));
-		T->set_duality_v		(l_v*_cos(1.1f*Device.fTimeGlobal));
-		T->set_blur				(m_pp_time < g_pp_fade ? m_pp.blur * ((f32)m_pp_time / g_pp_fade) : m_pp.blur);
-		T->set_gray				(m_pp_time < g_pp_fade ? m_pp.gray * ((f32)m_pp_time / g_pp_fade) : m_pp.gray);
-		T->set_noise			(m_pp_time < g_pp_fade ? m_pp.noise * ((f32)m_pp_time / g_pp_fade) : m_pp.noise);
-		//T->set_noise			(m_pp.noise);
-		T->set_noise_scale		(m_pp.noise_scale);
-		T->set_color_base		(color_rgba(m_pp.r,m_pp.g,m_pp.b,m_pp.a));
-		T->set_noise_fps		(10.f);
-	}
 	inherited::UpdateCL();
 	//inherited::Update(dt);
 }
