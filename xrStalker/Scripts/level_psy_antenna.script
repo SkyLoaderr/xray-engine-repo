@@ -106,7 +106,7 @@ function PsyAntenna:update_psy_hit		(dt)
 		psy_hit.impulse 				= 0;
 		psy_hit.draftsman 				= db.actor; 
 		psy_hit.type 					= hit.telepatic;
-//		db.actor:hit					(psy_hit);
+		db.actor:hit					(psy_hit);
 	end;
 end
 function PsyAntenna:update_phantoms 	()
