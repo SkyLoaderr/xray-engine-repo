@@ -1,0 +1,244 @@
+[postprocess_base]
+duality_h		= .015
+duality_v		= .015
+blur			= 1
+gray			= .0
+noise			= .01
+noise_scale		= 1
+noise_color		= 255,255,255,70
+;noise_color		= 200,150,40,0
+;noise_color		= 200,180,50,0
+
+[postprocess_anomaly]
+duality_h		= 0
+duality_v		= 0
+blur			= 1
+gray			= .7	;.9
+noise			= .2	;.5
+noise_scale		= 1
+;noise_color		= 255,255,255,70
+;noise_color		= 100,100,100,70
+noise_color		= 155,155,155,70
+;noise_color		= 200,150,40,0
+;noise_color		= 10,10,10,0
+
+;---------------------------------------------------------------------
+; New zone postprocess
+;---------------------------------------------------------------------
+[postprocess_new]
+duality_h		= 0.025
+duality_v		= 0.025
+blur			= 0.2
+gray			= 0.5
+noise_intensity = 1.5
+noise_grain		= 5
+noise_fps		= 15
+color_base		= 1.0,1.0,1
+color_gray		= 0.444,0.333,0.222
+color_add		= 0.01,0.01,0.01
+radius_min		= 0.5
+radius_max		= 1.1
+
+[postprocess_night]
+duality_h		= 0.000
+duality_v		= 0.000
+blur			= 0.02
+gray			= 1
+noise_intensity = 5
+noise_grain		= 0.5
+noise_fps		= 50
+color_base		= 1,1,1
+color_gray		= 0.333,0.333,0.333
+color_add		= 0.05,0.1,0.04
+
+time_attack		= 1.1		; (s) fade in
+time_release	= 1.1		; (s) fade out
+
+; camera effects
+time				= 10;
+ce_time				= 0.45 ;time 
+ce_amplitude		= -15.0 
+ce_period_number	= 1.5 ;2.0 
+ce_power			= 1.5 ;0.7 ; power 
+
+
+[postprocess_rad]
+duality_h		= 0.00
+duality_v		= 0.00
+blur			= 0.05
+gray			= 0.0
+noise_intensity = 1
+noise_grain		= 1
+noise_fps		= 8
+color_base		= 0.6,0.9,0.6
+color_gray		= 0.333,0.333,0.333
+color_add		= 0.0,0.00,0.0
+radius_min		= 0.5
+radius_max		= 1.1
+
+[postprocess_psi]
+duality_h		= 0.02
+duality_v		= 0.01
+blur			= 10
+gray			= 0.5
+noise_intensity = 0.5
+noise_grain		= 1
+noise_fps		= 5
+color_base		= 0.666,0.433,0.0666
+color_gray		= 0.333,0.3330,0.3330
+color_add		= 0.00,0.01,0.00
+radius_min		= 0.5
+radius_max		= 1.1
+
+
+[postprocess_death]
+
+duality_h			= 0.08;0.01
+duality_v			= 0.06;0.01
+blur				= 0.01
+gray				= 0.5
+noise_intensity 	= 0.0
+noise_grain			= 0.1 ;1.0
+noise_fps			= 30
+color_base			= 0.255,0.0,0.0;0.65,0.15,0.1
+color_gray			= 0.333,0.333,0.333
+color_add			= 0,0,0
+time				= 0.65 ;0.3
+time_attack			= 0.05		; fade in
+time_release		= 0.85		; fade out
+
+radius_min		= 0.5
+radius_max		= 1.1
+
+[postprocess_flame]
+duality_h		= 0.025
+duality_v		= 0.025
+blur			= 0.2
+gray			= 0.5
+noise_intensity = 1.5
+noise_grain		= 5
+noise_fps		= 15
+color_base		= 0.7,0.8,0.6
+color_gray		= 0.4,0.4,0.2
+color_add		= 0.4,0.4,0.2
+radius_min		= 0.5
+radius_max		= 0.8
+
+[postprocess_fuzz]
+duality_h		= 0.02
+duality_v		= 0.02
+blur			= 0.1
+gray			= 0.5
+noise_intensity = 0.5
+noise_grain		= 2
+noise_fps		= 25
+color_base		= 1.8,1.4,0.8
+color_gray		= 0.5,0.4,0.1
+color_add		= 0.08,0.13,0.06
+radius_min		= 0.5
+radius_max		= 0.8
+
+[postprocess_gravi]
+duality_h		= 0.0025
+duality_v		= 0.0025
+blur			= 0.0
+gray			= 0.5
+noise_intensity = 0.5
+noise_grain		= 5
+noise_fps		= 15
+color_base		= 0.6,0.7,0.6
+color_gray		= 0.333,0.5,0.333
+color_add		= 0.008,0.007,0.004
+radius_min		= 0.3
+radius_max		= 1.0
+
+[postprocess_electra]
+duality_h		= 0.005
+duality_v		= 0.005
+blur			= 0.0
+gray			= 0.0
+noise_intensity = 0.01
+noise_grain		= 0
+noise_fps		= 25
+color_base		= 1.0,1.0,1.0
+color_gray		= 0.0,0.0,0.0
+color_add		= 0.01,0.01,0.015
+radius_min		= 0.5
+radius_max		= 0.9
+
+
+[mosquito_bald]
+duality_h		= 0.01
+duality_v		= 0.01
+blur			= 0.00
+gray			= 0.3
+noise_intensity = 0.1
+noise_grain		= 1
+noise_fps		= 30
+color_base		= 0.6,0.6,0.5
+color_gray		= 1,1,1
+color_add		= 0.0,0.0,0.0
+radius_min		= 0.2
+radius_max		= 2.7
+;---------------------------------------------------------------------
+
+[postprocess_anomaly1]
+duality_h		= .1
+duality_v		= .1
+blur			= 1
+gray			= .4
+noise			= .01
+noise_scale		= 1
+;noise_color		= 255,255,255,70
+;noise_color		= 155,155,155,155
+;noise_color		= 200,150,40,0
+noise_color		= 10,10,10,0
+
+
+[postprocess_anomaly2]
+duality_h		= 0.5
+duality_v		= 0.5
+blur			= 1
+gray			= .6
+noise			= .5
+noise_scale		= 1
+;noise_color		= 255,255,255,70
+;noise_color		= 155,155,155,155
+noise_color		= 200,150,40,0
+;noise_color		= 10,10,10,0
+
+[postprocess_anomaly3]
+duality_h		= 0
+duality_v		= 0
+blur			= 1
+gray			= .6
+noise			= .5
+noise_scale		= 1
+;noise_color		= 255,255,255,70
+;noise_color		= 155,155,155,155
+noise_color		= 200,150,40,0
+;noise_color		= 10,10,10,0
+
+[postprocess_anomaly4]
+duality_h		= 0
+duality_v		= 0
+blur			= 1
+gray			= .6
+noise			= .5
+noise_scale		= 1
+;noise_color		= 255,255,255,70
+noise_color		= 155,155,155,155
+;noise_color		= 200,150,40,0
+;noise_color		= 10,10,10,0
+
+[postprocess_anomaly5]
+duality_h		= 0
+duality_v		= 0
+blur			= 1
+gray			= .6
+noise			= .5
+noise_scale		= 1
+;noise_color		= 255,255,255,70
+;noise_color		= 155,155,155,155
+;noise_color		= 200,150,40,0
+noise_color		= 10,10,10,0
