@@ -114,13 +114,19 @@ void CProjector::TurnOn()
 {
 	light_render->set_active(true);
 	glow_render->set_active (true);
-	smart_cast<CKinematics*>(Visual())->LL_SetBoneVisible(guid_bone, TRUE, TRUE);
+	
+	CKinematics *visual = smart_cast<CKinematics*>(Visual());
+
+	visual->LL_SetBoneVisible			(guid_bone, TRUE, TRUE);
+	visual->CalculateBones_Invalidate	();
+	visual->CalculateBones				();
 }
 
 void CProjector::TurnOff()
 {
 	light_render->set_active(false);
 	glow_render->set_active (false);
+	
 	smart_cast<CKinematics*>(Visual())->LL_SetBoneVisible(guid_bone, FALSE, TRUE);
 }
 
