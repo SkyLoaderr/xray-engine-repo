@@ -66,7 +66,7 @@ void __fastcall PS::CPEDef::OnControlClick(PropValue* sender, bool& bDataModifie
 bool __fastcall PS::CPEDef::FindActionByName(LPCSTR new_name)
 {
 	for (EPAVecIt s_it=m_EActionList.begin(); s_it!=m_EActionList.end(); s_it++)
-    	if (0==strcmp(new_name,*(*s_it)->actionName))return true;
+    	if (0==stricmp(new_name,*(*s_it)->actionName))return true;
     return false;
 }
 
@@ -86,7 +86,8 @@ void __fastcall PS::CPEDef::OnActionsClick(PropValue* sender, bool& bDataModifie
             for(int i=0; actions_token[i].name; i++){
                 if (0==strcmp(actions_token[i].name,nm)){
                     EParticleAction* A = pCreateEAction(actions_token[i].id);
-                    A->actionName	= FHelper.GenerateName(*A->actionName,2,FindActionByName,true).LowerCase().c_str();
+                    AnsiString pref	= AnsiString(*A->actionName).LowerCase();
+                    A->actionName	= FHelper.GenerateName(pref.c_str(),2,FindActionByName,true).LowerCase().c_str();
                     m_EActionList.push_back(A);
                     UI->Command		(COMMAND_UPDATE_PROPERTIES);
                     bDataModified	= true;
