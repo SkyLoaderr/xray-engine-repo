@@ -202,9 +202,9 @@ function FSM:run_loop()
 									self:reset_script_control()
 								end
 
-								if  self.current_state == 0 then 
-									self:set_script_control()
-								end
+								--if  self.current_state == 0 then 
+								--	self:set_script_control()
+								--end
 				
 								self.current_state = to_state_num
 								return true
