@@ -277,7 +277,7 @@ void CDetailManager::Render		(Fvector& EYE)
 		Device.Shader.SetupPass			(0);
 		Device.Primitive.setVertices	(VS->getFVF(),VS->getStride(),VS->getBuffer());
 
-		Fmatrix		mXform,mScale,mRot,mRotXZ;
+		Fmatrix		mXform,mRotXZ;
 		for (DWORD L_ID=0; L_ID<lock_count; L_ID++)
 		{
 			// Calculate params 
@@ -304,7 +304,7 @@ void CDetailManager::Render		(Fvector& EYE)
 				float	scale			= Instance.scale_calculated;
 
 				// Build matrix
-				mScale.scale			(scale,scale,scale);
+//				mScale.scale			(scale,scale,scale);
 				if (scale>0.7f)	
 				{
 					mRotXZ.setXYZ			(Instance.phase_x+fPhaseX,0,Instance.phase_z+fPhaseZ);
