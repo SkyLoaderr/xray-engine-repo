@@ -37,16 +37,10 @@ void bwdithermap	(int levels, int magic[16][16] )
 					(magic4x4[k][l] / 16.) * magicfact);
 }
 
-float dist2d(DWORD _x, DWORD _y, DWORD _x2, DWORD _y2)
-{
-	float	x=float(_x), y=float(_y), x2=float(_x2), y2=float(_y2);
-	return	sqrtf((x-x2)*(x-x2)+(y-y2)*(y-y2));
-}
-
 void main(int argc, char* argv[])
 {
 	CImage		tex;
-	tex.LoadTGA	("x:\\dbg\\logo.tga");
+	tex.LoadTGA	("x:\\dbg\\test.tga");
 	
 	int			magic[16][16];
 	bwdithermap	(2,magic);
@@ -61,8 +55,10 @@ void main(int argc, char* argv[])
 	{
 		for (DWORD x=0; x<tex.dwWidth; x++)
 		{
-//			DWORD c		= tex.GetPixel(x,y);
+			DWORD c		= tex.GetPixel(x,y)&255;
 			DWORD new_c;
+
+			/*
 
 			float	fx	= float(x)/f; float ifx = 1.f-fx;
 			float	fy	= float(y)/f; float ify = 1.f-fy;
@@ -76,10 +72,11 @@ void main(int argc, char* argv[])
 			float	cy	= ifx*c02 + fx*c13;
 
 			new_c		= DWORD((cx+cy)/2);
+			*/
 
 			int row		= y % 16; 
 			int col		= x % 16;
- 			new_c		= new_c > magic[col][row] ? 255 : 0;
+ 			new_c		= c > magic[col][row] ? 255 : 0;
 
 			tex.PutPixel(x,y,RGB(new_c,new_c,new_c));
 		}
