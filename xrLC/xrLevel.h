@@ -3,7 +3,7 @@
 #pragma once
 
 enum fsL_Chunks {
-	fsL_HEADER=1,		//*
+	fsL_HEADER2	=1,		//*
 	fsL_STRINGS,		//*
 	fsL_VISUALS,		//*
 	fsL_PORTALS,		//*		- Portal polygons
