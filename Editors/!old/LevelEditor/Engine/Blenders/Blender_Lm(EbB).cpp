@@ -104,7 +104,7 @@ void	CBlender_LmEbB::Compile(CBlender_Compile& C)
 			else				C.r_Pass	("lmapE","lmapE",TRUE);
 			C.r_Sampler		("s_base",	C.L_textures[0]);
 			C.r_Sampler		("s_lmap",	C.L_textures[1]);
-			C.r_Sampler_clf	("s_hemi",	C.L_textures[2]);
+			C.r_Sampler_clf	("s_hemi",	*C.L_textures[2]);
 			C.r_Sampler		("s_env",	oT2_Name,false,D3DTADDRESS_CLAMP);
 			C.r_End			();
 			// }
@@ -128,7 +128,7 @@ void	CBlender_LmEbB::Compile(CBlender_Compile& C)
 			C.r_Pass		("lmap_l","lmap_l",FALSE);
 			C.r_Sampler		("s_base",C.L_textures[0]);
 			C.r_Sampler		("s_lmap",C.L_textures[1]);
-			C.r_Sampler_clf	("s_hemi",C.L_textures[2]);
+			C.r_Sampler_clf	("s_hemi",*C.L_textures[2]);
 			C.r_End			();
 			break;
 		}
