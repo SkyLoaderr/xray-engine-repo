@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include "nvMeshMender.h"
+// #include "nvMeshMender.h"
 
 #include "r_shader.h"
 #include "r_constants_cache.h"
@@ -315,8 +315,10 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 	if(FAILED(hr))			return hr;
 
 	//compute the normals
+	/*
 	hr = D3DXComputeNormals(pMeshClone,NULL);
 	if(FAILED(hr))			return hr;
+	*/
 
 	//compute the tangent vectors in the texture space and load them into
 	//the tangent field (which is 3d), read the texture coords from the 0th texture
