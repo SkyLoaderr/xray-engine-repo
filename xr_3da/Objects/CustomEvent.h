@@ -25,7 +25,7 @@ struct EV_LIST	{
 	void	Signal		(DWORD P2);
 };
 
-class CCustomEvent : public CObject, public pureRender
+class CCustomEvent		: public CObject, public pureRender
 {
 	EV_LIST				OnEnter;
 	EV_LIST				OnExit;
