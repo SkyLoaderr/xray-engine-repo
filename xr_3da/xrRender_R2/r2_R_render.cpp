@@ -248,6 +248,13 @@ void CRender::Render		()
 	g_pGameLevel->pHUD->Render_Direct		();
 	Device.Statistic.RenderDUMP_HUD.End		();
 
+	/*
+	if (0==::Random.randI(100))	
+	{
+		u32		clr4clear							= color_rgba(0,0,0,0);	// 0x00
+		CHK_DX	(HW.pDevice->Clear					( 0L, NULL, D3DCLEAR_TARGET, clr4clear, 1.0f, 0L));
+	}
+	*/
 	// Msg					("--- %d : was(%d)",Device.dwFrame,stats.l_visible);	//.
 }
 
