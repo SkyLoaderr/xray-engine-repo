@@ -441,7 +441,7 @@ function issue_event(npc, st, event_fn, ...)
 end
 
 function pick_section_from_condlist(actor, npc, condlist)
-	local rval = math.random(100)
+	local rval = nil -- math.random(100)
 	--printf("_bp: pick_section_from_condlist: rval = %d", rval)
 
 	local newsect = nil
@@ -450,6 +450,9 @@ function pick_section_from_condlist(actor, npc, condlist)
 		infop_conditions_met = true -- изначально считаем, что все условия переключения удовлетворены
 		for inum, infop in pairs(cond.infop_check) do
 			if infop.prob then
+				if not rval then
+					rval = math.random(100)
+				end
 				if infop.prob < rval then
 					infop_conditions_met = false -- инфопоршен есть, но он не должен присутствовать
 					break
@@ -493,7 +496,7 @@ function pick_section_from_condlist(actor, npc, condlist)
 				if infop.func then
 					if not xr_effects[infop.func] then
 						utils.abort("object '%s': pick_section_from_condlist: function '%s' is " ..
-							"not defined in xr_effects.script", npc:name(), infop.func)
+							"not defined in xr_effects.script", if_then_else(npc, npc:name(), "nil"), infop.func)
 					end
 					xr_effects[infop.func](actor, npc)
 				elseif infop.required then
@@ -841,7 +844,6 @@ function cfg_get_switch_conditions(ini, section, npc)
 	n = add_condition(l, n, cfg_get_number_and_condlist(ini, section, "on_actor_dist_ge_nvis",  npc))
 	n = add_condition(l, n, cfg_get_number_and_condlist(ini, section, "on_actor_dist_ge_nvis2", npc))
 	n = add_condition(l, n, cfg_get_string_and_condlist(ini, section, "on_signal",              npc))
-	n = add_condition(l, n, cfg_get_string_and_condlist(ini, section, "on_signal2",             npc))
 	n = add_condition(l, n, cfg_get_condlist           (ini, section, "on_info",                npc))
 	n = add_condition(l, n, cfg_get_condlist           (ini, section, "on_info2",               npc))
 	n = add_condition(l, n, cfg_get_condlist           (ini, section, "on_info3",               npc))
