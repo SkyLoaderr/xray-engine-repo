@@ -8,6 +8,9 @@ public :
 	virtual			CUIGameCustom*		createGameUI			();
 	virtual			char*				getTeamSection			(int Team);
 	virtual			bool				IsServerControlHits		()	{return true;};
+
+	virtual		ALife::_TIME_ID			GetEnvironmentGameTime	()				{return GetGameTime();};
+	virtual		float					GetEnvironmentGameTimeFactor		()	{return GetGameTimeFactor();};
 };
 
 
