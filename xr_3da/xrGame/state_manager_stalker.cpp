@@ -12,6 +12,7 @@
 #include "state_manager_no_alife.h"
 #include "state_manager_alife.h"
 #include "state_manager_combat.h"
+#include "graph_abstract.h"
 
 CStateManagerStalker::CStateManagerStalker	()
 {
