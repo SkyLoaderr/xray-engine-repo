@@ -101,10 +101,10 @@ void CCharacterInfo::SetSpecificCharacter ()
 	R_ASSERT(m_iSpecificCharacterIndex != NO_SPECIFIC_CHARACTER);
 
 	m_SpecificCharacter.Load(m_iSpecificCharacterIndex);
-	if(Rank() == NO_RANK)
-		SetRank(m_SpecificCharacter.Rank());
-	if(Reputation() == NO_REPUTATION)
-		SetReputation(m_SpecificCharacter.Reputation());
+	///if(Rank() == NO_RANK)
+	SetRank(m_SpecificCharacter.Rank());
+	//if(Reputation() == NO_REPUTATION)
+	SetReputation(m_SpecificCharacter.Reputation());
 
 	if(ai().get_alife())
 	{

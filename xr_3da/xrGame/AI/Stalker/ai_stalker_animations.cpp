@@ -800,6 +800,10 @@ void CStalkerAnimations::reload				(IRender_Visual *Visual, CInifile *ini, LPCST
 	m_tAnims.Load							(PSkeletonAnimated(Visual),"");
 	m_tHead.Load							(PSkeletonAnimated(Visual),"");
 	m_tGlobalItem.Load						(PSkeletonAnimated(Visual),"item_");
+	
+	if (!m_object->g_Alive())
+		return;
+
 	int										head_bone = PKinematics(Visual)->LL_BoneID(ini->r_string(section,"bone_head"));
 	PKinematics(Visual)->LL_GetBoneInstance	(u16(head_bone)).set_callback(HeadCallback,m_object);
 
