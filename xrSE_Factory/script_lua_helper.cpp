@@ -382,6 +382,9 @@ void CDbgLuaHelper::Describe(char *szRet, int nIndex)
 	case LUA_TSTRING:
 		sprintf(value, "%.63s", lua_tostring(L, nIndex));
 		break;
+	case LUA_TBOOLEAN:
+		sprintf(value, "%s", lua_toboolean(L, nIndex) ? "true" : "false");
+		break;
 	default:
 		value[0] = '\0';
 		break;

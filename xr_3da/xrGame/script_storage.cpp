@@ -23,6 +23,9 @@
 
 #ifndef NO_XRGAME_SCRIPT_ENGINE
 #	include "ai_debug.h"
+#endif
+
+#ifdef USE_DEBUGGER
 #	include "script_debugger.h"
 #endif
 
