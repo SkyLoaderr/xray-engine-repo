@@ -5232,6 +5232,12 @@
 						RelativePath="game_cl_base.h">
 					</File>
 					<File
+						RelativePath=".\game_sv_artefacthunt.cpp">
+					</File>
+					<File
+						RelativePath=".\game_sv_artefacthunt.h">
+					</File>
+					<File
 						RelativePath="game_sv_base.cpp">
 					</File>
 					<File
