@@ -377,6 +377,9 @@
 				Name="Extensions"
 				Filter="">
 				<File
+					RelativePath=".\_std_extensions.cpp">
+				</File>
+				<File
 					RelativePath="_std_extensions.h">
 				</File>
 				<File

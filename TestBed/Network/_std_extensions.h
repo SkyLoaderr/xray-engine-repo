@@ -1,6 +1,8 @@
 #ifndef _STD_EXT_internal
 #define _STD_EXT_internal
 
+#define	BREAK_AT_STRCMP
+
 #ifdef abs
 #undef abs
 #endif
@@ -114,33 +116,14 @@ IC char*						strext					( const char* S )
 
 IC u32							xr_strlen				( const char* S )
 {	return (u32)strlen(S);			}
+
+#ifdef BREAK_AT_STRCMP
+int								xr_strcmp				( const char* S1, const char* S2 );
+#else
 IC int							xr_strcmp				( const char* S1, const char* S2 )
-{	return (int)strcmp(S1,S2);			}
+{	return (int)strcmp(S1,S2);  }
+#endif
 
-IC char*						timestamp				(string64& dest)
-{
-	string64	temp;
-
-	/* Set time zone from TZ environment variable. If TZ is not set,
-	* the operating system is queried to obtain the default value 
-	* for the variable. 
-	*/
-	_tzset		();
-	u32			it;
-
-	// date
-	_strdate	( temp );
-	for (it=0; it<xr_strlen(temp); it++)
-		if ('/'==temp[it]) temp[it]='-';
-	strconcat	( dest, temp, "_" );
-
-	// time
-	_strtime	( temp );
-	for (it=0; it<xr_strlen(temp); it++)
-		if (':'==temp[it]) temp[it]='-';
-	strcat		( dest, temp);
-    return dest;
-}
-
+char*							timestamp				(string64& dest);
 
 #endif
