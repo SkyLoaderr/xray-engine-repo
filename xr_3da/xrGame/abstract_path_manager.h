@@ -26,15 +26,18 @@ public:
 	IC					CAbstractPathManager		();
 	IC	virtual			~CAbstractPathManager		();
 	IC	virtual void	Init						(_Graph *graph = 0);
-	IC			void	build_path					(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id);
-	IC			void	select_intermediate_vertex	();
+	
 	IC	_vertex_id_type	get_intermediate_vertex_id	() const;
 	IC			u32		get_intermediate_index		() const;
-	IC			bool	path_actual					(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id) const;
-	IC			bool	path_completed				() const;
-	IC			bool	path_failed					() const;
 	IC			void	set_evaluator				(_VertexEvaluator *evaluator);
+	
+	IC			bool	actual						(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id) const;
+	IC			bool	completed					() const;
+	IC			bool	failed						() const;
 	IC	const xr_vector<_vertex_id_type> &path		() const;
+
+	IC			void	build_path					(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id);
+	IC			void	select_intermediate_vertex	();
 };
 
 #include "abstract_path_manager_inline.h"

@@ -69,12 +69,12 @@ private:
 	bool									m_path_actuality;
 	u64										m_start_time;
 	u64										m_time_work;
-	CGraphSearchEngine::CBaseParameters		*m_base_game_selector;
-	CGraphSearchEngine::CBaseParameters		*m_base_level_selector;
+	CGraphEngine::CBaseParameters			*m_base_game_selector;
+	CGraphEngine::CBaseParameters			*m_base_level_selector;
 
 	IC		void	time_start				();
 	IC		bool	time_over				() const;
-	IC		bool	path_actual				() const;
+	IC		bool	actual					() const;
 			void	process_game_path		();
 			void	process_level_path		();
 			void	process_enemy_search	();

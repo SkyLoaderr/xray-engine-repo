@@ -62,6 +62,6 @@ public:
 			void	build_path				(const xr_vector<u32> &level_path, u32 intermediate_index, const Fvector &dest_position);
 			const	Fvector &direction		();
 			float	speed					();
-			bool	path_actual				() const;
-			bool	path_completed			() const;
+			bool	actual					() const;
+			bool	completed				() const;
 };

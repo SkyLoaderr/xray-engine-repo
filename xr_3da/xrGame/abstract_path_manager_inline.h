@@ -10,7 +10,7 @@
 
 #include "abstract_path_manager.h"
 #include "ai_space.h"
-#include "graph_search_engine.h"
+#include "graph_engine.h"
 
 template <
 	typename _Graph,
@@ -54,8 +54,8 @@ IC	void CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>::build_pat
 {
 	VERIFY					(m_graph);
 	VERIFY					(m_evaluator);
-	if (!path_actual(start_vertex_id, dest_vertex_id) && m_graph->valid_vertex_id(start_vertex_id) && m_graph->valid_vertex_id(dest_vertex_id)) {
-		m_actuality			= ai().graph_search_engine().build_path(*m_graph,start_vertex_id,dest_vertex_id,&m_path,*m_evaluator);
+	if (!actual(start_vertex_id, dest_vertex_id) && m_graph->valid_vertex_id(start_vertex_id) && m_graph->valid_vertex_id(dest_vertex_id)) {
+		m_actuality			= ai().graph_engine().search(*m_graph,start_vertex_id,dest_vertex_id,&m_path,*m_evaluator);
 		if (m_actuality)
 			m_intermediate_index = 0;
 		m_actuality			= true;
@@ -98,7 +98,7 @@ template <
 	typename _VertexEvaluator,
 	typename _vertex_id_type
 >
-IC	bool CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>::path_actual(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id) const
+IC	bool CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>::actual(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id) const
 {
 	return				(!m_path.empty());
 }
@@ -108,7 +108,7 @@ template <
 	typename _VertexEvaluator,
 	typename _vertex_id_type
 >
-IC	bool CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>::path_completed() const
+IC	bool CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>::completed() const
 {
 	return				(true);
 }
@@ -118,7 +118,7 @@ template <
 	typename _VertexEvaluator,
 	typename _vertex_id_type
 >
-IC	bool CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>::path_failed() const
+IC	bool CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>::failed() const
 {
 	return				(false);
 }

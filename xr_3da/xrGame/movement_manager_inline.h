@@ -1,6 +1,6 @@
 #pragma once
 
-IC	bool CMovementManager::path_actual() const
+IC	bool CMovementManager::actual() const
 {
 	return					(m_path_actuality);
 }

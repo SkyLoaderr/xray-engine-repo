@@ -155,12 +155,12 @@ float CDetailPathManager::speed	()
 	return				(0.f);
 }
 
-bool CDetailPathManager::path_actual() const
+bool CDetailPathManager::actual() const
 {
 	return				(true);
 }
 
-bool CDetailPathManager::path_completed() const
+bool CDetailPathManager::completed() const
 {
 	return				(true);
 }
