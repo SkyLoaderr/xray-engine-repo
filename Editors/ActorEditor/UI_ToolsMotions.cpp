@@ -230,7 +230,7 @@ void CActorTools::FillMotionProperties()
         m_MotionProps->AddItem(0,PROP_FLOAT, 		"Accrue", 	m_MotionProps->MakeFloatValue(&SM->fAccrue,	0.f,20.f,0.01f,2));
         m_MotionProps->AddItem(0,PROP_FLOAT, 		"Falloff", 	m_MotionProps->MakeFloatValue(&SM->fFalloff,	0.f,20.f,0.01f,2));
         FlagValue* TV = m_MotionProps->MakeFlagValue(&SM->m_dwFlags,esmFX,MotionOnAfterEdit);
-        m_MotionProps->AddItem(0,PROP_TOKEN, 		"Type", 	TV);
+        m_MotionProps->AddItem(0,PROP_FLAG, 		"Type FX", 	TV);
         m_pCycleNode = m_MotionProps->AddItem(0,PROP_MARKER, "Cycle");
         {
             AStringVec lst;
