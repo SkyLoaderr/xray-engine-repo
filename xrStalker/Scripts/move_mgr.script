@@ -415,16 +415,19 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 			self.play_sound_after_anim_start = false
 		end
 
+		if not self.sound then
+			self.sound = {}
+		end
 		if snd_from and snd_to then
-			self.sound = { rnd = snd_prob,
-				maxidle = snd_to - snd_from + 1, 
-				sumidle = snd_from - 1,
-				themes = parse_names(suggested_snd) }
+			self.sound.rnd = snd_prob
+			self.sound.maxidle = snd_to - snd_from + 1
+			self.sound.sumidle = snd_from - 1
+			self.sound.themes = parse_names(suggested_snd)
 		else
-			self.sound = { rnd = snd_prob,
-				maxidle = 1, 
-				sumidle = -1,
-				themes = parse_names(suggested_snd) }
+			self.sound.rnd = snd_prob
+			self.sound.maxidle = 5000 -- 1  -- т.е. по умолчанию пауза от 5 до 10 сек
+			self.sound.sumidle = 5000 -- 1
+			self.sound.themes = parse_names(suggested_snd)
 		end
 		-- Этот звук играть прямо сейчас, а не когда начнется анимация на позиции (после поворота и т.д.):
 		if not self.play_sound_after_anim_start then
@@ -549,10 +552,13 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 				else
 					snd_prob = 100
 				end
-				self.sound = { rnd = snd_prob,
-					maxidle = 1, 
-					sumidle = -1,
-					themes = parse_names(suggested_snd) }
+				if not self.sound then
+					self.sound = {}
+				end
+				self.sound.rnd = snd_prob
+				self.sound.maxidle = 1
+				self.sound.sumidle = -1
+				self.sound.themes = parse_names(suggested_snd)
 				-- Этот звук играть не прямо сейчас, а когда начнется анимация на позиции (после поворота и т.д.):
 				self.play_sound_after_anim_start = true
 				-- И только один раз:
