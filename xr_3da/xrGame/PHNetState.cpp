@@ -32,6 +32,7 @@ static void w_qt_q8(NET_Packet& P,const Fquaternion& q)
 	P.w_float_q8(q.y,-1.f,1.f);
 	P.w_float_q8(q.z,-1.f,1.f);
 	P.w_float_q8(q.w,-1.f,1.f);
+	
 ///////////////////////////////////////////
 	
 	

@@ -21,6 +21,9 @@ int				m_nj					;
 int				m_nb					;
 
 public:
+
+IC	bool			IsActive()			{return b_active;}
+
 IC	dWorldID		DWorld()
 {
 	return (dWorldID)this;
