@@ -79,7 +79,6 @@ void CAI_Stalker::reinit			()
 	CCustomMonster::reinit			();
 	animation().reinit				();
 	movement().reinit				();
-	CStepManager::reinit			();
 
 	m_pPhysics_support->in_Init		();
 	
@@ -145,7 +144,7 @@ void CAI_Stalker::reload			(LPCSTR section)
 {
 	brain().setup					(this);
 	CCustomMonster::reload			(section);
-	
+	CStepManager::reload			(section);
 	CObjectHandler::reload			(section);
 	inventory().m_slots[OUTFIT_SLOT].m_bUsable = false;
 
@@ -190,7 +189,6 @@ void CAI_Stalker::Load				(LPCSTR section)
 	CObjectHandler::Load			(section);
 	sight().Load					(section);
 	movement().Load	(section);
-	CStepManager::load				(section);
 	
 	// skeleton physics
 	m_pPhysics_support->in_Load		(section);

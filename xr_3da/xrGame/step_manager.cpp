@@ -23,19 +23,21 @@ DLL_Pure *CStepManager::_construct	()
 	return				(m_object);
 }
 
-void CStepManager::load(LPCSTR section)
-{	
+void CStepManager::reload(LPCSTR section)
+{
 	m_legs_count		= pSettings->r_u8		(section, "LegsCount");
 	LPCSTR anim_section = pSettings->r_string	(section, "step_params");
-	
+
 	if (!pSettings->section_exist(anim_section)) return;
 	VERIFY((m_legs_count>=MIN_LEGS_COUNT) && (m_legs_count<=MAX_LEGS_COUNT));
 
-	SStepParam	param; 
+	SStepParam			param; 
 	param.step[0].time = 0.1f;	// avoid warning
 
-	LPCSTR		anim_name, val;
-	string16	cur_elem;
+	LPCSTR				anim_name, val;
+	string16			cur_elem;
+
+	CSkeletonAnimated	*skeleton_animated = smart_cast<CSkeletonAnimated*>(m_object->Visual());
 
 	for (u32 i=0; pSettings->r_line(anim_section,i,&anim_name,&val); ++i) {
 		_GetItem (val,0,cur_elem);
@@ -47,28 +49,30 @@ void CStepManager::load(LPCSTR section)
 			_GetItem	(val,1+j*2,		cur_elem);		param.step[j].time	= float(atof(cur_elem));
 			_GetItem	(val,1+j*2+1,	cur_elem);		param.step[j].power	= float(atof(cur_elem));
 		}
-		m_steps_map.insert(mk_pair(anim_name, param));
+		
+		MotionID motion_id = skeleton_animated->ID_Cycle_Safe(anim_name);
+		if (!motion_id) continue;
+		
+		m_steps_map.insert(mk_pair(motion_id, param));
 	}
-}
-
-void CStepManager::reinit()
-{
+	
+	// reload foot bones
 	for (u32 i = 0; i < MAX_LEGS_COUNT; i++) m_foot_bones[i] = BI_NONE;
-
 	reload_foot_bones	();
+
 	
 	m_time_anim_started	= 0;
 	m_blend				= 0;
 }
 
-void CStepManager::on_animation_start(shared_str anim, CBlend *blend)
+void CStepManager::on_animation_start(MotionID motion_id, CBlend *blend)
 {
 	if (!blend) return;
 
 	m_time_anim_started = Device.dwTimeGlobal; 
 	
 	// искать текущую анимацию в STEPS_MAP
-	STEPS_MAP_IT it = m_steps_map.find(anim);
+	STEPS_MAP_IT it = m_steps_map.find(motion_id);
 	if (it == m_steps_map.end()) {
 		m_step_info.disable = true;
 		return;

@@ -13,6 +13,10 @@
 #include "entity_alive.h"
 
 
+#include "level_debug.h"
+#include "actor.h"
+
+
 #define MAX_HEALTH 1.0f
 #define MIN_HEALTH -0.01f
 
@@ -403,6 +407,7 @@ float CEntityCondition::HitPowerEffect(float power_loss)
 
 CWound* CEntityCondition::AddWound(float hit_power, ALife::EHitType hit_type, u16 element)
 {
+	Msg("Add Wound!!!!!!!!!!!");
 	//максимальное число косточек 64
 	VERIFY(element  < 64 || BI_NONE == element);
 
@@ -493,7 +498,9 @@ float CEntityCondition::BleedingSpeed()
 	{
 		bleeding_speed += (*it)->TotalSize();
 	}
-	return bleeding_speed;
+	
+	
+	return (m_WoundVector.empty() ? 0.f : bleeding_speed / m_WoundVector.size());
 }
 
 
@@ -506,6 +513,22 @@ void CEntityCondition::UpdateHealth()
 	m_fDeltaHealth -= bleeding_speed;
 	VERIFY(_valid(m_fDeltaHealth));
 	ChangeBleeding(m_fV_WoundIncarnation * delta_time);
+
+	CActor *act = smart_cast<CActor *>(m_object);
+	if (!act) return;
+
+
+	CActor *pa = smart_cast<CActor *>(Level().CurrentEntity());
+	DBG().text(pa).clear();
+	string128 s;
+
+	sprintf(s,"REAL BLEEDING SPEED = [%f]",BleedingSpeed());
+	DBG().text(pa).add_item(s,400,50,D3DCOLOR_XRGB(0,0,255));
+
+	sprintf(s,"Time = [%u], bliding_speed[%f] delta_health[%f]",Device.dwTimeGlobal,bleeding_speed,m_fDeltaHealth);
+	DBG().text(pa).add_item(s,400,100,D3DCOLOR_XRGB(0,0,255));
+	sprintf(s,"V_Bleeding[%f] V_WoundIncarnation[%f]",m_fV_Bleeding, m_fV_WoundIncarnation);
+	DBG().text(pa).add_item(s,400,120,D3DCOLOR_XRGB(0,0,255));
 }
 void CEntityCondition::UpdatePower()
 {

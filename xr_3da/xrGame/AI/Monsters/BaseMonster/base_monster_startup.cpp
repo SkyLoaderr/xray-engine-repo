@@ -17,6 +17,7 @@
 void CBaseMonster::reload	(LPCSTR section)
 {
 	CCustomMonster::reload		(section);
+	CStepManager::reload		(section);
 	movement().reload	(section);
 
 	sound().add(pSettings->r_string(section,"sound_idle"),				16,		SOUND_TYPE_MONSTER_TALKING,		7,	u32(1 << 31) | 3,	MonsterSpace::eMonsterSoundIdle, 		"bip01_head");
@@ -36,8 +37,7 @@ void CBaseMonster::reload	(LPCSTR section)
 void CBaseMonster::reinit()
 {
 	inherited::reinit					();
-	movement().reinit			();
-	CStepManager::reinit				();
+	movement().reinit					();
 
 	MotionMan.reinit					();
 
@@ -89,8 +89,6 @@ void CBaseMonster::Load(LPCSTR section)
 	m_cover_evaluator_close_point	= xr_new<CCoverEvaluatorCloseToEnemy>	(&movement().restrictions());
 
 	movement().Load					(section);
-
-	CStepManager::load				(section);
 
 	MeleeChecker.load				(section);
 	Morale.load						(section);
@@ -188,14 +186,14 @@ BOOL CBaseMonster::net_Spawn (CSE_Abstract* DC)
 	m_PhysicMovementControl->SetPosition	(Position());
 	m_PhysicMovementControl->SetVelocity	(0,0,0);
 
-	movement().detail().add_velocity(eVelocityParameterStand,			CDetailPathManager::STravelParams(get_sd()->m_fsVelocityStandTurn.velocity.linear,		get_sd()->m_fsVelocityStandTurn.velocity.angular_path,		get_sd()->m_fsVelocityStandTurn.velocity.angular_real));
+	movement().detail().add_velocity(eVelocityParameterStand,		CDetailPathManager::STravelParams(get_sd()->m_fsVelocityStandTurn.velocity.linear,		get_sd()->m_fsVelocityStandTurn.velocity.angular_path,		get_sd()->m_fsVelocityStandTurn.velocity.angular_real));
 	movement().detail().add_velocity(eVelocityParameterWalkNormal,	CDetailPathManager::STravelParams(get_sd()->m_fsVelocityWalkFwdNormal.velocity.linear,	get_sd()->m_fsVelocityWalkFwdNormal.velocity.angular_path,	get_sd()->m_fsVelocityWalkFwdNormal.velocity.angular_real));
-	movement().detail().add_velocity(eVelocityParameterRunNormal,		CDetailPathManager::STravelParams(get_sd()->m_fsVelocityRunFwdNormal.velocity.linear,	get_sd()->m_fsVelocityRunFwdNormal.velocity.angular_path,	get_sd()->m_fsVelocityRunFwdNormal.velocity.angular_real));
+	movement().detail().add_velocity(eVelocityParameterRunNormal,	CDetailPathManager::STravelParams(get_sd()->m_fsVelocityRunFwdNormal.velocity.linear,	get_sd()->m_fsVelocityRunFwdNormal.velocity.angular_path,	get_sd()->m_fsVelocityRunFwdNormal.velocity.angular_real));
 	movement().detail().add_velocity(eVelocityParameterWalkDamaged,	CDetailPathManager::STravelParams(get_sd()->m_fsVelocityWalkFwdDamaged.velocity.linear,	get_sd()->m_fsVelocityWalkFwdDamaged.velocity.angular_path,	get_sd()->m_fsVelocityWalkFwdDamaged.velocity.angular_real));
 	movement().detail().add_velocity(eVelocityParameterRunDamaged,	CDetailPathManager::STravelParams(get_sd()->m_fsVelocityRunFwdDamaged.velocity.linear,	get_sd()->m_fsVelocityRunFwdDamaged.velocity.angular_path,	get_sd()->m_fsVelocityRunFwdDamaged.velocity.angular_real));
-	movement().detail().add_velocity(eVelocityParameterSteal,			CDetailPathManager::STravelParams(get_sd()->m_fsVelocitySteal.velocity.linear,			get_sd()->m_fsVelocitySteal.velocity.angular_path,			get_sd()->m_fsVelocitySteal.velocity.angular_real));
-	movement().detail().add_velocity(eVelocityParameterDrag,			CDetailPathManager::STravelParams(-get_sd()->m_fsVelocityDrag.velocity.linear,			get_sd()->m_fsVelocityDrag.velocity.angular_path,			get_sd()->m_fsVelocityDrag.velocity.angular_real));
-	movement().detail().add_velocity(eVelocityParameterRunAttack,		CDetailPathManager::STravelParams(get_sd()->m_fsVelocityRunAttack.velocity.linear,		get_sd()->m_fsVelocityRunAttack.velocity.angular_path,		get_sd()->m_fsVelocityRunAttack.velocity.angular_real));
+	movement().detail().add_velocity(eVelocityParameterSteal,		CDetailPathManager::STravelParams(get_sd()->m_fsVelocitySteal.velocity.linear,			get_sd()->m_fsVelocitySteal.velocity.angular_path,			get_sd()->m_fsVelocitySteal.velocity.angular_real));
+	movement().detail().add_velocity(eVelocityParameterDrag,		CDetailPathManager::STravelParams(-get_sd()->m_fsVelocityDrag.velocity.linear,			get_sd()->m_fsVelocityDrag.velocity.angular_path,			get_sd()->m_fsVelocityDrag.velocity.angular_real));
+	movement().detail().add_velocity(eVelocityParameterRunAttack,	CDetailPathManager::STravelParams(get_sd()->m_fsVelocityRunAttack.velocity.linear,		get_sd()->m_fsVelocityRunAttack.velocity.angular_path,		get_sd()->m_fsVelocityRunAttack.velocity.angular_real));
 	
 	monster_squad().register_member((u8)g_Team(),(u8)g_Squad(), this);
 

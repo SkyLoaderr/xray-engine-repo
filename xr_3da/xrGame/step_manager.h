@@ -1,5 +1,4 @@
 #pragma once
-
 #include "step_manager_defs.h"
 
 class CCustomMonster;
@@ -14,7 +13,6 @@ class CStepManager {
 	CCustomMonster	*m_object;
 
 	u16				m_foot_bones[MAX_LEGS_COUNT];
-	shared_str		m_animation;
 	CBlend			*m_blend;
 
 	u32				m_time_anim_started;
@@ -25,11 +23,10 @@ public:
 
 	// init on construction
 	virtual DLL_Pure	*_construct				();
-	virtual	void		load					(LPCSTR section);
-	virtual void		reinit					();
+	virtual	void		reload					(LPCSTR section);
 	
 	// call on set animation
-			void		on_animation_start		(shared_str anim, CBlend *blend);
+			void		on_animation_start		(MotionID motion_id, CBlend *blend);
 	// call on updateCL
 			void		update					();
 	

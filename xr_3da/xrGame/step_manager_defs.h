@@ -2,6 +2,8 @@
 #define MIN_LEGS_COUNT	1
 #define MAX_LEGS_COUNT	4 
 
+struct MotionID;
+
 struct SStepParam {
 	struct{
 		float	time;
@@ -11,7 +13,7 @@ struct SStepParam {
 	u8			cycles;
 };
 
-DEFINE_MAP(shared_str,	SStepParam, STEPS_MAP, STEPS_MAP_IT);
+DEFINE_MAP(MotionID, SStepParam, STEPS_MAP, STEPS_MAP_IT);
 
 struct SStepInfo {
 	struct {
