@@ -12,6 +12,28 @@ void	game_sv_Deathmatch::Create					(LPCSTR options)
 void	game_sv_Deathmatch::OnRoundStart			()
 {
 	__super::OnRoundStart	();
+
+	// Respawn all players and some info
+	Lock	();
+	u32		cnt = get_count();
+	for		(u32 it=0; it<cnt; it++)	
+	{
+		// init
+		game_PlayerState*	ps	=	get_it	(it);
+		ps->kills				=	0;
+		ps->deaths				=	0;
+
+		// spawn
+		LPCSTR	options			=	get_name_it	(it);
+		xrServerEntity*		E	=	spawn_begin	("actor");													// create SE
+		xrSE_Actor*	A			=	(xrSE_Actor*) E;					
+		strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
+		A->s_team				=	u8(0);																	// no-team
+		A->s_flags				=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER;// flags
+		assign_RP				(A);
+		spawn_end				(A,get_it_2_id(it));
+	}
+	Unlock	();
 }
 
 void	game_sv_Deathmatch::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
