@@ -5,6 +5,7 @@
 
 class base_lighting
 {
+public:
 	xr_vector<R_Light>		rgb;		// P,N	
 	xr_vector<Fvector>		hemi;		// P,N	
 	float					hemi_e;
@@ -15,6 +16,7 @@ class base_lighting
 };
 class base_color
 {
+public:
 	Fvector					rgb;		// - all static lighting
 	float					hemi;		// - hemisphere
 	float					sun;		// - sun
@@ -35,8 +37,8 @@ public:
 	Fvector					P;
 	Fvector					N;
 	base_color				C;			// all_lighting info
-	float					L_hemi;		// hemisphere
 public:
+	base_Vertex()			{ }
 	virtual ~base_Vertex()	= 0; 
 };
 class base_Face
