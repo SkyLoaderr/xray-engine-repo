@@ -86,9 +86,9 @@ end
 --'---------------------------------------------------------------------------------
 function dialog_allowed(object, victim, id)
 	if id ~= nil then
-		printf("*DIALOGS*: dialog_allowed:%s", id)
+		printf("*DIALOGS*: dialog_allowed: %s", id)
 	else
-		printf("*DIALOGS*: dialog_allowed:nil")
+		printf("*DIALOGS*: dialog_allowed: nil")
 	end
 	if db.storage[victim:id()].actor_dialogs ~= nil then
 		for k,v in db.storage[victim:id()].actor_dialogs do
