@@ -31,12 +31,10 @@ CArtifactMerger::~CArtifactMerger(void)
 	m_ArtifactList.clear();
 }
 
-
-void CArtifactMerger::SetArtifactMergeFunctor(const luabind::functor<void>& artifactMergeFunctor)
+void SetArtifactMergeFunctor(const luabind::functor<void>& artifactMergeFunctor)
 {
 	g_ArtifactMergeFunctor = artifactMergeFunctor;
 }
-
 
 BOOL CArtifactMerger::net_Spawn(LPVOID DC) 
 {

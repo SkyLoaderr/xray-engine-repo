@@ -19,6 +19,7 @@
 
 DEF_LIST (ARTIFACT_LIST, CArtifact*);
 
+void SetArtifactMergeFunctor(const luabind::functor<void> &artifactMergeFunctor);
 
 class CArtifactMerger : public CInventoryItem
 {
@@ -48,8 +49,6 @@ public:
 	//артефктами, что находятся в списке
 	//(вызов скриптованной процедуры)
 	bool PerformMerge();
-
-	void SetArtifactMergeFunctor(const luabind::functor<void> &artifactMergeFunctor);
 
 	//количество различных артефактов в списке
 	template<typename A> int GetArtifactNum()
