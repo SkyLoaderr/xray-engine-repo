@@ -93,6 +93,10 @@ function evaluator_factory_bandit:__init( name, storage ) super ()
 end
 
 function evaluator_factory_bandit:evaluate()
+    if not the_actor then
+    	the_actor = level.actor()
+    end
+
     --printf( "s1" )
     local b = self.a.enabled == true
 --    if b then sb = "true" else sb = "false" end
@@ -157,10 +161,6 @@ function action_go_to_pos:initialize()
 
     if not self.a.partner then
         self.a.partner = level.object( self.a.partner_name )
-    end
-
-    if not the_actor then
-    	the_actor = level.actor()
     end
 
     novice_enemy( self )
