@@ -102,6 +102,8 @@ function main()
 				anim	(anim.danger),
 				cond	(cond.time_end, 5000)
 				)
+			printf("b!")
+			flush()
 		wait(1000)
 			action(
 				stalker2,
@@ -110,6 +112,8 @@ function main()
 				anim	(anim.danger),
 				cond	(cond.time_end, 9000)
 				)
+			printf("c!")
+			flush()
 			break
 		end
 		wait()			
