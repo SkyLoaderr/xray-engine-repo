@@ -1,3 +1,4 @@
+// exxZERO Time Stamp AddIn. Document modified at : Thursday, March 07, 2002 14:49:48 , by user : Oles , from computer : OLES
 #ifndef __XR_INPUT__
 #define __XR_INPUT__
 
@@ -41,7 +42,7 @@ struct sxr_key
 };
 
 class ENGINE_API CInput 
-#ifdef ENGINE_BUILD 
+#ifndef M_BORLAND
 	:
 	public pureFrame,
 	public pureAppActivate,
