@@ -180,5 +180,6 @@ void CBuild::IsolateVertices	(BOOL bProgress)
 	g_vertices.erase	(_end,g_vertices.end());
 	g_bUnregister		= true;
 	mem_Compact			();
-	clMsg				("::compact:: %d verts removed",verts_old-g_vertices.size());
+	u32	_count			= verts_old-g_vertices.size();
+	if	(_count)		clMsg	("::compact:: %d verts removed",_count);
 }
