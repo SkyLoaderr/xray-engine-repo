@@ -54,9 +54,11 @@ void CLight_Compute_XFORM_and_VIS::compute_xf_spot	(light* L)
 	float	factor				= ps_r2_ls_squality * factor0 * factor1 * factor2 * factor3 * factor4;
 	
 	// final size calc
-	L->X.S.size					= iFloor( factor * SMAP_adapt_optimal );
-	if (L->X.S.size<SMAP_adapt_min)		L->X.S.size	= SMAP_adapt_min;
-	if (L->X.S.size>SMAP_adapt_max)		L->X.S.size	= SMAP_adapt_max;
+	u32 _size					= iFloor( factor * SMAP_adapt_optimal );
+	if (_size<SMAP_adapt_min)	_size	= SMAP_adapt_min;
+	if (_size>SMAP_adapt_max)	_size	= SMAP_adapt_max;
+	u32 _diff					= _abs	(int(_size)-int(L->X.S.size));
+	if (_diff>2) 				L->X.S.size	= _size;
 
 	// make N pixel border
 	L->X.S.view.build_camera_dir	(L_pos,L_dir,L_up);

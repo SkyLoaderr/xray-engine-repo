@@ -49,25 +49,25 @@ public:
 
 	union			_xform	{
 		struct		_D		{
-			Fmatrix						combine;
-			s32							minX,maxX;
-			s32							minY,maxY;
-			BOOL						transluent;
+			Fmatrix						combine	;
+			s32							minX,maxX	;
+			s32							minY,maxY	;
+			BOOL						transluent	;
 		}	D;
 		struct		_P		{
-			Fmatrix						world;
-			Fmatrix						view;
-			Fmatrix						project;
-			Fmatrix						combine;
+			Fmatrix						world		;
+			Fmatrix						view		;
+			Fmatrix						project		;
+			Fmatrix						combine		;
 		}	P;
 		struct		_S		{
-			Fmatrix						view;
-			Fmatrix						project;
-			Fmatrix						combine;
-			u32							size;
-			u32							posX;
-			u32							posY;
-			BOOL						transluent;
+			Fmatrix						view		;
+			Fmatrix						project		;
+			Fmatrix						combine		;
+			u32							size		;
+			u32							posX		;
+			u32							posY		;
+			BOOL						transluent	;
 		}	S;
 	}	X;
 #endif
