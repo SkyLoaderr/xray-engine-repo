@@ -816,7 +816,7 @@ void CUIBuyWeaponWnd::Update()
 	}
 
 	// Если деньги иземниличь то обновить и их
-	static int oldMoneyAmount	= 0;
+	static int oldMoneyAmount	= 0xffffffff;
 
 	if (oldMoneyAmount != m_iMoneyAmount)
 	{
@@ -1696,7 +1696,7 @@ const u8 CUIBuyWeaponWnd::GetCurrentSuit()
 
 void CUIBuyWeaponWnd::CheckBuyAvailability()
 {
-	// Прбоегаемся по всем вещам и проверяем иx на возможность покупки
+	// Пробегаемся по всем вещам и проверяем иx на возможность покупки
 	for (WEAPON_TYPES_it it = m_WeaponSubBags.begin(); it != m_WeaponSubBags.end(); ++it)	
 	{
 		for (DRAG_DROP_LIST_it it2 = (*it)->GetDragDropItemsList().begin(); it2 != (*it)->GetDragDropItemsList().end(); ++it2)
