@@ -36,13 +36,9 @@ HRESULT CreateTexture(LPDIRECTDRAWSURFACE7& pTexture, LPSTR pSrcName, int* w, in
 	HRESULT hr;
 	D3DX_SURFACEFORMAT fmt = D3DX_SF_UNKNOWN; 
 	DWORD mip_num=D3DX_DEFAULT;
-	__try {
-		hr=D3DXCreateTextureFromFile(	m_dx->pD3DDev, 0, (DWORD*)w, (DWORD*)h, &fmt, 0, 
+
+	hr=D3DXCreateTextureFromFile(	m_dx->pD3DDev, 0, (DWORD*)w, (DWORD*)h, &fmt, 0, 
 										&pTexture, &mip_num, pSrcName, D3DX_FT_LINEAR );
-	} __except(EXCEPTION_EXECUTE_HANDLER)
-	{
-		return D3DERR_TEXTURE_CREATE_FAILED;
-	}
 	if (!FAILED(hr))
 	{
 		switch (fmt){
