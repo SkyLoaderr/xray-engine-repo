@@ -89,7 +89,7 @@ function fract:calculate() -- просчет лагеря
 		for k,v in self.Object do
 			self:setJob(v)
 		end
-		self:print()
+--		self:print()
 	end
 end
 function fract:print()

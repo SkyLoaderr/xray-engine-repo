@@ -498,7 +498,7 @@ function add_to_binder_pda(object, char_ini)
 
     if char_ini:section_exist ("tradeseller") == true then
         if char_ini:line_exist("tradeseller", "enabled") == true then
-                xr_motivator.storage[self.object:id()].tradeseller.enabled = char_ini:r_bool("tradeseller", "enabled")
+                xr_motivator.storage[object:id()].tradeseller.enabled = char_ini:r_bool("tradeseller", "enabled")
         end
     end
 end
