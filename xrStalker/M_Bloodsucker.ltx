@@ -8,11 +8,12 @@ stand_attack_2 =	  	0.45,		40,		    400,        0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6
 
 [m_bloodsucker_step_params]
 ; order: front_left, front_right, back_right, back_left
-;------------------------------------------------------
-;	anim			| time1 | power1 | time2 | power2 | 
-;------------------------------------------------------
-stand_walk_fwd_0=	 1,  0.9,     1,	  0.2,    0.7 
-stand_run_0		=	 1,  0.2,     1,	  0.7,    0.7
+;--------------------------------------------------------------------------
+;	anim			Cycles	| time1 | power1 | time2 | power2 | 
+;--------------------------------------------------------------------------
+stand_walk_fwd_0	=	 1,  	   0.9,     1,	   0.2,      0.7 
+stand_run_0		=	 1,  	   0.2,     1,	   0.7,      0.7
+
 
 [m_bloodsucker_e]
 GroupControlSection	 = spawn_group
@@ -213,5 +214,5 @@ postprocess_new			= postprocess_new
 attack_effector			= monster_attack_effector
 
 attack_params			= m_bloodsucker_attack_params
-step_params				= m_bloodsucker_step_params
+step_params			= m_bloodsucker_step_params
 
