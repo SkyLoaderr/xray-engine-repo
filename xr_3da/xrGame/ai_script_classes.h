@@ -150,7 +150,13 @@ public:
 
 			 const Fvector		&GetPosition	() const
 	{
-		return				(m_tpSound->get_params()->position);
+		const CSound_params	*l_tpSoundParams = m_tpSound->get_params();
+		if (l_tpSoundParams)
+			return			(l_tpSoundParams->position);
+		else {
+			Log				("* [LUA] Sound was not launched, can't get position!");
+			return			(Fvector().set(0,0,0));
+		}
 	}
 
 			 const float		GetFrequency	() const
