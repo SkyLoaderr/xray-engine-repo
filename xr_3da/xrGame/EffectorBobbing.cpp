@@ -9,6 +9,7 @@
 CEffectorBobbing::CEffectorBobbing() : CEffector(cefBobbing,10000.f)
 {
 	fTime			= 0;
+	fReminderFactor	= 0;
 }
 
 CEffectorBobbing::~CEffectorBobbing	()
@@ -24,11 +25,14 @@ void CEffectorBobbing::SetState(DWORD mstate){
 #define SPEED_RUN		10.f
 #define SPEED_WALK		7.f
 #define CROUCH_FACTOR	0.75f
+#define SPEED_REMINDER	5.f
 
 void CEffectorBobbing::Process		(Fvector &p, Fvector &d, Fvector &n)
 {
 	fTime			+= Device.fTimeDelta;
 	if (dwMState&CActor::EMoveCommand::mcAnyMove){
+		if (fReminderFactor<1.f)	fReminderFactor += SPEED_REMINDER*Device.fTimeDelta;
+		else						fReminderFactor = 1.f;
 		Fmatrix		M;
 		M.identity	();
 		M.j.set		(n);
@@ -38,14 +42,14 @@ void CEffectorBobbing::Process		(Fvector &p, Fvector &d, Fvector &n)
 		
 		// apply footstep bobbing effect
 		Fvector dangle;
-		float k = (dwMState&CActor::EMoveCommand::mcCrouch)?CROUCH_FACTOR:1.f;
-		float A = (CActor::isAccelerated(dwMState)?AMPLITUDE_RUN:AMPLITUDE_WALK)*k;
-		float ST= ((CActor::isAccelerated(dwMState)?SPEED_RUN:SPEED_WALK)*fTime)*k;
+		float k		= ((dwMState&CActor::EMoveCommand::mcCrouch)?CROUCH_FACTOR:1.f);
+		float A		= (CActor::isAccelerated(dwMState)?AMPLITUDE_RUN:AMPLITUDE_WALK)*k;
+		float ST	= ((CActor::isAccelerated(dwMState)?SPEED_RUN:SPEED_WALK)*fTime)*k;
 	
-		float _sin	= fabsf(sinf(ST)*A);
-		float _cos	= cosf(ST)*A;
+		float _sin	= fabsf(sinf(ST)*A)*fReminderFactor;
+		float _cos	= cosf(ST)*A*fReminderFactor;
 
-		p.y			+=	_sin; 
+		p.y			+=	_sin;
 		dangle.x	=	_cos;
 		dangle.z	=	_cos;
 		dangle.y	=	_sin;
@@ -58,6 +62,9 @@ void CEffectorBobbing::Process		(Fvector &p, Fvector &d, Fvector &n)
 		
 		d.set		(mR.k);
 		n.set		(mR.j);
+	}else{
+		if (fReminderFactor>0.f)	fReminderFactor -= SPEED_REMINDER*Device.fTimeDelta;
+		else						fReminderFactor = 0.f;
 	}
 //	else{
 //		fTime		= 0;

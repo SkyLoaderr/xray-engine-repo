@@ -21,8 +21,7 @@ public:
 
 		Item() : first(0), second(0), comment(0) {};
 	};
-	typedef std::vector<Item>	Items;
-	typedef Items::iterator		SectIt;
+	DEFINE_VECTOR(Item,Items,SectIt);
 	struct	Sect {
 		LPSTR			Name;
 		Items			Data;
@@ -32,9 +31,7 @@ public:
 		IC int			size()	{ return Data.size();	}
 		IC void			clear()	{ Data.clear();			}
 	};
-	typedef	std::vector<Sect>	Root;
-	typedef Root::iterator		RootIt;
-
+	DEFINE_VECTOR(Sect,Root,RootIt);
 	struct sect_pred : public std::binary_function<Sect&, Sect&, bool> 
 	{	
 		IC bool operator() (const Sect& x, const Sect& y) const
@@ -43,7 +40,7 @@ public:
 	struct item_pred : public std::binary_function<Item&, Item&, bool> 
 	{	
 		IC bool operator() (const Item& x, const Item& y) const
-		{	
+		{
 			if ((0==x.first) || (0==y.first))	return x.first<y.first;
 			else								return strcmp(x.first,y.first)<0;
 		}
@@ -66,6 +63,7 @@ public:
 	BOOL		LineExists		( LPCSTR S, LPCSTR L );
 	DWORD		LineCount		( LPCSTR S );
 	BOOL		SectionExists	( LPCSTR S );
+	Root&		Sections		( ){return DATA;}
 
 	CLASS_ID	ReadCLSID		( LPCSTR S, LPCSTR L );
 	LPCSTR 		ReadSTRING		( LPCSTR S, LPCSTR L );

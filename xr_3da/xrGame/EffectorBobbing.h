@@ -12,6 +12,7 @@ class CEffectorBobbing : public CEffector
 	float	fSpeed;
 
 	DWORD	dwMState;
+	float	fReminderFactor;
 public:
 			CEffectorBobbing	();
 	virtual ~CEffectorBobbing	();
