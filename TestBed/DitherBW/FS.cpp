@@ -97,8 +97,8 @@ ENGINE_API void *	FileDecompress	(const char *fn, const char* sign, DWORD* size)
 
 	int	H = _open	(fn,O_BINARY|O_RDONLY);
 	_read	(H,&F,8);
-    R_ASSERT(strcmp(M,F)==0);
-//	R_ASSERT(M==F); 
+    R_ASSERT(strncmp(M,F,8)==0);
+
 	void* ptr = 0; DWORD SZ;
 	SZ = _readLZ (H, ptr, filelength(H)-8);
 	_close	(H);
