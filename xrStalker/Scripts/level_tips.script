@@ -1,22 +1,35 @@
 tips = {}
 
-function fill_tips(object, name, distance)
+function fill_tips(object, name, distance, cond)
 	if tips[name] == nil then
 		t = { info = name,
 			position = object:position(),
 			radius = distance,
-			done = nil }
+			conditions = cond}
 		tips[name] = t
 	end
 end
 
 function get_tips(actor)
 	for k,v in tips do
-		if v.done ~= true then
+		if actor:has_info(v.info) == false then			
 			if actor:position():distance_to(v.position) <= v.radius then
-				actor:give_info_portion_via_pda(v.info, actor)
-				v.done = true
+				local enable = true
+				
+				for kk,vv in v.conditions do
+					if actor:has_info(vv) == false then
+						enable = false
+						break
+					end
+				end
+				
+				if enable then
+					actor:give_info_portion_via_pda(v.info, actor)
+					tips[k] = nil
+				end
 			end
+		else
+			tips[k] = nil
 		end
 	end
 end

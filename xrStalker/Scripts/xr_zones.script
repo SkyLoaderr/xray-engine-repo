@@ -135,7 +135,14 @@ function zone_binder:net_spawn( server_object )
 
 	if ini:section_exist( "tips" ) then
 		if ini:line_exist("tips", "name") then
-			level_tips.fill_tips(self.object, ini:r_string("tips", "name"), ini:r_s32("tips", "distance"))
+			local conditions = {}
+			if ini:line_exist("tips", "conditions") then
+				conditions = parse_names(ini:r_string("tips", "conditions"))
+			end
+			level_tips.fill_tips(self.object, 
+								ini:r_string("tips", "name"), 
+								ini:r_s32("tips", "distance"),
+								conditions)
 		end
 	end
 
