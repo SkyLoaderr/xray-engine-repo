@@ -1,0 +1,173 @@
+<?xml version='1.0' encoding="windows-1251"?>
+
+<xml>
+<!---------------------------ZOMBIED----------------------->
+	<specific_character id="zombied_default1" team_default = "1">
+		<name>Зомбированный сталкер</name>
+		<icon x="20" y="10"></icon>
+		<map_icon x="7" y="0"></map_icon>
+		<bio>Один из сталкеров, которым не повезло.</bio>
+
+		<team>Zombied</team>
+		
+		<class>Zombied</class>
+		<community>zombied</community>
+		
+		<rank>30</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\stalker_zombi\stalker_zombie1</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pm \n
+			ammo_9x18_fmj = 1 \n
+			wpn_toz34 \n
+			ammo_12x70_buck = 1 \n
+		</supplies>
+	</specific_character>
+
+	<specific_character id="zombied_default2" team_default = "1">
+		<name>Зомбированный сталкер</name>
+		<icon x="20" y="10"></icon>
+		<map_icon x="7" y="0"></map_icon>
+		<bio>Один из сталкеров, которым не повезло.</bio>
+
+		<team>Zombied</team>
+		
+		<class>Zombied</class>
+		<community>zombied</community>
+	
+		<rank>30</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\stalker_zombi\stalker_zombie2</visual>
+		<supplies>
+			[spawn] \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
+			wpn_toz34 \n
+			ammo_12x70_buck = 1 \n
+		</supplies>
+	</specific_character>
+
+	<specific_character id="zombied_default3" team_default = "1">
+		<name>Зомбированный сталкер</name>
+		<icon x="20" y="10"></icon>
+		<map_icon x="7" y="0"></map_icon>
+		<bio>Один из сталкеров, которым не повезло.</bio>
+
+		<team>Zombied</team>
+		
+		<class>Zombied</class>
+		<community>zombied</community>
+		
+		<rank>30</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\stalker_zombi\stalker_zombie3</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pb \n
+			ammo_9x18_fmj = 1 \n
+			wpn_bm16 \n
+			ammo_12x70_buck = 1 \n
+		</supplies>
+	</specific_character>
+
+	<specific_character id="zombied_default4" team_default = "1">
+		<name>Зомбированный сталкер</name>
+		<icon x="20" y="10"></icon>
+		<map_icon x="7" y="0"></map_icon>
+		<bio>Один из сталкеров, которым не повезло.</bio>
+
+		<team>Zombied</team>
+		
+		<class>Zombied</class>
+		<community>zombied</community>
+		
+		<rank>30</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\stalker_zombi\stalker_zombie4</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pm \n
+			ammo_9x18_fmj = 1 \n
+			wpn_bm16 \n
+			ammo_12x70_buck = 1 \n
+		</supplies>
+	</specific_character>
+
+	<specific_character id="zombied_default5" team_default = "1">
+		<name>Зомбированный сталкер</name>
+		<icon x="20" y="10"></icon>
+		<map_icon x="7" y="0"></map_icon>
+		<bio>Один из сталкеров, которым не повезло.</bio>
+
+		<team>Zombied</team>
+		
+		<class>Zombied</class>
+		<community>zombied</community>
+		
+		<rank>30</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\stalker_zombi\stalker_zombie5</visual>
+		<supplies>
+			[spawn] \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
+			wpn_ak74 \n
+			ammo_5.45x39_fmj = 1 \n
+		</supplies>
+	</specific_character>
+
+	<specific_character id="zombied_default6" team_default = "1">
+		<name>Зомбированный сталкер</name>
+		<icon x="20" y="10"></icon>
+		<map_icon x="7" y="0"></map_icon>
+		<bio>Один из сталкеров, которым не повезло.</bio>
+
+		<team>Zombied</team>
+		
+		<class>Zombied</class>
+		<community>zombied</community>
+	
+		<rank>30</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\stalker_zombi\stalker_zombie6</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pb \n
+			ammo_9x18_fmj = 1 \n
+			wpn_ak74u \n
+			ammo_5.45x39_fmj = 1 \n
+		</supplies>
+	</specific_character>
+
+	<specific_character id="zombied_default7" team_default = "1">
+		<name>Зомбированный сталкер</name>
+		<icon x="20" y="10"></icon>
+		<map_icon x="7" y="0"></map_icon>
+		<bio>Один из сталкеров, которым не повезло.</bio>
+
+		<team>Zombied</team>
+		
+		<class>Zombied</class>
+		<community>zombied</community>
+		
+		<rank>30</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\stalker_zombi\stalker_zombie7</visual>
+		<supplies>
+			[spawn] \n
+			wpn_hpsa \n
+			ammo_9x19_fmj = 1 \n
+			wpn_mp5 \n
+			ammo_9x19_fmj = 1 \n
+		</supplies>
+	</specific_character>
+
+</xml>
