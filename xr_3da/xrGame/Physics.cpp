@@ -486,10 +486,6 @@ void SaveContacts(dGeomID o1, dGeomID o2,dJointGroupID jointGroup)
 	CollideIntoGroup(o1,o2,jointGroup);
 }
 
-
-
-
-
 void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 {
 	dBodyID b=dGeomGetBody(c->g1);
