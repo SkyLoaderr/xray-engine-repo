@@ -6,12 +6,13 @@
 
 CSoundRender_Source::CSoundRender_Source	()
 {
-	m_fMinDist	= DS3D_DEFAULTMINDISTANCE;
-	m_fMaxDist	= 300.f;
-	m_uGameType	= 0;
-	fname		= 0;
-	wave		= 0;
-    ovf			= xr_new<OggVorbis_File>();
+	m_fMinDist		= DS3D_DEFAULTMINDISTANCE;
+	m_fMaxDist		= 300.f;
+	m_fStartVolume	= 1.f;
+	m_uGameType		= 0;
+	fname			= 0;
+	wave			= 0;
+    ovf				= xr_new<OggVorbis_File>();
 }
 
 CSoundRender_Source::~CSoundRender_Source	()

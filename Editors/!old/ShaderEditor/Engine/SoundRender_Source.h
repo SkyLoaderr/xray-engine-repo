@@ -23,6 +23,7 @@ public:
 
 	float					m_fMinDist;
 	float					m_fMaxDist;
+    float					m_fStartVolume;
 	u32						m_uGameType;
 private:
 	void					LoadWave 				(LPCSTR name, BOOL b3D);
