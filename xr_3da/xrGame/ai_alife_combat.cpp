@@ -279,6 +279,9 @@ void CSE_ALifeSimulator::vfAssignDeathPosition(CSE_ALifeCreatureAbstract *tpALif
 		CSE_ALifeAnomalousZone				*l_tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(tpALifeSchedulable);
 		if (l_tpALifeAnomalousZone) {
 			vfAssignArtefactPosition		(l_tpALifeAnomalousZone,tpALifeCreatureAbstract);
+			CSE_ALifeMonsterAbstract		*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeCreatureAbstract);
+			if (l_tpALifeMonsterAbstract)
+				l_tpALifeMonsterAbstract->m_tPrevGraphID = l_tpALifeMonsterAbstract->m_tNextGraphID = l_tpALifeMonsterAbstract->m_tGraphID;
 			return;
 		}
 	}
@@ -290,6 +293,9 @@ void CSE_ALifeSimulator::vfAssignDeathPosition(CSE_ALifeCreatureAbstract *tpALif
 	tpALifeCreatureAbstract->m_tNodeID		= l_tpaLevelPoints[l_dwDeathpointIndex].tNodeID;
 	R_ASSERT2								((getAI().m_tpaGraph[tGraphID].tLevelID != m_tCurrentLevelID) || (u32(tpALifeCreatureAbstract->m_tNodeID) < getAI().Header().count),"Invalid node");
 	tpALifeCreatureAbstract->m_fDistance	= l_tpaLevelPoints[l_dwDeathpointIndex].fDistance;
+	CSE_ALifeMonsterAbstract				*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeCreatureAbstract);
+	if (l_tpALifeMonsterAbstract)
+		l_tpALifeMonsterAbstract->m_tPrevGraphID = l_tpALifeMonsterAbstract->m_tNextGraphID = l_tpALifeMonsterAbstract->m_tGraphID;
 }
 
 void CSE_ALifeSimulator::vfAppendItemVector(OBJECT_VECTOR &tObjectVector, ITEM_P_VECTOR &tItemList)

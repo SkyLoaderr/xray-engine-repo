@@ -321,7 +321,6 @@ void CSE_ALifeGraphRegistry::vfChangeObjectGraphPoint(CSE_ALifeDynamicObject *tp
 	tpALifeDynamicObject->m_tGraphID	= tNextGraphPointID;
 	tpALifeDynamicObject->o_Position	= getAI().m_tpaGraph[tpALifeDynamicObject->m_tGraphID].tLocalPoint;
 	tpALifeDynamicObject->m_tNodeID		= getAI().m_tpaGraph[tpALifeDynamicObject->m_tGraphID].tNodeID;
-	tpALifeDynamicObject->m_fDistance	= 0.f;
 }
 
 // events
