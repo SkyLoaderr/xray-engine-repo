@@ -230,15 +230,15 @@ bool CDetailPathManager::build_line_trajectory(
 	VERIFY				(ai().level_graph().valid_vertex_id(vertex_id));
 	STravelPathPoint	t;
 	t.velocity			= velocity;
+	if (path && !path->empty()) {
+		u32				index = path->back().velocity;
+		xr_map<u32,STravelParams>::const_iterator I = m_movement_params.find(index);
+		VERIFY			(m_movement_params.end() != I);
+		if (fis_zero((*I).second.linear_velocity))
+			path->back().velocity = velocity;
+	}
 	if (ai().level_graph().inside(vertex_id,dest.point)) {
 		if (path) {
-			if (m_path.size()) {
-				u32				index = m_path.back().velocity;
-				xr_map<u32,STravelParams>::const_iterator I = m_movement_params.find(index);
-				VERIFY			(m_movement_params.end() != I);
-				if (fis_zero((*I).second.linear_velocity))
-					m_path.back().velocity = velocity;
-			}
 			t.position	= ai().level_graph().v3d(dest.point);
 			t.vertex_id	= vertex_id;
 			path->push_back(t);
