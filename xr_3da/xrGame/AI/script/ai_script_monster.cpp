@@ -99,7 +99,7 @@ void CScriptMonster::vfUpdateParticles()
 	CParticleAction	&l_tParticleAction = GetCurrentAction()->m_tParticleAction;
 	LPCSTR			l_caBoneName = *l_tParticleAction.m_caBoneName;
 
-	if (l_caBoneName && xr_strlen(l_caBoneName)) {
+	if (l_caBoneName && strlen(l_caBoneName)) {
 		CParticlesObject	*l_tpParticlesObject = l_tParticleAction.m_tpParticleSystem;
 		l_tpParticlesObject->UpdateParent(GetUpdatedMatrix(l_caBoneName,l_tParticleAction.m_tParticlePosition,l_tParticleAction.m_tParticleAngles),l_tParticleAction.m_tParticleVelocity);
 	}
@@ -109,7 +109,7 @@ void CScriptMonster::vfUpdateSounds()
 {
 	CSoundAction	&l_tSoundAction = GetCurrentAction()->m_tSoundAction;
 	LPCSTR			l_caBoneName	= *l_tSoundAction.m_caBoneName;
-	if (l_caBoneName && xr_strlen(l_caBoneName) && l_tSoundAction.m_tpSound && l_tSoundAction.m_tpSound->feedback)
+	if (l_caBoneName && strlen(l_caBoneName) && l_tSoundAction.m_tpSound && l_tSoundAction.m_tpSound->feedback)
 		l_tSoundAction.m_tpSound->feedback->set_position(GetUpdatedMatrix(l_caBoneName,l_tSoundAction.m_tSoundPosition,Fvector().set(0,0,0)).c);
 }
 
@@ -170,8 +170,8 @@ const Fmatrix CScriptMonster::GetUpdatedMatrix(LPCSTR caBoneName, const Fvector 
 	l_tMatrix.setHPB(VPUSH(tAngleOffset));
 	l_tMatrix.c		= tPositionOffset;
 
-	if (caBoneName && xr_strlen(caBoneName)) {
-		CBoneInstance	&l_tBoneInstance = PKinematics(Visual())->LL_GetBoneInstance(PKinematics(Visual())->LL_BoneID(caBoneName));
+	if (caBoneName && strlen(caBoneName)) {
+		CBoneInstance	&l_tBoneInstance = PKinematics(Visual())->LL_GetInstance(PKinematics(Visual())->LL_BoneID(caBoneName));
 //#pragma todo("Dima to Dima : null callbacks after completion")
 //		if (fpBoneCallback)
 //			l_tBoneInstance.set_callback(fpBoneCallback,this);
@@ -198,7 +198,7 @@ bool CScriptMonster::bfAssignSound(CEntityAction *tpEntityAction)
 				l_tSoundAction.m_bCompleted = true;
 	}
 	else {
-		if (xr_strlen(l_tSoundAction.m_caSoundToPlay))
+		if (*l_tSoundAction.m_caSoundToPlay && strlen(*l_tSoundAction.m_caSoundToPlay))
 			::Sound->create	(*(l_tSoundAction.m_tpSound = xr_new<ref_sound>()),TRUE,*l_tSoundAction.m_caSoundToPlay);
 		else
 			l_tSoundAction.m_bCompleted = true;
@@ -243,6 +243,7 @@ void CScriptMonster::vfChoosePatrolPathPoint(CEntityAction *tpEntityAction)
 	CLevel::SPathPairIt	I = Level().m_PatrolPaths.find(*l_tMovementAction.m_caPatrolPathToGo);
 	if (I == Level().m_PatrolPaths.end()) {
 		LuaOut		(Lua::eLuaMessageTypeError,"Patrol path %s not found!",l_tMovementAction.m_caPatrolPathToGo);
+		m_iPreviousPatrolPoint = -1;
 		l_tMovementAction.m_bCompleted = true;
 		return;
 	}
@@ -274,7 +275,7 @@ void CScriptMonster::vfChoosePatrolPathPoint(CEntityAction *tpEntityAction)
 			default : NODEFAULT;
 		}
 		R_ASSERT	(l_iFirst>=0);
-		m_iPreviousPatrolPoint	= m_iCurrentPatrolPoint;
+		m_iPreviousPatrolPoint	= l_iFirst;
 		m_iCurrentPatrolPoint	= l_iFirst;
 		l_tMovementAction.m_tNodeID = l_tPatrolPath.tpaWayPoints[m_iCurrentPatrolPoint].dwNodeID;
 		l_tMovementAction.m_tDestinationPosition = l_tPatrolPath.tpaWayPoints[m_iCurrentPatrolPoint].tWayPoint;
@@ -295,6 +296,7 @@ void CScriptMonster::vfChoosePatrolPathPoint(CEntityAction *tpEntityAction)
 		if (!l_iCount) {
 			switch (l_tMovementAction.m_tPatrolPathStop) {
 				case CPatrolPathParams::ePatrolPathStop : {
+					m_iPreviousPatrolPoint = -1;
 					l_tMovementAction.m_bCompleted = true;
 					return;
 				}
@@ -305,6 +307,7 @@ void CScriptMonster::vfChoosePatrolPathPoint(CEntityAction *tpEntityAction)
 							break;
 						}
 					if (l_iFirst == -1) {
+						m_iPreviousPatrolPoint = -1;
 						l_tMovementAction.m_bCompleted = true;
 						return;
 					}
@@ -314,23 +317,19 @@ void CScriptMonster::vfChoosePatrolPathPoint(CEntityAction *tpEntityAction)
 			}
 		}
 		else {
-			if (l_tMovementAction.m_bRandom && (l_iCount > 1)) {
-				int			l_iChoosed = ::Random.randI(l_iCount);
-				l_iCount	= 0;
-				for (int i=0, n=(int)l_tPatrolPath.tpaWayLinks.size(); i<n; i++)
-					if ((l_tPatrolPath.tpaWayLinks[i].wFrom == m_iCurrentPatrolPoint) && (l_tPatrolPath.tpaWayLinks[i].wTo != m_iPreviousPatrolPoint))
-						if (l_iCount == l_iChoosed) {
-							l_iFirst = i;
-							break;
-						}
-						else
-							l_iCount++;
-				VERIFY(l_iFirst > -1);
-			}
-			else {
-				l_tMovementAction.m_bCompleted = true;
-				return;
-			}
+			int				l_iChoosed = l_iCount - 1;
+			if (l_tMovementAction.m_bRandom && (l_iCount > 1))
+				l_iChoosed	= ::Random.randI(l_iCount);
+			l_iCount	= 0;
+			for (int i=0, n=(int)l_tPatrolPath.tpaWayLinks.size(); i<n; i++)
+				if ((l_tPatrolPath.tpaWayLinks[i].wFrom == m_iCurrentPatrolPoint) && (l_tPatrolPath.tpaWayLinks[i].wTo != m_iPreviousPatrolPoint))
+					if (l_iCount == l_iChoosed) {
+						l_iFirst = i;
+						break;
+					}
+					else
+						l_iCount++;
+			VERIFY(l_iFirst > -1);
 		}
 	}
 	
