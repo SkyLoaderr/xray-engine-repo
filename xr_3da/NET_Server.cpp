@@ -288,7 +288,7 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 void	IPureServer::SendTo_LL(DPNID ID, void* data, u32 size, u32 dwFlags, u32 dwTimeout)
 {
 	// send it
-	DPN_BUFFER_DESC	desc;
+	DPN_BUFFER_DESC		desc;
 	desc.dwBufferSize	= size;
 	desc.pBufferData	= LPBYTE(data);
 
@@ -296,14 +296,17 @@ void	IPureServer::SendTo_LL(DPNID ID, void* data, u32 size, u32 dwFlags, u32 dwT
 	VERIFY		(desc.dwBufferSize);
 	VERIFY		(desc.pBufferData);
 
-    DPNHANDLE hAsync	= 0;
-	CHK_DX(NET->SendTo(
+    DPNHANDLE	hAsync	= 0;
+	HRESULT		_hr		= NET->SendTo(
 		ID,
 		&desc,1,
 		dwTimeout,
 		0,&hAsync,
 		dwFlags
-		));
+		);
+	if (SUCCEEDED(_hr) || (DPNERR_CONNECTIONLOST==_hr))	return;
+
+	R_CHK(_hr);
 }
 
 void	IPureServer::SendTo		(DPNID ID, NET_Packet& P, u32 dwFlags, u32 dwTimeout)
