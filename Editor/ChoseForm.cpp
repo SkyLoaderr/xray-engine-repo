@@ -7,14 +7,21 @@
 #include "shader.h"
 #include "FileSystem.h"
 #include "texture.h"
-#include "PSLibrary.h"
 #include "xr_trims.h"
 #include "Library.h"
 #include "EditObject.h"
 #include "D3DUtils.h"
+
+#ifdef _EDITOR
+#include "PSLibrary.h"
+#endif
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "Placemnt"
+#pragma link "ElXPThemedControl"
+#pragma link "ExtBtn"
+#pragma link "MXCtrls"
+#pragma link "mxPlacemnt"
+#pragma link "ElXPThemedControl"
 #pragma resource "*.dfm"
 TfrmChoseItem *TfrmChoseItem::form=0;
 AnsiString TfrmChoseItem::select_item="";
@@ -71,6 +78,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectShader(bool bExcludeSystem, LPCSTR start_
     return select_item.c_str();
 }
 //---------------------------------------------------------------------------
+#ifdef _EDITOR
 LPCSTR __fastcall TfrmChoseItem::SelectPS(LPCSTR start_folder, LPCSTR init_name){
 	VERIFY(!form);
 	form = new TfrmChoseItem(0);
@@ -92,6 +100,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectPS(LPCSTR start_folder, LPCSTR init_name)
     if (form->ShowModal()!=mrOk) return 0;
     return select_item.c_str();
 }
+#endif
 //---------------------------------------------------------------------------
 LPCSTR __fastcall TfrmChoseItem::SelectTexture(bool msel, LPCSTR init_name){
 	VERIFY(!form);
@@ -154,35 +163,29 @@ __fastcall TfrmChoseItem::TfrmChoseItem(TComponent* Owner)
 TElTreeItem* TfrmChoseItem::FindFolder(const char* s)
 {
     for ( TElTreeItem* node = tvItems->Items->GetFirstNode(); node; node = node->GetNext())
-        if (!node->Data && (node->Text == s)) return node;
+        if (!node->Data && (node->Text == WideString(s))) return node;
     return 0;
 }
 //---------------------------------------------------------------------------
 TElTreeItem* TfrmChoseItem::FindItem(const char* s)
 {
     for ( TElTreeItem* node = tvItems->Items->GetFirstNode(); node; node = node->GetNext())
-        if (node->Data && (node->Text == s)) return node;
+        if (node->Data && (node->Text == WideString(s))) return node;
     return 0;
 }
 //---------------------------------------------------------------------------
 TElTreeItem* TfrmChoseItem::AddFolder(const char* s)
 {
     TElTreeItem* node = 0;
-    if (s[0]!=0){
+    if (s[0]!=0)
         node = tvItems->Items->AddObject(0,s,0);
-        node->ParentStyle = false;
-        node->Bold = true;
-    }
     return node;
 }
 //---------------------------------------------------------------------------
 TElTreeItem* TfrmChoseItem::AddItem(TElTreeItem* node, const char* name, void* obj)
 {
     TElTreeItem* obj_node = tvItems->Items->AddChildObject(node, name, obj);
-    obj_node->ParentStyle = false;
-    obj_node->Bold = false;
 	obj_node->ShowCheckBox = bMultiSel;
-//	obj_node->CheckBoxType = ectCheckBox;
     obj_node->CheckBoxEnabled = bMultiSel;
     return obj_node;
 }
@@ -360,7 +363,7 @@ void __fastcall TfrmChoseItem::tvItemsDblClick(TObject *Sender)
 
 bool __fastcall LookupFunc(TElTreeItem* Item, void* SearchDetails){
     char s1 = *(char*)SearchDetails;
-    char s2 = *Item->Text.c_str();
+    char s2 = *AnsiString(Item->Text).c_str();
 	return (s1==tolower(s2));
 }
 //---------------------------------------------------------------------------
