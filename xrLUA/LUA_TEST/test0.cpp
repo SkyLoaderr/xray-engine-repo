@@ -338,18 +338,8 @@ void lua_bind_error(lua_State *L)
 			printf	("error : %s\n",S);
 		}
 		else {
-			for (int j=curr_stack_level - 1, k=0; j>0; --j, ++k) {
-//			for (int j=0, k=0; j<curr_stack_level; ++j, ++k) {
-				lua_Debug		l_tDebugInfo = stack_levels[j];
-				if (!l_tDebugInfo.name)
-					printf		("%2d : [C  ] C source code : %s\n",k,l_tDebugInfo.short_src);
-				else
-					if (!xr_strcmp(l_tDebugInfo.what,"C"))
-						printf	("%2d : [C  ] C source code : %s\n",k,l_tDebugInfo.name);
-					else
-						printf	("%2d : [%s] %s(%d) : %s\n",k,l_tDebugInfo.what,l_tDebugInfo.short_src,l_tDebugInfo.currentline,l_tDebugInfo.name);
-			}
-			curr_stack_level = 0;
+			if (i)
+				break;
 //			my_errorfb(L);
 //			for (int j=0; ; --j)
 //				if (lua_isstring(L,j)) {
@@ -359,6 +349,18 @@ void lua_bind_error(lua_State *L)
 //				else
 //					return;
 		}
+	for (int j=curr_stack_level - 1, k=0; j>=0; --j, ++k) {
+		//			for (int j=0, k=0; j<curr_stack_level; ++j, ++k) {
+		lua_Debug		l_tDebugInfo = stack_levels[j];
+		if (!l_tDebugInfo.name)
+			printf		("%2d : [C  ] C source code : %s\n",k,l_tDebugInfo.short_src);
+		else
+			if (!xr_strcmp(l_tDebugInfo.what,"C"))
+				printf	("%2d : [C  ] C source code : %s\n",k,l_tDebugInfo.name);
+			else
+				printf	("%2d : [%s] %s(%d) : %s\n",k,l_tDebugInfo.what,l_tDebugInfo.short_src,l_tDebugInfo.currentline,l_tDebugInfo.name);
+	}
+	curr_stack_level = 0;
 }
 
 void hook(lua_State *L, lua_Debug *ar)
@@ -412,12 +414,6 @@ void c_bug()
 	lua_function			();
 }
 
-//void lua_debug(lua_State *L,)
-int resume_thread(lua_State *L)
-{
-	return	(lua_resume((lua_State*)lua_touserdata(L,-1),0));
-}
-
 int print_stack(lua_State *L)
 {
 	lua_Debug l_tDebugInfo;
@@ -439,6 +435,92 @@ int print_stack(lua_State *L)
 extern bool load_file_into_namespace(lua_State *L, LPCSTR S, LPCSTR N, bool bCall = true);
 
 struct CEmptyClassEnum {};
+
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+
+int print_error_stack(lua_State *L)
+{
+	lua_Debug		debug_info;
+	for (int i=0; i<64; ++i) {
+		if (!lua_getstack(L,i,&debug_info))
+			break;
+		lua_getinfo	(L,"nSlu",&debug_info);
+		lua_Debug		l_tDebugInfo = debug_info;
+		if (!l_tDebugInfo.name)
+			printf		("%2d : [C  ] C source code : %s\n",i,l_tDebugInfo.short_src);
+		else
+			if (!xr_strcmp(l_tDebugInfo.what,"C"))
+				printf	("%2d : [C  ] C source code : %s\n",i,l_tDebugInfo.name);
+			else
+				printf	("%2d : [%s] %s(%d) : %s\n",i,l_tDebugInfo.what,l_tDebugInfo.short_src,l_tDebugInfo.currentline,l_tDebugInfo.name);
+	}
+	return		(0);
+}
+
+u32 err_func = 1024;
+
+void print_lua_stack(lua_State *L)
+{
+	printf("\n");
+	for (int i=0; lua_type(L, -i-1); i++)
+		printf("%2d : %s\n",-i-1,lua_typename(L, lua_type(L, -i-1)));
+}
+
+int start_thread(lua_State *L)
+{
+	print_lua_stack	(L);
+	lua_pushstring	(L,"print_error_stack");
+	lua_rawget		(L,LUA_GLOBALSINDEX);
+	VERIFY			(lua_isfunction(L,-1));
+	err_func		= lua_gettop(L);
+	lua_pushstring	(L,"thread_test");
+	lua_rawget		(L,LUA_GLOBALSINDEX);
+	VERIFY			(lua_istable(L,-1));
+	lua_pushstring	(L,"main");
+	lua_rawget		(L,-2);
+	VERIFY			(lua_isfunction(L,-1));
+	lua_remove		(L,-2);
+	lua_pushstring	(L,"coroutine");
+	lua_rawget		(L,LUA_GLOBALSINDEX);
+	VERIFY			(lua_istable(L,-1));
+	lua_pushstring	(L,"create");
+	lua_rawget		(L,-2);
+	VERIFY			(lua_isfunction(L,-1));
+	print_lua_stack	(L);
+	lua_remove		(L,-2);
+	return			(lua_pcall(L,1,1,err_func));
+}
+
+int resume_thread(lua_State *L)
+{
+	VERIFY			(lua_isfunction(L,-1));
+	lua_pushstring	(L,"coroutine");
+	lua_rawget		(L,LUA_GLOBALSINDEX);
+	VERIFY			(lua_istable(L,-1));
+	lua_pushstring	(L,"resume");
+	lua_rawget		(L,-2);
+	VERIFY			(lua_isfunction(L,-1));
+	return			(lua_pcall(L,1,0,err_func));
+}
+
+A* g_a = 0;
+
+void set_a(A &a)
+{
+	g_a = &a;
+}
+
+A *get_a()
+{
+	return(g_a);
+}
 
 void test0()
 {
@@ -517,7 +599,10 @@ void test0()
 			.def("add",	&M::add),
 #endif
 
-		def("c_bug", &c_bug)
+		def("c_bug", &c_bug),
+		def("print_error_stack", &print_error_stack),
+		def("set_a",			 &set_a),
+		def("get_a",			 &get_a)
 //		def("lua_resume", &lua_resume),
 //		def("lua_debug", &lua_debug)
 	];
@@ -539,10 +624,16 @@ void test0()
 		int				err = luaL_loadbuffer	(t,s,xr_strlen(s),"@_thread_main");
 		if (err)
 			lua_bind_error(t);
+//		bool			started = false;
+//		int				err;
 		do {
+//			if (!started) {
+//				err		= start_thread(L);
+//				started	= true;
+//			}
+//			else
+//				err		= resume_thread(L);
 			err			= lua_resume(t,0);
-//			lua_pushthread
-//			err			= lua_cpcall(t,resume_thread,t);
 			if (err) {
 				lua_bind_error(t);
 				curr_stack_level = 0;
@@ -552,6 +643,7 @@ void test0()
 			Sleep		(1);
 		}
 		while (t->ci->state & CI_YIELD);
+//		while (true);
 		
 		bool			ok = false;
 		for (int i=1, n=lua_gettop(L); i<=n; ++i)

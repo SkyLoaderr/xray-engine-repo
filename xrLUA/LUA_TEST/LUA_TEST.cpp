@@ -1309,7 +1309,7 @@ bool do_file(lua_State *L, LPCSTR N, LPCSTR S, bool bCall)
 
 	FILE				*f = fopen(S,"rb");
 	fseek				(f,0,SEEK_END);
-	long				e = ftell(f), u = e + strlen(SS);
+	long				e = ftell(f), u = e + xr_strlen(SS);
 	fseek				(f,0,SEEK_SET);
 	fread				(SS + xr_strlen(SS),1,e,f);
 	fclose				(f);
@@ -1331,8 +1331,13 @@ bool do_file(lua_State *L, LPCSTR N, LPCSTR S, bool bCall)
 	xr_free				(SS);
 	xr_free				(SS1);
 	
-	if (bCall)
-		lua_call		(L,0,0);
+	if (bCall) {
+		int err			= lua_pcall(L,0,0,0);
+		if (err) {
+			printf		("%s",lua_tostring(L,0));
+			printf		("%s",lua_tostring(L,-1));
+		}
+	}
 	else
 		lua_insert		(L,-4);
 
