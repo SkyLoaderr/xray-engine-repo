@@ -66,13 +66,9 @@ end
 
 function main()
 	log	("script don't want to work!")
+	local stalker1	= get_level_object("m_stalker_e0000")
 
-	a = fsm.lua_testclass('example')
-	a:print()
-
-	local stalker1	= get_level_object("m_stalker_e0001")
-
-	local fsm1 = FSM(stalker1)
+	local fsm1 = fsm.FSM(stalker1)
 	log	("and?!")
 
 	wait()
