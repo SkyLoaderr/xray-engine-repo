@@ -74,6 +74,7 @@ void CPHActorCharacter::Jump(const Fvector& accel)
 		dReal amag =m_acceleration.magnitude();
 		if(amag<1.f)amag=1.f;
 		m_jump_accel.set(vel[0]*JUMP_INCREASE_VELOCITY_RATE+m_acceleration.x/amag*0.2f,jump_up_velocity,vel[2]*JUMP_INCREASE_VELOCITY_RATE +m_acceleration.z/amag*0.2f);
+		Enable();
 	}
 }
 void CPHActorCharacter::SetObjectContactCallback(ObjectContactCallbackFun* callback)
