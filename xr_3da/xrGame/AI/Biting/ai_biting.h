@@ -183,13 +183,6 @@ public:
 			void			AddStepSound					(LPCSTR section, EMotionAnim a, LPCSTR name);
 			void			GetStepSound					(EMotionAnim a, float &vol, float &freq);
 	
-	// Velocity management
-			void			TranslateActionToVelocityMasks	(bool force_real_speed);
-			bool			UpdateVelocityWithPath			();
-			void			UpdateActionWithPath			();
-			void			UpdatePathWithAction			();
-			void			UpdateTargetVelocityWithPath	(float before_interval = 0.f);
-	
 // members
 public:
 

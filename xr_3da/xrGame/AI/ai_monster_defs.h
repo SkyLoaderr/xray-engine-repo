@@ -370,6 +370,12 @@ enum EAccelType {
 	eAT_Aggressive
 };
 
+enum EAccelValue {
+	eAV_Accel,
+	eAV_Braking
+};
+
+
 #define deg(x) (x * PI / 180)
 
 #define CHECK_SHARED_LOADED() {if (CSharedClass<_motion_shared>::IsLoaded()) return; }

@@ -14,13 +14,15 @@ void CMotionManager::accel_load(LPCSTR section)
 
 void CMotionManager::accel_activate(EAccelType type)
 {
-	m_accel.active	= true;
-	m_accel.type	= type;
+	m_accel.active			= true;
+	m_accel.type			= type;
+	
+	m_accel.enable_braking	= true;
 }
 
-float CMotionManager::accel_get()
+float CMotionManager::accel_get(EAccelValue val)
 {
-	if (!accel_active()) return flt_max;
+	if (!accel_active(val)) return flt_max;
 
 	switch(m_accel.type) {
 	case eAT_Calm:			return m_accel.calm;
@@ -86,9 +88,9 @@ bool CMotionManager::accel_chain_get(float cur_speed, EMotionAnim target_anim, E
 bool CMotionManager::accel_check_braking(float before_interval)
 {
 	if (!pMonster->IsMovingOnPath())	return false;
-	if (!accel_active())				return false;
+	if (!accel_active(eAV_Braking))		return false;
 
-	float acceleration = accel_get();
+	float acceleration = accel_get(eAV_Braking);
 	float braking_dist	= (pMonster->m_velocity_linear.current * pMonster->m_velocity_linear.current) / acceleration;
 	braking_dist += before_interval;
 

@@ -159,7 +159,10 @@ void CAI_Biting::ProcessScripts()
 	// обновить путь
 	CMonsterMovement::Frame_Update				();
 
-	MotionMan.Update						();
+//	MotionMan.accel_activate					(eAT_Сalm);
+//	MotionMan.accel_set_braking					(false);
+
+	MotionMan.Update							();
 	
 	// установить текущую скорость
 	CMonsterMovement::Frame_Finalize			();

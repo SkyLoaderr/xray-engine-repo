@@ -203,19 +203,15 @@ void CMonsterMovement::SetPathParams(u32 dest_vertex_id, const Fvector &dest_pos
 	set_level_dest_vertex(dest_vertex_id);
 	set_dest_position(dest_pos);
 	set_path_type (CMovementManager::ePathTypeLevelPath);
-
-	pMonster->TranslateActionToVelocityMasks(false);
 }
 
 void CMonsterMovement::SetSelectorPathParams()
 {
-
 	set_path_type (CMovementManager::ePathTypeLevelPath);
 	
 	// использовать при установке селектора: true - использовать путь найденный селектором, false - селектор находит тольтко ноду, путь строит BuildLevelPath
 	use_selector_path(true);
 
-	pMonster->TranslateActionToVelocityMasks(false);
 }
 
 
@@ -223,11 +219,13 @@ void CMonsterMovement::WalkNextGraphPoint()
 {
 	set_path_type		(CMovementManager::ePathTypeGamePath);
 	set_selection_type	(CMovementManager::eSelectionTypeRandomBranching);
-
-	pMonster->TranslateActionToVelocityMasks(false);
 }
 
 void CMonsterMovement::update_velocity()
 {
-	velocity_lerp	(m_velocity_linear.current, m_velocity_linear.target, pMonster->MotionMan.accel_get(), Device.fTimeDelta);
+	float t_accel = ((m_velocity_linear.target < m_velocity_linear.current) ? 
+										pMonster->MotionMan.accel_get(eAV_Braking) :
+										pMonster->MotionMan.accel_get(eAV_Accel));
+		
+	velocity_lerp	(m_velocity_linear.current, m_velocity_linear.target, t_accel, Device.fTimeDelta);
 }

@@ -52,7 +52,9 @@ class CMotionManager : public CSharedClass<_motion_shared> {
 	// Acceleration
 	
 	struct {
-		bool					active;
+		bool					active;				
+		bool					enable_braking;	// не использовать при торможении
+
 		EAccelType				type;	
 		
 		float					calm;
@@ -204,20 +206,21 @@ public:
 	//-------------------------------------------------------------------------------
 	// Acceleration
 		
-		void	accel_init			();
-		void	accel_load			(LPCSTR section);
+		void	accel_init				();
+		void	accel_load				(LPCSTR section);
 
-		void	accel_activate		(EAccelType type);
-	IC	void	accel_deactivate	() {m_accel.active = false;}
+		void	accel_activate			(EAccelType type);
+	IC	void	accel_deactivate		() {m_accel.active = false;}
+	IC	void	accel_set_braking		(bool val = true) {m_accel.enable_braking = val;}
 
-		float	accel_get			();
+		float	accel_get				(EAccelValue val = eAV_Accel);
 
-	IC	bool	accel_active		() {return m_accel.active;}
+	IC	bool	accel_active			(EAccelValue val = eAV_Accel) {return (val == eAV_Accel) ? m_accel.active : m_accel.enable_braking;}
 
-		void	accel_chain_add		(EMotionAnim anim1, EMotionAnim anim2);
-		bool	accel_chain_get		(float cur_speed, EMotionAnim target_anim, EMotionAnim &new_anim, float &a_speed);
+		void	accel_chain_add			(EMotionAnim anim1, EMotionAnim anim2);
+		bool	accel_chain_get			(float cur_speed, EMotionAnim target_anim, EMotionAnim &new_anim, float &a_speed);
 
-		bool	accel_check_braking	(float before_interval);
+		bool	accel_check_braking		(float before_interval);
 
 	//-------------------------------------------------------------------------------
 

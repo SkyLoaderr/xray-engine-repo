@@ -374,7 +374,6 @@ void CAI_Biting::UpdateCL()
 	else 
 		m_body.speed	= m_velocity_angular.target;
 
-
 #ifdef DEBUG
 	HDebug->M_Update	();
 #endif
