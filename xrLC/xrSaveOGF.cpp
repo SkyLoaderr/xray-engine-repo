@@ -27,6 +27,7 @@ u16		RegisterShader		(LPCSTR T)
 
 void	geom_batch_average	(u32 verts, u32 faces)
 {
+	clMsg			("* batch[%d], %d verts, %d faces",g_batch_count,verts,faces);
 	g_batch_count	++;
 	g_batch_verts	+=	verts;
 	g_batch_faces	+=	faces;
@@ -79,21 +80,15 @@ void CBuild::SaveTREE	(IWriter &fs)
 	remap.reserve		(g_tree.size());
 	for (u32 rid=0; rid<g_tree.size(); rid++)	{
 		OGF*	o		= dynamic_cast<OGF*>	(g_tree[rid]);
-		if		(o)		{
-			remap.push_back(rid);
-			/*
-			Fvector		c;
-			if (o->dbg_SphereContainsVertex(c.set(-9,0.3,-9),.5f))
-				if (o->dbg_SphereContainsVertex(c.set(+9,0.3,-9),.5f))
-					if (o->dbg_SphereContainsVertex(c.set(+9,0.3,+9),.5f))
-						if (o->dbg_SphereContainsVertex(c.set(-9,0.3,+9),.5f))
-							__asm int 3;	//.
-			*/
-		}
+		if		(o)		remap.push_back(rid);
 	}
 	std::stable_sort	(remap.begin(),remap.end(),remap_order);
-	for (u32 sid=0; sid<remap.size(); sid++)	
-		g_tree[remap[sid]]->PreSave(remap[sid]);
+	clMsg				("remap-size: %d",remap.size());
+	for (u32 sid=0; sid<remap.size(); sid++)	{
+		u32				id	= remap[sid];
+		clMsg			("%3d: subdiv: %d",sid,id);
+		g_tree[id]->PreSave	(id);
+	}
 
 	Status				("Visuals...");
 	fs.open_chunk		(fsL_VISUALS);
