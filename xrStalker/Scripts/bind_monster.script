@@ -38,7 +38,7 @@ function generic_object_binder:reinit()
 
 	self.st = db.storage[self.object:id()]
 
-	self.object:set_callback(game_object.patrol_path_in_point, self.waypoint_callback, self)
+	self.object:set_callback(callback.patrol_path_in_point, self.waypoint_callback, self)
 end
 
 function generic_object_binder:update(delta)
@@ -81,7 +81,7 @@ function generic_object_binder:net_spawn(data)
 end
 
 function generic_object_binder:net_destroy()
-	self.object:clear_callback(game_object.movement)
+	self.object:clear_callback(callback.movement)
 
 	db.del_obj(self.object)
 
