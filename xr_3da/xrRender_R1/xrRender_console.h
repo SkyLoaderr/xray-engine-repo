@@ -5,7 +5,7 @@
 // Common
 extern ENGINE_API	int			ps_r__Supersample;
 extern ECORE_API	int			ps_r__tf_Anisotropic;
-extern ECORE_API	int			ps_r__tf_Mipbias;
+extern ECORE_API	float		ps_r__tf_Mipbias;
 extern ECORE_API	int			ps_r__LightSleepFrames;
 
 extern ECORE_API	float		ps_r__Detail_l_ambient;
