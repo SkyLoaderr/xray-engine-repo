@@ -39,11 +39,11 @@ void	CRenderTarget::phase_combine	()
 		RCache.Vertex.Unlock		(4,g_combine->vb_stride);
 
 		// Draw COLOR
-		Fvector	e_down, w_down;
-		Device.mView.transform_dir	(e_down,w_down.set(0,-1,0));	e_down.normalize();
-		RCache.set_Element			(s_combine->E[0]);
-		RCache.set_c				("down",	e_down.x,	e_down.y,	e_down.z,	0);
-		RCache.set_Geometry			(g_combine);
+		Fmatrix	m_v2w;
+		m_v2w.invert				(Device.mView		);
+		RCache.set_Element			(s_combine->E[0]	);
+		RCache.set_c				("m_v2w",	m_v2w	);
+		RCache.set_Geometry			(g_combine			);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
 
