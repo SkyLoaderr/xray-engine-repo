@@ -482,7 +482,10 @@ UCS2String* UTF8ToUCS2StringArrayAlloc(const UTF8String* theUTF8StringArray, int
 		UCS2String* aUCS2StringArray = (UCS2String*)gsimalloc(sizeof(UCS2String)*theNumStrings);
 		int stringNum = 0;
 		while(stringNum < theNumStrings)
-			aUCS2StringArray[stringNum++] = UTF8ToUCS2StringAlloc(theUTF8StringArray[stringNum]);
+		{
+			aUCS2StringArray[stringNum] = UTF8ToUCS2StringAlloc(theUTF8StringArray[stringNum]);
+			stringNum++;
+		}
 
 		return aUCS2StringArray;
 	}
@@ -510,7 +513,10 @@ UTF8String* UCS2ToUTF8StringArrayAlloc(const UCS2String* theUCS2StringArray, int
 		UTF8String* aUTF8StringArray = (UTF8String*)gsimalloc(sizeof(UTF8String)*theNumStrings);
 		int stringNum = 0;
 		while(stringNum < theNumStrings)
-			aUTF8StringArray[stringNum++] = UCS2ToUTF8StringAlloc(theUCS2StringArray[stringNum]);
+		{
+			aUTF8StringArray[stringNum] = UCS2ToUTF8StringAlloc(theUCS2StringArray[stringNum]);
+			stringNum++;
+		}
 
 		return aUTF8StringArray;
 	}

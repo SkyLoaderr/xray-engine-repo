@@ -1,26 +1,13 @@
 /********
 INCLUDES
 ********/
-#if defined(applec) || defined(THINK_C) || defined(__MWERKS__) && !defined(__mips64) && !defined(_WIN32)
-#include "::nonport.h"
-#include "::stringutil.h"
-#else
 #include "../nonport.h"
 #include "../stringutil.h"
-#endif
 #include "qr2.h"
 #include "qr2regkeys.h"
 #include <stdlib.h>
 #include <stdio.h>
-
-
 #include <string.h>
-
-#if defined(_PS2) && defined(GSI_UNICODE)
-// A few prototypes to prevent warnings
-size_t wcslen( const wchar_t *string );
-wchar_t *wcscpy( wchar_t *strDestination, const wchar_t *strSource );
-#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -62,15 +49,15 @@ DEFINES
 #define INBUF_LEN 256
 #define PUBLIC_ADDR_LEN 12
 	
-#define PACKET_QUERY 0x00
-#define PACKET_CHALLENGE 0x01
-#define PACKET_ECHO 0x02
-#define PACKET_ECHO_RESPONSE 0x05
-#define PACKET_HEARTBEAT 0x03
-#define PACKET_ADDERROR 0x04
-#define PACKET_CLIENT_MESSAGE 0x06
+#define PACKET_QUERY              0x00
+#define PACKET_CHALLENGE          0x01
+#define PACKET_ECHO               0x02
+#define PACKET_ECHO_RESPONSE      0x05  // 0x05, not 0x03 (order)
+#define PACKET_HEARTBEAT          0x03
+#define PACKET_ADDERROR           0x04
+#define PACKET_CLIENT_MESSAGE     0x06
 #define PACKET_CLIENT_MESSAGE_ACK 0x07
-#define PACKET_KEEPALIVE 0x08
+#define PACKET_KEEPALIVE          0x08
 
 	
 #define MAX_LOCAL_IP 5
@@ -152,6 +139,10 @@ qr2_error_t qr2_init_socketA(/*[out]*/qr2_t *qrec, SOCKET s, int boundport, cons
 	int ret;
 	int i;
 	qr2_t cr;
+
+	gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Misc, GSIDebugLevel_StackTrace,
+		"qr2_init_socket()\r\n");
+
 	if (qrec == NULL)
 	{
 		cr = &static_qr2_rec;		
@@ -201,13 +192,30 @@ qr2_error_t qr2_init_socketA(/*[out]*/qr2_t *qrec, SOCKET s, int boundport, cons
 		if(!override)
 			sprintf(hostname, "%s.master.gamespy.com", gamename);
 		ret = get_sockaddrin(override?qr2_hostname:hostname, MASTER_PORT, &(cr->hbaddr), NULL);
+
+		if (ret == 1)
+		{
+			gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_Comment,
+				"%s resolved to %s\r\n", override?qr2_hostname:hostname, inet_ntoa(cr->hbaddr.sin_addr));
+		}
+		else
+		{
+			gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_HotError,
+				"Failed on DNS lookup for %s \r\n", override?qr2_hostname:hostname);
+		}
 	}
 	else //don't need to look up
 		ret = 1;
 	if (!ret)
+	{
+		gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Misc, GSIDebugLevel_HotError,
+			"qr2_init_socket() returned failed (DNS error)\r\n");
 		return e_qrdnserror;
+	}
 	else
+	{
 		return e_qrnoerror;
+	}
 
 
 }
@@ -224,6 +232,9 @@ qr2_error_t qr2_init_socketW(/*[out]*/qr2_t *qrec, SOCKET s, int boundport, cons
 {
 	char gamename_A[255];
 	char secretkey_A[255];
+
+	gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Misc, GSIDebugLevel_StackTrace,
+		"qr2_init_socketW()\r\n");
 
 	UCS2ToAsciiString(gamename, gamename_A);
 	UCS2ToAsciiString(secret_key, secretkey_A);
@@ -242,11 +253,16 @@ qr2_error_t qr2_create_socket(/*[out]*/SOCKET *sock, const char *ip, /*[in/out]*
 	int saddrlen;
 	int baseport = *port;
 
+	gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Misc, GSIDebugLevel_StackTrace,
+		"qr2_create_socket()\r\n");
+
 	SocketStartUp();
 	
 	hbsock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 	if (INVALID_SOCKET == hbsock)
 	{
+		gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_HotError,
+			"Failed to create heartbeat socket\r\n");
 		return e_qrwsockerror;
 	}
 	
@@ -257,7 +273,6 @@ qr2_error_t qr2_create_socket(/*[out]*/SOCKET *sock, const char *ip, /*[in/out]*
 		if (saddr.sin_addr.s_addr == htonl(0x7F000001)) //localhost -- we don't want that!
 			saddr.sin_addr.s_addr = INADDR_ANY;
 		
-		
 		lasterror = bind(hbsock, (struct sockaddr *)&saddr, sizeof(saddr));
 		if (lasterror == 0)
 			break; //we found a port
@@ -266,6 +281,8 @@ qr2_error_t qr2_create_socket(/*[out]*/SOCKET *sock, const char *ip, /*[in/out]*
 	
 	if (lasterror != 0) //we weren't able to find a port
 	{
+		gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_HotError,
+			"Failed to bind() query socket\r\n");
 		return e_qrbinderror;
 	}
 	
@@ -274,12 +291,19 @@ qr2_error_t qr2_create_socket(/*[out]*/SOCKET *sock, const char *ip, /*[in/out]*
 		saddrlen = sizeof(saddr);
 		lasterror = getsockname(hbsock,(struct sockaddr *)&saddr, &saddrlen);
 		if (lasterror)
+		{
+			gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_HotError,
+				"Query socket bind() success, but getsockname() failed\r\n");
 			return e_qrbinderror;
+		}
 		baseport = ntohs(saddr.sin_port);
 	}
 
 	*sock = hbsock;
 	*port = baseport;
+
+	gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_Comment,
+		"Query socket created and bound to port %d\r\n", *port);
 
 	return e_qrnoerror;
 }
@@ -296,6 +320,9 @@ qr2_error_t qr2_initA(/*[out]*/qr2_t *qrec, const char *ip, int baseport, const 
 {
 	SOCKET hbsock;
 	qr2_error_t ret;
+
+	gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Misc, GSIDebugLevel_StackTrace,
+		"qr2_init()\r\n");
 
 	ret = qr2_create_socket(&hbsock, ip, &baseport);
 	if(ret != e_qrnoerror)
@@ -326,6 +353,9 @@ qr2_error_t qr2_initW(/*[out]*/qr2_t *qrec, const unsigned short *ip, int basepo
 	char gamename_A[255];
 	char secretkey_A[255];
 
+	gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Misc, GSIDebugLevel_StackTrace,
+		"qr2_initW()\r\n");
+
 	if (ip != NULL) // NULL value is valid for IP
 		UCS2ToAsciiString(ip, ip_A);
 	UCS2ToAsciiString(gamename, gamename_A);
@@ -336,6 +366,9 @@ qr2_error_t qr2_initW(/*[out]*/qr2_t *qrec, const unsigned short *ip, int basepo
 
 void qr2_register_natneg_callback(qr2_t qrec, qr2_natnegcallback_t nncallback)
 {
+	gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Misc, GSIDebugLevel_StackTrace,
+		"qr2_register_natneg_callback()\r\n");
+
 	if (qrec == NULL)
 		qrec = current_rec;
 	qrec->nn_callback = nncallback;
@@ -343,12 +376,18 @@ void qr2_register_natneg_callback(qr2_t qrec, qr2_natnegcallback_t nncallback)
 }
 void qr2_register_clientmessage_callback(qr2_t qrec, qr2_clientmessagecallback_t cmcallback)
 {
+	gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Misc, GSIDebugLevel_StackTrace,
+		"qr2_register_clientmessage_callback()\r\n");
+
 	if (qrec == NULL)
 		qrec = current_rec;
 	qrec->cm_callback = cmcallback;
 }
 void qr2_register_publicaddress_callback(qr2_t qrec, qr2_publicaddresscallback_t pacallback)
 {
+	gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Misc, GSIDebugLevel_StackTrace,
+		"qr2_register_publicaddress_callback()\r\n");
+
 	if (qrec == NULL)
 		qrec = current_rec;
 	qrec->pa_callback = pacallback;
@@ -380,15 +419,23 @@ void qr2_check_queries(qr2_t qrec)
 	while(CanReceiveOnSocket(qrec->hbsock))
 	{
 		//else we have data
-		#ifdef SN_SYSTEMS
-		error = recvfrom(qrec->hbsock, indata, INBUF_LEN - 1, 0, (struct sockaddr *)&saddr, &saddrlen);
-		#else
-		error = (int)recvfrom(qrec->hbsock, indata, (unsigned int)INBUF_LEN - 1, 0, (struct sockaddr *)&saddr, &saddrlen);
-		#endif
+		error = (int)recvfrom(qrec->hbsock, indata, (INBUF_LEN - 1), 0, (struct sockaddr *)&saddr, &saddrlen);
+		
 		if (error != SOCKET_ERROR)
 		{
 			indata[error] = '\0';
+
+			gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_Comment,
+				"Received %d bytes on query socket\r\n", error);
+			gsDebugBinary(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_RawDump,
+				indata, error);
+
 			qr2_parse_queryA(qrec, indata, error, (struct sockaddr *)&saddr);
+		}
+		else
+		{
+			gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_Comment,
+				"CanReceiveOnSocket() returned true, but recvfrom failed!\r\n", error);
 		}
 	}
 }
@@ -400,13 +447,20 @@ void qr2_check_send_heartbeat(qr2_t qrec)
 	gsi_time tc = current_time();
 
 	if (INVALID_SOCKET == qrec->hbsock)
+	{
+		gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_WarmError,
+			"HBSock is invalid\r\n");
 		return; //no sockets to work with!
+	}
 
 	//check if we need to send a heartbet
 	if (qrec->listed_state > 0 && tc - qrec->lastheartbeat > FIRST_HB_TIME) 
 	{ //check to see if we haven't gotten a query yet
 		if (qrec->listed_state >= MAX_FIRST_COUNT)
 		{
+			gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_HotError,
+				"No response from master, generating NoChallengeResponse error\r\n");
+
 			qrec->listed_state = 0; //we failed to get a challenge! let them know
 #ifndef GSI_UNICODE
 			qrec->adderror_callback(e_qrnochallengeerror, "No challenge value was received from the master server.", qrec->udata);
@@ -433,16 +487,27 @@ void qr2_check_send_heartbeat(qr2_t qrec)
 your gamemode changes */
 void qr2_send_statechanged(qr2_t qrec)
 {
+	gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Misc, GSIDebugLevel_StackTrace,
+		"qr2_send_statechanged()\r\n");
+
 	if (qrec == NULL)
 		qrec = current_rec;
 	if (!qrec->ispublic)
+	{
+		gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Misc, GSIDebugLevel_Warning,
+			"Requested send statechange for LAN game, discarding\r\n");
 		return;
+	}
 	if (current_time() - qrec->lastheartbeat < MIN_STATECHANGED_HB_TIME)
 	{
+		gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Misc, GSIDebugLevel_Notice,
+			"Queing statechange for later send (too soon)\r\n");
+
 		// Queue up the statechange and send later
 		qrec->userstatechangerequested = 1;
 		return;  // don't allow the server to spam statechanges
 	}
+
 	send_heartbeat(qrec, 1);
 	qrec->userstatechangerequested = 0; // clear the flag in case a queued statechange was still pending
 }
@@ -451,6 +516,9 @@ void qr2_send_statechanged(qr2_t qrec)
 /* qr2_shutdown: Cleans up the sockets and shuts down */
 void qr2_shutdown(qr2_t qrec)
 {
+	gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_StackTrace,
+		"qr2_shutdown()\r\n");
+
 	if (qrec == NULL)
 		qrec = current_rec;
 	if (qrec->ispublic)
@@ -675,6 +743,9 @@ static void handle_public_address(qr2_t qrec, char * buffer)
 	if((ip == 0) || (port == 0))
 		return;
 
+	gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_Notice,
+		"Received public address (%s)\r\n", buffer);
+
 	// has anything changed?
 	if((qrec->publicip != ip) || (qrec->publicport != port))
 	{
@@ -770,7 +841,11 @@ static void qr_process_query(qr2_t qrec, qr2_buffer_t buf, uchar *qdata, int len
 	uchar *playerkeys = NULL;
 	uchar *teamkeys = NULL;
 	if (len < 3)
+	{
+		gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_WarmError,
+			"Discarding invalid query (too short#1: %d bytes total)\r\n", len);
 		return; //invalid
+	}
 	serverkeycount = qdata[0];
 	qdata++;
 	len--;
@@ -781,7 +856,11 @@ static void qr_process_query(qr2_t qrec, qr2_buffer_t buf, uchar *qdata, int len
 		len -= serverkeycount;
 	}
 	if (len < 2)
+	{
+		gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_WarmError,
+			"Discarding invalid query (too short#2: %d bytes remain)\r\n", len);
 		return; //invalid
+	}
 	playerkeycount = qdata[0];
 	qdata++;
 	len--;
@@ -792,7 +871,11 @@ static void qr_process_query(qr2_t qrec, qr2_buffer_t buf, uchar *qdata, int len
 		len -= playerkeycount;
 	}
 	if (len < 1)
+	{
+		gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_WarmError,
+			"Discarding invalid query (too short#3: %d bytes remain)\r\n", len);
 		return; //invalid
+	}
 	teamkeycount = qdata[0];
 	qdata++;
 	len--;
@@ -803,7 +886,11 @@ static void qr_process_query(qr2_t qrec, qr2_buffer_t buf, uchar *qdata, int len
 		len -= teamkeycount;
 	}
 	if (len < 0)
+	{
+		gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_WarmError,
+			"Discarding invalid query (too short#4: %d bytes remain)\r\n", len);
 		return; //invalid
+	}
 	qr_build_query_reply(qrec, buf, serverkeycount, serverkeys, playerkeycount, playerkeys, teamkeycount, teamkeys);
 
 }
@@ -872,6 +959,9 @@ static void qr_process_old_query(qr2_t qrec, qr2_buffer_t buf)
 	buf->len = 1;
 	buf->buffer[0] = '\\';
 
+	gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Misc, GSIDebugLevel_Comment,
+		"Processing QR1 style query\r\n");
+
 	qr_build_partial_old_query_reply(qrec, buf, key_server);
 	qr_build_partial_old_query_reply(qrec, buf, key_player);
 	qr_build_partial_old_query_reply(qrec, buf, key_team);
@@ -884,6 +974,10 @@ static void qr_process_client_message(qr2_t qrec, char *buf, int len)
 	unsigned char natNegBytes[NATNEG_MAGIC_LEN] = {NN_MAGIC_0,NN_MAGIC_1,NN_MAGIC_2,NN_MAGIC_3,NN_MAGIC_4,NN_MAGIC_5};
 	int i;
 	int isnatneg = 1;
+
+	gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Misc, GSIDebugLevel_Notice,
+		"Processing client message\r\n");
+
 	//see if it's a natneg request..
 	if (len >= NATNEG_MAGIC_LEN + 4)
 	{
@@ -939,20 +1033,24 @@ void qr2_parse_queryA(qr2_t qrec, char *query, int len, struct sockaddr *sender)
 	
 	buf.len = 0;
 
-/* DEBUG CODE
-	{
-		char* buf = inet_ntoa(((struct sockaddr_in*)sender)->sin_addr);
-		unsigned port = ntohs(((struct sockaddr_in*)sender)->sin_port);
-		printf("Received query from %s:%d\r\n", buf, port);
-	}
-*/
+	gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_StackTrace,
+		"qr2_parse_queryA()\r\n");
 
 	if (qrec == NULL)
 		qrec = current_rec;
 	if (query[0] == 0x3B) /* a cdkey query */
 	{
 		if (qrec->cdkeyprocess != NULL)
+		{
+			gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_Notice,
+				"Forwarding cdkey query onto cdkey sdk\r\n");
 			qrec->cdkeyprocess(query, len, sender);
+		}
+		else
+		{
+			gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_WarmError,
+				"Received cdkey query but not using qr2-cdkey integration!\r\n");
+		}
 		return;
 	}
 	if (query[0] == '\\') //it's a QR1-style query
@@ -960,9 +1058,14 @@ void qr2_parse_queryA(qr2_t qrec, char *query, int len, struct sockaddr *sender)
 		qr_process_old_query(qrec, &buf);
 #ifdef SN_SYSTEMS
 		sendto(qrec->hbsock, buf.buffer, buf.len, 0, sender, sizeof(struct sockaddr_in));
-#else 
+#else
 		sendto(qrec->hbsock, buf.buffer, (unsigned int)buf.len, 0, sender, sizeof(struct sockaddr_in));
 #endif
+		gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_Comment,
+			"Sent %d bytes as QR1 query response\r\n", buf.len);
+		gsDebugBinary(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_RawDump,
+			buf.buffer, buf.len);
+
 		return;
 	}
 
@@ -973,25 +1076,25 @@ void qr2_parse_queryA(qr2_t qrec, char *query, int len, struct sockaddr *sender)
 		return;
 
 //#define SIMULATE_HARD_FIREWALL
-#if defined(SIMULATE_HARD_FIREWALL) && defined(WIN32)
-#pragma message(" ")
-#pragma message("QR2 BROKEN - SIMULATE_HARD_FIREWALL DEFINED")
-#pragma message(" ")
+#if defined(SIMULATE_HARD_FIREWALL)
 	// ignore all QR2 packets on this port
 	// generates "no challenge" error
+	gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_Warning,
+			"SIMULATE_HARD_FIREWALL defined, ignoring QR2 packet\r\n");
 	return;
 #endif
 
 //#define SIMULATE_FIREWALL
-#if defined(SIMULATE_FIREWALL) && defined(WIN32)
-#pragma message(" ")
-#pragma message("QR2 WARNING - SIMULATE_FIREWALL DEFINED")
-#pragma message(" ")
+#if defined(SIMULATE_FIREWALL) 
 	// ignore messages that are not from the gamespy master
 	{
-		unsigned int aMasterAddr = 0x220826cf;
+		unsigned int aMasterAddr = (cr->hbaddr.sin_addr);
 		if (((SOCKADDR_IN*)sender)->sin_addr.s_addr != aMasterAddr)
+		{
+			gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_Warning,
+				"SIMULATE_FIREWALL defined, ignoring non-master QR2 packet\r\n");
 			return;
+		}
 	}
 #endif
 
@@ -1007,16 +1110,31 @@ void qr2_parse_queryA(qr2_t qrec, char *query, int len, struct sockaddr *sender)
 	switch (ptype)
 	{
 	case PACKET_QUERY:
+		gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_Notice,
+			"Processing query packet\r\n");
 		qr_process_query(qrec, &buf, (uchar *)pos, len);
-
 		break;
 	case PACKET_CHALLENGE:
+		gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_Notice,
+			"Processing challenge packet\r\n");
+
 		//calculate the challenge
-		if(qrec->pa_callback && (len >= (PUBLIC_ADDR_LEN + 1)))
-			handle_public_address(qrec, pos + len - (PUBLIC_ADDR_LEN + 1));
+		if (len >= (PUBLIC_ADDR_LEN + 1))
+		{
+			if(qrec->pa_callback)
+				handle_public_address(qrec, pos + len - (PUBLIC_ADDR_LEN + 1));
+			else
+			{
+				gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_Notice,
+					"Discarding public address (no callback set)\r\n");
+			}
+		}
 		compute_challenge_response(qrec, &buf, pos, len);
 		break;
 	case PACKET_ECHO:
+		gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_Notice,
+			"Processing echo packet\r\n");
+
 		//now add the echo data
 		if (len > 32)
 			len = 32; //max 32 bytes
@@ -1026,6 +1144,9 @@ void qr2_parse_queryA(qr2_t qrec, char *query, int len, struct sockaddr *sender)
 		break;
 
 	case PACKET_ADDERROR:
+		gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_WarmError,
+			"Processing adderror packet\r\n");
+
 		if (qrec->listed_state == -1)
 			return; //we already got an error message
 		//verify the instance code
@@ -1049,6 +1170,9 @@ void qr2_parse_queryA(qr2_t qrec, char *query, int len, struct sockaddr *sender)
 #endif
 		return; //we don't need to send anything back for this type of message
 	case PACKET_CLIENT_MESSAGE:
+		gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_Notice,
+			"Processing clientmessage packet\r\n");
+
 		//verify the instance code
 		for (i = 0 ; i < REQUEST_KEY_LEN ; i++)
 		{
@@ -1068,6 +1192,8 @@ void qr2_parse_queryA(qr2_t qrec, char *query, int len, struct sockaddr *sender)
 		//send an ack response
 		break;
 	case PACKET_KEEPALIVE:
+		gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_Comment,
+			"Processing keepalive packet\r\n");
 		return; //if we get a keep alive, ignore it and return (just used to tell us the server knows about us)
 	default:
 		return; //not valid type
@@ -1079,6 +1205,11 @@ void qr2_parse_queryA(qr2_t qrec, char *query, int len, struct sockaddr *sender)
 #else
 	sendto(qrec->hbsock, buf.buffer, (unsigned int)buf.len, 0, sender, sizeof(struct sockaddr_in));
 #endif
+
+	gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_Comment,
+		"Sent %d bytes as QR2 query response\r\n", buf.len);
+	gsDebugBinary(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_RawDump,
+		buf.buffer, buf.len);
 }
 
 void qr2_parse_queryW(qr2_t qrec, unsigned short *query, int len, struct sockaddr *sender)
@@ -1100,10 +1231,12 @@ static void send_keepalive(qr2_t qrec)
 #else
 	sendto(qrec->hbsock, buf.buffer, (unsigned int)buf.len, 0, (struct sockaddr *)&(qrec->hbaddr), sizeof(struct sockaddr_in));
 #endif
+
 	//set the ka time to now
 	qrec->lastka = current_time();
 
-
+	gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_Comment,
+		"Sent keepalive to master\r\n", buf);
 }
 
 /* send_heartbeat: Sends a heartbeat to the gamemaster,
@@ -1155,10 +1288,11 @@ static void send_heartbeat(qr2_t qrec, int statechanged)
 	}
 
 #ifdef SN_SYSTEMS
-	ret = sendto(qrec->hbsock, buf.buffer, buf.len, 0, (struct sockaddr *)&(qrec->hbaddr), sizeof(struct sockaddr_in));
+	ret = (int)sendto(qrec->hbsock, buf.buffer, buf.len, 0, (struct sockaddr *)&(qrec->hbaddr), sizeof(struct sockaddr_in));
 #else
 	ret = (int)sendto(qrec->hbsock, buf.buffer, (unsigned int)buf.len, 0, (struct sockaddr *)&(qrec->hbaddr), sizeof(struct sockaddr_in));
 #endif
+
 	//set the ka time and hb time to now
 	qrec->lastka = qrec->lastheartbeat = current_time();
 
@@ -1166,6 +1300,10 @@ static void send_heartbeat(qr2_t qrec, int statechanged)
 	if (statechanged != 0)
 		qrec->userstatechangerequested = 0;
 
+	gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_Comment,
+		"Sent heartbeat to master\r\n");
+	gsDebugBinary(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_RawDump,
+		buf.buffer, buf.len);
 }
 
 #ifdef __cplusplus

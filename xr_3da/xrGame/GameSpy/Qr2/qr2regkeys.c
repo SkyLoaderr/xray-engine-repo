@@ -1,11 +1,8 @@
 
 #include "qr2regkeys.h"
 
-#if defined(applec) || defined(THINK_C) || defined(__MWERKS__) && !defined(__mips64) && !defined(_WIN32)
-	#include "::stringutil.h" 
-#else
-	#include "../stringutil.h"
-#endif
+#include "../stringutil.h"
+#include "../gsiDebug.h"
 
 #ifdef __MWERKS__ // CodeWarrior requires prototypes
 void qr2_register_keyW(int keyid, const unsigned short *key);
@@ -113,13 +110,31 @@ void qr2_internal_key_list_free()
 ///////////////////////////////////////////////////////////////////////////////
 void qr2_register_keyA(int keyid, const char *key)
 {
+	gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Misc, GSIDebugLevel_StackTrace,
+		"qr2_register_keyA()\r\n");
+
+	// Verify the key range
 	if (keyid < NUM_RESERVED_KEYS || keyid > MAX_REGISTERED_KEYS)
+	{
+		gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Misc, GSIDebugLevel_WarmError,
+			"Attempted to register invalid key %d - %s\r\n", keyid, key);
 		return;
+	}
+
+	gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Misc, GSIDebugLevel_Comment,
+		"Registered key %d - %s\r\n", keyid, key);
+
 	qr2_registered_key_list[keyid] = key;
 }
 void qr2_register_keyW(int keyid, const unsigned short *key)
 {
-	char* key_A = UCS2ToUTF8StringAlloc(key);
+	char* key_A = NULL;
+
+	gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Misc, GSIDebugLevel_StackTrace,
+		"qr2_register_keyW()\r\n");
+
+	// Create UTF8 copy
+	key_A = UCS2ToUTF8StringAlloc(key);
 
 	// Register the ascii version
 	qr2_register_keyA(keyid, key_A);

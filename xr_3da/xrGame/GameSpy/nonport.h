@@ -16,10 +16,6 @@ devsupport@gamespy.com
 
 #ifndef GSI_MEM_ONLY
 
-#if defined(applec) || defined(THINK_C) || defined(__MWERKS__) && !defined(__mips64) && !defined(_WIN32)
-	#define _MACOS
-#endif
-
 #ifdef __mips64
 	#if !defined(SN_SYSTEMS) && !defined(EENET) && !defined(INSOCK)
 		#define EENET
@@ -29,10 +25,15 @@ devsupport@gamespy.com
 	#endif
 #endif
 
+#if defined(_LINUX) || defined(_MACOSX)
+	#define _UNIX
+#endif
+
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
-#ifdef _WIN32
+#if defined(_WIN32)
 	#define WIN32_LEAN_AND_MEAN
 	#include <windows.h>
 	// Added by Saad Nader on 08-02-2004
@@ -43,13 +44,7 @@ devsupport@gamespy.com
 		#include <winsock.h>
 	#endif
 	// end added
-#else
-#ifdef _MACOS
-	#include <events.h>
-	#include "mwinsock.h"
-	#define GS_BIG_ENDIAN
-#else
-#ifdef _PS2
+#elif defined(_PS2)
 	#define GS_BIG_ENDIAN
 	#ifdef EENET
 		#include <libeenet.h>
@@ -95,8 +90,7 @@ devsupport@gamespy.com
 		#include "sys/errno.h"
 		//#include "libmrpc.h"
 	#endif // INSOCK
-#else //UNIX
-	#define UNDER_UNIX
+#elif defined(_UNIX)
 	#include <unistd.h>
 	#include <sys/types.h>
 	#include <sys/socket.h>
@@ -105,16 +99,87 @@ devsupport@gamespy.com
 	#include <sys/socket.h>
 	#include <sys/ioctl.h>
 	#include <netinet/in.h>
-	#include <netdb.h>
+
+	// MACOSX Warning!! netdb.h has it's own NOFILE define.
+	// GameSpy uses NOFILE to determine if an HD is available
+	#ifndef NOFILE
+		// Since GameSpy NOFILE is not defined, include netdb.h then undef NOFILE
+		#include <netdb.h>
+		#undef NOFILE
+	#else
+		// Otherwise leave NOFILE defined
+		#include <netdb.h>
+	#endif
+
 	#include <arpa/inet.h>
-	#include <ctype.h>
 	#include <errno.h>
 	#include <sys/time.h>
 	#include <limits.h>
 	//#include <sys/syslimits.h>
 	#include <netinet/tcp.h>
+#else
+	#error The GameSpy SDKs do not support this operating system
 #endif
+
+#if defined(GSI_UNICODE)
+	#include <wchar.h>
 #endif
+
+#ifndef UNDER_CE
+	#include <ctype.h>
+	#if defined(_MACOSX)
+		#undef _T
+	#endif
+#else
+	int isdigit(int c);
+	int isxdigit(int c);
+	int isalnum(int c);
+	int isspace(int c);
+	int isgraph(int c);
+#endif
+
+#undef _vftprintf
+#undef _ftprintf
+#undef _tprintf
+#undef _tsnprintf
+#undef _tstrcpy
+#undef _tfopen
+#undef _tstrcat
+#undef _tstrlen
+#undef _T
+
+#ifdef GSI_UNICODE
+	#define _vftprintf  vfwprintf
+	#define _ftprintf   fwprintf
+	#define _stprintf   swprintf
+	#define _tprintf    wprintf
+	#define _tcscpy     wcscpy
+	#define _tcscat     wcscat
+	#define _tcslen     wcslen
+	#define _tfopen     _wfopen
+	#define _T(a)       L##a
+
+	#if defined(_WIN32) || defined(_PS2)
+		#define _tsnprintf _snwprintf
+	#else
+		#define _tsnprintf swprintf
+	#endif
+#else
+	#define _vftprintf  vfprintf
+	#define _ftprintf   fprintf
+	#define _stprintf   sprintf
+	#define _tprintf    printf
+	#define _tcscpy     strcpy
+	#define _tcscat     strcat
+	#define _tcslen     strlen
+	#define _tfopen     fopen
+	#define _T(a)       a
+
+	#if defined(_WIN32)
+		#define _tsnprintf _snprintf
+	#else
+		#define _tsnprintf snprintf
+	#endif
 #endif
 
 #ifdef UNDER_CE
@@ -133,31 +198,66 @@ devsupport@gamespy.com
 extern "C" {
 #endif
 
-#ifndef GSI_MEM_TRACK
-#define gsimalloc malloc
-#define gsifree free
-#define gsirealloc realloc
-#define gsimemalign memalign
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+//////////     ********** MEMORY MANAGEMENT SETTINGS  **********     //////////
+#if defined(GSI_MEM_MANAGED)
+	// BETA: SDKs will use an application defined memory pool
+	#define gsimalloc	gsiManagedMalloc
+	#define gsifree		gsiManagedFree
+	#define gsirealloc	gsiManagedRealloc
+	#define gsimemalign gsiManagedMemalign
+
+	// [internal] allocator functions
+	void* gsiManagedMalloc(size_t size);
+	void* gsiManagedRealloc(void* ptr, size_t size);
+	void  gsiManagedFree(void* ptr);
+	void* gsiManagedMemalign(size_t boundary, size_t size); // TODO
+
+	// TODO: Add support for multiple memory mgrs
+	//       Currently, SDKs will share a single static one
+	typedef void* GSIMemoryMgrPtr;
+	GSIMemoryMgrPtr gsMemMgrCreate(void* thePoolBuffer, size_t thePoolSize);
+
+	// Diagnostics
+	void gsMemMgrDumpStats();
+	void gsMemMgrDumpAllocations();
+	void gsMemMgrValidateMemoryPool();
+
+#elif defined(GSI_MEM_TRACK)
+	// BETA: SDKs will track memory allocations
+	void * gsimalloctrack(size_t size);
+	void gsifreetrack(void * ptr);
+	void * gsirealloctrack(void * ptr, size_t size);
+	#define gsimalloc gsimalloctrack
+	#define gsifree gsifreetrack
+	#define gsirealloc gsirealloctrack
+	// tracking of aligned memory is not supported
+	//#define gsimemalign
+	extern size_t gsimemtrack_total;
+	extern size_t gsimemtrack_peak;
+	extern int gsimemtrack_num;
+
 #else
-//typedef unsigned int size_t; // PS2 EEnet already has this, anyone not?
-void * gsimalloctrack(size_t size);
-void gsifreetrack(void * ptr);
-void * gsirealloctrack(void * ptr, size_t size);
-#define gsimalloc gsimalloctrack
-#define gsifree gsifreetrack
-#define gsirealloc gsirealloctrack
-// tracking of aligned memory is not supported
-//#define gsimemalign
-extern size_t gsimemtrack_total;
-extern size_t gsimemtrack_peak;
-extern int gsimemtrack_num;
+	// SDKs will use default memory manager
+	#define gsimalloc	malloc
+	#define gsifree		free
+	#define gsirealloc	realloc
+	#define gsimemalign memalign
 #endif
 
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 #ifndef GSI_MEM_ONLY
 	
 // Get rid of compiler warnings when parameters are never used
+// (Mainly used in sample apps and callback for platform switches)
 #if defined(__MWERKS__) || defined(WIN32)
 	#define GSI_UNUSED(x) x
+#elif defined(_PS2)
+	#define GSI_UNUSED(x) {void* y=&x;y=NULL;}
 #else
 	#define GSI_UNUSED(x)
 #endif
@@ -184,7 +284,7 @@ typedef gsi_u32           goa_uint32; //  these types will be removed once all S
 	typedef signed long           gsi_i64;
 	typedef unsigned long         gsi_u64;
 	typedef unsigned int          gsi_time; // must be int (32bits), not long (64bits)
-#elif defined(UNDER_UNIX)
+#elif defined(_UNIX)
 	typedef long long             gsi_i64;
 	typedef unsigned long long    gsi_u64;
 	typedef unsigned int          gsi_time; // must be int (32bits), not long (64bits)
@@ -265,7 +365,7 @@ void SocketShutDown();
 #define _strdup goastrdup
 char * goastrdup(const char *src);
 
-#if defined(_MACOS) || defined(UNDER_CE)
+#if defined(UNDER_CE)
 	int strcasecmp(const char *string1, const char *string2);
 	int strncasecmp(const char *string1, const char *string2, size_t count);
 #endif
@@ -276,7 +376,7 @@ char * goastrdup(const char *src);
 	#define FD_SETSIZE SN_MAX_SOCKETS
 #endif
 
-#if !defined(_MACOS) && !defined(_WIN32)
+#if !defined(_WIN32)
 	#define SOCKET int
 	
 	#ifdef SN_SYSTEMS
@@ -296,7 +396,7 @@ char * goastrdup(const char *src);
 		#define closesocket(s)	   sceInsockShutdown(s,SCE_INSOCK_SHUT_RDWR)
 	#endif
 
-	#ifdef UNDER_UNIX
+	#ifdef _UNIX
 		#define GOAGetLastError(s) errno
 		#define closesocket        close //on unix
 	#endif
@@ -344,7 +444,7 @@ char * goastrdup(const char *src);
 	#define WSAEREMOTE          EREMOTE
 	#define WSAEINVAL           EINVAL
 
-#else // !defined(_MACOS) && !defined(_WIN32)
+#else // !defined(_WIN32)
 	#define GOAGetLastError(s) WSAGetLastError()
 #endif
 
@@ -412,15 +512,6 @@ unsigned int GSIGetResolvedIP(GSIResolveHostnameHandle handle);
 	#include <time.h>
 #endif
 
-#ifndef UNDER_CE
-	#include <ctype.h>
-#else
-	int isdigit(int c);
-	int isxdigit(int c);
-	int isalnum(int c);
-	int isspace(int c);
-#endif
-
 #if defined(UNDER_CE) || defined(_PS2)
 	#define NOFILE
 #endif
@@ -437,6 +528,9 @@ extern GetUniqueIDFunction GOAGetUniqueID;
 #ifdef _PS2
 extern int wprintf(const wchar_t*,...);
 #endif
+
+// Include debug header AFTER types are declared
+#include "gsiDebug.h"
 
 #endif // #ifndef GSI_MEM_ONLY
 

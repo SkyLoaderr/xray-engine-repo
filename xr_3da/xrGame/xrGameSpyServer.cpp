@@ -6,6 +6,7 @@ xrGameSpyServer::xrGameSpyServer()
 {
 	m_iReportToMasterServer = 0;
 	m_bQR2_Initialized = FALSE;
+	m_bCDKey_Initialized = FALSE;
 
 	//set the secret key, in a semi-obfuscated manner
 	secret_key[0] = 't';
@@ -21,11 +22,12 @@ xrGameSpyServer::xrGameSpyServer()
 xrGameSpyServer::~xrGameSpyServer()
 {
 	QR2_ShutDown();
+	CDKey_ShutDown();
 }
 
 BOOL xrGameSpyServer::Connect(ref_str &session_name)
 {
-	BOOL res = xrServer::Connect(session_name);
+	BOOL res = inherited::Connect(session_name);
 	if (!res) return res;
 
 
@@ -51,60 +53,27 @@ BOOL xrGameSpyServer::Connect(ref_str &session_name)
 	m_iReportToMasterServer = game->get_option_i		(*session_name,"public",0);
 	m_iMaxPlayers	= game->get_option_i		(*session_name,"maxplayers",32);
 	//--------------------------------------------//
-	if (game->Type() != GAME_SINGLE) QR2_Init();
+	if (game->Type() != GAME_SINGLE) 
+	{
+		QR2_Init();
+		CDKey_Init();
+	};
 
 	return res;
 }
 
-void			xrGameSpyServer::QR2_Init			()
-{	
-	qr2_register_key(DEDICATED_KEY,   ("dedicated")  );
-	//--------- QR2 Init -------------------------/
-	//call qr_init with the query port number and gamename, default IP address, and no user data
-	if (qr2_init(NULL,NULL,GAMESPY_BASEPORT, GAMESPY_GAMENAME, secret_key, (m_iReportToMasterServer == 0)?0:1, 1,
-		callback_serverkey, callback_playerkey, callback_teamkey,
-		callback_keylist, callback_count, callback_adderror, this) != e_qrnoerror)
-	{
-		//		_tprintf(_T("Error starting query sockets\n"));
-		return;
-	}
-
-	// Set a function to be called when we receive a game specific message
-	qr2_register_clientmessage_callback(NULL, callback_cm);
-
-	// Set a function to be called when we receive a nat negotiation request
-	qr2_register_natneg_callback(NULL, callback_nn);
-
-	/*
-	DWORD aStartTime = GetTickCount();
-	while ((current_time() - aStartTime) < 60000)
-	{
-		// An actual game would do something between "thinks"
-//		DoGameStuff();
-
-		//check for / process incoming queries
-		qr2_think(NULL);
-	}
-	*/
-	Msg("GameSpy::QR2 : Initialized");
-	m_bQR2_Initialized = TRUE;
-};
-
-void			xrGameSpyServer::QR2_ShutDown()
-{
-	m_bQR2_Initialized = FALSE;
-	qr2_shutdown(NULL);	
-};
-
 void			xrGameSpyServer::Update				()
 {
-	xrServer::Update();
+	inherited::Update();
 
-//	if (!m_bQR2_Inited) QR2_Init();
-//	else	
 	if (m_bQR2_Initialized)
 	{
 		qr2_think(NULL);
+	};
+
+	if (m_bCDKey_Initialized)
+	{
+		gcd_think();
 	};
 }
 
@@ -113,4 +82,12 @@ int				xrGameSpyServer::GetPlayersCount()
 	int NumPlayers = client_Count();
 	if (!g_pGamePersistent->bDedicatedServer || NumPlayers < 1) return NumPlayers;
 	return NumPlayers - 1;
+};
+
+void			xrGameSpyServer::OnCL_Connected		(IClient* _CL)
+{
+	csPlayers.Enter					();
+	csPlayers.Leave					();
+
+	inherited::OnCL_Connected(_CL);
 };

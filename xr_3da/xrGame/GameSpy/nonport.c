@@ -17,7 +17,7 @@ extern "C" {
 
 #include "nonport.h"
 
-#if defined(_WIN32) && !defined(UNDER_CE) && !defined(_PS2)
+#if defined(_WIN32) && !defined(UNDER_CE)
 #if defined(__WINSOCK_2_0__)
 // Added by Saad Nader on 08-02-2004
 // support for winsock2
@@ -232,10 +232,6 @@ gsi_time current_time()  //returns current time in milliseconds
 	return (GetTickCount()); 
 #endif
 
-#ifdef _MACOS
-	return (TickCount() * 50) / 3;
-#endif
-
 #ifdef _PS2
 	unsigned int ticks;
 	static unsigned int msec = 0;
@@ -261,7 +257,7 @@ gsi_time current_time()  //returns current time in milliseconds
 	return msec;
 #endif
 
-#ifdef UNDER_UNIX
+#ifdef _UNIX
 	struct timeval time;
 	
 	gettimeofday(&time, NULL);
@@ -322,7 +318,7 @@ gsi_time current_time_hires()  // returns current time in microseconds
 	return msec;
 #endif
 
-#ifdef UNDER_UNIX
+#ifdef _UNIX
 	struct timeval time;
 	
 	gettimeofday(&time, NULL);
@@ -335,11 +331,6 @@ void msleep(gsi_time msec)
 {
 #ifdef _WIN32
 	Sleep(msec);
-#endif
-
-#ifdef _MACOS
-//	EventRecord rec;
-	WaitNextEvent(everyEvent,/*&rec*/NULL, (msec*1000)/60, NULL);
 #endif
 
 #ifdef _PS2
@@ -360,14 +351,14 @@ void msleep(gsi_time msec)
 	#endif
 #endif
 
-#ifdef UNDER_UNIX
+#ifdef _UNIX
 	usleep(msec * 1000);
 #endif
 }
 
 void SocketStartUp()
 {
-#if defined(_WIN32) || defined(_MACOS)
+#if defined(_WIN32)
 	WSADATA data;
 	// Added by Saad Nader on 08-02-2004
 	// support for winsock2
@@ -382,7 +373,7 @@ void SocketStartUp()
 
 void SocketShutDown()
 {
-#if defined(_WIN32) || defined(_MACOS)
+#if defined(_WIN32)
 	WSACleanup();
 #endif
 }
@@ -399,7 +390,6 @@ char * goastrdup(const char *src)
 }
 
 #if !defined(_WIN32) || defined(UNDER_CE)
-#include <ctype.h>
 
 char *_strlwr(char *string)
 {
@@ -429,8 +419,11 @@ char *_strupr(char *string)
 int SetSockBlocking(SOCKET sock, int isblocking)
 {
 	int rcode;
-#ifdef EENET
-	socklen_t argp;
+#ifdef _PS2
+	// EENet requires int
+	// SNSystems requires int
+	// Insock requires int
+	gsi_i32 argp;
 #else
 	unsigned long argp;
 #endif
@@ -454,13 +447,12 @@ int SetSockBlocking(SOCKET sock, int isblocking)
 			argp = -1;
 		else
 			argp = 0;
-		sceInsockSetRecvTimeout(sock, (int)argp);
-		sceInsockSetSendTimeout(sock, (int)argp);
-		sceInsockSetShutdownTimeout(sock, (int)argp);
+		sceInsockSetRecvTimeout(sock, argp);
+		sceInsockSetSendTimeout(sock, argp);
+		sceInsockSetShutdownTimeout(sock, argp);
 		GSI_UNUSED(sock);
 		rcode = 0;
 	#endif
-
 #else
 	rcode = ioctlsocket(sock, FIONBIO, &argp);
 #endif
@@ -473,7 +465,7 @@ int SetSockBlocking(SOCKET sock, int isblocking)
 
 int DisableNagle(SOCKET sock)
 {
-#if defined(_WIN32) || defined(UNDER_UNIX)
+#if defined(_WIN32) || defined(_UNIX)
 	int rcode;
 	int noDelay = 1;
 
@@ -533,6 +525,12 @@ int DisableNagle(SOCKET sock)
 	}
 	
 	// Formerly known as ghiSocketSelect
+#ifdef SN_SYSTEMS
+	#undef FD_SET
+	#define FD_SET(s,p)   ((p)->array[((s) - 1) >> SN_FD_SHR] |= \
+                       (unsigned int)(1 << (((s) - 1) & SN_FD_BITS)) )
+
+#endif
 	int GSISocketSelect(SOCKET theSocket, int* theReadFlag, int* theWriteFlag, int* theExceptFlag)
 	{
 		fd_set aReadSet;
@@ -1050,7 +1048,6 @@ int GSIStartResolvingHostname(const char * hostname, GSIResolveHostnameHandle * 
 {
 	GSIResolveHostnameInfo * info;
 	HOSTENT * hostent;
-	unsigned int ip;
 
 	// do the lookup now
 	hostent = gethostbyname(hostname);
@@ -1086,7 +1083,7 @@ unsigned int GSIGetResolvedIP(GSIResolveHostnameHandle handle)
 }
 #endif
 
-#if defined(_MACOS) || defined(UNDER_CE)
+#if defined(UNDER_CE)
 int strcasecmp(const char *string1, const char *string2)
 {
 	while (tolower(*string1) == tolower(*string2) && *string1 != 0 && *string2 != 0)
@@ -1109,10 +1106,12 @@ int strncasecmp(const char *string1, const char *string2, size_t count)
 #ifdef SN_SYSTEMS
 int GOAGetLastError(SOCKET s)
 {
-	int val;
+	int val = 0;
 	int soval = sizeof(val);
-	getsockopt(s,SOL_SOCKET,SO_ERROR,&val,&soval);
-	return val;
+	if (0 != getsockopt(s,SOL_SOCKET,SO_ERROR,&val,&soval))
+		return 0; // getsockopt failed
+	else
+		return val;
 }
 #endif
 
@@ -1265,16 +1264,7 @@ static const char * GOAGetUniqueID_Internal(void)
 #endif // UNIQUEID
 #endif // _PS2
 
-#ifdef _MACOS
-const char * GOAGetUniqueID_Internal(void)
-{
-	static char keyval[17];
-	keyval[0] = '\0';
-	return keyval;
-}
-#endif // _MACOS
-
-#if (defined(_WIN32) || defined(UNDER_UNIX)) && !defined(UNDER_CE)
+#if (defined(_WIN32) || defined(_UNIX)) && !defined(UNDER_CE)
 
 static void GenerateID(char *keyval)
 {
