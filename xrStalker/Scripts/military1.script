@@ -1,0 +1,45 @@
+
+function main ()
+
+	local eats = {"stand_eat_0", "stand_eat_1", "stand_eat_2", "stand_eat_3", "stand_eat_4"}
+	local curr_eat = 1
+    local hero = get_level_object("stalker_hero")
+	local flesh = get_level_object ("flesh_eat")
+	local dead = get_level_object ("dead_stalker")
+
+    hero:script (true, move2.script_name())
+    flesh:script (true, move2.script_name())
+
+    action (hero, move (move.standing, move.walk, move.line, patrol ("way_hero")),
+      		look (look.search),
+      		anim (anim.free),
+      		cond (cond.move_end))
+
+    action (flesh, move (move.act_run, dead), cond (cond.time_end, 1000))
+
+	local eat_set = 0
+
+	wait (1000)
+
+	while true do
+		  if flesh:see (hero) then 
+			 flesh:script (false, move2.script_name())
+			 flesh:script (true, move2.script_name())
+			 action (flesh, move (move.act_run,  patrol ("flesh_way")), cond (cond.move_end))
+			 break
+			 end
+		  if eat_set == 0 then
+			 flesh:script (false, move2.script_name())
+			 flesh:script (true, move2.script_name())
+             action (flesh, move (move.act_eat, dead), cond (cond.time_end, 10000000))
+			 eat_set = 1
+			 end
+		  wait (1000)
+		  end
+
+	while hero:action () do wait () end
+		  
+    hero:script (false, move2.script_name())
+    flesh:script (false, move2.script_name())
+
+end
