@@ -43,7 +43,7 @@ states = {
 				animstate = "stand",
 				animation = nil
 			},
-	attack = {	weapon = "unstrapped",
+	sneak = {	weapon = "unstrapped",
 				movement = move.walk,
 				mental = anim.danger,
 				bodystate = move.crouch,
@@ -57,7 +57,6 @@ states = {
 				animstate = "stand",
 				animation = nil
 			},
-
 
 	-- Стоячие состояния
 	wait = {	weapon = "strapped",
@@ -89,7 +88,7 @@ states = {
 				animstate = "stand",
 				animation = "hide"
 			},
-	prisluh = {	weapon = nil,
+	listen = {	weapon = nil,
 				movement = move.stand,
 				mental = anim.free,
 				bodystate = move.standing,
@@ -105,5 +104,4 @@ states = {
 				animstate = "sit",
 				animation = nil
 			}
-
 }
