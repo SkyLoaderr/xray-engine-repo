@@ -111,7 +111,9 @@ public:
 
 	IC	void						set_RT				(IDirect3DSurface9* RT, u32 ID=0);
 	IC	void						set_ZB				(IDirect3DSurface9* ZB);
+
 	IC	void						set_Constants		(R_constant_table* C);
+	IC	void						set_Constants		(ref_ctable& C)						{ set_Constants(&*C);			}
 
 	IC	void						set_Textures		(STextureList* T);
 	IC	void						set_Textures		(ref_texture_list& T)				{ set_Textures(&*T);			}
