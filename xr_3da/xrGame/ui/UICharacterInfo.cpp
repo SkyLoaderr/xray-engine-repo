@@ -103,10 +103,10 @@ void CUICharacterInfo::InitCharacter(CInventoryOwner* pInvOwner)
 
 	UIIcon.SetShader(GetCharIconsShader());
 	UIIcon.GetUIStaticItem().SetOriginalRect(
-					pInvOwnerEntity->GetTradeIconX()*ICON_GRID_WIDTH,
-					pInvOwnerEntity->GetTradeIconY()*ICON_GRID_HEIGHT,
-					pInvOwnerEntity->GetTradeIconX()+CHAR_ICON_WIDTH*ICON_GRID_WIDTH,
-					pInvOwnerEntity->GetTradeIconY()+CHAR_ICON_HEIGHT*ICON_GRID_HEIGHT);
+					pInvOwner->CharacterInfo().TradeIconX()*ICON_GRID_WIDTH,
+					pInvOwner->CharacterInfo().TradeIconY()*ICON_GRID_HEIGHT,
+					pInvOwner->CharacterInfo().TradeIconX()+CHAR_ICON_WIDTH*ICON_GRID_WIDTH,
+					pInvOwner->CharacterInfo().TradeIconY()+CHAR_ICON_HEIGHT*ICON_GRID_HEIGHT);
 }
 
 void CUICharacterInfo::ResetAllStrings()

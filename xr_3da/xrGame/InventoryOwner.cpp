@@ -81,18 +81,15 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 	{
 		LPCSTR name_id = pThis->spawn_ini()->r_string("game_info", "name_id");
 		init_default_profile = !CharacterInfo().Load(name_id);
-
-		if(!init_default_profile)
-		{
-			pThis->SetIconm_iIconX
-				m_iIconY
-	
-		}
 	}
 	
 	if(init_default_profile)
 	{
 		CharacterInfo().m_sGameName = pThis->cName();
+		CEntity* pEntity = dynamic_cast<CEntity*>(pThis);
+		VERIFY(pEntity);
+		CharacterInfo().m_iIconX = pEntity->GetTradeIconX();
+		CharacterInfo().m_iIconY = pEntity->GetTradeIconY();
 	}
 
 

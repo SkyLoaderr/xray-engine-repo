@@ -22,6 +22,9 @@ public:
 	virtual LPCSTR Rank();
 	virtual LPCSTR Community();
 
+	int		TradeIconX() {return m_iIconX;}
+	int		TradeIconY() {return m_iIconY;}
+
 	//загрузка профиля персонажа из xml файла,
 	//если профиль не найден - возвращаем false, иначе true
 	bool Load(LPCSTR name_id, LPCSTR xml_file = DEFAULT_CHARACTER_FILE);
