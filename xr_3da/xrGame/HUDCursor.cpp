@@ -7,8 +7,9 @@
 #include "hudmanager.h"
 
 #include "..\CustomHUD.h"
+#include "Entity.h"
 
-#define C_ON_ACTOR	D3DCOLOR_XRGB(0xff,0,0)
+#define C_ON_ENEMY	D3DCOLOR_XRGB(0xff,0,0)
 #define C_DEFAULT	D3DCOLOR_XRGB(0xff,0xff,0xff)
 #define C_SIZE		0.025f
 #define NEAR_LIM	0.5f
@@ -35,8 +36,8 @@ void CHUDCursor::Render()
 
 	if (0 == (psHUD_Flags&HUD_CROSSHAIR)) return;
 
-//	p1	= pCreator->CurrentEntity()->Position();
-//	dir = pCreator->CurrentEntity()->Direction();
+	int cur_team = ((CEntity*)pCreator->CurrentEntity())->id_Team;
+
 	p1	= Device.vCameraPosition;
 	dir = Device.vCameraDirection;
 	
@@ -48,7 +49,7 @@ void CHUDCursor::Render()
 	Collide::ray_query	RQ;
 
 	if (pCreator->ObjectSpace.RayPick( p1, dir, dist, RQ )){
-		if (RQ.O && RQ.O->CLS_ID == CLSID_ENTITY) C = C_ON_ACTOR;
+		if (RQ.O && (RQ.O->CLS_ID == CLSID_ENTITY) && (((CEntity*)RQ.O)->id_Team!=cur_team)) C = C_ON_ENEMY;
 		dist = RQ.range;
 	}
 	pCreator->CurrentEntity()->bEnabled = true;
@@ -67,7 +68,7 @@ void CHUDCursor::Render()
 	}
 	if (RQ.O){ 
 		CFontSmall* F = Level().HUD()->pSmallFont;
-		F->Color	(0xffffffff);
+		F->Color	(C);
 		F->Size		(0.02f);
 		F->Out		(PT.p.x,PT.p.y+di_size*4,"~%s",RQ.O->cName());
 	}
