@@ -11,8 +11,8 @@
 #include "..\\ai_monsters_misc.h"
 
 #undef	WRITE_TO_LOG
-//#define WRITE_TO_LOG(s) bStopThinking = true;
-/**/
+#define WRITE_TO_LOG(s) bStopThinking = true;
+/**
 #define WRITE_TO_LOG(s) {\
 	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
 	if (!feel_visible.size())\
@@ -121,7 +121,6 @@ void CAI_Rat::Death()
 	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
 
 	bStopThinking = true;
-	Msg("%s [health : %4.1f]",cName(),m_fFood);
 
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	vfSetFire(false,Group);

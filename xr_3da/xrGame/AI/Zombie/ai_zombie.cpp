@@ -72,7 +72,7 @@ void CAI_Zombie::Die()
 	Group.m_dwAliveCount--;
 	eCurrentState = aiZombieDie;
 	m_dwDeathTime = Level().timeServer();
-	Msg("%s : Death signal %d",cName(),Level().timeServer());
+//	Msg("%s : Death signal %d",cName(),Level().timeServer());
 }
 
 void CAI_Zombie::OnDeviceCreate()

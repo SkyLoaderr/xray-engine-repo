@@ -10,9 +10,9 @@
 #include "ai_zombie.h"
 #include "..\\ai_monsters_misc.h"
 
-/**
-//#define WRITE_TO_LOG(s) bStopThinking = true;
 #undef WRITE_TO_LOG
+#define WRITE_TO_LOG(s) bStopThinking = true;
+/**
 #define WRITE_TO_LOG(s) {\
 	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
 	if (!feel_visible.size())\
@@ -378,8 +378,6 @@ void CAI_Zombie::AttackRun()
 
 	if (bfComputeNewPosition(true,true))
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieTurn);
-
-	Msg("%s : %5.2f",cName(),m_fSpeed);
 
 	if	(!m_tpSoundBeingPlayed || !m_tpSoundBeingPlayed->feedback) {
 		u32 dwCurTime = Level().timeServer();
