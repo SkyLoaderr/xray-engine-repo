@@ -182,7 +182,7 @@ void CWeaponShotgun::OnDrawFlame	()
 			f		*= 0.9f;
 			float	S = f+f*::Random.randF	();
 			float	A = ::Random.randF		(PI_MUL_2);
-			::Render->add_Patch				(hFlames[Random.randI(hFlames.size())],P,S,A,hud_mode);
+			::Render->add_Patch				(hFlames[Random.randI(hFlames.size())](),P,S,A,hud_mode);
 			P.add(D);
 		}
 
@@ -200,7 +200,7 @@ void CWeaponShotgun::OnDrawFlame	()
 			f		*= 0.9f;
 			float	S = f+f*::Random.randF	();
 			float	A = ::Random.randF		(PI_MUL_2);
-			::Render->add_Patch				(hFlames[Random.randI(hFlames.size())],P,S,A,hud_mode);
+			::Render->add_Patch				(hFlames[Random.randI(hFlames.size())](),P,S,A,hud_mode);
 			P.add(D);
 		}
 		fFlameTime -= Device.fTimeDelta;
