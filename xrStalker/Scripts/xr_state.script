@@ -380,6 +380,15 @@ function anims:update(type)
 
 
 end
+-- проигрывается ли щас цикленный айдл или нет
+function anims:safe_to_break()
+	if self.anim.current_state ~= nil then
+		return false
+	end
+	if self.npc:animation_count() <= 1 then
+		return true
+	end
+end
 -- апдейт базового класса
 function anims:update_base()
 	if self.anim.base_state == "idle" then
@@ -610,12 +619,19 @@ end
 
 
 
-
 function anim_update(type, npc)
 	local st = xr_motivator.storage[npc:id()].state.anim
 
 	if st ~= nil then
 		st:update(type)
 	end
+end
+function anim_safe_to_break(npc)
+	local st = xr_motivator.storage[npc:id()].state.anim
+
+	if st ~= nil then
+		return st:safe_to_break()
+	end
+	return true
 end
 
