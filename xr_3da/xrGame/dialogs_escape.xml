@@ -592,7 +592,7 @@
         </phrase_list>
     </dialog>
     <dialog id="escape_trader_done_gift">
-        <dont_has_info>escape_stalker_done</dont_has_info>
+        <has_info>escape_stalker_give</has_info>
         <phrase_list>
             <phrase id="1">
                 <text>escape_trader_done_gift_1</text>
