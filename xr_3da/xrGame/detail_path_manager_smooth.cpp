@@ -536,10 +536,6 @@ void CDetailPathManager::build_path_via_key_points(
 	}
 	
 	ai().level_graph().assign_y_values	(m_path);
-	for (int i=1, n=m_path.size(); i<n; ++i)
-		if (_abs(m_path[i].position.y - m_path[i - 1].position.y) >= 1.f) {
-			ai().level_graph().assign_y_values	(m_path);
-		}
 }
 
 void CDetailPathManager::build_smooth_path		(

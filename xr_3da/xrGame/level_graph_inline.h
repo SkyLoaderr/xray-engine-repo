@@ -504,10 +504,9 @@ IC	bool	CLevelGraph::create_straight_PTN_path	(u32 start_vertex_id, const Fvecto
 template<typename T>
 IC	void CLevelGraph::assign_y_values		(xr_vector<T> &path)
 {
-	Fvector						DUP, normal, v1, P;
+	Fvector						DUP = {0,1,0}, normal, v1, P = {0,0,0};
 	Fplane						PL; 
 	const CVertex				*_vertex;
-	DUP.set						(0,1,0);
 	u32							prev_id = u32(-1);
 
 	xr_vector<T>::iterator		I = path.begin();
