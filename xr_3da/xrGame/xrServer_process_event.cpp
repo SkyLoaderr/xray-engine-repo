@@ -85,7 +85,6 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 		break;
 	case GE_DIE:
 		{
-			/*
 			// Parse message
 			u16					id_dest =	destination, id_src;
 			P.r_u16				(id_src);
@@ -95,7 +94,6 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			xrClientData*		c_src		= e_src->owner;
 			xrClientData*		c_from		= ID_to_client	(sender);
 			R_ASSERT			(c_src == c_from);		// assure client ownership of event
-			*/
 		}
 		break;
 	default:
