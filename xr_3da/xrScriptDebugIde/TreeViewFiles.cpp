@@ -213,8 +213,10 @@ void CTreeViewFiles::OnDblclk(NMHDR* pNMHDR, LRESULT* pResult)
 	CProjectFile* pPF = (CProjectFile*)m_pTree->GetItemData(hItem);
 	if ( pPF )
 	{
+		pPF->m_bBreakPointsSaved = FALSE;
 		CLuaView* pView = theApp.OpenProjectFilesView(pPF);
-		pView->Activate();
+		if(pView)
+			pView->Activate();
 	}
 
 	*pResult = 0;

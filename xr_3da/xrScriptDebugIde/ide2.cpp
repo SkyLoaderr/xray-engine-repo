@@ -150,8 +150,10 @@ CLuaView* CIdeApp::LoadProjectFilesView(CProjectFile *pPF)
 		return NULL;
 }
 
+CProjectFile * g_pPF = NULL;
 CLuaView* CIdeApp::OpenProjectFilesView(CProjectFile *pPF, int nLine)
 {
+	g_pPF = pPF;
 	CLuaView* pView = FindProjectFilesView(pPF);
 	if ( !pView )
 		pView = LoadProjectFilesView(pPF);

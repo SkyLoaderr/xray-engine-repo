@@ -10,6 +10,9 @@
 #include "SciLexer.h"
 #include "MainFrame.h"
 #include "GotoLineDialog.h"
+#include "LuaView.h"
+#include "LuaDoc.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -32,6 +35,7 @@ void CLuaEditor::GotoLineDlg()
 CLuaEditor::CLuaEditor()
 {
 	m_bShowCalltips = TRUE;
+	m_lua_view	= NULL;
 }
 
 CLuaEditor::~CLuaEditor()
@@ -53,6 +57,8 @@ BOOL CLuaEditor::Create(CWnd *pParentWnd, UINT nCtrlId)
 {
 	BOOL bCreated = CreateEx(0, "Scintilla","", WS_CHILD|WS_VISIBLE|WS_TABSTOP,
 		CRect(0,0,0,0),pParentWnd,nCtrlId);
+	
+	m_lua_view = (CLuaView*)pParentWnd;
 
 	if ( !bCreated )
 		return FALSE;
@@ -71,6 +77,17 @@ int CLuaEditor::Sci(int nCmd, int wParam, int lParam)
 	ASSERT(m_fnScintilla);
 	ASSERT(m_ptrScintilla);
 
+	static int nLineTotal = 0;
+	int cnt = m_fnScintilla(m_ptrScintilla, SCI_GETLINECOUNT, 0, 0);
+	
+	if(m_lua_view->GetDoc()){
+	
+		CProjectFile* pF = m_lua_view->GetDocument()->GetProjectFile();
+		if(SCI_MARKERNEXT != nCmd && nLineTotal && nLineTotal != cnt && pF && pF->m_bBreakPointsSaved)
+			SetBreakPointsIn( pF );
+		
+		nLineTotal = cnt;
+	}
 	return m_fnScintilla(m_ptrScintilla, nCmd, wParam, lParam);
 }
 

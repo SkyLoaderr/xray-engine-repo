@@ -78,6 +78,7 @@ public:
 	CharacterRange GetSelection();
 	void GotoLineDlg();
 	void FindText(CString str);
+	CLuaView*	m_lua_view;
 protected:
 	int (*m_fnScintilla)(void*,int,int,int);
 	void *m_ptrScintilla;

@@ -518,3 +518,7 @@ void CProject::OnDebugOptions()
 	SetModifiedFlag(TRUE);
 }
 
+void CProject::SetModifiedFlag(BOOL bModified) 
+{ 
+	m_bModified = bModified; 
+};

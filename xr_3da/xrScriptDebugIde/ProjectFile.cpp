@@ -43,7 +43,7 @@ CProjectFile::CProjectFile()
 {
 	RemoveAllDebugLines();
 	RemoveAllBreakPoints();
-
+	m_bBreakPointsSaved = FALSE;
 }
 
 CProjectFile::~CProjectFile()
@@ -226,6 +226,7 @@ BOOL CProjectFile::HasBreakPoint(int nLine)
 
 void CProjectFile::SetBreakPointsIn(CLuaEditor *pEditor)
 {
+	m_bBreakPointsSaved = FALSE;
 	pEditor->ClearAllBreakpoints();
 
 	POSITION pos = m_breakPoints.GetStartPosition();
@@ -235,6 +236,7 @@ void CProjectFile::SetBreakPointsIn(CLuaEditor *pEditor)
 		m_breakPoints.GetNextAssoc( pos, nLine, nTemp );
 		pEditor->SetBreakpoint(nLine);
 	}
+	m_bBreakPointsSaved = TRUE;
 }
 
 BOOL CProjectFile::HasFile(CString strPathName)

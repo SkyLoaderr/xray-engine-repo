@@ -20,6 +20,7 @@ protected: // create from serialization only
 // Attributes
 public:
 	CLuaDoc* GetDocument();
+	CLuaDoc* GetDoc(){return (CLuaDoc*)m_pDocument;};
 	CLuaEditor* GetEditor() { return &m_editor; };
 
 // Operations

@@ -29,7 +29,7 @@ public:
 	BOOL PositionBreakPoints();
 	BOOL CheckBeforeBuild();
 
-	void SetModifiedFlag(BOOL bModified) { m_bModified = bModified; };
+	void SetModifiedFlag(BOOL bModified);
 	void SaveModified();
 	BOOL SaveAs();
 	BOOL Save();

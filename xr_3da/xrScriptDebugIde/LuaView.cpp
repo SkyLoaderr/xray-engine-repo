@@ -163,6 +163,7 @@ int CLuaView::OnSci(SCNotification* pNotify)
 		case SCN_SAVEPOINTLEFT:
 			GetDocument()->SetModifiedFlag(TRUE);
 		break;
+
 	}
 
 	return TRUE;

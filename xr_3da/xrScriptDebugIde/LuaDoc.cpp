@@ -107,6 +107,10 @@ BOOL CLuaDoc::IsInProject()
 CProjectFile* CLuaDoc::GetProjectFile()
 {
 	CMainFrame* pFrame = g_mainFrame;
+	CString pn = GetPathName();
+	if ( pn.GetLength() == 0 )
+		return NULL;
+
 	return pFrame->GetProject()->GetProjectFile(GetPathName());
 }
 

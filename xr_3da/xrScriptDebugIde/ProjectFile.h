@@ -34,6 +34,7 @@ public:
 	CString		GetNameExt();
 	void		FillBreakPoints(CMailSlotMsg*);
 	BOOL		HasBreakPoint(){return m_breakPoints.GetSize();};
+	BOOL		m_bBreakPointsSaved;
 protected:
 	CString							m_strPathName;
 	CMap<int, int, BOOL, BOOL>		m_breakPoints;

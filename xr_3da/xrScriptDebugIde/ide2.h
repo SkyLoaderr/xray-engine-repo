@@ -48,6 +48,7 @@ protected:
 };
 
 extern CIdeApp theApp;
+extern CProjectFile * g_pPF;
 
 
 //{{AFX_INSERT_LOCATION}}
