@@ -29,6 +29,8 @@ CAI_Rat::CAI_Rat()
 	m_tpCurrentBlend = 0;
 	eCurrentState = aiRatFollowMe;
 	m_bMobility = true;
+	m_bStartAttack = false;
+	m_tpEnemyBeingAttacked = 0;
 }
 
 CAI_Rat::~CAI_Rat()
@@ -1561,16 +1563,19 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 	else {
 		if (m_bAttackStart) {
 			if (m_tpCurrentBlend) {
-				if ((!(m_tpCurrentBlend->playing)) || (!(m_tpCurrentBlend->noloop))) {
+				//|| (m_tpCurrentBlend->noloop)
+				if ((!(m_tpCurrentBlend->playing)) ) {
 					m_current = 0;
-					S = m_tpaAttackAnimations[::Random.randI(0,3)];
+					S = m_tpaAttackAnimations[1];//::Random.randI(0,3)];
+					m_bStartAttack = true;
 				}
 				else
 					S = m_current;
 			}
 			else {
 				m_current = 0;
-				S = m_tpaAttackAnimations[::Random.randI(0,3)];
+				S = m_tpaAttackAnimations[1];//::Random.randI(0,3)];
+				m_bStartAttack = true;
 			}
 		}
 		else {
@@ -1646,3 +1651,38 @@ void CAI_Rat::Exec_Action	( float dt )
 		L->setTimeout();
 }
 
+void CAI_Rat::Exec_Movement	( float dt )
+{
+	//if (!m_bAttackStart)
+	//	AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
+	//else 
+	{
+		if (m_tpEnemyBeingAttacked) {
+			UpdateTransform	();
+			if (m_bStartAttack) {
+				Fvector tAcceleration, tVelocity;
+				tAcceleration.sub(m_tpEnemyBeingAttacked->Position(),Position());
+				tAcceleration.normalize();
+				tVelocity = tAcceleration;
+				tAcceleration.mul(5);
+				tVelocity.mul(m_fCurSpeed);
+				Movement.SetPosition(vPosition);
+				Movement.SetVelocity(tVelocity);
+				tAcceleration.set(0,0,0);
+				Movement.Calculate	(tAcceleration,0,0,dt,false);
+				Movement.GetPosition(vPosition);
+				m_bStartAttack = false;
+			}
+			else {
+				Fvector tAcceleration;
+				tAcceleration.sub(m_tpEnemyBeingAttacked->Position(),Position());
+				tAcceleration.normalize();
+				tAcceleration.mul(5);
+				Movement.SetPosition(vPosition);
+				Movement.Calculate	(tAcceleration,0,0,dt,false);
+				Movement.GetPosition(vPosition);
+			}
+			UpdateTransform	();
+		}
+	}
+}

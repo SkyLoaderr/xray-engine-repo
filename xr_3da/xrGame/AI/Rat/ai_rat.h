@@ -70,13 +70,13 @@ class CAI_Rat : public CCustomMonster
 		
 		CMotionDef* 	m_tpaAttackAnimations[3];
 
-		bool			m_bAttackStart;
 		CBlend*			m_tpCurrentBlend;
 
 		CEntity*		m_tpEnemyBeingAttacked;
 		float			m_fHitPower;
 		DWORD			m_dwHitInterval;
-		DWORD			m_dwAttackStartTime;
+
+		bool			m_bStartAttack;
 
 		// finite state machine
 		stack<ERatStates>	tStateStack;
@@ -130,6 +130,10 @@ class CAI_Rat : public CCustomMonster
 		virtual void  net_Import				(NET_Packet* P);				// import from server
 		virtual void  SelectAnimation			( const Fvector& _view, const Fvector& _move, float speed );
 		virtual void  Exec_Action				( float dt );
+		virtual void  Exec_Movement				( float dt );
+
+		bool			m_bAttackStart;
+		DWORD			m_dwAttackStartTime;
 };
 		
 #endif

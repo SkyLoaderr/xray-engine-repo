@@ -112,7 +112,7 @@ public:
 
 	// stream executors
 	void				Exec_Look				( float dt );
-	void				Exec_Movement			( float dt );
+	virtual void		Exec_Movement			( float dt );
 	void				Exec_Visibility			( float dt );
 
 	void				BuildCamera				( );

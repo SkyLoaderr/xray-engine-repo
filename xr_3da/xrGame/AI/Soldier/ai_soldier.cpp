@@ -11,6 +11,7 @@
 #include "..\\..\\..\\3dsound.h"
 #include "ai_soldier.h"
 #include "ai_soldier_selectors.h"
+#include "..\\..\\..\\bodyinstance.h"
 
 //#define WRITE_LOG
 
@@ -64,6 +65,10 @@ void CAI_Soldier::Load(CInifile* ini, const char* section)
 	SelectorFreeHunting.Load(ini,section);
 	SelectorPursuit.Load(ini,section);
 	SelectorUnderFire.Load(ini,section);
+
+	m_tpaDeathAnimations[0] = m_death;
+	m_tpaDeathAnimations[1] = PKinematics(pVisual)->ID_Cycle_Safe("norm_death_2");
+
 }
 
 // when someone hit soldier
@@ -1137,3 +1142,61 @@ void CAI_Soldier::Think()
 	}
 	while (!bStopThinking);
 }
+
+void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
+{
+	R_ASSERT(fsimilar(_view.magnitude(),1));
+	R_ASSERT(fsimilar(_move.magnitude(),1));
+
+	CMotionDef*	S=0;
+
+	bool bCrouched = false; 
+
+	if (iHealth<=0) {
+		for (int i=0 ;i<2; i++)
+			if (m_tpaDeathAnimations[i] == m_current) {
+				S = m_current;
+				break;
+			}
+		if (!S)
+			S = m_tpaDeathAnimations[::Random.randI(0,2)];
+	} else {
+		if (speed<0.2f) {
+			// idle
+			S = m_idle;
+		} else {
+			Fvector view = _view; view.y=0; view.normalize_safe();
+			Fvector move = _move; move.y=0; move.normalize_safe();
+			float	dot  = view.dotproduct(move);
+			
+			SAnimState* AState = &m_walk;
+//			if (bCrouched)	AState = &m_crouch_walk;
+//			else			
+			AState = &m_walk;
+			
+			if (speed>2.f){
+//				if (bCrouched)	AState = &m_crouch_run;
+//				else			
+				AState = &m_run;
+			}
+			
+			if (dot>0.7f){
+				S = AState->fwd;
+			}else if ((dot<=0.7f)&&(dot>=-0.7f)){
+				Fvector cross; cross.crossproduct(view,move);
+				if (cross.y>0){
+					S = AState->rs;
+				}else{
+					S = AState->ls;
+				}
+			}else if (dot<-0.7f){
+				S = AState->back;
+			}
+		}
+	}
+	if (S!=m_current){ 
+		m_current = S;
+		if (S) PKinematics(pVisual)->PlayCycle(S);
+	}
+}
+
