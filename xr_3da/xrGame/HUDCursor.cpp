@@ -102,14 +102,6 @@ void CHUDCursor::Render()
 	{ 
 		if (RQ.O)
 		{
-/*
-			CKinematics* K = PKinematics(RQ.O->Visual());
-			if (K){
-				ref_shader shader; shader.create("effects\\wallmark","wm\\wm_blood_1");
-				K->AddWallmark(&RQ.O->renderable.xform,p1,dir,RQ.element,shader,0.2f);
-			}
-*/
-
 			CEntityAlive*	E = smart_cast<CEntityAlive*>(RQ.O);
 			PIItem	l_pI = smart_cast<PIItem>(RQ.O);
 
