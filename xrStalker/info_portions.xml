@@ -60,6 +60,29 @@
 	<info_portion id="job_box02_finished">
 	<disable>trader_start4</disable>
 	</info_portion>
+	
+	
+	<info_portion id="test_info">
+	
+		<!-- задание -->
+		<task>
+			<!-- 1й objective является главным и показывает
+			     выполнено ли задание  -->
+			<objective>
+				<text>test task primary</text>
+				<script_condition></script_condition>
+			</objective>
+			<!-- 2й objective является впомогательным  -->
+			<objective>
+				<text>test task secondary 01</text>
+				<script_condition></script_condition>
+			</objective>
+			<objective>
+				<text>test task secondary 01</text>
+				<script_condition></script_condition>
+			</objective>
+		</task>
+	</info_portion>
 
 
 </game_information_portions>
