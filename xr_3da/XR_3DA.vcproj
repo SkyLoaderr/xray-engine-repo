@@ -1187,12 +1187,6 @@
 			Name="Render"
 			Filter="">
 			<File
-				RelativePath=".\DetailModel.cpp">
-			</File>
-			<File
-				RelativePath=".\DetailModel.h">
-			</File>
-			<File
 				RelativePath=".\tempobject.cpp">
 			</File>
 			<File

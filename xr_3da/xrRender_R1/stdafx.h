@@ -16,4 +16,5 @@
 
 #include "..\vis_common.h"
 #include "..\render.h"
+#include "..\xr_creator.h"
 #include "FStaticRender.h"

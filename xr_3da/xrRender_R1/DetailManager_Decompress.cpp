@@ -5,8 +5,6 @@
 #ifdef _EDITOR
 	#include "scene.h"
 	#include "sceneobject.h"
-#else
-	#include "xr_creator.h"
 #endif
 
 float		psDetailDensity		= 0.15f;
