@@ -50,25 +50,24 @@ void CStateMonsterEatAbstract::setup_substates()
 {
 
 #ifdef DEBUG
-	switch (current_substate) {
-		case eStateCorpseApproachRun:
-			object->HDebug->M_Add(0, "Run", D3DCOLOR_XRGB(0,0,255));
-			break;
-		case eStateCorpseApproachWalk:
-			object->HDebug->M_Add(0, "Walk", D3DCOLOR_XRGB(0,0,255));
-			break;
-		case eStateCheckCorpse:
-			object->HDebug->M_Add(0, "CheckCorpse", D3DCOLOR_XRGB(0,0,255));
-			break;
-		case eStateEat:
-			object->HDebug->M_Add(0, "Eat", D3DCOLOR_XRGB(0,0,255));
-			break;
-		case eStateWalkAway:
-			object->HDebug->M_Add(0, "Walk Away", D3DCOLOR_XRGB(0,0,255));
-			break;
-		case eStateRest:
-			object->HDebug->M_Add(0, "Rest", D3DCOLOR_XRGB(0,0,255));
-			break;
+	if (psAI_Flags.test(aiMonsterDebug)) {
+		switch (current_substate) {
+			case eStateCorpseApproachRun:
+				object->HDebug->M_Add(0, "Eat :: Approach To Corpse :: Run", D3DCOLOR_XRGB(255,0,0));
+				break;
+			case eStateCorpseApproachWalk:
+				object->HDebug->M_Add(0, "Eat :: Approach To Corpse :: Walk", D3DCOLOR_XRGB(255,0,0));
+				break;
+			case eStateCheckCorpse:
+				object->HDebug->M_Add(0, "Eat :: Check Corpse", D3DCOLOR_XRGB(255,0,0));
+				break;
+			case eStateWalkAway:
+				object->HDebug->M_Add(0, "Eat :: Walk Away", D3DCOLOR_XRGB(0,0,255));
+				break;
+			case eStateRest:
+				object->HDebug->M_Add(0, "Eat :: Little Rest", D3DCOLOR_XRGB(0,0,255));
+				break;
+		}
 	}
 #endif
 
@@ -94,13 +93,7 @@ void CStateMonsterEatAbstract::setup_substates()
 		data.completion_dist= ((current_substate == eStateCorpseApproachRun) ? 4.5f : object->get_sd()->m_fDistToCorpse);
 
 		state->fill_data_with(&data, sizeof(SStateDataMoveToPoint));
-
-#ifdef DEBUG
-		if (psAI_Flags.test(aiMonsterDebug)) {
-			object->HDebug->M_Add(0,"Eat :: Approach To Corpse", D3DCOLOR_XRGB(255,0,0));
-		}
-#endif
-
+		
 		object->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,object->get_sd()->m_dwIdleSndDelay);
 		return;
 	}
@@ -112,13 +105,8 @@ void CStateMonsterEatAbstract::setup_substates()
 		data.time_out		= 1500;
 		state->fill_data_with(&data, sizeof(SStateDataAction));
 
-#ifdef DEBUG
-		if (psAI_Flags.test(aiMonsterDebug)) {
-			object->HDebug->M_Add(0,"Eat :: Check Corpse", D3DCOLOR_XRGB(255,0,0));
-		}
-#endif
-
 		object->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,object->get_sd()->m_dwIdleSndDelay);
+		
 		return;
 	}
 	
@@ -136,12 +124,6 @@ void CStateMonsterEatAbstract::setup_substates()
 		data.cover_search_radius	= 20.f;
 		state->fill_data_with(&data, sizeof(SStateHideFromPoint));
 
-#ifdef DEBUG
-		if (psAI_Flags.test(aiMonsterDebug)) {
-			object->HDebug->M_Add(0,"Eat :: Walk Away", D3DCOLOR_XRGB(255,0,0));
-		}
-#endif
-
 		object->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,object->get_sd()->m_dwIdleSndDelay);
 		return;
 	}
@@ -153,18 +135,18 @@ void CStateMonsterEatAbstract::setup_substates()
 		data.time_out		= 8500;
 		state->fill_data_with(&data, sizeof(SStateDataAction));
 
-#ifdef DEBUG
-		if (psAI_Flags.test(aiMonsterDebug)) {
-			object->HDebug->M_Add(0,"Eat :: Little Rest After Meal", D3DCOLOR_XRGB(255,0,0));
-		}
-#endif
-
 		object->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,object->get_sd()->m_dwIdleSndDelay);
 		return;
 	}
 
 }
 
+TEMPLATE_SPECIALIZATION
+bool CStateMonsterEatAbstract::check_completion()
+{
+	if (object->CorpseMan.get_corpse()) return false;
+	return true;
+}
 
 #undef TEMPLATE_SPECIALIZATION
 #undef CStateMonsterEatAbstract

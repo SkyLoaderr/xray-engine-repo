@@ -47,14 +47,14 @@ void CStateAbstract::execute()
 	CSState *state = get_state(current_substate);
 	state->execute();
 
+	// сохранить текущее состояние
+	prev_substate = current_substate;
+
 	// проверить на завершение текущего состояния
 	if (state->check_completion()) {
 		state->finalize();
 		current_substate = u32(-1);
-	} else {
-		// сохранить текущее состояние
-		prev_substate = current_substate;
-	}
+	} 
 }
 
 TEMPLATE_SPECIALIZATION

@@ -160,7 +160,6 @@ void CController::UpdateControlled()
 		HDebug->L_AddLine(enemy_pos,	new_pos, D3DCOLOR_XRGB(0,255,255));
 	}
 
-
 #endif
 }
 

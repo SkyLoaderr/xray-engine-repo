@@ -23,14 +23,14 @@
 #include "../states/monster_state_hear_danger_sound.h"
 #include "../states/monster_state_hitted.h"
 
-//#include "../states/monster_state_find_enemy.h"
-//#include "../states/monster_state_find_enemy_run.h"
-//#include "../states/monster_state_find_enemy_look.h"
-//#include "../states/monster_state_find_enemy_angry.h"
-//#include "../states/monster_state_find_enemy_walk.h"
-//#include "../states/state_move_to_point.h"
-//#include "../states/state_look_point.h"
-//#include "../states/state_custom_action.h"
+#include "../states/monster_state_find_enemy.h"
+#include "../states/monster_state_find_enemy_run.h"
+#include "../states/monster_state_find_enemy_look.h"
+#include "../states/monster_state_find_enemy_angry.h"
+#include "../states/monster_state_find_enemy_walk.h"
+#include "../states/state_move_to_point.h"
+#include "../states/state_look_point.h"
+#include "../states/state_custom_action.h"
 
 CStateManagerController::CStateManagerController(CController *obj) : inherited(obj)
 {
@@ -79,19 +79,18 @@ CStateManagerController::CStateManagerController(CController *obj) : inherited(o
 	);
 
 
-	//add_state(
-	//	eStateFindEnemy, xr_new<CStateMonsterFindEnemy<CChimera> > (obj,
-	//	xr_new<CStateMonsterFindEnemyRun<CChimera> >(obj), 
-	//	xr_new<CStateMonsterFindEnemyLook<CChimera> >(obj,
-	//	xr_new<CStateMonsterMoveToPoint<CChimera> >(obj), 
-	//	xr_new<CStateMonsterCustomAction<CChimera> >(obj),
-	//	xr_new<CStateMonsterLookToPoint<CChimera> >(obj)),
-	//	xr_new<CStateMonsterFindEnemyAngry<CChimera> >(obj), 
-	//	xr_new<CStateMonsterFindEnemyWalkAround<CChimera> >(obj)
-	//	)
-	//	);
-
-
+	add_state(
+		eStateFindEnemy, 
+		xr_new<CStateMonsterFindEnemy<CController> > (obj,
+			xr_new<CStateMonsterFindEnemyRun<CController> >(obj), 
+			xr_new<CStateMonsterFindEnemyLook<CController> >(obj,
+				xr_new<CStateMonsterMoveToPoint<CController> >(obj), 
+				xr_new<CStateMonsterCustomAction<CController> >(obj),
+				xr_new<CStateMonsterLookToPoint<CController> >(obj)),
+			xr_new<CStateMonsterFindEnemyAngry<CController> >(obj), 
+			xr_new<CStateMonsterFindEnemyWalkAround<CController> >(obj)
+		)
+	);
 }
 
 CStateManagerController::~CStateManagerController()
@@ -105,13 +104,6 @@ void CStateManagerController::execute()
 	const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
 	const CEntityAlive* corpse	= object->CorpseMan.get_corpse();
 
-	bool can_eat = false;
-	if ((prev_substate == eStateEat) && (object->GetSatiety() < object->get_sd()->m_fMaxSatiety)) 
-		can_eat = true;		
-
-	if ((prev_substate != eStateEat) && (object->GetSatiety() < object->get_sd()->m_fMinSatiety)) 
-		can_eat = true;		
-	
 	if (enemy) {
 		switch (object->EnemyMan.get_danger_type()) {
 			case eVeryStrong:	state_id = eStatePanic; break;
@@ -127,10 +119,14 @@ void CStateManagerController::execute()
 		state_id = eStateInterestingSound;
 	} else {
 		bool can_eat = false;
-		if (!corpse) can_eat = false;
-		else {
-			if ((prev_substate == eStateEat) && (object->GetSatiety() < object->get_sd()->m_fMaxSatiety)) 
-				can_eat = true;		
+		if (corpse) {
+			
+			if (prev_substate == eStateEat) {
+				if (!get_state_current()->check_completion()) can_eat = true;
+			}
+			
+			//if ((prev_substate == eStateEat) && (object->GetSatiety() < object->get_sd()->m_fMaxSatiety)) 
+			//	can_eat = true;		
 
 			if ((prev_substate != eStateEat) && (object->GetSatiety() < object->get_sd()->m_fMinSatiety)) 
 				can_eat = true;		

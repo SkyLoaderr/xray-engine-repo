@@ -28,8 +28,6 @@ void CStateMonsterFindEnemyLookAbstract::initialize()
 	
 	current_dir		= object->Direction();
 	start_position	= object->Position();
-
-	Msg("initialized !!!");
 }
 
 
@@ -45,11 +43,6 @@ void CStateMonsterFindEnemyLookAbstract::reselect_state()
 		current_dir.normalize();
 		target_point.mad(start_position, current_dir, Random.randF(4.f,5.f));
 		select_state((Random.randI(2)) ? eMoveToPoint : eTurnToPoint);
-
-#ifdef DEBUG
-		object->HDebug->L_Clear();
-		object->HDebug->L_AddPoint(target_point, 0.35f, D3DCOLOR_XRGB(0,255,255));
-#endif
 
 	} else select_state(eLookAround); 
 
@@ -80,8 +73,9 @@ void CStateMonsterFindEnemyLookAbstract::setup_substates()
 		state->fill_data_with(&data, sizeof(SStateDataMoveToPoint));
 
 #ifdef DEBUG
-		object->HDebug->M_Clear();
-		object->HDebug->M_Add(1, "Move To Point", D3DCOLOR_XRGB(255,0,0));
+	if (psAI_Flags.test(aiMonsterDebug)) {
+		object->HDebug->M_Add(0,"Find Enemy :: Move To Point", D3DCOLOR_XRGB(255,0,0));
+	}
 #endif
 		return;
 	}
@@ -93,9 +87,11 @@ void CStateMonsterFindEnemyLookAbstract::setup_substates()
 		data.time_out	= 2000;
 		
 		state->fill_data_with(&data, sizeof(SStateDataAction));
+
 #ifdef DEBUG
-		object->HDebug->M_Clear();
-		object->HDebug->M_Add(1, "Look Around", D3DCOLOR_XRGB(255,0,0));
+	if (psAI_Flags.test(aiMonsterDebug)) {
+		object->HDebug->M_Add(0,"Find Enemy :: Look around", D3DCOLOR_XRGB(255,0,0));
+	}
 #endif
 		return;
 	}
@@ -109,8 +105,9 @@ void CStateMonsterFindEnemyLookAbstract::setup_substates()
 		state->fill_data_with(&data, sizeof(SStateDataLookToPoint));
 
 #ifdef DEBUG
-		object->HDebug->M_Clear();
-		object->HDebug->M_Add(1, "Turn To Point", D3DCOLOR_XRGB(255,0,0));
+	if (psAI_Flags.test(aiMonsterDebug)) {
+		object->HDebug->M_Add(0,"Find Enemy :: Turn to point", D3DCOLOR_XRGB(255,0,0));
+	}
 #endif
 		return;
 	}

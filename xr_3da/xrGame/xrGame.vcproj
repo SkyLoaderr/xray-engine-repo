@@ -6578,6 +6578,23 @@
 						RelativePath=".\string_table.h">
 					</File>
 				</Filter>
+				<Filter
+					Name="Console Commands"
+					Filter="">
+					<File
+						RelativePath=".\console_commands.cpp">
+					</File>
+					<File
+						RelativePath=".\console_commands.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="Dll Process Detach"
+					Filter="">
+					<File
+						RelativePath=".\xrgame_dll_detach.cpp">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Server"

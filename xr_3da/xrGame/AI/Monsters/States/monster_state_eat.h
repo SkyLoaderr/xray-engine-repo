@@ -24,6 +24,7 @@ public:
 	virtual void		initialize				();
 	virtual	void		reselect_state			();
 	virtual	void		setup_substates			();
+	virtual bool		check_completion		();
 };
 
 #include "monster_state_eat_inline.h"
