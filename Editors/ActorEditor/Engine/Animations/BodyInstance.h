@@ -103,26 +103,36 @@ ALIGN(64) class ENGINE_API CBoneInstance
 {
 public:
 	// data
-	Fmatrix									mTransform;
-	BlendList								Blend;
-	BoneCallback							Callback;
-	void*									Callback_Param;
+	Fmatrix			mTransform;
+	BlendList		Blend;
+	BoneCallback	Callback;
+	void*			Callback_Param;
+	DWORD			tag;						
 
 	// methods
-	IC	void					construct()
+	IC	void		construct	()
 	{
-		ZeroMemory				(this,sizeof(*this));
-		mTransform.identity		();
+		ZeroMemory	(this,sizeof(*this));
+		mTransform.identity();
 	}
-	IC	void	blend_add		(CBlend* H)
-	{	Blend.push_back(H);	}
-	IC	void	blend_remove	(CBlend* H)
+	IC	void		blend_add	(CBlend* H)
+	{	
+		Blend.push_back(H);	
+	}
+	IC	void		blend_remove(CBlend* H)
 	{
 		CBlend** I = find(Blend.begin(),Blend.end(),H);
 		if (I!=Blend.end())	Blend.erase(I);
 	}
-	IC	void	set_callback	(BoneCallback C, void* Param)
-	{	Callback = C; Callback_Param = Param; }
+	IC	void		set_callback(BoneCallback C, void* Param)
+	{	
+		Callback		= C; 
+		Callback_Param	= Param; 
+	}
+	IC	void		set_tag		(DWORD data)
+	{
+		tag			= data;
+	}
 };
 #pragma pack(pop)
 
