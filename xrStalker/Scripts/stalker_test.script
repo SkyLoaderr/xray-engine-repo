@@ -20,10 +20,10 @@ function custom_action:__init(weight,object,name) super(object,name)
 	printf					("action %s is constructed!",self.name)
 end
 
-function custom_action:weight(world_state0,world_state1)
-	printf					("action %s is asked for the weight!",self.name)
-	return					self.m_weight
-end
+--function custom_action:weight(world_state0,world_state1)
+--	printf					("action %s is asked for the weight!",self.name)
+--	return					self.m_weight
+--end
 
 function custom_action:initialize()
 	action_base.initialize	(self)
