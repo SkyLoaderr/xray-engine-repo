@@ -13,7 +13,7 @@ void	CBlender_light_occq::Compile(CBlender_Compile& C)
 	switch (C.iElement) 
 	{
 	case 0:
-		C.r_Pass	("accum_volume", "null",false,TRUE,FALSE,FALSE);
+		C.r_Pass	("accum_volume", "dumb",false,TRUE,FALSE,FALSE);
 		C.r_End		();
 		break;
 	}
