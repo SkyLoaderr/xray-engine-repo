@@ -419,25 +419,35 @@ wakeable = true
 ;-------------------------------------------------------------------------------------
 [kamp1@gar_dolg]
 center_point = kamp_center
+meet_dialog = gar_dolg_start
+meet_talk_enabled = true
 
 [kamp2@gar_dolg]
 center_point = kamp_center
 patrol_path = kamp_walk1
 path_look = kamp_look1
+meet_dialog = gar_dolg_start
+meet_talk_enabled = true
 
 [kamp3@gar_dolg]
 center_point = kamp_center
 patrol_path = kamp_walk2
 path_look = kamp_look2
+meet_dialog = gar_dolg_start
+meet_talk_enabled = true
 
 [patrol1@gar_dolg]
 patrol_path = patrol_path
 patrol_look = patrol_look
 escape_path = patrol_look
 raid_enabled = true
+meet_dialog = gar_dolg_start
+meet_enabled = true
 
 [follower1@gar_dolg]
 escape_path = patrol_look
+meet_dialog = gar_dolg_start
+meet_enabled = true
 
 [zoneguard1@gar_dolg]
 path_walk = guard_way1
@@ -446,8 +456,9 @@ team = team_0
 zone_warn = zone_warn
 zone_guard = zone_kill
 no_move = false
-enable_dialog = true
 ignore_friends = true
+meet_dialog = gar_dolg_guard_start
+meet_talk_enabled = true
 
 [zoneguard2@gar_dolg]
 path_walk = guard_way2
@@ -456,8 +467,9 @@ team = team_0
 zone_warn = zone_warn
 zone_guard = zone_kill
 no_move = false
-enable_dialog = true
 ignore_friends = true
+meet_dialog = gar_dolg_guard_start
+meet_talk_enabled = true
 
 [zoneguard3@gar_dolg]
 path_walk = guard_way3
@@ -466,8 +478,9 @@ team = team_0
 zone_warn = zone_warn
 zone_guard = zone_kill
 no_move = false
-enable_dialog = true
 ignore_friends = true
+meet_dialog = gar_dolg_guard_start
+meet_talk_enabled = true
 
 [camper1@gar_dolg]
 path_walk = camper_path1
