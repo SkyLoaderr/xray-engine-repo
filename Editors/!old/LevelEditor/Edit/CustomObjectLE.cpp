@@ -208,15 +208,15 @@ void __fastcall CCustomObject::OnObjectNameAfterEdit(PropItem* sender, LPVOID ed
 
 void __fastcall	CCustomObject::OnNumChangePosition(PropValue* sender)
 {
-	NumSetPosition	(FPosition);
+	NumSetPosition	(PPosition);
 }
 void __fastcall	CCustomObject::OnNumChangeRotation(PropValue* sender)
 {
-	NumSetRotation	(FRotation);
+	NumSetRotation	(PRotation);
 }
 void __fastcall	CCustomObject::OnNumChangeScale(PropValue* sender)
 {
-	NumSetScale		(FScale);
+	NumSetScale		(PScale);
 }
 
 void CCustomObject::FillProp(LPCSTR pref, PropItemVec& items)

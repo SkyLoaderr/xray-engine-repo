@@ -214,16 +214,18 @@ bool CEditShape::RayPick(float& distance, const Fvector& start, const Fvector& d
 		case cfBox:{
         	Fbox box;
             box.identity		();
-            Fmatrix B;
-            B.invert			(it->data.box);
+            Fmatrix BI;
+            BI.invert			(it->data.box);
 		    Fvector S,D,S1,D1,P;
 		    FITransform.transform_tiny	(S,start);
 		    FITransform.transform_dir	(D,direction);
-		    B.transform_tiny			(S1,S);
-		    B.transform_dir				(D1,D);
+		    BI.transform_tiny			(S1,S);
+		    BI.transform_dir			(D1,D);
             Fbox::ERP_Result	rp_res 	= box.Pick2(S1,D1,P);
             if (rp_res==Fbox::rpOriginOutside){
-                P.sub			(S);
+            	it->data.box.transform_tiny	(P);
+                FTransform.transform_tiny	(P);
+                P.sub			(start);
                 dist			= P.magnitude();
             }
 		}break;

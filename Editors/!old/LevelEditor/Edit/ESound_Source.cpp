@@ -183,6 +183,7 @@ void __fastcall ESoundSource::OnControlClick(PropValue* sender, bool& bModif, bo
 
 void ESoundSource::FillProp(LPCSTR pref, PropItemVec& values)
 {
+	inherited::FillProp			(pref,values);
 	ButtonValue* B;
     B=PHelper.CreateButton		(values, FHelper.PrepareKey(pref,"Controls"), 	"Play,Stop",0);
     B->OnBtnClickEvent			= OnControlClick;

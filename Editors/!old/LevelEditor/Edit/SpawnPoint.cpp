@@ -311,13 +311,32 @@ bool CSpawnPoint::GetBox( Fbox& box )
             	box.set		(V->visual->vis.box);
                 box.xform	(FTransform);
             }else{
-                box.set		( PPosition, PPosition );
-                box.min.x 	-= RPOINT_SIZE;
-                box.min.y 	-= 0;
-                box.min.z 	-= RPOINT_SIZE;
-                box.max.x 	+= RPOINT_SIZE;
-                box.max.y 	+= RPOINT_SIZE*2.f;
-                box.max.z 	+= RPOINT_SIZE;
+			    CEditShape* shape	= dynamic_cast<CEditShape*>(m_AttachedObject);
+                if (shape&&!shape->GetShapes().empty()){
+                	CSE_Shape::ShapeVec& SV	= shape->GetShapes();
+                	box.invalidate();
+                    Fvector p;
+                	for (CSE_Shape::ShapeIt it=SV.begin(); it!=SV.end(); it++){
+                    	switch (it->type){
+                        case CSE_Shape::cfSphere:
+                        	p.add(it->data.sphere.P,it->data.sphere.R); shape->_Transform().transform_tiny(p); box.modify(p);
+                        	p.sub(it->data.sphere.P,it->data.sphere.R); shape->_Transform().transform_tiny(p); box.modify(p);
+                        break;
+                        case CSE_Shape::cfBox:
+                        	p.set( 0.5f, 0.5f, 0.5f);it->data.box.transform_tiny(p); shape->_Transform().transform_tiny(p); box.modify(p);
+                        	p.set(-0.5f,-0.5f,-0.5f);it->data.box.transform_tiny(p); shape->_Transform().transform_tiny(p); box.modify(p);
+                        break;
+                        }
+                    }
+                }else{
+                    box.set		( PPosition, PPosition );
+                    box.min.x 	-= RPOINT_SIZE;
+                    box.min.y 	-= 0;
+                    box.min.z 	-= RPOINT_SIZE;
+                    box.max.x 	+= RPOINT_SIZE;
+                    box.max.y 	+= RPOINT_SIZE*2.f;
+                    box.max.z 	+= RPOINT_SIZE;
+                }
             }
         }else{
             box.set		( PPosition, PPosition );
@@ -416,8 +435,11 @@ bool CSpawnPoint::FrustumPick(const CFrustum& frustum)
 
 bool CSpawnPoint::RayPick(float& distance, const Fvector& start, const Fvector& direction, SRayPickInfo* pinf)
 {
-	bool bPick = false;
-    if (m_AttachedObject) bPick = m_AttachedObject->RayPick(distance, start, direction, pinf);
+	bool bPick 	= false;
+    if (m_AttachedObject){
+    	bPick 	= m_AttachedObject->RayPick(distance, start, direction, pinf);
+        return 	bPick;
+    }
 
     Fbox 		bb;
     Fvector 	pos;
@@ -485,7 +507,7 @@ bool CSpawnPoint::Load(IReader& F){
 		    if (F.find_chunk(SPAWNPOINT_CHUNK_RPOINT)){ 
             	m_RP_TeamID	= F.r_u8();
                 m_RP_Type	= F.r_u8();
-                u16 res		= F.r_u16();
+                F.advance	(2);
             }
         break;
         case ptEnvMod:
