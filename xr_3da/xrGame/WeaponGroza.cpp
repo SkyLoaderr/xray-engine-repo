@@ -105,10 +105,10 @@ void CWeaponGroza::UpdateXForm(BOOL bHUDView)
 			
 			Fvector			R,D,N;
 			D.sub			(mL.c,mR.c);	D.normalize_safe();
-			R.crossproduct	(mR.j,D);	R.normalize_safe();
-			N.crossproduct	(D,R);	N.normalize_safe();
+			R.crossproduct	(mR.j,D);		R.normalize_safe();
+			N.crossproduct	(D,R);			N.normalize_safe();
 			mRes.set		(R,N,D,mR.c);
-			mRes.mul2		(m_pParent->clTransform);
+			mRes.mul2_43	(m_pParent->clTransform);
 			UpdatePosition	(mRes);
 		}
 	}
@@ -119,20 +119,26 @@ void CWeaponGroza::UpdateFP(BOOL bHUDView)
 	if (Device.dwFrame!=dwFP_Frame) 
 	{
 		dwFP_Frame = Device.dwFrame;
+		
+		if (bHUDView)	
+		{
+			// 1st person view - skeletoned
+			PKinematics V			= PKinematics(m_pHUD->Visual());
+			V->Calculate			();
+			
+			// fire point&direction
+			UpdateXForm				(bHUDView);
+			Fmatrix& fire_mat		= V->LL_GetTransform(m_pHUD->iFireBone);
+			Fmatrix& parent			= m_pHUD->Transform();
+			Fvector& fp				= m_pHUD->vFirePoint;
+			fire_mat.transform_tiny	(vLastFP,fp);
+			parent.transform_tiny	(vLastFP);
+			vLastFD.set				(0.f,0.f,1.f);
+			parent.transform_dir	(vLastFD);
+		} else {
+			// 3rd person
 
-		// update animation
-		PKinematics V			= bHUDView?PKinematics(m_pHUD->Visual()):0;
-		if (V) V->Calculate		();
-
-		// fire point&direction
-		UpdateXForm				(bHUDView);
-		Fmatrix& fire_mat		= bHUDView?V->LL_GetTransform(m_pHUD->iFireBone):precalc_identity;
-		Fmatrix& parent			= bHUDView?m_pHUD->Transform():clTransform;
-		Fvector& fp				= bHUDView?m_pHUD->vFirePoint:vFirePoint;
-		fire_mat.transform_tiny	(vLastFP,fp);
-		parent.transform_tiny	(vLastFP);
-		vLastFD.set				(0.f,0.f,1.f);
-		parent.transform_dir	(vLastFD);
+		}
 	}
 }
 
