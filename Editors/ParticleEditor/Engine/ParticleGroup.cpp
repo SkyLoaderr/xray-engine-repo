@@ -76,18 +76,25 @@ void CParticleGroup::pAnimateExec(ParticleGroup *group)
 
 void CParticleGroup::OnFrame()
 {
+    pTimeStep			(Device.fTimeDelta);
 	pCurrentGroup		(m_HandleGroup);
-	pCallActionList		(m_HandleActionList);
 
-    // action
+//	Fvector src;
+    
+//	PASource* source	= ;
+    
+    // execute action list
+	pCallActionList		(m_HandleActionList);
+    // 
 	ParticleGroup *pg = _GetGroupPtr(m_HandleGroup);
     if (m_Flags.is(flFramed)&&m_Flags.is(flAnimated)) 
     	pAnimateExec(pg);
 
 	for(int i = 0; i < pg->p_count; i++){
         Particle &m 	= pg->list[i];
+        if (m.flags&Particle::DYING){}
         if (m.flags&Particle::BIRTH){
-	        if (m_Flags.test(flFramed)) pFrameExec(&m);
+	        if (m_Flags.is(flFramed)) pFrameExec(&m);
 			m.flags		&=~	Particle::BIRTH;
         }
 	}
@@ -95,33 +102,24 @@ void CParticleGroup::OnFrame()
           
 void CParticleGroup::Render()
 {
-//	pSetTimeDelta	();
-	pCallActionList(m_HandleActionList);
-    pTimeStep		(Device.fTimeDelta);
-
 	// Get a pointer to the particles in gp memory
 	ParticleGroup *pg = _GetGroupPtr(m_HandleGroup);
 
-	if(pg == NULL)
-		return; // ERROR
-	
-	if(pg->p_count < 1)
-		return;
-	
+	if(pg == NULL)		return; // ERROR
+	if(pg->p_count < 1)	return;
 
 	Device.SetShader	(m_Shader);
     Device.SetTransform	(D3DTS_WORLD,Fidentity);
-    CTLSprite m_Sprite;
-    for(int i = 0; i < pg->p_count; i++)
-    {
+    CTLSprite 			m_Sprite;
+    for(int i = 0; i < pg->p_count; i++){
         Particle &m = pg->list[i];
 
         Fvector p;
         Fcolor c;
         p.set(m.pos.x,m.pos.y,m.pos.z);
         c.set(m.color.x,m.color.y,m.color.z,m.alpha);
-//		m_Sprite.Render(p,m.size.x,false,c.get());
-		if (m_Flags.test(flFramed)||m_Flags.test(flAnimated)){
+		if (m_Flags.is(flFramed)){
+//        	||m_Flags.test(flAnimated)){
 			Fvector2 lt,rb;
         	m_Animation.CalculateTC(m.frame,lt,rb);
 			m_Sprite.Render(p,c.get(),m.size.x,m.rot.x,lt,rb);
