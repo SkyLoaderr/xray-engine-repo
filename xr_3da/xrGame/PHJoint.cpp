@@ -984,7 +984,7 @@ void CPHJoint::SetVelocity		(const float velocity,const int axis_num){
 	if(ax==-1) 
 		switch(eType){
 					case welding:				; 
-					case ball:					break;
+					case ball:					return;
 					case hinge:					
 						axes[0].velocity=velocity;
 						break;
@@ -1087,7 +1087,7 @@ LimitAxisNum(ax);
 if(ax==-1) 
 	switch(eType){
 		case welding:				; 
-		case ball:					break;
+		case ball:					return;
 		case hinge:					
 									axes[0]=axis;
 									break;
