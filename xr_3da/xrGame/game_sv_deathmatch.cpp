@@ -23,6 +23,7 @@ void	game_sv_Deathmatch::Create					(ref_str& options)
 		m_bAnomaliesEnabled	= false;
 	//-----------------------------------------------------------------------
 	int		SpectatorMode = -1;
+	m_dwSM_CurViewEntity = 0;
 	if (!g_pGamePersistent->bDedicatedServer)
 	{
 		SpectatorMode = get_option_i		(*options,"spectr",-1);	// in (ms)
@@ -251,7 +252,7 @@ bool game_sv_Deathmatch::checkForRoundEnd()
 
 void	game_sv_Deathmatch::SM_SwitchOnNextActivePlayer()
 {
-	
+	if (!m_bSpectatorMode) return;
 	u32		PossiblePlayers[32];
 	u32		cnt		= get_players_count	();
 	u32		PPlayersCount = 0;
@@ -293,7 +294,7 @@ void	game_sv_Deathmatch::SM_SwitchOnNextActivePlayer()
 void	game_sv_Deathmatch::SM_SwitchOnPlayer(CObject* pNewObject)
 {
 //	CObject* pNewObject =  Level().Objects.net_Find(ps->GameID);
-	if (!pNewObject) return;
+	if (!pNewObject || !m_bSpectatorMode) return;
 
 //	CObject* pOldObject = Level().CurrentViewEntity();
 	Level().SetEntity(pNewObject);
@@ -1027,7 +1028,7 @@ void	game_sv_Deathmatch::LoadTeamData			(char* caSection)
 
 void game_sv_Deathmatch::OnDestroyObject			(u16 eid_who)
 {
-	if (eid_who == m_dwSM_CurViewEntity)
+	if (eid_who == m_dwSM_CurViewEntity && m_bSpectatorMode)
 	{
 		SM_SwitchOnNextActivePlayer();
 	};
