@@ -6,6 +6,7 @@
 
 static const char *		logFName	= "engine.log";
 static HWND				logWindow	= NULL;
+static HWND				logoWindow	= NULL;
 static HWND				logControl	= NULL;
 static DWORD			dwMainThreadID = 0;
 std::vector <char *>	LogFile;
@@ -166,6 +167,11 @@ void CreateLog(BOOL bQuiet)
 			0, logDlgProc );
 		
 		logControl = GetDlgItem( logWindow, IDC_LIST );
+	} else {
+		logoWindow = CreateDialog(
+			GetModuleHandle(NULL),
+			MAKEINTRESOURCE(IDD_LOGO),
+			0, logDlgProc );
 	}
 
 	// Calculating build
@@ -200,6 +206,10 @@ void CloseLogWindow(void) {
 		DestroyWindow(logWindow);
 		logWindow	= NULL;
 		logControl	= NULL;
+	}
+	if (logoWindow) {
+		DestroyWindow(logoWindow);
+		logoWindow	= NULL;
 	}
 }
 
