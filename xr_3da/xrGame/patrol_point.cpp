@@ -44,7 +44,7 @@ CPatrolPoint &CPatrolPoint::load		(IReader &stream)
 	stream.r_fvector3	(m_position);
 	m_flags				= stream.r_u32();
 	stream.r_stringZ	(m_name);
-	if (ai().get_level_graph())
+	if (ai().get_level_graph() && ai().level_graph().valid_vertex_position(m_position))
 		m_level_vertex_id	= ai().level_graph().vertex(u32(-1),m_position);
 	else
 		m_level_vertex_id	= u32(-1);
