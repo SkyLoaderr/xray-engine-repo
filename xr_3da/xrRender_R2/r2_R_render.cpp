@@ -126,7 +126,7 @@ void CRender::Render	()
 			else
 			{
 				marker									++;
-				phase									= PHASE_SMAP_D;
+				phase									= PHASE_SMAP_S;
 
 				// calculate
 				LR.compute_xfs_1						(0, L);
