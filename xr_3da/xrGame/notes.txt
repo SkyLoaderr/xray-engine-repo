@@ -126,7 +126,7 @@ can_kill &&
 ready_to_kill && 
 see_enemy && 
 kill_distance && 
-enemy_danger &&
+enemy_danger && 
 enemy_can_kill && 
 enemy_ready_to_kill && 
 enemy_see_me && 
