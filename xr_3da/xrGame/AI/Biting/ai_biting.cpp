@@ -66,7 +66,8 @@ void CAI_Biting::Init()
 
 void CAI_Biting::reinit()
 {
-	inherited::reinit();
+	m_pPhysics_support->in_NetSpawn		();
+	inherited::reinit					();
 	CMonsterMovement::reinit			();
 }
 
@@ -188,8 +189,6 @@ void CAI_Biting::LoadShared(LPCSTR section)
 
 BOOL CAI_Biting::net_Spawn (LPVOID DC) 
 {
-	m_pPhysics_support->in_NetSpawn();
-
 	if (!inherited::net_Spawn(DC))
 		return(FALSE);
 

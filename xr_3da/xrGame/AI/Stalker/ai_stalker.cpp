@@ -38,6 +38,7 @@ void CAI_Stalker::Init()
 
 void CAI_Stalker::reinit			()
 {
+	m_pPhysics_support->in_NetSpawn	();
 	CCustomMonster::reinit			();
 	CObjectHandler::reinit			(this);
 	CSightManager::reinit			();
@@ -133,8 +134,6 @@ void CAI_Stalker::Load				(LPCSTR section)
 
 BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 {
-	m_pPhysics_support->in_NetSpawn();
-
 	if (!inherited::net_Spawn(DC))
 		return						(FALSE);
 	if (!CInventoryOwner::net_Spawn(DC))

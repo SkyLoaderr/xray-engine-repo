@@ -155,6 +155,8 @@ CActor::~CActor()
 
 void CActor::reinit	()
 {
+	m_PhysicMovementControl.CreateCharacter();
+	m_PhysicMovementControl.SetPhysicsRefObject(this);
 	CEntityAlive::reinit	();
 	CInventoryOwner::reinit	();
 	CDamageManager::reinit	();
@@ -407,9 +409,6 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	{
 		E->s_flags.set(M_SPAWN_OBJECT_LOCAL, TRUE);
 	};
-
-	m_PhysicMovementControl.CreateCharacter();
-	m_PhysicMovementControl.SetPhysicsRefObject(this);
 
 	if (!inherited::net_Spawn(DC))	return FALSE;
 	//проспавнить PDA у InventoryOwner
