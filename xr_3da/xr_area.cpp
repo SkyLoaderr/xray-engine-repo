@@ -167,6 +167,7 @@ void CObjectSpace::Load( CStream *F ){
 	RAPID::tri*	tris	= (RAPID::tri*)(verts+H.vertcount);
 	Static.BuildModel	( verts, H.vertcount, tris, H.facecount );
 	Msg("* Level CFORM memory usage: %dK",Static.MemoryUsage()/1024);
+	pSounds->SetGeometry( &Static );
 
 	// CForm
 	x_count				= iCeil((H.aabb.max.x-H.aabb.min.x)/CL_SLOT_SIZE);
