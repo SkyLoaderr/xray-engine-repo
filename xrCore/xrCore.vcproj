@@ -16,7 +16,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="x:\builds\01"
+			OutputDirectory="x:\"
 			IntermediateDirectory=".\Debug"
 			ConfigurationType="2"
 			CharacterSet="2">
@@ -155,7 +155,7 @@
 		</Configuration>
 		<Configuration
 			Name="Mixed|Win32"
-			OutputDirectory="z:\"
+			OutputDirectory="x:\"
 			IntermediateDirectory="Mixed"
 			ConfigurationType="2"
 			CharacterSet="2"
