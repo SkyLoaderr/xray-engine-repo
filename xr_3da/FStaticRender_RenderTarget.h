@@ -23,12 +23,14 @@ private:
 	
 	BOOL				Create				();
 	void				e_render_noise		();
+	float				im_noise_time;
 	
 	float				param_blur;
 	float				param_gray;
 	float				param_noise;
-	u32					param_noise_scale;
+	float				param_noise_scale;
 	u32					param_noise_color;
+	float				param_noise_fps;
 public:
 	CRenderTarget		();
 
@@ -44,9 +46,12 @@ public:
 
 	virtual void		eff_load			(LPCSTR n);
 
-	virtual void		set_blur			(float f)		{ param_blur=f;		}
-	virtual void		set_gray			(float f)		{ param_gray=f;		}
-	virtual void		set_noise			(float f)		{ param_noise=f;	}
+	virtual void		set_blur			(float f)		{ param_blur=f;			}
+	virtual void		set_gray			(float f)		{ param_gray=f;			}
+	virtual void		set_noise			(float f)		{ param_noise=f;		}
+	virtual void		set_noise_scale		(float f)		{ param_noise_scale=f;	}
+	virtual void		set_noise_color		(u32 f)			{ param_noise_color=f;	}
+	virtual void		set_noise_fps		(float f)		{ param_noise_fps=f;	}
 
 	virtual u32			get_width			()				{ return curWidth;	}
 	virtual u32			get_height			()				{ return curHeight;	}

@@ -22,12 +22,14 @@ const float							fLightSmoothFactor = 4.f;
 class	ENGINE_API	CRender_target
 {
 public:
-	virtual void					eff_load	(LPCSTR n)	= 0;
-	virtual	void					set_blur	(float f)	= 0;
-	virtual	void					set_gray	(float f)	= 0;
-	virtual void					set_noise	(float f)	= 0;
-	virtual u32						get_width	()			= 0;
-	virtual u32						get_height	()			= 0;
+	virtual void					eff_load			(LPCSTR n)	= 0;
+	virtual	void					set_blur			(float f)	= 0;
+	virtual	void					set_gray			(float f)	= 0;
+	virtual void					set_noise			(float f)	= 0;
+	virtual void					set_noise_scale		(float f)	= 0;
+	virtual void					set_noise_color		(u32 f)		= 0;
+	virtual u32						get_width			()			= 0;
+	virtual u32						get_height			()			= 0;
 };
 
 // definition (Renderer)

@@ -17,6 +17,9 @@ CRenderTarget::CRenderTarget()
 	param_blur		= 0.f;
 	param_gray		= 0.f;
 	param_noise		= 0.f;
+	param_noise_fps	= 25.f;
+
+	im_noise_time	= 1/100;
 }
 
 BOOL CRenderTarget::Create	()
@@ -74,7 +77,7 @@ void CRenderTarget::eff_load	(LPCSTR n)
 	param_blur					= pSettings->ReadFLOAT	(n,"blur");
 	param_gray					= pSettings->ReadFLOAT	(n,"gray");
 	param_noise					= pSettings->ReadFLOAT	(n,"noise");
-	param_noise_scale			= pSettings->ReadINT	(n,"noise_scale");
+	param_noise_scale			= pSettings->ReadFLOAT	(n,"noise_scale");
 	param_noise_color			= pSettings->ReadCOLOR	(n,"noise_color");
 }
 
