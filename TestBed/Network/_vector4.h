@@ -51,7 +51,7 @@ public:
 		x = p1.x*invt + p2.x*t;
 		y = p1.y*invt + p2.y*t;
 		z = p1.z*invt + p2.z*t;
-		z = p1.z*invt + p2.z*t;
+		w = p1.w*invt + p2.w*t;
 		return *this;	
 	}
 };

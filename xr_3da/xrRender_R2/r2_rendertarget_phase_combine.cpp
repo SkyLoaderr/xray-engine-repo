@@ -32,6 +32,7 @@ void	CRenderTarget::phase_combine	()
 					envclr.x		*= hemi_correct;
 					envclr.y		*= hemi_correct;
 					envclr.z		*= hemi_correct;
+				Log		("",hemi_correct);
 
 		// Fill VB
 		u32		C					= color_rgba	(255,255,255,255);

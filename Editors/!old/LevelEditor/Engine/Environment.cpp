@@ -135,6 +135,7 @@ void CEnvDescriptor::load	(LPCSTR exec_tm, LPCSTR S, CEnvironment* parent)
     thunderbolt				= pSettings->r_bool		(S,"thunderbolt");
 	bolt_period				= thunderbolt?pSettings->r_float	(S,"bolt_period"):0.f;
 	bolt_duration			= thunderbolt?pSettings->r_float	(S,"bolt_duration"):0.f;
+	Log		("load",hemi_color.w);
 }
 void CEnvDescriptor::unload	()
 {
