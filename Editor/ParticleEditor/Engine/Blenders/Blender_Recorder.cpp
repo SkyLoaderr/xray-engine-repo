@@ -104,14 +104,19 @@ void	CBlender_Compile::StageSET_Alpha	(DWORD a1, DWORD op, DWORD a2)
 {
 	RS.SetAlpha	(Stage(),a1,op,a2);
 }
+void	CBlender_Compile::StageSET_TMC		(LPCSTR T, LPCSTR M, LPCSTR C, int UVW_channel)
+{
+	Stage_Texture		(T);
+	Stage_Matrix		(M,UVW_channel);
+	Stage_Constant		(C);
+}
+
 void	CBlender_Compile::StageTemplate_LMAP0	(CBlender_Compile& C)
 {
 	StageSET_Address	(D3DTADDRESS_WRAP);
 	StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
 	StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-	Stage_Texture		("$base1",		C.L_textures	);
-	Stage_Matrix		("$null",		C.L_matrices,	1);
-	Stage_Constant		("$null",		C.L_constants	);
+	StageSET_TMC		("$base1","$null","$null",1);
 }
 
 int ParseName(LPCSTR N)

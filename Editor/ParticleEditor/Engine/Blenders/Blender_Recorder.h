@@ -6,6 +6,7 @@
 #define AFX_BLENDER_RECORDER_H__1F549674_8674_4EB2_95E6_E6BC19218A6C__INCLUDED_
 #pragma once
 
+#pragma pack(push,4)
 #include "..\tss.h"
 
 class ENGINE_API CBlender_Compile  
@@ -50,6 +51,7 @@ public:
 	void				StageSET_XForm		(DWORD tf, DWORD tc);
 	void				StageSET_Color		(DWORD a1, DWORD op, DWORD a2);
 	void				StageSET_Alpha		(DWORD a1, DWORD op, DWORD a2);
+	void				StageSET_TMC		(LPCSTR T, LPCSTR M, LPCSTR C, int UVW_channel);
 	void				Stage_Texture		(LPCSTR name);
 	void				Stage_Matrix		(LPCSTR name, int UVW_channel);
 	void				Stage_Constant		(LPCSTR name);
@@ -60,5 +62,6 @@ public:
 	
 	void				Initialize			(Shader* _SH);
 };
+#pragma pack(pop)
 
 #endif // !defined(AFX_BLENDER_RECORDER_H__1F549674_8674_4EB2_95E6_E6BC19218A6C__INCLUDED_)

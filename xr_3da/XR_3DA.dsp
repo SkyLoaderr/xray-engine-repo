@@ -682,30 +682,6 @@ SOURCE=.\Blenders\Blender_BmmD.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Blenders\blender_complex2.cpp
-
-!IF  "$(CFG)" == "XR_3DA - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\Blenders\blender_complex2.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\Blenders\Blender_default_aref.cpp
 # End Source File
 # Begin Source File

@@ -43,74 +43,61 @@ void CBlender_default_aref::Compile(CBlender_Compile& C)
 		C.PassBegin		();
 		{
 			C.PassSET_ZB			(TRUE,TRUE);
-			C.PassSET_Blend		(TRUE, D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA,TRUE,oAREF.value);
-			C.PassSET_LightFog	(TRUE,TRUE);
+			C.PassSET_Blend			(TRUE, D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA,TRUE,oAREF.value);
+			C.PassSET_LightFog		(TRUE,TRUE);
 			
 			// Stage0 - Base texture
 			C.StageBegin		();
-			{
-				C.StageSET_Address	(D3DTADDRESS_WRAP);
-				C.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
-				C.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
-				C.Stage_Texture		(oT_Name,	C.L_textures);
-				C.Stage_Matrix		(oT_xform,	C.L_matrices,	0);
-				C.Stage_Constant		("$null",	C.L_constants);
-			}
+			C.StageSET_Address	(D3DTADDRESS_WRAP);
+			C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
+			C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
+			C.StageSET_TMC		(oT_Name,oT_xform,"$null",0);
 			C.StageEnd			();
 		}
 		C.PassEnd			();
 	} else {
 		if (C.bLighting)	
 		{
+			// Lighting only, but use alpha-channel
 			C.PassBegin		();
 			{
 				C.PassSET_ZB			(TRUE,TRUE);
-				C.PassSET_Blend		(TRUE, D3DBLEND_ONE, D3DBLEND_ZERO,TRUE,oAREF.value);
-				C.PassSET_LightFog	(FALSE,FALSE);
+				C.PassSET_Blend			(TRUE, D3DBLEND_ONE, D3DBLEND_ZERO,TRUE,oAREF.value);
+				C.PassSET_LightFog		(FALSE,FALSE);
 				
 				// Stage0 - Lightmap
-				C.StageBegin		();
-				{
-					C.StageSET_Address	(D3DTADDRESS_WRAP);
-					C.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-					C.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-					C.Stage_Texture		("$base1",	C.L_textures);
-					C.Stage_Matrix		("$null",	C.L_matrices,1);
-					C.Stage_Constant		("$null",	C.L_constants);
-				}
-				C.StageEnd			();
+				C.StageBegin			();
+				C.StageTemplate_LMAP0	();
+				C.StageEnd				();
+				
+				// Stage1 - Base texture
+				C.StageBegin			();
+				C.StageSET_Address		(D3DTADDRESS_WRAP);
+				C.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG2,	D3DTA_CURRENT);	// color from lmap
+				C.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_CURRENT);	// alpha from base
+				C.StageSET_TMC			(oT_Name, oT_xform, "$null", 0);
+				C.StageEnd				();
 			}
-			C.PassEnd			();
+			C.PassEnd		();
 		} else {
 			C.PassBegin		();
 			{
 				C.PassSET_ZB			(TRUE,TRUE);
-				C.PassSET_Blend		(TRUE, D3DBLEND_ONE, D3DBLEND_ZERO,TRUE,oAREF.value);
-				C.PassSET_LightFog	(FALSE,TRUE);
+				C.PassSET_Blend			(TRUE, D3DBLEND_ONE, D3DBLEND_ZERO,TRUE,oAREF.value);
+				C.PassSET_LightFog		(FALSE,TRUE);
 				
 				// Stage0 - Lightmap
-				C.StageBegin		();
-				{
-					C.StageSET_Address	(D3DTADDRESS_WRAP);
-					C.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-					C.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-					C.Stage_Texture		("$base1",	C.L_textures);
-					C.Stage_Matrix		("$null",	C.L_matrices,1);
-					C.Stage_Constant		("$null",	C.L_constants);
-				}
-				C.StageEnd			();
+				C.StageBegin			();
+				C.StageTemplate_LMAP0	();
+				C.StageEnd				();
 				
 				// Stage1 - Base texture
-				C.StageBegin		();
-				{
-					C.StageSET_Address	(D3DTADDRESS_WRAP);
-					C.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,	D3DTA_CURRENT);
-					C.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,	D3DTA_CURRENT);
-					C.Stage_Texture		(oT_Name,	C.L_textures);
-					C.Stage_Matrix		(oT_xform,	C.L_matrices,	0);
-					C.Stage_Constant		("$null",	C.L_constants);
-				}
-				C.StageEnd			();
+				C.StageBegin			();
+				C.StageSET_Address		(D3DTADDRESS_WRAP);
+				C.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,	D3DTA_CURRENT);
+				C.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_CURRENT);
+				C.StageSET_TMC			(oT_Name, oT_xform, "$null", 0);
+				C.StageEnd				();
 			}
 			C.PassEnd			();
 		}
