@@ -34,7 +34,7 @@ IC void MouseRayFromPoint	( Fvector& direction, int x, int y, Fmatrix& m_CamMat 
 	direction.normalize();
 }
 
-void CRender::Screenshot		(BOOL bSquare)
+void CRender::Screenshot		(LPCSTR postfix, BOOL bSquare)
 {
 	if (!Device.bReady) return;
 	if ((psDeviceFlags.test(rsFullscreen)) == 0) {
@@ -73,9 +73,12 @@ void CRender::Screenshot		(BOOL bSquare)
 			);
 	}
 
-	string64		buf,buf1;
-	strconcat		(buf,"ss_",Core.UserName,"_",itoa(timeGetTime(),buf1,10));
-	IWriter*		fs  = FS.w_open("$screenshots$",buf);
+	string64		buf,t_stemp;
+	timestamp		(t_stemp);
+	strconcat		(buf,"ss_",Core.UserName,"_",t_stemp);
+	if (postfix)	strconcat	(buf,"_#",postfix,".tga");
+	else			strcat		(buf,".tga");
+	IWriter*		fs  = FS.w_open("$screenshots$",buf); R_ASSERT(fs);
 
 	TGAdesc			p;
 	p.format		= IMG_24B;
