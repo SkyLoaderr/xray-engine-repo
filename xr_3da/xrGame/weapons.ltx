@@ -2796,3 +2796,67 @@ impair			= 1.15
 buck_shot		= 0
 tracer			= off
 
+
+
+#define CLSID_OBJECT_W_GLAUNCHER	MK_CLSID('W','_','G','L','A','U','N','C')
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[wpn_addon_scope]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\addons\scope" ; option for Level Editor
+class			= W_SCOPE
+cform           = skeleton
+visual          = munition\vog25p.ogf
+;$prefetch 		= 64
+
+cost					 = 50
+
+inv_name		= "Scope"
+inv_name_short	= "Scope"
+inv_weight		= .2
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 19
+inv_grid_y			= 10
+
+[wpn_addon_silencer]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\addons\silencer" ; option for Level Editor
+class			= W_SILENC
+cform           = skeleton
+visual          = munition\vog25p.ogf
+;$prefetch 		= 64
+
+cost					 = 50
+
+inv_name		= "Silencer"
+inv_name_short	= "Silencer"
+inv_weight		= .2
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 19
+inv_grid_y			= 10
+
+[wpn_addon_grenade_launcher]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\addons\grenade_launcher" ; option for Level Editor
+class			= W_GLAUNC
+cform           = skeleton
+visual          = munition\vog25p.ogf
+;$prefetch 		= 64
+
+cost					 = 50
+
+inv_name		= "Grenade Launcher Addon"
+inv_name_short	= "Grenade Launcher Addon"
+inv_weight		= .2
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 19
+inv_grid_y			= 10
