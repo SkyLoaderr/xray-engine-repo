@@ -64,3 +64,12 @@ end
 function enemy_actor(actor, npc)
 	return db.storage[npc:id()].enemy:id() == actor:id()
 end    
+
+
+
+function bar_random_33()
+	return math.random(100) <= 33
+end
+function bar_random_50()
+	return math.random(100) <= 50
+end
