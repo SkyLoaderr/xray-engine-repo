@@ -56,8 +56,10 @@ void FHierrarhyVisual::Load(const char* N, IReader *data, u32 dwFlags)
             if (OBJ){
                 IReader* O = OBJ->open_chunk(0);
                 for (int count=1; O; count++) {
-					string256			name_load;
-					sprintf				(name_load,"%s_%d",N,count);
+					string256			name_load,short_name,num;
+					strcpy				(short_name,N);
+					if (strext(short_name)) *strext(short_name)=0;
+					strconcat			(name_load,short_name,":",itoa(count,num,10));
 					children.push_back	(::Render->model_CreateChild(name_load,O));
                     O->close			();
                     O = OBJ->open_chunk	(count);
