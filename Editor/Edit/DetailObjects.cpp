@@ -454,7 +454,7 @@ bool CDetailManager::UpdateSlotObjects(int x, int z){
     DSIt slot	= m_Slots.begin()+z*m_Header.size_x+x;
     Irect		R;
     GetSlotTCRect(R,x,z);
-    Log->Msg(mtInformation,"TC [%d,%d]-[%d,%d]",R.x1,R.y1,R.x2,R.y2);
+//    Log->Msg(mtInformation,"TC [%d,%d]-[%d,%d]",R.x1,R.y1,R.x2,R.y2);
     SIndexDistVec best;
     // find best color index
     {
@@ -499,14 +499,8 @@ bool CDetailManager::UpdateSlotObjects(int x, int z){
         }
         alpha/=(cnt?float(cnt):1);
         alpha*=0.5f;
-        for (DWORD i=0; i<best.size(); i++){
-//        	float a=alpha;
-//			float b=best[i].density[part];
-//			float c=b*alpha/cnt;
+        for (DWORD i=0; i<best.size(); i++)
             best[i].density[part] = cnt?(best[i].density[part]*alpha)/float(cnt):0;
-//			float e=best[i].density[part];
-//			e=0;
-        }
     }
 
     // fill empty slots

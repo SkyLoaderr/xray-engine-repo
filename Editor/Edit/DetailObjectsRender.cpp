@@ -305,9 +305,9 @@ IC float	Interpolate			(float* base,		DWORD x, DWORD y, DWORD size)
 }
 IC bool		InterpolateAndDither(float* alpha255,	DWORD x, DWORD y, DWORD size, int dither[16][16] )
 {
-	int		c	= iFloor(Interpolate(alpha255,x,y,size)+.5f);
-	
-	DWORD	row	= y % 16; 
+	int		c	= iFloor(Interpolate(alpha255,x%size,y%size,size)+.5f);
+
+	DWORD	row	= y % 16;
 	DWORD	col	= x % 16;
  	return	c	> dither[col][row];
 }
@@ -363,7 +363,7 @@ void CDetailManager::UpdateCache	(int limit)
 
 		// Prepare to selection
 		float		density		= 0.1f;
-		float		jitter		= density/2.f;
+		float		jitter		= density/2;
 		DWORD		d_size		= iCeil	(slot_size/density);
 		svector<int,dm_obj_in_slot>		selected;
 
@@ -373,16 +373,18 @@ void CDetailManager::UpdateCache	(int limit)
 		CRandom				r_scale		(DS.r_scale);
 
 		// Decompressing itself
-		for (DWORD z=0; z<d_size; z++)
-		{
-			for (DWORD x=0; x<d_size; x++)
-			{
+		for (DWORD z=0; z<d_size; z++){
+			for (DWORD x=0; x<d_size; x++){
+				// shift mask
+                int shift_x = r_jitter.randI(16);
+                int shift_z = r_jitter.randI(16);
+
 				// Iterpolate and dither palette
 				selected.clear();
-				if ((DS.items[0].id!=0xff)&& InterpolateAndDither(alpha255[0],x,z,d_size,m_Dither))	selected.push_back(0);
-				if ((DS.items[1].id!=0xff)&& InterpolateAndDither(alpha255[1],x,z,d_size,m_Dither))	selected.push_back(1);
-				if ((DS.items[2].id!=0xff)&& InterpolateAndDither(alpha255[2],x,z,d_size,m_Dither))	selected.push_back(2);
-				if ((DS.items[3].id!=0xff)&& InterpolateAndDither(alpha255[3],x,z,d_size,m_Dither))	selected.push_back(3);
+				if ((DS.items[0].id!=0xff)&& InterpolateAndDither(alpha255[0],x+shift_x,z+shift_z,d_size,m_Dither))	selected.push_back(0);
+				if ((DS.items[1].id!=0xff)&& InterpolateAndDither(alpha255[1],x+shift_x,z+shift_z,d_size,m_Dither))	selected.push_back(1);
+				if ((DS.items[2].id!=0xff)&& InterpolateAndDither(alpha255[2],x+shift_x,z+shift_z,d_size,m_Dither))	selected.push_back(2);
+				if ((DS.items[3].id!=0xff)&& InterpolateAndDither(alpha255[3],x+shift_x,z+shift_z,d_size,m_Dither))	selected.push_back(3);
 
 				// Select
 				if (selected.empty())	continue;
@@ -391,13 +393,13 @@ void CDetailManager::UpdateCache	(int limit)
 				else					index = selected[r_selection.randI(selected.size())];
 
 				BYTE ID 	= DS.items[index].id; // current object
-                
+
 				SlotItem	Item;
 
 				// Position (XZ)
 				float		rx = (float(x)/float(d_size))*slot_size + D.BB.min.x;
 				float		rz = (float(z)/float(d_size))*slot_size + D.BB.min.z;
-				Item.P.set	(rx + r_jitter.randFs(jitter), D.BB.max.y, rz + r_jitter.randFs(jitter));
+				Item.P.set	(rx+r_jitter.randFs(jitter), D.BB.max.y, rz+r_jitter.randFs(jitter));
 
 				// Position (Y)
 				float y		= D.BB.min.y-1;
