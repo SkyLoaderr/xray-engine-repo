@@ -121,7 +121,9 @@ protected:
 			void			GetClientAddress	(ClientID ID, char* Address);
 			void			GetClientAddress	(IDirectPlay8Address* pClientAddress, char* Address);
 
-			IBannedClient*	GetBannedClient		(const char* Address);
+			IBannedClient*	GetBannedClient		(const char* Address);			
+			void			BannedAddress_Save	(u32 it, IWriter* fs);
+			void			BannedList_Save		();
 
 public:
 	IPureServer				(CTimer* timer);
