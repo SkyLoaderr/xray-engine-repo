@@ -6,7 +6,7 @@ void __cdecl CThread::startup(void* P)
 	CThread* T = (CThread*)P;
 
 	if (T->thMessages)	Msg("* THREAD #%d: Started.",T->thID);
-	FPU::m24r		();
+	FPU::m64r		();
 	T->Execute		();
 	T->thCompleted	= TRUE;
 	if (T->thMessages)	Msg("* THREAD #%d: Task Completed.",T->thID);

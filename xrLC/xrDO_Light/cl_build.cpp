@@ -25,9 +25,9 @@ namespace RAPID {
 			tris[i].convert_I2P(verts,tris);
 
 		// build hierrarhy
-		FPU::m64r();
+		FPU::m64r	();
 		int myrc = build_hierarchy();
-		FPU::m24r();
+		FPU::m24r	();
 		R_ASSERT	(myrc);
 	}
 

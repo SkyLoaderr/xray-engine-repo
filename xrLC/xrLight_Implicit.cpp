@@ -221,7 +221,6 @@ public:
 					Msg("* THREAD #%d: Access violation. Possibly recovered.",thID);
 				}
 				
-				FPU::m24r	();
 				if (Fcount) {
 					// Calculate lighting amount
 					Fcolor		Lumel,R;

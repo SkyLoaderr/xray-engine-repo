@@ -98,27 +98,21 @@ struct _TCF {
 	}
 };
 
-#define TESS_EDGE(E)	(1<<E)
-#define TESS_EDGE_0		TESS_EDGE(0)
-#define TESS_EDGE_1		TESS_EDGE(1)
-#define TESS_EDGE_2		TESS_EDGE(2)
-#define TESS_EDGE_ALL	(TESS_EDGE_0 | TESS_EDGE_1 | TESS_EDGE_2)
-
 class Face
 {
 public:
-	//------------------------------//
-	Vertex*			v[3];			// vertices
-	svector<_TCF,8>	tc;				// TC
+	Vertex*				v[3];			// vertices
+	Fvector				N;				// face normal
+	svector<_TCF,8>		tc;				// TC
 
-	WORD			dwMaterial;		// index of material
+	WORD				dwMaterial;		// index of material
 
-	Fvector			N;				// face normal
+	void*				pDeflector;		// does the face has LM-UV map?
+	svector<CLightmap*>	lmap_layers;
 
-	void*			pDeflector;		// does the face has LM-UV map?
 	union			{
-		bool		bSplitted;		//
-		bool		bOpaque;		// For ray-tracing speedup
+		bool		bSplitted;			//
+		bool		bOpaque;			// For ray-tracing speedup
 	};
 
 	Shader_xrLC&	Shader			();
@@ -155,7 +149,6 @@ public:
 	};
 	IC void CalcNormal2()
 	{
-		FPU::m64r();
 		Dvector			v0,v1,v2,t1,t2,dN;
 		v0.set			(v[0]->P);
 		v1.set			(v[1]->P);
@@ -183,7 +176,6 @@ public:
 			dN.div	(mag);
 			N.set	(dN);
 		}
-		FPU::m24r();
 	}
 	IC void	CalcNormal()
 	{

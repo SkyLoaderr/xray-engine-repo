@@ -89,7 +89,6 @@ void CDeflector::L_Direct	(HASH& H)
 					// World space
 					Fvector wP,B;
 					C[J].set	(0,0,0,0);
-					FPU::m64r	();
 					for (UVtri** it=space.begin(); it!=space.end(); it++)
 					{
 						if ((*it)->isInside(P,B)) {
@@ -113,8 +112,6 @@ void CDeflector::L_Direct	(HASH& H)
 			{
 				Msg("* Access violation. Possibly recovered. ");
 			}
-			
-			FPU::m24r	();
 			
 			if (Fcount) {
 				Fcolor	Lumel,R;

@@ -140,7 +140,6 @@ VOID CDeflector::GetRect(UVpoint &min, UVpoint &max)
 
 void CDeflector::RemapUV(DWORD base_u, DWORD base_v, DWORD size_u, DWORD size_v, DWORD lm_u, DWORD lm_v, BOOL bRotate)
 {
-	FPU::m64r	();
 	// UV rect (actual)
 	UVpoint		a_min,a_max,a_size;
 	GetRect		(a_min,a_max);
@@ -180,41 +179,5 @@ void CDeflector::RemapUV(DWORD base_u, DWORD base_v, DWORD size_u, DWORD size_v,
 				T.uv[i].set(tc);
 			}
 		}
-	}
-	FPU::m24r	();
-}
-
-VOID CDeflector::Capture		(CDeflector *D, int b_u, int b_v, int s_u, int s_v, BOOL bRotated)
-{
-	// Allocate 512x512 texture if needed
-	if (0==lm.pSurface)	{
-		DWORD	size	= 512*512*4;
-		lm.pSurface		= LPDWORD(malloc(size));
-		ZeroMemory		(lm.pSurface,size);
-	}
-
-	// Addressing
-	D->RemapUV		(b_u+BORDER,b_v+BORDER,s_u-2*BORDER,s_v-2*BORDER,512,512,bRotated);
-
-	// Capture faces and setup their coords
-	for (UVIt T=D->tris.begin(); T!=D->tris.end(); T++)
-	{
-		UVtri	P		= *T;
-		Face	*F		= P.owner;
-		F->pDeflector	= this;
-		F->AddChannel	(P.uv[0], P.uv[1], P.uv[2]);
-		tris.push_back	(P);
-	}
-
-	// Perform BLIT
-	if (!bRotated) 
-	{
-		DWORD real_H	= (D->lm.dwHeight	+ 2*BORDER);
-		DWORD real_W	= (D->lm.dwWidth	+ 2*BORDER);
-		blit	(lm.pSurface,512,512,D->lm.pSurface,real_W,real_H,b_u,b_v,254-BORDER);
-	} else {
-		DWORD real_H	= (D->lm.dwHeight	+ 2*BORDER);
-		DWORD real_W	= (D->lm.dwWidth	+ 2*BORDER);
-		blit_r	(lm.pSurface,512,512,D->lm.pSurface,real_W,real_H,b_u,b_v,254-BORDER);
 	}
 }

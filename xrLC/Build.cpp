@@ -187,23 +187,23 @@ void CBuild::Run()
 	fs.write(&H,sizeof(H));
 	fs.close_chunk();
 
-	FPU::m24r();
+	FPU::m64r();
 	Phase	("Optimizing...");
 	PreOptimize		();
 
-	FPU::m24r();
+	FPU::m64r();
 	Phase	("Checking T-Junctions...");
 	CorrectTJunctions();
 
-	FPU::m24r();
+	FPU::m64r();
 	Phase	("Building normals...");
 	CalcNormals		();
 
-	FPU::m24r();
+	FPU::m64r();
 	Phase	("Building collision database...");
 	BuildCForm		(fs);
 
-	FPU::m24r();
+	FPU::m64r();
 	Phase	("Building volume-pick database...");
 	BuildPortals	(fs);
 
@@ -211,51 +211,51 @@ void CBuild::Run()
 	Phase	("Building RayCast model...");
 	BuildRapid		();
 
-	FPU::m24r();
+	FPU::m64r();
 	Phase	("Resolving materials...");
 	ResolveMaterials();
 	
-	FPU::m24r();
+	FPU::m64r();
 	Phase	("Build UV mapping...");
 	BuildUVmap		();
 	
-	FPU::m24r();
+	FPU::m64r();
 	Phase	("Soften lights...");
 	SoftenLights	();
 
-	FPU::m24r();
+	FPU::m64r();
 	Phase	("Implicit lighting...");
 	ImplicitLighting();
 
-	FPU::m24r();
+	FPU::m64r();
 	Phase	("Raytracing...");
 	Light			();
 	
-	FPU::m24r();
+	FPU::m64r();
 	Phase	("Merging lightmaps...");
 	MergeLM			();
 
-	FPU::m24r();
+	FPU::m64r();
 	Phase	("Merging geometry...");
 	MergeGeometry	();
 	
-	FPU::m24r();
+	FPU::m64r();
 	Phase	("Calculating vertex lighting...");
 	LightVertex		();
 	
-	FPU::m24r();
+	FPU::m64r();
 	Phase	("Converting to OpenGraphicsFormat...");
 	Flex2OGF		();
 
-	FPU::m24r();
+	FPU::m64r();
 	Phase	("Processing DetailPatches...");
 	LightPatches	();
 
-	FPU::m24r();
+	FPU::m64r();
 	Phase	("Building sectors...");
 	BuildSectors	();
 
-	FPU::m24r();
+	FPU::m64r();
 	Phase	("Saving lights, glows, occlusion planes...");
 	SaveLights		(fs);
 
@@ -272,7 +272,7 @@ void CBuild::Run()
 	}
 	fs.close_chunk();
 
-	FPU::m24r();
+	FPU::m64r();
 	Phase	("Saving static geometry...");
 	SaveTREE		(fs);
 
