@@ -59,7 +59,7 @@ void CRenderTarget::accum_spot	(light* L)
 	}
 
 	// Shadow xform (+texture adjustment matrix)
-	Fmatrix			m_Shadow;
+	Fmatrix			m_Shadow,m_Lmap;
 	{
 		float			fTexelOffs			= (.5f / DSM_size);
 		float			view_dim			= float(RImplementation.LR.S_size)/float(DSM_size);
@@ -80,6 +80,22 @@ void CRenderTarget::accum_spot	(light* L)
 		Fmatrix			xf_project;		xf_project.mul	(m_TexelAdjust,RImplementation.LR.S_project);
 		m_Shadow.mul					(xf_view, xf_world);
 		m_Shadow.mulA					(xf_project	);
+
+		// lmap
+						view_dim			= 1.f;
+						view_sx				= 0.f;
+						view_sy				= 0.f;
+		Fmatrix			m_TexelAdjust2		= {
+			view_dim/2.f,							0.0f,									0.0f,		0.0f,
+			0.0f,									-view_dim/2.f,							0.0f,		0.0f,
+			0.0f,									0.0f,									fRange,		0.0f,
+			view_dim/2.f + view_sx + fTexelOffs,	view_dim/2.f + view_sy + fTexelOffs,	fBias,		1.0f
+		};
+
+		// compute xforms
+		xf_project.mul		(m_TexelAdjust2,RImplementation.LR.S_project);
+		m_Lmap.mul			(xf_view, xf_world);
+		m_Lmap.mulA			(xf_project	);
 	}
 
 	// Common constants
@@ -100,8 +116,9 @@ void CRenderTarget::accum_spot	(light* L)
 		// Constants
 		RCache.set_c				("Ldynamic_pos",	L_pos.x,L_pos.y,L_pos.z,1/(L->range*L->range));
 		RCache.set_c				("Ldynamic_color",	L_clr.x,L_clr.y,L_clr.z,L_spec);
-		RCache.set_c				("m_texgen",		m_Texgen);
-		RCache.set_c				("m_shadow",		m_Shadow);
+		RCache.set_c				("m_texgen",		m_Texgen	);
+		RCache.set_c				("m_shadow",		m_Shadow	);
+		RCache.set_c				("m_lmap",			m_Lmap		);
 
 		// Shader + constants
 		float circle				= ps_r2_ls_ssm_kernel / RImplementation.LR.S_size;
