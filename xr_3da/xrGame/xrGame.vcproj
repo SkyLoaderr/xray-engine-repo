@@ -1738,6 +1738,16 @@
 									RelativePath=".\ai\anim_triple.h">
 								</File>
 							</Filter>
+							<Filter
+								Name="Cover"
+								Filter="">
+								<File
+									RelativePath=".\ai\corpse_cover.cpp">
+								</File>
+								<File
+									RelativePath=".\ai\corpse_cover.h">
+								</File>
+							</Filter>
 						</Filter>
 					</Filter>
 					<Filter

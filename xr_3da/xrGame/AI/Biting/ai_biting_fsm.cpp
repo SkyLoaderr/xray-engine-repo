@@ -63,6 +63,14 @@ void CAI_Biting::Think()
 #ifdef DEBUG
 	HDebug->SetActive						(true);
 #endif
+	
+	Fvector position;
+	u32		vertex_id;
+	
+	if (GetCorpseCover(position, vertex_id)) {
+		HDebug->L_Clear();
+		HDebug->L_AddPoint(position,0.5f,D3DCOLOR_XRGB(0,255,255));
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////

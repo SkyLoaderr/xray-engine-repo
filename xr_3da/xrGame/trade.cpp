@@ -113,11 +113,11 @@ void CTrade::RemovePartner()
 void CTrade::Communicate() 
 {
 	// Вывести приветствие
-	Msg("--TRADE::----------------------------------------------");
-	Msg("--TRADE::          TRADE ACIVATED                      ");
-	Msg("--TRADE::----------------------------------------------");
-	Msg("--TRADE:: - Hello, my name is [%s]", *pThis.base->cName());
-	Msg("--TRADE::   Wanna trade with me?" );
+//	Msg("--TRADE::----------------------------------------------");
+//	Msg("--TRADE::          TRADE ACIVATED                      ");
+//	Msg("--TRADE::----------------------------------------------");
+//	Msg("--TRADE:: - Hello, my name is [%s]", *pThis.base->cName());
+//	Msg("--TRADE::   Wanna trade with me?" );
 
 	if (pPartner.inv_owner->GetTrade()->OfferTrade(pThis)) { 
 		StartTrade();
@@ -158,9 +158,9 @@ bool CTrade::OfferTrade(SInventoryOwner man)
 {
 	StartTrade();
 	pPartner.Set(man.type,man.base,man.inv_owner); 
-	Msg("--TRADE:: - My name is [%s]", *pThis.base->cName());
-	Msg("--TRADE:: [%s]: I know smth about you...", *pThis.base->cName());
-	Msg("--TRADE:: [%s]: a. Your name is %s", *pThis.base->cName(),pPartner.base->cName());
+//	Msg("--TRADE:: - My name is [%s]", *pThis.base->cName());
+//	Msg("--TRADE:: [%s]: I know smth about you...", *pThis.base->cName());
+//	Msg("--TRADE:: [%s]: a. Your name is %s", *pThis.base->cName(),pPartner.base->cName());
 	
 	string64	s;
 	switch (pPartner.type) 
@@ -170,7 +170,7 @@ bool CTrade::OfferTrade(SInventoryOwner man)
 		case TT_ACTOR: strcpy(s, "stalker"); break;
 	}
 	
-	Msg("--TRADE:: [%s]: b. You are a %s", *pThis.base->cName(),s);
+//	Msg("--TRADE:: [%s]: b. You are a %s", *pThis.base->cName(),s);
 	
 	switch (pPartner.inv_owner->m_tRank) 
 	{
@@ -182,11 +182,11 @@ bool CTrade::OfferTrade(SInventoryOwner man)
 		case ALife::eStalkerRankDummy: strcpy(s,"DUMMY"); break;
 	}
 	
-	Msg("--TRADE:: [%s]: c. Your rank is %s", *pThis.base->cName(),s);
-	Msg("--TRADE:: [%s]: d. You have %i money", *pThis.base->cName(),pPartner.inv_owner->m_dwMoney);
-	strcpy(s,"POSITIVE");
-	Msg("--TRADE:: [%s]: e. My attitude to you is %s", *pThis.base->cName(),s);
-	Msg("--TRADE:: [%s]: So, lets trade...",*pThis.base->cName());
+//	Msg("--TRADE:: [%s]: c. Your rank is %s", *pThis.base->cName(),s);
+//	Msg("--TRADE:: [%s]: d. You have %i money", *pThis.base->cName(),pPartner.inv_owner->m_dwMoney);
+//	strcpy(s,"POSITIVE");
+//	Msg("--TRADE:: [%s]: e. My attitude to you is %s", *pThis.base->cName(),s);
+//	Msg("--TRADE:: [%s]: So, lets trade...",*pThis.base->cName());
 
 	return true;
 }
@@ -211,7 +211,7 @@ void CTrade::StopTrade()
 	TradeState = false;
 	m_dwLastTradeTime = 0;
 	RemovePartner();
-	Msg("--TRADE:: [%s]: Trade stopped...",*pThis.base->cName());
+//	Msg("--TRADE:: [%s]: Trade stopped...",*pThis.base->cName());
 
 	if (pThis.type == TT_TRADER) dynamic_cast<CAI_Trader*>(pThis.base)->OnStopTrade();
 }
@@ -235,10 +235,13 @@ void CTrade::UpdateTrade()
 void CTrade::ShowItems()
 {
 	if (TradeState) m_dwLastTradeTime = Level().timeServer();
-	else { Msg("I'm not ready to trade"); return;}
+	else { 
+		//Msg("I'm not ready to trade"); 
+		return;
+	}
 
-	Msg("--TRADE:: ----------------------------------------------");
-	Msg("--TRADE:: [%s]: Here are my items: ",*pThis.base->cName());
+//	Msg("--TRADE:: ----------------------------------------------");
+//	Msg("--TRADE:: [%s]: Here are my items: ",*pThis.base->cName());
 
 	// определение коэффициента
 	float factor = 1.0f;
@@ -259,7 +262,7 @@ void CTrade::ShowItems()
 
 	string128	CurName;
 	u32			num = 0;
-	u32			i = 0;
+//	u32			i = 0;
 	u32			l_dwCost = 0;
 	CurName[0]	= 0;
 
@@ -269,9 +272,9 @@ void CTrade::ShowItems()
 	for ( ; I != E; ++I) {
 		if (0 != xr_strcmp(CurName, (*I)->Name())) {
 			if (!num) {
-				Msg("--TRADE:: [%s]: %i. %s ($%i) /%i items/ ",
-					*pThis.base->cName(),++i,
-					CurName,l_dwCost, num);
+//				Msg("--TRADE:: [%s]: %i. %s ($%i) /%i items/ ",
+//					*pThis.base->cName(),++i,
+//					CurName,l_dwCost, num);
 			} 
 			l_dwCost = (int)(((float) (*I)->Cost()) * factor );
 			num = 1;
@@ -282,47 +285,55 @@ void CTrade::ShowItems()
 	}
 
 	// Вывести последний item
-	if (B != E) 
-		Msg("--TRADE:: [%s]: %i. %s ($%i) /%i items/ ",*pThis.base->cName(),++i,CurName,l_dwCost, num);
-	
+	if (B != E) {
+//		Msg("--TRADE:: [%s]: %i. %s ($%i) /%i items/ ",*pThis.base->cName(),++i,CurName,l_dwCost, num);
+	}
 }
 
 void CTrade::ShowMoney()
 {
 	if (TradeState) m_dwLastTradeTime = Level().timeServer();
-	else { Msg("I'm not ready to trade"); return;}
+	else { 
+	//	Msg("I'm not ready to trade"); 
+		return;
+	}
 
-	Msg("--TRADE:: [%s]: Money = %i ",*pThis.base->cName(),pThis.inv_owner->m_dwMoney);
+//	Msg("--TRADE:: [%s]: Money = %i ",*pThis.base->cName(),pThis.inv_owner->m_dwMoney);
 }
 
 void CTrade::ShowArtifactPrices()
 {
 	if (TradeState) m_dwLastTradeTime = Level().timeServer();
-	else { Msg("I'm not ready to trade"); return;}
+	else { 
+	//	Msg("I'm not ready to trade"); 
+		return;
+	}
 
 	if (pThis.type == TT_TRADER) 
 	{
 		CAI_Trader					*l_pTrader = dynamic_cast<CAI_Trader *>(pThis.inv_owner);
 		R_ASSERT					(l_pTrader);
-		Msg							("--TRADE:: [%s]: I need the following artefacts :",*pThis.base->cName());
+//		Msg							("--TRADE:: [%s]: I need the following artefacts :",*pThis.base->cName());
 		ALife::ARTEFACT_TRADER_ORDER_PAIR_IT	ii = l_pTrader->m_tpOrderedArtefacts.begin();
 		ALife::ARTEFACT_TRADER_ORDER_PAIR_IT	ee = l_pTrader->m_tpOrderedArtefacts.end();
 		for ( ; ii != ee; ++ii) {
 			u32						l_dwAlreadyPurchased = GetTradeInv(pThis).dwfGetSameItemCount((*ii).second->m_caSection);
 			R_ASSERT				(l_dwAlreadyPurchased <= (*ii).second->m_dwTotalCount);
-			Msg						("-   Artefact %s (total %d items) :",pSettings->r_string((*ii).second->m_caSection,"inv_name"),(*ii).second->m_dwTotalCount - l_dwAlreadyPurchased);
+//			Msg						("-   Artefact %s (total %d items) :",pSettings->r_string((*ii).second->m_caSection,"inv_name"),(*ii).second->m_dwTotalCount - l_dwAlreadyPurchased);
 			ALife::ARTEFACT_ORDER_IT	iii = (*ii).second->m_tpOrders.begin();
 			ALife::ARTEFACT_ORDER_IT	eee = (*ii).second->m_tpOrders.end();
 			for ( ; iii != eee; ++iii)
 				if (l_dwAlreadyPurchased < (*iii).m_count) {
-					Msg				("-       %d items for $%d for organization %s",(*iii).m_count - l_dwAlreadyPurchased,(*iii).m_price,(*iii).m_section);
+//					Msg				("-       %d items for $%d for organization %s",(*iii).m_count - l_dwAlreadyPurchased,(*iii).m_price,(*iii).m_section);
 					l_dwAlreadyPurchased = 0;
 				}else
 					l_dwAlreadyPurchased -= (*iii).m_count;
 		}
 	}
-	else 
-		Msg("--TRADE:: [%s]: I don't buy artefacts! Go to trader",*pThis.base->cName());
+	else {
+//		Msg("--TRADE:: [%s]: I don't buy artefacts! Go to trader",*pThis.base->cName());
+	}
+
 }
 
 void CTrade::SellItem(int id)
@@ -356,7 +367,9 @@ void CTrade::SellItem(int id)
 				(pPartner.inv_owner->m_dwMoney >= dwTransferMoney )) {
 				
 				if (xr_strcmp(l_pIItem->Name(),"Bolt") == 0) {
+#ifdef DEBUG
 					Msg("Cannot sell bolt!");
+#endif					
 					break;
 				}
 
@@ -378,9 +391,9 @@ void CTrade::SellItem(int id)
 
 				// уменьшить денег у партнера
 				pPartner.inv_owner->m_dwMoney -= dwTransferMoney;
-				
+#ifdef DEBUG
 				Msg("--TRADE:: [%s]: Ok, item sold!",*pThis.base->cName());
-
+#endif
 				if (pThis.type == TT_TRADER) dynamic_cast<CAI_Trader*>(pThis.base)->OnTradeAction(l_pIItem, true);
 				else if (pPartner.type == TT_TRADER) dynamic_cast<CAI_Trader*>(pPartner.base)->OnTradeAction(l_pIItem, false);
 			}

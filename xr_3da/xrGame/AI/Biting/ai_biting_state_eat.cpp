@@ -98,7 +98,9 @@ void CBitingEat::Run()
 	bool bNeedRebuild = false; 
 
 	switch (m_tAction) {
+	/**********************************/
 	case ACTION_CORPSE_APPROACH_RUN:	// бежать к трупу
+	/**********************************/
 		pMonster->MotionMan.m_tAction = ACT_RUN;
 		pMonster->MotionMan.accel_activate		(eAT_Calm);
 
@@ -119,7 +121,9 @@ void CBitingEat::Run()
 		if (cur_dist < DIST_SLOW_APPROACH_TO_CORPSE) m_tAction = ACTION_CORPSE_APPROACH_WALK;
 
 		break;
+	/**********************************/
 	case ACTION_CORPSE_APPROACH_WALK:
+	/**********************************/
 		pMonster->MotionMan.accel_activate		(eAT_Calm);
 
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
@@ -140,8 +144,9 @@ void CBitingEat::Run()
 		}
 
 		break;
-
+	/****************/
 	case ACTION_EAT:
+	/****************/
 
 		pMonster->MotionMan.m_tAction	= ACT_EAT;
 
@@ -158,8 +163,9 @@ void CBitingEat::Run()
 		// Реализация 'Трясти труп во время еды'
 
 		break;
-	
+	/**********************************/
 	case ACTION_GET_HIDE: 
+	/**********************************/
 		
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;		
 
@@ -172,7 +178,9 @@ void CBitingEat::Run()
 			m_dwTimeStartRest = m_dwCurrentTime;
 		}
 		break;
+	/*************************/
 	case ACTION_LITTLE_REST:
+	/*************************/
 		pMonster->MotionMan.m_tAction = ACT_REST; 
 		
 		if (m_dwTimeStartRest + REST_AFTER_LUNCH_TIME < m_dwCurrentTime) {
@@ -183,7 +191,9 @@ void CBitingEat::Run()
 
 		break;
 
+	/********************/
 	case ACTION_WALK:
+	/*******************/
 
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 		pMonster->MoveToTarget(nearest_bone_pos,pCorpse->level_vertex_id());
@@ -192,7 +202,10 @@ void CBitingEat::Run()
 			m_tAction = ACTION_EAT;
 		}
 		break;
+	
+	/*************************/
 	case ACTION_PREPARE_DRAG:
+	/*************************/
 
 		if (m_dwPrepareDrag + 1000 < m_dwCurrentTime) {
 			// Если труп крысы || если не получилось взять
@@ -214,7 +227,9 @@ void CBitingEat::Run()
 		pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
 		break;
 
+	/****************/
 	case ACTION_DRAG:
+	/****************/
 
 		// Установить параметры движения
 		pMonster->MotionMan.m_tAction = ACT_DRAG; 

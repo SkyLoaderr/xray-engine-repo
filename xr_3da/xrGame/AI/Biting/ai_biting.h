@@ -28,6 +28,7 @@
 class CMonsterDebug;
 class CCharacterPhysicsSupport;
 class CAnimTriple;
+class CMonsterCorpseCoverEvaluator;
 
 class CAI_Biting : public CCustomMonster, 
 				   virtual public CMonsterMovement,
@@ -210,6 +211,9 @@ public:
 			void			LoadShared						(LPCSTR section);
 
 
+	// Cover
+			bool			GetCorpseCover					(Fvector &position, u32 &vertex_id);
+
 // members
 public:
 
@@ -229,6 +233,8 @@ public:
 	
 	SCurrentAnim				cur_anim;
 
+
+	CMonsterCorpseCoverEvaluator *m_corpse_cover_evaluator;
 
 	// -----------------------------------------------------------------------
 	// FSM

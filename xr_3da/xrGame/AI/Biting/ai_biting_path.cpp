@@ -12,6 +12,9 @@
 #include "../ai_monsters_misc.h"
 #include "../../game_graph.h"
 #include "../../game_level_cross_table.h"
+#include "../corpse_cover.h"
+#include "../../cover_manager.h"
+#include "../../cover_point.h"
 
 // Развернуть объект в направление движения по пути
 void CAI_Biting::SetDirectionLook(bool bReversed)
@@ -72,3 +75,13 @@ void CAI_Biting::FaceTarget(const Fvector &position)
 }
 
 
+bool CAI_Biting::GetCorpseCover(Fvector &position, u32 &vertex_id) 
+{
+	m_corpse_cover_evaluator->setup(10.f,30.f);
+	CCoverPoint	 *point = ai().cover_manager().best_cover(Position(),20.f,*m_corpse_cover_evaluator);
+	if (!point) return false;
+	
+	position	= point->m_position;
+	vertex_id	= point->m_level_vertex_id;
+	return true;
+}

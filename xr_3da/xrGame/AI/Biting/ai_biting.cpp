@@ -11,6 +11,7 @@
 #include "../ai_monster_utils.h"
 #include "../ai_monster_debug.h"
 #include "../ai_monster_group.h"
+#include "../corpse_cover.h"
 
 
 CAI_Biting::CAI_Biting()
@@ -51,6 +52,9 @@ CAI_Biting::CAI_Biting()
 
 	// Attack-stops init
 	AS_Init							();
+
+	m_corpse_cover_evaluator		= xr_new<CMonsterCorpseCoverEvaluator>();
+
 }
 
 CAI_Biting::~CAI_Biting()
@@ -59,6 +63,8 @@ CAI_Biting::~CAI_Biting()
 #ifdef DEBUG
 	xr_delete(HDebug);
 #endif	
+
+	xr_delete(m_corpse_cover_evaluator);
 }
 
 void CAI_Biting::reinit()
