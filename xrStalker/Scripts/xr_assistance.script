@@ -5,7 +5,7 @@
 --------------------------------------------------------------------------------
 --' ASSISTANCE
 class "evaluator_assistance" (property_evaluator)
-function evaluator_assistance:__init(storage) super(nil, name)
+function evaluator_assistance:__init(storage, name) super(nil, name)
 	self.a = storage
 end
 function evaluator_assistance:evaluate()
