@@ -57,6 +57,7 @@ void CBuild::Flex2OGF()
 					OGF_Vertex	V1,V2,V3;
 					
 					Face*	FF = *Fit;
+					R_ASSERT(FF);
 					
 					// Geometry
 					V1.P.set(FF->v[0]->P);	V1.N.set(FF->v[0]->N); V1.Color = FF->v[0]->Color;
