@@ -35,7 +35,7 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 //			return;
 //		if (Random.randI(2))
 //			return;
-//		::Sound->PlayAtPos		(S,this,vPosition);
+//		::Sound->play_at_pos		(S,this,vPosition);
 //	}
 //	if (g_Health() - amount <= 0) {
 //		if ((m_tpCurrentGlobalAnimation) && (!m_tpCurrentGlobalBlend->playing))

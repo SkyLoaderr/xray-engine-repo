@@ -39,7 +39,7 @@ void CWeaponCustomPistol::switch2_Fire	()
 /*
 void CWeaponCustomPistol::switch2_Empty	()
 {
-	Sound->PlayAtPos(sndEmptyClick,this,vLastFP);
+	Sound->play_at_pos(sndEmptyClick,this,vLastFP);
 }
 
 void CWeaponCustomPistol::OnEmptyClick	()

@@ -236,8 +236,8 @@ void CWeaponM134::Update	(u32 T)
 			bPending		= TRUE;
 			fTime			= 0;
 			// play start fire sound
-			pSounds->PlayAtPos(sndFireStart,	this,vLastFP,false);
-			pSounds->PlayAtPos(sndServo,		this,vLastFP,true);
+			pSounds->play_at_pos(sndFireStart,	this,vLastFP,false);
+			pSounds->play_at_pos(sndServo,		this,vLastFP,true);
 			break;
 		case eM134Brake:
 			// sound fire loop
@@ -245,8 +245,8 @@ void CWeaponM134::Update	(u32 T)
 
 			// play end fire sound
 			if (st_current==eM134Fire)
-				pSounds->PlayAtPos	(sndFireEnd,this,vLastFP,false);
-			pSounds->PlayAtPos	(sndServo,this,vLastFP,true);
+				pSounds->play_at_pos	(sndFireEnd,this,vLastFP,false);
+			pSounds->play_at_pos	(sndServo,this,vLastFP,true);
 			break;
 		case eM134Idle:
 			bPending		= FALSE;
@@ -258,7 +258,7 @@ void CWeaponM134::Update	(u32 T)
 			if (st_current==eM134Spinup)
 			{
 				m_pHUD->animPlay		(mhud_fire);
-				pSounds->PlayAtPos	(sndFireLoop,this,vLastFP,true);
+				pSounds->play_at_pos	(sndFireLoop,this,vLastFP,true);
 				if (sndServo.feedback) sndServo.feedback->Stop();
 			}
 			break;
@@ -376,7 +376,7 @@ void CWeaponM134::Show			()
 void CWeaponM134::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R) 
 {
 	inherited::FireShotmark		(vDir, vEnd, R);
-	pSounds->PlayAtPos		(sndRicochet[Random.randI(SND_RIC_COUNT)], H_Root(), vEnd,false);
+	pSounds->play_at_pos		(sndRicochet[Random.randI(SND_RIC_COUNT)], H_Root(), vEnd,false);
 
 	// particles
 	Fvector N,D;
@@ -390,10 +390,10 @@ void CWeaponM134::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collid
 	LPCSTR ps_gibs		= (Random.randI(5)==0)?"sparks_1":"stones";
 	CPSObject* PS		= xr_new<CPSObject> (ps_gibs,S,true);
 	PS->m_Emitter.m_ConeDirection.set(D);
-	PS->PlayAtPos		(vEnd);
+	PS->play_at_pos		(vEnd);
 
 	// smoke
 	PS					= xr_new<CPSObject> ("smokepuffs_1",S,true);
 	PS->m_Emitter.m_ConeDirection.set(D);
-	PS->PlayAtPos		(vEnd);
+	PS->play_at_pos		(vEnd);
 }

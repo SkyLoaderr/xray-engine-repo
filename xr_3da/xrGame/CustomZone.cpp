@@ -37,7 +37,7 @@ BOOL CCustomZone::net_Spawn(LPVOID DC) {
 		m_period = Z->m_period;
 
 		Fvector P; clXFORM().transform_tiny(P,cfModel->getSphere().P);
-		Sound->PlayAtPos(m_ambient,this, vPosition, true);
+		Sound->play_at_pos(m_ambient,this, vPosition, true);
 
 //		setVisible(true);
 		setEnabled(true);

@@ -139,7 +139,7 @@ void CWeaponProtecta::Update(float dt, BOOL bHUDView)
 		case eIdle:
 			break;
 		case eShoot:
-			pSounds->PlayAtPos(sndShoot,vLastFP,true);
+			pSounds->play_at_pos(sndShoot,vLastFP,true);
 			break;
 		}
 		st_current=st_target;
@@ -168,7 +168,7 @@ void CWeaponProtecta::Update(float dt, BOOL bHUDView)
 				// play smoke
 				m_pShootPS->Stop		();
 				m_pShootPS->m_Emitter.m_ConeDirection.set	(vLastFD);
-				m_pShootPS->PlayAtPos	(vLastFP);
+				m_pShootPS->play_at_pos	(vLastFP);
 
 				BOOL			bHit = FALSE;
 				for (int i=0; i<iShotCount; i++)
@@ -176,7 +176,7 @@ void CWeaponProtecta::Update(float dt, BOOL bHUDView)
 					Fvector p1=p1_base, d=d_base;
 					bHit |=		FireTrace(p1,vLastFP,d);
 				}
-//				if (bHit)		pSounds->PlayAtPos(sndRicochet[Random.randI(SND_RIC_COUNT)], vEnd,false);
+//				if (bHit)		pSounds->play_at_pos(sndRicochet[Random.randI(SND_RIC_COUNT)], vEnd,false);
 				iAmmoElapsed	--;
 		 		if (iAmmoElapsed==0) { m_pParent->g_fireEnd(); break; }
 				m_pHUD->Shoot	();
@@ -254,10 +254,10 @@ void CWeaponProtecta::FireShotmark(const Fvector &vDir, const Fvector &vEnd, Col
 	// stones
 	CPSObject* PS		= xr_new<CPSObject> ("stones",S,true);
 	PS->m_Emitter.m_ConeDirection.set(D);
-	PS->PlayAtPos		(vEnd);
+	PS->play_at_pos		(vEnd);
 
 	// smoke
 	PS					= xr_new<CPSObject> ("smokepuffs_1",S,true);
 	PS->m_Emitter.m_ConeDirection.set(D);
-	PS->PlayAtPos		(vEnd);
+	PS->play_at_pos		(vEnd);
 }

@@ -35,7 +35,7 @@ void CWeaponPistol::switch2_Idle	()
 void CWeaponPistol::switch2_Hiding()
 {
 	if(m_opened) {
-		Sound->PlayAtPos		(sndClose,H_Root(),vLastFP);
+		Sound->play_at_pos		(sndClose,H_Root(),vLastFP);
 		m_pHUD->animPlay		(mhud_close[Random.randI(mhud_close.size())],TRUE,this);
 	} else inherited::switch2_Hiding	();
 }
@@ -66,7 +66,7 @@ void CWeaponPistol::Load	(LPCSTR section)
 void CWeaponPistol::OnShot		()
 {
 	// Sound
-	Sound->PlayAtPos			(sndShot,H_Root(),vLastFP);
+	Sound->play_at_pos			(sndShot,H_Root(),vLastFP);
 
 	// Camera
 	if (hud_mode)	

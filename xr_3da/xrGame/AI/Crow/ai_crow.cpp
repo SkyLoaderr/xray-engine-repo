@@ -193,7 +193,7 @@ void CAI_Crow::Update(u32 DT)
 		if (fIdleSoundTime<=0){
 			fIdleSoundTime = fIdleSoundDelta+fIdleSoundDelta*Random.randF(-0.5f,0.5f);
 			//if (st_current==eFlyIdle)
-			::Sound->PlayAtPos(m_Sounds.m_idle.GetRandom(),H_Root(),vPosition);
+			::Sound->play_at_pos(m_Sounds.m_idle.GetRandom(),H_Root(),vPosition);
 		}
 		fIdleSoundTime-=float(DT)/1000.f;
 	}

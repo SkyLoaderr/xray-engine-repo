@@ -44,7 +44,7 @@ void CPSObject::Update(u32 dt)
 	}
 }
 
-void CPSObject::PlayAtPos(const Fvector& pos)
+void CPSObject::play_at_pos(const Fvector& pos)
 {
 	m_Emitter.m_Position.set(pos);
 	m_Emitter.Play			();

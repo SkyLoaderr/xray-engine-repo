@@ -16,7 +16,7 @@ void CAI_Rat::Exec_Action(float dt)
 	AI::AIC_Action* L	= (AI::AIC_Action*)C;
 	switch (L->Command) {
 		case AI::AIC_Action::AttackBegin: {
-			::Sound->PlayAtPos(m_tpaSoundAttack[Random.randI(SND_ATTACK_COUNT)],this,vPosition);
+			::Sound->play_at_pos(m_tpaSoundAttack[Random.randI(SND_ATTACK_COUNT)],this,vPosition);
 			u32 dwTime = Level().timeServer();
 			if ((m_tSavedEnemy->g_Health() > 0) && (dwTime - m_dwStartAttackTime > m_dwHitInterval)) {
 				m_bActionStarted = true;
@@ -64,7 +64,7 @@ void CAI_Rat::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 elem
 			return;
 		if (Random.randI(2))
 			return;
-		::Sound->PlayAtPos		(S,this,vPosition);
+		::Sound->play_at_pos		(S,this,vPosition);
 	}
 	if (g_Health() - amount <= 0) {
 		if ((m_tpCurrentGlobalAnimation) && (!m_tpCurrentGlobalBlend->playing))

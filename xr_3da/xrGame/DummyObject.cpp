@@ -86,7 +86,7 @@ BOOL CDummyObject::net_Spawn(LPVOID DC)
 	if (style&esSound)			{
 		// Load sound
 		::Sound->Create			(s_sound,TRUE,E->s_Sound);
-		::Sound->PlayAtPos		(s_sound,0,Position(),true);
+		::Sound->play_at_pos		(s_sound,0,Position(),true);
 	}
 
 	CKinematics* V			= PKinematics	(Visual());

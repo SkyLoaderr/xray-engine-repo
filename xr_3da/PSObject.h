@@ -19,7 +19,7 @@ public:
 	virtual void		Update			(u32 dt);
 	virtual Fvector&	Position		(){return m_Emitter.m_Position;}
 	void				UpdateSector	(CSector* sect);
-	void				PlayAtPos		(const Fvector& pos);
+	void				play_at_pos		(const Fvector& pos);
 	void				Stop			();
 };
 #endif /*_INCDEF_PSObject_H_*/

@@ -93,16 +93,16 @@ void CCustomDetector::Update(u32 dt) {
 				l_time = 0;
 				if(m_sounds.find(l_pZ->SUB_CLS_ID) != m_sounds.end()) {
 					sound *l_pSound = m_sounds[l_pZ->SUB_CLS_ID];
-					Sound->PlayAtPos(*l_pSound, this, P);
+					Sound->play_at_pos(*l_pSound, this, P);
 				}
 			} else l_time += dt;
 		}
 		if(l_buzzer) {
-			if(!m_buzzer.feedback) Sound->PlayAtPos(m_buzzer, this, P, true);
+			if(!m_buzzer.feedback) Sound->play_at_pos(m_buzzer, this, P, true);
 			if(m_buzzer.feedback) m_buzzer.feedback->SetPosition(P);
 		} else if(m_buzzer.feedback) m_buzzer.feedback->Stop();
 		if(l_maxPow > 0) {
-			if(!m_noise.feedback) Sound->PlayAtPos(m_noise, this, P, true);
+			if(!m_noise.feedback) Sound->play_at_pos(m_noise, this, P, true);
 			if(m_noise.feedback) {
 				l_maxPow = _max(logf(l_maxPow) / 10.f + 1.f, .0f);
 				m_noise.feedback->SetVolume(l_maxPow);

@@ -630,7 +630,7 @@ void CWeapon::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::r
 			LPCSTR ps_gibs		= "blood_1";//(Random.randI(5)==0)?"sparks_1":"stones";
 			CPSObject* PS		= xr_new<CPSObject> (ps_gibs,S,true);
 			PS->m_Emitter.m_ConeDirection.set(D);
-			PS->PlayAtPos		(vEnd);
+			PS->play_at_pos		(vEnd);
 		}
 	} else {
 		::Render->add_Wallmark	(

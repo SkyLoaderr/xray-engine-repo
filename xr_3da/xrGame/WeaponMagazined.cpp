@@ -323,14 +323,14 @@ void CWeaponMagazined::OnShellDrop	()
 	M.setHPB(PS->m_Emitter.m_ConeHPB.x, PS->m_Emitter.m_ConeHPB.y, PS->m_Emitter.m_ConeHPB.z);
 	Fvector V; M.transform_dir(V,vLastFD);
 	PS->m_Emitter.m_ConeDirection.set(V);
-	PS->PlayAtPos				(vLastSP);
+	PS->play_at_pos				(vLastSP);
 	*/
 }
 
 void CWeaponMagazined::OnShot		()
 {
 	// Sound
-	Sound->PlayAtPos			(sndShot,H_Root(),vLastFP);
+	Sound->play_at_pos			(sndShot,H_Root(),vLastFP);
 
 	// Camera
 	if (hud_mode)	
@@ -353,7 +353,7 @@ void CWeaponMagazined::OnShot		()
 
 void CWeaponMagazined::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R)
 {
-	Sound->PlayAtPos		(sndRicochet[Random.randI(SND_RIC_COUNT)], 0, vEnd,false);
+	Sound->play_at_pos		(sndRicochet[Random.randI(SND_RIC_COUNT)], 0, vEnd,false);
 	
 	if (!R.O) 
 	{
@@ -369,18 +369,18 @@ void CWeaponMagazined::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Col
 		LPCSTR ps_gibs		= (Random.randI(5)==0)?"sparks_1":"stones";
 		CPSObject* PS		= xr_new<CPSObject> (ps_gibs,S,true);
 		PS->m_Emitter.m_ConeDirection.set(D);
-		PS->PlayAtPos		(vEnd);
+		PS->play_at_pos		(vEnd);
 		
 		// stones
 		PS					= xr_new<CPSObject> ("stones",S,true);
 		PS->m_Emitter.m_ConeDirection.set(D);
-		PS->PlayAtPos		(vEnd);
+		PS->play_at_pos		(vEnd);
 	}
 }
 
 void CWeaponMagazined::OnEmptyClick	()
 {
-	Sound->PlayAtPos	(sndEmptyClick,H_Root(),vLastFP);
+	Sound->play_at_pos	(sndEmptyClick,H_Root(),vLastFP);
 }
 void CWeaponMagazined::OnAnimationEnd()
 {
@@ -403,14 +403,14 @@ void CWeaponMagazined::switch2_Empty()
 }
 void CWeaponMagazined::switch2_Reload()
 {
-	Sound->PlayAtPos		(sndReload,H_Root(),vLastFP);
+	Sound->play_at_pos		(sndReload,H_Root(),vLastFP);
 	m_pHUD->animPlay		(mhud_reload[Random.randI(mhud_reload.size())],TRUE,this);
 }
 void CWeaponMagazined::switch2_Hiding()
 {
 	FireEnd					();
 	bPending				= TRUE;
-	Sound->PlayAtPos		(sndHide,H_Root(),vLastFP);
+	Sound->play_at_pos		(sndHide,H_Root(),vLastFP);
 	m_pHUD->animPlay		(mhud_hide[Random.randI(mhud_hide.size())],TRUE,this);
 	if (Local())			Level().Cameras.RemoveEffector	(cefShot);
 }
@@ -421,6 +421,6 @@ void CWeaponMagazined::switch2_Hidden()
 void CWeaponMagazined::switch2_Showing()
 {
 	setVisible				(TRUE);
-	Sound->PlayAtPos		(sndShow,H_Root(),vLastFP);
+	Sound->play_at_pos		(sndShow,H_Root(),vLastFP);
 	m_pHUD->animPlay		(mhud_show[Random.randI(mhud_show.size())],FALSE,this);
 }

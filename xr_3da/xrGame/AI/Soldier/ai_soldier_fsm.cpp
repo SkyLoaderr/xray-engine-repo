@@ -1559,7 +1559,7 @@ void CAI_Soldier::OnPatrolRoute()
 				if (m_tpSoundBeingPlayed->feedback)			
 					return;
 
-				::Sound->PlayAtPos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
+				::Sound->play_at_pos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
 			}
 		}
 		else

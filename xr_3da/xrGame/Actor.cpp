@@ -464,7 +464,7 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who, s16 element
 		if (S.feedback) return;
 
 		// Play hit-sound
-		::Sound->PlayAtPos	(S,this,vPosition);
+		::Sound->play_at_pos	(S,this,vPosition);
 
 		// hit marker
 		if (Local() && (who!=this))	
@@ -497,7 +497,7 @@ void CActor::Die	( )
 	b_DropActivated			= TRUE;
 	g_PerformDrop			();
 	// Play sound
-	::Sound->PlayAtPos		(sndDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
+	::Sound->play_at_pos		(sndDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
 	cam_Set					(eacFreeLook);
 	g_fireEnd				();
 	mstate_wishful	&=		~mcAnyMove;
@@ -603,8 +603,8 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 	if (ph_Movement.gcontact_Was) 
 	{
 //		SGameMtlPair* pair	= GMLib.GetMaterialPair(0,1); R_ASSERT(pair);
-//		::Sound->PlayAtPos	(pair->HitSounds[0],this,Position());
-//		::Sound->PlayAtPos						(sndLanding,this,Position());
+//		::Sound->play_at_pos	(pair->HitSounds[0],this,Position());
+//		::Sound->play_at_pos						(sndLanding,this,Position());
 
 		if (Local()) {
 			pCreator->Cameras.AddEffector		(xr_new<CEffectorFall> (ph_Movement.gcontact_Power));
@@ -659,8 +659,8 @@ void CActor::ZoneEffect	(float z_amount)
 	// Sounds
 	Fvector				P;
 	clCenter			(P);
-	if (0==sndZoneHeart.feedback)		::Sound->PlayAtPos	(sndZoneHeart,		this,Position(),true);
-//	if (0==sndZoneDetector.feedback)	::Sound->PlayAtPos	(sndZoneDetector,	this,Position(),true);
+	if (0==sndZoneHeart.feedback)		::Sound->play_at_pos	(sndZoneHeart,		this,Position(),true);
+//	if (0==sndZoneDetector.feedback)	::Sound->play_at_pos	(sndZoneDetector,	this,Position(),true);
 	sndZoneHeart.feedback->SetVolume			(z_amount);
 	sndZoneHeart.feedback->SetPosition			(P);
 //	sndZoneDetector.feedback->SetFrequencyScale	(.1f+z_amount);
@@ -862,7 +862,7 @@ void CActor::Update	(u32 DT)
 			float tm			= isAccelerated(mstate_real)?(PI/(k*10.f)):(PI/(k*7.f));
 			m_fTimeToStep		= tm;
 			sndStep[bStep].clone(mtl_pair->StepSounds[bStep]);
-			::Sound->PlayAtPos	(sndStep[bStep],this,Position());
+			::Sound->play_at_pos	(sndStep[bStep],this,Position());
 		}
 		m_fTimeToStep -= dt;
 	}
@@ -884,7 +884,7 @@ void CActor::Update	(u32 DT)
 	// landing sounds
 	if (!sndLanding.feedback&&(mstate_real&(mcLanding|mcLanding2))){
 		sndLanding.clone	(mtl_pair->HitSounds[0]);
-		::Sound->PlayAtPos	(sndLanding,this,s_pos);
+		::Sound->play_at_pos	(sndLanding,this,s_pos);
 	}
 }
 

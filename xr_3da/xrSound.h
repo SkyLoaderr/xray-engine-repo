@@ -33,7 +33,7 @@ public:
 	virtual void					Create					( sound& S, BOOL _3D,	LPCSTR fName,	int		type=0)					;
 	virtual void					Play					( sound& S, CObject* O,								BOOL bLoop=false)	;
 	virtual void					Play_Unlimited			( sound& S, CObject* O,								BOOL bLoop=false)	;
-	virtual void					PlayAtPos				( sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false)	;
+	virtual void					play_at_pos				( sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false)	;
 	virtual void					PlayAtPos_Unlimited		( sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false)	;
 	virtual void					Delete					( sound& S)																;
 	virtual void					SetGeometry				( CDB::MODEL* M )														;

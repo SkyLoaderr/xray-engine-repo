@@ -175,7 +175,7 @@ BOOL	CCar::net_Spawn				(LPVOID DC)
 	
 	PHDynamicData::FMX33toDMX		(m33,Rot);
 	m_jeep.SetRotation				(Rot);
-	Sound->PlayAtPos				(snd_engine,this,vPosition,true);
+	Sound->play_at_pos				(snd_engine,this,vPosition,true);
 
 	//
 	CKinematics*	M				= PKinematics(pVisual);

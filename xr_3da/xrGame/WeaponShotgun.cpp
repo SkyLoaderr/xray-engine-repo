@@ -88,7 +88,7 @@ void CWeaponShotgun::OnShotBoth()
 	if(iAmmoElapsed < iMagazineSize) { OnShot(); return; }
 
 	// Sound
-	Sound->PlayAtPos			(sndShotBoth,H_Root(),vLastFP);
+	Sound->play_at_pos			(sndShotBoth,H_Root(),vLastFP);
 
 	// Camera
 	if (hud_mode)	

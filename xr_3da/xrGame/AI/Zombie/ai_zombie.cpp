@@ -65,7 +65,7 @@ void CAI_Zombie::Die()
 	//SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
 
 	
-	::Sound->PlayAtPos(m_tpaSoundDeath[Random.randI(SND_DEATH_COUNT)],this,vPosition);
+	::Sound->play_at_pos(m_tpaSoundDeath[Random.randI(SND_DEATH_COUNT)],this,vPosition);
 
 	CGroup &Group = Level().get_group(g_Team(),g_Squad(),g_Group());
 	vfRemoveActiveMember();

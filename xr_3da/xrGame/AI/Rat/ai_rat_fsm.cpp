@@ -235,7 +235,7 @@ void CAI_Rat::FreeHuntingActive()
 			m_tpSoundBeingPlayed = &(m_tpaSoundVoice[Random.randI(SND_VOICE_COUNT)]);
 			
 			if (!m_tpSoundBeingPlayed->feedback)
-				::Sound->PlayAtPos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
+				::Sound->play_at_pos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
 			else
 				m_tpSoundBeingPlayed->feedback->SetPosition(eye_matrix.c);
 		}

@@ -43,7 +43,7 @@ void	CCustomItem::SetState(EItemState e)
 		setVisible			(true);
 		break;
 	case esHidding:	
-		::Sound->PlayAtPos	(sndTake,this,vPosition);
+		::Sound->play_at_pos	(sndTake,this,vPosition);
 		vScale.set			(SM,SM,SM);
 		UpdateTransform		();
 		setVisible			(true);
