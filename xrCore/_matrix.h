@@ -79,7 +79,7 @@ public:
 	ICF	SelfRef	mk_xform	(const _quaternion<T> &Q, const Tvector &V);
 
 	// Multiply RES = A[4x4]*B[4x4] (WITH projection)
-	IC	SelfRef	mul			(const Self &A,const Self &B)
+	ICF	SelfRef	mul			(const Self &A,const Self &B)
 	{
 		m[0][0] = A.m[0][0] * B.m[0][0] + A.m[1][0] * B.m[0][1] + A.m[2][0] * B.m[0][2] + A.m[3][0] * B.m[0][3];
 		m[0][1] = A.m[0][1] * B.m[0][0] + A.m[1][1] * B.m[0][1] + A.m[2][1] * B.m[0][2] + A.m[3][1] * B.m[0][3];

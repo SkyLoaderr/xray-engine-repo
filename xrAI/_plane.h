@@ -22,26 +22,26 @@ public:
 	{
     	return (n.similar(P.n,eps_n)&&(_abs(d-P.d)<eps_d));
     }
-	IC	SelfRef	build	(const _vector3<T> &v1, const _vector3<T> &v2, const _vector3<T> &v3) 
+	ICF	SelfRef	build	(const _vector3<T> &v1, const _vector3<T> &v2, const _vector3<T> &v3) 
 	{
 		_vector3<T> t1,t2;
 		n.crossproduct(t1.sub(v1,v2), t2.sub(v1,v3)).normalize();
 		d = -n.dotproduct(v1);
 		return *this;
 	}
-	IC	SelfRef	build_precise	(const _vector3<T> &v1, const _vector3<T> &v2, const _vector3<T> &v3) 
+	ICF	SelfRef	build_precise	(const _vector3<T> &v1, const _vector3<T> &v2, const _vector3<T> &v3) 
 	{
 		_vector3<T> t1,t2;
 		n.crossproduct(t1.sub(v1,v2), t2.sub(v1,v3)); exact_normalize(n);
 		d = -n.dotproduct(v1);
 		return *this;
 	}
-	IC	SelfRef	build(const _vector3<T> &_p, const _vector3<T> &_n)
+	ICF	SelfRef	build(const _vector3<T> &_p, const _vector3<T> &_n)
 	{
 		d			= - n.normalize(_n).dotproduct(_p);
 		return *this;
 	}
-	IC	SelfRef	build_unit_normal(const _vector3<T> &_p, const _vector3<T> &_n)
+	ICF	SelfRef	build_unit_normal(const _vector3<T> &_p, const _vector3<T> &_n)
 	{
 		VERIFY		(fsimilar(_n.magnitude(),1,EPS));
 		d			= - n.set(_n).dotproduct(_p);
@@ -52,7 +52,7 @@ public:
 		pdest.mad	(psrc,n,-classify(psrc));
 		return *this;
 	}
-	IC	T		classify(const _vector3<T> &v) const	
+	ICF	T		classify(const _vector3<T> &v) const	
 	{
 		return n.dotproduct(v)+d;
 	}

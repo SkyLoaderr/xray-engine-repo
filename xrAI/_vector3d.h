@@ -333,7 +333,7 @@ public:
         z = _cp*_ch;
 		return *this;	
     }
-    IC	void	getHP	(T& h, T& p) const
+    ICF	void	getHP	(T& h, T& p) const
     {
         float hyp;
 
@@ -350,7 +350,7 @@ public:
             else						p = atanf(y/hyp);
         }
     }
-	IC float 	getH	() const
+	ICF float 	getH	() const
 	{
 		if (fis_zero(x)&& fis_zero(z)){
 			return	0.0f;
@@ -360,7 +360,7 @@ public:
 			else            			return -atanf(x/z);
 		}
 	}
-	IC float 	getP	() const
+	ICF float 	getP	() const
 	{
 		if (fis_zero(x)&& fis_zero(z)){
 			if (!fis_zero(float(y)))	return (y>0.0f)?PI_DIV_2:-PI_DIV_2;
