@@ -89,6 +89,45 @@ void CLightShadows::add_element	(NODE* N)
 }
 
 
+IC float PLC_energy	(Fvector& P, Fvector& N, xrLIGHT* L, float E)
+{
+	Fvector Ldir;
+	if (L->type==D3DLIGHT_DIRECTIONAL)
+	{
+		// Cos
+		Ldir.invert	(L->direction);
+		float D		= Ldir.dotproduct( N );
+		if( D <=0 )						return 0;
+		
+		// Trace Light
+		float A		= D*E;
+		return A;
+	} else {
+		// Distance
+		float sqD	= P.distance_to_sqr(L->position);
+		if (sqD > (L->range*L->range))	return 0;
+		
+		// Dir
+		Ldir.sub	(L->position,P);
+		Ldir.normalize_safe();
+		float D		= Ldir.dotproduct( N );
+		if( D <=0 )						return 0;
+		
+		// Trace Light
+		float R		= sqrtf(sqD);
+		float A		= D*E / (L->attenuation0 + L->attenuation1*R + L->attenuation2*sqD);
+		return A;
+	}
+}
+
+IC DWORD PLC_calc	(Fvector& P, Fvector& N, xrLIGHT* L, float E)
+{
+	float	A		= 1.f-.5f*PLC_energy(P,N,L,E);
+	int		iA		= iCeil(255.f*A);
+	clamp	(iA,0,255);
+	return	D3DCOLOR_RGBA	(iA,iA,iA,iA);
+}
+
 //
 class	pred_casters
 {
@@ -185,10 +224,12 @@ void CLightShadows::calculate	()
 			}
 			
 			// register shadow and increment slot
+			Fvector N; N.set	(0,1,0);
 			shadows.push_back	(shadow());
 			shadows.back().slot	=	slot_id;
 			shadows.back().M	=	mCombine;
 			shadows.back().L	=	L;
+			shadows.back().C	=	PLC_calc(C.C,N,L,L->diffuse.magnitude_rgb());
 			slot_id	++;
 		}
 	}
@@ -225,45 +266,6 @@ void CLightShadows::calculate	()
 	
 	Device.set_xform_project	(Device.mProject);
 	Device.set_xform_view		(Device.mView);
-}
-
-IC float PLC_energy	(Fvector& P, Fvector& N, xrLIGHT* L, float E)
-{
-	Fvector Ldir;
-	if (L->type==D3DLIGHT_DIRECTIONAL)
-	{
-		// Cos
-		Ldir.invert	(L->direction);
-		float D		= Ldir.dotproduct( N );
-		if( D <=0 )						return 0;
-		
-		// Trace Light
-		float A		= D*E;
-		return A;
-	} else {
-		// Distance
-		float sqD	= P.distance_to_sqr(L->position);
-		if (sqD > (L->range*L->range))	return 0;
-		
-		// Dir
-		Ldir.sub	(L->position,P);
-		Ldir.normalize_safe();
-		float D		= Ldir.dotproduct( N );
-		if( D <=0 )						return 0;
-		
-		// Trace Light
-		float R		= sqrtf(sqD);
-		float A		= D*E / (L->attenuation0 + L->attenuation1*R + L->attenuation2*sqD);
-		return A;
-	}
-}
-
-IC DWORD PLC_calc	(Fvector& P, Fvector& N, xrLIGHT* L, float E)
-{
-	float	A		= 1.f-.5f*PLC_energy(P,N,L,E);
-	int		iA		= iCeil(255.f*A);
-	clamp	(iA,0,255);
-	return	D3DCOLOR_RGBA	(iA,iA,iA,iA);
 }
 
 void CLightShadows::render	()
@@ -308,7 +310,7 @@ void CLightShadows::render	()
 		XRC.frustum_options		(0);
 		XRC.frustum_query		(DB,F);
 		if (0==XRC.r_count())	continue;
-
+		
 		// Clip polys by frustum
 		for (CDB::RESULT* p = XRC.r_begin(); p!=XRC.r_end(); p++)
 		{
