@@ -11,7 +11,7 @@
 
 xr_vector<CLightmap*>		g_lightmaps;
 
-extern BOOL ApplyBorders(b_texture &lm, u32 ref);
+extern BOOL ApplyBorders	(lm_layer &lm, u32 ref);
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -151,5 +151,5 @@ void CLightmap::Save()
 		DXTCompress				(FN,raw_data,w,h,pitch,&fmt,4);
 	}
 
-	
+	lm.destroy	();
 }
