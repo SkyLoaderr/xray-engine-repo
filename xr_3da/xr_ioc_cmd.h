@@ -44,7 +44,7 @@ public:
 	}
 };
 
-class ENGINE_API CCC_Mask : public IConsole_Command
+class ENGINE_API	CCC_Mask : public IConsole_Command
 {
 	Flags32*	value;
 	u32			mask;
@@ -69,7 +69,7 @@ public:
 	{	strcpy(I,"'on/off' or '1/0'"); }
 };
 
-class ENGINE_API CCC_Token : public IConsole_Command
+class ENGINE_API	CCC_Token : public IConsole_Command
 {
 	u32*			value;
 	xr_token*		tokens;
@@ -117,7 +117,7 @@ public:
 	}
 };
 
-class ENGINE_API CCC_Float : public IConsole_Command
+class ENGINE_API	CCC_Float : public IConsole_Command
 {
 	float*			value;
 	float			min,max;
@@ -146,7 +146,7 @@ public:
 	}
 };
 
-class ENGINE_API CCC_Vector3 : public IConsole_Command
+class ENGINE_API	CCC_Vector3 : public IConsole_Command
 {
 	Fvector*		value;
 	Fvector			min,max;
@@ -177,8 +177,9 @@ public:
 	}
 };
 
-class ENGINE_API CCC_Integer : public IConsole_Command
+class ENGINE_API	CCC_Integer : public IConsole_Command
 {
+protected:
 	int*			value;
 	int				min,max;
 public:
@@ -205,8 +206,9 @@ public:
 	}
 };
 
-class ENGINE_API CCC_String : public IConsole_Command
+class ENGINE_API	CCC_String : public IConsole_Command
 {
+protected:
 	LPSTR			value;
 	int				size;
 public:
