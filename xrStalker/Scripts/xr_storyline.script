@@ -160,6 +160,8 @@ function set_storyline(object, char_ini)
          								    point_path	= nil,
                                             camper_path = nil,
 			                                enemy		= nil,
+                                            zone		= nil,
+                                            enter       = false,
                                             monster		= nil
                                           }
         xr_sniper.add_to_binder (object, char_ini)
