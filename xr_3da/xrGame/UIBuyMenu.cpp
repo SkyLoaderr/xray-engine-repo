@@ -8,7 +8,7 @@
 #define BUY_MENU_OFFS_COL1	0
 #define BUY_MENU_OFFS_COL2	200
 //--------------------------------------------------------------------
-CUIBuyMenu::CUIBuyMenu()
+CUIBuyMenu::CUIBuyMenu		()
 {
 	CHUDManager* HUD	= (CHUDManager*)Level().HUD();
 	menu_offs			= iFloor(HUD->ClientToScreenScaledY(BUY_MENU_OFFS,alLeft|alTop)/HUD->pHUDFont->GetScale());
@@ -19,12 +19,12 @@ CUIBuyMenu::CUIBuyMenu()
 }
 //--------------------------------------------------------------------
 
-CUIBuyMenu::~CUIBuyMenu()
+CUIBuyMenu::~CUIBuyMenu		()
 {
 	_DELETE(menu_root);
 }
 //--------------------------------------------------------------------
-void CUIBuyMenu::ParseMenu(CInifile* ini, CMenuItem* root, LPCSTR sect)
+void CUIBuyMenu::ParseMenu	(CInifile* ini, CMenuItem* root, LPCSTR sect)
 {
 	CMenuItem* I=0;
 	string256 buf,buf1;
@@ -52,7 +52,7 @@ void CUIBuyMenu::ParseMenu(CInifile* ini, CMenuItem* root, LPCSTR sect)
 }
 //--------------------------------------------------------------------
 
-void CUIBuyMenu::Load()
+void CUIBuyMenu::Load		()
 {
 	// check ini exist
 	string256 fn;
@@ -66,7 +66,7 @@ void CUIBuyMenu::Load()
 }
 //--------------------------------------------------------------------
 
-void CUIBuyMenu::OnFrame()
+void CUIBuyMenu::OnFrame	()
 {
 	if (menu_active){
 		CGameFont* F	= Level().HUD()->pHUDFont2;
@@ -92,15 +92,15 @@ void CUIBuyMenu::OnFrame()
 }
 //--------------------------------------------------------------------
 
-void CUIBuyMenu::Render()
+void CUIBuyMenu::Render		()
 {
 }
 //--------------------------------------------------------------------
-void CUIBuyMenu::BackItem(CMenuItem* sender)
+void CUIBuyMenu::BackItem	(CMenuItem* sender)
 {
 }
 //--------------------------------------------------------------------
-void CUIBuyMenu::BuyItem(CMenuItem* sender)
+void CUIBuyMenu::BuyItem	(CMenuItem* sender)
 {
 	//
 	Level().HUD()->GetUI()->ShowBuyMenu(FALSE);
@@ -139,7 +139,7 @@ bool CUIBuyMenu::OnKeyboardRelease(int dik)
 }
 //--------------------------------------------------------------------
 
-bool CUIBuyMenu::OnMouseMove	(int dx, int dy)
+bool CUIBuyMenu::OnMouseMove(int dx, int dy)
 {
 	return false;
 }
