@@ -14,32 +14,81 @@
 #include "x_ray.h"
 #include "xr_smallfont.h"
 
-#define MAX_TRIS	512
+const float W_TTL			= 30.f;
+const float W_DIST_FADE		= 15.f;
+const float	W_DIST_FADE_SQR	= W_DIST_FADE*W_DIST_FADE;
+const float I_DIST_FADE_SQR	= 1.f/W_DIST_FADE_SQR;
+const int	MAX_TRIS		= 512;
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CWallmarksEngine::CWallmarksEngine()
+CWallmarksEngine::CWallmarksEngine	()
 {
-	VS = Device.Streams.Create(D3DFVF_XYZ|D3DFVF_DIFFUSE|D3DFVF_TEX1,MAX_TRIS*3);
+	VS = Device.Streams.Create		(FVF::F_LIT,MAX_TRIS*3);
+	pool.reserve	(256);
+	marks.reserve	(256);
 }
 
-CWallmarksEngine::~CWallmarksEngine()
+CWallmarksEngine::~CWallmarksEngine	()
 {
+	{
+		for (u32 it=0; it<marks.size(); it++)
+			wm_destroy	(marks[it]);
+		marks.clear	();
+	}
+	{
+		for (u32 it=0; it<pool.size(); it++)
+			_DELETE	(pool[it]);
+		pool.clear	();
+	}
+}
+
+// allocate
+CWallmarksEngine::wallmark*	CWallmarksEngine::wm_allocate		(Shader*	S	)
+{
+	wallmark*			W = 0;
+	if (pool.empty())	W = new wallmark;
+	else				{ W = pool.back(); pool.pop_back(); }
+
+	W->shader			= S;
+	W->ttl				= W_TTL;
+	W->verts.clear		();
+}
+// destroy
+void		CWallmarksEngine::wm_destroy		(wallmark*	W	)
+{
+	pool.push_back		(W);
+}
+// render
+void		CWallmarksEngine::wm_render			(wallmark*	W, FVF::LIT* &V)
+{
+	float		a	= 1-(W->ttl/W_TTL);
+	int			aC	= iFloor	( a * 255.f);	clamp	(aC,0,255);
+	DWORD		C	= D3DCOLOR_RGBA(128,128,128,aC);
+
+	FVF::LIT*	S	= W->verts.begin	();
+	FVF::LIT*	E	= W->verts.end		();
+	for (; S!=E; S++, V++)
+	{
+		V->p.set	(S->p);
+		V->color	= C;
+		V->t.set	(S->t);
+	}
 }
 
 //--------------------------------------------------------------------------------
-IC void AddTri(CDB::TRI* pTri,Fmatrix &mView,CWallmark	&W)
+IC void AddTri(CDB::TRI* pTri, Fmatrix &mView, CWallmarksEngine::wallmark	&W)
 {
 	Fvector				UV;
-	CWallmark::Vertex	V;
+	FVF::LIT			V;
 	for (int i=0; i<3; i++)
 	{
-		mView.transform_tiny(UV, *pTri->verts[i]);
-		V.P.set(*pTri->verts[i]);
-		V.tu = UV.x;
-		V.tv = UV.y;
-		W.verts.push_back(V);
+		mView.transform_tiny	(UV, *pTri->verts[i]);
+		V.p.set					(*pTri->verts[i]);
+		V.t.set					(UV.x,UV.y);
+		W.verts.push_back		(V);
 	}
 }
 
@@ -48,7 +97,7 @@ static Fvector				sml_normal;
 static sPoly				sml_poly_dest;
 static sPoly				sml_poly_src;
 
-IC void RecurseTri(CDB::TRI* T, Fmatrix &mView,CWallmark	&W,CFrustum &F)
+IC void RecurseTri(CDB::TRI* T, Fmatrix &mView, CWallmarksEngine::wallmark	&W, CFrustum &F)
 {
 	// Check if triangle already processed
 	if (find(sml_processed.begin(),sml_processed.end(),T)!=sml_processed.end())
@@ -67,22 +116,22 @@ IC void RecurseTri(CDB::TRI* T, Fmatrix &mView,CWallmark	&W,CFrustum &F)
 	
 	if (P) {
 		// Create vertices and triangulate poly (tri-fan style triangulation)
-		static CWallmark::Vertex	V0,V1,V2;
-		static Fvector				UV;
+		FVF::LIT			V0,V1,V2;
+		Fvector				UV;
 
 		mView.transform_tiny(UV, (*P)[0]);
-		V0.set((*P)[0],0,UV.x,UV.y);
+		V0.set				((*P)[0],0,(1+UV.x)*.5f,(1-UV.y)*.5f);
 		mView.transform_tiny(UV, (*P)[1]);
-		V1.set((*P)[1],0,UV.x,UV.y);
+		V1.set				((*P)[1],0,(1+UV.x)*.5f,(1-UV.y)*.5f);
 
 		for (DWORD i=2; i<P->size(); i++)
 		{
 			mView.transform_tiny(UV, (*P)[i]);
-			V2.set((*P)[i],0,UV.x,UV.y);
-			W.verts.push_back(V0);
-			W.verts.push_back(V1);
-			W.verts.push_back(V2);
-			V1 = V2;
+			V2.set				((*P)[i],0,(1+UV.x)*.5f,(1-UV.y)*.5f);
+			W.verts.push_back	(V0);
+			W.verts.push_back	(V1);
+			W.verts.push_back	(V2);
+			V1					= V2;
 		}
 		
 		// recurse
@@ -91,10 +140,10 @@ IC void RecurseTri(CDB::TRI* T, Fmatrix &mView,CWallmark	&W,CFrustum &F)
 			CDB::TRI* SML = T->adj[i];
 			if (SML)	{
 				Fvector test_normal;
-				test_normal.mknormal_non_normalized(*SML->verts[0],*SML->verts[1],*SML->verts[2]);
-				float cosa = test_normal.dotproduct(sml_normal);
-				if (cosa<0.01f) continue;
-				RecurseTri(SML,mView,W,F);
+				test_normal.mknormal	(*SML->verts[0],*SML->verts[1],*SML->verts[2]);
+				float cosa				= test_normal.dotproduct(sml_normal);
+				if (cosa<EPS)			continue;
+				RecurseTri				(SML,mView,W,F);
 			}
 		}
 	}
@@ -130,91 +179,89 @@ void CWallmarksEngine::AddWallmark	(CDB::TRI* pTri, const Fvector &contact_point
 	CFrustum			F;
 	F.CreateFromMatrix	(mView,FRUSTUM_P_LRTB);
 
-	// create empty wallmark
-	marks.push_back		(CWallmark());
-	CWallmark	&W		= marks.back();
+	// create wallmark
+	wallmark* W			= wm_allocate(hShader);
+	RecurseTri			(pTri,mView,*W,F);
+	sml_processed.clear	();
 
-	W.Create			(hShader);
-	RecurseTri			(pTri,mView,W,F);
-
-	sml_processed.clear();
-
-	// Calc sphere
-	if (W.verts.size()<3) { marks.pop_back(); return; }
+	// calc sphere
+	if (W->verts.size()<3) { wm_destroy(W); return; }
 	else {
 		Fbox bb; bb.invalidate();
 
-		CWallmark::Vertex* I=W.verts.begin	();
-		CWallmark::Vertex* E=W.verts.end	();
-		for (; I!=E; I++)	bb.modify(I->P);
-
-		bb.getsphere(W.S.P,W.S.R);
+		FVF::LIT* I=W->verts.begin		();
+		FVF::LIT* E=W->verts.end		();
+		for (; I!=E; I++)	bb.modify	(I->p);
+		bb.getsphere					(W->bounds.P,W->bounds.R);
 	}
 
-	// Search if similar wallmark exists
-	for (deque<CWallmark>::iterator it=marks.begin(); it!=marks.end(); it++)
+	// search if similar wallmark exists
+	vector<wallmark*>::iterator		it	=marks.begin();
+	vector<wallmark*>::iterator		end	=marks.end	();
+	for (; it!=end; it++)
 	{
-		CWallmark& wm = *it;
-		if (wm.hShader != hShader)	continue;
-		if (&wm == &W)				continue;
-
-		if (wm.S.P.similar(W.S.P,0.01f))	
+		wallmark* wm	= *it;
+		if (wm->shader != W->shader)	continue;
+		if (wm->bounds.P.similar(W->bounds.P,0.02f))
 		{
 			// replace
-			wm.Copy			(W);
-			marks.pop_back	();
+			wm_destroy		(wm);
+			*it				= W;
 			return;
 		}
 	}
+
+	// no similar - register new
+	marks.push_back			(W);
 }
 
 extern float g_fSCREEN;
 void CWallmarksEngine::Render()
 {
-	if (marks.empty())	return;
+	if (marks.empty())			return;
 
 	// Projection and xform
-	float _43 = Device.mProject._43;
-	Device.mProject._43		-= 0.001f; 
-	Device.set_xform_world	(Fidentity);
-	Device.set_xform_project(Device.mProject);
+	float _43					= Device.mProject._43;
+	Device.mProject._43			-= 0.001f; 
+	Device.set_xform_world		(Fidentity);
+	Device.set_xform_project	(Device.mProject);
 
 	Device.Statistic.RenderDUMP_WM.Begin	();
 
-	DWORD				w_offset;
-	CWallmark::Vertex*	w_verts = (CWallmark::Vertex*)VS->Lock	(MAX_TRIS*3,w_offset);
-	CWallmark::Vertex*	w_start = w_verts;
+	DWORD				w_offset= 0;
+	FVF::LIT*			w_verts = (FVF::LIT*)	VS->Lock	(MAX_TRIS*3,w_offset);
+	FVF::LIT*			w_start = w_verts;
 
-	Shader*	w_S			= marks.front().hShader;
+	Shader*	w_S			= marks.front()->shader;
 	for (DWORD i=0; i<marks.size(); i++)
 	{
-		CWallmark& W = marks[i];
-		if (::Render->ViewBase.testSphere_dirty(W.S.P,W.S.R)) 
+		wallmark* W		= marks	[i];
+		if (::Render->ViewBase.testSphere_dirty(W->bounds.P,W->bounds.R)) 
 		{
-			float dst = Device.vCameraPosition.distance_to_sqr(W.S.P);
-			float ssa = g_fSCREEN * W.S.R * W.S.R / dst;
-			if (ssa>=1)	{
+			float dst = Device.vCameraPosition.distance_to_sqr(W->bounds.P);
+			float ssa = g_fSCREEN * W->bounds.R * W->bounds.R / dst;
+			if (ssa>=2)	{
 				DWORD w_count	= w_verts-w_start;
-				if (((w_count+W.verts.size())>=(MAX_TRIS*3))||(w_S!=W.hShader))
+				if (((w_count+W->verts.size())>=(MAX_TRIS*3))||(w_S!=W->shader))
 				{
 					if (w_count)	
 					{
 						// Flush stream
-						VS->Unlock				(w_count);
+						VS->Unlock					(w_count);
 						Device.Shader.set_Shader	(w_S);
-						Device.Primitive.Draw	(VS,w_count/3,w_offset);
+						Device.Primitive.Draw		(VS,w_count/3,w_offset);
 
 						// Restart (re-lock/re-calc)
-						w_verts		= (CWallmark::Vertex*) VS->Lock	(MAX_TRIS*3,w_offset);
+						w_verts		= (FVF::LIT*)	VS->Lock	(MAX_TRIS*3,w_offset);
 						w_start		= w_verts;
-						w_S			= W.hShader;
+						w_S			= W->shader;
 					}
 				}
 
-				W.Draw	(w_verts);
+				wm_render	(W,w_verts);
 			}
 		}
-		W.ttl -= Device.fTimeDelta;
+		W->ttl -= Device.fTimeDelta;
 	}
 
 	// Flush stream
@@ -226,11 +273,14 @@ void CWallmarksEngine::Render()
 	}
 
 	// Remove last used wallmarks
-	while (!marks.empty() && (marks.front().ttl<=EPS_S)) marks.pop_front();
-
+	if (marks.front()->ttl<=EPS)	
+	{
+		wm_destroy	(marks.front());
+		marks.erase	(marks.begin());
+	}
 	Device.Statistic.RenderDUMP_WM.End		();
 
 	// Projection
-	Device.mProject._43 = _43;
+	Device.mProject._43			= _43;
 	Device.set_xform_project	(Device.mProject);
 }
