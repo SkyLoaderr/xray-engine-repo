@@ -33,6 +33,8 @@ CUIPdaCommunication::CUIPdaCommunication()
 	m_pOurDialogManager = m_pOthersDialogManager = NULL;
 
 	ToTopicMode();
+
+	m_bNeedToUpdateQuestions = false;
 }
 
 CUIPdaCommunication::~CUIPdaCommunication()
@@ -491,4 +493,9 @@ void CUIPdaCommunication::UpdateQuestions()
 				UpdateQuestions();
 		}
 	}
+}
+
+void CUIPdaCommunication::NeedUpdateQuestions()
+{
+	m_bNeedToUpdateQuestions = true;
 }

@@ -208,7 +208,7 @@ void  CActor::ReceivePhrase		(DIALOG_SHARED_PTR& phrase_dialog)
 
 	if(pGameSP->TalkMenu.IsShown())
 	{
-		pGameSP->TalkMenu.UpdateQuestions();
+		pGameSP->TalkMenu.NeedUpdateQuestions();
 	}
 	else if(pGameSP->PdaMenu.UIPdaCommunication.IsShown())
 	{

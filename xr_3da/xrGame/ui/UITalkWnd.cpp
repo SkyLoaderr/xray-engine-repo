@@ -126,6 +126,10 @@ void CUITalkWnd::InitOthersStartDialog()
 }
 
 //////////////////////////////////////////////////////////////////////////
+void CUITalkWnd::NeedUpdateQuestions()
+{
+	m_bNeedToUpdateQuestions = true;
+}
 
 void CUITalkWnd::UpdateQuestions()
 {
@@ -285,8 +289,7 @@ void CUITalkWnd::AskQuestion()
 	}
 
 	SayPhrase(phrase_id);
-	m_bNeedToUpdateQuestions = true;
-	//UpdateQuestions();
+	NeedUpdateQuestions();
 }
 
 //////////////////////////////////////////////////////////////////////////

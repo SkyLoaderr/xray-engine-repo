@@ -43,6 +43,7 @@ public:
 	virtual void Hide();
 
 	void UpdateQuestions();
+	void NeedUpdateQuestions();
 	//инициализации начального диалога собеседника
 	void InitOthersStartDialog();
 
