@@ -314,5 +314,9 @@
 		<class>dar_stalker_explorer</class>
 	</character>
 
+	<character id="dolg_veteran_silence">
+		<class>Dolg_specnaz_silence</class>
+	</character>
+
 
 </xml>

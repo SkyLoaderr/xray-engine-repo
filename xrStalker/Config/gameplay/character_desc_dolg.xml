@@ -482,6 +482,33 @@
 		<actor_dialog>bar_dolg_leader_join</actor_dialog>
 		<actor_dialog>bar_dolg_leader_quest_rg6_finish</actor_dialog>
 		<actor_dialog>bar_dolg_leader_job</actor_dialog>
+	</specific_character>
+
+<!---------------------------DOLG SPECNAZ SILENCE---------------------->
+	<specific_character id="dolg_veteran_silence" team_default = "1">
+		<name>Сталкер группировки "Долг"</name>
+		<icon x="8" y="2"></icon>
+		<map_icon x="4" y="0"></map_icon>
+		<bio>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
+
+		<class>Dolg_specnaz_silence</class>
+		<community>dolg</community>
+
+		<rank>70</rank>
+		<reputation>40</reputation>
+
+		<visual>actors\dolg\stalker_do_exoskeleton</visual>
+		<supplies>
+			[spawn] \n
+			wpn_colt1911 \n
+			ammo_11.43x23_hydro = 1 \n
+			wpn_vintorez \n
+			ammo_9x39_sp5 = 1 \n
+		</supplies>		
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>	
 
 
