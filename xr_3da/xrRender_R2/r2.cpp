@@ -58,6 +58,16 @@ static class cl_lhdrscale		: public R_constant_setup		{	virtual void setup	(R_co
 	float dr					= ps_r2_ls_dynamic_range;
 	RCache.set_c				(C,	dr,dr,dr,dr);
 }}	binder_lhdrscale;
+
+extern	float					emapslice;
+static class cl_emap			: public R_constant_setup		{	virtual void setup	(R_constant* C)
+{
+	// x=clip factor, y=position shift
+	float	shift				= emapslice;
+	float	clip				= emapslice/0.05f;	// 5cm
+	RCache.set_c				(C,	clip,shift,shift,shift);
+}}	binder_emap;
+
 //////////////////////////////////////////////////////////////////////////
 // Just two static storage
 void					CRender::create					()
@@ -65,6 +75,7 @@ void					CRender::create					()
 	::Device.Resources->RegisterConstantSetup	("v_encodeZ01",	&binder_encodeZ01);
 	::Device.Resources->RegisterConstantSetup	("v_decodeZ01",	&binder_decodeZ01);
 	::Device.Resources->RegisterConstantSetup	("parallax",	&binder_parallax);
+	::Device.Resources->RegisterConstantSetup	("emapslice",	&binder_emap);
 	::Device.Resources->RegisterConstantSetup	("L_hdr",		&binder_lhdrscale);
 
 	c_lmaterial					= "L_material";
