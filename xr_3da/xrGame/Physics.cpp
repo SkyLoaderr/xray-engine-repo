@@ -558,14 +558,14 @@ void CPHWorld::Destroy(){
 
 //////////////////////////////////////////////////////////////////////////////
 static dReal rest=0.f;
-const int dis_frames=50;
+const int dis_frames=10;
 void CPHWorld::Step(dReal step)
 {
 			// compute contact joints and forces
 	///return;
-
-	if(disable_count==dis_frames+1) disable_count=0;
 	disable_count++;	
+	if(disable_count==dis_frames+1) disable_count=0;
+
 	vector<CPHObject*>::iterator iter;
 	//step+=astep;
 	const dReal max_step=0.02f;//0.0034f;
@@ -1049,7 +1049,7 @@ if( !dBodyIsEnabled(m_body)) {
 
 
 
-				if(previous_p[0]==dInfinity){
+				if(previous_p[0]==dInfinity&&ph_world->disable_count==0){
 					const dReal* position=dBodyGetPosition(m_body);
 					previous_p[0]=position[0];
 					previous_p[1]=position[1];
