@@ -29,7 +29,8 @@ void	__stdcall log_cb_fn (LPCSTR string)
 {
 	if(!g_log_dlg)
 		return;
-	g_log_dlg->m_list_box.InsertString(0,string);
+//	g_log_dlg->m_list_box.InsertString(0,string);
+	g_log_dlg->m_list_box.AddString(string);
 	g_log_dlg->ShowWindow(SW_SHOW);
 }
 
@@ -61,7 +62,7 @@ BOOL CxrUpdateApp::InitInstance()
 	m_log_dlg->ShowWindow(SW_SHOW);
 
 	Core._initialize("xrUpdate",log_cb_fn,FALSE);
-	FS._initialize(CLocatorAPI::flTargetFolderOnly,"c:\\upd");
+	FS._initialize(CLocatorAPI::flTargetFolderOnly,"x:\\upd_scripts");
 
 	SetRegistryKey(_T("Local AppWizard-Generated Applications"));
 	LoadStdProfileSettings(10);  // Load standard INI file options (including MRU)

@@ -54,7 +54,7 @@ void CExecAppTaskDlgProp::init_(CTask* t)
 	m_params		= m_task->get_params();
 	m_wrk_folder	= m_task->get_wrk_folder();
 	m_app_name.MakeLower();
-	m_params.MakeLower();
+//	m_params.MakeLower();
 	m_wrk_folder.MakeLower();
 
 	UpdateData(FALSE);
