@@ -47,7 +47,7 @@ public:
 	static void					Destroy		(CParticlesObject*& p)
 	{
 		if (p){ 
-			p->PSI_Destroy		();
+			p->PSI_destroy		();
 			p					= 0;
 		}
 	}
