@@ -21,7 +21,6 @@ CWeaponHUD::CWeaponHUD()
 
 CWeaponHUD::~CWeaponHUD()
 {
-	xr_free						(pVisualName);
 	::Render->model_Delete		(pVisual);
 }
 
@@ -51,7 +50,7 @@ void CWeaponHUD::Load			(LPCSTR section)
 	vShellPoint					= pSettings->r_fvector3					(section,"shell_point");
 
 	// play default animation
-	pVisual						= ::Render->model_Create(pVisualName);
+	pVisual						= ::Render->model_Create(*pVisualName);
 	// PKinematics				(pVisual)->PlayCycle("idle");
 }
 

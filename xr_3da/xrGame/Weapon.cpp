@@ -93,10 +93,8 @@ CWeapon::~CWeapon		()
 {
 	::Render->light_destroy	(light_render);
 
-	xr_free				(m_WpnName);
 	xr_delete			(m_pHUD);
 	xr_delete			(m_pPhysicsShell);
-	xr_free				(pstrWallmark);
 
 	hUIIcon.destroy		();
 	hWallmark.destroy	();
@@ -442,7 +440,7 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 	ShaderCreate				(hUIIcon,"hud\\default","");
 
 	if (0==pstrWallmark)		hWallmark			= 0; 
-	else						hWallmark.create	("effects\\wallmark",pstrWallmark);
+	else						hWallmark.create	("effects\\wallmark",*pstrWallmark);
 
 	if (0==m_pPhysicsShell)
 	{

@@ -105,7 +105,7 @@ void CGrenade::Load(LPCSTR section)
 BOOL CGrenade::net_Spawn(LPVOID DC) 
 {
 	if(0==pstrWallmark) hWallmark	= 0; 
-	else hWallmark.create		("effects\\wallmark",pstrWallmark);
+	else hWallmark.create		("effects\\wallmark",*pstrWallmark);
 	return inherited::net_Spawn	(DC);
 }
 

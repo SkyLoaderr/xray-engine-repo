@@ -218,7 +218,7 @@ public:
 	virtual float			GetZoomFactor		()				{	return fZoomFactor;							}
 
 	float					GetPrecision		();
-	IC LPCSTR				GetName				()				{	return m_WpnName;							}
+	IC LPCSTR				GetName				()				{	return *m_WpnName;							}
 	IC int					GetAmmoElapsed		()				{	return int(m_magazine.size())/*iAmmoElapsed*/;						}
 	IC int					GetAmmoMagSize		()				{	return iMagazineSize;						}
 
