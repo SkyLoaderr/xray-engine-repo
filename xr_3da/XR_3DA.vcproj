@@ -1673,31 +1673,6 @@
 				</Filter>
 			</Filter>
 			<Filter
-				Name="Detail"
-				Filter="">
-				<File
-					RelativePath=".\DetailFormat.h">
-				</File>
-				<File
-					RelativePath=".\DetailManager.cpp">
-				</File>
-				<File
-					RelativePath=".\DetailManager.h">
-				</File>
-				<File
-					RelativePath="DetailManager_CACHE.cpp">
-				</File>
-				<File
-					RelativePath="DetailManager_Decompress.cpp">
-				</File>
-				<File
-					RelativePath=".\DetailManager_VS.cpp">
-				</File>
-				<File
-					RelativePath=".\DetailManager_soft.cpp">
-				</File>
-			</Filter>
-			<Filter
 				Name="Lighting"
 				Filter="">
 				<Filter
