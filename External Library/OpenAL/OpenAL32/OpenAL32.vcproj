@@ -19,16 +19,23 @@
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
+			CharacterSet="2"
+			WholeProgramOptimization="TRUE">
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
-				InlineFunctionExpansion="1"
+				Optimization="3"
+				GlobalOptimizations="TRUE"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="TRUE"
+				FavorSizeOrSpeed="1"
+				OmitFramePointers="TRUE"
+				OptimizeForProcessor="3"
 				AdditionalIncludeDirectories="..\,..\..\include"
 				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;_USRDLL;_OPENAL32LIB"
 				StringPooling="TRUE"
-				RuntimeLibrary="4"
-				EnableFunctionLevelLinking="TRUE"
+				ExceptionHandling="FALSE"
+				RuntimeLibrary="2"
+				BufferSecurityCheck="FALSE"
 				PrecompiledHeaderFile=".\Release/OpenAL32.pch"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
@@ -47,6 +54,8 @@
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
 				ProgramDatabaseFile=".\Release/wrap_oal.pdb"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
 				ImportLibrary=".\Release/wrap_oal.lib"
 				TargetMachine="1"/>
 			<Tool
