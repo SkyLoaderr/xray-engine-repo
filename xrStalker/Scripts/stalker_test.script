@@ -20,7 +20,6 @@ end
 
 function random_evaluator:evaluate()
 	printf					("evaluator is asked for the value!")
-	printf					("%f",math.random())
 	if (math.random() < 0.5) then
 		return				(true)
 	else
@@ -57,6 +56,7 @@ function custom_action:finalize()
 	printf					("action %s is finalized!",self.name)
 end
 
+-- define class custom planner
 class "custom_planner" 		(action_planner)
 
 function custom_planner:__init	() super()
