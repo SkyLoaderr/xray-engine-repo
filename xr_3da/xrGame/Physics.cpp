@@ -388,7 +388,7 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 			if(is_tri_1)
 			{ 
 				
-				if(material_1->Flags.is(SGameMtl::flSlowDown))
+				if(material_1->Flags.is(SGameMtl::flSlowDown)&&!(usr_data_2->pushing_neg||usr_data_2->pushing_b_neg))
 				{
 					dBodyID body=dGeomGetBody(g2);
 					R_ASSERT2(body,"static - static collision !!!");
@@ -400,8 +400,9 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 			if(is_tri_2)
 			{
 	
-				if(material_2->Flags.is(SGameMtl::flSlowDown))
+				if(material_2->Flags.is(SGameMtl::flSlowDown)&&!(usr_data_1->pushing_neg||usr_data_1->pushing_b_neg))
 				{
+					
 					dBodyID body=dGeomGetBody(g1);
 					R_ASSERT2(body,"static - static collision !!!");
 					add_contact_body_effector(body,c,material_2->fFlotationFactor);
@@ -548,7 +549,7 @@ void SaveContacts(dGeomID o1, dGeomID o2,dJointGroupID jointGroup){
 			if(is_tri_1)
 			{ 
 				
-				if(material_1->Flags.is(SGameMtl::flSlowDown))
+				if(material_1->Flags.is(SGameMtl::flSlowDown)&&!(usr_data_2->pushing_neg||usr_data_2->pushing_b_neg))
 				{
 					dBodyID body=dGeomGetBody(g2);
 					R_ASSERT2(body,"static - static collision !!!");
@@ -560,14 +561,15 @@ void SaveContacts(dGeomID o1, dGeomID o2,dJointGroupID jointGroup){
 			if(is_tri_2)
 			{
 	
-				if(material_2->Flags.is(SGameMtl::flSlowDown))
+				if(material_2->Flags.is(SGameMtl::flSlowDown)&&!(usr_data_1->pushing_neg||usr_data_1->pushing_b_neg))
 				{
+					
 					dBodyID body=dGeomGetBody(g1);
 					R_ASSERT2(body,"static - static collision !!!");
 					add_contact_body_effector(body,c,material_2->fFlotationFactor);
 				}
 				if(material_2->Flags.is(SGameMtl::flPassable)) 
-					continue;
+															continue;
 			}
 			/////////////////////////////////////////////////////////////////////////////////////////////////
 			///////////////////////////params can not be changed by calbacks/////////////////////////////////
