@@ -3,6 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="xrLC"
+	ProjectGUID="{A4ABD75E-825B-4D09-B3B2-2709682E40C8}"
 	SccProjectName="&quot;$/xrLC&quot;, TLAAAAAA"
 	SccAuxPath=""
 	SccLocalPath="."
