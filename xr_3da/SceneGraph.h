@@ -22,7 +22,7 @@ namespace SceneGraph
 		BOOL			nearer;
 	};
 
-	// Higher level
+	// Higher level	- NORMAL
 	struct mapNormalDirect
 	{
 		FixedMAP<float,FBasicVisual*>		sorted;
@@ -33,23 +33,38 @@ namespace SceneGraph
 		FixedMAP<float,FCached*>			sorted;
 		CList<FCached*>						unsorted;
 	};
-	struct mapNormalItem 
+	struct mapNormalItems 
 	{
 		BOOL								ssa_valid;
 		float								ssa;
 		mapNormalDirect						direct;
 		mapNormalCached						cached;
 	};
+	struct mapNormalConstants
+	{
+		BOOL								ssa_valid;
+		float								ssa;
+		FixedMAP<SConstantList*,mapNormalItems>		items;
+	};
+	struct mapNormalMatrices
+	{
+		BOOL								ssa_valid;
+		float								ssa;
+		FixedMAP<SMatrixList*,mapNormalConstants>	items;
+	};
+	struct mapNormalTextures
+	{
+		BOOL								ssa_valid;
+		float								ssa;
+		FixedMAP<STextureList*,mapNormalMatrices>	items;
+	};
+	typedef FixedMAP<DWORD,mapNormalTextures>		mapNormalCodes;
+
+	// Higher level - MATRIX
 	typedef FixedMAP<float,_MatrixItem>		mapMatrixItem;
 
-	// Shader sorting
-	typedef FixedMAP<SConstantList*,mapNormalItem>			mapNormal_Constants;
-	typedef FixedMAP<SMatrixList*,mapNormal_Constants>		mapNormal_Matrices;
-	typedef FixedMAP<STextureList*,mapNormal_Matrices>		mapNormal_Textures;
-	typedef FixedMAP<DWORD,mapNormal_Textures>				mapNormal_Code;
-
 	// Top level
-	typedef mapNormal_Code					mapNormal_T		[8];
+	typedef mapNormalCodes					mapNormal_T		[8];
 
 	typedef FixedMAP<Shader*,mapMatrixItem>	mapMatrix_T;
 	typedef mapMatrix_T::TNode				mapMatrix_Node;
