@@ -4,8 +4,8 @@
 <!---------------------------SVOBODA NOVICE----------------------->
 	<specific_character id="svoboda_novice_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
+		<icon x="10" y="2"></icon>
+		<map_icon x="5" y="0"></map_icon>
 		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Свобода".</bio>
 
 		<team>Svoboda_novice</team>
@@ -26,8 +26,8 @@
 <!---------------------------SVOBODA GENERAL---------------------->
 	<specific_character id="svoboda_general_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
+		<icon x="22" y="8"></icon>
+		<map_icon x="5" y="0"></map_icon>
 		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Свобода".</bio>
 
 		<team>Svoboda_general</team>
@@ -48,8 +48,8 @@
 <!---------------------------SVOBODA VETERAN---------------------->
 	<specific_character id="svoboda_veteran_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
+		<icon x="24" y="8"></icon>
+		<map_icon x="5" y="0"></map_icon>
 		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Свобода".</bio>
 
 		<team>Svoboda_veteran</team>
@@ -60,7 +60,7 @@
 		<rank>70</rank>
 		<reputation>50</reputation>
 
-		<visual>actors\svoboda\stalker_sv_rukzak_2</visual>
+		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
@@ -70,8 +70,8 @@
 <!---------------------------SVOBODA MASTER----------------------->
 	<specific_character id="svoboda_master_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
+		<icon x="10" y="0"></icon>
+		<map_icon x="5" y="0"></map_icon>
 		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Свобода".</bio>
 
 		<team>Svoboda_master</team>
@@ -83,7 +83,7 @@
 		<rank>90</rank>
 		<reputation>50</reputation>
 
-		<visual>actors\svoboda\stalker_sv_rukzak_2</visual>
+		<visual>actors\svoboda\stalker_sv_naychniy</visual>
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
