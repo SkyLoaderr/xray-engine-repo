@@ -56,6 +56,7 @@ void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 	if (0==O || (!O->net_Spawn	(E))) 
 	{
 		O->net_Destroy			( );
+		client_spawn_manager().clear(O->ID());
 		Objects.Destroy			(O);
 		Msg						("! Failed to spawn entity '%s'",E->s_name);
 	} else {
