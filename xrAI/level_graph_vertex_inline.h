@@ -580,7 +580,7 @@ IC	float CLevelGraph::compute_square(float fAngle, float fAngleOfView, float b0,
 	return(fSquare);
 }
 
-#define NORMALIZE_NODE_COVER(a,b) (float(a->cover(b))/255.f)
+#define NORMALIZE_NODE_COVER(a,b) (float(a->cover(b))/15.f)
 
 IC	float CLevelGraph::compute_square(float fAngle, float fAngleOfView, const CLevelGraph::CVertex *vertex) const
 {

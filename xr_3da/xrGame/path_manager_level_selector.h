@@ -325,7 +325,7 @@ namespace PathManagers {
 
 		IC		void vfAddTotalCoverCost					()
 		{
-			m_fResult += m_fTotalCover*(float(m_tpCurrentNode->cover(0))/255.f + float(m_tpCurrentNode->cover(1))/255.f + float(m_tpCurrentNode->cover(2))/255.f + float(m_tpCurrentNode->cover(3))/255.f);
+			m_fResult += m_fTotalCover*(float(m_tpCurrentNode->cover(0))/15.f + float(m_tpCurrentNode->cover(1))/15.f + float(m_tpCurrentNode->cover(2))/15.f + float(m_tpCurrentNode->cover(3))/15.f);
 		}
 
 		IC		void vfAddEnemyLookCost						()
