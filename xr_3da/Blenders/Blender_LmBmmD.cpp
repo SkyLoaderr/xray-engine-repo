@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "blender_lm_detail.h"
+#include "blender_LmBmmD.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -13,7 +13,7 @@
 
 CBlender_LmBmmD::CBlender_LmBmmD	()
 {
-	description.CLS		= B_LM_DETAIL;
+	description.CLS		= B_LmBmmD;
 }
 
 CBlender_LmBmmD::~CBlender_LmBmmD	()
