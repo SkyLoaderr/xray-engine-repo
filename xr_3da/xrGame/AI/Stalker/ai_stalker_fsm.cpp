@@ -172,7 +172,7 @@ void CAI_Stalker::Searching()
 
 //	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(Level().timeServer() - m_dwLastHitTime > 3000,eStalkerStateUnderFire);
 
-	if (!AI_Path.Nodes.size() || (AI_Path.Nodes[AI_Path.TravelPath.size() - 1] != AI_Path.DestNode))
+	if (!AI_Path.Nodes.size() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode))
 		vfBuildPathToDestinationPoint		(0);
 
 	vfSetMovementType(eBodyStateStand,eMovementTypeWalk,eLookTypeSearch);
