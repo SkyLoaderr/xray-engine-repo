@@ -41,6 +41,9 @@ public:
 	// Общее количество закладок
 	const int GetTabsCount() const { return m_TabsArr.size(); }
 
+	// Сделать новую такущую активную закладку
+	void SetNewActiveTab(const int iNewTab);
+
 protected:
 	// Список кнопок - переключателей закладок
 	TABS_VECTOR m_TabsArr;

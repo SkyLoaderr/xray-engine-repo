@@ -96,13 +96,16 @@ void CUITabControl::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			break;
 		}
 	}
-
-//	TABS_VECTOR_it it = std::find(m_TabsArr.begin(), m_TabsArr.end(), pWnd);
-//	if (it != m_TabsArr.end())
-//		(*it)->SetHighlightText(true);
 }
 
 void CUITabControl::Init(int x, int y, int width, int height)
 {
 	CUIWindow::Init(x, y, width, height);
+}
+
+void CUITabControl::SetNewActiveTab(const int iNewTab)
+{
+	R_ASSERT(iNewTab > 0 || iNewTab < GetTabsCount());
+	m_TabsArr[iNewTab]->OnMouse(1, 1, LBUTTON_DOWN);
+	SendMessage(m_TabsArr[iNewTab], CUIButton::BUTTON_CLICKED, NULL);
 }
