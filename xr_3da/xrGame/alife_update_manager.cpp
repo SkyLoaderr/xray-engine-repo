@@ -113,8 +113,8 @@ void CALifeUpdateManager::update_parent_data	(CSE_ALifeObject *parent, CSE_ALife
 	parent->m_tNodeID			= child->m_tNodeID;
 	parent->o_Position			= child->o_Position;
 	parent->o_Angle				= child->o_Angle;
-	if (parent->ID_Parent != 0xffff)
-		update_parent_data		(objects().object(parent->ID_Parent),child);
+//	if (parent->ID_Parent != 0xffff)
+//		update_parent_data		(objects().object(parent->ID_Parent),child);
 }
 
 bool CALifeUpdateManager::change_level	(NET_Packet &net_packet)
@@ -136,8 +136,8 @@ bool CALifeUpdateManager::change_level	(NET_Packet &net_packet)
 	net_packet.r_vec3			(graph().actor()->o_Position);
 	net_packet.r_vec3			(graph().actor()->o_Angle);
 
-	if (graph().actor()->ID_Parent != 0xffff)
-		update_parent_data		(objects().object(graph().actor()->ID_Parent),graph().actor());
+	if (graph().actor()->m_holderID != 0xffff)
+		update_parent_data		(objects().object(graph().actor()->m_holderID),graph().actor());
 
 	save						();
 
