@@ -99,7 +99,7 @@ private:
 	DWORD				mstate_wishful;	
 	DWORD				mstate_real;	
 
-	bool				m_bJumping;
+	BOOL				m_bJumpKeyPressed, m_bJumpInProgress;
 
 	float				m_fWalkAccel;
 	float				m_fJumpSpeed;

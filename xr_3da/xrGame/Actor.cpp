@@ -501,7 +501,7 @@ void CActor::g_cl_ValidateMState(DWORD mstate_wf)
 	// закончить прыжок
 	if (mstate_real&mcJump)
 		if (Movement.gcontact_Was)	mstate_real &= ~mcJump;
-	if ((mstate_wf&mcJump)==0)	m_bJumping = false;
+	if ((mstate_wf&mcJump)==0)	m_bJumpKeyPressed = FALSE;
 
 	// Зажало-ли меня/уперся - не двигаюсь
 	if (Movement.GetVelocityActual()<0.2f || Movement.bSleep) 
@@ -517,10 +517,15 @@ void CActor::g_cl_CheckControls(DWORD mstate_wf, Fvector &vControlAccel, float &
 	if (Movement.Environment()==CMovementControl::peOnGround)
 	{
 		// jump
-		if (((mstate_real&mcJump)==0) && (mstate_wf&mcJump) && !m_bJumping){
-			m_bJumping = true;
+		if (((mstate_real&mcJump)==0) && (mstate_wf&mcJump) && !m_bJumpKeyPressed)
+		{
+			m_bJumpKeyPressed	=	TRUE;
+			m_bJumpInProgress	=	TRUE;
 			Jump = (mstate_wf&mcCrouch)?m_fJumpSpeed*.8f:m_fJumpSpeed;
-			mstate_real |= mcJump;
+		} else if (m_bJumpInProgress && Movement.Environment()==CMovementControl::peInAir) 
+		{
+			mstate_real			|=	mcJump;
+			m_bJumpInProgress	=	FALSE;
 		}
 
 		// crouch
