@@ -1,24 +1,6 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <xml>
-<!---------------------------DOLG------------------------------>
-	<specific_character id="dolg_default" team_default = "1">
-		<name>Неизвестный сталкер</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
-		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Долг".</bio>
-
-		<team>Dolg</team>
-		<rank>50</rank>
-		<reputation>50</reputation>
-
-		<visual>actors\dolg\stalker_do_antigas</visual>
-			
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
-	</specific_character>
-
 <!---------------------------DOLG NOVICE----------------------->
 	<specific_character id="dolg_novice_default" team_default = "1">
 		<name>Неизвестный сталкер</name>

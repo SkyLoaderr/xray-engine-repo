@@ -1,20 +1,6 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <xml>
-<!---------------------------SOLDIER------------------------------>
-	<specific_character id="soldier_default" team_default = "1">
-		<name>Неизвестный солдат</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
-		<bio>Рядовой представитель вооруженных сил.</bio>
-
-		<team>Soldier</team>
-		<rank>50</rank>
-		<reputation>50</reputation>
-
-		<visual>actors\soldier\soldier_obichniy</visual>		
-	</specific_character>
-
 <!---------------------------SOLDIER NOVICE----------------------->
 	<specific_character id="soldier_novice_default" team_default = "1">
 		<name>Неизвестный солдат</name>

@@ -1,14 +1,14 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <xml>
-<!---------------------------STALKER------------------------------>
+<!---------------------------ECOLOG------------------------------>
 	<specific_character id="ecolog_default" team_default = "1">
 		<name>Неизвестный экогол</name>
 		<icon x="0" y="0"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Об этом сталкере ничего не известно.</bio>
 
-		<team>Ecolog</team>
+		<team>Ecolog_general</team>
 		<rank>80</rank>
 		<reputation>50</reputation>
 

@@ -1,21 +1,7 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <xml>
-<!---------------------------STALKER------------------------------>
-	<specific_character id="monolit_default" team_default = "1">
-		<name>Неизвестный сталкер</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
-		<bio>Представитель группировки "Монолит".</bio>
-
-		<team>Monolit</team>
-		<rank>50</rank>
-		<reputation>50</reputation>
-
-		<visual>actors\monolit\stalker_mo_hood_9</visual>
-	</specific_character>
-
-<!---------------------------STALKER NOVICE----------------------->
+<!---------------------------MONOLIT NOVICE----------------------->
 	<specific_character id="monolit_novice_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
 		<icon x="0" y="0"></icon>
@@ -29,7 +15,7 @@
 		<visual>actors\monolit\stalker_mo_hood_9</visual>
 	</specific_character>
 
-<!---------------------------STALKER GENERAL---------------------->
+<!---------------------------MONOLIT GENERAL---------------------->
 	<specific_character id="monolit_general_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
 		<icon x="0" y="0"></icon>
@@ -43,7 +29,7 @@
 		<visual>actors\monolit\stalker_mo_hood_9</visual>
 	</specific_character>
 
-<!---------------------------STALKER VETERAN---------------------->
+<!---------------------------MONOLIT VETERAN---------------------->
 	<specific_character id="monolit_veteran_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
 		<icon x="0" y="0"></icon>
@@ -57,7 +43,7 @@
 		<visual>actors\monolit\stalker_mo_hood_9</visual>
 	</specific_character>
 
-<!---------------------------STALKER MASTER----------------------->
+<!---------------------------MONOLIT MASTER----------------------->
 	<specific_character id="monolit_master_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
 		<icon x="0" y="0"></icon>

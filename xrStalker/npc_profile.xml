@@ -7,7 +7,7 @@
 	
 	<!-- Stalker  -->	
 	<character id="stalker">
-		<team>Stalker</team>
+		<team>Stalker_general</team>
 	</character>
 	<character id="stalker_novice">
 		<team>Stalker_novice</team>
@@ -24,7 +24,7 @@
 
 	<!-- Soldier  -->
 	<character id="soldier">
-		<team>Soldier</team>
+		<team>Soldier_general</team>
 	</character>
 	<character id="soldier_novice">
 		<team>Soldier_novice</team>
@@ -41,7 +41,7 @@
 
 	<!-- Dolg  -->
 	<character id="dolg">
-		<team>Dolg</team>
+		<team>Dolg_general</team>
 	</character>
 	<character id="dolg_novice">
 		<team>Dolg_novice</team>
@@ -58,7 +58,7 @@
 
 	<!-- Svoboda -->
 	<character id="svoboda">
-		<team>Svoboda</team>
+		<team>Svoboda_general</team>
 	</character>
 	<character id="svoboda_novice">
 		<team>Svoboda_novice</team>
@@ -75,7 +75,7 @@
 
 	<!-- Monolit -->
 	<character id="monolit">
-		<team>Monolit</team>
+		<team>Monolit_general</team>
 	</character>
 	<character id="monolit_novice">
 		<team>Monolit_novice</team>
@@ -92,7 +92,7 @@
 
 	<!-- Killer -->
 	<character id="killer">
-		<team>Killer</team>
+		<team>Killer_general</team>
 	</character>
 	<character id="killer_novice">
 		<team>Killer_novice</team>
@@ -109,7 +109,7 @@
 
 	<!-- Ecolog -->
 	<character id="ecolog">
-		<team>Ecolog</team>
+		<team>Ecolog_general</team>
 	</character>
 	
 	<character id="escape_trader">

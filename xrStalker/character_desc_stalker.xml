@@ -1,24 +1,6 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <xml>
-<!---------------------------STALKER------------------------------>
-	<specific_character id="stalker_default" team_default = "1">
-		<name>Неизвестный сталкер</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
-		<bio>Об этом сталкере ничего не известно.</bio>
-
-		<team>Stalker</team>
-		<rank>50</rank>
-		<reputation>50</reputation>
-
-		<visual>actors\neytral\stalker_neytral_hood_9</visual>
-			
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
-	</specific_character>
-
 <!---------------------------STALKER NOVICE----------------------->
 	<specific_character id="stalker_novice_default" team_default = "1">
 		<name>Неизвестный новичок</name>
