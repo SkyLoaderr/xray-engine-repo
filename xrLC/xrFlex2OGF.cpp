@@ -106,11 +106,10 @@ void CBuild::Flex2OGF()
 		}
 		
 		try {
-			pOGF->Optimize	();
-			pOGF->CalcBounds();
-			
-			if (g_params.m_bConvertProgressive)		pOGF->MakeProgressive	();
-			pOGF->Stripify							();
+			pOGF->Optimize						();
+			pOGF->CalcBounds					();
+			if (g_params.m_bConvertProgressive)	pOGF->MakeProgressive	();
+			pOGF->Stripify						();
 		} catch (...)
 		{
 			clMsg("* ERROR: Flex2OGF, 2nd part, model# %d",MODEL_ID);

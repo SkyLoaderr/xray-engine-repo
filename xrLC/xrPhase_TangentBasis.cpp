@@ -113,8 +113,8 @@ void CBuild::xrPhase_TangentBasis()
 
 	// ************************************* Perform mungle
 	Status			("Calculating basis...");
-	NVMeshMender	mender;
-	if (!mender.Munge(
+	NVMeshMender	mender	;
+	if (!mender.Munge		(
 		input,										// input attributes
 		output,										// outputs attributes
 		deg2rad(61.f),								// tangent space smooth angle

@@ -112,8 +112,8 @@ void OGF::Optimize()
 		for (u32 j=0; j<x_vertices.size(); j++)
 		{
 			x_vertex& V = x_vertices[j];
-			Tmin.min	(V.UV[i]);
-			Tmax.max	(V.UV[i]);
+			Tmin.min	(V.UV);
+			Tmax.max	(V.UV);
 		}
 		Tdelta.x = floorf((Tmax.x-Tmin.x)/2+Tmin.x);
 		Tdelta.y = floorf((Tmax.y-Tmin.y)/2+Tmin.y);
@@ -279,13 +279,13 @@ void OGF::MakeProgressive	()
 {
 	progressive_cs.Enter	();
 	// prepare progressive geom
-	VIPM_Init			();
+	VIPM_Init				();
 	for (u32 v_idx=0;  v_idx<vertices.size(); v_idx++)
 		VIPM_AppendVertex	(vertices[v_idx].P,vertices[v_idx].UV[0]);
 	for (u32 f_idx=0; f_idx<faces.size(); f_idx++)
 		VIPM_AppendFace		(faces[f_idx].v[0],faces[f_idx].v[1],faces[f_idx].v[2]);
 	// Convert
-	VIPM_Result* VR		= VIPM_Convert(u32(-1),1.f,1);
+	VIPM_Result* VR			= VIPM_Convert(u32(-1),1.f,1);
 	if (VR->swr_records.size()>0){
 		// Permute vertices
 		vertices_saved			= vertices;
