@@ -53,11 +53,11 @@ void CBoneData::Calculate(CKinematics* K, Fmatrix *parent)
 		CBlend*			B		=	*BI;
 		float			time	=	B->timeCurrent*float(SAMPLE_FPS);
 		CMotion&		M		=	Motions[B->motionID];
-		int				frame	=	iFloor(time);
+		u32				frame	=	iFloor(time);
 		float			delta	=	time-float(frame);
-		int				count	=	M.Keys.size();
-		CKeyQ&			K1		=	M.Keys[(frame+0)%count];
-		CKeyQ&			K2		=	M.Keys[(frame+1)%count];
+		u32				count	=	M._count;
+		CKeyQ&			K1		=	M._keys[(frame+0)%count];
+		CKeyQ&			K2		=	M._keys[(frame+1)%count];
 		PSGP.blerp				(D,&K1,&K2,delta);
 	}
 

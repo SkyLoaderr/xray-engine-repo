@@ -470,6 +470,8 @@ void CKinematics::Release()
 	for (i=0; i<bones->size(); i++)
 	{
 		CBoneData* &B = (*bones)[i];
+		for (u32 m=0; m<B->Motions.size(); m++)
+			xr_free(B->Motions[m]._keys);
 		xr_delete(B);
 	}
 
@@ -636,22 +638,18 @@ void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 	MS->r_chunk_safe	(0,&dwCNT,sizeof(dwCNT));
 	for (u32 M=0; M<dwCNT; M++)
 	{
-		R_ASSERT(MS->find_chunk(M+1));
-        char mname[128];
-		MS->r_stringZ(mname);
-		motion_map->insert(mk_pair(xr_strdup(strlwr(mname)),M));
+		string128			mname;
+		R_ASSERT			(MS->find_chunk(M+1));
+		MS->r_stringZ		(mname);
+		motion_map->insert	(mk_pair(xr_strdup(strlwr(mname)),M));
 
-		u32 dwLen = MS->r_u32();
+		u32 dwLen			= MS->r_u32();
 		for (i=0; i<bones->size(); i++)
 		{
 			CMotion TMP;
-			TMP.Keys.reserve(dwLen);
-			for (u32 k=0; k<dwLen; k++)
-			{
-				CKeyQ K;
-				MS->r(&K,sizeof(K));
-				TMP.Keys.push_back(K);
-			}
+			TMP._keys			= xr_alloc<CKeyQ>(dwLen);
+			TMP._count			= dwLen;
+			MS->r				(TMP._keys,TMP._count*sizeof(CKeyQ));
 			(*bones)[i]->Motions.push_back(TMP);
 		}
 	}

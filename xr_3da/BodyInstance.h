@@ -53,7 +53,6 @@ IC void	KEY_Interp(CKey& D, CKey& K1, CKey& K2, float delta)
 	D.T.lerp	(K1.T,K2.T,delta);
 }
 #pragma pack(pop)
-typedef xr_vector<CKeyQ>	vecKeys;
 
 //*** Run-time Blend definition *******************************************************************
 class ENGINE_API CBlend {
@@ -85,7 +84,7 @@ public:
 	PlayCallback	Callback;
 	void*			CallbackParam;
 	
-	u32			dwFrame;
+	u32				dwFrame;
 };
 typedef svector<CBlend*,MAX_BLENDED>	BlendList;
 typedef BlendList::iterator				BlendListIt;
@@ -94,8 +93,9 @@ typedef BlendList::iterator				BlendListIt;
 class ENGINE_API CMotion
 {
 public:
-	vecKeys		Keys;
-	float		GetLength() { return float(Keys.size())*SAMPLE_SPF; }
+	CKeyQ*			_keys;
+	u32				_count;
+	float			GetLength()				{ return float(_count)*SAMPLE_SPF; }
 };
 
 //*** Bone Instance *******************************************************************************
@@ -108,7 +108,7 @@ public:
 	BlendList		Blend;
 	BoneCallback	Callback;
 	void*			Callback_Param;
-	float			param[MAX_BONE_PARAMS];						
+	float			param		[MAX_BONE_PARAMS];						
 
 	// methods
 	IC	void		construct	()
