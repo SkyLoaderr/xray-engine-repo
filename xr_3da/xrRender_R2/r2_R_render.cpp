@@ -77,7 +77,7 @@ IC	bool	cmp_vs				(mapNormalVS::TNode* N1, mapNormalVS::TNode* N2)
 IC	bool	cmp_ps				(mapNormalPS::TNode* N1, mapNormalPS::TNode* N2)
 {	return (N1->val.ssa > N2->val.ssa);		}
 
-IC	bool	cmp_cs				(mapNormalConstants::TNode* N1, mapNormalConstants::TNode* N2)
+IC	bool	cmp_cs				(mapNormalCS::TNode* N1, mapNormalCS::TNode* N2)
 {	return (N1->val.ssa > N2->val.ssa);		}
 
 IC	bool	cmp_states			(mapNormalStates::TNode* N1, mapNormalStates::TNode* N2)
