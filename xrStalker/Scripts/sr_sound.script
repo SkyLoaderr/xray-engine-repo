@@ -1,6 +1,8 @@
 --[[------------------------------------------------------------------------------------------------------------------
 Проигровка звуков при входе актёра в рестриктор.
 Чугай Саша
+
+Sliding sound support: Jim
 --------------------------------------------------------------------------------------------------------------------]]
 
 -- типы звуков для зон
@@ -97,6 +99,10 @@ function action_sound:update( delta )
 
 	---------------------------------------
 	-- check for update of sliding sound
+	if self.slide_active and not self.snd_obj:playing() and self.st.sound_slide_once then
+		self.slide_active = false
+	end
+	
 	if self.slide_active then
 		-- play sound
 		if not self.snd_obj:playing() then 
@@ -254,6 +260,7 @@ function set_scheme( obj, ini, scheme, section, gulag_name )
 	if ini:line_exist( section, "slide_velocity" ) then
 		st.sound_slide		= true
 		st.sound_slide_vel	= utils.cfg_get_number(ini, section, "slide_velocity",	npc, false, 3)
+		st.sound_slide_once	= utils.cfg_get_bool(ini, section, "slide_sound_once",  npc, false)
 	else 
 		st.sound_slide		= false
 	end
