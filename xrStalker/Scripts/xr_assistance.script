@@ -97,8 +97,7 @@ function select_position(npc, st)
 	local node_2_distance = nil
 
 	--' проверяем точку слева от актера
-	--desired_direction = vector_rotate_y(st.actor:direction(), math.random(50,60) )
-	desired_direction = vector_rotate_y(st.actor:direction(), 50)
+	desired_direction = vector_rotate_y(st.actor:direction(), math.random(50,60) )
 	node_1_vertex_id = level.vertex_in_direction (  st.actor:level_vertex_id(),
 													desired_direction,
 													st.desired_distance )
@@ -106,8 +105,7 @@ function select_position(npc, st)
 		node_1_vertex_id = nil
 	end
 	--' проверяем точку справа от актера
-	--desired_direction = vector_rotate_y(st.actor:direction(), -math.random(50,60) )
-	desired_direction = vector_rotate_y(st.actor:direction(), -50)
+	desired_direction = vector_rotate_y(st.actor:direction(), -math.random(50,60) )
 	node_2_vertex_id = level.vertex_in_direction (  st.actor:level_vertex_id(),
 													desired_direction,
 													st.desired_distance )
