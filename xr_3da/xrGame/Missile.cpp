@@ -396,10 +396,9 @@ void CMissile::setup_throw_params()
 	if(pActor)// && pActor->HUDview())
 	{
 //		UpdateFP();
-		Fmatrix trans;
 //		pActor->EffectorManager().affected_Matrix(trans);
-
-
+		Fmatrix trans;
+		trans.identity();
 		Fvector FirePos, FireDir;
 		pActor->g_fireParams(this, FirePos, FireDir);
 		trans.k.set(FireDir);
@@ -555,6 +554,9 @@ void CMissile::activate_physic_shell()
 	a_vel.set(rxy*_cos(fi),rxy*_sin(fi),r*_cos(teta));
 
 	XFORM().set(m_throw_matrix);
+	//!!! DEBUG
+	Log("missile xform:", m_throw_matrix);
+
 	m_pPhysicsShell->Activate	(m_throw_matrix, l_vel, a_vel);
 	PKinematics(Visual())->Calculate();
 }
