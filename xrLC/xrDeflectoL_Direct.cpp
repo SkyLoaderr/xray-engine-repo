@@ -6,12 +6,12 @@
 extern void LightPoint		(RAPID::XRCollide* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end);
 extern void Jitter_Select	(UVpoint* &Jitter, DWORD& Jcount);
 
-void CDeflector::L_Direct_Edge (UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size, DWORD layer)
+void CDeflector::L_Direct_Edge (UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size)
 {
 	Fvector		vdir;
 	vdir.sub	(v2,v1);
 
-	b_texture&	lm = layers[layer].lm;
+	b_texture&	lm = layers.back().lm;
 
 	UVpoint		size; 
 	size.u		= p2.u-p1.u;
@@ -48,9 +48,9 @@ void CDeflector::L_Direct_Edge (UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& 
 	}
 }
 
-void CDeflector::L_Direct	(HASH& H, DWORD layer)
+void CDeflector::L_Direct	(HASH& H)
 {
-	b_texture&	lm = layers[layer].lm;
+	b_texture&	lm = layers.back().lm;
 
 	// Setup variables
 	UVpoint		dim,half;
@@ -138,8 +138,8 @@ void CDeflector::L_Direct	(HASH& H, DWORD layer)
 		UVtri&		T	= tris[t];
 		Face*		F	= T.owner;
 		R_ASSERT	(F);
-		L_Direct_Edge	(T.uv[0], T.uv[1], F->v[0]->P, F->v[1]->P, F->N, texel_size,layer);
-		L_Direct_Edge	(T.uv[1], T.uv[2], F->v[1]->P, F->v[2]->P, F->N, texel_size,layer);
-		L_Direct_Edge	(T.uv[2], T.uv[0], F->v[2]->P, F->v[0]->P, F->N, texel_size,layer);
+		L_Direct_Edge	(T.uv[0], T.uv[1], F->v[0]->P, F->v[1]->P, F->N, texel_size);
+		L_Direct_Edge	(T.uv[1], T.uv[2], F->v[1]->P, F->v[2]->P, F->N, texel_size);
+		L_Direct_Edge	(T.uv[2], T.uv[0], F->v[2]->P, F->v[0]->P, F->N, texel_size);
 	}
 }
