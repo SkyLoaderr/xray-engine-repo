@@ -17,6 +17,7 @@ void xrServer::Process_update(NET_Packet& P, DPNID sender)
 		P.r_u16			(ID);
 		P.r_u8			(size);
 		CSE_Abstract* E	= ID_to_entity(ID);
+		
 		CSE_ALifeTrader *l_tpALifeTrader = dynamic_cast<CSE_ALifeTrader*>(E);
 		if (l_tpALifeTrader) {
 			l_tpALifeTrader = l_tpALifeTrader;
@@ -24,9 +25,16 @@ void xrServer::Process_update(NET_Packet& P, DPNID sender)
 		if (E)				
 		{
 			E->net_Ready	= TRUE;
+			if (strstr(E->s_name, "m_car"))
+			{
+				int x=0; 
+				x=x;
+			};
 			E->UPDATE_Read	(P);
+			Log(" - Update -", E->s_name);
 		} else {
 			P.r_advance	(size);
+			Log(" - Update - Skip");
 		}
 	}
 }

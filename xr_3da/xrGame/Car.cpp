@@ -200,12 +200,18 @@ void	CCar::renderable_Render				( )
 	inherited::renderable_Render			();
 }
 
-void	CCar::net_Export			(NET_Packet& /**P/**/)
+void	CCar::net_Export			(NET_Packet& P)
 {
+	P.w_u32 (Level().timeServer());
+	P.w_u16 (0);
 }
 
-void	CCar::net_Import			(NET_Packet& /**P/**/)
+void	CCar::net_Import			(NET_Packet& P)
 {
+	u32 TimeStamp;
+	P.w_u32 (TimeStamp);
+	u16 NumItems;
+	P.w_u32 (NumItems);
 }
 
 void	CCar::OnHUDDraw				(CCustomHUD* /**hud/**/)
