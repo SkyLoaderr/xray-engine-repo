@@ -306,6 +306,15 @@ public:
 			tGraphVertex.dwPointOffset		= tDynamicGraphVertex.dwPointOffset;
 			tGraph.w						(&tGraphVertex,	sizeof(CGameGraph::CVertex));
 		}
+		
+		u32							dwNewEdgeCount = 0;
+		for (int i=0; i<(int)tpaGraph.size(); i++)
+			dwNewEdgeCount += tpaGraph[i].tNeighbourCount;
+		Msg("%d edges are removed",tGraphHeader.dwEdgeCount - dwNewEdgeCount);
+
+		tGraph.seek					(12);
+		tGraph.w_u32				(dwNewEdgeCount);
+
 		tGraph.save_to				(fName);
 		Progress					(1.0f);
 		Msg							("%d bytes saved",int(tGraph.size()));
@@ -417,9 +426,6 @@ void xrBuildGraph(LPCSTR name)
 
 	Phase("Saving graph");
 	::CGraphSaver	tGraphSaver(name,tpAI_Map);
-	for (int i=0, dwNewEdgeCount=0; i<(int)tpaGraph.size(); i++)
-		dwNewEdgeCount += tpaGraph[i].tNeighbourCount;
-	Msg("%d edges are removed",dwEdgeCount - dwNewEdgeCount);
 
 	Phase("Freeing graph being built");
 	Progress(0.0f);

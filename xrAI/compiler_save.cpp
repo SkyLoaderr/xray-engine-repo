@@ -199,20 +199,55 @@ public:
 		FS.w_close				(fs1);
 		return					(true);
 	}
+
+			void check_consistency(LPCSTR origin)
+	{
+		string256				original;
+		CLevelGraph				*level_graph = xr_new<CLevelGraph>(origin,XRAI_CURRENT_VERSION - VERSION_OFFSET);
+		if (level_graph->header().version() != XRAI_CURRENT_VERSION - VERSION_OFFSET) {
+			xr_delete			(level_graph);
+			return;
+		}
+		strcpy					(original,origin);
+		strcat					(original,"level.graph");
+		CGameGraph				*game_graph = xr_new<CGameGraph>(original,XRAI_CURRENT_VERSION - VERSION_OFFSET);
+		if (game_graph->header().version() != XRAI_CURRENT_VERSION - VERSION_OFFSET) {
+			xr_delete			(level_graph);
+			xr_delete			(game_graph);
+			return;
+		}
+		strcpy					(original,origin);
+		strcat					(original,"level.gct.raw");
+		CGameLevelCrossTable	*cross_table = xr_new<CGameLevelCrossTable>(original,XRAI_CURRENT_VERSION - VERSION_OFFSET);
+		if (cross_table->header().version() != XRAI_CURRENT_VERSION - VERSION_OFFSET) {
+			xr_delete			(level_graph);
+			xr_delete			(game_graph);
+			xr_delete			(cross_table);
+			return;
+		}
+		for (ALife::_GRAPH_ID i=0, n = game_graph->header().vertex_count(); i<n; ++i)
+			if ((!level_graph->valid_vertex_id(game_graph->vertex(i)->level_vertex_id()) ||
+				(cross_table->vertex(game_graph->vertex(i)->level_vertex_id()).game_vertex_id() != i) ||
+				!level_graph->inside(game_graph->vertex(i)->level_vertex_id(),game_graph->vertex(i)->level_point()))) {
+					Msg				("! Graph doesn't correspond to the cross table");
+					R_ASSERT2		(false,"Graph doesn't correspond to the cross table");
+				}
+
+		xr_delete				(level_graph);
+		xr_delete				(game_graph);
+		xr_delete				(cross_table);
+	}
+
 					CRenumbererConverter(LPCSTR folder)
 	{
 		// gathering existing information
 		string256				original,origin;
 		FS.update_path			(origin,"$game_levels$",folder);
 		
-		// creating backup copy
+		check_consistency		(origin);
+
 		if (!save_file(origin,"level.ai","level.ai.backup"))
 			return;
-		if (!save_file(origin,"level.graph","level.graph.backup"))
-			return;
-		if (!save_file(origin,"level.gct.raw","level.gct.raw.backup"))
-			return;
-
 		// loading level graph
 		CLevelGraph				*level_graph = xr_new<CLevelGraph>(origin,XRAI_CURRENT_VERSION - VERSION_OFFSET);
 		if (level_graph->header().version() != XRAI_CURRENT_VERSION - VERSION_OFFSET) {
@@ -244,12 +279,16 @@ public:
 			FS.w_close				(fs);
 		}
 
+		if (!save_file(origin,"level.graph","level.graph.backup"))
+			return;
 		// loading game graph
 		strcpy					(original,origin);
 		strcat					(original,"level.graph");
 		CGameGraph				*game_graph = xr_new<CGameGraph>(original,XRAI_CURRENT_VERSION - VERSION_OFFSET);
-		if (game_graph->header().version() != XRAI_CURRENT_VERSION - VERSION_OFFSET)
+		if (game_graph->header().version() != XRAI_CURRENT_VERSION - VERSION_OFFSET) {
+			xr_delete			(game_graph);
 			return;
+		}
 		CGameGraph::CHeader		game_header = game_graph->header();
 		xr_vector<CGameGraph::CVertex>	game_nodes;
 		xr_vector<CGameGraph::CEdge>	game_edges;
@@ -261,6 +300,7 @@ public:
 			game_nodes[i]		= *game_graph->vertex(i);
 			edge_count			+= game_graph->vertex(i)->edge_count();
 		}
+		game_header.dwEdgeCount	= edge_count;
 		game_edges.resize		(edge_count);
 		for (u32 i=0; i<edge_count; ++i)
 			game_edges[i]		= ((CGameGraph::CEdge*)(game_graph->m_nodes + game_nodes.size()))[i];
@@ -269,7 +309,7 @@ public:
 		// changing game graph
 		game_header.dwVersion	= XRAI_CURRENT_VERSION;
 		for (u32 i=0; i<game_header.vertex_count(); ++i)
-			game_nodes[i].tNodeID = renumbering[sorted[game_nodes[i].tNodeID]];
+			game_nodes[i].tNodeID = renumbering[game_nodes[i].tNodeID];
 
 		// writing graph copy
 		{
@@ -296,17 +336,21 @@ public:
 			FS.w_close				(fs);
 		}
 
+		if (!save_file(origin,"level.gct.raw","level.gct.raw.backup"))
+			return;
 		// loading cross table
 		strcpy					(original,origin);
 		strcat					(original,"level.gct.raw");
 		CGameLevelCrossTable	*cross_table = xr_new<CGameLevelCrossTable>(original,XRAI_CURRENT_VERSION - VERSION_OFFSET);
-		if (cross_table->header().version() != XRAI_CURRENT_VERSION - VERSION_OFFSET)
+		if (cross_table->header().version() != XRAI_CURRENT_VERSION - VERSION_OFFSET) {
+			xr_delete			(cross_table);
 			return;
+		}
 		CGameLevelCrossTable::CHeader			cross_header = cross_table->header();
 		xr_vector<CGameLevelCrossTable::CCell>	cross_nodes;
 		cross_nodes.resize		(cross_header.level_vertex_count());
 		for (u32 i=0; i<cross_header.level_vertex_count(); ++i)
-			cross_nodes[i]		= cross_table->m_tpaCrossTable[renumbering[sorted[i]]];
+			cross_nodes[renumbering[i]]	= cross_table->m_tpaCrossTable[i];
 		xr_delete				(cross_table);
 
 		// changing cross header
@@ -328,11 +372,34 @@ public:
 			fs->close_chunk			();
 			FS.w_close				(fs);
 		}
+
+		{
+			CLevelGraph				*level_graph = xr_new<CLevelGraph>(origin);
+			strcpy					(original,origin);
+			strcat					(original,"level.graph");
+			CGameGraph				*game_graph = xr_new<CGameGraph>(original);
+			strcpy					(original,origin);
+			strcat					(original,"level.gct.raw");
+			CGameLevelCrossTable	*cross_table = xr_new<CGameLevelCrossTable>(original);
+			for (ALife::_GRAPH_ID i=0, n = game_graph->header().vertex_count(); i<n; ++i)
+				if ((!level_graph->valid_vertex_id(game_graph->vertex(i)->level_vertex_id()) ||
+					(cross_table->vertex(game_graph->vertex(i)->level_vertex_id()).game_vertex_id() != i) ||
+					!level_graph->inside(game_graph->vertex(i)->level_vertex_id(),game_graph->vertex(i)->level_point()))) {
+						Msg				("! Graph doesn't correspond to the cross table");
+						R_ASSERT2		(false,"Graph doesn't correspond to the cross table");
+					}
+
+			xr_delete				(level_graph);
+			xr_delete				(game_graph);
+			xr_delete				(cross_table);
+		}
+
 	}
 };
 
 void xrConvertMaps	()
 {
+//	CRenumbererConverter	A("fog_dima\\");
 	VERIFY				(XRAI_CURRENT_VERSION == 6);
 	string256			path,drive,folder,file,extension;
 	FS.update_path		(path,"$game_levels$","");
