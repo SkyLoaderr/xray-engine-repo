@@ -13,12 +13,9 @@ class ENGINE_API	CEnvDescriptor
 public:
 	STextureList		sky_r_textures;	// C
 	float				sky_factor;		// C
-	float				sky_R0;			// C
-	float				sky_R1;			// C
 
 	ref_texture			sky_texture;
 	Fvector3			sky_color;
-	float				sky_rotation;
 
 	float				far_plane;
 
