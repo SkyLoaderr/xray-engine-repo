@@ -6,38 +6,6 @@ local time_walk_near_mnstr      = 40000              --Видит монстра, но на него
 local time_to_camper      = 20000              --Сколько времени сидим в укрытии и ждем
 local time_camper_look      = 7000              --Сколько приглядываемся, когда кемперим и ползем по маршруту
 
---возвращает некоторую точку пути у которой установлен бит
-function point_with_bit_id(patrol_path, bit)
-
-    for i = 0, patrol_path:count()-1 do
-        --Добовляем в таблицу точки с нужным битом
-    	if( patrol_path:flag(i, bit)) then
-      		return patrol_path:level_vertex_id(i)
-        end
-    end
-
-    return nil    --Плохой путь, нет точки для сидения
-end
-
---Возвращает индекс самой ближней точки пути с заданым битом, от текущей точки
-function near_point_with_bit(point, patrol_path, bit)
-  	local new_point  = nil
-  	local index    = 0
-    local dist     = 1000.0
-
-    for i = 0, patrol_path:count()-1 do
-        if( patrol_path:flag(i, bit) ) then
-      		if(new_point == nil or patrol_path:point(i):distance_to(point) < dist) then
-        		--Если эта точка первая из нашедшихся, либо от нее путь ближе, то запоминаем ее
-                new_point   = patrol_path:point(i)
-                index       = i
-                dist    = new_point:distance_to(point)
-             end
-        end
-    end
-
-  	return index
-end
 
 ---------------------------------------------------------------------------------------------------------------------
 -- Evaluators
@@ -118,7 +86,8 @@ function action_sniper_idle:__init (name, storage) super (nil, name)
   	self.time_sight = 0                --Используется при остановке
   	local path     	= patrol(self.a.rest_path)
     self.last_point = path:level_vertex_id	(path:count() - 1)      --Последняя точка пути
-    self.rest_point = this.point_with_bit_id(self.a.point_path, 0)  --Точка, в которой будем сидеть
+    self.rest_point = point_with_bit_id(self.a.point_path, 0)  --Точка, в которой будем сидеть
+	printf("rest point __________%d", self.rest_point)
     self.prev_point = -1
 end
 ---------------------------------------------------------------------------------------------------------------------
@@ -140,13 +109,14 @@ end
 function action_sniper_idle:init_state_sit_down  ()
 
   	if( self.object:level_vertex_id() ~= self.rest_point ) then
+    	printf("rest point __________%d", self.rest_point)
     	self.object:set_dest_level_vertex_id(self.rest_point)
         self.object:set_movement_type    	(move.walk)
         self.object:set_path_type      		(game_object.level_path)
     	self.object:set_detail_path_type  	(move.line)
       	self.object:set_sight               (look.danger, nil, 0)
         self.object:set_item              	(object.activate, self.object:best_weapon())
-        self.object:set_desired_direction  	(point_with_bit(self.a.point_path, 2):sub(self.object:position()) )
+        self.object:set_desired_direction  	(point_with_bit(self.a.point_path, 2):sub(level.vertex_position(self.rest_point)) )
     end
 
     self.object:set_mental_state            (anim.free)
@@ -257,7 +227,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 -- Action kill_monster
 ---------------------------------------------------------------------------------------------------------------------
-local fire   = 1
+local fire  = 1
 local LOOK  = 2
 local sight = 3
 
@@ -398,7 +368,7 @@ function action_camper:initialize ()
 	self.object:set_item			(object.activate, self.object:best_weapon())
     self.object:clear_animations	()
 
-    self.camper_point   = this.near_point_with_bit(self.object:position(), self.a.point_path, 1)
+    self.camper_point   = near_point_with_bit(self.object:position(), self.a.point_path, 1)
     self.state      	= hide
 end
 ---------------------------------------------------------------------------------------------------------------------

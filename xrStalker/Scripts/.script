@@ -913,3 +913,52 @@ function point_with_bit(patrol_path, bit, old_point)      -- old_point - индекс 
         return points[math.random(1, number_point)]
     end
 end
+
+--возвращает произвольную точку пути у которой установлен бит
+function point_with_bit_id(patrol_path, bit, old_point)        -- old_point - индекс точки, которую не надо выбирать,
+  	local points = {}                                          -- параметр не обязательный( например текущей точки )
+
+    for i = 0, patrol_path:count()-1 do
+      --Добовляем в таблицу точки с нужным битом
+      if( patrol_path:flag(i, bit)) then
+            --Добавляем точку если old_point == nil или новая точка не совпадает с old_point
+            if(old_point == nil) then
+                table.insert(points, i)
+                printf("insert point %d", i)
+            elseif(old_point ~= i) then
+                table.insert(points, i)
+                printf("insert point %d", i)
+            end
+        end
+    end
+
+    local number_point = table.getn(points)
+
+    if(number_point == 0) then
+        return nil
+    elseif(number_point == 1) then
+        return patrol_path:level_vertex_id(points[1])
+    else
+        return patrol_path:level_vertex_id(points[math.random(1, number_point)])
+    end
+end
+
+--Возвращает индекс самой ближней точки пути с заданым битом, от текущей точки
+function near_point_with_bit(point, patrol_path, bit)
+    local new_point = nil
+    local index     = nil
+    local dist      = 1000.0
+
+    for i = 0, patrol_path:count()-1 do
+        if( patrol_path:flag(i, bit) ) then
+            if(new_point == nil or patrol_path:point(i):distance_to(point) < dist) then
+                --Если эта точка первая из нашедшихся, либо от нее путь ближе, то запоминаем ее
+                new_point   = patrol_path:point(i)
+                index       = i
+                dist        = new_point:distance_to(point)
+             end
+        end
+    end
+
+    return index
+end
