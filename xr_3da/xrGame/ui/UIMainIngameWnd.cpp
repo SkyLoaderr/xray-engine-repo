@@ -287,7 +287,8 @@ void CUIMainIngameWnd::Draw()
 		custom_texture.static_item->Render(custom_texture.x1, custom_texture.y1,
 									custom_texture.x2, custom_texture.y2);
 	}
-	
+	m_CustomTextures.clear();
+
 	//отрендерить текстуру объектива снайперского прицела или бинокля
 	if(m_pActor->HUDview() && m_pWeapon && m_pWeapon->IsZoomed() && 
 		m_pWeapon->ZoomHideCrosshair())
