@@ -166,6 +166,10 @@ void CSpectator::cam_Set	(EActorCameras style)
 
 void CSpectator::cam_Update	(CActor* A)
 {
+	CHUDManager* HUD				= Level().HUD();
+	HUD->pFontDI->SetColor			(0xA0808080);
+	HUD->pFontDI->SetSize			(0.1f);
+	HUD->pFontDI->SetAligment		(CGameFont::alCenter);
 	if (A){
 		const Fmatrix& M			= A->clXFORM();
 		CCameraBase* cam			= cameras[cam_active];
@@ -189,6 +193,8 @@ void CSpectator::cam_Update	(CActor* A)
 			}break;
 		}
 		pCreator->Cameras.Update(cam);
+		// hud output
+		HUD->pFontDI->Out			(0.f,0.9f,"%s(%d%%)",last_actor->cName(),last_actor->g_Health());
 	}else{
 		Fvector point, dangle;
 		point.set					(0.f,1.6f,0.f);
@@ -199,17 +205,7 @@ void CSpectator::cam_Update	(CActor* A)
 		CCameraBase* cam			= cameras[eacFreeFly];
 		cam->Update					(point,dangle);
 		pCreator->Cameras.Update	(cam);
-	}
-}
-
-void CSpectator::OnHUDDraw(CCustomHUD* hud)
-{
-	CHUDManager* HUD				= (CHUDManager*)hud;
-	HUD->pFontDI->SetColor			(0xA0808080);
-	HUD->pFontDI->SetSize			(0.1f);
-	HUD->pFontDI->SetAligment		(CGameFont::alCenter);
-	if (last_actor)
-		HUD->pFontDI->Out			(0.f,0.9f,"%s(%d%%)",last_actor->cName(),last_actor->g_Health());
-	else
+		// hud output
 		HUD->pFontDI->Out			(0.f,0.9f,"free-fly camera");
+	}
 }

@@ -44,8 +44,6 @@ public:
 
 	virtual void			Update					( u32 T ); 
 	virtual void			UpdateCL				( );
-
-	virtual void			OnHUDDraw				(CCustomHUD* hud);
 };
 
 #endif // __SPECTATOR_H__

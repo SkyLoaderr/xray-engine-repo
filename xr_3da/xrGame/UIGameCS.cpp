@@ -72,22 +72,14 @@ void CUIGameCS::OnFrame()
 		else if (uFlags&flShowFragList) FragList.OnFrame	();
 		string16 buf;
 		game_cl_GameState::Player* P = Game().local_player;
-		m_Parent->m_Parent->pFontBigDigit->SetColor		(0xA0969678);
-		m_Parent->m_Parent->pFontBigDigit->SetAligment	(CGameFont::alRight);
-		m_Parent->m_Parent->pFontBigDigit->Out			((float)vMoneyPlace.x,(float)vMoneyPlace.y,"$%d",P->money_total);
-		m_Parent->m_Parent->pFontBigDigit->SetAligment	(CGameFont::alCenter);
-		m_Parent->m_Parent->pFontBigDigit->Out			((float)vTimePlace.x,(float)vTimePlace.y,"\x60%s",make_time(buf,(Game().timelimit-(Level().timeServer()-Game().start_time))/1000));
-/*
-		map<u32,game_cl_GameState::Player>::iterator I=Game().players.begin();
-		map<u32,game_cl_GameState::Player>::iterator E=Game().players.end();
-		for (;I!=E;I++){
-			game_cl_GameState::Player* P = (game_cl_GameState::Player*)&I->second;
-			if (P->flags&GAME_PLAYER_FLAG_LOCAL){
-//				if ((P->flags&GAME_PLAYER_FLAG_CS_ON_BASE)&&CanBuy())	BuyZone.OnFrame();
-//				if (P->flags&GAME_PLAYER_FLAG_CS_HAS_ARTEFACT)			Artifact.OnFrame();
-			}
+		CEntity* m_Actor = dynamic_cast<CEntity*>(Level().CurrentEntity());
+		if (m_Actor){
+			m_Parent->m_Parent->pFontBigDigit->SetColor		(0xA0969678);
+			m_Parent->m_Parent->pFontBigDigit->SetAligment	(CGameFont::alRight);
+			m_Parent->m_Parent->pFontBigDigit->Out			((float)vMoneyPlace.x,(float)vMoneyPlace.y,"$%d",P->money_total);
+			m_Parent->m_Parent->pFontBigDigit->SetAligment	(CGameFont::alCenter);
+			m_Parent->m_Parent->pFontBigDigit->Out			((float)vTimePlace.x,(float)vTimePlace.y,"\x60%s",make_time(buf,(Game().timelimit-(Level().timeServer()-Game().start_time))/1000));
 		}
-*/
 	break;
 	}
 }
@@ -101,11 +93,14 @@ void CUIGameCS::Render()
 		break;
 	case GAME_PHASE_INPROGRESS:
 		if (uFlags&flShowFragList) FragList.Render		();
-		game_cl_GameState::Player* P = Game().local_player;
-		if (P->flags&GAME_PLAYER_FLAG_CS_ON_BASE)				OwnBase.Render();
-		else if (P->flags&GAME_PLAYER_FLAG_CS_ON_ENEMY_BASE)	EnemyBase.Render();
-		if ((P->flags&GAME_PLAYER_FLAG_CS_ON_BASE)&&CanBuy())	BuyZone.Render();
-		if (P->flags&GAME_PLAYER_FLAG_CS_HAS_ARTEFACT)			Artifact.Render();
+		CEntity* m_Actor = dynamic_cast<CEntity*>(Level().CurrentEntity());
+		if (m_Actor){
+			game_cl_GameState::Player* P = Game().local_player;
+			if (P->flags&GAME_PLAYER_FLAG_CS_ON_BASE)				OwnBase.Render();
+			else if (P->flags&GAME_PLAYER_FLAG_CS_ON_ENEMY_BASE)	EnemyBase.Render();
+			if ((P->flags&GAME_PLAYER_FLAG_CS_ON_BASE)&&CanBuy())	BuyZone.Render();
+			if (P->flags&GAME_PLAYER_FLAG_CS_HAS_ARTEFACT)			Artifact.Render();
+		}
 		break;
 	}
 }
