@@ -28,9 +28,9 @@ struct 	v2p_in
 
 struct 	p2f
 {
-  float4 Pe: 		COLOR0;		// Eye-space position 	(for lighting)
-  float4 Ne:		COLOR1;		// Eye-space normal		(for lighting)
-  float4 C:     	COLOR2;		// Diffuse color + specular mask
+  half4 Pe: 		COLOR0;		// Eye-space position 	(for lighting)
+  half4 Ne:			COLOR1;		// Eye-space normal		(for lighting)
+  half4 C:     		COLOR2;		// Diffuse color + specular mask
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -75,18 +75,18 @@ p2f 	p_main	( v2p_in IN )
   p2f OUT;
 
   // Transfer position and sample diffuse
-  OUT.Pe	= float4	(IN.Pe.x,IN.Pe.y,IN.Pe.z,0);
+  OUT.Pe	= half4		(IN.Pe.x,IN.Pe.y,IN.Pe.z,0);
   OUT.C 	= tex2D		(s_texture, IN.tc0);
 
   // Sample normal and rotate it by matrix
-  float3 N	= tex2D		(s_nmap,	IN.tc0);
-  float3 Ne	= mul		(float3x3(
+  half3 N	= tex2D		(s_nmap,	IN.tc0);
+  half3 Ne	= mul		(half3x3(
 							IN.M1.x,IN.M1.y,IN.M1.z,
 							IN.M2.x,IN.M2.y,IN.M2.z,
 							IN.M3.x,IN.M3.y,IN.M3.z),
 							N);
 
-  float3 NeN= normalize	(Ne);
-  OUT.Ne 	= float4	(NeN.x,NeN.y,NeN.z,0);
+  half3 NeN= normalize	(Ne);
+  OUT.Ne 	= half4		(NeN.x,NeN.y,NeN.z,0);
   return OUT;
 }
