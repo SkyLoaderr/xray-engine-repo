@@ -41,6 +41,7 @@
 
 void CAI_Rat::Think()
 {
+	m_dwCurrentUpdate	= Level().timeServer();
 	vfUpdateMorale();
 	vfUpdateSpawnPosition();
 	m_bStopThinking = false;
@@ -158,10 +159,11 @@ void CAI_Rat::Turn()
 
 	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
 
-	Fmatrix	mXFORM;
-	mXFORM.setHPB	(m_tHPB.x = -r_torso_current.yaw,m_tHPB.y,m_tHPB.z);
-	mXFORM.c		= Position();
-	XFORM()			= mXFORM;
+//	Fmatrix	mXFORM;
+//	mXFORM.setHPB	(m_tHPB.x = -r_torso_current.yaw,m_tHPB.y,m_tHPB.z);
+//	mXFORM.c		= Position();
+//	XFORM()			= mXFORM;
+	m_tHPB.x		= -r_torso_current.yaw;
 
 	CHECK_IF_GO_TO_PREV_STATE(getAI().bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw, PI_DIV_6))
 	
