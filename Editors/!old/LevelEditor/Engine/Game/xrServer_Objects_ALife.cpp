@@ -1025,10 +1025,10 @@ void CSE_ALifeObjectHangingLamp::FillProps	(LPCSTR pref, PropItemVec& values)
 
 	// bones
     ChooseValue* V				= PHelper().CreateChoose	(values, 	PrepareKey(pref,*s_name,"Model\\Fixed bones"),	&fixed_bones,		smSkeletonBones,0,(void*)visual()->get_visual(),8);
-	V        					= PHelper().CreateChoose	(values, 	PrepareKey(pref,*s_name,"Model\\Guid bone"),		&guid_bone,			smSkeletonBones,0,(void*)visual()->get_visual());
+	V        					= PHelper().CreateChoose	(values, 	PrepareKey(pref,*s_name,"Model\\Guid bone"),	&guid_bone,			smSkeletonBones,0,(void*)visual()->get_visual());
 
 	if (flags.is(flPointAmbient)){
-        PHelper().CreateFloat	(values, PrepareKey(pref,*s_name,"Ambient\\Radius"),		&m_ambient_radius,	0.f, 1000.f);
+        PHelper().CreateFloat	(values, PrepareKey(pref,*s_name,"Ambient\\Radius"),	&m_ambient_radius,	0.f, 1000.f);
         PHelper().CreateFloat	(values, PrepareKey(pref,*s_name,"Ambient\\Power"),		&m_ambient_power);
 		PHelper().CreateChoose	(values, PrepareKey(pref,*s_name,"Ambient\\Texture"),	&m_ambient_texture,	smTexture, 	"lights");
     }
@@ -1037,6 +1037,20 @@ void CSE_ALifeObjectHangingLamp::FillProps	(LPCSTR pref, PropItemVec& values)
 	PHelper().CreateChoose		(values, PrepareKey(pref,*s_name,"Glow\\Texture"),	    &glow_texture, 		smTexture,	"glow");
 	// game
 	PHelper().CreateFloat		(values, PrepareKey(pref,*s_name,"Game\\Health"),		&m_health,			0.f, 100.f);
+}
+
+#define VIS_RADIUS 		0.25f
+void CSE_ALifeObjectHangingLamp::on_render(CDUInterface* du, ISE_AbstractLEOwner* owner, bool bSelected, const Fmatrix& parent,int priority, bool strictB2F)
+{
+	inherited1::on_render		(du,owner,bSelected,parent,priority,strictB2F);
+	if ((1==priority)&&(false==strictB2F)){
+		u32 clr					= bSelected?0x00FFFFFF:0x00FFFF00;
+		Fmatrix xform;
+		owner->get_bone_xform	(*guid_bone,xform);
+		if (bSelected)
+			du->DrawLineSphere	(parent.c, range, clr, true);
+		du->DrawPointLight		(parent.c,VIS_RADIUS, 0x00FFFFFF);
+	}
 }
 
 bool CSE_ALifeObjectHangingLamp::used_ai_locations	() const
