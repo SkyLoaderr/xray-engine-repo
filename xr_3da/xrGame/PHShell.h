@@ -134,6 +134,7 @@ public:
 	virtual CPhysicsJoint*		get_Joint				  (LPCSTR bone_name);
 	virtual CPhysicsJoint*		get_JointByStoreOrder	  (u16 num);
 	virtual	u16					get_JointsNumber		  ();
+	virtual CODEGeom*			get_GeomByID			  (u16 bone_id);
 	virtual void				Enable					  ();
 	virtual void				Disable					  ();
 	virtual bool				isEnabled				  (){return CPHObject::is_active();}

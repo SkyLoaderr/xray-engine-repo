@@ -9,6 +9,7 @@
 #include "PHSkeleton.h"
 #include "DamagableItem.h"
 #include "PHDestroyable.h"
+#include "phcollisiondamagereceiver.h"
 // refs
 class ENGINE_API			CBoneInstance;
 class						CActor;
@@ -25,7 +26,8 @@ class CCar :
 	public CHolderCustom,
 	public CPHSkeleton,
 	public CDamagableItem,
-	public CPHDestroyable
+	public CPHDestroyable,
+	public CPHCollisionDamageReceiver
 {
 	static BONE_P_MAP bone_map; //interface for PhysicsShell
 	virtual void						PhDataUpdate				(dReal step)			;
@@ -34,6 +36,7 @@ class CCar :
 	virtual void						ApplyDamage					(u16 level)				;
 	virtual	float						Health						()						{return fEntityHealth;}
 	virtual CPhysicsShellHolder*		PPhysicsShellHolder			()						{return static_cast<CPhysicsShellHolder*>(this);}
+	virtual CPHCollisionDamageReceiver	*PHCollisionDamageReceiver(){return static_cast<CPHCollisionDamageReceiver*>(this);}
 ////////////////////////////////////////////////////////////////////////
 	shared_str							m_wheels_damage_particles1;
 	shared_str							m_wheels_damage_particles2;

@@ -34,6 +34,7 @@ struct dxGeomUserData
 	ContactCallbackFun* callback;
 	ObjectContactCallbackFun* object_callback;
 	u16			element_position;
+	u16			bone_id;
 //	struct ContactsParameters
 //	{
 //	dReal damping;
@@ -66,6 +67,12 @@ IC dxGeomUserData* retrieveGeomUserData(dGeomID geom)
 			//	return dGeomGetUserData(geom);
 }
 
+IC CPhysicsShellHolder* retrieveRefObject(dGeomID geom)
+{
+	dxGeomUserData* ud=dGeomGetUserData(retrieveGeom(geom));
+	if(ud)return ud->ph_ref_object;
+	else return NULL;
+}
 IC void dGeomCreateUserData(dxGeom* geom)
 {
 	if(!geom) return;
@@ -82,6 +89,7 @@ IC void dGeomCreateUserData(dxGeom* geom)
 	(dGeomGetUserData(geom))->object_callback=NULL;
 	(dGeomGetUserData(geom))->ph_ref_object=NULL;
 	(dGeomGetUserData(geom))->element_position=u16(-1);
+	(dGeomGetUserData(geom))->bone_id=u16(-1);
 	//((dxGeomUserData*)dGeomGetData(geom))->ContactsParameters::mu=1.f;
 	//((dxGeomUserData*)dGeomGetData(geom))->ContactsParameters::damping=1.f;
 	//((dxGeomUserData*)dGeomGetData(geom))->ContactsParameters::spring=1.f;
@@ -123,7 +131,10 @@ IC void dGeomUserDataSetElementPosition(dxGeom* geom,u16 e_pos)
 {
 	(dGeomGetUserData(geom))->element_position=e_pos;
 }
-
+IC void dGeomUserDataSetBoneId(dxGeom* geom,u16 bone_id)
+{
+	(dGeomGetUserData(geom))->bone_id=bone_id;
+}
 IC void dGeomUserDataResetLastPos(dxGeom* geom)
 {
 	(dGeomGetUserData(geom))->last_pos[0]=-dInfinity;

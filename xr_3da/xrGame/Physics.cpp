@@ -569,15 +569,45 @@ void __stdcall PushOutCallback2(bool& do_colide,dContact& c,SGameMtl * /*materia
 	//c.surface.soft_erp*=3.1623f;
 	MulSprDmp(c.surface.soft_cfm,c.surface.soft_erp,1.f,3.1623f);
 }
-//
-float E_NlS(dBodyID body,dReal* norm,float norm_sign)
-{
+
+////Energy of non Elastic collision;
+//body - static case
+float E_NlS(dBodyID body,const dReal* norm,float norm_sign)//if body c.geom.g1 norm_sign + else -
+{													 //norm*norm_sign - to body
 	const dReal* vel=dBodyGetLinearVel(body);
 	dReal prg=-dDOT(vel,norm)*norm_sign;
 	prg=prg<0.f ? prg=0.f : prg;
 	dMass mass;
 	dBodyGetMass(body,&mass);
 	return mass.mass*prg*prg/2;
+}
+
+//body - body case
+float E_NLD(dBodyID b1,dBodyID b2,const dReal* norm)// norm - from 2 to 1
+{
+	dMass m1,m2;
+	dBodyGetMass(b1,&m1);dBodyGetMass(b2,&m2);
+	const dReal* vel1   =dBodyGetLinearVel(b1);
+	const dReal* vel2   =dBodyGetLinearVel(b2);
+
+	dReal vel_pr1=dDOT(vel1,norm);
+	dReal vel_pr2=dDOT(vel2,norm);
+
+	if(vel_pr1<vel_pr2) return 0.f; //exit if the bodies are departing
+
+	dVector3 impuls1={vel1[0]*m1.mass,vel1[1]*m1.mass,vel1[2]*m1.mass};
+	dVector3 impuls2={vel2[0]*m2.mass,vel2[1]*m2.mass,vel2[2]*m2.mass};
+
+	dVector3 c_mas_impuls={impuls1[0]+impuls2[0],impuls1[1]+impuls2[1],impuls1[2]+impuls2[2]};
+	dReal cmass=m1.mass+m2.mass;
+	dVector3 c_mass_vel={c_mas_impuls[0]/cmass,c_mas_impuls[1]/cmass,c_mas_impuls[2]/cmass};
+
+	dReal c_mass_vel_prg=dDOT(c_mass_vel,norm);
+
+	dReal kin_energy_start=vel_pr1*vel_pr1*m1.mass/2.f+vel_pr2*vel_pr2*m2.mass/2.f;
+	dReal kin_energy_end=c_mass_vel_prg*c_mass_vel_prg*cmass/2.f;
+
+	return (kin_energy_start-kin_energy_end);
 }
 
 void ApplyGravityAccel(dBodyID body,const dReal* accel)

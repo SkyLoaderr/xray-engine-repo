@@ -283,6 +283,7 @@ void CODEGeom::init()
 	dGeomTransformSetGeom(m_geom_transform,geom);
 	dGeomTransformSetInfo(m_geom_transform,1);
 	dGeomCreateUserData(geom);
+	dGeomUserDataSetBoneId(geom,m_bone_id);
 }
 void CODEGeom::destroy()
 {

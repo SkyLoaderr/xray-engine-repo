@@ -648,6 +648,7 @@ void CCar::Init()
 
 		}
 	}
+	CPHCollisionDamageReceiver::Init();
 	Break();
 	Transmision(1);
 }

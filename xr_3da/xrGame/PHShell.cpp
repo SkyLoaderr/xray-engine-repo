@@ -822,9 +822,12 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 		//B.set_callback(0,root_e);
 		E=root_e;
 	}
-
-	CODEGeom* added_geom	=	E->last_geom();
-	if(added_geom)	added_geom->set_bone_id(id);
+	
+	if(SBoneShape::stNone!=bone_data.shape.type)
+	{
+		CODEGeom* added_geom	=	E->last_geom();
+		if(added_geom)	added_geom->set_bone_id(id);
+	}
 
 	if(m_spliter_holder&&E->has_geoms())
 	{
@@ -1285,4 +1288,16 @@ void CPHShell::add_Joint					(CPhysicsJoint* J)					{
 	if(!J)return;
 	joints.push_back((CPHJoint*)J);
 	smart_cast<CPHJoint*>(J)->SetShell(this);
+}
+
+CODEGeom* CPHShell::get_GeomByID(u16 bone_id)
+{
+	ELEMENT_I i,e;
+	i=elements.begin(); e=elements.end();
+	for( ;i!=e;++i)
+	{
+		CODEGeom* ret=(*i)->GeomByBoneID(bone_id);
+		if(ret) return ret;
+	}
+	return NULL;
 }

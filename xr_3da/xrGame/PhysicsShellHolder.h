@@ -6,7 +6,7 @@
 
 
 class CPHDestroyable;
-
+class CPHCollisionDamageReceiver;
 
 class CPhysicsShellHolder:  virtual public CGameObject,
 									public CParticlesPlayer
@@ -32,7 +32,8 @@ public:
 	{
 		return this;
 	}
-	virtual CPHDestroyable*	ph_destroyable		(){return NULL;}
+	virtual CPHDestroyable				*ph_destroyable		(){return NULL;}
+	virtual CPHCollisionDamageReceiver	*PHCollisionDamageReceiver(){return NULL;}
 public:
 	virtual void			PHGetLinearVell		(Fvector& velocity);
 	virtual void			PHSetLinearVell		(Fvector& velocity);

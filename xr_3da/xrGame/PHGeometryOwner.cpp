@@ -325,3 +325,28 @@ void CPHGeometryOwner::CreateSimulBase()
 		dSpaceSetCleanup(m_group,0);
 	}
 }
+struct SFindPred
+{
+	u16 m_val;
+	SFindPred(u16 val)
+	{
+		m_val=val;
+	}
+bool	operator () (CODEGeom* g)
+	{
+		return g->bone_id()==m_val;
+	}
+};
+CODEGeom* CPHGeometryOwner::GeomByBoneID(u16 bone_id)
+{
+	
+	GEOM_I g=std::find_if(m_geoms.begin(),m_geoms.end(),SFindPred(bone_id));
+	if(g!=m_geoms.end())
+	{
+		return *g;
+	}
+	else
+	{
+		return NULL;
+	}
+}

@@ -268,6 +268,7 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	virtual CPhysicsJoint*		get_Joint				(LPCSTR bone_name)									= 0;
 	virtual CPhysicsJoint*		get_JointByStoreOrder	(u16 num)											= 0;
 	virtual	u16					get_JointsNumber		()													= 0;
+	virtual CODEGeom*			get_GeomByID			(u16 bone_id)										= 0;
 	virtual void				Freeze					()													= 0;
 	virtual void				UnFreeze				()													= 0;
 	virtual void				NetInterpolationModeON	()													= 0;

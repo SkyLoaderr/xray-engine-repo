@@ -5426,34 +5426,10 @@
 							Name="PhysicObject"
 							Filter="">
 							<File
-								RelativePath=".\PHDestroyable.cpp">
-							</File>
-							<File
-								RelativePath=".\PHDestroyable.h">
-							</File>
-							<File
-								RelativePath=".\PHSkeleton.cpp">
-							</File>
-							<File
-								RelativePath=".\PHSkeleton.h">
-							</File>
-							<File
 								RelativePath="PhysicObject.cpp">
 							</File>
 							<File
 								RelativePath="PhysicObject.h">
-							</File>
-							<File
-								RelativePath=".\PhysicsShellHolder.cpp">
-							</File>
-							<File
-								RelativePath=".\PhysicsShellHolder.h">
-							</File>
-							<File
-								RelativePath=".\PhysicsSkeletonObject.cpp">
-							</File>
-							<File
-								RelativePath=".\PhysicsSkeletonObject.h">
 							</File>
 						</Filter>
 						<Filter
@@ -6736,16 +6712,6 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="Breakable"
-						Filter="">
-						<File
-							RelativePath=".\BreakableObject.cpp">
-						</File>
-						<File
-							RelativePath=".\BreakableObject.h">
-						</File>
-					</Filter>
-					<Filter
 						Name="Info &amp; Dialogs"
 						Filter="">
 						<File
@@ -6841,14 +6807,78 @@
 						</Filter>
 					</Filter>
 					<Filter
-						Name="Climable"
+						Name="GamePhysics"
 						Filter="">
-						<File
-							RelativePath=".\ClimableObject.cpp">
-						</File>
-						<File
-							RelativePath=".\ClimableObject.h">
-						</File>
+						<Filter
+							Name="PHSkeleton"
+							Filter="">
+							<File
+								RelativePath=".\PHSkeleton.cpp">
+							</File>
+							<File
+								RelativePath=".\PHSkeleton.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="PHDestroyable"
+							Filter="">
+							<File
+								RelativePath=".\PHDestroyable.cpp">
+							</File>
+							<File
+								RelativePath=".\PHDestroyable.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="PhysicsSkeletonObject"
+							Filter="">
+							<File
+								RelativePath=".\PhysicsSkeletonObject.cpp">
+							</File>
+							<File
+								RelativePath=".\PhysicsSkeletonObject.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="PhysicsShellHolder"
+							Filter="">
+							<File
+								RelativePath=".\PhysicsShellHolder.cpp">
+							</File>
+							<File
+								RelativePath=".\PhysicsShellHolder.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="Climable"
+							Filter="">
+							<File
+								RelativePath=".\ClimableObject.cpp">
+							</File>
+							<File
+								RelativePath=".\ClimableObject.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="Breakable"
+							Filter="">
+							<File
+								RelativePath=".\BreakableObject.cpp">
+							</File>
+							<File
+								RelativePath=".\BreakableObject.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="CollisionDamageReceiver"
+							Filter="">
+							<File
+								RelativePath=".\PHCollisionDamageReceiver.cpp">
+							</File>
+							<File
+								RelativePath=".\PHCollisionDamageReceiver.h">
+							</File>
+						</Filter>
 					</Filter>
 				</Filter>
 				<Filter
