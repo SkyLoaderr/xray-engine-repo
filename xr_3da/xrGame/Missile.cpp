@@ -401,7 +401,7 @@ void CMissile::setup_throw_params()
 
 
 		Fvector FirePos, FireDir;
-		pActor->g_fireParams(FirePos, FireDir);
+		pActor->g_fireParams(this, FirePos, FireDir);
 		trans.k.set(FireDir);
 		Fvector::generate_orthonormal_basis(trans.k, trans.i,trans.j);
 		trans.c.set(FirePos);

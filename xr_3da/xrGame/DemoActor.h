@@ -39,7 +39,7 @@ public:
 	// virtual
 	virtual void		HitSignal		(int /**HitAmount/**/,Fvector& /**vLocalDir/**/,CEntity* /**E/**/, s16 /**element/**/) {};
 	virtual void		Die				(){};
-	virtual void		g_fireParams	(Fvector& P, Fvector& D);
+	virtual void		g_fireParams	(const CHudItem* pHudItem, Fvector& P, Fvector& D);
 };
 
 #endif //__DEMO_ACTOR_H__

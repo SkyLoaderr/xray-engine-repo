@@ -118,7 +118,7 @@ void CWeaponRPG7::SwitchState(u32 S)
 	{
 		Fvector						p1, d; p1.set(vLastFP); d.set(vLastFD);
 		CEntity*					E = dynamic_cast<CEntity*>(H_Parent());
-		if (E) E->g_fireParams		(p1,d);
+		if (E) E->g_fireParams		(this, p1,d);
 		m_pGrenade->m_pos.set(p1);
 		m_pGrenade->m_vel.set(d); m_pGrenade->m_vel.y += .0f; m_pGrenade->m_vel.mul(50.f);
 		m_pGrenade->m_pOwner = dynamic_cast<CGameObject*>(H_Parent());
@@ -155,7 +155,7 @@ void CWeaponRPG7::switch2_Fire	()
 		// Fire
 		Fvector						p1, d; p1.set(vLastFP); d.set(vLastFD);
 		CEntity*					E = dynamic_cast<CEntity*>(H_Parent());
-		if (E) E->g_fireParams		(p1,d);
+		if (E) E->g_fireParams		(this, p1,d);
 
 		//m_pGrenade->m_pos.set(p1);
 		//m_pGrenade->m_vel.set(d); m_pGrenade->m_vel.y += .0f; m_pGrenade->m_vel.mul(50.f);

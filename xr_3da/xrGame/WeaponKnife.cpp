@@ -131,7 +131,7 @@ void CWeaponKnife::OnAnimationEnd()
 				d.set(vLastFD);
 
 				if(H_Parent()) 
-					dynamic_cast<CEntity*>(H_Parent())->g_fireParams(p1,d);
+					dynamic_cast<CEntity*>(H_Parent())->g_fireParams(this, p1,d);
 				else break;
 				
 				CCartridge cartridge; 
@@ -162,7 +162,7 @@ void CWeaponKnife::OnAnimationEnd()
 				d.set(vLastFD);
 				
 				if(H_Parent()) 
-					dynamic_cast<CEntity*>(H_Parent())->g_fireParams(p1,d);
+					dynamic_cast<CEntity*>(H_Parent())->g_fireParams(this, p1,d);
 				else break;
 			
 				CCartridge cartridge; 

@@ -251,7 +251,7 @@ void CAI_Trader::renderable_Render	()
 	inherited::renderable_Render	();
 }
 
-void CAI_Trader::g_fireParams(Fvector& P, Fvector& D)
+void CAI_Trader::g_fireParams(const CHudItem* pHudItem, Fvector& P, Fvector& D)
 {
 	if (g_Alive() && inventory().ActiveItem()) {
 		Center(P);

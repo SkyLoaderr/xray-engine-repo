@@ -189,7 +189,7 @@ void CAI_Idol::renderable_Render	()
 		inventory().ActiveItem()->renderable_Render();
 }
 
-void CAI_Idol::g_fireParams(Fvector& P, Fvector& D)
+void CAI_Idol::g_fireParams(const CHudItem* pHudItem, Fvector& P, Fvector& D)
 {
 	if (g_Alive() && inventory().ActiveItem()) {
 		Center(P);

@@ -5,6 +5,7 @@
 
 #include "actor.h"
 #include "actoreffector.h"
+#include "Missile.h"
 
 
 
@@ -37,10 +38,18 @@ float CActor::GetWeaponAccuracy() const
 }
 
 
-void CActor::g_fireParams	(Fvector &fire_pos, Fvector &fire_dir)
+void CActor::g_fireParams	(const CHudItem* pHudItem, Fvector &fire_pos, Fvector &fire_dir)
 {
 	fire_pos = EffectorManager().vPosition;
 	fire_dir = EffectorManager().vDirection;
+
+	const CMissile* pMissile = dynamic_cast <const CMissile*> (pHudItem);
+	if (pMissile)
+	{
+		Fvector offset;
+		XFORM().transform_dir(offset, m_vMissileOffset);
+		fire_pos.add(offset);
+	}
 
 
 /*

@@ -20,6 +20,7 @@ class	ENGINE_API CKinematics;
 class	ENGINE_API CBoneInstance;
 class	CWeaponList;
 class   CPHMovementControl;
+class	CHudItem;
  
 class CEntity : virtual public CGameObject
 {
@@ -113,8 +114,7 @@ public:
 	virtual void			OnEvent				( NET_Packet& P, u16 type		);
 
 	virtual BOOL			IsVisibleForHUD		()	{return g_Alive();	}
-	virtual void			g_fireParams			(Fvector &, Fvector &){}; 
-
+	virtual void			g_fireParams		(const CHudItem*, Fvector &, Fvector &){}; 
 
 	//icon
 	virtual int GetTradeIconX() {return m_iTradeIconX;}

@@ -39,7 +39,7 @@ public:
 		tpIdol->m_bPlaying = false;
 	}
 
-	virtual void		g_fireParams	(Fvector& P, Fvector& D);
+	virtual void		g_fireParams	(const CHudItem* pHudItem, Fvector& P, Fvector& D);
 	virtual void		g_WeaponBones	(int &L, int &R1, int &R2);
 	virtual	float		ffGetFov		()const{return 150.f;}
 	virtual	float		ffGetRange		()const{return 30.f;}

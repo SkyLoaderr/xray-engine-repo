@@ -198,7 +198,7 @@ void CWeaponMagazinedWGrenade::state_Fire(float dt)
 		d.set(vLastFD);
 		
 		if(H_Parent()) 
-			dynamic_cast<CEntity*>	(H_Parent())->g_fireParams	(p1,d);
+			dynamic_cast<CEntity*>	(H_Parent())->g_fireParams	(this, p1,d);
 		else 
 			return;
 		
@@ -237,7 +237,7 @@ void CWeaponMagazinedWGrenade::SwitchState(u32 S)
 
 		CEntity*					E = dynamic_cast<CEntity*>(H_Parent());
 		
-		if (E) E->g_fireParams		(p1,d);
+		if (E) E->g_fireParams		(this, p1,d);
 		
 		m_pGrenade->m_pos.set(p1);
 		m_pGrenade->m_vel.set(d); 

@@ -164,7 +164,7 @@ void CWeaponShotgun::switch2_Fire2	()
 		d.set(vLastFD);
 
 		CEntity*					E = dynamic_cast<CEntity*>(H_Parent());
-		if (E) E->g_fireParams		(p1,d);
+		if (E) E->g_fireParams		(this, p1,d);
 		
 		OnShotBoth						();
 

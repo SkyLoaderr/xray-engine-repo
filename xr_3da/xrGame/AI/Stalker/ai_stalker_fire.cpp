@@ -43,7 +43,7 @@ float CAI_Stalker::HitScale	(int element)
 	return				(m_default_hit_factor*scale);
 }
 
-void CAI_Stalker::g_fireParams(Fvector& P, Fvector& D)
+void CAI_Stalker::g_fireParams(const CHudItem* pHudItem, Fvector& P, Fvector& D)
 {
 	if (g_Alive()) {
 		D.setHP			(-m_head.current.yaw,-m_head.current.pitch);

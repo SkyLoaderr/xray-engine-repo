@@ -38,6 +38,8 @@ class  CSleepEffectorPP;
 
 class  CActorEffector;
 
+class	CHudItem;
+
 class CActor: 
 	public CEntityAlive, 
 	public Feel::Touch,
@@ -332,7 +334,7 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 public:
 	virtual void						g_WeaponBones		(int &L, int &R1, int &R2);
-	virtual void						g_fireParams		(Fvector& P, Fvector& D);
+	virtual void						g_fireParams		(const CHudItem* pHudItem, Fvector& P, Fvector& D);
 	virtual BOOL						g_State				(SEntityState& state) const;
 	virtual	float						GetWeaponAccuracy	() const;
 
@@ -350,6 +352,9 @@ protected:
 	float								m_fDispAccelFactor;
 	//если актер сидит
 	float								m_fDispCrouchFactor;
+
+	//смещение firepoint относительно default firepoint для бросания болтов и гранат
+	Fvector								m_vMissileOffset;
 
 	//косточки используемые при стрельбе
 	int									m_r_hand;
