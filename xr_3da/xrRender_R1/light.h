@@ -2,7 +2,13 @@
 
 #include "..\ispatial.h"
 
-class light		:	public IRender_Light, public ISpatial
+struct	light_indirect		{
+	Fvector			P;
+	Fvector			D;
+	Fvector			C;
+};
+
+class	light		:	public IRender_Light, public ISpatial
 {
 public:
 	struct {

@@ -37,6 +37,7 @@ extern float		ps_r2_ssaLOD_B;
 extern float		ps_r2_ssaHZBvsTEX;
 
 // R2-specific
+extern Flags32		ps_r2_ls_flags;				// r2-only
 extern float		ps_r2_df_parallaxh;			// r2-only
 extern float		ps_r2_ls_dynamic_range;		// r2-only
 extern float		ps_r2_ls_bloom_kernel;		// r2-only
@@ -45,19 +46,20 @@ extern float		ps_r2_ls_dsm_kernel;		// r2-only
 extern float		ps_r2_ls_psm_kernel;		// r2-only
 extern float		ps_r2_ls_ssm_kernel;		// r2-only
 extern float		ps_r2_ls_spower;			// r2-only
-extern Flags32		ps_r2_ls_flags;				// r2-only
 extern Fvector		ps_r2_aa_barier;			// r2-only
 extern Fvector		ps_r2_aa_weight;			// r2-only
 extern float		ps_r2_aa_kernel;			// r2-only
+extern int			ps_r2_GI_depth;				// 1..5
+extern int			ps_r2_GI_quality;			// 8..64
 
 enum
 {
 	R2FLAG_SUN			= (1<<0),
 	R2FLAG_SKY			= (1<<1),
 	R2FLAG_BUMP_AF		= (1<<2),
-	R2FLAG_SPOT_UNMASK	= (1<<3),
-	R2FLAG_AA			= (1<<4),
-	R2FLAG_PARALLAX		= (1<<5)
+	R2FLAG_AA			= (1<<3),
+	R2FLAG_PARALLAX		= (1<<4),
+	R2FLAG_INDIRECT		= (1<<5),
 };
 
 extern void			xrRender_initconsole	();
