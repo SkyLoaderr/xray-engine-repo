@@ -34,7 +34,7 @@ function door_binder:initialize()
     
     self.object:set_nonscript_usable(false)
     self.object:set_use_callback(self, "door_callback")
-    self.object:set_tip_text("press E to open the door")
+    self.object:set_tip_text("press 'E' to open the door")
 
 	local variable = false
 
