@@ -131,6 +131,10 @@ SOURCE=".\xrMemCopy8_3DNow!.cpp"
 # End Source File
 # Begin Source File
 
+SOURCE=".\xrMemFill32_3DNow!.cpp"
+# End Source File
+# Begin Source File
+
 SOURCE=".\xrSkin1W_3DNow!.cpp"
 # End Source File
 # End Group
