@@ -439,12 +439,6 @@
 			Name="Shading templates"
 			Filter="">
 			<File
-				RelativePath="Blender_B.cpp">
-			</File>
-			<File
-				RelativePath="Blender_B.h">
-			</File>
-			<File
 				RelativePath="Blender_Blur.cpp">
 			</File>
 			<File
@@ -487,22 +481,10 @@
 				RelativePath="Blender_LaEmB.h">
 			</File>
 			<File
-				RelativePath="blender_light.cpp">
-			</File>
-			<File
-				RelativePath="blender_light.h">
-			</File>
-			<File
 				RelativePath="Blender_Lm(EbB).cpp">
 			</File>
 			<File
 				RelativePath="Blender_Lm(EbB).h">
-			</File>
-			<File
-				RelativePath="Blender_LmBmmD.cpp">
-			</File>
-			<File
-				RelativePath="Blender_LmBmmD.h">
 			</File>
 			<File
 				RelativePath="Blender_Model.cpp">
