@@ -99,8 +99,8 @@ function motivator_binder:reload (section)
 -- Состояние тела
 xr_motivator.storage[self.object:id()].state = {
         body_state = 0,
-	target_state = 0
-	}
+    target_state = 0
+    }
 -- Хранение трейдселлера
 xr_motivator.storage[self.object:id()].tradeseller =
     {   Buyer = nil,
@@ -300,7 +300,7 @@ xr_motivator.storage[self.object:id()].novice = {
                             enabled  = false
 }
     if( char_ini:section_exist ("novice") == true ) then
-        xr_motivator.storage[self.object:id()].novice.enabled = true			--Если есть секция новичка, то включаем эту схему
+        xr_motivator.storage[self.object:id()].novice.enabled = true            --Если есть секция новичка, то включаем эту схему
         if( char_ini:line_exist("novice", "path") == true ) then
             xr_motivator.storage[self.object:id()].novice.path   = char_ini:r_string("novice", "path")
         end
@@ -363,7 +363,7 @@ xr_motivator.storage[self.object:id()].reactions = {
 --    xr_meet.add_to_binder(self.object)
     xr_tradeseller.add_to_binder(self.object)
     xr_kamp.add_to_binder(self.object)
-    xr_commander.add_to_binder(self.object)
+--    xr_commander.add_to_binder(self.object)
     xr_guard.add_to_binder(self.object)
     xr_scout.add_to_binder(self.object)
     xr_follower.add_to_binder (self.object)
