@@ -212,8 +212,22 @@ int CLuaView::OnSci(SCNotification* pNotify)
 			GetDocument()->SetModifiedFlag(TRUE);
 		break;
 
+		case SCN_MODIFYATTEMPTRO:
+		{
+			if( GetEditor()->GetReadOnly() ){
+				if( (GetProjectFile()->GetSS_status()== vss_not_checked_out) ||
+					(GetProjectFile()->GetSS_status()== vss_checked_out)){
+						if( IDYES==AfxMessageBox("Check Out for edit ?",MB_YESNO) ){
+							GetProjectFile()->SS_check_out();
+						}
+					}else
+			AfxMessageBox("File is read only");
+			}
+
+		}
 		case SCN_CHARADDED:
 		{
+
 			if(pNotify->ch==13){
 				GetEditor()->AdjustCurrTabIndent();
 			}

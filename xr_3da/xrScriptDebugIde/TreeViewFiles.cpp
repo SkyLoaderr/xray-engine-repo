@@ -252,7 +252,7 @@ void CTreeViewFiles::AddFolder(CString& strName, HTREEITEM parent)
 	m_pTree->SetItemData(itm, 888);
 }
 
-HTREEITEM CTreeViewFiles::AddProjectFile(CString strName, long lParam, HTREEITEM parent)
+HTREEITEM CTreeViewFiles::AddProjectFile(CString strName, CProjectFile * pf, HTREEITEM parent)
 {
 	HTREEITEM to = m_hFilesFolder;
 	HTREEITEM itm_ = m_pTree->GetSelectedItem();
@@ -270,16 +270,15 @@ HTREEITEM CTreeViewFiles::AddProjectFile(CString strName, long lParam, HTREEITEM
 	file.item.iImage = 4;
 	file.item.iSelectedImage = 4;
 	file.item.pszText = strName.GetBuffer(0);
-	file.item.lParam = lParam;
+	file.item.lParam = (LPARAM)pf;
 	file.item.mask = TVIF_IMAGE | TVIF_SELECTEDIMAGE | TVIF_TEXT | TVIF_PARAM;
 	itm = m_pTree->InsertItem(&file);
 
 	}else{
-		m_pTree->SetItemData(itm,lParam);
+		m_pTree->SetItemData(itm,(LPARAM)pf);
 	}
 
 	VSSUpdateStatus(itm);
-
 	return itm;
 }
 
@@ -529,12 +528,15 @@ EVSSStatus CTreeViewFiles::GetItemStatus(HTREEITEM itm)
 	return vss_unknown;
 }
 
-void CTreeViewFiles::VSSUpdateStatus(HTREEITEM itm)
+void CTreeViewFiles::VSSUpdateStatus(HTREEITEM itm, EVSSStatus status/*=vss_unknown*/)
 {
 	if(!itm)
 		return;
 
-	EVSSStatus st = GetItemStatus(itm);
+
+	EVSSStatus st =status;
+	if(st == vss_unknown)
+		st = GetItemStatus(itm);
 
 //	long stat = VSSGetStatus(itm);
 		switch (st)
@@ -1016,4 +1018,21 @@ HTREEITEM CTreeViewFiles::FindFile(CString& name, HTREEITEM itm_root)
 		itm = m_pTree->GetNextSiblingItem(itm);
 	}
 	return NULL;
+}
+
+void CTreeViewFiles::ChangeSSstatus(CProjectFile* pf, EVSSStatus st)
+{
+		HTREEITEM itm = m_pTree->GetFirstVisibleItem();
+		if(itm&&m_pTree->GetItemData(itm)==(LPARAM)pf){
+			VSSUpdateStatus(itm,st);
+			return;
+			}
+
+		while (itm = m_pTree->GetNextVisibleItem(itm)){
+			if(itm&&m_pTree->GetItemData(itm)==(LPARAM)pf){
+				VSSUpdateStatus(itm,st);
+				return;
+				}
+
+		}
 }

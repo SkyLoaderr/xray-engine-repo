@@ -6,6 +6,8 @@
 #include "ide2.h"
 #include "ProjectFile.h"
 
+#include "TreeViewFiles.h"
+
 #include "LuaEditor.h"
 #include "MainFrame.h"
 #include "ScintillaView.h"
@@ -257,6 +259,11 @@ void CProjectFile::Check_view ()
 void CProjectFile::Change_status(EVSSStatus st)
 {
 	m_ssStatus = st;
+
+	CWorkspaceWnd* pWorkspace = g_mainFrame->GetWorkspaceWnd();
+	CTreeViewFiles* pTree = pWorkspace->GetTreeViewFiles();
+	pTree->ChangeSSstatus(this, m_ssStatus);
+
 	Check_view();
 }
 

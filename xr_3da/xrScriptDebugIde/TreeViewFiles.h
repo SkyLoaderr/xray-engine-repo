@@ -21,7 +21,7 @@ public:
 // Operations
 public:
 	void RemoveAll();
-	HTREEITEM AddProjectFile(CString strName, long lParam, HTREEITEM parent=NULL);
+	HTREEITEM AddProjectFile(CString strName, CProjectFile * pf, HTREEITEM parent=NULL);
 	void AddRoot(CString strProject);
 	void AddFolder(CString& strName,HTREEITEM parent=NULL);
 	void ExpandFiles();
@@ -35,7 +35,7 @@ public:
 	HTREEITEM FindFolder(CString& name, HTREEITEM from = NULL);
 	HTREEITEM FindFile(CString& name, HTREEITEM from = NULL);
 
-
+	void ChangeSSstatus(CProjectFile* pf, EVSSStatus st);
 protected:
 	CTreeCtrl* m_pTree;
 	HTREEITEM m_hRoot, m_hFilesFolder;
@@ -104,7 +104,7 @@ protected:
 	void Save(HTREEITEM itm);
 */
 public:
-	void VSSUpdateStatus(HTREEITEM);
+	void VSSUpdateStatus(HTREEITEM itm, EVSSStatus st=vss_unknown);
 	EVSSStatus GetItemStatus(HTREEITEM itm);
 
 };

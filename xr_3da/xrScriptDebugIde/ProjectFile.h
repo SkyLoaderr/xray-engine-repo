@@ -16,6 +16,8 @@ enum EVSSStatus{
 class CProjectFile
 {
 	CLuaView*	m_pluaview;
+
+
 public:
 	CLuaView*	GetLuaView(){return m_pluaview;}
 	void		SetLuaView(CLuaView* lw){m_pluaview = lw;}

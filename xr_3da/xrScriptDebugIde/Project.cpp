@@ -44,7 +44,7 @@ void CProject::RedrawFilesTree()
 
 	int nFiles = m_files.GetSize();
 	for ( int i=0; i<nFiles; ++i )
-		pTree->AddProjectFile(m_files[i]->GetNameExt(), (long)m_files[i]);
+		pTree->AddProjectFile(m_files[i]->GetNameExt(), m_files[i]);
 
 	pTree->ExpandFiles();
 }
@@ -101,7 +101,7 @@ void CProject::AddFile(CProjectFile* pPF)
 
 	CWorkspaceWnd* pWorkspace = g_mainFrame->GetWorkspaceWnd();
 	CTreeViewFiles* pTree = pWorkspace->GetTreeViewFiles();
-	pTree->AddProjectFile(pPF->GetNameExt(), (long)pPF);
+	pTree->AddProjectFile(pPF->GetNameExt(), pPF);
 
 	SetModifiedFlag(TRUE);
 }
