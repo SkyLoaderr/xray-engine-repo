@@ -180,7 +180,7 @@ public:
 
 extern CAI_Space *tpAI_Space;
 
-IC CAI_Space& getAI()
+IC CAI_Space &getAI()
 {
 	if (!tpAI_Space)
 		 tpAI_Space = xr_new<CAI_Space>();

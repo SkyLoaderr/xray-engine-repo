@@ -16,10 +16,38 @@ class CScript {
 public:
 	CLuaVirtualMachine	*m_tpLuaVirtualMachine;
 	LUA_VM_VECTOR		m_tpThreads;
-	string4096			m_caOutBuffer;
-	string4096			m_caErrorBuffer;
 
 						CScript						(LPCSTR				caFileName);
 	virtual				~CScript					();
 			void		Update						();
+};
+
+class CStreamRedirector {
+public:
+	FILE				*m_tpOutputLog;
+	FILE				*m_tpErrorLog;
+
+	CStreamRedirector()
+	{
+		string256		l_caLogFileName;
+		strconcat		(l_caLogFileName,Core.ApplicationName,"_",Core.UserName,".lualog");
+		FS.update_path	(l_caLogFileName,"$logs$",l_caLogFileName);
+		m_tpOutputLog	= freopen(l_caLogFileName,"wt",stdout);
+		m_tpErrorLog	= freopen(l_caLogFileName,"wt",stderr);
+		R_ASSERT		(m_tpOutputLog && m_tpErrorLog);
+	}
+
+	virtual				~CStreamRedirector()
+	{
+		fclose			(m_tpOutputLog);
+		fclose			(m_tpErrorLog);
+	}
+};
+
+extern CStreamRedirector *tpStreamRedirector;
+
+IC void vfRedirectHandles()
+{
+	if (!tpStreamRedirector)
+		tpStreamRedirector = xr_new<CStreamRedirector>();
 };

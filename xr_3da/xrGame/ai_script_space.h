@@ -18,8 +18,6 @@ extern "C" {
 	#include "lua.h"
 	#include "lualib.h"
 	#include "lauxlib.h"
-	__declspec(dllimport) char* g_caOutBuffer;
-	__declspec(dllimport) char* g_caErrorBuffer;
 }
 
 #pragma comment(lib,"x:\\xrLUA.lib")

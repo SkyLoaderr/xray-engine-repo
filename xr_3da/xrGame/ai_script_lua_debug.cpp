@@ -39,9 +39,7 @@ void Script::vfPrintError(CLuaVirtualMachine *tpLuaVirtualMachine, int iErrorCod
 		default : NODEFAULT;
 	}
 	
-	Msg			("! SCRIPT ERROR : %s",lua_tostring(tpLuaVirtualMachine, 0));
-	
-	for (int i=1; ; i++) {
+	for (int i=0; ; i++) {
 		Msg		("! Stack level %d",i);
 		if (!bfListLevelVars(tpLuaVirtualMachine,i))
 			return;

@@ -10,20 +10,18 @@
 #include "ai_script.h"
 #include "ai_script_lua_extension.h"
 
+CStreamRedirector *tpStreamRedirector = 0;
+
 using namespace Script;
 
 CScript::CScript(LPCSTR caFileName)
 {
+	vfRedirectHandles();
 	m_tpLuaVirtualMachine = lua_open();
 	if (!m_tpLuaVirtualMachine) {
 		Msg			("! ERROR : Cannot initialize script virtual machine!");
 		return;
 	}
-	m_caOutBuffer[0] = 0;
-	m_caErrorBuffer[0] = 0;
-	g_caOutBuffer	= m_caOutBuffer;
-	g_caErrorBuffer = m_caErrorBuffer;
-
 	// initialize lua standard library functions 
 	luaopen_base	(m_tpLuaVirtualMachine); 
 	luaopen_table	(m_tpLuaVirtualMachine);
@@ -33,22 +31,18 @@ CScript::CScript(LPCSTR caFileName)
 	luaopen_debug	(m_tpLuaVirtualMachine);
 #endif
 
-	vfExportToLua	(m_tpLuaVirtualMachine);
-
 	Msg				("* Loading script %s",caFileName);
 	IReader			*l_tpFileReader = FS.r_open(caFileName);
 	R_ASSERT		(l_tpFileReader);
 
 	CLuaVirtualMachine	*l_tpThread = lua_newthread(m_tpLuaVirtualMachine);
+	vfExportToLua	(l_tpThread);
+
 	int				i = luaL_loadbuffer(l_tpThread,static_cast<LPCSTR>(l_tpFileReader->pointer()),(size_t)l_tpFileReader->length(),static_cast<LPCSTR>(l_tpFileReader->pointer()));
 	
-	if (strlen(m_caOutBuffer))
-		Msg			("%s",m_caOutBuffer);
-	if (strlen(m_caErrorBuffer))
-		Msg			("%s",m_caErrorBuffer);
 #ifdef DEBUG
 	if (i)
-		vfPrintError(m_tpLuaVirtualMachine,i);
+		vfPrintError(l_tpThread,i);
 #endif
 	m_tpThreads.push_back	(l_tpThread);
 
@@ -63,18 +57,7 @@ CScript::~CScript()
 void CScript::Update()
 {
 	for (int i=0, n = int(m_tpThreads.size()); i<n; i++) {
-		m_caOutBuffer[0] = 0;
-		m_caErrorBuffer[0] = 0;
-		g_caOutBuffer	= m_caOutBuffer;
-		g_caErrorBuffer = m_caErrorBuffer;
-		
 		int			l_iErrorCode = lua_resume	(m_tpThreads[i],0);
-
-		if (strlen(m_caOutBuffer))
-			Msg		("%s",m_caOutBuffer);
-		if (strlen(m_caErrorBuffer))
-			Msg		("%s",m_caErrorBuffer);
-
 		if (l_iErrorCode) {
 #ifdef DEBUG
 			vfPrintError(m_tpThreads[i],l_iErrorCode);
