@@ -217,6 +217,8 @@ void CScriptEngine::process_file	(LPCSTR file_name)
 	bool					global_script_loaded = (!*file_name || !xr_strcmp(file_name,"_G"));
 	if (global_script_loaded || m_reload_modules || !namespace_loaded(file_name)) {
 		FS.update_path		(S,"$game_scripts$",strconcat(S1,file_name,".script"));
+		if (!FS.exist(S))
+			return;
 		Msg					("* loading script %s",S1);
 		m_reload_modules	= false;
 		load_file			(S,true);

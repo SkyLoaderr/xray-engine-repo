@@ -87,11 +87,14 @@ LPCSTR user_name()
 	return			(Core.UserName);
 }
 
+void obsolete_load(LPCSTR){}
+
 void CScriptEngine::script_register(lua_State *L)
 {
 	function	(L,	"log",							LuaLog);
 	function	(L,	"error_log",					ErrorLog);
 	function	(L,	"flush",						FlushLogs);
+	function	(L,	"module",						obsolete_load);
 	function	(L,	"verify_if_thread_is_running",	verify_if_thread_is_running);
 	function	(L,	"editor",						editor);
 	function	(L,	"bit_and",						bit_and);
