@@ -6,7 +6,7 @@
 #ifdef LWO_EXPORTS
 	#include "fs.h"
 #else 
-#ifdef _EDITOR
+#ifdef M_BORLAND
 	#include "fs.h"
 #else
 	#include "..\fs.h"
