@@ -98,7 +98,6 @@ public:
 
 				tpTemp1 = tpBestNode;
 				tpTemp = tpTemp1->tpBack;
-
 				for (u32 i=1; tpTemp; tpTemp1 = tpTemp, tpTemp = tpTemp->tpBack, i++) ;
 
 				tpaNodes.resize(i);
@@ -106,12 +105,14 @@ public:
 				tpTemp1 = tpBestNode;
 				tpaNodes[--i] = tpBestNode->iIndex;
 				tpTemp = tpTemp1->tpBack;
+#pragma todo("Optimization note : implement reverse-iterator")
 				for (u32 j=1; tpTemp; tpTemp = tpTemp->tpBack, j++)
 					tpaNodes[i - j] = tpTemp->iIndex;
 
 				float fCumulativeDistance = 0, fLastDirectDistance = 0, fDirectDistance;
 				Fvector tPosition = tStartPosition;
 				u32 dwNode = tpaNodes[0];
+#pragma todo("Optimization note : implement forward-iterator")
 				for (i=1; i<(int)tpaNodes.size(); i++) {
 					fDirectDistance = ffCheckPositionInDirection(dwNode,tPosition,tfGetNodeCenter(tpaNodes[i]),fMaxValue);
 					if (fDirectDistance == MAX_VALUE) {
@@ -161,8 +162,8 @@ public:
 							tpTemp->g = dG;
 							tpTemp->f = tpTemp->g + tpTemp->h;
 							tpTemp->tpBack = tpBestNode;
-							for (SNode **tpIndex = m_tppHeap + 1; *tpIndex != tpTemp; tpIndex++);
-							push_heap(m_tppHeap + 1,tpIndex + 1,CComparePredicate());
+							for (SNode **tpIndex = tppHeapStart; *tpIndex != tpTemp; tpIndex++);
+							push_heap(tppHeapStart,tpIndex + 1,CComparePredicate());
 							continue;
 						}
 						continue;
