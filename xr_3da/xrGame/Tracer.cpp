@@ -45,10 +45,10 @@ void	CTracer::Add	(const Fvector& from, const Fvector& to, float bullet_speed, f
 void	CTracer::Render	()
 {
 	if (bullets.empty())	return;
-
 	
-	FVF::LIT	*verts	=	(FVF::LIT	*) VS->Lock(bullets.size()*4);
-	DWORD	actual		=	0;
+	DWORD	vOffset;
+	FVF::LIT	*verts	=	(FVF::LIT	*) VS->Lock(bullets.size()*4,vOffset);
+	FVF::LIT	*start	=	verts;
 	float	dt			=	Device.fTimeDelta;
 
 	Fvector&	vTop	=	Device.vCameraTop;
@@ -83,6 +83,9 @@ void	CTracer::Render	()
 		P.mad(B.pos_trail,vTop,TRACER_SIZE);	verts->set(P,C,0,0);	verts++;
 		P.mad(B.pos_head, vTop,-TRACER_SIZE);	verts->set(P,C,1,1);	verts++;
 		P.mad(B.pos_head, vTop,TRACER_SIZE);	verts->set(P,C,1,0);	verts++;
-		actual++;
 	}
+
+	DWORD vCount = verts-start;
+	VS->Unlock(vCount);
+	Device.Primitive.Draw(VS,vCount,vCount/2,vOffset,Device.Streams_QuadIB);
 }
