@@ -15,6 +15,8 @@ CAI_Stalker::CAI_Stalker			()
 {
 	Init();
 	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai_stalker);
+	shedule.t_min	= 200;
+	shedule.t_max	= 1;
 }
 
 CAI_Stalker::~CAI_Stalker			()
@@ -119,9 +121,9 @@ void CAI_Stalker::Die				()
 {
 	//	vfAddStateToList				(m_eCurrentState = eStalkerStateDie);
 
-#ifdef DEBUG
-	Msg								("Death position : [%f][%f][%f]",VPUSH(Position()));
-#endif
+//#ifdef DEBUG
+//	Msg								("Death position : [%f][%f][%f]",VPUSH(Position()));
+//#endif
 	Fvector	dir;
 	AI_Path.Direction				(dir);
 	SelectAnimation					(XFORM().k,dir,AI_Path.fSpeed);
@@ -132,9 +134,9 @@ void CAI_Stalker::Die				()
 	S.feedback->set_volume			(1.f);
 	inherited::Die					();
 	m_bHammerIsClutched				= !::Random.randI(0,2);
-#ifdef DEBUG
-	Msg								("Death position : [%f][%f][%f]",VPUSH(Position()));
-#endif
+//#ifdef DEBUG
+//	Msg								("Death position : [%f][%f][%f]",VPUSH(Position()));
+//#endif
 }
 
 void CAI_Stalker::Load				(LPCSTR section)
