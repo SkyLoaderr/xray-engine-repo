@@ -29,6 +29,9 @@ IC void CShaderManager::set_Textures	(STextureList* T)
 				surf->Apply	(it);
 			}
 		}
+		DWORD last				= T->size();
+		cache.surfaces[last]	= 0;
+		CHK_DX(HW.pDevice->SetTexture(last,NULL));
 	}
 }
 IC void CShaderManager::set_Matrices	(SMatrixList* M)
