@@ -461,19 +461,26 @@ void CAI_Soldier::vfAimAtEnemy()
 	else
 		pos1 = tSavedEnemyPosition;
 
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// for making soldiers not so precise :-)))
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//	SRotation sRot;
-//	mk_rotation(pos1,sRot);
-//	sRot.pitch += ::Random.randF(-PI/10,+PI/10);
-//	sRot.yaw += ::Random.randF(-PI/10,+PI/10);
-//	pos1.setHP(sRot.yaw,sRot.pitch);
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	
 	svCenter(pos2);
 	tWatchDirection.sub(pos1,pos2);
 	float fDistance = tWatchDirection.magnitude();
+	
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	// for making soldiers not so precise :-)))
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	float fMissDistance = fDistance <= m_fMinMissDistance ? m_fMinMissFactor : fDistance >= m_fMaxMissDistance ? m_fMaxMissFactor : (fDistance - m_fMinMissDistance)/(m_fMaxMissDistance - m_fMinMissDistance)*(m_fMaxMissFactor - m_fMinMissFactor) + m_fMinMissFactor;
+	float fAlpha = 1.f - _sqr(fMissDistance)/(2*tWatchDirection.square_magnitude());
+	clamp(fAlpha,-.99999f,+.99999f);
+	fAlpha = acosf(fAlpha);
+
+	SRotation sRot;
+	mk_rotation(tWatchDirection,sRot);
+	
+	sRot.pitch += ::Random.randF(-fAlpha,+fAlpha);
+	sRot.yaw += ::Random.randF(-fAlpha,+fAlpha);
+	tWatchDirection.setHP(-sRot.yaw,-sRot.pitch);
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	
 	mk_rotation(tWatchDirection,r_torso_target);
 	r_target.yaw = r_torso_target.yaw;
 	

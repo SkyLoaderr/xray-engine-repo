@@ -126,10 +126,15 @@ void CAI_Soldier::Load	(LPCSTR section)
 	m_fShadowWeight = pSettings->ReadFLOAT(section,"ShadowWeight");
 	
 	//fire
-	m_dwFireRandomMin = pSettings->ReadINT(section,"FireRandomMin");
-	m_dwFireRandomMax = pSettings->ReadINT(section,"FireRandomMax");
-	m_dwNoFireTimeMin = pSettings->ReadINT(section,"NoFireTimeMin");
-	m_dwNoFireTimeMax = pSettings->ReadINT(section,"NoFireTimeMax");
+	m_dwFireRandomMin  = pSettings->ReadINT(section,"FireRandomMin");
+	m_dwFireRandomMax  = pSettings->ReadINT(section,"FireRandomMax");
+	m_dwNoFireTimeMin  = pSettings->ReadINT(section,"NoFireTimeMin");
+	m_dwNoFireTimeMax  = pSettings->ReadINT(section,"NoFireTimeMax");
+	m_fMinMissDistance = pSettings->ReadINT(section,"MinMissDistance");
+	m_fMinMissFactor   = pSettings->ReadINT(section,"MinMissFactor");
+	m_fMaxMissDistance = pSettings->ReadINT(section,"MaxMissDistance");
+	m_fMaxMissFactor   = pSettings->ReadINT(section,"MaxMissFactor");
+
 	
 	// patrol under fire
 	m_dwPatrolShock = pSettings->ReadINT(section,"PatrolShock");

@@ -318,6 +318,11 @@ class CAI_Soldier : public CCustomMonster
 		DWORD			m_dwFireRandomMax;
 		DWORD			m_dwNoFireTimeMin;
 		DWORD			m_dwNoFireTimeMax;
+		float			m_fMinMissDistance;
+		float			m_fMinMissFactor;
+		float			m_fMaxMissDistance;
+		float			m_fMaxMissFactor;
+
 		
 		// patrol under fire constants
 		DWORD			m_dwPatrolShock;

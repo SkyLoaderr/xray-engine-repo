@@ -14,7 +14,7 @@
 
 #define	FIRE_SAFETY_ANGLE				PI/10
 #define SPECIAL_SQUAD					6
-#define LIGHT_FITTING			
+//#define LIGHT_FITTING			
 
 bool CAI_Soldier::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint) 
 {
@@ -148,12 +148,14 @@ void CAI_Soldier::SelectEnemy(SEnemySelected& S)
 	S.bVisible			= FALSE;
 	S.fCost				= flt_max-1;
 	
+#ifdef LIGHT_FITTING
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	// this code is dummy
 	// only for fitting light coefficients
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	bool bActorInCamera = false;
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#endif
 
 	if (Known.size()==0) {
 #ifdef LIGHT_FITTING
