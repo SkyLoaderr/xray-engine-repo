@@ -7,7 +7,7 @@
 #include "hudmanager.h"
 
 #include "WeaponHUD.h"
-#include "WeaponEMSRifle.h"
+#include "WeaponGroza.h"
 #include "entity.h"
 #include "xr_weapon_list.h"
 
@@ -19,11 +19,11 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-CWeaponEMSRifle::CWeaponEMSRifle() : CWeapon()
+CWeaponGroza::CWeaponGroza() : CWeapon()
 {
 	m_WpnName = "EMS Rifle";
 
-	pSounds->Create3D(sndFireLoop,	"weapons\\EMSRifle_fire_loop");
+	pSounds->Create3D(sndFire,		 "weapons\\Groza_fire");
 	pSounds->Create3D(sndRicochet[0],"weapons\\ric1");
 	pSounds->Create3D(sndRicochet[1],"weapons\\ric2");
 	pSounds->Create3D(sndRicochet[2],"weapons\\ric3");
@@ -47,18 +47,18 @@ CWeaponEMSRifle::CWeaponEMSRifle() : CWeapon()
 	vLastFD.set		(0,0,0);
 }
 
-CWeaponEMSRifle::~CWeaponEMSRifle()
+CWeaponGroza::~CWeaponGroza()
 {
 	for (int i=0; i<EMS_TEX_COUNT; i++)
 		Device.Shader.Delete(hFlame[i]);
 	Device.Shader.Delete(hTrail);
 
 	// sounds
-	pSounds->Delete3D(sndFireLoop);
+	pSounds->Delete3D(sndFire);
 	for (i=0; i<SND_RIC_COUNT; i++) pSounds->Delete3D(sndRicochet[i]);
 }
 
-void CWeaponEMSRifle::Load(CInifile* ini, const char* section){
+void CWeaponGroza::Load(CInifile* ini, const char* section){
 	inherited::Load(ini, section);
 	R_ASSERT(m_pHUD);
 	
@@ -77,7 +77,7 @@ void CWeaponEMSRifle::Load(CInifile* ini, const char* section){
 	PKinematics(m_pHUD->Visual())->PlayCycle("idle");
 }
 
-void CWeaponEMSRifle::FireStart()
+void CWeaponGroza::FireStart()
 {
 	if (!IsWorking() && IsValid()){ 
 		CWeapon::FireStart();
@@ -86,7 +86,7 @@ void CWeaponEMSRifle::FireStart()
 	}
 }
 
-void CWeaponEMSRifle::FireEnd(){
+void CWeaponGroza::FireEnd(){
 	if (IsWorking()){
 		CWeapon::FireEnd();
 		m_pHUD->FireEnd();
@@ -95,7 +95,7 @@ void CWeaponEMSRifle::FireEnd(){
 }
 
 
-void CWeaponEMSRifle::UpdateXForm(BOOL bHUDView)
+void CWeaponGroza::UpdateXForm(BOOL bHUDView)
 {
 	if (Device.dwFrame!=dwXF_Frame)
 	{
@@ -130,7 +130,7 @@ void CWeaponEMSRifle::UpdateXForm(BOOL bHUDView)
 	}
 }
 
-void CWeaponEMSRifle::UpdateFP(BOOL bHUDView)
+void CWeaponGroza::UpdateFP(BOOL bHUDView)
 {
 	if (Device.dwFrame!=dwFP_Frame) 
 	{
@@ -152,7 +152,7 @@ void CWeaponEMSRifle::UpdateFP(BOOL bHUDView)
 	}
 }
 
-void CWeaponEMSRifle::Update(float dt, BOOL bHUDView)
+void CWeaponGroza::Update(float dt, BOOL bHUDView)
 {
 	BOOL bShot = false;
 
@@ -165,7 +165,7 @@ void CWeaponEMSRifle::Update(float dt, BOOL bHUDView)
 		case eIdle:
 			break;
 		case eFire:
-			pSounds->Play3DAtPos(sndFireLoop,vLastFP,true);
+			pSounds->Play3DAtPos(sndFire,vLastFP,true);
 			break;
 		}
 		st_current=st_target;
@@ -206,7 +206,7 @@ void CWeaponEMSRifle::Update(float dt, BOOL bHUDView)
 			}
 
 			// sound fire loop
-			if (sndFireLoop.feedback) sndFireLoop.feedback->SetPosition(vLastFP);
+			if (sndFire.feedback) sndFire.feedback->SetPosition(vLastFP);
 		}
 		break;
 	}
@@ -214,7 +214,7 @@ void CWeaponEMSRifle::Update(float dt, BOOL bHUDView)
 	m_pHUD->UpdateAnimation();
 }
 
-void CWeaponEMSRifle::Render(BOOL bHUDView)
+void CWeaponGroza::Render(BOOL bHUDView)
 {
 	UpdateXForm	(bHUDView);
 	if (bHUDView)
@@ -255,13 +255,13 @@ void CWeaponEMSRifle::Render(BOOL bHUDView)
 	}
 }
 
-void CWeaponEMSRifle::SetDefaults()
+void CWeaponGroza::SetDefaults()
 {
 	CWeapon::SetDefaults();
 	iAmmoElapsed = 0;
 }
 
-void CWeaponEMSRifle::AddShotmark(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R) 
+void CWeaponGroza::AddShotmark(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R) 
 {
 	inherited::AddShotmark(vDir, vEnd, R);
 	pSounds->Play3DAtPos(sndRicochet[Random.randI(SND_RIC_COUNT)], vEnd,false);

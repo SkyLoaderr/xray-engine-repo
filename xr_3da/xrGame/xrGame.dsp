@@ -226,6 +226,9 @@ SOURCE=.\dbg_draw_frustum.cpp
 # Begin Group "Weapons"
 
 # PROP Default_Filter ""
+# Begin Group "Custom Weapon"
+
+# PROP Default_Filter ""
 # Begin Source File
 
 SOURCE=.\Weapon.cpp
@@ -236,20 +239,16 @@ SOURCE=.\Weapon.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\WeaponEMSRifle.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\WeaponEMSRifle.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\WeaponHUD.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=.\WeaponHUD.h
 # End Source File
+# End Group
+# Begin Group "Weapon M134"
+
+# PROP Default_Filter ""
 # Begin Source File
 
 SOURCE=.\WeaponM134.cpp
@@ -258,6 +257,22 @@ SOURCE=.\WeaponM134.cpp
 
 SOURCE=.\WeaponM134.h
 # End Source File
+# End Group
+# Begin Group "Weapon Groza"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\WeaponGroza.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\WeaponGroza.h
+# End Source File
+# End Group
+# Begin Group "Weapon Rail"
+
+# PROP Default_Filter ""
 # Begin Source File
 
 SOURCE=.\WeaponRail.cpp
@@ -266,6 +281,19 @@ SOURCE=.\WeaponRail.cpp
 
 SOURCE=.\WeaponRail.h
 # End Source File
+# End Group
+# Begin Group "Weapon EMS Rifle"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\WeaponEMSRifle.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\WeaponEMSRifle.h
+# End Source File
+# End Group
 # Begin Source File
 
 SOURCE=.\xr_weapon_list.cpp

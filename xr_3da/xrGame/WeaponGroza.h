@@ -1,5 +1,5 @@
-#ifndef __XR_WEAPON_EMSRIFLE_H__
-#define __XR_WEAPON_EMSRIFLE_H__
+#ifndef __XR_WEAPON_GROZA_H__
+#define __XR_WEAPON_GROZA_H__
 #pragma once
 
 #include "weapon.h"
@@ -8,9 +8,9 @@ class ENGINE_API C3DSound;
 
 #define SND_RIC_COUNT 5
 
-class CWeaponEMSRifle: public CWeapon
+class CWeaponGroza: public CWeapon
 {
-	enum EEMSRifleState
+	enum EGrozaState
 	{
 		eIdle,
 		eReload,
@@ -22,7 +22,7 @@ private:
 	// General
 	float			fTime;
 
-	sound3D			sndFireLoop;
+	sound3D			sndFire;
 	sound3D			sndRicochet[SND_RIC_COUNT];
 
 	Shader*			hTrail;
@@ -42,7 +42,7 @@ private:
 	float			fFlameLength;
 	float			fFlameSize;
 	
-	EEMSRifleState	st_current, st_target;
+	EGrozaState		st_current, st_target;
 
 	void			DrawFlame	(const Fvector& fp, const Fvector& fd, bool bHUDView);
 	void			UpdateFP	(BOOL bHUD);
@@ -51,8 +51,8 @@ private:
 protected:
 	virtual void	AddShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R);
 public:
-					CWeaponEMSRifle	();
-	virtual			~CWeaponEMSRifle();
+					CWeaponGroza	();
+	virtual			~CWeaponGroza();
 
 	// misc
 	virtual void	Load		(CInifile* ini, const char* section);
@@ -64,4 +64,4 @@ public:
 	virtual	void	Render		(BOOL bHUDView);
 };
 
-#endif //__XR_WEAPON_EMSRIFLE_H__
+#endif //__XR_WEAPON_GROZA_H__
