@@ -1,3 +1,44 @@
+
+
 function main ()
+
+    local monsters = {
+                      get_level_object ("m_boar_e0000"),   
+                      get_level_object ("m_boar_e0001"),   
+                      get_level_object ("m_boar_e0002"),   
+                      get_level_object ("m_boar_e0003"),   
+                      get_level_object ("m_boar_e0004"),   
+                      get_level_object ("m_boar_e0005"),   
+                      get_level_object ("m_boar_e0006")
+                      }
+                      
+    local actor = get_actor ()                      
+    local scr_monster = nil                      
+    local old_monster = nil
+    
+    while true do
+          wait (10000)
+          
+          if scr_monster ~= nil and scr_monster:action () == nil then
+             scr_monster:script (false, chasers.script_name ())
+             old_monster = scr_monster
+             scr_monster = nil   
+          end
+          
+          if scr_monster == nil then
+             for a = 1, table.getn (monsters), 1 do
+                 if monsters[a] ~= nil and monsters[a] ~= scr_monster and monsters[a]:alive () == true then
+                    local t = distance_between (actor, monsters[a])
+                    if t < 50 and monster[a] ~= old_monster then
+                       scr_monster = monsters[a]
+                       scr_monster:script (true, chasers.script_name ())
+                       action (scr_monster, move (move.act_run, move_force_type, actor), cond (cond.move_end))
+                       old_monster = nil
+                       break
+                    end   
+                 end   
+             end  
+          end   
+    end                       
 
 end
