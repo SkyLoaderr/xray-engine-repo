@@ -459,7 +459,7 @@ void CUIMiniMap::UpdateSpots()
 	DetachAll();
 	Locations& ls =Level().MapManager().Locations();
 	for(Locations_it it=ls.begin(); it!=ls.end(); ++it){
-		if ((*it).location->Update())
+//		if ((*it).location->Update())
 			(*it).location->UpdateMiniMap(this);
 	}
 
