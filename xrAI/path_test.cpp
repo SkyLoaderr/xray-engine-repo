@@ -15,7 +15,7 @@
 #include "path_test_old.h"
 
 typedef CDataStorage<float,u32,u32,true,24,8>							CHeapDataStorage;
-typedef CPathManager1<CAI_Map,CHeapDataStorage,float,u32,u32>			CDistancePathManager;
+typedef CPathManager2<CAI_Map,CHeapDataStorage,float,u32,u32>			CDistancePathManager;
 typedef CAStar<CHeapDataStorage,CDistancePathManager,CAI_Map,u32,float>	CAStarSearch;
 
 #define TIME_TEST
