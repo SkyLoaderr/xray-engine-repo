@@ -22,7 +22,7 @@ end
 function stalker_script:net_import(packet)
 end
 
-function init			(obj)
-	printf				("stalker.init is called with %s!",obj:name())
-	obj:set_lua_object	(stalker.stalker_script(obj))
+function init		(obj)
+	printf			("stalker.init is called with %s!",obj:name())
+	obj:set_object	(stalker.stalker_script(obj))
 end
