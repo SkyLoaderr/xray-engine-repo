@@ -114,6 +114,8 @@ IC char*						strext					( const char* S )
 
 IC u32							xr_strlen				( const char* S )
 {	return (u32)strlen(S);			}
+IC int							xr_strcmp				( const char* S1, const char* S2 )
+{	return (int)strcmp(S);			}
 
 IC char*						timestamp				(string64& dest)
 {
