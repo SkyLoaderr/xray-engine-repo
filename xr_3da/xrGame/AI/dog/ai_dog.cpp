@@ -39,6 +39,8 @@ void CAI_Dog::Init()
 	Bones.Reset();
 
 	CJumping::Init(this);
+
+	strike_in_jump					= false;
 }
 
 void CAI_Dog::Load(LPCSTR section)
@@ -110,9 +112,9 @@ void CAI_Dog::Load(LPCSTR section)
 	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 600,	800,	center,		2.5f, m_fHitPower, 0.f, 0.f);
 	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 600,	700,	center,		1.5f, m_fHitPower, 0.f, 0.f);
 
-	CJumping::AddState(PSkeletonAnimated(Visual())->ID_Cycle_Safe("run_jump_0"), JT_CUSTOM,	true,	0.f, 0.f);
+//	CJumping::AddState(PSkeletonAnimated(Visual())->ID_Cycle_Safe("run_jump_0"), JT_CUSTOM,	true,	0.f, 0.f);
 	CJumping::AddState(PSkeletonAnimated(Visual())->ID_Cycle_Safe("run_jump_1"), JT_GLIDE,	false,	0.f, 0.f);
-	CJumping::AddState(PSkeletonAnimated(Visual())->ID_Cycle_Safe("run_jump_0"), JT_CUSTOM,	true,	0.f, 0.f);
+//	CJumping::AddState(PSkeletonAnimated(Visual())->ID_Cycle_Safe("run_jump_0"), JT_CUSTOM,	true,	0.f, 0.f);
 }
 
 void CAI_Dog::StateSelector()
@@ -236,6 +238,35 @@ void CAI_Dog::UpdateCL()
 {
 	inherited::UpdateCL();
 	CJumping::Update();
+
+	float trace_dist = 1.0f;
+
+	// Проверить на нанесение хита во время прыжка
+	if (CJumping::IsGlide()) {
+		
+		if (strike_in_jump) return;
+		
+		CEntity *pE = dynamic_cast<CEntity *>(CJumping::GetEnemy());
+		if (!pE) return;
+
+		Fvector trace_from;
+		Center(trace_from);
+		setEnabled(false);
+		Collide::ray_query	l_rq;
+
+		if (Level().ObjectSpace.RayPick(trace_from, Direction(), trace_dist , l_rq)) {
+			if ((l_rq.O == CJumping::GetEnemy()) && (l_rq.range < trace_dist)) {
+				DoDamage(pE, m_fHitPower,0,0);
+
+				Msg("Hit!");
+				strike_in_jump = true;
+			}
+		}
+		setEnabled(true);			
+
+		// !!!
+		LookPosition(pE->Position());
+	}
 }
 
 ///////////////////////////////////////////////////////

@@ -46,7 +46,7 @@ class CJumping {
 	float			m_fJumpMaxDist;			// макс. дистанция возможная для прыжка
 	float			m_fJumpMaxAngle;		// макс. угол возможный для прыжка между монстром и целью
 	TTime			m_dwDelayAfterJump;		// задержка после прыжка
-
+	float			m_fTraceDist;			// 
 
 public:
 					CJumping				();
@@ -64,12 +64,16 @@ public:
 
 	// Подготовка текущей анимации прыжка
 			bool	PrepareAnimation		(CMotionDef **m);
+	
 			void	OnAnimationEnd			();
 	// Обновляет состояние прыжка в каждом фрейме (вызывается из UpdateCL)
 			void	Update					();
 			bool	IsActive				() {return active;}
 	// Выполнить проверку на возможность прыжка в текущий момент времени
 	virtual bool	CanJump					() {return true;}
+
+			bool	IsGlide					() {return ((active) ? ptr_cur->type == JT_GLIDE : false);}
+			CObject	*GetEnemy				() {return entity;}
 
 private:
 			void	Reset					();
@@ -82,6 +86,8 @@ private:
 			void	ApplyParams				();
 			// Переключить следующее состояние прыжка				
 			void	NextState				();
+
+
 };
 
 

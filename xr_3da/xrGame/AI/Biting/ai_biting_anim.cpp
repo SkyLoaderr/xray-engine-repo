@@ -18,7 +18,10 @@ static void __stdcall vfPlayEndCallBack(CBlend* B)
 // Установка анимации
 void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, float speed )
 {
-	if (MotionMan.PrepareAnimation()) PSkeletonAnimated(Visual())->PlayCycle(MotionMan.m_tpCurAnim,TRUE,vfPlayEndCallBack,this);
+	if (MotionMan.PrepareAnimation()) {
+		PSkeletonAnimated(Visual())->PlayCycle(MotionMan.m_tpCurAnim,TRUE,vfPlayEndCallBack,this);
+		Msg("Animation Selected!!!");
+	}
 }
 
 bool CAI_Biting::AA_CheckHit()

@@ -26,6 +26,7 @@ void CJumping::Load(LPCSTR section)
 	m_fJumpMaxDist					= pSettings->r_float(section,"jump_max_dist");		
 	m_fJumpMaxAngle					= pSettings->r_float(section,"jump_max_angle");
 	m_dwDelayAfterJump				= pSettings->r_u32	(section,"jump_delay");
+	m_fTraceDist					= pSettings->r_float(section,"jump_trace_dist");
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -47,6 +48,8 @@ void CJumping::AddState(CMotionDef *motion, EJumpStateType type, bool change, fl
 
 void CJumping::Start()
 {
+	Msg("Start jump...");
+	
 	ptr_cur		= bank.begin();
 	cur_motion	= 0;
 	active		= true;
@@ -54,7 +57,6 @@ void CJumping::Start()
 	ApplyParams();
 	if (ptr_cur->type == JT_GLIDE) Execute();
 
-	Msg("Start jump...");
 }
 
 void CJumping::Stop()
@@ -74,6 +76,7 @@ bool CJumping::PrepareAnimation(CMotionDef **m)
 // вызывается по окончанию анимации
 void CJumping::OnAnimationEnd()
 {
+	Msg("Animation Ended!!!");
 	if (ptr_cur->change) NextState();
 }
 
@@ -102,7 +105,7 @@ void CJumping::NextState()
 
 void CJumping::Execute()
 {
-	Msg("Execute Jump...");
+	Msg("Execute phisical Jump...");
 	if (entity) {
 		// установить целевую точку 
 		u16 bone_id = PKinematics(entity->Visual())->LL_BoneID("bip01_head");
@@ -135,6 +138,7 @@ void CJumping::Update()
 	if ((time_started + itime < pMonster->m_dwCurrentTime + TTime(itime/4))) {
 		NextState();
 	}
+
 }
 
 // Проверка на возможность прыжка
@@ -171,44 +175,4 @@ bool CJumping::Check(Fvector from_pos, Fvector to_pos, CObject *pO)
 	Start();
 	return true;
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//// JUMPS
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//// функция для UpdateCL
-//void CMotionManager::JMP_Update()
-//{
-//	if (!jump.active) return;
-//	
-//	TTime itime = TTime(jump.ph_time * 1000);
-//
-//	// проверить на завершение прыжка
-//	if ((jump.started + itime < pMonster->m_dwCurrentTime + TTime(itime/4)) && (jump.state == JS_JUMP)) {
-//		JMP_Finish();
-//	}else {
-//		// tracing enemy here
-//		if (jump.striked) return;
-//		if (!jump.entity) return;
-//		CEntity *pE = dynamic_cast<CEntity *>(jump.entity);
-//		if (!pE) return;
-//
-//		Fvector trace_from;
-//		pMonster->Center(trace_from);
-//		pMonster->setEnabled(false);
-//		Collide::ray_query	l_rq;
-//
-//		if (Level().ObjectSpace.RayPick(trace_from, pMonster->Direction(), jump.ptr_cur->trace_dist, l_rq)) {
-//			if ((l_rq.O == jump.entity) && (l_rq.range < jump.ptr_cur->trace_dist)) {
-//				pMonster->DoDamage(pE, pMonster->m_fHitPower,0,0);
-//				jump.striked = true;
-//			}
-//		}
-//		pMonster->setEnabled(true);			
-//	}
-//
-//	if ((jump.state == JS_JUMP) && (jump.entity)) {
-//		pMonster->LookPosition(jump.entity->Position());
-//	}
-//}
 
