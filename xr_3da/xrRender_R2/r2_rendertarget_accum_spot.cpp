@@ -73,14 +73,8 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 				break;
 			}
 		}
-		if (bIntersect)				{
-			RCache.set_Element(shader->E[2]);	// back
-			CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,	D3DCULL_CW		)); 	
-		}
-		else							{
-			RCache.set_Element(shader->E[1]);	// front
-			CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,	D3DCULL_CCW		)); 	
-		}
+		if (bIntersect)	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,	D3DCULL_CW	)); 	// back
+		else			CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,	D3DCULL_CCW	)); 	// front
 	}
 
 	// 2D texgen (texture adjustment matrix)
@@ -123,16 +117,34 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 		m_Shadow.mulA					(xf_project	);
 	}
 
-	// Draw volume
+	// Common constants
+	Fvector		L_dir,L_clr,L_pos;	float L_spec;
+	L_clr.set					(L->color.r,L->color.g,L->color.b);
+	L_clr.div					(ps_r2_ls_dynamic_range);
+	L_spec						= L_clr.magnitude()/_sqrt(3.f);
+	Device.mView.transform_tiny	(L_pos,L->position);
+	Device.mView.transform_dir	(L_dir,L->direction);
+	L_dir.normalize				();
+
+	// Perform "unmasking" where dot(L,N) < 0
+	if (ps_r2_ls_flags.test(R2FLAG_SPOT_UNMASK))
 	{
+		// General: if stencil>=light_id && alpha<="small_value" => stencil=0x1
+		// Unmasking (note: alpha-func assumed to be "greater" we need "less" here
+		CHK_DX						(HW.pDevice->SetRenderState( D3DRS_ALPHAFUNC, D3DCMP_LESS		));
+		RCache.set_Element			(shader->E[1]);
+		RCache.set_c				("light_direction",	-L_dir.x,-L_dir.y,-L_dir.z,0.f);
+		RCache.set_c				("m_texgen",		m_Texgen);
+		RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0xff,0x01,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE,D3DSTENCILOP_KEEP);
+		CHK_DX						(HW.pDevice->SetRenderState( D3DRS_ALPHAFUNC, D3DCMP_GREATER	));
+	}
+
+	// Draw volume with projective texgen
+	{
+		// Lighting
+		RCache.set_Element			(shader->E[2]);
+
 		// Constants
-		Fvector		L_dir,L_clr,L_pos;	float L_spec;
-		L_clr.set					(L->color.r,L->color.g,L->color.b);
-		L_clr.div					(ps_r2_ls_dynamic_range);
-		L_spec						= L_clr.magnitude()/_sqrt(3.f);
-		Device.mView.transform_tiny	(L_pos,L->position);
-		Device.mView.transform_dir	(L_dir,L->direction);
-		L_dir.normalize				();
 		RCache.set_c				("light_position",	L_pos.x,L_pos.y,L_pos.z,1/L->range);
 		RCache.set_c				("light_direction",	L_dir.x,L_dir.y,L_dir.z,0.f);
 		RCache.set_c				("light_color",		L_clr.x,L_clr.y,L_clr.z,L_spec);

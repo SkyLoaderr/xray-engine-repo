@@ -20,13 +20,13 @@ void	CBlender_accum_spot::Compile(CBlender_Compile& C)
 			C.r2_End				();
 			break;
 		case 1:	// lighting/shadowing - front/back
-		case 2:
+			C.r2_Pass				(r2v("r2_accum_spot"),	r2p("r2_accum_spot_unmask"),FALSE,FALSE,TRUE,D3DBLEND_ZERO,D3DBLEND_ONE,TRUE,4);
+			C.r2_Sampler_rtf		("s_normal",		r2_RT_N_H);
+			C.r2_End				();
+			break;
+		case 2: // lighting/shadowing - front/back
 		case 3:
 			C.r2_Pass				(r2v("r2_accum_spot"),	r2p("r2_accum_spot_prj"),FALSE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE);
-			/*
-			if (ps_r2_ls_flags.test(R2FLAG_SPOTPRJ))	
-			else										C.r2_Pass				("null",				r2p("r2_accum_spot"),FALSE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE);
-			*/
 			C.r2_Sampler_rtf		("s_position",		r2_RT_P);
 			C.r2_Sampler_rtf		("s_normal",		r2_RT_N_H);
 			C.r2_Sampler			("s_material",		r2_material,					D3DTADDRESS_CLAMP,D3DTEXF_LINEAR,D3DTEXF_NONE,D3DTEXF_LINEAR);
