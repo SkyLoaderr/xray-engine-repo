@@ -76,6 +76,8 @@ void CBurerAttack::Execute_Tele()
 		float dist = tele_object.get_object()->Position().distance_to(enemy->Position());
 		pMonster->CTelekinesis::fire(tele_object.get_object(), enemy_pos, dist/10);
 
+		pMonster->StopTeleObjectParticle(tele_object.get_object());
+
 		pMonster->CSoundPlayer::play(eMonsterSoundGraviAttack);
 		m_tAction = ACTION_WAIT_TRIPLE_END;
 	}

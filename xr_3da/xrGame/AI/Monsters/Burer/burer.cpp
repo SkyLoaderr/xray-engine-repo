@@ -145,7 +145,8 @@ void CBurer::Load(LPCSTR section)
 
 	particle_gravi_wave		= pSettings->r_string(section,"Particle_Gravi_Wave");
 	particle_gravi_prepare	= pSettings->r_string(section,"Particle_Gravi_Prepare");
-
+	particle_tele_object	= pSettings->r_string(section,"Particle_Tele_Object");
+	
 	CSoundPlayer::add(pSettings->r_string(section,"sound_gravi_attack"),	16,	SOUND_TYPE_MONSTER_ATTACKING,	2,	u32(1 << 31) | 16,	MonsterSpace::eMonsterSoundGraviAttack, "bip01_head");
 	::Sound->create(sound_gravi_wave,TRUE, pSettings->r_string(section,"sound_gravi_wave"), SOUND_TYPE_WORLD);
 }
@@ -352,5 +353,13 @@ void CBurer::StopGraviPrepare()
 	pA->CParticlesPlayer::StopParticles(particle_gravi_prepare);
 }
 
+void CBurer::StartTeleObjectParticle(CGameObject *pO) 
+{
+	pO->CParticlesPlayer::StartParticles(particle_tele_object,Fvector().set(0.0f,0.1f,0.0f),pO->ID());
+}
+void CBurer::StopTeleObjectParticle(CGameObject *pO) 
+{
+	pO->CParticlesPlayer::StopParticles(particle_tele_object);
+}
 
 

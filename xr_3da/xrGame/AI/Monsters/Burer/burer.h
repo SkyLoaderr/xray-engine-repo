@@ -49,6 +49,7 @@ public:
 
 	LPCSTR	 particle_gravi_wave;
 	LPCSTR   particle_gravi_prepare;
+	LPCSTR	 particle_tele_object;
 
 	ref_sound	sound_gravi_wave;
 
@@ -80,6 +81,9 @@ public:
 
 			void	StartGraviPrepare	();
 			void	StopGraviPrepare	();
+
+			void	StartTeleObjectParticle(CGameObject *pO);
+			void	StopTeleObjectParticle(CGameObject *pO);
 
 private:
 

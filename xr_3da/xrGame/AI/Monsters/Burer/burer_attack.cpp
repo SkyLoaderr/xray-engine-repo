@@ -281,7 +281,8 @@ void CBurerAttack::find_tele_objects()
 		
 		// применить телекинез на объект
 		pMonster->CTelekinesis::activate(obj, 3.f, 2.f, 10000);
-			
+		pMonster->StartTeleObjectParticle(obj);
+
 		// удалить из списка
 		pMonster->tele_objects[i] = pMonster->tele_objects[pMonster->tele_objects.size()-1];
 		pMonster->tele_objects.pop_back();
