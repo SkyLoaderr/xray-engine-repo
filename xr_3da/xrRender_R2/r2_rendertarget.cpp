@@ -305,7 +305,7 @@ void	CRenderTarget::OnDeviceCreate	()
 							fs		*=	powf	(ld,1/8.f);
 								}	break;
 						}
-						s32		_d	=	clampr	(iFloor	(fd*255.5f),					0,255);
+						s32		_d	=	clampr	(iFloor	(fd*255.5f),	0,255);
 						s32		_s	=	clampr	(iFloor	(fs*255.5f),	0,255);
 						*p			=	u16		(_s*256 + _d);
 					}
