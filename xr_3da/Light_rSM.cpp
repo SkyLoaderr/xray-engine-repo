@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "light_rSM.h"
 
-void CLight_rSM::compute_xf_direct	(Fmatrix& mDest, Fmatrix& mView, float p_FOV, float p_A, float p_FAR )
+void CLight_rSM::compute_xf_direct	(Fmatrix& L_view, Fmatrix& L_project, Fmatrix& mView, float p_FOV, float p_A, float p_FAR )
 {
 	// calc window extents in camera coords
 	float YFov			=	deg2rad(p_FOV);
@@ -45,7 +45,6 @@ void CLight_rSM::compute_xf_direct	(Fmatrix& mDest, Fmatrix& mView, float p_FOV,
 	L_pos.mad			(Device.vCameraPosition, L_dir, -30);
 
 	// L-view matrix
-	Fmatrix				L_view;
 	L_view.build_camera_dir	(L_pos,L_dir,L_up);
 
 	// L-view corner points and box
@@ -59,9 +58,5 @@ void CLight_rSM::compute_xf_direct	(Fmatrix& mDest, Fmatrix& mView, float p_FOV,
 	}
 
 	// L_project
-	Fmatrix				L_project;
 	D3DXMatrixPerspectiveOffCenterLH((D3DXMATRIX*)&L_project,vmin.x,vmax.x,vmin.y,vmax.y,vmin.z,vmax.z);
-
-	// Combine
-	mDest.mul			(L_project,L_view);
 }
