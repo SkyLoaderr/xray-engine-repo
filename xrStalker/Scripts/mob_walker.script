@@ -78,10 +78,12 @@ function mob_walker:update(delta)
 		return
 	end
 
-	local suggested_action = mob_alife_mgr.script_interrupted(self.object, actor, self.st.alife_mode)
-	if suggested_action == mob_alife_mgr.disable_scheme then
+	if mob_alife_mgr.alife_control(self.object, actor, self.st.alife_mode) then
 		return
-	elseif suggested_action == mob_alife_mgr.reset_scheme then
+	end
+	
+	-- Монстр после выхода из alife может уже быть не под скриптом, поэтому взять опять под скрипт
+	if not xr_logic.mob_captured(self.object) then
 		self:reset_scheme()
 		return
 	end

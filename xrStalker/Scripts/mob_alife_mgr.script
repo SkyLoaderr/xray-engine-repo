@@ -14,14 +14,14 @@ function cfg_get_mode(ini, section, npc)
 	return alife
 end
 
-function script_interrupted(obj, actor, mode)
+function alife_control(obj, actor, mode)
 	local enemy = obj:get_enemy()
 	if enemy then
 		if not mode.friendly and
 		   (not mode.actor_friendly or enemy:id () ~= actor:id ()) and
 		   (not mode.npc_friendly or enemy:id() == actor:id()) then
 			xr_logic.mob_release(obj)
-			return disable_scheme
+			return true
 		end
 	end
 	
@@ -33,12 +33,8 @@ function script_interrupted(obj, actor, mode)
 		end
 		--printf("_bp [%s]: h.who:name() = %s", obj:name(), h.who:name())
 		xr_logic.mob_release(obj)
-		return disable_scheme
+		return true
 	end
 
-	if not xr_logic.mob_captured(obj) then
-		return reset_scheme
-	end
-	
-	return continue_execution
+	return false
 end
