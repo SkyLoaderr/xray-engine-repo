@@ -118,7 +118,7 @@ public:
 	}
 	IC	void		blend_add	(CBlend* H)
 	{	
-		Blend.push_back(H);	
+		if (Blend.size()<MAX_BLENDED) Blend.push_back(H);	
 	}
 	IC	void		blend_remove(CBlend* H)
 	{
