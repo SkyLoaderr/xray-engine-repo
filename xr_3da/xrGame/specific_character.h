@@ -31,16 +31,17 @@ struct SSpecificCharacterData : CSharedResource
 	virtual ~SSpecificCharacterData ();
 
 	//игровое имя персонажа
-	xr_string m_sGameName;
+	xr_string	m_sGameName;
 	//текст с биографией персонажа (линк на string table)
-	xr_string m_sBioText;
+	xr_string	m_sBioText;
 	//строка содержащая предметы, которые нужно проспавнить 
-	xr_string m_sSupplySpawn;
+	xr_string	m_sSupplySpawn;
 	//имя секции конфигурации настроек NPC для персонажа
-	xr_string m_sNpcConfigSect;
+	xr_string	m_sNpcConfigSect;
 	//имя секции конфигурации звука для NPC персонажа
-	xr_string m_sSndConfigSect;
+	xr_string	m_sSndConfigSect;
 
+	float		m_fPanic_threshold;
 #endif
 
 	//имя модели

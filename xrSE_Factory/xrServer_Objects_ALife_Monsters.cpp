@@ -944,29 +944,6 @@ void CSE_ALifeZoneVisual::FillProps(LPCSTR pref, PropItemVec& values)
 	PHelper().CreateChoose(values,	PrepareKey(pref,abstract->name(),"Attack animation"),	&attack_animation, smSkeletonAnims,0,(void*)*visual_name);
 }
 //-------------------------------------------------------------------------
-//
-//void CSE_ALifeAnomalousZoneMoving::UPDATE_Write(NET_Packet &tNetPacket)
-//{
-//	inherited::UPDATE_Write		(tNetPacket);
-//
-//	tNetPacket.w_u32			(timestamp		);
-//	tNetPacket.w_vec3			(o_Position		);
-//	tNetPacket.w_vec3			(o_Angle		);	
-//	tNetPacket.w_u32			(m_tNodeID		);
-//};
-//
-//void CSE_ALifeAnomalousZoneMoving::UPDATE_Read	(NET_Packet &tNetPacket)
-//{
-//	inherited::UPDATE_Read		(tNetPacket);
-//
-//	tNetPacket.w_u32			(timestamp		);
-//	tNetPacket.w_vec3			(o_Position		);
-//	tNetPacket.w_vec3			(o_Angle		);	
-//	tNetPacket.w_u32			(m_tNodeID		);
-//};
-//
-//-------------------------------------------------------------------------
-
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeCreatureAbstract
 ////////////////////////////////////////////////////////////////////////////

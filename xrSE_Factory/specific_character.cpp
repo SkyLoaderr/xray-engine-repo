@@ -16,24 +16,25 @@
 
 SSpecificCharacterData::SSpecificCharacterData()
 {
-	m_sGameName.clear();
-	m_sBioText.clear();
-	m_sVisual.clear();
-	m_sSupplySpawn.clear();
-	m_sNpcConfigSect.clear();
+	m_sGameName.clear		();
+	m_sBioText.clear		();
+	m_sVisual.clear			();
+	m_sSupplySpawn.clear	();
+	m_sNpcConfigSect.clear	();
 
 
-	m_StartDialog	= NULL;
-	m_ActorDialogs.clear(); 
+	m_StartDialog			= NULL;
+	m_ActorDialogs.clear	(); 
 
-	m_iIconX = m_iIconY = -1;
-	m_iMapIconX = m_iMapIconY = -1;
+	m_iIconX				= m_iIconY = -1;
+	m_iMapIconX				= m_iMapIconY = -1;
 
-	m_Rank = NO_RANK;
-	m_Reputation = NO_REPUTATION;
+	m_Rank					= NO_RANK;
+	m_Reputation			= NO_REPUTATION;
 
-	m_bNoRandom = false;
-	m_bDefaultForCommunity = false;
+	m_bNoRandom				= false;
+	m_bDefaultForCommunity	= false;
+	m_fPanic_threshold		= 0.0f;
 }
 
 SSpecificCharacterData::~SSpecificCharacterData()
@@ -137,6 +138,8 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 	data()->m_sGameName		= uiXml.Read("name", 0, "");
 	data()->m_sBioText		= uiXml.Read("bio", 0, "");
 
+
+	data()->m_fPanic_threshold =uiXml.ReadFlt("panic_threshold",0);
 #endif
 
 	data()->m_sVisual		= uiXml.Read("visual", 0, "");

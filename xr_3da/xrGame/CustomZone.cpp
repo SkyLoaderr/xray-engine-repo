@@ -342,8 +342,6 @@ BOOL CCustomZone::net_Spawn(CSE_Abstract* DC)
 	m_dwLastTimeMoved			= Device.dwTimeGlobal;
 	m_vPrevPos.set				(Position());
 
-//	if (Game().Type() != GAME_SINGLE)
-//		OnStateSwitch			(eZoneStateDisabled);
 
 	PrefetchArtefacts			();
 
@@ -528,8 +526,6 @@ void CCustomZone::shedule_Update(u32 dt)
 
 void CCustomZone::feel_touch_new	(CObject* O) 
 {
-//	if (smart_cast<CCustomZone*>(O))				return;
-//	if (0==smart_cast<CKinematics*>(O->Visual()))	return;
 	
 	if(bDebug) HUD().outMessage(0xffffffff,O->cName(),"entering a zone.");
 	if(smart_cast<CActor*>(O) && O == Level().CurrentEntity())
