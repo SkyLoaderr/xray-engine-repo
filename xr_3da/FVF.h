@@ -6,6 +6,7 @@ namespace FVF {
 	struct L {
 		Fvector		p;
 		DWORD		color;
+		IC void		set(const L& src) {*this = src;};
 		IC void		set(float x, float y, float z, DWORD C) { p.set(x,y,z); color=C; }
 		IC void		set(const Fvector& _p, DWORD C) { p.set(_p); color=C; }
 	};
@@ -14,6 +15,7 @@ namespace FVF {
 		Fvector		p;
 		DWORD		color;
 		Fvector2	t;
+		IC void		set(const LIT& src) {*this = src;};
 		IC void		set(float x, float y, float z, DWORD C, float u, float v) { p.set(x,y,z); color=C; t.set(u,v);}
 		IC void		set(const Fvector& _p, DWORD C, float u, float v) { p.set(_p); color=C; t.set(u,v);}
 	};
