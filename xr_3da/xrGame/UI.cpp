@@ -60,16 +60,20 @@ bool CUI::Render(){
 }
 //--------------------------------------------------------------------
 
-DWORD ScaleAlpha(DWORD val, float factor){
-    BYTE r, g, b, a;
-    a = (BYTE) (float((BYTE)(val >> 24))*factor);
-    r = (BYTE) (val >> 16);
-    g = (BYTE) (val >>  8);
-    b = (BYTE) (val >>  0);
+DWORD ScaleAlpha(DWORD val, float factor)
+{
+	DWORD	r, g, b, a;
+
+	float	_a		= float((val >> 24)&0xff)*factor;
+	a				= iFloor(_a);
+	r				= (val >> 16)&0xff;
+	g				= (val >>  8)&0xff;
+	b				= (val >>  0)&0xff;
     return ((DWORD)(a<<24) | (r<<16) | (g<<8) | (b));
 }
 
-void CUI::OnMove(){
+void CUI::OnMove()
+{
 	CEntity* m_Actor = dynamic_cast<CEntity*>(Level().CurrentEntity());
 	if (m_Actor&&m_Actor->Local())
 		UIZoneMap.UpdateRadar(m_Actor,Level().Teams[m_Actor->id_Team]);
