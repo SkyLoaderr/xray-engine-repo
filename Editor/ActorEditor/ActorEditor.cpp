@@ -66,8 +66,6 @@ USELIB("lib\dinput.lib");
 USEUNIT("lib\c_dinput.cpp");
 USEUNIT("engine\pure.cpp");
 USEUNIT("engine\xrImage_Resampler.cpp");
-USEOBJ("Intermediate\cpuid.obj");
-USEOBJ("Intermediate\_math.obj");
 USEFORM("LeftBar.cpp", fraLeftBar); /* TFrame: File Type */
 USEFORM("LogForm.cpp", frmLog);
 USEUNIT("Editor\Library.cpp");
@@ -115,6 +113,12 @@ USEFORM("Editor\TopBar.cpp", fraTopBar); /* TFrame: File Type */
 USEUNIT("Editor\EditMeshPick.cpp");
 USEUNIT("Editor\EditObjectEditor.cpp");
 USEFORM("Editor\PropertiesList.cpp", frmProperties);
+USEUNIT("Engine\Blenders\Blender_LmBmmD.cpp");
+USEOBJ("Intermediate\cpuid.obj");
+USEOBJ("Intermediate\_math.obj");
+USEUNIT("Engine\Blenders\Blender_LaEmB.cpp");
+USEUNIT("Engine\Blenders\Blender_BmmD.cpp");
+USEUNIT("Engine\Blenders\Blender_Lm(EbB).cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

@@ -20,6 +20,9 @@ struct	st_ObjectDB;
 
 class CSurface
 {
+#ifdef _ACTOR_EDITOR
+public:
+#endif
 	AnsiString		m_Name;
     AnsiString		m_Texture;	//
     AnsiString		m_VMap;		//
@@ -159,6 +162,7 @@ public:
     void			GetBoneWorldTransform	(DWORD bone_idx, float t, CSMotion* motion, Fmatrix& matrix);
     IC SMotionIt	FirstSMotion			()	{return m_SMotions.begin();}
     IC SMotionIt	LastSMotion				()	{return m_SMotions.end();}
+	SMotionVec&		SMotions				()	{return m_SMotions;}
     IC int			SMotionCount 			()	{return m_SMotions.size();}
     IC OMotionIt	FirstOMotion			()	{return m_OMotions.begin();}
     IC OMotionIt	LastOMotion				()	{return m_OMotions.end();}
@@ -177,6 +181,7 @@ public:
 	void			SetActiveOMotion		(COMotion* mot, bool upd_t=true);
     IC bool			IsSkeleton				()	{return !!m_Bones.size();}
     IC bool			IsSMotionActive			()	{return IsSkeleton()&&m_ActiveSMotion; }
+    CSMotion*		GetActiveSMotion		()	{return m_ActiveSMotion; }
 	void			SetActiveSMotion		(CSMotion* mot);
 	bool 			CheckBoneCompliance		(CSMotion* M);
 

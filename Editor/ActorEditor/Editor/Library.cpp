@@ -131,7 +131,7 @@ CEditableObject* ELibrary::CreateEditObject(LPCSTR nm,int* age)
 {
 	VERIFY(m_bReady);
     R_ASSERT(nm&&nm[0]);
-    sh_name name; strcpy(name,nm); strlwr(name);
+    string1024 name; strcpy(name,nm); strlwr(name);
     CEditableObject* m_EditObject = 0;
     FilePairIt p_it = m_Objects.find(name);
     if (p_it==m_Objects.end()) return 0;

@@ -28,14 +28,14 @@
       Intermediate\Xr_input.obj Intermediate\fcontroller.obj 
       Intermediate\XR_CustomFont.obj Intermediate\XR_HUDFont.obj 
       Intermediate\c_dinput.obj Intermediate\pure.obj 
-      Intermediate\xrImage_Resampler.obj Intermediate\cpuid.obj 
-      Intermediate\_math.obj Intermediate\LeftBar.obj Intermediate\LogForm.obj 
-      Intermediate\Library.obj Intermediate\ChoseForm.obj 
-      Intermediate\xr_avi.obj Intermediate\SH_Constant.obj 
-      Intermediate\SH_Matrix.obj Intermediate\SH_Texture.obj 
-      Intermediate\Shader.obj Intermediate\Texture.obj 
-      Intermediate\TextureManager.obj Intermediate\TextureManager_Loader.obj 
-      Intermediate\tss_def.obj Intermediate\Image.obj Intermediate\tga.obj 
+      Intermediate\xrImage_Resampler.obj Intermediate\LeftBar.obj 
+      Intermediate\LogForm.obj Intermediate\Library.obj 
+      Intermediate\ChoseForm.obj Intermediate\xr_avi.obj 
+      Intermediate\SH_Constant.obj Intermediate\SH_Matrix.obj 
+      Intermediate\SH_Texture.obj Intermediate\Shader.obj 
+      Intermediate\Texture.obj Intermediate\TextureManager.obj 
+      Intermediate\TextureManager_Loader.obj Intermediate\tss_def.obj 
+      Intermediate\Image.obj Intermediate\tga.obj 
       Intermediate\BlenderDefault.obj Intermediate\Blender_default_aref.obj 
       Intermediate\Blender_Editor_Selection.obj 
       Intermediate\Blender_Editor_Wire.obj Intermediate\Blender_Recorder.obj 
@@ -51,7 +51,10 @@
       Intermediate\FrameEmitter.obj Intermediate\TLSPRITE.obj 
       Intermediate\CustomObject.obj Intermediate\TopBar.obj 
       Intermediate\EditMeshPick.obj Intermediate\EditObjectEditor.obj 
-      Intermediate\PropertiesList.obj"/>
+      Intermediate\PropertiesList.obj Intermediate\Blender_LmBmmD.obj 
+      Intermediate\cpuid.obj Intermediate\_math.obj 
+      Intermediate\Blender_LaEmB.obj Intermediate\Blender_BmmD.obj 
+      Intermediate\Blender_Lm(EbB).obj"/>
     <RESFILES value="ActorEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -66,7 +69,7 @@
     <SPARELIBS value="Vcl50.lib bcbsmp50.lib VCLX50.lib dclusr50.lib elpackB5.lib"/>
     <PACKAGES value="Vcl50.bpi Vclx50.bpi bcbsmp50.bpi TeeUI50.bpi Tee50.bpi Vclbde50.bpi 
       TeeDB50.bpi dclusr50.bpi"/>
-    <PATHCPP value=".;editor;engine;lib;Intermediate;Engine\BLENDERS"/>
+    <PATHCPP value=".;editor;engine;lib;Engine\BLENDERS;Intermediate"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>

@@ -123,7 +123,11 @@ TElTreeItem* __fastcall TfrmProperties::AddItem(TElTreeItem* parent, DWORD type,
     case PROP_TEXT:		CS->CellType = sftText; 	TI->ColumnText->Add((LPSTR)value);  break;
     case PROP_COLOR:	CS->CellType = sftUndef; 	CS->Style = ElhsOwnerDraw; break;
     case PROP_TEXTURE:	CS->CellType = sftUndef; 	TI->ColumnText->Add((LPSTR)value);  CS->Style = ElhsOwnerDraw; break;
-    case PROP_SHADER:	CS->CellType = sftUndef; 	TI->ColumnText->Add((LPSTR)value);  CS->Style = ElhsOwnerDraw; break;
+    case PROP_SH_ENGINE:CS->CellType = sftUndef; 	TI->ColumnText->Add((LPSTR)value);  CS->Style = ElhsOwnerDraw; break;
+    case PROP_SH_COMPILE:CS->CellType = sftUndef; 	TI->ColumnText->Add((LPSTR)value);  CS->Style = ElhsOwnerDraw; break;
+    case PROP_S_TEXTURE:	CS->CellType = sftUndef;TI->ColumnText->Add(*(AnsiString*)value);  CS->Style = ElhsOwnerDraw; break;
+    case PROP_S_SH_ENGINE:	CS->CellType = sftUndef;TI->ColumnText->Add(*(AnsiString*)value);  CS->Style = ElhsOwnerDraw; break;
+    case PROP_S_SH_COMPILE:	CS->CellType = sftUndef;TI->ColumnText->Add(*(AnsiString*)value);  CS->Style = ElhsOwnerDraw; break;
     default: THROW2("PROP_????");
     }
     return TI;
@@ -153,8 +157,12 @@ void __fastcall TfrmProperties::tvPropertiesItemDraw(TObject *Sender,
   	if (SectionIndex == 1){
     	DWORD type = (DWORD)Item->Tag;
         switch(type){
+        case PROP_S_TEXTURE:
+        case PROP_S_SH_ENGINE:
+        case PROP_S_SH_COMPILE:
         case PROP_TEXTURE:
-        case PROP_SHADER:
+        case PROP_SH_ENGINE:
+        case PROP_SH_COMPILE:
         case PROP_WAVE:{
             R.Right	-=	10;
             R.Left 	+= 	1;
@@ -238,7 +246,11 @@ void __fastcall TfrmProperties::tvPropertiesMouseDown(TObject *Sender,
         case PROP_WAVE: 	CustomClick(item); 	break;
         case PROP_COLOR: 	ColorClick(item); 	break;
         case PROP_TEXTURE: 	TextureClick(item);	break;
-        case PROP_SHADER: 	ShaderClick(item); 	break;
+        case PROP_SH_ENGINE:ShaderEngineClick(item); 	break;
+        case PROP_SH_COMPILE:ShaderCompileClick(item); 	break;
+        case PROP_S_TEXTURE: 	STextureClick(item);	break;
+        case PROP_S_SH_ENGINE:	SShaderEngineClick(item); 	break;
+        case PROP_S_SH_COMPILE:	SShaderCompileClick(item); 	break;
         case PROP_INTEGER:
         case PROP_FLOAT:
         	PrepareLWNumber(item);
@@ -332,13 +344,65 @@ void __fastcall TfrmProperties::TextureClick(TElTreeItem* item)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmProperties::ShaderClick(TElTreeItem* item)
+void __fastcall TfrmProperties::ShaderEngineClick(TElTreeItem* item)
 {
-	VERIFY(PROP_SHADER==item->Tag);
+	VERIFY(PROP_SH_ENGINE==item->Tag);
     LPSTR sh = (LPSTR)item->Data;
     LPCSTR name = TfrmChoseItem::SelectShader(sh);
     if (name&&name[0]&&strcmp(sh,name)!=0){
         strcpy(sh,name);
+        item->ColumnText->Strings[0]= name;
+		bModified = true;
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmProperties::ShaderCompileClick(TElTreeItem* item)
+{
+	VERIFY(PROP_SH_COMPILE==item->Tag);
+    LPSTR sh = (LPSTR)item->Data;
+    LPCSTR name = TfrmChoseItem::SelectShaderXRLC(sh);
+    if (name&&name[0]&&strcmp(sh,name)!=0){
+        strcpy(sh,name);
+        item->ColumnText->Strings[0]= name;
+		bModified = true;
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmProperties::STextureClick(TElTreeItem* item)
+{
+	VERIFY(PROP_TEXTURE==item->Tag);
+    AnsiString& tex = *(AnsiString*)item->Data;
+    LPCSTR name = TfrmChoseItem::SelectTexture(false,tex.c_str());
+    if (name&&name[0]&&strcmp(tex.c_str(),name)!=0){
+        tex=name;
+        item->ColumnText->Strings[0]= name;
+		bModified = true;
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmProperties::SShaderEngineClick(TElTreeItem* item)
+{
+	VERIFY(PROP_SH_ENGINE==item->Tag);
+    AnsiString& sh = *(AnsiString*)item->Data;
+    LPCSTR name = TfrmChoseItem::SelectShader(sh.c_str());
+    if (name&&name[0]&&strcmp(sh.c_str(),name)!=0){
+        sh=name;
+        item->ColumnText->Strings[0]= name;
+		bModified = true;
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmProperties::SShaderCompileClick(TElTreeItem* item)
+{
+	VERIFY(PROP_SH_COMPILE==item->Tag);
+    AnsiString& sh = *(AnsiString*)item->Data;
+    LPCSTR name = TfrmChoseItem::SelectShaderXRLC(sh.c_str());
+    if (name&&name[0]&&strcmp(sh.c_str(),name)!=0){
+        sh=name;
         item->ColumnText->Strings[0]= name;
 		bModified = true;
     }

@@ -22,7 +22,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 
 	switch( _Command ){
 	case COMMAND_INITIALIZE:{
-		FS.OnCreate			(Device.m_hWnd);
+		FS.OnCreate			();
 		InitMath			();
         // make interface
 	    fraBottomBar		= new TfraBottomBar(0);
@@ -61,21 +61,48 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	case COMMAND_EDITOR_PREF:
 	    frmEditorPreferences->ShowModal();
         break;
-	case COMMAND_SAVE:
-    	Tools.Save();
-		Command(COMMAND_UPDATE_CAPTION);
-    	break;
-    case COMMAND_LOAD:{
-//    	AnsiString fn=m_EditObject?;
-//S    	if (FS.GetOpenName(&FS.m_Objects,fn))
-//    	Tools.Load(fn.c_str());
+    case COMMAND_SAVEAS:{
+		AnsiString fn = m_LastFileName;
+		if (FS.GetSaveName(FS.m_Objects,fn)) Command(COMMAND_SAVE, (DWORD)fn.c_str());
     	}break;
-    case COMMAND_RELOAD:
-		if (!Tools.IfModified()) return false;
-        if (ELog.DlgMsg(mtConfirmation,"Reload library?")==mrYes)
-        	Tools.Reload();
-		Command(COMMAND_UPDATE_CAPTION);
-    	break;
+	case COMMAND_SAVE:{
+    	AnsiString fn;
+        if (p1)	fn = (char*)p1;
+        else	fn = m_LastFileName;
+		if (Tools.Save(fn.c_str())){
+        	Command(COMMAND_UPDATE_CAPTION);
+        }
+    	}break;
+    case COMMAND_IMPORT:{
+    	AnsiString fn;
+    	if (FS.GetOpenName(FS.m_Import,fn))
+        	if (Command( COMMAND_LOAD, (DWORD)fn.c_str() ))
+            	Command( COMMAND_SAVEAS );
+    	}break;
+    case COMMAND_LOAD:{
+    	AnsiString fn;
+        if (p1)	fn = (char*)p1;
+        else	fn = m_LastFileName;
+        if( p1 || FS.GetOpenName( FS.m_Objects, fn ) ){
+            if (!Tools.IfModified()){
+                bRes=false;
+                break;
+            }
+            if ((0!=stricmp(fn.c_str(),m_LastFileName))&&FS.CheckLocking(0,fn.c_str(),false,true)){
+                bRes=false;
+                break;
+            }
+            if ((0==stricmp(fn.c_str(),m_LastFileName))&&FS.CheckLocking(0,fn.c_str(),true,false)){
+                FS.UnlockFile(0,fn.c_str());
+            }
+	    	if (!Tools.Load(fn.c_str())){
+            	ELog.DlgMsg(mtError,"Can't load file '%s'",fn.c_str());
+            	bRes=false;
+            	break;
+            }
+			strcpy(m_LastFileName,fn.c_str());
+        }
+    	}break;
 	case COMMAND_CLEAR:
 		{
 			Device.m_Camera.Reset();
@@ -186,7 +213,7 @@ void __fastcall TUI::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
 char* TUI::GetCaption()
 {
 	VERIFY(m_bReady);
- 	return "KARMA";
+	return GetEditFileName()[0]?GetEditFileName():"noname";
 }
 
 char* TUI::GetTitle()

@@ -8,6 +8,8 @@
 #include "xr_trims.h"
 #include "UI_Tools.h"
 #include "FolderLib.h"
+#include "EditObject.h"
+#include "Motion.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ExtBtn"
@@ -82,12 +84,6 @@ void TfraLeftBar::UpdateBar(){
 void __fastcall TfraLeftBar::ebSaveClick(TObject *Sender)
 {
 	UI.Command( COMMAND_SAVE );
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::ebReloadClick(TObject *Sender)
-{
-	UI.Command( COMMAND_RELOAD );
 }
 //---------------------------------------------------------------------------
 
@@ -236,22 +232,8 @@ void __fastcall TfraLeftBar::tvMotionsItemFocused(TObject *Sender)
 	AnsiString name;
     FOLDER::MakeName(tvMotions->Selected, 0, name, false);
 	Tools.SetCurrentMotion(name.c_str());
+	UpdateMotionProperties();
 }
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::ebParticleCloneClick(TObject *Sender)
-{
-/*    TElTreeItem* pNode = tvParticles->Selected;
-    if (pNode&&FOLDER::IsObject(pNode)){
-		AnsiString full_name;
-		FOLDER::MakeName(pNode,0,full_name,false);
-        PS::SDef* P = Tools.ClonePS(full_name.c_str());
-		Tools.SetCurrentPS(P);
-		Tools.Modified();
-    }else{
-		ELog.DlgMsg(mtInformation, "At first select item.");
-    }
-*/}
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::tvMotionsKeyDown(TObject *Sender, WORD &Key,
@@ -400,6 +382,28 @@ void __fastcall TfraLeftBar::tvMotionsDragDrop(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
+void TfraLeftBar::UpdateMotionList()
+{
+	tvMotions->Items->Clear();
+    if (Tools.CurrentObject()){
+		SMotionVec&	lst=Tools.CurrentObject()->SMotions();
+    	for (SMotionIt it=lst.begin(); it!=lst.end(); it++)
+        	FOLDER::AppendObject(tvMotions,(*it)->Name());
+    }
+}
+//---------------------------------------------------------------------------
+
+void TfraLeftBar::UpdateMotionProperties()
+{
+	if (Tools.CurrentObject()){
+    	paProperties->Enabled = true;
+        Tools.FillPropertiesList();
+    }else{
+    	paProperties->Enabled = false;
+    }
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfraLeftBar::ebCurrentPSPlayClick(TObject *Sender)
 {
 //	Tools.PlayCurrentPS();
@@ -412,16 +416,28 @@ void __fastcall TfraLeftBar::ebCurrentPSStopClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::Import1Click(TObject *Sender)
+{
+	UI.Command( COMMAND_IMPORT );
+}
+//---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::Load1Click(TObject *Sender)
+{
+	UI.Command( COMMAND_LOAD );
+    UpdateMotionList();
+}
+//---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::Save2Click(TObject *Sender)
+{
+	UI.Command( COMMAND_SAVE );
+}
+//---------------------------------------------------------------------------
 
-
-
-
-
-
-
-
-
-
+void __fastcall TfraLeftBar::SaevAs1Click(TObject *Sender)
+{
+	UI.Command( COMMAND_SAVEAS );
+}
+//---------------------------------------------------------------------------
 

@@ -72,13 +72,12 @@ __published:	// IDE-managed Components
 	TMxLabel *RxLabel1;
 	TMenuItem *Load1;
 	TMenuItem *Save2;
-	TMenuItem *Reload2;
 	TMenuItem *Export2;
 	TMenuItem *SaevAs1;
 	TMenuItem *N5;
 	TBevel *Bevel4;
+	TMenuItem *Import1;
     void __fastcall ebSaveClick(TObject *Sender);
-    void __fastcall ebReloadClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);
     void __fastcall PanelMaximizeClick(TObject *Sender);
     void __fastcall ebEditorPreferencesClick(TObject *Sender);
@@ -96,7 +95,6 @@ __published:	// IDE-managed Components
 	void __fastcall CollapseAll1Click(TObject *Sender);
 	void __fastcall ebParticleShaderRemoveClick(TObject *Sender);
 	void __fastcall tvMotionsItemFocused(TObject *Sender);
-	void __fastcall ebParticleCloneClick(TObject *Sender);
 	void __fastcall tvMotionsKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
 	void __fastcall Rename1Click(TObject *Sender);
@@ -111,9 +109,15 @@ __published:	// IDE-managed Components
           int Y);
 	void __fastcall ebCurrentPSPlayClick(TObject *Sender);
 	void __fastcall ebCurrentPSStopClick(TObject *Sender);
+	void __fastcall Import1Click(TObject *Sender);
+	void __fastcall Load1Click(TObject *Sender);
+	void __fastcall Save2Click(TObject *Sender);
+	void __fastcall SaevAs1Click(TObject *Sender);
 private:	// User declarations
 	void __fastcall ShowPPMenu		(TMxPopupMenu* M, TObject* btn);
     TElTreeItem*	DragItem;
+    void			UpdateMotionList();
+    void			UpdateMotionProperties();
 public:		// User declarations
         __fastcall TfraLeftBar		(TComponent* Owner);
     void 			UpdateBar		();

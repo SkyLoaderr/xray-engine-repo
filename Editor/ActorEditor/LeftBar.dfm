@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 650
+  Height = 654
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 212
-    Height = 650
+    Height = 654
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -152,7 +152,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 69
       Width = 210
-      Height = 188
+      Height = 192
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -174,13 +174,13 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 208
-        Height = 157
+        Height = 161
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
         object Bevel2: TBevel
           Left = 0
-          Top = 156
+          Top = 160
           Width = 208
           Height = 1
           Align = alBottom
@@ -198,7 +198,7 @@ object fraLeftBar: TfraLeftBar
           Left = 0
           Top = 35
           Width = 208
-          Height = 121
+          Height = 125
           Cursor = crDefault
           LeftPosition = 0
           DragCursor = crDrag
@@ -331,7 +331,6 @@ object fraLeftBar: TfraLeftBar
             Font.Style = []
             Margin = 13
             ParentFont = False
-            OnClick = ebParticleCloneClick
           end
           object ebEngineShaderFile: TExtBtn
             Left = 1
@@ -392,7 +391,7 @@ object fraLeftBar: TfraLeftBar
       end
       object paAction: TPanel
         Left = 1
-        Top = 171
+        Top = 175
         Width = 208
         Height = 16
         Align = alBottom
@@ -423,7 +422,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paProperties: TPanel
       Left = 1
-      Top = 299
+      Top = 303
       Width = 210
       Height = 350
       Hint = 'Scene commands'
@@ -489,7 +488,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paCurrentPS: TPanel
       Left = 1
-      Top = 257
+      Top = 261
       Width = 210
       Height = 42
       Hint = 'Scene commands'
@@ -688,7 +687,7 @@ object fraLeftBar: TfraLeftBar
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 117
+    Left = 181
     Top = 86
     object Save1: TMenuItem
       Caption = 'Load'
@@ -710,22 +709,26 @@ object fraLeftBar: TfraLeftBar
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 117
+    Left = 181
     Top = 18
     object Load1: TMenuItem
       Caption = 'Load'
-    end
-    object Reload2: TMenuItem
-      Caption = 'Reload'
+      OnClick = Load1Click
     end
     object Save2: TMenuItem
       Caption = 'Save'
+      OnClick = Save2Click
     end
     object SaevAs1: TMenuItem
       Caption = 'Save As...'
+      OnClick = SaevAs1Click
     end
     object N5: TMenuItem
       Caption = '-'
+    end
+    object Import1: TMenuItem
+      Caption = 'Import'
+      OnClick = Import1Click
     end
     object Export2: TMenuItem
       Caption = 'Export'

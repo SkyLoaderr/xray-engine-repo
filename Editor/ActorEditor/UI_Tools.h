@@ -56,13 +56,15 @@ public:
     bool				IsModified			(){return m_bModified;}
     void				Modified			();
 
+    CEditableObject*	CurrentObject		(){return m_EditObject;}
     void				SetCurrentMotion	(LPCSTR name);
+    void				FillPropertiesList	();
 
     void				ZoomObject			();
     void				ChangeAction		(EAction action);
 
-    void				Load				(LPCSTR name);
-    void				Save				();
+    bool				Load				(LPCSTR name);
+    bool				Save				(LPCSTR name);
     void				Reload				();
     void				ApplyChanges		();
 

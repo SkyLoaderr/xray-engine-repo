@@ -10,7 +10,6 @@
 #include "leftbar.h"
 #include "topbar.h"
 #include "xr_trims.h"
-#include "library.h"
 #include "PropertiesList.h"
 
 //------------------------------------------------------------------------------
@@ -60,7 +59,7 @@ void CActorTools::OnDestroy(){
 //    FS.UnlockFile(&FS.m_GameRoot,"particles.xr");
 	TfrmProperties::DestroyProperties(m_Props);
 
-	Lib.RemoveEditObject(m_EditObject);
+	_DELETE(m_EditObject);
     Device.seqDevCreate.Remove(this);
     Device.seqDevDestroy.Remove(this);
 }
@@ -68,7 +67,7 @@ void CActorTools::OnDestroy(){
 
 bool CActorTools::IfModified(){
     if (m_bModified){
-        int mr = ELog.DlgMsg(mtConfirmation, "The ... has been modified.\nDo you want to save your changes?");
+        int mr = ELog.DlgMsg(mtConfirmation, "The '%s' has been modified.\nDo you want to save your changes?",UI.GetEditFileName());
         switch(mr){
         case mrYes: if (!UI.Command(COMMAND_SAVE)) return false; else m_bModified = FALSE; break;
         case mrNo: m_bModified = FALSE; break;
@@ -145,12 +144,21 @@ void CActorTools::Clear(){
     UI.RedrawScene();
 }
 
-void CActorTools::Load(LPCSTR name)
+bool CActorTools::Load(LPCSTR name)
 {
 	VERIFY(m_bReady);
+	CEditableObject* O = new CEditableObject(name);
+	if (O->Load(name)&&O->IsDynamic()){
+    	_DELETE(m_EditObject);
+        m_EditObject = O;
+        return true;
+    }
+    _DELETE(O);
+
+    return false;
 }
 
-void CActorTools::Save()
+bool CActorTools::Save(LPCSTR name)
 {
 	VERIFY(m_bReady);
     ApplyChanges();
@@ -291,6 +299,32 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
 
 void CActorTools::SetCurrentMotion(LPCSTR name)
 {
-	//
+	if (m_EditObject)
+    	m_EditObject->SetActiveSMotion(m_EditObject->FindSMotionByName(name));
 }
+
+void CActorTools::FillPropertiesList()
+{
+	R_ASSERT(m_EditObject);
+	CSMotion* S = m_EditObject->GetActiveSMotion();
+    if (S){
+    	m_Props->BeginFillMode();
+        TElTreeItem* M=0;
+        TElTreeItem* N=0;
+        M = m_Props->AddItem(0,PROP_MARKER,		"Surfaces");
+        {
+        	for (SurfaceIt& it=m_EditObject->FirstSurface(); it!=m_EditObject->LastSurface(); it++){
+            	CSurface* S=*it;
+            	N = m_Props->AddItem(M,PROP_MARKER,	S->_Name());
+                {
+					m_Props->AddItem(N,PROP_S_SH_ENGINE,	"Shader",	&S->m_ShaderName);
+					m_Props->AddItem(N,PROP_S_SH_COMPILE,	"Compile",	&S->m_ShaderXRLCName);
+					m_Props->AddItem(N,PROP_S_TEXTURE,		"Texture",	&S->m_Texture);
+                }
+            }
+        }
+    	m_Props->EndFillMode();
+    }
+}
+
 

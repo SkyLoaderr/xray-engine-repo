@@ -100,7 +100,11 @@ private:	// User declarations
     void __fastcall PMItemClick(TObject *Sender);
 	void __fastcall CustomClick(TElTreeItem* item);
 	void __fastcall TextureClick(TElTreeItem* item);
-	void __fastcall ShaderClick(TElTreeItem* item);
+	void __fastcall ShaderEngineClick(TElTreeItem* item);
+	void __fastcall ShaderCompileClick(TElTreeItem* item);
+	void __fastcall STextureClick(TElTreeItem* item);
+	void __fastcall SShaderEngineClick(TElTreeItem* item);
+	void __fastcall SShaderCompileClick(TElTreeItem* item);
 	void __fastcall ColorClick(TElTreeItem* item);
 	Graphics::TBitmap* m_BMEllipsis;
     bool bModified;
@@ -156,17 +160,21 @@ public:		// User declarations
 };
 //---------------------------------------------------------------------------
 
-#define PROP_TYPE 		0x1000
-#define PROP_WAVE 		0x1001
-#define PROP_FLAG 		0x1002
-#define PROP_TOKEN	 	0x1003
-#define PROP_INTEGER 	0x1004
-#define PROP_FLOAT	 	0x1005
-#define PROP_BOOL	  	0x1006
-#define PROP_MARKER		0x1007
-#define PROP_COLOR		0x1008
-#define PROP_TEXT		0x1009
-#define PROP_SHADER		0x1010
-#define PROP_TEXTURE	0x1011
+#define PROP_TYPE 			0x1000
+#define PROP_WAVE 			0x1001
+#define PROP_FLAG 			0x1002
+#define PROP_TOKEN	 		0x1003
+#define PROP_INTEGER 		0x1004
+#define PROP_FLOAT	 		0x1005
+#define PROP_BOOL	  		0x1006
+#define PROP_MARKER			0x1007
+#define PROP_COLOR			0x1008
+#define PROP_TEXT			0x1009
+#define PROP_SH_ENGINE		0x1010
+#define PROP_SH_COMPILE		0x1011
+#define PROP_TEXTURE		0x1012
+#define PROP_S_SH_ENGINE	0x1013
+#define PROP_S_SH_COMPILE	0x1014
+#define PROP_S_TEXTURE		0x1015
 //---------------------------------------------------------------------------
 #endif

@@ -3,8 +3,8 @@
 
 #include "ui_camera.h"
 #include "frustum.h"
-#include "texturemanager.h"
 #include "hw.h"
+#include "texturemanager.h"
 #include "pure.h"
 #include "ftimer.h"
 #include "estats.h"
