@@ -204,7 +204,7 @@ CRender::CRender()
 	b_fp16				= (strstr(Core.Params,"-fp16"))?TRUE:FALSE;
 	b_Tshadows			= (strstr(Core.Params,"-notsh"))?FALSE:TRUE;
 	b_distortion		= (strstr(Core.Params,"-nodistort"))?FALSE:TRUE;
-	// b_nvstecil			= (strstr(Core.Params,"-nonvstencil"))?FALSE:TRUE;
+	b_nvstecil			= (strstr(Core.Params,"-nonvstencil"))?FALSE:TRUE;
 	b_nvstecil			= FALSE;
 }
 
