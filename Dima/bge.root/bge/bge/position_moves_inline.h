@@ -36,8 +36,7 @@ IC	void CSPositionMoves::add				(const move_type &move)
 TEMPLATE_SPECIALIZATION
 IC	void CSPositionMoves::actual			(bool value)
 {
-	VERIFY				(!m_actual);
-	m_actual			= true;
+	m_actual			= value;
 }
 
 TEMPLATE_SPECIALIZATION

@@ -85,6 +85,10 @@ IC	void COthelloClassicBoard::undo_move		()
 	m_color_to_move						= opponent_color == BLACK ? WHITE : BLACK;
 	
 	if (flip_count) {
+		if (opponent_color == BLACK)
+			m_difference				+= 2*flip_count + 1;
+		else
+			m_difference				-= 2*flip_count + 1;
 		++m_empties;
 		VERIFY							(!m_flip_stack.empty());
 		*m_flip_stack.top().m_cell		= EMPTY;
