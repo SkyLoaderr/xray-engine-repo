@@ -259,7 +259,9 @@ xr_motivator.storage[self.object:id()].patrol = {
     escape_path = nil,
     raid_enabled = false,
     raid_path = nil,
-    raid_process = false
+    raid_process = false,
+    npc_id = -1,
+    first_init = false
   }
       --if char_ini:section_exist ("patrol") == true then
 --         if char_ini:line_exist("patrol", "enabled") == true then
@@ -294,7 +296,8 @@ xr_motivator.storage[self.object:id()].follower = {
     leader_command = 0,
     npc = self.object,
     look_dir = vector():set(0,0,0)
-  }
+    npc_id = -1
+    }
 --      if char_ini:section_exist ("follower") == true then
 --    if char_ini:line_exist("follower", "enabled") == true then
 --          xr_motivator.storage[self.object:id()].follower.enabled = char_ini:r_bool("follower", "enabled")
