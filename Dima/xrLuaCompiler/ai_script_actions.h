@@ -722,25 +722,26 @@ public:
 			m_tActionCondition.m_tStartTime	= Level().GetGameTime();
 			m_bFirstTime	= false;
 		}
-		return((m_tActionCondition.m_tLifeTime >= 0) && ((m_tActionCondition.m_tStartTime + m_tActionCondition.m_tLifeTime) < Level().GetGameTime()));
+		return((m_tActionCondition.m_tLifeTime >= 0) && ((m_tActionCondition.m_tStartTime + m_tActionCondition.m_tLifeTime) < Device.TimerAsync()));
 	}
 
 	IC		bool			CheckIfActionCompleted()
 	{
+		u32					l_dwFlags = m_tActionCondition.m_dwFlags;
 		if ((CActionCondition::MOVEMENT_FLAG	& m_tActionCondition.m_dwFlags)	&& CheckIfMovementCompleted	())
-			return			(true);
+			l_dwFlags		^= CActionCondition::MOVEMENT_FLAG;
 		if ((CActionCondition::WATCH_FLAG		& m_tActionCondition.m_dwFlags)	&& CheckIfWatchCompleted	())
-			return			(true);
+			l_dwFlags		^= CActionCondition::WATCH_FLAG;
 		if ((CActionCondition::ANIMATION_FLAG	& m_tActionCondition.m_dwFlags)	&& CheckIfAnimationCompleted())
-			return			(true);
+			l_dwFlags		^= CActionCondition::ANIMATION_FLAG;
 		if ((CActionCondition::SOUND_FLAG		& m_tActionCondition.m_dwFlags)	&& CheckIfSoundCompleted	())
-			return			(true);
+			l_dwFlags		^= CActionCondition::SOUND_FLAG;
 		if ((CActionCondition::PARTICLE_FLAG	& m_tActionCondition.m_dwFlags)	&& CheckIfParticleCompleted	())
-			return			(true);
+			l_dwFlags		^= CActionCondition::PARTICLE_FLAG;
 		if ((CActionCondition::OBJECT_FLAG		& m_tActionCondition.m_dwFlags)	&& CheckIfObjectCompleted	())
-			return			(true);
+			l_dwFlags		^= CActionCondition::OBJECT_FLAG;
 		if ((CActionCondition::TIME_FLAG		& m_tActionCondition.m_dwFlags)	&& CheckIfTimeOver			())
-			return			(true);
+			l_dwFlags		^= CActionCondition::TIME_FLAG;
 		if (!m_tActionCondition.m_dwFlags && (m_tActionCondition.m_tLifeTime < 0) 
 			&& CheckIfMovementCompleted()
 			&& CheckIfWatchCompleted()
@@ -751,6 +752,6 @@ public:
 			)
 			return			(true);
 		else
-			return			(false);
+			return			(!l_dwFlags);
 	}
 };

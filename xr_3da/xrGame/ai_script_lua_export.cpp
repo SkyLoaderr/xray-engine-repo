@@ -22,7 +22,6 @@
 #include "ParticlesObject.h"
 #include "ArtifactMerger.h"
 
-#pragma warning(disable:4512)
 using namespace luabind;
 using namespace Script;
 
@@ -758,4 +757,3 @@ void Script::vfExportArtifactMerger(CLuaVirtualMachine *tpLuaVirtualMachine)
 
 
 }
-#pragma warning(default:4512)
