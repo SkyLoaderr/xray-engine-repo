@@ -57,11 +57,11 @@ void EFS_Utils::BackupFile(LPCSTR initial, const AnsiString& fname, bool bMsg)
     }
 }
 
-AnsiString&	EFS_Utils::AppendFolderToName(AnsiString& tex_name)
+AnsiString&	EFS_Utils::AppendFolderToName(AnsiString& tex_name, int depth)
 {
 	string1024 nm;
 	strcpy(nm,tex_name.c_str());
-	tex_name = AppendFolderToName(nm);
+	tex_name = AppendFolderToName(nm,depth);
 	return tex_name;
 }
 
