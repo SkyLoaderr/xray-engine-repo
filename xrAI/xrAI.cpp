@@ -52,6 +52,17 @@ char SYSTEM_LTX[256];
 char INI_FILE[256];
 
 extern  HWND logWindow;
+
+//#define TEST_FOR_BORLAND
+
+#ifdef TEST_FOR_BORLAND
+#	include "import_export.h"
+	extern "C" {
+		__declspec(dllimport) CTestInterface *create_test_object();
+		__declspec(dllimport) void			 destroy_test_object(CTestInterface *&);
+	}
+#endif
+
 void Startup(LPSTR     lpCmdLine)
 {
 	char cmd[512],name[256];
@@ -99,6 +110,13 @@ void Startup(LPSTR     lpCmdLine)
 	
 	pSettings			= xr_new<CInifile>(SYSTEM_LTX);
 
+#ifdef TEST_FOR_BORLAND
+	CTestInterface		*test = create_test_object();
+	test->test_test0	();
+	test->test_test1	();
+	destroy_test_object	(test);
+#endif
+	
 	if (strstr(cmd,"-f"))
 		xrCompiler			(prjName,!!strstr(cmd,"-draft"));
 	else

@@ -277,6 +277,12 @@
 				RelativePath=".\defines.h">
 			</File>
 			<File
+				RelativePath=".\FastDelegate.h">
+			</File>
+			<File
+				RelativePath=".\import_export.h">
+			</File>
+			<File
 				RelativePath=".\StdAfx.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
