@@ -21,6 +21,7 @@ TShiftState ssRBOnly;
 TUI_Tools::TUI_Tools()
 {
 	m_Props = TProperties::CreateForm(0,alClient,OnPropsModified,0,OnPropsClose);
+    m_Flags.zero();
 }
 //---------------------------------------------------------------------------
 TUI_Tools::~TUI_Tools()
@@ -43,8 +44,8 @@ void TUI_Tools::OnCreate(){
     pCurTools       = 0;
     ssRBOnly << ssRight;
     paParent = fraLeftBar->paFrames;   VERIFY(paParent);
-    bNeedChangeAction=false;
-    bNeedChangeTarget=false;
+    m_Flags.set(flChangeAction,FALSE);
+    m_Flags.set(flChangeTarget,FALSE);
 // create tools
     for (int tgt=etFirstTool; tgt<etMaxTarget; tgt++)
 		m_pTools[tgt]=NewToolFromTarget(tgt);
@@ -77,16 +78,11 @@ bool __fastcall TUI_Tools::MouseEnd(TShiftState Shift){
 void __fastcall TUI_Tools::OnFrame(){
 	if(!UI.IsMouseCaptured()){
         // если нужно изменить target выполняем после того как мышь освободится
-        if(bNeedChangeTarget){
-            SetTarget(iNeedTarget);
-            bNeedChangeTarget=false;
-        }
+        if(m_Flags.is(flChangeTarget)) 		SetTarget(iNeedTarget);
         // если нужно изменить action выполняем после того как мышь освободится
-        if(bNeedChangeAction){
-            SetAction(iNeedAction);
-            bNeedChangeAction=false;
-        }
+        if(m_Flags.is(flChangeAction)) 		SetAction(iNeedAction);
     }
+	if(m_Flags.is(flUpdateProperties)) 	RealUpdateProperties();
 }
 //---------------------------------------------------------------------------
 void __fastcall TUI_Tools::OnObjectsUpdate(){
@@ -129,15 +125,14 @@ void __fastcall TUI_Tools::SetAction   (int act)
     UI.RedrawScene();
     fraTopBar->ChangeAction(act);
     UI.Command(COMMAND_UPDATE_TOOLBAR);
+    m_Flags.set	(flChangeAction,FALSE);
 }
 
 void __fastcall TUI_Tools::ChangeAction(int act){
 	// если мышь захвачена - изменим action после того как она освободится
-	if (UI.IsMouseCaptured()||UI.IsMouseInUse()){
-		bNeedChangeAction=true;
-        iNeedAction=act;
-    }else
-    	SetAction(act);
+	if (!(UI.IsMouseCaptured()||UI.IsMouseInUse())){
+    	SetAction	(act);
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -158,6 +153,7 @@ void __fastcall TUI_Tools::SetTarget   (int tgt,bool bForced)
     UI.RedrawScene();
     fraLeftBar->ChangeTarget(tgt);
     UI.Command(COMMAND_UPDATE_TOOLBAR);
+    m_Flags.set(flChangeTarget,FALSE);
 }
 //---------------------------------------------------------------------------
 void __fastcall TUI_Tools::SetSubTarget(int tgt)
@@ -172,11 +168,7 @@ void __fastcall TUI_Tools::UnsetSubTarget(int tgt)
 //---------------------------------------------------------------------------
 void __fastcall TUI_Tools::ChangeTarget(int tgt){
 	// если мышь захвачена - изменим target после того как она освободится
-	if (UI.IsMouseCaptured()||UI.IsMouseInUse()){
-		bNeedChangeTarget=true;
-        iNeedTarget=tgt;
-    }else
-    	SetTarget(tgt);
+	if (!(UI.IsMouseCaptured()||UI.IsMouseInUse())) SetTarget(tgt);
 }
 //---------------------------------------------------------------------------
 void __fastcall	TUI_Tools::SetNumPosition(CCustomObject* O){
@@ -254,7 +246,7 @@ void TUI_Tools::ShowProperties()
     if (Scene.GetQueryObjects		(lst,cls_id)){
         bool bChange				= false;
         switch(cls_id){
-        case OBJCLASS_LIGHT:    	frmPropertiesLightRun(&lst,bChange);	   	break;
+//        case OBJCLASS_LIGHT:    	frmPropertiesLightRun(&lst,bChange);	   	break;
         case OBJCLASS_EVENT:   		frmPropertiesEventRun(&lst,bChange);		break;
         case OBJCLASS_WAY:   		TfrmPropertiesWayPoint::Run(&lst,bChange);	break;
         case OBJCLASS_PS:			TfrmPropertiesPS::Run(&lst,bChange);		break;
@@ -273,43 +265,42 @@ void TUI_Tools::HideProperties()
 	m_Props->HideProperties			();
 }
 //---------------------------------------------------------------------------
+/*
 static s8 		_s8=0;
 static u32 		_u32=0;
-static float	_float=0.f;
+static float	_float0=0.f;
+static float	_float1=1.f;
 static BOOL		_BOOL=0.f;
 static Flags16	_flag16={0};
 static Fcolor 	_fcolor={0,0,0,0};
 static Fvector 	_fvector={0,0,0};
-static string128 _text={0};
+static string32 _text={0};
 static AnsiString _atext="";
-
-void TUI_Tools::UpdateProperties()
+static WaveForm	_wave;
+*/
+void TUI_Tools::RealUpdateProperties()
 {
 	if (m_Props->Visible){
 		if (m_Props->IsModified()) Scene.UndoSave();
         ObjectList lst;
         EObjClass cls_id				= CurrentClassID();
         PropItemVec items;
-
+/*
     	PHelper.CreateCaption	(items,	"Caption",	"Caption2");
     	PHelper.CreateS8		(items,	"S8", 		&_s8);
     	PHelper.CreateU32		(items,	"U32", 		&_u32);
-    	PHelper.CreateFloat		(items,	"Float",	&_float);
+    	PHelper.CreateFloat		(items,	"Float",	&_float0);
+    	PHelper.CreateFloat		(items,	"Float",	&_float1);
     	PHelper.CreateBOOL		(items,	"BOOL",		&_BOOL);
     	PHelper.CreateFlag16	(items, "Flag16",	&_flag16,0x01);
 	    PHelper.CreateVector	(items, "Vector",	&_fvector);
         PHelper.CreateText		(items, "Text", 	_text, sizeof(_text));
 		PHelper.CreateAText		(items, "AText", 	&_atext);
-/*
-	IC TokenValue* 		CreateToken		(PropItemVec& items, LPCSTR key, LPVOID val, xr_token* token, int p_size)
+        PHelper.CreateWave		(items, "Wave",		&_wave);
 	IC TokenValue2*   	CreateToken2	(PropItemVec& items, LPCSTR key, u32* val, AStringVec* lst)
 	IC TokenValue3*   	CreateToken3	(PropItemVec& items, LPCSTR key, u32* val, u32 cnt, const TokenValue3::Item* lst)
 	IC ListValue* 	 	CreateList		(PropItemVec& items, LPCSTR key, LPSTR val, AStringVec* lst)
 	IC ListValue* 	 	CreateListA		(PropItemVec& items, LPCSTR key, LPSTR val, u32 cnt, LPCSTR* lst)
-    IC U32Value*  		CreateColor		(PropItemVec& items, LPCSTR key, u32* val)
-    IC ColorValue*		CreateFColor	(PropItemVec& items, LPCSTR key, Fcolor* val)
-	IC TextValue* 	   	CreateText		(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
-	IC ATextValue* 		CreateAText		(PropItemVec& items, LPCSTR key, AnsiString* val)
 	IC TextValue* 	 	CreateEShader	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
 	IC TextValue* 	   	CreateCShader	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
 	IC TextValue* 	   	CreateTexture	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
@@ -327,19 +318,18 @@ void TUI_Tools::UpdateProperties()
     IC TextValue*	 	CreateLibPS		(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
     IC ATextValue*	 	CreateALibPS	(PropItemVec& items, LPCSTR key, AnsiString* val)
 	IC TextValue* 		CreateEntity	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
-	IC WaveValue* 		CreateWave		(PropItemVec& items, LPCSTR key, WaveForm* val)
     IC TextValue* 		CreateGameMtl	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
 */
-/*	
         if (Scene.GetQueryObjects(lst,cls_id)){
             for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
                 LPCSTR pref				= GetClassNameByClassID((*it)->ClassID);
                 (*it)->FillProp	 		(pref,items);
             }
         }
-*/
+
 		m_Props->AssignItems		(items,true,"Object Inspector");
     }
+	m_Flags.set(flUpdateProperties,FALSE);
 }
 //---------------------------------------------------------------------------
 

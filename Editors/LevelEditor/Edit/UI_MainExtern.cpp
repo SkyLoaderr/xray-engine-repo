@@ -126,8 +126,9 @@ bool TUI::SelectionFrustum(CFrustum& frustum){
 //----------------------------------------------------
 void TUI::Redraw(){
 	VERIFY(m_bReady);
-    if (!(psDeviceFlags&rsRenderRealTime)) bRedraw = false;
-	if (bResize){ Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height); bResize=false; }
+    Log("Redraw");
+    if (!(psDeviceFlags&rsRenderRealTime)) m_Flags.set(flRedraw,FALSE);
+	if (m_Flags.is(flResize)){ Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height); m_Flags.set(flResize,FALSE); }
 // set render state
     Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
     // fog
@@ -225,8 +226,8 @@ void TUI::Idle()
 	Device.UpdateTimer();
     EEditorState est = GetEState();
     if ((est==esEditScene)||(est==esEditLibrary)||(est==esEditLightAnim)){
-	    if (bUpdateScene) RealUpdateScene();
-    	if (bRedraw){
+	    if (m_Flags.is(flUpdateScene)) RealUpdateScene();
+    	if (m_Flags.is(flRedraw)){
             Scene.Update(Device.fTimeDelta);
             Render->Calculate	();
             Render->Render		();
@@ -241,7 +242,7 @@ void TUI::Idle()
 	ResetBreak		();
 	// check mail    
     CheckMailslot	();
-    if (bNeedQuit) 	frmMain->Close();
+    if (m_Flags.is(flNeedQuit)) 	frmMain->Close();
 }
 //---------------------------------------------------------------------------
 void TUI::RealUpdateScene(){
@@ -250,7 +251,7 @@ void TUI::RealUpdateScene(){
     	Tools.OnObjectsUpdate(); // обновить все что как-то связано с объектами
 	    RedrawScene();
     }
-    bUpdateScene = false;
+    m_Flags.set(flUpdateScene,FALSE);
 }
 //---------------------------------------------------------------------------
 

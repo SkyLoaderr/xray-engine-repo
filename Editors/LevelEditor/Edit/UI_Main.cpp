@@ -35,11 +35,7 @@ TUI::TUI()
 #ifdef _LEVEL_EDITOR
     m_Cursor        = 0;
 #endif
-
-    bNeedQuit = false;
-    bRedraw = false;
-	bResize = true;
-    bUpdateScene = false;
+	m_Flags.set(flResize);
 
 	m_Pivot.set( 0, 0, 0 );
     m_MoveSnap = 0.1f;

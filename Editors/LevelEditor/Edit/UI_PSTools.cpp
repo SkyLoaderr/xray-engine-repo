@@ -48,7 +48,7 @@ bool __fastcall TUI_ControlPSAdd::Start(TShiftState Shift){
         obj->MoveTo(p,up);
         Scene.SelectObjects(false,OBJCLASS_PS);
         Scene.AddObject( obj );
-        if (Shift.Contains(ssCtrl)) UI.Command(COMMAND_SHOWPROPERTIES);
+        if (Shift.Contains(ssCtrl)) UI.Command(COMMAND_SHOW_PROPERTIES);
         if (!Shift.Contains(ssAlt)) ResetActionToSelect();
     }
     return false;

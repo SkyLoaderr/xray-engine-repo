@@ -74,8 +74,8 @@ public:
 						PropValue		():m_Owner(0),OnAfterEditEvent(0),OnBeforeEditEvent(0),OnChangeEvent(0){;}
     virtual LPCSTR		GetText			(TOnDrawEvent OnDraw)=0;
     virtual void		ResetValue		()=0;
-    virtual bool		Equal			(PropValue* prop){return true;};//=0;
-    virtual bool		ApplyValue		(LPVOID val)=0;
+    virtual bool		Equal			(PropValue* prop)=0;
+    virtual bool		ApplyValue		(LPVOID _val)=0;
     IC PropItem*		Owner			(){return m_Owner;}
 };
 //------------------------------------------------------------------------------
@@ -101,13 +101,17 @@ public:
     	set_value		(init_value,*val);
     };
     virtual LPCSTR		GetText			(TOnDrawEvent OnDraw){return 0;}
-//    virtual bool		Equal			(PropValue* prop){ return (*value!=*val); }
+    virtual bool		Equal			(PropValue* _prop)
+    { 
+    	CustomValue<T>* prop = (CustomValue<T>*)_prop; 
+        return (*value==*prop->value); 
+    }
     virtual const T&	GetValue		(){return *value; }
     virtual void		ResetValue		(){set_value(*value,init_value);}
     virtual bool		ApplyValue		(LPVOID _val)
     {
     	TYPE* val		= (TYPE*)_val;
-        if (*value!=*val){
+        if (!(*value==*val)){
         	set_value	(*value,*val);
             return		true;
         }
@@ -126,6 +130,7 @@ class PropItem{
     PropValueVec		values;
 public:
     int 				tag;
+    TOnClick			OnExtBtnClick;
     TOnClick			OnClickEvent;
     TOnDrawEvent		OnDrawEvent;
 public:
@@ -135,10 +140,11 @@ public:
     	flCBChecked		= (1<<2),
         flMixed			= (1<<3),
         flDrawBtnBorder	= (1<<4),
+        flShowExtBtn	= (1<<5),
     };
     Flags32				m_Flags;
 public:
-						PropItem		(EPropType _type):type(_type),item(0),key(0),tag(0),subitem(1),OnDrawEvent(0),OnClickEvent(0){m_Flags.zero();}
+						PropItem		(EPropType _type):type(_type),item(0),key(0),tag(0),subitem(1),OnDrawEvent(0),OnClickEvent(0),OnExtBtnClick(0){m_Flags.zero();}
 	virtual 			~PropItem		()
     {
     	for (PropValueIt it=values.begin(); it!=values.end(); it++) 
@@ -172,8 +178,11 @@ public:
     {
     	bool bChanged	= false;
     	for (PropValueIt it=values.begin(); it!=values.end(); it++)
-        	if ((*it)->ApplyValue(val)) bChanged = true;
-        if (bChanged) 	m_Flags.set(flMixed,FALSE);
+        	if ((*it)->ApplyValue(val)){ 
+            	bChanged = true;
+                if ((*it)->OnChangeEvent) (*it)->OnChangeEvent(*it);
+        	}
+        if (bChanged)	m_Flags.set(flMixed,FALSE);
         return bChanged;
     }
     IC PropValue*		GetFrontValue	(){VERIFY(!values.empty()); return values.front(); };
@@ -188,11 +197,6 @@ public:
     {
     	for (PropValueIt it=values.begin(); it!=values.end(); it++)
         	if ((*it)->OnAfterEditEvent) 	(*it)->OnAfterEditEvent(*it,edit_val);
-    }
-	IC void				OnChange		()
-    {
-    	for (PropValueIt it=values.begin(); it!=values.end(); it++)
-        	if ((*it)->OnChangeEvent) 		(*it)->OnChangeEvent(*it);
     }
 	IC void				OnClick			()
     {
@@ -245,7 +249,7 @@ public:
 typedef CustomValue<BOOL>		BOOLValue;
 //------------------------------------------------------------------------------
 
-IC bool operator != (const WaveForm& A, const WaveForm& B){return !A.Similar(B);}
+IC bool operator == (const WaveForm& A, const WaveForm& B){return A.Similar(B);}
 class WaveValue: public CustomValue<WaveForm>{
 public:
 						WaveValue		(TYPE* val):CustomValue<WaveForm>(val){};
@@ -253,8 +257,8 @@ public:
 };
 //------------------------------------------------------------------------------
 
-IC bool operator != (const Fcolor& A, const Fcolor& B)
-{	return !A.similar_rgba(B); }
+IC bool operator == (const Fcolor& A, const Fcolor& B)
+{	return A.similar_rgba(B); }
 typedef CustomValue<Fcolor>		ColorValue;
 //------------------------------------------------------------------------------
 
@@ -294,7 +298,7 @@ public:
         T edit_val 		= *value;
         if (OnDraw)OnDraw(this, &edit_val);
         static AnsiString prop_draw_text;
-        return astring_sprintf	(prop_draw_text,edit_val,0).c_str();
+        return astring_sprintf	(prop_draw_text,edit_val,dec).c_str();
     }
 };
 //------------------------------------------------------------------------------
@@ -316,23 +320,20 @@ IC AnsiString& astring_sprintf(AnsiString& s, const float& V, int dec)
 typedef NumericValue<float>	FloatValue;
 //------------------------------------------------------------------------------
 
-IC bool operator != (const Fvector& A, const Fvector& B)
-{	return !A.similar(B); }
-
+IC bool operator == (const Fvector& A, const Fvector& B)
+{	return A.similar(B); }
 IC void clamp(Fvector& V, Fvector& mn, const Fvector& mx)
 {
     clamp(V.x,mn.x,mx.x); 
     clamp(V.y,mn.y,mx.y); 
     clamp(V.z,mn.z,mx.z); 
 }
-
 IC AnsiString& astring_sprintf(AnsiString& s, const Fvector& V, int dec)
 {
 	AnsiString fmt; fmt.sprintf("{%%.%df, %%.%df, %%.%df}",dec,dec,dec);
 	s.sprintf(fmt.c_str(),V.x,V.y,V.z);
     return s;
-}
-
+}        
 class VectorValue: public NumericValue<Fvector>{
 public:
 						VectorValue		(Fvector* val, float mn, float mx, float increment, int decimal):NumericValue<Fvector>(val)
@@ -361,15 +362,15 @@ public:
     	init_value		= *val;
     };
     virtual LPCSTR		GetText			(TOnDrawEvent OnDraw){return 0;}
-//    virtual bool		Equal			(PropValue* prop){return value->equal(*((TYPE*)prop)->value,mask);}
+    virtual bool		Equal			(PropValue* prop){return value->equal(*((FlagValue<T>*)prop)->value,mask);}
     virtual const T&	GetValue		(){return *value; }
     virtual void		ResetValue		(){value->set(mask,init_value.is(mask));}
     bool				GetValueEx		(){return value->is(mask);}
     virtual bool		ApplyValue		(LPVOID _val)
     {
-    	BOOL* val		= (BOOL*)_val;
-        if (*val!=value->is(mask)){
-        	value->set	(mask,(bool)val);
+    	T* val			= (T*)_val;
+        if (!val->equal(*value,mask)){
+        	value->set	(mask,val->is(mask));
             return 		true;
         }
         return 			false;

@@ -49,10 +49,13 @@ protected:
 	Ipoint m_SelStart;
 	Ipoint m_SelEnd;
 protected:
-	bool bRedraw;
-    bool bUpdateScene;
-	bool bResize;
-    bool bNeedQuit;
+	enum{
+    	flRedraw		= (1<<0),
+        flUpdateScene	= (1<<1),
+        flResize		= (1<<2),
+        flNeedQuit		= (1<<3),
+    };	
+	Flags32 m_Flags;
 protected:
 	long m_StartTime;
 
@@ -105,7 +108,7 @@ public:
     				TUI				();
     virtual 		~TUI			();
 
-    void			Quit			()	{	bNeedQuit=true; }
+    void			Quit			()	{	m_Flags.set(flNeedQuit,TRUE); }
     
     IC HANDLE 		GetHWND			()	{   return m_D3DWindow->Handle; }
     int 			GetRenderWidth	()	{   return Device.dwWidth; }
@@ -128,11 +131,11 @@ public:
     bool 			IsModified		();
 
     void __fastcall Idle			();
-    void 			Resize				(bool bForced=false){   bResize = true; bRedraw = true; if (bForced) Idle(); }
+    void 			Resize				(bool bForced=false){   m_Flags.set(flResize,TRUE); if (bForced) Idle(); }
     // add, remove, changing objects/scene
-    void 			UpdateScene			(bool bForced=false){	bUpdateScene = true; if (bForced) Idle();}
+    void 			UpdateScene			(bool bForced=false){	m_Flags.set(flUpdateScene,TRUE); if (bForced) Idle();}
     // only redraw scene
-    void 			RedrawScene			(bool bForced=false){   bRedraw = true; if (bForced) Idle();}
+    void 			RedrawScene			(bool bForced=false){   m_Flags.set(flRedraw,TRUE); if (bForced) Idle();}
 
     void 			SetRenderQuality	(float q)      {   Device.m_ScreenQuality = q;}
 // mouse action

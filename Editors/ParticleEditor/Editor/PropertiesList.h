@@ -18,6 +18,8 @@
 #include <Mask.hpp>                    
 
 #include "PropertiesListHelper.h"
+#include "ElBtnCtl.hpp"
+#include "ElPopBtn.hpp"
 
 
 class TProperties : public TForm
@@ -29,6 +31,7 @@ __published:	// IDE-managed Components
 	TMultiObjSpinEdit 	*seNumber;
 	TEdit 				*edText;
 	TBevel 				*Bevel1;
+	TElPopupButton *pbExtBtn;
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall tvPropertiesClick(TObject *Sender);
 	void __fastcall tvPropertiesItemDraw(TObject *Sender, TElTreeItem *Item,
@@ -50,6 +53,9 @@ __published:	// IDE-managed Components
 	void __fastcall tvPropertiesItemChange(TObject *Sender, TElTreeItem *Item,
           TItemChangeMode ItemChangeMode);
 	void __fastcall FormDestroy(TObject *Sender);
+	void __fastcall pbExtBtnClick(TObject *Sender);
+	void __fastcall fsStorageRestorePlacement(TObject *Sender);
+	void __fastcall fsStorageSavePlacement(TObject *Sender);
 private:	// User declarations
     void __fastcall PMItemClick		(TObject *Sender);
 	void __fastcall WaveFormClick	(TElTreeItem* item);

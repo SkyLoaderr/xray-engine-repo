@@ -13,6 +13,7 @@
 #include "LightAnimLibrary.h"
 #include "scene.h"
 #include "PropertiesListHelper.h"
+#include "xr_tokens.h"
 
 #define LIGHT_VERSION   				0x0011
 //----------------------------------------------------
@@ -283,65 +284,128 @@ void CLight::Save(CFS_Base& F){
 }
 //----------------------------------------------------
 
+xr_token			token_light_type[ ]	=	{
+    { "Sun",		D3DLIGHT_DIRECTIONAL	},
+    { "Point",		D3DLIGHT_POINT			},
+    { "Spot",		D3DLIGHT_SPOT			},
+    { 0,			0						}
+};
 
 void CLight::FillProp(LPCSTR pref, PropItemVec& items)
 {
-//	inherited::FillProp(pref,items);
+	inherited::FillProp(pref,items);
+
     PropValue* V=0;
-    PHelper.CreateFColor(items,	PHelper.PrepareKey(pref,"Color"),			&m_D3D.diffuse);
+    
+    V=PHelper.CreateToken	(items,	PHelper.PrepareKey(pref,"Type"),			&m_D3D.type,token_light_type,4);
+    V->OnChangeEvent		= OnTypeChange;
+    PHelper.CreateFColor	(items,	PHelper.PrepareKey(pref,"Color"),			&m_D3D.diffuse);
     V=PHelper.CreateFloat	(items,	PHelper.PrepareKey(pref,"Brightness"),		&m_Brightness,-3.f,3.f,0.1f,2);
-    V->Owner()->m_Flags.set(PropItem::flDrawBtnBorder,TRUE);
-    PHelper.CreateBOOL	(items,	PHelper.PrepareKey(pref,"Use In D3D"),		&m_UseInD3D);
-    PHelper.CreateFlag32(items,	PHelper.PrepareKey(pref,"Usage\\LightMap"),	&m_Flags,	CLight::flAffectStatic);
-    PHelper.CreateFlag32(items,	PHelper.PrepareKey(pref,"Usage\\Dynamic"),	&m_Flags,	CLight::flAffectDynamic);
-    PHelper.CreateFlag32(items,	PHelper.PrepareKey(pref,"Usage\\Animated"),	&m_Flags,	CLight::flProcedural);
-    PHelper.CreateFlag32(items,	PHelper.PrepareKey(pref,"Flags\\Breakable"),&m_Flags,	CLight::flBreaking);
+    piBrightness			= V->Owner();
+    PHelper.CreateBOOL		(items,	PHelper.PrepareKey(pref,"Use In D3D"),		&m_UseInD3D);
+    PHelper.CreateFlag32	(items,	PHelper.PrepareKey(pref,"Usage\\LightMap"),	&m_Flags,	CLight::flAffectStatic);
+    PHelper.CreateFlag32	(items,	PHelper.PrepareKey(pref,"Usage\\Dynamic"),	&m_Flags,	CLight::flAffectDynamic);
+    PHelper.CreateFlag32	(items,	PHelper.PrepareKey(pref,"Usage\\Animated"),	&m_Flags,	CLight::flProcedural);
+    PHelper.CreateFlag32	(items,	PHelper.PrepareKey(pref,"Flags\\Breakable"),&m_Flags,	CLight::flBreaking);
+
+    switch(m_D3D.type){
+    case D3DLIGHT_DIRECTIONAL: 	FillSunProp		(pref, items);	break;
+    case D3DLIGHT_POINT: 		FillPointProp	(pref, items);	break;
+    case D3DLIGHT_SPOT: 		FillSpotProp 	(pref, items);	break;
+    }
 }
 //----------------------------------------------------
 
 void CLight::FillSunProp(LPCSTR pref, PropItemVec& items)
 {
 	CEditFlare& F 			= m_LensFlare;
-    PHelper.CreateFlag32	(items, PHelper.PrepareKey(pref,"Source\\Enabled"),		&F.m_Flags,				CEditFlare::flSource);
-    PHelper.CreateFloat		(items, PHelper.PrepareKey(pref,"Source\\Radius"),		&F.m_Source.fRadius,	0.f,10.f);
-    PHelper.CreateTexture	(items, PHelper.PrepareKey(pref,"Source\\Texture"),		F.m_Source.texture,		sizeof(F.m_Source.texture));
+    PHelper.CreateFlag32	(items, PHelper.PrepareKey(pref,"Sun\\Source\\Enabled"),		&F.m_Flags,				CEditFlare::flSource);
+    PHelper.CreateFloat		(items, PHelper.PrepareKey(pref,"Sun\\Source\\Radius"),		&F.m_Source.fRadius,	0.f,10.f);
+    PHelper.CreateTexture	(items, PHelper.PrepareKey(pref,"Sun\\Source\\Texture"),		F.m_Source.texture,		sizeof(F.m_Source.texture));
 
-    PHelper.CreateFlag32	(items, PHelper.PrepareKey(pref,"Gradient\\Enabled"),	&F.m_Flags,				CEditFlare::flGradient);
-    PHelper.CreateFloat		(items, PHelper.PrepareKey(pref,"Gradient\\Radius"),	&F.m_Gradient.fRadius,	0.f,100.f);
-    PHelper.CreateFloat		(items, PHelper.PrepareKey(pref,"Gradient\\Opacity"),	&F.m_Gradient.fOpacity,	0.f,1.f);
-    PHelper.CreateTexture	(items, PHelper.PrepareKey(pref,"Gradient\\Texture"),	F.m_Gradient.texture,	sizeof(F.m_Gradient.texture));
+    PHelper.CreateFlag32	(items, PHelper.PrepareKey(pref,"Sun\\Gradient\\Enabled"),	&F.m_Flags,				CEditFlare::flGradient);
+    PHelper.CreateFloat		(items, PHelper.PrepareKey(pref,"Sun\\Gradient\\Radius"),	&F.m_Gradient.fRadius,	0.f,100.f);
+    PHelper.CreateFloat		(items, PHelper.PrepareKey(pref,"Sun\\Gradient\\Opacity"),	&F.m_Gradient.fOpacity,	0.f,1.f);
+    PHelper.CreateTexture	(items, PHelper.PrepareKey(pref,"Sun\\Gradient\\Texture"),	F.m_Gradient.texture,	sizeof(F.m_Gradient.texture));
 
-    PHelper.CreateFlag32	(items, PHelper.PrepareKey(pref,"Flares\\Enabled"),		&F.m_Flags,				CEditFlare::flFlare);
+    PHelper.CreateFlag32	(items, PHelper.PrepareKey(pref,"Sun\\Flares\\Enabled"),		&F.m_Flags,				CEditFlare::flFlare);
 	for (CEditFlare::FlareIt it=F.m_Flares.begin(); it!=F.m_Flares.end(); it++){
-		AnsiString nm; nm.sprintf("Flares\\Flare %d",it-F.m_Flares.begin());
-		PHelper.CreateFloat		(items, PHelper.PrepareKey(pref,AnsiString(nm+"\\Radius").c_str()), 	&it->fRadius,  	0.f,10.f);
-        PHelper.CreateFloat		(items, PHelper.PrepareKey(pref,AnsiString(nm+"\\Opacity").c_str()),	&it->fOpacity,	0.f,1.f);
-        PHelper.CreateFloat		(items, PHelper.PrepareKey(pref,AnsiString(nm+"\\Position").c_str()),	&it->fPosition,	-10.f,10.f);
-        PHelper.CreateTexture	(items, PHelper.PrepareKey(pref,AnsiString(nm+"\\Texture").c_str()),	it->texture,	sizeof(it->texture));
+		AnsiString nm; nm.sprintf("%s\\Sun\\Flares\\Flare %d",pref,it-F.m_Flares.begin());
+		PHelper.CreateFloat		(items, PHelper.PrepareKey(nm.c_str(),"Radius"), 	&it->fRadius,  	0.f,10.f);
+        PHelper.CreateFloat		(items, PHelper.PrepareKey(nm.c_str(),"Opacity"),	&it->fOpacity,	0.f,1.f);
+        PHelper.CreateFloat		(items, PHelper.PrepareKey(nm.c_str(),"Position"),	&it->fPosition,	-10.f,10.f);
+        PHelper.CreateTexture	(items, PHelper.PrepareKey(nm.c_str(),"Texture"),	it->texture,	sizeof(it->texture));
 	}
 }
 //----------------------------------------------------
 
+void __fastcall	CLight::OnAutoA1Click(PropItem* value)
+{
+    float P = 0.1f;
+    float b = dynamic_cast<FloatValue*>(piBrightness->GetFrontValue())->GetValue();
+    float r = dynamic_cast<FloatValue*>(piRange->GetFrontValue())->GetValue();
+	float a0= 1.f;
+    float a2= dynamic_cast<FloatValue*>(piA2->GetFrontValue())->GetValue();
+    float a1= (b-P-P*r*r*a2)/(P*r);
+    piA0->ApplyValue(&a0);
+    piA1->ApplyValue(&a1);
+	UI.Command		(COMMAND_UPDATE_PROPERTIES);
+}
+void __fastcall	CLight::OnAutoA2Click(PropItem* value)
+{
+    float P = 0.1f;
+    float b = dynamic_cast<FloatValue*>(piBrightness->GetFrontValue())->GetValue();
+    float r = dynamic_cast<FloatValue*>(piRange->GetFrontValue())->GetValue();
+	float a0= 1.f;
+    float a1= dynamic_cast<FloatValue*>(piA1->GetFrontValue())->GetValue();
+    float a2= (b-P-P*r*a1)/(P*r*r);
+    piA0->ApplyValue(&a0);
+    piA2->ApplyValue(&a2);
+//    float P = seAutoBMax->Value/100.f;
+//    flPointA0->ApplyValue(1.f);
+//    flPointA2->ApplyValue((flBrightness->GetValue()-P-P*flPointRange->GetValue()*flPointA1->GetValue())/(P*flPointRange->GetValue()*flPointRange->GetValue()));
+	UI.Command		(COMMAND_UPDATE_PROPERTIES);
+}
 void CLight::FillPointProp(LPCSTR pref, PropItemVec& items)
 {
-    PHelper.CreateFloat	(items,	PHelper.PrepareKey(pref, "Range"),					&m_D3D.range,		0.1f,1000.f);
-    PHelper.CreateFloat	(items,	PHelper.PrepareKey(pref, "Attenuation\\Constant"),	&m_D3D.attenuation0,0.f,1.f,0.0001f,6);
-    PHelper.CreateFloat	(items,	PHelper.PrepareKey(pref, "Attenuation\\Linear"),	&m_D3D.attenuation1,0.f,1.f,0.0001f,6);
-    PHelper.CreateFloat	(items,	PHelper.PrepareKey(pref, "Attenuation\\Quadratic"),	&m_D3D.attenuation2,0.f,1.f,0.0001f,6);
+	PropValue* V=0;
+    V=PHelper.CreateFloat	(items,	PHelper.PrepareKey(pref, "Point", "Range"),					&m_D3D.range,		0.1f,1000.f);
+    piRange					= V->Owner();
+    V=PHelper.CreateFloat	(items,	PHelper.PrepareKey(pref, "Point", "Attenuation\\Constant"),	&m_D3D.attenuation0,0.f,1.f,0.0001f,6);
+    piA0 					= V->Owner();
+    V=PHelper.CreateFloat	(items,	PHelper.PrepareKey(pref, "Point", "Attenuation\\Linear"),	&m_D3D.attenuation1,0.f,1.f,0.0001f,6);
+    piA1 					= V->Owner();
+    piA1->m_Flags.set		(PropItem::flShowExtBtn);
+    piA1->OnExtBtnClick		= OnAutoA1Click;
+    V=PHelper.CreateFloat	(items,	PHelper.PrepareKey(pref, "Point", "Attenuation\\Quadratic"),&m_D3D.attenuation2,0.f,1.f,0.0001f,6);
+    piA2 					= V->Owner();
+    piA2->m_Flags.set		(PropItem::flShowExtBtn);
+    piA2->OnExtBtnClick		= OnAutoA2Click;
 }
 //----------------------------------------------------
 
 void CLight::FillSpotProp(LPCSTR pref, PropItemVec& items)
 {
 	PropValue* V=0;
-	PHelper.CreateFloat		(items,	PHelper.PrepareKey(pref, "Range"),					&m_D3D.range,	0.1f,1000.f);
-	V=PHelper.CreateFloat	(items,	PHelper.PrepareKey(pref, "Cone Angle"),				&m_D3D.phi,		0.1f,120.f,0.01f,2);
+	PHelper.CreateFloat		(items,	PHelper.PrepareKey(pref, "Spot", "Range"),					&m_D3D.range,	0.1f,1000.f);
+	V=PHelper.CreateFloat	(items,	PHelper.PrepareKey(pref, "Spot", "Cone Angle"),				&m_D3D.phi,		0.1f,120.f,0.01f,2);
     V->OnAfterEditEvent		= PHelper.floatRDOnAfterEdit;
     V->OnBeforeEditEvent	= PHelper.floatRDOnBeforeEdit;
     V->Owner()->OnDrawEvent	= PHelper.floatRDOnDraw;
-	PHelper.CreateATexture	(items,	PHelper.PrepareKey(pref, "Attenuation\\Texture"),	&m_SpotAttTex);
+	PHelper.CreateATexture	(items,	PHelper.PrepareKey(pref, "Spot", "Attenuation\\Texture"),	&m_SpotAttTex);
 }
 //----------------------------------------------------
+
+void __fastcall	CLight::OnTypeChange(PropValue* value)
+{
+	UI.Command		(COMMAND_UPDATE_PROPERTIES);
+
+	Update			();
+/*    
+	OnDeviceDestroy	();
+	OnDeviceCreate	();
+*/
+}
 
 void CLight::OnDeviceCreate()
 {
@@ -365,12 +429,12 @@ CEditFlare::CEditFlare()
 	// flares
     m_Flares.resize		(6);
     FlareIt it=m_Flares.begin();
-	it->fRadius=0.08f; it->fOpacity=0.06f; it->fPosition=1.3f; strcpy(it->texture,"fx\\fx_flare1"); it++;
-	it->fRadius=0.12f; it->fOpacity=0.04f; it->fPosition=1.0f; strcpy(it->texture,"fx\\fx_flare2"); it++;
-	it->fRadius=0.04f; it->fOpacity=0.10f; it->fPosition=0.5f; strcpy(it->texture,"fx\\fx_flare2"); it++;
-	it->fRadius=0.08f; it->fOpacity=0.08f; it->fPosition=-0.3f; strcpy(it->texture,"fx\\fx_flare2"); it++;
-	it->fRadius=0.12f; it->fOpacity=0.04f; it->fPosition=-0.6f; strcpy(it->texture,"fx\\fx_flare3"); it++;
-	it->fRadius=0.30f; it->fOpacity=0.04f; it->fPosition=-1.0f; strcpy(it->texture,"fx\\fx_flare1"); it++;
+	it->fRadius=0.08f; it->fOpacity=0.18f; it->fPosition=1.3f; strcpy(it->texture,"fx\\fx_flare1"); it++;
+	it->fRadius=0.12f; it->fOpacity=0.12f; it->fPosition=1.0f; strcpy(it->texture,"fx\\fx_flare2"); it++;
+	it->fRadius=0.04f; it->fOpacity=0.30f; it->fPosition=0.5f; strcpy(it->texture,"fx\\fx_flare2"); it++;
+	it->fRadius=0.08f; it->fOpacity=0.24f; it->fPosition=-0.3f; strcpy(it->texture,"fx\\fx_flare2"); it++;
+	it->fRadius=0.12f; it->fOpacity=0.12f; it->fPosition=-0.6f; strcpy(it->texture,"fx\\fx_flare3"); it++;
+	it->fRadius=0.30f; it->fOpacity=0.12f; it->fPosition=-1.0f; strcpy(it->texture,"fx\\fx_flare1"); it++;
 	// source
     strcpy(m_Source.texture,"fx\\fx_sun");
     m_Source.fRadius 	= 0.15f;

@@ -84,7 +84,7 @@ bool __fastcall TUI_ControlObjectAdd::Start(TShiftState Shift){
         
         Scene.SelectObjects(false,OBJCLASS_SCENEOBJECT);
         Scene.AddObject( obj );
-        if (Shift.Contains(ssCtrl)) UI.Command(COMMAND_SHOWPROPERTIES);
+        if (Shift.Contains(ssCtrl)) UI.Command(COMMAND_SHOW_PROPERTIES);
         if (!Shift.Contains(ssAlt)) ResetActionToSelect();
     }
     return false;

@@ -93,8 +93,11 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         case esEditScene:		bRes = Scene.IfModified(); 				break;
         }
 		}break;
-	case COMMAND_SHOWPROPERTIES:
+	case COMMAND_SHOW_PROPERTIES:
         Tools.ShowProperties();
+        break;
+	case COMMAND_UPDATE_PROPERTIES:
+        Tools.UpdateProperties();
         break;
 	case COMMAND_SHOWCONTEXTMENU:
     	ShowContextMenu(EObjClass(p1));
@@ -179,6 +182,8 @@ bool TUI::Command( int _Command, int p1, int p2 ){
                 // lock
                 Engine.FS.LockFile(0,filebuffer);
                 fraLeftBar->AppendRecentFile(filebuffer);
+                // update props
+		        Command(COMMAND_UPDATE_PROPERTIES);
 			}
 		} else {
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
@@ -265,6 +270,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
+        Command(COMMAND_UPDATE_PROPERTIES);
 		break;
 
     case COMMAND_IMPORT_COMPILER_ERROR:{
@@ -655,7 +661,7 @@ void TUI::ApplyShortCut(WORD Key, TShiftState Shift)
         	else if (Key=='P')	Command(COMMAND_EDITOR_PREF);
         	else if (Key=='W')	Command(COMMAND_OBJECT_LIST);
         	else if (Key==VK_DELETE)Command(COMMAND_DELETE_SELECTION);
-        	else if (Key==VK_RETURN)Command(COMMAND_SHOWPROPERTIES);
+        	else if (Key==VK_RETURN)Command(COMMAND_SHOW_PROPERTIES);
             else if (Key==VK_OEM_4)	Command(COMMAND_GRID_SLOT_SIZE,false);
             else if (Key==VK_OEM_6)	Command(COMMAND_GRID_SLOT_SIZE,true);
             else if (Key==VK_OEM_MINUS)	Command(COMMAND_HIDE_SEL, FALSE);

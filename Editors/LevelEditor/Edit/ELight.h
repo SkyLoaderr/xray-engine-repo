@@ -49,6 +49,16 @@ public:
     AnsiString		m_SpotAttTex;
 
     virtual void	OnUpdateTransform();
+    void __fastcall	OnTypeChange	(PropValue* value);
+
+    PropItem*		piA0;
+    PropItem*		piA1;
+    PropItem*		piA2;
+    PropItem*		piBrightness;
+    PropItem*		piRange;
+    
+    void __fastcall	OnAutoA1Click	(PropItem* value);
+    void __fastcall	OnAutoA2Click	(PropItem* value);
 protected:                 
     virtual Fvector& GetPosition	()	{ return m_D3D.position; 	}
     virtual void 	SetPosition		(Fvector& pos)	{ m_D3D.position.set(pos);	UpdateTransform();}

@@ -291,13 +291,6 @@ void __fastcall TfraLeftBar::ebDeleteClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-
-void __fastcall TfraLeftBar::sbPropertiesClick(TObject *Sender)
-{
-	UI.Command(COMMAND_SHOWPROPERTIES);
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfraLeftBar::ebHideAllClick(TObject *Sender)
 {
 	UI.Command(COMMAND_HIDE_ALL,FALSE);
@@ -509,7 +502,7 @@ void __fastcall TfraLeftBar::Scale1Click(TObject *Sender)
 
 void __fastcall TfraLeftBar::miPropertiesClick(TObject *Sender)
 {
-    UI.Command(COMMAND_SHOWPROPERTIES);
+    UI.Command(COMMAND_SHOW_PROPERTIES);
 }
 //---------------------------------------------------------------------------
 
@@ -566,7 +559,7 @@ void __fastcall TfraLeftBar::Quit1Click(TObject *Sender)
 
 void __fastcall TfraLeftBar::ebPropertiesClick(TObject *Sender)
 {
-	UI.Command(COMMAND_SHOWPROPERTIES);
+	UI.Command(COMMAND_SHOW_PROPERTIES);
 }
 //---------------------------------------------------------------------------
 
@@ -578,7 +571,7 @@ void __fastcall TfraLeftBar::ImportCompilerErrorsClick(TObject *Sender)
 
 void __fastcall TfraLeftBar::ebIgnoreModeClick(TObject *Sender)
 {
-	Tools.UpdateProperties();	
+	UI.Command(COMMAND_UPDATE_PROPERTIES);
 }
 //---------------------------------------------------------------------------
 

@@ -1,12 +1,12 @@
 object Properties: TProperties
   Left = 836
   Top = 301
-  Width = 242
-  Height = 357
+  Width = 237
+  Height = 386
   BiDiMode = bdRightToLeft
   BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'Shader Properties'
-  Color = clBtnFace
+  Color = clGray
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -26,7 +26,7 @@ object Properties: TProperties
   object Bevel1: TBevel
     Left = 0
     Top = 0
-    Width = 234
+    Width = 229
     Height = 1
     Align = alTop
     Shape = bsFrame
@@ -34,8 +34,8 @@ object Properties: TProperties
   object tvProperties: TElTree
     Left = 0
     Top = 1
-    Width = 234
-    Height = 329
+    Width = 229
+    Height = 358
     Cursor = crDefault
     LeftPosition = 0
     DragCursor = crDrag
@@ -116,16 +116,16 @@ object Properties: TProperties
     HeaderHeight = 17
     HeaderHotTrack = False
     HeaderSections.Data = {
-      F4FFFFFF020000006174610000000000FFFFFFFF00000100010000007D000000
-      32000000102700000000000014B2950400000000000000000000000000000100
-      0000000000000000000100000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000040000004B65790001000000
-      0000000000000000006174610000000000FFFFFFFF0000010101000000590000
-      00320000001027000000000000ECB69504010000000000000000000000000001
-      0000000000000000000001000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000600000056616C75650001
+      F4FFFFFF020000006871B90D00000000FFFFFFFF00000100010000007D000000
+      32000000102700000000000014B295040000000000005B000000000000000100
+      0000000000000000000100000000000089E35B00010000000000000003000000
+      00000000D8EB5B00E8EB5B0000EC5B0010EC5B0020EC5B004CEC5B008105B200
+      9105B200A905B200A8EFED09EC71B90D90000000040000004B65790001000000
+      0000000000000000006871B90D00000000FFFFFFFF0000010101000000590000
+      00320000001027000000000000ECB695040100000000005B0000000000000001
+      000000000000000000000100000000000089E35B000100000000000000030000
+      0000000000D8EB5B00E8EB5B0000EC5B0010EC5B0020EC5B004CEC5B008105B2
+      009105B200A905B200A8EFED09EC71B90D900000000600000056616C75650001
       000000000000000000000000}
     HeaderFlat = True
     HeaderFont.Charset = DEFAULT_CHARSET
@@ -212,7 +212,7 @@ object Properties: TProperties
     Height = 17
     LWSensitivity = 0.01
     ButtonKind = bkLightWave
-    ButtonWidth = 16
+    ButtonWidth = 15
     ValueType = vtFloat
     AutoSize = False
     BorderStyle = bsNone
@@ -237,6 +237,31 @@ object Properties: TProperties
     OnExit = edTextExit
     OnKeyDown = edTextKeyDown
   end
+  object pbExtBtn: TElPopupButton
+    Left = 198
+    Top = 35
+    Width = 16
+    Height = 17
+    DrawDefaultFrame = False
+    DisableAutoPopup = True
+    NumGlyphs = 1
+    ShowFocus = False
+    ShowGlyph = False
+    Caption = 'E'
+    TabOrder = 3
+    Color = 10526880
+    ParentColor = False
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    Visible = False
+    OnClick = pbExtBtnClick
+    DockOrientation = doNoOrient
+    DoubleBuffered = False
+  end
   object pmEnum: TMxPopupMenu
     Alignment = paCenter
     TrackButton = tbLeftButton
@@ -253,6 +278,8 @@ object Properties: TProperties
     Top = 152
   end
   object fsStorage: TFormStorage
+    OnSavePlacement = fsStorageSavePlacement
+    OnRestorePlacement = fsStorageRestorePlacement
     StoredValues = <>
     Left = 8
     Top = 120

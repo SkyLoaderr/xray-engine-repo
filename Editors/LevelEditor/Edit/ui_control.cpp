@@ -84,7 +84,7 @@ CCustomObject* __fastcall TUI_CustomControl::DefaultAddObject(TShiftState Shift,
 		obj->MoveTo(p,n);
         Scene.SelectObjects(false,parent_tool->objclass);
 		Scene.AddObject(obj);
-		if (Shift.Contains(ssCtrl)) UI.Command(COMMAND_SHOWPROPERTIES);
+		if (Shift.Contains(ssCtrl)) UI.Command(COMMAND_SHOW_PROPERTIES);
         if (!Shift.Contains(ssAlt)) ResetActionToSelect();
     }
     return obj;

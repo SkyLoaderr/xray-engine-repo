@@ -50,9 +50,15 @@ class TUI_Tools{
     int             target;
     int             action;
 
-    bool 			bNeedChangeAction;
+    Flags32			m_Flags;
+    
+    enum{
+    	flChangeAction		= (1<<0),
+        flChangeTarget		= (1<<1),
+        flUpdateProperties	= (1<<2)
+    };
+    
     int				iNeedAction;
-    bool 			bNeedChangeTarget;
     int				iNeedTarget;
 
     TUI_CustomTools*m_pTools[etMaxTarget];
@@ -66,6 +72,8 @@ class TUI_Tools{
     TProperties* 	m_Props;
     void __fastcall OnPropsModified	();
     void __fastcall OnPropsClose	();
+
+    void			RealUpdateProperties();
 public:
                     TUI_Tools		();
     virtual         ~TUI_Tools		();
@@ -107,7 +115,7 @@ public:
 
     void			ShowProperties	();
     void			HideProperties	();
-    void			UpdateProperties();
+    void			UpdateProperties(){m_Flags.set(flUpdateProperties,TRUE);}
 };
 extern TUI_Tools Tools;
 extern void ResetActionToSelect();

@@ -36,6 +36,8 @@
 #pragma link "MxMenus"
 #pragma link "mxPlacemnt"
 #pragma link "ElTreeAdvEdit"
+#pragma link "ElBtnCtl"
+#pragma link "ElPopBtn"
 #pragma resource "*.dfm"
 
 #define TSTRING_COUNT 	4
@@ -70,7 +72,6 @@ void __fastcall TProperties::BeginFillMode(const AnsiString& title, LPCSTR secti
     }else{
 		FHelper.MakeFullName(tvProperties->Selected,0,last_selected_item);
         ClearParams();
-	    tvProperties->Items->Clear();
     }
 
     Caption = title;
@@ -88,6 +89,7 @@ void __fastcall TProperties::EndFillMode(bool bFullExpand)
 void TProperties::ClearParams(TElTreeItem* node)
 {
 	if (node){
+    	THROW2("ClearParams - node");
     	//S когда будут все итемы удалить у каждого
 /*
 //s        
@@ -106,6 +108,9 @@ void TProperties::ClearParams(TElTreeItem* node)
 	    for (PropItemIt it=m_Items.begin(); it!=m_Items.end(); it++)
     		_DELETE	(*it);
 		m_Items.clear();
+		tvProperties->IsUpdating 	= true;
+	    tvProperties->Items->Clear	();
+    	tvProperties->IsUpdating 	= false;
     }
 }
 //---------------------------------------------------------------------------
@@ -117,9 +122,7 @@ void __fastcall TProperties::ResetItems()
 //---------------------------------------------------------------------------
 void __fastcall TProperties::ClearProperties()
 {
-	tvProperties->IsUpdating = true;
-    tvProperties->Items->Clear();
-    tvProperties->IsUpdating = false;
+	CancelEditControl();
     ClearParams();
 }
 //---------------------------------------------------------------------------
@@ -181,6 +184,7 @@ void __fastcall TProperties::HideProperties(){
 void __fastcall TProperties::FormClose(TObject *Sender,
       TCloseAction &Action)
 {
+	CancelEditControl();
     if (OnCloseEvent) OnCloseEvent();
 	ClearParams	();
 }
@@ -284,6 +288,18 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             Surface->Font->Color 	= clSilver;
             Surface->Font->Style 	= TFontStyles()<< fsBold;
         }
+        if (Item->Selected){
+            if(prop->m_Flags.is(PropItem::flShowExtBtn)&&prop->OnExtBtnClick){
+            	pbExtBtn->Tag	= (int)prop;
+                pbExtBtn->Height= R.Bottom-R.Top+2;
+                pbExtBtn->Width	= pbExtBtn->Height;
+                pbExtBtn->Left 	= R.Right-pbExtBtn->Width+1;
+                pbExtBtn->Top  	= R.Top+tvProperties->HeaderHeight+1;
+                R.Right			-= pbExtBtn->Width+1;
+                pbExtBtn->Show	();
+            }else
+                pbExtBtn->Hide();
+        }
         if (prop->m_Flags.is(PropItem::flMixed)){ 
             TColor C 		= Surface->Brush->Color;
             TBrushStyle S 	= Surface->Brush->Style;
@@ -330,8 +346,8 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 R.Top	+=	1;
                 R.Bottom-= 	1;
                 U32Value* V=dynamic_cast<U32Value*>(prop->GetFrontValue()); R_ASSERT(V);
-                u32* C 	= (U32Value::TYPE*)V->GetValue();
-                Surface->Brush->Color = (TColor)rgb2bgr(*C);
+                u32 C 	= (U32Value::TYPE)V->GetValue();
+                Surface->Brush->Color = (TColor)rgb2bgr(C);
                 Surface->FillRect(R);
             }break;
             case PROP_FLAG8:{
@@ -418,15 +434,12 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 if (seNumber->Tag!=(int)Item){
                     R.Right-= 1;
                     R.Left += 1;
-                    if (type==PROP_FLOAT){
-                    	int y=0;
-                    }
                     DrawText(Surface->Handle, prop->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
                 }
             break;
 	        };
             // draw btn border
-	        if (prop->m_Flags.is(PropItem::flDrawBtnBorder)){
+/*	        if (prop->m_Flags.is(PropItem::flDrawBtnBorder)){
             	src_rect.left+=1;
             	src_rect.top+=1;
             	src_rect.right-=1;
@@ -436,6 +449,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 DrawEdge(Canvas->Handle,&src_rect,BDR_RAISEDINNER,BF_MIDDLE);
 //	            Surface->FillRect(src_rect);
             }
+*/            
         }
         // show LW edit
         if (!prop->m_Flags.is(PropItem::flDisabled)){
@@ -474,30 +488,27 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
         switch(prop->type){
 		case PROP_FLAG8:{
 			Flag8Value* V				= dynamic_cast<Flag8Value*>(prop->GetFrontValue()); R_ASSERT(V);
-            BOOL new_val 				= !V->GetValueEx();
+            Flags8 new_val 				= V->GetValue(); new_val.invert(V->mask);
 			prop->OnAfterEdit			(&new_val);
             if (prop->ApplyValue(&new_val)){
-				prop->OnChange			();
                 Modified				();
 	            RefreshForm				();
             }
         }break;
 		case PROP_FLAG16:{
 			Flag16Value* V				= dynamic_cast<Flag16Value*>(prop->GetFrontValue()); R_ASSERT(V);
-            BOOL new_val 				= !V->GetValueEx();
+            Flags16 new_val 			= V->GetValue(); new_val.invert(V->mask);
 			prop->OnAfterEdit			(&new_val);
             if (prop->ApplyValue(&new_val)){
-				prop->OnChange			();
                 Modified				();
 	            RefreshForm				();
             }
         }break;
 		case PROP_FLAG32:{
 			Flag32Value* V				= dynamic_cast<Flag32Value*>(prop->GetFrontValue()); R_ASSERT(V);
-            BOOL new_val 				= !V->GetValueEx();
+            Flags32 new_val 			= V->GetValue(); new_val.invert(V->mask);
 			prop->OnAfterEdit			(&new_val);
             if (prop->ApplyValue(&new_val)){
-				prop->OnChange			();
                 Modified				();
 	            RefreshForm				();
             }
@@ -507,7 +518,6 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
             BOOL new_val 				= !V->GetValue();
 			prop->OnAfterEdit			(&new_val);
             if (prop->ApplyValue(&new_val)){
-				prop->OnChange			();
                 Modified				();
 	            RefreshForm				();
             }
@@ -644,29 +654,26 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
 		case PROP_TOKEN:{
 			TokenValue* T			= dynamic_cast<TokenValue*>(prop->GetFrontValue()); R_ASSERT(T);
             xr_token* token_list   	= T->token;
-            DWORD new_val			= token_list[mi->Tag].id;
+            u32 new_val				= token_list[mi->Tag].id;
 			prop->OnAfterEdit(&new_val);
             if (prop->ApplyValue(&new_val)){	
-				prop->OnChange		();
             	Modified			();
             }
 			item->ColumnText->Strings[0]= prop->GetText();
         }break;
 		case PROP_TOKEN2:{
-            DWORD new_val			= mi->Tag;
+            u32 new_val				= mi->Tag;
 			prop->OnAfterEdit		(&new_val);
             if (prop->ApplyValue(&new_val)){	
-				prop->OnChange		();
             	Modified			();
             }
 			item->ColumnText->Strings[0]= prop->GetText();
         }break;
 		case PROP_TOKEN3:{
 			TokenValue3* T			= dynamic_cast<TokenValue3*>(prop->GetFrontValue()); R_ASSERT(T);
-            DWORD new_val			= T->items[mi->Tag].ID;
+            u32 new_val				= T->items[mi->Tag].ID;
 			prop->OnAfterEdit		(&new_val);
             if (prop->ApplyValue(&new_val)){	
-				prop->OnChange		();
             	Modified			();
             }
 			item->ColumnText->Strings[0]= prop->GetText();
@@ -677,7 +684,6 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
             string256 new_val;	strcpy(new_val,lst[mi->Tag].c_str());
 			prop->OnAfterEdit		(&new_val);
             if (prop->ApplyValue(new_val)){	
-				prop->OnChange		();
 	            Modified			();
             }
 			item->ColumnText->Strings[0]= prop->GetText();
@@ -697,7 +703,6 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
                 edit_val		 	= new_val;
                 prop->OnAfterEdit	(&edit_val);
                 if (prop->ApplyValue(edit_val.c_str())){
-					prop->OnChange	();
 	                Modified		();
                 }
                 item->ColumnText->Strings[0]= prop->GetText();
@@ -720,7 +725,6 @@ void __fastcall TProperties::WaveFormClick(TElTreeItem* item)
 	if (TfrmShaderFunction::Run(&edit_val)==mrOk){
         prop->OnAfterEdit	(&edit_val);
         if (prop->ApplyValue(&edit_val)){
-			prop->OnChange	();
         	Modified		();
         }
         item->ColumnText->Strings[0]= prop->GetText();
@@ -742,7 +746,6 @@ void __fastcall TProperties::ColorClick(TElTreeItem* item)
 	        edit_val.set	(ev);
             prop->OnAfterEdit(&edit_val);
             if (prop->ApplyValue(&edit_val)){
-				prop->OnChange	();
                 item->RedrawItem(true);
                 Modified		();
             }
@@ -756,7 +759,6 @@ void __fastcall TProperties::ColorClick(TElTreeItem* item)
         if (SelectColor(&edit_val)){
             prop->OnAfterEdit(&edit_val);
             if (prop->ApplyValue(&edit_val)){	
-				prop->OnChange	();
                 item->RedrawItem(true);
                 Modified		();
             }
@@ -777,7 +779,6 @@ void __fastcall TProperties::VectorClick(TElTreeItem* item)
 	if (NumericVectorRun(AnsiString(item->Text).c_str(),&edit_val,V->dec,&edit_val,&V->lim_mn,&V->lim_mx)){
         prop->OnAfterEdit(&edit_val);
         if (prop->ApplyValue(&edit_val)){
-			prop->OnChange	();
 			item->RedrawItem(true);
             Modified		();
         }
@@ -811,7 +812,6 @@ void __fastcall TProperties::CustomTextClick(TElTreeItem* item)
         edit_val			= new_val;
         prop->OnAfterEdit	(&edit_val);
         if (prop->ApplyValue(edit_val.c_str())){	
-			prop->OnChange	();
         	Modified		();
         }
         item->ColumnText->Strings[0]= prop->GetText();
@@ -842,7 +842,6 @@ void __fastcall TProperties::CustomAnsiTextClick(TElTreeItem* item)
         edit_val				= new_val;
         prop->OnAfterEdit	(&edit_val);
         if (prop->ApplyValue(&edit_val)){ 
-			prop->OnChange	();
         	Modified();
         }
         item->ColumnText->Strings[0]= prop->GetText();
@@ -962,6 +961,7 @@ void TProperties::ShowLWNumber(TRect& R)
     seNumber->Top  	= R.Top+tvProperties->HeaderHeight;
     seNumber->Width	= R.Right-R.Left+2;
     seNumber->Height= R.Bottom-R.Top+2;
+	seNumber->ButtonWidth = seNumber->Height;
     seNumber->Show();
     seNumber->SetFocus();
 }
@@ -978,7 +978,6 @@ void TProperties::ApplyLWNumber()
             u8 new_val			= seNumber->Value;
 			prop->OnAfterEdit	(&new_val);
             if (prop->ApplyValue(&new_val)){ 
-				prop->OnChange	();
             	Modified		();
             }
         }break;
@@ -987,7 +986,6 @@ void TProperties::ApplyLWNumber()
             u16 new_val			= seNumber->Value;
 			prop->OnAfterEdit	(&new_val);
             if (prop->ApplyValue(&new_val)){ 
-				prop->OnChange	();
             	Modified		();
             }
         }break;
@@ -996,7 +994,6 @@ void TProperties::ApplyLWNumber()
             u32 new_val			= seNumber->Value;
 			prop->OnAfterEdit	(&new_val);
             if (prop->ApplyValue(&new_val)){ 
-				prop->OnChange	();
             	Modified		();
             }
         }break;
@@ -1005,7 +1002,6 @@ void TProperties::ApplyLWNumber()
             s8 new_val			= seNumber->Value;
 			prop->OnAfterEdit	(&new_val);
             if (prop->ApplyValue(&new_val)){ 
-				prop->OnChange	();
             	Modified		();
             }
         }break;
@@ -1014,7 +1010,6 @@ void TProperties::ApplyLWNumber()
             s16 new_val			= seNumber->Value;
 			prop->OnAfterEdit	(&new_val);
             if (prop->ApplyValue(&new_val)){ 
-				prop->OnChange	();
             	Modified		();
             }
         }break;
@@ -1023,7 +1018,6 @@ void TProperties::ApplyLWNumber()
             s32 new_val			= seNumber->Value;
 			prop->OnAfterEdit	(&new_val);
             if (prop->ApplyValue(&new_val)){ 
-				prop->OnChange	();
             	Modified		();
             }
         }break;
@@ -1032,7 +1026,6 @@ void TProperties::ApplyLWNumber()
             float new_val		= seNumber->Value;
 			prop->OnAfterEdit	(&new_val);
             if (prop->ApplyValue(&new_val)){ 
-				prop->OnChange	();
             	Modified		();
             }
         }break;
@@ -1118,7 +1111,6 @@ void TProperties::ApplyLWText()
             edText->MaxLength	= 0;
 			prop->OnAfterEdit	(&new_val);
             if (prop->ApplyValue(&new_val)){ 
-				prop->OnChange	();
             	Modified();
             }
             item->ColumnText->Strings[0] = prop->GetText();
@@ -1129,7 +1121,6 @@ void TProperties::ApplyLWText()
 			AnsiString new_val	= edText->Text;
 			prop->OnAfterEdit	(&new_val);
             if (V->ApplyValue(new_val.c_str())){ 
-				prop->OnChange	();
 	            Modified		();
             }
             item->ColumnText->Strings[0] = prop->GetText();
@@ -1229,7 +1220,6 @@ void __fastcall TProperties::tvPropertiesItemChange(TObject *Sender,
 		PropItem* prop 			= (PropItem*)Item->Tag;
 	    if (prop){
         	prop->m_Flags.set	(PropItem::flCBChecked,Item->Checked);
-        	prop->OnChange		();
 			Modified			();
     	}
 	    tvProperties->Refresh	();
@@ -1237,4 +1227,23 @@ void __fastcall TProperties::tvPropertiesItemChange(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TProperties::pbExtBtnClick(TObject *Sender)
+{
+	TElPopupButton* btn = dynamic_cast<TElPopupButton*>(Sender);
+	PropItem* prop = (PropItem*)btn->Tag; R_ASSERT(prop&&prop->OnExtBtnClick);
+	prop->OnExtBtnClick(prop);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TProperties::fsStorageRestorePlacement(TObject *Sender)
+{
+    RestoreColumnWidth(fsStorage);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TProperties::fsStorageSavePlacement(TObject *Sender)
+{
+	SaveColumnWidth(fsStorage);
+}
+//---------------------------------------------------------------------------
 

@@ -183,7 +183,6 @@ __published:	// IDE-managed Components
 	void __fastcall ebSelectAllClick(TObject *Sender);
 	void __fastcall ebUnselectAllClick(TObject *Sender);
 	void __fastcall ebDeleteClick(TObject *Sender);
-	void __fastcall sbPropertiesClick(TObject *Sender);
 	void __fastcall ebHideAllClick(TObject *Sender);
 	void __fastcall ebHideSelectedClick(TObject *Sender);
 	void __fastcall ebUnhideAllClick(TObject *Sender);
