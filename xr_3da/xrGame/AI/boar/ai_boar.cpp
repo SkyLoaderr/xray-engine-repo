@@ -91,6 +91,7 @@ void CAI_Boar::Load(LPCSTR section)
 	MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack, eAnimStandTurnLeft, eAnimStandTurnRight, PI_DIV_6/6);
 	MotionMan.LinkAction(ACT_STEAL,			eAnimSteal);
 	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimLookAround);
+	MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle,	eAnimStandTurnLeft, eAnimStandTurnRight, EPS_S); 
 
 	Fvector center;
 	center.set		(0.f,0.f,0.f);

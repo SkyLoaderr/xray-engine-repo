@@ -117,6 +117,7 @@ void CAI_Chimera::Load(LPCSTR section)
 	MotionMan.LinkAction(ACT_STEAL,			eAnimWalkFwd);
 	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimStandIdle);
 	MotionMan.LinkAction(ACT_JUMP,			eAnimJump);
+	MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle,	eAnimRunTurnLeft, eAnimRunTurnRight, PI / 180); 
 
 
 	Fvector center, left_side, right_side;

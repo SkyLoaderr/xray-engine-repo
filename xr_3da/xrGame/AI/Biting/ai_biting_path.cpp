@@ -87,6 +87,7 @@ void CAI_Biting::SetupVelocityMasks(bool force_real_speed)
 	case ACT_REST:
 	case ACT_LOOK_AROUND:
 	case ACT_ATTACK:
+	case ACT_TURN:
 		bEnablePath = false;
 		break;
 	

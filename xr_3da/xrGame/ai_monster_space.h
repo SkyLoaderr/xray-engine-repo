@@ -115,6 +115,7 @@ namespace MonsterSpace {
 		eActSteal,				// animation parameter (a-la mental state)
 		eActLookAround,			// watch parameter
 		eActJump,				// movement parameter
+		eActTurn,
 		eActNone	 = u32(-1),	
 	};
 	

@@ -434,7 +434,8 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 				value("act_attack",						int(MonsterSpace::eActAttack)),
 				value("act_steal",						int(MonsterSpace::eActSteal)),
 				value("act_look_around",				int(MonsterSpace::eActLookAround)),
-				value("act_jump",						int(MonsterSpace::eActJump))
+				value("act_jump",						int(MonsterSpace::eActJump)),
+				value("act_turn",						int(MonsterSpace::eActTurn))
 			]
 			.enum_("act_type")
 			[

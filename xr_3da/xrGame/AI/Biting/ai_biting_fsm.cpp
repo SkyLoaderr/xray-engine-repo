@@ -227,6 +227,7 @@ void CAI_Biting::UpdatePathWithAction()
 	case ACT_REST:
 	case ACT_LOOK_AROUND:
 	case ACT_ATTACK:
+	case ACT_TURN:
 		disable_path();
 		break;
 	case ACT_WALK_FWD:

@@ -115,6 +115,8 @@ void CAI_Dog::Load(LPCSTR section)
 	MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack, eAnimStandTurnLeft,	eAnimStandTurnRight, PI_DIV_6);
 	MotionMan.LinkAction(ACT_STEAL,			eAnimSteal);	
 	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimSniff);
+	MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle,	eAnimStandTurnLeft, eAnimStandTurnRight, EPS_S);
+
 
 	MotionMan.AA_PushAttackAnimTest(eAnimAttack, 0, 400, 600, -PI_DIV_6,PI_DIV_6,-PI_DIV_6,PI_DIV_6,2.5f, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,3.f));
 	MotionMan.AA_PushAttackAnimTest(eAnimAttack, 1, 400, 600, -PI_DIV_6,PI_DIV_6,-PI_DIV_6,PI_DIV_6,2.5f, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,3.f));

@@ -26,7 +26,7 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 	UpdateVelocityWithPath		();
 
 	CMonsterMovement::Frame_Finalize				();
-	
+
 //	// Show patrol path
 //	HDebug->L_Clear();
 //	const CLevel::SPath *P = CPatrolPathManager::get_path();

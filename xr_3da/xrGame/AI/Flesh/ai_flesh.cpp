@@ -112,6 +112,8 @@ void CAI_Flesh::Load(LPCSTR section)
 	MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack, eAnimStandTurnLeft, eAnimStandTurnRight, PI_DIV_2);
 	MotionMan.LinkAction(ACT_STEAL,			eAnimSteal);
 	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimScared);
+	MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle,	eAnimStandTurnLeft, eAnimStandTurnRight, EPS_S); 
+
 
 //	// Добавить анимации атак
 //	MotionMan.AA_PushAttackAnim(eAnimAttack,		0, 400,		600,	Fvector().set(0.f,0.f,0.f),	Fvector().set(0.f,0.f,3.5f),	inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,3.f));
