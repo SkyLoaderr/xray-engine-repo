@@ -91,6 +91,11 @@ void	CEffect_Rain::Born		(Item& dest, float radius, float height)
 	dest.D.random_dir	(axis,deg2rad(drop_angle));
 	dest.fSpeed			= ::Random.randF	(drop_speed_min,drop_speed_max);
 	dest.fLifetime		= (height*3)/dest.fSpeed;
+
+	// Raytrace
+	Collide::ray_query	RQ;
+	if (Level().ObjectSpace.RayPick(dest.P,dest.D,height*2,RQ))	dest.fHeight = dest.P.y-RQ.range;
+	else dest.fHeight	= dest.P.y - 2*height;
 }
 
 // initialize particles pool
@@ -233,8 +238,8 @@ void	CEffect_Rain::Render	()
 		if (one.fLifetime<0)	Born(one,b_radius,b_height);
 		one.P.mad		(one.D,one.fSpeed*dt);
 		
-		float	height	=	HM.Query(one.P.x,one.P.z);
-		if (height>one.P.y)	{
+//		float	height	=	HM.Query(one.P.x,one.P.z);
+		if (P.one.fHeight>one.P.y)	{
 			one.P.y		= height;
 			Hit			(one.P);
 			Born		(one,b_radius,b_height);

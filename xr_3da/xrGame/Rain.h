@@ -17,6 +17,7 @@ private:
 		Fvector D;
 		float	fSpeed;
 		float	fLifetime;
+		float	fHeight;
 	};
 	struct	Particle
 	{
