@@ -1,4 +1,27 @@
+function callback_enter(zone,object)
+	printf			("[%6d] Object %s entered zone %s",device():time_global(),object:name(),zone:name())
+end
+
+function callback_exit(zone,object)
+	printf			("[%6d] Object %s exited zone %s",device():time_global(),object:name(),zone:name())
+end
+
+
 function main ()
+	zone0			= get_level_object ("zone_mosquito_bald0000")
+	zone1			= get_level_object ("zone_mosquito_bald0001")
+	
+	zone0:set_callback	(callback_enter,true);
+	zone0:set_callback	(callback_exit,false);
+	
+	zone1:set_callback	(callback_enter,true);
+	zone1:set_callback	(callback_exit,false);
+	
+	while true do
+		wait			()
+	end
+	
+--[
     stalker			= get_level_object ("m_stalker_e0000")
     actor			= get_actor()
 
@@ -27,4 +50,5 @@ function main ()
 	end
 	
     stalker:script	(false,stalker_test:script_name());
+    ]--
 end
