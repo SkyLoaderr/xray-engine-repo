@@ -5,6 +5,8 @@
 #include "physicsshell.h"
 #include "gamemtllib.h"
 #include "phmovementcontrol.h"
+#include "wound.h"
+
 
 #define SMALL_ENTITY_RADIUS		0.6f
 
@@ -40,21 +42,9 @@ void CEntityAlive::Load		(LPCSTR section)
 	CEntityCondition::Load	(section);
 	m_fFood					= 100*pSettings->r_float	(section,"ph_mass");
 
-
 	//bloody wallmarks
 	if(m_BloodMarksVector.empty()) 
 		LoadBloodyWallmarks ("bloody_marks");
-
-	//blood_wallmark.create("effects\\wallmark", "wm\\wm_blood_1");
-/*	string128	tmp;
-	int cnt		=_GetItemCount(buf);	R_ASSERT(cnt<=GAMEMTL_SUBITEM_COUNT);
-	ref_shader	s;
-	for (int k=0; k<cnt; ++k)
-	{
-		s.create				("effects\\wallmark",_GetItem(buf,k,tmp));
-		BloodMarks.push_back	(s);
-	}*/
-
 }
 
 void CEntityAlive::LoadBloodyWallmarks (LPCSTR section)
@@ -101,6 +91,8 @@ void CEntityAlive::shedule_Update(u32 dt)
 
 	//condition update with the game time pass
 	UpdateCondition();
+	//Обновление партиклов огня
+	UpdateFireParticles();
 
 	//убить сущность
 	if(Local() && !g_Alive() && !AlreadyDie())
@@ -144,8 +136,14 @@ void CEntityAlive::HitImpulse	(float /**amount/**/, Fvector& /**vWorldDir/**/, F
 
 void CEntityAlive::Hit(float P, Fvector &dir,CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type)
 {
-	//изменить состояние, перед тем как родительский класс обработае хит
-	ConditionHit(who, P, hit_type, element);
+	//изменить состояние, перед тем как родительский класс обработает хит
+	CWound* pWound = ConditionHit(who, P, hit_type, element);
+
+	if(pWound)
+	{
+		if(ALife::eHitTypeBurn == hit_type)
+			StartFireParticles(pWound);
+	}
 
 	//добавить кровь на стены
 	BloodyWallmarks (P, dir, element, position_in_object_space);
@@ -239,40 +237,90 @@ void CEntityAlive::BloodyWallmarks (float P, Fvector &dir, s16 element,
 
 		Collide::rq_result result;
 		BOOL reach_wall = Level().ObjectSpace.RayPick(start_pos, dir, m_fBloodMarkDistance, 
-			Collide::rqtBoth, result);
+			Collide::rqtBoth, result) && !result.O;
 
 		//если кровь долетела до статического объекта
-		if(reach_wall && !result.O)
+		if(reach_wall)
 		{
-			//вычислить нормаль к пораженной поверхности
 			CDB::TRI*	pTri	= Level().ObjectSpace.GetStaticTris()+result.element;
-			Fvector*	pVerts	= Level().ObjectSpace.GetStaticVerts();
+			SGameMtl*	pMaterial = GMLib.GetMaterialByIdx(pTri->material);
 
-			//вычислить точку попадания
-			Fvector end_point;
-			end_point.set(0,0,0);
-			end_point.mad(start_pos, dir, result.range);
-
-
-			ref_shader* pWallmarkShader = m_BloodMarksVector.empty()?NULL:
-			&m_BloodMarksVector[::Random.randI(0,m_BloodMarksVector.size())];
-
-			if (pWallmarkShader)
+			if(pMaterial->Flags.is(SGameMtl::flBloodmark))
 			{
-				float wallmark_size = m_fBloodMarkSizeMax;
-				wallmark_size *= (P/m_fNominalHit);
-				wallmark_size *= small_entity;
-				wallmark_size *= main_mark;
-				clamp(wallmark_size, m_fBloodMarkSizeMin, m_fBloodMarkSizeMax);
-			
-				//добавить отметку на материале
-				::Render->add_Wallmark(*pWallmarkShader, end_point,
-					wallmark_size, pTri, pVerts);
+
+				//вычислить нормаль к пораженной поверхности
+				Fvector*	pVerts	= Level().ObjectSpace.GetStaticVerts();
+
+				//вычислить точку попадания
+				Fvector end_point;
+				end_point.set(0,0,0);
+				end_point.mad(start_pos, dir, result.range);
+
+
+				ref_shader* pWallmarkShader = m_BloodMarksVector.empty()?NULL:
+				&m_BloodMarksVector[::Random.randI(0,m_BloodMarksVector.size())];
+
+				if (pWallmarkShader)
+				{
+					float wallmark_size = m_fBloodMarkSizeMax;
+					wallmark_size *= (P/m_fNominalHit);
+					wallmark_size *= small_entity;
+					wallmark_size *= main_mark;
+					clamp(wallmark_size, m_fBloodMarkSizeMin, m_fBloodMarkSizeMax);
+
+					//добавить отметку на материале
+					::Render->add_Wallmark(*pWallmarkShader, end_point,
+						wallmark_size, pTri, pVerts);
+				}
 			}
 		}
+	}
+	setEnabled(true);
+}
 
+#define FIRE_WOUND_SIZE 0.01f
+#define FIRE_PARTICLES_NAME "explosions\\group_items\\campfire_03_smoke"
+
+
+void CEntityAlive::StartFireParticles(CWound* pWound)
+{
+	if(std::find(m_ParticlesWoundList.begin(),
+				m_ParticlesWoundList.end(),
+				pWound) == m_ParticlesWoundList.end())
+	{
+		m_ParticlesWoundList.push_back(pWound);
 	}
 
 
-	setEnabled(true);
+	//if(pWound->TypeSize(ALife::eHitTypeBurn)>FIRE_WOUND_SIZE)
+	if(pWound->TotalSize()>FIRE_WOUND_SIZE)
+	{
+		CKinematics* V = PKinematics(Visual());
+		u16 particle_bone = CParticlesPlayer::GetNearestBone(V, pWound->GetBoneNum());
+		pWound->SetParticleBoneNum(particle_bone);
+		CParticlesPlayer::StartParticles(FIRE_PARTICLES_NAME, 
+										 pWound->GetParticleBoneNum(),
+									     Fvector().set(0,1,0),
+										 ID(), 10000);
+	}
+}
+void CEntityAlive::UpdateFireParticles()
+{
+	for(WOUND_LIST_it it = m_ParticlesWoundList.begin();
+					  it != m_ParticlesWoundList.end();
+					  it++)
+	{
+		CWound* pWound = *it;
+		WOUND_LIST_it cur_it = it;
+		//if(pWound->TypeSize(ALife::eHitTypeBurn)<FIRE_WOUND_SIZE)
+		if(pWound->TotalSize()<FIRE_WOUND_SIZE)
+		{
+			CParticlesPlayer::StopParticles(FIRE_PARTICLES_NAME, pWound->GetParticleBoneNum());
+			it = m_ParticlesWoundList.erase(cur_it);
+		}
+	}
+}
+
+void CEntityAlive::LoadFireParticles(LPCSTR section)
+{
 }

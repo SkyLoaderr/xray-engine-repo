@@ -6,9 +6,7 @@
 #include "../effectorfall.h"
 #include "CameraLook.h"
 #include "CameraFirstEye.h"
-#include "EffectorBobbing.h"
-#include "EffectorPPHit.h"
-#include "EffectorHit.h"
+
 #include "customitem.h"
 #include "hudmanager.h"
 #include "Actor_Flags.h"
@@ -17,6 +15,11 @@
 #include "Car.h"
 #include "UIGameSP.h"
 #include "xrserver_objects_alife_monsters.h"
+
+#include "EffectorBobbing.h"
+#include "EffectorPPHit.h"
+#include "EffectorHit.h"
+#include "ShootingHitEffector.h"
 
 // breakpoints
 #include "../xr_input.h"
@@ -76,7 +79,10 @@ CActor::CActor() : CEntityAlive()
 
 	cam_active				= eacFirstEye;
 	fPrevCamPos				= 0;
+	
+	// эффекторы
 	pCamBobbing				= 0;
+	m_pShootingEffector		= NULL;
 
 	// 
 	//Weapons					= 0;
@@ -123,6 +129,7 @@ CActor::CActor() : CEntityAlive()
 	m_bPickupMode			= false;
 
 	NET_I_NeedReculc		= FALSE;
+
 
 }
 
@@ -247,6 +254,9 @@ void CActor::Load	(LPCSTR section )
 
 	//actor condition variables
 	CActorCondition::Load(section);
+
+	//загрузить параметры эффектора
+	LoadShootingEffector();
 	
 
 	//Weapons				= xr_new<CWeaponList> (this);
@@ -487,49 +497,6 @@ void CActor::net_Destroy	()
 
 }
 
-void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element, float impulse, ALife::EHitType hit_type)
-{
-	if (g_Alive()<=0) return;
-
-	Fvector position_in_bone_space;
-	position_in_bone_space.set(0.f,0.f,0.f);
-
-	if(g_pGameLevel->CurrentEntity() == this) 
-	{
-		Fvector l_d; l_d.set(dir); l_d.normalize();
-		//Level().Cameras.AddEffector(xr_new<CEffectorPPHit>(XFORM().i.dotproduct(l_d), XFORM().j.dotproduct(l_d), .5f, .003f*iLost));
-		//Level().Cameras.AddEffector(xr_new<CEffectorHit>(XFORM().i.dotproduct(l_d), XFORM().j.dotproduct(l_d), .8f, .003f*iLost));
-	}
-
-	//slow actor, only when he gets hit
-	if(hit_type == ALife::eHitTypeWound || hit_type == ALife::eHitTypeStrike)
-	{
-		hit_slowmo				= iLost/100.f;
-		if (hit_slowmo>1.f)		hit_slowmo = 1.f;
-	}
-	else
-		hit_slowmo = 0.f;
-
-	switch (GameID())
-	{
-	case GAME_SINGLE:		
-		{
-			if (psActorFlags.test(AF_GODMODE))	
-			{
-				//by Dandy for debug reasons
-				//fEntityHealth += iLost;
-			//	inherited::Hit(iLost,dir,who,element,position_in_bone_space, impulse, hit_type);
-				return;
-			}
-			else inherited::Hit		(iLost,dir,who,element,position_in_bone_space, impulse, hit_type);
-		}
-		break;
-	default:
-		inherited::Hit	(iLost,dir,who,element,position_in_bone_space, impulse, hit_type);
-		break;
-	}
-}
-
 
 void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector position_in_bone_space, float impulse, ALife::EHitType hit_type)
 {
@@ -555,8 +522,11 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 
 	if (!g_Alive()) return;
 
-	if(g_pGameLevel->CurrentEntity() == this) {
-		Fvector l_d; l_d.set(dir); l_d.normalize();
+	if(Level().CurrentEntity() == this) {
+		Level().Cameras.AddEffector(xr_new<CShootingHitEffectorPP>(	m_pShootingEffector->ppi,		m_pShootingEffector->time,		m_pShootingEffector->time_attack,		m_pShootingEffector->time_release));
+		Level().Cameras.AddEffector(xr_new<CShootingHitEffector>(	m_pShootingEffector->ce_time,	m_pShootingEffector->ce_amplitude,m_pShootingEffector->ce_period_number,m_pShootingEffector->ce_power));
+
+		//Fvector l_d; l_d.set(dir); l_d.normalize();
 		//Level().Cameras.AddEffector(xr_new<CEffectorPPHit>(XFORM().i.dotproduct(l_d), XFORM().j.dotproduct(l_d), .5f, .003f*iLost));
 		//Level().Cameras.AddEffector(xr_new<CEffectorHit>(XFORM().i.dotproduct(l_d), XFORM().j.dotproduct(l_d), .8f, .003f*iLost));
 	}
@@ -1511,11 +1481,11 @@ float CActor::Radius()const
 	return R;
 }
 
-void CActor::ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element)
+CWound* CActor::ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element)
 {
-	if (psActorFlags.test(AF_GODMODE)) return;
+	if (psActorFlags.test(AF_GODMODE)) return NULL;
 
-	CActorCondition::ConditionHit(who, hit_power, hit_type, element);
+	return CActorCondition::ConditionHit(who, hit_power, hit_type, element);
 }
 
 void CActor::UpdateCondition()

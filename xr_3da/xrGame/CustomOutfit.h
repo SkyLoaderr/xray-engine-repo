@@ -35,15 +35,7 @@ public:
 	//коэффициенты на которые домножается хит
 	//при соответствующем типе воздействия
 	//если на персонаже надет костюм
-	float m_fOutfitBurn;
-	float m_fOutfitStrike;
-	float m_fOutfitShock;
-	float m_fOutfitWound;
-	float m_fOutfitRadiation;
-	float m_fOutfitTelepatic;
-	float m_fOutfitChemicalBurn;
-	float m_fOutfitExplosion;
-	float m_fOutfitFireWound;
+	float GetHitTypeK(ALife::EHitType hit_type);
 
 	int GetIconX() {return m_iOutfitIconX;}
 	int GetIconY() {return m_iOutfitIconY;}
@@ -51,4 +43,6 @@ public:
 protected:
 	int m_iOutfitIconX;
 	int m_iOutfitIconY;
+
+	HitTypeSVec m_HitTypeK;
 };

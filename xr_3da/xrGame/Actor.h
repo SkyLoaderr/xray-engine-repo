@@ -25,6 +25,7 @@ class CWeaponList;
 class CEffectorBobbing;
 class CTargetCS;
 class CVehicleCustom;
+struct SShootingEffector;
 
 class CActor: 
 	public CEntityAlive, 
@@ -234,6 +235,10 @@ private:
 	float					fPrevCamPos;
 	CEffectorBobbing*		pCamBobbing;
 
+	void					LoadShootingEffector	();
+	SShootingEffector*		m_pShootingEffector;
+
+
 
 	////////////////////////////////////////////
 	// для взаимодействия с другими персонажами 
@@ -355,7 +360,6 @@ public:
 	virtual void						net_Destroy			();
 
 	virtual void						Die					( );
-	virtual	void						Hit					(float P, Fvector &dir,			CObject* who, s16 element, float impulse,  ALife::EHitType hit_type = ALife::eHitTypeWound);
 	virtual	void						Hit					(float P, Fvector &dir,			CObject* who, s16 element, Fvector position_in_bone_space, float impulse,  ALife::EHitType hit_type = ALife::eHitTypeWound);
 	virtual void						HitSignal			(float P, Fvector &vLocalDir,	CObject* who, s16 element);
 	virtual	float						HitScale			(int element);
@@ -415,7 +419,7 @@ public:
 
 	//by Dandy
 	//Actor condition
-	virtual void ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element = 0);
+	virtual CWound* ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element = 0);
 	virtual void UpdateCondition();
 
 	//information receive

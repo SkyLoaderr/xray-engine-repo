@@ -4,6 +4,7 @@
 #include "entitycondition.h"
 
 DEFINE_VECTOR(ref_shader, SHADER_VECTOR, SHADER_VECTOR_IT);
+DEFINE_VECTOR(ref_str, STR_VECTOR, STR_VECTOR_IT);
 
 class CEntityAlive			: public CEntity, 
 							  virtual public CEntityCondition
@@ -73,8 +74,23 @@ IC	CPHMovementControl* PMovement()
 ///////////////////////////////////////////////////////////////////////
 
 protected:
+	//информация о партиклах крови, огня или дыма,
+	//прицепляемых на местах ран
+	DEF_LIST(WOUND_LIST, CWound*);
+	//список ран, на которых отыгрываются партиклы
+	WOUND_LIST m_ParticlesWoundList;
+
+	virtual void StartFireParticles(CWound* pWound);
+	virtual void UpdateFireParticles();
+	
+	virtual void LoadFireParticles(LPCSTR section);
+	//имя партиклов огня, которым может гореть EntityAlive
+	static ref_str m_sFireParticlesName;
+
+
 	virtual void			BloodyWallmarks			(float P, Fvector &dir,	s16 element,Fvector position_in_object_space);
 	virtual void			LoadBloodyWallmarks		(LPCSTR section);
+
 
 	//информация о кровавых отметках на стенах, общая для всех CEntityAlive
 	static SHADER_VECTOR m_BloodMarksVector;

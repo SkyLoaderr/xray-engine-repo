@@ -18,7 +18,7 @@ public:
 
 	virtual void Load(LPCSTR section);
 
-	virtual void ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element = 0);
+	virtual CWound* ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element = 0);
 	virtual void UpdateCondition();
 	
 	
