@@ -605,7 +605,7 @@ void CInventory::Update()
 				pIItem->u_EventGen(P, GE_OWNERSHIP_REJECT, 
 									pIItem->H_Parent()->ID());
 				P.w_u16(u16(pIItem->ID()));
-				pIItem->u_EventSend(P);
+				if (OnServer()) pIItem->u_EventSend(P);
 			}
 			else
 				drop_tasks.push_back	(pIItem);
