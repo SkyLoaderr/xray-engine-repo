@@ -231,7 +231,7 @@ void CSheduler::Update				()
 	// Normal (sheduled)
 	Device.Statistic.Sheduler.Begin	();
 	cycles_start					= CPU::GetCycleCount			();
-	cycles_limit					= CPU::cycles_per_milisec * u64	(10) + cycles_start;
+	cycles_limit					= CPU::cycles_per_milisec * u64	(20) + cycles_start;
 	ProcessStep						();
 	Device.Statistic.Sheduler.End	();
 }
