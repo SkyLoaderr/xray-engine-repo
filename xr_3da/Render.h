@@ -61,6 +61,7 @@ public:
 public:
 	virtual void					set_type			(LT type)							= 0;
 	virtual void					set_active			(bool)								= 0;
+	virtual bool					get_active			()									= 0;
 	virtual void					set_shadow			(bool)								= 0;
 	virtual void					set_position		(const Fvector& P)					= 0;
 	virtual void					set_direction		(const Fvector& P)					= 0;

@@ -1,1 +1,2 @@
 1. LEVEL monstry_test на свинье на полупрозрачной текстуре черная тень
+2. O(1) AI node search
