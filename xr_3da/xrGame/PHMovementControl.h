@@ -9,6 +9,7 @@ using namespace AI;
 class CPHAICharacter;
 class CPHSimpleCharacter;
 class CPHCapture;
+
 class CPHMovementControl 
 {
 static const path_few_point=10;
@@ -17,12 +18,22 @@ void				PHCaptureObject(CGameObject* object);
 void				PHCaptureObject(CGameObject* object,u16 element);
 CPHCapture*			PHCapture      (){return m_capture;}
 void				PHReleaseObject();
+enum				JumpType 
+{
+					jtStrait, //end point before uppermost point
+					jtCurved, //end point after uppermost point
+					jtHigh	  //end point is uppermost point
+};
 void				JumpV(const Fvector &jump_velocity);
 void				Jump(const Fvector &start_point, const Fvector &end_point, float time);
 void				Jump(const Fvector &end_point, float time);
 float				Jump(const Fvector &end_point);
 bool				JumpState(){return (m_character&&m_character->b_exist&&m_character->IsEnabled()&&m_character->JumpState());};
-bool			b_exect_position;
+///
+void				GetJumpMinVelParam(Fvector &min_vel,float &time,JumpType &type,const Fvector &end_point); //returns vector of minimum velocity
+																									  //in min_vel and correspondent jump time in time
+void				GetJumpParam(Fvector &velocity, JumpType &type,const Fvector &end_point, float time);
+bool				b_exect_position;
 public:
 
 	enum EEnvironment

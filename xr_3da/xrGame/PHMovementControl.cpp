@@ -760,7 +760,68 @@ velosity.z=end_point.z-start_point.z;
 float time=_sqrt(2.f*velosity.magnitude()/world_gravity);
 velosity.x/=time;
 velosity.z/=time;
-velosity.y=time*world_gravity/2.f+(end_point.y-start_point.y)/time;
+velosity.y=time*world_gravity/2.f+(velosity.y)/time;
 JumpV(velosity);
 return time;
+}
+void CPHMovementControl::GetJumpMinVelParam(Fvector &min_vel,float &time,JumpType &type,const Fvector &end_point)
+{
+	Fvector start_point;
+	start_point.set(dynamic_cast<CGameObject*>(m_character->PhysicsRefObject())->Position());
+	min_vel.x=end_point.x-start_point.x;
+	min_vel.y=end_point.y-start_point.y;
+	min_vel.z=end_point.z-start_point.z;
+	time=_sqrt(2.f*min_vel.magnitude()/world_gravity);
+	min_vel.x/=time;
+	min_vel.z/=time;
+	min_vel.y=time*world_gravity/2.f+(min_vel.y)/time;
+	if(min_vel.y<0.f)
+	{
+		type=jtStrait;
+		return;
+	}
+	float rise_time=min_vel.y/world_gravity;
+	if(_abs(rise_time-time)<EPS_L)
+	{
+		type=jtHigh;
+	}
+	else if(rise_time>time)
+	{
+		type=jtStrait;
+	}
+	else
+	{
+		type=jtCurved;
+	}
+}
+void CPHMovementControl::GetJumpParam(Fvector &velocity, JumpType &type,const Fvector &end_point, float time)
+{
+	Fvector start_point;
+	start_point.set(dynamic_cast<CGameObject*>(m_character->PhysicsRefObject())->Position());
+	Fvector velosity;
+	velosity.x=end_point.x-start_point.x;
+	velosity.z=end_point.z-start_point.z;
+	
+	velosity.x/=time;
+	velosity.z/=time;
+	velosity.y=time*world_gravity/2.f+(end_point.y-start_point.y)/time;
+	if(velocity.y<0.f)
+	{
+		type=jtStrait;
+		return;
+	}
+	float rise_time=velosity.y/world_gravity;
+	if(_abs(rise_time-time)<EPS_L)
+	{
+		type=jtHigh;
+	}
+	else if(rise_time>time)
+	{
+		type=jtStrait;
+	}
+	else
+	{
+		type=jtCurved;
+	}
+
 }
