@@ -319,6 +319,7 @@ void CTreeViewFiles::OnItemexpanded(NMHDR* pNMHDR, LRESULT* pResult)
 
 void CTreeViewFiles::OnLclick(NMHDR* pNMHDR, LRESULT* pResult) 
 {
+	NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
 	CPoint pt;
 	GetCursorPos(&pt);
 	m_pTree->ScreenToClient(&pt);
@@ -330,18 +331,18 @@ void CTreeViewFiles::OnLclick(NMHDR* pNMHDR, LRESULT* pResult)
 
 void CTreeViewFiles::OnRclick(NMHDR* pNMHDR, LRESULT* pResult) 
 {
-	HTREEITEM itm = m_pTree->GetSelectedItem();
-	long stat = VSSGetStatus(itm);
-
-	// TODO: Add your control notification handler code here
 	CPoint pt;
 	GetCursorPos(&pt);
 	m_pTree->ScreenToClient(&pt);
 	UINT nFlags;
-	HTREEITEM item = m_pTree->HitTest(pt, &nFlags);
+	HTREEITEM itm = m_pTree->HitTest(pt, &nFlags);
 	
+	if(!m_pTree->SelectItem(itm)) return;
+	long stat = VSSGetStatus(itm);
+
+
 	HMENU hMenu = NULL;
-	if ( IsRoot(item) || IsFolder(item) ){
+	if ( IsRoot(itm) || IsFolder(itm) ){
 		hMenu = LoadMenu(theApp.m_hInstance, MAKEINTRESOURCE(IDR_PROJECT_MENU));
 
 		if ( !hMenu )
@@ -362,7 +363,7 @@ void CTreeViewFiles::OnRclick(NMHDR* pNMHDR, LRESULT* pResult)
 		DestroyMenu(hMenu);
 	}
 
-	if( IsFile(item)){
+	if( IsFile(itm)){
 		hMenu = LoadMenu(theApp.m_hInstance, MAKEINTRESOURCE(IDR_MENU1));
 		if ( !hMenu )
 			return;
@@ -374,31 +375,31 @@ void CTreeViewFiles::OnRclick(NMHDR* pNMHDR, LRESULT* pResult)
 			return;
 		}
 
-	CMenu mnu;
-	mnu.Attach(hSubMenu);
-	HTREEITEM itm = m_pTree->GetSelectedItem();
-	long stat = VSSGetStatus(itm);
-	UINT mnu_itm;
-	mnu_itm = mnu.GetMenuItemID(0);
-	mnu.EnableMenuItem(mnu_itm,(stat==VSSFILE_CHECKEDOUT_ME)?MF_ENABLED : MF_GRAYED);
+		CMenu mnu;
+		mnu.Attach(hSubMenu);
+//		HTREEITEM itm = m_pTree->GetSelectedItem();
+//		long stat = VSSGetStatus(itm);
+		UINT mnu_itm;
+		mnu_itm = mnu.GetMenuItemID(0);
+		mnu.EnableMenuItem(mnu_itm,(stat==VSSFILE_CHECKEDOUT_ME)?MF_ENABLED : MF_GRAYED);
 
 
-	mnu_itm = mnu.GetMenuItemID(1);
-	mnu.EnableMenuItem(mnu_itm,((stat==VSSFILE_NOTCHECKEDOUT)||(stat==VSSFILE_CHECKEDOUT))?MF_ENABLED : MF_GRAYED );
-	mnu_itm = mnu.GetMenuItemID(2);
-	mnu.EnableMenuItem(mnu_itm,(stat==VSSFILE_CHECKEDOUT_ME)?MF_ENABLED : MF_GRAYED);
-	mnu_itm = mnu.GetMenuItemID(3);
-	mnu.EnableMenuItem(mnu_itm,(stat != -1)?MF_ENABLED : MF_GRAYED);
-	mnu_itm = mnu.GetMenuItemID(4);
-	mnu.EnableMenuItem(mnu_itm,/*(stat != -1)?MF_ENABLED : */MF_GRAYED);
+		mnu_itm = mnu.GetMenuItemID(1);
+		mnu.EnableMenuItem(mnu_itm,((stat==VSSFILE_NOTCHECKEDOUT)||(stat==VSSFILE_CHECKEDOUT))?MF_ENABLED : MF_GRAYED );
+		mnu_itm = mnu.GetMenuItemID(2);
+		mnu.EnableMenuItem(mnu_itm,(stat==VSSFILE_CHECKEDOUT_ME)?MF_ENABLED : MF_GRAYED);
+		mnu_itm = mnu.GetMenuItemID(3);
+		mnu.EnableMenuItem(mnu_itm,(stat != -1)?MF_ENABLED : MF_GRAYED);
+		mnu_itm = mnu.GetMenuItemID(4);
+		mnu.EnableMenuItem(mnu_itm,/*(stat != -1)?MF_ENABLED : */MF_GRAYED);
 
-		POINT mouse;
-		GetCursorPos(&mouse);
-		::SetForegroundWindow(m_hWnd);	
-//		::TrackPopupMenu(hSubMenu, 0, mouse.x, mouse.y, 0, m_hWnd, NULL);
-		mnu.TrackPopupMenu(/*hSubMenu,*/ 0, mouse.x, mouse.y, this, NULL);
-		
-		DestroyMenu(hMenu);
+			POINT mouse;
+			GetCursorPos(&mouse);
+			::SetForegroundWindow(m_hWnd);	
+	//		::TrackPopupMenu(hSubMenu, 0, mouse.x, mouse.y, 0, m_hWnd, NULL);
+			mnu.TrackPopupMenu(/*hSubMenu,*/ 0, mouse.x, mouse.y, this, NULL);
+			
+			DestroyMenu(hMenu);
 
 	}
 	*pResult = 0;
