@@ -80,6 +80,7 @@ end
 function process_bloodsucker(bs, st)
 
 -------------
+--[[
 	local actor = get_actor()
 	local vec = level.vertex_in_direction(actor:level_vertex_id(), actor:direction(), 1)
 	if vec then
@@ -88,6 +89,7 @@ function process_bloodsucker(bs, st)
 	else
 		printf("no vec")
 	end
+--]]
 -------------
 
 	--printf("process_bloodsucker: going_to_roof=%s", utils.to_str(st.going_to_roof))
