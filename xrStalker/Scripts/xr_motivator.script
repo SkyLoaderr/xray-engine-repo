@@ -5,6 +5,7 @@
 ----------------------------------------------------------------------------------------------------------------------
 storage = {}
 trade_arhive = {}
+memtsg = {} --' временная таблица
 
 class "motivation_action1" (motivation_action)
 function motivation_action1:__init(value) super(value)
@@ -86,11 +87,14 @@ function motivator_binder:update(delta)
     end
 
 --' Проверка ТИМ СКВАД ГРУП 
-if false then
-	printf("[TSG] Object: %s t:%d s:%d g:%d", self.object:name(),
-											  self.object:team(),
-											  self.object:squad(),
-											  self.object:group())
+if true then	
+	if memtsg[self.object:id()] == nil then
+		printf("[TSG] Object: %s t:%d s:%d g:%d", self.object:name(),
+												  self.object:team(),
+												  self.object:squad(),
+												  self.object:group())
+		memtsg[self.object:id()] = self.object:id()
+	end
 end
 
 end
