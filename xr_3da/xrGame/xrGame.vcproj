@@ -1205,6 +1205,16 @@
 						</Filter>
 					</Filter>
 				</Filter>
+				<Filter
+					Name="Spectator"
+					Filter="">
+					<File
+						RelativePath="Spectator.cpp">
+					</File>
+					<File
+						RelativePath="Spectator.h">
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter

@@ -213,6 +213,10 @@ xrSE_DECLARE_BEGIN(xrSE_Target_CS,xrSE_Target)
 	xrSE_Target_CS();
 xrSE_DECLARE_END
 
+//***** Spectator
+xrSE_DECLARE_BEGIN(xrSE_Spectator,xrServerEntity)
+xrSE_DECLARE_END
+
 //***** Actor
 xrSE_DECLARE_BEGIN(xrSE_Actor,xrSE_Teamed)
 	u32						timestamp;

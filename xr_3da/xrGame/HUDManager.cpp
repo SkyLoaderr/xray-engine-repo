@@ -8,6 +8,7 @@
 
 #include "actor.h"
 #include "car.h"
+#include "spectator.h"
 
 //--------------------------------------------------------------------
 CHUDManager::CHUDManager()
@@ -110,6 +111,8 @@ void CHUDManager::Render_Calcualte()
 	if (A && !A->HUDview())			return;
 	CCar*		C					= dynamic_cast<CCar*>	(O);
 	if (C)							return;
+	CSpectator*	S					= dynamic_cast<CSpectator*>	(O);
+	if (S)							return;
 
 	::Render->set_HUD				(TRUE);
 	::Render->set_Object			(O->H_Root());

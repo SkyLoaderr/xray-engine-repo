@@ -94,18 +94,18 @@ IC void CObjectSpace::Object_Unregister		( CObject *O )
 {
 	R_ASSERT	(O);
 	CCFModel*	M = O->CFORM();
-	
-	Irect&		r0 = M->last_rect;
-	
-	int 		ix, iz;
-	for (ix=r0.x1; ix<=r0.x2; ix++)
-		for (iz=r0.y1; iz<=r0.y2; iz++)
-		{
-			vector<CObject*>&	lst = Dynamic(ix,iz).lst;
-			lst.erase(remove(lst.begin(),lst.end(),O),lst.end());
+	if (M){
+		Irect&	r0 = M->last_rect;
+
+		int 	ix, iz;
+		for (ix=r0.x1; ix<=r0.x2; ix++){
+			for (iz=r0.y1; iz<=r0.y2; iz++){
+				vector<CObject*>&	lst = Dynamic(ix,iz).lst;
+				lst.erase(remove(lst.begin(),lst.end(),O),lst.end());
+			}
 		}
-		
-	M->last_rect.null();
+		M->last_rect.null();
+	}
 }
 //----------------------------------------------------------------------
 IC int	CObjectSpace::GetNearest ( const Fvector &point, float range )

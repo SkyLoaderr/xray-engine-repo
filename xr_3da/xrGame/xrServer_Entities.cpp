@@ -391,6 +391,18 @@ void xrSE_Health::FillProp			(LPCSTR pref, PropValueVec& values)
 }
 #endif
 
+//***** Spectator
+void xrSE_Spectator::STATE_Read		(NET_Packet& P, u16 size)	{};
+void xrSE_Spectator::STATE_Write	(NET_Packet& P)				{};
+void xrSE_Spectator::UPDATE_Read	(NET_Packet& P)				{};
+void xrSE_Spectator::UPDATE_Write	(NET_Packet& P)				{};
+#ifdef _EDITOR
+void xrSE_Spectator::FillProp		(LPCSTR pref, PropValueVec& values)
+{
+  	inherited::FillProp(pref,values);
+}
+#endif
+
 //***** Actor
 void xrSE_Actor::STATE_Read			(NET_Packet& P, u16 size)	{inherited::STATE_Read(P,size); };
 void xrSE_Actor::STATE_Write		(NET_Packet& P)				{inherited::STATE_Write(P);		};
@@ -971,6 +983,7 @@ xrServerEntity*	F_entity_Create		(LPCSTR name)
 	case CLSID_AI_SOLDIER:			return new	xrSE_Enemy;
 	case CLSID_EVENT:				return new  xrSE_Event;
 	case CLSID_CAR_NIVA:			return new  xrSE_Car;
+	case CLSID_SPECTATOR:			return new	xrSE_Spectator;
 
 	// Artifacts
 	case CLSID_AF_MERCURY_BALL:		return new  xrSE_MercuryBall;

@@ -4,6 +4,7 @@
 #define CLSID_OBJECT_ACTOR			MK_CLSID('O','_','A','C','T','O','R',' ')
 #define CLSID_OBJECT_DUMMY			MK_CLSID('O','_','D','U','M','M','Y',' ')
 #define CLSID_ENTITY				MK_CLSID('E','N','T','I','T','Y',' ',' ')
+#define CLSID_SPECTATOR				MK_CLSID('S','P','E','C','T',' ',' ',' ')
 
 // all the monsters
 #define CLSID_AI_CROW				MK_CLSID('A','I','_','C','R','O','W',' ')

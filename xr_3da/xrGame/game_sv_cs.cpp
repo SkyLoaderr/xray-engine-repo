@@ -435,15 +435,17 @@ void game_sv_CS::OnPlayerConnect	(u32 id_who)
 
 	// Spawn "actor"
 	ps_who->team = u8(get_option_i(options,"team",AutoTeam()));
-	xrServerEntity*		E	=	spawn_begin	(ps_who->team?"actor_cs_1":"actor_cs_2");													// create SE
+	xrSE_Spectator*		A	=	(xrSE_Spectator*)spawn_begin	("spectator");															// create SE
+/*	xrServerEntity*		E	=	spawn_begin	(ps_who->team?"actor_cs_1":"actor_cs_2");													// create SE
 	xrSE_Actor*	A			=	(xrSE_Actor*) E;					
+*/
 	strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
 	A->s_flags				=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER;// flags
 	assign_RP				(A);
 	spawn_end				(A,id_who);
 
 	// Даем игроку децл оружия для начала. Если игрок изначально будет коннектится как наблюдатель то все это не нужно.
-	string256 fn;
+/*	string256 fn;
 	if (Engine.FS.Exist(fn,Path.GameData,"game_cs.ltx")) {
 		CInifile* ini = CInifile::Create(fn);
 		LPCSTR prim = ini->ReadSTRING("cs_start_Arms","primary");
@@ -482,7 +484,7 @@ void game_sv_CS::OnPlayerConnect	(u32 id_who)
 				F_entity_Destroy				(W_pistol);
 			}
 		}
-	}/**/
+	}*/
 }
 
 void game_sv_CS::OnPlayerBuy		(u32 id_who, u16 eid_who, LPCSTR what)
