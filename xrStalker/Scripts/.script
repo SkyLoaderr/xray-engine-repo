@@ -23,6 +23,7 @@ module ("xr_reactions")
 module ("xr_state")
 module ("xr_position")
 module ("xr_sound")
+module ("xr_dialogs")
 
 module ("xr_gulag")
 module ("gulag_tasks")
