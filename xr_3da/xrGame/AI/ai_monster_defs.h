@@ -6,15 +6,15 @@ typedef u32 TTime;
 // Using multiparam macros: 
 // e.g. LOG_EX2("X = [%u], vector = [%f,%f,%f]", *"*/ m_dwCurrentTime, VPUSH(Position())  /*"*);
 
-#define ENABLE_WRITE_LOG_EX
+//#define ENABLE_WRITE_LOG_EX
 
 #undef	LOG_EX
 #undef	LOG_EX2
 
 #ifndef ENABLE_WRITE_LOG_EX
 	
-	#define LOG_EX(str) ;
-	#define LOG_EX2(str,params) ;
+	#define LOG_EX(str) {;}
+	#define LOG_EX2(str,params) {;}
 	
 #else
 
