@@ -105,6 +105,7 @@ private:
 	float						param_noise_scale;
 	u32							param_noise_color;
 	float						param_noise_fps;
+	u32							param_blend_color;
 public:
 	void						OnDeviceCreate			();
 	void						OnDeviceDestroy			();
@@ -140,7 +141,8 @@ public:
 	virtual void				set_noise_scale			(float f)		{ param_noise_scale=f;				}
 	virtual void				set_noise_color			(u32 f)			{ param_noise_color=f;				}
 	virtual void				set_noise_fps			(float f)		{ param_noise_fps=_abs(f)+EPS_S;	}
+	virtual void				set_blend_color			(u32 f)			{ param_blend_color=f;				}
 
-	virtual u32					get_width				()				{ return dwWidth;			}
-	virtual u32					get_height				()				{ return dwHeight;			}
+	virtual u32					get_width				()				{ return dwWidth;					}
+	virtual u32					get_height				()				{ return dwHeight;					}
 };
