@@ -1,9 +1,10 @@
 
 
 function fe(item, parent)
-	local n = parent:name()
 	local p = parent:position()
-	p.z = p.z+7
+	p.x = -31
+	p.y = 1
+	p.z = -61
 	parent:drop_item(item,p)
 end
 
