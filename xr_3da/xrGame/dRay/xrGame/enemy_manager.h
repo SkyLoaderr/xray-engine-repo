@@ -19,6 +19,7 @@ protected:
 
 protected:
 	float				m_ignore_monster_threshold;
+	float				m_max_ignore_distance;
 	CEntityAlive		*m_self_entity_alive;
 	CHitMemoryManager	*m_self_hit_manager;
 

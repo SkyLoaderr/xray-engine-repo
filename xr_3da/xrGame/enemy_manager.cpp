@@ -24,7 +24,13 @@ bool CEnemyManager::useful					(const CEntityAlive *entity_alive) const
 	if (m_self_entity_alive && (m_self_entity_alive->tfGetRelationType(entity_alive) != ALife::eRelationTypeEnemy))
 		return				(false);
 
-	if (m_self_entity_alive->human_being() && !entity_alive->human_being() && !expedient(entity_alive) && (evaluate(entity_alive) >= m_ignore_monster_threshold))
+	if	(
+			m_self_entity_alive->human_being() && 
+			!entity_alive->human_being() && 
+			!expedient(entity_alive) && 
+			(evaluate(entity_alive) >= m_ignore_monster_threshold) &&
+			(m_self_entity_alive->Position().distance_to(entity_alive->Position()) >= m_max_ignore_distance)
+		)
 		return				(false);
 
 	return					(true);
@@ -64,6 +70,10 @@ void CEnemyManager::Load					(LPCSTR section)
 void CEnemyManager::reload					(LPCSTR section)
 {
 	m_ignore_monster_threshold	= 1.f;
+	m_max_ignore_distance		= 0.f;
+
 	if (pSettings->line_exist(section,"ignore_monster_threshold"))
 		m_ignore_monster_threshold	= pSettings->r_float(section,"ignore_monster_threshold");
+	if (pSettings->line_exist(section,"max_ignore_distance"))
+		m_max_ignore_distance		= pSettings->r_float(section,"max_ignore_distance");
 }

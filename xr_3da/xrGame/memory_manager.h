@@ -26,6 +26,12 @@ class CMemoryManager :
 protected:
 	CAI_Stalker				*m_object;
 
+protected:
+	template <typename T>
+		void				update					(const xr_vector<T> &objects);
+	template <typename T, typename _predicate>
+		void				fill_enemies			(const xr_vector<T> &objects, const _predicate &predicate) const;
+
 public:
 							CMemoryManager			();
 	virtual					~CMemoryManager			();
@@ -35,8 +41,8 @@ public:
 	virtual	void			reload					(LPCSTR section);
 	virtual	void			update					(float time_delta);
 	IC		ALife::ERelationType get_relation		(const CEntityAlive *tpEntityAlive) const;
-	template <typename T>
-			void			update					(const xr_vector<T> &objects);
+	template <typename _predicate>
+	IC		void			fill_enemies			(const _predicate &predicate) const;
 	IC		bool			visible					(const CObject *object) const;
 	IC		const CEntityAlive	*enemy				() const;
 	IC		const CGameObject	*item				() const;

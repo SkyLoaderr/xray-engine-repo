@@ -17,6 +17,13 @@ using namespace AgentManager;
 
 #define SECTION "agent_manager"
 
+struct CDeadMemberPredicate {
+	IC	bool operator()	(const CMemberOrder &order) const
+	{
+		return					(!order.object()->g_Alive());
+	}
+};
+
 CAgentManager::CAgentManager		()
 {
 	reload						(SECTION);
@@ -36,8 +43,12 @@ float CAgentManager::shedule_Scale	()
 
 void CAgentManager::shedule_Update	(u32 time_delta)
 {
-	ISheduled::shedule_Update	(time_delta);
-	inherited::update			(time_delta);
+	ISheduled::shedule_Update			(time_delta);
+
+	xr_vector<CMemberOrder>::iterator	I = remove_if(m_members.begin(),m_members.end(),CDeadMemberPredicate());
+	m_members.erase						(I,m_members.end());
+
+	inherited::update					(time_delta);
 }
 
 BOOL CAgentManager::shedule_Ready	()
@@ -62,7 +73,7 @@ void CAgentManager::reload			(LPCSTR section)
 void CAgentManager::add				(CEntity *member)
 {
 	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(member);
-	if (!stalker)
+	if (!stalker || !stalker->g_Alive())
 		return;
 
 	VERIFY2						(sizeof(squad_mask_type)*8 > members().size(),"Too many stalkers in squad!");
@@ -73,14 +84,17 @@ void CAgentManager::add				(CEntity *member)
 	m_members.push_back			(CMemberOrder(stalker));
 }
 
-void CAgentManager::remove			(CEntity *member)
+void CAgentManager::remove			(CEntity *member, bool no_assert)
 {
 	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(member);
 	if (!stalker)
 		return;
 
 	iterator					I = std::find_if(m_members.begin(),m_members.end(), CMemberPredicate(stalker));
-	VERIFY						(I != m_members.end());
+	if (I == m_members.end()) {
+		R_ASSERT				(no_assert);
+		return;
+	}
 	m_members.erase				(I);
 }
 
@@ -121,4 +135,12 @@ void CAgentManager::add_actions		()
 	add_condition			(action,ePropertyEnemy,				true);
 	add_effect				(action,ePropertyEnemy,				false);
 	add_operator			(eOperatorKillEnemy,				action);
+}
+
+void CAgentManager::distribute_locations	()
+{
+}
+
+void CAgentManager::setup_actions		()
+{
 }

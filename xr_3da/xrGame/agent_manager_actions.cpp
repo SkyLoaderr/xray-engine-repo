@@ -60,6 +60,10 @@ void CAgentManagerActionNoOrders::execute			()
 	for ( ; I != E; ++I) {
 		(*I).order_type			(AgentManager::eOrderTypeNoOrder);
 
+//		(*I).order_type			(AgentManager::eOrderTypeAction);
+//		(*I).action				(CSetupAction(0.f,0));
+//		(*I).action().movement().set_level_dest_vertex_id((*I).object()->level_vertex_id());
+
 //		(*I).order_type			(AgentManager::eOrderTypeGoal);
 //		(*I).goal				(goal);
 
@@ -107,6 +111,7 @@ CAgentManagerActionKillEnemy::CAgentManagerActionKillEnemy	(CAgentManager *objec
 
 void CAgentManagerActionKillEnemy::initialize		()
 {
+	m_level_time					= Level().timeServer() + 10000;
 }
 
 void CAgentManagerActionKillEnemy::finalize			()
@@ -115,12 +120,22 @@ void CAgentManagerActionKillEnemy::finalize			()
 
 void CAgentManagerActionKillEnemy::execute			()
 {
-	CAgentManager::iterator		I = m_object->members().begin();
-	CAgentManager::iterator		E = m_object->members().end();
+	m_object->distribute_enemies	();
+	m_object->distribute_locations	();
+	m_object->setup_actions			();
+
+	CAgentManager::iterator			I = m_object->members().begin();
+	CAgentManager::iterator			E = m_object->members().end();
 	for ( ; I != E; ++I) {
-		(*I).order_type			(AgentManager::eOrderTypeNoOrder);
-//		(*I).order_type			(AgentManager::eOrderTypeAction);
-//		(*I).action				(CSetupAction(0.f,0));
-//		(*I).action().movement().set_level_dest_vertex_id((*I).object()->level_vertex_id());
+//		if ((*I).object()->enemy())
+//			Msg						("%s vs %s",*(*I).object()->cName(),*(*I).object()->enemy()->cName());
+//		if (m_level_time >= Level().timeServer()) {
+//			(*I).order_type			(AgentManager::eOrderTypeAction);
+//			(*I).action				(CSetupAction(0.f,0));
+//			(*I).action().movement().set_level_dest_vertex_id((*I).object()->level_vertex_id());
+//		}
+//		else {
+			(*I).order_type			(AgentManager::eOrderTypeNoOrder);
+//		}
 	}
 }

@@ -68,3 +68,13 @@ IC	void CMemberOrder::goal						(const CGraphEngine::CWorldState &goal)
 	m_order_type	= AgentManager::eOrderTypeGoal;
 	m_goal			= goal;
 }
+
+IC	float CMemberOrder::probability				() const
+{
+	return			(m_probability);
+}
+
+IC	void CMemberOrder::probability				(float probability)
+{
+	m_probability	= probability;
+}

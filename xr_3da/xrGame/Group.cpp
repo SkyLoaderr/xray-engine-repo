@@ -52,8 +52,13 @@ const Fvector& CGroup::GetCentroid()
 
 void CGroup::Member_Add(CEntity *E)
 {
-	if (!get_agent_manager() && dynamic_cast<CAI_Stalker*>(E))
-		m_agent_manager	= xr_new<CAgentManager>();
+	if (!get_agent_manager() && dynamic_cast<CAI_Stalker*>(E)) {
+		m_agent_manager						= xr_new<CAgentManager>();
+		CSquad								&squad = Level().Teams[E->g_Team()].Squads[E->g_Squad()];
+		agent_manager().set_squad_objects	(&squad.m_visible_objects);
+		agent_manager().set_squad_objects	(&squad.m_sound_objects);
+		agent_manager().set_squad_objects	(&squad.m_hit_objects);
+	}
 
 	if (get_agent_manager())
 		agent_manager().add	(E);
@@ -74,7 +79,7 @@ void CGroup::Member_Remove(CEntity* E){
 	if (Members.end()!=it) {
 		Members.erase(it);
 		if (get_agent_manager())
-			agent_manager().remove(E);
+			agent_manager().remove(E,true);
 		
 		if (Members.empty() && get_agent_manager())
 			xr_delete	(m_agent_manager);

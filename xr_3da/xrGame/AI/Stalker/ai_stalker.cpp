@@ -372,7 +372,8 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 	// *** general stuff
 	float dt			= float(DT)/1000.f;
 
-	CMemoryManager::update				(dt);
+	if (g_Alive())
+		CMemoryManager::update			(dt);
 	inherited::inherited::shedule_Update(DT);
 	
 	// Queue setup

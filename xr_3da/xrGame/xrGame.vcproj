@@ -291,6 +291,9 @@
 						RelativePath=".\agent_manager.h">
 					</File>
 					<File
+						RelativePath=".\agent_manager_enemy.cpp">
+					</File>
+					<File
 						RelativePath=".\agent_manager_inline.h">
 					</File>
 					<File

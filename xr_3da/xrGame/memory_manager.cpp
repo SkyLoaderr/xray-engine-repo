@@ -78,8 +78,10 @@ void CMemoryManager::update			(const xr_vector<T> &objects)
 	for ( ; I != E; ++I) {
 		if (!(*I).m_enabled)
 			continue;
+		
 		if (m_object && !(*I).m_squad_mask.is(m_object->agent_manager().mask(m_object)))
 			continue;
+		
 		const CEntityAlive			*entity_alive = dynamic_cast<const CEntityAlive*>((*I).m_object);
 		if (!entity_alive || !CEnemyManager::add(entity_alive))
 			CItemManager::add		((*I).m_object);

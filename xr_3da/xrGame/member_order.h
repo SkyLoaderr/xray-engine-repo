@@ -21,6 +21,7 @@ protected:
 	CGraphEngine::CWorldState				m_goal;
 	CSetupAction							m_action;
 	bool									m_initialized;
+	float									m_probability;
 
 public:
 	IC										CMemberOrder	(CAI_Stalker *object);
@@ -29,10 +30,12 @@ public:
 	IC		const CSetupAction				&action			() const;
 	IC		const AgentManager::EOrderType	&order_type		() const;
 	IC		const CGraphEngine::CWorldState	&goal			() const;
+	IC		float							probability		() const;
 	IC		CSetupAction					&action			();
 	IC		void							action			(const CSetupAction	&action);
 	IC		void							order_type		(const AgentManager::EOrderType &order_type);
 	IC		void							goal			(const CGraphEngine::CWorldState &goal);
+	IC		void							probability		(float probability);
 };
 
 #include "member_order_inline.h"

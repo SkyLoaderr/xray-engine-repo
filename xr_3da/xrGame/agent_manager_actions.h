@@ -67,6 +67,8 @@ class CAgentManagerActionKillEnemy : public CAgentManagerActionBase {
 protected:
 	typedef CAgentManagerActionBase inherited;
 
+	u32					m_level_time;
+
 public:
 						CAgentManagerActionKillEnemy(CAgentManager *object, LPCSTR action_name = "");
 	virtual void		initialize					();

@@ -88,13 +88,9 @@ bool CAbstractObjectManager::add					(const T *object)
 	if (!useful(object))
 		return				(false);
 
-	T						*type = dynamic_cast<const T*>(object);
-	if (!type)
-		return				(false);
-
-	xr_set<const T*>::const_iterator	I = m_objects.find(type);
+	xr_set<const T*>::const_iterator	I = m_objects.find(object);
 	if (m_objects.end() == I) {
-		m_objects.insert	(type);
+		m_objects.insert	(object);
 		return				(true);
 	}
 	return					(true);

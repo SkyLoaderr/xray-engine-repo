@@ -217,6 +217,10 @@ BOOL CEntity::net_Spawn		(LPVOID DC)
 	CSquad& S				= Level().get_squad	(id_Team,id_Squad);
 	CGroup& G				= Level().get_group	(id_Team,id_Squad,id_Group);
 
+	// Initialize variables
+	fEntityHealth			= 100;
+	fArmor					= 0;
+
 	G.Member_Add			(this);
 	if (S.Leader==0)		S.Leader			=this;
 	++G.m_dwAliveCount;
@@ -227,10 +231,6 @@ BOOL CEntity::net_Spawn		(LPVOID DC)
 		//Level().SquadMan.Dump();
 	}
 
-	// Initialize variables
-	fEntityHealth			= 100;
-	fArmor					= 0;
-	
 	Engine.Sheduler.Unregister	(this);
 	Engine.Sheduler.Register	(this);
 
