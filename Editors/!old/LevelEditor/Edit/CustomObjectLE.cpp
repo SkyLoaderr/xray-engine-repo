@@ -206,10 +206,16 @@ void __fastcall CCustomObject::OnObjectNameAfterEdit(PropItem* sender, LPVOID ed
     else *new_name = new_name->LowerCase();
 }
 
-void __fastcall	CCustomObject::OnNumChangeTransform(PropValue* sender)
+void __fastcall	CCustomObject::OnNumChangePosition(PropValue* sender)
 {
-	NumSetRotation	(FRotation);	// не менять строки (важно)
 	NumSetPosition	(FPosition);
+}
+void __fastcall	CCustomObject::OnNumChangeRotation(PropValue* sender)
+{
+	NumSetRotation	(FRotation);
+}
+void __fastcall	CCustomObject::OnNumChangeScale(PropValue* sender)
+{
 	NumSetScale		(FScale);
 }
 
@@ -219,11 +225,11 @@ void CCustomObject::FillProp(LPCSTR pref, PropItemVec& items)
     V->Owner()->OnAfterEditEvent = OnObjectNameAfterEdit;
     if (V->Owner()->m_Flags.is(PropItem::flMixed)) V->Owner()->m_Flags.set(PropItem::flDisabled,TRUE);
     V = PHelper.CreateVector	(items, FHelper.PrepareKey(pref,"Transform\\Position"),	&PPosition,	-10000,	10000,0.01,2);
-    V->OnChangeEvent	= OnNumChangeTransform;
+    V->OnChangeEvent	= OnNumChangePosition;
     V = PHelper.CreateAngle3	(items, FHelper.PrepareKey(pref,"Transform\\Rotation"),	&PRotation,	-10000,	10000,0.1,1);
-    V->OnChangeEvent	= OnNumChangeTransform;
+    V->OnChangeEvent	= OnNumChangeRotation;
     V = PHelper.CreateVector	(items, FHelper.PrepareKey(pref,"Transform\\Scale"),	&PScale, 	0.01,	10000,0.01,2);
-    V->OnChangeEvent	= OnNumChangeTransform;
+    V->OnChangeEvent	= OnNumChangeScale;
 }
 //----------------------------------------------------
 
