@@ -16,7 +16,10 @@ function main ()
 			look (look.search), anim (anim.free), object (torch, object.activate), 
 			cond (cond.time_end, 1000000000000))
 
-	while stalker:action () do wait () end
+	while stalker:action () do 
+		  if stalker:alive () == false then break end
+		  wait () 
+		  end
 
 	stalker:script (false, s_test.script_name ())
 	
