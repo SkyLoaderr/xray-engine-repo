@@ -466,11 +466,14 @@ void CAI_Rat::Pursuit()
 
 	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
 
+	if (enemy() && (Level().timeServer() - memory(enemy()).m_level_time >= m_dwLostMemoryTime)) {
+		enable(enemy(),false);
+		GO_TO_PREV_STATE_THIS_UPDATE;
+	}
+
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(enemy(),aiRatAttackRun);
 
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE((m_fMorale < m_fMoraleNormalValue),aiRatUnderFire);
-
-	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(Level().timeServer() - memory(enemy()).m_level_time >= m_dwLostMemoryTime);
 
 	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && ((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_BULLET_HIT) == SOUND_TYPE_WEAPON_BULLET_HIT)) {
 		GO_TO_NEW_STATE_THIS_UPDATE(aiRatFreeRecoil);
