@@ -61,8 +61,10 @@ function evaluator_wound:evaluate ()
     this.process_map_spot(self.object, self.wound, self.a)
 	if self.wound then
 		self.a.state_talkable = false
+		self.object:disable_trade()
 	else
 		self.a.state_talkable = true
+		self.object:enable_trade()
 	end
     return self.wound
 end
