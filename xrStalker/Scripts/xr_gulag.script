@@ -305,6 +305,11 @@ function fract:set_relation (relation, object)
 	end
 end
 
+function fract:set_goodwill (goodwill, object)
+	for k,v in self.Object do
+		v:set_community_goodwill (goodwill, object)
+	end
+end
 ----------------------------------------------------------------------------------------------------------------------
 -- Function
 ----------------------------------------------------------------------------------------------------------------------
@@ -330,6 +335,11 @@ end
 function setGulagRelation (gulag_name, relation, object)
     if xr_gulag.fraction[gulag_name] == nil then return end
     xr_gulag.fraction[gulag_name]:set_relation (relation, object)
+end
+
+function setGulagGoodwill (gulag_name, goodwill, object)
+    if xr_gulag.fraction[gulag_name] == nil then return end
+    xr_gulag.fraction[gulag_name]:set_goodwill (goodwill, object)
 end
 
 function resetJob(name, npc)
