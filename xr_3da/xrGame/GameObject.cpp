@@ -162,6 +162,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	// XForm
 	XFORM().setXYZ					(E->o_Angle);
 	Position().set					(E->o_Position);
+	VERIFY							(_valid(renderable.xform));
 
 	// Net params
 	setLocal						(E->s_flags.is(M_SPAWN_OBJECT_LOCAL));
@@ -172,7 +173,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	// if we have a parent
 	if (0xffff != E->ID_Parent) {
 		
-		setup_parent_ai_locations();
+		// setup_parent_ai_locations();
 
 		if (!Parent) {
 			// we need this to prevent illegal ref_dec/ref_add
