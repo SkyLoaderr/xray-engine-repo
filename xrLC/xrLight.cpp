@@ -115,6 +115,8 @@ void	g_trans_register	(Vertex* V)
 	g_trans_CS.Leave	();
 }
 
+vecFace	VL_faces;
+
 class CVertexLightThread : public CThread
 {
 public:
@@ -136,7 +138,7 @@ public:
 		
 		for (DWORD I = faceStart; I<faceEnd; I++)
 		{
-			Face* F = g_faces[I];
+			Face* F = VL_faces[I];
 			if (F->pDeflector)				continue;
 			if (hasImplicitLighting(F))		continue;
 			
@@ -164,12 +166,23 @@ public:
 #define NUM_THREADS	12
 void CBuild::LightVertex()
 {
+	// Select faces
+	VL_faces.reserve					(g_faces.size()/2);
+	for (DWORD I = 0; I<g_faces.size(); I++)
+	{
+		Face* F = g_faces[I];
+		if (F->pDeflector)				continue;
+		if (hasImplicitLighting(F))		continue;
+	
+		VL_faces.push_back				(F);
+	}
+
 	// Start threads, wait, continue --- perform all the work
 	Status					("Calculating...");
 	DWORD	start_time		= timeGetTime();
 	CThreadManager			Threads;
-	DWORD	stride			= g_faces.size()/NUM_THREADS;
-	DWORD	last			= g_faces.size()-stride*(NUM_THREADS-1);
+	DWORD	stride			= VL_faces.size()/NUM_THREADS;
+	DWORD	last			= VL_faces.size()-stride*(NUM_THREADS-1);
 	for (DWORD thID=0; thID<NUM_THREADS; thID++)
 		Threads.start(new CVertexLightThread(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride)));
 	Threads.wait			();
