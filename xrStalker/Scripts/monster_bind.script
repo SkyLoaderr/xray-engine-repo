@@ -92,7 +92,7 @@ function CNecrophil:reload(section)
 	
 	self.hit			= hit()
 	self.hit.power		= 10
-	self.hit.impulse    = 4000
+	self.hit.impulse    = 6000
 	self.hit.draftsman  = self.object
 	self.hit.type       = hit.wound
 	self.hit:bone("bip01_spine")
