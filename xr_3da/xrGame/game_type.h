@@ -6,7 +6,7 @@ enum
 	GAME_SINGLE			= 1,
 	GAME_DEATHMATCH		= 2,
 	GAME_CTF			= 3,
-	GAME_ASSAULT		= 4,	// Team0 - assaulting, Team1 - Defending
+	GAME_ASSAULT		= 4,	// Team1 - assaulting, Team0 - Defending
 	GAME_CS				= 5
 };
 
