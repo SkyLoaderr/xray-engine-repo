@@ -482,13 +482,14 @@ bool CInventory::Take(CGameObject *pObj, bool bNotActivate)
 		}
 	} 
 	
-	m_pOwner->OnItemTake		();
 	//если активного предмета в руках нету, то активизировать
 	//то что только что подняли
 	else if(m_activeSlot == NO_ACTIVE_SLOT && !bNotActivate) 
 	{
 		Activate(pIItem->GetSlot());
 	}
+
+	m_pOwner->OnItemTake		(pIItem);
 	return true;
 }
 
@@ -513,8 +514,8 @@ bool CInventory::Drop(CGameObject *pObj, bool call_drop)
 			subs.insert(subs.end(), pIItem->m_subs.begin(), pIItem->m_subs.end());
 			subs.erase(subs.begin());
 		}*/
-		if (call_drop)
-			OnItemDrop			(pObj);
+		if (call_drop && dynamic_cast<CInventoryItem*>(pObj))
+			m_pOwner->OnItemDrop	(dynamic_cast<CInventoryItem*>(pObj));
 		return true;
 	}
 	return false;
@@ -858,7 +859,7 @@ void CInventory::Update(u32 /**deltaT/**/)
 	}
 
 	if (drop_count)
-		OnItemDropUpdate	();
+		m_pOwner->OnItemDropUpdate	();
 }
 //ищем на поясе гранату такоже типа
 PIItem CInventory::Same(const PIItem pIItem) 
