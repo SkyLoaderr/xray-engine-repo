@@ -493,10 +493,12 @@ void CHelicopter::doHunt(CObject* dest)
 
 void CHelicopter::doHunt2(CObject* dest, float dist, float time)
 {
-	if( m_curState==CHelicopter::eMovingByPatrolZonePath ){
+	if( !isOnAttack() ){
 
 		m_destEnemy		= dest;
 		dest->Center	(m_destEnemyPos);
+
+		m_movMngr.setHuntPathParam(dist, time);
 		setState(CHelicopter::eInitiateHunt2);
 	}
 }

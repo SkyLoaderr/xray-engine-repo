@@ -156,7 +156,7 @@ void CHelicopterMovManager::shedule_Update(u32 timeDelta, CHelicopter* heli)
 
 
 	if (heli->state() == CHelicopter::eInitiateHunt2) {
-		addHuntPath2(lt, heli->lastEnemyPos(), m_hunt_dist, m_hunt_time);
+		addHuntPath2(lt, heli->lastEnemyPos());
 		heli->setState(CHelicopter::eMovingByAttackTraj);
 		m_endAttackTime = m_endTime;
 	};
