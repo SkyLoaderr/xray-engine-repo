@@ -24,6 +24,8 @@ private:
 	BOOL				Create				();
 	void				e_render_noise		();
 	float				im_noise_time;
+	u32					im_noise_shift_w;
+	u32					im_noise_shift_h;
 	
 	float				param_blur;
 	float				param_gray;

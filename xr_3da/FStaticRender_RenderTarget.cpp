@@ -20,6 +20,8 @@ CRenderTarget::CRenderTarget()
 	param_noise_fps	= 25.f;
 
 	im_noise_time	= 1/100;
+	im_noise_shift_w= 0;
+	im_noise_shift_h= 0;
 }
 
 BOOL CRenderTarget::Create	()
@@ -84,12 +86,23 @@ void CRenderTarget::eff_load	(LPCSTR n)
 void CRenderTarget::e_render_noise	()
 {
 	Device.Shader.set_Shader		(pShaderNoise);
-
+	
 	CTexture*	T					= Device.Shader.get_ActiveTexture	(0);
-	u32			tw					= T->get_Width	()*param_noise_scale;
-	u32			th					= T->get_Height	()*param_noise_scale;
-	u32			shift_w				= ::Random.randI(tw);
-	u32			shift_h				= ::Random.randI(th);
+	u32			tw					= iFloor(float(T->get_Width	())*param_noise_scale+EPS_S);
+	u32			th					= iFloor(float(T->get_Height())*param_noise_scale+EPS_S);
+
+	// calculate shift from FPSes
+	im_noise_time					-= Device.fTimeDelta;
+	if (im_noise_time<0)
+	{
+		im_noise_shift_w			= ::Random.randI(tw);
+		im_noise_shift_h			= ::Random.randI(tw);
+		float	fps_time			= 1/param_noise_fps;
+		while (im_noise_time<0)		im_noise_time += fps_time;
+	}
+
+	u32			shift_w				= im_noise_shift_w;
+	u32			shift_h				= im_noise_shift_h;
 	float		start_u				= (float(shift_w)+.5f)/(tw);
 	float		start_v				= (float(shift_h)+.5f)/(th);
 	u32			_w					= Device.dwWidth;
