@@ -9,6 +9,7 @@
 #ifndef __XRAI_XR_GRAPH__
 #define __XRAI_XR_GRAPH__
 
+#define GRAPH_VERSION		1
 #pragma pack(push,4)
 typedef struct tagSGraphEdge {
 	u32		dwVertexNumber;
@@ -24,6 +25,22 @@ typedef struct tagSGraphVertex {
 	u32					tNeighbourCount;
 	tagSGraphEdge		*tpaEdges;
 } SGraphVertex;
+
+typedef struct tagSCompressedGraphVertex {
+	Fvector				tLocalPoint;
+	Fvector				tGlobalPoint;
+	u32					tNodeID:24;
+	u32					tLevelID:8;
+	u32					tVertexType:24;
+	u32					tNeighbourCount:8;
+	u32					dwEdgeOffset;
+} SCompressedGraphVertex;
+
+typedef struct tagSGraphHeader {
+	u32					dwVersion;
+	u32					dwVertexCount;
+	u32					dwLevelCount;
+} SGraphHeader;
 #pragma pack(pop)
 
 extern vector<SGraphVertex>	tpaGraph;		// graph

@@ -33,24 +33,6 @@ typedef struct tagRPoint {
 	Fvector A;
 } RPoint;
 
-#pragma pack(push,4)
-typedef struct tagSCompressedGraphVertex {
-	Fvector				tLocalPoint;
-	Fvector				tGlobalPoint;
-	u32					tNodeID:24;
-	u32					tLevelID:8;
-	u32					tVertexType:24;
-	u32					tNeighbourCount:8;
-	u32					dwEdgeOffset;
-} SCompressedGraphVertex;
-
-typedef struct tagSGraphHeader {
-	u32					dwVersion;
-	u32					dwVertexCount;
-	u32					dwLevelCount;
-} SGraphHeader;
-#pragma pack(pop)
-
 SGraphHeader			tGraphHeader;
 
 CStream*				vfs;			// virtual file
@@ -315,7 +297,7 @@ void vfSaveGraph(LPCSTR name)
 	CFS_Memory	tGraph;
 	tGraphHeader.dwVersion		= m_header.version;
 	tGraphHeader.dwVertexCount	= tpaGraph.size();
-	tGraphHeader.dwLevelCount	= 1;
+	tGraphHeader.dwLevelCount	= GRAPH_VERSION;
 	tGraph.write(&tGraphHeader,sizeof(SGraphHeader));	
 	Progress(0.0f);
 	SCompressedGraphVertex tCompressedGraphVertex;
