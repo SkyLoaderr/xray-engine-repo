@@ -25,8 +25,11 @@ BOOL psLibrary_Load(const char *Name, PS::PSVec &LIB)
 	{
 		Engine.FS.Close			(F);
 		F						= xr_new<CCompressedStream> (Name,ID);
-	}
+	}else{
+    	F->Seek	(0);
+    }
 	CStream&				FS	= *F;
+    
 	
 	// Load
 	LIB.clear			();
