@@ -524,8 +524,12 @@ void CWeapon::UpdateCL		()
 
 void CWeapon::SwitchState(u32 S)
 {
-	if (Local() && (S!=STATE))	
+	if (Local() && /*???????*/ (S!=STATE) /*???????*/)	
 	{
+		/// sdlkajdklsjaskldjlkasjdkljaskljdklasjldkjasklj
+
+		// !!! Just single entry for given state !!!
+
 		STATE			= S;	// Very-very important line of code!!! :)
 		NET_Packet		P;
 		u_EventGen		(P,GE_WPN_STATE_CHANGE,ID());
@@ -742,6 +746,7 @@ void CWeapon::OnEvent		(NET_Packet& P, u16 type)
 	{
 	case GE_WPN_STATE_CHANGE:
 		{
+			/// sdlkajdklsjaskldjlkasjdkljaskljdklasjldkjasklj
 			u8				S;
 			P.r_u8			(S);
 			OnStateSwitch	(u32(S));
