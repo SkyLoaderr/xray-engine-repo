@@ -6,7 +6,7 @@ input:
 		hemi_color	-	vector
 		sun_color	-	vector
 		sun_dir		-	vector
-		lmap_color	-	vector
+		lmap_color	-	vector	(other lights)
 	vertex:
 		diffuse.rgb	-	???
 		diffuse.a	-	hemi-occlusion
@@ -23,4 +23,12 @@ input:
 -------------------------------------------------------------------------------
 vertex
 -------------------------------------------------------------------------------
-		
+	constants:
+		hemi_color	-	vector
+		sun_color	-	vector
+		sun_dir		-	vector
+		lmap_color	-	vector	(other lights)
+	vertex:
+		diffuse.rgb	-	???
+		diffuse.a	-	hemi-occlusion
+		normal		-	for lighting
