@@ -39,7 +39,12 @@
 		*	NEW:		sub-rendering
 		*	NEW:		projective texturing in ps1_1
 		*	BUG:		projector - 
+		*	NEW:		sound cache
 		*	NEW:		R1/R2 shared scene-graph
+		*	NEW:		scripted shaders
+		*	NEW:		4tap shadow filter
+		*	OPT:		fast pixel correct projection 
+		*	NEW:		4tap projection filter
 
 ***[OLES]*** In progress:
 -------------------------
@@ -93,7 +98,6 @@
 		
 		*	smooth lerping of tree-lods
 		
-
 		*	wallmark на персонажах
 		*	кровь, следы от машин
 
