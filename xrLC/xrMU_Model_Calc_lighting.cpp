@@ -215,9 +215,16 @@ float	simple_optimize				(xr_vector<float>& A, xr_vector<float>& B, float& scale
 		float	old_bias	= bias;
 
 		//1. scale
+		u32		_ok			= 0;
 		for (accum=0, it=0; it<A.size(); it++)
-			accum	+= (B[it]-bias)/A[it];
-		float	s	= accum	/ elements;
+		{
+			if (_abs(A[it])>EPS_L)	
+			{
+				accum	+= (B[it]-bias)/A[it];
+				_ok		+= 1;
+			}
+		}
+		float	s	= _ok?(accum/_ok):scale;
 
 		//2. bias
 		for (accum=0, it=0; it<A.size(); it++)
@@ -225,17 +232,22 @@ float	simple_optimize				(xr_vector<float>& A, xr_vector<float>& B, float& scale
 		float	b	= accum	/ elements;
 
 		// mix
-		float	conv	= float(count+11.f)*2.f;
+		float	conv	= 10;
 		scale			= ((conv-1)*scale+s)/conv;
 		bias			= ((conv-1)*bias +b)/conv;
 
 		// error
 		for (accum=0, it=0; it<A.size(); it++)
-			accum	+= _sqr(B[it] - (A[it]*scale + bias));
-		float	err	= _sqrt(accum)/elements;
+			accum	+= B[it] - (A[it]*scale + bias);
+		float	err	= accum/elements;
 
-		if (err<error)	error = err;
-		else 
+		if (err<error)	
+		{
+			// continue?
+			error	= err;
+			if (error<EPS)	return error;
+		}
+		else
 		{
 			// exit
 			scale	= old_scale;

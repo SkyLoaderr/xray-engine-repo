@@ -34,7 +34,7 @@ public:
 	virtual void	Execute	()
 	{
 		// Priority
-		SetThreadPriority	(GetCurrentThread(), THREAD_PRIORITY_BELOW_NORMAL);
+//		SetThreadPriority	(GetCurrentThread(), THREAD_PRIORITY_BELOW_NORMAL);
 		Sleep				(0);
 
 		// Light references
@@ -58,7 +58,7 @@ public:
 		u32					m;
 
 		// Priority
-		SetThreadPriority	(GetCurrentThread(), THREAD_PRIORITY_BELOW_NORMAL);
+//		SetThreadPriority	(GetCurrentThread(), THREAD_PRIORITY_BELOW_NORMAL);
 		Sleep				(0);
 
 		// Light models
