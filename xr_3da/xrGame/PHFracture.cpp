@@ -469,7 +469,7 @@ bool CPHFracture::Update(CPHElement* element)
 	//break_force.sub(vtemp);
 	if(m_break_force<break_force.magnitude())
 	{
-		///m_breaked=true;
+		m_breaked=true;
 		return m_breaked;
 	}
 	return false;
