@@ -37,10 +37,11 @@ function main()
 			prof_privet_hosh_potorgovat:play_at_pos		(stalker1,stalker1:position(),0);
 			wait(2000)			
 			prof_zomby:play_at_pos						(stalker1,stalker1:position(),0);
-		break
+			break
 		end
 		wait()			
 	end
+
 
 	while true do
 		if actor.health <= 0 and stalker1.health > 0 then
