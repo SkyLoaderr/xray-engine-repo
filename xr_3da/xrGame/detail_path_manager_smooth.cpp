@@ -164,6 +164,7 @@ bool CDetailPathManager::build_circle_trajectory(
 			t.position		= ai().level_graph().v3d(position.position);
 			t.vertex_id		= position.vertex_id;
 			path->push_back	(t);
+
 		}
 		return			(true);
 	}
@@ -255,13 +256,17 @@ bool CDetailPathManager::build_trajectory(
 	const u32					velocity3
 )
 {
+
 	u32					vertex_id;
 	if (!build_circle_trajectory(start,path,&vertex_id,velocity1))
 		return			(false);
+
 	if (!build_line_trajectory(start,dest,vertex_id,path,velocity2))
 		return			(false);
+
 	if (!build_circle_trajectory(dest,path,0,velocity3))
 		return			(false);
+
 	return				(true);
 }
 
@@ -391,6 +396,7 @@ bool CDetailPathManager::compute_path(
 					if (m_tpTravelLine) {
 						m_tpTravelLine->resize(size);
 						m_tpTravelLine->insert(m_tpTravelLine->end(),m_temp_path.begin(),m_temp_path.end());
+
 						if (!m_try_min_time)
 							return	(true);
 					}
@@ -560,8 +566,8 @@ void CDetailPathManager::build_path_via_key_points(
 	const u32				straight_line_index_negative
 )
 {
-	STrajectoryPoint					s,d,t,p;
-	s = t								= start;
+	STrajectoryPoint					s,d,p;
+	s 									= start;
 	xr_vector<STravelPoint>::const_iterator	I = m_key_points.begin(), P = I;
 	xr_vector<STravelPoint>::const_iterator	E = m_key_points.end();
 	for ( ; I != E; ++I) {
@@ -597,8 +603,23 @@ void CDetailPathManager::build_path_via_key_points(
 				//VERIFY				(false);
 			}
 			P							= I - 1;
+
+			s							= d;
+
+			VERIFY						(m_path.size() > 1);
+			s.direction.sub				(
+				ai().level_graph().v2d(
+					m_path[m_path.size()-1].position
+				),
+				ai().level_graph().v2d(
+					m_path[m_path.size()-2].position
+				)
+			);
+			VERIFY						(s.direction.square_magnitude() > EPS_L);
+			s.direction.normalize		();
+			m_path.pop_back				();
+
 			d							= p;
-			s							= t;
 			if (!m_path.empty()) {
 				xr_map<u32,STravelParams>::const_iterator I = m_movement_params.find(m_path.back().velocity);
 				VERIFY					(m_movement_params.end() != I);
@@ -612,7 +633,6 @@ void CDetailPathManager::build_path_via_key_points(
 				return;
 			}
 		}
-		t								= d;
 	}
 
 	if (!compute_path(s,d,&m_path,m_start_params,finish_params,straight_line_index,straight_line_index_negative)) {
