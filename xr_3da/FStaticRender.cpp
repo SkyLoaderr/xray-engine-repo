@@ -173,7 +173,7 @@ void CRender::Calculate()
 	g_fFarSq						=	75.f;
 	g_fFarSq						*=	g_fFarSq;
 	g_fSCREEN						=	float(Device.dwWidth*Device.dwHeight);
-	g_fLOD							=	QualityControl.fGeometryLOD;
+	g_fLOD							=	QualityControl.fGeometryLOD*g_fLOD_scale;
 	
 	// Frustum & HOM rendering
 	ViewBase.CreateFromMatrix		(Device.mFullTransform,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
