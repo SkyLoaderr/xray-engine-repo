@@ -2,7 +2,7 @@
 -------------------------
 		*	PS for everything even for R1			(?)
 		*	OPT:		one pass detail textures
-		*	d-lighting
+		*	NF:			d-lighting
 				hemisphere
 					- xrLC tesselation
 					- EQ-ps: 			base * (diffuse.rgb + lmap*diffuse.a)
