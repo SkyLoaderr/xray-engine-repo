@@ -277,6 +277,16 @@
 				RelativePath="LightShadows.h">
 			</File>
 		</Filter>
+		<Filter
+			Name="Glows"
+			Filter="">
+			<File
+				RelativePath="GlowManager.cpp">
+			</File>
+			<File
+				RelativePath="GlowManager.h">
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

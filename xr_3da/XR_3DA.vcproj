@@ -1736,16 +1736,6 @@
 				</Filter>
 			</Filter>
 			<Filter
-				Name="Glows manager"
-				Filter="">
-				<File
-					RelativePath=".\GlowManager.cpp">
-				</File>
-				<File
-					RelativePath=".\GlowManager.h">
-				</File>
-			</Filter>
-			<Filter
 				Name="Model Pool"
 				Filter="">
 				<File
