@@ -93,6 +93,9 @@ public:
 	IC	LPCSTR			torch_bone_name			() const;
 	virtual void		renderable_Render		();
 	virtual	bool		use_torch				() const;
+	virtual void		OnItemTake				(CInventoryItem *inventory_item) {};
+	virtual void		OnItemDrop				(CInventoryItem *inventory_item) {};
+	virtual void		OnItemDropUpdate		() {};
 };
 
 #include "inventory_owner_inline.h"

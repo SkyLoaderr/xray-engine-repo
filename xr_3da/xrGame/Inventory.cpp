@@ -376,67 +376,6 @@ bool CEatableItem::Useful()
 // CInventory class 
 ///////////////////////////////////////////////////////////////////////////////
 
-void MergeSame(TIItemList &itemList) 
-{
-	PPIItem it = itemList.begin();
-	PPIItem it2;
-	
-	while(itemList.end() != it) 
-	{
-		it2 = it; 
-		++it2;
-		while(itemList.end() != it2) 
-		{
-			(*it2)->Merge(*it);
-			if(!(*it)->Useful()) break;
-			++it2;
-		}
-		if(!(*it)->Useful()) (*it)->Drop();
-		++it;
-	}
-}
-
-void SortRuckAndBelt(CInventory *pInventory) 
-{
-	for(int i = 0; i < 2; ++i) 
-	{
-		TIItemList &list = i?pInventory->m_ruck:pInventory->m_belt;
-		PPIItem it = list.begin();
-		PPIItem it2, first, last, erase;
-		
-		while(list.end() != it) 
-		{
-			first = last = it; 
-			++last;
-			while((list.end() != last) && ((*first)->Sort(*last) > 0)) 
-						++last;
-			
-			it2 = last;
-			while(list.end() != it2) 
-			{
-				erase = list.end();
-				s32 sort = (*first)->Sort(*it2);
-				if(sort > 0)
-				{
-					list.insert(last, *it2); 
-					erase = it2;
-				} 
-				else if(sort < 0) 
-				{
-					first = list.insert(first, *it2); 
-					erase = it2;
-				}
-				
-				++it2;
-				if(list.end() != erase) list.erase(erase);
-			}
-			++it;
-		}
-		MergeSame(list);
-	}
-}
-
-
 CInventory::CInventory() 
 {
 	m_takeDist = pSettings->r_float("inventory","take_dist"); // 2.f;
@@ -501,7 +440,6 @@ bool CInventory::Take(CGameObject *pObj, bool bNotActivate)
 	//сначала закинуть вещь в рюкзак
 	if(pIItem->Ruck()) m_ruck.insert(m_ruck.end(), pIItem); 
 		
-//	SortRuckAndBelt(this);
 //	l_subs.insert(l_subs.end(), l_pIItem->m_subs.begin(), l_pIItem->m_subs.end());
 		
 	/*while(l_subs.size())
@@ -531,7 +469,7 @@ bool CInventory::Take(CGameObject *pObj, bool bNotActivate)
 			{
 				//return true;
 				//else 
-				return !Drop(pIItem);
+				return !Drop(pIItem,false);
 			}
 		} 
 		else if(!Belt(pIItem)/* || !FreeBeltRoom()*/) 
@@ -540,9 +478,11 @@ bool CInventory::Take(CGameObject *pObj, bool bNotActivate)
 //				if(Belt(l_pIItem)) 
 //					return true;
 //				else 
-				return !Drop(pIItem);
+				return !Drop(pIItem,false);
 		}
 	} 
+	
+	m_pOwner->OnItemTake		();
 	//если активного предмета в руках нету, то активизировать
 	//то что только что подняли
 	else if(m_activeSlot == NO_ACTIVE_SLOT && !bNotActivate) 
@@ -552,7 +492,7 @@ bool CInventory::Take(CGameObject *pObj, bool bNotActivate)
 	return true;
 }
 
-bool CInventory::Drop(CGameObject *pObj) 
+bool CInventory::Drop(CGameObject *pObj, bool call_drop) 
 {
 	CInventoryItem *pIItem = dynamic_cast<CInventoryItem*>(pObj);
 	
@@ -573,6 +513,8 @@ bool CInventory::Drop(CGameObject *pObj)
 			subs.insert(subs.end(), pIItem->m_subs.begin(), pIItem->m_subs.end());
 			subs.erase(subs.begin());
 		}*/
+		if (call_drop)
+			OnItemDrop			(pObj);
 		return true;
 	}
 	return false;
@@ -683,7 +625,6 @@ bool CInventory::Belt(PIItem pIItem)
 	{
 		PPIItem it = std::find(m_ruck.begin(), m_ruck.end(), pIItem); 
 		if(m_ruck.end() != it) m_ruck.erase(it);
-		SortRuckAndBelt(this);
 		return true;
 	}
 }
@@ -706,7 +647,6 @@ bool CInventory::Ruck(PIItem pIItem)
 	if(m_belt.end() != it) m_belt.erase(it);
 	
 	m_ruck.insert(m_ruck.end(), pIItem); 
-	SortRuckAndBelt(this);
 	return true;
 }
 
@@ -867,6 +807,7 @@ void CInventory::Update(u32 /**deltaT/**/)
 	}
 	
 	//проверить рюкзак и пояс, есть ли вещи, которые нужно выкинуть
+	u32		drop_count = 0;
 	for(int i = 0; i < 2; ++i)
 	{
 		TIItemList &list = i?m_ruck:m_belt;
@@ -887,7 +828,7 @@ void CInventory::Update(u32 /**deltaT/**/)
 					pIItem->u_EventSend(P);
 				}
 				else 
-					Drop(pIItem);
+					drop_count = Drop(pIItem) ? drop_count + 1 : drop_count;
 			}
 			++it;
 		}
@@ -912,9 +853,12 @@ void CInventory::Update(u32 /**deltaT/**/)
 				pIItem->u_EventSend(P);
 			}
 			else 
-				Drop(pIItem);
+				drop_count = Drop(pIItem) ? drop_count + 1 : drop_count;
 		}
 	}
+
+	if (drop_count)
+		OnItemDropUpdate	();
 }
 //ищем на поясе гранату такоже типа
 PIItem CInventory::Same(const PIItem pIItem) 

@@ -191,7 +191,7 @@ public:
 
 	f32 TotalWeight() const;										// Вес инвенторя
 	bool Take(CGameObject *pObj, bool bNotActivate = false);// Взять объект. Объект попадает в рюкзак, если bNotActivate == false, то активировать объект, если у владельца инвентаря ничего не активировано (e.g. трейдер)
-	bool Drop(CGameObject *pObj);							// Выбросить объект
+	bool Drop(CGameObject *pObj, bool call_drop = true);							// Выбросить объект
 	bool DropAll();											// Выбросить все
 	void ClearAll();										// Очистить всё
 	
