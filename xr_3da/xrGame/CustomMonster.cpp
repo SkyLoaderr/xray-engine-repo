@@ -276,12 +276,6 @@ void CCustomMonster::net_Import(NET_Packet& P)
 
 void CCustomMonster::Exec_Physics( float dt )
 {
-	// Test nearest object
-	Fvector C; float R;	
-	svCenter	(C);
-	R = Radius	();
-	Level().ObjectSpace.TestNearestObject	(cfModel, C, R);
-
 	// 
 	Engine.Sheduler.Slice	();
 }
@@ -315,9 +309,9 @@ void CCustomMonster::Update	( DWORD DT )
 		if (iHealth>0) {
 			Exec_Look				(dt);
 			Exec_Movement			(dt);
-			Exec_Physics			(dt);
 			Exec_Visibility			();
-			
+			g_sv_AnalyzeNeighbours	();
+
 			net_update				uNext;
 			uNext.dwTimeStamp		= Level().timeServer();
 			uNext.o_model			= r_torso_current.yaw;
