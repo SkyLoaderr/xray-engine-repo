@@ -1,0 +1,15 @@
+-- File:        UI_OPTIONS_BASE_TAB.SCRIPT
+-- Description: Base tab for Options dialog
+-- Created:     30.11.2004
+-- Author:      Serhiy O. Vynnychenko
+-- Mail:        narrator@gsc-game.kiev.ua
+
+class "options_base_tab" (CUIScriptWnd)
+
+function options_base_tab:__init() super()
+end
+
+function options_base_tab:__finalize()
+end
+
+
