@@ -20,11 +20,11 @@ class ENGINE_API CBlender_DESC
 {
 public:
 	CLASS_ID	CLS;
-	WORD		version;
 	char		cName		[128];
 	char		cComputer	[32];
 	DWORD		cTime;
-
+	WORD		version;
+	
 	CBlender_DESC()	
 	{
 		CLS			= CLASS_ID(0);
