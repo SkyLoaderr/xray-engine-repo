@@ -11,7 +11,7 @@
 #include "std_classes.h"
 #include "bone.h"
 #include "motion.h"
-#include "MgcCont3DMinBox.h"
+#include "MgcCont3DMinBox.h"         
 #include "ui_main.h"
 #include "SkeletonAnimated.h"
 
@@ -396,7 +396,6 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
     return bRes;
 }
 //----------------------------------------------------
-extern u32 crc32_calc(void* P, u32 len);
 
 bool CExportSkeleton::ExportMotionKeys(IWriter& F)
 {
@@ -517,10 +516,10 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
             St.div	(127.f);
             // save
             F.w_u8	(t_present);
-            F.w_u32	(crc32_calc(_keysQR,dwLen*sizeof(CKeyQR)));
+			F.w_u32	(crc32(_keysQR,dwLen*sizeof(CKeyQR)));
             F.w		(_keysQR,dwLen*sizeof(CKeyQR));
             if (t_present){	
-	            F.w_u32(crc32_calc(_keysQT,dwLen*sizeof(CKeyQT)));
+	            F.w_u32(crc32(_keysQT,u32(dwLen*sizeof(CKeyQT))));
             	F.w	(_keysQT,dwLen*sizeof(CKeyQT));
 	            F.w_fvector3(St);
     	        F.w_fvector3(Ct);

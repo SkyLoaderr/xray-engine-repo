@@ -5,10 +5,9 @@
     <VERSION value="BCB.06.00"/>
     <PROJECT value="ECoreB_static.lib"/>
     <OBJFILES value="intermediate\xrXRC.obj intermediate\bone.obj intermediate\cl_collector.obj 
-      intermediate\crc32.obj intermediate\defines.obj 
-      intermediate\DetailModel.obj intermediate\Envelope.obj 
-      intermediate\Environment.obj intermediate\fmesh.obj 
-      intermediate\Frustum.obj intermediate\GameFont.obj 
+      intermediate\defines.obj intermediate\DetailModel.obj 
+      intermediate\Envelope.obj intermediate\Environment.obj 
+      intermediate\fmesh.obj intermediate\Frustum.obj intermediate\GameFont.obj 
       intermediate\GameMtlLib.obj intermediate\HW.obj intermediate\HWCaps.obj 
       intermediate\IGame_Persistent.obj intermediate\IInputReceiver.obj 
       intermediate\Image.obj intermediate\interp.obj intermediate\ModelPool.obj 
@@ -127,7 +126,6 @@
       <FILE FILENAME="Engine\xrXRC.cpp" FORMNAME="" UNITNAME="xrXRC.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\bone.cpp" FORMNAME="" UNITNAME="bone.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\cl_collector.cpp" FORMNAME="" UNITNAME="cl_collector.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\crc32.cpp" FORMNAME="" UNITNAME="crc32.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\defines.cpp" FORMNAME="" UNITNAME="defines.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\DetailModel.cpp" FORMNAME="" UNITNAME="DetailModel.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Envelope.cpp" FORMNAME="" UNITNAME="Envelope.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
