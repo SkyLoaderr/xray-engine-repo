@@ -216,6 +216,7 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("Stop",						&CParticlesObject::Stop),
 
 		class_<CGameObject>("CGameObject")
+			.def(constructor<>())
 			.def("Position",					(Fvector & (CGameObject::*)())(CGameObject::Position))
 			.def("cName",						(void	   (CGameObject::*)())(CGameObject::cName))
 	];
@@ -255,7 +256,7 @@ void Script::vfLoadStandardScripts(CLuaVirtualMachine *tpLuaVirtualMachine)
 		IReader		*F = FS.r_open(S);
 		R_ASSERT	(F);
 		strconcat	(S1,"@",S);		
-		int			l_iErrorCode = lua_dobuffer(tpLuaVirtualMachine,static_cast<LPCSTR>(F->pointer()),F->length(),S);
+		int			l_iErrorCode = lua_dobuffer(tpLuaVirtualMachine,static_cast<LPCSTR>(F->pointer()),F->length(),S1);
 		Msg			("* Loading common script %s",S);
 		vfPrintOutput(tpLuaVirtualMachine,S);
 		if (l_iErrorCode)
