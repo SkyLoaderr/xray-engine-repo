@@ -222,7 +222,7 @@ LONG UnhandledFilter	( struct _EXCEPTION_POINTERS *pExceptionInfo )
 
 			if (hFile!=INVALID_HANDLE_VALUE)
 			{
-				backend	("*** Internal Error ***\n",0,0);
+				Debug.backend	("*** Internal Error ***\n",0,0);
 
 				_MINIDUMP_EXCEPTION_INFORMATION ExInfo;
 
@@ -231,7 +231,7 @@ LONG UnhandledFilter	( struct _EXCEPTION_POINTERS *pExceptionInfo )
 				ExInfo.ClientPointers		= NULL;
 
 				// write the dump
-				MINIDUMP_TYPE	dump_flags	= MINIDUMP_TYPE(MiniDumpNormal | MiniDumpWithDataSegs | MiniDumpWithFullMemory | MiniDumpWithHandleData | MiniDumpFilterMemory | MiniDumpScanMemory);
+				MINIDUMP_TYPE	dump_flags	= MINIDUMP_TYPE(MiniDumpNormal /*| MiniDumpWithDataSegs | MiniDumpWithFullMemory | MiniDumpWithHandleData | MiniDumpFilterMemory | MiniDumpScanMemory*/ );
 
 				BOOL bOK = pDump( GetCurrentProcess(), GetCurrentProcessId(), hFile, dump_flags, &ExInfo, NULL, NULL );
 				if (bOK)

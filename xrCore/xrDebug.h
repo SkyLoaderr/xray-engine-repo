@@ -2,7 +2,7 @@
 
 class XRCORE_API	xrDebug
 {
-private:
+public:
 	void		backend		(const char* reason, const char* file, int line);
 
 public:
