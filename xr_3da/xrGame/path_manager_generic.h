@@ -37,6 +37,7 @@ public:
 	IC		void		setup				(const _Graph *graph, _DataStorage *_data_storage, xr_vector<_index_type> *_path, const _index_type	&_start_node_index, const _index_type &_goal_node_index, const _Parameters &params);
 	IC		_dist_type	evaluate			(const _index_type &node_index1, const _index_type &node_index2, const const_iterator &i) const;
 	IC		_dist_type	estimate			(const _index_type &vertex_id) const;
+	IC		void		init_path			();
 	template <typename T>
 	IC		void		create_path			(T &vertex);
 	IC		const _index_type &start_node	() const;

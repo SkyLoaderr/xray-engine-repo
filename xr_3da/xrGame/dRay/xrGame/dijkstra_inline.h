@@ -131,6 +131,7 @@ IC	bool CSDijkstra::step				(_PathManager &path_manager)
 	// check if this node is the one we are searching for
 	if (path_manager.is_goal_reached(best.index())) {
 		// we reached the goal, so we have to create a path
+		path_manager.init_path		();
 		path_manager.create_path	(best);
 		// and return success
 		return			(true);

@@ -73,6 +73,13 @@ IC	_dist_type CGenericPathManager::estimate		(const _index_type &vertex_id) cons
 }
 
 TEMPLATE_SPECIALIZATION
+IC	void CGenericPathManager::init_path				()
+{
+	if (path)
+		path->clear			();
+}
+
+TEMPLATE_SPECIALIZATION
 template <typename T>
 IC	void CGenericPathManager::create_path			(T &vertex)
 {
