@@ -28,7 +28,7 @@
 				FavorSizeOrSpeed="0"
 				EnableFiberSafeOptimizations="TRUE"
 				OptimizeForProcessor="2"
-				PreprocessorDefinitions="WIN32;_DEBUG;DEBUG;_WINDOWS;_USRDLL;XRGAME_EXPORTS;NO_PHYSICS_IN_AI_MOVE"
+				PreprocessorDefinitions="WIN32;_DEBUG;DEBUG;_WINDOWS;_USRDLL;XRGAME_EXPORTS;"
 				StringPooling="FALSE"
 				MinimalRebuild="TRUE"
 				ExceptionHandling="FALSE"
