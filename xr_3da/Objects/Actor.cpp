@@ -469,7 +469,7 @@ void CActor::Update	(DWORD DT)
 		if (die_hide>0)		
 		{
 			die_hide			-= .1f*dt;
-			if (die_hide>0)		vScale.set			(die_hide,die_hide,die_hide);
+			if (die_hide>0)		vScale.set			(1,die_hide,1);
 			else if (Local()) 
 			{
 				// Request destroy
