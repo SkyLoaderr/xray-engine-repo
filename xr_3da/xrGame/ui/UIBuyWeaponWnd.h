@@ -305,6 +305,9 @@ protected:
 	//  новые данные относящиеся к покупке оружия 
 	//-----------------------------------------------------------------------------/
 
+	// Имя секции из которой читать данные
+	ref_str		m_StrSectionName;
+
 	// массив в котором хратнятся названия секций для оружия 
 	DEF_VECTOR(WPN_SECT_NAMES, std::string);
 	// Вектор массивов с именами секций для оружия
@@ -330,8 +333,6 @@ protected:
 	bool CanPutInSlot(CUIDragDropItemMP *pDDItemMP, const u32 slotNum);
 	// Проверка возможности помещения вещи на пояс
 	bool CanPutInBelt(CUIDragDropItemMP *pDDItemMP);
-	// Запомнить имя секции из которой читать списки оружия
-	string64	m_SectionName;
 	// Кнопки OK и Cancel
 	CUIListItem UIBtnOK, UIBtnCancel;
 	// массив индексов пустых элементов
@@ -394,16 +395,18 @@ protected:
 	// Восстановить скин стаокера без костюма
 	void		SetDefaultSuit(  );
 	
-	// Таблица соответсвия имени армора с именами моделей персонажей. Заполняется ручками
-	// Во вложенной паре первое имя для синей комманды, второе для зеленой
-	typedef xr_vector<std::pair<ref_str, std::pair<ref_str, ref_str> > >	CONFORMITY_TABLE;
-	typedef CONFORMITY_TABLE::iterator										CONFORMITY_TABLE_it;
+	// Таблица соответсвия имени армора с именами моделей персонажей. Заполняется на этапе считывания 
+	// информации из ltx файла соответствующего типу сетевой игры
+	typedef xr_vector<std::pair<ref_str, ref_str> >	CONFORMITY_TABLE;
+	typedef CONFORMITY_TABLE::iterator				CONFORMITY_TABLE_it;
 	CONFORMITY_TABLE		m_ConformityTable;
 	
-	u8			m_CurSkin;
+	// Координаты дефолтного скина на текстуре с иконками сталкеров.
+	int			m_iIconTextureX, m_iIconTextureY;
 public:
 
-	void		SetSkin			(u8 SkinID )	{ m_CurSkin = SkinID; };	
+	// Процедура запоминания индекса скина в списке skins типа сетевой игры, после выбора его игроком
+	void		SetSkin			(u8 SkinID);	
 
 	// А не является ли данная вещь чьим-то аддоном?
 	// Возвращаем адрес хозяина аддона, если нашли и тип аддона

@@ -42,6 +42,7 @@ int			g_iOkAccelerator, g_iCancelAccelerator;
 
 CUIBuyWeaponWnd::CUIBuyWeaponWnd(char *strSectionName)
 {
+	m_StrSectionName = NULL;
 	m_iCurrentActiveSlot = NO_ACTIVE_SLOT;
 	Hide();
 
@@ -51,18 +52,13 @@ CUIBuyWeaponWnd::CUIBuyWeaponWnd(char *strSectionName)
 //	m_pItemToUpgrade = NULL;
 
 	m_iUsedItems	= 0;
-	m_CurSkin		= 0;
+	m_iIconTextureY	= 0;
+	m_iIconTextureX	= 0;
 
 	SetFont(HUD().pFontMedium);
 
 	m_mlCurrLevel	= mlRoot;
 	SetMoneyAmount(50000);
-
-	// Заполняем таблицу соответсвия армора и модели персонажа в этом арморе
-	m_ConformityTable.push_back(std::make_pair("exo_outfit", 
-		std::make_pair("stalker_ki_exoskeleton", "stalker_sv_exoskeleton")));
-	m_ConformityTable.push_back(std::make_pair("scientific_outfit",
-		std::make_pair("stalker_ki_nauchniy", "stalker_sv_nauchniy")));
 
 	// Инициализируем вещи
 	Init(strSectionName);
@@ -76,6 +72,8 @@ CUIBuyWeaponWnd::~CUIBuyWeaponWnd()
 
 void CUIBuyWeaponWnd::Init(char *strSectionName)
 {
+	m_StrSectionName = strSectionName;
+
 	CUIXml uiXml;
 	bool xml_result = uiXml.Init("$game_data$","inventoryMP_new.xml");
 	R_ASSERT2(xml_result, "xml file not found");
@@ -249,7 +247,6 @@ void CUIBuyWeaponWnd::Init(char *strSectionName)
 	AttachChild(&UIOutfitIcon);
 	xml_init.InitStatic(uiXml, "outfit_static", 0, &UIOutfitIcon);
 	UIOutfitIcon.SetShader(GetMPCharIconsShader());
-	UIOutfitIcon.Show(false);
 	UIOutfitIcon.SetTextureScale(0.65f);
 	UIOutfitIcon.ClipperOn();
 }
@@ -257,7 +254,7 @@ void CUIBuyWeaponWnd::Init(char *strSectionName)
 void CUIBuyWeaponWnd::ReInitItems	(char *strSectionName)
 {
 	// Заполняем массив со списком оружия
-	std::strcpy(m_SectionName, strSectionName);
+	m_StrSectionName = strSectionName;
 	// очищаем слоты
 	SlotToSection(KNIFE_SLOT		);
 	SlotToSection(PISTOL_SLOT		);
@@ -971,12 +968,15 @@ bool CUIBuyWeaponWnd::ToBelt()
 void CUIBuyWeaponWnd::InitWpnSectStorage()
 {
 	WPN_SECT_NAMES		wpnOneType;
-	string16			wpnSection;	
+	string16			wpnSection;
+	ref_str				iconName;	
 	string256			wpnNames, wpnSingleName;
+	// Номер секции с арморами
+	const int			armorSectionIndex = 5;
 
 	// Поле strSectionName должно содержать имя секции
-	R_ASSERT(xr_strcmp(m_SectionName,""));
-	R_ASSERT2(pSettings->section_exist(m_SectionName), "Section doesn't exist");
+	R_ASSERT(m_StrSectionName != "");
+	R_ASSERT2(pSettings->section_exist(m_StrSectionName), "Section doesn't exist");
 
 	for (int i = 1; i < 20; ++i)
 	{
@@ -985,20 +985,28 @@ void CUIBuyWeaponWnd::InitWpnSectStorage()
 
 		// Имя поля
 		sprintf(wpnSection, "slot%i", i);
-		if (!pSettings->line_exist(m_SectionName, wpnSection)) 
+		if (!pSettings->line_exist(m_StrSectionName, wpnSection)) 
 		{
 			wpnSectStorage.push_back(wpnOneType);
 			continue;
 		}
 
 		// Читаем данные этого поля
-		std::strcpy(wpnNames, pSettings->r_string(m_SectionName, wpnSection));
+		std::strcpy(wpnNames, pSettings->r_string(m_StrSectionName, wpnSection));
 		u32 count	= _GetItemCount(wpnNames);
 		// теперь для каждое имя оружия, разделенные запятыми, заносим в массив
-		for (u32 i = 0; i < count; ++i)
+		for (u32 j = 0; j < count; ++j)
 		{
-			_GetItem(wpnNames, i, wpnSingleName);
+			_GetItem(wpnNames, j, wpnSingleName);
 			wpnOneType.push_back(wpnSingleName);
+
+			// Для арморов дополнительно инициализируем таблицу соответсвия армора и 
+			// и иконки персонажа в этом арморе
+			if (armorSectionIndex == i)
+			{
+				iconName	= pSettings->r_string(m_StrSectionName, wpnSingleName);
+				m_ConformityTable.push_back(std::make_pair<ref_str, ref_str>(wpnSingleName, iconName));
+			}
 		}
 
 		if (!wpnOneType.empty())
@@ -1052,21 +1060,14 @@ void CUIBuyWeaponWnd::FillWpnSubBag(const u32 slotNum)
 		// Для арморов читаем дополнительно координаты на текстуре с иконками персонажей для арморов
 		if (OUTFIT_SLOT == m_slot)
 		{
-			// Необходимо знать, в какой команде мы находимся
-			bool bBlueTeam = true;//IsBlueTeam();
-
-			// Теперь для каждого армора, который может быть у нас в мультиплеере, читаем инфу
+			// Для каждого армора, который может быть у нас в мультиплеере, читаем инфу
 			// для иконки сталкера в полный рост в этом арморе и с нужным цветом
 			for (CONFORMITY_TABLE_it it = m_ConformityTable.begin(); it != m_ConformityTable.end(); ++it)
 			{
 				// Информация о таком арморе есть
 				if (0 == xr_strcmp(it->first, wpnSectStorage[slotNum][j].c_str()))
 				{
-					ref_str modelName;
-					if (bBlueTeam)
-						modelName = it->second.first;
-					else
-						modelName = it->second.second;
+					ref_str modelName = it->second;
 
 					int m_iSkinX = 0, m_iSkinY = 0;
 					sscanf(pSettings->r_string("multiplayer_skins", *modelName), "%i,%i", &m_iSkinX, &m_iSkinY);
@@ -1687,7 +1688,23 @@ void CUIBuyWeaponWnd::CheckBuyAvailability()
 
 void CUIBuyWeaponWnd::SetDefaultSuit( )
 {
-	UIOutfitIcon.Show(false);
+	UIOutfitIcon.GetUIStaticItem().SetOriginalRect(m_iIconTextureX, m_iIconTextureY, SKIN_TEX_WIDTH, SKIN_TEX_HEIGHT);
+}
+
+void CUIBuyWeaponWnd::SetSkin(u8 SkinID)
+{
+	const ref_str		skinsParamName = "skins";
+	ref_str				tmpStr;
+
+	// Читаем список скинов
+	tmpStr = pSettings->r_string(m_StrSectionName, *skinsParamName);
+
+	R_ASSERT(_GetItemCount(*tmpStr) > SkinID);
+
+	// Получаем имя скина, и координаты соответствующей иконки
+	string32 a;
+	tmpStr = _GetItem(*tmpStr, SkinID, a);
+	sscanf(pSettings->r_string("multiplayer_skins", a), "%i,%i", &m_iIconTextureX, &m_iIconTextureY);
 }
 
 //////////////////////////////////////////////////////////////////////////
