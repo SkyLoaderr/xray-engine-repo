@@ -197,7 +197,7 @@ public:
 	}
 
 	// fpu
-	IC BOOL			_box_fpu	(const Fvector& bCenter, const Fvector& bExtents, Fvector& coord)
+	ICF BOOL		_box_fpu	(const Fvector& bCenter, const Fvector& bExtents, Fvector& coord)
 	{
 		Fbox		BB;
 		BB.min.sub	(bCenter,bExtents);
@@ -205,7 +205,7 @@ public:
         return 		isect_fpu	(BB.min,BB.max,ray,coord);
 	}
 	// sse
-	IC BOOL			_box_sse	(const Fvector& bCenter, const Fvector& bExtents, float&  dist )
+	ICF BOOL		_box_sse	(const Fvector& bCenter, const Fvector& bExtents, float&  dist )
 	{
 		aabb_t		box;
 		box.min.sub (bCenter,bExtents);	box.min.pad = 0;
