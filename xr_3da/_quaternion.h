@@ -167,7 +167,7 @@ public:
 	IC	void	set(const _quaternion &Q)				// don't normalize
 	{	set(Q.w, Q.x, Q.y, Q.z);	}
 
-	void		set(const Fmatrix& m);
+	void		set(const _matrix<float>& m);
 
 	// multiplies q1 * q2, and places the result in *this.
 	// no failure. 	renormalization not automatic
