@@ -70,7 +70,7 @@ void CSoundMemory::GetMostDangerousSound(SoundElem &s)
 
 	// удаление устаревших звуков
 	for (u32 i = 0; i < Sounds.size(); i++) {
-		if ((TTime)Sounds[i].time + MemoryTime > CurrentTime) {
+		if ((TTime)Sounds[i].time + MemoryTime < CurrentTime) {
 			Sounds[i] = Sounds.back();
 			Sounds.pop_back();
 		}

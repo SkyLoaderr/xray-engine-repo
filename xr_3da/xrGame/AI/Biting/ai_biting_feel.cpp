@@ -49,8 +49,6 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
 	if (!g_Alive())
 		return;
 
-	Mem.HearSound(who,eType,Position,power,m_dwCurrentUpdate);
-
 #ifdef IGNORE_ACTOR
 	if ((who == Level().CurrentEntity()) || (who && (who->H_Parent() == Level().CurrentEntity())))
 		return;
@@ -63,14 +61,16 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
 		if ((this != who) && ((m_tLastSound.dwTime <= m_dwLastUpdateTime) || (m_tLastSound.fPower <= power))) {
 			Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
 
-			m_tLastSound.tpEntity		= dynamic_cast<CEntity *>(who);
-			if (m_tLastSound.tpEntity) {
-				m_dwLastSoundNodeID			= m_tLastSound.tpEntity->AI_NodeID;
-				m_tLastSound.eSoundType		= ESoundTypes(eType);
-				m_tLastSound.dwTime			= Level().timeServer();
-				m_tLastSound.fPower			= power;
-				m_tLastSound.tSavedPosition = Position;
-			}
+			Mem.HearSound(who,eType,Position,power,m_dwCurrentUpdate);
+
+//			m_tLastSound.tpEntity		= dynamic_cast<CEntity *>(who);
+//			if (m_tLastSound.tpEntity) {
+//				m_dwLastSoundNodeID			= m_tLastSound.tpEntity->AI_NodeID;
+//				m_tLastSound.eSoundType		= ESoundTypes(eType);
+//				m_tLastSound.dwTime			= Level().timeServer();
+//				m_tLastSound.fPower			= power;
+//				m_tLastSound.tSavedPosition = Position;
+//			}
 		}
 	}
 }
