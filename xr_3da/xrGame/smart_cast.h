@@ -107,6 +107,10 @@
 #		undef cast_type_list
 #		define cast_type_list save_cast_list	(CWeapon,			CInventoryItem)
 
+		DECLARE_SPECIALIZATION	(CWeapon,			CGameObject,			cast_weapon);
+#		undef cast_type_list
+#		define cast_type_list save_cast_list	(CWeapon,			CGameObject)
+
 		DECLARE_SPECIALIZATION	(CFoodItem,			CInventoryItem,			cast_food_item);
 #		undef cast_type_list
 #		define cast_type_list save_cast_list	(CFoodItem,			CInventoryItem)
