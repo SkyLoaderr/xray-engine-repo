@@ -560,6 +560,7 @@ namespace PAPI
 	#pragma pack( pop ) // push 4
 
 	PARTICLEDLL_API ParticleAction* pCreateAction	(PActionEnum type);
+	PARTICLEDLL_API ParticleAction* pCreateAction	(ParticleAction* src);
 
 	// State setting calls
 	PARTICLEDLL_API void pResetState();
