@@ -19,7 +19,7 @@ public:
 
 	virtual void Init(int x, int y, int width, int height);
 	virtual void SetText(LPCSTR sServer, LPCSTR sMap, LPCSTR sMode, LPCSTR sPlayers, LPCSTR sPing);
-	virtual void SetHighlightText(bool bHighlight);
+	//virtual void SetHighlightText(bool bHighlight);
 
 private:
 	CUIListItem m_sServer;
