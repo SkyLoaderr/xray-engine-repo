@@ -3,7 +3,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "UI_Tools.h"
+#include "UI_ActorTools.h"
 #include "UI_Main.h"
 #include "leftbar.h"
 #include "EditObject.h"

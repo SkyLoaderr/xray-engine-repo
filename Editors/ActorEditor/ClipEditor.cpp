@@ -10,7 +10,7 @@
 #include "motion.h"
 #include "skeletoncustom.h"
 #include "editobject.h"
-#include "UI_Tools.h"
+#include "UI_ActorTools.h"
 #include "UI_Main.h"
 #include "SkeletonAnimated.h"
 

@@ -6,7 +6,7 @@
 #include "EditObject.h"
 #include "BonePart.h"
 #include "Bone.h"
-#include "UI_Tools.h"
+#include "UI_ActorTools.h"
 #include "UI_Main.h"
 #include "FolderLib.h"
 //---------------------------------------------------------------------------

@@ -5,7 +5,7 @@
 #include "BottomBar.h"
 #include "UI_ActorMain.h"
 #include "main.h"
-#include "UI_Tools.h"
+#include "UI_ActorTools.h"
 #include "FolderLib.h"
 #include "EditObject.h"
 #include "Motion.h"

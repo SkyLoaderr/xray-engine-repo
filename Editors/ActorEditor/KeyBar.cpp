@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 #include "KeyBar.h"
-#include "UI_Tools.h"
+#include "UI_ActorTools.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ElXPThemedControl"

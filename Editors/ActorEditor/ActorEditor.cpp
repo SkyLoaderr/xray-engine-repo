@@ -4,7 +4,7 @@
 #include "main.h"
 #include "splash.h"
 #include "UI_ActorMain.h"
-#include "UI_Tools.h"
+#include "UI_ActorTools.h"
 #include "LogForm.h"
 //---------------------------------------------------------------------------
 USEFORM("BonePart.cpp", frmBonePart);

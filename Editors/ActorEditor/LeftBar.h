@@ -16,10 +16,10 @@
 #include "ElTree.hpp"
 #include "ElXPThemedControl.hpp"
 
-#include "UI_Tools.h"
 #include "ElTreeAdvEdit.hpp"
 #include "ElPgCtl.hpp"
 #include "MXCtrls.hpp"
+#include "folderlib.h"
 
 //---------------------------------------------------------------------------
 class TfraLeftBar : public TFrame

@@ -3,7 +3,7 @@
 #pragma hdrstop
 
 #include "UI_ActorMain.h"
-#include "UI_Tools.h"
+#include "UI_ActorTools.h"
 #include "topbar.h"
 #include "leftbar.h"
 #include "D3DUtils.h"

@@ -2,7 +2,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "UI_Tools.h"
+#include "UI_ActorTools.h"
 #include "UI_Main.h"
 #include "EditObject.h"
 #include "PropertiesList.h"               
