@@ -18,7 +18,8 @@ class CAI_Soldier : public CCustomMonster
 {
 	enum ESoundCcount {
 		SND_HIT_COUNT=4,
-		SND_DIE_COUNT=4
+		SND_DIE_COUNT=4,
+		SND_RADIO_COUNT=4,
 	};
 
 	enum ESoldierStates 	{
@@ -254,6 +255,7 @@ class CAI_Soldier : public CCustomMonster
 		// mea
 		sound			sndHit[SND_HIT_COUNT];
 		sound			sndDie[SND_DIE_COUNT];
+		sound			sndRadio[SND_RADIO_COUNT];
 		
 		// events
 		EVENT			m_tpEventSay;
@@ -328,6 +330,7 @@ class CAI_Soldier : public CCustomMonster
 		DWORD			m_dwPatrolShock;
 		DWORD			m_dwUnderFireShock;
 		DWORD			m_dwUnderFireReturn;
+		DWORD			m_dwLastRadioTalk;
 		// //
 
 		// patrol structures

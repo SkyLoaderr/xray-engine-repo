@@ -25,6 +25,9 @@
 #define RECHARGE_MEDIAN					(2.f/3.f)
 #define RECHARGE_EPSILON				(0.f/6.f)
 
+#define MIN_RADIO_INTERVAL				20.f
+#define MAX_RADIO_INTERVAL				120.f
+
 /**
 void CAI_Soldier::OnAttackFire()
 {
@@ -1156,7 +1159,13 @@ void CAI_Soldier::OnPatrol()
 	StandUp();
 	vfSetLookAndFireMovement(false, WALK_FORWARD_4,1.0f,Group,dwCurTime);
 
-	if (::Random.randF(0,1)) {
+	if ((dwCurTime - m_dwLastRadioTalk > MAX_RADIO_INTERVAL) || ((dwCurTime - m_dwLastRadioTalk > MIN_RADIO_INTERVAL) && (::Random.randF(0,1) > (dwCurTime - m_dwLastRadioTalk - MIN_RADIO_INTERVAL)/(MAX_RADIO_INTERVAL - MIN_RADIO_INTERVAL)))) {
+		// Play hit-sound
+		sound& S	= sndRadio[Random.randI(SND_RADIO_COUNT)];
+		
+		if (S.feedback)			
+			return;
+		pSounds->PlayAtPos	(S,this,vPosition);
 	}
 }
 

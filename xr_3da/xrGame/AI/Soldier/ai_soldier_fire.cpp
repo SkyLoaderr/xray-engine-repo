@@ -130,14 +130,14 @@ void CAI_Soldier::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 			PKinematics(pVisual)->PlayFX(tSoldierAnimations.tNormal.tTorso.tpDamageLeft);
 		else
 			PKinematics(pVisual)->PlayFX(tSoldierAnimations.tNormal.tTorso.tpDamageRight);
+		
+		// Play hit-sound
+		sound& S	= sndHit[Random.randI(SND_HIT_COUNT)];
+		
+		if (S.feedback)			
+			return;
+		pSounds->PlayAtPos	(S,this,vPosition);
 	}
-	
-	// Play hit-sound
-	sound& S	= sndHit[Random.randI(SND_HIT_COUNT)];
-	
-	if (S.feedback)			
-		return;
-	pSounds->PlayAtPos	(S,this,vPosition);
 }
 
 void CAI_Soldier::SelectEnemy(SEnemySelected& S)

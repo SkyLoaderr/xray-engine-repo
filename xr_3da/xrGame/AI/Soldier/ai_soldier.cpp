@@ -49,12 +49,14 @@ CAI_Soldier::CAI_Soldier()
 	m_fSensetivity = 0.f;
 	m_iSoundIndex = -1;
 	m_cGestureState = GESTURE_STATE_NONE;
+	m_dwLastRadioTalk = 0;
 }
 
 CAI_Soldier::~CAI_Soldier()
 {
 	for (int i=0; i<SND_HIT_COUNT; i++) pSounds->Delete(sndHit[i]);
 	for (i=0; i<SND_DIE_COUNT; i++) pSounds->Delete(sndDie[i]);
+	for (i=0; i<SND_RADIO_COUNT; i++) pSounds->Delete(sndRadio[i]);
 	Engine.Event.Handler_Detach (m_tpEventSay,this);
 	Engine.Event.Handler_Detach (m_tpEventAssignPath,this);
 }

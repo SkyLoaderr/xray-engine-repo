@@ -50,6 +50,10 @@ void CAI_Soldier::vfLoadSounds()
 	pSounds->Create(sndDie[1],TRUE,"monsters\\Soldier\\Injured\\06",0,SOUND_TYPE_MONSTER_DYING_HUMAN);
 	pSounds->Create(sndDie[2],TRUE,"monsters\\Soldier\\Injured\\07",0,SOUND_TYPE_MONSTER_DYING_HUMAN);
 	pSounds->Create(sndDie[3],TRUE,"monsters\\Soldier\\Injured\\08",0,SOUND_TYPE_MONSTER_DYING_HUMAN);
+	pSounds->Create(sndRadio[0],TRUE,"monsters\\Soldier\\Radio\\vo1");
+	pSounds->Create(sndRadio[1],TRUE,"monsters\\Soldier\\Radio\\vo2");
+	pSounds->Create(sndRadio[2],TRUE,"monsters\\Soldier\\Radio\\vo3");
+	pSounds->Create(sndRadio[3],TRUE,"monsters\\Soldier\\Radio\\R1");
 }
 
 // animations
