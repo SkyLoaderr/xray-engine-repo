@@ -24,8 +24,13 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
+				GlobalOptimizations="TRUE"
 				InlineFunctionExpansion="2"
-				OptimizeForProcessor="2"
+				EnableIntrinsicFunctions="TRUE"
+				FavorSizeOrSpeed="1"
+				OmitFramePointers="TRUE"
+				EnableFiberSafeOptimizations="TRUE"
+				OptimizeForProcessor="3"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;ETOOLS_EXPORTS"
 				StringPooling="TRUE"
 				ExceptionHandling="FALSE"
@@ -49,13 +54,14 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="odbc32.lib odbccp32.lib"
 				OutputFile="x:\ETools.dll"
 				LinkIncremental="1"
-				SuppressStartupBanner="TRUE"
+				SuppressStartupBanner="FALSE"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="x:\$(ProjectName).pdb"
-				GenerateMapFile="TRUE"
+				GenerateMapFile="FALSE"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
 				ImportLibrary="x:/ETools.lib"/>
 			<Tool
 				Name="VCMIDLTool"
