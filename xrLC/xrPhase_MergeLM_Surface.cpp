@@ -12,7 +12,7 @@ void _InitSurface	()
 }
 
 // Rendering of rect
-void _rect_register	(_rect &R, CDeflector* D, BOOL bRotate)
+void _rect_register	(_rect &R, CDeflector::Layer* D, BOOL bRotate)
 {
 	LPDWORD lm	= D->lm.pSurface;
 	DWORD	s_x	= D->lm.dwWidth+2*BORDER;
@@ -47,7 +47,7 @@ void _rect_register	(_rect &R, CDeflector* D, BOOL bRotate)
 }
 
 // Test of per-pixel intersection (surface test)
-bool Place_Perpixel	(_rect& R, CDeflector* D, BOOL bRotate)
+bool Place_Perpixel	(_rect& R, CDeflector::Layer* D, BOOL bRotate)
 {
 	LPDWORD lm			= D->lm.pSurface;
 	DWORD	s_x			= D->lm.dwWidth	+2*BORDER;
@@ -85,7 +85,7 @@ bool Place_Perpixel	(_rect& R, CDeflector* D, BOOL bRotate)
 }
 
 // Check for intersection
-BOOL _rect_place(vector<_rect>& dest, _rect &r, CDeflector* D)
+BOOL _rect_place(vector<_rect>& dest, _rect &r, CDeflector::Layer* D)
 {
 	// Normal
 	{
