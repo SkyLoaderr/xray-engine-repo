@@ -39,5 +39,5 @@ void xrServer::OnCL_Disconnected	(IClient* CL)
 	}
 	csPlayers.Leave			();
 
-//	Find_Server_Client();
+	Server_Client_Check(CL);
 }
