@@ -12,13 +12,14 @@
 #define CPlanner				CActionPlannerAction<_object_type>
 
 TEMPLATE_SPECIALIZATION
-IC	CPlanner::CActionPlannerAction	()
+IC	CPlanner::CActionPlannerAction	(_object_type *object, LPCSTR action_name) :
+	inherited_action			(object,action_name)
 {
 	init						();
 }
 
 TEMPLATE_SPECIALIZATION
-IC	CPlanner::~CActionPlannerAction	()
+CPlanner::~CActionPlannerAction		()
 {
 }
 
@@ -35,10 +36,10 @@ void CPlanner::Load					(LPCSTR section)
 }
 
 TEMPLATE_SPECIALIZATION
-void CPlanner::reinit					(_object_type *object, bool clear_all = false)
+void CPlanner::reinit					(_object_type *object, CPropertyStorage *storage, bool clear_all)
 {
-	inherited_planner::reinit	(clear_all);
-	inherited_action::reinit	(object);
+	inherited_planner::reinit	(object,clear_all);
+	inherited_action::reinit	(object,storage,clear_all);
 }
 
 TEMPLATE_SPECIALIZATION

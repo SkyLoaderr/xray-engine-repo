@@ -13,18 +13,19 @@
 
 template <typename _object_type>
 class CActionPlannerAction : 
-	public CActionPlanner,
+	public CActionPlanner<_object_type>,
 	public CActionBase<_object_type>
 {
 protected:
 	typedef	CActionPlanner<_object_type>	inherited_planner;
 	typedef	CActionBase<_object_type>		inherited_action;
+
 public:
-						CActionPlannerAction	();
+	IC					CActionPlannerAction	(_object_type *object = 0, LPCSTR action_name = "");
 	virtual				~CActionPlannerAction	();
-			void		init					();
+	IC		void		init					();
 	virtual	void		Load					(LPCSTR section);
-	virtual	void		reinit					(_object_type *object, bool clear_all = false);
+	virtual	void		reinit					(_object_type *object, CPropertyStorage *storage, bool clear_all = false);
 	virtual	void		reload					(LPCSTR section);
 	virtual	void		update					(u32 time_delta);
 	virtual void		initialize				();
@@ -33,4 +34,4 @@ public:
 	virtual bool		completed				() const;
 };
 
-#include "action_manager_action_inline.h"
+#include "action_planner_action_inline.h"

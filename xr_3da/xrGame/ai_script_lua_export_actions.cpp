@@ -20,6 +20,7 @@
 #include "script_property_evaluator_wrapper.h"
 #include "script_action_wrapper.h"
 #include "script_action_planner_wrapper.h"
+#include "script_action_planner_action_wrapper.h"
 
 #include "script_motivation_wrapper.h"
 #include "script_motivation_action_wrapper.h"
@@ -95,8 +96,11 @@ void Script::vfExportActionManagement(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("current_action_id",			&CScriptActionPlanner::current_action_id)
 			.def("current_action",				&CScriptActionPlanner::current_action)
 			.def("initialized",					&CScriptActionPlanner::initialized)
-			.def("set_goal_world_state",		(void (CScriptActionPlanner::*)(const CScriptActionPlanner::CState &))(CScriptActionPlanner::add_condition))
+			.def("set_goal_world_state",		(void (CScriptActionPlanner::*)(const CScriptActionPlanner::CState &))(CScriptActionPlanner::add_condition)),
 
+		class_<CScriptActionPlannerAction,CScriptActionPlannerActionWrapper,bases<CScriptActionPlanner,CScriptAction> >("planner_action")
+			.def(								constructor<>())
+			.def("reinit",						&CScriptActionPlannerActionWrapper::reinit_static)
 	];
 }
 
