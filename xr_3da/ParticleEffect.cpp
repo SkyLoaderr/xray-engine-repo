@@ -89,7 +89,7 @@ void CParticleEffect::OnFrame(u32 frame_dt)
 					m_fElapsedLimit -= fDT_STEP;
 					if (m_fElapsedLimit<0.f){
 						m_fElapsedLimit = m_Def->m_fTimeLimit;
-						Stop		(true);
+						Stop		(false);
 					}
 				}
 			}
