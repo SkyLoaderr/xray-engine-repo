@@ -354,4 +354,16 @@
     <string id="escape_trader_talk_level_41">
         <text>Как дорогу перейдешь, там и увидишь ее. Белое такое здание. Что смогли украсть - давно украли, а что не смогли то давно заржавело. Излюбленное место бандитов. Рядом с ней ложбинка есть, так вот там можно даже артефактами разжиться.</text>
     </string>
+    <string id="tutorial_wounded_0">
+        <text>Брат, поделись аптечкой, помираю!</text>
+    </string>
+    <string id="tutorial_wounded_1">
+        <text>Конечно, об чем речь.</text>
+    </string>
+    <string id="tutorial_wounded_3">
+        <text>Не, нету.</text>
+    </string>
+    <string id="tutorial_wounded_11">
+        <text>Спасибо, брат! Обратись к Волку в лагере около торговца, ты можешь быть ему полезен.</text>
+    </string>        
 </string_table>

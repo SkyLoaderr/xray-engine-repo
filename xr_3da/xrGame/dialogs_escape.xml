@@ -212,21 +212,22 @@
     <dialog id="tutorial_wounded">
         <phrase_list>
             <phrase id="1">
-                <text />
+                <text>tutorial_wounded_1</text>
                 <precondition>dialogs.medikit_yes</precondition>
                 <action>dialogs.transfer_medikit2</action>
                 <give_info>tutorial_wounded_help</give_info>
                 <next>11</next>
             </phrase>
             <phrase id="11">
-                <text />
+                <text>tutorial_wounded_11</text>
             </phrase>
             <phrase id="3">
-                <text />
+                <text>tutorial_wounded_3</text>
                 <precondition>dialogs.medikit_no</precondition>
+                <action>dialogs.break_dialog</action>
             </phrase>
             <phrase id="0">
-                <text />
+                <text>tutorial_wounded_0</text>
                 <next>1</next>
                 <next>3</next>
             </phrase>
