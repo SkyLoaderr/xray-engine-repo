@@ -268,21 +268,21 @@ static	D3DVERTEXELEMENT9 dwDecl_1W	[] =	// 16bytes
 };
 struct	vertHW_1W
 {
-	s16			P	[4];
-	u8			N_I	[4];
-	s16			tc	[2];
+	s16			_P		[4];
+	u8			_N_I	[4];
+	s16			_tc		[2];
 	void set(Fvector3& P, Fvector3& N, Fvector2& tc, int index)
 	{
-		P[0]	= q_P(P.x);
-		P[1]	= q_P(P.y);
-		P[2]	= q_P(P.z);
-		P[3]	= q_P(1);
-		N_I[0]	= q_N(N.x);
-		N_I[1]	= q_N(N.y);
-		N_I[2]	= q_N(N.z);
-		N_I[3]	= u8(index);
-		tc[0]	= q_tc(tc.x);
-		tc[1]	= q_tc(tc.y);
+		_P[0]	= q_P(P.x);
+		_P[1]	= q_P(P.y);
+		_P[2]	= q_P(P.z);
+		_P[3]	= q_P(1);
+		_N_I[0]	= q_N(N.x);
+		_N_I[1]	= q_N(N.y);
+		_N_I[2]	= q_N(N.z);
+		_N_I[3]	= u8(index);
+		_tc[0]	= q_tc(tc.x);
+		_tc[1]	= q_tc(tc.y);
 	}
 };
 static	D3DVERTEXELEMENT9 dwDecl_2W	[] =	// 32bytes
@@ -296,33 +296,33 @@ static	D3DVERTEXELEMENT9 dwDecl_2W	[] =	// 32bytes
 };
 struct	vertHW_2W
 {
-	s16			P0	[4];
-	s16			P1	[4];
-	u8			N0_w[4];
-	u8			N1	[4];
-	s16			tc_i[4];
+	s16			_P0		[4];
+	s16			_P1		[4];
+	u8			_N0_w	[4];
+	u8			_N1		[4];
+	s16			_tc_i	[4];
 	void set(Fvector3& P0, Fvector3& P1, Fvector3& N0, Fvector3& N1, Fvector2& tc, int index0, int index1, float w)
 	{
-		P0[0]	= q_P(P0.x);
-		P0[1]	= q_P(P0.y);
-		P0[2]	= q_P(P0.z);
-		P0[3]	= q_P(1);
-		P1[0]	= q_P(P1.x);
-		P1[1]	= q_P(P1.y);
-		P1[2]	= q_P(P1.z);
-		P1[3]	= q_P(1);
-		N0_w[0]	= q_N(N0.x);
-		N0_w[1]	= q_N(N0.y);
-		N0_w[2]	= q_N(N0.z);
-		N0_w[3]	= u8(clampr(iFloor(w*255.f+.5f),0,255));
-		N1[0]	= q_N(N1.x);
-		N1[1]	= q_N(N1.y);
-		N1[2]	= q_N(N1.z);
-		N1[3]	= 0;
-		tc_i[0]	= q_tc(tc.x);
-		tc_i[1]	= q_tc(tc.y);
-		tc_i[2]	= s16(index0);
-		tc_i[3]	= s16(index1);
+		_P0[0]		= q_P(P0.x);
+		_P0[1]		= q_P(P0.y);
+		_P0[2]		= q_P(P0.z);
+		_P0[3]		= q_P(1);
+		_P1[0]		= q_P(P1.x);
+		_P1[1]		= q_P(P1.y);
+		_P1[2]		= q_P(P1.z);
+		_P1[3]		= q_P(1);
+		_N0_w[0]	= q_N(N0.x);
+		_N0_w[1]	= q_N(N0.y);
+		_N0_w[2]	= q_N(N0.z);
+		_N0_w[3]	= u8(clampr(iFloor(w*255.f+.5f),0,255));
+		_N1[0]		= q_N(N1.x);
+		_N1[1]		= q_N(N1.y);
+		_N1[2]		= q_N(N1.z);
+		_N1[3]		= 0;
+		_tc_i[0]	= q_tc(tc.x);
+		_tc_i[1]	= q_tc(tc.y);
+		_tc_i[2]	= s16(index0);
+		_tc_i[3]	= s16(index1);
 	}
 };
 #pragma pack(pop)
