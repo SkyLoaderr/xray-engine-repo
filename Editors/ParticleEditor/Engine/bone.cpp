@@ -12,6 +12,7 @@
 #define BONE_CHUNK_MATERIAL		0x0004
 #define BONE_CHUNK_SHAPE		0x0005
 #define BONE_CHUNK_IK_JOINT		0x0006
+#define BONE_CHUNK_MASS			0x0007
 
 CBone::CBone()
 {
@@ -21,6 +22,8 @@ CBone::CBone()
     parent[0]	= 0;
     wmap[0]		= 0;
     rest_length	= 0;
+    mass		= 10.f;
+    center_of_mass.set(0.f,0.f,0.f);
 }
 
 CBone::~CBone()
@@ -64,6 +67,11 @@ void CBone::Save(IWriter& F)
     F.w_float		(IK_data.spring_factor);
     F.w_float		(IK_data.damping_factor);
     F.close_chunk	();
+
+    F.open_chunk	(BONE_CHUNK_MASS);
+    F.w_float		(mass);
+	F.w_fvector3	(center_of_mass);
+    F.close_chunk	();
 }
 
 void CBone::Load_0(IReader& F)
@@ -106,4 +114,9 @@ void CBone::Load_1(IReader& F)
     F.r						(IK_data.limits,sizeof(SJointLimit)*3);
     IK_data.spring_factor	= F.r_float();
     IK_data.damping_factor	= F.r_float();
+
+    if (F.find_chunk(BONE_CHUNK_MASS)){
+	    mass		= F.r_float();
+		F.r_fvector3(center_of_mass);
+    }
 }

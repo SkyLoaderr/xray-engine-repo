@@ -7,12 +7,13 @@
 #include <lwhost.h>
 #endif
 
+#pragma pack( push,1 )
 enum EJointType
 {
     jtRigid,
 	jtCloth,
 	jtJoint,
-    jtWheel,			// SJointLimit[0] = axis Z(0,0,1) = wheel; SJointLimit[1] = axis X(1,0,0) = steer; 
+    jtWheel,			// SJointLimit[0] = axis X(1,0,0) = steer; SJointLimit[2] = axis Z(0,0,1) = wheel; 
     jtForceU32 = u32(-1)
 };
 
@@ -55,7 +56,7 @@ struct SJointIKData
 {
     // IK
     EJointType		type;
-    SJointLimit		limits	[3];
+    SJointLimit		limits	[3];// by [axis XYZ on joint] and[Z-wheel,X-steer on wheel]
     float			spring_factor;
     float			damping_factor;
     SJointIKData	()
@@ -64,7 +65,9 @@ struct SJointIKData
         spring_factor	= 1.f;
         damping_factor	= 1.f;
     }
+    void			clamp_by_limits(const Fvector& basis_hpb, Fvector& dest_hpb);
 };
+#pragma pack( pop )
 
 class CBone
 {
@@ -72,11 +75,11 @@ class CBone
 	string64		parent;
 	string64		wmap;
 	Fvector			rest_offset;
-	Fvector			rest_rotate;
+	Fvector			rest_rotate;    // HPB format
 	float			rest_length;
 
 	Fvector			mot_offset;
-	Fvector			mot_rotate;
+	Fvector			mot_rotate;		// HPB format
 	float			mot_length;
 
     Fmatrix			last_transform;
@@ -92,6 +95,9 @@ public:
     SJointIKData	IK_data;
     string64		game_mtl;
     SBoneShape		shape;
+
+    float			mass;
+    Fvector			center_of_mass;
 public:
 					CBone			();
 	virtual			~CBone			();
@@ -132,9 +138,12 @@ public:
 	void			ShapeRotate		(const Fvector& amount);
 	void			ShapeMove		(const Fvector& amount);
 
+	void			BoneRotate		(const Fvector& amount);
+
 	bool 			Pick			(float& dist, const Fvector& S, const Fvector& D, const Fmatrix& parent);
 
     void			Select			(BOOL flag){flags.set(flSelected,flag);}
+    bool			Selected		(){return flags.is(flSelected);}
 #endif
 };
 DEFINE_VECTOR		(CBone*,BoneVec,BoneIt);
