@@ -7,6 +7,7 @@ module ("xr_evaluators")
 module ("xr_motivator")
 
 module ("xr_reactions")
+module ("xr_state")
 module ("xr_meet")
 module ("xr_tradeseller")
 module ("xr_kamp")
