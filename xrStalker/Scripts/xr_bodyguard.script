@@ -4,25 +4,14 @@
 -- Ќастройка:
 
 -- ѕоследний раз, когда игрока предупреждали убрать оружие (чтобы часто не повтор€тьс€):
-warn_rem_weapon_time = nil
+--warn_rem_weapon_time = nil
+warn_rem_weapon_times = {}
 
 local state_none = 0
 local state_moving = 1
 local state_looking = 2
 local state_asking_to_remove_weapon = 3
 local state_waiting = 4
-
-local bodyguards = {
-}
-
-function stop_talking(id)
-	local dis_until = device():time_global() + aftertalk_disable_time
-	bodyguards[id].state = state_none
-	bodyguards[id].disabled_until = dis_until
-	bodyguards[bodyguards[id].whom:id()].state = state_none
-	bodyguards[bodyguards[id].whom:id()].disabled_until = dis_until
-end
-
 
 ---------------------------------------------------------------------------------------------------------------------
 --Evaluators
@@ -88,6 +77,7 @@ function action_bodyguard_activity:reset_scheme()
 	self.path_active =  self.path_main
 
 	self.path_guard_ptr = patrol(self.stor.path_guard)
+	self.path_center_ptr = patrol(self.stor.path_center)
 	self.path_guard_radius = self.stor.path_guard_radius
 	
 	-- “очка, в которую смотрели в прошлый раз. ≈е запоминаем дл€ того, чтобы не делать паузу между анимаци€ми,
@@ -113,7 +103,7 @@ function action_bodyguard_activity:reset_scheme()
 	local ptr = patrol(self.path_active)
         local num_points = ptr:count()
 	local distance = pos:distance_to(ptr:point(0))
-	if distance <= 1 then
+	if distance <= 0.5 then
 		printf("simulating callback")
 		self:waypoint_callback(self.object, self.last_action_type, self.last_index)
 	end
@@ -151,20 +141,23 @@ function action_bodyguard_activity:execute()
 
 	if self.state == self.state_standing then
 		local actor = level.actor()
-		local dist = 0
+		local dist_guard = 0
+		local dist_center = 0
 		if actor then
-			dist = self.object:position():distance_to(actor:position())
+			dist_guard = self.path_guard_ptr:point(0):distance_to(actor:position())
+			dist_center = self.path_center_ptr:point(0):distance_to(actor:position())
 		end
 
 		if actor then
 			local active_item = actor:active_item()
-		        if active_item and isWeapon(active_item) then
-				if dist <= 5 and
-				   (not this.warn_rem_weapon_time or device():time_global() > this.warn_rem_weapon_time + 60000) then
+			local has_weapon = active_item and isWeapon(active_item)
+		        if has_weapon or dist_center > 5 then
+				if has_weapon and dist_center <= 5 and
+				   (not this.warn_rem_weapon_times[self.stor.path_center] or device():time_global() > this.warn_rem_weapon_times[self.stor.path_center] + 60000) then
 					self.object:play_sound(xr_sounds_id.zmey_bodyguard_base, 1, 0, 1, 0, 1)
-					this.warn_rem_weapon_time = device():time_global()
-				--elseif dist > 10 and this.warn_rem_weapon_time then
-				--	this.warn_rem_weapon_time = nil
+					this.warn_rem_weapon_times[self.stor.path_center] = device():time_global()
+				elseif dist_center > 5 and this.warn_rem_weapon_times[self.stor.path_center] then
+					this.warn_rem_weapon_times[self.stor.path_center] = nil
 				end
 
 				if self.path_guard_ptr:point(0):distance_to(actor:position()) < self.path_guard_radius then
@@ -173,14 +166,22 @@ function action_bodyguard_activity:execute()
 					end
 					--self.state = self.state_killing
 				elseif self.path_active ~= self.path_main then
-					self.object:play_sound(xr_sounds_id.zmey_bodyguard_base, 1, 0, 1, 0, 1)
-					this.warn_rem_weapon_time = device():time_global()
+					if has_weapon and dist_center <= 5 then
+						self.object:play_sound(xr_sounds_id.zmey_bodyguard_base, 1, 0, 1, 0, 1)
+						this.warn_rem_weapon_times[self.stor.path_center] = device():time_global()
+					end
 
 					self.path_active = self.path_main
 					self.object:set_movement_type(move.walk)
 					self.object:set_path_type(game_object.patrol_path)
 					self.object:set_patrol_path(self.path_active, patrol.start, patrol.continue, true)
 					self.state = self.state_moving
+					local pos = self.object:position()
+					local distance = pos:distance_to(patrol(self.path_active):point(0))
+					if distance <= 0.5 then
+						printf("simulating callback")
+						self:waypoint_callback(self.object, self.last_action_type, self.last_index)
+					end
 				end
 			else
 				if self.path_active ~= self.path_side then
@@ -189,15 +190,25 @@ function action_bodyguard_activity:execute()
 					self.object:set_path_type(game_object.patrol_path)
 					self.object:set_patrol_path(self.path_active, patrol.start, patrol.continue, true)
 					self.state = self.state_moving
+					local pos = self.object:position()
+					local distance = pos:distance_to(patrol(self.path_active):point(0))
+					if distance <= 0.5 then
+						printf("simulating callback")
+						self:waypoint_callback(self.object, self.last_action_type, self.last_index)
+					end
 				end
 			end
 		end
 
-		if actor and dist <= 10 and dist >= 2 then
+		if actor and dist_guard <= 10 and dist_guard >= 2 then
 			local pos = actor:position()
 			local look_pt = this.vector_copy_by_val(pos):sub(self.object:position())
+			--self.object:set_mental_state(anim.danger)
+			self.object:set_mental_state(anim.free)
 			self.object:set_sight(look.direction, look_pt, 0)
+			--self.object:set_sight(look.fire_point, actor:position(), 0)
 		else
+			self.object:set_mental_state(anim.free)
 			self:look_at_waypoint(1) -- поворачиваемс€
 		end
 	end
@@ -338,6 +349,22 @@ function set_bodyguard(object, enable, path_main, path_side, path_guard, path_gu
 			end
 		else
 			st.path_guard_radius = path_guard_radius
+		end
+	end
+	if st.enabled == true then
+		if path_center == nil then
+		    	if char_ini:section_exist ("bodyguard") == true then
+	        		if char_ini:line_exist("bodyguard", "path_center") == true then
+		        	        st.path_center = char_ini:r_string("bodyguard", "path_center")
+	        		else
+					printf("ERROR: set_bodyguard: path_center not specified")
+		        	    	st.path_center = st.path_main
+			        end
+			else
+				st.enabled = false
+			end
+		else
+			st.path_center = path_center
 		end
 	end
 	if st.action ~= nil then
