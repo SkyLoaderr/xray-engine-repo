@@ -78,6 +78,10 @@ CAI_Stalker::CAI_Stalker			()
 //	m_fAccuracy						= 0.f;
 //	m_fIntelligence					= 0.f;
 
+	m_fTimeToStep					= 0;
+	m_dwMyMaterialID				= GAMEMTL_NONE;
+	m_dwLastMaterialID				= GAMEMTL_NONE;
+
 	m_pPhysicsShell					= NULL;
 	m_saved_impulse					= 0.f;
 
@@ -121,6 +125,7 @@ void CAI_Stalker::Die				()
 #ifndef NO_PHYSICS_IN_AI_MOVE
 	Movement.DestroyCharacter();
 #endif
+	::Sound->play_at_pos			(m_tpSoundDie[Random.randI(STALKER_SND_DIE_COUNT)],this,vPosition);
 	inherited::Die					();
 	m_bHammerIsClutched				= !::Random.randI(0,2);
 }
@@ -198,13 +203,27 @@ void CAI_Stalker::Load				(LPCSTR section)
 	hinge_vel						= pSettings->r_float(section,"ph_skeleton_hinge_vel");
 	skel_fatal_impulse_factor		= pSettings->r_float(section,"ph_skel_fatal_impulse_factor");
 
-	// Msg	("! stalker size: %d",sizeof(*this));
+	::Sound->create					(m_tpSoundStep[0],	TRUE,	"Actor\\StepL",						SOUND_TYPE_MONSTER_WALKING_HUMAN);
+	::Sound->create					(m_tpSoundStep[1],	TRUE,	"Actor\\StepR",						SOUND_TYPE_MONSTER_WALKING_HUMAN);
+	::Sound->create					(m_tpSoundHit[0],	TRUE,	"Actor\\hurt1",	SOUND_TYPE_MONSTER_INJURING_HUMAN);
+	::Sound->create					(m_tpSoundHit[1],	TRUE,	"Actor\\hurt2",	SOUND_TYPE_MONSTER_INJURING_HUMAN);
+	::Sound->create					(m_tpSoundHit[2],	TRUE,	"Actor\\hurt3",	SOUND_TYPE_MONSTER_INJURING_HUMAN);
+	::Sound->create					(m_tpSoundHit[3],	TRUE,	"Actor\\hurt4",	SOUND_TYPE_MONSTER_INJURING_HUMAN);
+	::Sound->create					(m_tpSoundDie[0],	TRUE,	"Actor\\die0",	SOUND_TYPE_MONSTER_DYING_HUMAN);
+	::Sound->create					(m_tpSoundDie[1],	TRUE,	"Actor\\die1",	SOUND_TYPE_MONSTER_DYING_HUMAN);
+	::Sound->create					(m_tpSoundDie[2],	TRUE,	"Actor\\die2",	SOUND_TYPE_MONSTER_DYING_HUMAN);
+	::Sound->create					(m_tpSoundDie[3],	TRUE,	"Actor\\die3",	SOUND_TYPE_MONSTER_DYING_HUMAN);
+	
+	m_dwMyMaterialID				= GMLib.GetMaterialIdx("actor");
+	m_dwLastMaterialID				= GMLib.GetMaterialIdx("default");
 }
 
 BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 {
 	if (!inherited::net_Spawn(DC))
 		return						(FALSE);
+	Movement.SetPLastMaterial		(&m_dwLastMaterialID);
+
 	xrSE_Human						*tpHuman = (xrSE_Human*)(DC);
 	R_ASSERT						(tpHuman);
 	cNameVisual_set					(tpHuman->caModel);
@@ -867,6 +886,33 @@ void CAI_Stalker::Update	( u32 DT )
 				(**l_it).Drop();
 		}
 	}
+	
+	R_ASSERT					(m_dwLastMaterialID != GAMEMTL_NONE);
+	SGameMtlPair				*mtl_pair = GMLib.GetMaterialPair(m_dwMyMaterialID,m_dwLastMaterialID);
+	R_ASSERT3					(mtl_pair,"Undefined material pair: Actor # ", GMLib.GetMaterial(m_dwLastMaterialID)->name);
+	// sound step
+	if (m_tMovementType != eMovementTypeStand) {
+		if(m_fTimeToStep < 0) {
+			m_bStep				= !m_bStep;
+			float k				= (m_tBodyState == eBodyStateCrouch) ? 0.75f : 1.f;
+			float tm			= (m_tMovementType == eMovementTypeRun)?(PI/(k*10.f)):(PI/(k*7.f));
+			m_fTimeToStep		= tm;
+			m_tpSoundStep[m_bStep].clone		(mtl_pair->StepSounds[m_bStep]);
+			m_tpSoundStep[m_bStep].play_at_pos	(this,Position());
+		}
+		m_fTimeToStep -= dt;
+	}
+	float	s_k			=	(m_tBodyState == eBodyStateCrouch)?0.85f:1.f;
+	float	s_vol		=	s_k * ((m_tMovementType == eMovementTypeRun)?1.f:.85f);
+	if (m_tpSoundStep[0].feedback)		{
+		m_tpSoundStep[0].set_position	(vPosition);
+		m_tpSoundStep[0].set_volume	(s_vol);
+	}
+	if (m_tpSoundStep[1].feedback)		{
+		m_tpSoundStep[1].set_position	(vPosition);
+		m_tpSoundStep[1].set_volume	(s_vol);
+	}
+
 	m_inventory.Update(DT);
 
 	// *** general stuff

@@ -1,9 +1,9 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_stalker_space.h
+//	Module 		: ai_stalker_path.cpp
 //	Created 	: 28.03.2003
 //  Modified 	: 28.03.2003
 //	Author		: Dmitriy Iassenev
-//	Description : Stalker types and structures
+//	Description : Stalker path finding, curve building, position prediction
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"

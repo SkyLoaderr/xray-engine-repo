@@ -368,11 +368,6 @@ void CAI_Stalker::SelectSound(int &iIndex)
 			}
 }
 
-bool CAI_Stalker::bfCheckSoundForOwner(CObject *tpObject)
-{
-	return(!!m_inventory.Get(tpObject->ID(),true));
-}
-
 void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Position, float power)
 {
 	#ifdef WRITE_LOG
@@ -385,7 +380,7 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 		return;
 	}
 	
-	power *= ffGetStartVolume(ESoundTypes(eType));
+	power *= 1;//ffGetStartVolume(ESoundTypes(eType));
 	if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING)
 		power = 1.f;//expf(.1f*log(power));
 	u32 dwTime = m_dwCurrentUpdate;

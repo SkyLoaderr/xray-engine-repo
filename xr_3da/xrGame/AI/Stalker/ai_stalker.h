@@ -65,6 +65,18 @@ private:
 	typedef svector<Fvector,MAX_SUSPICIOUS_NODE_COUNT>	SuspiciousPoints;
 	typedef svector<Fvector,MAX_SUSPICIOUS_NODE_COUNT>	SuspiciousForces;
 
+	// sound
+	sound					m_tpSoundStep[STALKER_SND_STEP_COUNT];
+	sound					m_tpSoundHit[STALKER_SND_HIT_COUNT];
+	sound					m_tpSoundDie[STALKER_SND_DIE_COUNT];
+	
+	float					m_fTimeToStep;
+	bool					m_bStep;
+	
+	u32						m_dwMyMaterialID;
+	u32						m_dwLastMaterialID;
+
+	// dynamic objects, sounds, hurts, search positions, etc.
 	svector<SDynamicObject,	MAX_DYNAMIC_OBJECTS>		m_tpaDynamicObjects;
 	svector<SDynamicSound,	MAX_DYNAMIC_SOUNDS>			m_tpaDynamicSounds;
 	svector<SHurt,			MAX_HURT_COUNT>				m_tpaHurts;
@@ -113,6 +125,7 @@ private:
 	NodeCompressed*			m_tpSavedEnemyNode;
 	u32						m_dwSavedEnemyNodeID;
 	CInventoryItem*			m_tpItemToTake;
+	
 	// pursuiting
 	int						m_iCurrentSuspiciousNodeIndex;
 	SuspiciousPoints		m_tpaSuspiciousPoints;
@@ -126,8 +139,10 @@ private:
 	Fvector					m_saved_hit_position;
 	Fvector					m_saved_hit_dir;
 	s16						m_saved_element;
+	
 	//PHYS
 	float					m_phMass;
+	
 	//skeleton
 	float					skel_density_factor;
 	float					skel_airr_lin_factor;
@@ -272,7 +287,6 @@ private:
 			bool			bfAddEnemyToDynamicObjects		(CAI_Stalker *tpStalker);
 			bool			bfCheckIfSound					();
 			void			vfUpdateParameters				(bool &A, bool &B, bool &C, bool &D, bool &E, bool &F, bool &G, bool &H, bool &I, bool &J, bool &K, bool &L, bool &M);
-			bool			bfCheckSoundForOwner			(CObject *tpObject);
 
 			// physics
 			void			CreateSkeleton					();
