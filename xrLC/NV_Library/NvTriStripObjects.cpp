@@ -669,7 +669,7 @@ bool NvStripifier::FindTraversal(NvFaceInfoVec &faceInfos,
 ////////////////////////////////////////////////////////////////////////////////////////
 // RemoveSmallStrips()
 //
-// allStrips is the whole strip _vector...all small strips will be deleted from this list, to avoid leaking mem
+// allStrips is the whole strip _vector_...all small strips will be deleted from this list, to avoid leaking mem
 // allBigStrips is an out parameter which will contain all strips above minStripLength
 // faceList is an out parameter which will contain all faces which were removed from the striplist
 //
@@ -941,7 +941,7 @@ void NvStripifier::Stripify(const WordVec &in_indices, const int in_cacheSize,
 ///////////////////////////////////////////////////////////////////////////////////////////
 // SplitUpStripsAndOptimize()
 //
-// Splits the input _vector of strips (allBigStrips) into smaller, cache friendly pieces, then
+// Splits the input _vector_ of strips (allBigStrips) into smaller, cache friendly pieces, then
 //  reorders these pieces to maximize cache hits
 // The final strips are output through outStrips
 //
@@ -1194,7 +1194,7 @@ int NvStripifier::NumNeighbors(NvFaceInfo* face, NvEdgeInfoVec& edgeInfoVec)
 ///////////////////////////////////////////////////////////////////////////////////////////
 // AvgStripSize()
 //
-// Finds the average strip size of the input _vector of strips
+// Finds the average strip size of the input _vector_ of strips
 //
 float NvStripifier::AvgStripSize(const NvStripInfoVec &strips){
 	int sizeAccum = 0;
@@ -1210,7 +1210,7 @@ float NvStripifier::AvgStripSize(const NvStripInfoVec &strips){
 ///////////////////////////////////////////////////////////////////////////////////////////
 // FindAllStrips()
 //
-// Does the stripification, puts output strips into _vector allStrips
+// Does the stripification, puts output strips into _vector_ allStrips
 //
 // Works by setting runnning a number of experiments in different areas of the mesh, and
 //  accepting the one which results in the longest strips.  It then accepts this, and moves

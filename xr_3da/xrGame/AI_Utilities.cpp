@@ -4,7 +4,7 @@
 //******* Distance 2 line segment
 IC float	SqrDistance2Segment(const Fvector& P, const Fvector& A, const Fvector& B)
 {
-	// Determine t (the length of the _vector from ‘a’ to ‘p’)
+	// Determine t (the length of the _vector_ from ‘a’ to ‘p’)
 	Fvector c; c.sub(P,A);
 	Fvector V; V.sub(B,A); 
 	

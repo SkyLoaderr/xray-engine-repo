@@ -7,7 +7,7 @@ namespace CDB
 	//----------------------------------------------------------------------
 	// Name  : intersectRaySphere()
 	// Input : rO - origin of ray in world space
-	//         rV - _vector describing direction of ray in world space
+	//         rV - _vector_ describing direction of ray in world space
 	//         sO - Origin of sphere
 	//         sR - radius of sphere
 	// Notes : Normalized directional vectors expected

@@ -197,7 +197,7 @@ extern "C" int dCylBox (const dVector3 p1, const dMatrix3 R1,
     Q11,Q12,Q13,Q21,Q22,Q23,Q31,Q32,Q33,s,s2,l,sQ21,sQ22,sQ23;
   int i,invert_normal;
 
-  // get _vector from centers of box 1 to box 2, relative to box 1
+  // get _vector_ from centers of box 1 to box 2, relative to box 1
   p[0] = p2[0] - p1[0];
   p[1] = p2[1] - p1[1];
   p[2] = p2[2] - p1[2];

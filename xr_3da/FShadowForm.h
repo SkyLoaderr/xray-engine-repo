@@ -43,7 +43,7 @@ class FShadowForm : public IRender_Visual
 	// Private methods
 public:
 	void					RenderShadow		(LPDIRECT3DVERTEXBUFFER7 pv);
-	void					MakeShadowVolume	(_vector &L, _matrix &mWorld );
+	void					MakeShadowVolume	(Fvector &L, Fmatrix &mWorld );
 
 	virtual	void			Load(IReader *data, u32 dwFlags);
 	virtual void			Render(float LOD);

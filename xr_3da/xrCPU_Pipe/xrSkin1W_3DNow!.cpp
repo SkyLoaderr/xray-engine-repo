@@ -38,8 +38,8 @@ void __stdcall xrSkin1W_3DNow(	vertRender*		D,
 // ------------------------------------------------------------------
 	mov			ecx,vCount		; ecx = vCount ~ 1100
 // ------------------------------------------------------------------
-	; esi		= source _vector [S]
-	; edi		= result _vector [D]
+	; esi		= source _vector_ [S]
+	; edi		= result _vector_ [D]
 	; eax		= transform matrix [m]
 // ------------------------------------------------------------------
 	mov			edi,D			; edi = D

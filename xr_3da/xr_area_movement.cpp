@@ -25,7 +25,7 @@ IC float classifyPoint(const Fvector& point, const Fvector& planeO, const Fvecto
 // ----------------------------------------------------------------------
 // Name  : intersectRayPlane()
 // Input : rOrigin - origin of ray in world space
-//         rVector - _vector describing direction of ray in world space
+//         rVector - _vector_ describing direction of ray in world space
 //         pOrigin - Origin of plane 
 //         pNormal - Normal to plane
 // Notes : Normalized directional vectors expected
@@ -37,7 +37,7 @@ IC float intersectRayPlane(const Fvector& rayOrigin,	const Fvector& rayDirection
 	float numer = classifyPoint(rayOrigin,planeOrigin,planeNormal);
 	float denom = planeNormal.dotproduct(rayDirection);
 	
-	if (denom == 0)  // normal is orthogonal to _vector, cant intersect
+	if (denom == 0)  // normal is orthogonal to _vector_, cant intersect
 		return (-1.0f);
 	
 	return -(numer / denom);	
@@ -55,7 +55,7 @@ IC float intersectRayPlane(const Fvector& rayOrigin,	const Fvector& rayDirection
 IC void closestPointOnLine(Fvector& res, const Fvector& a, const Fvector& b, const Fvector& p) 
 {
 	
-	// Determine t (the length of the _vector from ‘a’ to ‘p’)
+	// Determine t (the length of the _vector_ from ‘a’ to ‘p’)
 	Fvector c; c.sub(p,a);
 	Fvector V; V.sub(b,a); 
 	
@@ -77,7 +77,7 @@ IC void closestPointOnEdge(Fvector& res,						// result
 						   const Fvector& ED, float elen,		// edge direction (b-a) and length
 						   const Fvector& P)					// query point
 {
-	// Determine t (the length of the _vector from ‘a’ to ‘p’)
+	// Determine t (the length of the _vector_ from ‘a’ to ‘p’)
 	Fvector c; c.sub(P,a);
 	float t = ED.dotproduct(c);
 	
@@ -125,7 +125,7 @@ IC void closestPointOnTriangle(Fvector& result, const tri& T, const Fvector& P)
 // ----------------------------------------------------------------------
 // Name  : intersectRaySphere()
 // Input : rO - origin of ray in world space
-//         rV - _vector describing direction of ray in world space
+//         rV - _vector_ describing direction of ray in world space
 //         sO - Origin of sphere 
 //         sR - radius of sphere
 // Notes : Normalized directional vectors expected
