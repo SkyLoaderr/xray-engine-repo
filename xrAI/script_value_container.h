@@ -11,7 +11,7 @@
 #ifdef XRSE_FACTORY_EXPORTS
 	class CScriptValue;
 #else
-	class CScriptValue {virtual ~CScriptValue(){}};
+	class CScriptValue {public: virtual ~CScriptValue(){}};
 #endif
 
 class CScriptValueContainer {
