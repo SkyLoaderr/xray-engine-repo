@@ -137,7 +137,7 @@
                 <next>2111</next>
             </phrase>
             <phrase id="21111">
-                <text></text>
+                <text />
                 <next>1</next>
             </phrase>
             <phrase id="22">
@@ -149,11 +149,11 @@
                 <next>2211</next>
             </phrase>
             <phrase id="22111">
-                <text></text>
+                <text />
                 <next>1</next>
             </phrase>
             <phrase id="1">
-                <text></text>
+                <text />
                 <next>2</next>
                 <next>3</next>
                 <next>4</next>
@@ -176,42 +176,7 @@
                 <next>22</next>
             </phrase>
             <phrase id="0">
-                <text></text>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="bar_bar_barmen_job_darkvalley">
-        <phrase_list>
-            <phrase id="211">
-                <text>bar_bar_barmen_job_darkvalley_211</text>
-                <next>2111</next>
-            </phrase>
-            <phrase id="211111">
-                <text>bar_bar_barmen_job_darkvalley_211111</text>
-            </phrase>
-            <phrase id="2">
-                <text>bar_bar_barmen_job_darkvalley_2</text>
-                <next>21</next>
-            </phrase>
-            <phrase id="21">
-                <text>bar_bar_barmen_job_darkvalley_21</text>
-                <next>211</next>
-            </phrase>
-            <phrase id="2111">
-                <text>bar_bar_barmen_job_darkvalley_2111</text>
-                <next>21111</next>
-            </phrase>
-            <phrase id="21111">
-                <text>bar_bar_barmen_job_darkvalley_21111</text>
-                <next>211111</next>
-            </phrase>
-            <phrase id="1">
-                <text></text>
-                <next>2</next>
-            </phrase>
-            <phrase id="0">
-                <text></text>
+                <text />
                 <next>1</next>
             </phrase>
         </phrase_list>
@@ -248,7 +213,7 @@
                 <next>61</next>
             </phrase>
             <phrase id="111">
-                <text></text>
+                <text />
                 <next>3</next>
                 <next>4</next>
                 <next>5</next>
@@ -310,7 +275,7 @@
                 <next>1</next>
             </phrase>
             <phrase id="11">
-                <text></text>
+                <text />
                 <next>111</next>
             </phrase>
         </phrase_list>
@@ -318,14 +283,14 @@
     <dialog id="bar_security_dialog">
         <phrase_list>
             <phrase id="1">
-                <text></text>
+                <text />
                 <next>2</next>
             </phrase>
             <phrase id="2">
                 <action>dialogs.break_dialog</action>
             </phrase>
             <phrase id="0">
-                <text></text>
+                <text />
                 <next>1</next>
             </phrase>
         </phrase_list>
@@ -333,7 +298,7 @@
     <dialog id="bar_zastava_dolg_acces">
         <phrase_list>
             <phrase id="11">
-                <text></text>
+                <text />
                 <next>111</next>
             </phrase>
             <phrase id="21">
@@ -377,7 +342,7 @@
                 <next>11</next>
             </phrase>
             <phrase id="111">
-                <text></text>
+                <text />
                 <next>2</next>
                 <next>3</next>
                 <next>4</next>
@@ -388,29 +353,52 @@
             </phrase>
         </phrase_list>
     </dialog>
+    <dialog id="bar_bar_barmen_job_darkvalley">
+        <phrase_list>
+            <phrase id="211">
+                <text>bar_bar_barmen_job_darkvalley_211</text>
+                <next>2111</next>
+            </phrase>
+            <phrase id="211111">
+                <text>bar_bar_barmen_job_darkvalley_211111</text>
+            </phrase>
+            <phrase id="2">
+                <text>bar_bar_barmen_job_darkvalley_2</text>
+                <next>21</next>
+            </phrase>
+            <phrase id="21">
+                <text>bar_bar_barmen_job_darkvalley_21</text>
+                <next>211</next>
+            </phrase>
+            <phrase id="2111">
+                <text>bar_bar_barmen_job_darkvalley_2111</text>
+                <next>21111</next>
+            </phrase>
+            <phrase id="21111">
+                <text>bar_bar_barmen_job_darkvalley_21111</text>
+                <next>211111</next>
+            </phrase>
+            <phrase id="1">
+                <text></text>
+                <next>2</next>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
     <dialog id="bar_bar_visitors_1_start">
         <phrase_list>
             <phrase id="211">
                 <text>bar_bar_visitors_1_start_211</text>
             </phrase>
-            <phrase id="2">
-                <text></text>
-                <next>21</next>
-            </phrase>
             <phrase id="21">
                 <text>bar_bar_visitors_1_start_21</text>
                 <next>211</next>
             </phrase>
-            <phrase id="4">
-                <text></text>
-                <next>41</next>
-            </phrase>
             <phrase id="411">
                 <text>bar_bar_visitors_1_start_411</text>
-            </phrase>
-            <phrase id="5">
-                <text></text>
-                <next>51</next>
             </phrase>
             <phrase id="51">
                 <text>bar_bar_visitors_1_start_51</text>
@@ -421,10 +409,6 @@
             </phrase>
             <phrase id="611">
                 <text>bar_bar_visitors_1_start_611</text>
-            </phrase>
-            <phrase id="6">
-                <text></text>
-                <next>61</next>
             </phrase>
             <phrase id="61">
                 <text>bar_bar_visitors_1_start_61</text>
@@ -437,10 +421,6 @@
                 <text>bar_bar_visitors_1_start_71</text>
                 <next>711</next>
             </phrase>
-            <phrase id="7">
-                <text></text>
-                <next>71</next>
-            </phrase>
             <phrase id="311">
                 <text>bar_bar_visitors_1_start_311</text>
             </phrase>
@@ -448,23 +428,11 @@
                 <text>bar_bar_visitors_1_start_31</text>
                 <next>311</next>
             </phrase>
-            <phrase id="3">
-                <text></text>
-                <next>31</next>
-            </phrase>
-            <phrase id="1">
-                <text></text>
-                <next>11</next>
-            </phrase>
-            <phrase id="111">
-                <text>bar_bar_visitors_1_start_111</text>
-            </phrase>
-            <phrase id="11">
-                <text>bar_bar_visitors_1_start_11</text>
-                <next>111</next>
+            <phrase id="41">
+                <text>bar_bar_visitors_1_start_41</text>
+                <next>411</next>
             </phrase>
             <phrase id="0">
-                <text></text>
                 <next>1</next>
                 <next>2</next>
                 <next>3</next>
@@ -473,9 +441,66 @@
                 <next>6</next>
                 <next>7</next>
             </phrase>
-            <phrase id="41">
-                <text>bar_bar_visitors_1_start_41</text>
-                <next>411</next>
+            <phrase id="11">
+                <text>bar_bar_visitors_1_start_11</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="111">
+                <text>bar_bar_visitors_1_start_111</text>
+            </phrase>
+            <phrase id="1">
+                <give_info>bar_bar_kill_borov_done</give_info>
+                <has_info>bar_bar_kill_borov_start</has_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="2">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <give_info>bar_bar_kill_svoboda_ambush_done</give_info>
+                <has_info>bar_bar_kill_svoboda_ambush_start</has_info>
+                <next>21</next>
+            </phrase>
+            <phrase id="3">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <give_info>bar_bar_kill_bloodsucker_done</give_info>
+                <has_info>bar_bar_kill_bloodsucker_start</has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="4">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <give_info>bar_bar_kill_svoboda_leader_done</give_info>
+                <has_info>bar_bar_kill_svoboda_leader_start</has_info>
+                <next>41</next>
+            </phrase>
+            <phrase id="5">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <give_info>bar_bar_kill_veterans_done</give_info>
+                <has_info>bar_bar_kill_veterans_start</has_info>
+                <next>51</next>
+            </phrase>
+            <phrase id="7">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_veterans_start</dont_has_info>
+                <dont_has_info>bar_bar_yantar_off_start</dont_has_info>
+                <next>71</next>
+            </phrase>
+            <phrase id="6">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_veterans_start</dont_has_info>
+                <give_info>bar_bar_yantar_off_done</give_info>
+                <has_info>bar_bar_yantar_off_start</has_info>
+                <next>61</next>
             </phrase>
         </phrase_list>
     </dialog>

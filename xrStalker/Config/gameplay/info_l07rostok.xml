@@ -15,6 +15,31 @@
     <info_portion id="bar_bar_square_3_state_2"></info_portion>
     <info_portion id="bar_bar_square_3_state_3"></info_portion>
 
+	<!-- bar talk infoportions -->
+	<info_portion id="bar_bar_kill_borov_start"></info_portion>
+	<info_portion id="bar_bar_kill_borov_done">
+		<disable>bar_bar_kill_borov_start</disable>
+	</info_portion>	
+	<info_portion id="bar_bar_kill_svoboda_ambush_start"></info_portion>
+	<info_portion id="bar_bar_kill_svoboda_ambush_done">
+		<disable>bar_bar_kill_svoboda_ambush_start</disable>
+	</info_portion>
+	<info_portion id="bar_bar_kill_bloodsucker_start"></info_portion>
+	<info_portion id="bar_bar_kill_bloodsucker_done">
+		<disable>bar_bar_kill_bloodsucker_start</disable>
+	</info_portion>	
+	<info_portion id="bar_bar_kill_svoboda_leader_start"></info_portion>
+	<info_portion id="bar_bar_kill_svoboda_leader_done">
+		<disable>bar_bar_kill_svoboda_leader_start</disable>
+	</info_portion>	
+	<info_portion id="bar_bar_kill_veterans_start"></info_portion>
+	<info_portion id="bar_bar_kill_veterans_done">
+		<disable>bar_bar_kill_veterans_start</disable>
+	</info_portion>	
+	<info_portion id="bar_bar_yantar_off_start"></info_portion>
+	<info_portion id="bar_bar_yantar_off_done">
+		<disable>bar_bar_yantar_off_start</disable>
+	</info_portion>	
 
 
 
