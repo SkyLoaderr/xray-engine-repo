@@ -211,10 +211,10 @@ void CRender::LoadSectors(CStream* fs)
 	{
 		b_portal	P;
 		fs->Read(&P,sizeof(P));
-		Portals[i].Setup(P.vertices,P.vert_count,
+		Portals[i].Setup(P.vertices.begin(),P.vertices.size(),
 			getSector(P.sector_front),
 			getSector(P.sector_back));
-		for (DWORD j=2; j<P.vert_count; j++)
+		for (DWORD j=2; j<P.vertices.size(); j++)
 			CL.add_face_packed(
 				P.vertices[0],P.vertices[j-1],P.vertices[j],
 				RAPID::edge_open,RAPID::edge_open,RAPID::edge_open,
