@@ -274,6 +274,7 @@ function action_help:execute ()
           self.dialog_first = true
           self.see_time = device ():time_global ()
           self.object:enable_talk ()
+          self.a.npc:run_talk_dialog (self.object)
           printf ("WAIT FOR DIALOG !!!")
        end
        self.object:set_movement_type (move.stand)
