@@ -17,6 +17,7 @@
 #include "explode_effector.h" 
 #include "actor.h"
 #include "actoreffector.h"
+#include "level_bullet_manager.h"
 
 #define EFFECTOR_RADIUS 30.f
 
@@ -164,7 +165,7 @@ void CExplosive::Explode()
 		m_vCurrentShootDir = frag_dir;
 		m_vCurrentShootPos = Position();
 		
-		Collide::ray_defs RD(Position(), frag_dir, m_fFragsRadius, 0,Collide::rqtBoth);
+/*		Collide::ray_defs RD(Position(), frag_dir, m_fFragsRadius, 0,Collide::rqtBoth);
 		Level().ObjectSpace.RayQuery(RD, firetrace_callback, dynamic_cast<CShootingObject*>(this));
 
 		//сделать так чтоб трассы разлетались только на фиксированное расстояние
@@ -178,6 +179,23 @@ void CExplosive::Explode()
 		Level().Tracers.Add	(m_vCurrentShootPos,m_vEndPoint,tracerHeadSpeed,
 							 tracerTrailCoeff,tracerStartLength,tracerWidth);
 */
+		CCartridge cartridge;
+		cartridge.m_kDist = 1.f;
+		cartridge.m_kHit = 1.f;
+		cartridge.m_kImpulse = 1.f;
+		cartridge.m_kPierce = 1.f;
+		cartridge.fWallmarkSize = m_fCurrentWallmarkSize;
+
+		SBullet* bullet =  xr_new<SBullet>();
+		bullet->Init(m_vCurrentShootPos, m_vCurrentShootDir,
+			tracerHeadSpeed,
+			m_fCurrentHitPower,
+			m_fCurrentHitImpulse,
+			(u16)m_iCurrentParentID,
+			m_fCurrentHitType,
+			m_fCurrentFireDist,
+			cartridge);
+		Level().BulletManager().AddBullet(bullet);
 	}	
 
 	if (Remote()) return;
