@@ -297,7 +297,7 @@ void CAI_Rat::UnderFire()
 	if ((!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8)) || m_bNoWay)
 		m_fSpeed = EPS_S;
 	else 
-		m_fSafeSpeed = m_fSpeed = m_fMaxSpeed;
+		m_fSafeSpeed = m_fSpeed = m_fAttackSpeed;
 
 	//if (m_fSpeed > EPS_L)
 		vfComputeNewPosition();
@@ -427,7 +427,7 @@ void CAI_Rat::AttackRun()
 	
 	vfSetFire(false,Group);
 
-	vfSetMovementType(m_cBodyState,m_fMaxSpeed);
+	vfSetMovementType(m_cBodyState,m_fAttackSpeed);
 	
 	if ((!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8)) || m_bNoWay)
 		m_fSpeed = EPS_S;
@@ -481,7 +481,7 @@ void CAI_Rat::Retreat()
 		if (m_fSpeed < EPS_L)
 			m_fSafeSpeed = m_fSpeed = m_fMinSpeed;
 		else
-			m_fSafeSpeed = m_fSpeed = m_fMaxSpeed;
+			m_fSafeSpeed = m_fSpeed = m_fAttackSpeed;
 		vfUpdateTime(m_fTimeUpdateDelta);
 		vfComputeNewPosition();
 		SetDirectionLook();

@@ -58,9 +58,14 @@ void CAI_Rat::feel_sound_new(CObject* who, int eType, Fvector& Position, float p
 	if (g_Health() <= 0)
 		return;
 	
-	power *= ffGetStartVolume(ESoundTypes(eType));
-	if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING)
-		power = 1.f;//expf(.1f*log(power));
+	if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING) {
+		Msg("%.2f",power);
+		power *= ffGetStartVolume(ESoundTypes(eType));
+		Msg("%.2f",power);
+	}
+	power = 0;
+	//if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING)
+	//	power = 1.f;//expf(.1f*log(power));
 
 	if (power >= 0.1) {
 		if ((this != who) && ((m_tLastSound.dwTime <= m_dwLastUpdateTime) || (m_tLastSound.fPower <= power))) {
