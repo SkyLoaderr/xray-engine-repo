@@ -57,7 +57,9 @@ void __stdcall  CCar::cb_Steer(CBoneInstance* B)
 {
 	CCar*	C			= dynamic_cast<CCar*>	(static_cast<CObject*>(B->Callback_Param));
 	Fmatrix m;
-	m.rotateZ(C->m_steering_wheels.begin()->GetSteerAngle());
+
+	C->m_steer_angle=C->m_steering_wheels.begin()->GetSteerAngle()*0.1f+C->m_steer_angle*0.9f;
+	m.rotateZ(C->m_steer_angle);
 
 	B->mTransform.mulB	(m);
 }
@@ -211,7 +213,7 @@ void CCar::detach_Actor()
 	m_owner->setVisible(1);
 	m_owner=NULL;
 	NeutralDrive();
-	Break();
+	///Break();
 }
 
 bool CCar::attach_Actor(CActor* actor)
@@ -313,8 +315,8 @@ void CCar::ParseDefinitions()
 	m_power_on_min_rpm  =		ini->r_float("car_definition","engine_power");
 	m_power_on_min_rpm			*=		(0.8f*1000.f)/10.f;///10 -temp
 
-	m_power_on_max_rpm  =		ini->r_float("car_definition","engine_power");
-	m_power_on_max_rpm			*=		(0.8f*1000.f);
+	//m_power_on_max_rpm  =		ini->r_float("car_definition","engine_power");
+	//m_power_on_max_rpm			*=		(0.8f*1000.f);
 
 	m_max_power  =				ini->r_float("car_definition","engine_power");
 	m_max_power			*=		(0.8f*1000.f);

@@ -58,15 +58,17 @@ void CActor::use_Vehicle()
 {
 	int element=-1;
 	CCar* vehicle=pick_VehicleObject(element);
+	Fvector center;
+	Center(center);
 	if(m_vehicle){
-		if(!vehicle&& m_vehicle->Use(element,Device.vCameraPosition, Device.vCameraDirection)) detach_Vehicle();
+		if(!vehicle&& m_vehicle->Use(element,Device.vCameraPosition, Device.vCameraDirection,center)) detach_Vehicle();
 		else
 		{
 		 if(m_vehicle==vehicle)
-			 if(m_vehicle->Use(element,Device.vCameraPosition, Device.vCameraDirection))detach_Vehicle();
+			 if(m_vehicle->Use(element,Device.vCameraPosition, Device.vCameraDirection,center))detach_Vehicle();
 		}
 	}else{
-		if(vehicle && vehicle->Use(element,Device.vCameraPosition, Device.vCameraDirection))
+		if(vehicle && vehicle->Use(element,Device.vCameraPosition, Device.vCameraDirection,center))
 		{
 			if (pCamBobbing){Level().Cameras.RemoveEffector(cefBobbing); pCamBobbing=0;}
 

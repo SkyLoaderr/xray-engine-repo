@@ -1700,3 +1700,8 @@ void CPHElement::get_Extensions(const Fvector& axis,float center_prg,float& lo_e
 	
 
 }
+
+const Fvector& CPHElement::mass_Center()
+{
+	return *((const Fvector*)dBodyGetPosition(m_body));
+}

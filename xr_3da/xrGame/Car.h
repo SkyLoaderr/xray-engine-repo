@@ -185,7 +185,7 @@ public:
 private:
 	typedef CEntity			inherited;
 private:
-
+	float					m_steer_angle;
 	bool					m_repairing;
 	CCameraBase*			camera[3];
 	CCameraBase*			active_camera;
@@ -211,7 +211,7 @@ private:
 
 	float					m_power;
 	float					m_power_on_min_rpm;
-	float					m_power_on_max_rpm;
+	//float					m_power_on_max_rpm;
 	float					m_max_power;//best rpm
 
 	/////////////////////porabola
