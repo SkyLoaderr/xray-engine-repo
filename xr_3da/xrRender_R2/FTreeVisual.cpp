@@ -59,7 +59,6 @@ void FTreeVisual::Load		(const char* N, IReader *data, u32 dwFlags)
 		data->r			(&xform,	sizeof(xform));
 		data->r			(&c_scale,	sizeof(c_scale));
 		data->r			(&c_bias,	sizeof(c_bias));
-		Msg				("scale: %f,%f, bias: %f,%f",c_scale.hemi,c_scale.sun,c_bias.hemi,c_bias.sun);
 	}
 
 	// Geom
