@@ -9,7 +9,7 @@
 	</background>
 	
 	<compass x="150" y="150" width="32" height="32">
-		<texture >ui\hud_map_arrow</texture>
+		<texture >ui\ui_hud_map_arrow</texture>
 	</compass>
 	
 	<center width="3" height="3" alignment="c"> 

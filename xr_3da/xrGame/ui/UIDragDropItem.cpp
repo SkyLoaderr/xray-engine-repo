@@ -34,7 +34,7 @@ CUIDragDropItem:: CUIDragDropItem()
 	m_iGridRow = 0;
 
 	m_pData = NULL;
-	m_pCustomUpdateProc = NULL;
+//	m_pCustomUpdateProc = NULL;
 	m_pCustomDrawProc = NULL;
 
 	m_bClipper = false;
@@ -60,7 +60,7 @@ void CUIDragDropItem::Init(LPCSTR tex_name, int x, int y, int width, int height)
 	m_pMouseCapturer = NULL;
 
 	m_pData = NULL;
-	m_pCustomUpdateProc = NULL;
+//	m_pCustomUpdateProc = NULL;
 	m_pCustomDrawProc = NULL;
 
 	m_iOldMouseX = x;
@@ -214,15 +214,19 @@ void CUIDragDropItem::Draw()
 	m_UIStaticItem.SetPos(rect.left , rect.top);
 
 	if (m_bInFloat) UI()->PushScissor(UI()->ScreenRect(),true);
+
 	m_UIStaticItem.Render();
+	//
+	if(m_pCustomDrawProc) (*m_pCustomDrawProc)(this);
+
 	if (m_bInFloat) UI()->PopScissor();
 }
 
 void CUIDragDropItem::Update()
 {
 	inherited::Update();
-	//вызвать дополнительную функцию обновления
-	if(m_pCustomUpdateProc) (*m_pCustomUpdateProc)(this);
+//вызвать дополнительную функцию обновления
+//	if(m_pCustomUpdateProc) (*m_pCustomUpdateProc)(this);
 }
 //////////////////////////////////////////////////////////////////////////
 

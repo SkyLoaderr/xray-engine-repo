@@ -61,7 +61,7 @@ void InventoryUtilities::DestroyShaders()
 //для надписей на иконках с оружием
 //////////////////////////////////////////////////////////////////////////
 
-void InventoryUtilities::AmmoUpdateProc(CUIDragDropItem* pItem)
+void InventoryUtilities::AmmoDrawProc(CUIDragDropItem* pItem)
 {
 	CInventoryItem* pIItem = (CInventoryItem*)(pItem->GetData());
 	CWeaponAmmo* pAmmoItem = smart_cast<CWeaponAmmo*>(pIItem);
@@ -83,7 +83,7 @@ void InventoryUtilities::AmmoUpdateProc(CUIDragDropItem* pItem)
 //для надписей на иконках с едой
 //////////////////////////////////////////////////////////////////////////
 
-void InventoryUtilities::FoodUpdateProc(CUIDragDropItem* pItem)
+void InventoryUtilities::FoodDrawProc(CUIDragDropItem* pItem)
 {
 	//CEatableItem* pEatableItem = (CEatableItem*)(pItem->GetData());
 	CInventoryItem* pIItem = (CInventoryItem*)(pItem->GetData()); R_ASSERT(pIItem);

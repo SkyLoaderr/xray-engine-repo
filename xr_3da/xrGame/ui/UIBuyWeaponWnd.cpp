@@ -335,7 +335,7 @@ void CUIBuyWeaponWnd::InitWeaponBoxes()
 		UIDragDropItem.SetOwner(pBoxesList);
 		// «адаем специальную дополнительную функцию отрисовки, дл€
 		// отображени€ номера оружи€ в углу его иконки
-		UIDragDropItem.SetCustomUpdate(static_cast<CUSTOM_UPDATE_PROC>(WpnDrawIndex));
+		UIDragDropItem.SetCustomDraw(static_cast<CUSTOM_DRAW_PROC>(WpnDrawIndex));
 	}
 }
 
@@ -1387,7 +1387,7 @@ void CUIBuyWeaponWnd::FillWpnSubBag(const u32 slotNum)
 		UIDragDropItem.SetOwner(m_WeaponSubBags[slotNum]);
 		// «адаем специальную дополнительную функцию отрисовки, дл€
 		// отображени€ номера оружи€ в углу его иконки
-		UIDragDropItem.SetCustomUpdate(static_cast<CUSTOM_UPDATE_PROC>(WpnDrawIndex));
+		UIDragDropItem.SetCustomDraw(static_cast<CUSTOM_DRAW_PROC>(WpnDrawIndex));
 
 		UIDragDropItem.SetSectionName(wpnSectStorage[slotNum][j].c_str());
 	}

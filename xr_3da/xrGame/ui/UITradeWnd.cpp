@@ -272,7 +272,7 @@ void CUITradeWnd::Update()
 		{
 			m_vDragDropItems[i]->GetParent()->DetachChild(m_vDragDropItems[i]);
 			m_vDragDropItems[i]->SetData(NULL);
-			m_vDragDropItems[i]->SetCustomUpdate(NULL);
+			m_vDragDropItems[i]->SetCustomDraw(NULL);
 
 			UpdatePrices();
 
@@ -580,10 +580,10 @@ void CUITradeWnd::UpdateLists()
 			UIDragDropItem.SetData((*it));
 
 			CWeaponAmmo* pWeaponAmmo  = smart_cast<CWeaponAmmo*>((*it));
-			if(pWeaponAmmo)	UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
+			if(pWeaponAmmo)	UIDragDropItem.SetCustomDraw(AmmoDrawProc);
 
 			CEatableItem* pEatableItem = smart_cast<CEatableItem*>((*it));
-			if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
+			if(pEatableItem) UIDragDropItem.SetCustomDraw(FoodDrawProc);
 
 			//установить коэффициент масштабирования
 //.			UIDragDropItem.SetTextureScaleXY(TRADE_ICONS_SCALE, TRADE_ICONS_SCALE);
@@ -625,10 +625,10 @@ void CUITradeWnd::UpdateLists()
 			UIDragDropItem.SetData((*it));
 
 			CWeaponAmmo* pWeaponAmmo  = smart_cast<CWeaponAmmo*>((*it));
-			if(pWeaponAmmo)	UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
+			if(pWeaponAmmo)	UIDragDropItem.SetCustomDraw(AmmoDrawProc);
 
 			CEatableItem* pEatableItem = smart_cast<CEatableItem*>((*it));
-			if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
+			if(pEatableItem) UIDragDropItem.SetCustomDraw(FoodDrawProc);
 
 			//установить коэффициент масштабирования
 //.			UIDragDropItem.SetTextureScaleXY(TRADE_ICONS_SCALE,TRADE_ICONS_SCALE);

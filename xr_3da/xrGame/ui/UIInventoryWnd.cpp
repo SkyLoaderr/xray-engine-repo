@@ -260,7 +260,7 @@ void CUIInventoryWnd::Update()
 			{
 				m_vDragDropItems[i]->GetParent()->DetachChild(m_vDragDropItems[i]);
 				m_vDragDropItems[i]->SetData(NULL);
-				m_vDragDropItems[i]->SetCustomUpdate(NULL);
+				m_vDragDropItems[i]->SetCustomDraw(NULL);
 				
 				if(m_pCurrentItem == pItem)
 				{	

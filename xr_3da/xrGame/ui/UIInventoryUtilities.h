@@ -43,9 +43,9 @@ bool GreaterRoomInRuck(PIItem item1, PIItem item2);
 bool FreeRoom(TIItemList item_list, int width, int height);
 
 //для надписей на иконках с оружием
-void AmmoUpdateProc(CUIDragDropItem* pItem);
+void AmmoDrawProc(CUIDragDropItem* pItem);
 //для надписей на иконках с едой
-void FoodUpdateProc(CUIDragDropItem* pItem);
+void FoodDrawProc(CUIDragDropItem* pItem);
 
 
 //получить shader на иконки инвенторя

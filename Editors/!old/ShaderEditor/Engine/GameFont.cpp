@@ -2,6 +2,7 @@
 #pragma hdrstop
 
 #include "GameFont.h"
+extern ENGINE_API BOOL g_bRendering; 
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -76,6 +77,7 @@ CGameFont::~CGameFont()
 
 void CGameFont::OnRender()
 {
+	VERIFY(g_bRendering);
 	if (pShader)		RCache.set_Shader	(pShader);
 
 	if (!(uFlags&fsValid))

@@ -67,8 +67,8 @@ public:
 	virtual void* GetData() {return m_pData;}
 	virtual void SetData(void* pData) {m_pData = pData;}
 
-	void SetCustomUpdate(CUSTOM_UPDATE_PROC pCustomUpdateProc) 
-								{m_pCustomUpdateProc = pCustomUpdateProc;}
+//	void SetCustomUpdate(CUSTOM_UPDATE_PROC pCustomUpdateProc) 
+//								{m_pCustomUpdateProc = pCustomUpdateProc;}
 	void SetCustomDraw(CUSTOM_DRAW_PROC pCustomDrawProc) 
 								{m_pCustomDrawProc = pCustomDrawProc;}
 
@@ -120,7 +120,7 @@ protected:
 	//присоеденены к элементу
 	void* m_pData; 
 
-	CUSTOM_UPDATE_PROC m_pCustomUpdateProc;
+//	CUSTOM_UPDATE_PROC m_pCustomUpdateProc;
 	CUSTOM_DRAW_PROC m_pCustomDrawProc;
 
 	// ѕризнак перемещени€ вещи в другой слот, при следующей посылке ITEM_DROP сообщени€.

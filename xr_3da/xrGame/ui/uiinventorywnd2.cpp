@@ -499,13 +499,13 @@ void CUIInventoryWnd::InitInventory()
 			// Применимио только к режиму мультиплеера
 			if(pWeaponAmmo)
 			{
-				UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
+				UIDragDropItem.SetCustomDraw(AmmoDrawProc);
 //				if (GameID() != GAME_SINGLE && pWeaponAmmo->m_bCanBeUnlimited)	
 //					continue;
 			}
 
 			CEatableItem* pEatableItem = smart_cast<CEatableItem*>((*it));
-			if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
+			if(pEatableItem) UIDragDropItem.SetCustomDraw(FoodDrawProc);
 
 			UIBeltList.AttachChild(&UIDragDropItem);
 			UIDragDropItem.Rescale(UIBeltList.GetItemsScaleX(), UIBeltList.GetItemsScaleY());
@@ -551,13 +551,13 @@ void CUIInventoryWnd::InitInventory()
 			// Применимио только к режиму мультиплеера
 			if(pWeaponAmmo)
 			{
-				UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
+				UIDragDropItem.SetCustomDraw(AmmoDrawProc);
 //				if (GameID() != GAME_SINGLE && pWeaponAmmo->m_bCanBeUnlimited)
 //					continue;
 			}
 
 			CEatableItem* pEatableItem = smart_cast<CEatableItem*>((*it));
-			if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
+			if(pEatableItem) UIDragDropItem.SetCustomDraw(FoodDrawProc);
 
 			UIBagList.AttachChild(&UIDragDropItem);
 			UIDragDropItem.Rescale(UIBagList.GetItemsScaleX(), UIBagList.GetItemsScaleY());
