@@ -128,7 +128,7 @@ void CAI_Rat::SelectEnemy(SEnemySelected& S)
 	}
 }
 
-bool CAI_Rat::bfGetActionSuccessProbability(EntityVec &Members, objVisible &VisibleEnemies, CBaseFunction &tBaseFunction)
+bool CAI_Rat::bfGetActionSuccessProbability(EntityVec &Members, objVisible &VisibleEnemies, CBaseFunction &fSuccessProbabilityFunction)
 {
 	int i = 0, j = 0, I = (int)Members.size(), J = (int)VisibleEnemies.size();
 	while ((i < I) && (j < J)) {
@@ -142,7 +142,7 @@ bool CAI_Rat::bfGetActionSuccessProbability(EntityVec &Members, objVisible &Visi
 			j++;
 			continue;
 		}
-		float fProbability = tBaseFunction.ffGetValue()/100.f, fCurrentProbability;
+		float fProbability = fSuccessProbabilityFunction.ffGetValue()/100.f, fCurrentProbability;
 		if (fProbability > MIN_PROBABILITY) {
 			fCurrentProbability = fProbability;
 			for (j++; (i < I) && (j < J); j++) {
@@ -151,7 +151,7 @@ bool CAI_Rat::bfGetActionSuccessProbability(EntityVec &Members, objVisible &Visi
 					j++;
 					continue;
 				}
-				fProbability = tBaseFunction.ffGetValue()/100.f;
+				fProbability = fSuccessProbabilityFunction.ffGetValue()/100.f;
 				if (fCurrentProbability*fProbability < MIN_PROBABILITY) {
 					i++;
 					break;
@@ -168,7 +168,7 @@ bool CAI_Rat::bfGetActionSuccessProbability(EntityVec &Members, objVisible &Visi
 					i++;
 					continue;
 				}
-				fProbability = 1.0f - tBaseFunction.ffGetValue()/100.f;
+				fProbability = 1.0f - fSuccessProbabilityFunction.ffGetValue()/100.f;
 				if (fCurrentProbability*fProbability < MIN_PROBABILITY) {
 					j++;
 					break;
@@ -197,7 +197,11 @@ DWORD CAI_Rat::dwfChooseAction(DWORD a1, DWORD a2, DWORD a3)
 	objVisible &VisibleEnemies = Level().Teams[g_Team()].KnownEnemys;
 	
 	if (!VisibleEnemies.size())
-		return(a3);
+		switch (Group.m_dwLastAction) {
+			case 0: return(a1);
+			case 1: return(a2);
+			default: return(a3);
+		}
 
 	EntityVec	Members;
 	if (this != Level().Teams[g_Team()].Squads[g_Squad()].Leader)

@@ -105,7 +105,7 @@ public:
 		m_fMinResultValue = 1.0;
 		m_fMaxResultValue = 20.0;
 		strcat(m_caName,"Distance");
-		OUT_MESSAGE("Evaluation function %s is successfully initalized",m_caName);
+		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	}
 	virtual float ffGetValue();
 	
@@ -133,7 +133,7 @@ public:
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 100.0;
 		strcat(m_caName,"PersonalHealth");
-		OUT_MESSAGE("Evaluation function %s is successfully initalized",m_caName);
+		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	}
 	virtual float ffGetValue();
 };
@@ -145,7 +145,7 @@ public:
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 100.0;
 		strcat(m_caName,"PersonalMorale");
-		OUT_MESSAGE("Evaluation function %s is successfully initalized",m_caName);
+		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	}
 	virtual float ffGetValue();
 };
@@ -157,7 +157,7 @@ public:
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 22.0;
 		strcat(m_caName,"PersonalCreatureType");
-		OUT_MESSAGE("Evaluation function %s is successfully initalized",m_caName);
+		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	}
 	virtual float ffGetValue();
 };
@@ -171,7 +171,7 @@ public:
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 12.0;
 		strcat(m_caName,"PersonalWeaponType");
-		OUT_MESSAGE("Evaluation function %s is successfully initalized",m_caName);
+		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	}
 	virtual float ffGetValue();
 };
@@ -183,7 +183,7 @@ public:
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 100.0;
 		strcat(m_caName,"EnemyHealth");
-		OUT_MESSAGE("Evaluation function %s is successfully initalized",m_caName);
+		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	}
 	virtual float ffGetValue();
 };
@@ -195,7 +195,7 @@ public:
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 100.0;
 		strcat(m_caName,"EnemyMorale");
-		OUT_MESSAGE("Evaluation function %s is successfully initalized",m_caName);
+		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	}
 	virtual float ffGetValue();
 };
@@ -207,7 +207,7 @@ public:
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 22.0;
 		strcat(m_caName,"EnemyCreatureType");
-		OUT_MESSAGE("Evaluation function %s is successfully initalized",m_caName);
+		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	}
 	virtual float ffGetValue();
 };
@@ -219,7 +219,7 @@ public:
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 12.0;
 		strcat(m_caName,"EnemyWeaponType");
-		OUT_MESSAGE("Evaluation function %s is successfully initalized",m_caName);
+		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	}
 	virtual float ffGetValue();
 };

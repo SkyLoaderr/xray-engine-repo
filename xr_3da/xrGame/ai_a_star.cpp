@@ -132,7 +132,7 @@ void CAI_Space::vfLoadSearch()
 	tpaIndexes	= (TIndexNode *)xr_malloc(S2);
 	ZeroMemory(tpaIndexes,S2);
 //	DWORD M2	= Engine.mem_Usage();
-	Msg			("* AI path-finding-structures: %d K",(S1 + S2)/(1024));
+	Msg("* AI path-finding structures: %d K",(S1 + S2)/(1024));
 }
 
 void CAI_Space::vfUnloadSearch()

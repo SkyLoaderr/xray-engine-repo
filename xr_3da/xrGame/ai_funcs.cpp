@@ -9,7 +9,8 @@
 #include "stdafx.h"
 #include "ai_funcs.h"
 
-#define AI_PATH		"ai\\"
+#define WRITE_TO_LOG
+#define AI_PATH			"ai\\"
 
 CPatternFunction::CPatternFunction()
 {
@@ -113,8 +114,9 @@ void CPatternFunction::vfLoadEF(const char *caFileName)
     
 	Level().m_tpAI_DDD->fpaBaseFunctions[m_dwFunctionType] = this;
 	
-	strcat(m_caName,caFileName);
-	Msg("Evaluation function (%s) is successfully loaded",caPath);
+	_splitpath(caFileName,0,0,m_caName,0);
+
+	Msg("* Evaluation function \"%s\" is successfully loaded",m_caName);
 }
 
 float CPatternFunction::ffEvaluate()
@@ -127,13 +129,24 @@ float CPatternFunction::ffEvaluate()
 
 float CPatternFunction::ffGetValue()
 {
-	if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == Level().m_tpAI_DDD->m_tpCurrentMember))
-		return(m_fLastValue);
+	//if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == Level().m_tpAI_DDD->m_tpCurrentMember))
+	//	return(m_fLastValue);
 	m_dwLastUpdate = Level().timeServer();
 	m_tpLastMonster = Level().m_tpAI_DDD->m_tpCurrentMember;
 	for (DWORD i=0; i<m_dwVariableCount; i++)
 		m_dwaVariableValues[i] = Level().m_tpAI_DDD->fpaBaseFunctions[m_dwaVariableTypes[i]]->dwfGetDiscreteValue(m_dwaAtomicFeatureRange[i]);
+#ifndef WRITE_TO_LOG
 	return(m_fLastValue = ffEvaluate());
+#else
+	m_fLastValue = ffEvaluate();
+	char caString[256];
+	int j = sprintf(caString,"%32s (",m_caName);
+	for ( i=0; i<m_dwVariableCount; i++)
+		j += sprintf(caString + j," %3d",m_dwaVariableValues[i] + 1);
+	sprintf(caString + j,") = %7.2f",m_fLastValue);
+	Msg("%s",caString);
+	return(m_fLastValue);
+#endif
 }
 
 // primary functions

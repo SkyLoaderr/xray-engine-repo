@@ -27,10 +27,11 @@
 	#ifdef WRITE_LOG
 		#define WRITE_TO_LOG(S) {\
 			Msg("%s,%s,%d,p[%.2f,%.2f,%.2f],%.2f,h[%.2f,%.2f],t[%.2f,%.2f]",cName(),S,Level().timeServer(),vPosition.x,vPosition.y,vPosition.z,m_fCurSpeed,r_current.yaw,r_target.yaw,r_torso_current.yaw,r_torso_target.yaw);\
-			Msg("%d",Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()].m_tpaSuspiciousNodes.size());\
 			vfUpdateDynamicObjects();\
 			bStopThinking = true;\
 		}
+		//	Msg("%d",Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()].m_tpaSuspiciousNodes.size());\
+
 	#else
 		#define WRITE_TO_LOG(S) {\
 			vfUpdateDynamicObjects();\

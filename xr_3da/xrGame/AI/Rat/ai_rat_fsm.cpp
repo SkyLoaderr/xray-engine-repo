@@ -115,8 +115,9 @@ void CAI_Rat::AttackRun()
 	SelectEnemy(m_Enemy);
 
 	ERatStates eState = ERatStates(dwfChooseAction(eCurrentState,eCurrentState,aiRatRetreat));
-	if (eState != eCurrentState)
+	if (eState != eCurrentState) {
 		GO_TO_NEW_STATE_THIS_UPDATE(eState);
+	}
 
 	if (m_Enemy.Enemy)
 		m_dwLostEnemyTime = Level().timeServer();
