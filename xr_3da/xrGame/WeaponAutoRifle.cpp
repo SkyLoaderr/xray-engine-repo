@@ -118,10 +118,12 @@ void CWeaponAutoRifle::switch2_Reload(BOOL bHUDView)
 void CWeaponAutoRifle::switch2_Hiding(BOOL bHUDView)
 {
 	switch2_Idle				(bHUDView);
+	pSounds->Play3DAtPos		(sndHide,vLastFP);
 	m_pHUD->animPlay			(mhud_hide,TRUE,this);
 }
 void CWeaponAutoRifle::switch2_Showing(BOOL bHUDView)
 {
+	pSounds->Play3DAtPos		(sndShow,vLastFP);
 	m_pHUD->animPlay			(mhud_show,FALSE,this);
 }
 void CWeaponAutoRifle::OnShot		(BOOL bHUDView)
@@ -190,6 +192,8 @@ void CWeaponAutoRifle::Update		(float dt, BOOL bHUDView)
 	// sound fire loop
 	inherited::Update			(dt,bHUDView);
 	UpdateFP					(bHUDView);
+	if (sndShow.feedback)		sndShow.feedback->SetPosition	(vLastFP);
+	if (sndHide.feedback)		sndHide.feedback->SetPosition	(vLastFP);
 	if (sndFireLoop.feedback)	sndFireLoop.feedback->SetPosition	(vLastFP);
 	if (sndReload.feedback)		sndReload.feedback->SetPosition		(vLastFP);
 	if (sndEmptyClick.feedback)	sndEmptyClick.feedback->SetPosition	(vLastFP);
