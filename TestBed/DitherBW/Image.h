@@ -14,12 +14,13 @@ public:
 	BOOL	bAlpha;
 	DWORD*	pData;
 
-	CImage	()		{ ZeroMemory(this,sizeof(*this)); }
-	~CImage	()		{ _FREE(pData); }
+	CImage	()			{ ZeroMemory(this,sizeof(*this)); }
+	~CImage	()			{ _FREE(pData); }
 
-	void	LoadT	(char *name);
-	void	LoadTGA	(char *name);
-	void	Create	(DWORD w, DWORD h);
+	void	Create		(DWORD w, DWORD h);
+	void	LoadT		(LPCSTR name);
+	void	LoadTGA		(LPCSTR name);
+	void	SaveTGA		(LPCSTR name, BOOL b24=FALSE);
 
 	void	Vflip		(void);
 	void	Hflip		(void);

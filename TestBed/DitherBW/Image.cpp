@@ -4,13 +4,28 @@
 
 #include "stdafx.h"
 #include "Image.h"
+#include "tga.h"
 
 void CImage::Create(DWORD w, DWORD h)
 {
 	_FREE		(pData);
 	dwWidth		= w;
 	dwHeight	= h;
-	pData		= malloc(w*h*sizeof(DWORD));
+	pData		= LPDWORD(malloc(w*h*sizeof(DWORD)));
+}
+
+void CImage::SaveTGA(LPCSTR name, BOOL b24)
+{
+	// Save
+	TGAdesc		tga;
+	tga.data	= pData;
+	tga.format	= b24?IMG_24B:IMG_32B;
+	tga.height	= dwHeight;
+	tga.width	= dwWidth;
+	tga.scanlenght=dwWidth*4;
+
+	CFS_File	fs	(name);
+	tga.maketga	(fs);
 }
 
 void CImage::Vflip()
@@ -154,7 +169,7 @@ struct TGAHeader
 };
 #pragma pack(pop)
 
-void CImage::LoadTGA(char *name)
+void CImage::LoadTGA(LPCSTR name)
 {
 	CFileStream	TGA(name);
 	TGAHeader	hdr;

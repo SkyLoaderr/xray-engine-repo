@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "tga.h"
+#include "xrImage_Resampler.h"
 
 static int magic4x4[4][4] =  
 {
@@ -42,6 +43,7 @@ void main(int argc, char* argv[])
 	CImage			tex,scaled;
 	tex.LoadTGA		("x:\\dbg\\test.tga");
 	scaled.Create	(tex.dwWidth/2,tex.dwHeight/2);
+	imf_Process		(scaled.pData,scaled.dwWidth,scaled.dwHeight,tex.pData,tex.dwWidth,tex.dwHeight,imf_filter);
 	
 	int			magic[16][16];
 	bwdithermap	(2,magic);
