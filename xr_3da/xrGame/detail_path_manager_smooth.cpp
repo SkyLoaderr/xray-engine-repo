@@ -751,6 +751,10 @@ IC	CDetailPathManager::STravelPoint compute_better_key_point(
 		direction21				= direction20;
 		direction21.mul			(d*c);
 		direction21.add			(point1.position);
+//.		
+		if (!ai().level_graph().valid_vertex_id(direction21))
+			return				(point1);
+
 		vertex_id				= ai().level_graph().check_position_in_direction(point0.vertex_id,point0.position,direction21);
 		if (ai().level_graph().valid_vertex_id(vertex_id)) {
 			VERIFY				(ai().level_graph().inside(vertex_id,direction21));
