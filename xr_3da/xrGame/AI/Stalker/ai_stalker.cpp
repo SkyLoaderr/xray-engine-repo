@@ -66,6 +66,9 @@ void CAI_Stalker::Die				()
 	Fvector	dir;
 	AI_Path.Direction				(dir);
 	SelectAnimation					(clTransform.k,dir,AI_Path.fSpeed);
+	#ifndef NO_PHYSICS_IN_AI_MOVE
+	Movement.DestroyCharacter();
+	#endif
 	inherited::Die					();
 }
 
@@ -164,6 +167,12 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	vfAssignBones					(pSettings,cNameSect());
 
 	setEnabled						(true);
+
+	#ifndef NO_PHYSICS_IN_AI_MOVE
+	Movement.CreateCharacter();
+	#endif
+	Movement.SetPosition	(vPosition);
+	Movement.SetVelocity	(0,0,0);
 	return							(TRUE);
 }
 
@@ -791,6 +800,8 @@ void CAI_Stalker::Update	( u32 DT )
 		mRotate.set(m_pPhysicsShell->mXFORM);
 		mRotate.c.set(0,0,0);
 		vPosition.set(m_pPhysicsShell->mXFORM.c);
+		UpdateTransform();
+
 		if(skel_ddelay==0)
 		{
 		m_pPhysicsShell->set_JointResistance(5.f*hinge_force_factor1);
@@ -803,7 +814,7 @@ void CAI_Stalker::Update	( u32 DT )
 		UpdateTransform					();
 		vPosition.set(m_pPhysicsShell->mXFORM.c);
 		svTransform.set(m_pPhysicsShell->mXFORM);
-		
+		UpdateTransform();		
 	//	CKinematics* M		= PKinematics(pVisual);			VERIFY(M);
 	//	int id=M->LL_BoneID("bip01_pelvis");
 	//	CBoneInstance& instance=M->LL_GetInstance				(id);

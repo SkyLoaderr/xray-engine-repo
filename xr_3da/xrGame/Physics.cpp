@@ -1749,10 +1749,16 @@ void CPHElement::CallBack(CBoneInstance* B){
 		m_body_interpolation.SetBody(m_body);
 		return;
 	}
-
+	Fmatrix parent;
 	if(bActivating){
 
-	if(!m_parent_element)m_shell->Activate();
+		if(!m_parent_element)
+		{	
+		m_shell->Activate();
+		//parent.set(B->mTransform);
+		//parent.invert();
+		//m_inverse_local_transform.mulB(parent);
+		}
 	if(!m_shell->bActive) return;
 	RunSimulation();
 
@@ -1790,7 +1796,7 @@ void CPHElement::CallBack(CBoneInstance* B){
 	}
 
 
-	Fmatrix parent;
+	
 	//if(!dBodyIsEnabled(m_body)){}
 
 	if(m_parent_element){
@@ -1802,9 +1808,10 @@ void CPHElement::CallBack(CBoneInstance* B){
 	else{
 
 		InterpolateGlobalTransform(&m_shell->mXFORM);
-		parent.set(B->mTransform);
-		parent.invert();
-		m_shell->mXFORM.mulB(parent);
+		B->mTransform.identity();
+		//parent.set(B->mTransform);
+		//parent.invert();
+		//m_shell->mXFORM.mulB(parent);
 		
 	}
 }

@@ -614,18 +614,13 @@ void CCustomMonster::Death	()
 
 void CCustomMonster::Die	()
 {
-#ifndef NO_PHYSICS_IN_AI_MOVE
-	Movement.DestroyCharacter();
-#endif
+
 
 }
 BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 {
 	if (!inherited::net_Spawn(DC))	return FALSE;
 
-#ifndef NO_PHYSICS_IN_AI_MOVE
-	Movement.CreateCharacter();
-#endif
 
 	Movement.SetPosition	(vPosition);
 	Movement.SetVelocity	(0,0,0);

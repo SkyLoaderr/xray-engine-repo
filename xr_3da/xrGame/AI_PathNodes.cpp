@@ -4,7 +4,7 @@
 
 using namespace AI;
 
-#define NO_PHYSICS_IN_AI_MOVE
+
 //******* Distance 2 line segment
 IC float	ClosestPointOnSegment(Fvector& Dest, const Fvector& P, const Fvector& A, const Fvector& B)
 {
