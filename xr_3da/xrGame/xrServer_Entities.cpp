@@ -2,12 +2,33 @@
 #include "xrServer.h"
 #include "entity.h"
 
-class xrSE_Actor : public xrServerEntity
+class xrSE_Teamed : public xrServerEntity
 {
 public:
 	u8						s_team;
 	u8						s_squad;
 	u8						s_group;
+public:
+	virtual u8				g_team()			{ return s_team;	}
+	virtual u8				g_squad()			{ return s_squad;	}
+	virtual u8				g_group()			{ return s_group;	}
+	
+	virtual void			STATE_Read			(NET_Packet& P, u16 size)
+	{
+		P.r_u8				(s_team	);
+		P.r_u8				(s_squad);
+		P.r_u8				(s_group);
+	}
+	virtual void			STATE_Write			(NET_Packet& P)
+	{
+		P.w_u8				(s_team	);
+		P.w_u8				(s_squad);
+		P.w_u8				(s_group);
+	}
+};
+
+class xrSE_Actor : public xrSE_Teamed
+{
 public:	
 	u32						timestamp;
 	u8						flags;
@@ -22,10 +43,6 @@ public:
 
 	xrSE_Actor() {};
 
-	virtual u8				g_team()			{ return s_team;	}
-	virtual u8				g_squad()			{ return s_squad;	}
-	virtual u8				g_group()			{ return s_group;	}
-	
 	virtual void			UPDATE_Read			(NET_Packet& P)
 	{
 		P.r_u32				(timestamp	);
@@ -62,19 +79,6 @@ public:
 			P.w_dir			(f_dir);
 		}
 	};
-	virtual void			STATE_Read			(NET_Packet& P, u16 size)
-	{
-		P.r_u8				(s_team	);
-		P.r_u8				(s_squad);
-		P.r_u8				(s_group);
-	}
-	virtual void			STATE_Write			(NET_Packet& P)
-	{
-		P.w_u8				(s_team	);
-		P.w_u8				(s_squad);
-		P.w_u8				(s_group);
-	}
-	
 	virtual BOOL			RelevantTo			(xrServerEntity* E)
 	{
 		return TRUE;
@@ -85,10 +89,6 @@ public:
 class xrSE_Enemy : public xrServerEntity
 {
 public:
-	u8						s_team;
-	u8						s_squad;
-	u8						s_group;
-public:
 	u32						dwTimeStamp;			// server(game) timestamp
 	u8						flags;
 	float					o_model;				// model yaw
@@ -96,10 +96,6 @@ public:
 
 	xrSE_Enemy()			{};
 
-	virtual u8				g_team()			{ return s_team;	}
-	virtual u8				g_squad()			{ return s_squad;	}
-	virtual u8				g_group()			{ return s_group;	}
-	
 	virtual void			UPDATE_Read			(NET_Packet& P)
 	{
 		P.r_u32				(dwTimeStamp	);
@@ -112,23 +108,11 @@ public:
 	virtual void			UPDATE_Write		(NET_Packet& P)
 	{
 		P.w_u32				(dwTimeStamp	);
-		P.w_u8				(flags);
+		P.w_u8				(flags			);
 		P.w_vec3			(o_Position		);
 		P.w_angle8			(o_model		);
 		P.w_angle8			(o_torso.yaw	);
 		P.w_angle8			(o_torso.pitch	);
-	}
-	virtual void			STATE_Read			(NET_Packet& P, u16 size)
-	{
-		P.r_u8				(s_team	);
-		P.r_u8				(s_squad);
-		P.r_u8				(s_group);
-	}
-	virtual void			STATE_Write			(NET_Packet& P)
-	{
-		P.w_u8				(s_team	);
-		P.w_u8				(s_squad);
-		P.w_u8				(s_group);
 	}
 	virtual BOOL			RelevantTo			(xrServerEntity* E)
 	{
