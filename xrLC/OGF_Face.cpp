@@ -205,6 +205,8 @@ void OGF_Node::Save	(CFS_Base &fs)
 	fs.close_chunk		();
 }
 
+extern int	RegisterString	(string &T);
+
 void OGF_LOD::Save	(CFS_Base &fs)
 {
 	OGF_Base::Save		(fs);
