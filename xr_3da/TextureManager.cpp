@@ -77,6 +77,13 @@ void	CShaderManager::_DeleteTexture		(CTexture* &T)
 	T->dwReference	--;
 	T=0;
 }
+LPCSTR	CShaderManager::DBG_GetTextureName	(CTexture* T)
+{
+	R_ASSERT(T);
+	for (map<LPSTR,CTexture*,str_pred>::iterator I=textures.begin(); I!=textures.end(); I++)
+		if (I->second == T)	return I->first;
+	return 0;
+}
 //--------------------------------------------------------------------------------------------------------------
 CMatrix*	CShaderManager::_CreateMatrix	(LPCSTR Name) 
 {
@@ -104,6 +111,13 @@ void	CShaderManager::_DeleteMatrix		(CMatrix* &M)
 	R_ASSERT(M);
 	M->dwReference	--;
 	M=0;
+}
+LPCSTR	CShaderManager::DBG_GetMatrixName	(CMatrix* T)
+{
+	R_ASSERT(T);
+	for (map<LPSTR,CMatrix*,str_pred>::iterator I=matrices.begin(); I!=matrices.end(); I++)
+		if (I->second == T)	return I->first;
+	return 0;
 }
 //--------------------------------------------------------------------------------------------------------------
 CConstant*	CShaderManager::_CreateConstant	(LPCSTR Name) 
@@ -133,7 +147,13 @@ void	CShaderManager::_DeleteConstant		(CConstant* &C)
 	C->dwReference	--;
 	C=0;
 }
-
+LPCSTR	CShaderManager::DBG_GetConstantName	(CConstant* T)
+{
+	R_ASSERT(T);
+	for (map<LPSTR,CConstant*,str_pred>::iterator I=constants.begin(); I!=constants.end(); I++)
+		if (I->second == T)	return I->first;
+	return 0;
+}
 //--------------------------------------------------------------------------------------------------------------
 CBlender* CShaderManager::_GetBlender		(LPCSTR Name) 
 {

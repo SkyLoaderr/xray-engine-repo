@@ -58,7 +58,10 @@ public:
 	void							_ParseList			(sh_list& dest, LPCSTR names);
 	CBlender*						_GetBlender			(LPCSTR Name);
 	DWORD							_GetMemoryUsage		();
-
+	LPCSTR							DBG_GetTextureName	(CTexture*);
+	LPCSTR							DBG_GetMatrixName	(CMatrix*);
+	LPCSTR							DBG_GetConstantName	(CConstant*);
+	
 	// Low level resource creation
 	CTexture*						_CreateTexture		(LPCSTR Name);
 	void							_DeleteTexture		(CTexture* &T);
