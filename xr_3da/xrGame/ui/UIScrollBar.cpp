@@ -169,7 +169,7 @@ void CUIScrollBar::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 				if (GetMessageTarget())
 					GetMessageTarget()->SendMessage(this, SCROLLBAR_VSCROLL);
 			}
-			UpdateScrollBar		();
+//			UpdateScrollBar		();
 		}else if(msg == SCROLLBOX_STOP){
 			//вычислить новое положение прокрутки
 //			UpdateScrollBar();
@@ -218,7 +218,7 @@ bool CUIScrollBar::ScrollDec()
 
 bool CUIScrollBar::ScrollInc()
 {
-	if(m_iScrollPos+m_iPageSize<=m_iMaxPos){
+	if(m_iScrollPos<=m_iMaxPos){
 		m_iScrollPos	= m_iScrollPos+m_iStepSize;
 		clamp			(m_iScrollPos,m_iMinPos,m_iMaxPos);
 		UpdateScrollBar	();
