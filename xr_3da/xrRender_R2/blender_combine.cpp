@@ -34,6 +34,7 @@ void	CBlender_combine::Compile(CBlender_Compile& C)
 		C.r2_Sampler_rtf		("s_normal",		r2_RT_N_H);
 		C.r2_Sampler_rtf		("s_color",			r2_RT_D_G);
 		C.r2_Sampler_rtf		("s_accumulator",	r2_RT_accum);
+		C.r2_Sampler_rtf		("s_result",		r2_RT_generic);
 		C.r2_End				();
 		break;
 	case 3:
