@@ -184,7 +184,6 @@ BOOL	game_sv_ArtefactHunt::CheckUpgrades			(CSE_Abstract* pItem, u8 IItem)
 
 void	game_sv_ArtefactHunt::OnPlayerBuyFinished		(u32 id_who, NET_Packet& P)
 {
-
 	game_PlayerState*	ps	=	get_id	(id_who);
 	if (!ps) return;
 
