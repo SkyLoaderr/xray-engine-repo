@@ -212,6 +212,9 @@ protected:
 	//для определения DoubleClick
 	u32						m_dwLastClickTime;
 
+    // need for CLICK generation
+	bool					m_bMouseDown;
+
 	//флаг автоматического удаления во время вызова деструктора
 	bool					m_bAutoDelete;
 

@@ -11,6 +11,7 @@
 
 CUIWindow::CUIWindow()
 {
+	m_bMouseDown			= false;
 	m_alignment				= waNone;
 	m_pFont					= NULL;
 
@@ -161,10 +162,8 @@ void CUIWindow::OnMouse(int x, int y, EUIMessages mouse_action)
 			OnFocusLost();			
 	m_bCursorOverWindow = cursor_on_window;
 
-	// CLICK GENERATION
-
 	// DOUBLE CLICK GENERATION
-	if( (mouse_action == WINDOW_LBUTTON_DOWN) && m_bDoubleClickEnabled )
+	if( ( WINDOW_LBUTTON_DOWN == mouse_action ) && m_bDoubleClickEnabled )
 	{
 		u32 dwCurTime = Device.TimerAsync();
 		if(dwCurTime - m_dwLastClickTime < DOUBLE_CLICK_TIME)
@@ -234,6 +233,8 @@ void CUIWindow::OnMouse(int x, int y, EUIMessages mouse_action)
 						   cursor_pos.y -(*it)->GetWndRect().top, mouse_action);
 		}
 	}
+
+
 }
 
 void CUIWindow::OnMouseMove(){
