@@ -116,33 +116,11 @@ xr_motivator.storage[object:id()].escape_factory_bandit = {
     if( char_ini:section_exist ("escape_factory_bandit") ) then
         xr_motivator.storage[object:id()].escape_factory_bandit.enabled = true
     end
--- Настройка командира военных сталкеров в НИИ "Агропром"
-xr_motivator.storage[object:id()].agroprom_military_commander = {
-        enabled = false,
-        soldiers = {},
-        --way
-        --way_inside
-        --way_outside
-        --near_door_index
-}
-    if char_ini:section_exist("military_commander") then
-        -- пути
-        if char_ini:line_exist("military_commander", "way") then
-            local w = char_ini:r_string( "military_commander", "way" )
-
-            if level.patrol_path_exists( w ) then
-                xr_motivator.storage[object:id()].agroprom_military_commander.way_inside = patrol( w )
-                xr_motivator.storage[object:id()].agroprom_military_commander.enabled = true
-            end
-        end
-    end
 
     xr_robbers.add_to_binder  (object)
     xr_trivial.add_novice     (object)
     xr_trivial.add_novice2    (object)
     xr_trivial.add_novice3    (object)
     escape_factory_bandits.add_to_binder(object)
-    agroprom_military_commander.add_to_binder(object)
 
---    escape.raid_init (object)
 end
