@@ -99,7 +99,13 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, const char* path,
 	int y = xml_doc.ReadAttribInt(path, index, "y");
 	int width = xml_doc.ReadAttribInt(path, index, "width");
 	int height = xml_doc.ReadAttribInt(path, index, "height");
-	
+
+	ref_str scale_str = xml_doc.ReadAttrib(path, index, "scale");
+	float scale = 1.f;
+	if(*scale_str) scale = (float)atof(*scale_str);
+	pWnd->SetTextureScale(scale);
+
+
 	ref_str texture = xml_doc.Read(strconcat(buf,path,":texture"), index, NULL);
 
 	if(*texture)
@@ -111,7 +117,7 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, const char* path,
 		pWnd->Init(x, y, width, height);
 	}
 
-
+	
 	
 	ref_str text_path = strconcat(buf,path,":text");
 	int text_x = xml_doc.ReadAttribInt(*text_path, index, "x");
