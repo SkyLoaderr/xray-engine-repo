@@ -75,7 +75,7 @@ void CGamePersistent::RegisterModel(IRender_Visual* V)
 	}
 }
 
-void CGamePersistent::OnAppCycleStart()
+void CGamePersistent::OnAppStart()
 {
 	// load game materials
 	GMLib.Load							();
@@ -84,9 +84,9 @@ void CGamePersistent::OnAppCycleStart()
 }
 
 extern void clean_game_globals	();
-void CGamePersistent::OnAppCycleEnd	()
+void CGamePersistent::OnAppEnd	()
 {
-	__super::OnAppCycleEnd		();
+	__super::OnAppEnd			();
 
 	clean_game_globals			();
 

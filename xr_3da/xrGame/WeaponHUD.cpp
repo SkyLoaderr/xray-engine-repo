@@ -150,13 +150,13 @@ void CWeaponHUD::animPlay			(CMotionDef* M,	BOOL bMixIn, CInventoryItem* W)
 
 		CBoneData			&bone_data = smart_cast<CKinematics*>(Visual())->LL_GetData(smart_cast<CKinematics*>(Visual())->LL_GetBoneRoot());
 		CBoneDataAnimated	*bone_anim = smart_cast<CBoneDataAnimated *>(&bone_data);
-		CMotion& motion = bone_anim->Motions[M->motion];
-		u32 anim_time = iFloor(0.5f + 1000.f*motion.GetLength()/ M->Dequantize(M->speed));
-		m_pCallbackItem = W;
-		m_dwAnimEndTime = Device.dwTimeGlobal + anim_time;
+		CMotion& motion		= bone_anim->Motions->at(M->motion);
+		u32 anim_time		= iFloor(0.5f + 1000.f*motion.GetLength()/ M->Dequantize(M->speed));
+		m_pCallbackItem		= W;
+		m_dwAnimEndTime		= Device.dwTimeGlobal + anim_time;
 	}
 	else
-		m_pCallbackItem = NULL;
+		m_pCallbackItem		= NULL;
 }
 
 void CWeaponHUD::UpdateHud		()

@@ -190,6 +190,9 @@ void CModelPool::Destroy()
 		xr_delete(I->model);
 	}
 	Models.clear();
+
+	// cleanup motions container
+	g_pMotionsContainer->clean(false);
 }
 
 CModelPool::CModelPool()
@@ -197,11 +200,13 @@ CModelPool::CModelPool()
 	bLogging				= TRUE;
     bForceDiscard 			= FALSE;
     bAllowChildrenDuplicate	= TRUE; 
+	g_pMotionsContainer		= xr_new<motions_container>();
 }
 
 CModelPool::~CModelPool()
 {
-	Destroy		();
+	Destroy					();
+	xr_delete				(g_pMotionsContainer);
 }
 
 IRender_Visual* CModelPool::Instance_Find(LPCSTR N)
