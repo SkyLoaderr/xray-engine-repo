@@ -122,5 +122,8 @@ BOOL CLuaDoc::OnOpenDocument(LPCTSTR lpszPathName)
 }
 void CLuaDoc::SetTitle(LPCTSTR lpszTitle)
 {
-	CDocument::SetTitle(GetView()->GetProjectFile()->GetPathName());
+	if(GetView()->GetProjectFile())
+		CDocument::SetTitle(GetView()->GetProjectFile()->GetPathName());
+	else
+		CDocument::SetTitle(lpszTitle);
 }
