@@ -8,7 +8,7 @@
 #include "alife_space.h"
 
 typedef shared_str			PROFILE_ID;
-#define DEFAULT_PROFILE		"default"
+#define DEFAULT_PROFILE		"escape_trader"
 
 
 typedef shared_str				SPECIFIC_CHARACTER_ID;
