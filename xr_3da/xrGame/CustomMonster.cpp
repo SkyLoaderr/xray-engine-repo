@@ -50,6 +50,7 @@ CCustomMonster::CCustomMonster()
 	m_dwSoundUpdate		= 0;
 	m_fBananPadlaCorrection = 0;
 	eye_pp_stage		= 0;
+	m_tpPath			= 0;
 }
 
 CCustomMonster::~CCustomMonster	()

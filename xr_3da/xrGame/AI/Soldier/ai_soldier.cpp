@@ -63,7 +63,6 @@ CAI_Soldier::CAI_Soldier()
 	m_dwCurrentUpdate = Level().timeServer();
 	m_dwUpdateCount = 0;
 	m_iCurrentSuspiciousNodeIndex = -1;
-	m_tpPath = 0;
 	m_dwLoopCount = 0;
 	m_tpaNodeStack.clear();
 //	if (!bStarted) {
@@ -282,9 +281,47 @@ void CAI_Soldier::OnEvent(EVENT E, DWORD P1, DWORD P2)
 					}
 				}
 				
-				INIT_SQUAD_AND_LEADER
+				INIT_SQUAD_AND_LEADER;
+				CGroup &Group = Squad.Groups[g_Group()];
 				
-				m_tpPath = &(Level().m_PatrolPaths[buf2]);
+				m_tpPath = 0;
+				CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(Leader);
+				if (tpCustomMonster && (tpCustomMonster->m_tpPath))
+					m_tpPath = tpCustomMonster->m_tpPath;
+				else {
+					for (int i=0; i<(int)Group.Members.size(); i++) {
+						CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(Group.Members[i]);
+						if (tpCustomMonster && (tpCustomMonster->m_tpPath)) {
+							m_tpPath = tpCustomMonster->m_tpPath;
+							break;
+						}
+					}
+					if (!m_tpPath) {
+						for (int i=0, iCount = 1; buf2[i]; i++)
+							if (buf2[i] == ',')
+								iCount++;
+						if (iCount == 1)
+							m_tpPath = &(Level().m_PatrolPaths[buf2]);
+						else {
+							iCount = ::Random.randI(0,iCount);
+							for (int i=0, iCountX = 0; buf2[i]; i++) {
+								if (iCountX == iCount) {
+									int j=i;
+									for (; buf2[i]; i++)
+										if (buf2[i] == ',') {
+											buf2[i] = 0;
+											break;
+										}
+									buf += j;
+									m_tpPath = &(Level().m_PatrolPaths[buf2]);
+									break;
+								}
+								if (buf2[i] == ',')
+									iCountX++;
+							}
+						}
+					}
+				}
 			}
 		}
 }

@@ -476,6 +476,7 @@ void CAI_Space::vfCreate2DMap(char *caFile0, char *caFile1, char *caFile2)
 		memset(tppMap[i],MAP_UNAVAILABLE_CELL,sizeof(unsigned char)*M);
 	}
 
+	// generating mini-nodes
 	for (int i=1; i<(int)m_header.count; i++) {
 		NodeCompressed *tpNode = m_nodes_ptr[i];
 		Fvector tVector;
@@ -485,6 +486,7 @@ void CAI_Space::vfCreate2DMap(char *caFile0, char *caFile1, char *caFile2)
 				memset(tppMap[j] + sMaxX - tpNode->p1.x, MAP_AVAILABLE_CELL, tpNode->p1.x - tpNode->p0.x + 1);
 	}
 	
+	// saving mini-nodes
 	FILE *fOutput = fopen(caFile0,"wb");
 	for (int i=0; i<N; i++) {
 		fwrite(tppMap[i],sizeof(unsigned char),M,fOutput);
@@ -492,6 +494,7 @@ void CAI_Space::vfCreate2DMap(char *caFile0, char *caFile1, char *caFile2)
 	}
 	fclose(fOutput);
 	
+	// initializing node alphabet
 	char caABC[ABC_SIZE] = {'0','1','2','3','4','5','6','7','8','9',
 					'a','b','c','d','e','f','g','h','i','j',
 					'k','l','m','n','o','p','q','r','s','t',
@@ -500,6 +503,7 @@ void CAI_Space::vfCreate2DMap(char *caFile0, char *caFile1, char *caFile2)
 					'O','P','Q','R','S','T','U','V','W','X',
 					'Y','Z'};
 	
+	// converting mini-nodes
 	for (int i=0; i<N; i++)
 		for (int j=0; j<M; j++)
 			if (tppMap[i][j] == MAP_AVAILABLE_CELL)
@@ -507,6 +511,7 @@ void CAI_Space::vfCreate2DMap(char *caFile0, char *caFile1, char *caFile2)
 			else
 				tppMap[i][j] = 255;
 	
+	// building izo-mini-nodes
 	for (unsigned char ucStart = 0; ucStart < ABC_SIZE; ucStart++) {
 		bool bOk = true;
 		unsigned char ucValue = ucStart ? ucStart : (unsigned char)255;
@@ -541,6 +546,7 @@ void CAI_Space::vfCreate2DMap(char *caFile0, char *caFile1, char *caFile2)
 			break;
 	}
 	
+	// converting izo-mini-nodes
 	for (int i=0; i<N; i++)
 		for (int j=0; j<M; j++)
 			if (tppMap[i][j] < ABC_SIZE)
@@ -551,24 +557,16 @@ void CAI_Space::vfCreate2DMap(char *caFile0, char *caFile1, char *caFile2)
 				else
 					tppMap[i][j] = '0';
 
+	// saving izo-mini-nodes
 	fOutput = fopen(caFile1,"wb");
 	for (int i=0; i<N; i++) {
 		fwrite(tppMap[i],sizeof(unsigned char),M,fOutput);
 		fprintf(fOutput,"\n");
 	}
 	fclose(fOutput);
+	
 	// freeing resources
 	for (int i=0; i<N; i++)
 		_FREE(tppMap[i]);
 	_FREE(tppMap);
-//	char *caRow = (char *)xr_malloc(sizeof(char)*(sMaxX - sMinX + 3));
-//	memset(caRow,'x',sizeof(char)*(sMaxX - sMinX + 1));
-//	caRow[sMaxX - sMinX + 1] = 13;
-//	caRow[sMaxX - sMinX + 2] = 10;
-//	
-//	FILE *fOutput = fopen(caString,"wb");
-//	for (int i=0; i<sMaxZ - sMinZ; i++) {
-//		fwrite(caRow,sizeof(char),sMaxX - sMinX + 3,fOutput);
-//	}
-//	fclose(fOutput);
 }

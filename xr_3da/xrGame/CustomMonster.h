@@ -11,6 +11,7 @@
 #include "custommonster_vistrack.h"
 #include "ai_commands.h"
 #include "ai_pathnodes.h"
+#include "level.h"
 
 class ENGINE_API CMotionDef;
 class ENGINE_API CKinematics;
@@ -102,6 +103,7 @@ public:
 	DWORD				m_dwSoundUpdate;
 	float				m_fSoundPower;
 	float				m_fStartPower;
+	CLevel::SPath		*m_tpPath;
 
 	virtual void		Think() = 0;
 
