@@ -6,6 +6,9 @@
 //	Description : Object item abstract class inline functions
 ////////////////////////////////////////////////////////////////////////////
 
+#ifndef object_item_abstract_inlineH
+#define object_item_abstract_inlineH
+
 #pragma once
 
 IC	CObjectItemAbstract::CObjectItemAbstract	(const CLASS_ID &clsid, LPCSTR script_clsid) :
@@ -26,4 +29,6 @@ IC	ref_str	CObjectItemAbstract::script_clsid	() const
 {
 	return				(m_script_clsid);
 }
+#endif
+
 #endif

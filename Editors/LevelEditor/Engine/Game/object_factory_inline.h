@@ -6,6 +6,9 @@
 //	Description : Object factory inline functions
 ////////////////////////////////////////////////////////////////////////////
 
+#ifndef object_factory_inlineH
+#define object_factory_inlineH
+
 #pragma once
 
 IC	const CObjectFactory &object_factory()
@@ -17,17 +20,19 @@ IC	const CObjectFactory &object_factory()
 	return						(*g_object_factory);
 }
 
-#ifndef NO_XR_GAME
+#ifndef NO_SCRIPTS
+#	ifndef NO_XR_GAME
 IC	CObjectFactory::CLIENT_SCRIPT_BASE_CLASS *CObjectFactory::client_instance() const
 {
 	return						(m_client_instance);
 }
-#endif
+#	endif
 
 IC	CObjectFactory::SERVER_SCRIPT_BASE_CLASS *CObjectFactory::server_instance() const
 {
 	return						(m_server_instance);
 }
+#endif
 
 IC	bool CObjectFactory::CObjectItemPredicate::operator()	(const CObjectItemAbstract *item1, const CObjectItemAbstract *item2) const
 {
@@ -127,4 +132,6 @@ IC	CObjectFactory::SERVER_BASE_CLASS *CObjectFactory::server_object	(const CLASS
 	const CObjectItemAbstract	*object = item(clsid,true);
 	return				(object ? object->server_object(section)->init() : 0);
 }
+#endif
+
 #endif

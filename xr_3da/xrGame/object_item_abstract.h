@@ -6,6 +6,9 @@
 //	Description : Object item abstract class
 ////////////////////////////////////////////////////////////////////////////
 
+#ifndef object_item_abstractH
+#define object_item_abstractH
+
 #pragma once
 
 #include "object_factory_space.h"
@@ -30,3 +33,4 @@ public:
 };
 
 #include "object_item_abstract_inline.h"
+#endif

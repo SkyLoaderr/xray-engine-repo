@@ -6,6 +6,9 @@
 //	Description : Object factory space
 ////////////////////////////////////////////////////////////////////////////
 
+#ifndef object_factory_spaceH
+#define object_factory_spaceH
+
 #pragma once
 
 #ifndef XRGAME_EXPORTS
@@ -39,3 +42,5 @@ namespace ObjectFactory {
 #endif
 
 };
+
+#endif

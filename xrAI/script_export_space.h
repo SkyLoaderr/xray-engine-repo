@@ -6,6 +6,9 @@
 //	Description : XRay Script export space 
 ////////////////////////////////////////////////////////////////////////////
 
+#ifndef script_export_spaceH
+#define script_export_spaceH
+
 #pragma once
 
 struct lua_State;
@@ -23,3 +26,5 @@ struct lua_State;
 #endif
 
 #define DECLARE_SCRIPT_REGISTER_FUNCTION public: static void script_register(lua_State *);
+
+#endif

@@ -6,6 +6,9 @@
 //	Description : Object item client or server class inline functions
 ////////////////////////////////////////////////////////////////////////////
 
+#ifndef object_item_single_inlineH
+#define object_item_single_inlineH
+
 #pragma once
 
 #define TEMPLATE_SPECIALIZATION template <typename _unknown_type, bool _client_object>
@@ -59,3 +62,4 @@ ObjectFactory::SERVER_BASE_CLASS *CObjectItemSingle<_unknown_type,true>::server_
 
 #undef TEMPLATE_SPECIALIZATION
 #undef CSObjectItemSingle
+#endif

@@ -6,13 +6,17 @@
 //	Description : Object factory implementation
 ////////////////////////////////////////////////////////////////////////////
 
+#ifndef object_factory_implH
+#define object_factory_implH
+
 #pragma once
+
+#include "object_factory.h"
 
 #ifndef NO_XR_GAME
 #	include <boost/type_traits/is_base_and_derived.hpp>
 #endif
 
-#include "object_factory.h"
 #include "object_item_client_server.h"
 #include "object_item_single.h"
 
@@ -82,4 +86,6 @@ IC	void CObjectFactory::add	(const CLASS_ID &clsid, LPCSTR script_clsid)
 {
 	add					(xr_new<CObjectItemSingle<_unknown_type,false> >(clsid,script_clsid));
 }
+#endif
+
 #endif
