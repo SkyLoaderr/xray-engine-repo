@@ -100,6 +100,9 @@ void OGF::_BuildFace	(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3)
 
 void OGF::Optimize()
 {
+	VERIFY	(x_vertices.size()	<= vertices.size()	);
+	VERIFY	(x_faces.size()		== faces.size()		);
+
 	// Real optimization
 	//////////////////////////////////////////////////////////////////////////
 	// x-vertices
