@@ -164,7 +164,8 @@ void CHOM::Render_DB	(CFrustum& base)
 		
 		// XForm and Rasterize
 		DWORD	pixels	= 0;
-		for (int v=1; v<P->size()-1; v++)
+		int		limit	= int(P->size())-1;
+		for (int v=1; v<limit; v++)
 		{
 			xform			(XF,T.raster[0],(*P)[0],	dim);
 			xform			(XF,T.raster[1],(*P)[v+0],	dim);

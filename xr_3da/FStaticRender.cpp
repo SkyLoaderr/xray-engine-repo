@@ -26,12 +26,12 @@ CVisual*	CRender::model_Duplicate	(CVisual* V)					{ return Models.Instance_Dupl
 void		CRender::model_Delete		(CVisual* &V)					{ Models.Delete(V);						}
 
 int			CRender::getVisualsCount	()					{ return Visuals.size();							}
-CPortal*	CRender::getPortal			(int id)			{ VERIFY(id<Portals.size());	return &Portals[id];}
-CSector*	CRender::getSector			(int id)			{ VERIFY(id<Sectors.size());	return Sectors[id];	}
+CPortal*	CRender::getPortal			(int id)			{ VERIFY(id<int(Portals.size()));	return &Portals[id];}
+CSector*	CRender::getSector			(int id)			{ VERIFY(id<int(Sectors.size()));	return Sectors[id];	}
 CSector*	CRender::getSectorActive	()					{ return pLastSector;								}
-CVisual*	CRender::getVisual			(int id)			{ VERIFY(id<Visuals.size());	return Visuals[id];	}
-DWORD		CRender::getFVF				(int id)			{ VERIFY(id<FVF.size());		return FVF[id];		}
-IDirect3DVertexBuffer8*	CRender::getVB	(int id)			{ VERIFY(id<VB.size());			return VB[id];		}
+CVisual*	CRender::getVisual			(int id)			{ VERIFY(id<int(Visuals.size()));	return Visuals[id];	}
+DWORD		CRender::getFVF				(int id)			{ VERIFY(id<int(FVF.size()));		return FVF[id];		}
+IDirect3DVertexBuffer8*	CRender::getVB	(int id)			{ VERIFY(id<int(VB.size()));		return VB[id];		}
 void		CRender::L_add				(CLightPPA* L)		{ VERIFY(L); L_Dynamic.Add(L);						}
 void		CRender::L_select			(Fvector &pos, float fRadius, vector<xrLIGHT*>& dest)
 {	L_DB.Select	(pos,fRadius,dest);		}
@@ -198,7 +198,7 @@ void CRender::Calculate()
 	Fvector box_radius; box_radius.set(EPS_L*2,EPS_L*2,EPS_L*2);
 	XRC.box_options	(0);
 	XRC.box_query	(rmPortals,Device.vCameraPosition,box_radius);
-	for (DWORD K=0; K<XRC.r_count(); K++)
+	for (int K=0; K<XRC.r_count(); K++)
 	{
 		CPortal*	pPortal	= (CPortal*) rmPortals->get_tris()[XRC.r_begin()[K].id].dummy;
 		pPortal->bDualRender = TRUE;

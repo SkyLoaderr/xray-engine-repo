@@ -121,7 +121,7 @@ void occRasterizer::propagade	()
 
 IC	BOOL			test_Level	(int* depth, int dim, float _x0, float _y0, float _x1, float _y1, int z)
 {
-	float d2	= dim/2;
+	float d2	= float(dim/2);
 	int x0		= iFloor(_x0*d2); clamp(x0,0,dim-1);
 	int x1		= iCeil (_x1*d2); clamp(x1,0,dim-1);
 	int y0		= iFloor(_y0*d2); clamp(y0,0,dim-1);
