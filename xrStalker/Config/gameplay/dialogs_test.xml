@@ -1,45 +1,5 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <game_dialogs>
-    <dialog id="stalker_wounded_friend">
-        <phrase_list>
-            <phrase id="2">
-                <text></text>
-                <precondition>dialogs.medikit_yes</precondition>
-                <next>21</next>
-                <next>22</next>
-            </phrase>
-            <phrase id="22">
-                <text></text>
-                <precondition>dialogs.not_have_money</precondition>
-            </phrase>
-            <phrase id="3">
-                <text></text>
-                <precondition>dialogs.medikit_no</precondition>
-            </phrase>
-            <phrase id="21">
-                <text></text>
-                <precondition>dialogs.have_money</precondition>
-                <action>dialogs.wounded_trade</action>
-                <action>dialogs.sell_medikit</action>
-            </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-            </phrase>
-            <phrase id="11">
-                <text></text>
-                <action>dialogs.transfer_medikit</action>
-                <action>dialogs.disable_wounded</action>
-            </phrase>
-            <phrase id="1">
-                <text></text>
-                <precondition>dialogs.medikit_yes</precondition>
-                <next>11</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="gar_dolg_bribe">
         <phrase_list>
             <phrase id="111">
@@ -79,14 +39,71 @@
                 <next>111</next>
                 <next>112</next>
             </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
-            </phrase>
             <phrase id="1">
                 <text>gar_dolg_bribe_1</text>
                 <next>11</next>
                 <next>12</next>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="stalker_wounded_friend">
+        <phrase_list>
+            <phrase id="1">
+                <text></text>
+                <precondition>dialogs.medikit_yes</precondition>
+                <next>11</next>
+            </phrase>
+            <phrase id="11">
+                <text></text>
+                <action>dialogs.transfer_medikit</action>
+                <action>dialogs.disable_wounded</action>
+            </phrase>
+            <phrase id="2">
+                <text></text>
+                <precondition>dialogs.medikit_yes</precondition>
+                <next>21</next>
+                <next>22</next>
+            </phrase>
+            <phrase id="21">
+                <text></text>
+                <precondition>dialogs.have_money</precondition>
+                <action>dialogs.wounded_trade</action>
+                <action>dialogs.sell_medikit</action>
+            </phrase>
+            <phrase id="22">
+                <text></text>
+                <precondition>dialogs.not_have_money</precondition>
+            </phrase>
+            <phrase id="3">
+                <text></text>
+                <precondition>dialogs.medikit_no</precondition>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="optional_dialog_test">
+		<precondition>dialogs.dialog_allowed</precondition>    
+        <phrase_list>
+			<phrase id="0">
+                <text>optional_dialog_test_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>optional_dialog_test_1</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="11">
+                <text>optional_dialog_test_11</text>
+                <action>dialogs.break_dialog</action>
             </phrase>
         </phrase_list>
     </dialog>
