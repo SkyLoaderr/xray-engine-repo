@@ -32,7 +32,7 @@
 	</reputation_static>
 
 	<!-- REPUTATION CAPTION -->
-	<reputation_caption x="20" y="97" width="125" height="18">
+	<reputation_caption x="20" y="97" width="240" height="18">
 		<text x="0" y="0" font="letterica18" r="216" g="186" b="140">reputation</text>
 	</reputation_caption>
 
