@@ -300,6 +300,13 @@ function body_state:anim_update(type)
 		else
 			printf("ANIMS: |nil| for %s", self.npc:name())
 		end
+		
+		--' Проверка на существование темы
+		if type ~= nil and self.animations[type] == nil then
+			printf("ERROR: Non existen ANIM STATEd called: %s", type)
+			return
+		end
+		
 		--' завершение старой
 		self.npc:clear_animations()
 		if self.states.current_state ~= nil then		
