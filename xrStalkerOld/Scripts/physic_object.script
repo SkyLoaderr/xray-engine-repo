@@ -40,6 +40,8 @@ function door_binder:initialize()
 
 	local variable = false
 
+	self.locked		= utils.mob_get_bool(ini, "door", "locked", nil, self.object, false, false)
+	
 	if(ini:line_exist("door", "opened")) then
 		//'Есть данные о том, закрыта или открыта дверь
 		variable = ini:r_bool("door", "opened")
@@ -84,7 +86,13 @@ function door_binder:close_door()
 	self.blockade	= true									// Закрываем и блокируем	
 end
 
+function door_binder:set_lock(param)
+	self.locked		= param
+end
+
 function door_binder:door_callback(door, actor)
+	if(self.locked) then return end				// Пока дверь заблокирована
+
 	self.angel  = self.joint:get_axis_angle(90)
 
 	//self.low_limits, self.hi_limits	= self.joint:get_limits(self.low_limits, self.hi_limits, 0)
