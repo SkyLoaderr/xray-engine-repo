@@ -183,7 +183,7 @@ void CBuild::Run	(LPCSTR P)
 
 	//****************************************** Convert to OGF
 	FPU::m64r					();
-	Phase						("Converting to OpenGraphicsFormat...");
+	Phase						("Converting to OGFs...");
 	mem_Compact					();
 	Flex2OGF					();
 
@@ -195,6 +195,9 @@ void CBuild::Run	(LPCSTR P)
 	mu_secondary.wait			(500);
 
 	//****************************************** Export MU-models
+	FPU::m64r					();
+	Phase						("Converting MU-models to OGFs...");
+	mem_Compact					();
 	{
 		u32 m;
 		Status			("MU : Models...");
