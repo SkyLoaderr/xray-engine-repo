@@ -81,15 +81,19 @@ void CUITradeWnd::Init()
 	//Списки Drag&Drop
 	UIOurBagWnd.AttachChild(&UIOurBagList);	
 	xml_init.InitDragDropList(uiXml, "dragdrop_list", 0, &UIOurBagList);
+	UIOurBagList.SetItemsScale(TRADE_ICONS_SCALE);
 
 	UIOthersBagWnd.AttachChild(&UIOthersBagList);	
 	xml_init.InitDragDropList(uiXml, "dragdrop_list", 1, &UIOthersBagList);
+	UIOthersBagList.SetItemsScale(TRADE_ICONS_SCALE);
 
 	UIOurTradeWnd.AttachChild(&UIOurTradeList);	
 	xml_init.InitDragDropList(uiXml, "dragdrop_list", 2, &UIOurTradeList);
+	UIOurTradeList.SetItemsScale(TRADE_ICONS_SCALE);
 
 	UIOthersTradeWnd.AttachChild(&UIOthersTradeList);	
 	xml_init.InitDragDropList(uiXml, "dragdrop_list", 3, &UIOthersTradeList);
+	UIOthersTradeList.SetItemsScale(TRADE_ICONS_SCALE);
 
 	
 	//информация о предмете

@@ -288,3 +288,11 @@ void CUIScrollBar::Draw()
 
 	inherited::Draw();
 }
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIScrollBar::Refresh()
+{
+	SendMessage(&m_ScrollBox, CUIScrollBox::SCROLLBOX_MOVE, NULL);
+}
+

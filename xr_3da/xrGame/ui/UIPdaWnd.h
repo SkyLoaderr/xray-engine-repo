@@ -13,6 +13,7 @@
 #include "UITaskWnd.h"
 #include "UIDiaryWnd.h"
 #include "UIFrameLineWnd.h"
+#include "UIEncyclopediaWnd.h"
 
 class CInventoryOwner;
 
@@ -35,7 +36,7 @@ public:
 	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = NULL);
 
 //	virtual void Draw();
-//	virtual void Update();
+	virtual void Update();
 		
 	virtual void Show();
 	
@@ -62,6 +63,7 @@ protected:
 	CUIMapWnd			UIMapWnd;
 	CUITaskWnd			UITaskWnd;
 	CUIDiaryWnd			UIDiaryWnd;
+	CUIEncyclopediaWnd	UIEncyclopediaWnd;
 
 	//элементы декоративного интерфейса
 	CUIStatic			UIStaticTop;
@@ -74,4 +76,7 @@ protected:
 
 	// кнопки PDA
 	CUITabControl		UITabControl;
+
+	// Установить игровое время
+	void UpdateDateTime();
 };

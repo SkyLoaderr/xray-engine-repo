@@ -35,7 +35,7 @@ public:
 	virtual void Update();
 
 
-	void SetText(LPCSTR str);
+	virtual void SetText(LPCSTR str);
 	LPCSTR GetText() {return m_str;}
 
 	virtual void SetTextAlign(CGameFont::EAligment align) {m_eTextAlign = align;}

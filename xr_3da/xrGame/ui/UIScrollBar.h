@@ -34,6 +34,9 @@ public:
 	virtual void SetHeight(int height);
 
 	virtual void Reset();
+	// В листбоксе скроллбар глючит если мы удаляем элементы снизу листа, а скроллбар
+	// в это время был в позиции не 0. Эта функция - фикс
+	void		 Refresh();
 
 	//скролинг
 	void SetRange(s16 iMin, s16 iMax);

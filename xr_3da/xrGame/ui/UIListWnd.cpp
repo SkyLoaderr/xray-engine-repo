@@ -44,7 +44,7 @@ CUIListWnd::~CUIListWnd(void)
 	for(LIST_ITEM_LIST_it it=m_ItemList.begin(); m_ItemList.end() != it; ++it)
 	{
 		DetachChild(*it);
-		if(NULL != *it)xr_delete(*it);
+		if(NULL != *it && !(*it)->IsManualDelete())xr_delete(*it);
 	}
 
 	m_ItemList.clear();
@@ -99,109 +99,6 @@ void CUIListWnd::SetWidth(int width)
 
 
 //добавляет элемент созданный извне
-bool CUIListWnd::AddItem(CUIListItem* pItem, bool push_front)
-{	
-	AttachChild(pItem);
-	pItem->Init(0, m_bVertFlip?GetHeight()-GetSize()* m_iItemHeight-m_iItemHeight:GetSize()* m_iItemHeight, 
-				m_iItemWidth, m_iItemHeight);
-	
-	//добавление в конец или начало списка
-	if(push_front)	
-	{
-		//изменить значения индексов уже добавленых элементов
-		for(LIST_ITEM_LIST_it it=m_ItemList.begin();  m_ItemList.end() != it; ++it)
-		{
-			(*it)->SetIndex((*it)->GetIndex()+1);
-		}
-		m_ItemList.push_front(pItem);
-		pItem->SetIndex(0);
-
-	}
-	else
-	{
-		m_ItemList.push_back(pItem);
-		pItem->SetIndex(m_ItemList.size()-1);
-	}
-
-	UpdateList();
-
-	//обновить полосу прокрутки
-	m_ScrollBar.SetRange(0,s16(m_ItemList.size()-1));
-	m_ScrollBar.SetPageSize(s16(
-							(u32)m_iRowNum<m_ItemList.size()?m_iRowNum:m_ItemList.size()));
-	m_ScrollBar.SetScrollPos(s16(m_iFirstShownIndex));
-
-	UpdateScrollBar();
-
-	return true;
-}
-
-bool CUIListWnd::AddItem(const char*  str, void* pData, int value, bool push_front)
-{
-	//создать новый элемент и добавить его в список
-	CUIListItem* pItem = NULL;
-	pItem = xr_new<CUIListItem>();
-
-    if(!pItem) return false;
-
-
-	pItem->Init(str, 0, m_bVertFlip?GetHeight()-GetSize()* m_iItemHeight-m_iItemHeight:GetSize()* m_iItemHeight, 
-					m_iItemWidth, m_iItemHeight);
-
-	pItem->SetData(pData);
-	pItem->SetValue(value);
-	pItem->SetTextColor(m_dwFontColor);
-
-	return AddItem(pItem, push_front);
-}
-
-bool CUIListWnd::AddParsedItem(const CUIString &str, const char StartShift, const u32 &MsgColor, 
-							   CGameFont* pFont, void* pData, int value, bool push_front)
-{
-	bool ReturnStatus = true;
-	const STRING& text = str.m_str;
-	STRING buf;
-
-	u32 last_pos = 0;
-
-	int GroupID = GetSize();
-
-	for(u32 i = 0; i<text.size()-2; ++i)
-	{
-		// '\n' - переход на новую строку
-		if(text[i] == '\\' && text[i+1]== 'n')
-		{	
-			buf.clear();
-			buf.insert(buf.begin(), StartShift, ' ');
-			buf.insert(buf.begin() + StartShift, text.begin()+last_pos, text.begin()+i);
-			buf.push_back(0);
-			ReturnStatus &= AddItem(&buf.front(), pData, value, push_front);
-			CUIListItem *pLocalItem = GetItem(GetSize() - 1);
-			pLocalItem->SetGroupID(GroupID);
-			pLocalItem->SetTextColor(MsgColor);
-			pLocalItem->SetFont(pFont);
-			++i;
-			last_pos = i+1;
-		}	
-	}
-
-	if(last_pos<text.size())
-	{
-		buf.clear();
-		buf.insert(buf.begin(), StartShift, ' ');
-		buf.insert(buf.begin() + StartShift, text.begin()+last_pos, text.end());
-		buf.push_back(0);
-		AddItem(&buf.front(), pData, value, push_front);
-		GetItem(GetSize() - 1)->SetGroupID(GroupID);
-		CUIListItem *pLocalItem = GetItem(GetSize() - 1);
-		pLocalItem->SetGroupID(GroupID);
-		pLocalItem->SetTextColor(MsgColor);
-		pLocalItem->SetFont(pFont);
-	}
-	
-	return ReturnStatus;
-}
-
 
 void CUIListWnd::RemoveItem(int index)
 {
@@ -216,7 +113,8 @@ void CUIListWnd::RemoveItem(int index)
 	R_ASSERT(m_ItemList.end() != it);
 
 	DetachChild(*it);
-	xr_delete(*it);
+	if (!(*it)->IsManualDelete())
+		xr_delete(*it);
 
 	m_ItemList.erase(it);
 
@@ -231,7 +129,7 @@ void CUIListWnd::RemoveItem(int index)
 	m_ScrollBar.SetPageSize(s16((u32)m_iRowNum<m_ItemList.size()?
 									 m_iRowNum:m_ItemList.size()));
 	m_ScrollBar.SetScrollPos(s16(m_iFirstShownIndex));
-
+	m_ScrollBar.Refresh();
 
 	//перенумеровать индексы заново
 	i=0;
@@ -270,7 +168,7 @@ void CUIListWnd::RemoveAll()
 		it = m_ItemList.begin();
 		
 		DetachChild(*it);
-		if(NULL != *it) xr_delete(*it);
+		if(NULL != *it && !(*it)->IsManualDelete()) xr_delete(*it);
 
 		m_ItemList.erase(it);
 	}
@@ -578,7 +476,7 @@ void CUIListWnd::SetFocusedItem(int iNewFocusedItem)
 //=============================================================================
 
 xr_vector<int> CUIListWnd::AddInteractiveItem(const char *str2, const char StartShift,
-											  const u32 &MsgColor, CGameFont* pFont)
+											  const u32 &MsgColor, CGameFont* pFont, int pushAfter)
 {
 	string1024	str = {0};
 	// скопируем строку для возможности записи
@@ -619,7 +517,7 @@ xr_vector<int> CUIListWnd::AddInteractiveItem(const char *str2, const char Start
 		// В этом случае ListWnd должен сам добавить строку обычным способом
 		CUIString A;
 		A.SetText(str);
-		AddParsedItem(A, StartShift, MsgColor, pFont);
+		AddParsedItem<CUIListItem>(A, StartShift, MsgColor, pFont);
 		return IDs;
 	}
 	int k = 0;
@@ -631,10 +529,24 @@ xr_vector<int> CUIListWnd::AddInteractiveItem(const char *str2, const char Start
 
 	// Если строка таки интерактивна, то конструируем интерактивную структуру - член листа
 	CUIInteractiveListItem *pILItem = xr_new<CUIInteractiveListItem>();
-	AddItem(pILItem);
+	AddItem<CUIListItem>(pILItem, pushAfter);
 	pILItem->Init(str, vSubItems, IDs, GetItemHeight(), StartShift);
 	pILItem->SetFont(pFont);
 	pILItem->SetTextColor(MsgColor);
 	pILItem->SetMessageTarget(GetMessageTarget());
 	return IDs;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+int CUIListWnd::GetItemPos(CUIListItem *pItem)
+{
+	LIST_ITEM_LIST_it it = m_ItemList.begin();
+	for (u32 i = 0; i < m_ItemList.size(); ++i)
+	{
+		if (*it == pItem) return i;
+		++it;
+	}
+
+	return -1;
 }

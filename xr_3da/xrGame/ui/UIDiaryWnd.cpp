@@ -38,38 +38,25 @@ void CUIDiaryWnd::Init()
 
 	inherited::Init(0,0, Device.dwWidth, Device.dwHeight);
 
-	XML_NODE* tab_node;
-
-	xml_init.InitWindow(uiXml, "news_window", 0, &UINewsWnd);
-	tab_node = uiXml.NavigateToNode("news_window", 0);
-	uiXml.SetLocalRoot(tab_node);
-	UINewsWnd.Init(uiXml, this);
-	UINewsWnd.Hide();
 	AttachChild(&UINewsWnd);
+	UINewsWnd.Init();
+	UINewsWnd.Hide();
 
-	uiXml.SetLocalRoot(uiXml.GetRoot());
-	xml_init.InitWindow(uiXml, "jobs_window", 0, &UIJobsWnd);
-	tab_node = uiXml.NavigateToNode("jobs_window", 0);
-	uiXml.SetLocalRoot(tab_node);
-	UIJobsWnd.Init(uiXml, this);
-	UIJobsWnd.Hide();
 	AttachChild(&UIJobsWnd);
+	UIJobsWnd.Init();
+	UIJobsWnd.Hide();
 
-	uiXml.SetLocalRoot(uiXml.GetRoot());
-	xml_init.InitWindow(uiXml, "notes_window", 0, &UINotesWnd);
-	tab_node = uiXml.NavigateToNode("notes_window", 0);
-	uiXml.SetLocalRoot(tab_node);
-	UINotesWnd.Init(uiXml, this);
-	UINotesWnd.Hide();
 	AttachChild(&UINotesWnd);
+	UINotesWnd.Init();
+	UINotesWnd.Hide();
 
 	switch (UITabControl.GetActiveIndex())
 	{
 	case 0:
-		m_pActiveSubdialog = &UINewsWnd;
+		m_pActiveSubdialog = &UIJobsWnd;
 		break;
 	case 1:
-		m_pActiveSubdialog = &UIJobsWnd;
+		m_pActiveSubdialog = &UINewsWnd;
 		break;
 	case 2:
 		m_pActiveSubdialog = &UINotesWnd;
@@ -81,7 +68,6 @@ void CUIDiaryWnd::Init()
 
 	// Табконтрол поддиалогов
 	AttachChild(&UITabControl);
-	uiXml.SetLocalRoot(uiXml.GetRoot());
 	xml_init.InitTabControl(uiXml, "tab", 0, &UITabControl);
 }
 
@@ -128,7 +114,7 @@ void CUIDiaryWnd::AddNewsItem(const char *sData)
 	CUIString			str;
 	str.SetText(sData);
 
-	UINewsWnd.UIListWnd.AddParsedItem(str, 4, 0xffffffff);
+	UINewsWnd.UIListWnd.AddParsedItem<CUIListItem>(str, 4, 0xffffffff);
 
-	UINewsWnd.UIListWnd.AddItem("");
+	UINewsWnd.UIListWnd.AddItem<CUIListItem>("");
 }

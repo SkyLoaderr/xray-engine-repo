@@ -7393,6 +7393,12 @@
 						RelativePath=".\ui\UIDiaryWnd.h">
 					</File>
 					<File
+						RelativePath=".\ui\UIEncyclopediaWnd.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIEncyclopediaWnd.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIIconedListItem.cpp">
 					</File>
 					<File
@@ -7593,6 +7599,12 @@
 						RelativePath=".\ui\UI3dStatic.h">
 					</File>
 					<File
+						RelativePath=".\ui\UIAnimatedStatic.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIAnimatedStatic.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIMultiTextStatic.cpp">
 					</File>
 					<File
@@ -7677,6 +7689,16 @@
 					</File>
 					<File
 						RelativePath=".\ui\UITabControl.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="TreeView"
+					Filter="">
+					<File
+						RelativePath=".\ui\UITreeViewItem.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UITreeViewItem.h">
 					</File>
 				</Filter>
 			</Filter>

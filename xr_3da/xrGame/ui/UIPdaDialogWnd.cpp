@@ -37,6 +37,8 @@ void CUIPdaDialogWnd::Init(int x, int y, int width, int height)
 	xml_init.InitFrameWindow(uiXml, "chicon_frame_window", 0, &UICharIconFrame);
 	UICharIconFrame.AttachChild(&UICharIconHeader);
 	xml_init.InitFrameLine(uiXml, "chicon_frame_line", 0, &UICharIconHeader);
+	UICharIconHeader.AttachChild(&UIAnimatedIcon);
+	xml_init.InitAnimatedStatic(uiXml, "a_static", 0, &UIAnimatedIcon);
 
 	AttachChild(&UIPhrasesFrame);
 	xml_init.InitFrameWindow(uiXml, "ph_frame_window", 0, &UIPhrasesFrame);
@@ -110,7 +112,7 @@ void CUIPdaDialogWnd::Hide()
 
 void CUIPdaDialogWnd::ContactLoss()
 {
-	UILogListWnd.AddItem(CONTACT_LOST);
+	UILogListWnd.AddItem<CUIListItem>(CONTACT_LOST);
 
 
 	UIPhrasesListWnd.Show(false);
@@ -119,7 +121,7 @@ void CUIPdaDialogWnd::ContactLoss()
 
 void CUIPdaDialogWnd::ContactWaitForReply()
 {
-	UILogListWnd.AddItem(WAIT_FOR_REPLY);
+	UILogListWnd.AddItem<CUIListItem>(WAIT_FOR_REPLY);
 
 	UIPhrasesListWnd.Show(false);
 	UIPhrasesListWnd.Enable(false);
@@ -140,38 +142,38 @@ void CUIPdaDialogWnd::Update()
 void CUIPdaDialogWnd::AddOurMessageToLog(EPdaMsg msg, CInventoryOwner* pInvOwner)
 {
 	UILogListWnd.SetTextColor(0xFF00CCCC);
-	UILogListWnd.AddItem(pInvOwner->CharacterInfo().Name());
+	UILogListWnd.AddItem<CUIListItem>(pInvOwner->CharacterInfo().Name());
 	AddMessageToLog(msg, 0xFF00FFFF);
 }
 void CUIPdaDialogWnd::AddOthersMessageToLog(EPdaMsg msg, CInventoryOwner* pInvOwner)
 {
 	UILogListWnd.SetTextColor(0xFFCCCC00);
-	UILogListWnd.AddItem(pInvOwner->CharacterInfo().Name());
+	UILogListWnd.AddItem<CUIListItem>(pInvOwner->CharacterInfo().Name());
 	AddMessageToLog(msg, 0xFFFFFF00);
 }
 
 void CUIPdaDialogWnd::AddMessageToLog(EPdaMsg msg, u32 color)
 {		
 	UILogListWnd.SetTextColor(color);
-	UILogListWnd.AddItem(CPda::m_PdaMsgStr[msg]);
+	UILogListWnd.AddItem<CUIListItem>(CPda::m_PdaMsgStr[msg]);
 }
 
 void  CUIPdaDialogWnd::PhrasesAnswer()
 {	
 	UIPhrasesListWnd.RemoveAll();
-	UIPhrasesListWnd.AddItem(CPda::m_PdaMsgStr[ePdaMsgAccept], NULL, ePdaMsgAccept);
-	UIPhrasesListWnd.AddItem(CPda::m_PdaMsgStr[ePdaMsgDecline], NULL, ePdaMsgDecline);
-	UIPhrasesListWnd.AddItem(CPda::m_PdaMsgStr[ePdaMsgDeclineRude], NULL, ePdaMsgDeclineRude);
+	UIPhrasesListWnd.AddItem<CUIListItem>(CPda::m_PdaMsgStr[ePdaMsgAccept], NULL, ePdaMsgAccept);
+	UIPhrasesListWnd.AddItem<CUIListItem>(CPda::m_PdaMsgStr[ePdaMsgDecline], NULL, ePdaMsgDecline);
+	UIPhrasesListWnd.AddItem<CUIListItem>(CPda::m_PdaMsgStr[ePdaMsgDeclineRude], NULL, ePdaMsgDeclineRude);
 	//завершение диалога
-	UIPhrasesListWnd.AddItem(CPda::m_PdaMsgStr[ePdaMsgILeave], NULL,ePdaMsgMax);
+	UIPhrasesListWnd.AddItem<CUIListItem>(CPda::m_PdaMsgStr[ePdaMsgILeave], NULL,ePdaMsgMax);
 	
 }
 void CUIPdaDialogWnd::PhrasesAsk()
 {
 	UIPhrasesListWnd.RemoveAll();
-	UIPhrasesListWnd.AddItem(CPda::m_PdaMsgStr[ePdaMsgTrade]	, NULL, ePdaMsgTrade);
-	UIPhrasesListWnd.AddItem(CPda::m_PdaMsgStr[ePdaMsgNeedHelp]	, NULL, ePdaMsgNeedHelp);
-	UIPhrasesListWnd.AddItem(CPda::m_PdaMsgStr[ePdaMsgGoAway]	, NULL, ePdaMsgGoAway);
+	UIPhrasesListWnd.AddItem<CUIListItem>(CPda::m_PdaMsgStr[ePdaMsgTrade]	, NULL, ePdaMsgTrade);
+	UIPhrasesListWnd.AddItem<CUIListItem>(CPda::m_PdaMsgStr[ePdaMsgNeedHelp]	, NULL, ePdaMsgNeedHelp);
+	UIPhrasesListWnd.AddItem<CUIListItem>(CPda::m_PdaMsgStr[ePdaMsgGoAway]	, NULL, ePdaMsgGoAway);
 	//завершение диалога
-	UIPhrasesListWnd.AddItem(CPda::m_PdaMsgStr[ePdaMsgILeave], NULL, ePdaMsgMax);
+	UIPhrasesListWnd.AddItem<CUIListItem>(CPda::m_PdaMsgStr[ePdaMsgILeave], NULL, ePdaMsgMax);
 }

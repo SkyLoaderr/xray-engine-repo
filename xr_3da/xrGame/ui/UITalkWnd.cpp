@@ -276,7 +276,7 @@ void CUITalkWnd::SayPhrase(PHRASE_ID phrase_id)
 
 void CUITalkWnd::AddQuestion(const CUIString &str, void* pData , int value)
 {
-	UITalkDialogWnd.UIQuestionsList.AddParsedItem(str, 0, UITalkDialogWnd.UIQuestionsList.GetTextColor(), 
+	UITalkDialogWnd.UIQuestionsList.AddParsedItem<CUIListItem>(str, 0, UITalkDialogWnd.UIQuestionsList.GetTextColor(), 
 						UITalkDialogWnd.UIQuestionsList.GetFont(), pData, value);
 }
 
@@ -285,11 +285,11 @@ void CUITalkWnd::AddAnswer(const CUIString &str, const CUIString &SpeakerName)
 	//для пустой фразы вообще ничего не выводим
 	if(xr_strlen((LPCSTR)str) == 0) return;
 
-	UITalkDialogWnd.UIAnswersList.AddParsedItem(SpeakerName, 0, UITalkDialogWnd.GetHeaderColor(), UITalkDialogWnd.GetHeaderFont());
-	UITalkDialogWnd.UIAnswersList.AddParsedItem(str, MessageShift, UITalkDialogWnd.UIAnswersList.GetTextColor());
+	UITalkDialogWnd.UIAnswersList.AddParsedItem<CUIListItem>(SpeakerName, 0, UITalkDialogWnd.GetHeaderColor(), UITalkDialogWnd.GetHeaderFont());
+	UITalkDialogWnd.UIAnswersList.AddParsedItem<CUIListItem>(str, MessageShift, UITalkDialogWnd.UIAnswersList.GetTextColor());
 
 	CUIString Local;
 	Local.SetText("----------------");
-	UITalkDialogWnd.UIAnswersList.AddParsedItem(Local, 0, UITalkDialogWnd.UIAnswersList.GetTextColor());
+	UITalkDialogWnd.UIAnswersList.AddParsedItem<CUIListItem>(Local, 0, UITalkDialogWnd.UIAnswersList.GetTextColor());
 	UITalkDialogWnd.UIAnswersList.ScrollToEnd();
 }

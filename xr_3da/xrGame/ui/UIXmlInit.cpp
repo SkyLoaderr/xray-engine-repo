@@ -27,13 +27,19 @@
 #define LETTERICA18_FONT_NAME	"letterica18"
 #define LETTERICA25_FONT_NAME	"letterica25"
 
+//////////////////////////////////////////////////////////////////////////
 
 CUIXmlInit::CUIXmlInit()
 {
 }
+
+//////////////////////////////////////////////////////////////////////////
+
 CUIXmlInit::~CUIXmlInit()
 {
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 bool CUIXmlInit::InitWindow(CUIXml& xml_doc, LPCSTR path, 	
 							int index, CUIWindow* pWnd)
@@ -47,6 +53,9 @@ bool CUIXmlInit::InitWindow(CUIXml& xml_doc, LPCSTR path,
 	pWnd->Init(x, y, width, height);
 	return true;
 }
+
+//////////////////////////////////////////////////////////////////////////
+
 bool CUIXmlInit::InitFrameWindow(CUIXml& xml_doc, LPCSTR path, 
 									int index, CUIFrameWindow* pWnd)
 {
@@ -97,6 +106,7 @@ bool CUIXmlInit::InitFrameWindow(CUIXml& xml_doc, LPCSTR path,
 	return true;
 }
 
+//////////////////////////////////////////////////////////////////////////
 
 bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path, 
 									int index, CUIStatic* pWnd)
@@ -150,6 +160,8 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path,
 	return true;
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 bool CUIXmlInit::InitButton(CUIXml& xml_doc, LPCSTR path, 
 						int index, CUIButton* pWnd)
 {
@@ -190,6 +202,8 @@ bool CUIXmlInit::InitButton(CUIXml& xml_doc, LPCSTR path,
 	return true;
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 bool CUIXmlInit::InitDragDropList(CUIXml& xml_doc, LPCSTR path, 
 						int index, CUIDragDropList* pWnd)
 {
@@ -224,6 +238,8 @@ bool CUIXmlInit::InitDragDropList(CUIXml& xml_doc, LPCSTR path,
 	return true;
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 bool CUIXmlInit::InitListWnd(CUIXml& xml_doc, LPCSTR path, 
 										   int index, CUIListWnd* pWnd)
 {
@@ -254,6 +270,8 @@ bool CUIXmlInit::InitListWnd(CUIXml& xml_doc, LPCSTR path,
 
 	return true;
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 bool CUIXmlInit::InitProgressBar(CUIXml& xml_doc, LPCSTR path, 
 						int index, CUIProgressBar* pWnd)
@@ -302,6 +320,8 @@ bool CUIXmlInit::InitProgressBar(CUIXml& xml_doc, LPCSTR path,
 	return true;
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 bool CUIXmlInit::InitAutoStatic(CUIXml& xml_doc, LPCSTR tag_name, CUIWindow* pParentWnd)
 {
 	int items_num = xml_doc.GetNodesNum(xml_doc.GetRoot(), tag_name);
@@ -317,6 +337,8 @@ bool CUIXmlInit::InitAutoStatic(CUIXml& xml_doc, LPCSTR tag_name, CUIWindow* pPa
 	}
 	return true;
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 bool CUIXmlInit::InitFont(CUIXml &xml_doc, LPCSTR path, int index, u32 &color, CGameFont *&pFnt)
 {
@@ -387,6 +409,8 @@ bool CUIXmlInit::InitFont(CUIXml &xml_doc, LPCSTR path, int index, u32 &color, C
 	return true;
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 bool CUIXmlInit::InitTabControl(CUIXml &xml_doc, LPCSTR path, int index, CUITabControl *pWnd)
 {
 	R_ASSERT2(xml_doc.NavigateToNode(path,index), "XML node not found");
@@ -412,7 +436,6 @@ bool CUIXmlInit::InitTabControl(CUIXml &xml_doc, LPCSTR path, int index, CUITabC
 }
 
 //////////////////////////////////////////////////////////////////////////
-
 
 bool CUIXmlInit::InitFrameLine(CUIXml& xml_doc, const char* path, int index, CUIFrameLineWnd* pWnd)
 {
@@ -520,6 +543,32 @@ bool CUIXmlInit::InitMultiTextStatic(CUIXml &xml_doc, const char *path, int inde
 	xml_doc.SetLocalRoot(xml_doc.GetRoot());
 
 	return status;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+bool CUIXmlInit::InitAnimatedStatic(CUIXml &xml_doc, const char *path, int index, CUIAnimatedStatic *pWnd)
+{
+	R_ASSERT2(xml_doc.NavigateToNode(path,index), "XML node not found");
+
+	InitStatic(xml_doc, path, index, pWnd);
+
+	u32 framesCount		= static_cast<u32>(xml_doc.ReadAttribInt(path, index, "frames", 0));
+	u32 animDuration	= static_cast<u32>(xml_doc.ReadAttribInt(path, index, "duration", 0));
+	u32 animCols		= static_cast<u32>(xml_doc.ReadAttribInt(path, index, "columns", 0));
+	u32 frameWidth		= static_cast<u32>(xml_doc.ReadAttribInt(path, index, "frame_width", 0));
+	u32 frameHeight		= static_cast<u32>(xml_doc.ReadAttribInt(path, index, "frame_height", 0));
+	bool cyclic			= !!xml_doc.ReadAttribInt(path, index, "cyclic", 0);
+	bool play			= !!xml_doc.ReadAttribInt(path, index, "autoplay", 0);
+
+	pWnd->SetFrameDimentions(frameWidth, frameHeight);
+	pWnd->SetFramesCount(framesCount);
+	pWnd->m_bCyclic = cyclic;
+	pWnd->SetAnimCols(animCols);
+	pWnd->SetAnimationDuration(animDuration);
+	if (play) pWnd->Play();
+
+	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -11,6 +11,7 @@
 #include "UIEditBox.h"
 #include "UIListWnd.h"
 #include "UICharacterInfo.h"
+#include "UIAnimatedStatic.h"
 
 class CUIPdaDialogWnd: public CUIWindow  
 {
@@ -60,6 +61,7 @@ public:
 	CUIFrameLineWnd		UIMsglogHeader;
 	CUIFrameLineWnd		UICharIconHeader;
 	CUIFrameLineWnd		UIPhrasesHeader;
+	CUIAnimatedStatic	UIAnimatedIcon;
 
 	//информация о персонаже
 	CUIWindow		 UICharacterWindow;

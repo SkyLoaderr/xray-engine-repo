@@ -42,6 +42,10 @@ public:
 	virtual bool IsHighlightText();
 	virtual void SetHighlightText(bool Highlight) { m_bHighlightText = Highlight; }
 
+	// Автоматическое обновление
+	void	ManualDelete(bool value) { m_bManualDelete = value; }
+	bool	IsManualDelete() { return m_bManualDelete; }
+
 protected:
 	//указатель на произвольные данные, которые могут
 	//присоедениены к элементу
@@ -58,6 +62,9 @@ protected:
 
 	// подсвечивается кнопка или нет?
 	bool m_bHighlightText;
+
+	// удалять item при детаче?
+	bool m_bManualDelete;
 };
 
 #endif

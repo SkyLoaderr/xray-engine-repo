@@ -13,6 +13,7 @@
 #include "UIListWnd.h"
 #include "UITabControl.h"
 #include "UIFrameWindow.h"
+#include "UITreeViewItem.h"
 
 #include "xrXMLParser.h"
 
@@ -24,10 +25,12 @@ public:
 	virtual ~CUINewsWnd();
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void* pData = NULL);
 
-	virtual void Init(CUIXml &uiXml, CUIWindow *pNewParent);
+	virtual void Init();
 
 	// Окно вывода информации
 	CUIListWnd	UIListWnd;
+
+//	virtual bool OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action);
 protected:
 	// Название окна в верхнем правом углу...
 	CUIStatic	UIStaticCaptionMain;

@@ -38,10 +38,14 @@ CUIPdaWnd::~CUIPdaWnd()
 {
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void CUIPdaWnd::Init()
 {
 	CUIXml uiXml;
-	uiXml.Init("$game_data$",PDA_XML);
+	bool xml_result = uiXml.Init("$game_data$",PDA_XML);
+	R_ASSERT2(xml_result, "xml file not found");
+
 	CUIXmlInit xml_init;
 
 	inherited::Init(0,0, Device.dwWidth, Device.dwHeight);
@@ -83,14 +87,21 @@ void CUIPdaWnd::Init()
 	UITaskWnd.Init();
 	
 	// Oкно новостей
-	UIMainPdaFrame.AttachChild(&UIDiaryWnd);
-	UIDiaryWnd.Init();
-	UIDiaryWnd.SetMessageTarget(this);
+//	UIMainPdaFrame.AttachChild(&UIDiaryWnd);
+//	UIDiaryWnd.Init();
+//	UIDiaryWnd.SetMessageTarget(this);
+
+	// Окно энциклопедии
+	UIMainPdaFrame.AttachChild(&UIEncyclopediaWnd);
+	UIEncyclopediaWnd.Init();
+	UIEncyclopediaWnd.Hide();
 
 	m_pActiveDialog = &UIPdaCommunication;
 	//!!!
 	//UITabControl.SetNewActiveTab(1);
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
@@ -114,7 +125,7 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				m_pActiveDialog = dynamic_cast<CUIDialogWnd*>(&UIMapWnd);
 				break;
 			case 3:
-				m_pActiveDialog = dynamic_cast<CUIDialogWnd*>(&UIDiaryWnd);
+				m_pActiveDialog = dynamic_cast<CUIDialogWnd*>(&UIEncyclopediaWnd);
 				break;
 			}
 			m_pActiveDialog->Reset();
@@ -133,16 +144,22 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	}
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void CUIPdaWnd::Show()
 {
 	inherited::Show();
 	m_pActiveDialog->Show();
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void CUIPdaWnd::ChangeActiveTab(E_PDA_TABS tabNewTab)
 {
 	UITabControl.SetNewActiveTab(tabNewTab);
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIPdaWnd::FocusOnMap(const int x, const int y, const int z)
 {
@@ -157,4 +174,32 @@ void CUIPdaWnd::FocusOnMap(const int x, const int y, const int z)
 void CUIPdaWnd::AddNewsItem(const char *sData)
 {
 	UIDiaryWnd.AddNewsItem(sData);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIPdaWnd::UpdateDateTime()
+{
+	string32 buf;
+	ALife::_TIME_ID currMsec = Level().GetGameTime();
+
+	static u8 prevCurrSecs = 0xff;
+	u8 currSecs		= static_cast<u8>(currMsec / 1000 % 60 & 0xFF);
+	u8 currMins		= static_cast<u8>(currMsec / (1000 * 60) % 60 & 0xFF);
+	u8 currHours	= static_cast<u8>(currMsec / (1000 * 3600) % 24 & 0xFF);
+
+	if (prevCurrSecs != currSecs)
+	{
+		sprintf(buf, "%02i:%02i:%02i", currHours, currMins, currSecs);
+		UITimerBackground.UITitleText.SetText(buf);
+		prevCurrSecs = currSecs;
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIPdaWnd::Update()
+{
+	inherited::Update();
+	UpdateDateTime();
 }

@@ -20,7 +20,7 @@ class CUINotesWnd: public CUIDialogWnd
 public:
 	CUINotesWnd() {}
 	virtual ~CUINotesWnd() {}
-	virtual void Init(CUIXml &uiXml, CUIWindow *pNewParent);
+	virtual void Init();
 	// Нет смысла скрывать листбокс, так как все равно пока это практически все, что есть, и
 	// придется писать обертки над всеми управляющими функциями листбокса
 	CUIListWnd		UIListWnd;

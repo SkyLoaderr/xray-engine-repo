@@ -69,7 +69,7 @@ void CUIStatsWnd::Init()
 CUIStatsListItem * CUIStatsWnd::AddItem()
 {
 	CUIStatsListItem *pNewItem = xr_new<CUIStatsListItem>();
-	UIStatsList.AddItem(pNewItem); 
+	UIStatsList.AddItem<CUIListItem>(pNewItem); 
 
 	CUIXml uiXml;
 	bool xml_result = uiXml.Init("$game_data$", STATS_XML);

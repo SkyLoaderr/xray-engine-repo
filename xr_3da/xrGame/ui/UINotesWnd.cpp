@@ -9,13 +9,13 @@
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
 
-void CUINotesWnd::Init(CUIXml &uiXml, CUIWindow *pNewParent)
+void CUINotesWnd::Init()
 {
 	CUIXmlInit xml_init;
 
 	//	inherited::Init(0,0, Device.dwWidth, Device.dwHeight);
 
 	// Заголовок
-	AttachChild(&UIStaticCaption);
-	xml_init.InitStatic(uiXml, "static", 0, &UIStaticCaption);
+//	AttachChild(&UIStaticCaption);
+//	xml_init.InitStatic(uiXml, "static", 0, &UIStaticCaption);
 }
