@@ -328,7 +328,7 @@ typedef struct tagSSoldierAnimations{
 		virtual void  SelectEnemy(SEnemySelected& S);
 		virtual void  SelectAnimation( const Fvector& _view, const Fvector& _move, float speed );
 		virtual void  g_fireParams(Fvector &fire_pos, Fvector &fire_dir);
-		virtual float OnVisible(); 
+		virtual void  OnVisible(); 
 		virtual objQualifier* GetQualifier	();
 		
 };

@@ -98,7 +98,7 @@ public:
 
 	virtual void			Load				(CInifile* ini, LPCSTR section);
 	virtual BOOL			Spawn				(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);
-	virtual float			OnVisible			();
+	virtual void			OnVisible			();
 
 	bool					IsFocused			()	{ return (pCreator->CurrentEntity()==this);		}
 	bool					IsMyCamera			()	{ return (pCreator->CurrentViewEntity()==this);	}
