@@ -265,6 +265,7 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	
 	// load damage params
 	if (pSettings->line_exist(cNameSect(),"damage")) {
+		string32 buf;
 		CInifile::Sect& dam_sect	= pSettings->r_section(pSettings->r_string(cNameSect(),"damage"));
 		for (CInifile::SectIt it=dam_sect.begin(); it!=dam_sect.end(); it++)
 		{
@@ -273,7 +274,9 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 			}else{
 				int bone	= PKinematics(pVisual)->LL_BoneID(it->first); 
 				R_ASSERT2(bone!=BONE_NONE,it->first);
-				PKinematics(pVisual)->LL_GetInstance(bone).set_param(0,(float)atof(it->second));
+				CBoneInstance& B = PKinematics(pVisual)->LL_GetInstance(bone);
+				B.set_param(0,(float)atof(_GetItem(it->second,0,buf)));
+				B.set_param(1,atoi(_GetItem(it->second,1,buf)));
 			}
 		}
 	}

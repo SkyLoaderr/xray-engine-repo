@@ -105,6 +105,8 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 	sound& S = m_tpSoundHit[::Random.randI(STALKER_SND_HIT_COUNT)];
 	if (!S.feedback && g_Alive())
 		::Sound->play_at_pos(S,this,vPosition);
+
+	fHealth	 = 100.f;
 }
 
 float CAI_Stalker::EnemyHeuristics(CEntity* E)

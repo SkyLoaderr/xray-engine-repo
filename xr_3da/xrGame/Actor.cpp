@@ -1349,6 +1349,6 @@ float CActor::Radius()const
 	float R		= inherited::Radius();
 	CWeapon* W	= dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
 	if (W) R	+= W->Radius();
-	if (HUDview()) R *= 1.f/psHUD_FOV;
+//	if (HUDview()) R *= 1.f/psHUD_FOV;
 	return R;
 }
