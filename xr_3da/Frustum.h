@@ -28,7 +28,8 @@ enum EFC_Visible {
 #define FRUSTUM_P_ALL		(FRUSTUM_P_LRTB|FRUSTUM_P_NEAR|FRUSTUM_P_FAR)
 
 #define FRUSTUM_SAFE		(FRUSTUM_MAXPLANES*4)
-typedef svector<Fvector,FRUSTUM_SAFE>	sPoly;
+typedef svector<Fvector,FRUSTUM_SAFE>		sPoly;
+extern	u32			frustum_aabb_remap[8][6];
 
 class ENGINE_API	CFrustum
 {
@@ -38,11 +39,25 @@ public:
 		u32			aabb_overlap_id;	// [0..7]
 		void		cache	();	
 	};
-
 	fplane			planes	[FRUSTUM_MAXPLANES];
 	int				p_count;
 
-	EFC_Visible		AABB_OverlapPlane	(const fplane& P, const float* mM) const;
+public:
+	IC EFC_Visible		AABB_OverlapPlane	(const fplane& P, const float* mM) const
+	{
+		// calc extreme pts (neg,pos) along normal axis (pos in dir of norm, etc.)
+		u32*	id		= frustum_aabb_remap[P.aabb_overlap_id];
+
+		Fvector			Neg;
+		Neg.set			(mM[id[3]],mM[id[4]],mM[id[5]]);
+		if				(P.classify(Neg) > 0)	return	fcvNone;
+
+		Fvector			Pos;
+		Pos.set			(mM[id[0]],mM[id[1]],mM[id[2]]);
+		if				(P.classify(Pos) <= 0)	return	fcvFully;
+
+		return			fcvPartial;
+	}
 public:
 	IC void			_clear				()				{ p_count=0; }
 	void			_add				(Fplane &P);

@@ -44,7 +44,7 @@ void			CFrustum::_add			(Fvector& P1, Fvector& P2, Fvector&P3)
 #define			Mx			3
 #define			My			4
 #define			Mz			5
-static			u32			remap [8][6]	=
+u32				frustum_aabb_remap [8][6]	=
 {
 	{ Mx,My,Mz,mx,my,mz}, 
 	{ Mx,My,mz,mx,my,Mz}, 
@@ -57,22 +57,6 @@ static			u32			remap [8][6]	=
 };
 
 //////////////////////////////////////////////////////////////////////
-EFC_Visible		CFrustum::AABB_OverlapPlane(const fplane& P, const float* mM) const
-{
-	// calc extreme pts (neg,pos) along normal axis (pos in dir of norm, etc.)
-	u32*	id		= remap[P.aabb_overlap_id];
-
-	Fvector			Neg;
-	Neg.set			(mM[id[3]],mM[id[4]],mM[id[5]]);
-	if				(P.classify(Neg) > 0)	return	fcvNone;
-
-	Fvector			Pos;
-	Pos.set			(mM[id[0]],mM[id[1]],mM[id[2]]);
-	if				(P.classify(Pos) <= 0)	return	fcvFully;
-
-	return			fcvPartial;
-}
-
 EFC_Visible	CFrustum::testSphere			(Fvector& c, float r, u32& test_mask) const
 {
 	u32	bit = 1;
