@@ -112,11 +112,6 @@ CHelicopterMovementManager::onFrame(Fmatrix& xform, float fTimeDelta)
 			}
 		break;
 		}
-	default:
-		{
-			int i;
-			i = 0;
-		}
 	}//switch
 	
 }
