@@ -669,21 +669,28 @@ HRESULT CreatePower(IDirect3DDevice9* D, DWORD size, float P, LPDIRECT3DTEXTURE9
 }
 
 // Gauss filtering coeffs
-void	CalcGauss	(int n=7, float r=3.3f, float t=1.f, float bs=1.2f)
-const int	n	= 7;		// kernel size
-const float r	= 3.3f;		// gaussian radius
-const float t	= 1;		// grid dimension
-const float bs	= 1.2f;		// bilinear interpolation (1=point sampling, 2=twice the kernel size - interpolated)
-
-float		w [2*n+1];	float* _w = w;
-float		u [2*n+1];	float* _u = u;
-for (int i=-n; i<=n; i++)
+void	CalcGauss	(
+					 vector<float>&			w,	// weight
+					 vector<D3DXVECTOR4>&	H,	// horizontal offsets
+					 vector<D3DXVECTOR4>&	V,	// vertical offsets
+					 int	n=7,				// kernel size
+					 float	r=3.3f,				// gaussian radius
+					 float	tw=1.f,				// grid/texture width
+					 float	th=1.f,				// grid/texture height
+					 float	bs=1.2f				// bilinear interpolation (1=point sampling, 2=twice the kernel size - interpolated)
+					 )
 {
-	*_w++	= expf(-float(i*i)/(2*r*r));
-	*_u++	= bs*float(i)/t;
+	D3DXVECTOR4		scale	= D3DXVECTOR4(1/tw,1/th,0,0);
+	D3DXVECTOR4		shift	= D3DXVECTOR4(.5f,.5f,0,0)*scale;
+	for (int i=-n; i<=n; i++)
+	{
+		w.push_back	(expf(-float(i*i)/(2*r*r)));	// weight
+
+		float offset	= bs*float(i); 
+		H.push_back		(shift+scale*D3DXVECTOR4(offset,0,0,0));
+		V.push_back		(shift+scale*D3DXVECTOR4(0,offset,0,0));
+	}
 }
-
-
 
 HRESULT CMyD3DApplication::RestoreDeviceObjects()
 {
