@@ -17,8 +17,8 @@
 #define FLAME_TIME 0.05f
 #define HIT_POWER_EPSILON 0.05f
 
-#define GROUND_HIT_PARTICLES "weapons\\generic_flame_01"
-//"weapons\\wg-hit-ground"
+#define GROUND_HIT_PARTICLES "weapons\\wg-hit-ground"
+
 
 void CWeapon::FireShotmark	(const Fvector& /**vDir/**/, const Fvector &vEnd, Collide::rq_result& R) 
 {
