@@ -5,6 +5,7 @@
 #include "WaveForm.h"
 
 class	ENGINE_API	CStream;
+class	ENGINE_API	CFS_Base;
 
 class	ENGINE_API	CConstant
 {
@@ -56,5 +57,6 @@ public:
 		return TRUE;
 	}
 	void			Load		(CStream* fs);
+	void			Save		(CFS_Base* fs);
 };
 #endif

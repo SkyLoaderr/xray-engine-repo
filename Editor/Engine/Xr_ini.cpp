@@ -18,12 +18,6 @@ CInifile* CInifile::Create(const char* szFileName, BOOL ReadOnly)
 void CInifile::Destroy(CInifile* ini)
 {	_DELETE(ini); }
 
-#ifdef ENGINE_BUILD
-#define FATAL(a,b)	Device.Fatal(a,b)
-#else
-#define FATAL(a,b)	R_ASSERT(0)
-#endif
-
 //-----------------------------------------------------------------------------------------------------------
 //Тело функций Inifile
 //-----------------------------------------------------------------------------------------------------------
@@ -69,7 +63,7 @@ CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly)
     bReadOnly	= ReadOnly;
 
 #ifdef ENGINE_BUILD
-	if (!Engine.FS.Exist(szFileName)) 
+	if (!Engine.FS.Exist(szFileName))
 #else
 	if (!FS.Exist(szFileName))
 #endif
@@ -240,7 +234,7 @@ CInifile::Sect& CInifile::ReadSection( LPCSTR S )
 	char	section[256]; strcpy(section,S); strlwr(section);
 	Sect Test; Test.Name = section; RootIt I = lower_bound(DATA.begin(),DATA.end(),Test,sect_pred());
 	if (I!=DATA.end() && strcmp(I->Name,section)==0)	return *I;
-	else												FATAL("Can't open section '%s'",S);
+	else												Device.Fatal("Can't open section '%s'",S);
 }
 
 LPCSTR	CInifile::ReadSTRING(LPCSTR S, LPCSTR L )
@@ -248,7 +242,7 @@ LPCSTR	CInifile::ReadSTRING(LPCSTR S, LPCSTR L )
 	Sect&	I = ReadSection(S);
 	Item Test; Test.first=(char*)L; SectIt	A = lower_bound(I.begin(),I.end(),Test,item_pred());
 	if (A!=I.end() && strcmp(A->first,L)==0)	return A->second;
-	else										FATAL("Can't find variable '%s'",L);
+	else										Device.Fatal("Can't find variable '%s'",L);
 }
 
 int  CInifile::ReadINT(LPCSTR S, LPCSTR L)
@@ -312,7 +306,7 @@ BOOL	CInifile::ReadLINE( LPCSTR S, int L, const char** N, const char** V )
 	Sect&	SS = ReadSection(S);
 	if (L>=SS.size() || L<0 ) return FALSE;
 	for (SectIt I=SS.begin(); I!=SS.end(); I++)
-		if (!(L--)){ 
+		if (!(L--)){
 			*N = I->first;
 			*V = I->second;
 			return TRUE;
@@ -339,7 +333,7 @@ void	CInifile::WriteString	( LPCSTR S, LPCSTR L, LPCSTR			V, LPCSTR comment)
 	// parse line/value
 	char	line	[256];	_parse	(line,L);
 	char	value	[256];	_parse	(value,V);
-	
+
 	// duplicate & insert
 	Item	I;
 	Sect&	data	= ReadSection	(sect);

@@ -221,7 +221,6 @@ static float incoming( st_Key *key0, st_Key *key1, st_Key *key1n ){
          if ( key1n )
             in *= ( key1->time - key0->time ) / ( key1n->time - key0->time );
          break;
-         return in;
 
       case SHAPE_BEZ2:
          in = key1->param[ 1 ] * ( key1->time - key0->time );

@@ -7,8 +7,8 @@
 
 #include "image.h"
 #include "xr_func.h"
-#include "xr_creator.h"
-#include "x_ray.h"
+//#include "xr_creator.h"
+//#include "x_ray.h"
 #include "texture.h"
 #include "std_classes.h"
 #include "xr_avi.h"
@@ -430,10 +430,16 @@ ENGINE_API IDirect3DTexture8*	TWLoader2D(
 	// make file name
 	char fname[_MAX_PATH];
 	strcpy(fname,fRName); if (strext(fname)) *strext(fname)=0;
+#ifdef M_BORLAND
+	#include "filesystem.h"
+	if (FS.Exist(fn,FS.m_GameTextures.m_Path,fname,	".dds"))	goto _DDS;
+	if (FS.Exist(fn,FS.m_GameTextures.m_Path,fname,	".tga"))	goto _TGA;
+#else
 	if (Engine.FS.Exist(fn,Path.Current,fname,	".dds"))	goto _DDS;
 	if (Engine.FS.Exist(fn,Path.Textures,fname,	".dds"))	goto _DDS;
 	if (Engine.FS.Exist(fn,Path.Current,fname,	".tga"))	goto _TGA;
 	if (Engine.FS.Exist(fn,Path.Textures,fname,	".tga"))	goto _TGA;
+#endif
 	Device.Fatal("Can't find texture '%s'",fname);
 	return 0;
 

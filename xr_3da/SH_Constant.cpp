@@ -9,3 +9,12 @@ void	CConstant::Load	(CStream* fs)
 	fs->Read	(&_B,sizeof(WaveForm));
 	fs->Read	(&_A,sizeof(WaveForm));
 }
+
+void	CConstant::Save	(CFS_Base* fs)
+{
+	fs->write	(&_R,sizeof(WaveForm));
+	fs->write	(&_G,sizeof(WaveForm));
+	fs->write	(&_B,sizeof(WaveForm));
+	fs->write	(&_A,sizeof(WaveForm));
+}
+

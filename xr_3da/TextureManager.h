@@ -91,7 +91,7 @@ public:
 	void	OnFrameEnd		();
 
 	// Creation/Destroying
-	Shader*	Create			(LPCSTR s_shader="null", LPCSTR s_textures = "$null", LPCSTR s_constants = "", LPCSTR s_matrices = "");
+	Shader*	Create			(LPCSTR s_shader=0, LPCSTR s_textures=0, LPCSTR s_constants=0, LPCSTR s_matrices=0);
 	void	Delete			(Shader*	&S);
 	void	DeferredLoad	(BOOL E)	{ bDeferredLoad=E;	}
 	void	DeferredUpload	();

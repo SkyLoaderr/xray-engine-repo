@@ -14,8 +14,6 @@ extern ENGINE_API void *	FileDecompress	(const char *fn, const char* sign, DWORD
 #define CFS_CompressMark	(1ul << 31ul)
 #define CFS_AlignMark		(1ul << 30ul)
 
-const char term[2]={13,10};
-
 class ENGINE_API CFS_Base {
 private:
 	std::stack<int>	chunk_pos;
@@ -48,8 +46,11 @@ public:
 	IC void	Wbyte(BYTE d)
 	{	write(&d,sizeof(BYTE));		}
 	IC void	Wstring(const char *p)
-	{	write(p,strlen(p));
-		write(term,2);		 	    }
+	{
+    	write(p,strlen(p));
+		Wbyte(13);
+		Wbyte(10);
+    }
 	IC void	WstringZ(const char *p)
 	{	write(p,strlen(p)+1);		}
 	IC void	Wvector(const Fvector &v)
