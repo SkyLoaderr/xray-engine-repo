@@ -38,6 +38,8 @@ public:
 	IC		bool			enabled				() const;
 			void			enable				(bool value);
 	virtual bool			can_be_attached		() const;
+	virtual void			afterAttach			();
+	virtual void			afterDetach			();
 };
 
 #include "attachable_item_inline.h"

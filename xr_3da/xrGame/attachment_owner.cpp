@@ -94,6 +94,7 @@ void CAttachmentOwner::attach(CInventoryItem *inventory_item)
 		m_attached_objects.push_back		(smart_cast<CAttachableItem*>(inventory_item));
 
 		inventory_item->object().setVisible	(true);
+		attachable_item->afterAttach();
 	}
 }
 
@@ -104,12 +105,14 @@ void CAttachmentOwner::detach(CInventoryItem *inventory_item)
 	for ( ; I != E; ++I) {
 		if ((*I)->ID() == inventory_item->object().ID()) {
 			m_attached_objects.erase	(I);
+			(*I)->afterDetach();
 			if (m_attached_objects.empty()) {
 				CGameObject					*game_object = smart_cast<CGameObject*>(this);
 				VERIFY						(game_object && game_object->Visual());
 				game_object->remove_visual_callback(AttachmentCallback);
 				
 				inventory_item->object().setVisible	(false);
+
 			}
 			break;
 		}
@@ -118,22 +121,28 @@ void CAttachmentOwner::detach(CInventoryItem *inventory_item)
 
 bool CAttachmentOwner::attached				(const CInventoryItem *inventory_item) const
 {
+	return (attachedItem(inventory_item->object().ID())!= NULL);
+/*
 	xr_vector<CAttachableItem*>::const_iterator	I = m_attached_objects.begin();
 	xr_vector<CAttachableItem*>::const_iterator	E = m_attached_objects.end();
 	for ( ; I != E; ++I)
 		if ((*I)->ID() == inventory_item->object().ID())
 			return		(true);
 	return				(false);
+*/
 }
 
 bool  CAttachmentOwner::attached			(shared_str sect_name) const
 {
+	return (attachedItem(sect_name)!= NULL);
+/*
 	xr_vector<CAttachableItem*>::const_iterator	I = m_attached_objects.begin();
 	xr_vector<CAttachableItem*>::const_iterator	E = m_attached_objects.end();
 	for ( ; I != E; ++I)
 		if (!xr_strcmp((*I)->cNameSect(), sect_name) && !(*I)->m_drop)
 			return		(true);
 	return				(false);
+*/
 }
 
 bool CAttachmentOwner::can_attach			(const CInventoryItem *inventory_item) const
@@ -169,4 +178,39 @@ void CAttachmentOwner::reattach_items		()
 		game_object->SetKinematicsCallback(false);
 	else
 		game_object->SetKinematicsCallback(true);
+}
+
+CAttachableItem* CAttachmentOwner::attachedItem			(CLASS_ID clsid) const
+{
+	xr_vector<CAttachableItem*>::const_iterator	I = m_attached_objects.begin();
+	xr_vector<CAttachableItem*>::const_iterator	E = m_attached_objects.end();
+	for ( ; I != E; ++I)
+		if ((*I)->CLS_ID == clsid)
+			return (*I);
+
+	return NULL;
+
+}
+
+CAttachableItem* CAttachmentOwner::attachedItem			(u16 id) const
+{
+	xr_vector<CAttachableItem*>::const_iterator	I = m_attached_objects.begin();
+	xr_vector<CAttachableItem*>::const_iterator	E = m_attached_objects.end();
+	for ( ; I != E; ++I)
+		if ((*I)->ID() == id)
+			return (*I);
+
+	return NULL;
+}
+
+CAttachableItem* CAttachmentOwner::attachedItem			(shared_str& section) const
+{
+	xr_vector<CAttachableItem*>::const_iterator	I = m_attached_objects.begin();
+	xr_vector<CAttachableItem*>::const_iterator	E = m_attached_objects.end();
+	for ( ; I != E; ++I)
+		if (!xr_strcmp((*I)->cNameSect(), section) && !(*I)->m_drop)
+			return		(*I);
+
+	return				NULL;
+
 }

@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "attachable_item.h"
 #include "inventoryowner.h"
+#include "inventory.h"
 
 CAttachableItem::~CAttachableItem	()
 {
@@ -83,5 +84,14 @@ void CAttachableItem::enable		(bool value)
 
 bool  CAttachableItem::can_be_attached		() const
 {
-	 return true;
+	if(!m_pInventory) return false;
+	if( !m_pInventory->IsBeltUseful() ) return true;
+	if(m_eItemPlace != eItemPlaceBelt) return false;
+	 
+	return true;
 }
+void CAttachableItem::afterAttach			()
+{}
+
+void CAttachableItem::afterDetach			()
+{}

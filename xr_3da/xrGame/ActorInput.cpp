@@ -68,18 +68,30 @@ void CActor::IR_OnKeyboardPress(int cmd)
 	case kCAM_3:	cam_Set			(eacFreeLook);				break;
 
 	case kNIGHT_VISION: {
-		PIItem I = inventory().Get(CLSID_DEVICE_TORCH, false); 
+		PIItem I = CAttachmentOwner::attachedItem(CLSID_DEVICE_TORCH);
 		if (I){
 			CTorch* torch = smart_cast<CTorch*>(I);
 			if (torch) torch->SwitchNightVision();
 		}
+/*
+		PIItem I = inventory().Get(CLSID_DEVICE_TORCH, false); 
+		if (I){
+			CTorch* torch = smart_cast<CTorch*>(I);
+			if (torch) torch->SwitchNightVision();
+		}*/
 		}break;
 	case kTORCH:{ 
-		PIItem I = inventory().Get(CLSID_DEVICE_TORCH, false); 
+		PIItem I = CAttachmentOwner::attachedItem(CLSID_DEVICE_TORCH);
 		if (I){
 			CTorch* torch = smart_cast<CTorch*>(I);
 			if (torch) torch->Switch();
 		}
+/*
+		PIItem I = inventory().Get(CLSID_DEVICE_TORCH, false); 
+		if (I){
+			CTorch* torch = smart_cast<CTorch*>(I);
+			if (torch) torch->Switch();
+		}*/
 		}break;
 	case kWPN_1:	
 	case kWPN_2:	

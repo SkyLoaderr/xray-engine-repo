@@ -404,8 +404,9 @@ bool CInventory::Belt(PIItem pIItem)
 	CalcTotalWeight();
 	m_dwModifyFrame = Device.dwFrame;
 
-	m_pOwner->OnItemBelt(pIItem, pIItem->m_eItemPlace);
+	EItemPlace p = pIItem->m_eItemPlace;
 	pIItem->m_eItemPlace = eItemPlaceBelt;
+	m_pOwner->OnItemBelt(pIItem, p);
 	pIItem->OnMoveToBelt();
 	
 	return true;

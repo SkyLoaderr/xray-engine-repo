@@ -31,9 +31,13 @@ public:
 	virtual	void			detach				(CInventoryItem *inventory_item);
 	virtual	bool			can_attach			(const CInventoryItem *inventory_item) const;
 			bool			attached			(const CInventoryItem *inventory_item) const;
-			bool			attached			(shared_str sect_name) const;
-			virtual void			reattach_items		();
-	IC		const xr_vector<CAttachableItem*> &attached_objects	() const;
+			bool			attached			(shared_str sect_name)  const;
+			virtual void	reattach_items		();
+	IC		const xr_vector<CAttachableItem*> &attached_objects	()		const;
+
+	CAttachableItem*		attachedItem		(CLASS_ID clsid)		const;
+	CAttachableItem*		attachedItem		(u16 id)				const;
+	CAttachableItem*		attachedItem		(shared_str& section)	const;
 };
 
 #include "attachment_owner_inline.h"
