@@ -34,6 +34,7 @@ private:
 	
 	void									_Create		(LPCSTR shName);
 	void									_Destroy	(BOOL	bKeepTextures);
+	void									_SetupStates();
 public:
     HWND									m_hWnd;
 	LRESULT									MsgProc		(HWND,UINT,WPARAM,LPARAM);
@@ -116,7 +117,7 @@ public:
 	void Create								(void);
 	void Run								(void);
 	void Destroy							(void);
-	void Reset								(LPCSTR shName=0, BOOL bKeepTextures=FALSE);
+	void Reset								(void);
 
 	void Initialize							(void);
 	void ShutDown							(void);

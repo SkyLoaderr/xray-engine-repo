@@ -32,13 +32,19 @@ void CRenderDevice::Destroy	(void) {
 	HW.DestroyDevice			();
 }
 
-void CRenderDevice::Reset		(LPCSTR shName, BOOL bKeepTextures)
+void CRenderDevice::Reset		()
 {
-	u32 tm_start		= TimerAsync();
-	Memory.mem_compact	();
-	_Destroy			(bKeepTextures);
-	_Create				(shName);
-	Memory.mem_compact	();
-	u32 tm_end			= TimerAsync();
-	Msg					("*** RESET [%d ms]",tm_end-tm_start);
+	u32 tm_start			= TimerAsync();
+	Resources->reset_begin	();
+	Memory.mem_compact		();
+	HW.Reset				();
+	dwWidth					= HW.DevPP.BackBufferWidth;
+	dwHeight				= HW.DevPP.BackBufferHeight;
+	fWidth_2				= float(dwWidth/2);
+	fHeight_2				= float(dwHeight/2);
+	Resources->reset_end	();
+	_SetupStates			();
+	PreCache				(10);
+	u32 tm_end				= TimerAsync();
+	Msg						("*** RESET [%d ms]",tm_end-tm_start);
 }

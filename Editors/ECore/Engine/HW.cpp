@@ -96,9 +96,11 @@ void	CHW::DestroyDevice	()
 	DestroyD3D				();
 }
 
-u32 CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
+u32 CHW::CreateDevice		(HWND m_hWnd)
 {
 	CreateD3D				();
+
+	u32 dwWidth,dwHeight;
 
 	// General - select adapter and device
 	BOOL  bWindowed			= !psDeviceFlags.is(rsFullscreen);

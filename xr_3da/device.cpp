@@ -8,13 +8,21 @@ ENGINE_API CRenderDevice Device;
 
 void CRenderDevice::Begin	()
 {
-	HW.Validate	();
-    if (HW.pDevice->TestCooperativeLevel()!=D3D_OK)
+	HW.Validate		();
+	HRESULT	_hr		= HW.pDevice->TestCooperativeLevel();
+    if (FAILED(_hr))
 	{
-		::OutputDebugString("TCL!=D3D_OK\n");
-		Sleep	(500);
-		Destroy	();
-		Create	();
+		// If the device was lost, do not render until we get it back
+		if		(D3DERR_DEVICELOST==_hr)		{
+			Sleep	(33);
+			return	;
+		}
+
+		// Check if the device is ready to be reset
+		if		(D3DERR_DEVICENOTRESET==_hr)
+		{
+			Reset	();
+		}
 	}
 
 	CHK_DX					(HW.pDevice->BeginScene());

@@ -4,13 +4,8 @@
 #include "xr_effgamma.h"
 #include "render.h"
 
-void CRenderDevice::_Create	(LPCSTR shName)
+void CRenderDevice::_SetupStates	()
 {
-	Memory.mem_compact		();
-
-	// after creation
-	bReady					= TRUE;
-
 	// General Render States
 	mView.identity			();
 	mProject.identity		();
@@ -22,7 +17,7 @@ void CRenderDevice::_Create	(LPCSTR shName)
 
 	HW.Caps.Update			();
 	for (u32 i=0; i<HW.Caps.raster.dwStages; i++)				{
-		float fBias = -1.f;
+		float fBias = -.75f;
 		CHK_DX(HW.pDevice->SetSamplerState	( i, D3DSAMP_MAXANISOTROPY, 4				));
 		CHK_DX(HW.pDevice->SetSamplerState	( i, D3DSAMP_MIPMAPLODBIAS, *((LPDWORD) (&fBias))));
 		CHK_DX(HW.pDevice->SetSamplerState	( i, D3DSAMP_MINFILTER,	D3DTEXF_LINEAR 		));
@@ -36,13 +31,6 @@ void CRenderDevice::_Create	(LPCSTR shName)
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_CULLMODE,			D3DCULL_CCW			));
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_ALPHAFUNC,			D3DCMP_GREATER		));
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_LOCALVIEWER,		TRUE				));
-
-	/*
-	CHK_DX(HW.pDevice->SetRenderState( D3DRS_POSITIONORDER,		D3DORDER_CUBIC));
-	CHK_DX(HW.pDevice->SetRenderState( D3DRS_NORMALORDER,		D3DORDER_CUBIC));
-	float tess = 3.f;
-	CHK_DX(HW.pDevice->SetRenderState( D3DRS_PATCHSEGMENTS,		*((u32*)&tess)));
-	*/
 
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_MATERIAL	));
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_SPECULARMATERIALSOURCE,D3DMCS_MATERIAL	));
@@ -66,6 +54,15 @@ void CRenderDevice::_Create	(LPCSTR shName)
 		CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGTABLEMODE,	D3DFOG_NONE			));
 		CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGVERTEXMODE,	D3DFOG_LINEAR		));
 	}
+}
+
+void CRenderDevice::_Create	(LPCSTR shName)
+{
+	Memory.mem_compact			();
+
+	// after creation
+	bReady						= TRUE;
+	_SetupStates				();
 
 	// Signal everyone - device created
 	RCache.OnDeviceCreate		();
@@ -82,7 +79,9 @@ void CRenderDevice::Create	()
 	if (bReady)	return;		// prevent double call
 	Log("Starting RENDER device...");
 
-	u32 dwWindowStyle = HW.CreateDevice(m_hWnd,dwWidth,dwHeight);
+	u32 dwWindowStyle = HW.CreateDevice(m_hWnd);
+	dwWidth		= HW.DevPP.BackBufferWidth;
+	dwHeight	= HW.DevPP.BackBufferHeight;
 	fWidth_2	= float(dwWidth/2);
 	fHeight_2	= float(dwHeight/2);
 	fFOV		= 90.f;
