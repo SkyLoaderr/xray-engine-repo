@@ -135,8 +135,7 @@ class "sWalking"
 function sWalking:__init( mem, script_name, position_o, radius_o )
 	self.memory    = mem
     self.scr_name  = script_name
-    self.point     = position_o
-    self.new_point = nil
+    self.point     = patrol(position_o):level_vertex_id(0)
     self.time      = 0
 
     if( radius_o ) then
@@ -153,24 +152,11 @@ end
 
 function sWalking:execute()
     if( self.memory.npc:action() == nil ) then
-        self:select_point()
-        action( self.memory.npc, move( move.walk, self.new_point ), sound( sound.idle ), cond( cond.move_end ) )
-    end
-
-    if( self.memory.npc:position():distance_to( self.new_point ) < 0.5 ) then
-    	reset_action( self.memory.npc, self.scr_name )
+        action( self.memory.npc, move( move.walk, new_point(self.point, self.memory.npc:level_vertex_id(), self.radius, self.radius) ), sound( sound.idle ), cond( cond.move_end ) )
     end
 end
 
 local pos   = nil
-
-function sWalking:select_point()
-    pos = self.memory.npc:position()
-    for i = 1, 10 do
-        self.new_point  = vector():set( self.point.x - 2*self.radius + math.random( 0, 2*self.radius ), self.point.y - 2*self.radius + math.random( 0, 2*self.radius ), self.point.z - 2*self.radius + math.random( 0, 2*self.radius ) )
-        if( self.new_point:distance_to( self.memory.npc:position() ) > self.radius ) then break  end
-    end
-end
 
 function sWalking:finalize()
     self.memory.npc:script( false, self.scr_name )
